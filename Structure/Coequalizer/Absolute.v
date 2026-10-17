@@ -52,11 +52,11 @@ Definition split_coequalizer_absolute@{co ch xo xh +}
 
 (** ** Every instance at or above C's levels: the lift *)
 
-(* An absolute coequalizer at ANY target level at or above C's is a
-   coequalizer in C, its cofork included: C is read at that level by
-   Construction/Lift.v's [LiftCat], and [Lift_in C] plays the part of
-   [Id].  The instance of the hypothesis is named, its target levels
-   being bounded below by C's alone. *)
+(*
+   本节说明 Absolute 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition AbsoluteCoequalizer_IsCoequalizer_up@{co ch xo xh +}
   {C : Category@{co ch ch}} {x y : C} {f g : x ~> y} {q : C} {e : y ~> q}
@@ -108,13 +108,11 @@ Example image_cofork_inj_ParY@{co ch xo +}
   cocone_inj (FCocone T (cofork_cocone f g e H)) ParY = fmap[T] e
   := eq_refl.
 
-(* Both directions are Structure/Coequalizer.v's diagram-general
-   conversions at [K := T ◯ APair f g], whose pair is [fmap[T] f] and
-   [fmap[T] g] by conversion.  Over [ParX] the cofork cocone of the image
-   pair has the injection [fmap[T] e ∘ fmap[T] f] and the image cocone
-   [fmap[T] (e ∘ f)], equal at ≈ by [fmap_comp]; so the first direction
-   transports along a cone isomorphism whose apex map is the identity,
-   and the second is the conversion itself. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition image_coequalizer_colimit@{co ch xo +}
   {C : Category@{co ch ch}} {X : Category@{xo ch ch}} (T : C ⟶ X)

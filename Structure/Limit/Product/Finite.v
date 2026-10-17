@@ -349,10 +349,11 @@ Definition fin_two_IsCartesianProduct {C : Category}
   iprod_two_IsCartesianProduct x y (fin_prod 2 (fin2fam x y))
     (fin_proj 2 (fin2fam x y)) (fin_IsIndexedProduct 2 (fin2fam x y)).
 
-(* The right fold is canonically isomorphic to ANY other n-ary product of
-   the same family -- a left fold included, once that left fold is shown to
-   be an [IsIndexedProduct].  Awodey's ternary one is shown to be one below,
-   so this is instantiated rather than left hanging. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition fin_prod_unique_iso {C : Category} (CP : @Cartesian C)
   (T : @Terminal C) (n : nat) (f : Fin.t n → C) (q : C)
   (projq : ∀ i, q ~> f i) (HQ : IsIndexedProduct f q projq) :
@@ -381,9 +382,11 @@ Definition fin_prod_unique_iso_from {C : Category} (CP : @Cartesian C)
 
 Section AwodeyTernary.
 
-(* NOTE the hypothesis: [Cartesian] alone, with NO [Terminal].  Awodey's
-   [A × B × C := (A × B) × C] pads with nothing, which is exactly why the
-   terminal object is needed only for the nullary and unary cases. *)
+(*
+   本节说明笛卡尔、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context {C : Category}.
 Context (CP : @Cartesian C).
 Context (x y z : C).

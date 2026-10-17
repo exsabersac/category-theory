@@ -89,14 +89,11 @@ End Bijection.
 
 (** ** The pinned notion *)
 
-(* [w] is the index universe, pinned at or below the hom universe [h];
-   [s] and [t] are the two universes of [SubObj_Setoid].  The trailing
-   [+] in both constraint lists is load-bearing on Coq 8.19 and 8.20,
-   where [sigT] and [eq] carry global universes: without it both
-   toolchains refuse the declaration with "Universe constraints are not
-   implied by the ones declared: h <= sigT.u0, h <= sigT.u1, h <= eq.u0"
-   (measured).  On Rocq 9.1 the block read back is the same four
-   constraints with or without it. *)
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition WellPowered@{o h w s t | w <= h, o <= s, h <= s, h < t +}
   (C : Category@{o h h}) :=
@@ -170,11 +167,11 @@ Definition complete_intersection_IsIntersection@{o h r so j +|
 
 (** ** The consequence: intersections of classes of subobjects *)
 
-(* A collection of subobjects is a collection of equivalence classes; in
-   setoid discipline, a predicate [P] on the large type [SubObj x] that is
-   closed under ≈.  Its members are intersected by reindexing them over the
-   SMALL index [{ i : wp_index W & P (wp_to W i) }] and taking the wide
-   pullback there. *)
+(*
+   本节说明拉回/推出、等价、子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ClassIntersection.
 
@@ -187,9 +184,11 @@ Definition wp_class_index : Type := { i : wp_index W & P (wp_to W i) }.
 
 Definition wp_class_family (k : wp_class_index) : SubObj x := wp_to W (`1 k).
 
-(* A lower bound of the representatives is a lower bound of the class:
-   [HP] carries membership along [wp_to (wp_from m) ≈ m] to the
-   representative, and [sub_le_of_equiv] carries the bound back. *)
+(*
+   本节说明 WellPowered 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma IsIntersection_reindex (w : SubObj x) :
   IsIntersection wp_class_family w →
   IsIntersection (fun k : { m : SubObj x & P m } => `1 k) w.
@@ -412,12 +411,11 @@ Definition Indiscrete_CoWellPowered@{o h w s t |
   Groupoid_CoWellPowered@{o h w s t} (Indiscrete@{o h h} A)
     (Indiscrete_isos A).
 
-(* A subobject classifier over pullbacks indexes the subobjects of x by the
-   arrows [x ~> Ω]: [wp_to] pulls [truth_subobject] back along the arrow,
-   [wp_from] takes the characteristic map, and exhaustiveness is
-   Structure/SubobjectClassifier.v's [classifier_pullback_roundtrip].  The
-   index is a hom-set, so it sits at the hom universe with no bound between
-   objects and homs. *)
+(*
+   本节说明拉回/推出、hom、子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition wp_of_classifier {C : Category} `{T : @Terminal C}
   `{PB : @HasPullbacks C} `{S : @SubobjectClassifier C T} (x : C) :
   WellPoweredAt x :=

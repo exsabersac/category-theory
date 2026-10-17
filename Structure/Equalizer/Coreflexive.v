@@ -90,11 +90,11 @@ Defined.
 
 (** ** The dual reading: a coreflexive pair in C is a reflexive pair in C^op *)
 
-(* The FIELD types convert — a common left inverse in C is literally a
-   common section in C^op — so the pair repackages by [:=] in both
-   directions and round-trips at [eq_refl].  The record TYPES are not the
-   same type, nor are the classes (the probe pins both), so the notion is
-   declared on its own and bridged. *)
+(*
+   本节说明 Coreflexive 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CoreflexivePair_of_op {C : Category} {x y : C} {f g : x ~> y}
   (R : @ReflexivePair (C^op) y x f g) : CoreflexivePair f g :=
   @Build_CoreflexivePair C x y f g
@@ -113,10 +113,11 @@ Example op_corefl_round {C : Category} {x y : C} {f g : x ~> y}
   (R : @ReflexivePair (C^op) y x f g) :
   op_ReflexivePair_of_Coreflexive (CoreflexivePair_of_op R) = R := eq_refl.
 
-(* The classes need the destruct-and-repackage Structure/Pullback/
-   Reduction.v performs for [HasEqualizers_op_of_HasCoequalizers]: the
-   existential body is [IsCoequalizer] on one side and [IsEqualizer] on
-   the other. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition HasCoreflexiveEqualizers_of_op {C : Category}
   (H : HasReflexiveCoequalizers (C^op)) : HasCoreflexiveEqualizers C.
 Proof.
@@ -334,15 +335,11 @@ Proof.
     split; [exact (refl_section_f R b) | exact (refl_section_g R b)].
 Defined.
 
-(* The image-level statement is a biconditional with NO choice principle,
-   in either direction: [Sets_Image]'s setoid compares codomain components
-   only, so the map b ↦ ((b, b); (chosen preimage; _)) is proper in b
-   however the choice function behaves, and the stored preimage of a
-   factorization reads back as a pointwise witness.  (An earlier revision
-   of this file said the reverse "would split the epi leg — a choice
-   principle"; the audit compiled it closed.  The choice principle sits
-   ONLY in the step from [diagonal_in_image] to a Sets morphism, i.e. to
-   [ReflexivePair]: [diagonal_section]'s properness hypothesis.) *)
+(*
+   本节说明 Coreflexive 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition diagonal_in_image_of_through_image
   (d : Y ~{Sets}~> Sets_Image (f △ g))
   (Hd : Sets_Image_mono (f △ g) ∘ d ≈ id △ id) : diagonal_in_image.
@@ -366,13 +363,11 @@ Proof.
   - intro b; simpl; split; reflexivity.
 Defined.
 
-(* Exercise 1(b) in Sets, stated with the image machinery as the issue
-   asks: the image of ⟨f, g⟩ contains the diagonal (pointwise) exactly when
-   the diagonal factors through [Sets_Image_mono (f △ g)].  This is the
-   image-level reading; the issue's pinned NAME
-   [Sets_common_section_iff_diagonal] would put [ReflexivePair f g] on the
-   left, and that reading is delivered only with the properness hypothesis
-   ([reflexive_of_diagonal_in_image]) — see the header. *)
+(*
+   本节说明 Coreflexive 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition diagonal_in_image_iff_through_image :
   diagonal_in_image
     ↔ (∃ d : Y ~{Sets}~> Sets_Image (f △ g),

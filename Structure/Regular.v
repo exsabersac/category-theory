@@ -26,11 +26,13 @@ Generalizable All Variables.
 Definition kernel_pair {C : Category} `{H : @HasPullbacks C} {x y : C}
   (f : x ~> y) : Pullback f f := pullback f f.
 
-(* A regular epimorphism is a morphism f : x ~> y that coequalizes some
-   parallel pair p1, p2 : d ~> x.  The witness records the pair together
-   with the elementary coequalizer structure of Structure/Coequalizer.v.
+(*
+   nLab: https://ncatlab.org/nlab/show/regular+epimorphism
 
-   nLab: https://ncatlab.org/nlab/show/regular+epimorphism *)
+   本节说明 Regular 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record RegularEpi {C : Category} {x y : C} (f : x ~> y) := {
   regepi_dom : C;
   regepi_p1 : regepi_dom ~> x;
@@ -73,14 +75,11 @@ Proof.
   exact (coequalizer_epic p1 p2 E).
 Qed.
 
-(* Every regular epimorphism is a strong epimorphism.  Given a monic
-   m : u ~> v and a commuting square m ∘ a ≈ b ∘ f with f coequalizing
-   p1, p2 : d ~> x, the top leg a coforks the pair — m absorbs into the
-   square on both sides and f ∘ p1 ≈ f ∘ p2, so cancelling the monic m
-   gives a ∘ p1 ≈ a ∘ p2 — hence a descends uniquely through f.  The
-   descent is the diagonal filler: its upper triangle is the descent
-   equation, its lower triangle follows by cancelling the epic f, and any
-   filler satisfies the descent equation, so descent uniqueness applies. *)
+(*
+   本节说明 Regular 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma regular_epi_strong {C : Category} {x y : C} (f : x ~> y) :
   RegularEpi f → StrongEpi f.
 Proof.

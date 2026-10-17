@@ -29,80 +29,16 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Where abelian categories come from, and what they are for
+(*
+   关于阿贝尔范畴的来源与用途
 
    nLab:      https://ncatlab.org/nlab/show/abelian+category
    Wikipedia: https://en.wikipedia.org/wiki/Grothendieck%27s_T%C3%B4hoku_paper
 
-   Abelian categories are the axiomatic home of homological algebra: the
-   common structure of the category Ab of abelian groups, the module
-   categories R-Mod, vector spaces, and sheaves of abelian groups, in
-   which one writes exact sequences, chain complexes, and derived functors
-   (Wikipedia, "Abelian category").  The notion accrued in three steps.
-   Mac Lane observed that group-theoretic notions, reformulated purely
-   through homomorphisms and their composition, exhibit a duality, and
-   proposed an axiomatic context to exploit it, with the stated aim of
-   making the proofs of homology exactly dual to those of cohomology (Mac
-   Lane, "Duality for groups", Bull. AMS 56, 1950).  Buchsbaum then gave
-   essentially the modern definition under the name "exact category", so
-   that the Cartan-Eilenberg construction of derived functors carried over
-   verbatim (Buchsbaum, "Exact categories and duality", Trans. AMS 80(1),
-   1955).  Grothendieck named the notion in the Tôhoku paper and organized
-   it by the AB-axiom hierarchy, AB1 through AB5 and their formal duals
-   (Grothendieck, "Sur quelques points d'algèbre homologique", Tôhoku
-   Math. J. 9(2), 1957).
+   本节说明阿贝尔范畴、函子、正合列相关定义、性质与动机。
 
-   The axioms are invariant under C ↦ C^op, so every theorem has a dual
-   for free — precisely Mac Lane's original goal, and the reason the
-   normality clauses of [Abelian] come in mirror-image pairs.  The clause
-   this file enforces, that every monomorphism is a kernel and every
-   epimorphism is a cokernel, is what forces the canonical comparison from
-   the coimage to the image of a morphism to be an isomorphism.  It follows
-   that every morphism has an honest image and factors as an epimorphism
-   followed by a monomorphism ([abelian_epi_mono_factorization], with
-   [abelian_image_obj] the image object); that factorization is the engine
-   of exactness.
-
-   The decisive motivation was Grothendieck's.  Sheaf categories generally
-   lack enough projectives, so the classical projective-resolution
-   machinery does not apply there.  They do have injective resolutions,
-   however, and these, in a Grothendieck category, meaning an AB5 category
-   with a generator, put sheaf cohomology and module homology on one
-   footing as derived functors (Wikipedia, "Grothendieck's Tôhoku paper").
-   On this base rest the Grothendieck spectral sequence for a composite of
-   derived functors, the derived and triangulated categories of
-   Grothendieck and Verdier, coherent duality announced at the 1958 ICM,
-   and the Gabriel-Popescu theorem (1964) that every Grothendieck category
-   is a localization of a module category.
-
-   That module categories are the universal examples is itself a theorem.
-   The Freyd-Mitchell embedding (Freyd, "Abelian Categories", Thm 7.34,
-   1964) places every small abelian category, by a full, faithful, exact
-   functor, inside R-Mod for some ring R.  The consequence is a working
-   method: an element-wise diagram chase valid in modules transfers
-   verbatim to any small abelian category, which is the classical warrant
-   for the diagram-chasing style in which the epic mediator
-   [image_mediator_epic] and its neighbours are argued.
-
-   The computational content sits in the additive substrate this file rests
-   on ([abelian_additive], over Structure/Additive.v), not in the exactness
-   clauses.  In any category with biproducts a morphism between direct sums
-   is a matrix whose (k, j) entry is pₖ ∘ f ∘ iⱼ, composition is matrix
-   multiplication over the addition on hom-setoids, and the biproduct
-   relations pₖ ∘ iⱼ ≈ δₖⱼ and Σ iₖ ∘ pₖ ≈ id are the Kronecker-delta and
-   completeness relations of linear algebra (nLab, "Biproduct").  This
-   enrichment is not extra data: by an Eckmann-Hilton argument a
-   bicartesian category whose canonical comparison a ⊔ b ≅ a × b is
-   invertible is already preadditive — one of the two semiadditivity
-   theorems of Structure/Semiadditive.v — and the mere existence of any
-   natural such isomorphism already forces that comparison to be invertible
-   (Lack, 2009), with Instance/CMon.v the concrete matrix-calculus witness.
-   The vanishing tests [monic_iff_kernel_pzero] and
-   [epic_iff_cokernel_pzero] are the exact place where the abelian-group
-   structure on homs — addition [padd] and zero [pzero] from
-   Structure/Preadditive.v, negation [pneg] and difference [psub] from
-   Structure/Additive.v — turns categorical cancellation into an algebraic
-   computation against [zero_mor]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Abelian (C : Category) := {
   abelian_additive : @Additive C;
@@ -132,11 +68,11 @@ Context `{A : @Abelian C}.
 
 (** ** Monic and epic as vanishing tests *)
 
-(* A morphism is monic exactly when its only vanishing test morphism is
-   zero.  Forward: f ∘ u ≈ 0 ≈ f ∘ 0, cancel f.  Backward: if
-   f ∘ g1 ≈ f ∘ g2 then f absorbs the difference g1 - g2, which the
-   hypothesis then identifies with zero, and cancellation in the abelian
-   group of homs recovers g1 ≈ g2. *)
+(*
+   本节说明 Abelian 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma monic_iff_kernel_pzero {x y : C} (f : x ~> y) :
   Monic f ↔ (∀ (z : C) (u : z ~> x), f ∘ u ≈ zero_mor → u ≈ zero_mor).
 Proof.
@@ -259,14 +195,11 @@ Proof. exact (unique_property (abelian_image_med_ex f)). Qed.
 
 (** ** The mediator onto the image is epic *)
 
-(* The engine of [image_mediator_epic], with the auxiliary kernel and
-   cokernel data abstracted.  Given t out of the image with
-   t ∘ mediator ≈ 0, given a kernel j of t through which the mediator
-   factors (via u), and given a cokernel r of the composite
-   abelian_image f ∘ j of which that same composite is in turn the kernel
-   (normality of the monomorphism abelian_image f ∘ j), conclude t ≈ 0.
-   The instantiation with the chosen data happens in
-   [image_mediator_epic] below. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma image_mediator_epic_aux {x y : C} (f : x ~> y)
   {z : C} (t : abelian_image_obj f ~> z)
   {kt : C} (j : kt ~> abelian_image_obj f) (KJ : IsKernel t j)
@@ -312,14 +245,11 @@ Proof.
   apply zero_mor_right.
 Qed.
 
-(* The mediator onto the image is an epimorphism (Freyd; Borceux vol. 2,
-   Proposition 1.5.5).  Test t with t ∘ mediator ≈ 0; the mediator
-   factors through the kernel j of t; the composite image ∘ j is monic,
-   hence — by normality — the kernel of its own chosen cokernel r; r
-   absorbs f, so it descends through the chosen cokernel of f and
-   therefore absorbs the image inclusion; the inclusion then factors back
-   through image ∘ j, splitting j; and a split-epic kernel of t forces
-   t ≈ 0.  The vanishing test [epic_iff_cokernel_pzero] concludes. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma image_mediator_epic {x y : C} (f : x ~> y) :
   Epic (abelian_image_med f).
 Proof.

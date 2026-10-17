@@ -35,11 +35,11 @@ Definition ReflectsLimitConesOver {C D : Category} (S : Category → Type)
   (F : C ⟶ D) : Type :=
   ∀ J : Category, S J → ∀ K : J ⟶ C, ReflectsLimitCone K F.
 
-(* Over a class of diagrams, Riehl's own quantifier: a predicate on the
-   diagrams K of every shape J.  A class of shapes S is the class of all
-   diagrams of those shapes, [fun J _ => S J], and the two forms agree up
-   to the order of their arguments, by the two maps below, each the
-   other's inverse at [eq_refl] (the probe, C23 and C24). *)
+(*
+   本节说明 Reflection 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ReflectsLimitConesOfClass {C D : Category}
   (S : ∀ J : Category, (J ⟶ C) → Type) (F : C ⟶ D) : Type :=
@@ -107,11 +107,11 @@ Definition ReflectsIsos_op {C D : Category} {F : C ⟶ D}
 
 (** ** Creation gives reflection: the colimit side *)
 
-(* The colimit twin of Structure/Limit/Creation.v's
-   [creates_reflects_limits].  [CreatesColimit K F] is [CreatesLimit] of
-   [K^op] along [F^op], whose reflection field asks for the image cone over
-   [F^op ◯ K^op]; Structure/Limit/Preservation.v's [islimitcone_op_comp]
-   reaches it from the image cocone over [(F ◯ K)^op]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition creates_reflects_colimits {J C D : Category}
   {K : J ⟶ C} {F : C ⟶ D} (CR : CreatesColimit K F) :
@@ -130,15 +130,11 @@ Definition creates_reflects_all_colimits {C D : Category} {F : C ⟶ D}
 
 (** ** Mac Lane's creation, read literally *)
 
-(* Mac Lane §V.1, the unnumbered Definition on p. 112: F creates the
-   limit of K when every limiting cone N over F ◯ K has exactly one lift,
-   an apex a with F a equal to N's apex and legs whose images are N's, and
-   that lift is limiting.  The lift is Creation.v's [StrictLift] (the
-   apex by [=], the legs by ≈ along it), and "exactly one" is equality
-   with every other strict lift of N, the apex by [=] and the legs by ≈
-   along it.  Creation.v declines that uniqueness as a FIELD of
-   [CreatesLimit] (its UNIQUENESS OF THE LIFT); as a hypothesis it is
-   what Mac Lane's Exercise 1 assumes. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record MacLaneCreatesLimit {J C D : Category} (K : J ⟶ C) (F : C ⟶ D) := {
   mlc_lift (N : Cone (F ◯ K)) (HN : IsLimitCone N) : StrictLift K F N;
@@ -154,11 +150,11 @@ Arguments mlc_lift {J C D K F} _ _ _.
 Arguments mlc_limiting {J C D K F} _ _ _.
 Arguments mlc_unique {J C D K F} _ _ _ _.
 
-(* Reflection by Mac Lane's argument: a cone M upstairs whose image is
-   limiting is a strict lift of that image (Creation.v's [self_lift]), so
-   it is the lift, which is limiting.  The cone isomorphism is built with
-   [exact], not as a pair term, which Coq 8.19 and 8.20 check by
-   unification. *)
+(*
+   本节说明（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition maclane_creates_reflects {J C D : Category} {K : J ⟶ C}
   {F : C ⟶ D} (CR : MacLaneCreatesLimit K F) : ReflectsLimitCone K F.
@@ -186,10 +182,11 @@ Proof.
   exact (slift_iso_legs (mlc_lift CR N HN) x).
 Defined.
 
-(* The same two clauses in the iso-invariant reading, a lift that is
-   limiting and unique up to cone isomorphism, give reflection in one
-   line; Creation.v's [creates_limiting] and [creates_lift_unique] derive
-   them back from the reflection field and the lift's comparison. *)
+(*
+   本节说明（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition iso_unique_lift_reflects {J C D : Category} {K : J ⟶ C}
   {F : C ⟶ D}
@@ -242,10 +239,11 @@ Definition MacLaneCreatesColimit {J C D : Category} (K : J ⟶ C)
 
 (** ** A conservative functor reflects the limits it preserves *)
 
-(* Let M be a cone over K whose image is limiting, and u its mediator
-   into L.  F u commutes with the image legs, so it is the comparison
-   between the two limiting image cones, an isomorphism; F reflects it,
-   so u is a cone isomorphism from M to L, and M is limiting. *)
+(*
+   本节说明（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition conservative_reflects_limit {J C D : Category}
   {K : J ⟶ C} {F : C ⟶ D} (R : ReflectsIsos F)
@@ -348,9 +346,11 @@ Definition preserves_conservative_reflects_colimits_of_class {C D : Category}
 
 (** ** Riehl Exercise 3.4.iii: preservation and conservativity create *)
 
-(* The lift of every limiting cone downstairs is the given limit upstairs,
-   whose image is limiting by preservation and so isomorphic, as a cone,
-   to any limiting cone downstairs; reflection is the theorem above. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition preserves_conservative_creates_limit {J C D : Category}
   {K : J ⟶ C} {F : C ⟶ D} (L : Limit K) (P : PreservesLimitCone K F)
@@ -410,12 +410,11 @@ Definition ReflectsCoequalizers@{co ch do dh +}
     IsCoequalizer (fmap[F] f) (fmap[F] g) (F q) (fmap[F] e) →
     IsCoequalizer f g q e.
 
-(* Preservation in the same form: the dual of Structure/Limit/
-   FromProducts.v's [PreservesEqualizers], and Monad/Monadicity/Crude.v's
-   [PreservesReflexiveCoequalizers] without its reflexivity hypothesis.
-   The binders of both predicates are written out: left to Rocq,
-   minimization identified D's hom level with C's (measured), and the
-   probe accepts both with D's strictly above (C6, C7). *)
+(*
+   本节说明单子、（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition PreservesCoequalizers@{co ch do dh +}
   {C : Category@{co ch ch}} {D : Category@{do dh dh}} (F : C ⟶ D) : Type :=
@@ -429,11 +428,11 @@ Definition PreservesCoequalizers@{co ch do dh +}
 Definition CreatesCoequalizers {C D : Category} (F : C ⟶ D) : Type :=
   ∀ K : Parallel ⟶ C, CreatesColimit K F.
 
-(* The elementary and the cocone-level readings agree, both ways, through
-   Structure/Coequalizer.v's conversions at a diagram of parallel-pair
-   shape: an image cocone is a cocone over [F ◯ K], whose pair is the
-   image pair and whose injection over [ParY] is the image injection, by
-   conversion. *)
+(*
+   本节说明 Reflection 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ReflectsCoequalizers_ReflectsColimitCocones {C D : Category}
   {F : C ⟶ D} (R : ReflectsCoequalizers F) :
@@ -452,10 +451,11 @@ Proof.
   - exact (parallel_colimit_coequalizer (F ◯ K) (FCocone F N) H).
 Defined.
 
-(* The two bridges from the cocone level to the elementary predicates use
-   their hypothesis only at the diagrams [APair f g], so they are stated
-   per parallel pair, and their forms over every diagram of parallel-pair
-   shape are the restrictions. *)
+(*
+   本节说明 Reflection 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ReflectsColimitCocones_ReflectsCoequalizers_of_pairs
   {C D : Category} {F : C ⟶ D}

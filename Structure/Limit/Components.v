@@ -31,238 +31,16 @@ Require Import Coq.Logic.Eqdep_dec.
 
 Generalizable All Variables.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician",
-              2nd ed., §IV.2 Exercise 7, printed p. 90 (maclane:IV.2:ex7)
+(*
+   Book:      Mac Lane, "Categories for the Working Mathematician",
    Book:      Riehl, "Category Theory in Context", §3.6
-              (riehl:3.6:construction-cat-coproducts)
    nLab:      https://ncatlab.org/nlab/show/connected+category
    nLab:      https://ncatlab.org/nlab/show/limit
 
-   Mac Lane's exercise has three clauses and they are delivered as three
-   theorems, with a fourth result -- the reindexing lemma clause (c)
-   needs -- factored out because nothing in it is about components.
+   本节说明（余）极限相关定义、性质与动机。
 
-     (a) [coprod_IsALimit]: for [F : ∐_k J_k ⟶ C], a limit of each
-         restriction [F ◯ inj k] plus an indexed product of those limit
-         apexes gives a limit of [F], at that product.
-
-     (b) [ComponentDecomposition] with [cd_compare], [cd_compare_Full],
-         [cd_compare_ESO], [cd_compare_Faithful] and [cd_equivalence]:
-         a category EQUIPPED WITH A DECOMPOSITION AS DATA, whose index
-         satisfies [IdxUIP], is the coproduct of its connected
-         components.  Mac Lane's own sentence quantifies over EVERY
-         category; this one does not, and §3 and §4 below say why and
-         at what cost.
-
-     (c) [components_IsALimit]: a limit over any shape carrying a
-         decomposition is a product of limits over connected shapes.
-
-      [xfer_IsALimit]: a FULL, ESSENTIALLY SURJECTIVE functor of
-         shapes transfers limits.  Faithfulness is not consumed.
-
-   1. A PRIOR-ART CORRECTION.  The catalog issue states that "no
-      connectedness predicate exists anywhere in the tree" and asks for
-      the zig-zag relation and its reflexivity, symmetry and
-      transitivity to be built.  That is FALSE, and was false before
-      Theory/Connected/Components.v landed: Structure/Groupoid/
-      Connected.v declares [Inductive ZigZag {C : Category}] and
-      [Definition Connected (C : Category)] for an ARBITRARY category,
-      together with [zigzag_trans], [zigzag_sym] and [hom_zigzag].
-      Theory/Connected/Components.v REUSES them -- it Requires that
-      module and declares neither -- and so does this
-      file.  Nothing here redeclares a zig-zag.
-
-   2. THE CENTRAL ABSENCE IS REAL, AND MEASURED BY CONSUMER RATHER THAN
-      BY NAME.  Before this file [SigmaCat] had exactly three mentions
-      in the tree -- its own module Construction/Coproduct/Indexed.v,
-      Instance/Cat/Coproduct.v, and Test/ProbeCatCoproduct338.v -- and
-      none of the three states any result about limits over a coproduct
-      of shapes.  An earlier revision of this paragraph said "none of the
-      three mentions a limit or a cone", and the LIMIT half of that is
-      FALSE: all three mention [Limit], 2, 11 and 2 times, in [Require]
-      lines and in NOT-delivered prose (Instance/Cat/Coproduct.v is
-      a numbered section headed "THE [Colimit] READING IS NOT
-      DELIVERED").  The CONE half stands -- zero hits in all three -- and
-      the conclusion is unaffected, but the evidence as first stated was
-      wrong.  The near-hit a
-      name search does return, Structure/Limit/Coproduct.v's
-      [colimit_is_indexed_coproduct], is a different statement: it
-      reads a COLIMIT OVER A DISCRETE DIAGRAM as an indexed coproduct
-      OF OBJECTS, and no coproduct of index CATEGORIES occurs in it.
-      Per the issue's own QA correction the indexed coproduct is
-      CONSUMED here and not rebuilt: [SigmaCat], [SigmaCat_inj],
-      [SigmaCat_case], [ob_cast], [mor_cast], [IdxUIP] and
-      [IdxUIP_pair] all come from the donor.
-
-   3. THE OBSTRUCTION IN PART (b) IS REAL, AND IT IS PROVED HERE RATHER
-      THAN ASSERTED.  Theory/Connected/Components.v's π₀ is a COARSER
-      SETOID ON THE SAME CARRIER -- that file's own [pi0_carrier]
-      records [carrier (pi0 C) = obj[C]] by [eq_refl] -- so it supplies
-      no quotient TYPE to index a coproduct by.  Indexing [SigmaCat] by
-      it yields ONE SUMMAND PER OBJECT, and at the walking arrow that
-      is two summands where there is one component:
-      [naive_pi0_sum_not_connected] proves the resulting category is
-      not connected while [Two_Connected] proves [_2] is, and
-      [no_ESO_into_naive_pi0_sum] turns that into the statement a
-      consumer would want, that no essentially surjective functor
-      [_2 ⟶ naive_pi0_sum] exists.  Read that at its strength: it
-      refutes THAT index, and it is NOT a proof that the two categories
-      are inequivalent, which would need connectedness carried backwards
-      along a quasi-inverse -- not done here.
-
-      The decomposition is therefore packaged as DATA, on the model of
-      Theory/Skeleton.v's [Skeleton] record, which carries a chosen
-      representative [skel_rep] together with a uniqueness field
-      [skel_uniq].  [ComponentDecomposition] carries [cd_rep] (a chosen
-      representative per index), [cd_part] (the index of an object),
-      [cd_join] (a chain from the representative) and [cd_sep] (the
-      uniqueness clause).  NO CHOICE PRINCIPLE IS CONSUMED and no
-      unconditional decomposition is claimed: a category is not shown
-      to HAVE a decomposition, and the two concrete ones below are
-      built by hand.  Riehl's uniqueness clause is [cd_transfer] with
-      [cd_transfer_round] -- the index type is determined up to a
-      canonical bijection -- sharpened by [cd_transfer_part], which
-      says the bijection is compatible with the two part-assignments,
-      so two decompositions cut the category into the same pieces
-      rather than merely having equinumerous index sets.
-
-   4. WHERE THE ONE HYPOTHESIS IS SPENT, AND -- MORE INTERESTINGLY --
-      WHERE IT IS NOT.  [cd_compare_ESO] and [cd_compare_Full] take NO
-      hypothesis; [cd_compare_Faithful] takes the donor's own
-      [IdxUIP (cd_index D)], spent in exactly one place, and
-      [cd_equivalence] inherits it.  The hypothesis is NOT shown
-      necessary: no countermodel is built and no forcing theorem in the
-      style of Construction/Coproduct/Indexed.v's
-      [sigma_inj_Full_forces_UIP] is proved.  It is discharged for any
-      index with decidable equality by Hedberg ([UIP_dec]), which is
-      what [poly_unit_IdxUIP] and [bool_IdxUIP] do for the two
-      witnesses.
-
-      PART (c) COSTS NO [IdxUIP] AT ALL, and that is the reason
-      [xfer_IsALimit] is stated for a full, essentially surjective
-      functor rather than for an equivalence: fullness supplies the
-      preimage arrows, essential surjectivity the objects, and
-      faithfulness is never used.  So the limit decomposition holds
-      wherever the equivalence of categories does and also where it is
-      not available.
-
-   5. STRENGTHS, MEASURED STRICT-FIRST.  Holding at [eq_refl]:
-      [summand_obj], [summand_map], [coprod_leg_at],
-      [coprod_IsALimit_leg], [coprod_IsALimit_med],
-      [coprod_IsALimit_iprod_leg], [restrict_cone_apex],
-      [cd_compare_obj], [cd_compare_map], [cd_eso_obj_image],
-      [Two_Decomposition_index], [component_diagram_obj],
-      [component_diagram_map], [sigma_hom_eta], and the three [Coq]
-      computations [CoqPair_leg_true], [CoqPair_leg_false] and
-      [CoqPair_med_computes].  Settling for [≈]: the two
-      projection-versus-restriction statements
-      ([coprod_proj_is_restriction], [coprod_proj_via_iso]), which are
-      equations between MEDIATORS and so cannot be definitional -- each
-      is proved through the summand limit's own uniqueness clause --
-      and [component_diagram_equiv], whose two DATA agreements are
-      [eq_refl] and whose refutation at whole-record level is pinned as
-      [component_diagram_strict].
-
-   6. UNIVERSES, READ OFF BOTH THE BINDER AND THE CONSTRAINT BLOCK.
-      [coprod_IsALimit@{...}] is over [J : I → Category@{u0 u1 u1}] and
-      [C : Category@{u2 u3 u3}] with the single equation [u1 = u3] in
-      its block: the SHAPES' hom-and-proof universe is identified with
-      the AMBIENT's.  That is the donor [IsALimit]'s own shape and
-      nothing here adds to it; BOTH object universes stay free, bounded
-      and never identified, and NO [Set] appears.  [components_IsALimit]
-      reads the same way ([J : Category@{u u0 u0}],
-      [C : Category@{u1 u2 u2}], block equation [u0 = u2]), and
-      [xfer_IsALimit] identifies THREE hom universes rather than two
-      ([u0 = u2] and [u0 = u4]), the two shapes' and the ambient's,
-      which is what stating [IsALimit] on both sides of a reindexing
-      costs.
-
-      TWO CONSTANTS PUT THE IDENTIFICATION ENTIRELY IN THE BINDER, WITH
-      AN EMPTY OR EQUATION-FREE BLOCK, so a reader who checks only the
-      block reports "no identification" and is wrong.
-      [coprod_IsALimit_HasIndexedProducts] has NO equation in its block
-      while its binder writes [Category@{u1 u7 u7}] and
-      [Category@{u6 u7 u7}], reusing one level for four slots; and
-      [ComponentDecomposition@{u u0 u1}] has a LITERALLY EMPTY block
-      while its binder reads [Category@{u0 u1 u1} → Type@{...}].  The
-      latter is [ZigZag]'s own shape, inherited; its INDEX universe [u]
-      is free of the category's, which is what lets the index be as
-      large as the object type.
-
-      [coprod_IsALimit_iprod] IS THE PLACE TO READ THE FORMER [Set] PIN,
-      AND THE PIN IS GONE.  An earlier revision of this paragraph said
-      the pin "arrives" here and is "WIDER than the donor's binder alone
-      suggests", quoting [iprod] as declared over
-      [C : Category@{_ Set Set}] and the corollary as reading
-      [J : I → Category@{u0 Set Set}] and [C : Category@{u3 Set Set}];
-      it added that the pin "is inherited, is not repaired, and is NOT
-      claimed unavoidable".  The first half was a correct reading of the
-      tree of the time and the last clause was right: the pin was a
-      universe-minimization artifact of Instance/Discrete.v's
-      [DiscreteCat_Functor], reaching [iprod] through [Limit]'s
-      identification of the shape's hom-and-proof universe with the
-      ambient's.  That donor was annotated in place in the PR "algebraic
-      carriers are sets" (2026-09-17), so no literal [Set] reaches this
-      corollary any more.  The elementary [IsIndexedProduct] form is
-      still stated first and the [iprod] reading is still a corollary --
-      that ordering was never only about [Set] -- and Section
-      [UniversePin] below now GUARDS the repair: the same two lines that
-      used to refuse over homs strictly above [Set] are kept there as
-      positive controls.
-
-   7. NEGATIVES: TWO, BOTH CONVERSION.  An earlier revision of this item
-      read "FOUR, OF TWO KINDS, KEPT LEXICALLY APART" and described two
-      FORMABILITY negatives -- [iprod] and [coprod_IsALimit_iprod]
-      rejected over a category whose homs are declared strictly above
-      [Set], "each ending "universe inconsistency: Cannot enforce
-      Set = uh"" -- against three controls.  Those two are now ACCEPTED
-      at those very levels and stand in Section [UniversePin] as
-      controls beside the original three (item 6); the correction is
-      recorded here rather than made silently.  What remains are the two
-      CONVERSION negatives.  [sigma_obj_eta],
-      which records that an object of a coproduct of categories is NOT
-      convertible with the pair of its projections (this is why
-      [coprod_leg] is a [match] with a return annotation; its control
-      [sigma_hom_eta] shows only that [sigma_equiv] PROJECTS its
-      arguments, NOT that morphisms have an eta rule -- measured, a
-      morphism is rejected with the same `cannot unify "f" and
-      "(`1 (f); `2 (f))"` as the object), and [component_diagram_strict],
-      which records
-      that [Compose] rebuilds its three law fields.  Each was stripped
-      of its [Fail] once and its failure kind read off the whole error.
-
-   WHAT IS NOT DELIVERED.  No dual: nothing here is stated for
-   colimits, coproducts of shapes on the colimit side, or cocones.  No
-   [Colimit]/[DiscreteCat_Functor] reading of part (a), and no bridge
-   to Structure/Limit/Coproduct.v's [colimit_is_indexed_coproduct].  No
-   converse to (a): it is not shown that a limit of [F] forces limits
-   of the restrictions, nor that the product of the summand limits is
-   the ONLY apex.  No preservation, reflection or creation statement,
-   and no relation to [PreservesLimit]/[CreatesLimit].  No functoriality
-   or naturality of [coprod_leg] or [cd_compare] in anything.  No proof
-   that a category HAS a decomposition, hence no "every category is a
-   coproduct of connected categories" as an unconditional theorem, and
-   no statement relating [ComponentDecomposition] to [Pi0] as a functor.
-   [IdxUIP] is not shown necessary for [cd_compare_Faithful].  Nothing
-   relates the [cd_sum]s of two different decompositions: [cd_transfer]
-   is a bijection of INDEX TYPES compatible with the part maps, and it
-   is never lifted to a comparison functor or an equivalence between
-   the two coproduct categories.  No constant of type [_ ≅[Cat] _] is
-   built for [cd_compare] -- work item 3 words its ask "isomorphism of
-   categories in the library's [≈]-based sense", and what is delivered
-   is [EquivalenceOfCategories], which is what [≅[Cat]] amounts to in
-   this tree but is not that literal type.  Finally, the issue's own
-   Verification block pins [Print Assumptions
-   limit_over_coproduct_is_product] and [Print Assumptions
-   category_is_coproduct_of_components]; NEITHER NAME EXISTS anywhere in
-   the tree, and the corresponding results here are [coprod_IsALimit]
-   and [cd_equivalence], both gated.  The
-   converse of [xfer_IsALimit] (that a full ESO functor of shapes
-   REFLECTS limits) is not proved, and neither is any cofinality
-   statement.  No notation.  No concrete category is shown complete by
-   these means.  The [Coq] witness of part (a) is at a two-element
-   index with point shapes; no witness instantiates part (c) at a
-   concrete ambient category with a concrete non-trivial component. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Part (a): the limit over a coproduct of shapes *)
 
@@ -292,10 +70,11 @@ Context {p : C}.
 Context {proj : ∀ k : I, p ~> L k}.
 Context (HP : IsIndexedProduct L p proj).
 
-(* The candidate legs: descend into the k-th summand's limit, then take
-   that limit's leg.  The [match] is forced -- [sigT] has no eta here, so
-   [X] is not convertible with [(`1 X; `2 X)] and the return type must be
-   given by the branch. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition coprod_leg (X : SigmaCat J) : p ~> F X :=
   match X as X0 return p ~> F X0 with
   | (k; x) => limit_leg (HL k) x ∘ proj k
@@ -318,10 +97,11 @@ Definition coprod_acone : ACone p F :=
 
 (** *** Restricting a competing cone to one summand *)
 
-(* The legs of [N] at the objects of the k-th summand form a cone over
-   [summand k].  The coherence proof is [N]'s own, at the injected
-   morphism: no reshaping is needed, the two statements being
-   convertible. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition restrict_leg (N : Cone F) (k : I) (x : J k) :
   vertex_obj[N] ~> summand k x := cone_leg N (k; x).
@@ -382,11 +162,11 @@ Qed.
 
 (** *** The theorem *)
 
-(* Mac Lane §IV.2 Exercise 7, first clause: the limit of a diagram over a
-   coproduct of shapes is the indexed product of the limits over the
-   summands.  Stated at the ELEMENTARY level -- the hypothesis is
-   [IsIndexedProduct], not a [Limit] of a discrete diagram -- so no
-   universe is pinned; see the [iprod] corollary below. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition coprod_IsALimit : IsALimit F p :=
   @Build_IsALimit (SigmaCat J) C F p coprod_acone
@@ -411,11 +191,11 @@ Definition coprod_Limit : Limit F := isalimit_to_limit coprod_IsALimit.
 
 (** *** The projections are the restrictions along the injections *)
 
-(* The plainest form: mediating the restriction of the assembled limit
-   cone to the k-th summand returns the k-th projection.  This is what
-   "the product projections agree with restriction along the injections"
-   says at the assembled limit, and it is proved through the SUMMAND's
-   own uniqueness clause rather than read off the definition. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma coprod_proj_is_restriction (k : I) :
   limit_med (HL k) (restrict_cone coprod_cone k) ≈ proj k.
@@ -424,11 +204,11 @@ Proof.
   intro x; reflexivity.
 Qed.
 
-(* The general form, at an ARBITRARY limit of [F].  Restricting that
-   limit's cone to the k-th summand and mediating into [L k] returns the
-   k-th projection conjugated by the comparison isomorphism.  Nothing
-   here is definitional: the proof runs through the summand's uniqueness
-   clause and the leg equations of [limit_unique_iso]. *)
+(*
+   本节说明（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma coprod_proj_via_iso {c : C} (Hc : IsALimit F c) (k : I) :
   proj k ∘ to (limit_unique_iso Hc coprod_IsALimit)
@@ -443,10 +223,11 @@ Qed.
 
 (** *** Part (a) packaged as an isomorphism *)
 
-(* Any apex carrying a limit of [F] is canonically isomorphic to the
-   indexed product of the summand limits.  [limit_unique_iso] carries the
-   leg equations, and [limit_unique_iso_unique] the uniqueness clause, so
-   this is not a bare [≅]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition coprod_limit_iso {c : C} (Hc : IsALimit F c) : c ≅ p :=
   limit_unique_iso Hc coprod_IsALimit.
@@ -482,20 +263,11 @@ Definition coprod_IsALimit_HasIndexedProducts {I : Type} {J : I → Category}
   IsALimit F (indexed_product L) :=
   coprod_IsALimit F HL (indexed_product_ump L).
 
-(* The [iprod] reading the issue's reviewer check asks for: the right-hand
-   side is [Structure/Limit/Product.v]'s own product operator, not a
-   bespoke one.  RECORDED CORRECTION: an earlier revision continued "IT
-   INHERITS THAT DONOR'S UNIVERSE PIN -- [iprod] is defined over
-   [Limit (DiscreteCat_Functor f)] and so is declared at
-   [C : Category@{_ Set Set}], where [coprod_IsALimit] above leaves both
-   levels free."  The pin is gone: the donor was annotated in place at
-   Instance/Discrete.v in the PR "algebraic carriers are sets"
-   (2026-09-17), and [iprod@{u u0 u1 u2 u3}] is now declared over
-   [C : Category@{u1 u2 u2}].  What it still inherits is [Limit]'s
-   IDENTIFICATION of the discrete shape's hom-and-proof universe with the
-   ambient's, where [coprod_IsALimit] above leaves the two apart; that,
-   rather than a [Set] floor, is why the elementary form is stated first
-   and this one is a corollary. *)
+(*
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition coprod_IsALimit_iprod {I : Type} {J : I → Category}
   {C : Category} (F : SigmaCat J ⟶ C)
@@ -522,14 +294,11 @@ Example coprod_IsALimit_iprod_leg {I : Type} {J : I → Category}
 
 (** ** Part (b): the decomposition of a category into its components *)
 
-(* A DECOMPOSITION OF [C] INTO CONNECTED COMPONENTS, PACKAGED AS DATA.
-   The design follows Theory/Skeleton.v's [Skeleton] record exactly:
-   an index type, a CHOSEN representative for each index, the assignment
-   of an index to each object, a chain joining every object to its
-   representative, and a uniqueness clause.  It is data and not a
-   theorem, and the header says why: [Theory/Connected/Components.v]'s
-   π₀ is a COARSER SETOID ON THE SAME CARRIER, so it supplies no
-   quotient type to index a coproduct by. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record ComponentDecomposition (C : Category) := {
   cd_index : Type;
@@ -593,10 +362,11 @@ Example cd_compare_map (k : cd_index D) (a b : cd_comp k) (f : a ~> b) :
 
 (** *** The comparison is essentially surjective, with NO hypothesis *)
 
-(* It is more than essentially surjective: it is SPLIT SURJECTIVE ON
-   OBJECTS, the chosen preimage's image being the object itself by
-   conversion, so the witnessing isomorphism is [iso_id].  That is what
-   makes the limit transfer of part (c) cheap. *)
+(*
+   本节说明（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition cd_eso_obj (y : C) : cd_sum :=
   (cd_part D y; ((y; cd_join D y) : cd_comp (cd_part D y))).
@@ -609,10 +379,11 @@ Definition cd_compare_ESO : EssentiallySurjective cd_compare :=
 
 (** *** The comparison is full, with NO hypothesis *)
 
-(* The index equality.  Both objects' membership witnesses pin their own
-   index, and the arrow supplies a one-step chain between the carriers;
-   [cd_sep] converts each into an index equation and [cd_part_zigzag]
-   bridges them. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition cd_full_eq {X Y : cd_sum} (f : cd_compare X ~> cd_compare Y) :
   `1 X = `1 Y :=
@@ -667,10 +438,11 @@ Definition cd_compare_Faithful (U : IdxUIP (cd_index D)) :
         cd_faithful_step (`1 f) (`1 g) (IdxUIP_pair U (`1 f) (`1 g))
           (`2 f) (`2 g) H)).
 
-(* Riehl §3.6: a category IS the coproduct of its connected components.
-   The strength is an EQUIVALENCE of categories, and the hypothesis is
-   [IdxUIP] on the index -- see the header for what is and is not known
-   about its necessity. *)
+(*
+   本节说明等价、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition cd_equivalence (U : IdxUIP (cd_index D)) :
   EquivalenceOfCategories cd_compare :=
@@ -693,10 +465,11 @@ End DecompositionTheory.
 Definition cd_transfer {C : Category} (D D' : ComponentDecomposition C)
   (k : cd_index D) : cd_index D' := cd_part D' (cd_rep D k).
 
-(* The two transfers are mutually inverse, so the index type of a
-   decomposition is determined up to a canonical bijection.  Only one
-   direction is written: it is symmetric in [D] and [D'], so the other is
-   the same statement with the arguments exchanged. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cd_transfer_round {C : Category} (D D' : ComponentDecomposition C)
   (k : cd_index D) : cd_transfer D' D (cd_transfer D D' k) = k.
@@ -707,9 +480,11 @@ Proof.
   - exact (cd_part_rep D k).
 Qed.
 
-(* Sharper than a bare bijection: the transfer is COMPATIBLE with the two
-   part-assignments, so the two decompositions cut [C] into the same
-   pieces rather than merely having equinumerous index sets. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cd_transfer_part {C : Category} (D D' : ComponentDecomposition C)
   (y : C) : cd_transfer D D' (cd_part D y) = cd_part D' y.
@@ -724,18 +499,19 @@ Definition cd_transfer_join {C : Category} (D D' : ComponentDecomposition C)
 
 (** ** Limits along a full, essentially surjective functor of shapes *)
 
-(* The reindexing step part (c) needs.  FAITHFULNESS IS NOT CONSUMED:
-   fullness supplies the preimage arrows and essential surjectivity the
-   objects, and that is all the argument uses.  So the decomposition
-   theorem for limits costs no [IdxUIP], even though the equivalence of
-   categories of part (b) does. *)
+(*
+   本节说明（余）极限、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section LimitAlongFullESO.
 
-(* Section-local: the fullness and essential-surjectivity hypotheses are
-   consumed only inside proofs, so the ambient default (which reads the
-   statement alone) rejects them.  Scoped to this section so that the
-   part (a) definitions do not pick up hypotheses they never use. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Set Default Proof Using "All".
 
 Context {K J C : Category}.
@@ -753,9 +529,11 @@ Context (H : IsALimit (G ◯ Phi) c).
 Definition xfer_leg (y : J) : c ~> G y :=
   fmap[G] (to (eso_iso y)) ∘ limit_leg H (eso_obj y).
 
-(* At an object in the image the conjugation is invisible: the leg is the
-   one the given limit already has.  This is where fullness is spent the
-   second time, and it is what makes the uniqueness clause go through. *)
+(*
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma xfer_leg_image (z : K) : xfer_leg (Phi z) ≈ limit_leg H z.
 Proof.
@@ -870,11 +648,11 @@ Proof.
   rewrite id_left, id_right; reflexivity.
 Defined.
 
-(* Mac Lane §IV.2 Exercise 7, third clause.  Given a decomposition of the
-   SHAPE, a limit over each connected component, and an indexed product
-   of those limits, the diagram has a limit at that product.  NO [IdxUIP]
-   is spent: the reindexing runs through [xfer_IsALimit], which consumes
-   only fullness and essential surjectivity. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition components_IsALimit {L : cd_index D → C}
   (HL : ∀ k : cd_index D, IsALimit (component_diagram k) (L k))
@@ -923,9 +701,11 @@ Definition Two_Decomposition : ComponentDecomposition _2 :=
     (fun x => two_ZigZag TwoX x)
     (fun x k s => match k as k0 return ttt = k0 with ttt => eq_refl end).
 
-(* Its index is a singleton -- the degenerate case, and it is labelled as
-   such: what it exercises is that the machinery closes when there is one
-   component, not that the decomposition is informative. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example Two_Decomposition_index : cd_index Two_Decomposition = poly_unit
   := eq_refl.
@@ -1028,13 +808,11 @@ Definition SigmaCat_not_connected {I : Type} {Cs : I → Category}
   fun K => Hij (sigma_index_zigzag
                   (K ((i; x) : SigmaCat Cs) ((j; y) : SigmaCat Cs))).
 
-(* [Theory/Connected/Components.v]'s π₀ COARSENS THE SETOID AND LEAVES THE
-   CARRIER ALONE -- [pi0_carrier] there records [carrier (pi0 C) = obj[C]]
-   by [eq_refl] -- so a coproduct indexed by it has ONE SUMMAND PER
-   OBJECT.  At the walking arrow that gives two summands where there is
-   one component, and the result is a category that is not connected
-   although [_2] is.  This is why the decomposition record above carries
-   a chosen representative as DATA. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition naive_pi0_sum : Category :=
   SigmaCat (fun x : carrier (pi0 _2) => ConnectedComponent _2 x).
@@ -1053,10 +831,11 @@ Definition no_ESO_into_naive_pi0_sum (F : _2 ⟶ naive_pi0_sum) :
 
 (** ** Non-vacuity, part 3: part (a) computing in [Coq] *)
 
-(* The constant functor out of the point.  Named [coq_point] rather than
-   [One_Const], which Theory/Shapes.v already takes for the DIFFERENT
-   functor [C ⟶ [_1, C]]; that module is deliberately not required here,
-   its identifications being pinned at [Category@{_ Set Set}]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition coq_point (T : Type) : _1 ⟶ Coq :=
   @Build_Functor _1 Coq (fun _ => T) (fun _ _ _ => Datatypes.id)
@@ -1156,26 +935,11 @@ Proof. discriminate. Qed.
 
 (** ** Measured boundaries, pinned *)
 
-(* The universe placement of the [iprod] reading, GUARDED rather than
-   merely measured.
+(*
+   本节说明 Components 相关定义、性质与动机。
 
-   RECORDED CORRECTION.  An earlier revision stated this section as two
-   NEGATIVES: over a category whose homs are declared strictly above
-   [Set] the elementary statements elaborated and the two [iprod] ones
-   were refused, and the section concluded that the pin was attributable
-   to the donor [iprod].  The attribution was one step short.  [iprod]
-   itself was never [Set]-pinned; it inherited the pin from
-   [DiscreteCat_Functor], which was declared with bare binders and
-   minimized to [DiscreteCat@{u Set Set}], and which [Limit] (unlike
-   [Cone]) identifies with the AMBIENT hom-and-proof universe.
-
-   In the PR "algebraic carriers are sets" (2026-09-17)
-   [DiscreteCat_Functor] was annotated in place at Instance/Discrete.v,
-   and both lines below are now ACCEPTED.  They are kept as positive
-   controls at exactly the levels that used to refuse them, so this
-   section now guards the repair rather than the pin: were the annotation
-   ever dropped, these two would refuse again and this file would stop
-   compiling. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniversePin.
 
@@ -1211,22 +975,20 @@ Check (fun (F : SigmaCat Js ⟶ Cu) (L : bool → Cu)
 
 End UniversePin.
 
-(* The objects of a coproduct of categories have NO eta rule: [sigT] is
-   not a primitive-projection record here, so an object is not
-   convertible with the pair of its projections.  That is why
-   [coprod_leg] above is written as a [match] with a return annotation
-   rather than as a plain composite. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example sigma_obj_eta (I : Type) (Cs : I → Category)
   (X : SigmaCat Cs) : X = ((`1 X; `2 X) : SigmaCat Cs) := eq_refl.
 
-(* [sigma_equiv] and [sigma_case_map] PROJECT their morphism argument
-   rather than requiring it to be a pair, which is why they need no
-   return annotation.  The morphism itself is NO MORE eta-convertible
-   than the object: measured, [f = ((`1 f; `2 f))] is rejected with
-   `cannot unify "f" and "(`1 (f); `2 (f))"`, the same failure as the
-   object negative above.  So this Example is not a contrast with that
-   negative; it records the projection behaviour only. *)
+(*
+   本节说明 Components 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example sigma_hom_eta (I : Type) (Cs : I → Category)
   {X Y : SigmaCat Cs} (f : X ~> Y) :

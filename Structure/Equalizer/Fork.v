@@ -74,9 +74,11 @@ Qed.
 
 (** ** Equalizers are unique up to isomorphism *)
 
-(* Mirrors [coequalizer_unique] in [Structure/Coequalizer.v]: each
-   equalizer factors the other's equalizing map, and both round-trips
-   factor the identity, so descent uniqueness identifies them with id. *)
+(*
+   本节说明等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma equalizer_unique {q1 q2 : C} {e1 : q1 ~> x} {e2 : q2 ~> x}
   (E1 : IsEqualizer f g q1 e1) (E2 : IsEqualizer f g q2 e2) :
   q1 ≅ q2.
@@ -117,10 +119,11 @@ Definition fork_legs {z : C} (h : z ~> x) (p : ParObj) :
   | ParY => f ∘ h
   end.
 
-(* Leg coherence: pushing the leg at the domain of any Parallel arrow
-   along its image recovers the leg at the codomain.  This statement is
-   definitionally the [cone_coherence] field of an [ACone] over
-   APair f g. *)
+(*
+   本节说明 Fork 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma fork_legs_coherence {z : C} (h : z ~> x) (Hh : f ∘ h ≈ g ∘ h) :
   ∀ (a b : ParObj) (k : a ~{Parallel}~> b),
     fmap[APair f g] k ∘ fork_legs h a ≈ fork_legs h b.

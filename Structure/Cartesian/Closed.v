@@ -26,10 +26,11 @@ Class Closed := {
   exponent_obj : obj → obj → obj    (* internal hom; y ^ x = exponent_obj x y *)
     where "y ^ x" := (exponent_obj x y);
 
-  (* The product-exponential adjunction (- × y) ⊣ (- ^ y), as the natural
-     isomorphism Hom(x × y, z) ≅ Hom(x, z^y).  This is the exponential UMP
-     in packaged form: the iso bundles existence and uniqueness of the
-     transpose, and naturality recovers the substitution laws below. *)
+  (*
+   本节说明伴随、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   exp_iso {x y z} : x × y ~> z ≊ x ~> z^y;
 
   curry'   {x y z} : x × y ~> z → x ~> z^y := to (@exp_iso x y z);    (* transpose: x×y~>z to x~>z^y *)

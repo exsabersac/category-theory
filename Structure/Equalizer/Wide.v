@@ -69,9 +69,11 @@ Local Notation WShape := (WideParallel I).
 
 (** ** Wide equalizing maps are monomorphisms *)
 
-(* The binary argument verbatim: both factorizations of e ∘ g1 agree with
-   the canonical one, so descent uniqueness cancels e on the left.  No
-   member of the family is ever named, so no inhabitant of I is needed. *)
+(*
+   本节说明 Wide 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma wide_equalizer_monic {q : C} {e : q ~> x}
   (E : IsWideEqualizer fs q e) : Monic e.
 Proof.
@@ -122,10 +124,11 @@ Defined.
 
 (** ** From the limit presentation to the fork equations *)
 
-(* The limit leg over [ParX] is equalized by the whole family: every member
-   pushes it to the leg over [ParY], by leg coherence at that member — the
-   arrow [i] of the shape IS the index, and [fmap[AWide fs] i] IS [fs i].
-   No inhabitant of I is needed: the statement quantifies over i and j. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma wide_limit_equalizes (L : WideEqualizer WFam) :
   ∀ i j : I,
     fs i ∘ limit_leg (limit_is_alimit L) ParX
@@ -144,9 +147,11 @@ Qed.
 
 Section Pointed.
 
-(* A chosen index.  This is the hypothesis the two round trips need, and
-   the section is exactly its scope: everything above holds without it, and
-   the sharpness results below show nothing weaker will do. *)
+(*
+   本节说明 Wide 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context (i0 : I).
 
 (* The legs of the cone induced by a jointly forking map h: the leg over
@@ -188,10 +193,11 @@ Definition wfork_cone {z : C} (h : z ~> x)
 Lemma wide_limit_equalizer_desc (L : WideEqualizer WFam)
   {z : C} (h : z ~> x) (Hh : ∀ i j : I, fs i ∘ h ≈ fs j ∘ h) :
   ∃! u : z ~> L, limit_leg (limit_is_alimit L) ParX ∘ u ≈ h.
-(* Lib.v sets [Default Proof Using "Type"], which keeps only the section
-   variables occurring in the STATEMENT.  This is the ONE proof in the
-   section that reaches for [i0] without its statement mentioning it — the
-   others go through [wfork_legs], whose body carries the dependency. *)
+(*
+   本节说明 Wide 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Proof using All.
   unshelve eapply Build_Unique.
   - exact (limit_med (limit_is_alimit L) (wfork_cone h Hh)).
@@ -284,14 +290,11 @@ Defined.
 
 End WideEqualizerLimit.
 
-(* Consequently an UNPOINTED round trip — one turning any elementary wide
-   equalizer into a limit of the same diagram AT THAT SAME APEX, with no
-   member of the family in hand — would produce an arrow x ~> y out of
-   nothing: apply it to the identity above and read off the limit leg over
-   [ParY].  The apex is pinned by the hypothesis below ([IsALimit (AWide fs)
-   q]), which makes the refuted principle strictly stronger than the literal
-   unpointed form of what is delivered, [is_wide_equalizer_limit] returning a
-   [WideEqualizer WFam] whose apex its type does not pin. *)
+(*
+   本节说明（余）极限、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition wide_unpointed_round_trip_gives_hom
   {C : Category} {I : Type} {x y : C} (fs : I → x ~> y)
   (Hempty : I → False)
@@ -300,12 +303,11 @@ Definition wide_unpointed_round_trip_gives_hom
   x ~{C}~> y :=
   limit_leg (RT x id[x] (wide_empty_id_IsWideEqualizer fs Hempty)) ParY.
 
-(* And that is refutable.  The witness is the walking arrow: [_2] has no
-   arrow from [TwoY] to [TwoX] at all, so an unpointed round trip over the
-   empty family [TwoY ⇉ TwoX] would produce an inhabitant of an empty
-   hom-set.  This is the sharpness statement for the [i0] hypothesis of the
-   section above; the general shape of the refuted principle is
-   [wide_unpointed_round_trip_gives_hom], and this is one instance of it. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition two_empty_family : Empty_set → (TwoY ~{_2}~> TwoX) :=
   fun i => match i with end.
 

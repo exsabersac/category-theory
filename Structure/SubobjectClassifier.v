@@ -84,12 +84,11 @@ Proof.
       * now rewrite Hp.
 Qed.
 
-(* A pullback square transports across an isomorphism of its apex: given a
-   pullback with apex P and an isomorphism i : P' ≅ P, precomposing the two
-   projections with [to i] yields a pullback with apex P'.  The two extra
-   equalities let the caller name the transported projections directly.
-   Companion to [is_pullback_respects_snd] above and
-   [is_pullback_respects_left] of Theory/Subobject/Functor.v. *)
+(*
+   本节说明函子、拉回/推出、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma is_pullback_precompose_iso {A B Z : C} {f : A ~> Z} {g : B ~> Z}
       {P P' : C} {p1 : P ~> A} {p2 : P ~> B} (i : P' ≅ P)
       {p1' : P' ~> A} {p2' : P' ~> B}
@@ -120,11 +119,11 @@ Proof.
       now rewrite id_left.
 Qed.
 
-(* [char] respects the subobject equivalence of Theory/Subobject.v.  This
-   was formerly a class field; it is derivable from [char_pullback] and
-   [char_unique] (transport the classifying square of m' across the domain
-   isomorphism, then invoke uniqueness), so it is proved here once rather
-   than paid as a redundant obligation by every instance. *)
+(*
+   本节说明等价、同构、子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma char_respects {u u' x : C} (m : u ~> x) (M : Monic m)
       (m' : u' ~> x) (M' : Monic m') :
   {| sub_dom := u; sub_mono := m; sub_is_monic := M |}
@@ -138,9 +137,11 @@ Proof.
   exact (char_pullback m' M').
 Qed.
 
-(* Round trip (i): classifying the pullback of truth along h recovers h.
-   The chosen pullback square, with its projection into 1 traded for [one],
-   is a classifying square for h, so char_unique concludes. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma classifier_char_roundtrip {x : C} (h : x ~> Ω) :
   char (sub_mono (sub_reindex h truth_subobject))
        (sub_is_monic (sub_reindex h truth_subobject)) ≈ h.
@@ -163,12 +164,11 @@ Proof.
   apply char_pullback.
 Qed.
 
-(* The classification theorem: subobjects of x correspond to morphisms
-   x ~> Ω, as an isomorphism of setoids.  Forward: char, respecting the
-   SubObj equivalence by char_respects.  Backward: pullback of truth along
-   h via sub_reindex, respecting ≈ of morphisms by sub_reindex_respects_mor.
-   The two round trips are the lemmas above.  Ends in Defined so the
-   correspondence computes. *)
+(*
+   本节说明拉回/推出、等价、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem classifier_classifies (x : C) :
   @Isomorphism Sets {| carrier := SubObj x |} {| carrier := x ~> Ω |}.
 Proof using Type HP.

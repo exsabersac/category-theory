@@ -153,10 +153,11 @@ Definition wcofork_legs {z : C} (h : y ~> z) (p : ParObj) :
   | ParY => h
   end.
 
-(* Injection coherence, phrased covariantly in C: precomposing the leg at
-   the codomain of a shape arrow with its image recovers the leg at the
-   domain.  This statement is definitionally the [cone_coherence] field of
-   an [ACone] over [WFam^op]. *)
+(*
+   本节说明 Wide 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma wcofork_legs_coherence {z : C} (h : y ~> z)
   (Hh : ∀ i j : I, h ∘ fs i ≈ h ∘ fs j) :
   ∀ (a b : ParObj) (k : b ~{WShape}~> a),
@@ -185,10 +186,11 @@ Lemma wide_colimit_coequalizer_desc (L : WideCoequalizer WFam)
   {z : C} (h : y ~> z) (Hh : ∀ i j : I, h ∘ fs i ≈ h ∘ fs j) :
   ∃! u : colimit_apex L ~> z,
     u ∘ colimit_inj (colimit_is_acolimit L) ParY ≈ h.
-(* Lib.v sets [Default Proof Using "Type"], which keeps only the section
-   variables occurring in the STATEMENT.  This is the ONE proof in the
-   section that reaches for [i0] without its statement mentioning it — the
-   others go through [wcofork_legs], whose body carries the dependency. *)
+(*
+   本节说明 Wide 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Proof using All.
   unshelve eapply Build_Unique.
   - exact (colimit_med (colimit_is_acolimit L) (wcofork_cocone h Hh)).

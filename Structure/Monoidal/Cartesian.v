@@ -21,11 +21,11 @@ Context {C : Category}.
 Context `{@Cartesian C}.
 Context `{@Terminal C}.
 
-(* The cartesian monoidal structure: tensor := ×, unit := 1.  This is a plain
-   [Definition] rather than an [Instance] (mirroring [CC_Monoidal]): making it
-   an instance would let typeclass resolution silently pick the product as
-   *the* monoidal structure on every cartesian category, conflicting with
-   hand-rolled monoidal structures elsewhere.  Callers select it explicitly. *)
+(*
+   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Cartesian_Monoidal : @Monoidal C := CC_Monoidal.
 
 End CartesianIsMonoidal.

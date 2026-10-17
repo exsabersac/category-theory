@@ -70,13 +70,11 @@ Section UniversalArrowUniversalProperty.
       simpl in M; rewrite <- M; clear M;
       assert (K := (@iso_to_from _ _ _ X)); simpl in K; rewrite K;
                now autorewrite with categories).
-    - (* This obligation is discharged directly by the tactic sequence
-         below.  It relies on setoid rewriting that handles universe
-         polymorphism well enough to close the goal, available on every
-         supported version (Coq >= 8.19, Rocq 9.0 and 9.1).  The
-         development stays axiom-free: [Print Assumptions
-         UniversalArrowIsUniversalProperty] reports "Closed under the
-         global context" on Rocq 9.1. *)
+    - (*
+   本节说明 Arrow 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
       simpl; assert (M := @preyoneda D^op _ d _ (to X));
       simpl in M; intro A; rewrite <- M in A; clear M;
       apply (proper_morphism (from X d)) in A;

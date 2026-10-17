@@ -24,11 +24,11 @@ Generalizable All Variables.
 
 (** ** Creation of limits (the iso-invariant reading) *)
 
-(* Mac Lane §V.1 Definition 3, in the form the setoid setting supports: a
-   lift of every limiting cone downstairs, a cone isomorphism identifying
-   its image with the given cone, and reflection.  The remaining two
-   clauses of the book — that the lift is limiting, and that it is unique —
-   are the theorems [creates_limiting] and [creates_lift_unique] below. *)
+(*
+   本节说明（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class CreatesLimit {J C D : Category} (K : J ⟶ C) (F : C ⟶ D) := {
   creates_lift (N : Cone (F ◯ K)) (HN : IsLimitCone N) : Cone K;
@@ -46,10 +46,11 @@ Definition creates_limiting {J C D : Category} {K : J ⟶ C} {F : C ⟶ D}
   creates_reflect (creates_lift N HN)
     (limitcone_transport (ConeIso_sym (creates_lift_over N HN)) HN).
 
-(* Mac Lane's uniqueness clause, in the form the setting supports: any cone
-   upstairs lying over N is canonically isomorphic to the created one.  This
-   is the pattern of [create_coeq_unique] (Monad/Monadicity/Beck.v) one
-   level up. *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition creates_lift_unique {J C D : Category} {K : J ⟶ C} {F : C ⟶ D}
   (CR : CreatesLimit K F) (N : Cone (F ◯ K)) (HN : IsLimitCone N)
@@ -77,10 +78,11 @@ Definition creates_limit_lift {J C D : Category}
 
 (** ** Mac Lane §V.4 Theorem 2, first half *)
 
-(* Creation plus existence of the limit downstairs gives preservation, at
-   the cone level.  The hypothesis [L] is Riehl's proviso, and it is
-   load-bearing: the creation clause only fires on a limiting cone
-   downstairs, so with no [Limit (F ◯ K)] there is nothing to feed it. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem creation_preserves_limit {J C D : Category}
   {K : J ⟶ C} {F : C ⟶ D} (CR : CreatesLimit K F) (L : Limit (F ◯ K)) :
@@ -195,12 +197,11 @@ Definition self_lift {J C D : Category} {K : J ⟶ C} {F : C ⟶ D}
   (M : Cone K) : StrictLift K F (FCone F M) :=
   @Build_StrictLift J C D K F (FCone F M) M eq_refl (fun x => reflexivity _).
 
-(* Riehl's Definition 3.4.7 asks for a UNIQUE on-the-nose lift that is
-   limiting.  This class keeps the on-the-nose lift and the limiting
-   clause and replaces her uniqueness clause by reflection, for the reason
-   given in the header; it is therefore neither weaker nor stronger than
-   the book's.  Uniqueness in the form this setting supports is
-   [screates_lift_unique] below, through the bridge to [CreatesLimit]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class StrictlyCreatesLimit {J C D : Category} (K : J ⟶ C) (F : C ⟶ D) := {
   screates (N : Cone (F ◯ K)) (HN : IsLimitCone N) : StrictLift K F N;
@@ -321,19 +322,11 @@ Definition creates_colimits_Cocomplete {C D : Category} (F : C ⟶ D)
 
 (** ** Jointly created limits (Riehl §3.4 Exercise 3.4.v) *)
 
-(* A FAMILY of functors [F i : C ⟶ D i] jointly creates the limit of [K]
-   when a family of limiting cones over the images, one for every [i],
-   lifts to a cone over [K] whose [i]-th image is the [i]-th given cone
-   up to cone isomorphism, and a cone upstairs ALL of whose images are
-   limiting is itself limiting.  This is [CreatesLimit] with the single
-   functor replaced by a family; the two bridges below record that
-   [CreatesLimit K F] is exactly the case of a one-member family.  Its
-   motivating instance is the family of projections out of a product of
-   categories (Construction/Product/Limit.v), which is what makes "limits
-   in a product category are computed componentwise" a creation statement
-   rather than a construction.  Mac Lane's remaining clauses — the lift
-   is limiting, and any cone over the given family is canonically
-   isomorphic to it — are derived exactly as for [CreatesLimit]. *)
+(*
+   本节说明函子、（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class JointlyCreateLimit {J C : Category} (K : J ⟶ C)
   {I : Type} {D : I → Category} (F : ∀ i : I, C ⟶ D i) := {

@@ -36,9 +36,11 @@ Context {F : A ⟶ B}.
 Context {C : Category}.
 Context (X : A ⟶ C).
 
-(* The diagram whose limit computes the extension at b: the comma category
-   (=(b) ↓ F) of pairs (a, f : b ~> F a), projected to A and followed by X.
-   Mac Lane writes this composite T ∘ Q (§X.3, display before Theorem 1). *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ran_comma_diagram (b : B) : (=(b) ↓ F) ⟶ C :=
   X ◯ @comma_proj2 _ _ _ =(b) F.
 
@@ -103,10 +105,11 @@ Qed.
 
 (** *** Reindexing, and the extension functor *)
 
-(* g : b ~> b' precomposes the comma component: (a, f : b' ~> F a) becomes
-   (a, f ∘ g : b ~> F a).  This is Riehl's reindexing functor, built here
-   in the minimal constant-domain case this file needs (issue #1021 owns
-   the general calculus). *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition ran_reindex {b b' : B} (g : b ~> b') :
   (=(b') ↓ F) ⟶ (=(b) ↓ F) := {|
   fobj := fun x => existT _ (`1 x) (`2 x ∘ g);

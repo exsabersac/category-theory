@@ -32,14 +32,11 @@ Section MonoidalPremonoidal.
 Context {C : Category}.
 Context `{M : @Monoidal C}.
 
-(** *** The one-sided tensoring functors
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    [Monoidal_Tensor_Left w] is [- ⨂ w] and [Monoidal_Tensor_Right w]
-    is [w ⨂ -], each an [AFunctor] over the stated object map so that
-    the binoidal tensor below is definitionally the monoidal one.  The
-    functor laws are the one-variable specializations of bifunctor
-    functoriality ([bimap_id_id], [bimap_comp_id_right] /
-    [bimap_comp_id_left]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Monoidal_Tensor_Left_respects (w x y : C) :
   Proper (equiv ==> equiv) (fun f : x ~> y => f ⨂ id[w]).
@@ -95,13 +92,11 @@ Definition Monoidal_Binoidal : @Binoidal C :=
     Monoidal_Tensor_Left
     Monoidal_Tensor_Right.
 
-(** *** Every morphism of a monoidal category is central
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Under [Monoidal_Binoidal] the tensorings of [f] and [f'] in the two
-    orders are [bimap f id ∘ bimap id f'] and [bimap id f' ∘ bimap f id];
-    both reduce to [bimap f f'] by the middle-four interchange, so the
-    two defining squares of [central] are a single lemma applied twice
-    with the roles of [f] and [f'] exchanged. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Monoidal_central_square {x y x' y' : C} (f : x ~> y) (f' : x' ~> y') :
   (f ⨂ id[y']) ∘ (id[x] ⨂ f') ≈ (id[y] ⨂ f') ∘ (f ⨂ id[x']).
@@ -119,21 +114,20 @@ Proof.
   - exact (Monoidal_central_square f' f).
 Qed.
 
-(* The interleaved binoidal tensor over [Monoidal_Binoidal] agrees with
-   the monoidal [bimap]; recorded as the bridge between the binoidal
-   [composite_ff'] spelling and the monoidal [bimap] spelling of
-   tensoring a pair of morphisms. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Monoidal_composite_ff' {x x' y y' : C} (f : x ~> y) (f' : x' ~> y') :
   @composite_ff' C Monoidal_Binoidal x x' y y' f f' ≈ f ⨂ f'.
 Proof. exact (bimap_id_left_right f' f). Qed.
 
-(** *** One-variable associator naturality
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    Each of the three premonoidal associator squares is the joint square
-    [to_tensor_assoc_natural] with identities in the two untouched
-    positions.  For the left and right squares one [bimap id id ≈ id]
-    cleanup aligns the identity-padded corner with the plain identity of
-    the compound object; the middle square is on the nose. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Monoidal_assoc_natural_left {x y z w : C} (g : x ~> y) :
   (g ⨂ id[(z ⨂ w)%object]) ∘ to (@tensor_assoc C M x z w)
@@ -157,14 +151,11 @@ Proof.
     apply bimap_id_id.
 Qed.
 
-(** *** The premonoidal structure of a monoidal category
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Every field is the corresponding monoidal datum: the unit, unitors
-    and associator are shared, centrality of the structural maps is the
-    all-central lemma, the unitor naturality squares and the coherence
-    laws coincide definitionally (the binoidal ⋉ / ⋊ over
-    [Monoidal_Binoidal] reduce to [bimap] with an identity), and the
-    associator squares are the one-variable lemmas above. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Monoidal_Premonoidal : @Premonoidal C Monoidal_Binoidal :=
   @Build_Premonoidal C Monoidal_Binoidal
@@ -185,14 +176,11 @@ Definition Monoidal_Premonoidal : @Premonoidal C Monoidal_Binoidal :=
 
 End MonoidalPremonoidal.
 
-(** ** Direction 2: an all-central premonoidal category is monoidal
+(*
+   本节说明幺半结构、单子、幺半群相关定义、性质与动机。
 
-    The converse engine.  [all_central] is taken as an explicit
-    hypothesis rather than a class field so that consumers can
-    instantiate it with a computed witness — Monad/Kleisli/Commutative.v
-    applies it with the centrality of all Kleisli morphisms of a
-    commutative strong monad, and Structure/Premonoidal/Centre.v uses
-    the same recipe with `1-projections for the centre. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AllCentralMonoidal.
 
@@ -202,14 +190,11 @@ Context `{P : @Premonoidal C B}.
 
 Variable all_central : ∀ (x y : C) (f : x ~> y), central f.
 
-(** *** The tensor bifunctor
+(*
+   本节说明函子相关定义、性质与动机。
 
-    On objects the tensor is the binoidal one; on morphisms it is the
-    interleaved composite [composite_ff'].  Identity preservation is
-    [composite_id_left] plus functoriality of the one-sided tensoring;
-    composition preservation is the one-sided interchange
-    [composite_ff'_comp_l], whose centrality hypothesis is the sole use
-    of [all_central]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Premonoidal_Tensor_respects (x y : C ∏ C) :
   Proper (equiv ==> equiv)
@@ -244,15 +229,11 @@ Definition Premonoidal_Tensor : (C ∏ C) ⟶ C :=
     Premonoidal_Tensor_id
     (fun x y z f g => Premonoidal_Tensor_comp f g).
 
-(** *** The monoidal structure
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    With [bimap] over [Premonoidal_Tensor] definitionally equal to
-    [composite_ff'], every [Build_Monoidal] field is one of the
-    [composite_ff']-phrased corollaries of Structure/Premonoidal.v: the
-    identity-padded unitor squares and their from-forms, the joint
-    associator squares (derived there from the three one-variable ones
-    with no centrality hypothesis), and the padded triangle and
-    pentagon. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Premonoidal_Monoidal : @Monoidal C :=
   @Build_Monoidal C

@@ -48,15 +48,11 @@ Notation "x ⊗ y" := (tensor x y) (at level 30, right associativity).
 Corollary inj_left_right {x y} : x ⋉ y = y ⋊ x.
 Proof. reflexivity. Qed.
 
-(* A morphism f : x ~> y in a binoidal category is central if, for every
-   morphism f' : x' ~> y', the two orders of tensoring f and f' agree. The
-   first conjunct is the square on x ⊗ x' ~~> y ⊗ y' (f on the left, f' on the
-   right); the second is the mirror square on x' ⊗ x ~~> y' ⊗ y. When f is
-   central these common composites are the f ⊗ f' and f' ⊗ f below. The
-   central morphisms form the centre, a monoidal subcategory of C: it is
-   constructed as a wide subcategory in Structure/Binoidal/Central.v
-   ([Centre]), and shown monoidal for premonoidal C in
-   Structure/Premonoidal/Centre.v ([Centre_Monoidal]). *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition central `(f : x ~> y) : Type :=
   ∀ x' y' (f' : x' ~> y'),

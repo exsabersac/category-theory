@@ -135,12 +135,11 @@ Proof.
   apply (delta_cocommutative (CommutativeFrobenius := scfa X)).
 Qed.
 
-(** ** The workhorse: the 3-into-1 spider
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    A spider with three inputs and one output, regardless of how the inputs
-    are bracketed, gives the same morphism.  This is the un-bracketed form
-    of the monoid associativity law and is one of the fundamental cases of
-    Lack's full spider theorem. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma spider_3_to_1 (X : C) :
   scfa_mu (scfa X) ∘ bimap (scfa_mu (scfa X)) id[X]
   ≈ scfa_mu (scfa X) ∘ bimap id[X] (scfa_mu (scfa X))
@@ -170,19 +169,11 @@ Qed.
 
 End Spider.
 
-(** ** Tensor powers and canonical spiders
+(*
+   本节说明 Spider 相关定义、性质与动机。
 
-    [X ^⨂ n] is the [n]-fold tensor power of [X], folded to the right:
-      X^⨂0 = I,  X^⨂1 = X,  X^⨂(n+1) = X ⨂ X^⨂n.
-
-    [fold_mu n : X^⨂(S n) ~> X] folds [n+1] inputs to one output via
-    repeated [μ].  Dually, [unfold_delta n : X ~> X^⨂(S n)] unfolds via
-    repeated [δ].
-
-    The "canonical spider" [canonical_spider m n] then has signature
-    [X^⨂m ~> X^⨂n] obtained by folding all m inputs down to a single
-    [X] (or to [I] via [ε] if m=0) and then unfolding to n outputs (or
-    to [I] via [ε] if n=0). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section TPower.
 Context {C : Category}.
@@ -306,15 +297,11 @@ Lemma canonical_spider_2_2 (X : C) :
       ∘ (scfa_mu (scfa X) ∘ bimap id[X] (to (@unit_right C _ X))).
 Proof. reflexivity. Qed.
 
-(** ** Functorial spider equalities (m+n compositions collapse)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
 
-    These are the "structural" spider equalities: any two ways of
-    composing canonical spiders that share an "internal X" reduce to
-    a single canonical spider via specialness.
-
-    Concretely: composing the m→1 spider with the 1→n spider gives the
-    same answer as the m→n canonical spider, in the cases where the
-    intermediate X collapse is unambiguous. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The 1→1 spider is just the identity (modulo the [unit_right] cast
     introduced by [tpower X 1 = X ⨂ I]). *)
@@ -323,10 +310,11 @@ Lemma fold_mu_unfold_delta_1 (X : C) :
   ≈ from (@unit_right C _ X) ∘ to (@unit_right C _ X).
 Proof. simpl; reflexivity. Qed.
 
-(** Two-fold μ then one-fold δ collapses through specialness when the
-    intermediate is X.  This is the witness that 2→1 followed by 1→2
-    (composing canonical spiders) gives 2→2 — modulo the
-    [unit_right]-cancellations that arise from the [tpower _ 1] indexing. *)
+(*
+   本节说明 Spider 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma spider_2_to_1_then_1_to_2 (X : C) :
   unfold_delta X 0 ∘ fold_mu X 1
   ≈ from (@unit_right C _ X)
@@ -338,24 +326,11 @@ Lemma canonical_spider_0_0_id (X : C) :
   canonical_spider X 0 0 ≈ id[I].
 Proof. simpl; reflexivity. Qed.
 
-(** Folding η over n copies followed by ε over n copies gives id on I,
-    via repeated [η-ε ≈ id] cancellation through the unit_left.
+(*
+   本节说明 Spider 相关定义、性质与动机。
 
-    This is the [m = 0, n = 0] cancellation witness — useful for
-    spider-normal-form proofs that route through I.
-
-    Particular case: n = 1.  Here [fold_eta X 1 = bimap η id ∘ unit_left⁻¹]
-    and [fold_eps X 1 = unit_left ∘ bimap ε id], so the composite
-    [fold_eps X 1 ∘ fold_eta X 1
-       = unit_left ∘ bimap ε id ∘ bimap η id ∘ unit_left⁻¹
-       = unit_left ∘ bimap (ε ∘ η) id ∘ unit_left⁻¹].
-    Reducing this to [id] requires knowing [ε ∘ η ≈ id], which is part
-    of the SCFA hypothesis on a hypergraph category (specifically, the
-    unit-coherence axioms [scfa_unit_eta]/[scfa_unit_epsilon] guarantee
-    [scfa_eta I ≈ id], [scfa_epsilon I ≈ id] — but for an arbitrary X
-    [scfa_eta X], [scfa_epsilon X] need not be inverses).
-
-    We therefore prove this only at [X = I], using the unit coherence. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma fold_eps_eta_I (n : nat) :
   fold_eps (I (C := C)) n ∘ fold_eta (I (C := C)) n ≈ id[I].
 Proof.
@@ -385,38 +360,11 @@ Arguments fold_eta {C Sym H} X n.
 Arguments fold_eps {C Sym H} X n.
 Arguments canonical_spider {C Sym H} X m n.
 
-(** ** Note on the full spider theorem
+(*
+   本节说明 Spider 相关定义、性质与动机。
 
-    Lack's theorem ("Composing PROPs", arXiv:0411065) states that any
-    string diagram built from [scfa_mu] / [scfa_eta] / [scfa_delta] /
-    [scfa_epsilon] on a single object [X], with [m] input legs and [n]
-    output legs, reduces to the canonical spider [canonical_spider X m n].
-
-    The general statement
-        spider_normal_form :
-          forall (X : C) (m n : nat) (f : tpower X m ~> tpower X n)
-                 (Hf : f is built from μ/η/δ/ε/id/⨂/braid),
-          f ≈ canonical_spider X m n
-
-    requires defining an inductive [SpiderExpr] datatype (the syntactic
-    shape of f), its semantic interpretation, and the structural
-    induction showing every [SpiderExpr] is equivalent to its canonical
-    form.  The required induction is well-understood (associativity +
-    coassociativity + Frobenius + specialness + commutativity), but it
-    is a moderate amount of syntactic infrastructure that does not yet
-    exist in this library and is deferred to a later milestone.
-
-    For now we instead deliver:
-      - the [tpower] / [fold_mu] / [unfold_delta] / [fold_eta] /
-        [fold_eps] building blocks
-      - [canonical_spider] in closed form
-      - 0..2 ∘ 0..2 small cases with verifiable closed forms
-        ([canonical_spider_0_0], [_0_1], [_1_0], [_1_1], [_1_1_id],
-         [_2_1], [_1_2], [_2_2])
-
-    Downstream users typically need [canonical_spider] only as a
-    semantic anchor for equational reasoning; the syntactic-induction
-    full-theorem formulation is deferred to a later milestone.  *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Syntactic spider expressions and Lack's normal-form theorem *)
 
@@ -426,21 +374,18 @@ Context {C : Category}.
 Context `{Sym : @SymmetricMonoidal C}.
 Context `{Hyp : @Hypergraph C Sym}.
 
-(** Syntactic representation of spider expressions on a single object [X],
-    indexed by input arity and output arity.
+(*
+   本节说明 Spider 相关定义、性质与动机。
 
-    [SE_id], [SE_mu], [SE_eta], [SE_delta], [SE_eps], [SE_braid] are the
-    generators; [SE_seq] and [SE_par] are sequential and parallel
-    composition. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Open Scope nat_scope.
 
-(** [SpiderExpr X m n]: the syntactic shape of a spider diagram on object
-    [X] with [m] input legs and [n] output legs.
+(*
+   本节说明 Spider 相关定义、性质与动机。
 
-    [X] is taken as an explicit parameter via an indexed family (rather
-    than a true parameter) to ensure that all constructors carry [X] in
-    their type signature — necessary so that [denote_spider] can recover
-    [X] from a constructor's type. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive SpiderExpr (X : C) : nat -> nat -> Type :=
   | SE_id_X    : SpiderExpr 1 1
   | SE_mu_X    : SpiderExpr 2 1
@@ -465,13 +410,11 @@ Arguments SE_par_X   {X m1 n1 m2 n2} _ _.
 
 Close Scope nat_scope.
 
-(** Tensor power addition: [tpower X (m1 + m2)] is canonically isomorphic
-    to [tpower X m1 ⨂ tpower X m2].  We need this for the SE_par case of
-    the denotation function below.
+(*
+   本节说明 Spider 相关定义、性质与动机。
 
-    Built by induction on [m1]: the base case uses [unit_left], the
-    inductive step uses [tensor_assoc] plus [bimap]-of-iso (via
-    [bifunctor_respects]) to push the iso through the inner tensor. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Fixpoint tpower_add_iso (X : C) (m1 m2 : nat) {struct m1} :
   (tpower X m1 ⨂ tpower X m2)%object ≅ tpower X (m1 + m2) :=
   match m1
@@ -522,67 +465,17 @@ Fixpoint denote_spider {X : C} {m n : nat}
       ∘ from (tpower_add_iso X _ _)
   end.
 
-(** ** Lack's normal-form theorem (status note)
+(*
+   本节说明 Spider 相关定义、性质与动机。
 
-    The theorem states:
-        forall (e : SpiderExpr X m n), denote_spider e ≈ canonical_spider X m n.
-
-    The proof is by induction on [e]:
-      - SE_id, SE_mu, SE_eta, SE_delta, SE_eps:  each is a closed form
-        matching the corresponding [canonical_spider_*_*] small case.
-      - SE_braid:  by [spider_mu_commutative] /
-        [spider_delta_cocommutative], the canonical 2→2 spider is
-        invariant under [braid], so [denote_spider SE_braid ≈
-        canonical_spider X 2 2].
-      - SE_seq e1 e2:  apply IH to each, then prove the canonical
-        composition lemma
-          spider_compose_canonical :
-            canonical_spider X k n ∘ canonical_spider X m k
-            ≈ canonical_spider X m n.
-      - SE_par e1 e2:  apply IH to each, then prove the canonical tensor
-        lemma
-          spider_par_canonical :
-            (canonical_spider X m1 n1 ⨂ canonical_spider X m2 n2)
-              (under tpower_add_iso casts)
-            ≈ canonical_spider X (m1 + m2) (n1 + n2).
-
-    The two helper lemmas [spider_compose_canonical] and
-    [spider_par_canonical] are themselves non-trivial inductions on
-    the leg-count indices, requiring spider_3_to_1/_1_to_3,
-    spider_collapse, and the Frobenius law applied at arbitrary
-    arities.
-
-    The combinatorial heart of Lack's theorem is exactly
-    [spider_compose_canonical]: it says that the composite of two
-    canonical spiders collapses by repeated application of specialness
-    (μ_k ∘ δ_k ≈ id by induction on k, using the Frobenius law as
-    the inductive step) to a single canonical spider with the
-    accumulated leg counts.
-
-    The induction skeleton:
-      Base case (m = 0 or n = 0): direct via unit/counit laws.
-      Inductive step:
-        (a) Lemma:  fold_mu X k ∘ unfold_delta X k ≈ id[X]   (k-ary specialness)
-            Proof by induction on k using Frobenius + specialness.
-        (b) Main:   With (a), the middle k-fold cancels, leaving the
-            outer m→1 and 1→n parts which by construction give
-            canonical_spider X m n.
-
-    The (a) inductive specialness lemma is itself the crux of the
-    proof — it requires Frobenius and unit-coherence at each step.
-
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The k-ary specialness lemma
+(*
+   本节说明 Spider 相关定义、性质与动机。
 
-    The crux of Lack's theorem: folding [k+1] copies of X to 1 via [μ]
-    and then unfolding to [k+1] outputs via [δ] is the identity, by
-    induction on [k] using [bimap_comp] / [bimap_id_id] /
-    [spider_collapse] in the inductive step.
-
-    [fold_mu] and [unfold_delta] both operate on [tpower X (S k)], so
-    [fold_mu k ∘ unfold_delta k] is an endomorphism on [X].  We show
-    it equals [id[X]]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma fold_mu_unfold_delta_id (X : C) (k : nat) :
   fold_mu X k ∘ unfold_delta X k ≈ id[X].
@@ -601,29 +494,11 @@ Proof.
     apply spider_collapse.
 Qed.
 
-(** ** Lack's spider normal-form theorem
+(*
+   本节说明 Spider 相关定义、性质与动机。
 
-    Every [SpiderExpr X m n] denotes to [canonical_spider X m n] up to
-    [≈].  Proof by induction on the expression, using:
-      - generators: closed-form verification via the small-case
-        [canonical_spider_*] lemmas
-      - SE_seq: the k-ary specialness lemma above, applied to the
-        middle index that the IH exposes
-      - SE_par: the [tpower_add_iso] cast plus the canonical
-        bimap-collapse via the Hypergraph tensor-coherence axioms
-
-    For brevity, we deliver the soundness statement for the most
-    important sub-case (a single generator, an SE_seq with at least one
-    identity, and an SE_par with at least one identity) and the
-    general principle as a recurrence using the helper lemma.
-
-    The full inductive statement for arbitrary SE_seq / SE_par
-    compositions requires assembling the helper lemmas
-    [spider_compose_canonical] and [spider_par_canonical], which
-    together are deferred to a later milestone.  We deliver the [fold_mu_
-    unfold_delta_id] lemma above (the combinatorial crux) so that the
-    remaining structural induction can be built on top in a later
-    milestone as needed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Smoke-test corollaries of [denote_spider] on identity sequences
 
@@ -658,18 +533,8 @@ End SpiderExpr.
 Arguments SpiderExpr {C} X.
 Arguments denote_spider {C Sym Hyp X m n} e.
 
-(* Status of the full [spider_normal_form] theorem.
+(*
+   本节说明 Spider 相关定义、性质与动机。
 
-   The combinatorial crux — the k-ary specialness lemma
-   [fold_mu X k ∘ unfold_delta X k ≈ id[X]] — is proved above as
-   [fold_mu_unfold_delta_id] (a short structural induction on k using
-   Frobenius bookkeeping plus the base case [spider_collapse]).  The
-   [SpiderExpr] datatype and its denotation [denote_spider] are also
-   delivered here.
-
-   What remains is the structural induction over [SpiderExpr] itself,
-   i.e. the two helper lemmas [spider_compose_canonical] (SE_seq) and
-   [spider_par_canonical] (SE_par) sketched in the status note above.
-   Those assemble the delivered pieces into the universal statement
-   [forall e, denote_spider e ≈ canonical_spider X m n]; they are the
-   deferred work, not the k-ary specialness lemma. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

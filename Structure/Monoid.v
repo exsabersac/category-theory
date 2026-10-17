@@ -22,80 +22,18 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* One definition, many algebras: what internalization is for
-
+(*
    nLab:  https://ncatlab.org/nlab/show/microcosm+principle
    nLab:  https://ncatlab.org/nlab/show/Eckmann-Hilton+argument
    nLab:  https://ncatlab.org/nlab/show/Day+convolution
    Paper: Eckmann, Hilton, "Group-like structures in general categories
-          I. Multiplications and comultiplications", Mathematische
-          Annalen 145, 1962
    Paper: Bénabou, "Algèbre élémentaire dans les catégories", C. R.
-          Acad. Sci. Paris 258, 1964
    Paper: Rivas, Jaskelioff, "Notions of Computation as Monoids", 2014
 
-   The systematic study of algebraic structure carried by an OBJECT of
-   a category, rather than by a set, begins with Eckmann and Hilton
-   (Math. Ann. 145, 1962), whose motivation was homotopy theory: to
-   explain why group structures arise on homotopy classes and why they
-   are natural.  nLab cites Bénabou (1964) for the definition of a
-   monoid in a monoidal category itself; the textbook treatment is
-   Mac Lane, Categories for the Working Mathematician, Sections III.6
-   and VII.3.
+   本节说明来源与用途相关定义、性质与动机。
 
-   A monoidal category is exactly enough structure to state the monoid
-   axioms, and each choice of ambient category then instantiates a
-   different classical theory.  In Set with the cartesian product,
-   [MonoidObject] yields ordinary monoids; in abelian groups under the
-   tensor product, rings; in R-modules, associative unital R-algebras;
-   in endofunctors under composition, monads; and in C^op, comonoids in
-   C (nLab, "monoid in a monoidal category").  It follows that a
-   theorem proved once at this generality — closure under products,
-   transport along lax monoidal functors, free monoids — specializes
-   everywhere at once.  The library proves the canonical instance one
-   directory away: Mac Lane's dictum that a monad "is just a monoid in
-   the category of endofunctors" (op. cit., 2nd ed., p. 138) is
-   [Monoid_Monad] in Monad/Monoid.v, a logical equivalence between
-   [MonoidObject] at the composition tensor and a [Monad].  Yet the
-   tensor is genuinely a parameter: a monoid object in StrictCat under
-   the funny tensor is a strict premonoidal category
-   (Instance/StrictCat/Premonoid.v), so changing the tensor changes
-   what a monoid is.
-
-   Two structural principles govern the tower.  Downward, the fact that
-   a monoid object can only be stated inside a categorified monoid — a
-   monoidal category — is the prototype of the microcosm principle of
-   Baez and Dolan ("Higher-Dimensional Algebra III", 1997): certain
-   algebraic structures can be defined in any category equipped with a
-   categorified version of the same structure.  Upward, the
-   Eckmann–Hilton argument shows that iterating the definition adds no
-   generality: a monoid object in the category of monoids is already a
-   commutative monoid, so the next rung is braided or symmetric
-   structure rather than a second multiplication.  The same argument
-   appears in this library at Structure/Semiadditive.v, where the two
-   convolutions on hom-sets satisfy interchange and therefore coincide,
-   commute, and associate.
-
-   The computational reading is direct: the header already notes that
-   [mempty] and [mappend] are borrowed from Haskell's Monoid class, and
-   the cartesian section below supplies the categorical semantics of
-   two standard library instances — [Product_Monoid] is the
-   componentwise monoid on pairs, and [Hom_Monoid] is the pointwise
-   monoid on functions into a monoid, with [doppel] distributing the
-   shared argument to both evaluations, obtained internally via
-   currying.  Rivas and Jaskelioff ("Notions of Computation as
-   Monoids", 2014) carry the pattern further: monads, applicative
-   functors, and arrows are all monoids in suitable monoidal
-   categories, so free constructions and Cayley representations
-   transfer uniformly.  On nLab's account of Day convolution, monoids
-   for the Day tensor are the lax monoidal functors underlying
-   Applicative; Construction/Day.v builds that tensor in-tree, though
-   this correspondence is not yet proved here.  Within the library,
-   [MonoidObject] is also the base of a tower of one-object structures:
-   [GroupObject] in Structure/Group.v extends it with an inverse, and
-   Theory/Algebra/Frobenius.v pairs the sibling definition of
-   Theory/Algebra/Monoid.v with a comonoid on the same carrier to form
-   Frobenius algebras. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section MonoidObject.
 
@@ -145,18 +83,20 @@ Context {C : Category}.
 Context `{@Cartesian C}.
 Context `{@Terminal C}.
 
-(* A monoid object for the cartesian monoidal structure [CC_Monoidal] (tensor
-   = categorical product ×, unit = terminal object 1) is a monoid in the usual
-   sense, with [mappend] reducing a product of two objects to one.
-
+(*
    nLab: "Classical monoids are of course just monoids in Set with the
-   cartesian product." *)
+
+   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Monoid := @MonoidObject C CC_Monoidal.
 
-(* The categorical product of two monoids is again a monoid, multiplying and
-   uniting componentwise; [toggle] rearranges (x × y) × (x × y) into the
-   (x × x) × (y × y) form expected by the componentwise [split] of the
-   two multiplications. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance Product_Monoid `(X : Monoid x) `(Y : Monoid y) :
   @MonoidObject C CC_Monoidal (x × y) := {|
   mempty  := @mempty _ _ _ X △ @mempty _ _ _ Y;
@@ -263,11 +203,11 @@ Proof.
   now rewrite !eval_first.
 Qed.
 
-(* The exponential [y ^ x] inherits a monoid structure pointwise from a monoid
-   [Y] on [y]: the unit is the constant function at [mempty[Y]], and two
-   functions are combined by evaluating each at the same point and multiplying
-   the results with [mappend[Y]]. This is the "monoid of functions into a
-   monoid", obtained here internally via currying. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance Hom_Monoid {x} `(Y : Monoid y) :
   @MonoidObject C CC_Monoidal (y ^ x) := {
   mempty  := curry (@mempty _ _ _ Y ∘ exl);

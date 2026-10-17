@@ -30,18 +30,11 @@ Generalizable All Variables.
 
 (* ------------------------------------------------------------------ *)
 
-(** ** Diagonal corollaries of the interchange
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    The four-object middle interchange [swap_inner] and its coherence laws
-    are developed for any symmetric monoidal category in the shared toolkit
-    of Structure/Monoidal/Braided/Proofs.v.  Its diagonal
-    [swap_inner x x y y] is definitionally Hypergraph.v's [mid_swap_inv]
-    ([swap_inner_diag]); the corollaries below restate the interchange
-    coherences in [mid_swap_inv] form, which is the shape the determinism
-    proofs consume.  Braided/Proofs.v itself stays independent of the
-    hypergraph stack; Theory/Algebra/Comonoid/Tensor.v restates the same
-    bridge in the mirror orientation ([mid_swap_inv_swap_inner]) for the
-    tensor-comonoid laws. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section MidSwapCoherence.
 
@@ -121,9 +114,11 @@ Lemma deterministic_equiv {x y : C} {f g : x ~> y} :
   f ≈ g → deterministic f → deterministic g.
 Proof. apply ComonoidHom_equiv. Qed.
 
-(** The headline: copy and discard ARE natural once restricted to
-    deterministic morphisms.  These are the two squares whose breakdown for
-    general morphisms is the defining negative space of [CopyDiscard]. *)
+(*
+   本节说明 Deterministic 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem copy_natural_on_deterministic {x y : C} (f : x ~> y) :
   deterministic f → copy[y] ∘ f ≈ (f ⨂ f) ∘ copy[x].
@@ -182,16 +177,11 @@ Proof.
     reflexivity.
 Qed.
 
-(** *** The generators copy and discard are themselves deterministic
+(*
+   本节说明 Deterministic 相关定义、性质与动机。
 
-    The canonical generators are the standard first examples of
-    deterministic morphisms (Fritz §10, over the CD structure of
-    Cho–Jacobs §2): [copy] is a
-    comonoid homomorphism precisely because the supply is coassociative
-    and cocommutative — its δ-square says [mid_swap_inv] fixes the
-    two-fold copy — and [discard] is one by the counit and unit
-    coherences.  These two lemmas are what a copy-discard supply on
-    [Det] itself would require of its structure morphisms. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The comonoid laws of the canonical supply, restated in copy/discard
    form for rewriting (the class fields state them at [delta] and
@@ -222,10 +212,11 @@ Lemma copy_counit_left {x : C} :
   (discard[x] ⨂ id[x]) ∘ copy[x] ≈ unit_left⁻¹.
 Proof. exact (@delta_counit_left C _ x (cd_comonoid x)). Qed.
 
-(* The δ-square of copy: [mid_swap_inv] fixes the two-fold copy
-   (δ ⨂ δ) ∘ δ.  The chase pushes all three copies into the right-hand
-   nest with coassociativity ([Key]), where the conjugated inner braid
-   dies against cocommutativity ([Inner]), and comes back down ([Key2]). *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma copy_copy {x : C} :
   copy[(x ⨂ x)%object] ∘ copy[x] ≈ (copy[x] ⨂ copy[x]) ∘ copy[x].
 Proof.

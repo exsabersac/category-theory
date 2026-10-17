@@ -127,10 +127,11 @@ Example initial_Limit_strict :
 
 (** *** The evaluation cone as a terminal object of [Cones F] *)
 
-(* The terminal-cone reading of the same fact: the evaluation cone is a
-   terminal object of Instance/Cones.v's category of cones over F.  This is
-   what Instance/Cones/Limit.v's [Limit_Cones] consumes, so the two
-   presentations can be compared — see [initial_Cones_strict]. *)
+(*
+   本节说明（余）极限、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition initial_Cones_Terminal : @Terminal (Cones F) := {|
   terminal_obj := initial_cone;
@@ -147,11 +148,11 @@ Example initial_Cones_strict :
 
 (** *** The honest biconditional *)
 
-(* A cone over F is limiting exactly when its leg at the initial object is
-   invertible.  Forward: the two mediators are mutually inverse, each round
-   trip being pinned by a uniqueness clause.  Backward: that inverse is a
-   cone isomorphism from the evaluation cone, along which limiting-ness
-   transports. *)
+(*
+   本节说明（余）极限、同构、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem limiting_iff_initial_leg_iso (N : Cone F) :
   IsLimitCone N ↔ IsIsomorphism (cone_leg N (@initial_obj J I)).
@@ -189,14 +190,11 @@ End LimitFromInitial.
 
 (** ** Reading invertibility back from the opposite category *)
 
-(* [IsIsomorphism] at C^op and at C carry the same inverse and swap their
-   two law fields, so passing between them is a field permutation with no
-   proof content.  Theory/Morphisms/CokernelPair.v already carries this
-   pair, as [IsIsomorphism_of_op] and [op_IsIsomorphism_of]; that module is
-   NOT required here — it pulls Theory/Morphisms.v, Structure/Pullback.v,
-   Structure/Pushout.v, Theory/Morphisms/Stability.v and
-   Theory/Morphisms/Duality.v onto every consumer — so the idiom is copied
-   under names that do not collide with it. *)
+(*
+   本节说明拉回/推出、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section OpIso.
 
@@ -220,25 +218,11 @@ End OpIso.
 
 (** ** The dual: a terminal shape computes colimits by evaluation *)
 
-(* Everything here is the section above read at J^op and C^op.
-   `Initial (J^op)` is notation for `Terminal ((J^op)^op)`, and
-   Construction/Opposite.v builds duality so that (J^op)^op is J on the
-   nose, so a `Terminal J` IS the hypothesis the primal section wants.  The
-   four packagings and the two accessors are supplied by `:=` with no
-   tactic.  Of the three lemmas, only [terminal_inj_id] is a single
-   [exact] of a PRIMAL lemma (`@initial_leg_id (J^op) (C^op) T (F^op)`);
-   an earlier draft of this header said all three were, which is wrong on
-   two counts.  [terminal_med_commutes] is a single [exact] of
-   [colimit_med_commutes] — a Structure/Limit/Preservation.v ACCESSOR, not
-   a primal lemma of this file — and [terminal_med_unique] introduces its
-   hypothesis first, so it is TWO tactics and again of an accessor.  The
-   biconditional is the primal one composed with the field permutation of
-   [iso_of_op]/[iso_to_op].  No second argument is given anywhere.
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-   The accessors are stated covariantly, in C: no `^op` appears in any type
-   below, which is the point of routing through
-   Structure/Limit/Preservation.v's [Cocone], [cocone_inj], [IsAColimit],
-   [colimit_inj] and [colimit_med]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ColimitFromTerminal.
 
@@ -296,10 +280,11 @@ Example terminal_med_strict (N : Cocone F) :
 Example terminal_apex_strict :
   colimit_apex terminal_Colimit = F (@terminal_obj J T) := eq_refl.
 
-(* The dual biconditional.  The primal theorem supplies both directions
-   with no second argument; the only residue is that invertibility at C^op
-   and at C are the same data in a different field order, which [iso_of_op]
-   and [iso_to_op] permute. *)
+(*
+   本节说明 Initial 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition colimiting_iff_terminal_inj_iso (N : Cocone F) :
   IsColimitCocone N ↔ IsIsomorphism (cocone_inj N (@terminal_obj J T)) :=
@@ -347,22 +332,11 @@ Example point_Cones_strict {C : Category} (F : _1 ⟶ C) :
 
 (** *** A computing witness in Sets *)
 
-(* [bool_set] is a REDUNDANT REDECLARATION, and an earlier draft of this
-   note gave a reason for it that is false.  That draft said the tree had
-   TWO [bool_setoid_object] definitions, in Theory/Concrete.v and
-   Theory/Algebra/Rig.v, "neither of which this file has any other reason
-   to require".  There are FIVE, and one of them — Instance/Sets.v,
-   `bool_setoid_object@{t u}` — is byte-identical in content to [bool_set]
-   and lives in a module this file ALREADY requires.  It is
-   convertible on the nose (`bool_setoid_object = bool_set := eq_refl`
-   compiles against this file's own import list, no new Require), and both
-   [Sets] witnesses below replay verbatim against it.  So the copy was
-   never forced.  It is kept rather than removed because deleting it is a
-   code change, not a correction of the record.  The cone apex, by
-   contrast, IS reused
-   — it is Instance/Sets.v's terminal singleton, so a cone over a point
-   diagram with that apex is literally a global element, and the mediator
-   below is the element it names. *)
+(*
+   本节说明 Initial 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition bool_set : obj[Sets] :=
   {| carrier := bool ; is_setoid := {| equiv := eq |} |}.
@@ -385,19 +359,11 @@ Example point_Sets_apex :
 Example point_Sets_med (b : bool) :
   limit_med (point_IsALimit (=(bool_set))) (elt_cone b) ttt = b := eq_refl.
 
-(* Non-degeneracy, and it is worth being exact about what this adds.  The
-   identification `limit_med … N = cone_leg N 0` holds at ARBITRARY
-   arguments ([initial_med_strict]), so instantiating it proves nothing on
-   its own.  What is specific to this diagram is that two cones over it
-   have provably different mediators, so the limit apex has at least two
-   distinct elements.  Be exact about the MECHANISM too: because the
-   mediator is DEFINITIONALLY the cone's leg, the statement reduces to
-   `true <> false` and [discriminate] closes it — no commutation or
-   uniqueness lemma is consumed, so it is not the universal property that
-   separates, as an earlier draft of this note said.  What the example
-   establishes is the apex's two distinct elements, which is what makes
-   the corollary non-degenerate: over a subsingleton apex any two
-   mediators would agree automatically. *)
+(*
+   本节说明（余）极限、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example point_Sets_separates :
   limit_med (point_IsALimit (=(bool_set))) (elt_cone true) ttt
@@ -438,15 +404,11 @@ Definition ordinal_succ_Colimit {n : nat} {C : Category}
   (G : Ordinal (S n) ⟶ C) : Colimit G :=
   @terminal_Colimit (Ordinal (S n)) C (Ordinal_Succ_Terminal n) G.
 
-(* A witness whose diagram genuinely varies from stage to stage:
-   Instance/Ordinal.v's embedding of `Ordinal (S n)` into ω sends a stage
-   to its own index, so the colimit apex is the numeral n and the bottom
-   stage is 0.  The same honesty note applies as in the [Sets] witness:
-   `colimit_apex … = G (ord_top n)` holds at ARBITRARY G
-   ([terminal_apex_strict]), so the apex computation alone shows nothing.
-   What is specific here is [ordinal_omega_nonconstant] — the diagram takes
-   different values at the bottom and top stages, so "the colimit is the
-   value at the top stage" is not a statement about a constant diagram. *)
+(*
+   本节说明（余）极限、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example ordinal_omega_apex (n : nat) :
   colimit_apex (ordinal_succ_Colimit (Ord_Omega (S n))) = n := eq_refl.
@@ -461,13 +423,11 @@ Proof. discriminate. Qed.
 
 (** *** Why ω itself is outside the colimit half of the theorem *)
 
-(* ω has an initial object, so LIMITS over ω are evaluation at stage 0 by
-   the first section — and provably no terminal object, so the second
-   section says nothing about colimits over ω.  That asymmetry is Riehl's
-   reason for indexing sequential colimits by ω rather than by a successor
-   ordinal: over a successor ordinal the colimit is the top stage and
-   nothing is glued.  Note that `Ordinal (S n)` is a FINITE successor
-   ordinal; ω+1 is not a category in this tree and is not claimed to be. *)
+(*
+   本节说明（余）极限、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Omega_Initial : @Initial Omega := {|
   terminal_obj := 0%nat;

@@ -39,11 +39,11 @@ Section AllDeterministicCartesian.
 
 Context `{M : @MarkovCategory C S}.
 
-(** ** Determinism in a Markov category is the copy square alone
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-    The ε-triangle of a comonoid homomorphism is automatic when the unit
-    is terminal, so a morphism of a Markov category is deterministic as
-    soon as it commutes with copying (Fritz, Definition 10.1). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma markov_deterministic_of_copy {x y : C} (f : x ~> y) :
   copy[y] ∘ f ≈ (f ⨂ f) ∘ copy[x] → deterministic f.
@@ -131,13 +131,11 @@ Next Obligation.
   apply braid_unit_right.
 Qed.
 
-(** ** Roundtrip: the produced cartesian structure carries the original
-    supply
+(*
+   本节说明笛卡尔、始/终对象相关定义、性质与动机。
 
-    The copy-discard structure induced by [all_deterministic_cartesian]
-    (via [CD_of_Cartesian]) has the same copy — definitionally — and the
-    same discard — by terminality — as the Markov category we started
-    from.  Fox's construction loses nothing. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary all_deterministic_cartesian_copy {x : C} :
   @copy C S (@CD_of_Cartesian C all_deterministic_cartesian) x ≈ copy[x].
@@ -156,11 +154,11 @@ Section CartesianDeterministic.
 
 Context `{H : @CartesianMonoidal C}.
 
-(* Every morphism of a cartesian monoidal category is a comonoid
-   homomorphism for the canonical diagonal/discard supply: the δ-square
-   is naturality of the diagonal, and the ε-triangle is terminality of
-   the unit.  "All kernels are deterministic": the degenerate,
-   probability-free reading of a cartesian category as a Markov one. *)
+(*
+   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem cartesian_all_deterministic :
   ∀ x y (f : x ~> y), @deterministic C _ (@CD_of_Cartesian C H) x y f.
 Proof.
@@ -174,14 +172,11 @@ End CartesianDeterministic.
 
 End Fox.
 
-(** ** Packaging: Fox's theorem as an equivalence
+(*
+   本节说明幺半结构、幺半群、等价相关定义、性质与动机。
 
-    A category carries a Markov structure in which every morphism is
-    deterministic precisely when it carries a cartesian monoidal
-    structure.  The forward direction is [all_deterministic_cartesian];
-    the backward direction equips the category with the canonical Markov
-    structure of its cartesian one ([Markov_of_Cartesian]) and observes
-    that all morphisms are deterministic there. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FoxPackaging.
 

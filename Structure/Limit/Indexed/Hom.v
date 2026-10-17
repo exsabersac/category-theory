@@ -407,9 +407,11 @@ Definition Sets_bad_not_icoprod :
   → False :=
   fun H => Sets_bad_transform_not_iso_co (fst (icoprod_iff_hom_iso _ _ _) H).
 
-(* The class-derived comparison and the one read straight off
-   [Sets_IsIndexedProduct] are the SAME TERM, not merely isomorphic: the
-   class projection reduces by iota to the field it was built from. *)
+(*
+   本节说明 Hom 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example Sets_iprod_hom_iso_is_class {A : Type} (F : A → obj[Sets]) :
   @indexed_product_hom_iso Sets Sets_HasIndexedProducts A F

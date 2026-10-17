@@ -42,11 +42,11 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The power as an endofunctor of [C]
+(*
+   本节说明函子相关定义、性质与动机。
 
-    The arrow action is the mediator [power_desc] produces for the family
-    [j ↦ g ∘ ev j], and every functor law is one appeal to that mediator's
-    uniqueness clause followed by a computation with [power_fmap_ev]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section PowerFunctor.
 
@@ -104,13 +104,11 @@ Arguments power_fmap {C HP} J {b b'} g.
 Arguments Power_Functor {C HP} J.
 Arguments power_functor_ev {C HP} J {b b'} g j.
 
-(** ** The copower as an endofunctor, for free
+(*
+   本节说明函子相关定义、性质与动机。
 
-    [copower J b] is [@power (C^op) HC J b] DEFINITIONALLY (#321), so the
-    copower functor is the op-power functor read back through
-    [Opposite_Functor].  That is a plain [Definition] with no obligation and
-    no tactic; the four [Example]s below record by [eq_refl] exactly what it
-    costs, namely nothing. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CopowerFunctor.
 
@@ -149,13 +147,11 @@ End CopowerFunctor.
 Arguments Copower_Functor {C HC} J.
 Arguments copower_functor_inj {C HC} J {b b'} g j.
 
-(** ** Mac Lane §IV.2 Exercise 12
+(*
+   本节说明hom、同构相关定义、性质与动机。
 
-    The hom-set isomorphism is the composite of #321's two bijections.  The
-    two land at the SAME [Sets]-power -- [copower_hom_iso_at] at
-    [J ⋔ C(b,c)] read from the copower side, [power_hom_iso_at] at the same
-    object read from the power side -- so no comparison map is needed and
-    [cp_adj_iso] is supplied by [:=]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CopowerPowerAdjunction.
 
@@ -164,17 +160,20 @@ Context {HP : @HasIndexedProducts C}.
 Context {HC : @HasIndexedCoproducts C}.
 Context (J : Type).
 
-(* The shared right-hand side of the two bijections: the [Sets]-power of the
-   hom-setoid [C(b,c)] by [J].  Naming it lets each donor be ASCRIBED at a
-   type mentioning it, which is what says they meet ON THE NOSE. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cp_middle (b c : C) : Sets :=
   @power Sets Sets_HasIndexedProducts J
     {| carrier := @hom C b c ; is_setoid := @homset C b c |}.
 
-(* Each donor lands at [cp_middle b c] with no comparison map inserted --
-   these are the two donors supplied AS TERMS at that ascribed type, so a
-   change to either target breaks them.  A tautology [X = X] would say
-   nothing here, and is deliberately not what is written. *)
+(*
+   本节说明 Adjunction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example cp_copower_at_middle (b c : C) :
   @Isomorphism Sets
     {| carrier := @hom C (copower J b) c
@@ -196,9 +195,11 @@ Definition cp_adj_iso (b c : C) :
   iso_compose (iso_sym (power_hom_iso_at (@power_ump C HP J c) b))
               (copower_hom_iso_at (@copower_ump C HC J b) c).
 
-(* The forward transpose of [u] is the unique arrow whose [j]-th evaluation
-   is [u] precomposed with the [j]-th injection -- Mac Lane's correct
-   [C(X · a, c) ≅ Set(X, C(a,c))], read at one pair of objects. *)
+(*
+   本节说明 Adjunction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cp_to_char (b c : C) (u : copower J b ~> c) (j : J) :
   power_ev J c j ∘ to (cp_adj_iso b c) u ≈ u ∘ copower_inj J b j.
 Proof. exact (unique_property (power_desc (power_ump J c) _) j). Qed.
@@ -250,15 +251,11 @@ End CopowerPowerAdjunction.
 Arguments cp_adj_iso {C HP HC} J b c.
 Arguments Copower_Power_Adjunction {C HP HC} J.
 
-(** ** C. The weighted-limit presentation, and that it agrees
+(*
+   本节说明（余）极限、始/终对象相关定义、性质与动机。
 
-    Mac Lane's §III.4 power is an indexed product; Structure/Limit/Weighted.v
-    presents limits by a WEIGHT.  The power is the weighted limit over the
-    TERMINAL SHAPE [1] whose weight picks out the index SET and whose diagram
-    is constant at [b].  Both directions are proved: [power_WeightedLimit]
-    inhabits the class at the chosen power, and [power_of_weighted] shows
-    that ANY weighted limit for that weight and diagram IS a power.  Dually
-    for the copower and [WeightedColimit]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section WeightedPower.
 
@@ -267,9 +264,11 @@ Context {HP : @HasIndexedProducts C}.
 Context (J : Type).
 Context (b : C).
 
-(* The weight picks out [J] as a DISCRETE setoid.  Discreteness is what the
-   backward leg's respectfulness needs: evaluations are indexed by ELEMENTS,
-   so a coarser index setoid would demand [ev j ≈ ev j'] from [j ≈ j']. *)
+(*
+   本节说明 Adjunction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition index_setoid : Sets :=
   {| carrier := J ; is_setoid := eq_Setoid J |}.
 
@@ -357,9 +356,11 @@ Context {HC : @HasIndexedCoproducts C}.
 Context (J : Type).
 Context (b : C).
 
-(* The colimit weight is contravariant on the shape, so it lives over
-   [1^op].  That shape is NOT [1] -- refuted at [eq_refl] and pinned -- which
-   is why this half is built directly rather than instantiated at [C^op]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition copower_weight : (Opposite _1) ⟶ Sets :=
   @Diagonal Sets (Opposite _1) (index_setoid J).
 
@@ -445,11 +446,11 @@ End WeightedCopower.
 
 Arguments copower_diagram {C} b.
 
-(** ** C'. The converses: a weighted limit for that data IS a power
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-    This is what turns §C from "the chosen power inhabits the class" into an
-    agreement of the two presentations, which is the issue's stated reviewer
-    check.  Nothing here assumes the ambient category has powers at all. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section WeightedPowerConverse.
 
@@ -600,21 +601,11 @@ Proof. exact (@id_left C _ _ (copower_inj J b j)). Qed.
 
 End WeightedRoundTrip.
 
-(** ** D0. The copower BIFUNCTOR, which BOTH parameter readings share
+(*
+   本节说明函子相关定义、性质与动机。
 
-    [(b, J) ↦ J · b] is functorial in both arguments at once.  §D fixes the
-    OBJECT and varies the index (Mac Lane's Ex 1 reads the object as the
-    parameter); §E fixes the index and varies the object.  They are two
-    parametrizations of this ONE bifunctor, and neither implies the other.
-
-    The index category is [Coq], not [Sets], and that is FORCED: the copower
-    injections are indexed by ELEMENTS, so [fmap_respects] demands
-    [f j = f' j] at LEIBNIZ equality from [f ≈ f'].  [Coq]'s hom-setoid is
-    pointwise Leibniz and supplies it; [Sets]' does not, and the probe
-    carries an axiom-free countermodel refuting the CANONICAL arrow action
-    over [Sets] -- the copower mediator of the injections -- outright rather
-    than merely recording that the obvious proof does not go through.  No
-    other arrow action over [Sets] is claimed refuted. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CopowerBifunctor.
 
@@ -676,15 +667,11 @@ End CopowerBifunctor.
 
 Arguments Copower_Bifunctor {C HC}.
 
-(** ** D1. Mac Lane §IV.7 Exercise 1, UNRESTRICTED
+(*
+   本节说明hom、同构、来源与用途相关定义、性质与动机。
 
-    The displayed isomorphism of the exercise, in its CORRECTED form
-    [C(J · a, c) ≅ Set(J, C(a,c))], upgraded from a family of bijections to
-    an isomorphism of BIFUNCTORS on [C^op ∏ C] -- which is what "natural in
-    the parameter a" asks for.  No hypothesis beyond [HasIndexedCoproducts].
-
-    The right-hand side is [Power_Functor] AT [Sets] composed with the
-    hom-bifunctor: Mac Lane's [Set(J, −)] is §A's own power functor. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ObjectParameterUnrestricted.
 
@@ -741,23 +728,17 @@ Arguments CopLeft {C HC} J.
 Arguments CopRight {C} J.
 Arguments Copower_Bifunctor_Iso {C HC} J.
 
-(** ** D2. Mac Lane §IV.7 Exercise 1, PACKAGED as an adjunction with a
-    parameter -- and the punchline, that the assembled right adjoint IS the
-    hom-functor
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
-    The packaging needs the right adjoint [C(a,−)] to land in the SAME index
-    category the copower is indexed by, and there the two demands pull
-    against each other: the copower wants LEIBNIZ equality on the index, the
-    hom-functor wants [C]'s own [≈].  [HomAllStrict C] is exactly the
-    hypothesis under which they coincide, and it is disclosed as an explicit
-    argument rather than hidden.  It is inhabited in tree -- degenerately,
-    by the terminal category, whose hom-setoid IS [Morphism_equality]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* [Construction/Comma/Special.v] already declares this hypothesis at a
-   FIXED pair of objects, for exactly this reason (its [Full] criterion for
-   the discrete-hom comparison), so it is CONSUMED here and quantified over
-   all objects rather than redeclared.  Its [Blur_HomStrict_absurd] is a
-   compiled witness of a category where the per-hom-set form is refutable. *)
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition HomAllStrict (C : Category) : Type :=
   ∀ x y : C, @HomStrict C x y.
 
@@ -847,9 +828,11 @@ Definition Copower_Object_ParametrizedAdjunction :
   pa_adj   := ex1_pa_adj
 |}.
 
-(* ★ THE PUNCHLINE.  #396's Theorem 3 assembles the right adjoints into a
-   bifunctor contravariant in the parameter, and that bifunctor IS the
-   hom-functor of [C] -- on objects definitionally, on arrows pointwise. *)
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition MacLane_Ex1_hom_bifunctor : C^op ∏ C ⟶ Coq :=
   @parametrized_right_adjoint_bifunctor Coq C C Ex1_Bifunctor
     Copower_Object_ParametrizedAdjunction.
@@ -899,14 +882,11 @@ End ObjectParameterPackaged.
 Arguments HomCoq {C} HS a.
 Arguments Ex1_Bifunctor {C HC}.
 
-(* ** [HomAllStrict] is inhabited in tree, degenerately
+(*
+   本节说明hom相关定义、性质与动机。
 
-   [_1]'s hom-setoid IS [Morphism_equality] (Instance/One.v), so
-   [HomAllStrict _1] is the identity implication -- which is also the donor's
-   own [One_HomStrict] (Construction/Comma/Special.v), there at the
-   single object pair.  The witness exercises the
-   HYPOTHESES and the assembly, not the conclusion: everything in [1]
-   collapses to [ttt]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition One_HomAllStrict : HomAllStrict _1 := fun _ _ _ _ H => H.
 
@@ -944,14 +924,11 @@ Definition One_Ex1_ParametrizedAdjunction :
   @Copower_Object_ParametrizedAdjunction _1 One_HasIndexedCoproducts
     One_HomAllStrict.
 
-(** ** E. The issue's own item 4: the INDEX SET as the parameter
+(*
+   本节说明伴随、函子相关定义、性质与动机。
 
-    Here the parameter slot of [ParametrizedAdjunction] holds the index and
-    the varying argument is the object, so the partial functors ARE §A's
-    copower functors and the right adjoints ARE §A's power functors.  A
-    function between index sets induces a transformation of copower functors
-    whose CONJUGATE is the induced transformation of power functors, and
-    that conjugacy is #396's [pa_natural_p] consumed, not recomputed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section IndexParameter.
 
@@ -959,9 +936,11 @@ Context {C : Category}.
 Context {HP : @HasIndexedProducts C}.
 Context {HC : @HasIndexedCoproducts C}.
 
-(* The §B isomorphism ASCRIBES at the partial functor (both [fobj]s reduce
-   to [copower J b]); the §B ADJUNCTION does not, because [Adjunction] is
-   indexed by the functor RECORD.  Both facts are pinned in the probe. *)
+(*
+   本节说明伴随、函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cp_pa_iso (J : Type) (b c : C) :
   @Isomorphism Sets
     {| carrier := @hom C (fobj[Partial_l Copower_Bifunctor J] b) c

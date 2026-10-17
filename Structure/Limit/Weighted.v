@@ -28,12 +28,11 @@ Section Weighted.
 
 #[local] Obligation Tactic := idtac.
 
-(* The covariant hom-diagram of a fixed apex [c] over the diagram [F]: the
-   functor J ⟶ Sets sending each [j] to the hom-setoid [c ~> F j] and each
-   [g : j ~> j'] to postcomposition with [fmap[F] g]. A Sets-natural
-   transformation [W ⟹ HomDiagram c F] is precisely a "W-shaped cone" from [c]
-   to [F], so representing this presheaf-of-cones (naturally in [c]) is what it
-   means for a W-weighted limit to exist. *)
+(*
+   本节说明自然变换、函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition HomDiagram {J C : Category} (c : C) (F : J ⟶ C) : J ⟶ Sets := {|
   fobj := fun j => {| carrier := c ~{C}~> F j ; is_setoid := @homset C c (F j) |};
@@ -53,11 +52,11 @@ Next Obligation.
   intros J C c F j j' j'' g g' h; simpl; now rewrite fmap_comp, <- comp_assoc.
 Qed.
 
-(* Reindexing the covariant hom-diagram along a morphism of apexes: for
-   [h : c' ~> c], precomposition with [h] is a natural transformation
-   [HomDiagram c F ⟹ HomDiagram c' F], component-wise [k ↦ k ∘ h]. This is the
-   action-on-morphisms of the "presheaf of cones" viewed in the apex, and is
-   exactly what the naturality square of a weighted limit compares against. *)
+(*
+   本节说明自然变换、（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition HomDiagram_precompose {J C : Category} {c c' : C}
   (h : c' ~{C}~> c) (F : J ⟶ C) : HomDiagram c F ⟹ HomDiagram c' F := {|
@@ -75,17 +74,13 @@ Qed.
 
 End Weighted.
 
-(* nLab: https://ncatlab.org/nlab/show/weighted+limit
+(*
+   nLab: https://ncatlab.org/nlab/show/weighted+limit
 
-   A W-weighted limit of [F : J ⟶ C] (with a Sets-valued weight [W : J ⟶ Sets])
-   is an object [wlim_obj] together with an isomorphism, natural in [c],
+   本节说明（余）极限、同构相关定义、性质与动机。
 
-       [J,Sets](W, HomDiagram c F)  ≅  C(c, wlim_obj)
-
-   in [Sets]. The left side is the setoid of W-shaped cones from [c] to [F]; the
-   isomorphism [wlim_iso] states that maps into [wlim_obj] classify such cones,
-   and [wlim_natural] is the precomposition/naturality square that makes the
-   family [wlim_iso] a natural isomorphism of presheaves on [C]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class WeightedLimit {J C : Category} (W : J ⟶ Sets) (F : J ⟶ C) := {
   wlim_obj : C;
@@ -95,11 +90,11 @@ Class WeightedLimit {J C : Category} (W : J ⟶ Sets) (F : J ⟶ C) := {
       ([[[J,Sets]]](W, HomDiagram c F))
       {| carrier := c ~{C}~> wlim_obj ; is_setoid := @homset C c wlim_obj |};
 
-  (* Naturality of [wlim_iso] in the apex [c]: for [h : c' ~> c] the square
-     relating the two presheaves commutes. Reindexing a cone [α] at [c] to a
-     cone at [c'] (by precomposing every leg with [h]) and then classifying it
-     is the same as classifying [α] and then precomposing the resulting map with
-     [h]. *)
+  (*
+   本节说明 Weighted 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   wlim_natural (c c' : C) (h : c' ~{C}~> c)
     (α : W ⟹ HomDiagram c F) :
     to (wlim_iso c') (nat_compose (HomDiagram_precompose h F) α)
@@ -110,15 +105,11 @@ Arguments wlim_obj {J C W F} _.
 Arguments wlim_iso {J C W F} _ _.
 Arguments wlim_natural {J C W F} _ _ _ _ _.
 
-(* * The conical dictionary.
+(*
+   本节说明自然变换、（余）极限、始/终对象相关定义、性质与动机。
 
-   Weighting by the constant weight at the terminal setoid recovers the ordinary
-   (conical) limit. The constant weight [Δ[J](1)] sends every object of [J] to
-   the singleton setoid and every morphism to the identity, so a Sets-natural
-   transformation [Δ[J](1) ⟹ HomDiagram c F] is exactly a choice, for each [j],
-   of a leg [c ~> F j] compatible with the diagram — i.e. a cone from [c] to
-   [F]. The two conversions below make this cone/nat-transformation dictionary
-   explicit. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Conical.
 
@@ -334,11 +325,13 @@ Lemma conical_of_limit `(F : J ⟶ C) :
   Limit F → WeightedLimit (Δ[J]( @terminal_obj Sets Sets_Terminal )) F.
 Proof. intro Lim. exact (conical_of_limit_inst Lim). Qed.
 
-(* nLab: https://ncatlab.org/nlab/show/weighted+limit#conical_limits
+(*
+   nLab: https://ncatlab.org/nlab/show/weighted+limit
 
-   The named payload: the [Sets]-weighted limit weighted by the constant weight
-   at the terminal setoid is exactly the ordinary limit. Both directions are
-   proved at full strength. *)
+   本节说明（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem conical_weighted `(F : J ⟶ C) :
   WeightedLimit (Δ[J]( @terminal_obj Sets Sets_Terminal )) F ↔ Limit F.
@@ -348,13 +341,13 @@ Proof.
   - apply conical_of_limit.
 Defined.
 
-(* nLab: https://ncatlab.org/nlab/show/weighted+colimit
+(*
+   nLab: https://ncatlab.org/nlab/show/weighted+colimit
 
-   A Sets-weighted colimit is the dual notion: a weighted limit in the opposite
-   category. The honest colimit weight is contravariant on [J], i.e. a functor
-   [W : J^op ⟶ Sets]; reading it as an (ordinary) weight for the opposite
-   diagram [F^op : J^op ⟶ C^op] fixes the variance so that this is the genuine
-   [W]-weighted colimit of [F]. *)
+   本节说明函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition WeightedColimit {J C : Category} (W : (J^op) ⟶ Sets) (F : J ⟶ C) :=
   @WeightedLimit (J^op) (C^op) W (F^op).

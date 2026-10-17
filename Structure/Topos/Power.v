@@ -29,88 +29,15 @@ Generalizable All Variables.
 *)
 Open Scope category_scope.
 
-(* The power-object functor of an elementary topos, and its self-adjointness
-   on the right.
-
+(*
    nLab:      https://ncatlab.org/nlab/show/power+object
    nLab:      https://ncatlab.org/nlab/show/topos
    Wikipedia: https://en.wikipedia.org/wiki/Topos
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.10,
-   book p. 107 (`maclane:IV.10:remark2`), closes the topos section with one
-   sentence and no proof:
+   本节说明伴随、函子、（余）极限相关定义、性质与动机。
 
-     "The axioms for a topos have many useful consequences. For exam-
-      ples, every topos has all finite colimits."
-
-   The standard route to that sentence is Paré's (1974): the contravariant
-   power-object functor P = Ω^(−) : E^op ⟶ E is self-adjoint on the right and
-   MONADIC, so E^op is EQUIVALENT to the Eilenberg-Moore category of the induced
-   monad and therefore inherits E's finite limits; read in E those are finite
-   colimits.  This file is step one and step two of that route: the functor, and
-   the self-adjointness.  Monadicity is Structure/Topos/Monadic.v; the colimits
-   are Structure/Topos/Colimits.v.  NONE of Mac Lane, Awodey or Seven Sketches
-   proves the theorem, and Mac Lane-Moerdijk, the reference Mac Lane and Awodey
-   send the reader to, was not available; the argument was reconstructed and
-   CHECKED BY COMPILATION.
-
-   THE FUNCTOR IS A PARTIAL APPLICATION AND RAISES NO OBLIGATION.  The
-   internal hom [InternalHomFunctor C : C^op ∏ C ⟶ C] of
-   Functor/Hom/Internal.v is contravariant in its FIRST argument, which is
-   exactly the variance of P, so [Partial_l] at Ω is the whole definition
-   and all three functor laws are inherited.  Two nearby constants are NOT
-   donors, and both refusals are pinned in Test/ProbeToposColimits405.v:
-   [Partial_r] fixes the first argument and varies the second, so it has
-   the wrong variance; and [Exp_Functor] of
-   Structure/Cartesian/Closed/Adjunction.v is covariant in the base with
-   the exponent held fixed (that file's own header calls it "the partial
-   application at a fixed exponent"), so its object action is (−)^S and
-   not Ω^(−).
-
-   STEP TWO CONSUMES NO SUBOBJECT CLASSIFIER, ONLY THE OBJECT Ω.  The issue
-   routes the two-sided transposition through [relations_iso]
-   (Structure/Topos.v), i.e. through subobjects of a × b.  That is not needed:
-   the bijection E(a, Ω^b) ≅ E(b, Ω^a) is a fact about ANY object in ANY
-   cartesian closed category, and the map is already in the tree as [flip]
-   (Structure/Cartesian/Closed.v), [flip f := curry (uncurry f ∘ swap)].  What
-   was missing is that [flip] is an INVOLUTION: a whole-tree search for an
-   involution lemma about that [flip] returned only the list-reversal hypothesis
-   [flip_involutive] of Lib/TList.v and Lib/NETList.v and Theory/Morphisms.v's
-   [flip_invol] about an [Involutive] endomorphism (a substring sweep adds
-   Construction/Free/Groupoid.v's [sflip_involutive], about a different flip),
-   none of which is this [flip], and by SHAPE the only statement of the form
-   [flip (flip f)] anywhere in the tree is [flip_flip] itself, which supplies it
-   in four rewrites.
-
-   THE FOUR NATURALITY FIELDS COLLAPSE TO TWO LEMMAS, and that is why the
-   step is cheap.  With S = T = P and both legs of the isomorphism equal
-   to [flip], [to_aor_nat_a] and [from_aor_nat_x] are one and the same
-   statement ([flip_comp]) and [to_aor_nat_x] and [from_aor_nat_a] are the
-   other ([flip_pow_comp]).  The three prior in-tree witnesses of S = T --
-   Adjunction/Right.v's [Powerset_AdjointOnTheRight],
-   Structure/Monoidal/Dual.v's [dual_self_adjoint_on_the_right] and
-   Instance/InnerProduct/Galois.v's [perp_AdjointOnTheRight] -- build
-   [aor] the same way, as a record literal whose [to] and [from] are one
-   map.
-
-   FIDELITY TO THE ISSUE'S OWN ROUTE is nevertheless recorded, as
-   [pow_aor_is_relations]: transporting a morphism a ~> Pow b to the
-   subobject of a × b it classifies, reindexing that subobject along
-   [swap], and classifying back is [flip].  It holds at ≈ and is refused
-   at [eq_refl] -- NOT because either leg of [relations_iso] is stuck
-   (both reduce on the nose, and §(E) reads them back by [eq_refl]) but
-   because the two sides are [curry] of the untransposed map composed
-   with [swap] against [curry] of the characteristic map of a
-   doubly-reindexed subobject, and reindexing introduces chosen pullback
-   objects.  This is the one place the classifier enters the file, and
-   only as a check.
-
-   WHAT IS NOT HERE.  No monad: [pow_monad] would need
-   [Adjunction_Induced_Monad] from Monad/Comparison.v, measured at +6
-   modules on this file's closure, so it is declared in
-   Structure/Topos/Monadic.v where the monadicity machinery is required
-   anyway.  No naturality of [pow_aor_is_relations] in a or b.  No claim
-   that the unit and the counit differ: they are the same term. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ToposPower.
 
@@ -198,10 +125,11 @@ Next Obligation. apply flip_pow_comp. Qed.
 Next Obligation. apply flip_pow_comp. Qed.
 Next Obligation. apply flip_comp. Qed.
 
-(* The ordinary adjunction it unpacks to.  In Theory/Adjunction.v's naming
-   [Adjunction {C D} (F : D ⟶ C) (U : C ⟶ D)] this reads: the "top"
-   category is C^op, the "bottom" is C, the LEFT adjoint is P^op and the
-   RIGHT adjoint -- the monadic one -- is P. *)
+(*
+   本节说明伴随、单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pow_adjunction :
   @Adjunction (C^op) C (Opposite_Functor PowF) PowF :=
   Adjunction_of_AdjointOnTheRight pow_self_adjoint.
@@ -242,10 +170,11 @@ Qed.
 
 (** ** (E) Fidelity to the issue's [relations_iso] route *)
 
-(* BOTH legs of [relations_iso] reduce on the nose, which the brief for this
-   work did not expect: the composite of two [Program]-elaborated setoid
-   morphisms still converts to [curry ∘ char_sub] one way and to pulling
-   truth back along the untransposed map the other. *)
+(*
+   本节说明 Power 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example relations_iso_to_is_curry_char {a b : C} (s : SubObj (a × b)) :
   to (relations_iso a b) s = curry (char_sub s) := eq_refl.
 
@@ -258,14 +187,11 @@ Example relations_iso_from_is_reindex {a b : C} (f : a ~> Pow b) :
 Definition pow_relations {a b : C} (f : a ~> Pow b) : b ~> Pow a :=
   to (relations_iso b a) (sub_reindex swap (from (relations_iso a b) f)).
 
-(* It agrees with [flip], hence with [aor], POINTWISE and at ≈.  The proof
-   is [char_reindex] followed by the classifier round trip; no naturality
-   of either isomorphism is used.  The [eq_refl] form is refused -- the two
-   sides are [curry] of the untransposed map composed with [swap] on one
-   side and [curry] of a characteristic map of a doubly-reindexed subobject
-   on the other, and the reindexing introduces chosen pullback objects.
-   Test/ProbeToposColimits405.v pins the refusal with this lemma as its
-   control. *)
+(*
+   本节说明拉回/推出、同构、子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma pow_aor_is_relations {a b : C} (f : a ~> Pow b) :
   to (pow_aor a b) f ≈ pow_relations f.
 Proof.

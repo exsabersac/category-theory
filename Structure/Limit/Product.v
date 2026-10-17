@@ -18,10 +18,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The elementary universal property of an indexed product: the family [proj]
-   of projections is universal, so every competing family [pi] factors
-   uniquely across it.  This mirrors the [IsEqualizer] record of
-   [Structure/Equalizer/Fork.v]. *)
+(*
+   本节说明等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record IsIndexedProduct {C : Category} {A : Type} (f : A → C)
   (p : C) (proj : ∀ a : A, p ~> f a) := {
   (* universal property: every family [pi] into the [f a] factors uniquely
@@ -34,11 +35,11 @@ Arguments iprod_desc {_ _ _ _ _} _ {_} _.
 
 (** ** From a plain family to a cone over the discrete diagram *)
 
-(* Cone coherence over the discrete diagram is vacuous: the only morphisms of
-   [DiscreteCat A] are equality witnesses, and pushing a leg along [fmap] of
-   an equality proof recovers the leg at the (necessarily equal) codomain.
-   This statement is definitionally the [cone_coherence] field of an [ACone]
-   over [DiscreteCat_Functor f]. *)
+(*
+   本节说明 Product 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma family_cone_coherence {C : Category} {A : Type} (f : A → C)
   (c : C) (pi : ∀ a, c ~> f a) :
   ∀ (x y : DiscreteCat A) (e : x ~{DiscreteCat A}~> y),

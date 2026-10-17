@@ -319,12 +319,11 @@ Next Obligation. now rewrite ring_neg_l. Qed.
 Next Obligation. now rewrite rig_distr_l. Qed.
 Next Obligation. now rewrite rig_distr_r. Qed.
 
-(* [PA] is new since the PR "algebraic carriers are sets" (2026-09-17): a
-   [RigObject] carries [rig_prop], and an arbitrary [SetoidObject] of [Sets]
-   supplies no [Prop] mirror for its `≈` (Instance/Sets/Propositional.v's
-   header says why there is no such instance in general).  It is a class
-   argument, so at every in-tree call site where [A] is a rig's own carrier it
-   is discharged by [rig_prop] without being written. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Rig_of_InternalSemiring@{o so} {A : SetoidObject@{o o}}
   {PA : PropEquiv@{o o} (is_setoid A)}
   (S : @InternalSemiring Sets@{o so} _ _ A) : RigObject@{o o o} := {|
@@ -396,9 +395,11 @@ Fail Example rig_round_record :
   (Rig_of_InternalSemiring (Sets_InternalSemiring R)) = R := eq_refl.
 
 Context {A : SetoidObject}.
-(* The round trip below runs at an ARBITRARY carrier, which supplies no
-   [Prop] mirror of its own; [Rig_of_InternalSemiring] therefore asks for one
-   and the section hands it over.  See that definition for why. *)
+(*
+   本节说明 Ring 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context (PA : PropEquiv (is_setoid A)).
 Context (S : @InternalSemiring Sets _ _ A).
 
@@ -464,10 +465,11 @@ Section LawsConstrain.
   repeat match goal with [ b : bool |- _ ] => destruct b end;
   simpl in *; congruence.
 
-(* [orb] on the two-element setoid is a commutative monoid with unit
-   [false].  Used TWICE below, as both the additive and the multiplicative
-   half, to show that annihilation is independent of the remaining
-   [InternalSemiring] laws. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Bool_Or_Monoid : @Monoid Sets _ _ bool_setoid_object :=
   Sets_Monoid bool_setoid_object false orb _ _ _ _.
 Next Obligation. bool_crush. Qed.

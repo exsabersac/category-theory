@@ -24,11 +24,11 @@ Definition Span (C : Category) := Roof ⟶ C.
    Wikipedia: https://en.wikipedia.org/wiki/Span_(category_theory)#Cospans *)
 Definition Cospan (C : Category) := Roof^op ⟶ C.
 
-(* [ASpan f g] packages a concrete span `x ← S → y` from its apex S and its
-   two legs [f : S ~> x] and [g : S ~> y] as a functor [Roof ⟶ C]. The
-   object part sends the apex RZero to S and the feet RNeg, RPos to x, y; the
-   morphism part sends the two non-identity Roof arrows ZeroNeg, ZeroPos to
-   the legs f and g (all other arrows being identities). *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition ASpan {C : Category} {S x y : C} (f : S ~> x) (g : S ~> y) :
   Roof ⟶ C := {|

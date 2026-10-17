@@ -20,75 +20,17 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The coend calculus, its history, and the existential reading
-
+(*
    nLab:  https://ncatlab.org/nlab/show/coend
    Book:  Loregian, "(Co)end Calculus", London Math. Soc. Lecture Note
-          Series 468, Cambridge University Press 2021
    Paper: Yoneda, "On Ext and exact sequences", J. Fac. Sci. Univ. Tokyo
-          Sec. I, 8 (1960) 507–576
    Book:  Mac Lane, "Categories for the Working Mathematician", Springer
-          1971 (2nd ed. 1998), chapter IX
    Paper: Day, "On closed categories of functors", Midwest Category
-          Seminar IV, Springer LNM 137 (1970) 1–38
 
-   A coend integrates a functor of mixed variance over its diagonal into
-   a single object of the target, and it does so where an ordinary
-   colimit cannot.  A colimit glues a covariant diagram; [coend_obj] is
-   instead the universal object receiving the injections [coend_inj]
-   that COEQUALIZE the two functorial actions of `F`.  Concretely it is
-   the coequalizer
+   本节说明函子、（余）极限、（余）端相关定义、性质与动机。
 
-     ∐_{f : c → c'} F(c', c) ⇉ ∐_c F(c, c) → ∫^c F(c, c)
-
-   forcing the contravariant action `F(f, 1)` and the covariant action
-   `F(1, f)` to agree (nLab, "coend"); this is [coend_cowedge] read as a
-   quotient rather than as a family of equations.  Many canonical
-   constructions are inherently of mixed variance, and it is these, not
-   covariant diagrams, that a coend is built to express.
-
-   The notation and the calculus accumulated in layers.  Yoneda
-   introduced the integral sign for ends and coends in §4 of his 1960
-   dissertation, though under a convention reversed from the modern one:
-   he named the coend "integration" and the end "cointegration" (Yoneda
-   1960; nLab, "end").  Mac Lane gave the textbook account — chapter IX
-   of "Categories for the Working Mathematician" defines dinatural
-   transformations and presents ends and coends as universal (co)wedges,
-   the presentation this file inherits through Structure/Wedge and
-   Structure/End (Mac Lane 1971).  Mac Lane also used a coend to render a
-   construction in algebraic topology as a tensor product of functors,
-   `F ⊗_C G ≅ ∫^c F c ⊗ G c`, with `C` cast in the role of the ring
-   (reported in Loregian's survey).  Loregian later supplied the first
-   book-length treatment and described the technique as a "secret weapon"
-   of working category theorists (Loregian 2021).
-
-   The utility is the calculus itself: a compact algebra of integral
-   manipulations that replaces long diagram chases.  Its basic reduction
-   is the co-Yoneda, or "ninja Yoneda", lemma — every functor is a coend
-   of representables, `∫^{c'} C(c', c) · F c' ≅ F c` — proven in Sets in
-   Theory/Coend/Yoneda.v; its second rule is the Fubini interchange
-   `∫^{(c,d)} H ≅ ∫^c ∫^d H` (Theory/Coend/Fubini.v).  Over these run the
-   applications: Day convolution, which makes a functor category
-   monoidal by `(F * G) c ≅ ∫^{a,b} C(a ⊗ b, c) · F a · G b`
-   (Day 1970; Construction/Day.v); profunctor composition
-   `(Q ∘ P)(c, e) ≅ ∫^d P(c, d) × Q(d, e)` (Theory/Profunctor.v,
-   Construction/Profunctor/Compose.v); the pointwise left Kan extension
-   `∫^c D(K c, d) · F c`, the coend presentation of the extension that
-   Theory/Kan/Extension.v instead builds through an adjunction; and the
-   geometric realization of a simplicial set as a single coend (nLab,
-   "coend").
-
-   Computationally a coend is an existential type.  An element of
-   `∫^c F(c, c)` is a pair `(c, a)` with `a : F(c, c)` — a hidden object
-   together with a value — taken modulo the dinaturality gluing that
-   identifies `(c, F(f, 1) b)` with `(c', F(1, f) b)`; dually an end is
-   a polymorphic `∀ c. …` carrying a naturality side-condition
-   (Milewski, "Category Theory for Programmers", §26).  This is the
-   shape of the concrete coend in Instance/Sets/Coend.v, where an
-   injection at a witness is quotiented by exactly that relation, and it
-   is why existential and parametric encodings stand in for coends in
-   profunctor-optics libraries (Clarke et al., "Profunctor Optics, a
-   Categorical Update", arXiv 2020). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Coend.
 
@@ -107,9 +49,11 @@ Definition coend_inj (E : Coend F) {x : C} :
   F (x, x) ~{D}~> coend_obj E :=
   @wedge_map (C^op) (D^op) (F^op) (@end_wedge (C^op) (D^op) (F^op) E) x.
 
-(** The covariant cowedge (co-dinaturality) condition, obtained from the
-    underlying wedge condition of `end_wedge` by one `symmetry`. For
-    `f : x ~> y` both composites run `F (y, x) ~> coend_obj`. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma coend_cowedge (E : Coend F) {x y : C} (f : x ~{C}~> y) :
   @coend_inj E x ∘ bimap[F] (op f) id ≈ @coend_inj E y ∘ bimap[F] id f.
 Proof.
@@ -118,18 +62,20 @@ Proof.
            (@end_wedge (C^op) (D^op) (F^op) E) y x (op f)).
 Qed.
 
-(** Covariant cowedge data on a candidate apex `w`: a family of legs
-    `i x : F (x, x) ~> w` satisfying the cowedge condition. This packages the
-    hypotheses of the coend's universal property and of the smart constructor
-    below. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Cowedge_cond (w : D) (i : ∀ x : C, F (x, x) ~{D}~> w) : Type :=
   ∀ (x y : C) (f : x ~{C}~> y),
     i x ∘ bimap[F] (op f) id ≈ i y ∘ bimap[F] id f.
 
-(** Covariant cowedge data assembles into an underlying `Wedge F^op`
-    (equivalently a `Cowedge F`). The wedge condition is the covariant
-    `cond` read back through `F^op` by one `symmetry`; this is the inverse of
-    the reading performed in [coend_cowedge]. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition covariant_cowedge (w : D)
   (i : ∀ x : C, F (x, x) ~{D}~> w) (cond : Cowedge_cond w i) :
   @Wedge (C^op) (D^op) (F^op).
@@ -140,10 +86,11 @@ Proof.
   exact (cond y x f).
 Defined.
 
-(** The coend universal property, stated covariantly: every cowedge
-    `(w, i)` over `F` factors through the coend by a unique mediator
-    `u : coend_obj ~> w` recovering each leg, `u ∘ coend_inj_x ≈ i x`. This is
-    the end UMP `ump_ends` read on the cowedge `covariant_cowedge w i cond`. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma coend_ump (E : Coend F)
   (w : D) (i : ∀ x : C, F (x, x) ~{D}~> w) (cond : Cowedge_cond w i) :
   ∃! u : coend_obj E ~{D}~> w, ∀ x : C, u ∘ coend_inj E ≈ i x.
@@ -193,12 +140,11 @@ Proof.
   - now apply coend_med_unique.
 Qed.
 
-(** A `Build_Coend`-style smart constructor: a coend is assembled from
-    covariant cowedge data `(w, i, cond)` together with its covariant
-    universal property `ump`. The underlying end wedge is
-    `covariant_cowedge w i cond`; the end UMP `ump_ends` is discharged by
-    reading each competing `Wedge F^op` back into covariant cowedge data and
-    applying `ump`. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Build_Coend (w : D)
   (i : ∀ x : C, F (x, x) ~{D}~> w) (cond : Cowedge_cond w i)
   (ump : ∀ (w' : D) (i' : ∀ x : C, F (x, x) ~{D}~> w')

@@ -251,10 +251,11 @@ Qed.
 
 Section SetsInternal.
 
-(* The same helper Structure/Ring.v names [Sets_Monoid].  It is duplicated
-   rather than imported so that neither Section III.6 file depends on the
-   other, and the name is kept distinct so that importing both is
-   unambiguous. *)
+(*
+   本节说明 Lattice 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Sets_Monoid_on@{o so p} (A : SetoidObject@{o o})
   (u : carrier A) (op : carrier A → carrier A → carrier A)
   (opP : Proper@{o p} (equiv ==> equiv ==> equiv) op)

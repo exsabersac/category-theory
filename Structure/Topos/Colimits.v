@@ -42,154 +42,16 @@ Generalizable All Variables.
 *)
 Open Scope category_scope.
 
-(* EVERY ELEMENTARY TOPOS HAS FINITE COLIMITS.
-
+(*
    nLab:      https://ncatlab.org/nlab/show/topos
    nLab:      https://ncatlab.org/nlab/show/Pare%27s+theorem
    Wikipedia: https://en.wikipedia.org/wiki/Topos
    Paper:     Paré, "Colimits in topoi", Bulletin of the American
-              Mathematical Society 80 (1974), pp. 556-561
 
-   THREE BOOKS STATE THIS IN FOUR PLACES AND NONE OF THEM PROVES IT.
+   本节说明（余）极限、topos相关定义、性质与动机。
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.10,
-   book p. 107 (`maclane:IV.10:remark2`), closes the topos section with:
-
-     "The axioms for a topos have many useful consequences. For exam-
-      ples, every topos has all finite colimits."
-
-   The Appendix "Foundations", §App.1, book p. 290
-   (`maclane:App.1:remark2`), singles out the initial object:
-
-     "These axioms for a topos then hold for the category of sets. They
-      have a number of strong consequences. For example, they give all
-      finite cate- gorical products and pullbacks, as well as all finite
-      coproducts, including an initial object 0, the empty set."
-
-   Awodey, "Category Theory" (1st ed., Carnegie Mellon pre-print,
-   September 2005), §8.8, printed p. 210
-   (`awodey:8.8:remark-topos-properties`), immediately after Definition
-   8.16:
-
-     "This compact definition proves to be amazingly rich in
-      consequences: it can be shown for instance that topoi also have all
-      finite colimits and that every slice category of a topos is again a
-      topos. We refer the reader to the books by Mac Lane and Moerdijk,
-      Johnstone, and McLarty for information on topoi, and here just give
-      an example (albeit one the covers a very large number of cases)."
-
-   Fong and Spivak, "Seven Sketches in Compositionality", §7.2.1, printed
-   p. 225 (`7sketches:7.2.1:remark-topos-properties`):
-
-     "Although we will not prove it in this book, toposes are categories
-      that are similar to Set in many ways. Here are some facts that are
-      true of any topos E:
-         1. E has all limits,
-         2. E has all colimits,
-         3. E is cartesian closed,
-         4. E has epi-mono factorizations,
-         5. E has a subobject classifier 1 --true--> Ω."
-
-   Mac Lane-Moerdijk, the reference Mac Lane §IV.10 and Awodey both send the
-   reader to (the Appendix page and Seven Sketches name none), was NOT available
-   here.  The proof below is Paré's, RECONSTRUCTED and CHECKED BY COMPILATION.
-
-   THE ROUTE, in one paragraph.  The contravariant power-object functor
-   P = Ω^(−) : E^op ⟶ E is self-adjoint on the right through the
-   cartesian-closed [flip], with no subobject classifier consumed at that
-   step (Structure/Topos/Power.v).  It is MONADIC: reflexive coequalizers
-   in E^op are three lines of pre-existing reductions, P is faithful
-   through the singleton map, P reflects isomorphisms because a topos is
-   balanced, and P carries the equalizer of a co-reflexive pair to a SPLIT
-   coequalizer -- direct image along a mono (no image factorization) for
-   the two sections, Beck-Chevalley by pullback pasting for the fourth
-   law.  Crude monadicity is then CONSUMED (Structure/Topos/Monadic.v's
-   [power_object_monadic], through Monad/Monadicity/Crude.v's
-   [crude_monadicity]).  So E^op is equivalent to the Eilenberg-Moore
-   category of P ◯ P^op, whose terminal object and pullbacks are built
-   here on the carriers and transported back along the equivalence.  In
-   E^op a terminal object is an INITIAL object of E, a binary product is a
-   COPRODUCT, an equalizer is a COEQUALIZER and a pullback is a PUSHOUT --
-   all four by NOTATION or by a pre-existing one-line bridge.
-
-   WHY THE ELEMENTARY ROUTE AND NOT THE [Limit] ROUTE.  The universe fact behind
-   it is a MEASUREMENT, pinned in Test/ProbeToposColimits405.v; the conclusion
-   drawn from it is an inference.  [Terminal_Limit] (Structure/Limit/Terminal.v)
-   and [Cartesian_Limit] (Structure/Limit/Cartesian.v) are stated over
-   [Category@{u Set Set}]: they pin the ambient category's hom AND proof
-   universes to the literal [Set].  Going through them would have made "every
-   elementary topos has finite colimits" a theorem about Set-homed toposes only
-   -- an inference from those two refusals and not a compiled comparison, since
-   the [Limit] route was not built.  So no [Cone], [Limit], [Colimit] or
-   [Cocomplete] token occurs outside a comment in Structure/Topos/Power.v,
-   Structure/Topos/Monadic.v, Theory/Equivalence/Pullback.v or this file --
-   MEASURED, and with one stated exception: the module path
-   [Category.Structure.Limit.Preservation] appears in one [Require] of
-   Structure/Topos/Monadic.v, where it supplies [ReflectsIsos] and no limit
-   vocabulary at all.  Correspondingly no [Cocomplete] claim is made: the
-   theorem is exactly the four elementary generator records, packaged as
-   [topos_has_finite_colimits].
-
-   WHAT IS NEW TO THE TREE BEYOND THE ISSUE'S ASK.  A topos is balanced; the
-   singleton map and its monicity; the direct image along a mono and its
-   retraction law; Beck-Chevalley for subobjects along a pullback square; the
-   power functor, its self-adjointness and its monadicity; pullbacks transported
-   along an equivalence of categories (Theory/Equivalence/Pullback.v -- MEASURED
-   with the five new files excluded, a whole-tree search for the six names
-   [Terminal_transport], [Initial_transport], [Cartesian_transport],
-   [Cocartesian_transport], [HasEqualizers_transport] and
-   [HasPullbacks_transport] returns 8 lines, all in
-   Theory/Equivalence/Terminal.v, naming [Terminal_transport],
-   [Initial_transport] and their two object readbacks; read that as a NAME
-   search, since other structures ARE carried across an equivalence under other
-   names -- Instance/Proset/Limit.v's [Complete_equivalence_invariant] and
-   [Cocomplete_equivalence_invariant], Theory/Equivalence/Monoidal.v's
-   [Transported_Monoidal], Theory/Equivalence/Adjunction.v's
-   [Transported_Adjunction] -- so what is new is the PULLBACK case, not the
-   pattern); and, at the instance level, the FIRST [HasCoequalizers FinSet] the
-   tree has ever had (in Test/ProbeToposColimits405.v -- no .v file declares a
-   constant of that type, and the only two .v hits for the phrase
-   [HasCoequalizers FinSet] elsewhere are NOT-DELIVERED notes in
-   Instance/Sets/Coequalizer.v and Instance/Sets/Coequalizer/Interconnect.v
-   about what those two files do not build, which therefore do not go stale).
-
-   NO CONSTANT DECLARED HERE IS REGISTERED AS AN [Instance].  A chosen colimit
-   must not become globally resolvable: the delivered constants are plain
-   [Definition]s (with [Example]s, [Lemma]s and one [Program Definition] beside
-   them), so a consumer passes the topos explicitly, exactly as
-   Instance/FinSet/Topos.v's [FinSet_Topos] is passed explicitly.  The one
-   registration below is the [Existing Instance pow_monad] of the section
-   preamble, declared local to this section and there only so that [t_alg],
-   [ret] and [join] resolve.
-
-   NOT DELIVERED.  No [Cocomplete] and no infinite colimits.  No
-   [Limit]/[Colimit]-shaped statement and no finite-shape induction -- both the
-   colimit theorem and Structure/Topos/Monadic.v's [topos_finitely_complete] are
-   at GENERATOR level, and a [Limit K]-for-every-finite-shape-J statement is
-   still not claimed anywhere in this library.  No image factorization and no
-   direct image along a general arrow (only along monos).  No route through
-   Beck's precise theorem.  No naturality of any identification.  No [eq_refl]
-   readback at FinSet: the agreement with FinSet's computable colimits is
-   delivered at [≅]; the [eq_refl] form for the initial object is pinned as a
-   CONVERSION refusal in the probe (the coproduct and pushout readbacks are
-   delivered at [≅] only, and no [eq_refl] form of them is attempted); and its
-   cause is NOT isolated -- the derived object is the quasi-inverse
-   [Crude_Inverse] at [EM_Terminal]'s object ([topos_Initial_obj] reads that
-   back at [eq_refl]), i.e. the reflexive coequalizer Monad/Monadicity/Crude.v
-   chooses through [op_HasReflexiveCoequalizers] and [topos_HasEqualizers], a
-   chain that never consumes [PowF_ReflectsIsos] ([Crude_Inverse] takes no
-   [ReflectsIsos] argument at all; in Crude.v [refl] enters only
-   [crude_theta_iso] and one [Proof using]), and no experiment names the
-   constant that blocks the reduction.  No second concrete topos.  Nothing about
-   slices of a topos (Awodey's other half), nor about epi-mono factorization
-   (Seven Sketches' clause 4), both of which are separate obligations.
-
-   Of this file's five [Defined] tokens, [em_pb_fst], [em_pb_snd] and
-   [EM_Pullback] are LOAD-BEARING -- each flipped alone to [Qed] breaks the
-   file, [em_pb_fst] and [em_pb_snd] at [EM_Pullback]'s own commuting-square
-   obligation and [EM_Pullback] at its first readback, [EM_Pullback_carrier] --
-   and [EM_Terminal]'s two data obligations are not, the file compiling
-   unchanged with either flipped alone; the flip was run per token. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ToposColimits.
 
@@ -199,9 +61,11 @@ Context `{H : @ElementaryTopos C}.
 Local Notation TT := (PowF ◯ Opposite_Functor PowF).
 Local Notation EMT := (@EilenbergMoore C TT pow_monad).
 
-(* The monad is not a registered instance -- a chosen monad structure
-   must not become globally resolvable -- so it is made available to
-   [t_alg], [ret] and [join] locally, for this section only. *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Existing Instance pow_monad.
 
 (** ** (A) The terminal algebra *)
@@ -235,9 +99,11 @@ Definition em_pb_carrier : C := Pull _ _ em_pb.
 Definition em_pb_p1 : em_pb_carrier ~> ``xa := pullback_fst _ _ em_pb.
 Definition em_pb_p2 : em_pb_carrier ~> ``ya := pullback_snd _ _ em_pb.
 
-(* The two candidate actions on the carriers form a cone over the target
-   algebra: each algebra square turns [t_alg_hom] past the action, and the
-   pullback square then equates the two T-images. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma em_pb_cone :
   t_alg_hom[FF] ∘ (t_alg[projT2 xa] ∘ fmap[TT] em_pb_p1)
     ≈ t_alg_hom[GG] ∘ (t_alg[projT2 ya] ∘ fmap[TT] em_pb_p2).

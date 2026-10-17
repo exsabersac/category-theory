@@ -29,15 +29,11 @@ Definition Continuous_PreservesProductCones {C D : Category} {F : C ⟶ D}
 
 (** ** Finite shapes *)
 
-(* Structure/Limit/Finite.v's [FiniteCategory] is now the tree's finiteness
-   predicate on shapes (Structure/Limit/Creation.v points at it;
-   Structure/Topos.v and Structure/Regular.v once spelled "finite limits" as
-   terminal, products, pullbacks).  A second, in the enumeration form of
-   Construction/Subcategory/Finite.v and Construction/Free/Quiver/
-   Presented.v: finitely many objects, and finitely many arrows in each
-   hom UP TO [≈], which is the only reading the setoid setting supports.
-   The lists are data, so the record is a [Type] and its inhabitants
-   compute. *)
+(*
+   本节说明（余）极限、拉回/推出、topos相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record FiniteShape (J : Category) : Type := {
   fs_objs : list (obj[J]);

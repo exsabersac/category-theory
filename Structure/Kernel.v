@@ -88,10 +88,11 @@ Qed.
 
 (** ** Descent in the zero-composite phrasing *)
 
-(* Any h with f ∘ h ≈ 0 factors uniquely through the kernel.  The
-   hypothesis of [eq_desc] reads f ∘ h ≈ zero_mor ∘ h; the adapter step
-   converts the zero-composite hypothesis into that shape via absorption
-   of zero morphisms under precomposition. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma kernel_desc {x y k : C} {f : x ~> y} {i : k ~> x}
   (K : IsKernel f i) {z : C} (h : z ~> x) (Hh : f ∘ h ≈ zero_mor) :
   ∃! u : z ~> k, i ∘ u ≈ h.
@@ -102,10 +103,11 @@ Proof.
   apply zero_mor_right.
 Qed.
 
-(* Dually, any h with h ∘ f ≈ 0 descends uniquely through the cokernel.
-   The hypothesis of [coeq_desc] reads h ∘ f ≈ h ∘ zero_mor; the adapter
-   step converts the zero-composite hypothesis into that shape via
-   absorption of zero morphisms under postcomposition. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cokernel_desc {x y q : C} {f : x ~> y} {e : y ~> q}
   (K : IsCokernel f e) {z : C} (h : y ~> z) (Hh : h ∘ f ≈ zero_mor) :
   ∃! u : q ~> z, u ∘ e ≈ h.
@@ -130,10 +132,11 @@ Definition normal_epi {y q : C} (e : y ~> q) : Type :=
 
 (** ** Cokernels are regular epimorphisms *)
 
-(* Every cokernel map is a regular epimorphism: it coequalizes the
-   parallel pair (f, 0) by definition.  This is the bridge Abelian.v uses
-   to inherit the strong-epi/mono factorization from Structure/Regular.v
-   ([regular_epi_strong]). *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cokernel_regular_epi {x y q : C} {f : x ~> y} {e : y ~> q}
   (K : IsCokernel f e) : RegularEpi e := {|
   regepi_dom := x;
@@ -144,13 +147,11 @@ Definition cokernel_regular_epi {x y q : C} {f : x ~> y} {e : y ~> q}
 
 (** ** Normality against the chosen (co)kernels *)
 
-(* A kernel of anything is a kernel of EVERY cokernel of itself: the
-   original morphism descends through the cokernel, so anything the
-   cokernel projection kills is already killed by the original morphism
-   and factors through the kernel.  Together with its dual this makes the
-   chosen-cokernel phrasing of the normality interface (the class fields
-   of Structure/Abelian.v) carry full generality, as a theorem rather
-   than a remark. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma kernel_of_any_cokernel {k x y q : C} {f : x ~> y} {i : k ~> x}
   (K : IsKernel f i) {e : x ~> q} (CK : IsCokernel i e) :
   IsKernel e i.

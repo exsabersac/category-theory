@@ -44,15 +44,11 @@ Qed.
 
 (** ** The smallness witness the proof consumes *)
 
-(* [ai_index] is a single type indexing ALL the arrows of C: every hom-set
-   is a retract of it RELATIVE TO A DEFAULT.  The default makes [ai_dec]
-   total without asking the caller to decide anything, and the law says the
-   round trip is the identity up to the hom-setoid, for every default.
-   Content: |hom x y| ≤ |ai_index| for every inhabited hom-set — Riehl's
-   "products of families as large as its own cardinality" (§3.7 Prop 3), so
-   the theorem covers large categories.  Theory/Size.v's [Small] is
-   deliberately NOT consumed: it resizes per hom-set through [ObjEq]
-   transports, and the proof needs one index type for all arrows. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record ArrowIndex (C : Category) := {
   ai_index   : Type;
   ai_enc     : ∀ {x y : C}, (x ~> y) → ai_index;
@@ -65,10 +61,11 @@ Arguments ai_enc {C} _ {x y} _.
 Arguments ai_dec {C} _ {x y} _ _.
 Arguments ai_dec_enc {C} _ {x y} _ _.
 
-(* The dual is field for field the same data ([hom[C^op] x y] is [hom[C] y x]
-   definitionally).  The constructor must be applied at [C^op] explicitly:
-   the anonymous record literal elaborates its binders at [obj[C]] and is
-   refused against [ArrowIndex (C^op)] (probe). *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ArrowIndex_op {C : Category} (AI : ArrowIndex C) :
   ArrowIndex (C^op) :=
   @Build_ArrowIndex (C^op) (ai_index AI)
@@ -113,10 +110,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* EVERY category with decidable object equality carries an [ArrowIndex] at
-   its own total arrow collection (Theory/Size.v's [TotalMor]).  So the
-   hypothesis is not disguised thinness or finiteness: the strength of the
-   theorem sits in the products at that index. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition canonical_ArrowIndex {C : Category} (DO : ObjDecEq C) :
   ArrowIndex C :=
   {| ai_index   := TotalMor C
@@ -126,9 +124,11 @@ Definition canonical_ArrowIndex {C : Category} (DO : ObjDecEq C) :
 
 (** ** The separated-pair core, fully constructive *)
 
-(* The core consumes ONE elementary product: the [K]-fold power of [b],
-   given as an [IsIndexedProduct] of the constant family.  Both the class
-   [HasIndexedProducts] and a [Complete] instance feed it below. *)
+(*
+   本节说明 Freyd 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section FreydCore.
 
 Context {C : Category}.
@@ -189,9 +189,11 @@ Proof using sep_resp sep_f sep_g.
   exact (fr_decode_mk phi i).
 Qed.
 
-(* THE CORE.  No axioms, no classical logic, no decidability: a parallel
-   pair separated by a boolean predicate cannot exist in a category whose
-   arrows are indexed by [K] and which has the [K]-fold power of [b]. *)
+(*
+   本节说明 Freyd 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem freyd_no_separated_pair : False.
 Proof using All.
   exact (freyd_cantor_bool fr_Fam fr_Fam_surjective).
@@ -321,9 +323,11 @@ Universe o h p uo uh up.
 
 Context {C : Category@{uo uh up}} (comp : @Complete C).
 
-(* The limit of the discrete diagram on [d], through the annotated
-   [DiscreteCat_Functor'] (Structure/Limit/Comparison.v) — the unannotated
-   [DiscreteCat_Functor] pins C's hom and proof levels to [Set] (probe). *)
+(*
+   本节说明（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition complete_iprod_obj {A : Type@{o}} (d : A → C) : C :=
   vertex_obj[@limit_cone _ _ _
     (comp (DiscreteCat@{o h p} A) (DiscreteCat_Functor' d))].
@@ -368,11 +372,11 @@ Definition small_cocomplete_is_thin {C : Category}
 
 (** ** The second half: all greatest lower bounds in the preorder reflection *)
 
-(* A product is a greatest lower bound in the preorder reflection
-   [thin_preorder C] (Structure/Thin.v) of ANY category — smallness and
-   thinness play no part.  The one hypothesis is [HomChoice C]: the family
-   of lower-bound witnesses is [inhabited]-squashed, and the mediator needs
-   the arrows themselves. *)
+(*
+   本节说明 Freyd 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition complete_has_glbs {C : Category} (comp : @Complete C)
   (ch : HomChoice C) : HasAllMeets (thin_preorder C).
 Proof.

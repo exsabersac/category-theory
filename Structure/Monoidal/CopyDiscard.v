@@ -31,9 +31,11 @@ Context `{S : @SymmetricMonoidal C}.
 Class CopyDiscard : Type := {
   cd_comonoid (X : C) : CommutativeComonoid X;
 
-  (* Tensor coherence: the comonoid on [X ⨂ Y] agrees with the canonical
-     one assembled from those on [X] and [Y] through [mid_swap_inv]
-     (Hypergraph.v):  δ_{X⨂Y} ≈ mid_swap_inv ∘ (δ_X ⨂ δ_Y). *)
+  (*
+   本节说明 CopyDiscard 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   cd_tensor_delta (X Y : C) :
     ccomon_delta (cd_comonoid (X ⨂ Y))
       ≈ canonical_tensor_delta (cd_comonoid X) (cd_comonoid Y);

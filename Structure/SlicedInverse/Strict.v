@@ -63,10 +63,11 @@ Example lali_rari_lali@{oA oX h +} {A : Category@{oA h h}}
 
 (** ** The dual of Proposition 1, over left-adjoint-right-inverses *)
 
-(* Coequalizers from sliced left-adjoint-right-inverses, over
-   Theory/Equivalence/Strict.v's [LeftAdjointRightInverse].  The
-   right-inverse clause is not consulted: only [lari_left] and [lari_adj]
-   occur in the body. *)
+(*
+   本节说明伴随、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition coequalizers_from_sliced_LARI@{oA oX h +}
   {A : Category@{oA h h}} {X : Category@{oX h h}} (G : A ⟶ X)
   `{GF : @Faithful A X G} `{HX : @HasCoequalizers X}

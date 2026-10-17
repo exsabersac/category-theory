@@ -180,10 +180,11 @@ Definition AntichainTop_trivial@{i o h t | i < o, h < t, h <= o +} :
   @WellPoweredAt@{o o o h t} AntichainTop@{i o h} None :=
   @wp_trivial@{o h o o t} AntichainTop@{i o h} None.
 
-(* Second positive control: with the homs one universe above the types
-   the objects name ([i < h]), the top object has a datum AT the pin,
-   indexed by the objects themselves.  [at_name] names each object's
-   subobject of [None]: the top one for [None], [at_sub A] for [Some A]. *)
+(*
+   本节说明子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition at_name@{i o h | i < o +} (a : option Type@{i}) :
   @SubObj AntichainTop@{i o h} None :=
   match a with

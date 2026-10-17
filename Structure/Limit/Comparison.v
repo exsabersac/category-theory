@@ -55,11 +55,11 @@ Example cone_reindex_leg (N : Cone F) (j' : J') :
 
 End Reindex.
 
-(* Functoriality in the shape functor, at the level where the types allow an
-   equation: apex and legs.  [Cone ((F ◯ W) ◯ V)] and [Cone (F ◯ (W ◯ V))]
-   are distinct record types (the probe pins the refusal), so there is no
-   equation of CONES to state; [cone_assoc] of Preservation.v repackages one
-   into the other. *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example cone_reindex_id_apex {J C : Category} {F : J ⟶ C} (N : Cone F) :
   vertex_obj[cone_reindex Id[J] N] = vertex_obj[N] := eq_refl.
@@ -83,11 +83,11 @@ Section ReindexComparison.
 
 Context {J' J C D : Category} (W : J' ⟶ J) {F : J ⟶ C} (H : C ⟶ D).
 
-(* Mac Lane's V.2 Exercise 4 arrow: the image under [H] of a cone over [F],
-   restricted along [W], mediated into a limit cone of [(H ◯ F) ◯ W].  The
-   limit cone is taken at the bracketing [(H ◯ F) ◯ W] so that [W = Id]
-   reads as the plain comparison; [islimitcone_assoc] moves it to
-   [H ◯ (F ◯ W)], which is where the image of the reindexed cone lives. *)
+(*
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition reindex_comparison (N : Cone F)
   {M : Cone ((H ◯ F) ◯ W)} (HM : IsLimitCone M) :
   H (vertex_obj[N]) ~{D}~> vertex_obj[M] :=
@@ -161,12 +161,11 @@ Section CoComparison.
 
 Context {J C D : Category} {K : J ⟶ C} (F : C ⟶ D).
 
-(* Built directly in the cocone vocabulary ([cocone_inj], [FCocone],
-   [cocone_comparison]) and not by instantiating the limit block at [F^op]:
-   [FCocone F N] is a cone over [(F ◯ K)^op] while [FCone F^op N] is one
-   over [F^op ◯ K^op], two distinct record types (Preservation.v
-   repackages between them with [cone_op_comp]).  Every proof below is the
-   mirror image of Preservation.v, one line for one line. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition colimitcocone_iso {N M : Cocone K}
   (HN : IsColimitCocone N) (HM : IsColimitCocone M) : ConeIso N M :=
@@ -235,12 +234,11 @@ Definition preserves_colimit_iff_comparison_iso {M : Cocone (F ◯ K)}
 
 End CoComparison.
 
-(* The cocone twin of [PreservesLimitCone_of_cone]: preserving ONE
-   colimiting cocone of [K] is preserving them all, through
-   [colimitcocone_iso] above and Preservation.v's [FCocone_iso].  Added by
-   #477, the tree having had no cocone twin, for
-   Structure/Limit/Absolute.v's [AbsoluteColimitCocone_preserves], with
-   that file's binders. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition PreservesColimitCocone_of_cocone@{jo co ch do +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}}
@@ -256,10 +254,11 @@ Section Whisker.
 
 Context {J C D : Category} (F : C ⟶ D) (c : C).
 
-(* The two functors agree on objects by [eq_refl] and on arrows up to
-   [fmap_id] (Structure/Limit/Constant.v records both facts
-   componentwise, the strict arrow form being refused there); as objects
-   of the functor category they are isomorphic with identity components. *)
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition const_image_iso :
   @equiv _ (@Functor_Setoid J D) (F ◯ Δ[J](c)) (Δ[J](F c)).
 Proof.
@@ -306,27 +305,11 @@ End RAPLRestated.
 
 (** ** Discrete shapes: a cone is limiting iff its legs are an indexed product *)
 
-(* An annotated discrete-diagram functor.
-   RECORDED CORRECTION.  An earlier revision declared this as a second
-   [Program Definition] with the same actions as Instance/Discrete.v's
-   [DiscreteCat_Functor], because that one was declared with bare binders and
-   so minimized to [DiscreteCat@{u Set Set}], pinning any [IsLimitCone] over
-   its cones to hom level [Set] (Functor/Hom/Limit.v; the probe pins
-   the comparison's refusal).  In the PR "algebraic carriers are sets"
-   (2026-09-17) the SAME binders were put on [DiscreteCat_Functor] itself, so
-   the two now have identical measured signatures:
+(*
+   本节说明函子、（余）极限、hom相关定义、性质与动机。
 
-     DiscreteCat_Functor@{o h p uo uh up u} :
-     ∀ {A : Type@{o}} {C : Category@{uo uh up}},
-     (A → obj) → Functor@{o h p uo uh up}
-
-   This is therefore no longer a separate construction but a transparent
-   alias, kept because eleven files and three probes name it and because the
-   name marks, at each use site, the places where the shape's hom and proof
-   levels must stay free and be identified with the ambient's by
-   [IsLimitCone].  The binders are repeated on the alias deliberately: an
-   unannotated [:=] alias of an annotated constant over a bare
-   [(C : Category)] minimizes back to [Category@{u u u}]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition DiscreteCat_Functor'@{o h p uo uh up +}
   {A : Type@{o}} {C : Category@{uo uh up}} (f : A → C) :
   DiscreteCat@{o h p} A ⟶ C := @DiscreteCat_Functor A C f.

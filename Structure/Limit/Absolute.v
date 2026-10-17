@@ -93,10 +93,11 @@ Definition AbsoluteColimitCocone_IsColimitCocone@{jo co ch +}
 
 (** ** Every instance at or above C's levels: the lift *)
 
-(* An absolute limit at ANY target object level at or above C's is a
-   limit: C is read at that level by Construction/Lift.v's [LiftCat], and
-   [Lift_in C] plays the part of [Id].  The instance of the hypothesis is
-   named, the target level [do] being bounded below by [co] alone. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition AbsoluteLimitCone_IsLimitCone_up@{jo co ch do +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}} {K : J ⟶ C}

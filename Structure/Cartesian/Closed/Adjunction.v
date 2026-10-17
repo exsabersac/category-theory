@@ -29,96 +29,17 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Currying, naturality, and representability
-
+(*
    nLab: https://ncatlab.org/nlab/show/exponential+object
    nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer 1998
    Book: Riehl, "Category Theory in Context", Dover 2016
    Paper: Lawvere, "Adjointness in Foundations", Dialectica 23(3/4), 1969;
-          reprinted as TAC Reprints 16, 2006
 
-   Mac Lane's Chapter I fixes the vocabulary this file is written in: §I.4
-   defines a natural transformation as a family of arrows whose square
-   commutes for every morphism of the source category, and the entire content
-   of [eval_natural] is that [eval] is such a family once the two sides are
-   read as functors of the base object. His Chapter IV, "Adjoints", is where
-   the exponential becomes one: its §6 is titled "Cartesian Closed
-   Categories", and the adjunction − × S ⊣ (−)^S with evaluation as counit is
-   the shape this file instantiates.
+   本节说明伴随、自然变换、函子相关定义、性质与动机。
 
-   The nLab's page on exponential objects states the same content in two
-   registers and both are realized here. Universally: the exponential is "an
-   object X^Y equipped with an evaluation map ev : X^Y × Y → X" through which
-   every e : Z × Y → X factors uniquely — this is [ump_exponents] in
-   Structure/Cartesian/Closed.v. Representably: X^Y is "a representing object
-   for the functor hom(− × Y, X)", the currying isomorphism
-   hom(Z, X^Y) ≅ hom(Z × Y, X) being "a natural isomorphism of sets". The
-   second reading is the one [Curry_Representable] formalizes.
-
-   Riehl's Example 2.1.6(iv) is that reading verbatim: "The functor
-   Hom(− × A, B) : Set^op → Set that sends a set X to the set of functions
-   X × A → B is represented by the set B^A of functions from A to B. That is,
-   there is a natural bijection between functions X × A → B and functions
-   X → B^A. This natural isomorphism is referred to as currying in computer
-   science". Two adjustments are made in passing to that example here. First,
-   the ambient category is a general cartesian closed C rather than Set, so
-   the presheaf is the hom-functor C(− × S, B) : C^op ⟶ Sets and the
-   representing object is B^S; Riehl's own statement is recovered by taking C
-   to be [Sets], which Instance/Sets/Cartesian/Closed/Adjunction.v does.
-   Second, "natural bijection" is here a genuine isomorphism in the functor
-   category [C^op, Sets] of setoid-valued functors, since hom-sets in this
-   library are setoids and equality of their elements is ≈, never =.
-
-   Lawvere's "Adjointness in Foundations" is the source of the slogan that
-   cartesian closed structure IS an adjunction — currying is − × a ⊣ (−)^a —
-   quoted already in the essay that heads Theory/Adjunction.v; the [Adjunction]
-   packaging below is what lets the general theory of that file apply, so
-   that the triangle identities ([curry_adj_triangle_left] and
-   [curry_adj_triangle_right]) arrive as instances of [counit_fmap_unit] and
-   [fmap_counit_unit] rather than being re-proved.
-
-   In-tree, this file sits between three neighbours. Structure/Cartesian/
-   Closed.v supplies every exponential equation used below, so no new lemma
-   about exponentials is needed: the four naturality fields of [Adjunction] are
-   exactly [curry_comp_l], [curry_comp], [uncurry_comp] and [uncurry_comp_r].
-   Functor/Hom/Internal.v supplies the internal-hom bifunctor
-   [-,-] : C^op ∏ C ⟶ C, of which [Exp_Functor] is the partial application at
-   a fixed exponent; the two agree up to ≈ ([Exp_Functor_InternalHom]) but not
-   definitionally, because the bifunctor inserts a [second id] that the
-   endofunctor does not. Adjunction/Diagonal/Product.v is the companion
-   result one level down: the same hom-set packaging applied to the product's
-   universal property, Δ ⊣ ×.
-
-   Theory/Naturality.v is deliberately NOT used. That file is naturality
-   infrastructure — a [Naturality] class computing, from the type of a family
-   of arrows, the naturality statement appropriate to it, plus the [Mapping]
-   class recording a morphism action without the functor laws. Its commented-
-   out [PartialApply_Product_Left] / [PartialApply_Curried_Right] block is the
-   only part that would bear on the present file, and it partially applies a
-   bifunctor already presented as C ∏ C ⟶ C or C ⟶ [C, C]. The exponential in
-   [Closed] is neither: it is a bare object operation [exponent_obj] plus the
-   iso [exp_iso], with functoriality nowhere assumed. (The tree does build a
-   bifunctor of the right mathematical content — [InternalHomFunctor] of
-   Functor/Hom/Internal.v, cited above — but at shape C^op ∏ C ⟶ C, which is
-   not one of the two shapes those instances accept.) The [Mapping]-based
-   [ArityOne] instances would in any case give a naturality *statement* but
-   no functor, and [Adjunction] needs functors.
-
-   WHAT DEFINING [Exp_Functor] DIRECTLY ACTUALLY BUYS, stated precisely
-   because the first commit of this file overstated it and an audit
-   disproved the overstatement by construction. It does NOT buy the
-   definitional counit: the counit is ⌈id⌉, which depends only on [adj]'s
-   [from] field being [uncurry] and on eval := uncurry id, so it comes out
-   [eval] by conversion for ANY right adjoint with the same transposes —
-   the audit assembled the adjunction through [InternalHomFunctor] instead
-   and all four corollaries below still closed by [reflexivity]. What the
-   direct definition buys is that the four naturality fields discharge from
-   the [Closed] corollaries VERBATIM: routed through the bifunctor, two of
-   them additionally need [second_id] and [id_right] rewritten away, since
-   that route inserts a [second (op id)]. That is a real but modest
-   convenience, and it is the whole of it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CurryAdjunction.
 
@@ -137,10 +58,11 @@ Program Definition Prod_Functor : C ⟶ C := {|
 Next Obligation. apply first_id. Qed.
 Next Obligation. apply first_comp. Qed.
 
-(* The right adjoint (-)^S : C ⟶ C, the endofunctor the issue calls (−)^S.
-   On arrows it is post-composition inside the exponential, f ↦ curry (f ∘
-   eval); [fmap] is this term definitionally, not merely up to ≈. Preservation
-   of identities is [curry_eval] and of composition is [curry_comp]. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Exp_Functor : C ⟶ C := {|
   fobj := fun x => x ^ S;
   fmap := fun _ _ f => curry (f ∘ eval)
@@ -148,36 +70,29 @@ Program Definition Exp_Functor : C ⟶ C := {|
 Next Obligation. proper; rewrites; reflexivity. Qed.
 Next Obligation. rewrite <- comp_assoc; apply curry_comp. Qed.
 
-(* Naturality of [eval] in its target (base) variable: transporting along
-   f : x ~> y after evaluating agrees with evaluating after transporting the
-   function part along f. Reading [fmap[Prod_Functor] (fmap[Exp_Functor] f)]
-   as curry (f ∘ eval) × id[S], the square is
+(*
+   本节说明 Adjunction 相关定义、性质与动机。
 
-       f ∘ eval ≈ eval ∘ (curry (f ∘ eval) × id[S]) : x^S × S ~> y,
-
-   which is [ump_exponents] applied to f ∘ eval. Both sides are arrows of C
-   compared with ≈; nothing here is an equality of morphisms. On vacuity:
-   neither [Category] nor [Closed] forces hom-setoids to be trivial, so this
-   is a genuine constraint — Instance/Sets/Cartesian/Closed/Adjunction.v
-   exhibits a model in which the two sides are visibly non-trivial maps and
-   the ambient hom-setoid separates arrows — and the proof consumes the
-   exponential's universal property rather than a general categorical law. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma eval_natural {x y : C} (f : x ~> y) :
   f ∘ eval ≈ eval ∘ fmap[Prod_Functor] (fmap[Exp_Functor] f).
 Proof. simpl; now rewrite ump_exponents. Qed.
 
-(* The same square bundled: evaluation is a natural transformation from
-   (-)^S × S to the identity functor. This is the counit of the adjunction
-   below, exhibited before the adjunction so that the naturality content is
-   visible on its own. *)
+(*
+   本节说明伴随、自然变换、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition eval_Transform : Prod_Functor ◯ Exp_Functor ⟹ Id[C] := {|
   transform := fun _ => eval
 |}.
 
-(* The currying adjunction, in the hom-set form of Theory/Adjunction.v: the
-   family of setoid isomorphisms (x × S ~> y) ≊ (x ~> y^S) is [exp_iso], with
-   [curry] forward and [uncurry] back, and the four naturality fields are the
-   substitution laws already proved in Structure/Cartesian/Closed.v. *)
+(*
+   本节说明伴随、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance Curry_Adjunction : Prod_Functor ⊣ Exp_Functor := {|
   adj := fun _ _ =>
     {| to   := {| morphism := curry |}
@@ -192,11 +107,11 @@ Next Obligation. apply uncurry_comp. Qed.
 (* from_adj_nat_r: uncurry (curry (f ∘ eval) ∘ g) ≈ f ∘ uncurry g *)
 Next Obligation. symmetry; apply uncurry_comp_r. Qed.
 
-(* The counit of the adjunction is evaluation. Both sides are arrows
-   x^S × S ~> x and the comparison is ≈, as everywhere in this library; the
-   [reflexivity] proof records the stronger fact that the two are convertible
-   (the counit ⌈id⌉ unfolds to [uncurry id], which is the definition of
-   [eval] in Structure/Cartesian/Closed.v). *)
+(*
+   本节说明伴随、笛卡尔、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary curry_adj_counit {x : C} :
   @counit _ _ _ _ Curry_Adjunction x ≈ eval.
 Proof. reflexivity. Qed.
@@ -207,13 +122,11 @@ Corollary curry_adj_unit {x : C} :
   @unit _ _ _ _ Curry_Adjunction x ≈ curry id.
 Proof. reflexivity. Qed.
 
-(* The transposes of the adjunction are [curry] and [uncurry] on the nose:
-   ⌊-⌋ = to adj is currying and ⌈-⌉ = from adj is uncurrying. Stated with ≈
-   between arrows of C, as required; both hold by [reflexivity] because
-   [Curry_Adjunction]'s [adj] field has [curry] and [uncurry] as its two
-   directions. (Not because that field IS [exp_iso], as the first commit
-   said: it is a freshly built [Isomorphism] wrapping the same two maps,
-   and [reflexivity] does not identify the two records.) *)
+(*
+   本节说明伴随、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary curry_adj_to {x y : C} (f : x × S ~> y) :
   to (@adj _ _ _ _ Curry_Adjunction x y) f ≈ curry f.
 Proof. reflexivity. Qed.
@@ -235,10 +148,11 @@ Corollary curry_adj_triangle_right {x : C} :
   curry (eval ∘ eval) ∘ curry (id[x^S × S]) ≈ id.
 Proof. exact (@fmap_counit_unit _ _ _ _ Curry_Adjunction x). Qed.
 
-(* [Exp_Functor] is the internal-hom bifunctor of Functor/Hom/Internal.v held
-   fixed in its contravariant argument. The agreement is up to ≈ and not
-   definitional: the bifunctor's action inserts [second (op id)], which is
-   [second id] and only ≈-equal to [id]. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Exp_Functor_InternalHom {x y : C} (f : x ~> y) :
   fmap[Exp_Functor] f
     ≈ @fmap _ _ (InternalHomFunctor C) (S, x) (S, y) (id[S], f).
@@ -257,21 +171,18 @@ Context `{@Closed C _}.
 
 Context (S B : C).
 
-(* The presheaf of Riehl's Example 2.1.6(iv), for a general cartesian closed
-   C: X ↦ C(X × S, B), contravariant in X. It is assembled from pieces
-   already in the tree — the contravariant hom [Hom ─, B] of Functor/Hom.v
-   composed with the opposite of the left adjoint — so its functor laws are
-   inherited and no new obligation arises. Unfolded, [Curry_Presheaf x] is the
-   hom-setoid (x × S ~> B) and [fmap] sends g to g ∘ first f. *)
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Curry_Presheaf : C^op ⟶ Sets := [Hom ─, B] ◯ (Prod_Functor S)^op.
 
-(* The representation itself: the currying bijection, natural in X. The
-   forward direction of a [Representable] is a transformation OUT of the
-   represented functor, so [to] is [uncurry] : (x ~> B^S) → (x × S ~> B) and
-   [from] is [curry]; naturality in x is [uncurry_comp] and [curry_comp_l],
-   and the two round trips are [uncurry_curry] and [curry_uncurry]. Note that
-   [Hom ─, B^S] is the covariant hom-functor of C^op at B^S, which is what
-   the [Representable] class asks for when the base category is C^op. *)
+(*
+   本节说明函子、hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Curry_Representation : [Hom ─, B^S] ≅ Curry_Presheaf := {|
   to   := {| transform := fun _ => {| morphism := uncurry |} |};
   from := {| transform := fun _ => {| morphism := curry |} |}
@@ -282,45 +193,30 @@ Next Obligation. apply curry_comp_l. Qed.
 Next Obligation. symmetry; apply curry_comp_l. Qed.
 Next Obligation. rewrite first_id, id_right; apply uncurry_curry. Qed.
 
-(* The [Representable] witness. Before this instance the class of
-   Functor/Representable.v had no inhabitants anywhere in the tree; this is
-   the first, and it says exactly what Riehl's Example 2.1.6(iv) says: the
-   functor C(− × S, B) is represented by B^S. The base category of the
-   instance is C^op, since the functor is contravariant in C.
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
 
-   Scope the claim correctly: it is THIS class that was uninhabited, and the
-   claim is about the state of the tree when this instance was written — the
-   tautological [Hom_Representable] has since been added beside the class
-   itself, deliberately as a plain [Definition] rather than an [Instance] so
-   that resolution below is unaffected. The tree does carry representability
-   content elsewhere, under a different class — Structure/UniversalProperty.v's
-   [IsUniversalProperty] also requires a natural iso out of a hom-functor, and
-   it has three instances (cartesian products, limits, universal arrows); the
-   passage between that class and this one is
-   Functor/Representable/Functorial.v's [Representable_of_UnivProperty] and
-   [UnivProperty_of_Representable]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance Curry_Representable : Representable Curry_Presheaf := {|
   repr_obj := B ^ S;
   represented := Curry_Representation
 |}.
 
-(* Identification of the universal element. The Yoneda lemma — in-tree as
-   [Yoneda_Lemma] in Functor/Hom/Yoneda.v, not re-proved here — says a
-   representation Φ : C(A, −) ≅ F is determined by the single element
-   Φ_A(id[A]) of F A. For this representation A is B^S and that element is
-   [eval] : B^S × S ~> B, so what is being represented is the exponential's
-   own evaluation and not some unrelated family. The comparison is ≈ between
-   arrows of C; the [reflexivity] proof shows the two sides convertible. *)
+(*
+   本节说明函子、Yoneda、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Curry_repr_universal :
   to Curry_Representation (B ^ S) id ≈ eval.
 Proof. reflexivity. Qed.
 
-(* What the presheaf's action is, spelled out: restricting a map along
-   f : y ~> x re-indexes by f in the first factor. This is a definitional
-   unfolding — [reflexivity] closes it, and it carries no content beyond
-   naming what [Curry_Presheaf]'s [fmap] computes to — but it is what makes
-   the naturality obligations of [Curry_Representation] above legible. Stated
-   as ≈ of arrows of C, as everywhere. *)
+(*
+   本节说明 Adjunction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Curry_Presheaf_fmap {x y : C} (f : y ~> x) (g : x × S ~> B) :
   fmap[Curry_Presheaf] f g ≈ g ∘ first f.
 Proof. reflexivity. Qed.
@@ -330,13 +226,11 @@ End CurryRepresentable.
 Arguments Curry_Presheaf {C _} S B.
 Arguments Curry_Representation {C _ _} S B.
 
-(* The instance is usable, not merely declared: typeclass resolution finds it
-   for the goal [Representable (Curry_Presheaf S B)] (the [_] below is solved
-   by resolution alone), and the class's [Representable_to_obj] coercion —
-   which had no callers in the tree either — reads the representing object
-   back off it as B^S. The second statement is a Leibniz equality between two
-   OBJECTS of C, which is the only sense available: this library has no ≈ on
-   objects, only isomorphism, and objects are not morphisms. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Curry_Representable_resolves
   {C : Category} `{@Cartesian C} `{@Closed C _} (S B : C) :
   Representable (Curry_Presheaf S B) := _.

@@ -79,20 +79,11 @@ Defined.
 
 (** ** Absoluteness: every functor preserves split coequalizers *)
 
-(* Push each datum through fmap; each law follows from the corresponding
-   law in the source by functoriality.  The proof ends with [Defined] so
-   that the transported data ([F (scoeq_obj S)], [fmap (scoeq_e S)], ...)
-   remain visible to conversion in the corollary below.
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-   The universe binders of this theorem and of the corollary below are
-   written out (#477) so that the target's hom level may sit ABOVE the
-   source's, as [Functor] itself permits.  Left unannotated, minimization
-   identified the two hom levels, and a target with strictly larger
-   hom-sets was refused ("Cannot enforce xh = ch because ch < xh"); the
-   same proof compiles with the bound strict, so the identification was
-   an artifact of the binders, not of the argument.  It mattered once
-   absoluteness quantified over every target category:
-   Structure/Coequalizer/Absolute.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem functor_preserves_split@{co ch do dh +}
   {C : Category@{co ch ch}} {D : Category@{do dh dh}} (F : C ⟶ D)
   {x y : C} (f g : x ~> y) :

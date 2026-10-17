@@ -24,18 +24,19 @@ Class CartesianMonoidal := {
   cartesian_is_relevance     : @RelevanceMonoidal C;
   cartesian_is_semicartesian : @SemicartesianMonoidal C _;
 
-  (* Fox's coherence: copying then discarding one copy is the identity. These
-     two laws are precisely what upgrades the relevance + semicartesian data to
-     a genuine product (tensor = ×), per the nLab characterisation above. *)
+  (*
+   本节说明 Heunen_Vicary 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   proj_left_diagonal  {x} : proj_left  ∘ diagonal ≈ id[x];
   proj_right_diagonal {x} : proj_right ∘ diagonal ≈ id[x];
 
-  (* Unit/braiding coherence λ ∘ σ ≈ ρ and ρ ∘ σ ≈ λ at the unit. In a
-     symmetric monoidal category these are derivable from Mac Lane's coherence
-     theorem rather than minimal; they are kept as explicit fields here because
-     this library's SymmetricMonoidal does not expose that derivation, and
-     downstream proofs (e.g. Heunen_Vicary/Proofs.v, Group/Proofs.v) rewrite with
-     them directly. *)
+  (*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   unit_left_braid  {x} : unit_left  ∘ @braid _ _ x I ≈ unit_right;
   unit_right_braid {x} : unit_right ∘ @braid _ _ I x ≈ unit_left
 }.

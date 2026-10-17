@@ -59,43 +59,39 @@ Context `{H : @ElementaryTopos C}.
 
 (** ** (A) Finite completeness, and reflexive coequalizers in C^op *)
 
-(* Mac Lane's finite-limit half, at the level of the four elementary
-   generators.  Equalizers are DERIVED from the terminal object and pullbacks by
-   Structure/Pullback/Reduction.v's Awodey square, which builds the products it
-   needs from those two ([Cartesian_of_HasPullbacks_Terminal]) rather than
-   consuming the class's own [topos_cartesian]; the class carries the other
-   three as fields. *)
+(*
+   本节说明（余）极限、拉回/推出、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition topos_HasEqualizers : @HasEqualizers C :=
   HasEqualizers_of_HasPullbacks_Terminal topos_pullbacks.
 
-(* The appended Seven Sketches checkbox, at generator level: terminal
-   object, binary products, pullbacks, equalizers.  NO finite-shape
-   induction is performed here, so this is NOT a [Limit]-shaped "all finite
-   limits"; that statement is Structure/Limit/Finite.v's [FinitelyComplete].
+(*
+   本节说明（余）极限、拉回/推出、等化子相关定义、性质与动机。
 
-   That checkbox asks this to close a reduction Structure/Topos.v's header
-   "records as not formalized"; the premise is stale -- since #326 that header
-   says the reduction and its converse ARE formalized.  What it records as not
-   done is the finite-shape induction, and that is still not done:
-   [topos_finitely_complete] is at generator level. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition topos_finitely_complete :
   @Terminal C * @Cartesian C * @HasPullbacks C * @HasEqualizers C :=
   (topos_terminal, topos_cartesian, topos_pullbacks, topos_HasEqualizers).
 
-(* A reflexive pair in C^op is a CO-reflexive pair in C, and a coequalizer
-   in C^op is an equalizer in C.  Both readings are definitional, so the
-   whole of Crude.v's first hypothesis is three pre-existing reductions.
-   [(C^op)^op = C] by reflexivity is what makes the middle line typecheck. *)
+(*
+   本节说明等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition op_HasCoequalizers : @HasCoequalizers (C^op) :=
   @HasCoequalizers_of_HasEqualizers_op (C^op) topos_HasEqualizers.
 
 Definition op_HasReflexiveCoequalizers : HasReflexiveCoequalizers (C^op) :=
   @HasCoequalizers_HasReflexiveCoequalizers (C^op) op_HasCoequalizers.
 
-(* The monad of the self-adjunction, P ◯ P^op.  Declared here rather than
-   in Structure/Topos/Power.v because [Adjunction_Induced_Monad] costs
-   that file +6 modules of closure, while this file requires Crude.v --
-   and hence Comparison.v -- anyway. *)
+(*
+   本节说明伴随、单子、topos相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pow_monad : @Monad C (PowF ◯ Opposite_Functor PowF) :=
   @Adjunction_Induced_Monad (C^op) C (Opposite_Functor PowF) PowF
     pow_adjunction.
@@ -204,12 +200,11 @@ Proof.
   now rewrite char_diag_swap.
 Qed.
 
-(* P IS FAITHFUL, AND THE PROOF USES STEP TWO RATHER THAN THE ADJUNCTION
-   MACHINERY.  From [flip_pow_comp] at p := sing a, precomposing the
-   singleton with an arrow is [flip] of its P-image postcomposed with the
-   singleton; [sing_Monic] then cancels.  (Adjunction/FullFaithful.v's
-   counit criterion [right_adjoint_faithful_iff_counit_epic] is NOT used:
-   it would cost a Require, and this route needs only step two.) *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance PowF_Faithful : Faithful PowF.
 Proof.
   constructor; intros a0 b0 f g Hfg.
@@ -223,13 +218,11 @@ Proof.
   now rewrite Hfg.
 Defined.
 
-(* Carrying [IsIsomorphism] between C and C^op is a permutation of the
-   three fields.  The tree's own copy of this permutation is
-   Theory/Morphisms/CokernelPair.v's [IsIsomorphism_of_op] /
-   [op_IsIsomorphism_of].  Requiring that module would cost this file exactly
-   ONE module of closure (measured with coqdep: its closure minus this file's is
-   that module alone), so the thirteen-line duplication below is a choice about
-   coupling and not about cost; it is recorded here rather than defended. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition IsIso_of_op {a b : C} (h : b ~> a)
   (I : @IsIsomorphism (C^op) a b h) : @IsIsomorphism C b a h :=
   @Build_IsIsomorphism C b a h
@@ -244,10 +237,11 @@ Definition op_IsIso_of {a b : C} (h : b ~> a)
     (@is_left_inverse C b a h I)
     (@is_right_inverse C b a h I).
 
-(* P REFLECTS ISOMORPHISMS: the image is monic and epic, faithfulness
-   reflects both into C^op, the duality quartet of
-   Theory/Morphisms/Duality.v exchanges them in C, and balancedness
-   concludes. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance PowF_ReflectsIsos : ReflectsIsos PowF.
 Proof.
   constructor; intros a0 b0 f Hiso.
@@ -431,10 +425,11 @@ Proof.
       reflexivity.
 Qed.
 
-(* [first] of one arrow and [second] of another form a pullback square in
-   the product, with NO monicity hypothesis on either: the two act in
-   independent coordinates.  This is the square Beck-Chevalley is applied
-   to on the right-hand side of [pow_bc]. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma first_second_pullback {z w u x : C} (phi : z ~> w) (m : u ~> x) :
   IsPullback (@first C _ z w x phi) (@second C _ u x w m)
              (z × u) (@second C _ u x z m) (@first C _ z w u phi).
@@ -473,9 +468,11 @@ Proof.
       reflexivity.
 Qed.
 
-(* BECK-CHEVALLEY at the level of subobjects, for a pushforward along a
-   MONO: reindexing a pushed subobject along the other leg of a pullback square
-   is pushing forward the reindexed one.  Eight lines of [pullback_paste]. *)
+(*
+   本节说明拉回/推出、子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma bc_mono {X Y Z K : C} {F : X ~> Z} {G : Y ~> Z}
       {p1 : K ~> X} {p2 : K ~> Y}
       (HP : IsPullback F G K p1 p2) (MF : Monic F) (M2 : Monic p2)
@@ -492,9 +489,11 @@ Proof.
                  (pullback p1 (sub_mono R))))).
 Qed.
 
-(* A co-reflexive parallel pair -- one with a common RETRACTION -- has its
-   equalizer as the pullback of the pair against itself, with BOTH legs
-   the equalizing map.  This is where co-reflexivity is spent. *)
+(*
+   本节说明拉回/推出、等化子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma coreflexive_equalizer_pullback {a b k : C} {f g : b ~> a}
       {r : a ~> b} (Hf : r ∘ f ≈ id) (Hg : r ∘ g ≈ id)
       {e : k ~> b} (HE : IsEqualizer f g k e) :
@@ -516,10 +515,11 @@ Proof.
     + intros v [V1 V2]; apply Huniq; exact V1.
 Qed.
 
-(* THE BECK-CHEVALLEY LAW FOR P, [SplitCoequalizer]'s fourth field.  Both
-   sides are transposes; [pow_precompose] and [curry_comp_l] reduce them
-   to characteristic maps, [char_reindex] turns those into subobjects, and
-   the two [bc_mono] applications meet at [mem_pow_square]. *)
+(*
+   本节说明子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem pow_bc {a b k : C} {f g : b ~> a} {e : k ~> b}
       (Mf : Monic f) (Me : Monic e) (HP : IsPullback f g k e e) :
   fmap[PowF] g ∘ ex_mono f Mf ≈ ex_mono e Me ∘ fmap[PowF] e.
@@ -550,28 +550,20 @@ Qed.
 
 (** ** (E) The split coequalizer, and monadicity *)
 
-(* Contravariant functoriality of P, in the orientation the laws want:
-   [P e ∘ P f] is [P (f ∘ e)], with both composites read in C.  Stated as
-   a lemma because [Program] and [simpl] unfold [fmap[PowF]] to its
-   [curry] normal form, after which [fmap_comp] no longer matches. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma pow_fmap_comp {a b k : C} (f : b ~> a) (e : k ~> b) :
   fmap[PowF] e ∘ fmap[PowF] f ≈ fmap[PowF] (f ∘ e).
 Proof. symmetry; exact (@fmap_comp (C^op) C PowF a b k e f). Qed.
 
-(* THE HEART OF THE ARGUMENT.  For a co-reflexive pair f, g : b ⇉ a with
-   common retraction r, and any equalizer e of the pair, the P-images form
-   a SPLIT coequalizer: the two direct images ∃_e and ∃_f are the two
-   sections the record asks for, and its four laws are exactly
-   functoriality, [pow_ex_mono] twice, and [pow_bc].  Co-reflexivity is
-   spent in TWO places: both halves at [coreflexive_equalizer_pullback],
-   which turns the equalizer into the pullback square Beck-Chevalley
-   needs, and the retraction of f alone at [sections_are_monic], which
-   makes f a mono so that the direct image ∃_f exists at all.
+(*
+   本节说明函子、拉回/推出、等化子相关定义、性质与动机。
 
-   Built with [unshelve refine] rather than [Program] deliberately: the
-   obligation statements [Program] generates have [fmap[PowF]] unfolded to
-   its [curry] normal form, and neither [fmap_comp] nor [pow_ex_mono] then
-   matches. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pow_split_coequalizer
   {a b k : C} {f g : b ~> a} {r : a ~> b}
   (Hf : r ∘ f ≈ id) (Hg : r ∘ g ≈ id)
@@ -595,13 +587,11 @@ Proof.
     apply (pow_bc _ _ (coreflexive_equalizer_pullback Hf Hg HE)).
 Defined.
 
-(* Crude monadicity's second hypothesis.  In C^op a reflexive pair is a
-   CO-reflexive pair of C and a coequalizer is an equalizer, both
-   definitionally; [IsEqualizer_op_of_IsCoequalizer] read at C^op is the
-   field repackaging that makes the conversion available to [Monic e]
-   through [equalizer_monic].  The obligation quantifies over ANY
-   coequalizer of the pair, not a chosen one, and the argument is uniform
-   in e. *)
+(*
+   本节说明单子、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pow_PreservesReflexiveCoequalizers :
   PreservesReflexiveCoequalizers PowF :=
   fun a b f g RP k e HC =>

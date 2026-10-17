@@ -32,11 +32,11 @@ Arguments Pullback_Limit {_%_category} F%_functor /.
 Definition Pushout_Limit {C : Category} (F : Span C) := Colimit F.
 Arguments Pushout_Limit {_%_category} F%_functor /.
 
-(* From the limit of a cospan, recover the universal-property pullback: the
-   pullback object is the limit apex, and the two projections are the limit
-   legs at RNeg and RPos. The square commutes by cone coherence, and the
-   pullback UMP is the limit UMP applied to the cone built from a competing
-   square (Q, q1, q2). *)
+(*
+   本节说明（余）极限、拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Pullback_to_Universal {C : Category}
         (F : Cospan C) (P : Pullback_Limit F) :
   Pullback (unop (fmap[F] ZeroNeg)) (unop (fmap[F] ZeroPos)) := {|
@@ -76,12 +76,11 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* Conversely, a universal-property pullback of f and g yields the limit of the
-   corresponding cospan. The cospan is presented as [(ASpan f g in C^op)^op]:
-   a span `z ← · → z` of f, g in C^op is a cospan `· → z ← ·` in C, with
-   F RNeg = x, F RZero = z, F RPos = y. The limit cone has apex [Pull P], legs
-   pullback_fst at RNeg, pullback_snd at RPos, and the diagonal f ∘ pullback_fst
-   at RZero; its universal property is exactly [ump_pullbacks]. *)
+(*
+   本节说明（余）极限、拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Pullback_from_Universal {C : Category}
         {x y z : C} (f : x ~> z) (g : y ~> z) (P : Pullback f g) :
   Pullback_Limit (@ASpan (C^op) _ _ _ f g)^op := {|

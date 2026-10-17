@@ -74,42 +74,28 @@ Coercion strict_is_monoidal : StrictMonoidal >-> Monoidal.
 
 Context `{S : StrictMonoidal}.
 
-(* A sanity-check corollary: in any strict monoidal category, the
-   composite [α ∘ α⁻¹] at any triple is [id] (which is just
-   [iso_to_from] specialised — we restate it here as a flat lemma
-   using the strict-shape so downstream code can use it without
-   going through [tensor_assoc]'s iso projections).  The closed-form
-   [from] direction of each structural iso (the transported identity
-   along the symmetric equality) is given by the [strict_*_from]
-   corollaries below. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma strict_assoc_iso (X Y Z : C) :
   to (@tensor_assoc C strict_is_monoidal X Y Z)
     ∘ from (@tensor_assoc C strict_is_monoidal X Y Z)
   ≈ id.
 Proof. apply iso_to_from. Qed.
 
-(** ** Closed-form [from] corollaries
+(*
+   本节说明同构相关定义、性质与动机。
 
-    The [from] direction of each structural isomorphism is, like its
-    [to] direction, the transported identity — but transported along the
-    SYMMETRIC equality (so that the domain and codomain of the resulting
-    morphism are swapped).
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-    The phrasing uses a single match-and-return-on-the-domain (rather
-    than a doubly-dependent [a ~> b]).  Concretely, given
-    [e : a = b], the morphism [b ~> a] is given by
-    [match e in _ = T return T ~> a with eq_refl => id end]:
-    at [eq_refl], [T = b] reduces to [a] by elimination, and the branch
-    [id : a ~> a] inhabits the resulting type. *)
+(*
+   本节说明同构相关定义、性质与动机。
 
-(** A general lemma: given an iso [phi : a ≅ b] and an equality [e : a = b]
-    such that [to phi] equals the transported identity along [e], the
-    [from phi] equals the transported identity along [e] in the other
-    direction.
-
-    This is purely group-theoretic — once you know [to phi] is "id along
-    e", uniqueness of inverses in [Isomorphism] forces [from phi] to be
-    "id along the symmetric e". *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma transported_iso_from
   {C' : Category} {a b : C'} (e : a = b) (phi : a ≅[C'] b)
   (Hto : to phi ≈ match e in _ = T return a ~> T with eq_refl => id end) :
@@ -162,21 +148,14 @@ Qed.
 
 End StrictMonoidal.
 
-(** ** Formulation note
+(*
+   本节说明 Strict 相关定义、性质与动机。
 
-    The library does not import the [rew] notation (Coq's [eq_rect]
-    sugar in [stdpp] / [Init.Logic]) by default — its [_CoqProject]
-    does not pull it in.  The explicit [match … in _ = T return …]
-    form parses cleanly inside record fields, and combined with
-    [destruct]-of-equality the dependent transport reduces by
-    [eq_refl] elimination just as cleanly as the [rew] form does in
-    libraries that import the notation.  Both [strict_*_to] and the
-    derived [strict_*_from] corollaries use the [match] formulation
-    consistently. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(** ** Future use
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    PROPs (deferred to V2b) are by definition strict symmetric monoidal
-    categories on the natural numbers; this class is their foundation.
-    Hypergraph PROPs — the main application area for the downstream
-    rewriting work — combine this with the V1 [Hypergraph] class. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

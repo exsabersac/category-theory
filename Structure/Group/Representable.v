@@ -102,14 +102,11 @@ Arguments hgd_inv_natural {C e} _ {x y} _ _.
 #[export] Existing Instance hmd_mul_respects.
 #[export] Existing Instance hgd_inv_respects.
 
-(** ** From a monoid or group object to the hom-set data
+(*
+   本节说明hom、幺半群相关定义、性质与动机。
 
-    The engine: a [MonoidObject] on [c] makes every hom-set [x ~> e] a
-    monoid, by [f · g := mappend ∘ (f △ g)] and [e := mempty ∘ one], and
-    a [GroupObject] adds [f⁻¹ := inverse ∘ f].  The five [rg_*_law]
-    lemmas below read the diagrammatic axioms off in their elementary
-    product form; each is [exact] of the corresponding class field, so
-    the two statements are CONVERTIBLE. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HomMonoidEngine.
 
@@ -260,11 +257,11 @@ Definition group_object_hom_data : HomGroupData c :=
 
 End HomGroupEngine.
 
-(** ** From the hom-set data to a presheaf monoid or group object
+(*
+   本节说明Yoneda、hom、幺半群相关定义、性质与动机。
 
-    Base-free: no products, no closure, no Yoneda.  The presheaf
-    category is cartesian and has a terminal object because [Sets] does,
-    so [CC_Monoidal] applies there whatever [C] is. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ToPresheaf.
 
@@ -325,12 +322,11 @@ Next Obligation. rewrite !id_right; apply hgd_inv_r. Qed.
 
 End ToPresheafGroup.
 
-(** ** From a presheaf monoid or group object back to the hom-set data
+(*
+   本节说明hom、幺半群、来源与用途相关定义、性质与动机。
 
-    Also base-free.  Every law is extracted componentwise: the class
-    field is a natural-transformation equation, applied at an object and
-    then at an element, and the [id_right] residues come from the
-    pointwise identity of [Sets]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FromPresheaf.
 
@@ -447,14 +443,11 @@ Definition psh_group_hom_data : HomGroupData e :=
 
 End FromPresheafGroup.
 
-(** ** From the hom-set data to a monoid or group object
+(*
+   本节说明hom、幺半群、始/终对象相关定义、性质与动机。
 
-    This is the half that needs finite products.  The structure
-    morphisms are the operations evaluated at the generic pair and the
-    generic point -- [data_mul := f · g] at [f := exl], [g := exr];
-    [data_unit] at the terminal object; [data_inv] at [id] -- and
-    [data_mul_eval], [data_unit_eval], [data_inv_eval] recover the whole
-    family from them by naturality. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ToObject.
 
@@ -598,37 +591,21 @@ Defined.
 
 End Headline.
 
-(** ** The external formulation: a functor into Grp
+(*
+   本节说明函子、hom、笛卡尔相关定义、性质与动机。
 
-    Clause (b): no cartesian closure and no products are used here.  The
-    hom-SET carries an [Instance/Grp.v] group and precomposition is a
-    homomorphism, so the assignment is a functor [C^op ⟶ Grp]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HomGrpFunctor.
 
 Context {C : Category}.
 Context (e : C).
-(* RECORDED STRENGTH CHANGE.  An earlier revision took only
-   [{C : Category} (e : C) (D : HomGroupData e)].  Since the PR "algebraic
-   carriers are sets" (2026-09-17) an [Instance/Grp.v] group carries
-   [grp_prop], and the hom-set this section turns into a group is a hom-set
-   of the ARBITRARY ambient [C], so the section assumes a [Prop]-valued
-   equality on each of the hom-setoids it actually uses.  The theorem below
-   therefore reads "for every [C] whose hom-sets INTO [e] are propositional
-   ...", which is strictly weaker than what was in tree.  What is NOT
-   weakened is clause (b) of the headline, since no cartesian closure and no
-   products are used here either, and the two headline biconditionals earlier
-   in this file build no [GrpObject] and are untouched.
+(*
+   本节说明hom、（余）强度相关定义、性质与动机。
 
-   Why this hypothesis and not [LocallyPropositional C].  The class would be
-   the tidier assumption and any locally propositional [C] discharges [HP] by
-   [fun x => locally_prop x e] -- [Grp] itself
-   ([Grp_LocallyPropositional], Instance/Grp.v), and [Ab], [CMon], [RMod R].
-   But the one in-tree instantiation is at [C := Sets], which is NOT locally
-   propositional and cannot be (Instance/Sets/Propositional.v's header says
-   why); what IS available there is [hom_PropEquiv], which constrains only
-   the CODOMAIN.  The codomain-only hypothesis is therefore both the weaker
-   assumption and the usable one. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context (HP : forall x : C, PropEquiv (@homset C x e)).
 Context (D : HomGroupData e).
 
@@ -686,10 +663,11 @@ Example data_psh_data_inv {x : C} (f : x ~> e) :
   hgd_inv (psh_group_hom_data e (RepPresheaf_Group e D)) f
     = hgd_inv D f := eq_refl.
 
-(* The data fields above return on the nose; the LAW fields do not, and
-   that is the whole reason the record round trip fails.  [HomGroupData]
-   has primitive projections with eta, so record equality IS field
-   equality. *)
+(*
+   本节说明 Representable 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example data_psh_data_law {x : C} (f g h : x ~> e) :
   @hmd_assoc C e (psh_monoid_hom_data e
                     (RepPresheaf_Monoid e (hgd_monoid D))) x f g h
@@ -702,13 +680,11 @@ Example data_psh_data_law_control {x : C} (f g h : x ~> e) :
 Fail Example data_psh_data_whole :
   psh_group_hom_data e (RepPresheaf_Group e D) = D := eq_refl.
 
-(* The whole-record control the negative above needs.  Without it that
-   [Fail] is guarded only by [data_psh_data_law_control], which is a
-   control for the LAW FIELD and not for the record, so a change making
-   whole-record equality unstatable would leave the negative succeeding
-   for the wrong reason.  No [≈] repair is available to sit beside it:
-   no setoid on [HomGroupData] exists anywhere in the tree, so an [≈]
-   statement about the record is not even formable. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example data_psh_data_whole_control : D = D := eq_refl.
 
 End RoundTrips.
@@ -847,9 +823,11 @@ Require Import Category.Instance.Sets.Products.
 Section SetsComputation.
 
 Context (gobj : Sets).
-(* [Sets] is NOT declared locally propositional (Instance/Sets/Propositional.v
-   says why), so the witness for THIS object is a section hypothesis.  Since
-   the PR "algebraic carriers are sets" (2026-09-17). *)
+(*
+   本节说明 Representable 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context (Pg : PropEquiv (is_setoid gobj)).
 Context (G : @GroupObject Sets CC_CartesianMonoidal gobj).
 

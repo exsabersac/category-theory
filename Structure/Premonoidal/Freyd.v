@@ -30,12 +30,11 @@ Set Transparent Obligations.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Effectful functors
+(*
+   本节说明函子相关定义、性质与动机。
 
-    The centrality half of the Freyd notion, isolated: a functor
-    J : V ⟶ K into a binoidal K is effectful when every morphism in its
-    image is central.  No strictness and no structure preservation is
-    demanded yet, so the class is stated over a bare binoidal target. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Effectful.
 
@@ -46,10 +45,11 @@ Class EffectfulFunctor (J : V ⟶ K) := {
   eff_central {x y} (f : x ~{V}~> y) : central (fmap[J] f)
 }.
 
-(** The image of an effectful functor lands in the wide subcategory
-    Z(K) = [Centre K] of Structure/Binoidal/Central.v, so J factors as a
-    functor into the centre.  The functor laws are the underlying laws of
-    J because [Sub]-homsets compare first projections. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Effectful_Centre_fmap {J : V ⟶ K} `{E : @EffectfulFunctor J}
     {x y : V} (f : x ~{V}~> y) :
@@ -104,28 +104,11 @@ Proof. reflexivity. Qed.
 
 End Effectful.
 
-(** ** Freyd categories
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    A Freyd category over the monoidal (V, ⨂, I) and the premonoidal
-    (K, ⊗, premon_I) is a functor J : V ⟶ K that
-
-      - has a central image ([freyd_central]);
-      - is bijective on objects, witnessed strictly by a section together
-        with both Leibniz round-trip equalities;
-      - preserves the unit and the tensor strictly on objects, and
-        preserves the tensorings and the structural isomorphisms on
-        morphisms up to the [id_cast] transports along those object
-        equalities.
-
-    The two tensoring fields relate V's joint tensor with an identity in
-    one slot to K's one-sided tensorings ⋉ / ⋊, one field per slot; the
-    unitor and associator fields express that J sends V's structural
-    isomorphisms to K's, modulo the cast bookkeeping that connects
-    J-images of compound objects with compounds of J-images.  In a fully
-    strict situation (both instances in this file) every equality is
-    [eq_refl], the composite equalities [eq_trans _ (f_equal _ _)]
-    compute to [eq_refl], and every [id_cast] disappears
-    definitionally. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Freyd.
 
@@ -191,11 +174,11 @@ Class Freyd (J : V ⟶ K) := {
                                  (@freyd_obj_tensor x y)))
 }.
 
-(** Projecting away the strictness data leaves an effectful functor, so
-    every Freyd category factors through the centre of its computation
-    category ([Freyd_Centre] below, through [Effectful_Centre]).  Since
-    the centre is monoidal ([Centre_Monoidal]), the value category of a
-    Freyd category always maps into a monoidal subcategory of K. *)
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Freyd_Effectful {J : V ⟶ K} (F : Freyd J) :
   @EffectfulFunctor V K BK J :=
@@ -207,26 +190,11 @@ Definition Freyd_Centre {J : V ⟶ K} (F : Freyd J) : V ⟶ Centre K :=
 
 End Freyd.
 
-(** ** The flagship instance: the Kleisli category of a strong monad
+(*
+   本节说明幺半结构、函子、单子相关定义、性质与动机。
 
-    The motivating example of Power–Thielecke 1999 and
-    Levy–Power–Thielecke 2003, built on the premonoidal structure of
-    Kl(M) established by Power–Robinson 1997.  For a strong monad M on a
-    symmetric monoidal C, the pure functor [Kleisli_Pure] : C ⟶ Kl(M)
-    is the identity on objects — [obj Kl(M)] is definitionally [obj C] —
-    so the section is the identity and every object equality is
-    [eq_refl].  All casts in the morphism-level fields therefore reduce
-    to [id], and the fields collapse to:
-
-      - the tensoring transfer laws [pure_inj_left]/[pure_inj_right] of
-        Monad/Kleisli/Premonoidal.v (the η-compat laws of the two
-        strengths, packaged);
-      - reflexivity-level agreements for the unitors and associator,
-        because the structural isomorphisms of [Kleisli_Premonoidal] are
-        BY CONSTRUCTION the [kpure] images of C's.
-
-    Centrality of the image is [pure_central] — the four double-strength
-    unit laws of Monad/Strong/Symmetric.v, needing no commutativity. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FreydKleisli.
 
@@ -294,16 +262,11 @@ Definition Freyd_Kleisli :
 
 End FreydKleisli.
 
-(** ** The degenerate instance: a monoidal category over itself
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    Every monoidal category is a Freyd category over its own premonoidal
-    reading (Structure/Premonoidal/Monoidal.v), with J the identity
-    functor: the identity is bijective on objects on the nose, the
-    binoidal tensor of [Monoidal_Binoidal] is definitionally the
-    monoidal one, and every morphism is central by
-    [Monoidal_all_central].  With a cartesian monoidal V this is the
-    classical base point of the Freyd-category hierarchy: the effect-free
-    computation category is the value category itself. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FreydId.
 

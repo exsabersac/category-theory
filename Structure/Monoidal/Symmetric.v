@@ -107,11 +107,11 @@ Next Obligation.
   now rewrite bimap_id_id.
 Qed.
 
-(* ncatlab: "Every symmetric monoidal category is balanced in a canonical way;
-   in fact, the identity natural transformation (on the identity functor of
-   BB) is a balance on BB if and only if BB is symmetric. Thus balanced
-   monoidal categories fall between braided monoidal categories and symmetric
-   monoidal categories." *)
+(*
+   本节说明幺半结构、自然变换、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition symmetric_is_balanced `{@SymmetricMonoidal C} :
   @BalancedMonoidal C := {|

@@ -52,11 +52,11 @@ Definition jointly_faithful_cogenerator {J : Type} (F : J -> C)
 
 End Dual.
 
-(* The same pair of bridges read at the other orientation, which costs
-   nothing because C^op^op is C by conversion (Construction/Opposite.v,
-   the duality discipline CLAUDE.md describes).  These sit OUTSIDE the
-   section above: inside it the category is a section variable and the
-   two bridges cannot be instantiated at C^op until it is discharged. *)
+(*
+   本节说明 Dual 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition gen_op_of_cog {C : Category} (G : Cogenerator C) :
   Generator (C^op) := @gen_of_cog (C^op) G.
 

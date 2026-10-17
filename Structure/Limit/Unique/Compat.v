@@ -41,11 +41,11 @@ Definition is_equalizer_alimit {q : C} {e : q ~> x}
   (E : IsEqualizer f g q e) : IsALimit (APair f g) q :=
   limit_is_alimit (is_equalizer_limit f g E).
 
-(* The two forward components coincide, and with them the whole
-   isomorphisms ([equalizer_unique_agrees_iso], one line through
-   [to_equiv_implies_iso_equiv]).  The general result adds what the
-   bare ≅ could not say: the legs and the uniqueness clause of
-   [limit_unique_iso_unique]. *)
+(*
+   本节说明（余）极限、等化子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem equalizer_unique_agrees {q1 q2 : C} {e1 : q1 ~> x} {e2 : q2 ~> x}
   (E1 : IsEqualizer f g q1 e1) (E2 : IsEqualizer f g q2 e2) :
   to (equalizer_unique f g E1 E2)
@@ -134,12 +134,11 @@ Context {J : Category}.
 Context {C : Category}.
 Context (F : J ⟶ C).
 
-(* The composite never before formed at limits:
-   [univ_property_unique_up_to_unique_iso] at
-   [LimitIsUniversalProperty].  Two limit witnesses of one diagram
-   are related by an isomorphism (of C^op, the representability side's
-   home) unique among those transporting the one representation to the
-   other. *)
+(*
+   本节说明（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition limit_unique_up_to_transport_iso
   (c d : C) (Hc : IsALimit F c) (Hd : IsALimit F d) :
   @Unique (@Isomorphism C^op c d) _

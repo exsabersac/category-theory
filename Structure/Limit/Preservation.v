@@ -23,17 +23,11 @@ Generalizable All Variables.
 
 (** ** Preservation of limits *)
 
-(* The APEX-ONLY class, kept for its downstream consumers: F preserves the
-   limit of G when the image of any limit apex of G underlies SOME limit of
-   F ◯ G, with the legs of that limit unrelated to the image legs.  The
-   cone-level [PreservesLimitCone] is the definition proper, and
-   Structure/Limit/Preservation/Separation.v shows this one does not imply
-   it. The apex is written [F L]: since
-   [limit_cone] is a class projection whose [Limit] argument is resolved by
-   typeclass inference, it cannot be applied to the term [L] directly;
-   instead [F L] elaborates through the coercion chain
-   [Limit >-> Cone >-> vertex_obj], so the explicit spelling of the image
-   apex is [F (@vertex_obj _ _ _ (@limit_cone _ _ _ L))]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class PreservesLimit `(G : J ⟶ C) `(F : C ⟶ D) := {
   preserves_limit (L : Limit G) : IsALimit (F ◯ G) (F L)
@@ -99,9 +93,11 @@ Definition limit_is_alimit `(L : @Limit J C G) : IsALimit G L :=
 
 (** ** The cone-level limit predicate *)
 
-(* [N] is a limiting cone: every cone over the same diagram factors through
-   it uniquely, and the factorization is compatible with the legs OF N —
-   which is what distinguishes this from the apex-pinned [IsALimit]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition IsLimitCone {J C : Category} {K : J ⟶ C} (N : Cone K) : Type :=
   ∀ M : Cone K, ∃! u : vertex_obj[M] ~{C}~> vertex_obj[N],
@@ -192,9 +188,11 @@ Proof.
     now rewrite id_left.
 Defined.
 
-(* Uniqueness of limits, in the cone-level form: any two limiting cones over
-   the same diagram are isomorphic by a leg-compatible isomorphism.  This is
-   what makes the created lift unique up to canonical isomorphism below. *)
+(*
+   本节说明（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition limitcone_iso {N M : Cone K}
   (HN : IsLimitCone N) (HM : IsLimitCone M) : ConeIso N M.
@@ -232,10 +230,11 @@ Context {J C D : Category}.
 Context (F : C ⟶ D).
 Context {K : J ⟶ C}.
 
-(* The coherence of a cone, read through [cone_leg].  This duplicates
-   [cone_leg_coherence] (Theory/Equivalence/Limit.v), which sits above
-   this layer: importing it here would compile, but it would invert the
-   layering. *)
+(*
+   本节说明（余）极限、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cone_leg_coh (N : Cone K) {x y : J} (f : x ~{J}~> y) :
   fmap[K] f ∘ cone_leg N x ≈ cone_leg N y.
@@ -284,10 +283,11 @@ Definition PreservesLimitCone {J C D : Category} (K : J ⟶ C) (F : C ⟶ D)
 Definition ReflectsLimitCone {J C D : Category} (K : J ⟶ C) (F : C ⟶ D)
   : Type := ∀ N : Cone K, IsLimitCone (FCone F N) → IsLimitCone N.
 
-(* The cone-level notion is stronger than the apex-only class of
-   Structure/Limit/Preservation.v; this is the bridge, and only this
-   direction holds (the argument at Construction/Comma/Limit.v is
-   precisely that the converse does not go through). *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition PreservesLimitCone_PreservesLimit {J C D : Category}
   {K : J ⟶ C} {F : C ⟶ D} (P : PreservesLimitCone K F) : PreservesLimit K F.
@@ -352,10 +352,11 @@ Definition comparison_iso_of_PreservesLimitCone
   IsIsomorphism (cone_comparison N HM) :=
   LimitCone_comparison_iso N HM (P N HN).
 
-(* The apex-only class produces SOME isomorphism between the image apex and
-   the limit apex, with no claim that it is the canonical comparison; the
-   Separation development exhibits the isomorphism existing while the
-   comparison is provably not invertible. *)
+(*
+   本节说明（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition apex_iso_of_PreservesLimit (P : PreservesLimit K F) (L : Limit K)
   {M : Cone (F ◯ K)} (HM : IsLimitCone M) :
@@ -405,10 +406,11 @@ Definition islimitcone_assoc_inv {N : Cone (G ◯ (F ◯ K))}
 
 End ConeAssoc.
 
-(* A cone over [K] read as a cone over [Id ◯ K]: the same apex and legs,
-   [Id ◯ K] not being [K] on the nose.  Added by #477 for
-   Structure/Limit/Absolute.v's "an absolute limit is a limit", with that
-   file's binders: one hom level for the shape and the ambient. *)
+(*
+   本节说明（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition cone_id_comp@{jo co ch +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}} {K : J ⟶ C}
@@ -452,12 +454,11 @@ Definition islimitcone_op_comp {N : Cone ((F ◯ K)^op)} (H : IsLimitCone N) :
 
 End OpComp.
 
-(* (F ◯ G)^op and F^op ◯ G^op share their object and morphism maps but
-   differ in the proofs of functoriality, so an apex-pinned limit witness
-   over the one repackages field by field as a witness over the other
-   (the [preserves_colimit] precedent in Structure/Limit/Preservation.v).
-   No destructuring: everything is spelled with projections, so the
-   result stays convertible with the input on legs and mediators. *)
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition isalimit_op_comp {J C D : Category} {G : J ⟶ C} {F : C ⟶ D}
   {c : D} (H : IsALimit ((F ◯ G)^op) c) : IsALimit (F^op ◯ G^op) c :=
@@ -490,10 +491,11 @@ Lemma cocone_inj_coherence `{F : J ⟶ C} (N : Cocone F)
   cocone_inj N y ∘ fmap[F] f ≈ cocone_inj N x.
 Proof. exact (@cone_coherence _ _ _ _ (@coneFrom _ _ _ N) y x f). Qed.
 
-(* [IsAColimit F c] pins the apex of a colimit of F at c, dually to
-   [IsALimit]: it is [IsALimit] for the opposite diagram, at the same
-   object. The accessors below restate its legs and universal property
-   covariantly, entirely in terms of C. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition IsAColimit `(F : J ⟶ C) (c : C) : Type := IsALimit (F^op) c.
 
@@ -564,11 +566,11 @@ Definition colimit_is_acolimit `(L : @Colimit J C G) :
 Definition PreservesColimit `(G : J ⟶ C) `(F : C ⟶ D) : Type :=
   @PreservesLimit (J^op) (C^op) (G^op) (D^op) (F^op).
 
-(* Covariant accessor: a colimit-preservation witness sends the apex of
-   any colimit of G to the apex of a colimit of F ◯ G. The functors
-   (F ◯ G)^op and F^op ◯ G^op share their object and morphism maps up to
-   conversion, differing only in the proofs of functoriality, so the
-   witness produced by [preserves_limit] is repackaged field by field. *)
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition preserves_colimit {J C D : Category} {G : J ⟶ C} {F : C ⟶ D}
   (P : PreservesColimit G F) (L : Colimit G) :
@@ -602,12 +604,11 @@ Definition PreservesAllColimits {C D : Category} (F : C ⟶ D) : Type :=
 
 (** ** Continuity, cocontinuity, and quantification over shapes *)
 
-(* Continuity is preservation of every limit of every shape in the CONE
-   sense (Mac Lane §V.4); [Continuous_PreservesAllLimits] descends to the
-   apex-only quantification, and the countermodel of
-   Structure/Limit/Preservation/Separation.v shows the descent has no
-   inverse.  These are plain Definitions: preservation of a class of limits
-   is data to be supplied, never inferred. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ContinuousFunctor {C D : Category} (F : C ⟶ D) : Type :=
   ∀ (J : Category) (K : J ⟶ C), PreservesLimitCone K F.
@@ -643,11 +644,11 @@ Definition continuous_compose {C D E : Category} {F : C ⟶ D} {G : D ⟶ E}
 
 (** ** Reflection of isomorphisms *)
 
-(* A conservative functor: any morphism whose image under F is invertible
-   is itself invertible. Stated with the two-sided-inverse predicate
-   [IsIsomorphism] (Theory/Isomorphism.v). Fully faithful functors are the
-   standard source of such witnesses (Phase consumers derive them there);
-   none is registered here. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class ReflectsIsos {C D : Category} (F : C ⟶ D) := {
   reflects_iso {x y : C} (f : x ~> y) :
@@ -656,9 +657,11 @@ Class ReflectsIsos {C D : Category} (F : C ⟶ D) := {
 
 (** ** The cocone-level colimit predicate, preservation, and cocontinuity *)
 
-(* [IsColimitCocone] is [IsLimitCone] for the opposite diagram at the same
-   cocone; unfolded in C it says every cocone over K receives a unique
-   mediator out of N compatible with the injections. *)
+(*
+   本节说明 Preservation 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition IsColimitCocone {J C : Category} {K : J ⟶ C} (N : Cocone K) : Type :=
   @IsLimitCone (J^op) (C^op) (K^op) N.

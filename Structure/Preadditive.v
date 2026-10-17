@@ -63,12 +63,11 @@ Delimit Scope addition_scope with padd.
 Infix "+" := padd : addition_scope.
 Notation "0" := pzero : addition_scope.
 
-(* Compatibility with zero objects: in a preadditive category that also has
-   a zero object, the enrichment zero [pzero] coincides with the canonical
-   zero morphism x ~> 1 ~> 0 ~> y of Structure/ZeroObject.v.  The proof
-   exhibits [pzero] as a morphism factoring through the zero object —
-   [compose_pzero_left] collapses each tunnelling leg — after which
-   [zero_mor_unique] identifies it with [zero_mor]. *)
+(*
+   本节说明 Preadditive 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma pzero_zero_mor {C : Category} `{P : @Preadditive C} `{Z : @ZeroObject C}
   {x y : C} :
   @pzero C P x y ≈ @zero_mor C Z x y.

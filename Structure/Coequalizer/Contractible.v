@@ -67,9 +67,11 @@ Example split_coequalizer_contractible_t {C : Category} {x y : C}
 
 (** ** (b) A coequalizer of a contractible pair is split *)
 
-(* On the same object and arrow: s is the descent of g ∘ t through e,
-   which the second equation makes possible; then s e = g t is law 4, and
-   e s e = e g t = e f t = e gives law 2, e being epic. *)
+(*
+   本节说明 Contractible 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition contractible_coequalizer_split {C : Category} {x y : C}
   {f g : x ~> y} (P : ContractiblePair f g) {q : C} {e : y ~> q}
   (E : IsCoequalizer f g q e) : SplitCoequalizer f g.

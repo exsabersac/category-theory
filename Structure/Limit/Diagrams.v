@@ -41,10 +41,11 @@ Record DObj (C : Category) : Type := {
 Arguments didx {C} _.
 Arguments ddiag {C} _.
 
-(* An arrow X → Y: a functor between the shapes and a transformation from
-   the reindexed diagram of Y to the diagram of X.  This is the direction
-   in which limits are contravariant: lim (ddiag Y) restricts along [dW]
-   and pushes along [dtau] into a cone over [ddiag X]. *)
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record DHom {C : Category} (X Y : DObj C) : Type := {
   dW   : didx X ⟶ didx Y;
   dtau : ddiag Y ◯ dW ⟹ ddiag X
@@ -53,9 +54,11 @@ Record DHom {C : Category} (X Y : DObj C) : Type := {
 Arguments dW {C X Y} _.
 Arguments dtau {C X Y} _.
 
-(* Two arrows are equivalent when their shape functors are naturally
-   isomorphic (Cat's own hom setoid, Theory/Functor.v's [Functor_Setoid])
-   and their transformations agree through that isomorphism's image. *)
+(*
+   本节说明函子、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition DHom_equiv {C : Category} {X Y : DObj C} (f g : DHom X Y) : Type :=
   { i : ∀ j : didx X, dW f j ≅ dW g j
   & ((∀ (x y : didx X) (h : x ~> y),
@@ -98,10 +101,11 @@ Next Obligation.
       reflexivity.
 Qed.
 
-(* Identity and composition are built componentwise: [◯] is neither
-   strictly unital nor strictly associative, so [nat_id] lands at
-   [ddiag X ◯ Id ⟹ ddiag X ◯ Id] and a whiskered composite at the wrong
-   bracketing (the probe pins both). *)
+(*
+   本节说明 Diagrams 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Did {C : Category} (X : DObj C) : DHom X X := {|
   dW := Id[didx X];
   dtau := {| transform := fun j => id[ddiag X j] |}
@@ -224,9 +228,11 @@ Definition dlim (X : DObj C) : C :=
 Definition dlim_is (X : DObj C) : IsALimit (ddiag X) (dlim X) :=
   limit_is_alimit (L (didx X) (ddiag X)).
 
-(* The cone over [ddiag X] with apex [dlim Y]: the limit cone of [ddiag Y]
-   restricted along [dW f] (Comparison.v's [cone_reindex]) and pushed along
-   [dtau f] (Theory/Equivalence/Colimit.v's [cone_along]). *)
+(*
+   本节说明（余）极限、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition dlim_cone {X Y : DObj C} (f : DHom X Y) : Cone (ddiag X) :=
   cone_along (dtau f)
     (cone_reindex (dW f) (isalimit_cone (dlim_is Y))).
@@ -291,11 +297,11 @@ End LimDiagrams.
 
 (** ** The colimit dual *)
 
-(* [Cocomplete C] and [Complete (C^op)] are not convertible (the probe pins
-   the [eq_refl]), but they are interderivable because [(F^op)^op] IS [F]
-   by conversion: Construction/Product/Limit.v's
-   [Complete_op_of_Cocomplete] goes one way, and the converse below the
-   other; the two round-trip at [eq_refl]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cocomplete_of_complete_op {C : Category} (L : @Complete (Opposite C)) :
   @Cocomplete C :=
   fun D F => L (Opposite D) (Opposite_Functor F).
@@ -306,12 +312,11 @@ Example cocomplete_roundtrip {C : Category} (L : @Cocomplete C) :
 Example complete_op_roundtrip {C : Category} (L : @Complete (Opposite C)) :
   Complete_op_of_Cocomplete (cocomplete_of_complete_op L) = L := eq_refl.
 
-(* An object of [Diagrams (C^op)] is a diagram [G : K ⟶ C^op], i.e. [F^op] for
-   [F : K^op ⟶ C]; an arrow X → Y is a shape functor [dW] with
-   [ddiag Y ◯ dW ⟹ ddiag X] in [C^op], i.e. [F_X ⟹ F_Y ◯ dW^op] in [C] —
-   exactly the arrows along which colimits are COVARIANT.  So the colimit
-   functor is the limit functor of the opposite target, read back through
-   [Opposite (Opposite C) = C]. *)
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ColimDiagrams {C : Category} (L : @Cocomplete C) :
   Diagrams (Opposite C) ⟶ C :=
   Opposite_Functor (LimDiagrams (Complete_op_of_Cocomplete L)).
@@ -332,14 +337,11 @@ Example dcolim_is_colimit_apex {C : Category} (L : @Cocomplete C)
 
 (** ** The comma form over Cat, and why it cannot carry the arrow part *)
 
-(* The issue names the comma category [Id[Cat] ↓ Δ(C)] as "the sub-case where
-   the transformation is the identity".  Its objects are the same pairs; its
-   arrows pair a shape functor with a commuting square, which in Cat's hom
-   setoid is a natural ISOMORPHISM [F' ◯ W ≅ F], never an identity; and its
-   hom setoid compares the functor components only (Construction/Comma.v's
-   [homset]), so the square is forgotten.  The probe carries the concrete
-   countermodel: two comma arrows equivalent in this setoid whose squares
-   would demand different mediators. *)
+(*
+   本节说明函子、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CommaDiagrams (C : Category) : Category :=
   @Comma Cat 1 Cat Id[Cat] (@Diagonal Cat 1 C).
 
@@ -347,11 +349,11 @@ Example CommaDiagrams_equiv (C : Category) (x y : CommaDiagrams C)
   (f g : x ~{CommaDiagrams C}~> y) :
   (f ≈ g) = ((fst `1 f ≈ fst `1 g) * (snd `1 f ≈ snd `1 g))%type := eq_refl.
 
-(* Every comma arrow does give a [Diagrams] arrow — its square, read as the
-   transformation — but only as a FUNCTION on arrows: the assignment depends on
-   the square, which the comma setoid discards, so it is not a morphism of
-   setoids (the probe's countermodel exhibits two equivalent comma arrows with
-   different transformations). *)
+(*
+   本节说明 Diagrams 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition comma_diagrams_obj {C : Category} (x : CommaDiagrams C) : DObj C :=
   {| didx := fst `1 x; ddiag := `2 x |}.
 

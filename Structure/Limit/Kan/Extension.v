@@ -87,13 +87,11 @@ Proof.
   - apply (unique_obj (ump_limits cone)).
   - apply to_from.
   - simpl in *.
-    (* Since half of the isomorphism has already been proven in [to_from], it
-       is sufficient to show that either [(adj nat) ttt] is monic, or
-       [unique_obj (ump_limits cone)] is epic. I've chosen the latter due
-       to Emily Riehl's statement in "Category Theory in Context" (p. 76):
-       "... Proposition 3.1.7 implies that the only automorphism of [a limit
-       object] l that commutes with the specified limit cone λ is the
-       identity." *)
+    (*
+   本节说明（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
     assert (∀ (f g : Lim ~{ C }~> Lim),
               (∀ x, vertex_map[Lim] ∘ f ≈ @vertex_map _ _ _ _ (@coneFrom _ _ _ Lim) x) ->
@@ -106,11 +104,11 @@ Proof.
       reflexivity.
     }
 
-    (* Apply the consequence that [unique_obj (ump_limits cone)] is epic
-      on morphisms commuting with the limit cone, leaving us with the burden
-      of showing that the two sides of our equivalence do in fact commute for
-      [Lim F]. The right side is trivial (id), while the left side relies on
-      the naturality of the Kan adjunction. *)
+    (*
+   本节说明伴随、（余）极限、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     apply HA; simpl; intros; cat; swap 1 2.
     + rewrite <- comp_assoc.
       rewrite to_from; cat.

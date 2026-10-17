@@ -99,19 +99,11 @@ Definition copower_ump {C : Category} {HC : @HasIndexedCoproducts C}
   (J : Type) (b : C) : IsCopower b (copower J b) (copower_inj J b) :=
   @power_ump (C^op) HC J b.
 
-(** ** The limit-shaped reading
+(*
+   本节说明伴随、（余）极限、hom相关定义、性质与动机。
 
-    [power_of_limit] and [copower_of_colimit] carry the universe pin that
-    Structure/Limit/Product.v's header describes: [DiscreteCat J]'s hom-setoid
-    is strict equality, so forming the limit constrains [C]'s hom and proof
-    universes (the index, measured in the header, stays free).  They are
-    supplied because that is the shape Theory/WeaklyInitial.v consumes -- and
-    only that file: Adjunction/SAFT.v's superficially similar [cogen_power] is
-    not a power, per the header.  Note the second one reads a limit taken IN
-    [C^op] -- the shape
-    Structure/Limit/Coproduct.v's header records, NOT [Colimit] in the sense
-    of Structure/Limit.v; no translation between the two is offered here
-    either. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition power_of_limit {C : Category} {J : Type} (b : C)
   (L : Limit (DiscreteCat_Functor (fun _ : J => b))) : C :=

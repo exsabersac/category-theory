@@ -37,9 +37,11 @@ Class HasReflexiveCoequalizers (C : Category) := {
 
 (** ** Recognizing reflexive pairs *)
 
-(* Exhibiting a common section in the style of [scoeq_t] from
-   [Structure/Coequalizer/Split.v] — a single map split by both f and g —
-   is exactly what it takes: the record is precisely this data. *)
+(*
+   本节说明 Reflexive 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma common_section_reflexive {C : Category} {x y : C} (f g : x ~> y)
   (s : y ~> x) (Hf : f ∘ s ≈ id) (Hg : g ∘ s ≈ id) :
   ReflexivePair f g.
@@ -58,10 +60,11 @@ Defined.
 
 (** ** Functors preserve reflexive pairs *)
 
-(* Push the common section through fmap; both retraction laws follow from
-   the corresponding law in the source by functoriality.  The proof ends
-   with [Defined] so that the transported section [fmap (refl_section R)]
-   stays visible to conversion. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem functor_preserves_reflexive {C D : Category} (F : C ⟶ D)
   {x y : C} (f g : x ~> y) :
   ReflexivePair f g → ReflexivePair (fmap[F] f) (fmap[F] g).

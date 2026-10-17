@@ -23,11 +23,11 @@ Section SemicartesianProofs.
 Context `{@Monoidal C}.
 Context `{@SemicartesianMonoidal C _}.
 
-(* Associator compatibility of the left projection: projecting the left pair of
-   a triple tensor and re-tensoring with id on the right agrees, across the
-   associator (x ⨂ y) ⨂ z ~> x ⨂ (y ⨂ z), with discarding the inner z by the
-   right projection on the right factor.  Both sides discard exactly z, so this
-   is the triangle/associativity coherence of the discard map. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma proj_left_tensor_id {x y z} :
   proj_left ⨂ id ≈ id[x] ⨂ @proj_right _ _ _ y z ∘ tensor_assoc.
 Proof.
@@ -39,10 +39,11 @@ Proof.
   normal; reflexivity.
 Qed.
 
-(* The mirror image of proj_left_tensor_id: re-tensoring the right projection
-   with id on the left agrees, across the inverse associator, with discarding
-   the inner x by the left projection on the left factor.  Both sides discard
-   exactly x. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma proj_right_tensor_id {x y z} :
   id ⨂ proj_right ≈ @proj_left _ _ _ x y ⨂ id[z] ∘ tensor_assoc⁻¹.
 Proof.
@@ -54,10 +55,11 @@ Proof.
   normal; reflexivity.
 Qed.
 
-(* Iterated left projection: projecting (x ⨂ y) ⨂ z down to x ⨂ y and then to x
-   is the same as re-associating to x ⨂ (y ⨂ z) and projecting straight onto x.
-   Both routes discard y and z and keep x, so they agree; this is the
-   associativity coherence between the projection and the associator. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma proj_left_left {x y z} :
   proj_left ∘ proj_left ≈ @proj_left _ _ _ x (y ⨂ z) ∘ tensor_assoc.
 Proof.
@@ -77,9 +79,11 @@ Proof.
   apply unit_terminal.
 Qed.
 
-(* The mirror image of proj_left_left: projecting x ⨂ (y ⨂ z) down to y ⨂ z and
-   then to z equals re-associating to (x ⨂ y) ⨂ z and projecting straight onto
-   z.  Both routes discard x and y and keep z. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma proj_right_right {x y z} :
   proj_right ∘ proj_right ≈ @proj_right _ _ _ (x ⨂ y) z ∘ tensor_assoc⁻¹.
 Proof.
@@ -99,10 +103,11 @@ Proof.
   apply unit_terminal.
 Qed.
 
-(* Naturality of the left projection: projecting after acting by f ⨂ g equals
-   acting by f after projecting.  The discarded g is killed by eliminate_comp
-   (eliminate ∘ g ≈ eliminate, since I is terminal), leaving only f.  This is the
-   naturality square of proj_left as a transformation (- ⨂ =) ⟹ pr1. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary proj_left_natural {x y z w} (f : x ~> y) (g : z ~> w) :
   proj_left ∘ f ⨂ g ≈ f ∘ proj_left.
 Proof.
@@ -114,9 +119,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* Naturality of the right projection, dual to proj_left_natural: the discarded
-   f is killed by eliminate_comp, leaving only g.  This is the naturality square
-   of proj_right as a transformation (- ⨂ =) ⟹ pr2. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary proj_right_natural {x y z w} (f : x ~> y) (g : z ~> w) :
   proj_right ∘ f ⨂ g ≈ g ∘ proj_right.
 Proof.

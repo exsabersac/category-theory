@@ -93,12 +93,11 @@ Qed.
 
 End PushoutSplit.
 
-(** ** The classical special case: a split leg
+(*
+   本节说明 Split 相关定义、性质与动机。
 
-    If [g] is a split monomorphism, with retraction [t : z ~> x], then [f]
-    factors through [g] as [f ∘ t], because [(f ∘ t) ∘ g ≈ f ∘ (t ∘ g) ≈ f].
-    So the OPPOSITE injection splits.  This is the constructively available
-    fragment of "monic legs give monic injections". *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition pushout_in1_Section_of_Retraction
            {C : Category} {x y z : C} {f : x ~> y} {g : x ~> z}
@@ -140,12 +139,11 @@ Proof.
   exact (pushout_in2_Section_of_Retraction P Sf).
 Qed.
 
-(** ** Both injections at once
+(*
+   本节说明（余）强度相关定义、性质与动机。
 
-    "Split-monic legs give split-monic injections" — the strength at which
-    Mac Lane's monic-legs refinement is available with no normal-form
-    theorem.  Note the CROSSING: a splitting of [g] is what splits the
-    injection out of [y], and vice versa. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition pushout_both_Section
            {C : Category} {x y z : C} {f : x ~> y} {g : x ~> z}

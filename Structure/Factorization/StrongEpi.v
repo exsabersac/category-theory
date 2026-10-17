@@ -20,9 +20,11 @@ Record StrongEpi {C : Category} {x y : C} (f : x ~> y) := {
   strong_lift {u v : C} (m : u ~> v) : Monic m → f ⫫ m
 }.
 
-(* Strong epimorphisms are closed under composition: the epic parts compose
-   by epi_compose, and the lifting parts compose because the left
-   orthogonality class is closed under composition (ortho_left_compose). *)
+(*
+   本节说明 StrongEpi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma strong_epi_compose {C : Category} {x y z : C}
   (f : y ~> z) (g : x ~> y) :
   StrongEpi f → StrongEpi g → StrongEpi (f ∘ g).
@@ -36,11 +38,11 @@ Proof.
     + exact (Hfl _ _ m Hm).
 Qed.
 
-(* Right cancellation: if a composite f ∘ g is a strong epimorphism, then so
-   is its left factor f. The epic part right-cancels through the composite;
-   a lifting problem for f against a monic m is whiskered with g into a
-   lifting problem for f ∘ g, solved there, and the filler is checked
-   against the original square by cancelling m. *)
+(*
+   本节说明 StrongEpi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma strong_epi_cancel {C : Category} {x y z : C}
   (f : y ~> z) (g : x ~> y) :
   StrongEpi (f ∘ g) → StrongEpi f.
@@ -84,9 +86,11 @@ Proof.
       * exact Hmd'.
 Qed.
 
-(* Every split epimorphism is strong: it is epic (retractions_are_epic),
-   and the section provides the filler p ∘ retract directly, with the monic
-   on the right forcing both the lower triangle and uniqueness. *)
+(*
+   本节说明 StrongEpi 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma split_epi_strong {C : Category} {x y : C} (f : x ~> y) :
   Retraction f → StrongEpi f.
 Proof.

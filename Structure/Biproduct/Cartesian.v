@@ -76,14 +76,11 @@ Definition biproduct_Cartesian : @Cartesian C := {|
 
 (** ** The cocartesian structure *)
 
-(* Dually — and this is the half Mac Lane's roster is about — the SAME
-   object with the two injections and the copairing [bi_copair] is a
-   cocartesian structure.  Recall that [Cocartesian C] is notation for
-   [@Cartesian (C^op)] (Structure/Cocartesian.v), so the field names
-   below are the product ones read in the opposite category: [product_obj]
-   is the coproduct x + y, [exl]/[exr] are [inl]/[inr], [fork] is the
-   copairing ▽, and [ump_products] arrives with its composition order
-   flipped, reading [h ∘ inl ≈ f] and [h ∘ inr ≈ g] in C. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition biproduct_merge {x y z : C} (f : y ~> x) (g : z ~> x) :
   biproduct_obj (biproduct y z) ~> x :=
   bi_copair (biproduct y z) f g.
@@ -110,26 +107,11 @@ Proof.
     now apply bi_copair_unique.
 Qed.
 
-(* TWO ELABORATION HAZARDS, both met and both worth recording.
+(*
+   本节说明 Cartesian 相关定义、性质与动机。
 
-   (1) A [{| … |}] literal ascribed to [@Cocartesian C] is checked field by
-   field before the ascription has forced the implicit category, and
-   [product_obj]'s type [obj → obj → obj] unifies that category with [C] on
-   sight — [obj[C^op]] and [obj[C]] being definitionally equal but not
-   syntactically so.  Every later field is then checked at [C], and [fork]
-   fails with its arrows pointing the wrong way.  Naming the constructor
-   and its category, [@Build_Cartesian (C^op) …], fixes the orientation.
-
-   (2) With the orientation fixed, the OPPOSITE hazard appears in
-   [product_obj]'s body: [biproduct_obj] and [biproduct] have their
-   category implicit ([Arguments biproduct_obj {C Z x y} _] and
-   [Arguments biproduct {C Z _} x y]), so writing them unannotated at an
-   expected result type of [obj[C^op]] resolves them AT [C^op], and the
-   [fork] field is then checked against a different family of biproducts
-   from the one [biproduct_merge] was built over.  The two are printed
-   identically — [biproduct_obj (biproduct y z)] either way — so the error
-   message is unreadable.  Spelling [@biproduct_obj C Z] and
-   [@biproduct C Z B] out is what pins the family. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition biproduct_Cocartesian : @Cocartesian C :=
   @Build_Cartesian (C^op)
     (fun x y => @biproduct_obj C Z x y (@biproduct C Z B x y))
@@ -186,11 +168,11 @@ End BiproductCartesian.
 
 (** ** The round trip against Structure/Semiadditive.v *)
 
-(* Structure/Semiadditive.v turns a preadditive category with binary
-   products into one with biproducts.  Feeding it the products this file
-   derives returns the original biproduct object and the original
-   projections on the nose; the injections are rebuilt as forks and are
-   recovered only up to [≈]. *)
+(*
+   本节说明 Cartesian 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section BiproductRoundTrip.
 
 Context {C : Category}.
@@ -213,9 +195,11 @@ Example biproduct_roundtrip_exr (x y : C) :
   bi_exr (@cartesian_biproduct C Z P Cart x y) = bi_exr (biproduct x y) :=
   eq_refl.
 
-(* The injections come back only up to [≈]: the reconstruction defines
-   them as [id △ 0] and [0 △ id], which are the original injections by the
-   four interaction laws and product uniqueness, not by conversion. *)
+(*
+   本节说明 Cartesian 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma biproduct_roundtrip_inl (x y : C) :
   bi_inl (@cartesian_biproduct C Z P Cart x y) ≈ bi_inl (biproduct x y).
 Proof.

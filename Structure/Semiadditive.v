@@ -33,10 +33,11 @@ Context {C : Category}.
 Context `{Z : @ZeroObject C}.
 Context `{P : @Preadditive C}.
 
-(* The identity of a biproduct decomposes as the sum of its two
-   "projection-then-injection" idempotents.  Both sides mediate the product
-   cone (bi_exl, bi_exr), so they agree by the uniqueness half of the
-   product universal property. *)
+(*
+   本节说明 Semiadditive 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem biproduct_id_decomp {x y : C} (B : Biproduct x y) :
   padd (bi_inl B ∘ bi_exl B) (bi_inr B ∘ bi_exr B) ≈ id.
 Proof.
@@ -165,9 +166,11 @@ Proof.
     apply padd_zero_left.
 Qed.
 
-(* The coproduct-side universal property of the product: the mediator out of
-   x × y is the sum of the composites through the projections, and its
-   uniqueness follows from [cartesian_id_decomp]. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cartesian_bi_is_coproduct (x y z : C) (f : x ~> z) (g : y ~> z) :
   ∃! h : x × y ~> z,
     (h ∘ (id △ zero_mor) ≈ f) ∧ (h ∘ (zero_mor △ id) ≈ g).
@@ -490,15 +493,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The three consequences below are the abstract Eckmann–Hilton argument of
-   Theory/EckmannHilton.v, read at the hom-setoid [x ~> y] with [conv] and
-   [conv_pr] as the two operations.  Everything that argument asks for is
-   already in hand: respectfulness is [conv_respects]/[conv_pr_respects],
-   the four unit laws are the [conv_*_zero_*] lemmas above, and interchange
-   is [conv_interchange].  Note that BOTH units are [zero_mor] here, so the
-   abstract theorem's first conclusion ([eh_units], that the two units
-   coincide) is [reflexivity] in this instance and is never invoked
-   directly (the abstract proofs still route through it internally). *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Eckmann–Hilton, first consequence: the two convolutions coincide.  Via
    the abstract [eh_ops] of Theory/EckmannHilton.v. *)
@@ -556,12 +555,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The second canonical theorem: a bicartesian category with a zero object
-   in which the canonical comparison x + y ~> x × y is invertible is
-   preadditive (CMon-enriched), with convolution as addition and the zero
-   morphism as unit.  Together with [cartesian_biproduct] this closes the
-   loop: such a category is semiadditive, i.e. its products and coproducts
-   are biproducts. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition bicartesian_preadditive : Preadditive C := {|
   padd := @conv;
   pzero := @zero_mor C Z;

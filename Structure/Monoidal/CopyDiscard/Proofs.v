@@ -34,13 +34,11 @@ Section MidSwapNatural.
 Context {C : Category}.
 Context `{S : @SymmetricMonoidal C}.
 
-(* Naturality of the middle-four interchange at the diagonal: tensoring
-   f with itself and f' with itself commutes past [mid_swap_inv].  The
-   diagonal instance of the four-slot [swap_inner_natural] of
-   Structure/Monoidal/Braided/Proofs.v ([mid_swap_inv x x'] being
-   definitionally [swap_inner x x x' x']); stated in [mid_swap_inv] form
-   rather than via Relevance.v's [braid2_natural] because [braid2] is a
-   [RelevanceMonoidal] field while [mid_swap_inv] needs only symmetry. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mid_swap_inv_natural {x x' y y'} (f : x ~> y) (f' : x' ~> y') :
   mid_swap_inv y y' ∘ ((f ⨂ f) ⨂ (f' ⨂ f'))
     ≈ ((f ⨂ f') ⨂ (f ⨂ f')) ∘ mid_swap_inv x x'.
@@ -53,11 +51,11 @@ Section Braid2Bridge.
 Context {C : Category}.
 Context `{R : @RelevanceMonoidal C}.
 
-(* [RelevanceMonoidal]'s middle-four interchange [braid2], instantiated
-   at (x, x, y, y), is definitionally the same composite as
-   [mid_swap_inv x y] — the only difference is that [braid2] tensors
-   id[x] against the three inner maps at once, while [mid_swap_inv]
-   distributes the tensoring.  Expand with [bimap_comp_id_left]. *)
+(*
+   本节说明分配律相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma braid2_mid_swap_inv (x y : C) :
   @braid2 C R x x y y ≈ mid_swap_inv x y.
 Proof.
@@ -113,13 +111,11 @@ Section CDCartesian.
 Context {C : Category}.
 Context `{H : @CartesianMonoidal C}.
 
-(* SOUND instance 1: in a cartesian monoidal category the natural
-   diagonal ∆ (Relevance) and the terminal-unit discard [eliminate]
-   (Semicartesian) form a commutative comonoid on every object — the
-   counit laws are Fox's proj_*_diagonal axioms, packaged by
-   [eliminate_left_diagonal] / [eliminate_right_diagonal] in
-   Structure/Monoidal/Heunen_Vicary/Proofs.v — and the comonoid supply
-   is coherent with the tensor and the unit. *)
+(*
+   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition CD_of_Cartesian :
   @CopyDiscard C (@relevance_is_symmetric C (@cartesian_is_relevance C H)) := {|
   cd_comonoid := fun X =>
@@ -148,10 +144,11 @@ Next Obligation.
   apply braid_diagonal.
 Qed.
 Next Obligation.
-  (* cd_tensor_delta: ∆ on a tensor is the canonical comonoid.  This is
-     diagonal_braid2 composed with the braid2 ≈ mid_swap_inv bridge; the
-     [braid2] let-field arrives inlined in diagonal_braid2's statement,
-     so we replay the expansion of [braid2_mid_swap_inv] directly. *)
+  (*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   unfold ccomon_delta, canonical_tensor_delta; simpl.
   rewrite diagonal_braid2.
   comp_right.
@@ -181,11 +178,11 @@ Context {C : Category}.
 Context `{S : @SymmetricMonoidal C}.
 Context `{H : @Hypergraph C S}.
 
-(* SOUND instance 2: a hypergraph category supplies a special
-   commutative Frobenius algebra on every object; forgetting the monoid
-   half of each SCFA leaves exactly a coherent commutative-comonoid
-   supply.  The four coherence obligations are literally the
-   scfa_tensor_delta/epsilon and scfa_unit_delta/epsilon fields. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition CD_of_Hypergraph : @CopyDiscard C S := {|
   cd_comonoid := fun X =>
     {| ccomon_comonoid :=

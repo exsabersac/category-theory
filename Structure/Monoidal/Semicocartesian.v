@@ -43,15 +43,13 @@ End SemicocartesianMonoidal.
 
 Require Import Category.Structure.Initial.
 
-(* The two directions below witness that "semicocartesian monoidal" and "the
-   unit I is initial" are the same condition, packaged as an Initial structure
-   on I and as a SemicocartesianMonoidal structure respectively. Cf. Wikipedia,
+(*
    https://en.wikipedia.org/wiki/Cartesian_monoidal_category : a cocartesian
-   monoidal category has "the monoidal structure given by the coproduct and
-   unit the initial object."
 
-   Semicocartesian monoidal ==> I is an initial object, with generate as the
-   unique arrow and unit_initial as its uniqueness proof. *)
+   本节说明幺半结构、幺半群、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition SemicocartesianMonoidal_Initial `{@Monoidal C}
         `{@SemicocartesianMonoidal C _} : @Initial C := {|
@@ -62,10 +60,11 @@ Program Definition SemicocartesianMonoidal_Initial `{@Monoidal C}
 
 Import EqNotations.
 
-(* Conversely, a monoidal category whose initial object 0 coincides with the
-   unit object I (the hypothesis Heq : 0 = I) is semicocartesian monoidal:
-   transport the unique arrow `zero` along Heq to obtain generate, and
-   transport zero_unique to obtain unit_initial. *)
+(*
+   本节说明幺半结构、幺半群、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Initial_SemicocartesianMonoidal `{M : @Monoidal C}
         `{T : @Initial C} (Heq : @initial_obj C T = @I C M) :

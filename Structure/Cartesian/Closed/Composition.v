@@ -46,9 +46,11 @@ Context `{@Closed C _}.
 Definition internal_compose {a b c : C} : c^b × b^a ~> c^a :=
   curry (eval ∘ second eval ∘ to prod_assoc).
 
-(* [unfork] and [cat] both call [simpl]; without this they would unfold
-   [internal_compose] into its transpose and destroy every rewrite below.
-   Same discipline as Structure/Cartesian/Closed/Natural.v for [ihom]. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Arguments internal_compose : simpl never.
 
 (* The three exponentials, pinned in their [exponent_obj] spelling, so that
@@ -70,9 +72,11 @@ Lemma eval_internal_compose {a b c : C} :
     ≈ eval ∘ second eval ∘ to prod_assoc.
 Proof. rewrite eval_first; apply uncurry_internal_compose_raw. Qed.
 
-(* The workhorse.  For any pair of generalized elements [h] and [k] of the
-   two exponentials, the transpose of the composite is "apply [h] to the
-   result of applying [k]".  Every law below is an instance. *)
+(*
+   本节说明 Composition 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma uncurry_internal_compose {w a b c : C}
       (h : w ~> c^b) (k : w ~> b^a) :
   uncurry (internal_compose ∘ (h △ k))
@@ -84,11 +88,11 @@ Proof.
   unfork.
 Qed.
 
-(* The rewrite rule that strips one [internal_compose] from inside an
-   evaluation: this is [eval_curry] at the transpose, followed by the fork
-   algebra of [prod_assoc].  Associativity, both naturality squares and
-   dinaturality are this rule and its two companions applied a bounded
-   number of times and then [exl_fork]/[exr_fork] to [reflexivity]. *)
+(*
+   本节说明 Composition 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma eval_internal_compose_fork {w a b c : C}
       (g : w ~> c^b × b^a) (k : w ~> a) :
   eval ∘ ((internal_compose ∘ g) △ k)
@@ -250,42 +254,17 @@ Proof.
   reflexivity.
 Qed.
 
-(** ** The two naturality squares, packaged as transformations
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-    The four functors below are built here rather than imported, and the
-    reason is NOT that nothing else would serve.  Two in-tree candidates
-    do: Functor/Bifunctor/Partial.v's [Partial_l] and [Partial_r], applied to Functor/Hom/Internal.v's
-    [InternalHomFunctor C], give functors agreeing with [ExpBase] and
-    [ExpExp] on BOTH actions at [eq_refl] -- object and arrow alike, with
-    no residue, only the whole functor RECORD refused because [Program]
-    rebuilds the law fields (all measured out of tree).  The marginal
-    closure cost is ONE module, 43 to 44: [InternalHomFunctor] is already
-    inside the 43, and only Functor/Bifunctor/Partial.v is new.
-    They are not adopted here only because doing so is a refactor rather
-    than a correction; nothing below depends on the hand-built forms
-    beyond their being these functors.  A THIRD candidate,
-    Structure/Cartesian/Closed/Adjunction.v's [Exp_Functor S], fits
-    worse: read off its source its object action is [ExpBase]'s but its
-    arrow action is [curry (f ∘ eval)] where [ihom id f] is
-    [curry (f ∘ eval ∘ second id)], and requiring that module takes
-    this file's transitive closure from 43 modules to 47 (measured).
-    Neither of the two SOURCE functors has an in-tree counterpart: no
-    declaration elsewhere has an object action of the shape [c^b × b^a],
-    the other products of two exponentials in tree being the isomorphism
-    statements [y^x × z^x] and [x^y × x^z], where the two exponentials
-    share their exponent or their base rather than meeting base to
-    exponent. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* The object and arrow actions are given as ordinary definitions and only
-   then assembled into functor records.  Elaborating them inside the
-   [Program Definition] would not do: [Program] defers the unresolved
-   [Cartesian] instance argument of [product_obj] into an OBLIGATION,
-   which Lib/Foundation.v's [Unset Transparent Obligations] makes opaque,
-   and the resulting [fobj] then converts with nothing -- in particular
-   not with the endpoints of [internal_compose].  This is the hazard
-   Structure/Cartesian/Closed/Natural.v records; it was met again
-   here, and the probe measures its boundary: an inline [exponent_obj]
-   alone reduces, an inline [product_obj] does not. *)
+(*
+   本节说明函子、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition expBase_obj (a c : C) : C := c^a.
 
@@ -409,10 +388,11 @@ Example compose_Transform_a_component (a b c : C) :
 
 (** ** Dinaturality in [b] *)
 
-(* [b] occurs contravariantly on the left of the product and covariantly on
-   the right, so there is no functor of [b] for a natural transformation in
-   [b] to run between.  What holds is the COWEDGE condition: for
-   [f : b1 ~> b2] the two routes out of [c^b2 × b1^a] into [c^a] agree. *)
+(*
+   本节说明自然变换、函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem internal_compose_dinatural {a c b1 b2 : C} (f : b1 ~> b2) :
   @internal_compose a b1 c ∘ split (ihom f id) id
     ≈ @internal_compose a b2 c ∘ split id (ihom id f).
@@ -431,10 +411,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The mixed-variance bifunctor the dinaturality is dinaturality FOR:
-   [ComposeB a c (b1, b2) = c^b1 × b2^a], contravariant in the first slot
-   and covariant in the second.  Object and arrow actions first, per the
-   hazard recorded above. *)
+(*
+   本节说明 Composition 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition composeB_obj (a c : C) (p : C^op ∏ C) : C :=
   c^(opobj (fst p)) × (snd p)^a.
@@ -480,9 +461,11 @@ Definition internal_compose_Wedge (a c : C) :=
 
 (** ** A cartesian closed category is enriched over itself *)
 
-(* The four identifications the enrichment rests on, re-checked here: over
-   [CC_Monoidal] the tensor of morphisms IS [split], the associator IS the
-   cartesian one, and the two unitors ARE the projections. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example assoc_bimap_is_split {x y z w : C} (f : x ~> y) (g : z ~> w) :
   @bimap C C C (@tensor C CC_Monoidal) _ _ _ _ f g = split f g := eq_refl.
 
@@ -512,20 +495,21 @@ End Composition.
 
 (** * Agreement with composition of functions in [Set] *)
 
-(* Mac Lane's remaining clause: the transformation "agrees in Set with
-   composition of functions".  [Sets] is this library's category of
-   setoids, whose exponential [c^b] is the setoid of ≈-respecting maps, so
-   the statement is pointwise on setoid morphisms. *)
+(*
+   本节说明 Composition 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example sets_internal_compose (a b c : Sets)
         (g : b ~{Sets}~> c) (f : a ~{Sets}~> b) (t : a) :
   @internal_compose Sets _ _ a b c (g, f) t = g (f t) := eq_refl.
 
-(* At the level of whole morphisms of [Sets] the identification is [≈] and
-   not Leibniz, and the cause is located rather than guessed: the two
-   UNDERLYING FUNCTIONS are the same term (next [Example]), so what differs
-   is exactly the rebuilt [proper_morphism] certificate.  The strict form is
-   refuted and pinned in Test/ProbeComposition391.v. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example sets_internal_compose_underlying (a b c : Sets)
         (g : b ~{Sets}~> c) (f : a ~{Sets}~> b) :
   (fun t : a => @internal_compose Sets _ _ a b c (g, f) t)

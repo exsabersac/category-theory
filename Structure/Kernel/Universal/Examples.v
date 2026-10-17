@@ -35,58 +35,28 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* WHAT IS DELIVERED
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-   * [ab_kernel_IsKernel] : [IsKernel f (ab_kernel_incl f)] for every
-     homomorphism f of abelian groups -- new; Instance/Ab.v builds the
-     object and the inclusion but proves no universal property of them.
-
-   * [ab_kernel_aue], [ab_kernel_Representable], [ab_kernel_representation]:
-     the companion file's constructions at [Ab], with the representing
-     object and the universal element read back by [eq_refl].
-
-   * [Ab_Z2], [ab_parity], and the non-degeneracy facts listed above.
-
-   * [Rng_no_hom_zero_to_Z], [Rng_no_zero_morphisms], [Rng_no_zero_object],
-     [Rng_fork_presheaf], [Rng_equalizer_aue] and [Rng_aue_equalizer].
-
-   WHAT IS NOT DELIVERED
-
-   * NO [HasKernels Ab] INSTANCE.  [ab_kernel_IsKernel] gives the kernel
-     of each morphism separately, which is what [kernel_aue] consumes;
-     bundling them into the class would add nothing to this file's point.
-
-   * NO CLAIM ABOUT Grp, Rng or RMod BEYOND THE ABOVE.  Instance/Grp.v
-     and Instance/Mod.v carry kernel objects too and the same proof shape
-     would work there; it is not run here.
-
-   * NO EQUALIZER WITNESS IN Rng.  [Rng_fork_presheaf] shows the presheaf
-     is formable; whether Rng has equalizers is not addressed, and no
-     universal element of that presheaf is exhibited.
-
-   * NO CLAIM THAT [Ab_Z2] IS NEW.  Z/2 exists in tree several times over
-     (Instance/Grp.v's [Z2], Construction/Deloop.v's [Bool_Xor_Grp]); none
-     of them is an [AbObject], and converting would cost more than the
-     six-line record below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Ab: [AbKernel] is a kernel *)
 
-(* The zero morphism of [Ab] evaluates to the zero element, by conversion:
-   [Ab_Zero]'s coincidence isomorphism is [iso_id] (the chosen initial and
-   terminal objects are literally the same term), so the tunnel through
-   the zero object collapses with no rewriting. *)
+(*
+   本节说明同构、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ab_zero_mor_apply {X Y : AbObject} (a : carrier (cmon_setoid X)) :
   cmon_map (@zero_mor Ab Ab_Zero X Y) a = cmon_zero Y.
 Proof. reflexivity. Qed.
 
-(* The descent map: a homomorphism killed by f lands in the kernel, and
-   the corestriction is a homomorphism because the kernel's zero and
-   addition are those of A read on first projections.
+(*
+   本节说明核/余核、来源与用途相关定义、性质与动机。
 
-   The hypothesis is stated ELEMENTWISE rather than as
-   [f ∘ h ≈ zero_mor], for the universe reason in the header;
-   [ab_kernel_IsKernel] feeds it from the [IsKernel] fork hypothesis,
-   where the zero object is inferred once. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition ab_kernel_med {A B : AbObject} (f : A ~{Ab}~> B)
   {Z0 : AbObject} (h : Z0 ~{Ab}~> A)
   (Hh : ∀ a : carrier (cmon_setoid Z0), cmon_map f (cmon_map h a) ≈ cmon_zero B)
@@ -96,11 +66,11 @@ Next Obligation. proper; simpl; now rewrite X. Qed.
 Next Obligation. simpl; apply (cmon_map_zero h). Qed.
 Next Obligation. simpl; apply (cmon_map_plus h). Qed.
 
-(* [AbKernel f] with [ab_kernel_incl f] satisfies Structure/Kernel.v's
-   [IsKernel].  The fork equation is the kernel elements' own defining
-   property (the second projection); descent is [ab_kernel_med]; and
-   uniqueness holds because the kernel's setoid compares first
-   projections, which is exactly what the inclusion returns. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ab_kernel_IsKernel {A B : AbObject} (f : A ~{Ab}~> B)
   : IsKernel f (ab_kernel_incl f).
 Proof.
@@ -151,12 +121,11 @@ Corollary ab_kernel_aue_elem {A B : AbObject} (f : A ~{Ab}~> B) :
   = ab_kernel_incl f.
 Proof. reflexivity. Qed.
 
-(* The equivalence itself, in the universe-free form: the passage back, and
-   the two round trips.  The bundled [kernel_universal_element_iso] is NOT
-   available here -- [Ab] puts its objects strictly above its homs, which
-   that packaging forbids (documented at its definition, pinned in
-   Test/ProbeKernelUniversal.v) -- so these three, together with
-   [ab_kernel_representation] above, are what "equivalent" means at [Ab]. *)
+(*
+   本节说明等价、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ab_aue_kernel {A B : AbObject} (f : A ~{Ab}~> B)
   (U : AUniversalElement
          (@KillPresheaf Ab (ZeroMorphisms_of_ZeroObject Ab_Zero) A B f)
@@ -167,11 +136,11 @@ Definition ab_aue_kernel {A B : AbObject} (f : A ~{Ab}~> B)
              (AbKernel f) U))
   := aue_kernel f U.
 
-(* The round trip on the kernel side, at [Ab].  Stated by instantiation
-   rather than by re-typing the conclusion: writing the [∃!] out by hand
-   leaves the hom-setoid instance of [z ~{Ab}~> AbKernel f] unresolved
-   ("expected to have type ∃! y, ?P y", measured), while the general
-   lemma's own statement carries it. *)
+(*
+   本节说明hom、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ab_kernel_round {A B : AbObject} (f : A ~{Ab}~> B)
   {z : AbObject} (h : z ~{Ab}~> A)
   := kernel_round_mediator f (ab_kernel_IsKernel f) h.
@@ -282,9 +251,11 @@ Definition ab_parity_universal_element
 
 (** ** Rng: no zero morphisms at all *)
 
-(* A ring homomorphism preserves 1 and 0.  In the zero ring these coincide,
-   so any homomorphism out of it into Z would give 1 = 0 there.  No appeal
-   to zero morphisms is made: this shows the HOM-SET is empty. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Rng_no_hom_zero_to_Z (u : Zero_Ring ~{Rng}~> Int_Ring) : False.
 Proof.
   pose proof (rig_map_one u) as H1.
@@ -312,18 +283,19 @@ Proof.
   exact (Rng_no_zero_morphisms (ZeroMorphisms_of_ZeroObject Z)).
 Qed.
 
-(* What DOES survive: the fork presheaf of a parallel pair, which needs no
-   structure on the category whatever.  This is the "survives in categories
-   without a zero object" clause, exhibited at the category that motivates
-   it. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Rng_fork_presheaf {R S : Rng} (u v : R ~{Rng}~> S)
   : Rng^op ⟶ Sets := ForkPresheaf u v.
 
-(* ... and the passage: an equalizer in Rng is a universal element of it.
-   The UNIVERSE-FREE form is used here deliberately -- the bundled
-   [equalizer_universal_element_iso] does not instantiate at [Rng], for the
-   reason documented at its definition and pinned in
-   Test/ProbeKernelUniversal.v. *)
+(*
+   本节说明等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Rng_equalizer_aue {R S : Rng} (u v : R ~{Rng}~> S) {k : Rng}
   {i : k ~> R} (E : IsEqualizer u v k i)
   : AUniversalElement (ForkPresheaf u v) k

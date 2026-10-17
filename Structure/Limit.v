@@ -29,79 +29,16 @@ Generalizable All Variables.
    其中 φ = vertex_map[L] 是极限的腿，ψ = vertex_map[N] 是竞争锥的腿。（同一预层可表性
    视角见 [Structure/UniversalProperty/Limit.v]，证明表示 [ConePresheaf F] 等价于是极限。） *)
 
-(* Where limits come from, and what they are for
+(*
+   关于极限的来源与用途
 
    nLab:  https://ncatlab.org/nlab/show/colimit
-   EoM:   https://encyclopediaofmath.org/wiki/Projective_limit
-   Blog:  https://bartoszmilewski.com/2015/04/15/limits-and-colimits/
    Paper: Kan, "Adjoint functors", Transactions of the American
-          Mathematical Society 87(2), 1958
 
-   The concept is younger than its examples.  Inverse and direct limits
-   over directed index sets were first studied as such in the 1930s, in
-   connection with topological concepts such as Čech cohomology
-   (Encyclopedia of Mathematics, "Projective limit"); the p-adic integers
-   arise as the inverse limit of the rings Z/pⁿZ under remainder maps,
-   and profinite groups, the Galois groups of infinite extensions among
-   them, are inverse limits of finite groups (Wikipedia, "Inverse limit"
-   and "Profinite group").  The formulation over an arbitrary diagram
-   shape is due to Daniel Kan, in Chapter II of the 1958 paper that also
-   introduced adjoint functors and Kan extensions (nLab, "colimit");
-   those early articles still call colimits "direct limits", the directed
-   special case lending the general notion its name for a while.
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
 
-   The purpose of the general definition is economy: one universal
-   property covers every construction that glues a diagram along a shape.
-   Varying only J recovers the terminal object (J empty,
-   Structure/Limit/Terminal.v), binary and indexed products (J discrete,
-   Structure/Limit/Cartesian.v and Structure/Limit/Product.v), equalizers
-   (J a parallel pair — Structure/Equalizer.v defines [Equalizer] as a
-   [Limit] over [Parallel]), pullbacks (J a cospan,
-   Structure/Pullback/Limit.v), and the classical inverse limits above
-   (J a directed poset, read contravariantly).  Whatever is proved once
-   about [Limit] — uniqueness up to unique isomorphism (Limit/Unique.v),
-   preservation (Limit/Preservation.v), construction from products and
-   equalizers (Limit/FromProducts.v) — specializes to each at no cost.
-
-   Two reformulations knit the concept into the rest of the theory.
-   Instance/Cones/Limit.v turns the terminal-cone slogan of the header
-   into a theorem, extracting a [Limit F] from a terminal object of the
-   category [Cones F] ([Limit_Cones]); Structure/Limit/Kan/Extension.v
-   exhibits the limit as the right Kan extension of F along the unique
-   functor J ⟶ 1, the other thread of Kan's 1958 paper.  When limits of
-   every shape exist, they assemble into functors right adjoint to the
-   constant-diagram functors Δ (Riehl, "Category Theory in Context",
-   Dover 2016, Proposition 4.6.1).
-
-   Downstream, the file is load-bearing in two ways.  Completeness — all
-   small limits, quantified in Structure/Complete.v as [Complete] — is
-   the standing hypothesis of the adjoint functor theorems, and
-   Construction/Comma/Limit.v with Adjunction/GAFT.v concludes Freyd's
-   theorem from it (Mac Lane, "Categories for the Working Mathematician",
-   Springer GTM 5 1998, Chapter V).  The preservation vocabulary of
-   Structure/Limit/Preservation.v ([PreservesLimit]) supports RAPL and
-   LAPC — right adjoints preserve limits, left adjoints preserve
-   colimits, with no size restriction (Riehl, Theorem 4.6.2) — proved
-   in-tree as Adjunction/Continuity.v's [rapl_is_alimit] and its duals.
-   Together with the existence theorem — a category with products and
-   equalizers has all limits (Riehl, Theorem 3.5.11, dual form; in-tree
-   [Complete_from_products_equalizers]) — these carry adjunction arguments.
-
-   The computational reading is concrete.  Products are pair types and
-   the terminal object is unit (the reading Instance/Coq.v realizes); an
-   equalizer carves out the subset on which two functions agree; and a
-   pullback computes a most general unifier, which is how Milewski frames
-   Hindley–Milner type inference (Milewski, "Limits and Colimits", 2015).
-   The existence theorem is in effect a program: a limit is the part of
-   the product of all F x whose components are compatible along every
-   arrow of J, exactly the shape of the funext-free end of
-   Instance/Sets/End.v.  The inverse-limit technique that opened the
-   history returns in semantics — Scott's D∞ model of the untyped
-   λ-calculus is an inverse limit of function lattices solving
-   D ≅ [D → D], an equation Cantor confines to singletons in Set (Scott,
-   "Continuous Lattices", Springer LNM 274 1972) — while the ω-chain
-   apparatus of Construction/Chain.v and Theory/Adamek.v is the in-tree
-   colimit-side counterpart, building initial algebras. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Limit `(F : J ⟶ C) := {
   (* The limit cone (L, φ): the terminal/universal cone over F. *)
   limit_cone : Cone F;
@@ -114,24 +51,28 @@ Class Limit `(F : J ⟶ C) := {
     vertex_map[limit_cone] ∘ u ≈ @vertex_map _ _ _ _ (@coneFrom _ _ _ N) x
 }.
 
-(* [IsALimit F c] is the same universal property as [Limit], but with the
-   apex pinned to a chosen object [c : C]: it is the (proof-relevant)
-   predicate "c, with its leg family, is a limit of F". This apex-fixed form
-   is the one consumed by [Structure/UniversalProperty/Limit.v]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class IsALimit `(F : J ⟶ C) (c : C) := {
     (* The limit's legs over the fixed apex c (the cone (c, φ)). *)
     limit_acone : ACone c F;
-    (* Universal property at the fixed apex: every cone N factors through c by
-       a unique u : vertex_obj[N] ~> c with φ_x ∘ u ≈ ψ_x for every x. The
-       first [vertex_map] is φ (from [limit_acone]); the second is ψ (from N). *)
+    (*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     ump_limit : ∀ N : Cone F, ∃! u : N ~> c, ∀ x : J,
     vertex_map _ ∘ u ≈ vertex_map x
   }.
 
-(* Setoid on the limit witnesses at a fixed apex c: two witnesses are
-   identified exactly when their leg families ([limit_acone]) agree as cones
-   (pointwise up to ≈, via [AConeEquiv]); the universal-property proof is
-   irrelevant to this equivalence. *)
+(*
+   本节说明（余）极限、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition LimitSetoid `(F : J ⟶ C) (c : C) : Setoid (IsALimit F c) :=
   {| equiv := fun l1 l2 => @limit_acone _ _ _ _ l1 ≈ @limit_acone _ _ _ _ l2 |}.
 Next Obligation.

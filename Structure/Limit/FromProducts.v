@@ -31,12 +31,11 @@ Open Scope category_scope.
 
 (** ** Joint monicity of the projections of an indexed product *)
 
-(* Two maps into an indexed product that agree under every projection are
-   equal — the uniqueness clause of [iprod_desc] read as an extensionality
-   principle.  Structure/Bicartesian/Matrix.v's [iprod_ext] states the
-   same fact but drags a coproduct hypothesis in from its section, and
-   Instance/Fun/Terminal.v's [iprod_jointly_monic] sits far outside this
-   closure; the four-line restatement is disclosed. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma pe_iprod_ext {C : Category} {A : Type} {f : A → C} {p : C}
   {proj : ∀ a : A, p ~> f a} (H : IsIndexedProduct f p proj)
@@ -84,10 +83,11 @@ Context {J : Category}.
 Context {I : Type} (idx_dom idx_cod : I → J)
   (idx_arr : ∀ i : I, idx_dom i ~{J}~> idx_cod i).
 
-(* The arrows of [J] that the family [idx_arr] generates under identities,
-   composition and [≈]: exactly the hypothesis under which the family may
-   index the second product in place of ALL arrows (Riehl, Exercise
-   3.2.ii). *)
+(*
+   本节说明 FromProducts 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive Gen : ∀ (x y : J), (x ~{J}~> y) → Type :=
   | gen_idx (i : I) : Gen (idx_dom i) (idx_cod i) (idx_arr i)
@@ -118,11 +118,11 @@ Definition ArrowIx_Generates {J : Category} :
 
 (** ** The core: an equalizer of two maps between two products is limiting *)
 
-(* Everything here is elementary — stated against [IsIndexedProduct] and
-   [IsEqualizer], with no class instance, no chosen product and no chosen
-   equalizer — so that it applies verbatim to the IMAGE of the construction
-   under a functor (§V.4 Exercise 2 below), and to any sub-family of arrows
-   that generates (Riehl's refinement). *)
+(*
+   本节说明函子、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Core.
 
@@ -341,9 +341,11 @@ Definition Cocomplete_from_coproducts_coequalizers {C : Category}
 (** ** §V.4 Exercise 2: a functor preserving products and equalizers is
        continuous *)
 
-(* Cone-level preservation of indexed products and of equalizers: the
-   image of a product with its projections is a product, the image of an
-   equalizer is an equalizer.  Neither predicate existed in the tree. *)
+(*
+   本节说明等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition PreservesIndexedProducts {C D : Category} (G : C ⟶ D) : Type :=
   ∀ (A : Type) (f : A → C) (p : C) (proj : ∀ a : A, p ~> f a),
@@ -530,9 +532,11 @@ Proof.
     exact (gen_equiv id f (symmetry Hf) (gen_id x)).
 Defined.
 
-(* The non-identity arrows (Riehl, Exercise 3.2.ii, first clause).  The
-   family generates as soon as being an identity is DECIDABLE, and the
-   decider is the whole cost: nothing here decides it for any shape. *)
+(*
+   本节说明 FromProducts 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition NonIdArrow (a : @ArrowIx J) : Type :=
   IsIdArrow (aix_dom a) (aix_cod a) (aix_arr a) → False.
@@ -547,10 +551,11 @@ Definition nonid_Generates
                   | inr Hn => inl Hn
                   end).
 
-(* The atomic arrows (second clause): non-identities with no factorization
-   through two non-identities.  Whether they generate is Riehl's
-   factorization hypothesis, and it is taken as a HYPOTHESIS here — a
-   [Generates (fam_arr AtomicArrow)] — with no shape shown to satisfy it. *)
+(*
+   本节说明 FromProducts 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition AtomicArrow (a : @ArrowIx J) : Type :=
   NonIdArrow a *

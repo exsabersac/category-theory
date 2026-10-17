@@ -22,10 +22,11 @@ Section CartesianMonoidal.
 
 Context `{@CartesianMonoidal C}.
 
-(* The right-handed Fox composite, generalized along f: discard the left copy,
-   apply f to the right copy, then project with the left unitor.  Since the
-   discarded factor is killed by `eliminate`, the result is just f.  Taking
-   f = id recovers proj_right ∘ ∆ ≈ id (the comonoid counit law on the right). *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary unit_left_eliminate {x y} (f : x ~> y) :
   unit_left ∘ eliminate ⨂ f ∘ ∆x ≈ f.
 Proof.
@@ -41,9 +42,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The left-handed Fox composite, dual to unit_left_eliminate: apply f to the
-   left copy, discard the right copy, then project with the right unitor.  With
-   f = id this is proj_left ∘ ∆ ≈ id (the comonoid counit law on the left). *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary unit_right_eliminate {x y} (f : x ~> y) :
   unit_right ∘ f ⨂ eliminate ∘ ∆x ≈ f.
 Proof.
@@ -83,9 +86,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* An associator-coherence step: copying the pair x ⨂ y and projecting the left
-   factor of the first copy regroups (via the associator) to copying x alone.
-   This is one of the two intermediate facts feeding proj_left_right_diagonal. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma proj_left_id_diagonal {x y} :
   proj_left ⨂ id ∘ ∆(x ⨂ y) ≈ tensor_assoc ∘ ∆x ⨂ id.
 Proof.
@@ -122,9 +127,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The companion associator-coherence step for the right projection: copying
-   x ⨂ y and projecting the right factor of the first copy regroups, through a
-   braiding, to copying y.  Feeds proj_right_left_diagonal. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma proj_right_id_diagonal {x y} :
   proj_right ⨂ id ∘ ∆(x ⨂ y)
     ≈ tensor_assoc ∘ braid ⨂ id ∘ tensor_assoc⁻¹ ∘ id[x] ⨂ ∆y.
@@ -203,9 +210,11 @@ Proof.
   normal; reflexivity.
 Qed.
 
-(* Copy x ⨂ y, then keep the left factor of the first copy and the right factor
-   of the second: the pairing ⟨π₁, π₂⟩ reassembles the original pair, so this is
-   the identity.  This is the fork/projection round-trip law for the product. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary proj_left_right_diagonal {x y} :
   proj_left ⨂ proj_right ∘ ∆(x ⨂ y) ≈ id[x ⨂ y].
 Proof.
@@ -230,9 +239,11 @@ Qed.
 
 #[local] Obligation Tactic := intros; simplify; simpl in *; intros; normal.
 
-(* The diagonal is monic: it has a left inverse (proj_left ∘ ∆ ≈ id via
-   unit_right_eliminate), so it is a split mono, hence monic.  The obligation
-   cancels ∆ from ∆ ∘ g1 ≈ ∆ ∘ g2 using naturality of the diagonal. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Instance diagonal_monic {x} :
   Monic ∆x.
 Next Obligation.

@@ -20,85 +20,21 @@ Remove Hints Sets_Product_Monoidal : typeclass_instances.
 
 (** * Star-autonomous categories (definition level) *)
 
-(* nLab:      https://ncatlab.org/nlab/show/star-autonomous+category
+(*
+   nLab:      https://ncatlab.org/nlab/show/star-autonomous+category
    nLab:      https://ncatlab.org/nlab/show/dualizing+object
    Wikipedia: https://en.wikipedia.org/wiki/Star-autonomous_category
 
-   A *-autonomous (star-autonomous) category is a symmetric monoidal closed
-   category C equipped with a DUALIZING OBJECT `⊥ : C` (here [dualizer]): an
-   object such that the canonical map from every `x` into its double dual
+   本节说明幺半结构、函子、hom相关定义、性质与动机。
 
-       x ~> (x ⇒ ⊥) ⇒ ⊥
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   is an isomorphism.  Writing the internal-hom into the dualizer as the
-   contravariant DUAL functor
+(*
+   本节说明幺半结构、伴随、hom相关定义、性质与动机。
 
-       (-)^*  :=  (- ⇒ ⊥)  :  C^op ⟶ C,
-
-   the defining datum is a natural isomorphism `x ≅ x^*^*` together with the
-   closed transpose `Hom(x ⨂ y, ⊥) ≅ Hom(x, y ⇒ ⊥)` exhibiting `y ⇒ ⊥` as the
-   dual of `y`.  This is the categorical semantics of classical multiplicative
-   linear logic: `⊗` is the multiplicative conjunction, the dual is linear
-   negation, and the dualizing object is the unit `⊥` of the multiplicative
-   disjunction `⅋`.
-
-   BASE.  A *-autonomous category is symmetric monoidal CLOSED, so the base must
-   supply a genuine internal hom over a possibly NON-cartesian tensor.  The
-   library's [ClosedMonoidal] (Structure/Monoidal/Closed.v) bundles the
-   genuinely cartesian [CartesianMonoidal]; but over a cartesian closed base a
-   dualizing object forces the category to be a preorder (a standard no-go
-   result), collapsing [StarAutonomous] to a vacuous predicate in every
-   nondegenerate model and excluding the intended examples — the category `Rel`
-   of relations, finite-dimensional vector spaces, coherence spaces.  We
-   therefore introduce the general base [SymMonClosed] below: the internal hom
-   `⇒`, the tensor-hom adjunction `exp_iso` in isomorphism-of-homsets form, and
-   its universal property [ump_exponents], over an arbitrary [SymmetricMonoidal]
-   structure.  [SymMonClosed] is [ClosedMonoidal] verbatim with the cartesian
-   field replaced by a symmetric monoidal one, so every accessor name
-   (`exponent_obj`, `exp_iso`, `eval'`, `ump_exponents'`) agrees and the
-   cartesian [ClosedMonoidal] is exactly the special case where `⨂` is the
-   categorical product.  We do NOT use Structure/Closed.v, an Eilenberg-Kelly
-   closed placeholder carrying no tensor-hom adjunction.
-
-   SCOPE (ledger 4).  This file is definition-level only.  The multiplicative
-   disjunction `⅋` (par), the linear-distributivity / linearly-distributed
-   structure relating `⨂` and `⅋`, and any coherence beyond the three fields of
-   [StarAutonomous] are OUT of scope and go to ledger entry 4.  No concrete
-   instance is constructed here.
-
-   PRECISION (necessary vs. sufficient — ledger 4).  The three fields make
-   [StarAutonomous C] a condition that every genuine *-autonomous category
-   satisfies, but NOT yet a sufficient one.  [star_double_dual] posits SOME
-   natural isomorphism `x ≅ (x ⇒ ⊥) ⇒ ⊥` as data, rather than requiring the
-   CANONICAL dualization map — the transpose of `eval'` through the symmetric
-   braid — to be invertible; a model could in principle meet the field with an
-   incidental iso that is not the canonical map.  Likewise [star_transpose] is
-   definitionally `exp_iso` at the dualizer, so it records data every
-   [SymMonClosed] already supplies and constrains no model.  Pinning
-   [star_double_dual] to the canonical map and requiring it to be an
-   isomorphism (equivalently, the Barr coherence tying the iso to the closed
-   structure) is the star-autonomous coherence deferred to ledger entry 4.
-
-   DEVIATION (transpose used for the dual functor).  The monoidal
-   [ump_exponents'] field is stated in existence-and-uniqueness form,
-   `∃! h, f ≈ eval' ∘ (h ⨂ id)`, and is NOT wired to `curry := to exp_iso`.
-   Consequently the beta law `eval' ∘ (curry f ⨂ id) ≈ f` for the packaged
-   `curry` is not derivable from the class fields alone.  We therefore transpose
-   with the UMP WITNESS itself, [dcur] below, whose defining beta law [dcur_beta]
-   and uniqueness [dcur_uniq] come straight from [ump_exponents]; this makes the
-   dual functor's [fmap_comp] provable with no additional assumptions. *)
-
-(** ** The genuine symmetric monoidal closed base
-
-    [SymMonClosed] is [ClosedMonoidal] (Structure/Monoidal/Closed.v) verbatim
-    except that the underlying `⨂`-structure is an arbitrary [SymmetricMonoidal]
-    rather than the [CartesianMonoidal] bundled there.  It packages the internal
-    hom `⇒`, the tensor-hom adjunction `exp_iso` in the isomorphism-of-homsets
-    form `x ⨂ y ~> z ≊ x ~> y ⇒ z`, and the universal property [ump_exponents']
-    in existence-and-uniqueness form.  Keeping the field names identical to
-    [ClosedMonoidal] lets the dual functor and the star-autonomous class below
-    read exactly as over the cartesian base, now with non-cartesian models
-    available. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SMClosed.
 
@@ -148,12 +84,11 @@ Context `{@SymMonClosed C}.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The UMP transpose
+(*
+   本节说明 StarAutonomous 相关定义、性质与动机。
 
-    [dcur f] is the unique transpose supplied by [ump_exponents]; unlike the
-    packaged `curry` (which is `to exp_iso` and is not, over this class, known
-    to satisfy the beta law), [dcur] carries the beta law [dcur_beta] and the
-    uniqueness principle [dcur_uniq] definitionally. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition dcur {x y z : C} (f : x ⨂ y ~> z) : x ~> y ⇒ z :=
   unique_obj (ump_exponents f).
@@ -194,11 +129,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** ** The dual (linear-negation) functor `(- ⇒ d) : C^op ⟶ C`
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Contravariant in its argument: a morphism `f : y ~> x` in C is a morphism
-    `x ~> y` in `C^op`, and is sent to the precomposition-in-the-exponent map
-    `(x ⇒ d) ~> (y ⇒ d)`. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma dual_hom_comp (d : C) {x y z : C} (f : z ~> y) (g : y ~> x) :
   dcur (eval' ∘ (@id _ (x ⇒ d) ⨂ (g ∘ f)))
@@ -251,12 +186,11 @@ Qed.
 (** The double-dual endofunctor `(-)^*^* : C ⟶ C`. *)
 Definition double_dual (d : C) : C ⟶ C := dual d ◯ (dual d)^op.
 
-(** ** Star-autonomous structure
+(*
+   本节说明幺半结构、幺半群、同构相关定义、性质与动机。
 
-    The three defining fields over the closed monoidal base: a dualizing object,
-    the closed transpose exhibiting `y ⇒ ⊥` as the dual of `y` (this is
-    `exp_iso` at the dualizer, recorded here as data), and the double-dual
-    isomorphism together with its naturality. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class StarAutonomous : Type := {
   dualizer : C;

@@ -25,14 +25,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Packaging a pointwise family of isomorphisms as a natural isomorphism
+(*
+   本节说明函子、同构相关定义、性质与动机。
 
-    Each of the four laws below is already available as a family of pointwise
-    isomorphisms; what has to be added is one naturality square.  The two
-    lemmas here move a square between the [to] and the [from] orientation (so
-    that whichever leg is easier to compute with may be the one proved), and
-    [NaturalIso_of_pointwise] assembles the family and the square into an
-    isomorphism of the functor category, with the components UNCHANGED. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section PointwiseNatural.
 
@@ -73,12 +70,11 @@ Program Definition NaturalIso_of_pointwise (comp : ∀ p, F p ≅ G p)
   to   := {| transform := fun p => to (comp p) |};
   from := {| transform := fun p => from (comp p) |}
 |}.
-(* The obligations are the naturality square of each leg in both
-   orientations, together with whichever round trips the ambient obligation
-   tactic has not already discharged.  [Program] neither fixes their order nor
-   guarantees how many survive, so each is closed by one alternation: the
-   square supplied, its flip, or invertibility of the component (the round
-   trips arrive with the identity of [G] still written [fmap[G] id]). *)
+(*
+   本节说明 Natural 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac natiso_obligation :=
   intros;
   try rewrite fmap_id;
@@ -103,14 +99,11 @@ Context `{@Closed C _}.
 
 (** ** The internal-hom action, and its functoriality *)
 
-(* [ihom f h : c^a ~> d^b] for f : b ~> a and h : c ~> d precomposes by f in
-   the exponent and postcomposes by h in the base.  This is the [fmap] of
-   Functor/Hom/Internal.v's [InternalHomFunctor] with the C^op arrow spelled
-   as the underlying C arrow, so that no [op] re-reading occurs below -- an
-   identification that holds at Leibniz [eq_refl], machine-checked after the
-   laws ([ihom_is_InternalHomFunctor_fmap]).  The three lemmas that follow
-   therefore re-prove that functor's three obligations in the [op]-free
-   spelling rather than shadowing something weaker. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ihom {a b c d : C} (f : b ~> a) (h : c ~> d) : c^a ~> d^b :=
   curry (h ∘ eval ∘ second f).
 
@@ -164,15 +157,11 @@ Proof. unfold first, split; cat. Qed.
 Lemma second_as_split {x y z : C} (f : x ~> y) : second (z:=z) f ≈ split id f.
 Proof. unfold second, split; cat. Qed.
 
-(** ** Naturality of the associator
+(*
+   本节说明同构、笛卡尔相关定义、性质与动机。
 
-    Structure/Cartesian.v states the associator as a pointwise isomorphism
-    only, with no naturality; the two general squares are supplied here for
-    reuse.  The squares of Law 1 do not consume them directly -- their middle
-    factor is an identity, and rewriting [first]/[second] into [split] form
-    costs more than proving the two specialised shapes below outright -- so
-    what the proofs actually use is [prod_assoc_second_first],
-    [prod_assoc_first_first] and [prod_assoc_from_first]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma prod_assoc_to_natural {x y z x' y' z' : C}
       (f : x ~> x') (g : y ~> y') (h : z ~> z') :
@@ -216,24 +205,19 @@ Proof.
   now rewrite comp_assoc.
 Qed.
 
-(** ** Reading a contravariant slot back in C
+(*
+   本节说明hom、笛卡尔相关定义、性质与动机。
 
-    [C^op] has the objects and the hom-sets of [C] (Construction/Opposite.v),
-    so both maps below are the identity.  They are nevertheless written out:
-    without them the elaborator sees a slot of the domain typed at [C^op] and
-    goes looking for a [@Cartesian (C^op)] -- that is, a [Cocartesian C] --
-    when resolving [×] or [split].  Applying [opobj]/[oparr] pins the ambient
-    category to [C], and simultaneously records the variance in the source
-    text: [oparr] reverses the arrow. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition opobj (a : C^op) : C := a.
 Definition oparr {a b : C^op} (f : a ~{C^op}~> b) : opobj b ~{C}~> opobj a := f.
 
-(** ** Law 1: z^(x × y) ≅ (z^y)^x, natural in x, y and z
+(*
+   本节说明 Natural 相关定义、性质与动机。
 
-    Domain ((C^op ∏ C^op) ∏ C).  The object ((x, y), z) goes to z^(x × y) on
-    the left and to (z^y)^x on the right.  A morphism ((f, g), h) out of it is
-    a pair of C-arrows f : x' ~> x and g : y' ~> y -- the two contravariant
-    slots, read in C^op -- together with h : z ~> z'. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The [to] and [from] legs of [exp_prod_l], named so that the calculations
    below never depend on how [Program] elaborated the instance; both hold by
@@ -246,13 +230,11 @@ Lemma exp_prod_l_from_unfold {x y z : C} :
   from (@exp_prod_l C _ _ x y z) ≈ curry (uncurry eval ∘ from prod_assoc).
 Proof. reflexivity. Qed.
 
-(* The object and arrow actions are given as ordinary definitions and only
-   then assembled into a functor record.  Elaborating them inside the
-   [Program Definition] would not do: [Program] defers an unresolved instance
-   argument of [product_obj] into an OBLIGATION, which
-   Lib/Foundation.v's [Unset Transparent Obligations] makes opaque, and the
-   resulting [fobj] then converts with nothing -- in particular not with the
-   endpoints of [exp_prod_l]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition expProdL_lhs (p : (C^op ∏ C^op) ∏ C) : C :=
   (snd p)^(opobj (fst (fst p)) × opobj (snd (fst p))).
 
@@ -364,20 +346,11 @@ Proof.
   now rewrite split_id in HA.
 Qed.
 
-(** ** The transpose triangle: the internal law is carried by [exp_iso]
+(*
+   本节说明伴随、同构、笛卡尔相关定义、性质与动机。
 
-    [exp_iso : x × y ~> z ≊ x ~> z^y] (Structure/Cartesian/Closed.v) is the
-    EXTERNAL currying bijection of the product-exponential adjunction; [curry]
-    and [uncurry] are its two legs.  The two statements below say that
-    composing with the internal isomorphism [exp_prod_l] computes as a
-    composite of [exp_iso] transposes taken through the associator: to
-    transpose f : w ~> z^(x × y) across [to exp_prod_l], untranspose it once,
-    reassociate, and transpose twice back.  They hold for EVERY generalized
-    element f, not merely for the identity, which is what makes them a
-    statement about the two bijections rather than about one value.
-
-    [prod_assoc_from_first] is the associator naturality the second statement
-    needs; the [to] orientation is [prod_assoc_first_first] above. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma prod_assoc_from_first {a b x y : C} (k : a ~> b) :
   from prod_assoc ∘ first (z:=x × y) k
     ≈ first (z:=y) (first (z:=x) k) ∘ from prod_assoc.
@@ -407,11 +380,11 @@ Proof.
   now rewrite <- uncurry_comp, eval_first.
 Qed.
 
-(** ** Law 2: (y × z)^x ≅ y^x × z^x, natural in x, y and z
+(*
+   本节说明 Natural 相关定义、性质与动机。
 
-    Domain (C^op ∏ (C ∏ C)): the object (x, (y, z)) goes to (y × z)^x on the
-    left and to y^x × z^x on the right.  Only the first slot is
-    contravariant. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma exp_prod_r_to_unfold {x y z : C} :
   to (@exp_prod_r C _ _ x y z) ≈ curry (exl ∘ eval) △ curry (exr ∘ eval).
@@ -628,11 +601,11 @@ Lemma prod_coprod_r_natural_component_from (p : C ∏ (C ∏ C)) :
     ≈ from (@prod_coprod_r C _ _ _ (fst p) (fst (snd p)) (snd (snd p))).
 Proof. reflexivity. Qed.
 
-(** ** Law 4: x^(y + z) ≅ x^y × x^z, natural in x, y and z
+(*
+   本节说明 Natural 相关定义、性质与动机。
 
-    Domain ((C^op ∏ C^op) ∏ C), as for Law 1, but now the two contravariant
-    slots are the summands of the exponent: ((y, z), x) goes to x^(y + z) on
-    the left and to x^y × x^z on the right. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma exp_coprod_to_unfold {x y z : C} :
   to (@exp_coprod C _ _ _ x y z)

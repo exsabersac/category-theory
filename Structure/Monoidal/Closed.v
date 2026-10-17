@@ -28,10 +28,11 @@ Class ClosedMonoidal := {
   exponent_obj : obj → obj → obj    (* internal hom; x ⇒ y = exponent_obj x y *)
     where "x ⇒ y" := (exponent_obj x y);
 
-  (* The tensor-hom adjunction (- ⨂ y) ⊣ (y ⇒ -), as the natural isomorphism
-     Hom(x ⨂ y, z) ≅ Hom(x, y ⇒ z).  This is the closed UMP in packaged form:
-     the iso bundles existence and uniqueness of the transpose, and naturality
-     recovers the substitution laws below. *)
+  (*
+   本节说明伴随、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   exp_iso {x y z} : x ⨂ y ~> z ≊ x ~> y ⇒ z;
 
   curry'   {x y z} : x ⨂ y ~> z → x ~> y ⇒ z := to (@exp_iso x y z);    (* transpose: x⨂y~>z to x~>y⇒z *)

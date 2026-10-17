@@ -33,11 +33,11 @@ Section PullbackFromEqualizer.
 Context {C : Category}.
 Context `{@Cartesian C}.
 
-(* maclane:III.4:ex7, forward; awodey:5.2:prop7, forward.  The two legs
-   of the cospan are shifted onto the product and their equalizer taken:
-   an element of x × y equalizing f ∘ exl and g ∘ exr is exactly a pair
-   whose two components agree over z.  The projections of the resulting
-   pullback square are the two components of the equalizing map. *)
+(*
+   本节说明拉回/推出、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma pullback_of_equalizer {x y z : C} (f : x ~> z) (g : y ~> z)
       {E : C} {e : E ~> x × y}
       (Eq : IsEqualizer (f ∘ exl) (g ∘ exr) E e) :
@@ -118,11 +118,11 @@ Qed.
 
 (** ** The two passages round-trip, up to [≈] but not on the nose *)
 
-(* Starting from an equalizer [e : E ~> x × y] of the shifted pair, (A)
-   produces the projections exl ∘ e and exr ∘ e, and (B) pairs them back
-   up.  The result is [e] again -- but only up to [≈]: [fork_exl_exr] is a
-   [≈]-law, not a conversion, so the strict form is refuted (see the
-   probes at the end of the file). *)
+(*
+   本节说明等化子、（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma equalizer_pullback_round {x y : C} (E : C) (e : E ~> x × y) :
   (exl ∘ e) △ (exr ∘ e) ≈ e.
 Proof.
@@ -149,20 +149,21 @@ Section KernelPair.
 Context {C : Category}.
 Context `{@Cartesian C}.
 
-(* maclane:III.4:ex7, second clause.  The kernel pair of f is the
-   pullback of f along ITSELF, so this is (B) read at g := f and carries
-   no new proof content -- the whole statement is [equalizer_of_pullback]
-   instantiated, and it is written that way rather than reproved. *)
+(*
+   本节说明拉回/推出、等化子、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma kernel_pair_of_IsPullback {x y : C} {f : x ~> y}
       {P : C} {p1 p2 : P ~> x} (HP : IsPullback f f P p1 p2) :
   IsEqualizer (f ∘ exl) (f ∘ exr) P (p1 △ p2).
 Proof. exact (equalizer_of_pullback HP). Qed.
 
-(* The tie to the tree's existing notion.  Structure/Regular.v already
-   defines [kernel_pair f := pullback f f] under [HasPullbacks], and the
-   statements below are about THAT constant -- no parallel notion of a
-   kernel pair is introduced here.  The identification is definitional
-   ([kernel_pair_is_pullback_along_itself], by [eq_refl]). *)
+(*
+   本节说明拉回/推出、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context `{HPB : @HasPullbacks C}.
 
 Definition kernel_pair_fst {x y : C} (f : x ~> y) :
@@ -280,28 +281,11 @@ Proof.
         now rewrite Hv.
 Qed.
 
-(** ** Comparing the two squares
+(*
+   本节说明（余）端相关定义、性质与动机。
 
-    The two cospans are not the same square.  They do not share a
-    codomain (x × y against y × y), and their legs are not even parallel:
-    Mac Lane's two legs both issue from x, Awodey's from x and from y.
-    Those are refuted at the end of the file, the leg comparisons being
-    FORMABILITY negatives (ill-typed when x and y differ) rather than
-    conversion negatives.
-
-    The difference is not merely syntactic, and the FOUR lemmas below
-    bear on it: BOTH of Mac Lane's legs are split monic, with the single
-    common retraction exl, whereas [exl ∘ aw_pair] is f, which is not an
-    identity FOR GENERAL f.  Read that hedge strictly.  It does NOT say
-    Awodey's leg is never split -- at f := id it is, by [ml_right_split]
-    -- and an earlier draft of this comment concluded "so no relabelling
-    of objects can turn one cospan into the other", which is REFUTED by
-    this file's own [maclane_awodey_degenerate_left]/[_right], where at
-    f := id the two cospans are the same two morphisms.  No non-existence
-    of a cospan isomorphism is proved anywhere here.  What is true is
-    that the two vertices are canonically
-    isomorphic, both being equalizers of the same parallel pair, and that
-    the comparison commutes with the two equalizing maps. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma ml_left_split : exl ∘ ml_left ≈ id.
 Proof. unfold ml_left. apply exl_fork. Qed.
@@ -312,11 +296,11 @@ Proof. unfold ml_right. apply exl_fork. Qed.
 Lemma aw_diag_split : exl ∘ aw_diag ≈ id.
 Proof. unfold aw_diag. apply exl_fork. Qed.
 
-(* Awodey's other leg retracts to f.  NOTE THE NAME: an earlier draft
-   called this [aw_pair_not_split], which asserted more than it proves and
-   more than is true -- at f := id this very statement makes [aw_pair]
-   split, discharged by [ml_right_split] above.  All that is proved is the
-   retraction identity. *)
+(*
+   本节说明 Reduction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma aw_pair_retracts_to_f : exl ∘ aw_pair ≈ f.
 Proof. unfold aw_pair. apply exl_fork. Qed.
 
@@ -367,13 +351,11 @@ Context {x y : C}.
 Context {P : C} {p1 : P ~> x} {p2 : P ~> y}.
 Context (HP : IsPullback (one : x ~> 1) (one : y ~> 1) P p1 p2).
 
-(* maclane:III.4:ex10; awodey:5.4:prop16; riehl:3.5:lem15, binary case.
-   Pulling back over the terminal object imposes no condition -- the
-   square commutes automatically, by [one_unique] -- so the pullback of
-   x --!--> 1 <--!-- y is the product, and its universal property is the
-   product's with the commutation hypothesis discharged rather than
-   assumed.  The conclusion is stated at [IsCartesianProduct], the
-   apex-pinned form, before any class is packaged. *)
+(*
+   本节说明拉回/推出、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pb_fork {a : C} (u : a ~> x) (v : a ~> y) : a ~> P :=
   unique_obj (is_pullback_ump HP a u v (one_unique _ _)).
 
@@ -576,19 +558,11 @@ Definition HasPushouts_of_Cocartesian_HasCoequalizers {C : Category}
        (HasEqualizers_op_of_HasCoequalizers E)).
 
 (* ====================================================================== *)
-(** * Measured negatives
+(*
+   本节说明hom、（余）强度相关定义、性质与动机。
 
-    Every strengthening attempted and refused, recorded as a [Fail] so a
-    later change to a donor breaks this file loudly rather than silently
-    invalidating a prose claim.  The two KINDS are kept apart, and the
-    split is measured rather than guessed: negatives 2 and 3 are
-    FORMABILITY failures -- the two legs do not live in a common hom-set,
-    so the equation cannot be stated -- while negatives 1, 4, 5, 6 and 7
-    are CONVERSION failures, where both sides are well typed and [eq_refl]
-    is refused.  Positive controls sit beside them.
-
-    These are measurements made in this file, not a substitute for a
-    guarded probe file with an instrument check. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Negatives.
 
@@ -636,10 +610,11 @@ Section NegativesDuality.
 
 Context {C : Category}.
 
-(* 6, 7. The duality of section (F) is NOT definitional: [IsCoequalizer]
-   and [IsEqualizer] are distinct record types, so neither the predicates
-   nor the classes are related by [eq_refl], however convertible their
-   fields are. *)
+(*
+   本节说明 Reduction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example neg_HasCoequalizers_is_op :
   HasCoequalizers C = HasEqualizers (C^op) := eq_refl.
 

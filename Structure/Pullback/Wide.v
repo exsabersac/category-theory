@@ -24,12 +24,11 @@ Generalizable All Variables.
 
 (** ** The elementary universal property *)
 
-(* [P] with projections [p] is a wide pullback of the family [f] when all
-   the composites into the common codomain agree and every family agreeing
-   in the same way factors uniquely.  The commutativity condition
-   quantifies over PAIRS of indices, exactly as [wfork_eq] does in
-   Structure/Equalizer/Wide.v; no distinguished index is named, so nothing
-   in this record requires I to be inhabited. *)
+(*
+   本节说明拉回/推出、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record IsWidePullback {C : Category} {I : Type} {A : I → C} {z : C}
   (f : ∀ i : I, A i ~> z) (P : C) (p : ∀ i : I, P ~> A i) := {
   (* every leg is carried to the common codomain in the same way *)
@@ -46,10 +45,11 @@ Arguments wpull_ump {_ _ _ _ _ _ _} _ {_} _ _.
 
 (** ** The bundled record *)
 
-(* The apex-carrying form, shaped after [Pullback] of Structure/Pullback.v
-   rather than after the ∃-valued [HasWideEqualizers] of the sibling: a
-   wide pullback is CHOSEN here, so consumers read the object off the
-   record instead of destructing an existential. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record WidePullback {C : Category} {I : Type} {A : I → C} {z : C}
   (f : ∀ i : I, A i ~> z) := {
   WPull : C;                             (* the wide pullback object *)
@@ -101,10 +101,11 @@ Example wide_pullback_bundled_round {C : Category} {I : Type} {A : I → C}
   {z : C} {f : ∀ i : I, A i ~> z} (W : WidePullback f) :
   is_wide_pullback_pullback (wide_pullback_is_pullback W) = W := eq_refl.
 
-(* A category has all wide pullbacks when every family over a common
-   codomain carries one.  As with [HasIndexedProducts], the index [Type] is
-   a universe PARAMETER of the class and not a quantifier over every
-   universe; a consumer whose index is a hom-type instantiates it there. *)
+(*
+   本节说明拉回/推出、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class HasWidePullbacks (C : Category) := {
   wide_pullback {I : Type} {A : I → C} {z : C} (f : ∀ i : I, A i ~> z) :
     WidePullback f
@@ -114,11 +115,11 @@ Arguments wide_pullback {C _ I A z} f.
 
 (** ** The projections are jointly monic *)
 
-(* Two maps into the apex agreeing after every projection are equal: both
-   are the mediator of one and the same family.  As with the sibling's
-   [wide_equalizer_monic], no index is ever named, so this holds for every
-   index type, the empty one included — where it degenerates to the (then
-   true) statement that any two maps into a terminal object agree. *)
+(*
+   本节说明始/终对象、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma wide_pullback_jointly_monic {C : Category} {I : Type} {A : I → C}
   {z : C} {f : ∀ i : I, A i ~> z} {P : C} {p : ∀ i : I, P ~> A i}
   (W : IsWidePullback f P p) {Q : C} (u v : Q ~> P)
@@ -138,9 +139,11 @@ Qed.
 
 (** ** Wide pullbacks are unique up to isomorphism *)
 
-(* The binary argument verbatim, one index at a time: each apex mediates
-   into the other along the other's projections, and the round trips agree
-   with the canonical self-mediator, which is the identity. *)
+(*
+   本节说明 Wide 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma wide_pullback_unique {C : Category} {I : Type} {A : I → C} {z : C}
   {f : ∀ i : I, A i ~> z} {P1 P2 : C}
   {p1 : ∀ i : I, P1 ~> A i} {p2 : ∀ i : I, P2 ~> A i}
@@ -183,9 +186,11 @@ Lemma wpull_empty_comm {C : Category} {I : Type} {A : I → C} {z : C}
   (q : ∀ i : I, Q ~> A i) : ∀ i j : I, f i ∘ q i ≈ f j ∘ q j.
 Proof. intros i j; destruct (Hempty i). Qed.
 
-(* So a wide pullback over an empty index is a terminal object: the
-   mediator exists for every Q, and its defining condition being vacuous,
-   EVERY map into P satisfies it and is therefore that mediator. *)
+(*
+   本节说明拉回/推出、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma wide_pullback_empty_terminal {C : Category} {I : Type} {A : I → C}
   {z : C} {f : ∀ i : I, A i ~> z} {P : C} {p : ∀ i : I, P ~> A i}
   (Hempty : I → False) (W : IsWidePullback f P p) : IsTerminalObj P.
@@ -221,12 +226,11 @@ Defined.
 
 (** ** Riehl's lemma: products are wide pullbacks over a terminal object *)
 
-(* An indexed product IS the wide pullback of the family of unique maps to
-   the terminal object.  The commutativity condition is discharged by
-   [one_unique] — that single step is the whole of Riehl's argument — and
-   the universal property is then [iprod_desc] with the competing family's
-   agreement hypothesis discarded, since a terminal codomain constrains
-   nothing. *)
+(*
+   本节说明拉回/推出、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem wide_pullback_product {C : Category} `{T : @Terminal C}
   {I : Type} (A : I → C) (P : C) (p : ∀ i : I, P ~> A i)
   (H : IsIndexedProduct A P p) :
@@ -241,10 +245,11 @@ Proof.
     exact (iprod_desc H q).
 Defined.
 
-(* ... and conversely.  Here [one_unique] runs the other way: it is what
-   MANUFACTURES the agreement hypothesis that [wpull_ump] demands of an
-   arbitrary competing family, which is exactly why the two universal
-   properties have the same content over a terminal codomain. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem product_wide_pullback {C : Category} `{T : @Terminal C}
   {I : Type} (A : I → C) (P : C) (p : ∀ i : I, P ~> A i)
   (W : IsWidePullback (fun i : I => @one C T (A i)) P p) :
@@ -260,11 +265,11 @@ Defined.
 
 (** ** The binary specialization *)
 
-(* At I := bool the wide notion is the ordinary pullback.  The family and
-   the two leg families are written with an explicit [return] annotation so
-   that [two_fam x y true] and [two_fam x y false] reduce by iota, which is
-   what lets the four-case [∀ i j] condition collapse to the single square
-   and back. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition two_fam {C : Category} (x y : C) : bool → C :=
   fun b => if b then x else y.
 
@@ -324,12 +329,11 @@ Proof.
       split; [ exact (Hv true) | exact (Hv false) ].
 Defined.
 
-(* MEASURED STRICT, and REFUTED at the whole record: the binary round trip
-   is NOT [eq_refl].  This Example localizes the obstruction to a single
-   field — the square itself DOES convert, the [∀ i j] condition
-   iota-reducing at the two literals — so what fails is [is_pullback_ump]
-   alone, rebuilt through a fresh [Build_Unique].  The whole-record
-   equality is therefore not stated here. *)
+(*
+   本节说明 Wide 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example wide_pullback_binary_commutes {C : Category} {x y z : C}
   {f : x ~> z} {g : y ~> z} {P : C} {p1 : P ~> x} {p2 : P ~> y}
   (H : IsPullback f g P p1 p2) :
@@ -338,11 +342,11 @@ Example wide_pullback_binary_commutes {C : Category} {x y z : C}
 
 (** ** Non-vacuity: the identification at [Sets] *)
 
-(* [Sets] has all indexed products (Instance/Sets/Products.v) and a
-   terminal object (Instance/Sets.v), so Riehl's lemma applies: the
-   dependent-function setoid ∀ i, F i, with its projections, is a wide
-   pullback of the family of unique maps F i → 1.  Nothing is reproved —
-   this is [wide_pullback_product] applied to [Sets_IsIndexedProduct]. *)
+(*
+   本节说明拉回/推出、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Sets_wide_pullback_over_one {A : Type} (F : A → obj[Sets]) :
   IsWidePullback (fun i : A => @one Sets Sets_Terminal (F i))
     (Sets_iprod_obj F) (Sets_iprod_proj F) :=

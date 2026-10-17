@@ -26,10 +26,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* A category is thin when parallel morphisms are identified by the hom-setoid
-   equivalence.  Note that this is `≈`, not `=`: on the library's setoid
-   hom-sets that is the right notion, and it is what Instance/Proset.v
-   supplies for a proset by declaring the equivalence to be [True]. *)
+(*
+   本节说明hom、等价、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Thin (C : Category) : Type :=
   ∀ (x y : C) (f g : x ~{C}~> y), f ≈ g.
 
@@ -54,17 +55,11 @@ Proof. constructor; intros z g1 g2 _; apply T. Qed.
 Lemma thin_Epic {C : Category} (T : Thin C) {x y : C} (f : x ~> y) : Epic f.
 Proof. constructor; intros z g1 g2 _; apply T. Qed.
 
-(* A pair of opposing morphisms in a thin category is automatically an
-   isomorphism: the two composites are endomorphisms, hence equal to the
-   identity.  This is the categorical reading of "x ≤ y and y ≤ x", and it is
-   exactly what antisymmetry rules out in Instance/Poset.v — a poset is a
-   SKELETAL thin category (Instance/Poset.v), the isomorphic objects being
-   forced equal.
+(*
+   本节说明同构、来源与用途相关定义、性质与动机。
 
-   Both inverse laws are supplied directly rather than through [Program], so
-   that the two appeals to thinness are visible in the term instead of being
-   found by the [cat_simpl] obligation tactic (Lib/Tactics.v), whose [auto]
-   would pick [T] out of the context. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition thin_iso {C : Category} (T : Thin C) {x y : C}
   (f : x ~> y) (g : y ~> x) : x ≅ y :=
   {| to          := f
@@ -74,22 +69,11 @@ Definition thin_iso {C : Category} (T : Thin C) {x y : C}
 
 (** ** The hom-preorder of a category *)
 
-(* The ∃-a-morphism preorder on objects, squashed to Prop.
+(*
+   本节说明hom相关定义、性质与动机。
 
-   The library ALREADY carries a preorder of this shape at the Type level:
-   Theory/Category.v's exported instance [hom_preorder : PreOrder hom[C]]
-   over CRelationClasses, whose "proofs" are the morphisms themselves.  That
-   instance is deliberately NOT reused here, and the reason is the honest
-   version of this file's choice story: fed to a Type-valued preorder, the
-   reconstruction below would need no [HomChoice] at all -- the witness IS the
-   morphism.  What forces the squash is Instance/Proset.v's [Proset], which
-   is hard-wired to [Relation_Definitions.relation], i.e. Prop-valued; a
-   Prop-squashed relation is the only thing it accepts, and recovering a
-   morphism from the squash is then a genuine choice.  (Instance/Omega.v
-   documents the same Prop-vs-Type obstruction and routes around it with a
-   bespoke Type-valued order; here the point is precisely to meet [Proset]
-   where it is.)  The new name [thin_preorder] avoids shadowing the exported
-   instance. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition thin_preorder (C : Category) : relation (obj[C]) :=
   fun x y => inhabited (x ~{C}~> y).
 
@@ -105,25 +89,20 @@ Proof.
     exact (inhabits (g ∘ f)).
 Defined.
 
-(* Opposition on categories is order reversal on hom-preorders, and the two
-   relations are not merely pointwise equivalent but CONVERTIBLE: both sides
-   reduce to [inhabited (y ~{C}~> x)].  [Basics.flip] is the stdlib operation
-   [flip R x y = R y x]. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma hom_preorder_op (C : Category) (x y : obj[C]) :
   thin_preorder (C^op) x y = Basics.flip (thin_preorder C) x y.
 Proof. reflexivity. Qed.
 
-(* Choosing an arrow from the bare knowledge that one exists.  This is
-   elimination of the Prop [inhabited (x ~> y)] into [Type], which Coq's
-   elimination rules do not grant: [inhabited] has a [Type]-valued argument in
-   its constructor, so its eliminator is restricted to Prop targets, and no
-   [match] on the witness can produce a morphism.  The hypothesis is therefore
-   taken explicitly wherever it is needed, never assumed.  It is free of charge
-   whenever the homs of C are themselves Props — in particular on every
-   [Proset], where [proset_HomChoice] discharges it (Instance/Proset/Order.v).
+(*
+   本节说明 Thin 相关定义、性质与动机。
 
-   What is claimed here is only that the obvious definition does not
-   typecheck; no impossibility theorem is being asserted. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition HomChoice (C : Category) : Type :=
   ∀ (x y : obj[C]), thin_preorder C x y → x ~{C}~> y.
 

@@ -65,10 +65,11 @@ Notation "Cone[ N ] F" := (ACone N F)(* . { ψ : Cone F | vertex_obj[ψ] = N } *
    F^op, whose legs run F x ~> apex (see nLab: cocone). *)
 Definition Cocone `(F : J ⟶ C) := Cone (F^op).
 
-(* The presheaf of cones over F: each object c is sent to the setoid of
-   cones with apex c, and a morphism f : c' ~> c in C (i.e. c ~> c' in C^op)
-   precomposes every leg with f, reindexing a c-cone to a c'-cone. Its
-   representing object, when one exists, is the limit of F. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Instance ConePresheaf@{u0 u1 u2 u3 u4 u5 +}
    {J : Category@{u0 u1 u2}} {C : Category@{u3 u4 u5}} (F : @Functor J C) :

@@ -32,9 +32,11 @@ Class IsUniversalProperty (C : Category) (P : C → Type) (eqP : forall c, Setoi
                                                (* natural isos [Hom c,─] ≅ repr_functor *)
   }.
 
-(* A transformation out of a representable presheaf [Hom ─,c] ⟹ P is fixed by
-   its value at id{C} c, the universal element: τ_d(f) ≈ P(f)(τ_c id).  This is
-   the computational half of the Yoneda lemma used throughout below. *)
+(*
+   本节说明Yoneda、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma preyoneda {C : Category} {c d: C} {P : C^op ⟶ Sets} (τ : [Hom ─ , c] ⟹ P) :
   forall f : d ~> c,
     transform τ d f ≈ fmap[P] f (transform τ c id{C}).
@@ -48,11 +50,11 @@ Qed.
   { equiv := fun a b => `1 a ≈ `1 b }.
 Local Arguments morphism {x H y H0} s.
 
-(* The universal-element form of representability: the set of universal elements
-   { x : F c & the Yoneda image of x is an isomorphism } is itself isomorphic to
-   the set of natural isomorphisms [Hom ─,c] ≅ F.  This is the contravariant
-   (presheaf) counterpart of the representation packaged in [IsUniversalProperty]
-   and witnesses that a representation is the same data as a universal element. *)
+(*
+   本节说明Yoneda、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Proposition representability_by_yoneda (C : Category) (F : C^op ⟶ Sets) (c : C):
   @Isomorphism Sets
     {| carrier := { x : F c & IsIsomorphism (from (Yoneda_Lemma C F c ) x) } |}
@@ -89,12 +91,11 @@ Section UniversalProperty.
   Context (C : Category) (P : obj[C] -> Type) (eqP : forall c, Setoid (P c))
     (H : IsUniversalProperty C P eqP).
 
-  (* A representing object is unique up to isomorphism: given t : P c, every
-     other v with a proof Pv is isomorphic to c.  The mediating iso is the
-     explicit inverse pair of the two representations — evaluation at the
-     identity through the Yoneda embedding — packaged once and for all as
-     Functor/Hom/Yoneda/Iso.v's [repr_pair_iso], which this proof consumes
-     where it previously inlined the construction. *)
+  (*
+   本节说明函子、Yoneda、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   Proposition univ_property_unique (c : C) (t : P c) : @Unique obj[C] (ob_setoid) P.
   Proof using eqP H.
     exists c ; [exact t |].
@@ -123,10 +124,11 @@ Section UniversalProperty.
     Unique (fun p : (c ≅ d) => univ_property_respects_iso c d p t ≈ s).
   Proof.
     (* We have already constructed the isomorphism p.*)
-    (* We have isomorphisms Hom(c, -) ≅ repr_functor ≅ Hom(d,-)
-       corresponding to the choice of t and s, and we
-       pull back this isomorphism Hom(c,-) ≅ Hom(d,-) along the
-       Yoneda embedding. *)
+    (*
+   本节说明Yoneda、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     exists (uniqueness (univ_property_unique c t) d s).
     - (* Why does this isomorphism respect the structure of P? *)
       abstract(simpl; unfold univ_property_respects_iso; simpl;

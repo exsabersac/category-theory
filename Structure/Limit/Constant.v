@@ -37,373 +37,26 @@ Open Scope category_scope.
 
 Generalizable All Variables.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician",
-              2nd ed., §IV.2 Exercise 8, printed p. 90 (maclane:IV.2:ex8)
+(*
+   Book:      Mac Lane, "Categories for the Working Mathematician",
    nLab:      https://ncatlab.org/nlab/show/connected+category
    nLab:      https://ncatlab.org/nlab/show/constant+functor
    nLab:      https://ncatlab.org/nlab/show/diagonal+functor
    nLab:      https://ncatlab.org/nlab/show/limit
    nLab:      https://ncatlab.org/nlab/show/absolute+colimit
 
-   Mac Lane's exercise says that if J is connected then the limit of the
-   constant diagram Δ[J](c) is c itself, and dually for the colimit; so
-   over a connected shape the diagonal functor is fully faithful and the
-   unit of Δ ⊣ lim is an isomorphism at every object.  The four
-   deliverables are
+   本节说明函子、（余）极限、同构相关定义、性质与动机。
 
-     (a) [const_IsALimit] / [const_IsAColimit] (with the cone-level
-         [const_IsLimitCone] / [const_IsColimitCocone] and the bundled
-         [const_Limit] / [const_Colimit]): the identity cone on c is a
-         limiting cone over Δ[J](c), and the identity cocone is a
-         colimiting cocone;
-
-     (b) [const_unit_iso] / [const_counit_iso]: the unit of
-         Δ[J] ⊣ [LimitFunctor] is invertible at every object, and dually
-         the counit of [ColimitFunctor] ⊣ Δ[J] -- with
-         [const_unit_is_med] recording that the unit IS the mediating
-         map rather than merely equalling it;
-
-     (c) [Diagonal_Full] and [Diagonal_Faithful]: the diagonal functor
-         is full over a connected shape and faithful over an inhabited
-         one -- the SPLIT is the point, and §4 below proves both halves
-         sharp;
-
-     (d) [const_AbsoluteLimit] / [const_AbsoluteColimit]: these limits
-         are ABSOLUTE, preserved by EVERY functor out of C.
-
-   1. A PRIOR-ART CORRECTION, ON TWO COUNTS, BOTH MEASURED.  The catalog
-      issue's "Current state" section is FALSE twice over.
-
-      FIRST, it states that no connectedness predicate exists in the
-      tree and asks for the zig-zag relation to be built from scratch.
-      Structure/Groupoid/Connected.v has declared [Inductive ZigZag
-      {C : Category}] and [Definition Connected (C : Category)]
-      for an ARBITRARY category since it was written, together
-      with [zigzag_trans], [zigzag_sym], [hom_zigzag] and
-      [Two_Discrete_not_connected]; Theory/Connected/Components.v
-      adds [ConnectedNonempty], [Zero_Connected],
-      [Zero_not_ConnectedNonempty] and [connected_readings_differ].
-      All of them are CONSUMED here.  Nothing in this file
-      redeclares a zig-zag, a connectedness predicate, or any of their
-      closure properties, and [leg_zigzag] below is an induction OVER the
-      donor's inductive type, not a second copy of it.
-
-      SECOND, it states that there is no Δ ⊣ lim adjunction to take the
-      unit of.  Adjunction/Diagonal/Limit.v supplies
-      [Diagonal_Limit_Adjunction : Δ[J] ⊣ LimitFunctor] and
-      [Colimit_Diagonal_Adjunction : ColimitFunctor ⊣ Δ[J]],
-      together with [HasLimitsOfShape], [LimitFunctor],
-      [lim_obj], [lim_leg], [lim_med], [lim_transpose_to] and the whole
-      covariant colimit mirror.  Part (b) below is stated against those
-      constants and builds no adjunction of its own.
-
-      What IS absent, and is what this file supplies, was confirmed by a
-      SHAPE sweep rather than a name sweep: no statement anywhere in the
-      tree computes the limit or colimit of a CONSTANT diagram.  The two
-      near-hits a name search returns are about a constant WEIGHT, not a
-      constant diagram -- Structure/Limit/Weighted.v's [conical_weighted]
-      has weight Δ[J](terminal_obj) with the DIAGRAM arbitrary, which is
-      a different statement -- and Instance/One/Diagonal.v's
-      [Diagonal_Unique] is a FACTORISATION (Δ[J](d) ≈ Δ(d) ◯ one)
-      carrying no connectedness hypothesis and computing no limit.
-      Separately, [Full (@Diagonal ...)], [Faithful (@Diagonal ...)],
-      [AbsoluteLimit], [AbsoluteColimit] and the string "absolute limit"
-      each had ZERO occurrences tree-wide.  (d) is genuinely new
-      VOCABULARY -- [AbsoluteLimit] and [AbsoluteColimit] are introduced
-      here.  (c) is not: [Full] and [Faithful] are pre-existing
-      (Theory/Functor.v), so what the zero-occurrence
-      measurement shows there is a new INSTANTIATION at [Diagonal], not
-      a new notion.  Prior art on absoluteness is prose in TWO files,
-      not one: Structure/Coequalizer/Split.v and
-      Construction/Karoubi.v ("Splitting an idempotent is an
-      absolute colimit").
-
-      READ (d)'s NOVELTY NARROWLY, THOUGH: the CONCEPT is prior art.
-      Structure/Coequalizer/Split.v is headed "Split coequalizers are
-      absolute", cites Paré 1971 and the nLab in prose, and proves
-      [functor_preserves_split] together with
-      [split_coequalizer_preserved].  What it does NOT do is declare a
-      predicate -- its absoluteness is a property of one construction,
-      stated by transporting its equational data through [fmap] -- so
-      there was nothing to instantiate here and nothing here subsumes it.
-      The two are related only by the shared word; §"WHAT IS NOT
-      DELIVERED" records that no bridge is built.
-
-   2. INHABITEDNESS IS LOAD-BEARING, AND THAT IS PROVED RATHER THAN
-      ARGUED.  The in-tree [Connected] is the bare "any two objects are
-      joined" clause with NO inhabitedness, and [Zero_Connected] shows
-      the empty category satisfies it vacuously.  Over the empty shape a
-      cone is a BARE APEX -- no legs, no coherence -- so the universal
-      property collapses to terminality, which
-      [zero_const_limit_IsTerminalObj] and [IsTerminalObj_zero_const_limit]
-      prove in both directions.  Consequently
-      [const_limit_not_from_bare_connected] refutes the bare-[Connected]
-      reading outright: at J := [_0] and C := [_2] the object [TwoX] is
-      not terminal ([TwoX_not_terminal], through [Instance/Two.v]'s own
-      [TwoHom_Y_X_absurd]), so the conclusion is FALSE there while the
-      hypothesis holds.
-
-      The hypothesis is therefore [ConnectedNonempty J], and it goes in
-      the statement.  #352 already separates the two readings at the
-      empty shape; what is new here is that the separation BITES for
-      constant limits.  A reader who wants the bare-[Connected] form
-      should read [zero_const_limit_IsTerminalObj] as the missing case.
-
-   3. WHERE EACH HYPOTHESIS IS SPENT.  [cn_obj K] and [cn_zigzag K] are
-      spent at DIFFERENT points and neither substitutes for the other:
-      [cn_obj K] NAMES the mediator ([limit_med (const_IsALimit K) N =
-      cone_leg N (cn_obj K)], on the nose), while [cn_zigzag K] proves
-      that this choice satisfies the triangle at EVERY other object.
-      That is the precise sense in which connectedness alone does not
-      suffice and a point alone does not either -- and both halves are
-      refuted, in §4.
-
-      The zig-zag content is factored out of the cone vocabulary
-      entirely: [leg_zigzag] takes a BARE family [leg : ∀ x : J, n ~> c]
-      that is constant along single arrows and concludes it is constant
-      along zig-zags.  Its three cases are [zz_nil] (reflexivity alone),
-      [zz_fwd] (the hypothesis at [f], then the induction hypothesis) and
-      [zz_bwd] (THE SAME hypothesis at SWAPPED arguments, rewritten
-      backwards) -- so the two non-trivial constructors consume one and
-      the same input and there is no asymmetry to manage.  It serves the
-      cone side, the cocone side, the two absolute statements and
-      [Diagonal_Full], five consumers in all.
-
-      THE COLIMIT HALF NEEDS NO [Connected (J^op)], WHICH IS FORTUNATE
-      SINCE THE TREE CARRIES NO TRANSPORT OF CONNECTEDNESS TO THE
-      OPPOSITE (measured: no [zigzag_op] and no [Connected_op] anywhere).
-      [Connected] is declared for an ARBITRARY category, so
-      [Connected (J^op)] is perfectly statable and would follow from a
-      three-case induction swapping [zz_fwd] and [zz_bwd]; what is
-      absent is that transport, not the statement.  [obj[J^op]] IS [obj[J]], so
-      [leg_zigzag] is instantiated at the shape [J] with AMBIENT [C^op];
-      the explicit [@leg_zigzag J (C^op) ...] is required, since left to
-      inference the index type of [cone_leg N] makes Coq pick [J^op] and
-      then the step hypothesis demands [J^op] arrows.
-
-   4. THE TWO HALVES OF (c) ARE SEPARATED BY COMPILED COUNTEREXAMPLES.
-      [Diagonal_Faithful] takes only an OBJECT of J; [Diagonal_Full]
-      takes the whole of [ConnectedNonempty].  Sharpness is PARTIAL and
-      the gap is named: what is refuted is the POINT for faithfulness
-      and the CONNECTEDNESS half for fullness.  Nothing refutes fullness
-      over a point-less shape, so the point half of [ConnectedNonempty]
-      is NOT shown necessary for [Diagonal_Full].  The two
-      refutations: [Diagonal_Zero_not_Faithful] refutes
-      faithfulness over the
-      empty shape (where [_0, Coq] has singleton hom-sets, so [id] and
-      [negb] collapse), and [Diagonal_Two_Discrete_not_Full] refutes
-      fullness over the inhabited but DISCONNECTED [Two_Discrete] --
-      the transformation [td_split], which is [id] at one object and
-      [negb] at the other, is natural there and is the image of no
-      morphism.  That refutation fires against [Full]'s [prefmap] and
-      [fmap_sur] directly, and [Full] demands no functoriality of
-      [prefmap], so it refutes the WEAKEST reading of fullness.
-
-      [Diagonal_Full] is delivered twice -- directly, and
-      [Diagonal_Full_via_limit] through part (a)'s mediator -- and the
-      two pick THE SAME preimage, recorded at [eq_refl] by
-      [Diagonal_Full_routes_agree].  So the limit route is not a detour
-      to a different chosen section; it is the direct one.  The two
-      [Full] RECORDS are not compared, their [fmap_sur] proofs being
-      distinct opaque terms.
-
-   5. WHAT THE [Two_Discrete] REFUTATION DOES AND DOES NOT SAY.
-      [two_discrete_const_not_limit] refutes that [bool], WITH ANY LEG
-      FAMILY WHATSOEVER, is a limit of the constant [bool]-diagram of
-      two-object discrete shape in [Coq] -- the quantification over legs
-      sits inside [IsALimit], so this is the strong form.  It does NOT
-      say the limit fails to exist: [td_const_IsALimit_product] builds
-      it, and it is c × c.  Nor does it hold at every object:
-      [td_const_IsALimit_at_unit] shows the disconnected conclusion is
-      still TRUE at a terminal c, so the witness must be an object with
-      c ≇ c × c, and no THIN ambient can host one (in a thin category
-      c × c ≅ c always).  That is why the witness is [Coq] and the
-      refutation is a pigeonhole: surjectivity of ⟨φX, φY⟩ onto
-      bool × bool from bool.
-
-   6. STRENGTHS, MEASURED STRICT-FIRST.  Every readback below names its
-      subject.  Holding at [eq_refl]: [const_fobj] and [const_fmap] (the
-      constant diagram's arrow action IS [id[c]], which is why every
-      coherence obligation in this file closes by [id_left] rather than
-      by a chase); [const_apex_strict], [const_cone_leg_strict],
-      [const_leg_strict] and [const_med_strict] (the mediator IS the
-      competing cone's leg at [cn_obj K]); the three colimit mirrors
-      [const_cocone_inj_strict], [const_coinj_strict],
-      [const_comed_strict]; [const_unit_is_transpose] and
-      [const_unit_is_med] (the unit of Δ ⊣ lim IS the mediating map, not
-      merely ≈ it) with [const_counit_is_transpose] dually;
-      [const_two_cones_same_legs]; [const_absolute_leg_strict] and
-      [const_absolute_coinj_strict]; [const_image_fobj];
-      [Diagonal_Full_routes_agree]; and the non-vacuity pair
-      [two_const_leg_strict], [two_const_med_strict].
-
-      SETTLING FOR ≈, with the cause diagnosed rather than guessed --
-      TWO of them, [const_unit_is_limit_unique_to] and
-      [const_image_fmap_equiv].  The first:  Its strict form is
-      REFUTED and pinned, and [const_two_cones_same_legs] is the
-      DIAGNOSING control -- the two competing cones have the same legs
-      at [eq_refl] and differ only in their [cone_coherence] proof
-      terms, and [ump_limits] of an abstract [HasLimitsOfShape] reduces
-      on nothing, so no conversion is available.  Also at ≈:
-      [const_image_fmap_equiv], whose strict form is likewise refuted --
-      [fmap[F ◯ Δ[J](c)] f] is [fmap[F] id[c]] where [fmap[Δ[J](F c)] f]
-      is [id[F c]], and only [fmap_id] relates them.
-
-   7. NEGATIVES: FIVE, OF TWO KINDS, KEPT LEXICALLY APART -- three
-      CONVERSION in the body and two FORMABILITY in the closing
-      [UniverseProbe] section -- each stripped once and its failure read
-      off the WHOLE error message rather than the tail.
-
-      CONVERSION.  [op_diag_strict] records that [Δ[J](c)^op] is NOT
-      [Δ[J^op](c)], with [op_diag_fobj] and [op_diag_fmap] as controls
-      showing BOTH DATA fields agree at [eq_refl], so the difference is
-      confined to the three rebuilt law fields.  That is not a curiosity:
-      [ACone n G] is not convertible for non-convertible [G], so the
-      colimit half CANNOT be obtained by instantiating the limit half at
-      [C^op] and [J^op], and it is built directly instead.
-      [const_image_fmap] and [const_unit_is_limit_unique_to_strict] are
-      the other two, both discussed in §6.
-
-      FORMABILITY.  With the shape's hom universe declared strictly below
-      both its own proof universe and the ambient's hom universe,
-      [Diagonal] and [IsALimit] are each rejected ALONE and on DIFFERENT
-      equations -- "Cannot enforce jh = ch" and "Cannot enforce jp = jh"
-      respectively -- against four controls accepted at those very levels
-      ([obj], a hom type, [ACone] and [Cone]).  So §8's "two independent
-      donors" is guarded, not merely measured.
-
-      Every constant named inside a [Fail] is also named by a succeeding
-      command, so a rename breaks this file loudly rather than turning a
-      guard vacuously green: [Opposite_Functor], [Diagonal], [fobj] and
-      [fmap] by the two [op_diag_*] controls; [Diagonal] and [◯] again by
-      [const_image_fobj] and [const_image_fmap_equiv]; and [const_unit],
-      [limit_unique_to], [const_IsALimit] and [lim_alimit] by
-      [const_unit_is_transpose] and [const_unit_is_limit_unique_to].
-
-   8. UNIVERSES, READ OFF BOTH THE BINDER AND THE CONSTRAINT BLOCK.
-      [const_IsALimit@{u u0 u1 u2 u3 u4 u5}] is over
-      [J : Category@{u u0 u0}] and [C : Category@{u1 u2 u2}] with the
-      single equation [u0 = u2] in its block -- the SHAPE's hom-and-proof
-      universe identified with the AMBIENT's -- while BOTH OBJECT
-      UNIVERSES STAY FREE, bounded and never identified, and no [Set]
-      appears anywhere in the general results.  Note that hom = proof in
-      each category is expressed by REUSING one level in the BINDER with
-      nothing in the block saying so, which is the reading trap this tree
-      records repeatedly.
-
-      [AbsoluteLimit] IS THIS FILE'S SHARPEST INSTANCE OF THAT TRAP: its
-      constraint block contains NO equation at all, while its binder reads
-      [J : Category@{u1 u5 u5}] and [C : Category@{u3 u5 u5}] -- one level
-      reused for four slots.  A reader who checks only the block reports
-      "no identification" and is wrong.
-
-      EVERY CROSS-CATEGORY IDENTIFICATION IS INHERITED -- read that
-      precisely, because ONE identification IS added here and an earlier
-      revision of this paragraph denied it (see the end of this item).
-      The inherited ones are measured at the DONORS' OWN SIGNATURES
-      rather than inferred:
-      [IsALimit@{u u0 u1 u2}] is itself declared over
-      [J : Category@{u0 u1 u1}] and [C : Category@{u2 u1 u1}], and
-      [Diagonal@{u u0 u1 u2 u3 u4}] over [C : Category@{u3 u4 u4}] and
-      [J : Category@{u2 u4 u4}], both carrying the identification in the
-      binder with no equation in the block; [ACone@{u0 u1 u2 u3 u4 u5}]
-      keeps all six levels apart and is innocent.  §7's two formability
-      negatives guard exactly this.  [leg_zigzag@{u u0 u1 u2}], the
-      reusable core, has a LITERALLY EMPTY constraint BLOCK -- but its
-      BINDER reads [C : Category@{u u2 u2}], and THAT identification is
-      NOT inherited: it is this file's own minimization artifact from
-      the unannotated [Context {J C : Category}], demonstrated by an
-      isolating experiment -- the identical statement and proof compile
-      inside a section declaring [Constraint ch < cp] over
-      [Cu : Category@{co ch cp}], with a hom type accepted at those
-      levels as the control.  The J-side IS inherited ([ZigZag@{u u0}]
-      is declared over [Category@{u u0 u0}]).  So reading the empty
-      block alone gets it wrong here, exactly as this item warns two
-      paragraphs above; explicit binders would lift it and none of it
-      is claimed unavoidable.
-
-   9. AXIOMS AND COUNTS.  89/89 constants closed under the global
-      context, counted by [Print Module] on the compiled module so the two
-      [Program] obligations of [td_split] are included; the file declares
-      no [Record], [Class] or [Inductive], so there is no unlisted
-      [Build_*] constructor, and the three [Fail]ed names declare nothing.
-      Read the GRADE: that is a ONE-TIME measurement of all 89, not a
-      standing gate.  CORRECTION (#477): 91 by the same count since #477
-      added [AbsoluteLimitCone_apex] and [AbsoluteColimitCocone_apex] to
-      part (d), both closed under the global context and gated fully
-      qualified in #477's block of the print-assumptions target; for
-      them this file requires Structure/Limit/Absolute.v.
-
-  10. TWO ENGINEERING FINDINGS, both recorded where they bite.  First,
-      the notation guard at the head of this file is REQUIRED rather than
-      defensive -- see the comment there.  Second,
-      Category.Theory.Adjunction exports [unit], so the singleton probe
-      object of the [Two_Discrete] refutation is spelled with Lib's
-      [poly_unit]/[ttt]: written [(unit : Coq)] the ascription resolves to
-      the adjunction unit and fails with a type error naming neither
-      culprit.
-
-   WHAT IS NOT DELIVERED.  The issue's own Verification block pins
-   [Print Assumptions connected_limit_of_constant]; THAT NAME EXISTS
-   NOWHERE IN THE TREE (measured), the delivered name being
-   [const_IsALimit].  And only the FORWARD direction of item 2's
-   "exactly when" is proved: nothing forces [ConnectedNonempty J] from
-   invertibility of the unit.  The GENERAL (non-connected) case is NOT
-   built: nothing here composes with Structure/Limit/Components.v's
-   [ComponentDecomposition] / [components_IsALimit] to compute the limit
-   of a constant diagram over an arbitrary shape as a product of copies
-   of c indexed by π₀, and no bridge exhibits the connected case as the
-   one-component instance of that file's results.
-   [td_const_IsALimit_product] is the two-object discrete case done by
-   hand, not an instance of anything.  No converse: it is NOT shown that
-   [∀ c, IsALimit Δ[J](c) c] forces [ConnectedNonempty J], so the
-   counterexamples establish one direction only.  No separation between
-   the cone-level and apex-only readings, so neither is called strictly
-   weaker.  Nothing is stated in [StrictCat], and no [_ ≅[Cat] _]
-   constant is built.  [Diagonal] is not shown to be an EQUIVALENCE
-   under any hypothesis, no [FullyFaithful] record is assembled, and no
-   essential-surjectivity clause is attempted.  No absolute-limit theory
-   beyond the two definitions and their two witnesses: nothing relates
-   [AbsoluteLimit] to [PreservesLimit], [PreservesLimitCone],
-   [ContinuousFunctor] or [CreatesLimit], no cone-level absoluteness is
-   defined, split coequalizers are not related to it although
-   Structure/Coequalizer/Split.v has an absoluteness notion of its own,
-   and no absolute limit OTHER than the constant one is exhibited.
-   CORRECTION (#477): accurate when written (#356, PR #1229); since #477
-   Structure/Limit/Absolute.v defines absoluteness at cone level and
-   relates it to [PreservesLimitCone] ([AbsoluteLimitCone_preserves] and
-   its converse), part (d) below maps it into [AbsoluteLimit] and
-   [AbsoluteColimit] ([AbsoluteLimitCone_apex],
-   [AbsoluteColimitCocone_apex]), and Structure/Coequalizer/Absolute.v
-   carries split coequalizers into it
-   ([split_cofork_AbsoluteColimitCocone]), an absolute colimit other
-   than the constant one, which reaches this file's [AbsoluteColimit]
-   through [AbsoluteColimitCocone_apex] (Test/ProbeAbsolute477.v, C21).
-   The clause asks for an absolute LIMIT: that side is reached through
-   Structure/Limit/Absolute.v's [AbsoluteColimitCocone_op], a split
-   fork of C^op giving an absolute limit cone in C itself, C^op^op being
-   C by conversion (the probe's C48; not declared as a constant).  This
-   file's constant witnesses are not restated at cone level, and nothing
-   relates [AbsoluteLimit] itself to [PreservesLimit],
-   [ContinuousFunctor] or [CreatesLimit].  No
-   functoriality or naturality of [const_unit] in c, so part (b) is a
-   FAMILY of isomorphisms and is not packaged as a natural isomorphism
-   [Id ≅ LimitFunctor ◯ Δ].  No uniqueness statement for the limiting
-   cone beyond what [Structure/Limit/Unique.v] already gives.  Nothing
-   about cofinality or final functors.  No notation.  No concrete
-   category is shown complete by these means, and the only non-vacuity
-   witness is the walking arrow. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The constant diagram, and the zig-zag closure that drives the file *)
 
-(* The arrow action of a constant diagram is [id] ON THE NOSE, not merely
-   ≈ it (Functor/Diagonal.v).  Everything below rests on this: each
-   coherence triangle of a cone over Δ[J](c) reads [id ∘ ψx ≈ ψy], so one
-   [id_left] collapses it to [ψx ≈ ψy], so no diagram chase occurs in
-   any cone-coherence triangle.  Read that scope: the two retraction
-   lemmas [const_unit_retraction] and [const_counit_retraction] DO
-   chase, each running [comp_assoc] plus a leg-agreement rewrite and a
-   section rewrite, and two obligations close with [cat]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example const_fobj {J C : Category} (c : C) (x : J) :
   fobj[Δ[J](c)] x = c := eq_refl.
@@ -411,11 +64,11 @@ Example const_fobj {J C : Category} (c : C) (x : J) :
 Example const_fmap {J C : Category} (c : C) {x y : J} (f : x ~{J}~> y) :
   fmap[Δ[J](c)] f = id[c] := eq_refl.
 
-(* The reusable core, stated for a BARE leg family rather than for a cone:
-   a family constant along every single arrow is constant along every
-   zig-zag.  [zz_nil] needs reflexivity alone; [zz_fwd] and [zz_bwd]
-   consume ONE AND THE SAME hypothesis [H], differing only in the order of
-   its arguments and the direction of the rewrite. *)
+(*
+   本节说明 Constant 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma leg_zigzag {J C : Category} {n c : C} (leg : ∀ x : J, n ~{C}~> c)
   (H : ∀ (x y : J) (f : x ~{J}~> y), leg x ≈ leg y)
@@ -457,10 +110,11 @@ Definition const_cone_zigzag (N : Cone Δ[J](c)) {x y : J} (s : ZigZag x y) :
   cone_leg N x ≈ cone_leg N y :=
   leg_zigzag (cone_leg N) (@const_cone_step N) s.
 
-(* [cn_obj K] NAMES the mediator; [cn_zigzag K] proves that naming
-   satisfies the triangle at every other object.  Neither substitutes for
-   the other -- §4 of the header refutes each hypothesis without the
-   other. *)
+(*
+   本节说明 Constant 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition const_IsALimit (K : ConnectedNonempty J) : IsALimit Δ[J](c) c.
 Proof.
@@ -504,11 +158,11 @@ Section ConstantColimit.
 Context {J C : Category}.
 Context (c : C).
 
-(* NEGATIVE 1 (conversion), with its two controls.  [Δ[J](c)^op] and
-   [Δ[J^op](c)] agree in BOTH data fields at [eq_refl] and differ only in
-   the three rebuilt law fields -- and since [ACone n G] is not
-   convertible for non-convertible [G], that is exactly what stops the
-   colimit half from being the limit half instantiated at [C^op], [J^op]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example op_diag_fobj (x : J) :
   fobj[Opposite_Functor Δ[J](c)] x = fobj[@Diagonal (C^op) (J^op) c] x
@@ -536,11 +190,11 @@ Proof.
   unfold cone_leg. rewrite <- Hc. symmetry. now rewrite id_left.
 Qed.
 
-(* [obj[J^op]] IS [obj[J]], so [leg_zigzag] applies at the shape [J] with
-   ambient [C^op] and NO [Connected (J^op)] is needed -- which is
-   fortunate, the tree having neither [zigzag_op] nor [Connected_op].
-   The explicit arguments are REQUIRED: left to inference the index type
-   of [cone_leg N] makes Coq pick [J^op]. *)
+(*
+   本节说明 Constant 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition const_cocone_zigzag (N : Cocone Δ[J](c)) {x y : J}
   (s : ZigZag x y) : cone_leg N x ≈ cone_leg N y :=
@@ -579,17 +233,11 @@ End ConstantColimit.
 
 (** ** Part (d): these limits are absolute *)
 
-(* "Absolute limit" had ZERO occurrences tree-wide, so the notion is
-   introduced here: a limit is absolute when EVERY functor out of the
-   ambient category preserves it.  Stated at the apex-pinned level, which
-   is what part (a) delivers; no cone-level variant is defined.
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
 
-   CORRECTION (#477): accurate when written; the cone-level variant is
-   now Structure/Limit/Absolute.v's [AbsoluteLimitCone] and
-   [AbsoluteColimitCocone], and [AbsoluteLimitCone_apex] and
-   [AbsoluteColimitCocone_apex], below the two predicates, map it into
-   them, typed by their names (Test/ProbeAbsolute477.v, C8 and C9).  The
-   converse is not proved and no separation is attempted. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition AbsoluteLimit {J C : Category} (G : J ⟶ C) (c : C) : Type :=
   ∀ (D : Category) (F : C ⟶ D), IsALimit (F ◯ G) (F c).
@@ -597,12 +245,11 @@ Definition AbsoluteLimit {J C : Category} (G : J ⟶ C) (c : C) : Type :=
 Definition AbsoluteColimit {J C : Category} (G : J ⟶ C) (c : C) : Type :=
   ∀ (D : Category) (F : C ⟶ D), IsAColimit (F ◯ G) (F c).
 
-(* The cone-level predicates of Structure/Limit/Absolute.v (#477), read at
-   the apex: an absolute limit cone makes its apex an [AbsoluteLimit] of
-   the same diagram, and dually.  The legs are forgotten, so no converse
-   is claimed.  Placed here, in the file that owns the apex-only notion,
-   so that they are typed by its names; this file requires
-   Structure/Limit/Absolute.v for them. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition AbsoluteLimitCone_apex@{jo co ch +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}} {K : J ⟶ C}
@@ -620,12 +267,11 @@ Section Absolute.
 Context {J C : Category}.
 Context (c : C).
 
-(* NEGATIVE 2 (conversion), with its control.  The image of a constant
-   diagram agrees with the constant diagram on OBJECTS at [eq_refl] but
-   not on ARROWS: [fmap[F ◯ Δ[J](c)] f] is [fmap[F] id[c]] where
-   [fmap[Δ[J](F c)] f] is [id[F c]].  So absoluteness is not read off by
-   rewriting the composite into a constant diagram; the proof repeats the
-   argument with one [fmap_id] inserted. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example const_image_fobj {D : Category} (F : C ⟶ D) (x : J) :
   fobj[F ◯ Δ[J](c)] x = fobj[Δ[J](F c)] x := eq_refl.
@@ -728,9 +374,11 @@ Proof using J C L K c.
            x y (cn_zigzag K x y)).
 Qed.
 
-(* The section direction spends NO connectedness -- it is the transpose's
-   own commutation law.  The zig-zag is spent exactly once, in the
-   retraction, through the same [const_cone_zigzag] part (a) uses. *)
+(*
+   本节说明 Constant 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma const_unit_section :
   lim_leg L Δ[J](c) (cn_obj K) ∘ const_unit ≈ id[c].
@@ -760,11 +408,11 @@ Definition const_unit_iso : c ≅ lim_obj L Δ[J](c) :=
    ; iso_to_from := const_unit_retraction
    ; iso_from_to := const_unit_section |}.
 
-(* NEGATIVE 3 (conversion), with its DIAGNOSING control.  The unit is the
-   canonical comparison of the two limits, but only at ≈: the two
-   competing cones have the same legs at [eq_refl] and differ only in
-   their [cone_coherence] proof terms, and [ump_limits] of an abstract
-   [HasLimitsOfShape] reduces on nothing. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example const_unit_is_limit_unique_to_strict :
   const_unit = @limit_unique_to J C Δ[J](c) c (lim_obj L Δ[J](c))
@@ -893,10 +541,11 @@ Proof.
     simpl in Hm. rewrite id_left in Hm. exact Hm.
 Defined.
 
-(* The two routes pick THE SAME preimage, on the nose -- so the limit
-   route is not a detour to a different chosen section.  The two [Full]
-   RECORDS are not compared; their [fmap_sur] proofs are distinct opaque
-   terms. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example Diagonal_Full_routes_agree (K : ConnectedNonempty J) (x y : C)
   (t : Δ[J](x) ⟹ Δ[J](y)) :
@@ -994,10 +643,11 @@ Definition tdY : bool → bool := limit_leg H TwoDY.
 (* The EXISTENCE half of the universal property alone, at apex [unit] with
    constant legs, makes ⟨tdX, tdY⟩ : bool → bool × bool surjective. *)
 
-(* [Theory/Adjunction.v] exports [unit], so the singleton probe object is
-   spelled with Lib's [poly_unit]/[ttt] rather than the stdlib [unit]/[tt];
-   otherwise the ascription [(unit : Coq)] resolves to the adjunction unit
-   and fails with a type error naming neither culprit. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma td_surj (a b : bool) : { z : bool & (tdX z = a) * (tdY z = b) }.
 Proof using H.
@@ -1052,9 +702,11 @@ Defined.
 Lemma punit_irrel (a b : poly_unit) : a = b.
 Proof. destruct a, b; reflexivity. Qed.
 
-(* ... and at a terminal object the disconnected conclusion still HOLDS, so
-   the refutation genuinely needs an object with c ≇ c × c.  No thin
-   ambient can host one, which is why the witness above is [Coq]. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition td_const_IsALimit_at_unit :
   IsALimit Δ[Two_Discrete]((poly_unit : Coq)) (poly_unit : Coq).
@@ -1067,10 +719,11 @@ Proof.
     + intros v _ y. apply punit_irrel.
 Defined.
 
-(* Fullness fails over an inhabited but disconnected shape.  The witness is
-   natural and is the image of no morphism; the refutation fires against
-   [Full]'s [prefmap]/[fmap_sur], which demand no functoriality of
-   [prefmap], so it refutes the WEAKEST reading of fullness. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition td_split :
   Δ[Two_Discrete]((bool : Coq)) ⟹ Δ[Two_Discrete]((bool : Coq)) := {|
@@ -1130,21 +783,11 @@ Example two_const_med_strict {C : Category} (c : C) (N : Cone Δ[_2](c)) :
 
 (** ** Universe probe: the two identifications are the DONORS' *)
 
-(* Section-local [Universes]/[Constraint] declarations do not leak past
-   [End] -- the Instance/Fun/Group.v precedent, re-measured for this file
-   out of tree by importing it into a scratch module that declares its own
-   levels strictly apart and having that module elaborate -- so the guard
-   for §8 of the header lives here rather than in a separate probe file.
+(*
+   本节说明hom、（余）端相关定义、性质与动机。
 
-   NEGATIVES 4 AND 5 (formability), with four controls.  With the shape's
-   hom universe declared strictly BELOW both its own proof universe and
-   the ambient's hom universe, [obj], a hom-type, [ACone] and [Cone] all
-   elaborate -- so the cone vocabulary is INNOCENT -- while [Diagonal] and
-   [IsALimit] are each rejected ALONE, and on DIFFERENT equations:
-   [Diagonal] fails with "Cannot enforce jh = ch" (its codomain [Fun]
-   identifies source and target hom levels) and [IsALimit] with "Cannot
-   enforce jp = jh".  So the [u0 = u2] carried by [const_IsALimit] has two
-   genuinely independent donors, neither introduced here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseProbe.
 

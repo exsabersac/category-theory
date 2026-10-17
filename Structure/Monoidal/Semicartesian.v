@@ -42,11 +42,11 @@ End SemicartesianMonoidal.
 
 Require Import Category.Structure.Terminal.
 
-(* The two directions below witness that "semicartesian monoidal" and "the
-   unit I is terminal" are the same condition, packaged as a Terminal
-   structure on I and as a SemicartesianMonoidal structure respectively. Cf.
-   Wikipedia, https://en.wikipedia.org/wiki/Cartesian_monoidal_category :
-   "in any such category, the terminal object is the monoidal unit." *)
+(*
+   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Semicartesian monoidal ==> I is a terminal object, with eliminate as the
    unique arrow and unit_terminal as its uniqueness proof. *)
@@ -60,10 +60,11 @@ Program Definition SemicartesianMonoidal_Terminal `{@Monoidal C}
 
 Import EqNotations.
 
-(* Conversely, a monoidal category whose terminal object 1 coincides with the
-   unit object I (the hypothesis Heq : 1 = I) is semicartesian monoidal:
-   transport the unique arrow `one` along Heq to obtain eliminate, and
-   transport one_unique to obtain unit_terminal. *)
+(*
+   本节说明幺半结构、幺半群、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Terminal_SemicartesianMonoidal `{M : @Monoidal C}
         `{T : @Terminal C} (Heq : 1 = @I C M) :

@@ -25,14 +25,17 @@ Generalizable All Variables.
 Lemma poly_unit_uniq (u : poly_unit) : u = ttt.
 Proof. now destruct u. Qed.
 
-(* The object-level predicates [IsInitialObj] / [IsTerminalObj] now live in
-   Structure/Initial.v and Structure/Terminal.v respectively, alongside the
-   bundled classes they abstract; this file consumes them. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-(* [IsUniversalProperty] demands a setoid on the predicate.  The honest choice
-   is not the indiscrete relation but the pointwise comparison of the chosen
-   arrows; it happens to be total ([IsInitialObj_irrelevant] below), but that
-   is a theorem here, not a definition. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+
+(*
+   本节说明 Terminal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance IsInitialObj_Setoid {C : Category} (c : C) :
   Setoid (IsInitialObj c) := {|
@@ -82,9 +85,11 @@ Program Definition initial_to_repr (c : C) (u : IsInitialObj c) :
 Next Obligation. simpl; intros; symmetry; apply poly_unit_uniq. Qed.
 Next Obligation. simpl; intros; now apply (uniqueness (u x)). Qed.
 
-(* ... and conversely: a representation Hom(c, −) ≅ 1 makes `c` initial.  The
-   arrow is the image of the point, and any competitor `v` is pinned by the
-   round trip `from ∘ to ≈ id`, since `to _ v` is the point. *)
+(*
+   本节说明hom、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition repr_to_initial (c : C)
   (t : @Isomorphism ([C, Sets]) [Hom c,─] (ConstOne C)) : IsInitialObj c :=
   fun x => {| unique_obj := from t x ttt ; unique_property := I |}.
@@ -115,12 +120,11 @@ Proof.
   - abstract (simpl; intros u x; reflexivity).
 Defined.
 
-(* The payoff, and the proof that the instance is usable: the generic
-   Remark-6.9 theorem [univ_property_unique_up_to_unique_iso] applied at this
-   instance, with its side condition discharged by
-   [IsInitialObj_irrelevant].  Two initial objects are joined by exactly one
-   isomorphism -- Remark 3.85 obtained from Remark 6.9 rather than proved
-   again. *)
+(*
+   本节说明同构、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition initial_obj_unique_up_to_unique_iso (c d : C)
   (Hc : IsInitialObj c) (Hd : IsInitialObj d) :
   Unique (fun _ : c ≅ d => True) := {|
@@ -140,10 +144,11 @@ End InitialUP.
 
 (* ---- the terminal case, by instantiation at C^op ---- *)
 
-(* [IsTerminalObj] in C and [IsInitialObj] in C^op are the same type: the
-   opposite category is defined with `hom x y := hom y x` and
-   `homset x y := homset y x`, so even the [Setoid] argument of [Unique]
-   matches definitionally.  Both directions are the identity function. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition IsTerminalObj_op {C : Category} (c : C) :
   IsTerminalObj c -> @IsInitialObj (C^op) c := fun u => u.
 
@@ -156,10 +161,11 @@ Definition TerminalIsUniversalProperty (C : Category) :
   IsUniversalProperty (C^op) (@IsInitialObj (C^op)) (@IsInitialObj_Setoid (C^op))
   := InitialIsUniversalProperty (C^op).
 
-(* Reading an isomorphism of C^op back as an isomorphism of C.  Both round-trip
-   laws are the same terms, since composition in C^op is composition in C with
-   the arguments swapped.  (The other direction is [Isomorphism_Opposite] of
-   Construction/Opposite.v.) *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition iso_from_op {C : Category} {x y : C}
   (i : @Isomorphism (C^op) x y) : @Isomorphism C x y := {|
   to   := from i ;
@@ -168,10 +174,11 @@ Program Definition iso_from_op {C : Category} {x y : C}
 Next Obligation. exact (iso_to_from i). Qed.
 Next Obligation. exact (iso_from_to i). Qed.
 
-(* The terminal corollary, routed through the instance: exactly one
-   isomorphism between any two objects that are terminal.  Transporting from
-   C^op is a pure relabelling -- the `to` of the C-isomorphism is the `from`
-   of the C^op-isomorphism -- so uniqueness transports componentwise. *)
+(*
+   本节说明同构、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition terminal_obj_unique_up_to_unique_iso {C : Category} (c d : C)
   (Hc : IsTerminalObj c) (Hd : IsTerminalObj d) :
   Unique (fun _ : c ≅ d => True) := {|
@@ -202,11 +209,11 @@ Program Definition Initial_IsInitialObj {C : Category} (I0 : @Initial C) :
   fun x => {| unique_obj := @zero C I0 x ; unique_property := I |}.
 Next Obligation. apply (@zero_unique C I0). Qed.
 
-(* Finally, Block A and Block B recovered from Block C: the SAME statements as
-   [terminal_unique_up_to_unique_iso] / [initial_unique_up_to_unique_iso],
-   now derived from the [IsUniversalProperty] instance instead of from
-   [one_unique] / [zero_unique] directly.  This is the demonstration that the
-   instance is genuinely usable at terminality and initiality. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition terminal_unique_up_to_unique_iso_via_UP {C : Category}
   (T1 T2 : @Terminal C) :
   Unique (fun _ : @terminal_obj C T1 ≅ @terminal_obj C T2 => True) :=

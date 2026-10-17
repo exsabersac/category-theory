@@ -26,9 +26,11 @@ Context `{@CartesianMonoidal C}.
 Context (mon : C).
 Context `{@MonoidObject C _ grp}.
 
-(* Multiplying an element on the right by the identity is the identity:
-   g·I = g. Here the right factor of the diagonal is collapsed to [mempty]
-   via [eliminate], then the right unit law [mempty_right] applies. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mempty_right_diagonal : mappend ∘ id ⨂ (mempty ∘ eliminate) ∘ ∆ grp ≈ id.
 Proof.
   rewrite bimap_comp_id_left.

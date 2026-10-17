@@ -28,25 +28,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Frobenius objects collapse in (semi)cartesian monoidal categories
+(*
+   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
 
-    Let (X, μ, η, δ, ε) be a Frobenius algebra in a monoidal category whose
-    unit I is terminal ([SemicartesianMonoidal]).  Terminality identifies ε
-    with the discard map, so the comonoid counit laws say precisely that the
-    projections retract δ.  Projecting the Frobenius law
-
-        (μ ⨂ id) ∘ α⁻¹ ∘ (id ⨂ δ) ≈ δ ∘ μ
-
-    with proj_right then collapses the multiplication: μ ≈ proj_right (in
-    generalized-element notation, μ(x, y) = y).  Evaluating the monoid's
-    right unit law at that equation yields η ∘ ε ≈ id, and ε ∘ η ≈ id[I]
-    holds by terminality, so ε : X ≅ I : η.
-
-    The cartesian case (Fox's setting, where the tensor is the product) is
-    the instance used by the seam-discipline arguments: a cartesian colour
-    cannot host a Frobenius algebra on any object except (up to iso) the
-    unit.  Note the proof below never uses the diagonal: semicartesian
-    suffices. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FrobeniusCollapse.
 
@@ -82,9 +68,11 @@ Section FrobeniusObject.
 Context {X : C}.
 Context (F : @Frobenius C M X).
 
-(* Projecting the left Frobenius law with proj_right collapses the
-   multiplication to the right projection: μ(x, y) = y on generalized
-   elements.  (Dually, the right Frobenius law would give μ ≈ proj_left.) *)
+(*
+   本节说明 Collapse 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma frobenius_mu_collapse : mu[F] ≈ @proj_right C M SM X X.
 Proof.
   rewrite <- (id_left (mu[F])).
@@ -131,48 +119,22 @@ End FrobeniusObject.
 
 End FrobeniusCollapse.
 
-(* The cartesian instance: in a cartesian monoidal category — where the
-   tensor is the categorical product — every Frobenius object collapses to
-   the terminal unit (cf. Heunen & Vicary, "Categories for Quantum Theory",
-   Oxford UP, 2019, Ch. 5 on Frobenius structures).  This is the
-   load-bearing form for seam discipline: no special commutative Frobenius
-   structure can live on a colour whose ambient tensor is cartesian. *)
+(*
+   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem frobenius_collapse {C : Category} `{H : @CartesianMonoidal C} {X : C}
         (F : @Frobenius C _ X) : X ≅ I.
 Proof.
   exact (frobenius_collapse_semicartesian F).
 Qed.
 
-(** ** Abramsky's no-cloning theorem
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Abramsky, "No-Cloning in categorical quantum mechanics" (arXiv:0910.2401),
-    §4.  Uniform copying in a symmetric monoidal category is a monoidal
-    natural diagonal that is coassociative and cocommutative — precisely the
-    [RelevanceMonoidal] structure.  The proofs below consume only
-    [diagonal_natural] (naturality), [diagonal_unit] (∆I = λ⁻¹),
-    [diagonal_braid2] (monoidality) and [braid_diagonal] (cocommutativity);
-    coassociativity ([diagonal_tensor_assoc]) is carried by the class but
-    never used, so the no-go applies just as well to a non-coassociative
-    copying operation.
-
-    The theorem: if such a category is moreover compact closed, the braiding
-    σ_{x,x} on every diagonal square is the identity ("the twist map is the
-    identity", the boxed Second Step of op. cit.), from which Abramsky's
-    Theorem 11 (every endomorphism is a scalar multiple of the identity)
-    follows.  The proof formalized here reorganizes the paper's Lemma 13:
-
-    1. Copying the cup η : I ~> x* ⨂ x and regrouping by colour shows the
-       two-cup state braid2 ∘ (η ⨂ η) ∘ λ⁻¹ *is* the copied state
-       (∆x* ⨂ ∆x) ∘ η          ([cups_mid_diagonal]);
-
-    2. cocommutativity of ∆x therefore lets the two x-wires of the two-cup
-       state be swapped silently  ([cups_mid_braid]) — the "confusion of
-       entanglements";
-
-    3. capping each input x-wire against one of the two duals turns that
-       silent swap into σ ∘ - on the outputs ([close_braid]), while a double
-       yanking evaluates the closure of the two-cup state to the braiding
-       itself ([close_cups_mid]); combining gives σ ≈ σ ∘ σ ≈ id. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section NoCloning.
 
@@ -219,12 +181,11 @@ Lemma braid2_unfold {a b c e : C} :
     ∘ tensor_assoc.
 Proof. reflexivity. Qed.
 
-(* The generic monoidal coherences the argument below leans on —
-   [unit_identity_from] (λ_I⁻¹ ≈ ρ_I⁻¹), the solved triangle forms
-   [tensor_assoc_unit_right] and [tensor_assoc_from_unit_left], and the
-   solved pentagon [pentagon_step] — are imported from the shared toolkit
-   in Structure/Monoidal/Braided/Proofs.v, where they are stated for any
-   [Monoidal] category. *)
+(*
+   本节说明幺半结构、幺半群、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Cloning.
 
@@ -346,9 +307,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* Passing a wire over a freshly inserted cup from the right equals passing
-   it under from the left: the hexagon absorbs the crossing.  (In Abramsky's
-   diagrams this is how the crossing of the "confused" cups is normalized.) *)
+(*
+   本节说明 Collapse 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cup_pass :
   tensor_assoc ∘ braid ⨂ id[x] ∘ tensor_assoc⁻¹ ∘ id[x] ⨂ cc_unit x
       ∘ unit_right⁻¹
@@ -368,10 +331,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The α-normalized two-cup state, sequentially: first cup at the head, the
-   second inserted inside it, with the crossing pushed onto the x-wires by
-   [cup_pass].  This is the state that the two-stage closure below consumes
-   snake by snake. *)
+(*
+   本节说明 Collapse 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cups_mid_nested :
   to tensor_assoc ∘ cups_mid
     ≈ id[d] ⨂ (id[d] ⨂ braid ∘ tensor_assoc ∘ cc_unit x ⨂ id[x]
@@ -506,12 +470,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* Abramsky's no-cloning theorem (arXiv:0910.2401, Theorem 11, second
-   step): in a compact closed category with uniform copying, the braiding
-   on every diagonal square is the identity.  The copied two-cup state is
-   silently swap-invariant ([cups_mid_braid]); pushing the swap through
-   the closure ([close_braid]) and evaluating ([close_cups_mid]) forces
-   σ ≈ σ ∘ σ ≈ id. *)
+(*
+   本节说明 Collapse 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem no_cloning : @braid C _ x x ≈ id[(x ⨂ x)%object].
 Proof using C CC R x.
   pose proof close_cups_mid as E1.

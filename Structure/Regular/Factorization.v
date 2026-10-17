@@ -135,12 +135,11 @@ Definition image_epi_regular {x y : C} (f : x ~> y) :
   RegularEpi (image_epi f) :=
   @regular_epi_of_kernel_coeq C R x y f.
 
-(* The image-factorization theorem: the comparison morphism out of the
-   image is monic.  This is the double-cover argument sketched in the
-   header: pulling the coequalizing map e back along a and then along
-   b ∘ pi1 produces a composite regular-epic cover of the common domain of
-   a and b, on which a and b agree because their difference is detected by
-   the kernel pair of f and erased by e. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma image_comparison_monic {x y : C} (f : x ~> y) : Monic (image_mor f).
 Proof using C R.
   constructor.

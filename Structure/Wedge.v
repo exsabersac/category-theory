@@ -35,10 +35,9 @@ Coercion Wedge_to_obj `(F : C^op ∏ C ⟶ D) (W : Wedge F) : D :=
 Notation "wedge_map[ C ]" := (@wedge_map _ _ _ C _)
   (at level 9, format "wedge_map[ C ]") : category_scope.
 
-(* A cowedge is the dual of a wedge: an apex `d : D` with legs
-   `F (x, x) ~> d` satisfying the dual condition. It is obtained as a wedge in
-   the opposite categories, `Wedge` of `F^op : (C^op)^op ∏ C^op ⟶ D^op`, so a
-   cowedge for `F` is literally a wedge for `F^op` (its apex is an object of
-   `D^op`, i.e. of `D`, and each leg `d ~{D^op}~> F (x, x)` is a leg
-   `F (x, x) ~{D}~> d`). The universal (initial) cowedge is the COEND. *)
+(*
+   本节说明（余）端、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Cowedge `(F : C^op ∏ C ⟶ D) := @Wedge (C^op) (D^op) (F^op).

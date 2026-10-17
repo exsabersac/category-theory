@@ -108,10 +108,11 @@ Example Cosliced_fmap@{oA hA oX hX +} {A : Category@{oA hA hA}}
 
 (** ** Right-adjoint-right-inverses *)
 
-(* [R] is a right-adjoint-right-inverse of [S] when [S ⊣ R] with counit the
-   identity.  As in Adjunction/LeftInverse.v, "counit the identity" is the
-   Leibniz object equation [S (R c) = c] together with the counit being
-   [≈] the identity transported along it. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record RightAdjointRightInverse@{oA oC h +} {A : Category@{oA h h}}
   {C : Category@{oC h h}} (S : A ⟶ C) : Type := {
   rari_right : C ⟶ A;
@@ -145,10 +146,11 @@ Example adj_unit_universal_op_arrow@{oC oD h +} {C : Category@{oC h h}}
 
 (** ** Proposition 1, pointwise *)
 
-(* One parallel pair, its downstairs equalizer (S, s), and ONE couniversal
-   arrow from [Sliced G x] to the object (S; s) of the slice over [G x]:
-   no adjunction and no right-inverse clause.  Faithfulness is a section
-   variable so that [Proof using] records which lemma spends it. *)
+(*
+   本节说明伴随、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section SlicedEqualizer.
 
 Universes oA oX h.

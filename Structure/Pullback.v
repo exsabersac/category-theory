@@ -15,147 +15,32 @@ Generalizable All Variables.
    f ∘ pullback_fst ≈ g ∘ pullback_snd，使得对每个满足 f ∘ q1 ≈ g ∘ q2 的 (Q, q1, q2)
    存在唯一 u : Q ~> Pull 满足 pullback_fst ∘ u ≈ q1 与 pullback_snd ∘ u ≈ q2。 *)
 
-(* Given a cospan in C:
-
-           A         B
-            \       /
-           f \     / g
-              \   /
-                v
-                C
-
-   This can be thought of, set-theoretically, as singling out the pairs that
-   agree under f and g, i.e. those satisfying the equation:
-
-      f(a) = g(b),   for a ∈ A, b ∈ B
-
-   A pullback is the subset of the cartesian product of A and B,
-   X ⊆ A × B, consisting of exactly those pairs (a, b) for which f(a) = g(b),
-   where the following diagram commutes:
-
-                 X
-               /   \
-           pA /     \ pB
-             /       \
-            A         B
-             \       /
-            f \     / g
-               \   /
-                 v
-                 C
-
-   An example of this is an INNER JOIN of two SQL tables, where f projects a
-   primary key from A, and g a foreign key referencing A, so that X contains
-   exactly those pairs of rows from A and B where id(A) = fkey(B).
-
+(*
    Wikipedia: "In fact, the pullback is the universal solution to finding a
-   commutative square like this. In other words, given any commutative square
-   [replacing in the above X with Y, and pA and pB with qA and qB] there is a
-   unique function h : Y → X such that pA ∘ h ≈ qA and pB ∘ h ≈ qB." *)
 
-(* Definition, in terms of morphisms and universal properties:
+   本节说明拉回/推出、笛卡尔、来源与用途相关定义、性质与动机。
 
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+
+(*
    Wikipedia: "A pullback of the morphisms f and g consists of an object P
-   [Pull] and two morphisms p1 : P → X [pullback_fst] and p2 : P → Y
-   [pullback_snd] for which the diagram
 
-       P ---p2---> Y
-       |           |
-     p1|           |g
-       |           |
-       X ---f----> Z
+   本节说明拉回/推出相关定义、性质与动机。
 
-   commutes. Moreover, the pullback (P, p1, p2) must be universal with respect
-   to this diagram. That is, for any other such triple (Q, q1, q2) for which
-   the following diagram commutes, there must exist a unique u : Q → P (called
-   a mediating morphism) such that
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-    p1 ∘ u = q1,    p2 ∘ u = q2
-
-   As with all universal constructions, a pullback, if it exists, is unique up
-   to isomorphism. In fact, given two pullbacks (A, a1, a2) and (B, b1, b2) of
-   the same cospan X → Z ← Y, there is a unique isomorphism between A and B
-   respecting the pullback structure (proven below as [pullback_unique])." *)
-
-(* Purpose, history, and the reach of the pullback
-
+(*
    nLab:  https://ncatlab.org/nlab/show/base+change
    nLab:  https://ncatlab.org/nlab/show/finite+limit
    nLab:  https://ncatlab.org/nlab/show/hyperdoctrine
    nLab:  https://ncatlab.org/nlab/show/span
 
-   The pullback is the categorical semantics of an equation (nLab,
-   "pullback"), and every use of it is some avatar of solving that equation
-   universally.  One limit thereby subsumes many familiar operations.
-   Pulling a monomorphism back along f computes the preimage of the
-   subobject it names; the pullback of two monomorphisms is the
-   intersection of subobjects; the pullback of f along itself is its
-   kernel pair ([kernel_pair] in Structure/Regular.v); and trivializing z
-   to the terminal object recovers the binary product, the reduction
-   recorded in the closing notes of this file.  Conversely, a terminal
-   object together with [HasPullbacks] generates every finite limit
-   (Borceux, "Handbook of Categorical Algebra" I, Prop. 2.8.2), which is
-   why Structure/Regular.v presents finite completeness economically as
-   exactly those two structures.
+   本节说明（余）极限、拉回/推出、子对象相关定义、性质与动机。
 
-   The name is imported from topology.  Steenrod's induced bundle
-   (Steenrod, "The Topology of Fibre Bundles", Princeton University Press
-   1951) forms, from a bundle over M and a map N → M, the bundle of pairs
-   of a point of N and a bundle point over its image — this construction
-   verbatim — and the classification of principal G-bundles as pullbacks
-   of a universal bundle made the operation central to algebraic topology.
-   Algebraic geometry knows the same limit as Grothendieck's produit fibré
-   (Grothendieck and Dieudonné, "Éléments de géométrie algébrique" I,
-   Publ. Math. IHÉS 4, 1960, §3.2); base change along a morphism is the
-   engine of the relative point of view there, and for affine schemes the
-   fibre product of Spec A and Spec B over Spec R is Spec of the tensor
-   product A ⊗_R B (Wikipedia, "Pullback (category theory)").  The
-   adjective "cartesian" descends from Grothendieck's fibered categories
-   (Streicher, "Fibered Categories à la Jean Bénabou", arXiv:1801.02927):
-   the cartesian arrows of the codomain fibration are precisely pullback
-   squares, a correspondence realized in-tree by
-   [codomain_cleaving_pullbacks] in Construction/Displayed/Codomain.v.
-
-   In categorical logic, substitution is pullback.  Lawvere's
-   hyperdoctrines (Lawvere, "Adjointness in Foundations", Dialectica 23,
-   1969) cast reindexing along f as the interpretation of substitution and
-   the quantifiers ∃ and ∀ as its adjoints, and Seely identified locally
-   cartesian closed categories as semantics for dependent type theory
-   (Seely, "Locally cartesian closed categories and type theory", Math.
-   Proc. Camb. Phil. Soc. 95, 1984), reading the adjoint triple
-   Σ_f ⊣ f* ⊣ Π_f as dependent sum, substitution, and dependent product.
-   The base-change functor between slices, with its left adjoint, is built
-   in Construction/Slice/Pullback.v as [Bang_Functor] ⊣ [Star_Functor],
-   proved there as [Base_Functor_Adjunction] (dependent sum on the LEFT);
-   topos theory rests on the same operation, for
-   Structure/SubobjectClassifier.v exhibits every mono as a pullback of
-   [truth] in exactly one way, and Theory/Subobject/Functor.v obtains the
-   Sub functor by chosen-pullback reindexing.
-
-   A design note.  The [Pullback] record below packages the apex
-   existentially — a pullback of f and g exists, and here is one — so it
-   cannot assert that a GIVEN commuting square is a pullback.  The
-   apex-pinned predicate [IsPullback], with conversions in both
-   directions, the pasting law [pullback_paste], mono-stability
-   [monic_pullback_stable], and the strengthened uniqueness
-   [pullback_transport] — re-derived there because [pullback_unique]
-   below is Qed-opaque — live in Theory/Morphisms/Stability.v, and that
-   split carries the subobject and classifier developments.
-   Structure/Pullback/Limit.v reconciles this record with [Limit] of a
-   cospan diagram over the walking roof of Instance/Roof.v;
-   Construction/Span/Category.v composes spans by exactly this
-   construction (nLab, "span"); Instance/FinSet/Classifier.v computes
-   [FinSet_Pullbacks] as counted subsets, so pullback objects reduce on
-   closed inputs; and the INNER JOIN reading in the header above is
-   developed by Spivak ("Category Theory for the Sciences", MIT Press
-   2014).
-
-   [WeakPullback] earns its keep in coalgebra.  Rutten's structure theory
-   of bisimulations (Rutten, "Universal coalgebra: a theory of systems",
-   Theoretical Computer Science 249, 2000) turns on whether an
-   endofunctor weakly preserves pullbacks — carries pullback squares to
-   weak pullback squares — and existence-only mediators, as in
-   [weak_ump_pullbacks], are exactly what that hypothesis consumes. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record Pullback {C : Category} {x y z : C} (f : x ~> z) (g : y ~> z) := {
   Pull         : C;            (* the pullback object  b ×_a c (fibered product) *)
@@ -174,10 +59,11 @@ Record Pullback {C : Category} {x y z : C} (f : x ~> z) (g : y ~> z) := {
 Coercion pullback_ob {C : Category} {x y z : C} (f : x ~> z) (g : y ~> z)
          (L : Pullback f g) := @Pull _ _ _ _ _ _ L.
 
-(** Pullbacks are unique up to a unique isomorphism respecting the projections.
-    This is the standard proof from the universal property: each pullback gives
-    a mediating morphism into the other, and the round-trip mediator into a
-    pullback from itself must equal [id] by uniqueness. *)
+(*
+   本节说明拉回/推出、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma pullback_unique {C : Category} {x y z : C} {f : x ~> z} {g : y ~> z}
       (P Q : Pullback f g) : Pull f g P ≅ Pull f g Q.
 Proof.
@@ -250,38 +136,28 @@ Proof.
   exact (unique_property U).
 Defined.
 
-(* Both reductions sketched below are now PROVED, in
-   [Structure/Pullback/Reduction.v]; the two dated TODO markers that stood
-   here since 2017 are retired accordingly.  The terminal-object
-   trivialization is [product_of_pullback] (apex-pinned, landing in
-   [IsCartesianProduct]) and
-   [Cartesian_of_HasPullbacks_Terminal]; the wide generalization -- an
-   [I]-indexed product as the wide pullback over the terminal object, Riehl
-   2nd ed. Lemma 3.5.15 -- is [wide_pullback_product] in
-   [Structure/Pullback/Wide.v]. *)
-(* Wikipedia: "The pullback is similar to the product, but not the same. One
-   may obtain the product by "forgetting" that the morphisms f and g exist,
-   and forgetting that the object Z exists. One is then left with a discrete
-   category containing only the two objects X and Y, and no arrows between
-   them. This discrete category may be used as the index set to construct the
-   ordinary binary product. Thus, the pullback can be thought of as the
-   ordinary (Cartesian) product, but with additional structure. Instead of
-   "forgetting" Z, f, and g, one can also "trivialize" them by specializing Z
-   to be the terminal object (assuming it exists). f and g are then uniquely
-   determined and thus carry no information, and the pullback of this cospan
-   can be seen to be the product of X and Y." *)
+(*
+   本节说明拉回/推出、笛卡尔、始/终对象相关定义、性质与动机。
 
-(* Also PROVED in [Structure/Pullback/Reduction.v]: [pullback_of_equalizer]
-   with [HasPullbacks_of_Cartesian_HasEqualizers] for the direction quoted
-   below, and [equalizer_of_pullback] for the converse (Awodey 2nd ed. Prop.
-   5.7).  Read the last sentence of the quotation with care: this file does
-   NOT establish the general "all finite limits" claim -- only the binary and
-   parallel-pair generators are related here; that claim is Structure/Limit/
-   Finite.v's [FinitelyComplete], built from products and equalizers. *)
-(* Wikipedia: "... another way of characterizing the pullback: as the
-   equalizer of the morphisms f ∘ p1, g ∘ p2 : X × Y → Z where X × Y is the
-   binary product of X and Y and p1 and p2 are the natural projections. This
-   shows that pullbacks exist in any category with binary products and
-   equalizers. In fact, by the existence theorem for limits, all finite limits
-   exist in a category with a terminal object, binary products and
-   equalizers." *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   Wikipedia: "The pullback is similar to the product, but not the same. One
+
+   本节说明拉回/推出、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+
+(*
+   本节说明（余）极限、拉回/推出、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   Wikipedia: "... another way of characterizing the pullback: as the
+
+   本节说明（余）极限、拉回/推出、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

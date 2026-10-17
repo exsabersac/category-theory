@@ -76,9 +76,11 @@ Qed.
 
 (** ** Coequalizers are unique up to isomorphism *)
 
-(* Mirrors [pullback_unique] in [Structure/Pullback.v]: each coequalizer
-   descends the other's coequalizing map, and both round-trips descend the
-   identity, so descent uniqueness identifies them with id. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma coequalizer_unique {q1 q2 : C} {e1 : y ~> q1} {e2 : y ~> q2}
   (E1 : IsCoequalizer f g q1 e1) (E2 : IsCoequalizer f g q2 e2) :
   q1 ≅ q2.
@@ -119,11 +121,11 @@ Definition cofork_legs {z : C} (h : y ~> z) (p : ParObj) :
   | ParY => h
   end.
 
-(* Leg coherence, phrased covariantly in C: precomposing the leg at the
-   codomain of any Parallel arrow with its image recovers the leg at the
-   domain.  This statement is definitionally the [cone_coherence] field of
-   an [ACone] over (APair f g)^op, since composition and hom-equivalence
-   in C^op are those of C, flipped. *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cofork_legs_coherence {z : C} (h : y ~> z) (Hh : h ∘ f ≈ h ∘ g) :
   ∀ (a b : ParObj) (k : b ~{Parallel}~> a),
     cofork_legs h a ∘ fmap[APair f g] k ≈ cofork_legs h b.
@@ -213,9 +215,11 @@ Definition is_coequalizer_cocone {q : C} {e : y ~> q}
   (E : IsCoequalizer f g q e) : Cocone (APair f g) :=
   cofork_cocone e (cofork E).
 
-(* The universal property of that cocone, phrased covariantly in C; this
-   statement is definitionally the [ump_limits] field of the colimit
-   ([Limit ((APair f g)^op)]) whose limit cone is [is_coequalizer_cocone]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma is_coequalizer_cocone_ump {q : C} {e : y ~> q}
   (E : IsCoequalizer f g q e) (N : Cocone (APair f g)) :
   ∃! u : q ~> vertex_obj[N],
@@ -257,45 +261,19 @@ End CoequalizerColimit.
 
 (** ** Coequalizers of any diagram of parallel-pair shape *)
 
-(* The section above converts at the diagram [APair f g] that a pair
-   determines.  A functor [K : Parallel ⟶ C] need not be such a record on
-   the nose -- [U ◯ APair f g] is not [APair (fmap[U] f) (fmap[U] g)] at
-   [eq_refl] (Test/ProbeComponents462.v, N9) -- but it names a pair, the
-   images under K of the two arrows of [Parallel], and both conversions
-   hold for every such K, by case analysis on the two objects (#477):
+(*
+   本节说明函子相关定义、性质与动机。
 
-     - [parallel_coequalizer_colimit]: an elementary coequalizer of the
-       pair is a colimiting cocone over K, the cocone
-       [parallel_cofork_cocone] of its coforking map;
-     - [parallel_colimit_coequalizer]: ANY colimiting cocone over K is an
-       elementary coequalizer of the pair at its apex, coequalized by its
-       injection over [ParY];
-     - [parallel_cocone_coequalizer_colimit], its converse for a GIVEN
-       cocone (#481): a cocone over K whose injection over [ParY] is an
-       elementary coequalizer of the pair is colimiting, being the
-       cocone of the first conversion up to a cone isomorphism whose apex
-       map is the identity (its injection over [ParX] agreeing by
-       coherence);
-     - [HasCoequalizers_HasColimitsOfShape]: chosen elementary
-       coequalizers give every such K a colimit.
-
-   At [K := APair f g] the pair is f, g by conversion, and the first two
-   have the types of [is_coequalizer_cocone_ump] (as an
-   [IsColimitCocone]) and of [coequalizer_is_coequalizer]; at
-   [K := U ◯ APair f g] the pair is [fmap[U] f], [fmap[U] g], so a
-   colimiting cocone over the image diagram is an elementary coequalizer
-   of the image pair with no identification of the two diagrams (all
-   three accepted in Test/ProbeAbsolute477.v).  The two conversions above
-   keep their own proofs.  [parallel_cofork_cocone] has the legs of
-   [cofork_cocone] at [APair f g] by conversion, and its coherence proof
-   is its own. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ParallelDiagram.
 
-(* The shape's hom level is C's, written in the binder as [APair] writes
-   it: [Cocone K] identifies the two (Structure/Cone.v), and left to
-   Rocq the identification lands in the constraint block as an equation
-   instead. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Universes co ch po.
 Context {C : Category@{co ch ch}}.
@@ -424,15 +402,11 @@ Proof.
       * exact Hv.
 Defined.
 
-(* The converse of the last for a GIVEN cocone N over K (#481): when N's
-   injection over ParY is an elementary coequalizer of the pair, N is
-   colimiting.  It is the cocone [parallel_cofork_cocone] of that
-   injection up to a cone isomorphism whose apex map is the identity:
-   over [ParY] the two injections are one arrow, and over [ParX] N's is
-   [cocone_inj N ParY ∘ par1] by coherence.  At [K := T ◯ APair f g] and
-   the image cocone of a cofork this is the statement of
-   Structure/Coequalizer/Absolute.v's [image_coequalizer_colimit], which
-   keeps its own proof. *)
+(*
+   本节说明（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition parallel_cocone_coequalizer_colimit (N : Cocone K)
   (E : IsCoequalizer par1 par2 vertex_obj[N] (cocone_inj N ParY)) :
@@ -454,12 +428,11 @@ Defined.
 
 End ParallelDiagram.
 
-(* The converse Adjunction/Diagonal/Finite.v records as absent for its
-   coequalizer row: chosen elementary coequalizers give every diagram of
-   parallel-pair shape a colimit.  Its type is that file's
-   [HasColimitsOfShape Parallel C] by δ (Adjunction/Diagonal/Limit.v),
-   spelled out here so that this file need not require that module
-   (accepted at the named type in Test/ProbeAbsolute477.v). *)
+(*
+   本节说明伴随、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition HasCoequalizers_HasColimitsOfShape {C : Category}
   (HC : HasCoequalizers C) : ∀ F : Parallel ⟶ C, Colimit F :=

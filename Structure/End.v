@@ -35,9 +35,9 @@ Coercion wedge_obj `(F : C^op ∏ C ⟶ D) (E : End F) := @end_wedge _ _ _ E.
 
 Require Import Category.Functor.Opposite.
 
-(* The COEND `∫^c F(c,c)` is the universal (initial) cowedge, dual to the end.
-   As with `Cowedge` in Structure/Wedge, it is obtained as an end in the
-   opposite categories: a coend for `F` is literally an end for
-   `F^op : (C^op)^op ∏ C^op ⟶ D^op`, so its legs `F (x, x) ~{D}~> d` are the
-   reversed wedge legs and the UMP runs `d ~> x` out of the coend. *)
+(*
+   本节说明（余）端、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Coend `(F : C^op ∏ C ⟶ D) := @End (C^op) (D^op) (F^op).

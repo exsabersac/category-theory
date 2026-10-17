@@ -70,12 +70,11 @@ Proof.
     now rewrite g2.
 Qed.
 
-(* The inverse of a central isomorphism is central: conjugate each
-   to-square by the tensored inverse on both sides and cancel via
-   [fmap_comp], the isomorphism laws, and [fmap_id].  The auxiliary
-   equation [E] expresses the tensored [f'] as the to-square composite
-   flanked by one inverse; substituting it into the goal leaves only the
-   other cancellation. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma central_iso_from {x y : C} (i : x ≅ y) :
   central (to i) → central (from i).
 Proof.
@@ -136,24 +135,11 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(** ** One-sided bifunctoriality
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    In a monoidal category [bimap] is functorial in both variables
-    jointly.  For the binoidal [composite_ff'] the analogous interchange
-
-      composite_ff' (f ∘ g) (f' ∘ g') ≈ composite_ff' f f' ∘ composite_ff' g g'
-
-    needs exactly one middle swap,
-
-      fmap[inj_right z] g' ∘ fmap[inj_left x'] f
-        ≈ fmap[inj_left y'] f ∘ fmap[inj_right y] g',
-
-    and a SINGLE centrality hypothesis supplies it: this square is
-    conjunct 1 of [central f] instantiated at [g'], and equally conjunct 2
-    of [central g'] instantiated at [f].  [composite_ff'_comp_swap] is
-    keyed on the bare square and pastes the swap between the [fmap_comp]
-    expansions once; the two variants below each read the square off one
-    conjunct. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma composite_ff'_comp_swap {x y z x' y' z' : C} {f : y ~> z} {g : x ~> y}
       {f' : y' ~> z'} {g' : x' ~> y'} :
@@ -182,15 +168,11 @@ Lemma composite_ff'_comp_r {x y z x' y' z' : C} {f : y ~> z} {g : x ~> y}
   composite_ff' (f ∘ g) (f' ∘ g') ≈ composite_ff' f f' ∘ composite_ff' g g'.
 Proof. intro cg'; exact (composite_ff'_comp_swap (snd (cg' y z f))). Qed.
 
-(** ** The centre Z(C) as a wide subcategory
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    [central_id] and [central_comp] are exactly the closure conditions
-    Construction/Subcategory.v asks of a subcollection of morphisms, so
-    the central morphisms over ALL objects form a wide subcategory, the
-    centre of the binoidal category (Power–Robinson, "Premonoidal
-    categories and notions of computation", 1997).  The packaging
-    mirrors [DeterministicSub]/[Det] of
-    Structure/Monoidal/CopyDiscard/Deterministic.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition CentralSub : Subcategory C := {|
   sobj  := fun _ => poly_unit;
@@ -202,19 +184,18 @@ Program Definition CentralSub : Subcategory C := {|
 Lemma Centre_wide : Wide C CentralSub.
 Proof. intro x; exact ttt. Qed.
 
-(* The inclusion Z(C) ⟶ C is the generic faithful [Incl C CentralSub]
-   from Construction/Subcategory.v.  Note that [Sub]'s homset compares
-   first projections — [fun f g => `1 f ≈ `1 g] — so every equation
-   between morphisms of the centre is literally an equation between the
-   underlying morphisms of [C]; Structure/Premonoidal/Centre.v relies on
-   this when it transports the coherence laws of a premonoidal [C] to
-   its (monoidal) centre. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 End CentralKit.
 
-(* The centre as a category, with the base category explicit so that
-   downstream files can write [Centre C] for the centre of [C].  Its
-   objects are those of [C] tagged with the trivial [poly_unit] witness,
-   and its morphisms are the central morphisms. *)
+(*
+   本节说明 Central 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Centre (C : Category) `{H : @Binoidal C} : Category :=
   Sub C (@CentralSub C H).

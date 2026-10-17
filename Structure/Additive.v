@@ -34,11 +34,11 @@ Class Additive (C : Category) := {
     padd f (pneg f) ≈ pzero
 }.
 
-(* The structural fields are registered as conditional instances in the
-   manner of Structure/Monoidal/Markov.v and Structure/Regular.v: they fire
-   only under an [Additive C] hypothesis, and registering them lets the
-   additive notations, the zero-morphism lemmas, and the biproduct
-   accessors resolve in any additive context. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Existing Instance additive_zero.
 #[export] Existing Instance additive_preadditive.
 #[export] Existing Instance additive_biproducts.

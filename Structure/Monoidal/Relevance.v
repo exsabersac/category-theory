@@ -44,9 +44,11 @@ Class RelevanceMonoidal := {
   braid_diagonal {x} :
     braid ∘ diagonal ≈ @diagonal x;
 
-  (* The middle-four interchange iso (a definitional abbreviation, not an
-     axiom): permutes the inner factors of (x ⨂ y) ⨂ (z ⨂ w) into
-     (x ⨂ z) ⨂ (y ⨂ w), built from the associator and braiding. *)
+  (*
+   本节说明 Relevance 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   braid2 {x y z w} : (x ⨂ y) ⨂ (z ⨂ w) ~> (x ⨂ z) ⨂ (y ⨂ w) :=
     tensor_assoc⁻¹
       ∘ id ⨂ (tensor_assoc ∘ braid ⨂ id ∘ tensor_assoc⁻¹)
@@ -90,9 +92,11 @@ Qed.
 Notation "∆ x" := (@diagonal _ x)
   (at level 9, format "∆ x") : morphism_scope.
 
-(* The fork (split) combinator: copy x with the diagonal, then run f and g on
-   the two copies, ⟨f, g⟩ = (f ⨂ g) ∘ ∆x. In a cartesian category this is the
-   pairing map; here the diagonal supplies the copying without a counit. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition fork {x y z} (f : x ~> y) (g : x ~> z) :
   x ~> y ⨂ z := f ⨂ g ∘ ∆x.
 

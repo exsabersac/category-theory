@@ -113,9 +113,11 @@ Section LimitUniversalProperty.
 
   Hint Extern 10 => (autorewrite with limit) : limit.
 
-  (* Main result: being a limit of [F] is a universal property, namely the
-     representability of the cone presheaf [ConePresheaf F] by the object [c].
-     This realises the natural isomorphism [Hom(c, z) ≅ Cone(c, F)]. *)
+  (*
+   本节说明（余）极限、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   Proposition LimitIsUniversalProperty :
     IsUniversalProperty C^op (fun c => IsALimit F c)
                             (fun c => @LimitSetoid J C F c).

@@ -56,9 +56,11 @@ Qed.
 
 (* Proposition 2.2.2 *)
 
-(* The left unitor is compatible with the tensor on the unit side:
-   id[I] ⨂ λ_x ≈ λ_{I ⨂ x}. Following Etingof et al., this is read off from
-   naturality of λ (the square below) together with λ being an isomorphism. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Proposition id_unit_left {x} :
   id ⨂ unit_left ≈ @unit_left _ _ (I ⨂ x).
@@ -101,11 +103,11 @@ Qed.
 
 (* Proposition 2.2.4 *)
 
-(* Helper diagram for the variant left triangle identity. It expresses the
-   commutativity of the "lower right triangle" obtained by pasting the
-   associator-naturality square against the pentagon and the triangle axiom;
-   [triangle_identity_left] is recovered from it by specializing x = I and
-   cancelling the leading [id[I] ⨂ -] via [tensor_id_left_inj]. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma bimap_id_unit_left {x y z} :
   id ⨂ (unit_left ⨂ id)
@@ -159,9 +161,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* Variant triangle identity, the unit-on-the-left form: λ ⨂ id ≈ λ ∘ α.
-   This is Kelly's lemma λ_x ⨂ id_y ≈ λ_{x ⨂ y} ∘ α_{I,x,y}, a derived
-   coherence consequence (not part of the monoidal data). *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem triangle_identity_left {x y} :
   unit_left ⨂ id
@@ -176,9 +180,11 @@ Proof.
   assumption.
 Qed.
 
-(* The original triangle axiom (ρ ⨂ id ≈ id ⨂ λ ∘ α) rewritten across the
-   inverse associator: id ⨂ λ ≈ (ρ ⨂ id) ∘ α⁻¹. Just the axiom post-composed
-   with α⁻¹ and simplified, so no new content beyond [triangle_identity]. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem inverse_triangle_identity {x y} :
   id ⨂ unit_left
@@ -190,9 +196,11 @@ Proof.
   rewrite iso_to_from; cat.
 Qed.
 
-(* The pentagon axiom in the inverse (α⁻¹) direction, obtained by inverting
-   both sides of [pentagon_identity] and reversing the composition order:
-   (α⁻¹ ⨂ id) ∘ α⁻¹ ∘ (id ⨂ α⁻¹) ≈ α⁻¹ ∘ α⁻¹. Used by [bimap_unit_right_id]. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem inverse_pentagon_identity {x y z w} :
   tensor_assoc⁻¹ ⨂ id[w] ∘ tensor_assoc⁻¹ ∘ id[x] ⨂ tensor_assoc⁻¹
@@ -215,10 +223,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* Right-handed mirror of [bimap_id_unit_left]: the helper diagram from which
-   [triangle_identity_right] is recovered. Built by pasting the inverse
-   associator-naturality square against the inverse pentagon and the inverse
-   triangle identity, then cancelling the trailing [- ⨂ id]. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma bimap_unit_right_id {x y z} :
   (id ⨂ unit_right) ⨂ id
@@ -274,9 +283,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* Variant triangle identity, the unit-on-the-right form: id ⨂ ρ ≈ ρ ∘ α⁻¹.
-   The Kelly lemma ρ_{x ⨂ y} ≈ (id_x ⨂ ρ_y) ∘ α_{x,y,I}, here stated across
-   α⁻¹; the right-handed companion of [triangle_identity_left]. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem triangle_identity_right {x y} :
   id ⨂ unit_right
@@ -316,12 +327,11 @@ Proof.
   rewrite iso_to_from; cat.
 Qed.
 
-(* Kelly's lemma (Kelly 1964): the two unitors agree on the unit object,
-   λ_I ≈ ρ_I : I ⨂ I ~> I. This is the canonical derived coherence fact, and
-   it underlies, e.g., the commutativity of End(I) via Eckmann-Hilton. It is
-   obtained here by combining the helper diagram [bimap_id_unit_left] at
-   x = y = I with the triangle axiom and [id_unit_left], then cancelling the
-   id[I]-tensorings on both sides. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary unit_identity :
   to (@unit_left _ _ I) ≈ to (@unit_right _ _ I).

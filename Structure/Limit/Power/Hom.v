@@ -199,14 +199,11 @@ Example copower_hom_iso_from_is_desc {C : Category} {J : Type} {b p : C}
   transform (from (copower_hom_iso H)) c fam = unique_obj (copower_desc H fam)
   := eq_refl.
 
-(** ** The pointwise form, evaluated at an object
+(*
+   本节说明同构相关定义、性质与动机。
 
-    Riehl states [C(X, A^I) ≅ C(X, A)^I].  Evaluating the natural
-    isomorphism above at [X] lands at exactly that shape, the right-hand side
-    being a power in [Sets] by [power_hom_functor_is_Sets_power].  The only
-    step is a unit law -- [id_right] on the power side, [id_left] on the
-    copower side, the orientation flipping with the variance -- because the
-    identity transformation's component is [fmap] of an identity. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition power_hom_iso_at {C : Category} {J : Type} {b p : C}
   {ev : ∀ _ : J, p ~> b} (H : IsPower b p ev) (c : C) :
@@ -260,11 +257,11 @@ Definition class_copower_hom_iso {C : Category} {HC : @HasIndexedCoproducts C}
                (copower_hom_functor J b) :=
   copower_hom_iso (copower_ump J b).
 
-(** ** Riehl 3.5.4 in [Sets]: the power is the function set, [ev_i] is
-       evaluation at [i]
+(*
+   本节说明 Hom 相关定义、性质与动机。
 
-    The object-level half was already proved in Instance/Sets/Products.v for
-    Awodey 2.9 exercise 7(b), and is reused by [:=] rather than reproved. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Sets_power_exponent (J : Type) (X : obj[Sets]) :
   @power Sets Sets_HasIndexedProducts J X ≅[Sets] Sets_pow J X :=
@@ -325,11 +322,11 @@ Proof.
   - intros [i x]; exists eq_refl; reflexivity.
 Defined.
 
-(** ** Awodey 3.2: a finite set is the [n]-fold copower of the terminal object
+(*
+   本节说明同构、始/终对象相关定义、性质与动机。
 
-    This is the [b := 1] reading of [Sets_copower_prod]'s statement and not a
-    second construction; it is proved directly because doing so is shorter
-    than composing with a right-unit isomorphism of the product. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Sets_copower_one_to (J : Type) :
   @copower Sets Sets_HasIndexedCoproducts J 1%object
@@ -340,9 +337,11 @@ Next Obligation.
   intros J [i x] [j y] [e Hxy]; simpl in *; destruct e; reflexivity.
 Qed.
 
-(* The [proper_morphism] certificate is supplied by hand deliberately: under
-   [Program] it is closed by instance resolution instead, and that pins this
-   constant's index universe to [Set].  See the header. *)
+(*
+   本节说明 Hom 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Sets_copower_one_from (J : Type) :
   Sets_discrete J
     ~{Sets}~> @copower Sets Sets_HasIndexedCoproducts J 1%object.

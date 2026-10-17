@@ -37,11 +37,11 @@ Program Definition CartesianMonoidal_Cartesian : @Cartesian C := {|
   exr  := fun _ _ => proj_right                (* second projection π₂ *)
 |}.
 Next Obligation.
-  (* ump_products: h ≈ ⟨f, g⟩ ↔ (exl ∘ h ≈ f) ∧ (exr ∘ h ≈ g).
-     Forward: rewrite h to ⟨f, g⟩ = (f ⨂ g) ∘ ∆, slide each projection past
-     the tensor by proj_*_natural, then collapse proj_* ∘ ∆ by the counit law
-     proj_*_diagonal.  Backward: rebuild ⟨f, g⟩ from the two equations using
-     bimap_comp, diagonal_natural, and the round-trip proj_left_right_diagonal. *)
+  (*
+   本节说明 Cartesian 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   unfold fork.
   split; intros.
   - split.

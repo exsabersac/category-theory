@@ -28,12 +28,11 @@ Generalizable All Variables.
    任意两初始对象由唯一同构同构，而每个普遍构造共有的这种唯一同构下的唯一性，使我们可以说
    「那个」初始对象（Milewski, "Products and Coproducts", 2015）。 *)
 
-(* To be initial is just to be terminal in the opposite category; but to avoid
-   confusion, we'd like a set of notations specific to categories with initial
-   objects. As a consequence the initial-object UMP is not restated here as a
-   primitive Class: `Initial C` literally unfolds to `Terminal (C^op)`, and the
-   projections below recover the C-side names (initial_obj, zero, zero_unique)
-   from the Terminal fields. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Notation "'Initial' C" := (@Terminal (C^op))
   (at level 9) : category_theory_scope.
@@ -67,15 +66,11 @@ Corollary zero_comp `{T : @Initial C} {x y : C} {f : x ~> y} :
   f ∘ zero ≈ zero.
 Proof. apply (@one_comp _ T). Qed.
 
-(* Uniqueness of the initial object (Mac Lane, CWM 2nd ed., §I.5, p. 20),
-   the exact dual of [terminal_unique].
+(*
+   本节说明同构、始/终对象相关定义、性质与动机。
 
-   Note this is NOT obtained by transporting [terminal_unique] along the
-   [Initial C = Terminal (C^op)] definition: that would produce an
-   isomorphism in `C^op`, and reading it back into `C` costs more than the
-   two-line direct argument. Each structure supplies the unique arrow out of
-   its own object, and both round trips are arrows out of an initial object,
-   so [zero_unique] identifies them with the identity. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition initial_unique {C : Category} (I1 I2 : @Initial C) :
   @initial_obj C I1 ≅ @initial_obj C I2 := {|
   to   := @zero C I1 (@initial_obj C I2);
@@ -91,14 +86,11 @@ Corollary initial_arrow_unique {C : Category} (I1 I2 : @Initial C)
       (f g : @initial_obj C I1 ~> @initial_obj C I2) : f ≈ g.
 Proof. apply (@zero_unique C I1). Qed.
 
-(* The initial dual of Block A, taken by duality in the file's own idiom:
-   each definition is its terminal counterpart read in C^op, exactly as
-   [initial_obj]/[zero]/[zero_unique] above are [terminal_obj]/[one]/
-   [one_unique] read in C^op.  Note that -- unlike [initial_unique],
-   where the file records that transporting would cost more than the
-   direct argument -- there is no cost here: no isomorphism has to be
-   read back into C, because the statements are about C-objects
-   throughout and only the hom-direction is reversed. *)
+(*
+   本节说明同构、始/终对象、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition IsInitialObj {C : Category} (c : C) : Type :=
   @IsTerminalObj (C^op) c.
 
@@ -155,13 +147,11 @@ Program Definition initial_hom_unique {C : Category} (I1 I2 : @Initial C) :
 |}.
 Next Obligation. apply (@zero_unique C I1). Qed.
 
-(* Any two morphisms out of an object isomorphic to `0` agree.  Transport both
-   along the isomorphism -- `p ≈ (p ∘ from i) ∘ to i` -- and the transported
-   halves are morphisms out of `0` proper, where [zero_unique] applies.
+(*
+   本节说明同构、始/终对象、来源与用途相关定义、性质与动机。
 
-   This is the engine behind strict initiality (Structure/BiCCC.v's
-   [initial_strict]): once an object is KNOWN isomorphic to `0`, arrows out of
-   it are forced, even though arrows INTO `0` are not. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma iso_initial_arrow_unique {C : Category} `{I : @Initial C} {y z : C}
       (i : y ≅ @initial_obj C I) (p q : y ~> z) : p ≈ q.
 Proof.

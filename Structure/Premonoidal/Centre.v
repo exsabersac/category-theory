@@ -37,30 +37,11 @@ Context `{P : @Premonoidal C B}.
 Local Notation "x ⊗ y" := (tensor x y)
   (at level 30, right associativity).
 
-(** ** Closure of centrality under the tensor
+(*
+   本节说明 Centre 相关定义、性质与动机。
 
-    For central f : x ~> y and f' : x' ~> y', the interleaved tensor
-    [composite_ff' f f'] is central.  Writing α for [to premon_assoc],
-    the first defining square (against an arbitrary h : a ~> b) is
-    conjugated by α : ((y ⊗ y') ⊗ b) ≅ (y ⊗ (y' ⊗ b)); expanding
-    [fmap[inj_left _]] over the two factors of the composite and pushing
-    α through each factor with the three one-variable naturality squares
-    ([premon_assoc_natural_middle], [_left], [_right]) brings both sides
-    to a word in which the two centrality squares — [central f] against
-    (x' ⋊ h) and [central f'] against h — apply at a SINGLE tensor level;
-    both sides land on the common normal form
-
-        (y ⋊ (y' ⋊ h)) ∘ (y ⋊ (f' ⋉ a)) ∘ (f ⋉ (x' ⊗ a)) ∘ α.
-
-    The second square mirrors the first with the from-direction
-    naturality squares (conjugating by [from premon_assoc]) and the
-    second conjuncts of the two centrality hypotheses.  Each square is
-    established after composing with the conjugating isomorphism on the
-    left, which is sufficient because the [to] and [from] components of
-    an isomorphism are monic ([iso_to_monic] and [iso_from_monic],
-    Theory/Isomorphism.v).  Note that
-    [composite_f'f f' f] is definitionally [composite_ff' f' f], so no
-    mirror closure lemma is needed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem composite_ff'_central {x x' y y'} {f : x ~> y} {f' : x' ~> y'} :
   central f → central f' → central (composite_ff' f f').
@@ -189,15 +170,11 @@ Proof using B C P.
       symmetry; apply premon_assoc_natural_left_from. }
 Qed.
 
-(** ** Lifting central isomorphisms to the centre
+(*
+   本节说明同构相关定义、性质与动机。
 
-    A C-isomorphism whose forward component is central lifts to an
-    isomorphism in Z(C): the inverse is central by [central_iso_from],
-    and both inverse laws are the underlying C-equations because
-    [Sub]-homsets compare first projections.  The objects are arbitrary
-    objects of the centre (their [poly_unit] witnesses need not be
-    [ttt]), which is exactly the generality [Build_Monoidal] requires
-    below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Centre_lift_iso {p q : @Centre C B} (i : `1 p ≅[C] `1 q)
            (ci : central (to i)) : p ≅[@Centre C B] q :=
@@ -255,16 +232,11 @@ Definition Centre_Tensor : (@Centre C B ∏ @Centre C B) ⟶ @Centre C B := {|
   fmap_comp := Centre_Tensor_comp
 |}.
 
-(** ** Z(C) is a monoidal category (Power–Robinson)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Every equational field of [Monoidal] at the centre is, by the
-    [Sub]-homset convention, an equation between underlying morphisms of
-    C, and those equations are precisely the [composite_ff']-phrased
-    translation lemmas of Structure/Premonoidal.v: the unitor squares and
-    the triangle/pentagon via identity padding, and the associator
-    squares via the joint naturality lemma (which needs no centrality at
-    all).  This discharges the promise recorded above [central] in
-    Structure/Binoidal.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Centre_Monoidal : @Monoidal (@Centre C B) :=
   @Build_Monoidal (@Centre C B)

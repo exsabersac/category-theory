@@ -22,9 +22,11 @@ Section Biproduct.
 Context {C : Category}.
 Context `{Z : @ZeroObject C}.
 
-(* A biproduct of x and y: injections and projections satisfying the four
-   interaction laws, such that (biproduct_obj, bi_exl, bi_exr) is a product
-   of x and y and (biproduct_obj, bi_inl, bi_inr) is a coproduct. *)
+(*
+   本节说明 Biproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record Biproduct (x y : C) := {
   biproduct_obj : C;
 

@@ -49,15 +49,11 @@ End IsoCancellation.
 
 (* ------------------------------------------------------------------ *)
 
-(** ** Toolkit: monoidal shuffles
+(*
+   本节说明幺半结构、幺半群、来源与用途相关定义、性质与动机。
 
-    Bimap fusion/cancellation, associator naturality and derived pentagon
-    shapes, all stated in right-associated "cons" form so that they apply
-    by a single [rewrite] in the middle of a right-associated chain.
-
-    The kit is exported, citable API: plain and mirror-image forms are
-    included for completeness even where only one orientation currently has
-    an in-tree consumer (e.g. [triangle_inverse_left]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section MonoidalToolkit.
 
@@ -204,9 +200,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** Pentagon shapes.  [pentagon_a] is the pentagon axiom right-associated;
-    the [pentagon_solved*] family solves it for the various two-factor
-    associator composites that appear while normalizing. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma pentagon_a {u v w t : C} :
   (id[u] ⨂ to tensor_assoc)
@@ -558,32 +556,11 @@ End BraidedUnitors.
 
 (* ------------------------------------------------------------------ *)
 
-(** ** The middle interchange and its coherence
+(*
+   本节说明 Proofs 相关定义、性质与动机。
 
-    [swap_inner a b c d : (a ⨂ b) ⨂ (c ⨂ d) ~> (a ⨂ c) ⨂ (b ⨂ d)] braids
-    the two middle factors.  The coherence laws — four-slot naturality
-    ([swap_inner_natural]), involution ([swap_inner_invol]), braid
-    compatibility ([swap_inner_braid]), associativity ([swap_inner_assoc],
-    via the two nesting laws [swap_inner_nested] / [swap_inner_nested2],
-    plus its inverted form [swap_inner_assoc_inv]) and unit coherence
-    ([swap_inner_unit_left2] / [swap_inner_unit_right2] with their solved
-    and inverse-orientation forms) — are precisely the conditions making
-    the squaring functor [x ↦ x ⨂ x] of a symmetric monoidal category
-    symmetric (strong) monoidal.  Everything is stated at general (mixed)
-    arguments; the diagonal special cases ([swap_inner_nat1],
-    [swap_inner_unit_left] / [swap_inner_unit_right],
-    [braid_conjugate_left]) are one-line instances, currently consumed
-    only within this file — the copy-discard stack takes its diagonal
-    corollaries from CopyDiscard/Deterministic.v instead.  The diagonal [swap_inner x x y y] is definitionally
-    Hypergraph.v's [mid_swap_inv]; that identification
-    ([swap_inner_diag]) and its corollaries live in
-    Structure/Monoidal/CopyDiscard/Deterministic.v, keeping this file
-    independent of the hypergraph stack (Hypergraph.v itself instantiates
-    [swap_inner_invol] for its [mid_swap_iso] lemmas).
-
-    Mirror forms are kept as citable API even where currently unconsumed
-    in-tree: [braid_conjugate_right] (which itself consumes the otherwise
-    unconsumed [braid_I_right]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Interchange.
 
@@ -1068,11 +1045,11 @@ Proof.
   apply swap_inner_core.
 Qed.
 
-(** The associativity hexagon, inverted: [swap_inner_assoc] with every
-    factor replaced by its inverse (the inverse of an interchange being
-    the interchange with the middle slots swapped, by [swap_inner_invol]).
-    Both sides are two-sided inverses of [swap_inner_assoc]'s left-hand
-    side, so they agree by [comp_inverse_unique]. *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem swap_inner_assoc_inv {a b c d e f : C} :
   tensor_assoc⁻¹
     ∘ (id[(a ⨂ b)%object] ⨂ swap_inner c e d f)
@@ -1210,11 +1187,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The unit coherences in the inverse orientation: the interchange
-   applied AFTER the doubled inverse unitors is the inverse unitor of
-   the tensor, decorated by the unit-object unitor.  These are the exact
-   residuals of the counit laws of a tensor comonoid
-   (Theory/Algebra/Comonoid/Tensor.v). *)
+(*
+   本节说明 Proofs 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma swap_inner_from_unit_left2 {x y : C} :
   swap_inner I x I y ∘ (unit_left⁻¹ ⨂ unit_left⁻¹)

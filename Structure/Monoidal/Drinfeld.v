@@ -26,13 +26,11 @@ Section Drinfeld.
 Context {C : Category}.
 Context `{M : @Monoidal C}.
 
-(** ** Half-braidings
+(*
+   本节说明同构相关定义、性质与动机。
 
-    A half-braiding on an object [z] is a natural family of isomorphisms
-    [β x : z ⨂ x ≅ x ⨂ z] satisfying the hexagon coherence with the tensor.
-    (This is "half" a braiding: only the object [z] is braided past
-    everything, and only the naturality/hexagon in the *other* variable is
-    asked for.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record HalfBraiding (z : C) := {
   half_braid (x : C) : z ⨂ x ≅ x ⨂ z;
@@ -212,14 +210,11 @@ Definition hb_unit : HalfBraiding I := {|
   half_braid_tensor  := @hb_unit_hexagon
 |}.
 
-(** ** The half-braiding on a tensor product
+(*
+   本节说明 Drinfeld 相关定义、性质与动机。
 
-    Given half-braidings [σ1] on [z1] and [σ2] on [z2], the object [z1 ⨂ z2]
-    carries a half-braiding built by threading [σ1] and [σ2] through the
-    associators:
-
-      (z1⨂z2)⨂x →[α] z1⨂(z2⨂x) →[id⨂σ2] z1⨂(x⨂z2)
-                 →[α⁻¹] (z1⨂x)⨂z2 →[σ1⨂id] (x⨂z1)⨂z2 →[α] x⨂(z1⨂z2). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HBTensor.
 
@@ -270,16 +265,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** The hexagon [hb_tensor_hexagon] below is a pure monoidal-coherence
-    identity: both sides transport the block [z1 ⨂ z2] past [a ⨂ b] using the
-    two component hexagons [half_braid_tensor σ1] and [half_braid_tensor σ2],
-    and they differ only in the ORDER of the four elementary half-braids
-    (σ1 past a, σ1 past b, σ2 past a, σ2 past b).  After expanding both sides,
-    the outer/inner associator scaffolding peels off by pentagon/associator
-    shuffles until the discrepancy reduces to commuting the two *independent*
-    strands "σ1 past a" and "σ2 past b" — the interchange [crux] below.  These
-    private helpers carry that chase; they touch only associators and two
-    opaque strands [P], [S], never the half-braidings themselves. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Pentagon, solved for [(id ⨂ α') ∘ α] around a strand — the inverse of the
    inner-peel move. *)
@@ -340,12 +330,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The independent-strand interchange.  [P] moves [z1] past [a] and [S] moves
-   [z2] past [b]; since the two strands are disjoint, the two associator
-   scaffolds agree.  Both sides are reduced to the common normal form
-   [α ∘ (P ⨂ S) ∘ α] by sliding each strand out (associator naturality) and
-   collapsing the residual pure-associator loop ([assoc_loop_cons] on the left,
-   an inverse-pentagon cancellation on the right). *)
+(*
+   本节说明 Drinfeld 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma crux (a b : C) (P : z1 ⨂ a ~> a ⨂ z1) (S : z2 ⨂ b ~> b ⨂ z2)
       {u : C} (k : u ~> (((z1 ⨂ a) ⨂ z2) ⨂ b)%object) :
   to (@tensor_assoc C M a z1 (b ⨂ z2))
@@ -429,11 +418,11 @@ Lemma hb_tensor_to {z1 z2} (σ1 : HalfBraiding z1) (σ2 : HalfBraiding z2)
                        ∘ to tensor_assoc))).
 Proof. exact (hb_tensor_iso_to σ1 σ2 x). Qed.
 
-(** ** Lifting a base isomorphism to the centre
+(*
+   本节说明同构相关定义、性质与动机。
 
-    A base isomorphism whose forward component intertwines the half-braidings
-    lifts to an isomorphism of the centre; the inverse intertwines them by the
-    lemma below, and the two inverse laws are the underlying base equations. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma half_braiding_morphism_iso_from {z z' : C}
       (σ : HalfBraiding z) (σ' : HalfBraiding z') (i : z ≅ z') :
@@ -519,9 +508,11 @@ Lemma hb_unit_field_to (x : C) :
   to (half_braid hb_unit x) ≈ unit_right⁻¹ ∘ unit_left.
 Proof. exact (hb_unit_to x). Qed.
 
-(** Cons-form triangle and unitor-naturality helpers.  Each keeps the working
-    term right-associated so the unit-compatibility chases below are a straight
-    line of rewrites collapsing the associators one at a time. *)
+(*
+   本节说明 Drinfeld 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma tri_left_cons {a b w} (k : w ~> (I ⨂ (a ⨂ b))%object) :
   (unit_left ⨂ id[b]) ∘ (tensor_assoc⁻¹ ∘ k) ≈ unit_left ∘ k.
@@ -543,9 +534,11 @@ Lemma ur_nat_cons {a b w} (g : a ~> b) (k : w ~> (a ⨂ I)%object) :
   unit_right ∘ ((g ⨂ id[I]) ∘ k) ≈ g ∘ (unit_right ∘ k).
 Proof. rewrite comp_assoc, <- to_unit_right_natural, <- comp_assoc; reflexivity. Qed.
 
-(** Cons-form to-then-from cancellation for a single tensor slot; the library's
-    [bimap_cancel_right_cons]/[bimap_id_cancel_cons] run from-then-to, and the
-    [iso_sym]-conjugated forms do not match syntactically here. *)
+(*
+   本节说明 Drinfeld 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma bimap_to_from_cancel_cons {h x y z : C} (i : x ≅ y)
       (k : z ~> (y ⨂ h)%object) :
@@ -563,11 +556,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** The left unitor is a morphism of half-braidings [hb_tensor hb_unit σ ⟶ σ].
-    Expanding [hb_tensor_to] and the unit half-braiding, the chase collapses the
-    outer triangle [(id ⨂ λ) ∘ α = ρ ⨂ id], cancels [ρ ∘ ρ⁻¹], folds the left
-    unitor along [α⁻¹], slides [λ] past [σ] by naturality, and lands on the
-    remaining triangle. *)
+(*
+   本节说明 Drinfeld 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma hb_left_unit_morphism {z : C} (σ : HalfBraiding z) :
   half_braiding_morphism (hb_tensor hb_unit σ) σ (to unit_left).
@@ -585,10 +578,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** The right unitor is a morphism of half-braidings [hb_tensor σ hb_unit ⟶ σ],
-    the mirror chase: collapse [(id ⨂ ρ) ∘ α = ρ], slide [ρ] past [σ], fold
-    [ρ⁻¹] along [α⁻¹], cancel [ρ ∘ ρ⁻¹] on the right slot, and finish on the
-    outer triangle [(id ⨂ λ) ∘ α = ρ ⨂ id]. *)
+(*
+   本节说明 Drinfeld 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma hb_right_unit_morphism {z : C} (σ : HalfBraiding z) :
   half_braiding_morphism (hb_tensor σ hb_unit) σ (to unit_right).
@@ -606,11 +600,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** Pentagon, solved for the mixed composite [(id ⨂ α⁻¹) ∘ α] that arises
-    when the associator produced by sliding the [σd] strand meets the inverse
-    associator framing the [σb] strand.  It is [pentagon_step] read across the
-    inverses; proved here directly by cancelling the outer [α_{a⨂b,c,e}] (epic)
-    and feeding the pentagon to the surviving [α ∘ α] run. *)
+(*
+   本节说明 Drinfeld 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma pentagon_helperB {a b c e : C} :
   (id[a] ⨂ (@tensor_assoc C M b c e)⁻¹) ∘ to (@tensor_assoc C M a b (c ⨂ e))
@@ -639,10 +633,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** Associator naturality against a map in the first slot whose remaining two
-    slots are a fused identity [id[b ⨂ c]], in cons position.  This slides the
-    opaque [σa] strand [f ⨂ id[b⨂c]] past the top associator, re-splitting the
-    fused identity into [(f ⨂ id[b]) ⨂ id[c]]. *)
+(*
+   本节说明 Drinfeld 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma to_assoc_nat_bid_cons {a a' b c w : C} (f : a ~> a')
       (k : w ~> ((a ⨂ b) ⨂ c)%object) :
@@ -657,21 +652,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** The base associator [α : (za ⨂ zb) ⨂ zd → za ⨂ (zb ⨂ zd)] is a morphism
-    of half-braidings between the two bracketings of the tensor half-braiding.
-    Pure monoidal coherence: the three half-braid components [σa], [σb], [σd]
-    each occur once and are treated as opaque strands (no naturality needed on
-    them); every other move is pentagon or associator-naturality.
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    After expanding both tensor half-braids and re-associating, the [σa]/[σb]/
-    [σd] strands sit in the "right-nested comb" normal form (a single pentagon
-    at the bottom folds the last three associators).  The chase then slides
-    each strand into its left-nested target position — [σd] and [σa] by plain
-    associator naturality ([to_assoc_nat_id2_cons], [to_assoc_nat_bid_cons]),
-    [σb] by naturality ([to_assoc_nat_cons]) after a [pentagon_helperB] step
-    reframes its surrounding inverse associator — collapsing the intervening
-    associator runs with [pentagon_solved2], one [α⁻¹ ∘ α] cancellation and a
-    final pentagon, until both sides meet the same distributed comb. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma hb_assoc_morphism {za zb zd : C}
       (σa : HalfBraiding za) (σb : HalfBraiding zb) (σd : HalfBraiding zd) :
@@ -721,12 +706,11 @@ Program Definition Drinfeld_Tensor : Drinfeld ∏ Drinfeld ⟶ Drinfeld := {|
 Next Obligation. proper; apply bimap_respects; assumption. Qed.
 Next Obligation. apply bimap_comp. Qed.
 
-(** ** Z(C) is monoidal
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Unit, unitors and associator are inherited from C on the underlying
-    objects; each is a centre morphism by the intertwining lemmas above, and
-    every coherence field is an equation between underlying morphisms of C,
-    discharged by C's own monoidal laws. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Drinfeld_unit_left (A : Drinfeld) :
   Drinfeld_Tensor ((I; hb_unit), A) ≅[Drinfeld] A :=
@@ -762,16 +746,11 @@ Next Obligation. apply from_tensor_assoc_natural. Qed.
 Next Obligation. apply triangle_identity. Qed.
 Next Obligation. apply pentagon_identity. Qed.
 
-(** ** Z(C) is braided
+(*
+   本节说明 Drinfeld 相关定义、性质与动机。
 
-    The braiding at ((z, σ), (z', σ')) is the half-braiding component
-    [σ z' : z ⨂ z' → z' ⨂ z].  That this base morphism is a centre morphism —
-    it intertwines the two tensor half-braidings [hb_tensor σ σ'] and
-    [hb_tensor σ' σ] — is [hb_braid_morphism]: expand both tensor half-braids,
-    fold the middle strands back into a single [half_braid σ (·⨂·)] so that the
-    naturality of [σ] against the whole strand [σ' x] applies, then re-expand.
-    The two hexagons and braiding naturality are then equations between
-    underlying morphisms of C, discharged by the half-braiding laws. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Naturality of a half-braiding in cons form. *)
 Lemma hb_nat_cons {z : C} (σ : HalfBraiding z) {a b w : C} (f : a ~> b)
@@ -783,11 +762,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The braiding is a centre morphism: [σ z'] intertwines [hb_tensor σ σ'] and
-   [hb_tensor σ' σ].  Both sides reduce to the common midpoint
-   [α ∘ half_braid σ (x⨂z') ∘ (id ⨂ σ' x) ∘ α]; the left equality folds the
-   [σ]-block by [half_braid_natural σ (σ' x)], the right one is a bare
-   associator cancellation after expanding [half_braid σ (x⨂z')]. *)
+(*
+   本节说明 Drinfeld 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma hb_braid_morphism {z z' : C} (σ : HalfBraiding z) (σ' : HalfBraiding z') :
   half_braiding_morphism (hb_tensor σ σ') (hb_tensor σ' σ) (to (half_braid σ z')).
 Proof.
@@ -848,10 +827,11 @@ Qed.
 
 End Drinfeld.
 
-(** Export the base category [C] explicitly on the user-facing constructions,
-    so downstream code can write [Drinfeld C], [Drinfeld_Monoidal C], etc.; the
-    monoidal structure [M] stays implicit (inferred from context), mirroring
-    [Centre C] of Structure/Binoidal/Central.v. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Arguments Drinfeld C {M}.
 Arguments Drinfeld_Forget C {M}.

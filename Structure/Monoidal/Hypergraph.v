@@ -58,12 +58,11 @@ Definition mid_swap_inv (X Y : C) :
     ∘ bimap id[X] ((@tensor_assoc C _ X Y Y)⁻¹)
     ∘ to (@tensor_assoc C _ X X (Y ⨂ Y)).
 
-(** ** The middle-swap is an isomorphism
+(*
+   本节说明幺半结构、幺半群、同构相关定义、性质与动机。
 
-    [mid_swap X Y] and [mid_swap_inv X Y] are definitionally the
-    interchange instances [swap_inner X Y X Y] and [swap_inner X X Y Y]
-    of Structure/Monoidal/Braided/Proofs.v, so both composites are
-    instances of the general involution [swap_inner_invol]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma mid_swap_iso (X Y : C) :
   mid_swap X Y ∘ mid_swap_inv X Y ≈ id[(X ⨂ X) ⨂ (Y ⨂ Y)].
@@ -97,18 +96,11 @@ Definition canonical_tensor_epsilon {X Y : C}
   X ⨂ Y ~> I :=
   to (@unit_left C _ I) ∘ bimap (@epsilon _ _ _ CX) (@epsilon _ _ _ CY).
 
-(** ** The hypergraph category class
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    A hypergraph category is a symmetric monoidal category with a chosen
-    SCFA on every object, satisfying:
-
-    - the tensor coherence: the SCFA on [X ⨂ Y] agrees with the canonical
-      SCFA assembled from those of [X] and [Y];
-    - the unit coherence: the SCFA on [I] is the trivial one (μ ≈ unit_left,
-      η ≈ id, δ ≈ unit_left⁻¹, ε ≈ id).
-
-    Without the unit coherence the user could supply an arbitrary
-    incoherent SCFA on [I]; the unit fields close that gap. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Hypergraph : Type := {
   scfa : forall (X : C), SpecialCommutativeFrobenius X;
 

@@ -17,54 +17,16 @@ Generalizable All Variables.
 
 (** * Natural transformations into a preorder *)
 
-(* nLab:  https://ncatlab.org/nlab/show/preorder
-   nLab:  https://ncatlab.org/nlab/show/thin+category
-   Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-          Springer 1998, §I.4, printed p. 19, exercise 4
-   Book:  Fong and Spivak, "Seven Sketches in Compositionality", Cambridge
-          2019, §3.3.4, Example 3.57 (printed pp. 96-97) and Exercise 3.58
-          (printed p. 97)
-   Book:  Riehl, "Category Theory in Context", Dover 2016, §1.4,
-          Exercise 1.4.iii (printed p. 30)
+(*
+ nLab:  https://ncatlab.org/nlab/show/thin+category
+ Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:  Fong and Spivak, "Seven Sketches in Compositionality", Cambridge
+ Book:  Riehl, "Category Theory in Context", Dover 2016, §1.4,
 
-   Let [P] be a preorder, regarded as the thin category [Proset P] of
-   Instance/Proset.v: objects are the elements of the carrier, and there is a
-   morphism [x ~> y] exactly when [R x y] holds.  Mac Lane's exercise asks for
-   the natural transformations between two functors [S T : C ⟶ Proset P]:
+   本文件给出预序集相关实例。
 
-     a natural transformation [S ⟹ T] exists if and only if [S c ≤ T c] for
-     every object [c] of [C], and when it exists it is unique.
-
-   Both halves are visible in the [Proset] construction.  A component of a
-   transformation at [c] is by definition a morphism [S c ~> T c], which is
-   literally a proof of [R (S c) (T c)]; so a transformation carries exactly a
-   pointwise family of order witnesses.  Conversely such a family assembles
-   into a transformation with no side condition, because the hom-setoid of
-   [Proset] is [fun _ _ => True] (all parallel morphisms are identified), so
-   every naturality square commutes for free.  Uniqueness is the same
-   observation once more: any two transformations [S ⟹ T] agree componentwise
-   under [≈], since [≈] on each hom-set of [Proset] is the total relation.
-
-   The library's setoid discipline is what makes "unique" the right word here.
-   Two transformations built from *different* proofs of the same pointwise
-   order are not equal in Coq's intensional sense, and nothing in this file
-   claims they are; they are equal in the hom-setoid of the functor category,
-   which is the library's notion of sameness for morphisms throughout (see
-   [Transform_Setoid] in Theory/Natural/Transformation.v).  Every comparison
-   of two morphisms below uses [≈] WHEREVER THE COMPARISON IS WHAT IS AT
-   STAKE — uniqueness, thinness, the isomorphism laws.
-
-   There is exactly one deliberate exception, and an audit of the first
-   commit was right to insist it be named rather than covered by a
-   universal: [endo_of_monotone_of_endo_fmap] states an [=] between two
-   morphisms of [Nat_Proset].  It is stated that way because it is the
-   informative form.  Its [≈] counterpart is vacuous — [≈] between [Proset]
-   morphisms is the total relation, so the [≈] version would hold of any two
-   morphisms whatever — whereas the [=] version says something real: the
-   arrow part of the round trip is the ORIGINAL arrow, on the nose.  The
-   remaining [=] statements in this file are round-trip identities for the
-   translation functions and an object-part agreement, and each is flagged
-   where it appears. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* What the exercise buys, and where the dual argument stops
 

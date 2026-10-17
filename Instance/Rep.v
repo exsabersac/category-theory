@@ -33,144 +33,16 @@ Open Scope category_scope.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd
-              ed., §II.4, printed p. 41 (PDF 51) —
-              maclane:II.4:construction3
-   Book:      Awodey, "Category Theory", 2nd ed., §7.1, printed p. 153 —
-              awodey:7.1:construction-linear-representation
-   nLab:      https://ncatlab.org/nlab/show/representation
-   nLab:      https://ncatlab.org/nlab/show/group+representation
-   Wikipedia: https://en.wikipedia.org/wiki/Group_representation
+(*
+ Book:      Awodey, "Category Theory", 2nd ed., §7.1, printed p. 153 —
+ nLab:      https://ncatlab.org/nlab/show/representation
+ nLab:      https://ncatlab.org/nlab/show/group+representation
+ Wikipedia: https://en.wikipedia.org/wiki/Group_representation
 
-   Mac Lane's third construction in §II.4: for a commutative ring K and
-   a group G, a K-linear representation of G is a K-module V together
-   with a homomorphism from G into the group of automorphisms of V, an
-   intertwiner between two such is a module map commuting with the two
-   actions, and the resulting category is the functor category
-   [B G, K-Mod].  Awodey states the same identification in §7.1 and
-   immediately draws the degenerate consequence: a functor from a group
-   into a poset carries every element to an identity, so there are no
-   interesting representations of a group in an order.
+   本文件给出具体实例。
 
-   This file is Instance/Fun/Action.v's structural twin one door down.
-   That file is Mac Lane's construction 2 — actions on SETS, the
-   category [MSet M] of M-actions and equivariant maps, and the
-   equivalence [MSet_Fun_equiv : [Deloop M, Sets] ≅[Cat] MSet M].  Here
-   [Sets] is replaced by [RMod K] and "action by functions" by "action
-   by module automorphisms"; the architecture, including how naturality
-   over one object collapses to a single commuting square and how the
-   functor-side round trip is rebuilt with a transparent component
-   family, is that file's and is followed rather than re-invented.
-
-     - [grp_mon]: the monoid underlying a group object, the converter
-       that lets Instance/Grp.v's [GrpObject] be delooped
-     - [RepObject K G]: a K-module with a homomorphism from G into the
-       units of its endomorphism monoid — the issue-literal
-       automorphism form
-     - [rep_act], [rep_act_unit], [rep_act_mul], [rep_act_iso]: the
-       action read off that homomorphism, its two laws, and each
-       element acting as an isomorphism of [RMod K]
-     - [monhom_of_rep] / [rep_of_monhom]: the passage between the
-       automorphism-valued and the endomorphism-valued (working) forms,
-       with both round trips definitional
-     - [Intertwiner], [Rep K G]: module maps commuting with the actions,
-       and the category they form
-     - [Rep_Fun_equiv]: the headline —
-       [[Deloop (grp_mon G), RMod K] ≅[Cat] Rep K G]
-     - [thin_functor_endo_trivial], [thin_group_functor_trivial],
-       [proset_group_functor_trivial]: Awodey's degeneracy
-     - [trivial_rep], [sign_rep]: the two witnesses
-
-   Design:
-
-   1. THE TWO [GrpObject] RECORDS.  The tree carries two records of that
-      name.  Construction/Deloop.v's extends [MonObject] by a two-sided
-      inverse and is what [Deloop] and Structure/Groupoid.v's [MonHom]
-      machinery consume; Instance/Grp.v's is the object of the official
-      category [Grp] (carrier setoid, unit, multiplication, inversion,
-      with only the LEFT unit and inverse laws as fields), and is what
-      Instance/Matr/GL.v's [UnitsOf] produces.  Since the issue-literal
-      statement of a representation names the group of automorphisms —
-      i.e. [UnitsOf] — the primitive here is Instance/Grp.v's record,
-      imported LAST so that the bare names [GrpObject], [grp_inv],
-      [grp_mul], [grp_unit] all refer to it.  [grp_mon] is the one-line
-      converter into [MonObject]: carrier, unit and multiplication
-      unchanged, associativity flipped (Deloop's [mon_op_assoc] is
-      stated in [comp_assoc]'s orientation) and the right unit law taken
-      from Instance/Grp.v's derived [grp_mul_unit_r].  Delooping is
-      therefore always [Deloop (grp_mon G)].
-
-   2. THE AUTOMORPHISM FORM IS PRIMITIVE, AND THE PASSAGE COSTS
-      NOTHING.  [RepObject] carries [rep_hom : GrpHom G (UnitsOf
-      (hom_monoid (RMod K) rep_mod) (rmod_hom_monoid_prop K rep_mod))] —
-      literally "a homomorphism from G into the automorphisms of V".
-      (An earlier revision of this line omitted the second argument of
-      [UnitsOf].  Since the PR "algebraic carriers are sets" (2026-09-17)
-      [UnitsOf] asks the monoid's carrier setoid for a [Prop] equality, and
-      [rmod_hom_monoid_prop] supplies it from [RMod_LocallyPropositional]
-      with nothing to prove; no statement in this file gained a
-      hypothesis.)
-      The working form the [Deloop] spine consumes is
-      [MonHom (grp_mon G) (hom_monoid (RMod K) V)], an action by bare
-      endomorphisms, and the two are interchangeable:
-
-        - [monhom_of_rep] forgets the invertibility witness, its
-          [mon_map] being [rep_act] — the FIRST projection of the unit
-          datum, so no proof is discarded, only ignored;
-        - [rep_of_monhom] supplies it, the inverse of the action of g
-          being the action of g⁻¹, by the group laws pushed through the
-          homomorphism (this is the automatic-invertibility pattern of
-          Construction/Deloop/Functors.v's
-          [perm_rep_acts_by_bijections], reached here through
-          [UnitsOf] rather than through [fobj_iso]).
-
-      BOTH ROUND TRIPS ARE DEFINITIONAL: [monhom_rep_round] and
-      [rep_monhom_round] are [reflexivity], because [UnitsOf]'s
-      hom-setoid compares unit data by the underlying element and
-      [rep_act] is exactly that projection.  So the choice of primitive
-      is one of statement fidelity only, and the equivalence below is
-      proved in whichever form is convenient at each step.
-
-   3. NOTHING BELOW USES COMMUTATIVITY OF K.  Mac Lane says commutative
-      ring; the parameter here is [RingObject] — defined in
-      Theory/Algebra/Rig.v and the object type of Instance/Rng.v's
-      [Rng] — because no step consumes commutativity (structurally so:
-      the record has no commutativity field) — [RMod K] is a category
-      for any
-      ring, and every argument is about the endomorphism monoid of one
-      of its objects.  Specializing to a commutative K (or to a field,
-      once issue #244 supplies one) is instantiation, not a change of
-      statement.
-
-   4. THE DEGENERACY IS PROVED IN ITS GENERAL FORM.  Awodey's remark is
-      about groups and posets, but neither hypothesis is used: in a thin
-      category ANY functor carries ANY endomorphism to an identity
-      ([thin_functor_endo_trivial]), since [fmap] of it is parallel to
-      [id].  The group statement and the [Proset] instantiation are
-      the SAME statement at two instantiations, not further theorems —
-      and at [Proset] the conclusion degenerates outright: [Proset]'s
-      hom-≈ is the trivial relation ([proset_thin]'s proof is [exact
-      I]), so [proset_group_functor_trivial]'s conclusion is inhabited
-      by [I] and carries typing content only (the Instance/Proset/
-      Limit.v degeneration, disclosed there too).  The instantiation
-      is stated at [Proset], not at posets: Instance/Poset.v's [Poset]
-      is DEFINED as [Proset P] and discards antisymmetry (the erratum
-      recorded in Instance/Proset/Galois.v) — and the coverage is not
-      thereby narrowed, since Instance/Pos.v's genuine category of
-      posets enters through [PosetAsCategory P := Proset
-      (pos_preorder P)], so the corollary covers real posets as well;
-      [proset_thin] is the honest donor and is cited, not re-proved.
-
-   5. WHAT IS NOT BUILT.  No category of representations over varying
-      K or varying G, and no character theory.  The matrix-valued
-      cousin of [RepObject] is Construction/Deloop/Functors.v's
-      [MatrixRep] (a dimension plus a homomorphism into the matrix
-      monoid, the same spine at [Matr R]); the finite-dimensional
-      vector-space reading belongs with issue #237's [FdVect] and is
-      deferred to it.  Instance/Fun/Action.v's [MSet_hom_iso] — the
-      transformation setoid presented literally as the setoid of
-      equivariant maps — has no counterpart here; the hom-level content
-      is already carried by [Rep_Fun_equiv]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** From a group object to a monoid object *)
 

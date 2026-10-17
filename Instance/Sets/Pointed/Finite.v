@@ -9,46 +9,14 @@ Generalizable All Variables.
 
 (** * Finite pointed sets: the unconditional witness *)
 
-(* nLab:      https://ncatlab.org/nlab/show/decidable+equality
-   nLab:      https://ncatlab.org/nlab/show/finite+set
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              Springer 1998, §I.7 (printed p. 26)
+(*
+ nLab:      https://ncatlab.org/nlab/show/finite+set
+ Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
 
-   Instance/Sets/Pointed.v proves two halves of Mac Lane's proposition over
-   explicit hypotheses — decidable image membership for the splitting of a
-   monic, an enumerated domain plus a decidable codomain for the splitting of
-   an epic — because without them the statements are not constructively
-   available ("every epimorphism splits" being the axiom of choice).  This
-   file discharges all of them at once, for the class where they are free:
-   finite pointed sets with decidable equality.
+   本文件给出有限情形。
 
-   [pointed_image_dec] is the general bridge — an enumerated domain and a
-   decidable codomain make image membership decidable, by running the
-   first-preimage search and reading off the answer — after which
-   [finite_monic_split] and [finite_epic_split] state the two halves with no
-   hypotheses beyond finiteness.  [pointed_balanced] needed none to begin
-   with.
-
-   The witnesses are the two-element pointed set [PointedBool] ([bool] pointed
-   at [false]) and the three-element [PointedThree] ([option bool] pointed at
-   [None]), both under Leibniz equality.  THE TWO SPLITTINGS COMPUTE: the
-   retraction of a concrete monic and the section of a concrete epic are
-   evaluated at each point by [reflexivity], which is why the two splitting
-   theorems of Instance/Sets/Pointed.v end in [Defined].  That claim is
-   scoped deliberately, and an audit of the first commit was right to
-   insist on the scope: the inverse produced by [pointed_balanced] does NOT
-   reduce, because that theorem ends in [Qed] and is opaque, so the closing
-   section's [pointed_swap_inverse_at_true] is proved by an algebraic
-   argument rather than by computation.  The section is the
-   more instructive of the two, since it exhibits both branches of the
-   construction: the basepoint is sent to the basepoint by fiat, and [true] to
-   the FIRST element of the enumeration lying over it.
-
-   Non-vacuity is settled here as well: [bool_to_three] is monic and not epic,
-   [three_to_bool] is epic and not monic, so neither implication of
-   [pointed_balanced] is trivial, and the basepoint-fixing [pointed_swap] of
-   [PointedThree] is invertible purely by being both — no inverse was
-   supplied to the theorem. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Discharging the hypotheses *)
 

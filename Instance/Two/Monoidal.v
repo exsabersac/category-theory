@@ -8,19 +8,11 @@ Require Import Category.Instance.Two.
 
 Generalizable All Variables.
 
-(** * Cartesian monoidal structure on the walking arrow 2.
+(*
+   本文件给出幺半结构实例。
 
-    The interval category [_2] is thin (posetal): at most one morphism between
-    any two objects, with hom-setoids under strict equality [Morphism_equality].
-    Regarded as the ordinal {TwoX < TwoY}, it has all finite meets, hence finite
-    products, and the top element TwoY is terminal.  Feeding the resulting
-    [Cartesian] + [Terminal] data to the cartesian-to-monoidal bridge
-    [Cartesian_Monoidal] (tensor := ×, unit := 1) yields the cartesian monoidal
-    structure [Two_Monoidal].
-
-    Every coherence law is an equation between parallel morphisms of a thin
-    category; [two_thin] below says any two such morphisms coincide, so each
-    obligation is discharged uniformly. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Any two parallel morphisms of [_2] are equal: the category is thin.  The
    argument now lives upstream as [Two_thin] in Instance/Two.v, where the

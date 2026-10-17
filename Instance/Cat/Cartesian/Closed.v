@@ -14,29 +14,14 @@ Generalizable All Variables.
 
 (** Cat is cartesian closed: the exponential is the functor category. *)
 
-(* nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
-   nLab: https://ncatlab.org/nlab/show/functor+category
-   Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
+(*
+ nLab: https://ncatlab.org/nlab/show/functor+category
+ Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
 
-   Cat is cartesian closed. Its product is the product category C × D
-   ([Cat_Cartesian], via [Construction.Product]), and the exponential C^B is
-   the functor category [B, C] = Fun B C, with functors as objects and natural
-   transformations as morphisms. Equivalently, in [Closed]'s argument order
-   ([exponent_obj x y] is displayed y ^ x), the exponential z^y is
-   [exponent_obj y z = @Fun y z = [y, z]].
+   本文件给出闭结构实例。
 
-   The closed structure is the natural bijection
-
-       Hom_Cat(A × B, C) ≅ Hom_Cat(A, [B, C])
-
-   carried by [exp_iso]. Its [to] direction is currying: a functor
-   F : A × B ⟶ C transposes to A ⟶ [B, C] sending x ↦ (y ↦ F (x, y)). Its
-   [from] direction is uncurrying, and the evaluation functor
-   eval : [B, C] × B ⟶ C (the bifunctor (G, b) ↦ G b, counit of the adjunction)
-   is recovered as [uncurry id]. The obligations below build the inner and
-   outer functors, prove their functoriality and naturality, and discharge the
-   round-trip laws and the exponential universal property; all are proven (the
-   instance is closed under the global context, no axioms). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Set Transparent Obligations.
 

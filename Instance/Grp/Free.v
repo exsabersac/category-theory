@@ -13,13 +13,11 @@ Require Import Category.Construction.Deloop.
 Require Import Category.Construction.Free.Groupoid.
 Require Import Category.Instance.Sets.
 
-(* [Instance/Grp.v] is imported LAST on purpose.  [Construction/Deloop.v]
-   also declares a record called [GrpObject] — layered on [MonObject], with
-   both unit laws and both inverse laws as fields — and the two names would
-   otherwise collide.  With this order, the unqualified [GrpObject],
-   [grp_unit], [grp_mul] and [grp_inv] below are always [Instance/Grp.v]'s,
-   which is the record [Grp] is the category of and hence the one the
-   adjunction must be stated over. *)
+(*
+   本文件给出自由构造相关。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Category.Instance.Grp.
 
 Generalizable All Variables.

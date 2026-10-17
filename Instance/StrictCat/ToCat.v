@@ -10,25 +10,11 @@ Generalizable All Variables.
 
 (** * The comparison functor [StrictCat ⟶ Cat] *)
 
-(* Issue #138 observes that [Cat] uses [Functor_Setoid], which identifies
-   functors only up to natural isomorphism, whereas the ZFC-style notion of
-   equality of functors is the *strict* one used by [StrictCat]
-   ([Functor_StrictEq_Setoid]: equal object maps, with morphism maps agreeing
-   after transport).  The two notions are not interchangeable — the underlying
-   1-category of the 2-category [Cat] genuinely needs the weak hom-equivalence,
-   since an isomorphism there is an *equivalence* of categories (this is what
-   the Lawvere/comma characterisation of adjunctions in
-   [Construction.Comma.Adjunction] relies on).
+(*
+   本文件给出具体实例。
 
-   What *is* true, and is the content of this file, is that the strict notion
-   refines the weak one: strict equality of functors implies natural
-   isomorphism.  This gives an identity-on-objects, identity-on-morphisms
-   comparison functor [StrictCat_to_Cat : StrictCat ⟶ Cat], exhibiting
-   [StrictCat] as a strictification of [Cat].  Functors *out of* [StrictCat]
-   that do not respect natural isomorphism — e.g. the underlying-graph functor
-   [Construction.Free.Quiver.Forgetful : StrictCat ⟶ Quiv] — therefore cannot
-   in general be factored through this comparison functor, which is precisely
-   why [StrictCat] is needed. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* An equality of objects induces an isomorphism: transport the identity along
    the equality.  By path induction this is [iso_id] when the proof is

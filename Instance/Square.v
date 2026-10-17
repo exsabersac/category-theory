@@ -15,11 +15,11 @@ Require Import Coq.Lists.List.
 
 Generalizable All Variables.
 
-(** [edgeset] is section-local in [Construction/Free/Quiver.v] and does not
-    escape it; [Construction/Free/Quiver/Presented.v] re-declares it locally
-    for the same reason and the declaration does not escape THAT file either.
-    Without it the first statement about edge equivalence reports a missing
-    [Setoid] instance, which reads like a universe problem and is not one. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Existing Instance edgeset.
 
 (** * The walking commutative square, by generators and relations

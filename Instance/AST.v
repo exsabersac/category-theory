@@ -13,30 +13,14 @@ Generalizable All Variables.
 
 (** The free bicartesian closed category, presented syntactically. *)
 
-(* nLab: https://ncatlab.org/nlab/show/free+cartesian+category
-   nLab: https://ncatlab.org/nlab/show/bicartesian+closed+category
-   Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
+(*
+ nLab: https://ncatlab.org/nlab/show/bicartesian+closed+category
+ Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
 
-   A bicartesian closed category is a cartesian closed category that also has
-   finite coproducts (an initial object and binary coproducts); its internal
-   language is the simply-typed lambda calculus with sums. This file builds the
-   free such category on no generators as a term model: objects [Obj] are the
-   syntax of types and morphisms [Hom a b] are the syntax of arrows (abstract
-   syntax trees) built from the bicartesian-closed combinators.
+   本文件构造自由双笛卡尔闭范畴；其内部语言为带和的简单类型 λ 演算。
 
-   Following the term-model construction (nLab: free cartesian category),
-   composition is the syntactic constructor [Compose] and the product/coproduct
-   structure is given by the pairing/copairing constructors. Rather than quotient
-   the terms by βη-equality directly, two arrows are deemed equivalent when they
-   agree under *every* interpretation into a concrete bicartesian closed category:
-
-       f ≈ g  :=  ∀ C (bicartesian closed), interp f ≈ interp g     ([AST] homset)
-
-   This makes [interp] sound by construction and, because the free category is
-   initial among bicartesian closed categories, the relation coincides with
-   equality of arrows in the free BiCCC. The result is the canonical setting for
-   normalising/deciding equations of bicartesian-closed combinators (a solver:
-   prove an equation once in [AST] and it holds in every model). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := cat_simpl.
 

@@ -19,47 +19,11 @@ Generalizable All Variables.
 
 (** * The evaluation functor as [Cat]'s exponential evaluation *)
 
-(* Satellite of Instance/Fun/Eval.v (Mac Lane §V.3, maclane:V.3:construction1):
-   the two-variable evaluation is [Cat]'s exponential counit, named, and the
-   fixed-object evaluation is its partial application.
+(*
+   本文件给出 Cat 相关实例。
 
-   WHAT IS DELIVERED (6 constants, every one closed under the global
-   context).
-     - [CatEval P X : [P, X] ∏ P ⟶ X := @eval Cat Cat_Cartesian Cat_Closed P
-       X] — the functor Instance/Cat/Cartesian/Closed.v describes in
-       prose and leaves unnamed.
-     - [CatEval_obj]/[CatEval_map]: its two data fields ARE Instance/Fun/
-       Eval.v's [EvalBi]'s, at [eq_refl] — which is why [EvalBi] uses the
-       arrow order [fmap[K] f ∘ transform[σ] p].
-     - [eval_is_CatEval_partial_obj] at [eq_refl] and
-       [eval_is_CatEval_partial_map] at [≈]: the fixed-object [Eval p] is
-       the partial application of [Cat]'s own evaluation (the [≈] is
-       [eval_partial_map]'s: [Partial_l] carries an [fmap id]).
-     - [eval_transpose J P X : [J ∏ P, X] ≅[Cat] [J, [P, X]] :=
-       Cat_exp_prod_l J P X] — the issue's "record the parameter/adjunct
-       passage" is Instance/Cat/Exponential.v's existing isomorphism,
-       cited, not rebuilt.
-
-   UNIVERSES (measured by [About] under [Set Printing Universes]).  The
-   price of the [Cat] route, and the reason Instance/Fun/Eval.v builds
-   [EvalBi] directly: the five [CatEval*] constants carry [u0 = u1],
-   [u0 = u5], [u0 = u6] — P's and X's object and hom levels collapse into
-   one universe ([Functor@{u0 u0 u0 u5 u6 u6}] with [u0 = u5 = u6]).  The
-   binder [P X : Cat] is innocent: [EvalBi] restated at the same binder
-   carries NO equation (measured), so the collapse comes from
-   [Cat_Closed]'s exponential structure itself, not from being at [Cat].
-   At arbitrary [P X : Category], [EvalBi] carries only Instance/Fun.v's
-   [jh = ch].  [eval_transpose@{u u0}] lives at [Cat]'s
-   single level ([Fun@{u u u u u u u0}]) with no equation.  All six carry
-   [Basics.compose], [eq_rect] and [prod_rect] bounds; no word-bounded
-   [Set], no [JMeq]/[EqdepFacts]/[eq_rect_r].  This is measured by [About],
-   not by a refutation: the route typechecks.
-
-   COUNTS.  6 constants (5 [def], 1 [prf]); one [Qed]; closure 33 files
-   excluding self (Instance/Cat/Exponential.v costs 8 at the margin,
-   Instance/Fun/Eval.v 1, the other fourteen [Require]s 0).  Precedent for
-   an Instance/Fun/ file requiring Instance/Cat/*: Instance/Fun/Discrete.v
-   and Instance/Fun/Action.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CatEval.
 

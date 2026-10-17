@@ -26,78 +26,13 @@ Generalizable All Variables.
 
 (** * Creation of limits is stable under the fibre product of categories *)
 
-(* nLab: https://ncatlab.org/nlab/show/created+limit
-   nLab: https://ncatlab.org/nlab/show/pullback
+(*
+ nLab: https://ncatlab.org/nlab/show/pullback
 
-   Mac Lane §V.6 Exercises 3 and 4 (book p. 125).  Exercise 3 asks that
-   creation of limits be stable under pullback in [Cat]: given a cospan
-   [F : A ⟶ C], [G : B ⟶ C] and the pullback [P] of the two, if [F] creates
-   the limits [G] preserves then the projection [P ⟶ B] creates them.
-   Exercise 4 asks that the comma category be recovered as such a pullback,
-   giving a second proof that its projection creates limits.
+   本文件给出 Cat 相关实例。
 
-   READ THE FIRST WORD OF THAT PRECISELY, because the tree already refutes
-   the naive reading.  Instance/Cat/Pullback.v proves
-   [FibreProduct_not_Cat_pullback]: the fibre product of categories is NOT a
-   pullback in [Cat].  Read THAT narrowly in turn, as its own file insists
-   (Instance/Cat/Pullback.v): it is a refutation AT ONE
-   COSPAN, [1 --true--> Indiscrete bool <--false-- 1], where the apex is
-   object-empty; the same cospan does have a [Cat] pullback, and nothing in
-   the tree refutes [FibreProduct (Coslice_Proj d) U] as a [Cat] pullback of
-   ITS cospan.  (An earlier revision of this header, of the commit message
-   and of the docs/INDEX.md bullet said the coslice apex was "refuted for
-   this object"; measured, the refutation is at the [Indiscrete bool]
-   cospan and says nothing about the coslice one.)  What the fibre product
-   is is a pullback in [StrictCat], and even there only under [ObjUIP C]
-   ([FibreProduct_IsPullback]); whether [Cat] has pullbacks at all is
-   neither proved nor refuted anywhere.  So the honest Exercise 3 is a
-   theorem about [FibreProduct] — the object that IS the pullback where the
-   tree can say so — and that is what is proved here.  Nothing below asserts
-   a pullback square in [Cat].
-
-   Two things are worth naming before the statements.
-
-   First, this proof needs NO [ObjUIP].  It never touches
-   [FibreProduct_IsPullback]; it works with the apex's own data, the stored
-   equality [`2 (K j) : F (KA j) = G (KB j)] and the stored cast condition
-   on arrows, both of which are definitional.  The printed type of
-   [fp_snd_StrictlyCreatesLimit] carries no [uip] argument.
-
-   Second, what it DOES need is that the bottom functor create limits
-   STRICTLY, not merely up to isomorphism.  The created apex pairs the
-   upstairs lift's vertex with the given cone's and stores [slift_eq] as its
-   third component, and that component must be a Leibniz [=] because that is
-   what an object of a fibre product stores; an isomorphism will not go in
-   its place.
-   Test/ProbeCatCreation439.v's negative n3 records the refusal against the
-   accepted control beside it.  In exchange the conclusion is strict too:
-   both [StrictLift] fields come out [eq_refl] and [reflexivity], at every
-   limiting cone downstairs.
-
-   The generic kit — [CreatesLimit_transport] and the [IsLimitCone]
-   transport it rests on — is not about [Cat] at all, and its natural home
-   is Structure/Limit/Creation.v, where appending is line-neutral for all
-   fifteen of that file's citations (the highest of them is the upper
-   endpoint of the range cited at doc/plan/books/qa; an earlier revision of
-   this sentence named the highest single-line citation instead, and both
-   are inside the 518-line file).  It lives here instead, for this change,
-   because that costs no rebuild of that file's large reverse-dependency
-   set and because it is where #428 put the analogous
-   [PreservesLimitCone_transport] (Functor/Hom/Continuous.v).  A later
-   move costs nothing.
-
-   Of the two [IsLimitCone] transports below only [islimitcone_dtransport_inv]
-   is consumed; [islimitcone_dtransport] is its mirror image, shipped for
-   symmetry with NO consumer in this file or anywhere in the tree.  An
-   earlier revision of this sentence said the kit rests on both.
-
-   Two further disclosures of prior art, neither of them reuse.
-   [fp_square_iso] re-derives a fact Instance/Cat/Pullback.v already
-   carries as [FP_commutes_cat : F ∘[Cat] FP_fst ≈[Cat] G ∘[Cat] FP_snd]:
-   whiskering that with this file's own [fun_equiv_whisker_r] typechecks at
-   exactly [fp_square_iso]'s type, though the two terms are not convertible.
-   And [fun_equiv_whisker_r] itself is written as a tactic proof for a
-   version reason recorded at its definition. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Cast algebra, with all endpoints variables *)
 

@@ -14,38 +14,13 @@ Generalizable All Variables.
 
 (** * FinSet, the skeletal category of finite sets *)
 
-(* nLab:      https://ncatlab.org/nlab/show/FinSet
-   Wikipedia: https://en.wikipedia.org/wiki/FinSet
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/FinSet
 
-   The skeleton of the category of finite sets: the objects are the natural
-   numbers, with [n] standing for the canonical n-element set [Fin.t n], and
-   the morphisms [m ~> n] are all functions [Fin.t m → Fin.t n].  Hom-setoids
-   are pointwise Leibniz equality (via [fun_setoid] over the discrete
-   [Fin_Setoid]), so this is an ordinary — non-quotient — category presented
-   in the library's setoid discipline.  That FinSet is skeletal — that
-   isomorphic objects are equal — is proved in Instance/FinSet/Skeleton.v
-   ([FinSet_Skeletal]).
+   本文件给出具体实例。
 
-   FinSet is the PROP for commutative monoids: its coproduct-induced monoidal
-   structure (tensor on objects is [plus]) makes every object a commutative
-   monoid via the codiagonal [id ▽ id] and the empty map.  That monoidal
-   assembly, and the [PROP] instance riding on it, need the coherence
-   machinery and are not yet built; this file delivers their intended
-   inputs:
-
-   - the category itself, with Initial (0), Terminal (1) and COMPUTING
-     coproducts: [fin_split] is a structural fixpoint dispatching through
-     [Fin.caseS'], so copairings evaluate on closed inputs by [eq_refl]
-     (see [fin_split_computes] and [merge_computes] below);
-   - the [HomEqProp] and [ObjDecEq] side conditions from
-     [Construction/Quotient.v], which universal-property proofs against
-     FinSet-like targets require ([Prop]-reflected hom equivalence, and
-     axiom-free UIP on objects via [Nat.eq_dec]).
-
-   NOTE on names: [Structure/Cocartesian.v] defines [inl], [inr], [left]
-   and [right] for the coproduct calculus, shadowing the sum-type
-   constructors, which are therefore qualified [Datatypes.inl] and
-   [Datatypes.inr] throughout this file. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Why the skeleton, and where it leads
 

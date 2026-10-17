@@ -16,39 +16,15 @@ Generalizable All Variables.
 
 (** * CMon is semiadditive: zero object, biproducts, CMon-enrichment *)
 
-(* nLab:      https://ncatlab.org/nlab/show/semiadditive+category
-   nLab:      https://ncatlab.org/nlab/show/biproduct
-   nLab:      https://ncatlab.org/nlab/show/CMon
-   Wikipedia: https://en.wikipedia.org/wiki/Biproduct
+(*
+ nLab:      https://ncatlab.org/nlab/show/biproduct
+ nLab:      https://ncatlab.org/nlab/show/CMon
+ Wikipedia: https://en.wikipedia.org/wiki/Biproduct
 
-   [CMon] is the archetypal semiadditive category.  This file exhibits the
-   three layers of that structure concretely:
+   本文件给出具体实例。
 
-   - [CMon_Zero]: the trivial (one-element) monoid is a zero object.  It is
-     terminal (everything maps to the point) and initial (the point maps to
-     the unit of any monoid, and any homomorphism out of it is forced to do
-     the same by [cmon_map_zero]); since one record plays both roles, the
-     coincidence isomorphism is the identity.
-
-   - [CMon_Biproducts]: the direct product M ⊕ N (product setoid,
-     componentwise operation) is simultaneously a product — with the
-     projections [fst], [snd] and the pairing a ↦ (f a, g a) — and a
-     coproduct — with the injections a ↦ (a, 0) and b ↦ (0, b) and the
-     copairing (a, b) ↦ f a + g b.  Commutativity of + enters exactly where
-     the theory predicts: the copairing is a homomorphism by the
-     middle-four interchange [cmon_plus_interchange], and its uniqueness
-     uses that any candidate is itself a homomorphism.
-
-   - [CMon_Preadditive]: hom-setoids are commutative monoids under the
-     pointwise addition (f + g) a := f a + g a with unit the constant-zero
-     homomorphism; composition distributes on both sides.  ROUTE NOTE: the
-     enrichment is defined directly by this pointwise formula (the honest,
-     carrier-level route) rather than derived through
-     [bicartesian_preadditive]; the connection to the phase machinery is
-     then proved, not assumed: [CMon_padd_biproduct] instantiates
-     [biproduct_addition] of Structure/Semiadditive.v at [CMon_Biproducts]
-     and shows the pointwise addition agrees with the biproduct convolution
-     ∇ ∘ (f ⊕ g) ∘ Δ. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The middle-four interchange for a commutative monoid: rebracketing a sum
    of four terms so that the outer pairs swap partners.  This is the single

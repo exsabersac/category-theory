@@ -8,42 +8,15 @@ Generalizable All Variables.
 
 (** * Ens_V, the category of sets belonging to a set V *)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
-         §I.2 "Categories", printed p. 11 (PDF p. 21)
-   nLab: https://ncatlab.org/nlab/show/category+of+sets
-   nLab: https://ncatlab.org/nlab/show/full+subcategory
-   nLab: https://ncatlab.org/nlab/show/type+universe
+(*
+ nLab: https://ncatlab.org/nlab/show/category+of+sets
+ nLab: https://ncatlab.org/nlab/show/full+subcategory
+ nLab: https://ncatlab.org/nlab/show/type+universe
 
-   Mac Lane's construction, as this repo's catalog summarizes it: for any set
-   V of sets, Ens_V is
-   the category with objects all sets X in V and arrows all functions
-   f : X → Y with the usual composition; "Ens" then denotes any one of these
-   categories. The point is the word ALL — the arrows carry no side condition
-   whatever, so Ens_V is the FULL subcategory of the category of sets spanned by
-   the members of V. What V buys is size: by choosing V one gets a category
-   whose objects form a set rather than a proper class.
+   本文件给出具体实例。
 
-   Rendered type-theoretically, "a set V of sets" is a type of codes together
-   with a decoding of each code into a type — a universe à la Tarski in the
-   nLab's terminology, as opposed to a universe à la Russell where the codes
-   *are* the types. So this file is parameterized by
-
-       V  : Type          the codes, i.e. the members of Mac Lane's V
-       El : V → Type      the decoding, i.e. "the set named by this code"
-
-   and builds the category
-
-       objects: the codes x : V
-        arrows: x ~> y  :=  El x → El y      (ALL functions, no side condition)
-     hom-setoid: f ≈ g  :=  ∀ a : El x, f a = g a
-      identity: the identity function
-   composition: ordinary function composition
-
-   [EnsV_Sets] is the same construction over Instance/Sets.v instead: [El]
-   decodes into [SetoidObject], an arrow is a setoid map, and two arrows are
-   identified when they agree pointwise up to the codomain's own `≈`. Both are
-   instances of one section, [Spanned], which spans a full subcategory of an
-   arbitrary ambient category C along a family El : V → C. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* How this file sits in the library, and what "recovers Coq" is measured to mean
 

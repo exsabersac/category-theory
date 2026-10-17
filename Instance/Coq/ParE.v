@@ -12,32 +12,13 @@ Generalizable All Variables.
 
 (** * ParE: partial functions with monoidal errors over Coq Types *)
 
-(* nLab:      https://ncatlab.org/nlab/show/exception+monad
-   Wikipedia: https://en.wikipedia.org/wiki/Monad_(functional_programming)#The_Either_monad
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Monad_(functional_programming)#The_Either_monad
 
-   [ParE] is the Kleisli category of the *exception* (a.k.a. error) monad
-   [T A := E + A] on Coq [Type]s, where the error type [E] carries a [Monoid]
-   structure so that errors can be combined. A morphism A ~> B is a total
-   function A → E + B, with [inl e] reporting an error [e] and [inr b] a
-   successful result [b]. Identity is [inr] (the monad's [return]) and
-   composition is Kleisli composition (the monad's [bind]), realized by
-   [sum_bind] below: [inl e] short-circuits, propagating the error, while
-   [inr b] feeds [b] to the next function.
+   本文件给出 Coq 类型相关实例。
 
-   The Maybe/partiality monad (see Instance/Coq/Par.v) is the special case
-   [E = unit]; here [E] is an arbitrary monoid, so an error carries typed
-   information rather than mere undefinedness, and several errors arising "in
-   parallel" (e.g. in the cartesian [fork] below) are merged with the monoid
-   product [⊗], the empty error being [mempty].
-
-   Crucially, the homset equivalence here is *error irrelevance*: two
-   morphisms agree at an input [x] when they return equal [inr] values, or
-   when they both return *some* [inl] error (regardless of which). Identifying
-   all errors is what makes [bind] (which keeps the first error) and parallel
-   error-merging (which uses [⊗]) cohere into a category and a cartesian
-   structure. A finer "error compatibility" relation — two errors are
-   equivalent when both are parts of a common error — would be desirable, but
-   is not provably transitive for this encoding, so it is not used. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ParE.
 

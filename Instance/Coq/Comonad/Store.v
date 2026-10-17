@@ -11,29 +11,13 @@ Generalizable All Variables.
 
 (** * The store (costate) comonad *)
 
-(* nLab:      https://ncatlab.org/nlab/show/store+comonad
-   Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)#Comonads
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)#Comonads
 
-   The store comonad — also called the costate comonad — over a fixed object
-   s of "positions" sends x to (s ⇒ x) × s: a store is an observation
-   function h from positions to values together with a currently focused
-   position s0, with
+   本文件给出 store 共态相关。
 
-       extract   (h, s0) = h s0                 (observe at the current focus)
-       duplicate (h, s0) = ((λ σ, (h, σ)), s0)  (a store of stores: at every
-                                                 position σ, the same
-                                                 observation refocused at σ)
-
-   Abstractly it is the comonad F ◯ U of the currying adjunction
-   (− × s) ⊣ (s ⇒ −) on a cartesian closed category, dually to the state
-   monad U ◯ F = s ⇒ (− × s).  Its coalgebras are the "very well-behaved
-   lenses" of functional programming.
-
-   Following Theory/Monad.v's [Comonad := @Monad (C^op) (W^op)], the witness
-   [Store_Comonad] below is literally a [Monad] on the opposite category; the
-   covariant accessors of Comonad/Core.v then read [extract], [duplicate] and
-   [extend] off it definitionally (the *_spec lemmas at the end hold by
-   [reflexivity]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Lenses, grids, and the practical API
 

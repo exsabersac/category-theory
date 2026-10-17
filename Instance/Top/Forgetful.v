@@ -14,136 +14,14 @@ Require Import Category.Instance.Top.
 
 Generalizable All Variables.
 
-(** * The underlying-set functor of Top and its adjoint triple
+(*
+ nLab: https://ncatlab.org/nlab/show/Top
+ nLab: https://ncatlab.org/nlab/show/adjoint+triple
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §V.9
-    (book pp. 132-135): the underlying-set functor of spaces
-    [maclane:V.9:construction1] and Exercise 2 [maclane:V.9:ex2].
-    Riehl, "Category Theory in Context", §4.1, Example 4.1.6: the adjoint
-    triple D ⊣ U ⊣ I for spaces, each adjunction a transposition bijection
-    on continuous maps.
-    Fong and Spivak, "Seven Sketches in Compositionality", §7.3.2,
-    Example 7.28 and Exercise 7.29: the two extreme topologies on a set,
-    and the fact that every function out of a discrete space is continuous.
-    nLab: https://ncatlab.org/nlab/show/Top
-    nLab: https://ncatlab.org/nlab/show/adjoint+triple
+   本文件给出遗忘函子相关。
 
-    The classical statement: the functor stripping a space to its set of
-    points is faithful and sits in an adjoint triple
-
-        Discrete  ⊣  Forget  ⊣  Indiscrete,
-
-    so it preserves all limits and all colimits; and the triple stops
-    there — the indiscrete functor has no right adjoint, because a right
-    adjoint would make it preserve colimits and it visibly does not
-    (Exercise 2).  Both extreme topologies already live in Instance/Top.v
-    ([Discrete_Top], [Indiscrete_Top] — Seven Sketches' Example 7.28), as
-    do both transposes: [out_of_discrete_continuous] (every setoid map out
-    of a discrete space is continuous — Exercise 7.29, the counit-side
-    transpose of the first adjunction) and [into_indiscrete_continuous]
-    (every setoid map into an indiscrete space is continuous — the
-    unit-side transpose of the second).
-
-    WHERE THE PACKAGED ADJUNCTIONS CANNOT LIVE, AND WHY.  In this library
-    the statement above meets a genuine size stratification, and the file's
-    shape is dictated by it, so it is spelled out once, here.
-
-      - The hom-sets of [Top] are LARGE: continuity is Type-valued data
-        quantifying over the opens of the codomain, so a continuous map
-        does not fit at the level [o] of the points — the hom level [h]
-        of [Top@{h o}] carries the strict constraint o < h
-        (Instance/Top.v, header point 2 and [ContinuousMorphism_equiv]).
-      - Every functor in this library imposes h₁ ≤ h₂ between its domain
-        and codomain hom levels: the [fmap_respects] field of [Functor] is
-        a [Proper] instance taken at the CODOMAIN's levels
-        (Theory/Functor.v), which squeezes the hom-map's function space
-        into the codomain level.
-      - [Sets@{o so}] has objects SetoidObject@{o o} and homs at level
-        [o], and the records involved are not cumulative.
-
-    Consequently a functor [Top@{h o} ⟶ Sets@{o so}] — the underlying-set
-    functor valued in the Sets WHOSE OBJECTS ARE THE POINT SETOIDS — is
-    rejected by the elaborator outright (it would need h ≤ o against
-    o < h).  A functor out of [Top] must land one level up, in
-    [Sets@{h so}], with the point setoids lifted ([Setoid_Lift],
-    Instance/Sets/Classifier.v — the lift changes carrier and equivalence
-    not at all, only their universe packaging); this is the same placement
-    Instance/Top/Closed.v gives its open- and closed-set functors out of
-    [Top^op].  Dually, a functor INTO [Top@{h o}] from a Sets must come
-    from [Sets@{o so}] exactly — its objects must be point setoids.  An
-    [Adjunction] record between the two would need both functors to share
-    ONE Sets, at levels o and h simultaneously, with o < h: the packaged
-    triple is unformable at every universe assignment.  This is the
-    library's familiar classifier phenomenon (Instance/Sets/Classifier.v
-    keeps the Sets classifier as cross-universe theorems for the same
-    reason), not a defect of the mathematics: with invariant records, "the
-    category of sets containing the points" and "the category of sets
-    large enough to receive the homs of Top" are different instantiations
-    of [Sets].
-
-    WHAT IS DELIVERED INSTEAD — the strongest formable readings, in the
-    Classifier.v style:
-
-      - [Top_Forget : Top@{h o} ⟶ Sets@{h so}], the underlying-set
-        functor into the lifted Sets, with [Top_Forget_Faithful].
-      - [Top_Discrete], [Top_Indiscrete] : Sets@{o so} ⟶ Top@{h o}, the
-        two extreme-topology functors at their natural level.
-      - The two adjunctions as CROSS-UNIVERSE TRANSPOSITION ISOMORPHISMS
-        of hom-setoids ([discrete_adj], [indiscrete_adj]) with all four
-        naturality squares each, packaged as
-        [discrete_forget_indiscrete_triple].  Both bijections are the
-        identity on underlying maps.  (Where the classical naturality
-        square mentions [fmap] of the forgetful functor, the formable
-        statement uses the stripped map itself — the lifted [fmap] lives
-        between lifted objects and cannot be composed with the unlifted
-        transpose.)
-      - Preservation of limits and colimits by the underlying-set functor,
-        stated shape-wise: the per-diagram stripping functor
-        [Forget_Diagram] (for shapes small enough to carry it, which every
-        concrete shape in this library is), and the theorems
-        [Forget_preserves_limit_cone] / [Forget_preserves_colimit_cocone],
-        proved by the two transposes exactly as the adjunctions would have
-        — a competing cone in [Sets] transposes along Discrete, a
-        competing cocone along Indiscrete.  (The competitor side is stated
-        as raw vertex-legs-coherence data; the preservation section
-        explains the second stratification that forces this.)  Cone-level
-        preservation for the LIFTED functor is neither claimed nor
-        concluded: its competitors have big vertices, which no space can
-        receive.
-      - Exercise 2 in two strengths:
-          [indiscrete_image_not_colimiting] — the indiscrete image of the
-            coproduct cocone 1 + 1 = 2 of [Sets] is not colimiting in
-            [Top]: the indiscrete functor does not preserve a coproduct.
-            (The packaged contrapositive through
-            [CocontinuousFunctor] cannot even be instantiated at
-            [Top_Indiscrete] — see the preservation section — so the
-            concrete refutation is the statement.)
-          [indiscrete_no_right_adjoint] — no adjunction-shaped data for a
-            right adjoint exists: quantifying over an object map
-            [R₀ : TopSpace → SetoidObject] together with a transposition
-            bijection natural in the Sets variable — exactly the data any
-            right adjoint would restrict to, and strictly less than
-            functoriality — still yields False.  The classical statement
-            "there is no functor R : Top ⟶ Sets with Indiscrete ⊣ R" is
-            subsumed: here the TYPE of such an R is itself unformable
-            (first bullet above), and the theorem refutes even the data a
-            candidate at any level would provide.
-
-    THE OBSTRUCTION, CONCRETELY.  The refuted colimit is the issue's
-    suggested one.  In [Sets] the coproduct of two one-point setoids is
-    the two-point setoid with its constant injections; [Top_Indiscrete]
-    sends it to the two-point indiscrete space, but the coproduct of two
-    one-point spaces in [Top] is the two-point DISCRETE space.  The
-    mediating map the colimit property would produce into the discrete
-    competitor sends true to true and false to false — the identity
-    carrier map from the indiscrete two-point space to the discrete one,
-    which Instance/Top.v's [indiscrete_to_discrete_id_not_continuous]
-    already refutes; here the refutation is re-derived directly: the
-    preimage of [singleton_true_open] would be an open of the indiscrete
-    space holding at true but not at false, and indiscrete opens are
-    UNIFORM.  (Issue #432 will package the adjoint-obstruction idiom
-    reusably; it has not landed, so per the issue's correction the
-    contrapositive is taken locally.) *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 

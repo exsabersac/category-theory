@@ -17,17 +17,11 @@ Require Import Coq.Vectors.Fin.
 
 Generalizable All Variables.
 
-(** * FinSet is an elementary topos
+(*
+   本文件给出 topos 相关实例。
 
-    This is the campaign's genuine elementary-topos WITNESS: skeletal
-    FinSet carries every component of [Structure/Topos.v] — terminal
-    object, binary products, pullbacks, exponentials, and a subobject
-    classifier — with ALL data computable (the codecs of
-    [Instance/FinSet/{Product,Closed,Classifier}.v] are structural
-    fixpoints, so closed instances reduce by [eq_refl]) and no universe
-    subtleties: every object is a [nat].  The Sets story is deliberately
-    the cross-universe THEOREM file ([Instance/Sets/Classifier.v]); the
-    honest, universe-clean witness lives here. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Deliberately a plain Definition, NOT an Existing Instance: the five
    topos_* projections are Existing Instances, and the component

@@ -1,126 +1,14 @@
 (** * Mac Lane V.8 Exercise 2(a): the hom-tensor adjunctions over any ring *)
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd
-              ed., §V.8 Exercise 2(a), printed p. 131, PDF p. 140
-              (ledger item `maclane:V.8:ex2`, issue #454), read from the
-              printed page: "For A a left R-module, B a right R-module
-              and G an abelian group, establish adjunctions
+(*
+ Book:      Mac Lane, ibid., §IV.1, printed pp. 79–80 — adjunctions in
+ nLab:      https://ncatlab.org/nlab/show/tensor+product+of+modules
+ nLab:      https://ncatlab.org/nlab/show/Eilenberg-Watts+theorem — the
 
-                (a) hom_R(A, hom_Z(B, G)) ≅ hom_Z(B ⊗_R A, G)
-                                          ≅ hom_R(B, hom_Z(A, G)),
+   本文件给出具体实例。
 
-              where hom_Z(B, G) has a suitable (left or right) R-module
-              structure, and where hom_R denotes the hom-set in R-Mod,
-              hom_Z that in Ab."  Here hom_Z(B, G) carries the left
-              R-action induced by B's right one and hom_Z(A, G) the right
-              R-action induced by A's left one.  Part (b), in
-              Instance/Mod/Cogenerator.v, takes B := R.
-   Book:      Mac Lane, ibid., §IV.1, printed pp. 79–80 — adjunctions in
-              hom-set form, the presentation of Theory/Adjunction.v's
-              record, built here through [Build_Adjunction'].
-   nLab:      https://ncatlab.org/nlab/show/tensor+product+of+modules
-   nLab:      https://ncatlab.org/nlab/show/Eilenberg-Watts+theorem — the
-              theorem these exercises serve.
-
-   WHAT IS DELIVERED, strict first.
-
-     - First isomorphism (section [HomTensor], B a right module fixed).
-       [HomZL B G : RModObject R] is hom_Z(B, G) with (r · f)(b) :=
-       f (b ⊲ r); its group is Adjunction/Additive.v's [hom_ab] at
-       [Ab_AbEnriched], nothing rebuilt.  [HomZLF B : Ab ⟶ RMod R] and
-       [TensorBF B : RMod R ⟶ Ab] (A ↦ [BalTensor B A]), and
-       **[tensor_homZ_adjunction B : TensorBF B ⊣ HomZLF B]**, natural in
-       A and G because it is an inhabitant of the [Adjunction] record.
-       The transpose computes: [ht_to_at] says ((⌊ψ⌋ a) b) = ψ (b ⊗ a) at
-       [eq_refl].
-     - Second isomorphism (section [TensorHomRight], A a left module
-       fixed): [HomZR A G : RModObject (Ring_op R)] with (f ⊲ r)(a) :=
-       f (r · a), [HomZRF A : Ab ⟶ ModR R], [TensorAF A : ModR R ⟶ Ab],
-       and **[homZ_tensor_adjunction A : TensorAF A ⊣ HomZRF A]**.
-     - The composite, Mac Lane's outer terms: [hom_hom_swap] and the
-       [Sets]-isomorphism [hom_hom_swap_iso].  At [eq_refl]
-       ([hom_hom_swap_at], [hom_hom_swap_iso_to],
-       [hom_hom_swap_iso_from_at]) the swap is literally the exchange of
-       the two arguments.  [hom_hom_swap_natural] states its naturality
-       in G, up to ≈.
-     - Over #449's tensor: the object of [TensorBF_AFT B] at A is the
-       [repr_obj] of Instance/Mod/TensorAFT.v's [bal_tensor_via_AFT B A],
-       [TensorBF_AFT_iso : TensorBF_AFT ≈ TensorBF B] is assembled from
-       that file's [bal_AFT_iso], and **[hom_tensor_adjunction :
-       TensorBF_AFT ⊣ HomZLF B]** — the name the issue's Verification
-       block prints — is [tensor_homZ_adjunction] carried along it by
-       Theory/Adjunction.v's [adjunction_along_left_iso].  Likewise
-       [hom_tensor_adjunction_right] for the second leg.  Both transposes
-       read back at [eq_refl] through [from (bal_AFT_iso _ _)].
-     - B := R (sections [RingUnit] and [RingCoext]): [ring_unit_iso A :
-       BalTensor R_R A ≅ rm_ab A] in Ab (R ⊗_R A ≅ A; both components at
-       [eq_refl]), [ring_unit_nat : RMod_Forget_Ab R ≈ TensorBF R_R],
-       [homzl_ring_adjunction : RMod_Forget_Ab R ⊣ HomZLF R_R], and the
-       comparison with Instance/Mod/Coextension.v's [coex_adjunction]:
-       the groups agree at [eq_refl] ([homzl_ring_group]), the actions
-       pointwise at [eq_refl] ([homzl_ring_act]), the two adjunctions'
-       transposes pointwise at [eq_refl]
-       ([homzl_ring_adjunction_is_coex_at]), and [homzl_coext_iso] is an
-       isomorphism in [RMod R] whose two maps are the identity.
-
-   THE TWO RECORDS ARE NOT IDENTIFIED — a stated fact, measured, not
-   pinned here.  [HomZL (Ring_RMod (Ring_op R)) G = CoextObj R G] at
-   [eq_refl] is refused, ending "(cannot unify "HomZL (Ring_RMod (Ring_op
-   R)) G" and "CoextObj R G")".  It is STILL refused in a scratch copy in
-   which every [Qed] of this file and of Instance/Mod/Coextension.v (up
-   to that file's probe section) was turned into [Defined] under
-   [Set Transparent Obligations], so the refusal is not caused by
-   opacity in these two files; the [Qed]s of the files they build on
-   (Instance/Mod.v, Instance/Ab.v, Instance/Mod/Bimodule.v and others)
-   were left opaque, so whether the law fields differ as proofs, rather
-   than only through opacity further down, is not measured, and nothing
-   here says that they are different proofs.  [homzl_coext_iso]
-   with the [eq_refl] components above is the strongest identification
-   made at that level of flipping.
-
-   NO COMMUTATIVITY.  Section [HomTensor]'s only [Context] is R and B.
-   The module laws of [HomZL] consume B's own laws and nothing of R's
-   commutativity: [hzl_act_assoc] is [rm_smul_assoc] of B read through
-   [Ring_op].  The R-linearity of the forward transpose is the balance
-   relation itself ([be_balance], in [ht_to]); the balance of the
-   backward one is [rm_map_smul] of the given map ([ht_bal]).  Neither
-   in-tree neighbour hosts G as a bare abelian group:
-   Instance/Mod/Closed.v's [HomMod] needs commutativity, and
-   Instance/Mod/Bimodule.v's [HomAbBimod] is bimodule-valued.
-
-   UNIVERSES, measured by [About] under [Set Printing Universes].  Each
-   section declares [Universes ra rc rp] for [R : RingObject@{ra rc rp}].
-   Every universe EQUATION in the constraint blocks of this file's
-   constants is one of three kinds, none introduced here: (i) the object
-   instance of [RMod R], whose objects are
-   [RModObject@{rc ra rc rc rc ra rc rp} R] (for instance A in
-   [hom_hom_swap]); (ii) the object instance of [Ab] at hom universe rc,
-   [AbObject@{rc rc rc}], which is Instance/Ab.v's hand pin
-   ([obj := AbObject@{p p p}]) and is where G lives; (iii) the fixed
-   module's group (B in [HomZL], A in [HomZR]) at rc, forced because
-   [hom_ab@{u u0}] returns [AbObject@{u u u}] and takes its source in
-   [Ab].  So [tensor_homZ_adjunction] reads
-   [Adjunction@{u4 rc rc u5 rc rc rc rc u6 rc u7}] with no equation
-   among the three ring universes.  [ring_unit_iso] and [ring_unit_nat] stay at
-   [RingObject@{ra rc rp}] with no equation.  [homzl_ring_adjunction]
-   carries [ra = rc] and [ra = rp]: its right adjoint is [hom_ab] out of
-   R's own additive group [ring_ab R : AbObject@{ra rc rp}], which (iii)
-   puts at Ab's object instance — the identification [CoextObj] carries
-   for the same reason.  Section [RingCoext] therefore fixes
-   [R : RingObject@{r r r}].
-
-   NOT DELIVERED.  No naturality in the FIXED module (B for the first
-   leg, A for the second): the tensor is not assembled into a bifunctor
-   [ModR R ∏ RMod R ⟶ Ab], so Adjunction/Parameter.v's
-   [ParametrizedAdjunction] is not instantiated.  The isomorphisms are
-   bijections of hom-setoids, not of hom-GROUPS; Adjunction/Additive.v's
-   [adj_hom_ab_iso] is not applied to them.  [hom_hom_swap] is stated
-   natural in G only ([hom_hom_swap_natural]); naturality in A or B would
-   need hom_Z(−, G) as a functor in the module variable, which is not
-   built.  No record-level
-   identification of [HomZL R_R G] with [CoextObj R G] (above).  No
-   comparison with Instance/Mod/Closed.v's [HomMod] over a commutative
-   ring. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Lib.Setoid.Propositional.

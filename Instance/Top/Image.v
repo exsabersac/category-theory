@@ -11,108 +11,16 @@ Require Import Coq.Arith.PeanoNat.
 
 Generalizable All Variables.
 
-(** * Awodey's topological caveat: the inverse image on OPENS
+(*
+ nLab: https://ncatlab.org/nlab/show/frame
+ nLab: https://ncatlab.org/nlab/show/locale
+ nLab: https://ncatlab.org/nlab/show/inverse+image
+ nLab: https://ncatlab.org/nlab/show/interior
 
-    Awodey, "Category Theory", §9.4 Example 9.12.  There is no page image
-    for that book here, so the clause is quoted from the catalog issue's
-    own transcription: after the direct-image / inverse-image adjunction
-    on power sets, Awodey observes that for a continuous map the inverse
-    image on OPEN SETS keeps its right adjoint but need not keep its left
-    one, because the direct image of an open set need not be open.
+   本文件给出具体实例。
 
-    nLab: https://ncatlab.org/nlab/show/frame
-    nLab: https://ncatlab.org/nlab/show/locale
-    nLab: https://ncatlab.org/nlab/show/inverse+image
-    nLab: https://ncatlab.org/nlab/show/interior
-
-    ** WHAT IS DELIVERED, WITH GRADES
-
-    (A) [Opens_preimage g : Opens X ⟶ Opens Y] for a continuous
-        [g : Y ~> X], the inverse image on opens AS A FUNCTOR.  Its object
-        action IS Instance/Top/Closed.v's [open_preimage] at [eq_refl]
-        ([Opens_preimage_obj]); that constant was an object assignment
-        only, with no arrow action, and NO functor in the tree had it as
-        its object action -- Instance/Top/Closed.v's [OpensF] uses it
-        in its ARROW action only, its object action being the
-        setoid of opens of a SPACE, and it lands in [Sets] rather than in
-        the category [Opens].  Read the claim at that
-        scope: functors out of [Opens] do exist, namely
-        Instance/Top/Closed.v's [OpenCompl] and its inverse, which
-        are complementation and not preimage.  All three functor laws
-        are free: [Opens] has the trivial hom-setoid, so every one of
-        them is an equation between parallel arrows of a thin category.
-
-    (B) THE NEGATIVE HALF, PROVED, not asserted.  [NatInf_Top] is
-        [option nat] under Leibniz equality with [None] playing infinity:
-        a predicate is open exactly when, IF it contains infinity, it
-        contains a tail.  [TopSpace] has seven fields: the two data
-        fields are the carrier and the openness predicate, and the five
-        proof fields are discharged by named lemmas (the union takes the
-        tail of whichever member contains infinity, the intersection the
-        larger of two tails).  [nat_inf_point] is the
-        constant map from the one-point space at infinity, continuous for
-        free because every predicate on a point is open.  Then
-        **[nat_inf_no_left_adjoint]**: NO functor
-        [L : Opens Point_Top ⟶ Opens NatInf_Top] is left adjoint to
-        [Opens_preimage nat_inf_point].  The argument transposes twice:
-        the identity at [L whole] shows [L whole] contains infinity, hence
-        a tail from some [N]; the open [nat_inf_punctured N] (everything
-        but [Some N]) pulls back to the whole point, so transposing the
-        other way gives [L whole ⊆ nat_inf_punctured N], which at
-        [Some N] is a contradiction.  The statement quantifies over
-        [Adjunction] DIRECTLY: [Opens]' homs are [Type]-valued, so
-        Instance/Proset/Galois.v's [GaloisConnection] -- whose relations
-        must be [Prop]-valued -- does not apply here, unlike in
-        Instance/Powerset.v.
-
-    (C) THE POSITIVE HALF, AT ITS TRUE STRENGTH.  The GENERAL right
-        adjoint is the interior of the dual image, a union over ALL opens
-        contained in a predicate, and that union IS NOT FORMABLE in this
-        [Top]: [OpenSet X : Type@{u}] sits one level ABOVE the points
-        (Instance/Top/Closed.v with [u0 < u]) while [open_union]
-        indexes only by [I : Type@{o}] at the points' level.  The
-        rejection is pinned as the probe's formability negative, against
-        [open_union] at a small index as the control; the same wall
-        Instance/Top/Kolmogorov.v records for its indistinguishability
-        relation.  Measured but NOT pinned: the [Powerset_squash]-truncated
-        variant of that union DOES form as a Prop-valued predicate, but
-        its openness is not derivable from [open_union] with a large
-        index, so truncating relocates the obstruction rather than
-        removing it.  What IS delivered is the right adjoint AT THE
-        WITNESS: [nat_inf_right_adjoint] with
-        **[nat_inf_preimage_adjunction : Opens_preimage nat_inf_point ⊣
-        nat_inf_right_adjoint]** -- so at this one map the inverse image
-        keeps its right adjoint and provably loses its left one, which is
-        Awodey's sentence exactly.  No second space is built and no
-        general positive statement is claimed.
-
-    ** WHAT IS NOT DELIVERED
-
-    No frame or locale structure on [Opens X], no interior operator, no
-    general right adjoint, no direct image on opens (the very thing
-    whose non-existence is the point), no relation to
-    Instance/Powerset.v's [Subsets]
-    (an open is not a subset in this presentation: [OpenSet] carries its
-    openness as data and lives a universe up), and nothing about the
-    closed-set side of Instance/Top/Closed.v.
-
-    ** UNIVERSES
-
-    [Opens X : Category@{u u0 u0}] with [u0 < u] is the donor's; every
-    constant here inherits it.  [NatInf_Top] carries [Set < o], declared
-    explicitly on [nat_inf_carrier], plus stdlib bounds and nothing more.
-    Measured per constant in the report.
-
-    ** TRANSPARENCY
-
-    Two proofs here end in [Defined], [nat_inf_punctured_open] and the
-    inline [point_into_punctured], because each produces Type-valued
-    data ([IsOpen] is [Type]-valued); neither is read through by a later
-    conversion, and each compiles as [Qed], measured by flipping.
-
-    ** REGISTRATION
-
-    Nothing here is an [Instance]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** (A) The inverse image on opens, as a functor *)

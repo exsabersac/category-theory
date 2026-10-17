@@ -12,29 +12,14 @@ Generalizable All Variables.
 
 (** * The category PROP of propositions *)
 
-(* nLab: https://ncatlab.org/nlab/show/Heyting+algebra
-   nLab: https://ncatlab.org/nlab/show/bicartesian+closed+category
-   Wikipedia: https://en.wikipedia.org/wiki/Heyting_algebra
+(*
+ nLab: https://ncatlab.org/nlab/show/bicartesian+closed+category
+ Wikipedia: https://en.wikipedia.org/wiki/Heyting_algebra
 
-   Objects are propositions (`Prop`) and a morphism P ~> Q is an implication,
-   i.e. a proof of `P → Q` (`Basics.impl`). Since every hom-setoid is made
-   trivial (`equiv f g := True`), this is a thin / posetal category: at most
-   one arrow between any two objects, so P ~> Q is inhabited exactly when
-   P entails Q. That makes Props the preorder of propositions ordered by
-   implication.
+   本文件给出具体实例。
 
-   Equipped with the logical connectives below it is a bicartesian closed
-   thin category — a Heyting prealgebra — modelling intuitionistic
-   propositional logic:
-
-       1 = True          (terminal,   Props_Terminal)
-       0 = False         (initial,    Props_Initial)
-       P × Q = P ∧ Q     (product,    Props_Cartesian)
-       P + Q = P ∨ Q     (coproduct,  Props_Cocartesian)
-       Q ^ P = P → Q     (exponent,   Props_Closed)
-
-   The exponential is implication because cartesian closure is exactly the
-   adjunction (R ∧ P) ⊢ Q  ↔  R ⊢ (P → Q), the deduction theorem. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Props : Category := {|
   obj     := Prop;                         (* objects are propositions *)

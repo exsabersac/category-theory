@@ -14,120 +14,14 @@ Require Import Coq.QArith.QArith.
 
 Generalizable All Variables.
 
-(** * Field: the category of fields, and the determination of its monos
+(*
+ nLab: https://ncatlab.org/nlab/show/field
+ Wikipedia: https://en.wikipedia.org/wiki/Field_(mathematics)
 
-    Riehl, "Category Theory in Context", §1.2 Exercise 1.2.iii (printed
-    p. 15): "show that every morphism in the category of fields is a
-    monomorphism" [riehl:1.2:exiii], and §1.6 Example 1.6.15 (printed
-    p. 38), the field half: the category of fields has NEITHER an
-    initial NOR a terminal object [riehl:1.6:example15].  These are the
-    one entry of the standard roster (Mac Lane §I.7, Awodey §1.4, Riehl
-    1.1.3) that asks for mathematics rather than bookkeeping: the roster
-    entries around it — Grp, Ab, Rng, RMod, Top — are constructions,
-    whereas these are theorems about the category once built.
-    nLab: https://ncatlab.org/nlab/show/field
-    Wikipedia: https://en.wikipedia.org/wiki/Field_(mathematics)
+   本文件给出具体实例。
 
-    OBJECTS AND MORPHISMS.  [FieldObject] is Instance/FdVect.v's record —
-    a [RingObject] with commutative multiplication, a separated unit
-    (1 ≉ 0), and a TOTAL inverse operation [finv] whose defining law
-    [finv_l] is asserted only away from zero.  Totality is forced by the
-    setoid discipline (a partial operation is not a setoid map), so
-    [finv (rig_zero F)] is a junk value, constrained by nothing except
-    [finv_respects]; every statement below that mentions [finv] carries
-    the nonzeroness hypothesis that makes it meaningful.
-
-    Morphisms are the ring homomorphisms of Instance/Rng.v, i.e. the
-    [RigHom]s of Theory/Algebra/Rig.v, which preserve 0, +, 1 and ·.  No
-    further preservation is demanded, and none may be: preservation of
-    negation is Rig.v's theorem [RigHom_neg], and preservation of
-    inverses is the theorem [field_hom_finv] below, holding at every
-    nonzero argument by uniqueness of two-sided inverses.  At zero it is
-    NOT claimed — both sides are junk values of two unrelated [finv]s,
-    and nothing relates them.
-
-    THE DETERMINATION, and its exact constructive strength.  The
-    classical argument is short: a homomorphism of fields carrying
-    a and b to a common value carries a − b to 0; were a − b nonzero it
-    would be invertible, and its image would be an invertible zero,
-    forcing 1 ≈ 0 in the target.  That argument is available here
-    verbatim and is [field_hom_distinct], stated in the form the
-    argument actually produces:
-
-        a ≉ b  →  f a ≉ f b
-
-    — distinct elements have distinct images, unconditionally and
-    axiom-free.  What the argument does NOT produce is the strict
-    cancellation form [f a ≈ f b → a ≈ b].  Running it under the
-    hypothesis [f a ≈ f b] yields ¬¬(a ≈ b), and no field axiom carries
-    that back to a ≈ b: the record supplies [finv] together with a law
-    holding away from zero, not a decision between "zero" and
-    "invertible".  This is exactly the shape of Instance/Grp/Epi.v,
-    where surjectivity of a group epimorphism is delivered as the
-    unconditional density theorem [grp_epic_image_dense] and the
-    classical biconditional is its double-negation elimination; the
-    same discipline is followed here, and for the same reason.
-
-    So the hypothesis is named rather than smuggled: [FieldStable F]
-    says that ≈ on F is ¬¬-stable.  It is discharged by decidable
-    equality ([field_dec_stable]), hence holds for both fields in the
-    tree ([Q_Field_stable], [F2_Field_stable]).  Two results say where
-    it sits.  [stability_is_the_conclusion] shows that under the
-    premise [f a ≈ f b] the hypothesis INSTANCE at (a, b) and the
-    conclusion a ≈ b inter-derive — a single-instance statement, not
-    the quantified biconditional Instance/Grp/Epi.v proves, and it is
-    labelled as such where it is stated.  [FieldStableAtZero], with
-    [field_stable_at_zero_suffices] and the two inter-derivability
-    lemmas, locates the obstruction: stability is ever used only at
-    zero, which is precisely the guard on [finv_l], and the zero-only
-    form is equivalent to the pairwise one.  With either,
-    [field_monic] gives Riehl's conclusion per morphism and
-    [field_every_monic] gives it in the blanket form the exercise
-    states.  No countermodel is offered: whether some field has
-    unstable equality is left open, not asserted either way.
-
-    NO INITIAL AND NO TERMINAL OBJECT.  Riehl's Example 1.6.15 is
-    delivered as [Field_no_initial] and [Field_no_terminal], with the
-    object-level readings [Field_no_initial_obj] and
-    [Field_no_terminal_obj] — no object of [Field] is initial, and none
-    is terminal — obtained through Structure/Terminal.v's
-    [IsTerminalObj]/[IsInitialObj] bundling.  The separating pair is ℚ
-    against [F2_Field], the two-element field built here on [bool]:
-    characteristic 0 against characteristic 2.  Both proofs are
-    CONSTRUCTIVE and consult no decision procedure — the guard on
-    [finv_l] is a negation, so the negative fact "1 + 1 is not zero
-    here" is itself the licence to invert, and neither [FieldStable]
-    nor decidability appears in either proof.  The same pair also gives
-    [no_hom_Q_F2] and [no_hom_F2_Q]: there is no homomorphism in either
-    direction, so [Field] is not even connected.
-
-    THE CONVERSE IS NOT CLAIMED.  "Monic ⟺ injective" would need the
-    monic ⇒ injective direction, and that needs a probe object — the
-    free field on one generator, which does not exist in this tree.  The
-    analogous probes elsewhere show what is missing rather than that the
-    pattern is unavailable: Instance/Sets.v probes with the singleton,
-    and Instance/Rng.v's own monic ⇒ injective — deferred there when this
-    was written, pending the polynomial ring ℤ[x] — is now proved, as
-    [rng_monic_injective] in Instance/Rng/Polynomial.v, using exactly
-    that probe.  No such object is available for fields.  Riehl's
-    exercise concludes that every morphism is monic, and that is what is
-    delivered.
-
-    WITNESSES.  ℚ is an object ([Q_Field], from FdVect.v) and F₂ is a
-    second one, built here; the identity is a morphism; every
-    homomorphism out of either is monic with no hypothesis at all
-    ([Q_hom_monic], [F2_hom_monic]); and ℚ is rigid — its only ring
-    endomorphism is the identity ([Q_endo_id]), by initiality of ℤ
-    followed by cancellation of the denominator.
-
-    AXIOMS.  Everything here is axiom-free, counted the way
-    docs/AXIOMS.md counts: all 76 constants the module declares — the
-    50 source-level definitions and theorems, the 2 [Faithful]
-    instances, and the 24 [Program] obligations, which no [.glob] sweep
-    sees — report "Closed under the global context".  The arithmetic is
-    Theory/Algebra/Rig.v's, the concrete carriers are [bool] and stdlib
-    [QArith], and neither needs an axiom.  In particular nothing in
-    this file touches the reals. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 

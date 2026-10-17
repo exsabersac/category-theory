@@ -17,96 +17,14 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §II.4, printed pp. 41–42 (PDF 51–52) —
-              maclane:II.4:construction2, maclane:II.4:ex5
-   nLab:      https://ncatlab.org/nlab/show/action
-   nLab:      https://ncatlab.org/nlab/show/G-set
+(*
+ nLab:      https://ncatlab.org/nlab/show/action
+ nLab:      https://ncatlab.org/nlab/show/G-set
 
-   Mac Lane's construction 2: a functor from a delooped monoid into
-   Sets is exactly an action of M on a set, and a natural
-   transformation between two such functors is exactly a single
-   EQUIVARIANT map — its one component, at the one object.  This file
-   packages the correspondence at category strength: the category
-   [MSet M] of M-actions with equivariant maps, and the equivalence
-   [MSet_Fun_equiv : [Deloop M, Sets] ≅[Cat] MSet M].  Exercise 5
-   specializes to a group acting on finite sets: every finite-set
-   value of a functor on a delooped GROUP is acted on by
-   permutations, since group elements are invertible arrows and
-   functors preserve isomorphisms — the permutation-representation
-   reading.
+   本文件给出具体实例。
 
-     - [Equivariant]: a setoid morphism between the carriers
-       commuting with the actions, with the componentwise setoid
-     - [MSet M]: the category of M-actions and equivariant maps
-     - [MSet_to]/[MSet_from]: the two comparison functors, riding
-       Construction/Deloop/Functors.v's [action_of_functor] and
-       [functor_of_action] (cited, not rebuilt)
-     - [MSet_Fun_equiv]: the equivalence [Deloop M, Sets] ≅ [MSet M]
-       in Cat, and [MSet_hom_iso], the hom-setoid isomorphism
-       stating literally that a natural transformation IS one
-       equivariant map
-     - [perm_of_group_element]/[FinPermRep]/
-       [perm_rep_acts_by_bijections]: Exercise 5 — for a group G,
-       each g acts on the finite-set value of any
-       F : Deloop G ⟶ FinSet as an isomorphism of FinSet (a
-       permutation), and representations correspond to functors
-       along the spine, invertibility being automatic rather than
-       part of the data
-
-   Design:
-
-   1. THE OBJECT-LEVEL DICTIONARY IS ALREADY IN THE TREE, AND IS NOT
-      REBUILT.  Construction/Deloop/Functors.v has [MSetoidAction],
-      [action_of_functor], [functor_of_action], the object-level
-      round trips ([action_round] is pointwise reflexivity;
-      [action_functor_round] is the [Functor_Setoid] witness), the
-      spine correspondence [functor_of_hom_monoid]/
-      [hom_monoid_of_functor] with its round trips, and
-      [action_automorphism] with its definitional readings — all
-      consumed below, none re-proved.  What this file adds is the
-      MORPHISM level — equivariant maps as a category — and the
-      equivalence at [Cat] strength.  The one thing rebuilt is the
-      functor-side round-trip ISOMORPHISM, with a transparent
-      component family ([MSet_round_iso]): the in-tree lemma is
-      opaque (Qed) and the equivalence needs to compute with the
-      components — the same transparent-witness discipline as
-      Construction/Arrow/Functor.v's [fs_refl].
-
-   2. NATURALITY AT THE ONE OBJECT IS EQUIVARIANCE.  A transformation
-      η between functors on [Deloop M] has one component, and its
-      naturality square at g : ttt ~> ttt says precisely that this
-      component commutes with the two actions.  [MSet_to]'s morphism
-      action reads this off; [MSet_from] materializes an equivariant
-      map as the constant transformation family, naturality being
-      equivariance again.
-
-   3. EXERCISE 5 RIDES INVERTIBILITY, AND ITS SCOPE IS THIS.
-      [perm_of_group_element] is Construction/Deloop/Functors.v's
-      [action_automorphism] read at the FinSet target — a functor
-      carries the group inverse to the inverse permutation — and
-      [FinPermRep] identifies representations with functors at the
-      OBJECT level along the spine (mirroring [MatrixRep]), with
-      invertibility a theorem rather than data
-      ([perm_rep_acts_by_bijections]).  A FinSet hom is a function
-      on positions (Instance/FinSet.v), so an isomorphism is
-      literally a permutation; Instance/FinSet/Classifier.v holds
-      the injectivity/surjectivity characterizations, cited not
-      imported.  What is NOT built: a separate CATEGORY of
-      permutation representations with an equivalence
-      [Deloop G, FinSet] ≃ PermRep (the morphism-level story at
-      FinSet would repeat the [MSet] development at a second
-      target), and no finiteness hypothesis on the GROUP is
-      rendered — [GrpObject] carries none, so every statement here
-      holds for all groups, strictly more than the exercise's
-      "finite group" asks.
-
-   4. THE GROUP-WITH-OPERATORS ASIDE.  Mac Lane's remark that
-      functors [Deloop M ⟶ Grp] are groups with operator monoid M
-      (and similarly for other targets) is the same dictionary at a
-      different target; there is no in-tree category of groups at
-      the needed generality to instantiate it, so it remains this
-      prose note, per the issue's own scoping. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Equivariant maps *)
 

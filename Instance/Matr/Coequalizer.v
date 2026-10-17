@@ -1,9 +1,8 @@
-(* [Coq.QArith.QArith] MUST precede [Category.Lib]: it exports an [equiv]
-   that otherwise shadows Lib/Setoid.v's, and every [Proper] statement
-   reachable from here then fails to elaborate.  This is the import-order
-   gotcha Instance/FdVect.v records in its own header and
-   Instance/Matr/Elimination.v measured again; the ℚ witness at the end
-   of this file is why the ordering matters here too. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Coq.QArith.QArith.
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

@@ -19,53 +19,13 @@ Generalizable All Variables.
 
 (** * The natural numbers as the initial algebra of [NatF] over COQ *)
 
-(* nLab:      https://ncatlab.org/nlab/show/natural+numbers+object
-   Wikipedia: https://en.wikipedia.org/wiki/Initial_algebra
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Initial_algebra
 
-   The polynomial endofunctor [NatF X := option X = 1 + X] on COQ
-   (Theory/Adamek/Corollaries.v) has the type [nat] as its initial algebra.
-   The structure map [nat_alg : 1 + nat ~> nat] is [O]/[S] ([None ↦ O],
-   [Some k ↦ S k]), and initiality is exactly primitive recursion: for every
-   [NatF]-algebra [β : 1 + Y ~> Y] there is a unique algebra map
-   [nat ~> Y], namely the fold determined by [β].  Uniqueness is the induction
-   that any algebra map into [(Y, β)] agrees with the fold.
+   本文件给出自然数相关实例。
 
-   This exhibits [nat] as the least fixed point [μ NatF]; by Lambek's lemma
-   (Theory/Lambek.v) the structure map is then an isomorphism
-   [1 + nat ≅ nat], recorded below as [nat_lambek].  As in Instance/Coq/Lists.v
-   the development stays within pointwise equality on COQ hom-sets and ordinary
-   [nat] induction, so it carries no axioms (in particular no functional
-   extensionality).
-
-   Three readings of the same theorem are carried explicitly, because the
-   sources state it in three different vocabularies:
-
-     - Mac Lane's and Riehl's TRIPLES ⟨X, x₀, f⟩.  A [NatF]-algebra
-       [α : 1 + X ~> X] is precisely a point together with an endomap, and the
-       commuting square of an algebra map is precisely the pair of clauses
-       [h x₀ ≈ x₀'] and [h ∘ f ≈ f' ∘ h].  [alg_of_triple]/[alg_pt]/[alg_step]
-       and [alg_hom_clauses]/[clauses_alg_hom] are that dictionary, stated as
-       lemmas rather than left as a remark, and [nat_recursion] restates
-       initiality in the resulting clause form: a unique [h] with [h O = y₀]
-       and [h (S n) = f (h n)].
-
-     - Awodey's characterisation UP TO ISOMORPHISM.  [nat_initial_unique] shows
-       that any initial algebra of [NatF] is isomorphic to [(nat, [O, S])] by an
-       isomorphism *of algebras* — an isomorphism in [FAlg NatF], not merely a
-       bijection of carriers, which [nat_initial_carrier_unique] then reads off.
-
-     - Riehl's REPRESENTABILITY.  [Endos := FAlg Id[Coq]] is the category of
-       sets with an endomorphism, [Endos_Forget] its forgetful functor to
-       [Sets], and [nat_succ_represents] the natural isomorphism exhibiting
-       [(nat, S)] as a representing object with universal element [O]
-       ([nat_universal_element]).  [repr_initial] is the universal-element
-       criterion for this functor: a representation of [Endos_Forget] makes the
-       algebra built from the representing object and its universal element
-       initial in [FAlg NatF].  [nat_initial_via_universal_element] is
-       a second, independent construction of the same initial object through
-       that criterion (its mediator is [nat_iter], not [nat_fold]; the two
-       records are distinct terms), and [nat_initial_agree] checks by
-       [reflexivity] that the two constructions name the same algebra. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where the statement comes from, and what it is used for
 

@@ -18,13 +18,11 @@ Require Import Category.Structure.Groupoid.
 
 Generalizable All Variables.
 
-(* Lib.v sets [Default Proof Using "Type"], which keeps only the Section
-   variables occurring in a lemma's STATEMENT.  Several proofs below consume
-   Section hypotheses that their statements do not mention -- the
-   multiplication's continuity certificate above all -- and the narrower
-   setting would discard them.  This is the same declaration
-   Instance/Top/Interval.v, Instance/Top/FundamentalGroupoid.v and
-   Instance/Top/Homotopy.v make, for the same reason. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Set Default Proof Using "All".
 
 (** * Loops in a topological group, and the abelian fundamental group *)

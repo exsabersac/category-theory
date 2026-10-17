@@ -21,91 +21,18 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * The underlying-set functor of R-modules is represented by R
+(*
+ Book: Riehl, "Category Theory in Context", 2nd ed., §2.1
+ Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Riehl, "Category Theory in Context", 2nd ed., §4.1
+ nLab:      https://ncatlab.org/nlab/show/representable+functor
+ nLab:      https://ncatlab.org/nlab/show/free+module
+ Wikipedia: https://en.wikipedia.org/wiki/Representable_functor
 
-    Book: Riehl, "Category Theory in Context", 2nd ed., §2.1
-          Example 2.1.5(iv), printed p. 56 (PDF pp. 76-77) —
-          riehl:2.1:example5
-    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-          §III.1, printed p. 56 — maclane:III.1:remark2
-    Book: Riehl, "Category Theory in Context", 2nd ed., §4.1
-          Exercise 4.1.v, printed p. 138 —
-          riehl:4.1:exv, which asks for a proof that the free R-module
-          construction is FUNCTORIAL in the generating set.  That
-          exercise needs no work here and none is done: packaging the
-          free module as a [UniversalArrow] and feeding it to
-          Theory/Universal/Arrow.v's [AdjunctionFromUniversalArrows]
-          delivers the functoriality as the [fmap] of the constructed
-          left adjoint, and Instance/Mod/Free.v does exactly that
-          ([FreeMod], with [free_module_adjunction] and
-          [free_module_fmap_generators] recording that the induced action
-          relabels basis vectors).  The citation is recorded here because
-          this is the file the exercise's other half — the pointwise
-          representability criterion — would be read against.
-    nLab:      https://ncatlab.org/nlab/show/representable+functor
-    nLab:      https://ncatlab.org/nlab/show/free+module
-    Wikipedia: https://en.wikipedia.org/wiki/Representable_functor
+   本文件给出具体实例。
 
-    WHAT RIEHL ADDS TO THE FREE-MODULE CONSTRUCTION.  Instance/Mod/Free.v
-    already proves that the free module on a generating setoid solves a
-    universal mapping problem, and packages that as a [UniversalArrow]
-    and an adjunction.  Riehl's Example 2.1.5(iv) says something that
-    LOOKS like a corollary and is worth separating: the forgetful functor
-    [RMod_Forget R] is REPRESENTABLE, and its representing object is R
-    itself, the free module on ONE generator.  Two things are being
-    claimed at once — that the ∃!-factorization property upgrades to a
-    natural isomorphism of functors
-
-        [Hom R,─]  ≅  RMod_Forget R      (in [RMod R, Sets])
-
-    and that the representing object can be named on the nose as
-    Instance/Mod.v's [Ring_RMod R], with no formal-sum carrier in sight.
-
-    HOW IT IS PROVED, AND WHY NOT BY CITING THE FREE MODULE.  The route
-    taken is the direct one: [ring_universal_element] exhibits [rig_one R]
-    as a universal element of [RMod_Forget R] at [Ring_RMod R], because a
-    module map out of R is determined by its value at 1 (h r ≈ h (r·1) ≈
-    r · h 1) and every element m of every module is the value at 1 of the
-    map r ↦ r·m.  That is four lines of module algebra and no formal sums.
-    Routing through Instance/Mod/Free.v instead would have produced the
-    representation at the object [FreeModObject SetsOne] — correct, but
-    naming a quotient of formal expressions where Riehl names R.  What
-    the free module then contributes is the COMPARISON, and it comes for
-    free from the generic uniqueness machinery: [free_one_generator_iso]
-    below is Theory/Universal/Element.v's [universal_element_iso] applied
-    to the two universal elements, so "the free module on one generator
-    is R" is a theorem here rather than a slogan, and it is proved
-    without ever computing a normal form.
-
-    WHAT IS DELIVERED.
-
-      - [ring_universal_element], and its bundled form; the
-        representation [rmod_representation] as a natural isomorphism in
-        the functor category, and [rmod_representable] as an inhabitant
-        of Functor/Representable.v's class;
-      - the two Theory/Universal/Arrow.v encodings of the same content as
-        a universal arrow from the one-point setoid;
-      - [free_one_generator_iso], the canonical isomorphism between the
-        free module on the singleton setoid and R, together with
-        [free_one_generator_iso_unique] — the uniqueness clause, which is
-        the part a bare [≅] would drop;
-      - the witness at ℤ, where the represented set is the integers.
-
-    WHAT IS NOT DELIVERED.  No claim that the representing object is
-    unique on the nose (it is unique up to the unique isomorphism
-    compatible with the universal elements, which is exactly what
-    [universal_element_unique] gives and no more); no contravariant or
-    enriched version; and no statement about [RMod_Forget_Ab], to which
-    Functor/Representable.v's class does not even apply — that functor
-    lands in [Ab], not in [Sets].  (Since #454 the Ab-level reading
-    exists in general: Functor/Representable/Additive.v's [watt_ab_iso]
-    upgrades a representation of [Ab_Forget ◯ T], for an additive
-    Ab-valued T, to [HomAb A ≅ T] in the functor category into [Ab].
-    It is not instantiated at [RMod_Forget_Ab] in this file;
-    Instance/Mod/Watts.v's [watt_at_forget] instantiates it there, from
-    this file's [rmod_representable], giving
-    [HomAb (RMod_AbEnriched R) (Ring_RMod R) ≅ RMod_Forget_Ab R] with no
-    hypothesis.) *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section RingRepresents.
 

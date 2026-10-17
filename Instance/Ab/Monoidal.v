@@ -1,128 +1,14 @@
 (** * The symmetric monoidal category (Ab, ⊗, ℤ) *)
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §VII.1, printed pp. 163–164 (PDF pp. 171–172) —
-              maclane:VII.1:remark1
-   nLab:      https://ncatlab.org/nlab/show/tensor+product+of+abelian+groups
-   nLab:      https://ncatlab.org/nlab/show/Ab
-   Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
+(*
+ nLab:      https://ncatlab.org/nlab/show/tensor+product+of+abelian+groups
+ nLab:      https://ncatlab.org/nlab/show/Ab
+ Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
 
-   Mac Lane's §VII.1 names (Ab, ⊗, ℤ) as the motivating monoidal category:
-   the tensor product of abelian groups is associative and unital only up to
-   canonical isomorphism, and the coherence axioms were calibrated against
-   exactly this example.  Instance/Ab/Tensor.v built the bifunctor
-   [AbTensor_Functor : Ab ∏ Ab ⟶ Ab] together with the universal property of
-   [AbTensor] and its consumable uniqueness half [tensor_hom_ext].  This file
-   supplies the rest of the structure:
+   本文件给出幺半结构实例。
 
-     - [ZAb]: the unit object ℤ, taken from the ring layer
-     - [zsmul]: the ℤ-action on any abelian group, with its module laws
-     - [Ab_lam]/[Ab_lam_inv], [Ab_rho]/[Ab_rho_inv]: the unitors
-     - [Ab_assoc_to]/[Ab_assoc_from]: the associator
-     - [Ab_Monoidal]: the monoidal structure, with both naturality
-       directions for each structural isomorphism and the triangle and
-       pentagon
-     - [Ab_braid], [Ab_Braided], [Ab_Symmetric]: the symmetry, with both
-       hexagons and the involution
-
-   Design:
-
-   1. THE ℤ-ACTION IS ITERATED ADDITION OVER [nat], NOT BINARY ARITHMETIC.
-      [zsmul A n a] is defined by a sign split on [n] over the unary
-      [nat_smul A k a] (a plain [Fixpoint] adding [a] to itself [k] times).
-      Defining it directly over the binary representation would make every
-      module law an induction entangled with carry propagation; over [nat]
-      the laws are one-line inductions, and the only place binary structure
-      surfaces is additivity in the scalar ([zsmul_add]), whose mixed-sign
-      cases go through [Z.pos_sub_spec] and are closed by [lia] on the
-      INDEX arithmetic alone — never on the group algebra, which stays
-      entirely in `≈`.
-
-   2. EVERY COHERENCE LAW IS A COMPUTATION ON GENERATORS.  The mediator of
-      Tensor.v's universal property is a fixpoint on formal sums, so the
-      structural maps compute: [Ab_assoc_to] sends [(a ⊗ b) ⊗ c] to
-      [a ⊗ (b ⊗ c)] definitionally, and both routes of the pentagon send
-      [((a ⊗ b) ⊗ c) ⊗ d] to the very same term.  What remains is to reach
-      the generators of an ITERATED tensor, whose left factor is itself an
-      arbitrary formal sum.  [AgreeOnL]/[AgreeOnR] package the three
-      closure steps (zero, sum, negation) that a pair of homomorphisms out
-      of a tensor always satisfies, and [tensor_hom_ext2],
-      [tensor_hom_ext2r] and [tensor_hom_ext3] iterate them to depth two
-      and three.  After that, associator round trips, associator
-      naturality, the pentagon, braid naturality and both hexagons all
-      close by [ts_refl]; the triangle closes by the one genuinely
-      arithmetic fact, [ts_gen_zsmul_balance] — that a scalar may be moved
-      across the tensor sign.
-
-   3. THE UNIT IS REUSED, NOT REBUILT.  [ZAb] is Instance/Rng.v's
-      [ring_ab] applied to Theory/Algebra/Rig.v's axiom-free [Int_Ring], so
-      ℤ enters as the additive group of the integer ring already in tree
-      rather than as a fresh record.  Its carrier setoid is `@eq Z`, which
-      is why the scalar arguments of the unitors are handled by Leibniz
-      reasoning ([ZAb_eq], [zsmul_int_one]) while everything else stays
-      in `≈`.
-
-   4. ONE MONOIDAL PATH ON [Ab].  Instance/Grp.v records the tree's
-      policy: a [Monoidal] structure is registered as an instance only when
-      it is the sole such path on its category, since a second registered
-      path silently changes resolution elsewhere.  [@Monoidal Ab] has no
-      other inhabitant in tree, so [Ab_Monoidal], [Ab_Braided] and
-      [Ab_Symmetric] are exported instances.
-
-   5. THE UNIVERSE ANNOTATIONS ARE LOAD-BEARING; DO NOT DROP THEM.  The
-      target is [Ab_Monoidal@{s o} : Monoidal@{o s}] with BOTH levels bound
-      parameters — [s] the hom/carrier level, [o] the object level, related
-      by [s < o] exactly as [Ab] itself relates them.  Left to inference the
-      instance instead comes out as [Monoidal@{u Set}]: nothing in a
-      monoidal structure on [Ab] pushes the carrier level up, so the
-      elaborator takes the least solution and [Ab] gets pinned to groups
-      whose carriers live in [Set], which makes the enrichment of [Ab] over
-      itself unusable for hom-objects above [Set].  Two things are needed,
-      and each is necessary on its own:
-
-        - Every definition feeding the instance carries an explicit
-          declaration ([Ab_lam], [Ab_lam_inv], [Ab_rho], [Ab_rho_inv] at
-          [@{s +}] over [AbObject@{s s s}]; the three isomorphisms and the
-          instances at [@{s o + | s < o +}] over [Ab@{o s}]).  A declared
-          universe cannot be minimized away.  The load-bearing [+] is the
-          one in CONSTRAINT position: the bodies incur constraints beyond
-          [s < o] (the auxiliary universes of [AbTensor], nine of them,
-          and [AbTensor_Functor], EIGHT, relate to [s] and [o]), and
-          without it elaboration stops with "Universe constraints are not
-          implied by the ones declared".  The [+] after the universe list
-          is inert here — dropping it still compiles — and is kept only
-          for uniformity with the constraint one.
-          (RE-MEASURED by [About] under [Set Printing Universes] after the
-          PR "algebraic carriers are sets" (2026-09-17): [AbTensor] still
-          binds nine universes, [AbTensor_Functor] now binds eight where
-          an earlier revision of this sentence wrote seven.  Nothing else
-          in the paragraph moved; the declarations it describes are
-          unchanged and still load-bearing.)
-
-        - [ZAb_one] exists so that no bare [1%Z] is elaborated at an
-          UNRESOLVED [carrier ?G] position in this file.  (Where the
-          [AbObject] is already pinned — as in Construction/Enriched/Ab.v's
-          [@ts_gen ZAb …] applications — the projection reduces to [Z]
-          before matching and a bare literal is harmless.)  The literal has sort [Set], and matching
-          it against [Type@{s}] forces the rigid constraint [Set = s] rather
-          than the cumulative [Set <= s] — which silently re-pins the whole
-          instance even after every declaration above is in place.  The
-          symptom is subtle: the type still PRINTS as [Monoidal@{o s}], with
-          [Set = s] hidden in the constraint list.  [zsmul_int_one] and
-          [nat_smul_int_one] are therefore stated over [ZAb_one] too.
-
-      A related trap, should these ever be revisited: annotating the
-      instance while leaving the helper definitions inferred does not break
-      loudly.  [Program] silently inserts [eq_rect] transport obligations
-      of the form [AbTensor ZAb x = fobj[AbTensor_Functor] (ZAb, x)],
-      because the conversion those two rely on has been broken by the
-      universe mismatch, and the coherence proofs then face transported
-      terms instead of the generator computations of note 2.
-   SCOPE.  §VII.1 also lists the sibling tensor-product monoidal
-   categories — K-Mod over a commutative ring, K-algebras, graded and
-   differential-graded modules, bimodules.  Each presupposes the module
-   categories of issue #258 and is recorded on issue #265, not owed
-   here; this file delivers the Ab case only. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

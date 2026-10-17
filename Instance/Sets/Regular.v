@@ -7,88 +7,15 @@ Generalizable All Variables.
 
 (** * Regular arrows in Sets: the blanket principle decides every proposition *)
 
-(* nLab:      https://ncatlab.org/nlab/show/Diaconescu%27s+theorem
-   nLab:      https://ncatlab.org/nlab/show/split+epimorphism
-   Wikipedia: https://en.wikipedia.org/wiki/Diaconescu%27s_theorem
-   Wikipedia: https://en.wikipedia.org/wiki/Axiom_of_choice
+(*
+ nLab:      https://ncatlab.org/nlab/show/split+epimorphism
+ Wikipedia: https://en.wikipedia.org/wiki/Diaconescu%27s_theorem
+ Wikipedia: https://en.wikipedia.org/wiki/Axiom_of_choice
 
-   Mac Lane, CWM 2nd ed., §I.5 Exercise 7 asks, in its second half, for the
-   regularity of every arrow of Set with nonempty domain.
-   Instance/FinSet/Regular.v settles that over FinSet by an executable finite
-   search.  This file measures what the same statement costs over [Sets], the
-   library's category of setoids, and the measurement does not come out where
-   the classical account of the exercise suggests it will.
+   本文件给出集合范畴相关实例。
 
-   THE CLASSICAL ACCOUNT.  Fix f : A → B with A inhabited by a₀.  A
-   pseudoinverse must send each b of B to SOME element of the fibre f⁻¹(b)
-   when that fibre is nonempty, and anywhere at all (say a₀) when it is
-   empty.  Nothing in the data of f selects a fibre element, so the classical
-   construction picks one simultaneously for every b in the image: an
-   instance of the axiom of choice over the family of fibres.  Reading a
-   regularity witness back off is choice-free, and is
-   [regular_epic_retraction] / [regular_monic_section] of
-   Theory/Morphisms.v.
-
-   WHAT THE PRINCIPLE COSTS HERE.  In this library's ambient logic that
-   account understates the price, and understates it by a wide margin.  The
-   blanket principle is stronger than any choice axiom on offer: it DECIDES
-   EVERY PROPOSITION.  [blanket_regularity_entails_LEM] below derives,
-   axiom-free, the Type-valued excluded middle ∀ P : Prop, P + (P → False)
-   from [BlanketRegularity]; and [blanket_splitting_entails_LEM] derives the
-   very same conclusion from the weaker principle [BlanketSplitting], "every
-   epimorphism with inhabited domain splits", which is the internal axiom of
-   choice the nLab page on split epimorphisms records as the categorical
-   phrasing of choice.  Coq's ambient logic is intuitionistic and proves
-   neither conclusion, so neither principle is available in this development,
-   and the exercise's second half stops at the finite case for a reason.
-
-   THE COUNTERMODEL.  Take bool with Coq's `=` for A, and bool again for B
-   but with the two booleans identified exactly when P holds ([sets_coarse]
-   below); A is inhabited by [true], and the identity on carriers is a
-   [Sets]-morphism into the coarser setoid ([sets_coarsen]), since it only
-   ever has to make things MORE equal.  A pseudoinverse g is again a
-   [Sets]-morphism, so P forces g true = g false; the regularity equation
-   read at each of the two booleans gives (g b = b) + P; two answers on the
-   left force P → False, and either answer on the right gives P outright.
-   That is [sets_coarsen_regular_dec], and its converse
-   [sets_coarsen_regular_of_dec] holds too, so the regularity of this ONE
-   arrow of [Sets] is EXACTLY the decidability of P
-   ([sets_coarsen_regular_iff_dec]).
-
-   WHY CHOICE CANNOT BE THE MEASURE.  A choice axiom would not deliver these
-   principles, because Coq's choice axioms do not decide propositions.  The
-   standard library axiomatizes relational choice on its own, with no
-   classical import (Stdlib.Logic.RelationalChoice); the module that does
-   yield excluded middle is Stdlib.Logic.ClassicalChoice, and it yields it by
-   re-exporting Stdlib.Logic.ClassicalUniqueChoice, which re-exports
-   Stdlib.Logic.Classical -- the excluded middle there is imported outright,
-   not extracted from choice.  What the countermodel above turns on is
-   instead the SETOID phrasing: choice over setoids is the extensional axiom
-   of choice, and Stdlib.Logic.SetoidChoice records its decomposition into
-   classical logic, relational choice, unique choice, and a limited
-   functional extensionality, citing Carlström, "EM + Ext_ + AC_int is
-   equivalent to AC_ext" (Mathematical Logic Quarterly 50(3), 2004,
-   pp. 236-240).  The classical logic in that decomposition is exactly what
-   the theorems below recover, and the argument that recovers it has the
-   shape of Diaconescu's: a two-element object coarsened by a proposition,
-   over which choosing a representative decides the proposition (Diaconescu,
-   "Axiom of choice and complementation", Proc. Amer. Math. Soc. 51, 1975,
-   pp. 176-178; nLab, "Diaconescu's theorem", retrieved 2026-08).  A setoid
-   library supplies the quotient-like objects that argument needs at no extra
-   cost, which is why the price is paid HERE and is not paid by the
-   intensional choice axioms of the standard library.
-
-   WHAT REMAINS TRUE.  Nothing above refutes the regularity of any particular
-   arrow of [Sets], and that too is a theorem rather than an omission:
-   [sets_coarsen_not_regular_absurd] REFUTES non-regularity for
-   [sets_coarsen], so no proof that this arrow is not regular can exist --
-   and this in a case where [sets_coarse_const] puts an arrow in the reverse
-   hom-set and [true] inhabits the domain.  Over [Sets], then, an arrow with
-   inhabited domain can be neither provably regular nor provably not, which
-   is why the in-tree refutations of regularity ([TwoXY_not_regular] in
-   Instance/Two.v, [finset_empty_to_one_not_regular] in
-   Instance/FinSet/Regular.v) both work by exhibiting an EMPTY reverse
-   hom-set.  That shape is forced, not chosen for convenience. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** The countermodel: bool coarsened by a proposition *)

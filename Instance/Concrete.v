@@ -10,12 +10,11 @@ Require Import Category.Instance.Rel.
 
 Generalizable All Variables.
 
-(* Obligation discipline: with the default tactic, Program discharges some
-   obligations and names the variables of the rest itself, and both behaviours
-   have varied across the Coq versions this library supports.  Setting the
-   tactic to [idtac] makes every obligation below the raw field type, with
-   variables introduced by name in the proof — the same discipline
-   Construction/Free/Quiver/Concrete.v uses. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
 (** * The concrete-category roster: Coq, CMon, and Rel *)

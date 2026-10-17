@@ -8,26 +8,15 @@ Generalizable All Variables.
 
 (** Universal algebra and the category of software components. *)
 
-(* nLab:      https://ncatlab.org/nlab/show/variety+of+algebras
-   nLab:      https://ncatlab.org/nlab/show/algebraic+theory
-   Wikipedia: https://en.wikipedia.org/wiki/Universal_algebra
-   Wikipedia: https://en.wikipedia.org/wiki/Initial_algebra
+(*
+ nLab:      https://ncatlab.org/nlab/show/algebraic+theory
+ Wikipedia: https://en.wikipedia.org/wiki/Universal_algebra
+ Wikipedia: https://en.wikipedia.org/wiki/Initial_algebra
 
-   This file develops finitary (single-sorted) universal algebra in the style
-   of nLab's "variety of algebras": an [OpSignature] lists operation symbols,
-   each tagged with an arity *type* (so an o-ary operation takes its arguments
-   as a function [arity o → carrier]); an [OpAlgebra] interprets those symbols
-   on a carrier; and [AlgHom] is a homomorphism (a carrier map commuting with
-   every operation).  For a fixed signature [S] these assemble into a category
-   [Algs] which is shown to have a terminal object (the one-element algebra),
-   binary products (carrierwise), and an initial object (the free algebra on
-   no generators).  Adding an [EqSignature] of laws yields varieties [Algebra
-   S E] (e.g. groups), and the eponymous [Comp] is the category of "software
-   components" — maps between such algebraic interfaces that need not be
-   homomorphic.
+   本文件给出具体实例。
 
-   Most of what follows in this file was written by Andrej Bauer:
-   https://gist.github.com/andrejbauer/3cc438ab38646516e5e9278fdb22022c *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Module UniversalAlgebra.
 

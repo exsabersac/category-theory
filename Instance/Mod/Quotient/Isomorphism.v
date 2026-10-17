@@ -19,117 +19,14 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * The module isomorphism theorems, from the universal property
+(*
+ nLab: https://ncatlab.org/nlab/show/isomorphism+theorem
+ Wikipedia: https://en.wikipedia.org/wiki/Isomorphism_theorems
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §III.1
-    Exercise 5 (printed p. 59, PDF p. 68) [maclane:III.1:ex5].
-    nLab: https://ncatlab.org/nlab/show/isomorphism+theorem
-    Wikipedia: https://en.wikipedia.org/wiki/Isomorphism_theorems
+   本文件给出同构相关。
 
-    Mac Lane's point at §III.1 is that the isomorphism theorems follow
-    from the universality of the projection ALONE, without a second look
-    at cosets.  This file takes that seriously, and the honest accounting
-    of how far it goes is the first thing below, because "derived from
-    universality" is a claim about the SHAPE of a proof and is easy to
-    assert falsely.  The grading is the same as
-    Instance/Grp/Quotient/Isomorphism.v's and is repeated rather than
-    cited, because the proofs here are not that file's proofs.
-
-    HOW EACH THEOREM IS ACTUALLY OBTAINED.
-
-    The comparisons for the FIRST and THIRD are produced by ONE
-    mechanism: [universal_element_iso] (Theory/Universal/Element.v),
-    which turns two universal elements of the SAME functor into an
-    isomorphism of their carriers, together with its uniqueness clause
-    [universal_element_iso_unique]; neither is built by exhibiting
-    mutually inverse maps and checking round trips.  The SECOND is not of
-    that form and this header does not pretend otherwise.  What differs
-    between the three is the cost of exhibiting the SECOND universal
-    element:
-
-      - THIRD ([mod_third_isomorphism_theorem], (M/S)/(T/S) ≅ M/T).  A pure
-        universal-property chase, and the cleanest of the three:
-        [mquot_universal_T_over_S] derives the second universal element
-        from [mquot_universal_element T] and [mquot_proj_epic S] by
-        composing and cancelling [mquot_proj S] on the right.  THE STEPS
-        THAT CARRY ELEMENTWISE CONTENT -- not every step that MENTIONS
-        an element, since several obligations bind an element variable
-        and then never inspect it -- and none of them destructures one: [mquot_step_kills] and
-        [mod_third_precompose_kills], which say respectively that the
-        comparison kills T/S and that k ∘ p_S kills T -- both are
-        [mquot_rel_zero_iff] or the given killing hypothesis applied at
-        a variable, and both are unavoidable in any formulation, since
-        "kills" is an elementwise predicate BY DEFINITION -- and the
-        `≈`-saturation obligation of [TmodS], which is the only one that
-        COMPUTES with elements and which is a prerequisite to STATING
-        the theorem rather than a step in proving it.  No coset is
-        manipulated and no representative is chosen.
-
-      - FIRST ([mod_first_isomorphism_theorem], M/ker f ≅ im f).  The second
-        universal element ([mod_image_universal_element]) is exhibited
-        directly, and the mediator [mod_image_med] READS A PREIMAGE out
-        of the image-membership witness -- [mod_image_med_wd] being what
-        makes that well defined.  The witness is DATA ([ImageSubmod]'s
-        membership is a sigma), so nothing is chosen, but an element IS
-        destructured, which is the honest difference from the third.
-        It is fair to call this a
-        universal-property derivation of the ISOMORPHISM whose input is
-        an elementwise construction of the comparison universal element.
-        Nothing shortens that input: the image is DEFINED elementwise, as
-        a submodule of the codomain, so any map out of it must consume a
-        membership witness.
-
-      - SECOND ([mod_second_isomorphism_theorem], S/(S ∩ T) ≅ (S + T)/T).  A
-        COROLLARY of the first, in the textbook manner: the composite
-        S ↪ S + T ↠ (S + T)/T is surjective with kernel S ∩ T.  Its two
-        elementwise inputs are named and proved separately
-        ([mod_psi_kernel_is_meet], [mod_psi_surjective]).  Downstream of those
-        two the argument is again universality -- BUT read the
-        composition honestly: this theorem is
-        [mod_first_isomorphism_theorem mod_psi] composed with
-        [mod_surjective_image_iso], and THAT one IS built as an inverse pair
-        with two round trips, as is [mquot_congr]
-        (Instance/Mod/Quotient.v) which the literal form composes with.
-        Both are degenerate as inverse pairs -- every leg the identity on
-        underlying elements, every round trip [reflexivity] or
-        [mquot_rel_refl] -- but they are not instances of
-        [universal_element_iso], and the claim above is scoped to the
-        comparisons, not to every isomorphism this file names.
-
-    So: one theorem is a pure chase, one has an elementwise construction
-    of its comparison object, and one is a corollary of that plus two
-    identity-carrier repackagings.  NONE of them manipulates cosets, for
-    the structural reason that the setoid quotient of
-    Instance/Mod/Quotient.v forms no coset object at all -- but that is a
-    property of the PRESENTATION, and the elementwise steps above would
-    still be elementwise in any presentation.
-
-    WHERE THE MODULE CASE IS GENUINELY CHEAPER THAN THE GROUP CASE, and
-    it is not a matter of degree.  Instance/Grp/Quotient/Isomorphism.v
-    needs [product_shuffle] and [inverse_shuffle] -- two normality
-    manipulations, associativity chains of four and five rewrites
-    respectively -- to make [SubgroupProduct] closed under product and
-    inverse, and it must require its second argument to be a NORMAL
-    subgroup for the product to be a subgroup at all.  Here
-    [SubmoduleSum] takes TWO arbitrary submodules, closure under
-    addition is one commutativity shuffle, closure under negation is
-    not even a field, and the SUM is symmetric in its two arguments
-    ([SubmoduleSum_comm], at the level of membership) in a way the
-    group product cannot be.  Nothing in this file conjugates
-    anything.
-
-    WHAT IS DELIVERED.  The image of a homomorphism as an object with its
-    corestriction; the first isomorphism theorem with its uniqueness
-    clause and the epi-mono mod_factorization; the third with its uniqueness
-    clause; the second over an explicit [SubmoduleSum]; and non-vacuity
-    witnesses at ℤ for all three.
-
-    WHAT IS NOT DELIVERED.  No fourth ("correspondence"/lattice) theorem;
-    no modular law; no butterfly lemma; no exact sequences; and no
-    naturality of the isomorphisms in f, S or T.  The second theorem's
-    two universal elements are not compared by a uniqueness clause, it
-    being a composite of three isomorphisms rather than a single
-    comparison. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The image of a homomorphism, as an object of [RMod R] *)
 

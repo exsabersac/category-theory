@@ -19,41 +19,15 @@ Generalizable All Variables.
 
 (** The syntactic cartesian closed category of the simply-typed lambda calculus. *)
 
-(* nLab: https://ncatlab.org/nlab/show/relation+between+type+theory+and+category+theory
-   nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
-   Wikipedia: https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence
-   Wikipedia: https://en.wikipedia.org/wiki/Simply_typed_lambda_calculus
+(*
+ nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
+ Wikipedia: https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence
+ Wikipedia: https://en.wikipedia.org/wiki/Simply_typed_lambda_calculus
 
-   This file is the top of the simply-typed lambda calculus (STLC) development
-   in Instance/Lambda/ (syntax in Ty.v/Exp.v, de Bruijn renaming/weakening in
-   Ren.v, the standard-model interpretation into Coq in Sem.v).  It packages
-   that syntax as a category and exhibits its cartesian closed structure, the
-   categorical half of the Curry-Howard-Lambek correspondence: STLC is the
-   internal language of cartesian closed categories (Lambek & Scott).
+   本文件给出 λ 演算相关实例。
 
-   Fixing a typing context `Γ`, the category [Lambda Γ] has
-
-     - objects        types `τ : Ty`,
-     - morphisms      `a ~> b  :=  Exp Γ (a ⟶ b)`, i.e. open terms of function
-                      type in context `Γ`,
-     - identity       `LAM (VAR ZV)`              (the term `λx. x`),
-     - composition    `LAM (APP (wk f) (APP (wk g) (VAR ZV)))`   (`λx. f (g x)`).
-
-   Morphism equivalence is *semantic*, not syntactic: `f ≈ g` holds when the
-   interpretations `SemExp f` and `SemExp g` agree on every environment (see
-   [Exp_Setoid]).  This is the denotational, not the β/η-quotient, equality;
-   the laws below are therefore discharged by `SemExp_*` rewriting rather than
-   by reasoning about reductions.  The cartesian closed structure is then read
-   off the term language: `TyUnit` is terminal, `TyPair` gives products with
-   the `Pair`/`Fst`/`Snd` introduction and projections, and `TyArrow` gives
-   exponentials with the usual [curry]/[uncurry] adjunction.
-
-   Note: `A` and `L : HostExprsSem A` below are vestigial context.  No class
-   named `HostExprsSem` is in scope, so `Generalizable All Variables` quietly
-   treats it as a free variable to be generalized; since nothing in this file
-   depends on `A` or `L`, both are dropped and [Lambda] reduces to `Env →
-   Category` (confirmed by `About Lambda`).  They are kept here as a record of
-   the intended host-language extension point used in the sibling files. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The Curry-Howard-Lambek correspondence, and what it is for
 

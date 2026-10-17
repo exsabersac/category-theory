@@ -27,138 +27,15 @@ Generalizable All Variables.
 
 (** * The modal operator B ⇒ − on propositions *)
 
-(* nLab: https://ncatlab.org/nlab/show/modal+operator
-   nLab: https://ncatlab.org/nlab/show/closure+operator
-   Book: Fong and Spivak, "Seven Sketches in Compositionality", arXiv v3,
-         SS 1.4.4, Example 1.123, printed pp. 34-35, and footnote 8,
-         printed p. 33
-   Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
-         SS 10.2, Example 10.4, printed p. 270
+(*
+ nLab: https://ncatlab.org/nlab/show/closure+operator
+ Book: Fong and Spivak, "Seven Sketches in Compositionality", arXiv v3,
+ Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
 
-   WHAT THE BOOK SAYS.  Seven Sketches Example 1.123 orders propositions
-   by entailment ("p ≤ q iff p implies q") and says: "A closure operator
-   on it is often called a modal operator.  It is a function j from
-   propositions to propositions, for which p ⇒ j(p) and j(j(p)) = j(p).
-   An example of a j is 'assuming Bob is in San Diego....'  Think of this
-   as a proposition B; so 'assuming Bob is in San Diego, p' means B ⇒ p.
-   Let's see why B ⇒ − is a closure operator."  The argument that
-   follows is informal.  Awodey's Example 10.4 (p. 270) names a different
-   modality, "The 'possibility operator' ⋄p in modal logic is another
-   example", which is not stated here.
+   本文件给出具体实例。
 
-   WHICH READING IS IMPLEMENTED.  The entailment preorder is
-   Instance/Props.v's [Props]: objects [Prop], arrows [Basics.impl], and
-   the hom-setoid [True], so [Props] is thin.  [modal_functor B] is
-   p ↦ (B → p), [modal_ext] is the first axiom, and the second is
-   [modal_idem] as mutual entailment (stdlib [<->]; the library's [↔] is
-   [iffT]), which is the isomorphism of [Props].  The book's "=" between
-   propositions is [modal_idem_ext], under propositional extensionality
-   supplied as a hypothesis; no axiom is assumed.  [modal_monad] is the
-   monad: its unit is [modal_ext], its multiplication [modal_mult], the
-   transparent term f ↦ (b ↦ f b b), of which [modal_idem] is built, so
-   that join computes ([modal_monad_join]); its five laws are [I].
-   [modal_monad_is_thin]: it IS Structure/Thin/Monad.v's [thin_monad] at
-   [Props] with the witness [fun _ _ _ _ => I], on the whole record by
-   [eq_refl].  It is not DEFINED through [thin_monad]: that route is
-   refused bare, the sort level of Structure/Thin.v's [Thin] being left
-   in the body alone; pinned to u or h it adds h <= u or u <= h
-   (measured); with + the thin level stays in the block only (the reason
-   Instance/Proset/Monad.v gives for [closure_monad]).  Its algebras are
-   the j-closed propositions, (B → p) → p ([modal_talgebra_iff]), and at
-   B := False the proposition False is not closed
-   ([modal_false_not_closed]).
-
-   THE MONAD OF THE CURRYING ADJUNCTION, at its true strength.  [Props]
-   is cartesian closed ([Props_Closed]), and
-   Structure/Cartesian/Closed/Adjunction.v's [Curry_Adjunction B] is
-   (− ∧ B) ⊣ (B ⇒ −).  Its monad [curry_monad B] has the functor
-   p ↦ (B → p ∧ B), by [eq_refl] ([curry_monad_fobj]).  That is a
-   different term from B ⇒ −: the equation of the two object maps is
-   refused by conversion (measured).  It is NOT a different functor in
-   the library's sense: the two are ≈ ([curry_modal_iso], a natural
-   isomorphism in [Props]), they have the same closed elements
-   ([curry_modal_closed_iff]), and under propositional extensionality,
-   taken as a hypothesis, the object maps are equal
-   ([curry_modal_fobj_ext]).  So no proof that the object maps differ
-   can exist unless that axiom, which is consistent with Coq, is
-   refuted (for the functors themselves, functional extensionality as
-   well).  The
-   modality is obtained from [Props_Closed] up to natural isomorphism,
-   and not on the nose.
-
-   THE DUAL.  The same adjunction's comonad [curry_comonad B]
-   (Comonad/Duality.v's [Adjunction_Comonad]) has the functor
-   p ↦ (B → p) ∧ B ([curry_comonad_fobj]), which is B ∧ − up to mutual
-   entailment ([curry_comonad_is_and]): the other composite of footnote 8,
-   an interior operator.  Its coalgebras are the p with
-   p → (B → p) ∧ B ([curry_wcoalgebra_iff]), that is, the propositions
-   that entail B ([curry_open_iff_entails]).
-
-   THE ORDER-LEVEL OPERATOR.  [impl_PreOrder] is [Basics.impl] as a
-   stdlib [PreOrder] (the tree declares none, and [Search PreOrder
-   Basics.impl] finds none in the loaded stdlib), and [modal_closure B]
-   is B ⇒ − as an Instance/Proset/Monad.v [ClosureOperator] on it.  Its
-   functor agrees with [modal_functor B] on objects by [eq_refl]
-   ([modal_closure_fobj]), and [closure_monad (modal_closure B)] has the
-   unit and multiplication of [modal_monad B] by [eq_refl].  The two
-   categories are not convertible as the tree stands; the refusal at
-   [impl_PreOrder] is the opacity of the two files' Program obligations
-   alone: with them transparent (verbatim restatements under Set
-   Transparent Obligations), Props = Proset impl_PreOrder is eq_refl on
-   the whole record; for a variable P it is refused at [id]
-   structurally.  In detail: [Props] is its own [Program Definition]
-   (Instance/Proset/Limit.v says it is not [Proset P] for any P, which
-   holds by conversion as the tree stands); at [impl_PreOrder] the [obj],
-   [hom], [id] and [compose] fields agree by [eq_refl] and the refusal is
-   at [homset], each category carrying its own proof that [True] is an
-   equivalence (Instance/Props.v's [Props_obligation_1] and
-   Instance/Proset.v's [Proset_obligation_1]); for a variable
-   [P : PreOrder Basics.impl] the [obj] and [hom] fields agree and [id]
-   is refused, with the obligations transparent or not, the identity of
-   [Proset P] being the reflexivity proof of the variable P.
-
-   STRENGTHS, measured.  [eq_refl]: [modal_monad_is_thin] (whole record),
-   [modal_monad_join] (join computes), [modal_talgebra_round] (structure
-   map), [curry_monad_fobj],
-   [curry_comonad_fobj], [modal_closure_fobj], [modal_closure_ret],
-   [modal_closure_join].  ≈: [curry_modal_iso].  Refused by conversion:
-   the object equation of the curry and modal functors (so also the
-   functor equation), and [Props = Proset P].  No [Qed] enters the first:
-   both sides normalise, to B → p ∧ B and to B → p, distinct [Prop]
-   terms, so no flip to [Defined] can change it.  The second is an
-   opacity refusal at [impl_PreOrder]: flipped, with verbatim
-   restatements of the two [Program Definition]s under [Set Transparent
-   Obligations], [Props = Proset impl_PreOrder] is [eq_refl] on the whole
-   record; for a variable P the same flip leaves it refused at [id],
-   structurally.
-
-   UNIVERSES, read off [About] with all instances printed.  No constant
-   has a level that occurs in its body only.  [Set < u] is [Props]'s own
-   (its objects are [Prop]), first carried by Instance/Props.v's [Props].
-   [h < e] in the curry constants is first carried by
-   Structure/Cartesian/Closed.v's [Closed] (its [u0 < u1], the level of
-   the [Sets] isomorphism of [exp_iso]), which [curry_functor] and
-   [curry_cofunctor] take as an argument for that reason: [Exp_Functor]
-   and [Prod_Functor] each carry a level absent from their own types, so
-   with [Props_Closed] inlined the level e would occur in the body only.
-   Those levels, the last level of [Curry_Adjunction]'s [Adjunction] and
-   the level u4 of [Adjunction_Comonad], sixth in its binder (free in
-   their blocks), are pinned to e or h.  The caps [h <= compose.u0,
-   compose.u1, compose.u2, ID.u0, prod_rect.u0, prod_rect.u1,
-   prod_rect.u2] are global stdlib
-   universes already in the blocks of [Closed] and [Curry_Adjunction].
-   [impl_PreOrder] carries the global [Set < Defs.u0] (stdlib's
-   [PreOrder] at a relation on [Prop]).  The biconditionals [@{u h +}]
-   add the free [iffT] level of their [Prop] side.  This file loads both
-   declarations of [Thin] and of [proset_thin] (Structure/Thin.v with
-   Instance/Proset/Order.v, and Instance/Proset/Galois.v, through
-   Instance/Proset/Monad.v; measured by [Locate]) and names neither: the
-   witness is the term [fun _ _ _ _ => I].
-
-   NOT DELIVERED.  No Lawvere-Tierney topology or nucleus (B ⇒ −
-   preserves meets, which is not stated); no other modality (Awodey's ⋄);
-   no functoriality in B; nothing over a Heyting algebra other than
-   [Props]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The operator and its two axioms *)
 

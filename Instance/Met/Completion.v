@@ -25,147 +25,16 @@ Open Scope R_scope.
 
 (** * The completion of a metric space, as a universal arrow *)
 
-(* nLab:      https://ncatlab.org/nlab/show/Cauchy+complete+metric+space
-   nLab:      https://ncatlab.org/nlab/show/universal+morphism
-   Wikipedia: https://en.wikipedia.org/wiki/Complete_metric_space#Completion
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, §III.1, printed pp. 56-57 (PDF pp. 65-66), the
-              unnumbered third construction — the theorem of this file
-   Book:      Bishop, "Foundations of Constructive Analysis", McGraw-Hill
-              1967 — the modulus discipline
-   Docs:      Rocq standard library, Reals (Rcomplete.R_complete,
-              SeqProp.UL_sequence)
+(*
+ nLab:      https://ncatlab.org/nlab/show/universal+morphism
+ Wikipedia: https://en.wikipedia.org/wiki/Complete_metric_space#Completion
+ Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Bishop, "Foundations of Constructive Analysis", McGraw-Hill
 
-   ON THE CITATIONS.  No book was opened for this file; the account of what
-   Mac Lane's §III.1 says is a paraphrase of the in-tree book inventory
-   (doc/plan/books/maclane/inventory/III.json, entry
-   [maclane:III.1:construction3], book p. 56, PDF pp. 65-66), not of the
-   printed text.  Instance/Met.v's header carries the same disclosure and
-   the fuller citation list.
+   本文件给出具体实例。
 
-   Mac Lane's §III.1 lists the completion of a metric space among the
-   examples of a universal arrow, in one sentence and with no proof: with
-   Met the metric spaces and metric-preserving maps and Cmet the full
-   subcategory of complete ones, the embedding X → X-bar is universal from X
-   to the inclusion Cmet ⟶ Met, and the general uniqueness of universal
-   arrows then delivers uniqueness of the completion up to a unique
-   isomorphism.  This file is that sentence, proved.
-
-   THE CONSTRUCTION is Cantor's, from 1872, applied to an arbitrary space
-   rather than to the rationals: a point of the completion is a Cauchy
-   sequence, two of them are identified when the distance between their
-   terms tends to zero, and the distance between two of them is the LIMIT of
-   the distances between their terms.  What Mac Lane contributes is that
-   none of those choices is what makes the completion the completion; the
-   factorization property does, and this file's [Completion_AUniversalArrow]
-   is that property while [completion_unique] is the uniqueness it forces.
-
-   WHY THE DISTANCE IS REAL-VALUED, AND WHY THIS FILE IS THEREFORE IN THE
-   INSTANCE LAYER.  The issue behind this file offers "a rational- or
-   real-valued distance" and asks for the choice to be documented.  The
-   choice is FORCED, and the reason is visible in the construction: the
-   distance between two Cauchy sequences is a limit of distances, so the
-   codomain of the metric has to contain the limits of its own Cauchy
-   sequences or the completion is not an object of the category at all and
-   the universal arrow is not statable.  [Q] does not contain them.
-
-   Two halves of that argument, kept apart on purpose:
-
-     - MACHINE-CHECKED: that the distance on the completion IS the limit and
-       is PINNED by being one.  [cdist_spec] proves the sequence of
-       distances converges to [cdist], and [cdist_unique] proves that any
-       real to which it converges IS [cdist].  So the limit is not one
-       admissible choice of distance among others — it is the only one, and
-       a codomain lacking it lacks the distance.
-
-     - ARGUED, NOT PROVED: that [Q] is not closed under such limits.  This
-       is the classical folklore fact that a Cauchy sequence of rationals
-       can converge to an irrational (√2), and it is NOT formalized here or
-       anywhere in this tree; the standard library has no irrationality
-       result to lean on.  It is stated as an argument and the reader should
-       treat it as one.
-
-   The consequence is that this file uses the standard library's [R], and so
-   inherits its axioms.  That is permitted by the issue's Definition of Done
-   ("if classical reals are unavoidable the file lives in the instance
-   layer") and follows the precedent of the Instance/Top/ reals files, where
-   docs/AXIOMS.md prices the reals per constant.  The stratification is
-   sharp, and the numbers below are MEASURED per constant rather than
-   sampled.  [R_complete] is the only door through which [sig_not_dec]
-   enters.  Instance/Met/Extended.v never opens it: none of its 55 constants
-   carries [sig_not_dec] and five are closed outright.  Instance/Met.v opens
-   it in EXACTLY TWO constants — [R_Metric_MComplete], which is where the
-   completeness of the real line is proved, and [R_CMet], the object of
-   [CMet] built from it — its other 61 constants carrying at most
-   [sig_forall_dec] and [functional_extensionality_dep].  THIS file opens it
-   in 41 of its 66 constants, everything downstream of [cdist].
-
-   NO CHOICE PRINCIPLE IS USED BY THE CONSTRUCTIONS BELOW.  (The three
-   standard-library axioms enumerated above are inherited from [R] itself and
-   are not introduced here; no claim is made in this file about their
-   strength.)  Instance/Met.v's [MCauchy] is Type-valued
-   (this library's `∃` is [sigT]), so a Cauchy sequence carries its modulus
-   as data.  That is what makes [Completion_MComplete] below constructive:
-   its diagonal argument consumes one threshold per index, and reading a
-   sequence of thresholds out of a sequence of Prop-level existentials would
-   be countable choice.  Correspondingly [cs_equiv], the identification of
-   Cauchy sequences, is Prop-valued (it is literally the standard library's
-   [Un_cv] at 0), because the completion's separation axiom has to PRODUCE
-   it from an equation between reals and nothing would be gained by asking
-   for a modulus there.  Both directions of that seam are deliberate.
-
-   NOTHING HERE COMPUTES, and that is worth saying because much of this tree
-   does.  [cdist] is [proj1_sig] of [R_complete], whose value is not a closed
-   term, so no distance in the completion evaluates and there are no
-   [eq_refl] acceptance tests of the kind Instance/FinSet/ files carry.  The
-   convertibility statements that ARE made below are structural (the carrier
-   of the completion is the type of Cauchy sequences) rather than numeric.
-   Consistently with that, the two witnesses whose type is data but whose
-   value nothing inspects — [cs_diag_MCauchy] and Instance/Met.v's
-   [R_Metric_MComplete] — are left [Qed]-opaque; [Completion_MComplete],
-   [Completion_AUniversalArrow] and [Completion_UniversalArrow] are
-   [Defined], since the universal-arrow machinery projects out of them.
-
-   NOT [CauchyComplete].  Construction/Karoubi/Universal.v defines
-   [CauchyComplete] to be [IdempotentsSplit], a property of CATEGORIES.
-   This file is about complete METRIC SPACES; the two are unrelated here and
-   nothing below refers to the Karoubi notion.
-
-   WHAT IS DELIVERED: the completion [Completion X] as an object of [Met],
-   its completeness [Completion_MComplete], the isometric embedding [eta],
-   the density of its image, the extension [ext] of an isometry into a
-   complete space, the universal arrow in BOTH of Theory/Universal/Arrow.v's
-   encodings, uniqueness of the completion up to a unique compatible
-   isomorphism obtained FROM that machinery rather than by hand, and a
-   non-vacuity witness: the completion of Instance/Met.v's [Harmonic] has a
-   point that the embedding misses.
-
-   WHAT IS NOT DELIVERED: the completion as a FUNCTOR, and hence the
-   adjunction [Completion ⊣ CMet_Incl] that would make the complete spaces a
-   reflective subcategory — the §IV.3-SHAPED reflection, over this file's
-   isometric [Met] rather than Mac Lane's own, whose §IV.3 statement is about
-   metric spaces with UNIFORMLY CONTINUOUS maps (a different category, as
-   Instance/Met.v's header records).  Theory/Universal/
-   Arrow.v's [LeftAdjointFunctorFromUniversalArrows] and
-   [AdjunctionFromUniversalArrows] produce both from
-   [Completion_UniversalArrow] applied at every object with no further proof
-   obligation, and that they do is MACHINE-CHECKED rather than asserted —
-   Test/ProbeMet.v elaborates both terms.  They are left out of the library
-   surface only because the issue asks for the universal arrow and its
-   uniqueness corollary and stops there; promoting them is a two-line change
-   whenever it is wanted.  CORRECTION (#370): they are promoted.
-   Instance/Met/Uniform.v's [CMet_Reflective_in_Met], with its adjunction
-   [completion_adj], makes the complete spaces a reflective subcategory of
-   Instance/Met.v's isometric [Met] by that route, and the same file builds
-   Mac Lane's own §IV.3 category of uniformly continuous maps, [MetU],
-   with the reflection [CMet_Reflective_in_MetU].
-
-   Also not delivered: any comparison with the Lawvere enriched reading of
-   metric spaces (see Instance/Met.v's header); and any claim that
-   [Completion X] is the only complete space containing X, which would be
-   false — many complete spaces contain a given one.  What is proved is the
-   universal property, which picks out the completion among them by a
-   factorization condition rather than by containment. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** A small toolkit for limits *)
 

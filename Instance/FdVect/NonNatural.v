@@ -23,73 +23,13 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician",
-              2nd ed., §I.4, printed p. 17 (PDF 27) — the remark that
-              the finite-dimensional V ≅ V* requires a choice of basis
-              and is not natural, in contrast to V ≅ V**.
-   Also:      Awodey, "Category Theory" (CMU pre-print, Sept 2005),
-              §7.5, Example 7.12 — the same contrast, as the motivating
-              example for naturality; Riehl, "Category Theory in
-              Context", §1.4, Example 1.4.4(ii) — riehl:1.4:example4,
-              the negative clause.
-   nLab:      https://ncatlab.org/nlab/show/natural+isomorphism
+(*
+ nLab:      https://ncatlab.org/nlab/show/natural+isomorphism
 
-   THE VARIANCE OBSTRUCTION, and what "natural" can even mean here.
-   The single-dual functor [DualFd] is CONTRAVARIANT — its domain is
-   (FdVect F)^op — while the identity functor is covariant, so a
-   natural transformation Id ⟹ DualFd is not even a well-typed
-   assertion: that is Riehl's "the variance clashes", and it is
-   already the clean negative statement her example records.  The
-   question becomes well posed as in the character-group precedent
-   (Instance/Ab/Character/NonNatural.v, Mac Lane's own §I.4 worked
-   pair): restrict to isomorphisms and read the dual covariantly
-   through inversion, D' f := DualFd (f⁻¹).  Naturality of a family
-   σ_V : V ≅ V* over the iso-core then demands, at each automorphism
-   α, the square σ ∘ α ≈ DualFd (α⁻¹) ∘ σ.  (The precedent's
-   D'-functor machinery is deliberately not rebuilt here: the square
-   is stated directly, a weaker hypothesis and so a stronger
-   refutation.)
+   本文件给出非自然情形。
 
-   THE REFUTATION.  One automorphism of one object, at one point,
-   suffices: the scaling v ↦ 2·v of the one-dimensional space
-   ℚ¹ = StdVect ℚ 1, whose inverse is v ↦ ½·v.  Since [DualFd] acts
-   by precomposition, the square evaluated at a vector v and then at
-   a vector w reads
-
-       σ(2·v)(w)  ≈  σ(v)(½·w),
-
-   and the SINGLE instance v = w = e₁ (the basis vector) is all the
-   proof consumes: writing q := σ(e₁)(e₁) ∈ ℚ, homogeneity of σ and
-   of the functional σ(e₁) turns the two sides into 2q and ½q.  So
-   2q ≈ ½q in ℚ, hence q ≈ 0; by homogeneity σ(e₁) is then the zero
-   functional, i.e. σ(e₁) ≈ σ(0), and applying σ⁻¹ collapses
-   e₁ ≈ 0 in ℚ¹ — refuted by evaluating the coordinate: 1 ≉ 0 in ℚ.
-   This is Mac Lane's m² ≢ 1 obstruction with m = 2 acting on ℚ
-   instead of ℤ/5: over ℚ the scalars 2 and ½ differ and their gap
-   is invertible, so the smallest space already separates.
-
-   STRENGTH.  [sigma_not_natural] takes ONE isomorphism
-   σ : ℚ¹ ≅ (ℚ¹)* and ONE equation — the pointwise square at the
-   single point (e₁, e₁) of the single automorphism 2·(−) —
-   refuting the weakest hypothesis is the strongest theorem;
-   [sigma_square_pointwise] bridges from the categorical square
-   through [DualFd], so the categorical reading is refuted too
-   ([sigma_categorical_not_natural]), and
-   [sigma_family_not_natural] instantiates the family form.  Unlike
-   the character precedent, whose family premise is itself
-   uninhabited over all of Ab (its [no_such_sigma_family]), here the
-   family premise IS inhabited: [family_premise_inhabited] repackages
-   DoubleDual.v's [fd_dual_pointwise_iso] at the [FdVect] hom-level
-   (the homs of [FdVect F] ARE the [RModHom]s of the underlying
-   modules, so the four fields transfer verbatim), and
-   [family_not_natural_applies] feeds it to the corollary, so the
-   non-vacuity is machine-checked rather than asserted.  This is
-   exactly Awodey's point: the pointwise isomorphisms exist at every
-   finite-dimensional object, and what is refuted is only, and
-   precisely, their naturality.  The POSITIVE half of the contrast —
-   V ≅ V** natural, at any dimension — is DoubleDual.v's
-   [double_dual_natural] and [double_dual_iso]; Riehl clause (vii)'s
-   no-cloning computation is Instance/FdVect/Tensor.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The one-dimensional stage over ℚ *)
 

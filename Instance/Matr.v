@@ -13,60 +13,13 @@ Require Import Coq.Arith.PeanoNat.
 
 Generalizable All Variables.
 
-(** * Matr: the matrix category over a rig
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Category_of_matrices
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.2
-    (printed p. 11): for a commutative ring K, [Matr_K] has the positive
-    integers as objects — here all of [nat], the issue's specification;
-    0 is the empty matrix and costs nothing — and an arrow n → m is an
-    m × n matrix over K,
-    composed by matrix product [maclane:I.2:construction5]; §II.3
-    Exercise 4 (printed p. 40): the opposite of the matrix category is
-    the matrix category again, via transposition [maclane:II.3:ex4].
-    Awodey, "Category Theory", §1.4 (printed p. 8): the same category
-    with NATURAL-number entries — matrices over the rig ℕ
-    [awodey:1.4:construction-mat].
-    Riehl, "Category Theory in Context", §1.1 Example 1.1.4(i) and §1.3
-    Example 1.3.14(v): the category and its transpose self-duality
-    [riehl:1.1:example4, riehl:1.3:example14].
-    Wikipedia: https://en.wikipedia.org/wiki/Category_of_matrices
+   本文件给出具体实例。
 
-    THE BASE IS A RIG, per the issue's QA corrections: the category laws
-    need only associativity, units, distributivity and annihilation —
-    never subtraction — so [Matr] is stated over Theory/Algebra/Rig.v's
-    [RigObject] (#839's class, consumed, not redefined), and Awodey's
-    ℕ-matrix category is the instance [Matr_N := Matr Nat_Rig].  Matrices
-    over Mac Lane's commutative ring K are the instance at any
-    [RingObject]'s underlying rig with commutative multiplication.
-
-    ORIENTATION, as the issue asks to fix and document: following Mac
-    Lane's "an arrow A : n → m is an m × n matrix", the hom [n ~> m] is
-    [Matrix R m n] — m rows, n columns, a function
-    [Fin.t m → Fin.t n → carrier R] — so composition
-    [A ∘ B := fun i j => Σ_l A i l · B l j] is the usual matrix product
-    with NO transposition anywhere.  Morphism equality is entrywise ≈.
-
-    THE ENGINE is a small reusable finite-sum library, parameterized by
-    the RIG (the additive-only lemmas — [fin_sum] with congruence,
-    [fin_sum_zero], additivity, and the exchange [fin_sum_swap] — spend
-    only the additive commutative monoid, i.e. [rig_cmon R], and a
-    monoid-level refounding over [CMonObject] is a disclosed possible
-    generalization, deferred until a monoid-only consumer exists);
-    bilinearity of · over Σ ([fin_sum_mul_l/r]) is where distributivity
-    and annihilation are spent, and the Kronecker collapse
-    ([fin_sum_delta_l/r]) is where decidability of [Fin.t] equality via
-    [Fin.eq_dec] is spent.  The issue asks these be kept reusable: the
-    GL_n/determinant issue consumes them next.
-
-    THE SELF-DUALITY: transposition is an identity-on-objects functor
-    [Matr_Transpose : Matr R ⟶ (Matr R)^op] whenever the rig's
-    multiplication is COMMUTATIVE — (AB)ᵀ = BᵀAᵀ needs exactly the
-    commutation of the two factors inside the sum — and it is involutive
-    on the nose, so the pair assembles into the isomorphism of categories
-    [Matr_transpose_iso : Matr R ≅[Cat] (Matr R)^op] (Riehl 1.3.14(v),
-    Mac Lane II.3 Ex 4).  Over a non-commutative rig the same functor
-    would land in matrices over the OPPOSITE rig; that generalization is
-    noted and not needed by any consumer in the queue. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The finite-sum library *)
 

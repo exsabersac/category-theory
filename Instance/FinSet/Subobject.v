@@ -25,146 +25,16 @@ Generalizable All Variables.
 (** * Subobjects of a skeletal finite set: images that compute, and Fong
       and Spivak's merging-versus-tagging exercise *)
 
-(* nLab:      https://ncatlab.org/nlab/show/subobject
-   nLab:      https://ncatlab.org/nlab/show/image
-   Wikipedia: https://en.wikipedia.org/wiki/Image_(category_theory)
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.
-              (GTM 5), §V.7 Definition 2, printed p. 126 (PDF p. 135)
-   Book:      Fong and Spivak, "Seven Sketches in Compositionality",
-              §1.2.1 including Exercise 1.11, printed p. 8 (PDF p. 20)
+(*
+ nLab:      https://ncatlab.org/nlab/show/image
+ Wikipedia: https://en.wikipedia.org/wiki/Image_(category_theory)
+ Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.
+ Book:      Fong and Spivak, "Seven Sketches in Compositionality",
 
-   Theory/Subobject/Lattice.v's [sub_meet] and [sub_join] are conditional
-   constructions: the meet wants chosen pullbacks, the join wants a
-   cocartesian structure and images.  [FinSet] already has the first two
-   -- Instance/FinSet/Classifier.v's [FinSet_Pullbacks] and
-   Instance/FinSet.v's [FinSet_Cocartesian] -- and this file adds the
-   third.  What that buys is not merely inhabitation but COMPUTATION:
-   objects of [FinSet] are literal natural numbers and every codec in
-   play reduces on closed input, so the meet and the join of two named
-   subobjects can be EVALUATED, and Fong and Spivak's exercise -- the
-   union of two subsets of a four-element set has four elements where
-   their disjoint union has five -- becomes a pair of [eq_refl]s rather
-   than a pair of isomorphisms.
+   本文件给出具体实例。
 
-   ** THE IMAGE, AND WHY THE DECISION PROCEDURE MUST RETURN A WITNESS
-
-   For f : m ~> n the image is cut out by the HIT PREDICATE [finset_hit],
-   "some a of the domain is carried to k", decided by
-   Instance/FinSet/Classifier.v's [fin_existsb].  The image object is
-   [fin_countP] of it, the mono is [fin_select] of it with
-   monicity read straight off [fin_select_inj], and the factoring
-   arrow is [fin_rank] at the hit witness supplied by
-   [fin_existsb_complete].  The whole shape is
-   Instance/FinSet/Limit.v's [FinSet_IsEqualizer] one construction over:
-   a decidable predicate, its count, its tabulation, its ranking.
-
-   [im_least] is where the choice of decision procedure is forced.  Given
-   a competing subobject w and a factorization g of f through it, the
-   comparison arrow must send the q-th selected image point to g of SOME
-   a with f a = that point.  A boolean test alone cannot produce that a.
-   Classifier.v's [fin_existsb_sound] can, because it is written to
-   return the least witness as DATA -- a sigT, and it ends in [Defined]
-   for exactly this kind of consumer.  [finset_image_witness] is that
-   projection and [finset_image_witness_eq] its defining equation, by
-   [fin_eqb_eq].  No injectivity of [sub_mono w] is spent here, unlike in
-   the [Sets] companion: [FinSet]'s hom-setoid is pointwise Leibniz
-   equality, so the equation transports with no respectfulness side
-   condition at all.
-
-   ** EXERCISE 1.11, CONCRETE AND COMPUTING
-
-   The ambient object is 4.  [ex11_u] is {0,1} and [ex11_v] is {1,2,3},
-   each presented as the count-codec subobject of an explicit boolean
-   predicate, so that monicity is [fin_select_inj] and the domain is a
-   count that reduces.  Then, all by [eq_refl]:
-
-     [ex11_u_size]          sub_dom ex11_u                = 2
-     [ex11_v_size]          sub_dom ex11_v                = 3
-     [ex11_union_four]      sub_dom (sub_join ex11_u ex11_v) = 4
-     [ex11_coproduct_five]  Coprod 2 3                    = 5
-     [ex11_meet_one]        sub_dom (sub_meet ex11_u ex11_v) = 1
-
-   The third is the book's MERGING reading and the fourth its TAGGING
-   reading, side by side on the same two subsets, which is the whole
-   point of the exercise.  The union number is not put in by hand: it is
-   [fin_countP] of the hit predicate of the copairing out of
-   [Fin.t (2 + 3)], evaluated.  The meet number is the count of the
-   agreement predicate over the encoded pairs in [Fin.t (2 * 3)],
-   evaluated through [FinSet_Pullbacks].
-
-   The arithmetic clauses of the same exercise, which the tree asserted
-   nowhere at these instances, are [finset_pow_three] (Pow 3 = 8) and
-   [finset_product_two_three] (2 × 3 = 6), in the style of
-   Instance/FinSet/Topos.v's [FinSet_Pow_two]; the third, 2 + 3 = 5, is
-   [ex11_coproduct_five] above and is not restated.  Seventeen [eq_refl]
-   Examples in all -- [grep -c ':= eq_refl'] over this file.
-
-   ** THE ELEMENTS OF Pow 2, AND A CORRECTION TO THE ISSUE'S PRIOR-ART CLAIM
-
-   The catalog issue says the [fin_tabulate]/[fin_apply] codec elements
-   "are never listed".  MEASURED, that is too strong.  Running
-   [grep -c "^Example .*_at_"] over Instance/FinSet/Subsets.v and
-   Instance/FinSet/Powerset.v and reading the [finpow_mem] ones out finds
-   NINE membership bits already recorded: six in Subsets.v and three in Powerset.v.
-
-   What is genuinely absent is narrower, and it is what the block below
-   supplies.  First, every one of those nine names its code by
-   [fin_tabulate] of a characteristic function ([empty1], [full1],
-   [sub2_10], [sub2_01], [finpow_sub02] -- checked at their defining
-   lines); NOT ONE names a code by its POSITION in [Fin.t (finpow n)].
-   Second, at n = 2 the four codes are all defined (Subsets.v) but only two of them are read out, so four of the eight
-   bits were listed and four were not.  [powcode2_0] through
-   [powcode2_3] are the four positions and the eight [powcode2_i_at_j]
-   Examples are the complete bit table, which is the enumeration the
-   issue asks for.  [finpow_two_is_Pow] pins [finpow 2] to
-   Structure/Topos.v's [Pow] at [FinSet_Topos] by [eq_refl], so the
-   positions really are positions in the topos-internal power object and
-   not merely in a same-sized set.
-
-   ** BOUNDARIES, measured
-
-   Both computed numbers are pinned by their neighbours being refused.
-   [sub_dom (sub_join ex11_u ex11_v) = 5%nat] is refused with "cannot
-   unify sub_dom (sub_join ex11_u ex11_v) and 5%nat", and [sub_dom
-   (sub_meet ex11_u ex11_v) = 2%nat] likewise against 2 -- conversion
-   refusals, not typing or universe ones, which is what makes the
-   positive [eq_refl]s evidence that the codecs reduced rather than that
-   the statement was vacuous.
-
-   ** TRANSPARENCY, measured by flipping
-
-   [finset_image_least] is the only [Defined] here, and it was flipped to
-   [Qed] and the file recompiled clean, so the transparency is for
-   uniformity with the [Sets] companion rather than forced: the [eq_refl]
-   Examples read [finset_image_obj] and [finset_image_mono], never
-   [im_least].  Those two, and [finset_image_sub], [FinSet_ImageOf] and
-   [finset_image_witness], are plain [Definition]s and MUST stay
-   transparent for the Examples to reduce.
-
-   ** UNIVERSES
-
-   [About FinSet_HasImages] prints
-   [FinSet_HasImages@{u u0 u1 u2 u3} : HasImages@{u u0} FinSet@{u u0 u1 u2}]
-   with the single-line block [Set < u1], inherited from [FinSet] itself
-   (objects are [nat]).  Nothing here introduces a constraint of its own.
-
-   ** WHAT IS NOT DELIVERED
-
-   No [HasWidePullbacks FinSet] -- the wide case is delivered at [Sets]
-   only, and the count codec does not obviously extend to an arbitrary
-   index type.  No [IsMeet]/[IsJoin] witnesses: the greatest-lower-bound
-   and least-upper-bound properties of the computed objects are
-   Theory/Subobject/Lattice.v's business, and nothing below states them.
-   No lattice or order instance on [SubObj n], for the [Type]-versus-[Prop]
-   reason Instance/Powerset/Subobject.v's header gives.  No comparison
-   between the count-codec subobjects here and
-   Instance/FinSet/Subsets.v's [finpow_le] order on power-object codes,
-   and no claim that [FinSet_HasImages] agrees with any orthogonal
-   factorization system or with Structure/Regular.v's image.  Nothing
-   below mentions Instance/FinSet/Regular.v, which builds regular
-   MORPHISMS and their splittings rather than a factorization.  The union
-   and the coproduct are compared only at the level of OBJECT SIZES; no
-   comparison arrow between them is built. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** (a) The map out of the empty finite set is monic *)

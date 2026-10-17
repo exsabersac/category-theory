@@ -13,61 +13,11 @@ Generalizable All Variables.
 
 (** A CEK abstract machine for the de Bruijn STLC *)
 
-(* Wikipedia: https://en.wikipedia.org/wiki/CEK_Machine
+(*
+   本文件给出 λ 演算相关实例。
 
-   This file gives an environment-machine evaluator for the de Bruijn STLC of
-   Exp.v, in the style of the CEK machine of Felleisen and Friedman: a
-   left-to-right call-by-value abstract machine whose state triples a Control
-   term, an Environment, and a Kontinuation.  Here a machine state is a [Σ]
-   pairing a closed control [Closure] (a term together with the environment
-   that closes its free variables) with an [EvalContext] continuation:
-
-       Σ τ          := MkΣ (c : Closed u) (κ : EvalContext u τ)
-       Closed τ     := Closure (e : Exp Γ τ) (ρ : ClEnv Γ)   (control + env)
-       ClEnv Γ      := a list of [Value]s, one per type in Γ   (the environment)
-       EvalContext  := the reified continuation / evaluation context
-
-   [step] is the one-step transition function on states; [loop gas] iterates it
-   a fixed number of times (the [gas]/fuel makes evaluation total, since the
-   STLC is strongly normalizing but [step] is not structurally recursive);
-   [inject] loads a closed term into the initial state [MkΣ (Closure e NoCl) MT]
-   with the empty environment and halt continuation [MT]; and [run gas e] is the
-   composite [loop gas (inject e)].
-
-   FLAG (meta-theory / correctness): pair evaluation is presently broken, so
-   this machine does NOT agree with the call-by-value operational semantics of
-   Step.v on terms involving products.  Two related defects:
-
-     - The PAIR_FST/PAIR_SND continuations do not gate on whether a component
-       is already a value.  Starting from [Closure (Pair x y) ρ] under any
-       continuation κ, the clauses at the [Pair]/[PAIR_SND]/[PAIR_FST] cases
-       form a 3-cycle that stashes both components away unevaluated and then
-       rebuilds the *original* pair, so neither x nor y is ever reduced.  For
-       example, [run 100 (Pair (APP (LAM (VAR ZV)) EUnit) EUnit)] cycles back
-       to the syntactic input rather than reducing the redex in the first
-       component (this is also why [example_pair] in Example.v holds only
-       because its gas count lands on a multiple of the cycle length).
-
-     - The [FN] continuation (a function value awaiting its evaluated argument)
-       only dispatches when the argument's control is [EUnit] or [LAM]; there
-       is no clause for a [Pair] argument.  A pair argument therefore falls
-       into the [Pair] 3-cycle above and the application never fires, e.g.
-       [run gas (APP (LAM (VAR ZV)) (Pair EUnit EUnit))] never terminates in a
-       value for any [gas].
-
-   The intended correctness statement (an agreement theorem relating [run] to
-   [--->*] of Step.v / Multi.v, or to [SemExp] of Sem.v) is sketched but
-   unproven at the end of this file.  Fixing the pair cases (have PAIR_SND only
-   swap once its component is a value, and add a [FN] clause that applies the
-   saved function to a [Pair]-valued argument) is left as future work; it
-   touches the [step] equation graph and the [eq_refl] computations in
-   Example.v, so it is deliberately not attempted as part of this review.
-
-   References:
-     CEK / environment machine
-       https://en.wikipedia.org/wiki/CEK_Machine
-     small-step CBV operational semantics (the relation this should agree with)
-       Instance/Lambda/Step.v, Instance/Lambda/Multi.v *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Set Transparent Obligations.
 

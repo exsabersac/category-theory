@@ -17,111 +17,13 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * The commutator subgroup and the abelianization functor
+(*
+ nLab: https://ncatlab.org/nlab/show/abelianization
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.3
-    (printed p. 14) and §I.4 (printed pp. 16–17)
-    [maclane:I.3:construction3, maclane:I.4:construction2]: the
-    commutator subgroup [G, G] is functorial in G — homomorphisms carry
-    commutators to commutators — and the factor-commutator group
-    G ↦ G/[G, G] is the abelianization functor Grp ⟶ Ab, with the
-    projections p_G : G → G/[G, G] a natural transformation from the
-    identity functor.
-    nLab: https://ncatlab.org/nlab/show/abelianization
+   本文件给出具体实例。
 
-    THE SETOID QUOTIENT.  In this library a quotient group needs no new
-    carrier: G/[G, G] is G's carrier under the COARSER equivalence
-    a ≈' b iff a·b⁻¹ lies in the commutator subgroup ([abel_eq]).  The
-    commutator subgroup itself is the inductively generated closure
-    [InCommutator]: commutators, the unit, products, inverses, and a
-    setoid-respect constructor (generation must be ≈-saturated for the
-    quotient relation to be well defined over setoid carriers).  The
-    quotient relation is an equivalence by the group laws, the
-    operations respect it by NORMALITY — the conjugate of a commutator
-    element is again one, an instance of the single induction
-    [hom_commutator] (every homomorphism pushes [InCommutator] forward)
-    applied to the conjugation homomorphisms [Grp_conj] of
-    Instance/Grp/TwoFunctors.v — and commutativity of the quotient is
-    the constructor [inc_comm] itself: (a·b)·(b·a)⁻¹ IS a commutator.
-
-    THE TWO FUNCTORS.  [Commutator_Functor : Grp ⟶ Grp] restricts each
-    homomorphism to the subgroup (the sigma carrier over
-    [InCommutator], compared on elements, as Instance/Grp/Center.v does
-    for the center); [Abelianization_Functor : Grp ⟶ Ab] sends G to
-    [AbelianizationOb G] — same carrier, coarser setoid, commutative by
-    construction — and a homomorphism to itself, [hom_commutator]
-    making it respect the quotient relations.  [Ab_to_Grp : Ab ⟶ Grp]
-    is the evident inclusion (an abelian group is a group), built here
-    since no Ab → Grp bridge existed in tree.
-
-    THE NATURAL PROJECTION ([abel_projection]): the family
-    p_G : G → G/[G, G] as a [Transform] from Id[Grp] to
-    Ab_to_Grp ◯ Abelianization_Functor.  Because the quotient reuses
-    the carrier, every component is the identity function and both
-    naturality squares hold by reflexivity of the coarser relation —
-    Mac Lane's square p_H ∘ f ≈ f' ∘ p_G with no computation left.
-
-    TOWARD THE ADJUNCTION (the issue's optional stretch, left to a
-    future change tying into Construction/Reflective.v): the germ is
-    [hom_to_abelian_kills] — a homomorphism from G into (the underlying
-    group of) an abelian group sends every commutator element to the
-    unit, by a second induction over the same generation — which is
-    exactly why such homomorphisms descend along p_G; the adjunction
-    Abelianization ⊣ Ab_to_Grp packages that descent and is not built
-    here.  CORRECTION (#370): the tie into Construction/Reflective.v now
-    exists, in Instance/Grp/Abelianize/Reflective.v
-    ([Ab_Reflective_in_Grp]); the adjunction itself is
-    Instance/Grp/Abelianize.v's.
-
-    SCOPE OF THE QUOTIENT — THE EXTRACTION HAS NOW BEEN CARRIED OUT.
-    This paragraph previously disclosed that the quotient here was
-    SPECIALIZED to [InCommutator], that the five congruence proofs
-    below consume only the normal-subgroup interface (≈-saturation,
-    unit, closure under product and inverse, normality), that a
-    generic [NormalSubgroup]-quotient was therefore extractable by
-    abstraction over exactly those five facts, and that unifying the
-    tree's quotient constructions was future work.
-
-    Instance/Grp/Quotient.v (issue #313) performs that extraction.
-    [Subgroup] and [NormalSubgroup] there are exactly those five laws;
-    [CommutatorNS] below packages [InCommutator] as one, using the
-    five facts this file already proved and adding nothing; and
-    [abel_eq] is [quot_rel] at that normal subgroup ([abel_eq_is_quot_rel]).
-    An earlier revision added "by convertibility": since the PR "algebraic
-    carriers are sets" (2026-09-17) the two are separated by one [inhabited],
-    so the identification is up to the propositional truncation and is stated
-    so at [eq_refl] there.  The six lemmas that follow keep their statements
-    unchanged and are one-line citations of the generic ones, each gaining a
-    [constructor] or a [destruct], so this file still carries no quotient
-    construction of its own.
-
-    THE OTHER TWO CONSTRUCTIONS the paragraph named are NOT unified,
-    and re-reading their record types shows why the count of "three
-    unshared quotient constructions" was itself imprecise.
-    Instance/Grp/Epi.v's [Grp_Coset] is a [SetoidObject] and not a
-    [GrpObject] at all: it is the coset space of the image of an
-    arbitrary homomorphism, and that file's argument exists precisely
-    for the case where the image is NOT normal (its header and two
-    later passages say so).  It is therefore not an instance of a
-    normal-subgroup
-    quotient and cannot be made one.  Instance/Ab.v's
-    [ab_coset_eq] IS a quotient group, but of an [AbObject], and Ab.v
-    sits upstream of Instance/Grp.v with the only bridge
-    ([Ab_to_GrpOb]) living in this file; routing it through
-    Instance/Grp/Quotient.v would move that bridge upstream and give
-    Ab.v a dependency on Grp.  That is left undone deliberately.  (An
-    earlier revision of that sentence cited Instance/Ab.v, where the
-    definition stood before the PR "algebraic carriers are sets"
-    (2026-09-17); the same PR also made [ab_coset_eq] a [Prop] -- it is
-    Coq's [ex] now, not a [Type]-valued sigma -- which is the shape
-    [abel_eq] here has too.)
-
-    NON-DEGENERACY, witnessed: [commutator_GrpTwo_proper] (in an
-    abelian group the subgroup omits the nonidentity),
-    [commutator_S3_nontrivial] (in S₃ it contains a nonidentity
-    element), and [abelianization_S3_nontrivial] (the quotient of the
-    nonabelian S₃ does not collapse: the reflection stays apart from
-    the unit, seen through the sign character). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Commutators and the generated subgroup *)
 

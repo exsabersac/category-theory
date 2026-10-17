@@ -13,62 +13,11 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * Functors between prosets are monotone maps
+(*
+   本文件给出预序集相关实例。
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.3
-    (printed p. 15), Exercise 3(a) [maclane:I.3:ex3]: a functor between
-    two preorders regarded as categories is exactly a monotone map.
-    Riehl, "Category Theory in Context", §1.3 Exercise 1.3.ii
-    [riehl:1.3:exii]: the same question, and the sharpening that the
-    correspondence should carry NO decidability hypothesis.
-    Fong and Spivak, "Seven Sketches in Compositionality", §3.3.2
-    Example 3.42 [7sketches:3.3.2:example3.42] (the identification,
-    worked at the naturals), §1.2.3 Examples 60 and 61
-    [7sketches:1.2.3:example60, example61] (the 17/24 witness, and the
-    tree-of-life rank map).
-
-    THE ORDINARY CORRESPONDENCE, decidability-free.  Two fragments
-    predate this file.  Construction/Enriched/Two.v's
-    [EnrichedFunctor_Two_monotone] is 2-ENRICHED, and its reverse leg
-    genuinely case-splits on the [TwoPreorder] decidability field
-    [tpre_dec] — a hypothesis Riehl's exercise does not impose.
-    Instance/Pos.v's [MonotoneAsFunctor] is ordinary and
-    decidability-free but is the FORWARD leg only, for posets bundled
-    as [PosetObject]s.  What this file adds is the full correspondence
-    over arbitrary prosets — both legs and both round trips, with no
-    decision procedure anywhere: the forward leg reads monotonicity
-    off [fmap], the backward leg USES the thinness of the target — in
-    a thin category the functor laws are automatic, every hom-setoid
-    being a subsingleton, which is the observation (Seven Sketches
-    §3.3.2's, and Pos.v's, made once in the general setting) that
-    [Functor_of_monotone] operationalizes as a smart constructor.
-
-    ROUND TRIPS.  Monotone → functor → monotone returns the same map on
-    the nose ([monotone_of_Functor_of_monotone]); functor → monotone →
-    functor returns the same functor up to the thin-category
-    identification, i.e. up to [Functor_Setoid]'s natural isomorphism,
-    with identity-arrow components ([Functor_of_monotone_of_Functor]).
-
-    WITNESSES.
-    - [seventeen_twentyfour] (Example 60): the monotone map from the
-      two-element order (bool under false ≤ true) to (ℕ, ≤) sending
-      bottom to 17 and top to 24 — the first concrete [MonotoneFun]
-      inhabitant, its functor [Seventeen_TwentyFour_Proset] obtained
-      through the smart constructor.  Alongside it,
-      [Seventeen_TwentyFour] reads the same map out of the library's
-      walking arrow as a functor [_2 ⟶ LessThanEqualTo_Category],
-      hand-built: [_2] is presented with strict-equality homs rather
-      than as a [Proset], so it sits outside the correspondence's
-      domain.
-    - [nondecreasing] (Example 3.42's payload): endofunctors of
-      (ℕ, ≤) are exactly the non-decreasing sequences, a named
-      instantiation of the correspondence.
-    - [taxonomy_rank] (Example 61): a PRESENTED tree preorder — five
-      classification terms with four generating edges, closed under
-      reflexivity-transitivity by [clos_refl_trans] — mapped to the
-      three-element chain of ranks, with monotonicity proved by
-      INDUCTION ON THE GENERATING RELATION (one case per edge, plus the
-      closure rules) rather than by enumerating the closure. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Monotone maps, and the correspondence *)
 

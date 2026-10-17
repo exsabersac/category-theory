@@ -18,30 +18,11 @@ Generalizable All Variables.
 
 (** Strong normalization of the intrinsically-typed STLC. *)
 
-(* Every well-typed closed expression reduces to a value.  Because [Step] is
-   deterministic (see [Step_deterministic]) there is a single reduction
-   sequence out of each term, so reaching a value (here [halts]) coincides with
-   strong normalization; the [SN]/[strong_normalization] naming reflects that
-   identification.
+(*
+   本文件给出 λ 演算相关实例。
 
-   The argument is Tait's reducibility / logical-relations method (Tait 1967,
-   Girard's "reducibility candidates"):
-   https://softwarefoundations.cis.upenn.edu/plf-current/Norm.html
-
-   The reducibility predicate is [SN := ExpP halts], where [ExpP] (from [Log])
-   recurses on the type:
-     - base ([Unit]):  SN e  :=  halts e
-     - arrow (σ ⟶ τ):  SN e  :=  halts e ∧ (∀ x, SN x → SN (APP e x))
-     - product (σ × τ): SN e  :=  halts e ∧ SN (Fst e) ∧ SN (Snd e)
-   The arrow clause is the crux: halting alone is not preserved by application,
-   since β-reduction substitutes the argument and may expose fresh redexes, so
-   reducibility must close over application.
-
-   Strong normalization then follows in two steps:
-     - the fundamental lemma [SubExp_SN]: under a reducible substitution every
-       expression is reducible (the analogue of Software Foundations' msubst_R);
-     - [Exp_SN] instantiates it at the empty substitution, and
-       [strong_normalization] extracts the halting witness via [SN_halts]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Norm.
 

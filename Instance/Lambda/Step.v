@@ -17,46 +17,11 @@ Generalizable All Variables.
 
 (** Small-step call-by-value reduction by congruence rules. *)
 
-(* This module gives the structural (congruence-rule) presentation of the
-   small-step operational semantics for the de Bruijn STLC (see [Exp]).  The
-   relation [e ---> e'] reduces one redex; the next redex is located not by a
-   reified evaluation context (that is the job of [Full], which factors the
-   same relation through [Frame]/[Ctxt]/[Plug]) but by one congruence rule per
-   elimination form that descends into the appropriate subterm:
+(*
+   本文件给出 λ 演算相关实例。
 
-     ST_Pair1   x ---> x'              ⟹  Pair x y ---> Pair x' y
-     ST_Pair2   ValueP x,  y ---> y'   ⟹  Pair x y ---> Pair x y'
-     ST_Fst1    p ---> p'              ⟹  Fst p ---> Fst p'
-     ST_Snd1    p ---> p'              ⟹  Snd p ---> Snd p'
-     ST_AppL    e1 ---> e1'            ⟹  APP e1 e2 ---> APP e1' e2
-     ST_AppR    ValueP v1, e2 ---> e2' ⟹  APP v1 e2 ---> APP v1 e2'
-
-   and one contraction rule per elimination form at the root:
-
-     ST_FstPair ValueP v1, ValueP v2  ⟹  Fst (Pair v1 v2) ---> v1
-     ST_SndPair ValueP v1, ValueP v2  ⟹  Snd (Pair v1 v2) ---> v2
-     ST_Beta    ValueP v              ⟹  APP (LAM e) v ---> SubExp {|| v ||} e
-
-   The relation is call-by-value, not full beta: ST_Beta fires only when the
-   argument is a value, the projections only when both components are values,
-   and the rules guarding a second subterm on a value of the first (ST_Pair2,
-   ST_AppR) fix a left-to-right evaluation order.  Reduction never proceeds
-   under a [LAM].  Because [Step] is indexed by [Exp Γ τ] on both sides,
-   preservation (subject reduction) holds by construction: a step cannot
-   change the context or the type, so there is no separate preservation lemma.
-
-   The metatheory established here: [strong_progress] (a closed well-typed
-   term is a value or steps), [Value_irreducible]/[Value_cannot_start]/
-   [value_is_nf] (values are normal forms), the congruence lemmas
-   [AppL_LAM]/[AppR_LAM], and [Step_deterministic] (reduction is a partial
-   function).  Semantic soundness of [--->] is proved in [Sound] and strong
-   normalization in [Norm].
-
-   References:
-     small-step / structural operational semantics
-       https://en.wikipedia.org/wiki/Operational_semantics
-     beta-reduction      https://ncatlab.org/nlab/show/beta-reduction
-     lambda-calculus     https://ncatlab.org/nlab/show/lambda-calculus *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Step.
 

@@ -9,129 +9,14 @@ Generalizable All Variables.
 
 (** * The category of algebras of a variety *)
 
-(* nLab:      https://ncatlab.org/nlab/show/variety+of+algebras
-   nLab:      https://ncatlab.org/nlab/show/algebraic+theory
-   Wikipedia: https://en.wikipedia.org/wiki/Variety_(universal_algebra)
+(*
+ nLab:      https://ncatlab.org/nlab/show/algebraic+theory
+ Wikipedia: https://en.wikipedia.org/wiki/Variety_(universal_algebra)
 
-   Mac Lane §V.6, book p. 124 (PDF p. 133); Awodey §9.8, printed p. 256
-   (PDF p. 265).
+   本文件给出具体实例。
 
-   The algebras of a given type that satisfy a set of identities — groups,
-   rings, abelian groups, lattices — together with their operation-preserving
-   maps form a category, the VARIETY or equational class of that
-   presentation.  Mac Lane needs it as the setting for the free-algebra
-   adjunction; Awodey defines the theory, its algebras and the forgetful
-   functor to sets as the setting for the free-algebra theorem.
-
-   ** What was missing, measured
-
-   Instance/Comp.v has the whole syntactic apparatus and stops one step
-   short of the category.  [OpSignature], [OpAlgebra] and
-   [AlgHom] give operations, interpretations and homomorphisms;
-   [EqSignature] gives laws with their naturality conditions; and
-   [Algebra S E] is the TYPE of algebras satisfying them.  But
-   [Algs] is the category of algebras of an OPERATION signature —
-   the equations are dropped — and [Group := Algebra GroupOp GroupEq]
-   is a type, not a category.  So ⟨Ω,E⟩-Alg was nowhere formed, and
-   Instance/Roster.v records exactly that gap in prose: "there is no
-   category of Groups there … the variety is recorded here as the type it
-   is".  This file forms it.
-
-   ** How, and why this way
-
-   [Variety] is the FULL SUBCATEGORY of [Algs] cut out by satisfaction of
-   the laws, built with Construction/Subcategory.v's [Sub] in exactly the
-   shape Theory/Lawvere/Model.v uses for [Models_sub]: an [sobj] that
-   selects, an [shom] that retains every morphism ([True]), and closure
-   proofs that are therefore [I].
-
-   Two alternatives were considered and lose.  A fresh [Category] record
-   over a sigma type would duplicate [Alg_id], [Alg_comp], [AlgHom_Setoid]
-   and the four laws that [Sub] supplies for nothing; it would give up
-   [Incl] and [Incl_Faithful]; and it would make fullness something to
-   prove rather than the one-liner [fun _ _ _ _ _ => I].  The "[Models_sub]
-   analogue" is not a third option — [Models] IS [Sub] of a subcategory, so
-   that suggestion and this construction are the same one.
-
-   The record presentation is not lost: [Variety_pack] and [Variety_unpack]
-   are mutually inverse ON THE NOSE against Instance/Comp.v's
-   [Algebra S E], each round trip an eta-expansion discharged by case
-   analysis — the [Model_pack]/[Model_unpack] idiom of
-   Theory/Lawvere/Model.v.
-
-   Setoid discipline is inherited, not rebuilt: [Sub]'s hom-setoid is
-   definitionally `≈` of first projections
-   (Construction/Subcategory.v), so morphisms of [Variety] are compared
-   with `≈`, and that `≈` is [Algs]' [AlgHom_Setoid], i.e. pointwise
-   Leibniz [=] on carriers.  That is a property of the DONOR, which
-   docs/INDEX.md's Instance/Ab.v bullet already flags, not a choice made
-   here.
-
-   ** The axiom boundary, and what it is actually a boundary of
-
-   [Variety] and its twelve satellites are closed under the global
-   context.  [GroupVariety] IS NOT: it reports
-   [functional_extensionality_dep], inherited from Instance/Comp.v's
-   [GroupEq], which is [Defined] with [functional_extensionality].
-   The mechanism is [EqSignature]'s [lhs_natural] and
-   [rhs_natural], which ask for a LEIBNIZ equation between
-   two [arity o → B] argument bundles that are only pointwise equal.
-
-   AN EARLIER REVISION OF THIS HEADER, OF THE COMMIT MESSAGE AND OF THE
-   docs/INDEX.md BULLET DIAGNOSED THIS AS A FACT ABOUT EQUATION DEPTH —
-   depth 1 free, depth ≥ 2 not.  THAT IS FALSE, and it is refuted by
-   construction rather than by argument: [InvInvEq] below is the law
-   inv (inv x) = x, DEPTH 2, over the very same [GroupOp], and it is
-   Closed under the global context.
-
-   The real criterion is the SHAPE OF EACH ARGUMENT BUNDLE, not the depth
-   of the term.  A naturality field is conversion-provable exactly when
-   every bundle the equation builds is either a REINDEXING [args ∘ φ] or
-   a CONSTANT bundle: in the first case the field IS [op_commute] at that
-   bundle, in the second [f_equal] against the constant-bundle former
-   discharges it.  What defeats conversion is a bundle that MIXES a
-   compound subterm with an [args] leaf, as every group axiom's [mul]
-   node does — [mul' one' (args Only)] builds
-   [fun i => match i with Fst => one' | Snd => args Only end], which is
-   neither shape.  Two further measurements pin this down: associativity
-   ALONE over [GroupOp], mentioning no nullary operation, still needs the
-   axiom; and the SAME law at the EMPTY arity needs it when the bundle is
-   spelled as a literal empty match and is CLOSED when the identical
-   bundle is spelled as a reindexing of [args].  So the empty arity is
-   not the root of anything — it is dodgeable — and
-   Test/ProbeVariety440.v's n1 pins one conversion refusal, no more.
-
-   What survives, and is the honest claim: no [EqSignature GroupOp]
-   CAPTURING THE GROUP LAWS can be axiom-free by this route, because
-   every group axiom has a [mul] node of the mixed shape.  That is a
-   statement about the routes tried and the criterion above, NOT a proof
-   of impossibility; and it needs the qualifier, since
-   [eq := Empty_set] gives an axiom-free [EqSignature GroupOp] that
-   captures nothing.
-
-   Both sides are exhibited below rather than asserted: [CommMagmaVariety]
-   (a depth-1 law, reindexing bundles) and [InvInvVariety] (a DEPTH-2 law,
-   constant bundles) are both closed, and the second is the sharper
-   exhibit because it is over [GroupOp] itself.
-
-   Consequently [GroupVariety] and [GroupVariety_Bool] are deliberately
-   NOT in the [make print-assumptions] gate — gating them would make the
-   axiom audit report a stdlib axiom — and docs/AXIOMS.md carries them
-   instead, with this reason.  Everything else in this file is gated,
-   including the four [Variety_Forget] [Program] obligations and the two
-   constructors, which are invisible to a [.glob] head census and were
-   missed by a first count that claimed this file had no obligations.
-
-   ** Not delivered
-
-   No bridge to Theory/Lawvere/Model.v beyond a stated connection: see
-   [variety_lawvere_connection] at the end of this file, which is a
-   comment and not a theorem, and the follow-on issue it names.  No
-   [GroupVariety ≅[Cat] Grp]: Instance/Variety/GroupComparison.v ships a fully
-   faithful comparison functor instead and states why the isomorphism is
-   not available.  No quotient of [Tree] by an equational congruence.  No
-   removal of Instance/Comp.v's two commented-out instances, which is
-   an edit to that file and is surfaced rather than made. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Instance/Comp.v's record fields [carrier], [eq] and [map] would shadow
    the library's if this module were imported, so it is aliased and

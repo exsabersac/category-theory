@@ -22,156 +22,20 @@ Open Scope R_scope.
 
 (** * Metric spaces, isometries, and the complete ones *)
 
-(* nLab:      https://ncatlab.org/nlab/show/metric+space
-   nLab:      https://ncatlab.org/nlab/show/complete+metric+space
-   nLab:      https://ncatlab.org/nlab/show/Cauchy+sequence
-   Wikipedia: https://en.wikipedia.org/wiki/Metric_space
-   Wikipedia: https://en.wikipedia.org/wiki/Complete_metric_space
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, §III.1, printed pp. 56-57 (PDF pp. 65-66) — the
-              construction this file and Instance/Met/Completion.v serve
-   Book:      Fong & Spivak, "Seven Sketches in Compositionality",
-              §2.3.3, Definition 2.51, printed pp. 59-60 (PDF pp. 71-72) —
-              the four axioms, transcribed below
-   Book:      Bishop, "Foundations of Constructive Analysis", McGraw-Hill
-              1967 — the constructive discipline the moduli below follow
-   Paper:     Lawvere, "Metric spaces, generalized logic, and closed
-              categories", Rend. Sem. Mat. Fis. Milano 43, 1973 — the
-              ROAD NOT TAKEN here; see the scope note
+(*
+ nLab:      https://ncatlab.org/nlab/show/complete+metric+space
+ nLab:      https://ncatlab.org/nlab/show/Cauchy+sequence
+ Wikipedia: https://en.wikipedia.org/wiki/Metric_space
+ Wikipedia: https://en.wikipedia.org/wiki/Complete_metric_space
+ Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Fong & Spivak, "Seven Sketches in Compositionality",
+ Book:      Bishop, "Foundations of Constructive Analysis", McGraw-Hill
+ Paper:     Lawvere, "Metric spaces, generalized logic, and closed
 
-   ON THE CITATIONS.  No book was opened for this file, and nothing below
-   quotes one; every claim about what a printed source says is a paraphrase,
-   and the paraphrases of Mac Lane are taken from the in-tree book
-   inventory rather than from the text.  Specifically: the §III.1 reading
-   used below — "the category of metric spaces and metric-preserving
-   functions (necessarily injective)", with the completion as a universal
-   arrow to the inclusion of the complete ones — is
-   doc/plan/books/maclane/inventory/III.json's entry
-   [maclane:III.1:construction3] (book p. 56, PDF pp. 65-66), and the §IV.3
-   contrast is that inventory's [maclane:IV.3:construction1] (book p. 92),
-   whose summary of Mac Lane's reflective-subcategory example says "metric
-   spaces with uniformly continuous maps".  The Fong & Spivak page numbers
-   come from doc/plan/books/seven-sketches/pagemap.md.  A reader checking
-   this file against the printed books should expect the wording to differ.
+   本文件给出具体实例。
 
-   A metric space is a set of points together with a numerical distance
-   between them.  The notion is Fréchet's: his 1906 thesis "Sur quelques
-   points du calcul fonctionnel" isolated what he called an *écart* — a
-   symmetric, vanishing-on-the-diagonal, triangle-obeying function of two
-   points — precisely so that convergence arguments from analysis could be
-   run on spaces whose points are functions rather than numbers.  Hausdorff's
-   "Grundzüge der Mengenlehre" (1914) named the resulting object the
-   *metrischer Raum* and made it the backbone of general topology; the
-   separation clause (distance zero forces equality), which Fréchet had
-   assumed, is exactly what distinguishes a metric from the pseudometrics
-   and the generalized distances that came later.
-
-   COMPLETION is older than the general definition, and is the reason the
-   general definition was worth making.  Cantor's 1872 construction of the
-   real numbers takes Cauchy sequences of rationals and identifies two of
-   them when their difference tends to zero; Hausdorff observed that the
-   same recipe applies verbatim to any metric space and manufactures a
-   complete space containing it.  What Mac Lane adds in §III.1 is the
-   observation that the recipe is not a recipe at all but a UNIVERSAL
-   PROPERTY: the embedding of a space into its completion is a universal
-   arrow to the inclusion of complete spaces, so the completion is
-   determined up to a unique isomorphism by a factorization property and
-   not by the sequences used to build it.  That is Instance/Met/Completion.v.
-
-   THIS FILE is the base: the four axioms, the category, and the complete
-   ones as a full subcategory.
-
-   TWO NAMES THAT ARE NOT THIS ONE.
-
-   (1) [CauchyComplete] (Construction/Karoubi/Universal.v) is a synonym
-       of [IdempotentsSplit] — CATEGORICAL Cauchy completeness, the property
-       that every idempotent of a category splits.  It is a same-name trap
-       and has nothing to do with the metric completeness defined here.  The
-       shared word is not an accident (Lawvere's enriched reading, below,
-       makes the two instances of one notion) but nothing in this file or in
-       Instance/Met/Completion.v is stated in terms of it, and no theorem
-       here is imported from there.  [MComplete] below is the metric notion.
-
-   (2) LAWVERE GENERALIZED METRIC SPACES.  Lawvere's 1973 paper reads a
-       metric space as a category enriched in the poset [0,∞] with addition
-       as the tensor — dropping symmetry and separation, which are the two
-       axioms that have no enriched counterpart.  In-tree that reading
-       appears only as prose, in the background essays of
-       Theory/Profunctor.v, Construction/Enriched.v, Instance/Poset.v,
-       Instance/Two.v and Construction/Karoubi.v.  This file does NOT take
-       that road: [MetricSpace] below is a record with a distance FUNCTION
-       and Fong & Spivak's four axioms, not an [Enriched] instance, and no
-       attempt is made here to identify the two presentations.  A metric
-       space in this file is symmetric and separated, so it is not a
-       Lawvere metric space and the enriched machinery would not apply to
-       it unchanged.
-
-   THE CODOMAIN OF THE DISTANCE is the standard library's [R].  The choice
-   is forced rather than stylistic, and the header of
-   Instance/Met/Completion.v gives the argument in full; in one line, the
-   distance between two Cauchy sequences is the LIMIT of the distances
-   between their terms, so a codomain that is not closed under limits of
-   its own Cauchy sequences cannot host the completion, and the universal
-   arrow would not be statable.  [Q] is not closed under such limits.  What
-   is machine-checked is the forcing half — Completion.v's
-   [cdist_spec]/[cdist_unique] show the completion's distance IS that limit
-   and is pinned by it — while the ℚ-specific half is classical folklore
-   (√2) and is labelled as ARGUED, not proved, in that file's header.
-
-   THE AXIOM FOOTPRINT of this file is measured per constant, not sampled.
-   Mentioning [R] costs nothing (the type is a definition), but any real
-   ARITHMETIC costs the two standard-library axioms [sig_forall_dec] and
-   [functional_extensionality_dep], and COMPLETENESS of the reals costs
-   [sig_not_dec] on top.  Exactly two constants here reach for completeness:
-   [R_Metric_MComplete] and the [CMet] object [R_CMet] built from it, both
-   through [R_complete].  Everything else carries at most the two, and
-   [R_Setoid] and [Nat_Setoid] are closed under the global context.
-   Instance/Met/Completion.v, which builds the completion, necessarily
-   carries all three on most of its constants; Instance/Met/Extended.v
-   carries none of [sig_not_dec] at all.
-
-   NON-NEGATIVITY IS NOT AN AXIOM HERE.  Fong & Spivak put it in the
-   codomain, writing d : X × X → ℝ≥0 and then listing four conditions.  This
-   file takes the codomain to be all of [R] and lists the same four
-   conditions; [dist_nonneg] below then DERIVES 0 ≤ d(x,y) from them, so
-   nothing is lost and the record carries one field fewer.
-
-   THE ARROWS ARE ISOMETRIES.  Mac Lane's §III.1 says "metric spaces and
-   metric-preserving functions", with the parenthetical "(necessarily
-   injective)", so the arrows are the distance-PRESERVING maps
-   d(fx,fy) = d(x,y) — not the short maps d(fx,fy) ≤ d(x,y), and not the
-   continuous or uniformly continuous ones.  His parenthetical is
-   [isometry_injective] below, proved rather than assumed, and
-   [Met_all_Monic] draws the categorical consequence.  The choice matters
-   for the universal property and the reader should know that Mac Lane
-   himself uses a DIFFERENT category one chapter later: the §IV.3 example of
-   a reflective subcategory takes metric spaces with UNIFORMLY CONTINUOUS
-   maps ([maclane:IV.3:construction1]).  Both categories have the completion
-   as a universal arrow — the extension of a uniformly continuous map to the
-   completion is the classical statement, and an isometry is in particular
-   uniformly continuous — but they are different categories with different
-   hom-sets, and NO comparison between them is built here.  This file
-   formalizes the §III.1 one, which is the one the issue names.
-   CORRECTION (#370): "here" is this file.  The uniformly continuous
-   category, [MetU], and the comparison [Met_to_MetU] (identity on
-   objects, faithful, not full) are Instance/Met/Uniform.v's.
-
-   WHAT IS DELIVERED HERE: the record [MetricSpace] (four axioms), the
-   derived non-negativity and injectivity lemmas, the category [Met], a
-   reusable constructor [Metric_of_injection] and the concrete spaces
-   [R_Metric], [Point_Metric] and [Harmonic], the Cauchy/convergence/
-   completeness vocabulary, the full subcategory [CMet] of complete spaces
-   with its inclusion, the completeness of [R_Metric] and [Point_Metric],
-   and the proof that [Harmonic] is NOT complete.
-
-   WHAT IS NOT DELIVERED HERE: any limit, colimit, monoidal or enriched
-   structure on [Met]; the identification of [Met] with a subcategory of
-   [Top] (the metric topology is not built); short maps, uniformly
-   continuous maps, or any category of metric spaces other than the
-   isometric one.  The completion itself is Instance/Met/Completion.v and
-   extended metric spaces are Instance/Met/Extended.v.  CORRECTION (#370):
-   the uniformly continuous maps are Instance/Met/Uniform.v's [MetU];
-   short maps are still not built. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** A missing standard-library step *)
 

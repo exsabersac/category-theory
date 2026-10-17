@@ -8,30 +8,15 @@ Generalizable All Variables.
 
 (** * The thin category of a preorder (proset) *)
 
-(* nLab: https://ncatlab.org/nlab/show/preorder
-   nLab: https://ncatlab.org/nlab/show/thin+category
-   Wikipedia: https://en.wikipedia.org/wiki/Preorder
+(*
+ nLab: https://ncatlab.org/nlab/show/thin+category
+ Wikipedia: https://en.wikipedia.org/wiki/Preorder
+ Wikipedia: "A category with at most one morphism from any object X to any
 
-   Any preordered set (a "proset": a set [A] with a reflexive and transitive
-   relation [R], not necessarily antisymmetric) forms a category. Its objects
-   are the elements of [A], and there is a (unique) morphism [x ~> y] exactly
-   when [R x y] holds: identities come from reflexivity and composition from
-   transitivity. See Instance/Pos.v for [Pos], the category whose
-   objects are posets, and Instance/Ord.v for [Ord], the category whose
-   objects are ALL preorders (Mac Lane's Preord, #372).  #786, the
-   preorder/Bool-category equivalence, is still open; it should consume
-   that [Ord] rather than build one.
+   本文件给出预序集相关实例。
 
-   Because antisymmetry is not required, distinct objects [x] and [y] may be
-   isomorphic (when both [R x y] and [R y x] hold) without being equal; this
-   is precisely what distinguishes a proset from a poset (see Instance/Poset.v,
-   which adds antisymmetry). The resulting category is "thin": any two parallel
-   morphisms are equal, so each hom-set has at most one element.
-
-   Wikipedia: "A category with at most one morphism from any object X to any
-   other object Y is a preorder. Such categories are called thin. In this
-   sense, categories 'generalize' preorders by allowing more than one relation
-   between objects: each morphism is a distinct (named) preorder relation." *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Proset {A : Type} {R : relation A} (P : PreOrder R) :
   Category := {|

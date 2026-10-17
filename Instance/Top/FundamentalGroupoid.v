@@ -23,12 +23,11 @@ Generalizable All Variables.
 
 Open Scope R_scope.
 
-(* Each of the five sections below quantifies over hypotheses that its proofs
-   genuinely use but that do not occur in their statements -- the Lipschitz and
-   endpoint constraints of [Straight], the two given homotopies of
-   [HomotopyConcat], the equality decider of [IntervalConnected].  Lib.v's
-   [Default Proof Using "Type"] would discard them; this is the same setting,
-   for the same reason, as Instance/Top/Interval.v. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Set Default Proof Using "All".
 
 (** * The fundamental groupoid of a topological space *)

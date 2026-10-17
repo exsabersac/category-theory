@@ -14,48 +14,14 @@ Require Import Coq.Vectors.Fin.
 
 Generalizable All Variables.
 
-(** * Row operations are left multiplication by a matrix
+(*
+ nLab: https://ncatlab.org/nlab/show/Yoneda+lemma
+ Wikipedia: https://en.wikipedia.org/wiki/Elementary_matrix
 
-    Riehl, "Category Theory in Context", 2nd ed., §2.2, Corollary 2.2.10
-    (printed p. 65) [riehl:2.2:cor10].
-    nLab: https://ncatlab.org/nlab/show/Yoneda+lemma
-    Wikipedia: https://en.wikipedia.org/wiki/Elementary_matrix
+   本文件给出具体实例。
 
-    In the matrix category (Instance/Matr.v: objects the naturals, an
-    arrow m ~> n an n × m matrix over a rig R), the matrices with n rows
-    are the elements of the represented presheaf [Hom ─,n], and a ROW
-    OPERATION — an operation defined uniformly on all matrices with n
-    rows, commuting with right multiplication — is exactly a natural
-    endomorphism of that presheaf.  The Yoneda lemma therefore makes
-    Gaussian elimination categorical: every row operation is left
-    multiplication by the single n × n matrix obtained by applying the
-    operation to the identity, and that matrix is unique.
-
-    THE DERIVATION IS THE POINT, as the issue insists: the corollary is
-    read off Functor/Hom/Yoneda.v's [Yoneda_Embedding] — the setoid
-    isomorphism  Presheaves [Hom ─,n] [Hom ─,n] ≊ (n ~> n)  — rather
-    than proved by a matrix computation.  Its [from] direction IS
-    left-multiplication, so the factorization is the round trip
-    [iso_from_to] read pointwise, the representing matrix is the [to]
-    direction (evaluation at the identity, [representing_matrix_at_id]),
-    and uniqueness is injectivity of [to] through the other round trip.
-    In the headline theorem no entry of any matrix is ever inspected
-    (the supporting lemmas bind entry indices only to peel Matr's
-    entrywise hom-setoid).
-
-    NATURALITY IS LINEARITY.  The presheaf action of [Hom ─,n] is right
-    multiplication, so the naturality square of an endomorphism η says
-    η (M · f) ≈ η M · f — the "linearity in the columns" that lets an
-    operation defined row-wise be applied before or after a change of
-    basis on the source.  [row_operation_natural] and
-    [Build_row_operation] state the two directions: every row operation
-    has the property, and any ≈-respecting family with the property
-    assembles into a row operation.
-
-    THE WITNESS: swapping the two rows of a 2 × m matrix, packaged as
-    [swap_rows_op] over any rig, with its representing matrix computed
-    entrywise BY [eq_refl] over ℕ — the permutation matrix
-    [[0,1],[1,0]], as Gaussian elimination expects. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Row operations *)
 

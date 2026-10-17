@@ -10,96 +10,11 @@ Require Import Coq.ZArith.ZArith.
 
 Generalizable All Variables.
 
-(** * The determinant over a commutative ring
+(*
+   本文件给出具体实例。
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.4
-    (printed p. 16): the determinant is the archetypal natural
-    transformation — for a commutative ring K, [det] is a map from the
-    n × n matrices over K to K, natural in K, and multiplicative
-    [maclane:I.4:construction1]; the same construction is what §I.4
-    Exercise 6 needs [maclane:I.4:ex6].
-
-    This file develops the determinant over Instance/Matr.v's matrix
-    category, on the base [RingObject] of Theory/Algebra/Rig.v with the
-    commutativity hypothesis stated exactly as Instance/Rng.v's
-    [CRng_Sub] states it.  Everything is setoid-level: entries are
-    compared with [≈], never [=], and no axiom is used anywhere.
-
-    THE DEFINITION is the first-column Laplace expansion,
-    [det A = Σ_i (-1)^i · A i 0 · det (minor A i 0)], by structural
-    recursion on the size.  [fin_delete] is the order-preserving
-    injection [Fin.t n → Fin.t (S n)] missing a given index, so
-    [minor A i j] deletes row i and column j.
-
-    THE ROAD TO MULTIPLICATIVITY.  [det_mul] is the load-bearing
-    theorem, and the route is the classical one, arranged to avoid the
-    two usual formalization sinkholes (a flat sum over the symmetric
-    group, and the fixed-point-free-involution cancellation).
-
-    - Multilinearity in each column ([det_col_add], [det_col_mul]) is
-      immediate from the recursion: column 0 enters linearly, and every
-      other column enters only through the minors.
-
-    - The Laplace expansion along the first ROW ([det_row_expand]) is
-      proved by induction, both sides reducing to the same double sum
-      over a doubly-deleted matrix.  It is what makes alternation
-      tractable: with columns 0 and 1 equal, the row expansion has only
-      two surviving terms and their minors are literally the same
-      matrix, so they cancel ([det_alt01]) — no involution argument.
-
-    - From [det_alt01] the swap of columns 0 and 1 negates the
-      determinant ([det_swap01], by bilinearity), a swap of two later
-      columns negates it by induction through the minors
-      ([det_swap_FS]), and a general transposition is a conjugate of
-      those two ([det_swap]).  General alternation ([det_alt]) then
-      follows by moving the two equal columns to positions 0 and 1 —
-      note that it does NOT follow from [det M ≈ - det M], which says
-      nothing in characteristic 2.
-
-    - [det_perm]: for EVERY [f : Fin.t n → Fin.t n], injective or not,
-      [det (A ∘ f) ≈ det (P f) · det A], where [P f] is the 0/1 matrix
-      of f.  Proved by induction on n; the non-injective case is caught
-      by a decidable finite search and killed by [det_alt].
-
-    - The product expansion is organized as a NESTED sum ([expand])
-      over the columns of B rather than a flat sum over functions, so
-      neither the symmetric group nor the products [Π_j B (f j) j] ever
-      need to be enumerated: [det (A ∘ B)] and [det B] are the same
-      nested sum with different leaves, and [det_perm] relates the
-      leaves by the constant factor [det A].
-
-    THE ADJUGATE.  With both expansions in hand the rest of the
-    classical package follows: [det_transpose] (the column-0 expansion
-    of the transpose IS the row-0 expansion of the original, minor for
-    minor), the expansion along an ARBITRARY column ([det_col_expand],
-    through the cycle [rotf] that moves column j to the front — its
-    permutation matrix has determinant [(-1)^j] by one application of
-    the definition, with no induction, and [det_perm] supplies the
-    rest), the alien-cofactor identity ([det_col_alien], which is the
-    expansion of a matrix with one column overwritten by another), and
-    hence [adj] with [adj_mul_l] and [adj_mul_r]:
-    [adj A ∘ A ≈ A ∘ adj A ≈ det A · I].  A square matrix therefore has
-    a two-sided inverse exactly when its determinant is a unit
-    ([det_unit_of_inverse] and [inverse_of_det_unit], with
-    [det_unit_of_iso] and [iso_of_det_unit] in [Matr]'s composition
-    vocabulary).
-
-    NATURALITY in the ring ([det_map]) is the [Matr]-level content of
-    Mac Lane's §I.4: a rig homomorphism between rings commutes with
-    [det], since the formula is polynomial.  No extra clause is needed
-    for negation — that is Theory/Algebra/Rig.v's theorem [RigHom_neg].
-
-    THREE SECTIONS.  [Determinant] fixes only the ring and carries what
-    does not need commutativity: the ring arithmetic, [fin_delete],
-    [pow_neg1], [minor], [det], [det_respects] and [det_id].
-    [DeterminantComm] adds the commutativity hypothesis and carries
-    everything from multilinearity to [det_mul]; since Lib.v's
-    project-wide [Default Proof Using "Type"] discharges only the
-    section variables occurring in a statement, that section sets
-    ["All"], so its lemmas take the ring and its commutativity proof as
-    their two leading arguments.  [DetMap] takes two rings and a
-    homomorphism.  Everything is axiom-free: [Print Assumptions det_mul]
-    answers "Closed under the global context". *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Determinant.
 

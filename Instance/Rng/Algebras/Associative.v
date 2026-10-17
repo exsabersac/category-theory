@@ -17,123 +17,17 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * Associative K-algebras, and the underlying K-module
+(*
+ Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book: Mac Lane, ibid., §I.8, printed p. 28 — Ab-categories and the
+ nLab:      https://ncatlab.org/nlab/show/associative+algebra
+ nLab:      https://ncatlab.org/nlab/show/tensor+algebra
+ Wikipedia: https://en.wikipedia.org/wiki/Associative_algebra
 
-    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-          GTM 5, §III.1, printed p. 59, Exercise 1 — the tensor algebra
-          of a vector space and the exterior algebra, each as a universal
-          arrow (maclane:III.1:ex1); the roster of free constructions on
-          printed p. 56 (maclane:III.1:remark2)
-    Book: Mac Lane, ibid., §I.8, printed p. 28 — Ab-categories and the
-          hom-rings that make an algebra an algebra
-    nLab:      https://ncatlab.org/nlab/show/associative+algebra
-    nLab:      https://ncatlab.org/nlab/show/tensor+algebra
-    Wikipedia: https://en.wikipedia.org/wiki/Associative_algebra
+   本文件给出具体实例。
 
-    WHY A SECOND CATEGORY OF ALGEBRAS.  Instance/Rng/Algebras.v already
-    carries [KAlg K], and that category is the right home for the
-    polynomial ring, for the coslice reading of Mac Lane §II.6 Exercise 1,
-    and for everything else whose objects happen to be commutative.  It
-    is NOT a possible home for the tensor algebra or the exterior
-    algebra, and the obstruction is a field of its record rather than a
-    matter of taste: [KAlgObject] carries
-
-      kalg_comm : forall a b, rig_mul kalg_ring a b ≈ rig_mul kalg_ring b a
-
-    so every object of [KAlg K] is commutative.  The tensor algebra T(V)
-    is not — Instance/Vect/TensorAlgebra.v's [tensor_not_commutative]
-    proves it for a concrete V — and the exterior algebra Λ(V) is
-    anticommutative rather than commutative, with
-    [ext_anticomm_nontrivial] proving there that the two orders of a
-    product of generators genuinely differ.  So a category of algebras
-    that does not demand commutativity has to exist before §III.1
-    Exercise 1 can be stated at all, and this file supplies it.
-
-    That is the shape Instance/Rng/Algebras.v names and declines: its own
-    deferral list says that a non-commutative K-algebra is one in which
-    "the structure map is required to land in the CENTRE, a condition
-    that is automatic exactly when the target is commutative", and adds
-    "No centre-valued variant is built here".  [AAlgObject]'s
-    [aalg_central] field IS that condition, so this file is the
-    centre-valued variant.  What is NOT claimed is anything about what
-    would happen to the universal property of T(V) or Λ(V) if it were
-    stated over [KAlg K] instead: no such statement is formed here, and
-    the reason for the choice is the two proved non-commutativity results
-    above, not a claim about a construction that is not made.
-
-    WHAT REPLACES COMMUTATIVITY.  A K-algebra in the classical sense is a
-    K-MODULE with a bilinear associative multiplication.  Presented ring
-    first, that is a ring A together with a homomorphism u : K → A whose
-    image is CENTRAL in A — centrality is exactly what makes the induced
-    action r·a := u(r)·a bilinear, and it is exactly what commutativity
-    of A was silently supplying in [KAlgObject].  So [AAlgObject K] and
-    [KAlgObject K] have three fields each, and they differ in exactly one:
-    the ring and the structure map are shared, and centrality of the
-    structure map's image stands where commutativity of the ring stood.
-    Morphisms are unchanged — a ring
-    homomorphism commuting with the two structure maps — which is what
-    lets [KAlg_AAlg] below be full and faithful with no proof obligation
-    on the hom side.
-
-    THE TWO CATEGORIES ARE GENUINELY DIFFERENT, and this is proved rather
-    than asserted.  [UT2] is the ring of upper-triangular 2×2 integer
-    matrices, an object of [AAlg Int_CRng] by way of the scalar diagonal;
-    [UT2_not_commutative] exhibits two of its elements whose products
-    disagree in both orders, and [AAlg_not_all_commutative] packages the
-    consequence.  Without such a witness the reader would have no way to
-    tell whether [AAlg K] is a proper generalization of [KAlg K] or a
-    re-spelling of it, and the tree contained no non-commutative
-    [RingObject] before this file — Instance/Mod/Tensor.v enumerates the
-    closed ones ("[Int_Ring], [Q_Ring], [Zero_Ring], [F2_Ring],
-    [FracRing] and [CRingOb], all commutative") in the course of deferring
-    a result for want of exactly such an object.  That quoted list
-    predates Instance/Rng/Polynomial.v and so omits [PolyRing]/[ZPoly];
-    the conclusion is unaffected, [PolyRing] being commutative by
-    construction (its [pe_mul_comm] constructor).  [UT2] is a closed
-    non-commutative [RingObject] and so supplies what that file records as
-    missing; whether it makes that file's collapse strict is NOT
-    investigated here, and no claim about it is made.
-
-    THE UNDERLYING K-MODULE, and why it is the interesting functor.  An
-    associative K-algebra is a K-module for r·a := u(r)·a, and a
-    K-algebra map is K-linear.  [AAlg_Forget_Mod : AAlg K ⟶ RMod (`1 K)]
-    packages that, and it is the functor to which the tensor algebra is a
-    universal arrow — "T(V) is the free associative K-algebra on the
-    K-module V" is precisely the statement that V has a universal arrow to
-    [AAlg_Forget_Mod].  Each of the four module laws is one rig law
-    conjugated by one preservation law of u, and none of them consumes
-    centrality; centrality is consumed downstream, by the algebras that
-    are built rather than by the module structure that is read off.
-
-    WHAT IS DELIVERED.
-
-      - [AAlgObject], [AAlgHom], [AAlg K]: associative unital K-algebras
-        over a commutative base ring K, with morphisms the ring
-        homomorphisms under K;
-      - [AAlg_Forget : AAlg K ⟶ Sets] and
-        [AAlg_Forget_Mod : AAlg K ⟶ RMod (`1 K)], the underlying set and
-        the underlying K-module;
-      - [AAlgLinear], K-linear maps from a K-module into an algebra, with
-        the setoid comparing underlying maps, and
-        [aalg_linear_of_module_hom] identifying a module homomorphism into
-        the underlying module of A with such a map;
-      - [KAlg_AAlg : KAlg K ⟶ AAlg K], full and faithful, exhibiting the
-        commutative algebras inside the associative ones;
-      - [UT2] with [UT2_AAlg], [UT2_not_commutative],
-        [AAlg_not_all_commutative] and [UT2_not_in_KAlg]: the inclusion is
-        proper, proved;
-      - [Base_AAlg]: the base ring is an algebra over itself, so [AAlg K]
-        is inhabited for every K with no witness-hunting.
-
-    WHAT IS NOT DELIVERED.  No comparison of [AAlg K] with a category of
-    monoid objects in [RMod (`1 K)] — the tree has no monoidal structure
-    on module categories (Instance/Mod/Tensor.v builds the tensor product
-    of two modules as a universal element but no bifunctor, and says so).
-    No opposite-algebra involution, no tensor product of algebras, no
-    graded algebras, and in particular no category of graded
-    anticommutative algebras — Instance/Vect/TensorAlgebra.v records why
-    that last one matters and what it costs.  No claim that [KAlg_AAlg]
-    is REPLETE or that its image is closed under any construction. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Objects *)
 

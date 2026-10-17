@@ -9,34 +9,11 @@ Import EqNotations.
 
 (** * The discrete category on a Type *)
 
-(* nLab: https://ncatlab.org/nlab/show/discrete+category
+(*
+   本文件给出离散范畴实例。
 
-   Given any [Type] [A], the discrete category [DiscreteCat A] has the elements
-   of [A] as objects and *propositional equality* [x = y] as the hom from [x] to
-   [y]. Identity is [eq_refl] and composition is [eq_trans] (in the categorical
-   orientation: [compose (g : y = z) (f : x = y) : x = z]). The hom-setoid is the
-   strict-equality setoid [Morphism_equality], so every [≈]-goal here reduces to
-   an [eq]-goal between equality proofs and is discharged by destructing the
-   proofs — no UIP, function extensionality, or other axiom is needed, because
-   the equivalence is [eq] itself rather than a quotient.
-
-   This is the object-level construction: [DiscreteCat] *builds* a category out
-   of a type. It is a genuinely different notion from the [Discrete] predicate of
-   Structure/Discrete.v, which *asserts* that a given category has only identity
-   morphisms. The sanity lemma [DiscreteCat_Discrete] at the end connects the two
-   by showing that every [DiscreteCat A] does satisfy that predicate.
-
-   Functors out of [DiscreteCat A] are exactly functions [A → C]: any [f : A → C]
-   extends to [DiscreteCat_Functor f], transporting [id] along the equality
-   witness. This is the left adjoint at the level of a single functor; the
-   adjunction itself is [Disc_Objects_Adjunction] in Instance/Cat/Objects.v.
-   NOTE THE AMBIENT: it is [Coq ⟶ StrictCat], not `Set ⟶ Cat`. That
-   file proves [objects_not_functorial_over_Cat]: over [Cat] the swap
-   endofunctor of [Indiscrete bool] is naturally isomorphic to the
-   identity while moving every object, so no objects functor into a
-   target comparing object maps by LEIBNIZ equality exists there. An
-   isomorphism-setoid one does; the strict reading is the exercise's
-   choice. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The discrete category on [A]: objects are elements of [A], morphisms are
    proofs of equality, composition is transitivity of equality. The explicit

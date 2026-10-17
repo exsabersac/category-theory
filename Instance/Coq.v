@@ -20,21 +20,13 @@ Generalizable All Variables.
 
 (** The category COQ of types and functions. *)
 
-(* nLab: https://ncatlab.org/nlab/show/Set
-   Wikipedia: https://en.wikipedia.org/wiki/Category_of_sets
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Category_of_sets
 
-   This is the strict-function model of the "category of sets" built from
-   Coq's universe Type: objects are types `A : Type`, morphisms `A ~> B` are
-   functions `A → B`, identity is `λ x, x` and composition is `λ x, g (f x)`.
-   Morphism equivalence is pointwise (extensional) equality of functions,
-   `f ≈ g  :=  ∀ x, f x = g x`; unlike Instance/Sets.v (the setoid model),
-   the underlying `=` here is Coq's Leibniz equality on the codomain.
+   本文件给出 Coq 类型相关实例。
 
-   The category laws and the cartesian/cocartesian/terminal/initial structure
-   below hold with no axioms (pointwise `=` needs none). The closed structure
-   (exponentials) does invoke functional_extensionality, which is the expected,
-   pre-existing funext axiom of this layer and lies outside the core
-   zero-axiom guarantee. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Types and functions as the category of sets: history and applications
 

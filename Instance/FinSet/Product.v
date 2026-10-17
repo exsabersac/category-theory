@@ -9,21 +9,11 @@ Require Import Coq.Arith.PeanoNat.
 
 Generalizable All Variables.
 
-(** * Computable products on skeletal FinSet
+(*
+   本文件给出积相关实例。
 
-    The product of the canonical m-element and n-element sets is the
-    canonical (m * n)-element set, mediated by the standard base-n
-    positional codec: the pair (a, b) is encoded as the digit string
-    "a then b", i.e. the number a·n + b.  Both directions are structural
-    fixpoints in the closed-computation style of [fin_split]/[fin_join]
-    from [Instance/FinSet.v] — built only from [Fin.L], [Fin.R] and
-    [fin_split], primitives available on every supported Coq/Rocq
-    version — so pairings and projections REDUCE on closed inputs by
-    [eq_refl].
-
-    Since [Nat.mul] recurses as [S m' * n = n + m' * n], the encoding of
-    (F1, b) is the first block [Fin.L (m' * n) b], and encoding along
-    [Fin.FS] skips one block via [Fin.R n]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** [fin_pair a b] encodes the pair (a, b) as position a·n + b of the
     canonical (m * n)-element set, by structural recursion on [a]. *)

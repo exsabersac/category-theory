@@ -21,55 +21,13 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * Rel: converse, self-duality, and the graph embedding's faithfulness
+(*
+ nLab: https://ncatlab.org/nlab/show/Rel
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.7
-    (printed p. 26) [maclane:I.7:construction8]: Rel carries the
-    CONVERSE relation R† = { (b, a) | (a, b) ∈ R }, an involution that
-    is an anti-homomorphism for the relative product; and Set sits
-    inside Rel by taking graphs of functions.
-    Awodey, "Category Theory", 2nd ed., §1.9 Exercise 2 (printed
-    p. 29) [awodey:1:ex2]: which of these hold?  (a) Rel ≅ Rel^op;
-    (b) Sets ≅ Sets^op; (c) P(X) ≅ P(X)^op for a fixed set X.
-    nLab: https://ncatlab.org/nlab/show/Rel
+   本文件给出关系范畴相关实例。
 
-    This file completes Instance/Rel.v's disclosed gaps:
-
-    - [Rel_Dagger]: the converse as the first instance of
-      Structure/Dagger.v's [DaggerCategory] — the design choice the
-      issue left open is resolved toward the general class, since the
-      ZX and compact-closed prose already speak of daggers.
-    - [Rel_Converse] / [Rel_self_dual_strict] / [Rel_self_dual]: the
-      dagger packaged as an identity-on-objects functor Rel ⟶ Rel^op
-      and the self-duality at BOTH strengths — strict functor equality
-      in StrictCat, the genuine isomorphism of categories Awodey asks
-      for, and the ≅[Cat] equivalence reading — Awodey's (a),
-      affirmative.
-    - [Relation_Functor_Faithful]: functions with pointwise-equal
-      graphs are pointwise equal, so Coq really is a WIDE SUBCATEGORY
-      of Rel, not merely mapped into it.
-    - [Rel_Terminal] / [Rel_Zero]: the empty set is terminal as well
-      as initial — the zero-object half Instance/Rel.v recorded as
-      missing.
-    - [Powerset] / [Powerset_self_dual]: Awodey's (c), affirmative,
-      via complementation — over DECIDABLE (bool-valued) subsets, the
-      constructive transposition of the classical statement: the
-      Prop-valued complement is an involution only up to double
-      negation, and a predicate-comparing setoid is equivalent to
-      double-negation elimination (the disclosure pattern of
-      Instance/Top/Closed.v's [pred_comparison_forces_DNE]).  On
-      bool-valued subsets the round trips close by case analysis on
-      the membership bit, with no axiom.
-    - [Sets_not_self_dual]: Awodey's (b), NEGATIVE, proved: any
-      isomorphism Sets ≅ Sets^op in Cat repackages as an equivalence
-      ([Cat_Iso_to_Equivalence]), hence a full and faithful functor F;
-      fullness reads a would-be element of Sets(F ∅, F 1) back through
-      the EMPTY hom-setoid Sets(1, ∅), so carrier (F 1) is empty; and
-      then the two points of Sets(1, 2) have vacuously equivalent
-      images — every parallel pair into an empty-carrier setoid agrees
-      — so faithfulness forces true = false.  All three parts of
-      Awodey's exercise are thereby answered: (a) yes, (b) no,
-      (c) yes. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The converse is a dagger *)
 

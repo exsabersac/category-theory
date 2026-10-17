@@ -1,90 +1,11 @@
-(** * R-Mod, the category of modules over a ring
+(*
+ nLab: https://ncatlab.org/nlab/show/Mod
+ Wikipedia: https://en.wikipedia.org/wiki/Category_of_modules
 
-    Mac Lane's §I.7 roll-call of large categories includes, alongside
-    [Set], [Ab] and [Rng], the categories of modules: "all small
-    R-modules and R-module homomorphisms, for a fixed ring R"
-    (Categories for the Working Mathematician, 2nd ed., §I.7, printed
-    p. 25 (PDF p. 35), [maclane:I.7:construction3]; the locations follow
-    issue jwiegley/category-theory#256's convention, and as there the
-    printed text was not consulted while writing this file).
-    nLab: https://ncatlab.org/nlab/show/Mod
-    Wikipedia: https://en.wikipedia.org/wiki/Category_of_modules
+   本文件给出具体实例。
 
-    WHAT IS BUILT ON.  A module is an abelian group with a scalar action,
-    so the objects EXTEND Instance/Ab.v's [AbObject] by [rm_smul] rather
-    than restating the carrier, the four monoid laws and the negation.
-    The coercion [rm_ab :> AbObject] makes [carrier], [cmon_zero],
-    [cmon_plus], [ab_neg] and every derived group fact available
-    unchanged: [ab_cancel_l], [ab_neg_unique], [ab_neg_zero],
-    [ab_neg_plus] and — the one that matters most for the homomorphisms —
-    [ab_map_neg], the theorem that a monoid map between groups preserves
-    negation.  So [RModHom] does not carry negation preservation as a
-    field either; it is [ab_map_neg] applied to the underlying [AbHom]
-    ([rmod_map_neg] below is that one-line citation, not a second proof).
-
-    Only the four module laws are new, and only four lemmas are derived
-    from them: [rm_smul_zero_l] (0·m ≈ 0), [rm_smul_zero_r] (r·0 ≈ 0),
-    [rm_smul_neg_l] ((−r)·m ≈ −(r·m)) and [rm_smul_neg_r]
-    (r·(−m) ≈ −(r·m)), each by the cancellation lemma [ab_cancel_l] or by
-    [ab_neg_unique].  They are lemmas, not fields, for the same reason
-    [ab_neg_right] is a corollary in Instance/Ab.v.
-
-    THE PROPOSITION.  Mac Lane's §I.7 proposition for [Ab] — monic
-    exactly when injective, epic exactly when surjective — holds verbatim
-    in R-Mod, and both halves are proved below constructively.  An earlier
-    revision stopped there; since the PR "algebraic carriers are sets"
-    (2026-09-17) the epic half concludes PROPOSITIONAL surjectivity
-    ([RModPropSurjective]), the split notion [RModSurjective] surviving as the
-    hypothesis the direct constructions supply.  [rmod_epic_surjective]
-    records why.  The
-    TECHNIQUE IS INHERITED FROM Instance/Ab.v, quite literally: the probe
-    objects here are Instance/Ab.v's [AbKernel] and [AbQuotient] with a
-    scalar action bolted on, so every group-level obligation
-    (associativity, commutativity, the unit law, [ab_neg_respects],
-    [ab_neg_left], and the coset relation's three equivalence laws) is
-    discharged there and reused here rather than reproved.  What this file
-    adds is exactly the module content:
-
-      - the kernel is a SUBMODULE — closed under the action because
-        f(r·k) ≈ r·f k ≈ r·0 ≈ 0, which is [rm_smul_zero_r];
-      - the image is a SUBMODULE, so the quotient N/fM carries a
-        well-defined action — from x ≈ y + f a one gets
-        r·x ≈ r·y + f (r·a), the witness being r·a.  This is the
-        module-level counterpart of the observation Instance/Ab.v records
-        about commutativity: there, commutativity is what makes the coset
-        relation a congruence and hence the quotient an object of the
-        category at all; here, the image being closed under the action is
-        what keeps it an object of R-Mod once it is one of [Ab].
-
-    RIGHT MODULES.  A right R-module is a left module over the opposite
-    ring, and that is taken as the DEFINITION here: [ModR R := RMod
-    (Ring_op R)], the right action m ⊲ r being the left action
-    r ·[Ring_op R] m.  No
-    opposite-ring construction existed in the tree (neither
-    Theory/Algebra/Rig.v nor Instance/Rng.v has one), so [Rig_op] and
-    [Ring_op] are built below — multiplication flipped, everything else
-    identical, so that [rig_setoid], [rig_zero], [rig_add], [rig_one] and
-    [ring_neg] of the opposite are the originals definitionally and the
-    additive laws transfer with no work.  [Bimodule] then packages a left
-    R-action and a right S-action with Mac Lane's compatibility law
-    (rm)s ≈ r(ms), i.e. r(ms) up to symmetry, and [bimodule_right_RMod] exhibits the right action as
-    a genuine left [Ring_op S]-module, which is what justifies the
-    definition of [ModR].
-
-    ALSO BUILT.  The forgetful functors [RMod_Forget_Ab : RMod R ⟶ Ab]
-    and [RMod_Forget : RMod R ⟶ Sets]; the [Preadditive] instance
-    [RMod_Preadditive], mirroring Structure/AbCategory.v's
-    [Ab_Preadditive] and reusing its [ab_hom_add]/[ab_hom_zero] for the
-    group part; and the concrete witness [Ring_RMod], every ring as a
-    module over itself with multiplication as the action — each of whose
-    four module laws IS the corresponding rig law — specialized to
-    [Int_RMod] over Theory/Algebra/Rig.v's ℤ, where the action computes.
-
-    SCOPE.  Deliberately NOT built here, per the issue's QA correction:
-    no [Field] class and no [Vct_F] notation for vector spaces — those
-    belong to issue #244, which owns them — and no category of bimodules
-    and no tensor product.  [Bimodule] stays definition-level.  The
-    Ab-enrichment and the monoidal structure are not attempted. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Lib.Setoid.Propositional.

@@ -14,102 +14,11 @@ Generalizable All Variables.
 
 (** * The cokernel pair of [Sets] is a cokernel pair *)
 
-(* nLab: https://ncatlab.org/nlab/show/cokernel+pair
+(*
+   本文件给出集合范畴相关实例。
 
-   Mac Lane, CWM 2nd ed., §III.3 p. 66 and §III.4 Exercise 4 p. 72; Fong
-   and Spivak, *Seven Sketches*, §7.2.1 Definition 7.5.
-
-   Instance/Sets.v already builds, for f : A ~> B in [Sets], the
-   setoid [CKSetoid f] — two copies of B glued exactly along the image of
-   f — with two inclusions [ck_left]/[ck_right] and the equation
-   [ck_agree : ck_left ∘ f ≈ ck_right ∘ f].  It was built to probe an
-   epimorphism, and it stops there: NO universal property of it is proved
-   in that file, the word "pushout" occurs there only in an
-   unrelated header line, and it is nowhere related to
-   Instance/Sets/Pushout.v's [Sets_HasPushouts], which sits in a different
-   file and glues by a five-constructor inductive closure instead.
-
-   This file proves the universal property, so that the pre-existing
-   construction is exhibited as a genuine cokernel pair —
-   [sets_ck_IsCokernelPair] — and hence as a pushout square in the sense
-   of Theory/Morphisms/CokernelPair.v.  Nothing in Instance/Sets.v is
-   changed; the mediator is the copairing of the two competing maps, and
-   the ONLY step with content is its respectfulness at the gluing case,
-   where the image witness supplies the preimage that lets the coequalizing
-   hypothesis be applied.  As everywhere in [Sets], `∃` is [sigT], so that
-   preimage is DATA and no choice principle is used.
-
-   ------------------------------------------------------------------
-   ** What is proved, and at what strength
-
-   - [sets_ck_ump], [sets_ck_IsCokernelPair]: the universal property, and
-     the apex-pinned identification.  The two triangles hold POINTWISE ON
-     THE NOSE — [sets_ck_med_left]/[sets_ck_med_right] are [reflexivity]
-     at every point, the mediator being defined by case analysis on the
-     sum — and this is recorded as two [eq_refl] Examples on the
-     underlying FUNCTIONS ([sets_ck_med_inl], [sets_ck_med_inr]).  What
-     does NOT hold strictly is the equality of MORPHISMS: the composite
-     [u ∘ ck_left] rebuilds its [proper_morphism] certificate, so the
-     triangles are [≈] and not [eq].  That negative is pinned in
-     Test/ProbeCokernelPair.v.
-
-   - Non-vacuity BOTH WAYS, on Instance/Sets.v's own two-element witness
-     pair, so that neither side of the characterization is empty:
-
-       * [collapse : bool ~> unit] is surjective, hence epic, and its
-         cokernel-pair legs are proved to agree
-         ([sets_collapse_ckp_trivial]), so the identity square on it IS a
-         pushout ([sets_collapse_pushout_square]).
-
-       * [pick_true : unit ~> bool] misses [false], and its cokernel-pair
-         legs are proved DISTINCT by hand ([sets_pick_true_ckp_nontrivial])
-         — at [false] the gluing relation would demand a preimage, i.e.
-         [true = false].  Hence the identity square on it is NOT a pushout
-         ([sets_pick_true_not_pushout_square]).
-
-     The second witness is the load-bearing one: it is what shows the
-     general biconditional is not vacuously true, and it CROSS-CHECKS the
-     general theory — [sets_pick_true_not_epic_via_ckp] re-derives
-     Instance/Sets.v's [pick_true_not_epic] from the distinctness of the
-     legs through [epic_iff_cokernel_pair_trivial], by a route that shares
-     no proof text with the original.
-
-   ------------------------------------------------------------------
-   ** Universes, measured in the constraint blocks
-
-   [sets_ck_IsCokernelPair@{h p}] and [sets_ck_ump@{h p}] carry two
-   universe parameters.  Beyond [Sets]'s own [p < h] ([Sets@{o so} :
-   Category@{so o o}] with [o < so], the carriers at [o]) the block records
-   only bounds INHERITED verbatim — [p <= compose.u0], [p <= compose.u1],
-   [p <= compose.u2], [p <= ID.u0], each of which [Sets], [CKSetoid],
-   [ck_left] and [ck_agree] display identically.  (An earlier draft called
-   [p < h] "the single constraint"; there are five lines.  The substance is
-   unaffected: nothing here narrows the shape, and the identification is
-   polymorphic in the carrier universe [p].)
-
-   The two-element WITNESSES do pin, and only they:
-   [sets_pick_true_not_pushout_square@{u}] displays
-   [bool_setoid_object@{Set Set}] with [Set < u], because
-   Instance/Sets.v's [bool_setoid_object] has a [bool] carrier.  That is
-   the ordinary concrete-witness price and it is confined to the
-   non-vacuity section.
-
-   ------------------------------------------------------------------
-   ** NOT DELIVERED (scoped)
-
-   - [CKSetoid f] is NOT identified with the chosen pushout of
-     [Sets_HasPushouts] (Instance/Sets/Pushout.v).  The two are different
-     objects — a closed-form relation against an inductive closure — and
-     the comparison would need a general "any two pushouts of one span are
-     uniquely isomorphic" statement, which Theory/Morphisms/CokernelPair.v
-     deliberately does not provide.  No claim is made here about whether
-     they are isomorphic; the question is simply not addressed.
-
-   - The [Top] and pointed-sets cokernel pairs (Instance/Top.v,
-     Instance/Sets/Pointed.v) are NOT given universal properties.
-     Only the [Sets] one is treated here.
-
-   - No [Sets]-specific statement about [Monic] and kernel pairs. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SetsCokernelPair.
 

@@ -21,22 +21,14 @@ Import ListNotations.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §I.4, printed p. 17 (PDF 27) — maclane:I.4:construction3
-   nLab:      https://ncatlab.org/nlab/show/Pontryagin+duality
-   Wikipedia: https://en.wikipedia.org/wiki/Pontryagin_duality
+(*
+ nLab:      https://ncatlab.org/nlab/show/Pontryagin+duality
+ Wikipedia: https://en.wikipedia.org/wiki/Pontryagin_duality
 
-   Mac Lane's §I.4 example ends with the remark that for a FINITE abelian
-   group the evaluation τ_G : G → DD(G) of Instance/Ab/Character.v is an
-   isomorphism, while no isomorphism G ≅ D(G) is natural.  This file
-   proves the first half — [tau_iso_finite] — and the sibling
-   NonNatural.v the second.
+   本文件给出有限情形。
 
-   The theorem is the substantial half: naturality of τ is a one-line
-   [qz_eq_refl] (Character.v), whereas invertibility is finite
-   Pontryagin duality, and its usual proof runs through the structure
-   theorem for finite abelian groups.  It is proved here WITHOUT the
-   structure theorem, by the character-extension route. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Design
 

@@ -15,42 +15,16 @@ Generalizable All Variables.
 
 (** * Streams as the final coalgebra of [StreamF] over [Sets] *)
 
-(* nLab:      https://ncatlab.org/nlab/show/coalgebra+of+an+endofunctor
-   nLab:      https://ncatlab.org/nlab/show/bisimulation
-   nLab:      https://ncatlab.org/nlab/show/terminal+coalgebra
-   Wikipedia: https://en.wikipedia.org/wiki/Coinduction
-   Wikipedia: https://en.wikipedia.org/wiki/Bisimulation
+(*
+ nLab:      https://ncatlab.org/nlab/show/bisimulation
+ nLab:      https://ncatlab.org/nlab/show/terminal+coalgebra
+ Wikipedia: https://en.wikipedia.org/wiki/Coinduction
+ Wikipedia: https://en.wikipedia.org/wiki/Bisimulation
 
-   For a fixed setoid [A] the "head/tail" endofunctor on [Sets] is
-   [StreamF X := A × X] (the product setoid).  Its coalgebras [(X, c)] with
-   [c : X ~> A × X] are precisely deterministic [A]-labelled transition
-   systems: each state [x] emits a head [fst (c x)] and steps to [snd (c x)].
-   The greatest fixed point of [StreamF] is the type of infinite streams over
-   [A], carrying the coalgebra [γ s = (shead s, stail s)].  This file realises
-   that greatest fixed point as the final object of [FCoalg (StreamF)].
+   本文件给出集合范畴相关实例。
 
-   Two subtleties are specific to a constructive, axiom-free setting:
-
-   - Streams are a [CoInductive] and equality of coinductives is intensionally
-     too fine (it is not provable without extra axioms), so the "correct" home
-     for streams is the setoid whose relation is bisimilarity [bisim] — the
-     largest relation matching heads (under [A]'s [≈]) and relating tails.  We
-     prove [bisim] is an equivalence by guarded corecursion and package the
-     result as [Stream_SO : SetoidObject].
-
-   - Because [equiv] lives in [crelation] ([Type]-valued, proof-relevant),
-     [bisim] is itself [Type]-valued so it may serve as the hom/carrier setoid
-     relation directly.
-
-   The universal property is the anamorphism [ana]: every coalgebra [(X, c)]
-   has a unique (up to bisimilarity) coalgebra map into [(Stream, γ)].
-   Existence is the corecursive [ana_fn]; uniqueness is [ana_unique_gen], again
-   by guarded corecursion, generalised over an intermediate state so that the
-   corecursive call stays guarded (a plain bisimilarity chain would place the
-   call under a transitivity, breaking the guard).  Since
-   [FCoalg F = (FAlg (F^op))^op] and [Initial C = Terminal (C^op)] hold
-   definitionally, the final coalgebra is assembled directly as a
-   [@Terminal (FCoalg StreamF)]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Streams.
 

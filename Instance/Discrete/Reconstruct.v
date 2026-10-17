@@ -16,127 +16,14 @@ Import EqNotations.
 
 (** * Reconstructing a discrete category from its set of objects *)
 
-(* nLab:      https://ncatlab.org/nlab/show/discrete+category
-   Reference: Saunders Mac Lane, "Categories for the Working Mathematician",
-              2nd ed., §I.2, p. 11, construction 2: "A category is discrete
-              when every arrow is an identity ... every set X may be regarded
-              as a discrete category, and every discrete category is so
-              determined by its set of objects."
-   Reference: Michael Hedberg, "A coherence theorem for Martin-Löf's type
-              theory", Journal of Functional Programming 8(4), 1998
-              (decidable equality implies uniqueness of identity proofs).
+(*
+ Reference: Saunders Mac Lane, "Categories for the Working Mathematician",
+ Reference: Michael Hedberg, "A coherence theorem for Martin-Löf's type
 
-   Both halves of Mac Lane's vocabulary are already in the library: the
-   *construction* [DiscreteCat A] (Instance/Discrete.v) turns a type into a
-   category, and the *predicate* [Discrete C] (Structure/Discrete.v) asserts
-   that a category has only identity morphisms.  What was missing is the
-   sentence that joins them — "every discrete category is so determined by its
-   set of objects", i.e. the reconstruction of [C] from [obj C].  This file
-   supplies it.
+   本文件给出离散范畴实例。
 
-   ** The comparison functor
-
-   In one direction nothing is needed.  For any category [C] there is a functor
-
-     [Discrete_Compare C : DiscreteCat (obj C) ⟶ C]
-
-   which is the identity on objects and sends an equality proof [e : x = y] to
-   the transported identity [rew e in id].  It is total, axiom-free, and
-   requires no hypothesis on [C] whatever.  Given [Discrete C] it is moreover
-   *full* ([Discrete_Compare_Full]): the [Discrete] witness of an arrow [f] is
-   precisely a preimage of [f] under [fmap].  Since it is also bijective on
-   objects (definitionally the identity), the whole of Mac Lane's claim reduces
-   to one question: is this functor *faithful*?
-
-   ** Why a hypothesis is unavoidable, and where it comes from
-
-   [DiscreteCat A]'s hom-setoid is [Morphism_equality] — strict Rocq equality
-   [eq] on the equality proofs themselves.  A functor *into* [DiscreteCat
-   (obj C)] must therefore choose, for each arrow [f : x ~> y] of [C], one
-   proof of [x = y], and its three laws ([fmap_respects], [fmap_id],
-   [fmap_comp]) are then equations *between equality proofs*.
-
-   [Discrete C] does not pin that choice down.  It hands back a witness
-   [H : x = y] together with [f ≈ rew H in id], but the constraint is stated up
-   to [≈] in [C]; two proofs [H H' : x = y] with [rew H in id ≈ rew H' in id]
-   are not thereby equal.  Taking [f := id] shows the point concretely: the
-   witness is some [H : x = x] with [id ≈ rew H in id], which does not force
-   [H = eq_refl].  So the obstruction is a property of the *target's strict
-   hom-setoid*, not an artifact of any particular proof — and that is a
-   theorem, not an impression: [Discrete_DiscreteRigid_forces_UIP] below shows
-   that if every [Discrete] category were [DiscreteRigid], uniqueness of
-   identity proofs would hold for every type.
-
-   ** The hypothesis actually taken: rigidity, not UIP
-
-   The crude repair is to assume uniqueness of identity proofs on [obj C].
-   This file assumes something strictly weaker and purely category-theoretic:
-
-     [DiscreteRigid C]  ⟺  [Faithful (Discrete_Compare C)]
-
-   — distinct proofs of [x = y] give [≈]-distinguishable transported
-   identities.  The two readings are proved interchangeable
-   ([DiscreteRigid_Faithful], [DiscreteRigid_elementary]).  UIP on [obj C]
-   implies rigidity ([DiscreteRigid_UIP]), and decidable object equality
-   implies UIP by Hedberg's theorem, taken from the standard library as
-   [UIP_dec] ([DiscreteRigid_dec]) — the same axiom-free route already used by
-   Construction/Grothendieck/Strict.v.
-
-   Weakening UIP to rigidity is not cosmetic.  Every [DiscreteCat A] is rigid
-   for *every* type [A], with no hypothesis at all ([DiscreteCat_Rigid]),
-   because there the transported identity [rew H in id] *is* [H].  A
-   UIP-phrased theorem would not apply to [DiscreteCat A] for an arbitrary [A];
-   the rigid one does.
-
-   ** Where the correspondence lives
-
-   [Discrete_iso] is an isomorphism in [StrictCat], not merely in [Cat]: both
-   functors are the identity on objects, and both round trips are strictly
-   equal to the identity functor, so the on-the-nose statement is available and
-   is the stronger one.  Landing in [Cat] instead does *not* buy back the
-   hypothesis — the obstruction is in constructing the functor at all, not in
-   comparing the two composites — so the [Cat] form ([Discrete_iso_Cat]) is
-   recorded merely as a corollary through [strict_equiv_implies_fun_equiv].
-
-   ** The iso-robust restatement
-
-   Structure/Discrete.v carries an in-file caveat that phrasing discreteness
-   through object *equality* is too strong, and the nLab notes the same: the
-   equivalence-respecting reading asks instead that hom-setoids be
-   subsingletons and every arrow be invertible.  That reading is
-   [DiscreteUpToIso] below, and the outcome is a genuine negative result rather
-   than the hoped-for equivalence:
-
-   - [Discrete C] gives invertibility of every arrow with no hypothesis
-     ([Discrete_invertible]), but the subsingleton half needs UIP on [obj C]
-     ([Discrete_DiscreteUpToIso]).
-   - For [DiscreteCat A] the restatement is *exactly* UIP on [A]
-     ([DiscreteUpToIso_DiscreteCat]), whereas [Discrete (DiscreteCat A)] holds
-     unconditionally ([DiscreteCat_Discrete]).  Consequently a general
-     implication [Discrete C → DiscreteUpToIso C] would prove UIP for every
-     type ([Discrete_DiscreteUpToIso_forces_UIP]), which is independent of
-     Rocq's logic; it therefore cannot be established in-tree.
-   - The converse implication is refuted outright: the indiscrete category on
-     [bool] satisfies the restatement ([Indiscrete_DiscreteUpToIso]) yet
-     [Discrete] of it is contradictory ([Indiscrete_bool_Discrete_absurd]).
-
-   The reason is structural: subsingleton homs plus invertibility says [C] is
-   *essentially* discrete — equivalent, given a choice of representatives, to
-   the discrete category on its iso-classes — not isomorphic to
-   [DiscreteCat (obj C)].  So the restatement is a different notion, and the
-   two are INDEPENDENT in a precise sense proved below: the direction
-   [DiscreteUpToIso → Discrete] is refuted outright by [Indiscrete bool],
-   while the direction [Discrete → DiscreteUpToIso] is unprovable in bare
-   Rocq — [Discrete_DiscreteUpToIso_forces_UIP] shows it entails UIP for
-   every type — yet true under UIP ([Discrete_DiscreteUpToIso]).  Neither
-   contains the other constructively; one inclusion holds exactly when UIP
-   does.
-
-   [Indiscrete] was introduced here as that separating witness.  It now has a
-   second use: it is the non-skeletal half of the equivalence-invariance
-   separation of Theory/Skeleton/Separation.v, where [Indiscrete bool] is
-   equivalent to [1] yet not skeletal, and where its skeleton is exhibited on
-   the nose as [1] ([Indiscrete_bool_skeleton_is_One]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Why a separate file rather than extending Instance/Discrete.v, as the
    issue's work-plan suggested: NOT layering -- Instance/Discrete.v,

@@ -12,106 +12,15 @@ Require Import Category.Instance.Powerset.
 
 Generalizable All Variables.
 
-(* Book: Riehl, "Category Theory in Context", 2nd ed., §5.1, Example
-         5.1.5(i), printed p. 185 (PDF p. 205) — riehl:5.1:example5; with
-         her Corollary 4.6.3, printed p. 167, and Example 4.1.8, printed
-         p. 134
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer GTM 5, 1998, §VI.2, Exercise 1(a), printed p. 142
-         (PDF p. 151) — maclane:VI.2:ex1
-   nLab: https://ncatlab.org/nlab/show/power+set
-   nLab: https://ncatlab.org/nlab/show/adjoint+functor
+(*
+ Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ nLab: https://ncatlab.org/nlab/show/power+set
+ nLab: https://ncatlab.org/nlab/show/adjoint+functor
 
-   Riehl's Example 5.1.5(i) presents the covariant power set monad under
-   "Monads also arise in nature" and says how its two naturality squares
-   are proved: "Naturality of the unit with respect to a function f : A → B
-   makes use of the fact that f_* : PA → PB is the direct image (rather
-   than inverse image) function.  Naturality of the multiplication maps
-   makes use of Corollary 4.6.3; the direct image function, as a left
-   adjoint, preserves unions."  Corollary 4.6.3 reads: "For any function
-   f : A → B, the inverse image f^{-1} : PB → PA, a function between the
-   power sets of A and B, preserves both unions and intersections, while
-   the direct image f_* : PA → PB only preserves unions", and its proof
-   cites the adjunction f_* ⊣ f^{-1} of Example 4.1.8 between the posets of
-   subsets and observes that "Unions are colimits and intersections are
-   limits in the poset category PA": left adjoints preserve colimits.
+   本文件给出单子相关实例。
 
-   Instance/Sets/Powerset/Monad.v proves the naturality of μ directly, by
-   opening the squashed direct image ([Powerset_union_natural]).  This
-   satellite takes Riehl's route, twice, through Instance/Powerset.v
-   (#382), which has her Example 4.1.8 as [image_preimage_adjunction] and
-   the direct-image half of Corollary 4.6.3 in two forms:
-   [direct_image_preserves_joins], proved directly at an arbitrary least
-   upper bound, and [direct_image_preserves_joins_via_LAPC], read off
-   Adjunction/Continuity.v's [left_adjoint_preserves_colimit] at the
-   adjunction, which is the corollary's own proof.  The naturality of η is
-   #227's [Powerset_Prop_Singleton], whose naturality square is #227's
-   [Powerset_Prop_image_singleton], the direct image of a singleton being
-   the singleton of the image (Riehl's point that f_* is the direct
-   image), and is not revisited.
-
-   THE UNION AS A LEAST UPPER BOUND.  ⋃ SS is the least upper bound,
-   under #382's inclusion [subset_le], of the family of its members,
-   indexed by the members themselves, the sigma { S & S ∈ SS }
-   ([Powerset_union_IsLUB], in Instance/Proset/Limit.v's [IsLUB]); and it
-   is ≈ #382's canonical union [subset_union] of that family
-   ([Powerset_union_family]).
-
-   THE TWO ROUTES.  [join_natural_via_image]: the direct image of that
-   least upper bound is the least upper bound of the images f S, S ∈ SS,
-   by [direct_image_preserves_joins]; ⋃ (P (P f) SS) is the least upper
-   bound of its own members, which are those images up to ≈; two least
-   upper bounds of families with the same upper bounds are equal by the
-   antisymmetry of inclusion.  [join_natural_via_LAPC] does the same with
-   [direct_image_preserves_joins_via_LAPC] at the family of members,
-   moving between #382's canonical union and the monad's by
-   [Powerset_union_family].  Preservation of unions does not give the
-   square for free: identifying ⋃ (P (P f) SS) with the least upper bound
-   of the images still opens the squashed direct image that the direct
-   proof opens, in both routes.
-
-   THE ROUTES PROVE THE MONAD'S FIELD.  [Powerset_join_natural_statement f]
-   is the type of [Powerset_Monad]'s naturality field [join_fmap_fmap] at
-   f.  [join_natural_routes_agree] pairs the field itself with the direct
-   lemma and both routes at that one type: it type-checks, so each route
-   proves the field's statement as stated, by conversion.  The proofs are
-   different terms of a proposition and are not compared.
-
-   COST, measured.  The dependency closure is thirty-two files for
-   Instance/Sets/Powerset/Monad.v, eighty-nine for that file with
-   Instance/Powerset.v, and ninety for this satellite (the transitive
-   closure of the Category.* [Require] lines, each file counted once, the
-   root included; Instance/Powerset.v alone reaches eighty-eight), which
-   is why the monad keeps the direct proof.  In universes, read off
-   [About]: [join_natural_via_image] adds to the block of
-   [Powerset_Monad] the caps o <= Relation_Definition.u0,
-   first carried by Instance/Proset/Limit.v's [IsLUB] over the standard
-   library's [relation], and o <= Projections.u0, the sigma projection of
-   the index, first carried by [Powerset_union_IsLUB].
-   [join_natural_via_LAPC] adds the strict bounds o < projections.u0 and
-   o < projections.u1 (the pair projections), with Set < projections.u0,
-   Set < projections.u1 and JMeq.u0 <= JMeq.u1, and the caps
-   o <= RelationClasses.Defs.u0, Relation_Definition.u0, eq.u0,
-   Logic_lemmas.equality.u0 and Projections.u0.  All are
-   [direct_image_preserves_joins_via_LAPC]'s own: the two strict bounds
-   and the caps eq.u0 and Logic_lemmas.equality.u0 at its index universe,
-   which the family of members puts at o; the caps
-   RelationClasses.Defs.u0, Relation_Definition.u0 and Projections.u0 at
-   its setoid level o; and the bounds on Set and JMeq unconditionally.
-   [join_natural_routes_agree] carries the union of the two.
-   [Powerset_union_IsLUB] states [IsLUB] at [IsLUB@{o o Set Set Set}]:
-   the bound is a pair of propositions, and with its level at o instead,
-   [join_natural_via_image] gained o <= projections.u0 (measured).
-   Every constant binds [@{o}] or [@{o so}]; there is no equation.
-
-   STRENGTHS.  The four proofs of the square are at ≈, which is what the
-   field states; that their statements are the field's is by conversion
-   ([join_natural_routes_agree]).  Nothing here is refused, and no probe
-   item pins this file.
-
-   NOT DELIVERED.  No monad is built with Riehl's proof in its naturality
-   field; one would differ from [Powerset_Monad] only in that proof.  The
-   inverse-image half of Corollary 4.6.3 is #382's. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** The union as a least upper bound *)

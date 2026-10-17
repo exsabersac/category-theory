@@ -12,52 +12,11 @@ Generalizable All Variables.
 
 (** * Comparing the group variety with the category of groups *)
 
-(* Mac Lane §V.6, book p. 124; the comparison obligation raised by issue
-   #440's QA correction, which asks for [GroupVariety ≅[Cat] Grp] now that
-   #255 has landed [Grp].
+(*
+   本文件给出具体实例。
 
-   ** THE ISOMORPHISM IS NOT AVAILABLE, AND THE REASON IS STRUCTURAL
-
-   [Grp]'s objects (Instance/Grp.v) carry an ARBITRARY [SetoidObject]:
-   a type together with a chosen equivalence, with every law stated up to
-   that `≈`.  [GroupVariety]'s objects carry a BARE TYPE, with every law a
-   Leibniz [=], because that is what Instance/Comp.v's [OpAlgebra] and
-   [EqSignature] are built on.  The functor below goes one way for nothing
-   — a bare type is a setoid under [=] — and is fully faithful.  What
-   is missing is essential surjectivity in the other direction: to hit a group
-   whose `≈` is coarser than [=] one must quotient its carrier by `≈`, and
-   this tree has no quotient of a setoid by its own equivalence that
-   returns a TYPE.  (Construction/Quotient.v quotients a category's
-   hom-setoids, not a carrier.)  So the isomorphism is neither proved nor
-   refuted here; what IS refuted, at Test/ProbeVariety440.v's negative n4,
-   is that the two categories are the same object.
-
-   The honest discharge of the QA correction is therefore the strongest
-   comparison that does hold, stated as such: [GroupVariety_to_Grp], full
-   and faithful, with [GroupVariety_to_Grp_reflects_iso] as its immediate
-   consequence.  An earlier revision of this paragraph called that
-   "exactly an isomorphism onto a full subcategory", which is too strong
-   and an audit was right to catch it: full and faithful gives an
-   EQUIVALENCE onto the full image, not an isomorphism, because
-   injectivity on objects is neither proved here nor cheap to get.
-
-   ** THIS WHOLE FILE CARRIES [functional_extensionality_dep]
-
-   Not one of its TWENTY-TWO constants is closed under the global context
-   — twelve [.glob] heads plus ten [Program] obligations, the latter
-   invisible to a head census and missed by a first count that said
-   "eleven".  The reason is inherited twice over.  [GroupVariety] mentions
-   Instance/Comp.v's [GroupEq], which is [Defined] with the axiom; and
-   the translation of an [AlgHom] into a [GrpHom] must turn
-   [op_commute]'s argument-bundle equation into the pointwise statements
-   [grp_map_unit] and [grp_map_mul], which is the same bundle rebuild that
-   Instance/Variety.v's header describes.  Nothing here is gated;
-   docs/AXIOMS.md records the file.
-
-   This is also why the comparison lives in its own file: it keeps
-   Instance/Grp.v's closure off Instance/Variety.v, and it keeps every
-   axiom-carrying constant of this development in the two places
-   docs/AXIOMS.md can point at. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Module UA := Category.Instance.Comp.UniversalAlgebra.
 

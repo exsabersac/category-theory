@@ -1,6 +1,8 @@
-(* [Coq.QArith.QArith] is imported FIRST, before [Category.Lib]: it exports
-   an [equiv] that shadows [Setoid]'s otherwise.  This is the import-order
-   discipline Instance/FdVect.v records at its own head. *)
+(*
+   本文件给出 Free 相关定义与性质。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Coq.QArith.QArith.
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -21,89 +23,18 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * The free vector space on a set, as a universal arrow and as an
-      adjunction
+(*
+ nLab:      https://ncatlab.org/nlab/show/free+module
+ nLab:      https://ncatlab.org/nlab/show/basis+of+a+vector+space
+ Wikipedia: https://en.wikipedia.org/wiki/Free_module
+ Book: Mac Lane, Categories for the Working Mathematician, 2nd ed.,
+ Book: Mac Lane, ibid., §IV.1, printed p. 79 —
+ Book: Riehl, Category Theory in Context, §4.0, printed p. 131 —
 
-    nLab:      https://ncatlab.org/nlab/show/free+module
-    nLab:      https://ncatlab.org/nlab/show/basis+of+a+vector+space
-    Wikipedia: https://en.wikipedia.org/wiki/Free_module
-    Book: Mac Lane, Categories for the Working Mathematician, 2nd ed.,
-          GTM 5, §III.1, printed p. 56 — maclane:III.1:construction1
-    Book: Mac Lane, ibid., §IV.1, printed p. 79 —
-          maclane:IV.1:construction1
-    Book: Riehl, Category Theory in Context, §4.0, printed p. 131 —
-          riehl:4.0:construction-free-vector-space
+   本文件给出自由构造相关。
 
-    THE HEADLINE.  Mac Lane's §III.1 asks for the vector space V_X of
-    formal K-linear combinations on a set X together with its insertion
-    of a basis j : X → U(V_X), and for the proof that ⟨V_X, j⟩ is a
-    universal arrow from X to the forgetful functor Vect_K ⟶ Set; his
-    §IV.1 asks for the SAME content presented as an adjunction, with the
-    bijection Vect_K(V_X, W) ≅ Set(X, U W) natural in each variable
-    separately; Riehl's §4.0 asks for k[S], its functoriality in S, and
-    the adjunction as the headline.  All of that is delivered here, and
-    the adjunction — [free_vect_adjunction] — is the principal artifact.
-
-    WHERE THE WORK ACTUALLY IS.  Instance/FdVect.v defines
-    [Vct_F F := RMod (field_ring F)]: a vector space over F IS an
-    F-module, by DEFINITION and not by an isomorphism of categories.  The
-    construction of the free object therefore uses nothing about fields,
-    and it is carried out over an arbitrary [RingObject] in
-    Instance/Mod/Free.v — the formal-expression carrier, the linear
-    extension, the universal property, the functor, the adjunction, both
-    naturality clauses, the finite-linear-combination normal form and the
-    non-degeneracy results all live there.  This file is the vector-space
-    reading, and because the two categories are the same term, every
-    specialization below is a CONVERSION: each definition is stated with
-    its [Vct_F]-level type and inhabited by the [RMod]-level term, so the
-    kernel checks the identification rather than a transport doing it.
-    Nothing here re-proves anything.
-
-    WHAT THE FIELD LAYER BUYS.  Exactly one thing, for exactly one
-    theorem, and it is worth naming precisely.  Instance/Mod/Free.v's
-    BASIS-INJECTIVITY result — and only that one — is stated under the
-    hypothesis 1 ≉ 0 in the ring, because over the zero ring every module
-    is trivial and that statement is genuinely false there.  (Its
-    linear-independence sibling needs no such hypothesis: over the zero
-    ring every scalar is already 0, so that statement degenerates to a
-    truth rather than to a falsehood and survives unassisted.)  A
-    [FieldObject] carries [field_one_neq_zero] as a FIELD, so over a
-    field that hypothesis is discharged for free and the only remaining
-    cost is a decider for the generating setoid's [≈] — see
-    [free_vect_basis_distinct], the one witness below that passes
-    [field_one_neq_zero Q_Field], and it passes it with no work.
-    Nothing else in the development spends
-    commutativity, [finv], or any other field structure — and the
-    witnesses below do not either: [free_vect_half_not_one] uses a proper
-    fraction as a scalar to show that the scalar ring really is ℚ, but it
-    never inverts anything, so no claim is made here that [finv] is
-    exercised.
-
-    THE ℚ WITNESS, AND WHY IT IS NOT DEGENERATE.  A free vector space on
-    the empty or a one-element set proves nothing, so the generating
-    setoid has TWO elements and the target is ℚ regarded as a
-    one-dimensional ℚ-vector space (Instance/Mod.v's [Ring_RMod] at
-    [field_ring Q_Field]).  The linear extension of the assignment
-    e₀ ↦ 3, e₁ ↦ 5 sends 2·e₀ + e₁ to 11, and that COMPUTES: the
-    [Example]s below close by [eq_refl] on the carrier ℚ, which is the
-    convertibility exception, not a claim about morphisms.  Beyond
-    computation, three separations are recorded: the two basis vectors
-    are distinct ([free_vect_basis_distinct]), they are linearly
-    independent ([free_vect_basis_independent] — the statement a reader
-    of §III.1 wants, and the one that spends no 1 ≉ 0, precisely because
-    over a degenerate scalar ring it would reduce to a truth rather than
-    to a falsehood), and distinct scalars give distinct multiples of one
-    basis vector even when the scalars are proper fractions
-    ([free_vect_half_not_one]).
-
-    WHAT IS NOT DELIVERED.  Everything Instance/Mod/Free.v's closing
-    section disclaims, in particular coefficient uniqueness and therefore
-    dimension; additionally, no comparison with Instance/FdVect.v's
-    [FdVectObject] (which carries a chosen coordinate isomorphism to Fⁿ),
-    so it is NOT proved here that the free vector space on a finite
-    generating setoid is finite-dimensional in that file's sense.  That
-    comparison needs the coefficient uniqueness just disclaimed, and it
-    is the natural next issue. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FreeVect.
 

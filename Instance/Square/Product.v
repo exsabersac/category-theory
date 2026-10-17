@@ -21,71 +21,14 @@ Generalizable All Variables.
 
 #[local] Existing Instance edgeset.
 
-(** * The walking commutative square as 2 × 2
+(*
+ Book: Riehl, Category Theory in Context, Dover 2016, §1.6,
+ Book: Mac Lane, Categories for the Working Mathematician, 2nd ed.,
 
-    Book: Riehl, Category Theory in Context, Dover 2016, §1.6,
-          Example 1.6.6, printed p. 41
-    Book: Mac Lane, Categories for the Working Mathematician, 2nd ed.,
-          §II.8, Exercise 1, printed p. 52
+   本文件给出积相关实例。
 
-    Riehl introduces the walking commutative square not by generators
-    and relations but as a PRODUCT: the shape 2 × 2, two copies of the
-    walking arrow.  That presentation makes the arrow count immediate —
-    an arrow of a product of thin categories is a pair of arrows, and
-    the walking arrow has three (two identities and the map between
-    them), so 3 × 3 = 9 — while Mac Lane's presentation makes the
-    UNIVERSAL PROPERTY immediate.  This file proves the two shapes are
-    the same category, so each reading is available for the other.
-
-    WHAT IS DELIVERED.  (1) the comparison functors both ways,
-    [Square_to_22] (built through [Instance/Square.v]'s
-    [SquareFunctor], so it IS the universal property applied to the
-    evident commutative square in 2 × 2) and [Square_of_22] (built by
-    hand, its three functor laws discharged by thinness); (2) their
-    object actions, mutually inverse at LEIBNIZ equality
-    ([square_22_node_round], [square_22_obj_round] — proved by case
-    analysis, not by [eq_refl] uniformly: both maps are matches, and on
-    the 2 × 2 side the argument must additionally be exposed as a pair,
-    [prod] carrying no eta); (3) the identification
-    [Square_2x2_iso : Square ≅[StrictCat] _2 ∏ _2];
-    (4) the arrow count of 2 × 2, proved independently of
-    [Instance/Square.v]'s count, and the cross-check that the two agree
-    ([square_22_counts_agree]).
-
-    THE STRENGTH IS [StrictCat], and that is the strong reading, not the
-    weak one.  [Instance/Cat.v] gives [Cat] the hom-setoid
-    [Functor_Setoid], which identifies naturally isomorphic functors, so
-    an isomorphism [C ≅[Cat] D] in this library is an EQUIVALENCE of
-    categories and says strictly less.  [≅[StrictCat]] is the genuine
-    isomorphism of categories: the two round trips are equalities of
-    functors in [Functor_StrictEq_Setoid], Leibniz on objects and a
-    [hom_cast] conjugation on morphisms.  The [Cat] reading is derived
-    from it ([Square_2x2_Cat_iso]) rather than stated in its place.
-
-    An isomorphism of categories, rather than a mere equivalence, is
-    available here for two reasons, both cheap: the categories are thin,
-    so the morphism half of each round trip is an equation between
-    parallel arrows and discharges outright; and the two object maps are
-    mutually inverse by case analysis on four constructors, so no
-    half-adjoint correction and no object-UIP hypothesis is needed.
-    (Contrast [Theory/Skeleton.v]'s
-    [skeletal_equivalence_is_isomorphism], where turning an equivalence
-    into a [StrictCat] isomorphism does need the HoTT half-adjoint
-    correction; nothing of the sort is used below, because the two
-    functors are written down rather than extracted.)
-
-    WHAT IS NOT DELIVERED.  No claim that the two categories are equal
-    as records — their object types are [SquareNode] and
-    [TwoObj * TwoObj], distinct inductive types, so no Leibniz equality
-    of categories is available or attempted.  No comparison with
-    [Construction/Funny.v]'s [_2 □ _2]: that is a DIFFERENT category
-    (the funny tensor imposes no interchange law, so its two diagonals
-    stay apart — [funny_diagonals_distinct]), and it is the free square
-    rather than the commutative one; the tree carries no comparison
-    functor and none is built here.  The count below is proved directly
-    rather than transported along the isomorphism: the library has no
-    machinery for transporting an arrow count along a comparison
-    functor, and proving it twice is what makes it a CROSS-CHECK. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Thinness of the product shape *)
 

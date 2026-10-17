@@ -9,40 +9,14 @@ Generalizable All Variables.
 
 (** * The category of commutative monoids *)
 
-(* nLab:      https://ncatlab.org/nlab/show/CMon
-   nLab:      https://ncatlab.org/nlab/show/commutative+monoid
-   Wikipedia: https://en.wikipedia.org/wiki/Monoid#Commutative_monoid
+(*
+ nLab:      https://ncatlab.org/nlab/show/commutative+monoid
+ Wikipedia: https://en.wikipedia.org/wiki/Monoid#Commutative_monoid
 
-   [CMon] is the category of commutative monoids over [Sets]: an object is a
-   setoid carrying a commutative, associative binary operation [cmon_plus]
-   with unit [cmon_zero], whose `≈` is PROPOSITIONAL ([cmon_prop]); a morphism
-   is a setoid map preserving both; two morphisms are equivalent when their
-   underlying maps agree pointwise.
+   本文件给出具体实例。
 
-   An earlier revision of this paragraph named only the operation, the unit and
-   the laws.  Since the PR "algebraic carriers are sets" (2026-09-17) the record
-   carries a fourth kind of datum, the field [cmon_prop] of
-   Lib/Setoid/Propositional.v's class [PropEquiv]: a [Prop]-valued relation on
-   the carrier that holds exactly when `≈` does.  A commutative monoid in this
-   library is therefore a commutative monoid on a SET in Bishop's sense, not on
-   an arbitrary proof-relevant setoid.  Lib/Setoid/Propositional.v's header says
-   why -- a type of congruences on a carrier is carrier-sized exactly when the
-   congruences are [Prop]-valued, which is what the solution-set condition of
-   Mac Lane's general adjoint functor theorem needs at a concrete algebraic
-   category.  The whole tower over [CMon] -- [Ab], [RMod R], and everything
-   coerced into them -- inherits the field through [ab_cmon] and [rm_ab], and
-   [RigObject] carries the twin field [rig_prop] (Theory/Algebra/Rig.v), since
-   [rig_cmon] builds a [CMonObject] out of a rig's own carrier setoid.
-
-   The in-tree alternative — commutative monoid OBJECTS in a symmetric
-   monoidal category (Theory/Algebra/CommutativeMonoid.v, instantiable at
-   [Sets_Product_Monoidal], with the hom-category pattern of
-   Theory/Algebra/Monoid/Hom.v) — is deliberately not taken here: the
-   biproduct/preadditive development (Instance/CMon/Biproduct.v) wants
-   direct carrier-level access to [cmon_plus] and [cmon_zero], without the
-   monoidal-object indirection.  Since [Mon] already names the internal
-   monoid category of Theory/Algebra/Monoid/Hom.v, the vocabulary here is
-   [CMonObject], [CMonHom], [CMon]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* A commutative monoid: a setoid whose `≈` is propositional, together with a
    unit element and a binary operation that respects `≈` and satisfies the

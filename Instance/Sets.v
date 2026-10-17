@@ -7,32 +7,15 @@ Generalizable All Variables.
 
 (** The category of setoids *)
 
-(* nLab: https://ncatlab.org/nlab/show/category+of+sets
-   nLab: https://ncatlab.org/nlab/show/setoid
-   Wikipedia: https://en.wikipedia.org/wiki/Category_of_sets
-   Wikipedia: https://en.wikipedia.org/wiki/Setoid
+(*
+ nLab: https://ncatlab.org/nlab/show/setoid
+ Wikipedia: https://en.wikipedia.org/wiki/Category_of_sets
+ Wikipedia: https://en.wikipedia.org/wiki/Setoid
 
-   This is the category [Sets], the constructive analogue of the classical
-   category Set. To model "sets" without quotient types and without the
-   function-extensionality axiom, objects are not bare types but setoids
-   (Bishop sets): a carrier type together with an equivalence relation `≈`.
-   Morphisms are setoid maps, i.e. functions that respect `≈` (proper
-   functions), and the hom-setoid identifies two such maps when they agree
-   pointwise up to the codomain's `≈` (extensional equality of setoid maps,
-   realised without [funext]).
+   本文件给出集合范畴相关实例。
 
-      objects: setoids        (carrier type + equivalence relation `≈`)
-       arrows: setoid maps    (functions f with x ≈ y → f x ≈ f y)
-     hom-setoid: f ≈ g  :=  ∀ x, f x ≈ g x   (pointwise, up to codomain `≈`)
-     identity: the identity function
-   composition: composition of functions, again respecting `≈`
-
-   This file builds the category and its first structural instances:
-   [Sets_Terminal] (singleton), [Sets_Initial] (empty), the cartesian
-   [Sets_Product_Monoidal], and the characterizations of monos as injections
-   and epis as surjections. The cartesian / closed structure proper lives in
-   the companion files Instance/Sets/Cartesian.v and
-   Instance/Sets/Cartesian/Closed.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Bishop sets, the zero-axiom regime, and the universal codomain
 

@@ -9,31 +9,14 @@ Generalizable All Variables.
 
 (** * The category of a partially-ordered set. *)
 
-(* nLab: https://ncatlab.org/nlab/show/poset
-   Wikipedia: https://en.wikipedia.org/wiki/Partially_ordered_set
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Partially_ordered_set
+ Wikipedia: "Every poset (and every preorder) may be considered as a category
 
-   A partially-ordered set forms a category directly from its preorder,
-   since a poset is precisely a preorder (a [Proset]) satisfying the extra
-   antisymmetry condition: x ≤ y ≤ x implies x = y. Antisymmetry adds nothing
-   to the underlying [Category] construction (the hom-sets are unchanged); it
-   only makes the resulting thin category skeletal, so that isomorphic objects
-   are equal. nLab characterizes a poset as exactly "a skeletal thin category",
-   equivalently "a skeletal (0,1)-category".  Both directions are proved as
-   [Proset_Skeletal_iff_Antisymmetric] in Instance/Proset/Skeletal.v. (See Instance/Pos.v for [Pos], the
-   category whose OBJECTS are posets and whose morphisms are monotone maps --
-   a different construction from this one, which turns a single poset into a
-   thin category.)
+   本文件给出偏序集相关实例。
 
-   Wikipedia: "Every poset (and every preorder) may be considered as a category
-   in which every hom-set has at most one element. More explicitly, let
-   hom(x, y) = {(x, y)} if x ≤ y (and otherwise the empty set) and
-   (y, z) ∘ (x, y) = (x, z). Such categories are sometimes called thin.
-
-   Posets are equivalent to one another if and only if they are isomorphic. In
-   a poset, the smallest element, if it exists, is an initial object, and the
-   largest element, if it exists, is a terminal object. Also, every preordered
-   set is equivalent to a poset. Finally, every subcategory of a poset is
-   isomorphism-closed." *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Order theory as category theory: the collapse dictionary
 

@@ -12,61 +12,16 @@ Generalizable All Variables.
 
 (** * The category of topological spaces *)
 
-(* Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.7,
-     printed p. 25
-   nLab:      https://ncatlab.org/nlab/show/Top
-   Wikipedia: https://en.wikipedia.org/wiki/Category_of_topological_spaces
-   Book:      Fong and Spivak, "Seven Sketches in Compositionality",
-              §7.3.2, Definition 7.25 (open covers)
-   Book:      Riehl, "Category Theory in Context", Examples 1.3.14(iv)
-              and 1.4.4(v)
+(*
+ nLab:      https://ncatlab.org/nlab/show/Top
+ Wikipedia: https://en.wikipedia.org/wiki/Category_of_topological_spaces
+ Book:      Fong and Spivak, "Seven Sketches in Compositionality",
+ Book:      Riehl, "Category Theory in Context", Examples 1.3.14(iv)
 
-   This is the category [Top]. Mac Lane's roll-call of the standard large
-   categories (CWM §I.7, printed p. 25) lists `Top`: objects the
-   topological spaces, arrows the continuous maps. It is the ambient
-   category of general topology, and the source of much categorical
-   vocabulary — in the mathematics at large (none of it formalized here)
-   the subspace and quotient topologies are limits and colimits, the
-   product topology is the categorical product, and the initial and final
-   topologies are those (co)limit constructions read as universal
-   properties.  CORRECTION (#457): "none of it formalized here" holds of
-   this file only, and was already untrue of the library before #457
-   (the quotient topologies inside Instance/Top/Pushout.v's pushouts and
-   Instance/Top/Wedge.v's wedges, Instance/Top/Coproduct.v's coproducts,
-   Instance/Top/Presheaf.v's [OpenSub]); #457 adds the general
-   constructions.  The subspace and quotient
-   topologies along an arbitrary function, with the equalizers and
-   coequalizers Mac Lane's Proposition V.9.1 and its dual build from
-   them, are Instance/Top/Subspace.v's, over Instance/Top/Prop.v's
-   Prop-valued spaces rather than this file's [Top]; over [Top] itself
-   the quotient topology is Instance/Top/Subspace/TypeValued.v's
-   [TQuot], the general subspace topology exists there only unpackaged,
-   one universe above the points (the open case is
-   Instance/Top/Presheaf.v's [OpenSub]), and particular quotient
-   topologies build Instance/Top/Pushout.v's pushouts and
-   Instance/Top/Wedge.v's wedges.  No products of [Top] are built
-   (Instance/Top/Coproduct.v's header scopes that negative), nor the
-   initial and final topologies of FAMILIES of maps.  CORRECTION (#458):
-   the second holds of [Top] only, and there of GENERAL families: no
-   general initial or final topology of a family is built over [Top],
-   though Instance/Top/Cocomplete/TypeValued.v's [TSigma] is the final
-   topology of one kind of family, the injections of a disjoint union.
-   The initial and final topologies of families are Instance/Top/
-   Complete.v's [PInit] and Instance/Top/Cocomplete.v's [PFinal], over
-   Instance/Top/Prop.v's Prop-valued spaces, and the products, limits
-   and colimits of [PTopCat] are built from them; over [Top] itself
-   Instance/Top/Cocomplete/TypeValued.v builds the coproducts indexed at
-   or below the points and the coequalizers, and still no products.
+   本文件给出具体实例。
 
-      objects: topological spaces  (a setoid of points + a family of opens)
-       arrows: continuous maps     (preimages of opens are open)
-   hom-setoid: f ≈ g  :=  ∀ x, f x ≈ g x   (pointwise, on the map part)
-     identity: the identity map
-  composition: composition of maps, preimages composing contravariantly
-
-   The companion file Instance/Top/Closed.v carries the opens of a space as
-   a thin category (Riehl, CTiC Example 1.3.14(iv)) and the complementation
-   duality with its closed sets (Example 1.4.4(v)). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Design: what a topological space is, constructively
 

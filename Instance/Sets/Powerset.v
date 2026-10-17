@@ -6,18 +6,11 @@ Require Import Category.Construction.Opposite.
 Require Import Category.Instance.Sets.
 Require Import Category.Instance.Sets.Classifier.
 
-(* [Monad] and [FAlg] are required only so that the two formability
-   statements at the end of the file — [Powerset_Prop_Monad_statement] and
-   [Powerset_Prop_FAlg] — can be entered into the environment.  Neither
-   module depends on anything under Instance/, and nothing in the tree
-   imports this file, so no cycle is introduced.  CORRECTION (#466): the
-   clause "nothing in the tree imports this file" does not hold.  Before
-   #466, forty-three files of _CoqProject required this module, and with
-   #466's six files (its five and Test/ProbeSupLat466.v) forty-nine do (a
-   script over their [Require] lines, comments stripped).  No cycle arises
-   all the same: the transitive closure of the [Require] lines of
-   Theory/Monad.v and Construction/FAlg.v, thirteen files, contains no file
-   under Instance/, measured by the same script. *)
+(*
+   本文件给出集合范畴相关实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Category.Theory.Monad.
 Require Import Category.Construction.FAlg.
 

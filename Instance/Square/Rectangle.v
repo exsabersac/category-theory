@@ -16,85 +16,14 @@ Require Import Coq.Lists.List.
 
 Generalizable All Variables.
 
-(** * The shape 2 × 3, and commutative rectangles
+(*
+ Book: Riehl, Category Theory in Context, Dover 2016, §1.6,
+ Book: Mac Lane, Categories for the Working Mathematician, 2nd ed.,
 
-    Book: Riehl, Category Theory in Context, Dover 2016, §1.6,
-          Example 1.6.9, printed p. 42
-    Book: Mac Lane, Categories for the Working Mathematician, 2nd ed.,
-          §II.8, Exercise 1, printed p. 52
+   本文件给出具体实例。
 
-    One step up from the walking commutative square.  A diagram of shape
-    2 × 3 in [C] is a rectangle
-
-        X0 --u--> X1 --v--> X2
-         |         |         |
-         p         q         r
-         v         v         v
-        Y0 --u'--> Y1 --v'--> Y2
-
-    in which BOTH squares commute — and then, necessarily, so does the
-    outer rectangle.  That last clause is the content of the example:
-    two commuting squares paste to one, and the shape category forces
-    the pasting rather than asking for it, because the composite
-    [X0 → X2] and the composite [Y0 → Y2] are already arrows of 2 × 3
-    and functoriality does the rest.
-
-    WHAT IS DELIVERED.  (1) the shape [Rect := _2 ∏ _3] over
-    [Instance/Ordinal.v]'s [_3], with its thinness; (2) the named
-    generating arrows and, from any [F : Rect ⟶ C], the six objects and
-    seven arrows of the rectangle together with the LEFT square, the
-    RIGHT square, the OUTER rectangle and the two "short diagonals" —
-    every one of them an equation [F] satisfies, not a hypothesis;
-    (3) the pasting principle as a free-standing categorical lemma
-    ([paste_squares]) and the observation that in a diagram of this
-    shape the outer rectangle is forced twice over, once by pasting and
-    once by thinness of the shape ([rect_outer_two_ways]); (4) the
-    converse — a commutative rectangle, i.e. six objects, seven arrows
-    and the TWO square equations, determines a functor
-    ([RectFunctor]), with its action on all seven generators recovered;
-    (5) the arrow count of the shape, 18 = 3 × 6, with 6 identities and
-    12 others, cross-checked against [Instance/Ordinal.v]'s own count of
-    the arrows of [_3].
-
-    HOW THE CONVERSE IS BUILT, and why not by a presentation.
-    [Instance/Square.v] builds its shape by generators and relations and
-    reads the universal property off [presented_universal].  The same
-    route is available here — six nodes, seven edges, two relations —
-    but it would need a second path classification over a quiver with
-    paths of length up to three, and the tree already contains every
-    piece needed for the shorter route: [Theory/Shapes.v]'s
-    [Functor_of_Pair] makes each ROW a functor [_3 ⟶ C],
-    [Construction/Cylinder.v]'s [Cyl_functor] turns a natural
-    transformation between two such into a functor on the cylinder
-    [_3 ∏ _2], and [Construction/Product.v]'s [Swap] reorders the
-    factors.  So the rectangle is assembled as "a natural
-    transformation between two composable pairs", which is what Riehl's
-    example says it is.  The one piece the tree lacked is the
-    naturality criterion for a PLAIN family of components (as against
-    [Instance/Ordinal.v]'s [ord_naturality_from_steps], which is stated
-    for a family of ISOMORPHISMS); it is supplied below as
-    [ord_transform_naturality], and the donor's version is exhibited as
-    its instance ([ord_naturality_from_steps_is_instance]) rather than
-    the relationship being asserted.
-
-    THE TWO SQUARE EQUATIONS ARE THE WHOLE HYPOTHESIS.  Nothing below
-    asks for the outer rectangle to commute: it is derived, in
-    [paste_squares] from the two squares alone and in
-    [rect_outer_commutes] from functoriality alone.
-
-    WHAT IS NOT DELIVERED.  No presentation of this shape by generators
-    and relations (see above), hence no free-versus-presented arrow
-    count for it — the count below is of [_2 ∏ _3] directly.  The
-    CONVERSE half is pinned at [C : Category@{co Set Set}], inherited
-    from [Functor_of_Pair] and [Cyl_functor]; the measurement and the
-    reason are stated at the [Converse] section below, the forward half
-    carries no pin, and Test/ProbeSquare.v guards both sides.  No
-    uniqueness clause for [RectFunctor]: [Cyl_functor_unique]
-    ([Construction/Cylinder.v]) supplies uniqueness on the cylinder, but
-    transporting it across [Swap] and across the row-functor
-    construction is not done here, and none of the statements below
-    depend on it.  No identification of [Rect] with a presented
-    category, and no [n × m] generalisation. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The shape *)
 

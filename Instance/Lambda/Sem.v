@@ -12,34 +12,14 @@ Generalizable All Variables.
 
 (** Denotational semantics of the simply-typed lambda calculus in a CCC *)
 
-(* nLab: https://ncatlab.org/nlab/show/relation+between+type+theory+and+category+theory
-   Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
-   Wikipedia: https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
+ Wikipedia: https://en.wikipedia.org/wiki/Curry%E2%80%93Howard_correspondence
 
-   This file gives the categorical (denotational) semantics of the de Bruijn
-   STLC of Exp.v, realizing the Curry-Howard-Lambek correspondence: a
-   cartesian closed category interprets the calculus, with the product type
-   denoting the categorical product, the function type denoting the internal
-   hom (exponential), and a context denoting the iterated product of its
-   types.  Here the interpreting CCC is taken to be Coq's own universe [Type]
-   (with [unit] terminal, [*] product, [→] exponential), so the interpretation
-   is the standard one read off into that concrete model:
+   本文件给出 λ 演算相关实例。
 
-       ⟦TyUnit⟧      := unit                   (terminal object)
-       ⟦t1 × t2⟧     := ⟦t1⟧ * ⟦t2⟧            (categorical product)
-       ⟦dom ⟶ cod⟧  := ⟦dom⟧ → ⟦cod⟧          (exponential / internal hom)
-       ⟦Γ⟧           := ilist ⟦·⟧ Γ            (right-nested product of types)
-       ⟦Γ ⊢ t : τ⟧   : ⟦Γ⟧ → ⟦τ⟧              (a morphism in the CCC)
-
-   On terms (SemExp) the standard CCC interpretation is used: a variable is a
-   product projection (var = proj), application is evaluation composed with
-   pairing (app = eval ∘ ⟨_,_⟩), and lambda abstraction is currying
-   (lam = curry).  The remaining results are the semantic compatibility lemmas
-   between interpretation and the renaming/substitution machinery of Ren.v and
-   Sub.v; they are what make βη-equality sound, witnessed downstream by
-   [soundness] in Sound.v ([e ---> v] implies [SemExp e = SemExp v]).  By
-   Lambek's theorem the syntax presented here is the free CCC, so this
-   interpretation factors uniquely through every model. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Sem.
 

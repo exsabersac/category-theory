@@ -14,115 +14,14 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * The isomorphism theorems, from the universal property
+(*
+ nLab: https://ncatlab.org/nlab/show/isomorphism+theorem
+ Wikipedia: https://en.wikipedia.org/wiki/Isomorphism_theorems
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §III.1
-    Exercise 4 (printed p. 59) [maclane:III.1:ex4]; Awodey, "Category
-    Theory", 2nd ed., §4.2 Corollary 4.5 (printed p. 85)
-    [awodey:4.2:cor5].
-    nLab: https://ncatlab.org/nlab/show/isomorphism+theorem
-    Wikipedia: https://en.wikipedia.org/wiki/Isomorphism_theorems
+   本文件给出同构相关。
 
-    Mac Lane's point at §III.1 is that the isomorphism theorems follow
-    from the universality of the projection ALONE, without a second look
-    at cosets.  This file takes that seriously, and the honest accounting
-    of how far it goes is the first thing below, because "derived from
-    universality" is a claim about the SHAPE of a proof and is easy to
-    assert falsely.
-
-    HOW EACH THEOREM IS ACTUALLY OBTAINED, stated before the theorems so
-    that no reader has to reverse-engineer it.
-
-    The comparisons for the FIRST and THIRD are produced by ONE
-    mechanism: [universal_element_iso] (Theory/Universal/Element.v),
-    which turns two universal elements of the SAME functor into an
-    isomorphism of their carriers, together with its uniqueness clause
-    [universal_element_iso_unique]; neither of those two is built by
-    exhibiting mutually inverse maps and checking round trips.  The
-    SECOND is not of that form and this header does not pretend
-    otherwise: it is the FIRST's comparison composed with two
-    identity-carrier inverse pairs ([surjective_image_iso] below, and
-    [quot_congr] in Instance/Grp/Quotient.v), each hand-built with
-    explicit [to] and [from] and their round trips discharged.  Both are
-    degenerate — every leg the identity on elements, every round trip
-    reflexivity — but degenerate is not the same as absent, and the
-    paragraphs below grade all three accordingly.  What differs between
-    the three theorems is the cost of exhibiting the SECOND universal
-    element:
-
-      - THIRD ([third_isomorphism_theorem], (G/M)/(N/M) ≅ G/N).  A pure
-        universal-property chase, and the cleanest of the three:
-        [quot_universal_N_over_M] derives the second universal element
-        from [quot_universal_element N] and [quot_proj_epic M] by
-        composing and cancelling [quot_proj M] on the right, and inspects
-        no element of any group.  Elementwise steps, exhaustively: the
-        `≈`-saturation obligation of [NmodM], which is a prerequisite to
-        STATING the theorem rather than a step in proving it, and
-        [third_precompose_kills], which transfers the hypothesis "k kills
-        N/M" to "k ∘ p_M kills N" and is unavoidable in any formulation,
-        since "kills" is an elementwise predicate by definition.  No coset
-        is manipulated and no representative is chosen.
-
-      - FIRST ([first_isomorphism_theorem], G/ker h ≅ im h).  The second
-        universal element ([image_universal_element]) is exhibited
-        directly, and its descent step ([image_med_wd]) reads a preimage
-        out of the image-membership witness.  That witness is DATA --
-        Epi.v's [GrpImage] is a sigma -- so nothing is chosen, but an
-        element IS inspected.  This is NOT a coset argument: no coset
-        object exists anywhere in the construction, and the mediator's
-        uniqueness is still the universal property's.  It is fair to call
-        it a universal-property derivation of the ISOMORPHISM whose input
-        is an elementwise construction of the comparison universal
-        element.  Nothing shortens that input: the image is DEFINED
-        elementwise, as a subgroup of the codomain, so any map out of it
-        must consume a membership witness.
-
-      - SECOND ([second_isomorphism_theorem], SN/N ≅ S/(S ∩ N)).  A
-        COROLLARY of the first, in the textbook manner: the composite
-        S ↪ SN ↠ SN/N is surjective with kernel S ∩ N.  Its two
-        elementwise inputs are named and proved separately
-        ([psi_kernel_is_meet], [psi_surjective]), and each is a single
-        normality computation.  Downstream of those two lemmas the
-        argument is again universality -- BUT read the composition
-        honestly: this theorem is [first_isomorphism_theorem psi]
-        composed with [surjective_image_iso], and THAT one IS built as an
-        inverse pair with two round trips, as is [quot_congr]
-        (Instance/Grp/Quotient.v) which the literal form
-        [second_isomorphism_theorem_literal] composes with.  Both are
-        degenerate as inverse pairs -- every leg is the identity on
-        underlying elements and every round trip closes by [reflexivity]
-        or [quot_rel_refl] -- but they are not instances of
-        [universal_element_iso] and the claim above is scoped to the
-        comparisons, not to every isomorphism this file names.
-
-    So: one theorem is a pure chase, one has an elementwise construction
-    of its comparison object, and one is a corollary of that plus two
-    identity-carrier repackagings.  NONE of them manipulates cosets, for
-    the structural reason that the setoid quotient of
-    Instance/Grp/Quotient.v forms no coset object at all -- but the reader
-    should note that this is a property of the PRESENTATION, and that the
-    elementwise steps above would still be elementwise in any
-    presentation.
-
-    WHAT IS DELIVERED.  The image of a homomorphism as a subgroup of the
-    codomain with its corestriction; the first isomorphism theorem
-    together with Awodey's Corollary 4.5 (the factorization
-    G ↠ G/ker h ≅ im h ↪ K, and h monic iff its kernel is trivial); the
-    third; the second, over an explicit [SubgroupProduct]; and non-vacuity
-    witnesses at S3 for all three.
-
-    UNIQUENESS is proved, not merely available: [first_isomorphism_unique]
-    and [third_isomorphism_unique] say that any isomorphism carrying the
-    one universal element to the other IS the comparison.  The second
-    theorem has no such clause, being a composite of three isomorphisms
-    rather than a single comparison.
-
-    WHAT IS NOT DELIVERED.  No fourth ("correspondence"/lattice) theorem;
-    no Zassenhaus, Schreier or Jordan-Hölder; no butterfly lemma; and no
-    naturality of the isomorphisms in h, S or N.  The second theorem is
-    stated as S/(S ∩ N) ≅ SN/N ([second_isomorphism_theorem_literal]),
-    the mirror of the orientation the issue writes; isomorphism being
-    symmetric, no separate statement is given for the other reading. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The image of a homomorphism, as a subgroup of the codomain *)
 

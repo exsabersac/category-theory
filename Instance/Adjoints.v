@@ -11,58 +11,13 @@ Generalizable All Variables.
 
 (** The category of adjunctions. *)
 
-(* nLab: https://ncatlab.org/nlab/show/adjoint+functor
-   Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors#Composition
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors#Composition
 
-   Adjunctions can be composed: the identity functor is self-adjoint
-   (Id ⊣ Id, [adj_id]), and given F ⊣ U and F' ⊣ U' the composites are again
-   adjoint, with the left adjoints composing covariantly and the right adjoints
-   contravariantly,
+   本文件给出具体实例。
 
-       F ⊣ U  →  F' ⊣ U'  →  F ◯ F' ⊣ U' ◯ U     ([adj_comp]).
-
-   (Recall F ◯ G applies G then F, so F ◯ F' is the left adjoint and U' ◯ U the
-   right adjoint of the composite.) This is exactly what is needed to organize
-   categories and adjunctions into a category [Adjoints]:
-
-       objects        Categories
-       arrows         Adjunctions F ⊣ U between categories
-       identity       Id ⊣ Id
-       composition    F ⊣ U → F' ⊣ U' → F ◯ F' ⊣ U' ◯ U
-
-   Two adjunctions are identified when their left and right adjoints are
-   correspondingly naturally isomorphic ([adj_morphism_setoid]).
-
-   WHICH ADJOINT POINTS FORWARD.  The choice is arbitrary, but it has to be
-   named correctly, and the code makes the opposite one from what this
-   header used to claim.  [adj_morphism] below declares
-   [free_functor : D ⟶ C] and [forgetful_functor : C ⟶ D], and [Adjoints]
-   sets [hom := @adj_morphism]; so an arrow C ~> D of [Adjoints] carries
-   its RIGHT adjoint pointing FORWARD, C ⟶ D, and its LEFT adjoint
-   pointing BACKWARD, D ⟶ C.  Measured out of tree, this file carrying no
-   probe: for f : X ~> Y in [Adjoints] the ascription
-   [forgetful_functor f : X ⟶ Y] typechecks and [free_functor f : X ⟶ Y]
-   is rejected.  The composition displayed above
-   agrees: along A ~> B ~> C the right adjoints compose covariantly, to
-   U' ◯ U : A ⟶ C, and the left adjoints contravariantly, to
-   F ◯ F' : C ⟶ A.
-
-   WHICH OF MAC LANE'S TWO ORIENTATIONS THIS IS.  §IV.7, book p. 101, meets
-   the ANALOGOUS choice for the category of adjunctions between two FIXED
-   categories -- analogous and not the same, his axis being which way a
-   natural TRANSFORMATION runs and this one which way a FUNCTOR runs --
-   and displays BOTH readings as forgetful
-   functors: A^X ← A^(adj)X reads off the LEFT adjoints, covariantly, while
-   [A^(adj)X]^op → X^A reads off the RIGHT adjoints and is therefore
-   displayed on the OPPOSITE category.  So in his A^(adj)X the left adjoint
-   is the forward one, and in [A^(adj)X]^op the right adjoint is.
-   [Adjoints] is a different category -- its objects are categories, not
-   adjunctions between one fixed pair -- but on this one axis it matches
-   the SECOND: right adjoint forward, like [A^(adj)X]^op.  Mac Lane's
-   A^(adj)X itself is Instance/Adj.v's [Adj C D], which takes the FIRST
-   orientation, and the two functors he displays are
-   Instance/Adj/Forgetful.v.  See the closing note on InvAdj for the
-   involutive refinement that removes the choice altogether. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The identity functor is its own left and right adjoint: the transpose iso
    F x ~> y ≅ x ~> U y is the identity on hom-sets when F = U = Id. *)

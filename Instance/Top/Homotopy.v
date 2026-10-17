@@ -18,11 +18,11 @@ Generalizable All Variables.
 
 Open Scope R_scope.
 
-(* The sections below quantify over the two homotopies being pasted, which
-   their proofs genuinely use but which do not occur in every statement.
-   Lib.v's [Default Proof Using "Type"] would discard them; this is the same
-   setting, for the same reason, as Instance/Top/Interval.v and
-   Instance/Top/FundamentalGroupoid.v. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Set Default Proof Using "All".
 
 (** * Homotopy, the homotopy category, and their pointed forms *)

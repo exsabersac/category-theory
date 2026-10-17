@@ -20,146 +20,15 @@ Generalizable All Variables.
 
 (** * The free abelian group monad ℤ[−] on Set, and Ab ≅ Set^{ℤ[−]} *)
 
-(* Book: Riehl, "Category Theory in Context", §5.3, the construction
-         opening the section, printed pp. 195-196 (PDF pp. 215-216) —
-         riehl:5.3:construction-ab-monadic, the box issue #472 appends
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         §VI.4, Exercise 2, printed p. 146 (PDF p. 155) — the case R = ℤ
-         of maclane:VI.4:ex2, whose general ring is
-         Instance/Mod/FreeMonad.v
-   nLab: https://ncatlab.org/nlab/show/free+abelian+group
-   nLab: https://ncatlab.org/nlab/show/monadic+functor
+(*
+ Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ nLab: https://ncatlab.org/nlab/show/free+abelian+group
+ nLab: https://ncatlab.org/nlab/show/monadic+functor
 
-   WHAT THE BOOK SAYS, read from the PDF.  "The free ⊣ forgetful
-   adjunction … between sets and abelian groups … induces a monad Z[−] on
-   Set.  Given a set S, Z[S] is the set of finite formal Z-linear
-   combinations of elements of S, and the map Z[f] … carries a formal sum
-   n1 s1 + ⋯ + nk sk … to the formal sum n1 f(s1) + ⋯ + nk f(sk) …  there
-   is a unique functor from the category of abelian groups to the
-   category of Z[−]-algebras that commutes with the left and right
-   adjoints.  The image of an abelian group A is the algebra consisting of
-   the underlying set of A together with the "evaluation" map
-   ϵ_A : Z[A] → A that interprets a finite formal sum as a single element
-   of A.  In fact, this functor defines an isomorphism of categories: to
-   equip a set A with an "evaluation" function ev : Z[A] → A, so that
-   diagrams … commute is precisely to give A the structure of an abelian
-   group", the triangle "a 'sanity check' … that it sends a singleton sum
-   a ∈ Z[A] to the element a", and an algebra homomorphism "a function
-   f : A → B that preserves the evaluation of formal sums, i.e., a group
-   homomorphism".
+   本文件给出阿贝尔群相关实例。
 
-   ROUTE (i), TAKEN.  Instance/Ab/Free.v's free abelian group, in the
-   hom-set form [free_ab_adjunction_hom] #472 adds there (its counit
-   computes; Ab/Free.v's CORRECTION (#472)).  [FreeAbF] is U ◯ F and
-   [FreeAbMonad] is ℤ[−], Monad/Comparison.v's [Adjunction_Induced_Monad]
-   of it: ℤ[X] is the free group's setoid of formal sums ([ZM_obj],
-   [ZM_carrier]), η the insertion ([ZM_ret], [ZM_ret_fun]), μ = U ε F the
-   flattening ([ZM_join_counit], [ZM_join_gen], [ZM_join_fun],
-   [ZM_join_zero]), all at [eq_refl]; ℤ[f] relabels at ≈
-   ([ZM_map_equiv]), refused at [eq_refl] (Test/ProbeFreeModule472.v,
-   R26).  [Ab_K] is the comparison Ab → Set^{ℤ[−]}, [EM_Comparison] of
-   the adjunction: K A = ⟨A, ε_A⟩, ε_A the evaluation of a formal sum
-   ([Ab_K_alg_fun]), a ↦ a, 0 ↦ 0, ⟨a⟩ + ⟨b⟩ ↦ a + b and −⟨a⟩ ↦ −a at
-   [eq_refl] ([Ab_K_alg_*]), K f = f ([Ab_K_map]); it commutes with the
-   right adjoints and with the left ones, each up to a natural
-   isomorphism whose components are identities (Monad/Comparison.v's two
-   triangles at this adjunction, [Ab_K_Forget] and [Ab_K_Free]): that
-   file's [EM_Comparison_Forget] and [EM_Comparison_Free] build them so
-   (its header; [iso_id], and [EM_Comparison_Free_iso]'s identity
-   arrows), and all four end [Qed], so that the components are identities
-   is read from that file's source and no readback pins it here
-   (Instance/Mod/FreeMonad.v's twins are [RMod_K_Forget] and
-   [RMod_K_Free]).  CORRECTION (#482): [EM_Comparison_Forget] and
-   [EM_Comparison_Free] end [Defined] since #482, and
-   Monad/Comparison/Resolution.v reads their components back at
-   [eq_refl] ([EM_Comparison_Forget_components],
-   [EM_Comparison_Free_components]); [Ab_K_Forget] and [Ab_K_Free] still
-   end [Qed], and no readback here pins them.
-   [EM_to_AbS] sends (A, ev) to [zm_alg_ab]: 0 = ev⟨⟩, a + b =
-   ev(⟨a⟩ + ⟨b⟩), −a = ev(−⟨a⟩); the triangle is [zm_alg_unit], every
-   group law one instance of [zm_alg_eval_respects], and ev IS the sum in
-   that group at ≈ ([zm_alg_fold]); an algebra map is additive
-   ([zm_alg_hom_step]).  [Ab_EM_iso : Ab ≅[Cat] Set^{ℤ[−]}] has legs K
-   and [EM_to_AbS] and identity components, to and from, at [eq_refl];
-   [Ab_EM_equivalence] and [Ab_Forget_Monadic : Monadic Ab_Forget].  The
-   argument is Instance/Mod/FreeMonad.v's part (c) without the action,
-   and [PropEquiv] again costs no hypothesis ([zm_alg_prop]); issue #1357
-   tracks a shared Eilenberg–Moore lemma for term-model monads, keeping
-   identity components, that would remove this parallel and its siblings
-   in #470 and #471.
-
-   RIEHL'S "ISOMORPHISM OF CATEGORIES".  By Instance/Cat.v an
-   isomorphism in Cat is an equivalence of categories, which the identity
-   components bring toward hers; the strict identity of Ab and its
-   algebras is refused (R27 to R29).  Issue #484 keeps the strict reading
-   ([StrictlyMonadic], isomorphism of categories on the nose).  Her Z[S]
-   as integer combinations: the carrier here is Ab/Free.v's formal sums
-   of generators and their negatives, and that each is a finite
-   ℤ-combination is not proved for it (Ab/Free.v's WHAT IS NOT
-   DELIVERED); T_R at [Int_Ring] has that reading, but its comparison
-   with ℤ[−] is not made.
-
-   ROUTE (ii), MEASURED AND NOT TAKEN.  ℤ[−] as T_R at [Int_Ring] with
-   Ab ≅ RMod Int_Ring: no such equivalence is in the tree, only
-   Instance/Mod/Cogenerator.v's one-way [Ab_to_ZMod] (#454).  #472's
-   scout built it (every ℤ-module's action agrees with the iterated sum,
-   ~25 lines) and composed it with [RMod_EM_iso Int_Ring]: the Require of
-   Cogenerator.v takes the closure from 70 modules to 191, the composite's
-   [iso_from_to] component is refused as the identity ([iso_compose]'s
-   obligations), and no [Monadic Ab_Forget] follows, there being no
-   monadicity-transport lemma in tree.  Two of the scout's findings
-   complete that account.  The 121 modules are Cogenerator.v's own
-   closure, not [Ab_to_ZMod]'s: relocated (about 40 lines) to a light
-   file, it costs 7, measured on #472's tree by [Print Libraries] after a
-   [Require] of Instance/Mod/FreeMonad.v (71 [Category] modules) with
-   Instance/Ab/Monoidal.v, whose [zsmul] family it uses (78), and 11 with
-   Adjunction/Unitalization.v too, where its [zsmul_mul] lives (82),
-   against Cogenerator.v's 192.  And a composite built by hand rather than
-   by [iso_compose] would keep identity components (not prototyped).
-   Route (i) stays the one taken on fidelity, not cost: Riehl's statement
-   is the comparison functor of the free-forgetful adjunction Set ⇄ Ab
-   itself, which route (ii) does not give, and the tree has no lemma that
-   would transport [Monadic] along Ab ≅ RMod Int_Ring.  Issue #1356 (Ab ≅
-   RMod ℤ, and ℤ[−] ≅ T_ℤ as monads; linked to #1150) tracks that
-   comparison.
-
-   STRENGTHS.  Every [Example] holds at [eq_refl], restated in the probe.  At ≈
-   only: [ZM_map_equiv], [zm_alg_step], [zm_alg_fold], [zm_alg_hom_step] (the
-   twins of Instance/Mod/FreeMonad.v's first four) and the
-   inverse laws of the isomorphism in Cat; [zm_fold_is_alg_eval] is Leibniz, by
-   induction.  Eight proofs end [Defined] (counted by token) and seven are
-   load-bearing, measured as in Instance/Mod/FreeMonad.v: [zm_alg_prop]
-   ([EM_to_AbS_prop]), [zm_alg_hom_ab] ([EM_to_AbS]), [EM_to_AbS]
-   ([Ab_EM_counit_iso]), [Ab_EM_counit_iso] and [Ab_EM_unit_iso]
-   ([Ab_EM_equivalence]), [Ab_EM_equivalence] ([Ab_EM_counit_component]) and
-   [Ab_EM_iso] ([Ab_EM_iso_to]); [Ab_Forget_Monadic] is [Defined] by the data
-   convention only.  Eleven lemmas end [Qed].
-
-   UNIVERSES, read off [About].  The section binds Sets@{c so} and every
-   name binds c so first, with c < so.  A closed binder is refused, so
-   each is extensible: forty-four names, ℤ[−] and the names built on it
-   other than those below ([Ab_K_Forget] among them), bind six more,
-   the group category's object level g (Set < g, c < g, Instance/Ab.v's
-   [Ab]), Theory/Functor.v's [Compose] level and [FreeAb]'s four internal
-   levels; ten bind g and the four: K, its eight readbacks ([Ab_K_carrier]
-   to [Ab_K_alg_neg]) and [Ab_K_Free]; [fa_relabel]
-   and [fa_flatten] bind g alone; five readbacks comparing across a
-   composite bind a second copy (nine or twelve in all), and [ZM_carrier]
-   one more for its equation's sort.  The isomorphism in Cat binds k
-   (c < k, so < k) and there g is so (Set < so).  No [Set] but these
-   bounds, and no equation; no explicit universe instance of a new
-   constant is written.  On Coq 8.19.2 and 8.20.1 every name binds the
-   same levels (compared by [About]).
-
-   NOT DELIVERED.  The uniqueness of the comparison functor (Riehl's
-   "unique functor", Proposition 5.2.13; ADDENDUM (#482): in general,
-   for comparisons coherent with the identification of the two monads,
-   it is Monad/Comparison/Resolution.v's [EM_Comparison_unique], not
-   instantiated here); the strict isomorphism (#484); a
-   computing ℤ[f]; the comparison of ℤ[−] with T_R at [Int_Ring], and
-   Ab ≃ RMod Int_Ring, which issue #1356 tracks (filed from #472's review,
-   linked to #1150, whose ℤ comparison for tensor products waits on the
-   same ℤ-module structure of [AbObject]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FreeAbMonad.
 

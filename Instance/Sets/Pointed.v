@@ -12,59 +12,17 @@ Generalizable All Variables.
 
 (** * The category of pointed sets *)
 
-(* nLab:      https://ncatlab.org/nlab/show/pointed+set
-   nLab:      https://ncatlab.org/nlab/show/pointed+object
-   Wikipedia: https://en.wikipedia.org/wiki/Pointed_set
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              Springer 1998, §I.7 (printed p. 26)
-   Book:      Awodey, "Category Theory", 2nd ed., OUP 2010, §1.6 Example 1.8
-              (printed p. 19)
-   Book:      Awodey, "Category Theory", 1st ed., OUP 2006, §7.9 Example 7.26
+(*
+ nLab:      https://ncatlab.org/nlab/show/pointed+object
+ Wikipedia: https://en.wikipedia.org/wiki/Pointed_set
+ Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Awodey, "Category Theory", 2nd ed., OUP 2010, §1.6 Example 1.8
+ Book:      Awodey, "Category Theory", 1st ed., OUP 2006, §7.9 Example 7.26
 
-   This is Set_*, Mac Lane's category of pointed sets, built over the setoids
-   of Instance/Sets.v.  An object is a Bishop set with a distinguished element
-   and an arrow is a map carrying the distinguished element to the
-   distinguished element:
+   本文件给出集合范畴相关实例。
 
-      objects: pointed setoids       (carrier + `≈` + a basepoint [pt])
-       arrows: pointed setoid maps   (setoid maps with f (pt X) ≈ pt Y)
-   hom-setoid: f ≈ g  :=  ∀ x, f x ≈ g x   (as in [Sets]: pointwise, up to `≈`)
-     identity: the identity setoid map
-  composition: composition of setoid maps — the basepoint travels through both
-
-   Mac Lane introduces Set_* in §I.7 alongside the observation that makes it
-   worth having: the one-point set is at once initial and terminal in it, so
-   Set_* has a null object, whereas Set itself does not (Mac Lane 1998, §I.7).
-   [PointedSets_Zero] is that remark, in the [ZeroObject] form of
-   Structure/ZeroObject.v; the zero morphism it induces is the constant map at
-   the basepoint, [pointed_const] here.  A zero object is exactly what the
-   additive-structure vocabulary of Structure/Preadditive.v and
-   Structure/Kernel.v presupposes — kernels and cokernels are stated relative
-   to zero morphisms — and Set_* supplies one with no addition on the homsets
-   whatsoever, in contrast with the commutative monoids of Instance/CMon.v.
-   More generally a pointed object in a category with a terminal object is an
-   object under 1 (nLab, "pointed object"), and Set_* is the case C = Set.
-   Awodey uses the same category as a first example of a category of
-   structured sets and structure-preserving maps (Awodey 2010, §1.6 Example
-   1.8), and returns to it for the coslice reading recorded in
-   Instance/Sets/Pointed/Coslice.v (Awodey 2006, §7.9 Example 7.26).
-
-   Structurally, pointed sets sit at three crossings the library already
-   touches.  They are the coslice of Set under the one-point set, the theorem
-   of Instance/Sets/Pointed/Coslice.v turning the prose of
-   Construction/Slice.v's header into a [≅[Cat]].  They are the algebras of
-   the maybe monad: an algebra structure option A → A is forced to be the
-   identity on [Some], so it amounts to nothing more than a choice of point,
-   while Instance/Sets/Par.v's [Part] is the Kleisli category of the same
-   monad.  Instance/Sets/Pointed/Part.v builds the comparison between the two
-   directly and proves it an equivalence over a decidability hypothesis —
-   whose content is that in the decidable case every algebra is free — which
-   upgrades the claim made in the header of Instance/Coq/Par.v.  (The
-   identification of that concrete functor with the Eilenberg–Moore comparison
-   of Monad/Comparison.v is not formalized here.)  And, in the classical
-   setting, pointed sets carry the smash product, making Set_* the prototype
-   of a monoidal-but-not-cartesian category of "sets with a zero" (nLab,
-   "pointed set"); the smash product is not developed here. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The constructive ledger of this development
 

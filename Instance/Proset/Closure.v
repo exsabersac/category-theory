@@ -23,52 +23,14 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §II.3 Exercise 2, printed p. 39 (PDF p. 49) — maclane:II.3:ex2
-              — and §II.4 Exercise 4, printed p. 41 (PDF p. 51) —
-              maclane:II.4:ex4
-   Book:      Fong–Spivak, "Seven Sketches in Compositionality", §1.2.2
-              (printed p. 17, PDF pp. 29–30) and §3.5.1 Exercise 3.90
-              clause 4 (printed p. 110, PDF p. 122)
-   nLab:      https://ncatlab.org/nlab/show/thin+category
+(*
+ Book:      Fong–Spivak, "Seven Sketches in Compositionality", §1.2.2
+ nLab:      https://ncatlab.org/nlab/show/thin+category
 
-   Preorders are exactly the thin categories, and thinness is closed
-   under the basic constructions.  The vocabulary is Structure/Thin.v's
-   [Thin] (issue #223's file, consumed here per issue #273's own
-   correction — not rebuilt), which this change extends with the closure
-   kit [Thin_Product]/[thin_natural]/[Thin_Transform]; over it this
-   file delivers the two Mac Lane exercises at the [Proset] instances:
+   本文件给出预序集相关实例。
 
-     - [PreOrder_prod]/[Proset_prod_iso]: the product of two preorders
-       is a preorder, and its thin category is the product of the thin
-       categories — II.3 Ex. 2, and Seven Sketches Ex. 3.90 clause 4 in
-       the categorical direction.  The supporting lemma "a product of
-       thin categories is thin" is Structure/Thin.v's [Thin_Product];
-       the iso's own obligations close by thinness directly.
-       (Instance/Proset/Order.v's [proset_thin] supplies thinness of
-       [Proset] itself.)
-     - [Thin_Fun]: a functor category into a thin target is thin — the
-       structural half of II.4 Ex. 4
-     - [mm_le]/[MonotoneProset]/[Fun_Proset_iso]: the concrete half of
-       II.4 Ex. 4 — the functor category between preorders IS the
-       preorder of monotone maps ordered pointwise, an isomorphism in
-       Cat riding Instance/Proset/Monotone.v's dictionary, whose round
-       trips are definitional by record eta
-     - [roof_two_hom_dec]: Seven Sketches §1.2.2's worked product, the
-       V-shaped [Roof] times the walking arrow [_2] — six objects, and
-       ONE total decision procedure that simultaneously enumerates
-       every related pair (as hom data) and refutes every unrelated
-       one, with the counts (fifteen and twenty-one) machine-checked
-       by computation.  Instance/Roof.v draws [RZero] at the TOP with
-       arrows pointing down — a correct category diagram that is the
-       REVERSE of the book's Hasse convention (the warning is issue
-       #273's, recorded here since Roof.v itself does not remark on
-       orientation).
-
-   The [Fun_Proset_iso] packaging is the strongest this library states
-   for categories compared up to [Functor_Setoid]: an isomorphism in
-   [Cat] is the strength of an equivalence of categories
-   (Instance/Cat.v's header). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Products: Mac Lane II.3 Ex. 2 *)
 

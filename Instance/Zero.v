@@ -8,19 +8,15 @@ Generalizable All Variables.
 
 (** The initial (empty) category 0. *)
 
-(* nLab:      https://ncatlab.org/nlab/show/empty+category
-   nLab:      https://ncatlab.org/nlab/show/initial+object
-   Wikipedia: https://en.wikipedia.org/wiki/Category_of_small_categories
-   Wikipedia: https://en.wikipedia.org/wiki/Initial_and_terminal_objects
+(*
+ nLab:      https://ncatlab.org/nlab/show/initial+object
+ Wikipedia: https://en.wikipedia.org/wiki/Category_of_small_categories
+ Wikipedia: https://en.wikipedia.org/wiki/Initial_and_terminal_objects
 
-   0 is the empty category: no objects and hence no morphisms.  Here the object
-   type and every hom are [Empty_set], so the identity, composition, and all
-   category laws hold vacuously (each obligation is discharged by [inversion] on
-   the empty hypothesis); the hom-setoid is strict equality.
+   本文件给出具体实例。
 
-   0 is the initial object of Cat: for every category C there is a unique
-   functor `¡ : 0 ⟶ C` ([From_0]), defined vacuously since there is nothing to
-   map.  Dually, [_1] is the terminal/point category 1 (Instance/One.v). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic :=
   intros; try match goal with [ H : Empty_set |- _ ] => inversion H end.

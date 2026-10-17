@@ -20,59 +20,13 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §I.4, printed p. 17 (PDF 27) — maclane:I.4:remark1
-   nLab:      https://ncatlab.org/nlab/show/natural+isomorphism
+(*
+ nLab:      https://ncatlab.org/nlab/show/natural+isomorphism
 
-   Mac Lane's remark: although each finite abelian group is isomorphic
-   to its own character group, no such family of isomorphisms is
-   natural — in the only sense in which the question is well posed,
-   naturality over the ISO-ONLY category, where the character functor
-   becomes covariant by D' f := D (f⁻¹).  This file makes the negative
-   half precise and proves it by one concrete violation.
+   本文件给出非自然情形。
 
-     - [AbIso]: the groupoid core of Ab (Construction/Groupoid.v's
-       [Groupoid], cited not rebuilt)
-     - [D']: the covariant character functor on the core,
-       D' f := D (f⁻¹)
-     - [Z5]: ℤ/5 as an [AbObject] (carrier ℤ, identified modulo 5 —
-       the same setoid-as-quotient discipline as [QZ])
-     - [alpha]: the automorphism x ↦ 2·x of ℤ/5, with inverse
-       x ↦ 3·x
-     - [sigma_not_natural]: no isomorphism ℤ/5 ≅ D(ℤ/5) satisfies
-       even the single naturality square at [alpha] (strong form;
-       [sigma_family_not_natural] instantiates it for families, and
-       [no_such_sigma_family] shows the family premise is itself
-       uninhabited — ℤ has no nonzero 2-torsion while D(ℤ) does)
-
-   Design:
-
-   1. ONE AUTOMORPHISM SUFFICES.  The issue allows "a concrete
-      two-object violation"; the violation here is at the two equal
-      endpoints of one automorphism, which is stronger and simpler.
-      The arithmetic: naturality of σ at α : x ↦ 2x demands
-      σ ∘ α ≈ D(α⁻¹) ∘ σ.  Writing q := σ(1)(1) ∈ ℚ/ℤ, the left side
-      evaluates σ(2)(1) = 2q by additivity of σ, and the right
-      evaluates σ(1)(3) = 3q by additivity of characters (α⁻¹ is
-      x ↦ 3x, since 2·3 = 6 ≡ 1 mod 5).  So 2q ≈ 3q in ℚ/ℤ, hence
-      q ≈ 0, hence σ(1) is the zero character; but then
-      σ(1) ≈ σ(0) while 1 ≉ 0 in ℤ/5, so σ is not injective —
-      contradicting that it is an isomorphism.  This is Mac Lane's
-      m² ≡ 1 obstruction in its smallest working clothes: for ℤ/p
-      the argument needs an automorphism m with m ≢ m⁻¹, so p = 5
-      with m = 2 is the first prime that works (p = 2, 3 have only
-      m ≡ ±1, and every additive map already commutes with those).
-
-   2. WHY THE STATEMENT LIVES AT ℤ/5 ALONE.  [sigma_not_natural]
-      takes ONE isomorphism ℤ/5 ≅ D(ℤ/5) and the single square at
-      [alpha] — not full naturality over [AbIso] (refuting the
-      weaker hypothesis is the stronger theorem), and not a family
-      over all of Ab (a family premise would make the statement
-      vacuous: [no_such_sigma_family] below proves no such family
-      exists at all, ℤ against D(ℤ) — an audit catch).  [D'] is
-      nonetheless constructed in full, so the covariant reading the
-      book names is in the tree, and the square hypothesis is
-      literally the to-component of [D']-naturality at [alpha]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The groupoid core and the covariant character functor *)
 

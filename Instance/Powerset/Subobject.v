@@ -13,116 +13,15 @@ Require Import Category.Instance.Sets.Powerset.Universal.
 
 Generalizable All Variables.
 
-(** * The direct image and the preimage on SUBOBJECTS
+(*
+ nLab: https://ncatlab.org/nlab/show/subobject
+ nLab: https://ncatlab.org/nlab/show/image
+ nLab: https://ncatlab.org/nlab/show/base+change
 
-    Seven Sketches (Fong and Spivak, "An Invitation to Applied Category
-    Theory") §1.4.3.  There is no page image for that book here, so the
-    two clauses are quoted from the catalog issue's own transcription:
+   本文件给出具体实例。
 
-      "the direct image ... as an operation on subobjects"
-
-      "monotonicity of the subobject preimage"
-
-    The second is a gap in the tree that can be stated precisely: the
-    reindexing map [sub_reindex] of Theory/Subobject/Functor.v is
-    proved to respect the [SubObj] SETOID ([sub_reindex_respects]),
-    to be the identity at [id] and to turn composition into
-    composition, but nothing anywhere says it is monotone for
-    Theory/Subobject.v's ORDER [sub_le] -- measured: the token
-    [sub_le] does not occur in Theory/Subobject/Functor.v at all.  That
-    is [sub_reindex_monotone] below.
-
-    nLab: https://ncatlab.org/nlab/show/subobject
-    nLab: https://ncatlab.org/nlab/show/image
-    nLab: https://ncatlab.org/nlab/show/base+change
-
-    ** WHY NONE OF THIS GOES THROUGH [Proset]
-
-    [sub_le u v] is [{ k : sub_dom u ~> sub_dom v & sub_mono v ∘ k ≈
-    sub_mono u }] -- a [sigT], hence [Type]-valued.  A [relation] is
-    [Prop]-valued, so [sub_le] is not one, and neither
-    Instance/Proset.v's [Proset] nor Instance/Proset/Galois.v's
-    [GaloisConnection] can be applied to it.  This file therefore states
-    everything elementarily, with no category of subobjects and no
-    adjunction; Instance/Powerset.v's [Subsets] is the Prop-valued
-    counterpart where those DO apply, and the last section relates the
-    two.  (The same Type-versus-Prop wall is what keeps
-    Instance/Sets/Powerset.v's proof-relevant [Powerset_obj] out of
-    Instance/Powerset.v; that rejection is pinned as the probe's formability
-    negative 2, a sort rejection.)
-
-    ** WHAT IS DELIVERED, WITH GRADES
-
-    (A) [sub_reindex_monotone], in ANY category with chosen pullbacks:
-        the mediator into the chosen pullback of [sub_mono v] along [f],
-        built from the [sub_le] factorization; its FIRST triangle IS the
-        required [sub_le] equation, so the [sub_le] witness is read off
-        [ump_pullbacks] with no further step.  General, so it mentions
-        neither [Sets] nor images and is stated before them.  (The file
-        still has [Instance/Sets] in scope, transitively, because
-        Theory/Subobject/Functor.v itself requires it; that is the
-        donor's import, not this section's.)
-
-    (B) [sub_image] in [Sets]: the image of [f ∘ sub_mono u], with
-        Instance/Sets/Image.v's [Sets_Image_mono] as the mono and
-        [Sets_Image_mono_monic] as its monicity, both cited rather than
-        reproved.  [sub_image_monotone] carries [sub_le] forward, and
-        [sub_image_respects] upgrades that to the [SubObj] setoid --
-        cheaply, because BOTH comparison maps preserve the first
-        projection and the image setoid compares nothing else, so the two
-        inverse laws are [reflexivity].
-
-    (C) The transposition at subobject level, BOTH directions:
-        [sub_image_transpose_to] and [sub_image_transpose_from],
-        packaged as [sub_image_reindex_iffT].  The backward direction is
-        the one with content: its comparison map sends an image point to
-        the second pullback projection of the mediator, and its
-        RESPECTFULNESS is where monicity of [sub_mono v] is spent --
-        two image points with the same first projection may carry
-        different preimages, and only injectivity of a mono in [Sets]
-        (Instance/Sets.v's [injectivity_is_monic], backward leg)
-        identifies their values.
-
-    (D) The bridges to #311's passages, at [≈] (NOT at [eq_refl] -- the
-        two truncated existentials are differently bracketed, which is
-        exactly what each proof reassociates):
-        [sub_image_is_Powerset_Prop_image] and
-        [sub_reindex_is_Powerset_Prop_preimage].  With them,
-        [subset_le_of_sub_le] carries the Type-valued subobject order to
-        the Prop-valued subset order.
-
-    ** WHAT IS NOT DELIVERED
-
-    No category of subobjects, no [Proset], no adjunction and no Galois
-    connection at this level -- see the wall above.  No claim that the
-    two bridges are mutually inverse (#311 proves one composite,
-    [Powerset_subset_roundtrip], and says in terms why the other is
-    blocked).  No naturality of [sub_image] in [f], no functoriality in
-    the subobject beyond the two monotonicity statements, no image
-    factorization system, and nothing about [sub_le_monic] or
-    [sub_le_unique] beyond citing them.
-
-    ** UNIVERSES
-
-    Section (A) is at whatever universes the ambient category has; (B)
-    through (D) inherit [Set < o] from [Powerset_Prop_truth] as usual and
-    [o < so] from [Sets@{o so}].  No constant here introduces a [Set]
-    pin.  Measured per constant in the report.
-
-    ** TRANSPARENCY
-
-    [sub_image_map] and [sub_transpose_from_map] MUST be [Defined]:
-    measured by flipping each to [Qed], which breaks the file, since the
-    consumers read their underlying functions.  The other three
-    [Defined]s here compile as [Qed] and are so written for uniformity.
-
-    ** REGISTRATION
-
-    Nothing is an [Instance] except [sub_image_respects], which is
-    declared [#[export] Instance] to match Theory/Subobject/Functor.v's
-    [sub_reindex_respects] -- the two are the same kind of fact about the
-    same setoid, and a [Proper] instance is what setoid rewriting
-    consumes. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** (A) The subobject preimage is monotone, in any category *)

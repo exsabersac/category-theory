@@ -16,14 +16,11 @@ Require Import Category.Instance.Proset.Limit.
 Require Import Category.Instance.Powerset.
 Require Import Category.Instance.Props.
 
-(* The same two as Instance/Powerset.v and Instance/Proset.v:
-   [relation] and [PreOrder] below are the stdlib Prop-valued ones, not
-   the [crelation] ones [Category.Lib] exports, and they must come AFTER
-   [Category.Lib].  The cost is that stdlib's [equiv] then shadows
-   [Category.Lib.Setoid.equiv], so every explicit occurrence below is
-   written [@Category.Lib.Setoid.equiv].  The [≈] NOTATION is unaffected:
-   a notation resolves its head reference when it is declared, so [≈]
-   stays bound to the library's [equiv]. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Coq.Classes.Equivalence.
 Require Import Coq.Relations.Relation_Definitions.
 

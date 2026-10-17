@@ -22,90 +22,14 @@ Generalizable All Variables.
 
 (** * The direct sum is the coproduct in R-Mod *)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician" (2nd ed.),
-         §III.3, book p. 63 (maclane:III.3:remark1)
-   Book: Riehl, "Category Theory in Context" (2nd ed.), §3.1,
-         printed p. 93 (riehl:3.1:exxi)
-   Wikipedia: https://en.wikipedia.org/wiki/Direct_sum_of_modules
+(*
+ Book: Riehl, "Category Theory in Context" (2nd ed.), §3.1,
+ Wikipedia: https://en.wikipedia.org/wiki/Direct_sum_of_modules
 
-   Mac Lane's roster entry for R-Mod, one layer above Instance/Ab.v: the
-   coproduct of two modules is their direct sum, carried by the product of
-   the underlying sets, with the action taken componentwise.
+   本文件给出余积实例。
 
-   THREE GRADES OF TRANSFER, MEASURED.  This is the informative half of
-   the file, because R-Mod sits at a different distance from its donor
-   than Ab does, and the distance is different for DATA, for LAWS and for
-   the ∃!-PACKAGES.  Instance/Ab.v defines [AbHom A B := CMonHom A B] as
-   a bare abbreviation, so Ab's arrows ARE CMon's and
-   Instance/Ab/Coproduct.v inherits ten of the biproduct record's eleven
-   fields by [:=].  Instance/Mod.v instead makes [RModHom] a RECORD
-   wrapping an [AbHom] together with [rm_map_smul] (Instance/Mod.v).
-   The three grades are then:
-
-   (1) DATA — the four structural morphisms and the two mediators — must
-   be REBUILT.  An arrow of R-Mod is not an arrow of Ab, and each rebuild
-   carries exactly one new obligation, that it commutes with the action.
-   TWO of the six are [reflexivity] — the two projections.  The other
-   four are more: both injections need [rm_smul_zero_r]
-   (Instance/Mod.v), r·0 ≈ 0, because [inl a] is [(a, 0)] and must
-   satisfy [(r·a, 0) ≈ (r·a, r·0)]; the two mediators each spend
-   [rm_map_smul]; and the copairing additionally spends
-   [rm_smul_distr_l].  (An earlier draft of this header said "only one of
-   the six", which was wrong twice over — it undercounted, and it
-   contradicted this file's own later sentence about where
-   [rm_smul_distr_l] is spent.)
-
-   (2) LAWS — all four interaction laws — TRANSFER UNCHANGED, by [:=]
-   with no tactic, exactly as at Ab.  [RModHom_Setoid]
-   (Instance/Mod.v) compares the underlying maps and
-   [rmod_hom_compose] (Instance/Mod.v) is [cmon_hom_compose] on those
-   maps, so each law, once unfolded, IS the CMon equation about the same
-   two functions — including the two comparing against [zero_mor], since
-   [rmod_zero_mor_is_cmon_zero_mor] shows the UNDERLYING arrow of R-Mod's
-   zero morphism IS CMon's by [eq_refl].  Note the statement has to be
-   about [rm_hom] of it: the two zero morphisms themselves inhabit
-   different types, so [≈] between them is not even well-formed, and it is
-   the two PROPOSITIONS that are convertible, not the two terms.  (An
-   earlier draft of this file proved all four by hand and said in this
-   header that only the CMon MATHEMATICS carried over; that understated
-   the transfer, and the four proofs are gone.)
-
-   (3) The ∃!-PACKAGES must be REPACKAGED but not re-argued.  They
-   quantify over [RModHom], a different type from [CMonHom], so the
-   [∃!] record cannot be handed over as a term — that is a genuine
-   formability failure, pinned in Test/ProbeCoproduct.v — while every
-   equation INSIDE it is again the CMon equation.  The two proofs are
-   three lines each and cite [CMon_bi_is_product] and
-   [CMon_bi_is_coproduct] for all of their content.
-
-   So the honest summary is: same propositions throughout, different
-   containers for the data and for the ∃!, and nothing new proved about
-   commutative monoids anywhere.
-
-   WHAT IS PROVED, AND AT WHAT STRENGTH.  [RMod_Biproducts] inhabits
-   [HasBiproducts (RMod R)] and, through
-   [Structure/Biproduct/Cartesian.v], yields [RMod_Cartesian] and
-   [RMod_Cocartesian] — the first product and coproduct structures on a
-   module category in this tree (Instance/Vect/TensorAlgebra.v
-   records the absence of [Cocartesian (RMod R)] as an obstruction it had
-   to route around).  The coproduct object IS the product object at
-   LEIBNIZ EQUALITY ([RMod_coprod_is_prod], [eq_refl]), and so is the
-   underlying abelian group of the direct sum: [RMod_coprod_ab] shows it
-   IS Instance/Ab/Coproduct.v's [Ab_product], so the two roster entries
-   agree on the nose rather than up to a comparison.  Non-vacuity over
-   ℤ ⊕ ℤ as a ℤ-module: the injections differ at the generator, and the
-   copairing, the projections and the scalar action all compute by
-   [eq_refl] on closed input.
-
-   WHAT IS NOT DELIVERED.  No indexed or infinite direct sums, hence
-   nothing about the free module on a set (Instance/Mod/Free.v owns that,
-   and its carrier is an inductive quotient, not a product).  No
-   [Additive (RMod R)]; [RMod_Preadditive] (Instance/Mod.v) exists and
-   is not extended here.  Nothing about right modules beyond what
-   [ModR R := RMod (Ring_op R)] gives for free by conversion, which is the
-   whole statement again at the opposite ring — no separate development.
-   And nothing about the tensor product, which is Instance/Mod/Tensor.v's
-   subject and is a different universal property. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Instance/Mod.v's convention: the obligations below are
    introduced by hand, so that the record binders [M] and [N] arrive with

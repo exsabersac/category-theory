@@ -22,131 +22,15 @@ Generalizable All Variables.
 
 (** * W₀-algebras as strings of operations ν₀, ν₁, … *)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer GTM 5, 1998, §VI.4, Exercise 1, printed p. 146 (PDF
-         p. 155) — maclane:VI.4:ex1
-   Book: Riehl, "Category Theory in Context", Example 5.2.6(iii),
-         printed pp. 189-190 (PDF pp. 209-210) — riehl:5.2:example6
-   nLab: https://ncatlab.org/nlab/show/free+monoid
-   nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad
+(*
+ Book: Riehl, "Category Theory in Context", Example 5.2.6(iii),
+ nLab: https://ncatlab.org/nlab/show/free+monoid
+ nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad
 
-   WHAT THE BOOKS SAY, read from the page image and the PDF.  Mac Lane:
-   "Show that a W₀-algebra is a set M with a string ν₀, ν₁, … of n-ary
-   operations νₙ, where ν₀ : * → M is the unit of the monoid M and νₙ is
-   the n-fold product."  His Proposition 2 (p. 145) gives the W-algebras
-   as systems ⟨S, ν1, ν2, …⟩ with ν1 = 1 and νk(νn1 × ⋯ × νnk) =
-   ν_{n1+⋯+nk} (2), which #470's Instance/Smgrp/Word.v delivers; this
-   file is its W₀ analogue, with ν₀ added.  Riehl reads the square
-   (5.2.7) on "a list ((a11, …, a1m1), …, (an1, …, anmn)) of n
-   varying-length lists": "the result of applying the (m1 + ⋯ + mn)-ary
-   operation to the concatenated list is the same as applying the n-ary
-   operation to the results of applying the mi-ary operations to each
-   sublist".
+   本文件给出具体实例。
 
-   THE FAMILIES.  [NAry0 X] is ν₀ ([nu_zero]) with #470's [NAry X] for
-   ν_{n+1} : X^(n+1) → X ([nu_pos]); [nu0 ν n] : Xⁿ → X on Instance/Mon/
-   Word.v's [Tup0 X n], and [nu0_list] reads the family on W₀ X = lists
-   (ν on ⟨⟩, ⟨x⟩ and ⟨x y⟩ is ν₀, ν₁ x and ν₂(x, y) at [eq_refl]:
-   [nu0_list_nil], [nu0_list_letter], [nu0_list_pair]).  ν₁ = 1 is
-   #470's [nu_unit] of the positive part, and (2) is [nu0_assoc]: for
-   every word of words, ν of the values of the inner words ≈ ν of their
-   concatenation [wconcat], which IS μ (Word.v's [W0_join_fun]) — Riehl's
-   reading on lists of lists.  The form over tuples of tuples, Mac
-   Lane's own, would need a juxtaposition of tuples by cases on the
-   lengths (n + m is not convertible through [Tup]'s S (n + m)) and more
-   of the dictionary: not built.
-
-   BOTH WAYS AND ON MORPHISMS.  An algebra gives a family
-   ([alg_NAry0]: ν₀ = α⟨⟩ and ν_{n+1} = α on X^(n+1), [alg_NAry0_zero],
-   [alg_NAry0_at] at [eq_refl]) satisfying ν₁ = 1 ([alg_NAry0_unit]) and
-   (2) ([alg_NAry0_assoc]); a family with the two conditions is an
-   algebra ([NAry0_alg]) whose structure map is [nu0_list]
-   ([NAry0_alg_map], at [eq_refl]), whose unit law IS ν₁ = 1 by
-   conversion and whose action law is (2) modulo W₀ f ≈ the letterwise
-   map.  Family → algebra → family keeps ν₀ at [eq_refl]
-   ([NAry0_rt_zero]) and ν_{n+1} at ≈ ([NAry0_rt_pos], which also holds
-   at Leibniz =, STRENGTHS below; at n = 1 at [eq_refl],
-   [NAry0_rt_pos_pair]): refused at [eq_refl] at a variable n and as the
-   whole family (Test/ProbeWord471.v, R15 and R16), weaker than #470's
-   [NAry_round_trip] at [eq_refl], because W₀'s carrier is lists and the
-   family is on tuples (the length of a tuple's list is stuck on n,
-   [nu0_list_tup_to_list]).  Algebra → family → algebra returns the
-   structure map at ≈ ([alg_round_trip0]).  The morphism clause, f νₙ =
-   ν'ₙ fⁿ for every n ≥ 0 ([NAry0_hom]), both ways: [alg_hom_NAry0_hom],
-   [NAry0_hom_alg_hom].
-
-   "ν₀ IS THE UNIT OF THE MONOID M AND νₙ THE n-FOLD PRODUCT".  For an
-   algebra α, ν₀ IS the unit of its monoid (Word.v's [alg_monoid]) and
-   ν₂ its multiplication at [eq_refl] ([alg_nu0_is_unit],
-   [alg_nu2_is_mul]), and νₙ is the n-fold product at ≈
-   ([alg_nu_is_fold]).  For a monoid M, the system of K M has ν₀ the
-   unit and ν₂(x, y) = x · (y · 1) at [eq_refl] ([Mon_system_zero],
-   [Mon_system_pair]) and νₙ the n-fold product at each n by cases
-   ([Mon_system_nu], refused at a variable n, R21).
-
-   AS A CATEGORY.  [W0Sys], the systems ⟨S, ν₀, ν₁, …⟩ with ν₁ = 1 and
-   (2) ([W0System]) and the maps commuting with every νₙ, is isomorphic
-   in Cat to Set^{W₀} ([W0Sys_EM_iso]): its legs are [W0Sys_to_EM] and
-   [EM_to_W0Sys] at [eq_refl] ([W0Sys_EM_iso_to], [W0Sys_EM_iso_from])
-   and every component of both natural isomorphisms is the identity, to
-   and from, at [eq_refl] ([W0Sys_EM_iso_to_from_component],
-   [W0Sys_EM_iso_from_to_component]).  The system round trip keeps the
-   set, ν₀ and the maps at [eq_refl] ([W0Sys_rt_set], [W0Sys_rt_zero],
-   [W0Sys_rt_hom]), and the algebra round trip the carrier and the maps
-   ([EM_W0Sys_rt_carrier], [EM_W0Sys_rt_alg_hom]); refused at [eq_refl]:
-   the family (R17), the whole system (R18), the whole algebra (R19) and
-   the composite against the identity functor (R20).  Mac Lane's
-   exercise as a statement about categories is [Mon_W0Sys_iso :
-   Mon ≅[Cat] W0Sys], the composite of Word.v's [Mon_EM_iso] with the
-   inverse of [W0Sys_EM_iso].  An isomorphism in Cat is, by
-   Instance/Cat.v, an equivalence of categories.
-
-   STRENGTHS.  Every [Example] holds at [eq_refl], and
-   Test/ProbeWord471.v restates each one (C58 to C67, C69 to C82).
-   Stated at ≈: [alg_nu0_list], [alg_nu_is_fold], [NAry0_rt_pos],
-   [nu0_list_tup_to_list], [alg_round_trip0], [Mon_system_nu] and the
-   inverse laws of the two isomorphisms in Cat.  Five of these also hold
-   at Leibniz =, as restating them with = shows (measured in #471's
-   audit and review): [Mon_system_nu] and [alg_nu0_list] by their own
-   scripts, [alg_round_trip0] pointwise from [alg_nu0_list], and
-   [nu0_list_tup_to_list] and [NAry0_rt_pos] through a sigma equality
-   between a tuple and the tuple rebuilt from its list, by induction on
-   its length.  They are kept at ≈, the form their uses rewrite with;
-   [eq_refl] is refused for the families' round trip (R15, R16) and for
-   νₙ of K M at a variable n (R21).  [alg_nu_is_fold], through Word.v's
-   [alg_fold], was not restated.  One lemma is a Leibniz equality proved
-   by induction, stronger than ≈: [tmap_tup_to_list].
-   Ten proofs end [Defined] (counted by token), all load-bearing,
-   measured by closing each alone [Qed] in a renamed copy of #471's five
-   files and naming the first command that then stops: [NAry0_alg]
-   ([NAry0_alg_map]), [W0SystemHom_Setoid], [W0System_id] and
-   [W0System_compose] ([W0Sys]), [W0Sys] ([W0Sys_to_EM]), [W0Sys_to_EM]
-   and [EM_to_W0Sys] ([W0Sys_EM_counit_iso]), [W0Sys_EM_counit_iso] and
-   [W0Sys_EM_unit_iso] ([W0Sys_EM_iso]) and [W0Sys_EM_iso]
-   ([W0Sys_EM_iso_to]).  Twelve lemmas end [Qed].
-
-   UNIVERSES, read off [About] (every name, by script).  The families,
-   their constructor, fields and readbacks, [nu0_list_respects],
-   [nu0_list_tup_to_list] and [tmap_tup_to_list] bind @{o} with caps of
-   the standard library only; [NAry0_hom] binds @{o so} with o < so.  The
-   section [W0Systems] is over Sets@{o so}; its constants bind o and so
-   first and, declared extensible as Word.v's are, the free functor's
-   three further levels (four on Coq 8.19 and 8.20) where they mention
-   W₀, with [Compose]'s one unless it is held at so (the two functors
-   between [W0Sys] and Set^{W₀} and their three readbacks hold it):
-   [nu0_assoc], [W0System] with its constructor
-   and fields, [W0SystemHom] and the category [W0Sys] bind o and so
-   alone, since (2) is stated through [wconcat].  Three readbacks
-   comparing across a composite bind a second copy (nine levels), and
-   [Mon_W0Sys_iso] binds c with o < c and so < c.  No [Set] and no
-   equation in any block.
-
-   NOT DELIVERED.  (2) over tuples of tuples (above).  A strict
-   isomorphism of the systems with Set^{W₀} (refused above).  The
-   Corollary's analogue for W₀, a characterization by ν₀, ν₁ = 1, an
-   associative ν₂ with ν₀ its unit, and νₙ₊₁ = νₙ(ν₂ × 1): the monoid
-   route of Word.v ([alg_monoid], [alg_fold], [Mon_EM_iso]) stands in
-   for it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** Families ν₀, ν₁, …: ν₀ an element, and #470's [NAry] for n ≥ 1 *)

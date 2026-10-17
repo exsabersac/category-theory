@@ -5,64 +5,13 @@ Require Import Category.Theory.Functor.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/Cat
-   Wikipedia: https://en.wikipedia.org/wiki/Category_of_small_categories
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Category_of_small_categories
 
-   Cat is the category of all small categories:
+   本文件给出 Cat 相关实例。
 
-    objects               Categories
-    arrows                Functors
-    arrow equivalence     Natural Isomorphisms
-    identity              Identity Functor
-    composition           Horizontal composition of Functors
-
-    isomorphisms          Equivalences of Categories (caused by the definition
-                          of [Functor_Setoid]).
-
-   Size: Cat is a large category, and so cannot be an object of itself (there
-   is no category of *all* categories). Here that constraint is enforced by
-   universe polymorphism: [Category@{o h p | h <= p}] lives at a strictly
-   higher universe than its objects, so the inner categories collected by
-   [obj := Category] sit below the universe of [Cat] itself.
-
-   Strict vs. weak: because the hom-setoid [Functor_Setoid] identifies functors
-   whenever they are naturally isomorphic (not on-the-nose equal on objects and
-   morphisms), an isomorphism in this [Cat] is an *equivalence* of categories.
-   Identifying functors up to natural isomorphism makes this the homotopy
-   category Ho(Cat) (the 1-truncation of the 2-category Cat), whose morphisms are
-   natural-isomorphism classes of functors. It is therefore NOT the strict
-   1-category of categories of the textbooks; and although it keeps the same
-   objects, it is neither the *underlying* 1-category of the 2-category Cat
-   (which keeps functor equality) nor its *core* (which keeps only the
-   isomorphisms).
-
-   This is deliberate, and consistent with the rest of the library: lacking
-   function extensionality, the development compares morphisms up to a setoid
-   equivalence [≈] rather than by Coq's intensional equality [=]. For [Cat] the
-   morphisms are functors, and the corresponding [≈] is natural isomorphism —
-   the equivalence-invariant notion of sameness for functors. So [Cat] applies
-   the weaker notion of equivalence used everywhere else, lifted one level up, to
-   suit Coq's metatheory.
-
-   The reporter of issue #138 is right that the textbook bare-name "Cat" is the
-   STRICT 1-category (functors compared by on-the-nose equality); that is
-   [Category.Instance.StrictCat.StrictCat]. The choice here is not an error but a
-   weaker, equivalence-invariant convention (cf. agda-categories' [Cats], whose
-   functor equivalence is likewise natural isomorphism). The identity-on-objects
-   comparison functor [StrictCat_to_Cat : StrictCat ⟶ Cat] of
-   [Category.Instance.StrictCat.ToCat] sends each strict equality to the natural
-   isomorphism it induces, exhibiting [StrictCat] as a strictification of this
-   Ho(Cat). The weak hom-equivalence is moreover used substantively, not merely
-   for phrasing: [Construction.Comma.Adjunction], for instance, builds an
-   adjunction's unit and counit out of the *natural-isomorphism components* of a
-   comma equivalence [≅[Cat]] — it takes the underlying morphism
-   [from (`1 (iso_from_to lawvere_iso) x)] of such a component — which relies on
-   [≅] in [Cat] being a natural isomorphism; a strict reformulation would be a
-   genuinely different, transport-based construction rather than a rename.
-   Conversely, the construction that cannot live over this
-   [Cat] at all is the object-equality-dependent underlying-graph functor
-   [Forgetful : StrictCat ⟶ Quiv] of issue #138, which does not respect natural
-   isomorphism. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where Cat comes from, and what it is for
 

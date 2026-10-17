@@ -18,108 +18,14 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * Two-sided ideals, the quotient ring, and its universal property
+(*
+ nLab: https://ncatlab.org/nlab/show/quotient+ring
+ Wikipedia: https://en.wikipedia.org/wiki/Quotient_ring
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §III.1
-    Exercise 6 (printed p. 59, PDF p. 68) [maclane:III.1:ex6].
-    nLab: https://ncatlab.org/nlab/show/quotient+ring
-    Wikipedia: https://en.wikipedia.org/wiki/Quotient_ring
+   本文件给出商相关。
 
-    For I a two-sided ideal of R, the projection p : R -> R/I is a
-    UNIVERSAL ELEMENT of the functor of ring homomorphisms killing I.
-    This is the ring half of §III.1's pair; the module half is
-    Instance/Mod/Quotient.v, and the two are deliberately NOT one file,
-    because the condition that makes the quotient work is different in
-    the two cases and that difference is the content.
-
-    THE CONDITION.  A module's addition is commutative, so every
-    submodule quotients and Instance/Mod/Quotient.v carries ONE record
-    with no normality layer ([smod_normal] proves the group-level
-    conjugation field is a theorem there).  A ring's MULTIPLICATION is
-    not commutative, and this is exactly where the group case's [ns_conj]
-    reappears: for the relation x ~ y :⟺ x - y ∈ I to be a congruence for
-    multiplication one needs
-
-        x·y - x'·y' ≈ x·(y - y') + (x - x')·y'
-
-    to have BOTH summands in I, and the two summands are absorbed on
-    OPPOSITE SIDES.  So [Ideal] carries both [idl_absorb_l] and
-    [idl_absorb_r], each spent exactly once, in [rquot_rel_mul].
-
-    A ONE-SIDED IDEAL WILL NOT DO, and that is proved rather than
-    asserted.  [LeftIdeal] below is the record with [idl_absorb_r]
-    dropped, [IdealMulCongruence] names the property [rquot_rel_mul]
-    establishes, [ideal_mul_congruence] shows every two-sided ideal has
-    it, and Instance/Rng/Quotient/OneSided.v REFUTES it for an explicit
-    left ideal of an explicit non-commutative ring -- ℤ·E₁₁ inside the
-    upper-triangular 2×2 integer matrices [UT2]
-    (Instance/Rng/Algebras/Associative.v).  That file also proves the
-    left ideal is genuinely not a right one, so the separation is not
-    vacuous.  It is a separate file for a dependency reason and not a
-    stylistic one: [UT2] lives under Instance/Rng/Algebras/, which
-    requires Instance/Mod.v and the associative-algebra tower, and no
-    consumer of quotient rings should inherit that.
-
-    ONE FEWER LAW.  [Ideal] carries FIVE laws and not six (six fields in
-    all, the first being membership itself): closure under
-    negation is DERIVED ([idl_neg]), since -a is (-1)·a and the record
-    already absorbs multiplication.  Instance/Rng.v's
-    [rig_mul_neg_one] is what makes that a one-line citation.  This is
-    the same economy Instance/Mod/Quotient.v's [Submodule] takes, and for
-    the same reason: a ring has a unit and a negation, so (-1) is
-    available.
-
-    ERRATUM.  Issue #314's "Current state in the library" section is
-    stale; Instance/Mod/Quotient.v's header records the measurement in
-    full and it is not repeated here.  The clause that matters for THIS
-    file is that Instance/Rng.v (#257) exists and is REQUIRED below, and
-    that an anchored sweep for a [Record], [Class], [Inductive],
-    [Definition] or [Structure] whose name contains "Ideal" or
-    "TwoSided", over every [.v] file in the tree, reads NONE -- so the
-    interface is new even though the category is not.  Note also that the
-    absence of quotient rings was load-bearing prose elsewhere:
-    Instance/Rng/Frac.v's comment above [IntDom_Incl] and
-    Instance/Field/Frac.v's quotation of it both say "the tree has no
-    quotient rings yet"; the first is annotated by this same change, and
-    the second is a QUOTATION of the first and is deliberately left
-    intact so that it stays an accurate quotation.
-
-    THE SETOID QUOTIENT.  As throughout this tree, R/I needs no new
-    carrier: it is R's carrier under the coarser relation
-    [rquot_rel I x y := inhabited (idl_mem I (x - y))], with the
-    subtraction taken in the additive group [ring_ab R] and the shuffles
-    supplied by Instance/Ab/Subtract.v.  No coset object is formed.  An
-    earlier revision wrote the relation without the [inhabited]; since the
-    PR "algebraic carriers are sets" (2026-09-17) a [RigObject] owes a
-    [Prop]-valued mirror of its equality, and this relation is the
-    PROPOSITIONAL TRUNCATION of a [Type]-valued membership, exactly as
-    Instance/Mod/Quotient.v's [mquot_rel] is.  See the note on [Ideal]
-    below for why membership itself stays [Type]-valued.
-
-    WHAT IS DELIVERED HERE.  [Ideal] with the derived [idl_neg];
-    [QuotientRing] with the projection [rquot_proj]; the functor
-    [RKillsFunctor I : Rng ⟶ Sets] of ring homomorphisms killing I, and
-    [rquot_universal_element], the statement that ⟨R/I, p⟩ is a universal
-    element of it, over #303's [AUniversalElement] -- the CLASS is used
-    directly and none of Theory/Universal/Element.v's Yoneda packaging is
-    touched, so the universe restriction that packaging carries is not
-    inherited; the homomorphism theorem as the biconditional
-    [ring_hom_theorem]; the kernel of a ring homomorphism as an ideal;
-    quotients by coextensive ideals; the degenerate ideals named and
-    separated by proof; and non-vacuity at ℤ ⊇ 2ℤ, where ℤ/2ℤ's
-    arithmetic is COMPUTED and the mediator out of ℤ/6ℤ is exercised.
-
-    WHAT IS NOT DELIVERED HERE.  No ring isomorphism theorems: the image
-    of a ring homomorphism is a SUBRING and not an ideal, so R/ker f ≅
-    im f needs a [Subring] interface that the issue does not ask for and
-    that nothing else in the tree wants yet; the module isomorphism
-    theorems, which the issue DOES ask for, are in
-    Instance/Mod/Quotient/Isomorphism.v.  Also absent: no sum, product or
-    intersection of ideals; no principal, prime or maximal ideals, hence
-    no Noetherian conditions and no Chinese remainder theorem; no
-    identification of ℤ/2ℤ with Instance/Field.v's [F2_Ring] (which would
-    make this file depend on the field layer); and no [Rng]-level
-    cokernel or [HasCokernels] instance. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Two-sided ideals *)
 

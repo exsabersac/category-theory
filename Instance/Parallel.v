@@ -5,25 +5,14 @@ Generalizable All Variables.
 
 (** The walking parallel pair *)
 
-(* nLab: https://ncatlab.org/nlab/show/parallel+morphisms
-   nLab: https://ncatlab.org/nlab/show/walking+parallel+pair
-   Wikipedia: https://en.wikipedia.org/wiki/Equaliser_(mathematics)
+(*
+ nLab: https://ncatlab.org/nlab/show/walking+parallel+pair
+ Wikipedia: https://en.wikipedia.org/wiki/Equaliser_(mathematics)
 
-   This is the "walking parallel pair" (also called the free quiver), the
-   category with two objects and two parallel non-identity arrows between them
-   (plus the two identity morphisms):
+   本文件给出并行相关。
 
-       --- f --->
-     x            y
-       --- g --->
-
-   There are no arrows y → x, and no non-identity arrows x → x or y → y, so
-   composition is trivial: composing the only non-identity arrows f, g : x → y
-   with an identity yields that same arrow.
-
-   A functor [Parallel ⟶ C] is exactly a parallel pair of morphisms in C; its
-   limit is their equalizer and its colimit their coequalizer.  This is the
-   shape category used to build the diagrams that identify (co)equalizers. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive ParObj : Set := ParX | ParY.
 

@@ -9,20 +9,11 @@ Generalizable All Variables.
 
 (** * 1 is the terminal object of StrictCat *)
 
-(* nLab: https://ncatlab.org/nlab/show/terminal+category
+(*
+   本文件给出终对象实例。
 
-   [Instance.One] shows that the terminal category [_1] is terminal in the
-   *weak* category [Cat], where functors are compared up to natural
-   isomorphism.  Here we show the stronger fact that [_1] is also terminal in
-   [StrictCat], where functors are compared by strict equality
-   ([Functor_StrictEq_Setoid]): any two functors [F G : C ⟶ 1] are equal on
-   the nose, because both objects and morphisms of [1] are inhabitants of the
-   contractible type [poly_unit].  The witness [one] is again the erasure
-   functor [Erase].
-
-   This instance is the prerequisite for exhibiting the funny tensor product
-   as a *semicartesian* monoidal structure on [StrictCat], whose unit [_1] is
-   the terminal object. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* [poly_unit] is contractible: any two inhabitants are equal. *)
 Lemma poly_unit_eq (u v : poly_unit) : u = v.

@@ -16,68 +16,11 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * A one-sided ideal does not give a quotient ring
+(*
+   本文件给出商相关。
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §III.1
-    Exercise 6 (printed p. 59) [maclane:III.1:ex6]: the quotient of a
-    ring is taken by a TWO-SIDED ideal.  Instance/Rng/Quotient.v carries
-    the construction and explains why both absorption laws are consumed;
-    this file proves that neither can be dropped, by exhibiting a LEFT
-    ideal for which the quotient relation is not a congruence for
-    multiplication.
-
-    THIS IS THE RING-LEVEL COUNTERPART of
-    Instance/Grp/Quotient.v's [S3_refl_sub_not_normal], which refutes
-    the normality CLOSURE condition for a particular subgroup.  Here
-    [ut2_left_ideal_not_mul_congruence] refutes the CONGRUENCE itself,
-    which is the property [rquot_rel_mul] establishes and the one the
-    construction actually consumes; [ut2_e11_not_right_absorbing]
-    separately refutes the dropped closure condition, so both readings
-    are covered.
-
-    READ THE COMPARISON PRECISELY.  An earlier draft of this header said
-    the ring statement was stronger in shape because the group side left
-    "and therefore the quotient would not be well defined" to the
-    reader.  That was wrong, and an audit caught it: the group side
-    ALREADY carries a congruence-level refutation, namely
-    Instance/Grp/Congruence.v's [S3_refl_sub_no_congruence] -- at
-    the same subgroup, landed by #301 -- so no inference is left
-    implicit there either.  What is actually different is narrower and
-    is all that is claimed: the refutation here is DIRECT, where the
-    group one is obtained through [congruence_iff_normal]; and it lands
-    on the MULTIPLICATION congruence specifically, which is the clause
-    one-sidedness is unable to supply.
-
-    THE WITNESS.  [UT2] (Instance/Rng/Algebras/Associative.v) is the
-    ring of upper-triangular 2×2 integer matrices, carried as triples
-    (a, b, c) for [[a, b], [0, c]], and that file proves it
-    non-commutative ([UT2_not_commutative]).  It is NOT the tree's only
-    non-commutative [RingObject] -- Instance/Rng/MonoidRing.v's
-    [zmring_not_commutative] exhibits a monoid ring that is not
-    commutative, although it proves that by mapping INTO [UT2] -- but it
-    is the smallest, and the one whose elements compute, being integer
-    triples.  The left ideal is ℤ·E₁₁, the multiples of
-    the matrix unit E₁₁ = [[1, 0], [0, 0]]:
-
-        x · (a, 0, 0) = (a'·a, 0, 0)   -- absorbed on the left,
-        (1, 0, 0) · (0, 1, 0) = (0, 1, 0)   -- NOT absorbed on the right.
-
-    Non-commutativity is not merely convenient here, it is necessary:
-    over a commutative ring the two absorption laws are the same
-    statement, so no commutative witness could exist.  That is why this
-    file must reach for [UT2] and why it is a separate file --
-    Instance/Rng/Algebras/Associative.v requires Instance/Mod.v and the
-    associative-algebra tower, and no consumer of quotient rings should
-    inherit that dependency.
-
-    WHAT IS NOT CLAIMED.  Nothing here says a left ideal gives no
-    quotient of any kind: ℤ·E₁₁ is in particular an additive subgroup, so
-    UT2/ℤ·E₁₁ is a perfectly good quotient ABELIAN GROUP, and the
-    left-module structure survives as well.  What is refuted is exactly
-    that the ring MULTIPLICATION descends.  Nor is the RIGHT-sided
-    mirror stated: the symmetric counterexample (a right ideal that is
-    not a left one) would need the transpose witness and adds nothing,
-    and the header says so rather than leaving a reader to wonder. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** ℤ·E₁₁ as a left ideal of UT2 *)
 

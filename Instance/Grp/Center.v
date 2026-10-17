@@ -14,72 +14,13 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * The center of a group is not functorial
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Center_(group_theory)
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.3
-    (printed pp. 14–15): the remark that the center Z(G) supports no
-    extension to a functor, and Exercise 4's sharpening
-    [maclane:I.3:remark1, maclane:I.3:ex4]: there is NO functor
-    T : Grp ⟶ Ab whose object function is G ↦ Z(G) — the quantification
-    is over ALL functors with that object function, arbitrary arrow
-    function included.
-    Wikipedia: https://en.wikipedia.org/wiki/Center_(group_theory)
+   本文件给出具体实例。
 
-    THE CENTER ITSELF ([IsCentral], [CenterGrp], [CenterAb]): the
-    elements commuting with everything form a subgroup — closure under
-    unit, multiplication, and inversion are the classical one-line
-    chains — and that subgroup is abelian BY CONSTRUCTION (centrality
-    of one factor is exactly commutation with the other), so the
-    center lands in [AbObject] and G ↦ Z(G) is a bona fide object
-    function Grp → Ab.  What it is not is functorial.
-
-    THE COUNTEREXAMPLE is Mac Lane's retract of symmetric groups.  Two
-    presentations of S₃ are in tree: Instance/Grp/Epi.v's [GrpSym3]
-    (permutations of a three-element setoid, where [grp_two_sym3]
-    includes ℤ/2 for that file's non-normal-image counterexample) and
-    Instance/Grp/TwoFunctors.v's semidirect [S3] on rot × bool.  The
-    SEMIDIRECT presentation carries the sign character definitionally
-    — the bool component of [s3_mul] is [xorb] — so it is the one
-    used here: [s3_sign : S3 ⟶ ℤ/2] is a homomorphism by projection,
-    [grp_two_s3 : ℤ/2 ⟶ S3] includes the rotation-free elements — a
-    split mono, [sign_retract] computing r ∘ i ≈ id on the two
-    elements.  ℤ/2 itself is Epi.v's [GrpTwo]; no permutation model of
-    S₂ is built, ℤ/2 BEING S₂ (the unique group of order two), and the
-    two S₃ presentations are not related by an in-tree isomorphism —
-    each serves its own file.
-
-    UNIVERSE SCOPE, disclosed.  TwoFunctors.v's [S3] pins its carrier
-    universe at Set, so [no_center_functor] as stated quantifies over
-    functors on Grp AT CARRIER UNIVERSE Set — precisely the hazard
-    Epi.v documents (its [GrpTwo] and three-letter setoid are built on
-    [poly_unit] to avoid pinning).  The argument itself is
-    universe-indifferent; a polymorphic restatement awaits either a
-    [poly_unit]-based semidirect S₃ or a sign character on [GrpSym3].
-
-    THE COMPUTATIONS: [GrpTwo_abelian] makes every element of ℤ/2
-    central, giving [Center_GrpTwo_iso : CenterGrp GrpTwo ≅ GrpTwo]
-    in Grp — Z(S₂) is the whole two-element group — while
-    [S3_center_trivial] shows by six-way case analysis that only the
-    identity of S₃ is central — the proof spends only the two
-    generators — so Z(S₃) is trivial, and [central_not_preserved]
-    records Mac Lane's REMARK proper: the inclusion carries ℤ/2's
-    central nonidentity to the non-central reflection, so
-    homomorphisms need not preserve centrality.
-
-    THE NO-FUNCTOR THEOREM ([no_center_functor]): suppose T : Grp ⟶ Ab
-    with fobj T G = CenterAb G for every G (strict equality of
-    objects, the honest reading of "has G ↦ Z(G) as its object
-    function").  Functoriality sends the retract
-    sgn ∘ inc ≈ id : S₂ → S₃ → S₂ to a factorization of the identity
-    of Z(S₂) through Z(S₃).  Every element of Z(S₃) is the unit
-    ([S3_center_trivial]), homomorphisms preserve units, so every
-    element of Z(S₂) is the unit — but Z(S₂) contains the nontrivial
-    element of ℤ/2, and in ℤ/2's setoid the two elements are distinct
-    constructors.  Contradiction, for an ARBITRARY arrow function.
-    The hypothesis is STRICT equality of objects — the literal reading
-    of "has G ↦ Z(G) as its object function"; a functor agreeing with
-    the center only up to isomorphism escapes this statement, and the
-    up-to-iso variant is left unstated rather than claimed. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Central elements, and the center as an abelian group *)
 

@@ -13,75 +13,13 @@ Generalizable All Variables.
 
 (** * Grp is well-powered one universe up *)
 
-(* nLab:      https://ncatlab.org/nlab/show/well-powered+category
-   Wikipedia: https://en.wikipedia.org/wiki/Subgroup
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Subgroup
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
-   §V.8, book p. 130 (PDF p. 139): a category is well-powered when the
-   subobjects of each object form a small set.  In [Grp] a subobject is a
-   subgroup up to isomorphism, so the classical index is the set of
-   subgroups.  This file states that at Structure/WellPowered.v's per-object
-   record: [Grp_WellPoweredAt_up G : WellPoweredAt G], with index
-   [Subgroup G] (Instance/Grp/Quotient.v).  The [Sets] witnesses are
-   Instance/Sets/WellPowered.v.
+   本文件给出具体实例。
 
-   WHAT IS BUILT.  [wp_to] sends a subgroup to its inclusion
-   ([grp_sub_of_subgroup], from Instance/Grp/Quotient.v's [SubgroupGrp],
-   [sub_incl] and [sub_incl_monic]); [wp_from] sends a subobject to the
-   image of its mono ([grp_image_subgroup], whose membership is Instance/
-   Grp/Epi.v's [Type]-valued [GrpImage] and whose closure laws are that
-   file's [GrpImage_respects], [GrpImage_unit], [GrpImage_mul] and
-   [GrpImage_inv]).  The domain isomorphism [grp_image_iso] projects the
-   carried preimage one way and pairs an element with itself the other.
-   Nothing is assumed.
-
-   A TRAP, recorded.  The [GrpImage_*] closure lemmas are [Qed], so the
-   preimages they build cannot be computed with.  The homomorphism laws of
-   the forward map [grp_image_fwd] are therefore proved through
-   injectivity of the mono (Instance/Grp.v's [Grp_injectivity_is_monic])
-   and [projT2] of the opaque witnesses, never by unfolding them.
-
-   WHY ONE UNIVERSE UP, measured.  [Subgroup G] has a [Type]-valued
-   membership predicate on the carrier, so it sits one universe above the
-   carrier, which is [Grp]'s hom universe:
-
-     Grp_WellPoweredAt_up@{u u0 u1} :
-       ∀ G : obj[Grp@{u0 u1}], WellPoweredAt@{u u0 u0 u1 u} G
-       (* Set < u0, u1 < u, u1 < u0 *)
-
-   ([WellPoweredAt]'s first slot is the index universe, its fourth the hom
-   universe.)  At Structure/WellPowered.v's pin the witness is refused, in
-   a copy of this whole file with the one command appended:
-   [WellPowered@{o h h o o} Grp@{o h}] with [h < o] gives "The term
-   "Grp_WellPoweredAt_up G" has type "WellPoweredAt@{R5.4103 o o h
-   R5.4103} G" while it is expected to have type "WellPoweredAt@{h o o h o}
-   G" (universe inconsistency: Cannot enforce o = h because h < o)", and
-   the control [Grp_WellPoweredAt_up@{o o h} G] is accepted.  [Set < u0]
-   and [u1 < u0] are inherited, not introduced here: [About Grp] reads
-   [Grp@{u p} : Category@{u p p}] with [Set < u] and [p < u], the [Set+1]
-   that the [PropEquiv] field puts in [GrpObject]'s sort (CLAUDE.md's
-   universe section).
-
-   MEASUREMENTS.  7 [.glob] heads ('^(def|prf|thm|ind|constr|proj|rec) ')
-   and 6 [Program] obligations ([grp_image_fwd_obligation_1] to [_3] and
-   [grp_image_bwd_obligation_1] to [_3], found by [strings] on the .vo):
-   all 13 report "Closed under the global context" by their fully
-   qualified names.  [grp_image_iso] and [grp_image_to_from] are
-   [Defined] (an isomorphism and a ≈ of subobjects, both data); the six
-   obligations are [Qed].
-
-   NOT DELIVERED.  [Grp] well-powered at the pin, unconditionally or under
-   any hypothesis: a [Prop]-valued membership would sit at the carrier
-   universe but meets the refusal Instance/Sets/WellPowered.v quotes for
-   [Sets], and nothing is attempted here.  [Grp] co-well-powered: Instance/
-   Grp/QuotObj.v's header records that its surjectivity leg takes the
-   double-negation stability of image membership as a hypothesis, and no
-   index of quotients is built.  No [Ab] analogue.  An earlier revision
-   said "No [Ab] or [RMod R] analogue"; since #454 Instance/Mod/
-   WellPowered.v is the [RMod R] one: [RMod_WellPoweredAt_up] and
-   [RMod_CoWellPoweredAt_up] one universe up, and
-   [RMod_WellPowered_untruncate] and [RMod_CoWellPowered_untruncate] at
-   the pin under [Untruncate]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The image of a homomorphism as a [Subgroup]; its membership is
    Instance/Grp/Epi.v's [GrpImage], a [Type]-valued "has a preimage". *)

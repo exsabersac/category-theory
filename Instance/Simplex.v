@@ -11,48 +11,14 @@ Generalizable All Variables.
 
 (** * Simplex, the simplicial category Δ *)
 
-(* nLab:      https://ncatlab.org/nlab/show/simplex+category
-   Wikipedia: https://en.wikipedia.org/wiki/Simplicial_category
-   Book:      Mac Lane, "Categories for the Working Mathematician",
-              2nd ed., §I.2 (p. 12) and §VII.5, "The Simplicial Category"
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Simplicial_category
+ Book:      Mac Lane, "Categories for the Working Mathematician",
 
-   The simplicial category: objects are the natural numbers, with [n]
-   standing for the canonical n-element ordinal [Fin.t n] carried by its
-   linear order, and the morphisms [m ~> n] are the ORDER-PRESERVING
-   functions [Fin.t m → Fin.t n].  A morphism is a function together with
-   a monotonicity witness; the hom-setoid compares only the FUNCTION part,
-   pointwise, exactly as Instance/FinSet.v compares its morphisms
-   through [fun_setoid].  The witness is proof data carried along, never
-   compared — two morphisms with the same underlying function are equal in
-   this category whatever their monotonicity proofs.
+   本文件给出具体实例。
 
-   WHICH Δ.  This is the "algebraist's Δ", which includes the empty
-   ordinal [0]: the objects are ALL the finite ordinals, so what is built
-   here is also called the AUGMENTED simplex category.  This is Mac Lane's
-   Δ — §I.2 (p. 12) puts the finite ordinals and their monotone maps among
-   the first examples of a category, and §VII.5 develops Δ with objects
-   the finite ordinals indexed by n ∈ ℕ, the empty one among them.  It is
-   the variant for which Δ is the free monoidal category containing a
-   monoid, with [0] the tensor unit, which is what makes including [0]
-   worth the trouble.  The "topologist's Δ" drops [0], keeping only the
-   nonempty ordinals, because a simplex has at least one vertex; that is
-   the shape category of simplicial sets proper, it is the full
-   subcategory of this one on the positive naturals, and it is not
-   separately built here.  Both conventions are in print under the name Δ,
-   so the reading is stated rather than assumed.
-
-   WHAT IS AND IS NOT PROVEN HERE.  The category, the inclusion into
-   FinSet with faithfulness and a witnessed statement of non-fullness, the
-   face and degeneracy generators, and ALL FIVE simplicial identities are
-   proven below.  What is NOT proven is the converse, generating half of
-   Mac Lane's §VII.5 theorem: that the faces and degeneracies GENERATE Δ,
-   and that the five identities are a complete set of relations presenting
-   it.  That is the Eilenberg–Zilber normal-form argument (every morphism
-   of Δ factors uniquely as a composite of degeneracies followed by a
-   composite of faces), and it is deferred; nothing below depends on it,
-   and no statement below is weakened by its absence.  Simplicial sets
-   (presheaves on this category), the nerve, and geometric realization are
-   likewise out of scope. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Why Δ, and where it leads
 

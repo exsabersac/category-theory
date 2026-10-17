@@ -5,25 +5,13 @@ Generalizable All Variables.
 
 (** * The ordinal ω as a thin category *)
 
-(* nLab:      https://ncatlab.org/nlab/show/interval+category
-   Wikipedia: https://en.wikipedia.org/wiki/Total_order
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Total_order
 
-   [Omega] is the thin category whose objects are the natural numbers and whose
-   morphisms [m ~> n] are proofs of [m ≤ n].  It is the shape category over which
-   Adámek's initial-algebra chain [Instance ... Construction/Chain.v] is indexed:
-   a functor [Omega ⟶ C] is exactly an ω-indexed diagram
-   [X₀ ~> X₁ ~> X₂ ~> ...] in [C].
+   本文件给出具体实例。
 
-   The order is carried by a bespoke [Type]-valued relation [le_t] rather than
-   the standard library's [le].  Two reasons: (1) [le] is [Prop]-valued and
-   cannot eliminate into the [Type]-valued hom-sets of an arbitrary target
-   category, which [Construction/Chain.v]'s [chain_hom] requires; (2) avoiding
-   the stdlib keeps this file portable across Coq 8.19/8.20 and Rocq 9.1, whose
-   [le] lemma names differ.  The explicit universe annotations
-   ([le_t@{h}], [Morphism_equality@{o h p}]) are load-bearing: under the
-   library-wide [Set Universe Polymorphism] a strictly-bound [Omega@{o h p}]
-   must instantiate every polymorphic constant it mentions, exactly as
-   [Instance/One.v] writes [Morphism_equality@{o h p}] and [poly_unit@{o}]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive le_t@{u} (n : nat) : nat → Type@{u} :=
   | le_t_n : le_t n

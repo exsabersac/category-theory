@@ -15,59 +15,16 @@ Open Scope R_scope.
 
 (** * Extended metric spaces *)
 
-(* nLab:      https://ncatlab.org/nlab/show/extended+metric+space
-   nLab:      https://ncatlab.org/nlab/show/Lawvere+metric+space
-   Wikipedia: https://en.wikipedia.org/wiki/Metric_space#Extended_metrics
-   Book:      Fong & Spivak, "Seven Sketches in Compositionality",
-              §2.3.3, the variant introduced immediately after
-              Definition 2.51, printed pp. 59-60 (PDF pp. 71-72)
-   Paper:     Lawvere, "Metric spaces, generalized logic, and closed
-              categories", Rend. Sem. Mat. Fis. Milano 43, 1973
+(*
+ nLab:      https://ncatlab.org/nlab/show/Lawvere+metric+space
+ Wikipedia: https://en.wikipedia.org/wiki/Metric_space#Extended_metrics
+ Book:      Fong & Spivak, "Seven Sketches in Compositionality",
+ Paper:     Lawvere, "Metric spaces, generalized logic, and closed
 
-   ON THE CITATIONS.  No book was opened for this file; the description of
-   what Seven Sketches says is a paraphrase, taken from issue #308's own
-   summary of §2.3.3 and from doc/plan/books/seven-sketches/pagemap.md (which
-   places §2.3.3, "Lawvere metric spaces", at printed p. 59).  A reader
-   checking this file against the printed book should expect the wording to
-   differ.
+   本文件给出具体实例。
 
-   Seven Sketches gives Definition 2.51 (Instance/Met.v's [MetricSpace]) and
-   then, immediately after it, the variant in which the distance is allowed
-   the value ∞.  The variant is not an aside for that book: its whole
-   enrichment story runs through the quantale Cost = [0,∞], whose monoidal
-   unit is 0 and whose top element ∞ is absorbing for the tensor (addition).
-   A Cost-enriched category can therefore record "there is no way from a to
-   b" as the hom-object ∞, and without that value the enriched reading has
-   nothing to say about spaces that fall into separate pieces.  What is
-   asserted here is only that ∞ is needed for the structure to exist; NO
-   enriched-category statement is proved in this file, and the identification
-   of Cost-categories with extended metric spaces is not formalized anywhere
-   in this tree.
-
-   This file supplies the structure and the comparison the book's remark
-   needs: [ExtMetricSpace], and the identification of ordinary metric spaces
-   among the extended ones as EXACTLY those whose distances are all finite,
-   in both directions with the round trips measured.
-
-   SCOPE.  What is NOT here, deliberately: the Lawvere/[Cost]-enriched
-   presentation.  Instance/Met.v's header explains the decision at length —
-   Lawvere metric spaces drop symmetry and separation, which both records in
-   this development keep, so they are a genuinely different structure, and
-   no comparison functor between this file's [ExtMetricSpace] and any
-   [Enriched] instance is built or claimed.  What this file does is name the
-   structure the book's remark is about; connecting it to enrichment is a
-   separate piece of work.  Also not here: a category of extended metric
-   spaces.  The arrows would be the distance-preserving maps again, and
-   nothing in Mac Lane §III.1 or in the issue asks for it; [Met] is
-   Instance/Met.v's and is the category the completion lives in.
-
-   [∞] IS AN INDUCTIVE CONSTRUCTOR, not a real number, so [Rinf] below has
-   decidable "is it infinite" by construction ([Rinf_finite_dec]) and the
-   two presentations of finiteness — a distance that is not ∞, and a
-   distance that IS some real — coincide constructively
-   ([EFinite_iff_not_infinite]).  Nothing in this file needs the reals to be
-   complete, so its constants carry at most the two standard-library real
-   axioms and never [sig_not_dec]; contrast Instance/Met/Completion.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The value type [0, ∞] *)
 

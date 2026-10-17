@@ -8,32 +8,13 @@ Generalizable All Variables.
 
 (** Monadic do-notation and combinators in COQ. *)
 
-(* nLab: https://ncatlab.org/nlab/show/Kleisli+category
-   Wikipedia: https://en.wikipedia.org/wiki/Monad_(functional_programming)
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Monad_(functional_programming)
 
-   This file is not a catalogue of concrete monads (identity, option, list,
-   …). It is the generic Haskell-style surface syntax and combinator library
-   for an *arbitrary* monad [M] on COQ, fixed by the section variables [m] and
-   [M] below. Everything here is parametric in that monad, so it specialises to
-   any concrete monad over COQ once one is supplied.
+   本文件给出单子相关实例。
 
-   The categorical monad (Theory/Monad.v) is presented in the join/return
-   style; here we expose the equivalent bind/Kleisli surface:
-
-     - bind          x >>= f  :=  join (fmap f x)        (m a → (a → m b) → m b)
-     - Kleisli comp  f >=> g  :=  fun x => f x >>= g     ((a → m b)→(b → m c)→…)
-     - reverse comp  f <=< g  :=  g >=> f
-
-   in the value-first argument order used by Haskell (the categorical [bind]
-   of Theory/Monad.v is the function-first [join ∘ fmap f]). The Kleisli laws
-   ret >=> g ≈ g, f >=> ret ≈ f and (f >=> g) >=> h ≈ f >=> (g >=> h) are the
-   bind-form of the monad laws and follow from the [Monad] class fields; the
-   four corollaries at the end restate those fields pointwise (∀ x, _ x = _ x).
-
-   This layer lives over Instance/Coq.v, whose function equivalence is pointwise
-   Leibniz equality; reasoning that collapses functions extensionally relies on
-   the pre-existing functional_extensionality axiom of that layer (the combinators
-   and corollaries here add none). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Monad.
 

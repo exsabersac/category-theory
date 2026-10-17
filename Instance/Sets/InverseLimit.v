@@ -22,10 +22,11 @@ Require Import Category.Instance.Sets.Streams.
 
 Generalizable All Variables.
 
-(* Category.Functor.Opposite opens [functor_scope], after which a bare
-   [Omega^op] in an ASCRIPTION (no expected type to bind the scope)
-   parses as [Opposite_Functor Omega] and dies naming neither culprit.
-   Reopening [category_scope] is the tree's guard for this. *)
+(*
+   本文件给出集合范畴相关实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Open Scope category_scope.
 
 (* Obligations are written out rather than left to the tree default, so

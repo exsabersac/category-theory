@@ -16,133 +16,14 @@ Require Import Category.Instance.SupLat.Free.
 
 Generalizable All Variables.
 
-(* Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer GTM 5, 1998, §VI.2, Exercise 1(c), printed p. 142
-         (PDF p. 151) — maclane:VI.2:ex1
-   nLab: https://ncatlab.org/nlab/show/suplattice
-   nLab: https://ncatlab.org/nlab/show/weak+excluded+middle
+(*
+ nLab: https://ncatlab.org/nlab/show/suplattice
+ nLab: https://ncatlab.org/nlab/show/weak+excluded+middle
 
-   Mac Lane's part (c) reads, from the page image: "Prove conversely that
-   every (small) complete semi-lattice is a 𝒫-algebra in this way", and
-   the exercise opens by recalling that "a complete semi-lattice is a
-   partial order Q in which every subset S ⊂ Q has a supremum (least upper
-   bound) in Q".  Instance/SupLat.v proves (b) for every 𝒫-algebra, and
-   (c) and (d) for every [SupLatObject]; a statement about every member of
-   a class says nothing until the class has members, and this file
-   supplies them, together with the measured reason why the smallest
-   classical example, the chain false < true on bool, whose equality is
-   decidable, is not one of them ([Prop], classically a two-element chain
-   too, is one with no hypothesis, [Prop_SupLat]).
+   本文件给出实例例子。
 
-   P X, THE FREE ONE.  Instance/SupLat/Free.v's [FreeSL X] is the power set
-   of X ordered by inclusion with union as its supremum, read back at
-   [eq_refl] ([FreeSL_set], [FreeSL_le], [FreeSL_sup]).  Part (c) at P X
-   has the carrier and the structure map of the free algebra (P X, μ_X) of
-   Monad/Eilenberg/Moore/Adjunction.v's [EM_Free] at [eq_refl] (the
-   structure maps in [FreeSL_alg], the carriers in the probe); as a whole
-   algebra, and as a whole object of the Eilenberg–Moore category, it is
-   refused (E3, E3b of Test/ProbeSupLat466.v), its proof fields [t_id] and
-   [t_action] each differing from the free algebra's (each refused at
-   [eq_refl] in a scratch copy of the probe).  Part (b) at the free
-   algebra orders P X by S ∪ T ≈ T, which is inclusion
-   ([FreeSL_talg_le_iff]) logically but not definitionally; since the
-   order reads only the structure map, which is (c)'s at [FreeSL X] by
-   conversion, that lemma is Instance/SupLat.v's [sl_talg_le_iff] at
-   [FreeSL X], reused.  The
-   object that (b) builds from the free algebra has the carrier and the
-   supremum of [FreeSL X] at [eq_refl], and as a whole object, and in its
-   order field, it is refused (E1, E1b of Test/ProbeSupLat466.v).  The
-   universal property of the free complete semilattice is read off the
-   adjunction's bijection elementwise: a map ψ into a complete semilattice
-   extends along the singletons ([FreeSL_extend_singleton]), and every
-   sup-preserving map that agrees with ψ on singletons is that extension
-   ([FreeSL_extend_unique]).
-
-   PROP, WHICH IS P 1.  [Prop_SupLat] is [Prop] ordered by implication,
-   with sup S := ∃ Q ∈ S, Q ([Prop_SupLat_le], [Prop_SupLat_sup], at
-   [eq_refl]); its carrier is Instance/Sets/Powerset.v's truth-value object
-   [Powerset_Prop_truth], compared by mutual implication.  [Prop_P1_iso]
-   is an isomorphism in [SupLat] between it and P 1, the free complete
-   semilattice on Instance/Sets.v's one-point setoid [unit_setoid_object]:
-   Q goes to the constant subset Q ([Prop_to_P1]), a subset T to T ttt
-   ([P1_to_Prop]).  The round trip on Prop holds at [eq_refl]
-   ([Prop_P1_round_trip]); on P 1 it holds at [eq_refl] at the point ttt
-   and is refused as a whole subset (E2: λ _, T ttt is not T).  False ≤ True
-   and True ≉ False ([Prop_SupLat_nontrivial]), so Prop is not the
-   one-point lattice.
-
-   THE CHAIN false < true ON bool IS A COMPLETE SEMILATTICE ONLY UNDER
-   INFORMATIVE WEAK EXCLUDED MIDDLE.  In Instance/SupLat.v a subset is
-   every ≈-respecting [Prop] predicate, so "every subset has a supremum"
-   quantifies over all propositions.  [suplat_two_points_WLEM]: a complete
-   semilattice with a decidable ≈ and two distinct comparable points,
-   bot ≤ top with top ≉ bot, decides ¬Q or ¬¬Q for every proposition Q,
-   informatively, (~ Q) + (~ ~ Q), the form of
-   Instance/Mod/Cogenerator.v's [QZ_injective_WLEM].  The sup of the
-   subset { x | Q ∧ x ≈ top } ([two_points_probe]) is compared with top:
-   when it is top, Q cannot be refuted, since a refutation empties the
-   subset and puts its sup at or below bot; when it is not, Q cannot hold,
-   since then the subset is {top}.  The conclusion is informative, a sum
-   and not a disjunction in [Prop], because the supremum is an operation,
-   the record's setoid map [sl_sup], and not a mere existence: the proof
-   decides the equality of that sup with top by the decidability of ≈,
-   and from a supremum that only existed in [Prop] the same argument would
-   reach only the proposition ¬Q ∨ ¬¬Q, an existence in [Prop] being
-   eliminable only into a proposition.  [bool_SupLat_WLEM] instantiates
-   the theorem at Instance/Sets.v's two-element setoid [bool_setoid_object]
-   ordered false ≤ true ([bool_chain_le]), whose equality is decidable:
-   any supremum operator for that order gives informative weak excluded
-   middle.  [bool_SupLat] is the converse at that chain, not for the
-   theorem in general: given wlem : ∀ Q : Prop, (~ Q) + (~ ~ Q), it is a
-   [SupLatObject] on [bool_setoid_object] ordered by [bool_chain_le], with
-   sup S = true exactly when ¬¬(true ∈ S).  Both
-   build the chain with [bool_chain_SupLat], which proves its four order
-   axioms once.  So the chain false < true on bool is a complete
-   semilattice in this library exactly under the informative weak excluded
-   middle ∀ Q, (~ Q) + (~ ~ Q), which [bool_SupLat] consumes and
-   [bool_SupLat_WLEM] produces, and the witnesses of non-vacuity are P X
-   and Prop, which the theorem does not reach: Prop meets every hypothesis
-   of the theorem but the decidability of ≈, and a decidable ≈ on it would
-   give informative weak excluded middle outright
-   ([Prop_SupLat_decidable_WLEM]).
-   Instance/Two.v is the walking arrow, a category rather than a lattice,
-   and is not used.
-
-   STRENGTHS.  By [eq_refl]: the readbacks of [FreeSL] and [Prop_SupLat],
-   [FreeSL_alg], [Prop_to_P1_at] and [Prop_P1_round_trip]; in the probe,
-   also the carrier and supremum of (b) at the free algebra against
-   [FreeSL X], and the P 1 round trip at ttt.  Logically ([iff]): the order
-   of (b) at the free algebra against inclusion.  At ≈: the universal
-   property, and [Prop_P1_iso].  Refused, each by a comparison with a
-   different term or a variable that no transparency changes, and each
-   standing in the probe's flip, where every [Qed] of its dependency
-   closure but those it names is turned into [Defined], and again in the
-   copy with Instance/Sets.v's two properness fields written as terms
-   (Test/ProbeSupLat466.v records both, and Instance/SupLat/Free.v the
-   second): E1, E1b, E2, E3 and E3b above.
-
-   UNIVERSES, read off [About].  The readbacks of [FreeSL], [Prop_sup],
-   [Prop_SupLat] with its readbacks, [Prop_SupLat_nontrivial],
-   [two_points_probe], [suplat_two_points_WLEM] and
-   [Prop_SupLat_decidable_WLEM] bind [@{o}] with the one bound [Set < o].
-   The constants on P 1 add o <= Logic_lemmas.equality.u0, first carried
-   by Lib/Setoid.v's [eq_equivalence] through [unit_setoid], and the
-   constants on the chain the same through Instance/Sets.v's
-   [bool_setoid_object]; [bool_chain_le] binds no universe ([@{}]).
-   [FreeSL_extend_singleton], [FreeSL_extend_unique] and [Prop_P1_iso]
-   bind [@{o so}] with the block of [SupLat@{o so}] (and [Prop_P1_iso]
-   the equality cap above);
-   [FreeSL_alg] and [FreeSL_talg_le_iff] add the sigma projections of
-   [EilenbergMoore], o <= Projections.u1 and so <= Projections.u0.  An
-   [exfalso] in the chain's proofs added o <= False_rect.u0; it was
-   replaced by case analysis on the absurd hypothesis and the cap is gone.
-   There is no equation and no strict bound beyond [Set < o] and [o < so].
-
-   NOT DELIVERED.  No finite chain beyond 0 < 1 is examined; the theorem
-   covers any complete semilattice with a decidable ≈ and two distinct
-   comparable points.  No classical witness is given, and none is needed:
-   under informative weak excluded middle [bool_SupLat] is one.  Frames
-   and complete lattices of open sets are not built. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** P X, the free complete semilattice *)

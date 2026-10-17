@@ -17,15 +17,11 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* NAME COLLISION, recorded because it is silent and the error it
-   produces names neither culprit.  [Coq.QArith.QArith] transitively
-   exports [Stdlib.setoid_ring.Field_theory.num] — the numerator of the
-   [linear] datatype of the [field] tactic — which SHADOWS
-   Instance/Rng/Frac.v's [num].  Its [den] is not shadowed, so the
-   symptom is a type error mentioning [linear] on the numerator alone.
-   Rather than depend on the order of two [Require Import]s, the
-   fraction numerator is bound here explicitly; the same family as the
-   [equiv] shadowing recorded in Instance/FdVect.v. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Notation num := Frac.num.
 
 (** * The field of quotients as a universal arrow, and Mac Lane's

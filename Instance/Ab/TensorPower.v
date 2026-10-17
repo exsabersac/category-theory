@@ -19,113 +19,16 @@ Generalizable All Variables.
 (** * ⨁ₙ A^{⊗n}: words modulo multilinearity, and the direct sum of the
       tensor powers *)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer GTM 5, 1998, §VI.4, Exercise 4(a), printed p. 146 (PDF
-         p. 155) — maclane:VI.4:ex4
-   Book: Riehl, "Category Theory in Context", Example 5.5.7(ii), printed
-         p. 205 (PDF p. 225) — riehl:5.5:example7
-   nLab: https://ncatlab.org/nlab/show/tensor+algebra
-   nLab: https://ncatlab.org/nlab/show/direct+sum
-   Wikipedia: https://en.wikipedia.org/wiki/Tensor_algebra
+(*
+ Book: Riehl, "Category Theory in Context", Example 5.5.7(ii), printed
+ nLab: https://ncatlab.org/nlab/show/tensor+algebra
+ nLab: https://ncatlab.org/nlab/show/direct+sum
+ Wikipedia: https://en.wikipedia.org/wiki/Tensor_algebra
 
-   WHAT THE BOOKS SAY, read from the page image and the PDF.  Mac Lane,
-   Exercise 4: "The adjunction ⟨F, G, φ⟩ : Ab ⇀ Rng with G the functor
-   "forget the multiplication in a ring" defines a monad T in Ab.  (a)
-   Give a direct description of this monad, like that in the text for W,
-   with Xⁿ replaced by the n-fold tensor power and coproduct ∐ by the
-   (infinite) direct sum of abelian groups."  Riehl, Example 5.5.7(ii):
-   "The induced monad on Ab is the free monoid monad TA := ⨁_{n≥0}
-   A^{⊗n}".  This file is the abelian-group half of (a), with nothing of
-   rings in it: the group ⨁ₙ A^{⊗n} in two readings, and the theorem
-   that they are one.  Instance/Rng/FreeMonad/Words.v proves T A
-   isomorphic to it and reads η, μ and T f through the isomorphism.
+   本文件给出阿贝尔群相关实例。
 
-   WORDS MODULO MULTILINEARITY.  [TWAb A] is the formal sums [TWTerm A]
-   of words over A (lists of elements) modulo [tw_eq]: the abelian-group
-   laws, congruence for + and −, and, in each letter of a word,
-   saturation under A's own ≈ ([twe_letter]) and additivity
-   ([twe_lin]).  Reflexivity is derived ([tw_refl]), as in
-   Instance/Rng/Free.v and Instance/Ab/Tensor.v, so every induction on
-   [tw_eq] has ten cases.  [tw_eq] is a [Prop], so the [PropEquiv] field
-   an abelian group carries since PR #1320 is the relation's own mirror.
-   A function on words that respects each letter and is additive in each
-   extends to a homomorphism out of [TWAb A] ([tw_ext], which computes on
-   words, [tw_ext_word]): the universal property of the presentation.
-   Juxtaposition on the left by a word, [tw_lmul], is here with its laws
-   because the injections below are built from it; the ring is Words.v's.
-   Its additivity on the right is Instance/CMon/Biproduct.v's middle-four
-   interchange [cmon_plus_interchange] at [TWAb], not a local copy.
-
-   THE LITERAL DIRECT SUM.  The n-fold tensor powers are not a new
-   construction: they are Structure/Monoidal/Hypergraph/Spider.v's
-   [tpower] at Instance/Ab/Monoidal.v's [Ab_Monoidal], written A ^⨂ n,
-   with A^{⊗0} the unit [ZAb] (ℤ) and A^{⊗(n+1)} = A ⊗ A^{⊗n},
-   Instance/Ab/Tensor.v's [AbTensor], both at [eq_refl]
-   ([tpower_ab_zero], [tpower_ab_succ]).  The shared route costs eight
-   modules: the imports of this file load 64 [Category] modules with
-   Spider.v and 56 without it (Print Libraries, compared by script); a
-   local fixpoint would be the same family by [eq_refl] and was not
-   written.  [tw_pure w] is a word as the pure tensor a₁ ⊗ (… ⊗ (aₙ ⊗ 1))
-   of its length; the injections [tw_iota n : A^{⊗n} → TWAb A] come from
-   the tensor's universal property ([tensor_ump]), degree 0 by the
-   integer multiples of the empty word ([tw_iota0], through
-   Instance/Ab/Monoidal.v's [zsmul]), with ι_{n+1}(a ⊗ x) = ⟨a⟩ · ιₙ x at
-   [eq_refl] ([tw_iota_gen]) and every word the image of its pure tensor
-   at ≈ ([tw_word_iota]).  The copairing [tw_desc] of a family ιₙ :
-   A^{⊗n} → c computes on words ([tw_desc_word]); with [tw_desc_iota]
-   (the copairing composed with ιₙ is the n-th map, at ≈) and
-   [tw_desc_unique] it gives [TW_is_tensor_coproduct : IsIndexedCoproduct
-   (fun n => A ^⨂ n) (TWAb A) tw_iota], Structure/Limit/Coproduct.v's
-   class in Ab: Mac Lane's "(infinite) direct sum of the n-fold tensor
-   powers", literally.  The copairing respects a letter and is additive
-   in it by an induction on the prefix of the word generalized over the
-   whole family ([tw_shift], [tw_desc_letter], [tw_desc_lin]), so no
-   transport along the length of a word is ever needed.  Read at c := A,
-   those two lemmas also say that a family of homomorphisms
-   νₙ : A^{⊗n} → A is a function on words respecting each letter and
-   additive in each, the form in which Instance/Rng/FreeMonad/System.v
-   states Mac Lane's systems.
-
-   STRENGTHS.  Every [Example] holds at [eq_refl], and
-   Test/ProbeFreeRing474.v restates each one (C55 to C59).  Stated at ≈:
-   [tw_word_iota] and [tw_desc_iota], refused at [eq_refl] at a variable
-   (R21, R20) and false at Leibniz = at an explicit instance (C103, C104),
-   and the uniqueness [tw_desc_unique], whose hypothesis is at ≈.  Three
-   lemmas are Leibniz equalities, stronger than ≈: [tw_lmul_app],
-   [tw_lmul_nil] and [tw_desc_lmul] (juxtaposition by one letter shifts
-   the family).  Six proofs end [Defined] and eighteen [Qed] (counted by
-   token).  Five [Defined]s are load-bearing, measured by closing each
-   alone [Qed] in a renamed copy of #474's five files and the probe and
-   naming the first command that then stops: [tw_ext] ([tw_ext_word]),
-   [tw_iota0] ([tw_word_iota]), [tw_lmul1_bilin] ([tw_iota_gen]),
-   [ts_gen_hom] ([tw_desc_letter]) and [tw_desc] ([tw_desc_iota]);
-   [TW_is_tensor_coproduct] is [Defined] by the data convention only
-   (closed [Qed], nothing stops).
-
-   UNIVERSES, read off [About] (every name, by script).  Every name is
-   universe polymorphic, with no [Set] but strict lower bounds and with
-   caps of the standard library's global levels only.  Thirty-nine names
-   bind three levels (the inductives [TWTerm] and [tw_eq] with their
-   constructors bind A's three), six bind four ([tw_Setoid],
-   [tw_eq_Equivalence], the eliminators [TWTerm_rect] and [TWTerm_rec],
-   [tw_ext_fun] and [tw_ext_respects]), fourteen bind five ([TWAb],
-   [tw_lmul1_bilin], [ts_gen_hom], the copairing's nine and the extension's
-   two) and [TW_is_tensor_coproduct] six.  Nothing in this file is
-   annotated, as in Instance/Ab/Tensor.v: the levels are inferred, and on
-   Coq 8.19.2 and 8.20.1 every name binds the same levels as on Rocq 9.1.1
-   (FreeMonad.v's header).  One equation, [u0 = u2], in eleven names: the
-   nine copairing names of the section [Desc] ([tw_shift] to
-   [tw_desc_unique]) and [tw_ext] with [tw_ext_word].  Its cause is
-   inherent: those maps run from A's words into c in ONE [Ab], whose
-   objects [AbObject@{p p p}] share their carrier level, so A's carrier
-   level and c's are identified, while the two object levels stay free.
-   [TW_is_tensor_coproduct] itself carries no equation.
-
-   NOT DELIVERED.  A general [HasIndexedCoproducts Ab]: this is the
-   coproduct of one family, the tensor powers of one A (the same
-   construction over tagged elements would give the general one; not
-   attempted).  A normal form for [tw_eq], hence no decision procedure
-   and no basis. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** Formal sums of words, modulo multilinearity in each letter *)

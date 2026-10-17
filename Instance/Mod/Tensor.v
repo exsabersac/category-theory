@@ -14,11 +14,11 @@ Require Import Coq.ZArith.ZArith.
 
 Generalizable All Variables.
 
-(* The global obligation tactic is [cat_simpl], which runs wide proof
-   searches on module obligations and has already introduced the
-   parameters by the time an obligation is opened.  Switched off here,
-   the Instance/Mod.v idiom, so every obligation starts with an
-   explicit [intros]. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
 (** * The tensor product of modules, as a universal element

@@ -1,132 +1,16 @@
 (** * Open(X) and the presheaf of continuous real-valued functions *)
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §II.2, printed p. 35 (PDF p. 45) — maclane:II.2:construction7
-   Book:      Riehl, "Category Theory in Context", Example 1.3.7,
-              clauses (iii)–(v), printed pp. 18–19 (PDF pp. 38–39)
-   Book:      Fong–Spivak, "Seven Sketches in Compositionality", §7.3.2,
-              printed p. 236 (PDF p. 248)
-   nLab:      https://ncatlab.org/nlab/show/presheaf
-   nLab:      https://ncatlab.org/nlab/show/sheaf
-   Wikipedia: https://en.wikipedia.org/wiki/Sheaf_(mathematics)
+(*
+ Book:      Riehl, "Category Theory in Context", Example 1.3.7,
+ Book:      Fong–Spivak, "Seven Sketches in Compositionality", §7.3.2,
+ nLab:      https://ncatlab.org/nlab/show/presheaf
+ nLab:      https://ncatlab.org/nlab/show/sheaf
+ Wikipedia: https://en.wikipedia.org/wiki/Sheaf_(mathematics)
 
-   Mac Lane's §II.2 example: for a topological space X the open sets,
-   ordered by inclusion, form a thin category, and assigning to each open U
-   the set of continuous real-valued functions on U — with restriction along
-   an inclusion as the arrow action — is a contravariant functor into Set,
-   the standard first example of a presheaf (and, classically, of a sheaf).
-   Riehl's Example 1.3.7 spreads the story across three clauses: (iii)
-   the open-set functor with preimage as arrow action, together with its
-   closed-set companion — both already in tree as Instance/Top/Closed.v's
-   [OpensF], [ClosedsF] and the complementation natural isomorphism
-   [complement_natural], with [Opens X] the thin inclusion category
-   itself; (iv) Spec, the prime spectrum of a commutative ring with the
-   Zariski topology, which stays OUT OF SCOPE here (design note 7); and
-   (v) the sheaf of continuous real-valued functions as the typifying
-   presheaf.  This file delivers clause (v), Mac Lane's construction:
+   本文件给出预层相关实例。
 
-     [ContinuousPresheaf X : Presheaf (Opens X) Sets]
-
-   sending an open U to the setoid of continuous maps from U (as a subspace)
-   to the real line, and an inclusion V ⊆ U to restriction, which is
-   precomposition with the continuous inclusion of subspaces.
-
-   Seven Sketches §7.3.2 builds the same [Opens X] preorder and adds its
-   ROLE: it is the site over which presheaves and sheaves on a space are
-   defined.  That role is visible here in the type of [ContinuousPresheaf];
-   the sheaf CONDITION is deliberately not stated (design note 4).
-
-   Contents:
-     - [R_Top]: the real line as a topological space (metric topology)
-     - [OpenSub U]: an open set as a subspace, with [sub_incl] and the
-       restriction morphisms [sub_map]
-     - [ContinuousPresheaf X]: the presheaf of continuous real-valued
-       functions, with constant sections as inhabitants
-     - [OpenSub_whole_iso], [global_sections_iso]: the subspace on the
-       whole-space open is the space itself, and its sections are the
-       continuous maps X → R — "Γ(X, C(−,ℝ)) = C(X,ℝ)"
-
-   Design:
-
-   1. AN OPEN SUBSPACE IS A SPACE WHOSE OPENS CARRY PROPERNESS.  The
-      carrier of [OpenSub U] is the sigma type { x : X & `1 U x } compared
-      on first components, and a predicate on it is open when (a) it
-      respects that comparison and (b) its extension along the projection —
-      the predicate "some membership witness lands in V" — is open in X.
-      Conjunct (a) is not decoration: the membership component of a point
-      of the subspace is proof DATA, and a bare predicate could distinguish
-      two witnesses of the same point, which no topology on the subspace
-      setoid may do.  This is the same move Instance/Top.v makes for
-      [Discrete_Top], whose opens are EXACTLY the respectful predicates.
-      Because U itself is open, the extension-openness conjunct gives the
-      standard subspace topology, and the identification is machine-checked
-      rather than asserted: the opens of [OpenSub U] correspond to the
-      opens of X contained in U ([sub_ext_contained], [sub_ext_recovers],
-      [sub_open_of_open], [sub_ext_of_open] below).
-
-   2. THE REAL LINE IS A BALL SPACE.  [R_Top] is Instance/Top/Interval.v's
-      [BallTop] applied to R with distance [Rabs (x − y)] — the metric
-      topology, with the radius of each interior ball carried as DATA, so
-      the union axiom is discharged without any choice principle.  The
-      interval file stops at [0,1] because paths need endpoints; the line
-      itself is the three-lemma instance below.
-
-   3. RESTRICTION IS PRECOMPOSITION.  An inclusion V ⊆ U induces a
-      continuous map of subspaces [sub_map : OpenSub V ~> OpenSub U], and
-      the presheaf's arrow action is precomposition with it.  Functoriality
-      is thereby inherited from the category laws of [Top] — up to the
-      subspace setoid's indifference to membership witnesses — rather than
-      proved against a bespoke notion of "restriction of a function".
-
-   4. THE SHEAF CONDITION IS NOT STATABLE HERE.  Two independent
-      obstructions, and the universe one bites first: Theory/Sheaf.v's
-      [Sheaf] class carries its own inferred universe signature, which
-      constrains its presheaf argument exactly the way the un-annotated
-      [Presheaf] alias used to, so [Sheaf (ContinuousPresheaf X)] is a
-      universe inconsistency, not a statement a reader could weaken — and
-      the still-minimized [Presheaves] alias likewise cannot receive
-      [ContinuousPresheaf] as an object.  Structurally, even at shared
-      levels, the class records a per-object, per-leg gluing condition
-      over the single covering family its [Site] supplies, which
-      Theory/Sheaf/Category.v discloses as vacuous beyond subsingleton
-      fibres — a donor erratum whose matching-family re-founding is
-      deferred with sheafification (ledger item 1).  That re-founding
-      will need the same universe generality [Presheaf] now has;
-      verifying gluing for this presheaf belongs there.  What Mac Lane's
-      p. 35 example asserts is the presheaf, which is delivered in full.
-      The smooth-manifold variant (C^∞ functions on a manifold) is
-      likewise out of tree: there are no manifolds here, and the example
-      would need them before it needs anything categorical.
-
-   5. WHAT IT COSTS.  This is the third file in the tree to import
-      Coq.Reals (after Instance/Top/Interval.v and its consumer
-      Instance/Top/FundamentalGroupoid.v), and it inherits the axiom set
-      of the standard library's construction of R — principally
-      [ClassicalDedekindReals.sig_forall_dec] and
-      [FunctionalExtensionality.functional_extensionality_dep] — exactly
-      as docs/AXIOMS.md's "Stdlib axioms" section documents for the other
-      two; the section enumerates this file alongside them.  Constants
-      that never touch R (the subspace machinery) remain closed under the
-      global context.
-
-   6. UNIVERSES.  [Top]'s hom-sets live strictly above its points
-      (Instance/Top.v's header), so a setoid of sections is an object of
-      Sets one level up — the same placement Instance/Top/Forgetful.v
-      gives [Top_Forget] and Instance/Top/Closed.v gives [OpensF].  The
-      polymorphic [Sets] absorbs this silently: [ContinuousPresheaf X]
-      lands in the Sets whose objects are section setoids, not the Sets
-      whose objects are point setoids.
-
-   7. SPEC STAYS OUT OF SCOPE.  Riehl's clause (iv) is the prime-spectrum
-      functor from commutative rings (opposite) to spaces, a ring going to
-      its set of prime ideals under the Zariski topology.  The tree now
-      has commutative rings (Instance/Rng.v's [CRng]) and, with this
-      file, enough topology to state the target — but no ideals, no
-      primality, and no spectrum construction: Spec is a development of
-      its own (prime ideals as setoid predicates, Zariski opens generated
-      by ring elements, contravariant functoriality along ring maps), not
-      an increment of the presheaf example, and no in-tree issue currently
-      tracks it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Coq.Reals.Rdefinitions.
 Require Import Coq.Reals.Raxioms.

@@ -1,58 +1,8 @@
-(** * Galois connections are adjunctions between preorders
+(*
+   本文件给出预序集相关实例。
 
-    Mac Lane §IV.5 Theorem 1: a Galois connection between preordered sets is
-    exactly an adjunction between the corresponding thin categories (Categories
-    for the Working Mathematician, 2nd ed., printed pp. 95-96).  The book is
-    cited BY LOCATION only; its printed text was not consulted while writing
-    this file, and the locations follow issue jwiegley/category-theory#380.
-
-    A GALOIS CONNECTION between preorders [(A,≤)] and [(B,⊑)] is a pair of
-    monotone maps [f : A → B], [g : B → A] with
-
-        f a ⊑ b   iff   a ≤ g b.
-
-    Instance/Proset.v turns a [PreOrder] into a category whose homs ARE the
-    order relation and whose hom-setoid identifies everything
-    ([equiv := fun _ _ => True]).  Under that reading the displayed
-    biconditional is precisely an adjunction's hom-set isomorphism, and this
-    file proves the correspondence in both directions.
-
-    WHY THIS IS MORE THAN A RESTATEMENT: THE VACUITY IS THE CONTENT.  An
-    [Adjunction] (Theory/Adjunction.v) is one iso field plus FOUR
-    naturality fields, and an [Adjunction_Transform]
-    (Adjunction/Natural/Transformation.v) additionally carries two
-    triangle identities.  Over a thin category every one of those side
-    conditions is an equation between parallel morphisms, and in [Proset] any
-    two parallel morphisms are related by [True].  So they are all discharged
-    by [exact I].
-
-    That is exactly why the bridge is cheap -- and it is also the thing worth
-    proving rather than assuming.  The naive worry about a thin target is that
-    the resulting statements are VACUOUS.  The honest position is subtler, and
-    this file states it as [proset_side_conditions_vacuous] and its consequences:
-    the side conditions carry no information, but the ISO FIELD does.  A Galois
-    connection is genuine data -- the two maps and the biconditional -- and it
-    is only the coherence overhead that collapses.  Stating that as a reusable
-    lemma is what three of issue #380's hidden checkboxes ask for.  Note the
-    obligations here are in fact closed by [Program]'s default tactic, which
-    inlines [I]; the named lemma earns its keep at [galois_of_unit_counit],
-    where the bare closure inequalities alone yield a full adjunction.
-
-    A FACT ABOUT [Poset] WORTH RECORDING (not an error in the issue, which
-    never claims otherwise -- it simply names both files).
-    Instance/Poset.v reads [Definition Poset ... := Proset P],
-    DISCARDING its antisymmetry argument, which never appears in the body.
-    Hence:
-
-      - [Poset] and [Proset] are the same category, so anything proved for
-        [Proset] holds for [Poset] by delta-reduction and no separate [Poset]
-        lemma is ever needed ([poset_is_proset] records this by [eq_refl]);
-      - antisymmetry cannot be recovered FROM THE CATEGORY VALUE, so a
-        "mutually related implies equal" corollary must take it as a separate
-        hypothesis ([mutual_le_to_eq]).  It CAN still be stated over [Poset]
-        itself, since [Poset] receives antisymmetry as an argument and it is
-        therefore in scope -- so this is a statement about what the category
-        remembers, not about what is expressible. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

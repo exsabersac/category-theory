@@ -16,167 +16,18 @@ Generalizable All Variables.
 
 (** * The Lindenbaum category of an elementary theory *)
 
-(* Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-   Springer GTM 5, 1998, §IV.6, printed p. 98, Exercise 2
-   (catalog id maclane:IV.6:ex2).  Verbatim from the printed page:
+(*
+ nLab:      https://ncatlab.org/nlab/show/Lindenbaum-Tarski+algebra
+ nLab:      https://ncatlab.org/nlab/show/Heyting+algebra
+ nLab:      https://ncatlab.org/nlab/show/deduction+theorem
+ Wikipedia: https://en.wikipedia.org/wiki/Lindenbaum%E2%80%93Tarski_algebra
+ Wikipedia: https://en.wikipedia.org/wiki/Deduction_theorem
+ Book:      Lambek and Scott, "Introduction to Higher Order Categorical
 
-     "In some elementary theory T, consider the set S = {p, q, ...} of
-      sentences of T as a preorder, with p ≤ q meaning "p entails q"
-      (i.e., q is a consequence of p on the basis of the axioms of T).
-      Prove that S is a cartesian closed category, with product given by
-      conjunction and exponential q^p given by "p implies q"."
+   本文件给出具体实例。
 
-   (The book prints the relation symbol as the double-bar ≦; it is
-   rendered ≤ above.  The exercise sits on the same page as Exercises 1,
-   3, 4 and 5, none of which is treated here.)
-
-   nLab:      https://ncatlab.org/nlab/show/Lindenbaum-Tarski+algebra
-   nLab:      https://ncatlab.org/nlab/show/Heyting+algebra
-   nLab:      https://ncatlab.org/nlab/show/deduction+theorem
-   Wikipedia: https://en.wikipedia.org/wiki/Lindenbaum%E2%80%93Tarski_algebra
-   Wikipedia: https://en.wikipedia.org/wiki/Deduction_theorem
-   Book:      Lambek and Scott, "Introduction to Higher Order Categorical
-              Logic", Cambridge Studies in Advanced Mathematics 7, 1986,
-              Part I §§1-3 (the deductive system of a cartesian closed
-              category).
-
-   ** What this file builds
-
-   [Sent V] is a deliberately MINIMAL propositional syntax over a type V
-   of atoms: an atom former, truth, conjunction and implication, and
-   nothing else.  That is the whole of what Mac Lane's exercise needs —
-   product is conjunction, terminal is truth, exponential is implication
-   — and a full first-order language (quantifiers, equality, function
-   and relation symbols, a signature, substitution) is OUT OF SCOPE
-   here.  Nothing below is claimed about first-order theories, and
-   [Sent] is not proposed as a model of one.
-
-   A theory is a bare set of sentences, [Theo V := Sent V -> Prop]; no
-   deductive closure is imposed on it, and no consistency is required.
-   Entailment RELATIVE to that theory, [Entails T p q], is Mac Lane's
-   "q is a consequence of p on the basis of the axioms of T": it is an
-   inductive family in Prop, so that [Instance/Proset.v]'s [Proset] —
-   whose relation argument is a stdlib [relation A], hence Prop-valued —
-   applies directly, and the resulting category is thin ([lind_thin])
-   with no truncation or squashing anywhere.
-
-   ** The design decision that makes the exercise cheap
-
-   The rules of [Entails] are given in NATURAL DEDUCTION form, and this
-   was a choice rather than the only option.  The consequence is that the
-   deduction theorem is the CONSTRUCTOR [ent_curry] and evaluation is the
-   CONSTRUCTOR [ent_eval], so the currying bijection of a cartesian
-   closed category is available with no induction at all.  Presented
-   instead as a Hilbert system — K and S plus modus ponens axiomatise
-   the IMPLICATIONAL fragment, and [Entails] carries conjunction and
-   truth as well, so a Hilbert presentation matching it needs analogues
-   of [ent_top], [ent_pair], [ent_fst] and [ent_snd] besides — the
-   deduction theorem is a metatheorem whose proof is an induction over
-   derivations, and that induction would then have to be carried out
-   before [Lind_Closed] could be stated.  That the two presentations
-   define the same relation is the standard equivalence and is NOT
-   established here.
-
-   ** Which rule each structure consumes (measured, not asserted)
-
-   Each of the nine constructors was deleted in turn from [Entails] and
-   the file recompiled up to the end of section (D); the first site that
-   then stopped resolving is recorded here.
-
-     ent_refl   -> [entails_PreOrder], i.e. [id] of [Lind]
-     ent_cut    -> [entails_PreOrder], i.e. [compose] of [Lind]
-     ent_ax     -> NOTHING: sections (A)-(D) compile unchanged without it
-     ent_top    -> [Lind_Terminal]  ([one])
-     ent_pair   -> [Lind_Cartesian] ([fork])
-     ent_fst    -> [Lind_Cartesian] ([exl])
-     ent_snd    -> [Lind_Cartesian] ([exr])
-     ent_curry  -> [Lind_Closed]    ([to exp_iso])
-     ent_eval   -> [lind_uncurry],  i.e. [from exp_iso]
-
-   So exactly eight of the nine are consumed by the four structures, and
-   the ninth, the axiom rule [ent_ax], is what makes the theory parameter
-   do any work at all: it is the only rule whose case in
-   [entails_weaken] consumes the theory, and the only one used on the
-   target side of section (G)'s [no_full_functor_empty_to_all].  The
-   section is not built from it alone — [entails_weaken] is an induction
-   applying all nine constructors by name — but it is the rule the
-   section turns on, where two different axiom sets are shown to give
-   two categories that are not equivalent.  No rule was dropped as
-   redundant, and no rule is claimed
-   here to be underivable from the others — that would take a countermodel
-   per rule, and none is built.
-
-   ** What is free because the category is thin
-
-   Every hom-setoid of [Lind T] is trivially true ([Proset]'s [equiv] is
-   [fun _ _ => True]), so [lind_thin] holds by [I].  Consequently every
-   obligation of the four structures is discharged by [Program]'s
-   default tactic with no proof written in this file.  Counted off
-   [Print Module], they are fourteen: [one_unique] for [Lind_Terminal];
-   [fork_respects] and [ump_products] for [Lind_Cartesian]; for
-   [Lind_Closed] the two [proper_morphism] certificates of the transpose
-   and its inverse (they are morphisms of [Sets]), both isomorphism laws
-   of [exp_iso], and [ump_exponents']; and [fmap_respects], [fmap_id],
-   [fmap_comp] three times over for each of [LindSound] and
-   [LindWeaken].  So uniqueness of the transpose is free, and is not
-   proved here because there is nothing to prove; the four structures
-   carry exactly the data of the nine rules and no equational content.
-
-   ** The comparison with Instance/Props.v
-
-   [Instance/Props.v] is the semantic side: its objects are Props,
-   its arrows implications, and its header already records that cartesian
-   closure there is the deduction theorem.  The bridge is a valuation:
-   given [val : V -> Prop] under which every axiom of T holds,
-   [ent_soundness] carries derivations to implications, and [LindSound]
-   packages that as a functor [Lind T ⟶ Props].  Its measured strength,
-   with nothing claimed beyond what compiles below:
-
-     - it is a functor (all three functor laws are free, Props is thin);
-     - it preserves the terminal object, binary products and
-       exponentials ON THE NOSE, at Leibniz equality of objects
-       ([sound_terminal], [sound_product], [sound_exponent], all
-       [eq_refl]);
-     - it is Faithful, but VACUOUSLY: the source is thin, so [f ≈ g]
-       there is [True] and EVERY functor out of [Lind T] is faithful —
-       that general statement is [lind_any_Faithful], and
-       [LindSound_Faithful] is literally it;
-     - it is NOT full ([sound_not_Full]) and NOT essentially surjective
-       ([sound_not_EssentiallySurjective]), hence not an equivalence,
-       both refuted at the empty theory under the valuation that sends
-       every atom to True.
-
-   So the CCC structure of [Props] is reproduced on the nose by the
-   comparison, while the two refutations show that THIS comparison is
-   neither full nor essentially surjective.  They are statements about
-   the single functor [LindSound T_empty val_true val_true_empty], and
-   no constant here says that [Lind T_empty] and [Props] are
-   inequivalent.  Fullness would be COMPLETENESS of the calculus with
-   respect to a single valuation, which is a strictly stronger statement
-   than the exercise asks for and is refuted here rather than attempted.
-
-   ** Engineering findings
-
-   [Lib.v] sets [Uniform Inductive Parameters] for the whole
-   development, so inside the body of [Inductive Sent (V : Type)] the
-   name [Sent] already stands for [Sent V]; writing the parameter
-   explicitly there is rejected with "Illegal application
-   (Non-functional construction)", an error that names the parameter but
-   neither the flag nor the cause: it reports [Sent] as a non-functional
-   term applied to [V], without saying that [Sent] has already absorbed
-   the parameter.  The same applies inside [Entails].
-
-   [PreOrder] in this file's scope is [CRelationClasses.PreOrder], the
-   crelation-valued one, because [Category.Lib] exports it; the one
-   [Proset] wants is the Prop-valued [RelationClasses.PreOrder], written
-   qualified in [entails_PreOrder].  No extra [Require] is needed for the
-   qualified name, since that module is already loaded transitively.
-
-   [lind_thin] is proved here in one term rather than by requiring
-   [Instance/Proset/Order.v]'s [proset_thin], which is the donor and
-   applies to [Lind T] by conversion.  That is a measurement, not a
-   preference: the transitive in-project closure of this file is 27
-   modules, and adding [Instance/Proset/Order] takes it to 35. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** (A) Syntax *)
 

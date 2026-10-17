@@ -20,97 +20,15 @@ Generalizable All Variables.
 
 (** * The direct sum is the coproduct in Ab *)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician" (2nd ed.),
-         §III.3, book p. 63 (maclane:III.3:remark1)
-   Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
-         §3.2, Example 3.10, printed p. 64 (awodey:3.2:example10)
-   Book: Riehl, "Category Theory in Context" (2nd ed.), §3.1,
-         printed p. 93 (riehl:3.1:exxi)
-   Wikipedia: https://en.wikipedia.org/wiki/Coproduct
+(*
+ Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
+ Book: Riehl, "Category Theory in Context" (2nd ed.), §3.1,
+ Wikipedia: https://en.wikipedia.org/wiki/Coproduct
 
-   Mac Lane's §III.3 roster names the direct sum as the coproduct in Ab,
-   and Awodey's Example 3.10 says exactly why it is not the free product:
-   the free product of abelian groups need not be abelian, so the
-   coproduct in Ab is instead carried by the underlying PRODUCT set, with
-   injections a ↦ (a, 0) and b ↦ (0, b) and copairing (a, b) ↦ f a + g b.
-   That is the semiadditive phenomenon, and Instance/CMon/Biproduct.v had
-   already proved every line of it one layer down, for commutative
-   monoids.
+   本文件给出余积实例。
 
-   HOW MUCH IS INHERITED, MEASURED RATHER THAN ASSERTED.  Instance/Ab.v
-   makes [AbObject] extend [CMonObject] by a coercion
-   ([ab_cmon :> CMonObject], Instance/Ab.v) and — the load-bearing
-   choice — defines [AbHom A B := CMonHom A B] as a bare [Definition]
-   (Instance/Ab.v), with [Ab]'s hom-setoid, identity and composition
-   taken from [CMon] literally.  So an arrow of Ab IS an arrow of CMon,
-   not merely one up to some comparison.
-
-   The consequence, measured: TEN of the biproduct record's ELEVEN fields
-   are supplied by Instance/CMon/Biproduct.v's constants WITH NO ADAPTER
-   AT ALL, by [:=] and no tactic — the four structural morphisms, all
-   four interaction laws, and both universal properties.  The ONLY new
-   field is [biproduct_obj]: [Ab_product] adds the negation
-   [(a, b) ↦ (−a, −b)] that a [CMonObject] does not carry, and its two
-   obligations are this file's only new proof content.
-
-   AN EARLIER DRAFT OF THIS HEADER GOT THAT WRONG AND IS CORRECTED HERE.
-   It claimed that the two interaction laws comparing against [zero_mor]
-   "do not transfer" and are "not even well-typed here", on the ground
-   that Ab's zero object is [Ab_Zero] while CMon's is [CMon_Zero].  That
-   is FALSE, and the falsity is now machine-checked:
-   [ab_zero_mor_is_cmon_zero_mor] shows the two zero morphisms are the
-   SAME TERM by [eq_refl].  They are, because [Ab_Zero] is assembled from
-   [Ab_Terminal] and [Ab_Initial], whose [one] and [zero] fields are
-   Instance/Ab.v's [Ab_one] and [Ab_zero_hom] — and those are literally
-   [CMon_one] and [CMon_zero_hom] (Instance/Ab.v).  So
-   [Ab_exl_inr] and [Ab_exr_inl] are [CMon_exl_inr] and [CMon_exr_inl],
-   supplied by [:=] like the rest.  The general lesson is the one the
-   correction cost: at this depth of inheritance, "different record at a
-   different category" is not by itself a reason for anything, and the
-   convertibility has to be TESTED rather than reasoned about.
-
-   WHAT IS PROVED, AND AT WHAT STRENGTH.  [Ab_Biproducts] inhabits
-   [HasBiproducts Ab] — the first such instance outside CMon — and
-   [Structure/Biproduct/Cartesian.v]'s generic bridge then yields
-   [Ab_Cartesian] and [Ab_Cocartesian], the tree's first product and
-   coproduct structures on Ab (neither existed: no [Ab_Cartesian],
-   [Ab_product] or [Ab_Biproduct] occurred anywhere).  The identification
-   of the coproduct object with the product object,
-   [Ab_coprod_is_prod], holds at LEIBNIZ EQUALITY by [eq_refl], as do the
-   readings of [inl], [inr] and [merge] as the concrete maps
-   ([Ab_inl_is_pair_zero] and its siblings).  Non-degeneracy is proved
-   rather than assumed: over ℤ ⊕ ℤ the two injections have DIFFERENT
-   values at the generator ([ab_coprod_injections_differ]), and the
-   copairing and both projections COMPUTE on closed input by [eq_refl]
-   ([ab_coprod_merge_computes], [ab_coprod_exl_computes],
-   [ab_coprod_exr_computes]).
-
-   A UNIVERSE PIN, MEASURED AND ATTRIBUTED BUT NOT REPAIRED.
-   [Ab_product@{…}] is universe-polymorphic with thirteen free binders,
-   but [Ab_Biproduct@{u} : ∀ M N : AbObject@{Set Set Set}, …] and
-   [Ab_Cocartesian@{u} : Cartesian@{u Set}] are PINNED at [Set].  The
-   cause is located rather than guessed: Instance/Ab.v's [Ab_trivial]
-   is declared with NO universe binders, at [AbObject@{Set Set Set}], and
-   everything mentioning a zero morphism goes through it via [Ab_Zero].
-   The contrast that identifies it is Instance/CMon/Coproduct.v, whose
-   [CMon_Cocartesian@{u u0} : Cartesian@{u u0}] is FREE of any [Set] —
-   because Instance/CMon/Biproduct.v's [CMon_trivial@{o}] IS
-   polymorphic.  So the pin is one donor constant's, it enters exactly
-   where the zero object does, and it is NOT claimed unavoidable; the
-   repair belongs to Instance/Ab.v and is not made here.  Both halves are
-   guarded in Test/ProbeCoproduct.v, the negative at [Ab_Biproduct] and
-   the control at [Ab_product], each above [Set].
-
-   WHAT IS NOT DELIVERED.  No indexed or infinite direct sums — the
-   coproduct here is binary, matching [Cocartesian]; the indexed statement
-   would need [HasIndexedCoproducts Ab], which is not built.  No
-   [Additive Ab] or [Abelian Ab] instance is claimed: Instance/Ab.v
-   records that it instantiates none of [Preadditive], [Additive] or
-   [Abelian], and while [Structure/AbCategory.v] has since supplied
-   [Ab_Preadditive], the remaining two need more than biproducts.  And
-   nothing is said about coproducts in Grp, where the answer is the free
-   product and no part of this file applies — that is exactly Awodey's
-   point in Example 3.10, and it is why this file is about Ab. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The direct sum as an object of Ab *)
 

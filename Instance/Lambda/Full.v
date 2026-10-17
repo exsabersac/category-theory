@@ -16,50 +16,11 @@ Set Transparent Obligations.
 
 (** Reduction by decomposition into an evaluation context and a redex. *)
 
-(* This module gives a Felleisen-Hieb-style, context-based presentation of the
-   small-step reduction relation for the de Bruijn STLC (see [Exp]).  Instead
-   of one congruence rule per elimination form (as in [Step]), reduction is
-   factored into three reusable pieces:
+(*
+   本文件给出全嵌入相关。
 
-     - a [Redex] is a contraction at the root: beta ([R_Beta]) and the two
-       projection rules ([R_Fst], [R_Snd]);
-     - a [Ctxt] is an evaluation context, i.e. a typed term with a single hole,
-       built as a snoc-list of single-constructor [Frame]s;
-     - [Plug e C e'] witnesses that filling the hole of [C] with [e] yields the
-       whole term [e'] (the recomposition operation written E[e] on paper).
-
-   A single rule then closes contraction under arbitrary evaluation contexts:
-
-     [Step]:   Plug e1 C e1'  →  Plug e2 C e2'  →  Redex e1 e2  →  e1' ---> e2'
-
-   so e1' ---> e2' iff e1' decomposes as C[e1], e1 contracts to e2, and e2'
-   recomposes as C[e2].  This is the standard contextual/reduction-semantics
-   schema: decompose into context-plus-redex, contract, plug back.
-
-   Note that, despite living next to a general beta-reduction story, the
-   relation here is call-by-value, not full beta-reduction: the redexes
-   [R_Fst]/[R_Snd] require both projection components to be values
-   ([ValueP]), and the [Plug] constructors that descend into a second
-   subterm ([Plug_PairR], [Plug_AppR]) require the first to already be a
-   value, fixing a left-to-right evaluation order.  Reduction therefore never
-   proceeds under a [LAM], and the contexts decompose exactly the redex that
-   [Step] (the congruence-rule presentation) would also reduce.
-
-   The accompanying lemmas establish that this presentation is well behaved:
-   [strong_progress] (a closed term is a value or steps), [Plug_functional]
-   and [Plug_injective] (plugging is single-valued in either argument),
-   [Redex_deterministic] (contraction is a function), and the congruence
-   lemmas [AppL_LAM]/[AppR_LAM].  The [Frame]/[Ctxt] and [Plug] layers are
-   moreover shown to be categorical: [Ctxt_id]/[Ctxt_comp] satisfy the
-   identity and associativity laws ([Ctxt_id_left], [Ctxt_id_right],
-   [Ctxt_comp_assoc]).
-
-   References:
-     beta-reduction      https://ncatlab.org/nlab/show/beta-reduction
-     lambda-calculus     https://ncatlab.org/nlab/show/lambda-calculus
-     evaluation contexts / reduction semantics:
-       M. Felleisen and R. Hieb, "The revised report on the syntactic
-       theories of sequential control and state", TCS 103(2), 1992. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Full.
 

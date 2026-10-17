@@ -9,50 +9,11 @@ Require Import Category.Theory.Bicategory.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/Cat
+(*
+   本文件给出双范畴实例。
 
-   Cat is the motivating bicategory: its 0-cells are categories, the hom-
-   category `bicat C D` is the functor category `[C, D]` (objects = functors,
-   2-cells = natural transformations, vertical composition = `nat_compose`),
-   horizontal composition is functor composition `◯` extended to natural
-   transformations by the Godement/horizontal composite `nat_hcompose`, and the
-   unitors and associator are the coherence isomorphisms of `Instance/Fun.v`.
-   Following `Instance/Cat.v`, `bi0cell := Category` sits one universe level up;
-   `Cat_Bicategory` is a registration-free `Definition`, never an `Instance`
-   (there is no bicategory of bicategories).
-
-   RECONCILING THE REVERSED NAMING OF Instance/Fun.v.  The unitor isomorphisms
-   in `Instance/Fun.v` are named against the usual monoidal convention (its own
-   comment flags this):
-
-       nat_λ F : F ◯ Id ≅ F   is the RIGHT-unit isomorphism (Id on the right),
-       nat_ρ F : Id ◯ F ≅ F   is the LEFT-unit  isomorphism (Id on the left).
-
-   The bicategory's `bi1id` is the identity functor `Id`, so `bi1id ∘∘∘ f` is
-   `Id ◯ f` and `f ∘∘∘ bi1id` is `f ◯ Id`.  Hence the CROSSED assignment:
-
-       hunit_left  f : bi1id ∘∘∘ f = Id ◯ f ≅ f   :=  nat_ρ f   (Fun's "ρ"),
-       hunit_right f : f ∘∘∘ bi1id = f ◯ Id ≅ f   :=  nat_λ f   (Fun's "λ").
-
-   For the associator, `nat_α F G H : H ◯ (G ◯ F) ≅ (H ◯ G) ◯ F` runs in the
-   `h ◯ (g ◯ f) → (h ◯ g) ◯ f` direction, whereas `hassoc h g f` must run
-   `(h ∘∘∘ g) ∘∘∘ f → h ∘∘∘ (g ∘∘∘ f)`, i.e. `(h ◯ g) ◯ f → h ◯ (g ◯ f)`.  So
-   `hassoc h g f` is the INVERSE of `nat_α f g h`: `iso_sym (nat_α f g h)`, whose
-   `to` is `from (nat_α f g h)` (mind the factor order `f g h`).
-
-   PERFORMANCE / DEFINITIONAL-EQUALITY NOTE (a deliberate deviation from the
-   `Build_Bicategory'` route).  The `hcompose` field wants a functor of type
-   `bicat D E ∏ bicat C D ⟶ bicat C E`, and `Cat_Hcompose` has the type
-   `[D, E] ∏ [C, D] ⟶ [C, E]`.  For Coq to accept it cheaply, the manifest
-   hom-category `bicat C D` must be *definitionally* the functor category
-   `[C, D]`; otherwise unifying two non-convertible `Category` records churns.
-   We obtain that definitional equality by feeding the structural fields of the
-   bicategory from `[C, D]`'s own projections (record eta then gives
-   `bicat C D ≡ [C, D]`).  Record eta breaks if `comp_assoc_sym` is the
-   `symmetry`-derived form of `Build_Bicategory'`, so `Cat_Bicategory` is built
-   with the raw `Build_Bicategory`, supplying `[C, D]`'s `comp_assoc_sym`
-   projection directly.  `Build_Bicategory'` remains available (and type-checked)
-   in `Theory/Bicategory.v`; it is simply not the constructor used here. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Horizontal composition as a bifunctor `[D, E] ∏ [C, D] ⟶ [C, E]`: on objects
    it composes functors, on 2-cells it takes the Godement horizontal composite

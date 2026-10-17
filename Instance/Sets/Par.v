@@ -6,23 +6,14 @@ Generalizable All Variables.
 
 (** The category of partial maps, built on the category of setoids. *)
 
-(* nLab: https://ncatlab.org/nlab/show/partial+function
-   nLab: https://ncatlab.org/nlab/show/maybe+monad
-   Wikipedia: https://en.wikipedia.org/wiki/Partial_function
+(*
+ nLab: https://ncatlab.org/nlab/show/maybe+monad
+ Wikipedia: https://en.wikipedia.org/wiki/Partial_function
 
-   This is the category PAR (also written Par or Pfn) of setoids and partial
-   maps. Following the standard presentation, a partial map A ⇀ B is encoded
-   as a total setoid map A → option B (= A → 1 + B): the elements sent to
-   [None] are exactly those outside the domain of definition. Equivalently
-   this is the Kleisli category of the maybe monad [option] on [Sets]; in Set
-   (a Boolean topos) every Kleisli map of [option] is a partial function, so
-   PAR ≅ Kleisli(option).
+   本文件给出集合范畴相关实例。
 
-      objects: setoids
-       arrows: partial setoid maps  f : A → option B   (None = undefined)
-     identity: the total map  x ↦ Some x
-   composition: Kleisli composition — (f ∘ g) x = match g x with
-                  None => None | Some b => f b end  (undefined if either is) *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Part : Category := {|
   obj := Sets;

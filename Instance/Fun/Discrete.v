@@ -21,108 +21,15 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §II.4, printed pp. 40–42 (PDF 50–52) — maclane:II.4:remark1,
-              maclane:II.4:ex2, maclane:II.4:remark2
-   Book:      Fong & Spivak, "Seven Sketches in Compositionality" (CUP,
-              2019), §3.3.4 Examples 3.53 and 3.56, printed p. 96 (PDF
-              p. 108) — 7sketches:3.3.4:example3.53,
-              7sketches:3.3.4:example3.56
-   nLab:      https://ncatlab.org/nlab/show/functor+category
-   Wikipedia: https://en.wikipedia.org/wiki/Functor_category
+(*
+ Book:      Fong & Spivak, "Seven Sketches in Compositionality" (CUP,
+ nLab:      https://ncatlab.org/nlab/show/functor+category
+ Wikipedia: https://en.wikipedia.org/wiki/Functor_category
 
-   Functor categories out of discrete shapes are function spaces.  Over
-   the terminal category the functor category recovers the target; over
-   a discrete set it is a power of the target, with NO naturality
-   constraint anywhere — a morphism of diagrams over a discrete shape is
-   a bare indexed family; over a two-element discrete target it computes
-   characteristic functions, which is also how the functor category
-   escapes a fixed universe when the domain is as large as the universe
-   (Cantor's diagonal).
+   本文件给出离散范畴实例。
 
-     - [Discrete_Transform]/[Discrete_hom_iso]: a bare family
-       [∀ a, F a ~> G a] IS a natural transformation over a discrete
-       shape (naturality is free), and the whole hom-setoid is
-       componentwise — [Discrete_hom_iso] states it as a hom-setoid
-       isomorphism in Sets, the discrete-shape analogue of
-       [One_hom_iso] below
-     - [Fun_Discrete_PiCat]: [DiscreteCat A, B] ≅ the indexed product
-       [PiCat (fun _ : A => B)] in Cat — "B^A is an A-fold power of B",
-       for ANY index type A
-     - [Fun_Discrete_power]: for finite shapes,
-       [DiscreteCat (Fin.t n), B] ≅ [Pow B n], the n-fold iterated
-       binary product B ∏ (B ∏ (… ∏ 1)) — Mac Lane's Exercise II.4.2
-     - [Fun_Discrete_bool_subsets]: functors [DiscreteCat X] ⟶
-       [DiscreteCat bool], up to natural isomorphism, are exactly the
-       characteristic functions X → bool — the power-set computation
-     - [cantor_predicates]/[cantor_bool]/[Fun_Discrete_no_surjection]:
-       the diagonal argument, and with it the size half of Mac Lane's
-       remark: no family of functors indexed by the domain's objects
-       exhausts [DiscreteCat X, DiscreteCat bool]
-     - [One_hom_iso]: the morphism half of [1, B] ≅ B as a hom-setoid
-       isomorphism in Sets (Seven Sketches Example 3.53, stated for any
-       B and instantiated at B := Sets)
-
-   Design:
-
-   1. THE OBJECT HALF OF [1, B] ≅ B IS ALREADY IN THE TREE.  Theory/
-      Shapes.v proves [One_Fun_iso : [_1, C] ≅[Cat] C], and
-      Instance/One.v and Instance/One/Diagonal.v already cite it; this
-      file does not rebuild it.  What Seven Sketches Example 3.53 adds
-      is the MORPHISM half stated at the hom-setoid level, [One_hom_iso]
-      below.  Example 3.56 states the object half as an *equivalence*
-      of categories; the in-tree statement is an isomorphism in [Cat],
-      which by Instance/Cat.v's convention (hom-setoid = natural
-      isomorphism of functors) IS equivalence-strength, so the stronger
-      packaging costs nothing and is what is reported.
-
-   2. EVERYTHING FACTORS THROUGH THE INDEXED PRODUCT.  The finite-power
-      statement is proven once at the level of families
-      ([Fun_Discrete_PiCat], for any index type) and then by induction
-      on n entirely inside [PiCat], where morphisms are componentwise
-      and no naturality obligation ever arises: [PiCat_Fin_zero] peels
-      the empty case to the terminal category, [PiCat_Fin_succ] peels
-      one component off [Fin.t (S n)] via [Fin.caseS'], and the local
-      congruence isomorphism [second_iso] (from [Cartesian]'s [second]
-      calculus) transports the induction hypothesis across [B ∏ −].
-      The n-fold power [Pow B n] takes the nullary case to be the
-      terminal category [_1], the standard empty product, so Exercise
-      II.4.2's "finite power" reads uniformly for all n.  The
-      trailing terminal factor can be collapsed with the right
-      unitor [prod_one_r]; [Fun_Discrete_power_two_flat] exhibits
-      the collapse at n = 2, giving the book's literal "B ∏ B" — at
-      general n the collapse would iterate [second_iso] down the
-      spine (the [_1] sits innermost), and that general flat form is
-      not stated here.
-
-   3. THE POWER-SET COMPUTATION IS CONSTRUCTIVE, SO IT LANDS ON
-      DECIDABLE SUBSETS.  A functor [DiscreteCat X ⟶ DiscreteCat bool]
-      is, up to the ambient natural isomorphism, exactly a
-      characteristic function X → bool ([Fun_Discrete_bool_subsets] —
-      isomorphisms in [DiscreteCat bool] are equality proofs, so the
-      Functor_Setoid equivalence collapses to pointwise equality).
-      Classically X → bool is the power set of X; constructively it is
-      the DECIDABLE subsets, the same reading as
-      Instance/FinSet/Classifier.v's Ω := 2, and the classical power
-      set would instead take values in a [Prop]-valued target one
-      universe up (Instance/Sets/Classifier.v's [PropSetoid]).  Mac
-      Lane's two-object case is stated for bool, where his counting
-      remark is exact.
-
-   4. THE SIZE REMARK IS A THEOREM, NOT A UNIVERSE INCIDENT.  Mac
-      Lane's second remark — for a universe-sized discrete domain the
-      functor category outgrows the universe — is rendered structurally
-      by the library's universe discipline ([Category@{o h p}] with
-      [Cat]'s objects one level down; Instance/Cat.v's size note).
-      What CAN be said inside a single universe is the diagonal
-      argument behind it: [cantor_predicates] (no family of predicates
-      indexed by A is extensionally surjective onto A → Prop) and
-      [cantor_bool] (likewise for A → bool), both bare inductions with
-      no axioms; [Fun_Discrete_no_surjection] then connects the bool
-      form through the characteristic-function correspondence: no
-      X-indexed family of functors exhausts
-      [DiscreteCat X, DiscreteCat bool] up to natural isomorphism —
-      "B^X is strictly bigger than X" at the smallest interesting B. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Natural transformations over a discrete shape are bare families *)
 

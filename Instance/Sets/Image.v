@@ -10,34 +10,13 @@ Generalizable All Variables.
 
 (** * Images in [Sets] *)
 
-(* nLab:      https://ncatlab.org/nlab/show/image
-   Wikipedia: https://en.wikipedia.org/wiki/Image_(category_theory)
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Image_(category_theory)
 
-   Concrete images in the category of setoids: every morphism f : X ~> Y
-   of [Sets] splits as an epimorphism onto its image followed by a
-   monomorphism into its codomain.
+   本文件给出集合范畴相关实例。
 
-   The image object carries the proof-relevant sigma type
-
-       { y : Y & { x : X & f x ≈ y } }
-
-   — a point of Y together with a chosen preimage and the witness that f
-   sends that preimage to it — and its setoid compares Y-components only:
-
-       (y1; _) ≈ (y2; _)  :=  y1 ≈ y2.
-
-   The epi leg sends x to (f x; (x; _)), the mono leg is the first
-   projection, and their composite agrees with f pointwise on the nose.
-
-   Both class memberships are established directly from these definitions;
-   in particular the construction needs no epis-are-surjections result for
-   [Sets] — the factorization is direct.  The left leg is epic because two
-   morphisms out of the image that agree on all points of the shape
-   (f x; (x; _)) agree everywhere: every image point is ≈ to one of that
-   shape by its stored witness.  The right leg is monic because agreement
-   of first projections is exactly the image setoid's equivalence.  The
-   whole package is bundled as [Sets_Image_Factorization], an (Epi, Mono)
-   [Factorization] in the sense of Structure/Factorization.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SetsImage.
 

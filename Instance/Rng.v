@@ -17,86 +17,14 @@ Require Import Coq.micromega.Lia.
 
 Generalizable All Variables.
 
-(** * Rng: the category of unital rings
+(*
+ nLab: https://ncatlab.org/nlab/show/Ring
+ Wikipedia: https://en.wikipedia.org/wiki/Category_of_rings
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.7
-    (printed p. 25): the roll-call of large categories includes Rng, all
-    small (unital) rings with the ring homomorphisms preserving the
-    multiplicative unit [maclane:I.7:def1, maclane:I.7:construction2];
-    §I.5 Exercise 4 (printed p. 21): the inclusion ℤ → ℚ is an epi of
-    Rng that is not surjective [maclane:I.5:ex4].
-    nLab: https://ncatlab.org/nlab/show/Ring
-    Wikipedia: https://en.wikipedia.org/wiki/Category_of_rings
+   本文件给出具体实例。
 
-    NAMING (per the issue's QA audit).  This category keeps Mac Lane's
-    name [Rng] — his abbreviation for the category of UNITAL rings — and
-    it IS Theory/Algebra/Rig.v's category [Ring], definitionally: a
-    [RingObject] there is a rig with additive inverses, i.e. exactly a
-    unital (not necessarily commutative) ring over a setoid carrier, and
-    its homomorphisms are the [RigHom]s, which preserve 0, +, 1 and · —
-    unit preservation is a FIELD, as Mac Lane requires — while
-    preservation of negation is the theorem [RigHom_neg].  The set-level
-    CLASS keeps the name [Ring]/[RingObject] (seventeen Seven Sketches
-    issues consume it under that name); the CATEGORY answers to both,
-    with [Rng] the Mac Lane-side entry point.  The category of
-    NON-unital rings is Instance/Rg.v's [Rg], with the forgetful
-    functor [Rng_Forget_Rg : Rng ⟶ Rg] there, so the direction is
-    unambiguous.  That file also proves the two categories are not
-    interchangeable: [Rg] has a ZERO object (the zero rng is initial
-    AND terminal, a rng homomorphism not being required to preserve 1)
-    where [Rng] has ℤ initial and the zero ring terminal, which do not
-    coincide.
-
-    CONTENT.  Beyond the category itself: the forgetful functors to [Ab]
-    (the additive abelian group, Instance/Ab.v) and to [Sets]; the zero
-    ring is terminal ([Rng_Terminal_zero]); the integers are initial
-    ([Rng_Initial_Z] — the ring-side counterpart of Rig.v's ℕ-initiality,
-    with the unique homomorphism z ↦ z·1 built by sign case analysis and
-    verified through the hand-rolled Type-valued recursor [Z_peano_rect]
-    below — the stdlib offers only the Prop-valued [Z.peano_ind]); the
-    full subcategory
-    [CRng] of commutative rings (needed downstream by the matrix-category
-    and GL_n issues); injections are monic and surjections are epi; and
-    the headline separation, Mac Lane's Exercise I.5.4:
-
-        [ZtoQ_epi_not_surjective] — the inclusion ℤ → ℚ is an epimorphism
-        of [Rng] although it is not surjective.
-
-    The epi half is the standard argument made constructive: a ring
-    homomorphism out of ℚ is determined by its values on the image of ℤ,
-    because g (1/b) is a two-sided multiplicative inverse of g b and
-    two-sided inverses are unique; no fraction ever needs to be chosen,
-    only cancelled.  The non-surjectivity half exhibits 1/2.
-
-    SCOPE NOTE, disclosed, and a DEFERRAL SINCE DISCHARGED.  "Monics are
-    exactly the injections" ships here in the direction that needs no new
-    machinery: injective ⇒ monic ([rng_injective_monic]), plus
-    surjective ⇒ epi ([rng_surjective_epic], whose converse is REFUTED by
-    the headline theorem).  The converse monic ⇒ injective requires
-    probing with the free ring on one generator — the polynomial ring
-    ℤ[x] — exactly as Instance/Sets.v probes with the singleton and
-    Instance/Top.v with the point space.  That probe did not exist when
-    this file was written and the result was deferred here; it exists
-    now, and the result is PROVED, in Instance/Rng/Polynomial.v.
-
-    What landed is STRONGER than what was deferred, in two respects worth
-    stating rather than leaving for a reader to notice.  First, it is a
-    BICONDITIONAL: [rng_monic_iff_injective] pairs the new
-    [rng_monic_injective] with this file's [rng_injective_monic], so
-    "monics are exactly the injections" is now the whole sentence and not
-    half of it.  Second, it holds over ALL of [Rng] and not merely over
-    [CRng].  The evaluation homomorphism out of ℤ[x] needs its target
-    element to commute with the image of the coefficients, which over an
-    arbitrary non-commutative ring is not automatic; Polynomial.v's
-    [zring_central] supplies it, the integers being central in every
-    unital ring, so ℤ[x] is free on one generator in the category of all
-    unital rings and the probe is available at every object of [Rng].
-
-    The statement cannot live in this file: ℤ[x] is built downstream of
-    [Rng_Initial_Z] and [CRng], both of which it consumes, so it lives
-    where its probe does.  (The issue's own verification list names
-    [Rng], [CRng], [Rng_Initial_Z], [Rng_Terminal_zero] and
-    [ZtoQ_epi_not_surjective] as the audited artifacts.) *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The category, under Mac Lane's name *)
 

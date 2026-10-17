@@ -6,37 +6,11 @@ Require Import Category.Instance.Ab.
 
 Generalizable All Variables.
 
-(** * Subtraction in an abelian group
+(*
+   本文件给出阿贝尔群相关实例。
 
-    Instance/Ab.v carries [ab_neg_right], [ab_cancel_l], [ab_neg_unique],
-    [ab_neg_zero], [ab_neg_plus] and [ab_map_neg], but no SUBTRACTION and
-    no involutivity of negation.  Both quotient constructions that follow
-    -- Instance/Mod/Quotient.v's quotient by a submodule and
-    Instance/Rng/Quotient.v's quotient by a two-sided ideal -- are
-    defined by the relation "x - y lies in the sub-thing", so both need
-    the same dozen shuffles, and this file is where they live so that
-    neither restates them and no ring file has to depend on a module
-    file to get them.
-
-    Nothing here mentions a scalar action or a multiplication: it is
-    stated over [AbObject] and applies at [Ab], at [RMod R] through the
-    [rm_ab] coercion, and at the additive group [ring_ab R] of a ring.
-
-    THIS FILE IS AN UPSTREAMING STAGING POST, and says so rather than
-    pretending to be the first word.  [ab_neg_invol] is the THIRD copy of
-    ELEMENT-LEVEL negation-involutivity in the tree (the qualifier is
-    load-bearing: Structure/AbCategory.v's [abneg_invol] is a fourth
-    involutivity, but of the negation on the HOM-GROUPS of an
-    Ab-enriched category, not on the elements of an [AbObject]):
-    Instance/Rep.v has it as [ab_neg_neg]
-    with this exact statement (that file's own header calls it an
-    upstreaming candidate for Instance/Ab.v), and Instance/Rng.v has
-    [ring_neg_involutive] for the additive group of a ring.  The name
-    differs from Rep.v's deliberately, so that a file importing both does
-    not shadow.  The right fix is to move the whole block into
-    Instance/Ab.v and delete the other two; that is not done here because
-    Instance/Ab.v sits under [Rng], [Mod] and much else, and the rebuild
-    is not this issue's to spend. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ab_sub (A : AbObject) (x y : carrier (cmon_setoid A)) :
   carrier (cmon_setoid A) := cmon_plus A x (ab_neg A y).

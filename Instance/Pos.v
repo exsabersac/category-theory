@@ -1,70 +1,8 @@
-(** * Pos, the category of posets and monotone maps
+(*
+   本文件给出具体实例。
 
-    Awodey §1.4 (Categories of structured sets): posets with monotone maps
-    form a category, the identity being monotone and monotone maps being
-    closed under composition.  The book is cited BY LOCATION only; its printed
-    text was not consulted while writing this file, and the locations follow
-    issue jwiegley/category-theory#641.
-
-    TWO DIFFERENT THINGS CALLED "POSET AS A CATEGORY", and this file is the
-    second.  Instance/Poset.v turns ONE poset into a thin category, whose
-    objects are the elements and whose homs are the order relation.  This file
-    builds the category whose OBJECTS ARE POSETS and whose morphisms are the
-    monotone maps between them -- the structured-sets reading, in the same
-    spirit as Instance/CMon.v's [CMon].  Neither subsumes the other, and #641
-    is explicit that it wants this one.
-
-    WHY Instance/Poset.v CANNOT BE REUSED.  Its [Poset] (shifted by
-    this commit's own two-line edit to that file's header) reads
-    [Definition Poset ... := Proset P], DISCARDING the antisymmetry argument,
-    which never appears in the body.  So a [Poset] VALUE is literally a
-    [Proset] value: antisymmetry is not recoverable from it, and a category of
-    posets cannot be carved out of [Cat] by selecting such values.  The
-    structure has to be bundled, which is what [PosetObject] does.
-
-    A FIELD Instance/Poset.v DOES NOT HAVE: [pos_le_respects], requiring the
-    order to be compatible with the carrier's own [≈].  State its status
-    accurately: it is an OBJECT WELL-FORMEDNESS condition, not a lemma anything
-    below consumes.  Composition of monotone maps is proved from
-    [SetoidMorphism]'s [proper_morphism] alone, and the file still compiles
-    with [pos_le_respects] deleted.  It is kept because an order that
-    distinguished [≈]-equal elements would not deserve the name, and because
-    Instance/CMon.v carries [cmon_plus_respects] in exactly this slot -- not
-    because any proof here needs it.
-
-    Antisymmetry is likewise stated at the SETOID level
-    ([pos_antisym : le x y -> le y x -> x ≈ y]) rather than with Leibniz [eq];
-    that is the honest reading of "partial order" over setoid carriers.  It is
-    what makes this the category of POSETS -- [Pos] compiles as a category
-    without it -- and it is a disclosed deviation from Awodey's set-level
-    statement.
-
-    SCOPE.  #641's work item 2 offers an "alternative": realize [Pos] as a full
-    subcategory of [Cat] on "the skeletal thin categories [Poset P]".  That is
-    NOT taken, and the honest reason is the one the issue itself gives -- it
-    calls the direct construction "likely simpler and the recommended
-    principal artifact".
-
-    Be precise about what is and is not an obstacle here, because it is easy to
-    overstate.  The subcategory ITSELF is constructible in a few lines:
-    Construction/Subcategory.v's [sobj : C -> Type] takes an arbitrary
-    [Type]-valued predicate, so "thin and skeletal" can be selected directly
-    with no equality on [Category] values anywhere.  Nor does "skeletal thin"
-    misdescribe its family: skeletality is exactly what antisymmetry buys (as
-    Instance/Poset.v says), and it strictly excludes preorders -- the
-    two-element indiscrete preorder is thin and NOT skeletal.
-
-    What is genuinely deferred is the AGREEMENT: showing the subcategory
-    presentation matches [Pos] means recovering the carrier setoid and the
-    order from a skeletal thin category, which is real work and is not
-    attempted here.  ([thin] and [skeletal] also have no in-tree predicate
-    today, but that is a "nobody wrote it yet" fact, not a viability
-    argument.)
-
-    A comparison in the other direction is cheap and IS provided:
-    [PosetAsCategory] sends a poset to its thin category and
-    [MonotoneAsFunctor] sends a monotone map to the induced functor, which is
-    the honest formal link between the two readings. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

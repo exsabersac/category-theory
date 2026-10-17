@@ -12,42 +12,14 @@ Generalizable All Variables.
 
 (** * Partial maps and pointed sets *)
 
-(* nLab:      https://ncatlab.org/nlab/show/partial+function
-   nLab:      https://ncatlab.org/nlab/show/pointed+set
-   Wikipedia: https://en.wikipedia.org/wiki/Partial_function
+(*
+ nLab:      https://ncatlab.org/nlab/show/pointed+set
+ Wikipedia: https://en.wikipedia.org/wiki/Partial_function
 
-   The header of Instance/Coq/Par.v states, in prose, that the category of
-   partial maps is "equivalent (not isomorphic) to the category of pointed
-   sets": the object A realizes the pointed set A ⊔ {*}, with the adjoined
-   point standing for divergence.  This file proves that sentence for the
-   setoid variant, comparing Instance/Sets/Par.v's [Part] with
-   Instance/Sets/Pointed.v's [PointedSets].
+   本文件给出集合范畴相关实例。
 
-   The comparison functor [Part_to_Pointed] sends A to (option A, None) and a
-   partial map — which in [Part] IS a total map A → option B — to the pointed
-   map fixing [None].  It is FULL and FAITHFUL with no hypotheses: the
-   restriction g ↦ (a ↦ g (Some a)) inverts its action on homs, and
-   pointedness, i.e. g None ≈ None, is exactly the statement that nothing is
-   lost by restricting.
-
-   Essential surjectivity is another matter.  To exhibit an arbitrary pointed
-   set (B, b0) as B' ⊔ {*} one must produce B' — the points of B other than
-   the basepoint — and that requires deciding `b ≈ b0`.  The equivalence is
-   therefore stated over an explicit hypothesis [PointedDecidablePt], with the
-   quasi-inverse sending (B, b0) to the apartness sub-setoid { b : B | b ≉ b0 }
-   ([Apart]).  Classically that hypothesis always holds, so what is proved
-   here IS the textbook statement; constructively, the decidable objects are
-   precisely where the classical picture survives.  Objects satisfying it are
-   exhibited in the companion file Finite.v of this directory.
-
-   Why the equivalence is not an isomorphism is visible in the round trip:
-   [Apart] of (option A, None) is A only up to isomorphism, since its elements
-   are points of [option A] paired with a proof of apartness from [None].  The
-   conclusion is packaged as [EquivalenceOfCategories] through the full +
-   faithful + essentially surjective assembly of
-   Theory/Equivalence/FullFaithful.v, which consumes no choice principle
-   because all three classes are choice-carrying in this library (the chosen
-   section [prefmap], the chosen preimage object [eso_obj]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 

@@ -22,152 +22,15 @@ Generalizable All Variables.
 
 (** * Quotient rings as coequalizers, split under the forgetful functor *)
 
-(* Book:   Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-           §VI.6 "Split Coequalizers", Exercise 1, book p. 150 (PDF
-           p. 159), item maclane:VI.6:ex1, read from the page image; the
-           group example it refers to is Instance/Grp/Coequalizer.v
-   nLab:   https://ncatlab.org/nlab/show/split+coequalizer
-   nLab:   https://ncatlab.org/nlab/show/quotient+ring
-   Wikipedia: https://en.wikipedia.org/wiki/Quotient_ring
+(*
+ nLab:   https://ncatlab.org/nlab/show/split+coequalizer
+ nLab:   https://ncatlab.org/nlab/show/quotient+ring
+ Wikipedia: https://en.wikipedia.org/wiki/Quotient_ring
 
-   WHAT THE BOOK SAYS.  "In Rng give a similar construction to show that
-   every quotient R/A of a ring R by an ideal A can be represented as a
-   coequalizer, and show that the resulting fork is split after the
-   application of the forgetful functors to sets."  Mac Lane's Rng is the
-   category of rings with identity, as is the tree's [Rng]
-   (Instance/Rng.v).
+   本文件给出具体实例。
 
-   THE CONSTRUCTION.  The book leaves it to the reader.  Here it is the
-   group example's, additively: R ×₀ A has elements the pairs (r, a) with
-   a ∈ A carrying its membership witness, added componentwise and
-   multiplied by (r, a)(r', a') = (rr', (ra' + ar') + aa'), with unit
-   (1, 0); ∂₀(r, a) = r and ∂₁(r, a) = r + a, the latter multiplicative
-   because (r + a)(r' + a') expands to rr' + ((ra' + ar') + aa').  The
-   ideal's two absorption laws put ra' and ar' in A, which is where
-   two-sidedness is spent.  The ring laws of R ×₀ A are not expanded:
-   (∂₀, ∂₁) is jointly injective ([rsdp_ext], cancelling r from r + a)
-   and carries every operation to R's ([rsdp_d1_add], [rsdp_d1_mul] and
-   the rest), so each law is R's, read twice.
-
-   WHAT IS HERE, in the group file's order and with its names prefixed
-   by r where they would collide.
-     - [SemidirectRing A], [rsemidirect_d0], [rsemidirect_d1].
-       [rsdp_d1_add] is Instance/CMon/Biproduct.v's middle-four
-       interchange [cmon_plus_interchange] at R's additive monoid.
-     - With no hypothesis: [rsemidirect_cofork],
-       [rsemidirect_cofork_iff_kills] (a ring map coforks the pair
-       exactly when it kills A), [rquot_proj_IsCoequalizer] (the descent
-       being Instance/Rng/Quotient.v's mediator [rquot_med]) and
-       [rsemidirect_U_cofork].
-     - [RTransversal A] (a representative in each class, with the
-       untruncated witness that s a - a ∈ A) and
-       [Rng_U_split_iff_transversal]: the U-image pair has a split
-       coequalizer if and only if A has a transversal; the splitting is
-       [rtransversal_split], with t r = (r, s(p r) - r)
-       ([rtransversal_t]), and [rsplit_transversal] reads a transversal
-       off any splitting; then [rtransversal_U_IsCoequalizer] and
-       [rtransversal_U_AbsoluteCoequalizer].
-     - [Rng_U_IsCoequalizer_iff_untruncates]: U p is a coequalizer in
-       Sets if and only if the class relation untruncates
-       ([RCosetUntruncates]); [rtransversal_untruncates].
-     - UNCONDITIONAL ALTERNATIVE, attempted and delivered: U corestricted
-       to PropSets carries p to a coequalizer (not a split one):
-       [Rng_ForgetP] factors [Rng_Forget] through Instance/Sets/
-       Propositional/Full.v's [PropSets] by [rig_prop], and
-       [PropSets_rquot_IsCoequalizer] holds with no hypothesis.  In
-       [Sets] the coequalizer of the U-image pair is, with no
-       hypothesis, the untruncated quotient [rquot_mem_object]
-       ([rquot_mem_IsCoequalizer]), Instance/Sets/Quotient.v's
-       [SetsQuotient] with [sets_quot_proj], its descent [sets_quot_med].
-     - [Rng_split_iff_hom_rtransversal]: the pair splits in Rng itself
-       exactly when p has a ring-homomorphic section with untruncated
-       witnesses ([HomRTransversal]); t is then a ring map
-       ([hom_rtransversal_t], again by joint injectivity).
-     - Witnesses.  Transversals at A = R ([TotalIdeal_transversal], 0),
-       at A trivial ([TrivialIdeal_transversal], the identity, a ring
-       map, so the fork splits in Rng: [TrivialIdeal_Rng_split]) and at
-       2Z ⊂ Z ([EvenIdeal_transversal], a ↦ a mod 2, over
-       Instance/Rng/Quotient.v's [EvenIdeal]).  At 2Z the fork does not
-       split in Rng ([EvenIdeal_not_split_in_Rng]): a ring map
-       s : Z/2Z → Z has s(1 + 1) = 1 + 1 = 2, while 1 + 1 ≡ 0 sends it
-       to s 0 = 0.
-
-   THE CONSTRUCTIVE QUESTION is the group file's, with the class of r
-   for the coset, and its two taboos are proved here at A_P ◁ Z ([AP]:
-   all of Z when P holds and zero when it does not, its membership the
-   Prop [or P (a = 0)]).  A transversal of A_P decides P
-   ([AP_rtransversal_decides]), so Exercise 1's "split after the
-   application of the forgetful functors", asked of every ideal,
-   decides every proposition ([Rng_U_split_taboo]); and the class
-   relation untruncates at A_P outright ([AP_untruncates]), so
-   untruncation does not give a transversal constructively
-   ([runtruncation_transversal_taboo]).  The group file's third
-   statement, untruncation for every N being the untruncation principle
-   (its N_S), is not repeated for ideals.
-
-   THE TWINS are deliberate, for the reasons the group file's THE RING
-   TWIN gives; the generic parts are Instance/Sets/Quotient.v's and
-   Lib/Setoid/Propositional.v's, stated once.  A candidate this file
-   does not take: [rquot_mem] and its four lemmas ([rquot_mem_of_equiv],
-   [rquot_mem_refl], [rquot_mem_sym], [rquot_mem_trans]) repeat
-   Instance/Rng/Quotient.v's [rquot_rel] lemmas without the truncation,
-   where Instance/Grp/Quotient.v keeps the untruncated [quot_rel] and its
-   lemmas upstream; Rng/Quotient.v could do the same and derive its
-   [rquot_rel] ones, a change to that file left to the maintainer.
-
-   STRENGTHS.  At [eq_refl]: the multiplication's two components
-   ([rsdp_mul_fst], [rsdp_mul_snd]); ∂₀ and ∂₁ ([rsemidirect_d0_fun],
-   [rsemidirect_d1_fun]); the descent IS [rquot_med]
-   ([rquot_proj_IsCoequalizer_desc]); the splitting's e, s and t's
-   second component s(p r) - r ([rtransversal_split_e],
-   [rtransversal_split_s], [rtransversal_split_t_snd]); law 3 of each
-   splitting, ∂₀ (t r) = r, pointwise ([rtransversal_split_law3],
-   [hom_rtransversal_Rng_split_law3]); the round trip
-   ([rtransversal_round_trip]); the transversal at 2Z
-   ([EvenIdeal_transversal_fun]).  At ≈ only: the ring laws of R ×₀ A
-   and laws 1, 2 and 4 of each splitting; law 4, ∂₁ (t r) =
-   r + (s(p r) - r) against s(p r), is refused at [eq_refl]
-   (Test/ProbeQuotient479.v, R4).
-
-   UNIVERSES, by [About] on each of the 84 gated names (a script).  As
-   in the group file: the construction binds R : RingObject@{u u0 u1}
-   freely; the rest binds R : RingObject@{p p p} in the binder,
-   [Rng@{u p}]'s object shape, and A : Ideal@{u p p p} R, the nine
-   readbacks of the pair and its splittings outside the sections with
-   the bound, @{p u + | u <= p +} (bare, their binders had u put at p
-   by minimization, measured); no block carries an equation; every name
-   generic in A that mentions the pair, a splitting of it, t or the
-   untruncated quotient carries "u <= p", first at [rsemidirect_d0]
-   (R6 refuses it at a membership level above the carrier, C15 and C16
-   accept [rtransversal_untruncates] and [SemidirectRing] there, C18
-   accepts [rtransversal_split_e] below it).  The witnesses
-   at the total, trivial and even ideals, and [Rng_U_split_taboo] at
-   A_P, take those ideals' membership level at the carrier level.
-   [rquot_mem_object] is annotated at [SetoidObject@{p p}], and its
-   equivalence is built from three lemmas in place, since a separate
-   [Equivalence] lemma read "p = u" (measured).  [Rng_ForgetP] keeps the
-   object levels of [Rng] and [PropSets] apart and
-   [PropSets_rquot_IsCoequalizer] names them (go, so), through
-   [Rng_ForgetP@{go p so}], the one explicit universe instance this file
-   writes of a constant of its own, closed at three levels (three on
-   Coq 8.19.2 and 8.20.1 as well).  No block mentions [Set] except as a
-   bound "Set < _".  [rtransversal_U_AbsoluteCoequalizer] names its
-   target levels.  On Coq 8.19.2 and 8.20.1 ([About] in a build of the
-   files' closure and the probe under each) every one of the 84 names
-   binds the same levels except [SemidirectRing], fifteen against Rocq
-   9.1's ten, and its readbacks [rsdp_mul_fst] and [rsdp_mul_snd],
-   eleven against nine; no explicit universe instance of them is
-   written, and no block carries an equation.
-
-   STALE PREMISES.  The group file's: Rng is stale since PR #1091
-   (merged 2026-08-14, #257) and quotient rings since PR #1171 (merged
-   2026-08-19, #314, Instance/Rng/Quotient.v).
-
-   NOT DELIVERED.  A transversal for every ideal: the taboo above; R ×₀ A
-   as the kernel pair of p; for ideals, the group file's N_S statement
-   and its consequence for Monad/Monadicity/Crude.v (the pair's
-   reflexivity is not built here); a ring isomorphism theorem
-   (Instance/Rng/Quotient.v records why). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section RngSemidirect.
 

@@ -12,65 +12,11 @@ Generalizable All Variables.
 
 (** * An evaluated coequalizer: interconnecting a set of ports *)
 
-(* Fong and Spivak, "Seven Sketches in Compositionality", §6.2.4
-   example 6.42 (printed p. 194).  Take X the set of "connect these two"
-   markers and Y the set of ports of a circuit; the two families of
-   arrows give functions f, g : X → Y, and the coequalizer of f and g is
-   the set of TERMINALS resulting from the interconnection -- the
-   connected groups of ports.
+(*
+   本文件给出集合范畴相关实例。
 
-   This file works one such circuit end to end over
-   Instance/Sets/Coequalizer.v's [Sets_HasCoequalizers]: six ports, three
-   wires, and three resulting terminals, one of which is a lone
-   unconnected port.  Nothing here is a new construction; it is the
-   delivered one, exercised.
-
-   WHY [Sets] AND NOT [FinSet], AND WHAT "EVALUATED" MEANS HERE
-
-   [FinSet] is where this library's finite combinatorics computes:
-   Instance/FinSet/Pushout.v labels connected components with
-   [components], counts them at [po_apex], maps into them at
-   [po_cls] and selects representatives at [po_cls_rep].
-   A witness built there would compute the terminal COUNT by [eq_refl] on
-   a numeral.  It would also compute it in a category for which no
-   [HasCoequalizers] instance exists -- building one is a separate piece
-   of work and is NOT part of this file or of the issue it serves --
-   so it would exercise a parallel construction rather than the delivered
-   one.  The witness is therefore over [Sets].
-
-   Over [Sets] the delivered coequalizer is the codomain under a coarser
-   `≈`, and the coarser `≈` is an INDUCTIVE relation, so it does not
-   reduce: exhibiting two ports as connected is a derivation, and no
-   amount of computation will produce one.  What does reduce is
-   everything on the other side of the universal property, and that is
-   where this file puts its [eq_refl]s:
-
-     - the coequalizer's CARRIER is the ic_port type on the nose
-       ([interconnect_carrier]);
-     - the terminal-labelling map computes on every closed port
-       ([label_P0] and its five siblings);
-     - the mediator produced by [coeq_desc] out of the delivered
-       [IsCoequalizer] IS that labelling, evaluated
-       ([interconnect_med_at_P2] and siblings) -- so it is the universal
-       property being run, not a hand-built map;
-     - one leg of the isomorphism with the three-element terminal set
-       closes by [eq_refl] ([ic_label_of_rep]), the other being the
-       six derivations that [ic_rep_of_label] collects.
-
-   And the count is PROVED, not read off: [interconnect_iso] exhibits
-   the coequalizer as isomorphic in [Sets] to a three-element discrete
-   setoid whose three elements are pairwise distinct
-   ([ic_terminal_distinct]) and which has no others
-   ([ic_terminal_cases]).  Without those two the isomorphism would pin
-   nothing.
-
-   NEGATIVE RESULTS GO OUT THROUGH THE MEDIATOR.  That two ports are NOT
-   connected cannot be shown by induction on the generated relation --
-   an induction over a congruence yields no negation -- so
-   [port_P0_P3_apart] and its siblings map out into the terminal setoid,
-   where the question is an equation between constructors and
-   [discriminate] settles it.  This is the discipline
-   Instance/Mod/Tensor.v uses for the same reason. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* WHAT IS DELIVERED
 

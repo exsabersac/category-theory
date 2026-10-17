@@ -22,106 +22,14 @@ Open Scope category_scope.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd
-              ed., §II.4 Exercise 3, printed p. 41 (PDF 51) —
-              maclane:II.4:ex3
-   nLab:      https://ncatlab.org/nlab/show/graded+object
-   Wikipedia: https://en.wikipedia.org/wiki/Graded_(mathematics)
+(*
+ nLab:      https://ncatlab.org/nlab/show/graded+object
+ Wikipedia: https://en.wikipedia.org/wiki/Graded_(mathematics)
 
-   A graded abelian group is a family of abelian groups, one in each
-   degree, and a map of graded abelian groups is a family of
-   homomorphisms, one in each degree.  Nothing ties the degrees
-   together — no operation carries degree n to degree m — so both the
-   objects and the arrows are bare ℕ-indexed families, and every law is
-   checked one degree at a time.  Said categorically: the degrees form
-   a DISCRETE shape, and the category of graded abelian groups is the
-   functor category out of it, Mac Lane's Aᴶ at J discrete and A := Ab.
-   That is [Graded_Fun_equiv].
+   本文件给出阿贝尔群相关实例。
 
-     - [GradedAb]: the direct definition the exercise asks for —
-       objects [nat → AbObject], homs the degreewise families of
-       [AbHom]s, hom-setoid, identity and composition all componentwise
-     - [graded_obj_definitional] … [graded_compose_definitional]: the
-       record against [PiCat (fun _ : nat => Ab)] — objects, homs, the
-       hom-setoid's RELATION, identity and composition all agree by
-       [eq_refl] (the [homset] field itself does not, nor does
-       [compose_respects] — see Design note 2)
-     - [PiCat_GradedAb_iso]: the two spellings compared in [Cat], by
-       functors that are the identity on objects and on arrows
-     - [Graded_Fun_equiv]: [([DiscreteCat nat, Ab]) ≅[Cat] GradedAb]
-     - [GradedAb_shift]: the degree shift [F ↦ F ∘ S] as an endofunctor,
-       with [graded_degree_one] reading a degree-one map as an ordinary
-       (degree-preserving) map into the shift
-     - witnesses: [Zgroup] and the constant family [ConstZ], the
-       degree-dependent endomorphism [graded_deg_mul] (multiplication
-       by n in degree n), and [conc0], a group concentrated in degree
-       zero, with the shift computing on both
-
-   Design:
-
-   1. THE DISCRETE-SHAPE COLLAPSE IS CONSUMED, NOT REPROVED.  Instance/
-      Fun/Discrete.v already proves [Fun_Discrete_PiCat :
-      [DiscreteCat A, B] ≅[Cat] PiCat (fun _ : A => B)] for ANY index
-      type A — that a transformation over a discrete domain is a bare
-      family ([Discrete_Transform], naturality free), and that
-      rebuilding a functor from its object function is the identity up
-      to identity components ([DiscreteCat_Functor_iso]).  This file
-      instantiates it at A := nat, B := Ab and adds only the comparison
-      between the indexed product and the hand-written [GradedAb].  No
-      transformation over [DiscreteCat nat] is built below; the only
-      naturality-shaped goals here are the two coherence conditions of
-      the identity-component isomorphisms in [Cat].
-
-   2. WHAT IS DEFINITIONAL, EXACTLY.  [GradedAb] and
-      [PiCat (fun _ : nat => Ab)] agree by [eq_refl] on objects
-      ([nat → AbObject] against the choice functions
-      [∀ _ : nat, obj[Ab]]), on homs, on the hom-setoid's RELATION,
-      and on identity and composition — the five Examples below, each
-      true by construction, since [GradedAb]'s data were written in
-      PiCat's shape; what was MEASURED rather than arranged is the
-      divergence: [eq_refl] at the type
-      [GradedAb = PiCat (fun _ : nat => Ab)] is rejected, and so are
-      the [homset] field itself (only its [equiv] projection agrees),
-      [compose_respects], the four category laws and the hom-setoid's
-      [Equivalence] witness — separately elaborated proof terms all.
-      So the comparison is a genuine pair of functors rather than an
-      [eq_refl] — but they are the identity on data, each functor
-      obligation closing either by [reflexivity] or by handing back
-      the hypothesis, and the natural isomorphisms witnessing both
-      round trips have identity components.  Strength note: [≅[Cat]]
-      in this tree IS equivalence of categories (Cat's hom-setoid is
-      [Functor_Setoid]); the [PiCat] leg of the comparison is in fact
-      STRICTER than that — identity on data in both directions —
-      while the [Fun_Discrete_PiCat] leg is an equivalence proper
-      (its round trip rebuilds a functor from its object function,
-      and only one direction is [eq_refl] on objects).
-
-   3. WHY DEGREE-PRESERVING MAPS.  The arrows here are the degree-zero
-      maps, which is what makes the category a functor category over a
-      discrete shape: a map that raised degrees would have to know how
-      to move along ℕ, and a discrete shape supplies no such arrow.
-      Maps of higher degree are recovered through [GradedAb_shift]
-      rather than lost: a family [∀ n, F n ~> G (S n)] IS a
-      [GradedAb]-arrow [F ~> shift G], definitionally
-      ([graded_degree_one]).
-
-   4. INDEX-GENERIC MACHINERY, ℕ-SPECIFIC STATEMENT.  Both DONORS are
-      generic in the index type; THIS FILE's own definitions are not —
-      [GradedAb], both comparison functors and the iso all hardcode
-      [nat], as the exercise asks.  A ℤ-graded or multigraded variant
-      would reuse the same two donors unchanged but would RESTATE this
-      file's definitions at the other index (with their obligations);
-      what it would not need to redo is the discrete-shape collapse or
-      the indexed-product category, which is where the actual content
-      lives.
-
-   5. NAME COLLISION, DISAMBIGUATED.  Monad/Graded.v is about GRADED
-      MONADS — a monad indexed by a monoid of effect grades, with
-      multiplication [T i ◯ T j ⟹ T (i ⊗ j)].  That is an unrelated
-      concept: it grades an endofunctor by a monoid and its grades
-      interact, whereas the objects here are families over a discrete
-      index whose degrees never interact.  The two share only the
-      English word. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The category of graded abelian groups *)
 

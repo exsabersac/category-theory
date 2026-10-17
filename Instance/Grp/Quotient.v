@@ -13,143 +13,14 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * Normal subgroups, the quotient group, and its universal property
+(*
+ nLab: https://ncatlab.org/nlab/show/quotient+group
+ Wikipedia: https://en.wikipedia.org/wiki/Quotient_group
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §III.1
-    (printed pp. 57-59) [maclane:III.1:construction5, maclane:III.1:ex4];
-    Awodey, "Category Theory", 2nd ed., §4.2 (printed pp. 83-85)
-    [awodey:4.2:construction-factor-group, awodey:4.2:thm4].
-    nLab: https://ncatlab.org/nlab/show/quotient+group
-    Wikipedia: https://en.wikipedia.org/wiki/Quotient_group
+   本文件给出商相关。
 
-    For N normal in G, the projection p : G -> G/N is a UNIVERSAL ELEMENT
-    of the functor of homomorphisms killing N.  Mac Lane's point in §III.1
-    is that every further property of quotient groups follows from that
-    universality alone, with no second look at cosets; this file proves the
-    universality, and Instance/Grp/Quotient/Isomorphism.v draws the named
-    consequences from it.
-
-    ERRATUM, recorded here rather than only in a commit message.  Issue
-    #313's "Current state in the library" section says the area is
-    "Absent", that a search for quotient/normal/coset vocabulary "returns
-    zero formal hits", and that "no category Grp exists".  All three were
-    stale when this file was written: #255 landed Instance/Grp.v with
-    [GrpObject], [GrpHom], [Grp], [Grp_Forget], [Grp_Zero],
-    [Grp_Cartesian] and [Grp_injectivity_is_monic], and the tree also
-    carries Instance/Grp/Abelianization.v, Instance/Grp/Epi.v,
-    Instance/Grp/Center.v, Instance/Grp/Free.v and Instance/Ab.v, several
-    of which quotient by something.  What IS absent, and was measured
-    against the parent commit rather than taken on the issue's word, is a
-    [NormalSubgroup] interface: AT THE PARENT COMMIT the token occurred in
-    the tree exactly once, at Instance/Grp/Abelianization.v, and there
-    it occurred inside a prose disclosure that no such class existed.
-    (That paragraph is rewritten by this same change, so the line number
-    is a statement about the parent commit and not about the tree as it
-    now stands.)  The only [Subgroup] record in the tree is
-    Instance/Ab/Character/Finite.v, which is over [AbObject] and
-    carries a DECIDABILITY field [sg_dec]; it is therefore not a donor
-    here, since nothing below decides membership.
-
-    THE FIVE FACTS.  Instance/Grp/Abelianization.v's "SCOPE OF THE
-    QUOTIENT" paragraph (at the parent commit) disclosed that its
-    quotient by the commutator subgroup consumes only five properties of
-    that subgroup -- "≈-saturation, unit, closure under product and
-    inverse, normality" -- and that a generic quotient "is extractable by
-    abstraction over exactly those five facts", left as future work.  That
-    is what [Subgroup] and [NormalSubgroup] below are: four laws and one
-    more, no membership decision, no smallness, no choice.  The extraction
-    is carried out rather than merely announced -- Abelianization.v is
-    refactored in the same change to obtain its five congruence lemmas
-    from the generic ones, with its statements byte-identical (the
-    Theory/EckmannHilton.v precedent), and its [CommutatorNS] supplies the
-    five fields with the five facts it had already proved.
-
-    WHAT THE UNIFICATION DOES AND DOES NOT COVER, measured.  The same
-    disclosure counts "three unshared quotient constructions
-    (Instance/Ab.v's [ab_coset_eq], Instance/Grp/Epi.v's [Grp_Coset], and
-    this one)".  Reading the two other constructions' actual record types
-    corrects the count:
-
-      - Instance/Grp/Epi.v's [Grp_Coset] is a [SetoidObject], NOT a
-        [GrpObject], and it is the coset space of the image of an
-        ARBITRARY homomorphism.  Epi.v's whole argument turns on that
-        image being possibly NON-normal (its own header, two later
-        passages, and the witness [grp_two_sym3] are explicit that the
-        non-normal case is the one the file exists for).  So it is not a
-        quotient GROUP, is not an instance of anything below, and could
-        not be: a normal-subgroup quotient is exactly what it declines to
-        assume.  It is left untouched.
-
-      - Instance/Ab.v's [ab_coset_eq] IS a quotient group, of an
-        abelian group by the image of a homomorphism.  (An earlier revision
-        of this sentence cited where that definition stood
-        before the PR "algebraic carriers are sets" (2026-09-17); the same
-        PR also turned the relation into a [Prop] -- it is now Coq's [ex],
-        spelled [(exists a, …)%type] -- so it is no longer a [Type]-valued
-        sigma either.)  It is not routed
-        through this file either, and the reason is a dependency
-        direction rather than a mathematical obstruction: [AbObject]
-        extends [CMonObject], Instance/Ab.v requires neither
-        Instance/Grp.v nor anything below it, and the only bridge in tree,
-        [Ab_to_GrpOb], lives DOWNSTREAM in Abelianization.v.  Routing
-        Ab.v's quotient through a [GrpObject]-level construction would
-        move that bridge upstream and give Ab.v a dependency on Grp.
-        That is a defensible change and it is deliberately not made here.
-
-    So of the three, one is unified, one is shown not to be an instance of
-    the notion at all, and one is declined with its reason stated.  No
-    fourth quotient construction is introduced: everything below, and
-    everything in the two sibling files, quotients by [quot_rel].
-
-    THE SETOID QUOTIENT.  As in Abelianization.v, G/N needs no new
-    carrier: it is G's carrier under the coarser relation
-    [quot_rel N a b := N (a * b⁻¹)] -- or rather, since the PR "algebraic
-    carriers are sets" (2026-09-17), under its PROPOSITIONAL TRUNCATION
-    [inhabited (quot_rel N a b)], the relation itself staying [Type]-valued
-    because [sub_mem] does.  The equivalence laws are the group
-    laws; multiplication and inversion respect the relation by NORMALITY,
-    which is where [ns_conj] earns its keep.  Elements of G/N are
-    therefore elements of G, and no coset object is ever formed -- which
-    is convenient, but is NOT what makes the derivations below universal:
-    the arguments in the sibling files run through [quot_universal_element] and
-    the mediator's uniqueness, not through element representatives, and
-    where an element-level step does occur it is called out.
-
-    WHAT IS DELIVERED HERE.  [Subgroup] and [NormalSubgroup]; the subgroup
-    as an object of [Grp] with its inclusion; [QuotientGrp] with the
-    projection [quot_proj]; the functor [KillsFunctor N : Grp ⟶ Sets] of
-    homomorphisms killing N, and [quot_universal_element], the statement
-    that ⟨G/N, p⟩ is a universal element of it, over #303's
-    [AUniversalElement] -- the CLASS is used directly, and none of
-    Theory/Universal/Element.v's Yoneda packaging
-    ([universal_element_yoneda], [universal_element_representation]) is
-    touched, so the universe restriction that packaging carries (object,
-    hom and proof universes identified) is not inherited; the sibling
-    files likewise reach [universal_element_iso], which lives in that
-    file's Yoneda-free section;
-    Awodey's Theorem 4.4 as the biconditional [hom_theorem]; the kernel of
-    a homomorphism as a normal subgroup ([KernelNS], the transplant from
-    #301); and the degenerate cases named and separated by proof
-    ([TrivialNS], [TotalNS], and the S3 witnesses).
-
-    WHAT IS NOT DELIVERED HERE.  No lattice of subgroups, no index, no
-    Lagrange, no correspondence theorem, no solvability; no [HasCokernels]
-    instance for [Grp] (the cokernel of a SINGLE map is built in the
-    Colimit sibling, but no choice of cokernel for every map is packaged);
-    no [Subgroup]-of-[Subgroup] calculus beyond what the second
-    isomorphism theorem consumes; and no comparison with
-    Instance/Ab/Character/Finite.v's decidable [Subgroup].
-
-    NO UNIVERSAL-ARROW PACKAGING, and the reason is structural rather than
-    a shortage of effort.  Theory/Universal/Element.v's
-    [universal_element_arrow_subsumption] relates universal elements of a
-    functor H to universal arrows exactly when H has the shape
-    d ↦ Hom(c, S d) for a functor S.  [KillsFunctor N] does not: it is the
-    SUBfunctor of Hom(G, −) cut out by the killing condition, and that
-    condition mentions N, which is data attached to G rather than
-    something a functor out of [Grp] supplies.  So the universal-ELEMENT
-    reading is the one Mac Lane's §III.1 states and the only one taken
-    here; no [AUniversalArrow] is claimed. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Subgroups and normal subgroups *)
 

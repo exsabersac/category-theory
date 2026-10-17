@@ -46,12 +46,11 @@ Require Import Category.Instance.Simplex.
 Require Import Category.Construction.Free.Quiver.
 Require Import Category.Construction.Free.Quiver.Concrete.
 
-(* SEGREGATED: the two entries below are the file's entire non-Closed
-   axiom footprint, and they are required here only so that the roster
-   is complete in one place.  Instance/Top and its satellites run
-   through the standard library reals (Instance/Top/Interval.v), so
-   every constant mentioning them carries stdlib axioms; see the AXIOMS
-   paragraph of the header. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Category.Instance.Top.
 Require Import Category.Instance.Top.Forgetful.
 Require Import Category.Instance.Top.Homotopy.

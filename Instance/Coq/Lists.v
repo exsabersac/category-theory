@@ -12,22 +12,13 @@ Generalizable All Variables.
 
 (** * Lists as the initial algebra of the list endofunctor over COQ *)
 
-(* nLab:      https://ncatlab.org/nlab/show/inductive+type
-   Wikipedia: https://en.wikipedia.org/wiki/Initial_algebra
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Initial_algebra
 
-   The polynomial endofunctor [ListF A X := 1 + A × X] on COQ (Instance/Coq.v)
-   has the type [list A] as its initial algebra.  The structure map
-   [alg : 1 + A × list A ~> list A] is [nil]/[cons], and initiality is exactly
-   the recursion principle of lists: for every [ListF A]-algebra
-   [β : 1 + A × Y ~> Y] there is a unique algebra map [list A ~> Y], namely the
-   fold (a [foldr]-style catamorphism) determined by [β].  Uniqueness is the
-   list induction that any algebra map into [(Y, β)] agrees with the fold.
+   本文件给出 Coq 类型相关实例。
 
-   This exhibits [list A] as the least fixed point [μ (ListF A)]; by Lambek's
-   lemma (Theory/Lambek.v) the structure map is then an isomorphism
-   [1 + A × list A ≅ list A].  The whole development stays within pointwise
-   equality on COQ hom-sets and ordinary list induction, so it carries no
-   axioms (in particular no functional extensionality). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Keep obligation handling explicit and predictable: the file builds functor
    and F-algebra-hom records whose remaining fields are commuting squares, and

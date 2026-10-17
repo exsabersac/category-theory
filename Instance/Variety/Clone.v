@@ -5,111 +5,14 @@ Generalizable All Variables.
 
 (** * Derived operators: the clone of a signature *)
 
-(* nLab:      https://ncatlab.org/nlab/show/clone
-   nLab:      https://ncatlab.org/nlab/show/Lawvere+theory
-   Wikipedia: https://en.wikipedia.org/wiki/Clone_(algebra)
+(*
+ nLab:      https://ncatlab.org/nlab/show/Lawvere+theory
+ Wikipedia: https://en.wikipedia.org/wiki/Clone_(algebra)
 
-   Mac Lane §V.6, book p. 124 (PDF p. 133), the definition of a DERIVED
-   OPERATOR.  The derived operators of a type close the given operations
-   under composition and substitution, and Mac Lane's point is that the
-   action of the clone on any algebra is already determined by the action
-   of the basic operations: every action of Ω extends uniquely to an
-   action of Λ.
+   本文件给出具体实例。
 
-   ** What the tree had, measured
-
-   Nothing arity-graded with a substitution action.  Instance/Comp.v's
-   [Tree] is a term over a WHOLE variable type, not an operator of a
-   specific arity, and names no composition or substitution operation.
-   Construction/PROP/Term.v's [Term] is arity-graded and closes under
-   composition, tensor and braids, but NOT under substitution along an
-   arbitrary function between finite arities — braids are bijections, and
-   Mac Lane's substitution duplicates and deletes variables.
-
-   ** The index type costs nothing
-
-   [Fin.t] is already in scope everywhere: Lib/Setoid.v requires
-   Coq.Vectors.Fin and defines [Fin_Setoid], and every file in
-   _CoqProject requires Category.Lib.  So grading on [Fin.t n] and
-   substituting along an ARBITRARY [Fin.t m → Fin.t n] adds no [Require].
-   Instance/FinSet.v is built on exactly this shape, which is to say
-   the tree's own [FinSet] already IS "arbitrary maps between finite
-   arities".
-
-   ** Substitution is the free-algebra universal property, not a new
-      recursion
-
-   [clone_subst] is [induced_map] at the free algebra on the target
-   arity.  That makes HALF of the issue's phrase "recovering
-   [induced_hom] / [from_free_unique] as the free-algebra instance"
-   literally true rather than a remark: substitution IS the induced
-   homomorphism's underlying map, and renaming is substitution by
-   variables.  The other half is NOT delivered and an audit was right to
-   say so — [from_free_unique] is not recovered here at all.  Its
-   analogue is [action_extends_to_clone] below, which is a different
-   statement (uniqueness of an ACTION extending the basic operations, in
-   setoid form) rather than that constant re-derived.
-
-   ** The unique-extension theorem, in two forms, and why
-
-   The theorem is shipped TWICE, and the difference is the whole point of
-   the file's discipline.
-
-   [action_extends_to_clone] — the name the issue's Verification block
-   checks — is stated against a [SetoidAction]: a carrier with a setoid,
-   operations, and an argumentwise-congruence field [sact_op_respects].
-   It is CLOSED UNDER THE GLOBAL CONTEXT.
-
-   [action_extends_to_clone_leibniz] is the same theorem with [=] for `≈`
-   and no congruence field, and it reports
-   [functional_extensionality_dep].  It cannot avoid it: the inductive
-   step compares [op A o (fun j => F (args j) env)] with
-   [op A o (fun j => clone_act (args j) env)], two argument bundles that
-   the induction hypothesis makes pointwise equal and that are not
-   convertible.  That is the identical wall as Instance/Comp.v's
-   [from_free_unique], whose own marker comment already names the
-   cure.
-
-   Nothing is smuggled by the setoid form.  [sact_op_respects] is
-   precisely what [functional_extensionality] supplies for [eq_Setoid], so
-   the setoid statement is strictly more general and strictly weaker in
-   assumptions — which is why it, and not the Leibniz shadow, carries the
-   headline name.  Only the axiom-free constants are gated;
-   docs/AXIOMS.md records the two that are not.
-
-   ** Not delivered
-
-   No setoid on [Tree] itself — the cure Instance/Comp.v proposes.
-   AN EARLIER REVISION OF THIS PARAGRAPH GAVE A REASON THAT IS WRONG, and
-   it is corrected here rather than quietly dropped.  It said such a
-   congruence "risks pulling in [Eqdep]/[JMeq_eq]", because transitivity
-   would have to invert [tree_equiv (node o k) (node o' k')] and so want
-   injectivity of [existT] on an [operation S] with no decidable
-   equality.  Measured: there is no such risk.  Making symmetry and
-   transitivity CONSTRUCTORS of the inductive rather than theorems means
-   no inversion is ever performed, and reflexivity is then derived by
-   plain induction on the tree; the whole thing is Closed under the
-   global context.  (It must be [Type]-valued rather than [Prop]-valued,
-   since [Setoid]'s [equiv] is a crelation.)  CORRECTION (#450): that
-   parenthesis is wrong.  Instance/Variety/Free.v's [tree_equiv], a
-   congruence of exactly the kind described, is [Prop]-valued since #450
-   ([About tree_equiv] ends in [→ Prop]), and a [crelation] field accepts a
-   [Prop]-valued relation by cumulativity; Free.v's CORRECTION (#450)
-   under "The congruence on terms is axiom-free" gives the account.
-
-   The honest reason it is absent is simply that this file does not need
-   it: what the clone's unique-extension theorem needs is a setoid on the
-   TARGET of an action, which is what [SetoidAction] supplies, and the
-   congruence generated by [E] on terms belongs to the free-algebra
-   construction rather than here.
-
-   THAT CONSTRUCTION HAS SINCE LANDED, which settles the correction above
-   rather than leaving it as an argument: Instance/Variety/Free.v's
-   [tree_equiv] is exactly the congruence this block declined, it takes
-   symmetry and transitivity as constructors precisely as described, and
-   it is Closed under the global context — as is everything built on it
-   up to [Free_Variety_adjunction].  No clone as a CATEGORY and so
-   no Lawvere theory — see the closing comment of Instance/Variety.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Module UA := Category.Instance.Comp.UniversalAlgebra.
 

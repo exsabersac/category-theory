@@ -5,25 +5,14 @@ Generalizable All Variables.
 
 (** The walking span (span shape category). *)
 
-(* The category of three objects and two non-identity arrows, both pointing
-   from the apex RZero to the other two objects (plus the three identities):
+(*
+ nLab:      https://ncatlab.org/nlab/show/span
+ Wikipedia: https://en.wikipedia.org/wiki/Span_(category_theory) *)
 
-                RZero
-               /     \
-       ZeroNeg/       \ZeroPos
-             /         \
-            v           v
-          RNeg         RPos
+   本文件给出具体实例。
 
-   This is the span shape `RNeg ← RZero → RPos`, i.e. the indexing category
-   whose functors out of it are spans: a functor [Roof ⟶ C] is a span in C,
-   and a functor out of the opposite [Roof^op ⟶ C] is a cospan in C (see
-   [Structure/Span.v]). A colimit over a span is a pushout; dually, a limit
-   over a cospan (a functor out of [Roof^op]) is a pullback (see
-   [Structure/Pullback/Limit.v]).
-
-   nLab:      https://ncatlab.org/nlab/show/span
-   Wikipedia: https://en.wikipedia.org/wiki/Span_(category_theory) *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive RoofObj : Set := RNeg | RZero | RPos.
 

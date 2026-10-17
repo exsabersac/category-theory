@@ -12,60 +12,15 @@ Generalizable All Variables.
 
 (** * Propositional equality for the objects and homs of [Sets] *)
 
-(* nLab:    https://ncatlab.org/nlab/show/Bishop+set
-   nLab:    https://ncatlab.org/nlab/show/h-set
-   Book:    The Univalent Foundations Program, "Homotopy Type Theory", IAS
-            2013, Definition 3.1.1 and Definition 3.3.1
-   Book:    Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-            §V.6 and §V.7, printed p. 128
+(*
+ nLab:    https://ncatlab.org/nlab/show/h-set
+ Book:    The Univalent Foundations Program, "Homotopy Type Theory", IAS
+ Book:    Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
 
-   Lib/Setoid/Propositional.v introduces [PropEquiv S]: the property that a
-   setoid's `≈` is logically equivalent to a [Prop]-valued relation, and
-   explains why that has to be a property of particular setoids rather than a
-   change to [Class Setoid].  This file carries the property along the
-   constructions of [Sets] that the concrete algebraic categories are built
-   from, since those categories are categories of setoids with structure and
-   their limits are created out of [Sets].
+   本文件给出集合范畴相关实例。
 
-   WHAT TRANSPORTS.  Hom-setoids, whose `≈` is pointwise into the target
-   ([SetoidMorphism_equiv], Instance/Sets.v); binary products, whose `≈` is
-   componentwise ([Sets_Cartesian], Instance/Sets/Cartesian.v); indexed
-   products, whose `≈` is pointwise in the index ([Sets_iprod_equiv],
-   Instance/Sets/Products.v); and limits, whose `≈` is the underlying
-   indexed product's, the compatibility witness playing no part
-   ([Sets_limit_equiv], Instance/Sets/Complete.v).  In each case the
-   [Prop] relation is the obvious pointwise or componentwise one, and the
-   [Example]s below read that back at [eq_refl] rather than asserting it.
-
-   The limit transport is the one with consequences: [Ab] and [RMod R] get
-   their limits by CREATION along the forgetful functors down to [Sets]
-   (Instance/Ab/Limit.v, Instance/Mod/Limit.v), so [limit_PropEquiv] is what
-   makes a limit of propositional algebras propositional again.
-
-   WHAT DOES NOT TRANSPORT, AND HOW THAT WAS MEASURED.  There is no instance
-   here of the shape [∀ X : SetoidObject, PropEquiv (is_setoid X)], and none of
-   [LocallyPropositional Sets] or [LocallyPropositional Cat].  The obvious
-   route -- take [pequiv f g := inhabited (f ≈ g)] -- supplies [pequiv_from] and
-   then stops: [pequiv_to] would have to eliminate a [Prop] into the
-   [Type]-valued goal [f ≈ g].  For [Cat] that is not merely inconvenient, and
-   Test/ProbePropEquiv.v measures it: an [F ≈ G] in [Cat] IS a family of
-   isomorphisms (Theory/Functor.v, installed at Instance/Cat.v), and
-   projecting the isomorphism at [x] out of an [inhabited (F ≈ G)] is refused.
-   For [Sets] the situation is weaker and is stated as such: an arbitrary
-   [SetoidObject] carries an arbitrary [Type]-valued `≈`, so no route to a
-   [Prop] mirror is available in general; that is an absence of a construction,
-   not a proof that none exists.  Which is exactly why the algebraic object
-   records of the later phases CARRY a [PropEquiv] field rather than deriving
-   one.
-   CORRECTION (#469): the absence is now characterized.  A [PropEquiv] on
-   every object of [Sets] at once is interderivable with the principle
-   ∀ A : Type, inhabited A → A at the carriers' level (Instance/Pos/
-   Monadicity.v's [all_PropEquiv_trunc] and [trunc_all_PropEquiv], through
-   its [SetsTruncElim], [trunc_choice] and [choice_trunc]).  That principle
-   follows from informative excluded middle, and it is believed to have
-   no axiom-free proof, by a normal-form argument that file's header
-   sketches (argued, not established); no in-tree
-   statement proves the unprovability, which is metatheory. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The property, at the level of a [Sets] object *)
 

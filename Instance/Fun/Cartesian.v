@@ -9,36 +9,14 @@ Require Import Category.Lib.Tactics2.
 
 (** Pointwise cartesian structure on the functor category [C, D]. *)
 
-(* nLab: https://ncatlab.org/nlab/show/functor+category
-   nLab: https://ncatlab.org/nlab/show/product
-   Wikipedia: https://en.wikipedia.org/wiki/Product_(category_theory)
+(*
+ nLab: https://ncatlab.org/nlab/show/product
+ Wikipedia: https://en.wikipedia.org/wiki/Product_(category_theory)
 
-   When D is cartesian, the functor category [C, D] is cartesian, with all of
-   the structure computed pointwise (objectwise) in D. The nLab records the
-   general fact that "if D has limits or colimits of a certain shape, then so
-   does [C, D] and they are computed pointwise"; finite products are the
-   special case used here; Instance/Fun/Limit.v proves the general limit half.
+   本文件给出笛卡尔结构实例。
 
-   Concretely, the product of two functors F, G : C ⟶ D is the functor
-
-       (F × G) c := F c × G c
-
-   acting on a morphism f : c ~> c' by the "Cartesian product of morphisms"
-   (Wikipedia), here the library's [split]:
-
-       (F × G) f := split (fmap[F] f) (fmap[G] f)
-                  = (fmap[F] f ∘ exl) △ (fmap[G] f ∘ exr).
-
-   The projections exl, exr and the pairing σ △ τ are natural transformations
-   whose components are the corresponding morphisms of D taken at each object,
-   and the universal mapping property of [Cartesian] holds componentwise,
-   inherited from the UMP in D. (The terminal/nullary product — the constant
-   functor at the terminal object of D — is Instance/Fun/Terminal.v's
-   [Functor_Category_Terminal]; an empty product is a terminal object.)
-
-   The propositions below repackage the product UMP [ump_products] of D into
-   the projection-equation and factorization forms consumed as `cat` hints by
-   the main instance [Functor_Category_Cartesian]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Proposition fmap_respects' (C D : Category) (F : C ⟶ D) : forall (x y : C) (f g: hom x y),
     f ≈ g -> fmap[F] f ≈ fmap[F] g.

@@ -7,50 +7,14 @@ Generalizable All Variables.
 
 (** * The strict category of categories *)
 
-(* nLab: https://ncatlab.org/nlab/show/strict+category
-   nLab: https://ncatlab.org/nlab/show/Cat
-   Wikipedia: https://en.wikipedia.org/wiki/Category_of_small_categories
+(*
+ nLab: https://ncatlab.org/nlab/show/Cat
+ Wikipedia: https://en.wikipedia.org/wiki/Category_of_small_categories
 
-   StrictCat is the category of categories where functors are compared by a
-   *strict* relation, in which objects are equal on the nose rather than merely
-   isomorphic:
+   本文件给出具体实例。
 
-    objects               Categories
-    arrows                Functors
-    arrow equivalence     Strict equality of functors ([Functor_StrictEq_Setoid])
-    identity              Identity Functor
-    composition           Horizontal composition of Functors
-
-   Strict equivalence: two functors F, G : C ⟶ D are identified when there is a
-   proof [eq_on_obj : ∀ x, F x = G x] of propositional equality on objects,
-   together with a coherence condition forcing the morphism maps to agree once
-   [fmap F f] and [fmap G f] are transported along [eq_on_obj] into a common
-   hom-setoid. This matches the nLab notion of a strict category, whose objects
-   carry a genuine equality relation (a *set* of objects), and the resulting
-   equality of strict functors: [Ob(F) = Ob(G)] together with compatible
-   agreement of the underlying morphism actions.
-
-   Difference from [Cat]: the sibling category [Cat] uses [Functor_Setoid],
-   which identifies functors up to natural isomorphism (object maps related by
-   [F x ≅ G x]); its isomorphisms are therefore *equivalences* of categories,
-   making it the homotopy category Ho(Cat). StrictCat instead uses
-   [Functor_StrictEq_Setoid] with [F x = G x], so it is the strict 1-category in
-   which an isomorphism is a genuine (on-the-nose) isomorphism of categories —
-   matching the textbook bare-name "Cat". The library nonetheless works up to the
-   weaker notion of equivalence in [Cat] almost everywhere, to suit Coq's
-   metatheory (no function extensionality); StrictCat is provided for the few
-   constructions that genuinely need on-the-nose object equality. Under the axiom
-   of choice this strict 1-category is equivalent, as a bicategory, to the weak
-   [Cat].
-
-   Strict equality of functors implies natural isomorphism, so there is an
-   identity-on-objects comparison functor [StrictCat_to_Cat : StrictCat ⟶ Cat],
-   built in [Category.Instance.StrictCat.ToCat]. The strictness of StrictCat is
-   what makes functors *out of* it well-defined even when they do not respect
-   natural isomorphism — e.g. the underlying-graph functor
-   [Category.Construction.Free.Quiver.Forgetful : StrictCat ⟶ Quiv], the
-   motivating example of issue #138, which has no counterpart over the weak
-   [Cat]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export]
 Instance StrictCat : Category := {

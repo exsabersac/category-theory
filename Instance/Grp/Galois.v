@@ -20,10 +20,11 @@ Require Import Category.Instance.Grp.
 Require Import Category.Instance.Grp.Quotient.
 Require Import Category.Adjunction.Right.
 
-(* Same two as Instance/Powerset.v and Instance/Proset/Galois.v, and
-   for the same reason and in the same position: [relation] and [PreOrder]
-   below are the stdlib Prop-valued ones, not Category.Lib's [crelation]
-   ones, and they must be required AFTER Category.Lib to win. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Coq.Classes.Equivalence.
 Require Import Coq.Relations.Relation_Definitions.
 

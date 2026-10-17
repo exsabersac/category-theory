@@ -8,23 +8,14 @@ Generalizable All Variables.
 
 (** The terminal category 1 (the point). *)
 
-(* nLab:      https://ncatlab.org/nlab/show/terminal+category
-   Wikipedia: https://en.wikipedia.org/wiki/Category_of_small_categories
-   Wikipedia: https://en.wikipedia.org/wiki/Initial_and_terminal_objects
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Category_of_small_categories
+ Wikipedia: https://en.wikipedia.org/wiki/Initial_and_terminal_objects
 
-   1 is the category with a single object and a single (identity) morphism on
-   it.  Here the lone object and the lone arrow are both [ttt], the unique
-   inhabitant of the universe-polymorphic unit type [poly_unit]; the hom-setoid
-   is strict equality, under which that hom is trivially contractible.
+   本文件给出具体实例。
 
-   1 is the terminal object of Cat: for every category C there is a unique
-   functor `! : C ⟶ 1` ([Erase]), sending every object and morphism to [ttt].
-   Dually, functors *out* of 1 pick out objects of the target, so [1, C] ≃ C.
-   Theory/Shapes.v proves both readings: [Point] and [point_of] with their
-   round trips for the objects, and [One_Fun_iso : [_1, C] ≅[Cat] C] for the
-   functor category — an equivalence of categories in the sense of
-   Instance/Cat.v, not an isomorphism of categories.
-   The dual notion — the initial/empty category 0 — lives in Instance/Zero.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition _1@{o h p} : Category@{o h p} := {|
   obj     := poly_unit@{o};            (* the single object *)

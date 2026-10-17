@@ -12,18 +12,11 @@ Require Import Category.Instance.Cat.
 Require Import Category.Instance.StrictCat.
 Require Import Category.Instance.StrictCat.ToCat.
 
-(* [Category.Instance.Grp] and its satellites are required LAST, deliberately,
-   for the reason [Instance/Grp/Free.v] gives: [Construction/Deloop.v]
-   also declares a record called [GrpObject], and the two names would
-   otherwise collide.  With this order the unqualified [GrpObject],
-   [grp_unit], [grp_mul] and [grp_inv] below are always [Instance/Grp.v]'s --
-   the record [Grp] is the category of, and hence the record #313's
-   [NormalSubgroup] and [QuotientGrp] are over.  Construction/Deloop.v's
-   record and its projection are named in full, as
-   [Category.Construction.Deloop.GrpObject] and
-   [Category.Construction.Deloop.grp_monoid], on the two occasions they are
-   mentioned in code (in [grp_deloop_GrpObject] and in
-   [deloop_GrpObject_monoid]). *)
+(*
+   本文件给出合同相关。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Category.Instance.Grp.
 Require Import Category.Instance.Grp.Free.
 Require Import Category.Instance.Grp.TwoFunctors.

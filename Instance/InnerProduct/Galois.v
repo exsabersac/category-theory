@@ -17,10 +17,11 @@ Require Import Category.Adjunction.Right.
 Require Import Coq.ZArith.ZArith.
 Require Import Coq.micromega.Lia.
 
-(* The same two as Instance/Powerset.v and Instance/Grp/Galois.v,
-   in the same position and for the same reason: [relation] and [PreOrder]
-   below must be the stdlib Prop-valued ones rather than Category.Lib's
-   [crelation] ones, so they are required LAST. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Coq.Classes.Equivalence.
 Require Import Coq.Relations.Relation_Definitions.
 

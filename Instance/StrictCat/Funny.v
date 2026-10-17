@@ -22,55 +22,11 @@ Require Import Category.Structure.Monoidal.Semicartesian.
 
 Generalizable All Variables.
 
-(** * The funny tensor product as a symmetric monoidal structure on StrictCat
+(*
+   本文件给出具体实例。
 
-    This file assembles the funny tensor product [□] (Construction/Funny.v)
-    into a tensor bifunctor [FunnyTensor : StrictCat ∏ StrictCat ⟶ StrictCat]
-    and the instances
-
-      [@Monoidal StrictCat], [@BraidedMonoidal StrictCat],
-      [@SymmetricMonoidal StrictCat], [@SemicartesianMonoidal StrictCat _]
-
-    with tensor [□] and unit the terminal category [1].
-
-    A load-bearing caveat: there is NO such tensor on the weak [Cat]
-    (Instance/Cat.v), whose hom-setoid [Functor_Setoid] identifies functors
-    up to natural isomorphism.  The funny tensor product is not invariant
-    under equivalence of categories: with I the "walking isomorphism"
-    chaotic groupoid on two objects, [Functor_Setoid] identifies [Id[I]]
-    with the constant functor at a point (they are naturally isomorphic by
-    chaotic naturality), yet [1 □ 1 ≅ 1] while [I □ I] is equivalent to the
-    group ℤ — the interchange loop
-    [(fapp (rstep u) (lstep u))⁻¹ ∘ (fapp (lstep u) (rstep u))]
-    at (a, a) is free ([fapp t u] is "t then u", Construction/Funny.v).
-    Hence [fmap_respects] of a would-be
-    [tensor : Cat ∏ Cat ⟶ Cat] is FALSE, and the obstruction persists with one
-    argument fixed ([− □ I] is already non-Proper).  The tensor therefore
-    lives on [StrictCat] (Instance/StrictCat.v), whose hom-setoid
-    [Functor_StrictEq_Setoid] compares functors strictly — the same shape of
-    problem as the issue #138 discussion recorded in Instance/StrictCat.v.
-
-    Per Foltz–Lair–Kelly ("Algebraic categories with few monoidal biclosed
-    structures or none", JPAA 17(2) (1980) 171-177), up to isomorphism there
-    are exactly two monoidal biclosed structures on Cat, and both are
-    symmetric: the cartesian one and this funny one.  The braiding is
-    [FunnySwap] (Construction/Funny/Swap.v), and the unit [1] is terminal in
-    StrictCat (Instance/StrictCat/Terminal.v), making the structure
-    semicartesian.
-
-    Proof method: every coherence law is a strict equality of two functors
-    out of an iterated funny tensor product, so it reduces via the master
-    lemma [Funny_strict_eq]/[Funny_strict_eq_word]
-    (Construction/Funny/StrictEq.v) to transported agreement on the
-    generating steps.  For the nested domains ((x □ y) □ z etc.) the master
-    lemma is applied ITERATIVELY: a generator of the outer level is
-    [lstep w]/[rstep w] with w a whole inner word, and
-    [fmap[F ◯ FunnyL d] w ≡ fmap[F] (lstep w)] holds definitionally, so
-    agreement on outer left generators is again a strict-equality-of-functors
-    problem one level down.  At the leaves all coherence routes send each
-    generating step to the SAME nested generator on the nose — except in the
-    triangle, where the unitors produce [id ∘ f]-shaped payloads and the
-    congruence [feq]'s identity-removal and payload-congruence rules fire. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 

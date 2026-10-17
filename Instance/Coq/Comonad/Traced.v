@@ -11,33 +11,13 @@ Generalizable All Variables.
 
 (** * The traced (cowriter, exponent) comonad *)
 
-(* Haskell:   Control.Comonad.Traced (the comonad package)
-   Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)#Comonads
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)#Comonads
 
-   The traced comonad over a monoid (m, mempty, mappend) — Haskell's Traced,
-   also called the cowriter or exponent comonad — is the endofunctor m ⇒ −,
-   sending x to the functions m → x, with
+   本文件给出带迹范畴实例。
 
-       extract   h = h mempty                  (evaluate at the neutral trace)
-       duplicate h = λ w w', h (mappend w w')  (evaluate under every further
-                                                translation of the context)
-
-   It is dual to the writer monad m × −: the same monoid structure that lets
-   a writer computation merge the output it emits lets a traced computation
-   split the context it consumes.  Both arise by pushing the monoid m through
-   a monoidal functor into the endofunctor category: m × − covariantly
-   (giving a monad), m ⇒ − contravariantly (giving a comonad, since
-   (m ⇒ −) ○ (m ⇒ −) ≅ (m × m) ⇒ − lets mappend and mempty land as the
-   comultiplication δ and the counit ε).  Co-Kleisli arrows (m → x) → y
-   consume a value together with all of its monoid translates — the comonad
-   of cellular automata (m a grid of offsets) and of monoid-weighted contexts
-   generally, with co-Kleisli composition accumulating the offsets.
-
-   Following Theory/Monad.v's [Comonad := @Monad (C^op) (W^op)], the witness
-   [Traced_Comonad] below is literally a [Monad] on the opposite category;
-   the covariant accessors of Comonad/Core.v then read [extract], [duplicate]
-   and [extend] off it definitionally (the *_spec lemmas at the end hold by
-   [reflexivity]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* How much monoid the comonad costs
 

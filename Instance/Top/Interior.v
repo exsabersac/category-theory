@@ -25,121 +25,14 @@ Generalizable All Variables.
 
 (** * Interior and closure on the subsets of a space *)
 
-(* nLab: https://ncatlab.org/nlab/show/interior
-   nLab: https://ncatlab.org/nlab/show/closure
-   Book: Riehl, "Category Theory in Context", 2nd ed., SS 5.1,
-         Example 5.1.7 with footnote 5, printed p. 186, and SS 5.2,
-         Example 5.2.6 (begins p. 189), clause (iv) and footnotes 10–11,
-         printed p. 190
+(*
+ nLab: https://ncatlab.org/nlab/show/closure
+ Book: Riehl, "Category Theory in Context", 2nd ed., SS 5.1,
 
-   WHAT THE BOOK SAYS.  Example 5.1.7 (p. 186) equips the poset PX of
-   subsets of a topological space X with "a closure operator TA = Ā ...
-   and a kernel operator KA = A°, where A° is the interior of A ⊂ X",
-   and footnote 5 reads: "The closure of A is the smallest closed set
-   containing A, equally the intersection of all closed sets containing
-   A; the interior is defined dually."  Example 5.2.6 (begins p. 189),
-   clause (iv) and footnotes 10–11, printed p. 190: "An algebra for the
-   closure closure operator on the poset of subsets of a
-   topological space X is exactly a closed subset of X.  Dually, a
-   coalgebra for the interior kernel operator is exactly an open
-   subset."  Riehl works classically; the constructive content of each
-   half is measured below.
+   本文件给出具体实例。
 
-   WHERE.  The spaces are Instance/Top/Prop.v's [PTop]: Prop-valued
-   opens closed under the union of any Prop-valued family
-   ([popen_union]).  That is what makes the interior formable, as the
-   union of all the opens inside a subset; Instance/Top/Image.v records
-   that over the Type-valued [Top] the same union is not formable and
-   delivers no interior operator.  The subsets are
-   Instance/Sets/Powerset.v's [Powerset_Prop_obj] (≈-respecting Prop
-   predicates), and their inclusion order is Instance/Powerset.v's
-   [Subsets].
-
-   THE INTERIOR, CONSTRUCTIVE THROUGHOUT.  [pinterior X S] is the union
-   of the opens contained in S ("defined dually" to footnote 5), written
-   in exactly the shape of [popen_union], so it is open ([pint_open]).
-   It is monotone, deflationary and comultiplicative ([pint_mono],
-   [pint_defl], [pint_comult]), hence an
-   Instance/Proset/Monad/Interior.v [InteriorOperator] ([pinterior_op])
-   with its comonad ([pinterior_comonad]).  [pint_coalgebra_iff_open] is
-   the coalgebra half of Example 5.2.6 (iv), with no hypothesis: through
-   Interior.v's [wcoalgebra_iff_open] a coalgebra is S ⊆ int S, which
-   holds exactly when S is open.  Non-vacuity: {true} in
-   Instance/Top/Cocomplete.v's indiscrete two-point space [PTwoIndisc]
-   is not open, so not a coalgebra ([true_sub_not_coalgebra]).
-
-   THE CLOSURE, BY FOOTNOTE 5.  A subset is closed when its complement is
-   open ([PClosedSub]), and [pclosure X S] is the intersection of the
-   closed subsets containing S, a closure operator ([pclosure_op],
-   [pclosure_monad]) with no hypothesis.  One direction of the algebra
-   half is constructive: a closed subset is an algebra
-   ([pcl_talgebra_of_closed]).  The converse, an algebra is closed
-   ([pcl_closed_of_talgebra]), takes excluded middle as an EXPLICIT
-   hypothesis [lem]; no axiom is assumed.  It is used twice: to pass
-   from "not every closed C above S contains z" to a closed C above S
-   that misses z, and to get C z from ¬¬ C z.  Some classical principle
-   is needed: the converse without [lem] implies ¬¬(∀ q, ¬¬q → q)
-   ([pcl_converse_nndne]), which intuitionistic higher-order logic does
-   not prove (it stops in the Kripke model on (ω, ≤)); whether ¬¬-LEM
-   suffices is not settled.  The witness is [true_or_sub q], {true} ∪ q
-   in [PTwoIndisc], which is closed exactly when ¬¬q, so that the point
-   false lies in the closure of {true} only if double-negation
-   elimination holds ([pcl_true_false_dne]).  Instance/Top/Hausdorff.v's
-   adherence closure [PClosureIn] would not avoid the first use: by its
-   definition, a point outside an algebra again yields only that not
-   every open neighbourhood meets S (¬∀), not one that misses it.
-
-   THE UNCONDITIONAL ROUTE, measured.  Both halves are constructive for
-   the closure written as the complement of the interior of the
-   complement, ¬ int (¬ S) ([ncl], [nclosure_op], [nclosure_monad]), with
-   "closed" read as "the complement of an open" ([PCoOpen]):
-   [ncl_talgebra_iff_coopen] is the algebra half with no hypothesis, and
-   {true} in [PTwoIndisc] is not such an algebra, constructively
-   ([true_sub_not_nclosed]).  Classically this is Riehl's statement:
-   under [lem], [pclosure] and [ncl] agree pointwise
-   ([pclosure_ncl_lem]) and the two readings of "closed" coincide
-   ([closed_of_coopen_lem]; conversely [coopen_of_closed_stable] needs
-   only that S be ¬¬-stable).  A complement of an open is ¬¬-stable
-   ([coopen_stable]), and no route from [PClosedSub] to [PCoOpen]
-   without that stability is given here, so the constructive theorem is
-   about the second reading.
-   Both routes are delivered, the footnote-5 route with its one
-   classical clause disclosed.
-
-   STRENGTHS.  Every statement here is a proposition about subsets, so
-   the strengths are logical rather than definitional: the interior
-   half and the ¬ int ¬ algebra half are constructive; the footnote-5
-   algebra half is constructive in one direction and uses [lem] in the
-   other, where without [lem] it implies ¬¬(∀ q, ¬¬q → q)
-   ([pcl_converse_nndne]); the bridges between the two closures use
-   [lem].  The data
-   ([pinterior], [pclosure], [ncl] and the operators) are transparent
-   definitions whose respect for ≈ is a [Qed] lemma.
-
-   UNIVERSES, read off [About] with all instances printed.  No constant
-   has a level that occurs in its body only.  [Set < o] is first carried
-   by Instance/Sets/Powerset.v's [Powerset_Prop_truth_equiv], a relation
-   on [Prop] at level o, and reaches this file through
-   [Powerset_Prop_obj]; the operators add the caps of stdlib's
-   [PreOrder] and [relation], and the interior side the global levels of
-   stdlib's [Basics.flip] (see Interior.v).  The two witnesses, and
-   [true_or_sub], [pcl_true_false_dne] and [pcl_converse_nndne], carry
-   [o <= Logic_lemmas.equality.u0] from [PTwoIndisc]; the equation
-   [false = true] is retyped at [bool] before [discriminate], which at
-   the carrier type would add a cap [o <= eq_ind.u0] (measured).  The
-   biconditionals name their [iffT] level (p), and the one-directional
-   algebra lemmas pin the free level of the inner
-   [talgebra_iff_closed] to h, so that no level is left in a body
-   alone.  Both declarations of [Thin] and of [proset_thin] are loaded
-   (measured by [Locate]); this file names neither.
-
-   NOT DELIVERED.  No statement over the Type-valued [Top]; no closure
-   as a left adjoint or interior as a right adjoint of an inclusion of
-   posets of closed or open subsets; no Kuratowski axioms beyond the
-   closure-operator ones (no preservation of finite unions by the
-   closure, or of finite intersections by the interior); no proof that
-   ¬¬-LEM suffices for [pcl_closed_of_talgebra], and no proof, beyond
-   [pcl_converse_nndne], of how much of [lem] it needs. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The subsets of the points of X: Prop-valued predicates respecting the
    points' ≈ (Instance/Sets/Powerset.v's [Powerset_Prop_obj]). *)

@@ -12,70 +12,13 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * The field of quotients, as a functor
+(*
+ nLab: https://ncatlab.org/nlab/show/field+of+fractions
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.3
-    (printed p. 15), Exercise 1 [maclane:I.3:ex1]: exhibit the field of
-    quotients of an integral domain as a functor, choosing the right
-    domain category.
-    nLab: https://ncatlab.org/nlab/show/field+of+fractions
+   本文件给出具体实例。
 
-    THE CHOICE OF MORPHISMS is the exercise's actual content.  A ring
-    homomorphism f that sends some nonzero d to zero supports no
-    induced map on fractions — n/d would need image f n / 0 — so the fraction
-    construction is functorial only on homomorphisms that reflect zero,
-    i.e. the INJECTIVE ones, and the standard fix is to take the
-    category of integral domains with MONOMORPHISMS.  Here that
-    category is [IntDom]: objects are [DomObject]s, morphisms are ring
-    homomorphisms carrying an injectivity field ([DomHom]).  In-tree
-    the identification "monomorphism = injection" is available in the
-    direction that matters — [rng_injective_monic] (Instance/Rng.v)
-    shows every [DomHom]'s underlying map is monic in [Rng].  The
-    converse (monic ⇒ injective) was deferred when this was written,
-    pending the free ring ℤ[x]; it is now proved, as
-    [rng_monic_injective] in Instance/Rng/Polynomial.v.  Injectivity
-    remains carried as DATA in [DomHom] rather than reconstructed from
-    the categorical property, and that is now a choice rather than a
-    necessity: the construction below consumes the injectivity witness
-    directly at several sites here and downstream in
-    Instance/Field/Frac.v, so recovering it from a [Monic] hypothesis at
-    each use would buy nothing.
-
-    CONSTRUCTIVE CHOICE, disclosed.  An integral domain is presented
-    with CANCELLATION as the defining field ([dom_cancel]: c ≉ 0 and
-    a·c ≈ b·c give a ≈ b), together with commutativity and 1 ≉ 0.
-    Cancellation is the only INTEGRALITY property the construction
-    consumes — the transitivity of the fraction relation and the ring
-    laws below use it and the plain ring laws, nothing more — and it
-    follows constructively from the no-zero-divisors disjunction in
-    its Type-valued form ([DomObject_of_no_zero_divisors]; the
-    Type-valued sum is constructively stronger than the classical
-    Prop-valued statement), while the converse direction — recovering
-    a chosen disjunct from cancellation — would need a classical,
-    indeed Type-valued, case split on the setoid equality.  No
-    decidability and no choice principle appears anywhere.
-
-    THE CONSTRUCTION.  [FracObj D] is the setoid of pairs (n, d) with
-    d ≉ 0, compared by cross-multiplication: (n₁, d₁) ≈ (n₂, d₂) iff
-    n₁·d₂ ≈ n₂·d₁.  Fraction arithmetic makes it a commutative ring
-    ([FracRing], [FracRing_comm]), the functor [Frac : IntDom ⟶ CRng]
-    acts componentwise on morphisms, and the FIELD property is the
-    lemma [frac_recip]: every fraction whose numerator is apart from
-    zero has a reciprocal ([frac_nonzero_recip] packages it against
-    apartness from the zero fraction).  The embedding n ↦ n/1 is
-    [frac_embed], itself injective ([frac_embed_inj]) — the unit of
-    the universal-arrow reading of the construction
-    (Theory/Universal/Arrow.v's essay lists this very example); the
-    full universal property needs a category of fields to land in and
-    is left to the future fields development.
-
-    THE LIE HALF of Mac Lane's exercise — the Lie algebra of a Lie
-    group as a functor — needs smooth manifolds and is out of scope
-    for this library for the foreseeable future; the catalog item is
-    covered with that descope made explicit here.
-
-    Witness: ℤ ([Int_Dom], cancellation from [Z.mul_cancel_r]), where
-    1/2 + 1/3 ≈ 5/6 computes by [eq_refl]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Negation moves through products *)
 

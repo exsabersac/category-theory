@@ -29,111 +29,14 @@ Generalizable All Variables.
 
 (** * The contravariant power-set functor on skeletal [FinSet], computably *)
 
-(* nLab:      https://ncatlab.org/nlab/show/universal+element
-   nLab:      https://ncatlab.org/nlab/show/subobject+classifier
-   Wikipedia: https://en.wikipedia.org/wiki/Power_set
+(*
+ nLab:      https://ncatlab.org/nlab/show/subobject+classifier
+ Wikipedia: https://en.wikipedia.org/wiki/Power_set
 
-   Mac Lane asks (CWM 2nd ed., §III.1, Exercise 2, printed p. 59) for a
-   universal element of the contravariant power-set functor, and the
-   classical answer is the pair ⟨2, {1}⟩.  Riehl states the same example
-   (Category Theory in Context, 2nd ed., §2.3 Example 2.3.6, printed
-   p. 68) with the emphasis that the universal element is the SUBSET
-   {⊤} ∈ P(Ω), an element of the functor's VALUE at Ω, and not the POINT
-   ⊤ ∈ Ω, the isomorphism sending f : A ⟶ Ω to the subset f⁻¹(⊤) ⊆ A.
-   Awodey runs the correspondence for Sets (Category Theory, §5.3
-   Example 5.14, printed pp. 104-106), where the punchline is that it is
-   NATURAL in the object.
+   本文件给出具体实例。
 
-   ATTRIBUTION.  The section-and-page coordinates above, and the one-line
-   summaries of what those passages contain, are reproduced from the
-   catalogue entry of the issue this file answers
-   (jwiegley/category-theory#311, items maclane:III.1:ex2,
-   riehl:2.3:example6, awodey:5.3:example14); the printed texts were not
-   consulted while writing the file, so every statement here about their
-   content is the issue's characterization rather than a reading of the
-   books.  The mathematics stands on its own proofs.
-
-   WHY THIS FILE EXISTS ALONGSIDE Instance/Sets/Powerset/Universal.v.
-   That file answers the same exercise over [Sets], where a subset of A
-   is a [Prop]-valued predicate on A and is therefore, by construction,
-   already a map A ⟶ Ω; the correspondence there is genuine but its
-   content is thin, being the single equivalence "membership in {⊤}
-   detects truth".  Here nothing is definitional: the power set of the
-   n-element set is the 2^n-element set, subsets are ELEMENTS of it, and
-   the passage between a subset and its characteristic map is the digit
-   codec of Instance/FinSet/Closed.v.  Both round trips of that codec hold
-   at LEIBNIZ equality ([fin_apply_tabulate], [fin_tabulate_apply]), which
-   is what lets the universal property below be proved without a single
-   setoid manoeuvre, and lets the whole correspondence COMPUTE — the
-   acceptance tests at the end are [eq_refl] on closed data.
-
-   WHAT THIS FILE DELIVERS, AND AT WHICH STRENGTH.
-
-     (1) [FinPowerset : FinSet^op ⟶ FinSet] — the contravariant power-set
-         functor INSIDE [FinSet], object action n ↦ 2^n, arrow action the
-         inverse image.  Both functor laws close at Leibniz equality of
-         codes through [fin_tabulate_apply] and [fin_apply_tabulate];
-         [FinSet]'s hom-setoid is pointwise [=] ([fun_setoid]), so those
-         are the honest statements, not weakenings.
-
-     (2) [FinPowerset_Sets : FinSet^op ⟶ Sets] — the same functor read
-         into [Sets], which is the shape [AUniversalElement] requires of
-         its [H].  [finpowerset_sets_agrees] records by [eq_refl] that the
-         two have the same arrow action, so (2) is (1) retyped and not a
-         second construction.
-
-     (3) [FinPowerset_universal_element] — Mac Lane's §III.1 clause, the
-         pair ⟨2, {⊤}⟩, through Theory/Universal/Element.v's
-         [AUniversalElement].  The universal element is
-         [finpow_truth_subset : Fin.t 4], an element of P(2), NOT the
-         point [fin_true : Fin.t 2]; the two have different types, and
-         Test/ProbePowersetUniversal.v pins the substitution as a type
-         error against a positive control.
-
-     (4) Riehl's preimage description, PROVED and not merely asserted:
-         [finpow_fmap_is_preimage] says that the i-th digit of
-         [P k {⊤}] is [k i] itself, so [finpow_preimage_iff] reads off
-         that i belongs to [P k {⊤}] exactly when [k i] is [fin_true] —
-         that is, that the functor's action on k applied to the universal
-         element IS k⁻¹(⊤).  [finpow_preimage_of_truth] collects the
-         digits: pulling {⊤} back along k returns the CODE of k.
-
-     (5) [FinSet_Sub_natural] — Awodey's naturality clause instantiated at
-         [FinSet_Classifier]: the subobject presheaf of [FinSet] is
-         naturally isomorphic to [Hom(─, 2)].  This is
-         Structure/SubobjectClassifier/Natural.v applied, not reproved.
-
-     (6) [FinSet_Sub_powerset] — the two are joined:
-         [Sub ≅ FinPowerset_Sets] in [[FinSet^op, Sets]].  So on [FinSet]
-         the power-set functor of (2) and the subobject functor of
-         Theory/Subobject/Functor.v are the same presheaf, naturally.  The
-         middle term is [Hom(─,2)] and the second leg is the codec.
-
-   THE PRIOR ART, measured against the parent commit rather than restated
-   from the issue.  There was no [Instance/FinSet/PowerSet.v] and no
-   power-set functor of any kind over [FinSet]; the only power-set
-   functors over a Sets-like category at one level were the four in
-   Instance/Sets/Powerset.v, none of them contravariant at a single
-   universe level (Instance/Concrete.v's [Rel_Powerset : Rel ⟶ Sets]
-   is a fifth, but it is COVARIANT and out of [Rel], so it bears on
-   neither), and no universal
-   element was stated for any of them.  Instance/Sets/Powerset/Universal.v
-   carries the fuller correction, including why the issue's "no power-set
-   functor" reading of the prior art would be wrong.
-
-     (7) [finpow_is_topos_Pow] — the object action AGREES with
-         Structure/Topos.v's internal power object [Pow a := Ω ^ a] at
-         [FinSet_Topos], by [eq_refl].  ([exponent_obj m n] of
-         [FinSet_Closed] is [n ^ m], so [Ω ^ n] at Ω = 2 is [2 ^ n].)
-
-   WHAT IS NOT DELIVERED.  No claim is made that [FinPowerset] is a monad.
-   [finpow_is_topos_Pow] identifies the OBJECT actions with the internal
-   power object and nothing further: no comparison morphism is built, and
-   the internal version has no arrow action to compare with — that is
-   exactly the gap Instance/Sets/Powerset.v's header records about
-   [Structure/Topos.v].  Nothing here is stated for a general topos,
-   and the [Sub ≅ FinPowerset_Sets] comparison lives in [[FinSet^op, Sets]]
-   rather than inside [FinSet]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** The power set of a finite set, and the inverse image *)

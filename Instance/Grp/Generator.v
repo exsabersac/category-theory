@@ -8,82 +8,14 @@ Require Import Category.Structure.Generator.
 
 Generalizable All Variables.
 
-(* The free group on one generator separates Grp
+(*
+ nLab:  https://ncatlab.org/nlab/show/separator
+ nLab:  https://ncatlab.org/nlab/show/free+group
 
-   nLab:  https://ncatlab.org/nlab/show/separator
-   nLab:  https://ncatlab.org/nlab/show/free+group
+   本文件给出具体实例。
 
-   Awodey, "Category Theory" (1st ed., Carnegie Mellon pre-print,
-   September 2005), §7.2, printed p. 154 (PDF p. 163), gives the
-   single-object generator and offers the free group on one generator as
-   the generator of groups; Mac Lane, "Categories for the Working
-   Mathematician", 2nd ed. (GTM 5), §V.7, book p. 127 (PDF p. 136),
-   Definition 4 is the family form this instantiates, and Riehl,
-   "Category Theory in Context", 2nd ed., Definition 4.7.7, printed
-   p. 177 (PDF p. 197), is the same definition in her vocabulary.  This
-   file supplies the [Grp] witness; the [Sets] witness is
-   Instance/Sets/Generator.v and the [Ab] one Instance/Ab/Generator.v.
-
-   THE ARGUMENT, AND WHERE ITS WORK LIVES.  Freeness does all of it.  For
-   parallel homomorphisms f, g : G ~> K agreeing after every homomorphism
-   out of the free group on one generator, and an element x of G, the
-   constant map [grp_point x] sends the one generator to x; its extension
-   [free_grp_extend] (Instance/Grp/Free.v) is a homomorphism out of
-   the free group, so the hypothesis applies to it, and
-   [free_grp_extend_generators] says the extension carries the
-   inserted generator [fg_insert] to x.  Properness of f and g as
-   setoid maps transports the agreement from the generator's image to x
-   itself.  So the only structural input is the universal property, and
-   the statement would read the same for any left adjoint to a forgetful
-   functor whose unit at the singleton picks out an element.
-
-   THE STRENGTH IS ≈, NOT CONVERSION, AND THAT IS FORCED BY THE DONOR.
-   [free_grp_extend_generators] is stated at ≈, not at [eq_refl]: the
-   extension's action is [fmap] of a functor built through
-   Construction/Free/Groupoid.v's [FreeGroupoidFunctor], whose value on a
-   one-letter word is reached by a [Qed]-opaque lemma rather than by
-   computation.  So the two [rewrite]s below are not cosmetic — the proof
-   cannot be the single [exact] that the [Ab] witness is, and the
-   difference between the two files is exactly this.
-   Instance/Ab/Generator.v records the contrast from the other side.
-
-   WHAT "THE INTEGERS" ARE HERE.  Mac Lane's second example is the
-   integers generating abelian groups, which belongs to
-   Instance/Ab/Generator.v.  For [Grp] the corresponding object is the
-   free group on one generator, which classically IS ℤ; this file does
-   NOT prove that identification.  The tree DOES carry ℤ as a group
-   object: Construction/Deloop/Functors.v's [Int_Plus_Grp : GrpObject]
-   (the additive monoid [Int_Plus] of that file, with [grp_inv := Z.opp]), a
-   built constant of the _CoqProject set.  What is left undone is the
-   isomorphism [FreeGrpObject unit_setoid_object ≅ Int_Plus_Grp] in
-   [Grp] -- the homomorphism out of the free group is
-   [free_grp_extend] at the map sending the generator to 1%Z, the
-   inverse needs the integer power of the generator in the free group,
-   and the two inverse laws need induction on words and on integers --
-   and nothing below depends on it.  On the abelian side the integers
-   have five names, measured with grep -rnE
-   '^Definition [A-Za-z_0-9]+ : AbObject := ring_ab Int_Ring\.$'
-   --include='*.v' . (which reports 5): [ZAb] (Instance/Ab/Monoidal.v),
-   [ab_Z] (Instance/Ab/Coproduct.v), [Zgroup]
-   (Instance/Ab/Graded.v), [Ab_Z]
-   (Structure/Kernel/Universal/Examples.v) and [ab_int]
-   (Instance/Ab/Free.v); Instance/Ab/TorsionFree.v records the
-   same count, and this is a re-measurement of it, not a citation.  An
-   earlier revision of this paragraph said that NO ℤ group object existed
-   in [Grp], from a sweep that saw only the tactic-mode
-   [Definition … : GrpObject.] constants ([Grp_trivial], [Z2], [GalZ2],
-   [GrpTwo]) and missed every [:= {| … |}] one; an audit found
-   [Int_Plus_Grp], and the sentence is corrected here rather than
-   removed.
-
-   NOT DELIVERED.  No claim that the free group on one generator is the
-   SMALLEST separator, nor that [Grp] has no smaller one; no statement
-   about generating families of more than one object; no
-   joint-faithfulness reading (Structure/Generator.v's [JointlyFaithful]),
-   which is the theory half of #447; and no isomorphism with
-   [Int_Plus_Grp], as above.  The two-generator non-degeneracy results of
-   Instance/Grp/Free.v are not used and say nothing about
-   separation. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The element of a group as a map out of the singleton *)
 

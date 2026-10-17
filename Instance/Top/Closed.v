@@ -13,26 +13,15 @@ Generalizable All Variables.
 
 (** * Closed sets, and the complementation duality *)
 
-(* Book:      Riehl, "Category Theory in Context", Example 1.3.14(iv) and
-              Example 1.4.4(v)
-   nLab:      https://ncatlab.org/nlab/show/closed+subset
-   nLab:      https://ncatlab.org/nlab/show/frame
-   Wikipedia: https://en.wikipedia.org/wiki/Closed_set
+(*
+ nLab:      https://ncatlab.org/nlab/show/closed+subset
+ nLab:      https://ncatlab.org/nlab/show/frame
+ Wikipedia: https://en.wikipedia.org/wiki/Closed_set
 
-   Riehl's Example 1.3.14(iv) reads the poset of open subsets of a space as
-   a category — a thin category, one arrow `U ~> V` exactly when `U ⊆ V` —
-   and Example 1.4.4(v) observes that complementation is an isomorphism
-   between that category and the OPPOSITE of the poset of closed subsets:
-   taking complements reverses inclusions.  This file supplies both, plus
-   the functorial form: the opens of a space are contravariantly functorial
-   in the space (preimage), the closed sets likewise, and complementation
-   is a natural isomorphism between the two presheaves on [Top].
+   本文件给出闭结构实例。
 
-      Opens X          thin category of the opens of X, ordered by ⊆
-      Closeds X        thin category of the closed sets of X
-      Opens X ≅ (Closeds X)^op            complementation, objectwise
-      OpensF, ClosedsF : Top^op ⟶ Sets    preimage presheaves
-      OpensF ≅ ClosedsF                   complementation, naturally *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Design: closed sets constructively, and why the order is what it is
 

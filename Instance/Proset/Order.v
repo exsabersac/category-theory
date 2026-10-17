@@ -23,125 +23,17 @@ Generalizable All Variables.
 (** * Preorders as thin categories: the round trip, order reversal, total
       orders, and infima as limits *)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician",
-         Springer GTM 5, 2nd ed. 1998, §I.2 (construction 7, definition 4)
-   Book: Riehl, "Category Theory in Context", Dover 2016, §1.2
-   Book: Fong and Spivak, "Seven Sketches in Compositionality",
-         CUP 2019, §§1.2.2 and 1.3.1
-   nLab: https://ncatlab.org/nlab/show/thin+category
-   nLab: https://ncatlab.org/nlab/show/preorder
-   nLab: https://ncatlab.org/nlab/show/total+order
+(*
+ Book: Riehl, "Category Theory in Context", Dover 2016, §1.2
+ Book: Fong and Spivak, "Seven Sketches in Compositionality",
+ nLab: https://ncatlab.org/nlab/show/thin+category
+ nLab: https://ncatlab.org/nlab/show/preorder
+ nLab: https://ncatlab.org/nlab/show/total+order
 
-   Instance/Proset.v builds the thin category of a preorder; this file
-   closes the circle and works out the order theory the correspondence buys.
+   本文件给出预序集相关实例。
 
-   MAC LANE §I.2 AND ITS ROUND TRIP.  That section lists among its examples
-   of categories the one attached to a preordered set: objects the elements,
-   one arrow x → y for each instance of x ≤ y.  (The internal numbering used
-   in the citation above — construction 7, definition 4 — is as given by the
-   issue this file answers, and has not been checked against the book here;
-   the section reference is the reliable part.)  Read in reverse,
-   a category determines a preorder on its objects — "x ≤ y when there is an
-   arrow x ~> y" — and the two passages are meant to be mutually inverse on
-   thin categories.  Both legs are proved below, and both are MEASURED rather
-   than asserted:
-
-     - [hom_preorder_Proset] recovers R from [Proset P] up to pointwise
-       logical equivalence, not up to equality of relations.  The gap is
-       exactly Coq's Prop/Type divide: Structure/Thin.v's [thin_preorder]
-       squashes the hom into [inhabited], and [inhabited (R x y)] is not the
-       same term as [R x y].  [hom_preorder_Proset_eq] then shows that
-       propositional and functional extensionality — taken as explicit
-       hypotheses, so that no axiom enters the development — close the gap
-       to an honest equality.
-
-     - [thin_Proset_iso] gives the other leg as an isomorphism in [Cat].
-       Instance/Cat.v discloses that its [Functor_Setoid] identifies
-       functors up to natural isomorphism, so an isomorphism there is only an
-       EQUIVALENCE of categories.  More than that is proved, and recorded
-       separately so the extra strength is checkable rather than asserted:
-       [thin_Proset_iso_obj] shows both functors are the identity on objects
-       definitionally, and [thin_Proset_roundtrip_hom] with
-       [Proset_thin_roundtrip_hom] show their morphism actions invert each
-       other up to `≈`.  That is an identity-on-objects isomorphism in the
-       setoid sense the library uses everywhere.  It is NOT an equality of
-       functors, and it is weaker than the [eq_refl]-level inverse pair the
-       order-reversal isomorphism below achieves.
-
-     - The backward functor needs [HomChoice] — an arrow produced from the
-       bare fact that one exists.  It is taken as an explicit hypothesis
-       (Structure/Thin.v), and it costs nothing where it is actually wanted:
-       [proset_HomChoice] discharges it for every [Proset], whose homs are
-       already Props, so [Proset_roundtrip] is hypothesis-free.  Separately,
-       [hom_Proset_Faithful_iff_Thin] pins the role of thinness exactly: the
-       forward functor is faithful precisely when the category is thin.
-
-   ORDER REVERSAL (Riehl §1.2).  The opposite of the thin category of P is
-   the thin category of the reversed order.  Here the two categories have
-   CONVERTIBLE objects and homs, so [Proset_op_iso] is an isomorphism whose
-   two morphism actions are mutually inverse by [eq_refl] — see
-   [Proset_op_roundtrip] and [Proset_op_hom].  This is much stronger than the
-   equivalence that `≅[Cat]` records, and stronger than the round trip above.
-   The reversed preorder is stdlib's [Basics.flip] with stdlib's
-   [flip_PreOrder] instance; nothing needed constructing.
-
-   SEVEN SKETCHES §1.2.2.  Four items from that section are settled here.
-   The axiom comparison — every [Equivalence] is a [PreOrder], and a
-   symmetric [PreOrder] is an [Equivalence] — is [Equivalence_is_PreOrder]
-   and [PreOrder_Symmetric_is_Equivalence].  The first direction already
-   exists in stdlib as [Equivalence_PreOrder] and is re-derived here only so
-   that both halves stand side by side over one carrier and one relation; for
-   the second, a [Search] over the modules this file loads returns no stdlib
-   lemma of that shape.  The discrete and codiscrete preorders on
-   an arbitrary carrier are [discrete_rel] and [codiscrete_rel], with
-   [codiscrete_terminal] and [discrete_initial] locating them as the top and
-   the bottom of the preorder structures on a fixed carrier under refinement
-   (the identity map being monotone), each characterized uniquely up to
-   mutual refinement.  Comparability is [comparable], distinguished from
-   decidability by three theorems rather than by a remark.  And a total order
-   is a preorder in which every two elements are comparable
-   ([TotalOrder_iff_all_comparable]).
-
-   SEVEN SKETCHES §1.3.1.  Infimum and supremum are introduced under their
-   order-theoretic names and identified with the limit and the colimit of the
-   two-object discrete diagram: [infimum_iff_limit] and
-   [supremum_iff_colimit], stated over Structure/Limit.v's [IsALimit] and
-   Instance/Discrete.v's [DiscreteCat] on [bool].  Instance/Poset.v
-   announces the dictionary entry as prose ("a product is a meet, and more
-   generally the limit over a subset is its greatest lower bound"); these two
-   theorems prove it at the two-object shape, for an ARBITRARY preorder.  The
-   tree does already contain one instance of the identification — the
-   cartesian structure on the walking arrow, whose product object is
-   Instance/Two/Monoidal.v's [two_meet] fed to [Two_Cartesian] —
-   but that is a single fixed two-element order presented as a [Cartesian]
-   instance rather than as a limit over a discrete diagram.
-
-   SCOPE NOTE on the general identification lemma.  The library contains no
-   thin-category-wide "a limit is a meet" lemma: a case-insensitive search of
-   every .v file for [infimum], [supremum], "greatest lower" and "least
-   upper" returns exactly one hit, the prose comment at Instance/Poset.v.
-   The general identification lemma belongs to issue #422 (MacLane V.2:
-   products in a preorder are greatest lower bounds), whose suggested module
-   is Instance/Proset/Limit.v -- this same directory.  The two theorems below
-   ARE that dictionary at binary discrete shape, proved here because this
-   issue's checkbox needs them; whoever takes #422 should consume and
-   generalize them rather than restate them (issue #737, the poset adjoint
-   functor theorem, consumes #422's lemma and explicitly forbids a second
-   copy).  #223's own checkbox text attributed the lemma to #737; that
-   attribution was wrong at the source.  The two theorems are accordingly
-   proved DIRECTLY, at the two-object discrete shape, over an arbitrary
-   preorder (totality is not needed for the identification — only for
-   existence, which is [TotalOrder_meet] and [TotalOrder_join]).  When the
-   general lemma lands, these become its specialization; until then they
-   stand on their own and depend on nothing that does not exist.
-
-   WHAT IS NOT CLAIMED.  The correspondence proved here is between preorders
-   and thin categories one object-set at a time.  It is not lifted to an
-   equivalence between a category of preorders and a category of thin
-   categories, and no adjunction between [Proset] and [thin_preorder] is
-   stated.  The morphism leg of the correspondence already exists in another
-   guise: Construction/Enriched/Two.v identifies enriched functors
-   between preorders enriched in the walking arrow with monotone maps. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Thinness of prosets and posets *)
 

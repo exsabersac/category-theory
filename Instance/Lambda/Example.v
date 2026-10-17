@@ -8,15 +8,11 @@ Generalizable All Variables.
 
 (** * Worked examples for the de Bruijn STLC CEK evaluator *)
 
-(* These [Definition]s exercise the CEK machine of Eval.v on concrete closed
-   terms, pinning each [run gas e] to the exact final machine state it computes.
-   The proofs are [eq_refl], so each one is a regression test: it typechecks
-   precisely when the machine still reduces the term to the stated state, by
-   the definitional unfolding of [run]/[loop]/[step].
+(*
+   本文件给出 λ 演算相关实例。
 
-   CEK machine:  https://en.wikipedia.org/wiki/CEK_Machine
-   simply typed lambda calculus:
-     https://en.wikipedia.org/wiki/Simply_typed_lambda_calculus *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Example.
 

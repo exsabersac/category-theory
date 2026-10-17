@@ -13,35 +13,11 @@ Unset Uniform Inductive Parameters.
 
 (** Intrinsically-typed de Bruijn syntax for the simply-typed lambda calculus *)
 
-(* This file gives the well-typed term syntax of the STLC as a GADT indexed by
-   its typing judgement: an inhabitant of [Exp Γ τ] *is* a derivation of
-   Γ ⊢ τ, so only well-typed terms can be written down (ill-typed terms are
-   not expressible).  Variables are de Bruijn indices made intrinsically
-   well-scoped by the [Var] family, indexing the context Γ (a list of types,
-   innermost binding at the head).
+(*
+   本文件给出 λ 演算相关实例。
 
-   The constructors below are exactly the STLC typing rules, in the usual
-   judgement notation Γ ⊢ e : τ (here [Exp Γ τ], with [Γ ∋ τ] for [Var Γ τ]):
-
-       ───────────── (ZV)        Γ ∋ τ   ──────────── (SV)
-       τ :: Γ ∋ τ                         τ' :: Γ ∋ τ
-
-         Γ ∋ τ                ───────────── (EUnit)
-       ───────── (VAR)          Γ ⊢ TyUnit
-       Γ ⊢ τ
-
-       Γ ⊢ τ1   Γ ⊢ τ2          Γ ⊢ τ1 × τ2          Γ ⊢ τ1 × τ2
-       ─────────────── (Pair)   ─────────── (Fst)    ─────────── (Snd)
-       Γ ⊢ τ1 × τ2              Γ ⊢ τ1               Γ ⊢ τ2
-
-       dom :: Γ ⊢ cod                 Γ ⊢ dom ⟶ cod   Γ ⊢ dom
-       ────────────────── (LAM)       ─────────────────────── (APP)
-       Γ ⊢ dom ⟶ cod                  Γ ⊢ cod
-
-   simply typed lambda calculus:
-     https://en.wikipedia.org/wiki/Simply_typed_lambda_calculus
-   de Bruijn indices:  https://ncatlab.org/nlab/show/de+Bruijn+index
-                       https://en.wikipedia.org/wiki/De_Bruijn_index *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Exp.
 

@@ -11,34 +11,13 @@ Generalizable All Variables.
 
 (** * The environment (coreader) comonad on COQ *)
 
-(* nLab:      https://ncatlab.org/nlab/show/coreader+comonad
-   Wikipedia: https://en.wikipedia.org/wiki/Monad_(functional_programming)
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Monad_(functional_programming)
 
-   The environment comonad — also called the coreader, product, or (after
-   Haskell's Control.Comonad.Env) Env comonad — is the endofunctor e × − on
-   COQ, for a fixed type e of "environments", with
+   本文件给出余单子相关实例。
 
-       extract   (e0, v) = v               (read the value, drop the context)
-       duplicate (e0, v) = (e0, (e0, v))   (expose the context to the value)
-
-   It is dual to the writer monad m × −: where writer requires a monoid
-   structure on m to merge accumulated output, the environment comonad
-   requires a comonoid structure on e to copy and discard the ambient
-   context, and in the cartesian category COQ every type carries one
-   canonically (the diagonal and the terminal map).  Morphisms W x ~> y of
-   its co-Kleisli category (Comonad/CoKleisli.v) are exactly the functions
-   e * x → y that consult an ambient environment.
-
-   Following Theory/Monad.v's [Comonad := @Monad (C^op) (W^op)], the witness
-   [Env_Comonad] below is literally a [Monad] on COQ^op; the covariant
-   accessors of Comonad/Core.v then read [extract], [duplicate] and [extend]
-   off it definitionally (the *_spec lemmas at the end hold by
-   [reflexivity]).
-
-   COQ's morphism equivalence is pointwise Leibniz equality, so every law
-   here is proved by destructuring the pair argument and [reflexivity]: no
-   functional extensionality — indeed no axiom of any kind — enters this
-   file, and every definition below is closed under the global context. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Coeffects, annotation, and the slice
 

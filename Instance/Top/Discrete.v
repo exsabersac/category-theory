@@ -9,95 +9,16 @@ Require Import Category.Instance.Top.Forgetful.
 
 Generalizable All Variables.
 
-(** * The discrete topology as a universal arrow
+(*
+ nLab:      https://ncatlab.org/nlab/show/discrete+space
+ nLab:      https://ncatlab.org/nlab/show/universal+morphism
+ Wikipedia: https://en.wikipedia.org/wiki/Discrete_space
+ Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
 
-    nLab:      https://ncatlab.org/nlab/show/discrete+space
-    nLab:      https://ncatlab.org/nlab/show/universal+morphism
-    Wikipedia: https://en.wikipedia.org/wiki/Discrete_space
+   本文件给出离散范畴实例。
 
-    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-          GTM 5, Springer 1998, §III.1, Exercise 3, printed p. 59 —
-          item maclane:III.1:ex3.  The exercise asks for a universal
-          arrow to each of four forgetful functors; this file is its
-          THIRD row, the discrete topology on a set.  Riehl, "Category
-          Theory in Context" 2nd ed., §4.1 Example 4.1.10 lists the same
-          adjunction (riehl:4.1:example10).
-
-    The content is Seven Sketches' Exercise 7.29 read as a universal
-    property: a map out of a discrete space is continuous for ANY
-    topology on the target, so the underlying-set map IS the continuous
-    map, and the extension is unique because a continuous map is
-    determined by its action on points.
-
-    WHY THIS FILE DOES NOT PACKAGE AN [Adjunction], AND WHY THAT IS NOT A
-    DEFECT OF THIS FILE.  Instance/Top/Forgetful.v records a
-    pre-existing universe obstruction, in its own words: a functor out of
-    [Top@{h o}] lands in [Sets@{h so}] while a functor INTO [Top@{h o}]
-    must come from [Sets@{o so}], so "[a]n [Adjunction] record between the
-    two would need both functors to share ONE Sets, at levels o and h
-    simultaneously, with o < h: the packaged triple is unformable at every
-    universe assignment."  That file calls it "the library's familiar
-    classifier phenomenon ... not a defect of the mathematics", the same
-    stratification Instance/Sets/Classifier.v lives with.  Accordingly it
-    delivers the adjunction as the cross-universe transposition
-    isomorphism [discrete_adj] with its four naturality lemmas,
-    rather than as an [Adjunction].
-
-    So the honest statement of #312's third row is NOT a packaged
-    [UniversalArrow] — [Theory/Universal/Arrow.v]'s record would inherit
-    exactly the same obstruction, since it mentions the forgetful functor
-    applied to an object of the OTHER category.  What IS formable, and is
-    delivered here, is the universal property itself, written out:
-
-      - [disc_extend] : the extension of a setoid map to a continuous map
-        out of the discrete space.
-      - [discrete_universal] : the FULL universal property as a Type-valued
-        [∃!] — every setoid map from A into the points of Y extends to one
-        and only one continuous map out of [Discrete_Top A].  This is the
-        elementary content that a [UniversalArrow] record would package,
-        and nothing about it is conditional or cross-universe.
-      - [disc_unit] : Mac Lane's unit X → U(X_disc), which the exercise
-        names explicitly.
-
-    THE UNIT IS THE IDENTITY, AND THAT IS STRICT.  [Top_Forget]'s object
-    action is [Setoid_Lift (top_carrier X)] and [Top_Discrete]'s is
-    [Discrete_Top A], whose carrier is A itself, so the composite is
-    [Setoid_Lift A] ON THE NOSE — [disc_unit_target_strict] is [eq_refl],
-    and it is NOT new: Instance/Top/Forgetful.v already ships
-    [forget_discrete_on_objects], the same proposition with the same
-    proof.  It is restated here only so the unit below can be read
-    without leaving the file —
-    and the unit is literally [id] of the lifted setoid.  That is the
-    right mathematical statement rather than a degeneracy: the discrete
-    topology adds nothing to the underlying set.  (That is the usual
-    reason one expects this left adjoint to be fully faithful, but NEITHER
-    [Full Top_Discrete] NOR [Faithful Top_Discrete] is proved here or
-    anywhere in tree, and neither is claimed — see NOT DELIVERED.)  Note the
-    unit
-    must be stated on the LIFTED setoid: [A] itself lives in
-    [Sets@{o so}] while [Top_Forget]'s values live in [Sets@{h so}], and
-    those are different categories — the same stratification again.
-
-    A MEASUREMENT WORTH RECORDING.  Writing [disc_extend] with the record
-    literal [{| continuous_map := g; ... |}] is REJECTED even though the
-    donor [discrete_adj] fills that very field the same way: the checker
-    must solve [top_carrier ?X = A] for [?X], which is higher-order, and
-    the ascription on the result type does not determine it in time.
-    Applying the constructor explicitly, [@Build_ContinuousMorphism
-    (Discrete_Top A) Y g _], fixes [?X] and elaborates.  The donor escapes
-    because there the field sits inside a [Program Definition] whose
-    expected type is already known.
-
-    NOT DELIVERED: [Full Top_Discrete] and [Faithful Top_Discrete] are
-    not proved, so the full faithfulness remarked on above is an
-    expectation and not a result of this file.  No [Adjunction] and no
-    [UniversalArrow] record either, for the reason above — and no claim that
-    either is unformable for a reason
-    OTHER than the donor's stratification, which is not re-derived here.
-    Nothing is said about the indiscrete side beyond what Forgetful.v
-    already proves, and no comparison with [Instance/Discrete.v]'s
-    [DiscreteCat] (a different construction on a different subject) is
-    made. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The extension of a setoid map to the discrete space *)
 

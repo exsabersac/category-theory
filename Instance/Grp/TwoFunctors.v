@@ -13,125 +13,14 @@ Generalizable All Variables.
 
 (** * Two functors with the same object function, over groups *)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer GTM 5, 1998, Section I.3 ("Functors"), printed p. 15
-   nLab: https://ncatlab.org/nlab/show/functor
-   nLab: https://ncatlab.org/nlab/show/inner+automorphism
+(*
+ nLab: https://ncatlab.org/nlab/show/functor
+ nLab: https://ncatlab.org/nlab/show/inner+automorphism
 
-   Mac Lane closes Section I.3 by asking the reader to find two DIFFERENT
-   functors whose object function is the identity, the point being that a
-   functor is not determined by what it does to objects.  This file builds
-   that pair over groups, together with the two facts that say why the
-   obvious candidates do not work.
+   本文件给出具体实例。
 
-   WHAT IS BUILT.
-
-     - [Grp_conj]: conjugation a ↦ t * a * t⁻¹ by an element t of a group,
-       as a morphism of [Grp] (Instance/Grp.v), and [Grp_conj_iso]
-       exhibiting it as an isomorphism with inverse the conjugation by
-       t⁻¹.  These are the inner automorphisms.
-
-     - [S3]: the symmetric group on three letters, presented as the
-       semidirect product of a rotation of order three by a reflection of
-       order two, over a carrier with decidable equality.  Its setoid IS
-       propositional equality -- literally, not merely extensionally: the
-       two relations are CONVERTIBLE, so [S3_equiv_is_eq] and
-       [S3_eq_is_equiv] below are each the identity coercion, and calling
-       them a record "in both directions" inflates them (an audit said so
-       and was right; the underlying fact is stronger than the pair of
-       lemmas suggests).  So a computation refuting an equation of carrier
-       elements is a statement about the hom-setoid of [Grp], not about
-       how a term happens to be written.  [S3] is
-       nonabelian ([S3_nonabelian]), which is exactly what the witness
-       needs.
-
-     - [GrpAt G]: the one-object category whose only object is G and whose
-       morphisms are the endomorphisms of G in [Grp].  Its inclusion
-       [GrpAt_Incl] into [Grp] is full ([GrpAt_Incl_Full]), faithful
-       ([GrpAt_Incl_Faithful]) and injective on objects
-       ([GrpAt_Incl_injective_on_objects]), so [GrpAt G] presents the full
-       subcategory of [Grp] on the single object G.
-
-     - The pair: [Id] and [S3_Twist], both endofunctors of [GrpAt S3] with
-       the identity object function ([S3_Twist_fobj]), differing on the
-       concrete morphism [S3_conj_r] at the concrete element
-       [S3_s] ([S3_twist_differs_on_conj_r]), hence distinct in the strict
-       functor setoid ([S3_two_functors_distinct]) while identified by the
-       weak one ([S3_two_functors_weakly_equal]).
-
-   WHY THE TWIST IS NOT DEGENERATE.  [S3_Twist] is [Twist] (Functor/Twist.v)
-   of the identity functor by conjugation with the reflection [S3_s].  Two
-   ways for such a witness to collapse are ruled out here by proof rather
-   than by assertion.  First, conjugation in an ABELIAN group is the
-   identity automorphism ([Grp_conj_abelian]), so a conjugation twist over
-   an abelian group proves nothing; the in-tree abelian witness Z/2
-   (Instance/Grp.v) is shown to collapse in exactly that way
-   ([Z2_conj_trivial]).  Second, and more generally, a twist by a NATURAL
-   family collapses ([Twist_natural_strict_id]); the canonical
-   group-theoretic family, inversion viewed as the isomorphism from a
-   group to its opposite (Instance/Grp.v), is natural, and its
-   twist is therefore an endofunctor of the whole of [Grp] with the
-   identity object function that is strictly EQUAL to [Id]
-   ([Grp_op_twist_is_Id]).  The conjugation family on [GrpAt S3] escapes
-   both: S3 is nonabelian, and the family is not natural at the inner
-   automorphism by the rotation ([S3_conj_not_central]), which is exactly
-   the datum [S3_two_functors_distinct] consumes.
-
-   SCOPE, STATED PLAINLY.  Mac Lane's exercise is posed for the whole
-   category of groups.  What is constructed here is the same twist over
-   the full subcategory of [Grp] on the single object S3, where the family
-   is one honest inner automorphism, plus the two collapse theorems above
-   which show what goes wrong with the uniform candidates.  The companion
-   witness in Construction/Free/TwoFunctors.v (Fong and Spivak's Exercise
-   3.40) needs no groups at all.
-
-   WHAT EXACTLY IS MISSING, and it is one principle rather than a vague
-   appeal to choice.  An audit of the first commit built the [Grp]-wide
-   pair using nothing from this file except [Twist], [Twist_not_strict_id],
-   [uip_of_dec] and [Grp_conj_iso], adding only a decision procedure for
-   equality of [GrpObject]s: with one in hand, the family that conjugates
-   at S3 and is the identity elsewhere is definable, and the resulting
-   endofunctor of [Grp] has the identity object function, is equal to [Id]
-   in [Cat] and distinct from it in [StrictCat].  Reading the axioms off
-   that construction gives exactly two, [classic] and
-   [constructive_indefinite_description] -- so the barrier really is a
-   choice principle, as the informal story says, and this library is
-   axiom-free (docs/AXIOMS.md).
-
-   The machinery in Functor/Twist.v is therefore exactly one principle
-   short of the exercise as posed, and that principle is the object
-   discriminator, not anything about twists.
-
-   AND THE OBSTRUCTION CANNOT BE UPGRADED TO A THEOREM, which is worth
-   saying because the reflex elsewhere in this development is to convert
-   "we could not" into "it cannot" by counterexample.  Here that move is
-   unavailable: since the separating endofunctor exists in every model of
-   Rocq extended by classical epsilon, the statement "every endofunctor of
-   [Grp] with the identity object function is strictly [Id]" is NOT
-   provable in Rocq, modulo the relative consistency of that extension.
-   So nothing is claimed to exist or not to exist here, and nothing can be.
-
-   A CONSEQUENCE OF THE SAME PRINCIPLE, not a second obstacle.  The first
-   commit recorded separately that the object component of a
-   [Functor_StrictEq_Setoid] witness is an ARBITRARY proof of [F x = G x] --
-   for functors sharing the identity object function, a loop [G = G] in
-   [GrpObject] -- so that refuting strict equality means refuting every
-   such loop rather than only [eq_refl].  That is accurate, but it is not
-   an independent barrier: the same decision procedure that supplies the
-   discriminator collapses every loop through Hedberg, via this
-   development's own [uip_of_dec] in Functor/Twist.v.  The witnesses below
-   sidestep it because their object types have decidable equality.
-
-   STRICT VERSUS WEAK.  The distinctness is stated in
-   [Functor_StrictEq_Setoid] (Theory/Functor.v), the hom-setoid of
-   [StrictCat] (Instance/StrictCat.v).  It could not be stated in
-   [Functor_Setoid] (Theory/Functor.v), the hom-setoid of [Cat]
-   (Instance/Cat.v), because that setoid identifies naturally
-   isomorphic functors and [S3_Twist] IS naturally isomorphic to [Id] --
-   [S3_two_functors_weakly_equal] proves it, the natural isomorphism being
-   the conjugation itself.  So the two functors are EQUAL as morphisms of
-   [Cat] and DIFFERENT as morphisms of [StrictCat]; that is the reading
-   under which Mac Lane's question has content in this library. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 

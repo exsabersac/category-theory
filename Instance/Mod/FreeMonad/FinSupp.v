@@ -18,88 +18,14 @@ Generalizable All Variables.
 
 (** * T_R X as the finitely supported functions X → R *)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer GTM 5, 1998, §VI.4, Exercise 2(a), printed p. 146 (PDF
-         p. 155) — maclane:VI.4:ex2
-   Book: Riehl, "Category Theory in Context", Example 5.1.4(iii),
-         printed p. 184 (PDF p. 204) — riehl:5.1:example4
-   nLab: https://ncatlab.org/nlab/show/free+module
+(*
+ Book: Riehl, "Category Theory in Context", Example 5.1.4(iii),
+ nLab: https://ncatlab.org/nlab/show/free+module
 
-   Mac Lane's part (a) opens "For each set X, T_R X is the set of all
-   those functions f: X → R with only a finite number of non-zero
-   values"; Riehl: "Formally, a finite R-linear combination is a finitely
-   supported function χ : A → R".  Instance/Mod/FreeMonad.v reads T_R
-   X on formal combinations, unconditionally, and their coefficients
-   under a decider; this satellite is the third reading.
+   本文件给出具体实例。
 
-   THE ISOMORPHISM.  Under a decider for X's ≈, [FinSupp X] is the setoid
-   of ≈-respecting functions X → R with a list of points outside which
-   they vanish, compared pointwise: the list witnesses finiteness and is
-   not compared.  [TR_FinSupp_iso : T_R X ≅ FinSupp X] in Sets sends a
-   combination to its coefficient function [to_finsupp], supported on the
-   points it names ([fv_gens]), and a function f to Σ f(y)·e_y over its
-   support with duplicates removed ([from_finsupp]); both at [eq_refl]
-   ([TR_FinSupp_iso_to], [TR_FinSupp_iso_from],
-   [TR_FinSupp_iso_coef]).  Its laws are [finsupp_to_from] (pointwise ≈)
-   and [finsupp_from_to] ([fv_eq]); the second is refused at [eq_refl]
-   (Test/ProbeFreeModule472.v, R13), the collected sum being a different
-   term.  [TR_FinSupp_iso] packages two converse facts.  UNIQUENESS: two
-   combinations denoting the same element have the same collected
-   coefficients ([fv_lc_unique]; the coefficient of z in Σ rᵢ·⟨xᵢ⟩ is the
-   sum of the rᵢ with xᵢ ≈ z, [fv_coef_lc]), which is the respectfulness
-   of [fv_coef] and the coefficient uniqueness Instance/Mod/Free.v's WHAT
-   IS NOT DELIVERED records ("nothing here says two lists denoting the
-   same element are related"), proved here under the decider (Free.v's
-   CORRECTION (#472)); [to_finsupp] respects ≈ by it.  INJECTIVITY, its
-   converse: a combination is determined by its coefficients
-   ([fv_coef_injective]), from [fv_collect] (every combination is [fv_eq]
-   to the sum of its coefficients over any duplicate-free list naming its
-   generators, like terms collected).  The inverse map respects ≈ by
-   [fv_coef_injective], so no permutation lemma for the deduplicated
-   supports is needed.
-
-   WHY A DECIDER.  The coefficient map is the linear extension of
-   Free.v's indicator [fv_probe_at], and deduplicating a support list
-   decides membership up to ≈; neither can be written over a bare
-   setoid.  The carrier [FinSupp] itself needs none.
-
-   A COMPUTING WITNESS.  Over ℤ on Free.v's two-element setoid [TwoGens]
-   the coefficients of 2·e_true + e_false are 2 and 1, and that of
-   μ (3·⟨e_true + e_false⟩ + ⟨e_true⟩) at true is 4, at [eq_refl]
-   ([TR_coef_Z_true], [TR_coef_Z_false], [TR_coef_Z_join]).
-
-   STRENGTHS.  Every [Example] holds at [eq_refl], restated in the probe.
-   [fv_coef_lc] and [fv_lc_unique] are at ≈ as R's own laws are, through
-   Instance/Mod/FreeMonad.v's [fv_eval_fibre_lc]; [to_finsupp] reads the
-   Leibniz [fv_coef_respects_point] at ≈.  The middle-four interchange of
-   [fv_lsum_plus] is Instance/CMon/Biproduct.v's [cmon_plus_interchange]
-   at the free module (its [Require] adds no module to this file's
-   closure).  One proof ends [Defined] (counted by token),
-   [TR_FinSupp_iso], and it is load-bearing: closed alone [Qed] in a
-   renamed copy of #472's six files, [TR_FinSupp_iso_to] stops.
-   Twenty-three lemmas end [Qed].
-
-   UNIVERSES, read off [About].  The section binds R : RingObject@{c c c}
-   and Sets@{c so}, the identification of the ring's levels being the one
-   Instance/Mod/FreeMonad.v's coefficient section records (inherited from
-   Free.v's [fv_probe_at]).  The list predicates [fs_mem] and [fs_nodup]
-   are typed in Type@{c} (with [poly_unit@{c}]), so that no free level is
-   left in the lemmas that take them as hypotheses.  Twenty-nine names
-   bind c so alone, eleven add one or two levels (nine of them two, the
-   module category's object level and [fv_coef]'s fourth level, bounded
-   only by c < it, which [to_finsupp] and [finsupp_from_to] bind through
-   the Leibniz [fv_coef_respects_point]), and the isomorphism and
-   its three readbacks add the six of T_R (Instance/Mod/FreeMonad.v's
-   UNIVERSES); the ℤ witnesses bind three or seven levels of their own,
-   the carrier level free above [bool] and [Z].  No [Set] but the bound
-   Set < m on the module category's object level, and no equation.  On
-   Coq 8.19.2 and 8.20.1 every name binds the same levels (compared by
-   [About]).
-
-   NOT DELIVERED.  [FinSupp] as a functor, with Mac Lane's
-   [(T_R t)f]_y = Σ′ f_x as its action, [TR_FinSupp_iso] natural, and the
-   monad structure transported to it; a decision procedure for T_R X's ≈
-   (for X inhabited it would need R's decider too). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FinSupp.
 

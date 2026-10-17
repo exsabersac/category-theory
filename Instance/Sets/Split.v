@@ -9,39 +9,14 @@ Generalizable All Variables.
 
 (** * A section/retraction pair in Sets that is not an isomorphism *)
 
-(* nLab:      https://ncatlab.org/nlab/show/split+monomorphism
-   nLab:      https://ncatlab.org/nlab/show/split+epimorphism
-   Wikipedia: https://en.wikipedia.org/wiki/Section_(category_theory)
+(*
+ nLab:      https://ncatlab.org/nlab/show/split+epimorphism
+ Wikipedia: https://en.wikipedia.org/wiki/Section_(category_theory)
 
-   Fong and Spivak, "Seven Sketches in Compositionality" (CUP, 2019), §3.2.5
-   Example 3.34, printed p. 89.  CITED BY LOCATION; the printed text was not
-   consulted and no sentence of it is reproduced here.  The library's book
-   catalog describes the example as exhibiting a one-sided inverse pair in
-   sets and observing that neither map is an isomorphism
-   (doc/plan/books/ledger.tsv, id 7sketches:3.2.5:example3.34).
+   本文件给出集合范畴相关实例。
 
-   Theory/Morphisms/Classes.v arranges the morphism classes in the inclusion
-   diagram
-
-       Iso ⊆ SplitMono ⊆ Mono
-       Iso ⊆ SplitEpi  ⊆ Epi
-
-   and proves all four inclusions ([split_mono_in_mono],
-   [split_epi_in_epi], [iso_in_split_mono], [iso_in_split_epi]).
-   Nothing there says any inclusion is STRICT, and showing Iso ⊆ SplitMono
-   proper needs an actual split mono with no inverse.  The tree did not have
-   one for [Sets].  Construction/Karoubi.v manufactures splittings
-   generically ([karoubi_idem_splits]), but only from a GIVEN idempotent, and
-   never exhibits one that is provably not an identity, so the
-   non-invertibility conclusion is never drawn there.  The nearest concrete
-   pair, [pick_true]/[collapse] at Instance/Sets.v,500, is built to refute
-   the cancellation converses (Mac Lane §I.5 Exercise 1) and is not carried as
-   far as invertibility.
-
-   The pair below separates both classes at once: a two-element setoid
-   included into a three-element one, and a retraction folding the extra
-   point back.  One composite is the identity, the other provably is not, and
-   non-invertibility is settled by evaluating at the extra point. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** The two objects *)

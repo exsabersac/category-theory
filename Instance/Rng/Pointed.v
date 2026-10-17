@@ -23,123 +23,16 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * Pointed rings, and the polynomial functor as a left adjoint
+(*
+ Book: Awodey, "Category Theory", §9.3, Example 9.10, printed
+ nLab:      https://ncatlab.org/nlab/show/free+functor
+ nLab:      https://ncatlab.org/nlab/show/pointed+object
+ Wikipedia: https://en.wikipedia.org/wiki/Polynomial_ring
 
-    Book: Awodey, "Category Theory", §9.3, Example 9.10, printed
-          pp. 226-227 (PDF pp. 235-236) — awodey:9.3:example10
-    nLab:      https://ncatlab.org/nlab/show/free+functor
-    nLab:      https://ncatlab.org/nlab/show/pointed+object
-    Wikipedia: https://en.wikipedia.org/wiki/Polynomial_ring
+   本文件给出具体实例。
 
-    THE STATEMENT.  A pointed ring is a ring together with a
-    distinguished element; a homomorphism of pointed rings is a ring
-    homomorphism carrying the point to the point.  Awodey's example says
-    that the forgetful functor which drops the point has a left adjoint,
-    sending a ring R to R[x] pointed at the indeterminate, and that the
-    transposition is EVALUATION at the point: a homomorphism R ⟶ S and a
-    choice of s in S amount to the same thing as a homomorphism of
-    pointed rings (R[x], x) ⟶ (S, s), namely the one substituting s for
-    x.  This is the adjunction whose unit is the coefficient inclusion
-    and whose counit is evaluation, and it is the reason "adjoin an
-    indeterminate" is a free construction.
-
-    A SCOPE CORRECTION, DISCLOSED, AND PROVED NECESSARY.  The adjunction
-    is stated here over COMMUTATIVE rings — Instance/Rng.v's [CRng] — and
-    not over all of [Rng].  It is not a matter of taste.  Over an
-    arbitrary ring the backward transpose does not exist: a homomorphism
-    R[x] ⟶ S over R must send x to an element commuting with the whole
-    image of R, since x is central in R[x] by construction, whereas an
-    arbitrary point of an arbitrary ring commutes with nothing in
-    particular.  That obstruction is a theorem and not an aside:
-    Instance/Rng/Polynomial.v's [poly_hom_value_central] proves that
-    EVERY ring homomorphism out of K[x] has its value at x commuting with
-    the image of the coefficients, so the hypothesis discharged here by
-    commutativity of the target is necessary and not an artifact of the
-    proof.
-
-    WHAT THE NON-COMMUTATIVE CASE WOULD NEED, named so that its absence
-    is not read as an oversight.  The forgetful functor from pointed
-    unital rings to unital rings does have a left adjoint; what it is
-    NOT is R ↦ R[x].  The free object there is the free algebra on one
-    NON-COMMUTING generator, R⟨x⟩ — the ring of words in x with
-    coefficients from R, in which x is not required to commute with the
-    coefficients — and that is a different construction from the one
-    below, not a relaxation of it: its underlying object is a free
-    R-bimodule on the words in x rather than a quotient of formal
-    expressions by commutative-ring laws, and [pe_mul_comm] would have to
-    be deleted from Instance/Rng/Polynomial.v's relation and the
-    coefficient interchange rewritten around its absence.  It is a
-    separate issue and no part of it is attempted here.
-
-    (What IS available over all of [Rng] is the ONE-generator case with
-    ℤ as the base, where the two constructions coincide: a single
-    generator commutes with itself, and the integers are central in
-    every unital ring, so ℤ⟨x⟩ IS ℤ[x] and it is free on one generator
-    in the category of all unital rings.  That statement lives in
-    Instance/Rng/Polynomial.v as [zpoly_universal_element], with
-    [zring_central] supplying the centrality, and it is Riehl's Example
-    2.1.5(v).)
-
-    THE CATEGORY OF POINTED RINGS IS NOT NEW MACHINERY.  A pointed object
-    of a category C with respect to an underlying-set functor
-    U : C ⟶ Sets is precisely an object of Construction/Elements.v's
-    category of elements of U: its objects are the pairs (A, a) with a an
-    element of U A, and its morphisms are the C-morphisms f with
-    U f a ≈ b — which is the point-preservation condition, verbatim.  So
-    [CRngPt] is [Elements CRng_Forget], the forgetful functor is
-    [Elements_proj], and both come with their laws already proved.  The
-    hom-setoid of [Elements] compares only the underlying morphism, which
-    is the right convention here: two homomorphisms of pointed rings are
-    equal when they are equal as homomorphisms.
-
-    WHAT IS DELIVERED.
-
-      - [CRng_Forget], [CRngPt], [CRngPt_Forget];
-      - [poly_pointed_universal_arrow], a universal arrow from every
-        commutative ring to the forgetful functor, in the comma-packaged
-        encoding of Theory/Universal/Arrow.v;
-      - [PolyPointed], the left adjoint it induces, and
-        [poly_pointed_adjunction : PolyPointed ⊣ CRngPt_Forget];
-      - evaluation as the transpose: [poly_pointed_transpose_is_evaluation]
-        identifies any morphism realizing the transposition with the
-        evaluation homomorphism, and [poly_pointed_adj_transpose_evaluates]
-        instantiates that at the adjunction's own backward transpose;
-      - strength measurements, and a ℤ witness that computes.
-
-    STRENGTHS, MEASURED.
-
-      - [eq_refl]: the left adjoint's object part is the pointed
-        polynomial ring ([PolyPointed_obj]); the universal arrow IS the
-        coefficient inclusion ([poly_pointed_arrow_is_const]); the unit
-        ACTS as that inclusion on every coefficient
-        ([poly_pointed_unit_is_const]); and the point of the free object
-        is the indeterminate ([poly_pointed_point_is_x]).
-      - NOT [eq_refl], measured: the unit as a MORPHISM.
-        [poly_pointed_unit A = poly_pointed_arrow A] is rejected — the
-        unit's underlying homomorphism is a composite record, not the
-        inclusion's record — so the [eq_refl] claim above is about the
-        action and is stated that way.  Test/ProbePolynomial.v pins it.
-      - `≈` only: the backward transpose.  It is
-        [unique_obj (ump_universal_arrows …)] and [ump_universal_arrows]
-        is [Qed]-opaque, so it does not compute; what is proved is that
-        it evaluates ([poly_pointed_adj_transpose_evaluates]).  This is
-        the same seam Instance/Mod/Free.v records for the counit of the
-        free-module adjunction.
-      - `≈` only, and not for want of trying: the action of [PolyPointed]
-        on a morphism, which [LeftAdjointFunctorFromUniversalArrows]
-        defines by universal factorization rather than by a formula.
-        That it relabels coefficients is [poly_pointed_fmap_const], a
-        theorem.
-
-    WHAT IS NOT DELIVERED.  No pointed-ring analogue for [Rng] — that
-    needs R⟨x⟩, the free algebra on a non-commuting generator, which is a
-    different construction and is described but not built (see above); no
-    monad or Eilenberg-Moore reading of the induced
-    comonad/monad; no statement that [PolyPointed] is faithful or that
-    the adjunction is monadic; and no several-indeterminate version —
-    R[x, y] would be the free pointed ring on R[x], which follows by
-    composing the adjunction with itself, but the resulting object is not
-    identified with a two-variable polynomial ring here. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The underlying-set functor of commutative rings *)
 

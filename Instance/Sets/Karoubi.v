@@ -12,26 +12,14 @@ Generalizable All Variables.
 
 (** Sets is Cauchy complete: every idempotent splits. *)
 
-(* nLab:      https://ncatlab.org/nlab/show/Cauchy+complete+category
-   nLab:      https://ncatlab.org/nlab/show/split+idempotent
-   Wikipedia: https://en.wikipedia.org/wiki/Karoubi_envelope
+(*
+ nLab:      https://ncatlab.org/nlab/show/split+idempotent
+ Wikipedia: https://en.wikipedia.org/wiki/Karoubi_envelope
 
-   An idempotent setoid map e : X ~> X in [Sets] — pointwise,
-   e (e a) ≈ e a — splits through the sub-setoid of its fixed points,
+   本文件给出集合范畴相关实例。
 
-      { a : X & e a ≈ a },  compared under X's ≈ on underlying elements.
-
-   The retraction X ~> Y sends a to e a, a fixed point by idempotency; the
-   section Y ~> X is the underlying-element projection.  Section after
-   retraction on X is a ↦ e a, which is e on the nose; retraction after
-   section carries (a; h) to (e a; _), equal to (a; h) in Y because
-   e a ≈ a is exactly h.  Both splitting laws thus hold pointwise.
-
-   Packaged through the [IdempotentsSplit] class of
-   Construction/Karoubi/Universal.v this makes [Sets] Cauchy complete
-   ([Sets_IdempotentsSplit]), whence by [cauchy_complete_embed_equiv] the
-   embedding of [Sets] into its own Karoubi envelope is an equivalence of
-   categories ([Sets_Cauchy]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 

@@ -24,117 +24,16 @@ Open Scope category_scope.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd
-              ed., §II.4, Exercise 1, printed p. 41 (PDF 51) —
-              maclane:II.4:ex1
-   Book:      Mac Lane, ibid., §I.8, printed pp. 28-29 —
-              maclane:I.8:def4, maclane:I.8:def6
-   nLab:      https://ncatlab.org/nlab/show/Ab-enriched+category
-   nLab:      https://ncatlab.org/nlab/show/module
-   Wikipedia: https://en.wikipedia.org/wiki/Module_(mathematics)
+(*
+ Book:      Mac Lane, ibid., §I.8, printed pp. 28-29 —
+ nLab:      https://ncatlab.org/nlab/show/Ab-enriched+category
+ nLab:      https://ncatlab.org/nlab/show/module
+ Wikipedia: https://en.wikipedia.org/wiki/Module_(mathematics)
 
-   Mac Lane's Exercise 1 of §II.4 has two clauses.  This file proves
-   the second in full and the first in the direction the second
-   consumes.  First: a ring R IS a one-object Ab-category — one
-   object, the hom-group is R's additive group, composition is R's
-   multiplication.  (The CONVERSE — reading a ring off an arbitrary
-   one-object Ab-enriched category — is not built here: the rig-level
-   biconditional [rig_iff_one_object_preadditive] with its [EndRig]
-   half is in Theory/Algebra/Rig.v, and its ring-level negation-adding
-   counterpart is left for whoever needs it; see WHAT IS NOT BUILT.)
-   Second: an R-module is exactly an ADDITIVE functor from that
-   one-object Ab-category into Ab, and a module homomorphism is exactly
-   a natural transformation between two such; so R-Mod is the full
-   subcategory of the functor category [B(R), Ab] spanned by the
-   additive functors.
+   本文件给出阿贝尔群相关实例。
 
-   WHAT IS REUSED, AND WHERE THE NEW STEP IS.  The rig-level half of the
-   first clause is already in tree: Theory/Algebra/Rig.v's [DeloopRig]
-   deloops the MULTIPLICATIVE monoid of a rig into a one-object category
-   and [DeloopRig_Preadditive] equips it with the CMon-enrichment whose
-   four clauses ARE the rig axioms, packaged there as
-   [rig_iff_one_object_preadditive].  A ring is a rig with negatives, so
-   the only step this file adds at that level is the NEGATION:
-   [DeloopRing_AbEnriched] upgrades the preadditive structure on
-   [DeloopRig (ring_rig R)] to Structure/AbCategory.v's [AbEnriched] by
-   taking [abneg] to be [ring_neg] and reading [padd_abneg] off
-   [ring_neg_l].  Nothing else about the delooping is rebuilt; the
-   readings [padd = rig_add], [compose = rig_mul], [id = rig_one] and
-   [abneg = ring_neg] are recorded as conversions ([eq_refl] Examples;
-   [deloop_ring_hom] compares types, while the other four are stated
-   at applied arguments and so compare MORPHISMS of the delooping by
-   Leibniz equality — a deliberate convertibility strengthening of the
-   house `≈` rule, labelled at the Examples themselves).
-
-   WHERE ADDITIVITY IS SPENT.  This is the pivot of the exercise, and it
-   is a single field on each side.  Of the four module laws in
-   Instance/Mod.v's [RModObject], three come from the functor structure
-   alone:
-
-     - [rm_smul_distr_l] (r·(m+n) = r·m + r·n) is [cmon_map_plus] of the
-       Ab-morphism [fmap[F] r] — every functor into Ab has it, for free;
-     - [rm_smul_assoc] ((r·s)·m = r·(s·m)) is [fmap_comp], because
-       composition in [DeloopRig] IS multiplication;
-     - [rm_smul_one] (1·m = m) is [fmap_id], because the identity IS 1.
-
-   The fourth, [rm_smul_distr_r] ((r+s)·m = r·m + s·m), is NOT available
-   from functoriality: it is exactly [fmap_padd], the single field of
-   Structure/AbCategory.v's [AdditiveFunctor].  So the additive
-   hypothesis is neither decoration nor convenience — it is precisely the
-   right-distributivity law of a module, and the correspondence is a
-   biconditional at the level of that one law.  The witnesses below make
-   the point concretely: [unit_act_functor R] and [square_functor] are
-   genuine functors into Ab — multiplicative and unital, since that is
-   all a functor out of a one-object category owes — and at R = ℤ each
-   is provably NOT additive, so the subcategory is PROPER: the predicate
-   genuinely cuts.
-
-   THE COLLAPSE.  A natural transformation between two functors out of a
-   ONE-OBJECT category is a single morphism of the target, and its
-   naturality is a single square, one instance per arrow of the source
-   — i.e. one equation per ring element.  That equation, read through
-   the dictionary above, IS Instance/Mod.v's [rm_map_smul].  So the
-   hom-level half of the exercise costs no argument at all:
-   [AbFunAdd_to]'s action on morphisms is [transform[η] ttt] with
-   [naturality_sym] as the module-map law, and [AbFunAdd_from]'s is the
-   constant family with [rm_map_smul] as naturality.  This is the
-   architecture of Instance/Rep.v (issue #279) and, before it,
-   Instance/Fun/Action.v; it is followed rather than re-invented,
-   including the transparent round-trip component family.
-
-   RELATION TO Instance/Rep.v.  That file is the MULTIPLICATIVE story at
-   the same one-object spine: representations of a GROUP are functors
-   [Deloop G ⟶ RMod K], and nothing there is enriched — [Deloop]
-   deloops a bare monoid and the target's additive structure plays no
-   part.  This file adds the ADDITIVE enrichment on the source side, and
-   that is the whole difference: [Deloop] becomes [DeloopRig], "functor"
-   becomes "additive functor", and the resulting category is R-Mod
-   rather than Rep_K(G).  Structure/AbCategory.v's [AbCat] is the
-   ambient category in which [DeloopRig (ring_rig R)] and [Ab] both
-   live as objects; it is not needed for the statement below and is not
-   used, but it is what makes "one-object Ab-category" a term of art
-   rather than a phrase.
-
-   WHAT IS PROVED.  [RMod_AbFun_equiv R : AbFunAdd R ≅[Cat] RMod R],
-   with the functor-category side on the left, matching Instance/Rep.v's
-   [Rep_Fun_equiv] and Instance/Fun/Action.v's [MSet_Fun_equiv].  Read
-   the strength precisely: [Cat]'s hom-setoid is [Functor_Setoid],
-   i.e. natural isomorphism (Instance/Cat.v), so [≅[Cat]] is an
-   EQUIVALENCE of categories, not an isomorphism — which is what
-   "R-Mod IS the full subcategory" means here, and is why the exercise's
-   word "is" is rendered by an equivalence.  Both comparison functors
-   are, however, better than the statement requires: the module-side
-   round trip is the IDENTITY module map (the carrier and the action are
-   recovered definitionally, [module_round_smul]), and the functor-side
-   round trip has identity components.
-
-   WHAT IS NOT BUILT.  No right-module or bimodule reading (Mod.v's
-   [ModR]/[Bimodule] stay where they are), no tensor product, no
-   varying-R functoriality, no comparison with [AbCat] as a category,
-   and no ring-level [EndRing] converse (reading a [RingObject] off a
-   one-object [AbEnriched] category — the negation-adding counterpart
-   of Rig.v's [EndRig]) — the exercise asks for the one identification
-   and that is what is delivered. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The Ab-enrichment of the delooping of a ring *)
 

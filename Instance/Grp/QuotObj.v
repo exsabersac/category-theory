@@ -19,116 +19,14 @@ Generalizable All Variables.
 (** * Mac Lane's group illustration: the quotient objects of G are the
       G/N *)
 
-(* nLab:      https://ncatlab.org/nlab/show/quotient+object
-   nLab:      https://ncatlab.org/nlab/show/quotient+group
-   Wikipedia: https://en.wikipedia.org/wiki/Quotient_group
+(*
+ nLab:      https://ncatlab.org/nlab/show/quotient+group
+ Wikipedia: https://en.wikipedia.org/wiki/Quotient_group
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
-   §V.7, book p. 126 (PDF p. 135), Definition 3, illustrates quotient
-   objects with groups: a quotient object of a group G is a quotient
-   G/N by a normal subgroup.  Issue #446 recorded that illustration as
-   absent "the library having no group theory of that kind".  That was
-   STALE when written: Instance/Grp/Quotient.v already carried
-   [Subgroup], [NormalSubgroup], [QuotientGrp], the
-   projection with its epicness and [KernelNS], and
-   Instance/Grp/Quotient/Isomorphism.v already carried the first
-   isomorphism theorem with its triangle.  This file spends
-   those donors; it adds no group theory.
+   本文件给出具体实例。
 
-   WHAT IS DELIVERED.  One direction is a line: [grp_quot_of_normal N] is
-   [mk_quot (quot_proj N) (quot_proj_epic N)].  The order comes with it:
-   [grp_quot_le_of_included] says that a LARGER normal subgroup gives a
-   SMALLER quotient object -- N ⊆ N' implies G/N' ≤ G/N in the
-   factorization preorder, the coarser quotient being the lower one --
-   with the identity function as mediator, its respectfulness clause
-   being exactly the inclusion of members.
-
-   The CONVERSE is where the constructive cost sits, and the type says
-   so.  [grp_quot_is_quot_by_kernel] takes a quotient object whose epi is
-   SURJECTIVE ([GrpSurjective], Instance/Grp/Epi.v) and produces
-   q ≈ grp_quot_of_normal (KernelNS (quot_epi q)): the first isomorphism
-   theorem gives G/ker e ≅ im e, [surjective_image_iso]
-   (Instance/Grp/Quotient/Isomorphism.v) gives im e ≅ Q, and the
-   composite carries the projection to e ([grp_quot_kernel_triangle],
-   through [first_isomorphism_triangle] and [image_factors]), which is
-   what makes it an equivalence OF
-   QUOTIENT OBJECTS rather than a bare isomorphism of codomains.
-   Surjectivity is NOT available from [Epic] alone in this tree: in [Grp]
-   "surjective implies epic" is unconditional (Instance/Grp/Epi.v)
-   but the converse is the double-negation elimination that file's own
-   header sets out -- the unconditional theorem is that file's
-   [grp_epic_image_dense], "no element can be SHOWN to miss the image" --
-   and recovering a preimage needs its [GrpImageStable].  So the
-   [Epic]-only reading is stated separately and conditionally, as
-   [grp_quot_is_quot_by_kernel_stable] through
-   [grp_quot_surjective_of_stable] (its [grp_epic_is_surjective]).
-   Instance/Grp/Epi.v onwards also shows that for an epimorphism
-   that hypothesis IS the conclusion restated (its
-   [surjective_gives_stable]), so the conditional form is
-   honest about buying nothing for free.  This is precisely the clause
-   that Instance/FinSet/QuotObj.v does NOT need, the finite search there
-   being decidable.
-
-   Non-vacuity is checked rather than assumed: A3 inside S3
-   (Instance/Grp/Quotient.v) is a proper nontrivial normal subgroup
-   of a nonabelian group, so [grp_quot_S3_A3] is a quotient object that
-   is neither the top nor the bottom of the order, and
-   [grp_quot_S3_trivial_le_A3] inhabits the order lemma at it.
-
-   STRENGTH.  Everything is at ≈ on [QuotObj G].  [QuotObj] inherits
-   [SubObj]'s setoid (Theory/Subobject.v) and has no Leibniz
-   antisymmetry, so no statement here is or could be an [eq_refl]
-   readback.
-
-   THE GENERAL LEMMA IT NEEDS.  [quot_equiv_of_cod_iso] -- an
-   isomorphism of codomains carrying one epi to the other gives ≈ of
-   quotient objects -- is not about groups.  It was first proved in this
-   file during the parallel build (as [grp_quot_equiv_of_cod_iso]) and
-   was lifted into Theory/Subobject/Quotient.v at integration as a
-   corollary of that file's [quot_equiv_iff_iso]; this file consumes it
-   and no longer carries its own copy.
-
-   MEASUREMENTS, each re-runnable.  10 constants (.glob heads; a first
-   draft had 11, the eleventh being the general lemma since lifted), no
-   [Program] so no obligations in the .vo, and all 10 report "Closed
-   under the global context" under [Print Assumptions] -- including the
-   ones routed through the S3 witness, whose carrier is
-   [rot * bool] with decidable equality and needs no axiom.  1 [Defined]
-   and 5 [Qed] (a first draft had 2 [Defined], the other being the lifted
-   lemma); the [Defined] recompiles green as [Qed] (measured by
-   flipping and rebuilding), and it is kept [Defined]
-   because [quot_le] and `≈` on [QuotObj] are data that a consumer may
-   want to read.  The requirement closure is 94 files (iterated over
-   .Makefile.coq.d).  No name introduced here occurs anywhere else in the
-   tree (swept over all .glob files with
-   '^[a-z]+ [0-9:]+ [^ ]* NAME$', instrument-checked on [sub_le]).
-   Universes, by [About], RE-MEASURED after the PR "algebraic carriers are
-   sets" (2026-09-17): [grp_quot_of_normal@{u u0 u1}] binds
-   [GrpObject@{u0 u0 u0}] and [Grp] as [Category@{u u0}] -- hom level
-   identified with proof level, which is what [SubObj] demands and which
-   [Grp] satisfies on the nose; the identification is INHERITED from
-   Theory/Subobject.v and is not introduced here.  An earlier revision
-   wrote [@{u u0}] for the constant and [Category@{u u0 u0}] for [Grp], and
-   said "No [Set] pin".  The constant now carries three universes (the
-   [NormalSubgroup] argument's own level became visible) and its block
-   gained [Set < u] -- a strict LOWER bound, entering with [Prop]'s sort
-   through [PropEquiv], and NOT an identification: nothing is pinned AT
-   [Set], which is what that sentence was about.
-
-   NOT DELIVERED.  No correspondence theorem: that [quot_le] between two
-   G/N is EQUIVALENT to inclusion of the normal subgroups is not stated,
-   only the one direction that is cheap; the converse would need the
-   mediator's action on members recovered from the factorization.  No
-   lattice: the meet of two quotient objects of a group is the pushout of
-   the two projections, [Grp] has pushouts (Instance/Grp/Pushout.v), and
-   nothing here identifies that pushout with the quotient by the join of
-   the two normal subgroups.  No coimages in [Grp^op]: the image
-   factorization is in tree (Instance/Grp/Quotient/Isomorphism.v's
-   [factorization]) but is not packaged as an [ImageOf] at [Grp^op], as
-   it is for [Sets] and [FinSet].  No enumeration of the quotient objects
-   of any finite group.  No [Print Assumptions] claim about the donors:
-   the eleven verdicts below cover the constants of THIS file, and
-   docs/AXIOMS.md is where the library-wide picture lives. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Mac Lane's illustration: the quotient objects of a group *)
 

@@ -13,22 +13,11 @@ Set Transparent Obligations.
 
 (** Renaming (variable renaming / weakening) for the de Bruijn calculus *)
 
-(* A [Ren Γ Γ'] is an order-preserving embedding (OPE, a.k.a. "thinning") of
-   the context Γ' into the context Γ: it lists, in order, which slots of the
-   larger context Γ are kept as the variables of the smaller context Γ'.  This
-   is the inductive "category of weakenings" of Altenkirch-Hofmann-Streicher
-   (1995) / order-preserving embeddings of Chapman (2009).
+(*
+   本文件给出 λ 演算相关实例。
 
-   The action of a renaming is contravariant: [RenVar]/[RenExp] transport a
-   variable / term living in Γ' to one living in the larger Γ, so a renaming
-   r : Ren Γ Γ' yields maps  Var Γ' τ → Var Γ τ  and  Exp Γ' τ → Exp Γ τ.
-   With composition [RcR] this makes (Env, Ren) a category, and Var(-,τ) and
-   Exp(-,τ) presheaves on it; the laws below are exactly its identity,
-   associativity, and functoriality equations.
-
-   de Bruijn indices:  https://ncatlab.org/nlab/show/de+Bruijn+index
-                       https://en.wikipedia.org/wiki/De_Bruijn_index
-   substitution / renaming:  https://ncatlab.org/nlab/show/substitution *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Ren.
 

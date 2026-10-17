@@ -19,108 +19,15 @@ Generalizable All Variables.
 
 (** * Quotient objects of a finite set: the meet that computes *)
 
-(* nLab:      https://ncatlab.org/nlab/show/quotient+object
-   nLab:      https://ncatlab.org/nlab/show/coimage
-   nLab:      https://ncatlab.org/nlab/show/FinSet
-   Wikipedia: https://en.wikipedia.org/wiki/Quotient_object
+(*
+ nLab:      https://ncatlab.org/nlab/show/coimage
+ nLab:      https://ncatlab.org/nlab/show/FinSet
+ Wikipedia: https://en.wikipedia.org/wiki/Quotient_object
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
-   §V.7, book p. 126 (PDF p. 135), Definition 3.  Theory/Subobject/
-   Quotient.v carries the definition; Instance/Sets/QuotObj.v carries the
-   setoid witness and Instance/Grp/QuotObj.v Mac Lane's group
-   illustration.  What the SKELETON adds, and what neither of the other
-   two can, is COMPUTATION: the objects of FinSet are natural numbers and
-   its morphisms are plain functions on [Fin.t], so a quotient object's
-   codomain is a number that reduces and the binary meet can be read back
-   by [eq_refl] with no tactic.
+   本文件给出具体实例。
 
-   WHAT IS DELIVERED.
-
-   (1) The onto clause, both ways and unconditionally, from
-   Instance/FinSet/Classifier.v's [finset_epic_iff_surjective].  No
-   stability hypothesis, unlike [Grp]: the probe there is the
-   classifier's own characteristic map into Ω = 2 and the search over a
-   finite set is decidable, so the backward leg hands back the preimage.
-   [finset_no_quot_of_const] records the other side -- not every map out
-   of an object presents a quotient object -- positively, by naming
-   Instance/FinSet/Classifier.v's refutation for the constant map
-   1 → 2, because a refutation probe on [mk_quot f _] would report an
-   uninstantiated evar and not the mathematical fact.
-
-   (2) COIMAGES, as [ImageOf]s in [FinSet^op], with [FinSet_HasCoimages]
-   the class form -- an [#[export] Instance], so that
-   [HasImages (FinSet^op)] resolves by class search; an audit found the
-   first draft a plain [Definition].  FinSet is balanced, and the
-   construction says so
-   concretely: the coimage of f IS the image object of
-   Instance/FinSet/Subobject.v with the image FACTOR as its
-   epi and the image MONO as the map to the codomain, so
-   [finset_coimage_commutes] is that file's [finset_image_commutes]
-   VERBATIM -- the image factorization of f read in [FinSet^op] is
-   already its coimage factorization, with no transport at all.  Only
-   [im_least] does work, and only because it must choose preimages under
-   a competing epi; [fin_rank_resp] (Instance/FinSet/Pushout.v)
-   discharges the proof argument of [fin_rank] from decidable equality of
-   booleans, so no proof irrelevance and no axiom enters.
-
-   (3) A MEET THAT COMPUTES.  [quot_meet] at FinSet is the PUSHOUT of the
-   two epis, supplied by Instance/FinSet/Pushout.v's union-find
-   [FinSet_HasPushouts].  Take the two surjections 4 ↠ 3 that identify
-   {0,1} and {1,2} respectively; their pushout identifies {0,1,2} and
-   leaves 3 alone, and [finset_quot_meet_two] states
-   [quot_cod finset_q_meet = 2%nat] by [eq_refl] -- no [vm_compute], no
-   tactic.  [finset_quot_meet_merges_0_2] and
-   [finset_quot_meet_merges_1_2] read the identifications off the EPI of
-   the meet, again by [eq_refl], and [finset_quot_meet_separates_0_3]
-   refutes the collapse by [discriminate].  Both factors are pinned at 3
-   ([finset_q01_three], [finset_q12_three]) so the meet is visibly a
-   coarsening of each.  Two coimage cardinalities are pinned the same
-   way.  Leibniz equality is the right relation for every one of these:
-   the claims are about DATA -- a natural number, an element of
-   [Fin.t 2] -- and FinSet's hom-setoid is pointwise Leibniz in any case.
-   Nothing about a [QuotObj] itself is claimed at `=`; the [QuotObj]
-   setoid has no antisymmetry here any more than at [Sets], and the
-   corresponding readback is measured REFUSED (CONVERSION).
-
-   MEASUREMENTS, each re-runnable.  24 constants
-   (grep -E '^(def|prf|thm|ind|constr|proj|class|inst|meth|rec|corec|ax|
-   defax) ' on the .glob), no [Program] so
-   [strings … .vo | grep obligation] returns nothing, and all 24 report
-   "Closed under the global context" under [Print Assumptions] -- the
-   union-find pushout, the rank/select codec and the classifier probe all
-   stay axiom-free.  0 [Defined] and 6 [Qed]: nothing here needs to be
-   transparent, because every computing readback goes through
-   [Definition]s and record projections and not through a proof term.
-   The requirement closure is 91 files (iterated over .Makefile.coq.d),
-   of which Instance/FinSet/Regular.v contributes exactly ONE -- it is
-   required only for its [fin3_cases], whose own requirements (Lib,
-   Theory/Category, Theory/Morphisms, Theory/Isomorphism,
-   Instance/FinSet) are already here.  No name introduced here occurs
-   anywhere else in the tree (swept over all .glob files with
-   '^[a-z]+ [0-9:]+ [^ ]* NAME$', instrument-checked on [sub_le]; a first
-   draft named the three codomain elements [fin3_0], [fin3_1], [fin3_2]
-   and restated [fin3_cases], and the sweep found
-   Structure/Limit/Power/Hom.v and Instance/FinSet/Regular.v,
-   so the elements are now written with bare constructors and the case
-   analysis is required rather than duplicated).  Universes, by [About]:
-   [finset_q_meet] binds [FinSet] and carries a [Set <] bound, which is
-   FinSet's own -- its objects are [nat] -- and not introduced here; the
-   [SubObj] hom-equals-proof collapse is inherited from
-   Theory/Subobject.v exactly as at [Sets] and [Grp].
-
-   NOT DELIVERED.  No JOIN of quotient objects at FinSet, and no lattice
-   laws: those are transports of Theory/Subobject/Lattice.v at
-   [FinSet^op] and belong wherever that transport lands.  No general
-   count of the quotient objects of [n] (the Bell numbers), and no
-   enumeration of them.  No claim that [FinSet_HasCoimages] and
-   Instance/FinSet/Subobject.v's [FinSet_HasImages] assemble a
-   factorization system, nor that the coimage is ISOMORPHIC to the image
-   as a general theorem -- here the two share an object by construction,
-   which is a fact about this particular presentation of the image and
-   not a statement of balancedness.  No wide (indexed) meet.  No
-   [Decategorify] reading of a quotient object as a partition, though
-   Instance/FinSet/Decategorify.v exists.  No timing claim: that the
-   [eq_refl]s above typecheck is measured, that they are fast is not. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** "Epis are onto" in the skeleton *)
 

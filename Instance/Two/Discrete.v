@@ -6,22 +6,13 @@ Generalizable All Variables.
 
 (** The discrete category on two objects. *)
 
-(* nLab:      https://ncatlab.org/nlab/show/discrete+category
-   Wikipedia: https://en.wikipedia.org/wiki/Discrete_category
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Discrete_category
 
-   The discrete category on a set has that set as objects and only identity
-   morphisms; equivalently |hom(x, y)| is 1 when x = y and 0 when x ≠ y.  Here
-   the object set is the two-element {TwoDX, TwoDY}, so the only arrows are the
-   identities TwoDIdX, TwoDIdY.  Unlike the interval category 2 of
-   [Instance/Two.v] (the "walking arrow", which carries one non-identity arrow
-   TwoX ~> TwoY), there is NO arrow between the two distinct objects in either
-   direction (hence both TwoDHom_X_Y_absurd and TwoDHom_Y_X_absurd below).
+   本文件给出离散范畴实例。
 
-   A functor Two_Discrete ⟶ C is exactly an ordered pair of objects of C (the
-   images of TwoDX and TwoDY); see [Pick_Two].  Two_Discrete is therefore the
-   shape category for binary products and coproducts: the limit of a diagram of
-   shape Two_Discrete is a binary product, and the colimit is a binary
-   coproduct (see [Structure/Limit/Cartesian.v]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive TwoDObj : Set := TwoDX | TwoDY.
 

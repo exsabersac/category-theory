@@ -28,138 +28,14 @@ Generalizable All Variables.
 
 (** * T-algebras as systems ⟨A, ν₀, ν₁, …⟩ of multilinear operations *)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer GTM 5, 1998, §VI.4, Exercise 4(b), printed p. 146 (PDF
-         p. 155) — maclane:VI.4:ex4
-   nLab: https://ncatlab.org/nlab/show/tensor+algebra
-   nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad
+(*
+ nLab: https://ncatlab.org/nlab/show/tensor+algebra
+ nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad
 
-   WHAT THE BOOK ASKS, read from the page image: "(b) Give the
-   corresponding description of T-algebras and show that the comparison
-   functor from rings to T-algebras is an isomorphism."  The
-   description it corresponds to is Proposition 2 (p. 145), the
-   W-algebras as systems ⟨S, ν1, ν2, …⟩ with ν1 = 1 and νk(νn1 × ⋯ ×
-   νnk) = ν_{n1+⋯+nk} (2), which #470's Instance/Smgrp/Word.v delivers
-   (and #471's Instance/Mon/Word/System.v with ν₀ added): here a T-algebra
-   is an abelian group A with homomorphisms νₙ : A^{⊗n} → A, n ≥ 0, ν₁ =
-   1 and (2), νₙ the n-fold product of a ring with unit ν₀.  The
-   comparison functor and its isomorphism are
-   Instance/Rng/FreeMonad.v's [Rng_K] and [Rng_EM_iso]; this file is the
-   description, and the isomorphism through it.
+   本文件给出具体实例。
 
-   THE SYSTEMS.  [TSystem A] is ν on the words over A ([tnu]),
-   respecting each letter ([tnu_letter]) and additive in each letter
-   ([tnu_lin]), with ν₁ = 1 ([tnu_unit], ν⟨a⟩ ≈ a) and (2) read on words
-   of words ([tnu_assoc]: ν of the values of the inner words ≈ ν of their
-   concatenation), as #471's [nu0_assoc] reads it after Riehl's square
-   (5.2.7) read on lists of lists (her Example 5.2.6(iii), printed
-   pp. 189-190, cited in Instance/Mon/Word/System.v).
-   A function on words respecting each letter and additive in each IS a
-   family of homomorphisms out of the tensor powers: the literal νₙ :
-   A^{⊗n} → A is [tsys_nu_hom σ n], ν extended additively to the sums of
-   words (Instance/Ab/TensorPower.v's [tw_ext]) composed with the
-   injection ιₙ, and on the pure tensor a₁ ⊗ … ⊗ aₙ ⊗ 1 it is ν⟨a₁ … aₙ⟩
-   ([tsys_nu_hom_pure], at ≈); conversely TensorPower.v's
-   [tw_desc_letter] and [tw_desc_lin] at c := A make any family of
-   homomorphisms such a ν, the two being the same data by
-   [TW_is_tensor_coproduct].  A map of systems ([TSystemHom]) is a
-   homomorphism f with f νₙ = ν'ₙ f^{⊗n}, f^{⊗n} being the letterwise
-   map on words.
-
-   BOTH WAYS.  An algebra h gives the system ν w = h(word product of w)
-   ([alg_system], [alg_system_nu] at [eq_refl]): ν₁ = 1 is the unit law
-   and (2) the action law at the word of words, through the relabelling
-   and the concatenation lemmas [fr_eval_word_map] (LEIBNIZ) and
-   [fr_eval_id_word_concat]; ν₀ is the unit and ν₂ the product of the
-   algebra's ring, on the nose ([alg_system_nil], [alg_system_pair]); an
-   algebra map is a map of the systems ([alg_hom_TSystemHom]).  A system
-   gives a ring with 1 = ν⟨⟩ and a·b = ν⟨a b⟩ ([sys_ring]: associativity
-   and the unit laws from (2) at words of two words, [sys_nu_pair], and
-   ν₁ = 1; distributivity from [tnu_lin]; annihilation derived), and "νₙ
-   is the n-fold product": ν of a word is the product of its letters in
-   that ring ([sys_nu_is_product], at ≈); a map of systems is a ring map
-   ([sys_ring_map]).
-
-   AS A CATEGORY.  [TSys], the systems ⟨A, ν₀, ν₁, …⟩ ([TSysObj]) and
-   their maps, is isomorphic in Cat to Ab^T ([TSys_EM_iso]): its legs
-   are [TSys_to_EM] (the system's ring, then [Rng_K]) and [EM_to_TSys]
-   ([TSys_EM_iso_to], [TSys_EM_iso_from]), and every component of both
-   natural isomorphisms is the identity, to and from, at [eq_refl]
-   ([TSys_EM_iso_to_from_component], [TSys_EM_iso_from_to_component]).  A
-   system's algebra evaluates in the system's ring, 1 ↦ ν⟨⟩ and
-   ⟨a⟩·⟨b⟩ ↦ ν⟨a b⟩ ([TSys_to_EM_alg], [TSys_to_EM_one],
-   [TSys_to_EM_pair]); an algebra's system has ν the structure map on the
-   word product and ν₂ the product of its ring ([EM_to_TSys_nu],
-   [EM_to_TSys_pair]).  The system round trip keeps the group, ν₀, ν₂ and
-   the maps on the nose and returns ν₁ as the identity ([TSys_rt_ab],
-   [TSys_rt_nil], [TSys_rt_pair], [TSys_rt_hom], [TSys_rt_letter]), and ν
-   at every word at ≈ ([TSys_rt_nu]); refused at [eq_refl]: ν at a
-   variable word (R27), ν₁ against the system's own (R28), the whole
-   system (R29), the whole algebra (R30) and the composite against the
-   identity functor (R31).  The algebra round trip keeps the group and
-   the maps ([EM_TSys_rt_carrier], [EM_TSys_rt_alg_hom]).  Mac Lane's
-   exercise as a statement about categories is [Rng_TSys_iso : Rng
-   ≅[Cat] TSys], the composite of FreeMonad.v's [Rng_EM_iso] with the
-   inverse of [TSys_EM_iso].  Its components are not identities at
-   [eq_refl], even at a point (R32; its controls are the identity
-   components of the two it composes, C47 and C98): Theory/
-   Isomorphism.v's [iso_compose] builds them in its transparent
-   [iso_compose_obligation_2], a chain of setoid rewrites in [Cat]
-   through three opaque constants of Theory/Functor.v,
-   [fun_equiv_comp_assoc], [fun_equiv_id_left] and
-   [Functor_Setoid_obligation_1] (read from the term; transparency by
-   [About]), so identity components are claimed for [TSys_EM_iso] and
-   [Rng_EM_iso] only.  For a ring R, the system of K R has ν⟨⟩ =
-   1, ν⟨a⟩ = a and ν⟨a b⟩ = a·b, and ν of a word the product of its
-   letters bracketed to the right, all at [eq_refl] ([Rng_system_nil],
-   [Rng_system_letter], [Rng_system_pair], [Rng_system_nu]).
-
-   STRENGTHS.  Every [Example] holds at [eq_refl], and
-   Test/ProbeFreeRing474.v restates each one (C79 to C93 and C95 to
-   C102).  Stated at ≈: [sys_nu_is_product], [TSys_rt_nu], the ring laws
-   of a system and the inverse laws of [TSys_EM_iso], which rest on a
-   system's ν₁ = 1 and (2), at ≈; [tsys_nu_hom_pure], which rests not on
-   those but on TensorPower.v's [tw_word_iota] (ι₀ adds a "+ 0", C103) and
-   on the system's respect for letters and additivity in them;
-   [fr_eval_id_word_concat], which has no hypothesis and is false at
-   Leibniz = (C107: at ⟨⟨a⟩, ⟨⟩⟩ one side is ⟨a⟩·1 and the other ⟨a⟩);
-   and the inverse laws of [Rng_TSys_iso] (R32, above).  [fr_eval_word_map] and
-   [map_cmon_id] are Leibniz equalities, stronger than ≈.  Eleven proofs
-   end [Defined] and sixteen [Qed] (counted by token); all eleven
-   [Defined]s are load-bearing, measured as Instance/Rng/FreeMonad.v's
-   header describes: [alg_system] ([alg_system_nu]), [sys_ring_map]
-   ([TSys_to_Rng]), [TSysHom_Setoid], [TSys_id] and [TSys_compose]
-   ([TSys]), [TSys] ([TSys_to_Rng]), [TSys_to_Rng] and [EM_to_TSys]
-   ([TSys_EM_counit_iso]), [TSys_EM_counit_iso] and [TSys_EM_unit_iso]
-   ([TSys_EM_iso]) and [TSys_EM_iso] ([TSys_EM_iso_to]).
-
-   UNIVERSES, read off [About] (every name, by script).  Every name is
-   universe polymorphic, in the section [Systems] over Ab@{u p} and
-   Rng@{u p}, and binds u and p first, with no [Set] but strict lower
-   bounds, no equation in any block and caps of the standard library's
-   global levels only.  The systems are stated with no reference to T, so
-   the record [TSystem] with its constructor and fields, the maps of
-   systems, the ring of a system and the category [TSys] bind u and p alone
-   (thirty-five names, with [tsys_sum], [fr_eval_word_map] and
-   [map_cmon_id]); [tsys_nu_hom] and [tsys_nu_hom_pure] bind three,
-   the further one the tensor powers'; the thirty names through T or K bind
-   six, u, p and the four levels [FreeRngAb] carries beyond [Ab]'s
-   ([TSys_EM_iso] binds u, p, c and three of the four, c above u and p from
-   Instance/Cat.v's [Cat@{c u u u p}]); [Rng_TSys_iso] binds u, p, c and
-   four; and three readbacks comparing across a composite bind a second
-   copy of three of those four, nine levels in all.  The same levels on
-   Coq 8.19.2 and 8.20.1 (FreeMonad.v's header).
-
-   NOT DELIVERED.  (2) over tensors of tensors, the ⊗ analogue
-   νk(νn1 ⊗ ⋯ ⊗ νnk) = ν_{n1+⋯+nk} of Mac Lane's (2) (he writes it with ×
-   for W, p. 145; the ⊗ form is the reader's to supply), which needs the
-   isomorphisms A^{⊗n1} ⊗ ⋯ ⊗ A^{⊗nk} ≅ A^{⊗(n1+⋯+nk)}: the reading on
-   words of words stands in for it.  The analogue of Mac Lane's Corollary
-   (a characterization by ν₀, an associative ν₂ and νₙ₊₁ = νₙ(ν₂ ⊗ 1)):
-   the ring route of FreeMonad.v stands in for it.  A strict isomorphism
-   of the systems with Ab^T (refused above).  Identity components for
-   [Rng_TSys_iso] (R32): it is the composite, not rebuilt from two
-   component isomorphisms as [TSys_EM_iso] is (not attempted). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Systems.
 

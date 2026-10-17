@@ -12,40 +12,13 @@ Generalizable All Variables.
 
 (** * Ends in [Sets], computed directly *)
 
-(* nLab:      https://ncatlab.org/nlab/show/end
-   Wikipedia: https://en.wikipedia.org/wiki/End_(category_theory)
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/End_(category_theory)
 
-   For a functor of mixed variance [F : C^op ∏ C ⟶ Sets] the end [∫_x F(x,x)]
-   is realised here as a concrete setoid, with no recourse to
-   function-extensionality.  The carrier is the setoid of "compatible
-   families": a choice [s x : F(x,x)] for every object [x : C], subject to the
-   wedge (dinaturality) constraint
+   本文件给出集合范畴相关实例。
 
-     fmap[F] (id, f) (s x)  ≈  fmap[F] (op f, id) (s y)      for f : x ~> y.
-
-   Both routes land in [F(x,y)]: the left applies the covariant action [F(x,f)]
-   to [s x], the right the contravariant action [F(f,y)] to [s y].  The pair
-   [(id, f)] is a morphism [(x,x) ~> (x,y)] of [C^op ∏ C] whose first component
-   is an op-morphism, following the variance convention of Theory/Dinatural and
-   Structure/Wedge; the pair [(op f, id)] is the morphism [(y,y) ~> (x,y)].
-
-   The equivalence on this carrier is pointwise: two families are identified
-   when they agree at every object up to that object's [≈].  Because the apex
-   is a setoid, this equivalence is carried by the object itself rather than by
-   a quotient type, so the construction is [funext]-free.
-
-   The universal wedge has the projection [s ↦ s x] as its leg at [x]; the wedge
-   condition is exactly the family's own constraint.  The end UMP sends a
-   competing wedge [W] to the mediator [e ↦ (fun x => wedge_map[W] e)], whose
-   compatibility constraint is [W]'s own wedge law read at [e]; commuting and
-   uniqueness are both pointwise.  This yields [Sets_End F : End F] for every
-   [F : C^op ∏ C ⟶ Sets].
-
-   As with every Sets-valued (co)limit in this development the indexing
-   category's object and hom levels are constrained to sit below Sets' carrier
-   level, so that the family type [∀ x, F(x,x)] and its constraint fit as a
-   setoid carrier; these smallness constraints are inferred by universe
-   polymorphism and recorded on [Sets_End]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SetsEnd.
 

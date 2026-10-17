@@ -11,167 +11,18 @@ Generalizable All Variables.
 
 (** * The finite ordinals as categories *)
 
-(* nLab:      https://ncatlab.org/nlab/show/thin+category
-   nLab:      https://ncatlab.org/nlab/show/simplex+category
-   nLab:      https://ncatlab.org/nlab/show/interval+category
-   Wikipedia: https://en.wikipedia.org/wiki/Posetal_category
-   Book:      Mac Lane, Categories for the Working Mathematician, 2nd ed.,
-              §I.2 (the roster of small examples, printed p. 11)
-   Book:      Fong and Spivak, Seven Sketches in Compositionality, §3.2.1
-   Book:      Riehl, Category Theory in Context, §1.6
+(*
+ nLab:      https://ncatlab.org/nlab/show/simplex+category
+ nLab:      https://ncatlab.org/nlab/show/interval+category
+ Wikipedia: https://en.wikipedia.org/wiki/Posetal_category
+ Book:      Mac Lane, Categories for the Working Mathematician, 2nd ed.,
+ Book:      Fong and Spivak, Seven Sketches in Compositionality, §3.2.1
+ Book:      Riehl, Category Theory in Context, §1.6
 
-   Every finite ordinal is a category.  The ordinal with n elements,
-   {0 < 1 < ... < n-1}, has those elements as objects and exactly one
-   arrow i ~> j whenever i ≤ j; identities are reflexivity and
-   composition is transitivity.  Mac Lane lists these among the first
-   examples of categories in CWM §I.2, and the pattern is the one
-   Instance/Proset.v states in general: any preorder is a category, and
-   the resulting category is THIN, meaning any two parallel arrows
-   coincide.  This file supplies the whole family at once, uniformly in
-   n, together with the structure that makes the family useful as a
-   supply of diagram shapes.
+   本文件给出序数相关。
 
-   The three smallest members already existed in the tree as bespoke
-   constructions — Instance/Zero.v's [_0] (objects [Empty_set]),
-   Instance/One.v's [_1] (the single object [ttt] of [poly_unit]), and
-   Instance/Two.v's [_2] (the inductives [TwoObj] and [TwoHom], the
-   walking arrow) — and the family stops there.  It resumes past the
-   finite stages in Instance/Omega.v's [Omega], the ordinal ω on all of
-   [nat].  This file builds the general [Ordinal n] and reconnects it to
-   all four: [Ordinal 0 ≅ _0], [Ordinal 1 ≅ _1], [Ordinal 2 ≅ _2] in
-   [Cat], and an embedding [Ordinal n ⟶ Omega] exhibiting each finite
-   stage inside ω.  (That ω is the colimit of the finite stages is true
-   and standard, but it is not proven here — Construction/Chain.v's
-   chains are the nearest in-tree machinery, and they are the
-   initial-algebra chain over a functor rather than general ω-colimit
-   apparatus.)
-
-   NAMING, stated loudly because the sources differ.  [Ordinal n] has n
-   OBJECTS.  So [Ordinal 0] is empty, [Ordinal 1] is the point,
-   [Ordinal 2] is the walking arrow, [Ordinal 3] (exported as [_3])
-   has three objects and two generating steps, and [Ordinal 4]
-   (exported as [_4]) has four objects and three generating steps.
-   This is the convention already fixed by the names [_0], [_1], [_2].
-   When a text speaks of "diagrams of shape 4" — as Riehl §1.6 does, in
-   the passage issue #224 cites — it means the ordinal on four objects,
-   which is [_4] here, and which is free on THREE composable arrows.
-   No bracket notation [n] is introduced: [[C, D]] is already the
-   functor category (Instance/Fun.v).
-
-   THE CARRIER.  An object of [Ordinal n] is a natural number together
-   with a proof that it is smaller than n — von Neumann's reading of an
-   ordinal as the set of its predecessors, which is exactly what the
-   embedding [Ord_Incl : Ordinal n ⟶ Ordinal (S n)] expresses.  The
-   standard alternative is the stdlib's [Fin.t n], which
-   Instance/FinSet.v uses as the n-element set its objects denote; the
-   two carriers are the same up to a bijection, and that bijection is
-   proven below ([ord_of_fin], [fin_of_ord] and both round trips).  The
-   record is taken as primary for a computational reason:
-   [ord_val (ord_incl x)] reduces to [ord_val x] on a variable [x],
-   whereas a weakening [Fin.t n → Fin.t (S n)] has to recurse on the
-   constructor and so leaves the numeric value stuck on a variable.
-   That single reduction is what lets the embedding functors act as the
-   IDENTITY on morphisms, and what lets the universal property below be
-   STATED without transporting morphisms along equalities of objects.
-   (The statements are transport-free; some proofs behind the
-   every-functor-comes-from-a-path half do rewrite along object
-   equalities internally -- [ord_clamp_step] and [ord_functor_iso] --
-   and that is disclosed where they occur.)
-
-   THE ORDER is Instance/Omega.v's [le_t], applied to the underlying
-   values, and not the standard library's [le].  The reasons are the
-   ones that file's header records: [le] is [Prop]-valued and so cannot
-   eliminate into the [Type]-valued hom-sets of an arbitrary target
-   category, and staying off the stdlib keeps lemma names portable
-   across Coq 8.19/8.20 and Rocq 9.1.  Reusing [le_t] verbatim, rather
-   than re-deriving an order on the carrier, is what makes
-   [Ord_Omega : Ordinal n ⟶ Omega] the identity on morphisms.  It also
-   rules out Instance/Proset.v as the donor: [Proset] is parameterized
-   by a [PreOrder R] over a [relation A], hence by a [Prop]-valued
-   order.
-
-   THINNESS is proven, not assumed.  [le_t m n] has at most one
-   inhabitant ([le_t_irr] below, axiom-free: it uses only UIP on [nat],
-   which [Eqdep_dec] derives from decidable equality).  The hom-setoid
-   is therefore strict equality, [Morphism_equality], exactly as in
-   [_0], [_1], [_2] and [Omega] — and NOT the always-true setoid
-   [fun _ _ => True] that Instance/Proset.v installs for a general
-   preorder.  The distinction earns its keep twice over.  Coherence
-   obligations become one-liners, since any equation between parallel
-   arrows of [Ordinal n] is closed by [le_t_irr].  And the count of
-   morphisms below is a statement about the arrows themselves rather
-   than about ≈-classes: under Proset's trivial hom-setoid every
-   hom-set is a single class whatever its underlying type, so counting
-   there would say nothing.
-
-   WHAT IS PROVEN.  (1) the family [Ordinal n] and its thinness;
-   (2) [Ordinal 0 ≅ _0], [Ordinal 1 ≅ _1], [Ordinal 2 ≅ _2] in [Cat],
-   with [_3] and [_4] exported; (3) the embeddings
-   [Ord_Incl : Ordinal n ⟶ Ordinal (S n)] and
-   [Ord_Omega : Ordinal n ⟶ Omega], both full and faithful, commuting
-   in the evident triangle; (4) a morphism count — the arrows of
-   [Ordinal n] are in bijection with their pairs of endpoint indices,
-   those pairs are enumerated by a duplicate-free list, and its length
-   t satisfies [2 * t = n * (n + 1)], proven by induction on n rather
-   than checked case by case (the exercise issue #224 cites from
-   Fong and Spivak, Seven Sketches, §3.2.1); (5) the universal property
-   making [Ordinal (S n)] the free category on the linear quiver with n
-   edges (Riehl §1.6), stated directly at the level of [Cat]; (6) its
-   specialization to shape 4.
-
-   UNIVERSES.  The explicit annotations on [Ord_obj] and [Ordinal] are
-   there because, left to inference, Coq collapses the three parameters
-   of [Category] into one and the family is issued as [Ordinal@{u}]
-   (measured, not asserted -- an unannotated copy elaborates at
-   [Category@{u Set Set}]).  Instance/Omega.v annotates [Omega@{o h p}]
-   for its own, different reason, recorded in its header: under the
-   library-wide [Set Universe Polymorphism] a strictly-bound family must
-   instantiate every polymorphic constant it mentions.  Unannotated,
-   [Ordinal@{u}] would still
-   serves as a diagram shape but is strictly less general than the
-   [_1@{o h p}] and [Omega@{o h p}] it is meant to sit beside.  With
-   them the family is [Ordinal@{o h p}], and it is usable as a shape
-   over targets of any size, [Cat] included.
-
-   ON THE STRENGTH OF (5).  The tree DOES carry free-category
-   machinery -- Construction/Free/Quiver.v has [FreeOnQuiver] with its
-   universal arrow ([UniversalArrowQuiverCat]) and the free/forgetful
-   adjunction ([FreeForgetfulAdjunction]), and Construction/Free.v has the
-   path category -- but that universal property lives in [StrictCat] under
-   [Functor_StrictEq_Setoid], on-the-nose equality of functors.  The
-   property proved HERE is the [Cat]-level one, up to [Functor_Setoid],
-   which the StrictCat development does not provide; the literal
-   identification [FreeOnQuiver (linear quiver) ≅ Ordinal (S n)] in
-   StrictCat is a further theorem, still not delivered in THIS file, but
-   it is no longer open: it is [ordinal_free] in
-   Construction/Free/Quiver/Examples.v, which proves
-   [FreeOnQuiver (LinQuiver m) ≅[StrictCat] Ordinal m] for every m, the
-   empty ordinal included.  That statement is pinned to
-   [Category@{Set Set Set}] -- the free side's universes are forced there
-   by [Build_Quiver_Standard_Eq] (Construction/Free/Quiver.v), whose
-   result type is [Quiver@{u u0 Set}] -- whereas [Ordinal@{o h p}] here
-   stays polymorphic, so the identification does not narrow this family.
-   Over a fixed
-   assignment of objects [X : nat → C], a "path of n composable arrows"
-   is an [OrdSteps n X], and the functorial actions on morphisms over
-   the same [X] are the [OrdArrows n X] satisfying the two functor laws.
-   [arrows_of_steps] and [steps_of_arrows] are mutually inverse up to
-   pointwise ≈ ([steps_arrows_steps], [arrows_steps_arrows]); this is
-   the free property at the level of raw actions, and it is
-   transport-free; it is a self-contained reading, and the functor-level
-   results below are proved directly rather than through it.
-   [Functor_of_Steps] turns a path into a functor
-   [Ordinal (S n) ⟶ C] whose action on the generating steps is the path
-   ([Functor_of_Steps_step]); [Functor_of_Steps_of_Functor] shows every
-   functor out of [Ordinal (S n)] is [Functor_Setoid]-equivalent to one
-   so obtained; and [ord_functor_equiv_from_steps] gives the uniqueness
-   half in its usable form — a family of isomorphisms that is natural on
-   the n generating steps is natural on every morphism.  What is NOT
-   claimed is a bijection between functors and paths on the nose: the
-   object part of a path is a function on all of [nat], so paths
-   agreeing below n but differing above it induce the same functor.  The
-   equivalence [Functor_of_Steps_of_Functor] is up to [Functor_Setoid],
-   the library's natural-isomorphism equality of functors. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ---------- [le_t] is a subsingleton ---------- *)
 

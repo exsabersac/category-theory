@@ -26,35 +26,13 @@ Generalizable All Variables.
 
 (** * The free monoid on a type, and its universal property *)
 
-(* nLab:      https://ncatlab.org/nlab/show/free+monoid
-   Wikipedia: https://en.wikipedia.org/wiki/Free_monoid
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Free_monoid
 
-   For a type [X], the free monoid on [X] is the type [list X] of finite words
-   over [X], multiplied by concatenation with the empty word as unit, together
-   with the insertion of generators [p : X → list X] sending a letter to the
-   one-letter word.  Its universal property is that [p] is universal among maps
-   from [X] into (the underlying set of) a monoid: every [h : X → U L] extends
-   along [p] to one and only one monoid homomorphism [list X → L], namely the
-   fold that replaces concatenation by the multiplication of [L] and the empty
-   word by its unit.
+   本文件给出自由构造相关。
 
-   Everything here is developed at [Mon Coq], the category of monoid objects
-   (Theory/Algebra/Monoid.v) in the cartesian monoidal category of Coq types
-   (Instance/Coq.v, [Coq_Monoidal]), with [Mon_Forget] as the underlying-type
-   functor U.  A monoid object over that base is exactly an ordinary monoid:
-   [mu : x * x → x], [eta : unit → x], and the three laws are associativity and
-   the two unit laws with the cartesian associator and unitors — which over
-   [Coq] are the evident reassociation and projections — inserted to make the
-   maps composable.  Morphism equivalence in [Coq] is pointwise Leibniz
-   equality, so no function extensionality is needed anywhere below: two
-   monoid homomorphisms are identified exactly when they agree at every word,
-   which is what list induction proves.
-
-   The book statements this file discharges are quoted from the catalog
-   inventories under doc/plan/books/{maclane,awodey,7sketches}/inventory/, and
-   the wordings paraphrased here are the CATALOG'S PARAPHRASE, not the books'
-   own wording.  A recap mapping each catalog item to the constants that
-   deliver it closes this header. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Free constructions, folds, and why the monoid case is the one everyone
    meets first

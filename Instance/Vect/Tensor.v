@@ -1,6 +1,8 @@
-(* [Coq.QArith.QArith] is imported FIRST, before [Category.Lib]: it exports
-   an [equiv] that shadows [Setoid]'s otherwise.  This is the import-order
-   discipline Instance/FdVect.v records at its own head. *)
+(*
+   本文件给出 Tensor 相关定义与性质。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Coq.QArith.QArith.
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -20,80 +22,17 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * The tensor product of vector spaces, as a universal element
+(*
+ nLab:      https://ncatlab.org/nlab/show/tensor+product
+ nLab:      https://ncatlab.org/nlab/show/universal+element
+ Wikipedia: https://en.wikipedia.org/wiki/Tensor_product
+ Book: Mac Lane, Categories for the Working Mathematician, 2nd ed.,
+ Book: Riehl, Category Theory in Context, Dover 2016, §2.3, printed
 
-    nLab:      https://ncatlab.org/nlab/show/tensor+product
-    nLab:      https://ncatlab.org/nlab/show/universal+element
-    Wikipedia: https://en.wikipedia.org/wiki/Tensor_product
-    Book: Mac Lane, Categories for the Working Mathematician, 2nd ed.,
-          GTM 5, §III.1, printed p. 58 — maclane:III.1:construction6
-    Book: Riehl, Category Theory in Context, Dover 2016, §2.3, printed
-          p. 58 — riehl:2.3:example8
+   本文件给出具体实例。
 
-    THE HEADLINE.  Mac Lane's §III.1 and Riehl's §2.3 both state the
-    tensor product for VECTOR SPACES: the functor carrying a space W to
-    the set of bilinear maps V × V' → W is represented by V ⊗ V', with
-    universal element the canonical bilinear map ⊗.  That statement is
-    [vct_tensor_universal_element] below.
-
-    WHERE THE WORK IS.  Instance/FdVect.v defines
-    [Vct_F F := RMod (field_ring F)]: a vector space over F IS an
-    F-module, by DEFINITION and not by an isomorphism of categories.  So
-    the construction uses nothing about fields and is carried out over an
-    arbitrary [RingObject] in Instance/Mod/Tensor.v — the formal-
-    expression carrier, the bilinear-maps functor, the mediator, the
-    universal element and the non-degeneracy results all live there.
-    This file is the vector-space reading, and because the two categories
-    are the same term, every specialization below is a CONVERSION: each
-    definition is stated with its [Vct_F]-level type and inhabited by the
-    [RMod]-level term, so the kernel checks the identification rather
-    than a transport doing it.  Nothing here reproves anything.
-
-    WHAT THE FIELD LAYER BUYS, EXACTLY.  Not the universal property:
-    Instance/Mod/Tensor.v proves that over an arbitrary ring, and
-    commutativity is a hypothesis of none of the construction, the
-    functor or the universal element there (that file's GENERALITY
-    section states it exactly, including the one general lemma that DOES
-    assume it).  What commutativity buys is that
-    the tensor product does not collapse further than the classical
-    construction does.  The engine file's [rbl_commutator] shows that
-    every commutator of the scalar ring annihilates the image of every
-    bilinear map, so over a non-commutative ring V ⊗ V' is smaller than a
-    reader of the commutative case expects; [vct_commutator_vacuous]
-    below is the record that over a field that identity is empty,
-    obtained from [field_comm] alone.  Read the direction carefully: the
-    hypothesis is absent upstream because the conclusion degenerates
-    without it, NOT because the theorem is stronger than the classical
-    one.
-
-    Nothing below spends [finv] or [field_one_neq_zero].  A proper
-    fraction does appear in both argument positions — as a VECTOR in
-    [q_tensor_half_distinct] (½ ⊗ 1 is not 1 ⊗ 1) and as a SCALAR in
-    [q_tensor_smul_half] and [q_tensor_smul_half_moves] (the action of ½
-    moves 1 ⊗ 1) — so the witnesses do exercise ℚ rather than its prime
-    subring; but nothing is ever inverted, and no claim is made here that
-    the multiplicative-inverse structure is exercised.
-
-    WHAT THE ℚ WITNESSES ADD OVER THE ℤ ONES.  Instance/Mod/Tensor.v
-    already measures the construction at ℤ.  The point of repeating the
-    measurement here is that ℤ's setoid equality is Leibniz [=], so the
-    ℤ witnesses exercise no quotient at the SCALAR level; ℚ's is [Qeq],
-    a genuine quotient (the terms [4#2] and [2#1] are distinct and
-    [Qeq]-equal), so [Q_tensor_iso] is the only place in these two files
-    where the tensor product is pinned over a scalar setoid that
-    identifies distinct terms.  Test/ProbeModTensor.v guards the
-    consequence: over ℤ the mediator's value at a closed generator is a
-    numeral by [eq_refl], over ℚ it is not.
-
-    WHAT IS NOT DELIVERED.  Everything the engine file's own
-    WHAT IS NOT DELIVERED section lists — no bifunctoriality, no monoidal
-    structure on [Vct_F F], no coefficient uniqueness, no comparison with
-    Instance/Ab/Tensor.v — plus two readings specific to this level: no
-    dimension theory (nothing here says dim(V ⊗ V') = dim V · dim V',
-    and no connection to Instance/FdVect.v's based spaces or to
-    Instance/FdVect/Tensor.v's [TensorSq], which is the diagonal square
-    endofunctor of Riehl Ex 1.4.4(vii) and not a tensor product of two
-    spaces at all), and no bilinear-forms specialization. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section VectTensor.
 

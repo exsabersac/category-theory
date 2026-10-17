@@ -22,67 +22,14 @@ Generalizable All Variables.
 
 (** * Decategorifying the exponential laws: the groupoid of finite sets *)
 
-(* nLab: https://ncatlab.org/nlab/show/decategorification
-   nLab: https://ncatlab.org/nlab/show/categorification
-   nLab: https://ncatlab.org/nlab/show/FinSet
+(*
+ nLab: https://ncatlab.org/nlab/show/categorification
+ nLab: https://ncatlab.org/nlab/show/FinSet
 
-   Riehl, "Category Theory in Context", §1.4 Example 1.4.11 (printed p. 29)
-   reads the four exponential laws
+   本文件给出具体实例。
 
-       z^(x × y) ≅ (z^y)^x,           (y × z)^x ≅ y^x × z^x,
-       x × (y + z) ≅ x × y + x × z,   x^(y + z) ≅ x^y × x^z
-
-   in finite sets, and observes that on restricting to the GROUPOID of finite
-   sets and bijections and applying the cardinality functor to the DISCRETE
-   category of natural numbers, the four isomorphisms become the four
-   arithmetic identities
-
-       z^(xy) = (z^y)^x,   (yz)^x = y^x z^x,
-       x(y+z) = xy + xz,   x^(y+z) = x^y x^z,
-
-   so that the groupoid of finite sets is a categorification of ℕ.  The
-   naturality half of the same example -- Mac Lane, "Categories for the
-   Working Mathematician", 2nd ed., §II.5 Exercise 2 (printed p. 44) -- is
-   Structure/Cartesian/Closed/Natural.v.
-
-   ** What is and is not the content here
-
-   The four identities below are, as arithmetic, entirely elementary: [lia]
-   proves the third outright and the other three follow by induction with
-   [Nat.pow_mul_r], [Nat.pow_mul_l], [Nat.mul_add_distr_l] and
-   [Nat.pow_add_r].  NONE of that is used.  Each identity is obtained by
-   applying [FinSet_skeletal] -- equivalently, the arrow action of
-   [Card_FinSet] -- to the CATEGORICAL isomorphism at [FinSet], so the route
-   is the content: the equation of numbers is the shadow cast by an
-   isomorphism of finite sets, and the proof term contains no arithmetic
-   induction at all.
-
-   ** Why two cardinality functors
-
-   [Card_Groupoid] is Riehl's functor as stated: its domain is the groupoid
-   of genuinely SET-LIKE objects (Instance/FinSet/Skeleton.v's [Set_f], finite
-   setoids each carrying a chosen counting) and its arrow action discards the
-   bijection, keeping only the fact that one exists -- which is exactly what
-   decategorification does.
-
-   [Card_FinSet] is its skeletal shadow: [FinSet] has the naturals themselves
-   as objects (Instance/FinSet.v), so the functor is the identity on objects
-   and its arrow action is [FinSet_skeletal].  It is the one the four
-   identities are read off, because at [FinSet] the product, coproduct and
-   exponential objects ARE [*], [+] and [^] on [nat]
-   (Instance/FinSet/Product.v, Instance/FinSet.v, Instance/FinSet/Closed.v).
-
-   ** A note on [=] versus [≈]
-
-   The library's standing rule is that morphisms are compared with [≈], never
-   with [=].  Nothing below breaks it: every [=] here is between OBJECTS.
-   [FinSet]'s objects are natural numbers, and the hom-sets of
-   [DiscreteCat nat] (Instance/Discrete.v) are equality PROOFS between
-   naturals compared by [Morphism_equality], i.e. by [eq] on those proofs.
-   That is why every functor law below is an identity between two proofs of
-   one equation of naturals, discharged by Hedberg's theorem in its standard
-   library form [UIP_dec] applied to [Nat.eq_dec] -- a theorem, not an axiom,
-   so the whole file stays closed under the global context. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The cardinality functor on the groupoid of finite sets *)
 

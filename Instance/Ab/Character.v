@@ -18,61 +18,14 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §I.4, printed p. 17 (PDF 27) — maclane:I.4:construction3
-              (the finite-iso and non-naturality halves are
-              Instance/Ab/Character/Finite.v's and NonNatural.v's)
-   nLab:      https://ncatlab.org/nlab/show/Pontryagin+duality
-   Wikipedia: https://en.wikipedia.org/wiki/Pontryagin_duality
+(*
+ nLab:      https://ncatlab.org/nlab/show/Pontryagin+duality
+ Wikipedia: https://en.wikipedia.org/wiki/Pontryagin_duality
 
-   Mac Lane's §I.4 example: the character group D(G) = hom(G, ℚ/ℤ) is
-   contravariant in G, its square DD is a covariant endofunctor of Ab,
-   and the evaluation family τ_G : G → DD(G), a ↦ (χ ↦ χ a), is
-   natural in G — his second worked example of a natural
-   transformation.  This file delivers the dualizing group, both
-   functors, and the natural evaluation; the finite-iso theorem and
-   the non-naturality remark live in the sibling files.
+   本文件给出特征相关。
 
-     - [QZ]: the circle group ℚ/ℤ as an [AbObject] — carrier ℚ,
-       identified up to integer difference, with decidable ≈
-     - [D_ob]/[D]: the character group and the contravariant functor
-       [D : Ab^op ⟶ Ab], acting by precomposition
-     - [DD]: the covariant double dual, defined directly (its action
-       Ξ ↦ (χ ↦ Ξ (χ ∘ f)) makes the two flips visible)
-     - [tau]/[tau_natural]/[tau_Transform]: the evaluation family and
-       its naturality square, packaged as [Id ⟹ DD]
-
-   Design:
-
-   1. ℚ/ℤ, NOT ℝ/ℤ, AND WHY THAT IS FAITHFUL.  The book's dualizing
-      group is the circle ℝ/ℤ; every character of a FINITE group
-      lands in its torsion subgroup, which is exactly ℚ/ℤ, so on the
-      finite abelian groups of the example the two dualizing choices
-      agree.  ℚ/ℤ is chosen because the stdlib rationals are
-      axiom-free while the reals import classical axioms
-      (docs/AXIOMS.md) — the issue's disclosed restriction.
-      CORRECTION (#410): the standard library's classical reals [R]
-      do; its constructive Cauchy reals [CReal] do not, and over them
-      Instance/Top/Solenoid/Presentations.v builds ℝ/ℤ as an abelian
-      group, [CircleGroup], closed under the global context.  Nothing
-      here is rebuilt on it: ℚ/ℤ stays this file's dualizing group.
-
-   2. THE QUOTIENT IS A SETOID, AND IT IS DECIDABLE.  A point of ℚ/ℤ
-      is a rational; two are identified when they differ by an
-      integer.  No quotient construction is needed — the setoid
-      discipline IS the quotient — and the relation is decidable
-      ([qz_dec]): x − y is an integer exactly when its [Qred]
-      canonical form has denominator 1, by [Qred]'s completeness.
-      Decidability is not consumed here, but the finite half of the
-      development counts characters, and counting needs it.
-
-   3. CHARACTERS FORM AN ABELIAN GROUP POINTWISE.  D(G) carries the
-      hom-set [AbHom G QZ] with pointwise addition, zero, and
-      negation; the hom-setoid is [CMonHom_Setoid]'s pointwise
-      equality, reused rather than rebuilt.  [D] acts by
-      precomposition; [DD] is defined directly rather than as a
-      composite through [Ab^op], so its object and arrow actions
-      unfold definitionally in the evaluation's naturality square. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The circle group ℚ/ℤ *)
 

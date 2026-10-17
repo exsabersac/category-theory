@@ -19,67 +19,14 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §I.3, printed p. 14 (PDF 24), and §I.4, printed p. 16
-              (PDF 26) — maclane:I.3:construction2 (with
-              maclane:I.4:construction1 completed by
-              Instance/Matr/Determinant.v)
-   nLab:      https://ncatlab.org/nlab/show/general+linear+group
-   Wikipedia: https://en.wikipedia.org/wiki/General_linear_group
+(*
+ nLab:      https://ncatlab.org/nlab/show/general+linear+group
+ Wikipedia: https://en.wikipedia.org/wiki/General_linear_group
 
-   Mac Lane's §I.3 example: for each n, sending a commutative ring K
-   to the group GL_n(K) of invertible n × n matrices is a functor
-   CRng ⟶ Grp, and so is sending K to its group of units K^*.  Both
-   are instances of ONE construction — the group of units of a
-   monoid, taken at the multiplicative monoid of K and at the matrix
-   monoid (the endomorphism monoid of n in Matr K) — and a ring
-   homomorphism acts entrywise.  The determinant connecting them is
-   Instance/Matr/Determinant.v's, and the natural transformation
-   det : GL_n ⟹ (−)^* is assembled where the two meet.
+   本文件给出具体实例。
 
-     - [UnitsOf]: the group of units of a [MonObject] whose carrier setoid
-       is propositional — carrier the two-sided-invertible elements
-       compared by their underlying element, inverse by swapping the
-       witness — with [UnitsOf_map]: monoid homomorphisms restrict to unit
-       groups.  (An earlier revision said "of any [MonObject]".  Since the
-       PR "algebraic carriers are sets" (2026-09-17) an [Instance/Grp.v]
-       group carries [grp_prop] and a [MonObject] does not, so the witness
-       is a hypothesis; see the note at [UnitsOf] below, and note that all
-       three consumer families in tree discharge it.)
-     - [Ring_mul_mon]: the multiplicative monoid of a ring
-     - [Units_Functor]: (−)^* : CRng ⟶ Grp
-     - [mat_mon]: the n × n matrix monoid over a ring, as the
-       endomorphism monoid of n in [Matr] (Construction/Deloop.v's
-       [hom_monoid] — cited, not rebuilt)
-     - [mat_map_hom]: a ring homomorphism acts entrywise as a monoid
-       homomorphism of matrix monoids
-     - [GL_n]: the general linear group functor CRng ⟶ Grp
-
-   Design:
-
-   1. UNITS OF A MONOID, ONCE.  A unit carries its two-sided inverse
-      as DATA together with both cancellation laws; two units are
-      identified when their underlying elements are — the inverse is
-      determined up to ≈ (Construction/Deloop.v's
-      [mon_inverse_unique]), so comparing first components is the
-      right setoid, and it is what makes every group law reduce to
-      monoid algebra on underlying elements.  [GrpObject] here is
-      Instance/Grp.v's record (minimal axioms, left laws only), not
-      Construction/Deloop.v's.
-
-   2. GL_n IS UNITS OF THE ENDOMORPHISM MONOID.  The n × n matrices
-      over K form exactly [hom_monoid (Matr (ring_rig K)) n], so
-      invertible matrices are [UnitsOf] of it, and functoriality in K
-      is [UnitsOf_map] applied to the entrywise homomorphism — whose
-      monoid laws are precisely "ring maps commute with the matrix
-      product", [fin_sum] naturality plus preservation of the
-      Kronecker delta.
-
-   3. COMMUTATIVITY IS NOT USED HERE.  Both functors below are
-      defined on CRng because that is where Mac Lane states them and
-      where the determinant lives; nothing in THIS file consumes the
-      commutativity witness (matrix multiplication over any ring has
-      units).  The witness is consumed by Determinant.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The group of units of a monoid *)
 

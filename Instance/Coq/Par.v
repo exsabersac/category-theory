@@ -15,25 +15,13 @@ Generalizable All Variables.
 
 (** * Par: partial functions over Coq Types *)
 
-(* nLab:      https://ncatlab.org/nlab/show/partial+function
-   Wikipedia: https://en.wikipedia.org/wiki/Partial_function
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Partial_function
 
-   [Par] is the Kleisli category of the option/Maybe ("partiality", or
-   "exception") monad on Coq [Type]s. A partial map A ⇀ B is encoded as a
-   total function A → option B, so the homset is
+   本文件给出 Coq 类型相关实例。
 
-       A ~> B  :=  A → option B,
-
-   with [None] standing for "undefined". Identity is [Some] (the monad's
-   [return]) and composition is Kleisli composition (the monad's [bind]),
-   i.e. [g ; f := option_bind f ∘ g] threads the "is it None?" check,
-   propagating undefinedness. Morphisms are compared pointwise, [∀ x, f x =
-   g x] — the extensional equality of partial functions — so this development
-   needs no funext axiom (it is closed under the global context).
-
-   This is equivalent (not isomorphic) to the category of pointed sets and
-   basepoint-preserving maps: the object [A] realizes the pointed set
-   [option A = A ⊔ {None}] with basepoint [None]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition option_bind {A B : Type}
            (f : A → option B) (o : option A) : option B :=

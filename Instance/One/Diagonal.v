@@ -11,26 +11,14 @@ Generalizable All Variables.
 
 (** * The constant diagram factors through the terminal category 1. *)
 
-(* nLab:      https://ncatlab.org/nlab/show/constant+functor
-   nLab:      https://ncatlab.org/nlab/show/diagonal+functor
-   Wikipedia: https://en.wikipedia.org/wiki/Diagonal_functor
+(*
+ nLab:      https://ncatlab.org/nlab/show/diagonal+functor
+ Wikipedia: https://en.wikipedia.org/wiki/Diagonal_functor
 
-   The constant diagram Δ[J](d) : J ⟶ D (every object ↦ d, every morphism ↦
-   id[d]) does not depend on J's structure, only on d. nLab records this as a
-   factorization through the point: "a constant functor can be expressed as the
-   composite C → 1 → D", where the first arrow is the unique functor `! : J ⟶ 1`
-   ([one], here [Erase J] at Cat's Terminal instance) and the second is the
-   functor `1 ⟶ D` picking out d — which is exactly the constant diagram on the
-   terminal index category, Δ[1](d), written here Δ(d).
+   本文件给出具体实例。
 
-   So Δ[J](d) ≈ Δ(d) ∘ ! in Cat. Both functors send every object to d and every
-   morphism to id[d], so they are equal on the nose; the witnessing natural
-   isomorphism (Cat's hom-setoid identifies functors up to natural iso) is the
-   identity iso [iso_id] at every j : J, and naturality is discharged by [cat].
-   This is the J-indexed analogue of [1, C] ≃ C: every constant diagram is an
-   object of D inflated along the unique map to 1.  That analogue is itself a
-   theorem, Theory/Shapes.v's [One_Fun_iso], proven there over that file's own
-   name [Point d] for the constant functor 1 ⟶ D on d. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary Diagonal_Unique (J C : Category) {D : Category} (d : D) :
   Δ[J](d) ≈[Cat] Δ(d) ∘[Cat] one.

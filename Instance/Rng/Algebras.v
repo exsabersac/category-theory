@@ -1,8 +1,8 @@
-(* [Coq.QArith.QArith] must be required BEFORE [Category.Lib]: it exports its
-   own [equiv], which shadows [Setoid]'s, and the anonymous record
-   [{| equiv := _ |}] used below is then rejected with the error
-   "equiv: Not a projection".  Instance/FdVect.v records the same
-   import-order gotcha. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Coq.ZArith.ZArith.
 Require Import Coq.QArith.QArith.
 

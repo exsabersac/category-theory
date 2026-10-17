@@ -25,129 +25,15 @@ Require Import Coq.Relations.Relation_Definitions.
 
 Generalizable All Variables.
 
-(** * The power set of a finite set, ordered by inclusion, COMPUTING
+(*
+ nLab: https://ncatlab.org/nlab/show/power+set
+ nLab: https://ncatlab.org/nlab/show/subobject+classifier
+ nLab: https://ncatlab.org/nlab/show/power+object
 
-    Seven Sketches (Fong and Spivak, "An Invitation to Applied Category
-    Theory") §1.2.2 Examples 50 and 51 and §1.4.3 Examples 117 and 118.
-    There is no page image for that book here, so the clauses are quoted
-    from the catalog issue's own transcription: the power sets of the
-    zero-, one- and two-element sets with their inclusion orders drawn
-    out, and then the apples-and-buckets function with its preimage, its
-    direct image and its dual image evaluated at named subsets.
+   本文件给出具体实例。
 
-    nLab: https://ncatlab.org/nlab/show/power+set
-    nLab: https://ncatlab.org/nlab/show/subobject+classifier
-    nLab: https://ncatlab.org/nlab/show/power+object
-
-    ** WHAT IS DELIVERED, WITH GRADES
-
-    (A) A decidable bounded quantifier pair, [fin_allb] and [fin_anyb],
-        with both halves of each specification.  Neither name occurs
-        anywhere else in the tree; the three existing [Fin.t]
-        enumerations ([all_fins] in Instance/Matr/Determinant.v,
-        [fin_enum] in Instance/FinSet/Skeleton.v, [all_fin] in
-        Instance/FinSet/Pushout.v) enumerate a LIST, which is a heavier
-        instrument than a fold to [bool] and, in the first case, sits in
-        a module whose closure is far larger than this file's.
-
-    (B) [finpow_le], its [PreOrder], and [FinSubsets n], the power set of
-        the n-element set as a thin category over Instance/Proset.v's
-        [Proset].  The objects are EXACTLY the [finpow n] codes
-        ([FinSubsets_obj_is_code], [eq_refl]), so the three counts of
-        Example 50 are [finpow 0 = 1], [finpow 1 = 2], [finpow 2 = 4],
-        all by [eq_refl].  The orders are exhibited: at n = 1 the two
-        codes [empty1]/[full1] with the one inclusion inhabited and its
-        converse refuted; at n = 2 the four codes with all FIVE
-        non-identity inclusions inhabited and BOTH incomparabilities
-        refuted ([sub2_01_not_le_10], [sub2_10_not_le_01]), so
-        [FinSubsets 2] is provably not a chain -- which is what
-        distinguishes the power set of a two-element set from an
-        arbitrary four-element order.  Every one of these is [eq_refl] or
-        [discriminate], because [finpow_mem] is a decidable test; its
-        [Subsets] cousin over an arbitrary Prop-valued predicate could
-        not be enumerated constructively at all.
-
-    (C) The comparison with Instance/Powerset.v: [finpow_to_subset] turns
-        a code into a Prop-valued subset of the discrete setoid
-        [Powerset_Prop_fin_object n], monotone and ORDER-REFLECTING, so
-        [FinSubsetsToSubsets n : FinSubsets n ⟶ Subsets _] is proved
-        [Full] -- order reflection is exactly what [Full] spends.
-        [FinSubsetsToSubsets_Faithful] is shipped beside it but carries
-        NO content: the source is thin, so [f ≈ g] there is [True] and
-        every functor out of [FinSubsets n] is faithful by the same
-        one-line proof.  Essential surjectivity is NOT claimed: it would
-        decide an arbitrary Prop-valued predicate.
-
-    (D) [FinSet_Pow_one : Pow 1 = 2] by [eq_refl] -- the missing member of
-        Instance/FinSet/Topos.v's [FinSet_Pow_zero]/[FinSet_Pow_two]
-        family, which lives here rather than there.  The GENERAL form
-        [finpow_is_topos_Pow] is NOT new: Instance/FinSet/Powerset.v
-        already proves [Pow n = finpow n] for open [n], and it is cited,
-        not duplicated.
-
-    (E) The INTERNAL inclusion order on the power object at [FinSet]:
-        [finpow_subseteq] as a [bool] and
-        [internal_subseteq n : Pow n × Pow n ~{FinSet}~> Ω] as an arrow
-        of the category, with [internal_subseteq_spec] proving the
-        internal test EQUIVALENT to the external order [finpow_le] -- so
-        the two readings agree, not merely correspond.  The general-topos
-        internal inclusion is NOT delivered, and the obstruction is
-        measured rather than guessed: it would be the equalizer of the
-        first projection against the composite of an internal
-        conjunction with the two evaluations, and the tree HAS NO
-        internal conjunction on Ω: no constant anywhere has type
-        [Ω × Ω ~> Ω], and the characteristic map of ⟨truth, truth⟩
-        appears nowhere.  Read that measurement at its scope -- the word
-        "meet" DOES occur in Structure/Topos.v, but as prose
-        describing what a Lawvere-Tierney topology is, not as a
-        constant.
-
-    (F) Example 118, evaluated.  [apples : 3 ~> 2] puts two apples in
-        bucket 0 and one in bucket 1.  [finpow_preimage] is
-        Instance/FinSet/Powerset.v's [finpow_map] under a name that
-        says what it is ([finpow_preimage_is_finpow_map], [eq_refl] --
-        the inverse image on codes was ALREADY the arrow action of
-        [FinPowerset], and nothing is rebuilt); [finpow_image] and
-        [finpow_dual] are new.  Six [eq_refl] evaluations at closed
-        inputs chosen so the three operations VISIBLY differ: at {0} the
-        image is {0} while the dual is empty (apple 1 is missing), at
-        {0,1} both are {0}.  Example 117's left half -- the preimage has
-        a LEFT adjoint -- is [finpow_image_preimage_galois]; its right
-        half, the dual image as a RIGHT adjoint, is #384's and is NOT
-        built here.  The EVALUATIONS of [finpow_dual] are this file's;
-        the adjunction it satisfies is not.
-
-    ** WHAT IS NOT DELIVERED
-
-    The dual-image adjunction (#384).  The general-topos internal
-    inclusion, for the measured reason above.  No isomorphism between
-    [FinSubsets n] and [Subsets (Powerset_Prop_fin_object n)] (only the
-    full and faithful comparison).  No link between [finpow_subseteq] and
-    [sub_le] on [SubObj n] through [FinSet_Sub_powerset]/[finpow_codec]:
-    that would need the classifier round trip carried across the
-    subobject setoid, which is a further construction and is only
-    cross-referenced.  No [Cartesian]/[Complete] structure on
-    [FinSubsets], which would be Instance/Powerset.v's development
-    repeated over codes.
-
-    ** UNIVERSES
-
-    [FinSubsets@{u}] carries a [Set] BOUND from [Fin.t n : Set], not an
-    identification; everything mentioning [Powerset_Prop_obj] inherits
-    [Set < o] from the donor as usual.  Measured per constant in the
-    report.
-
-    ** TRANSPARENCY
-
-    [finpow_to_subset] MUST be [Defined] -- measured by flipping it to
-    [Qed], which breaks the file, its predicate being read through by
-    the two monotonicity lemmas.  [FinSubsetsToSubsets_Full] and the
-    inline [FinSubsetsToSubsets_Faithful] each compile as [Qed] and are
-    [Defined] for uniformity -- three [Defined]s in this file.
-
-    ** REGISTRATION
-
-    Nothing here is an [Instance]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** (A) Bounded decidable quantifiers over [Fin.t] *)

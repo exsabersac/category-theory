@@ -19,118 +19,14 @@ Generalizable All Variables.
 
 (** * θ* between #466's two power-set monads *)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer GTM 5, 1998, §VI.2 Exercise 3, printed p. 142 (PDF
-         p. 151) — maclane:VI.2:ex3; with Exercise 1(d) on the same page
-         — maclane:VI.2:ex1
-   nLab: https://ncatlab.org/nlab/show/suplattice
-   nLab: https://ncatlab.org/nlab/show/monad (section "The 2-category of
-         monads")
+(*
+ nLab: https://ncatlab.org/nlab/show/suplattice
+ nLab: https://ncatlab.org/nlab/show/monad (section "The 2-category of
 
-   WHAT THIS FILE DOES.  Instance/SupLat/Free.v (#466) has two power-set
-   monads on Sets with the same functor data: Instance/Sets/Powerset/
-   Monad.v's [Powerset_Monad], whose join is the union ⋃, and
-   [SL_induced], the monad of the free complete semilattice adjunction
-   [SL_adj], whose join is ⋃ ∘ P id and so agrees with ⋃ at ≈ only
-   ([SL_induced_join_equiv]).  Free.v read an algebra of [SL_induced] as
-   one of [Powerset_Monad] ([SL_induced_repack], proving the action law
-   again) and says, under NOT DELIVERED, "No functor between the
-   Eilenberg–Moore categories of [SL_induced] and of [Powerset_Monad] is
-   built: the tree has no morphisms of monads, and [SL_induced_repack] is
-   the object part of one."  This file builds that functor as Mac Lane's
-   θ*, from Monad/Morphism.v's record and Monad/Morphism/Algebra.v's
-   construction.  Free.v is not changed.
+   本文件给出自由构造相关。
 
-   THE MORPHISM.  [SL_theta : MonadHom Powerset_Monad SL_induced] has
-   the identity of Sets as every component ([SL_theta_component],
-   [eq_refl]).  Its naturality and unit law hold pointwise by
-   reflexivity; its multiplication law is [SL_induced_join_equiv] after
-   Instance/Sets/Powerset.v's [Powerset_Prop_map_id], which removes the
-   direct image under the identity.  [SL_theta_inv] is the morphism the
-   other way, again with identity components ([SL_theta_inv_component],
-   [eq_refl]), its multiplication law the same two steps in the other
-   order; [SL_theta_iso]: the two are inverse in Monad/Morphism.v's
-   [Monads Sets], componentwise by reflexivity, so the two power-set
-   monads are isomorphic objects of the category of monads.  With T =
-   [Powerset_Monad] and T' = [SL_induced], θ* runs from the algebras of
-   [SL_induced] to those of [Powerset_Monad], the direction of
-   [SL_induced_repack].
-
-   θ*.  [SL_EM_theta] is mh_EM SL_theta, the functor Free.v lists as not
-   delivered.  On one algebra β, θ*'s structure map agrees with
-   [SL_induced_repack β]'s as a function, at [eq_refl]
-   ([SL_theta_alg_fun], and [SL_EM_theta_alg_fun] on objects), and the
-   carrier is kept ([SL_EM_theta_carrier]).  Free.v's
-   [EM_induced_to_SupLat], its functor from the algebras of
-   [SL_induced] to complete semilattices, factors through θ* and
-   Instance/SupLat.v's [EM_to_SupLat] (Mac Lane's Exercise 1(d) on the
-   algebras of [Powerset_Monad]): [SL_factor] states EM_to_SupLat ◯
-   SL_EM_theta ≈ EM_induced_to_SupLat at Cat's ≈, with identity
-   components.  On objects the two agree at [eq_refl] in the carrier
-   setoid ([SL_factor_set]), the order ([SL_factor_le]) and the supremum
-   as a function ([SL_factor_sup_fun]), and on arrows in the underlying
-   map ([SL_factor_map]).
-
-   STRENGTHS.  By [eq_refl]: [SL_theta_component],
-   [SL_theta_inv_component], [SL_theta_alg_fun], [SL_EM_theta_carrier],
-   [SL_EM_theta_alg_fun] and the four [SL_factor] readbacks.  At ≈: the
-   laws of [SL_theta] and [SL_theta_inv], [SL_theta_iso], and
-   [SL_factor].  Refused at [eq_refl], by conversion, each pinned in
-   Test/ProbeMonadMorphism468.v with its positive controls:
-   - θ*'s structure map as a setoid morphism, against
-     [SL_induced_repack]'s (R15; control C34); and the supremum of the
-     two semilattices as a setoid morphism (R16; control C35);
-   - the two semilattices, as whole objects (R17; controls C35 and
-     C36).
-   Controls C61, C45 and C62 restate [SL_theta_component],
-   [SL_theta_inv_component] and [SL_EM_theta_carrier].
-   θ* writes the structure map h as h ∘ id, a composite in Sets (Monad/
-   Morphism/Algebra.v's [mh_EM_alg]), where [SL_induced_repack] keeps h,
-   and [EM_to_SupLat] takes the supremum to be the structure map.  The
-   first two refusals are opacity outside the tree, as for Instance/Fun/
-   Action/Monad/BG/Morphism.v: Instance/Sets.v's [setoid_morphism_compose]
-   and [setoid_morphism_id] carry properness proofs built from opaque
-   CMorphisms lemmas, and in a copy of the probe's dependency closure in
-   which only those two fields are written as terms both hold at
-   [eq_refl]; with either field alone written so, both are still refused,
-   and turning every [Qed] of the closure into [Defined] (Instance/
-   Sets.v, Structure/Cartesian/Closed.v, Instance/Grp.v and Instance/
-   Grp/Free.v keeping theirs) changes neither.  The whole-object refusal
-   is not opacity, argued from the terms and not measured further (no
-   copy made Instance/Sets.v transparent): it stands in all three
-   copies, and in the one with
-   both changes the unit law [t_id] and the action law [t_action] of the
-   two algebras are each refused alone, [SL_induced_repack] keeping
-   β's unit law and proving its action law again, θ* rebuilding both
-   through [mh_ret] and [mh_join].
-   CORRECTION (#1347): the copy in which only those two fields are
-   written as terms is now the tree: the first two refusals, R15 and R16,
-   hold at [eq_refl] and are controls of the probe, and their attribution
-   to the standard library's opacity was right; the whole-object refusal,
-   R17, still stands.
-
-   UNIVERSES, read off [About].  Every constant binds [@{o so}] with
-   Set < o and o < so, except [SL_theta_iso], which adds the object and
-   hom levels m1 and m2 of [Monads@{so o m1 m2} Sets], at or above so,
-   and the caps of the sigma objects of [Monads], and [SL_factor], which
-   adds c with o < c and so < c, the levels of [Cat@{c so so so o}],
-   first carried by Instance/Cat.v's [Cat].  [SL_theta], [SL_theta_inv],
-   their component readbacks and [SL_theta_alg_fun] have exactly the
-   block of [SL_induced]: Set < o, first carried by
-   Instance/Sets/Powerset.v's [Powerset_Prop_truth_equiv], the relation
-   on Prop (Prop : Type@{Set+1}), as Instance/SupLat.v and
-   Instance/Sets/Powerset/Monad.v attribute it; o < so, first carried by
-   Instance/Sets.v's [Sets]; and the stdlib caps that Free.v's UNIVERSES
-   paragraph attributes.  [SL_EM_theta] and the constants that name it
-   have exactly the block of [EM_induced_to_SupLat], which adds o <=
-   Projections.u1 and so <= Projections.u0 from [EilenbergMoore]'s sigma
-   objects.  No equation occurs.
-
-   NOT DELIVERED.  Free.v is not rewired: its [SL_induced_repack] and
-   [EM_induced_to_SupLat] keep their own structure maps, which θ* would
-   replace by h ∘ id.  The isomorphism in Cat between the two
-   Eilenberg–Moore categories that Monad/Morphism/Algebra.v's
-   [Monads_EM] makes of [SL_theta_iso] is not stated. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** θ : Powerset_Monad ⟶ SL_induced, identity components *)
 

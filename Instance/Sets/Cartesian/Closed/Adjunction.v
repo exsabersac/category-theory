@@ -19,59 +19,13 @@ Generalizable All Variables.
 
 (** * The currying adjunction in [Sets], where the counit computes *)
 
-(* nLab: https://ncatlab.org/nlab/show/exponential+object
-   Book: Riehl, "Category Theory in Context", Dover 2016; §2.1
-         (Representable functors), Example 2.1.6(iv)
+(*
+ Book: Riehl, "Category Theory in Context", Dover 2016; §2.1
 
-   Structure/Cartesian/Closed/Adjunction.v builds (- × S) ⊣ (-)^S over an
-   arbitrary cartesian closed category. This file instantiates it at [Sets],
-   the category of setoids, through [Sets_Cartesian] and [Sets_Closed], and
-   checks that the abstract packaging computes to the expected concrete maps.
+   本文件给出伴随实例。
 
-   Because [Sets_Closed] takes the exponential y^S to be the setoid of
-   ≈-respecting maps S → y and [uncurry] to be λp. f (fst p) (snd p), the
-   counit — which the general file already identifies with [eval] — is
-   function application:
-
-       counit (h, s) = h s,
-
-   which [Sets_counit_apply] proves by [reflexivity]: the two sides are
-   convertible, not merely ≈-related. Note what kind of statement that is. It
-   relates two ELEMENTS of the carrier of a setoid, not two morphisms, so
-   [reflexivity] there is a claim about computation in this model; the variant
-   [Sets_counit_apply_eq] states it with Leibniz =, which is strictly stronger
-   than the ≈ form and is legitimate here only because both sides are carrier
-   elements that happen to be convertible. Every = appearing in this file
-   relates elements of a carrier type, and the one = in
-   Structure/Cartesian/Closed/Adjunction.v relates two OBJECTS of a
-   category (this library has no ≈ on objects), as that file says at the
-   site. No morphism is compared with = in either file. This is a statement
-   about these two files, not a claim about the rest of the library.
-
-   The middle of the file discharges the vacuity worry. A hom-setoid whose ≈
-   were trivial would make the equations below hold for uninteresting reasons,
-   so a concrete non-identity morphism is transposed and its transpose is
-   shown to be non-constant — a genuine inequality of setoid maps
-   ([curry_plus_not_constant]). The witness is addition on [NatSet], the
-   natural numbers under Leibniz equality; the transpose is n ↦ (m ↦ n + m),
-   and the counit applied to (curry plus_map 2, 3) computes to 5.
-
-   Finally [Sets_Curry_Representable] is Riehl's Example 2.1.6(iv) in literal
-   form: "The functor Hom(− × A, B) : Set^op → Set that sends a set X to the
-   set of functions X × A → B is represented by the set B^A of functions from
-   A to B." Here Set is [Sets], so "set" means setoid and "function" means
-   ≈-respecting map, and the natural bijection is an isomorphism in the
-   functor category [Sets^op, Sets].
-
-   One elaboration note, since it shapes how the statements below are
-   written. Several equations are between elements of a carrier rather than
-   between morphisms, and [Instance/Sets.v] exports a global [Setoid False]
-   instance ([False_Setoid]); when the side of a ≈ that Coq elaborates first
-   has a type still blocked on instance resolution, that global instance is
-   picked and the statement is rejected. The remedy used throughout is to put
-   the side whose type is immediately known on the left, or to name the arrow
-   with its type ascribed first (as [Sets_counit] does). This is a matter of
-   elaboration order only; no statement is weakened by it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The counit computes to function application *)
 

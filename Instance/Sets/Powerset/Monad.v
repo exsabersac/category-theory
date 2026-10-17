@@ -10,134 +10,16 @@ Require Import Category.Instance.Sets.Powerset.
 
 Generalizable All Variables.
 
-(* Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer GTM 5, 1998, §VI.2, Exercise 1(a), printed p. 142
-         (PDF p. 151) — maclane:VI.2:ex1
-   Book: Awodey, "Category Theory", Carnegie Mellon pre-print, September
-         2005, §10.2, Example 10.5, printed p. 271 (PDF p. 280) —
-         awodey:10.2:example5; and §10.6, Exercise 5, printed p. 291
-         (PDF p. 300) — awodey:10:ex5
-   Book: Riehl, "Category Theory in Context", 2nd ed., §5.1, Example
-         5.1.5(i), printed p. 185 (PDF p. 205) — riehl:5.1:example5;
-         with her Corollary 4.6.3, printed p. 167
-   nLab: https://ncatlab.org/nlab/show/power+set
-   nLab: https://ncatlab.org/nlab/show/monad
+(*
+ Book: Awodey, "Category Theory", Carnegie Mellon pre-print, September
+ Book: Riehl, "Category Theory in Context", 2nd ed., §5.1, Example
+ nLab: https://ncatlab.org/nlab/show/power+set
+ nLab: https://ncatlab.org/nlab/show/monad
 
-   The covariant power set is the monad whose algebras Mac Lane's §VI.2
-   Exercise 1, "Complete semi-lattices (E. Manes; thesis)", asks for.
-   All three books state the same data, read here from the page images.
-   Mac Lane: "Let 𝒫 be the covariant power set functor on Set so that 𝒫X
-   is the set of all subsets S ⊂ X, while for each function f : X → Y,
-   (𝒫f)S is the direct image of S under f.  For each set X, let
-   η_X : X → 𝒫X send each x ∈ X to the one point set {x}, while
-   μ_X : 𝒫𝒫X → 𝒫X sends each set of sets into its union.  (a) Prove that
-   ⟨𝒫, η, μ⟩ is a monad 𝒫 on Set."  Awodey's Example 10.5 sends each
-   function f to "the image mapping im(f)", with η_X(x) = {x} and
-   μ_X(α) = ⋃α, and says "The reader should verify as an exercise that
-   these operations are in fact natural in X, and that this defines a
-   monad (𝒫, {−}, ⋃) on Sets"; his Exercise 10.6.5, "Show that (P, s, ∪)
-   is a monad on Sets", is that verification, with
-   ∪_X(α) = {x ∈ X | ∃_{U∈α}. x ∈ U}.  Riehl's Example 5.1.5(i), under
-   "Monads also arise in nature", has the same unit and multiplication,
-   and notes that naturality of the multiplication "makes use of
-   Corollary 4.6.3; the direct image function, as a left adjoint,
-   preserves unions".  This file is part (a); parts (b), (c) and (d),
-   the algebras, are Instance/SupLat.v.
+   本文件给出单子相关实例。
 
-   THE FUNCTOR AND THE UNIT ARE NOT REBUILT.  Instance/Sets/Powerset.v
-   (#227) already has the endofunctor [Powerset_Prop : Sets ⟶ Sets]:
-   a subset of a setoid is a [Prop]-valued predicate that respects ≈
-   ([Powerset_Prop_obj]), two subsets are equal when they have the same
-   members, and the action is the direct image with its existential
-   squashed ([Powerset_Prop_image]).  It also has Riehl's
-   [Powerset_Prop_Singleton : Id ⟹ Powerset_Prop], whose component at
-   X sends x to {x} = λ z, squash (x ≈ z).  Both are used verbatim, and
-   η IS that transformation's component ([Powerset_Monad_ret], at
-   [eq_refl]).  The proof-relevant carrier of the same file,
-   [Powerset], lands one universe up and is not an endofunctor, so no
-   monad is formable over it (refused, below).
-
-   THE UNION.  ⋃ SS is the predicate λ x, ∃ S, SS S ∧ S x
-   ([Powerset_union_pred]).  Both memberships are [Prop]s, so the
-   existential is the standard library's [ex] and needs no squash, and
-   P(P X) stays at the level of X by the impredicativity of [Prop].
-   [Powerset_union] is μ_X as an arrow of [Sets], its respect for ≈
-   being [Powerset_union_respects].
-
-   THE LAWS are four pointwise lemmas: μ ∘ Pμ ≈ μ ∘ μP
-   ([Powerset_union_assoc]), μ ∘ Pη ≈ id
-   ([Powerset_union_image_singleton]), μ ∘ ηP ≈ id
-   ([Powerset_union_singleton]) and the naturality of μ
-   ([Powerset_union_natural]); the naturality of η is #227's own
-   [naturality_sym] field.  [Powerset_Monad] assembles them with
-   Theory/Monad.v's [Build_Monad].  The naturality of μ is proved
-   directly, by opening the squashed direct image: the union of the
-   images is the image of the union.  Riehl's route, through the direct
-   image as a left adjoint, needs Instance/Powerset.v (#382): with it
-   the dependency closure grows from this file's thirty-two files to
-   eighty-nine, and to ninety with the satellite itself (the transitive
-   closure of the Category.* [Require] lines, each file counted once,
-   the root included), so that route is kept apart, in the satellite
-   Instance/Sets/Powerset/Monad/Riehl.v.
-   Awodey's remark that "monads can, and often do, arise without coming
-   from evident adjunctions" is taken up in Instance/SupLat/Free.v, which
-   builds the free complete-semilattice adjunction and measures how far
-   its induced monad is this one.  [Powerset_Monad_statement] inhabits
-   the type [Powerset_Prop_Monad_statement], which Instance/Sets/
-   Powerset.v entered to show that this monad had become statable.
-
-   STRENGTHS.  By [eq_refl]: T X is [Powerset_Prop_obj X] and T f is
-   [Powerset_Prop_map f] ([Powerset_Monad_obj], [Powerset_Monad_map]),
-   and T f S at y is the squashed ∃ x, S x ∧ f x ≈ y
-   ([Powerset_Monad_map_at]); η_X is #227's singleton component and its
-   singleton map ([Powerset_Monad_ret], [Powerset_Monad_ret_map]), η x is
-   {x} and x's singleton at z is squash (x ≈ z) ([Powerset_Monad_ret_at],
-   [Powerset_Monad_ret_member]); μ_X is [Powerset_union]
-   ([Powerset_Monad_join]) and μ SS at x is ∃ S, SS S ∧ S x
-   ([Powerset_Monad_join_at]).  At ≈ only: the three monad laws and the
-   two naturality squares, which compare different predicates with the
-   same members.  Refused, each pinned in Test/ProbeSupLat466.v: each of
-   those five at [eq_refl], namely associativity (M3), μ ∘ Pη ≈ id (M4),
-   μ ∘ ηP ≈ id (M5), the naturality of η at one point (M6), and the
-   naturality of μ at one set of subsets (M1) and as a function of the
-   point (M7), all conversion refusals that stand in the probe's copy of
-   its dependency closure with every [Qed] turned into [Defined] but those
-   the probe's header names; and the statement
-   [@Monad Sets Powerset] over the proof-relevant carrier (M2, a type
-   mismatch between "Sets@{o so} ⟶ Sets@{so sso}" and "Sets@{o so} ⟶
-   Sets@{o so}", which Rocq 9.1 and Coq 8.20 explain as the universe
-   inconsistency "Cannot enforce so = o because o < so" and Coq 8.19
-   prints without that explanation).
-
-   UNIVERSES, read off [About].  The union and the four laws bind [@{o}],
-   with the one bound [Set < o], first carried by Instance/Sets/
-   Powerset.v's [Powerset_Prop_truth_equiv] ([Prop : Type@{Set+1}]).
-   [Powerset_Monad] and its readbacks bind [@{o so}] with a block
-   identical to [Powerset_Prop]'s: [Set < o], [o < so] (first carried by
-   Instance/Sets.v's [Sets]), and the caps compose and ID from
-   Instance/Sets.v's [setoid_morphism_compose] and [setoid_morphism_id].
-   [Powerset_Monad_statement] binds [@{u so o}], in the order of
-   [Powerset_Prop_Monad_statement]'s own universes, and adds [so <= u]
-   and [o <= u], the bounds of that statement's type.  There is no
-   equation and no further strict bound.
-
-   NOT DELIVERED.  The Kleisli category of this monad (the category of
-   sets and relations) is not identified.  The nearest construction in
-   the tree is Instance/Concrete.v's [Rel_Powerset : Rel ⟶ Sets], out of
-   Instance/Rel.v's [Rel], whose objects are Coq types and whose arrows
-   A ~> Ensemble B are relations: it sends X to the predicates X → Prop
-   under pointwise ↔ and a relation R to its direct image
-   S ↦ { y | ∃ x ∈ S, R x y }, which is μ ∘ P R, so that, written out on
-   types, it is the functor from the Kleisli category of a power-set monad
-   to its base; it is faithful ([Rel_Powerset_Faithful]) and makes [Rel]
-   concrete, and its comment calls it the Kleisli presentation of Rel over
-   the powerset monad.  It is over bare types, every predicate a subset,
-   and nothing compares it with this monad, whose subsets are the
-   ≈-respecting predicates on a setoid.  Neither the finite power-set
-   monad nor a strength or commutativity of this one is built.  No monad
-   is built over the proof-relevant carrier, where none is formable.
-   That [Powerset_Prop] has no initial algebra (#750, Lambek's lemma with
-   Cantor's theorem) remains open. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** The union of a set of subsets *)

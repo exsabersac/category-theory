@@ -16,65 +16,11 @@ Require Import Category.Structure.Binoidal.
 
 Generalizable All Variables.
 
-(** * Strict premonoidal structures as monoid objects in (StrictCat, □)
+(*
+   本文件给出具体实例。
 
-    The funny bridge: a strict premonoidal structure on a category [c] is
-    precisely a monoid object in the symmetric monoidal category
-    [(StrictCat, □, 1)] of Instance/StrictCat/Funny.v.  This is the funny
-    counterpart of the classical fact that a monoid in [(Cat, ∏, 1)] is a
-    strict monoidal category:
-
-      - the multiplication [mappend : c □ c ⟶ c] is a tensor that is
-        functorial in each variable SEPARATELY — by the funny tensor's
-        universal property (Construction/Funny.v: a functor out of [c □ c]
-        is exactly a [SepFunctorial] assignment), with no interchange law
-        relating the two partial actions.  This "separately functorial,
-        jointly not" tensor is the binoidal core of a premonoidal category
-        in the sense of Power–Robinson ("Premonoidal categories and notions
-        of computation", MSCS 7(5), 1997); see also nLab, "funny tensor
-        product" and "premonoidal category";
-      - the unit [mempty : 1 ⟶ c] picks out the tensor unit object;
-      - the monoid laws, read in StrictCat's strict hom-setoid
-        [Functor_StrictEq_Setoid], say that unitality and associativity of
-        the tensor hold on the nose, the comparison data being the funny
-        unitors (Construction/Funny/Unitors.v) and the funny associator
-        (Construction/Funny/Associator.v).  Strictness makes all of
-        Power–Robinson's central coherence isomorphisms identities, so no
-        centrality conditions need to be stated: this is the STRICT case of
-        the premonoidal notion whose general, iso-weakened form lives in
-        Structure/Premonoidal.v.
-
-    The record [StrictPremonoidal] below spells out the three monoid laws in
-    unfolded form (the field types ARE the types of [mempty_left],
-    [mempty_right] and [mappend_assoc] at [(StrictCat, Funny_Monoidal, c)],
-    up to definitional unfolding), so the two constructions
-
-      [StrictPremonoidal_of_Monoid]  and  [Monoid_of_StrictPremonoidal]
-
-    are pure repackagings, mutually inverse on the nose: the record-level
-    round trips [roundtrip_monoid] and [roundtrip_strict_premonoidal] hold
-    by [reflexivity].  The extractions [StrictPremonoidal_Binoidal] and
-    [StrictPremonoidal_SepFunctorial] connect the multiplication to the
-    [Binoidal] class of Structure/Binoidal.v and to the funny tensor's
-    universal property, again definitionally on the generating steps.
-
-    What is NOT built here: the bridge from [StrictPremonoidal] to the
-    library's iso-weakened [Premonoidal] class (Structure/Premonoidal.v) —
-    its coherence isomorphisms would be transported along the strict object
-    equalities, with naturality via the StrictEq seam helpers — is deferred;
-    the payoff sections below stop at the [Binoidal]/[SepFunctorial]
-    fragment and the object-level strict laws.
-
-    Universe scope.  [Funny_Monoidal@{u} : Monoidal@{u Set}] pins
-    StrictCat's member categories to [Category@{Set Set Set}].  Re-declaring
-    the instance at a rigid universe [v] is blocked: the compiled unitors of
-    Construction/Funny/Unitors.v carry a minimized [Set] level, so
-    [Build_Monoidal] at member level [v] reports "Cannot enforce Set = v" at
-    the unitor field (checked-in probe: Test/ProbeFunnyPoly.v, whose [Fail]
-    guards reproduce the failure).  Everything below therefore holds for
-    [Set]-small carrier categories; lifting the restriction requires
-    re-declaring the unitors with explicit universe binders in
-    Construction/Funny/Unitors.v, which is left as future work. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Strict premonoidal structures
 

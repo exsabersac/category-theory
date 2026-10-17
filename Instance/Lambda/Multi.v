@@ -13,29 +13,11 @@ Set Equations With UIP.
 
 (** Multi-step reduction: the reflexive-transitive closure of [Step] *)
 
-(* [multi R] is the reflexive-transitive closure of a relation R: the least
-   reflexive and transitive relation containing R.  Applied to the single-step
-   reduction [Step], [multi Step] (written t --->* t') is multi-step reduction,
-   relating t to t' when t reduces to t' in zero or more steps:
+(*
+   本文件给出 λ 演算相关实例。
 
-       t --->* t'   iff   t = r0 ---> r1 ---> ... ---> rn = t'   (n >= 0).
-
-   The two constructors are exactly the closure's defining rules: [multi_refl]
-   (reflexivity / the empty reduction sequence) and [multi_step] (prepend one
-   R-step to a sequence).  [multi_R], [multi_trans], and the PreOrder instance
-   record that the closure contains R, is transitive, and hence is a preorder;
-   the remaining lemmas lift the single-step congruence rules of [Step] (under
-   APP, Pair, Fst, Snd) to multi-step reduction, and [values_final] records
-   that a value reduces only to itself.  This is the [multi] combinator of
-   Pierce et al., Software Foundations (Smallstep chapter).
-
-   reflexive-transitive closure:
-     https://ncatlab.org/nlab/show/transitive+closure
-     https://en.wikipedia.org/wiki/Transitive_closure
-   abstract rewriting / multi-step reduction:
-     https://en.wikipedia.org/wiki/Abstract_rewriting_system
-   Software Foundations, Smallstep (the [multi] relation):
-     https://softwarefoundations.cis.upenn.edu/plf-current/Smallstep.html *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Multi.
 

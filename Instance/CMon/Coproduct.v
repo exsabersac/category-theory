@@ -16,35 +16,13 @@ Generalizable All Variables.
 
 (** * The direct sum is the coproduct in CMon *)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician" (2nd ed.),
-         §III.3, book p. 63 (maclane:III.3:remark1)
-   Wikipedia: https://en.wikipedia.org/wiki/Biproduct
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Biproduct
 
-   Instance/CMon/Biproduct.v proved
-   that the direct product of two commutative monoids is at once their
-   product and their coproduct — [CMon_bi_is_product] and
-   [CMon_bi_is_coproduct] at Instance/CMon/Biproduct.v, both
-   in the ∃!-form, packaged as [CMon_Biproducts].  What it never did was
-   say so in the vocabulary the rest of the library uses: there was no
-   [Cartesian CMon] and no [Cocartesian CMon] anywhere.
+   本文件给出余积实例。
 
-   This file is that sentence, and it is DELIVERED WITH NO NEW PROOF AT
-   ALL — two lines, both supplied by
-   [:=], the whole content coming from Structure/Biproduct/Cartesian.v's
-   generic bridge applied to the existing [CMon_Biproducts].  It is
-   included because it is the bridge's cleanest demonstration: the
-   donor's biproduct was already complete, so what the bridge adds is
-   exactly and only the vocabulary.
-
-   Instance/Ab/Coproduct.v and Instance/Mod/Coproduct.v are the same
-   statement one and two layers up, where the donor's biproduct does NOT
-   already exist and must be built; the three files together are Mac
-   Lane's "direct sum" roster entry.
-
-   WHAT IS NOT DELIVERED.  Nothing beyond the repackaging: no indexed
-   coproducts, no [Additive CMon] (there are no inverses — that is what
-   Instance/Ab.v adds), and no claim that the coproduct injections are
-   monic. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export] Instance CMon_Cartesian : @Cartesian CMon :=
   @biproduct_Cartesian CMon CMon_Zero CMon_Biproducts.

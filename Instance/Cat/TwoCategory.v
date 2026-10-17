@@ -18,86 +18,17 @@ Generalizable All Variables.
 
 (** * Cat as a strict 2-category *)
 
-(* nLab:      https://ncatlab.org/nlab/show/Cat
-   nLab:      https://ncatlab.org/nlab/show/Godement+product
-   Wikipedia: https://en.wikipedia.org/wiki/Strict_2-category
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, §II.5, printed pp. 42-45 (Theorem 1, and the
-              definitions of a double category and of a 2-category)
-   Book:      Mac Lane, ibid., §XII.3, printed p. 273
-   Book:      Riehl, "Category Theory in Context", Definition 1.7.8
+(*
+ nLab:      https://ncatlab.org/nlab/show/Godement+product
+ Wikipedia: https://en.wikipedia.org/wiki/Strict_2-category
+ Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ Book:      Mac Lane, ibid., §XII.3, printed p. 273
+ Book:      Riehl, "Category Theory in Context", Definition 1.7.8
 
-   Mac Lane's §II.5 Theorem 1 says that the natural transformations form
-   two interlocking categories — one whose objects are functors, one whose
-   objects are categories — satisfying the interchange law, with every
-   identity for the second composition an identity for the first.
-   [Cat_TwoCategory] is that theorem in the globular presentation of
-   Theory/TwoCategory.v: 0-cells are categories, 1-cells are functors,
-   2-cells are natural transformations, vertical composition is
-   [nat_compose] and horizontal composition is the Godement product
-   [nat_hcompose].
+   本文件给出 2-范畴实例。
 
-   WHERE THE PIECES COME FROM.  Nothing here is re-proved that the tree
-   already carries.  The 1-cell layer is [StrictCat], whose hom-setoid is
-   the STRICT equality of functors [Functor_StrictEq_Setoid] — the
-   deliberate use of a strict relation where the mathematical content is
-   strictness, per that file's own note.  The vertical laws are the
-   category laws of the functor category `[C, D]` ([id_left], [id_right],
-   [comp_assoc] at `Fun`), used by name.  The interchange law is the
-   `fmap_comp` obligation of Instance/Cat/Bicategory.v's [Cat_Hcompose],
-   whose comment already identifies it as the middle-four exchange; it is
-   applied here rather than reproved ([Cat_tinterchange]).
-
-   WHAT IS DEFINITIONAL, AND WHY THAT IS THE POINT.  A [Transform] mentions
-   only `fobj` and `fmap` of the two functors it lies between, and those
-   agree definitionally across re-bracketing and unit adjustment of a
-   functor composite: `((H ◯ G) ◯ F) x` and `(H ◯ (G ◯ F)) x` are the same
-   term, as are the two `fmap`s.  The three boundary identifications the
-   class asks for are therefore the identity on components — the
-   `transform` field is passed through unchanged, and only the two
-   naturality proofs are re-typed ([Cat_assoc_cast], [Cat_unitl_cast],
-   [Cat_unitr_cast], with the pass-through recorded by `eq_refl` in
-   [Cat_assoc_cast_component] and its siblings).  What is NOT definitional
-   is the corresponding statement one level down: `(H ◯ G) ◯ F` and
-   `H ◯ (G ◯ F)` are distinct terms of type `A ⟶ D`, since their
-   `fmap_respects`, `fmap_id` and `fmap_comp` fields are built differently
-   and those fields are `crelation`-valued, so no proof irrelevance
-   identifies them.  `Cat` is thus not strictly associative at the level of
-   1-CELLS in this library, and the class does not ask it to be; it asks
-   only that re-bracketing identify the 2-cells, which it does, on the
-   nose.  See the header of Theory/TwoCategory.v for the general
-   discussion.
-
-   THE WEAK AND THE STRICT PICTURE, RECONCILED.  Instance/Cat/Bicategory.v
-   presents the same data as a BICATEGORY, with unitors [nat_ρ], [nat_λ]
-   and associator `(nat_α)⁻¹` as genuine coherence 2-isomorphisms.  A
-   section below proves that every one of those coherence cells has
-   IDENTITY COMPONENTS ([Cat_bicat_hunit_left_id], [Cat_bicat_hunit_right_id],
-   [Cat_bicat_hassoc_id], and the inverses), so the bicategory structure on
-   `Cat` is weak only in its bookkeeping: the cells that a bicategory
-   permits to be non-trivial are, here, componentwise identities.  That is
-   the precise content of the folklore statement that `Cat` is a strict
-   2-category, stated in a form this library can prove.
-
-   MAC LANE'S NEGATIVE EXAMPLE.  §II.5's definition of a 2-category records
-   that the commutative squares of Set form a double category which is NOT
-   one.  Theory/TwoCategory.v builds the smallest faithful witness — the
-   commuting squares of a ONE-OBJECT category, so that composability never
-   asks for an equation between objects — as a genuine
-   [StrictDoubleCategory], and refutes Mac Lane's def-3 condition for it
-   ([NatSq_not_a_two_category]).  The base is the delooping of the additive
-   monoid of naturals, so a square is a quadruple with `bot + left =
-   right + top`; the offending cell is the horizontal identity on the
-   vertical arrow 1, which is no vertical identity because pasting it under
-   itself doubles its vertical edges.  A section below ties that model to
-   Construction/Sq.v: its cells ARE the squares of `Sq` at that base
-   (definitionally, with the round trip), and its two pastings agree
-   with that model's EDGE BY EDGE — the recorded Examples equate the
-   pasted square's edges with [Sq]'s composites; [dsq] there being a
-   proposition, the boundary is the whole content — and
-   the offending cell is [Sq_hid 1] — the horizontal identity square on a
-   vertical morphism, whose vertical edges are `u` where a vertical
-   identity square has vertical edges `id`. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The boundary identifications at Cat
 

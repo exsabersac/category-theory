@@ -1,72 +1,14 @@
 (** * The tensor product of abelian groups *)
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §I.8, printed pp. 28–29 (PDF pp. 38–39) — maclane:I.8:def5
-   Book:      Mac Lane, ibid., §VII.1, printed pp. 163–164 (PDF pp.
-              171–172) — maclane:VII.1:remark1 (the monoidal reading,
-              delivered in Instance/Ab/Monoidal.v over this file)
-   nLab:      https://ncatlab.org/nlab/show/tensor+product+of+abelian+groups
-   Wikipedia: https://en.wikipedia.org/wiki/Tensor_product
+(*
+ Book:      Mac Lane, ibid., §VII.1, printed pp. 163–164 (PDF pp.
+ nLab:      https://ncatlab.org/nlab/show/tensor+product+of+abelian+groups
+ Wikipedia: https://en.wikipedia.org/wiki/Tensor_product
 
-   Because composition in an Ab-category is bilinear, it factors through
-   the tensor product of abelian groups: G ⊗ H is the recipient of the
-   universal bilinear map out of G × H, turning bilinear maps into plain
-   group homomorphisms.  This file builds it for Instance/Ab.v's
-   [AbObject]s, setoid-first and axiom-free:
+   本文件给出阿贝尔群相关实例。
 
-     - [tsum]/[ts_eq]: formal sums over the two carriers, quotiented by
-       exactly the commutative-group laws and the two bilinearity
-       equations — an inductive setoid quotient in the style of
-       Instance/Sets/Coend.v
-     - [AbTensor G H : AbObject]: the tensor product itself
-     - [Bilinear]: the bilinear-map interface, with [tensor_gen] the
-       universal one
-     - [tensor_ump]: the factorization of a bilinear map through a
-       homomorphism out of the tensor, computing definitionally on
-       formal sums
-     - [tensor_hom_ext]: two homomorphisms out of the tensor agreeing on
-       generators agree — the uniqueness half of the UMP, and the
-       workhorse every later coherence proof reduces to
-     - [AbTensor_Functor : Ab ∏ Ab ⟶ Ab]: bifunctoriality, its laws all
-       instances of [tensor_hom_ext]
-
-   Design:
-
-   1. THE QUOTIENT IS AN INDUCTIVE RELATION, REFLEXIVITY DERIVED.  As in
-      Instance/Sets/Coend.v (and Construction/Quotient.v's [CongClosure]),
-      the carrier is a plain inductive of formal sums and the setoid
-      equality [ts_eq] is an inductive relation closing under the group
-      laws, the two bilinearity rules, congruence for the two term
-      formers, saturation under the point setoids ([te_gen]), and
-      symmetry/transitivity.  Reflexivity is a lemma ([ts_refl], by
-      induction on the term), keeping the relation's induction principle
-      one case shorter everywhere it is consumed.
-
-   2. NO FREE-ALGEBRA DETOUR.  The tree has no free abelian group to
-      quotient (verified across Construction/ and Instance/); building
-      formal sums directly keeps the development self-contained and the
-      mediator's respectfulness a single induction over [ts_eq], each
-      rule discharged by the corresponding law of the target — which is
-      precisely Mac Lane's "bilinear maps out of G × H are homomorphisms
-      out of G ⊗ H".  This trades away the issue sketch's "free-abelian-
-      group-on-a-setoid machinery, kept reusable": the carrier here is
-      bespoke to the pair (G, H).  What IS reusable is the interface —
-      [Bilinear], [tensor_ump] and [tensor_hom_ext] are stated over
-      arbitrary [AbObject]s, and they are all any consumer downstream
-      (Instance/Ab/Monoidal.v, Construction/Enriched/Ab.v) touches.
-
-   3. THE MEDIATOR COMPUTES.  [tensor_med] is a fixpoint on formal sums,
-      so [cmon_map_zero] and [cmon_map_plus] of the factorizing
-      homomorphism hold by reflexivity, and every later equation between
-      homomorphisms out of (iterated) tensors reduces along it to a
-      statement about generators.  [tensor_hom_ext] is the induction that
-      finishes such statements; preservation of negation, needed in its
-      [ts_neg] case, is Instance/Ab.v's [ab_map_neg] theorem.
-
-   4. UNIVERSES.  Nothing is annotated: like [CMonObject] and [AbObject]
-      themselves (Instance/Grp.v's stated policy), the construction is
-      universe-polymorphic, and [tsum] lives at the level of the two
-      carriers. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Lib.Setoid.Propositional.

@@ -15,27 +15,11 @@ Require Import Coq.Arith.PeanoNat.
 
 Generalizable All Variables.
 
-(** * The subobject classifier of skeletal FinSet
+(*
+   本文件给出具体实例。
 
-    This file equips [FinSet] with computed pullbacks and the subobject
-    classifier Ω = 2.
-
-    The pullback of f : m ~> k and g : n ~> k is the subset of the
-    canonical (m · n)-element set consisting of the (encoded) pairs (a, b)
-    with f a = g b.  "Subset" is realized by a COUNT codec: [fin_countP P]
-    counts the elements of [Fin.t N] satisfying a boolean predicate [P],
-    [fin_select] tabulates the satisfying elements in order (unrank), and
-    [fin_rank] sends a satisfying element to its index.  All three are
-    structural fixpoints in the closed-computation style of [fin_split] /
-    [fin_pair], so pullback objects and projections REDUCE on closed
-    inputs by [eq_refl].
-
-    Truth-value convention: Ω is the object [2]; the element [Fin.F1]
-    represents TRUE and [Fin.FS Fin.F1] represents FALSE ([fin_true] and
-    [fin_false] below).  [truth : 1 ~> Ω] is the constant [fin_true] map,
-    and the characteristic morphism of a mono m sends b to [fin_true]
-    exactly when b lies in the image of m — decided by the finite search
-    [fin_existsb] over the decidable equality [fin_eqb]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Decidable equality on the canonical finite sets
 

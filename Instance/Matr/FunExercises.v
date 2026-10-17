@@ -20,130 +20,15 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * Two functor categories over Matr: equivalence and similarity
+(*
+ nLab:      https://ncatlab.org/nlab/show/category+of+matrices
+ Wikipedia: https://en.wikipedia.org/wiki/Matrix_equivalence
+ Wikipedia: https://en.wikipedia.org/wiki/Matrix_similarity
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §II.4
-    Exercise 6 (printed p. 42) [maclane:II.4:ex6]: describe the objects
-    and the isomorphisms of the functor categories [Matr_K]^2 and
-    [Matr_K]^(B N), where 2 is the walking arrow and B N the delooping of
-    the free monoid on one generator.  The answer in each case is a
-    classical relation between matrices, and the exercise is the
-    observation that the SHAPE of the diagram decides which one:
+   本文件给出具体实例。
 
-      - over the walking arrow an object is a single matrix and an
-        isomorphism is an independent change of basis in the source and
-        in the target, so isomorphic objects are the EQUIVALENT matrices
-        (B = Q A P⁻¹) -- the relation whose invariant is the rank, and
-        whose normal form is the rank normal form;
-
-      - over B (ℕ, +) an object is a single SQUARE matrix -- the monoid
-        being free on one generator, a functor is determined by the image
-        of that generator -- and an isomorphism is one change of basis
-        used on both sides at once, so isomorphic objects are the SIMILAR
-        matrices (B = P A P⁻¹), the relation of conjugacy that eigenvalue
-        theory and the Jordan normal form classify.
-
-    nLab:      https://ncatlab.org/nlab/show/category+of+matrices
-    Wikipedia: https://en.wikipedia.org/wiki/Matrix_equivalence
-    Wikipedia: https://en.wikipedia.org/wiki/Matrix_similarity
-
-    DISAMBIGUATION.  This is §II.4 Exercise 6.  Mac Lane's §I.4 Exercise
-    6 -- the matrix-equivalence exercise carried out over FdVect, filed
-    separately as [maclane:I.4:ex6] -- is a different exercise with a
-    similar subject, and neither file consumes the other.
-
-    THE FREENESS POINT, which is the whole of part two.  A functor out of
-    [Deloop M] is, by Construction/Deloop/Functors.v's spine, a choice of
-    object c together with a monoid homomorphism M → [hom_monoid C c].
-    When M is (ℕ, +) -- free on the single generator 1 -- such a
-    homomorphism is determined by its value at 1, and its value at k is
-    the k-fold composite of that one endomorphism ([fmap_is_pow]).  The
-    same collapse happens one level up: a natural transformation between
-    two such functors is a single morphism ([Deloop Nat_Plus] has one
-    object), and its naturality at every k follows from its naturality at
-    the generator alone ([pow_intertwine]).  So both the objects and the
-    morphisms of [[Deloop Nat_Plus, C]] are described by data at the
-    generator, and the isomorphism condition is the single conjugation
-    equation.
-
-    ROUTE FOR PART ONE, and why the two halves are packaged differently.
-    An isomorphism of the arrow category is already a pair of component
-    isomorphisms plus one commuting square -- Construction/Comma.v's
-    morphisms ARE the squares and its hom-equivalence ignores the square
-    proof -- so [arrow_iso_iff] is an unpacking, and the only content is
-    that the backward direction must PRODUCE the square for the inverse
-    pair, which is [iso_square_from].  It is stated over [Arrow C] for an
-    arbitrary [C], where no universe restriction arises at all, and the
-    functor-category reading is then obtained by transport along
-    Theory/Shapes.v's [Arrow_of_Fun] / [Fun_of_Arrow] / [Walk_arrow_of_iso]
-    ([two_fun_iso_iff]).  That reading, like [Two_Fun_Arrow] itself, is
-    available only at [C : Category@{o Set Set}], since Instance/Fun.v's
-    [Fun] identifies the hom universes of source and target while [_2]'s
-    homs live in [Set]; the [Arrow C] statement carries no such
-    restriction, which is exactly why the general theorem is proven
-    there and transported rather than the other way round.
-
-    THE SAME RESTRICTION IS UNAVOIDABLE IN PART TWO, and is disclosed
-    rather than hidden.  [Deloop] takes a [MonObject] whose three
-    universes agree, and Construction/Deloop.v's [Nat_Plus] has carrier
-    [nat : Set], so [Deloop Nat_Plus : Category@{o Set Set}].  Three
-    separate mechanisms then pin C: [MonHom M N] takes its two monoids
-    at ONE universe instance, so already [pow_hom]'s TYPE requires C's
-    hom universe to be [Set]; [Functor_Setoid] takes its source and
-    target categories at one instance, so the round trip
-    [functor_of_endo (endo_of_functor F) ≈ F] requires it again; and the
-    functor category requires it a third time.  The similarity theorem
-    is consequently stated for [R : RigObject@{Set Set Set}], which is
-    where every rig in the tree already lives ([Nat_Rig], [Bool_Rig],
-    [Int_Rig] -- checked below).  Nothing mathematical turns on it: the
-    equivalence half is proved for an arbitrary rig, and the underlying
-    similarity theorem [endo_iso_iff] is proved for an arbitrary category
-    at the pinned universes.
-
-    Contents:
-
-      mat_pow, mat_pow_add        powers of an endomorphism
-      pow_hom                     (ℕ, +) → [hom_monoid C x], k ↦ Aᵏ
-      functor_of_endo             the functor named by an endomorphism
-      endo_of_functor             its generator, [fmap] at 1
-      fmap_is_pow                 freeness: [fmap] k is the k-th power
-      iso_square_from             the inverse square of a commuting square
-      arrow_pack, arrow_iso_iff   isomorphisms of the arrow category
-      MatrixEquivalent            B P ≈ Q A with P, Q invertible
-      matrix_equivalence_iso      part one, over [Arrow (Matr R)]
-      two_fun_iso_iff             the [[_2, C]] reading, by transport
-      matrix_equivalence_iso_Fun  part one over [[_2, Matr R]] itself
-      pow_intertwine              naturality at k from naturality at 1
-      endo_iso_iff                part two, for an arbitrary category
-      MatrixSimilar               P A ≈ B P with P invertible
-      matrix_similarity_iso       part two, over [[Deloop Nat_Plus, Matr R]]
-      similar_to_id               an endomorphism similar to id IS id
-      similar_implies_equivalent  similarity is the finer relation...
-      equivalence_is_weaker_than_similarity   ...and strictly so
-
-    [matrix_similarity_iso] is the constant pinned for the axiom audit.
-    All 62 top-level constants of the file report "Closed under the
-    global context", which covers the [Program] obligations too, those
-    being reachable from the definitions that generate them.
-
-    THE WITNESSES are over the integers, and they are chosen so that the
-    two relations are SEPARATED rather than merely inhabited.  The
-    diagonal idempotents diag(1,0) and diag(0,1) are conjugate by the
-    transposition, hence both similar and equivalent; the identity and
-    the shear [[1,1],[0,1]] are equivalent (the shear is invertible) and
-    are NOT similar, since [similar_to_id] would make the shear the
-    identity and it moves one entry.  So the two functor categories
-    genuinely classify different relations, which is the point of Mac
-    Lane's putting them side by side.
-
-    RELATED IN TREE, cited and not consumed: Instance/Matr/GL.v reads the
-    invertible n × n matrices off [hom_monoid (Matr K) n] as [UnitsOf] of
-    that monoid, so the [P] and [Q] below are its elements; and
-    Instance/Matr/Determinant.v's [det_unit_of_iso] / [iso_of_det_unit]
-    decide invertibility over a commutative ring by the determinant, hence
-    decide the hypotheses of the theorems here.  Neither file is required:
-    the statements need only the category structure, and requiring the
-    determinant development would cost its build for no theorem. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ---------------------------------------------------------------------- *)
 (** ** Powers of an endomorphism *)

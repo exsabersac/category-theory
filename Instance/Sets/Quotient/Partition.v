@@ -9,12 +9,11 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Lib.v sets [Default Proof Using "Type"], which keeps only the section
-   variables occurring in a statement.  Every statement below mentions the
-   section's R, HR and HC only THROUGH [sets_part_pred] and [SetsParts],
-   which are section-local definitions and so do not register as syntactic
-   occurrences; "All" is the precedent of Theory/EckmannHilton.v and
-   Theory/Category/Monoid.v. *)
+(*
+   本文件给出划分相关。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Set Default Proof Using "All".
 
 (** * The quotient as a set of parts *)

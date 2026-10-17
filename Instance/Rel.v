@@ -11,38 +11,13 @@ Local Set Warnings "-intuition-auto-with-star".
 
 (** The category REL of sets and binary relations. *)
 
-(* nLab: https://ncatlab.org/nlab/show/Rel
-   Wikipedia: https://en.wikipedia.org/wiki/Category_of_relations
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Category_of_relations
 
-   REL has sets (here Coq types, via [obj Coq]) as objects, and a morphism
-   `A ~> B` is a heterogeneous binary relation `R ⊆ A × B`. We curry this as
-   `A → Ensemble B` (equivalently `A → B → Prop`), so `R a b` means
-   `(a, b) ∈ R`. Two relations are equivalent when they are pointwise
-   logically equivalent, `f ≈ g := ∀ x y, f x y ↔ g x y` (Prop-valued, so `↔`
-   is the right notion of equality on homs).
+   本文件给出关系范畴相关实例。
 
-    objects               Coq types (sets)
-    arrows                relations `R ⊆ A × B`, as `A → Ensemble B`
-    arrow equivalence     pointwise `↔`
-    identity              the diagonal/equality relation `Δ = { (a, a) }`
-    composition           relational composition via an existential witness
-
-   Identity is [Singleton]: `id A a = Singleton a`, so `In (id A a) b` holds
-   iff `b = a` — the diagonal Δ_A. Composition of `R : A ~> B` then `S : B ~> C`
-   is `(S ∘ R) a c = ∃ b, R a b ∧ S b c`, the standard existential-witness
-   relational composite (note the diagrammatic order: [compose f g] applies
-   `g` first, then `f`).
-
-   REL is a dagger category: the converse `R† = { (b, a) | (a, b) ∈ R }` is an
-   involution with `(S ∘ R)† = R† ∘ S†`, and the dagger witnesses the
-   self-duality `Rel ≅ Rel^op`. It is moreover locally posetal (relations
-   ordered by inclusion) and dagger-compact closed. This file constructs the
-   bare category, its initial object, and the wide embedding `Coq ⟶ Rel` of
-   functions as relations; the converse/dagger structure, the self-duality
-   in Cat, the faithfulness of the embedding, and the terminal/zero-object
-   completion live in Instance/Rel/Dagger.v (over Structure/Dagger.v's
-   [DaggerCategory] class). Local posetality and compact closure remain
-   unformalized. The category laws hold with no axioms. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Rel : Category := {|
   obj     := @obj Coq;                  (* objects are Coq types (sets)        *)

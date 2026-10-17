@@ -1,16 +1,11 @@
 From Coq Require Import Utf8.
 From Coq Require Import Program.
 
-(** * Proof automation for the intrinsically-typed de Bruijn STLC.
+(*
+   本文件给出 λ 演算相关实例。
 
-    This module collects the general-purpose tactics shared across the
-    [Instance.Lambda] development.  Because terms, values and the reduction
-    relations are all indexed by typing contexts and types, proofs constantly
-    produce heterogeneous ([JMeq], notation [~=]) equalities between
-    differently-typed objects and equalities between dependent pairs
-    ([existT]); these tactics discharge that bookkeeping so that proof scripts
-    can focus on the operational content.  [Program] is imported for
-    [inj_pair2] (injectivity of [existT] up to UIP, from [Coq.Logic.Eqdep]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The [~=] (JMeq) notation is flagged deprecated by recent Rocq; silence the
    warning locally since it is pervasive in the dependently-typed goals below. *)

@@ -15,13 +15,11 @@ Require Import Category.Instance.Grp.Epi.
 
 Generalizable All Variables.
 
-(* Every statement below mentions the group [G] and, in the first half,
-   the group-object structure [GO]; but several of them -- [AbelianGrp G] in
-   particular -- do not mention [GO] in their STATEMENT while consuming it
-   in the PROOF.  Lib.v sets [Default Proof Using "Type"], which keeps only
-   the section variables occurring in the statement, so the section
-   hypotheses must be requested explicitly.  This is exactly the discipline
-   Theory/EckmannHilton.v adopts, and for the same reason. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Set Default Proof Using "All".
 
 (** * Group objects in Grp are abelian groups *)

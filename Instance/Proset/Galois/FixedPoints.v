@@ -25,10 +25,11 @@ From Coq Require Import Lia.
 
 Generalizable All Variables.
 
-(* Several proofs below draw on the two [PreOrder] witnesses of the section
-   without naming them in the statement, so capture every section variable
-   rather than the [Default Proof Using "Type"] subset inherited from Lib.v
-   (the Construction/Reflective/Idempotent.v precedent). *)
+(*
+   本文件给出预序集相关实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Set Default Proof Using "All".
 
 (** * Mac Lane's Exercise 2 at a Galois connection between posets *)

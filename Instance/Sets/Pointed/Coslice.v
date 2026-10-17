@@ -12,53 +12,15 @@ Generalizable All Variables.
 
 (** * Pointed sets as the coslice of Sets under the one-point set *)
 
-(* nLab:      https://ncatlab.org/nlab/show/pointed+object
-   nLab:      https://ncatlab.org/nlab/show/under+category
-   Wikipedia: https://en.wikipedia.org/wiki/Comma_category
-   Book:      Awodey, "Category Theory", 1st ed., OUP 2006, §7.9 Example 7.26
+(*
+ nLab:      https://ncatlab.org/nlab/show/under+category
+ Wikipedia: https://en.wikipedia.org/wiki/Comma_category
+ Book:      Awodey, "Category Theory", 1st ed., OUP 2006, §7.9 Example 7.26
 
-   The header of Construction/Slice.v records the standard reading — "pointed
-   sets are the coslice of Set under the one-point set" — and Awodey gives the
-   same example (1st ed., §7.9 Example 7.26).  This file turns that sentence
-   into a theorem: [Pointed_Coslice_iso] exhibits `PointedSets ≅[Cat] Coslice
-   Sets SetsOne`.
+   本文件给出余切片范畴实例。
 
-   WHAT THAT STRENGTH IS, EXACTLY (the first commit of this file got this
-   wrong and an audit corrected it).  An isomorphism in this library's [Cat]
-   IS an equivalence of categories, because [Functor_Setoid] identifies
-   functors that are merely naturally isomorphic — Instance/Cat.v says
-   so in as many words, and Theory/Equivalence.v,172 ships the
-   interconversion pair [Equivalence_to_Cat_Iso]/[Cat_Iso_to_Equivalence]
-   with both round trips.  So `≅[Cat]` here is NOT the on-the-nose
-   isomorphism of categories that Awodey's §1.6 Example 1.8 asserts, and
-   nothing in this file should be read as claiming it.  A strict
-   isomorphism would have to be stated in Instance/StrictCat.v's
-   [StrictCat], and the obstruction to it is recorded below: the coslice
-   round trip replaces a structure map `m` by the constant map at `m ttt`,
-   which agrees with `m` up to `≈` but is not the same function, so
-   identifying the two is a function-extensionality step this library
-   deliberately does not take.  The equivalence is therefore the honest
-   strength, not a weakening of something already available.
-
-   The content is the translation between the two ways of naming a point.  A
-   basepoint of A is an element; a coslice object is a morphism 1 ~> A out of
-   the terminal setoid, i.e. a global element (Structure/Terminal.v's header
-   discusses the correspondence).  The two are interchangeable: evaluate at
-   the unique point of 1 in one direction, take the constant map in the other.
-   Better still, the coslice triangle
-
-       `2 y ≈ f ∘ `2 x
-
-   is pointwise EXACTLY [preserves_pt], so the arrows match on the nose too.
-
-   Only one of the two round trips is the identity on the nose.  Pointed to
-   coslice and back returns the same record, because the constant map at the
-   basepoint evaluated at the point is the basepoint again; coslice to pointed
-   and back replaces the structure map m by the constant map at [m ttt], which
-   agrees with m up to `≈` — the one-point setoid has a single element, so
-   this is a [destruct] — but not syntactically.  The comparison isomorphism
-   in that direction is therefore carried by the identity of the underlying
-   setoid together with the two triangle proofs ([coslice_counit_iso]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 

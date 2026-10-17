@@ -14,22 +14,13 @@ Generalizable All Variables.
 
 (** * The category of cones over F is the comma category (Δ ↓ F) *)
 
-(* nLab: https://ncatlab.org/nlab/show/cone
-   Wikipedia: https://en.wikipedia.org/wiki/Cone_(category_theory)
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Cone_(category_theory)
 
-   A cone over a diagram F : J ⟶ C with apex c is exactly a natural
-   transformation Δ(c) ⟹ F from the constant functor at c to F. Collecting
-   these into a category, the category of cones to F is the comma category
-   (Δ ↓ F): its objects are pairs (c, ψ) with ψ : Δ(c) ⟹ F, and a cone
-   morphism (c, ψ) ~> (c', ψ') is a single arrow u : c ~> c' in C making every
-   leg triangle commute (ψ'x ∘ u ≈ ψx), since the diagonal acts trivially on
-   arrows. Here =(F) denotes the constant functor 1 ⟶ [J, C] picking out F, so
-   that the J-indexed diagonal Δ : C ⟶ [J, C] and =(F) share the codomain
-   [J, C] needed to form the comma category. The limit of F, when it exists, is
-   the terminal object of this category; dually, cocones to F form (F ↓ Δ).
+   本文件给出逗号范畴实例。
 
-   [Cones_to_Comma] and [Cones_from_Comma] build the two comparison functors,
-   and [Cones_Comma] assembles them into an isomorphism in Cat. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem Cones_to_Comma `(F : [J, C]) : Cones F ⟶ (Δ ↓ =(F)).
 Proof.

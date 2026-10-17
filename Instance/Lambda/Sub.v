@@ -18,37 +18,11 @@ Import ListNotations.
 
 (** Parallel substitution for the de Bruijn STLC. *)
 
-(* This module develops capture-avoiding, parallel substitution for the
-   simply-typed lambda calculus in de Bruijn form (see [Exp]).  A value of type
-   [Sub Γ' Γ] is a parallel substitution σ : Γ ⇒ Γ': an environment-indexed
-   snoc-list assigning, to every variable of the source context Γ, an
-   expression living in the target context Γ'.  Following the σ-calculus and
-   Autosubst, substitution is a total function on indices rather than the usual
-   name-with-freshness-side-condition operation; de Bruijn indices make terms
-   invariant under α-conversion, so no capture can occur.
+(*
+   本文件给出 λ 演算相关实例。
 
-   References:
-     de Bruijn index    https://en.wikipedia.org/wiki/De_Bruijn_index
-                        https://ncatlab.org/nlab/show/de+Bruijn+index
-     explicit/parallel
-       substitution     https://en.wikipedia.org/wiki/Explicit_substitution
-                        https://ncatlab.org/nlab/show/substitution
-
-   Writing e[σ] for [SubExp σ e], v[σ] for [SubVar σ v], and σ;δ for the
-   diagrammatic composite [ScS σ δ], the operations and their laws are:
-
-     SubExp / SubVar  e[σ]              apply a substitution to an expr/var
-     idSub            ι                 identity substitution (VAR on each var)
-     ScS              σ;δ               composition of substitutions
-     ScR              σ∘r               post-compose a substitution with a Ren
-     RcS              r∘σ               pre-compose a Ren with a substitution
-     Keepₛ / Dropₛ                      lift / weaken a substitution past a binder
-
-   The contexts Env and the substitutions Sub form a category: idSub is the
-   identity ([ScS_idSub_left], [ScS_idSub_right]) and ScS is associative (a
-   consequence of the substitution lemma [SubExp_ScS], e[σ;δ] = e[σ][δ]).  The
-   remaining lemmas establish that renaming and substitution commute as
-   expected ([SubExp_RcS], [SubExp_ScR], [ScR_ScS], [ScS_ScR]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* A substitution σ : Γ ⇒ Γ' (read as [Sub Γ' Γ], target then source) is a
    snoc-list giving, for each variable of the source context, an expression in

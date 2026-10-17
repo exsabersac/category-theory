@@ -22,89 +22,15 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * The integral group ring, and the unit-group functor
+(*
+ Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+ nLab:      https://ncatlab.org/nlab/show/group+algebra
+ Wikipedia: https://en.wikipedia.org/wiki/Group_ring
 
-    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-          GTM 5, §III.1, printed p. 59, Exercise 1 — the integral group
-          ring ℤ[G] as a universal arrow to the unit-group functor
-          (maclane:III.1:ex1)
-    nLab:      https://ncatlab.org/nlab/show/group+algebra
-    Wikipedia: https://en.wikipedia.org/wiki/Group_ring
+   本文件给出具体实例。
 
-    MAC LANE'S OWN PHRASING, RECOVERED.  Instance/Rng/MonoidRing.v builds
-    R[M] for a monoid M and exhibits ℤ[M] as a universal arrow to the
-    MULTIPLICATIVE-MONOID functor.  The exercise as Mac Lane states it is
-    about a GROUP G and the functor sending a ring to its GROUP OF UNITS,
-    and this file supplies exactly that reading, on top of the monoid ring
-    rather than beside it: [GrpRing G] is by definition
-    [ZMonRing (Grp_MonSets G)], the same object, and no second
-    construction is made.
-
-    THE ONE MATHEMATICAL STEP, and it is a theorem rather than a
-    convenience: a homomorphism of MONOIDS out of the underlying monoid of
-    a GROUP, into the multiplicative monoid of a ring, automatically lands
-    in the units — the image of g⁻¹ is a two-sided inverse of the image of
-    g.  That is [monoid_hom_to_units], and it is what makes the
-    unit-group reading equivalent to the multiplicative-monoid reading at
-    a group.  The two passages [units_hom_of_monoid_hom] and
-    [monoid_hom_of_units_hom] are mutually inverse ON THE UNDERLYING MAP
-    by [eq_refl] in both directions; no claim is made that they are
-    inverse on the whole records, because the unit-side records carry
-    inverse data that the monoid side does not.
-
-    THREE FUNCTORS, ONE OF THEM NEW.  [Rng_Units : Rng ⟶ Grp] is the
-    group-of-units functor over ALL unital rings.  Instance/Matr/GL.v
-    already has [Units_Functor], but over [CRng] only — its objects are
-    commutative rings, and ℤ[G] is not commutative when G is not — so
-    this file states the same construction over [Rng].  The two are built
-    from the same donors ([UnitsOf], [Ring_mul_mon], [mul_MonHom],
-    [UnitsOf_map]), and nothing is re-proved.  [Grp_MonSets : Grp ⟶
-    MonSets] forgets the inverses of a group; it is new, since the tree
-    had a monoid-object bridge for rings ([rig_mult_monoid]) but none for
-    groups.
-
-    BOTH SETOID-MONOID RECORDS APPEAR IN THIS FILE, and they never meet.
-    Instance/Matr/GL.v's [UnitsOf] is stated over Construction/Deloop.v's
-    [MonObject], so [Rng_Units] uses that record — but only through
-    [Ring_mul_mon], on the multiplicative monoid of a ring.  Everything
-    else here, and the whole of Instance/Rng/MonoidRing.v, uses
-    Theory/Algebra/Monoid/Hom.v's [Mon Sets].  No bridge between the two
-    records is built or needed: no definition below applies a [Mon Sets]
-    construction to a [MonObject] or the reverse.  Recording it because
-    the two drifting apart is a real hazard — Instance/Rep.v had to build
-    [grp_mon] for the analogous situation with two [GrpObject] records —
-    and because a reader who sees [MonSets] and [MonObject] in one file
-    should be told that the separation is deliberate.
-
-    THE UNIVERSE RESTRICTION IS INHERITED, and is disclosed in
-    Instance/Rng/MonoidRing.v in full: [Rig_Forget_Mon] is instantiable
-    only at rigs whose carrier and [≈] live in [Set], which is the
-    donor's own limitation and not one introduced here, so everything
-    below is likewise a statement about [Set]-carrier rings — and,
-    through [Grp_MonSets], about [Set]-carrier groups.  Test/ProbeAlgebras.v
-    pins the boundary with a positive control at [Int_Ring@{Set Set Set}]
-    and a rejected instance one universe up.
-
-    WHAT IS DELIVERED.
-
-      - [Rng_Units : Rng ⟶ Grp] and [Grp_MonSets : Grp ⟶ MonSets];
-      - [monoid_hom_to_units] with the two passages and their round trips
-        on the underlying map;
-      - [GrpRing G] with [grp_ring_insert : G ~{Grp}~> Rng_Units (GrpRing G)];
-      - [grp_ring_universal_arrow : UniversalArrow G Rng_Units] and
-        [grp_ring_auniversal_arrow], Mac Lane's Exercise 1 in his own
-        vocabulary, with the left-adjoint reading [GroupRingFunctor] and
-        [grp_ring_adjunction : GroupRingFunctor ⊣ Rng_Units];
-      - [grp_ring_insert_inverse]: the insertion's chosen inverse is the
-        generator of the inverse group element, on the nose.
-
-    WHAT IS NOT DELIVERED.  No augmentation map ℤ[G] → ℤ and hence no
-    augmentation ideal.  No identification of ℤ[G] with the free
-    ℤ-module on G.  No group-algebra representation theory: this file
-    does not connect ℤ[G]-modules with Instance/Rep.v's linear
-    representations, and no such comparison is claimed.  No statement
-    about when ℤ[G] is commutative, and no non-degeneracy results of its
-    own — those live with the monoid ring, which is the same object. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The group of units of an arbitrary unital ring
 

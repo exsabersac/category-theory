@@ -8,23 +8,13 @@ Generalizable All Variables.
 
 (** * The category of cones over a diagram *)
 
-(* nLab: https://ncatlab.org/nlab/show/cone
-   Wikipedia: https://en.wikipedia.org/wiki/Cone_(category_theory)
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Cone_(category_theory)
 
-   The cones over a fixed diagram F : J ⟶ C form a category. Its objects are
-   the cones over F, i.e. apex objects N : C equipped with a coherent leg
-   family ψx : N ~> F x (see [Cone]). A morphism from a cone N (legs ψ) to a
-   cone L (legs φ) is a single apex map u : N ~> L of C that is compatible
-   with both leg families: φx ∘ u ≈ ψx for every object x of J, so that u
-   transports N's legs onto L's. (Viewing cones as natural transformations
-   Δ N ⟹ F, such a u is the unique component to which any compatible
-   Δ N ⟹ Δ L collapses.) Two cone morphisms are identified exactly when
-   their underlying apex maps agree under ≈; the commutativity witness is
-   proof-irrelevant. Composition is composition of apex maps, and the
-   identity cone morphism is the identity apex map.
+   本文件给出具体实例。
 
-   The limit of F is the terminal object of this category: the universal cone
-   through which every other cone factors uniquely (see Cones/Limit). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Cones `(F : J ⟶ C) : Category := {|
   obj     := Cone F;

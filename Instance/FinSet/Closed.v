@@ -13,22 +13,11 @@ Require Import Coq.Arith.PeanoNat.
 
 Generalizable All Variables.
 
-(** * Computable exponentials on skeletal FinSet
+(*
+   本文件给出闭结构实例。
 
-    The exponential of the canonical m-element and n-element sets is the
-    canonical (n ^ m)-element set: a function [Fin.t m → Fin.t n] is a
-    string of m digits in base n, and [Nat.pow] recurses as
-    [n ^ S m = n * n ^ m], so tabulating one more argument is exactly one
-    [fin_pair] digit step from [Instance/FinSet/Product.v].  Both codec
-    directions are structural fixpoints in the closed-computation style of
-    [fin_split]/[fin_pair], so evaluation and currying REDUCE on closed
-    inputs by [eq_refl].
-
-    The hom-setoid of [FinSet] is pointwise Leibniz equality, so the
-    POINTWISE round trip [fin_apply_tabulate] is exactly what the Closed
-    laws consume — no function extensionality is needed anywhere; the
-    congruence [fin_tabulate_ext] replaces it at the single place a
-    rewrite must cross the [fin_tabulate] binder. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** [fin_tabulate f] encodes the function [f] as its digit string
     [f F1, f (FS F1), …], by structural recursion on the arity [m]: the

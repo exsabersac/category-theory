@@ -10,22 +10,14 @@ Generalizable All Variables.
 
 (** * Regular arrows in FinSet, by finite search *)
 
-(* nLab:      https://ncatlab.org/nlab/show/split+epimorphism
-   Wikipedia: https://en.wikipedia.org/wiki/Regular_semigroup
-   Wikipedia: https://en.wikipedia.org/wiki/Axiom_of_choice
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Regular_semigroup
+ Wikipedia: https://en.wikipedia.org/wiki/Axiom_of_choice
 
-   Mac Lane, CWM 2nd ed., §I.5 Exercise 7, printed p. 21.  CITED BY LOCATION;
-   the printed text was not consulted and no sentence of it is reproduced.
-   The in-tree catalog (doc/plan/books/maclane/inventory/I.json, id
-   maclane:I.5:ex7) summarizes the exercise as: "Call an arrow f : a -> b in
-   a category C regular when there exists g : b -> a with f g f = f.  Show f
-   is regular whenever it has either a left or a right inverse, and prove
-   that in Set every arrow f : a -> b with a nonempty is regular."
+   本文件给出具体实例。
 
-   The first half is category theory and lives in Theory/Morphisms.v
-   ([regular_of_section], [regular_of_retraction]).  This file is the second
-   half, and the second half is where a choice principle would ordinarily be
-   spent.  It is spent here on FINITENESS instead. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** What the classical statement costs, and what is proved instead *)

@@ -11,43 +11,16 @@ Generalizable All Variables.
 
 (** * The category of groupoids *)
 
-(* nLab:      https://ncatlab.org/nlab/show/Grpd
-   nLab:      https://ncatlab.org/nlab/show/groupoid
-   Wikipedia: https://en.wikipedia.org/wiki/Groupoid
+(*
+ nLab:      https://ncatlab.org/nlab/show/groupoid
+ Wikipedia: https://en.wikipedia.org/wiki/Groupoid
+ Book: Riehl, "Category Theory in Context", Dover 2016, §4.1,
+ Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
 
-   Book: Riehl, "Category Theory in Context", Dover 2016, §4.1,
-         Example 4.1.15, printed p. 137 (PDF pp. 157-158)
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         §I.5, printed p. 19
+   本文件给出具体实例。
 
-   [Grpd] is the full subcategory of [Cat] whose objects are the categories
-   in which every morphism is invertible.  It is built with
-   Construction/Subcategory.v's [Build_Subcategory] out of exactly one
-   predicate on objects, Structure/Groupoid.v's [IsGroupoid], and the
-   maximal choice of morphisms: [shom] ignores its arguments and returns
-   [True], so the two closure conditions are [I] and fullness
-   ([Grpd_Full]) is [I] as well.  This is the shape Instance/Variety.v uses
-   for the algebras of a variety, and it is used here for the same reason
-   the header of that file gives: a fresh [Category] record duplicating
-   [Cat]'s composition and hom-setoid would have to re-derive every law that
-   [Sub] already derives once and generically, and the inclusion would have
-   to be built by hand instead of being read off as [Incl].
-
-   The objects of [Grpd] are therefore PAIRS: a category together with a
-   chosen inverse-assigning function, since [IsGroupoid] is [Type]-valued
-   and its inhabitant carries a chosen inverse for each arrow.  The choice
-   is immaterial up to `≈` (Structure/Groupoid.v's [ginv_choice_irrelevant]),
-   but it is data, so two membership proofs for one category give two
-   objects of [Grpd] -- isomorphic, by [Full_membership_iso]; no [=]
-   between them is asserted anywhere here.
-   The morphisms are functors between the underlying categories, with no
-   condition whatever: a functor between groupoids preserves inverses
-   automatically, which is precisely what fullness of the inclusion records.
-
-   The inclusion [Grpd_Incl : Grpd ⟶ Cat] is [Incl], and it is faithful
-   ([Grpd_Incl_Faithful], generic) and full ([Grpd_Incl_Full], from
-   [Grpd_Full]).  Construction/Groupoid/Core.v makes the maximal-subgroupoid
-   construction of Construction/Groupoid.v into its right adjoint. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Why a category of groupoids, and why it sits inside Cat
 

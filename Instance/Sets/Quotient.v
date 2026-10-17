@@ -11,46 +11,24 @@ Require Import Category.Theory.Universal.Element.
 
 Generalizable All Variables.
 
-(* The global obligation tactic ([cat_simpl], Lib/Tactics.v) introduces
-   the obligations' binders under names of its own choosing, which makes the
-   proof scripts below brittle; [idtac] hands each obligation over
-   untouched, as Instance/Sets/Complete.v does. *)
+(*
+   本文件给出 Quotient 相关定义与性质。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
 (** * The quotient of a setoid by an equivalence relation *)
 
-(* nLab:      https://ncatlab.org/nlab/show/quotient+set
-   nLab:      https://ncatlab.org/nlab/show/setoid
-   Wikipedia: https://en.wikipedia.org/wiki/Equivalence_class
-   Wikipedia: https://en.wikipedia.org/wiki/Quotient_set
+(*
+ nLab:      https://ncatlab.org/nlab/show/setoid
+ Wikipedia: https://en.wikipedia.org/wiki/Equivalence_class
+ Wikipedia: https://en.wikipedia.org/wiki/Quotient_set
 
-   Mac Lane, "Categories for the Working Mathematician" 2nd ed., §III.1
-   construction 4 (p. 57): for an equivalence relation E on a set S, the
-   projection p : S -> S/E is universal among functions out of S that
-   respect E.  Every h : S -> X with h x = h y whenever x E y factors
-   through p by a unique u : S/E -> X.
+   本文件给出商相关。
 
-   In a setoid library that construction is not a construction at all: a
-   quotient IS another choice of `≈` on the same carrier.  The design is
-   stated as such at Instance/Sets.v ("a quotient is just another
-   choice of `≈` on the same carrier") and at Theory/Category.v, and
-   it is what Construction/Quotient.v does one dimension up (a quotient
-   of a CATEGORY by a hom-congruence, identity on objects).  This file
-   supplies the missing element-level operator: given a [SetoidObject] A
-   and an equivalence relation R on its carrier, [SetsQuotient A R] is A
-   with `≈` replaced by R, and [sets_quot_proj] is the identity function
-   read as a setoid map.
-
-   Because carrier and function are untouched, Mac Lane's universal
-   property becomes almost tautologous -- and that is the content, not a
-   defect.  The mediator IS the given function; its respectfulness for
-   the coarser relation IS the hypothesis that it respects E; and the
-   defining triangle holds pointwise by [reflexivity].  What has to be
-   built is only the ENVIRONMENT in which "universal" can be stated: the
-   functor X |-> {E-respecting maps A -> X}, which is covariant by
-   postcomposition, and against which ⟨A/R, p⟩ is a universal element in
-   the sense of Theory/Universal/Element.v (Mac Lane's §III.1
-   definition 2). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where this sits, and why the carrier does not move
 

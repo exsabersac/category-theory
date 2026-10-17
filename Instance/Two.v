@@ -6,23 +6,14 @@ Generalizable All Variables.
 
 (** The interval category 2 (the "walking arrow"). *)
 
-(* nLab:      https://ncatlab.org/nlab/show/interval+category
-   nLab:      https://ncatlab.org/nlab/show/walking+structure (walking morphism)
-   Wikipedia: https://en.wikipedia.org/wiki/Posetal_category
+(*
+ nLab:      https://ncatlab.org/nlab/show/walking+structure (walking morphism)
+ Wikipedia: https://en.wikipedia.org/wiki/Posetal_category
 
-   2 is the ordinal {0 < 1} regarded as a (thin / posetal) category: two
-   objects 0, 1, their identities, and a single non-identity arrow 0 → 1.
-   There is NO arrow 1 → 0.  Here the objects are named TwoX (= 0) and
-   TwoY (= 1), and the non-identity arrow is TwoXY : TwoX ~> TwoY.
+   本文件给出具体实例。
 
-   2 is the "walking arrow": a functor 2 ⟶ C is exactly a choice of one
-   morphism of C (the image of TwoXY), so functors out of 2 classify the
-   morphisms of C, and the functor category [2, C] is the arrow category of
-   C (objects = arrows of C, morphisms = commutative squares).  Both halves
-   of that sentence are theorems in Theory/Shapes.v: [Walk] and [arrow_of]
-   with their round trips for the first, and [Two_Fun_Arrow] for the
-   second, the latter an equivalence of categories in the sense of
-   Instance/Cat.v rather than an isomorphism of categories. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The smallest non-trivial shape, and the smallest object of truth values
 

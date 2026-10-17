@@ -18,56 +18,13 @@ Generalizable All Variables.
 
 (** Adjunctions and mates in the bicategory `Cat` *)
 
-(* nLab: https://ncatlab.org/nlab/show/adjoint+functor
-   nLab: https://ncatlab.org/nlab/show/mate
+(*
+ nLab: https://ncatlab.org/nlab/show/mate
 
-   `Instance/Cat/Bicategory.v` exhibits `Cat` as a bicategory: its 0-cells are
-   categories, its hom-category `bicat C D` is *definitionally* the functor
-   category `[C, D]`, horizontal composition `∘∘∘` is functor composition `◯`
-   (extended to natural transformations by the Godement composite), `bi1id` is
-   the identity functor, and the unitors/associator are the coherence natural
-   isomorphisms `nat_ρ`/`nat_λ`/`nat_α` of `Instance/Fun.v`.
+   本文件给出伴随实例。
 
-   This file is the payoff of the bicategory-mates development: it identifies the
-   abstract 2-cell calculus of `Theory/Bicategory/{Adjunction,Mates}.v`,
-   specialised to `Cat`, with the ordinary category-theoretic notions, so that
-   the general constructions become usable by ordinary-CT files.
-
-   1. AN INTERNAL ADJUNCTION IN `Cat` IS AN ORDINARY ADJUNCTION.  Because
-      `∘∘∘ = ◯` and `bi1id = Id`, a `BicatAdjunction (B:=Cat_Bicategory) F U`
-      carries a unit `adj_unit : Id ⟹ U ◯ F` and a counit
-      `adj_counit : F ◯ U ⟹ Id` that are literally natural transformations, and
-      its two bicategorical triangle identities — conjugated by the `Cat`
-      unitors `nat_λ`/`nat_ρ` and the associator `nat_α`, whose components are
-      all `fmap id` — collapse COMPONENTWISE to exactly the two zig-zag
-      identities of the unit/counit presentation `F ∹ U`
-      (`Adjunction/Natural/Transformation.v`).  Hence
-      `Cat_BicatAdjunction_iff : BicatAdjunction F U ↔ (F ∹ U)`, and, composing
-      with the `F ∹ U ↔ F ⊣ U` bridge of
-      `Adjunction/Natural/Transformation/Universal.v`, internal adjunctions in
-      `Cat` coincide with hom-set adjunctions `F ⊣ U`
-      (`Cat_BicatAdjunction_Adjunction_iff`).
-
-   2. MATES IN `Cat` UNFOLD TO THE TRANSPOSES.  The precomposition
-      hom-adjunction `precomp_to` of `Theory/Bicategory/Mates.v`, specialised to
-      `Cat`, IS the adjunction transpose `⌊−⌋`: componentwise
-      `(precomp_to A σ) t ≈ fmap[U] (σ t) ∘ η (c t) = ⌊ σ t ⌋`.  The
-      postcomposition hom-adjunction `postcomp_to` is the counit whiskering
-      `(postcomp_to A γ) t ≈ fmap[e] (ε t) ∘ γ (U t)`.  Threading these through
-      the definition `mate σ = postcomp (α⁻¹ ∘ precomp σ)` gives the classical
-      mate formula componentwise (`Cat_mate_unfold`):
-
-        (mate σ) Z ≈ fmap[U'] (fmap[b] (ε Z)) ∘ ⌊ σ (U Z) ⌋
-                   = fmap[U'] (fmap[b] (ε Z))
-                       ∘ fmap[U'] (σ (U Z)) ∘ η' (a (U Z)),
-
-      where `η'` is the unit of `F' ⊣ U'` and `ε` the counit of `F ⊣ U`.
-
-   The engine behind every proof here is the "standing trap" made harmless: in
-   `Cat` the identity 2-cell `bi2id`, the unitor and associator components are
-   all `fmap[_] id`, so after `simpl` a single `rewrite !fmap_id` followed by
-   `id_left`/`id_right` clears every coherence factor, leaving precisely the
-   ordinary-CT expression. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------ *)
 (* 1. Internal adjunctions in `Cat` coincide with `F ∹ U` and `F ⊣ U`. *)

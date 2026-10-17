@@ -26,80 +26,14 @@ Generalizable All Variables.
 
 (** * The category of groups *)
 
-(* nLab:      https://ncatlab.org/nlab/show/Grp
-   nLab:      https://ncatlab.org/nlab/show/group
-   Wikipedia: https://en.wikipedia.org/wiki/Category_of_groups
+(*
+ nLab:      https://ncatlab.org/nlab/show/group
+ Wikipedia: https://en.wikipedia.org/wiki/Category_of_groups
 
-   [Grp] is the category of groups over [Sets]: an object is a setoid whose
-   `≈` is PROPOSITIONAL ([grp_prop]), carrying an associative binary
-   operation [grp_mul] with unit [grp_unit] and an inversion [grp_inv]; a
-   morphism is a setoid map preserving the unit and the operation; two
-   morphisms are equivalent when their underlying maps agree pointwise.  The
-   file is modelled directly on Instance/CMon.v, whose [CMonObject] /
-   [CMonHom] / [CMon] triple it mirrors at the hom record and the category;
-   the object records differ by design (commutativity there, inversion here).
+   本文件给出具体实例。
 
-   Since the PR "algebraic carriers are sets" (2026-09-17) the record carries
-   the field [grp_prop] of Lib/Setoid/Propositional.v's class [PropEquiv]: a
-   [Prop]-valued relation on the carrier that holds exactly when `≈` does.  A
-   group in this library is therefore a group on a SET in Bishop's sense, not
-   on an arbitrary proof-relevant setoid; Lib/Setoid/Propositional.v's header
-   says why -- a type of congruences on a carrier is carrier-sized exactly
-   when the congruences are [Prop]-valued, which is what the solution-set
-   condition of Mac Lane's general adjoint functor theorem needs at a
-   concrete algebraic category.
-
-   An earlier revision of this paragraph added "including the universe
-   discipline: nothing here is annotated, so [Grp] is universe-polymorphic
-   exactly as [CMon] is".  The SHAPE of that claim survives, but neither is
-   inferred any more: [Grp] and [CMon] are both pinned by hand, for the
-   reason recorded at the definition of [Grp] below.
-
-   AXIOM ECONOMY.  The record below carries the SMALLEST law set that
-   still presents a group, and every omission is discharged as a lemma
-   rather than assumed:
-
-     - Only the LEFT unit law [grp_mul_unit_l] and the LEFT inverse law
-       [grp_mul_inv_l] are fields.  The right-handed forms are derived
-       ([grp_mul_inv_r], [grp_mul_unit_r]) by the classical argument that
-       runs left inverse + associativity into right inverse and then into
-       the right unit law.  This is the group-theoretic strengthening of
-       what Instance/CMon.v does with commutativity, where only
-       [cmon_plus_zero_r] is derivable.
-
-     - [grp_inv] carries NO respectfulness field.  Congruence of inversion
-       for `≈` is a THEOREM ([grp_inv_respects_law], exported as the
-       instance [grp_inv_Proper]): from a ≈ b one gets
-       grp_inv a * b ≈ grp_inv a * a ≈ grp_unit, and uniqueness of
-       one-sided inverses ([grp_inv_unique_l]) then forces
-       grp_inv a ≈ grp_inv b.  Only [grp_mul_respects] is a field.  A
-       constructor of a [GrpObject] therefore owes four proofs, not seven.
-       (Since [grp_prop] landed there is a fifth obligation, but it is a
-       DATUM about the carrier rather than a group law, and at the
-       constructions below it is discharged by a transport of
-       Lib/Setoid/Propositional.v rather than proved by hand.)
-
-   [GrpHom] does keep unit preservation as a field alongside
-   multiplication preservation, matching [CMonHom] (Instance/CMon.v)
-   and the issue's stated shape.  That field is REDUNDANT, and the file
-   says so constructively rather than in prose: [grp_map_unit_from_mul]
-   derives it from multiplication preservation alone by cancelling
-   f(e) from f(e) * f(e) ≈ f(e) * e, and [Build_GrpHom'] is the resulting
-   smart constructor that asks only for the multiplication law.
-   Inverse preservation is not a field either: [grp_map_inv] derives it.
-
-   WHAT THIS FILE ESTABLISHES BEYOND THE CATEGORY.  The forgetful functor
-   [Grp_Forget] to [Sets] with its faithfulness ([Grp_Forget_Faithful]);
-   the one-element group as a zero object ([Grp_Zero], packaged for
-   Structure/ZeroObject.v, whose [ZeroObject] class wants a [Terminal],
-   an [Initial] and a coincidence isomorphism -- here the identity, since
-   one record plays both roles, exactly as at Instance/CMon/Biproduct.v);
-   binary direct products as a [Cartesian] structure ([Grp_Cartesian],
-   against the class at Structure/Cartesian.v); the characterization
-   of monomorphisms as the injections ([Grp_injectivity_is_monic]); the
-   reconciliation with the internal [GroupObject] of Structure/Group.v
-   in both directions; and Riehl's opposite-group endofunctor with its
-   inversion natural isomorphism. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where the category of groups comes from, and what it is for
 

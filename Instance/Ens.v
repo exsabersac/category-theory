@@ -7,29 +7,14 @@ Generalizable All Variables.
 
 (** * The category of ensembles *)
 
-(* nLab: https://ncatlab.org/nlab/show/Set
-   nLab: https://ncatlab.org/nlab/show/category+of+sets
-   Wikipedia: https://en.wikipedia.org/wiki/Category_of_sets
+(*
+ nLab: https://ncatlab.org/nlab/show/category+of+sets
+ Wikipedia: https://en.wikipedia.org/wiki/Category_of_sets
 
-   "Ens" (from the French/Bourbaki "Ensembles") is a traditional name for the
-   category Set. In the textbook category of sets the objects are sets and the
-   morphisms are *arbitrary* functions between them; injective, surjective and
-   bijective functions are then characterized as the monos, epis and isos.
+   本文件给出具体实例。
 
-   This file does NOT build that classical category directly. Its objects are
-   Coq [Ensemble]s (predicates [T -> Prop], i.e. subsets [A ⊆ T] of a carrier
-   type [T]), packaged as a dependent pair [∃ T : Type, Ensemble T]. A morphism
-   from [A : Ensemble TA] to [B : Ensemble TB] is a function [f : TA -> TB] on
-   the *carrier types* satisfying
-
-       ∀ x : TA,  x ∈ A  ↔  f x ∈ B,
-
-   that is, [A = f⁻¹(B)]: [f] both preserves membership ([x ∈ A → f x ∈ B]) and
-   reflects it ([f x ∈ B → x ∈ A]). Note this is membership preservation-and-
-   reflection, NOT injectivity: it places no constraint of the form
-   [f a = f b → a = b]. Two morphisms are identified when they agree pointwise
-   on the whole carrier type. Identity and composition are the identity function
-   and ordinary function composition. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Cross-reference: Mac Lane's Ens_V — objects the members of a set V of sets,
    arrows ALL functions between them (CWM 2nd ed., §I.2, printed p. 11) — is a

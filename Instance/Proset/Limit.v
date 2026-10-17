@@ -29,84 +29,15 @@ Generalizable All Variables.
 
 (** * Limits in a preorder are greatest lower bounds *)
 
-(* nLab: https://ncatlab.org/nlab/show/preorder
-   nLab: https://ncatlab.org/nlab/show/thin+category
-   nLab: https://ncatlab.org/nlab/show/join
-   Wikipedia: https://en.wikipedia.org/wiki/Infimum_and_supremum
+(*
+ nLab: https://ncatlab.org/nlab/show/thin+category
+ nLab: https://ncatlab.org/nlab/show/join
+ Wikipedia: https://en.wikipedia.org/wiki/Infimum_and_supremum
 
-   Regard a preorder [(A, R)] as the thin category [Proset P] of
-   Instance/Proset.v, in which [x ~> y] is the relation [R x y] itself.
-   Under that dictionary the categorical universal constructions become
-   the order-theoretic ones:
+   本文件给出极限实例。
 
-     - a product   x × y   is a greatest lower bound (a meet) of x and y;
-     - a terminal object   1   is a greatest element (a top);
-     - a limit of a diagram is a greatest lower bound of the family of
-       its objects, whatever the shape of the diagram;
-
-   and dually coproducts are least upper bounds (joins), the initial
-   object is a least element, and colimits are least upper bounds.
-
-   CITATIONS ARE LOCATIONS ONLY.  The passages below are cited for where
-   the statement is found, not paraphrased from a consulted copy; none of
-   these sources was read while preparing this file, and no sentence here
-   is offered as their wording. Mac Lane, "Categories for the Working
-   Mathematician", 2nd ed., V.2; Awodey, "Category Theory", 2nd ed., 2.6
-   and the example in 3.2; Riehl, "Category Theory in Context", 1.2, 3.1
-   and 3.6; Fong and Spivak, "An Invitation to Applied Category Theory
-   (Seven Sketches in Compositionality)", 3.5.1 and 6.2.
-
-   WHAT CARRIES CONTENT, AND WHAT DEGENERATES.  [Proset P] is thin: its
-   hom-setoid equivalence is the constant relation [True], by the
-   construction in Instance/Proset.v ([proset_equiv_is_True] below states
-   this literally and proves it by [eq_refl]). Consequently every
-   requirement that is an EQUATION between parallel morphisms holds by
-   [Logic.I] and constrains nothing:
-
-     - the [Proper] obligation [fork_respects] of Structure/Cartesian.v;
-     - both halves of [ump_products] there;
-     - the [cone_coherence] field of Structure/Cone.v, for every shape of
-       diagram — this is why the identification below holds at an
-       arbitrary index category and not merely at a discrete one;
-     - the commutation clause and the [uniqueness] clause of the [∃!]
-       in [ump_limits] / [ump_limit] of Structure/Limit.v;
-     - [one_unique] of Structure/Terminal.v.
-
-   What carries the mathematics is exactly the DATA:
-
-     - the apex object [m] ([product_obj], [terminal_obj], the cone
-       vertex) — the candidate bound;
-     - the leg family ([exl], [exr], [vertex_map], [iprod_proj]) — the
-       lower-bound clause of [IsGLB];
-     - the mediating arrow ([fork], the [unique_obj] of the [∃!]) — the
-       greatest clause of [IsGLB].
-
-   So "limit = greatest lower bound" is an identification of data, with
-   the proof obligations on both sides degenerate. Following the same
-   discipline, this file does not leave that observation unguarded:
-   [nat_glb_not_4] refutes an [IsGLB] claim over a concrete preorder, and
-   [discrete_two_no_initial] and [discrete_two_no_cartesian] exhibit a
-   preorder that has neither a least element nor binary meets. The
-   predicates are therefore not uniformly inhabited, and the theorems
-   above are not statements about an empty distinction.
-
-   COORDINATION WITH ADJACENT WORK.  Two neighbouring developments touch
-   the same vocabulary, and this file is written to stay clear of both.
-   (i) A Galois-connection development for a preorder (issue #380)
-   introduces a [Thin] predicate with [proset_thin] and companion lemmas
-   in a separate Instance/Proset/ module. This file deliberately
-   introduces no such predicate and does not require that module:
-   wherever thinness is needed it is used concretely, as the fact that
-   the hom-setoid of [Proset P] is the constant-[True] setoid.
-   (ii) Order-theoretic vocabulary proper — meet- and join-semilattices,
-   lattices, Heyting and Boolean algebras — is claimed by a separate
-   Structure/Lattice.v effort (issues #340, #389, #1003). This file
-   therefore defines no [Meet], [Join], [Lattice] or [BooleanAlgebra]
-   class and creates no such module: [IsGLB] and [IsLUB] below are
-   family-level PREDICATES over a bare [PreOrder], not an algebraic
-   structure, and the four constructors [Proset_Cartesian],
-   [Proset_Cocartesian], [Proset_Terminal] and [Proset_Initial] are
-   exactly the interface such a class would later consume. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Bounds over a preorder *)
 

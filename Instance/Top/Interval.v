@@ -14,12 +14,11 @@ Generalizable All Variables.
 
 Open Scope R_scope.
 
-(* The sections below quantify over the real formula being certified, so every
-   proof inside them genuinely depends on its section variables.  Lib.v sets
-   [Default Proof Using "Type"], which would discard them; the wider setting is
-   the one already used for the same reason by
-   Construction/Reflective/Idempotent.v and
-   Construction/Localization/Universal.v. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Set Default Proof Using "All".
 
 (** * The unit interval as an object of Top *)

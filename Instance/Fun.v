@@ -12,21 +12,13 @@ Section Fun.
 Context {C : Category}.
 Context {D : Category}.
 
-(* nLab: https://ncatlab.org/nlab/show/functor+category
-   Wikipedia: https://en.wikipedia.org/wiki/Functor_category
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Functor_category
 
-   The functor category `[C, D]` (also written `D^C`) has functors `C ⟶ D` as
-   objects and natural transformations as morphisms. Composition is vertical
-   composition of natural transformations (`nat_compose`), the identity is the
-   identity natural transformation (`nat_id`), and the hom-setoid is
-   componentwise: two natural transformations are equal exactly when their
-   components agree at every object (this is the [Transform_Setoid] of
-   [Theory.Natural.Transformation]). The unit and associativity laws hold
-   componentwise, inherited from D, and are discharged by [Program] below.
+   本文件给出具体实例。
 
-   When D carries pointwise structure (limits, colimits, cartesian, closed),
-   `[C, D]` inherits it pointwise from D; those instances live in their own
-   files (e.g. under Structure) rather than here. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where the functor category comes from, and what it is for
 

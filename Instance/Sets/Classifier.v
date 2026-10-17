@@ -11,82 +11,13 @@ Generalizable All Variables.
 
 (** * The cross-universe subobject classifier of [Sets] *)
 
-(* nLab:      https://ncatlab.org/nlab/show/subobject+classifier
-   Wikipedia: https://en.wikipedia.org/wiki/Subobject_classifier
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Subobject_classifier
 
-   A subobject classifier for a category C is an object Ω together with a point
-   true : 1 ~> Ω such that every monomorphism m : A ~> B arises as the pullback
-   of true along a unique characteristic map χ_m : B ~> Ω.  This file proves the
-   classifier theorems for the setoid category [Sets] — as honest CROSS-UNIVERSE
-   theorems, not as a [SubobjectClassifier Sets] instance at a single level: the
-   canonical candidate provably cannot fit at one level (below).  A DIFFERENT
-   candidate does fit, CONDITIONALLY: Instance/Sets/Classifier/OneLevel.v
-   delivers a genuine [SubobjectClassifier Sets] instance at one universe level
-   under an explicit hypothesis — [Untruncate] (every impredicative truncation
-   at level o can be inverted) or, with a two-element truth object, [DecImage]
-   (every mono's image membership is decidable), each implied by informative
-   excluded middle at level o — and proves there that a one-level classifier for
-   [Sets] is inter-derivable with a resizing-shaped structure.  Neither
-   hypothesis has an axiom-free inhabitant in this tree, so nothing below is
-   weakened: the theorems in this file stay unconditional, and they are related
-   to that instance as one story — its characteristic map is the truncation of
-   [char_setoid] below, at [eq_refl] on values.  (That NO small classifier can
-   exist over predicative Type — setoids there form a ΠW-pretopos, and a
-   classifier needs impredicativity — is standard but is folklore relative to
-   this development: it is not proven in-tree, and this file does not claim it
-   as a theorem.)
+   本文件给出集合范畴相关实例。
 
-   WHY ONE LEVEL DOES NOT SUFFICE UNCONDITIONALLY.  Morphism equivalence
-   `≈` in this library is Type@{o}-valued (a [crelation]; see
-   Lib/Setoid.v — equivalence proofs may carry computational content), so
-   the characteristic predicate of a mono m : A ~> B in Sets@{o so},
-   namely λ b, ∃ a, m a ≈ b, is itself a
-   Type@{o}-valued predicate on the carrier of B.  A truth-value object able
-   to receive this predicate must have carrier Type@{o} (with equivalence
-   iffT), and Type@{o} : Type@{o+1} — one universe up — so the resulting
-   setoid is a SetoidObject@{so so}, an object of Sets@{so sso}, and NOT an
-   obj[Sets@{o so}] (which is SetoidObject@{o o}).  Taking Prop as the
-   carrier instead is not an escape: landing ∃ a, m a ≈ b in Prop would
-   require truncating a Type-valued sigma, and the pullback property below
-   must extract the witness back out of the truth value.
-
-   This obstruction is specific to the classifier, and the end of this file
-   records where its reach stops: epis-are-surjections was long thought to
-   inherit it, but that theorem has a probe which is not a truth-value
-   object, and it is proved at one universe in Instance/Sets.v.
-
-   WHAT IS TRUE, AND WHERE EACH PIECE LIVES:
-
-   - [PropSetoid]      the truth-value setoid: carrier Type@{o} under iffT,
-                       a SetoidObject@{so so} (o < so) — one universe up.
-   - [char_setoid]     the characteristic map of m : A ~> B, a morphism
-                       Setoid_Lift B ~> PropSetoid of Sets@{so sso}, where
-                       [Setoid_Lift] re-types a SetoidObject@{o o} at the
-                       higher level (the library's records are not
-                       cumulative, so the lift is by rebuilding).
-   - [sets_char_pullback]  the full pullback square, via Stability.v's
-                       apex-pinned [IsPullback] in Sets@{so sso}: the lift
-                       of A, with the lift of m and the terminal map, IS the
-                       pullback of true along char_setoid m.  The one-level
-                       IsPullback form is not statable — its ambient
-                       category would have to contain PropSetoid — but the
-                       apex, legs and cone quantification all live honestly
-                       one level up, so nothing is weakened beyond the
-                       forced lifting.
-   - [sets_char_subobject]  the one-level shadow: the pullback APEX (unlike
-                       the truth-value object) is small — the sub-setoid
-                       {b : B & ∃ a, m a ≈ b} is [Sets_Image m] of
-                       Instance/Sets/Image.v — and (A, m) is equal to it in
-                       the subobject setoid [SubObj_Setoid] of B, already in
-                       Sets@{o so}.
-   - [sets_char_unique]    uniqueness: any χ making the lifted square a
-                       pullback agrees with char_setoid m up to iff on
-                       components (the hom-setoid of Sets@{so sso}).
-
-   No universe hacks are used: no impredicativity, no cumulativity, no
-   disabling of universe checking.  The universe binders below are explicit,
-   and each carries only the constraints the statements force (essentially
-   o < so < sso). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** Lifting setoids one universe up *)

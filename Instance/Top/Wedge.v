@@ -15,74 +15,14 @@ Generalizable All Variables.
 
 (** * The wedge sum is the coproduct in Top∗ *)
 
-(* Book: Mac Lane, "Categories for the Working Mathematician" (2nd ed.),
-         §III.3, book p. 63 (maclane:III.3:remark1)
-   Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
-         §3.2, Example 3.6, printed p. 62 (awodey:3.2:example6) — the
-         "rooted posets by basepoint identification" clause, here for
-         pointed spaces
-   Wikipedia: https://en.wikipedia.org/wiki/Wedge_sum
+(*
+ Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
+ Wikipedia: https://en.wikipedia.org/wiki/Wedge_sum
 
-   The last of Mac Lane's four topological/algebraic roster entries: in
-   the category of pointed spaces the coproduct is the wedge sum, the
-   disjoint union with the two basepoints identified.
+   本文件给出具体实例。
 
-   THE CONSTRUCTION, AND WHY THE GLUING CLAUSE COMES BACK.
-   Instance/Top/Coproduct.v could DROP the respect-the-gluing clause that
-   Instance/Top.v's cokernel-pair topology carries, because over the sum
-   setoid equivalent points always lie in the same summand.  Here they do
-   not: [wedge_rel] identifies [inl (pt X)] with [inr (pt Y)], so the
-   clause returns and [wedge_open] is the full triple — the same shape as
-   [CP_open] (Instance/Top.v), with a different relation.  That is the
-   whole difference between the two files' topologies, and it is the
-   reason the pointed coproduct is not simply the unpointed one with a
-   basepoint chosen.
-
-   WHAT IS PROVED, AND AT WHAT STRENGTH.  [Top_pointed_Cocartesian] is
-   [@Cocartesian Top_pointed] — the tree's first (co)product structure of
-   any kind on the pointed category, [Instance/Top/Homotopy.v] registering
-   none.  The injections and the copairing are the evident maps at LEIBNIZ
-   EQUALITY ([Wedge_inl_is_inl] and siblings, [eq_refl]), and so is the
-   carrier ([Wedge_carrier_eq]).  The identification the construction
-   exists for is proved rather than assumed: [wedge_basepoints_identified]
-   shows the two injections AGREE at the basepoints, and — the contrast
-   that makes it content — [wedge_is_not_sum] exhibits a pointed space
-   where the corresponding two points of the UNPOINTED coproduct
-   [Instance/Top/Coproduct.v]'s [Sum_Top] are provably distinct.  So the
-   wedge genuinely glues, and the two roster entries are different
-   objects, not one object read twice.
-
-   Non-degeneracy also on the other side: [wedge_non_basepoints_differ]
-   shows that away from the basepoints nothing else is identified, over a
-   two-point space built from Instance/Top/Coproduct.v's own [Sum_Top] so
-   that no new space has to be constructed.
-
-   A NAMING NOTE.  The wedge object is [WedgeSum], not [Wedge]:
-   Structure/Wedge.v already exports a [Class Wedge] — the wedge of a
-   profunctor, from the end calculus — and the two would be ambiguous in
-   any scope importing both, including the [print-assumptions] audit file,
-   which imports enough of the tree to reach Structure/Coend.v.  Nothing
-   else in this file collides; the [wedge_*] and [WedgeSum_*] families are
-   unused elsewhere.
-
-   UNIVERSES, MEASURED.  [WedgeSum@{u u0} : PointedTop@{u} →
-   PointedTop@{u0} → PointedTop@{u}] carries [u = u0], for the same
-   reason as Instance/Top/Coproduct.v's [Sum_Top]: the glued carrier is a
-   single [SetoidObject@{o o}].  No [Set] appears in this file's
-   constraint blocks.
-
-   WHAT IS NOT DELIVERED.  No initial or terminal object of [Top_pointed]
-   is built here, so the wedge's unit laws — [coprod_zero_l] and
-   [coprod_zero_r] of Structure/Cocartesian.v, which would say the
-   one-point space is the unit — are NOT available, unlike in
-   Instance/Top/Coproduct.v where Instance/Top.v's [Top_Initial] supplies
-   them; [coprod_comm] and [coprod_assoc], which need only the
-   cocartesian structure, ARE exhibited.  No smash product, no reduced
-   suspension, no products of pointed spaces, and nothing about
-   [Instance/Top/Homotopy.v]'s [Toph_pointed] — the wedge is built in
-   [Top_pointed], and whether it descends to the based-homotopy quotient
-   is not investigated.  Awodey's rooted-poset clause is not formalized:
-   this is the pointed-SPACE reading of the same idea. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The glued carrier *)
 

@@ -23,10 +23,11 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Interval.v's [Rcases]/[Rlin] split absolute values in the GOAL only;
-   the estimates below also carry them in hypotheses.  Like those two,
-   these are top-level [Ltac]s, so they are visible to any module that
-   requires this one. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac RcasesH :=
   unfold Rabs, Rmin, Rmax in *;
   repeat

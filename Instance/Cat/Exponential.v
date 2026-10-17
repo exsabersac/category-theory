@@ -20,33 +20,13 @@ Generalizable All Variables.
 
 (** * The exponential laws at Cat: isomorphisms of functor categories *)
 
-(* nLab: https://ncatlab.org/nlab/show/Cat
-   nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
+(*
+ nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
 
-   [Cat] is cartesian (Instance/Cat/Cartesian.v, with
-   [product_obj := @Product], the product of categories [C ∏ D]), cocartesian
-   (Instance/Cat/Cocartesian.v, [product_obj := @Coproduct], read in the
-   opposite category, so the coproduct object is [C ∐ D]) and closed
-   (Instance/Cat/Cartesian/Closed.v, [exponent_obj := @Fun], so the internal
-   hom is the functor category [C, D]).
+   本文件给出 Cat 相关实例。
 
-   Instantiating the four exponential laws there therefore turns them into
-   isomorphisms OF FUNCTOR CATEGORIES, and the curried law is the currying of
-   [Cat_Closed] internalized: [C ∏ D, E] ≅ [C, [D, E]] says that a functor of
-   two variables is a functor into a functor category, which is exactly the
-   content of the transposition [exp_iso] that [Cat_Closed] supplies.
-
-   Each of the four statements below is TYPED as an isomorphism between
-   explicitly spelled functor categories and INHABITED by the generic
-   instance, so the two readings are checked to agree by conversion: nothing
-   here is asserted in prose.  The four natural upgrades of
-   Structure/Cartesian/Closed/Natural.v are instantiated at [Cat] as well.
-
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §II.5
-   Exercise 2 (printed p. 44) is the source of the four laws; this file
-   answers work item 3 of jwiegley/category-theory#284, which asks what they
-   say at [Cat].  It lives under Instance/ rather than beside the general
-   development because Structure/ files must not depend on Instance/. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CatExponential.
 

@@ -1,114 +1,68 @@
-# Tactic and hint-database reference
+# Tactic 与 hint 数据库参考
 
-A one-page contract for the library's exported proof automation.
-Downstream projects can rely on these names and behaviours as stable
-across non-major versions; conversely, anything not listed below is
-considered internal to the library and may change without notice.
+本库导出证明自动化的一页契约。下游项目可依赖下列名称与行为在非主版本间保持稳定；未列出的内容视为库内部实现，可能不经通知变更。
 
 ## Tactics
 
-Most tactics live in `Lib/Tactics.v` (loaded transitively by
-`Require Import Category.Lib.`, which is itself the first import of
-every library file).
+多数 tactic 在 `Lib/Tactics.v`（由 `Require Import Category.Lib.` 传递加载；该导入本身是每个库文件的首个 import）。
 
-**Exception:** `Ltac normal` is defined in `Functor/Bifunctor.v` —
-NOT in `Lib/Tactics.v`. To use `normal` in your own code, write
-`Require Import Category.Functor.Bifunctor.` explicitly.
+**例外：** `Ltac normal` 定义在 `Functor/Bifunctor.v`，**不在** `Lib/Tactics.v`。若在自己代码中使用 `normal`，需显式 `Require Import Category.Functor.Bifunctor.`。
 
-| Tactic        | Arity      | Purpose                                                       | Closes / progresses        | Stability     |
+| Tactic        | 元数      | 用途                                                       | 关闭 / 推进        | 稳定性     |
 |---------------|------------|---------------------------------------------------------------|----------------------------|---------------|
-| `cat`         | no-arg     | Standard simplification for category-law goals: `simplify` + `autorewrite with categories` + `auto with category_laws` + `try reflexivity`. | Most equational `≈` goals at the morphism level. | Stable        |
-| `cat_simpl`   | no-arg     | More aggressive: `program_simpl`, `autounfold`, then dispatch to `equivalence` / `proper` / `respectful` discharges and finally `cat`. Bound as the default `Obligation Tactic` library-wide. | All standard `Program` obligations. | Stable        |
-| `proper`      | no-arg     | Discharge a `Proper _ _` goal. `repeat intro; simpl; try cat; intuition`. | Most `Proper`/`respectful` instances. | Stable        |
-| `equivalence` | no-arg     | Discharge a `Equivalence` goal. `constructor; repeat intro; simpl; try cat; intuition; try solve [reflexivity \| (symmetry; eassumption)]; auto with category_laws`. The explicit reflexivity/symmetry pass and the narrow final database are deliberate: closing those two laws by a wide `auto with *` reaching a pattern-less stdlib hint (`solve_crelation`) held on the released Rocq versions but not on Rocq master (issue #213). | Most setoid `Equivalence` proofs. | Stable        |
-| `construct`   | no-arg     | `unshelve econstructor; simpl; intros` — build a record value, leaving each field as a subgoal. | Record-introduction step. | Stable        |
-| `normal`      | no-arg     | Bring a composition chain into a canonical left-associated form, via the forward direction of `comp_assoc`. (Note: this is the OPPOSITE direction from the `categories` rewrite DB below, which normalises right-associated.) Defined in `Functor/Bifunctor.v` (NOT `Lib/Tactics.v`). | Composition normalisation. | Stable        |
-| `simplify`    | no-arg     | Library's structural-tactic preamble used inside `cat` / `cat_simpl`. | Match-and-split goals.    | Internal*     |
-| `inv`         | hypothesis | `inversion H; subst; try clear H`.                            | Hypothesis destruction.     | Stable        |
-| `spose F as X` | term + ident | `pose proof F as X; simpl in X` — bring `F` into the context simplified. | Lemma instantiation step.   | Stable        |
-| `sapply F`    | term       | Cb-simplified `apply F`.                                       | Lemma application.          | Stable        |
-| `srewrite F`  | term       | Cb-simplified `rewrite F`.                                     | Lemma-driven rewrite.       | Stable        |
-| `srewrite_r F` | term      | Cb-simplified `rewrite <- F`.                                  | Reverse-direction rewrite.  | Stable        |
-| `isomorphism` | no-arg     | Solver for `_ ≅ _` goals (see `Theory/Isomorphism.v`).         | Iso construction.           | Stable        |
+| `cat`         | 无参     | 范畴定律目标的标准化简：`simplify` + `autorewrite with categories` + `auto with category_laws` + `try reflexivity`。 | 多数态射层上的等词 `≈` 目标。 | 稳定        |
+| `cat_simpl`   | 无参     | 更激进：`program_simpl`、`autounfold`，再分派到 `equivalence` / `proper` / `respectful` 消解，最后 `cat`。作为全库默认 `Obligation Tactic`。 | 所有标准 `Program` obligation。 | 稳定        |
+| `proper`      | 无参     | 消解 `Proper _ _` 目标。`repeat intro; simpl; try cat; intuition`。 | 多数 `Proper`/`respectful` 实例。 | 稳定        |
+| `equivalence` | 无参     | 消解 `Equivalence` 目标。`constructor; repeat intro; simpl; try cat; intuition; try solve [reflexivity \| (symmetry; eassumption)]; auto with category_laws`。显式 reflexivity/symmetry 与末尾窄数据库是刻意的：用宽 `auto with *` 触达无模式的 stdlib hint（`solve_crelation`）在已发布 Rocq 上能关这两条定律，在 Rocq master 上不行（issue #213）。 | 多数 setoid `Equivalence` 证明。 | 稳定        |
+| `construct`   | 无参     | `unshelve econstructor; simpl; intros` — 构造 record 值，每个字段留作子目标。 | Record 引入步骤。 | 稳定        |
+| `normal`      | 无参     | 把复合链规范成左结合形式，用 `comp_assoc` 的正向。（注意：与下方 `categories` rewrite DB 相反，后者规范成右结合。）定义在 `Functor/Bifunctor.v`（非 `Lib/Tactics.v`）。 | 复合规范化。 | 稳定        |
+| `simplify`    | 无参     | 库在 `cat` / `cat_simpl` 内使用的结构 tactic 前奏。 | Match 与拆分目标。    | 内部*     |
+| `inv`         | 假设 | `inversion H; subst; try clear H`。                            | 假设销毁。     | 稳定        |
+| `spose F as X` | 项 + 标识符 | `pose proof F as X; simpl in X` — 把 `F` 以化简后形式放入上下文。 | 引理实例化步骤。   | 稳定        |
+| `sapply F`    | 项       | Cb 化简后的 `apply F`。                                       | 引理应用。          | 稳定        |
+| `srewrite F`  | 项       | Cb 化简后的 `rewrite F`。                                     | 引理驱动的 rewrite。       | 稳定        |
+| `srewrite_r F` | 项      | Cb 化简后的 `rewrite <- F`。                                  | 反向 rewrite。  | 稳定        |
+| `isomorphism` | 无参     | `_ ≅ _` 目标求解器（见 `Theory/Isomorphism.v`）。         | 同构构造。           | 稳定        |
 
-`*` "Internal" means we keep the API working but downstream code
-should prefer the higher-level wrappers `cat` / `cat_simpl`.
+`*`「内部」表示我们保持 API 可用，但下游应优先用更高层包装 `cat` / `cat_simpl`。
 
-## Hint databases
+## Hint 数据库
 
-| Database         | Contents                                                                                          | Defined in                              |
+| 数据库         | 内容                                                                                          | 定义于                              |
 |------------------|---------------------------------------------------------------------------------------------------|------------------------------------------|
-| `categories`     | Rewrite rules for category laws: `id_left`, `id_right`, `comp_assoc` (right-associated direction only, to normalise; the forward direction would loop), `fmap_id`, etc. | `Theory/Category.v`, `Lib/Tactics2.v`   |
-| `category_laws`  | `Hint Extern` resolutions for `Reflexive`/`Symmetric`/`Transitive`/`Proper`/`equiv`.              | `Lib/Tactics.v`                          |
-| `core`           | Standard Coq + library-installed extensions for `Equivalence`/`Proper`/`Reflexive`/`Symmetric`/`Transitive`. | `Lib/Tactics.v` (via `Hint Extern 1`). |
+| `categories`     | 范畴定律 rewrite：`id_left`、`id_right`、`comp_assoc`（仅右结合方向以规范化；正向会循环）、`fmap_id` 等。 | `Theory/Category.v`、`Lib/Tactics2.v`   |
+| `category_laws`  | 针对 `Reflexive`/`Symmetric`/`Transitive`/`Proper`/`equiv` 的 `Hint Extern`。              | `Lib/Tactics.v`                          |
+| `core`           | 标准 Coq + 库为 `Equivalence`/`Proper`/`Reflexive`/`Symmetric`/`Transitive` 安装的扩展。 | `Lib/Tactics.v`（经由 `Hint Extern 1`）。 |
 
-Both `cat` and `cat_simpl` consult `categories` (via `autorewrite`) and
-`category_laws` (via `auto`).
+`cat` 与 `cat_simpl` 都会查阅 `categories`（经 `autorewrite`）与 `category_laws`（经 `auto`）。
 
-## Recommended downstream conventions
+## 推荐的下游约定
 
-If you depend on this library and want to add your own automation:
+若依赖本库并想加自己的自动化：
 
-1. **Don't pollute `categories`.** Reserve it for the library's
-   category-law identities. Use your own prefixed databases
-   (`mylib_kernels`, `mylib_rewrite_specs`, etc.).
-2. **Wrap, don't replace, `cat` / `cat_simpl`.** A downstream
-   `solve_mylib` tactic should typically end with `; cat` or
-   `; cat_simpl` to fall through to the library's primitive automation.
-3. **Don't fight the library's `Obligation Tactic`.** The library
-   sets `#[global] Obligation Tactic := cat_simpl.` in `Lib/Tactics.v`.
-   Inside your own files, set `#[local] Obligation Tactic := …` if you
-   need a different default — never `#[global]`.
-4. **Avoid `Set Default Proof Using "All"` in files with heavy
-   typeclass contexts.** This forces every proof term to capture every
-   in-scope section variable, which makes proof terms enormous and can
-   trigger memory blow-ups in typeclass-rich code (e.g. anything
-   touching `Hypergraph`).  Use per-proof `Proof using ...` with the
-   minimum set of section variables instead.  ([Note that
-   `"Type*"` is NOT a remedy here: it still captures every type-
-   relevant section variable that any tactic step touches, which in
-   typeclass-heavy code is effectively all of them.])
+1. **不要污染 `categories`。** 留给库的范畴定律恒等式。用自己前缀的数据库（`mylib_kernels`、`mylib_rewrite_specs` 等）。
+2. **包装而非替换 `cat` / `cat_simpl`。** 下游 `solve_mylib` 通常应以 `; cat` 或 `; cat_simpl` 结尾，落到库的原始自动化。
+3. **不要对抗库的 `Obligation Tactic`。** 库在 `Lib/Tactics.v` 设 `#[global] Obligation Tactic := cat_simpl.`。在自己文件里若需不同默认，用 `#[local] Obligation Tactic := …` — 绝不要 `#[global]`。
+4. **在类型类上下文很重的文件里避免 `Set Default Proof Using "All"`。** 这会迫使每个证明项捕获作用域内全部 section 变量，证明项巨大，并可能在类型类密集代码（如触及 `Hypergraph` 的）中触发内存爆炸。改用逐证明的 `Proof using ...`，只列最少 section 变量。（注意 `"Type*"` **不是**解药：它仍会捕获 tactic 步骤碰到的每个类型相关 section 变量，在类型类密集代码里几乎等于全部。）
 
-   **Known exception:** seven files use `Set Default Proof Using "All"`
-   today — the five
+   **已知例外：** 目前七个文件使用 `Set Default Proof Using "All"` — 五个
    `Construction/DecoratedCospan/{Category,Symmetric,Monoidal,
-   Braided,Hypergraph}.v` files, each carrying an 11-variable `Context`
-   block, together with `Construction/Localization/Universal.v` and
-   `Construction/Reflective/Idempotent.v`.  The per-proof `Proof using`
-   refactor is a tractable but tedious follow-up; the current memory
-   overhead is ~7 GB per file, which is borderline acceptable for the
-   library's CI budget.
-   New files in similar territory should NOT follow this pattern —
-   instead, take the per-proof `Proof using` discipline from the
-   outset.
-5. **Prefer flat projections over deep nests.** Use `scfa_mu (scfa X)`
-   rather than `@mu _ _ _ (@frob_monoid _ _ _ (@cfrob_frobenius _ _ _
-   (@scfa_commutative _ _ _ (scfa X))))`. The flat projections are
-   provided exactly to keep goal states readable.
+   Braided,Hypergraph}.v`（各带 11 变量 `Context` 块），以及 `Construction/Localization/Universal.v` 与
+   `Construction/Reflective/Idempotent.v`。逐证明 `Proof using` 重构可行但繁琐；当前每文件内存开销约 7 GB，对库的 CI 预算勉强可接受。
+   同类新文件**不要**跟这个模式 — 从一开始就用逐证明 `Proof using`。
+5. **优先扁平投影，避免深嵌套。** 用 `scfa_mu (scfa X)`，不要 `@mu _ _ _ (@frob_monoid _ _ _ (@cfrob_frobenius _ _ _
+   (@scfa_commutative _ _ _ (scfa X))))`。提供扁平投影正是为了让目标状态可读。
 
-## What `cat` will NOT do
+## `cat` **不会**做的事
 
-- Solve goals that require non-trivial categorical structure
-  reasoning (e.g. Frobenius, hypergraph-specific spider laws). For
-  those use the lemmas in `Structure/Monoidal/Hypergraph/Spider.v`
-  directly.
-- Compute monoidal coherence (associator / unitor) cancellations
-  beyond what's registered in `categories`. For strict-monoidal
-  reductions, this is currently a manual step.
-- Solve goals where the algebra is hidden behind opaque
-  `Program`-generated `existT` packagings — unfold them first with
-  `cbn` or `simpl`.
+- 需要非平凡范畴结构推理的目标（如 Frobenius、hypergraph 特有的 spider 定律）。那些请直接用 `Structure/Monoidal/Hypergraph/Spider.v` 中的引理。
+- 超出 `categories` 已注册范围的幺半连贯性（associator / unitor）消去。对严格幺半约化，目前仍是手工步骤。
+- 代数藏在不透明 `Program` 生成的 `existT` 包装后的目标 — 先用 `cbn` 或 `simpl` 展开。
 
-## When in doubt
+## 拿不准时
 
-`cat_simpl` is the highest-power closer the library exports. If
-`cat_simpl` doesn't progress, the next thing to try is a manual
-`spose` of the relevant lemma followed by a small `rewrite` chain.
+`cat_simpl` 是库导出的最高功率关闭器。若 `cat_simpl` 无进展，下一步试手动 `spose` 相关引理，再跟一小段 `rewrite` 链。
 
-## Stability promise
+## 稳定性承诺
 
-The tactics listed above will continue to exist with the same surface
-syntax in all future releases of this library. Their *implementation*
-may strengthen (we may make `cat` smarter); we will not remove or
-rename them. If a future tactic supersedes one of these, the old name
-will become a `Tactic Notation` alias for the new one.
+上表 tactic 在本库未来所有发布中将以相同表面语法继续存在。其*实现*可能加强（我们可能让 `cat` 更聪明）；不会删除或改名。若将来有 tactic 取代其中之一，旧名会成为新 tactic 的 `Tactic Notation` 别名。

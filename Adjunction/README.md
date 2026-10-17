@@ -1,24 +1,14 @@
-# Adjunctions
+# 伴随 (Adjunctions)
 
-There are at least four ways to specify an adjunction F ⊣ G:
+至少有四种方式给出伴随 F ⊣ G：
 
-1. A bijective mapping between hom-sets `F a ~> b` and `a ~> U b`, natural in
-   `a` and `b`. This is the definition given in `Category.Theory.Adjunction`.
+1. hom 集 `F a ~> b` 与 `a ~> U b` 之间的双射，且对 `a`、`b` 自然。这是 `Category.Theory.Adjunction` 中的定义。
 
-2. A pair of `unit` and `counit` natural transformations, and that they
-   compose to the identity functor in certain ways. This is given in
-   `Category.Adjunction.Natural.Transformation`.
+2. 一对 `unit` 与 `counit` 自然变换，并以特定方式复合为恒等函子。见 `Category.Adjunction.Natural.Transformation`。
 
-3. A pair of `unit` and `counit` morphisms, and their related equations. This
-   spells out the details of (2) in terms of morphisms, equivalences in C and
-   D, and the naturality conditions, rather than as natural transformations
-   and equivalences in the functor categories [C, D] and [D, C]. This is not
-   given, since it is not used.
+3. 一对 `unit` 与 `counit` 态射及其相关等式。这是把 (2) 用态射、C 与 D 中的等价、以及自然性条件写开，而不是用函子范畴 [C, D] 与 [D, C] 中的自然变换与等价。本库未给出此形式，因未使用。
 
-4. An isomorphism between hom-set functors `Hom(F -, -)` and `Hom(-, U -)`.
-   This the briefest statement, from which all the other formulations may be
-   derived. This is given in `Category.Adjunction.Hom`.
+4. hom 集函子 `Hom(F -, -)` 与 `Hom(-, U -)` 之间的同构。这是最简短的陈述，其余形式均可由此导出。见 `Category.Adjunction.Hom`。
 
-See the Wikipedia page
-on [Adjunctions](https://en.wikipedia.org/wiki/Adjoint_functors) for notes on
-how these four formulations relate to each other.
+这四种表述如何互相关联，见 Wikipedia 页面
+[Adjunctions](https://en.wikipedia.org/wiki/Adjoint_functors)。

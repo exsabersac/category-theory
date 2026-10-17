@@ -1,25 +1,8 @@
-(** * Probe for Adjunction/FunctorCategory.v (issue #431)
+(*
+   本文件为测试：ProbeFunctorCategory431。
 
-    Pins the measured boundaries of the functor-category adjunctions and
-    of Mac Lane's V.5 Remark 1 with negatives of three kinds, kept
-    lexically apart: CONVERSION (N1: the square of left adjoints
-    [postcompose F ◯ Δ] and [Δ ◯ F] is NOT an identity of functor records
-    — the two [fmap] fields differ by a [fmap_id] — and holds only as the
-    natural isomorphism [square_iso]; N5: the delivered adjunction's own
-    [unit] accessor is the whiskered original at [≈] only, its [fmap_id]
-    residue refusing the [eq_refl] form that the CONSTRUCTED
-    [postcompose_unit] satisfies); TYPING (N2-N3: the two induced
-    adjunctions have a direction — postcomposition keeps [F ⊣ G]'s,
-    precomposition reverses it — and the opposite ascriptions are
-    refused); UNIVERSE (N4: the functor category [[J, X]] identifies J's
-    hom level with X's, Instance/Fun.v's [Fun] pin, so nothing in this
-    development can hold at a shape whose hom level is below the
-    target's).  The [eq_refl] readbacks are positive controls: the induced
-    unit and counit are the whiskered originals ON THE NOSE, and the two
-    functors [postcompose] / [precompose] are #318's [Postcompose] and
-    Theory/Kan/Extension.v's [Induced] unchanged.  Each refutation was
-    stripped one at a time in a copy of the whole file; the import list
-    mirrors the target's. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

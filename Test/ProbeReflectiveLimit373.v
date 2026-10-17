@@ -23,48 +23,11 @@ Generalizable All Variables.
 
 (** * Boundary probe for Construction/Reflective/Limit.v (issue #373) *)
 
-(* Every boundary the target file's header states as measured is pinned
-   here, from OUTSIDE that file: an in-file negative renames in lockstep
-   with the constant it guards and so cannot detect a rename.  The
-   [Require] list above mirrors the target's exactly, plus this file's own
-   target and the four modules the concrete witness needs.
+(*
+   本文件为测试：ProbeReflectiveLimit373。
 
-   Eight negatives of THREE kinds, kept lexically apart, plus one
-   scope-free instrument check:
-
-     CONVERSION  1  the two routes to [PreservesLimitCone K (Incl C S)]
-                    are not the same term
-     CONVERSION  2  ... nor do their produced mediators agree on the nose
-     CONVERSION  3  [reflective_counit_iso]'s forward leg is not the
-                    counit on the nose (that lemma is closed with [Qed]
-                    while producing data)
-     TYPING      4  [CreatesLimit] is not [PreservesLimitCone]
-     TYPING      5  [CreatesLimit] is not [StrictlyCreatesLimit]
-     FORMABILITY 6  [Subcategory] identifies its category's hom and proof
-                    universes
-     FORMABILITY 7  [cone_leg] identifies the shape's hom-and-proof level
-                    with the ambient category's
-     FORMABILITY 8  ... and so does [IsLimitCone], separately
-
-   Negatives 7 and 8 sit on a DIFFERENT axis from negative 6 (two
-   categories' levels, rather than one category's hom against its proof),
-   and each is testable apart from the others: [Cone F] and [Ju ⟶ Cu] are
-   both accepted at the very levels where they are rejected, so neither
-   [Cone] nor [Functor] is a donor.
-
-   Each negative was stripped ONE AT A TIME, with the others left as
-   [Fail], and the whole error read.  Negatives 4 and 5 report a plain
-   "has type ... while it is expected to have type ...", with no "cannot
-   unify" clause and no universe clause; negatives 1-3 end in "cannot
-   unify"; negative 6 ends in "universe inconsistency: Cannot enforce
-   cp = ch because ch < cp", and negatives 7 and 8 in "universe
-   inconsistency: Cannot enforce vh = jh because jh < vh".
-
-   Every constant a negative names also appears outside a [Fail], in a
-   control below.  The controls were checked by rename simulation: each
-   such constant was renamed throughout this file, and the file then
-   stopped compiling at a control rather than compiling with a vacuously
-   green [Fail]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

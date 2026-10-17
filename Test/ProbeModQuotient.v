@@ -19,35 +19,11 @@ Require Import Coq.micromega.Lia.
 
 Generalizable All Variables.
 
-(** * Boundary probes for the quotient module and the quotient ring
+(*
+   本文件为测试：ProbeModQuotient。
 
-    Companion to Instance/Mod/Quotient.v,
-    Instance/Mod/Quotient/Isomorphism.v and Instance/Rng/Quotient.v
-    (issue #314, Mac Lane §III.1 Exercises 5 and 6).  Those files make
-    four strength claims whose negative side is a CONVERSION boundary;
-    a measurement recorded only in prose would not be noticed by a
-    refactor, so it is pinned here.  **If the [Fail] commands below stop
-    being rejected, this file breaks the build.**
-
-    Each negative is paired with a positive control that must SUCCEED,
-    for the reason Test/ProbeQuiverConstructions.v gives: a [Fail] alone
-    passes just as happily when a name has been renamed out from under
-    it.  Every negative is a [Fail Definition ... := eq_refl] and not a
-    [Fail Example ... : T.]; the latter guards only that the STATEMENT
-    elaborates and reports "The command has not failed!" when the
-    statement is fine and only the proof would have been rejected.
-
-    The instrument itself was checked (wrapping [Fail] around a
-    succeeding command aborts compilation with "The command has not
-    failed!"), and each negative was compiled once with the [Fail]
-    stripped, to confirm the error is the intended conversion failure
-    and not a syntax, scope or resolution error.  The observed errors
-    are recorded beside each probe.
-
-    THE IMPORT LIST IS THE UNION OF THE TARGETS', IN THEIR ORDER, and
-    that is deliberate rather than tidy: a short prefix is exactly what
-    makes a probe pass vacuously, by turning a conversion rejection into
-    an elaboration error that [Fail] swallows just as happily. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** (1) The two quotient relations are not convertible
 

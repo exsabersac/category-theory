@@ -1,30 +1,10 @@
 (** * Custom tactics shared across the library *)
 
-(* This file collects the bespoke Ltac tactics and hint databases that the
-   rest of the development relies on.  Because the library models morphisms as
-   setoids (equivalence classes under [≈], not strict [=]), the standard
-   automation built around [eq] is not enough: proofs must discharge
-   reflexivity/symmetry/transitivity of [equiv], respectfulness ([Proper]),
-   and the category laws stored in dedicated rewrite/auto hint databases.  The
-   tactics below package those recurring obligations.
+(*
+   本文件给出 Tactics 相关定义与性质。
 
-   The two workhorses are [cat] (used in hundreds of files) and [cat_simpl],
-   which is installed globally as the [Program] obligation tactic so that most
-   [Program Instance] obligations are dispatched automatically.
-
-   Two hint databases drive the automation:
-     - [categories]    : rewrite database of equational category laws
-                         (e.g. [id_left], [id_right], [fmap_id]), populated
-                         throughout the library; consumed by [autorewrite].
-     - [category_laws] : auto database closing setoid goals via the
-                         reflexivity/symmetry/transitivity externs declared
-                         below plus per-construction lemmas; consumed by [auto].
-
-   These tactics are project-internal conveniences with no external
-   reference; the underlying ideas (setoid rewriting, equivalence relations,
-   [Proper]/respectful morphisms) are standard Coq/Rocq machinery.  None of
-   the tactics here cheat: none leaves a goal unproven and none introduces an
-   axiom; each either makes progress and closes goals or fails. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Coq.Bool.Bool.
 

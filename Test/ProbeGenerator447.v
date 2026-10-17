@@ -14,37 +14,11 @@ Require Import Category.Theory.Concrete.
 
 Generalizable All Variables.
 
-(** * Probe for Structure/Generator.v, Structure/Generator/Dual.v and
-      Structure/Generator/Concrete.v
+(*
+   本文件为测试：ProbeGenerator447。
 
-    Mac Lane, Categories for the Working Mathematician, 2nd ed., §V.7
-    Definition 4, printed p. 127; Awodey §7.2 p. 154; Riehl 4.7.7 p. 177.
-    Issue #447.  The witnesses at Sets, Grp and Ab have their own probe,
-    Test/ProbeGeneratorWitnesses447.v; this file guards the general
-    theory and the duality bridge.
-
-    The import list above is the UNION of the three target files' own
-    import lists, unabbreviated.  A short prefix is what makes a probe
-    pass vacuously, so nothing is trimmed even where a require is
-    redundant.
-
-    Every statement asserted to be refuted below has been STRIPPED of its
-    refutation keyword in a copy of this WHOLE file, compiled alone, and
-    its complete error read; a refutation that holds prints nothing under
-    this repo's coqc, so a whole-file rc=0 would establish only THAT each
-    command does not typecheck and never WHY.  Each negative is classified
-    by the error TEXT, under THIS import list:
-
-      CONVERSION  - "The term T has type X while it is expected to have
-                    type Y (cannot unify A and B)".
-      TYPING      - the same opener with NO "cannot unify" parenthetical:
-                    the two types are not even candidates for conversion.
-
-    The instrument check comes first: a name that does not exist, refused
-    for a reason unrelated to any boundary.  Every LIBRARY constant a
-    negative names appears in a positive control outside any refutation
-    command, so that a rename cannot leave a negative refused for
-    reference-not-found and therefore vacuously green. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

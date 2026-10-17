@@ -1,76 +1,8 @@
-(** * Boundary probes for the quotient setoid and the Sets coequalizer
+(*
+   本文件为测试：ProbeSetsQuotient。
 
-    Companion to Instance/Sets/Quotient.v, Instance/Sets/Coequalizer.v,
-    Instance/Sets/Quotient/Partition.v and
-    Instance/Sets/Coequalizer/Interconnect.v (issue #315; Mac Lane §III.1
-    construction 4 and §III.3 remark 2 / exercise 5, Awodey §3.4-§3.5,
-    Fong and Spivak §1.2.1 and §6.2.4).  Those files make five negative
-    claims -- one about which route to a representation is available at
-    [Sets], two universe walls, and two conversion boundaries -- pinned
-    below by six [Fail] commands (the first boundary costs two) against
-    twelve positive controls.  A measurement made once and written into a
-    header is not guarded by anything; these are.  **If the [Fail]
-    commands below stop failing, this file breaks the build.**
-
-    Each negative is paired with a positive control that must SUCCEED,
-    for the reason Test/ProbeQuiverConstructions.v gives: a [Fail] alone
-    passes just as happily when a name has been renamed out from under
-    it.  The instrument itself was checked -- wrapping [Fail] around a
-    succeeding command reports "The command has not failed!" and aborts
-    compilation -- and each negative was compiled once with the [Fail]
-    stripped, to confirm the error is the intended one.  What each of the
-    six strips reported is recorded beside its probe.
-
-    THE FIVE BOUNDARIES.
-
-    (1) THE YONEDA ROUTE TO A REPRESENTATION IS NOT AVAILABLE AT [Sets].
-    Theory/Universal/Element.v's [universal_element_yoneda] is stated
-    over [Yoneda_Lemma], which identifies a category's object, hom and
-    proof universes; [Sets@{o so} : Category@{so o o}] has its objects
-    strictly above its homs, so no instantiation exists.  This is the
-    same donor restriction Test/ProbeUniversalElement.v pins at
-    Instance/Coq/Nat.v's [Endos] -- a DIFFERENT category, so the two
-    probes are not duplicates -- and it is why
-    Instance/Sets/Quotient.v's [sets_quot_Representable] goes through the
-    Yoneda-free [ue_representation].  Two positive controls: that route
-    at [Sets], and the Yoneda one at a category whose three universes can
-    be identified.
-
-    (2) THE UNTRUNCATED CLASS OBJECT IS NOT AN OBJECT OF THE SAME [Sets].
-    Instance/Sets/Quotient/Partition.v takes the class of an element to
-    be a [Prop]-valued predicate.  That is not a stylistic choice: since
-    [obj[Sets@{o so}]] is [SetoidObject@{o o}], a [Type@{o}]-valued
-    predicate on the carrier has type [Type@{o+1}] and does not fit.  The
-    probe must PIN THE UNIVERSE INSTANCE, because without a binder Coq
-    silently uses two different [Sets] and the claim evaporates -- the
-    erratum CLAUDE.md records for [Check (Cat : obj[Cat])], met here
-    again.  Two positive controls: the [Prop]-valued carrier at the very
-    same level, and the [Type]-valued one a level up.
-
-    (2') THE IMPREDICATIVE PHRASING OF THE GENERATED RELATION DOES NOT
-    FIT EITHER.  Awodey's §3.5 exercise 4 defines the coequalizer's
-    relation as the intersection of all equivalence relations containing
-    the given pairs.  Instance/Sets/Coequalizer.v's header says that
-    phrasing is unavailable at [Sets]' universe and generates the
-    relation inductively instead; the probe measures the claim, against a
-    positive control showing that the [Prop]-valued intersection DOES
-    fit.
-
-    (3) COARSENING IS NOT CONVERSION.  Instance/Sets/Quotient.v's
-    [sets_quot_finest_eq] closes by [eq_refl]: quotienting by the
-    setoid's own `≈` returns the [SetoidObject] record itself.  The
-    over-read to guard against is that a quotient whose relation is
-    PROVABLY equivalent to `≈` does the same.  It does not:
-    Instance/Sets/Coequalizer.v's [coeq_rel_diagonal] shows that the
-    coequalizer of a map with itself relates exactly the `≈`-related
-    points, and the object is still not the one it started from.
-
-    (4) A COEQUALIZER IDENTIFICATION IS A DERIVATION, NOT A COMPUTATION.
-    Instance/Sets/Coequalizer/Interconnect.v's header says the carrier of
-    the coequalizer is the ic_port type on the nose while `≈` moves.  Both
-    halves are probed: [IcP0] and [IcP1] are distinct ports (the [Fail]) and
-    identified in the coequalizer (the control), so the coarsening is
-    real and the carrier really did not move. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

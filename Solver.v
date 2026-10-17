@@ -1,11 +1,8 @@
-(** * The reflective categorical-equality solver (umbrella import).
+(*
+   本文件给出 Solver 相关定义与性质。
 
-   Re-exports the proof-by-reflection decision procedure for equalities of
-   morphisms in a free category: [Reify] (Ltac that reflects a goal into
-   abstract syntax), [Normal] (the free-category normal form and its
-   denotation-preserving soundness), and [Decide] (the decision procedure
-   and its soundness theorem).  Import this to get the [categorical] /
-   [normalize] tactics. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Export Category.Solver.Reify.
 Require Export Category.Solver.Normal.

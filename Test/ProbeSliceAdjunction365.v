@@ -20,36 +20,11 @@ Generalizable All Variables.
 
 (* Boundary probe for Construction/Slice/Adjunction.v (issue #365). *)
 
-(* This file exists for what an in-file [Fail] cannot do: an in-file
-   negative is renamed in lockstep with the constant it guards, so it
-   cannot detect a rename.  The [Require] list above is the target's own,
-   verbatim, plus four additions that the target does not need:
-   Construction/Comma.v and Construction/Opposite.v (both already in the
-   target's transitive closure, named here for the route and orientation
-   negatives below), Construction/Slice/Adjunction.v (the target itself)
-   and Instance/Cat/Pullback.v (for the prior-art agreement checks; its
-   own module closure is 39, and requiring it from the target would add
-   14 modules to the target's 31 -- measured with coqdep, and the reason
-   the target does not).  A short prefix of a target's imports is what
-   makes a probe pass vacuously, so the mirroring is deliberate.
+(*
+   本文件为测试：ProbeSliceAdjunction365。
 
-   TWELVE negatives of THREE KINDS, kept lexically apart, plus one
-   scope-free instrument check (thirteen [Fail] commands in all).  Each was
-   stripped ONE AT A TIME, with the others left intact, compiled alone,
-   and its whole error read to confirm where it fires and what kind it
-   is.  This repo's [coqc] emits nothing for a [Fail] that succeeds, so
-   rc=0 with every [Fail] intact is the verification.
-
-   Six FORMABILITY negatives end "universe inconsistency: Cannot enforce
-   up = uh because uh < up".  Five CONVERSION negatives end "cannot
-   unify" between two terms of ONE type.  The single TYPING negative
-   ALSO ends "cannot unify", so the tail alone does NOT separate it: what
-   separates it is that its unification mismatch is between two
-   CATEGORIES -- the index arguments of the type former -- and not
-   between two inhabitants of one type, with the body reporting one
-   whole [Adjunction] type as found and another as expected.  The
-   instrument check is itself a plain typing mismatch with no "cannot
-   unify" at all. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check: the harness reports a genuine rejection *)
 

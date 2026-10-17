@@ -1,76 +1,8 @@
-(** * Boundary probes for powers and copowers
+(*
+   本文件为测试：ProbePower。
 
-    Companion to Structure/Limit/Power.v and Structure/Limit/Power/Hom.v
-    (issue #321; Mac Lane §III.3 def 3 and §III.4 def 4, Riehl §3.5 Examples
-    3.5.4 and 3.5.8, Awodey §3.2).  **If the [Fail] commands below stop
-    failing, this file breaks the build.**
-
-    THE TWO KINDS OF NEGATIVE ARE KEPT LEXICALLY APART AND ARE NOT DESCRIBED
-    WITH ONE WORD.
-
-    (1) FORMABILITY.  Three [Fail Check]s, all about universes.
-
-    Group (1a), two negatives: the smallness side condition at [Sets].  The
-    index of [power] / [copower] at [Sets] must live at the universe of the
-    CARRIERS of [Sets]' objects, not at the universe of [obj[Sets]], which
-    sits strictly above it.  This is the same condition
-    Instance/Sets/Products.v's header analyses for [indexed_product] and
-    exhibits as a reproduction recipe; the two negatives here are that recipe
-    landed as a guarded command, at the power vocabulary.  Two controls at a
-    small index show the rejection is the index and not the vocabulary.
-
-    Group (1b), one negative, and it guards an ENGINEERING FINDING rather
-    than a mathematical boundary.  Instance/Sets/Products.v records
-    that letting instance resolution close a [proper_morphism] field can pin
-    a constant's index universe to [Set].  Written as a [Program Definition]
-    the map [Sets_discrete J → J · 1] raises no obligation at all --
-    resolution closes the field during elaboration -- and comes out pinned;
-    Structure/Limit/Power/Hom.v therefore supplies that certificate by hand
-    under [unshelve refine].  The negative is the [Program] variant, declared
-    in this file, applied at an index strictly above [Set]; the control is
-    the shipped hand-written constant at the SAME index.  The pair is what
-    makes the finding a guarded claim rather than a remembered one.
-
-    (2) CONVERSION.  Three claims of Leibniz equality, all rejected for the
-    same underlying reason: in this library a POWER is not an EXPONENTIAL and
-    a COPOWER is not a binary product -- the identifications proved in
-    Structure/Limit/Power/Hom.v are isomorphisms in [Sets], and nothing
-    stronger is available.  These are [Fail Definition ... := eq_refl] and
-    not [Fail Example ... : T.]: a failing type ascription would guard only
-    the statement, whereas what is claimed is convertibility of two terms.
-    Each is paired with a control that DOES hold on the nose, so the
-    rejection is attributable to the identification and not to a projection
-    being stuck.
-
-    COUNTS.  Six negatives -- three formability, three conversion -- and
-    eight positive controls.  This is not a one-to-one pairing: the controls
-    of each group serve that group's negatives jointly.  The instrument
-    itself was checked -- wrapping [Fail] around a succeeding command reports
-    "The command has not failed!" and stops compilation -- and every negative
-    was compiled once with the [Fail] stripped, to confirm the error is the
-    intended one:
-
-      - group (1a), two reports of "universe inconsistency" -- "Cannot
-        enforce o < <anon> because <anon> <= o" and "Cannot enforce o < o
-        because o = o" -- each naming the declared level [o];
-      - group (1b), one report of "universe inconsistency", "Cannot enforce
-        uj <= <anon> because <anon> < uj".  Read that message precisely: it
-        does NOT print [Set], and by itself it says only that the constant's
-        index universe sits strictly below [uj].  That the level in question
-        IS [Set] was measured separately, by elaborating the [Program]
-        variant on its own and running [Set Printing Universes. About
-        probe_copower_one_from_program.], whose constraint block reads
-        [Set < u0, Set = u] -- an EQUALITY on the index universe, which is
-        the finding.  The shipped hand-written constant prints [u < u0] and
-        no [Set];
-      - group (2), three "cannot unify" conversion errors, on
-        [carrier (J ⋔ X)] against [carrier (Sets_pow J X)], on [J · Y]
-        against [Sets_discrete J × Y], and on [fobj[power_hom_functor J b] c]
-        against the exponential of the hom-setoid.
-
-    The import list is the target files' own, in their order, plus both
-    target files.  It is deliberately the full list and not a working prefix:
-    a probe compiled against a short prefix can pass for the wrong reason. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

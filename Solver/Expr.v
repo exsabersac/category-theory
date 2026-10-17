@@ -2,21 +2,11 @@ Require Import Category.Lib.
 Require Import Category.Lib.IList.
 Require Import Category.Theory.Category.
 
-(** * Abstract syntax for the categorical solver
+(*
+   本文件给出 Expr 相关定义与性质。
 
-    This is the bottom of the [Solver/] reflective decision procedure: a
-    first-order syntax of categorical expressions that goals are reified into
-    (see Solver/Reify.v), interpreted back to real morphisms (Solver/Denote.v),
-    normalized (Solver/Normal.v), and decided (Solver/Decide.v).  The technique
-    is the standard "proof by reflection": represent the term as data, compute
-    on that data, and relate the computation back to the original goal — see
-    Adam Chlipala's "Certified Programming with Dependent Types" (CPDT), from
-    which much of this solver is adapted.
-
-    Objects and morphism variables are referred to by de Bruijn-style indices
-    into ambient lists ([objs], [arrs]); the [Objects]/[Arrows] classes below
-    package those lists together with the interpretation functions that resolve
-    the indices to concrete objects and morphisms of a fixed category [cat]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* An object of the syntax is just an index into the ambient [objs] list. *)
 Definition Obj := nat.

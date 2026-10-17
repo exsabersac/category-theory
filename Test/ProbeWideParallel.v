@@ -1,51 +1,8 @@
-(** * Boundary probes for the wide walking parallel pair
+(*
+   本文件为测试：ProbeWideParallel。
 
-    Companion to Instance/Parallel/Wide.v, Structure/Equalizer/Wide.v and
-    Structure/Coequalizer/Wide.v (issue #322, Mac Lane §III.3, book
-    pp. 64-65).  Those files make three strength claims whose negative
-    side is a conversion or a universe boundary.  A measurement taken
-    only in a header would not be noticed by a refactor, so the negatives
-    are pinned here.  **If the [Fail] commands below stop failing, this
-    file breaks the build.**
-
-    Each negative is paired with a positive control that must SUCCEED,
-    for the reason Test/ProbeQuiverConstructions.v gives: a [Fail] alone
-    passes just as happily when a name has been renamed out from under
-    it.  The instrument itself was checked — wrapping [Fail] around a
-    succeeding command reports "The command has not failed!" and aborts
-    compilation — and every negative below was compiled once with the
-    [Fail] stripped, to confirm the reported error is the intended one
-    and not a syntax, scope or resolution failure: three [cannot unify]
-    conversion errors and one genuine universe inconsistency naming the
-    declared level.
-
-    The import list is the union of the three target files' own, in
-    their order, so that nothing here passes for want of a definition
-    that the targets do have in scope.
-
-    THE THREE BOUNDARIES.
-
-    (1) [WideParallel bool] IS NOT [Parallel], AS A TERM.  What is proved
-    in Instance/Parallel/Wide.v is [WideParallel_bool_Parallel], an
-    isomorphism in [StrictCat] — the strong reading, since [≅[Cat]] in
-    this library is equivalence of categories.  It is NOT an equality of
-    [Category] records, and the two hom-families are not convertible
-    either: the wide shape's hom [ParX ~> ParY] IS the index type, while
-    [Parallel]'s is a dependent pair over [bool].  Both are pinned.
-
-    (2) THE DIAGRAM COMPARISON IS AT [Functor_StrictEq_Setoid], NOT AT
-    [eq].  [AWide_bool_APair] identifies the wide diagram at a
-    two-element family with the binary diagram pulled back along the
-    comparison, with [eq_refl] object components — but the two [Functor]
-    records are built from different arrow actions and different law
-    proofs, so no Leibniz equality is available.
-
-    (3) THE INDEX UNIVERSE IS BOUNDED BY THE AMBIENT HOM UNIVERSE.
-    [AWide]'s constraint block contains [i <= h].  Instance/Parallel/
-    Wide.v attributes that to [Functor]'s [fmap_respects] field rather
-    than to anything this development does; the probe holds it to the
-    claim, rejecting [AWide] at an index universe declared strictly
-    above the target's hom universe and accepting it strictly below. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

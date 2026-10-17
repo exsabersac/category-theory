@@ -1,28 +1,8 @@
-(** * Probe for Construction/Reflective/Colimit.v (issue #434)
+(*
+   本文件为测试：ProbeReflectiveColimit434。
 
-    Pins the measured boundaries of the reflected colimit with negatives
-    of two kinds, kept lexically apart: TYPING (N1: the reflected colimit's
-    apex is an object of the SUBCATEGORY, not the ambient apex — the
-    inclusion does not create the colimit, the reflector computes a new
-    one; N3: the cocone-level result is not an instance of
-    [PreservesColimitCocone K (Incl C S)] — the transfer is by reflection,
-    and the inclusion is not shown to preserve colimits; N4: nor is the
-    reflected colimit a [CreatesColimit K (Incl C S)] — Riehl §4.6 ex xi's
-    counterexample is scoped out, not contradicted) and CONVERSION (N2:
-    [Cocomplete (Sub C S)] and [Cocomplete C] are different types; the
-    theorem is a function between them, not a coercion).  The [eq_refl]
-    readbacks are positive controls: the transparent counit isomorphism
-    reduces to the counit (Construction/Reflective.v's own is [Qed], which
-    Test/ProbeReflectiveLimit373.v already pins), the reflected apex and
-    injections compute to the formula the issue asks for, and the
-    hypothesis-free witness, instantiated here at the torsion-free
-    reflection of abelian groups over the shape [Ordinal 2] (two objects
-    and a non-identity arrow, so the leg condition is exercised), computes
-    its apex — the instantiation lives in this probe rather than in the
-    target so that Construction/ does not import Instance/Ab.  Each
-    refutation was stripped one at a time in a copy of the whole file; the
-    import list mirrors the target's, plus Structure/Limit/Creation.v for
-    N4 and the three modules of the torsion-free witness. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

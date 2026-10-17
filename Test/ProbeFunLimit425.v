@@ -1,53 +1,8 @@
-(** * Probe for Instance/Fun/Limit.v (issue #425)
+(*
+   本文件为测试：ProbeFunLimit425。
 
-    Pins the measured boundaries of pointwise limits in a functor category:
-    the image of the pointwise cone under evaluation is the chosen limit
-    cone in apex and legs but not as a record, the packaged corollaries
-    must be universe-annotated at the definition, and [Limit] identifies
-    the shape's hom level with the ambient's.  Every refutation command
-    below was stripped ONE AT A TIME in a copy of the whole file and
-    compiled alone with its error read, so each refusal is of the kind its
-    label says.
-
-    Numbering:
-     instrument      an absent name, refused — the refutation keyword is
-                     live in this file.
-     N1 CONVERSION   [FCone (Eval p) (PointwiseLimitCone D L) = limit_cone
-                     (L p)] is refused at [eq_refl] ("cannot unify"): the
-                     coherence field is a rebuilt proof and [≈] is
-                     Type-valued.  Controls: the apex and every leg convert
-                     ([p425_fcone_apex], [p425_fcone_leg]), as do the diagram
-                     at p, the object action, the leg components, the
-                     mediator's components and the packaged limit's cone.
-     N2 UNIVERSE     the corollary's body written BARE at top level
-                     ([p425_bare_complete]) is refused at a category whose
-                     object level sits strictly below its hom level
-                     ("Cannot enforce jh = jo because jo < jh"): universe
-                     minimization identifies the two.  Control: the
-                     definition-annotated [Functor_Category_Complete] is
-                     accepted at the same levels.
-     N3 UNIVERSE     at a shape whose homs sit strictly below X's, [Limit F]
-                     is refused ("Cannot enforce ch = ih because ih < ch") —
-                     Structure/Limit.v's [Limit] is stated at [{J :
-                     Category@{u0 u1 u1}} {C : Category@{u2 u1 u1}}] — while
-                     the diagram F and [Cone F] are accepted (controls;
-                     Structure/Cone.v's record is innocent).
-
-    Positive controls, deliberately NOT written as refutations: the
-    unfolded [Fun_HasLimitsOfShape] ascribes at Adjunction/Diagonal/
-    Limit.v's [HasLimitsOfShape] ([p425_hlos]) and yields [LimitFunctor] on
-    [P, X] ([p425_LimitFunctor]) — so the library file need not pay that
-    import; and the presheaf corollaries.  No refutation is written for the
-    absence of a colimit dual or of creation: those are #715's and #426's,
-    metatheoretic here.
-
-    Guard coverage: every constant a refutation names is also named
-    outside a refutation command (the guard block at the end) — the
-    exceptions, under the plain identifier tokenization with comments
-    stripped, being the keyword itself, the name the refuted declaration
-    would introduce and the instrument's absent name — so a renamed or
-    removed constant breaks the build on a positive line rather than
-    letting a refutation pass for the wrong reason. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

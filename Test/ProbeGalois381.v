@@ -1,48 +1,8 @@
-(** * Boundary probe for the group-action Galois connection (#381)
+(*
+   本文件为测试：ProbeGalois381。
 
-    This file exists for what an in-file [Fail] cannot do: survive a
-    rename.  A negative written inside the module it guards is renamed in
-    lockstep with the constant it names and so stays green when that
-    constant disappears; a negative written HERE breaks loudly.
-
-    The [Require] list below is the target's own list, plus the target.  A
-    short prefix is exactly what makes a probe pass for the wrong reason
-    -- a missing coercion or notation can turn an intended unification
-    mismatch into an "illegal application" -- so the list is mirrored
-    rather than trimmed.
-
-    ** THE NEGATIVES, BY KIND
-
-    Seven negatives plus one instrument check (six since #450; see the
-    FORMABILITY paragraph).  The kinds are told apart
-    by the error TEXT, not by a label, and every one was stripped ONE AT A
-    TIME, compiled alone, and its whole error read.
-
-      TYPING       a plain "has type ... while it is expected to have
-                   type ...", with NO "cannot unify" and NO universe
-                   clause.  Negative 2.  This is the content of Mac Lane's
-                   display (1): the connection is [L X >= S], not
-                   [L X <= S], so it does not inhabit the covariant
-                   reading.
-
-      CONVERSION   "cannot unify" between two inhabitants of ONE type, or
-                   between two categories.  Negatives 3, 4 and 5.
-
-      FORMABILITY  ends in "universe inconsistency: Cannot enforce ...".
-                   Negatives 6, 7 and 8.  Within them the reported clause
-                   separates two shapes: 6 and 7 are LEVEL rejections
-                   between two DECLARED universes ("Cannot enforce qh = qo
-                   because qo < qh"), while 8 reports the literal [Set]
-                   ("Cannot enforce Set = ... because Set < ..."), which
-                   is what made Instance/Grp.v's [Z2] unusable
-                   here.  (CORRECTION, #450: Negative 8 is a CONTROL
-                   since #450 wrote out [Z2]'s universes in place; see
-                   its section.  Seven negatives are six since.)
-
-    Every constant a negative names also appears in a command OUTSIDE any
-    [Fail], donors included -- a guard that names a constant only inside
-    its own [Fail] is vacuous, and the control block below was written by
-    reading the [Fail] commands rather than from memory. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

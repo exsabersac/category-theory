@@ -20,26 +20,11 @@ Require Import Category.Instance.Ab.Generator.
 
 Generalizable All Variables.
 
-(** * Probe for the #447 witnesses: Instance/Sets/Generator.v,
-      Instance/Grp/Generator.v, Instance/Ab/Generator.v
+(*
+   本文件为测试：ProbeGeneratorWitnesses447。
 
-    Mac Lane §V.7 Definition 4 (p. 127), Awodey §7.2 (p. 154).  The
-    general theory has its own probe, Test/ProbeGenerator447.v.
-
-    The import list above is the UNION of the three witness files' own
-    import lists, unabbreviated, in the order the Sets file uses (Theory/
-    Concrete after Instance/Sets, so that the two [bool_setoid_object]s
-    shadow the way they do there; no bare occurrence of that name appears
-    below).
-
-    Every negative below has been STRIPPED of its refutation keyword in a
-    copy of this WHOLE file and its complete error read; all five are
-    CONVERSION refusals ("cannot unify A and B").  The instrument check
-    comes first, and every library constant a negative names has a
-    positive control outside any refutation command.  "The empty setoid
-    is not a separator" is NOT here: it is a theorem about a well-typed
-    statement with no inhabitant, delivered as
-    [Sets_empty_not_separates], and a refusal probe cannot express it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

@@ -23,17 +23,11 @@ Require Import Coq.ZArith.ZArith.
 Generalizable All Variables.
 Open Scope category_scope.
 
-(** * Boundary probes for Instance/Rng/Zp.v
+(*
+   本文件为测试：ProbeZp409。
 
-    NINE refutation commands = a scope-free instrument check plus EIGHT
-    negatives of THREE kinds, told apart by the error TEXT: four
-    CONVERSION (negatives 1-4), two TYPING (negatives 5 and 7, whose
-    errors carry no universe clause) and two FORMABILITY (negatives 6 and
-    8, whose do).  Each is stripped one at a time in a copy of this WHOLE
-    file and compiled alone.  Every constant a negative names is also
-    named by a [Check] outside every refutation command, so a rename
-    breaks this file at a control line rather than turning a guard
-    vacuously green. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument: a refutation command must be able to fail *)
 

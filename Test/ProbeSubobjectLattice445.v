@@ -38,58 +38,11 @@ Require Import Coq.Arith.PeanoNat.
 
 Generalizable All Variables.
 
-(** * Probe for Theory/Subobject/Lattice.v, Instance/Sets/SubobjectLattice.v
-      and Instance/FinSet/Subobject.v
+(*
+   本文件为测试：ProbeSubobjectLattice445。
 
-    Mac Lane, Categories for the Working Mathematician, 2nd ed., §V.7
-    Definition 2, printed p. 126; Riehl, Category Theory in Context, 2nd ed.,
-    Definition 4.7.9, printed p. 177; Fong and Spivak, Seven Sketches in
-    Compositionality, §1.2.1, printed p. 8.  Issue #445.
-
-    The import list above is the UNION of the three target files' own import
-    lists, unabbreviated, plus Theory/Subobject/Functor.v for the one
-    readback that needs [sub_reindex].  A short prefix is what makes a probe
-    pass vacuously, so nothing is trimmed even where a require is redundant.
-
-    This file guards the strength claims of those three files.  Every
-    statement asserted to be refuted below has been STRIPPED of its
-    refutation keyword in a copy of this WHOLE file, compiled alone, and its
-    complete error read; a refutation that holds prints nothing under this
-    repo's coqc, so a whole-file rc=0 would establish only THAT each command
-    does not typecheck and never WHY.  Each negative is classified by the
-    error TEXT, under THIS import list (the parenthetical of a conversion
-    error is rendered with the short names in scope, so the same refusal can
-    print differently elsewhere):
-
-      TYPING      - "The term T has type X while it is expected to have
-                    type Y", with NO trailing "cannot unify" clause and no
-                    universe clause.
-      CONVERSION  - the same, with a trailing "(cannot unify A and B)".
-      FORMABILITY - the statement cannot even be elaborated: an unresolved
-                    implicit, "Cannot infer this placeholder", with NO
-                    "(no type class instance found)" parenthetical (N3).
-      INSTANCE    - an implicit argument of class type that no instance in
-                    scope resolves.  The DISCRIMINATOR is the parenthetical
-                    "(no type class instance found)", which Rocq appends
-                    to either opener -- "Cannot infer the implicit
-                    parameter H of ..." (N1, N4) or "Cannot infer this
-                    placeholder of type ..." (N7); the opener alone does
-                    not separate INSTANCE from FORMABILITY.  NOTE that a
-                    bare [Check] TOLERATES such an open evar and succeeds,
-                    printing "where ?H : [...]"; every missing-instance
-                    negative below is therefore a [Definition], measured to
-                    be refused where the [Check] form is accepted.
-
-    The instrument check comes first: a name that does not exist, refused
-    for a reason unrelated to any boundary.  Every LIBRARY constant a
-    negative names -- in its statement, its section context or its proof
-    term -- appears in a positive control outside any refutation command
-    (stdlib names such as [Empty_set] and [False] excepted), so that a
-    rename cannot leave a negative refused for reference-not-found and
-    therefore vacuously green.  An independent audit of the first draft
-    found six such constants uncovered ([WidePullback], [IsPullback],
-    [IsWidePullback], [ImageOf], [terminal_obj], [Sets_Terminal]); the
-    controls below were extended to cover them. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

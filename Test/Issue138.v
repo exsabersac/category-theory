@@ -32,14 +32,11 @@ Generalizable All Variables.
 
 (* ===== BLOCK A138 — forgetful behaviour ===== *)
 
-(* The underlying-graph (Forgetful) functor is the motivating example of issue
-   #138.  It is defined over [StrictCat], NOT the weak [Cat], precisely because
-   it does NOT respect natural isomorphism: two categories can be equivalent
-   (naturally isomorphic functors witnessing an equivalence) while their
-   underlying quivers are genuinely different, so a functor sending a category
-   to its underlying quiver cannot be well-defined up to the weak equivalence
-   that [Cat]'s [Functor_Setoid] identifies.  It is well-defined up to the
-   STRICT equality of [StrictCat]'s [Functor_StrictEq_Setoid]. *)
+(*
+   本文件为测试：Issue138。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Forgetful is well-typed with the claimed signature. *)
 Check (Forgetful : StrictCat ⟶ QuiverCategory).

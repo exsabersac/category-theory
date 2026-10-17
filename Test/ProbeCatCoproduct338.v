@@ -1,67 +1,8 @@
-(** * Boundary probes for the indexed coproduct of categories (issue #338)
+(*
+   本文件为测试：ProbeCatCoproduct338。
 
-    Mac Lane CWM 2nd ed. §III.5 Exercise 4, book p. 74; Riehl 2nd ed. §3.6.
-
-    The two target files pin FOUR refutations of their own, and not all
-    of one kind: three CONVERSION
-    (`Construction/Coproduct/Indexed.v`,
-    `Instance/Cat/Coproduct.v` and) and one FORMABILITY
-    (`Instance/Cat/Coproduct.v`, the smallness measurement).  This
-    file pins the THREE boundaries they cannot state -- two because
-    stating them needs a section declaring universe levels strictly
-    apart, which a target cannot carry without constraining itself.
-
-    THREE NEGATIVES OF TWO KINDS, kept lexically apart, plus one compiled
-    POSITIVE that turns a header argument into a fact:
-
-      * Negatives 1 and 2 are FORMABILITY, and they carry the file's two
-        universe claims.  Negative 1 is why `SigmaCat` is written with
-        EXPLICIT universe binders: the same body written unannotated
-        minimizes so as to IDENTIFY the summands' hom and proof universes,
-        and is then rejected under `Constraint uh < up` where the
-        annotated form is accepted.  A target cannot pin this, since
-        stating it needs a section that declares levels strictly apart.
-        Negative 2 localizes the ONE identification the UMP-level results
-        do carry (`C : Category@{a b b}`) to its donor: `Functor_Setoid`
-        is rejected at separated levels while the functor TYPE `C ⟶ D`
-        and the underlying `Unique` over a hom-setoid both elaborate.
-        `Functor_Setoid` (`Theory/Functor.v`) is an unannotated
-        `Program Instance`, and since `≈` on functors IS that setoid, no
-        statement of the UMP in this library's vocabulary avoids it.  It
-        is not introduced by #338 and is NOT claimed unavoidable.
-
-      * Negative 3 is CONVERSION: the indexed construction at
-        `I := bool` is not Leibniz-equal to the binary `Coproduct` even
-        in its OBJECT type -- which is exactly why
-        `SigmaBool_strict_iso` is an isomorphism of categories and
-        nothing stronger.
-
-      An earlier revision of this file had a FOURTH negative, asserting
-      that the elementary coproduct record is not the bundled
-      `HasIndexedCoproducts` datum on the nose.  It was wrong twice over
-      and is recorded here rather than quietly dropped: it fired for the
-      WRONG REASON (an over-application typing error, since
-      `Cat_HasIndexedCoproducts` is not a function of the index), and
-      the statement it was reaching for is FALSE -- the packaging is
-      definitional all the way through.  What replaced it is the three
-      `eq_refl` identifications of section "The packaging is
-      transparent" below, which are a stronger and truer result.
-
-      * The POSITIVE, `probe_forall_encoding_inhabited`, compiles the
-        first half of the header's refutation of encoding (c).  The
-        header argues that reading the hom as `∀ e : i = j, …` is wrong
-        MATHEMATICS because for provably distinct `i` and `j` that type is
-        INHABITED by the vacuous function, so the reading would add a
-        morphism between every cross-summand pair -- the indiscrete
-        category on the summands rather than their disjoint union.  That
-        half is a one-line construction, so it is compiled here rather
-        than left as prose.  The header's SECOND half (no identity is
-        definable) and its fourth-encoding argument remain arguments; the
-        target says so and this file does not change that.
-
-    Every negative is paired with a positive control naming its own
-    constants.  The measured rename-simulation score is at the end, over
-    the constants the NEGATIVES name and no others. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

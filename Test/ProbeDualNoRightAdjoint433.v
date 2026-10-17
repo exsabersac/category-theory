@@ -1,37 +1,8 @@
-(** * Probe for Instance/FdVect/NoRightAdjoint.v and Instance/Mod/Product.v
-      (issue #433)
+(*
+   本文件为测试：ProbeDualNoRightAdjoint433。
 
-    Pins the measured boundaries of the conditional refutation with
-    negatives of two kinds, kept lexically apart (an earlier revision said
-    three; the correction is below): CONVERSION (N1: the
-    tree has TWO dual functors on [Vct_F F] — Instance/FdVect/DoubleDual.v's
-    [Dual F], precomposition on the nose, and Structure/Monoidal/
-    StarAutonomous.v's [dual] read at the line through Instance/Mod/
-    Closed.v's [RMod_SymMonClosed], the target's [VctDual359]; they are
-    naturally isomorphic ([dual_iso359]) but built by different [Program]
-    records and NOT convertible; N5: not even objectwise — the packed
-    modules [VctDual359 F x] and [Dual F x] are refused at [eq_refl] while
-    their carriers are accepted, the control beside it); TYPING (N2: the
-    refutation is CONDITIONAL — the unconditional statement [∀ Rt, Dual F ⊣
-    Rt → False] does not ascribe, [CoordSpanProper F] being the premise;
-    N3: the self-adjunction runs [(Dual F)^op ⊣ Dual F], and the exercise's
-    direction [Dual F ⊣ (Dual F)^op] is exactly the ascription that is
-    refused).  RECORDED CORRECTION: an earlier revision listed a fourth
-    kind, UNIVERSE, for N4 — "Instance/Discrete.v's unannotated
-    [DiscreteCat_Functor] pins the shape's hom level to [Set], so no cocone
-    over it lives in [Vct^op] — the reason the diagram uses
-    Structure/Limit/Comparison.v's [DiscreteCat_Functor']".  The donor was
-    annotated in place in the PR "algebraic carriers are sets"
-    (2026-09-17), Instance/Discrete.v, and the cocone type IS now
-    formable; §C keeps the line as a positive control and no UNIVERSE
-    refusal remains here.  The [eq_refl]
-    readbacks are positive controls (the coordinate projections, the
-    transpose, the colimit mediator and the isomorphism's components
-    compute), and the #359 control shows Structure/Monoidal/Dual.v's
-    self-adjunction instantiates at [VctDual359].  Each refutation was
-    stripped one at a time in a copy of the whole file; the import list
-    mirrors the target's, plus Structure/Monoidal/Dual.v for that control
-    and Structure/Limit/Product.v for the indexed-product readback. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Coq.Lists.List.
 Require Import Category.Lib.

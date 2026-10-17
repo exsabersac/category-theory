@@ -16,26 +16,11 @@ Generalizable All Variables.
 (** * Probes guarding Theory/Morphisms/CokernelPair.v and
       Instance/Sets/CokernelPair.v *)
 
-(* This file exists so that the strength claims in those two headers break
-   LOUDLY rather than silently.  Every [Fail] below was stripped once and
-   the failure KIND confirmed at the message, and every negative is paired
-   with a positive control that must SUCCEED, so a rename or a record
-   change cannot turn a [Fail] vacuously green.
+(*
+   本文件为测试：ProbeCokernelPair。
 
-   The import list is the union of the two targets' own import lists, in
-   target order — a shortened prefix is exactly what makes a probe pass
-   for the wrong reason.
-
-   The two kinds of negative are kept LEXICALLY APART:
-
-     - CONVERSION negatives, [Fail Definition … := eq_refl], asserting
-       that two well-typed terms are NOT definitionally equal;
-     - FORMABILITY negatives, [Fail Check], asserting that an expression
-       does not elaborate at all.
-
-   Instrument sanity: in batch mode a [Fail] that succeeds prints nothing
-   and a [Fail] that does not fail aborts the file with "The command has
-   not failed!", so a green build is genuine evidence. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Positive controls: what IS definitional *)
 

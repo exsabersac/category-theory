@@ -1,56 +1,8 @@
-(** * Boundary probes for Structure/Ring.v and Structure/Lattice.v (#340)
+(*
+   本文件为测试：ProbeRingLattice340。
 
-    Mac Lane CWM 2nd ed. §III.6, book p. 75.
-
-    The two targets already ship FOUR refutations of their own, and all
-    four are CONVERSION (`Structure/Ring.v`,,
-    `Structure/Lattice.v`, -- the Sets round trips, whole record
-    and internal `Monoid` record respectively; each was stripped and each
-    gives exactly one `cannot unify`, zero universe and zero typing
-    errors).  This file pins what they CANNOT state: the universe
-    boundary, which needs a section declaring levels strictly apart.
-
-    CORRECTION, added later: this file originally continued "...which a
-    library file cannot carry without constraining itself."  THAT IS
-    FALSE.  `Instance/Fun/Group.v` (issue #342) carries exactly such
-    probes in-file, as `Universes`/`Constraint` inside a `Section` with
-    `Context` variables and `Check` controls; the declarations are
-    discharged at `End`, and a downstream consumer that imports the file
-    can still declare its own levels strictly apart.  Measured, not
-    assumed.  So a separate Test file is a CHOICE here, not a necessity,
-    and the in-file form is arguably better since it keeps a refutation
-    beside what it refutes.
-
-    THREE NEGATIVES, ALL FORMABILITY, plus a POSITIVE MEASUREMENT.
-
-      * Negatives 1-3 attribute the hom = proof identification that every
-        class in both files carries.  THREE donors do it INDEPENDENTLY --
-        `Cartesian`, `Terminal` and `Monoidal` -- each rejected under
-        `Constraint uh < up` while a control naming a hom at those very
-        levels is accepted.  Testing all three separately is the point:
-        blaming whichever comes to mind first would be wrong, and the
-        classes here take all three.  `MonoidObject` is NOT a fourth
-        donor and is not probed as one: its [Monoidal] argument is
-        rejected first, so it cannot be tested apart from `Monoidal`,
-        and whether it identifies anything of its own is UNKNOWN.
-
-      * The POSITIVE is `dup_left`/`dup_right`, and it is the sharpest
-        instance in this tree of a rule the index states elsewhere: A
-        UNIVERSE IDENTIFICATION CAN HIDE ENTIRELY IN THE BINDER.
-        `dup_left@{u u0}`'s constraint block is LITERALLY EMPTY --
-        `(* u u0 |= *)` -- yet its binder reads
-        `C : Category@{u u0 u0}`, identifying hom with proof by reusing
-        the level variable.  A reader who checks only the block concludes
-        "no identification" and is wrong.  Run `About dup_left` to see it.
-        Inherited from `Cartesian`, not introduced by either target.
-
-    What the OBJECT universe does is worth as much as what the hom does:
-    it stays FREE in all four classes, appearing only in `<=` bounds.
-
-    Every negative is paired with a positive control naming its own
-    constants.  The measured rename-simulation score is at the end, over
-    the constants the NEGATIVES name and no others, with `Require` lines
-    preserved. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

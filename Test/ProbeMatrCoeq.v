@@ -23,31 +23,11 @@ Generalizable All Variables.
 
 (** * Probe: strength boundaries of the matrix coequalizer *)
 
-(* Guard file for Instance/Matr/Elimination.v and
-   Instance/Matr/Coequalizer.v, in the Test/ProbeFunnyPoly.v convention.
+(*
+   本文件为测试：ProbeMatrCoeq。
 
-   THE IMPORT LIST ABOVE IS Coequalizer.v's OWN, VERBATIM AND IN ITS
-   ORDER, AND THAT IS LOAD-BEARING RATHER THAN TIDINESS.  While drafting
-   these negatives, two candidates PASSED for the wrong reason under a
-   shortened import list: they failed at ELABORATION (a missing constant)
-   instead of at UNIFICATION, so the [Fail] succeeded while measuring
-   nothing at all.  A probe that cannot elaborate its own statement is
-   not a probe.  Note in particular that [Coq.QArith.QArith] must come
-   BEFORE [Category.Lib] -- QArith exports an [equiv] that shadows
-   Lib/Setoid.v's, and with the other order every [Proper (equiv ==> ...)]
-   in scope fails to elaborate.
-
-   Every negative below is paired with a positive control NAMING ITS OWN
-   CONSTANTS, and the pairing was verified by RENAME SIMULATION over the
-   constants appearing in the NEGATIVES -- not merely over those the
-   controls happen to name, which is the narrower check that let three
-   unguarded negatives ship in an earlier probe file in this tree.
-
-   All SEVEN negatives here are CONVERSION negatives ([Fail Definition
-   ... := eq_refl]); this file states no formability negative, so no
-   lexical separation is needed.  Each was stripped of its [Fail] once
-   and the resulting message inspected; every one reports a genuine
-   "cannot unify". *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check
 

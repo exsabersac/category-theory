@@ -32,32 +32,11 @@ Require Import Category.Instance.FinSet.QuotObj.
 
 Generalizable All Variables.
 
-(** * Probe for the three quotient-object witness files
+(*
+   本文件为测试：ProbeQuotObjWitnesses446。
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §V.7
-    Definition 3, printed p. 126.  Issue #446, witness half.  The targets
-    are Instance/Sets/QuotObj.v, Instance/Grp/QuotObj.v and
-    Instance/FinSet/QuotObj.v.
-
-    The import list above is the UNION of the three targets' own import
-    lists, unabbreviated.  A short prefix is what makes a probe pass
-    vacuously, so nothing is trimmed even where a require is redundant.
-
-    Each statement asserted below to be refuted has been STRIPPED of its
-    refutation keyword in a copy of this WHOLE file, compiled alone, and
-    its complete error read: this repo's coqc prints nothing for a
-    refutation that holds, so a whole-file rc=0 would establish only THAT
-    each command is rejected and never WHY.  Every negative here is
-    classified CONVERSION -- "The term eq_refl has type X while it is
-    expected to have type Y", with a trailing "(cannot unify A and B)".
-    The parenthetical is rendered with the short names in scope, so the
-    same refusal prints differently under a different import list.
-
-    The instrument check comes first: a name that does not exist,
-    refused for a reason unrelated to any boundary.  Every constant a
-    negative names then appears in a positive control outside any
-    refutation command, so that a rename cannot leave a negative refused
-    for reference-not-found and therefore vacuously green. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

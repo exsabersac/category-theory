@@ -17,32 +17,11 @@ Generalizable All Variables.
 
 (** * Probe for Instance/Theory/Lindenbaum.v (issue #390) *)
 
-(* Mac Lane §IV.6, printed p. 98, Exercise 2 (maclane:IV.6:ex2).
+(*
+   本文件为测试：ProbeLindenbaum390。
 
-   This file pins, from OUTSIDE the target, every boundary the target's
-   header records.  An in-file negative renames in lockstep with the
-   constant it guards and so cannot detect a rename; these can.
-
-   Eight negatives in THREE kinds, told apart by the error TEXT rather
-   than by label:
-
-     FORMABILITY  ends in a universe clause "Cannot enforce ..."
-       N1  [Lind]'s hom universe is identified with its proof universe
-       N2  ...and that is [Proset]'s doing, with no [Lind] in the command
-       N3  a Type-valued entailment is not a stdlib [relation]
-     TYPING       plain "has type ... expected ...", no "cannot unify"
-       N4  [Terminal] where [Cartesian] is wanted
-       N5  a derivation at one theory is not one at another
-     CONVERSION   ends in "cannot unify"
-       N6  the two categories of section (G) are not convertible
-       N7  the exponential's orientation: q ^ p is s_imp p q, not q p
-       N8  [eval] is not the rule [ent_eval] on the nose, only up to ≈
-
-   Plus one scope-free instrument check.  Each negative was stripped ONE
-   AT A TIME, the file compiled alone, and the WHOLE error read.
-
-   Every constant a negative names is also named outside every [Fail],
-   in the control blocks below. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check: this must be rejected for the trivial reason *)
 

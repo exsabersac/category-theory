@@ -1,13 +1,8 @@
-(* PROBE for QA finding E1 (#916): how many natural transformations Id ==> option
-   are there on Coq Types?
+(*
+   本文件给出 NatIdOptionProbe 相关定义与性质。
 
-   #916's Work item 2 orders: "Prove that Nat(Id, (-)+) has exactly ONE element,
-   the 'inject' transformation x |-> Some x".  That is FALSE.  Naturality forces
-   alpha_X x = fmap x (alpha_unit tt) by probing at the singleton, and
-   option unit has TWO inhabitants, so there are exactly two such families:
-   Some, and the constant-None family.  This probe exhibits both, proves they
-   are natural, and proves they are distinct -- which already refutes "exactly
-   one" without needing the full uniqueness argument. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Coq.Init.Datatypes.
 

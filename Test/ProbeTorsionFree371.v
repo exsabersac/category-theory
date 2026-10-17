@@ -1,32 +1,8 @@
-(** * Boundary probe for Instance/Ab/TorsionFree.v (issue #371)
+(*
+   本文件为测试：ProbeTorsionFree371。
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-    §IV.3, printed p. 92, Exercise 2.
-
-    Every rejection the target's header MEASURES is pinned here rather
-    than in the target itself, for the reason this tree records
-    elsewhere: an in-file [Fail] renames in lockstep with the constant
-    it guards, so it cannot detect a rename.  This file mirrors the
-    target's FULL [Require] list plus the target — a short prefix is
-    what makes a probe pass for a reason it never measured.
-
-    SEVEN [Fail] commands: SIX negatives of THREE KINDS kept lexically
-    apart, plus one scope-free instrument check.
-
-      - CONVERSION (3): each reports "cannot unify" between two terms of
-        ONE type.
-      - TYPING (1): a plain "has type ... while it is expected to have
-        type ...", with NO "cannot unify" and no universe clause.
-      - FORMABILITY (2): each ends "universe inconsistency: Cannot
-        enforce up = uh because uh < up".
-
-    Each negative was stripped ONE AT A TIME (the others left as
-    [Fail]), compiled alone, and its WHOLE error read; a [Fail] that
-    succeeds prints NOTHING under this coqc, which is why stripping is
-    the only way to see what fired.  Every constant a negative names is
-    also named OUTSIDE a [Fail] below, so that renaming any of them
-    breaks this file at a control rather than turning a guard silently
-    green. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

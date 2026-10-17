@@ -1,55 +1,8 @@
-(** * Boundary probe: the coproduct roster of Mac Lane §III.3
+(*
+   本文件为测试：ProbeCoproduct。
 
-    Companion to Structure/Biproduct/Cartesian.v,
-    Instance/CMon/Coproduct.v, Instance/Ab/Coproduct.v,
-    Instance/Mod/Coproduct.v, Instance/Top/Coproduct.v and
-    Instance/Top/Wedge.v.  Those files make a number of STRICT claims —
-    "by [eq_refl]", "supplied by [:=] with no tactic" — and a number of
-    NEGATIVE ones: this does not return on the nose, that is not
-    formable at those universes, the other is not statable at all.  The
-    positives are guarded by the [Example]s in the files themselves.  This
-    file guards the negatives: **if the [Fail] commands here stop failing,
-    it breaks the build.**
-
-    Both sides are pinned, in the manner of Test/ProbeQuiverConstructions.v.
-    A [Fail] alone proves very little — it passes just as happily when the
-    term is ill-typed for an unrelated reason, or when a name has been
-    renamed out from under it.  So every negative is paired with a positive
-    control that must SUCCEED and that NAMES THE SAME CONSTANTS, so that a
-    rename or a refactor breaks the controls loudly rather than turning the
-    [Fail]s vacuously green.  That claim was FALSE when this file was first
-    written and an audit caught it: [RMod_inr], [bi_inl],
-    [cartesian_biproduct] and [biproduct] were each named only inside a
-    negative, and renaming any of them left the file compiling clean —
-    the [Fail]s passing for "reference not found", which is the same
-    failure mode this file records catching once already with
-    [WedgeSum_Top].  Controls naming all four were added, and the repair
-    was verified the only way that settles it: renaming [RMod_inr] or
-    [bi_inl] now BREAKS the compile, where before it did not.
-
-    The import list is the full one of the six
-    target files, in their dependency order, for the same reason: a probe
-    compiled against a short prefix of its target's imports can fail for
-    want of a coercion rather than for the reason advertised.
-
-    The instrument was checked before being trusted: wrapping [Fail] around
-    a command that succeeds reports "The command has not failed!" and aborts
-    compilation, so [Fail] here is not a no-op.  Every negative below was
-    additionally STRIPPED of its [Fail] once and the resulting error read,
-    to confirm the failure KIND; the kinds are recorded beside each probe
-    and are of exactly two sorts, kept lexically apart:
-
-      CONVERSION negatives ([Fail Definition … := eq_refl]), which report
-      "cannot unify"; and FORMABILITY negatives ([Fail Check] /
-      [Fail Definition] at a declared universe), which report a universe
-      inconsistency or a typing error.
-
-    A REAL FALSE PASS WAS CAUGHT WHILE WRITING THIS FILE and is recorded
-    because the lesson is general: the wedge probe was first written
-    against [WedgeSum_Top], a name that does not exist (the object is
-    [WedgeSum], the space is [Wedge_Top]).  The [Fail] passed — for
-    "reference not found", not for the advertised reason.  Stripping the
-    [Fail] and reading the error is what caught it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Coq.ZArith.ZArith.
 Require Import Category.Lib.

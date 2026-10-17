@@ -34,10 +34,11 @@ Generalizable All Variables.
 Check (One_Small : Small _1).
 Check (small_locally_small _1 One_Small : LocallySmall _1).
 
-(* Every category is locally small at its OWN hom level.  This is the sense in
-   which the library's discipline is stronger than the books' convention:
-   [Class Category]'s [homset] field builds local smallness in, so the
-   predicate is universally satisfiable at the ambient level. *)
+(*
+   本文件为测试：Size。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (fun C : Category => locally_small_ambient C : LocallySmall C).
 
 (* THE CONTENT CHECK -- and note carefully which predicate it is about.

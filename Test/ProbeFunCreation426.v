@@ -1,19 +1,8 @@
-(** * Probe for Instance/Fun/Creation.v (issue #426)
+(*
+   本文件为测试：ProbeFunCreation426。
 
-    Pins the measured boundaries of the creation development: three
-    CONVERSION refusals (N1 the lifted cone's record against the given
-    cone; N2 a restricted functor against the discrete functor on its
-    object map; N3 Riehl's strict clause, an [eq] between functor records)
-    beside their accepted apex and leg controls, and three UNIVERSE
-    refusals (N4 #425's [Functor_Category_Complete]; N5 the type
-    [[Pw, Xw] ⟶ Xw]; N6 #424's [Eval]) at a shape whose objects sit
-    strictly above its homs, beside the accepted [ObjCat], [Res] and
-    [[Pw, Xw] ⟶ [Pw, Xw]] — the restriction functor is more
-    universe-general than the theorem it serves, and the bound [jo <= jh]
-    enters through [Functor] over [Fun], not through this development.
-    Each refutation was stripped one at a time in a copy of the whole
-    file; the import list mirrors the target's.  Section D's readbacks and
-    the guard block are positive controls. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

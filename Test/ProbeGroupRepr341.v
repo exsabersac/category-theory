@@ -1,80 +1,8 @@
-(** * Probe: the universe boundary of Structure/Group/Representable.v
+(*
+   本文件为测试：ProbeGroupRepr341。
 
-    Issue #341 (Mac Lane CWM 2nd ed. section III.6 Proposition 1 and
-    remark 2).  The target file pins four refutations of its own, and all
-    four are CONVERSION failures (`cannot unify`):
-    `data_psh_data_law`, `data_psh_data_whole`, `rt_mul_strict` and
-    `exp_mempty_is_Hom_Monoid`, each with a positive control beside it,
-    and three of the four additionally with a proved `≈` repair.
-    `data_psh_data_whole` is the exception and the asymmetry is not an
-    oversight: no setoid on `HomGroupData` exists anywhere in the tree,
-    so an `≈` statement about the whole record is not even formable, and
-    its control is therefore the bare `data_psh_data_whole_control`.
-    (An earlier revision of this sentence claimed a control OR a repair
-    for each and was wrong about that one on both counts -- it had
-    neither, `data_psh_data_law_control` being a control for the LAW
-    FIELD rather than for the record.)
-
-    This file supplies the OTHER kind: FORMABILITY, which needs a
-    section declaring universe levels strictly apart.
-
-    CORRECTION, added later: this file originally said a library file
-    "cannot state" that kind, because it "cannot carry such a
-    `Constraint` without constraining itself".  THAT IS FALSE.
-    `Instance/Fun/Group.v` (issue #342) carries exactly such probes
-    in-file, as `Universes`/`Constraint` inside a `Section` with
-    `Context` variables and `Check` controls; the declarations are
-    discharged at `End`, and a downstream consumer that imports the file
-    can still declare its own levels strictly apart.  Measured, not
-    assumed.  A separate Test file is therefore a CHOICE, not a
-    necessity.
-
-    THREE NEGATIVES, ALL FORMABILITY, plus a POSITIVE MEASUREMENT.
-
-      * Negatives 1-3 attribute the hom = proof identification that every
-        constant of the target carries in its BINDER.  Three subjects are
-        rejected INDEPENDENTLY under `Constraint uh < up` -- the two
-        ambient donors `Cartesian` and `Terminal`, and the target's OWN
-        central record `HomGroupData` -- while a control naming a hom of
-        such a category at those very levels is accepted.  Testing all
-        three separately is the point: blaming whichever comes to mind
-        first would be wrong.
-
-        `GroupObject` is deliberately NOT among them, and the reason is a
-        defect this file was written to avoid.  An earlier revision wrote
-        negative 3 as
-
-          Fail Check (fun (C : Category@{uo uh up}) (M : @Monoidal C)
-                          (x : C) => @GroupObject C M x).
-
-        and labelled it the `GroupObject` donor.  That is FALSE:
-        elaboration never reaches `GroupObject`, because `@Monoidal C` in
-        the binder is rejected first -- the error lands at character 52 of
-        that line, which is the `C` argument of `Monoidal`.  (`GroupObject`
-        in fact takes a `CartesianMonoidal`, not a `Monoidal`, so the line
-        was doubly wrong.)  A class whose binder is already identified by
-        an earlier argument cannot be tested apart from that argument;
-        whether `GroupObject` contributes an identification OF ITS OWN is
-        UNKNOWN, not refuted.  This is the same trap the sibling probe for
-        issue #340 records for `MonoidObject` under `Monoidal`.
-
-      * The POSITIVE is `HomGroupData`, and it is a sharper instance of
-        the rule the index states elsewhere than the target file's own
-        siblings: A UNIVERSE IDENTIFICATION CAN HIDE ENTIRELY IN THE
-        BINDER.  `HomGroupData@{u u0}`'s constraint block is LITERALLY
-        EMPTY -- `(* u u0 |= *)` -- yet its binder reads
-        `forall {C : Category@{u u0 u0}}`, identifying hom with proof by
-        reusing the level variable.  A reader who checks only the block
-        concludes "no identification" and is wrong.  `About` it and read
-        BOTH.
-
-    Measured, not assumed: each negative below was stripped of its `Fail`
-    once and its error read in full; all three are genuine universe
-    inconsistencies naming the declared levels, with zero `cannot unify`.
-    The file is rename-simulated with the `Require` lines PRESERVED, since
-    two of the guarded names also name modules and renaming those lines
-    would break the copy on a missing module rather than on the guard --
-    reading as a pass. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

@@ -28,51 +28,11 @@ Generalizable All Variables.
       Monad/Comparison/Resolution.v and the controls of
       Instance/Fun/Action/Monad/Comparison.v *)
 
-(* The import list is the first target's, in its order, followed by that
-   target.  The last section adds, after every command above it, the
-   import list of the second target,
-   Instance/Fun/Action/Monad/Comparison.v, and that module; so nothing
-   above it is elaborated under the second target's imports.
+(*
+   本文件为测试：ProbeResolution482。
 
-   REFUTATIONS.  Five lines open with the refutation keyword: the
-   instrument, NAME-ABSENCE, a [Check] of a name that does not exist,
-   which shows that the keyword is live; and four CONVERSION boundaries,
-   R1, R2a, R2 and R3, each a statement that is well typed and refused
-   at [eq_refl].  Each refutation, stripped of its keyword in a copy of
-   this whole file, stops inside the stripped command, the instrument
-   with "The reference p482_absent_name was not found in the current
-   environment" and the other four with "cannot unify" (five of five,
-   measured).  Each control, prefixed in such a copy, stops with "The
-   command has not" and the rest of that message (twenty-three of
-   twenty-three).
-
-   R1  The strict left triangle of [EM_Comparison] on objects:
-       K (F x) = F^T x at [eq_refl].  The two algebras agree on carrier
-       (C1) and on structure map (C2), both at [eq_refl]; the [TAlgebra]
-       records differ in their law fields.  This is why the comparison of
-       a resolution is read at ≈ (the target's header, THE READING).
-   R2  The Lemma's comparison at the Eilenberg–Moore resolution,
-       [EM_Comparison_via_Lemma], against [EM_Comparison], on objects at
-       [eq_refl].  They agree on carriers (C3) and are isomorphic
-       ([EM_Comparison_via_Lemma_agrees]); R2a: their structure maps are
-       refused at [eq_refl].  The Lemma's uniqueness is up to
-       isomorphism, not on the nose.  R2a and R2 measure conversion:
-       the Leibniz equality of the two is neither proved nor refuted.
-   R3  The coherence [cmp_monad] of [EM_Comparison_Comparison] at
-       [eq_refl]: its left side is id ∘ id at [eq_refl] (C5), the right
-       side id, in a variable category.
-
-   CONTROLS.  C1-C5 above; C4, the right triangle of the Lemma's
-   comparison at the Eilenberg–Moore resolution on objects, at
-   [eq_refl]; and C6-C17, the twelve [Example]s of the first target
-   restated, so that a rename or a lost transparency breaks this file.
-   In the last section, the second target's positive controls: at the
-   adjunction of LZ-sets, [EM_Comparison] satisfies the two hypotheses
-   that [bare_awodey_refuted] quantifies over (C18, C19) and is a
-   comparison over the identity identification (C20), to which
-   [EM_Comparison_unique] applies (C21), so that neither
-   [bare_awodey_refuted] nor [K_no_coherent_comparison] is vacuous; and
-   C22, C23, that target's two [Example]s restated. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** The instrument *)

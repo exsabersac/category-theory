@@ -21,97 +21,11 @@ Require Import Category.Instance.Grpd.
 
 Generalizable All Variables.
 
-(** * Probe for Construction/Fractions/Weak.v and
-      Construction/Fractions/Adjunction.v
+(*
+   本文件为测试：ProbeFractionsAdjunction972。
 
-    Riehl, Category Theory in Context, 2nd ed., §4.1, Example 4.1.15,
-    printed p. 137.  Issue #972.
-
-    The import list above is the UNION of the two target files' own import
-    lists, unabbreviated.  A short prefix is what makes a probe pass
-    vacuously, so nothing is trimmed even where a require is redundant.
-
-    This file guards the strength claims of those two files.  Every
-    statement asserted to be refuted below has been STRIPPED of its refutation keyword
-    in a copy of this WHOLE file, compiled alone, and its complete error
-    read; a refutation that holds prints nothing under this repo's coqc, so a
-    whole-file rc=0 would establish only THAT each command does not
-    typecheck and never WHY.  Each negative is classified by the error
-    TEXT:
-
-      TYPING      - "The term T has type X while it is expected to have
-                    type Y", with NO trailing "cannot unify" clause and no
-                    universe clause.
-      CONVERSION  - the same, with a trailing "(cannot unify A and B)".
-
-    ** TALLY
-
-    Seven positive controls and eleven negatives: NINE typing (N1-N7, N10,
-    N11) and TWO conversion (N8, N9).  No negative here is a universe
-    inconsistency, and that was checked rather than assumed -- see the note
-    on N1 and N2 below.
-
-    ** THE PRINTED FORM OF N1 AND N2 HIDES WHAT SEPARATES THEM
-
-    N1 and N2 are the two cross-transfers between the strict universal
-    property ([Construction/Fractions.v]'s [Fractions_UMP_groupoid]) and the
-    weak one ([Construction/Fractions/Weak.v]'s [Fractions_UMP_weak]).  Both
-    are [Unique] records, and the `∃!` notation hides the [Setoid] instance,
-    so with default printing the two types in each message print
-    identically and Coq falls back to disambiguating them by UNIVERSE
-    INSTANCE.  That display invites the reading that these two negatives
-    measure a universe clash rather than a strength difference, and they do
-    not: re-run under [Set Printing All] each message reads
-
-      "@Unique (@Functor (Fractions C) D) (@Functor_Setoid (Fractions C) D) …"
-      versus
-      "@Unique (@Functor (Fractions C) D)
-         (@Functor_StrictEq_Setoid (Fractions C) D) …"
-
-    with the two setoid arguments differing and no universe clause
-    anywhere.  Both are therefore TYPING, and the thing they separate is
-    the hom-setoid.
-
-    ** WHAT THE NEGATIVES PIN
-
-    N1  the weak universal property is NOT the strict one -- it cannot be
-        read at [Functor_StrictEq_Setoid].  This is the whole point of the
-        weak file: the statement it proves is genuinely weaker, and nothing
-        in the tree should be able to launder it back.
-    N2  the strict universal property is NOT the weak one either.  Its
-        EXISTENCE half transfers along [strict_equiv_implies_fun_equiv],
-        but the packaged [Unique] record does not, because its uniqueness
-        clause quantifies over the wrong setoid.  This is the measured
-        obstruction issue #972 was left open on.
-    N3  [Fractions_proj_epic_weak]'s conclusion is at [Functor_Setoid] and
-        cannot be read as [Construction/Fractions.v]'s [Fractions_proj_epic].
-    N4  the original refusal, reproduced: feeding [Fractions_UMP_groupoid]
-        straight to [universal_arrow_from_UMP].  The head of this message is
-        quoted in [Construction/Fractions.v]'s header (there with the older
-        spelling [frac_obj C] for what is now [frac_grpd C]).
-    N5  [Incl_Core_Adjunction] is [Grpd_Incl ⊣ Core] and not its converse.
-    N6  [Fractions_Incl_Adjunction] is [FractionsF ⊣ Grpd_Incl] and not its
-        converse.
-    N7  the triple does not survive exchanging its two ends: the left
-        adjoint of the inclusion is the localization and the right adjoint
-        is the core, not the other way round.
-    N8  [FractionsF]'s action on MORPHISMS agrees with the hand-written
-        [FractionsMap] only up to `≈`.  Unlike the object agreement (P3),
-        this one is not [eq_refl], and the header of the adjunction file
-        says so.
-    N9  the unit of [Fractions_Incl_Adjunction] is [FractionsProj] only up
-        to `≈` (P7 is the positive form).  In this message Coq prints the
-        adjunction's [unit] projection bare, as "unit", which reads like
-        the type of the same name; the environment line above it
-        disambiguates.
-    N10 the strict uniqueness lemma [FractionsLift_unique] does NOT accept a
-        [Functor_Setoid] hypothesis.  This is the guard against the one
-        shortcut the issue forbids -- restating the strict result under a
-        weaker-sounding name by strengthening its hypothesis back to object
-        equality.
-    N11 [strict_equiv_implies_fun_equiv] runs strict-to-weak only; the
-        reverse reading of it is refused.  This is why uniqueness had to be
-        reproved rather than transported. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Positive controls *)
 

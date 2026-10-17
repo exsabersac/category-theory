@@ -33,51 +33,11 @@ Generalizable All Variables.
 
 (** * Probe for issue #403 — the sieve classifier of a functor category *)
 
-(* Every refutation command below was stripped ONE AT A TIME, compiled
-   alone, and its WHOLE error read; the kind is read off the error TEXT.
-   FORMABILITY = "universe inconsistency"/"Cannot enforce"; CONVERSION =
-   "cannot unify" between two terms of ONE type; TYPING = a plain
-   "has type ... while it is expected to have type ..." with neither a
-   cannot-unify nor a universe clause, or "Illegal application";
-   RESOLUTION = "Cannot infer this placeholder".
+(*
+   本文件为测试：ProbeFunClassifier403。
 
-   1 instrument check + 16 negatives, classified by reading the whole
-   error of each after stripping it alone:
-     10 FORMABILITY  (lines with "universe inconsistency")
-      2 RESOLUTION   ("Cannot infer this placeholder")
-      3 TYPING       (a plain has-type clause, or "Illegal application")
-      1 CONVERSION   ("cannot unify" between two terms of one type)
-   The labels run 1-10 and 12-14 (with 4a/4b, 5a/5b and 6a/6b): there is
-   no NEGATIVE 11 — the prediction it would have pinned was refuted and
-   ships as the positive [probe403_med_strict] instead.
-
-   The probe mirrors the UNION of the three library files' Require lines
-   (a short prefix is what makes negatives pass for the wrong reason),
-   plus Instance/Sets/Powerset/Universal.v for the squash control and
-   Instance/FinSet/Classifier.v for [FinSet_Pullbacks].
-
-   GUARD COVERAGE, measured mechanically over the comment-stripped file: 67
-   identifiers occur inside a refutation command and 55 of them also occur
-   outside every one.  The twelve exceptions are exhaustively the keyword
-   itself, three bound variables (P, h, p), the seven [probe403_*] names
-   DECLARED inside a refutation command (which therefore never enter the
-   environment), and the instrument's deliberately absent name.
-
-   RENAME SIMULATION, 11/11.  Eleven TARGET constants are named inside a
-   refutation command — [Sieve], [total_sieve], [sieve_subpresheaf],
-   [sieve_incl], [sieve_incl_Monic], [Fun_Classifier],
-   [Fun_Classifier_cov], [Fun_Classifier_small], [PShSmall],
-   [PShSmall_Terminal], [Fun_HasPullbacks].  Each was renamed in a SCRATCH
-   COPY of the three library files (never in the worktree), compiled under
-   a shadowing logical root, and this file recompiled against it: every one
-   broke at a [Check] line of the guard block below and NONE inside a
-   refutation command.  One vacuous guard was found that way and closed:
-   [sieve_incl_Monic] was named only inside negative 5b, so renaming it
-   left this file compiling; its [Check] was added, and so were [Check]s
-   for the three [SubObj] field names the same negative uses.  The guard
-   block was extended after the simulation ran, which can only add breaking
-   lines; every one of the eleven has its [Check] in the file as shipped,
-   verified mechanically. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------ *)
 (** ** Instrument check *)

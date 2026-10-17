@@ -1,33 +1,8 @@
-(** * Boundary probe for Structure/Limit/Product/Finite.v (issue #335)
+(*
+   本文件为测试：ProbeFiniteProducts335。
 
-    Structure/Limit/Product/Finite.v measures ten refutations -- seven
-    CONVERSION failures and three FORMABILITY (universe) rejections -- and
-    ships no [Fail] of its own.  THIS FILE IS WHERE THEY ARE PINNED, so
-    that a later edit which quietly makes one of them SUCCEED breaks the
-    build instead of silently invalidating the target's header.  (An
-    earlier draft of this paragraph said the ten were "checked in scratch
-    files outside the tree" and that the target "pins none of them".  That
-    described the state BEFORE this file existed, and both files ship in
-    one commit; the target's header names this probe.)
-
-    TWO KINDS, kept lexically apart:
-
-      * CONVERSION (negatives 1-7) -- [Fail Definition … := eq_refl].
-        The fold pads with the terminal object and the round trip through
-        [HasFiniteProducts] does not return its inputs on the nose.
-
-      * FORMABILITY (negatives 8-10) -- [Fail Check] under a declared
-        [Constraint uh < up].  Each of [Cartesian], [Terminal] and
-        [IsIndexedProduct] independently identifies the hom and proof
-        universes; NO ONE of them is "the" cause, which is why all three
-        are pinned rather than one.
-
-    Every negative was stripped of its [Fail] once and its failure KIND
-    confirmed -- "cannot unify" for 1-7, "universe inconsistency" for
-    8-10.  The instrument check below guarantees [Fail] is live.  The
-    import list is the target's own; a shortened one would let these pass
-    vacuously.  The measured rename-simulation score is at the end, over
-    the constants the NEGATIVES name and no others. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Coq.Vectors.Fin.
 

@@ -1,49 +1,8 @@
-(** * Boundary probes for Instance/Cat/Pullback.v (issue #337)
+(*
+   本文件为测试：ProbeCatPullback337。
 
-    Mac Lane CWM 2nd ed. §III.5 Exercise 3, book p. 74.
-
-    The target proves that the fibre product of categories IS a pullback in
-    [StrictCat] under [ObjUIP C], that the same hypothesis is NECESSARY, and
-    that the fibre product is NOT a pullback in [Cat].  Three of its four
-    measured boundaries are pinned here; the fourth, the universe one, is
-    pinned here BECAUSE it cannot be pinned in the target: stating it needs
-    a section that declares three object universes strictly apart, and a
-    [Constraint] declaration inside the target would constrain the whole
-    file rather than one probe.
-
-    FOUR NEGATIVES OF THREE KINDS, kept lexically apart:
-
-      * Negative 1 is FORMABILITY (a universe inconsistency).  It does more
-        than record that [FibreProduct_IsPullback] identifies the three
-        object universes -- its positive control shows [FibreProduct]
-        ITSELF is formable at three universes declared strictly apart, so
-        the identification is the [IsPullback] PACKAGING's and not the
-        construction's.  Stripped, the error names the declared levels
-        (this one, and only this one, is legible from the message TAIL):
-          universe inconsistency: Cannot enforce co = ao
-          because ao < bo < co.
-
-      * Negatives 2 and 3 are CONVERSION ("cannot unify"), and they differ
-        in CAUSE.  Negative 2 fails only in the LAW fields -- its two
-        controls show the object and arrow actions of [FP_fst ◯ FP_med]
-        agree with [q1]'s at [eq_refl], so what does not convert is the
-        three rebuilt proofs.  Negative 3 fails in the DATA: the slice
-        stores an arrow where the fibre product stores a pair carrying an
-        equality proof, so these are different categories that happen to be
-        pullbacks of one cospan.
-
-      * Negative 4 is TYPING, and its marker is "cannot satisfy constraint"
-        -- which sits MID-MESSAGE, the tail ending in a "cannot unify" that
-        would misread as CONVERSION, so this kind must be read off the
-        whole error rather than off its tail.  It is the
-        content of [IB_FibreProduct_empty] made checkable at the term
-        level: no object of [FibreProduct IBtrue IBfalse] can be written,
-        while the control writes one at the AGREEING cospan, so the failure
-        is the cospan's and not the fibre product's.
-
-    Every negative is paired with a positive control naming its own
-    constants.  The measured rename-simulation score is at the end, over
-    the constants the NEGATIVES name and no others. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

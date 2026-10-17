@@ -50,37 +50,10 @@ Require Import Category.Adjunction.GAFT.Sets.
 
 Open Scope category_scope.
 
-(** * Probe for issue #404: Sets and presheaf categories as toposes
+(*
+   本文件为测试：ProbeToposInstances404。
 
-    Guards Instance/Fun/Topos.v and Instance/Sets/Topos.v.  Its Require
-    list is the UNION of theirs plus Structure/Topos/{Power,Monadic,
-    Colimits}.v, Monad/Comparison.v, Structure/SubobjectClassifier/
-    Natural.v, Theory/Subobject.v, the four shape modules
-    (One, Two, Ordinal, Parallel, Roof), the three further Sets colimit
-    modules and Adjunction/GAFT/Sets.v.  Those extras live here, and not
-    in the library files, because Structure/Topos/{Monadic,Colimits}.v
-    alone take the presheaf file's closure from 108 to 133 and the
-    setoid file's from 74 to 101.
-
-    NINETEEN refutation commands: ONE instrument check plus EIGHTEEN
-    negatives, of FOUR kinds, told apart by the error TEXT and not by
-    label.
-
-      FORMABILITY  the error ends in a universe clause
-                   ("universe inconsistency: Cannot enforce ...").
-      CONVERSION   "cannot unify" between two terms of one type.
-      TYPING       a plain has-type mismatch, no "cannot unify" and no
-                   universe clause.
-      RESOLUTION   "Cannot infer this placeholder ... (no type class
-                   instance found)".
-
-    Count by kind: 11 FORMABILITY (negatives 1-7 and 10-13), 4 CONVERSION
-    (14-17), 2 TYPING (9 and 18), 1 RESOLUTION (8).
-
-    Every negative was stripped from its Fail ONE AT A TIME, compiled
-    alone in a scratch file mirroring this Require list, and its WHOLE
-    error read before being classified.  Every constant a negative names
-    is also Checked outside every Fail, in the guard block at the end.
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (* ==================================================================== *)

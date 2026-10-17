@@ -17,39 +17,11 @@ Require Import Category.Structure.Cocartesian.
 
 Generalizable All Variables.
 
-(** * Probe for Theory/Subobject/Quotient.v
+(*
+   本文件为测试：ProbeQuotObj446。
 
-    Mac Lane, Categories for the Working Mathematician, 2nd ed., §V.7
-    Definition 3, printed p. 126.  Issue #446.  The witnesses at Sets, Grp
-    and FinSet have their own probe, Test/ProbeQuotObjWitnesses446.v; this
-    file guards the general theory.
-
-    The import list above is the target file's own import list,
-    unabbreviated.  A short prefix is what makes a probe pass vacuously, so
-    nothing is trimmed even where a require is redundant.
-
-    Every statement asserted to be refuted below has been STRIPPED of its
-    refutation keyword in a copy of this WHOLE file, compiled alone, and
-    its complete error read; a refutation that holds prints nothing under
-    this repo's coqc, so a whole-file rc=0 would establish only THAT each
-    command does not typecheck and never WHY.  Each negative is classified
-    by the error TEXT, under THIS import list:
-
-      CONVERSION  - "The term T has type X while it is expected to have
-                    type Y (cannot unify A and B)".
-      INSTANCE    - an implicit argument of class type that no instance in
-                    scope resolves; the discriminator is the parenthetical
-                    "(no type class instance found)".  A bare [Check]
-                    TOLERATES such an open evar and succeeds, printing
-                    "where ?H : [...]", so every missing-instance negative
-                    is a [Definition], and the accepted [Check] is kept
-                    beside it as the contrast.
-
-    The instrument check comes first: a name that does not exist, refused
-    for a reason unrelated to any boundary.  Every LIBRARY constant a
-    negative names appears in a positive control outside any refutation
-    command, so that a rename cannot leave a negative refused for
-    reference-not-found and therefore vacuously green. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

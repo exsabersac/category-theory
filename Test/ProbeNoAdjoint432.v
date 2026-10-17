@@ -1,23 +1,8 @@
-(** * Probe for Instance/Sets/NoAdjoint.v and Adjunction/Continuity/Finite.v
-      (issue #432)
+(*
+   本文件为测试：ProbeNoAdjoint432。
 
-    Pins the measured boundaries of the two non-existence results with
-    negatives of two kinds, kept lexically apart: CONVERSION (N1: even at
-    [X = 1], [fixed_product_functor 1] is NOT the identity functor as a
-    record — its objects are [1 × x] — so the converse of Exercise 1 is a
-    construction, not [Id ⊣ Id] read through a conversion); TYPING (N2:
-    the converse's adjoint sits on the LEFT, [Id ⊣ X × −], and the other
-    ascription is refused; N3: the refutation is about [Sets^op] — read at
-    [Sets], whose cartesian structure IS closed, the ascription is refused
-    while [Sets_Closed] is accepted as the control).  The [eq_refl]
-    readbacks are positive controls: the duality scaffolding is
-    conversion, the two injections of [1 + 1] are apart definitionally,
-    and the fixed-product functor's arrow action is [second].  Each
-    refutation was stripped one at a time in a copy of the whole file;
-    the import list mirrors the target's.  UNIVERSE (N4): the four
-    obstruction corollaries identify the hom levels of the two categories;
-    the identification is the adjunction's own — a functor may not go DOWN
-    the hom levels (Theory/Functor.v's [h1 <= h2]) — not this file's. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

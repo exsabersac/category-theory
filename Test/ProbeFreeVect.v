@@ -1,58 +1,8 @@
-(** * Boundary probe: what is and is not definitional in the free module
-      and the free vector space.
+(*
+   本文件为测试：ProbeFreeVect。
 
-    Companion to Instance/Mod/Free.v and Instance/Vect/Free.v (Mac Lane
-    §III.1 and §IV.1, Riehl §4.0).  Those files make several strength
-    claims — some things hold at Leibniz [=] or by [eq_refl], others only
-    up to [≈] — and a strength claim that lives only in a header is a
-    claim nothing in the build would notice losing.  This file pins the
-    boundary in the manner of Test/ProbeFreeGroupoid.v: **if the [Fail]
-    commands here stop failing, this file breaks the build.**
-
-    Both sides are pinned deliberately.  A [Fail] alone proves very
-    little — it passes just as happily when the term is ill-typed for
-    some unrelated reason, or when a name has been renamed out from under
-    it.  So each negative probe is paired with a positive control which
-    must SUCCEED, and the controls are the headline claims themselves.
-
-    The instrument was checked before being trusted: wrapping [Fail]
-    around a command that succeeds reports "The command has not failed!"
-    and aborts compilation, so [Fail] here is not a no-op.  Each negative
-    below was also run with the [Fail] stripped, and the error confirmed
-    to be a genuine unification failure rather than a syntax, scope or
-    universe error; the diagnoses are recorded beside each probe.
-
-    The three negatives and their causes:
-
-      - The COUNIT of the free-forgetful adjunction does not compute.  It
-        is [from adj id], i.e. [unique_obj (ump_universal_arrows …)], and
-        [ump_universal_arrows] (Theory/Universal/Arrow.v) is [Qed]-opaque,
-        so no reduction is available.  The UNIT is on the other side of
-        that boundary and does compute, which is the positive control
-        [probe_unit_computes]; Instance/Mod/Free.v says so in terms and
-        states the counit only up to [≈]
-        ([free_module_counit_evaluates]).
-
-      - The ACTION OF THE FREE FUNCTOR ON AN ARROW does not compute
-        either, and for the same reason:
-        [LeftAdjointFunctorFromUniversalArrows] defines [fmap] as the
-        unique universal factorization, not by a formula.  That it
-        relabels generators is therefore a theorem
-        ([free_module_fmap_generators], the positive control here) rather
-        than a computation — which is precisely why
-        [free_module_naturality_in_set] needs a proof at all, while its
-        sibling [free_module_naturality_in_module] closes by
-        [reflexivity].
-
-      - THE QUOTIENT IS GENUINE.  Commutativity of a formal sum is a step
-        of the generated congruence [fv_eq] and not a definitional
-        equality of the underlying inductive: the two formal sums
-        e_true + e_false and e_false + e_true are distinct terms of
-        [FVTerm].  The positive control is [fe_comm], which inhabits
-        [fv_eq] between exactly those two terms.  This is what makes the
-        setoid presentation of Instance/Mod/Free.v a quotient rather than
-        a renaming, and it is why the linear extension needs
-        [fv_eval_respects] before it is a morphism at all. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

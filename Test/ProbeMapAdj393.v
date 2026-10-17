@@ -14,19 +14,11 @@ Require Import Category.Theory.Skeleton.
 
 Generalizable All Variables.
 
-(** * Boundary probe for Adjunction/Map.v (issue #393)
+(*
+   本文件为测试：ProbeMapAdj393。
 
-    Every boundary the header of Adjunction/Map.v records is pinned here as
-    a [Fail] command, with a passing command outside any [Fail] for every
-    constant a negative names.  Each negative was stripped one at a time,
-    compiled alone, and its whole error read; the kind recorded beside it is
-    read off that error text.
-
-    This file mirrors Adjunction/Map.v's full [Require] list and adds
-    Category.Theory.Skeleton, which that file deliberately does not take
-    (measured there: 21 modules to 32).  Sections A and B below spend the
-    import once, to check that the two square fields of [AdjSquares] really
-    are the two arguments of [strict_equiv_of_id_cast_nat]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check: a name that is in no file of the tree *)
 

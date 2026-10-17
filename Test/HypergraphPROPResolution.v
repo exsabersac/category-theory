@@ -17,33 +17,15 @@ Require Import Category.Construction.PROP.
 
 Generalizable All Variables.
 
-(** * End-to-end typeclass-resolution smoke tests for HypergraphPROP
+(*
+ nLab:      https://ncatlab.org/nlab/show/PROP
+ nLab:      https://ncatlab.org/nlab/show/hypergraph+category
+ Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-    nLab:      https://ncatlab.org/nlab/show/PROP
-    nLab:      https://ncatlab.org/nlab/show/hypergraph+category
-    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
+   本文件为测试：HypergraphPROPResolution。
 
-    A [HypergraphPROP] (see [Construction/PROP.v]) bundles a [PROP] — a
-    strict symmetric monoidal category whose object monoid is [(ℕ, +, 0)] —
-    with a [Hypergraph] instance, i.e. a chosen special commutative
-    Frobenius algebra (SCFA) on every object.  This file is a compile-time
-    smoke test: each [Definition] below type-checks only if the coercion /
-    [#[export] Existing Instance] chain actually delivers the structure
-    named in its type, so a successful build IS the assertion.
-
-    These tests verify that, given just [Variable P : HypergraphPROP],
-    Coq's typeclass resolution finds the structural instances downstream
-    callers will need:
-
-      - PROP                            -- via the [hpprop] coercion
-      - prop_cat P : Category           -- via the [prop_cat] coercion
-      - SymmetricMonoidal (prop_cat P)  -- via prop_symmetric
-      - StrictMonoidal (prop_cat P)     -- via prop_strict
-      - Hypergraph (prop_cat P) ...     -- via hpprop_hyper
-      - SpecialCommutativeFrobenius X   -- via scfa : forall X, ...
-
-    If this file compiles, the [#[export] Existing Instance] / Coercion
-    chain is working as advertised. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Open Scope nat_scope.
 

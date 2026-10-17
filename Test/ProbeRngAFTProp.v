@@ -23,29 +23,11 @@ Require Import Category.Instance.Rng.AFT.
 
 Generalizable All Variables.
 
-(** * Probe: the ring adjoint-functor-theorem applications are
-      non-circular, and here they are at a named set and a named group
+(*
+   本文件为测试：ProbeRngAFTProp。
 
-    The import list above is Instance/Rng/AFT.v's own, verbatim, plus that
-    file itself; a shorter prefix is what makes a probe pass for no reason.
-
-    WHAT THIS FILE GUARDS.  Until the PR "algebraic carriers are sets"
-    (2026-09-17), [free_rng_ab_via_GAFT] and [free_ring_via_GAFT] consumed
-    [solution_set_of_adjunction] applied to the very adjunctions they were
-    meant to produce, and Instance/Rng/AFT.v's header said so at length.
-    They now consume solution sets built from the free-ring TERM MODEL by
-    [Prop]-valued congruences.  That change is invisible to the type -- the
-    two readings inhabit the same statement -- so nothing in the build
-    would notice it being reverted.  This file notices: the [eq_refl]
-    readbacks below name the congruence index, and the [Fail] pins that the
-    new solution set is not the old singleton.
-
-    DISCIPLINE.  Every negative is paired with a positive control naming
-    the same library constants; the instrument was checked; each negative
-    was re-run with its guard stripped in a copy of this whole file so the
-    refusal kind could be read rather than guessed.  The kinds recorded are
-    CONVERSION (two) beside the instrument check, whose refusal is a
-    missing NAME. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

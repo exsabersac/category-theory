@@ -1,61 +1,8 @@
-(** * Probe for Instance/Fun/Eval.v and Instance/Fun/Eval/Cat.v (issue #424)
+(*
+   本文件为测试：ProbeFunEval424。
 
-    Pins the measured boundaries of the evaluation functor on a functor
-    category: the new [Eval] is Adjunction/Diagonal/Connected.v's [EvalAt]
-    in both data fields but not as a record, and the partial application of
-    the two-variable evaluation agrees with it on arrows up to [≈] only.  It
-    also carries, as positive controls, the identifications with every
-    evaluation-shaped functor already in the tree ([EvalAt], [YoEvalAt],
-    [One_Eval], [Cat_Closed]'s own [eval]) and Awodey's [ev1] re-expressed
-    through the general one.  Every refutation command below was stripped
-    ONE AT A TIME in a copy of the whole file and compiled alone with its
-    error read, so each refusal is of the kind its label says.
-
-    Numbering:
-     instrument      an absent name, refused — the refutation keyword is
-                     live in this file.
-     N1 CONVERSION   [Eval p = EvalAt p] is refused at [eq_refl] ("cannot
-                     unify Eval p and EvalAt p"): both are [Program
-                     Definition]s whose law fields are separate opaque
-                     constants (Lib.v makes obligations opaque).  Controls:
-                     [fobj] and [fmap] convert at [eq_refl], under
-                     [EvalAt]'s own universe annotation.
-     N2 CONVERSION   [fmap[Eval p] s = fmap[Partial_l EvalBi p] s] is refused
-                     at [eq_refl]: [Partial_l]'s arrow action is [bimap s
-                     id], which still carries the [fmap id] the functor law
-                     removes.  Controls: the object actions convert, and
-                     [eval_partial_map] closes the arrow case at [≈], packaged
-                     as [eval_partial_iso].
-     N3 CONVERSION   the [Partial_r] twin: [fmap[Partial_r EvalBi H] f =
-                     fmap[H] f] is refused at [eq_refl] for the same reason
-                     ([bimap id f]); controls [eval_partial_r_obj] at
-                     [eq_refl] and [eval_partial_r_map] at [≈].  Added after
-                     the audit, which found the boundary measured but
-                     unguarded.
-
-    Positive controls, deliberately NOT written as refutations: the
-    identifications with [YoEvalAt] and [One_Eval] (both fields each),
-    [Cat_Closed]'s evaluation ([CatEval_map]) and the transpose
-    ([eval_transpose]); [p424_prior_nat], the one-object instance of
-    [Eval_nat] already in the tree (Functor/Representable/Functorial.v's
-    [wit_ev_tau]), component for component at [eq_refl]; and
-    [p424_ev1_via_Eval], Theory/Lawvere/Sets.v's [ev1] as [Eval (law_of_nat
-    1) ◯ Incl], agreeing with [ev1] in both data fields at [eq_refl] (a
-    twin: [ev1] itself is not re-expressed).  The universe COLLAPSE of
-    routing through [Cat]'s exponential typechecks and so cannot be
-    refuted; it is measured by [About] in the headers, not faked as a
-    probe.  Note the parenthesised [(Eval p)] wherever the constant heads a
-    term: bare [Eval p] at a definition-body head is read as the [Eval … in]
-    vernacular.
-
-    Guard coverage: every constant a refutation names is also named
-    outside a refutation command (the guard block at the end) — the
-    exceptions, under the plain identifier tokenization with comments
-    stripped, being the keyword itself, the three names the refuted
-    declarations would introduce, the binder [s] and the instrument's
-    absent name — so a renamed or removed constant breaks the build on a
-    positive line rather than letting a refutation pass for the wrong
-    reason. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

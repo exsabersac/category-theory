@@ -1,84 +1,8 @@
-(** * Boundary probes for Instance/Fun/Terminal.v (issue #339)
+(*
+   本文件为测试：ProbeFunTerminal339。
 
-    Mac Lane CWM 2nd ed. §III.5 Exercise 5, book p. 74.
-
-    The target ships its own two CONVERSION refutations with controls
-    (`Instance/Fun/Terminal.v` and).  This file pins the SEVEN
-    boundaries it cannot: six FORMABILITY negatives, which need a section
-    declaring universe levels strictly apart and so cannot live in a
-    library file, and one three-way SEPARATION that is a positive
-    measurement rather than a refutation.
-
-    SIX NEGATIVES, ALL FORMABILITY, in two groups:
-
-      * Negatives 1-5 attribute the hom = proof identification that every
-        result about `[C, D]` carries.  FIVE donors do it INDEPENDENTLY --
-        `Terminal`, `Cartesian`, `HasIndexedProducts`, `IsIndexedProduct`
-        and `Fun` -- each rejected under `Constraint uh < up` against
-        controls that name a hom and a family at those very levels.  The
-        point of testing all five separately is that blaming the first
-        plausible donor would be wrong: `Fun` in fact does MORE than the
-        other four, identifying hom with proof in BOTH arguments and the
-        two hom levels with each other.
-
-      * Negative 6 is why the target builds `Constant_Functor` instead of
-        citing `Functor/Diagonal.v`.  `Diagonal`'s type mentions `[J, C]`
-        and so inherits `Fun`'s identification; the constant functor built
-        by hand does not, and keeps C's hom and proof APART.  The control
-        is that very functor at the very levels the negative is rejected
-        at, so the negative is attributable to `Diagonal` and not to the
-        section.
-
-    THE SEPARATION (no `Fail` -- three `About`-able definitions):
-    `probe_functor_only`, `probe_cone_of_discrete` and
-    `probe_limit_of_discrete` measured WHERE the `Set` pin on the
-    `Limit`-of-a-discrete-diagram route came from, back when there was
-    one.  Measured here rather than assumed, and the result CORRECTED
-    what ONE of this tree's own docs/INDEX.md bullets said -- the
-    `Construction/Coproduct/Indexed.v`/`Instance/Cat/Coproduct.v` one.
-    (An earlier revision of this header named three bullets; the other
-    two are sound, `Functor/Hom/Limit.v`'s naming both donors and
-    `Structure/Limit/Product/Finite.v`'s citing the composite.)
-
-      probe_functor_only      C : Category@{u1 u0 u0}    FREE
-      probe_cone_of_discrete  C : Category@{u2 u1 u1}    FREE
-      probe_limit_of_discrete C : Category@{u3 u2 u2}    FREE
-
-    RECORDED CORRECTION.  An earlier revision of this table read the third
-    row as `C : Category@{u1 Set Set}  PINNED`, and concluded: "So
-    `DiscreteCat_Functor` ALONE does NOT pin the ambient category -- it
-    fixes only the SHAPE, at `DiscreteCat@{u Set Set}`.  The ambient pin
-    needs a SECOND donor that identifies the shape's hom and proof with
-    the ambient's; it takes BOTH."  Both halves were correct measurements
-    of the tree of the time, and the FIRST donor has since been repaired:
-    `DiscreteCat_Functor` was annotated in place at
-    `Instance/Discrete.v` in the PR "algebraic carriers are sets"
-    (2026-09-17), so it fixes no shape universe at all and the third row
-    is now FREE like the other two.  The separation therefore no longer
-    has a `Set` to locate, and the three definitions are kept as positive
-    CONTROLS: were the annotation dropped, the third row would print
-    `Set` again.  They are `About`-able below; re-run them rather than
-    trusting this table.  What is NOT repealed is the structural half of
-    the old conclusion -- `Limit` and `IsALimit` identify the shape's
-    hom-and-proof universe with the ambient's where `Cone` does not, so a
-    second donor is still what would carry any ambient restriction.  Read
-    the second half narrowly: the
-    `Cone` RECORD is innocent, but that licenses no claim that
-    `IsALimit`/`Limit` are the ONLY other donors, and they are not --
-    `cone_leg` (`Structure/Limit/Preservation.v`, over
-    `J : Category@{u u0 u0}` and `C : Category@{u1 u0 u0}`) and
-    `IsLimitCone` identify them in exactly the same way, so
-    CONE VOCABULARY is among the donors even though the record is not.
-    `Structure/Limit/Initial.v`'s own bullet already warns that an
-    `ACone` control rules out only `ACone`/`Cone`; an earlier revision of
-    this header ran that control and drew the broader conclusion anyway.  The practical conclusion those bullets draw (do not route an
-    indexed product through `Limit (DiscreteCat_Functor …)`) is unchanged
-    and is what `Instance/Fun/Terminal.v` follows; only the attribution
-    was wrong.
-
-    Every negative is paired with a positive control naming its own
-    constants.  The measured rename-simulation score is at the end, over
-    the constants the NEGATIVES name and no others. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

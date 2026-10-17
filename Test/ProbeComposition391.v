@@ -24,27 +24,11 @@ Generalizable All Variables.
 
 (** * Probe for Structure/Cartesian/Closed/Composition.v (issue #391) *)
 
-(* Mac Lane §IV.6 Exercise 4 (`maclane:IV.6:ex4`).  Everything the target
-   MEASURES and does not itself state is pinned here, from OUTSIDE that
-   file, so that a rename of a target constant breaks this probe rather
-   than silently turning a guard green.  The `Require` list above mirrors
-   the target's exactly, plus the target itself.
+(*
+   本文件为测试：ProbeComposition391。
 
-   FIVE negatives of THREE kinds, told apart by the error text:
-
-     1  CONVERSION  the [Sets] agreement does not hold at Leibniz equality
-                    on whole MORPHISMS -- only pointwise
-     2  TYPING      the naive functorial action in [b] is not well typed,
-                    which is why there is no naturality square in [b]
-     3  CONVERSION  the two candidate hom-TYPES of that action differ
-     4  CONVERSION  a functor whose [fobj] is elaborated inside its own
-                    [Program Definition] converts with nothing
-     5  FORMABILITY [Cartesian] identifies a category's hom and proof
-                    universes, which is where the target's binder
-                    [Category@{u u0 u0}] comes from
-
-   plus one scope-free instrument check.  Each was stripped one at a time,
-   compiled alone, and its whole error read. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Instrument check: a name that cannot exist must be rejected, so that no
    negative below can pass for the wrong reason. *)

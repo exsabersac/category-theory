@@ -79,9 +79,11 @@ Check (TwoFar : ExtMetricSpace).
 
 (* ===== BLOCK B — what IS definitional, and what is not, on the metric ===== *)
 
-(* POSITIVE CONTROL.  The distance of [R_Metric] reduces to the absolute
-   difference; Instance/Met.v states this as an [Example] and it is repeated
-   here so that Block B's rejection has a live neighbour. *)
+(*
+   本文件为测试：ProbeMet。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example R_Metric_dist_is_abs (x y : R_Metric) : dist x y = Rabs (x - y) := eq_refl.
 
 (* POSITIVE CONTROL.  The carrier of the completion is the type of Cauchy

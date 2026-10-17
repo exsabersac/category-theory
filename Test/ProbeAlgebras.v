@@ -1,24 +1,8 @@
-(* Probe file for the monoid ring, the tensor algebra and the exterior
-   algebra: Instance/Rng/MonoidRing.v, Instance/Rng/GroupRing.v,
-   Instance/Rng/Algebras/Associative.v and Instance/Vect/TensorAlgebra.v.
+(*
+   本文件为测试：ProbeAlgebras。
 
-   Convention: Test/ProbeFunnyPoly.v, Test/ProbeSquare.v,
-   Test/ProbeFreeGroupoid.v, Test/ProbePolynomial.v.  Each NEGATIVE is a
-   [Fail] guarding a strength claim made in one of those files, and each
-   is paired with a POSITIVE CONTROL that must succeed, so that a rename
-   or a definitional change breaks this file loudly instead of turning the
-   [Fail]s vacuously green.
-
-   PROBE HYGIENE.  The import list below is the union of the four target
-   files' imports, in their order, because a short prefix is exactly what
-   makes a probe pass for the wrong reason: a missing coercion turns a
-   [Fail] green with an "Illegal application" that has nothing to do with
-   the claim being guarded (the episode recorded in
-   Test/ProbeFieldFrac.v).  Each negative below was stripped of its [Fail]
-   during development and the resulting error inspected: negatives 1 and 2
-   are genuine universe inconsistencies naming the declared level
-   ("Cannot enforce Set = big"), and negatives 3 to 6 are genuine
-   conversion failures. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Coq.ZArith.ZArith.
 

@@ -1,25 +1,8 @@
-(** * Probe for Adjunction/Representability/Sets.v (issue #437)
+(*
+   本文件为测试：ProbeRepresentability437。
 
-    Pins the measured boundaries of the representability theorem with
-    negatives of three kinds, kept lexically apart: CONVERSION (N1: the
-    element-wise solution set of Definition 3 and the hom-shaped
-    [SolutionSet] at the singleton are different records, related by
-    [sols_of_esols]/[esols_of_sols] and not by conversion; N2: [HomAfter K
-    1] is [Hom(1,−) ◯ K] on the nose — the accepted control — but NOT [K]
-    itself, which is why [homafter_one_iso] exists); TYPING (N3: the
-    theorem consumes the cone-level [PreservesImageLimit], and the
-    apex-only [PreservesAllLimits] does not ascribe — GAFT's own
-    distinction; N5: [HasSetsCopowers] indexes by an object of [Sets], and
-    the [Type]-indexed shape the tree's copowers have does not ascribe,
-    which is exactly why §V.8 Exercise 1's converse is conditional);
-    UNIVERSE (N4: the theorem inherits GAFT's pin of the hom AND proof
-    universes, so a category declared with them apart is refused).  The
-    [eq_refl] readbacks are positive controls: both passages between the
-    two solution-set forms keep index and objects, the transported
-    representation keeps its object, the left-adjoint route returns the
-    adjoint at the singleton, and the two [Sets] witnesses compute.  Each
-    refutation was stripped one at a time in a copy of the whole file; the
-    import list mirrors the target's. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

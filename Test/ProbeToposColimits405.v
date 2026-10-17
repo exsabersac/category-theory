@@ -53,28 +53,11 @@ Require Import Category.Instance.FinSet.Topos.
 Generalizable All Variables.
 Open Scope category_scope.
 
-(* Measured negatives for Structure/Topos/{Power,Monadic,Colimits}.v and
-   Theory/Equivalence/Pullback.v.
+(*
+   本文件为测试：ProbeToposColimits405。
 
-   A passing refutation command prints NOTHING, so every one below was
-   stripped ONE AT A TIME, compiled alone, and its whole error read; the
-   KIND is read off the error TEXT, not guessed:
-
-     FORMABILITY -- "universe inconsistency" / "Cannot enforce";
-     TYPING      -- a plain "has type ... while it is expected to have
-                    type ..." with no cannot-unify and no universe clause;
-     CONVERSION  -- "cannot unify" between two terms of ONE type.
-
-   Every constant a refutation REFERENCES also appears OUTSIDE every refutation,
-   in a [Check] control or a positive [Example]; the exceptions are the
-   instrument's deliberately absent name and the five names the refutations
-   themselves DECLARE, which never enter the environment.
-
-   The FinSet section lives HERE and not in Structure/Topos/Colimits.v for
-   a MEASURED reason: requiring Instance/FinSet/Topos costs that file's
-   transitive closure +6 modules, above the +5 the plan allowed, and a
-   sanity example must not make every consumer of the general theorem pay
-   for the finite model. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check: a deliberately absent name *)
 

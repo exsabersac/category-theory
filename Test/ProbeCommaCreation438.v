@@ -1,46 +1,8 @@
-(** * Probe for the comma and coslice creation results (issue #438)
+(*
+   本文件为测试：ProbeCommaCreation438。
 
-    Pins the measured boundaries of Construction/Comma/Creation.v's
-    per-diagram and strict-creation additions and of
-    Construction/Slice/Creation.v.  Every negative is now of ONE kind, and
-    the recorded correction below says what the second kind was.
-    CONVERSION: N1, the all-shapes [PreservesImageLimit]
-    and the shape-indexed family of [PreservesLimitCone]s agree at every
-    diagram — the accepted controls show both passages — but the two
-    [Type]s are not convertible, one binding a [Limit] where the other
-    binds a cone with its universal property; N3 and N4, the coslice is
-    reached only by transport, so the transported projection's object
-    action does not reduce to the first projection and the coslice is not
-    the comma category on the nose; N5, the shipped [comma_CreatesLimit]'s
-    [creates_lift] discards the cone it is handed and returns the lift of
-    the fixed [L], so its apex is refused against that cone's apex, while
-    the paired control shows the new strict lift is accepted.
-
-    RECORDED CORRECTION: an earlier revision listed a second kind,
-    UNIVERSE, for N2 — "a discrete-shape base diagram built by ELIMINATING
-    the shape's [x = y] into a hom is not formable over a generic [C] —
-    the elimination pins both categories to [Category@{_ Set Set}], while
-    [DiscreteCat] itself leaves those universes free — which is why the
-    products clause is stated elementarily over [IsIndexedProduct]".  The
-    elimination was not the cause: the pin was a universe-minimization
-    artifact of Instance/Discrete.v's unannotated [DiscreteCat_Functor],
-    annotated in the PR "algebraic carriers are sets" (2026-09-17), and
-    the base diagram IS formable.  N2 is kept as a positive control there;
-    every remaining negative in this file is CONVERSION.  The products
-    clause is still stated elementarily over [IsIndexedProduct], which is
-    now a presentational choice, and the constant discrete diagram below
-    still shows that class inhabited.
-
-    N6, CONVERSION again: the plain coslice projection and the transported
-    one are different functors, so neither file's result transfers to the
-    other by conversion.
-
-    The [eq_refl] readbacks are positive controls: the per-diagram limit
-    projects onto the downstairs limit in apex and legs, so do the indexed
-    product and the equalizer, and the strict lift's own two fields are
-    [eq_refl] and [reflexivity].  Each refutation was stripped one at a
-    time in a copy of the whole file; the import list mirrors the two
-    targets'. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

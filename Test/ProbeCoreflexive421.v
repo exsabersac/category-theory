@@ -1,60 +1,8 @@
-(** * Probe for Structure/Equalizer/Coreflexive.v (issue #421)
+(*
+   本文件为测试：ProbeCoreflexive421。
 
-    Pins the measured boundaries of coreflexive pairs and Manes' criterion:
-    the notion is the op-dual of a reflexive pair field for field but not
-    as a type, the class is neither the dual class nor [HasEqualizers] by
-    conversion, the identity index that makes Mac Lane's pair coreflexive
-    exists only at the FULL arrow family of Structure/Limit/FromProducts.v,
-    and the Sets converse of Exercise 1(b) needs a properness hypothesis.
-    Every refutation command below was stripped ONE AT A TIME in a copy of
-    the whole file and compiled alone with its error read, so each refusal
-    is of the kind its label says.
-
-    Numbering:
-     instrument      an absent name, refused — the refutation keyword is
-                     live in this file.
-     N1 CONVERSION   [CoreflexivePair f g = @ReflexivePair (C^op) y x f g]
-                     is refused at [eq_refl] ("cannot unify"); the fields
-                     convert ([p421_field_converts]) and the pair
-                     round-trips both ways at [eq_refl] (controls).
-     N2 CONVERSION   [HasCoreflexiveEqualizers C = HasReflexiveCoequalizers
-                     (C^op)] is refused at [eq_refl]: the existential
-                     bodies are [IsEqualizer] and [IsCoequalizer]; both
-                     class directions are derivable (controls).
-     N3 CONVERSION   [HasCoreflexiveEqualizers C = HasEqualizers C] is
-                     refused at [eq_refl]; the inclusion from
-                     [HasEqualizers] is an instance (control).
-     N4 TYPING       at an abstract generating family, the projection at a
-                     chosen index has codomain [F (idx_cod (idx_id x))],
-                     not [F x]; it lands at its declared codomain
-                     (control), and at the FULL index the tie to [x] is
-                     definitional (control, and [p421_id_index] at
-                     [eq_refl]).  TRAP, pinned positively: with [idx_cod]
-                     left implicit the same ascription is ACCEPTED —
-                     [p421_trap_gen_proj_at_x] names a DIFFERENT product,
-                     the unifier having solved [?idx_cod (idx_id x) ≡ x]
-                     with a constant family.
-     N5 TYPING       the choice function carried by [diagonal_in_image]
-                     is not a Sets morphism by itself: the record literal
-                     is refused with "Cannot infer field proper_morphism";
-                     [diagonal_section] with the properness hypothesis is
-                     the control, and the IMAGE-level biconditional
-                     [diagonal_in_image_iff_through_image] — proper in
-                     both directions with no hypothesis, because the image
-                     setoid compares codomain components only — is the
-                     second control.
-
-    Readbacks: [mc_limit_apex] and [mc_limit_leg] (Theorem 2's explicit
-    limit read back through Manes' equalizer), the three identity-index
-    [eq_refl]s, and the non-vacuity witness [Sets_Complete_via_Manes].
-
-    Guard coverage: every constant a refutation names is also named
-    outside a refutation command (the guard block at the end) — the
-    exceptions, under the plain identifier tokenization with comments
-    stripped, being the keyword itself, the five names the refuted
-    declarations would introduce, and the instrument's absent name — so a
-    renamed or removed constant breaks the build on a positive line rather
-    than letting a refutation pass for the wrong reason. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

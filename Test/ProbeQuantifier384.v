@@ -22,67 +22,11 @@ Require Import Coq.Relations.Relation_Definitions.
 
 Generalizable All Variables.
 
-(** * Probe for Instance/Powerset/Quantifier.v (issue #384)
+(*
+   本文件为测试：ProbeQuantifier384。
 
-    Every boundary that file's header MEASURES is pinned here, from
-    OUTSIDE it: an in-file [Fail] renames in lockstep with the constant
-    it guards and so cannot detect a rename.  The [Require] list above
-    is the target's own, plus the target.
-
-    SIX NEGATIVES OF THREE KINDS -- four CONVERSION, one TYPING, one
-    FORMABILITY -- told apart by the error TEXT rather than by label,
-    plus one scope-free instrument check.  Each was stripped of its
-    [Fail] ONE AT A TIME, compiled alone, and its whole error read; the
-    typing one reports a plain "has type ... while it is expected to
-    have type" with NO "cannot unify" and no universe clause, the four
-    conversion ones end in "cannot unify", and the formability one ends
-    in "universe inconsistency: Cannot enforce pr = po".
-
-      1 CONVERSION -- [GaloisFunctor_l] of the new connection is not
-        [InverseImage f].  "cannot unify"; the two functor records have
-        the same [fobj] and the same [fmap] (controls below) and differ
-        only in their three opaque law fields, which is why the headline
-        is built with [proset_adjunction_at] rather than with #380's
-        [GaloisAdjunction].
-
-      2 CONVERSION -- [proj_exists S] is not [Powerset_Prop_image] along
-        the projection.  "cannot unify"; the [≈] form is the target's
-        [proj_exists_is_image] and the pointwise disagreement is real,
-        an [ex] against a [Powerset_squash] of a [sigT].
-
-      3 CONVERSION -- [proj_forall S] is not [Powerset_Prop_dual] along
-        the projection.  Same shape: the two quantify over different
-        carriers.
-
-      4 CONVERSION -- [Subsets 1] and [Props] are not the same category:
-        their OBJECT types differ, an [equiv]-respecting predicate on the
-        point against a bare [Prop].  So the target's
-        [subsets_one_Props], which is an [≅[Cat]] and hence an
-        EQUIVALENCE in this library, cannot be strengthened to an
-        identity of categories, and the target's header says so.
-
-    A NEGATIVE THAT DID NOT FIRE, RECORDED RATHER THAN REMOVED SILENTLY.
-    The first cut of this probe carried, as negative 4, the refutation of
-    Beck-Chevalley at WHOLE-SUBSET Leibniz equality, and it did not fire.
-    The equality holds, the target now ships it at that grade
-    ([beck_chevalley_exists]/[beck_chevalley_forall]), the probe carries
-    it as a POSITIVE, and both headers record the reason.  The
-    replacement negative 4 above is the [Subsets 1]-vs-[Props] one.
-
-      5 TYPING -- the headline adjunction cannot be ascribed at the
-        reversed handedness.  A plain "has type ... while it is expected
-        to have type"; its tail does mention the two functors, so the
-        kind is read off the whole message and not off the tail.
-
-      6 FORMABILITY -- [Powerset_Prop_obj] does not accept a setoid whose
-        carrier and relation universes are declared apart.  "Universe
-        inconsistency"; the carrier and the setoid structure of that very
-        argument ARE accepted at those levels, which is what makes the
-        rejection attributable to [Powerset_Prop_obj] rather than to the
-        argument.  It is probed FIRST, before [Powerset_Prop_dual], for
-        the reason #340 records: a probe aimed at the derived constant
-        would be rejected at its [Powerset_Prop_obj] argument and would
-        measure nothing of its own. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** Instrument check *)

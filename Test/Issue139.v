@@ -9,19 +9,11 @@ Require Import Category.Instance.Coq.
 
 Generalizable All Variables.
 
-(* Regression test for issue #139 ("CartesianMonoidal cleanup").
+(*
+   本文件为测试：Issue139。
 
-   Issue #139 observed that the library appeared to be missing the forward
-   direction "every cartesian category is a monoidal category", and that the
-   file Monoidal/Cartesian.v misleadingly held the *reverse* (Heunen-Vicary)
-   result instead.  The forward direction in fact already existed, as
-   CC_Monoidal in Monoidal/Internal/Product.v; it is now surfaced under the
-   discoverable name Cartesian_Monoidal in Monoidal/Cartesian.v.
-
-   These checks pin that down: the forward direction is available generically
-   under its discoverable name; its tensor is the categorical product, on both
-   objects and morphisms; its unit is the terminal object; and it agrees with
-   the monoidal structure that a concrete cartesian category (Coq) uses. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Issue139.
 

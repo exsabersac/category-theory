@@ -1,65 +1,8 @@
-(** * Boundary probe for Adjunction/Right.v (issue #358)
+(*
+   本文件为测试：ProbeRight358。
 
-    Mac Lane CWM 2nd ed. §IV.2 Definition 2, book p. 89 (the item
-    maclane:IV.2:def2) -- a pair of contravariant
-    functors each adjoint on the right, together with Mac Lane's own
-    warning that this relation is NOT the ordinary adjunction read
-    through an opposite category.
-
-    WHY THIS FILE EXISTS AT ALL.  [Adjunction/Right.v] carries ten
-    [Fail]s of its own and they are well formed -- each was stripped
-    once and its whole error message read, each sits beside a control
-    that must succeed, and the instrument check is scope-free.  What an
-    in-file negative CANNOT do is survive a rename: a whole-file rename
-    moves the [Fail] and the constant it names in lockstep, so the guard
-    stays green while the thing it guarded is gone.  Every negative
-    below therefore names a constant of the TARGET, and the file mirrors
-    ALL of the target's [Require] lines -- a probe built on a short
-    prefix of that list is the classic way to make a negative pass for a
-    reason it never measured (a missing coercion, an absent notation),
-    certifying nothing.
-
-    KINDS, separated by the error TEXT rather than by label:
-      TYPING       a plain `The term "H" has type ... while it is
-                   expected to have type ...`, with NO `cannot unify`
-                   and no universe clause
-      CONVERSION   ends `(cannot unify "X" and "Y")`
-      FORMABILITY  ends `(universe inconsistency: Cannot enforce ...)`
-
-    THE FIRST NEGATIVE IS THE REVIEWER'S BAR.  The question that decides
-    whether this issue has content at all is whether
-    [AdjointOnTheRight S T] is merely an abbreviation for the ordinary
-    [T^op ⊣ S].  It is not, and negative 1 is what says so: stripped, it
-    reports
-
-      The term "H" has type "T^op ⊣ S" while it is expected to have type
-       "AdjointOnTheRight S T".
-
-    -- a plain type mismatch.  The two are nevertheless INTERDERIVABLE,
-    which is what the controls name: [Adjunction_of_AdjointOnTheRight]
-    and [AdjointOnTheRight_of_Adjunction] pass both ways and all four
-    round trips hold at [eq_refl] in the target.  So the class is a
-    genuine record that is equivalent to, and not definitionally equal
-    to, the ordinary adjunction at the opposite categories.
-
-    NOTE THE ORIENTATION, which is easy to get backwards.  BOTH
-    readings are correct and both are delivered: [T^op ⊣ S] is the one
-    matching the direction of the book's bijection
-    [A(a, T x) ≅ X(x, S a)], while [S^op ⊣ T] matches its INVERSE, and
-    the target ships the second as the primed orientation with passages
-    both ways.  So which one is "the" reduction is a question of which
-    way the bijection is read, NOT an error in either spelling.
-    Negative 2 is the reverse direction of negative 1, and negative 3
-    separates the right-adjoint class from the left-adjoint one.
-
-    WHAT IS NOT GUARDED HERE.  The target's four FORMABILITY negatives
-    need section-local [Universes]/[Constraint] declarations naming
-    levels that do not exist outside them, so they stay in the target
-    beside their controls.  They measure TWO DIFFERENT identifications,
-    two negatives each: that hom is identified with proof (rejected at
-    [Opposite], and independently at [Sets] with no functor in the
-    command at all), and that A's hom is identified with X's.  Neither
-    is a claim about a name this file could rename-test. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

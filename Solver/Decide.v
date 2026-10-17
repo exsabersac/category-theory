@@ -9,38 +9,11 @@ Require Import Category.Solver.Denote.
 Require Import Category.Solver.Reify.
 Require Import Category.Solver.Normal.
 
-(** * The decision procedure and its soundness theorem
+(*
+   本文件给出 Decide 相关定义与性质。
 
-    This file is the top of the [Solver/] reflective tower (Expr → Denote →
-    Normal → Reify → Decide).  It assembles a decision procedure for morphism
-    equalities and proves the one fact that makes the reflective tactic sound:
-    if the procedure reports that two reified terms are equal, then their
-    denotations are equal under [≈].  The technique is the standard "proof by
-    reflection" (https://en.wikipedia.org/wiki/Computational_reflection):
-    compute a verdict on the syntax, then transport that verdict to the
-    original goal.
-
-    The decision is structural: by [to_morphism] (Solver/Normal.v) a [Term] of
-    the free category (https://ncatlab.org/nlab/show/free+category) is sent to a
-    flat normal form, and two terms are judged equal exactly when their normal
-    forms are [eq_dec]-equal.  Because [Term] normal forms have decidable
-    equality and normalization is sound w.r.t. denotation, agreement of normal
-    forms implies agreement of denotations.
-
-    The verdict type [partial], its [Yes]/[No] constructors and the
-    [Reduce]/[||]/[&&] notation are the decidability monad of Adam Chlipala's
-    "Certified Programming with Dependent Types" (CPDT): a [partial P] is either
-    a proof of [P] ([Proved]) or [Uncertain].  Note the asymmetry — an
-    [Uncertain] result carries no refutation, it merely records that the
-    procedure could not establish the goal.  Consequently only soundness is
-    proved here, never the converse: the procedure is sound but not claimed to
-    be complete, and an honest [Uncertain] is always permitted.  Soundness
-    alone is exactly what a reflective tactic needs.
-
-    [expr_sound] is the soundness lemma the tactics below rely on; the
-    [categorify] and [categorical] entry points reify a categorical goal (via
-    Solver/Reify.v), apply [expr_sound], and discharge the residual
-    well-typedness side-condition by [vm_compute]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Decide.
 

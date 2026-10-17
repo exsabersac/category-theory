@@ -20,27 +20,11 @@ Require Import Category.Adjunction.LeftInverse.
 
 Generalizable All Variables.
 
-(** * Boundary probes for Adjunction/LeftInverse.v (Mac Lane SS IV.4)
+(*
+   本文件为测试：ProbeLeftInverse376。
 
-    Each [Fail] below was stripped ONE AT A TIME -- the others left in
-    place -- the file recompiled, and the whole error message read, so
-    that the KIND of every rejection is measured rather than guessed.
-    The kinds are kept lexically apart:
-
-      TYPING       a plain "has type ... while it is expected to have
-                   type ...", with NO "cannot unify" and no universe
-                   clause;
-      CONVERSION   two terms of ONE type that do not convert
-                   ("Unable to unify" / "cannot unify");
-      FORMABILITY  "universe inconsistency: Cannot enforce ...".
-
-    Every constant a negative names also appears OUTSIDE a [Fail], so a
-    rename cannot leave a guard vacuously green.  The negatives that
-    compare terms compare TERMS OF A FIXED TYPE (an [eq] between two
-    explicitly typed sides, or a [Check] of a proposition), never an
-    ascription of a term to a type where a coercion -- Coq's
-    [reverse_coercion] in particular -- could silently repair the
-    mismatch and turn the guard into a false pass. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check: [Fail] itself must be able to fail. *)
 

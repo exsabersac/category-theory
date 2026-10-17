@@ -1,52 +1,8 @@
-(** * Boundary probes for couniversal arrows
+(*
+   本文件为测试：ProbeCouniversal。
 
-    Companion to Theory/Universal/Arrow/Dual.v and
-    Theory/Universal/Arrow/Dual/Examples.v (issue #302, Mac Lane §III.1
-    Definition 3).  That file makes several strength claims — some
-    definitional, some only up to [≈] — and the negative side of each is
-    a conversion boundary that no in-tree consumer would notice breaking.
-    They are pinned here.  **If the [Fail] commands below stop failing,
-    this file breaks the build.**
-
-    Every negative is paired with a positive control that must SUCCEED,
-    for the reason Test/ProbeQuiverConstructions.v gives: a [Fail] alone
-    passes just as happily when a name has been renamed out from under
-    it.  The instrument itself was checked — wrapping [Fail] around a
-    succeeding command reports "The command has not failed!" and aborts
-    compilation — and each negative below was compiled once with the
-    [Fail] stripped, to confirm the error is the intended typing failure
-    and not a syntax, scope or resolution error.
-
-    THE FOUR BOUNDARIES.
-
-    (1) THE COVARIANT READING IS REAL, NOT A REPACKAGING.  This is the
-    claim the issue's design constraint turns on: [coarrow_obj] and
-    [coarrow] are supplied by [:=] with no tactic, so the covariantly
-    typed [F a ~{C}~> c] and the op-side [c ~{C^op}~> (F^op) a] are the
-    same term.  Purely a positive control — the claim IS that nothing is
-    rejected.
-
-    (2) THE TERMINAL-OBJECT READING IS A THEOREM, NOT THE DEFINITION.
-    [@Initial (=(c) ↓ F^op)] taken in the opposite categories is not
-    convertible with [@Terminal (F ↓ =(c))]: [Comma] indexes its objects
-    by an ORDERED pair of categories, so the first ranges over
-    [1 ∏ D^op] and the second over [D ∏ 1], and [Product] of categories
-    is not symmetric on the nose.  This is why
-    [couniversal_arrow_terminal] exists as a construction rather than as
-    a coercion.  The mismatch is located precisely here as well: it is
-    NOT the terminal/initial axis (that conversion is free, and is a
-    positive control below), and Construction/Comma.v's [Cocomma] — the
-    route the issue proposed — does not close it, being neither of the
-    two commas involved.
-
-    (3) THE DUAL IS NOT THE PRIMAL.  [CouniversalArrow c F] and
-    [UniversalArrow c F] are distinct types; the file is not a renaming.
-
-    (4) THE COUNIT AGREES WITH THE COUNIVERSAL ARROW ONLY UP TO [≈].
-    [AdjunctionFromCouniversalArrows] assembles by duality, and its
-    object action does reduce ([right_adjoint_obj] is [eq_refl]) — but
-    the transpose delivers [coarrow ∘ fmap[F] id], one [fmap_id] and one
-    [id_right] short of the couniversal arrow itself. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

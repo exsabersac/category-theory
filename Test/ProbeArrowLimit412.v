@@ -21,63 +21,11 @@ Generalizable All Variables.
 
 (** * Probe: the measured boundaries of Construction/Arrow/Limit.v *)
 
-(* Companion to Construction/Arrow/Limit.v (Mac Lane, Categories for the
-   Working Mathematician, 2nd ed., §V.1 Exercise 3).  Everything that file
-   claims at [eq_refl] is shipped there as an [Example]; what it cannot
-   guard from inside are the REFUSALS its header records and the universe
-   boundary a consumer meets.  Those are pinned here, from OUTSIDE the
-   target, because an in-file [Fail] renames in lockstep with the constant
-   it guards and so cannot detect a rename.  The concrete witness lives
-   here too, because it costs three modules the target should not carry.
+(*
+   本文件为测试：ProbeArrowLimit412。
 
-   FOUR negatives of THREE kinds — two CONVERSION, one TYPING, one
-   UNIVERSE pinned by TWO [Fail] commands (the donor and the inherited
-   refusal) — told apart by the error TEXT, plus one scope-free instrument
-   check: five [Fail] commands beyond the instrument.  The kinds were read
-   off the messages produced by stripping each [Fail] in turn, in a copy
-   of this WHOLE file.
-
-     N1  CONVERSION  [FCone comma_proj (comma_lift_cone K HT N HN)] is not
-                   [N] as a whole RECORD, though its apex and every leg are
-                   [N]'s on the nose (the two controls beside it): the
-                   coherence field is a rebuilt proof and [≈] is
-                   Type-valued.
-     N2  CONVERSION  [Snd ◯ (comma_proj ◯ K)] is not [comma_proj2 ◯ K] as a
-                   functor RECORD although both actions agree at [eq_refl]
-                   (the two controls): [Compose]'s three law fields are
-                   separate opaque obligations.  This is why the target
-                   repackages [FCone Snd N] as [cod_cone N].  The same two
-                   action controls are shipped for the [Fst]/[comma_proj1]
-                   side, which the target's NOT DELIVERED paragraph cites.
-     N3  TYPING    Supplying preservation on the DOMAIN side — a
-                   [PreservesLimitCone (comma_proj1 ◯ K) S] — where the
-                   theorem asks for [T] is a has-type mismatch between two
-                   DIFFERENT types, with no universe clause; its trailing
-                   [cannot unify] is on the two cone TYPES,
-                   [Cone (comma_proj2 ◯ K)] against
-                   [Cone (comma_proj1 ◯ K)], and not on two inhabitants of
-                   one type, which is what separates it from N1 and N2.  The
-                   correct hypothesis is the control.  Nothing is asked of
-                   [S].
-     N4  UNIVERSE  At a shape whose homs are declared strictly BELOW the
-                   factors' homs, [Su ↓ Tu], the diagram [K] and a [Cone]
-                   over it are ACCEPTED while the composite [comma_proj ◯ K]
-                   is refused, firing at [K] with [Cannot enforce ch = jh]
-                   — [Compose] is declared over three categories sharing
-                   ONE hom-and-proof level.  [comma_proj_CreatesLimit] is
-                   refused too, but NOT at that composite: it fires at its
-                   shape argument [Ju], with [Cannot enforce jh = ah], its
-                   own block equation [u0 = u6] met at an already-refused
-                   argument (the #340 shape).  So the second [Fail] pins
-                   the inherited boundary and does not independently
-                   corroborate the [Compose] attribution, which rests on
-                   the donor [Fail] alone.  The comma category is NOT a
-                   donor: at [ah < bh] (the two factors' homs declared
-                   apart) [Su ↓ Tu] is accepted, the control at the end.
-
-   Every constant a negative names also appears in a [Check] outside every
-   [Fail], so a rename breaks this file loudly instead of turning a [Fail]
-   vacuously green. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

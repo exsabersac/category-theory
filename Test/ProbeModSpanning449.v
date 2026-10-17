@@ -27,53 +27,11 @@ Require Import Category.Theory.Algebra.Rig.
 
 Generalizable All Variables.
 
-(** * Probe for issue #449: spanning bilinear maps and the solution set
-      for the tensor product (Mac Lane §V.7, book p. 128)
+(*
+   本文件为测试：ProbeModSpanning449。
 
-    The import list above is Instance/Mod/Spanning.v's own 25 requires,
-    verbatim and in its order, plus that file itself; a shorter prefix
-    is what makes a probe pass for no reason.
-
-    DISCIPLINE.  Quoted refusals below have their generated universe
-    names replaced by readable ones ([u_car] for the module carrier
-    level, [u_obj] for the level [RModObject R] itself lives at, and so
-    on): the generated names are file-name dependent and would not
-    survive a rename.  Everything else in a quoted message is verbatim.
-    Every negative is paired with a positive control naming the same
-    library constants, the instrument was checked, and each negative was
-    re-run alone with its guard stripped IN A COPY OF THIS WHOLE FILE so
-    that the refusal kind could be read off the message rather than
-    guessed -- a preamble-only scratch would drop the Section variables
-    and misclassify the refusal.  The kinds recorded are UNIVERSE (two)
-    and CONVERSION (one), beside the instrument check, whose refusal is a
-    missing NAME.  The rubric is Test/ProbeModLimit449.v's:
-
-      CONVERSION  - "cannot unify A and B" parenthetical present.
-      TYPING      - the "has type X while it is expected to have type Y"
-                    opener with NO such parenthetical.
-      UNIVERSE    - "universe inconsistency".
-
-    WHAT THE TWO UNIVERSE NEGATIVES PIN.  Instance/Mod/Spanning.v's
-    [RMod_HasWidePullbacks] is a genuine wide pullback in [RMod R], but
-    its class INDEX universe is instantiated at the module CARRIERS,
-    strictly below the universe [RModObject R] itself lives at, because
-    the apex is a submodule of Instance/Mod/Product.v's [ProdMod] and a
-    dependent product over an index type forces that index at or below
-    the carrier.  [spanning_solution_set] indexes its wide pullback by
-    [FactoringFamily], a sigma over [SubObj a], which lives one level up.
-    So the exported instance does not discharge the hypothesis, and the
-    solution set of section 7 of that file stays a conditional over an
-    abstract [HasWidePullbacks (RMod R)].  NEGATIVE 2 pins the refusal at
-    the application and NEGATIVE 3 pins the donor one level down, at
-    [ProdMod] itself.  Neither says the wall is unavoidable; both say it
-    is there and where it comes from.
-
-    WHAT THE CONVERSION NEGATIVE PINS.  The submodule round trip
-    [subobj_smod (smod_subobj S)] is NOT [S] on the nose -- its
-    membership is a sigma over the submodule's own carrier, so it is a
-    different [Type] from [smod_mem S] -- and the header claims only
-    inter-derivability, [smod_round_iff].  NEGATIVE 1 pins that the
-    stronger [eq_refl] reading is not available. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

@@ -1,67 +1,8 @@
-(** * Boundary probes for universal elements
+(*
+   本文件为测试：ProbeUniversalElement。
 
-    Companion to Theory/Universal/Element.v, its satellites
-    Theory/Universal/Element/Elements.v and
-    Theory/Universal/Element/Examples.v (issue #303, Mac Lane §III.1
-    Definition 2 and Remark 3).  Those files make strength claims of three
-    different grades — some definitional, some only up to [≈], and one a
-    universe restriction — and the negative side of each is a boundary no
-    in-tree consumer would notice breaking.  They are pinned here.  **If the
-    [Fail] commands below stop failing, this file breaks the build.**
-
-    Every negative is paired with a positive control that must SUCCEED: a
-    [Fail] alone passes just as happily when a name has been renamed out
-    from under it.  The instrument itself was checked out of band —
-    wrapping [Fail] around a succeeding [Check] reports "The command has
-    not failed!" and aborts compilation — and each negative below was
-    compiled once with the [Fail] stripped, to confirm the error is the
-    intended failure and not a syntax, scope or resolution error.  Where
-    the stripped error is NOT of the form "cannot unify", the actual
-    message is quoted at the probe.
-
-    THE FIVE BOUNDARIES.
-
-    (1) THE MATE COMPUTES, BUT IS NOT THE COVARIANT LEMMA'S TERM.
-    [ue_mate]'s ACTION is [fmap[H] k x] by [eq_refl] ([ue_mate_at]), and
-    [Covariant_Yoneda_Lemma D H r] has the same action — but the two
-    transformations are distinct terms, their naturality fields being
-    separate opaque [Program] obligations.  Hence [ue_mate_covariant] is
-    stated up to [≈] and not by [eq_refl].  The same seam separates
-    [ue_mate] from the hand-built [ue_transform].
-
-    (2) THE YONEDA PASSAGE PRESERVES THE ELEMENT, NOT THE RECORD.  The
-    deliverable-2 isomorphism is an iso of SETOIDS, and what its two
-    round-trip laws say is that the underlying element survives — which
-    it does by [eq_refl].  The whole [AUniversalElement] record does not:
-    [AUniversalElement_of_mate] rebuilds the factorization data.  This is
-    the difference between the Yoneda passage and the two encodings'
-    passage (§3 below), and it is why the header declines to call the
-    former a bijection of types.
-
-    (3) THE 3(b) PASSAGE IS DIFFERENT IN KIND — AND STILL NOT A RENAMING.
-    [AUniversalElement (HomAfter S c) a] and [AUniversalArrow c S a] have
-    field types that are convertible one for one, so both round trips are
-    [eq_refl] ON THE WHOLE RECORD.  They are nevertheless distinct types,
-    and the two passages are genuine constructions, not coercions.
-
-    (4) THE 3(a) PASSAGE PRESERVES THE ELEMENT ON THE NOSE AND THE ARROW
-    ONLY UP TO [≈].  Rebuilding a map out of the singleton from its value
-    at [ttt] is [global_elements_iso]'s non-definitional leg, and that is
-    where it lands.
-
-    (5) THE YONEDA ROUTE CARRIES A UNIVERSE RESTRICTION THE DIRECT ROUTE
-    DOES NOT.  [Yoneda_Lemma] — hence [representability_by_yoneda], hence
-    [universal_element_representation] — is stated over
-    [C : Category@{u0 u0 u0}], object, hom and proof universes IDENTIFIED.
-    A category whose objects sit strictly above its homs cannot be
-    substituted, and [Instance/Coq/Nat.v]'s [Endos] is one.  This is why
-    every accessor in Theory/Universal/Element.v is routed through the
-    hand-built [ue_transform] / [AUniversalElement_of_repr] rather than
-    through the Yoneda composite, and why Examples.v exists at all: it
-    instantiates at exactly the category the Yoneda route cannot reach.
-    NOTE the scope — this is a restriction on the DONOR
-    ([Structure/UniversalProperty.v], measured), not one introduced by
-    issue #303, and nothing here shows it is unavoidable. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

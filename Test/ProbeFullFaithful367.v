@@ -1,41 +1,8 @@
-(* Boundary probe for issue #367: Mac Lane §IV.3 Theorem 1 and its lemma.
+(*
+   本文件为测试：ProbeFullFaithful367。
 
-   Targets: Functor/Hom/Transfer.v and Adjunction/FullFaithful.v.  This
-   file mirrors BOTH targets' full Require lists, then requires the
-   targets themselves, then the extra modules the non-vacuity witnesses
-   need.  The short-prefix hazard is real and is what this discipline
-   exists to avoid: a probe compiled against fewer imports can fail for a
-   missing coercion or a missing reference and look like a clean
-   refutation.
-
-   WHY A SEPARATE FILE.  An in-file [Fail] renames in lockstep with the
-   constant it guards, so it cannot detect a rename.  Every negative here
-   names target constants from OUTSIDE the targets, and every constant a
-   negative names also appears outside a [Fail] elsewhere in this file.
-
-   CONTENTS
-
-   - An instrument check: a [Fail Check] on a reference that does not
-     exist, so that a [Fail] which passes for the wrong reason is
-     visible.
-   - SEVEN negatives of THREE kinds, kept lexically apart and told apart
-     by the error TEXT rather than by label:
-       CONVERSION   ends "cannot unify" between two terms of one type;
-       TYPING       a plain "has type ... while it is expected to have
-                    type", with no "cannot unify" and no universe clause;
-       FORMABILITY  ends "universe inconsistency".
-     Each was stripped ONE AT A TIME, with the others left as [Fail], and
-     compiled alone; the whole error was read and the place it fires
-     confirmed.
-   - Positive controls beside each negative.
-   - Non-vacuity for one of the two quadrants of Theorem 1, and the
-     honest scope of the other.
-
-   NOTE on what "not a Section" can mean.  Theorem 1(ii) is a
-   biconditional between [Full U] and the FAMILY (∀ a, Section (ε a)).
-   Refuting fullness therefore refutes the FAMILY, not a named component:
-   a single ε_a may still split while U is not full.  The two witnesses
-   below are stated at exactly that strength and no stronger. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The Require list of Functor/Hom/Transfer.v. *)
 Require Import Category.Lib.

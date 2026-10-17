@@ -4,112 +4,17 @@ Generalizable All Variables.
 
 (** * Setoids whose equality is propositional *)
 
-(* nLab:    https://ncatlab.org/nlab/show/setoid
-   nLab:    https://ncatlab.org/nlab/show/h-set
-   nLab:    https://ncatlab.org/nlab/show/mere+proposition
-   Book:    The Univalent Foundations Program, "Homotopy Type Theory:
-            Univalent Foundations of Mathematics", IAS 2013, Definition 3.1.1
-            (a SET is a type whose identity types have at most one inhabitant)
-            and Definition 3.3.1 (a MERE PROPOSITION is a type any two of whose
-            inhabitants are equal)
-   Book:    Bishop, "Foundations of Constructive Analysis", McGraw-Hill 1967,
-            chapter one ("A constructivist manifesto")
-   Library: UniMath, Foundations/PartA.v ([isaprop]) and Foundations/Sets.v
-            ([isaset], [hSet])
-   Library: Agda standard library, Relation.Binary.Bundles.Setoid -- the
-            bundle agda-categories builds its hom-setoids from
-   Book:    Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-            §V.6 (the general adjoint functor theorem) and §V.7, printed
-            p. 128 (the solution-set condition, and the tensor product of
-            modules obtained from it)
+(*
+ nLab:    https://ncatlab.org/nlab/show/h-set
+ nLab:    https://ncatlab.org/nlab/show/mere+proposition
+ Book:    The Univalent Foundations Program, "Homotopy Type Theory:
+ Book:    Bishop, "Foundations of Constructive Analysis", McGraw-Hill 1967,
+ Book:    Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
 
-   TWO KINDS OF SETOID.  A setoid is a carrier together with a chosen
-   equivalence relation (nLab: setoid), and Bishop's prescription for defining
-   a set -- say what must be done to construct an element and what must be done
-   to show two elements equal (Bishop 1967, chapter one) -- says nothing about
-   whether a proof of an equation carries information.  Type theory therefore
-   has two setoids, and the distinction is exactly the one the HoTT book draws:
-   in the PROOF-RELEVANT setoid the relation is valued in a universe of types,
-   so an equality proof is data; in the PROPOSITIONAL setoid it is valued in
-   [Prop], so any two proofs of one equation are interchangeable -- a MERE
-   PROPOSITION in the sense of Definition 3.3.1, the condition under which the
-   carrier behaves as a SET in the sense of Definition 3.1.1.  UniMath spells
-   the two predicates [isaprop] and [isaset] and bundles the second as [hSet].
-   The Agda standard library's [Setoid], which agda-categories uses for its
-   hom-setoids, parameterises its relation by a universe level and so is
-   proof-relevant by default, exactly as this library is.
+   本文件给出 Propositional 相关定义与性质。
 
-   WHY THIS LIBRARY'S `≈` IS Type-VALUED, AND STAYS SO.  Lib/Setoid.v
-   fixes the choice: [equiv] lives in [crelation], "a [Type]-valued, hence
-   proof-relevant, relation ... so that equivalence proofs may carry
-   computational content".  That is load-bearing rather than decorative.  Cat's
-   hom-setoid is [Functor_Setoid] (Theory/Functor.v, installed as Cat's
-   [homset] at Instance/Cat.v), and there an [F ≈ G] IS a family of
-   isomorphisms [∀ x : C, F x ≅ G x] paired with its coherence condition: the
-   first projection of such a proof is an isomorphism of D, a value in [Type].
-   Truncating `≈` library-wide would discard that family, and nothing recovers
-   it -- Test/ProbePropEquiv.v's first negative measures the refusal, taking an
-   [inhabited (F ≈ G)] and asking for the isomorphism at [x].  Propositional
-   equality therefore cannot be a change to [Class Setoid].  It is a PROPERTY
-   that particular setoids have, and [PropEquiv] below is that property.
-
-   THE SIZE FACT, IN THREE LINES.  A [Prop]-valued relation on a carrier
-   [A : Type@{u}] inhabits [A → A → Prop], whose sort is [Type@{max(Set+1,u)}]
-   -- the carrier's own universe, as soon as [u] is above [Set].  A
-   [Type]-valued relation inhabits [A → A → Type@{p}], whose sort is
-   [Type@{max(u,p+1)}], strictly above the proof universe [p]; and every setoid
-   of this library's concrete algebra is used at [Setoid@{u u}], so its relation
-   space is [Type@{u+1}], one universe ABOVE the carrier.  Hence a type of
-   congruences on a carrier is carrier-sized exactly when the congruences are
-   [Prop]-valued.  Test/ProbePropEquiv.v measures all three sorts and pins the
-   middle one with a refusal.
-
-   WHY THAT MATTERS HERE.  Mac Lane's general adjoint functor theorem asks for
-   a SOLUTION SET (CWM 2nd ed., §V.6), and §V.7, printed p. 128, runs the
-   argument for the tensor product of modules.  Adjunction/GAFT.v demands that
-   the solution set's index sit at the carrier universe, while the intended
-   index for a concrete algebraic category -- the congruences on a term algebra
-   -- is a type of relations on that carrier.  By the previous paragraph the
-   index fits only when those relations are [Prop]-valued.  That is the entire
-   reason this property is worth naming.
-
-   WHAT THE CLASS IS, AND WHAT IT IS NOT.  [PropEquiv S] supplies a
-   [Prop]-valued relation [pequiv] together with implications BOTH ways between
-   it and `≈`.  It is a logical equivalence, never an identification: `≈` keeps
-   its [Type]-valued type and its data, and [pequiv] is a separate relation that
-   happens to hold exactly when `≈` does.  What it buys is one elimination,
-   [pequiv_elim_inhabited]: an [inhabited (x ≈ y)] can be eliminated into the
-   [Prop] goal [pequiv x y], which [pequiv_to] then converts back to [x ≈ y].
-   What it does NOT buy: it says nothing about proofs of `≈` being equal to one
-   another, gives no uniqueness of identity proofs for the carrier, and is not
-   inherited by a carrier under a different `≈` -- it is a property of the
-   SETOID, not of the type.
-
-   ONE SYNTACTIC TRAP, RECORDED HERE BECAUSE IT LOOKS LIKE A SHORTCUT.  The
-   sort ascription [(x ≈ y : Prop)] is refused even for [eq_Setoid], because
-   Coq types [equiv x y] at [Type] whatever the relation underneath happens to
-   be; there is no ascription that narrows it after the fact.  The relation must
-   be NAMED instead, which is what [PropEquiv_of_relation] below is for.
-   Test/ProbePropEquiv.v's second negative pins that refusal.
-
-   COVERAGE.  Lib/Setoid.v defines four setoid constructors -- [unit_setoid],
-   [eq_Setoid], [funext_Setoid] and [Fin_Setoid] -- and Lib/Datatypes.v six
-   more -- [prod_setoid], [sum_setoid], [option_setoid], [list_setoid],
-   [nat_setoid] and [fun_setoid].  Every one of them has an instance below.
-   Neither file defines a sigma setoid, so there is none to transport; the
-   typed-list setoids of Lib/TList.v and Lib/NETList.v belong to the solver's
-   term language and are not covered here.  The [Sets]-level transports --
-   hom-setoids, binary and indexed products, limits, and the
-   [LocallyPropositional] vocabulary for categories -- are in
-   Instance/Sets/Propositional.v.
-
-   AN EARLIER REVISION of this paragraph stopped there.  Since the PR
-   "algebraic carriers are sets" (2026-09-17) the file also carries two
-   TRANSPORTS -- [dep_fun_PropEquiv] and [sigma_first_PropEquiv] -- for setoids
-   the concrete algebra builds INLINE rather than through one of the ten
-   constructors above.  They are stated at the end of the file, and the reason
-   they take their two implications as arguments rather than naming a canonical
-   setoid is recorded there. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* [PropEquiv S] says that the setoid [S] has a [Prop]-valued equality: a
    relation [pequiv] in [Prop] that holds exactly when `≈` does.

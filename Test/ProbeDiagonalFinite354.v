@@ -31,38 +31,11 @@ Require Import Category.Adjunction.Diagonal.Finite.
 
 Generalizable All Variables.
 
-(** * Probe: the boundaries Adjunction/Diagonal/Finite.v measures
+(*
+   本文件为测试：ProbeDiagonalFinite354。
 
-   That file records its rejections and carries no [Fail] of its own. A
-   measurement is not a guard. This file pins them beside controls that
-   must SUCCEED.
-
-   The import list is the target's own, in its order, with the target
-   appended. A probe on a shorter prefix can fail for a missing-reference
-   reason and read as a mathematical rejection.
-
-   TWO PROBE HAZARDS THIS FILE WAS WRITTEN AROUND, both of which cost a
-   FALSE PASS when first attempted and are recorded here so the next
-   reader does not repeat them:
-
-   (1) A [Fail] that succeeds PRINTS NOTHING under this repo's [coqc]. You
-       cannot read a negative's reason from the compile log; every one must
-       be stripped and run on its own. That is how each was classified.
-
-   (2) **[Roof^op = Roof] IS A FALSE PASS.** `Functor/Opposite.v` opens
-       `functor_scope`, and inside an [eq] argument there is no expected
-       type for the category scope to win on, so `^op` parses as the
-       FUNCTOR opposite and the command fails with
-       "The term "Roof" has type "Category" while it is expected to have
-       type "?C ⟶ ?D"" — NOTATION, not mathematics. Written that
-       way the negative certifies nothing. Both are therefore spelled
-       [Opposite Roof] and [Opposite Parallel] below. (Measured: the
-       `^op` spelling really does fail with that message.)
-
-   KINDS, separated by the error TEXT:
-     CONVERSION  ends `(cannot unify "X" and "Y")`
-     TYPING      reports a type mismatch with no `cannot unify` clause
-     FORMABILITY ends `(universe inconsistency: Cannot enforce ...)` *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check — must ERROR ("The command has not failed!"). *)
 Fail Fail Check Category.

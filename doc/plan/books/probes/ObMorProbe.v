@@ -1,16 +1,8 @@
-(* PROBE for QA finding E1 (#929): how many natural transformations between the
-   object-functor ob and the morphism-functor mor on Cat?
+(*
+   本文件给出 ObMorProbe 相关定义与性质。
 
-   #929 as filed miscounts these.  The correct counts come from co-Yoneda:
-   ob = Cat(1, -) and mor = Cat(2, -), where 1 is the terminal category and 2
-   the walking arrow.  So
-       Nat(ob, mor) = Nat(Cat(1,-), Cat(2,-)) ~= Cat(2, 1)   -- ONE functor
-       Nat(mor, ob) = Nat(Cat(2,-), Cat(1,-)) ~= Cat(1, 2)   -- TWO functors
-   i.e. one transformation ob ==> mor and two mor ==> ob, THREE in total.
-
-   This probe checks the two counting facts the argument turns on, at the level
-   of the shapes themselves: there is exactly one map from the walking arrow to
-   the point, and exactly two points of the walking arrow. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Coq.Init.Datatypes.
 

@@ -33,42 +33,11 @@ Require Import Category.Adjunction.Diagonal.Limit.
 
 Generalizable All Variables.
 
-(** * Probe: the boundaries #353's two files measure
+(*
+   本文件为测试：ProbeDiagonalLimit353。
 
-   `Adjunction/Diagonal/Limit.v` and `Theory/Equivalence/Colimit.v` between
-   them record around twenty rejections and carry no [Fail] of their own. A
-   measurement is not a guard: nothing in the build would notice if a donor
-   changed and one of them began to succeed. **This file pins ELEVEN of
-   them**, beside a control that must SUCCEED — it does NOT pin all, and an
-   earlier draft of this comment claimed it did. Not pinned here, and named
-   so a reader can see the gap: the dual of NEGATIVE 6 on the colimit side;
-   the three law fields of the composite case individually; the coherence
-   component of the round trip alone; `cone_along` against `cone_transport`;
-   the transported colimit leg's `≈`-not-`=`; `Functor_Setoid` and
-   `Opposite_Functor` as independent hom=proof donors; the three
-   `limit_induced` donors; and `two_IsAColimit`'s `Set` pin (its twin IS
-   pinned, as NEGATIVE 10).
-
-   The import list is the UNION of the two targets' own lists, plus the two
-   targets and `Instance/Cat.Opposite` (needed for the `Op` negatives). A
-   probe compiled against a shorter prefix can fail for a missing-reference
-   reason and read as a mathematical rejection.
-
-   KINDS, separated by the error TEXT rather than by label:
-     CONVERSION  ends `(cannot unify "X" and "Y")`
-     FORMABILITY ends `(universe inconsistency: Cannot enforce ...)`
-   Each negative below was stripped of its [Fail] and its whole error read.
-
-   ONE MEASURED REJECTION IS DELIBERATELY NOT PINNED, and an earlier draft
-   of this comment OVERSTATED it. The Leibniz statement
-   `two_id_diagram = two_negb_diagram -> False` IS statable — `Check` on it
-   returns `Prop`, so a `Fail Check` would itself fail. What `Colimit.v`
-   accurately says is that it is NOT STATED, because `rewrite` cannot
-   abstract over one of two universe-POLYMORPHIC constants at different
-   instances (it reports the abstraction as ill-typed). What stands in its
-   place is the `≈`-level `two_diagrams_differ`, which is STRICTLY STRONGER
-   (two Leibniz-equal functors would have `≈`-equal arrow actions). It is
-   named in a control below so a rename still breaks this file. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check
 

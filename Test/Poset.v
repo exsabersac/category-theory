@@ -9,37 +9,14 @@ Require Import Coq.Relations.Relation_Definitions.
 
 Generalizable All Variables.
 
-(** * Regression test for the [Poset] category construction (issue #124)
+(*
+ nLab:      https://ncatlab.org/nlab/show/poset
+ Wikipedia: https://en.wikipedia.org/wiki/Partially_ordered_set
 
-    nLab:      https://ncatlab.org/nlab/show/poset
-    Wikipedia: https://en.wikipedia.org/wiki/Partially_ordered_set
+   本文件为测试：Poset。
 
-    Issue #124 reported two defects in [Instance/Poset.v] (fixed in PR
-    #136 / commit e2bcc89):
-
-      1. the carrier [C] was typed as a [Category] rather than a plain
-         [Type] (the morphism structure is unused); and
-      2. the order relation was required [Asymmetric] instead of
-         [Antisymmetric].  Because [PreOrder] is reflexive ([R x x]), an
-         [Asymmetric] relation ([R x y -> ~ R y x]) forces [~ R x x],
-         contradicting reflexivity — so under the old definition the only
-         possible carrier was empty ([there_is_no_poset : Poset P -> False]).
-
-    This file locks in the corrected definition.  Every [Definition],
-    [Example], and [Lemma] below type-checks only against the fixed
-    signature [Poset {C : Type} `{R : relation C} (P : PreOrder R)
-    `{@Antisymmetric C eq eq_equiv R}], so a successful build IS the
-    assertion.  The accompanying comments record why each item would have
-    been ill-typed or unprovable under the old broken definition.
-
-    NB on name resolution: [Instance/Proset.v] ALSO exports a
-    [LessThanEqualTo_Category] (the proset over [(ℕ, ≤)]).  To make the
-    [nat] block below a genuine regression guard rather than silently
-    falling through to the proset's definition, every reference to the
-    poset's example is fully qualified as
-    [Category.Instance.Poset.LessThanEqualTo_Category]; under the old
-    definition that name does not exist (no example could be built), so the
-    reference fails outright. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The canonical example [(ℕ, ≤)]
 

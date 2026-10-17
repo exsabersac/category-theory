@@ -1,27 +1,8 @@
-(** * Probe: boundaries of the pointwise-representability criterion
+(*
+   本文件为测试：ProbeRepresentability348。
 
-    Guards the strength claims of Adjunction/Representability.v and of
-    the packaging equivalence added to Theory/Universal/Arrow.v, from
-    OUTSIDE both files -- an in-file [Fail] renames in lockstep with the
-    constant it guards and so cannot detect a rename.
-
-    Two negatives, both CONVERSION, each with its cause exhibited by an
-    adjacent control rather than described:
-
-      1. [neg_ua_round] -- the packaging round trip does not return the
-         [UniversalArrow] record.  Controls [ctl_obj]/[ctl_arrow] show
-         BOTH derived projections do return on the nose, so what fails
-         is exactly the rebuilt [arrow_initial] field.
-
-      2. [neg_roundtrip_arrow] -- recovering the unit from a family of
-         representations does not return it on the nose.  Control
-         [ctl_residue] exhibits the offending term literally: the value
-         is [fmap[G] id ∘ unit], so the obstruction is that residue and
-         nothing else.
-
-    The import list mirrors Adjunction/Representability.v's in full; a
-    short prefix is what makes a probe pass vacuously, and a vacuity
-    check cannot detect it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

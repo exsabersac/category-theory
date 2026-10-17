@@ -25,20 +25,11 @@ Open Scope category_scope.
 
 (** * Refutation probe for Instance/Sets/InverseLimit.v *)
 
-(* Each refutation command below was verified by stripping its [Fail] in a
-   copy of the WHOLE file and compiling that copy alone, then reading the
-   error in full -- a preamble-plus-command scratch drops the enclosing
-   [Section]'s [Context] and its local universe declarations and then
-   refuses for a reason unrelated to the claim.  The four negatives are of
-   THREE kinds, told apart by the error TEXT and not by label:
+(*
+   本文件为测试：ProbeInverseLimit408。
 
-     CONVERSION  ends "cannot unify", no universe clause  (1, 2)
-     TYPING      a plain has-type mismatch, neither of those  (3)
-     FORMABILITY ends "universe inconsistency: Cannot enforce ..."  (4)
-
-   Every constant a negative names is also named by a passing command
-   outside every [Fail], so a rename breaks the probe rather than turning
-   a guard vacuously green. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument: a [Fail] that fails for a scope-free reason *)
 

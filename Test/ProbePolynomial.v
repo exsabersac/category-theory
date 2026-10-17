@@ -1,56 +1,8 @@
-(** * Boundary probes for the polynomial ring
+(*
+   本文件为测试：ProbePolynomial。
 
-    Companion to Instance/Rng/Polynomial.v and Instance/Rng/Pointed.v
-    (issue #309, Mac Lane §III.1 Exercise 7, Awodey §9.3 Example 9.10,
-    Riehl §2.1 Example 2.1.5(v) and §2.3 Example 2.3.4).  Those files
-    make strength claims of two different grades — some definitional,
-    some only up to [≈] — and the negative side of each is a boundary no
-    in-tree consumer would notice breaking.  They are pinned here.  **If
-    the [Fail] commands below stop failing, this file breaks the build.**
-
-    Every negative is paired with a positive control that must SUCCEED: a
-    [Fail] alone passes just as happily when a name has been renamed out
-    from under it.  The instrument itself was checked out of band —
-    wrapping [Fail] around a succeeding command reports "The command has
-    not failed!" and stops compilation — and each negative below was
-    compiled once with the [Fail] stripped, to confirm the error is the
-    intended one and not a syntax, scope or resolution error.  Where the
-    stripped error is NOT of the form "cannot unify" or "Unable to
-    unify", the actual message is quoted at the probe.
-
-    The import list below is Instance/Rng/Pointed.v's, in that file's
-    order: a shortened or reordered prefix produces different errors and
-    would make the probes report the wrong thing.
-
-    THE THREE BOUNDARIES.
-
-    (1) THE EXTENSION PRESERVES + AND · DEFINITIONALLY, BUT 0 AND 1 ONLY
-    UP TO [≈].  [peval] is a fixpoint whose clauses ARE the additive and
-    multiplicative homomorphism laws, so those two obligations close by
-    [reflexivity].  The zero of K[x] is [pt_const (rig_zero K)], not a
-    former of its own, so the fold returns the structure map's value at
-    K's zero and reaching the target's zero is that map's own
-    preservation law.  The header of Instance/Rng/Polynomial.v measures
-    this; §1 pins it.  NOTE the probe is stated at a VARIABLE ring and
-    structure map: over ℤ with the initial map the equation does close by
-    [eq_refl], because [zring S 0] reduces to [rig_zero S], so a probe
-    instantiated at ℤ would report the opposite of the truth.
-
-    (2) THE ADJUNCTION'S BACKWARD TRANSPOSE DOES NOT COMPUTE.  It is
-    [unique_obj (ump_universal_arrows …)] and [ump_universal_arrows]
-    (Theory/Universal/Arrow.v) is [Qed]-opaque, so
-    [poly_pointed_adj_transpose_evaluates] is stated up to [≈] and no
-    [eq_refl] is claimed.  This is the same seam Instance/Mod/Free.v
-    records for the counit of the free-module adjunction.
-
-    (3) THE FREE OBJECT COMPUTES; THE UNIT COMPUTES ONLY IN ITS ACTION.
-    The other side of the same boundary, and the reason (2) is a
-    measurement rather than a blanket disclaimer: the left adjoint's
-    object part, the point it carries and the universal arrow are all
-    [eq_refl].  The unit is not — [poly_pointed_unit A] is
-    [fmap[U] id ∘ arrow], a composite record — but its value at every
-    coefficient is, which is the strength Instance/Rng/Pointed.v claims
-    and no more. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

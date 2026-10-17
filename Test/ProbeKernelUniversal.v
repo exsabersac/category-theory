@@ -1,59 +1,8 @@
-(** * Boundary probes for kernels as universal elements
+(*
+   本文件为测试：ProbeKernelUniversal。
 
-    Companion to Structure/Kernel/Universal.v and its satellite
-    Structure/Kernel/Universal/Examples.v (issue #304).  Those files make
-    strength claims of four different grades -- some definitional, some
-    only up to [≈], one a universe restriction, and one a contrast
-    between two packagings -- and the negative side of each is a boundary
-    no in-tree consumer would notice breaking.  They are pinned here.
-    **If the [Fail] commands below stop failing, this file breaks the
-    build.**
-
-    Every negative is paired with a positive control that must SUCCEED: a
-    [Fail] alone passes just as happily when a name has been renamed out
-    from under it.  The instrument itself was checked out of band --
-    wrapping [Fail] around a succeeding [Check] reports "The command has
-    not failed!" and aborts compilation -- and each negative below was
-    compiled once with the [Fail] stripped, to confirm the error is the
-    intended failure and not a syntax, scope or resolution error.  Where
-    the stripped error is NOT of the form "cannot unify", the actual
-    message is quoted at the probe.
-
-    THE FOUR BOUNDARIES.
-
-    (1) THE KILL PACKAGING IS NOT A RECORD-LEVEL BIJECTION, IN EITHER
-    DIRECTION.  [kernel_aue] and [aue_kernel] preserve the underlying
-    morphism by [eq_refl], and in one direction the mediator too; but
-    neither whole record survives, and the obstruction is named: the kill
-    shape (f ∘ h ≈ 0) and the fork shape (f ∘ h ≈ 0 ∘ h) are exchanged by
-    the [Qed]-opaque [kill_fork] / [fork_kill], and [eq_desc] is
-    proof-RELEVANT in its hypothesis, so even the [fork_eq] field alone
-    does not come back.
-
-    (2) THE FORK PACKAGING IS DEFINITIONALLY TIGHTER THAN THE KILL
-    PACKAGING -- the opposite of what the naming suggests.  On the fork
-    side one whole round trip IS [eq_refl] ([aue_equalizer_round]),
-    because no reshaping happens; the other is not, and the ONLY
-    obstruction there is that [sigT] has no eta, which
-    [aue_equalizer_round_universal] states positively.
-
-    (3) THE BUNDLED SETOID ISOMORPHISM CARRIES A UNIVERSE RESTRICTION THE
-    UNIVERSE-FREE FORMS DO NOT.  [kernel_universal_element_iso] is stated
-    over [C : Category@{u u0 u0}] with [u <= u0] -- objects at or below
-    homs -- because [obj[Sets@{o so}]] is [SetoidObject@{o o}]
-    (Instance/Sets.v), identifying a setoid's carrier and relation
-    universes, while [KernelData]'s carrier sits at C's object universe
-    and its relation at C's proof universe.  [Ab@{u u0}] is declared with
-    [u0 < u], so neither it nor [Rng] can be substituted.  The passages,
-    the round-trip lemmas and [kernel_representation] carry no such
-    restriction and DO instantiate at [Ab]; the positive controls below
-    are that pair.
-
-    (4) THE TWO PRESHEAVES ARE DISTINCT TYPES.  [KillPresheaf f] and
-    [ForkPresheaf f zmor] are naturally isomorphic ([kill_fork_iso]) with
-    both components the identity on the underlying morphism, but they are
-    not the same functor and their element types are not the same type,
-    so the isomorphism is a construction and not a coercion. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

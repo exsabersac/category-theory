@@ -22,35 +22,11 @@ Generalizable All Variables.
 
 (** * Probe for Instance/Sets/Classifier/OneLevel.v (issue #402) *)
 
-(* Every boundary that file's header reports is pinned here, from OUTSIDE
-   the target: an in-file refutation command renames in lockstep with the
-   constant it guards and so cannot detect a rename.  The Require list
-   above mirrors the target's, plus
-   Structure/SubobjectClassifier/Natural.v (for the two constants that are
-   not statable at [Sets]) and the target itself.
+(*
+   本文件为测试：ProbeClassifier402。
 
-   TEN refutation commands = 1 instrument check + 9 negatives of THREE
-   kinds — 6 FORMABILITY, 1 TYPING, 2 CONVERSION — told apart by the
-   error TEXT:
-
-     FORMABILITY  the error carries a universe clause ("universe
-                  inconsistency", "Cannot enforce ...");
-     TYPING       a plain has-type mismatch, or "Illegal application",
-                  with no universe clause and no "cannot unify";
-     CONVERSION   "cannot unify" between two terms of ONE type.
-
-   Each was stripped one at a time, compiled alone, and its whole error
-   read.  Guard coverage was measured mechanically over the
-   comment-stripped source: 49 identifiers occur inside a refutation
-   command and 37 of them also occur outside one; the 12 that do not are
-   exhaustively the keywords [Fail], [Example], [Type] and [eq_refl], the
-   bound variables [h] and [p], the three universe binders local to the
-   two [Fail Example]s, the two [Fail Example] names themselves (which
-   never enter the environment), and the instrument's deliberately absent
-   name.  Rename simulation: each of the eight TARGET constants a negative
-   names was renamed in a scratch copy of the target that shadows the
-   worktree module, and all 8/8 broke this file at a [Check] control line,
-   never inside a refutation command. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------------ *)
 (** ** Instrument check *)

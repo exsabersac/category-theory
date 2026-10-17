@@ -1,23 +1,10 @@
 (** * Additional category-specific tactics and [cat] hint database *)
 
-(* This file supplements [Lib/Tactics.v] with tactics and hints aimed at the
-   recurring shapes of categorical goals: building morphisms by composition,
-   simplifying functor application, and closing setoid goals up to
-   associativity and respectfulness ([Proper]).  Most of these are wired into
-   a single discriminated auto database, [cat], so that [auto with cat] /
-   [eauto with cat] can chase the obligations that arise when reasoning about
-   universal properties (see [Structure/UniversalProperty*.v], the principal
-   clients).
+(*
+   本文件给出 Tactics2 相关定义与性质。
 
-   Unlike the [categories] rewrite database from [Lib/Tactics.v] (consumed by
-   [autorewrite]), the [cat] database created here is an *auto* database: its
-   externs run goal-directed tactics, and it is searched by [auto]/[eauto].
-
-   These tactics are project-internal conveniences with no external reference;
-   the ideas they build on (setoid rewriting, [Proper]/respectful morphisms,
-   discriminated hint databases) are standard Coq/Rocq machinery.  None of the
-   tactics here cheats: each either makes progress and (for the [solve]-backed
-   ones) closes the goal, or fails; none introduces an axiom. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Instance.Sets.

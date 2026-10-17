@@ -12,35 +12,13 @@ Set Transparent Obligations.
 
 Open Scope lazy_bool_scope.
 
-(* nLab: https://ncatlab.org/nlab/show/free+category
-   Wikipedia: https://en.wikipedia.org/wiki/Quiver_(mathematics)
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Quiver_(mathematics)
 
-   A [netlist B i j] is a NON-Empty Typed list: a type-aligned sequence of
-   values of [B] whose adjacent indices line up, [B i j0], [B j0 j1], ...,
-   [B jn j].  Reading [B] as the hom-family of a quiver (directed graph) on
-   the index type [A], such a chain is exactly a non-empty PATH in that
-   quiver, i.e. a composable chain of edges/morphisms from [i] to [j].  These
-   are the (length >= 1) morphisms of the free category / path category on
-   the quiver [B].
+   本文件给出 NETList 相关定义与性质。
 
-   The "NET" prefix abbreviates "Non-Empty Typed": [tfin] is a one-edge path
-   and [tadd] prepends an edge, so a netlist always carries at least one edge
-   (there is no nil constructor).  The same data structure is known in the
-   Haskell community as a non-empty "type-aligned sequence" (Atze van der
-   Ploeg, https://github.com/atzeus/type-aligned).
-
-   Operations below give this family its path algebra: [netlist_app] (++++)
-   concatenates two head-to-tail composable paths and is associative
-   ([netlist_app_assoc]), making [netlist B] an [ISemigroup] (a category
-   without identities, i.e. a semicategory) at the end of the file.  The
-   remaining operations are the expected destructors (head/tail/init/last,
-   uncons), structural maps ([netlist_map] over the edge family, [netlist_mapv]
-   to a plain list), [netlist_rev] (reverse, given an edge-flipping operation),
-   [netlist_concat] (flatten a path of paths), and decidable structure
-   (equality, setoid equivalence, and the [netlist_incl] / [netlist_find_sublist]
-   sub-path searches) used when [A] and each [B i j] have decidable equality.
-   Formalized with the Equations plugin, with UIP enabled so dependent matches
-   on the index equalities reduce. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive netlist {A : Type} (B : A → A → Type) : A → A → Type :=
   (* [tfin x] is the singleton path consisting of one edge [x : B i j];

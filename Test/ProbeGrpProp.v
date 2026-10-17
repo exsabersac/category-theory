@@ -1,32 +1,8 @@
-(* The Grp layer's carriers are sets: what that moved, and what it refuses.
+(*
+   本文件为测试：ProbeGrpProp。
 
-   Since the PR "algebraic carriers are sets" (2026-09-17) every [GrpObject]
-   carries [grp_prop] (Instance/Grp.v), the property that its carrier's `≈`
-   is logically equivalent to a [Prop]-valued relation.  Three relations in
-   the Grp layer changed sort or shape as a result, and this file pins each
-   one from both sides:
-
-     [am_eq]      Instance/Grp/Pushout.v  -- the amalgam's congruence, now a
-                  [Prop] INDUCTIVE;
-     [quot_rel]   Instance/Grp/Quotient.v -- unchanged itself, but the
-                  quotient group's `≈` is now its [inhabited] TRUNCATION
-                  ([quot_equiv]);
-     the free group's `≈` -- Instance/Grp/Free.v -- now the [inhabited]
-                  truncation of the free groupoid's hom-equality ([fg_equiv]).
-
-   Being in [Prop], each ELIMINATES ONLY INTO [Prop].  That is the whole
-   content of the change, and it is what the negatives below pin.  The
-   positive controls show what is NOT lost: every consumer reaches its
-   [Type]-valued goal through the TARGET group's own [grp_prop], and the
-   free-forgetful adjunction still types over an ARBITRARY object of [Sets].
-
-   METHOD.  A [Fail Lemma <statement>] would be vacuous here: each statement
-   is well formed whatever the relation's sort, and only the ELIMINATION is
-   refused.  Each negative is therefore a [Fail Definition … :=
-   ltac:(<tactic>)], carrying the proof.  Each was stripped once, in a copy
-   of this WHOLE file, and the first error line is quoted beside it.
-
-   The import list is the union of the three target files' own. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Lib.Setoid.Propositional.

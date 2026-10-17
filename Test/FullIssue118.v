@@ -1,37 +1,8 @@
-(** * Regression test for issue #118: the [Full] type class.
+(*
+   本文件为测试：FullIssue118。
 
-    https://github.com/jwiegley/category-theory/issues/118
-
-    The [Full] type class must express the *standard* notion of a full
-    functor: a section [prefmap] of the hom-map [fmap[F]] together with the
-    surjectivity witness [fmap_sur] — and nothing more.  No functoriality may
-    be demanded of [prefmap].  The previous definition additionally carried
-    [prefmap_respects], [prefmap_id] and [prefmap_comp]; those three fields
-    were extraneous and have been removed, leaving exactly:
-
-      Class Full `(F : C ⟶ D) := {
-        prefmap {x y} (g : F x ~> F y) : x ~> y;
-        fmap_sur {x y} (g : F x ~> F y) : fmap[F] (prefmap g) ≈ g
-      }.
-
-    This file pins that two-field shape.  It constructs a [Full] instance
-    using *only* [prefmap] and [fmap_sur]:
-
-      - [Id_Full_build] applies the generated constructor [Build_Full] to
-        exactly those two values.  Under the old five-field class this is a
-        partial application whose type still expects the three dropped fields,
-        so it is rejected; under the corrected class it has type [Full Id[C]].
-
-      - [Full_from_section] does the same via a record literal that lists only
-        the two surviving fields.  Under the old class the omitted fields turn
-        into unresolved implicit arguments (a hard error); under the corrected
-        class the literal is complete.
-
-    Either construction therefore compiles only against the corrected
-    definition and fails against the old one.  Finally we reference
-    [FullyFaithful] — the lemma whose proof previously relied on the removed
-    [prefmap_comp] / [prefmap_id] — to confirm it still typechecks under the
-    leaner class. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

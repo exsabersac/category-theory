@@ -1,37 +1,8 @@
-(** * Probe for Instance/Cat/Creation.v (issue #439)
+(*
+   本文件为测试：ProbeCatCreation439。
 
-    Pins the measured boundaries of Mac Lane §V.6 Exercises 3 and 4 as they
-    are actually delivered — over the tree's FIBRE PRODUCT of categories,
-    not over a pullback square in [Cat], which `Instance/Cat/Pullback.v`
-    refutes for this object.  Negatives of two kinds, kept lexically apart.
-
-    CONVERSION: n1, the composite [FP_snd ◯ Comma_to_FP] has the same object
-    and arrow action as [comma_proj2] — both accepted, at [eq_refl] — but is
-    not the same functor RECORD, which is exactly why
-    [CreatesLimit_transport] is needed to get from one to the other; n2, the
-    comma category is not the fibre product on the nose either, so
-    [Comma_FP_iso] is doing real work.
-
-    TYPING: n3, an object of a fibre product stores a LEIBNIZ equality
-    between the two images, and an isomorphism does not ascribe there — this
-    is the measured reason the bottom functor must create limits STRICTLY
-    rather than up to isomorphism, and the accepted control beside it builds
-    the same object from an equality.
-
-    The [eq_refl] readbacks are positive controls: the strict lift's apex
-    and legs lie over the given cone downstairs, and the two
-    Verification-block aliases are the constants they name.  Each
-    refutation was stripped one at a time in a copy of the whole file, and
-    the import list contains the target's in full (plus the target itself
-    and Construction/Comma/Creation, which the negatives name) — an earlier
-    revision said "mirrors the target's" while omitting
-    Category.Adjunction.Continuity and Category.Instance.Adjoints, the
-    short-import shape that makes probes pass vacuously.
-
-    One caveat on [p439_square], stated so it is not read for more than it
-    is: [fp_square_obj]'s definiens IS [`2 (K j)], so that readback pins the
-    definition's TRANSPARENCY, not the commutation of the square.  The other
-    seven accepted controls compare genuinely distinct expressions. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

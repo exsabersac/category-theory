@@ -10,25 +10,14 @@ Set Primitive Projections.
 Set Universe Polymorphism.
 Unset Transparent Obligations.
 
-(* nLab: https://ncatlab.org/nlab/show/setoid
-   nLab: https://ncatlab.org/nlab/show/equivalence+relation
-   Wikipedia: https://en.wikipedia.org/wiki/Setoid
+(*
+ nLab: https://ncatlab.org/nlab/show/equivalence+relation
+ Wikipedia: https://en.wikipedia.org/wiki/Setoid
 
-   A setoid is a type [A] together with a distinguished equivalence relation
-   [equiv] on it, written `≈`. Setoids stand in for quotient sets in a type
-   theory that lacks quotient types: rather than identifying elements, one
-   carries the equivalence explicitly and proves every operation respects it
-   (the respectfulness/[Proper] discipline of Coq's generalized rewriting; see
-   Coq.Classes.Morphisms). This is the foundational structure of the library:
-   every hom is a setoid (a hom-setoid), so morphism equality throughout is the
-   chosen `≈` rather than Coq's `=`. The relation lives in [crelation] (a
-   [Type]-valued, hence proof-relevant, relation) so that equivalence proofs
-   may carry computational content.
+   本文件给出 Setoid 相关定义与性质。
 
-   The defining laws of [equiv], packaged as [Equivalence], are:
-     reflexivity   x ≈ x
-     symmetry      x ≈ y  ->  y ≈ x
-     transitivity  x ≈ y  ->  y ≈ z  ->  x ≈ z *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Setoid A := {
   equiv : crelation A;                  (* the equivalence ≈ on A *)
   setoid_equiv : Equivalence equiv      (* refl/symm/trans laws for ≈ *)

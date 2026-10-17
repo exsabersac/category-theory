@@ -1,49 +1,8 @@
-(** * Boundary probes for Structure/Limit/Initial.v (issue #334)
+(*
+   本文件为测试：ProbeLimitInitial334。
 
-    Mac Lane CWM 2nd ed. §III.4 Exercise 3, book p. 72; Fong-Spivak
-    *Seven Sketches* §3.5.3 Ex 3.98; Riehl *CTiC* 2nd ed. §3.1.
-
-    This file pins the three measurements the target's header records and
-    states are pinned nowhere.  The target is right that they are
-    measurements; this file is where they stop being unguarded.
-
-    THREE NEGATIVES OF TWO KINDS, kept lexically apart:
-
-      * CONVERSION -- [initial_leg I F initial_obj] is not [id] on the
-        nose.  It is [fmap[F] zero] at the initial object, and [zero]
-        there is only [≈]-equal to [id] (by [zero_unique]), not
-        convertible to it; [F] then has no reason to send it to [id]
-        definitionally.  The target proves the [≈] form
-        ([initial_leg_id]) and says plainly that the strict form fails.
-
-      * CONVERSION (different cause; and an earlier draft of this file
-        wrote the statement with [initial_Cones_Terminal] applied to no
-        arguments, so its [Fail] fired on a MISSING ARGUMENT rather than
-        on the refutation -- a false guard, caught by strip-verifying the
-        failure KIND) -- the WHOLE-RECORD identity
-        [Limit_Cones … = initial_Limit] is refuted, although the CONE
-        components agree by [eq_refl] (that is the target's shipped
-        [initial_Cones_strict]).  What differs is the rebuilt universal
-        property, not the data.
-
-      * FORMABILITY (universe), THREE of them -- the index category's
-        hom-and-proof universes get identified with the ambient
-        category's, and an earlier draft of this file blamed [IsALimit]
-        ALONE on the strength of an [ACone] control.  That inference was
-        invalid.  With J's levels declared apart, [ACone c F] and [Cone F]
-        are formable, but [cone_leg N x]
-        (Structure/Limit/Preservation.v), [IsLimitCone N] AND
-        [IsALimit F c] (Structure/Limit.v) are all rejected with the
-        same message.  Two of the three donors ARE cone vocabulary, so the
-        control rules out [ACone]/[Cone] and nothing further; all three
-        rejections are pinned below.  None of the three carries universe
-        annotations, so this stays a repairable annotation defect of the
-        family this repo has met before, NOT inherent content, and not
-        claimed unavoidable here.
-
-    Every negative is paired with a positive control NAMING ITS OWN
-    CONSTANTS.  The measured rename-simulation score is at the end, over
-    the constants the NEGATIVES name and no others. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

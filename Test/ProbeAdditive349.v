@@ -1,18 +1,8 @@
-(** * Probe: boundaries of the additive-adjunction results
+(*
+   本文件为测试：ProbeAdditive349。
 
-    Guards the strength claims of Adjunction/Additive.v from OUTSIDE
-    that file — an in-file [Fail] renames in lockstep with the constant
-    it guards and so cannot detect a rename.
-
-    That file's header MEASURES three equations as rejected at
-    [eq_refl] and says plainly that nothing there would notice if a
-    later change made one of them definitional.  This file closes that
-    gap: each of the three is pinned as a CONVERSION negative, beside a
-    control establishing the same equation holds at [≈], so the
-    negatives are about conversion and not about the mathematics.
-
-    The import list mirrors the target's in full; a short prefix is what
-    makes a probe pass vacuously, and a vacuity check cannot detect it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

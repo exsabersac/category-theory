@@ -1,30 +1,8 @@
-(** * Probe for the necessity of the solution set condition (issue #444)
+(*
+   本文件为测试：ProbeAFTNecessity444。
 
-    Pins the two universe-instance boundaries that carry this development's
-    headline, and nothing else.  Both are measured in the two targets'
-    headers; measured is not guarded, which is what this file is for.
-
-    THE BOUNDARY IS THAT ONE LIBRARY CLASS IS INHABITED AT ONE UNIVERSE
-    INSTANCE AND REFUTED AT ANOTHER, over one and the same category.
-    [Complete] at the SMALL instance (diagram shape strictly below the
-    ambient objects) holds of the reversed order on the large ordinals;
-    [Complete] at the COLLAPSED instance (shape at the object level) is
-    refuted there.  N1-N3 pin the refused side and the [Check]s beside them
-    pin the inhabited side, so neither can drift without this file stopping.
-
-    N4 is the sharpest of the four: it feeds the INHABITED instance to the
-    constant that REFUTES the collapsed one.  If that ever succeeded the
-    development would prove False, so this refutation is the guard on the
-    whole two-instances framing.
-
-    N5 records that [Complete_Initial] is inert on the large categories --
-    the measurement that redirected the issue -- against the accepted
-    control on the thin one, which is Freyd's collapse appearing as a
-    universe constraint.
-
-    Each refutation was stripped ONE AT A TIME in a copy of this WHOLE file
-    and its refusal read.  Only the STABLE HEAD of each refusal is described
-    here, never the trailing clause, which is import-sensitive. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

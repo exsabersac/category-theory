@@ -1,71 +1,8 @@
-(** * Boundary probe: what is and is not definitional in the tensor
-      product of modules
+(*
+   本文件为测试：ProbeModTensor。
 
-    Companion to Instance/Mod/Tensor.v and Instance/Vect/Tensor.v (Mac
-    Lane §III.1, Riehl §2.3).  Those files make several strength claims —
-    some things hold at Leibniz [=] or by [eq_refl], others only up to
-    [≈] — and a strength claim that lives only in a header is a claim
-    nothing in the build would notice losing.  This file pins the
-    boundary in the manner of Test/ProbeFreeVect.v: **if the [Fail]
-    commands here stop failing, this file breaks the build.**
-
-    Both sides are pinned deliberately.  A [Fail] alone proves very
-    little — it passes just as happily when the term is ill-typed for
-    some unrelated reason, or when a name has been renamed out from under
-    it.  So each negative probe is paired with a positive control which
-    must SUCCEED, and the controls are the claims themselves.
-
-    The instrument was checked before being trusted: wrapping [Fail]
-    around a command that succeeds reports "The command has not failed!"
-    and aborts compilation, so [Fail] here is not a no-op.  Each negative
-    below was also run with the [Fail] stripped, and the error confirmed
-    to be a genuine unification error rather than a syntax, scope or
-    universe error; the diagnoses are recorded beside each probe.
-
-    The four negatives and their causes:
-
-      - THE QUOTIENT IS GENUINE.  Commutativity of a formal sum is a step
-        of the generated congruence [mt_eq] and not a definitional
-        equality of the underlying inductive: the two formal sums are
-        distinct terms of [MTerm].  The positive control is [mte_comm].
-        This is what makes the setoid presentation a quotient rather than
-        a renaming, and it is why the mediator needs
-        [tensor_med_respects] before it is a morphism at all.
-
-      - THE BALANCED LAW IS NOT DEFINITIONAL EITHER.  (r·v) ⊗ w and
-        v ⊗ (r·w) are distinct terms even at closed ℤ scalars, where both
-        sides' scalar products reduce to numerals; they are identified
-        only by [tensor_balanced], which composes the two action rules
-        through the formal scalar.  Since it is exactly this law that
-        makes the canonical map bilinear in the two-sided sense, the
-        probe records that the whole of bilinearity in the second
-        variable is quotient content, not computation.
-
-      - THE FACTORIZATION'S VALUE IS ONLY UP TO [≈] WHEN THE TARGET'S
-        SETOID SAYS SO.  Over ℤ the mediator's value at a closed
-        generator IS a numeral, by [eq_refl] ([probe_med_computes]).
-        Over ℚ it is not: [Qmult (1#2) (4#1)] reduces to the
-        term [4#2], which is [Qeq]-equal to [2] and not Leibniz-equal to
-        it.  The two probes together locate the boundary precisely — it
-        is the SCALAR SETOID, not the mediator, that decides.
-
-      - THE TRIANGLE IS AN EQUATION OF SETOIDS, NOT OF RECORDS.
-        [fmap[Bilin] (tensor_med β) tensor_gen] and β agree at every
-        argument, by [eq_refl] on the VALUE ([probe_triangle_value]), but
-        the two [RBilinear] records are not the same term: postcomposition
-        rebuilds the four law fields from [Program] obligations, which
-        are [Qed]-opaque.  So the universal element's [unique_property]
-        is stated, and can only be stated, in the hom-setoid of [Sets].
-
-    Two strict successes ABOUT THE CLASS are pinned as well, because
-    they are the unusual ones and a later refactor could silently lose
-    them: the universal element's element IS [tensor_gen]
-    ([probe_universal_element_is_gen]), and the mediator extracted from
-    the class IS the fixpoint [tensor_med] ([probe_factor_is_med]).  Contrast
-    Test/ProbeFreeVect.v, where the corresponding data (the counit, the
-    free functor's action on arrows) does NOT compute, [ump_universal_arrows]
-    being opaque; here the [Unique] record is built directly, so
-    [unique_obj] reduces. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Coq.QArith.QArith.
 Require Import Category.Lib.

@@ -19,51 +19,11 @@ Require Import Category.Construction.Comma.Creation.
 
 Generalizable All Variables.
 
-(** * Probe for Instance/Mod/Limit.v
+(*
+   本文件为测试：ProbeModLimit449。
 
-    Mac Lane, Categories for the Working Mathematician, 2nd ed., §V.1
-    Theorems 2 and 3 and §V.7 Construction 1, printed pp. 111-112 and
-    p. 128.  Issue #449.  The target creates every limit of [RMod R]
-    from [Ab] along [RMod_Forget_Ab] and reads [RMod_Complete] off
-    [Ab_Complete].
-
-    The first fifteen requires above are the target file's own import
-    list, unabbreviated, and the sixteenth is the target.  A short
-    prefix is what makes a probe pass vacuously, so nothing is trimmed
-    even where a require is redundant.  The last two are the probe's
-    own, and are the only additions: the adjoint-functor-theorem
-    boundary below names [PreservesImageLimit]
-    (Construction/Comma/Limit.v) and its repair
-    [Continuous_PreservesImageLimit] (Construction/Comma/Creation.v),
-    neither of which the target imports.
-
-    Every statement asserted to be refuted below has been STRIPPED of its
-    refutation keyword in a copy of this WHOLE file, compiled alone, and
-    its complete error read; a refutation that holds prints nothing under
-    this repo's coqc.  Kinds, under THIS import list, the rubric being
-    Test/ProbeSpanningArrow448.v's:
-
-      CONVERSION  - "cannot unify A and B" parenthetical present.
-      TYPING      - the "has type X while it is expected to have type Y"
-                    opener with NO such parenthetical.
-      INSTANCE    - "(no type class instance found)": such a negative
-                    must be a [Definition], since a [Check] tolerates the
-                    open evar and is then vacuously green.
-      UNIVERSE    - "universe inconsistency".
-
-    MEASURED, AND WORTH SAYING PLAINLY: all four negatives here open with
-    the "has type ... while it is expected to have type ..." line AND
-    carry the "cannot unify" parenthetical, so by that rubric all four
-    are CONVERSION, not TYPING.  The issue brief anticipated TYPING for
-    F2 and F3; the parenthetical decides it, and the exact text of each
-    is quoted at the command.  F3's parenthetical is also not the one
-    anticipated -- it reads "cannot unify "Cone (RMod_Forget_Ab R ◯ K)"
-    and "IsLimitCone N"", the short names being those this import list
-    puts in scope.
-
-    The instrument check comes first; every library constant a negative
-    names has a positive control outside any refutation command, and
-    each negative is followed by the term that DOES ascribe there. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

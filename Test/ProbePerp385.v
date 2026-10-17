@@ -1,36 +1,8 @@
-(** * Boundary probe for the orthogonal-complement connection (#385)
+(*
+   本文件为测试：ProbePerp385。
 
-    This file exists for what an in-file [Fail] cannot do: survive a
-    rename.  A negative written inside the module it guards is renamed in
-    lockstep with the constant it names and so stays green when that
-    constant disappears; a negative written HERE breaks loudly.
-
-    The [Require] list below is the target's own list, plus the target.  A
-    short prefix is exactly what makes a probe pass for the wrong reason
-    -- a missing coercion or notation can turn an intended unification
-    mismatch into an "illegal application" -- so the list is mirrored
-    rather than trimmed.
-
-    ** THE NEGATIVES, BY KIND
-
-    Six negatives plus one instrument check.  The kinds are told apart by
-    the error TEXT rather than by a label, and every one was stripped ONE
-    AT A TIME, compiled alone, and its whole message read.
-
-      TYPING       a plain "has type ... while it is expected to have
-                   type ...", with NO "cannot unify" and NO universe
-                   clause.  Negatives 2, 3 and 4.
-
-      CONVERSION   "cannot unify" between two inhabitants of ONE type.
-                   Negatives 5 and 6.
-
-      FORMABILITY  ends in "universe inconsistency: Cannot enforce ...".
-                   Negative 7.
-
-    Every constant a negative names also appears in a command OUTSIDE any
-    [Fail], donors included -- a guard that names a constant only inside
-    its own [Fail] is vacuous, and the control block below was written by
-    reading the [Fail] commands rather than from memory. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

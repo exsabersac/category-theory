@@ -1,26 +1,8 @@
-(** * Probe for Theory/WeaklyInitial.v's characterization (issue #435)
+(*
+   本文件为测试：ProbeWeaklyInitial435。
 
-    Pins the measured boundaries of the initial-object theorem's two
-    directions with negatives of two kinds, kept lexically apart: TYPING
-    (N1: a weakly initial OBJECT is not a weakly initial FAMILY — the two
-    notions are related by [wif_of_weakly_initial], not by conversion; N4:
-    Freyd's direction does not run without the SECOND product — the
-    equalizer supply is not accepted in its place; N5: a family does not
-    yield a weakly initial object at a chosen index — [wif_cover] picks its
-    own member per target, Riehl's distinction between weakly initial and
-    jointly weakly initial) and CONVERSION (N2: the singleton family's index
-    is [poly_unit] and nothing else; N3: a [Terminal] is not an [Initial],
-    the [C^op] pivot made visible).  The [eq_refl] readbacks are positive
-    controls: the family built from an initial object is that object, both
-    biconditionals' forward halves ARE [weakly_initial_of_initial], and at
-    Sets the DERIVED singleton family's index and member compute.  Every command
-    binds its own category, because the pinned [Limit] hypotheses need the
-    category's hom level at [Set] and a [Section] variable would fix it
-    elsewhere.  Each refutation was stripped one at a time in a copy of the
-    whole file; the import list mirrors the target's, plus the Sets
-    satellite and Adjunction/GAFT.v for their controls.  A universe
-    refutation at [Cat] was tried and does NOT refuse ([Cat]'s hom universe
-    instantiates at [Set]); it is not here. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

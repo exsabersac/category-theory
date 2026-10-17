@@ -1,32 +1,8 @@
-(* Epi implies PROPOSITIONAL surjectivity in [Ab] and in [RMod R], and not
-   the split form.
+(*
+   本文件为测试：ProbeAbPropSurjective。
 
-   Mac Lane's §I.7 proposition -- a homomorphism of abelian groups is epic
-   exactly when it is surjective -- is proved in Instance/Ab.v by probing with
-   the quotient [B/fA].  Before the PR "algebraic carriers are sets"
-   (2026-09-17) the coset relation was [Type]-valued, so the preimage came
-   back out as DATA and [ab_epic_surjective] concluded the split
-   [AbSurjective].  The relation is now a [Prop] ([ab_coset_eq]), because
-   every [AbObject] carries [cmon_prop] and a quotient's equality has to be a
-   [Prop] for the field to be supplied at all.  The conclusion is therefore
-   [AbPropSurjective], and the preimage is no longer data.
-
-   Nothing is doubly negated and no choice principle is consumed: the
-   existential is Coq's [ex].  What the negatives below pin is exactly the one
-   thing lost -- the [Prop] existential cannot be destructed into the
-   [Type]-valued [AbSurjective] -- and the controls show the two directions
-   that survive: the split notion still implies the propositional one
-   ([ab_surjective_prop]), and it still implies [Epic] ([ab_surjective_epic]).
-
-   Both negatives were stripped once, in a copy of this whole file, and both
-   report
-
-     Error: Incorrect elimination in the inductive type "ex": the return type
-     has sort "Type" while it should be SProp or Prop.  Elimination of an
-     inductive object of sort Prop is not allowed on a predicate in sort
-     "Type" because proofs can be eliminated only to build proofs.
-
-   The import lists are the union of Instance/Ab.v's and Instance/Mod.v's. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Lib.Setoid.Propositional.

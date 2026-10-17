@@ -10,34 +10,13 @@ Import ListNotations.
 
 (** Indexed (heterogeneous) lists *)
 
-(* CPDT: http://adam.chlipala.net/cpdt/html/Cpdt.DataStruct.html
-   nLab: https://ncatlab.org/nlab/show/dependent+product
+(*
+ nLab: https://ncatlab.org/nlab/show/dependent+product
 
-   An [ilist l] is an Indexed list (a heterogeneous list): given a type [A]
-   and an [A]-indexed family [B : A -> Type], and a list [l = [a0; ...; an]]
-   of indices, [ilist l] is the type of tuples [(b0, ..., bn)] where each
-   [bi : B ai].  Successive elements may therefore have *different* types,
-   unlike an ordinary homogeneous [list].  This is exactly Adam Chlipala's
-   heterogeneous list ([hlist]) from "Certified Programming with Dependent
-   Types"; see Solver/Reify.v, whose reification code is taken from CPDT and
-   builds [ilist]s of reified morphisms.
+   本文件给出 IList 相关定义与性质。
 
-   We follow CPDT's *recursive* (type-level computation) presentation rather
-   than an inductive one: [ilist] is a [Fixpoint] producing a right-nested
-   product terminated by [unit].  Because the type reduces structurally on
-   [l], the projections [ilist_hd]/[ilist_tl] and the lookups [ith]/[ith_exact]
-   are plain [fst]/[snd] cascades that need no equality reasoning, so every
-   definition here is axiom-free even though [Set Equations With UIP] is in
-   scope (it is only needed by clients such as Instance/Lambda/Sem.v, and the
-   Equations-generated functions below remain "closed under the global
-   context").
-
-   Categorically, with the index type [A] viewed as a discrete category and
-   [B] as a functor [A -> Set], [ilist [a0; ...; an]] is the indexed/dependent
-   product of the [B ai], i.e. a finite section of [B] over the chosen
-   indices.  Compare Lib/TList.v (type-aligned paths over a quiver) and
-   Lib/NETList.v: those align *adjacent* indices into a chain, whereas [ilist]
-   simply assigns one [B]-value to each position independently. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ilist.
 

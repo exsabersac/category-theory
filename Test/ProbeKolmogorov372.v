@@ -1,45 +1,8 @@
-(** * Boundary probe for Instance/Top/Kolmogorov.v (issue #372, part b)
+(*
+   本文件为测试：ProbeKolmogorov372。
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-    §IV.3, printed p. 92, Exercise 4(b).
-
-    Every rejection the target's header MEASURES is pinned here rather
-    than in the target itself, for the reason this tree records
-    elsewhere: an in-file [Fail] renames in lockstep with the constant
-    it guards, so it cannot detect a rename.  This file mirrors the
-    target's FULL [Require] list plus the target -- a short prefix is
-    what makes a probe pass for a reason it never measured.
-
-    SEVEN [Fail] commands: SIX negatives of THREE KINDS kept lexically
-    apart, plus one scope-free instrument check.
-
-      - CONVERSION (3): each reports "cannot unify" between two terms
-        of ONE type.
-      - TYPING (1): a plain "has type ... while it is expected to have
-        type ...", with NO "cannot unify" and no universe clause.
-      - FORMABILITY (2): each ends "universe inconsistency: Cannot
-        enforce ...".  The first is this development's own headline
-        measurement -- the unrestricted indistinguishability relation
-        is one universe too big to be a space's `≈`; the second is the
-        donor identification [Subcategory] carries.
-
-    CORRECTION (#1347): CONVERSION 1 below now holds at [eq_refl], since
-    Instance/Sets.v gives its identity's and composite's properness fields
-    as terms; it is a control, so the refutations are SIX, FIVE negatives
-    and the instrument, CONVERSION counting 2.
-
-    Each negative was stripped ONE AT A TIME (the others left as
-    [Fail]), compiled alone, and its WHOLE error read; a [Fail] that
-    succeeds prints NOTHING under this coqc, which is why stripping is
-    the only way to see what fired.  Every constant a negative names is
-    also named OUTSIDE a [Fail] below, so that renaming any of them
-    breaks this file at a control rather than turning a guard silently
-    green.
-    CORRECTION (#1347): the five negatives that remain, stripped one at a
-    time in copies of the WHOLE file, stop inside their commands with the
-    errors they printed before #1347 (compared by script); CONVERSION 1,
-    wrapped in the refutation keyword in such a copy, stops the build at
-    that command. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

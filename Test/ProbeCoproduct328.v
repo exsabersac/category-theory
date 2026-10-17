@@ -23,30 +23,11 @@ Local Open Scope category_scope.
 
 (** * Probe: strength boundaries of the Mon and Grph coproducts *)
 
-(* Guard file for Instance/Mon/Coproduct.v and
-   Construction/Free/Quiver/Coproduct.v, in the Test/ProbeFunnyPoly.v
-   convention.
+(*
+   本文件为测试：ProbeCoproduct328。
 
-   THE IMPORT LIST IS THE UNION OF THE TWO TARGETS' LISTS, plus
-   Instance/Roster.v.  That last one is deliberate and is the ONLY place
-   it appears: Instance/Mon/Coproduct.v does NOT require Roster, because
-   Roster pulls in Instance/Top and hence the stdlib reals, and an
-   algebra file depending on that would invert the layering.  The
-   consequence is that the file states its results over
-   [@Mon Sets Sets_Product_Monoidal] rather than over Roster's NAME for
-   that term.  Those are the same term, and the [Mon_Sets] controls
-   below are where that identification is machine-checked and GUARDED --
-   it was previously verified only in a scratch probe that could not be
-   preserved.
-
-   Every negative is paired with a positive control NAMING ITS OWN
-   CONSTANTS, and the pairing was verified by RENAME SIMULATION over the
-   constants appearing in the NEGATIVES -- the wider check, which found
-   five unguarded negatives in an earlier probe file in this tree.
-
-   All negatives here are CONVERSION negatives ([Fail Definition ...
-   := eq_refl]); this file states no formability negative.  Each was
-   stripped of its [Fail] once and the resulting message inspected. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

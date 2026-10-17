@@ -1,37 +1,8 @@
-(** * Probe for the Freyd characterization (issue #436)
+(*
+   本文件为测试：ProbeGAFTCharacterization436。
 
-    Pins the measured boundaries of Adjunction/GAFT.v's necessity direction
-    and of the biconditional, with negatives of three kinds kept lexically
-    apart.  NAME-ABSENCE: n7, there is no field called [sol_unique] — the
-    same KIND of refusal as the instrument, and it carries only half the
-    argument, the other half being the four accepted [Check]s beside it that
-    enumerate the record's fields; together they say that "solution set"
-    here is weak factorization with no uniqueness clause.  CONVERSION: n1, the direct singleton
-    family and Mac Lane's route through the comma-initial object agree on
-    every data field but are not the same term; n8, the member is [F d] and
-    not [F (U (F d))]; n3, a general solution set is not a singleton, which
-    is what makes the necessity direction's singleton a real choice; n9, the
-    manufactured family at [Id : Sets ⟶ Sets] agrees with the hand-built
-    [Sets_Id_SolutionSet] in index, member and arrow but is not the same
-    record, the two covering witnesses differing.  TYPING: n4, the
-    sufficient direction keeps all three premises — dropping continuity does
-    not ascribe.
-
-    RECORDED CORRECTION: an earlier revision counted a fourth kind,
-    UNIVERSE, for n6, "the biconditional inherits [GAFT]'s pin of both hom
-    universes to [Set] — which the necessity direction does NOT".  [GAFT]'s
-    [Set] came from Instance/Discrete.v's unannotated
-    [DiscreteCat_Functor] through GAFT.v; the donor was annotated in
-    the PR "algebraic carriers are sets" (2026-09-17) and n6 is now an
-    accepted positive control beside its former control.  No UNIVERSE
-    refusal remains in this file.
-
-    The [eq_refl] readbacks are positive controls: the three data fields of
-    the manufactured family, the collapse of the comma route's arrow to the
-    unit, the identity of the biconditional's reverse half with [GAFT], and
-    the [Sets] cross-check that reverse half IS the application the tree
-    already had.  Each refutation was stripped one at a time in a copy of
-    the whole file; the import list mirrors the two targets'. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

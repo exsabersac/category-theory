@@ -1,40 +1,8 @@
-(** * Universe probe: the funny monoidal structure on StrictCat is Set-pinned.
+(*
+   本文件为测试：ProbeFunnyPoly。
 
-    Companion to the "Universe scope" note of Instance/StrictCat/Premonoid.v.
-
-    [Funny_Monoidal@{u} : Monoidal@{u Set}] (Instance/StrictCat/Funny.v) fixes
-    the second universe of [Monoidal] — the level of StrictCat's member
-    categories — at [Set], so every carrier category reached through the
-    funny monoidal structure lives in [Category@{Set Set Set}].  This file
-    pins the obstruction to lifting that restriction:
-
-      - [StrictCat@{i v j v v} : Category@{i v v}] has object type
-        [Category@{v v v}]: member categories at the rigid (monomorphic)
-        level [v] declared below;
-
-      - the tensor is unproblematic: [Build_Monoidal] applied to [_1] and
-        [FunnyTensor] at member level [v] is accepted ([probe_tensor_ok]);
-
-      - supplying a unitor is what fails.  The compiled [Funny_unit_left] of
-        Construction/Funny/Unitors.v carries a rigid interior [Set] level
-        ([Print Funny_unit_left] shows
-        [from := Funny_unit_left_from@{u0 u0 u0 Set u0 u0}]), so
-        [Build_Monoidal] at member level [v] reports
-
-          universe inconsistency: Cannot enforce Set = v
-
-        at the [unit_left] field (first [Fail] below);
-
-      - consequently the compiled instance does not transport: casting
-        [Funny_Monoidal@{i}] to [@Monoidal StrictCat@{i v j v v}] fails with
-        the same message, [Monoidal@{i Set}] against [Monoidal@{i v}]
-        (second [Fail] below).
-
-    Lifting the restriction requires re-declaring the unitors with explicit
-    universe binders in Construction/Funny/Unitors.v.  If that is ever done,
-    the [Fail] commands here stop failing and this file breaks the build,
-    flagging that the universe-scope note in Instance/StrictCat/Premonoid.v
-    can be relaxed. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

@@ -1,63 +1,7 @@
-(** * Boundary probe for Structure/Limit/Components.v (issue #355)
+(*
+   本文件为测试：ProbeComponents355。
 
-    Mac Lane CWM 2nd ed. §IV.2, book p. 90, Exercise 7.
-
-    WHY THIS FILE EXISTS AT ALL.  [Structure/Limit/Components.v] carries
-    two [Fail]s of its own (an earlier revision said four; the two
-    universe ones there were repaired at the same time as N1/N2 below),
-    and they are well formed -- each is stripped and its whole error read,
-    each sits beside a control that must succeed.  What an in-file
-    negative CANNOT do is survive a rename: a
-    whole-file rename moves the [Fail] and the constant it names in
-    lockstep, so the guard stays green while the thing it guarded is
-    gone.  Every negative below therefore names a constant of the TARGET,
-    and the file mirrors ALL 23 of the target's [Require] lines -- a
-    probe built on a short prefix of that list is the classic way to
-    make a negative pass
-    for a reason it never measured (a missing coercion, an absent
-    notation), certifying nothing.
-
-    KINDS, separated by the error TEXT rather than by label:
-      CONVERSION   ends `(cannot unify "X" and "Y")`
-      FORMABILITY  ends `(universe inconsistency: Cannot enforce ...)`
-    A [Fail] that SUCCEEDS prints NOTHING under this repo's [coqc], so
-    every negative here was stripped and run alone before being trusted.
-
-    WHAT IS PINNED, and what each negative is FOR:
-
-    N1, N2 -- REPAIRED, and recorded as a correction.  An earlier revision
-          read:
-
-            "N1 -- the [iprod] reading of part (a) carries a [Set] pin
-             that the ELEMENTARY reading does not.  This is the reason
-             part (a) is stated first at [IsIndexedProduct] and only then
-             read through [iprod]: [iprod] is defined over
-             [Limit (DiscreteCat_Functor f)] and so pins the ambient
-             category's hom AND proof universes to the literal [Set].  The
-             issue's own reviewer check asks that the right-hand side use
-             [iprod]; taken alone that would have confined the theorem to
-             [Set]-homed categories WITHOUT SAYING SO.  The controls show
-             the elementary vocabulary is formable at levels where the
-             [iprod] one is not, so the pin is attributable to the DONOR
-             and not to anything the target adds.
-             N2 -- the same, one layer out, at the target's own corollary.
-             Both [Set]-pin negatives report `Cannot enforce Set = uh`,
-             which names the declared level, so neither can be passing for
-             an unrelated reason."
-
-          The attribution to the DONOR was right, and the donor was one
-          step further out than [iprod]: [DiscreteCat_Functor], declared
-          with bare binders and minimized to [DiscreteCat@{u Set Set}].
-          Annotated in place in the PR "algebraic carriers are sets"
-          (2026-09-17), Instance/Discrete.v, both commands are ACCEPTED
-          and are kept as positive controls at the same levels, so
-          dropping the annotation refuses them again and breaks this file.
-          Part (a) is still stated first at [IsIndexedProduct], which is
-          now a presentational choice and not a universe obligation.
-          NO FORMABILITY REFUSAL REMAINS IN THIS FILE.
-
-    N3 -- [component_diagram] is not [summand] of the transported functor
-          on the nose; the comparison is at [≈] with identity components.
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 Require Import Category.Lib.

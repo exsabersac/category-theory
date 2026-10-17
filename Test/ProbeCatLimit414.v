@@ -1,70 +1,8 @@
-(** * Probe for Instance/Cat/Limit.v (issue #414)
+(*
+   本文件为测试：ProbeCatLimit414。
 
-    Guards the boundary claims of Instance/Cat/Limit.v from OUTSIDE the
-    target: an in-file [Fail] renames in lockstep with the constant it guards
-    and so cannot detect a rename.  The [Require] list below mirrors the
-    target's in full, plus the target itself; a shorter prefix is what makes
-    a probe pass vacuously (a refusal on a missing coercion or an unresolved
-    implicit reads like the refusal one meant to pin).
-
-    Every [Fail] was stripped ONE AT A TIME in a copy of the WHOLE file and
-    compiled alone, its error read in full; a passing [Fail] prints NOTHING
-    under this coqc, so that is the only way to know a negative fires.
-
-    Refutation commands: 1 instrument check + 9 negatives of THREE kinds,
-    told apart by the error TEXT and not by their labels:
-
-      FORMABILITY (universe; the message ends in a universe clause)
-        N1  the donor: at [so < sh] the projection [PiCat_Proj C a] cannot be
-            ascribed at a product whose object universe is [so] — its
-            declared [PiCat] instance identifies the index universe with the
-            small hom universe and bounds the product's object universe
-            below by it.  Controls at the SAME levels: [PiCat C] at
-            [Category@{so sh sh}], [PiCat C] as an object of
-            [Cat@{_ sh _ so sh}], the class applied up to (not including)
-            the projections, and the bare [PiCat_Proj C a] and [PiCat_ump R]
-            (whose products land in a LARGER object universe).
-        N2  inherited: [PiCat_IsIndexedProduct C] at [so < sh] — fires at
-            the ARGUMENT [C] (the already-refused-argument shape), so it
-            pins the boundary a consumer meets and corroborates nothing.
-        N3  inherited: the instance [Cat_HasIndexedProducts@{i so sh _ _}]
-            at [so < sh], refused directly ("Cannot enforce sh <= so").
-        N4  [StrictCat_HasIndexedProducts uip fe] ascribed at a class whose
-            index universe [i] sits strictly below the hom universe [h]:
-            the message is a has-type mismatch CLOSING with a universe
-            clause ("Cannot enforce h = i"), so it is classified here and
-            not as typing.  Control: [StrictCat_HasEqualizers] at [h].
-        N5  [StrictCat_Complete uip fe] ascribed at [Complete@{i h h _}],
-            the shape [Complete_from_products_equalizers] forces (the index
-            universe IS the ambient hom universe).
-        N6  the donor of N5: [Complete_from_products_equalizers] fed a
-            product structure whose index universe is [i < h].
-      TYPING (a plain has-type mismatch, no "cannot unify", no universe
-              clause)
-        N7  [Eq_IsEqualizer F G uip] ascribed at [@IsEqualizer Cat ...]: the
-            strict equalizer's universal property is a statement in
-            [StrictCat], and the two types differ in the (implicit) ambient
-            category.  The mathematics behind the refusal is
-            [EqCat_not_Cat_equalizer] in the target.
-      CONVERSION (an [eq_refl] refused where both sides share a type)
-        N8  [EqIncl F G ◯ Eq_med F G h Hh = h] as WHOLE functor records,
-            with the two DATA fields agreeing at [eq_refl] as controls: the
-            difference is confined to [Compose]'s three rebuilt law fields.
-        N9  [PiCat_Proj C i ◯ PiCat_Pair R = R i], likewise, with both data
-            fields as controls.
-
-    Positive readbacks (all [eq_refl]): the class's object and projections
-    at [Cat] ARE [PiCat] and [PiCat_Proj]; the mediator the strict
-    equalizer's universal property produces IS [Eq_med]; the chosen
-    equalizer of [StrictCat_HasEqualizers] IS [EqCat] with inclusion
-    [EqIncl]; [EqCat F G] IS [Sub C (EqSub F G)] (delta, a guard against
-    name drift); the inclusion's object action IS the first projection.
-
-    Guard block: every constant a negative names is [Check]ed outside every
-    [Fail], so a rename in the target breaks this file on a [Check] line and
-    never turns a negative vacuously green.  Rename-simulated over the
-    target constants the negatives name; the result is recorded in the
-    target's header. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

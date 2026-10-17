@@ -18,20 +18,11 @@ Require Import Category.Instance.Variety.Spanning.
 
 Generalizable All Variables.
 
-(** * Probe for Instance/Variety/Spanning.v
+(*
+   本文件为测试：ProbeVarietySpanning448。
 
-    Mac Lane §V.7 Remark 1 (pp. 127-128): the underlying-set functor of
-    a variety has a solution set, the spanning arrows.  Issue #448.  The
-    general theory has its own probe, Test/ProbeSpanningArrow448.v.
-
-    The import list above is the target file's own import list,
-    unabbreviated, plus the target.  Every negative was STRIPPED of its
-    refutation keyword in a copy of this WHOLE file and its error read (a
-    preamble-only scratch would drop the Section variables and
-    misclassify).  Kinds: INSTANCE by the "(no type class instance
-    found)" parenthetical; CONVERSION by "cannot unify".  The instrument
-    check comes first; every library constant a negative names has a
-    positive control. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

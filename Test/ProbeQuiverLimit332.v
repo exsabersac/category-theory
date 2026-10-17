@@ -1,50 +1,8 @@
-(** * Boundary probes for Construction/Free/Quiver/Limit.v (issue #332)
+(*
+   本文件为测试：ProbeQuiverLimit332。
 
-    Mac Lane CWM 2nd ed. §III.4, book p. 71 (def 8, remark 6).
-
-    This file pins two measurements the target's header rests on, so that a
-    later edit which quietly makes either FALSE breaks the build rather
-    than silently invalidating the prose.
-
-    The two negatives are of DIFFERENT KINDS and are kept lexically apart:
-
-      * CONVERSION -- [dpath D p] and [fmap[FunctorOfDiagram D] p] are NOT
-        convertible at a VARIABLE path.  [dpath] is a [Fixpoint] over the
-        path while [InducedFunctor]'s arrow action elaborates as a
-        [tlist'_rect], so neither reduces against the other until the path
-        is a literal.  At a ONE-EDGE path they DO agree, and that is the
-        positive control [dpath_singleton_is_fmap] shipped in the target.
-
-      * FORMABILITY (universe) -- [Diagram G C] identifies C's hom and
-        proof universes.  This is why [AGraphCone] displays
-        [C : Category@{u u0 u0}] where the [ACone] it mirrors displays them
-        apart, and it is INHERITED from the donor, not introduced by the
-        target.  The controls below localize that: under
-        [Constraint uh < up], [QuiverOfCat C] and [ACone c F] are BOTH
-        formable and only [Diagram G C] is rejected, with
-          "universe inconsistency: Cannot enforce up = uh because uh < up".
-        The target's header declined to measure this and said so; the
-        measurement is recorded here and the attribution is to
-        Theory/Diagram.v's [Diagram], NOT to anything this issue added.
-        SHARPER, AND IT CHANGES WHAT THE PIN MEANS: [Diagram] opens its
-        section with an unannotated [Context {C : Category}]
-        (Theory/Diagram.v), so the identification is a universe
-        MINIMIZATION artifact -- the family
-        Construction/Free/Quiver/Examples.v's header records -- and is
-        repairable upstream with explicit binders.  It is not inherent
-        content, and nothing here claims it is unavoidable.
-
-    NOT PINNED HERE, and said plainly: the target also measures that the
-    three WHOLE-RECORD round trips are refuted at [eq_refl] (the records
-    have primitive projections with eta, so record equality is field
-    equality, and the coherence fields are rebuilt proofs).  Those are
-    stated in its header and are guarded nowhere -- they are not pinned
-    below either, so a later edit could make them silently true.
-
-    Every negative is paired with a positive control NAMING ITS OWN
-    CONSTANTS, and the pairing was verified by RENAME SIMULATION over the
-    constants appearing in the NEGATIVES.  The measured score is at the
-    end of this file. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Lib.TList.

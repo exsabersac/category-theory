@@ -15,43 +15,11 @@ Require Import Category.Adjunction.SpanningArrow.
 
 Generalizable All Variables.
 
-(** * Probe for Adjunction/SpanningArrow.v
+(*
+   本文件为测试：ProbeSpanningArrow448。
 
-    Mac Lane, Categories for the Working Mathematician, 2nd ed., §V.7
-    Definition 6 and Lemma 2, printed pp. 127-128.  Issue #448.  The
-    variety remark has its own probe, Test/ProbeVarietySpanning448.v.
-
-    The import list above is the target file's own import list,
-    unabbreviated.  A short prefix is what makes a probe pass vacuously,
-    so nothing is trimmed even where a require is redundant.
-
-    Every statement asserted to be refuted below has been STRIPPED of its
-    refutation keyword in a copy of this WHOLE file, compiled alone, and
-    its complete error read; a refutation that holds prints nothing under
-    this repo's coqc.  Kinds, under THIS import list:
-
-      CONVERSION  - "cannot unify A and B" parenthetical present.
-      TYPING      - the "has type X while it is expected to have type Y"
-                    opener with NO such parenthetical.
-      INSTANCE    - "(no type class instance found)": the negative must
-                    be a [Definition] in a section with NO instance in
-                    scope, since a [Check] tolerates the open evar and a
-                    section that carries the instance ACCEPTS the term.
-      UNIVERSE    - "universe inconsistency".  RECORDED CORRECTION: no
-                    negative of this kind remains in the file.  B7 was the
-                    only one, and it turned over when
-                    [DiscreteCat_Functor] was annotated (PR "algebraic
-                    carriers are sets", 2026-09-17); the section that held
-                    it now keeps it as a positive control.  The kind is
-                    left listed because the section still guards against
-                    the refusal coming back.
-
-    One boundary is NOT a refusal and is pinned positively (B1 below):
-    [Spanning] with its two [sub_le] arguments exchanged is inhabited by
-    EVERY arrow, so a refutation probe on it would be vacuous.
-
-    The instrument check comes first; every library constant a negative
-    names has a positive control outside any refutation command. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

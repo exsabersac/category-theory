@@ -1,66 +1,8 @@
-(* The six term-model congruences of the RING layer are [Prop] inductives,
-   and the quotient-ring relation is a propositional truncation.
+(*
+   本文件为测试：ProbeTermModelPropRng。
 
-   Since the PR "algebraic carriers are sets" (2026-09-17) every [RigObject]
-   carries [rig_prop] (Theory/Algebra/Rig.v), the property that its carrier's
-   `≈` is logically equivalent to a [Prop]-valued relation.  The six
-   relations that a free, monoid, polynomial, tensor, exterior or enveloping
-   construction quotients by --
-
-     [mr_eq]   Instance/Rng/MonoidRing.v,   [fr_eq]   Instance/Rng/Free.v,
-     [pt_eq]   Instance/Rng/Polynomial.v,   [tt_eq]   Instance/Vect/TensorAlgebra.v,
-     [et_eq]   Instance/Vect/TensorAlgebra.v, [uenv_eq] Adjunction/Enveloping.v
-
-   -- ARE the [Prop]-valued relations those six rings supply.  Being in
-   [Prop] they ELIMINATE ONLY INTO [Prop], which is the whole content of the
-   change and is what the negatives below pin.
-
-   THE POSITIVES ARE OF TWO KINDS, and the comments distinguish them rather
-   than letting the reader assume.  NINE are CONTROLS OF THE CHANGE: the six
-   [pequiv] readbacks, [rquot_of_mem_control], [rquot_zero_iff_control] and
-   [rquot_pequiv_control].  None of them can even be STATED against the
-   baseline -- [rig_prop], [pequiv] and [rquot_rel_of_mem] do not exist
-   there, and [rquot_rel_zero_iff] concludes against the bare membership --
-   which was measured by compiling them in
-   `/Users/johnw/Products/category-theory/base-27f68f10` (master 27f68f10),
-   where each is refused.  SEVEN are NOT-LOST CHECKS: the six mediator
-   [_respects] lemmas APPLIED, and [lquot_is_rquot_control].  Those compile
-   against the baseline unchanged -- measured in the same tree, rc=0 -- so
-   what they show is that the statements did not move, not that the change
-   is visible in them.  Both purposes are legitimate; only the second is
-   what the word "control" would otherwise suggest.
-
-   The seventh pair covers Instance/Rng/Quotient.v's [rquot_rel], which is
-   NOT a moved inductive but a TRUNCATION: [idl_mem] stays [Type]-valued and
-   the quotient's equality is [inhabited] of it, so a witness cannot be read
-   back out into a [Type] goal (negative) while congruence to zero and the
-   ring's own [pequiv] are unaffected (controls).
-
-   WHY A SEPARATE FILE from Test/ProbeTermModelProp.v, which pins the same
-   property for the five CMon-tower relations.  Its import list is the union
-   of five files under Instance/Ab/ and Instance/Mod/; this one's is the
-   union of six under Instance/Rng/, Instance/Vect/ and Adjunction/, and
-   reaches Instance/Lie.v.  Merging them would put two different [te_*]
-   constructor families (Instance/Ab/Tensor.v's and
-   Instance/Vect/TensorAlgebra.v's) in one scope, and a Coq refusal is
-   rendered with the short names in scope -- so the merged file's negatives
-   would report different text than the one measured here, for no gain.
-
-   METHOD.  A [Fail Lemma <statement>] would be vacuous: the statement of
-   each [_respects] lemma is well formed whatever the relation's sort, and
-   only the ELIMINATION is refused.  Each negative is therefore a
-   [Fail Definition … := ltac:(induction He)], carrying the proof.  Each was
-   stripped once, in a copy of this whole file, and confirmed to report
-
-     Error: Cannot find the elimination combinator <rel>_rect, the
-     elimination of the inductive definition <rel> on sort Type is probably
-     not allowed.
-
-   except the two [rquot_rel] negatives, whose measured texts are quoted at
-   their own section below.
-
-   The import list is the union of the six target files' own, plus
-   Instance/Rng/Quotient.v's. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Lib.Setoid.Propositional.

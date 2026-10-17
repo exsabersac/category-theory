@@ -1,65 +1,8 @@
-(** * Boundary probes for the induced-arrow theorem
+(*
+   本文件为测试：ProbeRepresentableInduced。
 
-    Companion to Functor/Representable.v and Functor/Representable/Functorial.v
-    (issue #317; Mac Lane §III.2 Exercise 1, printed p. 62).  Those files make
-    strength claims of two DIFFERENT kinds, and this file pins both.  **If the
-    [Fail] commands below stop failing, this file breaks the build.**
-
-    THE TWO KINDS ARE NOT THE SAME AND ARE NOT DESCRIBED WITH ONE WORD.
-
-    (1) FORMABILITY.  [Yoneda_Full], [Yoneda_Faithful] and the [Yoneda_Embedding']
-    assembled from them (Functor/Hom.v) are stated over
-    [C : Category@{u u u}] — object, hom and proof universes IDENTIFIED — so
-    nothing built over them applies to a category whose objects live strictly
-    below its homs.  [repr_pair_iso] (Functor/Hom/Yoneda/Iso.v) consumes
-    [Yoneda_Embedding'] and inherits the pin, and so does
-    Functor/Representable/Functorial.v's [repr_pair_iso_from_is_induced] —
-    whose printed BINDER shows [Category@{u u0 u0}] and whose CONSTRAINT BLOCK
-    carries [u = u0].  The rejections in group (1) are UNIVERSE
-    INCONSISTENCIES: the term is not formable at all, not merely
-    non-convertible.
-
-    The point of the group is that Functor/Representable.v does NOT inherit
-    that pin, so the controls are as load-bearing as the negatives: the
-    [Representable] class, [repr_induced], its uniqueness packaging, the
-    tautological representation and the representing-object FUNCTOR are all
-    formable at exactly the category the donors are rejected at.  That is the
-    file's claim that the development escaped the donors' restriction, and
-    that claim is what would break here if someone re-routed
-    Functor/Representable.v through [Yoneda_Embedding'].
-
-    The pin on the donors is an artifact of top-level minimization on an
-    unannotated [(C : Category)] binder, not something inherent to Yoneda
-    fullness or faithfulness: re-running those two proof scripts verbatim
-    inside a section whose category is annotated [Category@{uo uh uh}]
-    succeeds, and controls 7 and 8 are those two re-derivations performed
-    here, so that negatives 1-3 are pinned as facts about the CONSTANTS.
-    Nothing in this development repairs the donors.
-
-    (2) CONVERSION.  Two claims of Leibniz equality are rejected because the
-    two sides carry a different number of [fmap] applications, while the
-    corresponding claims elsewhere DO hold on the nose.  These are
-    [Fail Definition ... := eq_refl] and not [Fail Example ... : T.]: a failing
-    type ascription would guard only the statement, whereas what is claimed is
-    convertibility of the two terms.
-
-    COUNTS.  Eight negatives — six in group (1) and two in group (2) — and
-    twelve positive controls, which is not a one-to-one pairing: group (1)'s
-    nine controls serve its six negatives jointly, and group (2)'s three
-    controls are successes of exactly the [Fail Definition ... := eq_refl]
-    shape its two negatives are rejections of.  Every negative is accompanied
-    by at least one control that must SUCCEED.  The instrument itself was
-    checked twice, once on a [Check] control and once on a
-    [Definition ... := eq_refl] control — wrapping [Fail] around a succeeding
-    command reports "The command has not failed!" and aborts compilation — and
-    every negative was compiled once with the [Fail] stripped, to confirm the
-    error is the intended one: six universe inconsistencies for group (1), of
-    which five report "Cannot enforce uh = uo because uo < uh" naming the
-    declared universes and the sixth (negative 4) reports "Cannot enforce
-    uo = ..." while unifying the [Copresheaves] and [Fun] spellings of the
-    functor category, and two "cannot unify" conversion errors for group (2).
-    The import list is Functor/Representable/Functorial.v's own, in that
-    file's order, plus both target files. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

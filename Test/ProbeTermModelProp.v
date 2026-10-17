@@ -1,32 +1,8 @@
-(* The five term-model congruences of the CMon tower are [Prop] inductives.
+(*
+   本文件为测试：ProbeTermModelProp。
 
-   Since the PR "algebraic carriers are sets" (2026-09-17) every [CMonObject]
-   carries [cmon_prop] (Instance/CMon.v), the property that its carrier's `≈`
-   is logically equivalent to a [Prop]-valued relation, and the five relations
-   that a free or tensor construction quotients by --
-
-     [ts_eq] Instance/Ab/Tensor.v,   [fa_eq] Instance/Ab/Free.v,
-     [fv_eq] Instance/Mod/Free.v,    [mt_eq] Instance/Mod/Tensor.v,
-     [bs_eq] Instance/Mod/Bimodule.v
-
-   -- are the [Prop]-valued relations those five objects supply.  Being in
-   [Prop] they ELIMINATE ONLY INTO [Prop], which is the whole content of the
-   change and is what the negatives below pin.  The positive controls show
-   that nothing is lost: each mediator's respectfulness is still one
-   induction over the relation, run under [pequiv] and converted back with
-   [pequiv_to], and each is APPLIED here rather than merely mentioned.
-
-   METHOD.  A [Fail Lemma <statement>] would be vacuous: the statement of
-   each [_respects] lemma is well formed whatever the relation's sort, and
-   only the ELIMINATION is refused.  Each negative is therefore a
-   [Fail Definition … := ltac:(induction He)], carrying the proof.  Each was
-   stripped once, in a copy of this whole file, and confirmed to report
-
-     Error: Cannot find the elimination combinator <rel>_rect, the
-     elimination of the inductive definition <rel> on sort Type is probably
-     not allowed.
-
-   The import list is the union of the five target files' own. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Lib.Setoid.Propositional.

@@ -42,21 +42,11 @@ Generalizable All Variables.
 
 (** * Probe for Construction/Reflective/FixedPoints.v and its poset instance *)
 
-(* This file states, from OUTSIDE both targets, every boundary those two
-   files measure, so that a rename or a change of definition breaks a
-   build rather than turning a guard silently green.  It mirrors the
-   UNION of the two targets' [Require] lists (plus what the witnesses
-   need); a short prefix would let a guard pass for the wrong reason.
+(*
+   本文件为测试：ProbeFixedPoints386。
 
-   Contents: one scope-free instrument check, then negatives of THREE
-   kinds kept lexically apart -- TYPING, CONVERSION and FORMABILITY --
-   each with a control naming the same constants outside any guard, and
-   finally the two concrete witnesses.
-
-   The two witnesses are here rather than in the library files because
-   Instance/Coq/Monoid/Free.v has a transitive closure of 67 modules
-   (excluding itself), 44 of them outside the general file's 37, and the
-   general theory needs none of it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

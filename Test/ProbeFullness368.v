@@ -20,34 +20,11 @@ Generalizable All Variables.
 
 (** * Boundary probe for Adjunction/Fullness.v (issue #368). *)
 
-(* Why this file exists.  Every rejection recorded in the target's header
-   is pinned here as a [Fail] command, from OUTSIDE the target: a [Fail]
-   written inside the file it guards is renamed in lockstep with the
-   constant it guards, so it cannot detect a rename.  The target's own
-   [Require] list is mirrored above, plus what the instance section needs.
+(*
+   本文件为测试：ProbeFullness368。
 
-   Eleven negatives of THREE kinds, kept lexically apart, plus a scope-free
-   instrument check (twelve [Fail] commands in all):
-
-     - FORMABILITY (4): universe rejections localising the two
-       identifications the target's headlines carry.  Error text ends in
-       `universe inconsistency: Cannot enforce ...`.
-     - TYPING (2): the whiskered transformations cannot be ascribed at the
-       type the target's isomorphism is stated at.  Error text is a plain
-       `has type ... while it is expected to have type ...` with no
-       `cannot unify` and no universe clause.
-     - CONVERSION (5): the inverse the target produces is not the donor's
-       inverse on the nose, and the three record-level whisker-padding
-       facts of the target's correction 4.  Error text ends in
-       `cannot unify`.
-
-   Each negative was stripped ONE AT A TIME, with the others left as
-   [Fail], and compiled alone, and the WHOLE error read to confirm it
-   fires at its own command.  This repo's [coqc] prints nothing for a
-   [Fail] that succeeds, which is why stripping is the only check.
-
-   Every constant a negative names appears in a succeeding positive
-   control below it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ** Instrument check: a [Fail] that must fire for a reason having
    nothing to do with universes, typing or conversion. *)

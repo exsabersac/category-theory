@@ -30,59 +30,11 @@ Require Import Category.Adjunction.Parameter.
 
 Generalizable All Variables.
 
-(** * Probe for Structure/Limit/Power/Adjunction.v
+(*
+   本文件为测试：ProbeCopower366。
 
-    Every boundary that file MEASURES is pinned here, from OUTSIDE it: an
-    in-file [Fail] renames in lockstep with the constant it guards and so
-    cannot detect a rename.  The [Require] list above is the target's own,
-    which is what keeps a negative from failing for a reason it never
-    measured.
-
-    FIFTEEN [Fail] commands = ONE instrument check + FOURTEEN negatives of
-    THREE kinds, told apart by the error TEXT rather than by a label: nine
-    CONVERSION (each ends "cannot unify" between two terms of ONE type),
-    three TYPING (a plain "has type ... while it is expected to have type",
-    with NO "cannot unify" and no universe clause), two FORMABILITY (each
-    ends in a universe clause).  Negatives 2 and 3 are the SAME equation at two
-    spellings and come out as two DIFFERENT kinds, which is why the kind is
-    read off the error and never guessed.  Each was stripped ONE AT A TIME,
-    compiled ALONE, and its whole error read; each produced exactly one
-    [Error], at the command that was stripped.
-
-    Negatives 12 and 13 pin the two load-bearing [Defined]s the target
-    reports but does not guard; negative 2 replaces a spelling that was a
-    FALSE GUARD, which its own comment records rather than hides; negative
-    14 pins the consumer-facing consequence of the four universe equations
-    the target's §B paragraph records -- at an index universe strictly above
-    [C]'s hom level the §A functors are accepted and the pinned adjunction
-    is refused.
-
-    Plus one COUNTERMODEL, which is a positive theorem and not a [Fail]: it
-    refutes the CANONICAL arrow action over [Sets] as the index category --
-    the [fmap_respects] obligation of the copower mediator of the
-    injections -- outright, rather than recording that the obvious proof
-    does not go through; it says nothing about other arrow actions with the
-    same object action, and none is claimed.  It is axiom-free,
-    measured and not assumed -- [Print Assumptions sets_index_respects_
-    absurd] and [Print Assumptions blur_equal] both report "Closed under the
-    global context".
-
-    GUARD COVERAGE IS COMPLETE, checked mechanically rather than by eye:
-    every identifier occurring inside a [Fail] also occurs outside every
-    [Fail], with two classes of exception, both of them vacuous.  Twelve of
-    the fifteen [Fail]s declare a name; those twelve names never enter the
-    environment, so there is nothing to rename and nothing to guard.  The
-    thirteenth exception is the instrument's deliberately absent name.  (The
-    remaining three [Fail]s are [Fail Check]s, which declare nothing.)
-
-    RENAME-SIMULATED 15/15, ZERO VACUOUS GUARDS.  Each of the thirteen
-    TARGET constants a negative names was renamed IN THE LIBRARY FILE ALONE
-    -- a whole-file rename is a no-op by construction and would give a false
-    verdict -- the library recompiled, and this probe recompiled: every one
-    broke it, and every break landed on a [Check] control line, never inside
-    a [Fail].  The two constants negatives 12 and 13 reach only through
-    their [Qed] clones, [cp_pa_adj] and [ex1_pa_adj], were simulated the
-    same way, for 15.  The library file was byte-identical afterwards. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 

@@ -24,65 +24,11 @@ Require Import Category.Adjunction.Parameter.
 
 Generalizable All Variables.
 
-(** * Boundary probe for Adjunction/Parameter.v (issue #396)
+(*
+   本文件为测试：ProbeParameter396。
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.7
-    Theorem 3, book p. 102: adjunctions with a parameter.
-
-    Adjunction/Parameter.v carries ZERO [Fail] commands by design.  Every
-    strict ([eq_refl]) claim its three build increments tried and had to
-    weaken to [≈] is described in that file's prose and pinned NOWHERE.
-    This file is where they are pinned.
-
-    METHOD.  This file mirrors Adjunction/Parameter.v's [Require] list
-    character for character, adding only the target module itself (measured:
-    [diff] of the two [Require] blocks reports exactly that one line).  A
-    probe with a short prefix can fail for a reason it never measured, which
-    would be a FALSE PASS, so nothing else is added and nothing dropped.
-    Each negative below was stripped one at a time, the file compiled ALONE,
-    and the WHOLE error read; the kind recorded beside it is read off that
-    error text and not off an expectation:
-
-      TYPING       a plain "has type ... while it is expected to have type",
-                   with NO "cannot unify" clause and no universe clause;
-      CONVERSION   the error ends "cannot unify";
-      FORMABILITY  the error ends "universe inconsistency".
-
-    TALLY.  21 [Fail] commands = 1 instrument check + 20 negatives of THREE
-    kinds, told apart by the error TEXT: 12 CONVERSION (negatives 1-4, 6-9,
-    11-14), 2 TYPING (negatives 5 and 10 — each a plain type mismatch with
-    NO "cannot unify" clause and no universe clause) and 6 FORMABILITY
-    (negatives 15-20).  The two TYPING ones are the discriminating pair, and
-    they come out OPPOSITE ways: at negative 5 the direct ascription fails
-    while the field copy beside it ([copa_swap_transport]) succeeds, whereas
-    at negative 10 the field copy ITSELF fails, and it fails at a NAMED
-    field.  Each sits beside a CONVERSION negative (4 and 9 respectively)
-    about the very two functors being copied between.
-
-    GUARD COVERAGE, measured rather than asserted.  The 21 [Fail] blocks
-    mention 85 identifiers; 70 of them appear outside every [Fail], and the
-    ones that do not include the 14 [Fail Definition] heads (which never
-    enter the environment), the instrument's deliberately absent name, and
-    the stdlib constructor [eq_refl], whose code occurrences all sit inside
-    [Fail] blocks.
-
-    RENAME SIMULATION.  Each of the 12 constants of Adjunction/Parameter.v
-    that a negative names was renamed in THAT FILE ONLY — a whole-file
-    rename is a no-op by construction and gives a false verdict — the target
-    recompiled (0 errors in every case, so each rename was real) and this
-    file recompiled.  12/12 broke it, every one at a [Check] control line
-    (103, 105, 106, 108, 195-198, 270, 420, 421, 428) and none inside a
-    [Fail].  Zero vacuous guards.  The target was then restored and verified
-    byte-identical.
-
-    A MEASUREMENT THAT DID NOT REPRODUCE, recorded rather than pinned.  The
-    first build increment reported that writing a transpose with its two
-    functors left implicit, [to (@adj _ _ _ _ (pa_adj PA p) x a) k], is
-    rejected as a higher-order unification.  It is NOT: the [Adjunction]
-    argument's own type determines both functors, and the command is
-    accepted (control [p396_hou_control] below).  Naming the two functors,
-    as [pa_to] and [pa_from] do, is therefore a readability decision and not
-    a forced one.  Nothing is pinned for it, because there is no failure. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check
 

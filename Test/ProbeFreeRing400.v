@@ -17,19 +17,11 @@ Require Import Category.Instance.Rng.Free.
 
 Generalizable All Variables.
 
-(** * Boundary probe for issue #400 (maclane:IV.8:ex2)
+(*
+   本文件为测试：ProbeFreeRing400。
 
-    Instance/Ab/Free.v, Instance/Mon/Free.v and Instance/Rng/Free.v each
-    carry their own [Fail] probes.  Those guard their measurements from
-    INSIDE, which is exactly what a whole-file rename cannot test: rename
-    a definition and its in-file [Fail] renames with it, so the guard goes
-    vacuously green.  This file restates the three cross-file boundaries
-    from OUTSIDE, each against a positive control that NAMES the same
-    constants, so that renaming any of them breaks this file loudly.
-
-    Negatives are grouped BY KIND and the groups are kept lexically
-    apart.  Each was stripped of its [Fail] once and the resulting error
-    read, and the kind recorded here is the kind that actually fired. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Positive controls
 

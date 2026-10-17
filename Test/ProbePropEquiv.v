@@ -11,56 +11,11 @@ Require Import Category.Instance.Sets.Complete.
 Require Import Category.Instance.Sets.Propositional.
 Require Import Category.Instance.Cat.
 
-(** * Probe for [PropEquiv]: setoids whose equality is propositional
+(*
+   本文件为测试：ProbePropEquiv。
 
-    The import list above is the union of the two target files' own lists --
-    Lib/Setoid/Propositional.v and Instance/Sets/Propositional.v -- plus those
-    two files themselves and Instance/Cat.v, whose own list is a subset of what
-    is already here.  A shorter prefix is what makes a probe pass for no
-    reason.
-
-    WHAT THIS FILE PINS.  Four things, each a measurement rather than an
-    assertion.
-
-    (1) The library's `≈` cannot be truncated.  Cat's hom-setoid is
-        [Functor_Setoid] (Theory/Functor.v, installed as Cat's [homset] at
-        Instance/Cat.v) and an [F ≈ G] there IS a family of isomorphisms.
-        Replacing it by [inhabited (F ≈ G)] and asking for the isomorphism at
-        an object is refused -- NEGATIVE 1.  The same refusal, in the shape a
-        would-be blanket instance takes, is NEGATIVE 3.  This is why
-        [PropEquiv] is a PROPERTY of a setoid and not a change to
-        [Class Setoid].
-
-    (2) The property has to name its relation.  The sort ascription
-        [(x ≈ y : Prop)] is refused even for [eq_Setoid], whose relation is
-        Coq's [eq] -- NEGATIVE 2.  [PropEquiv_of_relation] is the constructor
-        that takes the named relation instead.
-
-    (3) The size fact the whole exercise rests on: a [Prop]-valued relation on
-        a carrier in [Type@{u}] lands in [Type@{u}] itself, a [Type]-valued one
-        lands in [Type@{u+1}].  Both halves are measured below, the second as
-        NEGATIVE 4, and the contrast is repeated for [PropEquiv] against
-        [Setoid] itself as NEGATIVE 5.
-
-    (4) [PropEquiv] lands AT the carrier universe.  [PropEquiv_at_carrier]
-        below is accepted with the measured signature quoted beside it.
-
-    DISCIPLINE.  The messages quoted below are as this file produces them,
-    with [Set Printing Universes] OFF -- which is why four of the five show a
-    bare [Type] where a universe name would otherwise stand.  Exactly two
-    edits are applied to the quotations and to nothing else: NEGATIVE 2's
-    generated universe name, which is file-name dependent and would not
-    survive a rename, is replaced by the readable [u_eq]; and Coq's line
-    breaks are re-flowed to this comment's width, with trailing spaces
-    trimmed.  Every other character is verbatim.  The SIGNATURES quoted beside
-    the size measurements were taken separately, with [About] under
-    [Set Printing Universes].  Every negative is paired with a positive control
-    naming the same library constants; the instrument was checked (a refusal
-    expected around a command that succeeds stops the file); and each negative
-    was re-run with its guard stripped IN A COPY OF THE WHOLE FILE, so that the
-    refusal kind is read off the message rather than guessed.  The refusal
-    kinds recorded are ELIMINATION (two), SORT (one) and UNIVERSE (two),
-    beside the instrument check, whose refusal is a missing NAME. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

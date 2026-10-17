@@ -6,28 +6,11 @@ Require Import Category.Lib.IList.
 Require Import Category.Theory.Category.
 Require Import Category.Solver.Expr.
 
-(** * Denotation: interpreting reified terms back into a category
+(*
+   本文件给出 Denote 相关定义与性质。
 
-    This file is the semantic anchor of the reflective solver: the decision
-    procedure works by reflection, computing on a syntactic mirror of the goal
-    rather than reasoning about it directly
-    (https://en.wikipedia.org/wiki/Computational_reflection).  Reification
-    (Solver/Reify.v) turns a goal about concrete morphisms into a syntactic
-    [Term]/[Expr]; here we interpret that syntax back into the morphisms it
-    came from, using the environment carried by [Arrows].  Soundness of the
-    decision procedure means: every rewrite Normal.v performs on the syntax
-    must be invisible under this denotation.
-
-    The [Term] grammar is the free category on the reified arrows
-    (https://ncatlab.org/nlab/show/free+category): objects are [nat] indices
-    into [objs] (via [objD]), [Ident] denotes the identity, [Comp] denotes
-    composition, and [Morph a] denotes the [a]th reified generator.  A [Term]
-    is intrinsically untyped (it does not record its own domain/codomain), so
-    [termD_work] is given a domain and *computes* the codomain by threading
-    types through the composition, returning the result as a dependent pair
-    [∃ cod, objD dom ~> objD cod]; partiality ([option]) absorbs ill-typed
-    syntax such as a [Comp] whose middle objects disagree or a [Morph]
-    referring to a generator of the wrong domain. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Denote.
 

@@ -22,25 +22,11 @@ Generalizable All Variables.
 
 (** * Probe: the strength boundary of the Grp and Top pushouts *)
 
-(* Guard file for Instance/Grp/Pushout.v and Instance/Top/Pushout.v, in
-   the Test/ProbeFunnyPoly.v convention.  Every negative is paired with a
-   positive control that NAMES ITS OWN CONSTANTS, so that a rename or a
-   definitional change breaks this file loudly instead of turning a [Fail]
-   vacuously green.  The pairing was verified by RENAME SIMULATION: each
-   negative was copied to a scratch file with one constant renamed, and
-   the scratch file was confirmed to stop compiling.
+(*
+   本文件为测试：ProbePushoutGrpTop。
 
-   The import list is the UNION of the two targets' import lists, in
-   dependency order -- a short prefix is what makes probes pass for the
-   wrong reason.
-
-   Conversion negatives ([Fail Definition ... := eq_refl]) and formability
-   negatives ([Fail Check ...]) are kept in separate sections; they fail
-   for different reasons and must not be read as one kind.  (Since #450 the
-   formability section holds controls only: its two negatives recorded a
-   donor pin that #450 lifted, and its correction says so.)  Each negative
-   was stripped of its [Fail] once and the resulting message inspected;
-   the kind is recorded beside it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check
 

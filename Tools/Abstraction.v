@@ -14,36 +14,13 @@ Generalizable All Variables.
 
 (** * Compiling Coq functions to cartesian-closed combinators *)
 
-(* nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
-   Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
 
-   Conal Elliott, "Compiling to Categories", Proc. ACM Program. Lang. 1, ICFP
-   (2017), 27:1–27:27. http://conal.net/papers/compiling-to-categories/
+   本文件给出 Abstraction 相关定义与性质。
 
-   By the Curry–Howard–Lambek correspondence the simply-typed lambda calculus is
-   the internal language of cartesian closed categories: types are objects,
-   pairing is the product, the function type is the exponential [z^y], lambda
-   abstraction is [curry], and application is [eval]. A closed term of type
-   [a → b] therefore denotes a morphism [repr a ~> repr b] in the free CCC
-   ([AST]), and Elliott's "compiling to categories" is exactly this translation
-   read as a program transformation.
-
-   This file makes the translation's *correctness* explicit. Via [Repr] (see
-   Tools/Represented) each Coq type [a] is represented by an object [repr a] and
-   each value [x : a] by a global element [convert x : 1 ~> repr a]. A lambda
-   term [lam : a → b] is correctly compiled to a combinator [ccc] when [convert]
-   intertwines them — when applying [lam] then representing the result agrees
-   with representing the argument then applying [ccc]:
-
-       lam >==> ccc  :=  ∀ x, convert (lam x) ≈ ccc ∘ convert x
-
-   i.e. [convert] is a homomorphism from the function [lam] to the arrow [ccc].
-   The lemmas below are the per-construct compilation rules of [Compiling to
-   Categories]: [ccc_id] (variable), [ccc_terminal] (unit introduction),
-   [ccc_curry] (abstraction), and [ccc_apply]/[ccc_apply_pair] (application),
-   each proving that the categorical combinator it names refines the source
-   lambda. Composing these rules over the structure of a term compiles the whole
-   term while preserving meaning. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Abstraction.
 

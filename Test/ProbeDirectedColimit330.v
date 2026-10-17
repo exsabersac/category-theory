@@ -1,53 +1,8 @@
-(** * Boundary probes for Instance/Ab/DirectedColimit.v (issue #330)
+(*
+   本文件为测试：ProbeDirectedColimit330。
 
-    Mac Lane CWM 2nd ed. §III.3 Exercise 7, book p. 68.
-
-    This file pins the two measurements the target's header states, so that
-    a later edit which quietly makes either one FALSE breaks the build
-    instead of silently invalidating the prose.
-
-    The two negatives are of DIFFERENT KINDS and are kept lexically apart:
-
-      * CONVERSION -- [fg_med_commutes] is stated at [≈] and NOT at Leibniz
-        equality of whole morphisms.  The cause is the mediator's design:
-        it evaluates the competing cocone at the CYCLIC object [cyc a],
-        while the triangle's right-hand side evaluates it at [X].  Those
-        are different objects of the index, so no amount of reduction
-        identifies the two morphisms.
-
-      * FORMABILITY (universe) -- [Instance/Proset.v]'s [Proset] cannot
-        host THIS index.  [Proset] takes a stdlib [relation A], which is
-        [A -> A -> Prop], while [FGHom] is [Type]-valued because
-        [absub_mem] is.  Squashing the hom to [Prop] is formable (the
-        positive control below) and is exactly what would break [fmap],
-        which must APPLY an inclusion to transport a membership witness.
-
-        READ THAT SCOPE EXACTLY.  It does NOT show the index cannot be
-        hosted by [Proset] at all, and an earlier revision of this header
-        said so ("[Proset] cannot host this index", full stop), which was
-        wrong: with membership itself made [Prop]-valued, [FGHom] is
-        natively a [relation], nothing is squashed, and [fmap] only applies
-        a [Prop -> Prop] function -- a variant that compiles and yields the
-        same colimit.  What this negative measures is a consequence of the
-        target's [Type]-valued membership CONVENTION, not an impossibility.
-        [Structure/Thin.v] records the [relation]-is-Prop-valued fact
-        independently.
-
-    PROBE HYGIENE.  This file carries the target's import list in the
-    target's order, plus the target itself and [Relation_Definitions] (for
-    [relation], named in Negative 2), and minus [Coq.micromega.Lia], which
-    is a tactic library the probe has no use for.  It is therefore NOT
-    literally "the target's full list" -- an earlier revision of this
-    header said that, and it was wrong in both directions.  The point of
-    the discipline stands: a short prefix leaves names like [cocone_inj]
-    unresolved, and a [Fail] that succeeds because a reference is missing
-    measures NOTHING.  Exactly that false pass was hit and discarded while
-    these measurements were being made.
-
-    Every negative is paired with a positive control NAMING ITS OWN
-    CONSTANTS, and the pairing was verified by RENAME SIMULATION over the
-    constants appearing in the NEGATIVES -- re-run after each control was
-    added.  The measured score is recorded at the end of this file. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

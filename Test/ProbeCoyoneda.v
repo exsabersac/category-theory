@@ -16,38 +16,11 @@ Generalizable All Variables.
 
 (** * Probes guarding Construction/Elements/Kan.v *)
 
-(* This file pins every strict attempt that Construction/Elements/Kan.v MADE
-   AND LOST, and every universe boundary its header claims, so that a later
-   change which quietly makes one of them succeed — or which renames the
-   constants out from under the claim — breaks the build loudly instead of
-   leaving the header's prose stale.  It follows the convention of
-   Test/ProbePostcompose.v and Test/ProbeQuiverConstructions.v.
+(*
+   本文件为测试：ProbeCoyoneda。
 
-   The import list is the target file's, in the target file's order, with the
-   target itself appended.  That matters: a probe compiled against a short
-   PREFIX of the real imports can fail for a missing-coercion or
-   missing-notation reason and thereby pass VACUOUSLY.  (Instance/Field/Frac.v
-   records an episode of exactly that.)  The target is Required last, so its
-   names win any contest.
-
-   TWO KINDS, KEPT LEXICALLY APART.
-
-     CONVERSION negatives are written [Fail Definition ... := eq_refl] and say
-     that two well-typed terms are not definitionally equal.
-
-     FORMABILITY negatives are written [Fail Check] and say that a term
-     cannot be elaborated at all, here always because of a universe
-     constraint.
-
-   Each negative was stripped of its [Fail] and the resulting error read; the
-   diagnosis is recorded beside it.  In batch [coqc] a SUCCEEDING [Fail]
-   prints nothing, so the exit code is the only signal, which is why the
-   stripped run is part of the procedure and not optional.  Positive controls
-   accompany each group, and the sharpest ones differ from their negative in
-   exactly the disputed spot.
-
-   Inventory: 7 conversion negatives, 3 formability negatives, 12 positive
-   controls. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Group 1 (CONVERSION): the nat/cone round trips *)
 

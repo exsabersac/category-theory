@@ -1,46 +1,8 @@
-(** * Boundary probes for Instance/Sets/Pullback.v (issue #333)
+(*
+   本文件为测试：ProbeSetsPullback333。
 
-    Mac Lane CWM 2nd ed. §III.4 Exercises 1 and 6, book p. 72; Awodey §5.2;
-    Riehl §3.2 Example 3.2.9.
-
-    This file exists mainly to pin ONE measurement the target CANNOT pin
-    itself.  The target's central design decision -- build the pullback
-    DIRECTLY rather than read it off issue #326's
-    [HasPullbacks_of_Cartesian_HasEqualizers] -- rests on the claim that
-    the DERIVED apex is not the agreement pair-set.  Stating that claim
-    requires [Adjunction/GAFT/Sets.v] (for [Sets_HasEqualizers]), and
-    requiring it from the target would put the whole GAFT closure behind
-    every consumer of [Sets] pullbacks.  A probe pays that cost once, for
-    nobody downstream.  That is what Negative 1 is.
-
-    THERE ARE NOW FOUR NEGATIVES, of TWO kinds.  An earlier revision
-    shipped only two, both CONVERSION, and justified that by saying "there
-    is no formability boundary to pin".  The formability half of that is
-    true and stays true -- [Sets_HasPullbacks@{u u0}] carries only [Sets]'
-    own [u0 < u], with no identification and no [Set] -- but it was the
-    wrong conclusion to draw: a TYPING-kind negative was one line away and
-    is now Negative 4.  An earlier revision also left the target's FIRST
-    refutation ([exl ∘ sets_pb_pair] against [sets_pb_fst]) pinned
-    NOWHERE while the header called it measured; it is now Negative 3.
-
-    The three CONVERSION negatives differ in CAUSE, not kind:
-
-      * Negative 1 -- the derived apex reduces to the compatible-family
-        setoid over the walking parallel pair, so an element is a
-        dependent function plus a constraint quantified over every arrow
-        of [Parallel], NOT a pair.  Stripped, the error is
-          cannot unify "DerObj" and "sets_pb_obj f g".
-        The derivation is TRANSPARENT, not opaque -- it reduces, just to
-        the wrong description -- which is why the target could not simply
-        take it and then state the kernel-pair, preimage and equalizer
-        identifications on top.
-
-      * Negative 2 -- the pairing does not round-trip strictly, because
-        stdlib [prod] has no definitional eta.  Nothing about [Sets].
-
-    Every negative is paired with a positive control NAMING ITS OWN
-    CONSTANTS.  The measured rename-simulation score is at the end, over
-    the constants the NEGATIVES name and no others. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

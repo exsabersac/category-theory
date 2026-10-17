@@ -14,86 +14,11 @@ Require Import Category.Instance.Field.Frac.
 Require Import Coq.ZArith.ZArith.
 Require Import Coq.QArith.QArith.
 
-(** * Boundary probe: what is and is not definitional in the field of
-      quotients as a universal arrow
+(*
+   本文件为测试：ProbeFieldFrac。
 
-    Companion to Instance/Field/Frac.v (Mac Lane §III.1).  That file
-    makes several strength claims — some things hold at Leibniz [=] by
-    [eq_refl], one deliberately holds only up to [≈] — and a strength
-    claim that lives only in a header is a claim nothing in the build
-    would notice losing.  This file pins the boundary in the manner of
-    Test/ProbeModTensor.v: **if the [Fail] commands here stop failing,
-    this file breaks the build.**
-
-    Both sides are pinned deliberately.  A [Fail] alone proves very
-    little — it passes just as happily when the term is ill-typed for
-    some unrelated reason, or when a name has been renamed out from
-    under it.  So each negative probe is paired with a positive control
-    which must SUCCEED, and the controls are the claims themselves.
-
-    The instrument was checked before being trusted: wrapping [Fail]
-    around a command that succeeds reports "The command has not
-    failed!" and aborts compilation, so [Fail] here is not a no-op.
-    Each negative below was also run with the [Fail] stripped and the
-    error confirmed to be a genuine unification or typing error rather
-    than a syntax, scope or coercion error; the diagnoses are recorded
-    beside each probe.  That check earned its keep: the first two
-    negatives, run in a file that did not import Instance/Sets, aborted
-    with "Illegal application (Non-functional construction)" — the
-    [SetoidMorphism]-to-function coercion was simply absent — which
-    would have been a FALSE PASS under [Fail].  The import list above
-    is therefore the one Instance/Field/Frac.v itself uses.
-
-    The four negatives and their causes:
-
-      - THE EXTENSION'S COMPUTED VALUE IS PINNED.  The extension of
-        ℤ ↪ ℚ carries the fraction 1/2 to the rational [1 # 2] at
-        Leibniz equality.  The first negative replaces the value with
-        [1 # 3], which is simply wrong, and confirms that the [eq_refl]
-        in the positive control discriminates at all rather than being
-        absorbed by some coercion.
-
-      - AND IT IS PINNED AT LEIBNIZ STRENGTH, NOT UP TO [Qeq].  The
-        second negative replaces the value with [2 # 4], which IS [Qeq]
-        -equal to the true answer — [q_probe_qeq] proves it, by
-        [eq_refl] no less — and is NOT Leibniz-equal to it
-        ([q_probe_not_leibniz]).  So this negative is a genuine
-        strength boundary and not a second wrong-value probe: it is
-        exactly the difference between "the extension computes to the
-        rational one half" and "it computes to something equivalent to
-        one half", and Instance/Field/Frac.v claims the former.
-
-      - THE TWO FORGETFUL FUNCTORS AGREE ONLY UP TO [≈] ON MORPHISMS.
-        [Field_IntDom stab] and [StableField_IntDom] send a morphism of
-        [StableField] to [DomHom]s with the SAME underlying map but
-        DIFFERENT injectivity proofs — [stab F] against the object's
-        own stability datum — and [DomHom] carries that proof as a
-        record field, so the two records are distinct terms.  The
-        positive control is the [≈] statement, which holds because
-        [IntDom]'s hom-setoid compares underlying maps pointwise and
-        ignores the proof.  This is the one place in that file where
-        strictness was attempted and rejected.
-
-      - ...WHICH IS NOT A GENERIC FACT ABOUT [DomHom] RECORDS.  The
-        third positive control is the SAME SHAPE of comparison for
-        [IntDom_Dom ◯ StableField_IntDom] against [StableField_Dom],
-        and that one IS strict, by [eq_refl]: [IntDom_Dom] forgets
-        exactly the injectivity field that was just supplied, so the
-        composite reduces to the underlying map on the nose.  Without
-        this control the previous negative would say only "records with
-        proof fields are rarely convertible"; with it, it says the
-        proofs genuinely differ in that one case and not in this one.
-
-      - THE TWO DOMAIN CATEGORIES DIFFER AT THE LEVEL OF TYPES.
-        Reduction mod 2 is a morphism of [Dom] (positive control) and
-        is not even well-typed as a morphism of [IntDom] (fourth
-        negative), [IntDom]'s homs being [DomHom]s, which bundle an
-        injectivity datum, and not bare [RigHom]s.  The probe records
-        the TYPING half only; the mathematical half — that no [DomHom]
-        from ℤ to F₂ exists at all, so the hom-set is empty rather than
-        merely differently packaged — is PROVED in
-        Instance/Field/Frac.v as [no_DomHom_Z_F2], and a probe would be
-        the weaker statement. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The extension's computed value *)
 

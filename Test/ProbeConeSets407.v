@@ -41,39 +41,11 @@ Generalizable All Variables.
 
 (** * Probe for issue #407: Mac Lane SV.1, completeness of Sets *)
 
-(* The boundary of Instance/Sets/Complete.v's cone-set section and of
-   Instance/Sets/Cone.v.  Nine refutation commands, plus one instrument
-   check on a name that does not exist.  Each was stripped ONE AT A TIME,
-   compiled alone, and its WHOLE error read; the classification below is by
-   the error TEXT, not by expectation:
+(*
+   本文件为测试：ProbeConeSets407。
 
-     FORMABILITY  the error ends in a universe clause
-     CONVERSION   "cannot unify", no universe clause
-     TYPING       a plain has-type mismatch, neither of the above
-     RESOLUTION   "Cannot infer the implicit parameter ..."
-
-   Count by kind: 7 CONVERSION, 1 TYPING, 1 RESOLUTION.
-
-   RECORDED CORRECTION: an earlier revision counted eleven refutation
-   commands, of which 2 FORMABILITY.  Both FORMABILITY refusals were the
-   [Set] pin of the unannotated [DiscreteCat_Functor]; annotated in the PR
-   "algebraic carriers are sets" (2026-09-17) both are accepted, and §(5)
-   and (6) keeps them as positive controls.  No FORMABILITY refusal
-   remains in this file.
-
-   Every constant any refutation command names is also named OUTSIDE every
-   such command, in a [Check] below, so that renaming it in its own library
-   file breaks this file at a [Check] rather than turning a guard silently
-   green.
-
-   The [Require] list is the UNION of the two new library files' own, plus
-   Category.Theory.Universal.Element, which this issue also extends and
-   whose new constant is guarded below though no refutation names it.
-
-   ONE TRAP, MEASURED AND WORKED AROUND.  Negative 2 must be a
-   [Definition], not a [Check]: a bare [Check] of the same expression is
-   ACCEPTED, printing an open evar for the missing [Setoid] instance, so a
-   refutation command against it would be a FALSE PASS. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Guard block: every constant the refutations name, named outside them *)
 

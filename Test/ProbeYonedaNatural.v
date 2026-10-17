@@ -1,52 +1,8 @@
-(** * Boundary probes for the two-variable Yoneda isomorphism
+(*
+   本文件为测试：ProbeYonedaNatural。
 
-    Companion to Functor/Hom/Yoneda/Natural.v (issue #316; Mac Lane §III.2
-    Lemma 2, Riehl §2.2 and §E.1, Awodey §8.3 Lemma 8.2).  That file makes
-    strength claims of two DIFFERENT kinds, and this file pins both.  **If
-    the [Fail] commands below stop failing, this file breaks the build.**
-
-    THE TWO KINDS ARE NOT THE SAME AND ARE NOT DESCRIBED WITH ONE WORD.
-
-    (1) FORMABILITY.  [Covariant_Yoneda_Lemma] and [Yoneda_Lemma]
-    (Functor/Hom/Yoneda.v) are stated over
-    [C : Category@{u u u}] — object, hom and proof universes IDENTIFIED —
-    so nothing built over them can be applied to a category whose objects
-    live strictly below its homs.  [yoneda_natural] inherits exactly that,
-    and the rejections below are UNIVERSE INCONSISTENCIES: the term is not
-    formable at all, not merely non-convertible.  The two bifunctors
-    [YoEval] and [YoNat] — and [YoEvalAt] — are over [Category@{u u0 u0}]
-    with the object universe FREE below the hom universe (measured: their
-    constraint sets carry [u <= u0] and no [u = u0]), and all three ARE
-    formable there; so is the THEOREM'S OWN TYPE, [YoNat C ≅ YoEval C],
-    which an audit checked elaborates in this very section — so the
-    rejection is attributable to the donor TERM, not to the statement or to
-    the [Isomorphism]-in-[[X, Sets]] packaging.  So is an identity
-    isomorphism between the bifunctors in
-    the very functor category the theorem lives in, which is what makes the
-    rejection attributable to the donor rather than to the packaging.  The
-    boundary runs exactly where [Covariant_Yoneda_Lemma] is consumed:
-    [YoEvalAt] does not consume it and is free, while
-    [YoEvalAt_Representable] does and carries [u = u0].
-
-    (2) CONVERSION.  Four claims of Leibniz equality are rejected because
-    the two sides carry different opaque proof terms, while the corresponding
-    claims one or two applications further in DO hold.  These are [Fail
-    Definition ... := eq_refl] and not [Fail Example ... : T.]: a failing
-    type ascription would guard only the statement, whereas what is claimed
-    is convertibility of the two terms.
-
-    COUNTS.  Eight negatives — four in each group — and seven positive
-    controls, which is not a one-to-one pairing: the four controls of group
-    (1) serve all four of its negatives jointly, and in group (2) the [to]
-    control serves two negatives.  Every negative is accompanied by at least
-    one control that must SUCCEED.  The instrument itself was checked —
-    wrapping [Fail] around a succeeding command reports "The command has not
-    failed!" and aborts compilation — and every negative was compiled once
-    with the [Fail] stripped, to confirm the error is the intended one: four
-    reports of "universe inconsistency: Cannot enforce uh = uo because
-    uo < uh" naming the declared universes for group (1), and four "cannot
-    unify" conversion errors for group (2).  The import list is the target
-    file's own, in the target file's order, plus the target file itself. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

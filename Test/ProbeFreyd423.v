@@ -1,59 +1,8 @@
-(** * Probe for Structure/Complete/Freyd.v (issue #423)
+(*
+   本文件为测试：ProbeFreyd423。
 
-    Pins the measured boundaries of Freyd's collapse: a [Complete] instance
-    reaches an indexed product WITHOUT a [Set] pin only through the
-    annotated discrete-diagram donor, the op-dual of an [ArrowIndex] needs
-    the explicit constructor, the smallness hypothesis is not vacuous, and
-    the constructive wall is an INJECTION no refutation can pin.  Every
-    refutation command below was stripped ONE AT A TIME in a copy of the
-    whole file and compiled alone with its error read, so each refusal is
-    of the kind its label says.
-
-    Numbering:
-     instrument      an absent name, refused — the refutation keyword is
-                     live in this file.
-     N1 UNIVERSE     under [Constraint Set < uh], feeding a [Complete]
-                     instance to Structure/Limit/Product.v's
-                     [limit_is_indexed_product] through the UNANNOTATED
-                     [DiscreteCat_Functor] is refused with "Cannot enforce
-                     Set = uh": that donor is stated at
-                     [C : Category@{_ Set Set}].  Freyd.v's [complete_iprod]
-                     at the same category is the control (it runs through
-                     Structure/Limit/Comparison.v's [DiscreteCat_Functor']).
-     N2 TYPING       the anonymous record literal for the dual elaborates
-                     its binders at [obj[C]] and is refused against
-                     [ArrowIndex (C^op)] ("has type ArrowIndex C while it
-                     is expected to have type ArrowIndex C^op");
-                     [ArrowIndex_op] with [@Build_ArrowIndex (C^op)] is the
-                     control, and it is an involution at [eq_refl]
-                     ([p423_op_round]).
-
-    Positive controls, deliberately NOT written as refutations:
-     - [canonical_ArrowIndex]: every category with decidable object
-       equality carries an [ArrowIndex], so the hypothesis is not disguised
-       thinness or finiteness.
-     - [fr_inj_injective]: from [f ≉ g] alone an injection [(K → bool) → K]
-       on the nose.  That this injection cannot be refuted without deciding
-       the hom-setoid is METATHEORETIC (Hyland's effective-topos model,
-       Structure/Complete.v); unprovability is not a refusal, so no
-       refutation command is written for it.
-     - [p423_small_and_products]: Theory/Size.v's [Small] and products over
-       the category's own total arrow collection coexist in one binder.
-       This is a coexistence check, not a refutation of a wall: [Small]'s
-       extra levels are fresh and bounded only below by C's, so the binder
-       adds no refutable constraint; what it witnesses is that
-       [indexed_product] applies at [TotalMor C] beside [Small].  The one
-       universe obstruction measured is the [Set] pin of N1.
-
-    Guard coverage: every constant a refutation names is also named
-    outside a refutation command (the guard block at the end) — the
-    exceptions, under the plain identifier tokenization with comments
-    stripped, being the keyword itself, the binder names and keywords of
-    the record literal ([_], [fun], [d], [h], [m], [x], [y]), the notation
-    token [op] of [C^op], the name the refuted declaration would introduce
-    and the instrument's absent name — so a renamed or removed constant
-    breaks the build on a positive line rather than letting a refutation
-    pass for the wrong reason. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

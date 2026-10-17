@@ -1,29 +1,8 @@
-(** * Boundary probe for Structure/Bicartesian/Matrix.v (issue #336)
+(*
+   本文件为测试：ProbeMatrix336。
 
-    The target MEASURES three boundaries and ships no [Fail] of its own.
-    THIS FILE IS WHERE THEY ARE PINNED, so that a later edit which quietly
-    makes one of them SUCCEED breaks the build instead of silently
-    invalidating the target's header.
-
-    TWO KINDS, kept lexically apart:
-
-      * CONVERSION (negatives 1-2) -- [Fail Definition … := eq_refl].
-        The Kronecker delta does not reduce to [id] on the diagonal even
-        at closed indices, and the n-ary comparison is not convertible
-        with the hand-written binary one.
-
-      * FORMABILITY (negative 3) -- [Fail Check] under a declared
-        [Constraint uh < up].  The target's [mat_entry] carries EXPLICIT
-        universe binders; written WITHOUT them the same body elaborates
-        at [Category@{uo uh uh}] and is then rejected at that setting.
-        The annotation is therefore load-bearing, and the identification
-        it removes was universe MINIMIZATION rather than content.
-
-    Each negative was stripped of its [Fail] once and its failure KIND
-    confirmed by reading the error TAIL, not by observing that it failed.
-    The import list is the target's own; a shortened one would let these
-    pass vacuously.  The measured rename-simulation score is at the end,
-    over the constants the NEGATIVES name and no others. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Coq.Vectors.Fin.
 Require Import Coq.Logic.Eqdep_dec.

@@ -1,24 +1,8 @@
-(** * Probe for Instance/Ab/FreeNotContinuous.v (issue #430)
+(*
+   本文件为测试：ProbeFreeAbNotContinuous430。
 
-    Pins the measured boundaries of the discontinuity witness with
-    negatives of three kinds, kept lexically apart: CONVERSION (N1-N3: the
-    identifications the proofs use — the image of the point's terminal
-    arrow is [id], the image legs are [id], the free group on a point is
-    not the zero group — hold at [≈] or as theorems, never on the nose);
-    TYPING (N4-N5: the cone-level refutations do not ascribe at the
-    apex-only classes — [ContinuousFunctor] against [PreservesAllLimits],
-    and the binary witness against [PreservesLimit] — so the header's
-    "only the empty shape reaches the apex level" is a measured boundary);
-    UNIVERSE (N6-N8: [Ab_trivial], [Ab_Terminal] and [Ab_Cartesian] are
-    refused at a hom level strictly above [Set] while [Ab] and [Ab_Forget]
-    are accepted there — the [Set] pin is the trivial group's, Instance/
-    Ab.v, not the category's).  Three [eq_refl] readbacks (the carrier
-    of the free group on a point, the binary diagram's objects, the zero
-    endomorphism's value) are positive controls, the last making
-    [ab_zero_endo]'s [Defined] load-bearing.  Each refutation was stripped
-    one at a time in a copy of the whole file; the import list mirrors the
-    target's.  Section D's checks and the guard block are positive
-    controls. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

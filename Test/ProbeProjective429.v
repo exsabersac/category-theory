@@ -1,22 +1,8 @@
-(** * Probe for Structure/Projective.v (issue #429)
+(*
+   本文件为测试：ProbeProjective429。
 
-    Pins the measured boundaries of the projective/injective development
-    with negatives of four kinds, kept lexically apart: UNIVERSE (N1-N3: at
-    a category whose hom and proof levels are declared apart, [Epic],
-    [Monic] and [Projective] are all refused while the category, its homs
-    and an arrow are accepted — the identification is the donors', not this
-    file's); CONVERSION and TYPING (N4-N5: [Epic] in [C^op] is not [Monic]
-    in [C], so [injective_extend]'s bridge [op_Epic_of_Monic] does real
-    work, while the objects and homs of the duality convert); TYPING (N6: a
-    Prop-valued existential over [≈] cannot be stated, [≈] being
-    Type-valued — there is no "∃-statement rather than data" option, [∃]
-    being [sigT]); PARSING (N7-N8: the [@Injective C] notation claims the
-    token [@Injective], as [@Initial C] already claims [@Initial]).  Three
-    [eq_refl] readbacks show the witnesses' lifts COMPUTE (the split epi's,
-    the initial object's, the Leibniz setoid's), and are what makes those
-    three [Defined] load-bearing.  Each refutation was stripped one at a
-    time in a copy of the whole file; the import list mirrors the target's.
-    Section E's readbacks and the guard block are positive controls. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

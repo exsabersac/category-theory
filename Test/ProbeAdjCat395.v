@@ -1,22 +1,8 @@
-(* Boundary probe for Instance/Adj.v and Instance/Adj/Forgetful.v.
+(*
+   本文件为测试：ProbeAdjCat395。
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.7,
-   book p. 101: the category of adjunctions, whose arrows are the conjugate
-   pairs <sigma, tau>.  His display puts sigma FORWARD on the left adjoints
-   and tau BACKWARD on the right adjoints.
-
-   THE ONE DESIGN DECISION OF Instance/Adj.v IS THAT VARIANCE, and it is
-   expressed by the ORDER of the two adjunction arguments handed to
-   [Conjugate]: the hom x -> y is [Conjugate (adjobj_adj y) (adjobj_adj x)].
-   Nothing in a type checker complains if that order is flipped -- the
-   result is simply a different, and wrong, category.  This file pins it.
-
-   Each negative below was stripped one at a time and compiled alone.  A
-   negative that passes prints nothing, so reading its error text requires
-   stripping it first.
-
-   These facts were measured while Instance/Adj.v was built but could be
-   pinned nowhere at the time; this file is where they are pinned. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

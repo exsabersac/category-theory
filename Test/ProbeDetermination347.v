@@ -1,9 +1,8 @@
-(* The target's FULL import list is mirrored below, deliberately.  A short
-   prefix is what makes a probe pass vacuously: with [Category.Instance.Sets]
-   missing, the negative below failed on "Illegal application" because the
-   [SetoidMorphism] coercion was out of scope, and with
-   [Category.Theory.Isomorphism] missing it failed on "reference [to] not
-   found" -- in both cases certifying nothing about conversion. *)
+(*
+   本文件为测试：ProbeDetermination347。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
 Require Import Category.Theory.Functor.

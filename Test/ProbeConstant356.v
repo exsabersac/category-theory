@@ -1,38 +1,7 @@
-(** * Boundary probe for Structure/Limit/Constant.v (issue #356)
+(*
+   本文件为测试：ProbeConstant356。
 
-    Mac Lane CWM 2nd ed. §IV.2, book p. 90, Exercise 8.
-
-    WHY THIS FILE EXISTS.  The target carries five [Fail]s of its own and
-    they are well formed -- the universe controls are APPLIED, which is
-    what makes them discriminate at all (an unapplied polymorphic
-    constant never meets the declared levels).  What an in-file negative
-    CANNOT do is survive a rename: a whole-file rename moves the [Fail]
-    and the constant it names together, so the guard stays green while
-    the thing it guarded is gone.  Every negative below therefore names a
-    constant of the TARGET, and this file mirrors the target's FULL
-    import list -- a probe built on a short prefix is the classic way to
-    make a negative pass for a reason it never measured.  (#477 added
-    Structure/Limit/Absolute.v to the target's list, and the same line
-    here; each stripped refusal's error text is unchanged by it.)
-
-    KINDS, separated by the error TEXT rather than by label:
-      CONVERSION   ends `(cannot unify "X" and "Y")`
-      FORMABILITY  ends `(universe inconsistency: Cannot enforce ...)`
-    A [Fail] that SUCCEEDS prints NOTHING under this repo's [coqc], so
-    every negative here was stripped and run alone before being trusted.
-
-    WHAT IS PINNED:
-
-    N1 -- the opposite of a constant diagram is NOT the constant diagram
-          on the opposite categories, on the nose.  This is why the
-          colimit half is built DIRECTLY rather than by instantiating the
-          limit half at [C^op]/[J^op]: [ACone n G] is not convertible for
-          non-convertible [G].  BOTH DATA FIELDS agree at [eq_refl]
-          (controls below), so the difference is confined to the three
-          rebuilt law fields.
-
-    N2 -- a functor does not carry a constant diagram to a constant
-          diagram on the nose at the ARROW action.
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

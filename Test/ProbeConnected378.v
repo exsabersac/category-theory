@@ -33,42 +33,11 @@ Require Import Category.Adjunction.Diagonal.Connected.
 
 Generalizable All Variables.
 
-(** * Boundary probe for Adjunction/Diagonal/Connected.v
+(*
+   本文件为测试：ProbeConnected378。
 
-    Every rejection the target's header records is pinned here, from
-    OUTSIDE the target -- an in-file [Fail] renames in lockstep with the
-    constant it guards and so cannot detect a rename.  The probe mirrors
-    the target's whole [Require] list, plus Structure/Limit/Unique.v for
-    negative 4; a short prefix is what makes a probe pass for the wrong
-    reason.
-
-    TEN [Fail] commands = 1 instrument check + 9 negatives of THREE
-    kinds, kept lexically apart:
-
-      - 3 CONVERSION (negatives 2, 4 and 10), each ending "cannot unify"
-        between two terms of one type;
-      - 2 TYPING (negatives 3 and 5), each a plain "has type ... while
-        it is expected to have type" with NO "cannot unify" and NO
-        universe clause.  Negative 3 is the sharper of the two and was
-        measured rather than predicted: at an arbitrary choice of
-        colimits the strict injection clause is not merely unprovable,
-        it is NOT WELL-TYPED, the two sides having different codomains
-        until the apex equation is supplied.  Negative 5 says the
-        headline does not accept a bare family of colimits where the
-        record is wanted;
-      - 4 FORMABILITY (negatives 6-9), each ending "universe
-        inconsistency: Cannot enforce ...".
-
-    Each was stripped ONE AT A TIME, with the others left as [Fail],
-    compiled alone, and its whole error read to confirm the kind and the
-    command it fires at.
-
-    Every constant a negative names also appears in a command OUTSIDE a
-    [Fail], so a rename breaks the probe at a non-[Fail] line.  The
-    universe sections carry the discriminating controls beside their
-    negatives: [Ju ⟶ Cu] elaborates at hom levels declared strictly
-    apart, so [Functor] is NOT a donor of either identification, and
-    that is what makes the four rejections attributable. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------ *)
 (** ** Instrument check *)

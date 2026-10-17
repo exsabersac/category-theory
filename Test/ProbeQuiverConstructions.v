@@ -1,51 +1,8 @@
-(** * Boundary probe: what is and is not definitional in the opposite and
-      product quivers.
+(*
+   本文件为测试：ProbeQuiverConstructions。
 
-    Companion to Construction/Free/Quiver/Constructions.v (Mac Lane §II.7
-    Ex. 1).  That file's headline is that the forgetful functor preserves
-    opposites and products ON THE NOSE — [QuiverOfCat (C^op) = QuiverOp
-    (QuiverOfCat C)] and its product analogue hold at Leibniz equality of the
-    whole [Quiver] record, by [eq_refl] — while three neighbouring statements
-    reach only [≈].  Its header records that the negative side was "measured
-    and found NOT to reach [eq_refl]", but the measurements themselves lived
-    outside the tree, so nothing in the build would notice if a refactor moved
-    the boundary.  This file pins it, in the manner of Test/ProbeFunnyPoly.v:
-    **if the [Fail] commands here stop failing, this file breaks the build.**
-
-    Both sides are pinned deliberately.  A [Fail] alone proves very little — it
-    passes just as happily when the term is ill-typed for some unrelated
-    reason, or when a name has been renamed out from under it.  So each
-    negative probe is paired with a positive control which must SUCCEED, and
-    the controls are the headline claims themselves.  A rename or a change in
-    the [Quiver] record breaks the controls loudly rather than turning the
-    [Fail]s vacuously green.
-
-    The instrument was checked before being trusted: wrapping [Fail] around a
-    command that succeeds reports "The command has not failed!" and aborts
-    compilation, so [Fail] here is not a no-op.
-
-    The three negatives and their causes, each diagnosed rather than merely
-    observed (the diagnoses are argued in Constructions.v's header, item (5)):
-
-      - [Forgetful_preserves_fst]/[_snd]: [Fst] and [Snd] of
-        Construction/Product.v are [Program Instance]s, so their
-        [fmap_respects] field is an opaque obligation (the tree runs
-        [Unset Transparent Obligations], Lib/Tactics.v).  The node and edge
-        actions do agree definitionally; it is respectfulness alone that
-        blocks.
-
-      - [QuiverSwap_invol]: the node action of the twice-swapped quiver is
-        [fun x => (fst x, snd x)], and surjective pairing is not definitional
-        for the standard library's [prod] — it holds on a constructor and not
-        on a variable.
-
-      - [prod_setoid]: Lib/Datatypes.v's global instance has exactly the
-        [equiv] that Constructions.v's [edgeset_prod] spells out, but an opaque
-        [setoid_equiv].  Since [Setoid] has primitive projections with eta,
-        conversion compares that field, and an opaque one defeats the
-        definitional agreement.  This is why [edgeset_prod] writes its
-        [Equivalence] fields out by hand instead of reusing the instance —
-        a deliberate non-reuse, and therefore worth guarding. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

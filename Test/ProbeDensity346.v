@@ -19,29 +19,11 @@ Generalizable All Variables.
 
 (** * Boundary probes for Theory/Density.v (issue #346) *)
 
-(* WHY THIS FILE EXISTS, AND WHAT IT ADDS OVER THE IN-FILE PROBES.
+(*
+   本文件为测试：ProbeDensity346。
 
-   Theory/Density.v already carries four negatives with their controls.
-   Those are sound, but they cannot guard the SIX constants the negatives
-   name that are declared in that same file -- [DensityDiagram],
-   [ElementsOp], [density_med], [density_inj], [density] and
-   [PDensityDiagram].  A rename of any of them would rewrite the [Fail]
-   bodies and the in-file controls IN LOCKSTEP, leaving every negative
-   vacuously green while the build stayed clean.  That is the same
-   instrument defect this tree records elsewhere: a rename simulation is
-   meaningless for a constant declared in the file under test, and the
-   remedy is to restate the boundary from OUTSIDE, where the names are
-   not renamed alongside.
-
-   This file is that outside.  It Requires Category.Theory.Density and
-   names all six, so a rename upstream breaks THIS file loudly instead of
-   silencing a probe.  The in-file negatives already cover the six DONOR
-   constants they name ([Curried_Hom], [Curried_CoHom], [Elements_proj],
-   [PElements_proj], [Cocone], [cocone_inj]) at 6/6, so between the two
-   files every constant a negative names is guarded.
-
-   If the [Fail] commands here stop failing, that is a real change in the
-   development and this file breaks the build on purpose. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProbeDensityConversion.
 

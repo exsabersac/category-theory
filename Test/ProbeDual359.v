@@ -1,53 +1,8 @@
-(** * Boundary probe for Structure/Monoidal/Dual.v (issue #359)
+(*
+   本文件为测试：ProbeDual359。
 
-    Mac Lane CWM 2nd ed. §IV.2, book p. 88, the vector-space duality
-    adjunction (the item maclane:IV.2:construction3): dualisation into a
-    fixed object is contravariant and self-adjoint on the right.
-
-    WHY THIS FILE EXISTS AT ALL.  The target carries eight [Fail]s of its
-    own and they are well formed -- each was stripped once and its WHOLE
-    error read, each sits beside an APPLIED control, and the instrument
-    check is scope-free.  What an in-file negative CANNOT do is survive a
-    rename: a whole-file rename moves the [Fail] and the constant it
-    names in lockstep, so the guard stays green while the thing it
-    guarded is gone.  Every negative below therefore names a constant of
-    the TARGET, and the file mirrors ALL of the target's [Require] lines
-    -- a probe built on a short prefix of that list is the classic way to
-    make a negative pass for a reason it never measured (a missing
-    coercion, an absent notation), certifying nothing.
-
-    IT ALSO MIRRORS THE TARGET'S [Remove Hints] LINE, AND THAT LINE IS
-    DEFENSIVE RATHER THAN LOAD BEARING — measured, in BOTH files:
-    deleting
-
-        Remove Hints Sets_Product_Monoidal : typeclass_instances.
-
-    leaves the target compiling clean and leaves this probe compiling
-    clean, and both of this file's negatives then fail with
-    byte-identical error messages.  The reason it costs nothing is the
-    one the target's own header gives: `C` arrives carrying a
-    [SymMonClosed] instance whose coercion already determines the
-    monoidal structure, so resolution is never offered a choice.  It is
-    mirrored here for consistency with the target and with the two
-    donors, where the ambient category is not so constrained.
-
-    KINDS, separated by the error TEXT rather than by label -- and note
-    that the tail ALONE does not separate two of them:
-      FORMABILITY  ends `universe inconsistency: Cannot enforce cp = ch`
-      CONVERSION   ends `cannot unify` between two terms of ONE type
-      TYPING       also ends `cannot unify`, but on the OBJECT VARIABLES,
-                   its body reporting two DIFFERENT objects of [Sets] as
-                   the expected and the actual type
-
-    THE REVIEWER'S CHECK IS THE POINT OF NEGATIVE 2.  The issue demands
-    that the canonical double-dual morphism be CONSTRUCTED, not assumed
-    invertible.  [Structure/Monoidal/StarAutonomous.v]'s class field
-    [star_double_dual] merely POSITS some iso, and that file's own header
-    says so, deferring the canonical pinning to its ledger
-    entry 4.  Negative 2 pins the sharpest available form of that gap:
-    for an ARBITRARY [StarAutonomous] instance the posited iso is not the
-    canonical map.  Read it precisely -- it does NOT say the equation is
-    false, only that the class does not force it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

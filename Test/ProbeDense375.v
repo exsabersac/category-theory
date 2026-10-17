@@ -18,47 +18,11 @@ Generalizable All Variables.
 
 (** * Boundary probe for Construction/Subcategory/Dense.v (issue #375) *)
 
-(* Every boundary the target file's header states as measured is pinned
-   here, from OUTSIDE that file: an in-file negative renames in lockstep
-   with the constant it guards and so cannot detect a rename.  The
-   [Require] list above mirrors the target's exactly, plus the target
-   itself and the two modules the witnesses need.
+(*
+   本文件为测试：ProbeDense375。
 
-   Five negatives of THREE kinds, kept lexically apart, plus one
-   scope-free instrument check:
-
-     CONVERSION  1  the [IsoDense] whole-record round trip does not
-                    return -- stdlib [sigT] has no eta
-     CONVERSION  2  the counit is not the fullness-lift of the chosen
-                    isomorphism on the nose
-     TYPING      3  [counit (dense_adj D) a = id[a]] is ill-typed: the two
-                    endpoints are different objects of [Sub C S]
-     TYPING      4  the reflection adjunction is not the [Reflective]
-                    record
-     FORMABILITY 5  [Subcategory] identifies its category's hom and proof
-                    universes
-
-   Negative 3 is the point of the whole file: Mac Lane's counit-is-the-
-   identity depends on choosing a_0 = a for objects already in the
-   subcategory, and with the choice supplied as one uniform function the
-   representative of an object of the subcategory can be a DIFFERENT
-   object.  The witness below is a full subcategory of [Indiscrete bool]
-   containing BOTH points whose chosen representative for each point is
-   the other point, and the two endpoints are proved distinct
-   ([swap_objects_differ]).
-
-   Each negative was stripped ONE AT A TIME, with the others left as
-   [Fail], and the whole error read.  Negatives 1 and 2 end in "cannot
-   unify"; negatives 3 and 4 report a plain "has type ... while it is
-   expected to have type ...", with no "cannot unify" clause and no
-   universe clause; negative 5 ends in "universe inconsistency: Cannot
-   enforce cp = ch because ch < cp".
-
-   Every constant a negative names also appears outside a [Fail], in a
-   control below.  The controls were checked by rename simulation: each
-   such constant was renamed throughout this file and the file then
-   stopped compiling at a control rather than compiling with a vacuously
-   green [Fail]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

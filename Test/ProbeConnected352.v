@@ -22,32 +22,11 @@ Require Import Category.Theory.Connected.Components.
 
 Generalizable All Variables.
 
-(** * Probe: the boundaries Theory/Connected/Components.v measures
+(*
+   本文件为测试：ProbeConnected352。
 
-   That file's header records five rejections and carries no [Fail] of its
-   own.  A measurement is not a guard: nothing in the build would notice if
-   a donor changed and one of them started to succeed.  This file converts
-   each into a pinned negative, beside a control that must SUCCEED, so that
-   the boundary breaks the build loudly rather than silently moving.
-
-   The import list is the target's own, in the target's order, with the
-   target itself appended.  A probe compiled against a shorter prefix can
-   fail for a missing-reference or missing-coercion reason and read as a
-   genuine mathematical rejection.
-
-   THREE KINDS, and here they really are distinguishable — the error TEXT
-   separates them, not merely the label:
-
-     CONVERSION   (negatives 1 and 2) ends in
-                  `(cannot unify "X" and "Y")`
-     TYPING       (negative 3) reports `has type ... while it is expected
-                  to have type ...` with NO `cannot unify` clause and no
-                  universe clause
-     FORMABILITY  (negatives 4 and 5) ends in
-                  `(universe inconsistency: Cannot enforce ...)`
-
-   Each negative below was stripped of its [Fail] and its whole error read,
-   not merely its tail; the distinguishing phrase is quoted at each. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check
 

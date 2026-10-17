@@ -22,89 +22,11 @@ Generalizable All Variables.
 
 (** * Probe: the measured boundaries of Construction/Product/Limit.v *)
 
-(* Companion to Construction/Product/Limit.v (Mac Lane, Categories for the
-   Working Mathematician, 2nd ed., §V.2 Exercise 2; Riehl, Category Theory
-   in Context, §3.4 Exercise 3.4.v).  Everything that file claims at
-   [eq_refl] is shipped there as an [Example], so it guards itself; what
-   it cannot guard from inside are the REFUSALS its header records and the
-   universe boundary a consumer meets.  Those are pinned here, from OUTSIDE
-   the target, because an in-file [Fail] renames in lockstep with the
-   constant it guards and so cannot detect a rename.
+(*
+   本文件为测试：ProbeProductLimit418。
 
-   SEVEN negatives of TWO kinds — five CONVERSION, two UNIVERSE (each
-   pinned by TWO [Fail] commands, the donor and an inherited refusal) —
-   told apart by the error TEXT rather than by label, plus one scope-free
-   instrument check: nine [Fail] commands beyond the instrument.  The
-   kinds were read off the messages actually produced by stripping each
-   [Fail] in turn.
-   Note N5 in particular: it LOOKS like a typing negative (a wrong
-   ascription) but its message carries a [cannot unify] clause, and a
-   TYPING negative in this tree is a has-type mismatch with NO such
-   clause, so it is classified as conversion.
-
-     N1  CONVERSION  [FCone Fst (prod_cone N1 N2)] is not [N1] as a whole
-                   RECORD, though its apex and every leg are [N1]'s on the
-                   nose (the two controls beside it): the coherence field is
-                   a rebuilt proof and [≈] is Type-valued.
-     N2  CONVERSION  The apex of [prod_cone (FCone Fst N) (FCone Snd N)] is
-                   [(fst n, snd n)] and not [n]: a [prod] has no
-                   definitional eta.  This is why [prod_reflect] goes
-                   through the cone isomorphism [prod_cone_iso], whose apex
-                   isomorphism is [(id, id)] (the control).
-     N3  CONVERSION  [pi_cone (fun i => FCone (PiCat_Proj D i) N)] is not
-                   [N] as a whole record EITHER, although here BOTH the apex
-                   and every leg are [N]'s on the nose by function eta (the
-                   two controls) — so the difference is located exactly in
-                   the coherence field, and [pi_cone_iso]'s apex isomorphism
-                   is [iso_id].
-     N4  CONVERSION  [Opposite (PiCat D)] is not [PiCat (fun i => Opposite
-                   (D i))]: [PiCat]'s law fields are [Program] obligations,
-                   so the two records differ in those fields although their
-                   objects, homs, identities and composition agree.  The
-                   control is [Product_Opposite] restated: for the BINARY
-                   product the same equation closes by [eq_refl], which is
-                   what makes [Product_Cocomplete] free and leaves
-                   [PiCat_Cocomplete] undelivered.
-     N5  CONVERSION  [Fst_PreservesLimitCone K] ascribed at
-                   [PreservesLimitCone K Snd] is refused with [cannot unify
-                   "Cone (Snd ◯ K)" and "Cone (Fst ◯ K)"] — the two
-                   preservation types unfold to quantifications over
-                   different cone types — against the correct ascription as
-                   its control.  No universe clause.
-     N6  UNIVERSE  At a shape whose homs are declared strictly BELOW the
-                   factors' homs, the diagram [K : Ju ⟶ Cu ∏ Du] and a
-                   [Cone] over it are ACCEPTED while the composite
-                   [Fst ◯ K] is refused: [Compose] is declared over three
-                   categories sharing ONE hom-and-proof level, and that is
-                   the identification every constant of the target
-                   inherits (its blocks carry [u0 = u2], [u0 = u4],
-                   [u0 = u6], the shape's hom level against both factors'
-                   and the product's).  [prod_cone K] is refused at the same
-                   levels, firing at that composite.
-     N7  UNIVERSE  The [PiCat] half carries a SECOND identification the
-                   binary half does not, on the INDEX: at an index type
-                   declared strictly ABOVE the factors' hom-and-proof level,
-                   [PiCat Du] itself is ACCEPTED (its block is bounds only)
-                   while [PiCat_Proj Du] is refused with [Cannot enforce dh
-                   = … because dh < ii] — that constant's own binder reads
-                   [C : I → Category@{u1 u u}], index at hom level — and so
-                   is [PiCat_Complete], whose BINDER reads
-                   [D : I → Category@{u5 u u}] with no block equation at all;
-                   both refusals fire at the argument [Du], so the inherited
-                   constant is not measured apart from the donor.  Every
-                   [PiCat]-side constant of the target (twelve) carries it,
-                   eleven in the block ([u = u1], [u = u3], [u = u5] in
-                   [pi_cone]) and [PiCat_Complete] in the binder alone.
-                   Found by the fess audit of the first commit, whose
-                   header attributed everything to [Compose].
-
-   Each negative was stripped ONE AT A TIME in a copy of this WHOLE file —
-   not a preamble-plus-command scratch, which would drop the [Section]'s
-   [Context] and local [Universes]/[Constraint] declarations and refuse for
-   a reason unrelated to the claim — compiled alone, and its whole error
-   read.  Every constant a negative names also appears in a [Check] outside
-   every [Fail], so a rename breaks this file loudly instead of turning a
-   [Fail] vacuously green. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

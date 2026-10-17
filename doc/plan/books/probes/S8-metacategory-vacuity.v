@@ -1,17 +1,8 @@
-(* AUDIT PROBE for defect S8.
+(*
+   本文件给出 S8-metacategory-vacuity 相关定义与性质。
 
-   Claim under test: in Theory/Metacategory.v the predicate
-
-     identity (u : arr) := (forall f, composite f u f) /\ (forall g, composite u g g)
-
-   is UNSATISFIABLE, because [arr := nat] is infinite while [pairs : M.t arr]
-   is a finite map.  If so, [FromArrows]'s object type [exists i, identity M i]
-   is uninhabited and [Three := FromArrows ThreeArrows] is the EMPTY category.
-
-   The campaign reported it could not build a probe because [Metacategory] is a
-   module functor never instantiated outside its own file.  It CAN be
-   instantiated: the functor takes any [WSfun PNN], and [FMapWeakList.Make PNN]
-   is one. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 From Coq Require Import FMapWeakList.
 From Coq Require Import List.

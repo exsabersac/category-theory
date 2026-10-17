@@ -1,60 +1,8 @@
-(** * Probe for Structure/Limit/Diagrams.v (issue #420)
+(*
+   本文件为测试：ProbeDiagrams420。
 
-    Pins the measured boundaries of the category of diagrams and its limit
-    functor: the two record-level walls that force identity and composition
-    to be built componentwise, the hypothesis mismatch behind the colimit
-    dual, and — as a compiled countermodel rather than an argument — why the
-    comma category over Cat cannot carry the limit's arrow part.  Every
-    refutation command below was stripped ONE AT A TIME in a copy of the
-    whole file and compiled alone with its error read, so each refusal is
-    of the kind its label says.
-
-    Numbering:
-     instrument      an absent name, refused — the refutation keyword is
-                     live in this file.
-     N1 CONVERSION   [W ◯ Id = W] is refused at [eq_refl] ("cannot unify
-                     W ◯ Id[A] and W"): functor composition is not strictly
-                     unital as a record; the object actions agree (control).
-     N2 CONVERSION   [F ◯ (U ◯ W) = (F ◯ U) ◯ W] is refused at [eq_refl]:
-                     nor strictly associative; object AND arrow actions
-                     agree (controls).
-     N3 TYPING       [nat_id] has type [ddiag X ◯ Id ⟹ ddiag X ◯ Id], not
-                     [ddiag X ◯ Id ⟹ ddiag X] — the unit wall behind
-                     [Did]'s componentwise identity (control).
-     N4 TYPING       [nat_compose (dtau g) (dtau f ⊲ dW g)] lands at
-                     [(ddiag Z ◯ dW f) ◯ dW g ⟹ ddiag X] where [DHom] wants
-                     [ddiag Z ◯ (dW f ◯ dW g) ⟹ ddiag X] — the bracketing
-                     wall behind [Dcomp] (control).
-     N5 CONVERSION   [@Cocomplete C = @Complete (C^op)] is refused at
-                     [eq_refl] ("cannot unify Cocomplete and Complete");
-                     the two bridges round-trip at [eq_refl] (controls).
-     N6 TYPING       the naive bridge [fun D G => L D G] is refused:
-                     [G : D ⟶ C^op] where [D ⟶ C] is expected; the bridge
-                     through [Opposite D] and [Opposite_Functor G] is the
-                     control.
-
-    Countermodel (positive, compiled): in [CommaDiagrams Sets] the two
-    arrows [p420_f_id] and [p420_f_negb] on the one-object diagram constant
-    at the two-element setoid share their functor components and differ
-    only in their squares (the identity and the swap [negb_iso]);
-    [p420_squares_forgotten] proves them equivalent in the comma setoid,
-    [p420_id_not_negb] that the squares' components are not, and
-    [p420_no_respectful_arrow_part] that no [Proper] assignment of arrows
-    can return the square's component on both — so the issue's "comma form
-    over Cat" cannot carry a limit functor's arrow part.
-
-    Readbacks: the object and hom types of [Diagrams C], the object and
-    arrow parts of [LimDiagrams] and [ColimDiagrams], the apex of the
-    reindexed-and-pushed cone, and [CommaDiagrams_equiv].
-
-    Guard coverage: every constant a refutation names is also named
-    outside a refutation command (the guard block at the end) — the
-    exceptions, under the plain identifier tokenization with comments
-    stripped, being the keyword itself, the
-    binder names [G] and [L] of N5/N6, the six names the refuted
-    declarations would introduce, and the instrument's absent name — so a
-    renamed or removed constant breaks the build on a positive line rather
-    than letting a refutation pass for the wrong reason. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

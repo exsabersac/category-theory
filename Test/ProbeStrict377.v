@@ -16,34 +16,11 @@ Require Import Category.Instance.Two.
 Require Import Category.Instance.Discrete.Reconstruct.
 Require Import Category.Theory.Equivalence.Strict.
 
-(** * Boundary probe for Theory/Equivalence/Strict.v (Mac Lane IV.4.3)
+(*
+   本文件为测试：ProbeStrict377。
 
-    Every rejection the target's header records is pinned here, from
-    OUTSIDE the target, so that a rename breaks the probe loudly instead
-    of turning a guard vacuously green.  The import list is the target's
-    own, plus the target.
-
-    Twelve negatives in THREE kinds, told apart by the error TEXT rather
-    than by label:
-
-      TYPING       (3) -- a plain "has type ... while it is expected to
-                          have type ...", with no "cannot unify" clause;
-                          negatives 1, 2 and 5.
-      CONVERSION   (5) -- "cannot unify" between two terms of ONE type,
-                          or a tactic script that does not close;
-                          negatives 3, 4, 6, 7 and 8.
-      FORMABILITY  (4) -- "universe inconsistency: Cannot enforce ...";
-                          negatives 9 to 12.
-
-    Negative 5 was expected to be a conversion rejection and is NOT: the
-    two adjunctions have different TYPES, because their left adjoints are
-    two non-convertible functors, so the error carries no "cannot unify"
-    clause at all.  It is counted as typing.
-
-    plus a scope-free instrument check.  Each was stripped ONE AT A TIME,
-    the others left in place, the file compiled alone, and the whole error
-    message read.  Every constant a negative names also appears in a
-    command outside any guarded position. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Generalizable All Variables.
 

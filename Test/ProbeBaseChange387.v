@@ -13,57 +13,11 @@ Generalizable All Variables.
 
 (** * Boundary probe for the base change adjunction Σ_f ⊣ f* *)
 
-(* This file guards Construction/Slice/Pullback.v from OUTSIDE that
-   module: a negative written inside a file is renamed in lockstep with
-   the constant it guards and so cannot detect a rename, whereas a
-   negative here breaks loudly.  The Require list is the target's own,
-   extended by Instance/Sets/Pullback for the concrete section.
+(*
+   本文件为测试：ProbeBaseChange387。
 
-   What is pinned, and of which kind:
-
-   (A) CONVERSION.  Two identifications that hold only up to ≈.  The
-       class's counit carries a residual identity, so it is the pullback
-       projection composed with [id] and not that projection; and the
-       class's unit is the transpose of the slice identity, which is the
-       mediator of the same cone as [bang_star_unit_mor] but produced
-       from a different proof of the cone's square condition.  Each
-       negative sits beside the strict statement that DOES hold, so what
-       is measured is the residue and not the constant.
-
-   (B) TYPING.  The reversed orientation is a different type, so the
-       delivered adjunction cannot be ascribed at it.  This is a plain
-       type mismatch, with no universe clause.
-
-   (C) FORMABILITY.  [Base_Functor_Adjunction] is over a category whose
-       hom and proof universes coincide -- an identification visible in
-       its BINDER, [Category@{u u0 u0}], while its constraint block
-       carries no equation at all.  Three donors are each rejected on
-       their own at levels declared apart ([Slice], [Pullback],
-       [Adjunction]); [Functor] is NOT one, and is the discriminating
-       control.
-
-   (D) The interesting measurement, and the reason the deleted stub in
-       the target was wrong.  [Star_Functor f ⊣ Bang_Functor f] -- the
-       orientation that stub proposed -- IS well typed: both functors
-       have the shapes the class wants once the roles are swapped, so it
-       is neither a formability nor a typing rejection.  It is a
-       well-formed statement that is simply not true in general, and
-       [reversed_orientation_refuted] compiles a counterexample: over
-       Sets, along the unique morphism ∅ ~> 1, the unit such an
-       adjunction would supply at the object (1; id) is a map 1 ~> ∅,
-       because pulling anything back along ∅ ~> 1 lands in a setoid whose
-       carrier is uninhabited (a sub-setoid of 1 × ∅, not the [sets_empty]
-       declared below) while Σ leaves the underlying object alone.
-       Evaluating it
-       at the point produces an inhabitant of False.
-
-   (E) The section hypothesis of the target is discharged at Sets from
-       [Sets_HasPullbacks] (Instance/Sets/Pullback.v), and the transpose
-       is exercised at a concrete morphism where it computes.
-
-   The sections below run A, C, E, then B and D together, since the
-   reversed orientation is refuted at a Sets witness and so has to come
-   after E. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Instrument check: a name that cannot exist. *)
 Fail Check probe_base_change_387_no_such_name.

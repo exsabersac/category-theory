@@ -20,115 +20,11 @@ Require Import Category.Adjunction.Choice.
 
 Generalizable All Variables.
 
-(** * Boundary probe for Adjunction/Choice.v (issue #397)
+(*
+   本文件为测试：ProbeChoice397。
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-    §IV.7, book p. 102, Exercise 3: in the functor category A^X let S be
-    the full subcategory of the functors that have a right adjoint, and
-    make R a functor S^op -> X^A by choosing one RF for each F, with
-    R(sigma) the conjugate of sigma.
-
-    Adjunction/Choice.v carries ZERO [Fail] commands by design: the
-    Definition-of-Done box forbids new [make todo] hits, and an in-file
-    negative renames in lockstep with the constant it guards, so it
-    cannot detect a rename at all.  This file is where every refutation
-    that file's prose describes is pinned.
-
-    METHOD.  The [Require] list above mirrors Adjunction/Choice.v's
-    eighteen lines character for character, adding only the target
-    module itself; measured, a [diff] of the two blocks reports exactly
-    that one added line.  A probe with a short prefix can fail for a
-    reason it never measured, which is a FALSE PASS, so nothing is
-    dropped and nothing else is added.  Each negative below was
-    STRIPPED (the [Fail] removed), written into its own scratch file
-    with that same full prefix, compiled ALONE, and its WHOLE error
-    read; the kind recorded beside it is read off that error text and
-    not off an expectation:
-
-      CONVERSION   the error ends in an explicit "cannot unify" between
-                   two inhabitants of ONE type, with no universe clause;
-      TYPING       a plain "has type ... while it is expected to have
-                   type", with NO "cannot unify" and no universe clause;
-      FORMABILITY  the error ends "universe inconsistency: Cannot
-                   enforce ...".
-
-    TALLY.  17 [Fail] commands = 1 instrument check + 16 negatives of
-    THREE kinds, told apart by the error TEXT: 7 CONVERSION (negatives
-    1-7), 1 TYPING (negative 8) and 8 FORMABILITY (negatives 9-16).
-    The TYPING one is discriminating: the SAME term ascribed at the
-    contravariant type is accepted immediately above it
-    ([p397_raf_type_control]), so what is refused is the variance and
-    not the term.
-
-    THREE FALSE-PASS SHAPES ARE AVOIDED, and ONE of the three is
-    MEASURED HERE rather than taken on trust.  (i) [Fail Program
-    Definition] -- negative 8's statement, written with [Program],
-    is ACCEPTED, so that spelling reports "The command has not failed!"
-    and guards nothing; see negative 8's own note for the obligation it
-    defers.  (ii) A bodyless [Fail Example], which fails for want of a
-    proof rather than for the reason claimed: every [Fail Example] here
-    carries the body [eq_refl].  (iii) An X = X tautology: negative 5
-    compares [LeftAdjCat C D] with [Adj C D], two distinct constants
-    both written APPLIED, so the command is refused at [eq_refl] and not
-    at the statement, and negative 8 compares two different types.
-
-    VERBATIM ERROR TAILS, as read from the sixteen stripped files:
-
-      1.  (cannot unify "RAF_via C D" and "RightAdjointFunctor C D").
-      2.  (cannot unify "LI_via C D" and
-           "Incl ([D, C]) (LeftAdjSub C D)").
-      3.  (cannot unify "fmap[SubToAdj C D ◯ AdjToSub C D] f" and "f").
-      4.  (cannot unify "fmap[AdjToSub C D ◯ SubToAdj C D] f" and "f").
-      5.  (cannot unify "LeftAdjCat C D" and "Adj C D").
-      6.  (cannot unify "ch_obj (ch_canonical C D) x" and "x").
-      7.  (cannot unify "conj_mate (adjobj_adj (F; q))
-           (adjobj_adj (F; p)) nat_id ∙ conj_mate (adjobj_adj (F; p))
-           (adjobj_adj (F; q)) nat_id" and "nat_id").
-      8.  The term "RightAdjointFunctor C D" has type
-          "(LeftAdjCat C D)^op ⟶ [C, D]" while it is expected to have
-          type "LeftAdjCat C D ⟶ [C, D]".   [no "cannot unify" clause]
-      9-13. (universe inconsistency: Cannot enforce cp = ch because
-            ch < cp).
-      14. (universe inconsistency: Cannot enforce ah = <fresh> because
-          ah < bh <= <fresh>).
-      15. (universe inconsistency: Cannot enforce bh = ah because
-          ah < bh).
-      16. (universe inconsistency: Cannot enforce ah = bh because
-          ah < bh).
-
-    RENAME SIMULATION.  Ten constants of Adjunction/Choice.v are named
-    by a negative: [RAF_via], [RightAdjointFunctor], [LI_via],
-    [LeftAdjSub], [SubToAdj], [AdjToSub], [LeftAdjCat], [ch_obj],
-    [ch_canonical] and [HasRightAdjoint].  Each was renamed in a SCRATCH
-    COPY of that file (never in place -- a whole-file rename is a no-op
-    by construction and gives a false verdict), the copy recompiled
-    under a scratch module name (rc=0 in all ten, so every rename was
-    real), and this file recompiled against the copy.  10/10 broke it,
-    EVERY ONE at a [Check] control line and NONE inside a
-    [Fail].  Zero vacuous guards.  The DENOMINATOR is exactly the
-    constants DECLARED IN THE TARGET that a negative names; the donors a
-    negative also names -- [Opposite], [Subcategory], [Adj], [AdjObj],
-    [Incl], [conj_mate], [adjobj_adj], [nat_id], and [Fun], which
-    negatives 2, 11 and 15 reach through the [[_, _]] notation rather
-    than by name -- are declared elsewhere and cannot be renamed in the
-    target, so each is given a top-level [Check] guard instead.
-
-    GUARD COVERAGE, measured rather than asserted.  Comment-stripping
-    this file and splitting it into commands, the 17 [Fail] blocks
-    mention 47 identifiers, of which 31 appear OUTSIDE every [Fail] --
-    in the [Check] block below or in a control [Definition].  The
-    sixteen that do not are exceptions by construction and nothing else:
-    the two vernacular keywords [Fail] and [Example]; the four bound
-    variables [F], [f], [p], [q]; the stdlib constructor [eq_refl]; the
-    instrument's deliberately absent name; and the eight [Fail]
-    command HEADS, which never enter the environment.
-
-    MAKE TODO.  This file adds 36 hits to that target (1826 -> 1862,
-    counted by leading "./path:"): the 17 refutation commands, plus 19
-    lines of the prose above that name them.  That is the usual
-    disclosed overshoot of a probe in this tree.  Adjunction/Choice.v
-    itself contributes ZERO, measured with the target's own pattern
-    anchored at that path. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check
 

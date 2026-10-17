@@ -1,75 +1,8 @@
-(** * Boundary probe: what is and is not definitional in the free groupoid
-      and the free group.
+(*
+   本文件为测试：ProbeFreeGroupoid。
 
-    Companion to Construction/Free/Groupoid.v and Instance/Grp/Free.v
-    (Mac Lane §II.7 Ex. 3, Riehl §4.2 Example 4).  Those files make several
-    strength claims — some things hold at Leibniz [=] or by [eq_refl], others
-    only up to [≈] — and a strength claim that lives only in a header is a
-    claim nothing in the build would notice losing.  This file pins the
-    boundary in the manner of Test/ProbeQuiverConstructions.v and
-    Test/ProbeFunnyPoly.v: **if the [Fail] commands here stop failing, this
-    file breaks the build.**
-
-    Both sides are pinned deliberately.  A [Fail] alone proves very little —
-    it passes just as happily when the term is ill-typed for some unrelated
-    reason, or when a name has been renamed out from under it.  So each
-    negative probe is paired with a positive control which must SUCCEED, and
-    the controls are the headline claims themselves.
-
-    The instrument was checked before being trusted: wrapping [Fail] around a
-    command that succeeds reports "The command has not failed!" and aborts
-    compilation, so [Fail] here is not a no-op.  Each negative below was also
-    run with the [Fail] stripped, and the error confirmed to be a genuine
-    unification or typing failure rather than a syntax, scope or universe
-    error; the diagnoses are recorded beside each probe.
-
-    RE-MEASURED after the PR "algebraic carriers are sets" (2026-09-17),
-    which made the free GROUP's `≈` the propositional truncation of the free
-    GROUPOID's hom-equality (Instance/Grp/Free.v's [fg_equiv]).  The free
-    groupoid itself is untouched, and every negative and every control below
-    still holds with its text unchanged; the truncation's own boundary is
-    pinned separately, in Test/ProbeGrpProp.v.
-
-    The five negatives and their causes:
-
-      - [FreeGroupoid] is not [FreeSigned].  The two share their objects and
-        their hom TYPES definitionally — that is [fg_hom_type], the positive
-        control, and it is the whole content of "equations merge, and never
-        add" — but the [Category] records differ in their [homset] field, so
-        the categories are not convertible.  The mathematical form of the
-        same fact is [free_signed_not_groupoid].
-
-      - The inverse law holds only up to [≈].  [fginv f ∘ f] is the word
-        [f] followed by its reversal, which is not the empty word until the
-        cancellation congruence is applied; the positive control is
-        [fginv_involutive], which DOES hold at Leibniz [=] because
-        [Lib/TList.v]'s [tlist_rev_involutive] does.
-
-      - The counit of the free-group adjunction does not compute.  It is
-        [from adj id], i.e. [unique_obj (ump_universal_arrows …)], and
-        [ump_universal_arrows] (Theory/Universal/Arrow.v) is [Qed]-opaque, so
-        no reduction is available.  The unit is on the other side of that
-        boundary and DOES compute, which is the positive control
-        [free_group_unit_is_insert].  Instance/Grp/Free.v says so in terms
-        and states the counit only up to [≈]
-        ([free_group_counit_evaluates]).
-
-      - The generator clause of the universal property is not even WELL-TYPED
-        without the object agreement in scope.  Stripped of [Fail] this one
-        is a typing error rather than a unification failure: [fedgemap x y e]
-        has type [edges (F x) (F y)] while the clause needs
-        [fobj[K] x ~> fobj[K] y], and nothing identifies those two until
-        [Hobj] is available to [hom_cast] across.  This is why
-        [free_groupoid_universal] nests [Hobj] INSIDE the sigma rather than
-        stating a flat generator clause beside it — the nesting is forced,
-        not stylistic.
-
-      - [Deloop] does not accept an [Instance/Grp.v] group.  There are two
-        records named [GrpObject] in the tree — Construction/Deloop.v's,
-        layered on [MonObject], and Instance/Grp.v's, flat — and no
-        converter between them, which is exactly why Instance/Grp/Free.v
-        builds [grp_deloop_monoid] by hand.  The positive control is that
-        [grp_deloop] does accept one. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

@@ -1,20 +1,8 @@
-(** * Probe for Functor/Hom/Continuous.v (issue #428)
+(*
+   本文件为测试：ProbeHomContinuous428。
 
-    Pins the measured boundaries of the isomorphism form of hom-functor
-    continuity: one CONVERSION refusal (N1: the two presentations of the
-    hom-diagram, [HomFrom c ◯ F] and [HomDiagram c F], agree on objects and
-    on the action of [fmap] but not at the [fmap] field, an opaque
-    [Program] obligation) and two UNIVERSE refusals (N2: the carrier and
-    relation levels of every set in the target are pinned to the hom level
-    of the source, so the hom-functor of a fixed category cannot be read
-    into a strictly larger universe of sets — only the level of the universe
-    holding Sets' objects is free; Mac Lane's Remark 1 as far as it holds;
-    N3: the [Sets] limit of the hom-diagram needs the
-    shape's object level at or below that carrier level, while #331's
-    preservation theorem does not — Riehl's large-diagram footnote).  Each
-    refutation was stripped one at a time in a copy of the whole file; the
-    import list mirrors the target's.  Section D's readbacks and the guard
-    block are positive controls. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

@@ -1,41 +1,8 @@
-(** * Probe: boundaries of Paré's criterion
+(*
+   本文件为测试：ProbePare350。
 
-    Guards the strength claims of Adjunction/Pare.v from OUTSIDE that
-    file — an in-file [Fail] renames in lockstep with the constant it
-    guards and so cannot detect a rename.
-
-    That file's header MEASURES a cluster of rejections and says plainly
-    that they are "not guarded here, probes being out of scope for this
-    file".  This file closes that gap.  The cluster is one phenomenon:
-    [Compose] is not associative on the nose and [Id] is not a strict
-    unit for it, so Mac Lane's own composites [Gε ∘ ρG] and [εK ∘ Kρ]
-    are not formable as written — they would land at [Id[X] ◯ G ⟹ G ◯
-    Id[A]] and [K ◯ Id[X] ⟹ Id[A] ◯ K] rather than at [G ⟹ G] and
-    [K ⟹ K].
-
-    The obstruction is LOCATED rather than asserted, and it is MEASURED
-    rather than inferred.  [Functor] has primitive projections WITH ETA
-    CONVERSION (Rocq reports this on [Print Functor]), so record equality
-    IS field equality — which is exactly what makes the localization
-    sharp, and neither this file nor the target said so before.  The
-    [fobj]/[fmap] controls show two of the five fields agree; negatives
-    5-7 show each of the remaining THREE fails individually, so the
-    confinement is a measurement and not an inference from a head count.
-
-    ALL NEGATIVES HERE ARE ONE KIND: CONVERSION.  An earlier revision of
-    this file labelled negative 4 TYPING and claimed "two kinds", with
-    the method "each stripped and its kind read off the error".  Applying
-    that method refutes the claim: all of them report
-    [The term "..." has type "..." while it is expected to have type
-    "..." (cannot unify ...)] and negative 4 carries NO distinguishing
-    marker — no [cannot satisfy constraint], no [Illegal application],
-    which is how this tree's genuine TYPING negatives are told apart
-    (Instance/Cat/Pullback.v and Theory/Morphisms/CokernelPair.v).  Only
-    the POSITION of the mismatch differs.  The claim is withdrawn.
-
-    The import list mirrors Adjunction/Pare.v's in full; a short prefix
-    is what makes a probe pass vacuously, and a vacuity check cannot
-    detect it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

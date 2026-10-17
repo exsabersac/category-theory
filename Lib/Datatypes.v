@@ -11,25 +11,16 @@ Import ListNotations.
 
 (** * Basic datatypes and setoid structure *)
 
-(* Utility lemmas and setoid instances for the standard-library datatypes used
-   throughout the development: lists, products, sums, options, functions and a
-   binary symmetric product for well-founded recursion.
+(*
+ nLab:    https://ncatlab.org/nlab/show/setoid
+ nLab:    https://ncatlab.org/nlab/show/product
+ nLab:    https://ncatlab.org/nlab/show/coproduct
+ Wikipedia: https://en.wikipedia.org/wiki/Setoid *)
 
-   The list induction helpers [rev_list_rect] and [rev_rect] mirror the
-   reverse-induction principles of the Rocq standard library
-   (Stdlib.Lists.List); they are reproduced here so that this file does not
-   depend on their exact location across Coq/Rocq versions.
+   本文件给出 Datatypes 相关定义与性质。
 
-   The product, sum, option, list and function setoid instances equip those
-   type constructors with the pointwise/componentwise equivalence that makes
-   them objects of the category of setoids (see Instance/Sets.v); these are the
-   constructive analogues of the categorical product, coproduct and maybe
-   monad on Set:
-
-     nLab:    https://ncatlab.org/nlab/show/setoid
-     nLab:    https://ncatlab.org/nlab/show/product
-     nLab:    https://ncatlab.org/nlab/show/coproduct
-     Wikipedia: https://en.wikipedia.org/wiki/Setoid *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition rev_list_rect (A : Type) (P : list A → Type) (H : P [])
            (H0 : ∀ (a : A) (l : list A), P (rev l) → P (rev (a :: l)))

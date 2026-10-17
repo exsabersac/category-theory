@@ -15,62 +15,11 @@ Require Import Category.Theory.Equivalence.Adjoint.Compose.
 
 Generalizable All Variables.
 
-(* Boundary probe for Theory/Equivalence/Adjoint/Compose.v (Mac Lane
-   SIV.4 Exercise 2(b)).
+(*
+   本文件为测试：ProbeAdjointCompose379。
 
-   The negatives live here rather than in the target because an in-file
-   negative renames in lockstep with the constant it guards and so
-   cannot detect a rename.  The require list above mirrors the target's
-   exactly.
-
-   THIRTEEN negatives in THREE kinds, plus one scope-free instrument
-   check.  Each was stripped ONE AT A TIME -- the others left in place
-   -- and compiled alone, and its whole error message was read, and its
-   line confirmed:
-
-     CONVERSION (5, negatives 1-5): each reports "cannot unify" between
-       two terms of a single type.  Negatives 1-3 separate the direct
-       composite from the refinement route the catalog entry proposes;
-       negatives 4-5 record that Mac Lane's whiskering formulas hold
-       only at [~], so the two grades the target keeps apart are
-       genuinely different.
-
-     TYPING (3, negatives 6-8): a plain "has type X while it is
-       expected to have type Y", with NO "cannot unify" and no universe
-       clause -- the two sides do not inhabit a common type at all,
-       because [Compose] of functors is neither associative on the nose
-       nor strictly unital.  So the groupoid laws are not statable at
-       the level of the class (6, 7), and neither is "the witness is an
-       identity adjoint equivalence" (8).
-
-     FORMABILITY (5, negatives 9-13): universe inconsistencies naming
-       the declared levels.  Negative 9 isolates the IDENTITY FUNCTOR
-       [Id] as a donor of the hom = proof identification ON ITS OWN --
-       easy to miss, and it means a probe writing [Id[Cu]] into an
-       [Adjunction] measures [Id] rather than [Adjunction]; negative 10
-       shows [Adjunction] is a donor independently, probed at two
-       arbitrary endofunctors so that no [Id] occurs in the command;
-       negative 11 adds [AdjointEquivalence], which CANNOT be tested
-       apart from [Adjunction], its first field being [F -| U], so 10
-       and 11 are NOT independent; negative 12 is the target's own
-       [AdjointEquivalence_Id], which has both donors in reach and
-       isolates neither; and negative 13 locates the composite's
-       identification of the three categories' hom universes at the
-       mere presence of functors in BOTH directions, before any
-       adjunction is formed.
-
-   The controls beside them are what make the negatives measure
-   something: [x ~> y], [id], an arbitrary endofunctor [Cu -> Cu],
-   [IsIsomorphism] and the target's own four [IsIso_*] constants are all
-   ACCEPTED at the very levels where the adjunction constants are
-   rejected, so the rejection is about the adjunction vocabulary and not
-   about the section's constraint.  Every constant a negative names is
-   also named outside a [Fail] -- including the identity functor [Id],
-   which a first cut named only INSIDE negative 9, so that renaming it
-   left the negative silently green (found by audit; the guard below
-   now breaks this file under that rename); rename simulation over the
-   six TARGET constants the negatives name breaks this file at a guard
-   line in all six cases. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Instrument check: a name that exists nowhere must be rejected. *)
 Fail Check probe379_no_such_constant_anywhere.

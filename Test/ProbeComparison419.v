@@ -1,70 +1,8 @@
-(** * Probe for Structure/Limit/Comparison.v (issue #419)
+(*
+   本文件为测试：ProbeComparison419。
 
-    Pins the measured boundaries of the comparison-arrow development: which
-    repackagings hold by conversion and which do not, that the
-    discrete-diagram functor no longer pins the universe (§B, a repair
-    recorded under N2/N3 below), how the terminal comparison is oriented,
-    and why the colimit block is built directly.  Every
-    refutation command below was stripped ONE AT A TIME in a copy of the
-    whole file and compiled alone with its error read, so each refusal is
-    of the kind its label says.
-
-    Numbering:
-     instrument      an absent name, refused — the refutation keyword is
-                     live in this file.
-     N1 CONVERSION   a twice-reindexed cone, of type
-                     [Cone ((F ◯ W) ◯ V)], is not a [Cone (F ◯ (W ◯ V))]
-                     by conversion (a has-type mismatch between the two
-                     bracketings, no universe clause); [cone_assoc]
-                     repackages it (control), and apex and legs agree at
-                     [eq_refl] across the bracketings (readbacks).
-     N2, N3          REPAIRED, and recorded as a correction.  An earlier
-                     revision read:
-                       "N2 UNIVERSE  under [Constraint Set < uh],
-                        [cone_comparison] at the UNANNOTATED
-                        [DiscreteCat_Functor] is refused: the functor's
-                        type names [DiscreteCat@{_ Set Set}] where the
-                        ambient's [uh] is needed; the cone type alone is
-                        formable (control a), the comparison at the
-                        annotated [DiscreteCat_Functor'] is accepted
-                        (control b), and so is [binary_comparison]
-                        (control c).
-                        N3 UNIVERSE  the same pin reached through
-                        Structure/Limit/Product.v's [family_cone], which
-                        is built over the unannotated functor."
-                     [DiscreteCat_Functor] was annotated in place in the
-                     PR "algebraic carriers are sets" (2026-09-17),
-                     Instance/Discrete.v, with exactly the binders
-                     [DiscreteCat_Functor'] already carried; both
-                     commands are now ACCEPTED and are kept in §B as
-                     positive controls beside their former controls.
-                     [DiscreteCat_Functor'] is now a transparent alias of
-                     [DiscreteCat_Functor], so control (b) and the former
-                     N2 are the same statement twice, which is the point:
-                     the two names agree.  No UNIVERSE refusal remains in
-                     this file.
-     N4 TYPING       [to fobj_one_iso] has type [1 ~> F 1], not
-                     [F 1 ~> 1]: the comparison is the class's [from]
-                     (control), and [terminal_comparison_one] reads it as
-                     the unique map into [1] (readback).
-     N5 TYPING       [cone_comparison (F^op) N HM], with [HM] a colimiting
-                     cocone of [F ◯ K], is refused with the clause "cannot
-                     unify Cone (F^op ◯ K^op) and Cone (F ◯ K)^op"; once
-                     [islimitcone_op_comp] repackages [HM] it is accepted
-                     (control), as is [cocone_comparison] (control).
-
-    Readbacks at [eq_refl]: [pullback_comparison] IS [cone_comparison];
-    the components of [const_image_iso] are identities; reindexing along
-    [Id] keeps the legs.  Positive formability of the two headline
-    biconditionals and of the bundled limit and colimit biconditionals.
-
-    Guard coverage: every constant a refutation names is also named
-    outside a refutation command (the guard block at the end) — the
-    exceptions, under the plain tokenization, being the keyword itself, the
-    two binder names [b] and [pi] that only the former N3 introduces, and
-    the instrument's absent name — so a renamed or removed constant breaks the
-    build on a positive line rather than letting a refutation pass for the
-    wrong reason. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

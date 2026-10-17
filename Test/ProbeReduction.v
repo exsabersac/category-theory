@@ -21,51 +21,11 @@ Generalizable All Variables.
 
 (** * Probe: the strength boundaries of the (co)limit reductions *)
 
-(* Guard file for Structure/Pullback/Reduction.v and
-   Structure/Pullback/Wide.v, in the Test/ProbeFunnyPoly.v convention.
+(*
+   本文件为测试：ProbeReduction。
 
-   Both target files carry measurements of their own; this file is what
-   makes those measurements GUARDS.  The distinction matters and is the
-   reason this file exists: Reduction.v states seven negatives in-file,
-   but an in-file [Fail] with no instrument check and no control can go
-   vacuously green after a rename -- it then reports "still refuted" when
-   what actually happened is that the statement stopped elaborating for an
-   unrelated reason.  Wide.v ships NO [Fail] at all; its refutations and
-   its universe measurements were reported by measurement only, and are
-   pinned here.
-
-   Every negative below is paired with a positive control that NAMES ITS
-   OWN CONSTANTS.  The pairing was verified by RENAME SIMULATION: each
-   negative was copied to a scratch file with one constant renamed, and
-   the scratch file was confirmed to STOP COMPILING -- so a rename breaks
-   this file loudly instead of turning a [Fail] vacuously green.
-
-   THAT GUARANTEE WAS NOT TRUE WHEN THIS FILE WAS FIRST WRITTEN, and the
-   failure is recorded here rather than quietly repaired.  The original
-   simulation covered only the nine constants the controls happened to
-   name; an independent audit re-ran it over the constants appearing in
-   the NEGATIVES and found [ml_right], [HasCoequalizers] and
-   [HasEqualizers] occurring in no control at all, so renaming any of them
-   left this file compiling and the corresponding negative vacuously
-   green.  Controls for all three were added below.  This is the same
-   defect family that two earlier probe files in this tree shipped with.
-
-   The import list is the UNION of the two targets' import lists, in
-   dependency order.  A short prefix is what makes a probe pass for the
-   wrong reason.
-
-   The two KINDS of negative are kept lexically apart, because they fail
-   for different reasons and must not be read as one thing:
-
-     - CONVERSION negatives ([Fail Definition ... := eq_refl]) -- the two
-       sides are well-typed and simply do not convert.
-     - FORMABILITY negatives ([Fail Check ...]) -- the equation cannot be
-       STATED at all, because the two sides do not even have the same
-       type.
-
-   Each negative was stripped of its [Fail] once and the resulting message
-   inspected; the kind recorded beside it is what the compiler actually
-   said, not what was expected. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check
 

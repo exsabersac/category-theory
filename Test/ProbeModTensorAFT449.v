@@ -28,10 +28,11 @@ Require Import Category.Instance.Mod.Limit.
 Require Import Category.Instance.Mod.Spanning.
 Require Import Category.Instance.Mod.TensorAFT.
 Require Import Category.Theory.Algebra.Rig.
-(* Beyond the target's own list: [Adjunction.GAFT] and [GAFT.Resize] for
-   the [SolutionSet]/[SmallUpToIso] vocabulary section 10 of the target
-   uses, and [Instance.Rng] for [Q_Ring], the SECOND concrete ring the
-   payoff section below instantiates at. *)
+(*
+   本文件为测试：ProbeModTensorAFT449。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Category.Adjunction.GAFT.
 Require Import Category.Adjunction.GAFT.Resize.
 Require Import Category.Instance.Rng.

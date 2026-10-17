@@ -48,92 +48,11 @@ Open Scope category_scope.
 
 (** * Probe: the measured boundaries of Structure/Limit/Finite.v *)
 
-(* Companion to Structure/Limit/Finite.v and to the additions in
-   Instance/Cones/Limit.v (Mac Lane, Categories for the Working
-   Mathematician, 2nd ed., §V.2 Definition 1 and Corollary 1; Awodey §5.4
-   and §5.6; Seven Sketches §6.2.4; Riehl §3.5 Theorem 3.5.17).  Everything
-   those files claim at [eq_refl] is shipped there as an [Example]; what they
-   cannot guard from inside are the REFUSALS their headers record and the
-   universe boundaries a consumer meets.  Those are pinned here, from
-   OUTSIDE the targets, because an in-file [Fail] renames in lockstep with
-   the constant it guards and so cannot detect a rename.  The [FinSet],
-   [Sets] and elementary-topos instantiations and the [Omega] refutation
-   live here too, because they cost modules the targets should not carry.
+(*
+   本文件为测试：ProbeFinite417。
 
-   The negatives are of THREE kinds, told apart by the error TEXT — the
-   kinds were read off the messages produced by stripping each [Fail] in
-   turn, in a copy of this WHOLE file — plus one scope-free instrument
-   check.
-
-     N1  CONVERSION  [Initial (Cocones F)] and [Terminal (Cocones F)] are
-                   different TYPES ([cannot unify]); the covariant
-                   [Initial ((Cocones F)^op)] IS the latter, the control.
-     N2  TYPING    The issue's literal passage [Initial (Cocones F) →
-                   Colimit F]: the hypothesis has the wrong type for
-                   [Colimit_Cocones] — a plain has-type mismatch with no
-                   [cannot unify] clause and no universe clause.
-     N3  CONVERSION  [Limit_Cones (Cones_Limit F L) = L] as whole [Limit]
-                   records: the [uniqueness] field is rebuilt through
-                   [one_unique]; the cone and every mediator agree at
-                   [eq_refl] (controls).
-     N4  CONVERSION  [Cones_Limit F (Limit_Cones T) = T] as whole
-                   [Terminal] records: the unique arrow is re-paired (stdlib
-                   [sigT] has no eta) and [one_unique] is rebuilt; the
-                   terminal cone and the apex map of the unique arrow agree
-                   at [eq_refl] (controls).
-     N5  CONVERSION  A [FinitelyComplete C] ascribed at [Complete C]: the
-                   message is a has-type mismatch whose [cannot unify]
-                   clause compares the SECOND binders, [J ⟶ C] against
-                   [FiniteCategory J] — the two Π-types differ in arity, and
-                   the tree's convention classifies by the clause.
-     N6  TYPING    [finitely_complete_from_generators] fed a
-                   [HasCoequalizers] where it asks for [HasEqualizers]: a
-                   plain has-type mismatch, no [cannot unify], no universe
-                   clause.
-     N7  UNIVERSE  A BARE clone of [EmptyDiagram] (no universe binders) is
-                   refused at an ambient whose homs are declared strictly
-                   above [Set] ("Cannot enforce Set = ch") while the
-                   target's annotated [EmptyDiagram], [empty_cone],
-                   [FinitelyComplete_Terminal] and the biconditional are all
-                   accepted there — the pin the annotation lifts.
-     N8  UNIVERSE  At that ambient a limit over [_2] ([Category@{u Set
-                   Set}]) is refused ("Cannot enforce Set = ch") and so is
-                   [FC _2 Two_FiniteCategory D2], firing at the [_2]
-                   argument, while the diagram [_2 ⟶ Cu] is accepted and
-                   [FC] at [Roof^op] and at [Parallel] — the free shapes —
-                   is accepted: why the converse reads pullbacks at
-                   [Roof^op] and the terminal object at [DiscreteCat False].
-     N9  UNIVERSE  At a shape whose hom is declared strictly below its
-                   proof universe, [x ~> y] and [id[x]] are accepted while
-                   [ArrowIx] (FromProducts.v) is refused ALONE ("Cannot
-                   enforce jp = jh") and [FiniteCategory] is refused at the
-                   same argument with the same message — the donor of the
-                   hom = proof identification in the record's binder; the
-                   inherited refusal fires at an already-refused argument
-                   and does not measure the record on its own.
-     N10 CONVERSION  The terminal object recovered at [FinSet] from the
-                   empty finite limit BY THE PULLBACK ROUTE (the witness
-                   [FinSet_FinitelyComplete_pb]; the native route of
-                   Instance/FinSet/Limit.v computes it) is not the numeral
-                   [1] by conversion:
-                   [lazy] leaves a [fin_countP] over a predicate testing
-                   [unique_obj (FinSet_Pullbacks_obligation_2 …)], the
-                   pullback UMP that [Program] closed opaquely, so the
-                   derived equalizer's carrier is stuck; [terminal_unique]
-                   gives the isomorphism (control).
-
-   Guard coverage: every constant a negative names is also named outside
-   every [Fail] (the guard block at the end, plus the controls beside each
-   negative).  Rename simulation, each target constant a negative names
-   renamed in ITS OWN FILE and the tree rebuilt: [FinitelyComplete],
-   [finitely_complete_from_generators], [Two_FiniteCategory],
-   [FiniteCategory], [FinitelyComplete_Terminal], [Colimit_Cocones] and
-   [Cones_Limit] each break this file on a control line, never inside a
-   [Fail]; [Limit_Cones] (pre-existing) breaks Structure/Limit/Initial.v
-   first.  [Defined] flips: of Finite.v's nine, only [empty_cone] is
-   load-bearing (its [Qed] form stops [FinitelyComplete_Terminal] in that
-   file); Cones/Limit.v's [Cones_Limit] is load-bearing, its [Qed] form
-   stopping [p417_round_cone] below. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

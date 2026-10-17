@@ -1,42 +1,8 @@
-(** * Boundary probe for the powerset order and its adjunctions (#382)
+(*
+   本文件为测试：ProbePowerset382。
 
-    This file exists for what an in-file [Fail] cannot do: survive a
-    rename.  A negative written inside the module it guards is renamed in
-    lockstep with the constant it names, and so stays green when that
-    constant disappears; a negative written HERE breaks loudly.
-
-    The [Require] list below is the UNION of the four target files' own
-    lists, plus the four targets.  A short prefix is exactly what makes a
-    probe pass for the wrong reason -- a missing coercion or notation can
-    turn an intended unification mismatch into an "illegal application" --
-    so the list is mirrored rather than trimmed.
-
-    ** THE NEGATIVES, BY KIND
-
-    Eight negatives plus one instrument check.  The kinds are told apart
-    by the error TEXT, not by a label, and the labels below were CHANGED
-    after reading those texts -- negatives 2 and 3 were drafted as
-    "typing" and are not:
-
-      FORMABILITY  ends in "universe inconsistency: Cannot enforce ...".
-                   Negatives 2, 3, 4 and 5.  Within them the reported
-                   bound separates two shapes: 2 and 3 are SORT
-                   rejections, "has type Type while it is expected to
-                   have type Prop (... Cannot enforce ... <= Prop)",
-                   while 4 and 5 are LEVEL rejections between two
-                   declared universes ("Cannot enforce X <= o because
-                   o < X", "Cannot enforce Set = u").  The tail alone
-                   does NOT separate the two shapes.
-      CONVERSION   "cannot unify" between two inhabitants of ONE type.
-                   Negatives 6, 7 and 8.
-      TYPING       a plain "has type ... while it is expected to have
-                   type ...", with NO "cannot unify" and NO universe
-                   clause.  Negative 9.
-
-    Each was stripped ONE AT A TIME and compiled alone, with its whole
-    error read.  Every constant a negative names also appears in a
-    command OUTSIDE any [Fail], including the donors -- a guard that
-    names a constant only inside its own [Fail] is vacuous. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

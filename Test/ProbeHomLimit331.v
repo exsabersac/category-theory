@@ -1,75 +1,8 @@
-(** * Boundary probes for Functor/Hom/Limit.v (issue #331)
+(*
+   本文件为测试：ProbeHomLimit331。
 
-    Mac Lane CWM 2nd ed. §III.4, book p. 70.
-
-    This file pins the two measurements the target's header rests on, so
-    that a later edit which quietly makes either FALSE breaks the build
-    rather than silently invalidating the prose.
-
-    One negative remains, and the section that used to hold a second is
-    now a positive control.  They are of DIFFERENT KINDS and are kept
-    lexically apart:
-
-      * FORMABILITY (universe) -- REPAIRED, and recorded as a correction.
-        An earlier revision stated this as Negative 2.  The target proves
-        its product corollaries DIRECTLY rather than deriving them from
-        the cone-level headline, and the header's stated reason was that
-        routing them through the discrete-diagram presentation would pin
-        the ambient category's hom and proof universes to [Set].  The
-        negative pinned exactly that, and localized the cause:
-        [DiscreteCat_Functor] ALONE was formable over a category whose hom
-        universe is strictly above [Set], and what was refused was the
-        COMBINATION -- [IsLimitCone] identifies the shape's hom-and-proof
-        universe with the ambient category's, while
-        [DiscreteCat_Functor]'s UNANNOTATED declaration instantiated
-        [DiscreteCat@{u Set Set}].  Stripped, the error read
-          "universe inconsistency: Cannot enforce Set = uh",
-        displaying [Cone@{_ Set Set uo uh uh}] against a [Cone] whose
-        shape and ambient levels are one and the same.
-
-        THE ATTRIBUTION WAS RIGHT AND THE DEFECT IS NOW FIXED.
-        [DiscreteCat] itself is
-        [DiscreteCat@{o h p} (A : Type@{o}) : Category@{o h p}] with hom
-        and proof FREE, and [DiscreteCat@{Set uh uh} bool] elaborates
-        under [Constraint Set < uh]; the header said so, and added that a
-        re-annotated discrete-diagram functor would LIFT the blocking step
-        entirely, so that what the negative pinned was a donor ANNOTATION
-        defect and not a structural obstruction.  In the PR "algebraic
-        carriers are sets" (2026-09-17) that annotation was applied in
-        place -- [DiscreteCat_Functor@{o h p uo uh up +}] at
-        Instance/Discrete.v -- and the prediction held: the command is
-        now ACCEPTED, and it is kept below as a positive control at
-        exactly the levels that used to refuse it.  Dropping the
-        annotation would refuse it again and break this file.
-
-        An earlier draft of this probe aimed the negative at
-        [DiscreteCat_Functor] by itself and it did NOT refuse -- the guard
-        was pointed at the wrong constant.  Recorded because a negative
-        aimed at the wrong constant is a false guard, not a small slip;
-        and an earlier draft ALSO mis-attributed the [Set] to the shape.
-
-      * TYPING -- written [FCone (HomFrom unit) (…)] elaboration reports
-          "HomFrom  has type Coq ⟶ Sets while it is expected to have
-           type Coq ⟶ Coq".
-        THE CAUSE IS [HomFrom]'s IMPLICIT [{C : Category}], undeterminable
-        from a bare [unit : Type] -- NOT [FCone]'s category arguments.
-        Those may be left implicit: [FCone (HomFrom (unit : obj[Coq])) (…)]
-        and [fun u : Coq => FCone (HomFrom u) (…)] both elaborate, and the
-        target's own [coq_hom_limit_cone] writes them implicitly.  An
-        earlier revision of this header said the three category arguments
-        "cannot be implicit" and that an ascription does not repair it;
-        both were wrong, and the controls below now name the object
-        ascription that does repair it.
-
-    NOT PINNED HERE, and said plainly: the header's claim that the direct
-    product statements carry no [Set] at all is exercised as a positive
-    CONTROL below (they elaborate over a category with hom universe above
-    [Set]), not as a negative -- there is nothing to refute.
-
-    Every negative is paired with a positive control NAMING ITS OWN
-    CONSTANTS, and the pairing was verified by RENAME SIMULATION over the
-    constants appearing in the NEGATIVES.  The measured score is recorded
-    at the end of this file. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

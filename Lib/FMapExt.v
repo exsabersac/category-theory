@@ -8,31 +8,13 @@ Module F := P.F.
 
 (** * Extensions to Coq's weak finite-map library *)
 
-(* nLab: https://ncatlab.org/nlab/show/decidable+equality
-   Wikipedia: https://en.wikipedia.org/wiki/Associative_array
+(*
+ Wikipedia: https://en.wikipedia.org/wiki/Associative_array
 
-   A finite map (associative array) over a key type with decidable equality
-   [E : DecidableType], implemented by the standard-library weak signature
-   [M : WSfun E].  [P] and [F] abbreviate the derived [WProperties_fun] and
-   [WFacts_fun] modules.
+   本文件给出 FMapExt 相关定义与性质。
 
-   This module layers convenience on top of Coq's [FMapFacts]:
-
-   - Tactics [normalize] and [simplify_maps] that decompose [MapsTo]/[find]
-     goals and hypotheses through the standard [add]/[remove]/[map]/[mapi]/
-     [filter]/[update]/[empty] characterization lemmas, plus [relational] and
-     [apply_for_all] for the recurring [Proper]/[for_all] bookkeeping.
-   - [Proper] instances so map operations ([MapsTo], [find], [fold], [add],
-     [filter], [update]) respect key equality [E.eq] and extensional map
-     equality [M.Equal], which the bare signature does not provide.
-   - Computational ([Type]-valued) counterparts [in_mapsto_iffT],
-     [add_mapsto_iffT] and a decision procedure [mapsto_dec] for use where the
-     [Prop]-valued [FMapFacts] versions cannot eliminate into [Type].
-   - Algebraic facts about [filter], [for_all], [update] and [add]/[remove]
-     interaction that are absent from [FMapFacts] (e.g. [filter_idempotent],
-     [filter_add_true], [for_all_add_true], [update_find_l], [remove_add]).
-
-   Every lemma is constructive: no axioms are used beyond the chosen [M]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Ltac normalize :=
   repeat match goal with

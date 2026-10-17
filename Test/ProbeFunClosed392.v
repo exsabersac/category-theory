@@ -34,44 +34,11 @@ Generalizable All Variables.
 
 (** * Probe for Instance/Fun/Closed.v (issue #392) *)
 
-(* Mac Lane §IV.6 Exercise 5 ([maclane:IV.6:ex5]) and Awodey §8.7
-   ([awodey:8.7:remark-pointwise-exponential-fails]).  Everything the
-   target MEASURES and does not itself state is pinned here, from
-   OUTSIDE that file, so that renaming a target constant breaks this
-   probe rather than silently turning a guard green.  The [Require] list
-   above mirrors the target's exactly, plus the target itself.
+(*
+   本文件为测试：ProbeFunClosed392。
 
-   SEVEN negatives of THREE kinds, told apart by the error text:
-
-     1  FORMABILITY  the universe binders on [TwoFun] are load-bearing:
-                     the same body without them is not an object of
-                     [Omega, FinSet] at levels where the annotated one is
-     2  FORMABILITY  [_2^op, Sets] elaborates only at a [Sets] whose
-                     carrier universe IS [Set]
-     3  CONVERSION   the presheaf P and the presheaf Q take different
-                     values at [TwoY]
-     4  CONVERSION   the objectwise candidate at [TwoY] is not the
-                     two-element setoid, which is the value the naive
-                     reading of the formula would want
-     5  TYPING       the headline is about [Omega, FinSet]; it does not
-                     apply to a cartesian structure on another category
-     6  CONVERSION   [alpha_fam] separates exactly at its own stage
-     7  TYPING       the engine's second half is about the TERMINAL
-                     object of the functor category, not an arbitrary
-                     source
-
-   TWO formability, THREE conversion, TWO typing.  Each was stripped one
-   at a time (its [Fail] removed, the file compiled alone) and the whole
-   error read, since a passing [Fail] prints nothing.  The two
-   formability ones end "universe inconsistency: Cannot enforce Set =
-   ..."; the three conversion ones end "cannot unify" between two terms
-   of ONE type; the two typing ones are a plain "has type ... while it
-   is expected to have type ..." with NO "cannot unify" and no universe
-   clause.  Every constant named inside a [Fail] is also named in a
-   passing command outside every [Fail], below.
-
-   ONE instrument check comes first, on a name that exists nowhere, so
-   that [Fail] is known to be live in this file. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument *)
 

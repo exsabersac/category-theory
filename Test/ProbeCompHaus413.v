@@ -1,56 +1,8 @@
-(** * Probe for Instance/Top/CompHaus.v and Construction/Subcategory/Creation.v
-    (issue #413)
+(*
+   本文件为测试：ProbeCompHaus413。
 
-    Pins the measured boundaries of the compact-Hausdorff development: what
-    is formable, what converts, and exactly where the classical arguments
-    stop constructively.  Every refutation command below was stripped ONE
-    AT A TIME in a copy of the whole file and compiled alone with its error
-    read, so each refusal is of the kind its label says.
-
-    Numbering:
-     instrument      an absent name, refused — the refutation keyword is
-                     live in this file.
-     N1 SORT/TYPING  the pairing into the truncated product is NOT shown
-                     continuous by eliminating the squashed box datum into
-                     the [Type]-valued [IsOpen Z]: the eliminator's motive
-                     must be a [Prop] ("has type Type while it is expected
-                     to have type Prop"); eliminating into [True] is
-                     accepted (control).  N1 and N2 both say "universe
-                     inconsistency"; they are told apart by "expected to
-                     have type Prop" against "because o < …".
-     N2 UNIVERSE     the other route to that continuity, a union indexed by
-                     ALL boxes inside [W], is refused because the box datum
-                     lives one universe above the space's points and
-                     [open_union] indexes at the points' level; a union
-                     indexed by the points themselves is accepted (control).
-     N3 TYPING       [CompHaus_Forget] lands in [Sets], not in [Top] — a
-                     plain has-type mismatch.
-     N4 TYPING       [compact_hausdorff_bijection_iso] is NOT an isomorphism
-                     without its decidability hypothesis: applied to the six
-                     other arguments it still has a function type, refused
-                     at [X ≅[Top] Y] ("has type … → X ≅ Y").
-
-    POSITIVE, recorded because a survey predicted the opposite: the issue's
-    pinned statement [CreatesLimit K CompHaus_Forget] IS formable, for a
-    diagram out of any shape [J] — the forgetful functor lands in the [Sets]
-    whose hom level is [Top]'s, so the limit-cone predicates apply on both
-    sides.  What is not delivered is a PROOF of it (see the target's header).
-
-    Readbacks at [eq_refl]: [CompHaus] IS [CompactHausdorffSpaces]; the
-    inclusion's object map is the first projection; the truncated product's
-    projections are [fst] and [snd] on points; the bijection isomorphism's
-    forward map is [f] itself; the generic creation lemma's lift keeps the
-    apex and the legs.  Non-vacuity: the per-open inverse lemma is applied
-    at the one-point space with the identity bijection and the whole space
-    as the decidable open.
-
-    Guard coverage: every constant a negative names is also named outside a
-    refutation command (the guard block at the end) — under the plain
-    tokenization 31 identifiers inside, 29 also outside, the two exceptions
-    exhaustively the instrument's absent name and the bound variable [z] of
-    N1's lambda — so a renamed or removed constant breaks the build on a
-    positive line rather than letting a refutation pass for the wrong
-    reason. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

@@ -27,48 +27,11 @@ Generalizable All Variables.
 
 (** * Probe for issue #718 -- exponentials of presheaves *)
 
-(* Every refutation command below was stripped ONE AT A TIME, compiled
-   alone, and its WHOLE error read; the kind is read off the error TEXT.
-   FORMABILITY = a "universe inconsistency: Cannot enforce ..." clause;
-   CONVERSION = "cannot unify" between two terms of ONE type; TYPING = a
-   plain "has type ... while it is expected to have type ..." with
-   neither a cannot-unify nor a universe clause, or a bare
-   "The type of this term is a product while it is expected to be ...".
+(*
+   本文件为测试：ProbePresheafExp718。
 
-   1 instrument check + 14 negatives:
-     9 FORMABILITY  (1a, 1b, 1c, 1d, 2, 3, 4a, 4b, 4c)
-     2 CONVERSION   (5, 6)
-     3 TYPING       (7, 8, 9)
-
-   The probe mirrors the target's FULL Require list -- a short prefix is
-   what makes a negative pass for the wrong reason -- plus
-   Instance/Fun/Closed.v and Instance/Two.v for the unconditional
-   corollary, and Functor/Hom/Yoneda.v with
-   Functor/Hom/Yoneda/Natural.v for the route measurement.  Note that a
-   refutation command which does what it is supposed to do prints
-   NOTHING, so each was stripped rather than trusted.
-
-   GUARD COVERAGE, measured mechanically over the comment-stripped file:
-   56 identifiers occur inside a refutation command and 49 of them also
-   occur outside every one.  The seven exceptions are exhaustively the
-   keyword [Fail] itself, the five [probe718_*] names DECLARED by a
-   refutation command (which therefore never enter the environment), and
-   the instrument's deliberately absent name.  No bound variable is among
-   them.
-
-   RENAME SIMULATION, 3/3.  Exactly three TARGET constants are named
-   inside a refutation command -- [PshExp], [presheaf_exp_iso] and
-   [Functor_Category_Closed] -- which is measured, not guessed: the same
-   mechanical pass intersects the identifiers inside a refutation command
-   with the 46 constants Instance/Fun/Exponential.v contributes and the
-   four Instance/Fun/Closed.v gains, and returns those three.  Each was
-   renamed in the TARGET ONLY -- whole-word, in both library files in
-   place, their [.vo] rebuilt, and the files restored byte-exact
-   afterwards -- and this file recompiled against the renamed library:
-   every one broke at a [Check] line of the guard block below, and NONE
-   inside a refutation command.  The guard
-   block nevertheless names every constant of both library files that
-   this probe could break on, not merely those three. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------ *)
 (** ** Instrument check *)

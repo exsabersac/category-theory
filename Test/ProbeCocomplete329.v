@@ -20,31 +20,11 @@ Generalizable All Variables.
 
 (** * Probe: strength boundaries of Sets cocompleteness *)
 
-(* Guard file for Instance/Sets/Cocomplete.v and Instance/Sets/Chain.v,
-   in the Test/ProbeFunnyPoly.v convention.  The import list is the UNION
-   of both targets, plus Instance/Sets/Complete.v for the duality
-   negative.
+(*
+   本文件为测试：ProbeCocomplete329。
 
-   PROBE-HYGIENE WARNING, MEASURED DURING THE WORK AND RECORDED HERE SO
-   IT IS NOT REDISCOVERED: writing the duality negative as
-   [Sets_Complete (D^op) (F^op)] is a FALSE PASS.  Functor/Opposite.v
-   opens [functor_scope], so [D^op] parses as [Opposite_Functor D] and
-   the command fails with a NOTATION error -- "D has type Category while
-   it is expected to have type ?C ⟶ ?D" -- rather than with the
-   mathematics.  A [Fail] that succeeds for that reason measures
-   nothing.  Both opposites are therefore spelled by NAME below.
-
-   Every negative is paired with a positive control NAMING ITS OWN
-   CONSTANTS, and the pairing was verified by RENAME SIMULATION over the
-   constants appearing in the NEGATIVES -- the wider check, re-run after
-   each control was added.  MEASURED SCORE, counted rather than recalled:
-   the three negatives name EIGHT distinct constants ([Sets_Complete],
-   [Opposite], [Opposite_Functor], [Sets_colim_obj], [Sets_colim_sum],
-   [Sets_colim_med], [Sets_colim_inj], [vertex_map]) and all EIGHT are
-   guarded, 8/8.  An earlier revision of this file claimed "13/13", a
-   figure matching no countable set here -- and it was claimed while
-   [Opposite] was in fact unguarded and only two of the three negatives
-   were shipped, so the number was wrong in both factors. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

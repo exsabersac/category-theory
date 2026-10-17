@@ -25,97 +25,11 @@ Open Scope category_scope.
 
 (** * Probe: the measured boundaries of Structure/Limit/FromProducts.v *)
 
-(* Companion to Structure/Limit/FromProducts.v (Mac Lane, Categories for
-   the Working Mathematician, 2nd ed., §V.2 Theorems 1 and 2, Corollary 2,
-   §V.4 Exercise 2; Riehl, Category Theory in Context, 2nd ed., Theorems
-   3.2.11 and 3.5.11, Exercise 3.2.ii).  Everything that file claims at
-   [eq_refl] is shipped there as an [Example]; what it cannot guard from
-   inside are the REFUSALS its header records and the universe boundaries
-   a consumer meets.  Those are pinned here, from OUTSIDE the target,
-   because an in-file [Fail] renames in lockstep with the constant it
-   guards and so cannot detect a rename.  The [Sets] instantiation and the
-   walking-arrow generating family live here too, because they cost
-   modules the target should not carry.
+(*
+   本文件为测试：ProbeFromProducts416。
 
-   The negatives are of THREE kinds, told apart by the error TEXT — the
-   kinds were read off the messages produced by stripping each [Fail] in
-   turn, in a copy of this WHOLE file — plus one scope-free instrument
-   check.
-
-     N1  CONVERSION  The refinement at the FULL arrow index is the
-                   construction in apex and in every leg (three controls
-                   at [eq_refl]) but NOT as a cone RECORD: the coherence
-                   field of [pe_cone] mentions the two component lemmas
-                   [Hs] and [Ht], and the [Refinement] section's
-                   [pe_gen_s_proj]/[pe_gen_t_proj] are different [Qed]
-                   constants from [pe_s_proj]/[pe_t_proj].
-     N2  CONVERSION  A leg of [pe_image_cone] is [fmap[G] proj ∘ fmap[G] e]
-                   while the leg of [FCone G (pe_limit_cone …)] is
-                   [fmap[G] (proj ∘ e)] — one [fmap_comp] apart, which
-                   [fmap_comp] being a law FIELD does not convert; the
-                   apex is the control.  This is why the target transports
-                   along [pe_image_ConeIso] rather than ascribing.
-     N3  CONVERSION  The two cones of N2 as whole records.
-     N4  TYPING    [Complete_from_products_equalizers] fed a
-                   [HasCoequalizers] where it asks for [HasEqualizers]: a
-                   plain has-type mismatch with no [cannot unify] clause
-                   and no universe clause.
-     N5  TYPING    [Cocomplete_from_coproducts_coequalizers] fed the
-                   products-and-equalizers pair: [HasIndexedProducts C] is
-                   not [HasIndexedCoproducts C] — the latter is that class
-                   at [C^op], and [C] is not [C^op] on the nose.
-     N6  UNIVERSE  At a category whose hom level is declared strictly BELOW
-                   its proof level, the hom-set, the identity and an
-                   endofunctor are ACCEPTED while [HasIndexedProducts],
-                   [HasEqualizers], [IsIndexedProduct], [IsEqualizer],
-                   [Limit] and [Complete] are each refused ALONE — six
-                   donors of the hom = proof identification every binder
-                   in the target carries, none introduced there.
-     N7  UNIVERSE  At a shape whose homs are declared strictly BELOW the
-                   ambient category's, the diagram, a [Cone] over it and
-                   the arrow index [ArrowIx] are ACCEPTED while [Limit]
-                   and [IsLimitCone] are refused — the shape-hom =
-                   ambient-hom identification is the limit vocabulary's.
-                   [pe_cone] is refused there too, at its AMBIENT
-                   argument [Cu] with the same [Cannot enforce ch = jh]
-                   (no argument of it is already refused: [Fu], [Cone Ju
-                   Cu Fu] and [ArrowIx Ju] all pass): the identification
-                   sits in [pe_cone]'s OWN binder, [{J : Category@{u u0
-                   u0}} {C : Category@{u1 u0 u0}}], whose donor is not
-                   isolated here, and since [Cone] is accepted at those
-                   levels this refusal corroborates nothing about the
-                   attribution to [Limit]/[IsLimitCone].  (An earlier
-                   draft said it fired at the diagram argument; an audit
-                   stripped the command and read the message.)
-     N8  REPAIRED, and recorded as a correction.  An earlier revision read:
-                   "UNIVERSE  At a category whose hom level is declared
-                   strictly above [Set], the class [HasIndexedProducts],
-                   its [indexed_product] and
-                   [Complete_from_products_equalizers] are ACCEPTED while
-                   [iprod] — the discrete-diagram presentation the issue's
-                   work item 4 asks the construction to route through — is
-                   refused with [Cannot enforce Set = ch]: [iprod]'s binder
-                   is [C : Category@{_ Set Set}] through
-                   [DiscreteCat_Functor] and [Limit].  This is the measured
-                   reason the target is stated over the CLASS and never
-                   over [iprod]."
-
-                   The attribution was correct and the defect is fixed.
-                   [iprod] was never [Set]-pinned in itself; it inherited
-                   the pin from [DiscreteCat_Functor], declared with bare
-                   binders and minimized to [DiscreteCat@{u Set Set}].
-                   Annotated in place in the PR "algebraic carriers are
-                   sets" (2026-09-17) — Instance/Discrete.v — [iprod] is
-                   ACCEPTED at those levels, and the line below is kept as
-                   a positive control there.  So the count of UNIVERSE
-                   negatives in this file is now two (N6 and N7), not
-                   three.  The target is still stated over the CLASS, but
-                   that is now a presentational choice rather than a
-                   universe obligation.
-
-   Every constant a negative names also appears in a [Check] outside every
-   [Fail], so a rename breaks this file loudly instead of turning a [Fail]
-   vacuously green. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Instrument check *)
 

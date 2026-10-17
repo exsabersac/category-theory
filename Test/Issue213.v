@@ -10,53 +10,11 @@ Require Import Category.Instance.Adjoints.
 
 Generalizable All Variables.
 
-(* Regression test for issue #213 ("Broken in Rocq CI").
+(*
+   本文件为测试：Issue213。
 
-   Rocq's own CI builds this library against Rocq master, and it started
-   failing in Instance/Adjoints.v with
-
-       File "./Instance/Adjoints.v", line 104, characters 35-45:
-       Error: No such assumption.
-
-   Characters 35-45 of that line are the [assumption] of
-
-       Next Obligation.
-         equivalence.
-         - transitivity (free_functor y); assumption.
-         - transitivity (forgetful_functor y); assumption.
-       Qed.
-
-   the [Equivalence] obligation of [adj_morphism_setoid], whose relation is a
-   PAIR of natural isomorphisms.  Nothing about that proof mentions symmetry,
-   and that was the problem.  [equivalence] splits the goal into its three laws
-   and discharges each; the reflexivity and symmetry components of the pair
-   were closed only because the tactic reached [solve_crelation], a
-   PATTERN-LESS [Hint Extern] in the standard library's [crelations] database,
-   through a wide [auto].  Which pattern-less hints a wide [auto] reaches, and
-   in what order, is a property of the hint database, not anything this library
-   states.
-
-   The break was introduced on our side: the commit that narrowed
-   [equivalence]'s fallback from [auto with *] to [auto with category_laws]
-   removed the tactic's own path to that hint.  The proofs kept building on the
-   released Rocq versions only because the [intuition] step inside
-   [equivalence] has its own wide [auto with *] leaf, which on those versions
-   still reached [solve_crelation].  On Rocq master that leaf no longer reaches
-   it, so symmetry stopped being discharged, the first bullet landed on
-   [free_functor y ≅ free_functor x] instead of the transitivity goal it was
-   written for, and [assumption] was left facing [free_functor y ≅ free_functor
-   y].
-
-   The repair is to stop guessing: [adj_morphism_setoid]'s three laws are now
-   proved componentwise from [iso_equivalence] (Theory/Isomorphism.v), and
-   [equivalence] closes reflexivity and symmetry deterministically and falls
-   back only on [category_laws], a database this library populates itself.
-
-   This file pins the invariant that actually matters -- those proofs go
-   through with NO wide hint search available at all -- by re-running both the
-   old and the repaired script in an environment where the search has been
-   taken away, so the fault reproduces on any Rocq version rather than only on
-   master. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Take the wide search away.  [intuition]'s default solver is
    [first [solve [auto] | tryif solve [auto with *] then <warn> else idtac]];

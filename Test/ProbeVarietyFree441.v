@@ -1,50 +1,8 @@
-(** * Probe for the free-algebra adjunction (issue #441)
+(*
+   本文件为测试：ProbeVarietyFree441。
 
-    Pins the measured boundaries of Mac Lane §V.6's free-algebra
-    construction as it is actually delivered.
-
-    THE LOAD-BEARING CLAIM is negative and is carried by a THEOREM, not
-    by a refutation command: the TERM ALGEBRA does not satisfy the equations in the
-    LEIBNIZ sense.  Read that for exactly what it says — an earlier
-    revision of this header went on to infer that #440's [Variety CommEq]
-    "has no free object on two generators", which is FALSE and was
-    refuted by construction (sorting terms into normal forms builds one).
-    What the theorem shows is that the NAIVE construction does not land
-    in the Leibniz variety; [free_empty_eq_leibniz] below shows the
-    claim needs a qualifier even for the naive one.  The reason for the
-    setoid carrier is uniformity in ⟨Ω,E⟩, and Instance/Variety/Free.v's
-    header states it.
-    [free_magma_not_comm_leibniz] proves that no satisfaction proof
-    exists, which a refutation of one candidate term could not; the
-    beside it (n1) records that the obvious attempt is refused, and the
-    control above it shows the shape IS inhabited at a different algebra
-    (the booleans under [xorb]).
-
-    The second negative is also a theorem: [free_comm_not_collapsed]
-    shows the congruence does not identify distinct generators, so
-    [Free_Variety] is not the trivial algebra at THIS presentation.  It
-    is proved by mapping into a commutative magma with
-    [free_alg_ext_respects] — the respectfulness lemma the universal
-    property is built from, not the universal property itself; an
-    earlier revision of this sentence said the latter.
-
-    CONVERSION: n2, the free algebra's carrier is the term type but its
-    `≈` is not Leibniz [=], so the two do not convert; n3, two distinct
-    terms are not convertible, which is what makes n1 a statement about
-    equality rather than about elaboration.
-
-    SORT (#450): n4, the term congruence [tree_equiv] is now [Prop]-valued
-    and a derivation of it is refused as the major premise of an
-    elimination into a [Type]-sorted goal, against a control running the
-    same script into [Prop].  [BoolCommMagma] below supplies the new
-    [soa_prop] field as [eq_PropEquiv bool], which is why this file now
-    requires Lib/Setoid/Propositional.v.
-
-    The import list contains the target's in full, plus the target
-    itself.  (#440's [Instance/Variety] is already one of the target's
-    ten, so naming it separately would double-count.  An earlier revision
-    said nine; #450 added Lib/Setoid/Propositional.v to the target's
-    list, and to this file's.) *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Lib.Setoid.Propositional.

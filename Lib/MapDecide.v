@@ -11,23 +11,11 @@ Generalizable All Variables.
 
 (** A reflective decision procedure for FMap membership goals *)
 
-(* Wikipedia: https://en.wikipedia.org/wiki/Associative_array
+(*
+   本文件给出 MapDecide 相关定义与性质。
 
-   This module implements proof by reflection (the computational-reflection
-   technique of CPDT chapter 15, Adam Chlipala) for goals about finite maps.
-   FMap goals such as [M.MapsTo (x, y) f m] and implications between them are
-   reified into the inductive syntax [formula] (see [reify]); a Gallina
-   decision procedure [formula_backward]/[formula_forward] decides the reified
-   goal and returns a [partial] proof object; and [formula_sound] reflects a
-   successful decision back into the original FMap proposition.
-
-   Soundness contract: every tactic here is sound by construction.  The
-   procedure can only emit [Yes] (i.e. [Proved]) when it carries an actual
-   proof of [formula_denote env t], so a goal closed via [map_decide] /
-   [solve_map] is genuinely true; the procedure is intentionally incomplete
-   (it may answer [No]/[Uncertain]) but never unsound.  There is no canonical
-   nLab/Wikipedia page for proof by reflection; see CPDT,
-   http://adam.chlipala.net/cpdt/html/Cpdt.Reflection.html. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* For the time being, this module is fixed to maps from [N * N → N]. *)
 

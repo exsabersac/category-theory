@@ -15,31 +15,11 @@ Generalizable All Variables.
 
 (** * Boundary probe for Instance/Fun/Morphisms.v (issue #369) *)
 
-(* Why this file exists, and what a reader may conclude from it.
+(*
+   本文件为测试：ProbeMorphisms369。
 
-   Every rejection recorded here concerns a constant of
-   Instance/Fun/Morphisms.v.  An in-file [Fail] renames in lockstep with
-   the constant it guards, so it cannot detect a rename; stating the
-   rejections from OUTSIDE the target is what makes them guards.  The
-   Require list above mirrors the target's exactly, plus the target
-   itself: a short prefix is what makes a probe pass for a reason it
-   never measured.
-
-   Three KINDS of rejection appear, kept in three lexically separate
-   sections and told apart by the error text rather than by label:
-
-     CONVERSION  ends "cannot unify X and Y" with X and Y two terms of
-                 ONE type;
-     TYPING      a plain "has type A while it is expected to have type
-                 B" with NO "cannot unify" clause and no universe
-                 clause;
-     FORMABILITY ends "universe inconsistency: Cannot enforce ...".
-
-   Each negative was stripped ONE AT A TIME -- the others left as
-   [Fail] -- compiled alone, and its whole error message read.  Every
-   constant a negative names, the target's and the donors' alike, also
-   appears in a command that must SUCCEED, so a rename breaks this file
-   at a non-[Fail] line rather than turning a guard vacuously green. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Instrument check: a [Fail] that must fire whatever else is true, so a
    silently vacuous [Fail] elsewhere is not mistaken for a measurement. *)

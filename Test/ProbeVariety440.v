@@ -1,38 +1,8 @@
-(** * Probe for the variety development (issue #440)
+(*
+   本文件为测试：ProbeVariety440。
 
-    Pins the measured boundaries of Mac Lane §V.6 / Awodey §9.8 as they
-    are actually delivered.  Negatives of three kinds, kept lexically
-    apart, each stripped one at a time in a copy of the WHOLE file with
-    the error read.
-
-    CONVERSION (each error read as "cannot unify"): n1, ONE instance of
-    the conversion step that [EqSignature]'s naturality fields demand and
-    cannot take by computation — an argument bundle over the empty arity
-    against the empty match.  An earlier revision of this header called
-    that "the root of every [functional_extensionality] in this
-    development", which is FALSE twice over and an audit refuted both
-    halves by construction: the same law at the same empty arity is
-    CLOSED when the bundle is spelled as a reindexing of [args], and
-    associativity alone over [GroupOp] needs the axiom with no nullary
-    operation in sight.  See Instance/Variety.v's header for the criterion
-    that actually holds — reindexing or constant bundles convert, mixed
-    ones do not.  n2, [clone_act_subst] is a genuine induction and not a
-    definitional identity; n4,
-    [GroupVariety] and [Grp] are not the same category, which is what
-    Instance/Variety/GroupComparison.v's header says and all it says —
-    that file ships a fully faithful comparison, not an isomorphism.
-
-    TYPING (error read as "cannot satisfy constraint"): n3, the equations
-    are NOT dropped — the naive [eq_refl] satisfaction proof for [AndOp],
-    the booleans under conjunction, does not ascribe, because it would
-    force [lhs e args] and [rhs e args] to be convertible.  That refutation
-    alone would only refute ONE candidate term, so the substance is
-    carried by a positive theorem beside it: [AndOp_not_group] proves
-    that NO satisfaction proof exists, while the control above it shows
-    [AndOp] is a perfectly good object of the equation-free [Algs].
-
-    The import list contains the FULL union of the three target files'
-    lists, plus the targets themselves. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

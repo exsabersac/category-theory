@@ -13,30 +13,19 @@ Generalizable All Variables.
 (* nLab: https://ncatlab.org/nlab/show/presheaf
    Wikipedia: https://en.wikipedia.org/wiki/Presheaf_(category_theory)
 
-   A C-valued presheaf on a category U is a functor U^op ⟶ C; the classical
-   case takes C := Sets. Its action fmap[X] f on a morphism f : a ~> b of U is
-   the restriction map X(b) → X(a). Presheaves on U form the functor category
-   [U^op, C], and a copresheaf is the covariant variant U ⟶ C (a presheaf on
-   U^op). *)
+   范畴 U 上取值于 C 的预层 (presheaf) 是函子 U^op ⟶ C；经典情形取 C := Sets。
+   其对 U 的态射 f : a ~> b 的作用 fmap[X] f 是限制映射 X(b) → X(a)。U 上的预层
+   构成函子范畴 [U^op, C]；余预层 (copresheaf) 是共变变体 U ⟶ C（即 U^op 上的预层）。 *)
 
 (* nLab: https://ncatlab.org/nlab/show/site
    Wikipedia: https://en.wikipedia.org/wiki/Grothendieck_topology
 
-   A site is a category C equipped with a coverage J, which assigns to each
-   object u a collection of covering families { fᵢ : uᵢ ~> u } subject to the
-   pullback-stability axiom: for any covering family of u and any g : v ~> u
-   there is a covering family { hⱼ : vⱼ ~> v } of v such that every composite
-   g ∘ hⱼ factors through some fᵢ (i.e. fᵢ ∘ k ≈ g ∘ hⱼ for some k). *)
+   位 (site) 是配备 Grothendieck 拓扑的范畴：对每个对象指定覆盖筛，服从稳定性与局部性公理。 *)
 
 (* nLab: https://ncatlab.org/nlab/show/sheaf
    Wikipedia: https://en.wikipedia.org/wiki/Sheaf_(mathematics)
 
-   A presheaf X : C^op ⟶ Sets is a sheaf for a covering family
-   { fᵢ : uᵢ ~> u } when every matching (compatible) family of local sections
-   xᵢ ∈ X(uᵢ) — sections agreeing on overlaps, X(g)(xᵢ) ≈ X(h)(xⱼ) whenever
-   fᵢ ∘ g ≈ fⱼ ∘ h — glues to a unique global section x ∈ X(u) with
-   X(fᵢ)(x) ≈ xᵢ for all i (existence is the gluing axiom, uniqueness is the
-   separated/locality axiom). A separated presheaf asks only for uniqueness. *)
+   层 (sheaf) 是满足下降条件的预层：对拓扑中的每个覆盖，截面由兼容的局部截面唯一胶合。 *)
 
 (* Where sheaves come from, and what they are for
 

@@ -20,33 +20,25 @@ Generalizable All Variables.
 (* nLab:      https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
    Wikipedia: https://en.wikipedia.org/wiki/Initial_algebra
 
-   For an endofunctor [F] on a category [C] with an initial object [0],
-   Adámek's theorem builds the initial [F]-algebra as the colimit of the
-   ω-indexed chain
+   对带初始对象 [0] 的范畴 [C] 上的自函子 [F]，Adámek 定理把初始 [F]-代数建为
+   ω-指标链的余极限
 
        0 --¡--> F 0 --F¡--> F² 0 --F²¡--> ...
 
-   ([Construction/Chain.v], packaged as [Chain F : Omega ⟶ C]).  Writing
-   [A] for the apex of a colimit [L : Colimit (Chain F)], the structure map
-   [α : F A ~> A] is the mediating morphism out of the shifted cocone, and
-   [(A, α)] is initial in the category [FAlg F] of [F]-algebras.
+   （[Construction/Chain.v]，打包为 [Chain F : Omega ⟶ C]）。写 [A] 为余极限
+   [L : Colimit (Chain F)] 的顶点，结构映射 [α : F A ~> A] 是出自平移余锥的中介态射，
+   且 [(A, α)] 在 [F]-代数范畴 [FAlg F] 中初始。
 
-   The colimit [A] is a colimit of the shifted diagram [F ◯ Chain F] with apex
-   [F A] precisely when [F] preserves it.  An abstract [PreservesColimit]
-   witness, however, only records that [F A] carries SOME colimit of
-   [F ◯ Chain F]; two colimit cocones at the shared apex [F A] differ by a free
-   apex-automorphism, so it does not expose that the cocone legs at [F A] are
-   the image legs [fmap[F] (colimit_inj HL n)].  That leg agreement is genuine
-   data the initiality argument consumes, so it is packaged here as the honest
-   hypothesis [AdamekData] and [adamek] is proven directly from it.
+   当且仅当 [F] 保持该余极限时，[A] 是平移图 [F ◯ Chain F] 以 [F A] 为顶点的余极限。
+   然而抽象 [PreservesColimit] 见证只记录 [F A] 携带 [F ◯ Chain F] 的*某个*余极限；
+   共享顶点 [F A] 上的两余极限余锥相差自由的顶点自同构，故不暴露 [F A] 处的余锥腿是
+   像腿 [fmap[F] (colimit_inj HL n)]。该腿一致性是初始性论证真正消耗的数据，故此处打包为
+   诚实假设 [AdamekData]，并由其直接证明 [adamek]。
 
-   The discharge [PreservesColimit -> AdamekData] is therefore not carried in
-   this file, and [Theory/Adamek/Corollaries.v] does not supply it either: it
-   is deferred as a fast-follow (ledger 17; see the matching note in that
-   file).  The cocone-level class [PreservesColimitCocone]
-   (Structure/Limit/Preservation.v) is the vocabulary that discharge would
-   be stated in; the ledger entry stays open until it is written.
-   The [AdamekData] interface is the load-bearing contract in the interim. *)
+   因此 [PreservesColimit -> AdamekData] 的消解不在本文件中，[Theory/Adamek/Corollaries.v]
+   也不提供：留作快速后续（ledger 17；见该文件对应注记）。余锥层类
+   [PreservesColimitCocone]（Structure/Limit/Preservation.v）是陈述该消解的词汇；
+   在写出之前 ledger 条目保持开放。过渡期内 [AdamekData] 接口是承重契约。 *)
 
 (* Shift of an order proof [m ≤ n] to [S m ≤ S n], by recursion on the
    derivation.  It only mentions [le_t] (Instance/Omega.v), so it lives above

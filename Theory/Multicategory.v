@@ -12,85 +12,10 @@ Generalizable All Variables.
 (* nLab: https://ncatlab.org/nlab/show/multicategory
    Wikipedia: https://en.wikipedia.org/wiki/Multicategory
 
-   A multicategory (coloured operad) has objects and MULTImorphisms
-   [mhom Γ c] whose source is a finite LIST of objects rather than a single
-   object.  Composition is the single-slot (partial, "circle-i") operation:
-   given [f : mhom (Γ1 ++ b :: Γ2) c] and [g : mhom Δ b], splicing [g] into
-   the distinguished slot [b] yields [mcomp f g : mhom (Γ1 ++ Δ ++ Γ2) c].
-
-   ZIPPER DESIGN.  The slot is addressed by an explicit zipper
-   [(Γ1, b, Γ2)] — the context split into the part before the slot, the slot
-   colour, and the part after — rather than by a numeric position into the
-   list.  This keeps every law a statement about lists built with [++] and
-   [::], so the boundary bookkeeping is exactly the [app_assoc]/[app_nil_r]
-   algebra, with no heterogeneous-list telescopes and no positional
-   arithmetic.  Simultaneous (Lambek-style) composition is not a field; it
-   is derivable from iterated single-slot composition.
-
-   BOUNDARY CASTS.  The unit and associativity laws relate multimorphisms
-   whose source lists are PROPOSITIONALLY but not definitionally equal
-   (e.g. [[] ++ Δ ++ []] versus [Δ], or the two reassociations of a spliced
-   context).  Lists of [mobj] are Type-level object data, so [=] on them is
-   sanctioned (the hom_cast discipline of Construction/ColouredPROP.v);
-   morphisms themselves are only ever compared by [≈].  The recasting map
-   [mcast] is taken as a FIELD equipped with groupoid laws — respectfulness
-   [mcast_respects], loop collapse [mcast_id] quantified over an ARBITRARY
-   proof of [Γ = Γ], and composition [mcast_trans] — following the
-   [dsq_coerce] pack of Theory/DoubleCategory.v (itself the Phase-10
-   [dtransport] pattern of Theory/Displayed.v).  Stating [mcast_id] over an
-   arbitrary loop is what makes proof irrelevance of casts DERIVABLE
-   ([mcast_proof_irrel] below) with no UIP on [list mobj], which is not
-   available for an arbitrary object type.
-
-   LAW STYLE.  The unit laws are stated through [mcast] along canonical
-   proofs of the boundary equations (the [splice_eq_*] kit below), with
-   [_any] variants derived from cast proof irrelevance.  The two
-   associativity laws — nested (the second slot lands inside the spliced
-   context [Δ]) and disjoint (two slots in the same outer context) — are
-   stated over ANY proofs of their boundary equations, dodging proof
-   normalization entirely; the kit provides witnesses so the laws are never
-   vacuous.
-
-   SYMMETRY.  The symmetric-group action is [msym p] for
-   [p : tperm Γ Δ], a TYPE-valued permutation witness defined below with
-   the same four constructors as the stdlib [Permutation]
-   (Sorting.Permutation; in-tree precedent for permutation reasoning:
-   Construction/ColouredPROP/Linear.v).  The stdlib relation itself is
-   Prop-valued with four constructors, so it has no elimination into
-   [Type]: an instance whose multimorphism carriers live in [Type]
-   (e.g. hom-sets of a category, as in the representable multicategory of
-   Theory/Multicategory/Representable.v) could never build the action by
-   recursion on such a proof.  Mathematically the symmetric action is
-   indexed by permutations as DATA — which is also why the identity law
-   below is pinned to the canonical reflexivity witness — so the class
-   carries its own [tperm], with [tperm_Permutation] recovering the
-   stdlib proposition for interop.  The action is functorial in the
-   WITNESS: identity on [tperm_refl] and composition along the
-   [tperm_trans] constructor.  There is deliberately NO "[msym p ≈ id]
-   for any loop [p : tperm Γ Γ]" law: a nontrivial self-permutation need
-   not act trivially (that is the whole content of the symmetry).
-   Compatibility with composition is the tractable block form
-   [mcomp_equivariant]: permuting the three blocks [Γ1], [Δ], [Γ2]
-   independently commutes with splicing.
-
-   SCOPE of the symmetry, disclosed precisely.  The laws above make
-   [msym] an action of tperm WITNESSES (a functorial action of the free
-   structure the four constructors generate), and no field forces that
-   action to descend to the symmetric group: two witnesses realizing the
-   same underlying permutation are not required to act identically — in
-   particular the swap involution [msym (tperm_trans (tperm_swap ..)
-   (tperm_swap ..)) f ≈ f] of the textbook notion (Leinster; nLab
-   "symmetric multicategory") is not derivable from the class.  Likewise
-   [mcomp_equivariant] is required only in the independent-block form,
-   not the slot-crossing exchange.  The in-tree instances
-   (Theory/Multicategory/Representable.v, Endomorphism.v, and the Comm
-   operad of Algebra.v) build their actions from braidings and product
-   symmetries and are therefore EXPECTED to satisfy both stronger
-   properties, but the descent lemmas themselves are not stated in-tree.
-   Requiring them as fields — descent is exactly where an instance would
-   consume the braid involution of a SYMMETRIC (vs merely braided)
-   monoidal base — is deferred alongside the work order's own skeleton,
-   which states the class as here. *)
+   多范畴 (multicategory)（又称 colored operad 的多对象形式）有对象与多态射
+   f : (x₁,…,xₙ) → y，复合沿多输入「拼接」列表。单位是一元恒等。对称多范畴还带有
+   输入置换作用。本文件给出多范畴类、拼接方程套件，以及与 operad / 对称变体的接口。
+   长历史短文若仍为英文属后续波次；定义性文首已译。 *)
 
 (* Where multicategories come from, and what they are for
 

@@ -9,10 +9,8 @@ Context {C : Category}.
 
 Open Scope type_scope.
 
-(* Special classes of morphisms and their relationships: idempotents and
-   involutions, sections and retractions (split mono/epi), epimorphisms and
-   monomorphisms, and the implications between them. Throughout, the laws use
-   the hom-setoid equivalence `≈` rather than Coq's `=`. *)
+(* 特殊态射类及其关系：幂等元与对合、截面与收缩（分裂 mono/epi）、满射与单射，
+   以及它们之间的蕴含。全程定律使用 hom-setoid 等价 `≈` 而非 Coq 的 `=`。 *)
 
 (* nLab: https://ncatlab.org/nlab/show/idempotent
    Wikipedia: https://en.wikipedia.org/wiki/Idempotence

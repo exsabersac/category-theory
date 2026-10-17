@@ -16,26 +16,19 @@ Generalizable All Variables.
 (* nLab:      https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
    Wikipedia: https://en.wikipedia.org/wiki/Initial_algebra
 
-   Lambek's lemma states that the structure map of an initial F-algebra is an
-   isomorphism: if [(μ, α)] is the initial object of [FAlg F], then
-   [α : F μ ~> μ] is invertible, so [F μ ≅ μ] and [μ] is a fixed point of [F]
-   ("the least fixed point"). The classical one-line argument runs entirely
-   inside [FAlg F]:
+   Lambek 引理断言：初始 F-代数的结构映射是同构。若 [(μ, α)] 是 [FAlg F] 的初始对象，
+   则 [α : F μ ~> μ] 可逆，故 [F μ ≅ μ] 且 [μ] 是 [F] 的不动点（「最小不动点」）。
+   经典一行论证完全在 [FAlg F] 内进行：
 
-     - form the algebra [(F μ, fmap α)];
-     - the initial mediator [h : μ ~> F μ] into it is an algebra map, so it
-       commutes: [h ∘ α ≈ fmap α ∘ fmap h];
-     - [α], read as an algebra map [(F μ, fmap α) ~> (μ, α)], composes with the
-       mediator to give an endomorphism of the initial object, which by
-       initiality is the identity: [α ∘ h ≈ id];
-     - feeding [α ∘ h ≈ id] back through the mediator's commuting square and
-       functoriality yields [h ∘ α ≈ id].
+     - 形成代数 [(F μ, fmap α)]；
+     - 进入它的初始中介 [h : μ ~> F μ] 是代数映射，故交换：[h ∘ α ≈ fmap α ∘ fmap h]；
+     - 把 [α] 读作代数映射 [(F μ, fmap α) ~> (μ, α)]，与中介复合得初始对象的自同态，
+       由初始性即为恒等：[α ∘ h ≈ id]；
+     - 把 [α ∘ h ≈ id] 经中介交换方块与函子性回推得 [h ∘ α ≈ id]。
 
-   Hence [α] and [h] are mutually inverse and [F μ ≅ μ]. By duality the final
-   F-coalgebra has an invertible structure map as well, [ν ≅ F ν] (the greatest
-   fixed point); [lambek_final] obtains this by applying [lambek] to [F^op] (the
-   final F-coalgebra being the initial [F^op]-algebra) and taking the symmetric
-   isomorphism. *)
+   故 [α] 与 [h] 互逆且 [F μ ≅ μ]。对偶地，终结 F-余代数也有可逆结构映射，
+   [ν ≅ F ν]（最大不动点）；[lambek_final] 通过对 [F^op] 应用 [lambek]
+   （终结 F-余代数即初始 [F^op]-代数）并取对称同构得到。 *)
 
 Theorem lambek `(F : C ⟶ C) (I : @Initial (FAlg F)) :
   F (`1 (@initial_obj (FAlg F) I)) ≅ `1 (@initial_obj (FAlg F) I).

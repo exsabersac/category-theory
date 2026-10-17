@@ -16,28 +16,21 @@ Reserved Infix "∘∘∘" (at level 40, left associativity).
 (* nLab: https://ncatlab.org/nlab/show/bicategory
    Wikipedia: https://en.wikipedia.org/wiki/Bicategory
 
-   A bicategory (a weak 2-category) has 0-cells (objects), 1-cells between
-   0-cells, and 2-cells between parallel 1-cells. For each pair of 0-cells the
-   1-cells and 2-cells form a hom-category `bicat x y` (objects are 1-cells,
-   morphisms are 2-cells, `∘∘` is vertical composition). Horizontal
-   composition `hcompose` is a functor of these hom-categories, associative
-   and unital only up to coherent 2-isomorphism: an associator α and left/right
-   unitors λ, ρ, subject to the pentagon and triangle coherence laws.
+   双范畴 (bicategory)（弱 2-范畴）有 0-胞（对象）、0-胞之间的 1-胞、以及平行 1-胞
+   之间的 2-胞。对每对 0-胞，1-胞与 2-胞形成 hom-范畴 `bicat x y`（对象是 1-胞，
+   态射是 2-胞，`∘∘` 是垂直复合）。水平复合 `hcompose` 是这些 hom-范畴的函子，
+   仅在连贯 2-同构下结合与有单位：结合子 α 与左/右单位子 λ、ρ，服从五边形与三角形
+   连贯定律。
 
-   Notation map: in the verbatim nLab definition below, → is `~>` (a 1-cell)
-   and ⇒ is `~~>` (a 2-cell); here `~~~>` is also a 2-cell, `∘∘` is vertical
-   2-cell composition and `∘∘∘` is horizontal 1-cell composition.
+   记号对照：下文 verbatim nLab 定义中，→ 是 `~>`（1-胞），⇒ 是 `~~>`（2-胞）；
+   此处 `~~~>` 也是 2-胞，`∘∘` 是垂直 2-胞复合，`∘∘∘` 是水平 1-胞复合。
 
-   STATUS: this development supplies a complete bicategory. Beyond the hom-
-   categories `bicat x y` and the horizontal-composition functor `hcompose`, the
-   class now carries the associator `hassoc`, the left/right unitors
-   `hunit_left`/`hunit_right` (as 2-isomorphisms in the hom-categories), their
-   naturality squares, and the triangle and pentagon coherence laws — exactly
-   the fields mirroring `Structure/Monoidal.v` under the dictionary
-   tensor ↔ hcompose, I ↔ bi1id, λ ↔ hunit_left, ρ ↔ hunit_right,
-   α ↔ hassoc. The derived horizontal 2-cell operation `hcomp2` (Godement
-   whiskering) is the functorial action of `hcompose` on a pair of 2-cells, and
-   is what the coherence laws are stated through. *)
+   状态：本开发提供完整双范畴。除 hom-范畴 `bicat x y` 与水平复合函子 `hcompose` 外，
+   类现携带结合子 `hassoc`、左/右单位子 `hunit_left`/`hunit_right`（作为 hom-范畴中的
+   2-同构）、其自然性方块，以及三角形与五边形连贯定律——恰是在词典
+   tensor ↔ hcompose、I ↔ bi1id、λ ↔ hunit_left、ρ ↔ hunit_right、α ↔ hassoc 下镜像
+   `Structure/Monoidal.v` 的字段。派生的水平 2-胞运算 `hcomp2`（Godement whiskering）
+   是 `hcompose` 对一对 2-胞的函子作用，连贯定律经其陈述。 *)
 
 (* Why weaken a 2-category: examples, coherence, and the monad slogan
 

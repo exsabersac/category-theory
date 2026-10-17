@@ -11,48 +11,33 @@ Generalizable All Variables.
    nLab: https://ncatlab.org/nlab/show/essentially+surjective+functor
    Wikipedia: https://en.wikipedia.org/wiki/Equivalence_of_categories
 
-   An equivalence of categories is a functor F : C ⟶ D together with a
-   quasi-inverse G : D ⟶ C whose composites with F are naturally isomorphic
-   to the identity functors.  It is the standard weakening of isomorphism of
-   categories, and the right notion of "sameness" for categories: it
-   preserves and reflects all categorical structure.
+   范畴等价 (equivalence of categories) 是函子 F : C ⟶ D 连同拟逆 G : D ⟶ C，
+   其与 F 的复合自然同构于恒等函子。它是范畴同构的标准弱化，也是范畴「相同性」的
+   正确概念：保持并反射一切范畴结构。
 
-   In this library the equivalence [≈] on functors ([Functor_Setoid],
-   Theory/Functor.v) is *bundled natural isomorphism*: a family of
-   isomorphisms [∀ x, F x ≅ G x] together with the conjugation coherence
-   condition on morphisms.  The two comparison cells of an equivalence are
-   therefore stated with [≈] directly:
+   本库中函子上的等价 [≈]（[Functor_Setoid]，Theory/Functor.v）是*捆绑的自然同构*：
+   一族同构 [∀ x, F x ≅ G x] 加上态射上的共轭连贯条件。等价的两个比较胞因此直接用 [≈]
+   陈述：
 
      equivalence_counit : F ◯ quasi_inverse ≈ Id[D]
      equivalence_unit   : Id[C] ≈ quasi_inverse ◯ F
 
-   and, since the hom-setoid of [Cat] (Instance/Cat.v) is exactly
-   [Functor_Setoid], an isomorphism in Cat *is* an equivalence of
-   categories; the bridge [Equivalence_to_Cat_Iso]/[Cat_Iso_to_Equivalence]
-   below repacks the data definitionally in both directions (witnessed up
-   to [≈] by the two round-trip corollaries).  The bundled [≅[Fun]] forms
-   of the two cells are recovered through [Functor_Setoid_Nat_Iso]
-   (Instance/Fun.v): see [equivalence_counit_iso]/[equivalence_unit_iso]
-   one way and [Nat_Isos_to_Equivalence] the other way.
+   又因 [Cat]（Instance/Cat.v）的 hom-setoid 恰是 [Functor_Setoid]，Cat 中的同构*就是*
+   范畴等价；下文桥 [Equivalence_to_Cat_Iso]/[Cat_Iso_to_Equivalence] 在两方向定义性
+   重打包数据（由两往返推论在 [≈] 下见证）。两胞的捆绑 [≅[Fun]] 形式经
+   [Functor_Setoid_Nat_Iso]（Instance/Fun.v）恢复：见一方向的
+   [equivalence_counit_iso]/[equivalence_unit_iso] 与另一方向的 [Nat_Isos_to_Equivalence]。
 
-   [EssentiallySurjective] is stated in the split, choice-carrying house
-   style (compare [Full]'s chosen section [prefmap] in Theory/Functor.v and
-   the split [surjective] class of Lib/Setoid.v): a chosen preimage object
-   [eso_obj d] for every [d : D], together with a witnessing isomorphism
-   [eso_iso d].  The classical characterization — full + faithful +
-   essentially surjective is the same as being an equivalence — lives in
-   Theory/Equivalence/FullFaithful.v; adjoint equivalences are developed in
-   Theory/Equivalence/Adjoint.v; preservation, reflection and creation of
-   limits along equivalences in Theory/Equivalence/Limit.v; the bundled
-   notion [C ≃ D] in Theory/Equivalence/Bundled.v.
+   [EssentiallySurjective] 以分裂、携带选择的风格陈述（比较 Theory/Functor.v 中 [Full]
+   的选定截面 [prefmap] 与 Lib/Setoid.v 的分裂 [surjective] 类）：对每个 [d : D] 选定
+   原像对象 [eso_obj d]，并带见证同构 [eso_iso d]。经典刻画——满 + 忠实 + 本质满射
+   等同于等价——在 Theory/Equivalence/FullFaithful.v；伴随等价在 Theory/Equivalence/Adjoint.v；
+   沿等价的极限保持、反射与创造在 Theory/Equivalence/Limit.v；捆绑概念 [C ≃ D] 在
+   Theory/Equivalence/Bundled.v。
 
-   NOTHING in this file is registered for instance resolution: a
-   quasi-inverse is a choice, and must never be conjured by typeclass
-   search (the [Monoidal_op] convention of Construction/Opposite/
-   Monoidal.v).  All constructions below are plain Definitions, passed
-   explicitly at use sites.  This also keeps the Cat-level universe
-   constraints of the bridge conversions local to the places that actually
-   use them. *)
+   本文件*没有任何*内容注册供实例解析：拟逆是选择，绝不可由类型类搜索凭空产生
+   （Construction/Opposite/Monoidal.v 的 [Monoidal_op] 约定）。下文所有构造都是普通
+   Definition，在使用点显式传入。这也使桥转换的 Cat 层宇宙约束局部于实际使用处。 *)
 
 (* Where equivalence came from, and what it is for
 

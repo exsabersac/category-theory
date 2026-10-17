@@ -7,10 +7,8 @@ Generalizable All Variables.
 
 (* nLab: https://ncatlab.org/nlab/show/subobject
 
-   A subobject of an object x is (an equivalence class of) a monomorphism
-   into x. Here the setoid structure itself carries the quotient: two monos
-   into x are equivalent when there is an isomorphism of their domains
-   commuting with them over x. *)
+   对象 x 的子对象 (subobject) 是进入 x 的单射（的等价类）。此处 setoid 结构本身
+   承载商：两进入 x 的 mono 等价，当存在其定义域的同构且与它们在 x 上交换。 *)
 
 Record SubObj {C : Category} (x : C) := {
   sub_dom : C;                     (* the domain of the mono *)

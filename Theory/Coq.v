@@ -2,28 +2,25 @@ Require Import Category.Lib.
 
 (** Aggregator for the applied functional-programming layer over Coq types *)
 
-(* This module re-exports the [Theory/Coq/] cluster, which develops the
-   familiar Haskell-style type classes directly over Coq types (the "category
-   of types") and connects each one to its categorical counterpart.  Importing
-   this single module brings the whole applied-FP layer into scope.
+(* 本模块再导出 [Theory/Coq/] 簇，在 Coq 类型（「类型范畴」）上直接开发熟悉的
+   Haskell 风格类型类，并把每一类连到其范畴对应物。导入本单一模块即可把整个
+   应用 FP 层纳入作用域。
 
-   The exported modules fall into two groups.  The functor/applicative/monad
-   tower, with traversals over it:
+   导出模块分两组。函子/applicative/单子塔及其上的遍历：
 
-     - Functor       (fmap)            ↔ endofunctor on the category of types
-     - Applicative   (pure/ap)         ↔ lax monoidal endofunctor
-     - Monad         (ret/bind)        ↔ monad (endofunctor with unit/mult)
+     - Functor       (fmap)            ↔ 类型范畴上的自函子
+     - Applicative   (pure/ap)         ↔ 松弛幺半自函子
+     - Monad         (ret/bind)        ↔ 单子（带单位/乘法的自函子）
      - Foldable      (foldr/foldMap)
-     - Traversable   (traverse)        ↔ traversal through an applicative
+     - Traversable   (traverse)        ↔ 经 applicative 的遍历
 
-   And the algebraic structures and concrete instances those classes act on:
+   以及这些类所作用的代数结构与具体实例：
 
-     - Semigroup     (associative <>)
-     - Monoid        (Semigroup with unit)
-     - Maybe, Either, Tuple, List, Map  (concrete functor/monad instances)
+     - Semigroup     （结合的 <>）
+     - Monoid        （带单位的 Semigroup）
+     - Maybe, Either, Tuple, List, Map  （具体函子/单子实例）
 
-   The per-module [Proofs] submodules under [Theory/Coq/] are auxiliary and
-   are deliberately not re-exported here. *)
+   [Theory/Coq/] 下各模块的 [Proofs] 子模块是辅助性的，故意不在此再导出。 *)
 
 (* Why the tower exists, and what a categorical footing buys
 

@@ -6,64 +6,16 @@ Generalizable All Variables.
 (** * Displayed categories *)
 
 (* nLab:      https://ncatlab.org/nlab/show/displayed+category
-   Wikipedia: https://en.wikipedia.org/wiki/Fibred_category
-   Reference: Benedikt Ahrens and Peter LeFanu Lumsdaine, "Displayed
-              Categories", Logical Methods in Computer Science 15(1), 2019.
+   Wikipedia: https://en.wikipedia.org/wiki/Displayed_category
+   Reference: Ahrens–Lumsdaine, "Displayed Categories", LMCS 15(1), 2019
               https://arxiv.org/abs/1705.04296
 
-   A displayed category [D] over a base category [C] assigns to each object
-   [x : C] a type [dobj x] of objects lying over [x], and to each base
-   morphism [f : x ~> y] and displayed objects [dx : dobj x], [dy : dobj y] a
-   setoid [dhom dx dy f] of morphisms lying over [f], together with displayed
-   identities lying over [id] and displayed composition lying over [∘]. This
-   is the Coq-friendly primitive presentation of fibred/indexed category
-   theory: the total category [∫ D] (Construction/Displayed/Total.v) has
-   pairs [(x; dx)] as objects and pairs [(f; ff)] as morphisms, and a
-   displayed category is exactly the data making that total assembly a
-   category, packaged without ever comparing objects of [C] for equality.
-
-   Because homs in this library are setoids, the family [dhom dx dy] is
-   indexed by base morphisms that are only ever compared up to [≈], so the
-   family must itself cohere across [≈]. That coherence is [dtransport]:
-   along every proof [e : f ≈ g] a map
-   [dtransport e : dhom dx dy f → dhom dx dy g] which respects [≈]
-   ([dtransport_respects]), is functorial ([dtransport_trans]), and is
-   proof-irrelevant ([dtransport_id]: transport along any proof of [f ≈ f]
-   is the identity up to [≈]; combined with functoriality this yields
-   irrelevance along arbitrary parallel proofs, [dtransport_proof_irrel]
-   below). The displayed unit and associativity laws are then stated over
-   the corresponding base laws by transporting one side along them.
-
-   Interface note (a disclosed strengthening of the Phase 10 skeleton). The
-   interchange of transport with displayed composition,
-
-     dcomp (dtransport e ff) gg ≈ dtransport e' (dcomp ff gg)
-     dcomp ff (dtransport e gg) ≈ dtransport e' (dcomp ff gg),
-
-   is not derivable from the other fields, so it is part of the interface as
-   [dtransport_comp_l]/[dtransport_comp_r]. Underivability: take the base to
-   be the one-object category with hom-monoid (ℤ, +, 0) and with [f ≈ g]
-   meaning congruence modulo 2; display over it the constant family
-   [dhom _ _ f := ℤ] under [eq], with [dtransport e] the identity map,
-   [did := 0], and with displayed composition over outer base [f] and inner
-   base [g] given by [(k, l) ↦ k + l + f·g]. Since [f·g] is bilinear (a
-   2-cocycle on ℤ vanishing when either argument is 0), every other field
-   below holds in this model; yet with outer bases [e : 0 ≈ 2] and inner
-   base [1], the left-hand side of the interchange computes over (2, 1) to
-   [0 + 0 + 2·1 = 2] while the right-hand side computes over (0, 1) to
-   [0 + 0 + 0·1 = 0], and [2 ≠ 0] in the strict fibre (ℤ, eq). These two
-   fields are load-bearing, not mere convenience: without them the derived
-   [dtransport_dcomp] (below), and hence the total category's [compose_respects]
-   (Construction/Displayed/Total.v), cannot be proved — in the same model the
-   [∫D]-morphisms [(base 0; 0)] and [(base 2; 0)] are equal, yet post-composing
-   each with [(base 1; 0)] gives [(base 1; 0)] and [(base 3; 2)], which are
-   unequal (bases agree mod 2 but the displayed parts [0] and [2] differ under
-   [eq]), so total composition would not respect [≈] and [∫D] would not be a
-   category; the interface must not be trimmed back to the bare skeleton. The
-   composite-side proof [e'] is universally quantified rather than pinned to
-   the canonical [compose_respects] witness: by proof-irrelevance of
-   [dtransport] the two phrasings are interderivable, and the quantified
-   form spares consumers from massaging proof terms. *)
+   展示范畴 (displayed category) D 在基范畴 C 上：对每个对象 x : C 给出展示对象类型
+   [dobj x]，对每个态射 f : x ~> y 与展示对象 dx、dy 给出展示态射类型
+   [dhom dx dy f]，配备展示恒等与展示复合，服从单位与结合律（相对基态射的相应定律，
+   经 setoid 等价）。总范畴 [Total D] 的对象是对 (x; dx)，态射是对 (f; ff)；投影
+   [Total_Proj D : Total D ⟶ C] 忘掉展示数据。纤维化语言见 Theory/Fibration.v。
+   本文件提供原语与总范畴构造；历史与用途见下一块注释（若仍为英文，属后续波次）。 *)
 
 (* Where displayed categories come from, and what they are for
 

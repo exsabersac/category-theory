@@ -5,13 +5,12 @@ Require Import Category.Theory.Morphisms.
 
 Generalizable All Variables.
 
-(* Orthogonality of morphisms (the unique lifting property).
+(* 态射的正交性 (orthogonality)（唯一提升性质）。
 
    nLab:      https://ncatlab.org/nlab/show/orthogonality
    Wikipedia: https://en.wikipedia.org/wiki/Lifting_property
 
-   A morphism e : a ~> b is (left) orthogonal to m : x ~> y, written e ⫫ m,
-   when every commuting square
+   态射 e : a ~> b （左）正交于 m : x ~> y，写作 e ⫫ m，当每个交换方块
 
             u
         a ----> x
@@ -21,19 +20,14 @@ Generalizable All Variables.
         b ----> y
             v
 
-   (that is, m ∘ u ≈ v ∘ e) has a unique diagonal filler d : b ~> x with
-   d ∘ e ≈ u and m ∘ d ≈ v. Orthogonality is the uniqueness-strengthened
-   form of the weak lifting property that underlies weak factorization
-   systems; with the uniqueness clause it characterizes the two classes of
-   an orthogonal factorization system (nLab: orthogonal factorization
-   system). Here we record the notion itself together with the closure
-   properties of the left class that need no (co)limits: isomorphisms are
-   orthogonal to everything (on either side), and the left class is closed
-   under composition and under retracts in the arrow category.
+   （即 m ∘ u ≈ v ∘ e）都有唯一对角填充 d : b ~> x 满足 d ∘ e ≈ u 与 m ∘ d ≈ v。
+   正交性是弱提升性质加强唯一性后的形式，后者支撑弱分解系统；带唯一性子句时它刻画
+   正交分解系统的两类（nLab: orthogonal factorization system）。此处记录概念本身，
+   以及左类无需（余）极限的闭包性质：同构正交于一切（任一侧），左类对复合与箭头范畴中的
+   收缩封闭。
 
-   Stability of the left class under cobase change (pushout) needs the
-   pullback/pushout toolkit and lives there: [ortho_left_cobase_change] in
-   Theory/Morphisms/Stability.v. *)
+   左类在余基变换（推出）下的稳定性需要拉回/推出工具箱，见 Theory/Morphisms/Stability.v
+   的 [ortho_left_cobase_change]。 *)
 
 (* The ∃!-with-∧ shape below mirrors [ump_pullbacks] in Structure/Pullback.v:
    [∃!] is the Type-valued [Unique] record of Lib/Setoid.v, and [∧] is the

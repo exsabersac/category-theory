@@ -14,23 +14,17 @@ Generalizable All Variables.
    Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
               §II.5 Exercise 5 (printed p. 45)
 
-   Suppose one carrier bears two binary operations, each with a two-sided
-   unit, and suppose the two operations INTERCHANGE: evaluating a 2x2 array
-   rows-first agrees with evaluating it columns-first,
+   设一载体带有两个二元运算，各有双侧单位，且两运算*交换* (interchange)：对 2×2 数组
+   先按行求值与先按列求值一致，
 
        f (g a b) (g c d)  ≈  g (f a c) (f b d).
 
-   Then the two units coincide, the two operations coincide, and the single
-   operation that remains is commutative and associative.  Nothing else is
-   assumed — no associativity, no commutativity, not even that either
-   operation is a monoid on its own.  Both laws are OUTPUTS.
+   则两单位重合、两运算重合，剩下的单一运算交换且结合。此外一无所设——无结合律、
+   无交换律，甚至不要求任一运算自身是幺半群。两定律都是*输出*。
 
-   This file states and proves exactly that, over a bare setoid.  It is
-   deliberately PRE-CATEGORICAL: its only import is [Category.Lib], and in
-   particular it does not import [Category.Theory.Category].  The argument
-   never mentions objects, morphisms, or composition; it is a fact about a
-   set with two interchanging unital operations, and the categorical
-   instances below are instances, not the content. *)
+   本文件在裸 setoid 上恰陈述并证明这一点。它刻意是*前范畴的*：仅导入 [Category.Lib]，
+   尤其不导入 [Category.Theory.Category]。论证从不提及对象、态射或复合；它是关于带两个
+   交换单位运算的集合的事实，下文范畴实例是实例而非内容。 *)
 
 (* Where the argument comes from, and what it is used for
 

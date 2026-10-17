@@ -18,25 +18,19 @@ Generalizable All Variables.
 (* nLab: https://ncatlab.org/nlab/show/profunctor
    Wikipedia: https://en.wikipedia.org/wiki/Profunctor
 
-   A profunctor from C to D (also called a distributor or a bimodule, written
-   C ⇸ D) is a functor
+   从 C 到 D 的双函子 (profunctor)（也称 distributor 或 bimodule，写作 C ⇸ D）是函子
 
      C^op ∏ D ⟶ Sets,
 
-   contravariant in its first argument and covariant in its second. It sends a
-   pair (c, d) to a setoid P(c, d) of "heteromorphisms" from c to d, carrying a
-   left action of C and a right action of D by composition. Since hom-sets here
-   are setoids, profunctors land in Sets, the category of setoids.
+   在第一变元反变、第二变元共变。它把对 (c, d) 送到「异态射」的 setoid P(c, d)，
+   携带 C 的左作用与 D 的右作用（经复合）。因此处 hom 集是 setoid，双函子落在 setoid
+   范畴 Sets。
 
-   Following the binding universe discipline of this development, a profunctor
-   is kept as a per-pair object: the profunctors C ⇸ D are the objects of the
-   functor category [C^op ∏ D, Sets] (Instance/Fun.v), whose morphisms are
-   natural transformations and whose object equivalence Prof_Setoid is a natural
-   isomorphism (Functor_Setoid, Theory/Functor.v). We never assemble a single
-   category of all profunctors between all categories — that would raise the
-   universe level — so the bicategory-lite composition and coherence live as
-   lemmas in these per-pair functor categories (the Construction/Profunctor
-   modules). *)
+   依本开发的绑定宇宙纪律，双函子保持为按对对象：C ⇸ D 的双函子是函子范畴
+   [C^op ∏ D, Sets]（Instance/Fun.v）的对象，其态射是自然变换，对象等价 Prof_Setoid
+   是自然同构（Functor_Setoid，Theory/Functor.v）。我们从不组装「所有范畴之间所有双函子」
+   的单一范畴——那会抬高宇宙层级——故轻量双范畴式复合与连贯作为这些按对函子范畴中的
+   引理存在（Construction/Profunctor 模块）。 *)
 
 (* Where profunctors come from, and what they are for
 

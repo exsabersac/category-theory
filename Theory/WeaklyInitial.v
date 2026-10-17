@@ -18,51 +18,34 @@ Generalizable All Variables.
 (* nLab:      https://ncatlab.org/nlab/show/initial+object
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functor_theorem
 
-   This file records the object-level input of Freyd's General Adjoint
-   Functor Theorem: the passage from a *weakly* initial family to an actual
-   initial object.  A family [wif_obj : wif_index -> C] is weakly initial
-   when every object [c] is hit by some member, i.e. [wif_cover c] exhibits
-   an index [i] and an arrow [wif_obj i ~> c] (existence, with no
-   uniqueness).  The classical construction (Freyd, Mac Lane CWM V.6) forms
-   the product [P] of the family — itself a single weakly initial object —
-   and then carves out the joint equalizer of *all* endomorphisms of [P];
-   that equalizer is genuinely initial.
+   本文件记录 Freyd 一般伴随函子定理的对象层输入：从*弱*初始族到真正初始对象的通路。
+   族 [wif_obj : wif_index -> C] 弱初始，当每个对象 [c] 被某成员击中，即 [wif_cover c]
+   展示指标 [i] 与箭头 [wif_obj i ~> c]（存在性，无唯一性）。经典构造（Freyd，
+   Mac Lane CWM V.6）形成该族的积 [P]——本身是单个弱初始对象——再挖出 [P] *全部*
+   自同态的联合等化子；该等化子真正初始。
 
-   STATUS / hypothesis form.  The construction consumes exactly two limits
-   over caller-chosen index [Type]s and a supply of binary equalizers:
+   状态 / 假设形式。构造恰消耗两个在调用方选定指标 [Type] 上的极限，以及二元等化子供给：
 
-     - [P]  : the product of the family [wif_obj] over [wif_index]
-              (an indexed product = limit of a discrete diagram);
-     - [Pe] : the product, over the hom-type of endomorphisms of that
-              product object, of that object with itself — this is the
-              [Type]-indexed limit whose universal cone lets a single
-              parallel pair [P ~> Pe] "capture all endos" at once, so the
-              wide equalizer of the endomorphism family reduces to one
-              *binary* equalizer supplied by [E];
-     - [E]  : binary equalizers for parallel pairs.
+     - [P]  ：族 [wif_obj] 在 [wif_index] 上的积
+              （指标积 = 离散图的极限）；
+     - [Pe] ：在该积对象自同态的 hom 类型上，该对象与自身的积——这是 [Type]-指标极限，
+              其普遍锥使单个平行对 [P ~> Pe]「一次捕获全部自同态」，故自同态族的宽等化子
+              归约为 [E] 供给的一个*二元*等化子；
+     - [E]  ：平行对的二元等化子。
 
-   Both products are passed as explicit hypotheses rather than harvested
-   from a [Complete] / [HasIndexedProducts] instance.  This is deliberate
-   (Risk (b)): the endomorphism-indexed product ranges over the hom-type
-   [iprod .. ~> iprod ..], which sits at the hom universe [h]; routing it
-   through a class that quantifies over every index [Type] would over-commit
-   the ambient universes, whereas the explicit form leaves the smallness of
-   the index (hence the relevant universe constraints) in the caller's
-   hands.  Supplying [Pe] separately from [P] strengthens the hypotheses
-   (an honest, leaner input) and never weakens the conclusion, which remains
-   a full [Initial C].
+   两积作为显式假设传入，而非从 [Complete] / [HasIndexedProducts] 实例收获。这是刻意的
+   （Risk (b)）：自同态指标积量化在 hom 类型 [iprod .. ~> iprod ..] 上，坐在 hom 宇宙 [h]；
+   经量化每个指标 [Type] 的类路由会过度承诺环境宇宙，而显式形式把指标的小性（故相关宇宙约束）
+   留给调用方。把 [Pe] 与 [P] 分开供给加强假设（诚实、更瘦的输入），从不削弱结论，结论仍是
+   完整 [Initial C]。
 
-   [Pe]'s family is CONSTANT -- [fun _ : P0 ~> P0 => P0] -- so [Pe] is a
-   POWER of [P0] in the sense of Mac Lane III.3/III.4, and the proof below
-   says so, through Structure/Limit/Power.v's [power_of_limit],
-   [power_ev_of_limit] and [power_ump_of_limit].  Those are [iprod],
-   [iprod_proj] and [iprod_ump] at the constant family, supplied by [:=], so
-   the change is by conversion and the statement of the theorem is unaffected
-   -- [Pe]'s type is written out in full above and is untouched.  [P]'s family
-   [wif_obj W] genuinely varies and stays an indexed product.  Only
-   Structure/Limit/Power.v is Required, not its Structure/Limit/Power/Hom.v
-   satellite; [Instance/Sets] is in this file's closure anyway (measured:
-   two hops since #435, Instance/Parallel → Instance/Sets; three before). *)
+   [Pe] 的族是常数——[fun _ : P0 ~> P0 => P0]——故 [Pe] 是 Mac Lane III.3/III.4 意义下
+   [P0] 的幂，下文经 Structure/Limit/Power.v 的 [power_of_limit]、[power_ev_of_limit]、
+   [power_ump_of_limit] 如此说明。它们是常数族上的 [iprod]、[iprod_proj]、[iprod_ump]，
+   由 [:=] 供给，故变化靠转换，定理陈述不受影响——[Pe] 的类型上文写全且未动。[P] 的族
+   [wif_obj W] 真正变化，仍是指标积。仅 Require Structure/Limit/Power.v，非其
+   Structure/Limit/Power/Hom.v 卫星；[Instance/Sets] 本就在本文件闭包中（测得：自 #435
+   起两跳，Instance/Parallel → Instance/Sets；此前三跳）。 *)
 
 (* A weakly initial family: an index [Type], a family of objects, and for
    every object [c] a *choice* of covering member together with an arrow

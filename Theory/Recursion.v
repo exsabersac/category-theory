@@ -16,10 +16,9 @@ Generalizable All Variables.
    Wikipedia: https://en.wikipedia.org/wiki/Catamorphism
               https://en.wikipedia.org/wiki/Anamorphism
 
-   When the endofunctor [F : C ⟶ C] has an initial F-algebra [(μ, inα)] — the
-   initial object of [FAlg F] (Construction/FAlg.v) — its universal property is
-   exactly the principle of structural recursion.  For every F-algebra
-   [(a, β)] there is a unique carrier map [cata β : μ ~> a] making the square
+   当自函子 [F : C ⟶ C] 有初始 F-代数 [(μ, inα)]——[FAlg F] 的初始对象
+   （Construction/FAlg.v）——其普遍性质恰是结构递归原理。对每个 F-代数 [(a, β)]
+   存在唯一载体映射 [cata β : μ ~> a] 使方块
 
        F μ --inα--> μ
         |           |
@@ -28,16 +27,14 @@ Generalizable All Variables.
         v           v
        F a ---β----> a
 
-   commute; this mediator is the *catamorphism* (a "fold").  Uniqueness and the
-   fusion law follow from the uniqueness of the initial-object mediator [zero].
+   交换；该中介即 *catamorphism*（「fold」）。唯一性与融合律由初始对象中介 [zero]
+   的唯一性推出。
 
-   Dually, a final F-coalgebra [(ν, outγ)] — the terminal object of [FCoalg F]
-   (Construction/FCoalg.v) — gives structural corecursion: every coalgebra
-   [(a, γ)] has a unique [ana γ : a ~> ν] (an "unfold").  Because the library
-   builds [FCoalg F] as [(FAlg (F^op))^op], so that [@Terminal (FCoalg F)] is
-   definitionally [@Initial (FAlg (F^op))], the anamorphism package is obtained
-   from the catamorphism package for [F^op] purely by op-duality, with
-   composition and [fmap] reversed on the nose. *)
+   对偶地，终结 F-余代数 [(ν, outγ)]——[FCoalg F] 的终对象（Construction/FCoalg.v）——
+   给出结构余递归：每个余代数 [(a, γ)] 有唯一 [ana γ : a ~> ν]（「unfold」）。
+   因库把 [FCoalg F] 建为 [(FAlg (F^op))^op]，故 [@Terminal (FCoalg F)] 定义上等于
+   [@Initial (FAlg (F^op))]，anamorphism 包纯由 [F^op] 的 catamorphism 包经 op-对偶得到，
+   复合与 [fmap] 在表面上反向。 *)
 
 Section Catamorphism.
 

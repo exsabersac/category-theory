@@ -8,22 +8,16 @@ Generalizable All Variables.
 (* nLab: https://ncatlab.org/nlab/show/natural+transformation
    Wikipedia: https://en.wikipedia.org/wiki/Natural_transformation
 
-   Naturality infrastructure. This file provides the `Naturality` type class,
-   whose method `natural f` computes the *naturality statement* appropriate to
-   the type `A` of the family `f`. Instance resolution on `A` selects the right
-   square: for a family `f : ∀ A, F A ~> G A` the statement is the ordinary
-   naturality square `fmap[G] g ∘ f x ≈ f y ∘ fmap[F] g` (i.e. `G g ∘ η_x ≈
-   η_y ∘ F g`); for families of several arguments it is the joint, per-variable
-   square; and for families of isomorphisms it is the conjunction of the `to`
-   and `from` squares. This lets a single `natural f` notation discharge the
-   naturality obligations that arise throughout the library (see
-   `prove_naturality` and `Structure/Monoidal/Naturality.v`).
+   自然性基础设施。本文件提供 `Naturality` 类型类，其方法 `natural f` 按族 `f` 的类型
+   `A` 计算合适的*自然性陈述*。在 `A` 上的实例解析选择正确方块：对族
+   `f : ∀ A, F A ~> G A`，陈述是普通自然性方块 `fmap[G] g ∘ f x ≈ f y ∘ fmap[F] g`
+   （即 `G g ∘ η_x ≈ η_y ∘ F g`）；对多变元族是联合、按变元的方块；对同构族是 `to` 与
+   `from` 方块的合取。这使单一 `natural f` 记号可消解库中各处出现的自然性义务（见
+   `prove_naturality` 与 `Structure/Monoidal/Naturality.v`）。
 
-   Note: the multi-argument `Arity*` instances express naturality *separately*
-   in each (covariant) argument, combined into one square via the bifunctorial
-   action `P(g,h) = FB h ∘ FA g`. This is distinct from a dinatural
-   transformation (https://ncatlab.org/nlab/show/dinatural+transformation),
-   whose hexagon mixes the two variances of a single variable. *)
+   注意：多变元 `Arity*` 实例分别表达每个（共变）变元中的自然性，经双函子作用
+   `P(g,h) = FB h ∘ FA g` 合成一方块。这有别于双自然变换
+   （https://ncatlab.org/nlab/show/dinatural+transformation），其六边形混合单变元的两种变差。 *)
 
 (* `Naturality A` equips a type `A` of morphism families with the proposition
    `natural f` that asserts `f` is natural. *)

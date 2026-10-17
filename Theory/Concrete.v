@@ -11,95 +11,12 @@ Generalizable All Variables.
 
 (* nLab:      https://ncatlab.org/nlab/show/concrete+category
    Wikipedia: https://en.wikipedia.org/wiki/Concrete_category
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, Springer 1998, §I.7 ("Large Categories"), printed p. 26
-   Book:      Riehl, "Category Theory in Context", Dover 2016, §1.6,
-              Definition 1.6.18 and Example 1.6.19, printed pp. 45-46
-   Book:      Awodey, "Category Theory", 2nd ed., OUP 2010, §1.5, Remark 1.7,
-              printed p. 15
-   Paper:     Freyd, "Homotopy is not concrete", in "The Steenrod Algebra and
-              Its Applications", Lecture Notes in Mathematics 168, Springer
-              1970, pp. 25-34
 
-   A concrete category, in Mac Lane's §I.7 sense, is a PAIR `⟨C, U⟩`: a
-   category together with a chosen faithful functor `U : C ⟶ Sets`.  The
-   pairing is the whole point.  Concreteness is not a property a category has
-   on its own; it is structure one equips a category with, and different
-   choices of `U` on the same `C` give different concrete categories.  The
-   class below therefore carries the functor as a field rather than
-   existentially quantifying it.
-
-   The intended reading — every object has an underlying set, and every arrow
-   is an actual function between those sets — is recorded here as a
-   definitional unfolding rather than as a separate axiom, since it IS what
-   the two fields say once they are unfolded:
-
-     - the object part `underlying x` is the underlying set of `x`;
-     - the arrow part `fmap[underlying] f` is the actual function
-       carried by `f`, and `fmap_respects` says an arrow determines its
-       function;
-     - `underlying_faithful` says the function determines the arrow.
-
-   [concrete_arrow_eq] below is the second bullet's converse spelled out at
-   the level of elements: two parallel arrows agreeing pointwise on the
-   underlying sets are already equal in `C`.  This is Riehl's gloss
-   (Definition 1.6.18): being a morphism is a PROPERTY of the underlying
-   function — continuity, say — rather than extra data, and a forgetful
-   functor is not faithful exactly when morphisms carry structure invisible
-   on the underlying sets.
-
-   Note the setoid discipline of this library.  `Sets` (Instance/Sets.v) is
-   the category of setoids, so "the underlying set" is a carrier type plus an
-   equivalence relation, and "actual function" means a setoid map.  Equality
-   of arrows in THIS FILE and its two companions is `≈` throughout, never
-   `=` — a claim about these three files only, not about the library, which
-   does state a few deliberate arrow equalities elsewhere (for instance
-   Construction/Quotient.v's cast-irrelevance lemmas).  Concretely, faithfulness reads
-   `fmap f ≈ fmap g → f ≈ g` with `≈` at both ends: the `Sets`-side `≈` is
-   pointwise equivalence of setoid maps, the `C`-side `≈` is `C`'s hom-setoid.
-
-   Awodey's refinement (§1.5, Remark 1.7) is developed in the second half of
-   this file.  He observes that the naive notion is defective and proposes
-   testing arrows against GENERALIZED ELEMENTS: arrows `f, g : x ~> y` should
-   be determined by their composites `f ∘ e`, `g ∘ e` with maps `e : t ~> x`
-   out of a test object `t`.  An object with that property is a separator (a
-   generator): [Separator] below.  A separator is exactly what makes the
-   representable `Hom(t, −) : C ⟶ Sets` faithful, so every separator
-   concretizes its category — [Concrete_of_Separator].  Awodey's own case is
-   `t` terminal, i.e. testing by global elements; that is
-   [WellPointedCategory], and it yields [Concrete_of_WellPointed].
-
-   Naming caution: [WellPointedCategory] here is unrelated to the
-   [WellPointed] class of Instance/Fun.v, which is a condition on a
-   POINTED ENDOFUNCTOR (`F ⊳ point` and `point ⊲ F` agreeing), not on a
-   category.  The two notions share only the English adjective; hence the
-   distinct name.
-
-   Disclosed deferrals (the two negative halves of Mac Lane's §I.7 remark)
-   ---------------------------------------------------------------------
-
-   (1) Toph, the pointed homotopy category, has NO faithful functor to
-       sets whatsoever (Freyd 1970).  That theorem is out of scope here and
-       is not proved, weakened, or assumed anywhere in this development.  It
-       is not even stateable in-tree yet: the library has no homotopy
-       category.  Riehl records the same result as a footnote to Definition
-       1.6.18.
-
-   (2) Rel, the category of sets and relations (Instance/Rel.v), is often
-       quoted alongside Toph as "not concrete".  That quotation is too
-       strong, and this development does not repeat it.  What is true, and
-       what Instance/Concrete.v proves, is a statement about the EVIDENT
-       candidate functor: no functor `U : Rel ⟶ Sets` whose value at the
-       one-element set is a subsingleton can be faithful, because Rel already
-       has two distinct endorelations of the one-element set.  The evident
-       "underlying set" candidate has exactly that property, so it is not
-       faithful.  Rel is nevertheless concretizable — Instance/Concrete.v
-       exhibits `Rel_Concrete` via the direct-image (powerset) functor, whose
-       value at the one-element set is a two-element setoid, precisely
-       escaping the obstruction.  So the honest reading of Mac Lane's remark
-       is "not concrete via its evident forgetful functor", and that is what
-       is proved.  Non-concretizability of Rel is not claimed and would in
-       fact be false. *)
+   具体范畴 (concrete category) 是配备到 [Sets]（或类似基础范畴）的忠实函子
+   [underlying] 的范畴 [C]：箭头由底层函数忠实表示。Mac Lane 与 nLab 强调「具体」
+   是相对选定遗忘函子的结构，而非内在性质。本文件打包 [Concrete] 类（范畴 + 忠实
+   遗忘）、底层函数提取，以及与忠实性相关的基本引理。长历史短文若仍为英文属后续波次；
+   此处定义性文首已译。 *)
 
 Section Concrete.
 

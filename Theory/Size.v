@@ -1,64 +1,40 @@
-(** * Size vocabulary: small, locally small, and the arrows-with-dom-cod packaging
+(** * 大小词汇：小、局部小，以及带 dom-cod 的箭头包装
 
-    Mac Lane fixes ZFC plus one universe [U] and calls a set, a function, or a
-    category SMALL when it lies in [U] (Categories for the Working
-    Mathematician, 2nd ed., §I.6, printed pp. 22-24).  Awodey Definition 1.11
-    says a category is small when its objects [C0] and its arrows [C1] are both
-    sets, and Definition 1.12 calls it LOCALLY SMALL when each [Hom(X,Y)] is a
-    set.  Riehl Definition 1.1.6 says the same with "a set's worth of arrows",
-    and Definition 1.1.7 the same for local smallness.
+    Mac Lane 固定 ZFC 加一个宇宙 [U]，当集合、函数或范畴落在 [U] 内时称为小
+    （Categories for the Working Mathematician, 2nd ed., §I.6, printed pp. 22-24）。
+    Awodey Definition 1.11 称范畴小当其对象 [C0] 与箭头 [C1] 都是集合，Definition 1.12
+    称局部小当每个 [Hom(X,Y)] 是集合。Riehl Definition 1.1.6 以「一集合份量的箭头」说同样的话，
+    Definition 1.1.7 对局部小同理。
 
-    This library takes a different foundational route, and docs/SIZE.md sets
-    the two side by side in full.  The short version: there is no universe
-    object, no membership, and no size axiom.  [Class Category@{o h p}]
-    (Theory/Category.v) is universe-POLYMORPHIC, so every category already
-    carries its own three levels, and the work Mac Lane's [U] does is done by
-    the elaborator's constraint solver.  That is why self-membership is a
-    universe inconsistency rather than a paradox to be excluded by axiom
-    (Instance/Cat.v).
+    本库取不同基础路线，docs/SIZE.md 把两者完整并置。简短版：没有宇宙对象、没有成员关系、
+    没有大小公理。[Class Category@{o h p}]（Theory/Category.v）是宇宙*多态*的，故每个范畴
+    已携带各自三个层级，Mac Lane 的 [U] 所做的工作由 elaborator 的约束求解器完成。这正是
+    自成员是宇宙不一致而非要用公理排除的悖论的原因（Instance/Cat.v）。
 
-    WHAT THIS FILE ADDS, AND WHY IT IS NOT REDUNDANT.  The discipline above is
-    enforced but was UNSTATABLE: before this file `Small`, `IsSmall` and
-    `LocallySmall` had no declaration anywhere in the tree, so smallness could
-    be neither a hypothesis nor a conclusion -- it could only be chosen at a
-    definition site by instantiating universes.  Theory/Lawvere/Sets.v
-    records the consequence in passing ("the library has no smallness
-    machinery").  The predicates below are that missing vocabulary.
+    本文件添加什么，以及为何不冗余。上述纪律被强制但曾*不可陈述*：此前文件树中任何地方
+    都没有 `Small`、`IsSmall`、`LocallySmall` 的声明，故小性既不能作假设也不能作结论——
+    只能在定义点通过实例化宇宙来选择。Theory/Lawvere/Sets.v 顺便记录后果（「库没有小性机制」）。
+    下文谓词即那缺失的词汇。
 
-    THE DESIGN, AND THE ONE THING THAT MAKES IT WORK.  A category is small
-    RELATIVE TO A PAIR OF LEVELS when its objects and each of its hom-setoids
-    are matched by copies at those levels.  All the content sits in the strict
-    constraints [uo < o] and [uh < h]: without them one could discharge
-    [Small C] for every [C] by handing back [obj[C]] and [hom] themselves, and
-    the predicate would be vacuously true.  With them that discharge is a
-    universe inconsistency -- Test/Size.v exhibits exactly that, since
-    demonstrating it needs the rejection vernacular, which this file avoids so
-    that the [make todo] sweep sees no new hit from here.
+    设计，以及使之成立的一件事。范畴相对一对层级是小的，当其对象与每个 hom-setoid 在那些
+    层级有匹配副本。全部内容在严格约束 [uo < o] 与 [uh < h]：没有它们，对每个 [C] 都可把
+    [obj[C]] 与 [hom] 自身交回以消解 [Small C]，谓词将空虚为真。有了它们，该消解是宇宙不一致——
+    Test/Size.v 恰展示这一点，因演示需要拒绝方言，本文件避免之，使 [make todo] 扫描不见新命中。
 
-    OBJECTS USE [=], HOMS USE [≈].  Objects carry no setoid in this library, so
-    a bijection of object types is Leibniz; that matches Instance/StrictCat.v's
-    treatment.  Morphisms do carry setoids, and CLAUDE.md's standing rule is
-    that [=] is never used on them, so the hom half is a SETOID ISOMORPHISM.
-    This is not a stylistic choice: stating the hom round trip with [=] is also
-    REJECTED, because the [eq] lemmas it drags in impose constraints
-    ([h <= eq_ind.u0]) that a declared universe binder cannot mention.
+    对象用 [=]，hom 用 [≈]。对象在本库无 setoid，故对象类型的双射是 Leibniz；与
+    Instance/StrictCat.v 的处理一致。态射有 setoid，且 CLAUDE.md 的常设规则是从不在其上用 [=]，
+    故 hom 半边是 setoid 同构。这不是风格选择：用 [=] 陈述 hom 往返也会被*拒绝*，因它拖入的
+    [eq] 引理施加声明宇宙绑定无法提及的约束（[h <= eq_ind.u0]）。
 
-    A TWO-SIDED SITUATION, RECORDED AS SUCH.  What the library PROVIDES is
-    stronger than the books' convention: [Class Category]'s [homset] field
-    (Theory/Category.v) gives every category hom-setoids at a fixed level
-    [h], so local smallness holds by construction and a non-locally-small
-    category is not expressible.  [locally_small_ambient] below records that as
-    a lemma rather than as prose, which is what makes the observation checkable.
-    What the library LACKED is the predicate needed to state the distinction at
-    all, and that is what [LocallySmall] supplies.  Accordingly [LocallySmall]
-    is stated with a NON-STRICT [uh <= h], so that the ambient instance exists;
-    [Small] is stated with strict constraints, so that it has content.  Both
-    readings are deliberate and neither is an oversight.
+    双边局面，按原样记录。库*提供*的比书中约定更强：[Class Category] 的 [homset] 字段
+    （Theory/Category.v）给每个范畴固定层级 [h] 的 hom-setoid，故局部小性由构造成立，
+    非局部小范畴不可表达。下文 [locally_small_ambient] 把它记为引理而非散文，使观察可检查。
+    库*缺少*的是陈述该区分所需的谓词，这正是 [LocallySmall] 所提供。因此 [LocallySmall]
+    以非严格 [uh <= h] 陈述，使环境实例存在；[Small] 以严格约束陈述，使之有内容。两种读法
+    都是刻意的，都不是疏忽。
 
-    The books are cited BY LOCATION only.  Their printed text was not consulted
-    while writing this file; the locations record where each definition is
-    stated, and the Coq below stands on its own.  The attributions follow issue
-    jwiegley/category-theory#253, which supplies them. *)
+    书目仅按位置引用。撰写本文件时未查阅印刷正文；位置记录各定义在何处陈述，下文 Coq
+    自立。归属依 issue jwiegley/category-theory#253 所供。 *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

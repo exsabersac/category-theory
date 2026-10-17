@@ -18,54 +18,37 @@ Generalizable All Variables.
               Categories", Logical Methods in Computer Science 15(1), 2019.
               https://arxiv.org/abs/1705.04296
 
-   Fibrations in both presentations, with the bridge between them.
+   两种呈现下的纤维化，以及其间的桥。
 
-   Displayed presentation (over the primitive of Theory/Displayed.v): a
-   displayed morphism [ff : dhom dx dy f] is cartesian ([DCartesian]) when
-   every displayed morphism over a composite [f ∘ g] factors uniquely
-   through [ff] by a displayed morphism over [g].  A cleaving ([Cleaving])
-   chooses, for every base morphism [f : x ~> y] and displayed object [dy]
-   over its codomain, an object [dx] over [x] and a cartesian morphism
-   [dx ~> dy] over [f].  No object is ever compared for equality here: the
-   fibre placement of the lift is carried by the index [x] itself.
+   展示呈现（基于 Theory/Displayed.v 的原语）：展示态射 [ff : dhom dx dy f] 是笛卡尔的
+   （[DCartesian]），当每个在复合 [f ∘ g] 上的展示态射都经 [ff] 由在 [g] 上的展示态射
+   唯一分解。劈开 (cleaving)（[Cleaving]）对每个基态射 [f : x ~> y] 及其陪域上的展示
+   对象 [dy]，选定 [x] 上的对象 [dx] 与在 [f] 上的笛卡尔态射 [dx ~> dy]。此处从不比较
+   对象相等：提升的纤维位置由指标 [x] 本身携带。
 
-   Functor presentation (the classical one): for [P : E ⟶ C], a morphism
-   [φ : e ~> e'] of [E] is cartesian ([CartesianMorphism]) when for every
-   [ψ : e'' ~> e'], every explicit base-morphism witness [g : P e'' ~> P e],
-   and every equation [fmap[P] ψ ≈ fmap[P] φ ∘ g] exhibiting [fmap[P] ψ] as
-   factoring through [fmap[P] φ], there is a unique [χ : e'' ~> e] lying
-   over [g] — meaning [fmap[P] χ ≈ g] — with [φ ∘ χ ≈ ψ].  Because homs in
-   this library are setoids, the classical equations [P ψ = P φ ∘ g] and
-   [P χ = g] are stated with [≈]; carrying the witness [g] and the
-   factorization equation explicitly is the ≈-honest reading of the
-   universal property (the displayed side realises the same reading with
-   [dtransport] doing the carrying).
+   函子呈现（经典）：对 [P : E ⟶ C]，[E] 的态射 [φ : e ~> e'] 是笛卡尔的
+   （[CartesianMorphism]），当对每个 [ψ : e'' ~> e']、每个显式基态射见证
+   [g : P e'' ~> P e]、以及每个方程 [fmap[P] ψ ≈ fmap[P] φ ∘ g]（展示 [fmap[P] ψ]
+   经 [fmap[P] φ] 分解），存在唯一 [χ : e'' ~> e] 落在 [g] 上——即 [fmap[P] χ ≈ g]——
+   且 [φ ∘ χ ≈ ψ]。因本库 hom 是 setoid，经典方程 [P ψ = P φ ∘ g] 与 [P χ = g] 用 [≈]
+   陈述；显式携带见证 [g] 与分解方程是普遍性质的 ≈-诚实读法（展示侧用 [dtransport]
+   做携带，实现同一读法）。
 
-   A cloven fibration ([ClovenFibration]) equips [P] with a chosen
-   cartesian lift ([CartesianLift]) of every [f : x ~> P e'].  Here — and
-   only here — the fibre placement is strict: the chosen [lift_obj]
-   satisfies a propositional object equality [P lift_obj = x], consumed
-   through the induced isomorphism [iso_of_eq] of
-   Instance/StrictCat/ToCat.v.  Plain [=] on objects is deliberate and
-   sanctioned at this single interface: it anchors each chosen lift in an
-   honest fibre over [x], which is what the split theory below and the
-   round trip with indexed categories
-   (Construction/Grothendieck/RoundTrip.v) consume.  A cleavage is split
-   ([SplitCleaving]) when the chosen lifts are functorial on the nose: the
-   lift of an identity is an identity and the lift of a composite is the
-   composite of the lifts, both stated across the strict anchoring's
-   transports.
+   劈开纤维化 ([ClovenFibration]) 给 [P] 配备每个 [f : x ~> P e'] 的选定笛卡尔提升
+   （[CartesianLift]）。此处——且仅此处——纤维位置是严格的：选定的 [lift_obj] 满足
+   命题对象相等 [P lift_obj = x]，经 Instance/StrictCat/ToCat.v 的诱导同构 [iso_of_eq]
+   消耗。对象上的普通 [=] 是刻意的，并在此单一接口获准：它把每个选定提升锚定在 [x]
+   上的诚实纤维，供下文分裂理论与指标范畴往返（Construction/Grothendieck/RoundTrip.v）
+   消耗。劈开是分裂的（[SplitCleaving]）当选定提升在表面上函子性：恒等的提升是恒等，
+   复合的提升是提升的复合，均跨严格锚定的 transport 陈述。
 
-   Bridge: a [Cleaving] on a displayed category [D] makes the projection
-   [Total_Proj D : Total D ⟶ C] a cloven fibration
-   ([cleaving_total_cloven]); the anchoring is [eq_refl], because the lift
-   object is literally the pair [(x; dx)] whose first component is [x].
+   桥：展示范畴 [D] 上的 [Cleaving] 使投影 [Total_Proj D : Total D ⟶ C] 成为劈开纤维化
+   （[cleaving_total_cloven]）；锚定是 [eq_refl]，因提升对象字面上是第一分量为 [x]
+   的对 [(x; dx)]。
 
-   Opfibrations arise by duality: [Displayed_op] re-reads a displayed
-   category over [C] as one over [C^op] — a displayed morphism from [dx]
-   to [dy] over [f : x ~{C^op}~> y] is a displayed morphism from [dy] to
-   [dx] over the underlying arrow of [C] — and an opcleaving of [D] is a
-   cleaving of the op-displayed category ([OpCleaving]). *)
+   余纤维化由对偶产生：[Displayed_op] 把 [C] 上的展示范畴重读为 [C^op] 上的——
+   在 [f : x ~{C^op}~> y] 上从 [dx] 到 [dy] 的展示态射是在 [C] 底层箭头上从 [dy] 到 [dx]
+   的展示态射——[D] 的余劈开是 op-展示范畴的劈开（[OpCleaving]）。 *)
 
 (** ** Cartesian morphisms and cleavings, displayed presentation *)
 

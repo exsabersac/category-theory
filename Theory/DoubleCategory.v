@@ -9,74 +9,11 @@ Generalizable All Variables.
 (* nLab: https://ncatlab.org/nlab/show/double+category
    Wikipedia: https://en.wikipedia.org/wiki/Double_category
 
-   A (pseudo) double category has a collection of objects, two kinds of
-   morphism between them — STRICT vertical 1-cells (organised as an ordinary
-   [Category], [dcat]) and WEAK horizontal 1-cells ([dhor]) — and, for every
-   arrangement
-
-        a --h--> b
-        |        |
-        u        v          (h : dhor a b top, k : dhor c d bottom,
-        v        v           u : a ~> c left, v : b ~> d right)
-        c --k--> d
-
-   a setoid [dsq h u v k] of squares filling it. Vertical composition of
-   squares ([dsq_vcomp]) and the vertical identity square ([dsq_vid]) are
-   STRICT and satisfy the ordinary category laws; horizontal composition of
-   1-cells ([dhcomp]) is only WEAKLY associative and unital, the coherence
-   isomorphisms being invertible GLOBULAR squares (squares whose two vertical
-   edges are identities). This is exactly the amount of weakening that lets
-   the same class host both the double category of commuting squares of a
-   category (Construction/Sq.v — where [dsq h u v k := k ∘ u ≈ v ∘ h] is a
-   mere proposition, its setoid trivial, every law automatic) and the double
-   category of cospans (Construction/Cospan/Double.v — where squares are
-   apex-maps and horizontal composition is a chosen pushout, so [dsq] is
-   genuinely proof-relevant and the coherence squares carry real content).
-
-   The horizontal 1-cells live in a plain [Type], but a square's boundary
-   mentions the vertical morphisms [u], [v], which are only ever compared up
-   to [≈]. So the square family must cohere across [≈] on its boundary. That
-   coherence is [dsq_coerce]: along proofs [eu : u ≈ u'], [ev : v ≈ v'] a map
-   [dsq h u v k → dsq h u' v' k], proof-irrelevant ([dsq_coerce_id]) and
-   functorial ([dsq_coerce_trans]). This is precisely the Phase 10 displayed
-   [dtransport] pattern (Theory/Displayed.v) re-applied to the vertical
-   boundary of a square: the strict vertical laws are then stated THROUGH
-   [dsq_coerce], which absorbs boundary reassociations such as [u' ∘ id]
-   versus [u], and the weak coherence laws are stated between globular squares
-   after normalising their [id ∘ id] vertical boundaries back to [id].
-
-   Design note (kept minimal so both models supply every field): [dsq] is NOT
-   assumed proof-irrelevant beyond what [dsq_setoid] provides, so the cospan
-   model — whose squares are not propositions — is admissible; and every
-   coherence field is dischargeable in the commuting-squares model, where the
-   square setoid identifies all inhabitants. The invertible globular squares
-   ([dassoc], [dunit_left], [dunit_right]) are packaged as a forward square, a
-   backward square, and the two round-trip identities (a sigma-of-squares),
-   which the commuting-squares model produces from associativity/unit laws of
-   the base and the cospan model produces from the pushout universal property;
-   named accessors ([dassoc_to], [dassoc_from], ...) are provided below.
-
-   SCOPE. This class is the coherence-only fragment of the literature's
-   pseudo double category (Grandis–Paré), matching the work order's skeleton.
-   Three standard components are deliberately not required as fields:
-   (a) horizontal identity squares on general VERTICAL morphisms
-       (1_u : dsq (dhid a) u u (dhid c)) together with their functoriality —
-       the representability formulation of the vertical zigzag in
-       Theory/DoubleCategory/Companion.v exists precisely because of this;
-   (b) the unit half of interchange,
-       dsq_hcomp (dsq_vid h) (dsq_vid h') ≈ dsq_vid (dhcomp h' h);
-   (c) naturality in squares of [dassoc]/[dunit_left]/[dunit_right]
-       (contrast the hassoc_natural/hunit_*_natural fields of
-       Theory/Bicategory.v).
-   Both in-tree instances (Construction/Sq.v, Construction/Cospan/Double.v)
-   satisfy all three, so a later phase may add them as fields without
-   breaking either model.
-
-   Orientation note: [dassoc] runs right-bracketed to left-bracketed
-   (h·(g·f) ⇒ (h·g)·f), the OPPOSITE of tensor_assoc (Structure/Monoidal.v)
-   and hassoc (Theory/Bicategory.v); the triangle and pentagon below are the
-   standard laws rearranged for that orientation. A future horizontal-
-   bicategory bridge must swap to/from accordingly. *)
+   双重范畴 (double category) 有对象、水平 1-胞、垂直 1-胞，以及填入方块的 2-胞
+   （四方格），水平与垂直方向各有范畴结构，且两方向的复合经交换律 (interchange)
+   相容。本库的伪双重范畴变体允许水平复合仅在连贯同构下结合/有单位（类比双范畴），
+   垂直方向通常更严格。companions 与 conjoints 是连接两方向的特殊方块，支撑 mates
+   对应。本文件给出核心类与边界连贯；历史与用途见下一块注释（后续波次可续译）。 *)
 
 (* Where double categories come from, and what they are for
 

@@ -16,40 +16,26 @@ Generalizable All Variables.
    nLab: https://ncatlab.org/nlab/show/category
    Wikipedia: https://en.wikipedia.org/wiki/Category_(mathematics)
 
-   The single-sorted ("arrows-only") axiomatization of a category, due to
-   Mac Lane (Categories for the Working Mathematician, I.1, "arrows-only"
-   description). A category is presented purely by a collection of arrows
-   together with a partial composition (a partial magma on arrows); there is
-   no separate sort of objects. Objects are recovered as the identity arrows.
-   Mac Lane's notion of identity is conditional — [u] is an identity when
-   [f ∘ u ≈ f] whenever [f ∘ u] is defined, and [u ∘ g ≈ g] whenever [u ∘ g]
-   is defined — but the [identity] field below drops both guards and demands
-   the two equations for EVERY arrow (see the note there). Two consequences
-   are worth stating plainly. First, over a finite table of composable pairs
-   that condition cannot be met at all, since it requires an entry [(f, u)]
-   for every [f : nat]: no arrow of [ZeroArrows], [OneArrow], [TwoArrows] or
-   [ThreeArrows] is an identity in this sense, so each category [FromArrows]
-   builds from them — [Three] included — has no objects. Second, the three
-   axioms below are NOT shown here to capture exactly a category: neither
-   direction is proved, and the third axiom [identity_law] is moreover vacuous
-   as written (again, see its note). What [FromArrows] does establish is the
-   one direction, that every metacategory in the present sense yields a
-   [Category] whose objects are the identity arrows [∃ i, identity M i].
-   Theory/Metacategory/General.v carries the axioms over an arbitrary arrow
-   type with neither defect, and proves both passages together with the sense
-   in which they are mutually inverse.
+   范畴的单排序（「仅箭头」）公理化，归于 Mac Lane（《Categories for the Working
+   Mathematician》, I.1，「仅箭头」描述）。范畴纯由箭头汇集连同偏复合（箭头上的偏岩浆）
+   呈现；没有单独的对象排序。对象恢复为恒等箭头。Mac Lane 的恒等概念是条件性的——
+   当 [f ∘ u] 有定义时 [f ∘ u ≈ f]，当 [u ∘ g] 有定义时 [u ∘ g ≈ g]，则 [u] 是恒等——
+   但下文 [identity] 字段去掉两道守卫，要求对*每个*箭头成立两方程（见彼处注记）。
+   两个后果宜直说。第一，在有限可复合对表上该条件根本无法满足，因它要求对每个
+   [f : nat] 有条目 [(f, u)]：[ZeroArrows]、[OneArrow]、[TwoArrows]、[ThreeArrows]
+   的箭头在此意义下都不是恒等，故 [FromArrows] 由它们建成的每个范畴——含 [Three]——
+   都没有对象。第二，下文三公理*未*在此证明恰好刻画范畴：两方向皆未证，且第三公理
+   [identity_law] 按书写还是空虚的（再见图注）。[FromArrows] 确立的是一方向：本意义下
+   每个元范畴都产出对象为恒等箭头 [∃ i, identity M i] 的 [Category]。
+   Theory/Metacategory/General.v 在任意箭头类型上携带无上述缺陷的公理，并证明两通路
+   及它们在何种意义下互逆。
 
-   This module shows that an "arrows-only" metacategory is sufficient to
-   define a category. The axioms defined by Mac Lane are used, with the
-   "defined set of composable pairs" and "composite assignments" both encoded
-   using a key-value map provided by FMap, since that provides just the
-   structure we need: [M.MapsTo (f, g) h pairs] records that the composable
-   pair [(f, g)] has composite [h]. Natural numbers are used to differentiate
-   arrows.
+   本模块表明「仅箭头」元范畴足以定义范畴。使用 Mac Lane 的公理，「可复合对的定义集」
+   与「复合赋值」都用 FMap 提供的键值映射编码，因它恰提供所需结构：
+   [M.MapsTo (f, g) h pairs] 记录可复合对 [(f, g)] 的复合为 [h]。用自然数区分箭头。
 
-   Theory/Metacategory/ArrowsOnly.v is a parallel development of the same idea
-   over [arrow := N] with a more direct [find]-based composition; it carries
-   the polished form of these definitions. *)
+   Theory/Metacategory/ArrowsOnly.v 是同一想法在 [arrow := N] 上的平行开发，复合更直接
+   基于 [find]；它携带这些定义的打磨形式。 *)
 
 (* The first-order theory of categories, and its computable models
 

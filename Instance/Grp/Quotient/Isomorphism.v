@@ -63,9 +63,9 @@ Proof.
   exact (`2 (`2 p)).
 Qed.
 
-(* A surjective homomorphism identifies its image with its codomain.  The
-   inverse map sends b to b together with its preimage witness, which is
-   DATA (Epi.v's [GrpImage] is a sigma), so nothing is chosen. *)
+(* A surjective 同态 identifies its image its codomain. The
+ inverse map sends b b together its preimage witness, which is
+ DATA (Epi.v's [GrpImage] is sigma), so nothing is chosen.（已译） *)
 Program Definition surjective_image_iso {G K : GrpObject} (h : G ~{Grp}~> K)
   (Hs : GrpSurjective h) : ImageGrp h ≅[Grp] K := {|
   to := sub_incl (ImageSub h);

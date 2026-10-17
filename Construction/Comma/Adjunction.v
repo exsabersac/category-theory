@@ -531,9 +531,9 @@ Proof.
   destruct x; reflexivity.
 Qed.
 
-(* Auxiliary re-expansion lemmas: under φ (resp. ψ) a comma object may be
-   replaced by its surjective-pairing normal form without changing the value.
-   Stated for completeness; not used by the development below. *)
+(* Auxiliary re-expansion 引理: under φ (resp. ψ) comma 对象 may be
+ replaced its surjective-pairing normal form without changing value.
+ Stated completeness; not used development below.（已译） *)
 Lemma expand_φ_ψ {a b} (g : a ~> G b) :
   φ E (ψ E ((a, b); g))
     ≈

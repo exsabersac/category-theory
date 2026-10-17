@@ -42,7 +42,7 @@ Definition SetsPoint : Sets := @terminal_obj Sets Sets_Terminal.
 
 (* Built directly rather than as [Ab_zero_hom A ∘ Ab_one A]: the composite
    would route through [Ab_trivial], whose monomorphic [Set] universes would
-   then pin this constant (see the header's UNIVERSES). *)
+   then pin this constant (see the header's UNIVERSES).（标题）（已译） *)
 Definition ab_zero_endo (A : Ab) : A ~{Ab}~> A.
 Proof.
   unshelve refine {| cmon_map := {| morphism := fun _ => cmon_zero A |} |}.

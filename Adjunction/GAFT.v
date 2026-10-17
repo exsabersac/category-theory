@@ -108,9 +108,9 @@ Qed.
 
 (* 相关说明。 （已译） *)
 
-(* Every complete category has all binary equalizers: take the limit of the
-   walking parallel pair [APair f g] and read it, at its apex, as an elementary
-   equalizer via [equalizer_is_equalizer] of [Structure/Equalizer/Fork.v]. *)
+(* Every 完备 范畴 has all binary equalizers: take 极限 the
+ walking parallel pair [APair f g] read it, at its apex, as elementary
+ 等化子 via [equalizer_is_equalizer] [Structure/Equalizer/Fork.v].（已译） *)
 Definition Complete_HasEqualizers {A : Category} (HA : @Complete A) :
   HasEqualizers A.
 Proof.

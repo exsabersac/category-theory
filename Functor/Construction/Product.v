@@ -36,10 +36,10 @@ Program Instance ProductFunctor
 (* F ∏⟶ G : C ∏ J ⟶ D ∏ K, the componentwise product of functors. *)
 Notation "F ∏⟶ G" := (@ProductFunctor _ _ F _ _ G) (at level 9).
 
-(* Conjugating a bifunctor by the symmetry Swap (C ∏ D ⟶ D ∏ C, defined in
-   Construction/Product) exchanges its two factors. Given F : C ∏ J ⟶ D ∏ K,
-   this yields J ∏ C ⟶ K ∏ D as Swap ◯ F ◯ Swap, sending an object x to
-   Swap (F (Swap x)). *)
+(* Conjugating bifunctor symmetry Swap (C ∏ D ⟶ D ∏ C, defined in
+ Construction/Product) exchanges its two factors. Given F : C ∏ J ⟶ D ∏ K,
+ this yields J ∏ C ⟶ K ∏ D as Swap ◯ F ◯ Swap, sending 对象 x to
+ Swap (F (Swap x)).（已译） *)
 Program Definition ProductFunctor_swap
         {C : Category} {D : Category}
         {J : Category} {K : Category}

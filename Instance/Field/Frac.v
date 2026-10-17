@@ -642,8 +642,8 @@ End FracField.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 (* Only FOUR obligations are generated: both setoids here carry Leibniz
-   equality, so [Proper (equiv ==> equiv) Z.odd] is discharged by
-   instance resolution during elaboration and never becomes one. *)
+ equality, so [Proper (equiv ==> equiv) Z.odd] is discharged by
+ 实例 resolution during elaboration never becomes one.（已译） *)
 Program Definition ZtoF2 : Int_Ring ~{Rng}~> F2_Ring := {|
   rig_map := {| morphism := Z.odd |}
 |}.

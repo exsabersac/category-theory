@@ -381,11 +381,11 @@ Definition HasSubobjectWidePullbacks@{o h q r k +}
   ∀ (x : C) (I : Type@{q}) (S : I → SubObj x),
     WidePullback@{q r o h} (fun i => Subobject.sub_mono (S i)).
 
-(* Completeness supplies it at every index universe [q] at or below its
-   shape universe [so], whatever the objects' universe: Structure/
-   Pullback/Wide/Complete.v's [complete_wide_pullback] at each family.
-   Theorem 2 asks it at [q] at or above the objects (the header's
-   paragraph IN TREE, THEOREM 2 IS APPLIED ONLY AT A THIN CATEGORY). *)
+(* Completeness supplies it at every index universe [q] at below its
+ shape universe [so], whatever 对象' universe: Structure/
+ Pullback/Wide/Complete.v's [complete_wide_pullback] at each family.
+ Theorem 2 asks it at [q] at above 对象 (the header's
+ paragraph IN TREE, THEOREM 2 IS APPLIED ONLY AT A THIN CATEGORY).（已译） *)
 Definition Complete_HasSubobjectWidePullbacks@{o h so q r k +|
     h <= so, q <= so +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C) :
@@ -605,10 +605,10 @@ Example SAFT_thm2_left_obj@{o dobj h so c pk pa q r rd pw k +|
 
 (* 相关说明。 （已译） *)
 
-(* Every wide pullback, of monos or not, at every index universe: the
-   monicity clause [Hm] is accepted and ignored.  Elementary, by
-   transposition along [adj], since a wide pullback has no shape
-   category for [rapl_ump]. *)
+(* Every wide 拉回, monos not, at every index universe: the
+ monicity clause [Hm] is accepted ignored. Elementary, by
+ transposition along [adj], since wide 拉回 has no shape
+ 范畴 [rapl_ump].（已译） *)
 Definition right_adjoint_PreservesWidePullbacks@{o dobj h pw q r rd +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} {F : D ⟶ C} {U : C ⟶ D}
   (A : F ⊣ U) : PreservesWidePullbacks@{o h dobj h pw q r rd} U.
@@ -639,10 +639,10 @@ Defined.
 
 (** ** Theorem 2, the biconditional *)
 
-(* Mac Lane §V.8 Theorem 2: over a complete C with a small cogenerating
-   family in which every family of subobjects has a wide pullback, [U] has
-   a left adjoint iff it preserves small limits and wide pullbacks of
-   monos. *)
+(* Mac Lane §V.8 Theorem 2: over 完备 C small cogenerating
+ family which every family subobjects has wide 拉回, [U] has
+ 左伴随 iff it preserves small limits wide pullbacks of
+ monos.（已译） *)
 Definition SAFT_iff@{o dobj h so c pk pa q r rd pw k +|
     h <= so, c <= so, o <= q, h <= q +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)

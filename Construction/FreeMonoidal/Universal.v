@@ -369,9 +369,9 @@ Fixpoint canW (w : Word) : w ≅[W] nfword (wlen w) :=
                     (canW v) (canW u)
   end.
 
-(* Transparent tensor-congruence for object equalities.  [f_equal2] is
-   opaque (Qed) in the stdlib, so casts along it can only be discharged by
-   UIP — unavailable at an arbitrary [B].  This match-defined twin reduces. *)
+(* Transparent tensor-congruence 对象 equalities. [f_equal2] is
+ opaque (Qed) stdlib, so casts along it can only be discharged by
+ UIP — unavailable at arbitrary [B]. This match-defined twin reduces.（已译） *)
 Definition tensor_eq {X X' Y Y' : B} (e1 : X = X') (e2 : Y = Y') :
   (X ⨂ Y)%object = (X' ⨂ Y')%object :=
   match e1 with eq_refl => match e2 with eq_refl => eq_refl end end.

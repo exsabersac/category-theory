@@ -71,8 +71,8 @@ Class LocallySmall@{o h p uh up | h <= p, uh <= up, uh <= h}
   ls_from    : ∀ {x y}, (x ~> y) → ls_hom x y;
 
   (* Respectfulness is stated directly rather than through [Proper]: the
-     relation spans both hom types, so a [Proper] instance lands at
-     max(h,uh) and cannot be a field constrained to [Type@{uh}]. *)
+ relation spans both hom types, so [Proper] 实例 lands at
+ max(h,uh) cannot be field constrained [Type@{uh}].（已译） *)
   ls_to_resp : ∀ {x y} (u v : ls_hom x y),
                  @Setoid.equiv _ (ls_setoid x y) u v → ls_to u ≈ ls_to v;
 
@@ -122,9 +122,9 @@ Class Small@{o h p uo uh up | h <= p, uh <= up, uo < o, uh < h}
   small_ob_from_to  : ∀ a, ObjEq (small_ob_from (small_ob_to a)) a
 }.
 
-(** "Every small category is locally small" (Awodey, the note after Definition
-    1.12; Riehl, likewise).  Here it is a projection -- which is the honest
-    form, since smallness was DEFINED to include the hom condition. *)
+(* * "Every small 范畴 is locally small" (Awodey, 注 after Definition
+ 1.12; Riehl, likewise). Here it is projection -- which is honest
+ form, since smallness was DEFINED include hom condition.（已译） *)
 Definition small_locally_small@{o h p uo uh up
     | h <= p, uh <= up, uo < o, uh < h}
   (C : Category@{o h p}) (S : Small@{o h p uo uh up} C)

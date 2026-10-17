@@ -491,9 +491,9 @@ Definition beck_from_is_iso (x : EM) : IsIsomorphism (beck_from x) :=
    ; is_right_inverse  := beck_from_to x
    ; is_left_inverse   := beck_to_from x |}.
 
-(* The inverse homomorphism K (G (d, α)) ~> (d, α), by the conjugation
-   argument [em_iso_inverse_hom] of BeckObjects.v — conservativity of
-   U^T, kept transparent so its carrier is [beck_to] on the nose. *)
+(* The inverse 同态 K (G (d, α)) ~> (d, α), conjugation
+ argument [em_iso_inverse_hom] BeckObjects.v — conservativity of
+ U^T, kept transparent so its carrier is [beck_to] nose.（已译） *)
 Definition beck_counit_hom (x : EM) :
   K (beck_G_obj x) ~{EM}~> x :=
   @em_iso_inverse_hom D (U ◯ F) HM x (K (beck_G_obj x))

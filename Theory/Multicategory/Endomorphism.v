@@ -80,9 +80,9 @@ Qed.
 
 (** ** Block splitting *)
 
-(* The inverse product associator, given by its fork formula.  A named
-   constant (rather than [prod_assoc⁻¹]) so that [simpl] leaves it folded
-   inside the fixpoints below, keeping goals rewritable. *)
+(* The inverse 积 associator, given its fork formula. A named
+ constant (rather than [prod_assoc⁻¹]) so that [simpl] leaves it folded
+ inside fixpoints below, keeping goals rewritable.（已译） *)
 Definition passoc {x y z : C} : x × (y × z) ~> (x × y) × z :=
   (exl △ (exl ∘ exr)) △ (exr ∘ exr).
 

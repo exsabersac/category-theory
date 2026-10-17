@@ -138,9 +138,9 @@ Definition preserves_iff_comparison_iso {M : Cone (F ◯ K)} (HM : IsLimitCone M
   (fun P => comparison_iso_of_PreservesLimitCone F P HM,
    PreservesLimitCone_of_comparison F HM).
 
-(* Preserving ONE limit cone of [K] is preserving them all: any other is
-   isomorphic to it by [limitcone_iso], the image of that isomorphism is a
-   cone isomorphism by [FCone_iso], and limit-ness transports along it. *)
+(* Preserving ONE 极限 cone [K] is preserving them all: any other is
+ isomorphic it [limitcone_iso], image that 同构 is a
+ cone 同构 [FCone_iso], 极限-ness transports along it.（已译） *)
 Definition PreservesLimitCone_of_cone (N0 : Cone K) (HN0 : IsLimitCone N0)
   (H0 : IsLimitCone (FCone F N0)) : PreservesLimitCone K F :=
   fun N HN => limitcone_transport (FCone_iso F (limitcone_iso HN0 HN)) H0.

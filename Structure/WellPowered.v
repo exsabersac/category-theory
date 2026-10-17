@@ -122,10 +122,10 @@ End Quotients.
 
 (* 相关说明。 （已译） *)
 
-(* Adjoining the top subobject to a family changes none of its lower
-   bounds, and it gives the index a point ([None]), which Theory/Subobject/
-   Lattice.v's [sub_wide_intersection] needs to read a wide pullback as a
-   subobject. *)
+(* Adjoining top subobject family changes none its lower
+ bounds, it gives index point ([None]), which Theory/Subobject/
+ Lattice.v's [sub_wide_intersection] needs read wide 拉回 as a
+ subobject.（已译） *)
 
 Section SmallIntersections.
 
@@ -314,9 +314,9 @@ Defined.
 
 (** ** Witnesses *)
 
-(* The trivial datum: the index is [SubObj x] itself.  It exists at every
-   object of every category, one universe too high to be [WellPowered] in
-   general; [trivial_small] is the case where it is not too high. *)
+(* The trivial datum: index is [SubObj x] itself. It exists at every
+ 对象 every 范畴, one universe too high be [WellPowered] in
+ 一般; [trivial_small] is case where it is not too high.（已译） *)
 Definition wp_trivial@{o h w s t | o <= w, h <= w, o <= s, h <= s, h < t +}
   {C : Category@{o h h}} (x : C) : WellPoweredAt@{w o s h t} x :=
   {| wp_index   := SubObj x;
@@ -445,9 +445,9 @@ Proof.
     + intros v _; destruct v; reflexivity.
 Defined.
 
-(* Both hypotheses of [wellpowered_complete_has_intersections] at once, at a
-   category whose objects, the types of [Type@{j}], sit one universe above
-   its homs; the trivial witness is out of reach there. *)
+(* Both hypotheses [wellpowered_complete_has_intersections] at once, at a
+ 范畴 whose 对象, types [Type@{j}], sit one universe above
+ its homs; trivial witness is out reach there.（已译） *)
 Definition Indiscrete_types_has_intersections@{j o t q +|
     j < o, j < t, o <= q +}
   (x : Indiscrete@{o j j} Type@{j}) (P : SubObj x → Type@{j})

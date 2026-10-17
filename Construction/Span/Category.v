@@ -357,8 +357,8 @@ Proof.
     by (apply pullback_med_snd).
   (* === Build mediator PR -> PL === *)
   (* PR has projections [pullback_fst PR : PR -> apex f] and
-                        [pullback_snd PR : PR -> Pull Phg].
-     Build cocone for Pgf using (pullback_fst PR, pullback_fst Phg ∘ pullback_snd PR). *)
+ [pullback_snd PR : PR -> Pull Phg].
+ Build cocone Pgf using (拉回_fst PR, 拉回_fst Phg ∘ 拉回_snd PR).（已译） *)
   assert (Hpgf :
     leg2 f ∘ pullback_fst _ _ PR
     ≈ leg1 g ∘ (pullback_fst _ _ Phg ∘ pullback_snd _ _ PR)).

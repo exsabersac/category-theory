@@ -508,9 +508,9 @@ Lemma colimit_inj_coherence `(H : @IsAColimit J C F c) {x y : J}
   colimit_inj H y ∘ fmap[F] f ≈ colimit_inj H x.
 Proof. exact (@cone_coherence _ _ _ _ (@limit_acone _ _ _ _ H) y x f). Qed.
 
-(* Universal property, covariantly: every cocone N over F factors through
-   the colimit apex by a unique mediating morphism out of c. Transparent,
-   so downstream constructions can extract the mediator. *)
+(* Universal 性质, covariantly: every cocone N over F factors through
+ 余极限 apex 唯一 mediating 态射 out c. Transparent,
+ so downstream constructions can extract mediator.（已译） *)
 
 Definition ump_colimit `(H : @IsAColimit J C F c) (N : Cocone F) :
   ∃! u : c ~{C}~> vertex_obj[N],
@@ -589,10 +589,10 @@ Defined.
 
 (** ** Continuity and cocontinuity *)
 
-(* A functor preserving the limits of all diagrams of all shapes
-   (continuous), respectively all colimits (cocontinuous). These are plain
-   Definitions: preservation of a class of limits is data to be supplied,
-   never inferred. *)
+(* A 函子 preserving limits all diagrams all shapes
+ (continuous), respectively all colimits (cocontinuous). These are plain
+ Definitions: preservation class limits is data be supplied,
+ never inferred.（已译） *)
 
 Definition PreservesAllLimits {C D : Category} (F : C ⟶ D) : Type :=
   ∀ (J : Category) (G : J ⟶ C), PreservesLimit G F.

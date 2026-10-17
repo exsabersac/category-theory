@@ -447,10 +447,10 @@ Example coex_ctrl_from_to :
   cmon_map (coex_from R (coex_to R g)) m ≈ cmon_map g m
   := proper_morphism (cmon_map g) _ _ (rm_smul_one M m).
 
-(* NEGATIVE 1 (CONVERSION).  [coex_from (coex_to g)] evaluates to
-   g (1 · m), and 1 · − is not the identity by conversion:
-   [rm_smul_one] is an abstract field of [RModObject], so neither side
-   reduces and no downstream transparency would help. *)
+(* NEGATIVE 1 (CONVERSION). [coex_from (coex_to g)] evaluates to
+ g (1 · m), 1 · − is not 恒等 conversion:
+ [rm_smul_one] is abstract field [RModObject], so neither side
+ reduces no downstream transparency would help.（已译） *)
 Fail Example coex_probe_from_to_strict :
   cmon_map (coex_from R (coex_to R g)) m = cmon_map g m := eq_refl.
 

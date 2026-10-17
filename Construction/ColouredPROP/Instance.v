@@ -99,7 +99,7 @@ Definition FreeColouredPROP : ColouredPROP Colour :=
     (* [strict_is_monoidal CFreeCat_Strict] and
        [braided_is_monoidal (symmetric_is_braided
         (CFreeCat_Symmetric S Cdec))] both reduce to the literal
-       term [CFreeCat_Monoidal S Cdec]. *)
+       term [CFreeCat_Monoidal S Cdec].（标题）（已译） *)
     eq_refl
 
     (* 相关说明。 （已译） *)
@@ -123,11 +123,11 @@ Definition FreeColouredPROP : ColouredPROP Colour :=
     (fun _ _ _ _ H => H)
     (fun _ _ _ _ H => H).
 
-(** Objects of [CFreeCat S] are colour words, whose equality
-    [list_eq_dec Cdec] decides.  A [Definition], not an [Instance]:
-    it is [Cdec]-conditional (D2), and call sites pass it explicitly
-    so that exactly one canonical decider circulates per colour
-    type. *)
+(* * Objects [CFreeCat S] are colour words, whose equality
+ [list_eq_dec Cdec] decides. A [Definition], not [Instance]:
+ it is [Cdec]-conditional (D2), call sites pass it explicitly
+ so that exactly one 典范 decider circulates per colour
+ type.（已译） *)
 
 Definition CFreeCat_ObjDecEq : ObjDecEq (CFreeCat S) := list_eq_dec Cdec.
 

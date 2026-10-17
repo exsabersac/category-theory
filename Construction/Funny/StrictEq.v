@@ -144,10 +144,10 @@ Proof using C D E H K el eo er.
     exact (@fmap_comp (C □ D) E K (ca, da) (ca, db) (cc, dc) t (rstep g)).
 Qed.
 
-(* In applications [eo] is typically [fun _ _ => eq_refl] (or a pair/unit
-   destruct), making the transports in [el]/[er] vanish definitionally.  The
-   object component needs the pair match because [prod] has no definitional
-   eta. *)
+(* In applications [eo] is typically [fun _ _ => eq_refl] (or pair/单位
+ destruct), making transports [el]/[er] vanish definitionally. The
+ 对象 component needs pair match because [prod] has no definitional
+ eta.（已译） *)
 Theorem Funny_strict_eq : @equiv _ (@Functor_StrictEq_Setoid (C □ D) E) H K.
 Proof using C D E H K el eo er.
   refine (Functor_StrictEq_intro H K

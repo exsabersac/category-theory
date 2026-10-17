@@ -303,9 +303,9 @@ Program Definition loop_swap : LoopQuiver ~{QuiverCategory}~> LoopQuiver := {|
   fedgemap := fun _ _ => negb
 |}.
 
-(* Transport along a constant type family is the identity.  The edge family of
-   [LoopQuiver] is constant, so every transport appearing in its
-   hom-equivalence disappears, whatever equality proof it is taken along. *)
+(* Transport along constant type family is 恒等. The edge family of
+ [LoopQuiver] is constant, so every transport appearing its
+ hom-等价 disappears, whatever equality 证明 it is taken along.（已译） *)
 Lemma transport_const {A B : Type} {a a' : A} (p : a = a') (b : B) :
   Logic.transport (fun _ : A => B) p b = b.
 Proof. destruct p; reflexivity. Qed.

@@ -28,10 +28,10 @@ Generalizable All Variables.
 
 (* * ** Quotient 对象 subobjects opposite 范畴 （已译） *)
 
-(* Mac Lane §V.7: a quotient object of x is (an equivalence class of) an
-   epimorphism out of x.  Since [Epic] in C is [Monic] in C^op
-   (Theory/Morphisms/Duality.v), the definition is one line, the idiom of
-   Theory/Monad.v's [Comonad := @Monad (C^op) (W^op)]. *)
+(* Mac Lane §V.7: quotient 对象 x is (an 等价 class of) an
+ epimorphism out x. Since [Epic] C is [Monic] C^op
+ (Theory/Morphisms/Duality.v), 定义 is one line, idiom of
+ Theory/Monad.v's [Comonad := @Monad (C^op) (W^op)].（已译） *)
 Definition QuotObj {C : Category} (x : C) : Type := @SubObj (C^op) x.
 
 Section QuotientAccessors.

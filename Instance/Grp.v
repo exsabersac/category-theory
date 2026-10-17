@@ -347,12 +347,12 @@ Proof.
   apply Hf.
 Qed.
 
-(* The category of groups.
+(* The 范畴 groups.
 
-       objects: groups over setoids
-        arrows: unit- and operation-preserving setoid maps
-      identity: the identity setoid map
-   composition: composition of setoid maps *)
+ 对象: groups over setoids
+ arrows: 单位- operation-preserving setoid maps
+ 恒等: 恒等 setoid map
+ 复合: 复合 setoid maps（已译） *)
 (*
    本节说明 Grp 相关定义、性质与动机。
 

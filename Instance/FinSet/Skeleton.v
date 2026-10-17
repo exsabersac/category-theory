@@ -585,10 +585,10 @@ Qed.
 
 (* 相关说明。 （已译） *)
 
-(* [nat] under equality of parity: two equivalence classes, infinitely
-   many inhabitants.  It is an object of [Set_f] of cardinality 2, so
-   [Set_f] is not a relabelling of [FinSet] — and the cardinal functor
-   computes on it. *)
+(* [nat] under equality parity: two 等价 classes, infinitely
+ many inhabitants. It is 对象 [Set_f] cardinality 2, so
+ [Set_f] is not relabelling [FinSet] — cardinal 函子
+ computes it.（已译） *)
 Program Definition parity_setoid : SetoidObject := {|
   carrier := nat;
   is_setoid := {| equiv := fun x y => Nat.odd x = Nat.odd y |}
@@ -657,10 +657,10 @@ Definition parity_succ : parity_two ~{Set_f}~> parity_two :=
 
 (* The carrier [nat]: 对象 [Set_f] finite setoid sense
  — finitely many EQUIVALENCE CLASSES — so carrier type need not be. （已译） *)
-(* PROJECTION: an identification of carriers, holding because [parity_two]
-   was built over [parity_setoid] whose carrier is [nat]. It records that a
-   two-element object may have an infinite carrier; it proves nothing about
-   the finiteness witness. *)
+(* PROJECTION: identification carriers, holding because [parity_two]
+ was built over [parity_setoid] whose carrier is [nat]. It records that a
+ two-element 对象 may have 无限 carrier; it proves nothing about
+ finiteness witness.（已译） *)
 Example parity_carrier_is_nat : carrier (fs_obj parity_two) = nat := eq_refl.
 
 (*
@@ -686,7 +686,7 @@ Example Card_parity_succ_FS :
 
 (* The counit at [parity_two], computed.  Again Leibniz equality of
    natural numbers, strictly stronger than [parity_setoid]'s ≈: the
-   component does not merely land in the even class, it returns 0. *)
+   component does not merely land in the even class, it returns 0.（标题）（已译） *)
 Example counit_at_parity_two :
   to (@equivalence_counit_at FinSet Set_f FinSet_Incl
         FinSet_Setf_Equivalence parity_two) Fin.F1 = 0%nat := eq_refl.

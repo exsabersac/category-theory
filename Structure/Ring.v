@@ -249,9 +249,9 @@ Proof.
 Qed.
 
 (* [Structure/Group.v] declares [Notation "'inverse' [ G ]"], which makes
-   [inverse] a notation keyword: neither [@inverse] nor a record-literal
-   field assignment [inverse := _] parses.  The group object is therefore
-   built with the constructor applied positionally. *)
+ [inverse] 记法 keyword: neither [@inverse] nor record-literal
+ field assignment [inverse := _] parses. The group 对象 is therefore
+ built constructor applied positionally.（已译） *)
 Definition InternalRing_GroupObject :
   @GroupObject C CC_CartesianMonoidal r :=
   @Build_GroupObject C CC_CartesianMonoidal r ir_add ir_neg

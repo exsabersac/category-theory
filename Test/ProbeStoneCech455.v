@@ -212,9 +212,9 @@ Fail Definition p455_n7_point_hausdorff_o@{h o +| o < h +} :
   IsHausdorff@{h o o o} Point_Top@{o} :=
   Point_Hausdorff.
 
-(* CONTROL: [bool_FinEnum] stated without a universe binder, and its uses:
-   at [Set], at [FinEnum] above [Set] by conversion, and in an object of
-   [CompHaus] above [Set] once its setoid is named at that universe. *)
+(* CONTROL: [bool_FinEnum] stated without universe binder, its uses:
+ at [Set], at [FinEnum] above [Set] conversion, 对象 of
+ [CompHaus] above [Set] once its setoid is named at that universe.（已译） *)
 Lemma p455_bool_FinEnum_bare : FinEnum bool_setoid_object.
 Proof.
   exists (true :: false :: nil). intros [|].

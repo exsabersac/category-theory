@@ -305,7 +305,7 @@ Arguments ClosedPerp {X} P S.
 (* The setoid of integer pairs, at ONE universe.  [eq_Setoid]
    (Lib/Setoid.v) is polymorphic in exactly the level [Subsets] needs,
    so [≈] here is Leibniz equality and every respectfulness obligation
-   below is a substitution. *)
+   below is a substitution.（标题）（已译） *)
 Definition zz_setoid@{wo} : SetoidObject@{wo wo} :=
   {| carrier := (Z * Z)%type ; is_setoid := eq_Setoid@{wo} (Z * Z)%type |}.
 

@@ -5,7 +5,7 @@ Require Import Category.Theory.Isomorphism.
 Require Import Category.Theory.Morphisms.
 (* Imported before Theory/Subobject.v on purpose: Adjunction/SAFT.v's
    record [SubobjectIndex] has its own [sub_dom] and [sub_mono], which
-   must not shadow the subobject projections used throughout. *)
+   must not shadow the subobject projections used throughout.（标题）（已译） *)
 Require Import Category.Adjunction.SAFT.
 Require Import Category.Theory.Subobject.
 Require Import Category.Theory.Subobject.Lattice.

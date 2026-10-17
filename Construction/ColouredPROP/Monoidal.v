@@ -108,10 +108,10 @@ Proof.
   - apply CTE_sym, CTE_id_left.
 Qed.
 
-(** Flipping a naturality square along both casts: from
-    [q ∘ cast ≈ cast ∘ p] conclude [p ∘ cast⁻¹ ≈ cast⁻¹ ∘ q].
-    This turns every [to]-direction structural naturality square
-    into its [from]-direction companion. *)
+(* * Flipping 自然性 square along both casts: from
+ [q ∘ cast ≈ cast ∘ p] conclude [p ∘ cast⁻¹ ≈ cast⁻¹ ∘ q].
+ This turns every [to]-direction structural 自然性 square
+ into its [from]-direction companion.（已译） *)
 Lemma ccast_square_flip {a b c d : list Colour} (e1 : a = b) (e2 : c = d)
   (p : CTerm S a c) (q : CTerm S b d) :
   CTermEq S (CT_comp q (CT_cast e1)) (CT_comp (CT_cast e2) p) ->

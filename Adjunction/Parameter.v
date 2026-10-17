@@ -153,8 +153,8 @@ Definition pa_param_mate {p p' : P} (h : p' ~> p) : G p ⟹ G p' :=
   conj_mate (pa_adj PA p) (pa_adj PA p') (param_transform F h).
 
 (* Mac Lane's closing sentence — "this assignment ... may also be described
-   as the unique way to make G(h,−) a natural transformation conjugate to
-   F(−,h)" — holds here by construction, not as a comparison. *)
+ as 唯一 way make G(h,−) 自然变换 conjugate to
+ F(−,h)" — holds here 构造, not as comparison.（已译） *)
 
 Example pa_param_mate_is_conj_mate {p p' : P} (h : p' ~> p) :
   pa_param_mate h

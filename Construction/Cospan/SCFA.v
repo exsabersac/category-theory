@@ -111,9 +111,9 @@ Proof.
     reflexivity.
 Defined.
 
-(** Note: composing [back_f] on the RIGHT (as inner) of a generic cospan is
-    a genuine pushout (not a collapse), so no analogous left-collapse bridge
-    exists.  The dual configurations use [back] on the LEFT (outer). *)
+(* * Note: composing [back_f] RIGHT (as inner) generic cospan is
+ genuine 推出 (not collapse), so no analogous left-collapse bridge
+ exists. The 对偶 configurations use [back] LEFT (outer).（已译） *)
 
 (* 相关说明。 （已译） *)
 Lemma cospan_tensor_mor_as_cospan_back
@@ -490,7 +490,7 @@ Proof.
     - apply cospan_equiv_refl. }
   (* Now: compose (mor_as_cospan (from α)) (back ((id▽id) ∘ cover id (id▽id))).
      Apply cospan_compose_mor_iso_left with phi = iso_sym coprod_assoc, since
-     [to (iso_sym α) = from α] (definitionally). *)
+     [to (iso_sym α) = from α] (definitionally).（标题）（已译） *)
   eapply cospan_equiv_trans.
   { apply (cospan_compose_mor_iso_left HP
               (mor_as_cospan_back (id[X] ▽ id[X] ∘ cover id[X] (id[X] ▽ id[X])))
@@ -681,7 +681,7 @@ Proof.
   (* compose (mor_as_cospan (to coprod_comm)) (back (id▽id))
        ≈ back ((id▽id) ∘ from coprod_comm)                  [forward_iso_back]
        ≈ back ((id▽id) ∘ paws)                               [from coprod_comm = paws]
-       ≈ back (id▽id)                                        [codiag_paws_comm]    *)
+       ≈ back (id▽id)                                        [codiag_paws_comm]（标题）（已译） *)
   eapply cospan_equiv_trans.
   { apply (cospan_compose_forward_iso_back (id[X] ▽ id[X])
              (@coprod_comm C H_Coc X X)). }
@@ -741,9 +741,9 @@ Proof.
   apply coprod_ext; assumption.
 Qed.
 
-(** Companion lemma: [pushout_in1 P ∘ inl ≈ pushout_in1 P ∘ inr], derived
-    from the additional cross constraint [pushout_in1 ∘ inr ≈ pushout_in2 ∘ inl]
-    obtained by post-composing [pushout_commutes] with [inl ∘ inr]. *)
+(* * Companion 引理: [pushout_in1 P ∘ inl ≈ pushout_in1 P ∘ inr], derived
+ from additional cross constraint [pushout_in1 ∘ inr ≈ pushout_in2 ∘ inl]
+ obtained post-composing [pushout_commutes] [inl ∘ inr].（已译） *)
 
 Lemma frob_pushout_in1_collapse (X : C) :
   let P := pushout
@@ -802,7 +802,7 @@ Proof.
      Hcomm: (id▽id) ∘ (cover id (id▽id) ∘ to α) ≈ (id▽id) ∘ cover (id▽id) id
        LHS: by codiag_cover, = (id ▽ (id▽id)) ∘ to α
        RHS: by codiag_cover, = (id▽id) ▽ id
-     These are equal by codiag_assoc (after rewrites). *)
+     These are equal by codiag_assoc (after rewrites).（标题）（已译） *)
   assert (HC : (id[X] ▽ id[X]) ∘ (cover id[X] (id[X] ▽ id[X]) ∘ to coprod_assoc)
               ≈ (id[X] ▽ id[X]) ∘ cover (id[X] ▽ id[X]) id[X]).
   { rewrite comp_assoc. symmetry. apply codiag_assoc. }
@@ -820,12 +820,12 @@ Proof.
   - (* (pushout_in1 P ∘ inl) ∘ m ≈ id[P]: use pushout_med_eq. *)
     apply (pushout_med_eq P (pushout_commutes P)
                           ((pushout_in1 P ∘ inl) ∘ m) id[pushout_apex P]).
-    + (* ((pushout_in1 P ∘ inl) ∘ m) ∘ pushout_in1 P ≈ pushout_in1 P
-         Step: rewrite <- comp_assoc twice (the m and inl):
-           pushout_in1 P ∘ inl ∘ (m ∘ pushout_in1 P) = pushout_in1 P ∘ inl ∘ (id▽id)
-         Then expand by coprod_ext: ∘ inl gives pushout_in1 ∘ inl ∘ id = pushout_in1 ∘ inl.
-         ∘ inr gives pushout_in1 ∘ inl ∘ id = pushout_in1 ∘ inl ≈ pushout_in1 ∘ inr (by Hleg).
-         So overall ≈ pushout_in1 P. *)
+    + (* ((推出_in1 P ∘ inl) ∘ m) ∘ 推出_in1 P ≈ 推出_in1 P
+ Step: rewrite <- comp_assoc twice (the m inl):
+ 推出_in1 P ∘ inl ∘ (m ∘ 推出_in1 P) = 推出_in1 P ∘ inl ∘ (id▽id)
+ Then expand coprod_ext: ∘ inl gives 推出_in1 ∘ inl ∘ id = 推出_in1 ∘ inl.
+ ∘ inr gives 推出_in1 ∘ inl ∘ id = 推出_in1 ∘ inl ≈ 推出_in1 ∘ inr (by Hleg).
+ So overall ≈ 推出_in1 P.（已译） *)
       rewrite <- !comp_assoc.
       rewrite Hm1.
       assert (Hcoll : pushout_in1 P ∘ (inl ∘ (id[X] ▽ id[X])) ≈ pushout_in1 P).
@@ -1035,10 +1035,10 @@ Proof.
         * apply cospan_equiv_refl.
         * apply cospan_equiv_sym, mor_as_cospan_id.
       + apply cospan_tensor_mor_as_cospan. }
-  (* Now: compose (back (cover id (id▽id) ∘ to coprod_assoc))
-                 (mor_as_cospan (cover (id▽id) id))
-     The outer is "back", inner is "forward".  This is a genuine pushout
-     (the Frobenius pushout). *)
+  (* Now: compose (back (cover id (id▽id) ∘ coprod_assoc))
+ (mor_as_cospan (cover (id▽id) id))
+ The outer is "back", inner is "forward". This is genuine 推出
+ (the Frobenius 推出).（已译） *)
   apply cospan_equiv_sym.
   (* RHS = compose (back (id▽id)) (mor_as_cospan (id▽id)).
      By cospan_compose_mor_as_cospan_back_left (with outer = back (id▽id), inner = mor_as_cospan (id▽id)):

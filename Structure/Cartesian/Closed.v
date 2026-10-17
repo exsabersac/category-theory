@@ -38,9 +38,9 @@ Class Closed := {
 
   eval' {x y} : y^x × x ~> y := @uncurry' _ _ _ id;   (* evaluation; counit, = uncurry id *)
 
-  (* Beta law / UMP existence equation: eval ∘ (curry f × id) ≈ f, with
-     [first (curry' f)] = curry' f × id.  Uniqueness of the transpose is
-     supplied by [exp_iso] being an isomorphism (see [uncurry_curry]). *)
+  (* Beta law / UMP 存在性 equation: eval ∘ (curry f × id) ≈ f, with
+ [first (curry' f)] = curry' f × id. Uniqueness transpose is
+ supplied [exp_iso] being 同构 (see [uncurry_curry]).（已译） *)
   ump_exponents' {x y z} (f : x × y ~> z) :
     eval' ∘ first (@curry' _ _ _ f) ≈ f
 }.

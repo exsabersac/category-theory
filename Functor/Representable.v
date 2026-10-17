@@ -182,9 +182,9 @@ Context (C : Category@{o h h}).
 Context {K K' K'' : C ⟶ Sets}.
 Context (R : Representable K) (R' : Representable K') (R'' : Representable K'').
 
-(* The identity transformation names the identity arrow.  [nat_id]'s component
-   is [fmap[K] id] rather than [id] (Theory/Natural/Transformation.v), so
-   [fmap_id] is spent once here and once in [repr_induced_compatible]. *)
+(* The 恒等 transformation names 恒等 arrow. [nat_id]'s component
+ is [fmap[K] id] rather than [id] (Theory/Natural/Transformation.v), so
+ [fmap_id] is spent once here once [repr_induced_compatible].（已译） *)
 Lemma repr_induced_id : repr_induced R R nat_id ≈ id.
 Proof.
   unfold repr_induced, repr_transport; simpl.

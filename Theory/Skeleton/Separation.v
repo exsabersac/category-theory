@@ -57,11 +57,11 @@ Program Definition Pick : _1 ⟶ Indiscrete bool := {|
   fmap := fun _ _ _ => tt
 |}.
 
-(* [poly_unit] has no definitional eta, so the unit component is given by a
-   [match] rather than by [fun _ => iso_id].  Both obligations end in
-   [Defined] to keep the equivalence transparent; unlike
-   [skeleton_inclusion_is_equivalence], whose [Defined] is what makes
-   [skel_reflect_obj] hold by [reflexivity], nothing here depends on it. *)
+(* [poly_unit] has no definitional eta, so 单位 component is given a
+ [match] rather than [fun _ => iso_id]. Both obligations end in
+ [Defined] keep 等价 transparent; unlike
+ [skeleton_inclusion_is_equivalence], whose [Defined] is what makes
+ [skel_reflect_obj] hold [reflexivity], nothing here depends it.（已译） *)
 
 Program Definition One_Indiscrete_Equivalence :
   EquivalenceOfCategories Pick := {| quasi_inverse := Erase (Indiscrete bool) |}.

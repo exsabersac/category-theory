@@ -99,10 +99,10 @@ Example FreePROP_I :
 Example FreePROP_tensor_plus_is_refl (m n : nat) :
   @prop_tensor_plus FreePROP m n = eq_refl := eq_refl.
 
-(** [PROP.v]'s successor decomposition [⟦S n⟧ = ⟦1⟧ ⨂ ⟦n⟧] applies to
+(* * [PROP.v]'s successor decomposition [⟦S n⟧ = ⟦1⟧ ⨂ ⟦n⟧] applies to
     [FreePROP]; whichever [Monoidal] path its statement was elaborated
     through, conversion closes the gap here, because both paths project
-    the one shared record. *)
+    the one shared record.（标题）（已译） *)
 Example FreePROP_of_nat_S_smoke (n : nat) :
   @prop_of_nat FreePROP (Datatypes.S n)
   = ((@prop_of_nat FreePROP 1)

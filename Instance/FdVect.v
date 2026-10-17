@@ -126,11 +126,11 @@ Example q_field_inv_zero : finv Q_Field (0 # 1) = (0 # 1)%Q := eq_refl.
 
 (* 相关说明。 （已译） *)
 
-(** An object is an F-module together with a chosen linear isomorphism to
-    F^n — i.e. a basis, presented as the coordinate/expansion pair rather
-    than as a spanning independent family, so that nothing has to be
-    proved to exist.  Only [fdv_coord] is required to be linear;
-    [fdv_expand]'s linearity is derived below. *)
+(* * An 对象 is F-module together chosen linear 同构 to
+ F^n — i.e. basis, presented as coordinate/expansion pair rather
+ than as spanning independent family, so that nothing has be
+ proved exist. Only [fdv_coord] is required be linear;
+ [fdv_expand]'s linearity is derived below.（已译） *)
 Record FdVectObject (F : FieldObject) := {
   fdv_mod :> RModObject (field_ring F);
   fdv_dim : nat;
@@ -557,10 +557,10 @@ Next Obligation.
   exact (mat_apply_respects A v w Hvw).
 Qed.
 
-(** Mac Lane §I.4 Exercise 6 / Riehl §1.5 Example 1.5.12: the comparison
-    functor.  [fmap_comp] is [Matr]'s associativity obligation read one
-    dimension down — bilinearity of · over Σ, then the exchange of double
-    sums. *)
+(* * Mac Lane §I.4 Exercise 6 / Riehl §1.5 Example 1.5.12: comparison
+ 函子. [fmap_comp] is [Matr]'s 结合律 obligation read one
+ dimension down — bilinearity · over Σ, then exchange double
+ sums.（已译） *)
 Program Definition Matr_to_FdVect : Matr (field_ring F) ⟶ FdVect F := {|
   fobj := fun n => StdVect F n;
   fmap := fun n m A => mat_hom A

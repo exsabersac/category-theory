@@ -129,7 +129,7 @@ Definition BoolCommVariety : SVariety CommEq :=
 (* The generators, as a [SetoidObject] with the discrete setoid.  Named
    [BoolGens] rather than [BoolSet], which is taken four times over
    (Instance/Sets/Quotient.v, Instance/Sets/Coequalizer.v,
-   Instance/Grp/EckmannHilton.v, Test/ProbeSetsQuotient.v). *)
+   Instance/Grp/EckmannHilton.v, Test/ProbeSetsQuotient.v).（标题）（已译） *)
 Definition BoolGens : SetoidObject :=
   {| carrier := bool ; is_setoid := eq_Setoid bool |}.
 

@@ -24,15 +24,15 @@ Section TermEq.
 
 Context (S : Signature).
 
-(** Strict tensor coherence requires equating terms whose types
-    involve different parenthesisations of [+] on [nat].  Because
-    [nat] addition is associative ONLY up to propositional [=]
-    (not definitional), we cannot state e.g. an associator
-    [T_assoc : Term S ((m+n)+p) (m+(n+p))] in [Term] alone.  The
-    equational theory bridges these via the strict tensor axioms
-    [TE_tens_assoc] / [TE_tens_id0_left] / [TE_tens_id0_right]; in
-    practice they are used as rewrite rules to bring a term into a
-    canonical right-associated form on its arities. *)
+(* * Strict tensor 融贯性 requires equating terms whose types
+ involve different parenthesisations [+] [nat]. Because
+ [nat] addition is associative ONLY up propositional [=]
+ (not definitional), we cannot state e.g. associator
+ [T_assoc : Term S ((m+n)+p) (m+(n+p))] [Term] alone. The
+ equational theory bridges these via 严格 tensor axioms
+ [TE_tens_assoc] / [TE_tens_id0_left] / [TE_tens_id0_right]; in
+ practice they are used as rewrite rules bring term into a
+ 典范 right-associated form its arities.（已译） *)
 
 Inductive TermEq : forall {m n}, Term S m n -> Term S m n -> Prop :=
 
@@ -154,7 +154,7 @@ Inductive TermEq : forall {m n}, Term S m n -> Term S m n -> Prop :=
           (* RHS: (σ_{m,p} ⊕ id_n) ⊙ (id_m ⊕ σ_{n,p})
              — the outer term needs both source and target casts to
              reach types Term S (m+(p+n)) (p+(m+n)); the inner term
-             already has type Term S (m+(n+p)) (m+(p+n)). *)
+             already has type Term S (m+(n+p)) (m+(p+n)).（标题）（已译） *)
           (T_comp
              (eq_rect ((p + m) + n)
                       (fun t => Term S (m + (p + n)) t)

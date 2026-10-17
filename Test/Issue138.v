@@ -102,9 +102,9 @@ Check (FreeCatFunctor ◯ Forgetful : StrictCat ⟶ StrictCat).
 Example C138_homset_is_strict (A B : Category) :
   @homset StrictCat A B = @Functor_StrictEq_Setoid A B := eq_refl.
 
-(* The strict identity law, exercised through StrictCat's OWN category structure
-   (its [id], [compose], [homset] and [id_left]), rather than only via the
-   free-standing [fun_strict_equiv_*] lemmas. *)
+(* The 严格 恒等 law, exercised through StrictCat's OWN 范畴 structure
+ (its [id], [compose], [homset] [id_left]), rather than only via the
+ 自由-standing [fun_strict_equiv_*] 引理.（已译） *)
 Example C138_strictcat_id_left (A B : Category) (F : A ⟶ B) :
   @equiv _ (@homset StrictCat A B)
          (@compose StrictCat _ _ _ (@id StrictCat B) F) F :=

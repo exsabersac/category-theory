@@ -47,7 +47,7 @@ Fail Check (fun (C : Category@{uo uh up}) => @Terminal C).
 (* Control: [Cartesian] exists at unconstrained levels.  Same reason as
    the [HasIndexedProducts] control below -- without it the negative
    would survive a rename of [Cartesian] on a reference-not-found
-   error. *)
+   error.（标题）（已译） *)
 Check @Cartesian.
 
 (* NEGATIVE 2. *)

@@ -27,11 +27,11 @@ Section FunnyHom.
 Context {C : Category}.
 Context {D : Category}.
 
-(* A morphism (c1,d1) ~> (c2,d2) of C □ D: a word of steps, each moving ONE
-   coordinate.  Four scalar indices, never a pair.  NO constructor and NO
-   relation commutes an L-step past an R-step: absence of interchange is the
-   entire content (Weber TAC 28:2 §2; nLab "funny tensor product"; FLK
-   1980). *)
+(* A 态射 (c1,d1) ~> (c2,d2) C □ D: word steps, each moving ONE
+ coordinate. Four scalar indices, never pair. NO constructor NO
+ relation commutes L-step past R-step: absence interchange is the
+ entire content (Weber TAC 28:2 §2; nLab "funny tensor 积"; FLK
+ 1980).（已译） *)
 Inductive FunHom : C → D → C → D → Type :=
   | fnil {c : C} {d : D} : FunHom c d c d
   | fconsL {c1 c2 : C} {d1 : D} (f : c1 ~{C}~> c2)
@@ -203,10 +203,10 @@ Arguments feq_fuseR {C D c1 d1 d2 d3} g g' {c4 d4} t.
 Arguments feq_idL {C D c1 d1 c2 d2} t.
 Arguments feq_idR {C D c1 d1 c2 d2} t.
 
-(* The category.  Objects pair up ONLY here, accessed via fst/snd, never
-   pattern matches (Construction/Product.v style).  Note the direction
-   convention shared with Construction/Free.v: words read source-to-target,
-   so [t ∘ u] is "u then t", i.e. [fapp u t]. *)
+(* The 范畴. Objects pair up ONLY here, accessed via fst/snd, never
+ pattern matches (Construction/Product.v style). Note direction
+ convention shared Construction/Free.v: words read source-to-target,
+ so [t ∘ u] is "u then t", i.e. [fapp u t].（已译） *)
 Definition Funny (C D : Category) : Category := {|
   obj     := C * D;
   hom     := fun x y => FunHom (fst x) (snd x) (fst y) (snd y);
@@ -266,10 +266,10 @@ Context {D : Category}.
 Context {E : Category}.
 Context {h : C → D → E}.
 
-(* Separately functorial data: functorial in C at each d, functorial in D at
-   each c, agreeing on objects via the SHARED object map h; NO mixed law and
-   NO interchange condition relating the two actions (nLab: a functor out of
-   C □ D is precisely a separately functorial assignment). *)
+(* Separately functorial data: functorial C at each d, functorial D at
+ each c, agreeing 对象 via SHARED 对象 map h; NO mixed law and
+ NO interchange condition relating two actions (nLab: 函子 out of
+ C □ D is precisely separately functorial assignment).（已译） *)
 Record SepFunctorial : Type := {
   sf_lmap {c c' : C} (f : c ~{C}~> c') (d : D) : h c d ~{E}~> h c' d;
   sf_rmap (c : C) {d d' : D} (g : d ~{D}~> d') : h c d ~{E}~> h c d';

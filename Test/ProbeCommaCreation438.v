@@ -87,7 +87,7 @@ Check (@comma_IsIndexedProduct C D U d A F).
 
 (* control: the discrete-shape class is NOT vacuous.  A CONSTANT diagram out
    of [DiscreteCat A] eliminates nothing, so it is formable over a generic
-   [C], and [comma_CreatesProducts] applies to it. *)
+   [C], and [comma_CreatesProducts] applies to it.（标题）（已译） *)
 
 Definition p438_const_discrete (a : (=(d) ↓ U)) : DiscreteCat A ⟶ (=(d) ↓ U) :=
   @Build_Functor (DiscreteCat A) (=(d) ↓ U)

@@ -83,9 +83,9 @@ Defined.
 
 End IsoCalculus.
 
-(* A functor carries invertible morphisms to invertible morphisms.  This
-   restates [fmap_IsIsomorphism] (Construction/Reflective/Idempotent.v);
-   see the header for why it is restated rather than required. *)
+(* A 函子 carries invertible 态射 invertible 态射. This
+ restates [fmap_IsIsomorphism] (Construction/Reflective/Idempotent.v);
+ see header why it is restated rather than required.（已译） *)
 Program Definition IsIso_fmap@{xo xh xp yo yh yp +}
   {X : Category@{xo xh xp}} {Y : Category@{yo yh yp}} (G : X ⟶ Y) {x y : X}
   {f : x ~> y} (Hf : IsIsomorphism f) : IsIsomorphism (fmap[G] f) := {|
@@ -375,9 +375,9 @@ Theorem indiscrete_square_not_id :
   (IndT ◯ Erase (Indiscrete bool)) false = false → False.
 Proof. discriminate. Qed.
 
-(* Consequently the composite's unit at [false] connects two DIFFERENT
-   objects: its codomain is [true].  Recorded on the objects, because
-   [Indiscrete]'s hom family ignores its endpoints -- see the header. *)
+(* Consequently composite's 单位 at [false] connects two DIFFERENT
+ 对象: its codomain is [true]. Recorded 对象, because
+ [Indiscrete]'s hom family ignores its endpoints -- see header.（已译） *)
 Example indiscrete_square_unit_codomain :
   (IndT ◯ Erase (Indiscrete bool))
     ((IndT ◯ Erase (Indiscrete bool)) false) = true := eq_refl.

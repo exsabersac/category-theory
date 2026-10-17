@@ -232,9 +232,9 @@ Arguments LocalLan {_ _} F {_} _ {_}.
  "A 函子 preserves Kan extension composing then extending is
  equivalent extending then composing." （已译） *)
 
-(* A functor L preserves left Kan extensions when applying L after extending
-   agrees with extending after applying L, i.e. L ◯ Lan K G ≈ Lan K (L ◯ G).
-   The two LeftKan hypotheses supply the extensions on each side. *)
+(* A 函子 L preserves left Kan extensions when applying L after extending
+ agrees extending after applying L, i.e. L ◯ Lan K G ≈ Lan K (L ◯ G).
+ The two LeftKan hypotheses supply extensions each side.（已译） *)
 
 Definition preserves_left_Kan `(L : E ⟶ F) :=
   ∀ C D (G : C ⟶ E) (K : C ⟶ D)

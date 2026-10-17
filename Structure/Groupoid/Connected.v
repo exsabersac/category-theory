@@ -197,9 +197,9 @@ Definition connected_deloop_inverse {C : Category} (G : IsGroupoid C)
 
 (* 相关说明。 （已译） *)
 
-(* [vertex_incl G x] sends EVERY object to x, so an essential-surjectivity
-   witness for it is exactly a family of isomorphisms x ≅ d — the chosen
-   preimage object carries no information, there being only one to choose. *)
+(* [vertex_incl G x] sends EVERY 对象 x, so essential-surjectivity
+ witness it is exactly family isomorphisms x ≅ d — chosen
+ preimage 对象 carries no information, there being only one choose.（已译） *)
 Definition vertex_incl_ESO_iso {C : Category} (G : IsGroupoid C) (x : C)
   (E : EssentiallySurjective (vertex_incl G x)) (d : C) : x ≅ d :=
   @eso_iso _ _ (vertex_incl G x) E d.
@@ -364,7 +364,7 @@ Proof. intro H. exact (Roof_no_arrow_neg_pos (H RNeg RPos)). Qed.
 
 (* The two forms can come apart only outside groupoids, since [zigzag_hom]
    collapses them inside one.  [Roof] is indeed not a groupoid: the arrow
-   ZeroNeg has no inverse, there being no arrow RNeg ~> RZero. *)
+   ZeroNeg has no inverse, there being no arrow RNeg ~> RZero.（标题）（已译） *)
 Theorem Roof_not_groupoid : IsGroupoid Roof → False.
 Proof.
   intro G.

@@ -409,7 +409,7 @@ Definition classifier_iff_small@{o so} :
 (* [Sets_Classifier] is the issue's Verification-block name.  Its Ω is
    [Powerset_Omega] and its truth [Powerset_truth_point], both by
    [eq_refl]; the hypothesis is used exactly once, in [sce_elim].
-   [small_of_IEM] is Seven Sketches' Ω_Set = 𝔹 as a small classifier. *)
+   [small_of_IEM] is Seven Sketches' Ω_Set = 𝔹 as a small classifier.（标题）（已译） *)
 
 Definition small_of_untruncate@{o} (U : Untruncate@{o}) :
   SmallClassifierExt@{o}.

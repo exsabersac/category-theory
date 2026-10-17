@@ -148,9 +148,9 @@ Definition sets_quot_of_rel (X : SetoidObject@{o o}) (R : sets_rel_index X) :
   @QuotObj Sets@{o so} X :=
   SetsQuotient_QuotObj X (`1 R) (fst (`2 R)) (snd (`2 R)).
 
-(* The kernel relation of a quotient's epimorphism.  Written in tactic
-   form: an anonymous pair whose expected type needs unfolding
-   [sets_rel_index] down to the carrier is a known Coq 8.19/8.20 trap. *)
+(* The 核 relation quotient's epimorphism. Written tactic
+ form: anonymous pair whose expected type needs unfolding
+ [sets_rel_index] down carrier is known Coq 8.19/8.20 trap.（已译） *)
 Definition sets_rel_of_quot (X : SetoidObject@{o o})
   (q : @QuotObj Sets@{o so} X) : sets_rel_index X.
 Proof.

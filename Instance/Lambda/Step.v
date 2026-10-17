@@ -166,9 +166,9 @@ Proof.
   now inv H.
 Qed.
 
-(* Determinism: the CBV strategy contracts a unique redex, so [--->] is a
-   partial function.  Overlaps between congruence and contraction rules are
-   ruled out via [Value_cannot_start] (a stepping subterm is not a value). *)
+(* Determinism: CBV strategy contracts 唯一 redex, so [--->] is a
+ partial function. Overlaps between congruence contraction rules are
+ ruled out via [Value_cannot_start] (a stepping subterm is not value).（已译） *)
 Theorem Step_deterministic Γ τ :
   deterministic (Step (Γ:=Γ) (τ:=τ)).
 Proof.

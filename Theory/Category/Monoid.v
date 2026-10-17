@@ -296,9 +296,9 @@ Lemma eq_trans_sym_l {A : Type} {x y : A} (e : x = y) :
   eq_trans (eq_sym e) e = eq_refl.
 Proof. destruct e; reflexivity. Qed.
 
-(* Transport of a morphism along equalities of its two endpoints.  Everything
-   in this section is proved by [destruct]ing the equalities in their general
-   form (both endpoints universally quantified), so none of it uses UIP. *)
+(* Transport 态射 along equalities its two endpoints. Everything
+ this section is proved [destruct]ing equalities their 一般
+ form (both endpoints universally quantified), so none it uses UIP.（已译） *)
 Definition hom_transport {C : Category} {x x' y y' : C}
            (p : x = x') (q : y = y') (f : x ~> y) : x' ~> y' :=
   match p in (_ = X) return (X ~> y') with
@@ -400,9 +400,9 @@ Definition HomRigid (C : Category) : Type :=
 Definition ObjUIP (C : Category) : Type :=
   ∀ (x y : C) (p q : x = y), p = q.
 
-(* UIP on objects gives rigidity.  [ObjUIP] is axiom-free for every category
-   whose object equality is decidable, by Hedberg's argument -- the discipline
-   already used in Instance/FinSet.v and Theory/Multicategory/Endomorphism.v. *)
+(* UIP 对象 gives rigidity. [ObjUIP] is axiom-自由 every 范畴
+ whose 对象 equality is decidable, Hedberg's argument -- discipline
+ already used Instance/FinSet.v Theory/Multicategory/Endomorphism.v.（已译） *)
 Lemma HomRigid_of_ObjUIP {C : Category} : ObjUIP C → HomRigid C.
 Proof.
   intros U x x' y y' p p' q q' f.
@@ -635,9 +635,9 @@ Qed.
 
 End MonoidRoundTrip.
 
-(* Conjugating by identity isomorphisms does nothing.  This is the shape
-   [Functor_Setoid]'s naturality condition takes when the two functors agree
-   on objects definitionally, as both comparisons below do. *)
+(* Conjugating 恒等 isomorphisms does nothing. This is shape
+ [Functor_Setoid]'s 自然性 condition takes when two 函子 agree
+ 对象 definitionally, as both comparisons below do.（已译） *)
 Lemma iso_id_conj {D : Category} {x y : D} (h : x ~> y) :
   from (@iso_id D y) ∘ h ∘ to (@iso_id D x) ≈ h.
 Proof. simpl; now rewrite id_right, id_left. Qed.
@@ -750,7 +750,7 @@ Context (A : Type) (a : A).
 
 (* Objects: [option A].  [None] is a RIGID point -- its loop space is
    provably contractible ([none_loop]) whatever A is -- while [Some a] is
-   FLOPPY: its loops are exactly the loops of A at a. *)
+   FLOPPY: its loops are exactly the loops of A at a.（标题）（已译） *)
 Definition ob : Type := option A.
 Definition pt (x : ob) : A := match x with None => a | Some b => b end.
 

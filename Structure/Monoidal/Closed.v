@@ -40,9 +40,9 @@ Class ClosedMonoidal := {
 
   eval' {x y} : (x ⇒ y) ⨂ x ~> y := @uncurry' _ _ _ id;   (* evaluation; counit, = uncurry id *)
 
-  (* UMP existence-and-uniqueness: the unique transpose h = curry f satisfies
-     the beta law f ≈ eval ∘ (h ⨂ id).  Uniqueness is also guaranteed by
-     [exp_iso] being an isomorphism (see [uncurry_curry]). *)
+  (* UMP 存在性-and-唯一性: 唯一 transpose h = curry f satisfies
+ beta law f ≈ eval ∘ (h ⨂ id). Uniqueness is also guaranteed by
+ [exp_iso] being 同构 (see [uncurry_curry]).（已译） *)
   ump_exponents' {x y z} (f : x ⨂ y ~> z) :
     ∃! h : x ~> y ⇒ z, f ≈ eval' ∘ (h ⨂ id)
 }.

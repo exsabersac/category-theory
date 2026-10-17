@@ -95,10 +95,10 @@ Context {C : Category}.
 Context `{S : @SymmetricMonoidal C}.
 Context `{CD : @CopyDiscard C S}.
 
-(* A morphism is deterministic when it is a comonoid homomorphism between
-   the canonical copy/discard comonoids (deterministic in the sense of
-   Fritz, Definition 10.1 of arXiv:1908.07021, stated over the Cho–Jacobs
-   CD structure, Definition 2.2 of arXiv:1709.00322). *)
+(* A 态射 is deterministic when it is comonoid 同态 between
+ 典范 copy/discard comonoids (deterministic sense of
+ Fritz, Definition 10.1 arXiv:1908.07021, stated over Cho–Jacobs
+ CD structure, Definition 2.2 arXiv:1709.00322).（已译） *)
 Definition deterministic {x y : C} (f : x ~> y) : Type :=
   ComonoidHom (cd_comonoid x) (cd_comonoid y) f.
 

@@ -344,7 +344,7 @@ Example iso_ascribes (b c : C) :
 (* NEGATIVE 10, CONVERSION.  The error names the offending field:
      (cannot unify "λ (x y : obj[C^op^op]) (f g : x ~{ C^op^op }~> y),
                     fmap_respects y x f g"
-      and "Partial.Partial_l_obligation_1 C Coq C Copower_Bifunctor J"). *)
+      and "Partial.Partial_l_obligation_1 C Coq C Copower_Bifunctor J").（标题）（已译） *)
 Fail Definition adjunction_ascribes :
   Partial_l Copower_Bifunctor J ⊣ Power_Functor J :=
   Copower_Power_Adjunction J.
@@ -403,7 +403,7 @@ Check (@power_fmap Cu HPu Ju).
      "Type@{...}" (universe inconsistency: Cannot enforce ji <= ...
      because ... < ji).
    [cp_adj_iso] is refused at the same levels, carrying the same four
-   equations. *)
+   equations.（标题）（已译） *)
 Fail Check (@Copower_Power_Adjunction Cu HPu HCu Ju).
 
 End IndexAboveHom.

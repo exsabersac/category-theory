@@ -44,9 +44,9 @@ Open Scope functor_scope.
 Corollary Opposite_Functor_invol `{F : C ⟶ D} : (F^op)^op = F.
 Proof. reflexivity. Qed.
 
-(* A functor F : C^op ⟶ D is a contravariant functor on C: it reverses the
-   direction of morphisms. [contramap] applies it to a C-arrow f : x ~> y by
-   reading f as the C^op-arrow (op f), yielding F y ~> F x in D. *)
+(* A 函子 F : C^op ⟶ D is contravariant 函子 C: it reverses the
+ direction 态射. [contramap] applies it C-arrow f : x ~> y by
+ reading f as C^op-arrow (op f), yielding F y ~> F x D.（已译） *)
 
 Definition contramap `{F : C^op ⟶ D} `(f : x ~{C}~> y) :
   F y ~{D}~> F x := fmap (op f).

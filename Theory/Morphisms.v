@@ -95,7 +95,7 @@ Class SplitIdempotent {x y : C} := {
 
    `Epic f` witnesses that `f : x ~> y` is an epimorphism: f is
    right-cancellable, `g1 ∘ f ≈ g2 ∘ f → g1 ≈ g2` for all parallel
-   `g1 g2 : y ~> z` (epic). This is exactly `Monic f` in `C^op`. *)
+   `g1 g2 : y ~> z` (epic). This is exactly `Monic f` in `C^op`.（标题）（已译） *)
 
 Class Epic {x y} (f : x ~> y) := {
   epic : ∀ z (g1 g2 : y ~> z), g1 ∘ f ≈ g2 ∘ f → g1 ≈ g2
@@ -107,7 +107,7 @@ Class Epic {x y} (f : x ~> y) := {
 
    `Monic f` witnesses that `f : x ~> y` is a monomorphism: f is
    left-cancellable, `f ∘ g1 ≈ f ∘ g2 → g1 ≈ g2` for all parallel
-   `g1 g2 : z ~> x` (monic). This is exactly `Epic f` in `C^op`. *)
+   `g1 g2 : z ~> x` (monic). This is exactly `Epic f` in `C^op`.（标题）（已译） *)
 
 Class Monic {x y} (f : x ~> y) := {
   monic : ∀ z (g1 g2 : z ~> x), f ∘ g1 ≈ f ∘ g2 → g1 ≈ g2

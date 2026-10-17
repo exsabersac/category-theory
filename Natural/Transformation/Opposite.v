@@ -30,9 +30,9 @@ Notation "N ^op" := (@Opposite_Transform _ _ _ _ N)
 
 Open Scope transform_scope.
 
-(* The op functor is an involution on natural transformations: applying it twice
-   recovers `N` definitionally, since (C^op)^op = C and (F^op)^op = F hold by
-   reflexivity and `N^op` reuses `N`'s components. *)
+(* The op 函子 is involution natural transformations: applying it twice
+ recovers `N` definitionally, since (C^op)^op = C (F^op)^op = F hold by
+ reflexivity `N^op` reuses `N`'s components.（已译） *)
 
 Corollary Opposite_Transform_invol `{F : C ⟶ D} {G : C ⟶ D} `(N : F ⟹ G) :
   (N^op)^op = N.

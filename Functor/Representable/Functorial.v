@@ -194,10 +194,10 @@ Next Obligation. intros f g Hfg; now apply repr_induced_respects. Qed.
 Next Obligation. now apply repr_induced_id. Qed.
 Next Obligation. now apply repr_induced_comp. Qed.
 
-(* Fullness: Mac Lane's correspondence run backwards.  An arrow h between the
-   representing objects is carried to ψ' ∘ Hom(h, −) ∘ ψ⁻¹, and that
-   transformation names h again — by uniqueness, once ψ⁻¹ ∘ ψ has been
-   cancelled. *)
+(* Fullness: Mac Lane's correspondence run backwards. An arrow h between the
+ 表示 对象 is carried ψ' ∘ Hom(h, −) ∘ ψ⁻¹, that
+ transformation names h again — 唯一性, once ψ⁻¹ ∘ ψ has been
+ cancelled.（已译） *)
 Program Definition ReprObj_Full : Functor.Full ReprObjFunctor := {|
   prefmap := fun X Y h =>
     (to (@represented _ _ (`2 Y))
@@ -266,10 +266,10 @@ Lemma wit_induced_not_id :
     ≈ id{BNat} → False.
 Proof. intro Hx; simpl in Hx; discriminate. Qed.
 
-(* The same at an in-tree [Representable] instance rather than the
-   tautological one: [YoEvalAt_Representable] (Functor/Hom/Yoneda/Natural.v)
-   represents evaluation at an object by the representable copresheaf.  Acting
-   on each functor by [fmap] at n is a transformation of evaluations. *)
+(* The same at in-tree [Representable] 实例 rather than the
+ tautological one: [YoEvalAt_Representable] (Functor/Hom/Yoneda/Natural.v)
+ represents evaluation at 对象 可表 copresheaf. Acting
+ each 函子 [fmap] at n is transformation evaluations.（已译） *)
 Program Definition wit_ev_tau (n : nat)
   : @YoEvalAt BNat ttt ⟹ @YoEvalAt BNat ttt := {|
   transform := fun F => fmap[F] n

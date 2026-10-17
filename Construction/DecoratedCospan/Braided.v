@@ -79,11 +79,11 @@ Notation Dlift f := (dec_mor_as_cospan id_decoration f).
 
 Class DecCospan_Braided_Coherent : Type := {
 
-  (** Naturality of [braid] : as a decorated-cospan equation.
+  (* * Naturality of [braid] : as a decorated-cospan equation.
       Goal shape (matching [@braid_natural]):
         [bimap h f ∘ braid_{x,z} ≈ braid_{y,w} ∘ bimap f h]
       where the bimap is [dec_cospan_tensor] and braid is
-      [Dlift paws]. *)
+      [Dlift paws].（标题）（已译） *)
   dec_braid_natural_eq :
     forall {x y z w : C}
            (f : DecoratedCospanArrow x y)

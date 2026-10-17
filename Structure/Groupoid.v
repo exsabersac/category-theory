@@ -115,7 +115,7 @@ Definition giso {x y : C} (f : x ~> y) : x ≅ y := IsIsoToIso f (G x y f).
 (* Moving an inverse across an equation, the two cancellation rules a
    groupoid computation needs: from g ∘ f ≈ h one reads off g ≈ h ∘ f⁻¹ and
    f ≈ g⁻¹ ∘ h.  Each is one rewrite by [ginv_right] or [ginv_left] after
-   substituting h. *)
+   substituting h.（标题）（已译） *)
 Lemma ginv_move_r {x y z : C} (f : x ~> y) (g : y ~> z) (h : x ~> z) :
   g ∘ f ≈ h → g ≈ h ∘ ginv f.
 Proof.

@@ -169,9 +169,9 @@ Defined.
 
 (* * ** The obstruction 假设, Mac Lane's own words （已译） *)
 
-(* Some functional on [F^ℕ] is NOT a finite linear combination of the
-   coordinate projections.  Classically true (Erdős–Kaplansky); not
-   provable in ZF + DC, hence a hypothesis — see the header. *)
+(* Some functional [F^ℕ] is NOT 有限 linear combination the
+ coordinate projections. Classically true (Erdős–Kaplansky); not
+ provable ZF + DC, hence hypothesis — see header.（已译） *)
 Definition CoordSpanProper : Type :=
   { phi : carrier (cmon_setoid DP) & smod_mem SpanCoords phi → False }.
 

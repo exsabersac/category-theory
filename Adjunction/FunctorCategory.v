@@ -286,10 +286,10 @@ Context (F : X ⟶ A).
 
 #[local] Obligation Tactic := idtac.
 
-(* The left adjoints commute — but NOT on the nose: [(postcompose F ◯ Δ) x]
-   has [fmap := fun _ _ _ => fmap[F] id] where [Δ (F x)] has [id] (probe
-   N1).  They agree up to a natural isomorphism whose every component is
-   an identity. *)
+(* The left adjoints commute — but NOT nose: [(postcompose F ◯ Δ) x]
+ has [fmap := fun _ _ _ => fmap[F] id] where [Δ (F x)] has [id] (探针
+ N1). They agree up natural 同构 whose every component is
+ 恒等.（已译） *)
 Program Definition square_at (x : X) :
   (postcompose (J:=J) F ◯ @Diagonal X J) x ≅[Fun] (@Diagonal A J ◯ F) x := {|
   to   := {| transform := fun _ => id |};

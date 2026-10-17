@@ -189,10 +189,10 @@ Check (@classifier_classifies ([C^op, Sets])
 Check (@Sub_classifier_natural ([C^op, Sets])
          (Functor_Category_Terminal Sets_Terminal) HPB HS).
 
-(* NEGATIVE 1 (FORMABILITY).  It is NOT applicable to the built
-   [Fun_Classifier], whose elaboration minimizes the presheaf category's
-   hom universe below its object universe.  The stripped error ends
-   "Cannot enforce ... because ... <= ... < ...". *)
+(* NEGATIVE 1 (FORMABILITY). It is NOT applicable built
+ [Fun_Classifier], whose elaboration minimizes presheaf 范畴's
+ hom universe below its 对象 universe. The stripped error ends
+ "Cannot enforce ... because ... <= ... < ...".（已译） *)
 Fail Check (@classifier_classifies ([C^op, Sets])
               (Functor_Category_Terminal Sets_Terminal)
               (Fun_HasPullbacks Sets_HasPullbacks) (Fun_Classifier UT)).

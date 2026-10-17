@@ -47,9 +47,9 @@ Proof.
   - rewrite <- E; exact sq2.
 Qed.
 
-(* Central morphisms compose: expand [fmap] over the composite with
-   [fmap_comp], then paste [g]'s square followed by [f]'s square.  Each
-   conjunct is a single-level pasting of two commuting squares. *)
+(* Central 态射 compose: expand [fmap] over composite with
+ [fmap_comp], then paste [g]'s square followed [f]'s square. Each
+ conjunct is single-level pasting two commuting squares.（已译） *)
 Lemma central_comp {x y z : C} {f : y ~> z} {g : x ~> y} :
   central f → central g → central (f ∘ g).
 Proof.

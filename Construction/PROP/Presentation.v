@@ -100,9 +100,9 @@ Inductive TermEqW : forall {m n}, Term Σ m n → Term Σ m n → Prop :=
       TermEqW f f' → TermEqW g g' →
       TermEqW (T_tens f g) (T_tens f' g').
 
-(** [TermEqW] is a hom-congruence on [FreeCat Σ] in the sense of
-    [Construction/Quotient.v]: it contains the hom-setoid equivalence
-    ([TermEq Σ], via [TEW_termeq]) and is closed under [T_comp]. *)
+(* * [TermEqW] is hom-congruence [FreeCat Σ] sense of
+ [Construction/Quotient.v]: it contains hom-setoid 等价
+ ([TermEq Σ], via [TEW_termeq]) is 闭 under [T_comp].（已译） *)
 #[export] Instance TermEqW_Congruence :
   @HomCongruence (FreeCat Σ) (fun m n : nat => @TermEqW m n) :=
   @Build_HomCongruence (FreeCat Σ) (fun m n : nat => @TermEqW m n)

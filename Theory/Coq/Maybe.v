@@ -128,7 +128,7 @@ Program Instance Monoid_option `{Monoid a} : Monoid (Maybe a) := {
 
 (* Traversable: [sequence] commutes [Maybe] past an applicative [F], turning
    [Maybe (F x)] into [F (Maybe x)].  [Nothing] becomes [pure Nothing]; a
-   [Just]-wrapped effect is run and re-wrapped with [fmap Just]. *)
+   [Just]-wrapped effect is run and re-wrapped with [fmap Just].（标题）（已译） *)
 #[export]
 Instance Maybe_Traversable : Traversable Maybe := {
   sequence := λ _ _ _ x,

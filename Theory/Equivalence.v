@@ -59,11 +59,11 @@ Class EssentiallySurjective {C D : Category} (F : C ⟶ D) := {
   eso_iso (d : D) : F (eso_obj d) ≅ d  (* its image is isomorphic to d *)
 }.
 
-(* F is an equivalence of categories when it has a quasi-inverse.  Both
-   cells are natural isomorphisms, because [≈] on functors is
-   [Functor_Setoid].  The orientation matches the adjunction every
-   equivalence refines to (counit F ◯ G ⟹ Id[D], unit Id[C] ⟹ G ◯ F; see
-   Theory/Equivalence/Adjoint.v). *)
+(* F is 等价 范畴 when it has quasi-inverse. Both
+ cells are natural isomorphisms, because [≈] 函子 is
+ [Functor_Setoid]. The orientation matches 伴随 every
+ 等价 refines (counit F ◯ G ⟹ Id[D], 单位 Id[C] ⟹ G ◯ F; see
+ Theory/Equivalence/Adjoint.v).（已译） *)
 Class EquivalenceOfCategories {C D : Category} (F : C ⟶ D) := {
   quasi_inverse : D ⟶ C;
   equivalence_counit : F ◯ quasi_inverse ≈ Id[D];

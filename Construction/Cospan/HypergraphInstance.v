@@ -92,7 +92,7 @@ Proof.
      vs Build_CospanArrow (0+0) (from coprod_zero_l) id.
      Apex iso: phi = iso_sym coprod_zero_l : 0 ≅ 0+0.
      to phi = from coprod_zero_l ✓.
-     to phi ∘ (id▽id) ≈ id[0+0] by initiality (0+0 → 0+0 from 0 source). *)
+     to phi ∘ (id▽id) ≈ id[0+0] by initiality (0+0 → 0+0 from 0 source).（标题）（已译） *)
   exists (iso_sym (@coprod_zero_l C H_Coc H_Ini (@Cospan_unit_obj C H_Ini))).
   simpl; split.
   - apply id_right.
@@ -142,7 +142,7 @@ Proof.
   (* RHS: cospan_tensor (mor_as_cospan zero) (mor_as_cospan zero)
         ≈ mor_as_cospan (cover zero zero).
      Then compose with mor_as_cospan (from coprod_zero_l)
-        ≈ mor_as_cospan ((cover zero zero) ∘ from coprod_zero_l). *)
+        ≈ mor_as_cospan ((cover zero zero) ∘ from coprod_zero_l).（标题）（已译） *)
   apply cospan_equiv_sym.
   eapply cospan_equiv_trans.
   { apply cospan_compose_respects_aux.
@@ -393,7 +393,7 @@ Proof.
         * apply cospan_equiv_refl. }
   (* Now all 5 pieces are mor_as_cospan; fuse left-to-right.
      Composite shape:  (((e1' ∘ e2') ∘ e3') ∘ e4') ∘ e5'  (all mor_as_cospan).
-     Fuse outermost first (peel f off and into the prefix). *)
+     Fuse outermost first (peel f off and into the prefix).（标题）（已译） *)
   eapply cospan_equiv_trans.
   { apply cospan_compose_respects_aux.
     - apply cospan_equiv_refl.

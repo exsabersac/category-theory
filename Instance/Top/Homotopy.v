@@ -419,10 +419,10 @@ Qed.
 
 (* Mac Lane's [Top_*].
 
-       objects: pointed spaces          (a space with a chosen point)
-        arrows: based continuous maps   (f (pt X) ≈ pt Y)
-      identity: the identity map
-   composition: composition of continuous maps *)
+ 对象: pointed spaces (a space chosen point)
+ arrows: based continuous maps (f (pt X) ≈ pt Y)
+ 恒等: 恒等 map
+ 复合: 复合 continuous maps（已译） *)
 Program Definition Top_pointed : Category := {|
   obj     := PointedTop;
   hom     := PointedMap;

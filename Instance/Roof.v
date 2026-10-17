@@ -69,9 +69,9 @@ Proof. inversion 1. Qed.
 Program Definition Roof : Category := {|
   obj    := RoofObj;
   hom    := RoofHom;
-  (* Each homset is a subsingleton (at most one arrow between any two
-     objects), so the trivial relation True is already an equivalence and
-     respects composition; any two parallel arrows are interchangeable. *)
+  (* Each homset is subsingleton (at most one arrow between any two
+ 对象), so trivial relation True is already 等价 and
+ respects 复合; any two parallel arrows are interchangeable.（已译） *)
   homset := fun x y => {| equiv := fun (f g : RoofHom x y) => True |};
   id     := fun x => match x return RoofHom x x with
     | RNeg  => IdNeg

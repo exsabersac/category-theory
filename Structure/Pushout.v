@@ -129,9 +129,9 @@ Class HasPushouts (C : Category) : Type := {
 
 Arguments pushout {C _ x y z} f g.
 
-(** [HasPushouts C] is exactly [HasPullbacks (C^op)] by definitional
-    unfolding of [IsPushout].  We expose both directions of the equivalence
-    as functions so the two predicates can be interchanged at will. *)
+(* * [HasPushouts C] is exactly [HasPullbacks (C^op)] definitional
+ unfolding [IsPushout]. We expose both directions 等价
+ as functions so two predicates can be interchanged at will.（已译） *)
 Definition HasPullbacks_op_of_HasPushouts
            {C : Category} (HP : HasPushouts C) : HasPullbacks (C^op).
 Proof.

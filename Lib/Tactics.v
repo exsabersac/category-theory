@@ -165,7 +165,7 @@ Ltac equivalence := constructor; repeat intro; simpl; try cat; intuition;
 Ltac proper := repeat intro; simpl; try cat; intuition.
 (* [sapply]/[srewrite]/[srewrite_r]: "setoid" variants that first materialize
    [F] as a hypothesis and [cbn]-normalize it (so projections of records unfold)
-   before applying / rewriting left-to-right / rewriting right-to-left. *)
+   before applying / rewriting left-to-right / rewriting right-to-left.（标题）（已译） *)
 Ltac sapply F :=
   let H := fresh "H" in pose proof F as H; cbn in H; apply H; clear H.
 Ltac srewrite F :=

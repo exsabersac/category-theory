@@ -199,10 +199,10 @@ Proof.
   - exact (fun s t u => te_trans).
 Qed.
 
-(* As in Instance/Ab/Tensor.v and Instance/Rng/Polynomial.v this setoid is
-   deliberately NOT registered as an instance: the [≈] of [TensorRing] IS
-   [tt_eq] definitionally, so Theory/Algebra/Rig.v's lemmas apply to it
-   unchanged. *)
+(* As Instance/Ab/Tensor.v Instance/Rng/Polynomial.v this setoid is
+ deliberately NOT registered as 实例: [≈] [TensorRing] IS
+ [tt_eq] definitionally, so Theory/Algebra/Rig.v's 引理 apply it
+ unchanged.（已译） *)
 Definition tt_Setoid : Setoid TTerm := {|
   equiv        := tt_eq;
   setoid_equiv := tt_eq_Equivalence

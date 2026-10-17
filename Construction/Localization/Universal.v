@@ -119,10 +119,10 @@ Lemma G_inverts_unit (c : C) :
     (fmap[G] (@Category.Theory.Adjunction.unit Su C Refl Iota A c)).
 Proof. exact (GW _ _ _ (Hunit c)). Qed.
 
-(* Factorization: the whiskered unit G ∘ η is a natural isomorphism
-   G ⟹ (G ◯ Iota) ◯ Refl.  Componentwise it is [fmap[G] η_c], invertible by
-   [G_inverts_unit]; the coherence square is [reflection_unit_naturality]
-   transported through G. *)
+(* Factorization: whiskered 单位 G ∘ η is natural 同构
+ G ⟹ (G ◯ Iota) ◯ Refl. Componentwise it is [fmap[G] η_c], invertible by
+ [G_inverts_unit]; 融贯性 square is [reflection_unit_naturality]
+ transported through G.（已译） *)
 Lemma localization_factors : G ≈ (G ◯ Iota) ◯ Refl.
 Proof.
   exists (fun c => IsIsoToIso _ (G_inverts_unit c)).

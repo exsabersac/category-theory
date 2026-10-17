@@ -127,9 +127,9 @@ End PartB.
 
 (* 相关说明。 （已译） *)
 
-(* A monoid acting on a setoid; at a [GrpObject] this is a permutation
-   representation / G-set (Riehl 1.3.9, left convention: the action law
-   is act (g · h) = act g ∘ act h, matching Deloop's composition). *)
+(* A monoid acting setoid; at [GrpObject] this is permutation
+ representation / G-set (Riehl 1.3.9, left convention: action law
+ is act (g · h) = act g ∘ act h, matching Deloop's 复合).（已译） *)
 Record MSetoidAction (M : MonObject) := {
   act_setoid :> SetoidObject;
   act : carrier M → carrier act_setoid → carrier act_setoid;
@@ -211,7 +211,7 @@ Definition functor_of_matrix_rep {M : MonObject} {R : RigObject}
 (* The sigma's family is supplied explicitly rather than left to
    unification: inferring it requires unfolding [obj] at [Matr R],
    which Coq 8.19/8.20's unifier declines in evar problems (the same
-   version split as Monotone.v's [nondecreasing_of_endo]). *)
+   version split as Monotone.v's [nondecreasing_of_endo]).（标题）（已译） *)
 Definition matrix_rep_of_functor {M : MonObject} {R : RigObject}
   (F : Deloop M ⟶ Matr R) : MatrixRep M R :=
   existT (fun n : nat => MonHom M (hom_monoid (Matr R) n))

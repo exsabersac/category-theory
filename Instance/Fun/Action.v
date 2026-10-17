@@ -213,10 +213,10 @@ Next Obligation.
   intros M A x; simpl; reflexivity.
 Qed.
 
-(* Mac Lane's construction 2 at category strength: the functor
-   category over a delooped monoid IS the category of M-actions, an
-   isomorphism in Cat and hence (by Cat's convention) an equivalence
-   of categories. *)
+(* Mac Lane's 构造 2 at 范畴 strength: 函子
+ 范畴 over delooped monoid IS 范畴 M-actions, an
+ 同构 Cat hence (by Cat's convention) 等价
+ 范畴.（已译） *)
 Program Definition MSet_Fun_equiv (M : MonObject) :
   [Deloop M, Sets] ≅[Cat] MSet M := {|
   to   := MSet_to M;
@@ -239,11 +239,11 @@ Qed.
 
 (* 相关说明。 （已译） *)
 
-(* Issue item 2's "unwind", stated literally as a hom-setoid
-   isomorphism in Sets, following the same-directory precedents
-   [One_hom_iso] and [Discrete_hom_iso]: a natural transformation
-   between functors on the delooping is exactly one equivariant
-   map. *)
+(* Issue item 2's "unwind", stated literally as hom-setoid
+ 同构 Sets, following same-directory precedents
+ [One_hom_iso] [Discrete_hom_iso]: 自然变换
+ between 函子 delooping is exactly one equivariant
+ map.（已译） *)
 Program Definition MSet_hom_iso {M : MonObject}
         (F G : Deloop M ⟶ Sets) :
   ({| carrier := F ⟹ G;

@@ -325,10 +325,10 @@ Next Obligation.
   apply coprod_hexagon_aux.
 Defined.
 Next Obligation.
-  (* hexagon_identity_sym:
-       Goal: cospan_compose (cospan_compose α⁻¹ paws) α⁻¹
-             ≈ cospan_compose (cospan_compose (paws⨂id) α⁻¹) (id⨂paws)
-     LHS: all mor_as_cospan (with α⁻¹ = mor_as_cospan (from α)). *)
+  (* hexagon_恒等_sym:
+ Goal: cospan_compose (cospan_compose α⁻¹ paws) α⁻¹
+ ≈ cospan_compose (cospan_compose (paws⨂id) α⁻¹) (id⨂paws)
+ LHS: all mor_as_cospan (with α⁻¹ = mor_as_cospan (from α)).（已译） *)
   eapply cospan_equiv_trans.
   { apply cospan_compose_respects_aux.
     - apply cospan_equiv_refl.

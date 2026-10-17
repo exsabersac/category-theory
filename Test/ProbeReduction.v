@@ -121,7 +121,7 @@ Context {C : Category}.
 (* CONVERSION negatives.  Stripped, the first reports that [eq_refl] has
    type [HasCoequalizers C = HasCoequalizers C] where
    [HasCoequalizers C = HasEqualizers C^op] was expected -- records are
-   nominal. *)
+   nominal.（标题）（已译） *)
 Fail Definition probe_HasCoequalizers_is_op :
   HasCoequalizers C = HasEqualizers (C^op) := eq_refl.
 

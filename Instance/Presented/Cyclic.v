@@ -179,7 +179,7 @@ Proof. exact (spath_app j i). Qed.
 (* [Construction/Free/Quiver.v]'s [tlist'_equiv_lengths] gives this in one
    line, which is what [Instance/Square.v]'s [wsq_equiv_length] and
    [Instance/WalkingIso.v]'s [wi_equiv_length] both do; a first draft here
-   re-proved it by induction through [fixpoint_implies_inductive]. *)
+   re-proved it by induction through [fixpoint_implies_inductive].（标题）（已译） *)
 Lemma free_equiv_length {i j : OneGen}
   (f g : i ~{FreeOnQuiver OneGen}~> j) :
   f ≈ g -> tlist_length f = tlist_length g.

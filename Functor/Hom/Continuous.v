@@ -303,9 +303,9 @@ Proof.
     now rewrite (remark2_iso_legs c p j).
 Qed.
 
-(* Riehl 3.5.3 in her own direction: the CANONICAL comparison map
-   C(c, lim F) --> lim C(c, F-) is invertible.  This performs the
-   composition Functor/Hom/Limit.v's header records as not performed. *)
+(* Riehl 3.5.3 her own direction: CANONICAL comparison map
+ C(c, lim F) --> lim C(c, F-) is invertible. This performs the
+ 复合 Functor/Hom/Limit.v's header records as not performed.（已译） *)
 Definition remark2_comparison (c : C) :
   fobj[HomFrom c] (vertex_obj[@limit_cone _ _ _ L])
     ~{Sets}~> Sets_limit_obj (HomFrom c ◯ F) :=

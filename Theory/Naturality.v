@@ -52,9 +52,9 @@ Program Instance Functor_Naturality
                ∀ x y (g : x ~{C}~> y), fmap[G] g ∘ f x ≈ f y ∘ fmap[F] g
 }.
 
-(* Retained exploratory code: partial-application functors for bi/curried
-   functors. Superseded by the `Mapping`-based `Arity*` instances below, which
-   avoid materialising a `C ⟶ C` functor per argument; kept for reference. *)
+(* Retained exploratory code: partial-application 函子 bi/curried
+ 函子. Superseded `Mapping`-based `Arity*` instances below, which
+ avoid materialising `C ⟶ C` 函子 per argument; kept reference.（已译） *)
 (*
 Program Instance PartialApply_Product_Left {F : C × C ⟶ C} {x : C} : C ⟶ C := {
   fobj := fun y => F (x, y);

@@ -62,11 +62,11 @@ Next Obligation.
   reflexivity.
 Qed.
 Next Obligation.
-  (* preserves composition:
-       ecompose ∘ (efmap G ∘ efmap F) ⨂ (efmap G ∘ efmap F)
-         ≈ (efmap G ∘ efmap F) ∘ ecompose.
-     Split the tensor with bimap_comp, then use G.efmap_comp and
-     F.efmap_comp. *)
+  (* preserves 复合:
+ ecompose ∘ (efmap G ∘ efmap F) ⨂ (efmap G ∘ efmap F)
+ ≈ (efmap G ∘ efmap F) ∘ ecompose.
+ Split tensor bimap_comp, then use G.efmap_comp and
+ F.efmap_comp.（已译） *)
   intros.
   simpl.
   rewrite bimap_comp.

@@ -299,11 +299,11 @@ Context (comm : ∀ a b, rig_mul R a b ≈ rig_mul R b a).
 
 #[local] Obligation Tactic := idtac.
 
-(* Identity on objects; A ↦ Aᵀ on arrows.  An arrow n ~> m of Matr is an
-   m × n matrix; its transpose is the n × m matrix, an arrow m ~> n,
-   i.e. an arrow n ~> m of the opposite — identity-on-objects really is
-   the right type.  Functoriality (AB)ᵀ ≈ BᵀAᵀ is where [comm] is
-   spent. *)
+(* Identity 对象; A ↦ Aᵀ arrows. An arrow n ~> m Matr is an
+ m × n matrix; its transpose is n × m matrix, arrow m ~> n,
+ i.e. arrow n ~> m 反 — 恒等-on-对象 really is
+ right type. Functoriality (AB)ᵀ ≈ BᵀAᵀ is where [comm] is
+ spent.（已译） *)
 Program Definition Matr_Transpose : Matr R ⟶ (Matr R)^op := {|
   fobj := fun n : nat => n;
   fmap := fun n m A => fun j i => A i j

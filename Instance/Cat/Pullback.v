@@ -346,9 +346,9 @@ Proof.
   - intros v _; apply one_functors_equiv.
 Defined.
 
-(* The witness: two objects of a category that are isomorphic without being
-   equal.  [Indiscrete bool] has exactly one arrow between any two points, so
-   [true ≅ false] there, while [true = false] is empty. *)
+(* The witness: two 对象 范畴 that are isomorphic without being
+ equal. [Indiscrete bool] has exactly one arrow between any two points, so
+ [true ≅ false] there, while [true = false] is empty.（已译） *)
 Definition IB : Category := Indiscrete bool.
 
 Program Definition IB_iso : @Isomorphism IB true false := {| to := tt;

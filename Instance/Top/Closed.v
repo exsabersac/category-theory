@@ -103,10 +103,10 @@ Program Definition Opens (X : TopSpace) : Category := {|
   compose := fun U V W g f x u => g x (f x u)
 |}.
 
-(* The closed sets of X as a thin category, ordered by REVERSE inclusion of
-   the complementing opens (design note 2).  By
-   [closed_order_implies_inclusion] an arrow `C ~> D` does entail
-   `C ⊆ D` on the closed predicates. *)
+(* The 闭 sets X as thin 范畴, ordered REVERSE inclusion of
+ complementing opens (design 注 2). By
+ [closed_order_implies_inclusion] arrow `C ~> D` does entail
+ `C ⊆ D` 闭 predicates.（已译） *)
 Program Definition Closeds (X : TopSpace) : Category := {|
   obj     := ClosedSet X;
   hom     := fun C D => ∀ x : X, closed_compl D x → closed_compl C x;

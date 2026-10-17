@@ -50,9 +50,9 @@ Fixpoint denote `(o : Obj) :
   | Coprod_ x y => denote x + denote y
   end.
 
-(* The syntax of arrows: one constructor per bicartesian-closed combinator.
-   This is a typed term language (a GADT indexed by source and target object),
-   so every well-formed AST denotes a morphism via [interp] below. *)
+(* The syntax arrows: one constructor per bicartesian-闭 组合子.
+ This is typed term language (a GADT indexed source target 对象),
+ so every well-formed AST denotes 态射 via [interp] below.（已译） *)
 Inductive Hom : Obj → Obj → Set :=
   | Id      : ∀ {a}, Hom a a                                     (* identity id *)
   | Compose : ∀ {a b c}, Hom b c → Hom a b → Hom a c             (* composition g ∘ f *)
@@ -72,9 +72,9 @@ Inductive Hom : Obj → Obj → Set :=
   | Inr     : ∀ {a b}, Hom b (Coprod_ a b)                       (* injection inr *)
   | Merge   : ∀ {a c d}, Hom c a → Hom d a → Hom (Coprod_ c d) a. (* copairing [f, g] *)
 
-(* Interpretation of arrow syntax into a bicartesian closed category C: each
-   combinator is sent to the corresponding operation of C, so [interp] is the
-   unique structure-preserving functor out of the free category into any model. *)
+(* Interpretation arrow syntax into bicartesian 闭 范畴 C: each
+ 组合子 is sent corresponding operation C, so [interp] is the
+ 唯一 structure-preserving 函子 out 自由 范畴 into any model.（已译） *)
 Program Fixpoint interp `(c : Hom a b) :
   ∀ {C : Category}
     {A : @Cartesian C}
@@ -201,9 +201,9 @@ Next Obligation.
     rewrite merge_comp; cat.
 Qed.
 
-(* [interp] respects arrow equivalence: equivalent ASTs interpret to equivalent
-   morphisms in C. This is immediate, since the homset equivalence of [AST] is
-   precisely agreement under every interpretation, instantiated here at C. *)
+(* [interp] respects arrow 等价: equivalent ASTs interpret equivalent
+ 态射 C. This is immediate, since homset 等价 [AST] is
+ precisely agreement under every interpretation, instantiated here at C.（已译） *)
 #[export]
 Program Instance interp_proper {x y : Obj}
         {C : Category} {A : @Cartesian C}

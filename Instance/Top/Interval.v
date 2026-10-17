@@ -963,9 +963,9 @@ Proof. intros H1 H2; apply proper_morphism; exact (H1, H2). Qed.
 
 (** ** Coordinate computations *)
 
-(* Every reindexing above acts on coordinates by its defining formula, and each
-   of these equations holds by conversion.  Downstream proofs rewrite with them
-   rather than unfolding the arrow constructors. *)
+(* Every reindexing above acts coordinates its defining formula, each
+ these equations holds conversion. Downstream 证明 rewrite them
+ rather than unfolding arrow constructors.（已译） *)
 
 Lemma ival_I_zero : ival I_zero = 0.
 Proof. reflexivity. Qed.

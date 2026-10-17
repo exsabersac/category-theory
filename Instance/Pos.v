@@ -130,9 +130,9 @@ Defined.
 Definition PosetAsCategory (P : PosetObject) : Category :=
   Proset (pos_preorder P).
 
-(** A monotone map induces a functor between the thin categories: on objects it
-    is the map, on morphisms it is monotonicity, and every law is an equation
-    between parallel morphisms in a thin target, hence free. *)
+(* * A monotone map induces 函子 between thin 范畴: 对象 it
+ is map, 态射 it is monotonicity, every law is equation
+ between parallel 态射 thin target, hence 自由.（已译） *)
 Program Definition MonotoneAsFunctor {P Q : PosetObject} (f : MonoHom P Q)
   : PosetAsCategory P ⟶ PosetAsCategory Q := {|
   fobj := fun x => mono_fn f x;

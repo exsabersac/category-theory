@@ -732,9 +732,9 @@ Example int_tensor_med_computes_sum :
     (zplus (zsmul 5%Z (zgen 2%Z 3%Z)) (zneg (zgen 4%Z 1%Z)))
   = 26%Z := eq_refl.
 
-(** The quotient does not collapse.  Both statements are proved by
+(* * The quotient does not collapse.  Both statements are proved by
     mapping OUT through [tensor_med_respects]: an inhabitant of [mt_eq]
-    would give an equation in ℤ that [discriminate] refutes. *)
+    would give an equation in ℤ that [discriminate] refutes.（标题）（已译） *)
 Lemma int_tensor_gen_nonzero : mt_eq (zgen 1%Z 1%Z) zzero → False.
 Proof.
   intro He.

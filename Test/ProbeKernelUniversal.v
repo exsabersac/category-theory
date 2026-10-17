@@ -115,10 +115,10 @@ Check (fun (ZM : ZeroMorphisms C) => kill_fork_iso f).
 Fail Check (fun ZM : ZeroMorphisms C =>
               eq_refl : KillPresheaf f = ForkPresheaf f zmor).
 
-(** Negative: nor are their element types the same type.  Stripped, again
+(* * Negative: nor are their element types the same type.  Stripped, again
     without a "cannot unify" line: the term [eq_refl] 'has type
     "Kills f k = Kills f k" while it is expected to have type
-    "Kills f k = Forks f zmor k"'. *)
+    "Kills f k = Forks f zmor k"'.（标题）（已译） *)
 Fail Check (fun ZM : ZeroMorphisms C =>
               eq_refl : Kills f k = Forks f zmor k).
 

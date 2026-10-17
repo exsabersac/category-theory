@@ -147,7 +147,7 @@ Check (fun (P : Prop) => proj1 (powerset_squash_prop_inert@{o} P)).
 (* NEGATIVE 6 (FORMABILITY).  The naive elimination at a [Type@{o}]
    instantiates the impredicative quantifier outside [Prop].  Stripped:
      universe inconsistency: Cannot enforce o <= Prop
-   This refusal is exactly what [Untruncate] buys. *)
+   This refusal is exactly what [Untruncate] buys.（标题）（已译） *)
 Fail Check (fun (P : Type@{o}) (h : Powerset_squash@{o} P) =>
               h P (fun p => p)).
 

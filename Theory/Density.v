@@ -144,9 +144,9 @@ Definition den_med_component (e : D) :
     (fun z => transform[cocone_inj M ((e; z) : ElementsOp)] e id)
     (fun z w H => den_med_respects z w H).
 
-(* Naturality: one step of the competing injection's own naturality, then
-   cocone coherence at the chosen lift [Elements_lift K z f], whose image
-   under the projection is f itself definitionally. *)
+(* Naturality: one step competing injection's own 自然性, then
+ cocone 融贯性 at chosen lift [Elements_lift K z f], whose image
+ under projection is f itself definitionally.（已译） *)
 
 Lemma den_med_naturality {e e' : D} (f : e ~> e') :
   fmap[vertex_obj[M]] f ∘ den_med_component e
@@ -472,11 +472,11 @@ Definition ctrl_pdd_fmap (x y : PElements P) (f : x ~{PElements P}~> y) :
     = @fmap _ _ (Curried_CoHom C ◯ PElements_proj P) x y f
   := pdd_via_proj_fmap P x y f.
 
-(* NEGATIVE 1 (CONVERSION).  Stripped, this reports
-   [cannot unify "PDensityDiagram P" and
-   "Curried_CoHom C ◯ PElements_proj P"].  The two records differ only
-   in their functor-law fields, which [PElements_proj] supplies as
-   opaque [Program] obligations. *)
+(* NEGATIVE 1 (CONVERSION). Stripped, this reports
+ [cannot unify "PDensityDiagram P" and
+ "Curried_CoHom C ◯ PElements_proj P"]. The two records differ only
+ their 函子-law fields, which [PElements_proj] supplies as
+ opaque [Program] obligations.（已译） *)
 
 Fail Example neg_pdd_records :
   PDensityDiagram P = Curried_CoHom C ◯ PElements_proj P := eq_refl.

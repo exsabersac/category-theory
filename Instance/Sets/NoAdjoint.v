@@ -145,10 +145,10 @@ Definition pt_inr : OnePt ~{Sets}~> OnePlusOne :=
 Example pt_inl_inr_apart :
   (pt_inl ttt ≈ pt_inr ttt) = False := eq_refl.
 
-(* If [Sets^op] were cartesian closed for ANY cartesian structure [CC],
-   [prod_zero_r] would give [1 ×[CC] 0 ≅ 0] in [Sets^op] — in [Sets], a
-   subterminal apex under both injections of [1 + 1] — forcing the two
-   injections to agree. *)
+(* If [Sets^op] were 笛卡尔闭 ANY cartesian structure [CC],
+ [prod_zero_r] would give [1 ×[CC] 0 ≅ 0] [Sets^op] — [Sets], a
+ subterminal apex under both injections [1 + 1] — forcing two
+ injections agree.（已译） *)
 Theorem Sets_op_not_cartesian_closed
   (CC : @Cartesian (Sets^op)) (CL : @Closed (Sets^op) CC) : False.
 Proof.

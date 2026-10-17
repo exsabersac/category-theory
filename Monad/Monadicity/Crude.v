@@ -32,7 +32,7 @@ Generalizable All Variables.
 
 (* Hypothesis 2, stated elementarily: U carries any elementary
    coequalizer of a reflexive pair to an elementary coequalizer of the
-   image pair, at the image apex, coequalized by the image map. *)
+   image pair, at the image apex, coequalized by the image map.（标题）（已译） *)
 Definition PreservesReflexiveCoequalizers {C D : Category} (U : C ⟶ D) :
   Type :=
   ∀ (x y : C) (f g : x ~{C}~> y), ReflexivePair f g →

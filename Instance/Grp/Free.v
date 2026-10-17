@@ -94,7 +94,7 @@ Lemma fg_mul_respects (X : SetoidObject) :
 Proof.
   (* Every argument is introduced BEFORE either truncation is opened: the
      intermediate goal of a [respectful] chain is ascribed sort [Type], so an
-     elimination there is refused even though the final goal is a [Prop]. *)
+     elimination there is refused even though the final goal is a [Prop].（标题）（已译） *)
   intros a a' Ha b b' Hb.
   destruct Ha as [Ha], Hb as [Hb]; constructor.
   exact (@compose_respects (FreeGroupoid (PointQuiver X)) ttt ttt ttt

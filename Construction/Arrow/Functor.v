@@ -316,10 +316,10 @@ Qed.
 
 (** ** The classification *)
 
-(* Ex. 7 as a bijection: functors into the arrow category, up to
-   natural isomorphism, are exactly transformation triples up to
-   componentwise natural isomorphism intertwining the
-   transformations. *)
+(* Ex. 7 as bijection: 函子 into arrow 范畴, up to
+ natural 同构, are exactly transformation triples up to
+ componentwise natural 同构 intertwining the
+ transformations.（已译） *)
 Program Definition Arrow_classification (C B : Category) :
   ({| carrier := C ⟶ @Arrow B;
       is_setoid := @Functor_Setoid C (@Arrow B) |} : SetoidObject)

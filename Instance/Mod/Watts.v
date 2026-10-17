@@ -383,10 +383,10 @@ Definition ab_hom_Z_iso@{a c +} :
     (Representable_transport (equiv_iso Ab_Forget_Id_equiv)
        (representable_of_left_adjoint Ab_Forget free_ab_adjunction)).
 
-(* C = F ℤ, up to isomorphism in RMod R, F being the left adjoint of
-   [watts_theorem_adjoint]: FreeAb ⊣ Ab_Forget composed with F ⊣ T
-   represents [Ab_Forget ◯ T] by F (FreeAb SetsOne), and two
-   representations of one functor have isomorphic representing objects. *)
+(* C = F ℤ, up 同构 RMod R, F being 左伴随 of
+ [watts_theorem_adjoint]: FreeAb ⊣ Ab_Forget composed F ⊣ T
+ represents [Ab_Forget ◯ T] F (FreeAb SetsOne), two
+ representations one 函子 have isomorphic 表示 对象.（已译） *)
 Definition watts_theorem_Fz@{c o x a pk pa ra rt +}
   {R : RingObject@{c c c}} (T : (RMod@{o x c c c} R)^op ⟶ Ab@{a c})
   (AF : @AdditiveFunctor ((RMod@{o x c c c} R)^op) Ab@{a c}

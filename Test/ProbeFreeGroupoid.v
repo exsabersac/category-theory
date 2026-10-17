@@ -92,5 +92,5 @@ Fail Check (∀ (G : Quiver) (D : Category)
 
 (* [Deloop] does not accept an [Instance/Grp.v] group directly: it wants a
    [MonObject], and there is no coercion.  (Stripped of [Fail]: "The term
-   ... has type GrpObject while it is expected to have type MonObject".) *)
+   ... has type GrpObject while it is expected to have type MonObject".)（标题）（已译） *)
 Fail Check (fun H : GrpObject => Deloop H).

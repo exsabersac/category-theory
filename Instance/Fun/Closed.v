@@ -91,9 +91,9 @@ Context {J A : Category}.
 Context {JI : @Initial J}.
 Context {AT : @Terminal A}.
 
-(* [Functor_Category_Terminal AT]'s object is [Constant_Terminal_Functor
-   AT], the constant functor at 1_A, so a component of [a] at [j] has
-   type [1_A ~> E j] on the nose -- no transport is involved. *)
+(* [Functor_Category_Terminal AT]'s 对象 is [Constant_Terminal_Functor
+ AT], constant 函子 at 1_A, so component [a] at [j] has
+ type [1_A ~> E j] nose -- no transport is involved.（已译） *)
 Definition fun_const_point {E : J ⟶ A}
   (a : @terminal_obj ([J, A]) (Functor_Category_Terminal AT)
          ~{[J, A]}~> E) :
@@ -262,9 +262,9 @@ Proof.
   - discriminate H.
 Qed.
 
-(* In [FinSet] every element of the one-element object is [Fin.F1]
-   ([fin1_unique]), so a morphism [1 ~> n] is determined by its value
-   there.  The [=] is [fun_setoid]'s pointwise Leibniz equality. *)
+(* In [FinSet] every element one-element 对象 is [Fin.F1]
+ ([fin1_unique]), so 态射 [1 ~> n] is determined its value
+ there. The [=] is [fun_setoid]'s pointwise Leibniz equality.（已译） *)
 Lemma finset_point_eq {n : nat}
   (u v : @hom FinSet 1%nat n) : u Fin.F1 = v Fin.F1 -> u ≈ v.
 Proof.

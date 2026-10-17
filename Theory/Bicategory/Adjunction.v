@@ -99,10 +99,10 @@ Proof.
   now rewrite hcomp2_comp.
 Qed.
 
-(* Whiskering respects `≈` in its 2-cell argument. Stated as congruence lemmas
-   (rather than `Proper` instances) because a whisker's result type depends on
-   the 1-cell argument, which blocks the pointwise `Proper` search; these support
-   whole-term rewrites of a whisker in a composite. *)
+(* Whiskering respects `≈` its 2-cell argument. Stated as congruence 引理
+ (rather than `Proper` instances) because whisker's result type depends on
+ 1-cell argument, which blocks pointwise `Proper` search; these support
+ whole-term rewrites whisker composite.（已译） *)
 Lemma lwhisker_cong {x y z : bi0cell} (g : bicat y z) {f f' : bicat x y}
   (η η' : f ~> f') : η ≈ η' → lwhisker g η ≈ lwhisker g η'.
 Proof. intro E; unfold lwhisker; now rewrite E. Qed.

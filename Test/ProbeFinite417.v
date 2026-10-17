@@ -113,10 +113,10 @@ End Cones.
 Section NotComplete.
   Context {C : Category} (FC : @FinitelyComplete C).
 
-  (* N5 CONVERSION: a finitely complete category is not thereby complete —
-     a has-type mismatch whose [cannot unify] clause compares the SECOND
-     binders ([J ⟶ C] against [FiniteCategory J]), classified by the
-     clause as the header table has it. *)
+  (* N5 CONVERSION: finitely 完备 范畴 is not thereby 完备 —
+ has-type mismatch whose [cannot unify] clause compares SECOND
+ binders ([J ⟶ C] against [FiniteCategory J]), classified the
+ clause as header table has it.（已译） *)
   Fail Definition p417_fc_is_complete : @Complete C := FC.
 
   (* 相关说明。 （已译） *)

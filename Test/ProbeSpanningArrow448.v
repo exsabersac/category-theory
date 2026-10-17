@@ -95,7 +95,7 @@ Fail Definition p448_b3 (z : X) : SolutionSet G z :=
 
 (* B5 -- TYPING: the spanning factor lands in the intersection, not in
    [a]: "has type "x ~{ X }~> fobj[G] (sub_dom (spanning_sub G f))" while
-   it is expected to have type "x ~{ X }~> fobj[G] a"". *)
+   it is expected to have type "x ~{ X }~> fobj[G] a"".（标题）（已译） *)
 Fail Definition p448_b5 : x ~> G a := spanning_factor G GP f.
 
 End Readbacks.

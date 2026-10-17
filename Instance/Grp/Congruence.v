@@ -82,9 +82,9 @@ Section DeloopArithmetic.
 
 Context {G : GrpObject}.
 
-(** An element of G, read as an arrow of the delooping.  Definitional in
+(* * An element of G, read as an arrow of the delooping.  Definitional in
     both directions; it exists only to give the elaborator the hom type
-    when a [HomCongruence] field is applied to a group element. *)
+    when a [HomCongruence] field is applied to a group element.（标题）（已译） *)
 Definition deloop_arr (a : carrier G) : ttt ~{grp_deloop G}~> ttt := a.
 
 Example deloop_hom_type (x y : grp_deloop G) :
@@ -111,10 +111,10 @@ Definition ns_rel {G : GrpObject} (N : NormalSubgroup G)
 Example ns_rel_is_quot_rel {G : GrpObject} (N : NormalSubgroup G)
   (f g : carrier G) : ns_rel N ttt ttt f g = quot_rel N f g := eq_refl.
 
-(** Mac Lane §II.8 Exercise 2, one direction.  Kept a plain [Definition]
+(* * Mac Lane §II.8 Exercise 2, one direction.  Kept a plain [Definition]
     rather than an [Instance], following [FunctorKernel_Congruence]'s own
     convention in [Construction/Quotient.v]: nothing new enters
-    typeclass search, and the witness stays transparent. *)
+    typeclass search, and the witness stays transparent.（标题）（已译） *)
 Definition ns_congruence {G : GrpObject} (N : NormalSubgroup G)
   : @HomCongruence (grp_deloop G) (ns_rel N) :=
   @Build_HomCongruence (grp_deloop G) (ns_rel N)
@@ -668,9 +668,9 @@ Definition cat_med : QuotientGrp N ~{Grp}~> K :=
 Example cat_med_is_quot_med (a : carrier (QuotientGrp N)) :
   grp_map cat_med a = grp_map (quot_med N p) a := eq_refl.
 
-(** Awodey §4.5 Exercise 1.  The existence half is [QuotientLift]; the
-    uniqueness half is [QuotientLift_unique], applied at the delooping's
-    single object.  No group-level uniqueness argument is written. *)
+(* * Awodey §4.5 Exercise 1. The 存在性 half is [QuotientLift]; the
+ 唯一性 half is [QuotientLift_unique], applied at delooping's
+ single 对象. No group-level 唯一性 argument is written.（已译） *)
 Definition hom_theorem_via_quotient_category
   : ∃! u : QuotientGrp N ~{Grp}~> K, u ∘ quot_proj N ≈ `1 p.
 Proof.

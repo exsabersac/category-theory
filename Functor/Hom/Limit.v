@@ -279,10 +279,10 @@ Definition cohom_ContinuousFunctor : ContinuousFunctor HomTo :=
 Definition cohom_PreservesLimitCone {J : Category} (K : J ⟶ C^op) :
   PreservesLimitCone K HomTo := @hom_PreservesLimitCone (C^op) c J K.
 
-(* The covariant reading in C: a colimiting cocone of C is carried to a
-   limiting cone of Sets.  [Cocone K] is [Cone (K^op)] and
-   [IsColimitCocone] is [IsLimitCone] at the opposite diagram, so no
-   repackaging is needed. *)
+(* The covariant reading C: colimiting cocone C is carried a
+ limiting cone Sets. [Cocone K] is [Cone (K^op)] and
+ [IsColimitCocone] is [IsLimitCone] at 反 diagram, so no
+ repackaging is needed.（已译） *)
 
 Definition cohom_colimit_to_limit {J : Category} {K : J ⟶ C}
   (N : Cocone K) (HN : IsColimitCocone N) : IsLimitCone (FCone HomTo N) :=
@@ -309,10 +309,10 @@ End HomContravariant.
 
 (** ** Non-vacuity *)
 
-(* The repackaging Structure/Cartesian.v does not carry: a bundled
-   [Cartesian] structure read at one chosen pair as an apex-pinned
-   product.  Supplied here only to state the witness below; deliberately
-   not registered as an [Instance]. *)
+(* The repackaging Structure/Cartesian.v does not carry: bundled
+ [Cartesian] structure read at one chosen pair as apex-pinned
+ 积. Supplied here only state witness below; deliberately
+ not registered as [Instance].（已译） *)
 
 Program Definition cartesian_IsCartesianProduct {C : Category}
   `{@Cartesian C} (x y : C) : IsCartesianProduct x y (x × y) := {|

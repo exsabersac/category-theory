@@ -516,10 +516,10 @@ Proof.
   - now f_equal.
 Qed.
 
-(** The retraction carries free equations to free equations — the
-    nineteen-case preservation induction [T_subst_TermEq] of
-    [Construction/PROP/TermEq.v], specialized (definitionally) to the
-    retraction substitution. *)
+(* * The retraction carries 自由 equations 自由 equations — the
+ nineteen-case preservation induction [T_subst_TermEq] of
+ [Construction/PROP/TermEq.v], specialized (definitionally) the
+ retraction substitution.（已译） *)
 Lemma retract_TermEq {a b : nat} {s t : Term ext_sig a b} :
   TermEq ext_sig s t → TermEq (smt_sig B) (ext_retract s) (ext_retract t).
 Proof.

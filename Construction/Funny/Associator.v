@@ -62,9 +62,9 @@ Qed.
 Definition FunnyAssocInnerL (e : E) : (C □ D) ⟶ (C □ (D □ E)) :=
   FunnyUP (FunnyAssocInnerL_sep e).
 
-(* Flattening itself: on an outer left step the whole inner word is fed to
-   [FunnyAssocInnerL e], so functoriality in that coordinate is exactly
-   functoriality of the inner functor ([ffold_respects]/[ffold_app]). *)
+(* Flattening itself: outer left step whole inner word is fed to
+ [FunnyAssocInnerL e], so functoriality that coordinate is exactly
+ functoriality inner 函子 ([ffold_respects]/[ffold_app]).（已译） *)
 Program Definition FunnyAssocTo_sep :
   SepFunctorial (E:=C □ (D □ E))
     (fun (p : C □ D) (e : E) => (fst p, (snd p, e))) := {|

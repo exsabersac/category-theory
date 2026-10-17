@@ -225,9 +225,9 @@ Proof. exact (proset_transform_unique α β). Qed.
 
 (* 相关说明。 （已译） *)
 
-(* [Nat_Proset] is the preorder [(ℕ, ≤)] as a category: the example
-   [LessThanEqualTo_Category] of Instance/Proset.v.  Instance/Poset.v exports a
-   same-named example, so the reference below is fully qualified. *)
+(* [Nat_Proset] is preorder [(ℕ, ≤)] as 范畴: 例子
+ [LessThanEqualTo_Category] Instance/Proset.v. Instance/Poset.v exports a
+ same-named 例子, so reference below is fully qualified.（已译） *)
 
 Definition Nat_Proset : Category :=
   Category.Instance.Proset.LessThanEqualTo_Category.

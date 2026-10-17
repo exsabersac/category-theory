@@ -47,10 +47,10 @@ Definition iso_op {x y : C} (i : x ≅ y) : @Isomorphism C^op y x := {|
 
 (* 相关说明。 （已译） *)
 
-(* Two objects are representably isomorphic when both represented
-   functors agree up to natural isomorphism: C(−,x) ≅ C(−,y) in
-   presheaves AND C(y,−) ≅ C(x,−) in copresheaves (Riehl's directions;
-   either component determines the other through x ≅ y below). *)
+(* Two 对象 are representably isomorphic when both represented
+ 函子 agree up natural 同构: C(−,x) ≅ C(−,y) in
+ presheaves AND C(y,−) ≅ C(x,−) copresheaves (Riehl's directions;
+ either component determines other through x ≅ y below).（已译） *)
 Definition ContravariantRepresentableIso (x y : C) : Type :=
   @Isomorphism (@Presheaves C Sets) [Hom ─,x] [Hom ─,y].
 

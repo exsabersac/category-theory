@@ -358,7 +358,7 @@ Defined.
 
 (* Distinct points have distinct singletons, and equivalent points have
    equivalent ones: [Powerset_singleton_pred] is injective up to [≈].  This
-   is what turns a statement about points into a statement about subsets. *)
+   is what turns a statement about points into a statement about subsets.（标题）（已译） *)
 Lemma Powerset_singleton_faithful@{o so} {X : SetoidObject@{o o}}
   (a b : carrier X) :
   Powerset_singleton_pred@{o so} a ≈ Powerset_singleton_pred@{o so} b
@@ -730,7 +730,7 @@ Definition Powerset_Prop_truth@{o} : SetoidObject@{o o} :=
 (* A truncated subset of [X] is a [≈]-respecting [Prop]-valued predicate —
    that is, a [SetoidMorphism] into [Powerset_Prop_truth], compared
    pointwise by [SetoidMorphism_Setoid], exactly as [Powerset_obj] is
-   compared.  No lift appears: domain and codomain are both at [o]. *)
+   compared.  No lift appears: domain and codomain are both at [o].（标题）（已译） *)
 Definition Powerset_Prop_obj@{o} (X : SetoidObject@{o o}) : SetoidObject@{o o} :=
   {| carrier   := SetoidMorphism@{o o o} X Powerset_Prop_truth@{o}
    ; is_setoid := @SetoidMorphism_Setoid@{o o o} X Powerset_Prop_truth@{o} |}.

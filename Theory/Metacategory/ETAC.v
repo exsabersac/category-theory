@@ -333,9 +333,9 @@ Qed.
 
 (** ** Sentences: closed formulas *)
 
-(* Well-scopedness below a pair of de Bruijn bounds, and sentences as
-   the formulas closed below (0, 0) — Mac Lane's "statements".  A
-   sentence's satisfaction does not depend on the environment at all. *)
+(* Well-scopedness below pair de Bruijn bounds, sentences as
+ formulas 闭 below (0, 0) — Mac Lane's "statements". A
+ sentence's satisfaction does not depend environment at all.（已译） *)
 Definition atom_below (ko ka : nat) (t : atom) : Prop :=
   match t with
   | ADom f a => (f < ka)%nat /\ (a < ko)%nat

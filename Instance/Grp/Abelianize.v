@@ -542,7 +542,7 @@ Fail Example probe_routes_from (G : Grp) (A : Ab)
    derived counit does not compute, while route two's does
    ([abelianize_counit_computes_via_transform]) and the named component
    does ([probe_control_counit]).  Same derived constant, same
-   statement shape. *)
+   statement shape.（标题）（已译） *)
 Fail Example probe_counit_route_one (A : Ab)
   (a : carrier (cmon_setoid A)) :
   cmon_map (@Category.Theory.Adjunction.counit _ _ _ _

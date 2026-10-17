@@ -248,7 +248,7 @@ End HomotopyTrans.
 
 (* Homotopy also transports along pointwise `≈`-equality of the arrows
    themselves, which is what lets a computation that changes a path only up
-   to the hom-setoid of Top be applied inside a homotopy class. *)
+   to the hom-setoid of Top be applied inside a homotopy class.（标题）（已译） *)
 Definition ah_pointwise {X : TopSpace} {a b : X} {p q p' q' : I_Top ~{Top}~> X}
            (Hp : p ≈ p') (Hq : q ≈ q') (H : ArrowHomotopy a b p q) :
   ArrowHomotopy a b p' q'.

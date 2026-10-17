@@ -45,9 +45,9 @@ Section DiagramCore.
 Context {G : Quiver}.
 Context {C : Category}.
 
-(* A diagram in [C] of shape [G]: vertices go to objects, edges to morphisms
-   between the labels of their endpoints.  Source and target preservation is
-   automatic because a [Quiver]'s edges are indexed by their endpoints. *)
+(* A diagram [C] shape [G]: vertices go 对象, edges 态射
+ between labels their endpoints. Source target preservation is
+ automatic because [Quiver]'s edges are indexed their endpoints.（已译） *)
 Definition Diagram : Type := QuiverHomomorphism G (QuiverOfCat C).
 
 Context (D : Diagram).
@@ -826,9 +826,9 @@ Definition FactorsThroughReflection {J C : Category} (F : J ⟶ C) : Type :=
       hom_cast (Hobj x) (Hobj y)
         (fmap[K] (fmap[Reflect J] f)) ≈ fmap[F] f }}.
 
-(* The factorization is moreover an equality of FUNCTORS in StrictCat's
-   hom-setoid, not merely a pointwise agreement -- the same equivalence
-   [functor_of_diagram_of_functor] above is stated in. *)
+(* The factorization is moreover equality FUNCTORS StrictCat's
+ hom-setoid, not merely pointwise agreement -- same 等价
+ [functor_of_diagram_of_functor] above is stated in.（已译） *)
 Lemma shape_factor_functor {J C : Category} (F : J ⟶ C) (Hc : CommutativeShape F) :
   @equiv _ (@Functor_StrictEq_Setoid J C) (ShapeFactor F Hc ◯ Reflect J) F.
 Proof.

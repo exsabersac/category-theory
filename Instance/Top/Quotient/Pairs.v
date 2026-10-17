@@ -92,10 +92,10 @@ Qed.
 
 (* Mac Lane's [Top^(2)].
 
-       objects: pairs ⟨X, A⟩         (a space with a subset of its points)
-        arrows: maps carrying A into A'
-      identity: the identity map
-   composition: composition of continuous maps *)
+ 对象: pairs ⟨X, A⟩ (a space subset its points)
+ arrows: maps carrying A into A'
+ 恒等: 恒等 map
+ 复合: 复合 continuous maps（已译） *)
 Program Definition Top_pairs@{h o | o < h +} : Category@{h h h} := {|
   obj     := PairTop@{o};
   hom     := PairMap@{h o};
@@ -798,7 +798,7 @@ Qed.
 (* No pointed space's underlying space is an elementary wide coequalizer
    of the empty family of point-inclusions at the empty space: its
    basepoint would be a point of it, which Instance/Top/Quotient.v's
-   [empty_wide_coequalizer_pointless] refutes. *)
+   [empty_wide_coequalizer_pointless] refutes.（标题）（已译） *)
 Lemma no_pointed_coequalizer_at_empty@{o h i | o < h, o <= i +}
   (Q : PointedTop@{o}) (e : Empty_Top@{o} ~{Top@{h o}}~> ptop_space Q) :
   IsWideCoequalizer@{i h h} (C := Top@{h o})
@@ -810,11 +810,11 @@ Proof.
            (ptop_pt Q)).
 Qed.
 
-(* Hence no assignment of a pointed space to each pair, a functor or any
-   other function on objects, makes every underlying space an elementary
-   wide coequalizer of the point-inclusions: at ⟨∅, ∅⟩ there is none.  The
-   colimit form is met by [PairQuotient] at every pair
-   ([pquot_wide_coequalizer_colimit_quotient]). *)
+(* Hence no assignment pointed space each pair, 函子 any
+ other function 对象, makes every underlying space elementary
+ wide coequalizer point-inclusions: at ⟨∅, ∅⟩ there is none. The
+ 余极限 form is met [PairQuotient] at every pair
+ ([pquot_wide_coequalizer_colimit_quotient]).（已译） *)
 Lemma no_pointed_elementary_coequalizers@{o h i | o < h, o <= i +}
   (L : PairTop@{o} → PointedTop@{o}) :
   (∀ X : PairTop@{o}, ∃ e : pair_space X ~{Top@{h o}}~> ptop_space (L X),

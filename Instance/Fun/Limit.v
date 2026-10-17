@@ -257,10 +257,10 @@ Definition Eval_PreservesAllLimits@{jo jh co ch u u0 u1 u2 u3 +}
 
 (* * ** Presheaves: concrete 推论 （已译） *)
 
-(* Awodey §8.5's Corollary: every presheaf category is complete, from
-   Instance/Sets/Complete.v's [Sets_Complete]; and evaluation at any object
-   preserves all limits (Proposition 8.7's second clause).  The covariant
-   twin [Fun_Sets_Complete] is recorded too. *)
+(* Awodey §8.5's Corollary: every presheaf 范畴 is 完备, from
+ Instance/Sets/Complete.v's [Sets_Complete]; evaluation at any 对象
+ preserves all limits (Proposition 8.7's second clause). The covariant
+ twin [Fun_Sets_Complete] is recorded too.（已译） *)
 Definition Presheaf_Complete (C : Category) : @Complete ([C^op, Sets]) :=
   Functor_Category_Complete Sets_Complete.
 

@@ -90,8 +90,8 @@ Program Definition W_tensor : W ∏ W ⟶ W := {|
 |}.
 
 (* [unit_left] is [eq_refl] because [0 + n] reduces; [unit_right] and
-   [tensor_assoc] are the corresponding [Nat] facts.  Thinness supplies
-   uniqueness of each arrow, [Nat] arithmetic supplies its existence. *)
+ [tensor_assoc] are corresponding [Nat] facts. Thinness supplies
+ 唯一性 each arrow, [Nat] arithmetic supplies its 存在性.（已译） *)
 #[export] Program Instance W_Monoidal : @Monoidal W := {|
   I            := WE;
   tensor       := W_tensor;

@@ -131,10 +131,10 @@ Definition Kleisli_Monoidal : @Monoidal Kleisli :=
     (fun (x y : Kleisli) (f : x ~{Kleisli}~> y) =>
        kleisli_all_central comm f).
 
-(* The induced tensor computes the double strength on morphism pairs:
-   [bimap] over [Kleisli_Monoidal] is definitionally the interleaved
-   composite [composite_ff'], whose right-then-left normal form is
-   [kl_square_rl]. *)
+(* The 诱导 tensor computes double strength 态射 pairs:
+ [bimap] over [Kleisli_Monoidal] is definitionally interleaved
+ composite [composite_ff'], whose right-then-left normal form is
+ [kl_square_rl].（已译） *)
 Lemma kleisli_bimap_dstr {a b c d : C}
       (f : a ~{Kleisli}~> b) (g : c ~{Kleisli}~> d) :
   (f ⨂[Kleisli_Monoidal] g)

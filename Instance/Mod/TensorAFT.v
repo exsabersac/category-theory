@@ -1482,9 +1482,9 @@ Definition tensor_esols_resized {R : RingObject} (V V' : obj[RMod R]) :
     (resize_up_to_iso (sols_of_esols (Bilin V V') (tensor_esols_direct V V'))
        (tensor_spanning_SmallUpToIso V V')).
 
-(* ...and fed to the theorem.  Same signature as [tensor_via_AFT], reached
-   by a different argument: p. 128's covering family plus Lemma 2, rather
-   than the kernel congruence of an arbitrary bilinear map directly. *)
+(* ...and fed 定理. Same signature as [tensor_via_AFT], reached
+ different argument: p. 128's covering family plus Lemma 2, rather
+ than 核 congruence arbitrary bilinear map directly.（已译） *)
 Definition tensor_via_AFT_maclane {R : RingObject} (V V' : obj[RMod R]) :
   Representable (Bilin V V') :=
   tensor_via_AFT_of_esols V V' (tensor_esols_resized V V').

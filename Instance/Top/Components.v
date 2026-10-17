@@ -550,7 +550,7 @@ Qed.
 
 (* Under [Untruncate], a continuous map into a discrete space on ANY
    setoid is constant on components: the proposition carried along the
-   connected subset is the truncation [Powerset_squash] of [≈]. *)
+   connected subset is the truncation [Powerset_squash] of [≈].（标题）（已译） *)
 Lemma comp_respect_U@{o} (U : Untruncate@{o}) (X : PTop@{o})
   (S : SetoidObject@{o o}) (g : PMor@{o} X (PDiscrete S)) (x y : X) :
   comp_rel X x y → pmap g x ≈ pmap g y.

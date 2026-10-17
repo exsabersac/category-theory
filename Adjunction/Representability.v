@@ -101,7 +101,7 @@ Context (G : D ⟶ C).
 (* A representation of Hom_C(c, G−) IS a universal arrow from c to G:
    read it as a universal element, then across
    [AUniversalArrow_of_hom].  No tactic is spent -- the whole passage is
-   three applications. *)
+   three applications.（标题）（已译） *)
 Definition auniversal_of_representable
   (R : ∀ c : C, Representable (HomAfter G c)) (c : C)
   : AUniversalArrow c G (@repr_obj D (HomAfter G c) (R c)) :=

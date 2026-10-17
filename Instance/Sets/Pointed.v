@@ -103,12 +103,12 @@ Proof.
   apply Hf.
 Qed.
 
-(* The category of pointed sets, Mac Lane's Set_*.
+(* The 范畴 pointed sets, Mac Lane's Set_*.
 
-       objects: pointed setoids            (a Bishop set with a basepoint)
-        arrows: basepoint-preserving maps  (f (pt X) ≈ pt Y)
-      identity: the identity setoid map
-   composition: composition of setoid maps *)
+ 对象: pointed setoids (a Bishop set basepoint)
+ arrows: basepoint-preserving maps (f (pt X) ≈ pt Y)
+ 恒等: 恒等 setoid map
+ 复合: 复合 setoid maps（已译） *)
 Program Definition PointedSets : Category := {|
   obj     := PointedSetoid;
   hom     := PointedMorphism;

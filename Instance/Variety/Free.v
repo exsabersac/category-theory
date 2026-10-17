@@ -518,10 +518,10 @@ Definition FreeGroup_adjunction :
   Free_Variety_Functor UA.GroupEq ⊣ SVariety_Forget UA.GroupEq :=
   Free_Variety_adjunction UA.GroupEq.
 
-(* Every Leibniz algebra is a setoid algebra on the discrete setoid, so
-   #440's objects embed here — but the passage costs the axiom, because
-   [soa_op_respects] at [eq_Setoid] is exactly what extensionality
-   supplies. *)
+(* Every Leibniz 代数 is setoid 代数 discrete setoid, so
+ #440's 对象 embed here — but passage costs axiom, because
+ [soa_op_respects] at [eq_Setoid] is exactly what extensionality
+ supplies.（已译） *)
 Definition leibniz_soa {S : UA.OpSignature} (A : UA.OpAlgebra S) :
   SetoidOpAlgebra S := {|
   soa_obj := {| carrier := UA.carrier A ; is_setoid := eq_Setoid (UA.carrier A) |};

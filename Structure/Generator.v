@@ -20,11 +20,11 @@ Generalizable All Variables.
 
 (* * ** Generating (separating) families 对象 （已译） *)
 
-(* Mac Lane §V.7 p. 127 / Riehl 4.7.7 / Awodey §7.2: a family of objects
-   SEPARATES (generates) C when parallel arrows agreeing after every arrow
-   OUT of a member are equal.  Stated positively as a cancellation law,
-   the constructively correct reading, exactly as [Cogenerator] states its
-   dual. *)
+(* Mac Lane §V.7 p. 127 / Riehl 4.7.7 / Awodey §7.2: family 对象
+ SEPARATES (generates) C when parallel arrows agreeing after every arrow
+ OUT member are equal. Stated positively as cancellation law,
+ constructively correct reading, exactly as [Cogenerator] states its
+ 对偶.（已译） *)
 Record Generator {C : Category} := {
   gen_index : Type;
   gen_obj : gen_index -> C;

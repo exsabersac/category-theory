@@ -29,9 +29,9 @@ Universes d c.
 Context {F : Type@{d} -> Type@{c}}.
 Context `{Monad F}.
 
-(* [join] is the monad multiplication μ : F (F x) → F x.  It collapses one
-   layer of structure; categorically μ = bind _ id, and FP-side
-   [join m ≈ m >>= id].  nLab: https://ncatlab.org/nlab/show/monad *)
+(* [join] is 单子 multiplication μ : F (F x) → F x. It collapses one
+ layer structure; categorically μ = bind _ id, FP-side
+ [join m ≈ m >>= id]. nLab: https://ncatlab.org/nlab/show/单子（已译） *)
 Definition join {x} (m : F (F x)) : F x := bind m id.
 
 (*
@@ -44,9 +44,9 @@ Definition join {x} (m : F (F x)) : F x := bind m id.
 Definition kleisli_compose {x y z : Type@{d}} `(f : x → F y) `(g : y → F z) :
   x → F z := λ x, bind (f x) g.
 
-(* [liftM] is the functorial action fmap of [F] expressed through the monad:
-   [fmap f = liftM f = bind _ (ret ∘ f)], i.e. FP-side
-   [liftM f m ≈ m >>= (ret ∘ f)] (= μ ∘ F(ret ∘ f) categorically). *)
+(* [liftM] is functorial action fmap [F] expressed through 单子:
+ [fmap f = liftM f = bind _ (ret ∘ f)], i.e. FP-side
+ [liftM f m ≈ m >>= (ret ∘ f)] (= μ ∘ F(ret ∘ f) categorically).（已译） *)
 Definition liftM {x y : Type@{d}} (f : x → y) : F x → F y :=
   λ x, bind x (λ x, ret (f x)).
 

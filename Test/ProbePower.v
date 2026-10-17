@@ -64,9 +64,9 @@ End BigIndex.
 (* * ** (1b) The [Program] form copower-of-[1] 嵌入 pinned to
  [Set], shipped hand-written form not （已译） *)
 
-(* This is the variant Structure/Limit/Power/Hom.v declines to use.  It
-   raises no obligation: instance resolution closes [proper_morphism] during
-   elaboration, the domain's [≈] being Leibniz [eq]. *)
+(* This is variant Structure/Limit/Power/Hom.v declines use. It
+ raises no obligation: 实例 resolution closes [proper_morphism] during
+ elaboration, domain's [≈] being Leibniz [eq].（已译） *)
 Program Definition probe_copower_one_from_program (J : Type) :
   Sets_discrete J
     ~{Sets}~> @copower Sets Sets_HasIndexedCoproducts J 1%object := {|

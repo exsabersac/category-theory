@@ -239,9 +239,9 @@ Corollary kernel_repr_obj {k : C} {i : k ~> x} (K : IsKernelOf i) :
   @repr_obj (C^op) KillPresheaf (kernel_Representable K) = k.
 Proof. reflexivity. Qed.
 
-(* The natural isomorphism itself: Hom(─, k) ≅ Kill_f in [C^op, Sets].
-   [@Curried_Hom (C^op) k] IS [Hom ─,k], the presheaf Hom(─, k)
-   (Functor/Hom.v defines [Curried_CoHom C] as [Curried_Hom C^op]). *)
+(* The natural 同构 itself: Hom(─, k) ≅ Kill_f [C^op, Sets].
+ [@Curried_Hom (C^op) k] IS [Hom ─,k], presheaf Hom(─, k)
+ (Functor/Hom.v defines [Curried_CoHom C] as [Curried_Hom C^op]).（已译） *)
 Definition kernel_representation {k : C} {i : k ~> x} (K : IsKernelOf i)
   : @Curried_Hom (C^op) k ≅[[C^op, Sets]] KillPresheaf :=
   ue_representation KillPresheaf k (kernel_aue K).

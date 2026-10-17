@@ -189,7 +189,7 @@ Qed.
 (* Mac Lane's Theorem 3, as an inhabitant of the class rather than as
    an equation: it may be handed to [Compose_AdditiveFunctor], to
    [fmap_pzero]/[fmap_abneg], or to the backward-transpose section
-   above. *)
+   above.（标题）（已译） *)
 #[export] Instance left_adjoint_additive :
   @AdditiveFunctor D C AD AC F := {|
   fmap_padd := @left_adjoint_fmap_padd

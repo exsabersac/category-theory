@@ -76,7 +76,7 @@ Proof. induction C; simpl; auto; now f_equal. Qed.
 
 (* [Redex e1 e2] is a root contraction: the three primitive reduction rules,
    each contracting an elimination of a value to its component.  These are the
-   only redexes; congruence is handled separately by [Plug]/[Step]. *)
+   only redexes; congruence is handled separately by [Plug]/[Step].（标题）（已译） *)
 Inductive Redex {Γ} : ∀ {τ}, Exp Γ τ → Exp Γ τ → Set :=
   | R_Beta {dom cod} (e : Exp (dom :: Γ) cod) v :
     ValueP v →
@@ -157,12 +157,10 @@ Fixpoint Plug_comp {Γ τ τ' τ''}
   | Plug_AppR _ V p'  => Plug_AppR _ V (Plug_comp P p')
   end.
 
-(*
-(* This should be provable, but the dependent types get in the way. *)
+(* (* This should be provable, but the dependent types get in the way. *)
 Theorem Plug_id_left {Γ τ τ'} {C : Ctxt Γ τ' τ} {x : Exp Γ τ'} {y : Exp Γ τ}
         (P : Plug x C y) :
-  Plug_comp Plug_id P ~= P.
-*)
+  Plug_comp Plug_id P ~= P.（标题）（已译） *)
 
 (* 相关说明。 （已译） *)
 Inductive Step {Γ τ} : Exp Γ τ → Exp Γ τ → Set :=

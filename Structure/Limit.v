@@ -43,10 +43,10 @@ Class Limit `(F : J ⟶ C) := {
   (* 相关说明。 （已译） *)
   limit_cone : Cone F;
 
-  (* Universal property: every cone N factors through the limit cone by a
-     unique mediating morphism u on apexes, satisfying φ_x ∘ u ≈ ψ_x for
-     every x in J. Here [N ~> limit_cone] is, via the [vertex_obj] coercion,
-     a morphism vertex_obj[N] ~> vertex_obj[limit_cone] in C. *)
+  (* Universal 性质: every cone N factors through 极限 cone a
+ 唯一 mediating 态射 u apexes, satisfying φ_x ∘ u ≈ ψ_x for
+ every x J. Here [N ~> limit_cone] is, via [vertex_obj] coercion,
+ 态射 vertex_obj[N] ~> vertex_obj[limit_cone] C.（已译） *)
   ump_limits : ∀ N : Cone F, ∃! u : N ~> limit_cone, ∀ x : J,
     vertex_map[limit_cone] ∘ u ≈ @vertex_map _ _ _ _ (@coneFrom _ _ _ N) x
 }.

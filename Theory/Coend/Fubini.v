@@ -46,9 +46,9 @@ Section Fubini.
 Context {C D : Category}.
 Context (H : (C ∏ D)^op ∏ (C ∏ D) ⟶ Sets).
 
-(** The inner integrand at fixed [c1 c2 : C]: the [D]-profunctor
+(* * The inner integrand at fixed [c1 c2 : C]: the [D]-profunctor
     [(d1, d2) ↦ H ((c1, d1), (c2, d2))], contravariant in [d1], covariant in
-    [d2], obtained by holding the [C]-coordinates fixed at [c1], [c2]. *)
+    [d2], obtained by holding the [C]-coordinates fixed at [c1], [c2].（标题）（已译） *)
 (*
    本节说明函子、（余）端相关定义、性质与动机。
 
@@ -82,9 +82,9 @@ Proof.
   split; split; simpl; assumption.
 Qed.
 
-(** Composing two [Hact]s collapses to a single one: the contravariant legs
-    ([u], [g1]) compose reversed (they live in the opposite factors, which is
-    definitional), the covariant legs ([v], [g2]) forwards. *)
+(* * Composing two [Hact]s collapses single one: contravariant legs
+ ([u], [g1]) compose reversed (they live 反 factors, which is
+ definitional), covariant legs ([v], [g2]) forwards.（已译） *)
 Lemma Hact_comp (c1 c2 c1' c2' c1'' c2'' : C) (d1 d2 d1' d2' d1'' d2'' : D)
   (u : c1' ~{C}~> c1) (v : c2 ~{C}~> c2')
   (u' : c1'' ~{C}~> c1') (v' : c2' ~{C}~> c2'')
@@ -249,9 +249,9 @@ Next Obligation.
     [ reflexivity | reflexivity | apply id_left | apply id_left ].
 Qed.
 
-(** The diagonal contravariant image [bimap[H] (op (u,g)) id] in [Hact] form;
-    a definitional identity, phrased with an explicit hom annotation so the pair
-    [(u, g)] elaborates as a [C ∏ D] morphism rather than a bare product. *)
+(* * The diagonal contravariant image [bimap[H] (op (u,g)) id] [Hact] form;
+ definitional 恒等, phrased explicit hom annotation so pair
+ [(u, g)] elaborates as [C ∏ D] 态射 rather than bare 积.（已译） *)
 Local Lemma bimap_diag (c1 c2 : C) (d1 d2 : D)
   (u : c1 ~{C}~> c2) (g : d1 ~{D}~> d2) (w : H ((c2, d2), (c1, d1))) :
   bimap[H] (op ((u, g) : (c1, d1) ~{C ∏ D}~> (c2, d2))) (id, id) w

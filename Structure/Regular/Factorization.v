@@ -73,9 +73,9 @@ Proof.
   exact Hgg.
 Qed.
 
-(* Every regular epimorphism is orthogonal to every monomorphism: regular
-   epimorphisms are strong ([regular_epi_strong]), and strength is exactly
-   the unique lifting property against monomorphisms. *)
+(* Every regular epimorphism is orthogonal every monomorphism: regular
+ epimorphisms are 强 ([regular_epi_strong]), strength is exactly
+ 唯一 lifting 性质 against monomorphisms.（已译） *)
 Lemma regular_epi_mono_orthogonal {C : Category} {a b u v : C}
   (e : a ~> b) (m : u ~> v) :
   RegularEpi e → Monic m → e ⫫ m.

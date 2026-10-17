@@ -255,8 +255,7 @@ Fixpoint init {a : Type} (x : a) (l : list a) :=
     | cons y ys => x :: init y ys
   end.
 
-(*
-Fixpoint maybe_nth {a} (v : list a) i {struct i} :=
+(* Fixpoint maybe_nth {a} (v : list a) i {struct i} :=
   match v with
   | [] => Nothing
   | x :: s' =>
@@ -271,8 +270,7 @@ Fixpoint apply_nth {a} (def : a) (v : list a) i (f : a → a) {struct i} :=
   then if i is i'.+1
        then x :: apply_nth def v' i' f
        else f x :: v'
-  else ncons i def [def].
-*)
+  else ncons i def [def].（标题）（已译） *)
 
 Definition forFold {A B : Type} (b : B) (v : list A) (f : B → A → B) : B :=
   fold_left f v b.
@@ -280,8 +278,7 @@ Definition forFold {A B : Type} (b : B) (v : list A) (f : B → A → B) : B :=
 Definition forFoldr {A B : Type} (b : B) (v : list A) (f : A → B → B) : B :=
   fold_right f b v.
 
-(*
-Definition foldl_with_index
+(* Definition foldl_with_index
   {A B : Type} (f : nat → B → A → B) (b : B) (v : list A) : B :=
   let fix go n xs z :=
       match xs with
@@ -297,8 +294,7 @@ Definition foldr_with_index
         | nil => z
         | y :: ys => f n y (go n.+1 ys z)
       end in
-  go 0 v b.
-*)
+  go 0 v b.（标题）（已译） *)
 
 Definition catMaybes {a} (l : list (Maybe a)) : list a :=
   (fun f => fold_right f [] l) (fun mx rest =>
@@ -333,11 +329,11 @@ Instance List_Functor : Functor list := {
   fmap := map
 }.
 
-(* [list_ap] is the cartesian-product application: it applies every function
-   in [fs] to every element of [xs], realizing the lax-monoidal product map
-   μ : list (A → B) × list A → list B of the standard list applicative.
-   nLab: https://ncatlab.org/nlab/show/monoidal+functor
-   Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor *)
+(* [list_ap] is cartesian-积 application: it applies every function
+ [fs] every element [xs], realizing lax-幺半 积 map
+ μ : list (A → B) × list A → list B standard list applicative.
+ nLab: https://ncatlab.org/nlab/show/幺半+函子
+ Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor（已译） *)
 Fixpoint list_ap {A B} (fs: list (A → B)) (xs: list A)
   : list B :=
   match fs with

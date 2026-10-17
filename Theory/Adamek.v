@@ -249,10 +249,10 @@ Qed.
 
 End Mediator.
 
-(* The candidate initial algebra [(A, α)], as an object of [FAlg F].  Naming it
-   with an explicit carrier type pins the sigma predicate to
-   [fun a => FAlgebra F a], which bare [(A; alpha)] would otherwise leave
-   ambiguous. *)
+(* The candidate 始 代数 [(A, α)], as 对象 [FAlg F]. Naming it
+ explicit carrier type pins sigma predicate to
+ [fun => FAlgebra F a], which bare [(A; alpha)] would otherwise leave
+ ambiguous.（已译） *)
 Definition muF : FAlg F := existT (fun a : C => FAlgebra F a) A alpha.
 
 (*
@@ -273,10 +273,10 @@ Proof.
   - symmetry. exact (hom_is_u y g).
 Qed.
 
-(* [(A, α)] is initial in [FAlg F], i.e. terminal in [(FAlg F)^op].  The
-   opposite category is named explicitly through [Opposite]: [FAlg F] and its
-   opposite share objects, so a bare record literal cannot recover which side
-   the terminal object lives on. *)
+(* [(A, α)] is 始 [FAlg F], i.e. 终 [(FAlg F)^op]. The
+ 反 范畴 is named explicitly through [Opposite]: [FAlg F] its
+ 反 share 对象, so bare record literal cannot recover which side
+ 终 对象 lives on.（已译） *)
 Definition adamek : @Initial (FAlg F) :=
   @Build_Terminal (Opposite (FAlg F)) muF adamek_one adamek_one_unique.
 

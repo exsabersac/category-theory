@@ -47,7 +47,7 @@ Context {C D E : Category}.
 (* NEGATIVE 1.  Stripped, this reports:
      The term "eq_refl" has type "zigzag_fmap Id[C] s = zigzag_fmap Id[C] s"
      while it is expected to have type "zigzag_fmap Id[C] s = s"
-     (cannot unify "zigzag_fmap Id[C] s" and "s").                        *)
+     (cannot unify "zigzag_fmap Id[C] s" and "s").（标题）（已译） *)
 Fail Definition probe_fmap_id_variable (x y : C) (s : ZigZag x y) :
   zigzag_fmap Id[C] s = s := eq_refl.
 

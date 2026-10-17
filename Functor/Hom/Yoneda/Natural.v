@@ -229,9 +229,9 @@ Program Definition YoEvalAt : [C, Sets] ⟶ Sets := {|
 |}.
 Next Obligation. srewrite (@fmap_id _ _ x c). reflexivity. Qed.
 
-(* It is the partial application of the evaluation bifunctor: on objects
-   definitionally (Leibniz [eq_refl]), on arrows only up to ≈, because the
-   bifunctor's action at ⟨τ, id⟩ still transports along [fmap[F] id]. *)
+(* It is partial application evaluation bifunctor: 对象
+ definitionally (Leibniz [eq_refl]), arrows only up ≈, because the
+ bifunctor's action at ⟨τ, id⟩ still transports along [fmap[F] id].（已译） *)
 Definition yo_eval_at_obj (F : C ⟶ Sets) :
   fobj[YoEvalAt] F = fobj[YoEval C] (F, c) := eq_refl.
 

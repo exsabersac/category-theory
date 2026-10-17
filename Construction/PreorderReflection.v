@@ -17,9 +17,9 @@ Generalizable All Variables.
  each hom, not 对象: it never relates 态射 different type. （已译） *)
 Definition TotalRel (C : Category) : HomRel C := fun _ _ _ _ => True.
 
-(** Every congruence field is immediate: the relation is constantly [True], so
-    inclusion of [≈], symmetry, transitivity, and compatibility with
-    composition all hold by [I].  (Reflexivity is derived, not a field.) *)
+(* * Every congruence field is immediate: relation is constantly [True], so
+ inclusion [≈], symmetry, transitivity, compatibility with
+ 复合 all hold [I]. (Reflexivity is derived, not field.)（已译） *)
 #[export] Instance TotalRel_Congruence (C : Category) :
   @HomCongruence C (TotalRel C).
 Proof. constructor; intros; exact I. Defined.

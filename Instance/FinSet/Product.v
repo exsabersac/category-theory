@@ -113,7 +113,7 @@ Qed.
 
 (* Closed pairings evaluated at concrete elements, by [eq_refl]: the fork
    of the two projections out of Fin.t 6 = Fin.t (2 * 3) re-encodes each
-   element to itself, checked here at position 4 = (1, 1). *)
+   element to itself, checked here at position 4 = (1, 1).（标题）（已译） *)
 Example fork_computes :
   @fork FinSet FinSet_Cartesian 6%nat 2%nat 3%nat
     (fun p : Fin.t 6 => fst (@fin_unpair 2 3 p))

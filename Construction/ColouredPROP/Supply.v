@@ -67,9 +67,9 @@ Definition cunit_nil_b : @I P (MBc P) = ⟦[]⟧c :=
         return (@I P M = ⟦[]⟧c)
   with eq_refl => cprop_unit_nil end.
 
-(** Transparent congruence of [⨂[MBc P]] on object equalities (the
-    [MBc]-side sibling of Interp.v's [ctensor_obj_eq]; kept as nested
-    [match]es so that it computes to [eq_refl] on [eq_refl]s). *)
+(* * Transparent congruence [⨂[MBc P]] 对象 equalities (the
+ [MBc]-side sibling Interp.v's [ctensor_obj_eq]; kept as nested
+ [match]es so that it computes [eq_refl] [eq_refl]s).（已译） *)
 Definition ctensor2_b {x x' y y' : P} (e : x = x') (e' : y = y') :
   ((x ⨂[MBc P] y)%object = (x' ⨂[MBc P] y')%object) :=
   match e in _ = u return ((x ⨂[MBc P] y)%object = (u ⨂[MBc P] y')%object) with

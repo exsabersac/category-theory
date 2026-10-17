@@ -228,9 +228,9 @@ Proof. intros a b; simpl; apply Qmult_comm. Qed.
 
 Definition Q_CRng : CRng := (Q_Ring; Q_Ring_commutative).
 
-(* ...and a ℤ-algebra by the inclusion ℤ → ℚ, a genuinely non-identity
-   structure map: Instance/Rng.v's [ZtoQ_not_surjective] shows it misses
-   1/2, so this algebra is not its own base ring in disguise. *)
+(* ...and ℤ-代数 inclusion ℤ → ℚ, genuinely non-恒等
+ structure map: Instance/Rng.v's [ZtoQ_not_surjective] shows it misses
+ 1/2, so this 代数 is not its own base ring disguise.（已译） *)
 Definition Q_KAlg : KAlgObject Int_CRng :=
   Build_KAlgObject Int_CRng Q_Ring Q_Ring_commutative ZtoQ.
 

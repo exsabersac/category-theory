@@ -63,10 +63,10 @@ Proof.
   exists t; exact e.
 Defined.
 
-(** The element-indexed twin.  [esol_covers] has no [Arguments] line, so
-    the functor is explicit: it is [esol_covers K E x], not
-    [esol_covers E x].  Outside [Adjunction/Representability/Sets.v]'s own
-    section [ElementSolutionSet] takes FOUR universes, not one. *)
+(* * The element-indexed twin. [esol_covers] has no [Arguments] line, so
+ 函子 is explicit: it is [esol_covers K E x], not
+ [esol_covers E x]. Outside [Adjunction/Representability/Sets.v]'s own
+ section [ElementSolutionSet] takes FOUR universes, not one.（已译） *)
 Definition resize_element_solution_set@{cobj h su i w}
   {C : Category@{cobj h h}} (K : C ⟶ Sets@{h su})
   (E : ElementSolutionSet@{cobj h su i} K)

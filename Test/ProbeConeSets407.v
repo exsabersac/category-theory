@@ -119,11 +119,11 @@ Fail Example neg_apex_strict {D : Category} (F : D ⟶ Sets) :
 
 (* * ** (2) There no [≈] grade 对象 -- RESOLUTION （已译） *)
 
-(* Objects of [Sets] carry no setoid.  Whole error:
-     The following term contains unresolved implicit arguments ...
-     ?Setoid: Cannot infer the implicit parameter Setoid of equiv whose
-     type is "Setoid SetoidObject" (no type class instance found).
-   A [Check] here is ACCEPTED (open evar), so this is a [Definition]. *)
+(* Objects [Sets] carry no setoid. Whole error:
+ The following term contains unresolved implicit arguments ...
+ ?Setoid: Cannot infer implicit parameter Setoid equiv whose
+ type is "Setoid SetoidObject" (no type class 实例 found).
+ A [Check] here is ACCEPTED (open evar), so this is [Definition].（已译） *)
 Fail Definition neg_apex_equiv {D : Category} (F : D ⟶ Sets) : Type :=
   (Sets_limit_obj F ≈ cone_apex F).
 
@@ -179,7 +179,7 @@ Check (@ACone (DiscreteCat A) C).
 (* Former donor 1: [DiscreteCat_Functor] used to pin its own SOURCE at
    [DiscreteCat@{_ Set Set}], with the error tail
      (universe inconsistency: Cannot enforce Set = ch).
-   Annotated, it reaches these levels. *)
+   Annotated, it reaches these levels.（标题）（已译） *)
 Check (DiscreteCat_Functor f : DiscreteCat@{io ch cp} A ⟶ C).
 
 (* Former donor 2: [IsALimit] identifies shape's hom-and-证明

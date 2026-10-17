@@ -73,9 +73,9 @@ Defined.
   coreflexive_eq := fun x y f g _ => @equalizer C H x y f g
 |}.
 
-(* Two equations with no quantification over the ambient category, so
-   arbitrary functors preserve coreflexivity — as they do reflexivity
-   (Structure/Coequalizer/Reflexive.v's [functor_preserves_reflexive]). *)
+(* Two equations no quantification over ambient 范畴, so
+ arbitrary 函子 preserve coreflexivity — as they do reflexivity
+ (Structure/Coequalizer/Reflexive.v's [functor_preserves_reflexive]).（已译） *)
 Theorem functor_preserves_coreflexive {C D : Category} (F : C ⟶ D)
   {x y : C} (f g : x ~> y) :
   CoreflexivePair f g → CoreflexivePair (fmap[F] f) (fmap[F] g).
@@ -379,7 +379,7 @@ End SetsHalf.
 
 (* [Sets] has coreflexive equalizers — but the only route in the tree is
    through the STRONGER [HasEqualizers Sets], so Manes' criterion is
-   instantiated here only where Theorem 1's hypothesis already holds. *)
+   instantiated here only where Theorem 1's hypothesis already holds.（标题）（已译） *)
 Definition Sets_HasCoreflexiveEqualizers : HasCoreflexiveEqualizers Sets :=
   @HasEqualizers_HasCoreflexiveEqualizers Sets
     (HasEqualizers_of_HasPullbacks_Terminal Sets_HasPullbacks).

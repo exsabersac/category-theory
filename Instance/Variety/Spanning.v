@@ -167,9 +167,9 @@ Definition sa_obj (B : SubAlg) : SetoidObject :=
   {| carrier   := { t : carrier (soa_obj (`1 A)) & sa_mem B t }
    ; is_setoid := sa_setoid B |}.
 
-(* Since #450 a setoid algebra carries [soa_prop]; a subalgebra's `≈` is
-   the ambient one read on first projections, so its propositional mirror
-   is the ambient algebra's, transported by [sigma_first_PropEquiv]. *)
+(* Since #450 setoid 代数 carries [soa_prop]; subalgebra's `≈` is
+ ambient one read first projections, so its propositional mirror
+ is ambient 代数's, transported [sigma_first_PropEquiv].（已译） *)
 Program Definition sa_soa (B : SubAlg) : SetoidOpAlgebra S := {|
   soa_obj := sa_obj B;
   soa_op  := fun o k => (soa_op (`1 A) o (fun i => `1 (k i));

@@ -161,10 +161,10 @@ Proof.
   apply mon_inv_cancel_l'.
 Defined.
 
-(* Every remaining field of [Adjunction] — both isomorphism laws, both
-   respectfulness proofs and all four naturality clauses — is an equation in
-   a hom-setoid of [MonDiscrete M], hence trivially true; the obligation
-   tactic in force discharges all eight. *)
+(* Every remaining field [Adjunction] — both 同构 laws, both
+ respectfulness 证明 all four 自然性 clauses — is equation in
+ hom-setoid [MonDiscrete M], hence trivially true; obligation
+ tactic force discharges all eight.（已译） *)
 Program Definition left_translation_adjunction :
   LeftTranslation M a ⊣ LeftTranslation M (minv Inv a) := {|
   adj := fun x y =>
@@ -482,9 +482,9 @@ Lemma Z3_adjoints_differ :
     <> fobj[LeftTranslation Z3_Mon (minv Z3_Inverses Z3_1)] Z3_0.
 Proof. discriminate. Qed.
 
-(* Z/3's carrier setoid is Leibniz equality on [Z3] (Structure/Groupoid.v),
-   so it also witnesses the strict reading, with both hypotheses discharged:
-   [MonStrict] by the identity function, [MonUIP] by Hedberg. *)
+(* Z/3's carrier setoid is Leibniz equality [Z3] (Structure/Groupoid.v),
+ so it also witnesses 严格 reading, both hypotheses discharged:
+ [MonStrict] 恒等 function, [MonUIP] Hedberg.（已译） *)
 Definition Z3_MonStrict : MonStrict Z3_Mon := fun _ _ p => p.
 
 Definition Z3_dec (x y : Z3) : {x = y} + {x <> y}.

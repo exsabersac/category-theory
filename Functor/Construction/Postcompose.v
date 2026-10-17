@@ -331,7 +331,7 @@ Example finpost_theta_component (x : _1) :
 
 (* A transformation exhibited DOWNSTAIRS, in [Sets], with no reference to
    the subcategory: its component is [Sets_negb].  Naturality over the point
-   reduces to [Sets_negb ∘ fmap[J] id ≈ fmap[J] id ∘ Sets_negb]. *)
+   reduces to [Sets_negb ∘ fmap[J] id ≈ fmap[J] id ∘ Sets_negb].（标题）（已译） *)
 Program Definition finpost_phi :
   FinSets_Incl ◯ finpost_K ⟹ FinSets_Incl ◯ finpost_K := {|
   transform := fun _ => Sets_negb
@@ -357,7 +357,7 @@ Qed.
 (* Non-degeneracy, upstairs: the source Nat-setoid has at least two
    elements.  [FinSets_two_arrows] is Construction/Subcategory/Finite.v's
    separation of [id] from [FinSets_negb] in the subcategory's own
-   hom-setoid. *)
+   hom-setoid.（标题）（已译） *)
 Lemma finpost_theta_not_id : @nat_id _1 FinSetsCat finpost_K ≈ finpost_theta → False.
 Proof.
   intro H.

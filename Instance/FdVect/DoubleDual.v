@@ -8,7 +8,7 @@
    import order and for its reason: it exports
    [Corelib.Relations.Relation_Definitions.equiv], which would otherwise
    shadow [Category.Lib.Setoid.equiv] and break every [Proper] signature
-   below. *)
+   below.（标题）（已译） *)
 Require Import Coq.QArith.QArith.
 Require Import Coq.Vectors.Fin.
 Require Import Category.Lib.
@@ -231,11 +231,11 @@ Next Obligation.
 Qed.
 Next Obligation. intros V r v f; simpl; apply (rm_map_smul f r v). Qed.
 
-(** Mac Lane §I.4 remark 2 / Awodey §7.5 Example 7.12 / Riehl §1.4
-    Example 1.4.4(ii): evaluation is NATURAL, at every dimension.  Both
-    orientations of the square hold by [reflexivity] at each vector and
-    each functional — both composites send (v, φ) to φ(f v) — and no
-    hypothesis on V, W or f is used. *)
+(* * Mac Lane §I.4 注记 2 / Awodey §7.5 Example 7.12 / Riehl §1.4
+ Example 1.4.4(ii): evaluation is NATURAL, at every dimension. Both
+ orientations square hold [reflexivity] at each vector and
+ each functional — both composites send (v, φ) φ(f v) — no
+ hypothesis V, W f is used.（已译） *)
 Program Definition double_dual_natural : Id[Vct_F F] ⟹ DoubleDual := {|
   transform := eta
 |}.

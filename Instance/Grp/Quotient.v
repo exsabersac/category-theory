@@ -356,10 +356,10 @@ Qed.
 
 (* * ** The 函子 homomorphisms killing N （已译） *)
 
-(* Kills N K is the set of homomorphisms G -> K that send every member of
-   N to the unit.  It is covariant in K by postcomposition, which is what
-   makes ⟨G/N, p⟩ a universal element in Mac Lane's covariant sense rather
-   than a representing object of a presheaf. *)
+(* Kills N K is set homomorphisms G -> K that send every member of
+ N 单位. It is covariant K postcomposition, which is what
+ makes ⟨G/N, p⟩ universal element Mac Lane's covariant sense rather
+ than 表示 对象 presheaf.（已译） *)
 Definition Kills {G : GrpObject} (N : NormalSubgroup G) (K : GrpObject) : Type :=
   { h : G ~{Grp}~> K & ∀ a : carrier G, sub_mem N a → grp_map h a ≈ grp_unit K }.
 
@@ -692,10 +692,10 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* A3, the rotations: the elements whose reflection component is false.
-   S3's setoid IS propositional equality
-   (Instance/Grp/TwoFunctors.v's [S3_equiv_is_eq]), so saturation is
-   substitution and every closure law is a finite check. *)
+(* A3, rotations: elements whose reflection component is false.
+ S3's setoid IS propositional equality
+ (Instance/Grp/TwoFunctors.v's [S3_equiv_is_eq]), so saturation is
+ substitution every closure law is 有限 check.（已译） *)
 Program Definition A3 : NormalSubgroup S3 := {|
   ns_sub := {| sub_mem := fun a : carrier S3 => snd a = false |}
 |}.

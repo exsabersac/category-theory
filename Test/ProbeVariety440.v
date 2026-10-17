@@ -80,7 +80,7 @@ Example p440_act_op {S : UA.OpSignature} (A : SetoidAction S) {n}
 (* 相关说明。 （已译） *)
 (* The constructor is applied explicitly rather than through record
    syntax: [UA.op]'s signature quantifies over the operation type of an
-   as-yet-unresolved [?S], and record syntax does not fix it. *)
+   as-yet-unresolved [?S], and record syntax does not fix it.（标题）（已译） *)
 Definition AndOp : UA.OpAlgebra UA.GroupOp :=
   UA.Build_OpAlgebra UA.GroupOp bool
     (fun o => match o return (UA.Group_arity o → bool) → bool with

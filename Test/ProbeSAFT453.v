@@ -619,7 +619,7 @@ Definition p453_large_cog@{c o so +| o < so, o < c +} :
 
 (* CONTROL: the Corollary takes it over a completeness datum whose shape
    universe is the family's index universe, a hypothetical datum taken as
-   a variable ([Sets_Complete] is [Complete@{o o o so}]). *)
+   a variable ([Sets_Complete] is [Complete@{o o o so}]).（标题）（已译） *)
 Definition p453_large_cog_abstract@{c o so w s t pk pa +|
     o < so, o < c, w <= o, so <= s, o <= s, o < t +}
   (comp : @Complete@{c c o so} Sets@{o so})

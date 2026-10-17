@@ -16,12 +16,12 @@ Generalizable All Variables.
 *)
 Definition Span (C : Category) := Roof ⟶ C.
 
-(* A cospan is the dual notion: a span in the opposite category, i.e. a
-   diagram of shape `x → s ← y` (two morphisms sharing a common codomain).
-   It is a functor out of the opposite shape category Roof^op.
+(* A cospan is 对偶 notion: span 反 范畴, i.e. a
+ diagram shape `x → s ← y` (two 态射 sharing common codomain).
+ It is 函子 out 反 shape 范畴 Roof^op.
 
-   nLab:      https://ncatlab.org/nlab/show/cospan
-   Wikipedia: https://en.wikipedia.org/wiki/Span_(category_theory)#Cospans *)
+ nLab: https://ncatlab.org/nlab/show/cospan
+ Wikipedia: https://en.wikipedia.org/wiki/Span_(范畴_theory)#Cospans（已译） *)
 Definition Cospan (C : Category) := Roof^op ⟶ C.
 
 (*

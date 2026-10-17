@@ -153,8 +153,8 @@ Proof. simpl; intros; cat. Qed.
 
 (* nLab: https://ncatlab.org/nlab/show/pointed+endofunctor
 
-   A pointed endofunctor is an endofunctor `F : C ⟶ C` equipped with a natural
-   transformation `point : Id ⟹ F` from the identity functor. *)
+ A pointed endofunctor is endofunctor `F : C ⟶ C` equipped natural
+ transformation `point : Id ⟹ F` from 恒等 函子.（已译） *)
 
 Class Pointed {C : Category} (F : C ⟶ C) := {
   point : Id ⟹ F                        (* the point η : Id ⟹ F *)

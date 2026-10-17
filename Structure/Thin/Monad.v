@@ -32,9 +32,9 @@ Generalizable All Variables.
 
 (** ** Monads in a thin category *)
 
-(* Mac Lane's display (3) in any thin category: an endofunctor with a
-   unit family and a multiplication family IS a monad.  Each law is an
-   equation between parallel arrows, hence one appeal to [TC]. *)
+(* Mac Lane's display (3) any thin 范畴: endofunctor a
+ 单位 family multiplication family IS 单子. Each law is an
+ equation between parallel arrows, hence one appeal [TC].（已译） *)
 Definition thin_monad@{t o h} {C : Category@{o h h}} (TC : Thin@{t o h} C)
   (T : C ⟶ C) (u : ∀ x : C, x ~> T x) (m : ∀ x : C, T (T x) ~> T x) :
   @Monad C T :=

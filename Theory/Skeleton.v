@@ -483,10 +483,10 @@ Proof. intros x y f; exact (to f). Qed.
 
 (* 相关说明。 （已译） *)
 
-(* Skeletality IS invariant under isomorphism of categories.  The other
-   half — that it is not invariant under equivalence — is
-   [skeletality_is_not_equivalence_invariant] in
-   Theory/Skeleton/Separation.v. *)
+(* Skeletality IS invariant under 同构 范畴. The other
+ half — that it is not invariant under 等价 — is
+ [skeletality_is_not_equivalence_invariant] in
+ Theory/Skeleton/Separation.v.（已译） *)
 
 Theorem Skeletal_StrictCat_invariant {C D : Category}
         (i : C ≅[StrictCat] D) : Skeletal C → Skeletal D.

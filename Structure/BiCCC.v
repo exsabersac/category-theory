@@ -71,9 +71,9 @@ Proof.
 Qed.
 
 #[export] Program Instance prod_coprod_r {x y z : C} :
-  (* Left distributivity: `x × _` preserves the coproduct y + z, so it
-     distributes over it. This is the canonical distributivity iso of a
-     distributive category, supplying [distr_prod_coprod] below. *)
+  (* Left distributivity: `x × _` preserves 余积 y + z, so it
+ distributes over it. This is 典范 distributivity iso a
+ distributive 范畴, supplying [distr_prod_coprod] below.（已译） *)
   x × (y + z) ≅ x × y + x × z := {
   to   := uncurry (curry (inl ∘ swap) ▽ curry (inr ∘ swap)) ∘ swap;
   from := second inl ▽ second inr

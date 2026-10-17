@@ -171,9 +171,9 @@ Proof.
   apply iso_from_to.
 Qed.
 
-(* [braid2] is a definitional field of [RelevanceMonoidal]; statements of
-   other fields (e.g. [diagonal_braid2]) carry its body inlined.  This fold
-   lemma lets those occurrences be rewritten back to the named form. *)
+(* [braid2] is definitional field [RelevanceMonoidal]; statements of
+ other fields (e.g. [diagonal_braid2]) carry its body inlined. This fold
+ 引理 lets those occurrences be rewritten back named form.（已译） *)
 Lemma braid2_unfold {a b c e : C} :
   @braid2 C R a b c e ≈
   tensor_assoc⁻¹ ∘ id ⨂ (tensor_assoc ∘ braid ⨂ id ∘ tensor_assoc⁻¹)

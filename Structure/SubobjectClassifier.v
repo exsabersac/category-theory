@@ -60,10 +60,10 @@ Definition truth_subobject : SubObj Ω := {|
   sub_is_monic := truth_monic
 |}.
 
-(* A pullback square is stable under replacing its second projection by an
-   ≈-equal morphism; both fields transport by rewriting.  Companion to
-   [is_pullback_respects_left] of Theory/Subobject/Functor.v, used below to
-   trade the chosen projection into 1 for the canonical [one]. *)
+(* A 拉回 square is stable under replacing its second projection an
+ ≈-equal 态射; both fields transport rewriting. Companion to
+ [is_pullback_respects_left] Theory/Subobject/Functor.v, used below to
+ trade chosen projection into 1 典范 [one].（已译） *)
 Lemma is_pullback_respects_snd {x y z : C} {f : x ~> z} {g : y ~> z}
       {P : C} {p1 : P ~> x} {p2 p2' : P ~> y} (Hp : p2 ≈ p2') :
   IsPullback f g P p1 p2 → IsPullback f g P p1 p2'.
@@ -153,10 +153,10 @@ Proof.
   exact (pullback_is_pullback h truth (pullback h truth)).
 Qed.
 
-(* Round trip (ii): pulling truth back along char m recovers the subobject
-   (u, m) up to the SubObj equivalence, since the classifying square is
-   itself a pullback of truth along char m; any two pullbacks of one cospan
-   agree, via sub_reindex_transport. *)
+(* Round trip (ii): pulling truth back along char m recovers subobject
+ (u, m) up SubObj 等价, since classifying square is
+ itself 拉回 truth along char m; any two pullbacks one cospan
+ agree, via sub_reindex_transport.（已译） *)
 Lemma classifier_pullback_roundtrip {x : C} (s : SubObj x) :
   sub_reindex (char (sub_mono s) (sub_is_monic s)) truth_subobject ≈ s.
 Proof.

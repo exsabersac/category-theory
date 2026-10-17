@@ -93,10 +93,10 @@ Next Obligation.
   - intros []; simpl; apply fu.
 Qed.
 
-(** The multiplicative-monoid forgetful functor of RINGS, obtained by
-    extending Theory/Algebra/Rig.v's [Rig_Forget_Mon] along
-    [Ring_Forget_Rig].  All four element-level readings hold on the
-    nose. *)
+(* * The multiplicative-monoid 遗忘 函子 RINGS, obtained by
+ extending Theory/Algebra/Rig.v's [Rig_Forget_Mon] along
+ [Ring_Forget_Rig]. All four element-level readings hold the
+ nose.（已译） *)
 Definition Rng_Forget_Mon : Rng ⟶ MonSets := Rig_Forget_Mon ◯ Ring_Forget_Rig.
 
 Example rng_forget_mon_carrier (S : Rng) :

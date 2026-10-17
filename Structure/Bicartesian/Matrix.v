@@ -367,9 +367,9 @@ End CoproductInjections.
 
 (* 相关说明。 （已译） *)
 
-(* The dual of [fin2_legs]: a pair of morphisms INTO a common target,
-   indexed over [Fin.t 2].  It is [fin2_legs] read in C^op, which is why the
-   binary coproduct instance below is a one-line instantiation. *)
+(* The 对偶 [fin2_legs]: pair 态射 INTO common target,
+ indexed over [Fin.t 2]. It is [fin2_legs] read C^op, which is why the
+ binary 余积 实例 below is one-line instantiation.（已译） *)
 Definition fin2_colegs {C : Category} {a x y : C} (f : x ~> a) (g : y ~> a) :
   ∀ i : Fin.t 2, fin2fam x y i ~> a :=
   @fin2_legs (C^op) a x y f g.

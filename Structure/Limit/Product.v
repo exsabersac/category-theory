@@ -96,10 +96,10 @@ Definition limit_is_indexed_product {C : Category} {A : Type} (f : A → C)
   IsIndexedProduct f (iprod f L) (iprod_proj f L) :=
   {| iprod_desc := fun c pi => iprod_ump f L c pi |}.
 
-(* A category has all indexed products when every family [f : A → C] over an
-   arbitrary index [Type] carries an elementary indexed product.  This is the
-   indexed-product analogue of [HasEqualizers] in
-   [Structure/Equalizer/Fork.v]. *)
+(* A 范畴 has all indexed products when every family [f : A → C] over an
+ arbitrary index [Type] carries elementary indexed 积. This is the
+ indexed-积 analogue [HasEqualizers] in
+ [Structure/Equalizer/Fork.v].（已译） *)
 Class HasIndexedProducts (C : Category) := {
   indexed_product {A : Type} (f : A → C) : C;
   indexed_product_proj {A : Type} (f : A → C) (a : A) :

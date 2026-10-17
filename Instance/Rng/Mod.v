@@ -43,10 +43,10 @@ Generalizable All Variables.
 
 (* 相关说明。 （已译） *)
 
-(** Along ρ : R → S, an S-module M becomes an R-module with r acting as
-    ρ r does.  The underlying abelian group is UNCHANGED — [rm_ab] is
-    [rm_ab M], the same term — which is what makes every comparison
-    further down an identity-carrier one. *)
+(* * Along ρ : R → S, S-module M becomes R-module r acting as
+ ρ r does. The underlying 阿贝尔 group is UNCHANGED — [rm_ab] is
+ [rm_ab M], same term — which is what makes every comparison
+ further down 恒等-carrier one.（已译） *)
 Definition RestrictObj {R S : RingObject} (rho : R ~{Rng}~> S)
   (M : RModObject S) : RModObject R.
 Proof.
@@ -114,9 +114,9 @@ Definition RigHom_op {R S : RingObject} (rho : R ~{Rng}~> S) :
     (rig_map rho) (rig_map_zero rho) (rig_map_add rho)
     (rig_map_one rho) (fun a b => rig_map_mul rho b a).
 
-(** Restriction of scalars for RIGHT modules — Mac Lane's own statement
-    of construction 8.  It is [Restrict] at the opposite rings, by
-    definition; no obligation is discharged a second time. *)
+(* * Restriction scalars RIGHT modules — Mac Lane's own statement
+ 构造 8. It is [Restrict] at 反 rings, by
+ 定义; no obligation is discharged second time.（已译） *)
 Definition RestrictR {R S : RingObject} (rho : R ~{Rng}~> S) :
   ModR S ⟶ ModR R := Restrict (RigHom_op rho).
 
@@ -254,10 +254,10 @@ Defined.
  below. The name issue's. （已译） *)
 Definition ModTotal : Category := Grothendieck ModIndexed.
 
-(** The projection to rings, contravariantly.  By
-    Construction/Grothendieck/Fibration.v it is an opfibration whose
-    canonical opcleaving satisfies the split laws — cited at that
-    strength, not re-proved here. *)
+(* * The projection rings, contravariantly. By
+ Construction/Grothendieck/Fibration.v it is opfibration whose
+ 典范 opcleaving satisfies split laws — cited at that
+ strength, not re-proved here.（已译） *)
 Definition ModProj : ModTotal ⟶ Rng^op := Grothendieck_Proj ModIndexed.
 
 (* * *** What 对象 态射 are, nose （已译） *)
@@ -332,10 +332,10 @@ Example ModProj_fmap {X Y : ModTotal} (a : X ~> Y) :
 Example ModTotal_fibre_target (R : RingObject) :
   idx_fib ModIndexed R = RMod R := eq_refl.
 
-(** The fibre of [ModTotal] over R is equivalent to [RMod R], by
-    Construction/Grothendieck/Fiber.v's equivalence — which is the
-    identity on objects, both of its cells carrying identity
-    components. *)
+(* * The fibre [ModTotal] over R is equivalent [RMod R], by
+ Construction/Grothendieck/Fiber.v's 等价 — which is the
+ 恒等 对象, both its cells carrying 恒等
+ components.（已译） *)
 Definition ModTotal_fibre (R : RingObject) :
   EquivalenceOfCategories (Fiber_Grothendieck_To ModIndexed R) :=
   fiber_grothendieck_equiv ModIndexed R.

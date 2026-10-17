@@ -329,9 +329,9 @@ End ToAbEnriched.
 
 (** ** The correspondence *)
 
-(* Mac Lane's "can be described completely in these terms", as a
-   Type-valued equivalence of the two presentations — the same shape as
-   [Category_is_Enriched_over_Set] and [Enriched_Two_preorder]. *)
+(* Mac Lane's "can be described completely these terms", as a
+ Type-valued 等价 two presentations — same shape as
+ [Category_is_Enriched_over_Set] [Enriched_Two_preorder].（已译） *)
 (* The forward direction, exercised at concrete witness: Ab an
  Ab-范畴, so it enriched over itself. （已译） *)
 Definition Enriched_Ab_itself : @Enriched Ab Ab_Monoidal :=

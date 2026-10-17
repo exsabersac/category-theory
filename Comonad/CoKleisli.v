@@ -111,7 +111,7 @@ Notation "f =<= g" :=
 
 (* Explicit-endofunctor forms, the robust fallback when higher-order
    unification cannot infer [W] through the bare [=>=]/[=<=] holes
-   (Monad/Kleisli.v exports the analogous [>=[ M ]=>]/[<=[ M ]=<]). *)
+   (Monad/Kleisli.v exports the analogous [>=[ M ]=>]/[<=[ M ]=<]).（标题）（已译） *)
 Notation "f =>[ W ]=> g" := (@cokleisli_compose _ W _ _ _ g _ f)
   (at level 40, left associativity) : morphism_scope.
 Notation "f =<[ W ]=< g" := (@cokleisli_compose _ W _ _ _ f _ g)

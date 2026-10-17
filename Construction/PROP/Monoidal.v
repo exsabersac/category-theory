@@ -105,10 +105,10 @@ Proof.
   - apply TE_sym, TE_id_left.
 Qed.
 
-(** Flipping a naturality square along both casts: from
-    [q ∘ cast ≈ cast ∘ p] conclude [p ∘ cast⁻¹ ≈ cast⁻¹ ∘ q].
-    This turns every [to]-direction structural naturality square
-    into its [from]-direction companion. *)
+(* * Flipping 自然性 square along both casts: from
+ [q ∘ cast ≈ cast ∘ p] conclude [p ∘ cast⁻¹ ≈ cast⁻¹ ∘ q].
+ This turns every [to]-direction structural 自然性 square
+ into its [from]-direction companion.（已译） *)
 Lemma cast_square_flip {a b c d : nat} (e1 : a = b) (e2 : c = d)
       (p : Term S a c) (q : Term S b d) :
   TermEq S (T_comp q (T_cast e1)) (T_comp (T_cast e2) p) ->

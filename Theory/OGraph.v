@@ -235,7 +235,7 @@ Qed.
 (* An arrow of A ×_O B from x to z is Mac Lane's composable pair <g, f>: a
    middle node [cmid], an arrow [cleft] of A into z and an arrow [cright] of
    B out of x meeting at it.  Kept as a primitive-projection record, so that
-   [composable_eta] below holds by [eq_refl]. *)
+   [composable_eta] below holds by [eq_refl].（标题）（已译） *)
 Record Composable@{o h p} {O : Type@{o}} (A B : OGraph@{o h p} O) (x z : O)
   : Type@{max(o,h)} := {
   cmid : O;

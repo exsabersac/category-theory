@@ -257,9 +257,9 @@ Definition galois_of_unit_counit {A B : Type}
 
 (* 相关说明。 （已译） *)
 
-(** Seven Sketches §1.4.3 exercise 1.110: two left adjoints of the same map
+(* * Seven Sketches §1.4.3 exercise 1.110: two left adjoints of the same map
     agree, and dually.  In an order "agree" is mutual comparability -- which is
-    equality only under antisymmetry, so both forms are given. *)
+    equality only under antisymmetry, so both forms are given.（标题）（已译） *)
 Lemma gal_left_unique {A B : Type} {RA : relation A} {RB : relation B}
   (PB : PreOrder RB)
   (G G' : GaloisConnection RA RB)

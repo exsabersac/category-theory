@@ -268,10 +268,10 @@ Arguments BaseChangeF_Strict {Colour Colour'} f Cdec C'dec S S' h : assert.
 Arguments BaseChangeF_Braided {Colour Colour'} f Cdec C'dec S S' h : assert.
 Arguments BaseChangeF_Symmetric {Colour Colour'} f Cdec C'dec S S' h : assert.
 (* [BaseChangeF_SymmetricStrict] keeps its auto-generated argument
-   status: its type [CSymmetricStrict ...] is a definitionally
-   unfolding ∀, so the constant carries the boundary binders [cs ds]
-   as trailing arguments (compare [CInterpF_SymmetricStrict] in
-   [Construction/ColouredPROP/Universal.v]). *)
+ status: its type [CSymmetricStrict ...] is definitionally
+ unfolding ∀, so constant carries 边界 binders [cs ds]
+ as trailing arguments (compare [CInterpF_SymmetricStrict] in
+ [Construction/ColouredPROP/Universal.v]).（已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。

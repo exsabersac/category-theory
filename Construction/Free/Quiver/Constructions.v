@@ -35,7 +35,7 @@ Section OppositeQuiver.
 
 (* Same nodes, every edge reversed.  The endpoint-indexed encoding makes this a
    pure reindexing: [edges y x] is already a type, so nothing is transported
-   and no equality on nodes is consumed. *)
+   and no equality on nodes is consumed.（标题）（已译） *)
 Definition QuiverOp@{o h p} (G : Quiver@{o h p}) : Quiver@{o h p} := {|
   nodes   := @nodes G;
   edges   := fun x y => @edges G y x;
@@ -54,7 +54,7 @@ Definition QuiverOp_edgeset@{o h p} (G : Quiver@{o h p}) (x y : @nodes G) :
 
 (* Involution, at Leibniz equality of the whole [Quiver] record.  [Quiver] has
    primitive projections with eta conversion, so the doubly-reversed record is
-   convertible to [G] itself rather than merely isomorphic to it. *)
+   convertible to [G] itself rather than merely isomorphic to it.（标题）（已译） *)
 Definition QuiverOp_invol@{o h p} (G : Quiver@{o h p}) :
   QuiverOp (QuiverOp G) = G := eq_refl.
 

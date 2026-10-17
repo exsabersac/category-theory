@@ -169,9 +169,9 @@ Definition probe_wit_computes (n : nat) :
                (Hom_Representable (C:=BNat) ttt) (wit_tau n) = n := eq_refl.
 
 (* Negative 8: against [YoEvalAt_Representable] it does not, even
-   componentwise — the Yoneda isomorphism's backward leg leaves an [∘ id],
-   which over (ℕ, +) is an [n + 0].  The agreement is [≈]
-   ([wit_ev_induced]). *)
+ componentwise — Yoneda 同构's backward leg leaves [∘ id],
+ which over (ℕ, +) is [n + 0]. The agreement is [≈]
+ ([wit_ev_induced]).（已译） *)
 Fail Definition probe_wit_ev_strict (n : nat) (d : BNat) (g : ttt ~{BNat}~> d) :
   transform[repr_induced (YoEvalAt_Representable BNat ttt)
                          (YoEvalAt_Representable BNat ttt) (wit_ev_tau n)] d g

@@ -159,7 +159,7 @@ End Coarsening.
 (* The statement Mac Lane's exercise makes about Set, transcribed for [Sets]:
    every arrow whose domain is inhabited -- inhabitation taken as DATA, an
    actual element, which is what "nonempty" means constructively -- is
-   regular. *)
+   regular.（标题）（已译） *)
 Definition BlanketRegularity : Type :=
   ∀ (A B : SetoidObject) (a0 : carrier A) (f : A ~{Sets}~> B),
     RegularMorphism f.

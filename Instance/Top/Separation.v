@@ -93,7 +93,7 @@ Proof. exact (PSep_mono prem_T0 prem_T1 prem_T0_T1 X). Qed.
 
 (* [sl_anti]: fewer opens relate more pairs.  [sl_pull]: the premise read
    through the opens pulled back along a function is carried forward by
-   it.  [sl_equiv]: equal points satisfy the premise. *)
+   it.  [sl_equiv]: equal points satisfy the premise.（标题）（已译） *)
 Record SepLaws@{o} (prem : SepPremise@{o}) : Prop := {
   sl_anti : ∀ (S : Type@{o}) (O O' : (S → Prop) → Prop),
       (∀ U, O U → O' U) → ∀ x y, prem S O' x y → prem S O x y;

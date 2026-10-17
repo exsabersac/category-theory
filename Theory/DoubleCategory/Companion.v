@@ -196,9 +196,9 @@ Proof using CC D a b u.
   apply (comp_zag_eval Q _ (comp_counit P)).
 Qed.
 
-(* Any two companions of [u] are connected by a canonical INVERTIBLE
-   globular square, packaged exactly like the coherence isomorphisms of
-   [DoubleCategory] (forward square, backward square, two round trips). *)
+(* Any two companions [u] are connected 典范 INVERTIBLE
+ globular square, packaged exactly like 融贯性 isomorphisms of
+ [DoubleCategory] (forward square, backward square, two round trips).（已译） *)
 Definition companion_unique (P Q : Companion u) :
   { fwd : dsq (comp_hor P) id id (comp_hor Q) &
   { bwd : dsq (comp_hor Q) id id (comp_hor P) &

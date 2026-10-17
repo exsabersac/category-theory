@@ -84,10 +84,10 @@ Delimit Scope functor_scope with functor.
 Open Scope functor_type_scope.
 Open Scope functor_scope.
 
-(* Functors used as functions map objects of categories, similar to the way
-   type constructors behave in Haskell. We cannot, unfortunately, have a
-   similar coercion for morphisms, because coercions cannot be bound to
-   scopes. *)
+(* Functors used as functions map 对象 范畴, similar way
+ type constructors behave Haskell. We cannot, unfortunately, have a
+ similar coercion 态射, because coercions cannot be bound to
+ scopes.（已译） *)
 Coercion fobj : Functor >-> Funclass.
 
 Notation "C ⟶ D" := (@Functor C%category D%category)

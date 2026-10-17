@@ -358,9 +358,9 @@ Context (Rcomm : ∀ a b : carrier (rig_setoid (ring_rig R)),
 
 Local Notation Runit := (Ring_RMod R).
 
-(* The action R × V → V as a bilinear map.  [rbl_respects] is supplied
-   explicitly: see engineering note (d) — left to [Program] it is closed by
-   instance resolution and the obligation numbering shifts. *)
+(* The action R × V → V as bilinear map. [rbl_respects] is supplied
+ explicitly: see engineering 注 (d) — left [Program] it is 闭 by
+ 实例 resolution obligation numbering shifts.（已译） *)
 Program Definition act_bilin (V : RModObject R) :
   RBilinear Runit V V := {|
   rbl_map := fun r v => rm_smul V r v;
@@ -864,18 +864,18 @@ Check (@mod_assoc_fr_in Int_Ring ZMod ZMod ZMod zz2).
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* [triangle_identity]'s content, [tensor_balanced].  Even at closed integer
-   scalars the two sides are literally different terms — `6 ⊗ 5` against
-   `3 ⊗ 10` — so the triangle is not a computation. *)
+(* [triangle_identity]'s content, [tensor_balanced]. Even at 闭 integer
+ scalars two sides are literally different terms — `6 ⊗ 5` against
+ `3 ⊗ 10` — so triangle is not computation.（已译） *)
 Fail Example probe_balanced_conversion :
   @mt_gen Int_Ring ZMod ZMod (rm_smul ZMod 2%Z zz3) zz5
     = @mt_gen Int_Ring ZMod ZMod zz3 (rm_smul ZMod 2%Z zz5)
   := eq_refl.
 
-(* Control: the same statement at `≈`, which is [tensor_balanced].  The
-   ascription is needed because [TensorMod]'s setoid is a projection rather
-   than a registered instance, so `≈` on a bare [MTerm] has nothing to
-   resolve against. *)
+(* Control: same statement at `≈`, which is [tensor_balanced]. The
+ ascription is needed because [TensorMod]'s setoid is projection rather
+ than registered 实例, so `≈` bare [MTerm] has nothing to
+ resolve against.（已译） *)
 Example probe_balanced_equiv :
   (@mt_gen Int_Ring ZMod ZMod (rm_smul ZMod 2%Z zz3) zz5
      : carrier (cmon_setoid (TensorMod ZMod ZMod)))

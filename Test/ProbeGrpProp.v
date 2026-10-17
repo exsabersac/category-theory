@@ -63,7 +63,7 @@ Fail Definition am_eq_eliminates_into_Type
 
 (* CONTROL 1a.  Two constructors of [am_eq] carry a [Type]-valued `≈`
    premise, and both are still accepted verbatim: a [Prop] inductive MAY
-   store [Type]-valued data, it simply may not be eliminated into [Type]. *)
+   store [Type]-valued data, it simply may not be eliminated into [Type].（标题）（已译） *)
 Definition am_eq_stores_a_Type_premise (b b' : carrier B) (H : b ≈ b') :
   am_eq f g (am_l b) (am_l b') := ae_l_resp b b' H.
 

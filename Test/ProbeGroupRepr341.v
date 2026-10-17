@@ -39,10 +39,10 @@ Fail Check (fun (C : Category@{uo uh up}) => @Cartesian C).
 (* NEGATIVE 2. *)
 Fail Check (fun (C : Category@{uo uh up}) => @Terminal C).
 
-(* NEGATIVE 3.  [HomGroupData] is the target's OWN central record, and
-   unlike [GroupObject] it takes no monoidal argument -- its signature is
-   [forall {C : Category}, obj[C] -> Type] -- so the rejection is
-   attributable to it rather than to something elaborated before it. *)
+(* NEGATIVE 3. [HomGroupData] is target's OWN central record, and
+ unlike [GroupObject] it takes no 幺半 argument -- its signature is
+ [forall {C : Category}, obj[C] -> Type] -- so rejection is
+ attributable it rather than something elaborated before it.（已译） *)
 Fail Check (fun (C : Category@{uo uh up}) (e : C) => @HomGroupData C e).
 
 End Donors.

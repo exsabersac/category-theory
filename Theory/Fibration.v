@@ -210,9 +210,9 @@ Program Definition Displayed_op {C : Category} (D : Displayed C) :
   did := fun x dx => @did C D x dx;
   dcomp := fun x y z dx dy dz f g ff gg => @dcomp C D z y x dz dy dx g f gg ff
 |}.
-(* [dtransport_respects] is resolved during elaboration by the registered
-   instance of the underlying displayed category, so it generates no
-   obligation; the remaining laws follow in field order. *)
+(* [dtransport_respects] is resolved during elaboration registered
+ 实例 underlying displayed 范畴, so it generates no
+ obligation; remaining laws follow field order.（已译） *)
 Next Obligation. (* dtransport_id *)
   intros C D x y dx dy f e ff.
   exact (@dtransport_id C D y x dy dx f e ff).

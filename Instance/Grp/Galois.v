@@ -546,9 +546,9 @@ Proof.
   - intros [|]; reflexivity.
 Defined.
 
-(* Z/2 acting on two points by the flip.  [act_respects] is supplied by
-   hand rather than left to resolution, so that no instance search can pin
-   a universe (the hazard Theory/Universal/Element.v records). *)
+(* Z/2 acting two points flip. [act_respects] is supplied by
+ hand rather than left resolution, so that no 实例 search can pin
+ universe (the hazard Theory/Universal/Element.v records).（已译） *)
 Definition GalZ2Act@{wo +} : MSetoidAction (grp_mon GalZ2@{wo}).
 Proof.
   unshelve refine (@Build_MSetoidAction (grp_mon GalZ2@{wo}) galois_two@{wo}

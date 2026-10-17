@@ -902,7 +902,7 @@ Context {E : MorphismClass C}.
 (* The mono leg of an (E, Mono) factorization, read as a subobject.  No
    transport is needed: Theory/Morphisms/Classes.v defines [MonoClass]
    as [fun _ _ f => Monic f], so [fact_m_in] IS the [sub_is_monic]
-   field. *)
+   field.（标题）（已译） *)
 Definition ofs_image_sub (O : OFS E (@MonoClass C)) {y x : C} (f : y ~> x) :
   SubObj x := {|
   sub_dom := fact_mid (ofs_factor (OFS := O) f);

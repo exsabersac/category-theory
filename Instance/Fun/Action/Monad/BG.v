@@ -150,9 +150,9 @@ Defined.
 
 (* 相关说明。 （已译） *)
 
-(* A cofork of transformations whose [MSet_to]-image is a coequalizer of
-   M-sets is a coequalizer of functors: the descended equivariant map is
-   the one component of the descended transformation. *)
+(* A cofork transformations whose [MSet_to]-image is coequalizer of
+ M-sets is coequalizer 函子: descended equivariant map is
+ one component descended transformation.（已译） *)
 Definition MSet_to_reflects_coeq@{o so} {M : MonObject@{o o o}}
   {P Q R : SetBG@{o so} M}
   (p q : P ~{SetBG@{o so} M}~> Q) (e : Q ~{SetBG@{o so} M}~> R)

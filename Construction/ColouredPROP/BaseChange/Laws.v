@@ -175,9 +175,9 @@ Qed.
 End BaseChangeIdentity.
 
 (* [CSigMap_id] keeps its auto-generated argument status ({Colour} S):
-   its type unfolds to a ∀, so the boundary words and the generator
-   ride along as trailing arguments (compare [basechange_val] in
-   [Construction/ColouredPROP/BaseChange.v]). *)
+ its type unfolds ∀, so 边界 words generator
+ ride along as trailing arguments (compare [basechange_val] in
+ [Construction/ColouredPROP/BaseChange.v]).（已译） *)
 
 (* * ** 2. Base change along 复合 colour function （已译） *)
 
@@ -384,9 +384,9 @@ Qed.
 End BaseChangeComposite.
 
 (* [CSigMap_compose] keeps its auto-generated argument status
-   ({Colour Colour' Colour''} f g S S' S'' hf hg): its type unfolds to
-   a ∀, so the boundary words and the generator ride along as trailing
-   arguments. *)
+ ({Colour Colour' Colour''} f g S S' S'' hf hg): its type unfolds to
+ ∀, so 边界 words generator ride along as trailing
+ arguments.（已译） *)
 Arguments BaseChangeF_comp_Strict {Colour Colour' Colour''} f g Cdec C'dec
   C''dec S S' S'' hf hg : assert.
 

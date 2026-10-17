@@ -479,10 +479,10 @@ Definition CongClosure_Congruence : @HomCongruence C CongClosure :=
 Definition cc_refl {x y : C} (f : x ~> y) : CongClosure x y f f :=
   cc_equiv (reflexivity f).
 
-(** Leastness: the closure is contained in every congruence containing
+(* * Leastness: the closure is contained in every congruence containing
     [R].  Because [HomCongruence] is stated over [HomRelT], a [Prop]-valued
     target congruence is covered by the same statement, through
-    [Prop ⊆ Type] cumulativity. *)
+    [Prop ⊆ Type] cumulativity.（标题）（已译） *)
 Lemma cc_least (S : HomRelT C) `{@HomCongruence C S}
   (HRS : ∀ x y (f g : x ~> y), R x y f g → S x y f g)
   {x y : C} {f g : x ~> y} : CongClosure x y f g → S x y f g.

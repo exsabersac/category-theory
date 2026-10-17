@@ -51,9 +51,9 @@ Lemma T_tens_id_id (m n : nat) :
   TermEq S (T_tens (T_id m) (T_id n)) (T_id (m + n)).
 Proof. apply TE_tens_id. Qed.
 
-(** Composing a trivial [T_cast eq_refl] (which is [T_id]) onto a
-    tensor is the identity operation.  [T_cast eq_refl] reduces to
-    [T_id (m1+m2)], so the composite collapses by left identity. *)
+(* * Composing trivial [T_cast eq_refl] (which is [T_id]) onto a
+ tensor is 恒等 operation. [T_cast eq_refl] reduces to
+ [T_id (m1+m2)], so composite collapses left 恒等.（已译） *)
 Lemma T_comp_cast_tens_left {m1 n1 m2 n2 : nat}
   (f : Term S m1 n1) (g : Term S m2 n2) :
   TermEq S (T_comp (T_cast eq_refl) (T_tens f g))

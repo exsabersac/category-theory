@@ -899,7 +899,7 @@ Fail Definition p457_tquot_unit_opaque@{o h so +| o < h, o < so +}
 (* Scout A's local encoding, rebuilt: V is open when it respects [≈] and
    each point of V MERELY has an open of X around its image whose preimage
    lies in V.  Instance/Sets/Powerset.v's [Powerset_squash] is the
-   truncation. *)
+   truncation.（标题）（已译） *)
 Definition p457_sq_box@{o o1 +| o < o1 +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X))
   (V : S → Type@{o}) (s : S) : Type@{o1} :=

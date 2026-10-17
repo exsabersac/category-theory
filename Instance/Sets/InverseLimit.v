@@ -74,7 +74,7 @@ Example step_is_le_t_S (m k : nat) (f : @hom (Omega^op) k m) :
 
 (* Mac Lane's matching-string condition: successive entries are carried to
    one another.  Compare [Sets_limit_compatible] (Instance/Sets/
-   Complete.v), which quantifies over EVERY arrow of the shape. *)
+   Complete.v), which quantifies over EVERY arrow of the shape.（标题）（已译） *)
 Definition tower_compat (x : Sets_iprod_obj (fun n : nat => F n)) : Type :=
   ∀ n : nat, fmap[F] (tower_step n) (x (S n)) ≈ x n.
 

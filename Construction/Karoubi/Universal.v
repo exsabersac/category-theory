@@ -466,10 +466,10 @@ Definition Karoubi_Embed_EssentiallySurjective :
   eso_iso := Karoubi_Embed_eso_iso
 |}.
 
-(* When C already has split idempotents, the embedding into its Karoubi
-   envelope is full, faithful and essentially surjective, hence an
-   equivalence of categories: a Cauchy complete category is equivalent to
-   its own free idempotent-splitting completion. *)
+(* When C already has split idempotents, embedding into its Karoubi
+ envelope is full, faithful essentially surjective, hence an
+ 等价 范畴: Cauchy 完备 范畴 is equivalent to
+ its own 自由 idempotent-splitting completion.（已译） *)
 Theorem cauchy_complete_embed_equiv :
   EquivalenceOfCategories (@Karoubi_Embed C).
 Proof using All.

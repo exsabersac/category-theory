@@ -68,7 +68,7 @@ Definition hom_action_injective : Type :=
 
 (* Fullness, read componentwise: every component of [hom_action] is surjective
    AS DATA — a preimage is produced, not merely asserted to exist. (In this
-   library ∃ is [sigT], so the two readings coincide; see Lib/Foundation.v.) *)
+   library ∃ is [sigT], so the two readings coincide; see Lib/Foundation.v.)（标题）（已译） *)
 Definition hom_action_surjective : Type :=
   ∀ (a b : A) (g : T a ~{D}~> T b),
     ∃ (f : a ~{A}~> b), transform[hom_action] (a, b) f ≈ g.

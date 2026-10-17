@@ -264,10 +264,10 @@ Definition created_e_hom :
   @Build_TAlgebraHom D T H (`1 b) (scoeq_obj SC) (`2 b) created_algebra
     (scoeq_e SC) created_e_commutes.
 
-(** Descent upstairs.  A homomorphism h coforking f, g has a coforking
-    carrier, hence descends through e downstairs; the descended arrow is
-    itself a homomorphism, seen by cancelling the epi T e: both sides of
-    its square restrict along T e to h₀ ∘ β. *)
+(* * Descent upstairs. A 同态 h coforking f, g has coforking
+ carrier, hence descends through e downstairs; descended arrow is
+ itself 同态, seen cancelling epi T e: both sides of
+ its square restrict along T e h₀ ∘ β.（已译） *)
 
 Lemma created_desc_is_alg_hom (z : EilenbergMoore T)
   (h : b ~{EilenbergMoore T}~> z)

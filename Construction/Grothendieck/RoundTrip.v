@@ -600,10 +600,10 @@ Lemma sf_comp1 {x : B} {a b c : StrictFiber x} (u : b ~> c) (v : a ~> b) :
   `1 (u ∘ v) ≈ `1 u ∘ `1 v.
 Proof. reflexivity. Qed.
 
-(* Break every [StrictFiber] composite under a first projection down to the
-   base composition.  Implicit-argument matching of [sf_comp1] is unreliable
-   under the fibre coercions, so each rewrite supplies the two factors
-   explicitly. *)
+(* Break every [StrictFiber] composite under first projection down the
+ base 复合. Implicit-argument matching [sf_comp1] is unreliable
+ under fibre coercions, so each rewrite supplies two factors
+ explicitly.（已译） *)
 Ltac break_sf :=
   repeat match goal with
   | |- context[`1 (?u ∘ ?v)] => rewrite (sf_comp1 u v)

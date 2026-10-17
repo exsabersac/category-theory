@@ -217,7 +217,7 @@ Fail Check (@Adjunction Cu Cu G H).
 (* Negative 11 (FORMABILITY): so does [AdjointEquivalence] -- but it
    CANNOT be
    tested apart from [Adjunction], its first field being [F -| U], so
-   this is a second donor and NOT an independent cause. *)
+   this is a second donor and NOT an independent cause.（标题）（已译） *)
 Fail Check (@AdjointEquivalence Cu Cu G H).
 
 (*

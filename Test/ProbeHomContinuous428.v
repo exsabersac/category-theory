@@ -51,10 +51,10 @@ Example p428_fobj : fobj[@HomFrom C c ◯ F] = fobj[HomDiagram c F] := eq_refl.
 Example p428_fmap_value {j j' : J} (g : j ~{J}~> j') (h : c ~{C}~> F j) :
   fmap[@HomFrom C c ◯ F] g h = fmap[HomDiagram c F] g h := eq_refl.
 
-(* N1 CONVERSION: the whole [fmap] field does not — the setoid morphism's
-   respectfulness proof is an opaque [Program] obligation:
-   [Curried_Hom_obligation_1], auto-discharged in Functor/Hom.v, against
-   [HomDiagram]'s written-out one in Structure/Limit/Weighted.v *)
+(* N1 CONVERSION: whole [fmap] field does not — setoid 态射's
+ respectfulness 证明 is opaque [Program] obligation:
+ [Curried_Hom_obligation_1], auto-discharged Functor/Hom.v, against
+ [HomDiagram]'s written-out one Structure/Limit/Weighted.v（已译） *)
 Fail Example p428_fmap_field {j j' : J} (g : j ~{J}~> j') :
   fmap[@HomFrom C c ◯ F] g = fmap[HomDiagram c F] g := eq_refl.
 

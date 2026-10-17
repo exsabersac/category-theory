@@ -58,11 +58,11 @@ Coercion eobj : Enriched >-> Sortclass.
 
 (** A K-enriched functor between K-categories. *)
 
-(* nLab: https://ncatlab.org/nlab/show/enriched+functor
-   Wikipedia: https://en.wikipedia.org/wiki/Enriched_category#Enriched_functors
+(* nLab: https://ncatlab.org/nlab/show/丰富+函子
+ Wikipedia: https://en.wikipedia.org/wiki/Enriched_category#Enriched_functors
 
-   An object map efobj together with hom-object maps efmap : (x ⟿ y) ~>
-   (efobj x ⟿ efobj y) in K, commuting with eid and ecompose. *)
+ An 对象 map efobj together hom-对象 maps efmap : (x ⟿ y) ~>
+ (efobj x ⟿ efobj y) K, commuting eid ecompose.（已译） *)
 
 Class EnrichedFunctor
       (K : Category) `{@Monoidal K}

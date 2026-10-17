@@ -246,7 +246,7 @@ Definition nu_unit@{o} {X : SetoidObject@{o o}} (ν : NAry@{o} X) :
 
 (* (2): νk (ν_{n1} × ⋯ × ν_{nk}) = ν_{n1+⋯+nk}, at each k-tuple of words
    (w1, …, wk), wi in S^{ni}: ν_k of the values of the wi is ν of their
-   concatenation w1 ⋯ wk, whose length is n1 + ⋯ + nk. *)
+   concatenation w1 ⋯ wk, whose length is n1 + ⋯ + nk.（标题）（已译） *)
 Definition nu_assoc@{o so} {X : SetoidObject@{o o}} (ν : NAry@{o} X) :
   Type@{o} :=
   ∀ (k : nat) (tt : Tup@{o} (PWordObj@{o} X) k),

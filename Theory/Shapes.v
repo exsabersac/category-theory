@@ -552,9 +552,9 @@ Definition two_three_mor (F : _2 ⟶ _3) : OrdMor 3 :=
 
 Definition mor_two_three (m : OrdMor 3) : _2 ⟶ _3 := Walk (projT2 (projT2 m)).
 
-(* Near-trivial by destructuring: [Walk] stores its argument verbatim.  The
-   [=] here reaches a morphism, but of [Ordinal 3], whose hom-setoid IS
-   [Morphism_equality]; [≈] and [=] coincide there. *)
+(* Near-trivial destructuring: [Walk] stores its argument verbatim. The
+ [=] here reaches 态射, but [Ordinal 3], whose hom-setoid IS
+ [Morphism_equality]; [≈] [=] coincide there.（已译） *)
 Theorem two_three_mor_of_mor (m : OrdMor 3) : two_three_mor (mor_two_three m) = m.
 Proof. destruct m as [a [b h]]; reflexivity. Qed.
 

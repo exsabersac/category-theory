@@ -569,9 +569,9 @@ Definition xfer_restrict (N : Cone G) : Cone (G ◯ Phi) :=
        (fun z w h => @cone_coherence _ _ _ _ (@coneFrom _ _ _ N)
                        (Phi z) (Phi w) (fmap[Phi] h))).
 
-(* Deliberately unascribed: writing the type as [vertex_obj[N] ~> c]
-   would make the composite below carry a different (though convertible)
-   object argument, and setoid rewriting matches syntactically. *)
+(* Deliberately unascribed: writing type as [vertex_obj[N] ~> c]
+ would make composite below carry different (though convertible)
+ 对象 argument, setoid rewriting matches syntactically.（已译） *)
 Definition xfer_med (N : Cone G) := limit_med H (xfer_restrict N).
 
 Lemma xfer_med_commutes (N : Cone G) (y : J) :

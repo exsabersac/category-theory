@@ -295,10 +295,10 @@ Program Definition pow_hom {x : C} (A : x ~> x) :
   MonHom Nat_Plus (hom_monoid C x) := {|
   mon_map := mat_pow A
 |}.
-(* [mon_map_respects] does not appear as an obligation: the source
-   setoid is [nat_setoid], whose `≈` is Leibniz equality, so instance
-   resolution discharges it -- the same economy Construction/Deloop.v
-   records for [Nat_Plus]'s own [mon_op_respects]. *)
+(* [mon_map_respects] does not appear as obligation: source
+ setoid is [nat_setoid], whose `≈` is Leibniz equality, so 实例
+ resolution discharges it -- same economy Construction/Deloop.v
+ records [Nat_Plus]'s own [mon_op_respects].（已译） *)
 Next Obligation. intros x A; reflexivity. Qed.
 Next Obligation. intros x A j k; exact (mat_pow_add A j k). Qed.
 
@@ -422,7 +422,7 @@ Definition functor_of_square {n : nat} (A : n ~{Matr R}~> n) :
 
 (* Two square matrices are SIMILAR when a single invertible change of
    basis conjugates one into the other.  Categorical spelling P A ≈ B P;
-   the classical B ≈ P A P⁻¹ is [matrix_similarity_classical]. *)
+   the classical B ≈ P A P⁻¹ is [matrix_similarity_classical].（标题）（已译） *)
 Definition MatrixSimilar {n n' : nat}
   (A : n ~{Matr R}~> n) (B : n' ~{Matr R}~> n') : Type :=
   ∃ P : n ≅[Matr R] n', to P ∘ A ≈ B ∘ to P.
@@ -524,7 +524,7 @@ Local Ltac entrywise :=
 (* The position of an index, so a small matrix can be written as a
    table.  (Instance/Matr/Determinant.v's [fidx] is the same function;
    it is re-declared here rather than requiring that file, whose
-   1600-line determinant development nothing below consumes.) *)
+   1600-line determinant development nothing below consumes.)（标题）（已译） *)
 Definition fin_index {n : nat} (i : Fin.t n) : nat :=
   proj1_sig (Fin.to_nat i).
 

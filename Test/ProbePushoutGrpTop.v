@@ -63,7 +63,7 @@ Definition ctl_grp_med_mul (u v : AmTerm B C) :
 (* CONTROL 2b.  [pushout_med] itself is named in a control, so that
    renaming it breaks this file rather than turning NEGATIVE 1 vacuously
    green -- [Fail] catches "reference not found" just as happily as it
-   catches a unification failure. *)
+   catches a unification failure.（标题）（已译） *)
 Definition ctl_grp_med_typed
   : pushout_apex (Grp_pushout f g) ~{Grp}~> Q :=
   pushout_med (Grp_pushout f g) Hcomm.
@@ -177,7 +177,7 @@ Check (Grp_zero_hom_Section Z2).
 (* CONTROL 9, formerly NEGATIVE 5 (formability).  Before #450,
    Instance/Grp.v's map out of the trivial group was NOT formable above
    [Set], and stripping the guard reported "Cannot enforce Set = bg".
-   Since #450 it is formable at every carrier level. *)
+   Since #450 it is formable at every carrier level.（标题）（已译） *)
 Check (fun G : GrpObject@{bg bg bg} => Grp_zero_hom G).
 
 (*

@@ -438,7 +438,7 @@ Example zp_int_stage (p : Z) (n : nat) :
 (* The polynomial ring is commutative BY CONSTRUCTION: [pe_mul_comm] is a
    constructor of Instance/Rng/Polynomial.v's congruence, and that file
    already packages it as [poly_comm], whose statement IS [RingComm]
-   after unfolding.  Consumed, not reproved. *)
+   after unfolding.  Consumed, not reproved.（标题）（已译） *)
 Definition ZPolyComm : RingComm ZPoly := poly_comm Int_Ring.
 
 (* 相关说明。 （已译） *)

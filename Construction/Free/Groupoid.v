@@ -456,9 +456,9 @@ Definition fg_restrict {G : Quiver} {D : Category} (S : FreeGroupoid G ⟶ D)
   : QuiverHomomorphism G (QuiverOfCat D) :=
   QuiverComp (FreeGroupoidUnit G) (QuiverHomomorphismOfFunctor _ _ S).
 
-(** On generators the restriction is [S] itself, definitionally — a Leibniz
-    equality of morphisms, stated at that strength deliberately, in the
-    manner of [QuotientLift_proj] ([Construction/Quotient.v]). *)
+(* * On generators restriction is [S] itself, definitionally — Leibniz
+ equality 态射, stated at that strength deliberately, the
+ manner [QuotientLift_proj] ([Construction/Quotient.v]).（已译） *)
 Lemma fg_restrict_gen {G : Quiver} {D : Category} (S : FreeGroupoid G ⟶ D)
   {x y : G} (e : edges x y) :
   @fedgemap _ _ (fg_restrict S) x y e = fmap[S] (fgpos e).

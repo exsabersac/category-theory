@@ -69,76 +69,74 @@ Program Instance Rel_Initial : @Initial Rel := {
 }.
 Next Obligation. contradiction. Qed.
 
-(*
-Program Instance Rel_Cartesian : @Cartesian Rel := {
-  product_obj := @Prod Coq _;
-  fork := fun _ _ _ f g x y => f x (fst y) ∧ g x (snd y);
-  exl  := fun _ _ p x => In _ (Singleton _ (fst p)) x;
-  exr  := fun _ _ p x => In _ (Singleton _ (snd p)) x
+(* Program Instance Rel_Cartesian : @Cartesian Rel := {
+ 积_obj := @Prod Coq _;
+ fork := fun _ _ _ f g x y => f x (fst y) ∧ g x (snd y);
+ exl := fun _ _ p x => In _ (Singleton _ (fst p)) x;
+ exr := fun _ _ p x => In _ (Singleton _ (snd p)) x
 }.
 Next Obligation.
-  proper.
-  split; intros.
-    destruct H.
-    split; intros.
-      apply X0; assumption.
-    apply X1; assumption.
-  destruct H.
-  split; intros.
-    apply X0; assumption.
-  apply X1; assumption.
+ proper.
+ split; intros.
+ destruct H.
+ split; intros.
+ apply X0; assumption.
+ apply X1; assumption.
+ destruct H.
+ split; intros.
+ apply X0; assumption.
+ apply X1; assumption.
 Qed.
 Next Obligation.
-  firstorder.
-  - destruct H1.
-    apply H, H0.
-  - eexists (y, _).
-    split.
-      apply H; simpl.
-      split.
-        assumption.
-      apply H.
+ firstorder.
+ - destruct H1.
+ apply H, H0.
+ - eexists (y, _).
+ split.
+ apply H; simpl.
+ split.
+ assumption.
+ apply H.
 Qed.
 
 Program Instance Rel_Cocartesian : @Cocartesian Rel := {
-  product_obj := or;
-  fork := fun _ _ _ f g x =>
-            match x with
-            | or_introl v => f v
-            | or_intror v => g v
-            end;
-  exl  := fun _ _ p => or_introl p;
-  exr  := fun _ _ p => or_intror p
+ 积_obj := or;
+ fork := fun _ _ _ f g x =>
+ match x with
+ | or_introl v => f v
+ | or_intror v => g v
+ end;
+ exl := fun _ _ p => or_introl p;
+ exr := fun _ _ p => or_intror p
 }.
-Obligation 1. proper; autounfold in *; apply proof_irrelevance. Qed.
+Obligation 1. proper; autounfold *; apply 证明_irrelevance. Qed.
 Obligation 2.
-  autounfold in *.
-  split; intros.
-    split; intros;
-    apply proof_irrelevance.
-  apply proof_irrelevance.
+ autounfold *.
+ split; intros.
+ split; intros;
+ apply 证明_irrelevance.
+ apply 证明_irrelevance.
 Qed.
 
 Program Instance Rel_Closed : @Closed Rel _ := {
-  exponent_obj := Basics.impl;
-  exp_iso := fun _ _ _ =>
-    {| to   := {| morphism := fun f a b => f (conj a b) |}
-     ; from := {| morphism := fun f p => f (proj1 p) (proj2 p) |} |}
+ exponent_obj := Basics.impl;
+ exp_iso := fun _ _ _ =>
+ {| := {| 态射 := fun f b => f (conj b) |}
+ ; from := {| 态射 := fun f p => f (proj1 p) (proj2 p) |} |}
 }.
-Next Obligation. proper; autounfold in *; apply proof_irrelevance. Qed.
-Next Obligation. proper; autounfold in *; apply proof_irrelevance. Qed.
-Next Obligation. autounfold in *; apply proof_irrelevance. Qed.
-Next Obligation. autounfold in *; apply proof_irrelevance. Qed.
-Next Obligation. autounfold in *; apply proof_irrelevance. Qed.
-*)
+Next Obligation. proper; autounfold *; apply 证明_irrelevance. Qed.
+Next Obligation. proper; autounfold *; apply 证明_irrelevance. Qed.
+Next Obligation. autounfold *; apply 证明_irrelevance. Qed.
+Next Obligation. autounfold *; apply 证明_irrelevance. Qed.
+Next Obligation. autounfold *; apply 证明_irrelevance. Qed.（已译） *)
 
 (* A sample non-functional 态射: strict-order 关系 `<` nat,
  genuine 关系 REL not graph any function. （已译） *)
 Definition some_number : nat ~{Rel}~> nat := fun x y => (x < y)%nat.
 
-(* The wide embedding of functions as relations, `Coq ⟶ Rel`: a function `f`
-   is sent to its graph `{ (x, y) | f x = y }`. It is the identity on objects
-   and faithful, exhibiting Coq (Set) as a wide subcategory of REL. *)
+(* The wide embedding functions as relations, `Coq ⟶ Rel`: function `f`
+ is sent its graph `{ (x, y) | f x = y }`. It is 恒等 对象
+ faithful, exhibiting Coq (Set) as wide subcategory REL.（已译） *)
 #[export]
 Program Instance Relation_Functor : Coq ⟶ Rel := {
   fobj := fun x => x;

@@ -75,10 +75,10 @@ Definition ArrowIndex_op {C : Category} (AI : ArrowIndex C) :
 
 (* * ** The canonical witness: decidable 对象 equality suffices （已译） *)
 
-(* Decidable object equality is Construction/Quotient.v's [ObjDecEq]
-   (a definitional class: an instance IS the decider), consumed as is —
-   an earlier revision declared a duplicate [DecObj]; the audit found the
-   twin. *)
+(* Decidable 对象 equality is Construction/Quotient.v's [ObjDecEq]
+ (a definitional class: 实例 IS decider), consumed as is —
+ earlier revision declared duplicate [DecObj]; audit found the
+ twin.（已译） *)
 
 (* 相关说明。 （已译） *)
 Definition td {C : Category} (DO : ObjDecEq C) {x y : obj[C]}

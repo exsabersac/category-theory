@@ -146,9 +146,9 @@ Instance Yoneda_Applicative `{Applicative F} : Applicative (Yoneda F) := {
   ap := λ _ _ f x, λ r k, f _ (λ h, k ∘ h) <*> x _ id
 }.
 
-(* Every applicative is a functor, recovering [fmap] from [pure] and [ap] by
-   [fmap f x = pure f <*> x] (the standard [Applicative ⇒ Functor] derivation).
-   Categorically: a lax monoidal functor is in particular a functor. *)
+(* Every applicative is 函子, recovering [fmap] from [pure] [ap] by
+ [fmap f x = pure f <*> x] (the standard [Applicative ⇒ Functor] derivation).
+ Categorically: lax 幺半 函子 is particular 函子.（已译） *)
 Section Instances.
 
 Universe d c.

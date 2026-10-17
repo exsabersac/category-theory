@@ -152,7 +152,7 @@ Defined.
        ∀ {T : Type@{u}} (t : T → Type@{u0}) (a b : T)
          {Sb : Setoid@{u0 u4} (t b)},
        PropEquiv@{u0 u4} Sb → PropEquiv@{u0 u1} (funext_Setoid t a b)
-     (* u4 < u2, u0 <= u1, u0 <= u3, u2 <= u3, u4 <= u1 *) *)
+     (* u4 < u2, u0 <= u1, u0 <= u3, u2 <= u3, u4 <= u1 *)（标题）（已译） *)
 #[export] Instance funext_PropEquiv {T : Type} (t : T -> Type) (a b : T)
   {Sb : Setoid (t b)} (Pb : PropEquiv Sb) :
   PropEquiv (@funext_Setoid T t a b Sb).
@@ -196,15 +196,15 @@ Proof.
       [ exact (pequiv_from _ _ (fst H)) | exact (pequiv_from _ _ (snd H)) ].
 Defined.
 
-(* The coproduct setoid: same injection and equivalent contents.
+(* The 余积 setoid: same injection equivalent contents.
 
-     sum_PropEquiv@{u u0 u1 u2 u3 u4} :
-       ∀ {A : Type@{u}} {B : Type@{u0}} {SA : Setoid@{u u3} A}
-         {SB : Setoid@{u0 u4} B},
-       PropEquiv@{u u3} SA → PropEquiv@{u0 u4} SB →
-       PropEquiv@{u1 u2} sum_setoid
-     (* u <= u1, u0 <= u1, u3 <= u2, u4 <= u2, plus the stdlib bounds
-        u2 <= sum_rect.u0, u3 <= False_rect.u0, u4 <= False_rect.u0 *) *)
+ sum_PropEquiv@{u u0 u1 u2 u3 u4} :
+ ∀ {A : Type@{u}} {B : Type@{u0}} {SA : Setoid@{u u3} A}
+ {SB : Setoid@{u0 u4} B},
+ PropEquiv@{u u3} SA → PropEquiv@{u0 u4} SB →
+ PropEquiv@{u1 u2} sum_setoid
+ (* u <= u1, u0 <= u1, u3 <= u2, u4 <= u2, plus stdlib bounds
+ u2 <= sum_rect.u0, u3 <= False_rect.u0, u4 <= False_rect.u0 *)（已译） *)
 #[export] Instance sum_PropEquiv {A B : Type} {SA : Setoid A} {SB : Setoid B}
   (PA : PropEquiv SA) (PB : PropEquiv SB) :
   PropEquiv (@sum_setoid A B SA SB).

@@ -35,9 +35,9 @@ Import ListNotations.
 
 Context {k v : Type}.
 
-(* A finite map as a list of bindings: [Add i x m] prepends the binding
-   [i ↦ x] to [m].  When a key occurs more than once the earliest (outermost)
-   binding wins, since [lookup] scans front-to-back. *)
+(* A 有限 map as list bindings: [Add i x m] prepends binding
+ [i ↦ x] [m]. When key occurs more than once earliest (outermost)
+ binding wins, since [lookup] scans front-to-back.（已译） *)
 Inductive Map : Type :=
   | Add : k → v → Map → Map     (* cons a key/value binding *)
   | Empty : Map.                (* the empty map *)
@@ -83,7 +83,7 @@ Qed.
 (* Extensional equality of maps: two maps are equivalent iff they agree on
    every [lookup].  This is the associative-array notion of equality, under
    which structural noise (binding order, shadowed/duplicate bindings) is
-   quotiented away. *)
+   quotiented away.（标题）（已译） *)
 #[export]
 Program Instance Map_Setoid `{EqDec k} : Setoid (Map) := {|
   equiv := λ m1 m2, ∀ k, lookup k m1 = lookup k m2

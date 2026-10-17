@@ -30,7 +30,7 @@ Section Hypergraph.
 Context {C : Category}.
 Context `{S : @SymmetricMonoidal C}.
 
-(** The "middle two factors" swap [(X⨂Y) ⨂ (X⨂Y) ≅ (X⨂X) ⨂ (Y⨂Y)],
+(* * The "middle two factors" swap [(X⨂Y) ⨂ (X⨂Y) ≅ (X⨂X) ⨂ (Y⨂Y)],
     built by re-associating, braiding the middle pair, then re-associating
     back.  Concretely, the chain is
 
@@ -39,8 +39,7 @@ Context `{S : @SymmetricMonoidal C}.
         =id⨂α⁻¹=> X ⨂ ((Y⨂X) ⨂ Y)
         =id⨂(braid⨂id)=> X ⨂ ((X⨂Y) ⨂ Y)
         =id⨂α=> X ⨂ (X ⨂ (Y⨂Y))
-        =α⁻¹=> (X⨂X) ⨂ (Y⨂Y).
-*)
+        =α⁻¹=> (X⨂X) ⨂ (Y⨂Y).（标题）（已译） *)
 Definition mid_swap (X Y : C) :
   (X ⨂ Y) ⨂ (X ⨂ Y) ~> (X ⨂ X) ⨂ (Y ⨂ Y) :=
   (@tensor_assoc C _ X X (Y ⨂ Y))⁻¹

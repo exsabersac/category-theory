@@ -990,9 +990,9 @@ Fail Example rng_counit_computes (R : Rng) (a : carrier (rig_setoid R)) :
   rig_map (free_rng_ab_counit R) (@fr_gen (Rng_Forget_Ab R) a) = a
   := eq_refl.
 
-(* Likewise the free functor's action on an arrow is defined by universal
-   factorization rather than by a formula, so relabelling generators is
-   the theorem [free_rng_ab_fmap_generators] and not a computation. *)
+(* Likewise 自由 函子's action arrow is defined universal
+ factorization rather than formula, so relabelling generators is
+ 定理 [free_rng_ab_fmap_generators] not computation.（已译） *)
 Fail Example rng_fmap_generator_computes {A B : Ab} (u : A ~{Ab}~> B)
   (a : carrier (cmon_setoid A)) :
   rig_map (fmap[FreeRngAb] u) (fr_gen a) = fr_gen (cmon_map u a)

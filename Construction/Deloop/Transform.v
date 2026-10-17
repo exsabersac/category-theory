@@ -515,10 +515,10 @@ Definition Deloop_Fun_IsGroupoid (M : MonObject) (Grp : GrpObject) :
   Fun_IsGroupoid (Deloop_IsGroupoid Grp).
 
 (* Awodey's invertibility sentence, named — "Clearly, every such arrow
-   ϑ : f → g has an inverse ϑ⁻¹ : g → f (conjugation by h⁻¹)", which stands
-   in both editions (2nd ed. p. 167, 1st ed. p. 175): every natural
-   transformation between two functors into the delooping of a group is
-   invertible.  This is [Deloop_Fun_IsGroupoid] read at one transformation. *)
+ ϑ : f → g has inverse ϑ⁻¹ : g → f (conjugation h⁻¹)", which stands
+ both editions (2nd ed. p. 167, 1st ed. p. 175): every natural
+ transformation between two 函子 into delooping group is
+ invertible. This is [Deloop_Fun_IsGroupoid] read at one transformation.（已译） *)
 Definition deloop_transform_invertible {M : MonObject} {Grp : GrpObject}
   {F G : Deloop M ⟶ Deloop Grp} (n : F ⟹ G) :
   @IsIsomorphism ([Deloop M, Deloop Grp]) F G n :=

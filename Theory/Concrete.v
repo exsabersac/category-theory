@@ -95,7 +95,7 @@ Class Separator (t : C) := {
 (* A separator concretizes: `Hom(t, −)` is faithful precisely when `t`
    separates, since `fmap[Hom(t,−)] f ≈ fmap[Hom(t,−)] g` unfolds to
    `∀ e : t ~> x, f ∘ e ≈ g ∘ e`.  This is the exact sense in which Awodey's
-   refinement implies (his version of) concreteness. *)
+   refinement implies (his version of) concreteness.（标题）（已译） *)
 Program Definition Concrete_of_Separator (t : C) `{@Separator t} :
   Concrete C := {|
   underlying := fobj[Curried_Hom C] t
@@ -189,7 +189,7 @@ Program Definition Sets_point@{o so+} {x : Sets@{o so}} (a : carrier x) :
 
 (* `Sets` is well-pointed: a point of `x` is a map out of the singleton
    setoid, and the constant map at `a` is such a point picking out `a`.  So
-   global elements detect equality of setoid maps. *)
+   global elements detect equality of setoid maps.（标题）（已译） *)
 #[export] Instance Sets_Separator@{o so+} :
   @Separator Sets@{o so} (@terminal_obj Sets@{o so} Sets_Terminal@{so o}).
 Proof.

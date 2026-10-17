@@ -145,7 +145,7 @@ Qed.
 (* The identification asserted above, machine-checked: [ihom] IS the arrow
    action of [InternalHomFunctor], read in C, at Leibniz equality -- not
    merely up to [≈].  ((a, c) ~> (b, d) in C^op ∏ C is a pair of f : b ~> a
-   in C and h : c ~> d.) *)
+   in C and h : c ~> d.)（标题）（已译） *)
 Example ihom_is_InternalHomFunctor_fmap {a b c d : C} (f : b ~> a) (h : c ~> d) :
   @fmap _ _ (InternalHomFunctor C) (a, c) (b, d) (f, h) = ihom f h := eq_refl.
 
@@ -173,9 +173,9 @@ Lemma prod_assoc_from_natural {x y z x' y' z' : C}
   from prod_assoc ∘ split f (split g h) ≈ split (split f g) h ∘ from prod_assoc.
 Proof. simpl; unfork. Qed.
 
-(* Two instances of associator naturality, in the exact shapes the squares
-   below produce (the middle factor of each composite is an identity, so
-   neither is a bare instance of [prod_assoc_to_natural]). *)
+(* Two instances associator 自然性, exact shapes squares
+ below produce (the middle factor each composite is 恒等, so
+ neither is bare 实例 [prod_assoc_to_natural]).（已译） *)
 Lemma prod_assoc_second_first {a x y x' y' : C} (f : x' ~> x) (g : y' ~> y) :
   to prod_assoc ∘ (second g ∘ first (second (z:=a) f))
     ≈ second (split f g) ∘ to prod_assoc.

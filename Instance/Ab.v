@@ -97,10 +97,10 @@ Qed.
 
 (** ** Morphisms *)
 
-(** A homomorphism of abelian groups is exactly a homomorphism of the
-    underlying commutative monoids.  Preservation of negation is derived, not
-    demanded -- the standard fact that a monoid map between groups is a group
-    map. *)
+(* * A 同态 阿贝尔 groups is exactly 同态 the
+ underlying commutative monoids. Preservation negation is derived, not
+ demanded -- standard fact that monoid map between groups is group
+ map.（已译） *)
 Definition AbHom (A B : AbObject) := CMonHom A B.
 
 Lemma ab_map_neg {A B : AbObject} (f : AbHom A B) (a : carrier (cmon_setoid A)) :
@@ -114,10 +114,10 @@ Qed.
 
 (** ** The category *)
 
-(** [Ab] is the full subcategory of [CMon] on the objects carrying a negation:
-    same homs, same identities, same composition, same hom-setoid.  Stating it
-    this way is what makes [ab_map_neg] a theorem rather than a coherence
-    obligation. *)
+(* * [Ab] is full subcategory [CMon] 对象 carrying negation:
+ same homs, same identities, same 复合, same hom-setoid. Stating it
+ this way is what makes [ab_map_neg] 定理 rather than 融贯性
+ obligation.（已译） *)
 (*
    本节说明 Ab 相关定义、性质与动机。
 
@@ -582,12 +582,12 @@ Qed.
 
 (* 相关说明。 （已译） *)
 
-(** L8: [Ab]'s hom-setoid IS [CMonHom_Setoid] (see [Ab] above), so
-    Instance/CMon.v's [CMonHom_PropEquiv] supplies the whole family at once.
-    This is what lets a construction that turns an object of an ambient
-    category into an abelian group -- [hom_ab] of Adjunction/Additive.v,
-    [ehom_ab] of Construction/Enriched/Ab.v -- be instantiated at [Ab] itself
-    without a hand-written hypothesis. *)
+(* * L8: [Ab]'s hom-setoid IS [CMonHom_Setoid] (see [Ab] above), so
+ Instance/CMon.v's [CMonHom_PropEquiv] supplies whole family at once.
+ This is what lets 构造 that turns 对象 ambient
+ 范畴 into 阿贝尔 group -- [hom_ab] Adjunction/Additive.v,
+ [ehom_ab] Construction/Enriched/Ab.v -- be instantiated at [Ab] itself
+ without hand-written hypothesis.（已译） *)
 #[export] Instance Ab_LocallyPropositional : LocallyPropositional Ab.
 Proof.
   constructor.

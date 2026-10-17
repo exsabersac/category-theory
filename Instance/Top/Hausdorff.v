@@ -62,9 +62,9 @@ Definition PSep_closed@{o so +| o < so +} (prem : SepPremise@{o})
 
 (* 相关说明。 （已译） *)
 
-(* A presentation of a quotient of X on X's own points: an equivalence
-   [R] coarser than X's equality, and a topology [T] on (X, R) coarser
-   than X's.  Mac Lane's "quotient set of X with some topology". *)
+(* A presentation quotient X X's own points: 等价
+ [R] coarser than X's equality, topology [T] (X, R) coarser
+ than X's. Mac Lane's "quotient set X some topology".（已译） *)
 Section Presentation.
 
 Universe o.

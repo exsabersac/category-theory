@@ -350,9 +350,9 @@ Proof.
   - (* to (collapse) ∘ (pushout_in1 P ∘ f) ≈ g ∘ f *)
     rewrite comp_assoc.
     apply compose_respects; [|reflexivity].
-    (* to (collapse) ∘ pushout_in1 P ≈ g; by definition of pushout_id_left_apex,
-       [to] is the [pushout_med P (Hcomm: g ∘ id ≈ id ∘ g)], and its first
-       leg equation is [m ∘ pushout_in1 P ≈ g]. *)
+    (* to (collapse) ∘ 推出_in1 P ≈ g; 定义 推出_id_left_apex,
+ [to] is [pushout_med P (Hcomm: g ∘ id ≈ id ∘ g)], its first
+ leg equation is [m ∘ pushout_in1 P ≈ g].（已译） *)
     apply pushout_med_in1.
   - (* to (collapse) ∘ (pushout_in2 P ∘ id) ≈ id *)
     rewrite (id_right (pushout_in2 _)).
@@ -471,11 +471,11 @@ Lemma pushout_cover_split_combine
   ≈ id.
 Proof.
   unfold pushout_cover_combine, pushout_cover_split.
-  (* Use joint-epi via [fork_inv]: a morphism on a coproduct is determined
-     by its restrictions to inl/inr.  The plan:
-       1. transitive through pushout_med Pcov (pushout_commutes Pcov)
-       2. apply pushout_med_unique
-       3. for each pushout-in, use cover_inl / cover_inr to split. *)
+  (* Use joint-epi via [fork_inv]: 态射 余积 is determined
+ its restrictions inl/inr. The plan:
+ 1. transitive through 推出_med Pcov (推出_commutes Pcov)
+ 2. apply 推出_med_唯一
+ 3. each 推出-in, use cover_inl / cover_inr split.（已译） *)
   transitivity (pushout_med Pcov (pushout_commutes Pcov)).
   - symmetry.
     apply pushout_med_unique.
@@ -1063,10 +1063,10 @@ Proof.
       rewrite Hk2.
       pose proof (pushout_commutes P) as PC.
       rewrite comp_assoc.
-      (* Need: pushout_in1 P ∘ m ∘ from phi ≈ pushout_in2 P.
-         By PC: pushout_in1 P ∘ m ≈ pushout_in2 P ∘ to phi.
-         Hence pushout_in1 P ∘ m ∘ from phi ≈ pushout_in2 P ∘ to phi ∘ from phi
-                                            ≈ pushout_in2 P ∘ id ≈ pushout_in2 P. *)
+      (* Need: 推出_in1 P ∘ m ∘ from phi ≈ 推出_in2 P.
+ By PC: 推出_in1 P ∘ m ≈ 推出_in2 P ∘ phi.
+ Hence 推出_in1 P ∘ m ∘ from phi ≈ 推出_in2 P ∘ phi ∘ from phi
+ ≈ 推出_in2 P ∘ id ≈ 推出_in2 P.（已译） *)
       rewrite PC.
       rewrite <- comp_assoc.
       rewrite iso_to_from.

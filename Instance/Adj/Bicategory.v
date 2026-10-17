@@ -389,7 +389,7 @@ Proof. split; simpl; intros; cat. Qed.
 (* The raw constructor, never [Build_Bicategory']: feeding [Adj]'s own ten
    projections keeps record eta, so [bicat C D] is definitionally
    [Adj C D] and [hcompose] typechecks against [Adj_Hcompose].  A plain
-   [Definition], not an [Instance], following [Cat_Bicategory]. *)
+   [Definition], not an [Instance], following [Cat_Bicategory].（标题）（已译） *)
 Definition Adj_Bicategory : Bicategory :=
   Build_Bicategory
     Category

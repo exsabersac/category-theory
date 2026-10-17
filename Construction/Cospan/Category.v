@@ -301,12 +301,12 @@ Proof.
     by (apply pushout_med_in1).
   assert (Hm_pgf2 : m_pgf ∘ pushout_in2 _ ≈ pushout_in2 PR ∘ pushout_in1 Phg)
     by (apply pushout_med_in2).
-  (* Now the mediator PL -> PR: cocone from PL into PR.
-     PL is pushout of (pushout_in2 Pgf ∘ cospan_in2 g, cospan_in1 h).
-     Legs: (m_pgf : apex Pgf ~> apex PR) and need
-           (apex h ~> apex PR).  Use pushout_in2 PR ∘ pushout_in2 Phg.
-     Commute: m_pgf ∘ (pushout_in2 Pgf ∘ cospan_in2 g)
-              ≈ (pushout_in2 PR ∘ pushout_in2 Phg) ∘ cospan_in1 h. *)
+  (* Now mediator PL -> PR: cocone from PL into PR.
+ PL is 推出 (推出_in2 Pgf ∘ cospan_in2 g, cospan_in1 h).
+ Legs: (m_pgf : apex Pgf ~> apex PR) need
+ (apex h ~> apex PR). Use 推出_in2 PR ∘ 推出_in2 Phg.
+ Commute: m_pgf ∘ (推出_in2 Pgf ∘ cospan_in2 g)
+ ≈ (推出_in2 PR ∘ 推出_in2 Phg) ∘ cospan_in1 h.（已译） *)
   assert (HuLR :
     m_pgf ∘ (pushout_in2 Pgf ∘ cospan_in2 g)
     ≈ (pushout_in2 PR ∘ pushout_in2 Phg) ∘ cospan_in1 h).
@@ -458,7 +458,7 @@ Arguments Build_CospanArrow {C X Y} _ _ _.
 (* [Build_CospanArrow] is the auto-generated record constructor:
      [Build_CospanArrow : forall {C X Y} (N : C) (l1 : X ~> N) (l2 : Y ~> N),
                            CospanArrow X Y].
-   Downstream uses match this signature directly. *)
+   Downstream uses match this signature directly.（标题）（已译） *)
 
 (* * ** Cospan 复合 accessors (reflexivity-level) （已译） *)
 

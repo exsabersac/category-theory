@@ -233,9 +233,9 @@ Proof.
   exact (Mclosed _ _ _ e' m' Hiso Hm').
 Qed.
 
-(* Characterization of E, hypothesis form, dual to [ofs_m_char]: e belongs
-   to E as soon as e ⫫ m for every m ∈ M, granted that E is closed under
-   postcomposition with isomorphisms ([Eclosed]). *)
+(* Characterization E, hypothesis form, 对偶 [ofs_m_char]: e belongs
+ E as soon as e ⫫ m every m ∈ M, granted that E is 闭 under
+ postcomposition isomorphisms ([Eclosed]).（已译） *)
 Theorem ofs_e_char {O : OFS E M}
   (Eclosed : ∀ (x y z : C) (e : x ~> y) (i : y ~> z),
       IsIsomorphism i → E x y e → E x z (i ∘ e))

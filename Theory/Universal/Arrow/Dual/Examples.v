@@ -90,9 +90,9 @@ Proof. reflexivity. Qed.
 
 (* * ** The terminal-对象 reading, exercised （已译） *)
 
-(* [couniversal_arrow_terminal] applied to a real couniversal arrow: the
-   product, with its projections, is a TERMINAL object of the comma category
-   Δ ↓ =(p) -- Mac Lane's §III.1 Definition 3 read at his own example. *)
+(* [couniversal_arrow_terminal] applied real couniversal arrow: the
+ 积, its projections, is TERMINAL 对象 comma 范畴
+ Δ ↓ =(p) -- Mac Lane's §III.1 Definition 3 read at his own 例子.（已译） *)
 Definition product_terminal (p : C ∏ C) :
   @Terminal (Diagonal_Product C ↓ =(p)) :=
   couniversal_arrow_terminal (product_CUA p).
@@ -109,9 +109,9 @@ Proof. reflexivity. Qed.
 
 (** ** The adjunction *)
 
-(* Run [AdjunctionFromCouniversalArrows] on that family.  The result is a
-   genuine adjunction Δ ⊣ R, produced entirely through the couniversal-arrow
-   machinery of Theory/Universal/Arrow/Dual.v. *)
+(* Run [AdjunctionFromCouniversalArrows] that family. The result is a
+ genuine 伴随 Δ ⊣ R, produced entirely through couniversal-arrow
+ machinery Theory/Universal/Arrow/Dual.v.（已译） *)
 Definition product_via_couniversal_functor : C ∏ C ⟶ C :=
   RightAdjointFunctorFromCouniversalArrows (Diagonal_Product C) product_CUA.
 

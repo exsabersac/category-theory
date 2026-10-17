@@ -462,9 +462,9 @@ Section BraidedUnitors.
 Context {C : Category}.
 Context `{S : @SymmetricMonoidal C}.
 
-(* In a symmetric monoidal category the braiding is self-inverse
-   ([braid_invol]), hence [braid ⨂ id] is invertible and in particular epic:
-   a trailing [braid ⨂ id] may be cancelled on the right. *)
+(* In symmetric 幺半 范畴 braiding is self-inverse
+ ([braid_invol]), hence [braid ⨂ id] is invertible particular epic:
+ trailing [braid ⨂ id] may be cancelled right.（已译） *)
 Lemma braid_id_cancel {x y z w} (f g : (y ⨂ x) ⨂ z ~> w) :
   f ∘ braid ⨂ id[z] ≈ g ∘ braid ⨂ id[z] → f ≈ g.
 Proof.

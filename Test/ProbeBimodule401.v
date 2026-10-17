@@ -276,9 +276,9 @@ Fail Example p401_n11 :
   (HomS E ◯ HomS E1 : ModR T ⟶ ModR R)
     = HomS (BimodTensorBimod E E1) := eq_refl.
 
-(* -- N16 (CONVERSION) -- Mac Lane's whiskered description of the
-   composite's unit holds at ≈ ([bac_unit_whiskered]) and NOT on the nose:
-   Adjunction/Compose.v is a [Qed] corollary proved by rewriting. *)
+(* -- N16 (CONVERSION) -- Mac Lane's whiskered description the
+ composite's 单位 holds at ≈ ([bac_unit_whiskered]) NOT nose:
+ Adjunction/Compose.v is [Qed] 推论 proved rewriting.（已译） *)
 Fail Example p401_n16 :
   bac_unit E E1 N
     = fmap[HomS E]

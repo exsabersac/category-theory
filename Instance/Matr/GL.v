@@ -205,7 +205,7 @@ Definition mat_mon (K : RingObject) (n : nat) : MonObject :=
 (* [Matr R]'s hom-setoid is entrywise `≈` in [R], so it is propositional
    whenever [R] is -- which it always is, [rig_prop] being a field.  Stated
    here rather than in Instance/Matr.v to keep the change local; it is the
-   witness [UnitsOf] asks for at [mat_mon]. *)
+   witness [UnitsOf] asks for at [mat_mon].（标题）（已译） *)
 Definition Matr_LocallyPropositional (R : RigObject) :
   LocallyPropositional (Matr R) :=
   LocallyPropositional_of_relation (Matr R)

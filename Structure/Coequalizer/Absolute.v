@@ -183,9 +183,9 @@ Definition split_coequalizer_PreservesColimitCocone@{co ch do +}
 
 (** ** Contractible pairs (#480) *)
 
-(* Every coequalizer of a contractible pair is absolute: Structure/
-   Coequalizer/Contractible.v's [contractible_coequalizer_split] splits
-   it.  The instance is named, as for [split_coequalizer_absolute]. *)
+(* Every coequalizer contractible pair is absolute: Structure/
+ Coequalizer/Contractible.v's [contractible_coequalizer_split] splits
+ it. The 实例 is named, as [split_coequalizer_absolute].（已译） *)
 
 Definition contractible_coequalizer_absolute@{co ch xo xh +}
   {C : Category@{co ch ch}} {x y : C} {f g : x ~> y}

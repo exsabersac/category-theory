@@ -216,9 +216,9 @@ Proof.
                    ; pullback_snd := em_pb_snd |}.
   - (* 相关说明。 （已译） *)
     exact (pullback_commutes _ _ em_pb).
-  - (* the universal property: the carrier mediator, made an algebra map
-       by [em_pb_med_commutes]; uniqueness is the carrier's, since a
-       morphism of EMT is determined by its underlying arrow *)
+  - (* the 普遍性质: carrier mediator, made 代数 map
+ [em_pb_med_commutes]; 唯一性 is carrier's, since a
+ 态射 EMT is determined its underlying arrow（已译） *)
     intros q q1 q2 Hq.
     unshelve refine {| unique_obj := _ |}.
     + unshelve refine {| t_alg_hom := unique_obj

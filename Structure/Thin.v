@@ -34,9 +34,9 @@ Generalizable All Variables.
 Definition Thin (C : Category) : Type :=
   ∀ (x y : C) (f g : x ~{C}~> y), f ≈ g.
 
-(* Thinness is self-dual: reversing arrows neither creates nor merges parallel
-   pairs.  Both directions hold on the nose because Construction/Opposite.v
-   defines hom[C^op] x y as hom[C] y x and reuses the same hom-setoid. *)
+(* Thinness is self-对偶: reversing arrows neither creates nor merges parallel
+ pairs. Both directions hold nose because Construction/Opposite.v
+ defines hom[C^op] x y as hom[C] y x reuses same hom-setoid.（已译） *)
 
 Lemma Thin_Opposite {C : Category} : Thin C → Thin (C^op).
 Proof. intros T x y f g; exact (T y x f g). Qed.
@@ -44,10 +44,10 @@ Proof. intros T x y f g; exact (T y x f g). Qed.
 Lemma Opposite_Thin {C : Category} : Thin (C^op) → Thin C.
 Proof. intros T x y f g; exact (T y x f g). Qed.
 
-(* In a thin category every morphism is both monic and epic (the classes at
-   Theory/Morphisms.v), because both cancellation laws conclude
-   an equation between parallel morphisms.  The converse does not hold: being
-   a bimorphism everywhere is far weaker than thinness. *)
+(* In thin 范畴 every 态射 is both monic epic (the classes at
+ Theory/Morphisms.v), because both cancellation laws conclude
+ equation between parallel 态射. The converse does not hold: being
+ bimorphism everywhere is far weaker than thinness.（已译） *)
 
 Lemma thin_Monic {C : Category} (T : Thin C) {x y : C} (f : x ~> y) : Monic f.
 Proof. constructor; intros z g1 g2 _; apply T. Qed.
@@ -120,9 +120,9 @@ Proof.
   - exact (TD b d g g').
 Qed.
 
-(* Into a thin target, any component family is natural — both naturality
-   squares are equations between parallel morphisms.  Functors into thin
-   categories are therefore compared by their object actions alone. *)
+(* Into thin target, any component family is natural — both 自然性
+ squares are equations between parallel 态射. Functors into thin
+ 范畴 are therefore compared their 对象 actions alone.（已译） *)
 Program Definition thin_natural {C D : Category} (TD : Thin D)
   (F G : C ⟶ D) (η : ∀ x : C, F x ~> G x) : F ⟹ G := {|
   transform := η
@@ -136,10 +136,10 @@ Next Obligation.
   exact (TD _ _ _ _).
 Qed.
 
-(* Parallel natural transformations into a thin target agree pointwise:
-   their components are parallel.  (The functor-category packaging of
-   this — a functor category into a thin target is thin — lives in
-   Instance/Proset/Closure.v, where [Fun] is available.) *)
+(* Parallel natural transformations into thin target agree pointwise:
+ their components are parallel. (The 函子-范畴 packaging of
+ this — 函子 范畴 into thin target is thin — lives in
+ Instance/Proset/Closure.v, where [Fun] is available.)（已译） *)
 Lemma Thin_Transform {C D : Category} (TD : Thin D)
   (F G : C ⟶ D) (σ τ : F ⟹ G) :
   ∀ x : C, transform σ x ≈ transform τ x.

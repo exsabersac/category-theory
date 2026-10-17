@@ -63,8 +63,7 @@ Definition when `(b : bool) (x : m ()) : m () :=
 Definition unless `(b : bool) (x : m ()) : m () :=
   if negb b then x else ret tt.
 
-(*
-Fixpoint mapM {Applicative m} {A B} (f : A → m B) (l : list A) :
+(* Fixpoint mapM {Applicative m} {A B} (f : A → m B) (l : list A) :
   m (list B) :=
   match l with
   | nil => ret nil
@@ -81,8 +80,7 @@ Fixpoint mapM_ {Applicative m} {A B} (f : A → m B) (l : list A) : m () :=
   end.
 
 Definition forM_ {Applicative m} {A B} (l : list A) (f : A → m B) : m () :=
-  mapM_ f l.
-*)
+  mapM_ f l.（标题）（已译） *)
 
 Definition foldM {A : Type} {B : Type}
   (f : A → B → m A) (s : A) (l : list B) : m A :=

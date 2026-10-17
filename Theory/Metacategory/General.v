@@ -28,7 +28,7 @@ Record Metacategory : Type := {
 
   (* "certain ordered pairs ⟨g, f⟩, called the composable pairs of arrows, and
      an operation assigning to each composable pair ⟨g, f⟩ an arrow g∙f".
-     [mcomp g f h] reads "g∙f is defined, and equals h". *)
+     [mcomp g f h] reads "g∙f is defined, and equals h".（标题）（已译） *)
   mcomp : marr → marr → marr → Type;
 
   mdefined (g f : marr) := ∃ h, mcomp g f h;

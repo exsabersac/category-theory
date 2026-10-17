@@ -197,9 +197,9 @@ Proof.
   exact (grp_map_mul (@mappend GrpS GrpMon G gob_monoid) (a, c) (b, d)).
 Qed.
 
-(* Input 5 is [grp_mul G]'s own unit and respectfulness data, which
-   Instance/Grp.v already supplies: [grp_mul_respects] is a field,
-   [grp_mul_unit_l] is a field, and [grp_mul_unit_r] is derived there. *)
+(* Input 5 is [grp_mul G]'s own 单位 respectfulness data, which
+ Instance/Grp.v already supplies: [grp_mul_respects] is field,
+ [grp_mul_unit_l] is field, [grp_mul_unit_r] is derived there.（已译） *)
 
 (* Eckmann-Hilton, output 1: the two units coincide. *)
 Theorem gob_units_agree : gunit2 ≈ grp_unit G.
@@ -455,9 +455,9 @@ Qed.
 
 (** ** Non-vacuity *)
 
-(* The degenerate case first, and proved degenerate: the trivial group is
-   abelian, so it carries a group-object structure, but every pair of its
-   elements is identified, so nothing about it separates anything. *)
+(* The degenerate case first, proved degenerate: trivial group is
+ 阿贝尔, so it carries group-对象 structure, but every pair its
+ elements is identified, so nothing about it separates anything.（已译） *)
 
 Lemma trivial_abelian : AbelianGrp Grp_trivial.
 Proof.
@@ -567,9 +567,9 @@ Definition ctrl_probe_terminal : @Terminal GrpS := Grp_Terminal.
 *)
 Check (Grp_Terminal : @Terminal Grp@{pu ph}).
 
-(* FORMABILITY (universe), 2 of 2, a CONTROL since #450.  The rejection
-   used to propagate to the cartesian monoidal structure, reported at
-   [Grp_Terminal]; since #450 the structure is formable at [Grp@{pu ph}]. *)
+(* FORMABILITY (universe), 2 2, CONTROL since #450. The rejection
+ used propagate cartesian 幺半 structure, reported at
+ [Grp_Terminal]; since #450 structure is formable at [Grp@{pu ph}].（已译） *)
 Check (@CC_CartesianMonoidal Grp@{pu ph} Grp_Cartesian Grp_Terminal
        : @CartesianMonoidal Grp@{pu ph}).
 

@@ -44,10 +44,10 @@ Definition Single_CSig (ms ns : list Colour) : CSignature :=
 Definition Sum_CSig (S T : CSignature) : CSignature :=
   fun cs ds => (S cs ds + T cs ds)%type.
 
-(** Sub-signature: a boundary-preserving family of generator
-    relabellings into another signature — despite the name, no
-    injectivity is required (generator collapses are allowed).
-    Inhabited by [inl] / [inr] / nested projection chains. *)
+(* * Sub-signature: 边界-preserving family generator
+ relabellings into another signature — despite name, no
+ injectivity is required (generator collapses are allowed).
+ Inhabited [inl] / [inr] / nested projection chains.（已译） *)
 Definition CSubSig (Sub Sup : CSignature) : Type :=
   forall cs ds, Sub cs ds -> Sup cs ds.
 

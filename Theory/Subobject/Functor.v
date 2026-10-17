@@ -48,9 +48,9 @@ Proof.
   exact (transport_fst T).
 Qed.
 
-(* Reindexing respects the SubObj setoid: if u ≈ v via a domain isomorphism
-   i, then the chosen pullback of v along f, corrected by i, is itself a
-   pullback square for sub_mono u along f; sub_reindex_transport concludes. *)
+(* Reindexing respects SubObj setoid: if u ≈ v via domain 同构
+ i, then chosen 拉回 v along f, corrected i, is itself a
+ 拉回 square sub_mono u along f; sub_reindex_transport concludes.（已译） *)
 #[export] Instance sub_reindex_respects {x y : C} (f : y ~> x) :
   Proper (equiv ==> equiv) (@sub_reindex x y f).
 Proof.

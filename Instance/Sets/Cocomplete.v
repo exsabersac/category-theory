@@ -200,9 +200,9 @@ Definition Sets_Cocomplete@{uc ud uo uso} :
 
 Section TwoDiscreteWitness.
 
-(* The two-object discrete shape.  Its hom type IS index equality, by
-   conversion, which is precisely why [cr_glue] has nothing to glue across
-   the two objects: a morphism can only relate an index to itself. *)
+(* The two-对象 discrete shape. Its hom type IS index equality, by
+ conversion, which is precisely why [cr_glue] has nothing glue across
+ two 对象: 态射 can only relate index itself.（已译） *)
 Definition TwoDisc : Category := DiscreteCat bool.
 
 Example two_disc_hom_is_eq (b b' : bool) :

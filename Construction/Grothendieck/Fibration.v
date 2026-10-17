@@ -83,10 +83,10 @@ Definition Grothendieck_OpCleaving :
 
 (* * ** The chosen lifts, read total 范畴 ∫ A （已译） *)
 
-(* The chosen opcartesian lift of [f] at [dx], as a morphism of ∫ A from
-   [(x; dx)] to [(y; idx_map A f dx)].  Its displayed component is
-   definitionally the one chosen by [Grothendieck_OpCleaving]
-   ([Grothendieck_colift_is_clift] below). *)
+(* The chosen opcartesian lift [f] at [dx], as 态射 ∫ A from
+ [(x; dx)] [(y; idx_map A f dx)]. Its displayed component is
+ definitionally one chosen [Grothendieck_OpCleaving]
+ ([Grothendieck_colift_is_clift] below).（已译） *)
 Definition Grothendieck_colift {x y : B} (f : x ~> y) (dx : idx_fib A x) :
   (x; dx) ~{ Grothendieck A }~> (y; idx_map A f dx) :=
   (f; Grothendieck_op_lift f dx).

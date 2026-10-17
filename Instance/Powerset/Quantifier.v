@@ -732,10 +732,10 @@ Theorem subsets_one_Props_round
   fobj[Props_to_subsets_one] (fobj[subsets_one_to_Props] S) ≈ S.
 Proof. intro x; destruct x; split; intro H; exact H. Qed.
 
-(* Riehl's Omega, up to equivalence.  [≅[Cat]] IS equivalence in this
-   library ([Cat]'s hom-setoid is [Functor_Setoid]); an isomorphism OF
-   CATEGORIES is unavailable, the object types differing, and none is
-   claimed. *)
+(* Riehl's Omega, up 等价. [≅[Cat]] IS 等价 this
+ library ([Cat]'s hom-setoid is [Functor_Setoid]); 同构 OF
+ CATEGORIES is unavailable, 对象 types differing, none is
+ claimed.（已译） *)
 Program Definition subsets_one_Props :
   @Isomorphism Cat (Subsets@{o u} quant_one@{o so}) Props@{o u} := {|
   to   := subsets_one_to_Props;

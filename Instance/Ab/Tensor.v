@@ -37,9 +37,9 @@ Inductive tsum : Type :=
   | ts_plus : tsum → tsum → tsum
   | ts_neg  : tsum → tsum.
 
-(* The quotienting relation: commutative-group laws, bilinearity in each
-   variable, congruence, saturation under the point setoids, symmetry and
-   transitivity.  Reflexivity is derived (design note 1). *)
+(* The quotienting relation: commutative-group laws, bilinearity each
+ variable, congruence, saturation under point setoids, symmetry and
+ transitivity. Reflexivity is derived (design 注 1).（已译） *)
 Inductive ts_eq : tsum → tsum → Prop :=
   | te_gen {g g' : carrier G} {h h' : carrier H} :
       g ≈ g' → h ≈ h' → ts_eq (ts_gen g h) (ts_gen g' h')

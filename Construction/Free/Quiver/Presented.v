@@ -193,9 +193,9 @@ Definition presented_restrict : QuiverHomomorphism G (QuiverOfCat D) :=
   QuiverComp (UnitQuiverCatAdjunction G)
     (QuiverHomomorphismOfFunctor _ _ (S ◯ PresentedQuiverProj)).
 
-(** On generators the restriction is [S] itself, definitionally — a
-    Leibniz equality of morphisms, stated at that strength deliberately,
-    in the manner of [QuotientLift_proj] ([Construction/Quotient.v]). *)
+(* * On generators restriction is [S] itself, definitionally — a
+ Leibniz equality 态射, stated at that strength deliberately,
+ manner [QuotientLift_proj] ([Construction/Quotient.v]).（已译） *)
 Lemma presented_restrict_gen {x y : G} (e : edges x y) :
   @fedgemap _ _ presented_restrict x y e = fmap[S] (pgen e).
 Proof. reflexivity. Qed.

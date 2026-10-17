@@ -46,9 +46,9 @@ Definition c_conservative (c : Colour) : Type :=
   forall (cs ds : list Colour) (g : S cs ds),
     count_occ Cdec cs c = count_occ Cdec ds c.
 
-(** The linear discipline for a whole signature: conservativity at
+(* * The linear discipline for a whole signature: conservativity at
     every linear colour.  Copyable colours are unconstrained — their
-    generators (e.g. explicit duplicators) may change wire counts. *)
+    generators (e.g. explicit duplicators) may change wire counts.（标题）（已译） *)
 Definition LinearRespecting : Type :=
   forall c : Colour, LinearColour c -> c_conservative c.
 

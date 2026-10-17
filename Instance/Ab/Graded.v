@@ -185,15 +185,15 @@ Example graded_degree_one (F G : obj[GradedAb]) :
 
 (** ** Witnesses *)
 
-(* ℤ as an abelian group, through the ring layer: Instance/Rng.v's
-   [ring_ab] applied to Theory/Algebra/Rig.v's axiom-free [Int_Ring],
-   the same donor Instance/Ab/Monoidal.v uses for its unit object. *)
+(* ℤ as 阿贝尔 group, through ring layer: Instance/Rng.v's
+ [ring_ab] applied Theory/Algebra/Rig.v's axiom-自由 [Int_Ring],
+ same donor Instance/Ab/Monoidal.v uses its 单位 对象.（已译） *)
 Definition Zgroup : AbObject := ring_ab Int_Ring.
 
-(* Multiplication by a fixed integer, as an endomorphism of ℤ.  The
-   [Proper] obligation of the underlying setoid morphism needs no
-   proof: ℤ's setoid equivalence is Leibniz equality ([Z_eqT]), so
-   elaboration discharges it. *)
+(* Multiplication fixed integer, as 自同态 ℤ. The
+ [Proper] obligation underlying setoid 态射 needs no
+ 证明: ℤ's setoid 等价 is Leibniz equality ([Z_eqT]), so
+ elaboration discharges it.（已译） *)
 Program Definition Zmul_hom (k : Z) : Zgroup ~{Ab}~> Zgroup := {|
   cmon_map := {| morphism := fun m => Z.mul k m |}
 |}.

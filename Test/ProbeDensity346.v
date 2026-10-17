@@ -77,7 +77,7 @@ Check (Curried_Hom D ◯ (Elements_proj K)^op).
 (* NEGATIVE 3, TYPING -- the variance.  The diagram of representables
    cannot be indexed by [Elements K] covariantly, because [d ↦ [Hom d,─]]
    is contravariant.  Stripped: "Elements_proj K has type
-   Elements K ⟶ D while it is expected to have type Elements K ⟶ D^op". *)
+   Elements K ⟶ D while it is expected to have type Elements K ⟶ D^op".（标题）（已译） *)
 Fail Check (Curried_Hom D ◯ Elements_proj K).
 
 End ProbeDensityMediator.

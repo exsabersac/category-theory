@@ -167,7 +167,7 @@ Qed.
 
 (* Riehl 4.1.15, left half, in the shape [universal_arrow_from_UMP] consumes:
    the same [Unique] record as [Fractions_UMP_groupoid], over
-   [Functor_Setoid] in both positions instead of [Functor_StrictEq_Setoid]. *)
+   [Functor_Setoid] in both positions instead of [Functor_StrictEq_Setoid].（标题）（已译） *)
 
 Definition Fractions_UMP_weak :
   @Unique _ (@Functor_Setoid (Fractions C) D)

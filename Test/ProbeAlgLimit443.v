@@ -365,10 +365,10 @@ Example p443_rng_apex_descends :
 
 Fail Check Ab_Forget_continuous.
 
-(* N18 NAME-ABSENCE: the mirror.  There is no RAPL-style continuity
-   constant at [Rng], and the [Rng] header's reason is measured there: no
-   adjunction in tree has [Rng_Forget] as its right adjoint, so
-   [right_adjoint_Continuous] does not reach it. *)
+(* N18 NAME-ABSENCE: mirror. There is no RAPL-style continuity
+ constant at [Rng], [Rng] header's reason is measured there: no
+ 伴随 tree has [Rng_Forget] as its 右伴随, so
+ [right_adjoint_Continuous] does not reach it.（已译） *)
 
 Fail Check Rng_Forget_Continuous.
 

@@ -188,7 +188,7 @@ Definition ckp_transform {A B : @Arrow C} (u : A ~> B)
 
 (* All three obligations are proved, none defaulted: [fmap_respects],
    [fmap_id] and [fmap_comp] each reduce at [ParX] to a component
-   equation and at [ParY] to one appeal to [ckp_fmap_Y_unique]. *)
+   equation and at [ParY] to one appeal to [ckp_fmap_Y_unique].（标题）（已译） *)
 
 Program Definition CokernelPairFunctor : @Arrow C ⟶ [Parallel, C] := {|
   fobj := ckp_pair ;

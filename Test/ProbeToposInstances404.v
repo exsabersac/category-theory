@@ -87,16 +87,16 @@ Fail Check (@classifier_classifies ([C^op, Sets])
      while it is expected to have type
       "ElementaryTopos@{n2.26 n2.27 n2.27} ([C^op, Sets@{n2.23 n2.30}])"
      (universe inconsistency: Cannot enforce n2.23 = n2.27 because
-      n2.23 < n2.30 <= n2.27).                                       *)
+      n2.23 < n2.30 <= n2.27).（标题）（已译） *)
 Fail Check (@relations_iso ([C^op, Sets]) (Presheaf_Topos C UT)).
 
-(* NEGATIVE 3 (FORMABILITY).  The naturality upgrade likewise.
-   Stripped:
+(* NEGATIVE 3 (FORMABILITY). The 自然性 upgrade likewise.
+ Stripped:
 
-     The term "topos_terminal" has type "Terminal@{n3.41 n3.23}"
-     while it is expected to have type "Terminal@{n3.26 n3.27}"
-     (universe inconsistency: Cannot enforce n3.23 = n3.27 because
-      n3.23 < n3.31 <= n3.26 <= n3.27).                              *)
+ The term "topos_终" has type "Terminal@{n3.41 n3.23}"
+ while it is expected have type "Terminal@{n3.26 n3.27}"
+ (universe inconsistency: Cannot enforce n3.23 = n3.27 because
+ n3.23 < n3.31 <= n3.26 <= n3.27).（已译） *)
 Fail Check (@Sub_classifier_natural ([C^op, Sets])
               (@topos_terminal _ (Presheaf_Topos C UT))
               (@topos_pullbacks _ (Presheaf_Topos C UT))
@@ -194,7 +194,7 @@ Check (Fun_Classifier_small Cs UTs
       "@Closed (PShSmall Cs)
          (Functor_Category_Cartesian Cs^op Sets Sets_Cartesian)"
      (universe inconsistency: Cannot enforce o = n4.97 because
-      o < so <= n4.96 <= n4.97).                                     *)
+      o < so <= n4.96 <= n4.97).（标题）（已译） *)
 Fail Check (Functor_Category_Closed Cs
             : @Closed (PShSmall Cs)
                 (@Functor_Category_Cartesian (Cs^op) Sets@{o so}
@@ -240,14 +240,14 @@ Context (U : Untruncate) (a b : obj[Sets]).
 (* 相关说明。 （已译） *)
 Check (@Pow Sets (Sets_Topos U) b).
 
-(* NEGATIVE 12 (FORMABILITY).  [classifier_classifies] carries
-   objects <= homs and [Sets@{o so} : Category@{so o o}] has o < so.
-   Stripped:
+(* NEGATIVE 12 (FORMABILITY). [classifier_classifies] carries
+ 对象 <= homs [Sets@{o so} : Category@{so o o}] has o < so.
+ Stripped:
 
-     The term "Sets" has type "Category@{n12.34 n12.33 n12.33}"
-     while it is expected to have type "Category@{n12.30 n12.31 n12.31}"
-     (universe inconsistency: Cannot enforce n12.34 = n12.30 because
-      n12.30 <= n12.31 < n12.34).                                    *)
+ The term "Sets" has type "Category@{n12.34 n12.33 n12.33}"
+ while it is expected have type "Category@{n12.30 n12.31 n12.31}"
+ (universe inconsistency: Cannot enforce n12.34 = n12.30 because
+ n12.30 <= n12.31 < n12.34).（已译） *)
 Fail Check (@classifier_classifies Sets Sets_Terminal Sets_HasPullbacks
               (Sets_Classifier U)).
 
@@ -257,7 +257,7 @@ Fail Check (@classifier_classifies Sets Sets_Terminal Sets_HasPullbacks
      The term "Sets" has type "Category@{n13.43 n13.42 n13.42}"
      while it is expected to have type "Category@{n13.41 n13.41 n13.41}"
      (universe inconsistency: Cannot enforce n13.43 = n13.41 because
-      n13.41 < n13.43).                                              *)
+      n13.41 < n13.43).（标题）（已译） *)
 Fail Check (@relations_iso Sets (Sets_Topos U) a b).
 
 End SetsNegatives.
@@ -272,14 +272,14 @@ End SetsNegatives.
 
      The term "eq_refl" has type "pbone a b = pbone a b"
      while it is expected to have type "pbone a b = a × b"
-     (cannot unify "pbone a b" and "a × b").                          *)
+     (cannot unify "pbone a b" and "a × b").（标题）（已译） *)
 Fail Example p404_pbone_prod (a b : obj[Sets]) : pbone a b = a × b := eq_refl.
 
 (* NEGATIVE 15 (CONVERSION), one layer in, at the CARRIERS.  Stripped:
 
      The term "eq_refl" has type "pbone a b = pbone a b"
      while it is expected to have type "pbone a b = a × b"
-     (cannot unify "carrier (pbone a b)" and "carrier (a × b)").      *)
+     (cannot unify "carrier (pbone a b)" and "carrier (a × b)").（标题）（已译） *)
 Fail Example p404_pbone_carrier (a b : obj[Sets]) :
   carrier (pbone a b) = carrier (a × b) := eq_refl.
 

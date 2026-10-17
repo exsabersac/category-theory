@@ -508,10 +508,10 @@ Proof.
     exact (colim_inj_coherence M F (ZeroPos : RZero ~{Roof}~> RPos)).
 Qed.
 
-(* Every hom-setoid of [Roof] is trivially true, so a functor out of it
-   carries any two parallel arrows to [≈]-equal morphisms; the identity
-   arrows go to identities.  These two facts discharge every case of the
-   cocone coherence below. *)
+(* Every hom-setoid [Roof] is trivially true, so 函子 out it
+ carries any two parallel arrows [≈]-equal 态射; 恒等
+ arrows go identities. These two facts discharge every case the
+ cocone 融贯性 below.（已译） *)
 Lemma roof_fmap_any (F : Roof ⟶ C) {a b : Roof} (k k' : a ~{Roof}~> b) :
   fmap[F] k ≈ fmap[F] k'.
 Proof. apply fmap_respects; exact I. Qed.

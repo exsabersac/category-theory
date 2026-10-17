@@ -78,9 +78,9 @@ Proof.
                              ((ttt, h1); e) ((ttt, v); X))).
 Qed.
 
-(* Conversely, the universal mapping property reconstructs the initial object,
-   hence a UniversalArrow: given η : c ~> F d that factors every f : c ~> F d'
-   uniquely, (d, η) is initial in =(c) ↓ F. *)
+(* Conversely, universal mapping 性质 reconstructs 始 对象,
+ hence UniversalArrow: given η : c ~> F d that factors every f : c ~> F d'
+ uniquely, (d, η) is 始 =(c) ↓ F.（已译） *)
 Definition universal_arrow_from_UMP (c : C) (F : D ⟶ C) (d : D) (η : c ~> fobj[F] d)
   (u : ∀ (d' : D) (f : c ~> fobj[F] d'), ∃! g : d ~> d', f ≈ fmap[F] g ∘ η)
   : UniversalArrow c F.

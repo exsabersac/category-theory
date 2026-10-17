@@ -18,11 +18,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The kernel pair of f : x ~> y is the pullback of f along itself: an
-   object x ×_y x with projections p1, p2 : x ×_y x ~> x satisfying
-   f ∘ p1 ≈ f ∘ p2, universal among such pairs.
+(* The 核 pair f : x ~> y is 拉回 f along itself: an
+ 对象 x ×_y x projections p1, p2 : x ×_y x ~> x satisfying
+ f ∘ p1 ≈ f ∘ p2, universal among such pairs.
 
-   nLab: https://ncatlab.org/nlab/show/kernel+pair *)
+ nLab: https://ncatlab.org/nlab/show/核+pair（已译） *)
 Definition kernel_pair {C : Category} `{H : @HasPullbacks C} {x y : C}
   (f : x ~> y) : Pullback f f := pullback f f.
 
@@ -40,11 +40,11 @@ Record RegularEpi {C : Category} {x y : C} (f : x ~> y) := {
   regepi_is_coeq : IsCoequalizer regepi_p1 regepi_p2 y f
 }.
 
-(* A regular category: a terminal object and all pullbacks (hence all
-   finite limits), coequalizers of kernel pairs, and pullback-stability of
-   regular epimorphisms.  Stability is phrased on the chosen pullbacks:
-   pulling a regular epimorphism f : x ~> z back along any g : y ~> z
-   yields a regular epimorphism x ×_z y ~> y. *)
+(* A regular 范畴: 终 对象 all pullbacks (hence all
+ 有限 limits), coequalizers 核 pairs, 拉回-stability of
+ regular epimorphisms. Stability is phrased chosen pullbacks:
+ pulling regular epimorphism f : x ~> z back along any g : y ~> z
+ yields regular epimorphism x ×_z y ~> y.（已译） *)
 Class Regular (C : Category) := {
   regular_terminal  : @Terminal C;
   regular_pullbacks : @HasPullbacks C;

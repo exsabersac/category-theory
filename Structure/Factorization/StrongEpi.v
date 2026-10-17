@@ -128,9 +128,9 @@ Proof.
       apply id_right.
 Qed.
 
-(* A morphism that is both a strong epimorphism and a monomorphism is an
-   isomorphism: lifting the identity square f ∘ id ≈ id ∘ f against f
-   itself (which is monic by hypothesis) produces a two-sided inverse. *)
+(* A 态射 that is both 强 epimorphism monomorphism is an
+ 同构: lifting 恒等 square f ∘ id ≈ id ∘ f against f
+ itself (which is monic hypothesis) produces two-sided inverse.（已译） *)
 Lemma strong_epi_mono_is_iso {C : Category} {x y : C} (f : x ~> y) :
   StrongEpi f → Monic f → IsIsomorphism f.
 Proof.

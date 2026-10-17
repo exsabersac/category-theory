@@ -135,9 +135,9 @@ Definition fin2_swap (i : Fin.t 2%nat) : Fin.t 2%nat :=
 Example fin2_swap_F1 : fin2_swap Fin.F1 = Fin.FS Fin.F1 := eq_refl.
 Example fin2_swap_FS : fin2_swap (Fin.FS Fin.F1) = Fin.F1 := eq_refl.
 
-(* The sharp content, independent of how fullness is packaged: no
-   morphism of [Simplex] has the swap as its underlying function.
-   Monotonicity applied to 0 ≤ 1 would give swap 0 ≤ swap 1, i.e. 1 ≤ 0. *)
+(* The sharp content, independent how fullness is packaged: no
+ 态射 [Simplex] has swap as its underlying function.
+ Monotonicity applied 0 ≤ 1 would give swap 0 ≤ swap 1, i.e. 1 ≤ 0.（已译） *)
 Lemma no_monotone_swap (f : @hom Simplex 2%nat 2%nat) :
   (∀ i, mono_map f i = fin2_swap i) → False.
 Proof.

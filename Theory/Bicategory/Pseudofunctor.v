@@ -42,9 +42,9 @@ Lemma bi_iso_from_to {B : Bicategory} {x y : @bi0cell B} {a b : @bicat B x y}
   (i : a ≅ b) : from i ∘∘ to i ≈ bi2id.
 Proof. exact (iso_from_to i). Qed.
 
-(* Functor action on 2-cells, in `vcompose`/`bi2id` form.  `K` ranges over
-   functors between hom-categories (the hom-functors `pf1` of a pseudofunctor);
-   these are the generic `fmap_comp`/`fmap_id` up to conversion. *)
+(* Functor action 2-cells, `vcompose`/`bi2id` form. `K` ranges over
+ 函子 between hom-范畴 (the hom-函子 `pf1` pseudofunctor);
+ these are generic `fmap_comp`/`fmap_id` up conversion.（已译） *)
 Lemma pfmap_comp {B B' : Bicategory} {x y : @bi0cell B} {c d : @bi0cell B'}
   (K : @bicat B x y ⟶ @bicat B' c d) {p q r : @bicat B x y}
   (u : q ~> r) (v : p ~> q) :

@@ -173,10 +173,10 @@ Proof.
   exact (`2 p x y Hxy).
 Qed.
 
-(* The functor.  It is COVARIANT -- postcomposition, not precomposition --
-   which is what makes ⟨A/R, p⟩ a universal element in Mac Lane's sense
-   rather than a representing object of a presheaf.  Nothing in this
-   definition uses any law of R. *)
+(* The 函子. It is COVARIANT -- postcomposition, not precomposition --
+ which is what makes ⟨A/R, p⟩ universal element Mac Lane's sense
+ rather than 表示 对象 presheaf. Nothing this
+ 定义 uses any law R.（已译） *)
 Program Definition RespFunctor : Sets ⟶ Sets := {|
   fobj := fun X => {| carrier := RespMap X ; is_setoid := RespMap_Setoid X |};
   fmap := fun X Y k =>

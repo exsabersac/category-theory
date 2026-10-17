@@ -307,7 +307,7 @@ Arguments grp_translate {G H} f a.
 
 (* A permutation of a setoid: an invertible setoid map, presented as a pair of
    setoid maps with both round trips up to `≈`.  Nothing here is a bijection on
-   the nose; the inverse is data, so no choice principle is involved. *)
+   the nose; the inverse is data, so no choice principle is involved.（标题）（已译） *)
 Record SetoidPermutation (X : SetoidObject) := {
   sperm_to   : SetoidMorphism X X;
   sperm_from : SetoidMorphism X X;
@@ -461,9 +461,9 @@ Proof.
   reflexivity.
 Qed.
 
-(* Conjugation by a fixed element is an endomorphism of the group; classically
-   it is the inner automorphism at [s], but invertibility is neither proved
-   here nor needed -- only the homomorphism property is used below. *)
+(* Conjugation fixed element is 自同态 group; classically
+ it is inner automorphism at [s], but invertibility is neither proved
+ here nor needed -- only 同态 性质 is used below.（已译） *)
 Definition grp_conj (K : GrpObject) (s : carrier K) : K ~{Grp}~> K :=
   Build_GrpHom' (grp_conj_map K s) (grp_conj_mul K s).
 

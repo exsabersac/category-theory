@@ -29,11 +29,11 @@ Section CatEval.
 
 Context (P X : Cat).
 
-(* [Cat]'s exponential is the functor category (Instance/Cat/Cartesian/
-   Closed.v's [Cat_Closed]), so the closed structure's own [eval] IS a
-   functor [[P, X] ∏ P ⟶ X].  Named here; it is reachable only at [Cat]'s
-   universes, which is why Instance/Fun/Eval.v builds [EvalBi] directly
-   (see the header's universe measurement). *)
+(* [Cat]'s exponential is 函子 范畴 (Instance/Cat/Cartesian/
+ Closed.v's [Cat_Closed]), so 闭 structure's own [eval] IS a
+ 函子 [[P, X] ∏ P ⟶ X]. Named here; it is reachable only at [Cat]'s
+ universes, which is why Instance/Fun/Eval.v builds [EvalBi] directly
+ (see header's universe measurement).（已译） *)
 Definition CatEval : ([P, X] ∏ P) ⟶ X := @eval Cat Cat_Cartesian Cat_Closed P X.
 
 (* 相关说明。 （已译） *)

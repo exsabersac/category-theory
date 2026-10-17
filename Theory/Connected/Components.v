@@ -685,10 +685,10 @@ Definition image_connected_not_connected :
     * (Connected (DiscreteCat bool) → False) :=
   (connected_image One_to_bool One_Connected, DiscreteCat_bool_not_connected).
 
-(* ... and the hypothesis of [eso_connected] genuinely fails at it: an
-   essential-surjectivity witness would supply an isomorphism
-   [true ≅ false] in [DiscreteCat bool], whose forward leg is an equality
-   of booleans. *)
+(* ... hypothesis [eso_connected] genuinely fails at it: an
+ essential-surjectivity witness would supply 同构
+ [true ≅ false] [DiscreteCat bool], whose forward leg is equality
+ booleans.（已译） *)
 Theorem One_to_bool_not_ESO :
   EssentiallySurjective One_to_bool → False.
 Proof.

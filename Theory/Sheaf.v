@@ -71,23 +71,23 @@ Inductive ExistsT {A : Type} (P : A → Type) :
   | ExistsT_cons_tl (m : nat) (x : A) (v : t A m) :
     ExistsT v → ExistsT (cons A x m v).
 
-(* A coverage on a category C consists of a function assigning to each object
-   U ∈ C a collection of families of morphisms { fᵢ : Uᵢ → U } (i∈I), called
-   covering families, such that
+(* A coverage 范畴 C consists function assigning each 对象
+ U ∈ C collection families 态射 { fᵢ : Uᵢ → U } (i∈I), called
+ covering families, such that
 
-   if { fᵢ : Uᵢ → U } (i∈I) is a covering family
-   and g : V → U is a morphism,
-   then there exists a covering family { hⱼ : Vⱼ → V }
-   such that each composite g ∘ hⱼ factors through some fᵢ. *)
+ if { fᵢ : Uᵢ → U } (i∈I) is covering family
+ g : V → U is 态射,
+ then there exists covering family { hⱼ : Vⱼ → V }
+ such that each composite g ∘ hⱼ factors through some fᵢ.（已译） *)
 
 Class Site (C : Category) := {
   (* A covering family u finite (vector-indexed) list 态射
  uᵢ ~> u u; sigT packages length together vector. （已译） *)
   covering_family (u : C) := sigT (Vector.t (∃ uᵢ, uᵢ ~> u));
 
-  (* This encoding picks a single covering family per object rather than the
-     usual collection of covering families; it suffices to state the sheaf
-     condition below, but is less general than a full coverage. *)
+  (* This encoding picks single covering family per 对象 rather than the
+ usual collection covering families; it suffices state sheaf
+ condition below, but is less 一般 than full coverage.（已译） *)
   coverage (u : C) : covering_family u;
 
   (* 相关说明。 （已译） *)

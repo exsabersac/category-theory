@@ -35,9 +35,9 @@ Definition ob_cast@{ui uo oh op} {I : Type@{ui}}
   (C : I → Category@{uo oh op}) {i j : I} (e : i = j) (x : C i) : C j :=
   match e in _ = k return C k with eq_refl => x end.
 
-(* Transport a morphism along an equality BETWEEN two index equalities.
-   This is what the hom-setoid needs in order to compare two morphisms
-   whose index components are only propositionally equal. *)
+(* Transport 态射 along equality BETWEEN two index equalities.
+ This is what hom-setoid needs order compare two 态射
+ whose index components are only propositionally equal.（已译） *)
 Definition mor_cast@{ui uo oh op} {I : Type@{ui}}
   (C : I → Category@{uo oh op}) {i j : I} {x : C i} {y : C j}
   {e1 e2 : i = j} (p : e1 = e2) (f : ob_cast C e1 x ~> y) :

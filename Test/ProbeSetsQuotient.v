@@ -100,9 +100,9 @@ Fail Definition probe_intersection_type@{o} (A : SetoidObject@{o o})
   (a b : carrier A) : Type@{o} :=
   forall R : crelation@{o o} (carrier A), Equivalence R -> R a b.
 
-(** Positive control: the [Prop]-valued intersection DOES fit, [Prop]
+(* * Positive control: the [Prop]-valued intersection DOES fit, [Prop]
     being impredicative -- which is why Awodey's phrasing is available
-    classically and the inductive generation is what replaces it here. *)
+    classically and the inductive generation is what replaces it here.（标题）（已译） *)
 Definition probe_intersection_prop@{o} (A : SetoidObject@{o o})
   (a b : carrier A) : Prop :=
   forall R : carrier A -> carrier A -> Prop,

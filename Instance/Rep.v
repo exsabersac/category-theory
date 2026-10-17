@@ -492,10 +492,10 @@ Qed.
 
 (** ** Awodey's degeneracy *)
 
-(* In a thin category any functor carries any ENDOmorphism to an
-   identity: its image is parallel to [id], and thinness identifies
-   parallel morphisms.  Neither the group hypothesis nor the one-object
-   hypothesis plays any part. *)
+(* In thin 范畴 any 函子 carries any ENDOmorphism an
+ 恒等: its image is parallel [id], thinness identifies
+ parallel 态射. Neither group hypothesis nor one-对象
+ hypothesis plays any part.（已译） *)
 Lemma thin_functor_endo_trivial {B C : Category} (T : Thin C)
   (F : B ⟶ C) {x : B} (f : x ~> x) : fmap[F] f ≈ id.
 Proof. exact (T (F x) (F x) (fmap[F] f) id). Qed.
@@ -510,7 +510,7 @@ Proof. exact (thin_functor_endo_trivial T F g). Qed.
 (* Instantiated at a preorder.  The statement is about [Proset], not
    about posets: Instance/Poset.v's [Poset] is DEFINED as [Proset P] and
    drops antisymmetry, so nothing here would be strengthened by naming
-   it.  [proset_thin] is Instance/Proset/Order.v's, cited. *)
+   it.  [proset_thin] is Instance/Proset/Order.v's, cited.（标题）（已译） *)
 Corollary proset_group_functor_trivial {G : GrpObject} {A : Type}
   {R : relation A} (P : RelationClasses.PreOrder R)
   (F : Deloop (grp_mon G) ⟶ Proset P) (g : carrier G) :
@@ -572,10 +572,10 @@ Lemma ab_neg_hom_smul {K : RingObject} (V : RModObject K)
   ab_neg V (rm_smul V r m) ≈ rm_smul V r (ab_neg V m).
 Proof. symmetry; apply rm_smul_neg_r. Qed.
 
-(* Written as an explicit record literal rather than through [Program]:
-   every field is an existing lemma, so there is nothing to defer, and
-   Instance/Ab.v's exported [ab_neg_respects] instance would otherwise
-   silently discharge one hole and shift the obligation numbering. *)
+(* Written as explicit record literal rather than through [Program]:
+ every field is existing 引理, so there is nothing defer, and
+ Instance/Ab.v's exported [ab_neg_respects] 实例 would otherwise
+ silently discharge one hole shift obligation numbering.（已译） *)
 Definition rmod_neg_hom {K : RingObject} (V : RModObject K) :
   V ~{RMod K}~> V :=
   {| rm_hom :=

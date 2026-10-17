@@ -74,7 +74,7 @@ Proof. induction x as [A f IH]; simpl; intro a; exists a; exact (IH a). Qed.
 
 (* Each element of an ordinal precedes it; equivalently, [osup A f] is an
    upper bound of its own family [f].  It is discharged by the induction
-   hypothesis alone, with no case analysis on [f a]. *)
+   hypothesis alone, with no case analysis on [f a].（标题）（已译） *)
 Lemma ole_elem@{u} (x : SmallOrd@{u}) (a : oidx x) : ole (oelt x a) x.
 Proof.
   revert a; induction x as [A f IH]; intro a.
@@ -203,9 +203,9 @@ Proof. intro H; exact (olt_irrefl x (proj1 (ole_unfold _ _) H ttt)). Qed.
 Definition SmallOrd_HasAllJoins : HasAllJoins ole :=
   fun A f => existT _ (ojoin A f) (ojoin_IsLUB A f).
 
-(* Mac Lane's "Ord^op is small-complete".  Every diagram whose shape
-   category has objects at the ordinals' own universe -- one level BELOW
-   the object type of [SmallOrd_op_Proset] -- has a limit. *)
+(* Mac Lane's "Ord^op is small-完备". Every diagram whose shape
+ 范畴 has 对象 at ordinals' own universe -- one level BELOW
+ 对象 type [SmallOrd_op_Proset] -- has 极限.（已译） *)
 Definition SmallOrd_op_Complete : @Complete SmallOrd_op_Proset :=
   Proset_op_Complete_of_all_joins ole_preorder SmallOrd_HasAllJoins.
 

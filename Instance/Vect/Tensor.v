@@ -143,9 +143,9 @@ Proof.
     intros r v w; simpl; ring.
 Defined.
 
-(** The factorization computes: the mediator is a fixpoint, so its value
-    on a closed generator reduces — up to [≈], which here is [Qeq] and so
-    is a genuine quotient step rather than a syntactic identity. *)
+(* * The factorization computes: mediator is fixpoint, so its value
+ 闭 generator reduces — up [≈], which here is [Qeq] so
+ is genuine quotient step rather than syntactic 恒等.（已译） *)
 Example q_tensor_med_computes :
   cmon_map (rm_hom (tensor_med Q_mul_bilinear)) (qgen (1#2) (4#1)) ≈ 2.
 Proof. reflexivity. Qed.

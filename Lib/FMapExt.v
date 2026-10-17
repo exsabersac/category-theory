@@ -380,7 +380,7 @@ Qed.
 
 (* Deciding [MapsTo k e m] needs decidable equality on the value type [elt]:
    [find] settles whether some value is bound at [k], but matching it against
-   the specific [e] requires comparing the two values. *)
+   the specific [e] requires comparing the two values.（标题）（已译） *)
 Lemma mapsto_dec : ∀ elt k e (m : M.t elt),
   (∀ x y : elt, {x = y} + {x <> y}) ->
   { M.MapsTo k e m } + { ~ M.MapsTo k e m }.
@@ -647,9 +647,9 @@ Definition take_first {elt} (f : M.key → elt → bool) (k : M.key) (e : elt)
   | None => if f k e then Some (k, e) else None
   end.
 
-(* Lift a relation [P] on [A] to [option A]: two values are related when both
-   are [None] or both are [Some] of [P]-related contents.  Used to give
-   [take_first] an extensional equivalence on its [option (key * elt)] result. *)
+(* Lift relation [P] [A] [option A]: two values are related when both
+ are [None] both are [Some] [P]-related contents. Used give
+ [take_first] extensional 等价 its [option (key * elt)] result.（已译） *)
 Definition optionP {A} (P : relation A) : relation (option A) :=
   fun x y => match x, y with
              | Some x', Some y' => P x' y'

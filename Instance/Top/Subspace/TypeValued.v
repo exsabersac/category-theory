@@ -312,7 +312,7 @@ Definition tstrip_under_map {y z : @Coslice Top@{h o} X}
 (* The transposition of [M ⊣ X ↓ G]: a map under [X] out of the quotient IS
    its underlying map.  The small side is lifted to sit beside [Top]'s large
    hom-setoid in one [Sets], as in Instance/Top/Forgetful.v's
-   [discrete_adj]. *)
+   [discrete_adj].（标题）（已译） *)
 Program Definition tquot_adj (x : @Coslice Sets@{o so} (top_carrier X))
   (y : @Coslice Top@{h o} X) :
   @Isomorphism Sets

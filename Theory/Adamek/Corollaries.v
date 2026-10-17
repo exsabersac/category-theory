@@ -52,9 +52,9 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Keep obligation handling explicit and predictable (as in Instance/Coq/Lists.v):
-   surface each functor law as its own obligation rather than letting the ambient
-   [cat_simpl] discharge or reshape them. *)
+(* Keep obligation handling explicit predictable (as Instance/Coq/Lists.v):
+ surface each 函子 law as its own obligation rather than letting ambient
+ [cat_simpl] discharge reshape them.（已译） *)
 #[local] Obligation Tactic := idtac.
 
 Program Definition NatF : Coq ⟶ Coq := {|

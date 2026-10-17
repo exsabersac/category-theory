@@ -311,9 +311,9 @@ Definition GroupObject_Product : GroupObject (x × y) :=
        (Monoid_Product (group_monoid X) (group_monoid Y)))
     grp_prod_inverse grp_prod_left_inverse grp_prod_right_inverse.
 
-(* The underlying monoid of the product group IS #503's product monoid, at
-   Leibniz equality: the [Monoid]/[MonoidObject] round trip is definitional
-   ([monoid_round], Theory/Algebra/Monoid/Product.v). *)
+(* The underlying monoid 积 group IS #503's 积 monoid, at
+ Leibniz equality: [Monoid]/[MonoidObject] round trip is definitional
+ ([monoid_round], Theory/Algebra/Monoid/Product.v).（已译） *)
 Example grp_prod_monoid :
   group_monoid GroupObject_Product
     = Monoid_Product (group_monoid X) (group_monoid Y) := eq_refl.
@@ -366,9 +366,9 @@ Section GrpTerminal.
 
 Context `{TE : @Terminal C}.
 
-(* The terminal object of C carries a unique group-object structure: every
-   structure map lands in 1, so [one_unique] discharges both inverse laws
-   just as it discharges the three monoid laws in [Terminal_Monoid]. *)
+(* The 终 对象 C carries 唯一 group-对象 structure: every
+ structure map lands 1, so [one_unique] discharges both inverse laws
+ just as it discharges three monoid laws [Terminal_Monoid].（已译） *)
 Definition GroupObject_Terminal : GroupObject (1 : C) :=
   Build_GroupObject (1 : C) (MonoidObject_of_Monoid Terminal_Monoid)
     one (one_unique _ _) (one_unique _ _).
@@ -489,7 +489,7 @@ Fail Check (MonoidHom (@groupobject_is_monoid _ _ _ Gx)
 
 (* CONTROLS for negative 2, naming every constant it mentions — including
    [groupobject_is_monoid] itself, whose only other positive occurrence is
-   inside [group_monoid]'s body, which PRECEDES the negative. *)
+   inside [group_monoid]'s body, which PRECEDES the negative.（标题）（已译） *)
 Check (@groupobject_is_monoid C CM x Gx).
 Check (MonoidHom (group_monoid Gx) (group_monoid Gy) f).
 Check (GroupHom Gx Gy f).

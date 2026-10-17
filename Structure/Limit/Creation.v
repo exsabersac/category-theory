@@ -186,10 +186,10 @@ Lemma slift_iso_legs {J C D : Category} {K : J ⟶ C} {F : C ⟶ D}
   cone_leg N x ∘ to (slift_iso L) ≈ fmap[F] (cone_leg (slift_cone L) x).
 Proof. exact (hom_rew_obj_eq_iso _ _ _ (slift_legs L x)). Qed.
 
-(* Every cone upstairs is tautologically a strict lift of its own image.
-   Provided for reference: it has no consumer here, the uniqueness clause
-   it was intended to feed having become the derived
-   [screates_lift_unique] rather than a field. *)
+(* Every cone upstairs is tautologically 严格 lift its own image.
+ Provided reference: it has no consumer here, 唯一性 clause
+ it was intended feed having become derived
+ [screates_lift_unique] rather than field.（已译） *)
 
 Definition self_lift {J C D : Category} {K : J ⟶ C} {F : C ⟶ D}
   (M : Cone K) : StrictLift K F (FCone F M) :=

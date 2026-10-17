@@ -167,10 +167,10 @@ Lemma CT_tens_id_id {Colour : Type} {S : CSignature Colour}
   CTermEq S (CT_tens (CT_id cs) (CT_id ds)) (CT_id (cs ++ ds)).
 Proof. apply CTE_tens_id. Qed.
 
-(** Composing a trivial [CT_cast eq_refl] (which is [CT_id]) onto a
-    tensor is the identity operation.  [CT_cast eq_refl] reduces to
-    [CT_id (ds1 ++ ds2)], so the composite collapses by left
-    identity. *)
+(* * Composing trivial [CT_cast eq_refl] (which is [CT_id]) onto a
+ tensor is 恒等 operation. [CT_cast eq_refl] reduces to
+ [CT_id (ds1 ++ ds2)], so composite collapses left
+ 恒等.（已译） *)
 Lemma CT_comp_cast_tens_left {Colour : Type} {S : CSignature Colour}
   {cs1 ds1 cs2 ds2 : list Colour}
   (f : CTerm S cs1 ds1) (g : CTerm S cs2 ds2) :

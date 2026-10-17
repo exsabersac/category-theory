@@ -230,9 +230,9 @@ Definition fg_gens {A : AbObject} (X : FGObj A)
 Definition FGHom (A : AbObject) (X Y : FGObj A) : Type :=
   ∀ a, absub_mem (fg_sub X) a → absub_mem (fg_sub Y) a.
 
-(* The index category.  The hom-setoid is the trivially-true one of
-   Instance/Proset.v, so every categorical law is free; [Proset] itself
-   is unusable here because its homs must be [Prop]-valued (header). *)
+(* The index 范畴. The hom-setoid is trivially-true one of
+ Instance/Proset.v, so every categorical law is 自由; [Proset] itself
+ is unusable here because its homs must be [Prop]-valued (header).（已译） *)
 Program Definition FGSub (A : AbObject) : Category := {|
   obj     := FGObj A;
   hom     := FGHom A;
@@ -319,9 +319,9 @@ Lemma nu_transport (X Y : FGObj A) (f : X ~{FGSub A}~> Y)
   nu_val Y a (f a p) ≈ nu_val X a p.
 Proof using A N. exact (cocone_inj_coherence N f (existT _ a p)). Qed.
 
-(** The master coherence lemma: the cocone's legs agree on any two
-    memberships of any two objects, at ≈-equal elements.  Everything below is
-    an application of it, and it is exactly where directedness is spent. *)
+(* * The master 融贯性 引理: cocone's legs agree any two
+ memberships any two 对象, at ≈-equal elements. Everything below is
+ application it, it is exactly where directedness is spent.（已译） *)
 Lemma med_coherent (X Y : FGObj A) (a b : carrier (cmon_setoid A))
   (p : absub_mem (fg_sub X) a) (q : absub_mem (fg_sub Y) b) (Hab : a ≈ b) :
   nu_val X a p ≈ nu_val Y b q.
@@ -459,10 +459,10 @@ Proof. intros X Y f g; exact I. Qed.
 
 (** * Non-vacuity over the integers *)
 
-(* [Instance/Ab/Coproduct.v]'s [ab_Z] is [ring_ab Int_Ring], the additive
-   group of Theory/Algebra/Rig.v's axiom-free integers.  It is reused here;
-   no new group is built, and [ab_Z]'s `≈` is Leibniz equality of [Z]
-   ([Z_eqT]), which is what makes the computations below close by [eq_refl]. *)
+(* [Instance/Ab/Coproduct.v]'s [ab_Z] is [ring_ab Int_Ring], additive
+ group Theory/Algebra/Rig.v's axiom-自由 integers. It is reused here;
+ no new group is built, [ab_Z]'s `≈` is Leibniz equality [Z]
+ ([Z_eqT]), which is what makes computations below close [eq_refl].（已译） *)
 
 (* 相关说明。 （已译） *)
 

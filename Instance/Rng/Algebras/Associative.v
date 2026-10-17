@@ -429,10 +429,10 @@ Next Obligation. ut2_1. Qed.
 
 (* The scalar diagonal ℤ → UT2, whose image is central because ℤ is
    commutative. *)
-(* The respectfulness witness is written out as a pointwise term rather
-   than left to instance resolution — the engineering finding recorded in
-   Theory/Universal/Element.v, where resolving [Proper] at a concrete
-   setoid pinned a carrier universe. *)
+(* The respectfulness witness is written out as pointwise term rather
+ than left 实例 resolution — engineering finding recorded in
+ Theory/Universal/Element.v, where resolving [Proper] at concrete
+ setoid pinned carrier universe.（已译） *)
 Definition ut2_scal_proper
   : Proper (@equiv _ (is_setoid Z_setoid_object)
               ==> @equiv _ (is_setoid ut2_setoid_object)) ut2_scal :=

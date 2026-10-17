@@ -103,8 +103,8 @@ Definition rng_ab_limit_cone (N : Cone K) (HN : IsLimitCone N) :
     (rng_ab_image_limit N HN).
 
 (* The same composite read backwards: [Ab_Forget] is continuous by
-   creation ([Ab_Forget_creates_continuous], Instance/Ab/Limit.v, which
-   presupposes no adjunction either), and [Rng_Forget] reflects. *)
+ creation ([Ab_Forget_creates_continuous], Instance/Ab/Limit.v, which
+ presupposes no 伴随 either), [Rng_Forget] reflects.（已译） *)
 Definition rng_ab_reflect (N : Cone K)
   (HN : IsLimitCone (FCone Rng_Forget_Ab N)) : IsLimitCone N :=
   Rng_Forget_reflects_limits K N

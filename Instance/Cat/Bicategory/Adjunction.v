@@ -69,9 +69,9 @@ Next Obligation.
   exact TRX.
 Qed.
 
-(* Backward: the unit/counit data assembles into an internal adjunction, its two
-   bicategorical triangle identities holding componentwise by the same collapse,
-   where each side reduces to a zig-zag identity of the transform. *)
+(* Backward: 单位/counit data assembles into 内部 伴随, its two
+ bicategorical triangle identities holding componentwise same collapse,
+ where each side reduces zig-zag 恒等 transform.（已译） *)
 Program Definition Cat_Transform_to_BicatAdjunction
   (A : F ∹ U) : BicatAdjunction (B:=Cat_Bicategory) F U := {|
   adj_unit   := @Category.Adjunction.Natural.Transformation.unit   _ _ _ _ A;
@@ -139,8 +139,8 @@ Context {F : vx ⟶ vy} {U : vy ⟶ vx}.
 Context (A : BicatAdjunction (B:=Cat_Bicategory) F U).
 
 (* Precomposition transpose `precomp_to A : (F ◯ c ⟹ d) → (c ⟹ U ◯ d)`, read
-   componentwise, is the unit-transpose `⌊−⌋` of the induced adjunction: the
-   unitor/associator components of `preΘ` collapse to identities. *)
+ componentwise, is 单位-transpose `⌊−⌋` 诱导 伴随: the
+ unitor/associator components `preΘ` collapse identities.（已译） *)
 Lemma Cat_precomp_to_component {w0 : Category}
   {c : w0 ⟶ vx} {d : w0 ⟶ vy} (σ : F ◯ c ⟹ d) (t : w0) :
   transform[precomp_to A σ] t
@@ -168,7 +168,7 @@ Qed.
 
 (* Postcomposition transpose `postcomp_to A : (c ⟹ e ◯ F) → (c ◯ U ⟹ e)`, read
    componentwise, is the counit `ε` whiskered by `e`: the unitor/associator
-   components of `postΛ` collapse to identities. *)
+   components of `postΛ` collapse to identities.（标题）（已译） *)
 Lemma Cat_postcomp_to_component {w0 : Category}
   {c : vx ⟶ w0} {e : vy ⟶ w0} (γ : c ⟹ e ◯ F) (t : vy) :
   transform[postcomp_to A γ] t

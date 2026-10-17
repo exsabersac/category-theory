@@ -283,9 +283,9 @@ Next Obligation.
   intros x y e; exact I.
 Qed.
 Next Obligation.
-  (* Hom_Discrete_eq ◯ Discrete_eq_Hom ≈ Id[DiscreteCat ...]: identity on
-     objects definitionally; the coherence clause is an equation between
-     equality proofs in the hom-type, hence exactly [HomUIP]. *)
+  (* Hom_Discrete_eq ◯ Discrete_eq_Hom ≈ Id[DiscreteCat ...]: 恒等 on
+ 对象 definitionally; 融贯性 clause is equation between
+ equality 证明 hom-type, hence exactly [HomUIP].（已译） *)
   intros HE HU.
   exists (fun _ => iso_id).
   intros x y p; apply HU.

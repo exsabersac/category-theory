@@ -59,10 +59,10 @@ Coercion markov_is_cd : MarkovCategory >-> CopyDiscard.
 
 Context `{M : MarkovCategory}.
 
-(* Discarding IS eliminating: both are morphisms into the terminal [I].
-   Some presentations of Markov categories take this identification as an
-   axiom; in Fritz's redundancy-free formulation it is a corollary of
-   terminality. *)
+(* Discarding IS eliminating: both are 态射 into 终 [I].
+ Some presentations Markov 范畴 take this identification as an
+ axiom; Fritz's redundancy-自由 formulation it is 推论 of
+ terminality.（已译） *)
 Corollary markov_discard_eliminate {x : C} :
   discard[x] ≈ @eliminate C _ markov_semicartesian x.
 Proof. apply (@unit_terminal C _ markov_semicartesian). Qed.

@@ -48,10 +48,10 @@ Example nat_ue_is_image_of_id :
     = transform (to nat_succ_represents) NatSucc (id{Endos}).
 Proof. reflexivity. Qed.
 
-(* Mac Lane's unique-factorization clause, at this instance: every element n
-   of every [Endos]-object is reached from [O] by a unique endomorphism-
-   preserving map out of (nat, S) -- which is iteration.  The general class
-   supplies it; nothing here is proved. *)
+(* Mac Lane's 唯一-factorization clause, at this 实例: every element n
+ every [Endos]-对象 is reached from [O] 唯一 自同态-
+ preserving map out (nat, S) -- which is iteration. The 一般 class
+ supplies it; nothing here is proved.（已译） *)
 Definition nat_ue_factor (y : Endos) (n : Endos_Forget y)
   : NatSucc ~{Endos}~> y :=
   unique_obj (@ue_universal Endos Endos_Forget nat_UniversalElement y n).

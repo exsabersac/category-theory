@@ -308,10 +308,10 @@ Definition limit_general_IsGLB {J : Category} (F : J ⟶ Proset P)
   (L : Limit F) : IsGLB R (fobj[F]) (vertex_obj[L]) :=
   isalimit_IsGLB F _ (limit_is_alimit L).
 
-(* Dually: an object is a colimit of [F] exactly when it is a least
-   upper bound of the family of objects of [F]. [IsAColimit F c] is
-   [IsALimit (F^op) c] (Structure/Limit/Preservation.v), whose legs run
-   [F j ~> c] in [Proset P], that is [R (F j) c]. *)
+(* Dually: 对象 is 余极限 [F] exactly when it is least
+ upper bound family 对象 [F]. [IsAColimit F c] is
+ [IsALimit (F^op) c] (Structure/Limit/Preservation.v), whose legs run
+ [F j ~> c] [Proset P], that is [R (F j) c].（已译） *)
 
 Definition Proset_IsAColimit {J : Category} (F : J ⟶ Proset P) (m : A)
   (H : IsLUB R (fobj[F]) m) : IsAColimit F m.
@@ -589,10 +589,10 @@ Definition two_product_is_glb (x y : TwoObj) :=
 
 (* 相关说明。 （已译） *)
 
-(* [Instance/Proset.v]'s [LessThanEqualTo_Category] is the thin category
-   of [(nat, <=)]. The name is also defined in Instance/Poset.v, over
-   [Poset] rather than [Proset]; it is written qualified here so the
-   intended one is unambiguous. *)
+(* [Instance/Proset.v]'s [LessThanEqualTo_Category] is thin 范畴
+ [(nat, <=)]. The name is also defined Instance/Poset.v, over
+ [Poset] rather than [Proset]; it is written qualified here so the
+ intended one is unambiguous.（已译） *)
 Definition Nat_Proset : Category :=
   Category.Instance.Proset.LessThanEqualTo_Category.
 

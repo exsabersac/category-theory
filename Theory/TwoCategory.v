@@ -728,9 +728,9 @@ Proof.
   discriminate.
 Qed.
 
-(* Mac Lane §II.5: the double category of commuting squares is not a
-   2-category.  There is no way to equip [NatSq_Double] with a
-   [StrictTwoCategory] structure, its def-3 condition being refutable. *)
+(* Mac Lane §II.5: double 范畴 commuting squares is not a
+ 2-范畴. There is no way equip [NatSq_Double] a
+ [StrictTwoCategory] structure, its def-3 condition being refutable.（已译） *)
 Theorem NatSq_not_a_two_category :
   (∀ u : dcell NatSq_Double, dhident NatSq_Double u → dvident NatSq_Double u)
     → False.

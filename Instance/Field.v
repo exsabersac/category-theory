@@ -435,9 +435,9 @@ Proof. exact (field_monic f F2_Field_stable). Qed.
 
 (* 相关说明。 （已译） *)
 
-(* 1 + 1 in an arbitrary field.  Named because both non-existence
-   theorems below run through it: it is zero in F₂ and nonzero in ℚ,
-   and a homomorphism must carry it to the corresponding element. *)
+(* 1 + 1 arbitrary field. Named because both non-存在性
+ 定理 below run through it: it is zero F₂ nonzero ℚ,
+ 同态 must carry it corresponding element.（已译） *)
 Definition ftwo (F : FieldObject) : carrier (rig_setoid F) :=
   rig_add F (rig_one F) (rig_one F).
 

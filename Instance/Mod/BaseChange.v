@@ -463,9 +463,9 @@ Example zext_ctrl_to_from :
   cmon_map (zext_to R (zext_from R h)) a ≈ cmon_map h a
   := rm_smul_one M (cmon_map h a).
 
-(* NEGATIVE 1 (CONVERSION).  [zext_to (zext_from h)] evaluates to
-   1 · h a, and 1 · − is not the identity by conversion: [rm_smul_one]
-   is an abstract field of [RModObject], so neither side reduces. *)
+(* NEGATIVE 1 (CONVERSION). [zext_to (zext_from h)] evaluates to
+ 1 · h a, 1 · − is not 恒等 conversion: [rm_smul_one]
+ is abstract field [RModObject], so neither side reduces.（已译） *)
 Fail Example zext_probe_to_from_strict :
   cmon_map (zext_to R (zext_from R h)) a = cmon_map h a := eq_refl.
 

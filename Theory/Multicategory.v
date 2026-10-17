@@ -249,9 +249,9 @@ Class Multicategory : Type := {
   msym_respects {Γ Δ c} (p : tperm Γ Δ) :
     Proper (equiv ==> equiv) (@msym Γ Δ c p);
 
-  (* The action of the canonical reflexivity witness is trivial.  ONLY
-     the [tperm_refl] witness: a nontrivial self-permutation need not act
-     trivially, so no loop-quantified variant is stated. *)
+  (* The action 典范 reflexivity witness is trivial. ONLY
+ [tperm_refl] witness: nontrivial self-permutation need not act
+ trivially, so no loop-quantified variant is stated.（已译） *)
   msym_id {Γ c} (f : mhom Γ c) : msym (tperm_refl Γ) f ≈ f;
 
   (* 相关说明。 （已译） *)
@@ -262,7 +262,7 @@ Class Multicategory : Type := {
   (* Equivariance of splicing, block form: permuting the three blocks
      [Γ1], [Δ], [Γ2] independently (slot fixed) commutes with [mcomp].
      Both sides land in [mhom (Γ1' ++ Δ' ++ Γ2') c] on the nose, so no
-     cast is needed. *)
+     cast is needed.（标题）（已译） *)
   mcomp_equivariant {Γ1 Γ1' Γ2 Γ2' Δ Δ' : list mobj} {b c : mobj}
     (p : tperm Γ1 Γ1') (q : tperm Δ Δ')
     (r : tperm Γ2 Γ2')

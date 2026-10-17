@@ -149,7 +149,7 @@ End DiagTransport.
 
 (* The creation analogue of Functor/Hom/Continuous.v's
    [PreservesLimitCone_transport].  It carries CREATION, not strictness:
-   there is still no [StrictlyCreatesLimit_transport] and none is claimed. *)
+   there is still no [StrictlyCreatesLimit_transport] and none is claimed.（标题）（已译） *)
 
 #[local] Obligation Tactic := idtac.
 

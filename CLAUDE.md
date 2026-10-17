@@ -80,232 +80,184 @@ Adjunction/Monad/Kan Extension
 - `p` - 证明/命题宇宙层级
 - 约束：`h <= p` 保证态射证明可以引用态射
 
-This allows categories of categories at any level without universe inconsistencies.
+这使任意层级上的「范畴的范畴」成为可能，而不致宇宙不一致。
 
-The concrete algebraic categories are the exception that has to be written out by hand. Their object records carry `PropEquiv` (`Lib/Setoid/Propositional.v`), the property that the carrier's `≈` is logically a `Prop`-valued relation, because a `Prop`-valued relation on a carrier is carrier-sized where a `Type`-valued one is one universe up — the arithmetic the adjoint functor theorems turn on. The sort of `Prop` then contributes `Set+1` to each record, which would give the category built on it a third, redundant universe, so `CMon`, `Ab`, `Rig`, `Ring`, `Rg` and `Grp` are pinned BY HAND to `Category@{u p p}` with every field's instance written out, and the records' three universes read `(auxiliary, carrier, proof)` rather than `(carrier, proof, auxiliary)`. Annotations that give the three slots distinct levels must be permuted to match; all-equal ones such as `@{Set Set Set}` are unaffected. The setoid variety is the counter-case: since #450 `Instance/Variety/Free.v`'s `SetoidOpAlgebra` carries `PropEquiv` too (the field `soa_prop`), and it needs NO hand pin — measured by `About`, `SetoidAlgs` keeps its seven universes and its `Category@{u1 u2 u2}` shape and gains only the bound `Set < u1`. The authoritative statement of why any of this is needed is the size note in the header of `Structure/Complete.v`, which is where a disagreement between documents is to be resolved.
+具体代数范畴是必须手写的例外。其对象记录携带 `PropEquiv`（`Lib/Setoid/Propositional.v`），即载体的 `≈` 在逻辑上是 `Prop`-值关系的性质——因为载体上的 `Prop`-值关系是载体大小的，而 `Type`-值关系高一个宇宙，伴随函子定理正依赖此算术。`Prop` 的排序随后给每个记录贡献 `Set+1`，会使建于其上的范畴多出第三个冗余宇宙，故 `CMon`、`Ab`、`Rig`、`Ring`、`Rg`、`Grp` 被**手工**钉到 `Category@{u p p}`，每个字段的实例写出，且记录的三个宇宙读作 `(辅助, 载体, 证明)` 而非 `(载体, 证明, 辅助)`。给三个槽不同层级的注解必须置换以匹配；全相等者如 `@{Set Set Set}` 不受影响。setoid 簇是反例：自 #450 起 `Instance/Variety/Free.v` 的 `SetoidOpAlgebra` 也携带 `PropEquiv`（字段 `soa_prop`），且**无需**手工钉住——`About` 测得 `SetoidAlgs` 保持七个宇宙与其 `Category@{u1 u2 u2}` 形状，仅多约束 `Set < u1`。为何需要这一切的权威陈述是 `Structure/Complete.v` 文首的大小注记；文档分歧以彼处为准。
 
-### Duality Architecture
+### 对偶架构 (Duality Architecture)
 
-**Key insight**: Duality is built into definitions so `C^op^op = C` by reflexivity.
+**关键洞见**：对偶内建于定义，使 `C^op^op = C` 由 reflexivity 成立。
 
-This requires symmetric laws in core definitions:
-- `comp_assoc` AND `comp_assoc_sym` in Category
-- `naturality` AND `naturality_sym` in Natural transformations
+这要求核心定义中的对称定律：
+- Category 中同时有 `comp_assoc` 与 `comp_assoc_sym`
+- 自然变换中同时有 `naturality` 与 `naturality_sym`
 
-Benefits:
-- Comonads are one line: `Definition Comonad := @Monad (C^op) (M^op)`
-- Dual proofs are often automatic
-- No code duplication for dual concepts
+好处：
+- 余单子一行：`Definition Comonad := @Monad (C^op) (M^op)`
+- 对偶证明常常自动
+- 对偶概念无需代码重复
 
-### Proof Obligation Management
+### 证明义务管理 (Proof Obligation Management)
 
-The library uses Coq's Program mechanism extensively:
-1. Definitions use `Program Instance` to defer proof obligations
-2. `Obligation Tactic := cat_simpl` automates most proofs
-3. Remaining obligations proven with specific tactics
-4. This separates mathematical content from proof details
+本库广泛使用 Coq 的 Program 机制：
+1. 定义用 `Program Instance` 推迟证明义务
+2. `Obligation Tactic := cat_simpl` 自动化多数证明
+3. 剩余义务用具体 tactic 证明
+4. 从而把数学内容与证明细节分开
 
-### Instance Resolution Strategy
+### 实例解析策略 (Instance Resolution Strategy)
 
-Categories are discovered through:
-1. Type classes for concepts (Category, Functor, etc.)
-2. `Existing Instance` for conditional instances
-3. Notation-driven inference with category hints
-4. Explicit category parameters when inference fails
+范畴通过以下方式发现：
+1. 概念的类型类（Category、Functor 等）
+2. 条件实例用 `Existing Instance`
+3. 带范畴提示的记号驱动推断
+4. 推断失败时显式范畴参数
 
-Example: `f ∘[C] g` specifies category C when needed.
+例：需要时用 `f ∘[C] g` 指定范畴 C。
 
-## Key Files and Concepts
+## 关键文件与概念 (Key Files and Concepts)
 
-The per-development index of the library's headline developments lives in
-**docs/INDEX.md**: one bullet per landed development, about 250 of them,
-each stating what was delivered, at what strength (`eq_refl`, `≈`, `Cat`
-against `StrictCat`), what was measured and by what criterion, and what was
-NOT delivered. It was this file's "Key Files and Concepts" section until
-2026-09-09 and every bullet is unchanged. Any `.v` header, commit message,
-plan document or issue checkbox written before that date that refers to the
-CLAUDE.md Key Files index, to a bullet or figure in it ("the CLAUDE.md
-bullet", what "CLAUDE.md records" or "carries"), or to a count of
-occurrences in CLAUDE.md, means the entry or the count in docs/INDEX.md.
+本库 headline 开发的分项索引在 **docs/INDEX.md**：每个已落地开发一条 bullet，约 250 条，各说明交付了什么、强度如何（`eq_refl`、`≈`、相对 `StrictCat` 的 `Cat`）、测了什么及按何标准、以及**未**交付什么。直至 2026-09-09 这是本文件的 “Key Files and Concepts” 节，每条 bullet 未改。该日期前凡引用 CLAUDE.md Key Files 索引、其中 bullet/数字，或 CLAUDE.md 出现次数的材料，均指 docs/INDEX.md 中的条目或计数。
 
-Rules of use:
-- Before editing a file, grep its basename in docs/INDEX.md (some bullets
-  spell paths relative to their section) and read its bullet if it has one:
-  it records the strength of every claim and the traps already met (universe
-  pins, `Qed`-opaque donors, notation shadowing, false-passing probes).
-  About a third of the `.v` files head a bullet of their own (just over 300
-  of 926 on 2026-09-09, counting distinct bold heads), so absence is not a
-  signal.
-- New work appends ONE bullet to docs/INDEX.md under the heading its sibling
-  developments already sit under. The index's sections are thematic, not
-  per-directory (`Structure/Topos.v` sits under Theory Core), and `Solver/`,
-  `Tools/`, `Lib/` and `Test/` have no section there. An `Edit` that inserts
-  a bullet has twice eaten the heading after it, so check BOTH
-  `grep -c '^- \*\*' docs/INDEX.md` and `grep -c '^## ' docs/INDEX.md`
-  before and after; `make index-check` (run by lefthook and CI) fails if the
-  five headings are not all present in order. The map below changes only
-  when a new directory or family of files appears.
-- Every figure in a bullet is a measurement with its criterion stated
-  (which files, which pattern, which command); a number that cannot be
-  re-measured from the sentence does not go in. Corrections are recorded in
-  place as corrections ("an earlier revision said X; measured Y"), never
-  silently.
-- Cite files and constructs, never line numbers (`File.v:N`, `:N`, "line
-  N"): they drift; the tree was swept of them on 2026-09-17. Name the
-  definition, instance, field, flag, notation or header essay you mean, and
-  the reader can grep for it however the file has since moved.
+使用规则：
+- 编辑文件前，在 docs/INDEX.md 中 grep 其 basename（有些 bullet 路径相对其节），若有 bullet 则先读：记录每项断言的强度与已遇陷阱（宇宙钉、`Qed`-不透明捐赠者、记号遮蔽、假通过探测等）。约三分之一 `.v` 有自己的 bullet，故缺席不是信号。
+- 新工作在同类已在其下的标题下向 docs/INDEX.md **追加一条** bullet。索引节按主题而非按目录（`Structure/Topos.v` 在理论核心下），且 `Solver/`、`Tools/`、`Lib/`、`Test/` 在彼处无节。插入 bullet 的 `Edit` 曾两次吃掉后随标题，故前后检查 `grep -c '^- \*\*' docs/INDEX.md` 与 `grep -c '^## ' docs/INDEX.md`；`make index-check` 在五标题未按序全在时失败。仅当出现新目录或文件族时才改下方地图。
+- bullet 中每个数字都是带标准的测量；无法从该句重测的数字不要写入。更正就地记为更正（「早先修订说 X；测得 Y」），从不静默改写。
+- 引用文件与构造，从不引用行号（`File.v:N` 等）：它们会漂移；树已于 2026-09-17 清扫。点名所指定义、实例、字段、标志、记号或文首短文，读者可 grep。
 
-The map — where the headline developments live; the bullets carry the
-detail. A directory followed by an asterisk stands for all the files under
-it, and a root file followed by a parenthesised "+" glob names the file
-together with its satellites. The headings below group the map by directory;
-they are not the index's sections. Every file in `_CoqProject` is reachable
-from an exact path or a glob below.
+下方地图——headline 开发所在；细节在 bullet。目录后跟星号表示其下全部文件；根文件后括号内 “+” glob 表示文件及其卫星。下列标题按目录分组地图，**不是**索引的节。`_CoqProject` 中每个文件都可从下方精确路径或 glob 到达。
 
-### Theory Core (`Theory/`, `Natural/`, `Functor/`, `Adjunction/`, `Monad/`, `Comonad/`)
-- `Theory/Category.v`, `Theory/Functor.v`, `Theory/Natural/Transformation.v` (+ `Theory/Natural/Transformation/Arrows.v`), `Natural/Transformation/*` (monoidal, strong and applicative-functor transformations, the opposite of a transformation), `Theory/Isomorphism.v`, `Theory/Morphisms.v` (+ `Theory/Morphisms/*`): setoid-based categories and functors (Full/Faithful closure and reflection), natural transformations in the componentwise and arrows-only presentations, the monic/epic calculus and the discipline of deriving duals through `C^op`.
-- `Theory/Shapes.v`, `Theory/Diagram.v` (+ `Theory/Diagram/Examples.v`), `Construction/PreorderReflection.v`: functors out of the walking shapes, diagrams as quiver homomorphisms with path-general commutativity, the universal thin quotient.
-- `Theory/Adjunction.v` and `Adjunction/*`: hom-set and unit/counit adjunctions; conjugates, mates and adjoint squares (`Adjunction/Conjugate.v`, `Adjunction/Square.v`, `Adjunction/Map.v`, `Adjunction/Choice.v`), adjunctions with a parameter (`Adjunction/Parameter.v`), composition (`Adjunction/Compose.v`), RAPL/LAPC (`Adjunction/Continuity.v`), additivity (`Adjunction/Additive.v`), Paré's splitting criterion (`Adjunction/Pare.v`), adjoints on the right (`Adjunction/Right.v`), determination by counits (`Adjunction/Determination.v`), representability (`Adjunction/Representability.v`), fullness and faithfulness by unit and counit (`Adjunction/Fullness.v`, `Adjunction/FullFaithful.v`), left-adjoint-left-inverses (`Adjunction/LeftInverse.v`; the same notion with the left adjoint as the parameter is `Structure/SlicedInverse.v`'s `RightAdjointRightInverse`), the adjoints of the diagonal (`Adjunction/Diagonal/*`), GAFT and SAFT (`Adjunction/GAFT.v`, `Adjunction/SAFT.v`, `Adjunction/GAFT/*`, `Adjunction/SAFT/*`; the solution-set resizing vocabulary is `Adjunction/GAFT/Resize.v`, and `Adjunction/SAFT/*` holds the bridge from well-poweredness to SAFT's subobject index, the refutation of SAFT's covering datum at the identity of `Sets`, and Mac Lane's special initial-object theorem (`Adjunction/SAFT/InitialObject.v`, the initial object as the intersection of all subobjects of the cogenerator product, with its unconditional witnesses at two thin categories in `Adjunction/SAFT/InitialObject/Examples.v`); `Adjunction/SAFT/Characterization.v` is the special adjoint functor theorem as a characterization over the book's hypotheses with no covering datum (the monos lemma for comma categories, Mac Lane's Corollary `SAFT_wellpowered_iff` over completeness, a cogenerating family and well-poweredness, and his Theorem 2 `SAFT_iff` over wide pullbacks of subobjects), with the satellites `Adjunction/SAFT/Characterization/Cover.v` (the covering datum over the product of the arrows out of `d`, proved, and the theorem through `GAFT`), `Adjunction/SAFT/Characterization/Corollaries.v` (representability of continuous `Sets`-valued functors, and cocompleteness) and `Adjunction/SAFT/Characterization/Examples.v` (the witnesses at `Sets` under `Untruncate`, at `Subsets` and at `Indiscrete`)), unitalization (`Adjunction/Unitalization.v`), enveloping algebras (`Adjunction/Enveloping.v`), the cokernel-pair/equalizer adjunction (`Adjunction/CokernelPair.v`).
-- `Instance/Adj.v` (+ `Instance/Adj/*`), `Instance/Adjoints.v`: the category of adjunctions with conjugate pairs as arrows, its two forgetful functors, and the bicategory of categories, adjunctions and conjugate pairs.
-- `Theory/Monad.v`, `Monad/*`, `Comonad/*`: monads, strength, Kleisli and Eilenberg–Moore resolutions and their limits, monadicity (Beck's precise and crude forms), comparisons of two resolutions of a monad with Mac Lane's §VI.7 Lemma (`Monad/Comparison/Resolution.v`), Dubuc lifting, graded and commutative monads, transformers, morphisms of monads and the category of monads on a category, with the functor θ* each morphism induces between Eilenberg–Moore categories and the category's equivalence with the monoids of the endofunctor category (`Monad/Morphism.v` and `Monad/Morphism/*`); comonads by duality with the co-Kleisli and coalgebra API.
-- `Theory/Kan/Extension.v`, `Structure/Limit/Kan/Pointwise.v`: Kan extensions, global and local, and the pointwise (co)limit formula.
-- `Functor/Hom.v`, `Functor/Hom/Yoneda.v` (+ `Functor/Hom/Yoneda/*`), `Functor/Representable.v` (+ `Functor/Representable/Functorial.v`, `Functor/Representable/Additive.v`), `Functor/Hom/Induced.v`, `Functor/Hom/Limit.v`, `Functor/Hom/Transfer.v`, `Functor/Construction/Postcompose.v`, `Functor/Bifunctor/Partial.v`, `Functor/Product/Fixed.v`: Yoneda as an isomorphism of bifunctors, representably isomorphic objects, functoriality of representations, the Ab-valued hom functors `HomAb`/`CoHomAb` with the additive upgrade of a representation (`watt_ab_iso`), hom-functors preserving limits, the transfer lemma, bifunctors from partial functors, the fixed-factor product.
-- `Theory/Universal/Element.v` (+ `Theory/Universal/Element/*`), `Theory/Universal/Arrow.v` (+ `Theory/Universal/Arrow/*`), `Theory/Density.v`, `Construction/Elements/Kan.v`: universal elements and arrows in both variances with their worked examples, every set-valued functor as a colimit of representables, Kan's coyoneda form.
-- `Theory/Category/Raw.v`, `Theory/Category/Semi.v`, `Theory/Naturality.v`, `Theory/Concrete/Morphisms.v`: the law-free `RawCategory` data, semigroupoids, the `Naturality` type class that computes a family's naturality statement from its type, underlying injections and surjections in a concrete category. None heads a bullet of its own in the index.
-- `Theory/Equivalence.v` (+ `Theory/Equivalence/*`), `Theory/Skeleton.v` (+ `Theory/Skeleton/Separation.v`), `Construction/Subcategory/Dense.v`: equivalences (FF+ESO, adjoint, strict), their composition, and transport of limits, colimits, pullbacks, terminal objects, adjunctions and monoidal structure; skeletons; iso-dense full subcategories are reflective.
-- `Theory/Bicategory.v` (+ `Theory/Bicategory/*`), `Theory/TwoCategory.v`, `Instance/Cat/TwoCategory.v`, `Theory/DoubleCategory.v` (+ `Theory/DoubleCategory/Companion.v`), `Construction/Sq.v`, `Construction/Cospan/Double.v`, `Instance/Cat/Bicategory.v` (+ `Instance/Cat/Bicategory/*`): bicategories, pseudofunctors, lax transformations, modifications, adjunctions and mates; strict 2-categories in the globular and arrows-only presentations; pseudo double categories with companions and conjoints.
-- `Theory/Algebra/Rig.v` (+ `Theory/Algebra/Rig/Connections.v`), `Theory/Algebra/Monoid.v` (+ `Theory/Algebra/Monoid/*`), `Theory/Algebra/Semigroup.v`, `Theory/Algebra/Group/Hom.v`, `Theory/Category/Monoid.v`, `Theory/OGraph.v`, `Theory/EckmannHilton.v`, `Theory/Centre.v`: rigs and rings, internal monoids and groups with their categories and finite products, internal semigroups with their category, categories as monoids in O-graphs, Eckmann–Hilton over a bare setoid, the centre of a category.
-- `Theory/Algebra/Comonoid.v` (+ `Theory/Algebra/Comonoid/*`), `Theory/Algebra/CommutativeMonoid.v`, `Theory/Algebra/CommutativeComonoid.v`, `Theory/Algebra/Frobenius.v`, `Theory/Algebra/CommutativeFrobenius.v`, `Theory/Algebra/SpecialCommutativeFrobenius.v`, `Theory/Algebra.v`: internal comonoids with their homomorphisms and tensor comonoids, commutative monoids and comonoids, Frobenius algebras through the special commutative ones, and categorified high-school algebra in a bicartesian closed category. None heads a bullet of its own in the index.
-- `Theory/Metacategory.v`, `Theory/Metacategory/*`: arrows-only metacategories, the elementary theory ETAC with the duality principle.
-- `Theory/Lawvere.v` (+ `Theory/Lawvere/*`), `Theory/Multicategory.v` (+ `Theory/Multicategory/*`): Lawvere theories, models and the PROP bridge; symmetric multicategories, operads and their algebras.
-- `Theory/Concrete.v`, `Theory/Connected/Components.v`, `Theory/Size.v`, `Theory/Sieve.v`, `Theory/WeaklyInitial.v` (+ `Theory/WeaklyInitial/Wide.v`): concrete categories, π₀ and connected components, size vocabulary, sieves, Freyd's initial-object construction.
-- `Functor/Structure/Monoidal.v` (+ `Functor/Structure/Monoidal/*`), `Functor/Structure/Cartesian.v` (+ `Functor/Structure/Cartesian/Closed.v`), `Functor/Structure/Terminal.v`, `Functor/Structure/Constant.v`, `Functor/Applicative.v`, `Functor/Traversable.v` (+ `Functor/Traversable/Product.v`), `Functor/Strong.v` (+ `Functor/Strong/Product.v`), `Functor/Bifunctor.v`, `Functor/Diagonal.v`, `Functor/Opposite.v`, `Functor/Product.v` (+ `Functor/Product/Internal.v`), `Functor/Coproduct.v`, `Functor/Construction/Product.v` (+ `Functor/Construction/Product/*`), `Functor/Hom/Internal.v`, `Functor/Twist.v`: the functor-structure layer the `Theory/Coq/*` results are built on — lax, strict and braided monoidal functors (`MonoidalFunctor`/`LaxMonoidalFunctor` are `Functor/Structure/Monoidal.v`), cartesian, terminal and constant functors, applicative, traversable and strong functors, the diagonal, opposite, product, coproduct and internal-hom functors, twisting a functor by a family of isomorphisms. None of these files heads a bullet of its own in the index.
+### 理论核心 (`Theory/`、`Natural/`、`Functor/`、`Adjunction/`、`Monad/`、`Comonad/`)
+- `Theory/Category.v`、`Theory/Functor.v`、`Theory/Natural/Transformation.v`（+ `Theory/Natural/Transformation/Arrows.v`）、`Natural/Transformation/*`、`Theory/Isomorphism.v`、`Theory/Morphisms.v`（+ `Theory/Morphisms/*`）：基于 setoid 的范畴与函子（Full/Faithful 闭包与反射）、分量与仅箭头呈现的自然变换、单/满演算及经 `C^op` 导出对偶的纪律。
+- `Theory/Shapes.v`、`Theory/Diagram.v`（+ `Theory/Diagram/Examples.v`）、`Construction/PreorderReflection.v`：出自行走形状的函子、作为 quiver 同态且路径一般交换的图、普遍薄商。
+- `Theory/Adjunction.v` 与 `Adjunction/*`：hom 集与单位/余单位伴随；共轭、mates 与伴随方块、带参数伴随、复合、RAPL/LAPC、加性、Paré 分裂判据、右侧伴随、由余单位决定、可表性、由单位与余单位的满与忠实、左伴随左逆、对角的伴随、GAFT 与 SAFT（解集 resizing 词汇在 `Adjunction/GAFT/Resize.v`；`Adjunction/SAFT/*` 含从良幂到 SAFT 子对象指标的桥等）、单位化、包络代数、余核对/等化子伴随。细节见 docs/INDEX.md 对应 bullet。
+- `Instance/Adj.v`（+ `Instance/Adj/*`）、`Instance/Adjoints.v`：以共轭对为箭头的伴随范畴、两遗忘函子，以及范畴、伴随与共轭对的双范畴。
+- `Theory/Monad.v`、`Monad/*`、`Comonad/*`：单子、强度、Kleisli 与 Eilenberg–Moore 分解及其极限、单子性（Beck）、两分解比较、Dubuc 提升、分次与交换单子、变换子、单子态射；对偶给出余单子及 co-Kleisli 与余代数 API。
+- `Theory/Kan/Extension.v`、`Structure/Limit/Kan/Pointwise.v`：Kan 扩张（整体与局部）及逐点（余）极限公式。
+- `Functor/Hom.v`、`Functor/Hom/Yoneda.v`（+ 卫星）、`Functor/Representable.v`（+ 卫星）等：Yoneda、可表性、hom 函子保持极限、转移引理等。
+- `Theory/Universal/Element.v`、`Theory/Universal/Arrow.v`、`Theory/Density.v`、`Construction/Elements/Kan.v`：普遍元与普遍箭头、每个取值于集合的函子作为 representable 的余极限、Kan 余 Yoneda 形式。
+- `Theory/Equivalence.v`、`Theory/Skeleton.v`、`Construction/Subcategory/Dense.v`：等价、骨骼、同构稠密满子范畴可反射。
+- `Theory/Bicategory.v`、`Theory/TwoCategory.v`、`Theory/DoubleCategory.v` 及相关 Instance/Construction：双范畴、严格 2-范畴、伪双重范畴及 companions/conjoints。
+- `Theory/Algebra/*`、`Theory/OGraph.v`、`Theory/EckmannHilton.v`、`Theory/Centre.v`：代数结构、O-图、Eckmann–Hilton、中心。
+- `Theory/Metacategory.v`、`Theory/Lawvere.v`、`Theory/Multicategory.v` 及卫星：元范畴、Lawvere 理论、对称多范畴与 operad。
+- `Theory/Concrete.v`、`Theory/Connected/Components.v`、`Theory/Size.v`、`Theory/Sieve.v`、`Theory/WeaklyInitial.v`：具体范畴、连通分量、大小词汇、筛、Freyd 初始对象构造。
+- `Functor/Structure/*`、`Functor/Applicative.v`、`Functor/Strong.v` 等：函子结构层（幺半、笛卡尔、applicative、强函子等），支撑 `Theory/Coq/*`。
 
-### Structures (`Structure/`)
-- `Structure/Terminal.v`, `Structure/Initial.v`, `Structure/ZeroObject.v`, `Structure/Cartesian.v` (+ `Structure/Cartesian/*`, among them the product of categories as a cartesian category), `Structure/Cocartesian.v`, `Structure/Cartesian/Closed.v` (+ `Structure/Cartesian/Closed/*`), `Structure/BiCCC.v` (+ `Structure/BiCCC/Strict.v`), `Structure/UniversalProperty.v` (+ `Structure/UniversalProperty/*`): terminal and initial objects with uniqueness in three strengths, products, exponentials with the currying adjunction, naturality of the exponential laws, internal composition and self-enrichment, strict initiality, universal properties.
-- `Structure/Bicartesian.v`, `Structure/Distributive.v`, `Structure/Discrete.v`, `Structure/Constant.v`, `Structure/Span.v`: bicartesian and distributive categories, the discreteness property (its reconstruction theorem is `Instance/Discrete/Reconstruct.v`), constants as global elements, spans as `Roof`-shaped diagrams. None heads a bullet of its own in the index.
-- `Structure/Limit.v` (+ `Structure/Limit/*`), `Structure/Cone.v` (+ `Structure/Cone/*`: constant cones, cones as natural transformations out of the diagonal), `Structure/Complete.v` (+ `Structure/Complete/Freyd.v`, Freyd's collapse: a small complete category with decidable hom-setoids is thin): limits and colimits — cone-level preservation, reflection and creation (`Structure/Limit/Preservation.v`, `Structure/Limit/Creation.v`; reflection over shapes and classes of shapes, by conservative functors and of coequalizers, `Structure/Limit/Reflection.v`), essential uniqueness with legs (`Structure/Limit/Unique.v`), limits from products and equalizers (`Structure/Limit/FromProducts.v`), finite index categories and finite limits (`Structure/Limit/Finite.v`), limits by evaluation at an initial index (`Structure/Limit/Initial.v`), indexed products and coproducts, finite products, powers and copowers (`Structure/Limit/Product.v`, `Structure/Limit/Coproduct.v`, `Structure/Limit/Product/Finite.v`, `Structure/Limit/Power.v`, `Structure/Limit/Power/*`, `Structure/Limit/Indexed/Hom.v`), constant diagrams over connected shapes (`Structure/Limit/Constant.v`), limits over coproducts of shapes (`Structure/Limit/Components.v`), weighted limits (`Structure/Limit/Weighted.v`).
-- `Structure/Pullback.v` (+ `Structure/Pullback/*`, among them wide pullbacks from completeness, `Structure/Pullback/Wide/Complete.v`), `Structure/Pushout.v` (+ `Structure/Pushout/Split.v`), `Structure/Equalizer.v` (+ `Structure/Equalizer/*`), `Structure/Coequalizer.v` (+ `Structure/Coequalizer/*`), `Structure/SlicedInverse.v` (+ `Structure/SlicedInverse/Strict.v`): the finite-limit generators and their interdefinability, wide variants (the first inhabitant of `HasWideCoequalizers` being `Instance/Top/Quotient.v`'s, at `Top`), split and reflexive coequalizers, and Mac Lane's Proposition V.9.1 with its dual — equalizers and coequalizers lifted along a faithful functor from sliced right-adjoint-right-inverses (the record `RightAdjointRightInverse`) and sliced left-adjoint-right-inverses, with faithfulness shown necessary.
-- `Structure/Monoidal.v` (+ `Structure/Monoidal/*`), `Structure/Premonoidal.v` (+ `Structure/Premonoidal/*`), `Structure/Binoidal.v` (+ `Structure/Binoidal/Central.v`): monoidal, braided, symmetric, closed monoidal (`Structure/Monoidal/Closed.v`) and star-autonomous categories, the dual-object self-adjunction, the Drinfeld centre, copy/discard and Markov categories with Fox's theorem, premonoidal and Freyd categories. `Structure/Closed.v` is an Eilenberg–Kelly stub: its `Class Closed` is commented out and only `Curry` and `Flip` are live.
-- `Structure/Ring.v`, `Structure/Lattice.v`, `Structure/Monoid.v`, `Structure/Group.v` (+ `Structure/Group/*`): internal semirings, rings and lattices, monoid and group objects and their functor-of-points characterisation.
-- `Structure/AbCategory.v`, `Structure/Preadditive.v`, `Structure/Semiadditive.v`, `Structure/Additive.v`, `Structure/Biproduct.v` (+ `Structure/Biproduct/Cartesian.v`), `Structure/Kernel.v` (+ `Structure/Kernel/*`), `Structure/Abelian.v`, `Structure/Bicartesian/Matrix.v`: the additive spine from Ab-enrichment through biproducts and kernels to abelian categories, with the matrix calculus from coproducts to products.
-- `Structure/Factorization.v` (+ `Structure/Factorization/StrongEpi.v`), `Structure/Regular.v` (+ `Structure/Regular/Factorization.v`), `Theory/Orthogonality.v`: orthogonal factorization systems, strong epis, regular categories with the image factorization.
-- `Structure/Topos.v` (+ `Structure/Topos/*`), `Structure/SubobjectClassifier.v` (+ `Structure/SubobjectClassifier/Natural.v`), `Theory/Subobject.v` (+ `Theory/Subobject/*`: the subobject presheaf, and the subobject lattice — meets by pullback, joins by image, wide intersections — and the disjointness of coproduct injections in a category with a zero object), `Structure/WellPowered.v` (+ `Structure/WellPowered/*`: well-powered and co-well-powered categories, the intersection of every class of subobjects in a well-powered complete category, and a category that is not well-powered; the witnesses at `Sets` (at the pin only under `Untruncate`, otherwise one universe up), `Grp` (one universe up only, not at the pin), `RMod R` (well-powered and co-well-powered one universe up, at the pin only under `Untruncate`), `FinSet` and the powerset lattices are the `WellPowered.v` satellites of those `Instance/` directories), `Theory/Sheaf.v` (+ `Theory/Sheaf/Category.v`): subobjects and well-poweredness, classifiers, elementary toposes with power objects and their finite colimits, sheaves.
-- `Structure/Dagger.v`, `Structure/Groupoid.v` (+ `Structure/Groupoid/*`), `Construction/Groupoid.v` (+ `Construction/Groupoid/Core.v`), `Construction/Fractions.v` (+ `Construction/Fractions/*`), `Structure/Thin.v` (+ `Structure/Thin/Monad.v`): dagger categories, groupoids as a property with the connected-groupoid structure theorem, the core construction `Groupoid C` (the maximal subgroupoid), thin categories, with the monads and comonads on them, every one idempotent.
-- `Structure/Coend.v`, `Structure/End.v`, `Structure/Wedge.v`, `Theory/Coend/*`, `Theory/Dinatural.v`, `Theory/Profunctor.v` (+ `Theory/Profunctor/Adjunction.v`, `Construction/Profunctor/*`), `Construction/Day.v`: the (co)end calculus, ninja Yoneda, Fubini, profunctors and Day convolution.
+### 结构 (`Structure/`)
+- 终/初/零对象、笛卡尔与余笛卡尔、闭、BiCCC、普遍性质。
+- 极限/余极限及其保持、反射、创造；拉回、推出、等化子、余等化子。
+- 幺半、辫、对称、闭幺半、星自治；预幺半与 Freyd 范畴。
+- 加性脊柱：Ab 充实 → 双积 → 核 → 阿贝尔范畴。
+- 正交分解、正则范畴；topos、子对象分类子、良幂、层。
+- （余）端、双自然、双函子、Day 卷积。
 
-### Constructions (`Construction/`)
-- `Construction/Opposite.v` (+ `Construction/Opposite/Monoidal.v`), `Construction/Product.v` (+ `Construction/Product/*`), `Construction/Coproduct.v` (+ `Construction/Coproduct/Indexed.v`), `Instance/Cat/Opposite.v`, `Instance/Cat/Coproduct.v`, `Instance/Cat/Pullback.v`: duality as a functor, products and set-indexed products and coproducts of categories with their limits, fibre products.
-- `Construction/Comma.v` (+ `Construction/Comma/*`), `Construction/Slice.v` (+ `Construction/Slice/*`), `Construction/Arrow.v` (+ `Construction/Arrow/*`), `Construction/Cylinder.v` (+ `Construction/Cylinder/Arrow.v`): comma categories (functoriality, Huq's correspondence, the commuting diagram, discrete-hom special cases), slices with the projection adjunctions and base change, the arrow category and its limits, the cylinder.
-- `Construction/Free.v`, `Construction/Free/Quiver.v` (+ `Construction/Free/Quiver/*`), `Construction/Free/Groupoid.v`, `Construction/Free/TwoFunctors.v`, `Construction/FreeMonoidal.v` (+ `Construction/FreeMonoidal/*`), `Construction/PROP.v` (+ `Construction/PROP/*`), `Construction/ColouredPROP.v` (+ `Construction/ColouredPROP/*`), `Construction/Funny.v` (+ `Construction/Funny/*`): free categories on quivers with the worked identifications, presented categories, free groupoids, the free monoidal category with coherence, free and coloured PROPs, the funny tensor.
-- `Construction/Deloop.v` (+ `Construction/Deloop/*`), `Construction/Elements.v`, `Construction/Karoubi.v` (+ `Construction/Karoubi/Universal.v`), `Construction/Quotient.v`, `Construction/Cayley.v`, `Construction/Lift.v`: delooping and the monoid dictionary, categories of elements, Karoubi envelopes, hom-congruence quotients, the Cayley representation of a category (no bullet of its own in the index), and a category re-read at higher universe levels, the lift #477's absolute (co)limit predicates use for their downward closure (it heads part of #477's bullet in the index).
-- `Construction/Subcategory.v` (+ `Construction/Subcategory/*`), `Construction/Reflective.v` (+ `Construction/Reflective/*`), `Construction/Localization.v` (+ `Construction/Localization/Universal.v`): subcategories, reflective subcategories and idempotent monads, limit creation by reflective inclusions, fixed points of adjunctions, orthogonal localization.
-- `Construction/Grothendieck.v` (+ `Construction/Grothendieck/*`), `Theory/Displayed.v`, `Theory/Fibration.v`, `Construction/Displayed/*`, `Construction/Indexed.v`: displayed categories, fibrations, the Grothendieck construction and its round trip with indexed categories.
-- `Construction/FAlg.v`, `Construction/FCoalg.v`, `Construction/Chain.v`, `Theory/Lambek.v`, `Theory/Recursion.v`, `Theory/Adamek.v` (+ `Theory/Adamek/Corollaries.v`): F-(co)algebras, Lambek's lemma, cata/anamorphisms, Adámek's theorem.
-- `Construction/Enriched.v` (+ `Construction/Enriched/*`): enriched categories, functors and transformations; enrichment over Sets, the walking arrow and Ab.
-- `Construction/Span/Category.v`, `Construction/Cospan/*`, `Construction/DecoratedCospan.v` (+ `Construction/DecoratedCospan/*`): the span and cospan categories, braided and symmetric monoidal structure on cospans, corelations (`Construction/Cospan/Corelation.v`), special commutative Frobenius algebras (`Construction/Cospan/SCFA.v`), the hypergraph instance `Cospan_Hypergraph` (`Construction/Cospan/HypergraphInstance.v`), Fong's decorated cospans with their monoidal, braided, symmetric and hypergraph structure, and the black-boxing functor (`Construction/Cospan/BlackBox.v`). None of these files heads a bullet of its own in the index; docs/INHABITATION.md records their inhabitation status.
+### 构造 (`Construction/`)
+- 对偶、积、余积、逗号、切片、箭头范畴、柱。
+- 自由范畴/群胚/幺半、PROP、Karoubi、商、Cayley、提升。
+- 子范畴、反射、局部化；Grothendieck、展示、纤维化；F-（余）代数、Lambek、Adámek；充实范畴；跨/共跨与装饰共跨。
 
-### Concrete Instances (`Instance/`)
-- Sets and types: `Instance/Sets.v` (+ `Instance/Sets/*`: products, complete and cocomplete, the cone-set limit, inverse limits, quotients, coequalizers, pullbacks, pushouts, cokernel pairs, powersets, classifiers, topos, Karoubi, streams, pointed sets, cogenerators (`Instance/Sets/Cogenerator.v`: small ones under `Untruncate` or `IEM`, a large one unconditionally) and the special initial-object theorem at `Sets^op` unconditionally and at `Sets` under those hypotheses (`Instance/Sets/SpecialInitial.v`), and propositional setoids — `Instance/Sets/Propositional.v` transports `PropEquiv` through products, indexed products and limits and declares `LocallyPropositional`, and `Instance/Sets/Propositional/Full.v` cuts out their full subcategory `PropSets`, reflective in `Sets` by the truncation of ≈), `Instance/Coq.v` (+ `Instance/Coq/*`), `Instance/Ens.v`, `Instance/EnsV.v`, `Instance/FinSet.v` (+ `Instance/FinSet/*`), `Instance/Powerset.v` (+ `Instance/Powerset/*`), `Instance/Discrete.v` (+ `Instance/Discrete/Reconstruct.v`), `Instance/Indiscrete.v`.
-- Algebra: `Instance/Grp.v` (+ `Instance/Grp/*`), `Instance/Ab.v` (+ `Instance/Ab/*`), `Instance/CMon.v` (+ `Instance/CMon/*`), `Instance/Mon/*`, `Instance/Monoid/Translation.v`, `Instance/Smgrp.v` (+ `Instance/Smgrp/*`: Mac Lane §VI.4, the free semigroup on words, the word monad W and the monadicity of semigroups over Set), `Instance/Mod.v` (+ `Instance/Mod/*`, among them Watt's theorem in Mac Lane's contravariant text form with no hypothesis beyond the book's (`Instance/Mod/Watts/Unconditional.v`, through the general adjoint functor theorem), and Mac Lane's special-adjoint-functor-theorem route, the text form under `Untruncate` and the covariant Exercise 3 under `Untruncate` and a cogenerator hypothesis (`Instance/Mod/Watts.v`)), `Instance/Rng.v` (+ `Instance/Rng/*`), `Instance/Rg.v`, `Instance/Field.v` (+ `Instance/Field/Frac.v`), `Instance/FdVect.v` (+ `Instance/FdVect/*`), `Instance/Vect/*`, `Instance/Matr.v` (+ `Instance/Matr/*`), `Instance/Lie.v`, `Instance/InnerProduct/Galois.v`, `Instance/Rep.v`: groups, abelian groups, monoids, semigroups, modules, rings, fields, vector spaces, matrices, Lie algebras and representations, each with the constructions the bullets record (quotients and isomorphism theorems, free objects and their adjunctions, tensors and tensor-hom, limits and colimits, Galois connections).
-- Order: `Instance/Proset.v` (+ `Instance/Proset/*`), `Instance/Pos.v` (+ `Instance/Pos/*`: the discrete-poset adjunction and the forgetful functor not monadic, Awodey §10.3), `Instance/Ord.v` (+ `Instance/Ord/Poset.v`), `Instance/Poset.v`, `Instance/Two.v` (+ `Instance/Two/*`), `Instance/Ordinal.v`, `Instance/Omega.v`, `Instance/Simplex.v`, `Instance/SupLat.v` (+ `Instance/SupLat/*`: complete join-semilattices and sup-preserving maps as the Eilenberg–Moore category of the covariant power-set monad, which is `Instance/Sets/Powerset/Monad.v`, with the free/forgetful adjunction, the monadicity of the forgetful functor, the free ones and `Prop`, and the theorem that a complete semilattice with a decidable ≈ and two distinct comparable points yields informative weak excluded middle, with its converse at the chain false < true on `bool` (`bool_SupLat`, a complete semilattice given that hypothesis; `Prop`, classically also a two-element chain, is one with no hypothesis)).
-- Topology and metric spaces: `Instance/Top.v` (+ `Instance/Top/*`, among them the finite case of Stone–Čech with the refutations of its adjoint-functor-theorem routes, `Instance/Top/StoneCech.v` and `Instance/Top/StoneCech/Refutations.v`, and the Prop-valued spaces `PTopCat` of `Instance/Top/Prop.v` with the subspace and quotient topologies over them as sliced adjoint inverses, `Instance/Top/Subspace.v`, their formable readings over the Type-valued `Top` being `Instance/Top/Subspace/TypeValued.v`, and `PTopCat` complete and cocomplete at every shape universe at or below its points and refuted above them under informative excluded middle, `Instance/Top/Complete.v` and `Instance/Top/Cocomplete.v` with their satellites, and the collapse X/A as a wide coequalizer with the category of pairs and its quotient functor left adjoint into pointed spaces, `Instance/Top/Quotient.v` and `Instance/Top/Quotient/Pairs.v`, and the separation axioms T0, T1 and T2 over `PTopCat` with their largest separated quotients, and Hausdorff spaces complete, cocomplete and reflective with the reflector also by the general adjoint functor theorem, the regular-Hausdorff rung of Mac Lane's §V.9 Exercise 4 and an inclusion with no right adjoint, `Instance/Top/Separation.v` and `Instance/Top/Hausdorff.v`, their formable reading over the Type-valued `Top` being `Instance/Top/Hausdorff/TypeValued.v`, and the circle R/Z over the standard library's constructive Cauchy reals with the p-adic solenoid as the limit of the tower of circles under the p-fold map, in the Type-valued `Top` and in `PTopCat`, its topology characterised by its universal property, with the circle group's tower, the p-adic integers as the fibre over the base point and the p-fold map a covering in both categories of spaces, `Instance/Top/Circle.v`, `Instance/Top/Solenoid.v` and `Instance/Top/Solenoid/Presentations.v`, and the connected components of locally connected spaces left adjoint to the discrete space and without a left adjoint of their own, with the path components as the colimit functor after the endpoint evaluations, `Instance/Top/Components.v` and `Instance/Top/Components/Paths.v`), `Instance/Met.v` (+ `Instance/Met/*`). No development file outside `Instance/Top/*` and `Instance/Met*` requires the stdlib reals directly — fourteen files do: ten require the classical reals `R` and inherit their axioms, nine named in the `Instance/Top/FundamentalGroupoid.v` bullet of docs/INDEX.md and the tenth, #370's `Instance/Met/Uniform.v`, in that bullet's correction and its own; and four, #410's `Instance/Top/Circle.v`, `Instance/Top/Solenoid.v` and `Instance/Top/Solenoid/Presentations.v` and #462's `Instance/Top/Components/Paths.v`, require only the constructive Cauchy reals (`Coq.Reals.Cauchy`) and carry no axiom, every constant closed and gated (an earlier revision of this sentence said ten files, which were the classical ten, and a later one thirteen, three constructive, before #462; measured by `rg -l` of `Coq.Reals.Rdefinitions` and of `Coq.Reals.Cauchy` over the `.v` files outside `Test/`, ten and four); `Instance/Top.v` itself is not among them; `Instance/Roster.v`, `Instance/Top/Wedge.v` and `Instance/Top/Quotient/Pairs.v` reach the classical ones through `Instance/Top/Homotopy.v`, the three development files whose `Require` lines name it (a grep of the `_CoqProject` files outside `Test/`; an earlier revision of this sentence named `Instance/Roster.v` alone, omitting `Instance/Top/Wedge.v`), and docs/AXIOMS.md carries the per-constant axiom footprint.
-- Categories of categories and functor categories: `Instance/Cat.v` (+ `Instance/Cat/*`), `Instance/StrictCat.v` (+ `Instance/StrictCat/*`), `Instance/Fun.v` (+ `Instance/Fun/*`: the evaluation functors and the two-variable evaluation (`Instance/Fun/Eval.v`, `Instance/Fun/Eval/Cat.v`), terminal object and indexed products, cartesian structure pointwise (`Instance/Fun/Cartesian.v`), exponentials for presheaf categories only (`Instance/Fun/Exponential.v`) with `Instance/Fun/Closed.v` proving that cartesian closure is NOT inherited in general, pullbacks, monos and epis, classifier, topos, group objects, discrete shapes, actions), `Instance/Cones.v` (+ `Instance/Cones/*`: the cone category's limit, and cones as the comma category `Δ ↓ F`).
-- Presented and finite shapes: `Instance/Square.v` (+ `Instance/Square/*`), `Instance/Presented/*`, `Instance/WalkingIso.v`, `Instance/Parallel.v` (+ `Instance/Parallel/Wide.v`), `Instance/Roof.v`, `Instance/Zero.v`, `Instance/One.v` (+ `Instance/One/Diagonal.v`).
-- Others: `Instance/Rel.v` (+ `Instance/Rel/Dagger.v`), `Instance/Props.v` (+ `Instance/Props/Modal.v`: propositions under implication, and Seven Sketches' modal operator B ⇒ − on them as a closure operator), `Instance/Theory/Lindenbaum.v`, `Instance/Lambda.v` (+ `Instance/Lambda/*`), `Instance/AST.v` (the free bicartesian closed category as a term model), `Instance/Fact.v` (the factorization category of a morphism), `Instance/Shapes.v` (shape-indexed tries; its `Shape` is unrelated to `Theory/Shapes.v`), `Instance/Roster.v` (the roster of standard large categories with their forgetful functors), `Instance/Concrete.v`, `Instance/Comp.v`, `Instance/Variety.v` (+ `Instance/Variety/*`: the derived-operator clone, the comparison with `Grp`, the free-algebra adjunction, and the limits and colimits of the setoid variety), `Instance/ZX.v` (the only file with `Axiom`/`Parameter` declarations). Of these, only `Instance/Theory/Lindenbaum.v`, `Instance/Roster.v` and `Instance/Variety.v` head a bullet of their own in the index (`Instance/Lambda/*` heads one as a directory); since #463 so does `Instance/Props/Modal.v`, one of the seven files heading that issue's bullet (a revision of this sentence, which named the first three only). `Instance/Variety.v` and its satellites are the one development whose principal constants are deliberately SPLIT across the `make print-assumptions` gate — the variety, the clone in setoid form and a depth-1 example are gated and closed, while five named constants and all of `Instance/Variety/GroupComparison.v` carry `functional_extensionality_dep` inherited from `Instance/Comp.v` and are recorded in docs/AXIOMS.md instead. `Instance/Variety/Free.v` extends that split and sharpens what it means: its GENERAL free-algebra adjunction is closed and gated, and only four of its constants carry the axiom: three `GroupEq` instantiations (`SGroupVariety`, `FreeGroupOn`, `FreeGroup_adjunction`) and `leibniz_soa`, which applies `functional_extensionality_dep` itself in its `soa_op_respects` at `eq_Setoid`. An earlier revision of this sentence said "its four `GroupEq` instantiations"; `Print Assumptions` on the four, and `Print leibniz_soa`, measured the difference. Extensionality is the cost of BUILDING an `EqSignature` (or, for `leibniz_soa`, of reading a Leibniz algebra as a setoid one), not of using one, and #450's `Instance/Variety/Limit.v` and `Instance/Variety/Colimit.v` add no constant that carries it.
+### 具体实例 (`Instance/`)
+- 集合与类型：`Sets`、`Coq`、`FinSet`、幂集、离散/非离散等。
+- 代数：群、阿贝尔群、模、环、域、向量空间等。
+- 序：预序、偏序、完备半格等。
+- 拓扑与度量：`Top`、`Met` 及大量卫星（见 docs/INDEX.md / docs/AXIOMS.md）。
+- 范畴的范畴与函子范畴：`Cat`、`StrictCat`、`Fun`、锥范畴。
+- 其它：关系、命题、λ 演算、品种、ZX（唯一含 `Parameter` 的文件）等。
 
-### Applied Programming and Tooling (`Theory/Coq/`, `Solver/`, `Tools/`, `Lib/`, `Test/`)
-- `Theory/Coq/*` (+ the aggregator `Theory/Coq.v`): bridges pure theory with practical Coq programming — applicative functors via monoidal functors, traversable functors with laws, and monad transformers with coherence conditions (`MonadTransformer` and `MonadTransformerLaws` are in `Monad/Transformer.v`, not under `Theory/Coq/`) (CORRECTION (#468): `MonadTransformerLaws` is not a constant: it sits inside a comment block of that file, as it has since e0761772 (2017-05-29), and a `Definition` naming it is refused as not found while `Check @MonadTransformer` is accepted; this line has said otherwise since PR #1284 (merged 2026-09-09), carrying the claim of ee1ce4fd (2026-08-12; PR #1085), and the reading of `MonadTransformer`'s laws as a morphism of monads is `Monad/Morphism/Transformer.v`).
-- `Solver/*` (+ the umbrella `Solver.v`): the reflective solver for categorical equations — abstract syntax (`Solver/Expr.v`), reification of a goal (`Solver/Reify.v`), normalization (`Solver/Normal.v`), denotation back into the category (`Solver/Denote.v`) and the sound decision procedure the tactics consume (`Solver/Decide.v`) — with no bullets in the index.
-- `Tools/Abstraction.v`, `Tools/Represented.v`: compiling Coq functions to cartesian-closed combinators, and representing Coq data types in the free bicartesian closed category — with no bullets in the index.
-- `Lib.v` and `Lib/*`: the foundation. Every file in `_CoqProject` requires `Category.Lib` except the umbrellas `Theory.v` and `Solver.v` (which re-export modules that do), three files inside `Lib/` itself, and `Instance/Lambda/Ltac.v` (pure Ltac, requiring nothing from `Category.*`). `Lib.v` sets the eight project-wide flags every file inherits (primitive projections, universe polymorphism, uniform inductive parameters, `Default Proof Using "Type"`, the `!` goal selector, opaque `Program` obligations, no intuition negation unfolding, no universe minimization to `Set`); the index cites two of those flags, `Set Primitive Projections` and `Set Uniform Inductive Parameters`, as the causes of two recorded traps. `Lib/*` holds the setoid layer and `≈` (`Lib/Setoid.v`, `Lib/Datatypes.v`, `Lib/Foundation.v`), the property of a setoid whose equality is a proposition (`Lib/Setoid/Propositional.v`, `PropEquiv`; its transports through `Sets` are `Instance/Sets/Propositional.v`), the tactics of the Proof Development Patterns section above (`Lib/Tactics.v`, `Lib/Tactics2.v`), the typed lists (`Lib/TList.v`, `Lib/NETList.v`, `Lib/IList.v`) and the finite-map helpers (`Lib/FMapExt.v`, `Lib/MapDecide.v`). Neither has bullets of its own in the index.
-- `Test/*`: the `Fail`-probe files that pin each development's measured boundaries — `Test/Probe<Topic>.v`, most carrying the number of the issue they guard and most named in that development's bullet — plus the regression and smoke-test files `Test/Issue*.v`, `Test/FullIssue118.v`, `Test/HypergraphPROPResolution.v`, `Test/Poset.v` and `Test/Size.v`. All are in `_CoqProject` and built by `make`; none heads a bullet of its own, and `make todo` counts their `Fail` commands.
+### 应用编程与工具 (`Theory/Coq/`、`Solver/`、`Tools/`、`Lib/`、`Test/`)
+- `Theory/Coq/*`：把纯理论与实用 Coq 编程桥接。
+- `Solver/*`：范畴等式的反射求解器。
+- `Tools/Abstraction.v`、`Tools/Represented.v`：把 Coq 函数编译到笛卡尔闭组合子等。
+- `Lib.v` 与 `Lib/*`：基础（setoid、`≈`、tactic、标志）。
+- `Test/*`：`Fail` 探测与回归测试。
 
-## Critical Design Patterns
+## 关键设计模式 (Critical Design Patterns)
 
-### Equivalence Over Equality
-Never use `=` for morphisms. Always use `≈`:
+### 优先等价而非相等 (Equivalence Over Equality)
+态射上绝不要用 `=`，永远用 `≈`：
 ```coq
-(* WRONG *)
+(* 错误 *)
 Lemma foo : f ∘ id = f.
 
-(* RIGHT *)
+(* 正确 *)
 Lemma foo : f ∘ id ≈ f.
 ```
 
-### Proper Morphisms
-All operations must respect equivalence:
+### Proper 态射
+所有运算必须尊重等价：
 ```coq
 Program Instance Foo_Proper {C : Category} :
   Proper (equiv ==> equiv ==> equiv) (@foo C).
 ```
 
-### Notation Precedence
-- `~>` morphisms (level 90)
-- `∘` composition (level 40, left associative)
-- `⟶` functors between categories
-- `⟹` natural transformations
+### 记号优先级
+- `~>` 态射（level 90）
+- `∘` 复合（level 40，左结合）
+- `⟶` 范畴之间的函子
+- `⟹` 自然变换
 
-### Proof Automation
-Standard proof pattern:
+### 证明自动化
+标准证明模式：
 ```coq
 Proof.
   intros.
-  cat.          (* tries simplification + rewriting *)
-  proper.       (* if proving Proper *)
-  equivalence.  (* if proving Equivalence *)
+  cat.          (* 尝试化简 + 重写 *)
+  proper.       (* 若证明 Proper *)
+  equivalence.  (* 若证明 Equivalence *)
 Qed.
 ```
 
-## Common Development Tasks
+## 常见开发任务 (Common Development Tasks)
 
-### Adding a New Category Instance
-1. Define objects and morphisms
-2. Define equivalence relation on morphisms (setoid)
-3. Prove it forms a category (id, compose, laws)
-4. Place in Instance/ directory
-5. Add to _CoqProject
+### 添加新范畴实例
+1. 定义对象与态射
+2. 定义态射上的等价关系（setoid）
+3. 证明它构成范畴（id、compose、定律）
+4. 放入 Instance/ 目录
+5. 加入 _CoqProject
 
-### Proving Functoriality
-1. Define object mapping F_obj
-2. Define morphism mapping F_map
-3. Prove F_map respects equivalence
-4. Prove F preserves id and composition
-5. Use `Program Instance` to manage obligations
+### 证明函子性
+1. 定义对象映射 F_obj
+2. 定义态射映射 F_map
+3. 证明 F_map 尊重等价
+4. 证明 F 保持 id 与复合
+5. 用 `Program Instance` 管理义务
 
-### Establishing Adjunctions
-1. Define functors F : C ⟶ D and G : D ⟶ C
-2. Define unit η : Id ⟹ G ○ F
-3. Define counit ε : F ○ G ⟹ Id
-4. Prove triangle identities
-5. Or use hom-set adjunction definition
+### 建立伴随
+1. 定义函子 F : C ⟶ D 与 G : D ⟶ C
+2. 定义单位 η : Id ⟹ G ○ F
+3. 定义余单位 ε : F ○ G ⟹ Id
+4. 证明三角恒等式
+5. 或使用 hom 集伴随定义
 
-## References and Learning
+## 参考与学习 (References and Learning)
 
-When working with specific concepts, reference:
-- **nLab**: https://ncatlab.org/nlab/show/[concept_name]
-- **README.md**: Contains detailed notation guide (the "Notations" section)
-- **docs/AXIOMS.md**: the axiom audit — what each `Axiom`/`Parameter` is, which definitions are certified "Closed under the global context", and which stdlib axioms the concrete instance layers do use.
-- **docs/INHABITATION.md**: which headline results carry a concrete in-tree witness of their distinctive premise, and which are proven parametrically as axiom-free conditionals awaiting a model. Consult it before citing a flagship theorem (GAFT, SAFT, the Sheaf theory, `image_mediator_epic`, the spider results, …) as demonstrated over a concrete object — several are conditional-only.
-- **docs/INDEX.md**: the per-development index of the library's headline developments (the former "Key Files and Concepts" section of this file) — one bullet per landed development, with strengths, measurements and what was not delivered
-- **In-file background essays**: beyond the definitional header most files carry, the flagship concept files across Theory/, Structure/, Construction/, Instance/, Adjunction/, and the Comonad development open with a background essay — the concept's history, purpose, cross-disciplinary use, and in-tree connections, each substantive claim cited to a primary source (nLab, the named papers, textbooks, or package documentation). Read that block first when approaching an unfamiliar file.
+处理具体概念时参考：
+- **nLab**：https://ncatlab.org/nlab/show/[concept_name]
+- **README.md**：详细记号指南（「记号」节）
+- **docs/AXIOMS.md**：公理审计
+- **docs/INHABITATION.md**：哪些标题结果有树内具体见证
+- **docs/INDEX.md**：分项开发索引
+- **文件内背景短文**：多数旗舰概念文件在定义性文首之外还有历史/用途短文；接触陌生文件时先读该块。
 
-## Versioning
+## 版本 (Versioning)
 
-Default version: Rocq 9.1 (the `default` package in flake.nix)
-Supported: Coq 8.19-8.20, Rocq 9.0-9.1
-Equations dependency required for some parts (versions matched to Coq)
+默认版本：Rocq 9.1（flake.nix 中的 `default` 包）
+支持：Coq 8.19–8.20，Rocq 9.0–9.1
+部分内容需要 Equations（版本与 Coq 匹配）
 
-## Testing Individual Theorems
+## 测试个别定理 (Testing Individual Theorems)
 
-To test a specific construction:
+测试特定构造：
 ```bash
-# Extract just the files needed
+# 提取所需文件
 coqdep -R . Category Theory/MyConstruction.v | grep -v "^#"
 
-# Compile dependencies first
+# 先编译依赖
 make Theory/Category.vo Theory/Functor.vo
 
-# Then compile your file
+# 再编译你的文件
 coqc -R . Category Theory/MyConstruction.v
 ```
+
+**中文翻译说明（zh-CN）**：本文已尽量全文译为简体中文；地图条目中的路径与标识符保持英文。更细的交付测量见 docs/INDEX.md。

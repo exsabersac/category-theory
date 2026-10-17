@@ -25,7 +25,7 @@ Context {B : Category}.
 Context `{MB : @Monoidal B}.
 Context (b : B).
 
-(** ** The right-normalised tensor and the join *)
+(* 相关说明。 （已译） *)
 
 (* [nf n X] is b ⨂ (b ⨂ (… ⨂ X)), n copies of b with tail X. *)
 Fixpoint nf (n : nat) (X : B) : B :=
@@ -34,8 +34,7 @@ Fixpoint nf (n : nat) (X : B) : B :=
   | S m => b ⨂ nf m X
   end.
 
-(* The join: appending under the tail parameter.  See the header design note
-   for why the codomain is [nf (m + n) X]. *)
+(* 相关说明。 （已译） *)
 Fixpoint J (m n : nat) (X : B) : (nf m I ⨂ nf n X) ≅ nf (m + n) X :=
   match m with
   | O   => unit_left
@@ -51,8 +50,8 @@ Fixpoint subst (w : Word) : B :=
   | WT v u => subst v ⨂ subst u
   end.
 
-(* The normalisation isomorphism.  The [WT] branch IS the multiplicativity of
-   the normaliser, definitionally — there is no separate lemma to prove. *)
+(* The normalisation 同构. The [WT] branch IS multiplicativity of
+ normaliser, definitionally — there no separate 引理 prove. （已译） *)
 Fixpoint can (w : Word) : subst w ≅ nf (wlen w) I :=
   match w with
   | WE     => iso_id
@@ -110,11 +109,9 @@ Proof.
   now rewrite bimap_id_id, id_right.
 Qed.
 
-(** ** Where the coherence of B is spent *)
+(* 相关说明。 （已译） *)
 
-(* Associativity of the join: joining (m + m') then n agrees with joining m
-   then (m' + n), up to the nat-level reassociation cast.  Induction on [m];
-   the inductive step is the PENTAGON. *)
+(* 相关说明。 （已译） *)
 Theorem J_assoc (m m' n : nat) (X : B) :
   to (J (m + m') n X) ∘ bimap (to (J m m' I)) id[nf n X]
     ≈ id_cast (f_equal (fun i => nf i X) (Nat.add_assoc m m' n))
@@ -123,8 +120,8 @@ Theorem J_assoc (m m' n : nat) (X : B) :
         ∘ to (@tensor_assoc B _ (nf m I) (nf m' I) (nf n X)).
 Proof.
   induction m; simpl.
-  - (* Both outer joins are the left unitor and the cast is a loop; the
-       residue is λ-naturality against J m' n X plus the left triangle. *)
+  - (* Both outer joins left unitor cast loop; the
+ residue λ-自然性 against J m' n X plus left triangle. （已译） *)
     rewrite nf_cast_loop, id_left.
     rewrite <- (to_unit_left_natural (to (J m' n X))).
     rewrite <- !comp_assoc.
@@ -140,7 +137,7 @@ Proof.
     rewrite (@nf_cast_succ (m + (m' + n)) (m + m' + n) X
                (Nat.add_assoc m m' n)).
     normal.
-    (* Right side: peel the associator across the (id ⨂ J m' n) factor. *)
+    (* 相关说明。 （已译） *)
     pose proof (to_tensor_assoc_natural
                   (id[b]) (id[nf m I]) (to (J m' n X))) as N1.
     rewrite bimap_id_id in N1.
@@ -166,8 +163,7 @@ Proof.
     apply pentagon_identity.
 Qed.
 
-(* The join with an empty tail is the right unitor.  Induction on [n]; the
-   base is Kelly's λ_I ≈ ρ_I, the step is the (right) triangle. *)
+(* 相关说明。 （已译） *)
 Theorem J_right_unit (n : nat) :
   id_cast (f_equal (fun i => nf i I) (Nat.add_0_r n)) ∘ to (J n 0 I)
     ≈ to (@unit_right B _ (nf n I)).
@@ -182,8 +178,7 @@ Proof.
     simpl.
     rewrite id_left.
     apply unit_identity.
-  - (* Same implicit-index obstruction in the successor case; route the cast
-       step through [apply] (full conversion) instead of [rewrite]. *)
+  - (* 相关说明。 （已译） *)
     etransitivity.
     { apply compose_respects.
       - rewrite (UIP_dec Nat.eq_dec (Nat.add_0_r (S n))
@@ -200,7 +195,7 @@ Qed.
 (* Substitution is definitional. *)
 Example subst_mix : subst (WT (WT WI WE) WI) = ((b ⨂ I) ⨂ b)%object := eq_refl.
 
-(* The normal form of length 3, and its agreement with the normalised word. *)
+(* 相关说明。 （已译） *)
 Example nf_3 : nf 3 I = (b ⨂ (b ⨂ (b ⨂ I)))%object := eq_refl.
 Example subst_nfword_3 : subst (nfword 3) = nf 3 I := eq_refl.
 

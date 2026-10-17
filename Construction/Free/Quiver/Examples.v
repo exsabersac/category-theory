@@ -18,7 +18,7 @@ Require Import Coq.Logic.Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * Concrete free categories, and the finite ordinals as free categories *)
+(* * * Concrete free 范畴, finite ordinals free 范畴 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/quiver
@@ -32,9 +32,9 @@ Generalizable All Variables.
 
 #[local] Existing Instance edgeset.
 
-(* Every obligation below is discharged explicitly; no proof depends on a
-   Program-generated tactic.  (Construction/Free/Quiver/Concrete.v does the
-   same, for the same reason.) *)
+(* Every obligation below discharged explicitly; no 证明 depends a
+ Program-generated tactic. (Construction/Free/Quiver/Concrete.v does the
+ same, same reason.) （已译） *)
 #[local] Obligation Tactic := idtac.
 
 (* ---------- graded quivers have thin free categories ---------- *)
@@ -57,8 +57,7 @@ Definition graded_node_eq_dec (x y : G) : {x = y} + {x ≠ y} :=
 Lemma graded_node_uip (x y : G) (e e' : x = y) : e = e'.
 Proof using G rank rank_inj. apply (UIP_dec graded_node_eq_dec). Qed.
 
-(* Every edge raises the rank by one, so a path's length is the rank
-   difference of its endpoints. *)
+(* 相关说明。 （已译） *)
 Lemma graded_len (j i : G) (p : tlist edges i j) :
   rank j = (tlist_length p + rank i)%nat.
 Proof using G rank edge_rank.
@@ -127,8 +126,8 @@ End Graded.
 
 (* ---------- the walking arrow ---------- *)
 
-(* Two nodes, one edge between them.  The nodes are [TwoObj] itself, so both
-   comparison functors below are the identity on objects. *)
+(* Two nodes, one edge between them. The nodes [TwoObj] itself, so both
+ comparison 函子 below 恒等 对象. （已译） *)
 Definition arrow_edges (x y : TwoObj) : Type :=
   match x with
   | TwoX => match y with
@@ -219,8 +218,8 @@ Next Obligation.
   exists (fun _ => eq_refl); intros x y f; apply arrow_free_thin.
 Qed.
 
-(* The same identification read in [Cat], where functors are compared only up
-   to natural isomorphism.  This is strictly weaker than the above. *)
+(* The same identification read [Cat], where 函子 compared up
+ natural 同构. This strictly weaker than above. （已译） *)
 Definition arrow_free_Cat : FreeOnQuiver ArrowQuiver ≅[Cat] _2 :=
   @Build_Isomorphism Cat _ _ Arrow_to Arrow_from
     (strict_equiv_implies_fun_equiv _ _ (iso_to_from arrow_free))
@@ -266,8 +265,8 @@ Proof.
   exact (graded_no_path (LinQuiver m) (@ord_val m) (@linear_edge_rank m) x y p).
 Qed.
 
-(* The comparison into the ordinal: an edge is the generating step.  This half
-   is uniform in m, the empty ordinal included. *)
+(* The comparison 进入 ordinal: edge generating step. This half
+ uniform m, empty ordinal included. （已译） *)
 Definition linear_arrow {m} {x y : LinQuiver m} (e : @edges (LinQuiver m) x y) :
   x ~{Ordinal m}~> y :=
   match e in _ = z return le_t (ord_val x) z with
@@ -348,8 +347,8 @@ Next Obligation.
     intros x y f; destruct (ord_0_empty x).
 Qed.
 
-(* Mac Lane II.7 Exercise 2, as stated: EVERY finite ordinal is a free
-   category -- free on the linear quiver with the same nodes. *)
+(* Mac Lane II.7 Exercise 2, stated: EVERY finite ordinal free
+ 范畴 -- free linear quiver same nodes. （已译） *)
 Definition ordinal_free (m : nat) :
   FreeOnQuiver (LinQuiver m) ≅[StrictCat] Ordinal m :=
   match m with
@@ -357,33 +356,31 @@ Definition ordinal_free (m : nat) :
   | S n => ordinal_free_S n
   end.
 
-(* The same reading in [Cat], where functors are compared only up to natural
-   isomorphism.  This is strictly weaker than the above. *)
+(* The same reading [Cat], where 函子 compared up natural
+ 同构. This strictly weaker than above. （已译） *)
 Definition ordinal_free_Cat (m : nat) :
   FreeOnQuiver (LinQuiver m) ≅[Cat] Ordinal m :=
   @Build_Isomorphism Cat _ _ (to (ordinal_free m)) (from (ordinal_free m))
     (strict_equiv_implies_fun_equiv _ _ (iso_to_from (ordinal_free m)))
     (strict_equiv_implies_fun_equiv _ _ (iso_from_to (ordinal_free m))).
 
-(* ---------- existence of paths, and the exhaustive hom description ---------- *)
+(* 相关说明。 （已译） *)
 
 Definition free_mor_of_eq {G : Quiver} {x y : FreeOnQuiver G} (e : x = y) : x ~> y :=
   match e in _ = z return x ~{FreeOnQuiver G}~> z with
   | eq_refl => id
   end.
 
-(* The converse of [linear_no_descent]: whenever the indices are ordered there
-   IS a path, obtained by transporting the ordinal's own arrow back along
-   [Linear_from]. *)
+(* 相关说明。 （已译） *)
 Definition linear_path_of_le {n} (x y : FreeOnQuiver (LinQuiver (S n)))
   (H : (ord_val x <= ord_val y)%nat) : x ~> y :=
   @free_mor_of_eq (LinQuiver (S n)) _ _ (@ord_clamp_id n y)
     ∘ fmap[Linear_from n] (le_t_of_le H)
     ∘ @free_mor_of_eq (LinQuiver (S n)) _ _ (eq_sym (@ord_clamp_id n x)).
 
-(* Together with thinness this classifies every hom-set of the free category on
-   a linear quiver: it is empty when the indices are out of order, and a
-   singleton otherwise. *)
+(* Together thinness classifies every hom-set free 范畴 on
+ linear quiver: it empty indices out order, a
+ singleton otherwise. （已译） *)
 Theorem linear_hom_iff {n} (x y : FreeOnQuiver (LinQuiver (S n))) :
   ((x ~> y) → (ord_val x <= ord_val y)%nat) *
   ((ord_val x <= ord_val y)%nat → (x ~> y)) *
@@ -395,7 +392,7 @@ Proof.
   - exact (@linear_free_thin (S n) x y).
 Qed.
 
-(* ---------- the composable pair: the three-node instance ---------- *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Examples 相关定义、性质与动机。
@@ -414,7 +411,7 @@ Definition chain_e1 : ord3_1 ~{FreeOnQuiver (LinQuiver 3)}~> ord3_2 :=
 Definition chain_e10 : ord3_0 ~{FreeOnQuiver (LinQuiver 3)}~> ord3_2 :=
   chain_e1 ∘ chain_e0.
 
-(* The composite is literally the two-edge path, not a further generator. *)
+(* The 复合 literally two-edge path, not further generator. （已译） *)
 Lemma chain_e0_length : tlist_length chain_e0 = 1%nat.
 Proof. reflexivity. Qed.
 
@@ -424,7 +421,7 @@ Proof. reflexivity. Qed.
 Lemma chain_e10_length : tlist_length chain_e10 = 2%nat.
 Proof. reflexivity. Qed.
 
-(* The three ascending hom-sets are singletons ... *)
+(* 相关说明。 （已译） *)
 Theorem chain_hom_01 (p : ord3_0 ~{FreeOnQuiver (LinQuiver 3)}~> ord3_1) :
   p ≈ chain_e0.
 Proof. apply linear_free_thin. Qed.
@@ -437,7 +434,7 @@ Theorem chain_hom_02 (p : ord3_0 ~{FreeOnQuiver (LinQuiver 3)}~> ord3_2) :
   p ≈ chain_e10.
 Proof. apply linear_free_thin. Qed.
 
-(* ... the three diagonal ones contain only the identity ... *)
+(* ... three diagonal ones contain 恒等 ... （已译） *)
 Theorem chain_hom_00 (p : ord3_0 ~{FreeOnQuiver (LinQuiver 3)}~> ord3_0) :
   p ≈ id.
 Proof. apply linear_free_thin. Qed.
@@ -450,7 +447,7 @@ Theorem chain_hom_22 (p : ord3_2 ~{FreeOnQuiver (LinQuiver 3)}~> ord3_2) :
   p ≈ id.
 Proof. apply linear_free_thin. Qed.
 
-(* ... and the three descending ones are empty. *)
+(* 相关说明。 （已译） *)
 Theorem chain_no_10 (p : ord3_1 ~{FreeOnQuiver (LinQuiver 3)}~> ord3_0) : False.
 Proof. pose proof (linear_no_descent _ _ p) as H; simpl in H; lia. Qed.
 

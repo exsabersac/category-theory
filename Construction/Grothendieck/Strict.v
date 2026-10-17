@@ -15,7 +15,7 @@ From Coq Require Import Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * Constructors for indexed categories *)
+(* * * Constructors indexed 范畴 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/strict+category
@@ -34,8 +34,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Reading [iso_of_eq] through a concatenation of equalities composes the
-   isomorphisms (in the opposite order, as always for [to]). *)
+(* 相关说明。 （已译） *)
 Lemma iso_of_eq_trans {C : Category} {x y z : C} (p : x = y) (q : y = z) :
   to (iso_of_eq (eq_trans p q)) ≈ to (iso_of_eq q) ∘ to (iso_of_eq p).
 Proof. destruct p, q; cat. Qed.
@@ -65,9 +64,9 @@ Proof.
   symmetry; exact Hc.
 Qed.
 
-(* The inverse-side companion, obtained by conjugating the naturality with the
-   two inverse laws (the shape of [idx_resp_natural_from] in
-   Construction/Indexed.v). *)
+(* The inverse-side companion, obtained conjugating 自然性 the
+ two inverse laws (the shape [idx_resp_natural_from] in
+ Construction/Indexed.v). （已译） *)
 Lemma strict_eq_iso_natural_from {C D : Category} {F' G' : C ⟶ D}
   (S : @equiv _ Functor_StrictEq_Setoid F' G') {a b : C} (k : a ~> b) :
   fmap[F'] k ∘ from (iso_of_eq (`1 S a)) ≈ from (iso_of_eq (`1 S b)) ∘ fmap[G'] k.
@@ -83,7 +82,7 @@ Proof.
   apply id_right.
 Qed.
 
-(** ** The indexed category of a strict functor *)
+(* * ** The indexed 范畴 strict 函子 （已译） *)
 
 Section StrictFunctorToIndexed.
 
@@ -106,8 +105,8 @@ Proof using B F Fuip. now rewrite (Fuip b X Y p q). Qed.
 Lemma iso_of_eq_refl_id {b : B} {X : F b} (p : X = X) : to (iso_of_eq p) ≈ id.
 Proof using B F Fuip. now rewrite (Fuip b X X p (@eq_refl _ X)). Qed.
 
-(* The strict-equality witnesses that [F] supplies for reindexing along
-   equivalent, identity, and composite base morphisms. *)
+(* The strict-equality witnesses [F] supplies reindexing along
+ equivalent, 恒等, 复合 base 态射. （已译） *)
 Definition Sresp {x y : B} {f g : x ~> y} (e : f ≈ g) :
   @equiv _ Functor_StrictEq_Setoid (fmap[F] f) (fmap[F] g) :=
   @fmap_respects _ _ F x y f g e.
@@ -120,9 +119,9 @@ Definition Scomp {x y z : B} (f : y ~> z) (g : x ~> y) :
   @equiv _ Functor_StrictEq_Setoid (fmap[F] (f ∘ g)) (fmap[F] f ∘ fmap[F] g) :=
   @fmap_comp _ _ F x y z f g.
 
-(* The indexed-category data: fibres are [F]'s values, reindexing is [F]'s
-   action, and the mediators are the [iso_of_eq]s of the strict-equality
-   object components. *)
+(* The indexed-范畴 data: fibres [F]'s values, reindexing [F]'s
+ action, mediators [iso_of_eq]s strict-equality
+ 对象 components. （已译） *)
 Definition SF_map {x y : B} (f : x ~> y) : F x ⟶ F y := fmap[F] f.
 
 Definition SF_resp {x y : B} {f g : x ~> y} (e : f ≈ g) (a : F x) :
@@ -135,9 +134,9 @@ Definition SF_comp {x y z : B} (f : y ~> z) (g : x ~> y) (a : F x) :
   SF_map f (SF_map g a) ≅ SF_map (f ∘ g) a :=
   iso_of_eq (eq_sym (`1 (Scomp f g) a)).
 
-(* Collapsing a to-side coherence equation: expose the mediators, absorb any
-   functor action into an [iso_of_eq], fuse the composites, and appeal to
-   proof irrelevance of [iso_of_eq]. *)
+(* Collapsing to-side coherence equation: expose mediators, absorb any
+ 函子 action [iso_of_eq], fuse composites, appeal to
+ 证明 irrelevance [iso_of_eq]. （已译） *)
 Ltac sf_collapse :=
   cbv beta delta [SF_comp SF_resp SF_id];
   rewrite ?fmap_iso_of_eq;
@@ -200,7 +199,7 @@ Lemma SF_cocycle {w x y z : B} (f : y ~> z) (g : x ~> y) (h : w ~> x)
         ∘ to (SF_comp f (g ∘ h) a) ∘ fmap[SF_map f] (to (SF_comp g h a)).
 Proof using B F Fuip. sf_collapse. Qed.
 
-(* The indexed category built from [F] and the fibrewise UIP hypothesis. *)
+(* The indexed 范畴 built [F] fibrewise UIP 假设. （已译） *)
 Definition IndexedCat_of_StrictFunctor : IndexedCat B :=
   {| idx_fib          := fun x => F x
    ; idx_map          := @SF_map
@@ -220,7 +219,7 @@ Definition IndexedCat_of_StrictFunctor : IndexedCat B :=
 
 End StrictFunctorToIndexed.
 
-(** ** Hedberg corollary: decidable fibres discharge the hypothesis *)
+(* * ** Hedberg 推论: decidable fibres discharge 假设 （已译） *)
 
 (* When every fibre of [F] has decidable object equality, Hedberg's theorem
    supplies the fibrewise UIP hypothesis, so no side condition remains. *)
@@ -235,8 +234,8 @@ Section Constant.
 
 Context (B D : Category).
 
-(* Every fibre is [D], every reindexing is the identity functor, and every
-   mediator is the identity isomorphism; all coherence is therefore trivial. *)
+(* Every fibre [D], every reindexing 恒等 函子, every
+ mediator 恒等 同构; all coherence therefore trivial. （已译） *)
 #[local] Obligation Tactic :=
   intros; simpl; rewrite ?id_left, ?id_right; reflexivity.
 
@@ -249,10 +248,10 @@ Program Definition Constant_IndexedCat : IndexedCat B :=
 
 End Constant.
 
-(** ** The Grothendieck construction of a constant family is a product *)
+(* * ** The Grothendieck construction 常值 family product （已译） *)
 
-(* Conjugating by identity isomorphisms does nothing; the generic stripping
-   step for equivalence cells whose isomorphism family is [iso_id]. *)
+(* Conjugating 恒等 isomorphisms does nothing; generic stripping
+ step 等价 cells whose 同构 family [iso_id]. （已译） *)
 Lemma conj_id {C : Category} {a b : C} (f : a ~> b) :
   from (@iso_id C b) ∘ f ∘ to (@iso_id C a) ≈ f.
 Proof. simpl; now rewrite id_left, id_right. Qed.
@@ -263,8 +262,8 @@ Context {B D : Category}.
 
 #[local] Obligation Tactic := idtac.
 
-(* The forward functor: ∫ (constant D) ⟶ B ∏ D, unpacking dependent pairs into
-   plain pairs on both objects and morphisms. *)
+(* The forward 函子: ∫ (常值 D) ⟶ B ∏ D, unpacking dependent pairs into
+ plain pairs both 对象 态射. （已译） *)
 Program Definition GC_to :
   Grothendieck (Constant_IndexedCat B D) ⟶ (B ∏ D) := {|
   fobj := fun s => (`1 s, `2 s);
@@ -300,8 +299,8 @@ Next Obligation.
   simpl; now rewrite id_right.
 Qed.
 
-(* Both composites are the identity up to the pair/dependent-pair repackaging;
-   their natural-isomorphism cells carry identity components. *)
+(* Both composites 恒等 up pair/dependent-pair repackaging;
+ natural-同构 cells carry 恒等 components. （已译） *)
 Definition GC_tofrom_iso (p : B ∏ D) : (GC_to ◯ GC_from) p ≅ Id p.
 Proof. destruct p as [a b]; exact iso_id. Defined.
 
@@ -329,8 +328,8 @@ Proof.
   reflexivity.
 Defined.
 
-(* The sanity isomorphism in Cat: the Grothendieck construction of the constant
-   family over [D] is the product category [B ∏ D]. *)
+(* The sanity 同构 Cat: Grothendieck construction 常值
+ family over [D] product 范畴 [B ∏ D]. （已译） *)
 Definition Grothendieck_Constant_iso :
   Grothendieck (Constant_IndexedCat B D) ≅[Cat] (B ∏ D) :=
   @Build_Isomorphism Cat _ _ GC_to GC_from GC_iso_to_from GC_iso_from_to.

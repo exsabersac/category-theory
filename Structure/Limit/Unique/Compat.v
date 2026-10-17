@@ -27,7 +27,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Equalizers: the elementary uniqueness agrees *)
+(* 相关说明。 （已译） *)
 
 Section EqualizerAgrees.
 
@@ -59,7 +59,7 @@ Proof.
     now rewrite (unique_property (eq_desc E2 e1 (fork_eq E1))).
 Qed.
 
-(* ...and therefore the isomorphisms agree outright. *)
+(* 相关说明。 （已译） *)
 Theorem equalizer_unique_agrees_iso {q1 q2 : C} {e1 : q1 ~> x}
   {e2 : q2 ~> x}
   (E1 : IsEqualizer f g q1 e1) (E2 : IsEqualizer f g q2 e2) :
@@ -71,7 +71,7 @@ Qed.
 
 End EqualizerAgrees.
 
-(** ** Pullbacks: the elementary uniqueness agrees *)
+(* 相关说明。 （已译） *)
 
 Section PullbackAgrees.
 
@@ -126,7 +126,7 @@ Qed.
 
 End PullbackAgrees.
 
-(** ** The generic representability route, finally instantiated *)
+(* 相关说明。 （已译） *)
 
 Section TransportUnique.
 

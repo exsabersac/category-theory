@@ -45,8 +45,7 @@ Class CopyDiscard : Type := {
     ccomon_epsilon (cd_comonoid (X ⨂ Y))
       ≈ canonical_tensor_epsilon (cd_comonoid X) (cd_comonoid Y);
 
-  (* Unit coherence: the comonoid on [I] is the trivial one,
-     δ_I ≈ unit_left⁻¹ and ε_I ≈ id (cf. scfa_unit_delta/epsilon). *)
+  (* 相关说明。 （已译） *)
   cd_unit_delta   : ccomon_delta   (cd_comonoid I) ≈ from (@unit_left C _ I);
   cd_unit_epsilon : ccomon_epsilon (cd_comonoid I) ≈ id[I]
 }.

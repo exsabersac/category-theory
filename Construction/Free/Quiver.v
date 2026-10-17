@@ -13,7 +13,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * Quivers and the free category on a quiver *)
+(* * * Quivers free 范畴 quiver （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Quiver_(mathematics)
@@ -571,8 +571,8 @@ Proof.
   now rewrite IHf.
 Qed.
 
-(* While this is merely an equivalence. Such is the essence of adjointness
-   between pseudocategories. *)
+(* While 这是 merely 等价. Such essence adjointness
+ between pseudocategories. （已译） *)
 Lemma tlistDA_morDA `{f : Mor x y} :
   tlistDA (morDA f) ≈ f.
 Proof.

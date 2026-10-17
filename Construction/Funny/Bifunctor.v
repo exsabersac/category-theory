@@ -13,7 +13,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The action of [F □ G], as separately functorial data *)
+(* 相关说明。 （已译） *)
 
 Program Definition FunnyBimap_sep {C C' D D' : Category}
   (F : C ⟶ C') (G : D ⟶ D') :
@@ -55,10 +55,7 @@ Qed.
 Definition FunnyBimap {C C' D D' : Category} (F : C ⟶ C') (G : D ⟶ D') :
   (C □ D) ⟶ (C' □ D') := FunnyUP (FunnyBimap_sep F G).
 
-(** ** Computation lemmas
-
-    [ffold] and [fapp] compute, so the action of [FunnyBimap] on words is
-    definitional, constructor by constructor. *)
+(* 相关说明。 （已译） *)
 
 Lemma FunnyBimap_fnil {C C' D D' : Category} (F : C ⟶ C') (G : D ⟶ D')
   {c : C} {d : D} :

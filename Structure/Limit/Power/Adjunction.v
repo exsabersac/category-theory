@@ -29,7 +29,7 @@ Require Import Category.Adjunction.Parameter.
 
 Generalizable All Variables.
 
-(** * The copower is left adjoint to the power *)
+(* * * The copower 左伴随 power （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/power
@@ -58,8 +58,7 @@ Definition power_fmap {b b' : C} (g : b ~> b') : power J b ~> power J b' :=
   unique_obj (power_desc (power_ump J b')
                 (fun j : J => g ∘ power_ev J b j)).
 
-(* The characterizing equation of the arrow action: it commutes with the
-   evaluations.  This is the mediator's [unique_property], nothing more. *)
+(* 相关说明。 （已译） *)
 Lemma power_fmap_ev {b b' : C} (g : b ~> b') (j : J) :
   power_ev J b' j ∘ power_fmap g ≈ g ∘ power_ev J b j.
 Proof. exact (unique_property (power_desc (power_ump J b') _) j). Qed.
@@ -92,8 +91,8 @@ Example power_functor_obj (b : C) :
 Example power_functor_fmap {b b' : C} (g : b ~> b') :
   fmap[Power_Functor] g = power_fmap g := eq_refl.
 
-(* [power_fmap_ev] restated through [fmap], which is the spelling the
-   adjunction's naturality goals present. *)
+(* [power_fmap_ev] restated through [fmap], spelling the
+ 伴随's 自然性 goals present. （已译） *)
 Lemma power_functor_ev {b b' : C} (g : b ~> b') (j : J) :
   power_ev J b' j ∘ fmap[Power_Functor] g ≈ g ∘ power_ev J b j.
 Proof. exact (power_fmap_ev g j). Qed.
@@ -125,13 +124,12 @@ Example copower_functor_obj (b : C) :
 Example copower_functor_fmap {b b' : C} (g : b ~> b') :
   fmap[Copower_Functor] g = @power_fmap (C^op) HC J b' b g := eq_refl.
 
-(* The double opposite returns the op-power functor ON THE NOSE, which is
-   what makes [C ⟶ C] the right type rather than [(C^op)^op ⟶ (C^op)^op]. *)
+(* The double opposite returns op-power 函子 ON THE NOSE, is
+ what makes [C ⟶ C] right type rather than [(C^op)^op ⟶ (C^op)^op]. （已译） *)
 Example copower_functor_double_op :
   Opposite_Functor Copower_Functor = @Power_Functor (C^op) HC J := eq_refl.
 
-(* And the arrow action IS the mediator [copower_desc] produces, read
-   covariantly: no [^op] appears in this statement. *)
+(* 相关说明。 （已译） *)
 Example copower_functor_desc {b b' : C} (g : b ~> b') :
   fmap[Copower_Functor] g
   = unique_obj (copower_desc (copower_ump J b)
@@ -213,7 +211,7 @@ Proof.
            (fun j : J => u ∘ copower_inj J b j)) v H).
 Qed.
 
-(* Mac Lane §IV.2 Ex 12: the copower is left adjoint to the power. *)
+(* Mac Lane §IV.2 Ex 12: copower 左伴随 power. （已译） *)
 Definition Copower_Power_Adjunction : Copower_Functor J ⊣ Power_Functor J.
 Proof.
   unshelve eapply (Build_Adjunction' cp_adj_iso).
@@ -230,8 +228,8 @@ Proof.
     rewrite <- !comp_assoc; now rewrite (cp_to_char x y g j).
 Defined.
 
-(* The adjunction's own hom-set isomorphism IS the composite, and both its
-   legs are the mediators of the two universal properties, on the nose. *)
+(* The 伴随's own hom-set 同构 IS 复合, both its
+ legs mediators two universal properties, nose. （已译） *)
 Example cp_adj_readback (b c : C) :
   @adj C C (Copower_Functor J) (Power_Functor J) Copower_Power_Adjunction b c
   = cp_adj_iso b c := eq_refl.
@@ -469,12 +467,11 @@ Next Obligation. intros c pi i x y Hxy; simpl in Hxy; subst; reflexivity. Qed.
 Next Obligation. intros c pi x y f j; simpl; now rewrite id_left. Qed.
 Next Obligation. intros c pi x y f j; simpl; now rewrite id_left. Qed.
 
-(* The generic element: transport the identity back across [wlim_iso]. *)
+(* The generic element: transport 恒等 back across [wlim_iso]. （已译） *)
 Definition wpow_ev (j : J) : wlim_obj WL ~> b :=
   from (wlim_iso WL (wlim_obj WL)) id ttt j.
 
-(* The only place [wlim_natural] is spent: the inverse transpose of [u] is
-   the generic element precomposed with [u]. *)
+(* 相关说明。 （已译） *)
 Lemma wpow_from_is_precompose (c : C) (u : c ~> wlim_obj WL) (j : J) :
   from (wlim_iso WL c) u ttt j ≈ wpow_ev j ∘ u.
 Proof.
@@ -570,8 +567,8 @@ Defined.
 
 End WeightedCopowerConverse.
 
-(* The round trip returns the chosen data with ONE identity residue on each
-   side, exhibited here rather than described. *)
+(* The round trip returns chosen data ONE 恒等 residue each
+ side, exhibited here rather than described. （已译） *)
 
 Section WeightedRoundTrip.
 
@@ -758,8 +755,7 @@ Next Obligation.
   intros a x y z k k' h; apply HS; simpl; symmetry; apply comp_assoc.
 Qed.
 
-(* The SAME bifunctor as §D0, with its two arguments exchanged so that the
-   OBJECT sits in the parameter slot [P] of [ParametrizedAdjunction]. *)
+(* 相关说明。 （已译） *)
 Definition Ex1_Bifunctor : Coq ∏ C ⟶ C := Copower_Bifunctor ◯ Swap.
 
 Example ex1_bifunctor_obj (J : Type) (a : C) :
@@ -957,8 +953,7 @@ Proof.
   now rewrite (cop_bifun_inj (b, J) (b', J) (g, id) j).
 Qed.
 
-(* [cp_to_char] restated in the spelling these goals present: [rewrite] is
-   syntactic and will not see through the [cp_pa_iso] delta. *)
+(* 相关说明。 （已译） *)
 Lemma cp_pa_char (J : Type) (b c : C) (u : copower J b ~> c) (j : J) :
   power_ev J c j ∘ to (cp_pa_iso J b c) u ≈ u ∘ copower_inj J b j.
 Proof. exact (cp_to_char J b c u j). Qed.
@@ -996,8 +991,8 @@ Example power_bifunctor_obj (J : Type) (b : C) :
 Example pa_right_is_power_functor (J : Type) :
   pa_right Copower_ParametrizedAdjunction J = Power_Functor J := eq_refl.
 
-(* The parametrized adjunction's own hom-set isomorphism at each index IS
-   §B's, on the nose -- so §E does not fork §B's bijection. *)
+(* The parametrized 伴随's own hom-set 同构 at each index IS
+ §B's, nose -- so §E does not fork §B's bijection. （已译） *)
 Example pa_adj_iso_is_cp_adj_iso (J : Type) (b c : C) :
   @adj C C (Partial_l Copower_Bifunctor J) (Power_Functor J)
     (pa_adj Copower_ParametrizedAdjunction J) b c
@@ -1018,7 +1013,7 @@ Context {HC : @HasIndexedCoproducts C}.
 Notation PA := (@Copower_ParametrizedAdjunction C HP HC).
 Notation CB := (@Copower_Bifunctor C HC).
 
-(* Reindexing the COPOWER, covariantly in the index set. *)
+(* 相关说明。 （已译） *)
 Definition copower_reindex {J J' : Type} (h : J ~{Coq}~> J') :
   Partial_l CB J ⟹ Partial_l CB J' := param_transform CB h.
 
@@ -1034,8 +1029,8 @@ Example power_reindex_is_conj_mate {J J' : Type} (h : J' ~{Coq}~> J) :
   power_reindex h
     = conj_mate (pa_adj PA J) (pa_adj PA J') (param_transform CB h) := eq_refl.
 
-(* The counit of the parametrized adjunction at the index [J], read through
-   the copower injections: it IS the evaluation, with one identity residue. *)
+(* The counit parametrized 伴随 at index [J], read through
+ copower injections: it IS evaluation, one 恒等 residue. （已译） *)
 Lemma cp_pa_counit_inj (J : Type) (b : C) (j : J) :
   @counit C C (Partial_l CB J) (Power_Functor J) (pa_adj PA J) b
     ∘ copower_inj J (power J b) j ≈ power_ev J b j.
@@ -1060,15 +1055,15 @@ Proof.
   apply cp_pa_counit_inj.
 Qed.
 
-(* ★ THE CONJUGACY, CONSUMED.  [pa_natural_p] is #396's theorem and
-   [pa_square_is_Conjugate] says the square IS #394's [Conjugate] on the
-   nose, so the ascription below is the whole proof. *)
+(* ★ THE CONJUGACY, CONSUMED. [pa_natural_p] #396's 定理 and
+ [pa_square_is_Conjugate] says square IS #394's [Conjugate] the
+ nose, so ascription below whole 证明. （已译） *)
 Definition power_reindex_conjugate {J J' : Type} (h : J' ~{Coq}~> J) :
   Conjugate (pa_adj PA J) (pa_adj PA J')
             (copower_reindex h) (power_reindex h) :=
   pa_natural_p PA h.
 
-(* And it is the UNIQUE such transformation. *)
+(* 相关说明。 （已译） *)
 Definition power_reindex_universal {J J' : Type} (h : J' ~{Coq}~> J) :
   ∃! tau : Power_Functor J ⟹ Power_Functor J',
     Conjugate (pa_adj PA J) (pa_adj PA J') (copower_reindex h) tau :=

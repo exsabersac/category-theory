@@ -8,7 +8,7 @@ Require Import Category.Instance.Two.Discrete.
 
 Generalizable All Variables.
 
-(** * Binary products as limits of a discrete two-object diagram *)
+(* * * Binary products limits discrete two-对象 diagram （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Product_(category_theory)

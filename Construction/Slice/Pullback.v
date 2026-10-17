@@ -28,7 +28,7 @@ Context `{C : Category}.
 
 #[local] Set Transparent Obligations.
 
-(* Dependent sum Σ_f (= f_!): post-compose the structure morphism with f. *)
+(* Dependent sum Σ_f (= f_!): post-compose structure 态射 f. （已译） *)
 Program Definition Bang_Functor `(f : a ~> b) : @Slice C a ⟶ @Slice C b := {|
   fobj := λ '(o; h), (o; f ∘ h);
   fmap := λ x y f, (_; _)
@@ -38,14 +38,14 @@ Next Obligation.
   now rewrite X.
 Qed.
 
-(* Postfix notation for Σ_f, mirroring the standard f_! ("lower shriek"). *)
+(* 相关说明。 （已译） *)
 Notation "f !" := (Bang_Functor f) (at level 90) : category_scope.
 
 (* C has all binary pullbacks; this is what makes base change f* below total. *)
 Hypothesis pullbacks : ∀ {X Y Z : C} (f : Y ~> Z) (g : X ~> Z), Pullback f g.
 
-(* Base change f*: pull the structure morphism back along f, taking the
-   resulting projection onto c as the new structure morphism over c. *)
+(* Base change f*: pull structure 态射 back along f, taking the
+ resulting projection onto c new structure 态射 over c. （已译） *)
 Program Definition Star_Functor `(f : c ~> a) :
   @Slice C a ⟶ @Slice C c := {|
   fobj := λ '(_; h),
@@ -93,7 +93,7 @@ Next Obligation.
     now rewrite b0.
 Qed.
 
-(** ** The base change adjunction Σ_f ⊣ f* *)
+(** ** The base change 伴随 Σ_f ⊣ f* *)
 
 Section BaseChange.
 
@@ -161,9 +161,9 @@ Lemma base_to_snd {o p : C} {h : o ~> a} {k : p ~> b}
   pullback_snd k f (pullbacks k f) ∘ base_to_mor g ≈ h.
 Proof. exact (snd (unique_property (base_ump h k (`1 g) (`2 g)))). Defined.
 
-(* Every competitor satisfying the two leg equations IS the transpose.
-   This single lemma discharges respectfulness, one round trip and both
-   naturality clauses. *)
+(* Every competitor satisfying two leg equations IS transpose.
+ This single 引理 discharges respectfulness, one round trip both
+ 自然性 clauses. （已译） *)
 Lemma base_to_mor_unique {o p : C} {h : o ~> a} {k : p ~> b}
       (g : (o; f ∘ h) ~{@Slice C b}~> (p; k))
       (u : o ~> Pull k f (pullbacks k f)) :
@@ -180,9 +180,9 @@ Definition base_to {o p : C} {h : o ~> a} {k : p ~> b}
   (o; h) ~{@Slice C a}~> Star_Functor f (p; k) :=
   (base_to_mor g; base_to_snd g).
 
-(* The backward transpose: post-compose with the pullback projection.
-   Its slice condition over b is [pullback_commutes] followed by the
-   argument's own slice condition over a. *)
+(* The backward transpose: post-compose pullback projection.
+ Its slice condition over b [pullback_commutes] followed the
+ 论元's own slice condition over a. （已译） *)
 Lemma base_from_ok {o p : C} {h : o ~> a} {k : p ~> b}
       (u : (o; h) ~{@Slice C a}~> Star_Functor f (p; k)) :
   k ∘ (pullback_fst k f (pullbacks k f) ∘ `1 u) ≈ f ∘ h.
@@ -210,8 +210,8 @@ Proof.
   - apply base_to_snd.
 Qed.
 
-(* Round trip: the transpose of a morphism into the pullback recovers
-   it, by uniqueness of the mediator. *)
+(* Round trip: transpose 态射 进入 pullback recovers
+ it, uniqueness mediator. （已译） *)
 Lemma base_to_from {o p : C} {h : o ~> a} {k : p ~> b}
       (u : (o; h) ~{@Slice C a}~> Star_Functor f (p; k)) :
   base_to_mor (base_from u) ≈ `1 u.
@@ -221,8 +221,8 @@ Proof.
   - exact (`2 u).
 Qed.
 
-(* The other round trip is the FIRST leg equation of the mediator, with
-   no further argument. *)
+(* The other round trip FIRST leg equation mediator, with
+ no further 论元. （已译） *)
 Lemma base_from_to {o p : C} {h : o ~> a} {k : p ~> b}
       (g : (o; f ∘ h) ~{@Slice C b}~> (p; k)) :
   `1 (base_from (base_to g)) ≈ `1 g.
@@ -270,9 +270,7 @@ Proof.
   exact (base_adj_at o p h k).
 Defined.
 
-(* The two leg equations the [to_adj_nat_r] clause needs, stated at
-   arguments whose slice types are already in pullback form, so that the
-   rewriting below has the shape it expects. *)
+(* 相关说明。 （已译） *)
 Lemma base_nat_r_fst {o p1 p2 : C} {h : o ~> a}
       {k1 : p1 ~> b} {k2 : p2 ~> b}
       (g : (p1; k1) ~{@Slice C b}~> (p2; k2))
@@ -296,8 +294,8 @@ Proof.
   apply base_to_snd.
 Qed.
 
-(** The base change adjunction: dependent sum is left adjoint to
-    pullback along the same morphism. *)
+(** The base change 伴随: dependent sum 左伴随 to
+ pullback along same 态射. （已译） *)
 Definition Base_Functor_Adjunction : Bang_Functor f ⊣ Star_Functor f.
 Proof.
   unshelve eapply (@Build_Adjunction' (@Slice C b) (@Slice C a)
@@ -318,9 +316,9 @@ Defined.
 
 (** ** Unit and counit *)
 
-(* The unit at (o; h) is the comparison of o into the pullback of f ∘ h
-   along f: the mediator of the cone ⟨id, h⟩, whose square condition is
-   (f ∘ h) ∘ id ≈ f ∘ h. *)
+(* The unit at (o; h) comparison o 进入 pullback f ∘ h
+ along f: mediator cone ⟨id, h⟩, whose square condition is
+ (f ∘ h) ∘ id ≈ f ∘ h. （已译） *)
 Definition bang_star_unit_mor (o : C) (h : o ~> a) :
   o ~> Pull (f ∘ h) f (pullbacks (f ∘ h) f) :=
   unique_obj (base_ump h (f ∘ h) id (id_right (f ∘ h))).
@@ -330,8 +328,7 @@ Definition bang_star_unit (o : C) (h : o ~> a) :
   (bang_star_unit_mor o h;
    snd (unique_property (base_ump h (f ∘ h) id (id_right (f ∘ h))))).
 
-(* The counit at (p; k) is the pullback projection itself; its slice
-   condition k ∘ fst ≈ f ∘ snd IS [pullback_commutes]. *)
+(* 相关说明。 （已译） *)
 Definition bang_star_counit_mor (p : C) (k : p ~> b) :
   Pull k f (pullbacks k f) ~> p := pullback_fst k f (pullbacks k f).
 
@@ -339,10 +336,10 @@ Definition bang_star_counit (p : C) (k : p ~> b) :
   Bang_Functor f (Star_Functor f (p; k)) ~{@Slice C b}~> (p; k) :=
   (bang_star_counit_mor p k; pullback_commutes k f (pullbacks k f)).
 
-(** *** How the named unit and counit relate to the class *)
+(* 相关说明。 （已译） *)
 
-(* The class's unit at (o; h) IS the forward transpose of the identity,
-   on the nose. *)
+(* The class's unit at (o; h) IS forward transpose 恒等,
+ nose. （已译） *)
 Example bang_star_unit_strict (o : C) (h : o ~> a) :
   `1 (@unit (@Slice C b) (@Slice C a) (Bang_Functor f)
         (Star_Functor f) Base_Functor_Adjunction (o; h))
@@ -386,8 +383,8 @@ Lemma bang_star_unit_is_unit (o : C) (h : o ~> a) :
     ≈ bang_star_unit o h.
 Proof. exact (bang_star_unit_is_mediator o h). Qed.
 
-(* The class's counit at (p; k) is the pullback projection with one
-   residual identity, which is exactly what ε := ⌈id⌉ produces. *)
+(* The class's counit at (p; k) pullback projection one
+ residual 恒等, exactly what ε := ⌈id⌉ produces. （已译） *)
 Example bang_star_counit_strict (p : C) (k : p ~> b) :
   `1 (@counit (@Slice C b) (@Slice C a) (Bang_Functor f)
         (Star_Functor f) Base_Functor_Adjunction (p; k))

@@ -28,7 +28,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The object map: a localization is a groupoid *)
+(* * ** The 对象 map: localization groupoid （已译） *)
 
 (*
    本节说明 Adjunction 相关定义、性质与动机。
@@ -57,13 +57,13 @@ Proof.
     exact (uniqueness (Fractions_UMP_weak (`2 d') f) L HF).
 Defined.
 
-(** ** The left adjoint, and the adjunction *)
+(* * ** The 左伴随, 伴随 （已译） *)
 
 Definition FractionsF : Cat ⟶ Grpd :=
   LeftAdjointFunctorFromUniversalArrows Grpd_Incl Fractions_universal_arrow.
 
-(* The generated functor's object map is the category of fractions itself,
-   not a copy of it. *)
+(* The generated 函子's 对象 map 范畴 fractions itself,
+ not copy it. （已译） *)
 
 Example FractionsF_obj (C : Cat) : fobj[FractionsF] C = frac_grpd C := eq_refl.
 
@@ -103,9 +103,9 @@ Proof.
            (FractionsProj D ◯ F)).
 Qed.
 
-(* The two functor laws, transported onto [FractionsMap].  These are the
-   "functoriality of [Fractions] in [C]" that [Construction/Fractions.v]
-   listed as not delivered. *)
+(* The two 函子 laws, transported onto [FractionsMap]. These the
+ "functoriality [Fractions] [C]" [Construction/Fractions.v]
+ listed not delivered. （已译） *)
 
 Corollary FractionsMap_id (C : Cat) :
   @equiv _ (@Functor_Setoid (Fractions C) (Fractions C))

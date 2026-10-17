@@ -57,7 +57,7 @@ Context `{H : @ElementaryTopos C}.
 
 #[local] Set Default Proof Using "All".
 
-(** ** (A) Finite completeness, and reflexive coequalizers in C^op *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限、拉回/推出、等化子相关定义、性质与动机。
@@ -96,11 +96,11 @@ Definition pow_monad : @Monad C (PowF ◯ Opposite_Functor PowF) :=
   @Adjunction_Induced_Monad (C^op) C (Opposite_Functor PowF) PowF
     pow_adjunction.
 
-(** ** (B) Balancedness, the singleton map, and reflection of isos *)
+(* 相关说明。 （已译） *)
 
-(* A topos is balanced.  The classifying square of a MONIC epi forces its
-   characteristic map down to [truth ∘ one], after which the identity
-   lies over truth and factors through f. *)
+(* A topos balanced. The classifying square MONIC epi forces its
+ characteristic map down [truth ∘ one], after 恒等
+ lies over truth factors through f. （已译） *)
 Theorem topos_balanced {x y : C} (f : x ~> y) (Mf : Monic f) (Ef : Epic f) :
   IsIsomorphism f.
 Proof.
@@ -128,8 +128,7 @@ Proof.
   unfold topos_diag; cat.
 Qed.
 
-(* The singleton map: the transpose of the characteristic map of the
-   diagonal, i.e. x ↦ {x}. *)
+(* 相关说明。 （已译） *)
 Definition sing (x : C) : x ~> Pow x :=
   curry (char (topos_diag x) (diag_Monic x)).
 
@@ -168,8 +167,8 @@ Proof.
     unfold topos_diag; unfork.
 Qed.
 
-(* The diagonal is a SYMMETRIC relation, so its characteristic map is
-   invariant under [swap]; hence the singleton is its own [flip]. *)
+(* The diagonal SYMMETRIC 关系, so characteristic map is
+ invariant under [swap]; hence singleton own [flip]. （已译） *)
 Lemma char_diag_swap (x : C) :
   char (topos_diag x) (diag_Monic x) ∘ swap
     ≈ char (topos_diag x) (diag_Monic x).
@@ -256,7 +255,7 @@ Proof.
   - exact (@Epic_of_op_Monic C b0 a0 f Mf).
 Qed.
 
-(** ** (C) The direct image along a mono *)
+(* 相关说明。 （已译） *)
 
 (* [second] of a mono is a mono: read both components off the product. *)
 Lemma second_Monic {u x z : C} (m : u ~> x) (M : Monic m) :
@@ -273,8 +272,7 @@ Proof.
           <- !fork_comp, H1, H2; reflexivity.
 Qed.
 
-(* Pushing a subobject forward along a MONO is just composing the two
-   monos -- no image factorization is needed, and none is available. *)
+(* 相关说明。 （已译） *)
 Definition sub_push {x y : C} (n : y ~> x) (N : Monic n) (s : SubObj y)
   : SubObj x :=
   {| sub_dom := sub_dom s
@@ -307,15 +305,14 @@ Proof.
       now rewrite <- Hw2; cat.
 Qed.
 
-(* The membership subobject of Pow x × x, and its characteristic map. *)
+(* 相关说明。 （已译） *)
 Definition pow_mem (x : C) : SubObj (Pow x × x) :=
   sub_reindex eval truth_subobject.
 
 Lemma char_mem (x : C) : char_sub (pow_mem x) ≈ eval.
 Proof. exact (classifier_char_roundtrip eval). Qed.
 
-(* Classification is injective on subobjects: pull truth back on both
-   sides and use the round trip twice. *)
+(* 相关说明。 （已译） *)
 Lemma char_sub_inj {x : C} (s s' : SubObj x) :
   char_sub s ≈ char_sub s' → s ≈ s'.
 Proof.
@@ -327,8 +324,8 @@ Proof.
     + apply classifier_pullback_roundtrip.
 Qed.
 
-(* Evaluation intertwines the P-image of m on the left with m on the
-   right: the substitution law for the membership relation. *)
+(* Evaluation intertwines P-image m left m the
+ right: substitution law membership 关系. （已译） *)
 Lemma eval_pow_square {u x : C} (m : u ~> x) :
   eval ∘ first (fmap[PowF] m) ≈ eval ∘ second m.
 Proof.
@@ -348,12 +345,12 @@ Proof.
   apply eval_pow_square.
 Qed.
 
-(* THE DIRECT IMAGE along a mono m: classify the pushed membership
-   relation and transpose. *)
+(* THE DIRECT IMAGE along mono m: classify pushed membership
+ 关系 transpose. （已译） *)
 Definition ex_mono {u x : C} (m : u ~> x) (M : Monic m) : Pow u ~> Pow x :=
   curry (char_sub (sub_push (second m) (second_Monic m M) (pow_mem u))).
 
-(* THE RETRACTION LAW: P m splits the direct image along m. *)
+(* 相关说明。 （已译） *)
 Theorem pow_ex_mono {u x : C} (m : u ~> x) (M : Monic m) :
   fmap[PowF] m ∘ ex_mono m M ≈ id.
 Proof.
@@ -366,7 +363,7 @@ Proof.
   apply curry_eval.
 Qed.
 
-(** ** (D) Pullback plumbing and Beck-Chevalley *)
+(* 相关说明。 （已译） *)
 
 Lemma IsPullback_sym {x y z : C} {f : x ~> z} {g : y ~> z}
       {P : C} {p1 : P ~> x} {p2 : P ~> y} :
@@ -548,7 +545,7 @@ Proof.
     apply curry_comp_l.
 Qed.
 
-(** ** (E) The split coequalizer, and monadicity *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -599,7 +596,7 @@ Definition pow_PreservesReflexiveCoequalizers :
       (pow_split_coequalizer (refl_section_f RP) (refl_section_g RP)
          (@IsEqualizer_op_of_IsCoequalizer (C^op) a b f g k e HC)).
 
-(* The equivalence C^op ≃ EM(P ◯ P^op), CONSUMED from Crude.v. *)
+(* The 等价 C^op ≃ EM(P ◯ P^op), CONSUMED Crude.v. （已译） *)
 Definition pow_equivalence :
   EquivalenceOfCategories (EM_Comparison pow_adjunction) :=
   crude_monadicity pow_adjunction op_HasReflexiveCoequalizers

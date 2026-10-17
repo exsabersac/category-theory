@@ -44,15 +44,15 @@ Program Definition Subst : W ⟶ B := {|
 |}.
 Next Obligation.
   (* fmap_respects: W's hom-setoid identifies ALL parallel arrows, so the
-     cast must not depend on the proof — nat-UIP, the only place it is
-     needed for functoriality. *)
+ cast must not depend 证明 — nat-UIP, place it is
+ needed functoriality. （已译） *)
   proper.
   apply compose_respects; [| reflexivity ].
   apply compose_respects; [ reflexivity |].
   apply nf_cast_irr.
 Qed.
 Next Obligation.
-  (* fmap_id: the cast at eq_refl is the identity by conversion. *)
+  (* fmap_id: cast at eq_refl 恒等 conversion. （已译） *)
   rewrite id_right.
   apply iso_from_to.
 Qed.
@@ -75,8 +75,7 @@ Theorem Subst_tensor {v v' u u' : Word}
     ≈ bimap (fmap[Subst] p) (fmap[Subst] q).
 Proof.
   simpl.
-  (* Peel the join off the cast with [J_cast], then cancel it against its
-     inverse; the residue is the bimap of the two component fmaps. *)
+  (* 相关说明。 （已译） *)
   rewrite <- !comp_assoc.
   rewrite (comp_assoc (id_cast _) (to (J b (wlen v) (wlen u) I))).
   rewrite (J_cast b p q).
@@ -160,9 +159,9 @@ Next Obligation.
   split; apply iso_from_to.
 Qed.
 
-(** ** The three strictness equations
+(* * ** The three strictness equations
 
-    Stated standalone so the coherence corollary (#497) can consume them. *)
+ Stated standalone so coherence 推论 (#497) can consume them. （已译） *)
 
 Theorem Subst_unit_left (x : Word) :
   fmap[Subst] (to (@unit_left W W_Monoidal x))
@@ -181,7 +180,7 @@ Theorem Subst_unit_right (x : Word) :
     ≈ to (@unit_right B MB (subst b x)).
 Proof.
   simpl.
-  (* Group the cast against the join; that pair is exactly [J_right_unit]. *)
+  (* 相关说明。 （已译） *)
   rewrite comp_assoc.
   rewrite <- (comp_assoc (from (can b x))).
   rewrite (J_right_unit b (wlen x)).
@@ -197,8 +196,7 @@ Theorem Subst_assoc (x y z : Word) :
     ≈ to (@tensor_assoc B MB (subst b x) (subst b y) (subst b z)).
 Proof.
   simpl.
-  (* Read J_assoc across the eq_sym cast first: composing both sides of
-     [J_assoc] with the loop kills its cast. *)
+  (* 相关说明。 （已译） *)
   assert (JA' :
     id_cast (f_equal (fun i => nf b i I)
                (eq_sym (Nat.add_assoc (wlen x) (wlen y) (wlen z))))
@@ -213,7 +211,7 @@ Proof.
     rewrite nf_cast_trans.
     rewrite nf_cast_loop, id_left.
     reflexivity. }
-  (* Assemble the left side into cast-join-components form and fire JA'. *)
+  (* 相关说明。 （已译） *)
   rewrite comp_assoc.
   rewrite <- (comp_assoc _ (id_cast _)
                 (to (J b (wlen x + wlen y) (wlen z) I))).
@@ -225,8 +223,7 @@ Proof.
                 (id_cast _ ∘ to (J b (wlen x + wlen y) (wlen z) I))
                 (bimap (to (J b (wlen x) (wlen y) I)) id)).
   rewrite JA'.
-  (* Cancel the outer join pair, carry α across the components, and let the
-     remaining conjugates cancel. *)
+  (* 相关说明。 （已译） *)
   rewrite <- (comp_assoc _ (from (J b (wlen x) (wlen y + wlen z) I))).
   rewrite (comp_assoc (from (J b (wlen x) (wlen y + wlen z) I))
              (to (J b (wlen x) (wlen y + wlen z) I)
@@ -242,9 +239,9 @@ Proof.
   rewrite <- (to_tensor_assoc_natural
                 (to (can b x)) (to (can b y)) (to (can b z))).
   normal.
-  (* The residue is [bimap id CONJ ∘ α ≈ α] with CONJ a conjugate of the
-     y/z-join by its inverse; close by congruence so the argument does not
-     depend on how [normal] grouped the composite. *)
+  (* The residue [bimap id CONJ ∘ α ≈ α] CONJ conjugate the
+ y/z-join inverse; close congruence so 论元 does not
+ depend how [normal] grouped 复合. （已译） *)
   etransitivity; [| apply id_left ].
   apply compose_respects; [| reflexivity ].
   etransitivity; [| apply bimap_id_id ].
@@ -260,7 +257,7 @@ Proof.
     reflexivity.
 Qed.
 
-(** ** The strong and strict monoidal packagings *)
+(* 相关说明。 （已译） *)
 
 Program Definition Subst_Monoidal :
   @MonoidalFunctor W B W_Monoidal MB Subst := {|
@@ -299,8 +296,7 @@ Next Obligation.
   intros x y z; simpl.
   normal.
   rewrite ?id_left, ?id_right.
-  (* [normal] left-associated one node further than [fmap]'s definitional
-     grouping; put it back and the goal IS [Subst_assoc], by conversion. *)
+  (* 相关说明。 （已译） *)
   rewrite <- (comp_assoc _ (to (J b (wlen x + wlen y) (wlen z) I))
                 (bimap (to (J b (wlen x) (wlen y) I)
                           ∘ bimap (to (can b x)) (to (can b y)))
@@ -322,14 +318,14 @@ Next Obligation. intros x y; simpl; reflexivity. Qed.
 (* The generator condition, definitionally. *)
 Example Subst_generator : Subst WI = b := eq_refl.
 
-(* Strictness on the nose: both object equalities of [Subst_Strict] are
-   literally [eq_refl], stronger than the class demands. *)
+(* Strictness nose: both 对象 equalities [Subst_Strict] are
+ literally [eq_refl], stronger than class demands. （已译） *)
 Example Subst_strict_pure_on_the_nose :
   @strict_pure_obj W B W_Monoidal MB Subst Subst_Strict = eq_refl := eq_refl.
 Example Subst_strict_ap_on_the_nose (x y : Word) :
   @strict_ap_obj W B W_Monoidal MB Subst Subst_Strict x y = eq_refl := eq_refl.
 
-(* The associator instance at length 3, and the unitors at length 1. *)
+(* 相关说明。 （已译） *)
 Corollary Subst_assoc_words :
   fmap[Subst] (to (@tensor_assoc W W_Monoidal WI WI WI))
     ≈ to (@tensor_assoc B MB b b b).
@@ -390,9 +386,9 @@ Context (G : W ⟶ B).
 Context (SG : @StrictMonoidalFunctor W B W_Monoidal MB G).
 Context (Hb : G WI = b).
 
-(* Object agreement, DERIVED from strictness plus the single generator
-   datum — where the PROP development takes the whole family as a
-   hypothesis. *)
+(* Object agreement, DERIVED strictness plus single generator
+ datum — where PROP development takes whole family a
+ 假设. （已译） *)
 Fixpoint Theta (w : Word) : G w = subst b w :=
   match w with
   | WE     => eq_sym (@strict_pure_obj _ _ _ _ G SG)
@@ -402,9 +398,9 @@ Fixpoint Theta (w : Word) : G w = subst b w :=
                 (tensor_eq (Theta v) (Theta u))
   end.
 
-(* Mac Lane's T(f □ g) = Tf □' Tg, extracted from strictness once: the
-   naturality square of the tensor comparison, with both components rewritten
-   to transported identities. *)
+(* Mac Lane's T(f □ g) = Tf □' Tg, extracted strictness once: the
+ 自然性 square tensor comparison, both components rewritten
+ transported identities. （已译） *)
 Lemma strict_fmap_bimap {v v' u u' : Word}
   (f : v ~{W}~> v') (g : u ~{W}~> u') :
   id_cast (@strict_ap_obj _ _ _ _ G SG v' u')
@@ -422,14 +418,14 @@ Proof.
   symmetry in N; exact N.
 Qed.
 
-(* W is thin, so G cannot distinguish parallel arrows — the license to pick
-   the structurally convenient representative in every proof below. *)
+(* W thin, so G cannot distinguish parallel arrows — license pick
+ structurally convenient representative every 证明 below. （已译） *)
 Lemma G_irr {v w : Word} (p q : v ~{W}~> w) : fmap[G] p ≈ fmap[G] q.
 Proof. apply fmap_respects; constructor. Qed.
 
-(* The canonical arrow between normalised words of equal length, and its
-   G-image: a transported identity.  Stated over bare naturals so [destruct]
-   applies. *)
+(* The canonical arrow between normalised words equal length, its
+ G-image: transported 恒等. Stated over bare naturals so [destruct]
+ applies. （已译） *)
 Definition nfword_arrow {m n : nat} (e : m = n) :
   nfword m ~{W}~> nfword n :=
   match e in _ = k return nfword m ~{W}~> nfword k with
@@ -445,7 +441,7 @@ Proof.
   apply fmap_id.
 Qed.
 
-(* Shorthand for the object-agreement transport. *)
+(* Shorthand 对象-agreement transport. （已译） *)
 Notation thc w := (id_cast (Theta w)).
 
 (* [subst (nfword n) = nf n I] holds by induction, NOT by conversion — at an
@@ -466,15 +462,14 @@ Notation sigma n := (id_cast (subst_nfword n)).
 Lemma id_cast_match {X Y : B} (e : X = Y) :
   (match e in _ = T return X ~{B}~> T with eq_refl => id end) = id_cast e.
 Proof. reflexivity. Qed.
-(* Bridge: the [from]-direction matches of Strict.v are the casts along the
-   symmetric equalities. *)
+(* 相关说明。 （已译） *)
 Lemma id_cast_sym_match {X Y : B} (e : X = Y) :
   (match e in _ = T return T ~{B}~> X with eq_refl => id end)
     = id_cast (eq_sym e).
 Proof. destruct e; reflexivity. Qed.
 
-(* [sigma (S k)] and its kin display as the partially-reduced [tensor_eq]
-   match; this is that shape's split lemma. *)
+(* [sigma (S k)] kin display partially-reduced [tensor_eq]
+ match; 这是 shape's split 引理. （已译） *)
 Lemma id_cast_tensor_match {Y Y' : B} (e : Y = Y') :
   id_cast (match e in _ = o
            return ((b ⨂ Y)%object = (b ⨂ o)%object)
@@ -482,8 +477,8 @@ Lemma id_cast_tensor_match {Y Y' : B} (e : Y = Y') :
     ≈ bimap id[b] (id_cast e).
 Proof. destruct e; simpl; now rewrite bimap_id_id. Qed.
 
-(* The tensor of two object agreements is the agreement at the tensor,
-   across the strictness cast. *)
+(* The tensor two 对象 agreements agreement at tensor,
+ across strictness cast. （已译） *)
 Lemma thc_tensor (v u : Word) :
   bimap (thc v) (thc u)
     ≈ thc (WT v u) ∘ id_cast (@strict_ap_obj _ _ _ _ G SG v u).
@@ -495,9 +490,9 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(* The join square: G carries the W-side join to the B-side join, across the
-   object agreement.  Induction on m; the base is SG's left unitality, the
-   step is SG's associativity coherence. *)
+(* The join square: G carries W-side join B-side join, across the
+ 对象 agreement. Induction m; base SG's left unitality, the
+ step SG's associativity coherence. （已译） *)
 Lemma JW_unique (m n : nat) :
   to (J b m n I)
       ∘ bimap (sigma m) (sigma n)
@@ -538,14 +533,14 @@ Proof.
     (* Split the composite object-agreement cast. *)
     rewrite <- id_cast_trans.
     rewrite id_cast_tensor_eq.
-    (* Carry the agreement across the left unitor by naturality. *)
+    (* Carry agreement across left unitor 自然性. （已译） *)
     rewrite !comp_assoc.
     rewrite (to_unit_left_natural (id_cast (subst_nfword n) ∘ thc (nfword n))).
     rewrite <- (comp_assoc _
                   (bimap id (id_cast (subst_nfword n) ∘ thc (nfword n)))
                   (bimap (id_cast (eq_sym (@strict_pure_obj _ _ _ _ G SG))) id)).
     rewrite bimap_id_left_right.
-    (* Fuse the left side's cast pair into the same shape. *)
+    (* Fuse left side's cast pair 进入 same shape. （已译） *)
     rewrite <- (comp_assoc _
                   (bimap (id_cast (subst_nfword 0)) (id_cast (subst_nfword n)))
                   (bimap (id_cast (eq_sym (@strict_pure_obj _ _ _ _ G SG)))
@@ -555,8 +550,8 @@ Proof.
     change (id_cast (subst_nfword 0)) with (@id B (@I B MB)).
     normal.
     reflexivity.
-  - (* Split G over the S-branch composite, solve SG's associativity law for
-       the G-image of the W-side associator, and reduce to the IH. *)
+  - (* Split G over S-branch 复合, solve SG's associativity law for
+ G-image W-side associator, reduce IH. （已译） *)
     (* simpl dissolved W's composition into eq_trans; thinness lets us swap
        in the explicit composite representative before splitting G over it. *)
     rewrite (G_irr _ (bimap (@id W WI) (to (JW m n))
@@ -567,9 +562,9 @@ Proof.
                   (@strict_functor_is_monoidal _ _ _ _ G SG)
                   WI (nfword m) (nfword n)) as MA.
     simpl in MA.
-    (* LHS -> RHS.  Split every composite cast, push the associator across
-       the components, fold the IH back in, then let strictness translate the
-       remaining G-images. *)
+    (* LHS -> RHS. Split every 复合 cast, push associator across
+ components, fold IH back in, then let strictness translate the
+ remaining G-images. （已译） *)
     rewrite <- !id_cast_trans.
     rewrite !id_cast_tensor_eq.
     rewrite !id_cast_tensor_match.
@@ -616,14 +611,14 @@ Proof.
                    (bimap (@id W WI) (to (JW m n)))) in GB.
     rewrite GB.
     rewrite fmap_id.
-    (* Cancel the adjacent inverse pair the GB insertion created. *)
+    (* Cancel adjacent inverse pair GB 嵌入 created. （已译） *)
     rewrite !comp_assoc.
     rewrite <- (comp_assoc _
                   (id_cast (eq_sym (@strict_ap_obj _ _ _ _ G SG
                                WI (nfword (m + n)))))
                   (id_cast (@strict_ap_obj _ _ _ _ G SG WI (nfword (m + n))))).
     rewrite id_cast_inv_l, id_right.
-    (* The G-image of the W-associator, in all-cast form, from MA. *)
+    (* 相关说明。 （已译） *)
     assert (GAc : fmap[G] (to (@tensor_assoc W W_Monoidal
                                  WI (nfword m) (nfword n)))
               ≈ id_cast (@strict_ap_obj _ _ _ _ G SG
@@ -663,8 +658,8 @@ Proof.
       rewrite id_cast_inv_r.
       reflexivity. }
     rewrite GAc.
-    (* Cancel the WT-pair the GAc insertion created, split the leftover inner
-       cast on the left, and the two sides fuse to the same normal form. *)
+    (* Cancel WT-pair GAc 嵌入 created, split leftover inner
+ cast left, two sides fuse same normal form. （已译） *)
     rewrite !comp_assoc.
     rewrite <- (comp_assoc _
                   (id_cast (eq_sym (@strict_ap_obj _ _ _ _ G SG
@@ -746,8 +741,8 @@ Proof.
     normal.
     rewrite (from_unit_right_natural (id_cast Hb)).
     reflexivity.
-  - (* WT: expand G over the composite and the component bimap, tensor the
-       IHs, and finish with the join square. *)
+  - (* WT: expand G over 复合 component bimap, tensor the
+ IHs, finish join square. （已译） *)
     rewrite (@G_irr (WT v u) (nfword (wlen v + wlen u)) _
                (to (JW (wlen v) (wlen u))
                   ∘ bimap[W_tensor] (to (canW v)) (to (canW u)))).

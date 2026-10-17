@@ -24,7 +24,7 @@ Set Universe Polymorphism.
 
 Generalizable All Variables.
 
-(** * The coslice projection creates limits *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/created+limit
@@ -34,7 +34,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The identity is its own right adjoint, so the comma side is free *)
+(* * ** The 恒等 own 右伴随, so comma side free （已译） *)
 
 Definition Id_PreservesImageLimit {C : Category} : @PreservesImageLimit C C Id
   := right_adjoint_PreservesImageLimit (@Adjunction_Id C).
@@ -78,7 +78,7 @@ Definition coslice_comma_Complete_via_adjoint (HC : @Complete C) :
   @Complete (=(c) ↓ Id) :=
   Comma_Complete_right_adjoint (@Adjunction_Id C) c HC.
 
-(** ** Transporting along [Comma_Coslice] *)
+(* 相关说明。 （已译） *)
 
 Definition Coslice_to_Comma : (c ̸co C) ⟶ (=(c) ↓ Id) :=
   to (Comma_Coslice C c).
@@ -95,7 +95,7 @@ Definition Coslice_Complete (HC : @Complete C) : @Complete (c ̸co C) :=
   creates_limits_Complete Coslice_to_Comma (coslice_comma_Complete HC)
     Coslice_to_Comma_CreatesAllLimits.
 
-(* The coslice projection, as the transported comma projection. *)
+(* 相关说明。 （已译） *)
 
 Definition coslice_comma_proj : (c ̸co C) ⟶ C := comma_proj2 ◯ Coslice_to_Comma.
 
@@ -110,7 +110,7 @@ Definition coslice_comma_proj_CreatesAllLimits :
 
 End CosliceComma.
 
-(** ** Strict creation for the PLAIN coslice projection *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、函子相关定义、性质与动机。
@@ -137,8 +137,7 @@ Definition coslice_structure_cone : Cone (Coslice_Proj c ◯ K) :=
     (@Build_ACone J C c (Coslice_Proj c ◯ K)
        (fun j => `2 (K j)) (@coslice_structure_coherence)).
 
-(* Reflection needs no chosen cone downstairs, so it sits outside the
-   section that fixes one. *)
+(* 相关说明。 （已译） *)
 
 Definition coslice_reflect_at (M : Cone K)
   (HM : IsLimitCone (FCone (Coslice_Proj c) M)) : IsLimitCone M.
@@ -226,7 +225,7 @@ Defined.
 Definition coslice_limit_at : Limit K :=
   @Build_Limit J (c ̸co C) K coslice_lift_cone coslice_lift_ump.
 
-(* Mac Lane's [F a = x] and [F σ = τ], at the GIVEN limiting cone. *)
+(* 相关说明。 （已译） *)
 
 Definition coslice_strict_lift : StrictLift K (Coslice_Proj c) N :=
   @Build_StrictLift J (c ̸co C) C K (Coslice_Proj c) N

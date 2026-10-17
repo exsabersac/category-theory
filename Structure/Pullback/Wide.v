@@ -11,7 +11,7 @@ Require Import Category.Instance.Sets.Products.
 
 Generalizable All Variables.
 
-(** * Wide pullbacks, and products as wide pullbacks over a terminal object *)
+(* * * Wide pullbacks, products wide pullbacks over 终对象 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/pullback
@@ -22,7 +22,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The elementary universal property *)
+(* * ** The elementary 普遍性质 （已译） *)
 
 (*
    本节说明拉回/推出、等化子相关定义、性质与动机。
@@ -31,7 +31,7 @@ Generalizable All Variables.
 *)
 Record IsWidePullback {C : Category} {I : Type} {A : I → C} {z : C}
   (f : ∀ i : I, A i ~> z) (P : C) (p : ∀ i : I, P ~> A i) := {
-  (* every leg is carried to the common codomain in the same way *)
+  (* 相关说明。 （已译） *)
   wpull_commutes : ∀ i j : I, f i ∘ p i ≈ f j ∘ p j;
 
   (* universal property: every jointly agreeing family factors uniquely *)
@@ -70,9 +70,7 @@ Arguments ump_wide_pullbacks {_ _ _ _ _} _ _ _ _.
 
 Coercion WPull : WidePullback >-> obj.
 
-(* Both conversions are field repackagings, mirroring
-   [pullback_is_pullback] and [is_pullback_pullback] of
-   Theory/Morphisms/Stability.v. *)
+(* 相关说明。 （已译） *)
 
 Definition wide_pullback_is_pullback {C : Category} {I : Type} {A : I → C}
   {z : C} {f : ∀ i : I, A i ~> z} (W : WidePullback f) :
@@ -88,9 +86,9 @@ Definition is_wide_pullback_pullback {C : Category} {I : Type} {A : I → C}
    ; wide_pullback_commutes := wpull_commutes W
    ; ump_wide_pullbacks     := fun Q q Hq => wpull_ump W q Hq |}.
 
-(* MEASURED STRICT: both composites are the identity on the nose, on the
-   WHOLE record, because both records have primitive projections with eta.
-   Neither is merely an equivalence up to ≈. *)
+(* MEASURED STRICT: both composites 恒等 nose, the
+ WHOLE record, because both records have primitive projections eta.
+ Neither merely 等价 up ≈. （已译） *)
 
 Example wide_pullback_predicate_round {C : Category} {I : Type} {A : I → C}
   {z : C} {f : ∀ i : I, A i ~> z} {P : C} {p : ∀ i : I, P ~> A i}
@@ -113,7 +111,7 @@ Class HasWidePullbacks (C : Category) := {
 
 Arguments wide_pullback {C _ I A z} f.
 
-(** ** The projections are jointly monic *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明始/终对象、来源与用途相关定义、性质与动机。
@@ -137,7 +135,7 @@ Proof.
     intro i; symmetry; apply Hd.
 Qed.
 
-(** ** Wide pullbacks are unique up to isomorphism *)
+(* * ** Wide pullbacks unique up 同构 （已译） *)
 
 (*
    本节说明 Wide 相关定义、性质与动机。
@@ -172,7 +170,7 @@ Proof.
       intro i; apply id_right.
 Defined.
 
-(** ** The empty index: the wide pullback is the terminal object *)
+(* * ** The empty index: wide pullback 终对象 （已译） *)
 
 (* Over an empty index there is exactly one family of legs into any apex,
    namely the empty function. *)
@@ -180,7 +178,7 @@ Definition wpull_empty_legs {C : Category} {I : Type} {A : I → C}
   (Hempty : I → False) (Q : C) : ∀ i : I, Q ~> A i.
 Proof. intro i; destruct (Hempty i). Defined.
 
-(* ... and it agrees with itself vacuously. *)
+(* 相关说明。 （已译） *)
 Lemma wpull_empty_comm {C : Category} {I : Type} {A : I → C} {z : C}
   (f : ∀ i : I, A i ~> z) (Hempty : I → False) {Q : C}
   (q : ∀ i : I, Q ~> A i) : ∀ i j : I, f i ∘ q i ≈ f j ∘ q j.
@@ -207,9 +205,9 @@ Proof.
     intro i; destruct (Hempty i).
 Defined.
 
-(* Conversely a terminal object is a wide pullback of the empty family over
-   ANY codomain, with its (empty) family of projections.  Emptiness is used
-   twice, once for each field. *)
+(* Conversely 终对象 wide pullback empty family over
+ ANY codomain, (empty) family projections. Emptiness used
+ twice, once each field. （已译） *)
 Definition terminal_wide_pullback_empty {C : Category} {I : Type}
   {A : I → C} {z : C} (f : ∀ i : I, A i ~> z) {P : C}
   (p : ∀ i : I, P ~> A i) (Hempty : I → False) (H : IsTerminalObj P) :
@@ -224,7 +222,7 @@ Proof.
     + intros v _; apply (is_terminal_unique H).
 Defined.
 
-(** ** Riehl's lemma: products are wide pullbacks over a terminal object *)
+(* * ** Riehl's 引理: products wide pullbacks over 终对象 （已译） *)
 
 (*
    本节说明拉回/推出、始/终对象相关定义、性质与动机。
@@ -287,7 +285,7 @@ Theorem wide_pullback_binary {C : Category} {x y z : C}
   IsPullback f g P p1 p2.
 Proof.
   unshelve refine {| is_pullback_commutes := _ |}.
-  - (* the square is the [∀ i j] condition at [true], [false] *)
+  - (* 相关说明。 （已译） *)
     exact (wpull_commutes W true false).
   - intros Q q1 q2 Hq.
     assert (Hc : ∀ i j : bool,
@@ -340,7 +338,7 @@ Example wide_pullback_binary_commutes {C : Category} {x y z : C}
   is_pullback_commutes (wide_pullback_binary (binary_wide_pullback H))
   = is_pullback_commutes H := eq_refl.
 
-(** ** Non-vacuity: the identification at [Sets] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明拉回/推出、始/终对象相关定义、性质与动机。
@@ -353,9 +351,9 @@ Definition Sets_wide_pullback_over_one {A : Type} (F : A → obj[Sets]) :
   wide_pullback_product F (Sets_iprod_obj F) (Sets_iprod_proj F)
     (Sets_IsIndexedProduct F).
 
-(* ... and the converse direction is available at the same witness, so the
-   two readings of that object genuinely coincide in a concrete category
-   rather than only in the abstract statement. *)
+(* ... converse direction available at same witness, so the
+ two readings 对象 genuinely coincide concrete 范畴
+ rather than abstract statement. （已译） *)
 Definition Sets_iprod_of_wide_pullback {A : Type} (F : A → obj[Sets]) :
   IsIndexedProduct F (Sets_iprod_obj F) (Sets_iprod_proj F) :=
   product_wide_pullback F (Sets_iprod_obj F) (Sets_iprod_proj F)

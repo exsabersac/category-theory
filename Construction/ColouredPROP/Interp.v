@@ -19,7 +19,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * Interpreting free coloured-PROP terms in an arbitrary coloured PROP *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/free+category
@@ -37,9 +37,9 @@ Section CInterp.
 Context {Colour : Type}.
 Context (P : ColouredPROP Colour).
 
-(** The coloured-PROP-object [⟦cs⟧], as in
-    [Construction/ColouredPROP.v] (whose notation is section-local
-    there and must be re-declared per file). *)
+(** The coloured-PROP-对象 [⟦cs⟧], in
+ [Construction/ColouredPROP.v] (whose notation section-local
+ there must re-declared per file). （已译） *)
 Notation "⟦ cs ⟧" := (@cprop_of_list Colour P cs)
   (at level 0, format "⟦ cs ⟧").
 
@@ -103,8 +103,8 @@ Proof.
            (fun a b c => @hexagon_identity_sym P _ a b c)).
 Qed.
 
-(** The unitor coherences at [MPc] (Joyal–Street Prop. 2.1, imported
-    from [Structure/Monoidal/Braided/Proofs.v] and transported). *)
+(** 本节：The unitor coherences at [MPc] (Joyal–Street Prop. 2.1, imported
+ [Structure/Monoidal/Braided/Proofs.v] transported). （已译） *)
 Lemma cstrict_braid_unit_left (x : P) :
   to (@unit_left P MPc x) ∘ cstrict_braid x (@I P MPc)
     ≈ to (@unit_right P MPc x).
@@ -127,9 +127,9 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** A transparent pairing of object equalities through the tensor.
-    The stdlib's [f_equal2] is opaque, so a cast along it would be
-    stuck even at [eq_refl]; this local combinator reduces. *)
+(** A transparent pairing 对象 equalities through tensor.
+ The stdlib's [f_equal2] opaque, so cast along it would be
+ stuck even at [eq_refl]; local 组合子 reduces. （已译） *)
 Definition ctensor_obj_eq {a a' b b' : P} (e : a = a') (e' : b = b') :
   (a ⨂[MPc] b)%object = (a' ⨂[MPc] b')%object :=
   match e in _ = u return ((a ⨂[MPc] b)%object = (u ⨂[MPc] b')%object) with
@@ -141,7 +141,7 @@ Definition ctensor_obj_eq {a a' b b' : P} (e : a = a') (e' : b = b') :
       end
   end.
 
-(** A tensor of casts is the cast along the paired equality. *)
+(** 本节：A tensor casts cast along paired equality. （已译） *)
 Lemma cbimap_cast {a a' b b' : P} (e : a = a') (e' : b = b') :
   (id_cast e ⨂[MPc] id_cast e') ≈ id_cast (ctensor_obj_eq e e').
 Proof.
@@ -378,9 +378,9 @@ Qed.
 
 Context {OD : @ObjDecEq P}.
 
-(** [chcast] is proof-irrelevant in its boundary equation: both casts
-    transport along object equalities of [P], which are unique under
-    [ObjDecEq].  No decidability of [Colour] is involved. *)
+(** [chcast] 证明-irrelevant boundary equation: both casts
+ transport along 对象 equalities [P], unique under
+ [ObjDecEq]. No decidability [Colour] involved. （已译） *)
 Lemma chcast_irr {cs ds : list Colour} (e1 e2 : cs = ds) :
   chcast e1 = chcast e2.
 Proof using OD P.
@@ -410,9 +410,9 @@ Proof using OD P.
   apply id_right.
 Qed.
 
-(** K6: tensoring with [id ⟦[]⟧] on the left is the identity (the
-    boundary equation [[] ++ a = a] holds definitionally, exactly as
-    [0 + a = a] did in the one-sorted donor). *)
+(** K6: tensoring [id ⟦[]⟧] left 恒等 (the
+ boundary equation [[] ++ = a] holds definitionally, exactly as
+ [0 + = a] did one-sorted donor). （已译） *)
 Lemma ctensor_hom_idnil_left {a b : list Colour} (f : ⟦a⟧ ~{P}~> ⟦b⟧) :
   id[⟦[]⟧] ⊞c f ≈ f.
 Proof using OD P.
@@ -421,8 +421,8 @@ Proof using OD P.
            (cprop_tensor_app [] a) (cprop_tensor_app [] b)).
 Qed.
 
-(** General right-unit absorption at [MPc], with mediating casts for
-    the propositional boundary equation [a ++ [] = a]. *)
+(** 本节：General right-unit absorption at [MPc], mediating casts for
+ propositional boundary equation [a ++ [] = a]. （已译） *)
 Lemma ctensor_unit_right_general {u x y x' y' : P} (eu : @I P MPc = u)
   (f : x ~> y)
   (e1 : (x ⨂[MPc] u)%object = x') (e2 : (y ⨂[MPc] u)%object = y')
@@ -441,8 +441,8 @@ Proof using OD P.
   cat.
 Qed.
 
-(** K7: tensoring with [id ⟦[]⟧] on the right is the identity up to
-    the [chcast]s along [a ++ [] = a]. *)
+(** K7: tensoring [id ⟦[]⟧] right 恒等 up to
+ [chcast]s along [a ++ [] = a]. （已译） *)
 Lemma ctensor_hom_idnil_right {a b : list Colour} (f : ⟦a⟧ ~{P}~> ⟦b⟧) :
   f ⊞c id[⟦[]⟧]
     ≈ chcast (eq_sym (app_nil_r b)) ∘ f ∘ chcast (app_nil_r a).
@@ -500,8 +500,8 @@ Proof using OD P.
            (f_equal (@cprop_of_list Colour P) (eq_sym (app_assoc b d k)))).
 Qed.
 
-(** The [eq_sym] cast in the reversed-match spelling used by
-    [strict_assoc_from] ([Structure/Monoidal/Strict.v]). *)
+(** 本节：The [eq_sym] cast reversed-match spelling used by
+ [strict_assoc_from] ([Structure/Monoidal/Strict.v]). （已译） *)
 Lemma cid_cast_sym_match {a b : P} (e : a = b) :
   id_cast (eq_sym e) = match e in _ = T return (T ~> a) with
                        | eq_refl => id
@@ -517,7 +517,7 @@ Proof using P.
   symmetry; apply strict_assoc_from.
 Qed.
 
-(** The first hexagon, with every structural map spelled as a cast. *)
+(** 本节：The first hexagon, every structural map spelled cast. （已译） *)
 Lemma cstrict_braid_hex_cast (x y z : P) :
   id_cast (strict_assoc_obj y z x)
      ∘ cstrict_braid x ((y ⨂[MPc] z)%object)
@@ -582,8 +582,8 @@ Proof using OD P.
   reflexivity.
 Qed.
 
-(** K9: the right hexagon at [⟦·⟧]-indexed objects, in the transport
-    spelling produced by interpreting [CTE_braid_hex_right]. *)
+(** K9: right hexagon at [⟦·⟧]-indexed 对象, transport
+ spelling produced interpreting [CTE_braid_hex_right]. （已译） *)
 Lemma cbraid_hom_hex_r (m n p : list Colour) :
   chcast (eq_sym (app_assoc n p m)) ∘ cbraid_hom m (n ++ p)
     ≈ ((id[⟦n⟧] ⊞c cbraid_hom m p) ∘ chcast (eq_sym (app_assoc n m p)))
@@ -642,8 +642,8 @@ Proof using OD P.
   reflexivity.
 Qed.
 
-(** K10: the left hexagon at [⟦·⟧]-indexed objects, in the transport
-    spelling produced by interpreting [CTE_braid_hex_left]. *)
+(** K10: left hexagon at [⟦·⟧]-indexed 对象, transport
+ spelling produced interpreting [CTE_braid_hex_left]. （已译） *)
 Lemma cbraid_hom_hex_l (m n p : list Colour) :
   cbraid_hom (m ++ n) p ∘ chcast (app_assoc m n p)
     ≈ (chcast (eq_sym (app_assoc p m n))
@@ -663,7 +663,7 @@ Proof using OD P.
            (f_equal (@cprop_of_list Colour P) (eq_sym (app_assoc p m n)))).
 Qed.
 
-(** The braids against the unit object, as casts. *)
+(** The braids against unit 对象, casts. （已译） *)
 Lemma cstrict_braid_unit_l_core (x : P) :
   cstrict_braid x (@I P MPc)
     ≈ id_cast (eq_sym (strict_unit_left_obj x))
@@ -694,8 +694,8 @@ Proof using P.
   reflexivity.
 Qed.
 
-(** General unit-braid collapse: the braid against a unit-equal object
-    is a pure cast, so a cast-conjugated copy of it is the identity. *)
+(** General unit-braid collapse: braid against unit-equal 对象
+ pure cast, so cast-conjugated copy it 恒等. （已译） *)
 Lemma cbraid_unit_general_l {u x q r : P} (eu : @I P MPc = u)
   (eux : (u ⨂[MPc] x)%object = q) (exu : (x ⨂[MPc] u)%object = r)
   (d : r = q) :
@@ -732,7 +732,7 @@ Proof using OD P.
   reflexivity.
 Qed.
 
-(** K11: the braid of [[]] past [n] collapses to the identity. *)
+(** K11: braid [[]] past [n] collapses 恒等. （已译） *)
 Lemma cbraid_hom_unit_l (n : list Colour) :
   chcast (app_nil_r n) ∘ cbraid_hom [] n ≈ id[⟦n⟧].
 Proof using OD P.
@@ -742,7 +742,7 @@ Proof using OD P.
            (f_equal (@cprop_of_list Colour P) (app_nil_r n))).
 Qed.
 
-(** K12: the braid of [n] past [[]] collapses to the identity. *)
+(** K12: braid [n] past [[]] collapses 恒等. （已译） *)
 Lemma cbraid_hom_unit_r (n : list Colour) :
   cbraid_hom n [] ∘ chcast (eq_sym (app_nil_r n)) ≈ id[⟦n⟧].
 Proof using OD P.
@@ -758,7 +758,7 @@ Proof using OD P.
   - reflexivity.
 Qed.
 
-(** *** Valuations and the interpretation of terms *)
+(* 相关说明。 （已译） *)
 
 Context (S : CSignature Colour).
 
@@ -788,12 +788,7 @@ Lemma cinterp_CT_cast {cs ds : list Colour} (e : cs = ds) :
   cinterp (CT_cast e) = chcast e.
 Proof using P. destruct e; reflexivity. Qed.
 
-(** ** Transport bridges
-
-    The strict-PROP axioms of [CTermEq] carry their boundary
-    mismatches as [eq_rect] transports; under [cinterp] a codomain
-    transport becomes a post-composed [chcast] and a domain transport
-    a pre-composed one. *)
+(* 相关说明。 （已译） *)
 
 Lemma cinterp_eq_rect_cod {a b b' : list Colour} (e : b = b')
   (t : CTerm S a b) :

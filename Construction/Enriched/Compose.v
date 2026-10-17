@@ -17,8 +17,8 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** The identity enriched functor: the object map is the identity and each
-    hom-object map is the identity K-morphism id[x ⟿ y]. *)
+(** The 恒等 enriched 函子: 对象 map 恒等 each
+ hom-对象 map 恒等 K-态射 id[x ⟿ y]. （已译） *)
 
 Program Definition EnrichedId {K : Category} `{@Monoidal K}
         (C : Enriched K) : EnrichedFunctor K C C := {|
@@ -32,8 +32,8 @@ Next Obligation.
   now rewrite id_left.
 Qed.
 Next Obligation.
-  (* preserves composition: ecompose ∘ id ⨂ id ≈ id ∘ ecompose.
-     bimap id id ≈ id collapses the left tensor, id_left the right. *)
+  (* preserves 复合: ecompose ∘ id ⨂ id ≈ id ∘ ecompose.
+ bimap id id ≈ id collapses left tensor, id_left right. （已译） *)
   intros.
   simpl.
   rewrite bimap_id_id.
@@ -41,8 +41,8 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(** Composition of enriched functors G ∘ F: compose object maps and compose
-    the hom-object maps in K. *)
+(** Composition enriched 函子 G ∘ F: compose 对象 maps compose
+ hom-对象 maps K. （已译） *)
 
 Program Definition EnrichedCompose {K : Category} `{@Monoidal K}
         {C D E : Enriched K}
@@ -104,7 +104,7 @@ Next Obligation.
      through H.efmap_comp into efmap H ∘ ecompose *)
   rewrite !comp_assoc.
   rewrite !(efmap_comp (EnrichedFunctor := H)).
-  (* factor efmap H off the far left and finish by σ's enaturality *)
+  (* 相关说明。 （已译） *)
   rewrite <- !comp_assoc.
   apply compose_respects; [ reflexivity | ].
   rewrite !comp_assoc.
@@ -130,18 +130,16 @@ Next Obligation.
 *)
   intros.
   simpl.
-  (* pad each component transform with an identity so the tensor becomes a
-     tensor of composites, then split it *)
+  (* pad each component transform 恒等 so tensor becomes a
+ tensor composites, then split it （已译） *)
   rewrite <- (id_right (etransform (efobj y))).
   rewrite <- (id_right (etransform (efobj x))).
   rewrite !bimap_comp.
-  (* right-associate so bimap id (efmap H) ∘ unit_left⁻¹ and
-     bimap (efmap H) id ∘ unit_right⁻¹ appear as bare subterms, then slide
-     the unitors past efmap H *)
+  (* 相关说明。 （已译） *)
   rewrite <- !comp_assoc.
   rewrite from_unit_left_natural.
   rewrite from_unit_right_natural.
-  (* factor efmap H off the far right and finish by σ's enaturality *)
+  (* 相关说明。 （已译） *)
   rewrite !comp_assoc.
   apply compose_respects; [ | reflexivity ].
   apply (enaturality (EnrichedTransform := σ)).

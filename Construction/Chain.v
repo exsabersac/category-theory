@@ -9,7 +9,7 @@ Require Import Category.Instance.Omega.
 
 Generalizable All Variables.
 
-(** * The initial-algebra chain of an endofunctor *)
+(* * * The initial-algebra chain 自函子 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
@@ -37,17 +37,17 @@ Fixpoint chain_step (n : nat) : chain_obj n ~> chain_obj (S n) :=
   | S k => fmap[F] (chain_step k)
   end.
 
-(* The action on an order proof [m ≤ n]: iterate [chain_step] along the
-   derivation. *)
+(* The action order 证明 [m ≤ n]: iterate [chain_step] along the
+ derivation. （已译） *)
 Fixpoint chain_hom {m n} (p : le_t m n) : chain_obj m ~> chain_obj n :=
   match p with
   | le_t_n    => id
   | le_t_S p' => chain_step _ ∘ chain_hom p'
   end.
 
-(* Functoriality on composites: transporting along a fused order proof is the
-   composite of the transports (in the direction fixed by [Omega]'s
-   composition [le_t_trans g f]). *)
+(* Functoriality composites: transporting along fused order 证明 the
+ 复合 transports (in direction fixed [Omega]'s
+ 复合 [le_t_trans g f]). （已译） *)
 Lemma chain_hom_trans {m n k} (a : le_t m n) (b : le_t n k) :
   chain_hom (le_t_trans a b) ≈ chain_hom b ∘ chain_hom a.
 Proof.
@@ -60,15 +60,15 @@ Program Definition Chain : Omega ⟶ C := {|
   fobj := chain_obj;
   fmap := fun _ _ p => chain_hom p
 |}.
-(* fmap_respects: strict-equality hom-setoid; fmap_id: chain_hom of the
-   reflexivity proof is [id] definitionally; fmap_comp: chain_hom_trans. *)
+(* fmap_respects: strict-equality hom-setoid; fmap_id: chain_hom the
+ reflexivity 证明 [id] definitionally; fmap_comp: chain_hom_trans. （已译） *)
 Solve All Obligations with
   (simpl; intros; try subst; try reflexivity;
    try (now apply chain_hom_trans); try (now rewrite chain_hom_trans); try cat).
 
 End Chain.
 
-(* The dual chain (a co-chain into the codomain), for the final-coalgebra
-   development, by duality through [C^op]. *)
+(* The dual chain (a co-chain 进入 codomain), final-coalgebra
+ development, duality through [C^op]. （已译） *)
 Definition Cochain {C : Category} `{@Terminal C} (F : C ⟶ C) :
   Omega^op ⟶ C := (@Chain (C^op) _ (F^op))^op.

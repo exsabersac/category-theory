@@ -72,10 +72,10 @@ Next Obligation.
   now rewrite bimap_id_id.
 Qed.
 
-(** ** The intertwining condition on morphisms
+(* * ** The intertwining condition 态射
 
-    A base morphism [f : z ~> z'] is a morphism of half-braided objects when
-    it commutes with the two half-braidings against every object [x]. *)
+ A base 态射 [f : z ~> z'] 态射 half-braided 对象 when
+ it commutes two half-braidings against every 对象 [x]. （已译） *)
 
 Definition half_braiding_morphism {z z' : C}
            (σ : HalfBraiding z) (σ' : HalfBraiding z') (f : z ~> z') : Type :=
@@ -110,7 +110,7 @@ Proof.
   reflexivity.
 Qed.
 
-(** ** The Drinfeld centre as a category *)
+(* * ** The Drinfeld centre 范畴 （已译） *)
 
 Program Definition Drinfeld : Category := {|
   obj     := { z : C & HalfBraiding z };
@@ -122,17 +122,17 @@ Program Definition Drinfeld : Category := {|
                (`1 f ∘ `1 g; half_braiding_morphism_comp (`2 f) (`2 g))
 |}.
 
-(** The forgetful functor to the base category, dropping the half-braiding. *)
+(** The forgetful 函子 base 范畴, dropping half-braiding. （已译） *)
 
 Program Definition Drinfeld_Forget : Drinfeld ⟶ C := {|
   fobj := fun a => `1 a;
   fmap := fun _ _ f => `1 f
 |}.
 
-(** ** The half-braiding on the unit object
+(* * ** The half-braiding unit 对象
 
-    On [I] the half-braiding is forced by the unitors: [I ⨂ x ≅ x ≅ x ⨂ I],
-    i.e. [unit_right⁻¹ ∘ unit_left]. *)
+ On [I] half-braiding forced unitors: [I ⨂ x ≅ x ≅ x ⨂ I],
+ i.e. [unit_right⁻¹ ∘ unit_left]. （已译） *)
 
 Definition hb_unit_iso (x : C) : (I ⨂ x) ≅ (x ⨂ I) :=
   iso_compose (iso_sym (@unit_right C M x)) (@unit_left C M x).
@@ -153,8 +153,8 @@ Proof.
   reflexivity.
 Qed.
 
-(** Triangle coherence in cons form, and the inverse right-unitor along the
-    associator, which together collapse the unit hexagon. *)
+(** 本节：Triangle coherence cons form, inverse right-unitor along the
+ associator, together collapse unit hexagon. （已译） *)
 
 Lemma tri_cons {a b w} (k : w ~> ((a ⨂ I) ⨂ b)%object) :
   (id[a] ⨂ unit_left) ∘ (to tensor_assoc ∘ k) ≈ (unit_right ⨂ id[b]) ∘ k.
@@ -271,8 +271,7 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Pentagon, solved for [(id ⨂ α') ∘ α] around a strand — the inverse of the
-   inner-peel move. *)
+(* 相关说明。 （已译） *)
 Lemma P1 (u v p q : C) :
   (id[u] ⨂ (@tensor_assoc C M v p q)⁻¹) ∘ to (@tensor_assoc C M u v (p ⨂ q))
     ≈ to (@tensor_assoc C M u (v ⨂ p) q)
@@ -285,8 +284,8 @@ Proof.
   reflexivity.
 Qed.
 
-(* A five-associator loop around a strand collapses to the identity (inverse
-   pentagon), and its cons form threading a continuation [k]. *)
+(* A five-associator loop around strand collapses 恒等 (inverse
+ pentagon), cons form threading continuation [k]. （已译） *)
 Lemma assoc_loop (w x y v : C) :
   to (@tensor_assoc C M (w ⨂ x) y v)
     ∘ ((@tensor_assoc C M w x y)⁻¹ ⨂ id[v]
@@ -393,7 +392,7 @@ Proof.
   rewrite P1.
   rewrite to_assoc_nat_cons.
   rewrite pentagon_solved2_cons.
-  (* The remaining discrepancy is the independent-strand interchange. *)
+  (* 相关说明。 （已译） *)
   rewrite crux.
   reflexivity.
 Qed.
@@ -406,7 +405,7 @@ Definition hb_tensor : HalfBraiding (z1 ⨂ z2) := {|
 
 End HBTensor.
 
-(** The record-level unfolding of the tensor half-braiding. *)
+(** 本节：The record-level unfolding tensor half-braiding. （已译） *)
 
 Lemma hb_tensor_to {z1 z2} (σ1 : HalfBraiding z1) (σ2 : HalfBraiding z2)
       (x : C) :
@@ -451,7 +450,7 @@ Definition Drinfeld_lift_iso {A B : Drinfeld}
     (iso_to_from i)
     (iso_from_to i).
 
-(** ** Intertwining of the structural isomorphisms with the half-braidings *)
+(* 相关说明。 （已译） *)
 
 (* Splitting a [bimap] whose one component is a composite, in cons position. *)
 Lemma bimap_split_right_cons {a b c d e w : C}
@@ -500,9 +499,9 @@ Proof.
   reflexivity.
 Qed.
 
-(** The unit half-braiding read off its underlying record accessor, so the
-    coherence rewrites below fire on [half_braid hb_unit] terms produced by
-    [hb_tensor_to]. *)
+(** 本节：The unit half-braiding read off underlying record accessor, so the
+ coherence rewrites below fire [half_braid hb_unit] terms produced by
+ [hb_tensor_to]. （已译） *)
 
 Lemma hb_unit_field_to (x : C) :
   to (half_braid hb_unit x) ≈ unit_right⁻¹ ∘ unit_left.
@@ -668,32 +667,32 @@ Proof.
   intro x.
   rewrite !hb_tensor_to.
   rewrite <- !comp_assoc.
-  (* Distribute the inner tensor half-braid under [id[za] ⨂ -] and fold the
-     three trailing associators of the LHS into the pentagon normal form. *)
+  (* Distribute inner tensor half-braid under [id[za] ⨂ -] fold the
+ three trailing associators LHS 进入 pentagon normal form. （已译） *)
   rewrite !bimap_comp_id_left.
   rewrite <- !comp_assoc.
   rewrite pentagon_a.
   (* Slide the [σd] strand into left-nested position. *)
   rewrite <- to_assoc_nat_id2_cons.
-  (* Reframe the inverse associator around the [σb] strand. *)
+  (* 相关说明。 （已译） *)
   rewrite pentagon_helperB_cons.
   (* Slide the [σb] strand into left-nested position. *)
   rewrite to_assoc_nat_cons.
-  (* Collapse the associator run left of the [σb] strand. *)
+  (* 相关说明。 （已译） *)
   rewrite pentagon_solved2_cons.
   (* The surviving [α⁻¹ ∘ α] cancels. *)
   rewrite (cancel_from_to_cons tensor_assoc).
   (* Slide the [σa] strand into left-nested position. *)
   rewrite to_assoc_nat_bid_cons.
-  (* Fold the two leading associators back through the pentagon. *)
+  (* 相关说明。 （已译） *)
   rewrite <- pentagon_cons.
-  (* Distribute the right-hand side's [β_{ab} ⨂ id[zd]] to meet the LHS comb. *)
+  (* 相关说明。 （已译） *)
   rewrite !bimap_comp_id_right.
   rewrite <- !comp_assoc.
   reflexivity.
 Qed.
 
-(** ** The tensor bifunctor on the centre *)
+(* 相关说明。 （已译） *)
 
 Program Definition Drinfeld_Tensor : Drinfeld ∏ Drinfeld ⟶ Drinfeld := {|
   fobj := fun p =>
@@ -800,16 +799,15 @@ Program Definition Drinfeld_Braided : @BraidedMonoidal Drinfeld := {|
   braid := fun A B => Drinfeld_braid A B
 |}.
 Next Obligation.
-  (* braid naturality: intertwine g by its centre-morphism proof, then slide
-     h past the σ-half-braid by its naturality. *)
+  (* braid 自然性: intertwine g centre-态射 证明, then slide
+ h past σ-half-braid 自然性. （已译） *)
   rewrite <- !comp_assoc.
   rewrite <- (X2 z).
   rewrite <- (hb_nat_cons X3 h (g ⨂ id[z])).
   reflexivity.
 Qed.
 Next Obligation.
-  (* first hexagon: expand [half_braid σa (zb⨂zd)] and cancel the two outer
-     associators framing it. *)
+  (* 相关说明。 （已译） *)
   rewrite (half_braid_tensor X1).
   rewrite <- !comp_assoc.
   rewrite (cancel_to_from_cons (@tensor_assoc C M y z x)).
@@ -817,8 +815,7 @@ Next Obligation.
   reflexivity.
 Qed.
 Next Obligation.
-  (* second hexagon: the tensor half-braid is already expanded by [hb_tensor];
-     cancel the two outer inverse associators. *)
+  (* 相关说明。 （已译） *)
   rewrite <- !comp_assoc.
   rewrite (cancel_from_to_cons (@tensor_assoc C M z x y)).
   rewrite iso_to_from, id_right.

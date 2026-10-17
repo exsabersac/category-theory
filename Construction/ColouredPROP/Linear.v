@@ -16,7 +16,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * The linear discipline over coloured PROPs *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/linear+logic
@@ -27,7 +27,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The negative half: conservativity and hom-emptiness *)
+(* 相关说明。 （已译） *)
 
 Section LinearDiscipline.
 
@@ -66,7 +66,7 @@ Proof.
                  | xs1 ys1 xs2 ys2 f IHf g IHg | xs ys g];
   simpl.
   - (* CT_id *) reflexivity.
-  - (* CT_braid: both boundaries are the same two blocks, swapped *)
+  - (* 相关说明。 （已译） *)
     rewrite !count_occ_app; apply Nat.add_comm.
   - (* CT_comp: paste the two invariants *)
     etransitivity; eauto.
@@ -76,12 +76,7 @@ Proof.
     exact (Hgen _ _ g).
 Qed.
 
-(** *** Hom-emptiness at conservative colours
-
-    No term can fan a conservative wire out ([1 <> 2]) or discard it
-    ([1 <> 0]).  These are statements about the TYPE of raw terms:
-    the free hom-setoid at these boundaries is empty outright, which
-    is strictly stronger than emptiness up to [CTermEq]. *)
+(* 相关说明。 （已译） *)
 
 Theorem no_linear_fanout (c : Colour) (Hgen : c_conservative c) :
   CTerm S [c] [c; c] -> False.
@@ -105,8 +100,8 @@ Proof.
   - exact (n eq_refl).
 Qed.
 
-(** The bundled forms: under the linear discipline, every LINEAR
-    colour has empty fan-out and discard homs. *)
+(** 本节：The bundled forms: under linear discipline, every LINEAR
+ colour has empty fan-out discard homs. （已译） *)
 
 Corollary linear_no_fanout (HL : LinearRespecting)
   (c : Colour) (Hc : LinearColour c) :
@@ -280,9 +275,9 @@ Proof.
   exact (@ComonoidHom_equiv P (MBc P) ⟦cs⟧c ⟦ds⟧c _ _ f g).
 Qed.
 
-(** The two Cho–Jacobs squares, projected out in the copy/discard
-    vocabulary of [Supply.v]: copying after [f] is running [f] twice
-    on a copy, and discarding after [f] is discarding. *)
+(** 本节：The two Cho–Jacobs squares, projected out copy/discard
+ vocabulary [Supply.v]: copying after [f] running [f] twice
+ copy, discarding after [f] discarding. （已译） *)
 
 Lemma sel_deterministic_scopy {cs ds : list Colour}
   (Hc : all_copyable copyable cs) (Hd : all_copyable copyable ds)

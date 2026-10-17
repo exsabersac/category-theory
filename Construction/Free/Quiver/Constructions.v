@@ -58,8 +58,7 @@ Definition QuiverOp_edgeset@{o h p} (G : Quiver@{o h p}) (x y : @nodes G) :
 Definition QuiverOp_invol@{o h p} (G : Quiver@{o h p}) :
   QuiverOp (QuiverOp G) = G := eq_refl.
 
-(* Reversal on homomorphisms: the node action is unchanged and the edge action
-   is the same family read at swapped indices. *)
+(* 相关说明。 （已译） *)
 Definition QuiverOp_map@{o1 h1 p1 o2 h2 p2}
   {G : Quiver@{o1 h1 p1}} {G' : Quiver@{o2 h2 p2}} (F : G ⇨ G') :
   QuiverOp G ⇨ QuiverOp G' :=
@@ -102,8 +101,7 @@ Definition edgeset_prod@{h1 p1 h2 p2 h p}
             (snd x) (snd y) (snd z) (snd f) (snd g)) |}
 |}.
 
-(* Nodes are pairs, edges are pairs of edges with matching endpoints, and the
-   edge setoid is componentwise. *)
+(* 相关说明。 （已译） *)
 Definition QuiverProd@{o1 h1 p1 o2 h2 p2 o h p}
   (G : Quiver@{o1 h1 p1}) (H : Quiver@{o2 h2 p2}) : Quiver@{o h p} := {|
   nodes   := (@nodes G * @nodes H)%type;
@@ -141,7 +139,7 @@ Definition QuiverSnd@{o1 h1 p1 o2 h2 p2 o h p}
     (fun x y => snd)
     (fun x y f g e => snd e).
 
-(* The pairing of two homomorphisms with a common source. *)
+(* 相关说明。 （已译） *)
 Definition QuiverPair
   {K G H : Quiver} (F : K ⇨ G) (F' : K ⇨ H) : K ⇨ QuiverProd G H :=
   Build_QuiverHomomorphism K (QuiverProd G H)
@@ -157,14 +155,13 @@ Definition QuiverSwap {G H : Quiver} : QuiverProd G H ⇨ QuiverProd H G :=
     (fun x y e => (snd e, fst e))
     (fun x y f g e => (snd e, fst e)).
 
-(* Swap is the pairing of the two projections in the other order — recorded by
-   [eq_refl] rather than asserted. *)
+(* 相关说明。 （已译） *)
 Definition QuiverSwap_is_pair {G H : Quiver} :
   @QuiverSwap G H = QuiverPair QuiverSnd QuiverFst := eq_refl.
 
 End ProductQuiver.
 
-(** ** The universal property of the product quiver *)
+(* * ** The 普遍性质 product quiver （已译） *)
 
 Section ProductUniversal.
 
@@ -216,8 +213,8 @@ Defined.
 
 End ProductUniversal.
 
-(* Swapping twice is the identity, up to [≈]; see the header for why this one
-   cannot be [eq_refl]. *)
+(* Swapping twice 恒等, up [≈]; see header why one
+ cannot [eq_refl]. （已译） *)
 Definition QuiverSwap_invol {G H : Quiver} :
   @equiv _ (@homset QuiverCategory (QuiverProd G H) (QuiverProd G H))
     (@compose QuiverCategory (QuiverProd G H) (QuiverProd H G) (QuiverProd G H)
@@ -229,7 +226,7 @@ Proof.
   - intros [a b] [c d] e; cbn; split; reflexivity.
 Defined.
 
-(** ** Preservation by the forgetful functor *)
+(* * ** Preservation forgetful 函子 （已译） *)
 
 Section Preservation.
 

@@ -28,7 +28,7 @@ Generalizable All Variables.
 
 Import EqNotations.
 
-(** * The characterizing isomorphisms of a power and a copower *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/copower
@@ -40,7 +40,7 @@ Import EqNotations.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The two hom functors, at a constant family *)
+(* * ** The two hom 函子, at 常值 family （已译） *)
 
 (* [c ↦ ∏_J C(c, b)], the right-hand side of Riehl's [C(X, A)^I]. *)
 Definition power_hom_functor {C : Category} (J : Type) (b : C) : C^op ⟶ Sets :=
@@ -61,7 +61,7 @@ Example copower_hom_functor_is_Sets_power {C : Category} (J : Type) (b c : C) :
   = @power Sets Sets_HasIndexedProducts J
       {| carrier := @hom C b c ; is_setoid := @homset C b c |} := eq_refl.
 
-(** ** The comparison maps: composing with the evaluations, resp. injections *)
+(* 相关说明。 （已译） *)
 
 Definition power_hom_transform {C : Category} {J : Type} (b p : C)
   (ev : ∀ _ : J, p ~> b) :
@@ -82,7 +82,7 @@ Example copower_hom_transform_computes {C : Category} {J : Type} (b p : C)
   transform (copower_hom_transform b p inj) c u = fun j : J => u ∘ inj j
   := eq_refl.
 
-(** ** The isomorphisms, derived at the constant family *)
+(* * ** The isomorphisms, derived at 常值 family （已译） *)
 
 Definition power_hom_inverse {C : Category} {J : Type} {b p : C}
   {ev : ∀ _ : J, p ~> b} (H : IsPower b p ev) :
@@ -106,8 +106,8 @@ Definition copower_hom_iso {C : Category} {J : Type} {b p : C}
   @Isomorphism ([C, Sets]) (@Curried_Hom C p) (copower_hom_functor J b) :=
   @icoprod_hom_iso C J (fun _ : J => b) p inj H.
 
-(* The converse, and the biconditional: an invertible comparison map is a
-   universal property.  Both are the donor's, at the constant family. *)
+(* The converse, biconditional: invertible comparison map a
+ 普遍性质. Both donor's, at 常值 family. （已译） *)
 Definition power_of_hom_iso {C : Category} {J : Type} {b p : C}
   {ev : ∀ _ : J, p ~> b}
   (I : @IsIsomorphism ([C^op, Sets]) (@Curried_CoHom C p)
@@ -138,7 +138,7 @@ Definition copower_iff_hom_iso {C : Category} {J : Type} (b p : C)
                  (copower_hom_transform b p inj) :=
   @icoprod_iff_hom_iso C J (fun _ : J => b) p inj.
 
-(** ** The derived forms are the donors' TERMS, not merely their types *)
+(* 相关说明。 （已译） *)
 
 Example power_hom_functor_is_donor {C : Category} (J : Type) (b : C) :
   power_hom_functor J b = @iprod_hom_functor C J (fun _ : J => b) := eq_refl.
@@ -185,8 +185,8 @@ Example copower_iff_hom_iso_is_donor {C : Category} {J : Type} (b p : C)
   copower_iff_hom_iso b p inj = @icoprod_iff_hom_iso C J (fun _ : J => b) p inj
   := eq_refl.
 
-(* And the backward leg still computes to the mediator the [∃!] accessor
-   names, so the packaging cannot drift from the universal property. *)
+(* And backward leg still computes mediator [∃!] accessor
+ names, so packaging cannot drift 普遍性质. （已译） *)
 Example power_hom_iso_from_is_desc {C : Category} {J : Type} {b p : C}
   {ev : ∀ _ : J, p ~> b} (H : IsPower b p ev)
   (c : C) (fam : ∀ _ : J, c ~> b) :
@@ -243,7 +243,7 @@ Next Obligation.
   now rewrite id_left in Hl.
 Qed.
 
-(** ** At the chosen (co)power of a category that has all of them *)
+(* * ** At chosen (co)power 范畴 has all them （已译） *)
 
 Definition class_power_hom_iso {C : Category} {HP : @HasIndexedProducts C}
   (J : Type) (b : C) :
@@ -280,7 +280,7 @@ Lemma Sets_power_ev_is_exponent_eval (J : Type) (X : obj[Sets]) (j : J) :
     ≈ @power_ev Sets Sets_HasIndexedProducts J X j.
 Proof. intros g; reflexivity. Qed.
 
-(** ** Riehl 3.5.8 in [Sets]: the copower is the product with the index *)
+(* 相关说明。 （已译） *)
 
 Example Sets_copower_carrier (J : Type) (Y : obj[Sets]) :
   carrier (@copower Sets Sets_HasIndexedCoproducts J Y)
@@ -359,20 +359,20 @@ Proof.
   - intros [i []]; exists eq_refl; reflexivity.
 Defined.
 
-(* The finite case: a set of [n] elements is the [n]-fold copower of [1]. *)
+(* 相关说明。 （已译） *)
 Definition Sets_copower_fin (n : nat) :
   @copower Sets Sets_HasIndexedCoproducts (Fin.t n) 1%object
     ≅[Sets] Sets_discrete (Fin.t n) :=
   Sets_copower_one (Fin.t n).
 
-(* Awodey's [2 = 1 + 1], through the BINARY coproduct of
-   Instance/Sets/Cocartesian.v: the constant-family instance of the
-   pre-existing [Sets_icoprod_bool], so the passage costs nothing. *)
+(* Awodey's [2 = 1 + 1], through BINARY coproduct of
+ Instance/Sets/Cocartesian.v: 常值-family instance the
+ pre-existing [Sets_icoprod_bool], so passage costs nothing. （已译） *)
 Definition Sets_copower_two :
   @copower Sets Sets_HasIndexedCoproducts bool 1%object ≅[Sets] (1 + 1)%object :=
   Sets_icoprod_bool (fun _ : bool => 1%object).
 
-(** ** Non-vacuity: the [n]-fold copower of [1] does not collapse *)
+(* 相关说明。 （已译） *)
 
 Definition Sets_copower_pt {n : nat} (k : Fin.t n) :
   carrier (@copower Sets Sets_HasIndexedCoproducts (Fin.t n) 1%object) :=

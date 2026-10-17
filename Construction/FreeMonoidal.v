@@ -20,14 +20,13 @@ Generalizable All Variables.
 
 (** ** Binary words *)
 
-(* [maclane:VII.2:def1].  [WE] is the empty word e0, [WI] the single generator
-   (-), and [WT] the formal tensor. *)
+(* 相关说明。 （已译） *)
 Inductive Word : Set :=
   | WE : Word
   | WI : Word
   | WT : Word → Word → Word.
 
-(* Structural, with [+] — see the header note on conversion. *)
+(* 相关说明。 （已译） *)
 Fixpoint wlen (w : Word) : nat :=
   match w with
   | WE      => 0
@@ -64,8 +63,8 @@ Qed.
 
 (** ** The category W *)
 
-(* One arrow per pair of equal-length words.  The hom is a proposition and the
-   hom-setoid identifies everything parallel, so [W] is thin by construction. *)
+(* One arrow per pair equal-length words. The hom 命题 the
+ hom-setoid identifies everything parallel, so [W] thin construction. （已译） *)
 Program Definition W : Category := {|
   obj     := Word;
   hom     := fun v w => wlen v = wlen w;
@@ -74,8 +73,8 @@ Program Definition W : Category := {|
   compose := fun _ _ _ f g => eq_trans g f
 |}.
 
-(* Every law of [W] — and, below, of its tensor and of [Monoidal] — is an
-   equation between parallel arrows, so this single lemma discharges them all. *)
+(* Every law [W] — and, below, tensor [Monoidal] — an
+ equation between parallel arrows, so single 引理 discharges them all. （已译） *)
 Definition W_thin : Thin W.
 Proof. intros x y f g; constructor. Defined.
 
@@ -96,8 +95,7 @@ Program Definition W_tensor : W ∏ W ⟶ W := {|
 #[export] Program Instance W_Monoidal : @Monoidal W := {|
   I            := WE;
   tensor       := W_tensor;
-  (* The endpoints are pinned explicitly: left to inference, [Program] reads
-     them off [eq_refl] and then cannot match [x] against [I ⨂ x]. *)
+  (* 相关说明。 （已译） *)
   unit_left    := fun x => @thin_iso W W_thin (WT WE x) x eq_refl eq_refl;
   unit_right   := fun x => @thin_iso W W_thin (WT x WE) x
                              (Nat.add_0_r (wlen x))
@@ -115,10 +113,7 @@ Program Definition W_tensor : W ∏ W ⟶ W := {|
 *)
 Solve All Obligations with (intros; constructor).
 
-(** ** Acceptance tests
-
-    Everything here computes; the point of stating them is that the
-    definitional facts the header claims really are definitional. *)
+(* 相关说明。 （已译） *)
 
 Example wlen_WE  : wlen WE = 0%nat := eq_refl.
 Example wlen_WI  : wlen WI = 1%nat := eq_refl.
@@ -126,21 +121,20 @@ Example wlen_mix : wlen (WT (WT WI WE) WI) = 2%nat := eq_refl.
 
 Example nfword_3 : nfword 3 = WT WI (WT WI (WT WI WE)) := eq_refl.
 
-(* The tensor of [W] is the word constructor, on the nose. *)
+(* 相关说明。 （已译） *)
 Example W_tensor_obj (v w : Word) :
   (v ⨂[W_Monoidal] w)%object = WT v w := eq_refl.
 
-(* The unit is the empty word, and the left unitor is [eq_refl] — the
-   conversion the header's [wlen] note is about. *)
+(* 相关说明。 （已译） *)
 Example W_unit_is_WE : @I W W_Monoidal = WE := eq_refl.
 Example W_unit_left_is_refl (x : Word) :
   to (@unit_left W W_Monoidal x) = eq_refl := eq_refl.
 
-(* Thinness, as it is actually used: ANY two parallel arrows of [W] agree, so
-   every diagram of [W] commutes.  This is the property the freeness theorem
-   will consume. *)
+(* Thinness, it actually used: ANY two parallel arrows [W] agree, so
+ every diagram [W] commutes. This property freeness 定理
+ will consume. （已译） *)
 Example W_thin_concrete (v w : Word) (f g : v ~{W}~> w) : f ≈ g := W_thin v w f g.
 
-(* And the arrows really are the length equations, so [W] is a groupoid. *)
+(* 相关说明。 （已译） *)
 Example W_iso_concrete : WT (WT WI WE) WI ≅[W] WT WI (WT WI WE) :=
   W_iso (v:=WT (WT WI WE) WI) (w:=WT WI (WT WI WE)) eq_refl.

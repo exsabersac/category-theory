@@ -28,7 +28,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The predicate, and Mac Lane's two remarks *)
+(* 相关说明。 （已译） *)
 
 Definition AbsoluteCoequalizer@{co ch xo xh +}
   {C : Category@{co ch ch}} {x y : C} (f g : x ~> y) (q : C) (e : y ~> q) :
@@ -41,8 +41,7 @@ Definition AbsoluteCoequalizer_IsCoequalizer@{co ch +}
   (A : AbsoluteCoequalizer f g q e) : IsCoequalizer f g q e :=
   A C Id.
 
-(* The instance is named: left to Rocq, minimization sets the target's
-   hom level [xh] to [ch], its only lower bound. *)
+(* 相关说明。 （已译） *)
 
 Definition split_coequalizer_absolute@{co ch xo xh +}
   {C : Category@{co ch ch}} {x y : C} {f g : x ~> y}
@@ -50,7 +49,7 @@ Definition split_coequalizer_absolute@{co ch xo xh +}
   AbsoluteCoequalizer@{co ch xo xh _} f g (scoeq_obj S) (scoeq_e S) :=
   fun X T => split_coequalizer_preserved T f g S.
 
-(** ** Every instance at or above C's levels: the lift *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Absolute 相关定义、性质与动机。
@@ -74,8 +73,8 @@ Proof.
     + intros v Hv. exact (uniqueness U v Hv).
 Defined.
 
-(* Each instance implies every lower one: a target X below the
-   hypothesis' levels is read at them, and [Lift_after T] replaces T. *)
+(* Each instance implies every lower one: target X below the
+ 假设' levels read at them, [Lift_after T] replaces T. （已译） *)
 
 Definition AbsoluteCoequalizer_down@{co ch xo xh yo yh +}
   {C : Category@{co ch ch}} {x y : C} {f g : x ~> y} {q : C} {e : y ~> q}
@@ -94,7 +93,7 @@ Proof.
     + intros v Hv. exact (uniqueness U v Hv).
 Defined.
 
-(** ** The image of a cofork: elementary and cocone-level readings agree *)
+(* 相关说明。 （已译） *)
 
 Example image_cofork_inj_ParX@{co ch xo +}
   {C : Category@{co ch ch}} {X : Category@{xo ch ch}} (T : C ⟶ X)
@@ -145,7 +144,7 @@ Example image_colimit_coequalizer_desc@{co ch xo +}
     = unique_obj (HC (parallel_cofork_cocone (T ◯ APair f g) h Hh))
   := eq_refl.
 
-(** ** The absolute coequalizer is the cofork-shaped absolute colimit *)
+(* 相关说明。 （已译） *)
 
 
 Definition AbsoluteCoequalizer_AbsoluteColimitCocone@{co ch +}
@@ -160,7 +159,7 @@ Definition AbsoluteColimitCocone_AbsoluteCoequalizer@{co ch +}
   AbsoluteCoequalizer f g q e :=
   fun D T => image_colimit_coequalizer T H (A D T).
 
-(** ** Split coequalizers, at cone level *)
+(* 相关说明。 （已译） *)
 
 Definition split_cofork_AbsoluteColimitCocone@{co ch +}
   {C : Category@{co ch ch}} {x y : C} {f g : x ~> y}

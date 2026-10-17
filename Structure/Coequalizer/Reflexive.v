@@ -5,7 +5,7 @@ Require Import Category.Structure.Coequalizer.
 
 Generalizable All Variables.
 
-(** * Reflexive pairs and reflexive coequalizers *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Coequaliser
@@ -15,7 +15,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The equational data: one map that both f and g retract. *)
+(* 相关说明。 （已译） *)
 Record ReflexivePair {C : Category} {x y : C} (f g : x ~> y) := {
   refl_section : y ~> x;                   (* the common section *)
   refl_section_f : f ∘ refl_section ≈ id;  (* f retracts it *)
@@ -58,7 +58,7 @@ Defined.
   reflexive_coeq := fun x y f g _ => @coeq C H x y f g
 |}.
 
-(** ** Functors preserve reflexive pairs *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。

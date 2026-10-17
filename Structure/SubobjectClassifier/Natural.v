@@ -17,7 +17,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * The subobject classifier classifies NATURALLY *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/representable+functor
@@ -48,8 +48,7 @@ Definition char_sub {x : C} (s : SubObj x) : x ~> Ω :=
 Example char_sub_is_classifier_to {x : C} (s : SubObj x) :
   char_sub s = to (classifier_classifies x) s := eq_refl.
 
-(* [char_respects] is stated on the three components; a subobject is its
-   own triple, so the passage is a [destruct]. *)
+(* 相关说明。 （已译） *)
 Lemma char_sub_respects {x : C} (s s' : SubObj x) :
   s ≈ s' → char_sub s ≈ char_sub s'.
 Proof. destruct s, s'; apply char_respects. Qed.
@@ -99,10 +98,10 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The two natural transformations *)
+(* 相关说明。 （已译） *)
 
-(* Both components are taken verbatim from [classifier_classifies], so what
-   the two definitions add is precisely the naturality field. *)
+(* Both components taken verbatim [classifier_classifies], so what
+ two definitions add precisely 自然性 field. （已译） *)
 
 (*
    本节说明 Natural 相关定义、性质与动机。
@@ -122,15 +121,14 @@ Program Definition classifier_pullback_transform :
   transform := fun x : C => from (@classifier_classifies C HT HP HS x)
 |}.
 Next Obligation. simpl; intros; apply (@reindex_char x y f). Qed.
-(* The symmetric orientation, applied in [sub_reindex_comp]'s own
-   direction for the reason given above. *)
+(* 相关说明。 （已译） *)
 Next Obligation.
   simpl; intros; rename x0 into h.
   exact (sub_reindex_comp h f truth_subobject).
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Awodey's clause: the correspondence is natural *)
+(* 相关说明。 （已译） *)
 
 Program Definition Sub_classifier_natural :
   @Isomorphism ([(C^op), Sets]) (@Sub C HP) (@Curried_CoHom C Ω) := {|

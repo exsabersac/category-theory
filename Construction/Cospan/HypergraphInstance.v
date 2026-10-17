@@ -79,8 +79,8 @@ Proof.
   apply mor_as_cospan_id.
 Defined.
 
-(** [scfa_delta (scfa I) ≈ from unit_left] : analogous to mu, but with
-    backward cospans. *)
+(** 本节：[scfa_delta (scfa I) ≈ unit_left] : analogous mu, but with
+ backward cospans. （已译） *)
 Lemma cospan_scfa_unit_delta :
   cospan_equiv
     (cospan_scfa_delta (@Cospan_unit_obj C H_Ini))
@@ -128,11 +128,7 @@ Proof.
     apply (@zero_unique C H_Ini _ _ _).
 Defined.
 
-(** ** Tensor coherence: [scfa_tensor_eta]
-
-    Both [scfa_eta (X⨂Y)] and [canonical_tensor_eta (scfa X) (scfa Y)]
-    reduce to [mor_as_cospan zero : 0 → X+Y] after lifting through
-    [mor_as_cospan_compose] and [cospan_tensor_mor_as_cospan]. *)
+(* 相关说明。 （已译） *)
 
 Lemma cospan_scfa_tensor_eta (X Y : C) :
   cospan_equiv
@@ -162,10 +158,7 @@ Proof.
   apply (@zero_unique C H_Ini _ _ _).
 Defined.
 
-(** ** Tensor coherence: [scfa_tensor_epsilon]
-
-    [scfa_epsilon (X⨂Y) ≈ canonical_tensor_epsilon] :
-    both reduce to [mor_as_cospan_back (zero : 0 → X+Y)]. *)
+(* 相关说明。 （已译） *)
 
 Lemma cospan_scfa_tensor_epsilon (X Y : C) :
   cospan_equiv
@@ -188,9 +181,7 @@ Proof.
   { apply (cospan_compose_forward_iso_back HP
               (cover (zero : 0 ~{C}~> X) (zero : 0 ~{C}~> Y))
               (@coprod_zero_l C H_Coc H_Ini 0%object)). }
-  (* Result: mor_as_cospan_back ((cover zero zero) ∘ from coprod_zero_l).
-     LHS target: mor_as_cospan_back (zero : 0 → X+Y).
-     Need: (cover zero zero) ∘ from coprod_zero_l ≈ zero in C. *)
+  (* 相关说明。 （已译） *)
   apply mor_as_cospan_back_proper.
   unfold from, coprod_zero_l; simpl.
   rewrite cover_inr.
@@ -198,10 +189,10 @@ Proof.
   apply (@zero_unique C H_Ini _ _ _).
 Defined.
 
-(** ** C-level identity for [scfa_tensor_mu]
+(* * ** C-level 恒等 [scfa_tensor_mu]
 
-    The codiagonal on [(X+Y) + (X+Y)] factors through the middle-swap
-    composite and the per-component codiagonals. *)
+ The codiagonal [(X+Y) + (X+Y)] factors through middle-swap
+ 复合 per-component codiagonals. （已译） *)
 
 Lemma codiag_through_mid_swap (X Y : C) :
   ((id[X + Y] ▽ id[X + Y]) : ((X + Y) + (X + Y))%object ~> (X + Y))
@@ -317,12 +308,7 @@ Proof.
       reflexivity.
 Qed.
 
-(** ** Cospan-level [scfa_tensor_mu]
-
-    Reduces [bimap mu_X mu_Y ∘ mid_swap X Y] (at the cospan level) to
-    [mor_as_cospan ((cover (id▽id_X) (id▽id_Y)) ∘ mid_swap_C)], which by
-    [codiag_through_mid_swap] equals [mor_as_cospan (id▽id_{X+Y})] =
-    [scfa_mu (X+Y)]. *)
+(* 相关说明。 （已译） *)
 
 (** Tactical hint: any [cospan_tensor (cospan_id _) (mor_as_cospan g)]
     reduces to [mor_as_cospan (cover id g)] via id_as_back + tensor compatibility.
@@ -341,11 +327,11 @@ Proof.
   apply cospan_tensor_mor_as_cospan.
 Defined.
 
-(** ** C-level mid-swap composite
+(* * ** C-level mid-swap 复合
 
-    The C-morphism [(X+Y)+(X+Y) → (X+X)+(Y+Y)] that the Hypergraph
-    [mid_swap] reduces to when [tensor = coproduct], expressed without
-    [bimap]/[cover] sugar (i.e., directly as a [cover]-of-isos chain). *)
+ The C-态射 [(X+Y)+(X+Y) → (X+X)+(Y+Y)] Hypergraph
+ [mid_swap] reduces [tensor = coproduct], expressed without
+ [bimap]/[cover] sugar (i.e., directly [cover]-of-isos chain). （已译） *)
 
 Definition mid_swap_C (X Y : C) :
   ((X + Y) + (X + Y))%object ~> ((X + X) + (Y + Y))%object :=
@@ -432,12 +418,12 @@ Proof.
   reflexivity.
 Defined.
 
-(** ** Cospan-level [scfa_tensor_mu]
+(* * ** Cospan-level [scfa_tensor_mu]
 
-    Both sides reduce to [mor_as_cospan (id▽id : (X+Y)+(X+Y) → X+Y)]
-    via [codiag_through_mid_swap]: the RHS fuses to [mor_as_cospan
-    (cover (id▽id_X) (id▽id_Y) ∘ mid_swap_C X Y)], which by the
-    C-identity equals [mor_as_cospan (id▽id)]. *)
+ Both sides reduce [mor_as_cospan (id▽id : (X+Y)+(X+Y) → X+Y)]
+ via [codiag_through_mid_swap]: RHS fuses [mor_as_cospan
+ (cover (id▽id_X) (id▽id_Y) ∘ mid_swap_C X Y)], the
+ C-恒等 equals [mor_as_cospan (id▽id)]. （已译） *)
 
 Lemma cospan_scfa_tensor_mu (X Y : C) :
   cospan_equiv
@@ -461,17 +447,17 @@ Proof.
   apply codiag_via_mid_swap_C.
 Defined.
 
-(** ** Cospan-level [scfa_tensor_delta]
+(* * ** Cospan-level [scfa_tensor_delta]
 
-    Dual to [tensor_mu]: both sides reduce to [mor_as_cospan_back
-    (id▽id : (X+Y)+(X+Y) → X+Y)] (backward cospans).  The bridge uses
-    [cospan_tensor_mor_as_cospan_back] for the inner tensor, then
-    [mid_swap_inv] is bridged as [mor_as_cospan_back] of an inverse-iso
-    composite, after which [mor_as_cospan_back_compose] fuses. *)
+ Dual [tensor_mu]: both sides reduce [mor_as_cospan_back
+ (id▽id : (X+Y)+(X+Y) → X+Y)] (backward cospans). The bridge uses
+ [cospan_tensor_mor_as_cospan_back] inner tensor, then
+ [mid_swap_inv] bridged [mor_as_cospan_back] inverse-iso
+ 复合, after [mor_as_cospan_back_compose] fuses. （已译） *)
 
-(** A [mor_as_cospan] of [to phi] for an iso [phi] is cospan-equivalent
-    to a [mor_as_cospan_back] of [from phi].  Both express the same
-    span shape via the iso [phi]. *)
+(** 本节：A [mor_as_cospan] [to phi] iso [phi] cospan-equivalent
+ [mor_as_cospan_back] [from phi]. Both express same
+ span shape via iso [phi]. （已译） *)
 Lemma mor_as_cospan_to_iso_as_back {X Y : C} (phi : X ≅ Y) :
   cospan_equiv
     (mor_as_cospan (to phi))
@@ -483,8 +469,8 @@ Proof.
   - rewrite id_right. reflexivity.
 Defined.
 
-(** [mid_swap_C] is an iso in [C] (built as a composite of coproduct
-    isos and [paws]).  Its inverse is the analogous backwards composite. *)
+(** [mid_swap_C] iso [C] (built 复合 coproduct
+ isos [paws]). Its inverse analogous backwards 复合. （已译） *)
 Definition mid_swap_C_inv (X Y : C) :
   ((X + X) + (Y + Y))%object ~> ((X + Y) + (X + Y))%object :=
   from (@coprod_assoc C H_Coc X Y (X + Y))

@@ -12,7 +12,7 @@ Require Import Category.Structure.Group.
 
 Generalizable All Variables.
 
-(** * Ring and semiring objects in a cartesian category *)
+(* * * Ring semiring 对象 cartesian 范畴 （已译） *)
 
 (*
    本文件给出相关范畴论结构的定义与性质。

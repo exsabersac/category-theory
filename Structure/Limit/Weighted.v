@@ -22,7 +22,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* * The covariant hom-diagram and its reindexing. *)
+(* 相关说明。 （已译） *)
 
 Section Weighted.
 
@@ -119,8 +119,8 @@ Context {J : Category}.
 Context {C : Category}.
 Context {F : J ⟶ C}.
 
-(* A Sets-natural transformation out of the constant-singleton weight is a cone:
-   read off the leg at [j] by evaluating the [j]-component at the unique point. *)
+(* A Sets-自然变换 out 常值-singleton weight cone:
+ read off leg at [j] evaluating [j]-component at unique point. （已译） *)
 
 Program Definition cone_of_nat (c : C)
   (α : Δ[J]( @terminal_obj Sets Sets_Terminal ) ⟹ HomDiagram c F) : ACone c F := {|
@@ -131,8 +131,8 @@ Next Obligation.
   exact (@naturality _ _ _ _ α x y f ttt).
 Qed.
 
-(* Conversely a cone yields a Sets-natural transformation out of the
-   constant-singleton weight: each component is the constant map at that leg. *)
+(* Conversely cone yields Sets-自然变换 out the
+ 常值-singleton weight: each component 常值 map at leg. （已译） *)
 
 Program Definition nat_of_cone (c : C) (κ : ACone c F) :
   Δ[J]( @terminal_obj Sets Sets_Terminal ) ⟹ HomDiagram c F := {|
@@ -159,7 +159,7 @@ Lemma limit_of_conical `(F : J ⟶ C) :
 Proof.
   intro WL.
   destruct WL as [L Φ Φnat].
-  (* The universal cone at apex [L]: the legs classified by [id[L]]. *)
+  (* 相关说明。 （已译） *)
   pose (β := from (Φ L) id[L]).
   unshelve refine {| limit_cone :=
     {| vertex_obj := L ; coneFrom := cone_of_nat (F:=F) L β |} |}.
@@ -240,7 +240,7 @@ Lemma Lmed_unique (N : Cone F) (v : @vertex_obj _ _ _ N ~{C}~> Lobj) :
   Lmed N ≈ v.
 Proof. intro H. exact (uniqueness (@ump_limits _ _ _ Lim N) v H). Qed.
 
-(* The classifying map: a cone from [c] is sent to its mediating morphism. *)
+(* The classifying map: cone [c] sent mediating 态射. （已译） *)
 
 Definition wl_to_fn (c : C)
   (α : Δ[J]( @terminal_obj Sets Sets_Terminal ) ⟹ HomDiagram c F) :
@@ -260,8 +260,7 @@ Next Obligation.
   - symmetry; exact (Heq x ttt).
 Qed.
 
-(* Its inverse: a map [u : c ~> Lobj] is sent to the cone obtained by
-   postcomposing every limit leg with [u]. *)
+(* 相关说明。 （已译） *)
 
 Program Definition wl_from_acone (c : C) (u : c ~{C}~> Lobj) : ACone c F := {|
   vertex_map := fun j => Lleg j ∘ u
@@ -291,14 +290,14 @@ Program Definition wl_iso (c : C) :
     {| carrier := c ~{C}~> Lobj ; is_setoid := @homset C c Lobj |} :=
   {| to := wl_to c ; from := wl_from c |}.
 Next Obligation.
-  (* to ∘ from ≈ id : classifying the [u]-cone recovers [u]. *)
+  (* 相关说明。 （已译） *)
   intros c u; unfold wl_to_fn, wl_from_fn.
   apply (Lmed_unique (mkCone (cone_of_nat c (nat_of_cone c (wl_from_acone c u)))));
     intro x; simpl.
   reflexivity.
 Qed.
 Next Obligation.
-  (* from ∘ to ≈ id : the classified map carries [α]'s legs. *)
+  (* 相关说明。 （已译） *)
   intros c α j w; destruct w; unfold wl_from_fn, wl_to_fn; simpl.
   exact (Lmed_commutes (mkCone (cone_of_nat c α)) j).
 Qed.

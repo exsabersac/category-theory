@@ -13,7 +13,7 @@ Require Import Category.Structure.Terminal.
 
 Generalizable All Variables.
 
-(** The category of elements of a Sets-valued functor, and its projection. *)
+(** The 范畴 elements Sets-valued 函子, projection. （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Category_of_elements
@@ -28,9 +28,9 @@ Section Elements.
 Context {D : Category}.
 Context (K : D ⟶ Sets).
 
-(* The functor laws of K, read at an element. A Sets hom equation is a
-   pointwise family, so it must be instantiated at the element before it
-   can be used as an ordinary equivalence. *)
+(* The 函子 laws K, read at element. A Sets hom equation a
+ pointwise family, so it must instantiated at element before it
+ can used ordinary 等价. （已译） *)
 
 Lemma elements_id_cond {d : D} (x : K d) : fmap[K] id x ≈ x.
 Proof. exact (@fmap_id _ _ K _ x). Qed.
@@ -65,8 +65,8 @@ Program Definition Elements : Category := {|
 Next Obligation. apply elements_id_cond. Qed.
 Next Obligation. eapply elements_comp_cond; eassumption. Qed.
 
-(* The projection, taking (d, x) to d and a morphism to its first
-   component. *)
+(* The projection, taking (d, x) d 态射 first
+ component. （已译） *)
 
 Program Definition Elements_proj : Elements ⟶ D := {|
   fobj := fun x => `1 x;
@@ -75,17 +75,17 @@ Program Definition Elements_proj : Elements ⟶ D := {|
 
 Program Instance Elements_proj_Faithful : Faithful Elements_proj.
 
-(* Faithfulness is definitional under the hom-setoid chosen above: the
-   injectivity statement is the identity implication, and this witness
-   records that fact for readers of the instance. *)
+(* Faithfulness definitional under hom-setoid chosen above: the
+ injectivity statement 恒等 implication, witness
+ records fact readers instance. （已译） *)
 
 Definition Elements_proj_faithful_definitional
   {x y : Elements} (f g : x ~{Elements}~> y) :
   fmap[Elements_proj] f ≈ fmap[Elements_proj] g → f ≈ g :=
   fun H => H.
 
-(* The chosen lift of a base morphism at an element, and the definitional
-   check that the projection returns that base morphism. *)
+(* The chosen lift base 态射 at element, definitional
+ check projection returns base 态射. （已译） *)
 
 Program Definition Elements_lift {d d' : D} (x : K d) (f : d ~> d') :
   ((d; x) : Elements) ~{Elements}~> (d'; fmap[K] f x) := (f; _).
@@ -94,8 +94,8 @@ Lemma Elements_lift_over {d d' : D} (x : K d) (f : d ~> d') :
   fmap[Elements_proj] (Elements_lift x f) ≈ f.
 Proof. reflexivity. Qed.
 
-(* The comma presentation. [SetsOne] is the singleton of Sets_Terminal,
-   and [=(SetsOne)] is the constant functor 1 ⟶ Sets at it. *)
+(* The comma presentation. [SetsOne] singleton Sets_Terminal,
+ [=(SetsOne)] 常值 函子 1 ⟶ Sets at it. （已译） *)
 
 Definition SetsOne : Sets := @terminal_obj Sets Sets_Terminal.
 
@@ -141,9 +141,7 @@ Qed.
 
 End Elements.
 
-(* Instances declared inside a section are not registered once the section
-   closes; re-register so downstream files can resolve
-   [Faithful (Elements_proj K)] by typeclass search rather than by name. *)
+(* 相关说明。 （已译） *)
 #[export] Existing Instance Elements_proj_Faithful.
 
 (*
@@ -179,22 +177,17 @@ Section Presheaf_Elements.
 Context {C : Category}.
 Context (P : C^op ⟶ Sets).
 
-(* The contravariant (presheaf) orientation: the opposite of the covariant
-   construction taken on C^op. Objects are still the pairs (c, x) with x
-   an element of P c. *)
+(* 相关说明。 （已译） *)
 
 Definition PElements : Category := (Elements P)^op.
 
-(* A definitional check, closed by [reflexivity]: the hom type is the one
-   the presheaf orientation asks for, with the element condition running
-   backwards. *)
+(* 相关说明。 （已译） *)
 
 Lemma PElements_hom (x y : PElements) :
   (x ~{PElements}~> y) = (∃ f : `1 x ~{C}~> `1 y, fmap[P] f (`2 y) ≈ `2 x).
 Proof. reflexivity. Qed.
 
-(* The projection stays covariant: it lands in C, with no transport,
-   because the opposite of the opposite of C is C. *)
+(* 相关说明。 （已译） *)
 
 Program Definition PElements_proj : PElements ⟶ C := {|
   fobj := fun x => `1 x;

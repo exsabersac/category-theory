@@ -25,7 +25,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Theorem (i): biproducts realize the preadditive structure *)
+(* 相关说明。 （已译） *)
 
 Section BiproductAddition.
 
@@ -60,9 +60,9 @@ Proof.
   - apply id_right.
 Qed.
 
-(* Every morphism into a biproduct is the sum of its two components,
-   reinjected.  This is the identity decomposition transported along the
-   pairing. *)
+(* Every 态射 biproduct sum two components,
+ reinjected. This 恒等 decomposition transported along the
+ pairing. （已译） *)
 Lemma bi_pair_decomp {x y z : C} (B : Biproduct x y)
   (f : z ~> x) (g : z ~> y) :
   bi_pair B f g ≈ padd (bi_inl B ∘ f) (bi_inr B ∘ g).
@@ -76,8 +76,7 @@ Proof.
     + now rewrite <- comp_assoc, bi_exr_pair.
 Qed.
 
-(* Copairing against pairing computes the matrix product: a 1×2 row against
-   a 2×1 column yields the sum of the diagonal composites. *)
+(* 相关说明。 （已译） *)
 Lemma bi_copair_pair {x y z w : C} (B : Biproduct x y)
   (u : x ~> w) (v : y ~> w) (f : z ~> x) (g : z ~> y) :
   bi_copair B u v ∘ bi_pair B f g ≈ padd (u ∘ f) (v ∘ g).
@@ -89,7 +88,7 @@ Proof.
   - now rewrite comp_assoc, bi_copair_inr.
 Qed.
 
-(* Pairing fuses with the biproduct's functorial action. *)
+(* 相关说明。 （已译） *)
 Lemma bimap_bi_pair {x y x' y' z : C}
   (B : Biproduct x y) (B' : Biproduct x' y')
   (f : x ~> x') (g : y ~> y') (h : z ~> x) (k : z ~> y) :
@@ -105,8 +104,8 @@ Proof.
     now rewrite <- comp_assoc, bi_exr_pair.
 Qed.
 
-(* The first canonical theorem: the enrichment addition is computed by the
-   biproduct as f + g ≈ ∇ ∘ (f ⊕ g) ∘ Δ. *)
+(* The first canonical 定理: enrichment addition computed the
+ biproduct f + g ≈ ∇ ∘ (f ⊕ g) ∘ Δ. （已译） *)
 Theorem biproduct_addition {x y : C} (B : Biproduct x x) (B' : Biproduct y y)
   (f g : x ~> y) :
   padd f g ≈ bi_copair B' id id ∘ bimap B B' f g ∘ bi_pair B id id.
@@ -119,8 +118,8 @@ Qed.
 
 End BiproductAddition.
 
-(** ** Theorem (i), continued: products are biproducts in a preadditive
-    category *)
+(* * ** Theorem (i), continued: products biproducts preadditive
+ 范畴 （已译） *)
 
 Section CartesianBiproduct.
 
@@ -129,8 +128,8 @@ Context `{Z : @ZeroObject C}.
 Context `{P : @Preadditive C}.
 Context `{H : @Cartesian C}.
 
-(* The product-side universal property, packaged for the biproduct record:
-   the mediator is the fork, and uniqueness is [ump_products]. *)
+(* The product-side 普遍性质, packaged biproduct record:
+ mediator fork, uniqueness [ump_products]. （已译） *)
 Definition cartesian_bi_is_product (x y z : C) (f : z ~> x) (g : z ~> y) :
   ∃! h : z ~> x × y, (exl ∘ h ≈ f) ∧ (exr ∘ h ≈ g).
 Proof.
@@ -143,8 +142,8 @@ Proof.
     now apply ump_products.
 Defined.
 
-(* The identity decomposition for the product equipped with the additive
-   injections id △ 0 and 0 △ id.  Both sides mediate the cone (exl, exr). *)
+(* The 恒等 decomposition product equipped additive
+ injections id △ 0 0 △ id. Both sides mediate cone (exl, exr). （已译） *)
 Lemma cartesian_id_decomp {x y : C} :
   padd ((id △ zero_mor) ∘ exl) ((zero_mor △ id) ∘ exr) ≈ id[x × y].
 Proof.
@@ -203,9 +202,9 @@ Proof using C H P Z.
       reflexivity.
 Defined.
 
-(* In a preadditive category, every binary product is a biproduct: the
-   injections are id △ 0 and 0 △ id, and the four interaction laws are the
-   fork computation rules. *)
+(* In preadditive 范畴, every binary product biproduct: the
+ injections id △ 0 0 △ id, four interaction laws the
+ fork computation rules. （已译） *)
 Definition cartesian_biproduct (x y : C) : Biproduct x y := {|
   biproduct_obj := x × y;
   bi_inl := id △ zero_mor;
@@ -228,8 +227,8 @@ Definition cartesian_has_biproducts : HasBiproducts C := {|
 
 End CartesianBiproduct.
 
-(** ** Theorem (ii): semiadditivity from a bicartesian category with an
-    invertible canonical comparison *)
+(* * ** Theorem (ii): semiadditivity bicartesian 范畴 an
+ invertible canonical comparison （已译） *)
 
 Section BicartesianSemiadditive.
 
@@ -265,8 +264,8 @@ Proof.
     now rewrite id_right.
 Qed.
 
-(* The canonical comparison morphism from the coproduct to the product,
-   the "identity matrix" ((id, 0), (0, id)). *)
+(* The canonical comparison 态射 coproduct product,
+ "恒等 matrix" ((id, 0), (0, id)). （已译） *)
 Definition can_comparison (x y : C) : x + y ~{C}~> x × y :=
   (id △ zero_mor) ▽ (zero_mor △ id).
 
@@ -277,7 +276,7 @@ Proof. apply inl_merge. Qed.
 Lemma can_inr {x y : C} : can_comparison x y ∘ inr ≈ zero_mor △ id.
 Proof. apply inr_merge. Qed.
 
-(* ...and the four matrix entries of the comparison. *)
+(* 相关说明。 （已译） *)
 Lemma exl_can_inl {x y : C} : exl ∘ can_comparison x y ∘ inl ≈ id.
 Proof.
   rewrite <- comp_assoc, can_inl.
@@ -314,8 +313,7 @@ Proof. exact (@is_right_inverse C _ _ (can_comparison x y) (E x y)). Qed.
 Lemma can_inv_can {x y : C} : can_inv x y ∘ can_comparison x y ≈ id.
 Proof. exact (@is_left_inverse C _ _ (can_comparison x y) (E x y)). Qed.
 
-(* Cancellation forms of the inverse laws, shaped for rewriting inside
-   right-associated composites. *)
+(* 相关说明。 （已译） *)
 Lemma can_can_inv_cancel {x y z : C} (h : z ~> x × y) :
   can_comparison x y ∘ (can_inv x y ∘ h) ≈ h.
 Proof.
@@ -330,8 +328,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* The inverse sends the additive injections of the product back to the
-   coproduct injections. *)
+(* 相关说明。 （已译） *)
 Lemma can_inv_fork_inl {x y : C} : can_inv x y ∘ (id △ zero_mor) ≈ inl.
 Proof.
   rewrite <- can_inl.
@@ -344,16 +341,11 @@ Proof.
   apply can_inv_can_cancel.
 Qed.
 
-(* The convolution addition on hom-setoids, in its coproduct-flavoured form
-   (sum after the coproduct copairing)...
-
-       x --⟨id,id⟩--> x × x --can⁻¹--> x + x --f ▽ g--> y            *)
+(* 相关说明。 （已译） *)
 Definition conv {x y : C} (f g : x ~> y) : x ~> y :=
   (f ▽ g) ∘ can_inv x x ∘ (id △ id).
 
-(* ...and in its product-flavoured form (sum before the product pairing):
-
-       x --f △ g--> y × y --can⁻¹--> y + y --[id,id]--> y            *)
+(* 相关说明。 （已译） *)
 Definition conv_pr {x y : C} (f g : x ~> y) : x ~> y :=
   (id ▽ id) ∘ can_inv y y ∘ (f △ g).
 
@@ -436,7 +428,7 @@ Proof.
     now rewrite zero_mor_right.
 Qed.
 
-(* The zero morphism is a two-sided unit for both convolutions. *)
+(* The zero 态射 two-sided unit both convolutions. （已译） *)
 Lemma conv_zero_left {x y : C} (f : x ~> y) : conv zero_mor f ≈ f.
 Proof.
   unfold conv.
@@ -479,9 +471,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* The Eckmann–Hilton interchange law between the two convolutions.  It is
-   exactly the bicartesian interchange [fork_merge] of
-   Structure/Bicartesian.v, conjugated by can⁻¹ on both sides. *)
+(* 相关说明。 （已译） *)
 Lemma conv_interchange {x y : C} (a b c d : x ~> y) :
   conv (conv_pr a b) (conv_pr c d) ≈ conv_pr (conv a c) (conv b d).
 Proof.
@@ -499,8 +489,7 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Eckmann–Hilton, first consequence: the two convolutions coincide.  Via
-   the abstract [eh_ops] of Theory/EckmannHilton.v. *)
+(* 相关说明。 （已译） *)
 Lemma conv_conv_pr {x y : C} (f g : x ~> y) : conv f g ≈ conv_pr f g.
 Proof.
   exact (eh_ops (@conv x y) (@conv_pr x y) zero_mor zero_mor
@@ -533,8 +522,7 @@ Proof.
                   (@conv_interchange x y) f g h).
 Qed.
 
-(* Composition distributes over convolution on the left (computed in the
-   coproduct-flavoured form)... *)
+(* 相关说明。 （已译） *)
 Lemma conv_compose_left {x y z : C} (h : y ~> z) (f g : x ~> y) :
   h ∘ conv f g ≈ conv (h ∘ f) (h ∘ g).
 Proof.
@@ -544,7 +532,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* ...and on the right (computed in the product-flavoured form). *)
+(* 相关说明。 （已译） *)
 Lemma conv_compose_right {x y z : C} (f g : y ~> z) (h : x ~> y) :
   conv f g ∘ h ≈ conv (f ∘ h) (g ∘ h).
 Proof.

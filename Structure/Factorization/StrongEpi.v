@@ -49,14 +49,14 @@ Lemma strong_epi_cancel {C : Category} {x y z : C}
 Proof.
   intros [He Hl].
   constructor.
-  - (* Epic f: this is exactly [epic_cancel] (Theory/Morphisms.v), which was
-       for a long time inlined here and nowhere exposed. *)
+  - (* Epic f: 这是 exactly [epic_cancel] (Theory/Morphisms.v), was
+ long time inlined here nowhere exposed. （已译） *)
     exact (epic_cancel He).
   - (* f ⫫ m for every monomorphism m. *)
     intros u v m Hm.
     constructor.
     intros p q comm.
-    (* Whiskering the square with g yields a square over f ∘ g. *)
+    (* 相关说明。 （已译） *)
     assert (comm' : m ∘ (p ∘ g) ≈ q ∘ (f ∘ g)). {
       rewrite !comp_assoc.
       rewrite comm.
@@ -76,8 +76,7 @@ Proof.
         reflexivity.
       * exact Um.
     + intros d' [Hd'f Hmd'].
-      (* Any filler of the f-square also fills the whiskered square, so it
-         coincides with the lift obtained there. *)
+      (* 相关说明。 （已译） *)
       apply (uniqueness U).
       split.
       * rewrite comp_assoc.

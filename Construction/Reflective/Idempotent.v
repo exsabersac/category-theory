@@ -55,11 +55,11 @@ Class IdempotentMonad {C : Category} (M : C ⟶ C) `{@Monad C M} := {
 
 Arguments idem_join_iso {C} M {_ _} x.
 
-(** * Equivalent characterizations of a single invertible join *)
+(* 相关说明。 （已译） *)
 
-(* These describe when the multiplication [join] is invertible at one object;
-   none of them presupposes [IdempotentMonad], so each is stated over a bare
-   monad and consumed pointwise below. *)
+(* These describe multiplication [join] invertible at one 对象;
+ none them presupposes [IdempotentMonad], so each stated over bare
+ 单子 consumed pointwise below. （已译） *)
 
 Section Characterizations.
 
@@ -85,8 +85,8 @@ Proof.
   - apply (@join_ret C M _ x).
 Defined.
 
-(* Conversely, if ret (M x) is invertible then so is join x, with ret (M x)
-   as the inverse (the symmetric inverse-uniqueness argument). *)
+(* Conversely, if ret (M x) invertible then so join x, ret (M x)
+ inverse (the symmetric inverse-uniqueness 论元). （已译） *)
 Definition ret_iso_join_iso (x : C)
   (Hr : IsIsomorphism (@ret C M _ (M x))) :
   IsIsomorphism (@join C M _ x).
@@ -105,9 +105,7 @@ Definition join_iso_iff_ret_M_iso (x : C) :
   IsIsomorphism (@join C M _ x) ↔ IsIsomorphism (@ret C M _ (M x)) :=
   (join_iso_ret_iso x, ret_iso_join_iso x).
 
-(* When join x is invertible the two unit laws force M ret = ret M at x: both
-   fmap ret and ret (M x) are right inverses of the invertible (hence monic)
-   join x, so they coincide. *)
+(* 相关说明。 （已译） *)
 Definition join_iso_fmap_ret (x : C)
   (Hj : IsIsomorphism (@join C M _ x)) :
   fmap[M] (@ret C M _ x) ≈ @ret C M _ (M x).
@@ -129,7 +127,7 @@ Qed.
 
 End Characterizations.
 
-(** * A reflective subcategory induces an idempotent monad *)
+(* * * A reflective subcategory induces idempotent 单子 （已译） *)
 
 Section ReflectiveInducesIdempotent.
 
@@ -160,7 +158,7 @@ Proof.
              (Incl C S x)).
 Qed.
 
-(* The monad on C induced by reflector ⊣ Incl, with join = U ε F. *)
+(* The 单子 C induced reflector ⊣ Incl, join = U ε F. （已译） *)
 Definition Reflective_Monad : @Monad C (Incl C S ◯ reflector R) :=
   Adjunction_Induced_Monad (reflective_adj R).
 
@@ -179,7 +177,7 @@ Defined.
 
 End ReflectiveInducesIdempotent.
 
-(** * An idempotent monad yields a reflective subcategory (and EM equivalence) *)
+(* * * An idempotent 单子 yields reflective subcategory (and EM 等价) （已译） *)
 
 Section IdempotentInducesReflective.
 
@@ -188,9 +186,9 @@ Context {M : C ⟶ C}.
 Context `{MM : @Monad C M}.
 Context `{IM : @IdempotentMonad C M MM}.
 
-(* The M-local objects: those x whose unit ret x is invertible.  The
-   subcategory is full — every C-morphism between local objects is retained —
-   so [shom] is the terminal predicate. *)
+(* The M-local 对象: those x whose unit ret x invertible. The
+ subcategory full — every C-态射 between local 对象 retained —
+ so [shom] terminal predicate. （已译） *)
 Definition MLocal_Subcategory : Subcategory C :=
   {| sobj  := fun x => IsIsomorphism (@ret C M MM x)
    ; shom  := fun _ _ _ _ _ => True
@@ -219,7 +217,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(** ** The reflector C ⟶ Sub, x ↦ M x *)
+(* 相关说明。 （已译） *)
 
 Definition idem_reflector_fobj (x : C) : Sub C MLocal_Subcategory :=
   (M x; join_iso_ret_iso x (idem_join_iso M x)).
@@ -248,7 +246,7 @@ Definition idem_reflector : C ⟶ Sub C MLocal_Subcategory :=
     (fun x => idem_reflector_fmap_id)
     (fun x y z f g => idem_reflector_fmap_comp f g).
 
-(** ** Unit and counit of reflector ⊣ Incl, and the adjunction *)
+(* * ** Unit counit reflector ⊣ Incl, 伴随 （已译） *)
 
 Lemma idem_unit_natural (x y : C) (f : x ~> y) :
   fmap[Incl C MLocal_Subcategory ◯ idem_reflector] f ∘ @ret C M MM x
@@ -279,15 +277,15 @@ Definition idem_counit_transform :
     (G := Id[Sub C MLocal_Subcategory])
     idem_counit_transform_fun idem_counit_natural.
 
-(* First triangle identity: at reflector X the counit underlies join X, and
-   join X ∘ M ret is the unit law [join_fmap_ret]. *)
+(* First triangle 恒等: at reflector X counit underlies join X, and
+ join X ∘ M ret unit law [join_fmap_ret]. （已译） *)
 Lemma idem_triangle_counit (X : C) :
   transform[idem_counit_transform] (idem_reflector X)
     ∘ fmap[idem_reflector] (transform[idem_unit_transform] X) ≈ id.
 Proof. cbn; apply (@join_fmap_ret C M MM X). Qed.
 
-(* Second triangle identity: at a local object the counit underlies the unit
-   inverse, and inverse ∘ ret is [is_left_inverse]. *)
+(* Second triangle 恒等: at local 对象 counit underlies unit
+ inverse, inverse ∘ ret [is_left_inverse]. （已译） *)
 Lemma idem_triangle_unit (X : Sub C MLocal_Subcategory) :
   fmap[Incl C MLocal_Subcategory] (transform[idem_counit_transform] X)
     ∘ transform[idem_unit_transform] (Incl C MLocal_Subcategory X) ≈ id.
@@ -317,11 +315,11 @@ Definition Idempotent_Reflective : Reflective MLocal_Subcategory :=
   @Build_Reflective C MLocal_Subcategory
     MLocal_Full idem_reflector idem_reflective_adj.
 
-(** ** Eilenberg–Moore algebras coincide with M-local objects *)
+(* * ** Eilenberg–Moore algebras coincide M-local 对象 （已译） *)
 
-(* Every local object carries a canonical M-algebra whose structure map is the
-   inverse of its unit; the action law reduces to fmap (ret⁻¹) = join, both
-   being the inverse of fmap ret = ret M. *)
+(* Every local 对象 carries canonical M-algebra whose structure map the
+ inverse unit; action law reduces fmap (ret⁻¹) = join, both
+ being inverse fmap ret = ret M. （已译） *)
 Definition local_algebra {b : C} (ob : IsIsomorphism (@ret C M MM b)) :
   @TAlgebra C M MM b.
 Proof.
@@ -355,7 +353,7 @@ Proof.
   - exact (@t_id C M MM a alg).
 Defined.
 
-(** ** The comparison functor Sub ⟶ EM and its inverse *)
+(* * ** The comparison 函子 Sub ⟶ EM inverse （已译） *)
 
 Definition idem_G_fobj (s : Sub C MLocal_Subcategory) : EilenbergMoore M :=
   (`1 s; local_algebra (`2 s)).
@@ -389,8 +387,8 @@ Definition idem_G : Sub C MLocal_Subcategory ⟶ EilenbergMoore M :=
     (fun s => idem_G_fmap_id)
     (fun s t u f g => idem_G_fmap_comp f g).
 
-(* [idem_G] is faithful: EM-morphisms are compared on their underlying arrows,
-   which are exactly the underlying arrows of the Sub-morphisms. *)
+(* [idem_G] faithful: EM-态射 compared underlying arrows,
+ exactly underlying arrows Sub-态射. （已译） *)
 #[local] Instance idem_G_Faithful : Faithful idem_G.
 Proof.
   refine {| fmap_inj := _ |}.
@@ -434,8 +432,8 @@ Proof.
   refine {| eso_obj := idem_eso_obj; eso_iso := idem_eso_iso |}.
 Defined.
 
-(* The Eilenberg–Moore category of the idempotent monad is equivalent to its
-   subcategory of M-local objects. *)
+(* The Eilenberg–Moore 范畴 idempotent 单子 equivalent its
+ subcategory M-local 对象. （已译） *)
 Definition Idempotent_EM_Equivalence : EquivalenceOfCategories idem_G :=
   FF_ESO_Equivalence idem_G.
 

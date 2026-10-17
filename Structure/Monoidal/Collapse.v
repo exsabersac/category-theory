@@ -40,8 +40,7 @@ Context {C : Category}.
 Context `{M : @Monoidal C}.
 Context `{SM : @SemicartesianMonoidal C M}.
 
-(* The counit of any comonoid is the discard map (both live in the terminal
-   hom-set X ~> I), so the left counit law makes proj_right retract delta. *)
+(* 相关说明。 （已译） *)
 Lemma proj_right_delta {X : C} (Co : Comonoid X) :
   proj_right ∘ delta[Co] ≈ id[X].
 Proof.
@@ -103,9 +102,9 @@ Proof using C F M SM X.
   apply iso_to_from.
 Qed.
 
-(* A Frobenius object in a semicartesian monoidal category is isomorphic to
-   the monoidal unit, with the counit and unit of the Frobenius structure as
-   the two directions. *)
+(* A Frobenius 对象 semicartesian 幺半范畴 isomorphic to
+ monoidal unit, counit unit Frobenius structure as
+ two directions. （已译） *)
 Theorem frobenius_collapse_semicartesian : X ≅ I.
 Proof using C F M SM X.
   isomorphism.
@@ -142,8 +141,8 @@ Context {C : Category}.
 Context `{R : @RelevanceMonoidal C}.
 Context `{CC : @CompactClosed C (@relevance_is_symmetric C R)}.
 
-(* Naturality of the diagonal, in rewriting form: ∆ is a natural
-   transformation from the identity functor to the squaring functor. *)
+(* Naturality diagonal, rewriting form: ∆ natural
+ transformation 恒等 函子 squaring 函子. （已译） *)
 Lemma diagonal_natural' {a b : C} (f : a ~> b) :
   f ⨂ f ∘ ∆a ≈ ∆b ∘ f.
 Proof.
@@ -151,9 +150,9 @@ Proof.
   apply X0.
 Qed.
 
-(* The middle-four interchange is involutive: swapping the middle two
-   factors twice is the identity.  (The two instances have their middle
-   arguments transposed.) *)
+(* The middle-four interchange involutive: swapping middle two
+ factors twice 恒等. (The two instances have middle
+ arguments transposed.) （已译） *)
 Lemma braid2_invol {a b c e : C} :
   @braid2 C R a c b e ∘ @braid2 C R a b c e ≈ id[((a ⨂ b) ⨂ (c ⨂ e))%object].
 Proof.
@@ -201,8 +200,7 @@ Definition cups : I ~> ((d ⨂ x) ⨂ (d ⨂ x))%object :=
 Definition cups_mid : I ~> ((d ⨂ d) ⨂ (x ⨂ x))%object :=
   braid2 ∘ cups.
 
-(* Naturality of ∆ at the cup, with ∆I = λ⁻¹: copying the cup is the
-   diagonal of the cup.  This is the upper square of Abramsky's Lemma 13. *)
+(* 相关说明。 （已译） *)
 Lemma cups_diagonal : cups ≈ ∆(d ⨂ x) ∘ cc_unit x.
 Proof.
   unfold cups.
@@ -210,9 +208,7 @@ Proof.
   apply diagonal_natural'.
 Qed.
 
-(* Regrouped by colour, the two-cup state is the tensor of the two
-   componentwise diagonals: monoidality of ∆ ([diagonal_braid2]) cancels
-   against the regrouping via [braid2_invol]. *)
+(* 相关说明。 （已译） *)
 Lemma cups_mid_diagonal : cups_mid ≈ ∆d ⨂ ∆x ∘ cc_unit x.
 Proof.
   unfold cups_mid.
@@ -224,9 +220,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* Cocommutativity of ∆x, tensored on the right: the two x-wires of the
-   regrouped two-cup state can be swapped silently.  This is the state-level
-   "confusion of entanglements". *)
+(* 相关说明。 （已译） *)
 Lemma cups_mid_braid :
   id[(d ⨂ d)%object] ⨂ braid ∘ cups_mid ≈ cups_mid.
 Proof.
@@ -237,8 +231,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* The two-cup state built sequentially: the second cup is tensored to the
-   right of the first. *)
+(* 相关说明。 （已译） *)
 Lemma cups_split :
   cups ≈ id[(d ⨂ x)%object] ⨂ cc_unit x ∘ unit_right⁻¹ ∘ cc_unit x.
 Proof.
@@ -251,9 +244,9 @@ Proof.
   reflexivity.
 Qed.
 
-(* A single yanking stage: cap the leading x against the leading dual and
-   pass the remainder through.  [bend] at Z := x, precomposed with a cup, is
-   the left snake identity. *)
+(* A single yanking stage: cap leading x against leading dual and
+ pass remainder through. [bend] at Z := x, precomposed cup, is
+ left snake 恒等. （已译） *)
 Definition bend {Z : C} : (x ⨂ (d ⨂ Z))%object ~> Z :=
   unit_left ∘ cc_counit x ⨂ id[Z] ∘ tensor_assoc⁻¹.
 
@@ -277,15 +270,15 @@ Proof.
   reflexivity.
 Qed.
 
-(* The left snake identity, phrased with [bend]. *)
+(* The left snake 恒等, phrased [bend]. （已译） *)
 Lemma bend_snake : bend ∘ id[x] ⨂ cc_unit x ∘ unit_right⁻¹ ≈ id[x].
 Proof.
   unfold bend.
   apply snake_left.
 Qed.
 
-(* A corollary of the second hexagon: braiding a whole pair past x and then
-   swapping inside the left factor is braiding the two inner x-wires. *)
+(* A 推论 second hexagon: braiding whole pair past x then
+ swapping inside left factor braiding two inner x-wires. （已译） *)
 Lemma braid_pass {y : C} :
   braid ⨂ id[x] ∘ tensor_assoc⁻¹ ∘ @braid C _ (y ⨂ x)%object x
     ≈ tensor_assoc⁻¹ ∘ id[y] ⨂ braid ∘ tensor_assoc.
@@ -358,7 +351,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* The left snake identity, solved for the inverse unitor. *)
+(* The left snake 恒等, solved inverse unitor. （已译） *)
 Lemma snake_left_from :
   cc_counit x ⨂ id[x] ∘ tensor_assoc⁻¹ ∘ id[x] ⨂ cc_unit x ∘ unit_right⁻¹
     ≈ unit_left⁻¹.
@@ -369,8 +362,8 @@ Proof.
   apply snake_left.
 Qed.
 
-(* Yanking with a spectator: inserting a cup beside a wire and capping it
-   against the leading input is the identity on both wires. *)
+(* Yanking spectator: inserting cup beside wire capping it
+ against leading input 恒等 both wires. （已译） *)
 Lemma spectator_snake :
   bend ∘ id[x] ⨂ (tensor_assoc ∘ cc_unit x ⨂ id[x] ∘ unit_left⁻¹)
     ≈ id[(x ⨂ x)%object].
@@ -400,9 +393,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* The two-input closure: tensor a colour-grouped state next to the two
-   inputs and cap each input in turn against the state's dual wires; the
-   state's two x-wires are the outputs. *)
+(* 相关说明。 （已译） *)
 Definition close (v : I ~> ((d ⨂ d) ⨂ (x ⨂ x))%object) :
   (x ⨂ x)%object ~> (x ⨂ x)%object :=
   bend ∘ id[x] ⨂ (bend ∘ id[x] ⨂ (to tensor_assoc ∘ v) ∘ unit_right⁻¹).
@@ -415,8 +406,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* A braid on the x-wires of the state emerges from the closure as a braid
-   on its outputs. *)
+(* 相关说明。 （已译） *)
 Lemma close_braid (v : I ~> ((d ⨂ d) ⨂ (x ⨂ x))%object) :
   close (id[(d ⨂ d)%object] ⨂ braid ∘ v) ≈ braid ∘ close v.
 Proof.
@@ -439,9 +429,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* Double yanking: closing the colour-grouped two-cup state evaluates to
-   the braiding — the first input caps the first cup and flows out on the
-   second output, and conversely. *)
+(* 相关说明。 （已译） *)
 Lemma close_cups_mid : close cups_mid ≈ braid.
 Proof.
   unfold close.

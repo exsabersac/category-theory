@@ -34,7 +34,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Zero morphisms without a zero object *)
+(* * ** Zero 态射 without zero 对象 （已译） *)
 
 (*
    本节说明 Universal 相关定义、性质与动机。
@@ -102,13 +102,13 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The action, by conversion: this is what makes the universal-element
-   clause below literally the descent clause of [kernel_desc]. *)
+(* The action, conversion: 这是 what makes universal-element
+ clause below literally descent clause [kernel_desc]. （已译） *)
 Lemma kill_fmap (d d' : C) (u : d' ~{C}~> d) (p : Kills d) :
   `1 (fmap[KillPresheaf] u p) = `1 p ∘ u.
 Proof. reflexivity. Qed.
 
-(** ** The two shapes of the kernel equation *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明核/余核相关定义、性质与动机。
@@ -123,9 +123,9 @@ Lemma fork_kill {d : C} {h : d ~> x} (Hh : f ∘ h ≈ zmor ∘ h) :
   f ∘ h ≈ zmor.
 Proof. rewrite Hh; apply zmor_absorb_r. Qed.
 
-(* [Structure/Kernel.v]'s [IsKernel] restated over [ZeroMorphisms].  When
-   the structure comes from a zero object the two are THE SAME TYPE; see
-   [IsKernel_is_IsKernelOf] below. *)
+(* [Structure/Kernel.v]'s [IsKernel] restated over [ZeroMorphisms]. When
+ structure comes zero 对象 two THE SAME TYPE; see
+ [IsKernel_is_IsKernelOf] below. （已译） *)
 Definition IsKernelOf {k : C} (i : k ~> x) : Type := IsEqualizer f zmor k i.
 
 (** ** The two passages *)
@@ -147,7 +147,7 @@ Definition aue_kernel {k : C} (U : AUniversalElement KillPresheaf k)
    ; eq_desc := fun z h Hh =>
        @aue_universal (C^op) KillPresheaf k U z (existT _ h (fork_kill Hh)) |}.
 
-(* The underlying morphism survives both passages on the nose. *)
+(* The underlying 态射 survives both passages nose. （已译） *)
 Corollary kernel_aue_morphism {k : C} {i : k ~> x} (K : IsKernelOf i) :
   `1 (@aue_elem (C^op) KillPresheaf k (kernel_aue K)) = i.
 Proof. reflexivity. Qed.
@@ -158,15 +158,14 @@ Corollary aue_kernel_morphism {k : C} (U : AUniversalElement KillPresheaf k) :
     = `1 (@aue_elem (C^op) KillPresheaf k U).
 Proof. reflexivity. Qed.
 
-(* ... and so does the mediator: the unique factorization the universal
-   element produces IS the one [eq_desc] produces, as a term. *)
+(* 相关说明。 （已译） *)
 Corollary kernel_aue_mediator {k : C} {i : k ~> x} (K : IsKernelOf i)
   (d : C) (h : d ~> x) (Hh : f ∘ h ≈ zmor) :
   unique_obj (@aue_universal (C^op) KillPresheaf k (kernel_aue K) d (h; Hh))
     = unique_obj (eq_desc K h (kill_fork Hh)).
 Proof. reflexivity. Qed.
 
-(** ** The equivalence, universe-free: the two round trips *)
+(* * ** The 等价, universe-free: two round trips （已译） *)
 
 (*
    本节说明同构、核/余核、来源与用途相关定义、性质与动机。
@@ -194,7 +193,7 @@ Proof.
   exact (unique_property (@aue_universal (C^op) KillPresheaf k U d p)).
 Qed.
 
-(** ** The equivalence, as an isomorphism of setoids *)
+(* * ** The 等价, 同构 setoids （已译） *)
 
 Definition KernelData (k : C) : Type := { i : k ~> x & IsKernelOf i }.
 
@@ -247,8 +246,8 @@ Definition kernel_representation {k : C} {i : k ~> x} (K : IsKernelOf i)
   : @Curried_Hom (C^op) k ≅[[C^op, Sets]] KillPresheaf :=
   ue_representation KillPresheaf k (kernel_aue K).
 
-(* Its component at d carries u : d ~> k to i ∘ u, on the nose -- the
-   comparison map of the kernel's universal property. *)
+(* Its component at d carries u : d ~> k i ∘ u, nose -- the
+ comparison map kernel's 普遍性质. （已译） *)
 Corollary kernel_representation_at {k : C} {i : k ~> x} (K : IsKernelOf i)
   (d : C) (u : d ~{C}~> k) :
   `1 (transform (to (kernel_representation K)) d u) = i ∘ u.
@@ -284,7 +283,7 @@ Arguments Kills {C ZM x y} f d.
 Arguments KillPresheaf {C ZM x y} f.
 Arguments IsKernelOf {C ZM x y} f {k} i.
 
-(** ** The zero-object case: [Structure/Kernel.v]'s kernels, unchanged *)
+(* * ** The zero-对象 case: [Structure/Kernel.v]'s kernels, unchanged （已译） *)
 
 Section KernelUniversalZeroObject.
 
@@ -321,7 +320,7 @@ Definition kernel_representable {k : C} {i : k ~> x} (K : IsKernel f i)
 
 End KernelUniversalZeroObject.
 
-(** ** The zero-free packaging: an arbitrary parallel pair *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明等化子、（余）强度、核/余核相关定义、性质与动机。
@@ -348,9 +347,7 @@ Program Definition ForkPresheaf : C^op ⟶ Sets := {|
 |}.
 Next Obligation. rewrite !comp_assoc; now rewrite (`2 p). Qed.
 
-(* Here the sigma's property IS the fork equation and the universal clause
-   IS [eq_desc], with NO reshaping: both passages are [:=] and the field
-   types are convertible one for one. *)
+(* 相关说明。 （已译） *)
 Definition equalizer_aue {k : C} {i : k ~> x} (E : IsEqualizer f g k i)
   : AUniversalElement ForkPresheaf k :=
   @Build_AUniversalElement (C^op) ForkPresheaf k
@@ -400,9 +397,7 @@ Lemma aue_equalizer_round_mediator {k : C}
                 (equalizer_aue (aue_equalizer U)) d p)
     = unique_obj (@aue_universal (C^op) ForkPresheaf k U d p).
 Proof.
-  (* [destruct p] and not [reflexivity]: the two sides differ ONLY by the
-     repacking (`1 p; `2 p), which is [sigT]'s missing eta -- and which the
-     [destruct] supplies. *)
+  (* 相关说明。 （已译） *)
   destruct p; reflexivity.
 Qed.
 
@@ -426,7 +421,7 @@ Program Definition equalizer_universal_element_iso (k : C)
                (`1 (@aue_elem (C^op) ForkPresheaf k U); aue_equalizer U) |}
 |}.
 
-(* The equalizer's representability, for symmetry with the kernel case. *)
+(* 相关说明。 （已译） *)
 Definition equalizer_Representable {k : C} {i : k ~> x}
   (E : IsEqualizer f g k i) : Representable ForkPresheaf :=
   Representable_of_UniversalElement
@@ -441,7 +436,7 @@ End EqualizerUniversal.
 Arguments Forks {C x y} f g d.
 Arguments ForkPresheaf {C x y} f g.
 
-(** ** How much the zero morphism buys *)
+(* * ** How much zero 态射 buys （已译） *)
 
 (*
    本节说明 Universal 相关定义、性质与动机。

@@ -25,8 +25,8 @@ Record Subcategory := {
   (* sub-collection of the C-morphisms between selected objects *)
   shom {x y : C} : sobj x → sobj y → (x ~> y) → Type;
 
-  (* closed under composition: if f : y ~> z and g : x ~> y are in D, then so
-     is the composite f ∘ g : x ~> z *)
+  (* closed under 复合: if f : y ~> z g : x ~> y D, then so
+ 复合 f ∘ g : x ~> z （已译） *)
   scomp {x y z : C} (ox : sobj x) (oy : sobj y) (oz : sobj z)
         {f : y ~> z} {g : x ~> y} :
     shom oy oz f → shom ox oy g → shom ox oz (f ∘ g);
@@ -46,7 +46,7 @@ Program Definition Sub : Category := {|
   compose := fun x y z f g  => (`1 f ∘ `1 g; scomp S `2 x `2 y `2 z `2 f `2 g)
 |}.
 
-(* ... and the inclusion D ⟶ C is a functor. *)
+(* ... 含入 D ⟶ C 函子. （已译） *)
 Program Instance Incl : Sub ⟶ C := {
   fobj := fun x => `1 x;
   fmap := fun x y f => `1 f
@@ -65,15 +65,15 @@ Proof.
   constructor; simpl; intros x y f g Hfg; exact Hfg.
 Qed.
 
-(* Additionally, we say that D is...
+(* Additionally, we say D is...
 
-   A full subcategory if for any x and y in D, every morphism f : x → y in C
-   is also in D... *)
+ A full subcategory if any x y D, every 态射 f : x → y C
+ D... （已译） *)
 
 Definition Full : Type :=
   ∀ (x y : C) (ox : sobj S x) (oy : sobj S y) (f : x ~> y), shom S ox oy f.
 
-(* ... (that is, the inclusion functor D ⟶ C is full) *)
+(* ... (that is, 含入 函子 D ⟶ C full) （已译） *)
 
 Lemma Full_Implies_Full_Functor : Full → Functor.Full Incl.
 Proof.
@@ -153,8 +153,8 @@ Proof.
   exact (HR _ _ _ _ _ _ Hgf Hg).
 Qed.
 
-(* A replete subcategory if for any x in D and any isomorphism f : x ≅ y in C,
-   both y and f are also in D. *)
+(* A replete subcategory if any x D any 同构 f : x ≅ y C,
+ both y f D. （已译） *)
 
 Definition Replete : Type :=
   ∀ (x : C) (ox : sobj S x) (y : C) (f : x ≅ y),

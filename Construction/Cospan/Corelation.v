@@ -13,7 +13,7 @@ Require Import Category.Construction.Cospan.Category.
 
 Generalizable All Variables.
 
-(** * Corelations: jointly-epic cospans *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: none-exists (no category-theoretic article; the page title
@@ -45,7 +45,7 @@ Arguments corelation_copairing_epic {X Y} _.
 (** Coercion: a corelation IS a cospan. *)
 Coercion corelation_cospan : CorelationArrow >-> CospanArrow.
 
-(** Two corelations are equivalent iff their underlying cospans are. *)
+(** 本节：Two corelations equivalent iff underlying cospans are. （已译） *)
 Definition corelation_equiv {X Y : C} (f g : CorelationArrow X Y) : Type :=
   cospan_equiv (corelation_cospan f) (corelation_cospan g).
 
@@ -67,8 +67,8 @@ Next Obligation.
              (@setoid_equiv _ (@CospanArrow_Setoid C X Y))).
 Defined.
 
-(** The identity cospan is a corelation: its copairing is
-    [id ▽ id : X + X ~> X], which is the codiagonal — an epi. *)
+(** The 恒等 cospan corelation: copairing is
+ [id ▽ id : X + X ~> X], codiagonal — epi. （已译） *)
 Lemma id_copairing_epic (X : C) :
   Epic (cospan_in1 (cospan_id X) ▽ cospan_in2 (cospan_id X)).
 Proof.
@@ -93,10 +93,10 @@ Definition corelation_id (X : C) : CorelationArrow X X :=
   {| corelation_cospan := cospan_id X;
      corelation_copairing_epic := id_copairing_epic X |}.
 
-(** ** Composition: requires epi-stable pushouts
+(* * ** Composition: requires epi-stable pushouts
 
-    The composite of two corelations is a corelation only when pushouts
-    preserve epimorphisms.  We carry this as a typeclass hypothesis. *)
+ The 复合 two corelations corelation pushouts
+ preserve epimorphisms. We carry typeclass 假设. （已译） *)
 
 Context (HP : HasPushouts C).
 
@@ -125,8 +125,8 @@ Definition corelation_underlying_compose
   : CospanArrow X Z :=
   cospan_compose HP (corelation_cospan g) (corelation_cospan f).
 
-(** Composition of corelations. The copairing-epi witness is exactly
-    [composite_copairing_epic] from the [CorelComposable] hypothesis. *)
+(** Composition corelations. The copairing-epi witness exactly
+ [composite_copairing_epic] [CorelComposable] 假设. （已译） *)
 Definition corelation_compose
            {X Y Z : C}
            (g : CorelationArrow Y Z) (f : CorelationArrow X Y)
@@ -142,7 +142,7 @@ Arguments corelation_copairing_epic {C _ X Y} _.
 Arguments corelation_id {C _} X.
 Arguments corelation_compose {C _ HP CC X Y Z} g f.
 
-(** ** Setoid for corelations, lifted to the global level *)
+(* 相关说明。 （已译） *)
 Arguments CorelationArrow_Setoid {C _} X Y.
 
 (*

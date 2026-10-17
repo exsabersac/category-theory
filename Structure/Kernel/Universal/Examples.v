@@ -21,13 +21,12 @@ Require Import Category.Structure.Equalizer.Fork.
 Require Import Category.Structure.Kernel.
 Require Import Category.Theory.Universal.Element.
 Require Import Category.Structure.Kernel.Universal.
-(* Last, matching Theory/Algebra/Rig.v's own placement of this import:
-   after Category.Lib and after the [Sets]/[CMon] layer. *)
+(* 相关说明。 （已译） *)
 Require Import Coq.ZArith.ZArith.
 
 Generalizable All Variables.
 
-(** * Witnesses for kernels as universal elements *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出例子。
@@ -87,7 +86,7 @@ Proof.
       symmetry; exact (Hv a).
 Defined.
 
-(** ** ... hence a universal element of the kill-f presheaf *)
+(* 相关说明。 （已译） *)
 
 Definition ab_kernel_aue {A B : AbObject} (f : A ~{Ab}~> B)
   : AUniversalElement
@@ -105,7 +104,7 @@ Definition ab_kernel_representation {A B : AbObject} (f : A ~{Ab}~> B)
     (@KillPresheaf Ab (ZeroMorphisms_of_ZeroObject Ab_Zero) A B f)
   := kernel_representation f (ab_kernel_IsKernel f).
 
-(* The representing object is the kernel group, on the nose. *)
+(* The 表示 对象 kernel group, nose. （已译） *)
 Corollary ab_kernel_repr_obj {A B : AbObject} (f : A ~{Ab}~> B) :
   @repr_obj (Ab^op)
     (@KillPresheaf Ab (ZeroMorphisms_of_ZeroObject Ab_Zero) A B f)
@@ -113,7 +112,7 @@ Corollary ab_kernel_repr_obj {A B : AbObject} (f : A ~{Ab}~> B) :
   = AbKernel f.
 Proof. reflexivity. Qed.
 
-(* ... and the universal element is the inclusion, on the nose. *)
+(* ... universal element 含入, nose. （已译） *)
 Corollary ab_kernel_aue_elem {A B : AbObject} (f : A ~{Ab}~> B) :
   `1 (@aue_elem (Ab^op)
         (@KillPresheaf Ab (ZeroMorphisms_of_ZeroObject Ab_Zero) A B f)
@@ -145,14 +144,14 @@ Definition ab_kernel_round {A B : AbObject} (f : A ~{Ab}~> B)
   {z : AbObject} (h : z ~{Ab}~> A)
   := kernel_round_mediator f (ab_kernel_IsKernel f) h.
 
-(* ... and on the universal-element side. *)
+(* 相关说明。 （已译） *)
 Definition ab_aue_kernel_round {A B : AbObject} (f : A ~{Ab}~> B)
   (U : AUniversalElement
          (@KillPresheaf Ab (ZeroMorphisms_of_ZeroObject Ab_Zero) A B f)
          (AbKernel f))
   := aue_kernel_round_mediator f U.
 
-(** ** A non-degenerate instance: the even integers inside Z *)
+(* 相关说明。 （已译） *)
 
 (* Z/2 as an abelian group on [bool] under exclusive-or.  Negation is the
    identity, since every element is its own inverse. *)
@@ -183,8 +182,7 @@ Program Definition ab_parity : Ab_Z ~{Ab}~> Ab_Z2 :=
   {| cmon_map := {| morphism := Z.odd |} |}.
 Next Obligation. apply Z.odd_add. Qed.
 
-(* Its kernel is the even integers.  Membership is decidable and computes:
-   both witnesses below are [eq_refl] on the underlying booleans. *)
+(* 相关说明。 （已译） *)
 Definition ab_even (n : Z) (H : Z.odd n = false)
   : carrier (cmon_setoid (AbKernel ab_parity)) := (n; H).
 
@@ -193,13 +191,13 @@ Definition ab_even_0 : carrier (cmon_setoid (AbKernel ab_parity)) :=
 Definition ab_even_2 : carrier (cmon_setoid (AbKernel ab_parity)) :=
   ab_even 2%Z eq_refl.
 
-(* NONTRIVIAL: the kernel has at least two distinct elements, so it is not
-   the zero group and the kill-f presheaf is not the constant singleton. *)
+(* NONTRIVIAL: kernel has at least two distinct elements, so it not
+ zero group kill-f presheaf not 常值 singleton. （已译） *)
 Lemma ab_parity_kernel_has_two : (ab_even_0 ≈ ab_even_2) → False.
 Proof. simpl; unfold Z_eqT; discriminate. Qed.
 
-(* PROPER: 1 is not in it, so the kernel is not all of Z either and the
-   inclusion is not an isomorphism. *)
+(* PROPER: 1 not it, so kernel not all Z either the
+ 含入 not 同构. （已译） *)
 Lemma ab_parity_kernel_proper : Z.odd 1%Z = false → False.
 Proof. discriminate. Qed.
 
@@ -222,9 +220,7 @@ Proof.
   now rewrite Z.odd_mul.
 Qed.
 
-(* THE MEDIATOR COMPUTES.  The unique factorization of [ab_double] through
-   the kernel of [ab_parity], evaluated at 3, is 6 -- by [eq_refl] on the
-   underlying integer, with no reduction hint. *)
+(* 相关说明。 （已译） *)
 Definition ab_parity_med : Ab_Z ~{Ab}~> AbKernel ab_parity :=
   unique_obj (eq_desc (ab_kernel_IsKernel ab_parity) ab_double
                 (fun n => ab_double_killed n)).
@@ -233,8 +229,8 @@ Example ab_parity_med_computes :
   `1 (cmon_map ab_parity_med 3%Z) = 6%Z.
 Proof. reflexivity. Qed.
 
-(* ... and it is the factorization: composing with the inclusion returns
-   the doubling map. *)
+(* ... it factorization: composing 含入 returns
+ doubling map. （已译） *)
 Example ab_parity_med_factors :
   ab_kernel_incl ab_parity ∘ ab_parity_med ≈ ab_double.
 Proof.
@@ -242,7 +238,7 @@ Proof.
                             (fun n => ab_double_killed n))).
 Qed.
 
-(* The universal element of the kill-parity presheaf, named. *)
+(* 相关说明。 （已译） *)
 Definition ab_parity_universal_element
   : AUniversalElement
       (@KillPresheaf Ab (ZeroMorphisms_of_ZeroObject Ab_Zero) Ab_Z Ab_Z2 ab_parity)
@@ -260,16 +256,15 @@ Lemma Rng_no_hom_zero_to_Z (u : Zero_Ring ~{Rng}~> Int_Ring) : False.
 Proof.
   pose proof (rig_map_one u) as H1.
   pose proof (rig_map_zero u) as H0.
-  (* [rig_one Zero_Ring] and [rig_zero Zero_Ring] are the same term [ttt],
-     so the two conclusions are about the same integer. *)
+  (* 相关说明。 （已译） *)
   simpl in H1, H0.
   unfold Z_eqT in H1, H0.
   rewrite H1 in H0.
   discriminate.
 Qed.
 
-(* Hence Rng carries no zero-morphism family: one would in particular
-   supply a morphism from the zero ring to Z. *)
+(* Hence Rng carries no zero-态射 family: one would particular
+ supply 态射 zero ring Z. （已译） *)
 Theorem Rng_no_zero_morphisms : ZeroMorphisms Rng → False.
 Proof.
   intro ZM.

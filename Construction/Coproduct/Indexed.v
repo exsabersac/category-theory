@@ -1,4 +1,4 @@
-(** * Set-indexed coproducts of categories *)
+(* * * Set-indexed coproducts 范畴 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -26,11 +26,11 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Casting along index equalities *)
+(* 相关说明。 （已译） *)
 
-(* Transport an object of [C i] to [C j] along [e : i = j].  Every
-   dependency on the index equality in this file goes through this one
-   definition. *)
+(* Transport 对象 [C i] [C j] along [e : i = j]. Every
+ dependency index equality file goes through one
+ 定义. （已译） *)
 Definition ob_cast@{ui uo oh op} {I : Type@{ui}}
   (C : I → Category@{uo oh op}) {i j : I} (e : i = j) (x : C i) : C j :=
   match e in _ = k return C k with eq_refl => x end.
@@ -55,7 +55,7 @@ Lemma mor_cast_sym@{ui uo oh op} {I : Type@{ui}}
   mor_cast C (eq_sym p) (mor_cast C p f) = f.
 Proof. destruct p; reflexivity. Qed.
 
-(** ** The data of the coproduct category *)
+(* * ** The data coproduct 范畴 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -124,8 +124,8 @@ Proof.
   now rewrite Hp, Hq.
 Qed.
 
-(* [id ∘ f] REDUCES, because [sigma_compose] matches on the index proof
-   of its first argument and the identity's is [eq_refl]. *)
+(* [id ∘ f] REDUCES, because [sigma_compose] matches index 证明
+ first 论元 恒等's [eq_refl]. （已译） *)
 Lemma sigma_id_left@{ui uo oh op us} {I : Type@{ui}}
   {C : I → Category@{uo oh op}} {X Y : sigma_obj@{ui uo oh op us} C}
   (f : sigma_hom X Y) : sigma_equiv (sigma_compose (sigma_id Y) f) f.
@@ -171,7 +171,7 @@ Qed.
 
 (** ** The coproduct category *)
 
-(* The explicit universe binders are load-bearing; see header point 4. *)
+(* 相关说明。 （已译） *)
 Definition SigmaCat@{ui uo oh op us} {I : Type@{ui}}
   (C : I → Category@{uo oh op}) : Category@{us oh op} := {|
   obj := sigma_obj@{ui uo oh op us} C;
@@ -230,18 +230,17 @@ Definition SigmaCat_inj@{ui uo oh op us} {I : Type@{ui}}
     (fun x => sigma_inj_map_id C i x)
     (fun x y z f g => sigma_inj_map_comp C i f g).
 
-(* Across summands the hom is EMPTY, and it is empty for the only
-   reason it could be: the index equality it carries is. *)
+(* 相关说明。 （已译） *)
 Lemma sigma_hom_cross_empty {I : Type} (C : I → Category)
   {X Y : SigmaCat C} (H : `1 X = `1 Y → False) : (X ~> Y) → False.
 Proof. intros [e _]; exact (H e). Qed.
 
-(* An empty index leaves the coproduct with no objects at all. *)
+(* An empty index leaves coproduct no 对象 at all. （已译） *)
 Lemma SigmaCat_empty_no_obj (C : Empty_set → Category) :
   obj[SigmaCat C] → False.
 Proof. intros [i _]; destruct i. Qed.
 
-(** ** The case functor and the universal property *)
+(* * ** The case 函子 普遍性质 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -323,9 +322,9 @@ Example sigma_case_inj_fmap {I : Type} {C : I → Category} {D : Category}
   (F : ∀ i : I, C i ⟶ D) (i : I) (x y : C i) (f : x ~> y) :
   fmap[SigmaCat_case F ◯ SigmaCat_inj C i] f = fmap[F i] f := eq_refl.
 
-(* The whole functor RECORD is not recovered, however: the composite
-   rebuilds the three law fields, and they are distinct opaque terms.
-   Measured, not assumed. *)
+(* The whole 函子 RECORD not recovered, however: 复合
+ rebuilds three law fields, they distinct opaque terms.
+ Measured, not assumed. （已译） *)
 Fail Example sigma_case_inj_strict {I : Type} {C : I → Category}
   {D : Category} (F : ∀ i : I, C i ⟶ D) (i : I) :
   SigmaCat_case F ◯ SigmaCat_inj C i = F i := eq_refl.
@@ -356,8 +355,8 @@ Proof.
     exact (`2 (H i) x y f).
 Qed.
 
-(* The universal property, bundled: existence is the case functor with
-   its triangle, uniqueness the lemma above. *)
+(* The 普遍性质, bundled: existence case 函子 with
+ triangle, uniqueness 引理 above. （已译） *)
 Lemma SigmaCat_ump {I : Type} {C : I → Category} {D : Category}
   (F : ∀ i : I, C i ⟶ D) :
   ∃! G : SigmaCat C ⟶ D, ∀ i : I, G ◯ SigmaCat_inj C i ≈ F i.
@@ -368,11 +367,11 @@ Proof.
   - intros G HG; symmetry; exact (SigmaCat_case_unique F G HG).
 Qed.
 
-(** ** Fullness and faithfulness of the injections *)
+(* 相关说明。 （已译） *)
 
-(* Uniqueness of identity proofs on the index, in the Streicher-K form
-   Theory/OGraph.v's [NodeUIP] uses — which is also the form the
-   stdlib's [UIP_shift] consumes. *)
+(* Uniqueness 恒等 proofs index, Streicher-K form
+ Theory/OGraph.v's [NodeUIP] uses — form the
+ stdlib's [UIP_shift] 所消耗. （已译） *)
 Definition IdxUIP (I : Type) : Type := ∀ (i : I) (p : i = i), p = eq_refl.
 
 Lemma IdxUIP_pair {I : Type} (U : IdxUIP I) {i j : I} (p q : i = j) : p = q.
@@ -417,9 +416,9 @@ Definition SigmaCat_const_inj_Faithful {I : Type} (D : Category) (i : I) :
   Faithful (SigmaCat_inj (fun _ : I => D) i) :=
   Faithful_cancel _ _ (SigmaCat_const_retract D i).
 
-(* Fullness needs [IdxUIP] outright: the chosen preimage of a morphism
-   is its second component read back through the index proof's collapse
-   to [eq_refl]. *)
+(* Fullness needs [IdxUIP] outright: chosen preimage 态射
+ second component read back through index 证明's collapse
+ [eq_refl]. （已译） *)
 Program Definition SigmaCat_inj_Full {I : Type} (C : I → Category)
   (U : IdxUIP I) (i : I) : Full (SigmaCat_inj C i) := {|
   prefmap := fun x y g => mor_cast C (U i (`1 g)) (`2 g)

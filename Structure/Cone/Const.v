@@ -34,9 +34,9 @@ Proof.
     + abstract(simpl; rewrite id_right; symmetry; apply cone_coherence).
 Defined.
 
-(* See Instance/Cones/Comma.v for the analogous statement upgraded to a
-   functorial equivalence Cones F ≅[Cat] (Δ ↓ =(F)) between the whole category
-   of cones and the comma category. *)
+(* See Instance/Cones/Comma.v analogous statement upgraded a
+ functorial 等价 Cones F ≅[Cat] (Δ ↓ =(F)) between whole 范畴
+ cones comma 范畴. （已译） *)
 
 Lemma Cone_Comma `(F : [J, C]) : (Δ ↓ Δ(F)) ↔ Cone F.
 Proof.

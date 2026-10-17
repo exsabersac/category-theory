@@ -26,7 +26,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * The linear/non-linear comonoid-supply bridge *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/copy-discard+category
@@ -42,7 +42,7 @@ Generalizable All Variables.
 
 (* ------------------------------------------------------------------ *)
 
-(** ** The bridge: supplied objects and deterministic maps *)
+(* * ** The bridge: supplied 对象 deterministic maps （已译） *)
 
 Section LNLBridge.
 
@@ -51,9 +51,9 @@ Context (P : ColouredPROP Colour).
 Context (copyable : Colour -> bool).
 Context `{SS : @SelectiveSupply Colour P copyable}.
 
-(** The coloured-PROP-object [⟦cs⟧c], as in
-    [Construction/ColouredPROP.v] (whose notation is section-local
-    there and must be re-declared per file). *)
+(** The coloured-PROP-对象 [⟦cs⟧c], in
+ [Construction/ColouredPROP.v] (whose notation section-local
+ there must re-declared per file). （已译） *)
 Notation "⟦ cs ⟧c" := (@cprop_of_list Colour P cs)
   (at level 0, format "⟦ cs ⟧c").
 
@@ -72,8 +72,8 @@ Definition SupplyDeterministic {cs ds : list Colour}
        (supply_list ds Hd))
     f.
 
-(** The bridge predicate IS Linear.v's determinism predicate, on the
-    nose. *)
+(** 本节：The bridge predicate IS Linear.v's determinism predicate, the
+ nose. （已译） *)
 Example SupplyDeterministic_is_sel_deterministic
   {cs ds : list Colour}
   (Hc : all_copyable copyable cs) (Hd : all_copyable copyable ds)
@@ -91,9 +91,9 @@ Definition supplied_obj (cs : list Colour)
    @ccomon_comonoid P (@cprop_symmetric Colour P) ⟦cs⟧c
      (supply_list cs H)).
 
-(** A supply-deterministic map lifts to a [Comon]-hom between the
-    supplied objects: the sigma-pack of the map with its determinism
-    witness. *)
+(** A supply-deterministic map lifts [Comon]-hom between the
+ supplied 对象: sigma-pack map determinism
+ witness. （已译） *)
 Definition LNL_lift {cs ds : list Colour}
   (Hc : all_copyable copyable cs) (Hd : all_copyable copyable ds)
   (f : ⟦cs⟧c ~{P}~> ⟦ds⟧c) (Hf : SupplyDeterministic Hc Hd f) :
@@ -137,9 +137,9 @@ Proof.
   exact Hu.
 Qed.
 
-(** The eta-form of uniqueness: every [Comon]-hom between supplied
-    objects is the lift of its own underlying map, its determinism
-    witness being its own second projection. *)
+(** The eta-form uniqueness: every [Comon]-hom between supplied
+ 对象 lift own underlying map, determinism
+ witness being own second projection. （已译） *)
 Corollary LNL_lift_eta {cs ds : list Colour}
   (Hc : all_copyable copyable cs) (Hd : all_copyable copyable ds)
   (u : supplied_obj cs Hc
@@ -195,9 +195,9 @@ Context {Colour : Type}.
 Context (Cdec : forall c d : Colour, {c = d} + {c <> d}).
 Context (S : CSignature Colour).
 
-(** Every colour word is all-copyable for the total predicate: a
-    computing fixpoint ([forallb (fun _ => true)] peels cons cells
-    definitionally). *)
+(** 本节：Every colour word all-copyable total predicate: a
+ computing fixpoint ([forallb (fun _ => true)] peels cons cells
+ definitionally). （已译） *)
 Fixpoint all_true (cs : list Colour) :
   all_copyable (fun _ : Colour => true) cs :=
   match cs with
@@ -209,9 +209,9 @@ Notation TotalPROP := (SupplyPROP Cdec S (fun _ : Colour => true)).
 Notation TotalSS :=
   (SupplyPROP_SelectiveSupply Cdec S (fun _ : Colour => true)).
 
-(** Decidable object equality for the presented supply PROP: objects
-    are colour words (per the D2 discipline this is a definition fed
-    the one canonical [Cdec], not an instance). *)
+(** Decidable 对象 equality presented supply PROP: 对象
+ colour words (per D2 discipline 这是 定义 fed
+ one canonical [Cdec], not instance). （已译） *)
 Definition TotalPROP_ObjDecEq : @ObjDecEq (cprop_cat TotalPROP) :=
   CFreeCat_ObjDecEq (SupplyExtSig S (fun _ : Colour => true)) Cdec.
 
@@ -229,9 +229,7 @@ Program Definition CopyDiscard_of_total_supply :
     supply_list (P := TotalPROP) (SS := TotalSS) X (all_true X)
 |}.
 Next Obligation.
-  (* cd_tensor_delta: [X ⨂ Y ≡ X ++ Y] definitionally, so this IS the
-     coherence square at [all_true] evidence, its [hom_cast] mediation
-     gone by conversion. *)
+  (* 相关说明。 （已译） *)
   exact (@supply_app_delta Colour TotalPROP TotalPROP_ObjDecEq
            (fun _ : Colour => true) TotalSS
            X Y (all_true X) (all_true Y) (all_true ((X ++ Y)%list))).
@@ -243,17 +241,16 @@ Next Obligation.
            X Y (all_true X) (all_true Y) (all_true ((X ++ Y)%list))).
 Qed.
 Next Obligation.
-  (* cd_unit_delta: the supply on [I ≡ []] is the (untransported) unit
-     comonoid, whose δ is the inverse left unitor on the nose. *)
+  (* 相关说明。 （已译） *)
   reflexivity.
 Qed.
 Next Obligation.
-  (* cd_unit_epsilon: its ε is the identity on the nose. *)
+  (* cd_unit_epsilon: ε 恒等 nose. （已译） *)
   reflexivity.
 Qed.
 
-(** The copy and discard morphisms of the degenerate instance are the
-    derived supply's, definitionally. *)
+(** The copy discard 态射 degenerate instance the
+ derived supply's, definitionally. （已译） *)
 Example CopyDiscard_of_total_supply_copy (X : list Colour) :
   @copy (cprop_cat TotalPROP) (@cprop_symmetric Colour TotalPROP)
     CopyDiscard_of_total_supply X

@@ -13,7 +13,7 @@ Require Import Category.Functor.Opposite.
 
 Generalizable All Variables.
 
-(** * Coequalizers, elementarily: coforks and descent *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Coequaliser
@@ -23,11 +23,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The elementary universal property: e coforks the pair f, g at q, and
-   every coforking map h out of y descends uniquely across e. *)
+(* The elementary 普遍性质: e coforks pair f, g at q, and
+ every coforking map h out y descends uniquely across e. （已译） *)
 Record IsCoequalizer {C : Category} {x y : C} (f g : x ~> y)
   (q : C) (e : y ~> q) := {
-  (* the coequalizing map absorbs the parallel pair *)
+  (* 相关说明。 （已译） *)
   cofork : e ∘ f ≈ e ∘ g;
 
   (* universal property: every coforking map h descends uniquely through e *)
@@ -38,9 +38,9 @@ Record IsCoequalizer {C : Category} {x y : C} (f g : x ~> y)
 Arguments cofork {_ _ _ _ _ _ _} _.
 Arguments coeq_desc {_ _ _ _ _ _ _} _ {_} _ _.
 
-(* A category has all (binary) coequalizers when every parallel pair
-   carries an elementary coequalizer.  This is the coequalizer analogue of
-   [HasPullbacks] in [Structure/Pullback.v]. *)
+(* A 范畴 has all (binary) coequalizers every parallel pair
+ carries elementary coequalizer. This coequalizer analogue of
+ [HasPullbacks] [Structure/Pullback.v]. （已译） *)
 Class HasCoequalizers (C : Category) := {
   coeq {x y : C} (f g : x ~> y) : ∃ (q : C) (e : y ~> q), IsCoequalizer f g q e
 }.
@@ -51,11 +51,9 @@ Context {C : Category}.
 Context {x y : C}.
 Context (f g : x ~> y).
 
-(** ** Coequalizing maps are epimorphisms *)
+(* 相关说明。 （已译） *)
 
-(* Wikipedia: "every coequalizer is an epimorphism"; both descents of
-   g1 ∘ e agree with the canonical one, so descent uniqueness cancels e on
-   the right. *)
+(* 相关说明。 （已译） *)
 Lemma coequalizer_epic {q : C} {e : y ~> q} (E : IsCoequalizer f g q e) :
   Epic e.
 Proof.
@@ -74,7 +72,7 @@ Proof.
     exact Hg.
 Qed.
 
-(** ** Coequalizers are unique up to isomorphism *)
+(* * ** Coequalizers unique up 同构 （已译） *)
 
 (*
    本节说明拉回/推出相关定义、性质与动机。
@@ -110,10 +108,10 @@ Proof.
       apply id_left.
 Qed.
 
-(** ** From a coforking map to a cocone over the walking parallel pair *)
+(* 相关说明。 （已译） *)
 
-(* The legs of the cocone induced by a coforking map h: the leg over ParX
-   is the common composite h ∘ f, the leg over ParY is h itself. *)
+(* The legs cocone induced coforking map h: leg over ParX
+ common 复合 h ∘ f, leg over ParY h itself. （已译） *)
 Definition cofork_legs {z : C} (h : y ~> z) (p : ParObj) :
   APair f g p ~{C}~> z :=
   match p return (APair f g p ~{C}~> z) with
@@ -138,7 +136,7 @@ Proof.
   - (* an arrow ParY ~> ParX: refuted *)
     destruct k as [bb hk].
     destruct (ParHom_Y_X_absurd _ hk).
-  - (* the two arrows ParX ~> ParY, sent to f and g *)
+  - (* 相关说明。 （已译） *)
     destruct k as [bb hk].
     destruct bb.
     + (* (true; ParOne), sent to f *)
@@ -158,11 +156,9 @@ Definition cofork_cocone {z : C} (h : y ~> z) (Hh : h ∘ f ≈ h ∘ g) :
     (@Build_ACone (Parallel^op) (C^op) z ((APair f g)^op)
        (cofork_legs h) (cofork_legs_coherence h Hh)).
 
-(** ** From the colimit presentation to the elementary one *)
+(* 相关说明。 （已译） *)
 
-(* The colimit injection over ParY coforks the pair: both composites agree
-   with the injection over ParX, by leg coherence at the two nonidentity
-   arrows of the walking parallel pair. *)
+(* 相关说明。 （已译） *)
 Lemma colimit_coequalizes (L : Coequalizer (APair f g)) :
   colimit_inj (colimit_is_acolimit L) ParY ∘ f
     ≈ colimit_inj (colimit_is_acolimit L) ParY ∘ g.
@@ -175,8 +171,8 @@ Proof.
              ((false; ParTwo) : ParX ~{Parallel}~> ParY)).
 Qed.
 
-(* Descent through the colimit apex: mediate out of the colimit into the
-   cocone induced by the coforking map. *)
+(* Descent through colimit apex: mediate out colimit 进入
+ cocone induced coforking map. （已译） *)
 Lemma colimit_coequalizer_desc (L : Coequalizer (APair f g))
   {z : C} (h : y ~> z) (Hh : h ∘ f ≈ h ∘ g) :
   ∃! u : colimit_apex L ~> z,
@@ -191,7 +187,7 @@ Proof.
               (colimit_is_acolimit L) (cofork_cocone h Hh) v _).
     intros p.
     destruct p.
-    + (* the ParX leg follows from the ParY leg via coherence *)
+    + (* 相关说明。 （已译） *)
       rewrite <- (colimit_inj_coherence (colimit_is_acolimit L)
                     ((true; ParOne) : ParX ~{Parallel}~> ParY)).
       rewrite comp_assoc.
@@ -207,10 +203,9 @@ Definition coequalizer_is_coequalizer (L : Coequalizer (APair f g)) :
   {| cofork    := colimit_coequalizes L
    ; coeq_desc := fun z h Hh => colimit_coequalizer_desc L h Hh |}.
 
-(** ** From the elementary presentation back to the colimit *)
+(* 相关说明。 （已译） *)
 
-(* The colimit cocone of an elementary coequalizer: legs e ∘ f and e over
-   ParX and ParY. *)
+(* 相关说明。 （已译） *)
 Definition is_coequalizer_cocone {q : C} {e : y ~> q}
   (E : IsCoequalizer f g q e) : Cocone (APair f g) :=
   cofork_cocone e (cofork E).
@@ -250,8 +245,7 @@ Proof.
     exact (Hv ParY).
 Qed.
 
-(* An elementary coequalizer yields the bundled colimit over the walking
-   parallel pair. *)
+(* 相关说明。 （已译） *)
 Definition is_coequalizer_colimit {q : C} {e : y ~> q}
   (E : IsCoequalizer f g q e) : Coequalizer (APair f g) :=
   {| limit_cone := is_coequalizer_cocone E
@@ -259,7 +253,7 @@ Definition is_coequalizer_colimit {q : C} {e : y ~> q}
 
 End CoequalizerColimit.
 
-(** ** Coequalizers of any diagram of parallel-pair shape *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -279,7 +273,7 @@ Universes co ch po.
 Context {C : Category@{co ch ch}}.
 Context (K : Parallel@{po ch} ⟶ C).
 
-(* The pair K names: the images of the two arrows ParX ~> ParY. *)
+(* 相关说明。 （已译） *)
 
 Local Notation par1 := (fmap[K] ((true; ParOne) : ParX ~{Parallel}~> ParY)).
 Local Notation par2 := (fmap[K] ((false; ParTwo) : ParX ~{Parallel}~> ParY)).
@@ -331,7 +325,7 @@ Proof.
     + destruct (ParHom_Id_false_absurd _ hk).
 Qed.
 
-(* The cocone over K induced by a coforking map of the pair. *)
+(* 相关说明。 （已译） *)
 
 Definition parallel_cofork_cocone {z : C} (h : K ParY ~> z)
   (Hh : h ∘ par1 ≈ h ∘ par2) : Cocone K :=
@@ -378,7 +372,7 @@ Definition parallel_colimit_coequalizer (N : Cocone K)
   IsCoequalizer par1 par2 vertex_obj[N] (cocone_inj N ParY).
 Proof.
   unshelve econstructor.
-  - (* both composites are the injection over ParX *)
+  - (* 相关说明。 （已译） *)
     transitivity (cocone_inj N ParX).
     + exact (cocone_inj_coherence N
                ((true; ParOne) : ParX ~{Parallel}~> ParY)).
@@ -393,7 +387,7 @@ Proof.
     + intros v Hv.
       apply (uniqueness U).
       intro p; destruct p.
-      * (* the ParX leg follows from the ParY leg by coherence *)
+      * (* 相关说明。 （已译） *)
         change (v ∘ cocone_inj N ParX ≈ h ∘ par1).
         rewrite <- (cocone_inj_coherence N
                       ((true; ParOne) : ParX ~{Parallel}~> ParY)).

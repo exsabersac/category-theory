@@ -20,7 +20,7 @@ Require Import Category.Adjunction.Diagonal.Limit.
 
 Generalizable All Variables.
 
-(** * The limit as a functor on the category of all diagrams *)
+(* * * The limit 函子 范畴 all diagrams （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/limit
@@ -30,9 +30,9 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The category of all diagrams in a fixed target *)
+(* * ** The 范畴 all diagrams fixed target （已译） *)
 
-(* An object: an index category together with a diagram of that shape. *)
+(* An 对象: index 范畴 together diagram shape. （已译） *)
 Record DObj (C : Category) : Type := {
   didx  : Category;
   ddiag : didx ⟶ C
@@ -215,7 +215,7 @@ Example Diagrams_obj (C : Category) : obj[Diagrams C] = DObj C := eq_refl.
 Example Diagrams_hom (C : Category) (X Y : Diagrams C) :
   (X ~{Diagrams C}~> Y) = DHom X Y := eq_refl.
 
-(** ** The limit functor on the opposite of the category of diagrams *)
+(* * ** The limit 函子 opposite 范畴 diagrams （已译） *)
 
 Section LimDiagrams.
 
@@ -240,7 +240,7 @@ Definition dlim_cone {X Y : DObj C} (f : DHom X Y) : Cone (ddiag X) :=
 Example dlim_cone_apex {X Y : DObj C} (f : DHom X Y) :
   vertex_obj[dlim_cone f] = dlim Y := eq_refl.
 
-(* The arrow part: the unique mediator into the limit of [ddiag X]. *)
+(* The arrow part: unique mediator 进入 limit [ddiag X]. （已译） *)
 Definition dlim_map {X Y : DObj C} (f : DHom X Y) : dlim Y ~{C}~> dlim X :=
   limit_med (dlim_is X) (dlim_cone f).
 
@@ -256,8 +256,8 @@ Lemma dlim_map_unique {X Y : DObj C} (f : DHom X Y)
   dlim_map f ≈ v.
 Proof. intro Hv. exact (limit_med_unique (dlim_is X) (dlim_cone f) v Hv). Qed.
 
-(* Mac Lane V.2 Exercise 5: over a complete target, taking limits is a
-   functor on the opposite of the category of diagrams. *)
+(* Mac Lane V.2 Exercise 5: over complete target, taking limits a
+ 函子 opposite 范畴 diagrams. （已译） *)
 Program Definition LimDiagrams : (Diagrams C)^op ⟶ C := {|
   fobj := dlim;
   fmap := fun X Y f => dlim_map f
@@ -327,15 +327,15 @@ Definition dcolim {C : Category} (L : @Cocomplete C) (X : DObj (Opposite C)) : C
 Example ColimDiagrams_fobj {C : Category} (L : @Cocomplete C) (X : DObj (Opposite C)) :
   ColimDiagrams L X = dcolim L X := eq_refl.
 
-(* At a diagram given as [F^op], the object part is the colimit apex the
-   hypothesis chooses for [F]. *)
+(* At diagram given [F^op], 对象 part colimit apex the
+ 假设 chooses [F]. （已译） *)
 Example dcolim_is_colimit_apex {C : Category} (L : @Cocomplete C)
   {J : Category} (F : J ⟶ C) :
   dcolim L {| didx := Opposite J; ddiag := Opposite_Functor F |}
   = vertex_obj[@limit_cone (Opposite J) (Opposite C) (Opposite_Functor F) (L J F)]
   := eq_refl.
 
-(** ** The comma form over Cat, and why it cannot carry the arrow part *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、hom、同构相关定义、性质与动机。
@@ -382,14 +382,14 @@ Example comma_diagrams_arrow_W {C : Category} {x y : CommaDiagrams C}
   (f : x ~{CommaDiagrams C}~> y) :
   dW (comma_diagrams_arrow f) = fst `1 f := eq_refl.
 
-(** ** At a fixed shape, the arrow part is #353's [Lim_map] *)
+(* 相关说明。 （已译） *)
 
 Section FixedShape.
 
 Context {C : Category} (L : @Complete C) {J : Category}.
 
-(* A natural transformation [b : F ⟹ G] as an arrow (J, G) → (J, F) of
-   [Diagrams C] with the identity shape functor. *)
+(* A 自然变换 [b : F ⟹ G] arrow (J, G) → (J, F) of
+ [Diagrams C] 恒等 shape 函子. （已译） *)
 Definition fixed_hom {F G : J ⟶ C} (b : F ⟹ G) :
   DHom {| didx := J; ddiag := G |} {| didx := J; ddiag := F |}.
 Proof.
@@ -403,8 +403,8 @@ Example lim_obj_is_dlim (F : J ⟶ C) :
   @lim_obj J C (Complete_HasLimitsOfShape L J) F = dlim L {| didx := J; ddiag := F |}
   := eq_refl.
 
-(* Adjunction/Diagonal/Limit.v's fixed-shape limit functor is the restriction
-   of [LimDiagrams] to the identity shape functor. *)
+(* Adjunction/Diagonal/Limit.v's fixed-shape limit 函子 restriction
+ [LimDiagrams] 恒等 shape 函子. （已译） *)
 Lemma dlim_map_fixed {F G : J ⟶ C} (b : F ⟹ G) :
   dlim_map L (fixed_hom b) ≈ @Lim_map J C (Complete_HasLimitsOfShape L J) F G b.
 Proof.

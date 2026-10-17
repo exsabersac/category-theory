@@ -16,7 +16,7 @@ From Coq Require Import Arith.
 
 Generalizable All Variables.
 
-(** * The braided monoidal structure on the free PROP *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category

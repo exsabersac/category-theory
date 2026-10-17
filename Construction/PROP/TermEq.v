@@ -8,7 +8,7 @@ Generalizable All Variables.
 
 Local Open Scope nat_scope.
 
-(** * Equational theory of free-PROP terms *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category
@@ -65,10 +65,10 @@ Inductive TermEq : forall {m n}, Term S m n -> Term S m n -> Prop :=
                   TermEq (T_comp (T_comp h g) f)
                          (T_comp h (T_comp g f))
 
-  (** Bifunctor laws: identity, sequential interchange.
+  (** Bifunctor laws: 恒等, sequential interchange.
 
-      [TE_tens_id]: [id_m ⊕ id_n = id_(m+n)] — typing OK because [Term]
-      is [nat]-indexed and addition is the tensor on arities. *)
+ [TE_tens_id]: [id_m ⊕ id_n = id_(m+n)] — typing OK because [Term]
+ [nat]-indexed addition tensor arities. （已译） *)
   | TE_tens_id : forall (m n : nat),                         (* bifunctor: tensor preserves identity *)
                  TermEq (T_tens (T_id m) (T_id n)) (T_id (m + n))
 
@@ -247,7 +247,7 @@ Arguments TE_braid_unit_right {S}.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** An identity slides from one side of a morphism to the other. *)
+(** An 恒等 slides one side 态射 other. （已译） *)
 Lemma tm_id_swap {S : Signature} {m n : nat} (t : Term S m n) :
   TermEq S (T_comp t (T_id m)) (T_comp (T_id n) t).
 Proof.
@@ -312,11 +312,7 @@ Fixpoint T_subst {S T : Signature}
   | T_gen s     => sub _ _ s
   end.
 
-(** *** Transport seams
-
-    The strict-PROP axioms of [TermEq] carry their arity mismatches as
-    [eq_rect] transports; [T_subst] commutes with each transport shape
-    by Leibniz equality (destruct the arity equation). *)
+(* 相关说明。 （已译） *)
 
 Lemma T_subst_eq_rect_cod {S T : Signature}
   (sub : forall a b : nat, S a b -> Term T a b)

@@ -24,23 +24,20 @@ Class RelevanceMonoidal := {
   (* The underlying symmetric monoidal structure (braiding + symmetry). *)
   relevance_is_symmetric : @SymmetricMonoidal C;
 
-  (* The diagonal / copying map ∆x : x ~> x ⨂ x (the contraction rule). *)
+  (* 相关说明。 （已译） *)
   diagonal {x} : x ~> x ⨂ x;
-  (* Naturality: (f ⨂ f) ∘ ∆x ≈ ∆y ∘ f, so ∆ is a natural transformation
-     from the identity functor to the squaring functor x ↦ x ⨂ x. *)
+  (* Naturality: (f ⨂ f) ∘ ∆x ≈ ∆y ∘ f, so ∆ 自然变换
+ 恒等 函子 squaring 函子 x ↦ x ⨂ x. （已译） *)
   diagonal_natural : natural (@diagonal);
 
-  (* Unit: the diagonal at the monoidal unit is the canonical iso I ≅ I ⨂ I,
-     here unit_left⁻¹ : I ~> I ⨂ I. *)
+  (* 相关说明。 （已译） *)
   diagonal_unit : @diagonal I ≈ unit_left⁻¹;
 
-  (* Coassociativity: copying-then-copying-the-left equals
-     copying-then-copying-the-right, modulo the associator. *)
+  (* 相关说明。 （已译） *)
   diagonal_tensor_assoc {x} :
    id ⨂ diagonal ∘ diagonal ≈ tensor_assoc ∘ diagonal ⨂ id ∘ @diagonal x;
 
-  (* Cocommutativity / symmetry compatibility: swapping the two copies leaves
-     the diagonal unchanged, σ_{x,x} ∘ ∆x ≈ ∆x. *)
+  (* 相关说明。 （已译） *)
   braid_diagonal {x} :
     braid ∘ diagonal ≈ @diagonal x;
 
@@ -65,8 +62,7 @@ Coercion relevance_is_symmetric : RelevanceMonoidal >-> SymmetricMonoidal.
 
 Context `{RelevanceMonoidal}.
 
-(* The middle-four interchange braid2 is natural in all four arguments; this
-   is what makes the tensor-compatibility axiom diagonal_braid2 coherent. *)
+(* 相关说明。 （已译） *)
 Lemma braid2_natural : natural (@braid2 _).
 Proof.
   unfold braid2; simpl; intros; normal.

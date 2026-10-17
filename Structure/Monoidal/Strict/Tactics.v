@@ -14,11 +14,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** [strict_collapse]: replace structural isos with transported-id form
-
-    Rewrites until fixpoint using the six [strict_*_to] / [strict_*_from]
-    lemmas.  Use [?] so each pattern is optional — the tactic does not
-    fail if none applies. *)
+(* 相关说明。 （已译） *)
 Ltac strict_collapse :=
   repeat (rewrite ?strict_assoc_to ||
           rewrite ?strict_assoc_from ||
@@ -27,7 +23,7 @@ Ltac strict_collapse :=
           rewrite ?strict_unit_right_to ||
           rewrite ?strict_unit_right_from).
 
-(** ** [strict_collapse_in H]: same, targeting hypothesis [H]. *)
+(* * ** [strict_collapse_in H]: same, targeting 假设 [H]. （已译） *)
 Tactic Notation "strict_collapse" "in" hyp(H) :=
   repeat (rewrite ?strict_assoc_to in H ||
           rewrite ?strict_assoc_from in H ||
@@ -36,9 +32,9 @@ Tactic Notation "strict_collapse" "in" hyp(H) :=
           rewrite ?strict_unit_right_to in H ||
           rewrite ?strict_unit_right_from in H).
 
-(** ** [strict_collapse_all]: rewrite EVERYWHERE.
+(* * ** [strict_collapse_all]: rewrite EVERYWHERE.
 
-    Goal AND every hypothesis. *)
+ Goal AND every 假设. （已译） *)
 Ltac strict_collapse_all :=
   repeat (rewrite ?strict_assoc_to in * ||
           rewrite ?strict_assoc_from in * ||

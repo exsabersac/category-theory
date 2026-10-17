@@ -24,7 +24,7 @@ Require Import Category.Construction.DecoratedCospan.Monoidal.
 
 Generalizable All Variables.
 
-(** * Braided and Symmetric Monoidal structure on [DecoratedCospanCat] *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category
@@ -131,7 +131,7 @@ Context `{DCBrC : DecCospan_Braided_Coherent}.
 
 Set Default Proof Using "All".
 
-(** ** [DecoratedCospan_BraidedMonoidal] : the BraidedMonoidal instance *)
+(* 相关说明。 （已译） *)
 
 Program Definition DecoratedCospan_BraidedMonoidal
   : @BraidedMonoidal DC := {|
@@ -214,7 +214,7 @@ Class DecCospan_Symmetric_Coherent : Type := {
 
 Context `{DCSC : DecCospan_Symmetric_Coherent}.
 
-(** ** [DecoratedCospan_SymmetricMonoidal] : the SymmetricMonoidal instance *)
+(* 相关说明。 （已译） *)
 
 Program Definition DecoratedCospan_SymmetricMonoidal
   : @SymmetricMonoidal DC := {|

@@ -33,8 +33,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * Presentations of coloured PROPs by many-sorted symmetric monoidal
-      theories *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/PROP
@@ -48,7 +47,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Coloured symmetric monoidal theories *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Presentation 相关定义、性质与动机。
@@ -87,7 +86,7 @@ Inductive CTermEqW : forall {cs ds}, CTerm Σ cs ds → CTerm Σ cs ds → Prop 
   | CTEW_termeq {cs ds} (s t : CTerm Σ cs ds) :
       CTermEq Σ s t → CTermEqW s t
 
-  (** Every axiom of the theory holds in the presented coloured PROP. *)
+  (** 本节：Every axiom theory holds presented coloured PROP. （已译） *)
   | CTEW_ax {cs ds} (s t : CTerm Σ cs ds) :
       csmt_eqs E cs ds s t → CTermEqW s t
 
@@ -106,7 +105,7 @@ Inductive CTermEqW : forall {cs ds}, CTerm Σ cs ds → CTerm Σ cs ds → Prop 
       CTermEqW f f' → CTermEqW g g' →
       CTermEqW (CT_tens f g) (CT_tens f' g').
 
-(** Reflexivity of the theory congruence, via the embedding. *)
+(** 本节：Reflexivity theory congruence, via embedding. （已译） *)
 Definition CTermEqW_refl {cs ds : list Colour} (t : CTerm Σ cs ds) :
   CTermEqW t t :=
   CTEW_termeq t t (CTE_refl t).
@@ -140,12 +139,12 @@ Definition CPresentedCat : Category :=
   @Quotient (CFreeCat Σ) (fun cs ds : list Colour => @CTermEqW cs ds)
     CTermEqW_Congruence.
 
-(** A term, viewed as a morphism of the presented category (the
-    carrier of a hom of [CPresentedCat] IS [CTerm Σ]). *)
+(** A term, viewed 态射 presented 范畴 (the
+ carrier hom [CPresentedCat] IS [CTerm Σ]). （已译） *)
 Definition cquot {cs ds : list Colour} (t : CTerm Σ cs ds) :
   cs ~{CPresentedCat}~> ds := t.
 
-(** The projection functor: identity on objects and morphisms. *)
+(** The projection 函子: 恒等 对象 态射. （已译） *)
 Definition CPresentedProj : CFreeCat Σ ⟶ CPresentedCat :=
   @QuotientProj (CFreeCat Σ) (fun cs ds : list Colour => @CTermEqW cs ds)
     CTermEqW_Congruence.
@@ -156,10 +155,10 @@ Definition CPresentedProj : CFreeCat Σ ⟶ CPresentedCat :=
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The tensor on the presented category
+(* * ** The tensor presented 范畴
 
-    The parallel-composition bifunctor descends to the quotient
-    because [CTermEqW] is closed under [CT_tens]. *)
+ The parallel-复合 bifunctor descends quotient
+ because [CTermEqW] closed under [CT_tens]. （已译） *)
 
 Definition CPresented_Tensor : CPresentedCat ∏ CPresentedCat ⟶ CPresentedCat :=
   @Quotient_bifunctor (CFreeCat Σ) (fun cs ds : list Colour => @CTermEqW cs ds)
@@ -248,12 +247,10 @@ Definition CPresentedColouredPROP : ColouredPROP Colour :=
     CPresented_Strict
     CPresented_Symmetric
 
-    (* [strict_is_monoidal CPresented_Strict] and
-       [braided_is_monoidal (symmetric_is_braided CPresented_Symmetric)]
-       both reduce to the literal term [CPresented_Monoidal]. *)
+    (* 相关说明。 （已译） *)
     eq_refl
 
-    (* Objects of [CPresentedCat] are literally the colour words. *)
+    (* 相关说明。 （已译） *)
     (fun cs : list Colour => cs)
 
     (* [I] of [CPresented_Monoidal] is the literal [[]]. *)
@@ -268,16 +265,16 @@ Definition CPresentedColouredPROP : ColouredPROP Colour :=
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** The tensor-then-project and project-then-tensor composites that
-    the tensor comparison relates. *)
+(** 本节：The tensor-then-project project-then-tensor composites that
+ tensor comparison relates. （已译） *)
 Definition CPresented_ap_dom : CFreeCat Σ ∏ CFreeCat Σ ⟶ CPresentedCat :=
   CPresented_Tensor ◯ (CPresentedProj ∏⟶ CPresentedProj).
 
 Definition CPresented_ap_cod : CFreeCat Σ ∏ CFreeCat Σ ⟶ CPresentedCat :=
   CPresentedProj ◯ CFreeCat_Tensor Σ.
 
-(** Both directions of the tensor comparison are families of
-    identities; naturality is [ctm_id_swap]. *)
+(** Both directions tensor comparison families of
+ identities; 自然性 [ctm_id_swap]. （已译） *)
 Definition CPresented_ap_to : CPresented_ap_dom ⟹ CPresented_ap_cod :=
   @Build_Transform' (CFreeCat Σ ∏ CFreeCat Σ) CPresentedCat
     CPresented_ap_dom CPresented_ap_cod
@@ -329,9 +326,9 @@ Program Definition CPresentedProj_Monoidal :
             (ctm_collapse_l (CT_cast (eq_sym (app_assoc x y z))))))
 |}.
 
-(** Both comparison maps of the projection are identities on the
-    nose, so the projection is STRICT monoidal, with [eq_refl] object
-    equalities. *)
+(** Both comparison maps projection identities the
+ nose, so projection STRICT monoidal, [eq_refl] 对象
+ equalities. （已译） *)
 
 Lemma CPresentedProj_pure_id :
   to (@pure_iso _ _ _ _ CPresentedProj CPresentedProj_Monoidal)
@@ -395,39 +392,34 @@ Definition CPresentedProj_Symmetric :
     (CFreeCat_Symmetric Σ Cdec) CPresented_Symmetric CPresentedProj :=
   CPresentedProj_Braided.
 
-(** ** Machine-checked sanity
+(* 相关说明。 （已译） *)
 
-    Each [Example] holds by [eq_refl] (or a single constructor),
-    witnessing that the corresponding field or action is definitional;
-    any regression in the shared-record wiring is caught here rather
-    than at a distant use site. *)
-
-(** The coherence between the strict and symmetric [Monoidal] paths
-    is the reflexivity proof itself. *)
+(** The coherence between strict symmetric [Monoidal] paths
+ reflexivity 证明 itself. （已译） *)
 Example CPresentedColouredPROP_coherence_is_refl :
   @cprop_monoidal_coherence Colour CPresentedColouredPROP = eq_refl := eq_refl.
 
-(** The object correspondence is the identity on colour words. *)
+(** The 对象 correspondence 恒等 colour words. （已译） *)
 Example CPresentedColouredPROP_of_list_id (cs : list Colour) :
   cprop_of_list (ColouredPROP := CPresentedColouredPROP) cs = cs := eq_refl.
 
-(** Tensor-on-objects is literally concatenation, with [eq_refl]
-    proof. *)
+(** Tensor-on-对象 literally concatenation, [eq_refl]
+ 证明. （已译） *)
 Example CPresentedColouredPROP_tensor_app_is_refl (cs ds : list Colour) :
   cprop_tensor_app (ColouredPROP := CPresentedColouredPROP) cs ds = eq_refl
   := eq_refl.
 
-(** The singleton wire object for colour [c] is the literal
-    one-element word [c :: nil]. *)
+(** The singleton wire 对象 colour [c] literal
+ one-element word [c :: nil]. （已译） *)
 Example CPresentedColouredPROP_wire (c : Colour) :
   wire (P := CPresentedColouredPROP) c = (c :: nil) := eq_refl.
 
-(** The projection functor acts as the identity on terms. *)
+(** The projection 函子 acts 恒等 terms. （已译） *)
 Example CPresentedProj_fmap_id_on_terms {cs ds : list Colour}
   (t : CTerm Σ cs ds) :
   fmap[CPresentedProj] t = cquot t := eq_refl.
 
-(** Every axiom of the theory holds in the presented category. *)
+(** Every axiom theory holds presented 范畴. （已译） *)
 Example CPresented_axioms_hold {cs ds : list Colour}
   (s t : CTerm Σ cs ds) (H : csmt_eqs E cs ds s t) :
   cquot s ≈[CPresentedCat] cquot t := CTEW_ax s t H.

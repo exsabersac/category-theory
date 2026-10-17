@@ -1,4 +1,4 @@
-(** * Products of categories subsume the classical products *)
+(* * * Products 范畴 subsume classical products （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -23,7 +23,7 @@ Generalizable All Variables.
 *)
 
 
-(** ** The product monoid, and the product group *)
+(* * ** The product 幺半群, product group （已译） *)
 
 (*
    本节说明 Special 相关定义、性质与动机。
@@ -71,8 +71,8 @@ Example GrpObject_prod_monoid (G H : GrpObject) :
 
 (** ** Delooping preserves products *)
 
-(* Both functors are the identity on arrows (design note 1); only the
-   single objects need shuttling. *)
+(* Both 函子 恒等 arrows (design note 1); the
+ single 对象 need shuttling. （已译） *)
 Program Definition Deloop_prod_to (M N : MonObject) :
   Deloop (MonObject_prod M N) ⟶ Deloop M ∏ Deloop N := {|
   fobj := fun _ => (ttt, ttt);
@@ -103,8 +103,8 @@ Next Obligation.
   intros M N x y z p q; simpl; split; reflexivity.
 Qed.
 
-(* The isomorphism in Cat: the composites are the identity on arrows, and
-   the object round trips are closed by unit-morphism conjugation. *)
+(* The 同构 Cat: composites 恒等 arrows, and
+ 对象 round trips closed unit-态射 conjugation. （已译） *)
 Program Definition Deloop_prod_iso (M N : MonObject) :
   Deloop (MonObject_prod M N) ≅[Cat] Deloop M ∏ Deloop N := {|
   to   := Deloop_prod_to M N;
@@ -144,7 +144,7 @@ Definition Deloop_grp_prod (G H : GrpObject) :
   Deloop (GrpObject_prod G H) ≅[Cat] Deloop G ∏ Deloop H :=
   Deloop_prod_iso G H.
 
-(** ** Discrete categories multiply as sets *)
+(* * ** Discrete 范畴 multiply sets （已译） *)
 
 Program Definition Discrete_Product_to (A B : Type) :
   DiscreteCat (A * B) ⟶ DiscreteCat A ∏ DiscreteCat B := {|
@@ -159,9 +159,9 @@ Next Obligation.
   destruct e, e'; simpl; split; reflexivity.
 Qed.
 
-(* Transparent equality kit for pairs: the stdlib's [surjective_pairing]
-   and [f_equal2] are opaque, which would leave the arrow action stuck
-   and sink every functor law; these compute. *)
+(* Transparent equality kit pairs: stdlib's [surjective_pairing]
+ [f_equal2] opaque, would leave arrow action stuck
+ sink every 函子 law; these compute. （已译） *)
 Definition pair_eta {A B : Type} (p : A * B) : p = (fst p, snd p) :=
   match p with (a, b) => eq_refl end.
 
@@ -212,8 +212,8 @@ Qed.
 
 (** ** Witnesses *)
 
-(* The product monoid computes at Construction/Deloop.v's inhabitants,
-   and the discrete comparison is the identity on a concrete pair. *)
+(* The product 幺半群 computes at Construction/Deloop.v's inhabitants,
+ discrete comparison 恒等 concrete pair. （已译） *)
 Example MonObject_prod_computes :
   @mon_op (MonObject_prod Nat_Plus Bool_Xor) (3%nat, true) (2%nat, true)
     = (5%nat, false) := eq_refl.

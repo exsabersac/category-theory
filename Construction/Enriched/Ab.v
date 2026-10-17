@@ -1,4 +1,4 @@
-(** * Ab-enrichment: Enriched over (Ab, ⊗, ℤ) is exactly AbEnriched *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/Ab-enriched+category
@@ -33,7 +33,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** From an AbEnriched category to tensor data *)
+(* * ** From AbEnriched 范畴 tensor data （已译） *)
 
 Section FromAbEnriched.
 
@@ -84,8 +84,7 @@ Next Obligation.
   exact (@compose_padd_right C _ x y z g g' f).
 Qed.
 
-(* Postcomposition with g, likewise: [compose_padd_left] and
-   [compose_pzero_right]. *)
+(* 相关说明。 （已译） *)
 Program Definition postcomp_hom {x y z : C} (g : y ~> z) :
   AbHom (ehom_ab x y) (ehom_ab x z) := {|
   cmon_map := {| morphism := fun f : x ~> y => g ∘ f |}
@@ -103,8 +102,8 @@ Next Obligation.
   exact (@compose_padd_left C _ x y z g f f').
 Qed.
 
-(* The ℤ-action commutes with composition on either side — instances of
-   [zsmul_hom] at the two homomorphisms above (design note 2). *)
+(* The ℤ-action commutes 复合 either side — instances of
+ [zsmul_hom] at two homomorphisms above (design note 2). （已译） *)
 Lemma zsmul_precomp {x y z : C} (n : Z) (g : y ~> z) (f : x ~> y) :
   zsmul (ehom_ab y z) n g ∘ f ≈ zsmul (ehom_ab x z) n (g ∘ f).
 Proof.
@@ -135,8 +134,8 @@ Next Obligation.
   exact (zsmul_add (ehom_ab x x) n m (@id C x)).
 Qed.
 
-(* Composition A(y,z) ⊗ A(x,y) → A(x,z): the ⊗-factorization of ∘, its
-   bilinearity the two composition-bilinearity fields of Preadditive. *)
+(* Composition A(y,z) ⊗ A(x,y) → A(x,z): ⊗-factorization ∘, its
+ bilinearity two 复合-bilinearity fields Preadditive. （已译） *)
 Program Definition ab_ecompose (x y z : C) :
   AbHom (AbTensor (ehom_ab y z) (ehom_ab x y)) (ehom_ab x z) :=
   tensor_ump (@Build_Bilinear (ehom_ab y z) (ehom_ab x y) (ehom_ab x z)
@@ -181,15 +180,15 @@ Defined.
 
 End FromAbEnriched.
 
-(** ** From tensor data to an AbEnriched category *)
+(* * ** From tensor data AbEnriched 范畴 （已译） *)
 
 Section ToAbEnriched.
 
 Context (E : @Enriched Ab Ab_Monoidal).
 
-(* The category: composition is [ecompose] at a generator, identity is
-   [eid] at 1.  The laws are E's equations consumed at generators, where
-   both sides compute. *)
+(* The 范畴: 复合 [ecompose] at generator, 恒等 is
+ [eid] at 1. The laws E's equations consumed at generators, where
+ both sides compute. （已译） *)
 Program Definition Category_of_Enriched_Ab : Category := {|
   obj := @eobj Ab Ab_Monoidal E;
   hom := fun x y => carrier (@ehom Ab Ab_Monoidal E x y);
@@ -248,9 +247,9 @@ Next Obligation.
   exact Ha.
 Qed.
 
-(* The AbEnriched structure: hom-group operations from the hom-objects;
-   bilinearity of composition is the generator relations of the tensor
-   pushed through [ecompose]'s homomorphism property. *)
+(* The AbEnriched structure: hom-group operations hom-对象;
+ bilinearity 复合 generator relations tensor
+ pushed through [ecompose]'s homomorphism property. （已译） *)
 (*
    本节说明hom相关定义、性质与动机。
 
@@ -333,8 +332,8 @@ End ToAbEnriched.
 (* Mac Lane's "can be described completely in these terms", as a
    Type-valued equivalence of the two presentations — the same shape as
    [Category_is_Enriched_over_Set] and [Enriched_Two_preorder]. *)
-(* The forward direction, exercised at the concrete witness: Ab is an
-   Ab-category, so it is enriched over itself. *)
+(* The forward direction, exercised at concrete witness: Ab an
+ Ab-范畴, so it enriched over itself. （已译） *)
 Definition Enriched_Ab_itself : @Enriched Ab Ab_Monoidal :=
   @Enriched_of_AbEnriched Ab Ab_AbEnriched Ab_LocallyPropositional.
 

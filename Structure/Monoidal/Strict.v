@@ -37,10 +37,10 @@ Class StrictMonoidal : Type := {
     forall (X : C),
       (X ⨂[strict_is_monoidal] I)%object = X;
 
-  (** The structural isomorphisms ARE the identity, transported.
+  (** The structural isomorphisms ARE 恒等, transported.
 
-      We use the [match] form (rather than [eq_rect]) to keep
-      destruct-of-equality reductions clean. *)
+ We use [match] form (rather than [eq_rect]) keep
+ destruct-of-equality reductions clean. （已译） *)
   strict_assoc_to :
     forall (X Y Z : C),
       to (@tensor_assoc C strict_is_monoidal X Y Z)
@@ -67,10 +67,10 @@ Class StrictMonoidal : Type := {
 
 Coercion strict_is_monoidal : StrictMonoidal >-> Monoidal.
 
-(** ** Corollaries
+(* * ** Corollaries
 
-    In a strict monoidal category the [from] direction of each
-    structural iso is also the transported identity. *)
+ In strict 幺半范畴 [from] direction each
+ structural iso transported 恒等. （已译） *)
 
 Context `{S : StrictMonoidal}.
 

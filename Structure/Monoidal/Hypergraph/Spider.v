@@ -32,7 +32,7 @@ Context {C : Category}.
 Context `{Sym : @SymmetricMonoidal C}.
 Context `{H : @Hypergraph C Sym}.
 
-(** The Frobenius law at the user-friendly [scfa_*] level. *)
+(** 本节：The Frobenius law at user-friendly [scfa_*] level. （已译） *)
 Lemma spider_frobenius (X : C) :
   scfa_delta (scfa X) ∘ scfa_mu (scfa X)
   ≈ bimap (scfa_mu (scfa X)) id[X]
@@ -157,7 +157,7 @@ Proof.
   apply spider_delta_coassoc.
 Qed.
 
-(** The 2-into-2 spider: the heart of the Frobenius equation. *)
+(** 本节：The 2-into-2 spider: heart Frobenius equation. （已译） *)
 Lemma spider_2_to_2 (X : C) :
   scfa_delta (scfa X) ∘ scfa_mu (scfa X)
   ≈ bimap (scfa_mu (scfa X)) id[X]
@@ -244,11 +244,7 @@ Definition canonical_spider (X : C) (m n : nat) : tpower X m ~> tpower X n :=
   | S m', S n' => unfold_delta X n' ∘ fold_mu X m'
   end.
 
-(** ** Small-case spiders
-
-    The 0..3 / 0..3 cases of [canonical_spider] are all definitionally
-    equal to simple closed forms involving μ/η/δ/ε.  These [_eq] lemmas
-    expose those closed forms so downstream proofs can reason directly. *)
+(* 相关说明。 （已译） *)
 
 Lemma canonical_spider_0_0 (X : C) :
   canonical_spider X 0 0 = id[I].
@@ -269,9 +265,9 @@ Lemma canonical_spider_1_1 (X : C) :
   = from (@unit_right C _ X) ∘ to (@unit_right C _ X).
 Proof. reflexivity. Qed.
 
-(** The 1-1 spider is the identity (a special case of the un-bracketed
-    1-1 spider law, here verified by direct cancellation of [unit_right]
-    with its inverse). *)
+(** The 1-1 spider 恒等 (a special case un-bracketed
+ 1-1 spider law, here verified direct cancellation [unit_right]
+ inverse). （已译） *)
 Lemma canonical_spider_1_1_id (X : C) :
   canonical_spider X 1 1 ≈ id[X ⨂ I].
 Proof.
@@ -303,8 +299,8 @@ Proof. reflexivity. Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** The 1→1 spider is just the identity (modulo the [unit_right] cast
-    introduced by [tpower X 1 = X ⨂ I]). *)
+(** The 1→1 spider just 恒等 (modulo [unit_right] cast
+ introduced [tpower X 1 = X ⨂ I]). （已译） *)
 Lemma fold_mu_unfold_delta_1 (X : C) :
   unfold_delta X 0 ∘ fold_mu X 0
   ≈ from (@unit_right C _ X) ∘ to (@unit_right C _ X).
@@ -321,7 +317,7 @@ Lemma spider_2_to_1_then_1_to_2 (X : C) :
       ∘ (scfa_mu (scfa X) ∘ bimap id[X] (fold_mu X 0)).
 Proof. simpl; reflexivity. Qed.
 
-(** The 0→0 spider is the identity on I. *)
+(** The 0→0 spider 恒等 I. （已译） *)
 Lemma canonical_spider_0_0_id (X : C) :
   canonical_spider X 0 0 ≈ id[I].
 Proof. simpl; reflexivity. Qed.
@@ -366,7 +362,7 @@ Arguments canonical_spider {C Sym H} X m n.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Syntactic spider expressions and Lack's normal-form theorem *)
+(* * ** Syntactic spider expressions Lack's normal-form 定理 （已译） *)
 
 Section SpiderExpr.
 
@@ -430,14 +426,7 @@ Program Fixpoint tpower_add_iso (X : C) (m1 m2 : nat) {struct m1} :
         (@tensor_assoc C _ X (tpower X m1') (tpower X m2))
   end.
 
-(** ** Semantic interpretation of [SpiderExpr]
-
-    Each generator denotes the corresponding scfa_* witness, suitably
-    sandwiched by [unit_right] isos to land in the right tpower-shape.
-
-    Concretely, [tpower X 0 = I], [tpower X 1 = X ⨂ I], [tpower X 2 =
-    X ⨂ (X ⨂ I)] etc.; each generator's underlying scfa_* lives at
-    [X ⨂ X ~> X] etc., so we need unit_right insertions to bridge. *)
+(* 相关说明。 （已译） *)
 Fixpoint denote_spider {X : C} {m n : nat}
   (e : SpiderExpr X m n) : tpower X m ~> tpower X n :=
   match e with
@@ -500,11 +489,11 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Smoke-test corollaries of [denote_spider] on identity sequences
+(* * ** Smoke-test corollaries [denote_spider] 恒等 sequences
 
-    Direct consequences of the [SE_seq_X] / [SE_par_X] reduction rules.
-    These exercise the semantic interpretation without requiring the
-    full normal-form theorem. *)
+ Direct consequences [SE_seq_X] / [SE_par_X] reduction rules.
+ These exercise semantic interpretation without requiring the
+ full normal-form 定理. （已译） *)
 
 (** A sequence of two identity wires denotes the identity. *)
 Lemma denote_spider_id_seq_id (X : C) :

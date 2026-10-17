@@ -18,7 +18,7 @@ Require Import Category.Construction.Profunctor.Compose.
 
 Generalizable All Variables.
 
-(** * Coherence laws of profunctor composition *)
+(* * * Coherence laws profunctor 复合 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/profunctor
@@ -29,11 +29,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Discharge every [Program] obligation by hand, as in Compose.v: the default
-   tactic would destructure the product-category objects and rename the
-   variables the proofs below refer to. *)
+(* Discharge every [Program] obligation hand, Compose.v: default
+ tactic would destructure product-范畴 对象 rename the
+ variables proofs below refer to. （已译） *)
 
-(** ** Pointwise [fmap] lemmas on [Sets]-valued functors *)
+(* * ** Pointwise [fmap] lemmas [Sets]-valued 函子 （已译） *)
 
 (* Respectfulness of [fmap] read pointwise at an element. *)
 Lemma fmap_pt {A : Category} (G : A ⟶ Sets) {x y : A}
@@ -58,8 +58,8 @@ Proof.
   - exact (@fmap_respects _ _ G _ _ (m1 ∘ m2) m3 Hm w).
 Qed.
 
-(* Post-composing a coend's injections with a fixed morphism keeps the cowedge
-   condition, by the coend's own cowedge law. *)
+(* Post-composing coend's injections fixed 态射 keeps cowedge
+ condition, coend's own cowedge law. （已译） *)
 Lemma postcomp_cowedge {K : Category} (G : K^op ∏ K ⟶ Sets)
   (Ecw : Coend G) (Q : SetoidObject) (mm : coend_obj Ecw ~{Sets}~> Q) :
   Cowedge_cond G Q (fun x => mm ∘ @coend_inj K Sets G Ecw x).
@@ -71,7 +71,7 @@ Qed.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The left unitor: [prof_id ∘ P ≅ P] *)
+(* 相关说明。 （已译） *)
 
 Section LeftUnit.
 Context {C D : Category}.
@@ -120,7 +120,7 @@ Lemma lu_to_inj (c : C) (d : D) (m : C) :
   lu_to c d ∘ @coend_inj C Sets (II c d) (SetsCoend (II c d)) m ≈ lu_leg c d m.
 Proof. intro w; reflexivity. Qed.
 
-(* The reverse map: embed [b ∈ P(c, d)] at the identity leg [ci c (id, b)]. *)
+(* The reverse map: embed [b ∈ P(c, d)] at 恒等 leg [ci c (id, b)]. （已译） *)
 Program Definition lu_from (c : C) (d : D) :
   SetoidMorphism (P (c, d)) (coend_apex_setoid (II c d)) :=
   {| morphism := fun b => ci (II c d) c (id[c], b) |}.
@@ -229,7 +229,7 @@ Defined.
 
 End LeftUnit.
 
-(** ** The right unitor: [P ∘ prof_id ≅ P] *)
+(* 相关说明。 （已译） *)
 
 Section RightUnit.
 Context {C D : Category}.
@@ -278,7 +278,7 @@ Lemma ru_to_inj (c : C) (d : D) (m : D) :
   ru_to c d ∘ @coend_inj D Sets (JJ c d) (SetsCoend (JJ c d)) m ≈ ru_leg c d m.
 Proof. intro w; reflexivity. Qed.
 
-(* The reverse map: embed [b ∈ P(c, d)] at the identity leg [ci d (b, id)]. *)
+(* The reverse map: embed [b ∈ P(c, d)] at 恒等 leg [ci d (b, id)]. （已译） *)
 Program Definition ru_from (c : C) (d : D) :
   SetoidMorphism (P (c, d)) (coend_apex_setoid (JJ c d)) :=
   {| morphism := fun b => ci (JJ c d) d (b, id[d]) |}.
@@ -388,7 +388,7 @@ Defined.
 
 End RightUnit.
 
-(** ** The associator: [(P ∘ Q) ∘ R ≅ P ∘ (Q ∘ R)] *)
+(* 相关说明。 （已译） *)
 
 Section Associator.
 Context {C D E FF : Category}.

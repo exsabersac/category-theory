@@ -34,17 +34,17 @@ Class ColouredPROP : Type := {
   cprop_strict : @StrictMonoidal cprop_cat;
   cprop_symmetric : @SymmetricMonoidal cprop_cat;
 
-  (** Coherence between the two [Monoidal] paths — see the analogous
-      [prop_monoidal_coherence] in [Construction/PROP.v] for
-      motivation. *)
+  (** 本节：Coherence between two [Monoidal] paths — see analogous
+ [prop_monoidal_coherence] [Construction/PROP.v] for
+ motivation. （已译） *)
   cprop_monoidal_coherence :
     (@strict_is_monoidal cprop_cat cprop_strict)
     = (@braided_is_monoidal cprop_cat
          (@symmetric_is_braided cprop_cat cprop_symmetric));
 
-  (** The canonical object correspondence: every list of colours names
-      an object of [cprop_cat], with the empty list the monoidal unit
-      and concatenation reflecting tensor. *)
+  (** The canonical 对象 correspondence: every list colours names
+ 对象 [cprop_cat], empty list monoidal unit
+ concatenation reflecting tensor. （已译） *)
   cprop_of_list : list Colour -> @obj cprop_cat;
 
   cprop_unit_nil :
@@ -100,12 +100,12 @@ End ColouredPROPLemmas.
 
 Arguments wire {Colour P} c.
 
-(** ** Hypergraph Coloured PROPs
+(* * ** Hypergraph Coloured PROPs
 
-    Analogous to [HypergraphPROP]: a [ColouredPROP] whose underlying
-    symmetric monoidal category carries a [Hypergraph] instance.
-    Every wire-list carries a special commutative Frobenius algebra
-    coherent under concatenation. *)
+ Analogous [HypergraphPROP]: [ColouredPROP] whose underlying
+ symmetric 幺半范畴 carries [Hypergraph] instance.
+ Every wire-list carries special commutative Frobenius algebra
+ coherent under concatenation. （已译） *)
 
 Class HypergraphColouredPROP {Colour : Type} : Type := {
   hcprop : ColouredPROP Colour;

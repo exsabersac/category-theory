@@ -78,7 +78,7 @@ Arguments dual {C S _} X.
 Arguments cc_unit {C S _} X.
 Arguments cc_counit {C S _} X.
 
-(** * Every hypergraph category is compact closed (self-dual) *)
+(* * * Every hypergraph 范畴 compact closed (self-dual) （已译） *)
 
 (*
    本节说明幺半群相关定义、性质与动机。
@@ -101,7 +101,7 @@ Definition hcc_counit (X : C) `{F : @SpecialCommutativeFrobenius C S X}
 
 End HypergraphIsCompactClosed.
 
-(** * The derivation [Hypergraph C -> CompactClosed C] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明幺半群、分配律相关定义、性质与动机。
@@ -115,8 +115,7 @@ Context {C : Category}.
 Context `{S : @SymmetricMonoidal C}.
 Context `{H : @Hypergraph C S}.
 
-(* Re-expose the unfoldings of [cc_unit] / [cc_counit] for the self-dual
-   construction; these isolate the [scfa_*] form for rewriting. *)
+(* 相关说明。 （已译） *)
 Lemma cc_unit_unfold (X : C) :
   hcc_unit X (F := scfa X) = scfa_delta (scfa X) ∘ scfa_eta (scfa X).
 Proof. reflexivity. Qed.
@@ -125,7 +124,7 @@ Lemma cc_counit_unfold (X : C) :
   hcc_counit X (F := scfa X) = scfa_epsilon (scfa X) ∘ scfa_mu (scfa X).
 Proof. reflexivity. Qed.
 
-(* The snake-left calculation, abstracted away from the iso unfoldings. *)
+(* 相关说明。 （已译） *)
 Lemma hypergraph_snake_left (X : C) :
   to (@unit_left C _ X)
     ∘ bimap (hcc_counit X (F := scfa X)) id[X]

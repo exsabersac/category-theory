@@ -37,7 +37,7 @@ Class SubobjectClassifier := {
   char_pullback {u x : C} (m : u ~> x) (M : Monic m) :
     IsPullback (char m M) truth u m one;
 
-  (* and char m is the unique morphism with that property *)
+  (* and char m unique 态射 property （已译） *)
   char_unique {u x : C} (m : u ~> x) (M : Monic m) (h : x ~> Ω) :
     IsPullback h truth u m one → h ≈ char m M
 }.

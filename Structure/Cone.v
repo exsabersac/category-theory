@@ -17,16 +17,15 @@ Generalizable All Variables.
 
 Class ACone@{u0 u1 u2 u3 u4 u5} {J : Category@{u0 u1 u2}}
   {C : Category@{u3 u4 u5}} (c : obj[C]) (F : J ⟶ C) := {
-    (* The leg (component) at x: a morphism from the apex c into F x. *)
+    (* The leg (component) at x: 态射 apex c F x. （已译） *)
     vertex_map (x : J) : c ~{C}~> F x;
-    (* Naturality of the legs: pushing the leg at x along F f lands on the
-       leg at y, i.e. F(f) ∘ ψx ≈ ψy, so every diagram triangle commutes. *)
+    (* 相关说明。 （已译） *)
     cone_coherence {x y : J} (f : x ~{J}~> y) :
     fmap[F] f ∘ vertex_map x ≈ vertex_map y
   }.
 
-(* Two cones with the same apex are identified when their legs agree
-   pointwise (up to ≈); the coherence proof is irrelevant to this equivalence. *)
+(* Two cones same apex identified legs agree
+ pointwise (up ≈); coherence 证明 irrelevant 等价. （已译） *)
 #[export]
   Program Instance AConeEquiv@{u0 u1 u2 u3 u4 u5 +}
   {J: Category@{u0 u1 u2}} {C: Category@{u3 u4 u5}}
@@ -39,15 +38,15 @@ Next Obligation.
   exact (Equivalence_Transitive _ _ _ X X0).
 Qed.
 
-(* A [Cone] over F packages an apex with a leg family over that apex,
-   matching the nLab/Wikipedia definition of a cone as an apex object
-   together with its commuting legs. *)
+(* A [Cone] over F packages apex leg family over apex,
+ matching nLab/Wikipedia 定义 cone apex 对象
+ together commuting legs. （已译） *)
 Class Cone@{u0 u1 u2 u3 u4 u5}
   {J : Category@{u0 u1 u2}}
   {C : Category@{u3 u4 u5}}
   (F : J ⟶ C) := {
   vertex_obj : C;                  (* the apex (vertex) object *)
-  coneFrom : ACone vertex_obj F    (* the legs over that apex, with coherence *)
+  coneFrom : ACone vertex_obj F    (* 相关说明。 （已译） *)
 }.
 
 Coercion vertex_obj : Cone >-> obj.
@@ -61,8 +60,7 @@ Notation "vertex_map[ L ]" := (@vertex_map _ _ _ _ (@coneFrom _ _ _ L) _)
 Notation "Cone[ N ] F" := (ACone N F)(* . { ψ : Cone F | vertex_obj[ψ] = N } *)
   (at level 9, format "Cone[ N ] F") : category_scope.
 
-(* A cocone over F is the dual notion: a cone over the opposite diagram
-   F^op, whose legs run F x ~> apex (see nLab: cocone). *)
+(* 相关说明。 （已译） *)
 Definition Cocone `(F : J ⟶ C) := Cone (F^op).
 
 (*

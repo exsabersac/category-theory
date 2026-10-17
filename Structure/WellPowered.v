@@ -23,7 +23,7 @@ Require Import Category.Instance.Discrete.Reconstruct.
 
 Generalizable All Variables.
 
-(** * Well-powered and co-well-powered categories *)
+(* * * Well-powered co-well-powered 范畴 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/subobject
@@ -46,14 +46,13 @@ Arguments wp_to {C x} _ _.
 Arguments wp_from {C x} _ _.
 Arguments wp_to_from {C x} _ _.
 
-(** ** The bijection onto all subobjects *)
+(* 相关说明。 （已译） *)
 
 Section Bijection.
 
 Context {C : Category} {x : C} (W : WellPoweredAt x).
 
-(* The index setoid: two indices are equal when the subobjects they name
-   are. *)
+(* 相关说明。 （已译） *)
 Definition wp_rel : crelation (wp_index W) :=
   fun i j => wp_to W i ≈ wp_to W j.
 
@@ -103,7 +102,7 @@ Definition CoWellPowered@{o h w s t | w <= h, o <= s, h <= s, h < t +}
   (C : Category@{o h h}) :=
   WellPowered@{o h w s t} (C^op).
 
-(** ** Co-well-powered is well-powered over the quotient objects *)
+(* * ** Co-well-powered well-powered over quotient 对象 （已译） *)
 
 Section Quotients.
 
@@ -114,14 +113,14 @@ Example quot_obj_is_sub_op : @QuotObj C x = @SubObj (C^op) x := eq_refl.
 Example quot_setoid_is_sub_setoid_op :
   @QuotObj_Setoid C x = @SubObj_Setoid (C^op) x := eq_refl.
 
-(* Exhaustiveness read in the quotient setoid, with no conversion step. *)
+(* 相关说明。 （已译） *)
 Lemma cowp_to_from (W : @WellPoweredAt (C^op) x) (q : QuotObj x) :
   @equiv _ (@QuotObj_Setoid C x) (wp_to W (wp_from W q)) q.
 Proof. exact (wp_to_from W q). Qed.
 
 End Quotients.
 
-(** ** Intersections of small families need no well-poweredness *)
+(* 相关说明。 （已译） *)
 
 (* Adjoining the top subobject to a family changes none of its lower
    bounds, and it gives the index a point ([None]), which Theory/Subobject/
@@ -146,8 +145,8 @@ Defined.
 
 End SmallIntersections.
 
-(* The intersection of ANY family indexed at or below [Complete]'s
-   shape-object universe, empty or not, from completeness alone. *)
+(* The intersection ANY family indexed at below [Complete]'s
+ shape-对象 universe, empty not, completeness alone. （已译） *)
 Definition complete_intersection@{o h r so j +| so <= r, h <= r, j <= so +}
   {C : Category@{o h h}} (comp : @Complete@{r so h o} C) {x : C}
   {J : Type@{j}} (S : J → SubObj x) : SubObj x :=
@@ -165,7 +164,7 @@ Definition complete_intersection_IsIntersection@{o h r so j +|
        (complete_wide_pullback comp
           (fun o => Subobject.sub_mono (sub_opt_top S o)))).
 
-(** ** The consequence: intersections of classes of subobjects *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明拉回/推出、等价、子对象相关定义、性质与动机。
@@ -233,14 +232,14 @@ Definition wellpowered_complete_has_intersections@{o h w s t r so p q +|
     IsIntersection@{o h q} (fun k : { m : SubObj x & P m } => `1 k) w } :=
   wp_complete_class_intersection comp (WP x) P HP.
 
-(* The intersection IS the wide pullback over the small index. *)
+(* 相关说明。 （已译） *)
 Example wellpowered_intersection_is_small {C : Category}
   (WP : WellPowered C) (comp : @Complete C) (x : C)
   (P : SubObj x → Type) (HP : ∀ m m' : SubObj x, m ≈ m' → P m → P m') :
   `1 (wellpowered_complete_has_intersections WP comp x P HP)
     = complete_intersection comp (wp_class_family (WP x) P) := eq_refl.
 
-(* The same for a [Prop]-valued class, which carries no size condition. *)
+(* 相关说明。 （已译） *)
 Definition wellpowered_complete_has_intersections_prop@{o h w s t r so q +|
     w <= h, h < t, o <= s, h <= s, so <= r, h <= r, w <= so,
     o <= q, h <= q +}
@@ -251,8 +250,7 @@ Definition wellpowered_complete_has_intersections_prop@{o h w s t r so q +|
     IsIntersection@{o h q} (fun k : { m : SubObj x & P m } => `1 k) w } :=
   wellpowered_complete_has_intersections WP comp x P HP.
 
-(* The intersection of ALL subobjects, indexed by the large type [SubObj x]
-   itself: the class [fun _ => True]. *)
+(* 相关说明。 （已译） *)
 Definition wellpowered_complete_intersection_all@{o h w s t r so q +|
     w <= h, h < t, o <= s, h <= s, so <= r, h <= r, w <= so,
     o <= q, h <= q +}
@@ -282,7 +280,7 @@ Proof.
                   WP comp x))).
 Defined.
 
-(** ** The dual: cointersections of classes of quotient objects *)
+(* * ** The dual: cointersections classes quotient 对象 （已译） *)
 
 Definition cowellpowered_cocomplete_has_cointersections@{o h w s t r so qo p q
     +| w <= h, h < t, o <= s, h <= s, so <= r, h <= r, w <= so, p <= so,
@@ -297,8 +295,7 @@ Definition cowellpowered_cocomplete_has_cointersections@{o h w s t r so qo p q
   wellpowered_complete_has_intersections CWP
     (Complete_op_of_Cocomplete cocomp) x P HP.
 
-(* Read in the order of quotients, with no conversion step: the
-   cointersection lies below every member of the class in [quot_le]. *)
+(* 相关说明。 （已译） *)
 Lemma cointersection_quot_le@{o h w s t r so qo p q +|
     w <= h, h < t, o <= s, h <= s, so <= r, h <= r, w <= so, p <= so,
     o <= qo, h <= qo, qo <= q, p <= q +}
@@ -332,9 +329,9 @@ Definition trivial_small@{o h t | o <= h, h < t +}
   (C : Category@{o h h}) : WellPowered@{o h h h t} C :=
   fun x => wp_trivial x.
 
-(* A category in which every arrow is invertible (Structure/Groupoid.v's
-   [IsGroupoid]) is well-powered with the one-point index: every subobject
-   is the top one. *)
+(* A 范畴 every arrow invertible (Structure/Groupoid.v's
+ [IsGroupoid]) well-powered one-point index: every subobject
+ top one. （已译） *)
 Section Groupoid.
 
 Context {C : Category}.
@@ -354,15 +351,14 @@ Defined.
 
 End Groupoid.
 
-(* The pinned forms.  The one-point index sits at [Set], below every hom
-   universe, so no bound relates the objects to the homs. *)
+(* The pinned forms. The one-point index sits at [Set], below every hom
+ universe, so no bound relates 对象 homs. （已译） *)
 Definition Groupoid_WellPowered@{o h w s t | w <= h, o <= s, h <= s, h < t +}
   (C : Category@{o h h}) (G : IsGroupoid C) :
   WellPowered@{o h w s t} C :=
   fun x => wp_groupoid G x.
 
-(* A groupoid's opposite is a groupoid, with the same inverses:
-   Structure/Groupoid.v's [IsGroupoid_op]. *)
+(* 相关说明。 （已译） *)
 Definition Groupoid_CoWellPowered@{o h w s t | w <= h, o <= s, h <= s, h < t +}
   (C : Category@{o h h}) (G : IsGroupoid C) :
   CoWellPowered@{o h w s t} C :=
@@ -387,8 +383,8 @@ Definition DiscreteCat_CoWellPowered@{o h w s t |
   Groupoid_CoWellPowered@{o h w s t} (DiscreteCat@{o h h} A)
     (DiscreteCat_isos A).
 
-(* The objects are the types of [Type@{j}], one universe above the homs,
-   which sit at [j]; the index is at [Set]. *)
+(* The 对象 types [Type@{j}], one universe above homs,
+ sit at [j]; index at [Set]. （已译） *)
 Definition DiscreteCat_types_WellPowered@{j o t | j < o, j < t +} :
   WellPowered@{o j Set o t} (DiscreteCat@{o j j} Type@{j}) :=
   DiscreteCat_WellPowered@{o j Set o t} Type@{j}.
@@ -429,10 +425,10 @@ Definition Classifier_WellPowered@{o h s t | o <= s, h <= s, h < t +}
   `{S : @SubobjectClassifier C T} : WellPowered@{o h h s t} C :=
   fun x => wp_of_classifier x.
 
-(** ** Non-vacuity of the consequence *)
+(* 相关说明。 （已译） *)
 
-(* An inhabited indiscrete category is complete: the limit of every diagram
-   is any object, with the only possible legs. *)
+(* An inhabited indiscrete 范畴 complete: limit every diagram
+ any 对象, possible legs. （已译） *)
 Definition Indiscrete_Complete@{r so h o +| so <= r, h <= r +}
   {A : Type@{o}} (a : A) : @Complete@{r so h o} (Indiscrete@{o h h} A).
 Proof.

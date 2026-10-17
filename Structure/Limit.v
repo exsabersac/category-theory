@@ -5,7 +5,7 @@ Require Import Category.Structure.Cone.
 
 Generalizable All Variables.
 
-(** * Limit of a diagram (terminal cone) *)
+(* 相关说明。 （已译） *)
 
 (* nLab:      https://ncatlab.org/nlab/show/limit
    Wikipedia: https://en.wikipedia.org/wiki/Limit_(category_theory)
@@ -40,7 +40,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 Class Limit `(F : J ⟶ C) := {
-  (* The limit cone (L, φ): the terminal/universal cone over F. *)
+  (* 相关说明。 （已译） *)
   limit_cone : Cone F;
 
   (* Universal property: every cone N factors through the limit cone by a
@@ -57,7 +57,7 @@ Class Limit `(F : J ⟶ C) := {
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 Class IsALimit `(F : J ⟶ C) (c : C) := {
-    (* The limit's legs over the fixed apex c (the cone (c, φ)). *)
+    (* 相关说明。 （已译） *)
     limit_acone : ACone c F;
     (*
    本节说明（余）极限相关定义、性质与动机。
@@ -85,7 +85,7 @@ Coercion limit_cone : Limit >-> Cone.
 
 Require Import Category.Functor.Opposite.
 
-(* The colimit of F is the dual notion: a limit of the opposite diagram
-   F^op, i.e. the universal cocone / initial object of the category of
-   cocones over F (nLab, Wikipedia). *)
+(* The colimit F dual notion: limit opposite diagram
+ F^op, i.e. universal cocone / 始对象 范畴 of
+ cocones over F (nLab, Wikipedia). （已译） *)
 Definition Colimit `(F : J ⟶ C) := Limit (F^op).

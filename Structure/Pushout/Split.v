@@ -7,7 +7,7 @@ Require Import Category.Structure.Pushout.
 
 Generalizable All Variables.
 
-(** * When a pushout injection splits *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Pushout_(category_theory)
@@ -26,8 +26,7 @@ Context (P : IsPushout f g).
 
 (** ** The first injection *)
 
-(* If [f] factors through [g], the cocone [(id[y], r)] commutes, so the
-   pushout hands back a retraction of [pushout_in1]. *)
+(* 相关说明。 （已译） *)
 Lemma pushout_in1_factor_commutes (r : z ~> y) (Hr : r ∘ g ≈ f) :
   id[y] ∘ f ≈ r ∘ g.
 Proof.

@@ -15,7 +15,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* In 2, an object receiving an arrow from the top is itself the top. *)
+(* In 2, 对象 receiving arrow top itself top. （已译） *)
 Lemma two_from_top {z : TwoObj} : TwoHom TwoY z → z = TwoY.
 Proof.
   destruct z; intro f.
@@ -44,8 +44,8 @@ Record TwoPreorder := {
   tpre_dec x y : tpre_le x y + (tpre_le x y → False)
 }.
 
-(** (a) Every category enriched over 2 gives a preorder on its objects:
-    x ≤ y iff the hom truth value is the top. *)
+(** (a) Every 范畴 enriched over 2 gives preorder 对象:
+ x ≤ y iff hom truth value top. （已译） *)
 
 Definition TwoPreorder_of_Enriched (E : @Enriched _2 Two_Monoidal) :
   TwoPreorder.
@@ -71,8 +71,8 @@ Proof.
     + left; reflexivity.
 Defined.
 
-(** (b) Every preorder gives a category enriched over 2, with hom
-    truth values computed by the decision procedure. *)
+(** (b) Every preorder gives 范畴 enriched over 2, hom
+ truth values computed decision procedure. （已译） *)
 
 Definition ehom_of_le (P : TwoPreorder) (x y : tpre_carrier P) : TwoObj :=
   match tpre_dec P x y with
@@ -117,9 +117,7 @@ Proof.
     intro x.
     rewrite (ehom_of_le_complete (tpre_refl P x)).
     exact TwoIdY.
-  - (* ecompose : (y ⟿ z) ⨂ (x ⟿ y) ~> (x ⟿ z), from transitivity;
-       when either factor is the bottom, so is the meet, and the bottom
-       maps into everything *)
+  - (* 相关说明。 （已译） *)
     intros x y z; simpl.
     destruct (tpre_dec P y z) as [lyz|nyz];
     destruct (tpre_dec P x y) as [lxy|nxy].
@@ -138,8 +136,8 @@ Proof.
   - intros; apply two_thin.
 Defined.
 
-(** The promised correspondence: enrichments over 2 on one side,
-    preorders on the other, with maps in both directions. *)
+(** 本节：The promised correspondence: enrichments over 2 one side,
+ preorders other, maps both directions. （已译） *)
 
 Theorem Enriched_Two_preorder : @Enriched _2 Two_Monoidal ↔ TwoPreorder.
 Proof.
@@ -148,8 +146,8 @@ Proof.
   - exact Enriched_of_TwoPreorder.
 Defined.
 
-(** The morphism leg: enriched functors between the enrichments built
-    from preorders are exactly the monotone maps. *)
+(** The 态射 leg: enriched 函子 between enrichments built
+ preorders exactly monotone maps. （已译） *)
 
 Record MonotoneMap (P Q : TwoPreorder) := {
   mono_map : tpre_carrier P → tpre_carrier Q;

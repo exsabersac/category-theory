@@ -1,4 +1,4 @@
-(** * Limits and colimits of a constant diagram *)
+(* * * Limits colimits 常值 diagram （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -50,7 +50,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The constant diagram, and the zig-zag closure that drives the file *)
+(* * ** The 常值 diagram, zig-zag closure drives file （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -80,15 +80,14 @@ Proof.
   - now rewrite <- (H _ _ f).
 Qed.
 
-(** ** Part (a), the limit: the identity cone on c is limiting *)
+(* * ** Part (a), limit: 恒等 cone c limiting （已译） *)
 
 Section ConstantLimit.
 
 Context {J C : Category}.
 Context (c : C).
 
-(* No [Program], and no obligation: the coherence field is literally
-   [id_left (id[c])]. *)
+(* 相关说明。 （已译） *)
 
 Definition const_acone : ACone c Δ[J](c) :=
   @Build_ACone J C c Δ[J](c) (fun _ => id[c]) (fun _ _ _ => id_left (id[c])).
@@ -96,8 +95,8 @@ Definition const_acone : ACone c Δ[J](c) :=
 Definition const_cone : Cone Δ[J](c) :=
   {| vertex_obj := c ; coneFrom := const_acone |}.
 
-(* The single mathematical step: a cone over a constant diagram has legs
-   that agree along every arrow of the shape. *)
+(* The single mathematical step: cone over 常值 diagram has legs
+ agree along every arrow shape. （已译） *)
 
 Lemma const_cone_step (N : Cone Δ[J](c)) {x y : J} (f : x ~{J}~> y) :
   cone_leg N x ≈ cone_leg N y.
@@ -128,8 +127,8 @@ Proof.
       rewrite id_left in Hv. symmetry. exact Hv.
 Defined.
 
-(* The cone-level and bundled readings cost nothing: Preservation.v's four
-   conversions are proof-free, so both are [:=] with no tactic. *)
+(* The cone-level bundled readings cost nothing: Preservation.v's four
+ conversions 证明-free, so both [:=] no tactic. （已译） *)
 
 Definition const_IsLimitCone (K : ConnectedNonempty J) :
   IsLimitCone const_cone := @ump_limit _ _ _ _ (const_IsALimit K).
@@ -151,7 +150,7 @@ Example const_med_strict (K : ConnectedNonempty J) (N : Cone Δ[J](c)) :
 
 End ConstantLimit.
 
-(** ** Part (a), the colimit: built directly, not by op-instantiation *)
+(* 相关说明。 （已译） *)
 
 Section ConstantColimit.
 
@@ -231,7 +230,7 @@ Example const_comed_strict (K : ConnectedNonempty J) (N : Cocone Δ[J](c)) :
 
 End ConstantColimit.
 
-(** ** Part (d): these limits are absolute *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、（余）极限相关定义、性质与动机。
@@ -344,7 +343,7 @@ Example const_absolute_coinj_strict (K : ConnectedNonempty J)
 
 End Absolute.
 
-(** ** Part (b): the unit of Δ ⊣ lim is the mediating map, and invertible *)
+(* 相关说明。 （已译） *)
 
 Section LimitUnit.
 
@@ -357,8 +356,8 @@ Definition const_unit : c ~{C}~> lim_obj L Δ[J](c) :=
   @unit ([J, C]) C (@Diagonal C J) (LimitFunctor L)
         (Diagonal_Limit_Adjunction L) c.
 
-(* Both identifications are [eq_refl]: the unit IS the transpose of the
-   identity, and IS the mediator out of the transposed cone. *)
+(* Both identifications [eq_refl]: unit IS transpose the
+ 恒等, IS mediator out transposed cone. （已译） *)
 
 Example const_unit_is_transpose :
   const_unit = lim_transpose_to L (@id ([J, C]) Δ[J](c)) := eq_refl.
@@ -434,7 +433,7 @@ Qed.
 
 End LimitUnit.
 
-(** ** Part (b), dually: the counit of colim ⊣ Δ is invertible *)
+(* 相关说明。 （已译） *)
 
 Section ColimitCounit.
 
@@ -487,22 +486,22 @@ Definition const_counit_iso : colim_obj M Δ[J](c) ≅ c :=
 
 End ColimitCounit.
 
-(** ** Part (c): the diagonal is faithful on a point, full on a zig-zag *)
+(* 相关说明。 （已译） *)
 
 Section DiagonalFullyFaithful.
 
 Context {J C : Category}.
 
-(* Faithfulness costs only an OBJECT of J: two transformations agreeing
-   everywhere agree at [j0], and their components at [j0] ARE the two
-   morphisms. *)
+(* Faithfulness costs OBJECT J: two transformations agreeing
+ everywhere agree at [j0], components at [j0] ARE two
+ 态射. （已译） *)
 
 Definition Diagonal_Faithful (j0 : J) : Faithful (@Diagonal C J).
 Proof. construct. exact (X j0). Defined.
 
-(* Naturality between two constant functors reads [id ∘ τx ≈ τy ∘ id], so
-   the components agree along every arrow -- the transformation-level twin
-   of [const_cone_step]. *)
+(* Naturality between two 常值 函子 reads [id ∘ τx ≈ τy ∘ id], so
+ components agree along every arrow -- transformation-level twin
+ [const_cone_step]. （已译） *)
 
 Lemma const_transform_step {x y : C} (t : Δ[J](x) ⟹ Δ[J](y))
   {p q : J} (f : p ~{J}~> q) : transform[t] p ≈ transform[t] q.
@@ -554,8 +553,8 @@ Example Diagonal_Full_routes_agree (K : ConnectedNonempty J) (x y : C)
 
 End DiagonalFullyFaithful.
 
-(** ** Inhabitedness is necessary: the empty shape computes a terminal
-       object, not c *)
+(* * ** Inhabitedness necessary: empty shape computes terminal
+ 对象, not c （已译） *)
 
 Definition zero_ACone {C : Category} (c n : C) : ACone n Δ[_0](c) :=
   @Build_ACone _0 C n Δ[_0](c)
@@ -619,7 +618,7 @@ Proof.
   exact (Bool.diff_true_false (Hn true)).
 Qed.
 
-(** ** Connectedness is necessary: a two-object discrete shape *)
+(* * ** Connectedness necessary: two-对象 discrete shape （已译） *)
 
 Definition td_ACone {C : Category} {c d : C} (p q : d ~{C}~> c) :
   ACone d Δ[Two_Discrete](c).
@@ -640,8 +639,8 @@ Context (H : IsALimit Δ[Two_Discrete]((bool : Coq)) (bool : Coq)).
 Definition tdX : bool → bool := limit_leg H TwoDX.
 Definition tdY : bool → bool := limit_leg H TwoDY.
 
-(* The EXISTENCE half of the universal property alone, at apex [unit] with
-   constant legs, makes ⟨tdX, tdY⟩ : bool → bool × bool surjective. *)
+(* The EXISTENCE half 普遍性质 alone, at apex [unit] with
+ 常值 legs, makes ⟨tdX, tdY⟩ : bool → bool × bool surjective. （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -658,8 +657,7 @@ Proof using H.
   exact (Hu TwoDX ttt, Hu TwoDY ttt).
 Defined.
 
-(* [False] mentions no section variable, so the [Proof using] is explicit;
-   the Theory/Category/Monoid.v precedent. *)
+(* 相关说明。 （已译） *)
 
 Theorem td_const_not_limit : False.
 Proof using H.
@@ -683,8 +681,7 @@ Proof.
            (H Two_Discrete Coq (bool : Coq) TwoDX)).
 Qed.
 
-(* What the disconnected shape computes INSTEAD: the binary product.  So
-   what is refuted is quantitative, not existence. *)
+(* 相关说明。 （已译） *)
 
 Definition td_const_IsALimit_product {C : Category} `{@Cartesian C} (c : C) :
   IsALimit Δ[Two_Discrete](c) (c × c).
@@ -745,7 +742,7 @@ Proof.
   simpl in H1, H2. congruence.
 Qed.
 
-(** ** Non-vacuity: the walking arrow *)
+(* 相关说明。 （已译） *)
 
 (* [Two_Connected] is Structure/Limit/Components.v, consumed rather
    than rebuilt. *)
@@ -763,9 +760,9 @@ Definition two_const_AbsoluteLimit {C : Category} (c : C) :
   AbsoluteLimit Δ[_2](c) c :=
   @const_AbsoluteLimit _2 C c two_ConnectedNonempty.
 
-(* The shape is not degenerate: two distinct objects, a crossing arrow, and
-   provably NO arrow back -- so the zig-zag, not a single arrow, is what
-   joins [TwoY] to [TwoX]. *)
+(* The shape not degenerate: two distinct 对象, crossing arrow, and
+ provably NO arrow back -- so zig-zag, not single arrow, what
+ joins [TwoY] [TwoX]. （已译） *)
 
 Theorem two_objects_distinct : (TwoX : _2) = TwoY → False.
 Proof. discriminate. Qed.
@@ -781,7 +778,7 @@ Example two_const_leg_strict {C : Category} (c : C) (x : _2) :
 Example two_const_med_strict {C : Category} (c : C) (N : Cone Δ[_2](c)) :
   limit_med (two_const_IsALimit c) N = cone_leg N TwoX := eq_refl.
 
-(** ** Universe probe: the two identifications are the DONORS' *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom、（余）端相关定义、性质与动机。

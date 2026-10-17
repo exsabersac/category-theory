@@ -33,7 +33,7 @@ From Coq Require Import Arith.
 
 Generalizable All Variables.
 
-(** * Presentations of PROPs by symmetric monoidal theories *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category
@@ -82,7 +82,7 @@ Inductive TermEqW : forall {m n}, Term Σ m n → Term Σ m n → Prop :=
   | TEW_termeq {m n} (s t : Term Σ m n) :
       TermEq Σ s t → TermEqW s t
 
-  (** Every axiom of the theory holds in the presented PROP. *)
+  (** 本节：Every axiom theory holds presented PROP. （已译） *)
   | TEW_ax {m n} (s t : Term Σ m n) :
       smt_eqs E m n s t → TermEqW s t
 
@@ -121,11 +121,11 @@ Inductive TermEqW : forall {m n}, Term Σ m n → Term Σ m n → Prop :=
 Definition PresentedCat : Category :=
   @Quotient (FreeCat Σ) (fun m n : nat => @TermEqW m n) TermEqW_Congruence.
 
-(** A term, viewed as a morphism of the presented category (the
-    carrier of a hom of [PresentedCat] IS [Term Σ]). *)
+(** A term, viewed 态射 presented 范畴 (the
+ carrier hom [PresentedCat] IS [Term Σ]). （已译） *)
 Definition quot {m n : nat} (t : Term Σ m n) : m ~{PresentedCat}~> n := t.
 
-(** The projection functor: identity on objects and morphisms. *)
+(** The projection 函子: 恒等 对象 态射. （已译） *)
 Definition PresentedProj : FreeCat Σ ⟶ PresentedCat :=
   @QuotientProj (FreeCat Σ) (fun m n : nat => @TermEqW m n) TermEqW_Congruence.
 
@@ -135,14 +135,14 @@ Definition PresentedProj : FreeCat Σ ⟶ PresentedCat :=
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** Reflexivity of the theory congruence, via the embedding. *)
+(** 本节：Reflexivity theory congruence, via embedding. （已译） *)
 Definition TermEqW_refl {m n : nat} (t : Term Σ m n) : TermEqW t t :=
   TEW_termeq t t (TE_refl t).
 
-(** ** The tensor on the presented category
+(* * ** The tensor presented 范畴
 
-    The parallel-composition bifunctor descends to the quotient
-    because [TermEqW] is closed under [T_tens]. *)
+ The parallel-复合 bifunctor descends quotient
+ because [TermEqW] closed under [T_tens]. （已译） *)
 
 Definition Presented_Tensor : PresentedCat ∏ PresentedCat ⟶ PresentedCat :=
   @Quotient_bifunctor (FreeCat Σ) (fun m n : nat => @TermEqW m n)
@@ -245,16 +245,16 @@ Definition PresentedPROP : PROP := {|
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** The tensor-then-project and project-then-tensor composites that
-    the tensor comparison relates. *)
+(** 本节：The tensor-then-project project-then-tensor composites that
+ tensor comparison relates. （已译） *)
 Definition Presented_ap_dom : FreeCat Σ ∏ FreeCat Σ ⟶ PresentedCat :=
   Presented_Tensor ◯ (PresentedProj ∏⟶ PresentedProj).
 
 Definition Presented_ap_cod : FreeCat Σ ∏ FreeCat Σ ⟶ PresentedCat :=
   PresentedProj ◯ FreeCat_Tensor Σ.
 
-(** Both directions of the tensor comparison are families of
-    identities; naturality is [tm_id_swap]. *)
+(** Both directions tensor comparison families of
+ identities; 自然性 [tm_id_swap]. （已译） *)
 Definition Presented_ap_to : Presented_ap_dom ⟹ Presented_ap_cod :=
   @Build_Transform' (FreeCat Σ ∏ FreeCat Σ) PresentedCat
     Presented_ap_dom Presented_ap_cod
@@ -267,9 +267,9 @@ Definition Presented_ap_from : Presented_ap_cod ⟹ Presented_ap_dom :=
     (fun p => T_id (fst p + snd p))
     (fun p q f => TEW_termeq _ _ (tm_id_swap (T_tens (fst f) (snd f)))).
 
-(** The identity components are inverse up to [TermEqW] (the identity
-    natural transformation of a composite-with-tensor functor has
-    components [T_tens (T_id _) (T_id _)]). *)
+(** The 恒等 components inverse up [TermEqW] (恒等
+ 自然变换 复合-with-tensor 函子 has
+ components [T_tens (T_id _) (T_id _)]). （已译） *)
 Program Definition Presented_ap_iso :
   Presented_ap_dom ≅[[FreeCat Σ ∏ FreeCat Σ, PresentedCat]] Presented_ap_cod := {|
   to   := Presented_ap_to;
@@ -300,9 +300,9 @@ Program Definition PresentedProj_Monoidal :
             (tm_collapse_l (T_cast (eq_sym (Nat.add_assoc x y z))))))
 |}.
 
-(** Both comparison maps of the projection are identities on the
-    nose, so the projection is STRICT monoidal, with [eq_refl] object
-    equalities. *)
+(** Both comparison maps projection identities the
+ nose, so projection STRICT monoidal, [eq_refl] 对象
+ equalities. （已译） *)
 
 Lemma PresentedProj_pure_id :
   to (@pure_iso _ _ _ _ PresentedProj PresentedProj_Monoidal)
@@ -362,27 +362,22 @@ Definition PresentedProj_Symmetric :
     (FreeCat_Symmetric Σ) Presented_Symmetric PresentedProj :=
   PresentedProj_Braided.
 
-(** ** Machine-checked sanity
+(* 相关说明。 （已译） *)
 
-    Each [Example] holds by [eq_refl], witnessing that the
-    corresponding field or action is definitional; any regression in
-    the shared-record wiring is caught here rather than at a distant
-    use site. *)
-
-(** The coherence between the strict and symmetric [Monoidal] paths
-    is the reflexivity proof itself. *)
+(** The coherence between strict symmetric [Monoidal] paths
+ reflexivity 证明 itself. （已译） *)
 Example PresentedPROP_coherence_is_refl :
   @prop_monoidal_coherence PresentedPROP = eq_refl := eq_refl.
 
-(** Tensor-on-objects is literally addition, with [eq_refl] proof. *)
+(** Tensor-on-对象 literally addition, [eq_refl] 证明. （已译） *)
 Example PresentedPROP_tensor_plus_is_refl (m n : nat) :
   @prop_tensor_plus PresentedPROP m n = eq_refl := eq_refl.
 
-(** The projection functor acts as the identity on terms. *)
+(** The projection 函子 acts 恒等 terms. （已译） *)
 Example PresentedProj_fmap_id_on_terms {m n : nat} (t : Term Σ m n) :
   fmap[PresentedProj] t = quot t := eq_refl.
 
-(** Every axiom of the theory holds in the presented category. *)
+(** Every axiom theory holds presented 范畴. （已译） *)
 Example Presented_axioms_hold {m n : nat} (s t : Term Σ m n)
   (H : smt_eqs E m n s t) : quot s ≈[PresentedCat] quot t := TEW_ax s t H.
 

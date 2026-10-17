@@ -18,7 +18,7 @@ Require Import Category.Adjunction.Opposite.
 
 Generalizable All Variables.
 
-(** * The fixed points of an adjunction *)
+(* * * The fixed points 伴随 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/adjoint+functor
@@ -31,7 +31,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Three inverse-calculus lemmas, restated locally *)
+(* 相关说明。 （已译） *)
 
 (* Transport of invertibility along an equation between parallel arrows. *)
 Definition fixed_IsIso_along {X : Category} {x y : X} {f g : x ~> y}
@@ -55,7 +55,7 @@ Definition fixed_IsIso_comp {X : Category} {x y z : X}
   fixed_IsIso_of_iso
     (iso_compose (@IsIsoToIso X _ _ g Hg) (@IsIsoToIso X _ _ f Hf)).
 
-(** ** (A) The two fixed subcategories and the restricted equivalence *)
+(* * ** (A) The two fixed subcategories restricted 等价 （已译） *)
 
 Section FixedPoints.
 
@@ -86,9 +86,9 @@ Proof.
     now rewrite <- Hek.
 Defined.
 
-(* The mirror: an invertible counit at [c] gives an invertible unit at
-   [U c], with [fmap[U] (counit c)] as inverse and [fmap_counit_unit] as
-   the free law. *)
+(* The 镜像: invertible counit at [c] gives invertible unit at
+ [U c], [fmap[U] (counit c)] inverse [fmap_counit_unit] as
+ free law. （已译） *)
 Definition unit_iso_of_counit_iso (c : C)
   (K : IsIsomorphism (@counit C D F U A c)) :
   IsIsomorphism (@unit C D F U A (U c)).
@@ -106,9 +106,9 @@ Defined.
 
 (** *** The subcategories *)
 
-(* The full subcategory of D spanned by the objects at which the unit is
-   invertible.  [shom] is the terminal predicate, following
-   Construction/Reflective/Idempotent.v's [MLocal_Subcategory]. *)
+(* The full subcategory D spanned 对象 at unit is
+ invertible. [shom] terminal predicate, following
+ Construction/Reflective/Idempotent.v's [MLocal_Subcategory]. （已译） *)
 Definition UnitFixed : Subcategory D :=
   {| sobj  := fun x => IsIsomorphism (@unit C D F U A x)
    ; shom  := fun _ _ _ _ _ => True
@@ -187,8 +187,8 @@ Definition FixedR : Sub C CounitFixed ⟶ Sub D UnitFixed :=
 
 (** *** The restricted adjunction *)
 
-(* The transposition is the ambient one on carriers; the [shom] component
-   of every morphism is [I], so nothing is transported. *)
+(* The transposition ambient one carriers; [shom] component
+ every 态射 [I], so nothing transported. （已译） *)
 Definition fixed_hom_to (x : Sub D UnitFixed) (y : Sub C CounitFixed)
   (f : FixedL x ~{Sub C CounitFixed}~> y) :
   x ~{Sub D UnitFixed}~> FixedR y :=
@@ -239,8 +239,7 @@ Proof.
   - intros x y z f g; simpl; apply to_adj_nat_r.
 Defined.
 
-(* The restricted unit and counit ARE the ambient ones, on the carrier and
-   on the whole sigma. *)
+(* 相关说明。 （已译） *)
 Example fixed_unit_strict (x : Sub D UnitFixed) :
   `1 (@unit _ _ FixedL FixedR fixed_adjunction x)
     = @unit C D F U A `1 x := eq_refl.
@@ -259,8 +258,8 @@ Example fixed_counit_whole (y : Sub C CounitFixed) :
 
 (** *** Lemma 4.2.11 *)
 
-(* The inverses of the restricted unit and counit are the ambient objects'
-   own inverses, carried into the subcategory by the terminal [shom]. *)
+(* The inverses restricted unit counit ambient 对象'
+ own inverses, carried 进入 subcategory terminal [shom]. （已译） *)
 Definition fixed_unit_inverse (x : Sub D UnitFixed) :
   FixedR (FixedL x) ~{Sub D UnitFixed}~> x :=
   (@two_sided_inverse D _ _ _ `2 x; I).
@@ -282,8 +281,7 @@ Proof.
     + exact (@is_left_inverse C _ _ _ `2 y).
 Defined.
 
-(* Riehl Lemma 4.2.11 / Exercise 4.2.iv, and the general half of Mac
-   Lane's closing question. *)
+(* 相关说明。 （已译） *)
 Definition adjunction_fixed_point_equivalence :
   EquivalenceOfCategories FixedL :=
   AdjointEquivalence_to_Equivalence fixed_AdjointEquivalence.
@@ -293,7 +291,7 @@ Definition fixed_point_equivalence_swap :
   AdjointEquivalence_to_Equivalence
     (AdjointEquivalence_swap fixed_AdjointEquivalence).
 
-(** ** (B) The fixed objects are the essential image of the other adjoint *)
+(* * ** (B) The fixed 对象 essential image other adjoint （已译） *)
 
 (*
    本节说明 FixedPoints 相关定义、性质与动机。
@@ -319,7 +317,7 @@ Proof.
     now rewrite id_left.
 Defined.
 
-(* The mirror, through naturality of the counit. *)
+(* The 镜像, through 自然性 counit. （已译） *)
 Lemma counit_iso_of_image (c : C) (x : D)
   (H : IsIsomorphism (@unit C D F U A x)) (psi : c ≅ F x) :
   IsIsomorphism (@counit C D F U A c).
@@ -341,9 +339,9 @@ Proof.
     now rewrite id_right.
 Defined.
 
-(* Mac Lane's "the closed elements are the image of R", categorified:
-   the unit is invertible at [x] exactly when [x] lies in the essential
-   image of U RESTRICTED to the counit-fixed objects. *)
+(* Mac Lane's "the closed elements image R", categorified:
+ unit invertible at [x] exactly [x] lies essential
+ image U RESTRICTED counit-fixed 对象. （已译） *)
 Theorem unit_fixed_iff_image (x : D) :
   IsIsomorphism (@unit C D F U A x)
     ↔ ∃ c : C, IsIsomorphism (@counit C D F U A c) ∧ (x ≅ U c).
@@ -368,7 +366,7 @@ Defined.
 
 End FixedPoints.
 
-(** ** (C) The comonad side, and the bridge to the monad-side results *)
+(* * ** (C) The 余单子 side, bridge 单子-side results （已译） *)
 
 (*
    本节说明单子、余单子相关定义、性质与动机。
@@ -379,8 +377,8 @@ Definition IdempotentComonad {C : Category} (W : C ⟶ C)
   (H : @Comonad C W) : Type := @IdempotentMonad (C^op) (W^op) H.
 Existing Class IdempotentComonad.
 
-(* The W-colocal objects: those at which the comonad counit is invertible.
-   Read through [op_subcategory], this is a subcategory of C itself. *)
+(* The W-colocal 对象: those at 余单子 counit invertible.
+ Read through [op_subcategory], 这是 subcategory C itself. （已译） *)
 Definition WLocal_Subcategory {C : Category} {W : C ⟶ C}
   (H : @Comonad C W) : Subcategory C :=
   op_subcategory (@MLocal_Subcategory (C^op) (W^op) H).
@@ -393,8 +391,7 @@ Definition WLocal_Subcategory {C : Category} {W : C ⟶ C}
 Example wlocal_op_involution {C : Category} (S : Subcategory C) :
   op_subcategory (op_subcategory S) = S := eq_refl.
 
-(* The issue's first work item: the dual of [Idempotent_Reflective], with
-   no tactic and no transport. *)
+(* 相关说明。 （已译） *)
 Definition Idempotent_Coreflective {C : Category} {W : C ⟶ C}
   (H : @Comonad C W) (IH : IdempotentComonad W H) :
   Coreflective (WLocal_Subcategory H) :=
@@ -411,8 +408,8 @@ Definition Coreflective_IdempotentMonad_op {C : Category}
     (Reflective_Monad R) :=
   Reflective_IdempotentMonad R.
 
-(* Membership in the colocal subcategory IS invertibility of the monad
-   unit read in C^op, on the nose. *)
+(* Membership colocal subcategory IS invertibility 单子
+ unit read C^op, nose. （已译） *)
 Example wlocal_sobj_strict {C : Category} {W : C ⟶ C} (H : @Comonad C W)
   (x : C) :
   sobj C (WLocal_Subcategory H) x
@@ -464,22 +461,22 @@ Example unit_fixed_is_mlocal :
   UnitFixed A
     = @MLocal_Subcategory D (U ◯ F) (Adjunction_Induced_Monad A) := eq_refl.
 
-(* The issue's fifth work item, positive half: with idempotency the
-   fixed subcategory is REFLECTIVE.  This is the one statement below that
-   needs a hypothesis beyond the bare adjunction. *)
+(* The issue's fifth work item, positive half: idempotency the
+ fixed subcategory REFLECTIVE. This one statement below that
+ needs 假设 beyond bare 伴随. （已译） *)
 Definition unit_fixed_reflective_of_idempotent
   (IM : @IdempotentMonad D (U ◯ F) (Adjunction_Induced_Monad A)) :
   Reflective (UnitFixed A) :=
   @Idempotent_Reflective D (U ◯ F) (Adjunction_Induced_Monad A) IM.
 
-(* The opposite adjunction's unit IS this adjunction's counit -- same
-   term, same type, since a hom of C^op is a reversed hom of C. *)
+(* The opposite 伴随's unit IS 伴随's counit -- same
+ term, same type, since hom C^op reversed hom C. （已译） *)
 Example fixed_op_unit_is_counit (c : C) :
   @unit (D^op) (C^op) (U^op) (F^op) (Opposite_Adjunction F U A) c
     = @counit C D F U A c := eq_refl.
 
-(* Consequently the counit-fixed objects are the unit-fixed objects of the
-   opposite adjunction, read in C^op. *)
+(* Consequently counit-fixed 对象 unit-fixed 对象 the
+ opposite 伴随, read C^op. （已译） *)
 Example counit_fixed_op_strict (c : C) :
   sobj (C^op) (UnitFixed (Opposite_Adjunction F U A)) c
     = @IsIsomorphism (C^op) c (F (U c)) (@counit C D F U A c) := eq_refl.

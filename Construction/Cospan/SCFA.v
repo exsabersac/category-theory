@@ -61,9 +61,9 @@ Lemma cospan_scfa_eta_as_cospan (X : C) :
   cospan_scfa_eta X = mor_as_cospan (zero : 0%object ~{C}~> X).
 Proof. reflexivity. Qed.
 
-(** A cospan from [X] to [Y] with apex [X], leg1 = id, leg2 = f : Y → X.
-    This is the "backward" direction: a C-morphism [Y → X] reinterpreted
-    as a cospan from [X] to [Y]. *)
+(** A cospan [X] [Y] apex [X], leg1 = id, leg2 = f : Y → X.
+ This "backward" direction: C-态射 [Y → X] reinterpreted
+ cospan [X] [Y]. （已译） *)
 Definition mor_as_cospan_back {X Y : C} (f : Y ~> X) : CospanArrow X Y :=
   Build_CospanArrow X id[X] f.
 
@@ -115,7 +115,7 @@ Defined.
     a genuine pushout (not a collapse), so no analogous left-collapse bridge
     exists.  The dual configurations use [back] on the LEFT (outer). *)
 
-(** ** Tensor of [mor_as_cospan_back]s is again a [mor_as_cospan_back] *)
+(* 相关说明。 （已译） *)
 Lemma cospan_tensor_mor_as_cospan_back
       {X Y X' Y' : C} (f : Y ~> X) (g : Y' ~> X') :
   cospan_equiv
@@ -151,26 +151,19 @@ Proof.
     exact Hfg.
 Defined.
 
-(** Composition of two backward cospans corresponds to composition of the
-    underlying C-morphisms IN REVERSE ORDER (this is the cospan duality). *)
+(** Composition two backward cospans corresponds 复合 the
+ underlying C-态射 IN REVERSE ORDER (这是 cospan duality). （已译） *)
 Lemma mor_as_cospan_back_compose
       {X Y Z : C} (g : Z ~> Y) (f : Y ~> X) :
   cospan_equiv
     (cospan_compose HP (mor_as_cospan_back g) (mor_as_cospan_back f))
     (mor_as_cospan_back (f ∘ g)).
 Proof.
-  (* Apply cospan_compose_mor_as_cospan_back_left with the inner being back_f
-     and back_g as outer. *)
+  (* 相关说明。 （已译） *)
   apply cospan_compose_mor_as_cospan_back_left.
 Defined.
 
-(** ** Bridging: composing forward [mor_as_cospan (to phi)] (iso!) outside
-       of a [mor_as_cospan_back g]
-
-    [back_g : X → A] has apex X, in2 = g : A → X.
-    [forward (to phi) : A → B] (phi : A ≅ B) has apex B, in1 = to phi.
-    Compose: pushout (g : A → X, to phi : A → B) ≅ X via
-    [pushout_along_iso_apex] (shared source A). *)
+(* 相关说明。 （已译） *)
 Lemma cospan_compose_forward_iso_back
       {X A B : C} (g : A ~> X) (phi : A ≅ B) :
   cospan_equiv
@@ -181,8 +174,8 @@ Proof.
   unfold cospan_compose, mor_as_cospan, mor_as_cospan_back; simpl.
   pose (P := pushout (g : A ~{C}~> X) (to phi)).
   pose (iso := pushout_along_iso_apex HP g phi).
-  (* to iso ∘ pushout_in1 P ≈ id[X];  to iso ∘ pushout_in2 P ≈ g ∘ from phi.
-     (These come from the [pushout_med] definition inside pushout_along_iso_apex.) *)
+  (* to iso ∘ pushout_in1 P ≈ id[X]; iso ∘ pushout_in2 P ≈ g ∘ phi.
+ (These come [pushout_med] 定义 inside pushout_along_iso_apex.) （已译） *)
   exists iso; simpl; fold P; split.
   - (* pushout_med ∘ (pushout_in1 P ∘ id[X]) ≈ id[X] *)
     rewrite comp_assoc.
@@ -196,10 +189,10 @@ Proof.
     apply pushout_med_in2.
 Defined.
 
-(** ** C-level: codiagonal absorbs cover
+(* * ** C-level: codiagonal absorbs cover
 
-    [(id ▽ id) ∘ cover f g ≈ f ▽ g] : the codiagonal absorbs the
-    coproduct structure, simplifying both sides of the monoid axioms. *)
+ [(id ▽ id) ∘ cover f g ≈ f ▽ g] : codiagonal absorbs the
+ coproduct structure, simplifying both sides 幺半群 axioms. （已译） *)
 
 Lemma codiag_cover {X Y Z : C} (f : Y ~> X) (g : Z ~> X) :
   ((id[X] ▽ id[X]) : (X + X)%object ~> X) ∘ cover f g ≈ f ▽ g.
@@ -221,10 +214,7 @@ Proof.
     reflexivity.
 Qed.
 
-(** ** [Monoid mu_assoc] at the C-level
-
-    Reduces via [codiag_cover] to:
-      (id ▽ id) ▽ id ≈ id ▽ (id ▽ id) ∘ to coprod_assoc                  *)
+(* 相关说明。 （已译） *)
 
 Lemma codiag_assoc {X : C} :
   ((id[X] ▽ id[X]) : (X + X)%object ~> X) ∘ cover (id[X] ▽ id[X]) id[X]
@@ -271,11 +261,7 @@ Proof.
     reflexivity.
 Qed.
 
-(** ** C-level identities backing the unit laws
-
-    [mu ∘ bimap eta id ≈ to unit_left] becomes (at C level after
-    mor_as_cospan-fusion):
-      (id ▽ id) ∘ cover zero id ≈ zero ▽ id     [= to coprod_zero_l]   *)
+(* 相关说明。 （已译） *)
 
 Lemma codiag_eta_left {X : C} :
   ((id[X] ▽ id[X]) : (X + X)%object ~> X) ∘ cover (zero : 0%object ~> X) id[X]
@@ -323,19 +309,17 @@ Proof.
     apply (@zero_unique C H_Ini _ _ _).
 Qed.
 
-(** ** C-level: codiagonal commutes with paws
-
-    [(id ▽ id) ∘ paws ≈ id ▽ id]  is just [paws_fork]. *)
+(* 相关说明。 （已译） *)
 
 Lemma codiag_paws_comm {X : C} :
   ((id[X] ▽ id[X]) : (X + X)%object ~> X) ∘ paws
   ≈ (id[X] ▽ id[X]).
 Proof. apply paws_fork. Qed.
 
-(** ** Cospan-level monoid axioms
+(* * ** Cospan-level 幺半群 axioms
 
-    Each axiom lifts the corresponding C-level identity through
-    [mor_as_cospan_compose] and [cospan_tensor_mor_as_cospan]. *)
+ Each axiom lifts corresponding C-level 恒等 through
+ [mor_as_cospan_compose] [cospan_tensor_mor_as_cospan]. （已译） *)
 
 (** [cospan_scfa_mu ∘ bimap mu (cospan_id X) ≈ cospan_scfa_mu ∘ bimap id mu ∘ to tensor_assoc]
     in [CospanCat C HP]. *)
@@ -442,11 +426,11 @@ Proof.
   apply codiag_eta_right.
 Defined.
 
-(** ** Cospan-level comonoid axioms (duals of the monoid axioms)
+(* * ** Cospan-level comonoid axioms (duals 幺半群 axioms)
 
-    Each δ-axiom decomposes into the same C-level codiagonal identity as
-    the corresponding μ-axiom, via [mor_as_cospan_back_compose] +
-    [cospan_tensor_mor_as_cospan_back] + [cospan_compose_mor_iso_left]. *)
+ Each δ-axiom decomposes 进入 same C-level codiagonal 恒等 as
+ corresponding μ-axiom, via [mor_as_cospan_back_compose] +
+ [cospan_tensor_mor_as_cospan_back] + [cospan_compose_mor_iso_left]. （已译） *)
 
 (** [bimap delta id ∘ delta ≈ from tensor_assoc ∘ bimap id delta ∘ delta]. *)
 Lemma cospan_delta_coassoc (X : C) :
@@ -511,8 +495,7 @@ Proof.
   { apply (cospan_compose_mor_iso_left HP
               (mor_as_cospan_back (id[X] ▽ id[X] ∘ cover id[X] (id[X] ▽ id[X])))
               (iso_sym (@coprod_assoc C H_Coc X X X))). }
-  (* Resulting cospan: Build_CospanArrow X id ((id▽id) ∘ cover id (id▽id) ∘ from phi)
-     where from phi = to α. *)
+  (* 相关说明。 （已译） *)
   apply cospan_equiv_sym.
   (* LHS-after-reduction (target): mor_as_cospan_back ((id▽id) ∘ cover (id▽id) id) *)
   unfold mor_as_cospan_back.
@@ -595,7 +578,7 @@ Proof.
     apply (iso_from_to (@coprod_zero_r C H_Coc H_Ini X)).
 Defined.
 
-(** ** [Monoid (CospanCat C HP) X] for every X *)
+(* 相关说明。 （已译） *)
 
 Program Definition cospan_monoid (X : C) :
   @Monoid (CospanCat C HP) (Cospan_Monoidal HP) X := {|
@@ -646,8 +629,8 @@ Proof.
   apply (fst (fst (merge_inv _ _ _ _) Heq)).
 Qed.
 
-(** [pushout_apex (pushout (id▽id) (id▽id)) ≅ X], with both pushout legs
-    becoming the identity under the iso. *)
+(** [pushout_apex (pushout (id▽id) (id▽id)) ≅ X], both pushout legs
+ becoming 恒等 under iso. （已译） *)
 
 Lemma pushout_codiag_apex (X : C) :
   pushout_apex (pushout (id[X] ▽ id[X] : (X + X)%object ~> X)
@@ -672,11 +655,7 @@ Proof.
     + cat.
 Defined.
 
-(** ** Commutativity axioms
-
-    [mu ∘ braid ≈ mu] : both forward, fuses via [mor_as_cospan_compose].
-    [braid ∘ delta ≈ delta] : forward outer, back inner, uses
-    [cospan_compose_forward_iso_back]. *)
+(* 相关说明。 （已译） *)
 
 Lemma cospan_mu_commutative (X : C) :
   cospan_equiv
@@ -710,13 +689,13 @@ Proof.
   apply codiag_paws_comm.
 Defined.
 
-(** ** Frobenius pushout apex calculation
+(* * ** Frobenius pushout apex calculation
 
-    The Frobenius law decomposes (after [bimap], [tensor_assoc] reductions)
-    to a pushout of [cover id (id▽id) ∘ to α] against [cover (id▽id) id],
-    both [(X+X)+X → X+X].  This pushout's apex collapses to X by an
-    argument analogous to specialness: the pushout's commutativity relation
-    forces [pushout_in1 ≈ pushout_in2] via [coprod_ext]. *)
+ The Frobenius law decomposes (after [bimap], [tensor_assoc] reductions)
+ pushout [cover id (id▽id) ∘ α] against [cover (id▽id) id],
+ both [(X+X)+X → X+X]. This pushout's apex collapses X an
+ 论元 analogous specialness: pushout's commutativity 关系
+ forces [pushout_in1 ≈ pushout_in2] via [coprod_ext]. （已译） *)
 
 Lemma frob_pushout_legs_eq (X : C) :
   let P := pushout
@@ -727,7 +706,7 @@ Lemma frob_pushout_legs_eq (X : C) :
 Proof.
   intros P.
   pose proof (pushout_commutes P) as PC.
-  (* From PC, prove three sub-equations via coprod_ext on the (X+X)+X domain. *)
+  (* 相关说明。 （已译） *)
   assert (Eq1 : pushout_in1 P ∘ inl ≈ pushout_in2 P ∘ inl).
   { (* PC ∘ (inl ∘ inl) gives this after reduction. *)
     assert (H : (pushout_in1 P ∘ (cover id[X] (id[X] ▽ id[X])
@@ -809,7 +788,7 @@ Proof.
     reflexivity.
 Qed.
 
-(** Apex iso for the Frobenius pushout. *)
+(** 本节：Apex iso Frobenius pushout. （已译） *)
 Lemma frob_pushout_apex (X : C) :
   pushout_apex (pushout
     ((cover id[X] (id[X] ▽ id[X]) ∘ to (@coprod_assoc C H_Coc X X X))
@@ -1010,11 +989,7 @@ Proof.
     + cat.
 Defined.
 
-(** ** Frobenius laws
-
-    LHS = [bimap mu id ∘ from α ∘ bimap id delta] and
-    RHS = [delta ∘ mu], where both reduce to the cospan with apex X and
-    legs (id ▽ id, id ▽ id). *)
+(* 相关说明。 （已译） *)
 
 Lemma cospan_frob_law_left (X : C) :
   cospan_equiv
@@ -1167,11 +1142,7 @@ Proof.
     reflexivity.
 Defined.
 
-(** ** Specialness: μ ∘ δ ≈ id
-
-    [μ ∘ δ : X → X] via [cospan_compose μ δ].  Inner = δ = back (id▽id),
-    outer = μ = forward (id▽id).  The pushout [pushout (id▽id) (id▽id)]
-    collapses via [pushout_codiag_apex]. *)
+(* 相关说明。 （已译） *)
 
 Lemma cospan_mu_delta_id (X : C) :
   cospan_equiv
@@ -1196,7 +1167,7 @@ Proof.
     apply pushout_med_in2.
 Defined.
 
-(** ** [Comonoid (CospanCat C HP) X] for every X *)
+(* 相关说明。 （已译） *)
 
 Program Definition cospan_comonoid (X : C) :
   @Comonoid (CospanCat C HP) (Cospan_Monoidal HP) X := {|
@@ -1213,7 +1184,7 @@ Next Obligation.
   apply cospan_delta_counit_right.
 Defined.
 
-(** ** [Frobenius (CospanCat C HP) X] for every X *)
+(* 相关说明。 （已译） *)
 
 Program Definition cospan_frobenius (X : C) :
   @Frobenius (CospanCat C HP) (Cospan_Monoidal HP) X := {|
@@ -1231,7 +1202,7 @@ Next Obligation.
   apply (cospan_frob_law_right X).
 Defined.
 
-(** ** [CommutativeFrobenius (CospanCat C HP) X] for every X *)
+(* 相关说明。 （已译） *)
 
 Program Definition cospan_commutative_frobenius (X : C) :
   @CommutativeFrobenius (CospanCat C HP) (Cospan_SymmetricMonoidal HP) X := {|
@@ -1244,7 +1215,7 @@ Next Obligation.
   apply cospan_delta_cocommutative.
 Defined.
 
-(** ** [SpecialCommutativeFrobenius (CospanCat C HP) X] for every X *)
+(* 相关说明。 （已译） *)
 
 Program Definition cospan_scfa (X : CospanCat C HP) :
   @SpecialCommutativeFrobenius (CospanCat C HP) (Cospan_SymmetricMonoidal HP) X := {|

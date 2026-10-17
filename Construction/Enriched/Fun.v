@@ -57,8 +57,8 @@ Lemma triangle_inverse_middle_cons {u v z : K} (k : z ~> (u ⨂ v)%object) :
   tensor_assoc ∘ ((unit_right⁻¹ ⨂ id[v]) ∘ k) ≈ (id[u] ⨂ unit_left⁻¹) ∘ k.
 Proof. rewrite comp_assoc; now rewrite triangle_inverse_middle. Qed.
 
-(* The associativity law of an enriched category, re-bracketed so that it
-   rewrites in right-nested composition chains. *)
+(* The associativity law enriched 范畴, re-bracketed so it
+ rewrites right-nested 复合 chains. （已译） *)
 Lemma ecompose_assoc_cons {D : Enriched K} {x y z w : D} {v : K}
       (k : v ~{K}~> ((z ⟿ w) ⨂ (y ⟿ z)) ⨂ (x ⟿ y)) :
   ecompose ∘ ((ecompose ⨂ id) ∘ k)
@@ -97,8 +97,8 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* eid is a right unit for vertical composition, by eid_right; Kelly's
-   λ_I⁻¹ ≈ ρ_I⁻¹ ([unit_identity_from]) converts the coercion. *)
+(* eid right unit vertical 复合, eid_right; Kelly's
+ λ_I⁻¹ ≈ ρ_I⁻¹ ([unit_identity_from]) converts coercion. （已译） *)
 Lemma vertical_id_right {x y : D} (f : I ~{K}~> (x ⟿ y)) :
   ecompose ∘ (f ⨂ eid) ∘ unit_left⁻¹ ≈ f.
 Proof.
@@ -125,7 +125,7 @@ Lemma vertical_assoc {w x y z : D}
     ≈ ecompose ∘ ((ecompose ∘ (p ⨂ q) ∘ unit_left⁻¹) ⨂ r) ∘ unit_left⁻¹.
 Proof.
   rewrite <- !comp_assoc.
-  (* left side: peel ecompose and the coercion out of the second slot *)
+  (* 相关说明。 （已译） *)
   rewrite (tensor_split2_left p ecompose).
   rewrite (tensor_split2_right p (q ⨂ r)).
   rewrite <- !comp_assoc.
@@ -133,19 +133,19 @@ Proof.
   rewrite from_unit_left_natural.
   rewrite <- triangle_inverse_left.
   rewrite <- !comp_assoc.
-  (* slide α through the three components and reassociate the composition *)
+  (* slide α through three components reassociate 复合 （已译） *)
   rewrite to_assoc_nat_cons.
   rewrite <- ecompose_assoc_cons.
   (* fuse everything back into the right-hand shape *)
   rewrite !bimap_fuse_cons.
   rewrite id_right, id_left.
-  (* match the bracketing of the right-hand side *)
+  (* 相关说明。 （已译） *)
   now rewrite (comp_assoc ecompose (p ⨂ q) (unit_left⁻¹)).
 Qed.
 
 End Vertical.
 
-(** * The identity V-natural transformation *)
+(* * * The 恒等 V-自然变换 （已译） *)
 
 Program Definition EnrichedIdTransform {K : Category} `{M : @Monoidal K}
         {C D : Enriched K} (F : EnrichedFunctor K C D) :
@@ -155,9 +155,9 @@ Program Definition EnrichedIdTransform {K : Category} `{M : @Monoidal K}
 Next Obligation.
   intros K M C D F x y.
   simpl.
-  (* Both whiskerings reduce to efmap: split eid out of the tensor, collapse
-     ecompose against it via eid_left / eid_right, and cancel the unitors by
-     their naturality. *)
+  (* Both whiskerings reduce efmap: split eid out tensor, collapse
+ ecompose against it via eid_left / eid_right, cancel unitors by
+ 自然性. （已译） *)
   rewrite <- (bimap_id_right_left eid).
   rewrite <- (bimap_id_left_right eid).
   rewrite !comp_assoc.
@@ -169,7 +169,7 @@ Next Obligation.
   now rewrite !id_right.
 Qed.
 
-(** * Vertical composition of V-natural transformations *)
+(* * * Vertical 复合 V-natural transformations （已译） *)
 
 Program Definition EnrichedTransform_vcompose {K : Category} `{M : @Monoidal K}
         {C D : Enriched K} {F G J : EnrichedFunctor K C D}

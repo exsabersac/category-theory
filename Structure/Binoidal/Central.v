@@ -25,10 +25,9 @@ Section CentralKit.
 Context {C : Category}.
 Context `{@Binoidal C}.
 
-(** ** Closure properties of centrality *)
+(* * ** Closure properties 中心性 （已译） *)
 
-(* Identities are central: both defining squares reduce by [fmap_id] and
-   the unit laws to a triviality. *)
+(* 相关说明。 （已译） *)
 Lemma central_id {x : C} : central (@id C x).
 Proof.
   intros x' y' f'; split.
@@ -115,9 +114,9 @@ Proof.
     now rewrite id_left.
 Qed.
 
-(** ** [composite_ff'] against identities *)
+(* 相关说明。 （已译） *)
 
-(* Tensoring the identity on the left leaves the right tensoring of [g]. *)
+(* Tensoring 恒等 left leaves right tensoring [g]. （已译） *)
 Lemma composite_id_left {x y : C} (w : C) (g : x ~> y) :
   composite_ff' (id[w]) g ≈ fmap[inj_right w] g.
 Proof.
@@ -126,7 +125,7 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(* Tensoring the identity on the right leaves the left tensoring of [f]. *)
+(* Tensoring 恒等 right leaves left tensoring [f]. （已译） *)
 Lemma composite_id_right {x y : C} (w : C) (f : x ~> y) :
   composite_ff' f (id[w]) ≈ fmap[inj_left w] f.
 Proof.

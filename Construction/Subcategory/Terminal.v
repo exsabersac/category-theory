@@ -40,18 +40,18 @@ Definition TerminalObjects_Replete : Replete C TerminalObjects :=
     (IsTerminalObj_from_Terminal
        (Terminal_iso (Terminal_from_IsTerminalObj ox) y f); (I, I)).
 
-(* Each hom-set is INHABITED: the target is terminal, so it receives an
-   arrow from the source, and fullness lets it into the subcategory. *)
+(* Each hom-set INHABITED: target terminal, so it receives an
+ arrow source, fullness lets it 进入 subcategory. （已译） *)
 Definition terminal_sub_hom (a b : TSub) : a ~{TSub}~> b :=
   (@is_terminal_one C (`1 b) (`2 b) (`1 a); I).
 
-(* ... and it is a SINGLETON up to ≈, since the subcategory's hom-setoid
-   compares underlying C-morphisms and the target is terminal. *)
+(* ... it SINGLETON up ≈, since subcategory's hom-setoid
+ compares underlying C-态射 target terminal. （已译） *)
 Lemma terminal_sub_hom_unique (a b : TSub) (f g : a ~{TSub}~> b) : f ≈ g.
 Proof. exact (is_terminal_unique (`2 b) (`1 f) (`1 g)). Qed.
 
-(* The two facts packaged as Lemma 1.6.16's "exactly one morphism in each
-   hom-set", in the library's own [Unique] idiom. *)
+(* The two facts packaged Lemma 1.6.16's "exactly one 态射 each
+ hom-set", library's own [Unique] idiom. （已译） *)
 Definition terminal_sub_hom_contractible (a b : TSub) :
   Unique (fun _ : a ~{TSub}~> b => True) :=
   {| unique_obj       := terminal_sub_hom a b
@@ -59,8 +59,8 @@ Definition terminal_sub_hom_contractible (a b : TSub) :
    ; uniqueness       := fun v _ =>
        terminal_sub_hom_unique a b (terminal_sub_hom a b) v |}.
 
-(* It is a GROUPOID: the reverse arrow exists for the same reason, and
-   both round trips are arrows into terminal objects, hence identities. *)
+(* It GROUPOID: reverse arrow exists same reason, and
+ both round trips arrows terminal 对象, hence identities. （已译） *)
 Definition terminal_sub_IsIso {a b : TSub} (f : a ~{TSub}~> b) :
   IsIsomorphism f.
 Proof.
@@ -79,9 +79,9 @@ Proof.
   - apply (terminal_sub_hom_unique a a).
 Defined.
 
-(* A bundled [Terminal] structure is an object of the subcategory; this is
-   what makes it non-empty, and it is the hypothesis of the contractibility
-   statement in Block E. *)
+(* A bundled [Terminal] structure 对象 subcategory; 这是
+ what makes it non-empty, it 假设 contractibility
+ statement Block E. （已译） *)
 Definition terminal_sub_obj (T : @Terminal C) : TSub :=
   (@terminal_obj C T; IsTerminalObj_from_Terminal T).
 

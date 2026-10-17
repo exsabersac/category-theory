@@ -1,5 +1,5 @@
 (* Strict initiality at the
-   concrete categories Sets and FinSet (Seven Sketches §1.2.1 Exercise 1.25). *)
+ concrete 范畴 Sets FinSet (Seven Sketches §1.2.1 Exercise 1.25). （已译） *)
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
 Require Import Category.Theory.Isomorphism.

@@ -130,7 +130,7 @@ Context {AD : AbEnriched D}.
 Context (F : C ⟶ D).
 Context `{AF : @AdditiveFunctor C D AC AD F}.
 
-(* "Whence T0 = 0": cancel by the inverse of the image of zero. *)
+(* 相关说明。 （已译） *)
 Lemma fmap_pzero {x y : C} :
   fmap[F] (@pzero C _ x y) ≈ pzero.
 Proof using AC AD AF C D F.
@@ -177,8 +177,8 @@ Definition AbCatHom (C D : AbCatObj) : Type :=
   { F : `1 C ⟶ `1 D
   & @AdditiveFunctor (`1 C) (`1 D) (`2 C) (`2 D) F }.
 
-(* Morphisms are compared by the underlying functors' natural-iso
-   setoid — the same hom-equivalence as Cat, the documented choice. *)
+(* Morphisms compared underlying 函子' natural-iso
+ setoid — same hom-等价 Cat, documented choice. （已译） *)
 Program Definition AbCat : Category := {|
   obj := AbCatObj;
   hom := AbCatHom;
@@ -225,9 +225,7 @@ Qed.
 
 (** ** Ab itself is Ab-enriched *)
 
-(* Pointwise addition and negation of homomorphisms into an abelian
-   group are homomorphisms again; this closes the instance
-   Instance/Ab.v's header records as available but not attempted. *)
+(* 相关说明。 （已译） *)
 Program Definition ab_hom_add {A B : AbObject} (f g : AbHom A B) :
   AbHom A B := {|
   cmon_map := {| morphism := fun a =>

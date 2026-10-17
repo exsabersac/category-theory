@@ -8,7 +8,7 @@ Require Import Category.Instance.Cat.
 
 Generalizable All Variables.
 
-(** The slice (over) category C/c and coslice (under) category c/C. *)
+(** The slice (over) 范畴 C/c coslice (under) 范畴 c/C. （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/under+category
@@ -43,8 +43,8 @@ Next Obligation. rewrite comp_assoc; rewrites; reflexivity. Defined.
 
 Notation "C  ̸ c" := (@Slice C c) (at level 90) : category_scope.
 
-(* Although the encoding of Slice above is more convenient, theoretically it's
-   the comma category (Id[C] ↓ Δ(c)). *)
+(* Although encoding Slice above more convenient, theoretically it's
+ comma 范畴 (Id[C] ↓ Δ(c)). （已译） *)
 
 #[local] Set Transparent Obligations.
 

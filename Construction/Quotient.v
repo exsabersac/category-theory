@@ -31,16 +31,16 @@ Context {C : Category}.
 Definition id_cast {x y : C} (e : x = y) : x ~> y :=
   match e in _ = T return x ~> T with eq_refl => id end.
 
-(** At [eq_refl], the cast is the literal identity. *)
+(** At [eq_refl], cast literal 恒等. （已译） *)
 Lemma id_cast_refl {x : C} : id_cast (@eq_refl _ x) = id.
 Proof. reflexivity. Qed.
 
-(** Composing two casts gives the cast along the composite equality. *)
+(** Composing two casts gives cast along 复合 equality. （已译） *)
 Lemma id_cast_trans {x y z : C} (e1 : x = y) (e2 : y = z) :
   id_cast e2 ∘ id_cast e1 ≈ id_cast (eq_trans e1 e2).
 Proof. destruct e2, e1; cat. Qed.
 
-(** Casting along [e] and back along [eq_sym e] is the identity. *)
+(** Casting along [e] back along [eq_sym e] 恒等. （已译） *)
 Lemma id_cast_inv_l {x y : C} (e : x = y) :
   id_cast (eq_sym e) ∘ id_cast e ≈ id.
 Proof. destruct e; cat. Qed.
@@ -68,7 +68,7 @@ Lemma id_cast_conj_fuse {x y x' y' x'' y'' : C}
     ≈ id_cast (eq_trans e2 d2) ∘ f ∘ id_cast (eq_sym (eq_trans e1 d1)).
 Proof. destruct e1, e2, d1, d2; cat. Qed.
 
-(** Leibniz-equal objects are in particular isomorphic, via the casts. *)
+(** Leibniz-equal 对象 particular isomorphic, via casts. （已译） *)
 Definition id_cast_iso {x y : C} (e : x = y) : x ≅ y := {|
   to := id_cast e;
   from := id_cast (eq_sym e);
@@ -82,7 +82,7 @@ Definition hom_cast {x y x' y' : C} (ex : x = x') (ey : y = y')
   match ey in _ = b return x' ~> b with eq_refl =>
     match ex in _ = a return a ~> y with eq_refl => f end end.
 
-(** At [eq_refl] on both ends, the cast is the morphism itself. *)
+(** At [eq_refl] both ends, cast 态射 itself. （已译） *)
 Lemma hom_cast_refl {x y : C} (f : x ~> y) :
   hom_cast eq_refl eq_refl f = f.
 Proof. reflexivity. Qed.
@@ -93,7 +93,7 @@ Lemma hom_cast_decompose {x y x' y' : C} (ex : x = x') (ey : y = y')
   hom_cast ex ey f ≈ id_cast ey ∘ f ∘ id_cast (eq_sym ex).
 Proof. destruct ex, ey; cat. Qed.
 
-(** Casting the identity along the same equality twice is the identity. *)
+(** Casting 恒等 along same equality twice 恒等. （已译） *)
 Lemma hom_cast_id {x x' : C} (e : x = x') : hom_cast e e id ≈ id.
 Proof. destruct e; cat. Qed.
 
@@ -104,7 +104,7 @@ Lemma hom_cast_comp {x y z x' y' z' : C}
   hom_cast ey ez g ∘ hom_cast ex ey f ≈ hom_cast ex ez (g ∘ f).
 Proof. destruct ex, ey, ez; cat. Qed.
 
-(** Casting there and back is the identity operation. *)
+(** Casting there back 恒等 operation. （已译） *)
 Lemma hom_cast_roundtrip {x y x' y' : C} (ex : x = x') (ey : y = y')
   (f : x' ~> y') :
   hom_cast ex ey (hom_cast (eq_sym ex) (eq_sym ey) f) = f.
@@ -141,7 +141,7 @@ Lemma obj_uip {C : Category} `{@ObjDecEq C} {x y : C} (e1 e2 : x = y) :
   e1 = e2.
 Proof. exact (UIP_dec obj_eq_dec e1 e2). Qed.
 
-(** [id_cast] does not depend on the choice of equality proof. *)
+(** [id_cast] does not depend choice equality 证明. （已译） *)
 Lemma id_cast_irr {C : Category} `{@ObjDecEq C} {x y : C} (e1 e2 : x = y) :
   id_cast e1 = id_cast e2.
 Proof. rewrite (obj_uip e1 e2); reflexivity. Qed.
@@ -176,8 +176,8 @@ Proof. rewrite (obj_uip e1 eq_refl), (obj_uip e2 eq_refl); reflexivity. Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** The reshuffle itself, both directions, by [destruct] on the endpoint
-    equalities. *)
+(** 本节：The reshuffle itself, both directions, [destruct] endpoint
+ equalities. （已译） *)
 Lemma hom_cast_transport_iff {D : Category} {a b a' b' : D}
   (ex : a = a') (ey : b = b') (f : a ~> b) (g : a' ~> b') :
   ((hom_cast ex ey f ≈ g) →
@@ -201,8 +201,8 @@ Proof.
                 (fmap[F] f) (fmap[G] f)) (H x y f)).
 Qed.
 
-(** ...and conversely, an equality of functors in [StrictCat] yields the
-    object equalities together with the [hom_cast]-conjugated agreement. *)
+(** ...and conversely, equality 函子 [StrictCat] yields the
+ 对象 equalities together [hom_cast]-conjugated agreement. （已译） *)
 Lemma hom_cast_of_strict {C D : Category} (F G : C ⟶ D)
   (E : @equiv _ (@Functor_StrictEq_Setoid C D) F G) :
   { Hobj : ∀ x, fobj[F] x = fobj[G] x &
@@ -239,8 +239,8 @@ Definition HomRel (C : Category) : Type :=
 Definition HomRelT (C : Category) : Type :=
   ∀ x y : C, (x ~> y) → (x ~> y) → Type.
 
-(** A congruence: an equivalence on each hom containing [≈] (whence
-    reflexivity) and compatible with composition. *)
+(** A congruence: 等价 each hom containing [≈] (whence
+ reflexivity) compatible 复合. （已译） *)
 Class HomCongruence {C : Category} (R : HomRelT C) : Type := {
   cong_incl {x y : C} {f g : x ~> y} : f ≈ g → R x y f g;
   cong_sym {x y : C} {f g : x ~> y} : R x y f g → R x y g f;
@@ -286,7 +286,7 @@ Definition Quotient (C : Category) (R : HomRelT C)
 |}.
 
 (** The quotient's [≈] IS [R x y] after reduction, so both directions of
-    the [Prop] reflection are the identity. *)
+ [Prop] reflection 恒等. （已译） *)
 #[export] Instance Quotient_HomEqProp (C : Category) (R : HomRel C)
   `{@HomCongruence C R} : HomEqProp (Quotient C R) :=
   Build_HomEqProp (Quotient C R)
@@ -294,12 +294,12 @@ Definition Quotient (C : Category) (R : HomRelT C)
     (fun x y f g Hfg => Hfg)
     (fun x y f g Hfg => Hfg).
 
-(** The quotient has the same objects as [C], so decidability of object
-    equality is inherited on the nose. *)
+(** The quotient has same 对象 [C], so decidability 对象
+ equality inherited nose. （已译） *)
 #[export] Instance Quotient_ObjDecEq (C : Category) (R : HomRel C)
   `{@HomCongruence C R} `{OD : @ObjDecEq C} : ObjDecEq (Quotient C R) := OD.
 
-(** *** The universal property of the quotient *)
+(* * *** The 普遍性质 quotient （已译） *)
 
 Section QuotientUMP.
 
@@ -337,13 +337,13 @@ Definition QuotientLift : Quotient C R ⟶ D :=
     (fun x => @fmap_id C D F x)
     (fun x y z f g => @fmap_comp C D F x y z f g).
 
-(** The lift factors [F] through the projection — definitionally. *)
+(** 本节：The lift factors [F] through projection — definitionally. （已译） *)
 Lemma QuotientLift_proj {x y : C} (f : x ~> y) :
   fmap[QuotientLift] (fmap[QuotientProj] f) = fmap[F] f.
 Proof. reflexivity. Qed.
 
-(** The factorization, packaged as a single equality of functors in
-    [StrictCat] — the same strength as [QuotientLift_unique] below. *)
+(** The factorization, packaged single equality 函子 in
+ [StrictCat] — same strength [QuotientLift_unique] below. （已译） *)
 Lemma QuotientLift_factors_strict :
   @equiv _ (@Functor_StrictEq_Setoid C D) (QuotientLift ◯ QuotientProj) F.
 Proof. exists (fun _ => eq_refl). intros x y f. simpl. reflexivity. Qed.
@@ -370,14 +370,14 @@ End QuotientUMP.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** The projection is the identity on objects, on the nose — the honest
-    reading of "bijective on objects". *)
+(** The projection 恒等 对象, nose — honest
+ reading "bijective 对象". （已译） *)
 Lemma QuotientProj_obj {C : Category} (R : HomRelT C)
   `{HR : @HomCongruence C R} (x : C) : fobj[@QuotientProj C R HR] x = x.
 Proof. reflexivity. Qed.
 
-(** The sharpest form of "equations merge and never add": the hom TYPE is
-    unchanged by the quotient. *)
+(** 本节：The sharpest form "equations merge never add": hom TYPE is
+ unchanged quotient. （已译） *)
 Lemma Quotient_hom_type {C : Category} (R : HomRelT C)
   `{HR : @HomCongruence C R} (x y : C) :
   (x ~{Quotient C R}~> y) = (x ~{C}~> y).
@@ -517,8 +517,8 @@ Arguments cc_comp {C R x y z f f' g g'} _ _.
 Arguments cc_refl {C} R {x y} f.
 Arguments CongClosure_Congruence {C} R.
 
-(** The quotient by the congruence GENERATED by an arbitrary relation
-    family — Mac Lane §II.8 Proposition 1's category. *)
+(** The quotient congruence GENERATED arbitrary 关系
+ family — Mac Lane §II.8 Proposition 1's 范畴. （已译） *)
 Definition QuotientCong (C : Category) (R : HomRelT C) : Category :=
   @Quotient C (CongClosure R) (CongClosure_Congruence R).
 
@@ -527,15 +527,15 @@ Definition QuotientCongProj {C : Category} (R : HomRelT C) :
   C ⟶ QuotientCong C R :=
   @QuotientProj C (CongClosure R) (CongClosure_Congruence R).
 
-(** Proposition 1, clause (i): related arrows are identified by the
-    projection. *)
+(** 本节：Proposition 1, clause (i): related arrows identified the
+ projection. （已译） *)
 Lemma cong_identifies {C : Category} (R : HomRelT C) {x y : C}
   {f g : x ~> y} (Hr : R x y f g) :
   fmap[QuotientCongProj R] f ≈ fmap[QuotientCongProj R] g.
 Proof. exact (cc_gen Hr). Qed.
 
-(** Proposition 1, clause (ii): any functor merging [R] factors through the
-    projection, with no side condition on the target [D]. *)
+(** Proposition 1, clause (ii): any 函子 merging [R] factors through the
+ projection, no side condition target [D]. （已译） *)
 Definition QuotientCongLift {C D : Category} (R : HomRelT C) (F : C ⟶ D)
   (HF : ∀ x y (f g : x ~> y), R x y f g → fmap[F] f ≈ fmap[F] g) :
   QuotientCong C R ⟶ D :=

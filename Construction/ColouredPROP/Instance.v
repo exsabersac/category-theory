@@ -19,7 +19,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * The free coloured PROP, bundled: the library's first [ColouredPROP] *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/strict+monoidal+category
@@ -44,9 +44,9 @@ Context (Cdec : forall c d : Colour, {c = d} + {c <> d}).
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** The associator [(x ++ y) ++ z ≅ x ++ (y ++ z)] is the transported
-    identity along [eq_sym (app_assoc x y z)] — the orientation of
-    [Cast.v]'s [to]. *)
+(** The associator [(x ++ y) ++ z ≅ x ++ (y ++ z)] transported
+ 恒等 along [eq_sym (app_assoc x y z)] — orientation of
+ [Cast.v]'s [to]. （已译） *)
 Lemma CFreeCat_strict_assoc_to (x y z : list Colour) :
   to (@tensor_assoc (CFreeCat S) (CFreeCat_Monoidal S Cdec) x y z)
   ≈ match eq_sym (app_assoc x y z) in _ = T
@@ -54,8 +54,8 @@ Lemma CFreeCat_strict_assoc_to (x y z : list Colour) :
     with eq_refl => id end.
 Proof. reflexivity. Qed.
 
-(** The left unitor [[] ++ x ≅ x] is the transported identity along
-    [app_nil_l x] (definitionally trivial: [app] is left-strict). *)
+(** The left unitor [[] ++ x ≅ x] transported 恒等 along
+ [app_nil_l x] (definitionally trivial: [app] left-strict). （已译） *)
 Lemma CFreeCat_strict_unit_left_to (x : list Colour) :
   to (@unit_left (CFreeCat S) (CFreeCat_Monoidal S Cdec) x)
   ≈ match app_nil_l x in _ = T
@@ -63,8 +63,8 @@ Lemma CFreeCat_strict_unit_left_to (x : list Colour) :
     with eq_refl => id end.
 Proof. reflexivity. Qed.
 
-(** The right unitor [x ++ [] ≅ x] is the transported identity along
-    [app_nil_r x] (a genuinely propositional equation). *)
+(** The right unitor [x ++ [] ≅ x] transported 恒等 along
+ [app_nil_r x] (a genuinely propositional equation). （已译） *)
 Lemma CFreeCat_strict_unit_right_to (x : list Colour) :
   to (@unit_right (CFreeCat S) (CFreeCat_Monoidal S Cdec) x)
   ≈ match app_nil_r x in _ = T
@@ -72,7 +72,7 @@ Lemma CFreeCat_strict_unit_right_to (x : list Colour) :
     with eq_refl => id end.
 Proof. reflexivity. Qed.
 
-(** ** The Strict instance over THE shared Monoidal record *)
+(* 相关说明。 （已译） *)
 
 Definition CFreeCat_Strict : @StrictMonoidal (CFreeCat S) := {|
   strict_is_monoidal    := CFreeCat_Monoidal S Cdec;  (* THE shared record *)
@@ -102,7 +102,7 @@ Definition FreeColouredPROP : ColouredPROP Colour :=
        term [CFreeCat_Monoidal S Cdec]. *)
     eq_refl
 
-    (* Objects of [CFreeCat S] are literally the colour words. *)
+    (* 相关说明。 （已译） *)
     (fun cs : list Colour => cs)
 
     (* [I] of [CFreeCat_Monoidal S Cdec] is the literal [[]]. *)
@@ -145,31 +145,31 @@ Definition CFreeCat_ObjDecEq : ObjDecEq (CFreeCat S) := list_eq_dec Cdec.
 Example FreeColouredPROP_coherence_is_refl :
   @cprop_monoidal_coherence Colour FreeColouredPROP = eq_refl := eq_refl.
 
-(** The object correspondence is the identity on colour words. *)
+(** The 对象 correspondence 恒等 colour words. （已译） *)
 Example FreeColouredPROP_of_list_id (cs : list Colour) :
   cprop_of_list (ColouredPROP := FreeColouredPROP) cs = cs := eq_refl.
 
-(** The monoidal unit of THE shared record is the literal empty
-    word. *)
+(** 本节：The monoidal unit THE shared record literal empty
+ word. （已译） *)
 Example FreeColouredPROP_I :
   @I (CFreeCat S) (CFreeCat_Monoidal S Cdec) = ([] : list Colour) := eq_refl.
 
-(** The same unit, projected through the bundled instance — pinning
-    that the instance path and the shared record agree on the
-    nose. *)
+(** 本节：The same unit, projected through bundled instance — pinning
+ instance path shared record agree the
+ nose. （已译） *)
 Example FreeColouredPROP_I_instance :
   @I (CFreeCat S)
      (@strict_is_monoidal (CFreeCat S) (@cprop_strict Colour FreeColouredPROP))
   = ([] : list Colour) := eq_refl.
 
-(** Tensor-on-objects is literally concatenation, with [eq_refl]
-    proof. *)
+(** Tensor-on-对象 literally concatenation, [eq_refl]
+ 证明. （已译） *)
 Example FreeColouredPROP_tensor_app_is_refl (cs ds : list Colour) :
   cprop_tensor_app (ColouredPROP := FreeColouredPROP) cs ds = eq_refl
   := eq_refl.
 
-(** The singleton wire object for colour [c] is the literal
-    one-element word [[c]]. *)
+(** The singleton wire 对象 colour [c] literal
+ one-element word [[c]]. （已译） *)
 Example FreeColouredPROP_wire (c : Colour) :
   wire (P := FreeColouredPROP) c = [c] := eq_refl.
 
@@ -191,6 +191,6 @@ End FreeColouredPROP.
 Arguments CFreeCat_Strict {Colour} S Cdec : assert.
 Arguments FreeColouredPROP {Colour} S Cdec : assert.
 Arguments CFreeCat_HomEqProp {Colour} S : assert.
-(* [ObjDecEq] is a definitional (singleton) class, so the constant's
-   argument list continues with the two objects being compared. *)
+(* [ObjDecEq] definitional (singleton) class, so 常值's
+ 论元 list continues two 对象 being compared. （已译） *)
 Arguments CFreeCat_ObjDecEq {Colour} S Cdec x y : assert.

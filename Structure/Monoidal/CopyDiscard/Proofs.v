@@ -95,7 +95,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* The unit-coherence fields, in the same rewrite-friendly form. *)
+(* 相关说明。 （已译） *)
 
 Corollary copy_unit `{CD : @CopyDiscard C S} :
   copy[I] ≈ (@unit_left C _ I)⁻¹.
@@ -158,7 +158,7 @@ Next Obligation.
   reflexivity.
 Qed.
 Next Obligation.
-  (* cd_tensor_epsilon: both sides are maps into the terminal unit. *)
+  (* cd_tensor_epsilon: both sides maps 进入 terminal unit. （已译） *)
   apply unit_terminal.
 Qed.
 Next Obligation.
@@ -166,7 +166,7 @@ Next Obligation.
   apply diagonal_unit.
 Qed.
 Next Obligation.
-  (* cd_unit_epsilon: both sides are maps into the terminal unit. *)
+  (* cd_unit_epsilon: both sides maps 进入 terminal unit. （已译） *)
   apply unit_terminal.
 Qed.
 

@@ -4,7 +4,7 @@ Require Import Category.Theory.Functor.
 
 Generalizable All Variables.
 
-(** * A category read at higher universe levels *)
+(* * * A 范畴 read at higher universe levels （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/universe+enlargement (the general

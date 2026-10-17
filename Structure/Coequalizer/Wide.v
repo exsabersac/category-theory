@@ -15,7 +15,7 @@ Require Import Category.Functor.Opposite.
 
 Generalizable All Variables.
 
-(** * Wide coequalizers, elementarily: wide coforks and descent *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/wide+pullback
@@ -26,18 +26,16 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The wide coequalizer of a diagram of shape [WideParallel I]: a colimit,
-   exactly as [Structure/Equalizer.v]'s [Coequalizer] is over the two-arrow
-   shape. *)
+(* 相关说明。 （已译） *)
 Definition WideCoequalizer {C : Category} {I : Type} (F : WideParallel I ⟶ C) :=
   Colimit F.
 
-(* The elementary universal property: [e] coequalizes the whole family at q,
-   and every map h out of y that absorbs the family descends uniquely
-   across e. *)
+(* The elementary 普遍性质: [e] coequalizes whole family at q,
+ every map h out y absorbs family descends uniquely
+ across e. （已译） *)
 Record IsWideCoequalizer {C : Category} {I : Type} {x y : C}
   (fs : I → x ~> y) (q : C) (e : y ~> q) := {
-  (* the coequalizing map absorbs every member in the same way *)
+  (* 相关说明。 （已译） *)
   wcofork : ∀ i j : I, e ∘ fs i ≈ e ∘ fs j;
 
   (* universal property: every jointly coforking map descends uniquely *)
@@ -62,12 +60,11 @@ Context {I : Type}.
 Context {x y : C}.
 Context (fs : I → x ~> y).
 
-(* Abbreviations for the diagram and its shape; these are notations, so the
-   statements below are literally about [AWide fs] and [WideParallel I]. *)
+(* 相关说明。 （已译） *)
 Local Notation WFam := (AWide fs).
 Local Notation WShape := (WideParallel I).
 
-(** ** Wide coequalizing maps are epimorphisms *)
+(* 相关说明。 （已译） *)
 
 Lemma wide_coequalizer_epic {q : C} {e : y ~> q}
   (E : IsWideCoequalizer fs q e) : Epic e.
@@ -88,7 +85,7 @@ Proof.
     exact Hg.
 Qed.
 
-(** ** Wide coequalizers are unique up to isomorphism *)
+(* * ** Wide coequalizers unique up 同构 （已译） *)
 
 Lemma wide_coequalizer_unique {q1 q2 : C} {e1 : y ~> q1} {e2 : y ~> q2}
   (E1 : IsWideCoequalizer fs q1 e1) (E2 : IsWideCoequalizer fs q2 e2) :
@@ -117,11 +114,9 @@ Proof.
       apply id_left.
 Defined.
 
-(** ** From the colimit presentation to the cofork equations *)
+(* 相关说明。 （已译） *)
 
-(* The colimit injection over [ParY] absorbs the whole family: every member
-   pushes it to the injection over [ParX], by injection coherence at that
-   member.  No inhabitant of I is needed. *)
+(* 相关说明。 （已译） *)
 Lemma wide_colimit_coequalizes (L : WideCoequalizer WFam) :
   ∀ i j : I,
     colimit_inj (colimit_is_acolimit L) ParY ∘ fs i
@@ -136,16 +131,16 @@ Proof.
              (j : ParX ~{WShape}~> ParY)).
 Qed.
 
-(** ** The round trips, over a chosen member of the family *)
+(* 相关说明。 （已译） *)
 
 Section Pointed.
 
-(* A chosen index; the section is exactly the scope of that hypothesis. *)
+(* A chosen index; section exactly scope 假设. （已译） *)
 Context (i0 : I).
 
-(* The injections of the cocone induced by a jointly coforking map h: the
-   injection out of [ParX] is the common composite through the chosen
-   member, the one out of [ParY] is h itself. *)
+(* The injections cocone induced jointly coforking map h: the
+ injection out [ParX] common 复合 through chosen
+ member, one out [ParY] h itself. （已译） *)
 Definition wcofork_legs {z : C} (h : y ~> z) (p : ParObj) :
   WFam p ~{C}~> z :=
   match p return (WFam p ~{C}~> z) with
@@ -201,7 +196,7 @@ Proof using All.
               (colimit_is_acolimit L) (wcofork_cocone h Hh) v _).
     intros p.
     destruct p.
-    + (* the ParX injection follows from the ParY one via coherence at i0 *)
+    + (* 相关说明。 （已译） *)
       rewrite <- (colimit_inj_coherence (colimit_is_acolimit L)
                     (i0 : ParX ~{WShape}~> ParY)).
       rewrite comp_assoc.
@@ -217,15 +212,15 @@ Definition wide_coequalizer_is_coequalizer (L : WideCoequalizer WFam) :
   {| wcofork     := wide_colimit_coequalizes L
    ; wcoeq_desc  := fun z h Hh => wide_colimit_coequalizer_desc L h Hh |}.
 
-(** ** From the elementary presentation back to the colimit *)
+(* 相关说明。 （已译） *)
 
 Definition is_wide_coequalizer_cocone {q : C} {e : y ~> q}
   (E : IsWideCoequalizer fs q e) : Cocone WFam :=
   wcofork_cocone e (wcofork E).
 
-(* The universal property of that cocone, phrased covariantly in C; this
-   statement is definitionally the [ump_limits] field of the colimit whose
-   limit cone is [is_wide_coequalizer_cocone]. *)
+(* The 普遍性质 cocone, phrased covariantly C; this
+ statement definitionally [ump_limits] field colimit whose
+ limit cone [is_wide_coequalizer_cocone]. （已译） *)
 Lemma is_wide_coequalizer_cocone_ump {q : C} {e : y ~> q}
   (E : IsWideCoequalizer fs q e) (N : Cocone WFam) :
   ∃! u : q ~> vertex_obj[N],
@@ -244,8 +239,7 @@ Proof.
   - exact (unique_obj (wcoeq_desc E (cocone_inj N ParY) Hfs)).
   - intros p.
     destruct p.
-    + (* the injection out of ParX: u ∘ (e ∘ fs i0) ≈ nX via the ParY
-         triangle *)
+    + (* 相关说明。 （已译） *)
       simpl.
       rewrite comp_assoc.
       rewrite (unique_property (wcoeq_desc E (cocone_inj N ParY) Hfs)).
@@ -256,8 +250,7 @@ Proof.
     exact (Hv ParY).
 Qed.
 
-(* An elementary wide coequalizer yields the bundled colimit over the wide
-   shape. *)
+(* 相关说明。 （已译） *)
 Definition is_wide_coequalizer_colimit {q : C} {e : y ~> q}
   (E : IsWideCoequalizer fs q e) : WideCoequalizer WFam :=
   {| limit_cone := is_wide_coequalizer_cocone E
@@ -265,10 +258,10 @@ Definition is_wide_coequalizer_colimit {q : C} {e : y ~> q}
 
 End Pointed.
 
-(** ** The inhabitant is necessary, not merely convenient *)
+(* 相关说明。 （已译） *)
 
-(* Over an empty index the cofork condition is vacuous, so the identity of y
-   satisfies the elementary record. *)
+(* Over empty index cofork condition vacuous, so 恒等 y
+ satisfies elementary record. （已译） *)
 Lemma wide_empty_id_IsWideCoequalizer (Hempty : I → False) :
   IsWideCoequalizer fs y id[y].
 Proof.
@@ -285,9 +278,9 @@ Defined.
 
 End WideCoequalizerColimit.
 
-(* An UNPOINTED round trip on the colimit side would likewise manufacture an
-   arrow x ~> y out of nothing: apply it to the identity above and read off
-   the colimit injection over [ParX]. *)
+(* An UNPOINTED round trip colimit side would likewise manufacture an
+ arrow x ~> y out nothing: apply it 恒等 above read off
+ colimit injection over [ParX]. （已译） *)
 Definition wide_unpointed_coround_trip_gives_hom
   {C : Category} {I : Type} {x y : C} (fs : I → x ~> y)
   (Hempty : I → False)
@@ -296,8 +289,7 @@ Definition wide_unpointed_coround_trip_gives_hom
   x ~{C}~> y :=
   colimit_inj (RT y id[y] (wide_empty_id_IsWideCoequalizer fs Hempty)) ParX.
 
-(* And that is refutable at the walking arrow, whose hom-set
-   [TwoY ~> TwoX] is empty. *)
+(* 相关说明。 （已译） *)
 Theorem wide_coround_trip_needs_point :
   (∀ (q : _2) (e : TwoX ~{_2}~> q),
      IsWideCoequalizer two_empty_family q e

@@ -95,16 +95,16 @@ Proof.
     + apply (uniqueness HPP); split; apply id_right.
 Defined.
 
-(** A category has all binary pullbacks if every cospan has a pullback.
-    This is the dual of [HasPushouts] in [Structure/Pushout.v]. *)
+(** A 范畴 has all binary pullbacks if every cospan has pullback.
+ This dual [HasPushouts] [Structure/Pushout.v]. （已译） *)
 Class HasPullbacks (C : Category) : Type := {
   pullback : forall {x y z : C} (f : x ~> z) (g : y ~> z), Pullback f g
 }.
 
 Arguments pullback {C _ x y z} f g.
 
-(* A weak pullback differs from a pullback in that the mediating morphism is
-   merely required to exist; uniqueness is dropped. *)
+(* A weak pullback differs pullback mediating 态射 is
+ merely required exist; uniqueness dropped. （已译） *)
 Record WeakPullback {C : Category} {x y z : C} (f : x ~> z) (g : y ~> z) := {
   weak_pull : C;
   weak_pullback_fst : weak_pull ~> x;

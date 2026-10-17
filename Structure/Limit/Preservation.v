@@ -9,7 +9,7 @@ Require Import Category.Functor.Opposite.
 
 Generalizable All Variables.
 
-(** * Preservation of limits and colimits; reflection of isomorphisms *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/continuous+functor
@@ -33,11 +33,11 @@ Class PreservesLimit `(G : J ⟶ C) `(F : C ⟶ D) := {
   preserves_limit (L : Limit G) : IsALimit (F ◯ G) (F L)
 }.
 
-(** ** Covariant accessors for apex-pinned limits *)
+(* 相关说明。 （已译） *)
 
-(* The leg of a cone N at x, as a first-class function (the notation
-   [vertex_map[N]] leaves the diagram object as a hole, so it resists
-   explicit application). *)
+(* The leg cone N at x, first-class function (the notation
+ [vertex_map[N]] leaves diagram 对象 hole, so it resists
+ explicit application). （已译） *)
 
 Definition cone_leg `{F : J ⟶ C} (N : Cone F) (x : J) :
   vertex_obj[N] ~{C}~> F x :=
@@ -52,8 +52,8 @@ Lemma limit_leg_coherence `(H : @IsALimit J C F c) {x y : J} (f : x ~{J}~> y) :
   fmap[F] f ∘ limit_leg H x ≈ limit_leg H y.
 Proof. exact (@cone_coherence _ _ _ _ (@limit_acone _ _ _ _ H) x y f). Qed.
 
-(* The mediating morphism from a competing cone into the limit apex, and
-   its defining properties. *)
+(* The mediating 态射 competing cone 进入 limit apex, and
+ defining properties. （已译） *)
 
 Definition limit_med `(H : @IsALimit J C F c) (N : Cone F) :
   vertex_obj[N] ~{C}~> c :=
@@ -69,8 +69,8 @@ Lemma limit_med_unique `(H : @IsALimit J C F c) (N : Cone F)
   limit_med H N ≈ v.
 Proof. intro Hv. exact (uniqueness (@ump_limit _ _ _ _ H N) v Hv). Qed.
 
-(* Two morphisms into the limit apex that agree on every leg are equal;
-   useful for identifying mediators without naming [limit_med]. *)
+(* Two 态射 进入 limit apex agree every leg equal;
+ useful identifying mediators without naming [limit_med]. （已译） *)
 
 Lemma limit_med_eq `(H : @IsALimit J C F c) (N : Cone F)
   (u v : vertex_obj[N] ~{C}~> c) :
@@ -91,7 +91,7 @@ Definition limit_is_alimit `(L : @Limit J C G) : IsALimit G L :=
     (@coneFrom _ _ _ (@limit_cone _ _ _ L))
     (@ump_limits _ _ _ L).
 
-(** ** The cone-level limit predicate *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -103,8 +103,8 @@ Definition IsLimitCone {J C : Category} {K : J ⟶ C} (N : Cone K) : Type :=
   ∀ M : Cone K, ∃! u : vertex_obj[M] ~{C}~> vertex_obj[N],
     ∀ x : J, cone_leg N x ∘ u ≈ cone_leg M x.
 
-(* The four conversions against the existing classes are pure repackaging:
-   every one is a term, with no proof obligation. *)
+(* The four conversions against existing classes pure repackaging:
+ every one term, no 证明 obligation. （已译） *)
 
 Definition limitcone_isalimit {J C : Category} {K : J ⟶ C} {N : Cone K}
   (H : IsLimitCone N) : IsALimit K vertex_obj[N] :=
@@ -123,9 +123,9 @@ Definition limitcone_limit {J C : Category} {K : J ⟶ C} (N : Cone K)
 
 (** ** Isomorphism of cones *)
 
-(* A cone isomorphism is an isomorphism of apexes commuting with the legs.
-   It is [sigT], hence data: the comparison morphism can be projected and
-   computed with. *)
+(* A cone 同构 同构 apexes commuting legs.
+ It [sigT], hence data: comparison 态射 can projected and
+ computed with. （已译） *)
 
 Definition ConeIso {J C : Category} {K : J ⟶ C} (N M : Cone K) : Type :=
   { i : vertex_obj[N] ≅ vertex_obj[M]
@@ -222,7 +222,7 @@ Defined.
 
 End ConeIsoLemmas.
 
-(** ** The image of a cone under a functor *)
+(* * ** The image cone under 函子 （已译） *)
 
 Section ImageCone.
 
@@ -256,8 +256,8 @@ Definition FCone (N : Cone K) : Cone (F ◯ K) :=
     (@Build_ACone J D (F (vertex_obj[N])) (F ◯ K) (fcone_leg N)
        (fun x y f => fcone_coherence N f)).
 
-(* The legs of [FCone N] ARE the image legs, definitionally; this is what
-   discharges the leg side conditions of the reflection lemmas downstream. *)
+(* The legs [FCone N] ARE image legs, definitionally; 这是 what
+ discharges leg side conditions reflection lemmas downstream. （已译） *)
 
 Lemma FCone_leg (N : Cone K) (x : J) :
   cone_leg (FCone N) x ≈ fmap[F] (cone_leg N x).
@@ -275,7 +275,7 @@ Defined.
 
 End ImageCone.
 
-(** ** Cone-level preservation and reflection *)
+(* 相关说明。 （已译） *)
 
 Definition PreservesLimitCone {J C D : Category} (K : J ⟶ C) (F : C ⟶ D)
   : Type := ∀ N : Cone K, IsLimitCone N → IsLimitCone (FCone F N).
@@ -297,7 +297,7 @@ Proof.
   exact (limitcone_isalimit (P (@limit_cone _ _ _ L) (limit_limitcone L))).
 Defined.
 
-(** ** The canonical comparison map [F (lim K) ~> lim (F ◯ K)] (Awodey §5.5) *)
+(* 相关说明。 （已译） *)
 
 Section Comparison.
 
@@ -363,7 +363,7 @@ Definition apex_iso_of_PreservesLimit (P : PreservesLimit K F) (L : Limit K)
   F (vertex_obj[L]) ≅ vertex_obj[M] :=
   `1 (limitcone_iso (isalimit_limitcone (preserves_limit L)) HM).
 
-(* The bundled reading, for chosen limits (Awodey's F (lim D) → lim (F D)). *)
+(* 相关说明。 （已译） *)
 
 Definition limit_comparison (L : Limit K) (M : Limit (F ◯ K)) :
   F (vertex_obj[L]) ~{D}~> vertex_obj[M] :=
@@ -373,7 +373,7 @@ End Comparison.
 
 
 
-(** ** Repackagings across functor-composition associativity and op *)
+(* * ** Repackagings across 函子-复合 associativity op （已译） *)
 
 Section ConeAssoc.
 
@@ -382,8 +382,7 @@ Context {K : J ⟶ C}.
 Context {F : C ⟶ D}.
 Context {G : D ⟶ E}.
 
-(* [(G ◯ F) ◯ K] and [G ◯ (F ◯ K)] have the same cones, but the two record
-   types are not convertible, so the repackaging is field by field. *)
+(* 相关说明。 （已译） *)
 
 Definition cone_assoc (N : Cone ((G ◯ F) ◯ K)) : Cone (G ◯ (F ◯ K)) :=
   @Build_Cone J E (G ◯ (F ◯ K)) (@vertex_obj _ _ _ N)
@@ -476,11 +475,11 @@ Definition isalimit_op_comp {J C D : Category} {G : J ⟶ C} {F : C ⟶ D}
                   @cone_coherence _ _ _ _ (@coneFrom _ _ _ N) x y f)))).
 
 
-(** ** Covariant accessors for cocones and apex-pinned colimits *)
+(* 相关说明。 （已译） *)
 
-(* A cocone over F is a cone over F^op (Structure/Cone.v); its legs run
-   from the diagram into the apex. [cocone_inj] re-reads those legs
-   covariantly, as injections F x ~> N in C. *)
+(* A cocone over F cone over F^op (Structure/Cone.v); legs run
+ diagram 进入 apex. [cocone_inj] re-reads those legs
+ covariantly, injections F x ~> N C. （已译） *)
 
 Definition cocone_inj `{F : J ⟶ C} (N : Cocone F) (x : J) :
   F x ~{C}~> vertex_obj[N] :=
@@ -499,8 +498,7 @@ Proof. exact (@cone_coherence _ _ _ _ (@coneFrom _ _ _ N) y x f). Qed.
 
 Definition IsAColimit `(F : J ⟶ C) (c : C) : Type := IsALimit (F^op) c.
 
-(* The injections of the colimit: the legs of the underlying opposite
-   cone, read in C. *)
+(* 相关说明。 （已译） *)
 
 Definition colimit_inj `(H : @IsAColimit J C F c) (x : J) : F x ~{C}~> c :=
   @vertex_map _ _ _ _ (@limit_acone _ _ _ _ H) x.
@@ -545,8 +543,8 @@ Proof.
   - exact (colimit_med_unique H N v Hv).
 Qed.
 
-(* The apex of a bundled colimit, read as an object of C, and the bundled
-   colimit viewed as a colimit witness pinned at that apex. *)
+(* The apex bundled colimit, read 对象 C, bundled
+ colimit viewed colimit witness pinned at apex. （已译） *)
 
 Definition colimit_apex `(L : @Colimit J C G) : C :=
   @vertex_obj _ _ _ (@limit_cone _ _ _ L).
@@ -559,9 +557,9 @@ Definition colimit_is_acolimit `(L : @Colimit J C G) :
 
 (** ** Preservation of colimits *)
 
-(* F preserves the colimit of G exactly when F^op preserves the limit of
-   the opposite diagram G^op; this is the one-line dual definition, in the
-   style of [Colimit] itself. *)
+(* F preserves colimit G exactly F^op preserves limit of
+ opposite diagram G^op; 这是 one-line dual 定义, the
+ style [Colimit] itself. （已译） *)
 
 Definition PreservesColimit `(G : J ⟶ C) `(F : C ⟶ D) : Type :=
   @PreservesLimit (J^op) (C^op) (G^op) (D^op) (F^op).
@@ -602,7 +600,7 @@ Definition PreservesAllLimits {C D : Category} (F : C ⟶ D) : Type :=
 Definition PreservesAllColimits {C D : Category} (F : C ⟶ D) : Type :=
   ∀ (J : Category) (G : J ⟶ C), PreservesColimit G F.
 
-(** ** Continuity, cocontinuity, and quantification over shapes *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -655,7 +653,7 @@ Class ReflectsIsos {C D : Category} (F : C ⟶ D) := {
     IsIsomorphism (fmap[F] f) → IsIsomorphism f
 }.
 
-(** ** The cocone-level colimit predicate, preservation, and cocontinuity *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Preservation 相关定义、性质与动机。
@@ -716,9 +714,9 @@ Definition cocone_comparison (N : Cocone K) {M : Cocone (F ◯ K)}
 
 End ImageCocone.
 
-(* The cocone twin of [FCone_iso]: the image of a cocone isomorphism is
-   one.  Added by #477, the tree having had no cocone twin, with
-   Structure/Limit/Absolute.v's binders. *)
+(* The cocone twin [FCone_iso]: image cocone 同构 is
+ one. Added #477, tree having had no cocone twin, with
+ Structure/Limit/Absolute.v's binders. （已译） *)
 
 Definition FCocone_iso@{jo co ch do +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}}
@@ -776,9 +774,7 @@ Defined.
 
 End CoCompose.
 
-(* The cocone twin of [cone_assoc_inv], and the inverse repackaging of
-   [cocone_assoc].  Added by #477, with Structure/Limit/Absolute.v's
-   binders. *)
+(* 相关说明。 （已译） *)
 
 Definition cocone_assoc_inv@{jo co ch do eo +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}}

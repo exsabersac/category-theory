@@ -7,7 +7,7 @@ Require Import Category.Construction.Opposite.
 
 Generalizable All Variables.
 
-(** * Zero objects and zero morphisms *)
+(* * * Zero 对象 zero 态射 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Initial_and_terminal_objects
@@ -37,7 +37,7 @@ Class ZeroObject (C : Category) := {
 Definition zero_obj {C : Category} `{Z : @ZeroObject C} : C :=
   @terminal_obj C zero_terminal.
 
-(* The zero morphism x ~> y: into 1, across the coincidence iso, out of 0. *)
+(* The zero 态射 x ~> y: 1, across coincidence iso, out 0. （已译） *)
 Definition zero_mor {C : Category} `{Z : @ZeroObject C} {x y : C} : x ~> y :=
   @zero C (@zero_initial C Z) y
     ∘ from (@zero_coincide C Z)
@@ -57,9 +57,9 @@ Proof.
   now rewrite (@zero_comp C (@zero_initial C Z) y z f).
 Qed.
 
-(* Precomposition absorbs: 0 ∘ f ≈ 0.  Dually, after reassociation the
-   composite one ∘ f is a morphism into the terminal object, so [one_comp]
-   collapses it to one. *)
+(* Precomposition absorbs: 0 ∘ f ≈ 0. Dually, after reassociation the
+ 复合 one ∘ f 态射 进入 终对象, so [one_comp]
+ collapses it one. （已译） *)
 Lemma zero_mor_right {C : Category} `{Z : @ZeroObject C} {x y z : C}
   (f : x ~> y) :
   @zero_mor C Z y z ∘ f ≈ zero_mor.
@@ -69,9 +69,9 @@ Proof.
   now rewrite (@one_comp C (@zero_terminal C Z) x y f).
 Qed.
 
-(* Any morphism factoring through the zero object is the zero morphism:
-   the leg into 1 is unique by [one_unique], and the leg out of 0 is
-   unique by [zero_unique]. *)
+(* Any 态射 factoring through zero 对象 zero 态射:
+ leg 1 unique [one_unique], leg out 0 is
+ unique [zero_unique]. （已译） *)
 Lemma zero_mor_unique {C : Category} `{Z : @ZeroObject C} {x y : C}
   (g : x ~> @terminal_obj C (@zero_terminal C Z))
   (h : @initial_obj C (@zero_initial C Z) ~> y) :
@@ -94,7 +94,7 @@ Program Definition zero_object_unique {C : Category} (Z1 Z2 : ZeroObject C) :
   @terminal_obj C (@zero_terminal C Z1) ≅ @terminal_obj C (@zero_terminal C Z2) :=
   terminal_unique (@zero_terminal C Z1) (@zero_terminal C Z2).
 
-(* The same statement read through the chosen initial objects. *)
+(* The same statement read through chosen initial 对象. （已译） *)
 Program Definition zero_object_unique_initial {C : Category}
       (Z1 Z2 : ZeroObject C) :
   @initial_obj C (@zero_initial C Z1) ≅ @initial_obj C (@zero_initial C Z2) :=
@@ -135,7 +135,7 @@ Program Definition terminal_initial_arrow_iso {C : Category}
 Next Obligation. apply (@zero_unique C I). Qed.
 Next Obligation. apply (@one_unique C T). Qed.
 
-(* The same fact as a predicate on the given morphism. *)
+(* The same fact predicate given 态射. （已译） *)
 Program Definition terminal_initial_arrow_is_iso {C : Category}
   (T : @Terminal C) (I : @Initial C)
   (f : @terminal_obj C T ~> @initial_obj C I) : IsIsomorphism f := {|

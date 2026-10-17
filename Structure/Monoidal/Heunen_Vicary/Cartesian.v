@@ -16,7 +16,7 @@ Require Import Category.Structure.Monoidal.Heunen_Vicary.Proofs.
 
 Generalizable All Variables.
 
-(** The cartesian-monoidal tensor is the categorical product. *)
+(** 本节：The cartesian-monoidal tensor categorical product. （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Cartesian_monoidal_category

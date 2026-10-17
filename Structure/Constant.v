@@ -4,7 +4,7 @@ Require Import Category.Structure.Terminal.
 
 Generalizable All Variables.
 
-(** * Embedded constants via global elements *)
+(* * * Embedded constants via 全局元素 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Global_element

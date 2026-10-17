@@ -26,8 +26,8 @@ Class DaggerCategory (C : Category) := {
 
   dagger_id {x : C} : dagger (@id C x) ≈ id;
 
-  (* The anti-homomorphism law: reversal exchanges the order of
-     composition. *)
+  (* The anti-homomorphism law: reversal exchanges order of
+ 复合. （已译） *)
   dagger_compose {x y z : C} (f : y ~> z) (g : x ~> y) :
     dagger (f ∘ g) ≈ dagger g ∘ dagger f
 }.

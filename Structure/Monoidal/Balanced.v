@@ -24,7 +24,7 @@ Context {C : Category}.
 Class BalancedMonoidal := {
   balanced_is_braided : @BraidedMonoidal C;
 
-  (* The twist theta : x ≅ x, a natural automorphism of the identity. *)
+  (* The twist theta : x ≅ x, natural automorphism 恒等. （已译） *)
   twist {x} : x ≅ x;
   twist_natural : natural (@twist);
 
@@ -32,14 +32,14 @@ Class BalancedMonoidal := {
   balanced_to   : to   (@twist I) ≈ id;
   balanced_from : from (@twist I) ≈ id;
 
-  (* Twist/braiding coherence: theta on x ⊗ y is the double braiding wrapping
-     theta ⊗ theta (naturality-shifted form; see the header). *)
+  (* Twist/braiding coherence: theta x ⊗ y double braiding wrapping
+ theta ⊗ theta (自然性-shifted form; see header). （已译） *)
   balanced_to_commutes {x y} :
     braid ∘ twist ⨂ twist ∘ braid
       << x ⨂ y ~~> x ⨂ y >>
     twist;
 
-  (* The same coherence for the inverse twist theta⁻¹. *)
+  (* 相关说明。 （已译） *)
   balanced_from_commutes {x y} :
     braid ∘ twist⁻¹ ⨂ twist⁻¹ ∘ braid
       << x ⨂ y ~~> x ⨂ y >>

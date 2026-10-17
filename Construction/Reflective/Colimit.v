@@ -75,10 +75,10 @@ Section Shape.
 Context {J : Category}.
 Context (K : J ⟶ Sub C S).
 
-(** ** The diagram isomorphism [reflector ◯ (I ◯ K) ≈ K]
+(* * ** The diagram 同构 [reflector ◯ (I ◯ K) ≈ K]
 
-    The counit isomorphism at each [K x], with its naturality square: the
-    one triangle identity each way and [counit_naturality]. *)
+ The counit 同构 at each [K x], 自然性 square: the
+ one triangle 恒等 each way [counit_naturality]. （已译） *)
 
 Definition reflective_diagram_iso : (reflector R ◯ (I ◯ K)) ≈ K.
 Proof.
@@ -108,8 +108,7 @@ Example reflective_colimit_apex (L : Colimit (I ◯ K)) :
   colimit_apex (reflective_colimit L) = reflector R (colimit_apex L)
   := eq_refl.
 
-(* The injections: the reflector applied to the ambient injections, after
-   the inverse counit — the formula the issue asks for, on the nose. *)
+(* 相关说明。 （已译） *)
 Example reflective_colimit_inj (L : Colimit (I ◯ K)) (x : J) :
   colimit_inj (colimit_is_acolimit (reflective_colimit L)) x
     = fmap[reflector R] (colimit_inj (colimit_is_acolimit L) x)
@@ -142,19 +141,19 @@ End Shape.
 Definition reflective_Cocomplete (HC : @Cocomplete C) : @Cocomplete (Sub C S) :=
   fun J K => reflective_colimit K (HC J (I ◯ K)).
 
-(* The issue's name for the same constant. *)
+(* The issue's name same 常值. （已译） *)
 Definition reflective_subcategory_cocomplete :
   @Cocomplete C → @Cocomplete (Sub C S) := reflective_Cocomplete.
 
-(* The reflector is cocontinuous, with no hypothesis at all. *)
+(* The reflector cocontinuous, no 假设 at all. （已译） *)
 Definition reflective_reflector_Cocontinuous :
   CocontinuousFunctor (reflector R) := left_adjoint_Cocontinuous radj.
 
-(** ** A hypothesis-free witness
+(* * ** A 假设-free witness
 
-    Over any shape with a terminal object the ambient colimit exists in
-    ANY category (Structure/Limit/Initial.v's [terminal_Colimit]), so the
-    reflected colimit needs no cocompleteness hypothesis. *)
+ Over any shape 终对象 ambient colimit exists in
+ ANY 范畴 (Structure/Limit/Initial.v's [terminal_Colimit]), so the
+ reflected colimit needs no cocompleteness 假设. （已译） *)
 
 Definition reflective_terminal_shape_colimit {J : Category} (T : @Terminal J)
   (K : J ⟶ Sub C S) : Colimit K :=

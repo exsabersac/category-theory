@@ -7,7 +7,7 @@ From Coq Require Import Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * Two functors between free categories, agreeing on objects *)
+(* * * Two 函子 between free 范畴, agreeing 对象 （已译） *)
 
 (*
    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
@@ -36,7 +36,7 @@ Defined.
 Inductive fs_one_edge : fs_node → fs_node → Type :=
   | fs_gen : fs_one_edge fs_dom fs_cod.
 
-(* ... and two parallel arrows between the same nodes. *)
+(* 相关说明。 （已译） *)
 Inductive fs_two_edges : fs_node → fs_node → Type :=
   | fs_left  : fs_two_edges fs_dom fs_cod
   | fs_right : fs_two_edges fs_dom fs_cod.
@@ -53,7 +53,7 @@ Definition FreeParallelPair : Category := FreeOnQuiver ParallelPairQuiver.
 
 (** ** The two functors *)
 
-(* The generator goes to the left parallel arrow ... *)
+(* 相关说明。 （已译） *)
 Definition free_pick_left_hom :
   QuiverHomomorphism WalkingArrowQuiver (QuiverOfCat FreeParallelPair).
 Proof.
@@ -94,11 +94,11 @@ Lemma free_two_functors_same_objects :
   fobj[FreePickLeft] = fobj[FreePickRight].
 Proof. reflexivity. Qed.
 
-(** ** The generator, and where the two functors send it *)
+(* * ** The generator, where two 函子 send it （已译） *)
 
-(* A functor induced from a quiver homomorphism sends a one-edge path to
-   the chosen image of that edge: the induction defining [InducedFunctor]
-   contributes an identity on the empty tail. *)
+(* A 函子 induced quiver homomorphism sends one-edge path to
+ chosen image edge: induction defining [InducedFunctor]
+ contributes 恒等 empty tail. （已译） *)
 Lemma fmap_free_singleton {G : Quiver} {C : Category}
   (F : QuiverHomomorphism G (QuiverOfCat C)) {x y : G} (e : edges x y) :
   fmap[InducedFunctor G F] (tlist_singleton e) ≈ @fedgemap _ _ F x y e.
@@ -117,8 +117,7 @@ Proof. apply (fmap_free_singleton free_pick_right_hom fs_gen). Qed.
 
 (** ** The separation *)
 
-(* The hom-setoid of the target really does separate the two generating
-   paths: it is not a setoid that identifies everything. *)
+(* 相关说明。 （已译） *)
 Lemma fs_singleton_distinct :
   @equiv _ (@homset FreeParallelPair fs_dom fs_cod)
     (tlist_singleton fs_left) (tlist_singleton fs_right) → False.
@@ -132,8 +131,7 @@ Proof.
   discriminate.
 Qed.
 
-(* The concrete separating datum: the two arrow maps disagree on the
-   generator, in the hom-setoid of the target. *)
+(* 相关说明。 （已译） *)
 Theorem free_two_functors_differ_on_generator :
   fmap[FreePickLeft] (tlist_singleton fs_gen)
     ≈ fmap[FreePickRight] (tlist_singleton fs_gen) → False.
@@ -158,7 +156,7 @@ Proof.
   pose proof (coherent fs_dom fs_cod (tlist_singleton fs_gen)) as Hc.
   rewrite (UIP_dec fs_node_eq_dec (eq_on_obj fs_dom) eq_refl),
           (UIP_dec fs_node_eq_dec (eq_on_obj fs_cod) eq_refl) in Hc.
-  (* both transports are along [eq_refl] and vanish *)
+  (* 相关说明。 （已译） *)
   apply free_two_functors_differ_on_generator.
   exact Hc.
 Qed.

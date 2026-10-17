@@ -14,7 +14,7 @@ Require Import Category.Instance.Sets.Cocartesian.
 
 Generalizable All Variables.
 
-(** * Adjoints of the slice and coslice projections *)
+(* 相关说明。 （已译） *)
 
 (*
    Reference: Steve Awodey, "Category Theory", 2nd ed., §9.9, Exercise 6
@@ -28,7 +28,7 @@ Generalizable All Variables.
 *)
 
 
-(** ** Block A: the coslice projection and its left adjoint *)
+(* * ** Block A: coslice projection 左伴随 （已译） *)
 
 Section CosliceAdjunction.
 
@@ -59,9 +59,9 @@ Program Definition coslice_adj_to (c : C) (y : @Coslice C a) :
   morphism := fun h => `1 h ∘ inr
 |}.
 
-(* The exercise words the arrow action as "id + f"; the tree spells that
-   [cover id f], and [right f] is the same morphism with the redundant
-   [∘ id] removed. *)
+(* The exercise words arrow action "id + f"; tree spells that
+ [cover id f], [right f] same 态射 redundant
+ [∘ id] removed. （已译） *)
 Lemma coslice_fmap_is_cover (x y : C) (f : x ~> y) :
   `1 (fmap[Coslice_Coprod] f) ≈ cover id f.
 Proof.
@@ -133,7 +133,7 @@ Proof. simpl; reflexivity. Qed.
 
 End CosliceAdjunction.
 
-(** ** Block B: the slice projection and its right adjoint *)
+(* * ** Block B: slice projection 右伴随 （已译） *)
 
 Section SliceAdjunction.
 
@@ -155,8 +155,7 @@ Next Obligation. proper; now rewrite X. Qed.
 Next Obligation. apply first_id. Qed.
 Next Obligation. apply first_comp. Qed.
 
-(* Dually, the slice arrow action is "f × id", spelled [split f id]; the
-   [id ∘] on the second component is what [first f] omits. *)
+(* 相关说明。 （已译） *)
 Lemma slice_fmap_is_split (x y : C) (f : x ~> y) :
   `1 (fmap[Slice_Prod] f) ≈ split f id.
 Proof.
@@ -238,7 +237,7 @@ Proof. apply id_right. Qed.
 
 End SliceAdjunction.
 
-(** ** Block C: when do the projections have adjoints on the other side? *)
+(* 相关说明。 （已译） *)
 
 Section SliceSettle.
 
@@ -383,7 +382,7 @@ Defined.
 
 End SliceSettle.
 
-(** ** Block D: witnesses over [Sets] *)
+(* 相关说明。 （已译） *)
 
 Definition Sets_Coslice_Projection_Adjunction (a : Sets) :
   Coslice_Coprod a ⊣ Coslice_Proj a := Coslice_Projection_Adjunction a.

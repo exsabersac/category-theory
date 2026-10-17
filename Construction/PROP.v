@@ -12,7 +12,7 @@ Require Import Category.Structure.Monoidal.Hypergraph.
 
 Generalizable All Variables.
 
-(** * PROPs (PROducts and Permutations) *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
@@ -50,9 +50,9 @@ Class PROP : Type := {
     = (@braided_is_monoidal prop_cat
          (@symmetric_is_braided prop_cat prop_symmetric));
 
-  (** The canonical object correspondence: every natural number names an
-      object of [prop_cat], with [0] the monoidal unit and addition
-      reflecting tensor. *)
+  (** The canonical 对象 correspondence: every natural number names an
+ 对象 [prop_cat], [0] monoidal unit addition
+ reflecting tensor. （已译） *)
   prop_of_nat : nat -> @obj prop_cat;
 
   prop_unit_zero :
@@ -80,7 +80,7 @@ Section PROPLemmas.
 
 Context (P : PROP).
 
-(** The PROP-object [⟦n⟧] is the canonical object indexed by [n : nat]. *)
+(** The PROP-对象 [⟦n⟧] canonical 对象 indexed [n : nat]. （已译） *)
 Notation "⟦ n ⟧" := (@prop_of_nat P n) (at level 0, format "⟦ n ⟧").
 
 (** Sanity: the unit object of [P] is [⟦0⟧]. *)
@@ -100,7 +100,7 @@ Proof.
   apply prop_tensor_plus.
 Qed.
 
-(** The unit object on the left of a tensor is absorbed. *)
+(** The unit 对象 left tensor absorbed. （已译） *)
 Lemma prop_tensor_unit_left_obj (n : nat) :
   (⟦0⟧ ⨂ ⟦n⟧)%object = ⟦n⟧.
 Proof.
@@ -108,7 +108,7 @@ Proof.
   reflexivity.
 Qed.
 
-(** The unit object on the right of a tensor is absorbed, modulo [n + 0 = n]. *)
+(** The unit 对象 right tensor absorbed, modulo [n + 0 = n]. （已译） *)
 Lemma prop_tensor_unit_right_obj (n : nat) :
   (⟦n⟧ ⨂ ⟦0⟧)%object = ⟦n + 0⟧.
 Proof. apply prop_tensor_plus. Qed.

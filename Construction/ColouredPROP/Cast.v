@@ -50,8 +50,8 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** Casting along [e] after casting along [eq_sym e] is the identity
-    on the TARGET word [ds]. *)
+(** Casting along [e] after casting along [eq_sym e] 恒等
+ TARGET word [ds]. （已译） *)
 Lemma CT_cast_inv {Colour : Type} {S : CSignature Colour}
   {cs ds : list Colour} (e : cs = ds) :
   CTermEq S (CT_comp (CT_cast e) (CT_cast (eq_sym e))) (CT_id ds).
@@ -61,8 +61,8 @@ Proof.
   apply CTE_id_left.
 Qed.
 
-(** Casting along [eq_sym e] after casting along [e] is the identity
-    on the SOURCE word [cs]. *)
+(** Casting along [eq_sym e] after casting along [e] 恒等
+ SOURCE word [cs]. （已译） *)
 Lemma CT_cast_inv_sym {Colour : Type} {S : CSignature Colour}
   {cs ds : list Colour} (e : cs = ds) :
   CTermEq S (CT_comp (CT_cast (eq_sym e)) (CT_cast e)) (CT_id cs).
@@ -117,9 +117,9 @@ Lemma CT_term_eq_rect_destruct {Colour : Type} {S : CSignature Colour}
     end.
 Proof. destruct e; reflexivity. Qed.
 
-(** Dual: an [eq_rect_r] transport on the domain index reduces at
-    [eq_refl] to the term itself.  More general transport shapes
-    require a [destruct e] in context. *)
+(** 本节：Dual: [eq_rect_r] transport domain index reduces at
+ [eq_refl] term itself. More general transport shapes
+ require [destruct e] context. （已译） *)
 Lemma CT_term_eq_rect_r_refl {Colour : Type} {S : CSignature Colour}
   {cs : list Colour} (t : CTerm S cs cs) :
   eq_rect_r (fun k => CTerm S k cs) t (@eq_refl _ cs) = t.
@@ -146,7 +146,7 @@ Proof.
   apply CTE_tens_id.
 Qed.
 
-(** Symmetric variant: cast on the LEFT, identity on the RIGHT. *)
+(** Symmetric variant: cast LEFT, 恒等 RIGHT. （已译） *)
 Lemma CT_tens_cast_id_right {Colour : Type} {S : CSignature Colour}
   {a b ns : list Colour} (e : a = b) :
   CTermEq S (CT_tens (CT_cast e) (CT_id ns))
@@ -201,10 +201,10 @@ Proof.
   reflexivity.
 Qed.
 
-(** Special case: any cast along an equation of [cs = cs] is the
-    identity, because [eq_refl cs] is the canonical proof of
-    [cs = cs] and [CT_cast eq_refl = CT_id cs] reduces
-    definitionally. *)
+(** Special case: any cast along equation [cs = cs] the
+ 恒等, because [eq_refl cs] canonical 证明 of
+ [cs = cs] [CT_cast eq_refl = CT_id cs] reduces
+ definitionally. （已译） *)
 Lemma CT_cast_id {Colour : Type} {S : CSignature Colour}
   (Cdec : forall c d : Colour, {c = d} + {c <> d})
   {cs : list Colour} (e : cs = cs) :
@@ -214,7 +214,7 @@ Proof.
   reflexivity.
 Qed.
 
-(** * Structural isomorphisms for the free coloured PROP *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/monoidal+category

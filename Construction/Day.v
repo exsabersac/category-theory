@@ -18,12 +18,12 @@ Require Import Category.Theory.Coend.Fubini.
 
 Generalizable All Variables.
 
-(* Discharge every [Program] obligation by hand: the default [cat_simpl] would
-   destructure the product-category objects, renaming the variables the proofs
-   below refer to. *)
+(* Discharge every [Program] obligation hand: default [cat_simpl] would
+ destructure product-范畴 对象, renaming variables proofs
+ below refer to. （已译） *)
 #[local] Obligation Tactic := idtac.
 
-(** Element-level readings of the functor laws for a [Sets]-valued functor. *)
+(** Element-level readings 函子 laws [Sets]-valued 函子. （已译） *)
 Local Lemma fmap_id_app {K : Category} (G : K ⟶ Sets) {x : K} (z : G x) :
   fmap[G] (@id K x) z ≈ z.
 Proof. exact (@fmap_id K Sets G x z). Qed.
@@ -61,7 +61,7 @@ Section Day.
 Context {C : Category}.
 Context `{M : @Monoidal C}.
 
-(** ** The integrand bifunctor at a fixed target *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -118,14 +118,13 @@ Next Obligation.
     + apply fmap_comp_app.
 Qed.
 
-(** The Day convolution object at [c]: the coend apex of the integrand. *)
+(** The Day convolution 对象 at [c]: coend apex integrand. （已译） *)
 Definition Day_obj (F G : C ⟶ Sets) (c : C) : SetoidObject :=
   coend_apex_setoid (DayI F G c).
 
-(** ** Functoriality in the target [c] *)
+(* 相关说明。 （已译） *)
 
-(* The change-of-target map at [((a1,b1),(a2,b2))]: post-compose the hom factor
-   with [k], leaving [F], [G] untouched. *)
+(* 相关说明。 （已译） *)
 Program Definition Day_theta_map (F G : C ⟶ Sets) (c1 c2 : C)
   (k : c1 ~{C}~> c2) (p : (C ∏ C)^op ∏ (C ∏ C)) :
   DayI F G c1 p ~{Sets}~> DayI F G c2 p := {|
@@ -137,7 +136,7 @@ Next Obligation.
   - exact Hfg.
 Qed.
 
-(* Naturality of the change-of-target map in the coend index. *)
+(* 相关说明。 （已译） *)
 Lemma Day_theta_natural (F G : C ⟶ Sets) (c1 c2 : C) (k : c1 ~{C}~> c2) :
   ∀ (x y : (C ∏ C)^op ∏ (C ∏ C)) (m : x ~{(C ∏ C)^op ∏ (C ∏ C)}~> y),
     fmap[DayI F G c2] m ∘ Day_theta_map F G c1 c2 k x
@@ -153,7 +152,7 @@ Definition Day_theta (F G : C ⟶ Sets) (c1 c2 : C) (k : c1 ~{C}~> c2) :
   Build_Transform' (Day_theta_map F G c1 c2 k)
                    (Day_theta_natural F G c1 c2 k).
 
-(* On the diagonal the change-of-target map for [id] is the identity. *)
+(* On diagonal change-of-target map [id] 恒等. （已译） *)
 Lemma Day_theta_id (F G : C ⟶ Sets) (c : C) (ab : C ∏ C) :
   transform[Day_theta F G c c id] (ab, ab) ≈ id.
 Proof.
@@ -162,7 +161,7 @@ Proof.
   - split; reflexivity.
 Qed.
 
-(* On the diagonal the change-of-target map sends a composite to a composite. *)
+(* On diagonal change-of-target map sends 复合 复合. （已译） *)
 Lemma Day_theta_comp (F G : C ⟶ Sets) (c1 c2 c3 : C)
   (k1 : c1 ~{C}~> c2) (k2 : c2 ~{C}~> c3) (ab : C ∏ C) :
   transform[Day_theta F G c2 c3 k2] (ab, ab)
@@ -186,7 +185,7 @@ Proof.
   - split; reflexivity.
 Qed.
 
-(* The transported injections form a cowedge over the source integrand. *)
+(* 相关说明。 （已译） *)
 Lemma Day_leg_cowedge (F G : C ⟶ Sets) (c1 c2 : C) (k : c1 ~{C}~> c2) :
   Cowedge_cond (DayI F G c1)
     (coend_obj (SetsCoend (DayI F G c2)))
@@ -207,7 +206,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* The action of [Day F G] on a target morphism: the coend mediator. *)
+(* The action [Day F G] target 态射: coend mediator. （已译） *)
 Definition Day_map (F G : C ⟶ Sets) (c1 c2 : C) (k : c1 ~{C}~> c2) :
   coend_obj (SetsCoend (DayI F G c1))
     ~{Sets}~> coend_obj (SetsCoend (DayI F G c2)) :=
@@ -285,7 +284,7 @@ Next Obligation.
     reflexivity.
 Qed.
 
-(** ** The monoidal unit: the covariant representable at [I] *)
+(* 相关说明。 （已译） *)
 
 Program Definition unit_Day : C ⟶ Sets := {|
   fobj := fun x => {| carrier := I ~{C}~> x; is_setoid := @homset C I x |};
@@ -310,13 +309,13 @@ Next Obligation.
   symmetry; apply comp_assoc.
 Qed.
 
-(** ** Left unitor: [Day unit_Day G ≅ G] via co-Yoneda *)
+(* 相关说明。 （已译） *)
 
 Section LeftUnitor.
 Context (G : C ⟶ Sets).
 
-(* Forward leg at [(a,b)]: collapse the [C(I,a)] factor into the hom by
-   [u ↦ h ∘ (u ⨂ 1) ∘ λ⁻¹], then transport [y : G b] along that map [b ~> c]. *)
+(* Forward leg at [(a,b)]: collapse [C(I,a)] factor 进入 hom by
+ [u ↦ h ∘ (u ⨂ 1) ∘ λ⁻¹], then transport [y : G b] along map [b ~> c]. （已译） *)
 Program Definition lu_leg (c : C) (ab : C ∏ C) :
   DayI unit_Day G c (ab, ab) ~{Sets}~> G c := {|
   morphism := fun huy =>
@@ -360,7 +359,7 @@ Proof.
     reflexivity.
 Qed.
 
-(* Forward map at [c]: the coend mediator collapsing the [C(I,−)] factor. *)
+(* 相关说明。 （已译） *)
 Definition lu_to (c : C) :
   coend_apex_setoid (DayI unit_Day G c) ~{Sets}~> G c :=
   coend_mediator (DayI unit_Day G c) (lu_leg c) (lu_cowedge c).
@@ -395,8 +394,7 @@ Next Obligation.
            (fun ab => coend_inj (SetsCoend (DayI unit_Day G c)) (x := ab))
            (fun ab ab' g => coend_cowedge (SetsCoend (DayI unit_Day G c)) g)).
   - intro ab; destruct ab as [a b]; intros [h [u y0]]; simpl.
-    (* [ci (I,c) (λ_c, 1, fmap m y0) ≈ ci (a,b) (h,u,y0)], the co-Yoneda glue
-       chain collapsing [a := I] through [u : I ~> a], with [m := h ∘ (u⨂1) ∘ λ_b⁻¹]. *)
+    (* 相关说明。 （已译） *)
     apply ce_sym.
     apply (ce_trans (DayI unit_Day G c) _
              (ci (DayI unit_Day G c) (a, b)
@@ -451,7 +449,7 @@ Proof.
   exact (lu_cowedge c1 x y f).
 Qed.
 
-(* Naturality of the forward map in the target [c]. *)
+(* 相关说明。 （已译） *)
 Lemma lu_to_natural (c1 c2 : C) (k : c1 ~{C}~> c2) :
   fmap[G] k ∘ lu_to c1 ≈ lu_to c2 ∘ Day_map unit_Day G c1 c2 k.
 Proof.
@@ -489,13 +487,13 @@ Defined.
 
 End LeftUnitor.
 
-(** ** Right unitor: [Day F unit_Day ≅ F] via co-Yoneda *)
+(* 相关说明。 （已译） *)
 
 Section RightUnitor.
 Context (F : C ⟶ Sets).
 
-(* Forward leg at [(a,b)]: collapse the [C(I,b)] factor into the hom by
-   [v ↦ h ∘ (1 ⨂ v) ∘ ρ⁻¹], then transport [x : F a] along that map [a ~> c]. *)
+(* Forward leg at [(a,b)]: collapse [C(I,b)] factor 进入 hom by
+ [v ↦ h ∘ (1 ⨂ v) ∘ ρ⁻¹], then transport [x : F a] along map [a ~> c]. （已译） *)
 Program Definition ru_leg (c : C) (ab : C ∏ C) :
   DayI F unit_Day c (ab, ab) ~{Sets}~> F c := {|
   morphism := fun hxv =>
@@ -661,10 +659,10 @@ Defined.
 
 End RightUnitor.
 
-(** ** The Day tensor as a bifunctor [[C,Sets] ∏ [C,Sets] ⟶ [C,Sets]] *)
+(* 相关说明。 （已译） *)
 
-(* Change-of-functor map on the integrand: apply [α] and [β] on the covariant
-   [F]- and [G]-factors, leaving the hom factor untouched. *)
+(* Change-of-函子 map integrand: apply [α] [β] covariant
+ [F]- [G]-factors, leaving hom factor untouched. （已译） *)
 Program Definition DFG_map (F F' G G' : C ⟶ Sets)
   (α : F ⟹ F') (β : G ⟹ G') (c : C) (p : (C ∏ C)^op ∏ (C ∏ C)) :
   DayI F G c p ~{Sets}~> DayI F' G' c p := {|
@@ -695,7 +693,7 @@ Definition DFG_theta (F F' G G' : C ⟶ Sets)
   (α : F ⟹ F') (β : G ⟹ G') (c : C) : DayI F G c ⟹ DayI F' G' c :=
   Build_Transform' (DFG_map F F' G G' α β c) (DFG_natural F F' G G' α β c).
 
-(* On the diagonal, identity transformations act as the identity. *)
+(* On diagonal, 恒等 transformations act 恒等. （已译） *)
 Lemma DFG_theta_id (F G : C ⟶ Sets) (c : C) (ab : C ∏ C) :
   transform[DFG_theta F F G G (@nat_id C Sets F) (@nat_id C Sets G) c] (ab, ab)
     ≈ id.
@@ -728,7 +726,7 @@ Proof.
   - split; [ exact (Hα (fst ab) a) | exact (Hβ (snd ab) b) ].
 Qed.
 
-(* The change-of-functor legs form a cowedge over the source integrand. *)
+(* The change-of-函子 legs form cowedge over source integrand. （已译） *)
 Lemma DFG_leg_cowedge (F F' G G' : C ⟶ Sets)
   (α : F ⟹ F') (β : G ⟹ G') (c : C) :
   Cowedge_cond (DayI F G c)
@@ -750,7 +748,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* The action of the Day tensor on a pair of transformations, at target [c]. *)
+(* 相关说明。 （已译） *)
 Definition DFG_c (F F' G G' : C ⟶ Sets)
   (α : F ⟹ F') (β : G ⟹ G') (c : C) :
   coend_obj (SetsCoend (DayI F G c))
@@ -774,9 +772,9 @@ Proof.
            (DFG_leg_cowedge F F' G G' α β c) ab).
 Qed.
 
-(* Any transform of Day-integrands post-composed with the injections is a
-   cowedge; this abstracts the naturality-plus-coend-glue argument shared by the
-   target- and functor-change legs. *)
+(* Any transform Day-integrands post-composed injections a
+ cowedge; abstracts 自然性-plus-coend-glue 论元 shared the
+ target- 函子-change legs. （已译） *)
 Lemma day_theta_leg_cowedge (A A' B B' : C ⟶ Sets) (c1 c2 : C)
   (T : DayI A B c1 ⟹ DayI A' B' c2) :
   Cowedge_cond (DayI A B c1)
@@ -796,7 +794,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* Naturality of the functor-change action in the target [c]. *)
+(* Naturality 函子-change action target [c]. （已译） *)
 Lemma DFG_c_natural (F F' G G' : C ⟶ Sets)
   (α : F ⟹ F') (β : G ⟹ G') (c1 c2 : C) (k : c1 ~{C}~> c2) :
   fmap[Day F' G'] k ∘ DFG_c F F' G G' α β c1
@@ -1013,7 +1011,7 @@ Proof.
         { apply fmap_id_app. }
 Qed.
 
-(* The inner forward leg respects equivalence of [k] and [e]. *)
+(* The inner forward leg respects 等价 [k] [e]. （已译） *)
 Lemma ato_inner_leg_respects (p d : C) (k k' : (p ⨂[M] d)%object ~{C}~> c)
   (e e' : H d) (ab : C ∏ C) :
   k ≈ k' -> e ≈ e' ->
@@ -1036,8 +1034,7 @@ Definition ato_inner_med (p d : C) (k : (p ⨂[M] d)%object ~{C}~> c) (e : H d) 
             (ato_inner_leg p d k e)
             (ato_inner_cowedge p d k e).
 
-(* The outer forward leg at [(p,d)]: apply the inner mediator to the
-   [(Day F G) p] datum, carrying the hom [k] and the [H] datum [e]. *)
+(* 相关说明。 （已译） *)
 Program Definition ato_outer_leg (pd : C ∏ C) :
   DayI (Day F G) H c (pd, pd)
     ~{Sets}~> coend_obj (SetsCoend (DayI F (Day G H) c)) := {|
@@ -1072,7 +1069,7 @@ Next Obligation.
   - exact (Hmed x').
 Qed.
 
-(* The inner mediator computes on an injection to the inner leg. *)
+(* 相关说明。 （已译） *)
 Lemma ato_inner_med_ci (p d : C) (k : (p ⨂[M] d)%object ~{C}~> c) (e : H d)
   (ab : C ∏ C) (elt : DayI F G p (ab, ab)) :
   ato_inner_med p d k e (ci (DayI F G p) ab elt)
@@ -1083,7 +1080,7 @@ Proof.
            (ato_inner_leg p d k e) (ato_inner_cowedge p d k e) ab elt).
 Qed.
 
-(* Hom reassociation for the outer [(p,d)]-move. *)
+(* 相关说明。 （已译） *)
 Lemma hom_outer_eq (p1 d1 p2 d2 : C) (k : (p2 ⨂[M] d2)%object ~{C}~> c)
   (a0 b0 : C) (gp : p1 ~{C}~> p2) (gd : d1 ~{C}~> d2)
   (h0 : (a0 ⨂[M] b0)%object ~{C}~> p1) :
@@ -1204,8 +1201,8 @@ Definition assoc_to :
 
 (* ---------------------------------------------------------------- *)
 (* Backward direction: [Day F (Day G H) c ~> Day (Day F G) H c].    *)
-(* Mirror of the forward machinery: the inner coend now eliminates  *)
-(* the [(Day G H) x] factor on the right, reassociating with        *)
+(* 相关说明。 （已译） *)
+(* 相关说明。 （已译） *)
 (* [tensor_assoc] (rather than its inverse).                        *)
 (* ---------------------------------------------------------------- *)
 
@@ -1707,15 +1704,13 @@ Next Obligation. exact assoc_from_to. Qed.
 End Associator.
 
 (* ---------------------------------------------------------------- *)
-(* Naturality in [c] and the natural associator isomorphism.         *)
+(* Naturality [c] natural associator 同构. （已译） *)
 (* ---------------------------------------------------------------- *)
 
 Section AssocNat.
 Context (F G H : C ⟶ Sets).
 
-(* Naturality of the forward associator in the coend variable [c]. On a
-   generator both sides collapse to the same [ci], differing only by the
-   reassociation [k ∘ (kk ∘ …) = (k ∘ kk) ∘ …]. *)
+(* 相关说明。 （已译） *)
 Lemma assoc_to_natural (c1 c2 : C) (k : c1 ~{C}~> c2) :
   Day_map F (Day G H) c1 c2 k ∘ assoc_to F G H c1
     ≈ assoc_to F G H c2 ∘ Day_map (Day F G) H c1 c2 k.

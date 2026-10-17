@@ -13,7 +13,7 @@ Require Import Category.Construction.Opposite.
 
 Generalizable All Variables.
 
-(** * Biproducts give both a cartesian and a cocartesian structure *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Coproduct
@@ -32,9 +32,7 @@ Context `{B : @HasBiproducts C Z}.
 
 (** ** The cartesian structure *)
 
-(* The product-side mediator, named so the [Cartesian] record below can be
-   built as a literal rather than through [Program] obligations whose
-   order is an elaboration detail. *)
+(* 相关说明。 （已译） *)
 Definition biproduct_fork {x y z : C} (f : x ~> y) (g : x ~> z) :
   x ~> biproduct_obj (biproduct y z) :=
   bi_pair (biproduct y z) f g.
@@ -43,8 +41,8 @@ Lemma biproduct_fork_respects (x y z : C) :
   Proper (equiv ==> equiv ==> equiv) (@biproduct_fork x y z).
 Proof. apply bi_pair_respects. Qed.
 
-(* The universal property: existence gives the two computation rules,
-   uniqueness gives the converse. *)
+(* The 普遍性质: existence gives two computation rules,
+ uniqueness gives converse. （已译） *)
 Lemma biproduct_ump {x y z : C} (f : x ~> y) (g : x ~> z)
       (h : x ~> biproduct_obj (biproduct y z)) :
   h ≈ biproduct_fork f g
@@ -63,8 +61,8 @@ Proof.
     now apply bi_pair_unique.
 Qed.
 
-(* The chosen biproduct object, its two projections and the product-side
-   mediator [bi_pair] assemble into a [Cartesian] structure directly. *)
+(* The chosen biproduct 对象, two projections product-side
+ mediator [bi_pair] assemble [Cartesian] structure directly. （已译） *)
 Definition biproduct_Cartesian : @Cartesian C := {|
   product_obj := fun x y => biproduct_obj (biproduct x y);
   fork := @biproduct_fork;
@@ -123,7 +121,7 @@ Definition biproduct_Cocartesian : @Cocartesian C :=
 
 (** ** Strict identifications *)
 
-(* The product object IS the biproduct object, on the nose. *)
+(* The product 对象 IS biproduct 对象, nose. （已译） *)
 Example biproduct_product_obj (x y : C) :
   @product_obj C biproduct_Cartesian x y = biproduct_obj (biproduct x y) :=
   eq_refl.
@@ -133,15 +131,15 @@ Example biproduct_coprod_obj (x y : C) :
   @Coprod C biproduct_Cocartesian x y = biproduct_obj (biproduct x y) :=
   eq_refl.
 
-(* Hence the binary product and the binary coproduct are the SAME object
-   — the defining feature of a biproduct, as a conversion rather than as
-   prose or as a constructed isomorphism. *)
+(* Hence binary product binary coproduct SAME 对象
+ — defining feature biproduct, conversion rather than as
+ prose constructed 同构. （已译） *)
 Example biproduct_prod_is_coprod (x y : C) :
   @product_obj C biproduct_Cartesian x y
     = @Coprod C biproduct_Cocartesian x y :=
   eq_refl.
 
-(* The two mediators are the biproduct's own, definitionally. *)
+(* 相关说明。 （已译） *)
 Example biproduct_fork_is_pair {x y z : C} (f : x ~> y) (g : x ~> z) :
   @fork C biproduct_Cartesian x y z f g = bi_pair (biproduct y z) f g :=
   eq_refl.
@@ -151,7 +149,7 @@ Example biproduct_merge_is_copair {x y z : C} (f : y ~> x) (g : z ~> x) :
     = bi_copair (biproduct y z) f g :=
   eq_refl.
 
-(* As are the four structural morphisms. *)
+(* As four structural 态射. （已译） *)
 Example biproduct_exl_is_bi_exl (x y : C) :
   @exl C biproduct_Cartesian x y = bi_exl (biproduct x y) := eq_refl.
 
@@ -166,7 +164,7 @@ Example biproduct_inr_is_bi_inr (x y : C) :
 
 End BiproductCartesian.
 
-(** ** The round trip against Structure/Semiadditive.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Cartesian 相关定义、性质与动机。

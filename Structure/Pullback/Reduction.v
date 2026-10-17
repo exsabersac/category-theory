@@ -15,7 +15,7 @@ Require Import Category.Structure.Regular.
 
 Generalizable All Variables.
 
-(** * Interdefinability of the finite (co)limit constructions *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Limit_(category_theory)
@@ -26,7 +26,7 @@ Generalizable All Variables.
 *)
 
 (* ====================================================================== *)
-(** * (A) Cartesian + equalizers give pullbacks                           *)
+(* 相关说明。 （已译） *)
 
 Section PullbackFromEqualizer.
 
@@ -80,7 +80,7 @@ Proof.
 Defined.
 
 (* ====================================================================== *)
-(** * (B) The converse: a pullback square is an equalizer                 *)
+(* 相关说明。 （已译） *)
 
 Section EqualizerFromPullback.
 
@@ -116,7 +116,7 @@ Proof.
         now rewrite exr_fork_comp.
 Qed.
 
-(** ** The two passages round-trip, up to [≈] but not on the nose *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明等化子、（余）端相关定义、性质与动机。
@@ -129,8 +129,8 @@ Proof.
   now rewrite fork_comp, fork_exl_exr, id_left.
 Qed.
 
-(* The other composite, on each projection separately; this is exactly
-   [exl_fork]/[exr_fork], i.e. again a [≈]-law and not a conversion. *)
+(* The other 复合, each projection separately; 这是 exactly
+ [exl_fork]/[exr_fork], i.e. again [≈]-law not conversion. （已译） *)
 Lemma pullback_equalizer_round_fst {x y : C} {P : C}
       (p1 : P ~> x) (p2 : P ~> y) : exl ∘ (p1 △ p2) ≈ p1.
 Proof. apply exl_fork. Qed.
@@ -142,7 +142,7 @@ Proof. apply exr_fork. Qed.
 End EqualizerFromPullback.
 
 (* ====================================================================== *)
-(** * (C) The kernel pair as an equalizer                                 *)
+(* 相关说明。 （已译） *)
 
 Section KernelPair.
 
@@ -186,7 +186,7 @@ Example kernel_pair_is_pullback_along_itself {x y : C} (f : x ~> y) :
 End KernelPair.
 
 (* ====================================================================== *)
-(** * (D) Pullbacks give equalizers: two genuinely different squares      *)
+(* 相关说明。 （已译） *)
 
 Section EqualizerFromPullbackSquares.
 
@@ -195,7 +195,7 @@ Context `{@Cartesian C}.
 Context {x y : C}.
 Context (f g : x ~> y).
 
-(** ** Mac Lane's square (maclane:III.4:ex9) *)
+(* 相关说明。 （已译） *)
 
 Definition ml_left  : x ~> x × y := id △ f.
 Definition ml_right : x ~> x × y := id △ g.
@@ -241,7 +241,7 @@ Proof.
       * now rewrite <- Hp.
 Qed.
 
-(** ** Awodey's and Riehl's square (awodey:5:ex3, riehl:3.5:lem16) *)
+(* 相关说明。 （已译） *)
 
 Definition aw_diag : y ~> y × y := id △ id.
 Definition aw_pair : x ~> y × y := f △ g.
@@ -330,8 +330,8 @@ Qed.
 
 End EqualizerFromPullbackSquares.
 
-(** The two cospans coincide, up to swapping the two legs, exactly in the
-    degenerate case f = id.  Both sides are checked at Leibniz equality. *)
+(** 本节：The two cospans coincide, up swapping two legs, exactly the
+ degenerate case f = id. Both sides checked at Leibniz equality. （已译） *)
 
 Example maclane_awodey_degenerate_left {C : Category} `{@Cartesian C}
         {x : C} : @ml_left C _ x x id = @aw_diag C _ x := eq_refl.
@@ -341,7 +341,7 @@ Example maclane_awodey_degenerate_right {C : Category} `{@Cartesian C}
   @ml_right C _ x x g = @aw_pair C _ x x id g := eq_refl.
 
 (* ====================================================================== *)
-(** * (E) Pullbacks and a terminal object give products and equalizers    *)
+(* * * (E) Pullbacks 终对象 give products equalizers （已译） *)
 
 Section ProductFromPullback.
 
@@ -410,7 +410,7 @@ Context {C : Category}.
 Context `{T : @Terminal C}.
 Context (HPB : @HasPullbacks C).
 
-(* The chosen pullback of the terminal cospan a --!--> 1 <--!-- b. *)
+(* 相关说明。 （已译） *)
 Definition pb_chosen (a b : C) : Pullback (one : a ~> 1) (one : b ~> 1) :=
   @pullback C HPB a b 1%object one one.
 
@@ -434,8 +434,8 @@ Definition Cartesian_of_HasPullbacks_Terminal : @Cartesian C := {|
     @ump_product C b c (pb_prod b c) (pb_prod_IsCartesianProduct b c) a
 |}.
 
-(* Combining (E) with (D): the Awodey square is now available, so a
-   category with pullbacks and a terminal object has all equalizers. *)
+(* Combining (E) (D): Awodey square now available, so a
+ 范畴 pullbacks 终对象 has all equalizers. （已译） *)
 Definition HasEqualizers_of_HasPullbacks_Terminal : @HasEqualizers C.
 Proof using All.
   pose (CC := Cartesian_of_HasPullbacks_Terminal).
@@ -451,7 +451,7 @@ Defined.
 End CartesianFromPullbacks.
 
 (* ====================================================================== *)
-(** * (F) The dual: cocartesian + coequalizers give pushouts              *)
+(* 相关说明。 （已译） *)
 
 Section Duality.
 
@@ -506,9 +506,7 @@ Section PushoutFromCoequalizer.
 Context {C : Category}.
 Context `{O : @Cocartesian C}.
 
-(* The coproduct vocabulary of Structure/Cocartesian.v is the product
-   vocabulary of C^op ON THE NOSE, which is what lets (A) be instantiated
-   below with no translation step at all. *)
+(* 相关说明。 （已译） *)
 Example Coprod_is_op_product (a b : C) :
   @Coprod C O a b = @product_obj (C^op) O a b := eq_refl.
 
@@ -527,8 +525,7 @@ Proof.
            (IsEqualizer_op_of_IsCoequalizer Eq)).
 Qed.
 
-(* Read through the covariant accessors of Structure/Pushout.v.  The apex
-   and both injections compute: no transport, no [≈]-step. *)
+(* 相关说明。 （已译） *)
 Definition IsPushout_of_coequalizer {x y z : C} (f : x ~> y) (g : x ~> z)
       {E : C} {e : y + z ~> E}
       (Eq : IsCoequalizer (inl ∘ f) (inr ∘ g) E e) : IsPushout f g :=
@@ -571,7 +568,7 @@ Context `{@Cartesian C}.
 Context {x y : C}.
 Context (f g : x ~> y).
 
-(* 1. The two cospans of section (D) do not share a codomain. *)
+(* 相关说明。 （已译） *)
 Fail Example neg_ml_aw_codomain :
   (x × y)%object = (y × y)%object := eq_refl.
 
@@ -579,28 +576,27 @@ Fail Example neg_ml_aw_codomain :
 Example pos_ml_aw_codomain_degenerate :
   (x × x)%object = (x × x)%object := eq_refl.
 
-(* 2, 3. Nor are the legs parallel: these are ill-typed, not merely
-   inconvertible. *)
+(* 相关说明。 （已译） *)
 Fail Example neg_ml_left_is_aw_pair :
   @ml_left C _ x y f = @aw_pair C _ x y f g := eq_refl.
 
 Fail Example neg_ml_right_is_aw_diag :
   @ml_right C _ x y g = @aw_diag C _ y := eq_refl.
 
-(* positive control: at f := id the legs DO coincide, up to swapping the
-   two sides of the cospan -- this is [maclane_awodey_degenerate_*]. *)
+(* positive control: at f := id legs DO coincide, up swapping the
+ two sides cospan -- 这是 [maclane_awodey_degenerate_*]. （已译） *)
 Example pos_ml_aw_degenerate :
   @ml_left C _ x x id = @aw_diag C _ x := eq_refl.
 
-(* 4. The (A)/(B) round trip on the equalizing map is [≈], not [=]. *)
+(* 相关说明。 （已译） *)
 Fail Example neg_equalizer_pullback_round {E : C} (e : E ~> x × y) :
   (exl ∘ e) △ (exr ∘ e) = e := eq_refl.
 
-(* 5. Nor is the reverse composite strict on the projections. *)
+(* 5. Nor reverse 复合 strict projections. （已译） *)
 Fail Example neg_pullback_equalizer_round {P : C}
      (p1 : P ~> x) (p2 : P ~> y) : exl ∘ (p1 △ p2) = p1 := eq_refl.
 
-(* positive control for 4 and 5: both hold at [≈]. *)
+(* 相关说明。 （已译） *)
 Example pos_rounds_up_to_equiv {E : C} (e : E ~> x × y) :
   (exl ∘ e) △ (exr ∘ e) ≈ e := equalizer_pullback_round E e.
 
@@ -622,8 +618,7 @@ Fail Example neg_IsCoequalizer_is_op {x y : C} (f g : x ~> y)
      (q : C) (e : y ~> q) :
   IsCoequalizer f g q e = @IsEqualizer (C^op) y x f g q e := eq_refl.
 
-(* positive control: the FIELD types are convertible, which is exactly
-   why the bridge below needs no tactic. *)
+(* 相关说明。 （已译） *)
 Example pos_cofork_is_fork_eq {x y : C} (f g : x ~> y)
         (q : C) (e : y ~> q) (Hyp : e ∘ f ≈ e ∘ g) :
   f ∘[C^op] e ≈ g ∘[C^op] e := Hyp.

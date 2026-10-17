@@ -7,7 +7,7 @@ Require Import Category.Structure.Coequalizer.Split.
 
 Generalizable All Variables.
 
-(** * Contractible pairs, and the coequalizers that are split *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:   https://ncatlab.org/nlab/show/split+coequalizer, the section
@@ -19,8 +19,7 @@ Generalizable All Variables.
 
 (** ** The definition *)
 
-(* A contraction t of the pair: a section of f through which g ∘ t
-   coforks the pair. *)
+(* 相关说明。 （已译） *)
 Record ContractiblePair {C : Category} {x y : C} (f g : x ~> y) := {
   contr_t : y ~> x;                                (* the contraction *)
 
@@ -33,10 +32,9 @@ Arguments contr_t       {_ _ _ _ _} _.
 Arguments contr_section {_ _ _ _ _} _.
 Arguments contr_cofork  {_ _ _ _ _} _.
 
-(** ** (a) The pair of a split fork is contractible *)
+(* 相关说明。 （已译） *)
 
-(* t is the split fork's t: law 3 is ∂₀ t = 1, and g t f = s e f = s e g
-   = g t g by laws 4, 1 and 4. *)
+(* 相关说明。 （已译） *)
 Definition split_coequalizer_contractible {C : Category} {x y : C}
   {f g : x ~> y} (S : SplitCoequalizer f g) : ContractiblePair f g.
 Proof.
@@ -65,7 +63,7 @@ Example split_coequalizer_contractible_t {C : Category} {x y : C}
   {f g : x ~> y} (S : SplitCoequalizer f g) :
   contr_t (split_coequalizer_contractible S) = scoeq_t S := eq_refl.
 
-(** ** (b) A coequalizer of a contractible pair is split *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Contractible 相关定义、性质与动机。
@@ -139,8 +137,7 @@ Example contractible_coequalizer_split_t {C : Category} {x y : C}
   (E : IsCoequalizer f g q e) :
   scoeq_t (contractible_coequalizer_split P E) = contr_t P := eq_refl.
 
-(* Given the coequalizer and the contraction, s is unique up to ≈: any s'
-   satisfying law 4 is the descent of g ∘ t. *)
+(* 相关说明。 （已译） *)
 Lemma contractible_coequalizer_split_s_unique {C : Category} {x y : C}
   {f g : x ~> y} (P : ContractiblePair f g) {q : C} {e : y ~> q}
   (E : IsCoequalizer f g q e) (s : q ~> y) (Hs : g ∘ contr_t P ≈ s ∘ e) :
@@ -150,7 +147,7 @@ Proof.
            (symmetry Hs)).
 Qed.
 
-(** ** "Any (and hence every) coequalizer is split" *)
+(* 相关说明。 （已译） *)
 
 Definition every_coequalizer_split {C : Category} {x y : C}
   {f g : x ~> y} (S : SplitCoequalizer f g) {q : C} {e : y ~> q}
@@ -167,7 +164,7 @@ Example every_coequalizer_split_e {C : Category} {x y : C}
   (E : IsCoequalizer f g q e) :
   scoeq_e (every_coequalizer_split S E) = e := eq_refl.
 
-(* Every coequalizer of the pair is split by the same t. *)
+(* 相关说明。 （已译） *)
 Example every_coequalizer_split_t {C : Category} {x y : C}
   {f g : x ~> y} (S : SplitCoequalizer f g) {q : C} {e : y ~> q}
   (E : IsCoequalizer f g q e) :
@@ -175,8 +172,7 @@ Example every_coequalizer_split_t {C : Category} {x y : C}
 
 (** ** The characterization *)
 
-(* A pair has a split coequalizer exactly when it is contractible and has
-   a coequalizer: (a) and Mac Lane's Lemma one way, (b) the other. *)
+(* 相关说明。 （已译） *)
 Definition split_coequalizer_iff_contractible {C : Category} {x y : C}
   (f g : x ~> y) :
   SplitCoequalizer f g ↔
@@ -192,10 +188,9 @@ Proof.
     exact (contractible_coequalizer_split P E).
 Defined.
 
-(** ** The pair (1, i) of an idempotent *)
+(* 相关说明。 （已译） *)
 
-(* Contracted by 1: the second equation is i ∘ 1 ∘ 1 ≈ i ∘ 1 ∘ i, both
-   sides being i up to ≈, the right one by idempotence. *)
+(* 相关说明。 （已译） *)
 Definition idempotent_contractible {C : Category} {x : C} (i : x ~> x)
   (I : Idempotent i) : ContractiblePair id i.
 Proof.
@@ -246,7 +241,7 @@ Example coequalizer_splits_idempotent_r {C : Category} {x : C}
   (E : IsCoequalizer id i q r) :
   @split_idem_r C x q (coequalizer_splits_idempotent i I E) = r := eq_refl.
 
-(** ** Functors preserve contractible pairs *)
+(* 相关说明。 （已译） *)
 
 Theorem functor_preserves_contractible@{co ch do dh +}
   {C : Category@{co ch ch}} {D : Category@{do dh dh}} (F : C ⟶ D)

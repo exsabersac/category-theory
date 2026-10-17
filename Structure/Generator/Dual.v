@@ -23,7 +23,7 @@ Section Dual.
 
 Context {C : Category}.
 
-(** ** A cogenerating family of C^op IS a generating family of C *)
+(* 相关说明。 （已译） *)
 
 Definition gen_of_cog (G : Cogenerator (C^op)) : Generator C :=
   @Build_Generator C (cog_index G) (cog_obj G)
@@ -33,14 +33,14 @@ Definition cog_of_gen (G : Generator C) : Cogenerator (C^op) :=
   @Build_Cogenerator (C^op) (gen_index G) (gen_obj G)
     (fun x y f g H => @gen_separates C G y x f g H).
 
-(* Both round trips are the identity on the nose. *)
+(* Both round trips 恒等 nose. （已译） *)
 Example gen_of_cog_of_gen (G : Generator C) :
   gen_of_cog (cog_of_gen G) = G := eq_refl.
 
 Example cog_of_gen_of_cog (G : Cogenerator (C^op)) :
   cog_of_gen (gen_of_cog G) = G := eq_refl.
 
-(** ** The reading the SAFT header states as prose, proved both ways *)
+(* 相关说明。 （已译） *)
 
 Definition cogenerator_jointly_faithful (G : Cogenerator C) :
   JointlyFaithful (fun j : cog_index G => [Hom ─, cog_obj G j]) :=

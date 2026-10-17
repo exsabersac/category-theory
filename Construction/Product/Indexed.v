@@ -1,4 +1,4 @@
-(** * Set-indexed products of categories *)
+(* * * Set-indexed products 范畴 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -71,8 +71,8 @@ Qed.
 
 (** ** The universal property *)
 
-(* Pairing: a family of functors into the components assembles into one
-   functor into the product, componentwise. *)
+(* Pairing: family 函子 进入 components assembles one
+ 函子 进入 product, componentwise. （已译） *)
 Program Definition PiCat_Pair {I : Type} {C : I → Category}
   {D : Category} (R : ∀ i : I, D ⟶ C i) : D ⟶ PiCat C := {|
   fobj := fun d i => R i d;
@@ -89,9 +89,9 @@ Next Obligation.
   intros I C D R x y z h h' i; exact (@fmap_comp _ _ (R i) _ _ _ h h').
 Qed.
 
-(* The triangle: projecting the pairing IS the component, definitionally
-   on both objects and arrows, so the natural isomorphism is the
-   identity family. *)
+(* The triangle: projecting pairing IS component, definitionally
+ both 对象 arrows, so natural 同构 the
+ 恒等 family. （已译） *)
 Lemma PiCat_Pair_Proj {I : Type} {C : I → Category}
   {D : Category} (R : ∀ i : I, D ⟶ C i) (i : I) :
   PiCat_Proj C i ◯ PiCat_Pair R ≈ R i.
@@ -124,8 +124,8 @@ Proof.
     exact (projT2 (HP i) x y h).
 Qed.
 
-(* The whole universal property, bundled: existence is the pairing with
-   its triangle, uniqueness the lemma above. *)
+(* The whole 普遍性质, bundled: existence pairing with
+ triangle, uniqueness 引理 above. （已译） *)
 Lemma PiCat_ump {I : Type} {C : I → Category} {D : Category}
   (R : ∀ i : I, D ⟶ C i) :
   ∃! F : D ⟶ PiCat C, ∀ i : I, PiCat_Proj C i ◯ F ≈ R i.

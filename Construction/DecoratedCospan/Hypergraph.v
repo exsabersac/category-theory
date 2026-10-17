@@ -80,8 +80,8 @@ Class DecCospan_Hypergraph_Coherent : Type := {
   dec_cospan_scfa : forall (X : DC),
     @SpecialCommutativeFrobenius DC DCSMC X;
 
-  (** Tensor coherence: the SCFA on [X ⨂ Y] agrees with the canonical
-      assembled one. *)
+  (** 本节：Tensor coherence: SCFA [X ⨂ Y] agrees canonical
+ assembled one. （已译） *)
   dec_scfa_tensor_mu : forall (X Y : DC),
     @scfa_mu DC DCSMC _ (dec_cospan_scfa (X ⨂ Y)%object)
       ≈ @canonical_tensor_mu DC DCSMC X Y
@@ -102,7 +102,7 @@ Class DecCospan_Hypergraph_Coherent : Type := {
       ≈ @canonical_tensor_epsilon DC DCSMC X Y
           (dec_cospan_scfa X) (dec_cospan_scfa Y);
 
-  (** Unit coherence: the SCFA on [I_DC] is the trivial one. *)
+  (** 本节：Unit coherence: SCFA [I_DC] trivial one. （已译） *)
   dec_scfa_unit_mu :
     @scfa_mu DC DCSMC _ (dec_cospan_scfa (@I DC DCMon))
       ≈ to (@unit_left DC DCMon (@I DC DCMon));
@@ -124,7 +124,7 @@ Context `{DCHGC : DecCospan_Hypergraph_Coherent}.
 
 Set Default Proof Using "All".
 
-(** ** [DecoratedCospan_Hypergraph] : the Hypergraph instance *)
+(* 相关说明。 （已译） *)
 
 Program Definition DecoratedCospan_Hypergraph : @Hypergraph DC DCSMC := {|
   scfa                := dec_cospan_scfa ;

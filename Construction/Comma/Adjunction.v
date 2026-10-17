@@ -86,9 +86,7 @@ Record lawvere_equiv := {
         (to (equiv_iso projF))
         (to (equiv_iso projG));
 
-  (* The hom-set bijection extracted from the comma iso: transport
-     f : F a ~> b through φ, then re-fasten the endpoints to (a, b) using the
-     projection comparison κ, landing on a ~> G b. *)
+  (* 相关说明。 （已译） *)
   lawvere_to {a b} (f : F a ~> b) : a ~> G b :=
     let o := ((a, b); f) in
     fmap[G] (snd (from (κ o))) ∘ `2 (φ o) ∘ fst (to (κ o));
@@ -104,8 +102,7 @@ Record lawvere_equiv := {
 
 Context `(E : lawvere_equiv).
 
-(* Component form of the first conjunct of σ: the unit η factors through the
-   projection comparisons κ and θ. *)
+(* 相关说明。 （已译） *)
 Lemma η_θ_κ : ∀ x, `1 (η E x) ≈ θ E (φ E x) ∘ κ E x.
 Proof.
   intros.
@@ -121,7 +118,7 @@ Proof.
     rewrite <- e3; cat.
 Qed.
 
-(* Component form of the second conjunct of σ: the counit μ factors dually. *)
+(* 相关说明。 （已译） *)
 Lemma μ_κ_θ : ∀ x, `1 (μ E x) ≈ κ E (ψ E x) ∘ θ E x.
 Proof.
   intros.
@@ -137,8 +134,8 @@ Proof.
     rewrite <- e3; cat.
 Qed.
 
-(* The composite ψ∘φ acts as the identity on the carrier morphism `2 x, the
-   morphism-level half of ψ'(φ' f) ≈ f (cf. lawvere_from_to). *)
+(* The 复合 ψ∘φ acts 恒等 carrier 态射 `2 x, the
+ 态射-level half ψ'(φ' f) ≈ f (cf. lawvere_from_to). （已译） *)
 Theorem ψ_φ_equiv :
   ∀ x, snd (from (κ E x))
          ∘ snd (from (θ E (φ E x)))
@@ -165,8 +162,8 @@ Proof.
   now rewrite iso_from_to; cat.
 Qed.
 
-(* Dual: φ∘ψ acts as the identity on the carrier morphism, the morphism-level
-   half of φ'(ψ' g) ≈ g (cf. lawvere_to_from). *)
+(* Dual: φ∘ψ acts 恒等 carrier 态射, 态射-level
+ half φ'(ψ' g) ≈ g (cf. lawvere_to_from). （已译） *)
 Theorem φ_ψ_equiv :
   ∀ x, fmap[G] (snd (from (θ E x)))
          ∘ fmap[G] (snd (from (κ E (ψ E x))))
@@ -293,8 +290,8 @@ Next Obligation.
   apply e.
 Qed.
 
-(* Fold a product-category composite of first/second components back into the
-   component of the composite (fst_comp / snd_comp). *)
+(* Fold product-范畴 复合 first/second components back 进入
+ component 复合 (fst_comp / snd_comp). （已译） *)
 Ltac pair_comp :=
   match goal with
   | [ |- context[@fst _ _ ?F ∘ @fst _ _ ?G] ] =>
@@ -306,8 +303,7 @@ Ltac pair_comp :=
 Arguments φ' l {_ _} _.
 Arguments ψ' l {_ _} _.
 
-(* φ((a,b);f) is isomorphic in (Id[D] ↓ G) to the normal form ((a,b); φ' f),
-   re-fastened to the original endpoints (a, b) via κ. *)
+(* 相关说明。 （已译） *)
 Lemma lawvere_iso_to {a b} (f : F a ~> b) :
   φ E ((a, b); f) ≅ ((a, b); φ' E f).
 Proof.
@@ -389,8 +385,7 @@ Proof.
   now apply lawvere_iso_from.
 Qed.
 
-(* Round-trip on the (Id[D] ↓ G) side: ((a,b); φ'(ψ' g)) ≅ ((a,b); g), using
-   the comma iso's own iso_to_from.  Underlies φ'(ψ' g) ≈ g. *)
+(* 相关说明。 （已译） *)
 Definition lawvere_to_from_iso {a b} (g : a ~> G b) :
   ((a, b); φ' E (ψ' E g)) ≅[Id[D] ↓ G] ((a, b); g) :=
   iso_compose (`1 (iso_to_from (lawvere_iso E)) ((a, b); g))
@@ -402,9 +397,9 @@ Definition lawvere_from_to_iso {a b} (f : F a ~> b) :
   iso_compose (`1 (iso_from_to (lawvere_iso E)) ((a, b); f))
               (iso_sym (@lawvere_iso_from_to _ _ f)).
 
-(* Naturality of the forward adjunct in both variables: this is the hom-set
-   adjunction naturality square Φ(j ∘ f ∘ F i) = G j ∘ Φ(f) ∘ i
-   (Wikipedia: Hom(i, G j) ∘ Φ = Φ ∘ Hom(F i, j)). *)
+(* Naturality forward adjunct both variables: 这是 hom-set
+ 伴随 自然性 square Φ(j ∘ f ∘ F i) = G j ∘ Φ(f) ∘ i
+ (Wikipedia: Hom(i, G j) ∘ Φ = Φ ∘ Hom(F i, j)). （已译） *)
 Lemma lawvere_to_functorial {a b} (f : F a ~{C}~> b)
       {a' b'} (i : a' ~> a) (j : b ~> b') :
   φ' E (j ∘ f ∘ fmap[F] i) ≈ fmap[G] j ∘ φ' E f ∘ i.
@@ -595,7 +590,7 @@ Proof.
             ].
 Qed.
 
-(* Dual round-trip: the backward adjunct inverts the forward one. *)
+(* 相关说明。 （已译） *)
 Lemma lawvere_from_to {a b} (f : F a ~> b) : ψ' E (φ' E f) ≈ f.
 Proof.
   intros.
@@ -642,24 +637,23 @@ Program Instance lawvere_morph_iso {a b} : F a ~> b ≊ a ~> G b := {
   iso_from_to := lawvere_from_to
 }.
 
-(* Naturality of the bijection in both variables, restated for the packaged
-   iso: φ'(j ∘ f ∘ F i) ≈ G j ∘ φ'(f) ∘ i (cf. lawvere_to_functorial). *)
+(* 相关说明。 （已译） *)
 Corollary lawvere_to_morph_iso_functorial {a b} (f : F a ~{C}~> b)
           {a' b'} (i : a' ~> a) (j : b ~> b') :
   to lawvere_morph_iso (j ∘ f ∘ fmap[F] i)
     ≈ fmap[G] j ∘ to lawvere_morph_iso f ∘ i.
 Proof. now apply lawvere_to_functorial. Qed.
 
-(* Dual naturality for the inverse leg (cf. lawvere_from_functorial). *)
+(* Dual 自然性 inverse leg (cf. lawvere_from_functorial). （已译） *)
 Corollary lawvere_from_morph_iso_functorial {a b} (g : a ~{D}~> G b)
           {a' b'} (i : a' ~> a) (j : b ~> b') :
   j ∘ from lawvere_morph_iso g ∘ fmap[F] i
     ≈ from lawvere_morph_iso (fmap[G] j ∘ g ∘ i).
 Proof. now apply lawvere_from_functorial. Qed.
 
-(* Diagonal embedding of D into (F ↓ Id[C]) sending a to the object
-   (a, F a; id[F a]); its carrier id[F a] is the seed whose forward adjunct is
-   the unit (see lawvere_eqv_unit). *)
+(* Diagonal embedding D (F ↓ Id[C]) sending 对象
+ (a, F a; id[F a]); carrier id[F a] seed whose forward adjunct is
+ unit (see lawvere_eqv_unit). （已译） *)
 Program Definition Left_Functor : D ⟶ (F ↓ Id[C]) := {|
   fobj := fun x : D => ((x, F x); id[F x]);
   fmap := fun _ _ f => ((f, fmap[F] f); _)
@@ -676,13 +670,13 @@ Program Definition Right_Functor : C ⟶ (Id[D] ↓ G) := {|
 Next Obligation. proper; rewrites; reflexivity. Qed.
 Next Obligation. split; [ apply fmap_comp | reflexivity ]. Qed.
 
-(* Unit η_a := φ'(id[F a]), the forward adjunct of the identity; this is the
-   universal arrow a ~> G (F a). *)
+(* Unit η_a := φ'(id[F a]), forward adjunct 恒等; 这是 the
+ 泛箭头 ~> G (F a). （已译） *)
 Definition lawvere_eqv_unit {a} : a ~{ D }~> G (F a) :=
   to lawvere_morph_iso (`2 (Left_Functor a)).
 
-(* Counit ε_a := ψ'(id[G a]), the backward adjunct of the identity; the
-   universal arrow F (G a) ~> a. *)
+(* Counit ε_a := ψ'(id[G a]), backward adjunct 恒等; the
+ 泛箭头 F (G a) ~> a. （已译） *)
 Definition lawvere_eqv_counit {a} : F (G a) ~{ C }~> a :=
   from lawvere_morph_iso (`2 (Right_Functor a)).
 
@@ -714,8 +708,7 @@ Proof.
   now sapply (iso_to_from (@lawvere_morph_iso (G a) a)).
 Qed.
 
-(* Naturality of the unit: the underlying square for η as a transformation
-   Id ⟹ G ◯ F, obtained by transporting f through the comma projection. *)
+(* 相关说明。 （已译） *)
 Lemma Left_Functoriality
       x y (f : comma_proj (Left_Functor x) ~> comma_proj (Left_Functor y)) :
   fmap[G] (fmap[F] (fst f))

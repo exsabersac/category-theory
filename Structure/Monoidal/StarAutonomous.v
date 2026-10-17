@@ -18,7 +18,7 @@ Generalizable All Variables.
 *)
 Remove Hints Sets_Product_Monoidal : typeclass_instances.
 
-(** * Star-autonomous categories (definition level) *)
+(* * * Star-autonomous 范畴 (定义 level) （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/star-autonomous+category
@@ -110,8 +110,8 @@ Next Obligation.
   apply dcur_beta.
 Qed.
 
-(** Two bookkeeping slides for the tensor bifunctor, factoring a joint action
-    `u ⨂ v` through the two one-sided actions in either order. *)
+(** 本节：Two bookkeeping slides tensor bifunctor, factoring joint action
+ `u ⨂ v` through two one-sided actions either order. （已译） *)
 
 Lemma bimap_slide_l {a a' b b' : C} (u : a ~> a') (v : b ~> b') :
   u ⨂ v ≈ (u ⨂ id) ∘ (id ⨂ v).
@@ -195,7 +195,7 @@ Definition double_dual (d : C) : C ⟶ C := dual d ◯ (dual d)^op.
 Class StarAutonomous : Type := {
   dualizer : C;
 
-  (* `Hom(x ⨂ y, ⊥) ≅ Hom(x, y ⇒ ⊥)`, the closed transpose at the dualizer. *)
+  (* 相关说明。 （已译） *)
   star_transpose {x y : C} :
     (x ⨂ y ~> dualizer) ≊ (x ~> dual dualizer y);
 

@@ -30,7 +30,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * Relabelling coloured-PROP terms along a signature morphism *)
+(* * * Relabelling coloured-PROP terms along signature 态射 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/generators+and+relations
@@ -59,19 +59,14 @@ Fixpoint CT_map {Colour : Type} {S T : CSignature Colour}
   | CT_gen g       => CT_gen (h _ _ g)
   end.
 
-(** Casts are fixed by every signature morphism (a Leibniz equality:
-    both sides are the same [match] once [e] is destructed). *)
+(** Casts fixed every signature 态射 (a Leibniz equality:
+ both sides same [match] once [e] destructed). （已译） *)
 Lemma CT_map_CT_cast {Colour : Type} {S T : CSignature Colour}
   (h : CSubSig S T) {cs ds : list Colour} (e : cs = ds) :
   CT_map h (CT_cast e) = CT_cast e.
 Proof. destruct e; reflexivity. Qed.
 
-(** *** Transport seams
-
-    The strict-PROP axioms of [CTermEq] carry their boundary
-    mismatches as [eq_rect] transports over [app_nil_r] / [app_assoc]
-    equations; [CT_map] commutes with each transport shape by Leibniz
-    equality (destruct the boundary equation). *)
+(* 相关说明。 （已译） *)
 
 Lemma CT_map_eq_rect_cod {Colour : Type} {S T : CSignature Colour}
   (h : CSubSig S T) {a b b' : list Colour} (e : b = b')
@@ -175,8 +170,8 @@ Definition CRelabelFunctor : CFreeCat S ⟶ CFreeCat T :=
     (fun cs => CTE_refl (CT_id cs))
     (fun x y z f g => CTE_refl (CT_comp (CT_map h f) (CT_map h g))).
 
-(** The tensor-then-map and map-then-tensor composites related by the
-    tensor comparison of the monoidal structure. *)
+(** 本节：The tensor-then-map map-then-tensor composites related the
+ tensor comparison monoidal structure. （已译） *)
 Definition CRelabel_ap_dom : CFreeCat S ∏ CFreeCat S ⟶ CFreeCat T :=
   CFreeCat_Tensor T ◯ (CRelabelFunctor ∏⟶ CRelabelFunctor).
 
@@ -200,9 +195,9 @@ Definition CRelabel_ap_from : CRelabel_ap_cod ⟹ CRelabel_ap_dom :=
     (fun p => CT_id (fst p ++ snd p))
     (fun p q f => ctm_id_swap (CT_tens (CT_map h (fst f)) (CT_map h (snd f)))).
 
-(** The identity components are inverse up to [CTermEq] (the identity
-    natural transformation of a composite-with-tensor functor has
-    components [CT_tens (CT_id _) (CT_id _)]). *)
+(** The 恒等 components inverse up [CTermEq] (恒等
+ 自然变换 复合-with-tensor 函子 has
+ components [CT_tens (CT_id _) (CT_id _)]). （已译） *)
 Definition CRelabel_ap_iso :
   @Isomorphism (@Category.Instance.Fun.Fun (CFreeCat S ∏ CFreeCat S)
                   (CFreeCat T))
@@ -272,9 +267,9 @@ Definition CRelabelFunctor_Monoidal :
     (fun x => CRelabel_unit_right_square x)
     (fun x y z => CRelabel_assoc_square x y z).
 
-(** Both comparison maps are identities on the nose, so the functor is
-    STRICT monoidal with [eq_refl] object equalities; the two
-    comparison fields reduce to [CTE_refl]-grade goals. *)
+(** Both comparison maps identities nose, so 函子 is
+ STRICT monoidal [eq_refl] 对象 equalities; two
+ comparison fields reduce [CTE_refl]-grade goals. （已译） *)
 Definition CRelabelFunctor_Strict :
   @StrictMonoidalFunctor (CFreeCat S) (CFreeCat T)
     (CFreeCat_Monoidal S Cdec) (CFreeCat_Monoidal T Cdec) CRelabelFunctor :=
@@ -287,8 +282,8 @@ Definition CRelabelFunctor_Strict :
     (fun x y => CTE_refl (CT_id (x ++ y))).
 
 (** The braid-compatibility square: [CT_map] fixes [CT_braid], and
-    both tensor comparisons are identities, so the square is one slide
-    of an identity past the braid. *)
+ both tensor comparisons identities, so square one slide
+ 恒等 past braid. （已译） *)
 Lemma CRelabelFunctor_braid (m n : list Colour) :
   fmap[CRelabelFunctor] (@braid (CFreeCat S) (CFreeCat_Braided S Cdec) m n)
     ∘ to (@ap_iso _ _ _ _ CRelabelFunctor CRelabelFunctor_Monoidal m n)

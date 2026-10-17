@@ -10,7 +10,7 @@ Require Import Category.Construction.Reflective.Coreflective.
 
 Generalizable All Variables.
 
-(** * Reflective subcategories from universal arrows *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:  https://ncatlab.org/nlab/show/universal+morphism
@@ -32,7 +32,7 @@ Definition Reflective_of_UniversalArrows@{o h +} {C : Category@{o h h}}
     (LeftAdjointFunctorFromUniversalArrows (Incl C S) UA)
     (AdjunctionFromUniversalArrows (Incl C S) UA).
 
-(* The reflection of x is the universal object, on the nose. *)
+(* The reflection x universal 对象, nose. （已译） *)
 Example Reflective_of_UniversalArrows_obj@{o h +} {C : Category@{o h h}}
   {S : Subcategory C}
   (full : Construction.Subcategory.Full C S)
@@ -40,8 +40,8 @@ Example Reflective_of_UniversalArrows_obj@{o h +} {C : Category@{o h h}}
   fobj[reflector (Reflective_of_UniversalArrows full UA)] x
     = @arrow_obj C (Sub C S) x (Incl C S) (UA x) := eq_refl.
 
-(* The unit is the universal arrow, up to [≈]: it arrives as the
-   transpose of the identity, [fmap[Incl C S] id ∘ arrow]. *)
+(* The unit 泛箭头, up [≈]: it arrives the
+ transpose 恒等, [fmap[Incl C S] id ∘ arrow]. （已译） *)
 Lemma Reflective_of_UniversalArrows_unit@{o h +} {C : Category@{o h h}}
   {S : Subcategory C}
   (full : Construction.Subcategory.Full C S)
@@ -50,7 +50,7 @@ Lemma Reflective_of_UniversalArrows_unit@{o h +} {C : Category@{o h h}}
     ≈ @arrow C (Sub C S) x (Incl C S) (UA x).
 Proof. simpl. apply id_left. Qed.
 
-(** ** The dual: coreflective subcategories from couniversal arrows *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -65,7 +65,7 @@ Definition Coreflective_of_CouniversalArrows@{o h +} {C : Category@{o h h}}
     (RightAdjointFunctorFromCouniversalArrows (Incl C S) CA)
     (AdjunctionFromCouniversalArrows (Incl C S) CA).
 
-(* The coreflection of x is the couniversal object, on the nose. *)
+(* The coreflection x couniversal 对象, nose. （已译） *)
 Example Coreflective_of_CouniversalArrows_obj@{o h +}
   {C : Category@{o h h}} {S : Subcategory C}
   (full : Construction.Subcategory.Full C S)
@@ -73,8 +73,7 @@ Example Coreflective_of_CouniversalArrows_obj@{o h +}
   fobj[coreflector (Coreflective_of_CouniversalArrows full CA)] x
     = @coarrow_obj C (Sub C S) x (Incl C S) (CA x) := eq_refl.
 
-(* The covariant counit is the couniversal arrow, up to [≈]: it arrives
-   as [coarrow ∘ fmap[Incl C S] id], Dual.v's [counit_couniversal]. *)
+(* 相关说明。 （已译） *)
 Lemma Coreflective_of_CouniversalArrows_counit@{o h +}
   {C : Category@{o h h}} {S : Subcategory C}
   (full : Construction.Subcategory.Full C S)

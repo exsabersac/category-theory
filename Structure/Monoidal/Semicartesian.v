@@ -19,7 +19,7 @@ Context {C : Category}.
 *)
 
 Class SemicartesianMonoidal `{@Monoidal C} := {
-  (* the discard / projection-to-unit map, the unique x ~> I *)
+  (* 相关说明。 （已译） *)
   eliminate {x} : x ~> I;
 
   (* uniqueness of maps into I, i.e. I is terminal (up to ≈) *)
@@ -31,8 +31,7 @@ Class SemicartesianMonoidal `{@Monoidal C} := {
   proj_right {x y} : x ⨂ y ~> y := unit_left  ∘ eliminate ⨂ id
 }.
 
-(* Discarding after any map is discarding: eliminate is natural, since both
-   sides are maps A ~> I and I is terminal. *)
+(* 相关说明。 （已译） *)
 
 Corollary eliminate_comp `{@Monoidal C} `{@SemicartesianMonoidal _} `{f : A ~> B} :
   eliminate ∘ f ≈ eliminate.
@@ -48,8 +47,8 @@ Require Import Category.Structure.Terminal.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Semicartesian monoidal ==> I is a terminal object, with eliminate as the
-   unique arrow and unit_terminal as its uniqueness proof. *)
+(* Semicartesian monoidal ==> I 终对象, eliminate the
+ 唯一箭头 unit_terminal uniqueness 证明. （已译） *)
 
 Program Definition SemicartesianMonoidal_Terminal `{@Monoidal C}
         `{@SemicartesianMonoidal C _} : @Terminal C := {|

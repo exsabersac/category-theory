@@ -17,12 +17,12 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Currying
+(* * ** Currying
 
-    [FunnyCurry F a] is [F ∘ (a, −)], i.e. [F ◯ FunnyR a]; its action on
-    [f : a ~> a'] is the family of images of the generating steps
-    [lstep f], one component per [b : B].  Everything is definitional on
-    objects: [FunnyCurry F a b ≡ F (a, b)]. *)
+ [FunnyCurry F a] [F ∘ (a, −)], i.e. [F ◯ FunnyR a]; action on
+ [f : ~> a'] family images generating steps
+ [lstep f], one component per [b : B]. Everything definitional on
+ 对象: [FunnyCurry F b ≡ F (a, b)]. （已译） *)
 
 Program Definition FunnyCurry {A B E : Category} (F : (A □ B) ⟶ E) :
   A ⟶ ⟦B, E⟧ := {|

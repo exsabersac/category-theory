@@ -92,9 +92,9 @@ Definition Effectful_Centre {J : V ⟶ K} `{E : @EffectfulFunctor J} :
                  Effectful_Centre_comp f g
 |}.
 
-(** The factorization J = Incl ∘ Effectful_Centre is definitional on
-    morphisms: including the centred image back into K returns exactly
-    the original action of J. *)
+(** The factorization J = Incl ∘ Effectful_Centre definitional on
+ 态射: including centred image back K returns exactly
+ original action J. （已译） *)
 
 Corollary Effectful_Centre_factors {J : V ⟶ K} `{E : @EffectfulFunctor J}
           {x y : V} (f : x ~{V}~> y) :
@@ -126,14 +126,14 @@ Class Freyd (J : V ⟶ K) := {
   freyd_obj_eq (k : K) : fobj[J] (freyd_obj_section k) = k;
   freyd_sec_eq (v : V) : freyd_obj_section (fobj[J] v) = v;
 
-  (* Strict preservation of the unit and the tensor on objects. *)
+  (* Strict preservation unit tensor 对象. （已译） *)
   freyd_obj_I : fobj[J] (@I V MV) = @premon_I K BK PK;
   freyd_obj_tensor {x y : V} :
     fobj[J] ((x ⨂ y)%object) = (fobj[J] x ⊗ fobj[J] y)%object;
 
-  (* Morphism-level strictness of the two tensorings, transported by
-     [id_cast]: tensoring with an identity in V maps to the one-sided
-     tensoring in K. *)
+  (* Morphism-level strictness two tensorings, transported by
+ [id_cast]: tensoring 恒等 V maps one-sided
+ tensoring K. （已译） *)
   freyd_map_left {x y : V} (f : x ~{V}~> y) (z : V) :
     id_cast (@freyd_obj_tensor y z) ∘ fmap[J] (f ⨂ id[z])
       ≈ (fmap[J] f ⋉ fobj[J] z) ∘ id_cast (@freyd_obj_tensor x z);
@@ -142,9 +142,9 @@ Class Freyd (J : V ⟶ K) := {
     id_cast (@freyd_obj_tensor z y) ∘ fmap[J] (id[z] ⨂ f)
       ≈ (fobj[J] z ⋊ fmap[J] f) ∘ id_cast (@freyd_obj_tensor z x);
 
-  (* J sends V's structural isomorphisms to K's, across the casts that
-     mediate between J-images of compound objects and compounds of
-     J-images. *)
+  (* J sends V's structural isomorphisms K's, across casts that
+ mediate between J-images compound 对象 compounds of
+ J-images. （已译） *)
   freyd_unit_left {x : V} :
     fmap[J] (to (@unit_left V MV x))
       ≈ to (@premon_unit_left K BK PK (fobj[J] x))

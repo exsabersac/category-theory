@@ -20,7 +20,7 @@ Context {C : Category}.
 *)
 
 Class SemicocartesianMonoidal `{@Monoidal C} := {
-  (* the create / coprojection-from-unit map, the unique I ~> x *)
+  (* 相关说明。 （已译） *)
   generate {x} : I ~> x;
 
   (* uniqueness of maps out of I, i.e. I is initial (up to ≈) *)
@@ -32,8 +32,7 @@ Class SemicocartesianMonoidal `{@Monoidal C} := {
   embed_right {x y} : y ~> x ⨂ y := generate ⨂ id ∘ unit_left⁻¹
 }.
 
-(* Creating before any map is creating: generate is natural, since both sides
-   are maps I ~> B and I is initial. Dual of eliminate_comp. *)
+(* 相关说明。 （已译） *)
 
 Corollary generate_comp `{@Monoidal C} `{@SemicocartesianMonoidal _} `{f : A ~> B} :
   f ∘ generate ≈ generate.

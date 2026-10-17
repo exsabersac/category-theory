@@ -10,7 +10,7 @@ Require Import Category.Instance.One.
 
 Generalizable All Variables.
 
-(** The comma category over the terminal category is the product category. *)
+(** The comma 范畴 over terminal 范畴 product 范畴. （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/product+category
@@ -24,9 +24,9 @@ Generalizable All Variables.
 
 Section ProductComma.
 
-(* Build the isomorphism (and its functors, naturals, and proofs) by repeatedly
-   peeling the head connective of the goal and discharging the leaf with the
-   appropriate category tactic. *)
+(* Build 同构 (and 函子, naturals, proofs) repeatedly
+ peeling head connective goal discharging leaf the
+ appropriate 范畴 tactic. （已译） *)
 Ltac simpl_cat :=
   repeat (
     simpl; intros;

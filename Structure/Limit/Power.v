@@ -10,7 +10,7 @@ Require Import Category.Instance.Discrete.
 
 Generalizable All Variables.
 
-(** * Powers and copowers of a single object *)
+(* * * Powers copowers single 对象 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/copower
@@ -21,11 +21,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The elementary universal properties, at a constant family *)
+(* * ** The elementary universal properties, at 常值 family （已译） *)
 
-(* A power of [b] by the index [J]: an object [p] with a family [ev] of
-   evaluation maps that is universal among such families.  Mac Lane's [b^J];
-   Riehl's [A^I] with [ev_i] the projections. *)
+(* A power [b] index [J]: 对象 [p] family [ev] of
+ evaluation maps universal among such families. Mac Lane's [b^J];
+ Riehl's [A^I] [ev_i] projections. （已译） *)
 Definition IsPower {C : Category} {J : Type} (b p : C)
   (ev : ∀ _ : J, p ~> b) : Type :=
   IsIndexedProduct (fun _ : J => b) p ev.
@@ -44,8 +44,8 @@ Example IsCopower_is_IsIndexedCoproduct {C : Category} {J : Type} (b p : C)
   (inj : ∀ _ : J, b ~> p) :
   IsCopower b p inj = IsIndexedCoproduct (fun _ : J => b) p inj := eq_refl.
 
-(* The universal property, read with arrows in [C].  The copower form is
-   covariant: no [^op] appears in its statement. *)
+(* The 普遍性质, read arrows [C]. The copower form is
+ covariant: no [^op] appears statement. （已译） *)
 Definition power_desc {C : Category} {J : Type} {b p : C}
   {ev : ∀ _ : J, p ~> b} (H : IsPower b p ev)
   {c : C} (pi : ∀ _ : J, c ~> b) :
@@ -58,7 +58,7 @@ Definition copower_desc {C : Category} {J : Type} {b p : C}
   ∃! u : p ~> c, ∀ j : J, u ∘ inj j ≈ iota j :=
   @icoprod_desc C J (fun _ : J => b) p inj H c iota.
 
-(* Smart constructors, taking the data in that same covariant form. *)
+(* 相关说明。 （已译） *)
 Definition Build_IsPower {C : Category} {J : Type} (b p : C)
   (ev : ∀ _ : J, p ~> b)
   (desc : ∀ (c : C) (pi : ∀ _ : J, c ~> b),
@@ -73,7 +73,7 @@ Definition Build_IsCopower {C : Category} {J : Type} (b p : C)
   IsCopower b p inj :=
   @Build_IsIndexedCoproduct C J (fun _ : J => b) p inj desc.
 
-(** ** The chosen power and copower, from the classes *)
+(* 相关说明。 （已译） *)
 
 Definition power {C : Category} {HP : @HasIndexedProducts C}
   (J : Type) (b : C) : C :=

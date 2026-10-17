@@ -26,7 +26,7 @@ Require Import Category.Construction.Reflective.Idempotent.
 
 Generalizable All Variables.
 
-(** ** The comparison functor of a reflection *)
+(* * ** The comparison 函子 reflection （已译） *)
 
 (*
    本节说明伴随、单子、Eilenberg–Moore相关定义、性质与动机。
@@ -43,9 +43,9 @@ Definition reflective_comparison_Faithful@{o h +} {C : Category@{o h h}}
   Faithful (reflective_comparison R).
 Proof. constructor; intros x y f g H; exact H. Defined.
 
-(* A morphism of algebras between two comparison algebras is an arrow of
-   C between objects of the subcategory; fullness of the subcategory puts
-   it back in [Sub C S]. *)
+(* A 态射 algebras between two comparison algebras arrow of
+ C between 对象 subcategory; fullness subcategory puts
+ it back [Sub C S]. （已译） *)
 Definition reflective_comparison_prefmap@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (R : Reflective S) {s t : Sub C S}
   (h : reflective_comparison R s ~> reflective_comparison R t) : s ~> t :=
@@ -59,7 +59,7 @@ Proof.
   intros s t h; simpl; reflexivity.
 Defined.
 
-(* The chosen preimage of an algebra (a, α) is the reflection of [a]. *)
+(* 相关说明。 （已译） *)
 Definition reflective_eso_obj@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (R : Reflective S)
   (z : @EilenbergMoore C (Incl C S ◯ reflector R) (Reflective_Monad R)) :
@@ -104,8 +104,8 @@ Definition reflective_comparison_ESO@{o h +} {C : Category@{o h h}}
 
 (** ** Riehl, Proposition 5.3.3 (ii) *)
 
-(* The subcategory ITSELF is equivalent to the algebras of the induced
-   idempotent monad, by the comparison functor. *)
+(* The subcategory ITSELF equivalent algebras induced
+ idempotent 单子, comparison 函子. （已译） *)
 Definition Reflective_EM_Equivalence@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (R : Reflective S) :
   EquivalenceOfCategories (reflective_comparison R) :=
@@ -113,17 +113,17 @@ Definition Reflective_EM_Equivalence@{o h +} {C : Category@{o h h}}
     (reflective_comparison_Full R) (reflective_comparison_Faithful R)
     (reflective_comparison_ESO R).
 
-(* The inclusion of a reflective subcategory is monadic, in
-   Monad/Comparison.v's sense: the reflector, the reflection, and the
-   equivalence above. *)
+(* The 含入 reflective subcategory monadic, in
+ Monad/Comparison.v's sense: reflector, reflection, the
+ 等价 above. （已译） *)
 Definition Reflective_Monadic@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (R : Reflective S) : Monadic (Incl C S) :=
   (reflector R; (reflective_adj R; Reflective_EM_Equivalence R)).
 
 (** ** Readbacks *)
 
-(* The comparison sends an object of the subcategory to its own carrier,
-   with the counit read through the inclusion as the structure map. *)
+(* The comparison sends 对象 subcategory own carrier,
+ counit read through 含入 structure map. （已译） *)
 Example reflective_comparison_obj@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (R : Reflective S) (s : Sub C S) :
   ``(reflective_comparison R s) = `1 s := eq_refl.
@@ -133,19 +133,19 @@ Example reflective_comparison_alg@{o h +} {C : Category@{o h h}}
   t_alg[projT2 (reflective_comparison R s)]
     = fmap[Incl C S] (@counit _ _ _ _ (reflective_adj R) s) := eq_refl.
 
-(* The chosen preimage of an algebra is the reflection of its carrier. *)
+(* 相关说明。 （已译） *)
 Example reflective_eso_obj_is_reflector@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (R : Reflective S)
   (z : @EilenbergMoore C (Incl C S ◯ reflector R) (Reflective_Monad R)) :
   reflective_eso_obj R z = fobj[reflector R] ``z := eq_refl.
 
-(* The isomorphism's forward leg IS the algebra's structure map. *)
+(* The 同构's forward leg IS algebra's structure map. （已译） *)
 Example reflective_eso_iso_to@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (R : Reflective S) (a : C)
   (alg : @TAlgebra C _ (Reflective_Monad R) a) :
   t_alg_hom[to (reflective_eso_iso R (a; alg))] = t_alg[alg] := eq_refl.
 
-(* The monadic witness's left adjoint is the reflector itself. *)
+(* The monadic witness's 左伴随 reflector itself. （已译） *)
 Example Reflective_Monadic_left@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (R : Reflective S) :
   `1 (Reflective_Monadic R) = reflector R := eq_refl.

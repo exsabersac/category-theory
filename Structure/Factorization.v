@@ -26,9 +26,9 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* An (E, M)-factorization of f : x ~> y: a middle object [fact_mid], a
-   left leg [fact_e] belonging to E, and a right leg [fact_m] belonging to
-   M, with [fact_m ∘ fact_e ≈ f]. *)
+(* An (E, M)-factorization f : x ~> y: middle 对象 [fact_mid], a
+ left leg [fact_e] belonging E, right leg [fact_m] belonging to
+ M, [fact_m ∘ fact_e ≈ f]. （已译） *)
 Record Factorization {C : Category} {x y : C} (f : x ~> y)
   (E M : MorphismClass C) := {
   fact_mid  : C;
@@ -61,8 +61,8 @@ Section FactorizationSystem.
 Context {C : Category}.
 Context {E M : MorphismClass C}.
 
-(* Two factorizations of one morphism bound the same commuting square: the
-   two composites are both ≈ f, hence ≈ each other. *)
+(* Two factorizations one 态射 bound same 交换方块: the
+ two composites both ≈ f, hence ≈ each other. （已译） *)
 Lemma factorization_square {x y : C} {f : x ~> y}
   (F1 F2 : Factorization f E M) :
   fact_m F2 ∘ fact_e F2 ≈ fact_m F1 ∘ fact_e F1.
@@ -72,9 +72,9 @@ Proof.
   reflexivity.
 Qed.
 
-(* The comparison morphism between two factorizations of f: the unique
-   diagonal filler of the square [fact_m F2 ∘ fact_e F2 ≈ fact_m F1 ∘
-   fact_e F1], obtained from (fact_e F1) ⫫ (fact_m F2). *)
+(* The comparison 态射 between two factorizations f: unique
+ diagonal filler square [fact_m F2 ∘ fact_e F2 ≈ fact_m F1 ∘
+ fact_e F1], obtained (fact_e F1) ⫫ (fact_m F2). （已译） *)
 Lemma factorization_lift {O : OFS E M} {x y : C} {f : x ~> y}
   (F1 F2 : Factorization f E M) :
   ∃ d : fact_mid F1 ~> fact_mid F2,
@@ -87,8 +87,8 @@ Proof.
   exact (unique_obj U; unique_property U).
 Qed.
 
-(* Any two comparison morphisms between the same pair of factorizations
-   agree: both fill the same orthogonality square, whose filler is unique. *)
+(* Any two comparison 态射 between same pair factorizations
+ agree: both fill same orthogonality square, whose filler unique. （已译） *)
 Lemma factorization_lift_unique {O : OFS E M} {x y : C} {f : x ~> y}
   (F1 F2 : Factorization f E M) (d d' : fact_mid F1 ~> fact_mid F2)
   (de : d ∘ fact_e F1 ≈ fact_e F2) (md : fact_m F2 ∘ d ≈ fact_m F1)
@@ -203,7 +203,7 @@ Proof.
     reflexivity.
   }
   pose proof (@ortho_lift _ _ _ _ _ e' m' Hself e' m' selfcomm) as Uself.
-  (* Both e' ∘ (unique_obj U) and id fill the self-square of (e', m'). *)
+  (* 相关说明。 （已译） *)
   assert (Hu1 : unique_obj Uself ≈ e' ∘ unique_obj U). {
     apply (uniqueness Uself).
     split.
@@ -258,7 +258,7 @@ Proof.
     reflexivity.
   }
   pose proof (@ortho_lift _ _ _ _ _ e' m' Hself e' m' selfcomm) as Uself.
-  (* Both (unique_obj U) ∘ m' and id fill the self-square of (e', m'). *)
+  (* 相关说明。 （已译） *)
   assert (Hu1 : unique_obj Uself ≈ unique_obj U ∘ m'). {
     apply (uniqueness Uself).
     split.

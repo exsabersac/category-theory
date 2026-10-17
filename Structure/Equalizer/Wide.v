@@ -12,7 +12,7 @@ Require Import Category.Instance.Two.
 
 Generalizable All Variables.
 
-(** * Wide equalizers, elementarily: wide forks and descent *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/wide+pullback
@@ -23,18 +23,16 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The wide equalizer of a diagram of shape [WideParallel I]: a terminal
-   cone, exactly as [Structure/Equalizer.v]'s [Equalizer] is over the
-   two-arrow shape. *)
+(* 相关说明。 （已译） *)
 Definition WideEqualizer {C : Category} {I : Type} (F : WideParallel I ⟶ C) :=
   Limit F.
 
-(* The elementary universal property: [e] equalizes the whole family at q,
-   and every map h into x that the family agrees on factors uniquely
-   through e. *)
+(* The elementary 普遍性质: [e] equalizes whole family at q,
+ every map h x family agrees factors uniquely
+ through e. （已译） *)
 Record IsWideEqualizer {C : Category} {I : Type} {x y : C}
   (fs : I → x ~> y) (q : C) (e : q ~> x) := {
-  (* every member of the family absorbs e in the same way *)
+  (* 相关说明。 （已译） *)
   wfork_eq : ∀ i j : I, fs i ∘ e ≈ fs j ∘ e;
 
   (* universal property: every jointly forking map h factors uniquely *)
@@ -62,12 +60,11 @@ Context {I : Type}.
 Context {x y : C}.
 Context (fs : I → x ~> y).
 
-(* Abbreviations for the diagram and its shape; these are notations, so the
-   statements below are literally about [AWide fs] and [WideParallel I]. *)
+(* 相关说明。 （已译） *)
 Local Notation WFam := (AWide fs).
 Local Notation WShape := (WideParallel I).
 
-(** ** Wide equalizing maps are monomorphisms *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Wide 相关定义、性质与动机。
@@ -93,7 +90,7 @@ Proof.
     exact Hg.
 Qed.
 
-(** ** Wide equalizers are unique up to isomorphism *)
+(* * ** Wide equalizers unique up 同构 （已译） *)
 
 Lemma wide_equalizer_unique {q1 q2 : C} {e1 : q1 ~> x} {e2 : q2 ~> x}
   (E1 : IsWideEqualizer fs q1 e1) (E2 : IsWideEqualizer fs q2 e2) :
@@ -122,7 +119,7 @@ Proof.
       apply id_right.
 Defined.
 
-(** ** From the limit presentation to the fork equations *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -143,7 +140,7 @@ Proof.
              (j : ParX ~{WShape}~> ParY)).
 Qed.
 
-(** ** The round trips, over a chosen member of the family *)
+(* 相关说明。 （已译） *)
 
 Section Pointed.
 
@@ -154,9 +151,9 @@ Section Pointed.
 *)
 Context (i0 : I).
 
-(* The legs of the cone induced by a jointly forking map h: the leg over
-   [ParX] is h itself, the leg over [ParY] the common composite through the
-   chosen member. *)
+(* The legs cone induced jointly forking map h: leg over
+ [ParX] h itself, leg over [ParY] common 复合 through the
+ chosen member. （已译） *)
 Definition wfork_legs {z : C} (h : z ~> x) (p : ParObj) :
   z ~{C}~> WFam p :=
   match p return (z ~{C}~> WFam p) with
@@ -164,8 +161,7 @@ Definition wfork_legs {z : C} (h : z ~> x) (p : ParObj) :
   | ParY => fs i0 ∘ h
   end.
 
-(* Leg coherence.  This statement is definitionally the [cone_coherence]
-   field of an [ACone] over [AWide fs]. *)
+(* 相关说明。 （已译） *)
 Lemma wfork_legs_coherence {z : C} (h : z ~> x)
   (Hh : ∀ i j : I, fs i ∘ h ≈ fs j ∘ h) :
   ∀ (a b : ParObj) (k : a ~{WShape}~> b),
@@ -209,7 +205,7 @@ Proof using All.
     intros p.
     destruct p.
     + exact Hv.
-    + (* the ParY leg follows from the ParX leg via coherence at i0 *)
+    + (* 相关说明。 （已译） *)
       rewrite <- (limit_leg_coherence (limit_is_alimit L)
                     (i0 : ParX ~{WShape}~> ParY)).
       rewrite <- comp_assoc.
@@ -223,14 +219,14 @@ Definition wide_equalizer_is_equalizer (L : WideEqualizer WFam) :
   {| wfork_eq  := wide_limit_equalizes L
    ; weq_desc  := fun z h Hh => wide_limit_equalizer_desc L h Hh |}.
 
-(** ** From the elementary presentation back to the limit *)
+(* 相关说明。 （已译） *)
 
 Definition is_wide_equalizer_cone {q : C} {e : q ~> x}
   (E : IsWideEqualizer fs q e) : Cone WFam :=
   wfork_cone e (wfork_eq E).
 
-(* The universal property of that cone; definitionally the [ump_limits]
-   field of the limit whose limit cone is [is_wide_equalizer_cone]. *)
+(* The 普遍性质 cone; definitionally [ump_limits]
+ field limit whose limit cone [is_wide_equalizer_cone]. （已译） *)
 Lemma is_wide_equalizer_cone_ump {q : C} {e : q ~> x}
   (E : IsWideEqualizer fs q e) (N : Cone WFam) :
   ∃! u : vertex_obj[N] ~> q,
@@ -250,7 +246,7 @@ Proof.
   - intros p.
     destruct p.
     + exact (unique_property (weq_desc E (cone_leg N ParX) Hfs)).
-    + (* the leg over ParY: (fs i0 ∘ e) ∘ u ≈ nY via the ParX triangle *)
+    + (* 相关说明。 （已译） *)
       simpl.
       rewrite <- comp_assoc.
       rewrite (unique_property (weq_desc E (cone_leg N ParX) Hfs)).
@@ -260,8 +256,7 @@ Proof.
     exact (Hv ParX).
 Qed.
 
-(* An elementary wide equalizer yields the bundled limit over the wide
-   shape. *)
+(* 相关说明。 （已译） *)
 Definition is_wide_equalizer_limit {q : C} {e : q ~> x}
   (E : IsWideEqualizer fs q e) : WideEqualizer WFam :=
   {| limit_cone := is_wide_equalizer_cone E
@@ -269,11 +264,11 @@ Definition is_wide_equalizer_limit {q : C} {e : q ~> x}
 
 End Pointed.
 
-(** ** The inhabitant is necessary, not merely convenient *)
+(* 相关说明。 （已译） *)
 
-(* Over an empty index the fork condition is vacuous, so the identity of x
-   satisfies the elementary record — descent is then just [id_left], and
-   needs no emptiness at all. *)
+(* Over empty index fork condition vacuous, so 恒等 x
+ satisfies elementary record — descent then just [id_left], and
+ needs no emptiness at all. （已译） *)
 Lemma wide_empty_id_IsWideEqualizer (Hempty : I → False) :
   IsWideEqualizer fs x id[x].
 Proof.

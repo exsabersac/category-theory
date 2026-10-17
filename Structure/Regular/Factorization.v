@@ -21,14 +21,12 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The class of regular epimorphisms, as a morphism class in the sense of
-   Theory/Morphisms/Classes.v. *)
+(* The class regular epimorphisms, 态射 class sense of
+ Theory/Morphisms/Classes.v. （已译） *)
 Definition RegularEpiClass {C : Category} : MorphismClass C :=
   fun _ _ f => RegularEpi f.
 
-(* The elementary coequalizer property transports along ≈ of the
-   coequalizing map: the cofork equation rewrites, and equivalent maps
-   carry exactly the same descents. *)
+(* 相关说明。 （已译） *)
 Lemma is_coequalizer_respects {C : Category} {x y q : C}
   (f g : x ~> y) (e e' : y ~> q) :
   e ≈ e' → IsCoequalizer f g q e → IsCoequalizer f g q e'.
@@ -50,8 +48,7 @@ Proof.
       exact Hv.
 Qed.
 
-(* Being a regular epimorphism transports along ≈: the same parallel pair,
-   with the transported coequalizer structure, is a witness. *)
+(* 相关说明。 （已译） *)
 Lemma regular_epi_respects {C : Category} {x y : C} (f g : x ~> y) :
   f ≈ g → RegularEpi f → RegularEpi g.
 Proof.
@@ -93,19 +90,19 @@ Section RegularFactorization.
 Context {C : Category}.
 Context (R : Regular C).
 
-(* The kernel pair of f, on the chosen pullbacks of the regular structure. *)
+(* 相关说明。 （已译） *)
 Definition image_kernel_pair {x y : C} (f : x ~> y) : Pullback f f :=
   @kernel_pair C (@regular_pullbacks C R) x y f.
 
-(* The image object of f: the coequalizer of its kernel pair. *)
+(* The image 对象 f: coequalizer kernel pair. （已译） *)
 Definition image_obj {x y : C} (f : x ~> y) : C :=
   `1 (@regular_coeq C R x y f).
 
-(* The coequalizing map onto the image. *)
+(* 相关说明。 （已译） *)
 Definition image_epi {x y : C} (f : x ~> y) : x ~> image_obj f :=
   `1 (`2 (@regular_coeq C R x y f)).
 
-(* The elementary coequalizer structure carried by the image. *)
+(* 相关说明。 （已译） *)
 Definition image_is_coeq {x y : C} (f : x ~> y) :
   IsCoequalizer
     (pullback_fst f f (image_kernel_pair f))
@@ -113,14 +110,13 @@ Definition image_is_coeq {x y : C} (f : x ~> y) :
     (image_obj f) (image_epi f) :=
   `2 (`2 (@regular_coeq C R x y f)).
 
-(* f coforks its own kernel pair — the pullback square — so it descends
-   uniquely across the coequalizing map. *)
+(* 相关说明。 （已译） *)
 Definition image_desc {x y : C} (f : x ~> y) :
   ∃! u : image_obj f ~> y, u ∘ image_epi f ≈ f :=
   coeq_desc (image_is_coeq f) f
     (pullback_commutes f f (image_kernel_pair f)).
 
-(* The comparison morphism from the image into the codomain. *)
+(* The comparison 态射 image 进入 codomain. （已译） *)
 Definition image_mor {x y : C} (f : x ~> y) : image_obj f ~> y :=
   unique_obj (image_desc f).
 
@@ -129,8 +125,7 @@ Definition image_commutes {x y : C} (f : x ~> y) :
   image_mor f ∘ image_epi f ≈ f :=
   unique_property (image_desc f).
 
-(* The left leg is a regular epimorphism: it coequalizes the kernel pair
-   of f. *)
+(* 相关说明。 （已译） *)
 Definition image_epi_regular {x y : C} (f : x ~> y) :
   RegularEpi (image_epi f) :=
   @regular_epi_of_kernel_coeq C R x y f.
@@ -170,9 +165,7 @@ Proof using C R.
     exact (@regular_stable C R x (Pull (image_epi f) a P1) (image_obj f)
              (image_epi f) (b ∘ pi1) (image_epi_regular f)).
   }
-  (* (iii) the two legs of the double cover into x agree under f:
-       f ∘ (s1 ∘ pi2) ≈ m ∘ e ∘ s1 ∘ pi2 ≈ m ∘ a ∘ pi1 ∘ pi2
-         ≈ m ∘ b ∘ pi1 ∘ pi2 ≈ m ∘ e ∘ s2 ≈ f ∘ s2 *)
+  (* 相关说明。 （已译） *)
   assert (Hcone : f ∘ (s1 ∘ pi2) ≈ f ∘ s2). {
     transitivity ((image_mor f ∘ image_epi f) ∘ (s1 ∘ pi2)).
     - apply compose_respects.
@@ -191,11 +184,11 @@ Proof using C R.
         * exact (image_commutes f).
         * reflexivity.
   }
-  (* the legs therefore factor through the kernel pair of f *)
+  (* 相关说明。 （已译） *)
   pose proof (ump_pullbacks f f (image_kernel_pair f) _
                 (s1 ∘ pi2) s2 Hcone) as Uw.
   destruct (unique_property Uw) as [Hw1 Hw2].
-  (* (iv) e coequalizes the kernel pair, so the legs agree under e *)
+  (* 相关说明。 （已译） *)
   assert (Hes : image_epi f ∘ (s1 ∘ pi2) ≈ image_epi f ∘ s2). {
     transitivity
       (image_epi f
@@ -214,8 +207,7 @@ Proof using C R.
         * reflexivity.
         * exact Hw2.
   }
-  (* unwinding the two pullback squares identifies a and b on the double
-     cover *)
+  (* 相关说明。 （已译） *)
   assert (Hfinal : a ∘ (pi1 ∘ pi2) ≈ b ∘ (pi1 ∘ pi2)). {
     rewrite !comp_assoc.
     rewrite <- Hc1.
@@ -233,8 +225,7 @@ Proof using C R.
   exact Hfinal.
 Qed.
 
-(* The image factorization of f, as an (E, M)-factorization for E the
-   regular epimorphisms and M the monomorphisms. *)
+(* 相关说明。 （已译） *)
 Definition regular_factorization {x y : C} (f : x ~> y) :
   Factorization f (@RegularEpiClass C) (@MonoClass C) := {|
   fact_mid  := image_obj f;

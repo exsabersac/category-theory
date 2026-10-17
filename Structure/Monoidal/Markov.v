@@ -41,12 +41,12 @@ Context {C : Category}.
 Context `{S : @SymmetricMonoidal C}.
 
 Class MarkovCategory : Type := {
-  (* The copy-discard structure: a commutative comonoid on every object,
-     coherent with the tensor and the unit (but NOT natural). *)
+  (* The copy-discard structure: commutative comonoid every 对象,
+ coherent tensor unit (but NOT natural). （已译） *)
   markov_is_cd : @CopyDiscard C S;
 
-  (* The unit [I] is terminal (the category is semicartesian / affine):
-     synthetically, "probability distributions are normalized". *)
+  (* The unit [I] terminal (范畴 semicartesian / affine):
+ synthetically, "probability distributions normalized". （已译） *)
   markov_semicartesian :
     @SemicartesianMonoidal C
       (@braided_is_monoidal C (@symmetric_is_braided C S))
@@ -113,9 +113,9 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* Copying then discarding one of the two copies is the identity: the
-   comonoid counit laws, with [eliminate] traded for [discard] by
-   terminality of [I]. *)
+(* Copying then discarding one two copies 恒等: the
+ comonoid counit laws, [eliminate] traded [discard] by
+ terminality [I]. （已译） *)
 
 Lemma proj_left_copy {x : C} :
   @proj_left C _ markov_semicartesian x x ∘ copy[x] ≈ id[x].

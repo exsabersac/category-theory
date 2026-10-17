@@ -25,7 +25,7 @@ Set Transparent Obligations.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Direction 1: a monoidal category is premonoidal *)
+(* * ** Direction 1: 幺半范畴 premonoidal （已译） *)
 
 Section MonoidalPremonoidal.
 
@@ -251,9 +251,9 @@ Definition Premonoidal_Monoidal : @Monoidal C :=
     (fun x y => premon_triangle_ff')
     (fun x y z w => premon_pentagon_ff').
 
-(* The induced monoidal tensor acts on morphism pairs exactly by
-   [composite_ff']; the agreement is definitional, recorded here as
-   the explicit bridge between the two spellings. *)
+(* The induced monoidal tensor acts 态射 pairs exactly by
+ [composite_ff']; agreement definitional, recorded here as
+ explicit bridge between two spellings. （已译） *)
 Corollary Premonoidal_Monoidal_bimap {x x' y y' : C}
           (f : x ~> y) (f' : x' ~> y') :
   f ⨂[Premonoidal_Monoidal] f' ≈ composite_ff' f f'.

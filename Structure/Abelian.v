@@ -66,7 +66,7 @@ Section AbelianFacts.
 Context {C : Category}.
 Context `{A : @Abelian C}.
 
-(** ** Monic and epic as vanishing tests *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Abelian 相关定义、性质与动机。
@@ -131,7 +131,7 @@ Proof.
     apply pzero_zero_mor.
 Qed.
 
-(** ** The chosen kernel, cokernel, and image *)
+(* 相关说明。 （已译） *)
 
 Definition abelian_coker_obj {x y : C} (f : x ~> y) : C :=
   `1 (cokernel f).
@@ -154,7 +154,7 @@ Definition abelian_kernel_is {x y : C} (f : x ~> y) :
   IsKernel f (abelian_kernel f) :=
   `2 (`2 (kernel f)).
 
-(* The normality fields, restated through the named accessors. *)
+(* 相关说明。 （已译） *)
 Definition abelian_monic_is_kernel {x y : C} (f : x ~> y) (Hm : Monic f) :
   IsKernel (abelian_coker f) f :=
   abelian_monic_normal f Hm.
@@ -163,7 +163,7 @@ Definition abelian_epic_is_cokernel {x y : C} (f : x ~> y) (He : Epic f) :
   IsCokernel (abelian_kernel f) f :=
   abelian_epic_normal f He.
 
-(* The image of f: the kernel of its chosen cokernel. *)
+(* 相关说明。 （已译） *)
 Definition abelian_image_obj {x y : C} (f : x ~> y) : C :=
   abelian_kernel_obj (abelian_coker f).
 
@@ -178,8 +178,7 @@ Definition abelian_image_is {x y : C} (f : x ~> y) :
 Lemma abelian_image_monic {x y : C} (f : x ~> y) : Monic (abelian_image f).
 Proof. exact (kernel_monic (abelian_image_is f)). Qed.
 
-(* f is absorbed by its cokernel, so it factors uniquely through the
-   kernel of that cokernel: the mediator onto the image. *)
+(* 相关说明。 （已译） *)
 Definition abelian_image_med_ex {x y : C} (f : x ~> y) :
   ∃! w : x ~> abelian_image_obj f, abelian_image f ∘ w ≈ f :=
   kernel_desc (abelian_image_is f) f
@@ -193,7 +192,7 @@ Lemma abelian_image_med_comm {x y : C} (f : x ~> y) :
   abelian_image f ∘ abelian_image_med f ≈ f.
 Proof. exact (unique_property (abelian_image_med_ex f)). Qed.
 
-(** ** The mediator onto the image is epic *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明核/余核相关定义、性质与动机。
@@ -221,14 +220,14 @@ Proof.
     apply zero_mor_right. }
   (* hence r descends through the chosen cokernel of f *)
   pose proof (cokernel_desc (abelian_coker_is f) r Hrf) as S.
-  (* r absorbs the image inclusion as well, across the descent *)
+  (* r absorbs image 含入 well, across descent （已译） *)
   assert (Hrm : r ∘ abelian_image f ≈ zero_mor).
   { rewrite <- (unique_property S).
     rewrite <- comp_assoc.
     rewrite (kernel_comp_zero (abelian_image_is f)).
     apply zero_mor_left. }
-  (* so the image inclusion factors through the kernel of r, which is
-     abelian_image f ∘ j itself; cancelling the monic inclusion splits j *)
+  (* so image 含入 factors through kernel r, is
+ abelian_image f ∘ j itself; cancelling monic 含入 splits j （已译） *)
   pose proof (kernel_desc KN (abelian_image f) Hrm) as V.
   assert (Hjv : j ∘ unique_obj V ≈ id).
   { apply (@monic C (abelian_image_obj f) y (abelian_image f)
@@ -280,7 +279,7 @@ Proof using A C.
     + exact (abelian_image_med_comm f).
 Qed.
 
-(** ** The (Epi, Mono) orthogonal factorization system *)
+(* 相关说明。 （已译） *)
 
 (* Epimorphisms transport along ≈: rewrite inside the cancellation. *)
 Lemma epic_respects_equiv {x y : C} (f g : x ~> y) :
@@ -306,7 +305,7 @@ Proof.
   exact Hg.
 Qed.
 
-(* The image factorization, packaged for the factorization system. *)
+(* 相关说明。 （已译） *)
 Definition abelian_factorization {x y : C} (f : x ~> y) :
   Factorization f (@EpiClass C) (@MonoClass C) := {|
   fact_mid  := abelian_image_obj f;

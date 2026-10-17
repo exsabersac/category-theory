@@ -136,14 +136,14 @@ Definition ZigZagProj_inverts {x y : C} (f : x ~> y) (w : W x y f) :
   @Build_IsIsomorphism FracZigZag x y (fmap[ZigZagProj] f)
     (zbwd f w) (cc_gen (zr_inv_r f w)) (cc_gen (zr_inv_l f w)).
 
-(* ...and so, symmetrically, does the formal inverse itself. *)
+(* 相关说明。 （已译） *)
 Definition zbwd_IsIso {x y : C} (f : x ~> y) (w : W x y f) :
   @IsIsomorphism FracZigZag y x (zbwd f w) :=
   @Build_IsIsomorphism FracZigZag y x (zbwd f w)
     (zfwd f) (cc_gen (zr_inv_l f w)) (cc_gen (zr_inv_r f w)).
 
-(* The two cancellation equations, as they read after any functor out of the
-   localization. *)
+(* The two cancellation equations, they read after any 函子 out the
+ localization. （已译） *)
 Lemma zbwd_zfwd_functor {D : Category} (K : FracZigZag ⟶ D)
   {x y : C} (f : x ~> y) (w : W x y f) :
   fmap[K] (zbwd f w) ∘ fmap[K] (zfwd f) ≈ id.
@@ -228,7 +228,7 @@ Proof.
   - now rewrite fmap_comp, zump_free_fwd, zump_free_bwd, fmap_id, winv_right.
 Qed.
 
-(* The induced functor out of the localization. *)
+(* The induced 函子 out localization. （已译） *)
 Definition ZigZagLift : FracZigZag ⟶ D :=
   @QuotientCongLift FreeZigZag D ZRel zump_free zump_merges.
 
@@ -248,7 +248,7 @@ Proof.
   intros x y f; exact (ZigZagLift_fwd f).
 Qed.
 
-(** *** Uniqueness of the factorization *)
+(* 相关说明。 （已译） *)
 
 Lemma ZigZagLift_unique_edge (G : FracZigZag ⟶ D)
   (Hobj : ∀ x : C, fobj[G] x = fobj[F] x)
@@ -319,11 +319,11 @@ Arguments ZRel {C} W x y _ _.
 Arguments FracZigZag {C} W.
 Arguments ZigZagProj {C} W.
 
-(** * The category of fractions [C[C⁻¹]] *)
+(* * * The 范畴 fractions [C[C⁻¹]] （已译） *)
 
-(* The class consisting of every morphism.  It is [Type]-valued because the
-   generating relation [ZRel] is, and [unit] rather than [True] so that no
-   [Prop]-elimination restriction can arise. *)
+(* The class consisting every 态射. It [Type]-valued because the
+ generating 关系 [ZRel] is, [unit] rather than [True] so no
+ [Prop]-elimination restriction can arise. （已译） *)
 Definition WAll (C : Category) : ∀ x y : C, (x ~> y) → Type :=
   fun _ _ _ => unit.
 
@@ -382,7 +382,7 @@ Proof.
     + exact (zbwd_IsIso (WAll C) g u).
 Defined.
 
-(** ** The universal property of [C[C⁻¹]] *)
+(* * ** The 普遍性质 [C[C⁻¹]] （已译） *)
 
 Section FractionsUMP.
 
@@ -424,7 +424,7 @@ Definition Fractions_UMP :
 
 End FractionsUMP.
 
-(** ** Riehl 4.1.15, the left half, at a groupoid target *)
+(* 相关说明。 （已译） *)
 
 (* Every functor into a groupoid inverts every morphism, so the hypothesis of
    [Fractions_UMP] is automatic there. *)
@@ -435,9 +435,9 @@ Definition Fractions_UMP_groupoid {C D : Category} (Dg : IsGroupoid D)
                 F (L ◯ FractionsProj C)) :=
   Fractions_UMP F (fun x y f => Dg (F x) (F y) (fmap[F] f)).
 
-(* The other half of the hom-set bijection: precomposition with the
-   projection is injective on functors into a groupoid.  Two functors out of
-   [C[C⁻¹]] that agree on [C] agree everywhere. *)
+(* The other half hom-set bijection: precomposition the
+ projection injective 函子 groupoid. Two 函子 out of
+ [C[C⁻¹]] agree [C] agree everywhere. （已译） *)
 Corollary Fractions_proj_epic {C D : Category} (Dg : IsGroupoid D)
   (L L' : Fractions C ⟶ D)
   (E : @equiv _ (@Functor_StrictEq_Setoid C D)
@@ -450,7 +450,7 @@ Proof.
   - exact (uniqueness U L' E).
 Qed.
 
-(** ** The bridge to the free groupoid on a quiver *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -462,7 +462,7 @@ Definition FreeGroupoidToFractions (C : Category) :
   FreeGroupoidFunctor (QuiverOfCat C) (Fractions_IsGroupoid C)
     (QuiverHomomorphismOfFunctor C (Fractions C) (FractionsProj C)).
 
-(* It carries a positive generator to the image of that morphism of [C]. *)
+(* It carries positive generator image 态射 [C]. （已译） *)
 Lemma FreeGroupoidToFractions_pos {C : Category} {x y : C} (f : x ~> y) :
   fmap[FreeGroupoidToFractions C] (fgpos (G:=QuiverOfCat C) f)
     ≈ fmap[FractionsProj C] f.
@@ -471,7 +471,7 @@ Proof.
            (QuiverHomomorphismOfFunctor C (Fractions C) (FractionsProj C)) f).
 Qed.
 
-(* ...and it is the identity on objects. *)
+(* ...and it 恒等 对象. （已译） *)
 Lemma FreeGroupoidToFractions_obj {C : Category} (x : C) :
   fobj[FreeGroupoidToFractions C] x = x.
 Proof. reflexivity. Qed.
@@ -567,9 +567,9 @@ Proof.
   - rewrite E; exact (FractionsLift_fwd (Id[C]) Finv g).
 Defined.
 
-(* An unconditional instance of that: the core of any category is a groupoid
-   (Structure/Groupoid.v's [core_is_groupoid]), so localizing a core merges
-   nothing. *)
+(* An unconditional instance that: core any 范畴 groupoid
+ (Structure/Groupoid.v's [core_is_groupoid]), so localizing core merges
+ nothing. （已译） *)
 Definition FractionsProj_Faithful_core (C : Category) :
   Faithful (FractionsProj (Groupoid C)) :=
   FractionsProj_Faithful (core_is_groupoid C).

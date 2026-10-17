@@ -5,7 +5,7 @@ Require Import Category.Theory.Displayed.
 
 Generalizable All Variables.
 
-(** * The total category of a displayed category *)
+(* * * The total 范畴 displayed 范畴 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/Grothendieck+construction
@@ -30,16 +30,16 @@ Program Definition Total {C : Category} (D : Displayed C) : Category := {|
 Next Obligation.
   (* The total hom equivalence is an equivalence relation. *)
   split.
-  - (* reflexivity: the identity proof, cancelled by [dtransport_id] *)
+  - (* reflexivity: 恒等 证明, cancelled [dtransport_id] （已译） *)
     intros [f ff].
     exists (Equivalence_Reflexive f).
     now apply dtransport_id.
-  - (* symmetry: invert the base proof; flip the transport across ≈ *)
+  - (* symmetry: invert base 证明; flip transport across ≈ （已译） *)
     intros [f ff] [g gg] [e He]; simpl in *.
     exists (symmetry e).
     symmetry.
     now apply (fst (dtransport_flip e ff gg)).
-  - (* transitivity: compose the base proofs; fuse the transports *)
+  - (* 相关说明。 （已译） *)
     intros [f ff] [g gg] [h hh] [e1 He1] [e2 He2]; simpl in *.
     exists (Equivalence_Transitive _ _ _ e1 e2).
     rewrite <- dtransport_trans.

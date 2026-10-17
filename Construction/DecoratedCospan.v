@@ -34,10 +34,7 @@ Context `{MD : @Monoidal D}.
 Context {F : C ⟶ D}.
 Context (LM : @LaxMonoidalFunctor C D MC MD F).
 
-(** ** Decorated cospan arrows
-
-    A decorated cospan from [X] to [Y] is a cospan together with a
-    decoration of its apex. *)
+(* 相关说明。 （已译） *)
 Record DecoratedCospanArrow (X Y : C) : Type := {
   dc_cospan : CospanArrow X Y;
   dc_decoration : @I D _ ~{D}~> F (cospan_apex dc_cospan)
@@ -77,9 +74,7 @@ Proof.
   unshelve econstructor.
   - apply cospan_equiv_sym; exact E.
   - destruct E as [phi [E1 E2]]; simpl in *.
-    (* Need: fmap[F] (from phi) ∘ dc_decoration g ≈ dc_decoration f.
-       Have: fmap[F] (to phi) ∘ dc_decoration f ≈ dc_decoration g.
-       Apply fmap[F] (from phi) ∘ - to both sides. *)
+    (* 相关说明。 （已译） *)
     rewrite <- He.
     rewrite comp_assoc.
     rewrite <- fmap_comp.
@@ -173,7 +168,7 @@ Definition dec_cospan_compose
 
 End DecoratedCospan.
 
-(** Argument metadata for the section-closed definitions. *)
+(** 本节：Argument metadata section-closed definitions. （已译） *)
 
 Arguments dc_cospan {C D MD F X Y} _.
 Arguments dc_decoration {C D MD F X Y} _.

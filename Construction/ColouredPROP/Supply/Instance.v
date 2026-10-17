@@ -36,8 +36,7 @@ From Coq Require Import Morphisms.
 
 Generalizable All Variables.
 
-(** * The free selective supply: a presented coloured PROP with
-      per-wire duplicators and deleters *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/PROP
@@ -70,9 +69,9 @@ Inductive SupplyGen : list Colour -> list Colour -> Type :=
 (** The extended signature: base generators plus supply generators. *)
 Definition SupplyExtSig : CSignature Colour := Sum_CSig S SupplyGen.
 
-(** The generators as terms.  [[c] ++ [c] ≡ [c; c]] definitionally,
-    so [sg_dup] also inhabits the tensor-shaped boundary on the
-    nose. *)
+(** 本节：The generators terms. [[c] ++ [c] ≡ [c; c]] definitionally,
+ so [sg_dup] inhabits tensor-shaped boundary the
+ nose. （已译） *)
 Definition sg_dup (c : Colour) (H : copyable c = true) :
   CTerm SupplyExtSig [c] [c; c] :=
   CT_gen (inr (SG_dup c H)).
@@ -90,9 +89,9 @@ Definition sg_del (c : Colour) (H : copyable c = true) :
 Inductive SupplyEqs : forall cs ds : list Colour,
     CTerm SupplyExtSig cs ds -> CTerm SupplyExtSig cs ds -> Prop :=
 
-  (** Coassociativity.  The right-hand side carries the [from] of the
-      presented associator at [([c], [c], [c])]: the single
-      [app_assoc [c] [c] [c]] cast. *)
+  (** 本节：Coassociativity. The right-hand side carries [from] the
+ presented associator at [([c], [c], [c])]: single
+ [app_assoc [c] [c] [c]] cast. （已译） *)
   | SE_coassoc (c : Colour) (H : copyable c = true) :
       SupplyEqs [c] [c; c; c]
         (CT_comp (CT_tens (sg_dup c H) (CT_id [c])) (sg_dup c H))
@@ -100,8 +99,8 @@ Inductive SupplyEqs : forall cs ds : list Colour,
                           (CT_tens (CT_id [c]) (sg_dup c H)))
                  (sg_dup c H))
 
-  (** Left counit law.  Cast-free: [[] ++ [c] ≡ [c]] definitionally,
-      so deleting the left copy is the identity wire on the nose. *)
+  (** Left counit law. Cast-free: [[] ++ [c] ≡ [c]] definitionally,
+ so deleting left copy 恒等 wire nose. （已译） *)
   | SE_counit_left (c : Colour) (H : copyable c = true) :
       SupplyEqs [c] [c]
         (CT_comp (CT_tens (sg_del c H) (CT_id [c])) (sg_dup c H))
@@ -117,19 +116,19 @@ Inductive SupplyEqs : forall cs ds : list Colour,
         (CT_comp (CT_tens (CT_id [c]) (sg_del c H)) (sg_dup c H))
         (CT_cast (eq_sym (app_nil_r [c])))
 
-  (** Cocommutativity.  Cast-free: [CT_braid [c] [c]] is the
-      presented braid on the nose. *)
+  (** 本节：Cocommutativity. Cast-free: [CT_braid [c] [c]] the
+ presented braid nose. （已译） *)
   | SE_cocomm (c : Colour) (H : copyable c = true) :
       SupplyEqs [c] [c; c]
         (CT_comp (CT_braid [c] [c]) (sg_dup c H))
         (sg_dup c H).
 
-(** ** The theory and its presented coloured PROP *)
+(* 相关说明。 （已译） *)
 
 Definition SupplySMT : CSMT Colour :=
   Build_CSMT Colour SupplyExtSig SupplyEqs.
 
-(** The THIRD [ColouredPROP] instance of the library. *)
+(** 本节：The THIRD [ColouredPROP] instance library. （已译） *)
 Definition SupplyPROP : ColouredPROP Colour :=
   CPresentedColouredPROP SupplySMT Cdec.
 
@@ -172,8 +171,8 @@ Proof using Cdec.
   exact (CTEW_ax SupplySMT _ _ (SE_counit_left c H)).
 Qed.
 
-(** Right counit, in the shape of [delta_counit_right]: the axiom is
-    already stated with the field's right-hand side. *)
+(** 本节：Right counit, shape [delta_counit_right]: axiom is
+ already stated field's right-hand side. （已译） *)
 Definition supply_wire_counit_right (c : Colour) (H : copyable c = true) :
   CTermEqW SupplySMT
     (CT_comp (CT_tens (CT_id [c]) (sg_del c H)) (sg_dup c H))
@@ -211,8 +210,8 @@ Definition supply_wire_comonoid_raw (c : Colour) (H : copyable c = true) :
     (supply_wire_counit_left c H)
     (supply_wire_counit_right c H).
 
-(** The commutative packaging, at the instances the [SelectiveSupply]
-    class of Supply.v asks for ([wire c ≡ [c]] on the nose). *)
+(** 本节：The commutative packaging, at instances [SelectiveSupply]
+ class Supply.v asks ([wire c ≡ [c]] nose). （已译） *)
 Definition supply_wire_comonoid (c : Colour) (H : copyable c = true) :
   @CommutativeComonoid (@cprop_cat Colour SupplyPROP)
     (@cprop_symmetric Colour SupplyPROP)
@@ -246,8 +245,8 @@ Example SupplyPROP_coherence_is_refl :
 Example SupplyPROP_wire (c : Colour) :
   wire (P := SupplyPROP) c = (c :: nil) := eq_refl.
 
-(** The empty-boundary supply is the unit comonoid on the nose (the
-    [cunit_nil_b] transport vanished). *)
+(** 本节：The empty-boundary supply unit comonoid nose (the
+ [cunit_nil_b] transport vanished). （已译） *)
 Example SupplyPROP_supply_list_nil :
   supply_list (P := SupplyPROP) (SS := SupplyPROP_SelectiveSupply)
     [] (all_copyable_nil copyable)
@@ -351,7 +350,7 @@ Definition supply_eqw_tens_id (a b : list Colour) :
   CTermEqW SupplySMT (CT_tens (CT_id a) (CT_id b)) (CT_id (a ++ b)) :=
   CTEW_termeq SupplySMT _ _ (CTE_tens_id a b).
 
-(** The derived singleton copy IS the duplicator. *)
+(** 本节：The derived singleton copy IS duplicator. （已译） *)
 Theorem SupplyPROP_scopy_wire (c : Colour) (H : copyable c = true)
   (Hc : all_copyable copyable [c]) :
   scopy (P := SupplyPROP) (SS := SupplyPROP_SelectiveSupply) [c] Hc
@@ -360,24 +359,23 @@ Proof.
   unfold scopy.
   rewrite (SupplyPROP_supply_list_wire c H Hc).
   cbn.
-  (* The unit braid collapses (its [eq_rect] transport is over an
-     endo-equality at the concrete word [[c]]). *)
+  (* 相关说明。 （已译） *)
   pose proof (@CTE_braid_unit_right Colour SupplyExtSig [c]) as Hb.
   rewrite (UIP_dec (list_eq_dec Cdec) (app_nil_r [c]) eq_refl) in Hb.
   cbn in Hb.
-  (* The strict right-unit law at the duplicator. *)
+  (* 相关说明。 （已译） *)
   pose proof (@CTE_tens_id0_right Colour SupplyExtSig
                 [c] [c; c] (sg_dup c H)) as Ht.
   rewrite (UIP_dec (list_eq_dec Cdec) (app_nil_r [c; c]) eq_refl) in Ht.
   rewrite (UIP_dec (list_eq_dec Cdec) (app_nil_r [c]) eq_refl) in Ht.
   cbn in Ht.
-  (* Kill the five endo-casts (all boundary words are concrete). *)
+  (* 相关说明。 （已译） *)
   rewrite (CT_cast_id Cdec (app_assoc [c] [] [c])).
   rewrite (CT_cast_id Cdec (eq_sym (app_assoc [] [c] []))).
   rewrite (CT_cast_id Cdec (app_assoc [c] [] [])).
   rewrite (CT_cast_id Cdec (eq_sym (app_assoc [c] [c] []))).
   rewrite (CT_cast_id Cdec (eq_sym (app_nil_l []))).
-  (* Braid to id, fuse the identity tensors, peel the identities. *)
+  (* Braid id, fuse 恒等 tensors, peel identities. （已译） *)
   rewrite (CTEW_termeq SupplySMT _ _ Hb).
   rewrite !supply_eqw_tens_id.
   rewrite (CTEW_termeq SupplySMT _ _ Ht).
@@ -385,7 +383,7 @@ Proof.
   reflexivity.
 Qed.
 
-(** The derived singleton discard IS the deleter. *)
+(** 本节：The derived singleton discard IS deleter. （已译） *)
 Theorem SupplyPROP_sdiscard_wire (c : Colour) (H : copyable c = true)
   (Hc : all_copyable copyable [c]) :
   sdiscard (P := SupplyPROP) (SS := SupplyPROP_SelectiveSupply) [c] Hc
@@ -394,7 +392,7 @@ Proof.
   unfold sdiscard.
   rewrite (SupplyPROP_supply_list_wire c H Hc).
   cbn.
-  (* The strict right-unit law at the deleter. *)
+  (* 相关说明。 （已译） *)
   pose proof (@CTE_tens_id0_right Colour SupplyExtSig
                 [c] [] (sg_del c H)) as Ht.
   rewrite (UIP_dec (list_eq_dec Cdec) (app_nil_r ([] : list Colour)) eq_refl)
@@ -432,9 +430,9 @@ Proof using Type.
     + reflexivity.
 Qed.
 
-(** The extended signature is conservative at [c] whenever the base
-    signature is (the supply half always is, by the previous
-    lemma). *)
+(** The extended signature conservative at [c] whenever base
+ signature (the supply half always is, previous
+ 引理). （已译） *)
 Definition supplyextsig_conservative (c : Colour) (Hc : copyable c = false)
   (HS : c_conservative Cdec S c) :
   c_conservative Cdec SupplyExtSig c :=
@@ -503,9 +501,9 @@ Context {Colour : Type}.
 Context (Cdec : forall c d : Colour, {c = d} + {c <> d}).
 Context (copyable : Colour -> bool).
 
-(** The empty signature is conservative at every colour —
-    [Empty_CSig_conservative] of [Construction/ColouredPROP/Linear.v],
-    at the section's [Cdec]. *)
+(** 本节：The empty signature conservative at every colour —
+ [Empty_CSig_conservative] [Construction/ColouredPROP/Linear.v],
+ at section's [Cdec]. （已译） *)
 Definition pure_base_conservative (c : Colour) :
   c_conservative Cdec Empty_CSig c :=
   Empty_CSig_conservative Cdec c.
@@ -528,7 +526,7 @@ Proof using Type.
     exact (inhabits (SupplyPROP_fanout Cdec Empty_CSig copyable c H)).
 Qed.
 
-(** The discard-side mirror, for symmetry. *)
+(** The discard-side 镜像, symmetry. （已译） *)
 Theorem discard_iff (c : Colour) :
   inhabited
     (([c] : list Colour) ~{SupplyPROP Cdec Empty_CSig copyable}~> [])

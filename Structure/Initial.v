@@ -46,7 +46,7 @@ Context `{I : @Initial C}.
 (* The initial object `0` itself (terminal in C^op).         *)
 Definition initial_obj : C := @terminal_obj _ I.
 
-(* The unique morphism `¡ : 0 ~> x` (the `one` of C^op).      *)
+(* The unique 态射 `¡ : 0 ~> x` (`one` C^op). （已译） *)
 Definition zero {x} : initial_obj ~{C}~> x := @one _ I _.
 
 (* Uniqueness: any two morphisms out of `0` are equivalent.   *)
@@ -79,9 +79,9 @@ Program Definition initial_unique {C : Category} (I1 I2 : @Initial C) :
 Next Obligation. apply (@zero_unique C I2). Qed.
 Next Obligation. apply (@zero_unique C I1). Qed.
 
-(* And it is the only arrow between them, so the isomorphism is canonical --
-   the "unique isomorphism" half of Mac Lane's statement, dual to
-   [terminal_arrow_unique]. *)
+(* And it arrow between them, so 同构 canonical --
+ "unique 同构" half Mac Lane's statement, dual to
+ [terminal_arrow_unique]. （已译） *)
 Corollary initial_arrow_unique {C : Category} (I1 I2 : @Initial C)
       (f g : @initial_obj C I1 ~> @initial_obj C I2) : f ≈ g.
 Proof. apply (@zero_unique C I1). Qed.
@@ -108,16 +108,16 @@ Definition IsInitialObj_from_Initial {C : Category} (I : @Initial C) :
   IsInitialObj (@initial_obj C I) :=
   @IsTerminalObj_from_Terminal (C^op) I.
 
-(* Riehl, CTiC, Exercise 1.6.ii(i), initial half.  [Isomorphism_Opposite]
-   (Construction/Opposite.v) re-reads the C-isomorphism in C^op, and
-   [Terminal_iso] at C^op is the whole proof. *)
+(* Riehl, CTiC, Exercise 1.6.ii(i), initial half. [Isomorphism_Opposite]
+ (Construction/Opposite.v) re-reads C-同构 C^op, and
+ [Terminal_iso] at C^op whole 证明. （已译） *)
 Definition Initial_iso {C : Category} (I : @Initial C) (y : C)
   (i : @initial_obj C I ≅ y) : @Initial C :=
   @Terminal_iso (C^op) I y (Isomorphism_Opposite i).
 
-(* The transported structures choose the new object definitionally, which
-   is what makes them usable as transports rather than as bare existence
-   statements. *)
+(* The transported structures choose new 对象 definitionally, which
+ what makes them usable transports rather than bare existence
+ statements. （已译） *)
 Corollary Terminal_iso_obj {C : Category} (T : @Terminal C) (y : C)
   (i : @terminal_obj C T ≅ y) : @terminal_obj C (Terminal_iso T y i) = y.
 Proof. reflexivity. Qed.
@@ -126,8 +126,8 @@ Corollary Initial_iso_obj {C : Category} (I : @Initial C) (y : C)
   (i : @initial_obj C I ≅ y) : @initial_obj C (Initial_iso I y i) = y.
 Proof. reflexivity. Qed.
 
-(* The dual of [terminal_unique_up_to_unique_iso]: two initial objects are
-   connected by exactly one isomorphism. *)
+(* The dual [terminal_unique_up_to_unique_iso]: two initial 对象 are
+ connected exactly one 同构. （已译） *)
 Program Definition initial_unique_up_to_unique_iso {C : Category}
   (I1 I2 : @Initial C) :
   Unique (fun _ : @initial_obj C I1 ≅ @initial_obj C I2 => True) := {|

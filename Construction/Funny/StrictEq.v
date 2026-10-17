@@ -12,13 +12,13 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Seam helpers
+(* * ** Seam helpers
 
-    [transport] moves a morphism along an equality of its codomain and
-    [transport_r] along an equality of its domain; note the orientation
-    [transport_r B (p : a = b) : B b → B a], matching
-    [Functor_StrictEq_Setoid].  Each helper is proved by path induction, so
-    each holds definitionally once the equality is [eq_refl]. *)
+ [transport] moves 态射 along equality codomain and
+ [transport_r] along equality domain; note orientation
+ [transport_r B (p : = b) : B b → B a], matching
+ [Functor_StrictEq_Setoid]. Each helper proved path induction, so
+ each holds definitionally once equality [eq_refl]. （已译） *)
 
 Lemma transport_id_hom {E : Category} {a b : E} (p : a = b) :
   transport (fun z => a ~{E}~> z) p id
@@ -37,8 +37,8 @@ Lemma transport_dom_comp {E : Category} {x x' m w : E} (p : x = x')
     = u ∘ transport_r (fun z => z ~{E}~> m) p v.
 Proof. destruct p; reflexivity. Qed.
 
-(* Moving a transport across a composition seam: a domain-transport on the
-   left factor equals a codomain-transport on the right factor. *)
+(* Moving transport across 复合 seam: domain-transport the
+ left factor equals codomain-transport right factor. （已译） *)
 Lemma transport_seam {E : Category} {x m m' w : E} (p : m = m')
   (u : m' ~{E}~> w) (v : x ~{E}~> m) :
   transport_r (fun z => z ~{E}~> w) p u ∘ v
@@ -63,7 +63,7 @@ Lemma transport_dom_respects {E : Category} {x x' w : E} (p : x = x')
     ≈ transport_r (fun z => z ~{E}~> w) p v.
 Proof. intros; destruct p; assumption. Qed.
 
-(** ** Introduction form for [Functor_StrictEq_Setoid] *)
+(* 相关说明。 （已译） *)
 
 Definition Functor_StrictEq_intro {A B : Category} (F G : A ⟶ B)
   (eo : ∀ x : A, F x = G x)
@@ -160,7 +160,7 @@ Qed.
 
 End FunnyStrictEq.
 
-(** ** Eta: a functor out of [C □ D] is determined by the generating steps *)
+(* * ** Eta: 函子 out [C □ D] determined generating steps （已译） *)
 
 Corollary Funny_eta {C D E : Category} (H : (C □ D) ⟶ E) :
   @equiv _ (@Functor_StrictEq_Setoid (C □ D) E) H (FunnyUP (toSep H)).
@@ -174,7 +174,7 @@ Proof.
     exact (id_left (@fmap (C □ D) E H (c, d) (c, d') (rstep g))).
 Qed.
 
-(** ** Uniqueness half of the pushout universal property *)
+(* * ** Uniqueness half pushout 普遍性质 （已译） *)
 
 Corollary Funny_UP_unique {C D E : Category} {h : C → D → E}
   (S : SepFunctorial h) (H : (C □ D) ⟶ E)

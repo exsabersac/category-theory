@@ -34,7 +34,7 @@ Proof.
   apply TE_tens_id.
 Qed.
 
-(** Symmetric variant: cast on the LEFT, identity on the RIGHT. *)
+(** Symmetric variant: cast LEFT, 恒等 RIGHT. （已译） *)
 Lemma T_tens_cast_id_right {a b n : nat} (e : a = b) :
   TermEq S (T_tens (T_cast e) (T_id n))
            (T_cast (f_equal (fun k => k + n) e)).
@@ -44,9 +44,9 @@ Proof.
   apply TE_tens_id.
 Qed.
 
-(** Tensor preserves identities: [id_m ⊕ id_n ≈ id_(m+n)].  This is
-    just the primitive [TE_tens_id] constructor restated as a named
-    lemma (no cast involved) for use as a rewrite target. *)
+(** Tensor preserves identities: [id_m ⊕ id_n ≈ id_(m+n)]. This is
+ just primitive [TE_tens_id] constructor restated named
+ 引理 (no cast involved) use rewrite target. （已译） *)
 Lemma T_tens_id_id (m n : nat) :
   TermEq S (T_tens (T_id m) (T_id n)) (T_id (m + n)).
 Proof. apply TE_tens_id. Qed.

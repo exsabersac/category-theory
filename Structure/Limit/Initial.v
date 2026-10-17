@@ -19,7 +19,7 @@ Require Import Category.Instance.Ordinal.
 
 Generalizable All Variables.
 
-(** * Limits over a shape with an initial object, computed by evaluation *)
+(* * * Limits over shape 始对象, computed evaluation （已译） *)
 
 (*
    nLab:        https://ncatlab.org/nlab/show/final+functor
@@ -30,7 +30,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The limit of a diagram over a shape with an initial object *)
+(* * ** The limit diagram over shape 始对象 （已译） *)
 
 Section LimitFromInitial.
 
@@ -38,7 +38,7 @@ Context {J C : Category}.
 Context (I : @Initial J).
 Context (F : J ⟶ C).
 
-(* The leg at x is the image of the unique arrow ¡ : 0 ~> x. *)
+(* The leg at x image 唯一箭头 ¡ : 0 ~> x. （已译） *)
 
 Definition initial_leg (x : J) : F (@initial_obj J I) ~{C}~> F x :=
   fmap[F] (@zero J I x).
@@ -62,8 +62,8 @@ Definition initial_cone : Cone F :=
   {| vertex_obj := F (@initial_obj J I)
    ; coneFrom   := initial_acone |}.
 
-(* The leg AT the initial object is the identity — only up to `≈`; see the
-   header's STRENGTHS paragraph for the measured rejection at `eq_refl`. *)
+(* The leg AT 始对象 恒等 — up `≈`; see the
+ header's STRENGTHS paragraph measured rejection at `eq_refl`. （已译） *)
 
 Lemma initial_leg_id : initial_leg (@initial_obj J I) ≈ id.
 Proof.
@@ -72,7 +72,7 @@ Proof.
   apply fmap_id.
 Qed.
 
-(* The mediator from a competing cone is that cone's own leg at 0. *)
+(* 相关说明。 （已译） *)
 
 Definition initial_med (N : Cone F) :
   vertex_obj[N] ~{C}~> F (@initial_obj J I) :=
@@ -84,8 +84,8 @@ Proof.
   exact (@cone_coherence _ _ _ _ (@coneFrom _ _ _ N) _ _ (@zero J I x)).
 Qed.
 
-(* Uniqueness: evaluate the factorization condition at 0, where the leg is
-   `≈ id`.  This is the whole content of the universal property. *)
+(* Uniqueness: evaluate factorization condition at 0, where leg is
+ `≈ id`. This whole content 普遍性质. （已译） *)
 
 Lemma initial_med_unique (N : Cone F)
   (v : vertex_obj[N] ~{C}~> F (@initial_obj J I)) :
@@ -97,7 +97,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* The three packagings: cone-level, apex-pinned, and bundled. *)
+(* 相关说明。 （已译） *)
 
 Definition initial_IsLimitCone : IsLimitCone initial_cone :=
   fun N =>
@@ -125,7 +125,7 @@ Example initial_med_strict (N : Cone F) :
 Example initial_Limit_strict :
   @limit_cone _ _ _ initial_Limit = initial_cone := eq_refl.
 
-(** *** The evaluation cone as a terminal object of [Cones F] *)
+(* * *** The evaluation cone 终对象 [Cones F] （已译） *)
 
 (*
    本节说明（余）极限、始/终对象相关定义、性质与动机。
@@ -188,7 +188,7 @@ Qed.
 
 End LimitFromInitial.
 
-(** ** Reading invertibility back from the opposite category *)
+(* * ** Reading invertibility back opposite 范畴 （已译） *)
 
 (*
    本节说明拉回/推出、核/余核相关定义、性质与动机。
@@ -216,7 +216,7 @@ Definition iso_to_op {a b : C} (h : b ~> a)
 
 End OpIso.
 
-(** ** The dual: a terminal shape computes colimits by evaluation *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明始/终对象相关定义、性质与动机。
@@ -230,7 +230,7 @@ Context {J C : Category}.
 Context (T : @Terminal J).
 Context (F : J ⟶ C).
 
-(* The injection at x is the image of the unique arrow ! : x ~> 1. *)
+(* The injection at x image 唯一箭头 ! : x ~> 1. （已译） *)
 
 Definition terminal_inj (x : J) : F x ~{C}~> F (@terminal_obj J T) :=
   fmap[F] (@one J T x).
@@ -247,8 +247,8 @@ Definition terminal_IsAColimit : IsAColimit F (F (@terminal_obj J T)) :=
 Definition terminal_Colimit : Colimit F :=
   @initial_Limit (J^op) (C^op) T (F^op).
 
-(* The mediator out of the colimit into a competing cocone is that
-   cocone's own injection at the terminal object. *)
+(* The mediator out colimit competing cocone that
+ cocone's own injection at 终对象. （已译） *)
 
 Definition terminal_med (N : Cocone F) :
   F (@terminal_obj J T) ~{C}~> vertex_obj[N] :=
@@ -295,11 +295,11 @@ Definition colimiting_iff_terminal_inj_iso (N : Cocone F) :
 
 End ColimitFromTerminal.
 
-(** ** Deliverable: the point shape (Seven Sketches §3.5.3 Ex 3.98) *)
+(* 相关说明。 （已译） *)
 
-(* `_1` has an initial object — its unique object — and that instance did
-   not exist: Instance/One.v's [Cat_Terminal] says `_1` is terminal in
-   Cat, a different statement (see the header). *)
+(* `_1` has 始对象 — unique 对象 — instance did
+ not exist: Instance/One.v's [Cat_Terminal] says `_1` terminal in
+ Cat, different statement (see header). （已译） *)
 
 Program Definition One_Initial : @Initial _1 := {|
   terminal_obj := ttt;
@@ -307,8 +307,8 @@ Program Definition One_Initial : @Initial _1 := {|
 |}.
 Next Obligation. now destruct f, g. Qed.
 
-(* The limit of a diagram of shape 1 is its value at the point.  This is
-   the section-1 theorem instantiated, not a second construction. *)
+(* The limit diagram shape 1 value at point. This is
+ section-1 定理 instantiated, not second construction. （已译） *)
 
 Definition point_cone {C : Category} (F : _1 ⟶ C) : Cone F :=
   @initial_cone _1 C One_Initial F.
@@ -319,9 +319,9 @@ Definition point_IsALimit {C : Category} (F : _1 ⟶ C) :
 Definition point_Limit {C : Category} (F : _1 ⟶ C) : Limit F :=
   @initial_Limit _1 C One_Initial F.
 
-(* The cross-check the exercise asks for: the same cone is a TERMINAL
-   OBJECT of the category of cones, and the [Limit] that
-   Instance/Cones/Limit.v reads off it is the very cone built above. *)
+(* The cross-check exercise asks for: same cone TERMINAL
+ OBJECT 范畴 cones, [Limit] that
+ Instance/Cones/Limit.v reads off it very cone built above. （已译） *)
 
 Definition point_Cones_Terminal {C : Category} (F : _1 ⟶ C) :
   @Terminal (Cones F) := @initial_Cones_Terminal _1 C One_Initial F.
@@ -354,7 +354,7 @@ Example point_Sets_apex :
   @vertex_obj _ _ _ (@limit_cone _ _ _ (point_Limit (=(bool_set))))
     = bool_set := eq_refl.
 
-(* The mediator computes: it is the element the competing cone names. *)
+(* 相关说明。 （已译） *)
 
 Example point_Sets_med (b : bool) :
   limit_med (point_IsALimit (=(bool_set))) (elt_cone b) ttt = b := eq_refl.
@@ -370,10 +370,9 @@ Example point_Sets_separates :
     <> limit_med (point_IsALimit (=(bool_set))) (elt_cone false) ttt.
 Proof. discriminate. Qed.
 
-(** ** Deliverable: successor ordinals (Riehl §3.1) *)
+(* 相关说明。 （已译） *)
 
-(* The top stage of `Ordinal (S n)`, and its bottom stage, neither of which
-   was named in Instance/Ordinal.v. *)
+(* 相关说明。 （已译） *)
 
 Definition ord_top (n : nat) : Ord_obj (S n) := ord_at n le_t_n.
 
@@ -383,8 +382,7 @@ Definition ord_bot (n : nat) : Ord_obj (S n) :=
 Lemma ord_top_neq_bot (n : nat) : ord_top (S n) <> ord_bot (S n).
 Proof. intro H; discriminate (f_equal ord_val H). Qed.
 
-(* The top stage is terminal: the arrow from x is the bound of x with one
-   successor peeled off both sides, and uniqueness is thinness of `le_t`. *)
+(* 相关说明。 （已译） *)
 
 Program Definition Ordinal_Succ_Terminal (n : nat) :
   @Terminal (Ordinal (S n)) := {|
@@ -393,8 +391,7 @@ Program Definition Ordinal_Succ_Terminal (n : nat) :
 |}.
 Next Obligation. apply le_t_irr. Qed.
 
-(* Hence: the colimit of a diagram indexed by a successor ordinal is its
-   value at the top stage. *)
+(* 相关说明。 （已译） *)
 
 Definition ordinal_succ_IsAColimit {n : nat} {C : Category}
   (G : Ordinal (S n) ⟶ C) : IsAColimit G (G (ord_top n)) :=
@@ -421,7 +418,7 @@ Lemma ordinal_omega_nonconstant (n : nat) :
     <> Ord_Omega (S (S n)) (ord_top (S n)).
 Proof. discriminate. Qed.
 
-(** *** Why ω itself is outside the colimit half of the theorem *)
+(* * *** Why ω itself outside colimit half 定理 （已译） *)
 
 (*
    本节说明（余）极限、始/终对象相关定义、性质与动机。

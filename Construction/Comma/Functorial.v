@@ -69,8 +69,8 @@ Context {A B C : Category}.
 
 #[local] Obligation Tactic := simpl; intros.
 
-(** The action on the first (source) functor argument, CONTRAVARIANT: a
-    transformation σ : S' ⟹ S induces a functor (S ↓ T) ⟶ (S' ↓ T). *)
+(** The action first (source) 函子 论元, CONTRAVARIANT: a
+ transformation σ : S' ⟹ S induces 函子 (S ↓ T) ⟶ (S' ↓ T). （已译） *)
 
 Program Definition Comma_map_left {S S' : A ⟶ C} {T : B ⟶ C} (σ : S' ⟹ S) :
   (S ↓ T) ⟶ (S' ↓ T) := {|
@@ -88,8 +88,8 @@ Next Obligation. now repeat intro. Qed.
 Next Obligation. now split. Qed.
 Next Obligation. now split. Qed.
 
-(** The action on the second (target) functor argument, COVARIANT: a
-    transformation τ : T ⟹ T' induces a functor (S ↓ T) ⟶ (S ↓ T'). *)
+(** The action second (target) 函子 论元, COVARIANT: a
+ transformation τ : T ⟹ T' induces 函子 (S ↓ T) ⟶ (S ↓ T'). （已译） *)
 
 Program Definition Comma_map_right {S : A ⟶ C} {T T' : B ⟶ C} (τ : T ⟹ T') :
   (S ↓ T) ⟶ (S ↓ T') := {|
@@ -155,21 +155,21 @@ Proof.
   exists (comma_map_equiv_iso σ σ' τ τ' Hσ Hτ); comma_id_carrier.
 Qed.
 
-(** * The exchange law.
+(* * * The exchange law.
 
-    [Comma_map σ τ] and the two one-sided composites agree.  One order is
-    literally the same functor data, the other differs by exactly one
-    associativity step. *)
+ [Comma_map σ τ] two one-sided composites agree. One order is
+ literally same 函子 data, other differs exactly one
+ associativity step. （已译） *)
 
-(** One order is the definition: equality of the whole functor RECORDS, not
-    merely of their object and morphism actions. *)
+(** One order 定义: equality whole 函子 RECORDS, not
+ merely 对象 态射 actions. （已译） *)
 
 Lemma Comma_map_left_right (σ : S' ⟹ S) (τ : T ⟹ T') :
   Comma_map σ τ = Comma_map_left σ ◯ Comma_map_right τ.
 Proof. reflexivity. Qed.
 
-(** The other order agrees on the underlying pair of every object, and on
-    every morphism, on the nose. *)
+(** The other order agrees underlying pair every 对象, on
+ every 态射, nose. （已译） *)
 
 Lemma Comma_map_exchange_pair (σ : S' ⟹ S) (τ : T ⟹ T') (X : S ↓ T) :
   `1 (fobj[Comma_map_right τ ◯ Comma_map_left σ] X)
@@ -208,7 +208,7 @@ Proof.
   exists (comma_map_exchange_iso σ τ); comma_id_carrier.
 Qed.
 
-(** The exchange law proper: the two one-sided actions commute. *)
+(** 本节：The exchange law proper: two one-sided actions commute. （已译） *)
 
 Theorem Comma_map_exchange (σ : S' ⟹ S) (τ : T ⟹ T') :
   Comma_map_right τ ◯ Comma_map_left σ ≈ Comma_map_left σ ◯ Comma_map_right τ.
@@ -219,7 +219,7 @@ Qed.
 
 End CommaMapLemmas.
 
-(** * Identity and composition laws for the arrow action. *)
+(* * * Identity 复合 laws arrow action. （已译） *)
 
 Section CommaMapLaws.
 
@@ -286,8 +286,8 @@ Qed.
 Next Obligation. intros; apply Comma_map_id. Qed.
 Next Obligation. intros; apply Comma_map_comp. Qed.
 
-(** Acceptance: the bifunctor's two actions are the comma construction and
-    [Comma_map] on the nose. *)
+(** 本节：Acceptance: bifunctor's two actions comma construction and
+ [Comma_map] nose. （已译） *)
 
 Lemma Comma_Bifunctor_fobj (S : A ⟶ C) (T : B ⟶ C) :
   fobj[Comma_Bifunctor] (S, T) = (S ↓ T).
@@ -372,7 +372,7 @@ Lemma Comma_Iso_from_Right_fmap (x y : B ⟶ C) (iso : x ≅[Fun] y) (z : A ⟶ 
     = `1 (fmap[Comma_map_right (from iso)] f).
 Proof. reflexivity. Qed.
 
-(** The same four agreements restated at the level of Cat's hom-equivalence. *)
+(** The same four agreements restated at level Cat's hom-等价. （已译） *)
 
 Lemma Comma_Iso_to_Left_is_map_left
       (x y : A ⟶ C) (iso : x ≅[Fun] y) (z : B ⟶ C) :
@@ -565,8 +565,8 @@ Lemma comma_post_beta (K : C ⟶ C') :
     id ∘ fmap[K] (fmap[T] v) ≈ fmap[K ◯ T] (fmap[Id] v) ∘ id.
 Proof. intros; simpl; rewrite id_left, id_right; reflexivity. Qed.
 
-(** Post-composing both defining functors with K: the ambient category moves
-    from C to C', and the mediating morphism is carried by K. *)
+(** Post-composing both defining 函子 K: ambient 范畴 moves
+ C C', mediating 态射 carried K. （已译） *)
 
 Definition Comma_postcompose (K : C ⟶ C') :
   (S ↓ T) ⟶ ((K ◯ S) ↓ (K ◯ T)) :=
@@ -595,8 +595,8 @@ Lemma comma_pre_beta (G : B ⟶ B') :
     id ∘ fmap[Id] (fmap[T ◯ G] v) ≈ fmap[T] (fmap[G] v) ∘ id.
 Proof. intros; simpl; rewrite id_left, id_right; reflexivity. Qed.
 
-(** Pre-composing the defining functors with F and G: the two domains move
-    from A, B to A', B', and the mediating morphism is untouched. *)
+(** Pre-composing defining 函子 F G: two domains move
+ A, B A', B', mediating 态射 untouched. （已译） *)
 
 Definition Comma_precompose (F : A ⟶ A') (G : B ⟶ B') :
   ((S ◯ F) ↓ (T ◯ G)) ⟶ (S ↓ T) :=

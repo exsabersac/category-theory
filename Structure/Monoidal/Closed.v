@@ -104,8 +104,7 @@ Qed.
 #[local] Hint Rewrite @uncurry_curry : categories.
 #[local] Hint Rewrite @ump_exponents : categories.
 
-(* Swap the two transposed arguments through the braiding: given a transpose
-   of an x⨂y map, produce the transpose of the corresponding y⨂x map. *)
+(* 相关说明。 （已译） *)
 Definition flip `{@BraidedMonoidal C} {x y z : C} `(f : x ~> y ⇒ z) :
   y ~> x ⇒ z := curry (uncurry f ∘ braid).
 

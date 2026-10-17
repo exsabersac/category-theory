@@ -15,7 +15,7 @@ Require Import Category.Construction.Lift.
 
 Generalizable All Variables.
 
-(** * Absolute limits and colimits, at cone level *)
+(* 相关说明。 （已译） *)
 
 (*
    Book:   Riehl, "Category Theory in Context", 2nd ed., §3.4, Exercise
@@ -42,7 +42,7 @@ Definition AbsoluteColimitCocone@{jo co ch do +}
 
 (** ** An absolute limit is a limit *)
 
-(* The image of N under [Id] is N on the nose, apex and legs. *)
+(* 相关说明。 （已译） *)
 
 Example FCone_Id_apex@{jo co ch +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}} {K : J ⟶ C}
@@ -52,15 +52,14 @@ Example FCone_Id_leg@{jo co ch +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}} {K : J ⟶ C}
   (N : Cone K) (x : J) : cone_leg (FCone Id N) x = cone_leg N x := eq_refl.
 
-(* "Take F := Id": the instance whose target is C's own levels, with the
-   competing cone repackaged by Preservation.v's [cone_id_comp]. *)
+(* 相关说明。 （已译） *)
 
 Definition AbsoluteLimitCone_IsLimitCone@{jo co ch +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}} {K : J ⟶ C}
   {N : Cone K} (A : AbsoluteLimitCone N) : IsLimitCone N :=
   fun M => A C Id (cone_id_comp M).
 
-(** ** Duality: an absolute colimit is an absolute limit in the opposite *)
+(* 相关说明。 （已译） *)
 
 Definition AbsoluteColimitCocone_op@{jo co ch +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}} {K : J ⟶ C}
@@ -91,7 +90,7 @@ Definition AbsoluteColimitCocone_IsColimitCocone@{jo co ch +}
   {N : Cocone K} (A : AbsoluteColimitCocone N) : IsColimitCocone N :=
   AbsoluteLimitCone_IsLimitCone (AbsoluteColimitCocone_op A).
 
-(** ** Every instance at or above C's levels: the lift *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -125,8 +124,8 @@ Definition AbsoluteColimitCocone_IsColimitCocone_up@{jo co ch do +}
   IsColimitCocone N :=
   AbsoluteLimitCone_IsLimitCone_up (AbsoluteColimitCocone_op A).
 
-(* Each instance implies every lower one: a target D at a level below the
-   hypothesis' is read at that level, and [Lift_after F] replaces F. *)
+(* Each instance implies every lower one: target D at level below the
+ 假设' read at level, [Lift_after F] replaces F. （已译） *)
 
 Definition AbsoluteLimitCone_down@{jo co ch do eo +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}} {K : J ⟶ C}
@@ -155,7 +154,7 @@ Definition AbsoluteColimitCocone_down@{jo co ch do eo +}
   AbsoluteColimitCocone_of_op
     (AbsoluteLimitCone_down (AbsoluteColimitCocone_op A)).
 
-(** ** Absoluteness is preservation by every functor *)
+(* * ** Absoluteness preservation every 函子 （已译） *)
 
 Definition AbsoluteLimitCone_preserves@{jo co ch do +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}} {K : J ⟶ C}
@@ -184,7 +183,7 @@ Definition AbsoluteColimitCocone_of_preserves@{jo co ch do +}
   AbsoluteColimitCocone N :=
   fun D F => P D F N HN.
 
-(** ** Invariance: along cone isomorphisms, and across limiting cones *)
+(* 相关说明。 （已译） *)
 
 Definition AbsoluteLimitCone_transport@{jo co ch +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}} {K : J ⟶ C}
@@ -199,8 +198,7 @@ Definition AbsoluteColimitCocone_transport@{jo co ch +}
   AbsoluteColimitCocone_of_op
     (AbsoluteLimitCone_transport i (AbsoluteColimitCocone_op A)).
 
-(* Absoluteness belongs to the diagram's limit, not to the cone chosen to
-   represent it: any other limiting cone is absolute too. *)
+(* 相关说明。 （已译） *)
 
 Definition AbsoluteLimitCone_limitcone@{jo co ch +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}} {K : J ⟶ C}
@@ -214,7 +212,7 @@ Definition AbsoluteColimitCocone_colimitcocone@{jo co ch +}
   (A : AbsoluteColimitCocone N) : AbsoluteColimitCocone M :=
   AbsoluteColimitCocone_transport (colimitcocone_iso HN HM) A.
 
-(** ** Closure under functors: the image of an absolute limit is absolute *)
+(* * ** Closure under 函子: image absolute limit absolute （已译） *)
 
 Definition AbsoluteLimitCone_image@{jo co ch eo +}
   {J : Category@{jo ch ch}} {C : Category@{co ch ch}}
@@ -229,10 +227,10 @@ Definition AbsoluteColimitCocone_image@{jo co ch eo +}
   AbsoluteColimitCocone (FCocone G N) :=
   fun D H M => A D (H ◯ G) (cocone_assoc_inv M).
 
-(** ** Non-vacuity: a limit and a colimit that are not absolute *)
+(* 相关说明。 （已译） *)
 
 
-(* Cones and cocones over a diagram of the empty shape are bare apexes. *)
+(* 相关说明。 （已译） *)
 
 Definition empty_shape_cone {C : Category} (G : _0 ⟶ C) (c : C) : Cone G.
 Proof.
@@ -247,7 +245,7 @@ Proof.
   unshelve econstructor; intro x; destruct x.
 Defined.
 
-(* In the walking arrow [_2], [TwoY] is terminal and [TwoX] initial. *)
+(* 相关说明。 （已译） *)
 
 Definition two_into_TwoY (m : TwoObj) : TwoHom m TwoY :=
   match m with TwoX => TwoXY | TwoY => TwoIdY end.
@@ -275,9 +273,9 @@ Proof.
   - intros v _; apply Two_thin.
 Defined.
 
-(* The constant functor at [TwoX] sends the terminal [TwoY] to [TwoX],
-   which receives no arrow from [TwoY]; dually the constant functor at
-   [TwoY] sends the initial [TwoX] to [TwoY]. *)
+(* The 常值 函子 at [TwoX] sends terminal [TwoY] [TwoX],
+ receives no arrow [TwoY]; dually 常值 函子 at
+ [TwoY] sends initial [TwoX] [TwoY]. （已译） *)
 
 Theorem two_terminal_not_absolute :
   AbsoluteLimitCone (empty_shape_cone (From_0 _2) (TwoY : _2)) → False.

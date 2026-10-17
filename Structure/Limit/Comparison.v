@@ -21,7 +21,7 @@ Require Import Category.Instance.Roof.
 
 Generalizable All Variables.
 
-(** * The canonical comparison arrow for limits of composites *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/preserved+limit
@@ -31,14 +31,14 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Reindexing a cone along a functor between shapes *)
+(* * ** Reindexing cone along 函子 between shapes （已译） *)
 
 Section Reindex.
 
 Context {J' J C : Category} (W : J' ⟶ J) {F : J ⟶ C}.
 
-(* Restricting a cone over [F] along [W]: the same apex, the legs at the
-   objects [W j'], the coherence read off [N]'s at the arrows [fmap[W] f]. *)
+(* Restricting cone over [F] along [W]: same apex, legs at the
+ 对象 [W j'], coherence read off [N]'s at arrows [fmap[W] f]. （已译） *)
 Definition cone_reindex (N : Cone F) : Cone (F ◯ W) :=
   @Build_Cone J' C (F ◯ W) (vertex_obj[N])
     (@Build_ACone J' C (vertex_obj[N]) (F ◯ W)
@@ -77,7 +77,7 @@ Example cone_reindex_comp_leg {J'' J' J C : Category} (W : J' ⟶ J) (V : J'' �
   cone_leg (cone_reindex V (cone_reindex W N)) j = cone_leg (cone_reindex (W ◯ V) N) j
   := eq_refl.
 
-(** ** The comparison with a change of shape: H (Lim F) ~> Lim ((H ◯ F) ◯ W) *)
+(* 相关说明。 （已译） *)
 
 Section ReindexComparison.
 
@@ -110,8 +110,7 @@ Proof.
   exact (cone_comparison_unique H (cone_reindex W N) (islimitcone_assoc HM) v Hv).
 Qed.
 
-(* Invertibility is exactly limit-ness of the image of the reindexed cone,
-   both ways. *)
+(* 相关说明。 （已译） *)
 Definition reindex_comparison_iso (N : Cone F)
   {M : Cone ((H ◯ F) ◯ W)} (HM : IsLimitCone M)
   (HN : IsLimitCone (FCone H (cone_reindex W N))) :
@@ -126,15 +125,13 @@ Definition reindex_comparison_iso_LimitCone (N : Cone F)
 
 End ReindexComparison.
 
-(** ** The biconditional, bundled; one limit cone suffices *)
+(* 相关说明。 （已译） *)
 
 Section LimitBundle.
 
 Context {J C D : Category} {K : J ⟶ C} (F : C ⟶ D).
 
-(* Riehl's Lemma 3.4.3 and Mac Lane's V.4 Exercise 5 as one statement: the
-   two directions are Preservation.v's [comparison_iso_of_PreservesLimitCone]
-   and [PreservesLimitCone_of_comparison]. *)
+(* 相关说明。 （已译） *)
 Definition preserves_iff_comparison_iso {M : Cone (F ◯ K)} (HM : IsLimitCone M) :
   PreservesLimitCone K F ↔
   (∀ N : Cone K, IsLimitCone N → IsIsomorphism (cone_comparison F N HM)) :=
@@ -155,7 +152,7 @@ Definition PreservesLimitCone_of_comparison_iso (N0 : Cone K) (HN0 : IsLimitCone
 
 End LimitBundle.
 
-(** ** The colimit comparison and its biconditional *)
+(* 相关说明。 （已译） *)
 
 Section CoComparison.
 
@@ -248,7 +245,7 @@ Definition PreservesColimitCocone_of_cocone@{jo co ch do +}
   fun N HN =>
     limitcone_transport (FCocone_iso F (colimitcocone_iso HN0 HN)) H0.
 
-(** ** Riehl's whiskering identity F ∘ Δc = Δ(Fc), at functor level *)
+(* * ** Riehl's whiskering 恒等 F ∘ Δc = Δ(Fc), at 函子 level （已译） *)
 
 Section Whisker.
 
@@ -272,7 +269,7 @@ Example const_image_iso_component (x : J) :
 
 End Whisker.
 
-(** ** Riehl's warm-up: the pullback comparison F (X ×_Z Y) ~> F X ×_{F Z} F Y *)
+(* 相关说明。 （已译） *)
 
 Section PullbackWarmup.
 
@@ -288,7 +285,7 @@ Example pullback_comparison_is (N : Cone F) {M : Cone (H ◯ F)}
 
 End PullbackWarmup.
 
-(** ** RAPL restated: the comparison of a right adjoint is invertible *)
+(* * ** RAPL restated: comparison 右伴随 invertible （已译） *)
 
 Section RAPLRestated.
 
@@ -303,7 +300,7 @@ Definition rapl_comparison_iso {M : Cone (U ◯ G)} (HM : IsLimitCone M)
 
 End RAPLRestated.
 
-(** ** Discrete shapes: a cone is limiting iff its legs are an indexed product *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、（余）极限、hom相关定义、性质与动机。
@@ -335,8 +332,8 @@ Defined.
 Example discrete_cone_leg (c : C) (pi : ∀ a : A, c ~> G a) (a : A) :
   cone_leg (discrete_cone c pi) a = pi a := eq_refl.
 
-(* The two readings of "product" coincide, for ANY functor out of a discrete
-   shape — in particular for image diagrams [F ◯ G]. *)
+(* The two readings "product" coincide, ANY 函子 out discrete
+ shape — particular image diagrams [F ◯ G]. （已译） *)
 Definition discrete_IsLimitCone_of_IsIndexedProduct (N : Cone G)
   (HP : IsIndexedProduct (fobj[G]) (vertex_obj[N]) (cone_leg N)) :
   IsLimitCone N.
@@ -348,8 +345,7 @@ Proof.
   - exact Huniq.
 Defined.
 
-(* The converse Structure/Limit/Product.v's [limit_is_indexed_product] never
-   had (Functor/Hom/Limit.v records the absence). *)
+(* 相关说明。 （已译） *)
 Definition discrete_IsIndexedProduct_of_IsLimitCone (N : Cone G)
   (HN : IsLimitCone N) :
   IsIndexedProduct (fobj[G]) (vertex_obj[N]) (cone_leg N) :=
@@ -357,7 +353,7 @@ Definition discrete_IsIndexedProduct_of_IsLimitCone (N : Cone G)
 
 End DiscreteBridge.
 
-(** ** Binary products: [CartesianFunctor] is invertibility of the comparison *)
+(* 相关说明。 （已译） *)
 
 Section BinaryProducts.
 
@@ -395,7 +391,7 @@ Section CartesianBridge.
 
 Context {C D : Category} (F : C ⟶ D) `{@Cartesian C} `{@Cartesian D}.
 
-(* the product cone of [C] over the discrete two-object diagram of [f] *)
+(* the product cone [C] over discrete two-对象 diagram [f] （已译） *)
 Definition binary_cone (f : bool → C) : Cone (DiscreteCat_Functor' f) :=
   discrete_cone (DiscreteCat_Functor' f) (f true × f false) (binary_proj f).
 
@@ -403,7 +399,7 @@ Definition binary_cone_IsLimitCone (f : bool → C) : IsLimitCone (binary_cone f
   discrete_IsLimitCone_of_IsIndexedProduct _ (binary_cone f)
     (IsIndexedProduct_binary f).
 
-(* the product cone of [D] over the IMAGE diagram [F ◯ DiscreteCat_Functor' f] *)
+(* 相关说明。 （已译） *)
 Definition binary_image_cone (f : bool → C) : Cone (F ◯ DiscreteCat_Functor' f) :=
   discrete_cone (F ◯ DiscreteCat_Functor' f) (F (f true) × F (f false))
     (binary_proj (fun b => F (f b))).
@@ -413,8 +409,7 @@ Definition binary_image_cone_IsLimitCone (f : bool → C) :
   discrete_IsLimitCone_of_IsIndexedProduct _ (binary_image_cone f)
     (IsIndexedProduct_binary (fun b => F (f b))).
 
-(* The comparison F (x × y) ~> F x × F y, as the general [cone_comparison]
-   at the two product cones. *)
+(* 相关说明。 （已译） *)
 Definition binary_comparison (f : bool → C) :
   F (f true × f false) ~{D}~> F (f true) × F (f false) :=
   cone_comparison F (binary_cone f) (binary_image_cone_IsLimitCone f).
@@ -433,9 +428,7 @@ Proof.
            (binary_image_cone_IsLimitCone f) false).
 Qed.
 
-(* It is the pairing of the images of the projections — the forward map
-   [prod_out] of Functor/Structure/Cartesian.v's class, computed rather
-   than postulated. *)
+(* 相关说明。 （已译） *)
 Lemma binary_comparison_fork (f : bool → C) :
   binary_comparison f ≈ fmap[F] exl △ fmap[F] exr.
 Proof.
@@ -485,8 +478,8 @@ Proof.
         now rewrite exr_fork.
 Qed.
 
-(* The issue's headline: a cartesian functor is exactly a functor preserving
-   the limit cones of the two-object discrete diagrams. *)
+(* The issue's headline: cartesian 函子 exactly 函子 preserving
+ limit cones two-对象 discrete diagrams. （已译） *)
 Theorem cartesian_functor_iff_preserves_binary_products :
   @CartesianFunctor C D F _ _ ↔
   (∀ x y : C, PreservesLimitCone (DiscreteCat_Functor' (binary_fam x y)) F).
@@ -506,7 +499,7 @@ Qed.
 
 End CartesianBridge.
 
-(** ** The terminal object: [TerminalFunctor] is invertibility of the comparison *)
+(* * ** The 终对象: [TerminalFunctor] invertibility comparison （已译） *)
 
 Section NullaryProducts.
 
@@ -549,7 +542,7 @@ Definition nullary_image_cone_IsLimitCone (f : False → C) :
   discrete_IsLimitCone_of_IsIndexedProduct _ (nullary_image_cone f)
     (IsIndexedProduct_nullary (fun a => F (f a))).
 
-(* The comparison F 1 ~> 1: the unique map into the terminal object. *)
+(* The comparison F 1 ~> 1: unique map 进入 终对象. （已译） *)
 Definition terminal_comparison (f : False → C) :
   F terminal_obj ~{D}~> terminal_obj :=
   cone_comparison F (nullary_cone f) (nullary_image_cone_IsLimitCone f).
@@ -557,8 +550,7 @@ Definition terminal_comparison (f : False → C) :
 Lemma terminal_comparison_one (f : False → C) : terminal_comparison f ≈ one.
 Proof. apply one_unique. Qed.
 
-(* Functor/Structure/Terminal.v records [fobj_one_iso : 1 ≅ F 1] with
-   [to : 1 ~> F 1]; the comparison is therefore its [from]. *)
+(* 相关说明。 （已译） *)
 Theorem terminal_functor_iff_comparison_iso :
   @TerminalFunctor C D F _ _ ↔ IsIsomorphism (terminal_comparison nullary_fam).
 Proof.

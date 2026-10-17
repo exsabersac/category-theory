@@ -40,8 +40,8 @@ Context (R : Reflective (C_W W)).
 Context {E : Category}.
 
 (* Parse-time abbreviations, matching Localization.v's [Section Inverts], so
-   every adjunction-transpose lemma instance stays in the same syntactic form
-   as the goal. *)
+ every 伴随-transpose 引理 instance stays same syntactic form
+ goal. （已译） *)
 Local Notation Su   := (Sub C (C_W W)).
 Local Notation Iota := (Incl C (C_W W)).
 Local Notation Refl := (reflector R).
@@ -107,14 +107,13 @@ Context (G : C ⟶ E).
 (* G sends every W-map to an isomorphism (the localizing hypothesis). *)
 Context (GW : ∀ (a b : C) (w : a ~> b), W a b w → IsIsomorphism (fmap[G] w)).
 
-(* The reflection units are W-maps: the honest saturation condition making
-   [C_W W] the localization AT W.  See the header. *)
+(* 相关说明。 （已译） *)
 Context (Hunit : ∀ c : C,
            W c (Iota (Refl c))
              (@Category.Theory.Adjunction.unit Su C Refl Iota A c)).
 
-(* Consequently G inverts every reflection unit — the exact content the
-   factorization consumes. *)
+(* Consequently G inverts every reflection unit — exact content the
+ factorization 所消耗. （已译） *)
 Lemma G_inverts_unit (c : C) :
   IsIsomorphism
     (fmap[G] (@Category.Theory.Adjunction.unit Su C Refl Iota A c)).
@@ -146,9 +145,9 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* The universal property: G factors through the reflector L = Refl, uniquely
-   up to natural isomorphism.  The witnessing functor is the restriction
-   G' := G ◯ Iota. *)
+(* The 普遍性质: G factors through reflector L = Refl, uniquely
+ up natural 同构. The witnessing 函子 restriction
+ G' := G ◯ Iota. （已译） *)
 Theorem localization_universal :
   { G' : Su ⟶ E
   & (G ≈ G' ◯ Refl) *

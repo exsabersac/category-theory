@@ -12,7 +12,7 @@ From Coq Require Import Arith.
 
 Generalizable All Variables.
 
-(** * Parallel-composition bifunctor on FreeCat *)
+(* * * Parallel-复合 bifunctor FreeCat （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/PROP

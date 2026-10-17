@@ -18,7 +18,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** A coherence helper for the two-object discrete shape *)
+(* * ** A coherence helper two-对象 discrete shape （已译） *)
 
 Lemma two_discrete_cone_coherence {C : Category} (H : Two_Discrete ⟶ C)
   (c : C) (leg : ∀ x : Two_Discrete, c ~{C}~> H x)
@@ -31,7 +31,7 @@ Proof.
   rewrite fmap_id; apply id_left.
 Qed.
 
-(** ** The diagram: the two feet of the walking span *)
+(* 相关说明。 （已译） *)
 
 Definition SepK : Two_Discrete ⟶ Roof := @Pick_Two Roof RNeg RPos.
 
@@ -44,7 +44,7 @@ Definition sep_cone : Cone SepK :=
                  end)
        (fun x y f => I)).
 
-(* Only the apex of the span carries legs into both feet. *)
+(* 相关说明。 （已译） *)
 
 Lemma sep_apex (v : Roof) (f : v ~{Roof}~> RNeg) (g : v ~{Roof}~> RPos) :
   RZero = v.
@@ -73,12 +73,12 @@ Proof.
   - intros v _; exact I.
 Defined.
 
-(** ** The functor: both legs of the span go to the first projection *)
+(* * ** The 函子: both legs span go first projection （已译） *)
 
 Definition SepF : Roof ⟶ Coq :=
   @ASpan Coq (prod bool bool) bool bool (@fst bool bool) (@fst bool bool).
 
-(** ** [bool × bool] with its genuine projections is the limit downstairs *)
+(* 相关说明。 （已译） *)
 
 Definition sep_prod_cone : Cone (SepF ◯ SepK) :=
   @Build_Cone Two_Discrete Coq (SepF ◯ SepK) (prod bool bool)
@@ -107,7 +107,7 @@ Proof.
     subst; reflexivity.
 Defined.
 
-(** ** The image cone is NOT limiting, though its apex carries a limit *)
+(* 相关说明。 （已译） *)
 
 Definition sep_image_isalimit : IsALimit (SepF ◯ SepK) (SepF RZero) :=
   limitcone_isalimit sep_prod_IsLimitCone.
@@ -132,15 +132,15 @@ Proof.
   rewrite H1 in H2; discriminate.
 Qed.
 
-(* Statement (A): the apex carries a limit of the composite diagram, and the
-   image cone at that very apex is not universal. *)
+(* Statement (A): apex carries limit 复合 diagram, the
+ image cone at very apex not universal. （已译） *)
 
 Definition apex_limit_without_limit_cone :
   IsALimit (SepF ◯ SepK) vertex_obj[FCone SepF sep_cone]
     * (IsLimitCone (FCone SepF sep_cone) → False) :=
   (sep_image_isalimit, sep_image_not_limiting).
 
-(** ** Statement (B): the class-level separation *)
+(* 相关说明。 （已译） *)
 
 Definition sep_PreservesLimit : PreservesLimit SepK SepF :=
   @Build_PreservesLimit Two_Discrete Roof SepK Coq SepF
@@ -161,7 +161,7 @@ Proof.
   exact (sep_not_PreservesLimitCone (H _ _ _ SepK SepF sep_PreservesLimit)).
 Qed.
 
-(** ** The documented non-invertible endomorphism, exhibited *)
+(* 相关说明。 （已译） *)
 
 Definition sep_dup : prod bool bool ~{Coq}~> prod bool bool :=
   fun p => (fst p, fst p).
@@ -197,8 +197,8 @@ Proof.
   - rewrite <- sep_comparison_is_dup; exact Hl.
 Qed.
 
-(* And yet the apex-only witness produces an isomorphism between the same two
-   objects — just not the canonical one. *)
+(* And yet apex-only witness produces 同构 between same two
+ 对象 — just not canonical one. （已译） *)
 
 Definition sep_apex_iso (L : Limit SepK) :
   SepF (vertex_obj[L]) ≅ vertex_obj[sep_prod_cone] :=

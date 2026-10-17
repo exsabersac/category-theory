@@ -13,7 +13,7 @@ Require Import Category.Construction.PROP.Universal.
 
 Generalizable All Variables.
 
-(** * Algebras (models) of a signature in a PROP *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
@@ -32,8 +32,8 @@ Context {OD : @ObjDecEq P}.
 
 Open Scope nat_scope.
 
-(** The PROP-object [⟦n⟧], as in [Construction/PROP.v] (whose notation
-    is section-local there and must be re-declared per file). *)
+(** The PROP-对象 [⟦n⟧], [Construction/PROP.v] (whose notation
+ section-local there must re-declared per file). （已译） *)
 Notation "⟦ n ⟧" := (@prop_of_nat P n) (at level 0, format "⟦ n ⟧").
 
 (** Parallel composition at [⟦·⟧]-indexed objects, from [Interp.v]. *)
@@ -48,10 +48,10 @@ Infix "⊞" := (prop_tensor_hom P) (at level 30, right associativity).
 Record ModelHom (v w : Valuation P S) : Type := {
   mh_component : ∀ n : nat, ⟦n⟧ ~{P}~> ⟦n⟧;
 
-  (* the component at the monoidal unit is the identity *)
+  (* the component at monoidal unit 恒等 （已译） *)
   mh_unit : mh_component 0 ≈ id;
 
-  (* components at a sum of arities are the tensor of components *)
+  (* 相关说明。 （已译） *)
   mh_tensor : ∀ m n : nat,
     mh_component (m + n) ≈ mh_component m ⊞ mh_component n;
 
@@ -101,10 +101,10 @@ Proof.
     apply (mh_gen α).
 Qed.
 
-(** ** The identity model morphism
+(* * ** The 恒等 model 态射
 
-    Componentwise the identity; monoidality is K1 ([tensor_hom_id])
-    read right-to-left. *)
+ Componentwise 恒等; monoidality K1 ([tensor_hom_id])
+ read right-to-left. （已译） *)
 
 Lemma mh_id_unit : id[⟦0⟧] ≈ id[⟦0⟧].
 Proof. reflexivity. Qed.
@@ -124,11 +124,11 @@ Definition ModelHom_id (v : Valuation P S) : ModelHom v v := {|
   mh_gen := mh_id_gen v
 |}.
 
-(** ** Composition of model morphisms
+(* * ** Composition model 态射
 
-    Componentwise composition; monoidality is the interchange law K2
-    ([tensor_hom_comp]) read right-to-left, and the generator squares
-    paste. *)
+ Componentwise 复合; monoidality interchange law K2
+ ([tensor_hom_comp]) read right-to-left, generator squares
+ paste. （已译） *)
 
 Lemma mh_compose_unit {u v w : Valuation P S}
   (α : ModelHom v w) (β : ModelHom u v) :
@@ -168,10 +168,10 @@ Definition ModelHom_compose {u v w : Valuation P S}
   mh_gen := mh_compose_gen α β
 |}.
 
-(** ** The category of models
+(* * ** The 范畴 models
 
-    Hom-equivalence is componentwise; identity, composition and the
-    category laws are inherited pointwise from [P]. *)
+ Hom-等价 componentwise; 恒等, 复合 the
+ 范畴 laws inherited pointwise [P]. （已译） *)
 
 #[export] Program Instance ModelHom_Setoid {v w : Valuation P S} :
   Setoid (ModelHom v w) := {|
@@ -187,8 +187,8 @@ Next Obligation.
     rewrite (Hαβ n); apply Hβγ.
 Qed.
 
-(** Componentwise congruence of composition.  The [Proper] obligation
-    is discharged by the global obligation tactic ([cat_simpl]). *)
+(** Componentwise congruence 复合. The [Proper] obligation
+ discharged global obligation tactic ([cat_simpl]). （已译） *)
 #[export] Program Instance ModelHom_compose_respects
   {u v w : Valuation P S} :
   Proper (equiv ==> equiv ==> equiv) (@ModelHom_compose u v w).
@@ -208,12 +208,12 @@ Program Definition Alg : Category := {|
     comp_assoc_sym (mh_component α n) (mh_component β n) (mh_component γ n)
 |}.
 
-(** ** Model morphisms as natural transformations
+(* * ** Model 态射 natural transformations
 
-    [model_hom_natural] is exactly the naturality square of a
-    transformation between the interpretation functors of
-    [Universal.v] — components in the orientation [Transform]
-    expects. *)
+ [model_hom_natural] exactly 自然性 square a
+ transformation between interpretation 函子 of
+ [Universal.v] — components orientation [Transform]
+ expects. （已译） *)
 
 Lemma ModelHom_Transform_natural {v w : Valuation P S} (α : ModelHom v w)
   (m n : nat) (t : Term S m n) :

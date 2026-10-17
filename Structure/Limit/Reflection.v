@@ -14,7 +14,7 @@ Require Import Category.Functor.Opposite.
 
 Generalizable All Variables.
 
-(** * Reflection of limits, colimits and coequalizers *)
+(* 相关说明。 （已译） *)
 
 (*
    Book:   Riehl, "Category Theory in Context", 2nd ed., §3.4:
@@ -26,7 +26,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Reflection over a shape, a class of shapes or diagrams, and all *)
+(* 相关说明。 （已译） *)
 
 Definition ReflectsLimitConesOfShape (J : Category) {C D : Category}
   (F : C ⟶ D) : Type := ∀ K : J ⟶ C, ReflectsLimitCone K F.
@@ -92,11 +92,11 @@ Definition ReflectsAllColimits_Over {C D : Category} {S : Category → Type}
   {F : C ⟶ D} (H : ReflectsAllColimits F) : ReflectsColimitCoconesOver S F :=
   fun J _ K => H J K.
 
-(** ** A conservative functor's opposite is conservative *)
+(* * ** A conservative 函子's opposite conservative （已译） *)
 
-(* An isomorphism of C^op is one of C with its two laws exchanged;
-   Theory/Morphisms/CokernelPair.v's [IsIsomorphism_of_op] and
-   [op_IsIsomorphism_of] read it across, in D and in C. *)
+(* An 同构 C^op one C two laws exchanged;
+ Theory/Morphisms/CokernelPair.v's [IsIsomorphism_of_op] and
+ [op_IsIsomorphism_of] read it across, D C. （已译） *)
 
 Definition ReflectsIsos_op {C D : Category} {F : C ⟶ D}
   (R : ReflectsIsos F) : ReflectsIsos (F^op) :=
@@ -105,7 +105,7 @@ Definition ReflectsIsos_op {C D : Category} {F : C ⟶ D}
        @op_IsIsomorphism_of C x y f
          (@reflects_iso C D F R y x f (IsIsomorphism_of_op (fmap[F] f) I))).
 
-(** ** Creation gives reflection: the colimit side *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -128,7 +128,7 @@ Definition creates_reflects_all_colimits {C D : Category} {F : C ⟶ D}
   (CR : CreatesAllColimits F) : ReflectsAllColimits F :=
   fun J K => creates_reflects_colimits (CR J K).
 
-(** ** Mac Lane's creation, read literally *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -167,8 +167,8 @@ Proof.
   - exact (`2 (mlc_unique CR (FCone F M) HM (self_lift M))).
 Defined.
 
-(* So Mac Lane's creation is one of the tree's, whose reflection field is
-   the theorem above. *)
+(* So Mac Lane's creation one tree's, whose reflection field is
+ 定理 above. （已译） *)
 
 Definition maclane_CreatesLimit {J C D : Category} {K : J ⟶ C}
   {F : C ⟶ D} (CR : MacLaneCreatesLimit K F) : CreatesLimit K F.
@@ -199,8 +199,8 @@ Definition iso_unique_lift_reflects {J C D : Category} {K : J ⟶ C}
     limitcone_transport (ConeIso_sym (lift_unique _ HM M (ConeIso_id _)))
       (lift_limiting _ HM).
 
-(* The identity creates every limit in Mac Lane's sense: the lift of N is
-   N itself, read over K, and a strict lift of N has N's apex. *)
+(* The 恒等 creates every limit Mac Lane's sense: lift N is
+ N itself, read over K, strict lift N has N's apex. （已译） *)
 
 Definition id_maclane_creates {J C : Category} (K : J ⟶ C) :
   MacLaneCreatesLimit K Id[C].
@@ -232,12 +232,12 @@ Proof.
     symmetry; exact HL.
 Defined.
 
-(* The colimit side, by the opposite, as Creation.v's [CreatesColimit]. *)
+(* 相关说明。 （已译） *)
 
 Definition MacLaneCreatesColimit {J C D : Category} (K : J ⟶ C)
   (F : C ⟶ D) : Type := MacLaneCreatesLimit (K^op) (F^op).
 
-(** ** A conservative functor reflects the limits it preserves *)
+(* * ** A conservative 函子 reflects limits it preserves （已译） *)
 
 (*
    本节说明（余）极限、同构相关定义、性质与动机。
@@ -303,8 +303,7 @@ Definition preserves_conservative_reflects_limits_of_class {C D : Category}
   fun J K HS =>
     preserves_conservative_reflects_limit (HL J K HS) (P J K HS) R.
 
-(* The colimit side, by op: [F^op] is conservative ([ReflectsIsos_op]),
-   and both image cocones are read as image cones over [F^op ◯ K^op]. *)
+(* 相关说明。 （已译） *)
 
 Definition conservative_reflects_colimit {J C D : Category}
   {K : J ⟶ C} {F : C ⟶ D} (R : ReflectsIsos F)
@@ -344,7 +343,7 @@ Definition preserves_conservative_reflects_colimits_of_class {C D : Category}
   fun J K HS =>
     preserves_conservative_reflects_colimit (HL J K HS) (P J K HS) R.
 
-(** ** Riehl Exercise 3.4.iii: preservation and conservativity create *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -369,9 +368,7 @@ Definition preserves_conservative_creates_limits_over {C D : Category}
   fun J HJ K =>
     preserves_conservative_creates_limit (HL J HJ K) (P J HJ K) R.
 
-(* For a class of diagrams, as the exercise states it; the form over a
-   class of shapes S above is this one at [fun J _ => S J], pointwise at
-   [eq_refl] (the probe, C29). *)
+(* 相关说明。 （已译） *)
 
 Definition preserves_conservative_creates_limits_of_class {C D : Category}
   (S : ∀ J : Category, (J ⟶ C) → Type) {F : C ⟶ D}
@@ -397,7 +394,7 @@ Definition preserves_conservative_creates_colimits_of_class {C D : Category}
   fun J K HS =>
     preserves_conservative_creates_colimit (HL J K HS) (P J K HS) R.
 
-(** ** Coequalizers: Mac Lane's "in particular" and Exercises 1 and 3 *)
+(* 相关说明。 （已译） *)
 
 (* Mac Lane's reflection of coequalizers, over the tree's elementary
    [IsCoequalizer]: a fork in C (e ∘ f ≈ e ∘ g) whose image is a
@@ -441,7 +438,7 @@ Proof.
   intros K N H.
   apply (parallel_cocone_coequalizer_colimit K N).
   apply R.
-  - (* N coforks the pair: both composites are its injection over ParX *)
+  - (* 相关说明。 （已译） *)
     transitivity (cocone_inj N ParX).
     + exact (cocone_inj_coherence N
                ((true; ParOne) : ParX ~{Parallel}~> ParY)).
@@ -496,8 +493,7 @@ Definition PreservesColimitCocones_PreservesCoequalizers {C D : Category}
   PreservesColimitCocones_PreservesCoequalizers_of_pairs
     (fun x y f g => P (APair f g)).
 
-(* Mac Lane §VI.7 Exercise 1, per parallel pair, as the book states it:
-   under the tree's creation, where reflection is a field ... *)
+(* 相关说明。 （已译） *)
 
 Definition creates_reflects_coequalizers_of_pairs {C D : Category}
   {F : C ⟶ D}

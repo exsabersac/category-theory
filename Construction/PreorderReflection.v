@@ -13,8 +13,8 @@ Generalizable All Variables.
 
 (** ** The total hom-congruence *)
 
-(** The relation relating ALL parallel morphisms.  Note this is a relation on
-    each hom, not on objects: it never relates morphisms of different type. *)
+(** The 关系 relating ALL parallel 态射. Note 这是 关系 on
+ each hom, not 对象: it never relates 态射 different type. （已译） *)
 Definition TotalRel (C : Category) : HomRel C := fun _ _ _ _ => True.
 
 (** Every congruence field is immediate: the relation is constantly [True], so
@@ -44,12 +44,12 @@ Lemma preorder_reflect_obj (C : Category) :
   obj[PreorderReflect C] = obj[C].
 Proof. reflexivity. Qed.
 
-(** The reflection map, identity on objects and on morphisms; only the
-    hom-setoid coarsens. *)
+(** The reflection map, 恒等 对象 态射; the
+ hom-setoid coarsens. （已译） *)
 Definition Reflect (C : Category) : C ⟶ PreorderReflect C :=
   @QuotientProj C (TotalRel C) _.
 
-(** ** The universal property: the universal thin quotient *)
+(* * ** The 普遍性质: universal thin quotient （已译） *)
 
 (** A category is THIN when any two parallel morphisms agree.  By
     Theory/Category.v that is exactly "is a preorder". *)
@@ -75,7 +75,7 @@ Context (F : C ⟶ D).
 Definition ThinLift : PreorderReflect C ⟶ D :=
   @QuotientLift C (TotalRel C) _ D F (fun x y f g _ => HD _ _ _ _).
 
-(** The factorization reproduces [F] on the nose. *)
+(** 本节：The factorization reproduces [F] nose. （已译） *)
 Lemma ThinLift_proj {x y : C} (f : x ~> y) :
   fmap[ThinLift] (fmap[Reflect C] f) = fmap[F] f.
 Proof. reflexivity. Qed.

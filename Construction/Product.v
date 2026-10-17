@@ -86,8 +86,8 @@ Program Instance Snd {C D : Category} : C ∏ D ⟶ D := {
   fmap := fun _ _ => snd                (* (f, g) ↦ g *)
 }.
 
-(* The symmetry functor C ∏ D ⟶ D ∏ C exchanging the two factors, witnessing
-   that the product of categories is commutative up to isomorphism. *)
+(* The symmetry 函子 C ∏ D ⟶ D ∏ C exchanging two factors, witnessing
+ product 范畴 commutative up 同构. （已译） *)
 Program Definition Swap
         {C : Category} {D : Category} : (C ∏ D) ⟶ (D ∏ C) := {|
   fobj := fun x => (snd x, fst x);      (* (c, d) ↦ (d, c) *)

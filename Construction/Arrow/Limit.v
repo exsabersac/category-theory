@@ -17,7 +17,7 @@ Set Primitive Projections.
 Set Universe Polymorphism.
 Unset Transparent Obligations.
 
-(** * The arrow-category projection creates limits *)
+(* * * The arrow-范畴 projection creates limits （已译） *)
 
 (*
    本文件给出极限相关。
@@ -25,7 +25,7 @@ Unset Transparent Obligations.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The identity functor preserves limiting cones *)
+(* * ** The 恒等 函子 preserves limiting cones （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -46,7 +46,7 @@ Proof.
   - intros v Hv; apply Huniq; intro j; exact (Hv j).
 Defined.
 
-(** ** The two-sided comma projection creates limits *)
+(* 相关说明。 （已译） *)
 
 Section TwoSided.
 
@@ -74,8 +74,7 @@ Definition cod_cone (N : Cone (comma_proj ◯ K)) : Cone (comma_proj2 ◯ K) :=
     (@Build_ACone J B (snd vertex_obj[N]) (comma_proj2 ◯ K) (cod_leg N)
        (fun x y f => cod_coherence N f)).
 
-(* #418's second projection preserves limiting cones unconditionally; the
-   competitor is repackaged across the same record boundary. *)
+(* 相关说明。 （已译） *)
 
 Definition cod_limiting (N : Cone (comma_proj ◯ K)) (HN : IsLimitCone N) :
   IsLimitCone (cod_cone N).
@@ -94,8 +93,7 @@ Definition tcod_limiting (N : Cone (comma_proj ◯ K)) (HN : IsLimitCone N) :
   IsLimitCone (FCone T (cod_cone N)) :=
   HT (cod_cone N) (cod_limiting N HN).
 
-(* The cone over [T ◯ (comma_proj2 ◯ K)] with apex [S] of the domain apex,
-   whose legs are the comma arrows of [K] after the domain legs. *)
+(* 相关说明。 （已译） *)
 
 Definition dom_leg (N : Cone (comma_proj ◯ K)) (j : J) :
   S (fst vertex_obj[N]) ~{C}~> (T ◯ (comma_proj2 ◯ K)) j :=
@@ -124,8 +122,8 @@ Section Lift.
 
 Context (N : Cone (comma_proj ◯ K)) (HN : IsLimitCone N).
 
-(* The comparison arrow: the mediator of [dom_cone N] into the preserved
-   codomain limit. *)
+(* The comparison arrow: mediator [dom_cone N] 进入 preserved
+ codomain limit. （已译） *)
 
 Definition comma_lift_arrow :
   S (fst vertex_obj[N]) ~{C}~> T (snd vertex_obj[N]) :=
@@ -160,7 +158,7 @@ Definition comma_lift_cone : Cone K :=
     (@Build_ACone J (S ↓ T) comma_lift_obj K comma_lift_leg
        (fun x y f => comma_lift_coherence f)).
 
-(* The lift lies over [N] ON THE NOSE. *)
+(* 相关说明。 （已译） *)
 
 Example comma_lift_apex_strict :
   comma_proj vertex_obj[comma_lift_cone] = vertex_obj[N] := eq_refl.
@@ -174,9 +172,9 @@ Definition comma_lift_StrictLift : StrictLift K comma_proj N :=
 
 End Lift.
 
-(* Reflection: a cone over [K] whose projection is limiting is limiting.
-   The mediator downstairs is a comma morphism because the legs of the
-   preserved codomain limit are jointly monic. *)
+(* Reflection: cone over [K] whose projection limiting limiting.
+ The mediator downstairs comma 态射 because legs the
+ preserved codomain limit jointly monic. （已译） *)
 
 Definition comma_proj_reflect (M : Cone K)
   (HM : IsLimitCone (FCone comma_proj M)) : IsLimitCone M.
@@ -235,7 +233,7 @@ Example comma_proj_Limit_arrow (L : Limit (comma_proj ◯ K)) :
 
 End TwoSided.
 
-(** ** The arrow category: Mac Lane §V.1 Exercise 3 *)
+(* * ** The arrow 范畴: Mac Lane §V.1 Exercise 3 （已译） *)
 
 Section ArrowLimit.
 
@@ -254,8 +252,8 @@ Definition arrow_proj_creates_all_limits :
   CreatesAllLimits (@comma_proj C C C Id[C] Id[C]) :=
   fun J K => arrow_proj_creates_limits K.
 
-(* The corollary: the arrow category is complete whenever the base is, its
-   limits computed on domains and codomains. *)
+(* The 推论: arrow 范畴 complete whenever base is, its
+ limits computed domains codomains. （已译） *)
 
 Definition Arrow_Complete (HC : @Complete C) : @Complete (@Arrow C) :=
   creates_limits_Complete comma_proj (Product_Complete HC HC)

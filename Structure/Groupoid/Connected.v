@@ -12,7 +12,7 @@ Require Import Category.Structure.Groupoid.
 
 Generalizable All Variables.
 
-(** * Connected categories, and the structure of a connected groupoid *)
+(* * * Connected 范畴, structure connected groupoid （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/groupoid
@@ -54,8 +54,8 @@ Arguments zz_bwd {C x y z} f s.
    zig-zag. *)
 Definition Connected (C : Category) : Type := ∀ x y : C, ZigZag x y.
 
-(* A single arrow is a one-step zig-zag, so the one-arrow form implies the
-   zig-zag form in ANY category. *)
+(* A single arrow one-step zig-zag, so one-arrow form implies the
+ zig-zag form ANY 范畴. （已译） *)
 Definition hom_zigzag {C : Category} {x y : C} (f : x ~> y) : ZigZag x y :=
   zz_fwd f (zz_nil y).
 
@@ -75,9 +75,7 @@ Fixpoint zigzag_trans {C : Category} {x y z : C}
   | zz_bwd f s'  => fun t => zz_bwd f (zigzag_trans s' t)
   end.
 
-(* Reversal, by turning every forward step into a backward one and vice
-   versa.  Stated through [zigzag_trans] because a reversed chain is built
-   from the tail outwards. *)
+(* 相关说明。 （已译） *)
 Fixpoint zigzag_sym {C : Category} {x y : C} (s : ZigZag x y) : ZigZag y x :=
   match s in ZigZag a b return ZigZag b a with
   | zz_nil w    => zz_nil w
@@ -118,7 +116,7 @@ Fixpoint zigzag_fence {C : Category} {x y : C} (s : ZigZag x y) : Fence x y :=
   | zz_bwd f s'   => fence_cons _ id f (zigzag_fence s')
   end.
 
-(** ** Collapse to the one-arrow form in a groupoid *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Connected 相关定义、性质与动机。
@@ -136,8 +134,8 @@ Fixpoint zigzag_hom {C : Category} (G : IsGroupoid C) {x y : C}
 Definition connected_arrow {C : Category} (G : IsGroupoid C) (K : Connected C)
   (x y : C) : x ~> y := zigzag_hom G (K x y).
 
-(* And therefore any two objects of a connected groupoid are isomorphic —
-   the form the structure theorem consumes. *)
+(* And therefore any two 对象 connected groupoid isomorphic —
+ form structure 定理 所消耗. （已译） *)
 Definition connected_iso {C : Category} (G : IsGroupoid C) (K : Connected C)
   (x y : C) : x ≅ y := giso G (connected_arrow G K x y).
 
@@ -191,13 +189,13 @@ Proof.
            (vertex_incl_ESO G K x)).
 Defined.
 
-(* The quasi-inverse, extracted: it sends every object of C to the single
-   object of the delooping, and an arrow to its conjugate into hom(x, x). *)
+(* The quasi-inverse, extracted: it sends every 对象 C single
+ 对象 delooping, arrow conjugate hom(x, x). （已译） *)
 Definition connected_deloop_inverse {C : Category} (G : IsGroupoid C)
   (K : Connected C) (x : C) : C ⟶ Deloop (vertex_group G x) :=
   @quasi_inverse _ _ _ (connected_deloop_equiv G K x).
 
-(** ** Connectedness is necessary, not merely sufficient *)
+(* 相关说明。 （已译） *)
 
 (* [vertex_incl G x] sends EVERY object to x, so an essential-surjectivity
    witness for it is exactly a family of isomorphisms x ≅ d — the chosen
@@ -221,9 +219,9 @@ Proof.
            ∘ from (vertex_incl_ESO_iso G x Eso y)).
 Defined.
 
-(* The two directions together.  For a groupoid with a chosen object, being
-   connected and being equivalent to the delooping of the vertex group at
-   that object are interderivable. *)
+(* The two directions together. For groupoid chosen 对象, being
+ connected being equivalent delooping vertex group at
+ 对象 interderivable. （已译） *)
 Theorem connected_iff_deloop_equiv {C : Category} (G : IsGroupoid C) (x : C) :
   Connected C ↔ EquivalenceOfCategories (vertex_incl G x).
 Proof.
@@ -265,13 +263,13 @@ Definition WideDeloop (M : MonObject) (A : Type) : Category := {|
 Example WideDeloop_Deloop (M : MonObject) : WideDeloop M poly_unit = Deloop M
   := eq_refl.
 
-(* Its endomorphism monoid at every object is M itself, on the nose — the
-   [hom_monoid_Deloop] round trip of Construction/Deloop.v, widened. *)
+(* Its endomorphism 幺半群 at every 对象 M itself, nose — the
+ [hom_monoid_Deloop] round trip Construction/Deloop.v, widened. （已译） *)
 Example WideDeloop_hom_monoid (M : MonObject) (A : Type) (a : A) :
   hom_monoid (WideDeloop M A) a = M := eq_refl.
 
-(* If M is a group then [WideDeloop M A] is a groupoid: the inverse of an
-   arrow is the inverse of the element, at any pair of objects. *)
+(* If M group then [WideDeloop M A] groupoid: inverse an
+ arrow inverse element, at any pair 对象. （已译） *)
 Definition WideDeloop_IsGroupoid (G : GrpObject) (A : Type) :
   IsGroupoid (WideDeloop G A).
 Proof.
@@ -281,13 +279,12 @@ Proof.
   - apply grp_inv_l.
 Defined.
 
-(* And it is connected, by the one-step zig-zag carrying the unit of M —
-   every hom-set is inhabited, whatever A is. *)
+(* 相关说明。 （已译） *)
 Definition WideDeloop_Connected (M : MonObject) (A : Type) :
   Connected (WideDeloop M A) :=
   @arrow_connected (WideDeloop M A) (fun _ _ => mon_unit).
 
-(** ** The structure theorem, exercised *)
+(* * ** The structure 定理, exercised （已译） *)
 
 (* Two objects, eight arrows, vertex group Z/2 at each of them. *)
 Definition Bool_Wide : Category := WideDeloop Bool_Xor_Grp bool.
@@ -298,8 +295,7 @@ Definition Bool_Wide_IsGroupoid : IsGroupoid Bool_Wide :=
 Definition Bool_Wide_Connected : Connected Bool_Wide :=
   WideDeloop_Connected Bool_Xor_Grp bool.
 
-(* Its vertex group at [true] really is Z/2: both data fields agree with
-   [Bool_Xor_Grp] on the nose. *)
+(* 相关说明。 （已译） *)
 Example Bool_Wide_vertex_monoid :
   grp_monoid (vertex_group Bool_Wide_IsGroupoid true) = grp_monoid Bool_Xor_Grp
   := eq_refl.
@@ -317,30 +313,30 @@ Definition Bool_Wide_structure :
   EquivalenceOfCategories (vertex_incl Bool_Wide_IsGroupoid true) :=
   connected_deloop_equiv Bool_Wide_IsGroupoid Bool_Wide_Connected true.
 
-(* The same statement at the other object, to exhibit the "any one vertex
-   group" clause with a second choice actually made. *)
+(* The same statement at other 对象, exhibit "any one vertex
+ group" clause second choice actually made. （已译） *)
 Definition Bool_Wide_structure_false :
   EquivalenceOfCategories (vertex_incl Bool_Wide_IsGroupoid false) :=
   connected_deloop_equiv Bool_Wide_IsGroupoid Bool_Wide_Connected false.
 
-(* And the conjugation isomorphism between the two vertex groups, which is
-   what makes the two statements above compatible. *)
+(* And conjugation 同构 between two vertex groups, is
+ what makes two statements above compatible. （已译） *)
 Definition Bool_Wide_conjugation :
   MonIso (vertex_group Bool_Wide_IsGroupoid true)
          (vertex_group Bool_Wide_IsGroupoid false) :=
   conjugation_iso Bool_Wide_IsGroupoid
     (connected_arrow Bool_Wide_IsGroupoid Bool_Wide_Connected true false).
 
-(** ** Connected does not mean "joined by an arrow" *)
+(* 相关说明。 （已译） *)
 
 (* [Roof] (Instance/Roof.v) is the walking span RNeg <-- RZero --> RPos.  It
    is connected: every pair of objects is joined by a zig-zag through RZero. *)
 Definition Roof_Connected : Connected Roof.
 Proof.
   intros x y.
-  (* [destruct] replaces the objects by bare [RoofObj] constructors, which no
-     longer carry the category in their type, so each chain names [Roof]
-     explicitly. *)
+  (* [destruct] replaces 对象 bare [RoofObj] constructors, no
+ longer carry 范畴 type, so each chain names [Roof]
+ explicitly. （已译） *)
   destruct x, y.
   - exact (@zz_nil Roof RNeg).
   - exact (@zz_bwd Roof RNeg RZero RZero ZeroNeg (@zz_nil Roof RZero)).
@@ -386,8 +382,8 @@ Proof.
   exact (Roof_no_arrow_neg_pos (zigzag_hom G (Roof_Connected RNeg RPos))).
 Qed.
 
-(** ** A groupoid that is not connected, and for which the theorem's
-       conclusion is false *)
+(* * ** A groupoid not connected, 定理's
+ conclusion false （已译） *)
 
 (*
    本节说明 Connected 相关定义、性质与动机。

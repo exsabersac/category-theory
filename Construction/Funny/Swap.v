@@ -17,7 +17,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The action of the swap, as separately functorial data *)
+(* 相关说明。 （已译） *)
 
 Program Definition FunnySwap_sep {C D : Category} :
   SepFunctorial (E := D □ C) (fun (c : C) (d : D) => (d, c)) := {|
@@ -88,11 +88,11 @@ Proof.
   - intros c d d' g. reflexivity.
 Qed.
 
-(** ** Strict naturality in both variables
+(* * ** Strict 自然性 both variables
 
-    Both composites send [lstep f] to [rstep (fmap[F] f)] and [rstep g] to
-    [lstep (fmap[G] g)] definitionally, and agree definitionally on
-    explicit-pair objects. *)
+ Both composites send [lstep f] [rstep (fmap[F] f)] [rstep g] to
+ [lstep (fmap[G] g)] definitionally, agree definitionally on
+ explicit-pair 对象. （已译） *)
 
 Lemma FunnySwap_natural {C C' D D' : Category} (F : C ⟶ C') (G : D ⟶ D') :
   @equiv _ (@Functor_StrictEq_Setoid (C □ D) (D' □ C'))

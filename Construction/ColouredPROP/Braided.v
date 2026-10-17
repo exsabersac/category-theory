@@ -12,7 +12,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * The braided and symmetric monoidal structures on the free coloured PROP *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category

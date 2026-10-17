@@ -13,7 +13,7 @@ Require Import Category.Theory.Skeleton.
 
 Generalizable All Variables.
 
-(** * An isomorphism-dense full subcategory is reflective *)
+(* * * An 同构-dense full subcategory reflective （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/essentially+surjective+functor
@@ -31,15 +31,15 @@ Context (S : Subcategory C).
 
 (** ** The hypothesis *)
 
-(* Mac Lane's "every c in C is isomorphic (in C) to some object of A", with
-   the object chosen.  The sigma is Type-valued, so the representative and
-   the isomorphism are both DATA. *)
+(* Mac Lane's "every c C isomorphic (in C) some 对象 A", with
+ 对象 chosen. The sigma Type-valued, so representative and
+ 同构 both DATA. （已译） *)
 
 Definition IsoDense : Type :=
   ∀ c : C, { a : Sub C S & Incl C S a ≅ c }.
 
-(* ... which is [EssentiallySurjective] for the inclusion, field for
-   field.  A plain [Definition], raising no obligation. *)
+(* ... [EssentiallySurjective] 含入, field for
+ field. A plain [Definition], raising no obligation. （已译） *)
 
 Definition iso_dense_ESO (D : IsoDense) :
   EssentiallySurjective (Incl C S) :=
@@ -58,27 +58,25 @@ Definition ESO_iso_dense (E : EssentiallySurjective (Incl C S)) :
 Example ESO_iso_dense_obj (E : EssentiallySurjective (Incl C S)) (c : C) :
   `1 (ESO_iso_dense E c) = @eso_obj _ _ _ E c := eq_refl.
 
-(* One round trip closes on the WHOLE record, because
-   [EssentiallySurjective] is a two-field class and Lib.v sets
-   [Set Primitive Projections]. *)
+(* 相关说明。 （已译） *)
 
 Example ESO_round_whole (E : EssentiallySurjective (Incl C S)) :
   iso_dense_ESO (ESO_iso_dense E) = E := eq_refl.
 
-(* The other closes only on the object component: stdlib [sigT] has no eta,
-   so the [IsoDense] whole record does not return.  Refuted and pinned in
-   Test/ProbeDense375.v. *)
+(* The other closes 对象 component: stdlib [sigT] has no eta,
+ so [IsoDense] whole record does not return. Refuted pinned in
+ Test/ProbeDense375.v. （已译） *)
 
 Example iso_dense_round_obj (D : IsoDense) (c : C) :
   `1 (ESO_iso_dense (iso_dense_ESO D) c) = `1 (D c) := eq_refl.
 
 Context (F : Subcategory.Full C S).
 
-(** ** (1) The insertion is an equivalence *)
+(* * ** (1) The 嵌入 等价 （已译） *)
 
-(* [Incl_Faithful] appears here, in a [:=] with no tactic; the reviewer
-   check for this issue is that the generic lemma is consumed rather than
-   bypassed. *)
+(* [Incl_Faithful] appears here, [:=] no tactic; reviewer
+ check issue generic 引理 consumed rather than
+ bypassed. （已译） *)
 
 Definition dense_incl_equivalence (D : IsoDense) :
   EquivalenceOfCategories (Incl C S) :=
@@ -87,17 +85,17 @@ Definition dense_incl_equivalence (D : IsoDense) :
     (Incl_Faithful C S)
     (iso_dense_ESO D).
 
-(* The quasi-inverse acts on objects by the chosen representative:
-   [FF_ESO_Equivalence] is [Defined] and [ff_eso_inverse]'s [fobj] is
-   [eso_obj], so this reduces all the way. *)
+(* The quasi-inverse acts 对象 chosen representative:
+ [FF_ESO_Equivalence] [Defined] [ff_eso_inverse]'s [fobj] is
+ [eso_obj], so reduces all way. （已译） *)
 
 Example dense_incl_quasi_obj (D : IsoDense) (c : C) :
   fobj[@quasi_inverse _ _ _ (dense_incl_equivalence D)] c = `1 (D c)
   := eq_refl.
 
-(** ** (2) The adjoint equivalence, in both handednesses *)
+(* * ** (2) The adjoint 等价, both handednesses （已译） *)
 
-(* Mac Lane's triple read with the insertion on the LEFT. *)
+(* Mac Lane's triple read 嵌入 LEFT. （已译） *)
 
 Definition dense_incl_adjoint_equivalence (D : IsoDense) :
   AdjointEquivalence (Incl C S)
@@ -112,8 +110,8 @@ Definition dense_reflector (D : IsoDense) : C ⟶ Sub C S :=
 Example dense_reflector_obj (D : IsoDense) (c : C) :
   fobj[dense_reflector D] c = `1 (D c) := eq_refl.
 
-(* ... and the reflection adjunction T -| K, the handedness the
-   [Reflective] record asks for. *)
+(* ... reflection 伴随 T -| K, handedness the
+ [Reflective] record asks for. （已译） *)
 
 Definition dense_adj (D : IsoDense) : dense_reflector D ⊣ Incl C S :=
   AdjointEquivalence_swap_adjunction (dense_incl_adjoint_equivalence D).
@@ -138,10 +136,10 @@ Example dense_reflective_obj (D : IsoDense) (c : C) :
   fobj[reflector (dense_full_subcategory_reflective D)] c = `1 (D c)
   := eq_refl.
 
-(** ** (3) The counit, as an isomorphism *)
+(* * ** (3) The counit, 同构 （已译） *)
 
-(* [:=] with no tactic: the swapped adjoint equivalence carries this as a
-   field. *)
+(* [:=] no tactic: swapped adjoint 等价 carries a
+ field. （已译） *)
 
 Definition dense_counit_iso (D : IsoDense) (a : Sub C S) :
   IsIsomorphism (@counit _ _ _ _ (dense_adj D) a) :=
@@ -186,9 +184,9 @@ Definition skeleton_reflective {C : Category} (Sk : Skeleton C) :
 Example skeleton_reflector_obj {C : Category} (Sk : Skeleton C) (c : C) :
   fobj[reflector (skeleton_reflective Sk)] c = skel_rep Sk c := eq_refl.
 
-(* The reflector produced by the general theorem IS Theory/Skeleton.v's
-   [skel_reflect], on the nose: the two [EssentiallySurjective] records
-   agree field for field, and that class has eta. *)
+(* The reflector produced general 定理 IS Theory/Skeleton.v's
+ [skel_reflect], nose: two [EssentiallySurjective] records
+ agree field field, class has eta. （已译） *)
 
 Example skeleton_reflector_is_skel_reflect {C : Category} (Sk : Skeleton C) :
   reflector (skeleton_reflective Sk) = skel_reflect Sk := eq_refl.

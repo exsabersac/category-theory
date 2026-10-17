@@ -14,7 +14,7 @@ Set Universe Polymorphism.
 
 Generalizable All Variables.
 
-(** * Creation of limits in a comma category [=(d) ↓ U] *)
+(* * * Creation limits comma 范畴 [=(d) ↓ U] （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/created+limit
@@ -42,10 +42,9 @@ Proof.
   - exact (`2 m).
 Qed.
 
-(** ** The image cone and the honest preservation hypothesis *)
+(* * ** The image cone honest preservation 假设 （已译） *)
 
-(* The legs of the image cone: [fmap[U]] applied to the legs of a [C]-limit L
-   of G.  The codomain [U (G x)] is convertible with [(U ◯ G) x]. *)
+(* 相关说明。 （已译） *)
 Definition image_leg {J : Category} {G : J ⟶ C} (L : Limit G) (x : J) :
   U L ~{D}~> (U ◯ G) x :=
   fmap[U] (limit_leg (limit_is_alimit L) x).
@@ -73,12 +72,12 @@ Definition PreservesImageLimit : Type :=
     ∃! φ : vertex_obj[N] ~{D}~> U L,
       ∀ x : J, image_leg L x ∘ φ ≈ cone_leg N x.
 
-(* Packaged apex-pinned limit whose legs are the image legs. *)
+(* 相关说明。 （已译） *)
 Definition image_is_alimit (HU : PreservesImageLimit)
   {J : Category} {G : J ⟶ C} (L : Limit G) : IsALimit (U ◯ G) (U L) :=
   @Build_IsALimit J D (U ◯ G) (U L) (image_acone L) (HU J G L).
 
-(** ** Creation of the limit of one diagram *)
+(* 相关说明。 （已译） *)
 
 Section Create.
 
@@ -93,7 +92,7 @@ Definition Gdiag : J ⟶ C := comma_proj2 ◯ K.
    [Complete C] hypothesis. *)
 Context (Ldiag : Limit Gdiag).
 
-(* The cone over [U ◯ Gdiag] with apex [d] built from the [d]-legs of K. *)
+(* 相关说明。 （已译） *)
 Definition base_leg (j : J) : d ~{D}~> (U ◯ Gdiag) j := `2 (K j).
 
 Lemma base_coherence {x y : J} (f : x ~{J}~> y) :
@@ -110,7 +109,7 @@ Definition base_cone : Cone (U ◯ Gdiag) :=
   @Build_Cone J D (U ◯ Gdiag) d
     (@Build_ACone J D d (U ◯ Gdiag) base_leg (@base_coherence)).
 
-(* The mediating morphism into the preserved (image) limit. *)
+(* The mediating 态射 进入 preserved (image) limit. （已译） *)
 Definition phi : d ~{D}~> U Ldiag :=
   limit_med (image_is_alimit HU Ldiag) base_cone.
 
@@ -118,11 +117,11 @@ Lemma phi_commutes (j : J) :
   fmap[U] (limit_leg (limit_is_alimit Ldiag) j) ∘ phi ≈ `2 (K j).
 Proof. exact (limit_med_commutes (image_is_alimit HU Ldiag) base_cone j). Qed.
 
-(* The apex object of the comma limit: [(Ldiag, φ)]. *)
+(* The apex 对象 comma limit: [(Ldiag, φ)]. （已译） *)
 Definition apex_obj : (=(d) ↓ U) := ((ttt, vertex_obj[Ldiag]); phi).
 
-(* The legs of the comma limit cone: the projected [C]-legs [π_j], upgraded to
-   comma morphisms by the triangle [`2 (K j) ≈ fmap[U] π_j ∘ φ]. *)
+(* The legs comma limit cone: projected [C]-legs [π_j], upgraded to
+ comma 态射 triangle [`2 (K j) ≈ fmap[U] π_j ∘ φ]. （已译） *)
 Definition apex_leg (j : J) : apex_obj ~{=(d) ↓ U}~> K j.
 Proof.
   unshelve refine ((ttt, limit_leg (limit_is_alimit Ldiag) j); _).
@@ -203,7 +202,7 @@ Definition comma_limit : Limit K :=
 
 End Create.
 
-(** ** Completeness of the comma category *)
+(* * ** Completeness comma 范畴 （已译） *)
 
 Definition Comma_Complete
   (HU : PreservesImageLimit) (HC : @Complete C) :
@@ -212,7 +211,7 @@ Definition Comma_Complete
 
 End CommaLimit.
 
-(** ** The preservation hypothesis is inhabited by right adjoints *)
+(* * ** The preservation 假设 inhabited right adjoints （已译） *)
 
 Require Import Category.Theory.Adjunction.
 Require Import Category.Adjunction.Continuity.

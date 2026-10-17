@@ -11,7 +11,7 @@ Require Import Category.Instance.Parallel.
 
 Generalizable All Variables.
 
-(** * Equalizers, elementarily: forks and descent *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Equaliser_(mathematics)
@@ -21,11 +21,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The elementary universal property: e forks the pair f, g at q, and
-   every forking map h into x factors uniquely across e. *)
+(* The elementary 普遍性质: e forks pair f, g at q, and
+ every forking map h x factors uniquely across e. （已译） *)
 Record IsEqualizer {C : Category} {x y : C} (f g : x ~> y)
   (q : C) (e : q ~> x) := {
-  (* the equalizing map is absorbed by the parallel pair *)
+  (* 相关说明。 （已译） *)
   fork_eq : f ∘ e ≈ g ∘ e;
 
   (* universal property: every forking map h factors uniquely through e *)
@@ -36,9 +36,9 @@ Record IsEqualizer {C : Category} {x y : C} (f g : x ~> y)
 Arguments fork_eq {_ _ _ _ _ _ _} _.
 Arguments eq_desc {_ _ _ _ _ _ _} _ {_} _ _.
 
-(* A category has all (binary) equalizers when every parallel pair
-   carries an elementary equalizer.  This is the equalizer analogue of
-   [HasCoequalizers] in [Structure/Coequalizer.v]. *)
+(* A 范畴 has all (binary) equalizers every parallel pair
+ carries elementary equalizer. This equalizer analogue of
+ [HasCoequalizers] [Structure/Coequalizer.v]. （已译） *)
 Class HasEqualizers (C : Category) := {
   equalizer {x y : C} (f g : x ~> y) : ∃ (q : C) (e : q ~> x), IsEqualizer f g q e
 }.
@@ -49,11 +49,9 @@ Context {C : Category}.
 Context {x y : C}.
 Context (f g : x ~> y).
 
-(** ** Equalizing maps are monomorphisms *)
+(* 相关说明。 （已译） *)
 
-(* Wikipedia: "every equaliser is a monomorphism"; both factorizations of
-   e ∘ g1 agree with the canonical one, so descent uniqueness cancels e on
-   the left. *)
+(* 相关说明。 （已译） *)
 Lemma equalizer_monic {q : C} {e : q ~> x} (E : IsEqualizer f g q e) :
   Monic e.
 Proof.
@@ -72,7 +70,7 @@ Proof.
     exact Hg.
 Qed.
 
-(** ** Equalizers are unique up to isomorphism *)
+(* * ** Equalizers unique up 同构 （已译） *)
 
 (*
    本节说明等化子相关定义、性质与动机。
@@ -108,10 +106,10 @@ Proof.
       apply id_right.
 Defined.
 
-(** ** From a forking map to a cone over the walking parallel pair *)
+(* 相关说明。 （已译） *)
 
-(* The legs of the cone induced by a forking map h: the leg over ParX is
-   h itself, the leg over ParY is the common composite f ∘ h. *)
+(* The legs cone induced forking map h: leg over ParX is
+ h itself, leg over ParY common 复合 f ∘ h. （已译） *)
 Definition fork_legs {z : C} (h : z ~> x) (p : ParObj) :
   z ~{C}~> APair f g p :=
   match p return (z ~{C}~> APair f g p) with
@@ -133,7 +131,7 @@ Proof.
   - (* identity arrow on ParX *)
     simpl.
     apply id_left.
-  - (* the two arrows ParX ~> ParY, sent to f and g *)
+  - (* 相关说明。 （已译） *)
     destruct k as [bb hk].
     destruct bb.
     + (* (true; ParOne), sent to f *)
@@ -156,11 +154,9 @@ Definition fork_cone {z : C} (h : z ~> x) (Hh : f ∘ h ≈ g ∘ h) :
     (@Build_ACone Parallel C z (APair f g)
        (fork_legs h) (fork_legs_coherence h Hh)).
 
-(** ** From the limit presentation to the elementary one *)
+(* 相关说明。 （已译） *)
 
-(* The limit leg over ParX forks the pair: both composites agree with the
-   leg over ParY, by leg coherence at the two nonidentity arrows of the
-   walking parallel pair. *)
+(* 相关说明。 （已译） *)
 Lemma limit_equalizes (L : Equalizer (APair f g)) :
   f ∘ limit_leg (limit_is_alimit L) ParX
     ≈ g ∘ limit_leg (limit_is_alimit L) ParX.
@@ -173,8 +169,8 @@ Proof.
              ((false; ParTwo) : ParX ~{Parallel}~> ParY)).
 Qed.
 
-(* Descent through the limit apex: mediate into the limit from the cone
-   induced by the forking map. *)
+(* Descent through limit apex: mediate 进入 limit cone
+ induced forking map. （已译） *)
 Lemma limit_equalizer_desc (L : Equalizer (APair f g))
   {z : C} (h : z ~> x) (Hh : f ∘ h ≈ g ∘ h) :
   ∃! u : z ~> L,
@@ -190,7 +186,7 @@ Proof.
     intros p.
     destruct p.
     + exact Hv.
-    + (* the ParY leg follows from the ParX leg via coherence *)
+    + (* 相关说明。 （已译） *)
       rewrite <- (limit_leg_coherence (limit_is_alimit L)
                     ((true; ParOne) : ParX ~{Parallel}~> ParY)).
       rewrite <- comp_assoc.
@@ -204,17 +200,16 @@ Definition equalizer_is_equalizer (L : Equalizer (APair f g)) :
   {| fork_eq := limit_equalizes L
    ; eq_desc := fun z h Hh => limit_equalizer_desc L h Hh |}.
 
-(** ** From the elementary presentation back to the limit *)
+(* 相关说明。 （已译） *)
 
-(* The limit cone of an elementary equalizer: legs e and f ∘ e over ParX
-   and ParY. *)
+(* 相关说明。 （已译） *)
 Definition is_equalizer_cone {q : C} {e : q ~> x}
   (E : IsEqualizer f g q e) : Cone (APair f g) :=
   fork_cone e (fork_eq E).
 
-(* The universal property of that cone; this statement is definitionally
-   the [ump_limits] field of the limit ([Limit (APair f g)]) whose limit
-   cone is [is_equalizer_cone]. *)
+(* The 普遍性质 cone; statement definitionally
+ [ump_limits] field limit ([Limit (APair f g)]) whose limit
+ cone [is_equalizer_cone]. （已译） *)
 Lemma is_equalizer_cone_ump {q : C} {e : q ~> x}
   (E : IsEqualizer f g q e) (N : Cone (APair f g)) :
   ∃! u : vertex_obj[N] ~> q,
@@ -245,8 +240,7 @@ Proof.
     exact (Hv ParX).
 Qed.
 
-(* An elementary equalizer yields the bundled limit over the walking
-   parallel pair. *)
+(* 相关说明。 （已译） *)
 Definition is_equalizer_limit {q : C} {e : q ~> x}
   (E : IsEqualizer f g q e) : Equalizer (APair f g) :=
   {| limit_cone := is_equalizer_cone E

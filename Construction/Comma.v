@@ -14,7 +14,7 @@ Context {A B C : Category}.
 Context {S : A ⟶ C}.
 Context {T : B ⟶ C}.
 
-(** The comma category (S ↓ T) of two functors with common codomain. *)
+(** The comma 范畴 (S ↓ T) two 函子 common codomain. （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Comma_category
@@ -40,11 +40,11 @@ Context {T : B ⟶ C}.
 Program Definition Comma : Category := {|
   (* objects: triples (a, b, h : S a ~> T b) *)
   obj     := ∃ p : A ∏ B, S (fst p) ~{C}~> T (snd p);
-  (* morphisms: pairs (f, g) with the commuting square h' ∘ S f ≈ T g ∘ h *)
+  (* 态射: pairs (f, g) 交换方块 h' ∘ S f ≈ T g ∘ h （已译） *)
   hom     := fun x y =>
     ∃ f : (fst (`1 x) ~{A}~> fst (`1 y)) * (snd (`1 x) ~{B}~> snd (`1 y)),
       `2 y ∘ fmap[S] (fst f) ≈ fmap[T] (snd f) ∘ `2 x;
-  (* equivalence: componentwise ≈ in A and B (square proof is irrelevant) *)
+  (* 等价: componentwise ≈ A B (square 证明 irrelevant) （已译） *)
   homset  := fun _ _ =>
     {| equiv := fun f g => (fst `1 f ≈ fst `1 g) * (snd `1 f ≈ snd `1 g) |};
   id      := fun _ => ((id, id); _);    (* identity (id_a, id_b) *)

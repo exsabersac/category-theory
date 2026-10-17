@@ -21,9 +21,9 @@ Section EnrichedSetsTransform.
 Context {C D : Category}.
 Context (F G : C ⟶ D).
 
-(* The enriched functors corresponding to the ordinary functors F and G, via
-   the [Category → Enriched] / [(C ⟶ D) → EnrichedFunctor] halves of the two
-   companion equivalences. *)
+(* The enriched 函子 corresponding ordinary 函子 F G, via
+ [Category → Enriched] / [(C ⟶ D) → EnrichedFunctor] halves two
+ companion equivalences. （已译） *)
 Definition EF : EnrichedFunctor Sets
                   (snd Category_is_Enriched_over_Set C)
                   (snd Category_is_Enriched_over_Set D) :=
@@ -38,16 +38,16 @@ Theorem EnrichedTransform_is_Transform :
   @EnrichedTransform Sets Sets_Product_Monoidal _ _ EF EG ↔ (F ⟹ G).
 Proof.
   split; intros X.
-  - (* Forward: read each enriched component at [ttt] as an ordinary component,
-       and derive ordinary naturality from enriched naturality. *)
+  - (* Forward: read each enriched component at [ttt] ordinary component,
+ derive ordinary 自然性 enriched 自然性. （已译） *)
     apply (Build_Transform' (fun x => @etransform _ _ _ _ EF EG X x ttt)).
     intros x y f.
     (* Enriched naturality at [x], [y], evaluated at [f], unfolds in Sets to the
        [naturality_sym] orientation; take its symmetry. *)
     symmetry.
     exact (@enaturality _ _ _ _ EF EG X x y f).
-  - (* Backward: package each ordinary component as a constant setoid map out of
-       the singleton, and derive enriched naturality from ordinary naturality. *)
+  - (* Backward: package each ordinary component 常值 setoid map out of
+ singleton, derive enriched 自然性 ordinary 自然性. （已译） *)
     unshelve refine
       (@Build_EnrichedTransform
          Sets Sets_Product_Monoidal
@@ -57,8 +57,8 @@ Proof.
          (fun x => {| morphism := fun _ => @transform _ _ F G X x |}) _).
     + proper.
     + intros x y f.
-      (* The enriched naturality square in Sets reduces pointwise to the
-         [naturality_sym] orientation of the ordinary naturality square. *)
+      (* The enriched 自然性 square Sets reduces pointwise the
+ [naturality_sym] orientation ordinary 自然性 square. （已译） *)
       exact (@naturality_sym _ _ F G X x y f).
 Defined.
 

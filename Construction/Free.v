@@ -13,7 +13,7 @@ Section Free.
 Universes o h p.
 Context {C : Category@{o h p}}.
 
-(** The free category (path category) on the underlying quiver of C. *)
+(** The free 范畴 (path 范畴) underlying quiver C. （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Free_category
@@ -111,9 +111,9 @@ Fixpoint morD `(t : Mor x y) : x ~> y :=
   | Comp f g => morD f ∘ morD g
   end.
 
-(* Flatten a syntax term to its path; this is the normal form that
-   [Mor_Setoid] compares terms by, and the action on morphisms of the
-   forgetful map [ForgetSyntax : FreeSyntax ⟶ Free] below. *)
+(* Flatten syntax term path; 这是 normal form that
+ [Mor_Setoid] compares terms by, action 态射 the
+ forgetful map [ForgetSyntax : FreeSyntax ⟶ Free] below. （已译） *)
 Fixpoint morDA `(t : Mor x y) : tlist hom x y :=
   match t with
   | Ident => tnil
@@ -149,7 +149,7 @@ Fixpoint tlistDA `(t : tlist hom x y) : Mor x y :=
   | tcons _ f fs => Comp (tlistDA fs) (Morph f)
   end.
 
-(* Note that this yields an equality. *)
+(* 相关说明。 （已译） *)
 Lemma morDA_tlistDA `{f : tlist hom x y} :
   morDA (tlistDA f) = f.
 Proof.

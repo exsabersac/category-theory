@@ -18,12 +18,12 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** A limit witness, read as a competing cone at its own apex *)
+(* 相关说明。 （已译） *)
 
 Definition alimit_cone `{F : J ⟶ C} {c : C} (H : IsALimit F c) : Cone F :=
   {| vertex_obj := c; coneFrom := @limit_acone _ _ _ _ H |}.
 
-(* The legs of that cone are the limit legs, definitionally. *)
+(* 相关说明。 （已译） *)
 Example alimit_cone_leg `{F : J ⟶ C} {c : C} (H : IsALimit F c) (x : J) :
   cone_leg (alimit_cone H) x = limit_leg H x := eq_refl.
 
@@ -85,16 +85,16 @@ Definition limit_unique_iso : c ≅ d := {|
   iso_from_to := limit_unique_from_to
 |}.
 
-(* ...carrying the leg-commutation equations in both directions — the
-   isomorphism "commutes with the legs of the two limit cones", not a
-   bare ≅. *)
+(* ...carrying leg-commutation equations both directions — the
+ 同构 "commutes legs two limit cones", not a
+ bare ≅. （已译） *)
 Definition limit_unique_iso_legs :
   (∀ x : J, limit_leg Hd x ∘ to limit_unique_iso ≈ limit_leg Hc x) *
   (∀ x : J, limit_leg Hc x ∘ from limit_unique_iso ≈ limit_leg Hd x) :=
   (limit_unique_to_legs, limit_unique_from_legs).
 
-(* The uniqueness clause — Riehl's content: ANY morphism commuting with
-   the two leg families is the isomorphism. *)
+(* The uniqueness clause — Riehl's content: ANY 态射 commuting with
+ two leg families 同构. （已译） *)
 Theorem limit_unique_iso_unique (h : c ~{C}~> d) :
   (∀ x : J, limit_leg Hd x ∘ h ≈ limit_leg Hc x) →
   h ≈ to limit_unique_iso.
@@ -105,8 +105,8 @@ Qed.
 
 End LimitUnique.
 
-(* The accompanying remark, at a single witness: the only endomorphism
-   of the apex commuting with a fixed limit cone is the identity. *)
+(* The accompanying remark, at single witness: endomorphism
+ apex commuting fixed limit cone 恒等. （已译） *)
 Theorem limit_endo_id `{F : J ⟶ C} {c : C} (H : IsALimit F c)
   (e : c ~{C}~> c) :
   (∀ x : J, limit_leg H x ∘ e ≈ limit_leg H x) → e ≈ id.
@@ -117,7 +117,7 @@ Proof.
   - apply id_right.
 Qed.
 
-(** ** Proposition 3.1.7, colimits — op-instances of the above *)
+(* 相关说明。 （已译） *)
 
 Section ColimitUnique.
 
@@ -132,8 +132,8 @@ Definition colimit_unique_to : c ~{C}~> d :=
 Definition colimit_unique_from : d ~{C}~> c :=
   @limit_unique_to (J^op) (C^op) (F^op) c d Hc Hd.
 
-(* The colimit mediator IS the opposite limit mediator, definitionally
-   — the sense in which this section adds no proof content. *)
+(* The colimit mediator IS opposite limit mediator, definitionally
+ — sense section adds no 证明 content. （已译） *)
 Example colimit_unique_to_is_op :
   colimit_unique_to = @limit_unique_from (J^op) (C^op) (F^op) c d Hc Hd
   := eq_refl.

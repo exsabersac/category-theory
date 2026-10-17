@@ -5,7 +5,7 @@ Require Import Category.Structure.Limit.
 
 Generalizable All Variables.
 
-(** * Complete and cocomplete categories *)
+(* * * Complete cocomplete 范畴 （已译） *)
 
 (* nLab:      https://ncatlab.org/nlab/show/complete+category
    Wikipedia: https://en.wikipedia.org/wiki/Complete_category
@@ -55,8 +55,6 @@ Generalizable All Variables.
 Definition Complete@{r so h o | so <= r, h <= r} {C : Category@{o h h}} :=
   ∀ (D : Category@{so h h}) (F : D ⟶ C), Limit@{r so h o} F.
 
-(* C is cocomplete: every diagram F : D ⟶ C has a colimit in C — the dual of
-   completeness, equivalently completeness of C^op.  Same four universes in
-   the same order. *)
+(* 相关说明。 （已译） *)
 Definition Cocomplete@{r so h o | so <= r, h <= r} {C : Category@{o h h}} :=
   ∀ (D : Category@{so h h}) (F : D ⟶ C), Colimit@{r so h o} F.

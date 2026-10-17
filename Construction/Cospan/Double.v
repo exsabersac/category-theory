@@ -23,13 +23,13 @@ Section CospanDouble.
 Context {C : Category}.
 Context (HP : HasPushouts C).
 
-(** The chosen gluing pushout for a composable pair of cospans: [f] then
-    [g], glued over the shared boundary object [Y]. *)
+(** The chosen gluing pushout composable pair cospans: [f] then
+ [g], glued over shared boundary 对象 [Y]. （已译） *)
 Definition gpo {X Y Z : C} (f : CospanArrow X Y) (g : CospanArrow Y Z) :
   IsPushout (cospan_in2 f) (cospan_in1 g) :=
   pushout (cospan_in2 f) (cospan_in1 g).
 
-(** ** Joint epimorphy of the pushout injections *)
+(* 相关说明。 （已译） *)
 
 Lemma pushout_jointly_epic {x y z : C} {f : x ~> y} {g : x ~> z}
       (P : IsPushout f g) {Q : C} (m n : pushout_apex P ~> Q) :
@@ -46,7 +46,7 @@ Proof.
   - now symmetry.
 Qed.
 
-(** ** Squares: morphisms of cospans over a vertical boundary *)
+(* * ** Squares: 态射 cospans over vertical boundary （已译） *)
 
 Record CospanSq {a b c d : C}
        (h : CospanArrow a b) (u : a ~> c) (v : b ~> d)
@@ -60,16 +60,16 @@ Arguments sq_map {a b c d h u v k} _.
 Arguments sq_in1 {a b c d h u v k} _.
 Arguments sq_in2 {a b c d h u v k} _.
 
-(** The square setoid compares the apex maps (real data, not a mere
-    proposition). *)
+(** The square setoid compares apex maps (real data, not mere
+ 命题). （已译） *)
 Program Instance CospanSq_Setoid {a b c d : C}
         {h : CospanArrow a b} {u : a ~> c} {v : b ~> d}
         {k : CospanArrow c d} : Setoid (CospanSq h u v k) := {|
   equiv := fun s t => sq_map s ≈ sq_map t
 |}.
 
-(** Boundary coercion: the apex map is unchanged, only its recorded
-    boundary proofs are rebuilt along [≈]-equal vertical edges. *)
+(** 本节：Boundary coercion: apex map unchanged, recorded
+ boundary proofs rebuilt along [≈]-equal vertical edges. （已译） *)
 Program Definition CospanSq_coerce {a b c d : C} {h : CospanArrow a b}
         {u u' : a ~> c} {v v' : b ~> d} {k : CospanArrow c d}
         (eu : u ≈ u') (ev : v ≈ v') (s : CospanSq h u v k) :
@@ -198,8 +198,8 @@ Proof.
     now apply compose_respects.
 Qed.
 
-(** Interchange: both pastings of a 2x2 grid are mediators out of the same
-    gluing pushout with the same legs. *)
+(** 本节：Interchange: both pastings 2x2 grid mediators out same
+ gluing pushout same legs. （已译） *)
 Lemma CospanSq_interchange {a b c a' b' c' a'' b'' c'' : C}
       {h1 : CospanArrow a b} {h2 : CospanArrow b c}
       {u1 : a ~> a'} {u2 : b ~> b'} {u3 : c ~> c'}
@@ -236,7 +236,7 @@ Section Unitors.
 Context {a b : C}.
 Context (h : CospanArrow a b).
 
-(** *** Left unitor: [dhid b ∘h h ≅ h] *)
+(* 相关说明。 （已译） *)
 
 Let PL : IsPushout (cospan_in2 h) (cospan_in1 (cospan_id b)) :=
   gpo h (cospan_id b).
@@ -298,7 +298,7 @@ Proof.
     rewrite (pushout_commutes PL); simpl; cat.
 Qed.
 
-(** *** Right unitor: [h ∘h dhid a ≅ h] *)
+(* 相关说明。 （已译） *)
 
 Let PR : IsPushout (cospan_in2 (cospan_id a)) (cospan_in1 h) :=
   gpo (cospan_id a) h.
@@ -420,7 +420,7 @@ Definition assoc_fwd_map : pushout_apex PL ~> pushout_apex PR :=
 Lemma assoc_fwd_in1 : assoc_fwd_map ∘ pushout_in1 PL ≈ assoc_m1.
 Proof. apply pushout_med_in1. Qed.
 
-(* Generator computation rules: the [p], [q] and [r] legs. *)
+(* 相关说明。 （已译） *)
 
 Lemma assoc_fwd_p :
   assoc_fwd_map ∘ (pushout_in1 PL ∘ pushout_in1 Ppq) ≈ pushout_in1 PR.
@@ -497,7 +497,7 @@ Proof.
   apply assoc_m2_in2.
 Qed.
 
-(** *** The two mediators are mutually inverse *)
+(* 相关说明。 （已译） *)
 
 Lemma assoc_bwd_fwd : assoc_bwd_map ∘ assoc_fwd_map ≈ id.
 Proof.
@@ -884,7 +884,7 @@ Proof.
     reflexivity.
 Qed.
 
-(** ** The double category of cospans *)
+(* * ** The double 范畴 cospans （已译） *)
 
 Definition Cospan_Double : DoubleCategory := {|
   dcat := C;

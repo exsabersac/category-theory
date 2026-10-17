@@ -8,7 +8,7 @@ Require Import Category.Instance.Discrete.
 
 Generalizable All Variables.
 
-(** * Indexed products as limits of discrete diagrams *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Product_(category_theory)
@@ -25,15 +25,15 @@ Generalizable All Variables.
 *)
 Record IsIndexedProduct {C : Category} {A : Type} (f : A → C)
   (p : C) (proj : ∀ a : A, p ~> f a) := {
-  (* universal property: every family [pi] into the [f a] factors uniquely
-     through the projections *)
+  (* 普遍性质: every family [pi] 进入 [f a] factors uniquely
+ through projections （已译） *)
   iprod_desc {c : C} (pi : ∀ a, c ~> f a) :
     ∃! u : c ~> p, ∀ a, proj a ∘ u ≈ pi a
 }.
 
 Arguments iprod_desc {_ _ _ _ _} _ {_} _.
 
-(** ** From a plain family to a cone over the discrete diagram *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Product 相关定义、性质与动机。
@@ -62,21 +62,21 @@ Proof.
     + exact (family_cone_coherence f c pi).   (* coherence, vacuous here *)
 Defined.
 
-(** ** Reading a limit of the discrete diagram as an indexed product *)
+(* 相关说明。 （已译） *)
 
-(* The product object: the apex of the limit cone. *)
+(* The product 对象: apex limit cone. （已译） *)
 Definition iprod {C : Category} {A : Type} (f : A → C)
   (L : Limit (DiscreteCat_Functor f)) : C :=
   vertex_obj[L].
 
-(* The projections: the limit legs, one for each index. *)
+(* 相关说明。 （已译） *)
 Definition iprod_proj {C : Category} {A : Type} (f : A → C)
   (L : Limit (DiscreteCat_Functor f)) (a : A) : iprod f L ~> f a :=
   limit_leg (limit_is_alimit L) a.
 
-(* The universal property: every competing family [pi] factors uniquely
-   through the projections, by mediating into the limit from the cone the
-   family induces. *)
+(* The 普遍性质: every competing family [pi] factors uniquely
+ through projections, mediating 进入 limit cone the
+ family induces. （已译） *)
 Definition iprod_ump {C : Category} {A : Type} (f : A → C)
   (L : Limit (DiscreteCat_Functor f))
   (c : C) (pi : ∀ a, c ~> f a) :

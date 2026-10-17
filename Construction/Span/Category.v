@@ -19,8 +19,8 @@ Section SpanCategory.
 
 Context {C : Category}.
 
-(** A span from [X] to [Y]: an apex [N] together with two legs from the
-    apex into [X] and [Y]. *)
+(** 本节：A span [X] [Y]: apex [N] together two legs the
+ apex [X] [Y]. （已译） *)
 Record SpanArrow (X Y : C) : Type := {
   apex : C;
   leg1 : apex ~> X;
@@ -161,7 +161,7 @@ Proof.
   - apply pullback_med_unique; assumption.
 Qed.
 
-(** ** Proper instance for composition (the pullback-pasting lemma) *)
+(* * ** Proper instance 复合 (the pullback-pasting 引理) （已译） *)
 
 Lemma span_compose_respects_aux
       {X Y Z : C}
@@ -256,8 +256,8 @@ Lemma span_id_left {X Y : C} (f : SpanArrow X Y) :
 Proof.
   unfold span_compose, span_id; simpl.
   pose (P := pullback (leg2 f) id[Y]).
-  (* Mediator from apex f into the pullback, using the cocone
-       (id : apex f ~> apex f, leg2 f : apex f ~> Y). *)
+  (* Mediator apex f 进入 pullback, using cocone
+ (id : apex f ~> apex f, leg2 f : apex f ~> Y). （已译） *)
   assert (HC : leg2 f ∘ id ≈ id ∘ leg2 f) by cat.
   set (m := pullback_med P HC).
   assert (Hm1 : pullback_fst _ _ P ∘ m ≈ id) by (apply pullback_med_fst).
@@ -307,7 +307,7 @@ Proof.
     + reflexivity.
 Defined.
 
-(** ** Associativity via pullback-pasting *)
+(* 相关说明。 （已译） *)
 
 Lemma span_compose_assoc {X Y Z W : C}
       (h : SpanArrow Z W) (g : SpanArrow Y Z) (f : SpanArrow X Y) :
@@ -479,7 +479,7 @@ Arguments apex {C X Y} _.
 Arguments leg1 {C X Y} _.
 Arguments leg2 {C X Y} _.
 
-(** ** The span category as a [Category] record *)
+(* * ** The span 范畴 [Category] record （已译） *)
 Section SpanCatDef.
 Context (C : Category).
 Context (HP : HasPullbacks C).

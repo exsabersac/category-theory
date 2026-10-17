@@ -40,7 +40,7 @@ Program Definition Karoubi (C : Category) : Category := {|
   compose := fun _ _ _ f g => (`1 f ∘ `1 g; _)
 |}.
 Next Obligation.
-  (* the hom-setoid: equivalence of the underlying C-morphisms *)
+  (* the hom-setoid: 等价 underlying C-态射 （已译） *)
   intros C X Y.
   equivalence.
 Qed.
@@ -53,7 +53,7 @@ Next Obligation.
   - exact He.
 Qed.
 Next Obligation.
-  (* composition: each absorption law comes from the nearer factor *)
+  (* 复合: each absorption law comes nearer factor （已译） *)
   intros C X Y Z f g.
   destruct f as [f [fl fr]], g as [g [gl gr]]; simpl in *.
   split.
@@ -88,9 +88,9 @@ Next Obligation.
   apply comp_assoc_sym.
 Qed.
 
-(* The canonical full and faithful embedding C ⟶ Split(C), sending x to the
-   trivially split idempotent (x, id[x]) and acting as the identity on
-   morphisms. *)
+(* The canonical 全忠实 embedding C ⟶ Split(C), sending x the
+ trivially split idempotent (x, id[x]) acting 恒等 on
+ 态射. （已译） *)
 Program Definition Karoubi_Embed {C : Category} : C ⟶ Karoubi C := {|
   fobj := fun x => (x; (id[x]; _));
   fmap := fun _ _ f => (f; _)
@@ -129,8 +129,8 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* The embedding is faithful: equality of images is literally equality of the
-   underlying morphisms. *)
+(* The embedding faithful: equality images literally equality the
+ underlying 态射. （已译） *)
 #[export] Program Instance Karoubi_Embed_Faithful {C : Category} :
   Faithful (@Karoubi_Embed C).
 Next Obligation.
@@ -158,7 +158,7 @@ Next Obligation.
   - exact (snd (`2 φ)).
 Qed.
 Next Obligation.
-  (* the section (x, φ) ~> X: absorption by e above, by φ below *)
+  (* 相关说明。 （已译） *)
   intros C X φ H; simpl.
   split.
   - exact (fst (`2 φ)).

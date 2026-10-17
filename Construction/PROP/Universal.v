@@ -34,7 +34,7 @@ From Coq Require Import Arith.
 
 Generalizable All Variables.
 
-(** * The universal property of the free PROP *)
+(* * * The 普遍性质 free PROP （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/free+category
@@ -125,8 +125,8 @@ Example InterpF_extends_valuation (m n : nat) (g : S m n) :
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** Naturality of the tensor-comparison cast against [interp]: the
-    conjugating cast of [⊞] cancels its inverse. *)
+(** 本节：Naturality tensor-comparison cast against [interp]: the
+ conjugating cast [⊞] cancels inverse. （已译） *)
 Lemma interp_ap_natural {m n m' n'} (f : Term S m m') (g : Term S n n') :
   interp P S v (T_tens f g) ∘ id_cast (prop_tensor_plus m n)
     ≈ id_cast (prop_tensor_plus m' n')
@@ -139,7 +139,7 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(** The inverse-direction square, by flipping across the casts. *)
+(** 本节：The inverse-direction square, flipping across casts. （已译） *)
 Lemma interp_ap_natural_from {m n m' n'} (f : Term S m m') (g : Term S n n') :
   (interp P S v f ⨂[MP P] interp P S v g)
       ∘ id_cast (eq_sym (prop_tensor_plus m n))
@@ -150,8 +150,8 @@ Proof.
   apply interp_ap_natural.
 Qed.
 
-(** General left-unit coherence: with every comparison an [id_cast],
-    the left-unitality square collapses to the strict unitor. *)
+(** 本节：General left-unit coherence: every comparison [id_cast],
+ left-unitality square collapses strict unitor. （已译） *)
 Lemma to_unit_left_cast_general {u w s : P}
   (eu : @I P (MP P) = u) (e : (u ⨂[MP P] w)%object = s) (d : s = w) :
   to (@unit_left P (MP P) w)
@@ -236,8 +236,8 @@ Proof using OD P S v.
   apply to_assoc_cast_general.
 Qed.
 
-(** The braid-compatibility square of [interp] against the target's
-    strict-path braiding [strict_braid]. *)
+(** 本节：The braid-compatibility square [interp] against target's
+ strict-path braiding [strict_braid]. （已译） *)
 Lemma interp_braid_ap (m n : nat) :
   interp P S v (T_braid m n) ∘ id_cast (prop_tensor_plus m n)
     ≈ id_cast (prop_tensor_plus n m) ∘ strict_braid P ⟦m⟧ ⟦n⟧.
@@ -249,10 +249,10 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(** ** 3. The strong and strict monoidal structure on [InterpF]
+(* * ** 3. The strong strict monoidal structure [InterpF]
 
-    The tensor comparison is the [prop_tensor_plus] cast, packaged as
-    a natural isomorphism in the functor category. *)
+ The tensor comparison [prop_tensor_plus] cast, packaged as
+ natural 同构 函子 范畴. （已译） *)
 
 Definition InterpF_ap_dom : FreeCat S ∏ FreeCat S ⟶ P :=
   @tensor P (MP P) ◯ InterpF ∏⟶ InterpF.
@@ -305,8 +305,8 @@ Program Definition InterpF_ap_iso :
   iso_from_to := InterpF_ap_from_to
 |}.
 
-(** The strong monoidal structure.  All proof fields are the named
-    lemmas of section 2; the derived-iso data fields are casts. *)
+(** The strong monoidal structure. All 证明 fields named
+ lemmas section 2; derived-iso data fields casts. （已译） *)
 Program Definition InterpF_Monoidal :
   @MonoidalFunctor (FreeCat S) P (FreeCat_Monoidal S) (MP P) InterpF := {|
   pure_iso := id_cast_iso (@prop_unit_zero P);
@@ -329,7 +329,7 @@ Program Definition InterpF_Monoidal :
   monoidal_assoc := interp_monoidal_assoc
 |}.
 
-(** The comparisons ARE the PROP's strictness equalities, verbatim. *)
+(** 本节：The comparisons ARE PROP's strictness equalities, verbatim. （已译） *)
 Lemma InterpF_strict_pure_iso_id :
   to (@pure_iso _ _ _ _ InterpF InterpF_Monoidal)
     ≈ match @prop_unit_zero P in _ = T return @I P (MP P) ~{P}~> T
@@ -352,8 +352,8 @@ Program Definition InterpF_Strict :
   strict_ap_iso_id := InterpF_strict_ap_iso_id
 |}.
 
-(** Machine-checked: the strict object comparisons of [InterpF_Strict]
-    are the PROP class fields themselves. *)
+(** Machine-checked: strict 对象 comparisons [InterpF_Strict]
+ PROP class fields themselves. （已译） *)
 Example InterpF_strict_pure_obj_is_prop_unit_zero :
   @strict_pure_obj _ _ _ _ InterpF InterpF_Strict = @prop_unit_zero P
   := eq_refl.
@@ -402,8 +402,8 @@ Proof.
   exact H.
 Qed.
 
-(** The converse direction: a braid square at the transported functor
-    comes back to one at the original, against the transported braid. *)
+(** The converse direction: braid square at transported 函子
+ comes back one at original, against transported braid. （已译） *)
 Lemma SymmetricStrict_untransport
   {N1 N2 : @Monoidal P} (e : N1 = N2)
   (G : FreeCat S ⟶ P)
@@ -426,9 +426,9 @@ Proof.
   exact (Hsq x y).
 Qed.
 
-(** [InterpF] as a [BraidedMonoidalFunctor]: the underlying
-    strong structure is [InterpF_Monoidal] transported across the
-    coherence, and the braid square is [InterpF_SymmetricStrict]. *)
+(** 本节：[InterpF] [BraidedMonoidalFunctor]: underlying
+ strong structure [InterpF_Monoidal] transported across the
+ coherence, braid square [InterpF_SymmetricStrict]. （已译） *)
 Program Definition InterpF_Braided :
   @BraidedMonoidalFunctor (FreeCat S) P (FreeCat_Braided S)
     (@symmetric_is_braided P (@prop_symmetric P)) InterpF := {|
@@ -450,9 +450,9 @@ Definition InterpF_Symmetric :
   @SymmetricMonoidalFunctor (FreeCat S) P (FreeCat_Symmetric S)
     (@prop_symmetric P) InterpF := InterpF_Braided.
 
-(** Competitors arriving with a [BraidedMonoidalFunctor]
-    convert to [SymmetricStrict], given that their two tensor
-    comparisons agree across the coherence transport. *)
+(** 本节：Competitors arriving [BraidedMonoidalFunctor]
+ convert [SymmetricStrict], given two tensor
+ comparisons agree across coherence transport. （已译） *)
 Corollary SymmetricStrict_of_Braided
   (G : FreeCat S ⟶ P)
   (SG : @StrictMonoidalFunctor (FreeCat S) P (FreeCat_Monoidal S) (MP P) G)

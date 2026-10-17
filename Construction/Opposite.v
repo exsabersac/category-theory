@@ -58,8 +58,8 @@ Qed.
 Definition op   {C : Category} {x y} (f : y ~{C}~> x) : x ~{C^op}~> y := f.
 Definition unop {C : Category} {x y} (f : x ~{C^op}~> y) : y ~{C}~> x := f.
 
-(* If two objects are isomorphic in C, then they are also isomorphic in C^op,
-   just the conversion arrows are flipped. *)
+(* If two 对象 isomorphic C, then they isomorphic C^op,
+ just conversion arrows flipped. （已译） *)
 
 Require Import Category.Theory.Isomorphism.
 

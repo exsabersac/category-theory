@@ -19,7 +19,7 @@ Generalizable All Variables.
 
 Class EnrichedTransform {K : Category} `{@Monoidal K} {C D : Enriched K}
       (F G : EnrichedFunctor K C D) := {
-  (* component at x: names the morphism F x ~> G x inside the hom-object *)
+  (* component at x: names 态射 F x ~> G x inside hom-对象 （已译） *)
   etransform (x : C) :
     I ~{K}~> @ehom K _ D (@efobj K _ C D F x) (@efobj K _ C D G x);
 
@@ -35,8 +35,8 @@ Class EnrichedTransform {K : Category} `{@Monoidal K} {C D : Enriched K}
     ecompose ∘ (@efmap K _ C D G x y ⨂ etransform x) ∘ unit_right⁻¹
 }.
 
-(** The componentwise setoid on V-natural transformations: two transformations
-    are equal when all their components agree in K. *)
+(** 本节：The componentwise setoid V-natural transformations: two transformations
+ equal all components agree K. （已译） *)
 
 Program Definition EnrichedTransform_Setoid
         {K : Category} `{@Monoidal K} {C D : Enriched K}

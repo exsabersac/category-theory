@@ -47,8 +47,8 @@ Definition WLocal {C : Category} (W : MorphismClass C) (x : C) : Type :=
   ∀ (a b : C) (w : a ~> b), W a b w →
     IsIsomorphism (@fmap (C^op) Sets (Curried_CoHom C x) b a w).
 
-(* From W-locality, the two elementary hom-set facts used downstream: the
-   precomposition [(- ∘ w)] into a W-local object is split-surjective ... *)
+(* From W-locality, two elementary hom-set facts used downstream: the
+ precomposition [(- ∘ w)] W-local 对象 split-surjective ... （已译） *)
 
 Lemma WLocal_surj {C : Category} {W : MorphismClass C} {x : C} (Hx : WLocal W x)
       {a b : C} (w : a ~> b) (Hw : W a b w) (p : a ~> x) :
@@ -74,9 +74,9 @@ Proof.
     + exact (Hl g2).
 Qed.
 
-(* The full subcategory of W-local objects.  Objects are the W-local ones;
-   every C-morphism between them is retained ([shom := True]), so composition
-   and identities are closed trivially. *)
+(* The full subcategory W-local 对象. Objects W-local ones;
+ every C-态射 between them retained ([shom := True]), so 复合
+ identities closed trivially. （已译） *)
 
 Definition C_W {C : Category} (W : MorphismClass C) : Subcategory C :=
   {| sobj  := fun x => WLocal W x
@@ -84,8 +84,8 @@ Definition C_W {C : Category} (W : MorphismClass C) : Subcategory C :=
    ; scomp := fun x y z ox oy oz f g _ _ => I
    ; sid   := fun x ox => I |}.
 
-(* The subcategory C_W is full: every morphism between W-local objects is in it
-   (the [shom] witness is [I]). *)
+(* The subcategory C_W full: every 态射 between W-local 对象 it
+ ([shom] witness [I]). （已译） *)
 
 Definition Full_C_W {C : Category} (W : MorphismClass C) :
   Construction.Subcategory.Full C (C_W W) :=
@@ -103,7 +103,7 @@ Lemma unit_at_local_iso {C : Category} {W : MorphismClass C}
     (@Category.Theory.Adjunction.unit (Sub C (C_W W)) C (reflector R)
        (Incl C (C_W W)) (reflective_adj R) (Incl C (C_W W) s)).
 Proof.
-  (* zeta : the unit at [Incl s], lifted into the subcategory by fullness. *)
+  (* zeta : unit at [Incl s], lifted 进入 subcategory fullness. （已译） *)
   pose (zeta := (@Category.Theory.Adjunction.unit (Sub C (C_W W)) C (reflector R)
                    (Incl C (C_W W)) (reflective_adj R) (Incl C (C_W W) s)
                  ; reflective_full R (Incl C (C_W W) s)
@@ -112,14 +112,14 @@ Proof.
                      (@Category.Theory.Adjunction.unit (Sub C (C_W W)) C (reflector R)
                         (Incl C (C_W W)) (reflective_adj R) (Incl C (C_W W) s)))
                 : s ~{Sub C (C_W W)}~> reflector R (Incl C (C_W W) s)).
-  (* zeta ∘ counit ≈ id in the subcategory (the [from ∘ to] triangle). *)
+  (* 相关说明。 （已译） *)
   assert (Hlaw2 : zeta ∘ (@counit (Sub C (C_W W)) C (reflector R)
                             (Incl C (C_W W)) (reflective_adj R) s) ≈ id).
   { rewrite <- (counit_naturality (reflective_adj R)).
     apply (@counit_fmap_unit (Sub C (C_W W)) C (reflector R)
              (Incl C (C_W W)) (reflective_adj R) (Incl C (C_W W) s)). }
   unshelve econstructor.
-  - (* the inverse: the inclusion of the counit *)
+  - (* the inverse: 含入 counit （已译） *)
     exact (fmap[Incl C (C_W W)]
              (@counit (Sub C (C_W W)) C (reflector R)
                 (Incl C (C_W W)) (reflective_adj R) s)).
@@ -158,11 +158,10 @@ Local Notation A    := (reflective_adj R).
 Theorem reflector_inverts_W {a b : C} (w : a ~> b) (Hw : W a b w) :
   IsIsomorphism (fmap[Refl] w).
 Proof.
-  (* fill the unit η_a through precomposition by w, using W-locality of the
-     reflection Iota (Refl a). *)
+  (* 相关说明。 （已译） *)
   destruct (WLocal_surj (`2 (Refl a)) w Hw
               (@Category.Theory.Adjunction.unit Su C Refl Iota A a)) as [q Hq].
-  (* the candidate inverse, transposed back into the subcategory *)
+  (* the candidate inverse, transposed back 进入 subcategory （已译） *)
   assert (Hli : from (@adj Su C Refl Iota A b (Refl a)) q ∘ fmap[Refl] w ≈ id).
   { transitivity
       (from (@adj Su C Refl Iota A a (Refl a))

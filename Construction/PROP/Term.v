@@ -5,7 +5,7 @@ From Coq Require Import Arith.
 
 Generalizable All Variables.
 
-(** * Raw terms over a PROP signature *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category

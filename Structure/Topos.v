@@ -63,9 +63,9 @@ Class ElementaryTopos (C : Category) := {
 #[export] Existing Instance topos_closed.
 #[export] Existing Instance topos_classifier.
 
-(* The power object of a: the exponential Ω^a.  Mind the argument order of
-   Structure/Cartesian/Closed.v: [exponent_obj x y] displays as y ^ x, so
-   [Ω ^ a] is [exponent_obj a Ω]. *)
+(* The power 对象 a: exponential Ω^a. Mind 论元 order of
+ Structure/Cartesian/Closed.v: [exponent_obj x y] displays y ^ x, so
+ [Ω ^ a] [exponent_obj Ω]. （已译） *)
 Definition Pow {C : Category} {H : ElementaryTopos C} (a : C) : C := Ω ^ a.
 
 (*

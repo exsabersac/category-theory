@@ -19,7 +19,7 @@ Set Universe Polymorphism.
 
 Generalizable All Variables.
 
-(** * The comma projection creates limits *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/created+limit
@@ -35,7 +35,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** [PreservesImageLimit] is cone-level preservation at every shape *)
+(* 相关说明。 （已译） *)
 
 Definition PreservesImageLimit_Continuous
   {C D : Category} {U : C ⟶ D} (H : @PreservesImageLimit C D U) :
@@ -137,8 +137,7 @@ Context (K : J ⟶ (=(d) ↓ U)).
 *)
 Context (L : Limit (Gdiag K)).
 
-(* The image of the comma limit cone IS that downstairs limit cone, by
-   conversion. *)
+(* 相关说明。 （已译） *)
 
 Definition comma_image_limitcone :
   IsLimitCone (FCone comma_proj2 (@limit_cone _ _ _ (comma_limit HU K L)))
@@ -155,7 +154,7 @@ Defined.
 
 End CommaCreates.
 
-(** ** Strictness at EVERY limit: apex and legs on the nose *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限、（余）强度相关定义、性质与动机。
@@ -175,7 +174,7 @@ Definition comma_strict_legs {C D : Category} {U : C ⟶ D} {d : D}
   fmap[comma_proj2] (cone_leg (comma_limit HU K L) j)
     = limit_leg (limit_is_alimit L) j := eq_refl.
 
-(** ** The same construction from a PER-DIAGRAM hypothesis *)
+(* * ** The same construction PER-DIAGRAM 假设 （已译） *)
 
 (*
    本节说明（余）极限、等化子相关定义、性质与动机。
@@ -266,8 +265,7 @@ Defined.
 Definition comma_limit_at : Limit K :=
   @Build_Limit J (=(d) ↓ U) K comma_at_apex_cone comma_at_ump.
 
-(* The projection lands on [L] on the nose, exactly as [comma_strict_apex]
-   and [comma_strict_legs] do for the all-shapes construction. *)
+(* 相关说明。 （已译） *)
 
 Definition comma_limit_at_apex :
   comma_proj2 (vertex_obj[comma_limit_at]) = vertex_obj[L] := eq_refl.
@@ -278,7 +276,7 @@ Definition comma_limit_at_legs (j : J) :
 
 End CommaCreateAt.
 
-(** ** The reflection clause, per diagram *)
+(* 相关说明。 （已译） *)
 
 Section CommaReflectAt.
 
@@ -289,9 +287,9 @@ Context {J : Category}.
 Context (K : J ⟶ (=(d) ↓ U)).
 Context (HK : PreservesLimitCone (Gdiag K) U).
 
-(* [comma_creates_reflect] above with the all-shapes [HU] weakened to [HK];
-   the script is that proof's, with [image_is_alimit HU L] replaced by
-   [comma_at_image K HK L]. *)
+(* [comma_creates_reflect] above all-shapes [HU] weakened [HK];
+ script 证明's, [image_is_alimit HU L] replaced by
+ [comma_at_image K HK L]. （已译） *)
 
 Definition comma_reflect_at (M : Cone K)
   (HM : IsLimitCone (FCone comma_proj2 M)) : IsLimitCone M.
@@ -361,8 +359,8 @@ Proof using HK.
   - exact (comma_reflect_at K HK).
 Defined.
 
-(* Creation with no [L] argument at all, and with the lift over the given
-   cone rather than over a chosen one. *)
+(* Creation no [L] 论元 at all, lift over given
+ cone rather than over chosen one. （已译） *)
 
 Definition comma_CreatesLimit_at : CreatesLimit K comma_proj2 :=
   StrictlyCreatesLimit_CreatesLimit comma_StrictlyCreatesLimit.
@@ -391,8 +389,8 @@ Context (p : C).
 Context (proj : ∀ a : A, p ~{C}~> comma_prod_fam a).
 Context (HP : IsIndexedProduct comma_prod_fam p proj).
 
-(* The per-shape preservation hypothesis at its most elementary: [U] carries
-   THIS indexed product to an indexed product. *)
+(* The per-shape preservation 假设 at most elementary: [U] carries
+ THIS indexed product indexed product. （已译） *)
 Context (HU : IsIndexedProduct (fun a => U (comma_prod_fam a)) (U p)
                 (fun a => fmap[U] (proj a))).
 
@@ -479,7 +477,7 @@ Definition comma_StrictlyCreatesEqualizers :
 
 End CommaEqualizers.
 
-(** ** The shape-indexed creation classes *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -510,7 +508,7 @@ Definition comma_Complete_via_creation {C D : Category} {U : C ⟶ D} {d : D}
   @Complete (=(d) ↓ U) :=
   creates_limits_Complete comma_proj2 comp (comma_CreatesAllLimits HU).
 
-(** ** The three names issue #438's Verification block audits *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）强度相关定义、性质与动机。

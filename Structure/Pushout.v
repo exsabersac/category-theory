@@ -36,7 +36,7 @@ Definition pushout_in2 {x y z : C} {f : x ~> y} {g : x ~> z}
            (P : IsPushout f g) : z ~{C}~> pushout_apex P :=
   @pullback_snd (C^op) y z x f g P.
 
-(** The square commutes: both legs precomposed with the span agree. *)
+(** 本节：The square commutes: both legs precomposed span agree. （已译） *)
 Lemma pushout_commutes {x y z : C} {f : x ~> y} {g : x ~> z}
       (P : IsPushout f g) :
   pushout_in1 P ∘ f ≈ pushout_in2 P ∘ g.
@@ -44,8 +44,8 @@ Proof.
   exact (@pullback_commutes (C^op) y z x f g P).
 Qed.
 
-(** The universal property: given any other cocone over the same span there
-    is a unique mediating morphism from the pushout apex. *)
+(** The 普遍性质: given any other cocone over same span there
+ unique mediating 态射 pushout apex. （已译） *)
 Lemma pushout_ump {x y z : C} {f : x ~> y} {g : x ~> z}
       (P : IsPushout f g)
       (Q : C) (q1 : y ~> Q) (q2 : z ~> Q)
@@ -99,9 +99,9 @@ Proof.
   apply (uniqueness (pushout_ump P Q q1 q2 Hcomm)); split; assumption.
 Qed.
 
-(** Equality lemma: two mediators out of a pushout that agree on both
-    pushout legs are equal.  Useful for showing [u ≈ v] without
-    exhibiting the intermediate [pushout_med] explicitly. *)
+(** Equality 引理: two mediators out pushout agree both
+ pushout legs equal. Useful showing [u ≈ v] without
+ exhibiting intermediate [pushout_med] explicitly. （已译） *)
 Lemma pushout_med_eq {x y z : C} {f : x ~> y} {g : x ~> z}
       (P : IsPushout f g)
       {Q : C} {q1 : y ~> Q} {q2 : z ~> Q}

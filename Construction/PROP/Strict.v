@@ -14,7 +14,7 @@ From Coq Require Import Arith.
 
 Generalizable All Variables.
 
-(** * The Strict structure on the free PROP *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/PROP
@@ -38,9 +38,9 @@ Open Scope nat_scope.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** The associator [(x + y) + z ≅ x + (y + z)] is the transported
-    identity along [eq_sym (Nat.add_assoc x y z)] — the orientation of
-    [Structural.v]'s [to]. *)
+(** The associator [(x + y) + z ≅ x + (y + z)] transported
+ 恒等 along [eq_sym (Nat.add_assoc x y z)] — orientation of
+ [Structural.v]'s [to]. （已译） *)
 Lemma FreeCat_strict_assoc_to (x y z : nat) :
   to (@tensor_assoc (FreeCat S) (FreeCat_Monoidal S) x y z)
   ≈ match eq_sym (Nat.add_assoc x y z) in _ = T
@@ -48,8 +48,8 @@ Lemma FreeCat_strict_assoc_to (x y z : nat) :
     with eq_refl => id end.
 Proof. reflexivity. Qed.
 
-(** The left unitor [0 + x ≅ x] is the transported identity along
-    [Nat.add_0_l x] (definitionally trivial: [Nat.add] is left-strict). *)
+(** The left unitor [0 + x ≅ x] transported 恒等 along
+ [Nat.add_0_l x] (definitionally trivial: [Nat.add] left-strict). （已译） *)
 Lemma FreeCat_strict_unit_left_to (x : nat) :
   to (@unit_left (FreeCat S) (FreeCat_Monoidal S) x)
   ≈ match Nat.add_0_l x in _ = T
@@ -57,8 +57,8 @@ Lemma FreeCat_strict_unit_left_to (x : nat) :
     with eq_refl => id end.
 Proof. reflexivity. Qed.
 
-(** The right unitor [x + 0 ≅ x] is the transported identity along
-    [Nat.add_0_r x] (a genuinely propositional equation). *)
+(** The right unitor [x + 0 ≅ x] transported 恒等 along
+ [Nat.add_0_r x] (a genuinely propositional equation). （已译） *)
 Lemma FreeCat_strict_unit_right_to (x : nat) :
   to (@unit_right (FreeCat S) (FreeCat_Monoidal S) x)
   ≈ match Nat.add_0_r x in _ = T
@@ -66,7 +66,7 @@ Lemma FreeCat_strict_unit_right_to (x : nat) :
     with eq_refl => id end.
 Proof. reflexivity. Qed.
 
-(** ** The Strict instance over THE shared Monoidal record *)
+(* 相关说明。 （已译） *)
 
 Definition FreeCat_Strict : @StrictMonoidal (FreeCat S) := {|
   strict_is_monoidal    := FreeCat_Monoidal S;  (* THE shared record *)

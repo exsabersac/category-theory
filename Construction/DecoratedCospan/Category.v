@@ -65,9 +65,9 @@ Class DecCospan_Coherent : Type := {
         ∘ dec_compose_decoration HP LM cospan_merge g f
       ≈ dec_compose_decoration HP LM cospan_merge g' f';
 
-  (** Identity-decoration left coherence: the composite-decoration of
-      [(id_decoration Y) ∘ f] equals [dc_decoration f] after transport
-      along the cospan-level identity-left apex iso. *)
+  (** Identity-decoration left coherence: 复合-decoration of
+ [(id_decoration Y) ∘ f] equals [dc_decoration f] after transport
+ along cospan-level 恒等-left apex iso. （已译） *)
   dc_id_left_dec :
     forall {X Y : C} (f : DecoratedCospanArrow X Y),
       fmap[F] (to (projT1 (cospan_id_left HP (dc_cospan f))))
@@ -83,9 +83,9 @@ Class DecCospan_Coherent : Type := {
             f (dec_cospan_id id_decoration X)
       ≈ dc_decoration f;
 
-  (** Associativity of the decoration: the composite-decoration of
-      [(h ∘ g) ∘ f] equals that of [h ∘ (g ∘ f)] after transport along
-      the cospan-level associativity apex iso. *)
+  (** Associativity decoration: 复合-decoration of
+ [(h ∘ g) ∘ f] equals [h ∘ (g ∘ f)] after transport along
+ cospan-level associativity apex iso. （已译） *)
   dc_compose_assoc_dec :
     forall {X Y Z W : C}
            (h : DecoratedCospanArrow Z W)
@@ -111,9 +111,9 @@ Context `{DCC : DecCospan_Coherent}.
 
 Set Default Proof Using "All".
 
-(** Proper instance for composition.  The cospan part comes from
-    [cospan_compose_respects_aux]; the decoration part from
-    [dc_compose_respects_dec]. *)
+(** Proper instance 复合. The cospan part comes from
+ [cospan_compose_respects_aux]; decoration part from
+ [dc_compose_respects_dec]. （已译） *)
 Lemma dec_cospan_compose_respects_aux
       {X Y Z : C}
       (g g' : DecoratedCospanArrow Y Z) (f f' : DecoratedCospanArrow X Y)
@@ -139,8 +139,8 @@ Next Obligation.
   now apply dec_cospan_compose_respects_aux.
 Qed.
 
-(** Identity laws and associativity, each pairing the cospan-level
-    lemma with the matching coherence field. *)
+(** Identity laws associativity, each pairing cospan-level
+ 引理 matching coherence field. （已译） *)
 
 Lemma dec_cospan_id_left {X Y : C} (f : DecoratedCospanArrow X Y) :
   dec_cospan_equiv
@@ -190,7 +190,7 @@ Proof.
   apply dec_cospan_equiv_sym, dec_cospan_compose_assoc.
 Qed.
 
-(** ** [DecoratedCospanCat] as a [Category] record *)
+(* 相关说明。 （已译） *)
 
 Program Definition DecoratedCospanCat : Category := {|
   obj      := @obj C;

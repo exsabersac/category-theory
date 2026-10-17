@@ -11,7 +11,7 @@ Require Import Category.Construction.Cospan.Category.
 
 Generalizable All Variables.
 
-(** * Cospan bridging helpers (direct-CospanCat version) *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Span_(category_theory)
@@ -32,8 +32,8 @@ Section CoprodCoverBridging.
 Context {C : Category}.
 Context `{H_Coc : @Cocartesian C}.
 
-(** When you have a [merge ∘ cover] composite, you can bring the
-    [inl/inr] selector across to the C-level: *)
+(** When you have [merge ∘ cover] 复合, you can bring the
+ [inl/inr] selector across C-level: （已译） *)
 
 Lemma merge_cover_inl
       {a b c d e : C}
@@ -61,8 +61,8 @@ Proof.
   reflexivity.
 Qed.
 
-(** Variant: when the [merge] is composed with an [inl] on the right
-    via two-step composition, you can collapse directly. *)
+(** Variant: [merge] composed [inl] right
+ via two-step 复合, you can collapse directly. （已译） *)
 Lemma merge_inl_assoc
       {a c d e : C} (m1 : c ~> e) (m2 : d ~> e) (h : a ~> c) :
   (m1 ▽ m2) ∘ inl ∘ h ≈ m1 ∘ h.
@@ -90,8 +90,8 @@ Section CoprodJointEpi.
 Context {C : Category}.
 Context `{H_Coc : @Cocartesian C}.
 
-(** Two morphisms out of a coproduct are equal iff they agree on
-    [inl] and [inr]. *)
+(** Two 态射 out coproduct equal iff they agree on
+ [inl] [inr]. （已译） *)
 Lemma coprod_ext {a b c : C} (u v : a + b ~> c) :
   u ∘ inl ≈ v ∘ inl -> u ∘ inr ≈ v ∘ inr -> u ≈ v.
 Proof.
@@ -131,10 +131,7 @@ Defined.
 
 End CospanEquivIntro.
 
-(** ** Section 4: Cospan-compose accessors restated cleanly
-
-    The library already has [cospan_compose_in1/in2] as reflexivity
-    lemmas; these are convenience aliases. *)
+(* 相关说明。 （已译） *)
 
 Section CospanComposeRewrites.
 

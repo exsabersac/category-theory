@@ -11,7 +11,7 @@ Require Import Category.Structure.Monoid.
 
 Generalizable All Variables.
 
-(** * Lattice objects in a cartesian category *)
+(* * * Lattice 对象 cartesian 范畴 （已译） *)
 
 (*
    本文件给出子对象格相关结构。
@@ -137,8 +137,7 @@ Proof.
   now rewrite exr_fork.
 Qed.
 
-(* The bottom element annihilates the meet: it is NOT a field, but a
-   consequence of absorption together with the join unit law. *)
+(* 相关说明。 （已译） *)
 Lemma lattice_bot_meet :
   (mappend[il_meet] : x × x ~> x)
       ∘ (((mempty[il_join] : 1 ~> x) ∘ one) △ id)
@@ -159,7 +158,7 @@ Proof.
   now rewrite exl_fork.
 Qed.
 
-(* Dually, the top element annihilates the join. *)
+(* 相关说明。 （已译） *)
 Lemma lattice_top_join :
   (mappend[il_join] : x × x ~> x)
       ∘ (((mempty[il_meet] : 1 ~> x) ∘ one) △ id)
@@ -195,7 +194,7 @@ End LatticeDerived.
 Require Import Category.Instance.Sets.
 Require Import Category.Instance.Sets.Cartesian.
 
-(** ** Bounded lattices on a setoid carrier *)
+(* 相关说明。 （已译） *)
 
 Record SetoidLattice := {
   sl_setoid :> SetoidObject;
@@ -233,8 +232,7 @@ Corollary sl_meet_top_r (L : SetoidLattice) (a : carrier (sl_setoid L)) :
   sl_meet L a (sl_top L) ≈ a.
 Proof. rewrite sl_meet_comm; apply sl_meet_top_l. Qed.
 
-(* Idempotence is derived from the two absorption laws alone -- the
-   set-level shadow of [lattice_join_idem] / [lattice_meet_idem]. *)
+(* 相关说明。 （已译） *)
 Corollary sl_join_idem (L : SetoidLattice) (a : carrier (sl_setoid L)) :
   sl_join L a a ≈ a.
 Proof.

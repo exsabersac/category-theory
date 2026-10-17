@@ -28,7 +28,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * Laws of base change for coloured PROPs *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/restriction+of+scalars
@@ -40,13 +40,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Transport of generators along boundary equalities
-
-    A signature is a family [S : list Colour → list Colour → Type];
-    reindexing a generator along propositional equalities of its
-    boundary words is the evident double transport.  Spelled as a
-    nested [match] (the [hom_cast] shape of [Construction/Quotient.v])
-    so that it computes at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 
 Definition csig_transport {Colour : Type} {S : CSignature Colour}
   {a a' b b' : list Colour} (e1 : a = a') (e2 : b = b') (s : S a b) :
@@ -58,7 +52,7 @@ Definition csig_transport {Colour : Type} {S : CSignature Colour}
       end
   end.
 
-(** At [eq_refl] on both ends, the transport is the identity. *)
+(** At [eq_refl] both ends, transport 恒等. （已译） *)
 Example csig_transport_refl {Colour : Type} {S : CSignature Colour}
   {a b : list Colour} (s : S a b) :
   csig_transport eq_refl eq_refl s = s := eq_refl.
@@ -78,16 +72,16 @@ Lemma csig_transport_inv_sym {Colour : Type} {S : CSignature Colour}
   csig_transport (eq_sym e1) (eq_sym e2) (csig_transport e1 e2 s) = s.
 Proof. destruct e1, e2; reflexivity. Qed.
 
-(** A [hom_cast] of a generator leaf is the generator of the
-    transported datum — the bridge between the object-level cast kit
-    and the signature-level transport. *)
+(** A [hom_cast] generator leaf generator the
+ transported datum — bridge between 对象-level cast kit
+ signature-level transport. （已译） *)
 Lemma CT_gen_hom_cast {Colour : Type} {S : CSignature Colour}
   {a a' b b' : list Colour} (e1 : a = a') (e2 : b = b') (s : S a b) :
   @hom_cast (CFreeCat S) a b a' b' e1 e2 (CT_gen s)
   = CT_gen (csig_transport e1 e2 s).
 Proof. destruct e1, e2; reflexivity. Qed.
 
-(** ** 1. Base change along the identity colour function *)
+(* * ** 1. Base change along 恒等 colour function （已译） *)
 
 Section BaseChangeIdentity.
 
@@ -104,8 +98,8 @@ Definition CSigMap_id : CSigMap (fun c : Colour => c) S S :=
   fun (cs ds : list Colour) (s : S cs ds) =>
     csig_transport (eq_sym (map_id cs)) (eq_sym (map_id ds)) s.
 
-(** Machine-checked: the identity base change acts on objects by
-    [map (fun c => c)] and sends a generator to its transport. *)
+(** Machine-checked: 恒等 base change acts 对象 by
+ [map (fun c => c)] sends generator transport. （已译） *)
 Example BaseChangeF_identity_fobj (cs : list Colour) :
   fobj[BaseChangeF (fun c : Colour => c) Cdec S S CSigMap_id] cs
   = map (fun c : Colour => c) cs := eq_refl.
@@ -129,9 +123,9 @@ Proof.
   etransitivity; [ apply id_right | symmetry; apply id_left ].
 Qed.
 
-(** Generator agreement of the identity competitor: unwinding the
-    double [eq_sym] with [eq_sym_involutive], the conjugating cast
-    exactly undoes the [CSigMap_id] transport. *)
+(** Generator agreement 恒等 competitor: unwinding the
+ double [eq_sym] [eq_sym_involutive], conjugating cast
+ exactly undoes [CSigMap_id] transport. （已译） *)
 Lemma BaseChangeF_id_gen (cs ds : list Colour) (s : S cs ds) :
   fmap[Id[CFreeCat S]] (CT_gen s)
     ≈ @hom_cast (CFreeCat S) _ _ _ _
@@ -185,7 +179,7 @@ End BaseChangeIdentity.
    ride along as trailing arguments (compare [basechange_val] in
    [Construction/ColouredPROP/BaseChange.v]). *)
 
-(** ** 2. Base change along a composite colour function *)
+(* * ** 2. Base change along 复合 colour function （已译） *)
 
 Section BaseChangeComposite.
 
@@ -201,16 +195,16 @@ Context (S'' : CSignature Colour'').
 Context (hf : CSigMap f S S').
 Context (hg : CSigMap g S' S'').
 
-(** The composite signature morphism over [fun c => g (f c)]: apply
-    [hf] then [hg], and reindex the boundary words along [map_map]. *)
+(** The 复合 signature 态射 over [fun c => g (f c)]: apply
+ [hf] then [hg], reindex boundary words along [map_map]. （已译） *)
 Definition CSigMap_compose : CSigMap (fun c : Colour => g (f c)) S S'' :=
   fun (cs ds : list Colour) (s : S cs ds) =>
     csig_transport (map_map f g cs) (map_map f g ds)
       (hg (map f cs) (map f ds) (hf cs ds s)).
 
-(** Local abbreviations for the two legs, their strict structures, and
-    their strict tensor comparisons (the [map_app]-shaped object
-    equalities pinned by [Example]s in [BaseChange.v]). *)
+(** Local abbreviations two legs, strict structures, and
+ strict tensor comparisons ([map_app]-shaped 对象
+ equalities pinned [Example]s [BaseChange.v]). （已译） *)
 Notation F1 := (BaseChangeF f C'dec S S' hf).
 Notation G1 := (BaseChangeF g C''dec S' S'' hg).
 Notation SF1 := (BaseChangeF_Strict f Cdec C'dec S S' hf).
@@ -231,9 +225,9 @@ Example BaseChangeF_comp_gen_datum {cs ds : list Colour} (s : S cs ds) :
     (CT_gen s)
   = CT_gen (CSigMap_compose cs ds s) := eq_refl.
 
-(** The composite functor is strict monoidal, by the generic
-    composition of strict monoidal functors; its strict object
-    comparisons are the [eq_trans]/[f_equal] composites of the legs'. *)
+(** The 复合 函子 strict monoidal, generic
+ 复合 strict monoidal 函子; strict 对象
+ comparisons [eq_trans]/[f_equal] composites legs'. （已译） *)
 Definition BaseChangeF_comp_Strict :
   @StrictMonoidalFunctor (CFreeCat S) (CFreeCat S'')
     (CFreeCat_Monoidal S Cdec) (CFreeCat_Monoidal S'' C''dec)
@@ -325,9 +319,9 @@ Proof using C''dec C'dec Cdec Colour Colour' Colour'' S S' S'' f g hf hg.
   reflexivity.
 Qed.
 
-(** Generator agreement of the composite competitor: the conjugating
-    cast along [eq_sym (map_map ...)] exactly undoes the
-    [CSigMap_compose] transport. *)
+(** Generator agreement 复合 competitor: conjugating
+ cast along [eq_sym (map_map ...)] exactly undoes the
+ [CSigMap_compose] transport. （已译） *)
 Lemma BaseChangeF_comp_gen (cs ds : list Colour) (s : S cs ds) :
   fmap[G1 ◯ F1] (CT_gen s)
     ≈ @hom_cast (CFreeCat S'') _ _ _ _
@@ -342,8 +336,8 @@ Proof.
   reflexivity.
 Qed.
 
-(** Generator agreement of the one-step competitor, with [eq_refl]
-    object family — definitional. *)
+(** Generator agreement one-step competitor, [eq_refl]
+ 对象 family — definitional. （已译） *)
 Lemma BaseChangeF_comp_gen2 (cs ds : list Colour) (s : S cs ds) :
   fmap[BaseChangeF (fun c : Colour => g (f c)) C''dec S S'' CSigMap_compose]
     (CT_gen s)
@@ -396,11 +390,11 @@ End BaseChangeComposite.
 Arguments BaseChangeF_comp_Strict {Colour Colour' Colour''} f g Cdec C'dec
   C''dec S S' S'' hf hg : assert.
 
-(** ** 3. Subset restriction: base change along a subtype projection *)
+(* 相关说明。 （已译） *)
 
-(** The subtype of colours satisfying a predicate [Q].  Base change
-    along the first projection restricts a free coloured PROP over
-    [Colour] to the colours in [Q]. *)
+(** 本节：The subtype colours satisfying predicate [Q]. Base change
+ along first projection restricts free coloured PROP over
+ [Colour] colours [Q]. （已译） *)
 Definition ColourSub {Colour : Type} (Q : Colour -> Prop) : Type :=
   { c : Colour | Q c }.
 
@@ -459,8 +453,8 @@ Definition SubColourFunctor_SymmetricStrict :
     SubColourFunctor SubColourFunctor_Monoidal :=
   BaseChangeF_SymmetricStrict (@proj1_sig Colour Q) CdecSub Cdec Ssub S hsub.
 
-(** Machine-checked: the restriction acts on objects by erasing the
-    membership proofs, and on generators through [hsub]. *)
+(** Machine-checked: restriction acts 对象 erasing the
+ membership proofs, generators through [hsub]. （已译） *)
 Example SubColourFunctor_fobj (cs : list (ColourSub Q)) :
   fobj[SubColourFunctor] cs = map (@proj1_sig Colour Q) cs := eq_refl.
 
@@ -468,7 +462,7 @@ Example SubColourFunctor_gen {cs ds : list (ColourSub Q)}
   (s : Ssub cs ds) :
   fmap[SubColourFunctor] (CT_gen s) = CT_gen (hsub cs ds s) := eq_refl.
 
-(** A restricted wire is the wire of the underlying colour. *)
+(** 本节：A restricted wire wire underlying colour. （已译） *)
 Example SubColourFunctor_wire (c : ColourSub Q) :
   fmap[SubColourFunctor] (CT_id [c]) = CT_id [proj1_sig c] := eq_refl.
 
@@ -476,7 +470,7 @@ End SubsetRestriction.
 
 Arguments SubColourFunctor {Colour} Cdec S Q Ssub hsub : assert.
 
-(** ** 4. Descent to presented coloured PROPs *)
+(* 相关说明。 （已译） *)
 
 Section PresentedDescent.
 
@@ -487,7 +481,7 @@ Context (E : CSMT Colour).
 Context (E' : CSMT Colour').
 Context (hE : CSigMap f (csmt_sig E) (csmt_sig E')).
 
-(** The base-change functor between the underlying free categories. *)
+(** The base-change 函子 between underlying free 范畴. （已译） *)
 Notation BF := (BaseChangeF f C'dec (csmt_sig E) (csmt_sig E') hE).
 
 (*
@@ -530,9 +524,9 @@ Proof using C'dec E E' HR f hE.
     exact (CTEW_trans E' _ _ _ IH1 IH2).
   - (* CTEW_comp: fmap computes to CT_comp on both sides *)
     exact (CTEW_comp E' _ _ _ _ IHf IHg).
-  - (* CTEW_tens: fmap computes to a cast-conjugated CT_tens; the
-       casts agree on both sides, so two composition congruences
-       around the tensor congruence close the goal *)
+  - (* CTEW_tens: fmap computes cast-conjugated CT_tens; the
+ casts agree both sides, so two 复合 congruences
+ around tensor congruence close goal （已译） *)
     exact (CTEW_comp E' _ _ _ _
              (CTEW_comp E' _ _ _ _
                 (CTermEqW_refl E' _)
@@ -554,9 +548,9 @@ Definition PresentedBaseChange : CPresentedCat E ⟶ CPresentedCat E' :=
     (fun (cs ds : list Colour) (s t : CTerm (csmt_sig E) cs ds)
          (H : CTermEqW E s t) => BaseChange_CTermEqW H).
 
-(** Machine-checked: the descended functor acts on objects by [map f],
-    on quotiented terms by [fmap[BF]], and the descent square with the
-    two projections commutes definitionally. *)
+(** Machine-checked: descended 函子 acts 对象 [map f],
+ quotiented terms [fmap[BF]], descent square the
+ two projections commutes definitionally. （已译） *)
 Example PresentedBaseChange_fobj (cs : list Colour) :
   fobj[PresentedBaseChange] cs = map f cs := eq_refl.
 

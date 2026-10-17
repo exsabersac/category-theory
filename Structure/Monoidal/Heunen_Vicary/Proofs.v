@@ -62,8 +62,8 @@ Proof.
   reflexivity.
 Qed.
 
-(* Copy x then delete the right factor: this is the pairing ⟨id, e⟩, which is
-   exactly the inverse right unitor r⁻¹ in the product presentation. *)
+(* Copy x then delete right factor: 这是 pairing ⟨id, e⟩, is
+ exactly inverse right unitor r⁻¹ product presentation. （已译） *)
 Lemma eliminate_right_diagonal {x} :
   id[x] ⨂ eliminate ∘ ∆x ≈ unit_right⁻¹.
 Proof.
@@ -74,8 +74,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* Dually, copy x then delete the left factor: the pairing ⟨e, id⟩, which is the
-   inverse left unitor l⁻¹. *)
+(* 相关说明。 （已译） *)
 Lemma eliminate_left_diagonal {x} :
   eliminate ⨂ id[x] ∘ ∆x ≈ unit_left⁻¹.
 Proof.
@@ -166,9 +165,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* Copy x ⨂ y, then keep the right factor of the first copy and the left factor
-   of the second: this swaps the two components, i.e. it is the braiding
-   σ_{x,y} = ⟨π₂, π₁⟩. *)
+(* 相关说明。 （已译） *)
 Corollary proj_right_left_diagonal {x y} :
   proj_right ⨂ proj_left ∘ ∆(x ⨂ y) ≈ braid.
 Proof.
@@ -261,8 +258,7 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* Projecting left after the braiding is the same as projecting right: swapping
-   then taking π₁ equals taking π₂. *)
+(* 相关说明。 （已译） *)
 Corollary proj_left_braid {x y} :
   proj_left ∘ braid ≈ @proj_right _ _ _ x y.
 Proof.

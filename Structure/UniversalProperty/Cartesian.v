@@ -19,7 +19,7 @@ Local Hint Extern 5 (Proper _ _ ) => progress(repeat(intro)) : cat.
 #[local] Hint Rewrite @exl_fork : categories.
 #[local] Hint Rewrite @exr_fork : categories.
 
-(** * The cartesian product as a universal property *)
+(* * * The cartesian product 普遍性质 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/universal+property

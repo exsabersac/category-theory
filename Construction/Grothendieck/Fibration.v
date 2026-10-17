@@ -11,7 +11,7 @@ Require Import Category.Construction.Grothendieck.
 
 Generalizable All Variables.
 
-(** * The Grothendieck projection is a split opfibration *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/Grothendieck+fibration
@@ -52,7 +52,7 @@ Proof.
   unfold Grothendieck_op_lift.
   constructor; intros z g dz hh; simpl in *.
   unshelve refine {| unique_obj := hh ∘ to (idx_comp A g f dx) |}.
-  - (* the factorization commutes: cancel [to] against [from] *)
+  - (* 相关说明。 （已译） *)
     rewrite fmap_id, id_right.
     rewrite <- comp_assoc.
     rewrite iso_to_from.
@@ -81,7 +81,7 @@ Definition Grothendieck_OpCleaving :
         (@Grothendieck_op_lift v u f dv;
          @Grothendieck_lift_cocartesian v u f dv))).
 
-(** ** The chosen lifts, read in the total category ∫ A *)
+(* * ** The chosen lifts, read total 范畴 ∫ A （已译） *)
 
 (* The chosen opcartesian lift of [f] at [dx], as a morphism of ∫ A from
    [(x; dx)] to [(y; idx_map A f dx)].  Its displayed component is
@@ -97,8 +97,8 @@ Definition Grothendieck_vert {z : B} {a b : idx_fib A z} (k : a ~> b) :
   (z; a) ~{ Grothendieck A }~> (z; b) :=
   (@id B z; k ∘ to (idx_id A a)).
 
-(* The total-level lift and the cleaving's chosen lift agree — both are
-   the identity of the pushforward, so the comparison is definitional. *)
+(* The total-level lift cleaving's chosen lift agree — both are
+ 恒等 pushforward, so comparison definitional. （已译） *)
 Lemma Grothendieck_colift_is_clift {x y : B} (f : x ~> y)
   (dx : idx_fib A x) :
   `1 (`2 (@clift (B^op) (Displayed_op (Grothendieck_Displayed A))
@@ -106,8 +106,7 @@ Lemma Grothendieck_colift_is_clift {x y : B} (f : x ~> y)
     ≈ `2 (Grothendieck_colift f dx).
 Proof. reflexivity. Qed.
 
-(* The chosen lift lies strictly over [f]: the projection sends it to [f]
-   on the nose. *)
+(* 相关说明。 （已译） *)
 Lemma Grothendieck_colift_over {x y : B} (f : x ~> y) (dx : idx_fib A x) :
   fmap[Grothendieck_Proj A] (Grothendieck_colift f dx) ≈ f.
 Proof. reflexivity. Qed.
@@ -127,9 +126,9 @@ Proof.
   exists (id_left (@id B x)); simpl.
   unfold Grothendieck_op_lift.
   rewrite fmap_id.
-  (* [id_right] is applied at its exact occurrence: the goal carries the
-     composite [id ∘ id] inside a dependent argument of [idx_resp], which
-     an ambient rewrite would try to abstract *)
+  (* [id_right] applied at exact occurrence: goal carries the
+ 复合 [id ∘ id] inside dependent 论元 [idx_resp], which
+ ambient rewrite would try abstract （已译） *)
   rewrite (id_right
              (to (idx_id A dx) ∘ to (idx_id A (idx_map A (@id B x) dx)))).
   rewrite <- !comp_assoc.
@@ -174,9 +173,9 @@ Qed.
 
 (** ** The split laws, bundled *)
 
-(* The splitting of the canonical opcleaving, as one named theorem: the
-   chosen lifts are functorial on the nose, mediated by the chosen unit
-   and composition isos of [A]. *)
+(* The splitting canonical opcleaving, one named 定理: the
+ chosen lifts functorial nose, mediated chosen unit
+ 复合 isos [A]. （已译） *)
 Theorem Grothendieck_Split :
   (∀ (x : B) (dx : idx_fib A x),
      Grothendieck_vert (to (idx_id A dx))
@@ -195,7 +194,7 @@ Proof.
     apply Grothendieck_split_lift_comp.
 Qed.
 
-(** ** The projection as a cloven fibration of the op-total category *)
+(* * ** The projection cloven fibration op-total 范畴 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。

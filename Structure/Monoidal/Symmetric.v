@@ -42,8 +42,8 @@ Coercion symmetric_is_braided : SymmetricMonoidal >-> BraidedMonoidal.
 
 Context `{SymmetricMonoidal}.
 
-(* A rotated form of the hexagon identity, available once the braiding is
-   symmetric: the second hexagon is recovered from the first via braid_invol. *)
+(* A rotated form hexagon 恒等, available once braiding is
+ symmetric: second hexagon recovered first via braid_invol. （已译） *)
 Lemma hexagon_rotated {x y z} :
   tensor_assoc ∘ braid ⨂ id ∘ tensor_assoc ⁻¹
     << x ⨂ (y ⨂ z) ~~> y ⨂ (x ⨂ z) >>
@@ -61,8 +61,8 @@ Proof.
   cat.
 Qed.
 
-(* Naturality of the braiding, transposed: braid commutes a tensor of two
-   morphisms past itself, swapping the order of the factors. *)
+(* Naturality braiding, transposed: braid commutes tensor two
+ 态射 past itself, swapping order factors. （已译） *)
 Lemma bimap_braid {x y z w} (f : x ~> z) (g : y ~> w) :
   g ⨂ f ∘ braid ≈ braid ∘ f ⨂ g.
 Proof.
@@ -71,8 +71,7 @@ Proof.
   apply X.
 Qed.
 
-(* Conjugating a swapped tensor by the braiding on both sides recovers the
-   original tensor; combines bimap_braid with the symmetry law braid_invol. *)
+(* 相关说明。 （已译） *)
 Lemma braid_bimap_braid {x y z w} (f : x ~> z) (g : y ~> w) :
   braid ∘ g ⨂ f ∘ braid ≈ f ⨂ g.
 Proof.
@@ -87,9 +86,9 @@ End SymmetricMonoidal.
 
 Require Export Category.Structure.Monoidal.Balanced.
 
-(* A balanced monoidal category whose twist is the identity is symmetric: the
-   balancing axiom braid ∘ twist ⨂ twist ∘ braid ≈ twist then degenerates to
-   the symmetry law braid ∘ braid ≈ id. *)
+(* A balanced 幺半范畴 whose twist 恒等 symmetric: the
+ balancing axiom braid ∘ twist ⨂ twist ∘ braid ≈ twist then degenerates to
+ symmetry law braid ∘ braid ≈ id. （已译） *)
 Program Definition balanced_twist_id_is_symmetric
   `{@BalancedMonoidal C}
   (to_twist : ∀ x : C, to twist ≈[C] to (@iso_id _ x)) :

@@ -62,30 +62,29 @@ Proof.
   - exact (markov_deterministic_of_copy f).
 Qed.
 
-(** ** All morphisms deterministic ⇒ cartesian monoidal *)
+(* * ** All 态射 deterministic ⇒ cartesian monoidal （已译） *)
 
 Context (D : ∀ x y (f : x ~> y), deterministic f).
 
-(* The copy supply becomes a natural diagonal: naturality is the
-   determinism hypothesis, and the remaining coherence fields are the
-   comonoid laws of the supply re-oriented. *)
+(* The copy supply becomes natural diagonal: 自然性 the
+ determinism 假设, remaining coherence fields the
+ comonoid laws supply re-oriented. （已译） *)
 Program Definition Relevance_of_deterministic : @RelevanceMonoidal C := {|
   relevance_is_symmetric := S;
   diagonal := fun x => copy[x]
 |}.
 Next Obligation.
-  (* diagonal_natural: exactly the δ-square of the determinism
-     hypothesis, read right-to-left. *)
+  (* diagonal_natural: exactly δ-square determinism
+ 假设, read right-to-left. （已译） *)
   symmetry.
   apply (copy_natural_on_deterministic _ (D _ _ _)).
 Qed.
 Next Obligation.
-  (* diagonal_unit: the unit-coherence field of the supply. *)
+  (* 相关说明。 （已译） *)
   apply copy_unit.
 Qed.
 Next Obligation.
-  (* diagonal_tensor_assoc: coassociativity of the comonoid on x,
-     solved for the forward associator. *)
+  (* 相关说明。 （已译） *)
   unfold copy, ccomon_delta.
   rewrite <- comp_assoc.
   rewrite delta_coassoc.
@@ -100,8 +99,7 @@ Next Obligation.
   apply delta_cocommutative_of_ccomon.
 Qed.
 Next Obligation.
-  (* diagonal_braid2: the tensor-coherence field, with [braid2]
-     recognized as [mid_swap_inv] (cf. braid2_mid_swap_inv). *)
+  (* 相关说明。 （已译） *)
   rewrite copy_tensor.
   comp_right.
   unfold mid_swap_inv.
@@ -148,7 +146,7 @@ Proof. apply (@unit_terminal C _ markov_semicartesian). Qed.
 
 End AllDeterministicCartesian.
 
-(** ** Cartesian monoidal ⇒ all morphisms deterministic *)
+(* * ** Cartesian monoidal ⇒ all 态射 deterministic （已译） *)
 
 Section CartesianDeterministic.
 

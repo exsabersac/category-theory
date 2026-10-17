@@ -15,7 +15,7 @@ Require Import Category.Instance.StrictCat.ToCat.
 
 Generalizable All Variables.
 
-(** * The round trip: split cleavings versus indexed categories *)
+(* * * The round trip: split cleavings versus indexed 范畴 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/Grothendieck+fibration
@@ -118,8 +118,8 @@ Next Obligation. intros x a b c d u v w; simpl; apply comp_assoc_sym. Qed.
 
 (* ---- the reindexing functor ---- *)
 
-(* The base witness that the reindexed morphism lies over: the identity of
-   the target fibre, expressed through the two anchors. *)
+(* The base witness reindexed 态射 lies over: 恒等 of
+ target fibre, expressed through two anchors. （已译） *)
 Definition rmap_g {x y : B} (f : x ~> y) (a b : { e : E & P e = x }) :
   P (pf_obj f (`1 a) (`2 a)) ~> P (pf_obj f (`1 b) (`2 b)) :=
   from (iso_of_eq (pf_anchor f (`1 b) (`2 b)))
@@ -137,8 +137,7 @@ Proof using Cl.
   rewrite (pf_over f eb pb).
   rewrite vφ.
   rewrite (pf_over f ea pa).
-  (* left:  (from(anchor_b) ∘ (f ∘ to pb)) ∘ (from pb ∘ to pa)
-     right: (from(anchor_b) ∘ to(anchor_a)) ∘ (from(anchor_a) ∘ (f ∘ to pa)) *)
+  (* 相关说明。 （已译） *)
   rewrite <- !comp_assoc.
   rewrite (comp_assoc (to (iso_of_eq pb))).
   rewrite iso_to_from, id_left.
@@ -203,7 +202,7 @@ Next Obligation.
     reflexivity.
 Qed.
 
-(* ---- workhorses: the mediating vertical morphism and joint monicity ---- *)
+(* ---- workhorses: mediating vertical 态射 joint monicity ---- （已译） *)
 
 Lemma mediate_fac {x y : B} (f : x ~> y) (e : E) (p : P e = x)
   (d : E) (q : P d = y) (m : e ~> d)
@@ -245,8 +244,8 @@ Lemma mediate_over {x y : B} (f : x ~> y) (e : E) (p : P e = x)
     ≈ from (iso_of_eq q) ∘ to (iso_of_eq (pf_anchor f e p)).
 Proof using Cl. exact (snd (unique_property (med f e p d q m Hm))). Qed.
 
-(* Joint monicity of the opcartesian lift: two morphisms out of a pushforward
-   that agree after precomposition with the lift and on the base are equal. *)
+(* Joint monicity opcartesian lift: two 态射 out pushforward
+ agree after precomposition lift base equal. （已译） *)
 Lemma vunique {x y : B} (f : x ~> y) (e : E) (p : P e = x) (d : E)
   (u v : pf_obj f e p ~> d)
   (Hcomm : u ∘ pf_mor f e p ≈ v ∘ pf_mor f e p)
@@ -559,7 +558,7 @@ Qed.
 
 End IdxComp.
 
-(* ---- accessors for the reindexing functor's action on morphisms ---- *)
+(* ---- accessors reindexing 函子's action 态射 ---- （已译） *)
 
 Lemma rmap_comm {x y : B} (f : x ~> y) (a b : { e : E & P e = x })
   (u : { φ : `1 a ~> `1 b
@@ -610,9 +609,7 @@ Ltac break_sf :=
   | |- context[`1 (?u ∘ ?v)] => rewrite (sf_comp1 u v)
   end.
 
-(* Accessors phrased on the iso projections themselves, matching the goal
-   shape after [sf_comp1].  Each holds by conversion from the underlying
-   [resp_to]/[idid_to]/[comp_to] accessor. *)
+(* 相关说明。 （已译） *)
 Lemma respi_to_comm {x y : B} {f g : x ~> y} (ε : f ≈ g)
   (a : { e : E & P e = x }) :
   `1 (to (idx_resp_iso ε a)) ∘ pf_mor f (`1 a) (`2 a)
@@ -667,9 +664,9 @@ Lemma mgi_over {x y z : B} (f : y ~> z) (g : x ~> y)
         ∘ (f ∘ to (iso_of_eq (pf_anchor g (`1 a) (`2 a)))).
 Proof using Cl. exact (mg_over f g a). Qed.
 
-(* The [from]-side companions of the mediator comm/over accessors, used by
-   the comparison functor below: the inverse mediators split the one-step
-   lift back into its constituents. *)
+(* The [from]-side companions mediator comm/over accessors, used by
+ comparison 函子 below: inverse mediators split one-step
+ lift back constituents. （已译） *)
 Lemma respi_from_comm {x y : B} {f g : x ~> y} (ε : f ≈ g)
   (a : { e : E & P e = x }) :
   `1 (from (idx_resp_iso ε a)) ∘ pf_mor g (`1 a) (`2 a)
@@ -866,9 +863,9 @@ Proof using Cl.
       * exact (compi_to_over f g b).
 Qed.
 
-(* Compatibility of [mg] with the ≈-mediator in the outer base argument: the
-   [g]-pushforward level of [idx_comp_resp_l].  The [over] branch bridges [f]
-   and [f'] through the ≈-witness [e]. *)
+(* Compatibility [mg] ≈-mediator outer base 论元: the
+ [g]-pushforward level [idx_comp_resp_l]. The [over] branch bridges [f]
+ [f'] through ≈-witness [e]. （已译） *)
 Lemma mg_resp_l {x y z : B} {f f' : y ~> z} (g : x ~> y) (e : f ≈ f')
   (e' : f ∘ g ≈ f' ∘ g) (a : { e : E & P e = x }) :
   mg f' g a ≈ `1 (to (idx_resp_iso e' a)) ∘ mg f g a.
@@ -930,9 +927,9 @@ Proof using Cl.
       * exact (respi_to_over e' a).
 Qed.
 
-(* Compatibility of [mg] with the ≈-mediator in the inner base argument: the
-   [g]-pushforward level of [idx_comp_resp_r].  Both sides lie over the same
-   [f], so no ≈-bridge is needed. *)
+(* Compatibility [mg] ≈-mediator inner base 论元: the
+ [g]-pushforward level [idx_comp_resp_r]. Both sides lie over same
+ [f], so no ≈-bridge needed. （已译） *)
 Lemma mg_resp_r {x y z : B} (f : y ~> z) {g g' : x ~> y} (e : g ≈ g')
   (e' : f ∘ g ≈ f ∘ g') (a : { e : E & P e = x }) :
   mg f g' a ∘ `1 (to (idx_resp_iso e a))
@@ -1003,9 +1000,9 @@ Proof using Cl.
       * exact (respi_to_over e' a).
 Qed.
 
-(* The [g]-pushforward level of the left unit coherence: reindexing along
-   [id ∘ f] then correcting by the left-unit ≈-mediator returns the identity
-   on the [f]-pushforward. *)
+(* The [g]-pushforward level left unit coherence: reindexing along
+ [id ∘ f] then correcting left-unit ≈-mediator returns 恒等
+ [f]-pushforward. （已译） *)
 Lemma mg_unit_left {x y : B} (f : x ~> y) (a : { e : E & P e = x }) :
   `1 (to (idx_resp_iso (id_left f) a)) ∘ mg (@id B y) f a ≈ id.
 Proof using Cl.
@@ -1053,9 +1050,7 @@ Proof using Cl.
       exact (idi_to_over (Reindex f a)).
 Qed.
 
-(* The [id]-pushforward level of the right unit coherence: reindexing along
-   [f ∘ id] then correcting by the right-unit ≈-mediator equals the
-   [f]-pushforward precomposed with the unit iso. *)
+(* 相关说明。 （已译） *)
 Lemma mg_unit_right {x y : B} (f : x ~> y) (a : { e : E & P e = x }) :
   `1 (to (idx_resp_iso (id_right f) a)) ∘ mg f (@id B x) a
     ≈ pf_mor f (`1 a) (`2 a) ∘ `1 (to (idx_id_iso a)).
@@ -1332,7 +1327,7 @@ Definition RT_Indexed : IndexedCat B := {|
   idx_cocycle := @RT_cocycle
 |}.
 
-(* ---- the comparison functor back to the total category E ---- *)
+(* ---- comparison 函子 back total 范畴 E ---- （已译） *)
 
 (*
    本节说明 RoundTrip 相关定义、性质与动机。
@@ -1344,7 +1339,7 @@ Program Definition RT_Comparison : Grothendieck RT_Indexed ⟶ E := {|
   fmap := fun o1 o2 m => `1 (`2 m) ∘ pf_mor (`1 m) (`1 (`2 o1)) (`2 (`2 o1))
 |}.
 Next Obligation.
-  (* fmap respects ≈: the transport mediator splits back into the two lifts *)
+  (* fmap respects ≈: transport mediator splits back 进入 two lifts （已译） *)
   intros o1 o2 m m' [ε Hε].
   change (`1 (`2 m) ∘ `1 (from (idx_resp_iso ε (`2 o1))) ≈ `1 (`2 m')) in Hε.
   rewrite <- Hε.
@@ -1357,8 +1352,8 @@ Next Obligation.
   exact (idi_to_comm (`2 o)).
 Qed.
 Next Obligation.
-  (* composition: the compositor's inverse rebuilds the two-step lift, then
-     the reindexed leg is natural against [pf_mor] *)
+  (* 复合: compositor's inverse rebuilds two-step lift, then
+ reindexed leg natural against [pf_mor] （已译） *)
   intros [x a] [y b] [z c] [f k] [g l]; simpl.
   break_sf.
   rewrite <- !comp_assoc.
@@ -1394,8 +1389,8 @@ Proof using Cl.
   reflexivity.
 Qed.
 
-(* Inverting the naturality square: the base morphism is recovered from the
-   [P]-image of its comparison morphism by conjugating the other way. *)
+(* Inverting 自然性 square: base 态射 recovered the
+ [P]-image comparison 态射 conjugating other way. （已译） *)
 Lemma RT_base_recover {o1 o2 : Grothendieck RT_Indexed}
   (m : o1 ~> o2) :
   `1 m ≈ to (iso_of_eq (`2 (`2 o2)))
@@ -1411,8 +1406,8 @@ Proof using Cl.
   reflexivity.
 Qed.
 
-(* Deliverable: [P] after the comparison is the Grothendieck projection, up
-   to the natural isomorphism whose components are the anchoring isos. *)
+(* Deliverable: [P] after comparison Grothendieck projection, up
+ natural 同构 whose components anchoring isos. （已译） *)
 Definition RT_Comparison_Proj :
   P ◯ RT_Comparison ≈ Grothendieck_Proj RT_Indexed.
 Proof.
@@ -1538,8 +1533,7 @@ Definition RT_EssSurj : EssentiallySurjective RT_Comparison :=
 
 (* ---- the comparison is an equivalence of categories ---- *)
 
-(* Assembled from the full + faithful + essentially-surjective
-   characterization (Theory/Equivalence/FullFaithful.v). *)
+(* 相关说明。 （已译） *)
 Definition RT_Equivalence : EquivalenceOfCategories RT_Comparison :=
   @FF_ESO_Equivalence _ _ RT_Comparison RT_Full RT_Faithful RT_EssSurj.
 
@@ -1551,22 +1545,21 @@ End RoundTrip.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* (a) The indexed category built from a split cleaving of [P]. *)
+(* (a) The indexed 范畴 built split cleaving [P]. （已译） *)
 Definition IndexedCat_of_SplitCleaving {E B : Category} (P : E ⟶ B)
   {Cl : ClovenFibration (P^op)}
   (Sp : @SplitCleaving (B^op) (E^op) (P^op) Cl) : IndexedCat B :=
   @RT_Indexed E B P Cl.
 
-(* (b) The comparison functor from the Grothendieck construction of the
-   round trip back to the total category [E]. *)
+(* (b) The comparison 函子 Grothendieck construction the
+ round trip back total 范畴 [E]. （已译） *)
 Definition RoundTrip_Comparison {E B : Category} (P : E ⟶ B)
   {Cl : ClovenFibration (P^op)}
   (Sp : @SplitCleaving (B^op) (E^op) (P^op) Cl) :
   Grothendieck (IndexedCat_of_SplitCleaving P Sp) ⟶ E :=
   @RT_Comparison E B P Cl.
 
-(* The comparison lies over the projection: [P] after it is the Grothendieck
-   projection, up to the natural iso whose components are the anchoring isos. *)
+(* 相关说明。 （已译） *)
 Definition RoundTrip_Comparison_Proj {E B : Category} (P : E ⟶ B)
   {Cl : ClovenFibration (P^op)}
   (Sp : @SplitCleaving (B^op) (E^op) (P^op) Cl) :
@@ -1607,8 +1600,8 @@ Definition RoundTrip_Comparison_cloven {E B : Category} (P : E ⟶ B)
   Grothendieck (@RT_Indexed E B P Cl) ⟶ E :=
   @RT_Comparison E B P Cl.
 
-(* The comparison is an equivalence of categories, from a cloven structure
-   alone. *)
+(* The comparison 等价 范畴, cloven structure
+ alone. （已译） *)
 Definition RoundTrip_Equivalence_cloven {E B : Category} (P : E ⟶ B)
   (Cl : ClovenFibration (P^op)) :
   EquivalenceOfCategories (RoundTrip_Comparison_cloven P Cl) :=

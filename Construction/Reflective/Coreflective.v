@@ -18,11 +18,11 @@ Require Import Category.Construction.Reflective.
 
 Generalizable All Variables.
 
-(** ** From covariant data to the record *)
+(* 相关说明。 （已译） *)
 
-(* A covariant functor into the subcategory, read as a functor between
-   the opposites.  Every field is the donor's own, with the two object
-   arguments exchanged. *)
+(* A covariant 函子 进入 subcategory, read 函子 between
+ opposites. Every field donor's own, two 对象
+ arguments exchanged. （已译） *)
 Definition coreflector_op@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (G : C ⟶ Sub C S) :
   C^op ⟶ Sub (C^op) (op_subcategory S).
@@ -63,8 +63,8 @@ Proof.
   - intros x y z f g. exact (@to_adj_nat_l _ _ _ _ A z y x g f).
 Defined.
 
-(* Mac Lane's dual definition, built from covariant data: a full
-   subcategory together with a right adjoint of its inclusion. *)
+(* Mac Lane's dual 定义, built covariant data: full
+ subcategory together 右伴随 含入. （已译） *)
 Definition Coreflective_of_adjunction@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (full : Construction.Subcategory.Full C S)
   (G : C ⟶ Sub C S) (A : Incl C S ⊣ G) : Coreflective S :=
@@ -72,7 +72,7 @@ Definition Coreflective_of_adjunction@{o h +} {C : Category@{o h h}}
     (fun x y ox oy f => full y x oy ox f)
     (coreflector_op G) (coreflector_op_adj G A).
 
-(** ** From the record back to covariant data *)
+(* 相关说明。 （已译） *)
 
 Definition coreflective_full@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (R : Coreflective S) :
@@ -134,8 +134,8 @@ Example coreflector_fmap_roundtrip@{o h +} {C : Category@{o h h}}
   fmap[coreflector (Coreflective_of_adjunction full G A)] f = fmap[G] f
   := eq_refl.
 
-(* The whole functor, the whole adjunction, the fullness witness and the
-   whole record all return on the nose. *)
+(* The whole 函子, whole 伴随, fullness witness the
+ whole record all return nose. （已译） *)
 Example coreflector_roundtrip@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (full : Construction.Subcategory.Full C S)
   (G : C ⟶ Sub C S) (A : Incl C S ⊣ G) :
@@ -157,10 +157,9 @@ Example Coreflective_roundtrip@{o h +} {C : Category@{o h h}}
   Coreflective_of_adjunction (coreflective_full R) (coreflector R)
     (coreflective_adj R) = R := eq_refl.
 
-(** ** Unit and counit, read across the bridge *)
+(* 相关说明。 （已译） *)
 
-(* The covariant counit at [x : C] IS the record's unit at [x], and the
-   covariant unit at [s : Sub C S] IS the record's counit at [s]. *)
+(* 相关说明。 （已译） *)
 Example coreflective_counit_is_op_unit@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (R : Coreflective S) (x : C) :
   @counit _ _ _ _ (coreflective_adj R) x

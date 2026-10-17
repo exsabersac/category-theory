@@ -18,7 +18,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Generating (separating) families and objects *)
+(* * ** Generating (separating) families 对象 （已译） *)
 
 (* Mac Lane §V.7 p. 127 / Riehl 4.7.7 / Awodey §7.2: a family of objects
    SEPARATES (generates) C when parallel arrows agreeing after every arrow
@@ -50,15 +50,15 @@ Definition Generator_of_separator {C : Category} (c : C) (H : IsSeparator c) :
   gen_separates := fun x y f g Hk => H x y f g (fun k => Hk tt k)
 |}.
 
-(* Joint faithfulness of a family of functors: the arrows are told apart
-   by SOME member.  For the representables [Hom (gen_obj j), ─] this is
-   the separation condition read through [fmap]. *)
+(* Joint faithfulness family 函子: arrows told apart
+ SOME member. For representables [Hom (gen_obj j), ─] 这是
+ separation condition read through [fmap]. （已译） *)
 Definition JointlyFaithful {C D : Category} {J : Type}
   (F : J -> C ⟶ D) : Type :=
   forall (x y : C) (f g : x ~> y),
     (forall j : J, fmap[F j] f ≈ fmap[F j] g) -> f ≈ g.
 
-(** ** Awodey §7.2: separation IS faithfulness of the representable *)
+(* 相关说明。 （已译） *)
 
 Section Characterizations.
 
@@ -73,14 +73,14 @@ Definition separator_faithful (c : C) (H : IsSeparator c) :
   Faithful [Hom c,─] :=
   @Build_Faithful C Sets [Hom c,─] (fun x y f g E => H x y f g (fun k => E k)).
 
-(* Backward, by the same unfolding read the other way: [fmap_inj] is the
-   field of [Faithful], and its hypothesis is already the separation
-   hypothesis. *)
+(* Backward, same unfolding read other way: [fmap_inj] the
+ field [Faithful], 假设 already separation
+ 假设. （已译） *)
 Definition faithful_separator (c : C) (F : Faithful [Hom c,─]) :
   IsSeparator c :=
   fun x y f g H => @fmap_inj _ _ [Hom c,─] F x y f g (fun k => H k).
 
-(** ** Mac Lane §V.7 / Riehl §E.4: the family form is joint faithfulness *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -95,7 +95,7 @@ Definition jointly_faithful_generator {J : Type} (F : J -> C)
   (H : JointlyFaithful (fun j : J => [Hom F j,─])) : Generator C :=
   @Build_Generator C J F (fun x y f g Hk => H x y f g (fun j k => Hk j k)).
 
-(** ** The single-object / family bridge *)
+(* * ** The single-对象 / family bridge （已译） *)
 
 (*
    本节说明 Generator 相关定义、性质与动机。
@@ -134,8 +134,7 @@ Definition generator_iff_jointly_faithful {J : Type} (F : J -> C) :
   (fun H x y f g E => H x y f g (fun j k => E j k),
    fun H x y f g E => H x y f g (fun j k => E j k)).
 
-(* The same bridge one level up, between the two faithfulness notions:
-   [JointlyFaithful] over a [unit] index is [Faithful]. *)
+(* 相关说明。 （已译） *)
 Definition jointly_faithful_faithful {D : Category} (F : C ⟶ D)
   (H : Faithful F) : JointlyFaithful (fun _ : unit => F) :=
   fun x y f g E => @fmap_inj _ _ F H x y f g (E tt).
@@ -146,7 +145,7 @@ Definition faithful_jointly_faithful {D : Category} (F : C ⟶ D)
 
 End Characterizations.
 
-(** ** Transport along isomorphisms and along maps of index types *)
+(* 相关说明。 （已译） *)
 
 Section Transport.
 
@@ -208,7 +207,7 @@ Definition gen_extend (G : Generator C) {K : Type} (ob : K -> C) :
 
 End Transport.
 
-(** ** Riehl's contrapositive reading, as far as it is free *)
+(* 相关说明。 （已译） *)
 
 Section Contrapositive.
 

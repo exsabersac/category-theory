@@ -1,4 +1,4 @@
-(** * Functors into the arrow category classify natural transformations *)
+(* * * Functors 进入 arrow 范畴 classify natural transformations （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -24,7 +24,7 @@ Generalizable All Variables.
 
 (** ** Transformation triples *)
 
-(* The data Ex. 7 classifies: two functors and a transformation. *)
+(* The data Ex. 7 classifies: two 函子 transformation. （已译） *)
 Definition ArrowTriple (C B : Category) : Type :=
   { S : C ⟶ B & { T : C ⟶ B & S ⟹ T } }.
 
@@ -34,7 +34,7 @@ Definition triple_cod {C B : Category} (t : ArrowTriple C B) : C ⟶ B :=
 Definition triple_nat {C B : Category} (t : ArrowTriple C B) :
   triple_dom t ⟹ triple_cod t := `2 (`2 t).
 
-(** ** Transparent equivalence witnesses for [Functor_Setoid] *)
+(* * ** Transparent 等价 witnesses [Functor_Setoid] （已译） *)
 
 (*
    本节说明函子、等价相关定义、性质与动机。
@@ -126,7 +126,7 @@ Next Obligation.
     reflexivity.
 Qed.
 
-(** ** Ex. 7 forward: reading a triple off a functor into [Arrow B] *)
+(* * ** Ex. 7 forward: reading triple off 函子 [Arrow B] （已译） *)
 
 Definition Arrow_dom {C B : Category} (H : C ⟶ @Arrow B) : C ⟶ B :=
   comma_proj1 ◯ H.
@@ -153,8 +153,7 @@ Next Obligation.
   exact (`2 (fmap[H] f)).
 Qed.
 
-(* Boundary lemmas: the generic arrow's component at c runs from the
-   projected domain to the projected codomain, definitionally. *)
+(* 相关说明。 （已译） *)
 Lemma Arrow_dom_boundary {C B : Category} (H : C ⟶ @Arrow B) (c : C) :
   Arrow_dom H c = fst (`1 (H c)).
 Proof. reflexivity. Qed.
@@ -167,7 +166,7 @@ Definition Arrow_extract {C B : Category} (H : C ⟶ @Arrow B) :
   ArrowTriple C B :=
   (Arrow_dom H; (Arrow_cod H; Arrow_generic H)).
 
-(** ** Ex. 7 inverse: the classifying functor of a transformation *)
+(* * ** Ex. 7 inverse: classifying 函子 transformation （已译） *)
 
 (* A natural transformation materializes as a functor into the arrow
    category: objects go to components, morphisms to naturality
@@ -199,7 +198,7 @@ Next Obligation.
   - apply fmap_comp.
 Qed.
 
-(** ** Component isomorphisms for the classification *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。
@@ -254,8 +253,8 @@ Proof.
   intros x y f; exact (snd (Θnat x y f)).
 Qed.
 
-(* Boundary isomorphisms intertwining the transformations assemble into
-   an isomorphism of the classifying functors' values. *)
+(* Boundary isomorphisms intertwining transformations assemble into
+ 同构 classifying 函子' values. （已译） *)
 Program Definition Arrow_intro_component_iso {C B : Category}
         {t u : ArrowTriple C B}
         (σ : triple_dom t ≈ triple_dom u) (ρ : triple_cod t ≈ triple_cod u)
@@ -272,7 +271,7 @@ Next Obligation.
   symmetry; apply compat.
 Qed.
 Next Obligation.
-  (* the reverse square, by conjugating the intertwining with inverses *)
+  (* 相关说明。 （已译） *)
   intros C B t u σ ρ compat c; simpl.
   transitivity ((`1 ρ c)⁻¹ ∘ ((`1 ρ c ∘ triple_nat t c) ∘ (`1 σ c)⁻¹)).
   - rewrite !comp_assoc.
@@ -294,8 +293,8 @@ Next Obligation.
   - apply (iso_from_to (`1 ρ c)).
 Qed.
 
-(* Introduction after extraction differs from the original only by
-   sigT/pair eta, repaired by the identity-legged square. *)
+(* Introduction after extraction differs original by
+ sigT/pair eta, repaired 恒等-legged square. （已译） *)
 Program Definition Arrow_eta_iso {C B : Category} (H : C ⟶ @Arrow B)
         (c : C) :
   @Isomorphism (@Arrow B) (Arrow_intro (Arrow_extract H) c) (H c) := {|
@@ -331,8 +330,8 @@ Program Definition Arrow_classification (C B : Category) :
   from := {| morphism := fun t => Arrow_intro t |}
 |}.
 Next Obligation.
-  (* to respects ≈: a natural iso of functors into Arrow B projects to
-     boundary isos, and its squares are the intertwining *)
+  (* to respects ≈: natural iso 函子 Arrow B projects to
+ boundary isos, squares intertwining （已译） *)
   intros C B H H' (Θ & Θnat).
   exists (existT _ (fun c => Arrow_proj_dom_iso (Θ c))
                  (Arrow_extract_dom_nat Θ Θnat)).
@@ -342,8 +341,8 @@ Next Obligation.
   exact (symmetry (`2 (to (Θ c)))).
 Qed.
 Next Obligation.
-  (* from respects ≈: boundary isos with intertwining assemble into a
-     natural iso of classifying functors, componentwise squares *)
+  (* from respects ≈: boundary isos intertwining assemble a
+ natural iso classifying 函子, componentwise squares （已译） *)
   intros C B t u (σ & ρ & compat).
   exists (fun c => Arrow_intro_component_iso σ ρ compat c).
   intros x y f; split; simpl.

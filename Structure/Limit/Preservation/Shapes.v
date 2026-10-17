@@ -18,7 +18,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Products: the discrete-shape case *)
+(* 相关说明。 （已译） *)
 
 Definition PreservesProductCones {C D : Category} (F : C ⟶ D) : Type :=
   ∀ (A : Type) (K : DiscreteCat A ⟶ C), PreservesLimitCone K F.

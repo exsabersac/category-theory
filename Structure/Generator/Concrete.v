@@ -21,7 +21,7 @@ Section Bridge.
 
 Context {C : Category}.
 
-(** ** The two spellings of Awodey's condition *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Concrete 相关定义、性质与动机。

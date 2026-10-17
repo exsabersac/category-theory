@@ -23,8 +23,8 @@ Definition CSignature : Type := list Colour -> list Colour -> Type.
 
 (** ** Examples *)
 
-(** The empty signature.  Useful as a base case: the free coloured
-    PROP on [Empty_CSig] is the coloured permutation category. *)
+(** The empty signature. Useful base case: free coloured
+ PROP [Empty_CSig] coloured permutation 范畴. （已译） *)
 Definition Empty_CSig : CSignature :=
   fun _ _ => Empty_set.
 
@@ -107,9 +107,9 @@ Notation "f ⊕c g" := (CT_tens f g)
 
 (** ** Smart constructors *)
 
-(** The "swap" braid on two single typed wires.  Note that
-    [[c] ++ [d]] is definitionally [[c; d]], so this term also
-    inhabits [CTerm S [c; d] [d; c]] on the nose. *)
+(** 本节：The "swap" braid two single typed wires. Note that
+ [[c] ++ [d]] definitionally [[c; d]], so term also
+ inhabits [CTerm S [c; d] [d; c]] nose. （已译） *)
 Definition CT_swap {Colour} {S : CSignature Colour} (c d : Colour) :
   CTerm S ([c] ++ [d]) ([d] ++ [c]) :=
   CT_braid [c] [d].
@@ -121,8 +121,8 @@ Definition cwire {Colour} {S : CSignature Colour} (c : Colour) :
   CTerm S [c] [c] :=
   CT_id [c].
 
-(** The empty term: no input wires, no output wires — the monoidal
-    unit's identity. *)
+(** The empty term: no input wires, no output wires — monoidal
+ unit's 恒等. （已译） *)
 Definition CT_nothing {Colour} {S : CSignature Colour} : CTerm S [] [] :=
   CT_id [].
 

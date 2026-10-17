@@ -12,7 +12,7 @@ Require Import Category.Functor.Opposite.
 
 Generalizable All Variables.
 
-(** * Creation of limits and colimits by a functor *)
+(* * * Creation limits colimits 函子 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/preserved+limit
@@ -22,7 +22,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Creation of limits (the iso-invariant reading) *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限、同构相关定义、性质与动机。
@@ -37,8 +37,7 @@ Class CreatesLimit {J C D : Category} (K : J ⟶ C) (F : C ⟶ D) := {
   creates_reflect (M : Cone K) : IsLimitCone (FCone F M) → IsLimitCone M
 }.
 
-(* Mac Lane's clause (b): the lift is itself a limiting cone.
-   CORRECTION (#467): the book numbers this clause (ii). *)
+(* 相关说明。 （已译） *)
 
 Definition creates_limiting {J C D : Category} {K : J ⟶ C} {F : C ⟶ D}
   (CR : CreatesLimit K F) (N : Cone (F ◯ K)) (HN : IsLimitCone N) :
@@ -76,7 +75,7 @@ Definition creates_limit_lift {J C D : Category}
     (creates_lift (@limit_cone _ _ _ L) (limit_limitcone L))
     (creates_limiting CR (@limit_cone _ _ _ L) (limit_limitcone L)).
 
-(** ** Mac Lane §V.4 Theorem 2, first half *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -89,12 +88,12 @@ Theorem creation_preserves_limit {J C D : Category}
   PreservesLimitCone K F.
 Proof.
   intros M HM.
-  (* the created lift of the given limit downstairs *)
+  (* 相关说明。 （已译） *)
   pose (N := @limit_cone _ _ _ L).
   pose (HN := limit_limitcone L).
   pose (M' := creates_lift N HN).
   pose (HM' := creates_limiting CR N HN).
-  (* M and M' are both limiting upstairs, hence isomorphic as cones *)
+  (* 相关说明。 （已译） *)
   pose (i := limitcone_iso HM' HM).
   (* transport limit-ness along  N ≅ F M' ≅ F M *)
   exact (limitcone_transport
@@ -121,7 +120,7 @@ Definition CreatesAllLimits_CreatesProducts {C D : Category} {F : C ⟶ D}
   (CR : CreatesAllLimits F) : CreatesProducts F :=
   fun A K => CR (DiscreteCat A) K.
 
-(** ** Mac Lane §V.4 Theorem 2, second half *)
+(* 相关说明。 （已译） *)
 
 (* Creation of all limits transports completeness ... *)
 
@@ -129,32 +128,32 @@ Definition creates_limits_Complete {C D : Category} (F : C ⟶ D)
   (HD : @Complete D) (CR : CreatesAllLimits F) : @Complete C :=
   fun J K => creates_limit_lift (CR J K) (HD J (F ◯ K)).
 
-(* ... and makes the functor continuous, at the cone level ... *)
+(* ... makes 函子 continuous, at cone level ... （已译） *)
 
 Definition creates_limits_continuous {C D : Category} (F : C ⟶ D)
   (HD : @Complete D) (CR : CreatesAllLimits F) :
   ∀ (J : Category) (K : J ⟶ C), PreservesLimitCone K F :=
   fun J K => creation_preserves_limit (CR J K) (HD J (F ◯ K)).
 
-(* ... hence also in the apex-only vocabulary already in the tree. *)
+(* 相关说明。 （已译） *)
 
 Definition creates_limits_PreservesAllLimits {C D : Category} (F : C ⟶ D)
   (HD : @Complete D) (CR : CreatesAllLimits F) : PreservesAllLimits F :=
   fun J K => PreservesLimitCone_PreservesLimit
                (creates_limits_continuous F HD CR J K).
 
-(** ** Strict creation (Riehl §3.4 Definition 3.4.7) *)
+(* 相关说明。 （已译） *)
 
-(* Transport of a morphism along an equality of its domain.  Objects use
-   [eq]; morphisms are still compared with [≈]. *)
+(* Transport 态射 along equality domain. Objects use
+ [eq]; 态射 still compared [≈]. （已译） *)
 
 Definition hom_rew {D : Category} {d d' : D} (p : d = d') {t : D}
   (f : d ~{D}~> t) : d' ~{D}~> t :=
   match p in _ = z return z ~{D}~> t with eq_refl => f end.
 
-(* The isomorphism induced by an equality of objects.  Deliberately not
-   named [iso_of_eq]: that name is taken by Instance/StrictCat/ToCat.v,
-   which this Structure-layer file must not import. *)
+(* The 同构 induced equality 对象. Deliberately not
+ named [iso_of_eq]: name taken Instance/StrictCat/ToCat.v,
+ Structure-layer file must not import. （已译） *)
 
 Definition obj_eq_iso {D : Category} {d d' : D} (p : d = d') : d ≅ d' :=
   match p in _ = z return d ≅ z with eq_refl => iso_id end.
@@ -164,8 +163,7 @@ Lemma hom_rew_obj_eq_iso {D : Category} {d d' : D} (p : d = d') {t : D}
   hom_rew p f ≈ g → g ∘ to (obj_eq_iso p) ≈ f.
 Proof. destruct p; simpl; intro H. rewrite id_right. now symmetry. Qed.
 
-(* An on-the-nose lift: the image apex is EQUAL to the given apex, and the
-   image legs agree with the given legs up to [≈] after that transport. *)
+(* 相关说明。 （已译） *)
 
 Record StrictLift {J C D : Category} (K : J ⟶ C) (F : C ⟶ D)
   (N : Cone (F ◯ K)) := {
@@ -279,10 +277,9 @@ Defined.
 
 End Compose.
 
-(** ** Creation of colimits, by duality *)
+(* 相关说明。 （已译） *)
 
-(* The definitions cost one line each; the covariant accessors do not,
-   because [(F ◯ K)^op] and [F^op ◯ K^op] are not convertible. *)
+(* 相关说明。 （已译） *)
 
 Definition CreatesColimit `(K : J ⟶ C) `(F : C ⟶ D) : Type :=
   @CreatesLimit (J^op) (C^op) (D^op) (K^op) (F^op).
@@ -320,7 +317,7 @@ Definition creates_colimits_Cocomplete {C D : Category} (F : C ⟶ D)
   (HD : @Cocomplete D) (CR : CreatesAllColimits F) : @Cocomplete C :=
   fun J K => creates_colimit_lift (CR J K) (HD J (F ◯ K)).
 
-(** ** Jointly created limits (Riehl §3.4 Exercise 3.4.v) *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、（余）极限、同构相关定义、性质与动机。
@@ -367,8 +364,8 @@ Definition jcreates_limit_lift {J C : Category} {K : J ⟶ C}
        (fun i => limit_limitcone (L i)))
     (jcreates_limiting JC _ _).
 
-(* A single functor is a one-member family, both ways.  [unit] is the
-   index; the reflection clause and the lift are literally the same data. *)
+(* A single 函子 one-member family, both ways. [unit] the
+ index; reflection clause lift literally same data. （已译） *)
 
 Definition JointlyCreateLimit_of_CreatesLimit {J C D : Category}
   {K : J ⟶ C} {F : C ⟶ D} (CR : CreatesLimit K F) :

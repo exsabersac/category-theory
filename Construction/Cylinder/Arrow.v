@@ -1,4 +1,4 @@
-(** * Exercise II.4.8: the cylinder and arrow-category encodings agree *)
+(* * * Exercise II.4.8: cylinder arrow-范畴 encodings agree （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -27,7 +27,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The transpose and its arrow-category form *)
+(* * ** The transpose arrow-范畴 form （已译） *)
 
 Definition Cyl_transpose {C B : Category} (F : C ∏ _2 ⟶ B) :
   C ⟶ [_2, B] :=
@@ -37,7 +37,7 @@ Definition Cyl_to_arrow {C B : Category} (F : C ∏ _2 ⟶ B) :
   C ⟶ @Arrow B :=
   Arrow_of_Fun ◯ Cyl_transpose F.
 
-(** ** The two encodings classify the same transformation *)
+(* 相关说明。 （已译） *)
 
 Lemma cylinder_arrow_dom_nat {C B : Category} {S T : C ⟶ B} (τ : S ⟹ T) :
   ∀ x y (f : x ~{C}~> y),
@@ -67,8 +67,7 @@ Qed.
 
 #[local] Existing Instance ArrowTriple_Setoid.
 
-(* Naturality in the triple, in the setoid sense: equivalent triples
-   are carried to equivalent extracted triples. *)
+(* 相关说明。 （已译） *)
 Corollary cylinder_arrow_natural {C B : Category}
           {S T S' T' : C ⟶ B} (τ : S ⟹ T) (τ' : S' ⟹ T')
           (E : ((S; (T; τ)) : ArrowTriple C B) ≈ (S'; (T'; τ'))) :
@@ -82,8 +81,8 @@ Proof.
     + symmetry; apply cylinder_arrow_agree.
 Qed.
 
-(* The theorem has content at small categories; the walking arrow
-   itself is the donor's own precedent ([Two_Fun_Arrow_at_three]). *)
+(* The 定理 has content at small 范畴; walking arrow
+ itself donor's own precedent ([Two_Fun_Arrow_at_three]). （已译） *)
 Example cylinder_arrow_agree_at_two {S T : _2 ⟶ _2} (τ : S ⟹ T) :
   @equiv _ (@ArrowTriple_Setoid _2 _2)
     (Arrow_extract (Cyl_to_arrow (Cyl_functor τ)))

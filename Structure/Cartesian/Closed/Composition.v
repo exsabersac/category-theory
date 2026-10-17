@@ -21,7 +21,7 @@ Require Import Category.Instance.Sets.Cartesian.Closed.
 
 Generalizable All Variables.
 
-(** * Internal composition in a cartesian closed category *)
+(* * * Internal 复合 笛卡尔闭 范畴 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
@@ -40,7 +40,7 @@ Context {C : Category}.
 Context `{@Cartesian C}.
 Context `{@Closed C _}.
 
-(** ** The composition and identity morphisms *)
+(* * ** The 复合 恒等 态射 （已译） *)
 
 (* Mac Lane's c^b × b^a ~> c^a: transpose the double evaluation. *)
 Definition internal_compose {a b c : C} : c^b × b^a ~> c^a :=
@@ -53,8 +53,8 @@ Definition internal_compose {a b c : C} : c^b × b^a ~> c^a :=
 *)
 Arguments internal_compose : simpl never.
 
-(* The three exponentials, pinned in their [exponent_obj] spelling, so that
-   the argument order of the header's notation note is machine-checked. *)
+(* The three exponentials, pinned [exponent_obj] spelling, so that
+ 论元 order header's notation note machine-checked. （已译） *)
 Example internal_compose_obj (a b c : C) :
   (c^b × b^a ~{C}~> c^a)
     = (exponent_obj b c × exponent_obj a b ~{C}~> exponent_obj a c)
@@ -125,8 +125,8 @@ Qed.
 
 (** ** The unit laws *)
 
-(* [1 × y^x ~> y^x]: composing with the internal identity on the left is
-   the projection, which is [to unit_left] over [CC_Monoidal]. *)
+(* [1 × y^x ~> y^x]: composing internal 恒等 left is
+ projection, [to unit_left] over [CC_Monoidal]. （已译） *)
 Theorem internal_compose_id_left {x y : C} :
   @internal_compose x y y ∘ split internal_id id ≈ exr.
 Proof.
@@ -141,8 +141,8 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* [y^x × 1 ~> y^x]: composing with the internal identity on the right is
-   the other projection, which is [to unit_right] over [CC_Monoidal]. *)
+(* [y^x × 1 ~> y^x]: composing internal 恒等 right is
+ other projection, [to unit_right] over [CC_Monoidal]. （已译） *)
 Theorem internal_compose_id_right {x y : C} :
   @internal_compose x x y ∘ split id internal_id ≈ exl.
 Proof.
@@ -159,8 +159,7 @@ Qed.
 
 (** ** Associativity *)
 
-(* The two projections of the associator, in the composed shape the fork
-   algebra below actually meets. *)
+(* 相关说明。 （已译） *)
 Lemma exl_prod_assoc_r {v a b c : C} (h : v ~> (a × b) × c) :
   exl ∘ (to (@prod_assoc C _ a b c) ∘ h) ≈ exl ∘ (exl ∘ h).
 Proof. rewrite !comp_assoc; simpl; now rewrite exl_fork. Qed.
@@ -174,8 +173,8 @@ Proof.
   now rewrite !comp_assoc.
 Qed.
 
-(* Mac Lane's "prove it (like composition) associative", in exactly the
-   shape [ecompose_assoc] demands: the associator on the right. *)
+(* Mac Lane's "prove it (like 复合) associative", exactly the
+ shape [ecompose_assoc] demands: associator right. （已译） *)
 Theorem internal_compose_assoc {x y z w : C} :
   @internal_compose x y w ∘ split internal_compose id
     ≈ @internal_compose x z w ∘ split id internal_compose
@@ -199,8 +198,7 @@ Qed.
 
 (** ** Naturality in [a] and in [c] *)
 
-(* The companion of [eval_internal_compose_fork] for the internal hom's own
-   action: it strips one [ihom] from inside an evaluation. *)
+(* 相关说明。 （已译） *)
 Lemma eval_ihom_fork {v a b c d : C} (f : b ~> a) (h : c ~> d)
       (g : v ~> c^a) (m : v ~> b) :
   eval ∘ ((ihom f h ∘ g) △ m) ≈ h ∘ (eval ∘ (g △ (f ∘ m))).
@@ -211,8 +209,8 @@ Proof.
   unfork.
 Qed.
 
-(* Naturality in the base [c], at fixed [a] and [b]: both sides are
-   morphisms [c^b × b^a ~> c'^a]. *)
+(* Naturality base [c], at fixed [a] [b]: both sides are
+ 态射 [c^b × b^a ~> c'^a]. （已译） *)
 Theorem internal_compose_natural_c {a b c c' : C} (g : c ~> c') :
   ihom id g ∘ @internal_compose a b c
     ≈ @internal_compose a b c' ∘ first (ihom id g).
@@ -232,9 +230,9 @@ Proof.
   reflexivity.
 Qed.
 
-(* Naturality in the exponent [a], at fixed [b] and [c]: the variable is
-   CONTRAVARIANT, so the square runs against an arrow [f : a' ~> a] and
-   both sides are morphisms [c^b × b^a ~> c^a']. *)
+(* Naturality exponent [a], at fixed [b] [c]: variable is
+ CONTRAVARIANT, so square runs against arrow [f : a' ~> a] and
+ both sides 态射 [c^b × b^a ~> c^a']. （已译） *)
 Theorem internal_compose_natural_a {a a' b c : C} (f : a' ~> a) :
   ihom f id ∘ @internal_compose a b c
     ≈ @internal_compose a' b c ∘ second (ihom f id).
@@ -349,9 +347,9 @@ Next Obligation.
   rewrite <- second_comp, ihom_comp; now rewrite id_left.
 Qed.
 
-(* The four object actions read back on the nose, which is what makes the
-   two transformations typecheck with no transport -- and what the hazard
-   above would have destroyed. *)
+(* The four 对象 actions read back nose, what makes the
+ two transformations typecheck no transport -- what hazard
+ above would have destroyed. （已译） *)
 Example expBase_fobj (a c : C) : fobj[ExpBase a] c = c^a := eq_refl.
 
 Example composeSrcC_fobj (a b c : C) :
@@ -370,14 +368,14 @@ Definition compose_Transform_c (a b : C) :
     (fun c => @internal_compose a b c)
     (fun c c' g => @internal_compose_natural_c a b c c' g).
 
-(* And in [a], where the variable is contravariant. *)
+(* 相关说明。 （已译） *)
 Definition compose_Transform_a (b c : C) :
   ComposeSrcA b c ⟹ ExpExp c :=
   @Build_Transform' (C^op) C (ComposeSrcA b c) (ExpExp c)
     (fun a => @internal_compose a b c)
     (fun a a' f => @internal_compose_natural_a a a' b c f).
 
-(* The components ARE [internal_compose], on the nose. *)
+(* 相关说明。 （已译） *)
 Example compose_Transform_c_component (a b c : C) :
   transform (compose_Transform_c a b) c = @internal_compose a b c
   := eq_refl.
@@ -440,9 +438,9 @@ Next Obligation.
   now rewrite split_comp, !ihom_comp, !id_left.
 Qed.
 
-(* The constant family [internal_compose] satisfies the tree's own covariant
-   cowedge condition (Structure/Coend.v) at that bifunctor, with apex
-   [c^a]. *)
+(* The 常值 family [internal_compose] satisfies tree's own covariant
+ cowedge condition (Structure/Coend.v) at bifunctor, apex
+ [c^a]. （已译） *)
 Definition internal_compose_Cowedge_cond (a c : C) :
   @Cowedge_cond C C (ComposeB a c) (c^a)
     (fun x => @internal_compose a x c).
@@ -459,7 +457,7 @@ Definition internal_compose_Wedge (a c : C) :=
     (fun x => @internal_compose a x c)
     (internal_compose_Cowedge_cond a c).
 
-(** ** A cartesian closed category is enriched over itself *)
+(* * ** A 笛卡尔闭 范畴 enriched over itself （已译） *)
 
 (*
    本节说明笛卡尔相关定义、性质与动机。
@@ -479,8 +477,8 @@ Example assoc_unit_left_is_exr {x : C} :
 Example assoc_unit_right_is_exl {x : C} :
   to (@unit_right C CC_Monoidal x) = exl := eq_refl.
 
-(* The payoff: [C] enriched over itself, with hom-objects the
-   exponentials. *)
+(* The payoff: [C] enriched over itself, hom-对象 the
+ exponentials. （已译） *)
 Program Definition CCC_Enriched : @Enriched C CC_Monoidal := {|
   eobj := obj[C];
   ehom := fun x y => y^x;
@@ -493,7 +491,7 @@ Next Obligation. exact internal_compose_assoc. Qed.
 
 End Composition.
 
-(** * Agreement with composition of functions in [Set] *)
+(* * * Agreement 复合 functions [Set] （已译） *)
 
 (*
    本节说明 Composition 相关定义、性质与动机。
@@ -520,11 +518,11 @@ Example sets_internal_compose_morphism (a b c : Sets)
   @internal_compose Sets _ _ a b c (g, f) ≈[Sets] g ∘ f.
 Proof. intro t; reflexivity. Qed.
 
-(* And the identity: [internal_id] is the identity function of [Sets]. *)
+(* And 恒等: [internal_id] 恒等 function [Sets]. （已译） *)
 Example sets_internal_id (x : Sets)
         (u : @terminal_obj Sets Sets_Terminal) (t : x) :
   @internal_id Sets _ _ Sets_Terminal x u t = t := eq_refl.
 
-(* [Sets] is therefore enriched over itself, with hom-objects the function
-   setoids. *)
+(* [Sets] therefore enriched over itself, hom-对象 function
+ setoids. （已译） *)
 Definition Sets_Enriched : @Enriched Sets CC_Monoidal := CCC_Enriched.

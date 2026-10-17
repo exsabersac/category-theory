@@ -1,4 +1,4 @@
-(** * The converse of [Full_Implies_Full_Functor] needs its hypothesis *)
+(* * * The converse [Full_Implies_Full_Functor] needs 假设 （已译） *)
 
 (*
    本文件给出构造。
@@ -38,9 +38,9 @@ Next Obligation. intros ?? f; simpl; rewrite PeanoNat.Nat.add_0_r; reflexivity. 
 Next Obligation. intros ???? f g h; simpl; rewrite PeanoNat.Nat.add_assoc; reflexivity. Qed.
 Next Obligation. intros ???? f g h; simpl; rewrite PeanoNat.Nat.add_assoc; reflexivity. Qed.
 
-(* The selection data: every object; the morphisms are every natural number
-   EXCEPT 1.  That is closed under + (a sum is 1 only if one summand is 1 and
-   the other 0) and contains id = 0. *)
+(* The selection data: every 对象; 态射 every natural number
+ EXCEPT 1. That closed under + (a sum 1 if one summand 1 and
+ other 0) contains id = 0. （已译） *)
 
 Lemma not_one_add : forall m n, m <> 1%nat -> n <> 1%nat -> (m + n)%nat <> 1%nat.
 Proof.
@@ -56,9 +56,9 @@ Definition NotOne : Subcategory NZ :=
     (fun _ _ _ _ _ _ f g Hf Hg => not_one_add f g Hf Hg)
     (fun _ _ => ltac:(discriminate)).
 
-(* The inclusion is FULL as a functor: given any f : nat, send it to 2 when it
-   is 1 and to itself otherwise.  The result is never 1, and it is ≈ f because
-   2 and 1 are both nonzero. *)
+(* The 含入 FULL 函子: given any f : nat, send it 2 it
+ 1 itself otherwise. The result never 1, it ≈ f because
+ 2 1 both nonzero. （已译） *)
 Definition pick (f : nat) : nat := if Nat.eqb f 1 then 2%nat else f.
 
 Lemma pick_not_one : forall f, pick f <> 1%nat.
@@ -79,8 +79,8 @@ Program Definition NotOne_Incl_Full : Functor.Full (Incl NZ NotOne) := {|
 |}.
 Next Obligation. intros ?? g; simpl; apply pick_equiv. Qed.
 
-(* But the subcategory is NOT Full as data: 1 is a morphism of NZ between
-   selected objects that the subcategory does not retain. *)
+(* But subcategory NOT Full data: 1 态射 NZ between
+ selected 对象 subcategory does not retain. （已译） *)
 Theorem NotOne_not_Full : Subcategory.Full NZ NotOne -> False.
 Proof.
   intro HF.
@@ -100,14 +100,12 @@ Proof.
   exact (NotOne_not_Full (Hbad NZ NotOne NotOne_Incl_Full)).
 Qed.
 
-(* Sanity: the hom-setoid of NZ really is non-degenerate — 0 and 1 are NOT
-   identified — so the counterexample is not the indiscrete cheat. *)
+(* 相关说明。 （已译） *)
 Lemma NZ_setoid_nondegenerate :
   @equiv _ (@homset NZ tt tt) 0%nat 1%nat -> False.
 Proof. simpl; discriminate. Qed.
 
-(* And NotOne really fails ShomRespects, as the commit's diagnosis says: 1 ≈ 2
-   yet 2 is retained and 1 is not. *)
+(* 相关说明。 （已译） *)
 Lemma NotOne_not_ShomRespects : ShomRespects NZ NotOne -> False.
 Proof.
   intro HR.

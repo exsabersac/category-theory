@@ -17,7 +17,7 @@ From Coq Require Import Arith.
 
 Generalizable All Variables.
 
-(** * The Monoidal structure on the free PROP *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/PROP
@@ -35,12 +35,12 @@ Context (S : Signature).
 
 Open Scope nat_scope.
 
-(** ** Transport bridges: [eq_rect] spellings vs. [T_cast] composites
+(* * ** Transport bridges: [eq_rect] spellings vs. [T_cast] composites
 
-    A codomain transport is post-composition by the cast; a domain
-    transport is pre-composition by the (inverted) cast.  Each proof
-    destructs the arity equation, after which both sides collapse to
-    an identity law of [TermEq]. *)
+ A codomain transport post-复合 cast; domain
+ transport pre-复合 (inverted) cast. Each 证明
+ destructs arity equation, after both sides collapse to
+ 恒等 law [TermEq]. （已译） *)
 
 (** Codomain transport equals post-composition with [T_cast e]. *)
 Lemma eq_rect_cod_cast {a b b' : nat} (e : b = b') (t : Term S a b) :
@@ -128,11 +128,11 @@ Proof.
     + apply TE_sym, TE_id_left.
 Qed.
 
-(** ** Tensor fusion
+(* * ** Tensor fusion
 
-    A tensor of morphisms decomposes as either sliding order of the
-    two "half-identity" tensors; both composites fuse back to the
-    plain tensor via the interchange law. *)
+ A tensor 态射 decomposes either sliding order the
+ two "half-恒等" tensors; both composites fuse back the
+ plain tensor via interchange law. （已译） *)
 
 Lemma tens_fuse_l {a b c d : nat} (f : Term S a b) (g : Term S c d) :
   TermEq S (T_comp (T_tens f (T_id d)) (T_tens (T_id a) g)) (T_tens f g).
@@ -174,7 +174,7 @@ Proof.
     + apply eq_rect_r_dom_cast.
 Qed.
 
-(** The [from]-direction square [(g ⊕ id₀) ∘ ρ⁻¹ ≈ ρ⁻¹ ∘ g]. *)
+(** 本节：The [from]-direction square [(g ⊕ id₀) ∘ ρ⁻¹ ≈ ρ⁻¹ ∘ g]. （已译） *)
 Lemma right_unit_natural_from {x y : nat} (g : Term S x y) :
   TermEq S (T_comp (T_tens g (T_id 0)) (T_cast (eq_sym (Nat.add_0_r x))))
            (T_comp (T_cast (eq_sym (Nat.add_0_r y))) g).
@@ -182,11 +182,11 @@ Proof.
   apply cast_square_flip, right_unit_natural.
 Qed.
 
-(** ** Associator naturality in [T_cast] form
+(* * ** Associator 自然性 [T_cast] form
 
-    The [to]-direction square
-      [(f ⊕ (g ⊕ h)) ∘ α ≈ α ∘ ((f ⊕ g) ⊕ h)],
-    obtained from [TE_tens_assoc] through the transport bridges. *)
+ The [to]-direction square
+ [(f ⊕ (g ⊕ h)) ∘ α ≈ α ∘ ((f ⊕ g) ⊕ h)],
+ obtained [TE_tens_assoc] through transport bridges. （已译） *)
 
 Lemma assoc_natural {m1 n1 m2 n2 m3 n3 : nat}
       (f : Term S m1 n1) (g : Term S m2 n2) (h : Term S m3 n3) :
@@ -208,8 +208,8 @@ Proof.
     + apply eq_rect_cod_cast.
 Qed.
 
-(** The [from]-direction square
-      [((f ⊕ g) ⊕ h) ∘ α⁻¹ ≈ α⁻¹ ∘ (f ⊕ (g ⊕ h))]. *)
+(** 本节：The [from]-direction square
+ [((f ⊕ g) ⊕ h) ∘ α⁻¹ ≈ α⁻¹ ∘ (f ⊕ (g ⊕ h))]. （已译） *)
 Lemma assoc_natural_from {m1 n1 m2 n2 m3 n3 : nat}
       (f : Term S m1 n1) (g : Term S m2 n2) (h : Term S m3 n3) :
   TermEq S
@@ -221,11 +221,11 @@ Proof.
   apply cast_square_flip, assoc_natural.
 Qed.
 
-(** ** Triangle coherence
+(* * ** Triangle coherence
 
-    [ρ ⊕ id ≈ (id ⊕ λ) ∘ α] on [(x + 0) + y].  Every arrow involved
-    is a cast or an identity tensored with a cast, so both sides
-    collapse to a single [T_cast] and UIP on [nat] closes the gap. *)
+ [ρ ⊕ id ≈ (id ⊕ λ) ∘ α] [(x + 0) + y]. Every arrow involved
+ cast 恒等 tensored cast, so both sides
+ collapse single [T_cast] UIP [nat] closes gap. （已译） *)
 
 Lemma free_triangle (x y : nat) :
   TermEq S (T_tens (T_cast (Nat.add_0_r x)) (T_id y))

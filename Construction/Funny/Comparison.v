@@ -38,19 +38,18 @@ Lemma FunnyToProduct_obj {C D : Category} (c : C) (d : D) :
   FunnyToProduct (c, d) = ((c, d) : C ∏ D).
 Proof. reflexivity. Qed.
 
-(* κ is full: (f, g) is the image of the word "g then f" (the R-then-L
-   diagonal; the L-then-R one would do just as well). *)
+(* 相关说明。 （已译） *)
 #[export] Program Instance FunnyToProduct_Full {C D : Category} :
   Full (@FunnyToProduct C D) := {
   prefmap := fun x y fg => fconsR (snd fg) (fconsL (fst fg) fnil)
 }.
 
-(** ** The discriminating interpretation
+(* * ** The discriminating interpretation
 
-    The free monoid on [bool], as a one-object category: morphisms are lists
-    of booleans, composition is concatenation.  Words read source-to-target
-    while composition reads right-to-left, so [v ∘ u] appends [u] in front:
-    [compose v u = u ++ v]. *)
+ The free 幺半群 [bool], one-对象 范畴: 态射 lists
+ booleans, 复合 concatenation. Words read source-to-target
+ while 复合 reads right-to-left, so [v ∘ u] appends [u] front:
+ [compose v u = u ++ v]. （已译） *)
 
 Program Definition ListMon : Category := {|
   obj     := poly_unit;
@@ -63,15 +62,14 @@ Next Obligation. now rewrite app_nil_r. Qed.
 Next Obligation. now rewrite app_assoc. Qed.
 Next Obligation. now rewrite app_assoc. Qed.
 
-(* Tag the single non-identity arrow of 2 with [b]; identities vanish. *)
+(* Tag single non-恒等箭头 2 [b]; identities vanish. （已译） *)
 Definition two_tag (b : bool) {x y : TwoObj} (f : TwoHom x y) : list bool :=
   match f with
   | TwoXY => b :: nil
   | _ => nil
   end.
 
-(* The separately functorial interpretation _2 □ _2 ⟶ ListMon distinguishing
-   the two diagonals: L-steps are tagged [true], R-steps [false]. *)
+(* 相关说明。 （已译） *)
 Program Definition FunnyTwo_sep :
   SepFunctorial (C:=_2) (D:=_2) (E:=ListMon) (fun _ _ => ttt) := {|
   sf_lmap := fun _ _ f _ => two_tag true f;
@@ -100,9 +98,9 @@ Qed.
 
 Definition FunnyTwoInterp : (_2 □ _2) ⟶ ListMon := FunnyUP FunnyTwo_sep.
 
-(** ** The two diagonals of the fundamental square *)
+(* 相关说明。 （已译） *)
 
-(* The square in _2 □ _2 built from TwoXY in each coordinate; L first. *)
+(* 相关说明。 （已译） *)
 Definition diagLR : FunHom (C:=_2) (D:=_2) TwoX TwoX TwoY TwoY :=
   fconsL (C:=_2) (D:=_2) TwoXY (fconsR (C:=_2) (D:=_2) TwoXY fnil).
 

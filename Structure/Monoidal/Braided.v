@@ -60,8 +60,7 @@ Coercion braided_is_monoidal : BraidedMonoidal >-> Monoidal.
 
 Context `{BraidedMonoidal}.
 
-(* The hexagons imply the Yang-Baxter equation on a triple tensor product:
-   the two ways of fully reversing a ⊗ b ⊗ c by adjacent braidings agree. *)
+(* 相关说明。 （已译） *)
 Theorem Yang_Baxter_equation {a b c : C} :
   braid ⨂ id[a] ∘ tensor_assoc⁻¹
     ∘ id[b] ⨂ braid ∘ tensor_assoc

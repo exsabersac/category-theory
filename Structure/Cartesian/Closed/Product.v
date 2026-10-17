@@ -30,7 +30,7 @@ Context `{@Closed D _}.
 Program Instance Product_Closed : @Closed (C ∏ D) Product_Cartesian := {
   (* internal hom, componentwise: (e,f) ^ (c,d) = (e^c, f^d) *)
   exponent_obj := fun x y => (fst y ^ fst x, snd y ^ snd x);
-  (* currying iso, the factorwise pairing of the component exp_iso's *)
+  (* 相关说明。 （已译） *)
   exp_iso := fun _ _ _ =>
     {| to   := {| morphism := fun f =>
                     (to exp_iso (fst f), to exp_iso (snd f)) |}

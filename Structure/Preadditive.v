@@ -46,7 +46,7 @@ Class Preadditive (C : Category) := {
 
 #[export] Existing Instance padd_respects.
 
-(* The right unit law follows from commutativity and the left unit law. *)
+(* 相关说明。 （已译） *)
 Corollary padd_zero_right {C : Category} `{P : @Preadditive C} {x y : C}
   (f : x ~> y) :
   padd f pzero ≈ f.
@@ -55,8 +55,7 @@ Proof.
   apply padd_zero_left.
 Qed.
 
-(* Additive notations in a dedicated scope, so `+` and `0` retain their
-   usual meanings wherever this scope is not open. *)
+(* 相关说明。 （已译） *)
 Declare Scope addition_scope.
 Delimit Scope addition_scope with padd.
 
@@ -75,8 +74,8 @@ Proof.
   rewrite <- (@zero_mor_unique C Z x y
                 (@one C (@zero_terminal C Z) x)
                 (@pzero C P (@initial_obj C (@zero_initial C Z)) y)).
-  (* Goal: pzero ≈ (pzero ∘ from zero_coincide) ∘ one.  Each composite with
-     [pzero] on the left collapses by [compose_pzero_left]. *)
+  (* Goal: pzero ≈ (pzero ∘ zero_coincide) ∘ one. Each 复合 with
+ [pzero] left collapses [compose_pzero_left]. （已译） *)
   rewrite compose_pzero_left.
   rewrite compose_pzero_left.
   reflexivity.

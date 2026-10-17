@@ -36,7 +36,7 @@ Proof.
   now rewrite id_left, id_right.
 Qed.
 
-(* The reflector, the fullness witness, and the reflection adjunction. *)
+(* The reflector, fullness witness, reflection 伴随. （已译） *)
 
 Record Reflective {C : Category} (S : Subcategory C) := {
   reflective_full : Construction.Subcategory.Full C S;
@@ -48,9 +48,9 @@ Arguments reflective_full {C S} r.
 Arguments reflector {C S} r.
 Arguments reflective_adj {C S} r.
 
-(* The opposite subcategory: the same selected objects, with a C^op-morphism
-   x ~> y (that is, a C-morphism y ~> x) selected exactly when the underlying
-   C-morphism is selected by S. *)
+(* The opposite subcategory: same selected 对象, C^op-态射
+ x ~> y (that is, C-态射 y ~> x) selected exactly underlying
+ C-态射 selected S. （已译） *)
 
 Definition op_subcategory {C : Category} (S : Subcategory C) :
   Subcategory (C^op) :=
@@ -60,8 +60,8 @@ Definition op_subcategory {C : Category} (S : Subcategory C) :
     (fun x y z ox oy oz f g Hf Hg => scomp C S oz oy ox Hg Hf)
     (fun x ox => sid C S ox).
 
-(* A coreflective subcategory of C is a reflective subcategory of C^op on the
-   opposite subcategory: the inclusion then has a right adjoint in C. *)
+(* A coreflective subcategory C reflective subcategory C^op the
+ opposite subcategory: 含入 then has 右伴随 C. （已译） *)
 
 Definition Coreflective {C : Category} (S : Subcategory C) : Type :=
   @Reflective (C^op) (op_subcategory S).
@@ -82,7 +82,7 @@ Proof.
      ; from := _
      ; iso_to_from := _
      ; iso_from_to := _ |}.
-  - (* inverse: the unit, lifted into the subcategory by fullness *)
+  - (* inverse: unit, lifted 进入 subcategory fullness （已译） *)
     exists (@Category.Theory.Adjunction.unit
               (Sub C S) C (reflector R) (Incl C S) (reflective_adj R)
               (Incl C S x)).
@@ -90,7 +90,7 @@ Proof.
   - (* ε_x ∘ η ≈ id, one triangle identity *)
     apply (@fmap_counit_unit
              (Sub C S) C (reflector R) (Incl C S) (reflective_adj R) x).
-  - (* η ∘ ε_x ≈ id, by counit naturality and the other triangle identity *)
+  - (* η ∘ ε_x ≈ id, counit 自然性 other triangle 恒等 （已译） *)
     rewrite <- (counit_naturality (reflective_adj R)).
     apply (@counit_fmap_unit
              (Sub C S) C (reflector R) (Incl C S) (reflective_adj R)

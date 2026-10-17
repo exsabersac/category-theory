@@ -10,7 +10,7 @@ Require Import Category.Structure.Group.
 
 Generalizable All Variables.
 
-(** * Derived identities for group objects *)
+(* * * Derived identities group 对象 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Group_object
@@ -39,9 +39,9 @@ Proof.
   apply proj_left_diagonal.
 Qed.
 
-(* Multiplying an element on the left by the identity is the identity:
-   I·g = g. Dual to [mempty_right_diagonal], using the left unit law
-   [mempty_left]. *)
+(* Multiplying element left 恒等 恒等:
+ I·g = g. Dual [mempty_right_diagonal], using left unit law
+ [mempty_left]. （已译） *)
 Lemma mempty_left_diagonal : mappend ∘ (mempty ∘ eliminate) ⨂ id ∘ ∆ grp ≈ id.
 Proof.
   rewrite bimap_comp_id_right.
@@ -58,15 +58,15 @@ Context `{@CartesianMonoidal C}.
 Context (grp : C).
 Context `{@GroupObject C _ grp}.
 
-(* This proof is analogous to the following
-   proof that y = x⁻¹ for an
-   element y with yx = I:
+(* This 证明 analogous following
+ 证明 y = x⁻¹ an
+ element y yx = I:
 
-     y = yI
-       = y(xx⁻¹)
-       = (yx)x⁻¹
-       = Ix⁻¹
-       = x⁻¹ *)
+ y = yI
+ = y(xx⁻¹)
+ = (yx)x⁻¹
+ = Ix⁻¹
+ = x⁻¹ （已译） *)
 Lemma left_inverse_unique
   (X : C) (f : X ~> grp) (f_inv : X ~> grp)
   (f_left_inverse : mappend ∘ f_inv ⨂ f ∘ ∆ X ≈ mempty ∘ eliminate) :
@@ -133,16 +133,16 @@ Proof.
   cat.
 Qed.
 
-(* This proof is analogous to the following
-   proof y⁻¹x⁻¹ = (xy)⁻¹: Calculate
+(* This 证明 analogous following
+ 证明 y⁻¹x⁻¹ = (xy)⁻¹: Calculate
 
-     (y⁻¹x⁻¹)(xy) = y⁻¹(x⁻¹(xy))
-                  = y⁻¹((x⁻¹x)y)
-                  = y⁻¹(Iy)
-                  = y⁻¹y
-                  = I
+ (y⁻¹x⁻¹)(xy) = y⁻¹(x⁻¹(xy))
+ = y⁻¹((x⁻¹x)y)
+ = y⁻¹(Iy)
+ = y⁻¹y
+ = I
 
-   Then use the lemma above. *)
+ Then use 引理 above. （已译） *)
 Lemma mappend_inverse : mappend ∘ inverse[grp] ⨂ inverse[grp] ≈ inverse[grp] ∘ mappend ∘ braid.
 Proof.
   rewrite <- (comp_assoc inverse[grp] mappend braid).

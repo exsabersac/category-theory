@@ -27,7 +27,7 @@ From Coq Require Import Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * Selective comonoid supplies on coloured PROPs *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/copy-discard+category
@@ -44,24 +44,24 @@ Section Supply.
 Context {Colour : Type}.
 Context (P : ColouredPROP Colour).
 
-(** The coloured-PROP-object [⟦cs⟧c], as in
-    [Construction/ColouredPROP.v] (whose notation is section-local
-    there and must be re-declared per file). *)
+(** The coloured-PROP-对象 [⟦cs⟧c], in
+ [Construction/ColouredPROP.v] (whose notation section-local
+ there must re-declared per file). （已译） *)
 Notation "⟦ cs ⟧c" := (@cprop_of_list Colour P cs)
   (at level 0, format "⟦ cs ⟧c").
 
 (** ** MP/MB mediation *)
 
-(** Tensor-on-objects is concatenation, transported to the
-    braided/symmetric monoidal path where the comonoids live. *)
+(** Tensor-on-对象 concatenation, transported the
+ braided/symmetric monoidal path where comonoids live. （已译） *)
 Definition ctensor_app_b (cs ds : list Colour) :
   ((⟦cs⟧c ⨂[MBc P] ⟦ds⟧c)%object = ⟦cs ++ ds⟧c) :=
   match cprop_monoidal_coherence P in _ = M
         return ((⟦cs⟧c ⨂[M] ⟦ds⟧c)%object = ⟦cs ++ ds⟧c)
   with eq_refl => cprop_tensor_app cs ds end.
 
-(** The unit object is the empty word, on the braided/symmetric
-    monoidal path. *)
+(** The unit 对象 empty word, braided/symmetric
+ monoidal path. （已译） *)
 Definition cunit_nil_b : @I P (MBc P) = ⟦[]⟧c :=
   match cprop_monoidal_coherence P in _ = M
         return (@I P M = ⟦[]⟧c)
@@ -84,8 +84,8 @@ Definition ctensor2_b {x x' y y' : P} (e : x = x') (e' : y = y') :
 
 Context (copyable : Colour -> bool).
 
-(** Every colour of the word is copyable.  A boolean equation, so the
-    evidence is proof-irrelevant without any axioms. *)
+(** Every colour word copyable. A boolean equation, so the
+ evidence 证明-irrelevant without any axioms. （已译） *)
 Definition all_copyable (cs : list Colour) : Prop :=
   forallb copyable cs = true.
 
@@ -121,9 +121,9 @@ Proof.
   exact (proj2 (andb_prop _ _ H)).
 Qed.
 
-(** Unconditional proof irrelevance of copyability evidence — the
-    payoff of [bool]-valued copyability (no colour decidability
-    needed). *)
+(** Unconditional 证明 irrelevance copyability evidence — the
+ payoff [bool]-valued copyability (no colour decidability
+ needed). （已译） *)
 Lemma all_copyable_irrelevant (cs : list Colour)
   (H1 H2 : all_copyable cs) : H1 = H2.
 Proof. exact (UIP_dec Bool.bool_dec H1 H2). Qed.
@@ -142,9 +142,9 @@ Class SelectiveSupply : Type := {
 
 (** ** The derived boundary supply *)
 
-(** Leibniz transport of a commutative-comonoid structure along an
-    object equality.  Transparent, so that at instances where the
-    equality computes to [eq_refl] the transport vanishes. *)
+(** Leibniz transport commutative-comonoid structure along an
+ 对象 equality. Transparent, so at instances where the
+ equality computes [eq_refl] transport vanishes. （已译） *)
 Definition ccomonoid_transport {X Y : P} (e : X = Y) :
   @CommutativeComonoid P (@cprop_symmetric Colour P) X ->
   @CommutativeComonoid P (@cprop_symmetric Colour P) Y :=
@@ -185,8 +185,8 @@ Definition sdiscard `{SS : SelectiveSupply} (cs : list Colour)
   ⟦cs⟧c ~{P}~> @I P (MBc P) :=
   ccomon_epsilon (supply_list cs H).
 
-(** The derived supply does not depend on the copyability evidence —
-    Leibniz equality, not merely [≈]. *)
+(** 本节：The derived supply does not depend copyability evidence —
+ Leibniz equality, not merely [≈]. （已译） *)
 Lemma supply_list_irr `{SS : SelectiveSupply} (cs : list Colour)
   (H1 H2 : all_copyable cs) :
   supply_list cs H1 = supply_list cs H2.
@@ -305,8 +305,8 @@ Proof.
   exact He.
 Qed.
 
-(** If the [to] direction of an isomorphism is a cast, its [from]
-    direction is the cast along the symmetric equality. *)
+(** If [to] direction 同构 cast, [from]
+ direction cast along symmetric equality. （已译） *)
 Lemma iso_from_id_cast {C : Category} {x y : C} (i : x ≅ y) (e : x = y) :
   to i ≈ id_cast e → from i ≈ id_cast (eq_sym e).
 Proof.
@@ -418,8 +418,8 @@ Section SupplyCastKit.
 Context {Colour : Type}.
 Context (P : ColouredPROP Colour).
 
-(** A tensor of casts at [MBc P] is the cast along the paired
-    equality [ctensor2_b]. *)
+(** 本节：A tensor casts at [MBc P] cast along paired
+ equality [ctensor2_b]. （已译） *)
 Lemma cbimap_cast_b {x x' y y' : P} (e : x = x') (e' : y = y') :
   (id_cast e ⨂[MBc P] id_cast e') ≈ id_cast (ctensor2_b P e e').
 Proof.
@@ -501,10 +501,10 @@ Proof.
   reflexivity.
 Qed.
 
-(** *** The canonical morphisms, respelled through [ccomon_*]
+(* * *** The canonical 态射, respelled through [ccomon_*]
 
-    Definitional unfoldings of [canonical_tensor_delta]/[epsilon]
-    (Hypergraph.v) into the raw shapes the supply theorems chase. *)
+ Definitional unfoldings [canonical_tensor_delta]/[epsilon]
+ (Hypergraph.v) 进入 raw shapes supply theorems chase. （已译） *)
 
 Lemma canonical_tensor_delta_ccomon {X Y : P}
   (MX : @CommutativeComonoid P (@cprop_symmetric Colour P) X)
@@ -542,7 +542,7 @@ Arguments canonical_tensor_epsilon_ccomon {Colour} P {X Y} MX MY : assert.
 
 (* ------------------------------------------------------------------ *)
 
-(** ** The Fong–Spivak coherence theorems *)
+(* 相关说明。 （已译） *)
 
 Section SupplyCoherence.
 
@@ -559,9 +559,9 @@ Notation "⟦ cs ⟧c" := (@cprop_of_list Colour P cs)
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** Unit absorption for the canonical delta: casting the canonical
-    tensor delta of (the transported unit comonoid's delta) with [dy]
-    along a unitor-shaped equality is [dy] itself. *)
+(** 本节：Unit absorption canonical delta: casting canonical
+ tensor delta (the transported unit comonoid's delta) [dy]
+ along unitor-shaped equality [dy] itself. （已译） *)
 Lemma supply_delta_unit_general {n y : P}
   (u : @I P (MBc P) = n)
   (U2 : ((@I P (MBc P)) ⨂[MBc P] (@I P (MBc P)))%object
@@ -591,7 +591,7 @@ Proof using OD P.
   apply id_right.
 Qed.
 
-(** Unit absorption for the canonical epsilon. *)
+(** 本节：Unit absorption canonical epsilon. （已译） *)
 Lemma supply_epsilon_unit_general {n y : P}
   (u : @I P (MBc P) = n)
   (ey : y ~{P}~> @I P (MBc P))
@@ -613,8 +613,8 @@ Proof using OD P.
   apply id_right.
 Qed.
 
-(** Associativity for the canonical delta: the two cast-mediated
-    iterations of the canonical tensor delta agree. *)
+(** 本节：Associativity canonical delta: two cast-mediated
+ iterations canonical tensor delta agree. （已译） *)
 Lemma supply_delta_assoc_general {x y z v w s : P}
   (dx : x ~{P}~> (x ⨂[MBc P] x)%object)
   (dy : y ~{P}~> (y ⨂[MBc P] y)%object)
@@ -676,7 +676,7 @@ Proof using OD P.
   apply id_left.
 Qed.
 
-(** Associativity for the canonical epsilon. *)
+(** 本节：Associativity canonical epsilon. （已译） *)
 Lemma supply_epsilon_assoc_general {x y z v w s : P}
   (ex : x ~{P}~> @I P (MBc P))
   (ey : y ~{P}~> @I P (MBc P))
@@ -715,7 +715,7 @@ Proof using OD P.
            ex ey ez).
 Qed.
 
-(** *** Computed projections of the derived supply *)
+(* 相关说明。 （已译） *)
 
 Context (copyable : Colour -> bool).
 Context {SS : SelectiveSupply P copyable}.
@@ -726,10 +726,10 @@ Proof.
   apply (UIP_dec Bool.bool_dec).
 Qed.
 
-(** Each equation unfolds one [supply_list] constructor case and
-    computes the transported projection through
-    [ccomonoid_transport_delta]/[epsilon]; the residue is
-    definitional. *)
+(** 本节：Each equation unfolds one [supply_list] constructor case and
+ computes transported projection through
+ [ccomonoid_transport_delta]/[epsilon]; residue is
+ definitional. （已译） *)
 
 Lemma supply_list_delta_nil (H : all_copyable copyable []) :
   ccomon_delta (supply_list [] H)
@@ -831,8 +831,7 @@ Theorem supply_app_delta (cs ds : list Colour)
 Proof using OD P SS copyable.
   revert Hc Hcd.
   induction cs as [| c cs' IH]; intros Hc Hcd.
-  - (* [[] ++ ds ≡ ds]: align the evidence, expose the transported
-       unit comonoid, and absorb it. *)
+  - (* 相关说明。 （已译） *)
     rewrite (all_copyable_irrelevant copyable _ Hcd Hd).
     rewrite (canonical_tensor_delta_ccomon P).
     rewrite supply_list_delta_nil.

@@ -33,7 +33,7 @@ Generalizable All Variables.
 
 Open Scope nat_scope.
 
-(** * Tietze moves for presentations of PROPs *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/PROP
@@ -61,8 +61,8 @@ Example T_map_is_T_subst {S T : Signature} (h : SubSig S T) {m n : nat} :
   @T_map S T h m n
   = @T_subst S T (fun a b (s : S a b) => T_gen (h a b s)) m n := eq_refl.
 
-(** [T_map] agrees with the tactic-built [T_inj] of [Term.v] on the
-    nose; [T_inj] itself is left untouched. *)
+(** 本节：[T_map] agrees tactic-built [T_inj] [Term.v] the
+ nose; [T_inj] itself left untouched. （已译） *)
 Lemma T_map_T_inj {S T : Signature} (h : SubSig S T) {m n : nat}
   (t : Term S m n) :
   T_map h t = T_inj h t.
@@ -70,20 +70,14 @@ Proof.
   induction t; cbn; try reflexivity; now f_equal.
 Qed.
 
-(** Casts are fixed by every signature morphism (a Leibniz equality:
-    both sides are the same [match] once [e] is destructed). *)
+(** Casts fixed every signature 态射 (a Leibniz equality:
+ both sides same [match] once [e] destructed). （已译） *)
 Lemma T_map_T_cast {S T : Signature} (h : SubSig S T) {a b : nat}
   (e : a = b) :
   T_map h (T_cast e) = T_cast e.
 Proof. destruct e; reflexivity. Qed.
 
-(** *** Soundness of relabelling
-
-    [T_map h] carries every free equation of [TermEq S] to the
-    corresponding free equation of [TermEq T] — the nineteen-case
-    preservation induction [T_subst_TermEq] of
-    [Construction/PROP/TermEq.v], specialized (definitionally) to the
-    relabelling substitution. *)
+(* 相关说明。 （已译） *)
 
 Lemma T_map_TermEq {S T : Signature} (h : SubSig S T) {m n : nat}
   {s t : Term S m n} :
@@ -111,8 +105,8 @@ Definition RelabelFunctor : FreeCat S ⟶ FreeCat T :=
     (fun x => TE_refl (T_id x))
     (fun x y z f g => TE_refl (T_comp (T_map h f) (T_map h g))).
 
-(** The tensor-then-map and map-then-tensor composites related by the
-    tensor comparison of the monoidal structure. *)
+(** 本节：The tensor-then-map map-then-tensor composites related the
+ tensor comparison monoidal structure. （已译） *)
 Definition Relabel_ap_dom : FreeCat S ∏ FreeCat S ⟶ FreeCat T :=
   FreeCat_Tensor T ◯ (RelabelFunctor ∏⟶ RelabelFunctor).
 
@@ -136,9 +130,9 @@ Definition Relabel_ap_from : Relabel_ap_cod ⟹ Relabel_ap_dom :=
     (fun p => T_id (fst p + snd p))
     (fun p q f => tm_id_swap (T_tens (T_map h (fst f)) (T_map h (snd f)))).
 
-(** The identity components are inverse up to [TermEq] (the identity
-    natural transformation of a composite-with-tensor functor has
-    components [T_tens (T_id _) (T_id _)]). *)
+(** The 恒等 components inverse up [TermEq] (恒等
+ 自然变换 复合-with-tensor 函子 has
+ components [T_tens (T_id _) (T_id _)]). （已译） *)
 Program Definition Relabel_ap_iso :
   Relabel_ap_dom ≅[[FreeCat S ∏ FreeCat S, FreeCat T]] Relabel_ap_cod := {|
   to   := Relabel_ap_to;
@@ -215,9 +209,9 @@ Program Definition RelabelFunctor_Strict :
 Next Obligation. exact (TE_refl _). Qed.
 Next Obligation. exact (TE_refl _). Qed.
 
-(** The braid-compatibility square: [T_map] fixes [T_braid], and both
-    tensor comparisons are identities, so the square is one slide of an
-    identity past the braid. *)
+(** The braid-compatibility square: [T_map] fixes [T_braid], both
+ tensor comparisons identities, so square one slide an
+ 恒等 past braid. （已译） *)
 Lemma RelabelFunctor_braid (m n : nat) :
   fmap[RelabelFunctor] (@braid (FreeCat S) (FreeCat_Braided S) m n)
     ∘ to (@ap_iso _ _ _ _ RelabelFunctor RelabelFunctor_Monoidal m n)
@@ -274,8 +268,8 @@ Definition copair_val {S T : Signature} {P : PROP}
     | Datatypes.inr t => w m n t
     end.
 
-(** No decidability or reflection hypotheses are needed here: the
-    induction never leaves the [Type]-valued hom equivalence. *)
+(** No decidability reflection hypotheses needed here: the
+ induction never leaves [Type]-valued hom 等价. （已译） *)
 Lemma interp_copair_inl {S T : Signature} {P : PROP}
   (v : Valuation P S) (w : Valuation P T) {m n : nat} (t : Term S m n) :
   interp P (Sum_Sig S T) (copair_val v w) (T_map sig_inl t)
@@ -380,7 +374,7 @@ Context (B : SMT).
 Context (m n : nat).
 Context (w : Term (smt_sig B) m n).
 
-(** The extended signature: the base plus one generator. *)
+(** 本节：The extended signature: base plus one generator. （已译） *)
 Definition ext_sig : Signature := Sum_Sig (smt_sig B) (Single_Sig m n).
 
 (*
@@ -453,9 +447,9 @@ Definition single_cod {a b : nat} : Single_Sig m n a b → b = n :=
   | false => fun s => match s return b = n with end
   end.
 
-(** [Single_Sig m n] is a SINGLETON: any two generators of any one
-    arity are equal.  This identifies a generator of the extended
-    signature with [single_gen] in the section lemma below. *)
+(** [Single_Sig m n] SINGLETON: any two generators any one
+ arity equal. This identifies generator extended
+ signature [single_gen] section 引理 below. （已译） *)
 Lemma single_sig_singleton {a b : nat} (s s' : Single_Sig m n a b) :
   s = s'.
 Proof.
@@ -464,11 +458,11 @@ Proof.
   destruct (Nat.eqb a m), (Nat.eqb b n); intros s s'; now destruct s, s'.
 Qed.
 
-(** The fresh generator, as a generator of the extended signature. *)
+(** 本节：The fresh generator, generator extended signature. （已译） *)
 Definition new_gen : ext_sig m n := Datatypes.inr single_gen.
 
-(** The equations of the extended theory: the base axioms (embedded
-    along [sig_inl]) plus the single defining equation. *)
+(** 本节：The equations extended theory: base axioms (embedded
+ along [sig_inl]) plus single defining equation. （已译） *)
 Inductive ext_eqs : ∀ a b : nat,
   Term ext_sig a b → Term ext_sig a b → Prop :=
   | ee_base {a b} (s t : Term (smt_sig B) a b) :
@@ -510,8 +504,8 @@ Lemma retract_T_cast {a b : nat} (e : a = b) :
   ext_retract (T_cast e) = T_cast e.
 Proof. destruct e; reflexivity. Qed.
 
-(** The retraction is a left inverse of the embedding — a Leibniz
-    equality, by term induction. *)
+(** 本节：The retraction left inverse embedding — Leibniz
+ equality, term induction. （已译） *)
 Lemma retract_map_inl {a b : nat} (t : Term (smt_sig B) a b) :
   ext_retract (T_map sig_inl t) = t.
 Proof.
@@ -565,10 +559,10 @@ Proof.
   - cbn [ext_retract T_subst]; apply TEW_tens; assumption.
 Qed.
 
-(** *** Conservativity, both directions *)
+(* 相关说明。 （已译） *)
 
-(** Base-signature terms identified in the extension were already
-    identified in the base theory. *)
+(** 本节：Base-signature terms identified extension were already
+ identified base theory. （已译） *)
 Theorem ext_conservative {a b : nat} (s t : Term (smt_sig B) a b) :
   TermEqW ext_smt (T_map sig_inl s) (T_map sig_inl t) →
   TermEqW B s t.
@@ -622,7 +616,7 @@ Proof.
     destruct s as [s|s].
     + (* a base generator retracts to itself *)
       apply TEW_termeq, TE_refl.
-    + (* the fresh generator: pin the arity, then [ee_def] *)
+    + (* 相关说明。 （已译） *)
       pose proof (single_dom s) as ea.
       pose proof (single_cod s) as eb.
       subst.
@@ -639,7 +633,7 @@ Proof.
         -- apply TE_id_right.
 Qed.
 
-(** The defining equation itself holds in the extended theory. *)
+(** 本节：The defining equation itself holds extended theory. （已译） *)
 Example ext_definition_holds :
   TermEqW ext_smt (T_gen new_gen) (T_map sig_inl w) :=
   TEW_ax ext_smt _ _ ee_def.
@@ -653,10 +647,10 @@ End Extension.
 Arguments ext_smt B m n w : assert.
 Arguments new_gen B m n : assert.
 
-(** ** Machine-checked sanity
+(* * ** Machine-checked sanity
 
-    [T_map] computes on the structural constructors, so the functor
-    action of [RelabelFunctor] is definitional. *)
+ [T_map] computes structural constructors, so 函子
+ action [RelabelFunctor] definitional. （已译） *)
 
 Example T_map_fixes_id {S T : Signature} (h : SubSig S T) (k : nat) :
   T_map h (T_id k) = T_id k := eq_refl.

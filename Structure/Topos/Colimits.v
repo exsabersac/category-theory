@@ -70,8 +70,8 @@ Local Notation EMT := (@EilenbergMoore C TT pow_monad).
 
 (** ** (A) The terminal algebra *)
 
-(* The terminal object of C carries a unique algebra structure, and every
-   algebra map into it is unique, both by [one_unique]. *)
+(* The 终对象 C carries unique algebra structure, every
+ algebra map it unique, both [one_unique]. （已译） *)
 Program Definition EM_Terminal : @Terminal EMT := {|
   terminal_obj := (@terminal_obj C _; _)
 |}.
@@ -85,7 +85,7 @@ Next Obligation.
   destruct f, g; simpl; apply one_unique.
 Qed.
 
-(** ** (B) Pullbacks of algebras, computed on carriers *)
+(* 相关说明。 （已译） *)
 
 Section EMPullback.
 
@@ -136,9 +136,7 @@ Proof.
     (ump_pullbacks _ _ em_pb _ _ _ em_pb_cone))).
 Qed.
 
-(* Both algebra laws are checked leg by leg through joint monicity; the
-   unit law spends [fmap_ret] and [t_id], the action law [fmap_comp],
-   [t_action] and [join_fmap_fmap]. *)
+(* 相关说明。 （已译） *)
 Lemma em_pb_t_id : em_pb_action ∘ ret ≈ id.
 Proof.
   apply (is_pullback_jointly_monic (pullback_is_pullback _ _ em_pb)).
@@ -184,8 +182,7 @@ Proof.
   exact em_pb_action_2.
 Defined.
 
-(* The mediator of a competing cone of algebras is the carrier mediator;
-   that it is an algebra map is again checked leg by leg. *)
+(* 相关说明。 （已译） *)
 Lemma em_pb_med_commutes (q : EMT) (q1 : q ~{EMT}~> xa)
       (q2 : q ~{EMT}~> ya)
       (Hq : t_alg_hom[FF] ∘ t_alg_hom[q1] ≈ t_alg_hom[GG] ∘ t_alg_hom[q2]) :
@@ -211,15 +208,13 @@ Proof.
     now rewrite M2.
 Qed.
 
-(* Built with [unshelve refine] rather than [Program] so that the
-   competing cone and its commuting witness are named by [intros] rather
-   than by [Program]'s numbering. *)
+(* 相关说明。 （已译） *)
 Definition EM_Pullback : Pullback FF GG.
 Proof.
   unshelve refine {| Pull         := em_pb_alg_obj
                    ; pullback_fst := em_pb_fst
                    ; pullback_snd := em_pb_snd |}.
-  - (* the square commutes: it is the carrier square *)
+  - (* 相关说明。 （已译） *)
     exact (pullback_commutes _ _ em_pb).
   - (* the universal property: the carrier mediator, made an algebra map
        by [em_pb_med_commutes]; uniqueness is the carrier's, since a
@@ -242,7 +237,7 @@ End EMPullback.
 Definition EM_HasPullbacks : @HasPullbacks EMT :=
   {| pullback := fun x y z F G => EM_Pullback F G |}.
 
-(** ** (C) Transport back, and the four shapes *)
+(* 相关说明。 （已译） *)
 
 (* The equivalence read backwards: EM(P ◯ P^op) ≃ C^op. *)
 Definition pow_equivalence_sym :
@@ -252,16 +247,16 @@ Definition pow_equivalence_sym :
   @EquivalenceOfCategories_sym (C^op) EMT (EM_Comparison pow_adjunction)
     pow_equivalence.
 
-(* [@Initial C] IS [@Terminal (C^op)], so the terminal algebra transports
-   straight to an initial object of the topos. *)
+(* [@Initial C] IS [@Terminal (C^op)], so terminal algebra transports
+ straight 始对象 topos. （已译） *)
 Definition topos_Initial : @Initial C :=
   Terminal_transport pow_equivalence_sym EM_Terminal.
 
 Definition topos_HasPullbacks_op : @HasPullbacks (C^op) :=
   HasPullbacks_transport pow_equivalence_sym EM_HasPullbacks.
 
-(* [@Cocartesian C] IS [@Cartesian (C^op)], and the terminal object of
-   C^op is the initial object just built. *)
+(* [@Cocartesian C] IS [@Cartesian (C^op)], 终对象 of
+ C^op 始对象 just built. （已译） *)
 Definition topos_Cocartesian : @Cocartesian C :=
   @Cartesian_of_HasPullbacks_Terminal (C^op) topos_Initial
     topos_HasPullbacks_op.
@@ -285,9 +280,9 @@ Definition topos_has_finite_colimits :
 
 (** ** (D) Readbacks *)
 
-(* The initial object IS the quasi-inverse's image of the terminal
-   algebra, and the terminal algebra's carrier IS the terminal object of
-   the topos -- both on the nose. *)
+(* The 始对象 IS quasi-inverse's image terminal
+ algebra, terminal algebra's carrier IS 终对象 of
+ topos -- both nose. （已译） *)
 Example topos_Initial_obj :
   @initial_obj C topos_Initial
     = @quasi_inverse (C^op) EMT (EM_Comparison pow_adjunction)
@@ -296,8 +291,7 @@ Example topos_Initial_obj :
 Example EM_Terminal_carrier :
   ``(@terminal_obj EMT EM_Terminal) = @terminal_obj C _ := eq_refl.
 
-(* A pullback of algebras is the pullback of the carriers, with both
-   projections the carrier projections. *)
+(* 相关说明。 （已译） *)
 Example EM_Pullback_carrier {xa ya za : EMT}
         (FF : xa ~{EMT}~> za) (GG : ya ~{EMT}~> za) :
   ``(Pull FF GG (EM_Pullback FF GG)) = em_pb_carrier FF GG := eq_refl.
@@ -312,13 +306,12 @@ Example EM_Pullback_snd {xa ya za : EMT}
   t_alg_hom[pullback_snd FF GG (EM_Pullback FF GG)]
     = em_pb_p2 FF GG := eq_refl.
 
-(* The pushout is the transported pullback read in C^op, with no second
-   construction interposed. *)
+(* 相关说明。 （已译） *)
 Example topos_HasPushouts_is_op {x y z : C} (f : x ~> y) (g : x ~> z) :
   @pushout C topos_HasPushouts x y z f g
     = @pullback (C^op) topos_HasPullbacks_op y z x f g := eq_refl.
 
-(* The four components of the headline are the four records built above. *)
+(* 相关说明。 （已译） *)
 Example topos_has_finite_colimits_fst :
   fst (fst (fst topos_has_finite_colimits)) = topos_Initial := eq_refl.
 

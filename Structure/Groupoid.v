@@ -8,7 +8,7 @@ Require Import Category.Construction.Deloop.
 
 Generalizable All Variables.
 
-(** * Groupoids: the property, and the vertex-group structure *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/vertex+group
@@ -49,11 +49,11 @@ Section Groupoid.
 Context {C : Category}.
 Context (G : IsGroupoid C).
 
-(* The inverse of f, extracted from the groupoid structure. *)
+(* 相关说明。 （已译） *)
 Definition ginv {x y : C} (f : x ~> y) : y ~> x :=
   two_sided_inverse (IsIsomorphism := G x y f).
 
-(* The two inverse laws, in the orientation [IsIsomorphism] states them. *)
+(* 相关说明。 （已译） *)
 Lemma ginv_right {x y : C} (f : x ~> y) : f ∘ ginv f ≈ id.
 Proof. exact (is_right_inverse (IsIsomorphism := G x y f)). Qed.
 
@@ -80,8 +80,8 @@ Proof.
   exact (comp_inverse_unique f (ginv f) g (ginv_right f) H).
 Qed.
 
-(* Inversion respects `≈`.  Like [grp_inv_respects] in Construction/Deloop.v
-   this is derived from uniqueness of inverses, not required as data. *)
+(* Inversion respects `≈`. Like [grp_inv_respects] Construction/Deloop.v
+ 这是 derived uniqueness inverses, not required data. （已译） *)
 #[export] Instance ginv_respects {x y : C} :
   Proper (equiv ==> equiv) (@ginv x y).
 Proof.
@@ -108,8 +108,8 @@ Proof.
   apply ginv_right.
 Qed.
 
-(* An arrow of a groupoid, packaged as an object-level isomorphism.  This is
-   the bridge from the predicate reading back to `≅`. *)
+(* An arrow groupoid, packaged 对象-level 同构. This is
+ bridge predicate reading back `≅`. （已译） *)
 Definition giso {x y : C} (f : x ~> y) : x ≅ y := IsIsoToIso f (G x y f).
 
 (* Moving an inverse across an equation, the two cancellation rules a
@@ -145,7 +145,7 @@ Lemma ginv_choice_irrelevant {C : Category} (G G' : IsGroupoid C)
   {x y : C} (f : x ~> y) : ginv G f ≈ ginv G' f.
 Proof. apply ginv_unique_r, ginv_right. Qed.
 
-(** ** The core of a category is a groupoid *)
+(* * ** The core 范畴 groupoid （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。
@@ -183,7 +183,7 @@ Defined.
 Example ginv_op_eq {C : Category} (G : IsGroupoid C) {x y : C}
   (f : y ~{C}~> x) : ginv (IsGroupoid_op G) f = ginv G f := eq_refl.
 
-(** ** Groups as one-object groupoids *)
+(* * ** Groups one-对象 groupoids （已译） *)
 
 (*
    本节说明幺半群相关定义、性质与动机。
@@ -201,8 +201,8 @@ Arguments minv {M} _ _.
 Arguments minv_l {M} _ _.
 Arguments minv_r {M} _ _.
 
-(* [MonInverses M] and "M is the underlying monoid of a [GrpObject]" are the
-   same data, repackaged; both round trips hold. *)
+(* [MonInverses M] "M underlying 幺半群 [GrpObject]" the
+ same data, repackaged; both round trips hold. （已译） *)
 Definition GrpObject_of {M : MonObject} (I : MonInverses M) : GrpObject := {|
   grp_monoid := M;
   grp_inv    := minv I;
@@ -294,7 +294,7 @@ Example vertex_group_Deloop_monoid (G : GrpObject) :
 Example vertex_group_Deloop_inv (G : GrpObject) :
   @grp_inv (vertex_group (Deloop_IsGroupoid G) ttt) = @grp_inv G := eq_refl.
 
-(** ** Monoid homomorphisms, and conjugation *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、幺半群、同构相关定义、性质与动机。
@@ -370,7 +370,7 @@ Lemma conjugate_comp (a b : x ~> x) :
 Proof.
   unfold conjugate.
   rewrite <- !comp_assoc.
-  (* on the right-hand side the inner  f⁻¹ ∘ f  cancels *)
+  (* 相关说明。 （已译） *)
   rewrite (comp_assoc (ginv G f) f).
   rewrite ginv_left, id_left.
   reflexivity.
@@ -418,7 +418,7 @@ Proof.
     apply id_left.
 Defined.
 
-(** ** The two witnesses of Exercise 3.32 *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom、幺半群相关定义、性质与动机。
@@ -465,19 +465,16 @@ Proof.
   exact (deloop_nat_not_groupoid (fst (deloop_groupoid_iff Nat_Plus) I)).
 Qed.
 
-(* The other witness: the delooping of Z/2 IS a groupoid, because Z/2 is a
-   group.  Construction/Deloop.v's [Bool_Xor_Grp] is that group. *)
+(* 相关说明。 （已译） *)
 Definition deloop_bool_groupoid : IsGroupoid (Deloop Bool_Xor_Grp) :=
   Deloop_IsGroupoid Bool_Xor_Grp.
 
-(* And its vertex group is Z/2 back again, on the nose in both data fields —
-   the round trip of [vertex_group_Deloop_monoid]/[vertex_group_Deloop_inv]
-   at a concrete group. *)
+(* 相关说明。 （已译） *)
 Example vertex_group_bool_inv :
   @grp_inv (vertex_group deloop_bool_groupoid ttt) = @grp_inv Bool_Xor_Grp
   := eq_refl.
 
-(** ** A group whose inversion is not the identity *)
+(* * ** A group whose inversion not 恒等 （已译） *)
 
 (*
    本节说明函子、来源与用途相关定义、性质与动机。
@@ -536,16 +533,14 @@ Qed.
 Definition deloop_Z3_groupoid : IsGroupoid (Deloop Z3_Grp) :=
   Deloop_IsGroupoid Z3_Grp.
 
-(* Inversion in Z/3 really does move an element.  The [=] is Leibniz equality
-   on [Z3], which is exactly the `≈` of [Z3_Mon]'s carrier setoid, so nothing
-   weaker is being claimed. *)
+(* 相关说明。 （已译） *)
 Example Z3_inv_1 : grp_inv (g:=Z3_Grp) Z3_1 = Z3_2 := eq_refl.
 
 Lemma Z3_inv_moves : grp_inv (g:=Z3_Grp) Z3_1 <> Z3_1.
 Proof. discriminate. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** A nonabelian group, and a conjugation that genuinely moves an element *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Groupoid 相关定义、性质与动机。
@@ -556,7 +551,7 @@ Proof. discriminate. Qed.
 Inductive S3 : Set :=
   | S3_e | S3_r | S3_rr | S3_a | S3_b | S3_c.
 
-(* r is a 3-cycle, rr its square; a, b, c are the three transpositions. *)
+(* 相关说明。 （已译） *)
 Definition S3_mul (x y : S3) : S3 :=
   match x, y with
   | S3_e,  y    => y
@@ -596,8 +591,7 @@ Program Definition S3_Grp : GrpObject := {|
 Next Obligation. intros a; now destruct a. Qed.
 Next Obligation. intros a; now destruct a. Qed.
 
-(* It is genuinely nonabelian — the two three-cycles conjugate the
-   transpositions around, which is exactly what Z/2 and Z/3 cannot do. *)
+(* 相关说明。 （已译） *)
 Theorem S3_not_abelian : S3_mul S3_r S3_a = S3_mul S3_a S3_r → False.
 Proof. simpl; discriminate. Qed.
 

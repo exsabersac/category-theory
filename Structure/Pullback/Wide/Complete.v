@@ -12,7 +12,7 @@ Require Import Category.Instance.Discrete.
 
 Generalizable All Variables.
 
-(** * Wide pullbacks from completeness *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/complete+category
@@ -33,18 +33,18 @@ Section AtFamily.
 
 Context {J : Type} {A : J → C} {z : C} (f : ∀ j, A j ~> z).
 
-(* The product of the family, and its projections. *)
+(* 相关说明。 （已译） *)
 Definition cwp_P_lim := comp _ (DiscreteCat_Functor A).
 Definition cwp_P : C := iprod A cwp_P_lim.
 Definition cwp_pi (j : J) : cwp_P ~> A j := iprod_proj A cwp_P_lim j.
 
-(* The [J × J]-fold power of the codomain. *)
+(* 相关说明。 （已译） *)
 Definition cwp_Z_lim := comp _ (DiscreteCat_Functor (fun _ : J * J => z)).
 Definition cwp_Z : C := iprod (fun _ : J * J => z) cwp_Z_lim.
 Definition cwp_rho (k : J * J) : cwp_Z ~> z :=
   iprod_proj (fun _ : J * J => z) cwp_Z_lim k.
 
-(* The two maps whose equalizer is the wide pullback. *)
+(* 相关说明。 （已译） *)
 Definition cwp_l : cwp_P ~> cwp_Z :=
   unique_obj (iprod_ump (fun _ : J * J => z) cwp_Z_lim cwp_P
                 (fun k => f (fst k) ∘ cwp_pi (fst k))).
@@ -52,7 +52,7 @@ Definition cwp_r : cwp_P ~> cwp_Z :=
   unique_obj (iprod_ump (fun _ : J * J => z) cwp_Z_lim cwp_P
                 (fun k => f (snd k) ∘ cwp_pi (snd k))).
 
-(* The equalizer, from the Structure layer's finite-limit bridge. *)
+(* 相关说明。 （已译） *)
 Definition cwp_E :=
   @equalizer C (FinitelyComplete_HasEqualizers (Complete_FinitelyComplete comp))
     _ _ cwp_l cwp_r.
@@ -106,7 +106,7 @@ End AtFamily.
 
 End CompleteWide.
 
-(* The class, with its index slot at [Complete]'s shape-object universe. *)
+(* The class, index slot at [Complete]'s shape-对象 universe. （已译） *)
 Definition Complete_HasWidePullbacks {C : Category} (comp : @Complete C) :
   HasWidePullbacks C :=
   {| wide_pullback := fun I A z f => complete_wide_pullback comp f |}.

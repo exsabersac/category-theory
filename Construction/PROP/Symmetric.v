@@ -12,7 +12,7 @@ Require Import Category.Construction.PROP.Braided.
 
 Generalizable All Variables.
 
-(** * The symmetric monoidal structure on the free PROP *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/PROP

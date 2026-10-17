@@ -10,7 +10,7 @@ Require Import Category.Instance.StrictCat.
 
 Generalizable All Variables.
 
-(** ** The opposite monoid, and delooping against duality *)
+(* * ** The opposite 幺半群, delooping against duality （已译） *)
 
 (*
    本文件给出反范畴、反函子或反自然变换（2-胞方向反转）。

@@ -14,7 +14,7 @@ Require Import Category.Structure.Cone.Const.
 
 Generalizable All Variables.
 
-(** * Limits as right Kan extensions along the terminal functor *)
+(* * * Limits right Kan extensions along terminal 函子 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Kan_extension

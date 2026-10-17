@@ -26,8 +26,8 @@ Section LimitUniversalProperty.
   Context (J C : Category).
   Context (F : J ⟶ C).
 
-  (* Existence half of the UMP: from a competing cone [ACone a F] extract
-     the mediating morphism [a ~> z] into the limit. *)
+  (* Existence half UMP: competing cone [ACone F] extract
+ mediating 态射 [a ~> z] 进入 limit. （已译） *)
   Definition ump_limit_construct (a z : C) (H : IsALimit F z) :
       ACone a F -> a ~> z.
   Proof.
@@ -51,8 +51,7 @@ Section LimitUniversalProperty.
   Qed.
 
   Local Arguments vertex_map {J C c F}.
-  (* Factorisation equation [φ_m ∘ u ≈ ψ_m]: composing the limit leg [m] with
-     the mediator recovers the original cone's leg [m]. *)
+  (* 相关说明。 （已译） *)
   Proposition ump_limit_construct_recover (w z : C) (H : IsALimit F z) (m : obj[J])
      (a : ACone w F) : vertex_map limit_acone m ∘ (ump_limit_construct w z _ a) ≈ vertex_map a m.
   Proof.
@@ -60,7 +59,7 @@ Section LimitUniversalProperty.
     exact (unique_property (ump_limit {| vertex_obj := w; coneFrom :=a |} ) _).
   Qed.
 
-  (* The factorisation equation post-composed with an arbitrary [f]. *)
+  (* 相关说明。 （已译） *)
   Proposition ump_limit_construct_recover' (q w z : C) (H : IsALimit F z) (m : obj[J])
     (a : ACone w F) (f : q ~> w) :
     vertex_map limit_acone m ∘ (ump_limit_construct w z _ a ∘ f) ≈ vertex_map a m ∘ f.
@@ -77,8 +76,8 @@ Section LimitUniversalProperty.
   Hint Rewrite -> ump_limit_construct_recover : limit.
   Hint Rewrite -> ump_limit_construct_recover' : limit.
 
-  (* Uniqueness half of the UMP: two morphisms into the limit that agree
-     after composing with every limit leg are themselves equal. *)
+  (* Uniqueness half UMP: two 态射 进入 limit agree
+ after composing every limit leg themselves equal. （已译） *)
   Proposition cone_equiv_to_morphism_equiv (c z : C) (H : IsALimit F z) (f g : c ~> z) :
     (forall a : J, vertex_map limit_acone a ∘ f ≈ vertex_map limit_acone a ∘ g) ->
     f ≈ g.

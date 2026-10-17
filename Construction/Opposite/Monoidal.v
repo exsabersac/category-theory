@@ -16,7 +16,7 @@ Require Import Category.Theory.Algebra.Comonoid.Hom.
 
 Generalizable All Variables.
 
-(** * Monoidal structure on the opposite category *)
+(* * * Monoidal structure opposite 范畴 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/monoidal+category
@@ -89,8 +89,8 @@ Next Obligation.
   simpl; symmetry; apply to_tensor_assoc_natural.
 Qed.
 Next Obligation.
-  (* Triangle in C^op: ρ⁻¹ ⨂ id ≈ α⁻¹ ∘ (id ⨂ λ⁻¹) in C, the triangle
-     identity of C solved for the inverse unitors. *)
+  (* Triangle C^op: ρ⁻¹ ⨂ id ≈ α⁻¹ ∘ (id ⨂ λ⁻¹) C, triangle
+ 恒等 C solved inverse unitors. （已译） *)
   simpl.
   assert (X : (@unit_right C M x)⁻¹ ⨂ to (@unit_left C M y)
                 ≈ (@tensor_assoc C M x I y)⁻¹).
@@ -114,9 +114,9 @@ Next Obligation.
   apply inverse_pentagon_identity.
 Qed.
 
-(* A braiding on C transports to C^op: the braid at (x, y) in C^op is the
-   braid at (y, x) in C.  Naturality dualizes to naturality, and the two
-   hexagon identities exchange roles. *)
+(* A braiding C transports C^op: braid at (x, y) C^op the
+ braid at (y, x) C. Naturality dualizes 自然性, two
+ hexagon identities exchange roles. （已译） *)
 Program Definition Braided_op `{B : @BraidedMonoidal C} :
   @BraidedMonoidal (C^op) := {|
   braided_is_monoidal := Monoidal_op;
@@ -142,8 +142,7 @@ Next Obligation.
   exact (@hexagon_identity C B z x y).
 Qed.
 
-(* A symmetry on C transports to C^op: the involution law at (x, y) in C^op
-   is literally the involution law at (x, y) in C. *)
+(* 相关说明。 （已译） *)
 Program Definition Symmetric_op `{S : @SymmetricMonoidal C} :
   @SymmetricMonoidal (C^op) := {|
   symmetric_is_braided := Braided_op
@@ -237,7 +236,7 @@ Next Obligation.
   apply X.
 Qed.
 
-(* Both round trips are definitional on the underlying data. *)
+(* 相关说明。 （已译） *)
 
 Lemma Comonoid_op_roundtrip `{M : @Monoidal C} {x : C}
   (Cm : @Comonoid C M x) :

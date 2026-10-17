@@ -13,7 +13,7 @@ Require Import Category.Structure.Groupoid.
 
 Generalizable All Variables.
 
-(** * A groupoid is isomorphic to its opposite *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/opposite+category
@@ -48,9 +48,9 @@ Next Obligation. now apply ginv_respects. Qed.
 Next Obligation. now apply ginv_id. Qed.
 Next Obligation. now apply ginv_comp. Qed.
 
-(* The functor is the identity on objects, literally: [fobj] is [fun x => x],
-   so this [=] is an equality of objects holding by [eq_refl], not a claim
-   about morphisms. *)
+(* The 函子 恒等 对象, literally: [fobj] [fun x => x],
+ so [=] equality 对象 holding [eq_refl], not claim
+ about 态射. （已译） *)
 Example Inversion_identity_on_objects {C : Category} (G : IsGroupoid C)
   (x : C) : fobj[Inversion G] x = x := eq_refl.
 
@@ -123,9 +123,9 @@ Definition Z3_Inversion_iso :
   Deloop Z3_Grp ≅[StrictCat] (Deloop Z3_Grp)^op :=
   Deloop_Inversion_iso Z3_Grp.
 
-(* The morphism map really moves the arrow [Z3_1].  Both [=]s are Leibniz
-   equality on [Z3], which is exactly the `≈` of that carrier setoid, so
-   nothing weaker is being claimed. *)
+(* The 态射 map really moves arrow [Z3_1]. Both [=]s Leibniz
+ equality [Z3], exactly `≈` carrier setoid, so
+ nothing weaker being claimed. （已译） *)
 Example Z3_inversion_nontrivial :
   @fmap _ _ (Inversion deloop_Z3_groupoid) ttt ttt Z3_1 = Z3_2 := eq_refl.
 

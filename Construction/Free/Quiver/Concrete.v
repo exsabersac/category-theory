@@ -10,7 +10,7 @@ From Coq Require Import Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * Quivers as a concrete category: the multi-sorted case *)
+(* * * Quivers concrete 范畴: multi-sorted case （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/concrete+category
@@ -26,10 +26,10 @@ Generalizable All Variables.
 #[local] Existing Instance edgeset.
 #[local] Obligation Tactic := idtac.
 
-(** ** Uniqueness of identity proofs on nodes *)
+(* * ** Uniqueness 恒等 proofs nodes （已译） *)
 
-(* The hypothesis discussed in the header: the node type of `Q` is a set in
-   the sense of uniqueness of identity proofs. *)
+(* The 假设 discussed header: node type `Q` set in
+ sense uniqueness 恒等 proofs. （已译） *)
 Definition NodeUIP (Q : Quiver) : Type :=
   ∀ (x y : @nodes Q) (p q : x = y), p = q.
 
@@ -67,8 +67,7 @@ Next Obligation. intros Q1 Q2 Q3 F G a; reflexivity. Qed.
 
 (** ** The arrow functor *)
 
-(* The arrows of a quiver, assembled from the endpoint-indexed edge families
-   of Construction/Free/Quiver.v into a single type of triples. *)
+(* 相关说明。 （已译） *)
 Record QArrow (Q : Quiver) := {
   qsrc  : @nodes Q;
   qtgt  : @nodes Q;
@@ -130,14 +129,14 @@ Next Obligation.
   - exact (@QArrow_equiv_trans Q).
 Qed.
 
-(* Introduction forms for the arrow setoid, so that no proof below has to see
-   through the `≈` notation to reach the underlying sigma type. *)
+(* Introduction forms arrow setoid, so no 证明 below has see
+ through `≈` notation reach underlying sigma type. （已译） *)
 Lemma QArrow_intro {Q : Quiver} (u v : QArrow Q)
       (p : qsrc u = qsrc v) (q : qtgt u = qtgt v) :
   qmove p q (qedge u) ≈ qedge v → u ≈ v.
 Proof. intro H; exact (existT _ p (existT _ q H)). Qed.
 
-(* The common case: the endpoints agree on the nose. *)
+(* 相关说明。 （已译） *)
 Lemma QArrow_intro_same {Q : Quiver} {a b : @nodes Q} (e e' : edges a b) :
   e ≈ e' →
   {| qsrc := a ; qtgt := b ; qedge := e |} ≈
@@ -169,7 +168,7 @@ Definition qarrow_map {Q Q' : Quiver} (F : QuiverHomomorphism Q Q')
    ; qtgt  := F (qtgt u)
    ; qedge := @fedgemap _ _ F _ _ (qedge u) |}.
 
-(* The arrow map respects the arrow setoid. *)
+(* 相关说明。 （已译） *)
 Lemma qarrow_map_respects {Q Q' : Quiver} (F : QuiverHomomorphism Q Q')
       (u v : QArrow Q) : u ≈ v → qarrow_map F u ≈ qarrow_map F v.
 Proof.
@@ -180,7 +179,7 @@ Proof.
   now apply (@fedgemap_respects _ _ F).
 Qed.
 
-(* Two homomorphisms that are equivalent agree on every arrow. *)
+(* 相关说明。 （已译） *)
 Lemma qarrow_map_agrees {Q Q' : Quiver} (F G : Q ~{QuiverCategory}~> Q')
       (HFG : F ≈ G) (u : QArrow Q) : qarrow_map F u ≈ qarrow_map G u.
 Proof.
@@ -203,8 +202,7 @@ Qed.
 
 (** ** The disjoint-union functor *)
 
-(* Riehl's V ⊎ E: the elements of a quiver are its vertices and its arrows.
-   Vertices and arrows are never identified with one another. *)
+(* 相关说明。 （已译） *)
 Definition QElt (Q : Quiver) : Type := (@nodes Q + QArrow Q)%type.
 
 Definition QElt_equiv {Q : Quiver} (z w : QElt Q) : Type :=
@@ -275,21 +273,20 @@ Theorem QuiverElements_faithful_under_NodeUIP
   fmap[QuiverElements] F ≈ fmap[QuiverElements] G → F ≈ G.
 Proof.
   intro H.
-  (* The node family, read off the vertex summand. *)
+  (* 相关说明。 （已译） *)
   unshelve refine (existT _ (fun x => H (Datatypes.inl x)) _).
   intros x y f; simpl.
-  (* The arrow summand at the arrow (x, y, f). *)
+  (* 相关说明。 （已译） *)
   pose proof (H (Datatypes.inr {| qsrc := x; qtgt := y; qedge := f |})) as Ha.
   simpl in Ha.
   destruct Ha as [ps [pt Hc]].
-  (* [NodeUIP] replaces the arrow summand's endpoint equalities by the ones
-     the vertex summand supplied. *)
+  (* 相关说明。 （已译） *)
   rewrite (uip _ _ ps (H (Datatypes.inl x))) in Hc.
   rewrite (uip _ _ pt (H (Datatypes.inl y))) in Hc.
   exact (qmove_bridge_inv _ _ _ _ Hc).
 Qed.
 
-(** ** Witness quivers, and the two negative results *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -299,8 +296,8 @@ Qed.
 Definition LoopQuiver : Quiver :=
   Build_Quiver_Standard_Eq poly_unit (fun _ _ => bool).
 
-(* The loop-swapping endomorphism: identity on the single node, negation on
-   the two loops. *)
+(* The loop-swapping endomorphism: 恒等 single node, negation on
+ two loops. （已译） *)
 Program Definition loop_swap : LoopQuiver ~{QuiverCategory}~> LoopQuiver := {|
   fnodes   := Datatypes.id;
   fedgemap := fun _ _ => negb
@@ -313,9 +310,9 @@ Lemma transport_const {A B : Type} {a a' : A} (p : a = a') (b : B) :
   Logic.transport (fun _ : A => B) p b = b.
 Proof. destruct p; reflexivity. Qed.
 
-(* The identity and [loop_swap] are DISTINCT in the hom-setoid of
-   `QuiverCategory`: whatever node equality is offered, the coherence
-   condition would force `true = negb true`. *)
+(* The 恒等 [loop_swap] DISTINCT hom-setoid of
+ `QuiverCategory`: whatever node equality offered, coherence
+ condition would force `true = negb true`. （已译） *)
 Lemma loop_swap_distinct :
   @id QuiverCategory LoopQuiver ≈ loop_swap → False.
 Proof.
@@ -344,8 +341,8 @@ Proof.
   discriminate.
 Qed.
 
-(* Riehl's first negative: the vertex functor is not faithful.  The identity
-   and [loop_swap] have the same node map. *)
+(* Riehl's first negative: vertex 函子 not faithful. The 恒等
+ [loop_swap] have same node map. （已译） *)
 Theorem QuiverVertices_not_Faithful : Faithful QuiverVertices → False.
 Proof.
   intro HF.
@@ -355,8 +352,8 @@ Proof.
   reflexivity.
 Qed.
 
-(* Two nodes and no edges.  A homomorphism out of it is a pair of nodes and no
-   edge data at all — this is what defeats the arrow functor. *)
+(* Two nodes no edges. A homomorphism out it pair nodes no
+ edge data at all — 这是 what defeats arrow 函子. （已译） *)
 Definition DiscQuiver : Quiver :=
   Build_Quiver_Standard_Eq bool (fun _ _ => Empty_set).
 
@@ -366,8 +363,8 @@ Program Definition disc_swap : DiscQuiver ~{QuiverCategory}~> DiscQuiver := {|
   fedgemap := fun _ _ => Datatypes.id
 |}.
 
-(* The identity and [disc_swap] are DISTINCT in the hom-setoid: any node
-   family would have to prove `true = negb true`. *)
+(* The 恒等 [disc_swap] DISTINCT hom-setoid: any node
+ family would have prove `true = negb true`. （已译） *)
 Lemma disc_swap_distinct :
   @id QuiverCategory DiscQuiver ≈ disc_swap → False.
 Proof.
@@ -377,8 +374,8 @@ Proof.
   discriminate.
 Qed.
 
-(* Riehl's second negative: the arrow functor is not faithful.  The identity
-   and [disc_swap] have the same action on arrows, [DiscQuiver] having none. *)
+(* Riehl's second negative: arrow 函子 not faithful. The 恒等
+ [disc_swap] have same action arrows, [DiscQuiver] having none. （已译） *)
 Theorem QuiverArrows_not_Faithful : Faithful QuiverArrows → False.
 Proof.
   intro HF.
@@ -388,7 +385,7 @@ Proof.
   destruct e.
 Qed.
 
-(** ** The full subcategory of set-quivers, and its concreteness *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -407,7 +404,7 @@ Definition SetQuiverCat : Category := Sub QuiverCategory SetQuivers.
 Lemma SetQuivers_Full : Full QuiverCategory SetQuivers.
 Proof. intros x y ox oy f; exact ttt. Qed.
 
-(* The three functors, restricted along the inclusion. *)
+(* The three 函子, restricted along 含入. （已译） *)
 Definition SetQuiverVertices : SetQuiverCat ⟶ Sets :=
   QuiverVertices ◯ Incl QuiverCategory SetQuivers.
 
@@ -417,8 +414,7 @@ Definition SetQuiverArrows : SetQuiverCat ⟶ Sets :=
 Definition SetQuiverElements : SetQuiverCat ⟶ Sets :=
   QuiverElements ◯ Incl QuiverCategory SetQuivers.
 
-(* Both witness quivers are set-quivers, by Hedberg from decidable node
-   equality. *)
+(* 相关说明。 （已译） *)
 Lemma LoopQuiver_NodeUIP : NodeUIP LoopQuiver.
 Proof.
   apply NodeDecEq_NodeUIP.
@@ -435,8 +431,7 @@ Qed.
 Definition LoopSetQuiver : SetQuiverCat := (LoopQuiver; LoopQuiver_NodeUIP).
 Definition DiscSetQuiver : SetQuiverCat := (DiscQuiver; DiscQuiver_NodeUIP).
 
-(* The two negatives survive the restriction: the witnesses are set-quivers,
-   so all of Example 1.6.19 takes place inside [SetQuiverCat]. *)
+(* 相关说明。 （已译） *)
 Theorem SetQuiverVertices_not_Faithful : Faithful SetQuiverVertices → False.
 Proof.
   intro HF.
@@ -456,16 +451,15 @@ Proof.
   simpl; intros [a b e]; destruct e.
 Qed.
 
-(* The positive half, unconditionally on [SetQuiverCat]: the [NodeUIP] witness
-   the theorem needs is carried by the target object. *)
+(* The positive half, unconditionally [SetQuiverCat]: [NodeUIP] witness
+ 定理 needs carried target 对象. （已译） *)
 #[export] Instance SetQuiverElements_Faithful : Faithful SetQuiverElements.
 Proof.
   constructor; intros x y f g Hfg.
   exact (QuiverElements_faithful_under_NodeUIP `2 y `1 f `1 g Hfg).
 Qed.
 
-(* Riehl's Example 1.6.19: quivers are concrete, by way of the disjoint union
-   of their vertices and their arrows.  Neither summand alone would do. *)
+(* 相关说明。 （已译） *)
 #[export] Instance SetQuiver_Concrete : Concrete SetQuiverCat := {|
   underlying          := SetQuiverElements;
   underlying_faithful := SetQuiverElements_Faithful
@@ -481,7 +475,7 @@ Lemma SetQuiverCat_two_arrows :
 Proof. exact loop_swap_distinct. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The node-UIP hypothesis is necessary, not merely convenient *)
+(* * ** The node-UIP 假设 necessary, not merely convenient （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -505,8 +499,7 @@ Lemma uip_transport_r {A} {c : A} {K : Type} {b b2 : A}
   = (u, Logic.transport (fun t => c = t) q v).
 Proof. destruct q; reflexivity. Qed.
 
-(* One shared loop cannot meet the source and the target constraint at
-   once unless the loop it is compared against is trivial. *)
+(* 相关说明。 （已译） *)
 Lemma uip_key {A} {c : A} (shared loop : c = c) :
   Logic.transport (fun t : A => ((c = c) * (c = t))%type) shared
     (eq_refl, eq_refl)
@@ -533,8 +526,7 @@ Section UIPNecessity.
 
 Context (N : Set) (c : N) (loop : c = c).
 
-(* The probe quiver: edges from x to y record proofs that c is BOTH x and
-   y, so an edge constrains its two endpoints independently. *)
+(* 相关说明。 （已译） *)
 Definition UIPQuiver : Quiver :=
   Build_Quiver_Standard_Eq N (fun x y => ((c = x) * (c = y))%type).
 
@@ -557,7 +549,7 @@ Proof.
     exact (existT _ loop (existT _ eq_refl eq_refl)).
 Qed.
 
-(* But the quiver category equates them only when the loop is trivial. *)
+(* But quiver 范畴 equates them loop trivial. （已译） *)
 Lemma uip_homs_equal_forces_trivial :
   uip_hom_id ≈ uip_hom_moved → loop = eq_refl.
 Proof.
@@ -571,8 +563,8 @@ Qed.
 
 End UIPNecessity.
 
-(* Hence the hypothesis under which [QuiverElements] was proved faithful is
-   exactly what that faithfulness would give back. *)
+(* Hence 假设 under [QuiverElements] was proved faithful is
+ exactly what faithfulness would give back. （已译） *)
 Theorem faithful_QuiverElements_implies_UIP :
   Faithful QuiverElements →
   ∀ (N : Set) (c : N) (loop : c = c), loop = eq_refl.

@@ -9,7 +9,7 @@ Require Import Category.Instance.Cat.
 
 Generalizable All Variables.
 
-(** * The slice over a terminal object is the ambient category *)
+(* * * The slice over 终对象 ambient 范畴 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/over+category
@@ -21,7 +21,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Block A: the slice over a terminal object *)
+(* * ** Block A: slice over 终对象 （已译） *)
 
 Section SliceTerminal.
 
@@ -64,7 +64,7 @@ Program Definition slice_terminal_unit (x : @Slice C (@terminal_obj C T)) :
 Next Obligation. apply one_unique. Qed.
 Next Obligation. apply one_unique. Qed.
 
-(* The component is carried by the identity of C, in both directions. *)
+(* The component carried 恒等 C, both directions. （已译） *)
 Corollary slice_terminal_unit_carrier
   (x : @Slice C (@terminal_obj C T)) :
   (`1 (to (slice_terminal_unit x)) ≈ id) ∧
@@ -112,7 +112,7 @@ Qed.
 
 End SliceTerminal.
 
-(** ** Block B: the coslice under an initial object *)
+(* * ** Block B: coslice under 始对象 （已译） *)
 
 (*
    本节说明始/终对象相关定义、性质与动机。
@@ -132,9 +132,9 @@ Program Definition Coslice_Forget :
   fmap := fun _ _ f => `1 f
 |}.
 
-(* Equip an object with its unique arrow out of 0; the triangle condition
-   `zero ≈ f ∘ zero` is discharged by [zero_unique] (equivalently, the
-   corollary [zero_comp]). *)
+(* Equip 对象 唯一箭头 out 0; triangle condition
+ `zero ≈ f ∘ zero` discharged [zero_unique] (equivalently, the
+ 推论 [zero_comp]). （已译） *)
 Program Definition Coslice_Section :
   C ⟶ @Coslice C (@initial_obj C I) := {|
   fobj := fun x => (x; zero);
@@ -156,8 +156,7 @@ Corollary coslice_initial_unit_carrier
   (`1 (from (coslice_initial_unit x)) ≈ id).
 Proof. split; reflexivity. Qed.
 
-(* The dual of [Slice_Terminal], at the same strength and for the same
-   reason. *)
+(* 相关说明。 （已译） *)
 Program Definition Coslice_Initial :
   @Coslice C (@initial_obj C I) ≅[Cat] C := {|
   to   := Coslice_Forget;

@@ -12,7 +12,7 @@ Require Import Category.Instance.Grpd.
 
 Generalizable All Variables.
 
-(** * The core functor, and its adjunction with the inclusion *)
+(* * * The core 函子, 伴随 含入 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/Grpd
@@ -84,8 +84,7 @@ Next Obligation.
   - now rewrite Hto.
   - now rewrite Hfrom.
 Qed.
-(* The [fmap_id] obligation is discharged by the ambient [cat_simpl]; only
-   [fmap_comp] survives it. *)
+(* 相关说明。 （已译） *)
 Next Obligation. split; simpl; apply fmap_comp. Qed.
 
 (*
@@ -109,15 +108,15 @@ Program Definition Core : Cat ⟶ Grpd := {|
   fobj := fun C => ((Groupoid C; core_is_groupoid C) : Grpd);
   fmap := fun _ _ F => (CoreMap F; I)
 |}.
-(* Only [fmap_respects] survives the ambient [cat_simpl]; the two functor
-   laws of [Core] are the identity natural isomorphism on both sides and it
-   discharges them. *)
+(* Only [fmap_respects] survives ambient [cat_simpl]; two 函子
+ laws [Core] 恒等 natural 同构 both sides it
+ discharges them. （已译） *)
 Next Obligation.
   intros F F1 HF; simpl.
   now apply CoreMap_respects.
 Qed.
 
-(** ** The counit: reading an isomorphism as a morphism *)
+(* * ** The counit: reading 同构 态射 （已译） *)
 
 (*
    本节说明伴随、同构相关定义、性质与动机。
@@ -287,9 +286,9 @@ Example core_counit_is_ForgetCore (C : Cat) :
   @counit Cat Grpd Grpd_Incl Core Incl_Core_Adjunction C ≈ ForgetCore C.
 Proof. apply fun_equiv_id_right. Qed.
 
-(* The unit sends an arrow of a groupoid to itself regarded as an
-   isomorphism -- that is exactly [core_lift] applied to the identity
-   functor. *)
+(* The unit sends arrow groupoid itself regarded an
+ 同构 -- exactly [core_lift] applied 恒等
+ 函子. （已译） *)
 
 Example core_unit_is_core_lift_Id (G : Grpd) :
   `1 (@unit Cat Grpd Grpd_Incl Core Incl_Core_Adjunction G)

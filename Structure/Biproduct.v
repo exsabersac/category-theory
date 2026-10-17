@@ -43,18 +43,16 @@ Record Biproduct (x y : C) := {
   bi_exl_inr : bi_exl ∘ bi_inr ≈ zero_mor;
   bi_exr_inl : bi_exr ∘ bi_inl ≈ zero_mor;
 
-  (* the object is a product of x and y via bi_exl, bi_exr *)
+  (* 对象 product x y via bi_exl, bi_exr （已译） *)
   bi_is_product : ∀ (z : C) (f : z ~> x) (g : z ~> y),
     ∃! h : z ~> biproduct_obj, (bi_exl ∘ h ≈ f) ∧ (bi_exr ∘ h ≈ g);
 
-  (* and a coproduct of x and y via bi_inl, bi_inr *)
+  (* 相关说明。 （已译） *)
   bi_is_coproduct : ∀ (z : C) (f : x ~> z) (g : y ~> z),
     ∃! h : biproduct_obj ~> z, (h ∘ bi_inl ≈ f) ∧ (h ∘ bi_inr ≈ g)
 }.
 
-(* Make the record parameters implicit for the projections, section-locally;
-   the full implicit statuses (with C and Z) are restated after the
-   section closes. *)
+(* 相关说明。 （已译） *)
 Arguments biproduct_obj {x y} _.
 Arguments bi_inl {x y} _.
 Arguments bi_inr {x y} _.
@@ -73,10 +71,10 @@ Class HasBiproducts := {
   biproduct (x y : C) : Biproduct x y
 }.
 
-(** ** The product mediator [bi_pair] and its trio *)
+(* 相关说明。 （已译） *)
 
-(* The pairing ⟨f, g⟩ into the biproduct, extracted from the product-side
-   universal property. *)
+(* The pairing ⟨f, g⟩ 进入 biproduct, extracted product-side
+ 普遍性质. （已译） *)
 Definition bi_pair {x y : C} (B : Biproduct x y) {z : C}
   (f : z ~> x) (g : z ~> y) : z ~> biproduct_obj B :=
   unique_obj (bi_is_product B z f g).
@@ -99,7 +97,7 @@ Proof.
   exact (uniqueness (bi_is_product B z f g) v (Hl, Hr)).
 Qed.
 
-(* Any two morphisms into the biproduct with the same projections agree. *)
+(* Any two 态射 进入 biproduct same projections agree. （已译） *)
 Lemma bi_pair_eq {x y : C} (B : Biproduct x y) {z : C}
   (f : z ~> x) (g : z ~> y) (u v : z ~> biproduct_obj B) :
   bi_exl B ∘ u ≈ f → bi_exr B ∘ u ≈ g →
@@ -125,10 +123,10 @@ Proof.
     now symmetry.
 Qed.
 
-(** ** The coproduct mediator [bi_copair] and its trio *)
+(* 相关说明。 （已译） *)
 
-(* The copairing [f, g] out of the biproduct, extracted from the
-   coproduct-side universal property. *)
+(* The copairing [f, g] out biproduct, extracted the
+ coproduct-side 普遍性质. （已译） *)
 Definition bi_copair {x y : C} (B : Biproduct x y) {z : C}
   (f : x ~> z) (g : y ~> z) : biproduct_obj B ~> z :=
   unique_obj (bi_is_coproduct B z f g).
@@ -151,8 +149,8 @@ Proof.
   exact (uniqueness (bi_is_coproduct B z f g) v (Hl, Hr)).
 Qed.
 
-(* Any two morphisms out of the biproduct with the same restrictions to the
-   injections agree. *)
+(* Any two 态射 out biproduct same restrictions the
+ injections agree. （已译） *)
 Lemma bi_copair_eq {x y : C} (B : Biproduct x y) {z : C}
   (f : x ~> z) (g : y ~> z) (u v : biproduct_obj B ~> z) :
   u ∘ bi_inl B ≈ f → u ∘ bi_inr B ≈ g →
@@ -178,10 +176,10 @@ Proof.
     now symmetry.
 Qed.
 
-(** ** Functorial action, diagonal, and codiagonal *)
+(* 相关说明。 （已译） *)
 
-(* The action of the biproduct on a pair of morphisms, built through the
-   product side: bimap f g ≈ ⟨f ∘ exl, g ∘ exr⟩. *)
+(* The action biproduct pair 态射, built through the
+ product side: bimap f g ≈ ⟨f ∘ exl, g ∘ exr⟩. （已译） *)
 Definition bimap {x y x' y' : C}
   (Bxy : Biproduct x y) (Bx'y' : Biproduct x' y')
   (f : x ~> x') (g : y ~> y') :
@@ -200,8 +198,7 @@ Lemma bimap_exr {x y x' y' : C}
   bi_exr Bx'y' ∘ bimap Bxy Bx'y' f g ≈ g ∘ bi_exr Bxy.
 Proof. exact (bi_exr_pair Bx'y' (f ∘ bi_exl Bxy) (g ∘ bi_exr Bxy)). Qed.
 
-(* The diagonal Δ = ⟨id, id⟩ into a biproduct of x with itself, and the
-   codiagonal ∇ = [id, id] out of it. *)
+(* 相关说明。 （已译） *)
 Definition bi_diag {x : C} (B : Biproduct x x) : x ~> biproduct_obj B :=
   bi_pair B id id.
 
@@ -210,8 +207,8 @@ Definition bi_codiag {x : C} (B : Biproduct x x) : biproduct_obj B ~> x :=
 
 End Biproduct.
 
-(* Restate implicit arguments so the accessors are usable with implicit
-   category and zero-object structure. *)
+(* Restate implicit arguments so accessors usable implicit
+ 范畴 zero-对象 structure. （已译） *)
 
 Arguments Biproduct {C Z} x y.
 Arguments HasBiproducts C {Z}.

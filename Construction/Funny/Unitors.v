@@ -32,7 +32,7 @@ Program Definition Funny_unit_left_sep {C : Category} :
 Definition Funny_unit_left_to {C : Category} : (1 □ C) ⟶ C :=
   FunnyUP Funny_unit_left_sep.
 
-(* The injection at the lone object of [1] is the inverse. *)
+(* The injection at lone 对象 [1] inverse. （已译） *)
 Definition Funny_unit_left_from {C : Category} : C ⟶ (1 □ C) :=
   FunnyR (C:=1) ttt.
 
@@ -182,10 +182,10 @@ Definition Funny_unit_right {C : Category} : (C □ 1) ≅[StrictCat] C :=
     Funny_unit_right_to Funny_unit_right_from
     funny_unit_right_to_from funny_unit_right_from_to.
 
-(** ** The unitors in the weak [Cat]
+(* * ** The unitors weak [Cat]
 
-    Strict isomorphism refines isomorphism-up-to-natural-isomorphism, so
-    the comparison functor transfers both unitors to [Cat] for free. *)
+ Strict 同构 refines 同构-up-to-natural-同构, so
+ comparison 函子 transfers both unitors [Cat] free. （已译） *)
 
 Definition Funny_unit_left_cat {C : Category} : (1 □ C) ≅[Cat] C :=
   fobj_iso StrictCat_to_Cat (1 □ C) C Funny_unit_left.

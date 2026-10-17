@@ -13,7 +13,7 @@ Require Import Category.Instance.Cat.
 
 Generalizable All Variables.
 
-(** * The codomain displayed category *)
+(* * * The codomain displayed 范畴 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/displayed+category
@@ -40,13 +40,13 @@ Next Obligation.
   equivalence.
 Qed.
 Next Obligation.
-  (* transport keeps the morphism and rewrites its square along e *)
+  (* transport keeps 态射 rewrites square along e （已译） *)
   intros C x y dx dy f g e ff; simpl.
   rewrite (`2 ff).
   now rewrite e.
 Qed.
 Next Obligation.
-  (* dtransport_respects: transport is the identity on the morphism *)
+  (* dtransport_respects: transport 恒等 态射 （已译） *)
   intros C x y dx dy f g e; repeat intro; simpl in *.
   assumption.
 Qed.
@@ -106,7 +106,7 @@ Next Obligation.
   apply comp_assoc.
 Qed.
 
-(** ** Cartesian lifts from pullbacks *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明拉回/推出、笛卡尔相关定义、性质与动机。
@@ -143,18 +143,18 @@ Proof.
     as U.
   destruct (unique_property U) as [Ufst Usnd].
   unshelve refine {| unique_obj := (unique_obj U; Ufst) |}.
-  - (* the mediator composes with the lift to give back [hh] *)
+  - (* 相关说明。 （已译） *)
     simpl.
     exact Usnd.
-  - (* and is the only displayed morphism over [g] that does so *)
+  - (* and displayed 态射 over [g] does so （已译） *)
     intros v Hv; simpl in Hv.
     apply (uniqueness U); split.
     + exact (`2 v).
     + exact Hv.
 Defined.
 
-(* The (⇐) direction of the payoff: pullbacks induce a cleaving of the
-   codomain displayed category. *)
+(* The (⇐) direction payoff: pullbacks induce cleaving the
+ codomain displayed 范畴. （已译） *)
 Definition codomain_cleaving `{H : @HasPullbacks C} :
   Cleaving (Codomain_Displayed C) := {|
   clift := fun x y f dy =>
@@ -163,7 +163,7 @@ Definition codomain_cleaving `{H : @HasPullbacks C} :
       codomain_lift_cartesian f dy (pullback f (`2 dy))))
 |}.
 
-(** ** Pullbacks from cartesian lifts *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明拉回/推出、笛卡尔相关定义、性质与动机。
@@ -179,7 +179,7 @@ Proof.
     as [dx [ff cart]].
   destruct dx as [P p1].
   destruct ff as [u sq].
-  (* sq : g ∘ u ≈ f ∘ p1 — the lift's square is the pullback square *)
+  (* 相关说明。 （已译） *)
   unshelve refine {| Pull := P; pullback_fst := p1; pullback_snd := u |}.
   - (* the square commutes *)
     exact (symmetry sq).
@@ -197,7 +197,7 @@ Proof.
     simpl in Hw.
     unshelve refine {| unique_obj := `1 w |}.
     + split.
-      * (* p1 ∘ w ≈ q1: the factorization's own square, sans the id *)
+      * (* 相关说明。 （已译） *)
         rewrite <- (id_right q1).
         exact (`2 w).
       * (* u ∘ w ≈ q2: the factorization equation *)
@@ -213,7 +213,7 @@ Defined.
 
 End CodomainCleaving.
 
-(** ** Comparison with the comma-based arrow category *)
+(* * ** Comparison comma-based arrow 范畴 （已译） *)
 
 (*
    本节说明等价相关定义、性质与动机。
@@ -229,7 +229,7 @@ Program Definition Codomain_Total_to_Arrow {C : Category} :
   fmap := fun x y f => ((`1 (`2 f), `1 f); `2 (`2 f))
 |}.
 Next Obligation.
-  (* respects ≈: both sides compare the square's leg and the base *)
+  (* 相关说明。 （已译） *)
   intros f g [e He]; split.
   - exact He.
   - exact e.
@@ -249,7 +249,7 @@ Program Definition Arrow_to_Codomain_Total {C : Category} :
   fmap := fun x y f => (snd (`1 f); (fst (`1 f); `2 f))
 |}.
 Next Obligation.
-  (* respects ≈, with the reflexivity proof carrying the transport *)
+  (* respects ≈, reflexivity 证明 carrying transport （已译） *)
   intros f g [e1 e2].
   exists e2; simpl.
   exact e1.
@@ -271,10 +271,10 @@ Program Definition Codomain_Total_Arrow_iso {C : Category} :
   from := Arrow_to_Codomain_Total
 |}.
 Next Obligation.
-  (* to ∘ from ≈ id on the arrow category *)
+  (* to ∘ ≈ id arrow 范畴 （已译） *)
   constructive; simplify; simpl in *; cat.
 Qed.
 Next Obligation.
-  (* from ∘ to ≈ id on the total category *)
+  (* from ∘ ≈ id total 范畴 （已译） *)
   constructive; simplify; simpl in *; cat.
 Qed.

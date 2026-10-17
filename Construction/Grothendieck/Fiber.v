@@ -9,7 +9,7 @@ Require Import Category.Construction.Grothendieck.
 
 Generalizable All Variables.
 
-(** * Fibre categories, and the fibres of the Grothendieck construction *)
+(* * * Fibre 范畴, fibres Grothendieck construction （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/displayed+category
@@ -23,9 +23,9 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Conjugating by the identity isomorphism does nothing: the generic
-   stripping step for equivalence cells whose isomorphism family is
-   [iso_id] pointwise. *)
+(* Conjugating 恒等 同构 does nothing: generic
+ stripping step 等价 cells whose 同构 family is
+ [iso_id] pointwise. （已译） *)
 Lemma conjugate_iso_id {C : Category} {a b : C} (f : a ~> b) :
   from (@iso_id C b) ∘ f ∘ to (@iso_id C a) ≈ f.
 Proof.
@@ -33,7 +33,7 @@ Proof.
   now rewrite id_left, id_right.
 Qed.
 
-(** ** The fibre category of a displayed category *)
+(* * ** The fibre 范畴 displayed 范畴 （已译） *)
 
 Section FiberCategory.
 
@@ -64,9 +64,9 @@ Proof.
   apply dtransport_proof_irrel.
 Qed.
 
-(* The fibre of [D] over [x]: objects displayed over [x], morphisms
-   displayed over [id[x]], composition recentred over [id] along the
-   base unit law. *)
+(* The fibre [D] over [x]: 对象 displayed over [x], 态射
+ displayed over [id[x]], 复合 recentred over [id] along the
+ base unit law. （已译） *)
 Program Definition Fiber : Category := {|
   obj := dobj x;
   hom := fun dx dy => dhom dx dy id;
@@ -114,9 +114,9 @@ Context {B : Category}.
 Context (A : IndexedCat B).
 Context (x : B).
 
-(* The from-side of the unit coherence [idx_unit_left] at [f := id]: the
-   inverses of the mediator and compositor isos fuse into the inverse of
-   the unit iso at the reindexed object. *)
+(* The from-side unit coherence [idx_unit_left] at [f := id]: the
+ inverses mediator compositor isos fuse 进入 inverse of
+ unit iso at reindexed 对象. （已译） *)
 Lemma Grothendieck_fiber_unit_left_inv (a : idx_fib A x) :
   from (idx_comp A id id a) ∘ from (idx_resp A (id_left (@id B x)) a)
     ≈ from (idx_id A (idx_map A (@id B x) a)).
@@ -127,9 +127,9 @@ Proof.
     (idx_unit_left A id a))).
 Qed.
 
-(* The from-side of [idx_unit_right] at [f := id], fused against the
-   compositor/mediator tail of the Grothendieck fibre's composition: the
-   whole composite cancels. *)
+(* The from-side [idx_unit_right] at [f := id], fused against the
+ compositor/mediator tail Grothendieck fibre's 复合: the
+ whole 复合 cancels. （已译） *)
 Lemma Grothendieck_fiber_unit_right_inv (a : idx_fib A x) :
   fmap[idx_map A (@id B x)] (to (idx_id A a))
       ∘ from (idx_comp A id id a)
@@ -138,9 +138,9 @@ Lemma Grothendieck_fiber_unit_right_inv (a : idx_fib A x) :
 Proof.
   rewrite <- (idx_unit_right A id a).
   rewrite <- (comp_assoc (to (idx_resp A (id_right (@id B x)) a))).
-  (* the rewrites below are pinned: the base identity [id ∘ id] also occurs
-     inside the (dependent) implicit arguments of [idx_resp], where the
-     generalized rewrite may not abstract *)
+  (* the rewrites below pinned: base 恒等 [id ∘ id] occurs
+ inside (dependent) implicit arguments [idx_resp], where the
+ generalized rewrite may not abstract （已译） *)
   rewrite (iso_to_from (idx_comp A (@id B x) (@id B x) a)).
   rewrite (id_right (to (idx_resp A (id_right (@id B x)) a))).
   rewrite (idx_resp_from_irrel A (id_left (@id B x)) (id_right (@id B x)) a).
@@ -165,11 +165,11 @@ Proof.
   - (* fmap respects ≈ *)
     intros a b ff gg Hfg; simpl in *.
     now rewrite Hfg.
-  - (* identities: the two sides of the unit iso cancel *)
+  - (* 相关说明。 （已译） *)
     intros a; simpl.
     apply iso_to_from.
-  - (* composition: the compositor/mediator tail is the inverted left unit
-       law, and the unit iso is natural *)
+  - (* 复合: compositor/mediator tail inverted left unit
+ law, unit iso natural （已译） *)
     intros a b c ff gg; simpl.
     rewrite <- !comp_assoc.
     apply compose_respects; [ reflexivity |].
@@ -179,8 +179,8 @@ Proof.
     now rewrite (idx_id_natural_from A gg).
 Defined.
 
-(* From the indexed fibre to the Grothendieck fibre: the identity on
-   objects; on homs, precompose with the unit iso. *)
+(* From indexed fibre Grothendieck fibre: 恒等 on
+ 对象; homs, precompose unit iso. （已译） *)
 Definition Fiber_Grothendieck_From :
   idx_fib A x ⟶ Fiber (Grothendieck_Displayed A) x.
 Proof.
@@ -196,8 +196,8 @@ Proof.
   - (* identities *)
     intros a; simpl.
     apply id_left.
-  - (* composition: the inverted right unit law cancels the tail, then the
-       unit iso is natural *)
+  - (* 复合: inverted right unit law cancels tail, then the
+ unit iso natural （已译） *)
     intros a b c k l; simpl.
     symmetry.
     rewrite fmap_comp.
@@ -208,8 +208,8 @@ Proof.
     now rewrite <- (idx_id_natural A l).
 Defined.
 
-(* The counit cell: To ◯ From ≈ Id on the indexed fibre, with identity
-   components. *)
+(* The counit cell: To ◯ From ≈ Id indexed fibre, 恒等
+ components. （已译） *)
 Definition Grothendieck_fiber_counit :
   Fiber_Grothendieck_To ◯ Fiber_Grothendieck_From ≈ Id[idx_fib A x].
 Proof.
@@ -221,8 +221,8 @@ Proof.
   apply id_right.
 Defined.
 
-(* The unit cell: Id on the Grothendieck fibre ≈ From ◯ To, with
-   identity components. *)
+(* The unit cell: Id Grothendieck fibre ≈ From ◯ To, with
+ 恒等 components. （已译） *)
 Definition Grothendieck_fiber_unit :
   Id[Fiber (Grothendieck_Displayed A) x]
     ≈ Fiber_Grothendieck_From ◯ Fiber_Grothendieck_To.
@@ -235,9 +235,7 @@ Proof.
   now rewrite id_right.
 Defined.
 
-(* The committed half of the round trip, packaged: the fibre of the
-   Grothendieck construction of [A] at [x] is equivalent to the fibre
-   [A] indexes at [x]. *)
+(* 相关说明。 （已译） *)
 Definition fiber_grothendieck_equiv :
   EquivalenceOfCategories Fiber_Grothendieck_To :=
   @Build_EquivalenceOfCategories

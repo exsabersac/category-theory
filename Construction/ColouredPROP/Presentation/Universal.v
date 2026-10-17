@@ -37,7 +37,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * The universal property of a presented coloured PROP *)
+(* * * The 普遍性质 presented coloured PROP （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/PROP
@@ -133,8 +133,8 @@ Definition CPresentedInterp : CPresentedCat E ⟶ P :=
     (fun (cs ds : list Colour) (s t : CTerm Σ cs ds)
          (H : CTermEqW E s t) => cinterpW_sound H).
 
-(** The factorisation through the projection is DEFINITIONAL: both
-    sides are the very same interpretation of the very same term. *)
+(** 本节：The factorisation through projection DEFINITIONAL: both
+ sides very same interpretation very same term. （已译） *)
 Lemma CPresentedInterp_proj {cs ds : list Colour} (t : CTerm Σ cs ds) :
   fmap[CPresentedInterp] (fmap[CPresentedProj E] t)
   = fmap[CInterpF Σ P v] t.
@@ -214,8 +214,8 @@ Definition CPresentedInterp_ap_iso :
     CPresentedInterp_ap_to CPresentedInterp_ap_from
     CPresentedInterp_ap_to_from CPresentedInterp_ap_from_to.
 
-(** The strong monoidal structure.  All data fields are casts and all
-    proof fields are the named lemmas of [Universal.v] §2. *)
+(** The strong monoidal structure. All data fields casts all
+ 证明 fields named lemmas [Universal.v] §2. （已译） *)
 Definition CPresentedInterp_Monoidal :
   @MonoidalFunctor (CPresentedCat E) P (CPresented_Monoidal E Cdec)
     (MPc P) CPresentedInterp :=
@@ -323,9 +323,9 @@ Definition CPresentedComposite_Strict :
     (CFreeCat_Monoidal Σ Cdec) (CPresented_Monoidal E Cdec) (MPc P)
     G (CPresentedProj E) SG (CPresentedProj_Strict E Cdec).
 
-(** Machine-checked: the composite's strict object comparisons ARE
-    [SG]'s, definitionally.  This is the cast-fusing content of the
-    precomposition route. *)
+(** Machine-checked: 复合's strict 对象 comparisons ARE
+ [SG]'s, definitionally. This cast-fusing content the
+ precomposition route. （已译） *)
 Example CPresentedComposite_ap_obj_is_SG (x y : list Colour) :
   @strict_ap_obj _ _ _ _ CPresentedComposite CPresentedComposite_Strict x y
   = @strict_ap_obj _ _ _ _ G SG x y := eq_refl.
@@ -334,9 +334,9 @@ Example CPresentedComposite_pure_obj_is_SG :
   @strict_pure_obj _ _ _ _ CPresentedComposite CPresentedComposite_Strict
   = @strict_pure_obj _ _ _ _ G SG := eq_refl.
 
-(** Both tensor comparisons, spelled as the cast along [SG]'s object
-    equality (the composite's comparison converts to the same cast,
-    by the [Example]s above). *)
+(** Both tensor comparisons, spelled cast along [SG]'s 对象
+ equality (复合's comparison converts same cast,
+ [Example]s above). （已译） *)
 Lemma CPresentedComposite_ap_cast (x y : list Colour) :
   to (@ap_iso _ _ _ _ CPresentedComposite
         (@strict_functor_is_monoidal _ _ _ _ CPresentedComposite
@@ -354,9 +354,9 @@ Proof.
   exact (@strict_ap_iso_id _ _ _ _ G SG x y).
 Qed.
 
-(** The composite inherits the braid-compatibility square from [HBW]:
-    rewriting all four comparisons to the SAME cast aligns the two
-    squares, and the remaining sides agree definitionally. *)
+(** The 复合 inherits braid-compatibility square [HBW]:
+ rewriting all four comparisons SAME cast aligns two
+ squares, remaining sides agree definitionally. （已译） *)
 Lemma CPresentedComposite_SymmetricStrict :
   CSymmetricStrict Σ Cdec P CPresentedComposite
     (@strict_functor_is_monoidal _ _ _ _ CPresentedComposite
@@ -488,19 +488,15 @@ Proof using Cdec E OD P v.
   now rewrite !hom_cast_roundtrip.
 Qed.
 
-(** ** Machine-checked sanity
+(* 相关说明。 （已译） *)
 
-    Each [Example] pins a definitional behaviour, so any regression in
-    the quotient-lifting or shared-record wiring is caught here rather
-    than at a distant use site. *)
-
-(** The lifted functor acts as the interpretation on terms. *)
+(** The lifted 函子 acts interpretation terms. （已译） *)
 Example CPresentedInterp_fmap_on_terms {cs ds : list Colour}
   (t : CTerm Σ cs ds) :
   fmap[CPresentedInterp] (cquot E t) = cinterp P Σ v t := eq_refl.
 
-(** The strict object comparisons of [CPresentedInterp_Strict] are the
-    coloured-PROP class fields themselves. *)
+(** The strict 对象 comparisons [CPresentedInterp_Strict] the
+ coloured-PROP class fields themselves. （已译） *)
 Example CPresentedInterp_strict_pure_obj_is_cprop_unit_nil :
   @strict_pure_obj _ _ _ _ CPresentedInterp CPresentedInterp_Strict
   = @cprop_unit_nil Colour P := eq_refl.
@@ -510,8 +506,8 @@ Example CPresentedInterp_strict_ap_obj_is_cprop_tensor_app
   @strict_ap_obj _ _ _ _ CPresentedInterp CPresentedInterp_Strict x y
   = @cprop_tensor_app Colour P x y := eq_refl.
 
-(** Every axiom of the theory holds under the lifted interpretation —
-    the end-to-end form of [CESound]. *)
+(** 本节：Every axiom theory holds under lifted interpretation —
+ end-to-end form [CESound]. （已译） *)
 Example CPresentedInterp_respects_axioms {cs ds : list Colour}
   (s t : CTerm Σ cs ds) (Hax : csmt_eqs E cs ds s t) :
   fmap[CPresentedInterp] (cquot E s) ≈ fmap[CPresentedInterp] (cquot E t) :=

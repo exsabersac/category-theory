@@ -46,8 +46,8 @@ Context `{H : @ElementaryTopos C}.
 
 (** ** (A) The power-object functor *)
 
-(* P := Ω^(−), as the partial application of the internal hom at Ω.  Its
-   contravariance is [InternalHomFunctor]'s in its first argument. *)
+(* P := Ω^(−), partial application internal hom at Ω. Its
+ contravariance [InternalHomFunctor]'s first 论元. （已译） *)
 Definition PowF : C^op ⟶ C := Partial_l (InternalHomFunctor C) Ω.
 
 (* Three readbacks, all on the nose. *)
@@ -58,9 +58,9 @@ Example powf_obj_exponent (a : C) : fobj[PowF] a = exponent_obj a Ω := eq_refl.
 Example powf_map {a b : C} (f : b ~{C}~> a) :
   fmap[PowF] f = curry (id ∘ eval ∘ second f) := eq_refl.
 
-(** ** (B) [flip] is an involution, and its two composition laws *)
+(* * ** (B) [flip] involution, two 复合 laws （已译） *)
 
-(* NEW: no involution lemma for the cartesian-closed [flip] existed. *)
+(* NEW: no involution 引理 cartesian-closed [flip] existed. （已译） *)
 Lemma flip_flip {a b : C} (f : a ~> Ω^b) : flip (flip f) ≈ f.
 Proof.
   unfold flip.
@@ -97,9 +97,9 @@ Proof.
   unfork.
 Qed.
 
-(** ** (C) Self-adjointness on the right *)
+(* 相关说明。 （已译） *)
 
-(* [flip] as a morphism of [Sets], used for BOTH legs of the isomorphism. *)
+(* [flip] 态射 [Sets], used BOTH legs 同构. （已译） *)
 Program Definition flip_mor (a b : C) :
   {| carrier := a ~{C}~> Ω^b ; is_setoid := @homset C a (Ω^b) |}
     ~{Sets}~>
@@ -115,9 +115,9 @@ Program Definition pow_aor (a x : C) :
 Next Obligation. simpl; apply flip_flip. Qed.
 Next Obligation. simpl; apply flip_flip. Qed.
 
-(* Mac Lane §IV.2 definition 2's vocabulary (Adjunction/Right.v): the four
-   naturality fields are [flip_comp], [flip_pow_comp], [flip_pow_comp],
-   [flip_comp], in that order. *)
+(* Mac Lane §IV.2 定义 2's vocabulary (Adjunction/Right.v): four
+ 自然性 fields [flip_comp], [flip_pow_comp], [flip_pow_comp],
+ [flip_comp], order. （已译） *)
 Program Definition pow_self_adjoint : AdjointOnTheRight PowF PowF :=
   {| aor := pow_aor |}.
 Next Obligation. apply flip_comp. Qed.
@@ -134,7 +134,7 @@ Definition pow_adjunction :
   @Adjunction (C^op) C (Opposite_Functor PowF) PowF :=
   Adjunction_of_AdjointOnTheRight pow_self_adjoint.
 
-(* The two transposes ARE [flip], on the nose. *)
+(* 相关说明。 （已译） *)
 Example pow_to_adj_is_flip {a x : C} (f : a ~> PowF x) :
   to (@adj (C^op) C (Opposite_Functor PowF) PowF pow_adjunction x a) f
     = flip f := eq_refl.
@@ -143,9 +143,9 @@ Example pow_from_adj_is_flip {a x : C} (f : x ~> PowF a) :
   from (@adj (C^op) C (Opposite_Functor PowF) PowF pow_adjunction x a) f
     = flip f := eq_refl.
 
-(* The unit and the counit of a self-adjunction on the right are one and
-   the same map, [flip id] -- classically the "singleton of singleton"
-   Ω^(Ω^x) map.  Both readbacks are on the nose. *)
+(* The unit counit self-伴随 right one and
+ same map, [flip id] -- classically "singleton singleton"
+ Ω^(Ω^x) map. Both readbacks nose. （已译） *)
 Example pow_unit_is_flip_id {x : C} :
   @unit (C^op) C (Opposite_Functor PowF) PowF pow_adjunction x
     = flip (@id C (Pow x)) := eq_refl.
@@ -154,11 +154,9 @@ Example pow_counit_is_flip_id {x : C} :
   @counit (C^op) C (Opposite_Functor PowF) PowF pow_adjunction x
     = flip (@id C (Pow x)) := eq_refl.
 
-(** ** (D) The reduction lemma for precomposition *)
+(* * ** (D) The reduction 引理 precomposition （已译） *)
 
-(* P applied to m, precomposed with a transpose, is the transpose of the
-   substituted map.  Used at two sites in Structure/Topos/Monadic.v,
-   [pow_ex_mono] and [pow_bc]. *)
+(* 相关说明。 （已译） *)
 Lemma pow_precompose {z u x : C} (m : u ~> x) (h : z × x ~> Ω) :
   fmap[PowF] m ∘ curry h ≈ curry (h ∘ second m).
 Proof.
@@ -168,7 +166,7 @@ Proof.
   reflexivity.
 Qed.
 
-(** ** (E) Fidelity to the issue's [relations_iso] route *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Power 相关定义、性质与动机。
@@ -182,8 +180,8 @@ Example relations_iso_from_is_reindex {a b : C} (f : a ~> Pow b) :
   from (relations_iso a b) f = sub_reindex (uncurry f) truth_subobject
   := eq_refl.
 
-(* The issue's transposition: read f : a ~> Pow b as a subobject of a × b,
-   turn that relation round with [swap], and read it back as b ~> Pow a. *)
+(* The issue's transposition: read f : ~> Pow b subobject × b,
+ turn 关系 round [swap], read it back b ~> Pow a. （已译） *)
 Definition pow_relations {a b : C} (f : a ~> Pow b) : b ~> Pow a :=
   to (relations_iso b a) (sub_reindex swap (from (relations_iso a b) f)).
 

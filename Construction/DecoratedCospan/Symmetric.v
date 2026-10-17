@@ -95,9 +95,9 @@ Class DecCospan_Bifunctor_Coherent : Type := {
             (dec_cospan_id id_decoration Y)
       ≈ id_decoration (X + Y)%object;
 
-  (** Decoration coherence for [tensor_respects]: pairwise equivalent
-      decorated cospans yield equivalent tensors, with the decoration
-      transporting along the per-component apex isos. *)
+  (** 本节：Decoration coherence [tensor_respects]: pairwise equivalent
+ decorated cospans yield equivalent tensors, decoration
+ transporting along per-component apex isos. （已译） *)
   dec_tensor_respects_dec :
     forall {X Y X' Y' : C}
            (f f' : DecoratedCospanArrow X Y)
@@ -111,9 +111,9 @@ Class DecCospan_Bifunctor_Coherent : Type := {
         ∘ dec_tensor_decoration f g
       ≈ dec_tensor_decoration f' g';
 
-  (** Decoration interchange: the tensor of two composites equals the
-      composite of two tensors, with decorations matching after the
-      cospan-level apex-iso transport. *)
+  (** Decoration interchange: tensor two composites equals the
+ 复合 two tensors, decorations matching after the
+ cospan-level apex-iso transport. （已译） *)
   dec_tensor_compose_compat_dec :
     forall {X Y Z X' Y' Z' : C}
            (g : DecoratedCospanArrow Y Z) (f : DecoratedCospanArrow X Y)
@@ -133,7 +133,7 @@ Context `{DCBC : DecCospan_Bifunctor_Coherent}.
 
 Set Default Proof Using "All".
 
-(** ** Bifunctor-level lemmas, pairing cospan + decoration coherences *)
+(* 相关说明。 （已译） *)
 
 Lemma dec_cospan_tensor_id (X Y : C) :
   dec_cospan_equiv
@@ -184,7 +184,7 @@ Proof.
   - simpl. exact (dec_tensor_compose_compat_dec g f g' f').
 Qed.
 
-(** ** [DecoratedCospan_Bifunctor]: the Bifunctor on [DecoratedCospanCat] *)
+(* 相关说明。 （已译） *)
 
 #[export] Program Instance dec_cospan_tensor_respects_proper
   {X Y X' Y' : C} :

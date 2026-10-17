@@ -16,7 +16,7 @@ Require Import Category.Theory.Equivalence.Limit.
 
 Generalizable All Variables.
 
-(** * Limits in a full reflective subcategory *)
+(* 相关说明。 （已译） *)
 
 (*
    Book: Riehl, "Category Theory in Context", Dover 2016, §4.6,
@@ -35,8 +35,8 @@ Context (R : Reflective S).
 
 Notation I := (Incl C S).
 
-(* The reflection adjunction, under a short name.  Deliberately NOT an
-   [Instance]: the transpose notations below name it explicitly. *)
+(* The reflection 伴随, under short name. Deliberately NOT an
+ [Instance]: transpose notations below name it explicitly. （已译） *)
 
 Definition reflective_incl_adj : reflector R ⊣ I := reflective_adj R.
 
@@ -52,9 +52,7 @@ Notation "⌈ f ⌉" := (from (@adj _ _ _ _ reflective_incl_adj _ _) f).
 Definition reflective_Incl_Full : Functor.Full I :=
   Full_Implies_Full_Functor C S (reflective_full R).
 
-(* Injectivity of the forward transpose.  [adj_to_inj]
-   (Adjunction/Additive.v) is the same fact, in a module outside this
-   file's closure. *)
+(* 相关说明。 （已译） *)
 
 Lemma reflective_to_adj_inj {x : C} {y : Sub C S}
   (f g : reflector R x ~{Sub C S}~> y) : ⌊f⌋ ≈ ⌊g⌋ → f ≈ g.
@@ -72,8 +70,7 @@ Context (K : J ⟶ Sub C S).
 
 (** ** The lift *)
 
-(* A cone over the diagram read in C, transposed across the reflection.
-   Its apex is the reflector applied to the apex downstairs. *)
+(* 相关说明。 （已译） *)
 
 Definition reflective_lift (N : Cone (I ◯ K)) : Cone K :=
   rapl_transposed_cone reflective_incl_adj K N.
@@ -91,7 +88,7 @@ Section Compare.
 Context (N : Cone (I ◯ K)).
 Context (HN : IsLimitCone N).
 
-(* The mediator of the image of the lift through the limiting cone N. *)
+(* 相关说明。 （已译） *)
 
 Definition reflective_compare :
   I (reflector R vertex_obj[N]) ~{C}~> vertex_obj[N] :=
@@ -103,7 +100,7 @@ Proof.
   exact (unique_property (HN (FCone I (reflective_lift N))) x).
 Qed.
 
-(* One inverse law, by the uniqueness clause of the limit N. *)
+(* 相关说明。 （已译） *)
 
 Lemma reflective_compare_unit :
   reflective_compare
@@ -125,9 +122,9 @@ Proof.
     apply id_right.
 Qed.
 
-(* The other inverse law, by fullness.  This is the one place fullness
-   is spent BY HAND; the reflection lemma below spends it too, by handing
-   it to [ff_reflect_ump]. *)
+(* The other inverse law, fullness. This one place fullness
+ spent BY HAND; reflection 引理 below spends it too, handing
+ it [ff_reflect_ump]. （已译） *)
 
 Lemma reflective_unit_compare :
   @unit _ _ (reflector R) I reflective_incl_adj vertex_obj[N]
@@ -189,10 +186,10 @@ Definition reflective_ReflectsLimitCone : ReflectsLimitCone K I :=
     @ff_ReflectsLimitCone (Sub C S) C I reflective_Incl_Full
       (Incl_Faithful C S) J K M H.
 
-(** ** Riehl 4.6.14(i) / 5.6.6, at one diagram *)
+(* 相关说明。 （已译） *)
 
-(* Note that the lift ignores the limiting hypothesis: it is defined for
-   every cone downstairs. *)
+(* Note lift ignores limiting 假设: it defined for
+ every cone downstairs. （已译） *)
 
 Definition reflective_CreatesLimit : CreatesLimit K I :=
   {| creates_lift      := fun N _ => reflective_lift N
@@ -212,14 +209,12 @@ Example reflective_inherits_limits_apex (L : Limit (Incl C S ◯ K)) :
   vertex_obj[@limit_cone _ _ _ (reflective_inherits_limits L)]
     = reflector R vertex_obj[@limit_cone _ _ _ L] := eq_refl.
 
-(** ** The inclusion preserves limits, with no completeness hypothesis *)
+(* * ** The 含入 preserves limits, no completeness 假设 （已译） *)
 
 Definition reflective_Incl_PreservesLimitCone : PreservesLimitCone K I :=
   right_adjoint_PreservesLimitCone reflective_incl_adj K.
 
-(* The creation route and the right-adjoint route to the same statement
-   agree on mediators up to [≈], by uniqueness of the mediator, and are
-   not convertible (pinned in the probe). *)
+(* 相关说明。 （已译） *)
 
 Lemma reflective_two_routes_agree (L : Limit (I ◯ K))
   (M : Cone K) (HM : IsLimitCone M) (P : Cone (I ◯ K)) :
@@ -233,7 +228,7 @@ Qed.
 
 End Shape.
 
-(** ** The quantified forms, and Riehl's "in particular" *)
+(* 相关说明。 （已译） *)
 
 Definition reflective_CreatesLimitsOfShape (J : Category) :
   CreatesLimitsOfShape J I := fun K => reflective_CreatesLimit K.

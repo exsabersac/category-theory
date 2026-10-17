@@ -8,7 +8,7 @@ From Coq Require Import Arith.
 
 Generalizable All Variables.
 
-(** * The free PROP category on a signature *)
+(* * * The free PROP 范畴 signature （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/free+category
@@ -24,7 +24,7 @@ Section FreeCategory.
 
 Context (S : Signature).
 
-(** The hom-setoid: terms are quotiented by [TermEq]. *)
+(** 本节：The hom-setoid: terms quotiented [TermEq]. （已译） *)
 #[export] Program Instance Term_Setoid {m n : nat} : Setoid (Term S m n) := {|
   equiv := @TermEq S m n
 |}.

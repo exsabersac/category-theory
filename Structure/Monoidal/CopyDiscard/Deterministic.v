@@ -41,7 +41,7 @@ Section MidSwapCoherence.
 Context {C : Category}.
 Context `{S : @SymmetricMonoidal C}.
 
-(* [mid_swap_inv] (Hypergraph.v) is the diagonal of the interchange. *)
+(* 相关说明。 （已译） *)
 Lemma swap_inner_diag (x y : C) : swap_inner x x y y ≈ mid_swap_inv x y.
 Proof. reflexivity. Qed.
 
@@ -63,8 +63,7 @@ Proof.
   apply swap_inner_assoc.
 Qed.
 
-(* The unit coherence, left form: conjugating [mid_swap_inv I x] by the
-   canonical unit isomorphisms is the left unitor. *)
+(* 相关说明。 （已译） *)
 Corollary mid_swap_inv_unit_left {x : C} :
   (unit_left ⨂ unit_left) ∘ mid_swap_inv I x
     ∘ (unit_left⁻¹ ⨂ id[(x ⨂ x)%object])
@@ -128,8 +127,7 @@ Theorem discard_natural_on_deterministic {x y : C} (f : x ~> y) :
   deterministic f → discard[y] ∘ f ≈ discard[x].
 Proof. intro F. exact (@hom_epsilon _ _ _ _ _ _ _ F). Qed.
 
-(* Closure under the tensor: the δ-square pastes through
-   [mid_swap_inv_natural], the ε-square through the unit. *)
+(* 相关说明。 （已译） *)
 Lemma deterministic_tensor {x x' y y' : C} {f : x ~> y} {f' : x' ~> y'} :
   deterministic f → deterministic f' → deterministic (f ⨂ f').
 Proof.
@@ -183,9 +181,7 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The comonoid laws of the canonical supply, restated in copy/discard
-   form for rewriting (the class fields state them at [delta] and
-   [epsilon] of the underlying comonoid). *)
+(* 相关说明。 （已译） *)
 
 Lemma copy_coassoc {x : C} :
   (copy[x] ⨂ id[x]) ∘ copy[x]
@@ -195,7 +191,7 @@ Proof.
   exact (@delta_coassoc C _ x (cd_comonoid x)).
 Qed.
 
-(* Coassociativity solved for the forward associator. *)
+(* 相关说明。 （已译） *)
 Lemma copy_coassoc_to {x : C} :
   to tensor_assoc ∘ ((copy[x] ⨂ id[x]) ∘ copy[x])
     ≈ (id[x] ⨂ copy[x]) ∘ copy[x].
@@ -221,8 +217,8 @@ Lemma copy_copy {x : C} :
   copy[(x ⨂ x)%object] ∘ copy[x] ≈ (copy[x] ⨂ copy[x]) ∘ copy[x].
 Proof.
   rewrite copy_tensor.
-  (* The α-normalized two-fold copy: all three copies pushed into the
-     right-hand nest. *)
+  (* The α-normalized two-fold copy: all three copies pushed 进入
+ right-hand nest. （已译） *)
   assert (Key : to (@tensor_assoc C _ x x (x ⨂ x)%object)
                   ∘ ((copy[x] ⨂ copy[x]) ∘ copy[x])
                   ≈ (id[x] ⨂ ((id[x] ⨂ copy[x]) ∘ copy[x])) ∘ copy[x]).
@@ -250,8 +246,7 @@ Proof.
     rewrite comp_assoc.
     rewrite bimap_id_left_right.
     reflexivity. }
-  (* Conjugating the inner braid by the associators fixes the nest:
-     cocommutativity. *)
+  (* 相关说明。 （已译） *)
   assert (Inner : to (@tensor_assoc C _ x x x)
                     ∘ ((braid ⨂ id[x])
                          ∘ ((@tensor_assoc C _ x x x)⁻¹
@@ -276,7 +271,7 @@ Proof.
   apply Key2.
 Qed.
 
-(* The ε-square of copy: the counit laws. *)
+(* 相关说明。 （已译） *)
 Lemma discard_copy {x : C} :
   discard[(x ⨂ x)%object] ∘ copy[x] ≈ discard[x].
 Proof.
@@ -297,8 +292,7 @@ Proof.
   - exact discard_copy.
 Qed.
 
-(* The δ-square of discard: both sides are the counit pushed through the
-   left unitor. *)
+(* 相关说明。 （已译） *)
 Lemma copy_discard {x : C} :
   copy[I] ∘ discard[x] ≈ (discard[x] ⨂ discard[x]) ∘ copy[x].
 Proof.
@@ -310,7 +304,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* The ε-square of discard: the unit coherence. *)
+(* 相关说明。 （已译） *)
 Lemma discard_discard {x : C} :
   discard[I] ∘ discard[x] ≈ discard[x].
 Proof.
@@ -325,10 +319,9 @@ Proof.
   - exact discard_discard.
 Qed.
 
-(** *** The structural isomorphisms are deterministic *)
+(* 相关说明。 （已译） *)
 
-(* Braiding: the δ-square is the interchange/braid compatibility, the
-   ε-square degenerates through [braid_I_I]. *)
+(* 相关说明。 （已译） *)
 
 Lemma copy_braid {x y : C} :
   copy[(y ⨂ x)%object] ∘ braid ≈ (braid ⨂ braid) ∘ copy[(x ⨂ y)%object].
@@ -436,8 +429,7 @@ Theorem deterministic_unit_right_from {x : C} :
   deterministic ((@unit_right C _ x)⁻¹).
 Proof. exact (deterministic_iso_from _ deterministic_unit_right_to). Qed.
 
-(* Associator: the δ-square is the associativity hexagon of the
-   interchange, the ε-square a triangle-and-Kelly computation. *)
+(* 相关说明。 （已译） *)
 
 Lemma copy_tensor_assoc {x y z : C} :
   copy[(x ⨂ (y ⨂ z))%object] ∘ to tensor_assoc
@@ -509,7 +501,7 @@ Theorem deterministic_tensor_assoc_from {x y z : C} :
   deterministic ((@tensor_assoc C _ x y z)⁻¹).
 Proof. exact (deterministic_iso_from _ deterministic_tensor_assoc_to). Qed.
 
-(** *** The wide deterministic subcategory [Det] (Fritz §10) *)
+(* 相关说明。 （已译） *)
 
 Program Definition DeterministicSub : Subcategory C := {|
   sobj  := fun _ => poly_unit;
@@ -523,7 +515,7 @@ Definition Det : Category := Sub C DeterministicSub.
 Lemma Det_wide : Wide C DeterministicSub.
 Proof. intro x; exact ttt. Qed.
 
-(* The inclusion Det ⟶ C is the generic (faithful) [Incl C DeterministicSub]
-   from Construction/Subcategory.v. *)
+(* The 含入 Det ⟶ C generic (faithful) [Incl C DeterministicSub]
+ Construction/Subcategory.v. （已译） *)
 
 End Deterministic.

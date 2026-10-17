@@ -57,8 +57,7 @@ Proof.
   apply padd_pneg.
 Qed.
 
-(* Right cancellation: adding [pneg h] on the right and reassociating
-   strips the common summand. *)
+(* 相关说明。 （已译） *)
 Lemma padd_cancel_right {x y : C} (f g h : x ~> y) :
   padd f h ≈ padd g h -> f ≈ g.
 Proof.
@@ -101,9 +100,9 @@ Proof.
   apply padd_zero_left.
 Qed.
 
-(* Postcomposition commutes with negation: h ∘ pneg f is an additive
-   inverse of h ∘ f, since composition distributes over the addition and
-   absorbs the zero. *)
+(* Postcomposition commutes negation: h ∘ pneg f additive
+ inverse h ∘ f, since 复合 distributes over addition and
+ absorbs zero. （已译） *)
 Lemma compose_pneg_left {x y z : C} (h : y ~> z) (f : x ~> y) :
   h ∘ pneg f ≈ pneg (h ∘ f).
 Proof.
@@ -125,8 +124,8 @@ Qed.
 
 End AdditiveLaws.
 
-(* Subtraction of parallel morphisms, and its notation alongside `+` and
-   `0` in addition_scope. *)
+(* Subtraction parallel 态射, notation alongside `+` and
+ `0` addition_scope. （已译） *)
 Definition psub {C : Category} `{A : @Additive C} {x y : C}
   (f g : x ~> y) : x ~> y := padd f (pneg g).
 

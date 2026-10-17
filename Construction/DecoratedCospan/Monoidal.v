@@ -51,9 +51,9 @@ Context `{DCBC : @DecCospan_Bifunctor_Coherent C HP H_Coc MC D MD F LM
 
 Notation DC := (DecoratedCospanCat HP LM id_decoration cospan_merge).
 
-(** Local aliases that fix the [LM], [cospan_merge], [id_decoration]
-    arguments to those of the ambient section, so the proofs below
-    don't have to re-pass them at every use. *)
+(** 本节：Local aliases fix [LM], [cospan_merge], [id_decoration]
+ arguments those ambient section, so proofs below
+ don't have re-pass them at every use. （已译） *)
 
 Notation Dtensor f g := (dec_cospan_tensor LM cospan_merge f g).
 Notation Dcompose g f := (dec_cospan_compose HP LM cospan_merge g f).

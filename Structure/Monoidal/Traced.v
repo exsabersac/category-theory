@@ -57,7 +57,7 @@ Class TracedMonoidal := {
     trace (tensor_assoc⁻¹ ∘ id[c] ⨂ f ∘ tensor_assoc)
       ≈ id[c] ⨂ trace f;
 
-  (* Yanking: tracing the braiding of x past itself yields the identity. *)
+  (* Yanking: tracing braiding x past itself yields 恒等. （已译） *)
   yanking {x} : trace braid ≈ id[x];
 }.
 #[export] Existing Instance traced_is_symmetric.

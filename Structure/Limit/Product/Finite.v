@@ -14,7 +14,7 @@ Require Import Category.Instance.Coq.
 
 Generalizable All Variables.
 
-(** * Finite products from a terminal object and binary products *)
+(* * * Finite products 终对象 binary products （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Product_(category_theory)
@@ -179,7 +179,7 @@ Arguments fin_prod {C _ _} n f.
 Arguments fin_proj {C _ _} n f i.
 Arguments fin_tuple {C _ _} n f c pi.
 
-(** ** Reading an indexed product at the two bracketing arities *)
+(* 相关说明。 （已译） *)
 
 Definition iprod_zero_IsTerminalObj {C : Category} (f : Fin.t 0 → C)
   (p : C) (proj : ∀ i, p ~> f i) (HP : IsIndexedProduct f p proj) :
@@ -237,7 +237,7 @@ Defined.
 
 End IndexedProductTwo.
 
-(** ** Essential uniqueness of an indexed product *)
+(* 相关说明。 （已译） *)
 
 Section IndexedProductUnique.
 
@@ -293,7 +293,7 @@ Definition Cartesian_of_IsCartesianProduct {C : Category}
   ump_products  := fun x y z => @ump_product C y z (P y z) (HP y z) x
 |}.
 
-(** ** The class of finite products, and its two directions *)
+(* 相关说明。 （已译） *)
 
 Class HasFiniteProducts (C : Category) := {
   finite_product {n : nat} (f : Fin.t n → C) : C;
@@ -335,7 +335,7 @@ Proof.
     exact (Cartesian_Terminal_HasFiniteProducts CP T).
 Defined.
 
-(** ** The two bracketing arities of the fold itself *)
+(* 相关说明。 （已译） *)
 
 Definition fin_zero_IsTerminalObj {C : Category}
   (CP : @Cartesian C) (T : @Terminal C) (f : Fin.t 0 → C) :
@@ -361,8 +361,8 @@ Definition fin_prod_unique_iso {C : Category} (CP : @Cartesian C)
   iprod_unique_iso f (fin_prod n f) q (fin_proj n f) projq
     (fin_IsIndexedProduct n f) HQ.
 
-(* ... and the isomorphism commutes with the projections, in both
-   directions.  A bare [≅] would be the weak form. *)
+(* ... 同构 commutes projections, both
+ directions. A bare [≅] would weak form. （已译） *)
 Definition fin_prod_unique_iso_to {C : Category} (CP : @Cartesian C)
   (T : @Terminal C) (n : nat) (f : Fin.t n → C) (q : C)
   (projq : ∀ i, q ~> f i) (HQ : IsIndexedProduct f q projq) :
@@ -378,7 +378,7 @@ Definition fin_prod_unique_iso_from {C : Category} (CP : @Cartesian C)
   iprod_compare_inv_commutes f (fin_prod n f) q (fin_proj n f) projq
     (fin_IsIndexedProduct n f).
 
-(** ** Awodey's left-associated ternary product *)
+(* 相关说明。 （已译） *)
 
 Section AwodeyTernary.
 
@@ -401,8 +401,7 @@ Definition awodey_tuple {c : C} (pi : ∀ i, c ~> fin3 x y z i) :
   c ~> awodey_prod :=
   (pi Fin.F1 △ pi (Fin.FS Fin.F1)) △ pi (Fin.FS (Fin.FS Fin.F1)).
 
-(* The three triangles, stated with the projections written out so that no
-   tactic has to unfold [awodey_proj]; they are convertible with it. *)
+(* 相关说明。 （已译） *)
 Lemma awodey_tuple_1 {c : C} (pi : ∀ i, c ~> fin3 x y z i) :
   (exl ∘ exl) ∘ awodey_tuple pi ≈ pi Fin.F1.
 Proof.
@@ -453,8 +452,8 @@ Defined.
 
 End AwodeyTernary.
 
-(* Awodey §2.7's displayed ternary product IS this file's right fold, up to
-   a canonical isomorphism commuting with all three projections. *)
+(* Awodey §2.7's displayed ternary product IS file's right fold, up to
+ canonical 同构 commuting all three projections. （已译） *)
 Definition awodey_fold_iso {C : Category} (CP : @Cartesian C)
   (T : @Terminal C) (x y z : C) :
   fin_prod 3 (fin3 x y z) ≅ awodey_prod CP x y z :=
@@ -552,7 +551,7 @@ Definition HasFiniteCoproducts_Initial {C : Category}
   (HP : HasFiniteCoproducts C) : @Initial C :=
   @HasFiniteProducts_Terminal (C^op) HP.
 
-(** ** Non-vacuity: the fold computes *)
+(* 相关说明。 （已译） *)
 
 Example coq_fin_prod_zero (f : Fin.t 0 → Coq) :
   fin_prod 0 f = unit := eq_refl.

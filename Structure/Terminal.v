@@ -55,8 +55,8 @@ Proof. intros; apply one_unique. Qed.
 Notation "one[ C ]" := (@one _ _ C)
   (at level 9, format "one[ C ]") : morphism_scope.
 
-(* A "constant" map `x ~> y` factoring through `1`: pick `f : 1 ~> y`, then
-   precompose with `! : x ~> 1`, so the result ignores its argument's data. *)
+(* A "常值" map `x ~> y` factoring through `1`: pick `f : 1 ~> y`, then
+ precompose `! : x ~> 1`, so result ignores 论元's data. （已译） *)
 Definition const `{@Terminal C} {x y : C} {f : 1 ~> y} := f ∘ one[x].
 
 (*
@@ -89,12 +89,11 @@ Proof. apply (@one_unique C T2). Qed.
 Definition IsTerminalObj {C : Category} (c : C) : Type :=
   ∀ x : C, Unique (fun _ : x ~> c => True).
 
-(* The unique arrow x ~> c supplied by the predicate. *)
+(* The 唯一箭头 x ~> c supplied predicate. （已译） *)
 Definition is_terminal_one {C : Category} {c : C} (H : IsTerminalObj c)
   {x : C} : x ~> c := unique_obj (H x).
 
-(* ... and its uniqueness, in the two-arrow form used by [one_unique]:
-   both arrows agree with the chosen witness, hence with each other. *)
+(* 相关说明。 （已译） *)
 Lemma is_terminal_unique {C : Category} {c : C} (H : IsTerminalObj c)
   {x : C} (f g : x ~> c) : f ≈ g.
 Proof.
@@ -111,7 +110,7 @@ Program Definition Terminal_from_IsTerminalObj {C : Category} {c : C}
 |}.
 Next Obligation. now apply (is_terminal_unique H). Qed.
 
-(* ... and conversely, unbundling at the chosen object. *)
+(* ... conversely, unbundling at chosen 对象. （已译） *)
 Program Definition IsTerminalObj_from_Terminal {C : Category}
   (T : @Terminal C) : IsTerminalObj (@terminal_obj C T) := fun x =>
   {| unique_obj := @one C T x

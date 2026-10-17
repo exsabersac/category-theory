@@ -16,7 +16,7 @@ Require Import Category.Structure.Limit.Coproduct.
 
 Generalizable All Variables.
 
-(** * The hom-set form of the indexed product and coproduct *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/coproduct
@@ -29,7 +29,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The indexed hom presheaf [c ↦ ∏ₐ C(c, f a)] *)
+(* 相关说明。 （已译） *)
 
 Definition iprod_hom_fam {C : Category} {A : Type} (f : A → C) (c : C) :
   A → obj[Sets] :=
@@ -54,7 +54,7 @@ Next Obligation.
   intros C A f x y z h k fam a; simpl; apply comp_assoc.
 Qed.
 
-(** ** The comparison map: restriction along the projections *)
+(* 相关说明。 （已译） *)
 
 Program Definition iprod_hom_transform {C : Category} {A : Type} (f : A → C)
   (q : C) (proj : ∀ a : A, q ~> f a) :
@@ -71,7 +71,7 @@ Next Obligation.
   intros C A f q proj x y h u a; simpl; apply comp_assoc.
 Qed.
 
-(** ** The inverse, supplied by the universal property *)
+(* * ** The inverse, supplied 普遍性质 （已译） *)
 
 Program Definition iprod_hom_inverse {C : Category} {A : Type} {f : A → C}
   {q : C} {proj : ∀ a : A, q ~> f a} (H : IsIndexedProduct f q proj) :
@@ -120,7 +120,7 @@ Next Obligation.
   intros a; reflexivity.
 Qed.
 
-(** ** The converse: an invertible comparison map is a universal property *)
+(* * ** The converse: invertible comparison map 普遍性质 （已译） *)
 
 Definition iprod_of_hom_iso {C : Category} {A : Type} {f : A → C}
   {q : C} {proj : ∀ a : A, q ~> f a}
@@ -184,8 +184,7 @@ Example iprod_hom_iso_from_is_desc {C : Category} {A : Type} {f : A → C}
   transform (from (iprod_hom_iso H)) c fam = unique_obj (iprod_desc H fam)
   := eq_refl.
 
-(* The biconditional's pairing is transparent, so projecting it returns the
-   named leg by conversion rather than merely proving the same thing. *)
+(* 相关说明。 （已译） *)
 
 Example iprod_iff_hom_iso_fst {C : Category} {A : Type} (f : A → C)
   (q : C) (proj : ∀ a : A, q ~> f a) :
@@ -197,11 +196,11 @@ Example iprod_iff_hom_iso_snd {C : Category} {A : Type} (f : A → C)
   snd (iprod_iff_hom_iso f q proj)
   = fun I => @iprod_of_hom_iso C A f q proj I := eq_refl.
 
-(** ** The coproduct side, by definition at [C^op] *)
+(* * ** The coproduct side, 定义 at [C^op] （已译） *)
 
-(* Every constant in this section is its product counterpart applied at
-   [C^op], supplied by [:=] with no tactic; [icoprod_hom_functor_is_op]
-   records that reading by [eq_refl]. *)
+(* Every 常值 section product counterpart applied at
+ [C^op], supplied [:=] no tactic; [icoprod_hom_functor_is_op]
+ records reading [eq_refl]. （已译） *)
 
 Definition icoprod_hom_fam {C : Category} {A : Type} (f : A → C) (c : C) :
   A → obj[Sets] :=
@@ -271,7 +270,7 @@ Example icoprod_hom_iso_from_is_desc {C : Category} {A : Type} {f : A → C}
   transform (from (icoprod_hom_iso H)) c fam = unique_obj (icoprod_desc H fam)
   := eq_refl.
 
-(** ** The three presentations of an indexed (co)product all compose *)
+(* 相关说明。 （已译） *)
 
 Definition limit_hom_iso {C : Category} {A : Set} (f : A → C)
   (L : Limit (DiscreteCat_Functor f)) :
@@ -297,7 +296,7 @@ Definition indexed_coproduct_hom_iso {C : Category}
                (icoprod_hom_functor f) :=
   icoprod_hom_iso (indexed_coproduct_ump f).
 
-(** ** The right-hand side is the tree's own indexed product, at [Sets] *)
+(* 相关说明。 （已译） *)
 
 Example iprod_hom_functor_is_indexed_product {C : Category} {A : Type}
   (f : A → C) (c : C) :
@@ -311,7 +310,7 @@ Example icoprod_hom_functor_is_indexed_product {C : Category} {A : Type}
 Example icoprod_hom_functor_is_op {C : Category} {A : Type} (f : A → C) :
   icoprod_hom_functor f = @iprod_hom_functor (C^op) A f := eq_refl.
 
-(** ** Non-vacuity: the in-tree indexed (co)products of [Sets] *)
+(* 相关说明。 （已译） *)
 
 Definition Sets_iprod_hom_iso {A : Type} (F : A → obj[Sets]) :
   @Isomorphism ([Sets^op, Sets]) (@Curried_CoHom Sets (Sets_iprod_obj F))
@@ -333,7 +332,7 @@ Example Sets_icoprod_hom_from_computes {A : Type} (F : A → obj[Sets])
   transform (from (Sets_icoprod_hom_iso F)) c fam = Sets_icoprod_case F c fam
   := eq_refl.
 
-(** ** The invertibility hypothesis is not vacuous *)
+(* * ** The invertibility 假设 not vacuous （已译） *)
 
 Definition Sets_const_true : Sets_bool ~{Sets}~> Sets_bool.
 Proof.

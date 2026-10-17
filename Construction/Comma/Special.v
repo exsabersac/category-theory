@@ -15,7 +15,7 @@ Require Import Category.Structure.Terminal.
 
 Generalizable All Variables.
 
-(** * The comma of two constant functors is the discrete category on a hom-set *)
+(* * * The comma two 常值 函子 discrete 范畴 hom-set （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/comma+category
@@ -27,7 +27,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Block A: the discrete category on a setoid *)
+(* * ** Block A: discrete 范畴 setoid （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -48,20 +48,20 @@ Lemma DiscreteSetoidCat_thin {A : Type} (S : Setoid A)
   (x y : DiscreteSetoidCat S) (f g : x ~> y) : f ≈ g.
 Proof. exact I. Qed.
 
-(* The discrete category on the hom-set C(b, a) — Mac Lane's "discrete
-   category on the hom-set", read at the hom-SETOID as the header explains. *)
+(* The discrete 范畴 hom-set C(b, a) — Mac Lane's "discrete
+ 范畴 hom-set", read at hom-SETOID header explains. （已译） *)
 Definition HomDiscrete {C : Category} (b a : C) : Category :=
   DiscreteSetoidCat (@homset C b a).
 
-(** ** Block B: the comma of two constant functors *)
+(* * ** Block B: comma two 常值 函子 （已译） *)
 
 Section CommaConstant.
 
 Context {C : Category}.
 Context {b a : C}.
 
-(* The canonical comma object attached to an arrow h : b ~> a, padded with the
-   unique object of 1 on both sides. *)
+(* The canonical comma 对象 attached arrow h : b ~> a, padded the
+ unique 对象 1 both sides. （已译） *)
 Definition comma_const_obj (h : b ~{C}~> a) : (=(b) ↓ =(a)) := ((ttt, ttt); h).
 
 (*
@@ -117,8 +117,8 @@ Program Definition comma_const_obj_iso {X Y : (=(b) ↓ =(a))} (e : `2 X ≈ `2 
 |}.
 Solve All Obligations with (intros; apply comma_const_thin).
 
-(* Every comma object is canonically isomorphic to the canonical one on its own
-   arrow; only the unit padding changes. *)
+(* Every comma 对象 canonically isomorphic canonical one own
+ arrow; unit padding changes. （已译） *)
 Program Definition comma_const_iso (X : (=(b) ↓ =(a))) :
   comma_const_obj (`2 X) ≅ X := {|
   to   := comma_const_mor (Y:=X) (reflexivity _);
@@ -126,7 +126,7 @@ Program Definition comma_const_iso (X : (=(b) ↓ =(a))) :
 |}.
 Solve All Obligations with (intros; apply comma_const_thin).
 
-(* Read off the arrow: the comma of two constant functors ⟶ the hom-set. *)
+(* Read off arrow: comma two 常值 函子 ⟶ hom-set. （已译） *)
 Program Definition Comma_Hom : (=(b) ↓ =(a)) ⟶ HomDiscrete b a := {|
   fobj := fun X => `2 X;
   fmap := fun _ _ m => comma_const_equiv m
@@ -145,8 +145,7 @@ Solve All Obligations with (intros; apply comma_const_thin).
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
-(* [idtac] so that BOTH clauses are written out rather than left to the default
-   obligation tactic; restored immediately afterwards. *)
+(* 相关说明。 （已译） *)
 #[local] Obligation Tactic := idtac.
 
 Program Definition Comma_Discrete_Hom : (=(b) ↓ =(a)) ≅[Cat] HomDiscrete b a := {|
@@ -163,8 +162,8 @@ Next Obligation.
   intros x y e; exact I.
 Qed.
 Next Obligation.
-  (* Hom_Comma ◯ Comma_Hom ≈ Id[(=(b) ↓ =(a))]: renormalise the unit padding.
-     The coherence clause is an equation between parallel comma morphisms. *)
+  (* Hom_Comma ◯ Comma_Hom ≈ Id[(=(b) ↓ =(a))]: renormalise unit padding.
+ The coherence clause equation between parallel comma 态射. （已译） *)
   exists comma_const_iso.
   intros X Y m.
   first [ apply comma_const_thin | (split; reflexivity) ].
@@ -174,7 +173,7 @@ Qed.
 
 End CommaConstant.
 
-(** ** Block C: the plain [DiscreteCat] reading and its exact price *)
+(* 相关说明。 （已译） *)
 
 Section CommaDiscreteEq.
 
@@ -186,7 +185,7 @@ Context {b a : C}.
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
-(* `=` implies `≈`: transport the reflexivity witness along the equality. *)
+(* 相关说明。 （已译） *)
 Definition discrete_eq_equiv (x y : b ~{C}~> a) (e : x = y) : x ≈ y :=
   match e in _ = z return x ≈ z with eq_refl => reflexivity x end.
 
@@ -205,14 +204,14 @@ Definition Comma_Discrete_eq : DiscreteCat (b ~{C}~> a) ⟶ (=(b) ↓ =(a)) :=
     (fun _ => comma_const_thin _ _ _ _)
     (fun _ _ _ _ _ => comma_const_thin _ _ _ _).
 
-(* The hypothesis that would make the hom-setoid strict. *)
+(* The 假设 would make hom-setoid strict. （已译） *)
 Definition HomStrict : Type := ∀ f g : b ~{C}~> a, f ≈ g → f = g.
 
-(* ... and uniqueness of identity proofs on the hom-type. *)
+(* ... uniqueness 恒等 proofs hom-type. （已译） *)
 Definition HomUIP : Type := ∀ (f g : b ~{C}~> a) (p q : f = g), p = q.
 
-(* Essential surjectivity is free: every comma object is the canonical one on
-   its own arrow, up to the unit-renormalising isomorphism. *)
+(* Essential surjectivity free: every comma 对象 canonical one on
+ own arrow, up unit-renormalising 同构. （已译） *)
 Program Definition Comma_Discrete_eq_ESO :
   EssentiallySurjective Comma_Discrete_eq := {|
   eso_obj := fun X => `2 X;
@@ -263,8 +262,7 @@ Definition Hom_Discrete_eq (HE : HomStrict) (HU : HomUIP) :
     (fun _ => HU _ _ _ _)             (* fmap_id *)
     (fun _ _ _ _ _ => HU _ _ _ _).    (* fmap_comp *)
 
-(* The other leg, again hand-built rather than [DiscreteCat_Functor] so that no
-   universe is baked in; every law is an equation in the thin [HomDiscrete]. *)
+(* 相关说明。 （已译） *)
 Definition Discrete_eq_Hom : DiscreteCat (b ~{C}~> a) ⟶ HomDiscrete b a :=
   @Build_Functor (DiscreteCat (b ~{C}~> a)) (HomDiscrete b a)
     (fun h => h) discrete_eq_equiv
@@ -278,8 +276,8 @@ Program Definition Discrete_HomDiscrete (HE : HomStrict) (HU : HomUIP) :
   from := Hom_Discrete_eq HE HU
 |}.
 Next Obligation.
-  (* Discrete_eq_Hom ◯ Hom_Discrete_eq ≈ Id[HomDiscrete b a]: identity on
-     objects definitionally, and the target is thin. *)
+  (* Discrete_eq_Hom ◯ Hom_Discrete_eq ≈ Id[HomDiscrete b a]: 恒等 on
+ 对象 definitionally, target thin. （已译） *)
   intros HE HU.
   exists (fun _ => iso_id).
   intros x y e; exact I.
@@ -295,9 +293,9 @@ Qed.
 
 #[local] Obligation Tactic := cat_simpl.
 
-(* Mac Lane's remark in its literal, strictly-discrete form — available exactly
-   under the two explicit hypotheses, and (by the theorem after it) not for
-   free. *)
+(* Mac Lane's remark literal, strictly-discrete form — available exactly
+ under two explicit hypotheses, (by 定理 after it) not for
+ free. （已译） *)
 Definition Comma_Discrete_Hom_eq (HE : HomStrict) (HU : HomUIP) :
   DiscreteCat (b ~{C}~> a) ≅[Cat] (=(b) ↓ =(a)) :=
   iso_compose (iso_sym Comma_Discrete_Hom) (Discrete_HomDiscrete HE HU).
@@ -317,7 +315,7 @@ Qed.
 
 End CommaDiscreteEq.
 
-(** ** Block D: witnesses — both hypotheses inhabited, and both necessary *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom、（余）强度相关定义、性质与动机。
@@ -345,8 +343,8 @@ Program Definition Blur : Category := {|
 Lemma Blur_HomStrict_absurd : @HomStrict Blur ttt ttt → False.
 Proof. intro HE; discriminate (HE true false I). Qed.
 
-(* But UIP on the hom-type does hold, by Hedberg's theorem at the decidable
-   equality of [bool] (stdlib [UIP_dec]; no axiom). *)
+(* But UIP hom-type does hold, Hedberg's 定理 at decidable
+ equality [bool] (stdlib [UIP_dec]; no axiom). （已译） *)
 Lemma Blur_HomUIP : @HomUIP Blur ttt ttt.
 Proof.
   intros f g p q; apply UIP_dec.
@@ -362,12 +360,12 @@ Theorem Blur_no_discrete_iso :
   (DiscreteCat (ttt ~{Blur}~> ttt) ≅[Cat] (=((ttt : Blur)) ↓ =((ttt : Blur)))) → False.
 Proof.
   intro iso.
-  (* the two comma images are isomorphic, all Blur-arrows being ≈ *)
+  (* 相关说明。 （已译） *)
   pose proof (comma_const_obj_iso
                 (X := to iso true) (Y := to iso false) I) as Hcomma.
-  (* transport that isomorphism back along `from iso` *)
+  (* transport 同构 back along `from iso` （已译） *)
   pose proof (@fobj_iso _ _ (from iso) _ _ Hcomma) as Hback.
-  (* the round trip identifies `from (to x)` with `x` *)
+  (* 相关说明。 （已译） *)
   pose proof (`1 (iso_from_to iso) true) as Ht.
   pose proof (`1 (iso_from_to iso) false) as Hf.
   assert (Heq : (true : DiscreteCat (ttt ~{Blur}~> ttt)) = false).

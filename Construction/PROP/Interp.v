@@ -19,7 +19,7 @@ From Coq Require Import Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * Interpreting free-PROP terms in an arbitrary PROP *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/free+category
@@ -128,13 +128,13 @@ Context (P : PROP).
 
 Open Scope nat_scope.
 
-(** The PROP-object [⟦n⟧], as in [Construction/PROP.v] (whose notation
-    is section-local there and must be re-declared per file). *)
+(** The PROP-对象 [⟦n⟧], [Construction/PROP.v] (whose notation
+ section-local there must re-declared per file). （已译） *)
 Notation "⟦ n ⟧" := (@prop_of_nat P n) (at level 0, format "⟦ n ⟧").
 
-(** The two [Monoidal] paths through a PROP: the strict one and the
-    braided/symmetric one.  Everything downstream is phrased at [MP];
-    the braid is imported from [MB] by [transport_braid]. *)
+(** 本节：The two [Monoidal] paths through PROP: strict one the
+ braided/symmetric one. Everything downstream phrased at [MP];
+ braid imported [MB] [transport_braid]. （已译） *)
 Definition MP : @Monoidal P := @strict_is_monoidal P (@prop_strict P).
 Definition MB : @Monoidal P :=
   @braided_is_monoidal P (@symmetric_is_braided P (@prop_symmetric P)).
@@ -187,8 +187,8 @@ Proof.
            (fun a b c => @hexagon_identity_sym P _ a b c)).
 Qed.
 
-(** The unitor coherences at [MP] (Joyal–Street Prop. 2.1, imported
-    from [Structure/Monoidal/Braided/Proofs.v] and transported). *)
+(** 本节：The unitor coherences at [MP] (Joyal–Street Prop. 2.1, imported
+ [Structure/Monoidal/Braided/Proofs.v] transported). （已译） *)
 Lemma strict_braid_unit_left (x : P) :
   to (@unit_left P MP x) ∘ strict_braid x (@I P MP)
     ≈ to (@unit_right P MP x).
@@ -211,9 +211,9 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** A transparent pairing of object equalities through the tensor.
-    The stdlib's [f_equal2] is opaque, so a cast along it would be
-    stuck even at [eq_refl]; this local combinator reduces. *)
+(** A transparent pairing 对象 equalities through tensor.
+ The stdlib's [f_equal2] opaque, so cast along it would be
+ stuck even at [eq_refl]; local 组合子 reduces. （已译） *)
 Definition tensor_obj_eq {a a' b b' : P} (e : a = a') (e' : b = b') :
   (a ⨂[MP] b)%object = (a' ⨂[MP] b')%object :=
   match e in _ = u return ((a ⨂[MP] b)%object = (u ⨂[MP] b')%object) with
@@ -225,7 +225,7 @@ Definition tensor_obj_eq {a a' b b' : P} (e : a = a') (e' : b = b') :
       end
   end.
 
-(** A tensor of casts is the cast along the paired equality. *)
+(** 本节：A tensor casts cast along paired equality. （已译） *)
 Lemma bimap_cast {a a' b b' : P} (e : a = a') (e' : b = b') :
   (id_cast e ⨂[MP] id_cast e') ≈ id_cast (tensor_obj_eq e e').
 Proof.
@@ -483,8 +483,8 @@ Proof using OD P.
   apply id_right.
 Qed.
 
-(** K6: tensoring with [id ⟦0⟧] on the left is the identity (the arity
-    equation [0 + a = a] holds definitionally). *)
+(** K6: tensoring [id ⟦0⟧] left 恒等 (the arity
+ equation [0 + = a] holds definitionally). （已译） *)
 Lemma tensor_hom_id0_left {a b : nat} (f : ⟦a⟧ ~{P}~> ⟦b⟧) :
   id[⟦0⟧] ⊞ f ≈ f.
 Proof using OD P.
@@ -493,8 +493,8 @@ Proof using OD P.
            (prop_tensor_plus 0 a) (prop_tensor_plus 0 b)).
 Qed.
 
-(** General right-unit absorption at [MP], with mediating casts for
-    the propositional arity equation [a + 0 = a]. *)
+(** 本节：General right-unit absorption at [MP], mediating casts for
+ propositional arity equation [a + 0 = a]. （已译） *)
 Lemma tensor_unit_right_general {u x y x' y' : P} (eu : @I P MP = u)
   (f : x ~> y)
   (e1 : (x ⨂[MP] u)%object = x') (e2 : (y ⨂[MP] u)%object = y')
@@ -513,8 +513,8 @@ Proof using OD P.
   cat.
 Qed.
 
-(** K7: tensoring with [id ⟦0⟧] on the right is the identity up to the
-    [hcast]s along [a + 0 = a]. *)
+(** K7: tensoring [id ⟦0⟧] right 恒等 up the
+ [hcast]s along [a + 0 = a]. （已译） *)
 Lemma tensor_hom_id0_right {a b : nat} (f : ⟦a⟧ ~{P}~> ⟦b⟧) :
   f ⊞ id[⟦0⟧]
     ≈ hcast (eq_sym (Nat.add_0_r b)) ∘ f ∘ hcast (Nat.add_0_r a).
@@ -572,8 +572,8 @@ Proof using OD P.
            (f_equal (@prop_of_nat P) (eq_sym (Nat.add_assoc b d k)))).
 Qed.
 
-(** The [eq_sym] cast in the reversed-match spelling used by
-    [strict_assoc_from] ([Structure/Monoidal/Strict.v]). *)
+(** 本节：The [eq_sym] cast reversed-match spelling used by
+ [strict_assoc_from] ([Structure/Monoidal/Strict.v]). （已译） *)
 Lemma id_cast_sym_match {a b : P} (e : a = b) :
   id_cast (eq_sym e) = match e in _ = T return (T ~> a) with
                        | eq_refl => id
@@ -589,7 +589,7 @@ Proof using P.
   symmetry; apply strict_assoc_from.
 Qed.
 
-(** The first hexagon, with every structural map spelled as a cast. *)
+(** 本节：The first hexagon, every structural map spelled cast. （已译） *)
 Lemma strict_braid_hex_cast (x y z : P) :
   id_cast (strict_assoc_obj y z x)
      ∘ strict_braid x ((y ⨂[MP] z)%object)
@@ -654,8 +654,8 @@ Proof using OD P.
   reflexivity.
 Qed.
 
-(** K9: the right hexagon at [⟦·⟧]-indexed objects, in the transport
-    spelling produced by interpreting [TE_braid_hex_right]. *)
+(** K9: right hexagon at [⟦·⟧]-indexed 对象, transport
+ spelling produced interpreting [TE_braid_hex_right]. （已译） *)
 Lemma prop_braid_hex_r (m n p : nat) :
   hcast (eq_sym (Nat.add_assoc n p m)) ∘ prop_braid m (n + p)
     ≈ ((id[⟦n⟧] ⊞ prop_braid m p) ∘ hcast (eq_sym (Nat.add_assoc n m p)))
@@ -714,8 +714,8 @@ Proof using OD P.
   reflexivity.
 Qed.
 
-(** K10: the left hexagon at [⟦·⟧]-indexed objects, in the transport
-    spelling produced by interpreting [TE_braid_hex_left]. *)
+(** K10: left hexagon at [⟦·⟧]-indexed 对象, transport
+ spelling produced interpreting [TE_braid_hex_left]. （已译） *)
 Lemma prop_braid_hex_l (m n p : nat) :
   prop_braid (m + n) p ∘ hcast (Nat.add_assoc m n p)
     ≈ (hcast (eq_sym (Nat.add_assoc p m n))
@@ -735,7 +735,7 @@ Proof using OD P.
            (f_equal (@prop_of_nat P) (eq_sym (Nat.add_assoc p m n)))).
 Qed.
 
-(** The braids against the unit object, as casts. *)
+(** The braids against unit 对象, casts. （已译） *)
 Lemma strict_braid_unit_l_core (x : P) :
   strict_braid x (@I P MP)
     ≈ id_cast (eq_sym (strict_unit_left_obj x))
@@ -766,8 +766,8 @@ Proof using P.
   reflexivity.
 Qed.
 
-(** General unit-braid collapse: the braid against a unit-equal object
-    is a pure cast, so a cast-conjugated copy of it is the identity. *)
+(** General unit-braid collapse: braid against unit-equal 对象
+ pure cast, so cast-conjugated copy it 恒等. （已译） *)
 Lemma braid_unit_general_l {u x q r : P} (eu : @I P MP = u)
   (eux : (u ⨂[MP] x)%object = q) (exu : (x ⨂[MP] u)%object = r)
   (d : r = q) :
@@ -804,7 +804,7 @@ Proof using OD P.
   reflexivity.
 Qed.
 
-(** K11: the braid of [0] past [n] collapses to the identity. *)
+(** K11: braid [0] past [n] collapses 恒等. （已译） *)
 Lemma prop_braid_unit_l (n : nat) :
   hcast (Nat.add_0_r n) ∘ prop_braid 0 n ≈ id[⟦n⟧].
 Proof using OD P.
@@ -814,7 +814,7 @@ Proof using OD P.
            (f_equal (@prop_of_nat P) (Nat.add_0_r n))).
 Qed.
 
-(** K12: the braid of [n] past [0] collapses to the identity. *)
+(** K12: braid [n] past [0] collapses 恒等. （已译） *)
 Lemma prop_braid_unit_r (n : nat) :
   prop_braid n 0 ∘ hcast (eq_sym (Nat.add_0_r n)) ≈ id[⟦n⟧].
 Proof using OD P.
@@ -830,7 +830,7 @@ Proof using OD P.
   - reflexivity.
 Qed.
 
-(** *** Valuations and the interpretation of terms *)
+(* 相关说明。 （已译） *)
 
 Context (S : Signature).
 
@@ -859,11 +859,7 @@ Lemma interp_T_cast {a b : nat} (e : a = b) :
   interp (T_cast e) = hcast e.
 Proof using P. destruct e; reflexivity. Qed.
 
-(** ** Transport bridges
-
-    The strict-PROP axioms of [TermEq] carry their arity mismatches as
-    [eq_rect] transports; under [interp] a codomain transport becomes a
-    post-composed [hcast] and a domain transport a pre-composed one. *)
+(* 相关说明。 （已译） *)
 
 Lemma interp_eq_rect_cod {a b b' : nat} (e : b = b') (t : Term S a b) :
   interp (eq_rect b (fun k : nat => Term S a k) t b' e)

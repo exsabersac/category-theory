@@ -14,12 +14,12 @@ Require Import Category.Theory.Profunctor.
 
 Generalizable All Variables.
 
-(* Discharge every [Program] obligation by hand: the default [cat_simpl] would
-   destructure the product-category objects, renaming the variables the proofs
-   below refer to. *)
+(* Discharge every [Program] obligation hand: default [cat_simpl] would
+ destructure product-范畴 对象, renaming variables proofs
+ below refer to. （已译） *)
 #[local] Obligation Tactic := idtac.
 
-(** * Composition of profunctors by coends *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Profunctor
@@ -54,7 +54,7 @@ Lemma fmap_comp_pt {A : Category} (F : A ⟶ Sets) {x y z : A}
   fmap[F] (m2 ∘ m1) a ≈ fmap[F] m2 (fmap[F] m1 a).
 Proof. exact (@fmap_comp _ _ F x y z m2 m1 a). Qed.
 
-(** ** The integrand bifunctor at a fixed pair *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Compose 相关定义、性质与动机。
@@ -95,10 +95,9 @@ Next Obligation.
     apply (fmap_pt Q); split; simpl; cat.
 Qed.
 
-(** ** Change of the fixed pair as a natural transformation of integrands *)
+(* * ** Change fixed pair 自然变换 integrands （已译） *)
 
-(* The component map at `(d', d)` sending `P(c1, d) × Q(d', e1)` to
-   `P(c2, d) × Q(d', e2)` by acting with `P(fc, -)` and `Q(-, fe)`. *)
+(* 相关说明。 （已译） *)
 Program Definition prof_theta_map (c1 c2 : C) (e1 e2 : E)
   (fc : c1 ~{C^op}~> c2) (fe : e1 ~{E}~> e2) (de : D^op ∏ D)
   : prof_integrand c1 e1 de ~{Sets}~> prof_integrand c2 e2 de := {|
@@ -111,9 +110,7 @@ Next Obligation.
   - now rewrite Hb.
 Qed.
 
-(* Naturality of `prof_theta_map` in `(d', d)`: acting with `P(fc, -)`,
-   `Q(-, fe)` commutes with the integrand action, by the interchange law
-   (`fmap_comp`) of `P` and `Q`. *)
+(* 相关说明。 （已译） *)
 Lemma prof_theta_natural (c1 c2 : C) (e1 e2 : E)
   (fc : c1 ~{C^op}~> c2) (fe : e1 ~{E}~> e2) :
   ∀ (x y : D^op ∏ D) (m : x ~{D^op ∏ D}~> y),
@@ -139,9 +136,9 @@ Definition prof_theta (c1 c2 : C) (e1 e2 : E)
   Build_Transform' (prof_theta_map c1 c2 e1 e2 fc fe)
                    (prof_theta_natural c1 c2 e1 e2 fc fe).
 
-(** ** Diagonal composition laws of `prof_theta` *)
+(* * ** Diagonal 复合 laws `prof_theta` （已译） *)
 
-(* On the diagonal `prof_theta` for the identity morphism is the identity. *)
+(* On diagonal `prof_theta` 恒等 态射 恒等. （已译） *)
 Lemma prof_theta_id (c : C) (e : E) (d : D) :
   transform[prof_theta c c e e id id] (d, d) ≈ id.
 Proof.
@@ -150,7 +147,7 @@ Proof.
   - exact (fmap_id_pt Q q).
 Qed.
 
-(* On the diagonal `prof_theta` sends a composite to the composite. *)
+(* On diagonal `prof_theta` sends 复合 复合. （已译） *)
 Lemma prof_theta_comp (c1 c2 c3 : C) (e1 e2 e3 : E)
   (fc1 : c1 ~{C^op}~> c2) (fc2 : c2 ~{C^op}~> c3)
   (fe1 : e1 ~{E}~> e2) (fe2 : e2 ~{E}~> e3) (d : D) :
@@ -167,7 +164,7 @@ Proof.
     apply (fmap_pt Q); split; simpl; cat.
 Qed.
 
-(* On the diagonal `prof_theta` respects equivalence of the pair morphism. *)
+(* On diagonal `prof_theta` respects 等价 pair 态射. （已译） *)
 Lemma prof_theta_respects (c1 c2 : C) (e1 e2 : E)
   (fc fc' : c1 ~{C^op}~> c2) (fe fe' : e1 ~{E}~> e2) (d : D) :
   fc ≈ fc' -> fe ≈ fe' ->
@@ -179,7 +176,7 @@ Proof.
   - apply (fmap_pt Q); split; [ reflexivity | exact He ].
 Qed.
 
-(** ** The dinaturality (cowedge) condition of the transported legs *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）端相关定义、性质与动机。
@@ -207,7 +204,7 @@ Proof.
   reflexivity.
 Qed.
 
-(** ** The mediator: the action of `prof_compose` on morphisms *)
+(* * ** The mediator: action `prof_compose` 态射 （已译） *)
 
 Definition prof_compose_map (c1 c2 : C) (e1 e2 : E)
   (fc : c1 ~{C^op}~> c2) (fe : e1 ~{E}~> e2)
@@ -219,7 +216,7 @@ Definition prof_compose_map (c1 c2 : C) (e1 e2 : E)
                       ∘ transform[prof_theta c1 c2 e1 e2 fc fe] (d, d))
             (prof_leg_cowedge c1 c2 e1 e2 fc fe).
 
-(* The mediator computation rule: it recovers each transported leg. *)
+(* 相关说明。 （已译） *)
 Lemma prof_compose_map_inj (c1 c2 : C) (e1 e2 : E)
   (fc : c1 ~{C^op}~> c2) (fe : e1 ~{E}~> e2) (d : D) :
   prof_compose_map c1 c2 e1 e2 fc fe ∘ coend_inj (SetsCoend (prof_integrand c1 e1))
@@ -263,7 +260,7 @@ Next Obligation.
              (fst g) (snd g) d).
 Qed.
 Next Obligation.
-  (* fmap_id: the mediator of the identity legs is the identity. *)
+  (* fmap_id: mediator 恒等 legs 恒等. （已译） *)
   intros [c e].
   apply (coend_med_eq (SetsCoend (prof_integrand c e))
            (coend_obj (SetsCoend (prof_integrand c e)))
@@ -279,7 +276,7 @@ Next Obligation.
     reflexivity.
 Qed.
 Next Obligation.
-  (* fmap_comp: the mediator of a composite equals the composite of mediators. *)
+  (* fmap_comp: mediator 复合 equals 复合 mediators. （已译） *)
   intros x y z f g.
   apply (coend_med_eq (SetsCoend (prof_integrand (fst x) (snd x)))
            (coend_obj (SetsCoend (prof_integrand (fst z) (snd z))))
@@ -308,6 +305,6 @@ End ProfCompose.
 
 (** ** The identity profunctor *)
 
-(* The unit for profunctor composition is the hom-bifunctor `Hom C`, viewed as a
-   profunctor `C ⇸ C` (Functor/Hom.v, Theory/Profunctor.v). *)
+(* The unit profunctor 复合 hom-bifunctor `Hom C`, viewed a
+ profunctor `C ⇸ C` (Functor/Hom.v, Theory/Profunctor.v). （已译） *)
 Definition prof_id {C : Category} : C ⇸ C := Hom C.

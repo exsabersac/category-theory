@@ -8,7 +8,7 @@ Require Import Category.Instance.Zero.
 
 Generalizable All Variables.
 
-(** * Terminal object as the limit of the empty diagram *)
+(* * * Terminal 对象 limit empty diagram （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Initial_and_terminal_objects

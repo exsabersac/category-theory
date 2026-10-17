@@ -10,7 +10,7 @@ Require Import Category.Instance.Sets.
 Require Import Category.Structure.UniversalProperty.
 Require Import Category.Theory.Universal.Arrow.
 
-(** * A universal arrow is a universal property *)
+(* * * A 泛箭头 普遍性质 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/representable+functor

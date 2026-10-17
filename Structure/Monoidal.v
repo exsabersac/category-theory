@@ -60,7 +60,7 @@ Class Monoidal := {
 
   tensor_assoc {x y z} : (x ⨂ y) ⨂ z ≅ x ⨂ (y ⨂ z);  (* alpha *)
 
-  (* alpha, lambda and rho are all natural isomorphisms. *)
+  (* 相关说明。 （已译） *)
 
   to_unit_left_natural {x y} (g : x ~> y) :
     g ∘ unit_left << I ⨂ x ~~> y >> unit_left ∘ bimap id g;
@@ -84,9 +84,9 @@ Class Monoidal := {
       << x ⨂ z ⨂ v ~~> (y ⨂ w) ⨂ u >>
     tensor_assoc⁻¹ ∘ bimap g (bimap h i);
 
-  (* The above observe the following coherence conditions:
-     the triangle identity (unitors vs. associator) and the pentagon
-     identity (the two reassociations of a fourfold tensor agree). *)
+  (* The above observe following coherence conditions:
+ triangle 恒等 (unitors vs. associator) pentagon
+ 恒等 (the two reassociations fourfold tensor agree). （已译） *)
 
   triangle_identity {x y} :
     bimap unit_right id

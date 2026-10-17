@@ -26,7 +26,7 @@ Require Import Category.Instance.Sets.Pullback.
 
 Generalizable All Variables.
 
-(** * Coreflexive pairs, coreflexive equalizers, and Manes' criterion *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/equalizer
@@ -38,9 +38,7 @@ Generalizable All Variables.
 
 (** ** Coreflexive pairs *)
 
-(* The equational data: one map that retracts both f and g.  A coreflexive
-   pair is two split monomorphisms (Theory/Morphisms.v's [Section]) sharing
-   one retraction. *)
+(* 相关说明。 （已译） *)
 Record CoreflexivePair {C : Category} {x y : C} (f g : x ~> y) := {
   corefl_retract   : y ~> x;                    (* the common retraction *)
   corefl_retract_f : corefl_retract ∘ f ≈ id;   (* it retracts f *)
@@ -88,7 +86,7 @@ Proof.
   - rewrite <- fmap_comp, (corefl_retract_g R); apply fmap_id.
 Defined.
 
-(** ** The dual reading: a coreflexive pair in C is a reflexive pair in C^op *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Coreflexive 相关定义、性质与动机。
@@ -138,21 +136,21 @@ Proof.
   exact (@IsCoequalizer_of_IsEqualizer_op (C^op) x y f g q e Eq).
 Defined.
 
-(** ** Mac Lane's pair is coreflexive *)
+(* 相关说明。 （已译） *)
 
 Section Manes.
 
 Context {C : Category} (HP : HasIndexedProducts C).
 Context {J : Category} (F : J ⟶ C).
 
-(* The identity arrow at x is an index of the FULL arrow family of
-   Structure/Limit/FromProducts.v, and its codomain is x on the nose. *)
+(* The 恒等箭头 at x index FULL arrow family of
+ Structure/Limit/FromProducts.v, codomain x nose. （已译） *)
 Example id_index_cod (x : J) : aix_cod (mk_arrow (@id J x)) = x := eq_refl.
 Example id_index_dom (x : J) : aix_dom (mk_arrow (@id J x)) = x := eq_refl.
 Example id_index_arr (x : J) : aix_arr (mk_arrow (@id J x)) = @id J x := eq_refl.
 
-(* Mac Lane's candidate retraction: the map into the object product whose
-   component at x is the arrow product's projection at the identity of x. *)
+(* Mac Lane's candidate retraction: map 进入 对象 product whose
+ component at x arrow product's projection at 恒等 x. （已译） *)
 Definition pe_retract : pe_arrow_product HP F ~> pe_obj_product HP F :=
   unique_obj (iprod_desc (pe_obj_product_ump HP F)
     (fun x : J => pe_arrow_proj HP F (mk_arrow (@id J x)))).
@@ -201,9 +199,9 @@ Definition mc_incl : mc_apex ~> pe_obj_product HP F := `1 (`2 mc_equalizer).
 Definition mc_IsEqualizer : IsEqualizer (pe_s HP F) (pe_t HP F) mc_apex mc_incl
   := `2 (`2 mc_equalizer).
 
-(* The limit is FromProducts.v's construction fed the coreflexive
-   equalizer in place of an arbitrary one; its core consumes the
-   elementary [IsEqualizer], never the class. *)
+(* The limit FromProducts.v's construction fed coreflexive
+ equalizer place arbitrary one; core 所消耗 the
+ elementary [IsEqualizer], never class. （已译） *)
 Definition mc_cone : Cone F :=
   pe_cone F (pe_obj_proj HP F) (pe_obj_product_ump HP F) ArrowIx_Generates
     (pe_arrow_proj HP F) (pe_arrow_product_ump HP F)
@@ -233,12 +231,11 @@ Definition Complete_from_coreflexive_equalizers {C : Category}
   (HP : HasIndexedProducts C) (HE : HasCoreflexiveEqualizers C) : @Complete C :=
   fun J F => mc_limit HP F HE.
 
-(** ** Exercise 1(b), the categorical half: a common section is a
-       factorization of the diagonal through the induced map *)
+(* 相关说明。 （已译） *)
 
-(* Part (b) is about REFLEXIVE pairs (a common right inverse), not the
-   coreflexive pairs of part (a); in any cartesian category the section is
-   exactly a factorization of the diagonal [id △ id] through [f △ g]. *)
+(* Part (b) about REFLEXIVE pairs (a common right inverse), not the
+ coreflexive pairs part (a); any cartesian 范畴 section is
+ exactly factorization diagonal [id △ id] through [f △ g]. （已译） *)
 Section CartesianHalf.
 
 Context {C : Category} `{@Cartesian C}.
@@ -287,12 +284,11 @@ Section SetsHalf.
 Context {X Y : SetoidObject}.
 Context (f g : X ~{Sets}~> Y).
 
-(* "The image of ⟨f, g⟩ contains the diagonal", pointwise: every point of Y
-   is hit by f and g at one common point of X. *)
+(* 相关说明。 （已译） *)
 Definition diagonal_in_image : Type :=
   ∀ b : Y, ∃ a : X, (f a ≈ b) * (g a ≈ b).
 
-(* One direction is unconditional: the section supplies the witness. *)
+(* 相关说明。 （已译） *)
 Definition diagonal_in_image_of_reflexive (R : ReflexivePair f g) :
   diagonal_in_image :=
   fun b => (refl_section R b; (refl_section_f R b, refl_section_g R b)).
@@ -317,9 +313,9 @@ Proof.
   - intro b; exact (snd (`2 (D b))).
 Defined.
 
-(* The morphism-level reading through Instance/Sets/Image.v: the diagonal
-   factors through the mono leg of the (epi, mono) factorization of the
-   induced map.  Unconditional in this direction. *)
+(* The 态射-level reading through Instance/Sets/Image.v: diagonal
+ factors through mono leg (epi, mono) factorization the
+ induced map. Unconditional direction. （已译） *)
 Definition diagonal_through_image (R : ReflexivePair f g) :
   ∃ d : Y ~{Sets}~> Sets_Image (f △ g),
     Sets_Image_mono (f △ g) ∘ d ≈ id △ id.

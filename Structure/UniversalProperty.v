@@ -11,7 +11,7 @@ Require Import Category.Functor.Hom.Yoneda.Iso.
 Require Import Category.Instance.Sets.
 Require Import Category.Construction.Groupoid.
 
-(** * Universal properties as representability *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/representable+functor
@@ -104,9 +104,9 @@ Section UniversalProperty.
                          (to (repr_equivalence v) Pv)).
   Defined.
 
-  (* P is invariant under isomorphism: an iso c ≅ d transports a proof of P c to
-     a proof of P d, by conjugating the representation of c with the induced
-     iso of hom-functors [Hom d,─] ≅ [Hom c,─]. *)
+  (* P invariant under 同构: iso c ≅ d transports 证明 P c to
+ 证明 P d, conjugating representation c induced
+ iso hom-函子 [Hom d,─] ≅ [Hom c,─]. （已译） *)
   Proposition univ_property_respects_iso (c d : C) (iso : c ≅ d) : P c -> P d.
   Proof using eqP H.
     intro t.
@@ -116,9 +116,9 @@ Section UniversalProperty.
     - apply (to (repr_equivalence c)). exact t.
   Defined.
 
-  (* Let c, d be objects in C, and t : P c, s : P d.
-     Then there is a unique isomorphism p : c ≈ d
-     such that the transport of p along t is equivalent to s. *)
+  (* Let c, d 对象 C, t : P c, s : P d.
+ Then there unique 同构 p : c ≈ d
+ such transport p along t equivalent s. （已译） *)
   Proposition univ_property_unique_up_to_unique_iso
     (c d : C) (t : P c) (s : P d) :
     Unique (fun p : (c ≅ d) => univ_property_respects_iso c d p t ≈ s).
@@ -130,12 +130,12 @@ Section UniversalProperty.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
     exists (uniqueness (univ_property_unique c t) d s).
-    - (* Why does this isomorphism respect the structure of P? *)
+    - (* Why does 同构 respect structure P? （已译） *)
       abstract(simpl; unfold univ_property_respects_iso; simpl;
-      (* Proofs of P d are in one to one correspondence
-         with natural isomorphisms
-         Hom(d, - ) ≅ repr_functor. *)
-      (* So it suffices to show that these determine the same natural isomorphism. *)
+      (* Proofs P d one one correspondence
+ natural isomorphisms
+ Hom(d, - ) ≅ repr_函子. （已译） *)
+      (* So it suffices show these determine same natural 同构. （已译） *)
       rapply (snd (injectivity_is_monic _) (iso_to_monic (repr_equivalence d)));
       set (M := (iso_to_from (repr_equivalence d)));
         simpl in M; rewrite M; clear M;
@@ -164,11 +164,11 @@ Section UniversalProperty.
          y(v) : Hom(d, -) ≌ Hom(c, -)
          rep_c : Hom(c, -) ≌ repr_functor
          rep_d : Hom(d, -) ≌ repr_functor *)
-      (* and the natural isomorphism Hom(d, -) ≌ repr_functor given by *)
+      (* and natural 同构 Hom(d, -) ≌ repr_函子 given by （已译） *)
       (* rep_c ∘ y(v) : Hom(d, -)  ≌ Hom(c, -) ≌ repr_functor *)
       (* corresonds to s across the bijection. *)
       (* Of couse since by construction, s also corresponds to rep_d, *)
-      (* this means that  rep_c ∘ y(v) ≈ rep_d as isomorphisms Hom(d,-) ≈ repr_functor. *)
+      (* this means rep_c ∘ y(v) ≈ rep_d isomorphisms Hom(d,-) ≈ repr_函子. （已译） *)
       (* Thus y(v) ≈ rep_c^-1 ∘ rep_d : Hom(d,-) ≅ Hom(c,-) and in particular
          they agree at (d, id{C} d).  *)
       abstract(intros v respects_iso;

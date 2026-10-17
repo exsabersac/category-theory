@@ -37,7 +37,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * The universal property of the free coloured PROP *)
+(* * * The 普遍性质 free coloured PROP （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/PROP
@@ -104,8 +104,8 @@ Example CInterpF_extends_valuation (cs ds : list Colour) (g : S cs ds) :
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** Naturality of the tensor-comparison cast against [cinterp]: the
-    conjugating cast of [⊞c] cancels its inverse. *)
+(** 本节：Naturality tensor-comparison cast against [cinterp]: the
+ conjugating cast [⊞c] cancels inverse. （已译） *)
 Lemma cinterp_ap_natural {m n m' n' : list Colour}
   (f : CTerm S m m') (g : CTerm S n n') :
   cinterp P S v (CT_tens f g) ∘ id_cast (@cprop_tensor_app Colour P m n)
@@ -119,7 +119,7 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(** The inverse-direction square, by flipping across the casts. *)
+(** 本节：The inverse-direction square, flipping across casts. （已译） *)
 Lemma cinterp_ap_natural_from {m n m' n' : list Colour}
   (f : CTerm S m m') (g : CTerm S n n') :
   (cinterp P S v f ⨂[MPc P] cinterp P S v g)
@@ -131,8 +131,8 @@ Proof.
   apply cinterp_ap_natural.
 Qed.
 
-(** General left-unit coherence: with every comparison an [id_cast],
-    the left-unitality square collapses to the strict unitor. *)
+(** 本节：General left-unit coherence: every comparison [id_cast],
+ left-unitality square collapses strict unitor. （已译） *)
 Lemma cto_unit_left_cast_general {u w s : P}
   (eu : @I P (MPc P) = u) (e : (u ⨂[MPc P] w)%object = s) (d : s = w) :
   to (@unit_left P (MPc P) w)
@@ -179,10 +179,10 @@ Proof using OD P.
   apply cstrict_assoc_cast.
 Qed.
 
-(** The left-unitality field of [MonoidalFunctor] at [CInterpF].  The
-    boundary equation [[] ++ x = x] holds definitionally ([app] is
-    left-strict), but [app_nil_l] is an opaque stdlib proof of it, so
-    the cast is carried explicitly. *)
+(** The left-unitality field [MonoidalFunctor] at [CInterpF]. The
+ boundary equation [[] ++ x = x] holds definitionally ([app] is
+ left-strict), but [app_nil_l] opaque stdlib 证明 it, so
+ cast carried explicitly. （已译） *)
 Lemma cinterp_monoidal_unit_left (x : list Colour) :
   to (@unit_left P (MPc P) ⟦x⟧)
     ≈ cinterp P S v (CT_cast (app_nil_l x))
@@ -224,8 +224,8 @@ Proof using OD P S v.
   apply cto_assoc_cast_general.
 Qed.
 
-(** The braid-compatibility square of [cinterp] against the target's
-    strict-path braiding [cstrict_braid]. *)
+(** 本节：The braid-compatibility square [cinterp] against target's
+ strict-path braiding [cstrict_braid]. （已译） *)
 Lemma cinterp_braid_ap (cs ds : list Colour) :
   cinterp P S v (CT_braid cs ds)
       ∘ id_cast (@cprop_tensor_app Colour P cs ds)
@@ -239,10 +239,10 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(** ** 3. The strong and strict monoidal structure on [CInterpF]
+(* * ** 3. The strong strict monoidal structure [CInterpF]
 
-    The tensor comparison is the [cprop_tensor_app] cast, packaged as
-    a natural isomorphism in the functor category. *)
+ The tensor comparison [cprop_tensor_app] cast, packaged as
+ natural 同构 函子 范畴. （已译） *)
 
 Definition CInterpF_ap_dom : CFreeCat S ∏ CFreeCat S ⟶ P :=
   @tensor P (MPc P) ◯ CInterpF ∏⟶ CInterpF.
@@ -302,8 +302,8 @@ Definition CInterpF_ap_iso :
     CInterpF_ap_to CInterpF_ap_from
     CInterpF_ap_to_from CInterpF_ap_from_to.
 
-(** The strong monoidal structure.  All proof fields are the named
-    lemmas of section 2; the derived-iso data fields are casts. *)
+(** The strong monoidal structure. All 证明 fields named
+ lemmas section 2; derived-iso data fields casts. （已译） *)
 Definition CInterpF_Monoidal :
   @MonoidalFunctor (CFreeCat S) P (CFreeCat_Monoidal S Cdec) (MPc P)
     CInterpF :=
@@ -329,8 +329,8 @@ Definition CInterpF_Monoidal :
     cinterp_monoidal_unit_right
     cinterp_monoidal_assoc.
 
-(** The comparisons ARE the coloured PROP's strictness equalities,
-    verbatim. *)
+(** 本节：The comparisons ARE coloured PROP's strictness equalities,
+ verbatim. （已译） *)
 Lemma CInterpF_strict_pure_iso_id :
   to (@pure_iso _ _ _ _ CInterpF CInterpF_Monoidal)
     ≈ match @cprop_unit_nil Colour P in _ = T return @I P (MPc P) ~{P}~> T
@@ -355,8 +355,8 @@ Definition CInterpF_Strict :
     CInterpF_strict_pure_iso_id
     CInterpF_strict_ap_iso_id.
 
-(** Machine-checked: the strict object comparisons of [CInterpF_Strict]
-    are the coloured-PROP class fields themselves. *)
+(** Machine-checked: strict 对象 comparisons [CInterpF_Strict]
+ coloured-PROP class fields themselves. （已译） *)
 Example CInterpF_strict_pure_obj_is_cprop_unit_nil :
   @strict_pure_obj _ _ _ _ CInterpF CInterpF_Strict
   = @cprop_unit_nil Colour P := eq_refl.
@@ -406,8 +406,8 @@ Proof.
   exact H.
 Qed.
 
-(** The converse direction: a braid square at the transported functor
-    comes back to one at the original, against the transported braid. *)
+(** The converse direction: braid square at transported 函子
+ comes back one at original, against transported braid. （已译） *)
 Lemma CSymmetricStrict_untransport
   {N1 N2 : @Monoidal P} (e : N1 = N2)
   (G : CFreeCat S ⟶ P)
@@ -455,9 +455,9 @@ Proof.
            x y (CInterpF_SymmetricStrict x y)).
 Qed.
 
-(** [CInterpF] as a [BraidedMonoidalFunctor]: the underlying
-    strong structure is [CInterpF_Monoidal] transported across the
-    coherence, and the braid square is [CInterpF_SymmetricStrict]. *)
+(** 本节：[CInterpF] [BraidedMonoidalFunctor]: underlying
+ strong structure [CInterpF_Monoidal] transported across the
+ coherence, braid square [CInterpF_SymmetricStrict]. （已译） *)
 Definition CInterpF_Braided :
   @BraidedMonoidalFunctor (CFreeCat S) P (CFreeCat_Braided S Cdec)
     (@symmetric_is_braided P (@cprop_symmetric Colour P)) CInterpF :=
@@ -474,9 +474,9 @@ Definition CInterpF_Symmetric :
   @SymmetricMonoidalFunctor (CFreeCat S) P (CFreeCat_Symmetric S Cdec)
     (@cprop_symmetric Colour P) CInterpF := CInterpF_Braided.
 
-(** Competitors arriving with a [BraidedMonoidalFunctor]
-    convert to [CSymmetricStrict], given that their two tensor
-    comparisons agree across the coherence transport. *)
+(** 本节：Competitors arriving [BraidedMonoidalFunctor]
+ convert [CSymmetricStrict], given two tensor
+ comparisons agree across coherence transport. （已译） *)
 Corollary CSymmetricStrict_of_Braided
   (G : CFreeCat S ⟶ P)
   (SG : @StrictMonoidalFunctor (CFreeCat S) P (CFreeCat_Monoidal S Cdec)

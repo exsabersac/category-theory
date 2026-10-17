@@ -79,15 +79,12 @@ Class Premonoidal := {
   premon_unit_right {x} : x ⊗ premon_I ≅ x;                 (* rho *)
   premon_assoc {x y z} : (x ⊗ y) ⊗ z ≅ x ⊗ (y ⊗ z);         (* alpha *)
 
-  (* The forward structural maps are central; the from-directions are
-     derived below via [central_iso_from]. *)
+  (* 相关说明。 （已译） *)
   premon_unit_left_central  {x} : central (to (@premon_unit_left x));
   premon_unit_right_central {x} : central (to (@premon_unit_right x));
   premon_assoc_central {x y z} : central (to (@premon_assoc x y z));
 
-  (* Naturality, one variable at a time.  For the unitors there is a single
-     variable; for the associator there are three squares, one for each
-     tensor position. *)
+  (* 相关说明。 （已译） *)
   premon_unit_left_natural {x y} (g : x ~> y) :
     g ∘ to premon_unit_left
       << premon_I ⊗ x ~~> y >>
@@ -113,8 +110,7 @@ Class Premonoidal := {
       << (x ⊗ y) ⊗ z ~~> x ⊗ (y ⊗ w) >>
     to premon_assoc ∘ ((x ⊗ y) ⋊ i);
 
-  (* Coherence: triangle (unitors against the associator, across the unit)
-     and pentagon (the two reassociations of a fourfold tensor agree). *)
+  (* 相关说明。 （已译） *)
   premon_triangle {x y} :
     to premon_unit_right ⋉ y
       << (x ⊗ premon_I) ⊗ y ~~> x ⊗ y >>

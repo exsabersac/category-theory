@@ -13,7 +13,7 @@ Require Import Category.Structure.Groupoid.Connected.
 
 Generalizable All Variables.
 
-(** * Natural transformations between group homomorphisms are conjugations *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/delooping
@@ -45,7 +45,7 @@ Generalizable All Variables.
 *)
 #[local] Obligation Tactic := idtac.
 
-(** ** Functors between deloopings are monoid homomorphisms *)
+(* * ** Functors between deloopings 幺半群 homomorphisms （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -61,9 +61,9 @@ Definition Deloop_map {M N : MonObject} (f : MonHom M N) :
     (fun _ => mon_map_unit f)                   (* fmap id ≈ id  is  f 1 ≈ 1 *)
     (fun _ _ _ a b => mon_map_op f a b).        (* fmap (a ∘ b) is f (a · b) *)
 
-(* And the other half: a functor between deloopings is a homomorphism, its
-   action on the single hom-set.  Again every homomorphism law is a functor
-   law by projection. *)
+(* And other half: 函子 between deloopings homomorphism, its
+ action single hom-set. Again every homomorphism law 函子
+ law projection. （已译） *)
 Definition Deloop_unmap {M N : MonObject} (F : Deloop M ⟶ Deloop N) :
   MonHom M N := {|
   mon_map          := fun a => @fmap _ _ F ttt ttt a;
@@ -109,7 +109,7 @@ Proof.
            Heq).
 Qed.
 
-(** ** The composition-order convention, checked *)
+(* * ** The 复合-order convention, checked （已译） *)
 
 (*
    本节说明hom、幺半群相关定义、性质与动机。
@@ -119,7 +119,7 @@ Qed.
 Example deloop_compose_mon_op (N : MonObject) :
   @compose (Deloop N) ttt ttt ttt = @mon_op N := eq_refl.
 
-(** ** The characterization, for monoids *)
+(* 相关说明。 （已译） *)
 
 Section Intertwining.
 
@@ -155,7 +155,7 @@ Proof.
   exact (I a).
 Defined.
 
-(* The component of the transformation built from h is h, by [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example intertwines_transform_component (h : carrier N) (I : Intertwines h) :
   transform (intertwines_transform h I) ttt = h := eq_refl.
 
@@ -174,7 +174,7 @@ Proof.
     exact (intertwines_transform h I).
 Defined.
 
-(** ** The correspondence at the level of setoids *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明同构、来源与用途相关定义、性质与动机。
@@ -204,8 +204,8 @@ Definition Deloop_Intertwiners : SetoidObject := {|
   is_setoid := Intertwiner_Setoid
 |}.
 
-(* A transformation to its component, with the naturality square read as the
-   intertwining condition. *)
+(* A transformation component, 自然性 square read the
+ intertwining condition. （已译） *)
 Program Definition transform_intertwiner :
   Deloop_Transforms ~{Sets}~> Deloop_Intertwiners := {|
   morphism := fun n => existT _ (transform n ttt) (transform_intertwines n)
@@ -250,7 +250,7 @@ End Intertwining.
 Arguments Intertwines {M N} F G h.
 Arguments Intertwiner {M N} F G.
 
-(** ** The characterization, for groups: Mac Lane §I.4 Exercise 3 *)
+(* 相关说明。 （已译） *)
 
 Section GroupConjugation.
 
@@ -317,7 +317,7 @@ End GroupConjugation.
 
 Arguments Conjugates {M Grp} F G h.
 
-(** ** The set of conjugating elements *)
+(* 相关说明。 （已译） *)
 
 Section ConjugatorIso.
 
@@ -403,8 +403,7 @@ Definition transform_conjugator_hom {B C : GrpObject} (S T : MonHom B C) :
     ≅[Sets] Deloop_Conjugators (Deloop_map S) (Deloop_map T) :=
   transform_conjugator_iso (Deloop_map S) (Deloop_map T).
 
-(* Right cancellation in a group, the one piece of group arithmetic used
-   below that is not already in Construction/Deloop.v. *)
+(* 相关说明。 （已译） *)
 Lemma grp_cancel_r {Grp : GrpObject} (a b c : carrier Grp) :
   mon_op a c ≈ mon_op b c → a ≈ b.
 Proof.
@@ -414,8 +413,7 @@ Proof.
   now rewrite mon_op_unit_r.
 Qed.
 
-(* Conjugation by h⁻¹ runs the other way.  This is the computation Awodey's
-   consequence rests on, isolated from the transformation that carries it. *)
+(* 相关说明。 （已译） *)
 Lemma conjugates_inverse {M : MonObject} {Grp : GrpObject}
   (F G : Deloop M ⟶ Deloop Grp) (h : carrier Grp) :
   Conjugates F G h → Conjugates G F (grp_inv h).
@@ -474,7 +472,7 @@ Proof.
     exact (conjugates_inverse (Deloop_map T) (Deloop_map S) h Cj).
 Defined.
 
-(** ** Awodey §7.7: the functor category is a groupoid *)
+(* * ** Awodey §7.7: 函子 范畴 groupoid （已译） *)
 
 (*
    本节说明自然变换、来源与用途相关定义、性质与动机。
@@ -526,9 +524,7 @@ Definition deloop_transform_invertible {M : MonObject} {Grp : GrpObject}
   @IsIsomorphism ([Deloop M, Deloop Grp]) F G n :=
   Deloop_Fun_IsGroupoid M Grp F G n.
 
-(* And the inverse really is conjugation by h⁻¹, in two steps.  First, its
-   component is the group inverse of the component, on the nose: no
-   transport, no rewriting, [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example deloop_ginv_component {M : MonObject} {Grp : GrpObject}
   {F G : Deloop M ⟶ Deloop Grp} (n : F ⟹ G) :
   transform (ginv (Deloop_Fun_IsGroupoid M Grp) n) ttt
@@ -548,7 +544,7 @@ Proof.
   exact (transform_intertwines F G n).
 Qed.
 
-(** ** The first trap: the statement is empty over an abelian target *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -569,9 +565,9 @@ Proof.
   now rewrite mon_op_unit_r.
 Qed.
 
-(* Z/2 and Z/3 — the only groups the tree had until Structure/Groupoid.v
-   added S3 — are both abelian, so by the lemma above neither can display a
-   conjugation that moves anything. *)
+(* Z/2 Z/3 — groups tree had until Structure/Groupoid.v
+ added S3 — both abelian, so 引理 above neither can display a
+ conjugation moves anything. （已译） *)
 Lemma Bool_Xor_abelian :
   ∀ a b : carrier Bool_Xor_Grp, mon_op a b ≈ mon_op b a.
 Proof. intros [|] [|]; reflexivity. Qed.
@@ -632,21 +628,20 @@ Theorem S3_hom_conjugate :
   @Conjugates Bool_Xor S3_Grp (Deloop_map S3_hom_a) (Deloop_map S3_hom_c) S3_r.
 Proof. intros [|]; reflexivity. Qed.
 
-(* So a natural transformation between the two homomorphisms exists, built
-   through the backward direction of the theorem. *)
+(* So 自然变换 between two homomorphisms exists, built
+ through backward direction 定理. （已译） *)
 Definition S3_conjugating_transform :
   Deloop_map S3_hom_a ⟹ Deloop_map S3_hom_c :=
   snd (@transform_iff_conjugate Bool_Xor_Grp S3_Grp S3_hom_a S3_hom_c)
       (existT _ S3_r S3_hom_conjugate).
 
-(* Its single component is the conjugating element r itself, by [eq_refl] —
-   the backward direction of the theorem puts h in as the component and
-   nothing intervenes. *)
+(* Its single component conjugating element r itself, [eq_refl] —
+ backward direction 定理 puts h component and
+ nothing intervenes. （已译） *)
 Example S3_conjugating_transform_component :
   transform S3_conjugating_transform ttt = S3_r := eq_refl.
 
-(* And it is not degenerate: the two homomorphisms it relates are different,
-   so the conjugation genuinely moves one to the other. *)
+(* 相关说明。 （已译） *)
 Theorem S3_conjugation_moves :
   (∀ g : carrier Bool_Xor, S3_hom_a g ≈ S3_hom_c g) → False.
 Proof.
@@ -672,7 +667,7 @@ Proof.
            S3_hom_conjugate g).
 Qed.
 
-(** ** Awodey's second sentence: a groupoid, but not a group *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。

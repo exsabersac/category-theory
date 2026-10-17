@@ -59,26 +59,26 @@ Definition cospan_tensor
                     (cover (cospan_in1 f) (cospan_in1 g))
                     (cover (cospan_in2 f) (cospan_in2 g)).
 
-(** ** SCFA-witness data on each object [X] *)
+(* * ** SCFA-witness data each 对象 [X] （已译） *)
 
-(** Multiplication [μ_X] : a cospan from [X + X] to [X] with apex [X],
-    leg1 = codiagonal [id ▽ id], leg2 = identity. *)
+(** Multiplication [μ_X] : cospan [X + X] [X] apex [X],
+ leg1 = codiagonal [id ▽ id], leg2 = 恒等. （已译） *)
 Definition cospan_scfa_mu (X : C) : CospanArrow (X + X) X :=
   Build_CospanArrow X (id[X] ▽ id[X]) id[X].
 
-(** Unit [η_X] : a cospan from [0] to [X] with apex [X],
-    leg1 = [zero], leg2 = identity. *)
+(** Unit [η_X] : cospan [0] [X] apex [X],
+ leg1 = [zero], leg2 = 恒等. （已译） *)
 Definition cospan_scfa_eta (X : C) : CospanArrow Cospan_unit_obj X :=
   Build_CospanArrow X zero id[X].
 
-(** Comultiplication [δ_X] : a cospan from [X] to [X + X] with apex [X],
-    leg1 = identity, leg2 = codiagonal.
+(** Comultiplication [δ_X] : cospan [X] [X + X] apex [X],
+ leg1 = 恒等, leg2 = codiagonal.
 
-    Note: as a cospan from X to X+X, leg1 : X ~> apex and leg2 : X+X ~> apex. *)
+ Note: cospan X X+X, leg1 : X ~> apex leg2 : X+X ~> apex. （已译） *)
 Definition cospan_scfa_delta (X : C) : CospanArrow X (X + X) :=
   Build_CospanArrow X id[X] (id[X] ▽ id[X]).
 
-(** Counit [ε_X] : a cospan from [X] to [0] with apex [X], leg1 = id, leg2 = zero. *)
+(** 本节：Counit [ε_X] : cospan [X] [0] apex [X], leg1 = id, leg2 = zero. （已译） *)
 Definition cospan_scfa_epsilon (X : C) : CospanArrow X Cospan_unit_obj :=
   Build_CospanArrow X id[X] zero.
 
@@ -103,8 +103,8 @@ Section CospanTensorBasics.
 Context {C : Category}.
 Context `{H_Coc : @Cocartesian C}.
 
-(** Tensor of identity cospans is the identity cospan, witnessed by the
-    codiagonal identity [inl ▽ inr ≈ id]. *)
+(** Tensor 恒等 cospans 恒等 cospan, witnessed the
+ codiagonal 恒等 [inl ▽ inr ≈ id]. （已译） *)
 Lemma cospan_tensor_id (X Y : C) :
   cospan_equiv (cospan_tensor (cospan_id X) (cospan_id Y))
                (cospan_id (X + Y)).
@@ -229,9 +229,7 @@ Next Obligation.
   apply mor_as_cospan_proper, Hfg.
 Defined.
 
-(** ** Unitor cospans on [CospanCat C]
-
-    These are the cospan-lifts of the corresponding coproduct isos in C. *)
+(* 相关说明。 （已译） *)
 
 Context `{H_Coc : @Cocartesian C}.
 Context `{H_Ini : @Initial C}.
@@ -323,10 +321,10 @@ Defined.
 
 End PushoutIdCollapse.
 
-(** ** [mor_as_cospan] is functorial
+(* * ** [mor_as_cospan] functorial
 
-    Composition of two morphism-as-cospans agrees with the morphism-as-
-    cospan of the composite.  Witnessed via the pushout-of-id collapse. *)
+ Composition two 态射-as-cospans agrees 态射-as-
+ cospan 复合. Witnessed via pushout-of-id collapse. （已译） *)
 
 Section MorAsCospanFunctorial.
 
@@ -407,8 +405,8 @@ Definition pushout_cover_split
   : pushout_apex Pcov ~> (pushout_apex P + pushout_apex P')%object
   := pushout_med Pcov (pushout_cover_split_cocone f g f' g' P P').
 
-(** Sub-cocone: pushout_in1 Pcov composed with [inl] is a leg into the
-    pushout-of-covers apex via the X-side of the coproduct. *)
+(** Sub-cocone: pushout_in1 Pcov composed [inl] leg 进入
+ pushout-of-covers apex via X-side coproduct. （已译） *)
 Lemma pushout_cover_left_cocone
   {X X' Y Y' Z Z' : C}
   (f : X ~> Y) (g : X ~> Z)
@@ -459,10 +457,7 @@ Definition pushout_cover_combine
   merge (pushout_med P (pushout_cover_left_cocone f g f' g' Pcov))
         (pushout_med P' (pushout_cover_right_cocone f g f' g' Pcov)).
 
-(** ** Pushout-coproduct compatibility iso
-
-    The pushout of covers IS the coproduct of pushouts.  Witnessed by the
-    split/combine maps above being mutual inverses. *)
+(* 相关说明。 （已译） *)
 
 Lemma pushout_cover_split_combine
   {X X' Y Y' Z Z' : C}
@@ -711,8 +706,8 @@ Context `{H_Coc : @Cocartesian C}.
 Context `{H_Ini : @Initial C}.
 Context (HP : HasPushouts C).
 
-(** [cospan_tensor] of two [mor_as_cospan]s agrees with [mor_as_cospan]
-    of the [cover] of the underlying C-morphisms. *)
+(** [cospan_tensor] two [mor_as_cospan]s agrees [mor_as_cospan]
+ [cover] underlying C-态射. （已译） *)
 Lemma cospan_tensor_mor_as_cospan
       {X Y X' Y' : C} (f : X ~> Y) (g : X' ~> Y') :
   cospan_equiv (cospan_tensor (mor_as_cospan f) (mor_as_cospan g))
@@ -817,12 +812,9 @@ Proof.
     + cat.
 Defined.
 
-(** ** Cover-associator interaction
+(* 相关说明。 （已译） *)
 
-    The C-iso [coprod_assoc] intertwines [cover (cover f g) h] with
-    [cover f (cover g h)]. *)
-
-(** Helpers for the associator-cover proofs. *)
+(** 本节：Helpers associator-cover proofs. （已译） *)
 
 Lemma assoc_to_inl_inl {x y z : C} :
   to (@coprod_assoc C H_Coc x y z) ∘ (inl ∘ inl) ≈ inl.
@@ -1107,9 +1099,9 @@ Proof.
     apply id_left.
 Defined.
 
-(** Dual bridging: composing a cospan with [mor_as_cospan (to phi)] on
-    the LEFT where [phi] is a C-iso. By [pushout_along_iso_apex], the
-    apex collapses to apex(f), with adjusted in2. *)
+(** 本节：Dual bridging: composing cospan [mor_as_cospan (to phi)] on
+ LEFT where [phi] C-iso. By [pushout_along_iso_apex], the
+ apex collapses apex(f), adjusted in2. （已译） *)
 
 Lemma cospan_compose_mor_iso_left
       {X Y Z : C} (f : CospanArrow X Y) (phi : Y ≅ Z) :
@@ -1249,10 +1241,10 @@ Proof.
       exact Hm2.
 Defined.
 
-(** ** Right-unitor naturality, dual of left.
+(* * ** Right-unitor 自然性, dual left.
 
-    [unit_right = mor_as_cospan (id ▽ zero : x + 0 → x)] and
-    [bimap g id = cospan_tensor g (cospan_id 0)]. *)
+ [unit_right = mor_as_cospan (id ▽ zero : x + 0 → x)] and
+ [bimap g id = cospan_tensor g (cospan_id 0)]. （已译） *)
 
 Lemma cospan_unit_right_natural
       {x y : C} (g : CospanArrow x y) :
@@ -1334,13 +1326,13 @@ Proof.
       exact Hm2.
 Defined.
 
-(** ** Tensor-associator naturality
+(* * ** Tensor-associator 自然性
 
-    For arbitrary cospans [f : x → x'], [g : y → y'], [h : z → z']:
-      [bimap f (bimap g h) ∘ tensor_assoc
-       ≈ tensor_assoc ∘ bimap (bimap f g) h]
-    in [CospanCat C HP], where [tensor_assoc = mor_as_cospan (to coprod_assoc)]
-    and [bimap = cospan_tensor]. *)
+ For arbitrary cospans [f : x → x'], [g : y → y'], [h : z → z']:
+ [bimap f (bimap g h) ∘ tensor_assoc
+ ≈ tensor_assoc ∘ bimap (bimap f g) h]
+ [CospanCat C HP], where [tensor_assoc = mor_as_cospan (to coprod_assoc)]
+ [bimap = cospan_tensor]. （已译） *)
 
 Lemma cospan_tensor_assoc_natural
       {x x' y y' z z' : C}
@@ -1367,8 +1359,7 @@ Proof.
     rewrite <- comp_assoc.
     rewrite iso_from_to.
     apply id_right.
-  - (* from coprod_assoc ∘ cover (in2 f) (cover (in2 g) (in2 h))
-       ≈ cover (cover (in2 f) (in2 g)) (in2 h) ∘ from coprod_assoc *)
+  - (* 相关说明。 （已译） *)
     apply cover_assoc_from.
 Defined.
 
@@ -1405,9 +1396,9 @@ Proof.
   apply id_left.
 Qed.
 
-(** Variant matching the Monoidal naturality shape:
-      from to-naturality [g ∘ to phi_X ≈ to phi_Y ∘ h]
-      derive from-naturality [h ∘ from phi_X ≈ from phi_Y ∘ g]. *)
+(** Variant matching Monoidal 自然性 shape:
+ to-自然性 [g ∘ phi_X ≈ phi_Y ∘ h]
+ derive from-自然性 [h ∘ phi_X ≈ phi_Y ∘ g]. （已译） *)
 Lemma from_naturality_of_to_M {D : Category} {X Y A B : D}
       (phi_X : @Isomorphism D X A) (phi_Y : @Isomorphism D Y B)
       (g : A ~{D}~> B) (h : X ~{D}~> Y)
@@ -1426,10 +1417,10 @@ Proof.
   apply id_right.
 Qed.
 
-(** ** Triangle identity at C level (for coproducts).
+(* * ** Triangle 恒等 at C level (for coproducts).
 
-    [cover (to coprod_zero_r) id ≈ cover id (to coprod_zero_l) ∘ to coprod_assoc]
-    i.e., (X+0)+Y → X+Y the two paths agree. *)
+ [cover (to coprod_zero_r) id ≈ cover id (to coprod_zero_l) ∘ coprod_assoc]
+ i.e., (X+0)+Y → X+Y two paths agree. （已译） *)
 
 Lemma coprod_triangle_aux {x y : C} :
   cover (to (@coprod_zero_r C H_Coc H_Ini x)) id[y]
@@ -1486,11 +1477,11 @@ Proof.
     symmetry. apply id_right.
 Qed.
 
-(** ** C-level pentagon identity for [coprod_assoc].
+(* * ** C-level pentagon 恒等 [coprod_assoc].
 
-    [cover id (to coprod_assoc) ∘ to coprod_assoc ∘ cover (to coprod_assoc) id
-     ≈ to coprod_assoc ∘ to coprod_assoc]
-    at types [(((X+Y)+Z)+W) → (X+(Y+(Z+W)))]. *)
+ [cover id (to coprod_assoc) ∘ coprod_assoc ∘ cover (to coprod_assoc) id
+ ≈ coprod_assoc ∘ coprod_assoc]
+ at types [(((X+Y)+Z)+W) → (X+(Y+(Z+W)))]. （已译） *)
 
 (*
    本节说明 Hypergraph 相关定义、性质与动机。

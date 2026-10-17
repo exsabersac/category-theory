@@ -117,7 +117,7 @@ Definition QuiverCoprod_edges_rr (a b : @nodes H) :
   @edges (QuiverCoprod G H) (Datatypes.inr a) (Datatypes.inr b)
     = @edges H a b := eq_refl.
 
-(* The two clauses that make the union DISJOINT, stated as equations. *)
+(* 相关说明。 （已译） *)
 
 Definition QuiverCoprod_edges_lr (a : @nodes G) (b : @nodes H) :
   @edges (QuiverCoprod G H) (Datatypes.inl a) (Datatypes.inr b)
@@ -127,9 +127,9 @@ Definition QuiverCoprod_edges_rl (a : @nodes H) (b : @nodes G) :
   @edges (QuiverCoprod G H) (Datatypes.inr a) (Datatypes.inl b)
     = False := eq_refl.
 
-(* …and again as eliminators, which is the form a consumer wants.  Both are
-   the identity function: the edge set IS [False], so nothing is proved by
-   these beyond making the fact quotable. *)
+(* …and again eliminators, form consumer wants. Both are
+ 恒等 function: edge set IS [False], so nothing proved by
+ these beyond making fact quotable. （已译） *)
 
 Definition quiver_coprod_no_edge_lr (a : @nodes G) (b : @nodes H)
   (e : @edges (QuiverCoprod G H) (Datatypes.inl a) (Datatypes.inr b))
@@ -139,8 +139,7 @@ Definition quiver_coprod_no_edge_rl (a : @nodes H) (b : @nodes G)
   (e : @edges (QuiverCoprod G H) (Datatypes.inr a) (Datatypes.inl b))
   : False := e.
 
-(* Distinctness of the two families of nodes.  This one is not definitional
-   and is not vacuous: it is what says the union is tagged. *)
+(* 相关说明。 （已译） *)
 Definition quiver_coprod_nodes_disjoint (a : @nodes G) (b : @nodes H)
   (p : @eq (@nodes (QuiverCoprod G H))
          (Datatypes.inl a) (Datatypes.inr b)) : False.
@@ -152,9 +151,9 @@ End CoproductQuiver.
 
 Section Injections.
 
-(* Both injections are the identity on edges: [edges (QuiverCoprod G H)
-   (inl x) (inl y)] iota-reduces to [edges G x y], so no map is needed and
-   respectfulness is the identity too. *)
+(* Both injections 恒等 edges: [edges (QuiverCoprod G H)
+ (inl x) (inl y)] iota-reduces [edges G x y], so no map needed and
+ respectfulness 恒等 too. （已译） *)
 
 Definition QuiverInl@{o h p} {G H : Quiver@{o h p}} : G ⇨ QuiverCoprod G H :=
   Build_QuiverHomomorphism G (QuiverCoprod G H)
@@ -212,7 +211,7 @@ End Copair.
 
 Arguments QuiverCopair {G H R} F F'.
 
-(** ** The universal property of the coproduct quiver *)
+(* * ** The 普遍性质 coproduct quiver （已译） *)
 
 Section CoproductUniversal.
 
@@ -270,9 +269,7 @@ Proof.
     + exact (qc a b e).
 Defined.
 
-(* Respectfulness of the copairing in both arguments — the statement
-   Constructions.v leaves open on the product side, and the reason
-   uniqueness above can take [≈] hypotheses. *)
+(* 相关说明。 （已译） *)
 Definition QuiverCopair_respects :
   Proper (@equiv _ (@homset QuiverCategory G R) ==>
           @equiv _ (@homset QuiverCategory H R) ==>
@@ -315,7 +312,7 @@ Proof.
   - intros [a|a] [b|b] e; try (exact (match e with end)); reflexivity.
 Defined.
 
-(** ** QuiverCategory has binary coproducts *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明笛卡尔相关定义、性质与动机。
@@ -340,9 +337,7 @@ Proof.
     + intros [p q]; exact (QuiverCopair_unique M F F' p q).
 Defined.
 
-(* The derived vocabulary of Structure/Cocartesian.v, pinned to the named
-   constants by [eq_refl] so that the orientation is fixed by computation
-   rather than by prose. *)
+(* 相关说明。 （已译） *)
 
 Definition Coprod_is_QuiverCoprod (G H : Quiver) :
   @Coprod QuiverCategory QuiverCategory_Cocartesian G H
@@ -360,13 +355,13 @@ Definition merge_is_QuiverCopair {G H R : Quiver} (F : G ⇨ R) (F' : H ⇨ R) :
   @merge QuiverCategory QuiverCategory_Cocartesian R G H F F'
     = QuiverCopair F F' := eq_refl.
 
-(** ** Preservation by the forgetful functor *)
+(* * ** Preservation forgetful 函子 （已译） *)
 
 Section Preservation.
 
 Context (C D : Category).
 
-(* Objects: the node types agree on the nose. *)
+(* 相关说明。 （已译） *)
 Definition QuiverOfCat_Coproduct_nodes :
   @nodes (QuiverOfCat (C ∐ D))
     = @nodes (QuiverCoprod (QuiverOfCat C) (QuiverOfCat D)) := eq_refl.
@@ -514,8 +509,7 @@ Definition LoopQ : Quiver :=
 Definition TwoQ : Quiver :=
   Build_Quiver_Standard_Eq bool (fun _ _ => bool).
 
-(* The loop is a genuine edge, and the cross edge sets of the coproduct are
-   genuinely empty. *)
+(* 相关说明。 （已译） *)
 
 Definition loop_edge : @edges LoopQ ttt ttt := ttt.
 
@@ -557,9 +551,7 @@ Definition Ftrue : LoopQ ⇨ TwoQ :=
   Build_QuiverHomomorphism LoopQ TwoQ
     (fun _ => true) (fun _ _ _ => true) (fun _ _ _ _ _ => eq_refl).
 
-(* The copairing COMPUTES, on nodes and on edges, and differently on the two
-   summands: the same loop is carried to [false] from the left and to [true]
-   from the right. *)
+(* 相关说明。 （已译） *)
 
 Definition copair_node_left :
   @fnodes _ _ (QuiverCopair Ffalse Ftrue) (Datatypes.inl ttt)
@@ -577,12 +569,12 @@ Definition copair_edge_right :
   @fedgemap _ _ (QuiverCopair Ffalse Ftrue)
     (Datatypes.inr ttt) (Datatypes.inr ttt) ttt = true := eq_refl.
 
-(* The two given homomorphisms really are different. *)
+(* 相关说明。 （已译） *)
 Definition Ffalse_neq_Ftrue
   (p : @equiv _ (@homset QuiverCategory LoopQ TwoQ) Ffalse Ftrue) : False.
 Proof. destruct p as [pn _]; discriminate (pn ttt). Defined.
 
-(* The copairing depends on the ORDER of its two arguments. *)
+(* 相关说明。 （已译） *)
 Definition copair_order_matters
   (p : @equiv _ (@homset QuiverCategory (QuiverCoprod LoopQ LoopQ) TwoQ)
          (QuiverCopair Ffalse Ftrue) (QuiverCopair Ftrue Ffalse)) : False.

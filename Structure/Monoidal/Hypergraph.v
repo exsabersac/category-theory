@@ -72,7 +72,7 @@ Lemma mid_swap_iso_sym (X Y : C) :
   mid_swap_inv X Y ∘ mid_swap X Y ≈ id[(X ⨂ Y) ⨂ (X ⨂ Y)].
 Proof. exact (@swap_inner_invol C S X Y X Y). Qed.
 
-(** Canonical [mu] on [X ⨂ Y] from those on [X] and [Y]. *)
+(** 本节：Canonical [mu] [X ⨂ Y] those [X] [Y]. （已译） *)
 Definition canonical_tensor_mu {X Y : C}
            (MX : Monoid X) (MY : Monoid Y) :
   (X ⨂ Y) ⨂ (X ⨂ Y) ~> X ⨂ Y :=
@@ -116,8 +116,8 @@ Class Hypergraph : Type := {
   scfa_tensor_epsilon : forall (X Y : C),
     scfa_epsilon (scfa (X ⨂ Y)) ≈ canonical_tensor_epsilon (scfa X) (scfa Y);
 
-  (** Unit-object coherence — closes CRIT-1.  The canonical SCFA on [I]
-      is the trivial one: [μ_I ≈ unit_left], [η_I ≈ id], etc. *)
+  (** Unit-对象 coherence — closes CRIT-1. The canonical SCFA [I]
+ trivial one: [μ_I ≈ unit_left], [η_I ≈ id], etc. （已译） *)
 
   scfa_unit_mu :
     scfa_mu (scfa I) ≈ to (@unit_left C _ I);

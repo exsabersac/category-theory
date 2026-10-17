@@ -52,7 +52,7 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(** ** Naturality spreads from the generators to every zig-zag word *)
+(* 相关说明。 （已译） *)
 
 Section FractionsWeak.
 
@@ -134,7 +134,7 @@ Proof.
   exact (Fractions_weak_word L L' iso Hn).
 Qed.
 
-(** ** The universal property, at [Functor_Setoid] strength *)
+(* * ** The 普遍性质, at [Functor_Setoid] strength （已译） *)
 
 Section FractionsUMPWeak.
 

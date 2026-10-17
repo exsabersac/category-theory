@@ -12,7 +12,7 @@ Require Import Equations.Prop.Logic.
 
 Generalizable All Variables.
 
-(** * The comma diagram over the arrow category, and its universal property *)
+(* * * The comma diagram over arrow 范畴, 普遍性质 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/comma+category
@@ -25,7 +25,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Transport and [hom_cast]: the two spellings of strict functor equality *)
+(* * ** Transport [hom_cast]: two spellings strict 函子 equality （已译） *)
 
 Section StrictCastKit.
 
@@ -60,7 +60,7 @@ Definition Build_strict_eq {C D : Category} {F G : C ⟶ D}
   @equiv _ (@Functor_StrictEq_Setoid C D) F G :=
   (eo; fun x y f => transports_of_hom_cast _ _ _ _ (em x y f)).
 
-(** ** The domain and codomain functors of the arrow category *)
+(* * ** The domain codomain 函子 arrow 范畴 （已译） *)
 
 Definition Arrow_dom {C : Category} : @Arrow C ⟶ C := @comma_proj1 C C C Id[C] Id[C].
 Definition Arrow_cod {C : Category} : @Arrow C ⟶ C := @comma_proj2 C C C Id[C] Id[C].
@@ -87,7 +87,7 @@ Lemma Arrow_square {C : Category} (x y : @Arrow C) (f : x ~> y) :
   `2 y ∘ fmap[Arrow_dom] f ≈ fmap[Arrow_cod] f ∘ `2 x.
 Proof. exact (`2 f). Qed.
 
-(** ** Mac Lane's functor [R] : the comma category over the arrow category *)
+(* * ** Mac Lane's 函子 [R] : comma 范畴 over arrow 范畴 （已译） *)
 
 Section CommaToArrow.
 
@@ -123,9 +123,9 @@ Example Comma_to_Arrow_dom_leg (x y : S ↓ T) (f : x ~> y) :
 Example Comma_to_Arrow_cod_leg (x y : S ↓ T) (f : x ~> y) :
   fmap[Arrow_cod] (fmap[Comma_to_Arrow] f) = fmap[T] (snd ``f) := eq_refl.
 
-(* Exercise 3 for [P] and [Q] as well: both projections act on a comma
-   morphism -- a commuting square -- by returning its leg in the relevant
-   factor, definitionally. *)
+(* Exercise 3 [P] [Q] well: both projections act comma
+ 态射 -- 交换方块 -- returning leg relevant
+ factor, definitionally. （已译） *)
 Example comma_proj1_fmap (x y : S ↓ T) (f : x ~> y) :
   fmap[comma_proj1] f = fst ``f := eq_refl.
 
@@ -141,7 +141,7 @@ Lemma Comma_to_Arrow_naturality (x y : S ↓ T) (f : x ~> y) :
     ≈ fmap[T ◯ comma_proj2] f ∘ comma_proj_nat x.
 Proof. apply naturality_sym. Qed.
 
-(** ** The commuting diagram, Mac Lane's displays (5)-(6) *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Diagram 相关定义、性质与动机。
@@ -174,7 +174,7 @@ Proof. apply strict_equiv_implies_fun_equiv, comma_diagram_cod. Qed.
 
 End CommaToArrow.
 
-(** ** Rebuilding a comma / arrow object from its cast components *)
+(* * ** Rebuilding comma / arrow 对象 cast components （已译） *)
 
 Lemma arrow_eta_cast {C : Category} (z : @Arrow C) {d0 d1 : C}
       (p : Arrow_dom z = d0) (q : Arrow_cod z = d1) :
@@ -201,7 +201,7 @@ Proof.
   intros H0 H1; split; [ now symmetry | now symmetry ].
 Qed.
 
-(** ** Mac Lane §II.6 Exercise 5: the universal property *)
+(* * ** Mac Lane §II.6 Exercise 5: 普遍性质 （已译） *)
 
 Section UMP.
 
@@ -243,7 +243,7 @@ Next Obligation. intros x; split; simpl; apply fmap_id. Qed.
 Next Obligation. intros x y z f g; split; simpl; apply fmap_comp. Qed.
 
 (* [Defined], not [Qed]: [comma_mediator_mediates] below projects out the
-   object-equality component and needs it to reduce to [eq_refl]. *)
+ 对象-equality component needs it reduce [eq_refl]. （已译） *)
 Theorem comma_mediator_proj1 :
   @equiv _ (@Functor_StrictEq_Setoid X A) (comma_proj1 ◯ comma_mediator) P'.
 Proof. exists (fun _ => eq_refl); intros; reflexivity. Defined.
@@ -270,7 +270,7 @@ Proof.
   - exact (strict_fmap_cast Hcod g).
 Qed.
 
-(** The three commuting equations for a competing mediator. *)
+(** 本节：The three commuting equations competing mediator. （已译） *)
 Definition MediatesDiagram (L : X ⟶ (S ↓ T)) : Type :=
   { k1 : @equiv _ (@Functor_StrictEq_Setoid X A) (comma_proj1 ◯ L) P' &
   { k2 : @equiv _ (@Functor_StrictEq_Setoid X B) (comma_proj2 ◯ L) Q' &
@@ -330,7 +330,7 @@ Defined.
 
 End UMP.
 
-(** ** Non-vacuity: the comma category is its own mediator *)
+(* * ** Non-vacuity: comma 范畴 own mediator （已译） *)
 
 (*
    本节说明函子、来源与用途相关定义、性质与动机。
@@ -364,9 +364,9 @@ Proof.
   - intros x y g; split; simpl; now rewrite id_left, id_right.
 Qed.
 
-(* The strict form is also available: the self-mediator and the identity
-   have literally the same object map, and their fmaps agree by the
-   category laws. *)
+(* The strict form available: self-mediator 恒等
+ have literally same 对象 map, fmaps agree the
+ 范畴 laws. （已译） *)
 Theorem comma_diagram_self_strict :
   @equiv _ Functor_StrictEq_Setoid comma_self_mediator Id[S ↓ T].
 Proof.

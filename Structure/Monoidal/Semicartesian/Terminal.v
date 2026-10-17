@@ -5,7 +5,7 @@ Require Import Category.Structure.Monoidal.Semicartesian.
 
 Generalizable All Variables.
 
-(** * The unit of a semicartesian monoidal category is terminal *)
+(* * * The unit semicartesian 幺半范畴 terminal （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Cartesian_monoidal_category

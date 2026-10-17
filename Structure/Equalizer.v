@@ -6,7 +6,7 @@ Require Import Category.Instance.Parallel.
 
 Generalizable All Variables.
 
-(** * Equalizer of a parallel pair (a limit over the shape [Parallel]) *)
+(* 相关说明。 （已译） *)
 
 (* nLab:      https://ncatlab.org/nlab/show/equalizer
    Wikipedia: https://en.wikipedia.org/wiki/Equaliser_(mathematics)

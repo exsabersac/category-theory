@@ -78,8 +78,8 @@ Next Obligation.
   apply X0.
 Qed.
 
-(* The embedding: f : x ~> y is sent to its post-composition action
-   k ↦ k ∘ f, the corepresentable transformation [Hom y,─] ⟹ [Hom x,─]. *)
+(* The embedding: f : x ~> y sent post-复合 action
+ k ↦ k ∘ f, corepresentable transformation [Hom y,─] ⟹ [Hom x,─]. （已译） *)
 Program Instance To_Cayley : C ⟶ Cayley := {
   fobj := fun x => x;
   fmap := fun _ _ f => (fun _ k => k ∘ f; _);
@@ -89,8 +89,8 @@ Next Obligation.
   proper.
 Defined.
 
-(* The retraction: read a Cayley-morphism f back as the C-morphism f _ id,
-   recovering the original by the Yoneda law.  From_Cayley ∘ To_Cayley = Id. *)
+(* The retraction: read Cayley-态射 f back C-态射 f _ id,
+ recovering original Yoneda law. From_Cayley ∘ To_Cayley = Id. （已译） *)
 Program Instance From_Cayley : Cayley ⟶ C := {
   fobj := fun x => x;
   fmap := fun _ y f => `1 f y (@id C y);
@@ -98,8 +98,8 @@ Program Instance From_Cayley : Cayley ⟶ C := {
 
 Context `{Cayley}.
 
-(* No matter how we associate the mapped morphisms, the functor back from
-   Cayley yields them left-associated. *)
+(* No matter how we associate mapped 态射, 函子 back from
+ Cayley yields them left-associated. （已译） *)
 
 Lemma Cayley_Right (x y z w : C) (f : z ~> w) (g : y ~> z) (h : x ~> y) :
   (∀ a b (k : a ~{C}~> b), id[b] ∘ k = k) ->

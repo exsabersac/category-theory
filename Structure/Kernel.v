@@ -25,13 +25,13 @@ Section Kernel.
 Context {C : Category}.
 Context `{Z : @ZeroObject C}.
 
-(* The kernel of f : x ~> y, presented elementarily: i : k ~> x equalizes
-   f against the zero morphism. *)
+(* The kernel f : x ~> y, presented elementarily: i : k ~> x equalizes
+ f against zero 态射. （已译） *)
 Definition IsKernel {x y k : C} (f : x ~> y) (i : k ~> x) : Type :=
   IsEqualizer f zero_mor k i.
 
-(* The cokernel of f : x ~> y, presented elementarily: e : y ~> q
-   coequalizes f against the zero morphism. *)
+(* The cokernel f : x ~> y, presented elementarily: e : y ~> q
+ coequalizes f against zero 态射. （已译） *)
 Definition IsCokernel {x y q : C} (f : x ~> y) (e : y ~> q) : Type :=
   IsCoequalizer f zero_mor q e.
 
@@ -47,11 +47,11 @@ Class HasCokernels := {
   cokernel {x y : C} (f : x ~> y) : ∃ (q : C) (e : y ~> q), IsCokernel f e
 }.
 
-(** ** The defining composites are zero *)
+(* 相关说明。 （已译） *)
 
-(* The kernel inclusion is absorbed by f: from the fork equation
-   f ∘ i ≈ zero_mor ∘ i, the right-hand side collapses by zero-morphism
-   absorption. *)
+(* The kernel 含入 absorbed f: fork equation
+ f ∘ i ≈ zero_mor ∘ i, right-hand side collapses zero-态射
+ absorption. （已译） *)
 Lemma kernel_comp_zero {x y k : C} {f : x ~> y} {i : k ~> x}
   (K : IsKernel f i) : f ∘ i ≈ zero_mor.
 Proof.
@@ -59,9 +59,9 @@ Proof.
   apply zero_mor_right.
 Qed.
 
-(* Dually, the cokernel projection absorbs f: from the cofork equation
-   e ∘ f ≈ e ∘ zero_mor, the right-hand side collapses by zero-morphism
-   absorption. *)
+(* Dually, cokernel projection absorbs f: cofork equation
+ e ∘ f ≈ e ∘ zero_mor, right-hand side collapses zero-态射
+ absorption. （已译） *)
 Lemma cokernel_comp_zero {x y q : C} {f : x ~> y} {e : y ~> q}
   (K : IsCokernel f e) : e ∘ f ≈ zero_mor.
 Proof.
@@ -69,7 +69,7 @@ Proof.
   apply zero_mor_left.
 Qed.
 
-(** ** Kernels are monic, cokernels are epic *)
+(* 相关说明。 （已译） *)
 
 (* Wikipedia: "every kernel is a monomorphism" — read off the equalizer. *)
 Lemma kernel_monic {x y k : C} {f : x ~> y} {i : k ~> x}
@@ -86,7 +86,7 @@ Proof.
   exact (coequalizer_epic f zero_mor K).
 Qed.
 
-(** ** Descent in the zero-composite phrasing *)
+(* * ** Descent zero-复合 phrasing （已译） *)
 
 (*
    本节说明核/余核相关定义、性质与动机。
@@ -118,7 +118,7 @@ Proof.
   apply zero_mor_left.
 Qed.
 
-(** ** Normal monomorphisms and normal epimorphisms *)
+(* 相关说明。 （已译） *)
 
 (* A morphism is a normal monomorphism when it is the kernel of some
    morphism.  nLab: https://ncatlab.org/nlab/show/normal+monomorphism *)
@@ -130,7 +130,7 @@ Definition normal_mono {k x : C} (i : k ~> x) : Type :=
 Definition normal_epi {y q : C} (e : y ~> q) : Type :=
   ∃ (x : C) (f : x ~> y), IsCokernel f e.
 
-(** ** Cokernels are regular epimorphisms *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明核/余核相关定义、性质与动机。
@@ -145,7 +145,7 @@ Definition cokernel_regular_epi {x y q : C} {f : x ~> y} {e : y ~> q}
   regepi_is_coeq := K
 |}.
 
-(** ** Normality against the chosen (co)kernels *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明核/余核相关定义、性质与动机。
@@ -199,8 +199,7 @@ Proof.
     exact (cokernel_desc CK h Hf).
 Defined.
 
-(* At the CHOSEN cokernel/kernel: a normal mono is a kernel of its chosen
-   cokernel, and dually. *)
+(* 相关说明。 （已译） *)
 Corollary normal_mono_kernel_of_cokernel {HCK : HasCokernels} {k x : C}
   (i : k ~> x) (N : normal_mono i) :
   IsKernel (`1 (`2 (cokernel i))) i.

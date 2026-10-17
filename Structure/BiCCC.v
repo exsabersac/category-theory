@@ -27,8 +27,8 @@ Context `{@Cocartesian C}.
 Context `{@Closed C _}.
 
 #[export] Program Instance prod_coprod_l {x y z : C} :
-  (* Right distributivity: `_ × x` preserves the coproduct y + z, so it
-     distributes over it (the left-hand, mirror form of prod_coprod_r). *)
+  (* Right distributivity: `_ × x` preserves coproduct y + z, so it
+ distributes over it (the left-hand, 镜像 form prod_coprod_r). （已译） *)
   (y + z) × x ≅ y × x + z × x := {
   to   := uncurry (curry inl ▽ curry inr);
   from := first inl ▽ first inr

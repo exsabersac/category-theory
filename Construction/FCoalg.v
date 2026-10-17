@@ -19,13 +19,13 @@ Generalizable All Variables.
 
 Definition FCoalg `(F : C ⟶ C) : Category := (FAlg (F^op))^op.
 
-(* A co-algebra hom-set of [FCoalg F] is, on the nose, an [F^op]-algebra hom of
-   the opposite category. *)
+(* A co-algebra hom-set [FCoalg F] is, nose, [F^op]-algebra hom of
+ opposite 范畴. （已译） *)
 Lemma fcoalg_hom `(F : C ⟶ C) (x y : FCoalg F) :
   (x ~{FCoalg F}~> y) = (y ~{FAlg (F^op)}~> x).
 Proof. reflexivity. Qed.
 
-(* The forgetful functor to the underlying category, by dualizing
-   [FAlg_Forget] and using [C^op^op = C]. *)
+(* The forgetful 函子 underlying 范畴, dualizing
+ [FAlg_Forget] using [C^op^op = C]. （已译） *)
 Definition FCoalg_Forget `(F : C ⟶ C) : FCoalg F ⟶ C :=
   (FAlg_Forget (F^op))^op.

@@ -13,7 +13,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** Kan's form of the coyoneda lemma over the category of elements. *)
+(** Kan's form coyoneda 引理 over 范畴 elements. （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/category+of+elements
@@ -48,7 +48,7 @@ Notation leg psi j :=
 Notation coh psi f :=
   (@cone_coherence (Elements K) D _ (Elements_proj K) psi _ _ f).
 
-(** ** From a map into a representable to a cone *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Kan 相关定义、性质与动机。
@@ -71,14 +71,13 @@ Definition kan_cone_of_nat {a : D} (tau : K ⟹ [Hom a,─]) :
     (fun j => transform[tau] (`1 j) (`2 j))
     (fun x y f => kan_cone_coherence tau f).
 
-(* The leg at a pair is the component of τ evaluated at the element, on
-   the nose. *)
+(* 相关说明。 （已译） *)
 Example kan_cone_of_nat_leg {a : D} (tau : K ⟹ [Hom a,─])
         (d : D) (x : K d) :
   leg (kan_cone_of_nat tau) ((d; x) : Elements K) = transform[tau] d x
   := eq_refl.
 
-(** ** From a cone to a map into a representable *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Kan 相关定义、性质与动机。
@@ -94,8 +93,8 @@ Definition elements_same {d : D} (x y : K d) (H : x ≈ y) :
   ((d; x) : Elements K) ~{Elements K}~> (d; y) :=
   (id[d]; elements_same_cond x y H).
 
-(* Respectfulness of a cone's leg family in the ELEMENT argument, derived
-   from cone coherence at [elements_same] rather than assumed. *)
+(* Respectfulness cone's leg family ELEMENT 论元, derived
+ cone coherence at [elements_same] rather than assumed. （已译） *)
 
 Lemma kan_leg_respects {a : D} (psi : ACone a (Elements_proj K))
       {d : D} (x y : K d) (H : x ≈ y) :
@@ -134,8 +133,7 @@ Definition kan_nat_of_cone {a : D} (psi : ACone a (Elements_proj K)) :
     (fun d d' f => kan_nat_naturality psi f)
     (fun d d' f => kan_nat_naturality_sym psi f).
 
-(* The component at d, evaluated at an element, is the leg at the pair,
-   on the nose. *)
+(* 相关说明。 （已译） *)
 Example kan_nat_of_cone_component {a : D} (psi : ACone a (Elements_proj K))
         (d : D) (x : K d) :
   transform[kan_nat_of_cone psi] d x = leg psi ((d; x) : Elements K)
@@ -143,9 +141,7 @@ Example kan_nat_of_cone_component {a : D} (psi : ACone a (Elements_proj K))
 
 (** ** The two round trips *)
 
-(* Both hold at `≈` and neither holds at [eq_refl]; the negatives are
-   pinned in Test/ProbeCoyoneda.v.  The cone side must destruct the pair
-   first, stdlib [sigT] having no eta rule here. *)
+(* 相关说明。 （已译） *)
 
 Lemma kan_nat_cone_nat {a : D} (tau : K ⟹ [Hom a,─]) :
   kan_nat_of_cone (kan_cone_of_nat tau) ≈ tau.
@@ -156,7 +152,7 @@ Lemma kan_cone_nat_cone {a : D} (psi : ACone a (Elements_proj K)) :
          (kan_cone_of_nat (kan_nat_of_cone psi)) psi.
 Proof. intros [d x]; reflexivity. Qed.
 
-(** ** The two sides as functors of the apex *)
+(* * ** The two sides 函子 apex （已译） *)
 
 (*
    本节说明函子、Yoneda、hom相关定义、性质与动机。
@@ -167,13 +163,12 @@ Proof. intros [d x]; reflexivity. Qed.
 Definition KanNat : D^op ⟶ Sets :=
   Curried_Hom ([D, Sets]) K ◯ Curried_Hom D.
 
-(* The right-hand side is Structure/Cone.v's presheaf of cones, taken at
-   the elements projection.  Also pure reuse. *)
+(* 相关说明。 （已译） *)
 
 Definition KanCone : D^op ⟶ Sets :=
   ConePresheaf (Elements_proj K).
 
-(* Both object actions are the setoids the exercise names, on the nose. *)
+(* Both 对象 actions setoids exercise names, nose. （已译） *)
 
 Example kan_nat_obj (a : D) :
   KanNat a = {| carrier   := K ~{[D, Sets]}~> [Hom a,─]
@@ -215,7 +210,7 @@ Next Obligation. intros a a' g psi d z; reflexivity. Qed.
 Next Obligation. intros a psi [d z]; simpl; now rewrite id_right. Qed.
 Next Obligation. intros a tau d z; simpl; now rewrite id_right. Qed.
 
-(* The upgrade is an upgrade: the components ARE the pointwise legs. *)
+(* 相关说明。 （已译） *)
 
 Example kan_coyoneda_to_component (a : D) :
   transform[to kan_coyoneda] a = to (kan_iso_at a) := eq_refl.
@@ -285,8 +280,7 @@ Lemma kan_transform_cone_transform {a : D}
   kan_transform_of_cone (kan_cone_of_transform theta) ≈ theta.
 Proof. intro j; reflexivity. Qed.
 
-(* The setoid of Δ-transformations, named so the two isomorphisms below
-   can mention it without repeating the packaging. *)
+(* 相关说明。 （已译） *)
 
 Definition KanDelta (a : D) : SetoidObject :=
   {| carrier   := Δ[Elements K](a) ~{[Elements K, D]}~> Elements_proj K

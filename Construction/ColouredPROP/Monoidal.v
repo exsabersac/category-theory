@@ -11,7 +11,7 @@ From Coq Require Import Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * The Monoidal structure on the free coloured PROP *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/PROP
@@ -29,12 +29,12 @@ Context {Colour : Type}.
 Context (S : CSignature Colour).
 Context (Cdec : forall c d : Colour, {c = d} + {c <> d}).
 
-(** ** Transport bridges: [eq_rect] spellings vs. [CT_cast] composites
+(* * ** Transport bridges: [eq_rect] spellings vs. [CT_cast] composites
 
-    A codomain transport is post-composition by the cast; a domain
-    transport is pre-composition by the (inverted) cast.  Each proof
-    destructs the boundary equation, after which both sides collapse
-    to an identity law of [CTermEq].  No decidability is involved. *)
+ A codomain transport post-复合 cast; domain
+ transport pre-复合 (inverted) cast. Each 证明
+ destructs boundary equation, after both sides collapse
+ 恒等 law [CTermEq]. No decidability involved. （已译） *)
 
 (** Codomain transport equals post-composition with [CT_cast e]. *)
 Lemma ceq_rect_cod_cast {a b b' : list Colour}
@@ -131,11 +131,11 @@ Proof.
     + apply CTE_sym, CTE_id_left.
 Qed.
 
-(** ** Tensor fusion
+(* * ** Tensor fusion
 
-    A tensor of morphisms decomposes as either sliding order of the
-    two "half-identity" tensors; both composites fuse back to the
-    plain tensor via the interchange law. *)
+ A tensor 态射 decomposes either sliding order the
+ two "half-恒等" tensors; both composites fuse back the
+ plain tensor via interchange law. （已译） *)
 
 Lemma ctens_fuse_l {a b c d : list Colour}
   (f : CTerm S a b) (g : CTerm S c d) :
@@ -193,10 +193,10 @@ Proof using Cdec.
   apply ccast_square_flip, cleft_unit_natural.
 Qed.
 
-(** ** Simple corollaries of the strict-unit axioms *)
+(* 相关说明。 （已译） *)
 
-(** Tensoring an identity with [CT_id []] on the left collapses to a
-    single identity term. *)
+(** Tensoring 恒等 [CT_id []] left collapses a
+ single 恒等 term. （已译） *)
 Lemma ctens_id0_id (n : list Colour) :
   CTermEq S (CT_tens (CT_id []) (CT_id n)) (CT_id n).
 Proof. apply CTE_tens_id0_left. Qed.
@@ -206,12 +206,7 @@ Lemma ctens_id0_id0 :
   CTermEq S (CT_tens (CT_id []) (CT_id [])) (CT_id []).
 Proof. apply CTE_tens_id0_left. Qed.
 
-(** ** Strict-PROP right-unit at the [CT_cast] level
-
-    [CTE_tens_id0_right] states the right-unit law in [eq_rect]
-    transport form.  We can extract its content as a [CT_cast]
-    sandwich: pre/post-composing by appropriate casts gives a direct
-    [CT_tens f (CT_id []) ↔ f]-style equation. *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -236,7 +231,7 @@ Proof using Cdec.
   exact Hr.
 Qed.
 
-(** ** Boundary-specialised right-unit at any concrete boundaries *)
+(* 相关说明。 （已译） *)
 
 Lemma ctens_id0_right_at {m n : list Colour} (f : CTerm S m n) :
   CTermEq S
@@ -245,7 +240,7 @@ Lemma ctens_id0_right_at {m n : list Colour} (f : CTerm S m n) :
     (eq_rect_r (fun k => CTerm S k n) f (app_nil_r m)).
 Proof. exact (CTE_tens_id0_right f). Qed.
 
-(** ** Tensor-associativity at any concrete boundaries *)
+(* 相关说明。 （已译） *)
 
 Lemma ctens_assoc_at {m1 n1 m2 n2 m3 n3 : list Colour}
   (f : CTerm S m1 n1) (g : CTerm S m2 n2) (h : CTerm S m3 n3) :
@@ -280,7 +275,7 @@ Proof.
     + apply ceq_rect_r_dom_cast.
 Qed.
 
-(** The [from]-direction square [(g ⊕c id_[]) ∘ ρ⁻¹ ≈ ρ⁻¹ ∘ g]. *)
+(** 本节：The [from]-direction square [(g ⊕c id_[]) ∘ ρ⁻¹ ≈ ρ⁻¹ ∘ g]. （已译） *)
 Lemma cfrom_right_unit_natural {x y : list Colour} (g : CTerm S x y) :
   CTermEq S (CT_comp (CT_tens g (CT_id [])) (CT_cast (eq_sym (app_nil_r x))))
             (CT_comp (CT_cast (eq_sym (app_nil_r y))) g).
@@ -317,8 +312,8 @@ Proof.
     + apply ceq_rect_cod_cast.
 Qed.
 
-(** The [from]-direction square
-      [((f ⊕c g) ⊕c h) ∘ α⁻¹ ≈ α⁻¹ ∘ (f ⊕c (g ⊕c h))]. *)
+(** 本节：The [from]-direction square
+ [((f ⊕c g) ⊕c h) ∘ α⁻¹ ≈ α⁻¹ ∘ (f ⊕c (g ⊕c h))]. （已译） *)
 Lemma cfrom_assoc_natural {m1 n1 m2 n2 m3 n3 : list Colour}
   (f : CTerm S m1 n1) (g : CTerm S m2 n2) (h : CTerm S m3 n3) :
   CTermEq S

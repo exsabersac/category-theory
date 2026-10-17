@@ -89,8 +89,7 @@ Proof.
   - intros u v m Hm.
     constructor.
     intros a b comm.
-    (* a coforks the pair p1, p2, by cancelling the monomorphism m:
-       m ∘ (a ∘ p1) ≈ b ∘ (f ∘ p1) ≈ b ∘ (f ∘ p2) ≈ m ∘ (a ∘ p2). *)
+    (* 相关说明。 （已译） *)
     assert (Ha : a ∘ p1 ≈ a ∘ p2). {
       apply (@monic C u v m Hm).
       rewrite !comp_assoc.
@@ -117,9 +116,9 @@ Proof.
       exact Hd'f.
 Qed.
 
-(* In a regular category, the coequalizing map supplied by [regular_coeq]
-   for the kernel pair of f is itself a regular epimorphism: it manifestly
-   coequalizes the kernel-pair projections. *)
+(* In regular 范畴, coequalizing map supplied [regular_coeq]
+ kernel pair f itself regular epimorphism: it manifestly
+ coequalizes kernel-pair projections. （已译） *)
 Definition regular_epi_of_kernel_coeq {C : Category} {R : Regular C}
   {x y : C} (f : x ~> y) :
   RegularEpi (`1 (`2 (regular_coeq f))) := {|

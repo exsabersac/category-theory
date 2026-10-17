@@ -148,9 +148,9 @@ Proof.
   exact (feq_trans _ _ _ (fapp_feq_l Et u) (fapp_feq_r t' Eu)).
 Qed.
 
-(* The same fact keyed on [fapp]'s actual argument structure (the target
-   indices intervene between the two word arguments), so that setoid
-   [rewrite] works under literal [fapp] applications. *)
+(* The same fact keyed [fapp]'s actual 论元 structure (the target
+ indices intervene between two word arguments), so setoid
+ [rewrite] works under literal [fapp] applications. （已译） *)
 #[export] Instance fapp_respects_forall {c1 d1 c2 d2} :
   Proper (equiv ==>
             forall_relation (fun c3 =>
@@ -396,8 +396,8 @@ Next Obligation.
              (rstep g') (rstep g)).
 Qed.
 
-(* ...and folding through that data recovers the functor: functors out of
-   C □ D are determined by their action on the generating steps. *)
+(* ...and folding through data recovers 函子: 函子 out of
+ C □ D determined action generating steps. （已译） *)
 Lemma ffold_toSep {C D E : Category} (H : (C □ D) ⟶ E)
   {c1 : C} {d1 : D} {c2 : C} {d2 : D} (t : FunHom c1 d1 c2 d2) :
   ffold (toSep H) t ≈ @fmap (C □ D) E H (c1, d1) (c2, d2) t.
@@ -415,8 +415,7 @@ Proof.
       exact (@fmap_comp (C □ D) E H (ca, da) (ca, db) (cc, dc) t (rstep g)).
 Qed.
 
-(* Two separately functorial data packages agreeing on the generating steps
-   fold identically: uniqueness of the eliminator. *)
+(* 相关说明。 （已译） *)
 Lemma ffold_ext {C D E : Category} {h : C → D → E} (S S' : SepFunctorial h)
   (el : ∀ (c c' : C) (f : c ~{C}~> c') (d : D), sf_lmap S f d ≈ sf_lmap S' f d)
   (er : ∀ (c : C) (d d' : D) (g : d ~{D}~> d'), sf_rmap S c g ≈ sf_rmap S' c g)
@@ -431,8 +430,7 @@ Qed.
 
 (* ---- injections ---- *)
 
-(* NOTE: fmap[FunnyL d] f ≡ lstep f and fmap[FunnyR c] g ≡ rstep g
-   DEFINITIONALLY — used by the nested associator/pentagon proofs. *)
+(* 相关说明。 （已译） *)
 Program Definition FunnyL {C D : Category} (d : D) : C ⟶ (C □ D) := {|
   fobj := fun c => (c, d);
   fmap := fun _ _ f => lstep f

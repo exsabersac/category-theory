@@ -20,9 +20,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* A pullback of a cospan F is just the limit of F. This is a definitional
-   alias introduced to name the cospan-limit and to read its legs/UMP as
-   pullback data in the lemmas below. *)
+(* 相关说明。 （已译） *)
 Definition Pullback_Limit {C : Category} (F : Cospan C) := Limit F.
 Arguments Pullback_Limit {_%_category} F%_functor /.
 

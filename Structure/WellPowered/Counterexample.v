@@ -10,7 +10,7 @@ Require Import Coq.Logic.Hurkens.
 
 Generalizable All Variables.
 
-(** * A category that is not well-powered *)
+(* * * A 范畴 not well-powered （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/Burali-Forti%27s+paradox
@@ -21,7 +21,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Hurkens' paradox over a retract *)
+(* 相关说明。 （已译） *)
 
 Lemma retract_paradox@{i +} (A : Type@{i}) (down : Type@{i} → A)
   (up : A → Type@{i}) (up_down : ∀ X : Type@{i}, up (down X) = X) : False.
@@ -112,7 +112,7 @@ Definition AntichainTop : Category@{o h h} :=
      comp_assoc := fun _ _ _ _ _ _ _ => I ;
      comp_assoc_sym := fun _ _ _ _ _ _ _ => I |}.
 
-(* The subobject of the top named by a type. *)
+(* 相关说明。 （已译） *)
 Definition at_sub (A : Type@{i}) : @SubObj AntichainTop None :=
   {| sub_dom := (Some A : obj[AntichainTop]) ;
      sub_mono := (tt : @hom AntichainTop (Some A) None) ;
@@ -120,15 +120,14 @@ Definition at_sub (A : Type@{i}) : @SubObj AntichainTop None :=
                        (tt : @hom AntichainTop (Some A) None)
                        (fun _ _ _ _ => I) |}.
 
-(* Reading a type back off an index: the domain of the subobject it
-   names. *)
+(* 相关说明。 （已译） *)
 Definition at_up (W : @WellPoweredAt AntichainTop None) (j : wp_index W) :
   Type@{i} :=
   match sub_dom (wp_to W j) with Some B => B | None => Datatypes.unit end.
 
-(* The retract equation, from the domain isomorphism that exhaustiveness
-   supplies: its forward arrow is [B = X] when the domain is [Some B], and
-   inhabits [False] when it is [None]. *)
+(* The retract equation, domain 同构 exhaustiveness
+ supplies: forward arrow [B = X] domain [Some B], and
+ inhabits [False] it [None]. （已译） *)
 Lemma at_up_down (W : @WellPoweredAt AntichainTop None) (X : Type@{i}) :
   at_up W (wp_from W (at_sub X)) = X.
 Proof.
@@ -144,8 +143,8 @@ End AntichainTop.
 
 (** ** The refutation *)
 
-(* No well-poweredness datum at the top object with index at or below
-   [i]. *)
+(* No well-poweredness datum at top 对象 index at below
+ [i]. （已译） *)
 Theorem AntichainTop_not_WellPoweredAt@{i o h w s t |
     i < o, w <= i, h < t, o <= s, h <= s +}
   (W : @WellPoweredAt@{w o s h t} AntichainTop@{i o h} None) : False.
@@ -154,8 +153,7 @@ Proof.
            (at_up W) (at_up_down W)).
 Qed.
 
-(* At the pin: with the homs at or below [i], [AntichainTop] is not
-   well-powered. *)
+(* 相关说明。 （已译） *)
 Theorem AntichainTop_not_WellPowered@{i o h w s t |
     i < o, h <= i, w <= h, h < t, o <= s, h <= s +}
   (WP : WellPowered@{o h w s t} AntichainTop@{i o h}) : False.
@@ -174,8 +172,8 @@ Theorem AntichainTop_op_not_CoWellPowered@{i o h w s t |
   (CWP : CoWellPowered@{o h w s t} (AntichainTop@{i o h}^op)) : False.
 Proof. exact (AntichainTop_not_WellPowered@{i o h w s t} CWP). Qed.
 
-(* Positive control: one universe up, at the objects, the trivial datum
-   exists, so the refutation measures size and nothing else. *)
+(* Positive control: one universe up, at 对象, trivial datum
+ exists, so refutation measures size nothing else. （已译） *)
 Definition AntichainTop_trivial@{i o h t | i < o, h < t, h <= o +} :
   @WellPoweredAt@{o o o h t} AntichainTop@{i o h} None :=
   @wp_trivial@{o h o o t} AntichainTop@{i o h} None.

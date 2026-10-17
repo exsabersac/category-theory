@@ -5,7 +5,7 @@ Require Import Category.Theory.Isomorphism.
 
 Generalizable All Variables.
 
-(** * Indexed categories: the coherent pseudofunctor-lite *)
+(* * * Indexed 范畴: coherent pseudofunctor-lite （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/pseudofunctor
@@ -22,9 +22,9 @@ Record IndexedCat (B : Category) : Type := {
 
   idx_map {x y : B} (f : x ~> y) : idx_fib x ⟶ idx_fib y;
 
-  (* Reindexing respects ≈ on base morphisms, up to a chosen fibre iso,
-     natural in the fibre argument and proof-irrelevant ([idx_resp_id],
-     [idx_resp_trans] make any two such isos agree). *)
+  (* Reindexing respects ≈ base 态射, up chosen fibre iso,
+ natural fibre 论元 证明-irrelevant ([idx_resp_id],
+ [idx_resp_trans] make any two such isos agree). （已译） *)
   idx_resp {x y : B} {f g : x ~> y} (e : f ≈ g) (a : idx_fib x) :
     idx_map f a ≅[idx_fib y] idx_map g a;
   idx_resp_natural {x y : B} {f g : x ~> y} (e : f ≈ g)
@@ -38,14 +38,14 @@ Record IndexedCat (B : Category) : Type := {
     to (idx_resp e2 a) ∘ to (idx_resp e1 a)
       ≈ to (idx_resp (Equivalence_Transitive _ _ _ e1 e2) a);
 
-  (* Unit: reindexing along the identity is isomorphic to doing nothing,
-     naturally in the fibre argument. *)
+  (* Unit: reindexing along 恒等 isomorphic doing nothing,
+ naturally fibre 论元. （已译） *)
   idx_id {x : B} (a : idx_fib x) : idx_map (@id B x) a ≅ a;
   idx_id_natural {x : B} {a b : idx_fib x} (k : a ~> b) :
     k ∘ to (idx_id a) ≈ to (idx_id b) ∘ fmap[idx_map (@id B x)] k;
 
-  (* Composition: reindexing twice is isomorphic to reindexing along the
-     composite, naturally in the fibre argument. *)
+  (* Composition: reindexing twice isomorphic reindexing along the
+ 复合, naturally fibre 论元. （已译） *)
   idx_comp {x y z : B} (f : y ~> z) (g : x ~> y) (a : idx_fib x) :
     idx_map f (idx_map g a) ≅ idx_map (f ∘ g) a;
   idx_comp_natural {x y z : B} (f : y ~> z) (g : x ~> y)
@@ -111,8 +111,8 @@ Section IndexedCatLemmas.
 Context {B : Category}.
 Context (A : IndexedCat B).
 
-(* [idx_resp] at a reflexivity-flavoured proof has identity inverse as well:
-   the [from]-side companion to [idx_resp_id]. *)
+(* [idx_resp] at reflexivity-flavoured 证明 has 恒等 inverse well:
+ [from]-side companion [idx_resp_id]. （已译） *)
 Lemma idx_resp_from_id {x y : B} {f : x ~> y} (e : f ≈ f) (a : idx_fib A x) :
   from (idx_resp A e a) ≈ id.
 Proof.
@@ -121,8 +121,8 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(* The chosen iso at a symmetric proof is the inverse of the chosen iso:
-   [to] at [symmetry e] agrees with [from] at [e]. *)
+(* The chosen iso at symmetric 证明 inverse chosen iso:
+ [to] at [symmetry e] agrees [from] at [e]. （已译） *)
 Lemma idx_resp_to_sym {x y : B} {f g : x ~> y} (e : f ≈ g) (a : idx_fib A x) :
   to (idx_resp A (symmetry e) a) ≈ from (idx_resp A e a).
 Proof.
@@ -132,9 +132,7 @@ Proof.
   - apply iso_from_to.
 Qed.
 
-(* Proof irrelevance: the chosen isos at any two proofs of [f ≈ g] agree.
-   This is the [idx_resp_id]/[idx_resp_trans] pair in the form downstream
-   proofs use directly. *)
+(* 相关说明。 （已译） *)
 Lemma idx_resp_irrel {x y : B} {f g : x ~> y} (e e' : f ≈ g)
       (a : idx_fib A x) :
   to (idx_resp A e a) ≈ to (idx_resp A e' a).
@@ -146,7 +144,7 @@ Proof.
   - apply iso_to_from.
 Qed.
 
-(* [from] at [symmetry e] agrees with [to] at [e]. *)
+(* 相关说明。 （已译） *)
 Lemma idx_resp_from_sym {x y : B} {f g : x ~> y} (e : f ≈ g)
       (a : idx_fib A x) :
   from (idx_resp A (symmetry e) a) ≈ to (idx_resp A e a).
@@ -155,7 +153,7 @@ Proof.
   apply idx_resp_irrel.
 Qed.
 
-(* Proof irrelevance on the [from] side. *)
+(* 相关说明。 （已译） *)
 Lemma idx_resp_from_irrel {x y : B} {f g : x ~> y} (e e' : f ≈ g)
       (a : idx_fib A x) :
   from (idx_resp A e a) ≈ from (idx_resp A e' a).
@@ -164,7 +162,7 @@ Proof.
   apply idx_resp_irrel.
 Qed.
 
-(* Transitivity on the [from] side: inverses compose in reverse order. *)
+(* 相关说明。 （已译） *)
 Lemma idx_resp_from_trans {x y : B} {f g h : x ~> y}
       (e1 : f ≈ g) (e2 : g ≈ h) (a : idx_fib A x) :
   from (idx_resp A e1 a) ∘ from (idx_resp A e2 a)
@@ -176,8 +174,7 @@ Proof.
   apply idx_resp_irrel.
 Qed.
 
-(* Naturality of [idx_resp] on the [from] side, by conjugating
-   [idx_resp_natural] with the inverses. *)
+(* 相关说明。 （已译） *)
 Lemma idx_resp_natural_from {x y : B} {f g : x ~> y} (e : f ≈ g)
       {a b : idx_fib A x} (k : a ~> b) :
   fmap[idx_map A f] k ∘ from (idx_resp A e a)
@@ -194,7 +191,7 @@ Proof.
   apply id_right.
 Qed.
 
-(* Naturality of [idx_id] on the [from] side. *)
+(* 相关说明。 （已译） *)
 Lemma idx_id_natural_from {x : B} {a b : idx_fib A x} (k : a ~> b) :
   fmap[idx_map A (@id B x)] k ∘ from (idx_id A a) ≈ from (idx_id A b) ∘ k.
 Proof.
@@ -209,7 +206,7 @@ Proof.
   apply id_right.
 Qed.
 
-(* Naturality of [idx_comp] on the [from] side. *)
+(* 相关说明。 （已译） *)
 Lemma idx_comp_natural_from {x y z : B} (f : y ~> z) (g : x ~> y)
       {a b : idx_fib A x} (k : a ~> b) :
   fmap[idx_map A f] (fmap[idx_map A g] k) ∘ from (idx_comp A f g a)

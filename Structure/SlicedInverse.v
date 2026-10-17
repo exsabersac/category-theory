@@ -33,7 +33,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The sliced functors [G/a] and [a/G] *)
+(* * ** The sliced 函子 [G/a] [a/G] （已译） *)
 
 (* Mac Lane's G↓a : (A↓a) ⟶ (X↓Ga), on this library's [Slice] encoding:
    an object (d; h : d ~> a) goes to (G d; G h), an arrow m to G m. *)
@@ -63,7 +63,7 @@ Next Obligation.
   apply fmap_comp.
 Qed.
 
-(* The dual, a↓G : (a↓A) ⟶ (Ga↓X), on the [Coslice] encoding. *)
+(* 相关说明。 （已译） *)
 Program Definition Cosliced@{oA hA oX hX +} {A : Category@{oA hA hA}}
   {X : Category@{oX hX hX}} (G : A ⟶ X) (a : A) :
   @Coslice A a ⟶ @Coslice X (G a) := {|
@@ -127,10 +127,10 @@ Arguments rari_adj {A C S} _.
 Arguments rari_obj {A C S} _ _.
 Arguments rari_counit {A C S} _ _.
 
-(** ** The unit of an adjunction as a universal arrow, by duality *)
+(* * ** The unit 伴随 泛箭头, duality （已译） *)
 
 (* Adjunction/Determination.v's [adj_counit_couniversal] read at the
-   opposite adjunction.  Both readbacks below are [eq_refl]. *)
+ opposite 伴随. Both readbacks below [eq_refl]. （已译） *)
 Definition adj_unit_universal_op@{oC oD h +} {C : Category@{oC h h}}
   {D : Category@{oD h h}} {F : D ⟶ C} {U : C ⟶ D}
   (A : F ⊣ U) (c : D) : UniversalArrow c U :=
@@ -168,7 +168,7 @@ Definition sliced_eq_obj : A := `1 (coarrow_obj U).
 
 Definition sliced_eq_arrow : sliced_eq_obj ~> x := `2 (coarrow_obj U).
 
-(* The fork equation: the only step that spends faithfulness. *)
+(* 相关说明。 （已译） *)
 Lemma sliced_fork : f ∘ sliced_eq_arrow ≈ g ∘ sliced_eq_arrow.
 Proof using E U GF.
   apply (@fmap_inj _ _ G GF).
@@ -181,8 +181,7 @@ Proof using E U GF.
   reflexivity.
 Qed.
 
-(* Descent: existence from the downstairs equalizer followed by the
-   couniversal property, uniqueness from the couniversal property alone. *)
+(* 相关说明。 （已译） *)
 Definition sliced_desc {z : A} (h : z ~> x) (Hh : f ∘ h ≈ g ∘ h) :
   ∃! u : z ~> sliced_eq_obj, sliced_eq_arrow ∘ u ≈ h.
 Proof using E U.
@@ -279,10 +278,10 @@ Definition cosliced_coequalizer :
 
 End CoslicedCoequalizer.
 
-(** ** Proposition 1 and its dual, as stated *)
+(* 相关说明。 （已译） *)
 
-(* The downstairs equalizer is read out by projections, not by a [match],
-   so that the object and arrow readbacks below hold at [eq_refl]. *)
+(* The downstairs equalizer read out projections, not [match],
+ so 对象 arrow readbacks below hold at [eq_refl]. （已译） *)
 Definition equalizers_from_sliced_right_adjoints@{oA oX h +}
   {A : Category@{oA h h}} {X : Category@{oX h h}} (G : A ⟶ X)
   `{GF : @Faithful A X G} `{HX : @HasEqualizers X}
@@ -296,8 +295,7 @@ Definition equalizers_from_sliced_right_adjoints@{oA oX h +}
        (sliced_eq_obj G s U;
         (sliced_eq_arrow G s U; sliced_equalizer G f g s E U)) |}.
 
-(* Mac Lane's Proposition 1.  The right-inverse clause is not consulted:
-   only [rari_right] and [rari_adj] occur in the body. *)
+(* 相关说明。 （已译） *)
 Definition equalizers_from_sliced_RARI@{oA oX h +}
   {A : Category@{oA h h}} {X : Category@{oX h h}} (G : A ⟶ X)
   `{GF : @Faithful A X G} `{HX : @HasEqualizers X}
@@ -305,7 +303,7 @@ Definition equalizers_from_sliced_RARI@{oA oX h +}
   equalizers_from_sliced_right_adjoints G
     (fun a => rari_right (L a)) (fun a => rari_adj (L a)).
 
-(* The equalizer built is L applied to the downstairs one, on the nose. *)
+(* 相关说明。 （已译） *)
 Example equalizers_from_sliced_RARI_obj@{oA oX h +}
   {A : Category@{oA h h}} {X : Category@{oX h h}} (G : A ⟶ X)
   `{GF : @Faithful A X G} `{HX : @HasEqualizers X}
@@ -328,8 +326,7 @@ Example equalizers_from_sliced_RARI_arrow@{oA oX h +}
              `1 (`2 (@equalizer X HX _ _ (fmap[G] f) (fmap[G] g))))) :=
   eq_refl.
 
-(* The dual of Proposition 1, with whole left adjoints; its LARI form is
-   Structure/SlicedInverse/Strict.v's [coequalizers_from_sliced_LARI]. *)
+(* 相关说明。 （已译） *)
 Definition coequalizers_from_sliced_left_adjoints@{oA oX h +}
   {A : Category@{oA h h}} {X : Category@{oX h h}} (G : A ⟶ X)
   `{GF : @Faithful A X G} `{HX : @HasCoequalizers X}
@@ -363,7 +360,7 @@ Example coequalizers_from_sliced_left_adjoints_arrow@{oA oX h +}
                `1 (`2 (@coeq X HX _ _ (fmap[G] f) (fmap[G] g))))) :=
   eq_refl.
 
-(** ** What the right-inverse clause adds *)
+(* 相关说明。 （已译） *)
 
 Lemma slice_id_cast_1@{o h +} {C : Category@{o h h}} {u : C}
   {p q : @Slice C u} (e : p = q) :
@@ -410,7 +407,7 @@ Example rari_eq_obj :
 Example rari_eq_arrow :
   sliced_eq_arrow G s rari_couniversal = `2 (rari_right L (S; s)) := eq_refl.
 
-(* The lifted object sits over S: Leibniz, from the field [rari_obj]. *)
+(* The lifted 对象 sits over S: Leibniz, field [rari_obj]. （已译） *)
 Definition rari_over : G (`1 (rari_right L (S; s))) = S :=
   f_equal (@projT1 _ _) (rari_obj L (S; s)).
 
@@ -426,7 +423,7 @@ Proof using Type.
     reflexivity.
 Qed.
 
-(* G carries the lifted equalizer onto an equalizer of the images. *)
+(* 相关说明。 （已译） *)
 Definition rari_preserves :
   IsEqualizer (fmap[G] f) (fmap[G] g)
     (G (`1 (rari_right L (S; s)))) (fmap[G] (`2 (rari_right L (S; s)))) :=
@@ -434,8 +431,7 @@ Definition rari_preserves :
 
 End RARIPreserves.
 
-(* The same at the [HasEqualizers] level: [G] preserves every equalizer
-   that [equalizers_from_sliced_RARI] constructs. *)
+(* 相关说明。 （已译） *)
 Definition equalizers_from_sliced_RARI_preserved@{oA oX h +}
   {A : Category@{oA h h}} {X : Category@{oX h h}} (G : A ⟶ X)
   `{GF : @Faithful A X G} `{HX : @HasEqualizers X}
@@ -448,7 +444,7 @@ Definition equalizers_from_sliced_RARI_preserved@{oA oX h +}
   rari_preserves G f g _ (`2 (`2 (@equalizer X HX _ _ (fmap[G] f) (fmap[G] g))))
     (L x).
 
-(** ** Faithfulness cannot be dropped *)
+(* 相关说明。 （已译） *)
 
 (* [Parallel]'s two arrows have no fork at all, so [Parallel] has no
    equalizers; its erasure to [_1] is not faithful; and every other
@@ -500,8 +496,8 @@ Context (a : Parallel).
 
 #[local] Notation B := (Erase Parallel).
 
-(* The right adjoint of [Sliced B a] is constant at the terminal object
-   (a; id) of the slice over [a]. *)
+(* The 右伴随 [Sliced B a] 常值 at 终对象
+ (a; id) slice over [a]. （已译） *)
 Program Definition erase_slice_right : @Slice _1 (B a) ⟶ @Slice Parallel a := {|
   fobj := fun _ => (a; id);
   fmap := fun _ _ _ => id
@@ -560,7 +556,7 @@ Definition sliced_RARI_without_faithfulness :
   (erase_slice_RARI, One_HasEqualizers, Erase_Parallel_not_faithful,
    Parallel_no_equalizers).
 
-(* Proposition 1 with the faithfulness hypothesis deleted is false. *)
+(* Proposition 1 faithfulness 假设 deleted false. （已译） *)
 Definition prop1_needs_faithfulness :
   (∀ (A X : Category) (G : A ⟶ X), @HasEqualizers X →
      (∀ a : A, RightAdjointRightInverse (Sliced G a)) → @HasEqualizers A)

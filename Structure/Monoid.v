@@ -12,7 +12,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * Monoid objects in a monoidal category *)
+(* * * Monoid 对象 幺半范畴 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Monoid_(category_theory)
@@ -49,8 +49,7 @@ Class MonoidObject (mon : C) := {
   (* right unit law: mappend ∘ (id ⨂ mempty) ≈ ρ (right unitor mon ⨂ I ≅ mon) *)
   mempty_right : mappend ∘ bimap id mempty ≈ to (@unit_right C _ mon);
 
-  (* associativity, with the associator α reassociating the triple tensor:
-     (mon ⨂ mon) ⨂ mon ≅ mon ⨂ (mon ⨂ mon) *)
+  (* 相关说明。 （已译） *)
   mappend_assoc :
     mappend ∘ bimap mappend id ≈ mappend ∘ bimap id mappend ∘ to tensor_assoc
 }.
@@ -58,8 +57,7 @@ Class MonoidObject (mon : C) := {
 Context (mon : C).
 Context `{@MonoidObject mon}.
 
-(* Symmetric form of [mappend_assoc], reassociating in the opposite direction
-   by composing with the inverse associator [tensor_assoc ⁻¹]. *)
+(* 相关说明。 （已译） *)
 Lemma mappend_assoc_sym :
   mappend ∘ bimap id mappend ≈ mappend ∘ bimap mappend id ∘ (tensor_assoc ⁻¹).
 Proof.
@@ -71,7 +69,7 @@ Qed.
 
 End MonoidObject.
 
-(* Projections to the unit and multiplication of a given monoid object [M]. *)
+(* Projections unit multiplication given 幺半群 对象 [M]. （已译） *)
 Notation "mempty[ M ]" := (@mempty _ _ _ M)
   (at level 9, format "mempty[ M ]") : category_scope.
 Notation "mappend[ M ]" := (@mappend _ _ _ M)
@@ -187,14 +185,14 @@ Qed.
 
 Context `{@Closed C _}.
 
-(* Duplicate the [z] component across both halves of a product:
-   (x × y) × z ~> (x × z) × (y × z). Used to feed the shared argument to both
-   pointwise multiplications in [Hom_Monoid]. *)
+(* Duplicate [z] component across both halves product:
+ (x × y) × z ~> (x × z) × (y × z). Used feed shared 论元 both
+ pointwise multiplications [Hom_Monoid]. （已译） *)
 Definition doppel {x y z : C} : (x × y) × z ~> (x × z) × (y × z) :=
   first exl △ first exr.
 
-(* The pair of uncurried projections equals evaluating both function arguments
-   at the shared point, after distributing that point via [doppel]. *)
+(* The pair 未柯里化的 projections equals evaluating both function arguments
+ at shared point, after distributing point via [doppel]. （已译） *)
 Lemma uncurry_exl_fork_exr {x y : C} :
   uncurry exl △ uncurry exr ≈ split eval eval ∘ @doppel (y ^ x) (y ^ x) x.
 Proof.

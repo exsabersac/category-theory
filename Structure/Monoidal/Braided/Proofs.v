@@ -19,11 +19,11 @@ Generalizable All Variables.
 
 (* ------------------------------------------------------------------ *)
 
-(** ** Toolkit: iso cancellation in mid-composition position
+(* * ** Toolkit: iso cancellation mid-复合 position
 
-    Rewriting inside long composites constantly needs to cancel an adjacent
-    [to i ∘ from i] pair that is followed by a continuation [k]; these
-    "cons" forms keep every rewrite a single step. *)
+ Rewriting inside long composites constantly needs cancel adjacent
+ [to i ∘ i] pair followed continuation [k]; these
+ "cons" forms keep every rewrite single step. （已译） *)
 
 Section IsoCancellation.
 
@@ -172,8 +172,8 @@ Proof.
   reflexivity.
 Qed.
 
-(* Naturality against a map in the third slot, the first two slots being a
-   fused identity. *)
+(* Naturality against map third slot, first two slots being a
+ fused 恒等. （已译） *)
 Lemma to_assoc_nat_id2_cons {u v x y w : C} (g : x ~> y)
       (k : w ~> ((u ⨂ v) ⨂ x)%object) :
   to tensor_assoc ∘ ((id[(u ⨂ v)%object] ⨂ g) ∘ k)
@@ -329,7 +329,7 @@ Proof.
   apply pentagon_from_solved.
 Qed.
 
-(* The pentagon, solved for α⁻¹ ∘ (id ⨂ α). *)
+(* 相关说明。 （已译） *)
 Lemma pentagon_step {a b c e : C} :
   (@tensor_assoc C _ a b (c ⨂ e))⁻¹ ∘ id[a] ⨂ to (@tensor_assoc C _ b c e)
     ≈ to (@tensor_assoc C _ (a ⨂ b) c e)
@@ -354,7 +354,7 @@ Proof.
   reflexivity.
 Qed.
 
-(** Triangle identities solved for the inverse unitors. *)
+(** 本节：Triangle identities solved inverse unitors. （已译） *)
 
 (* α ∘ (ρ⁻¹ ⨂ id) ≈ id ⨂ λ⁻¹ : u ⨂ v ~> u ⨂ (I ⨂ v). *)
 Lemma triangle_inverse_middle {u v : C} :
@@ -481,22 +481,21 @@ Proof.
   exact H2.
 Qed.
 
-(* Joyal & Street, Proposition 2.1: the right unitor is the left unitor
-   composed with the braiding, ρ_x ≈ λ_x ∘ β_{x,I}. *)
+(* 相关说明。 （已译） *)
 Theorem braid_unit_left {x : C} :
   unit_left ∘ braid << x ⨂ I ~~> x >> unit_right.
 Proof.
   apply tensor_id_left_inj.
   apply (iso_to_epic tensor_assoc).
   apply braid_id_cancel.
-  (* Expose the right-hand side of the hexagon at (x, I, I). *)
+  (* 相关说明。 （已译） *)
   rewrite bimap_comp_id_left.
   rewrite <- !comp_assoc.
   rewrite (comp_assoc (id[I] ⨂ braid)).
   rewrite <- hexagon_identity.
   rewrite !comp_assoc.
-  (* Contract the left-hand side: triangle, braid naturality, then the
-     derived triangle ρ_{x ⨂ I} ≈ (id ⨂ ρ) ∘ α. *)
+  (* Contract left-hand side: triangle, braid 自然性, then the
+ derived triangle ρ_{x ⨂ I} ≈ (id ⨂ ρ) ∘ α. （已译） *)
   rewrite <- triangle_identity.
   rewrite bimap_braid.
   (* Contract the right-hand side to β ∘ ρ via ρ's naturality. *)
@@ -507,8 +506,8 @@ Proof.
   reflexivity.
 Qed.
 
-(* The mirror coherence: λ_x ≈ ρ_x ∘ β_{I,x}, from [braid_unit_left] by
-   pre-composing with the braiding and cancelling via [braid_invol]. *)
+(* The 镜像 coherence: λ_x ≈ ρ_x ∘ β_{I,x}, [braid_unit_left] by
+ pre-composing braiding cancelling via [braid_invol]. （已译） *)
 Theorem braid_unit_right {x : C} :
   unit_right ∘ braid << I ⨂ x ~~> x >> unit_left.
 Proof.
@@ -540,9 +539,9 @@ Proof.
   reflexivity.
 Qed.
 
-(* On the unit object the braiding degenerates to the identity: combine
-   [braid_unit_left] at x := I with Kelly's [unit_identity] (λ_I ≈ ρ_I) and
-   cancel the monic λ_I. *)
+(* On unit 对象 braiding degenerates 恒等: combine
+ [braid_unit_left] at x := I Kelly's [unit_identity] (λ_I ≈ ρ_I) and
+ cancel monic λ_I. （已译） *)
 Corollary braid_I_I : braid << I ⨂ I ~~> I ⨂ I >> id.
 Proof.
   apply (iso_to_monic unit_left).
@@ -614,8 +613,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* The rotated hexagon of Symmetric.v, post-composed with the braiding it
-   rotates around: the two inner braids cancel by [braid_invol]. *)
+(* 相关说明。 （已译） *)
 Lemma braid_rotate_cancel {u v w : C} :
   to tensor_assoc ∘ (@braid C _ u v ⨂ id[w]) ∘ tensor_assoc⁻¹
     ∘ @braid C _ (v ⨂ w)%object u
@@ -643,7 +641,7 @@ Proof.
   apply braid_rotate_cancel.
 Qed.
 
-(** Braiding against the unit object, solved for the braid. *)
+(** Braiding against unit 对象, solved braid. （已译） *)
 
 Lemma braid_I_left {x : C} :
   @braid C _ I x ≈ unit_right⁻¹ ∘ unit_left.
@@ -684,7 +682,7 @@ Lemma braid_conjugate_left {x : C} :
     ≈ (id[x] ⨂ unit_left⁻¹) ∘ unit_left.
 Proof. exact braid_conjugate_left2. Qed.
 
-(* Mirror image, kept as citable API (see the section header). *)
+(* 相关说明。 （已译） *)
 Lemma braid_conjugate_right {x : C} :
   to tensor_assoc ∘ (@braid C _ x I ⨂ id[I]) ∘ tensor_assoc⁻¹
     ≈ unit_left⁻¹ ∘ (id[x] ⨂ unit_left).
@@ -698,7 +696,7 @@ Proof.
   reflexivity.
 Qed.
 
-(** *** The interchange of four objects *)
+(* * *** The interchange four 对象 （已译） *)
 
 Definition swap_inner (a b c d : C) :
   (a ⨂ b) ⨂ (c ⨂ d) ~> (a ⨂ c) ⨂ (b ⨂ d) :=
@@ -744,9 +742,9 @@ Proof.
   apply bimap_braid.
 Qed.
 
-(* The same naturality in mid-composition ("cons") position, oriented
-   for pushing a tensor-of-tensors across the interchange from the
-   left. *)
+(* The same 自然性 mid-复合 ("cons") position, oriented
+ pushing tensor-of-tensors across interchange the
+ left. （已译） *)
 Lemma swap_inner_natural_cons {a a' b b' c c' d d' z : C}
       (f : a ~> a') (g : b ~> b') (h : c ~> c') (k : d ~> d')
       (m : z ~> ((a ⨂ b) ⨂ (c ⨂ d))%object) :
@@ -769,8 +767,8 @@ Proof.
   symmetry; apply X.
 Qed.
 
-(** Involution: swapping the two middle factors twice is the identity.
-    The braid pair inside dies by [braid_invol]. *)
+(** Involution: swapping two middle factors twice 恒等.
+ The braid pair inside dies [braid_invol]. （已译） *)
 Lemma swap_inner_invol {a b c d : C} :
   swap_inner a c b d ∘ swap_inner a b c d
     ≈ id[((a ⨂ b) ⨂ (c ⨂ d))%object].
@@ -805,9 +803,9 @@ Proof.
   apply id_left.
 Qed.
 
-(** Compatibility of the interchange with the braiding: braiding the two
-    tensor pairs and interchanging equals interchanging and braiding
-    pairwise. *)
+(** 本节：Compatibility interchange braiding: braiding two
+ tensor pairs interchanging equals interchanging braiding
+ pairwise. （已译） *)
 Lemma swap_inner_braid {a b c d : C} :
   swap_inner c d a b ∘ braid
     ≈ (@braid C _ a c ⨂ @braid C _ b d) ∘ swap_inner a b c d.
@@ -838,9 +836,9 @@ Proof.
   reflexivity.
 Qed.
 
-(** The first nesting law: interchanging under a fixed leading tensorand
-    equals interchanging with the merged pair.  Pure pentagon bookkeeping
-    (the braid inside is inert). *)
+(** 本节：The first nesting law: interchanging under fixed leading tensorand
+ equals interchanging merged pair. Pure pentagon bookkeeping
+ (the braid inside inert). （已译） *)
 Lemma swap_inner_nested {u v w e f : C} :
   tensor_assoc⁻¹ ∘ ((id[u] ⨂ swap_inner v w e f) ∘ to tensor_assoc)
     ≈ (to tensor_assoc ⨂ id[(w ⨂ f)%object])
@@ -871,7 +869,7 @@ Proof.
   apply swap_inner_nested.
 Qed.
 
-(* [swap_inner_nested] solved for the merged interchange. *)
+(* 相关说明。 （已译） *)
 Lemma swap_inner_unnest {u v w e f : C} :
   swap_inner (u ⨂ v) w e f
     ≈ (tensor_assoc⁻¹ ⨂ id[(w ⨂ f)%object])
@@ -887,8 +885,8 @@ Proof.
   reflexivity.
 Qed.
 
-(** The second nesting law: merging the second tensorand of the first
-    pair.  Again pure pentagon bookkeeping around [hexagon_b]. *)
+(** 本节：The second nesting law: merging second tensorand first
+ pair. Again pure pentagon bookkeeping around [hexagon_b]. （已译） *)
 Lemma swap_inner_nested2 {u v w e f : C} :
   swap_inner u v e (w ⨂ f)
     ∘ (to tensor_assoc ∘ swap_inner (u ⨂ v) w e f)
@@ -943,8 +941,8 @@ Proof.
   apply swap_inner_nested2.
 Qed.
 
-(** The core coherence behind associativity: interchanging with a merged
-    leading pair equals interchanging with a merged middle pair. *)
+(** 本节：The core coherence behind associativity: interchanging merged
+ leading pair equals interchanging merged middle pair. （已译） *)
 Lemma swap_inner_core {b c d e f : C} :
   to tensor_assoc
     ∘ ((@braid C _ b (c ⨂ e)%object ⨂ id[(d ⨂ f)%object])
@@ -1024,8 +1022,8 @@ Proof.
   reflexivity.
 Qed.
 
-(** Associativity of the interchange — the associativity hexagon for the
-    squaring functor's monoidal structure. *)
+(** Associativity interchange — associativity hexagon the
+ squaring 函子's monoidal structure. （已译） *)
 Theorem swap_inner_assoc {a b c d e f : C} :
   swap_inner a b (c ⨂ e) (d ⨂ f)
     ∘ ((id[(a ⨂ b)%object] ⨂ swap_inner c d e f) ∘ to tensor_assoc)
@@ -1062,15 +1060,15 @@ Proof.
            (swap_inner a b (c ⨂ e) (d ⨂ f)
               ∘ ((id[(a ⨂ b)%object] ⨂ swap_inner c d e f)
                    ∘ to tensor_assoc))).
-  - (* The forward hexagon side against the inverted left side. *)
+  - (* 相关说明。 （已译） *)
     rewrite <- !comp_assoc.
     rewrite (cancel_to_from_cons tensor_assoc).
     rewrite bimap_id_fuse_cons.
     rewrite swap_inner_invol.
     rewrite bimap_id_id, id_left.
     apply swap_inner_invol.
-  - (* The inverted right side against the forward hexagon side; here
-       [swap_inner_assoc] itself discharges the composite. *)
+  - (* The inverted right side against forward hexagon side; here
+ [swap_inner_assoc] itself discharges 复合. （已译） *)
     rewrite swap_inner_assoc.
     rewrite <- !comp_assoc.
     rewrite bimap_fuse_cons.
@@ -1082,10 +1080,9 @@ Proof.
     apply bimap_id_id.
 Qed.
 
-(** *** Unit coherence of the interchange *)
+(* 相关说明。 （已译） *)
 
-(* The unit coherence, left form: conjugating [swap_inner I I x y] by the
-   canonical unit isomorphisms is the left unitor. *)
+(* 相关说明。 （已译） *)
 Lemma swap_inner_unit_left2 {x y : C} :
   (unit_left ⨂ unit_left) ∘ swap_inner I I x y
     ∘ (unit_left⁻¹ ⨂ id[(x ⨂ y)%object])
@@ -1123,8 +1120,7 @@ Lemma swap_inner_unit_left {x : C} :
     ≈ @unit_left C _ (x ⨂ x).
 Proof. exact swap_inner_unit_left2. Qed.
 
-(* The unit coherence, right form, derived from the left form through the
-   braid compatibility. *)
+(* 相关说明。 （已译） *)
 Lemma swap_inner_unit_right2 {x y : C} :
   (unit_right ⨂ unit_right) ∘ swap_inner x y I I
     ∘ (id[(x ⨂ y)%object] ⨂ unit_left⁻¹)
@@ -1150,8 +1146,8 @@ Lemma swap_inner_unit_right {x : C} :
     ≈ @unit_right C _ (x ⨂ x).
 Proof. exact swap_inner_unit_right2. Qed.
 
-(* The unit coherences solved for the interchange composite, with the
-   inverse unitor moved to the other side. *)
+(* The unit coherences solved interchange 复合, the
+ inverse unitor moved other side. （已译） *)
 
 Lemma swap_inner_unit_left2_solved {x y : C} :
   (unit_left ⨂ unit_left) ∘ swap_inner I I x y

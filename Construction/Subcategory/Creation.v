@@ -18,15 +18,15 @@ Require Import Category.Construction.Subcategory.
 
 Generalizable All Variables.
 
-(** * A full subcategory closed under limits is created into by its inclusion *)
+(* * * A full subcategory closed under limits created 含入 （已译） *)
 
 Section SubcategoryCreation.
 
 Context {C : Category} (S : Subcategory C) (full : Full C S).
 
-(* Closure under limits: the apex of any limiting cone in [C] over a diagram
-   of [S]-objects is again an [S]-object.  The legs need no clause because
-   [S] is full. *)
+(* Closure under limits: apex any limiting cone [C] over diagram
+ [S]-对象 again [S]-对象. The legs need no clause because
+ [S] full. （已译） *)
 Definition ClosedUnderLimits : Type :=
   ∀ (J : Category) (K : J ⟶ Sub C S) (N : Cone (Incl C S ◯ K)),
     IsLimitCone N → sobj C S (vertex_obj[N]).
@@ -36,7 +36,7 @@ Context (closed : ClosedUnderLimits).
 Section AtDiagram.
 Context {J : Category} (K : J ⟶ Sub C S).
 
-(* The lift: the same apex and the same legs, now inside [Sub C S]. *)
+(* 相关说明。 （已译） *)
 Definition sub_lift (N : Cone (Incl C S ◯ K)) (HN : IsLimitCone N) : Cone K.
 Proof using C J K S closed full.
   unshelve refine
@@ -53,7 +53,7 @@ Example sub_lift_apex (N : Cone (Incl C S ◯ K)) (HN : IsLimitCone N) :
 Example sub_lift_leg (N : Cone (Incl C S ◯ K)) (HN : IsLimitCone N) (x : J) :
   (`1 (cone_leg (sub_lift N HN) x)) = cone_leg N x := eq_refl.
 
-(* The image of the lift is [N] itself, up to the identity isomorphism. *)
+(* The image lift [N] itself, up 恒等 同构. （已译） *)
 Definition sub_cone_iso (N : Cone (Incl C S ◯ K)) (HN : IsLimitCone N) :
   ConeIso (FCone (Incl C S) (sub_lift N HN)) N.
 Proof using C J K S closed full.

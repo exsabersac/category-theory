@@ -26,7 +26,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * Base change: reindexing coloured PROPs along a colour function *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/restriction+of+scalars
@@ -69,26 +69,25 @@ Definition ColouredPROP_restrict (P : ColouredPROP Colour') :
     (cprop_strict P)
     (cprop_symmetric P)
 
-    (* The coherence between the two [Monoidal] paths is [P]'s own
-       proof: both paths project through the untouched structures. *)
+    (* The coherence between two [Monoidal] paths [P]'s own
+ 证明: both paths project through untouched structures. （已译） *)
     (@cprop_monoidal_coherence Colour' P)
 
     (* Objects: colour words over [Colour], read through [map f]. *)
     (fun cs : list Colour => @cprop_of_list Colour' P (map f cs))
 
-    (* [map f [] ≡ []] is definitional, so the unit condition is [P]'s
-       own field at the empty word. *)
+    (* 相关说明。 （已译） *)
     (@cprop_unit_nil Colour' P)
 
-    (* The tensor condition: [P]'s own strictness at the image words,
-       composed with the [cprop_of_list]-image of the (propositional)
-       monoid-homomorphism law of [map f]. *)
+    (* The tensor condition: [P]'s own strictness at image words,
+ composed [cprop_of_list]-image (propositional)
+ 幺半群-homomorphism law [map f]. （已译） *)
     (fun cs ds : list Colour =>
        eq_trans (@cprop_tensor_app Colour' P (map f cs) (map f ds))
                 (f_equal (@cprop_of_list Colour' P)
                          (eq_sym (map_app f cs ds)))).
 
-(** Machine-checked: the restriction changes only the object naming. *)
+(** Machine-checked: restriction changes 对象 naming. （已译） *)
 
 Example ColouredPROP_restrict_cat (P : ColouredPROP Colour') :
   cprop_cat (ColouredPROP_restrict P) = cprop_cat P := eq_refl.
@@ -102,8 +101,8 @@ Example ColouredPROP_restrict_unit (P : ColouredPROP Colour') :
   @cprop_unit_nil Colour (ColouredPROP_restrict P)
   = @cprop_unit_nil Colour' P := eq_refl.
 
-(** A restricted wire is the wire of the image colour ([map f [c]]
-    computes to [[f c]]). *)
+(** 本节：A restricted wire wire image colour ([map f [c]]
+ computes [[f c]]). （已译） *)
 Example ColouredPROP_restrict_wire (P : ColouredPROP Colour') (c : Colour) :
   wire (P := ColouredPROP_restrict P) c = wire (P := P) (f c) := eq_refl.
 

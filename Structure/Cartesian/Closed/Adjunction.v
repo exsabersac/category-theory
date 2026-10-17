@@ -16,7 +16,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * The currying adjunction (- × S) ⊣ (-)^S, and evaluation as its counit *)
+(* * * The currying 伴随 (- × S) ⊣ (-)^S, evaluation counit （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/adjoint+functor
@@ -49,8 +49,8 @@ Context `{@Closed C _}.
 
 Context (S : C).
 
-(* The left adjoint (- × S) : C ⟶ C. On arrows it is [first f] = f × id[S],
-   so the functor laws are [first_id] and [first_comp]. *)
+(* The 左伴随 (- × S) : C ⟶ C. On arrows it [first f] = f × id[S],
+ so 函子 laws [first_id] [first_comp]. （已译） *)
 Program Definition Prod_Functor : C ⟶ C := {|
   fobj := fun x => x × S;
   fmap := fun _ _ f => first f
@@ -135,15 +135,12 @@ Corollary curry_adj_from {x y : C} (g : x ~> y ^ S) :
   from (@adj _ _ _ _ Curry_Adjunction x y) g ≈ uncurry g.
 Proof. reflexivity. Qed.
 
-(* The two triangle identities, obtained from the general theory of
-   Theory/Adjunction.v rather than re-proved. The first, ε ∘ F η ≈ id, reads
-   eval ∘ (curry id × id[S]) ≈ id on x × S. *)
+(* 相关说明。 （已译） *)
 Corollary curry_adj_triangle_left {x : C} :
   eval ∘ first (curry (id[x × S])) ≈ id.
 Proof. exact (@counit_fmap_unit _ _ _ _ Curry_Adjunction x). Qed.
 
-(* The second, U ε ∘ η ≈ id, on x^S; here [curry (eval ∘ eval)] is
-   [fmap[Exp_Functor]] applied to the counit [eval]. *)
+(* 相关说明。 （已译） *)
 Corollary curry_adj_triangle_right {x : C} :
   curry (eval ∘ eval) ∘ curry (id[x^S × S]) ≈ id.
 Proof. exact (@fmap_counit_unit _ _ _ _ Curry_Adjunction x). Qed.

@@ -26,7 +26,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The right Kan extension as a pointwise limit *)
+(* 相关说明。 （已译） *)
 
 Section PointwiseRan.
 
@@ -59,9 +59,9 @@ Proof.
   exact (@cone_coherence _ _ _ _ (@coneFrom _ _ _ ((@limit_cone _ _ _ (lim b)))) x y f).
 Qed.
 
-(* Legs transport along ≈-equality of the comma component: (id, id) is a
-   comma morphism (a, f) ~> (a, f') whenever f ≈ f', and the diagram sends
-   it to fmap[X] id ≈ id. *)
+(* Legs transport along ≈-equality comma component: (id, id) a
+ comma 态射 (a, f) ~> (a, f') whenever f ≈ f', diagram sends
+ it fmap[X] id ≈ id. （已译） *)
 Lemma ran_leg_transport {b : B} (t : (1 ∏ A)%category) (f f' : b ~> F (snd t)) :
   f ≈ f' →
   ran_leg (existT _ t f) ≈ ran_leg (existT _ t f').
@@ -79,8 +79,7 @@ Proof.
   now rewrite fmap_id, id_left.
 Qed.
 
-(* Any family through the limit legs induces a probe cone, whence the legs
-   are jointly monic. *)
+(* 相关说明。 （已译） *)
 Program Definition ran_probe_cone {b : B} {c : C} (u : c ~> ran_obj b) :
   Cone (ran_comma_diagram b) :=
   @Build_Cone (=(b) ↓ F) C (ran_comma_diagram b) c
@@ -103,7 +102,7 @@ Proof.
   - apply Huniq; intro x; symmetry; apply H.
 Qed.
 
-(** *** Reindexing, and the extension functor *)
+(* * *** Reindexing, extension 函子 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -136,8 +135,8 @@ Next Obligation.
   split; reflexivity.
 Qed.
 
-(* The restricted cone: the b-limit's legs at reindexed objects form a
-   cone over the b'-diagram (the two composites agree definitionally). *)
+(* The restricted cone: b-limit's legs at reindexed 对象 form a
+ cone over b'-diagram (the two composites agree definitionally). （已译） *)
 Program Definition ran_restrict_cone {b b' : B} (g : b ~> b') :
   Cone (ran_comma_diagram b') :=
   @Build_Cone (=(b') ↓ F) C (ran_comma_diagram b') (ran_obj b)
@@ -193,14 +192,14 @@ Next Obligation.
   symmetry; apply comp_assoc.
 Qed.
 
-(** *** The counit, and the local universal property *)
+(* * *** The counit, local 普遍性质 （已译） *)
 
-(* The identity object (a, id[F a]) of the comma category at F a. *)
+(* The 恒等 对象 (a, id[F a]) comma 范畴 at F a. （已译） *)
 Definition ran_id_obj (a : A) : =(F a) ↓ F :=
   existT (fun p : 1 ∏ A => F a ~> F (snd p)) (ttt, a) id.
 
-(* The counit component at a is the limit-cone leg at the identity —
-   Mac Lane's ε_a = λ_{1_{F a}}, Riehl's display (6.2.3). *)
+(* The counit component at limit-cone leg at 恒等 —
+ Mac Lane's ε_a = λ_{1_{F a}}, Riehl's display (6.2.3). （已译） *)
 Definition ran_counit_component (a : A) :
   Pointwise_Ran (F a) ~> X a := ran_leg (ran_id_obj a).
 
@@ -210,8 +209,8 @@ Program Definition ran_counit : Pointwise_Ran ◯ F ⟹ X :=
 Next Obligation.
   intros a a' v; simpl.
   unfold ran_counit_component.
-  (* left side: coherence along the comma morphism (ttt, v) from (a, id)
-     to (a', F v) in (=(F a) ↓ F) *)
+  (* left side: coherence along comma 态射 (ttt, v) (a, id)
+ (a', F v) (=(F a) ↓ F) （已译） *)
   assert (sq : fmap[F] v ∘ fmap[=(F a)] (@id 1 ttt)
                  ≈ fmap[F] v ∘ @id B (F a)).
   { simpl; reflexivity. }
@@ -234,9 +233,9 @@ Next Obligation.
   apply id_left.
 Qed.
 
-(* The mediating cone for the universal property: a transformation
-   μ : M ◯ F ⟹ X spreads over the comma category as the cone with legs
-   μ_a ∘ M f at (a, f). *)
+(* The mediating cone 普遍性质: transformation
+ μ : M ◯ F ⟹ X spreads over comma 范畴 cone legs
+ μ_a ∘ M f at (a, f). （已译） *)
 Program Definition ran_ump_cone (M : B ⟶ C) (μ : M ◯ F ⟹ X) (b : B) :
   Cone (ran_comma_diagram b) :=
   @Build_Cone (=(b) ↓ F) C (ran_comma_diagram b) (M b)
@@ -309,8 +308,8 @@ Next Obligation.
     apply ran_jointly_monic; intro x.
     etransitivity; [ exact (ran_ump_delta_leg M μ b x) |].
     destruct x as [[t a] f]; destruct t; simpl.
-    (* μ_a ∘ M f ≈ ran_leg ((ttt,a); f) ∘ v_b, through the factorization
-       hypothesis, naturality of v, and the leg at the identity *)
+    (* μ_a ∘ M f ≈ ran_leg ((ttt,a); f) ∘ v_b, through factorization
+ 假设, 自然性 v, leg at 恒等 （已译） *)
     etransitivity.
     { apply compose_respects; [ exact (Hv a) | reflexivity ]. }
     etransitivity; [ symmetry; apply comp_assoc |].
@@ -328,7 +327,7 @@ Next Obligation.
     exact (ran_fmap_leg f (ran_id_obj a)).
 Qed.
 
-(** *** Acceptance: the counit is the leg at the identity, on the nose *)
+(* * *** Acceptance: counit leg at 恒等, nose （已译） *)
 
 Example ran_counit_is_identity_leg (a : A) :
   transform[@ran_transform _ _ _ _ _ Pointwise_LocalRightKan] a
@@ -340,7 +339,7 @@ Example ran_extension_is_pointwise_limit (b : B) :
 
 End PointwiseRan.
 
-(** ** The left Kan extension as a pointwise colimit *)
+(* 相关说明。 （已译） *)
 
 Section PointwiseLan.
 
@@ -350,9 +349,9 @@ Context {F : A ⟶ B}.
 Context {C : Category}.
 Context (X : A ⟶ C).
 
-(* The diagram whose colimit computes the extension at b: the comma
-   category (F ↓ =(b)) of pairs (a, f : F a ~> b), projected to A and
-   followed by X. *)
+(* The diagram whose colimit computes extension at b: comma
+ 范畴 (F ↓ =(b)) pairs (a, f : F ~> b), projected A and
+ followed X. （已译） *)
 Definition lan_comma_diagram (b : B) : (F ↓ =(b)) ⟶ C :=
   X ◯ @comma_proj1 _ _ _ F =(b).
 
@@ -361,8 +360,7 @@ Context (colim : ∀ b : B, Colimit (lan_comma_diagram b)).
 Definition lan_obj (b : B) : C :=
   vertex_obj[@limit_cone _ _ _ (colim b)].
 
-(* The colimit cone of [Colimit K = Limit K^op] is a Cocone K; its legs,
-   read covariantly, are the injections. *)
+(* 相关说明。 （已译） *)
 Definition lan_inj {b : B} (x : F ↓ =(b)) :
   lan_comma_diagram b x ~{C}~> lan_obj b :=
   cocone_inj (@limit_cone _ _ _ (colim b)) x.
@@ -390,8 +388,7 @@ Proof.
   now rewrite fmap_id, id_right.
 Qed.
 
-(* The dual probe: a family out of the injections is a cocone, whence the
-   injections are jointly epic. *)
+(* 相关说明。 （已译） *)
 Program Definition lan_probe_cocone {b : B} {c : C} (u : lan_obj b ~> c) :
   Cocone (lan_comma_diagram b) :=
   @Build_Cone ((F ↓ =(b))^op) (C^op) ((lan_comma_diagram b)^op) c
@@ -415,7 +412,7 @@ Proof.
   - apply (uniqueness U); intro x; symmetry; apply H.
 Qed.
 
-(** *** Reindexing, and the extension functor *)
+(* * *** Reindexing, extension 函子 （已译） *)
 
 (* g : b ~> b' postcomposes the comma component: (a, f : F a ~> b) becomes
    (a, g ∘ f : F a ~> b'). *)
@@ -445,8 +442,8 @@ Next Obligation.
   split; reflexivity.
 Qed.
 
-(* The restricted cocone: the b'-injections at reindexed objects form a
-   cocone over the b-diagram. *)
+(* The restricted cocone: b'-injections at reindexed 对象 form a
+ cocone over b-diagram. （已译） *)
 Program Definition lan_restrict_cocone {b b' : B} (g : b ~> b') :
   Cocone (lan_comma_diagram b) :=
   @Build_Cone ((F ↓ =(b))^op) (C^op) ((lan_comma_diagram b)^op)
@@ -507,13 +504,13 @@ Next Obligation.
   apply comp_assoc.
 Qed.
 
-(** *** The unit, and the local universal property *)
+(* * *** The unit, local 普遍性质 （已译） *)
 
 Definition lan_id_obj (a : A) : F ↓ =(F a) :=
   existT (fun p : A ∏ 1 => F (fst p) ~> F a) (a, ttt) id.
 
-(* The unit component at a is the colimit injection at the identity —
-   Riehl's display (6.2.2). *)
+(* The unit component at colimit injection at 恒等 —
+ Riehl's display (6.2.2). （已译） *)
 Definition lan_unit_component (a : A) :
   X a ~> Pointwise_Lan (F a) := lan_inj (lan_id_obj a).
 
@@ -523,9 +520,9 @@ Program Definition lan_unit : X ⟹ Pointwise_Lan ◯ F :=
 Next Obligation.
   intros a a' v; simpl.
   unfold lan_unit_component.
-  (* left side: the reindexing property of lan_fmap at (a, id); right
-     side: coherence along the comma morphism (v, ttt) from (a, F v) to
-     (a', id) in (F ↓ =(F a')) *)
+  (* left side: reindexing property lan_fmap at (a, id); right
+ side: coherence along comma 态射 (v, ttt) (a, F v) to
+ (a', id) (F ↓ =(F a')) （已译） *)
   assert (sq : @id B (F a') ∘ fmap[F] v
                  ≈ fmap[=(F a')] (@id 1 ttt) ∘ fmap[F] v).
   { simpl; reflexivity. }
@@ -545,9 +542,9 @@ Next Obligation.
   now rewrite id_right.
 Qed.
 
-(* The mediating cocone for the universal property: a transformation
-   ε : X ⟹ M ◯ F spreads over the comma category as the cocone with legs
-   M f ∘ ε_a at (a, f). *)
+(* The mediating cocone 普遍性质: transformation
+ ε : X ⟹ M ◯ F spreads over comma 范畴 cocone legs
+ M f ∘ ε_a at (a, f). （已译） *)
 Program Definition lan_ump_cocone (M : B ⟶ C) (ε : X ⟹ M ◯ F) (b : B) :
   Cocone (lan_comma_diagram b) :=
   @Build_Cone ((F ↓ =(b))^op) (C^op) ((lan_comma_diagram b)^op) (M b)
@@ -623,8 +620,8 @@ Next Obligation.
     apply lan_jointly_epic; intro x.
     etransitivity; [ exact (lan_ump_delta_inj M ε b x) |].
     destruct x as [[a t] f]; destruct t; simpl.
-    (* M f ∘ ε_a ≈ v_b ∘ lan_inj ((a,ttt); f), through the factorization
-       hypothesis, naturality of v, and the injection at the identity *)
+    (* M f ∘ ε_a ≈ v_b ∘ lan_inj ((a,ttt); f), through factorization
+ 假设, 自然性 v, injection at 恒等 （已译） *)
     symmetry.
     etransitivity.
     { apply compose_respects; [ reflexivity |].
@@ -642,7 +639,7 @@ Next Obligation.
     symmetry; exact (Hv a).
 Qed.
 
-(** *** Acceptance: the unit is the injection at the identity, on the nose *)
+(* * *** Acceptance: unit injection at 恒等, nose （已译） *)
 
 Example lan_unit_is_identity_inj (a : A) :
   transform[@lan_transform _ _ _ _ _ Pointwise_LocalLeftKan] a

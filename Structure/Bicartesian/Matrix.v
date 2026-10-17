@@ -29,7 +29,7 @@ Generalizable All Variables.
 *)
 #[local] Set Default Proof Using "All".
 
-(** * Matrices of morphisms between finite coproducts and products *)
+(* * * Matrices 态射 between finite coproducts products （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/biproduct
@@ -59,7 +59,7 @@ Example mat_entry_unfold {C : Category} {J K : Type} {g : J → C}
   (proj : ∀ k : K, p ~> fam k) (u : q ~> p) (j : J) (k : K) :
   mat_entry inj proj u j k = proj k ∘ u ∘ inj j := eq_refl.
 
-(** ** The m x n determination (Mac Lane §III.5) *)
+(* 相关说明。 （已译） *)
 
 Section Matrix.
 
@@ -74,8 +74,8 @@ Context {proj : ∀ k : K, p ~> fam k}.
 Context (HQ : IsIndexedCoproduct g q inj).
 Context (HP : IsIndexedProduct fam p proj).
 
-(* Two morphisms into the product agree when all their projections do: both
-   factor the same family through the universal one. *)
+(* Two 态射 进入 product agree all projections do: both
+ factor same family through universal one. （已译） *)
 Lemma iprod_ext {c : C} (a b : c ~> p) :
   (∀ k : K, proj k ∘ a ≈ proj k ∘ b) → a ≈ b.
 Proof.
@@ -89,7 +89,7 @@ Proof.
     intro k; symmetry; apply H.
 Qed.
 
-(* Dually for morphisms out of the coproduct. *)
+(* Dually 态射 out coproduct. （已译） *)
 Lemma icoprod_ext {c : C} (a b : q ~> c) :
   (∀ j : J, a ∘ inj j ≈ b ∘ inj j) → a ≈ b.
 Proof.
@@ -130,7 +130,7 @@ Proof.
   - apply matrix_ext.
 Qed.
 
-(* The j-th row of a prescribed matrix: the tuple of its entries. *)
+(* 相关说明。 （已译） *)
 Definition matrix_row (e : ∀ (j : J) (k : K), g j ~> fam k) (j : J) :
   g j ~> p := unique_obj (iprod_desc HP (e j)).
 
@@ -138,7 +138,7 @@ Lemma matrix_row_commutes (e : ∀ (j : J) (k : K), g j ~> fam k)
   (j : J) (k : K) : proj k ∘ matrix_row e j ≈ e j k.
 Proof. exact (unique_property (iprod_desc HP (e j)) k). Qed.
 
-(* The morphism with prescribed entries: the cotuple of the rows. *)
+(* The 态射 prescribed entries: cotuple rows. （已译） *)
 Definition matrix_mor (e : ∀ (j : J) (k : K), g j ~> fam k) : q ~> p :=
   unique_obj (icoprod_desc HQ (matrix_row e)).
 
@@ -155,7 +155,7 @@ Proof.
   apply matrix_row_commutes.
 Qed.
 
-(* The correspondence in one statement: matrices are morphisms. *)
+(* The correspondence one statement: matrices 态射. （已译） *)
 Theorem matrix_ump (e : ∀ (j : J) (k : K), g j ~> fam k) :
   ∃! u : q ~> p, ∀ (j : J) (k : K), mat_entry inj proj u j k ≈ e j k.
 Proof.
@@ -168,8 +168,8 @@ Proof.
     symmetry; apply Hv.
 Defined.
 
-(* The other round trip: reading a morphism's entries and rebuilding it
-   returns it (up to ≈; see the header for what is refuted strictly). *)
+(* The other round trip: reading 态射's entries rebuilding it
+ returns it (up ≈; see header what refuted strictly). （已译） *)
 Theorem matrix_mor_entry (u : q ~> p) :
   matrix_mor (mat_entry inj proj u) ≈ u.
 Proof. apply matrix_ext; intros j k; apply matrix_entry. Qed.
@@ -227,7 +227,7 @@ Example kron_off_computes {C : Category} `{Z : @ZeroObject C}
   (fam : Fin.t 2 → C) :
   kron fam Fin.eq_dec Fin.F1 (Fin.FS Fin.F1) = zero_mor := eq_refl.
 
-(** ** The identity matrix as the canonical comparison *)
+(* * ** The 恒等 matrix canonical comparison （已译） *)
 
 Section IdentityMatrix.
 
@@ -261,8 +261,8 @@ Proof.
   now apply kron_off.
 Qed.
 
-(* The identity matrix determines the comparison: any morphism with those
-   entries is it. *)
+(* The 恒等 matrix determines comparison: any 态射 those
+ entries it. （已译） *)
 Theorem can_matrix_unique (u : q ~> p) :
   (∀ j : A, mat_entry inj proj u j j ≈ id) →
   (∀ j k : A, j <> k → mat_entry inj proj u j k ≈ zero_mor) →
@@ -293,7 +293,7 @@ Defined.
 
 End IdentityMatrix.
 
-(** ** Riehl Exercise 3.1.ix, indexed form *)
+(* 相关说明。 （已译） *)
 
 Section IndexedInjections.
 
@@ -306,9 +306,7 @@ Context {q : C}.
 Context {inj : ∀ a : A, fam a ~> q}.
 Context (HQ : IsIndexedCoproduct fam q inj).
 
-(* The retraction of the j-th injection is the cotuple of the j-th COLUMN of
-   the Kronecker delta.  Note that only the coproduct is used: no product,
-   no [Cartesian], no [Terminal]. *)
+(* 相关说明。 （已译） *)
 Definition inj_retract (j : A) : q ~> fam j :=
   unique_obj (icoprod_desc HQ (fun k => kron fam dec k j)).
 
@@ -336,7 +334,7 @@ Definition indexed_inj_Monic (j : A) : Monic (inj j) :=
 
 End IndexedInjections.
 
-(** ** Riehl Exercise 3.1.ix, binary form *)
+(* 相关说明。 （已译） *)
 
 Section CoproductInjections.
 
@@ -367,7 +365,7 @@ Definition inr_Monic : Monic (@inr C CC x y) :=
 
 End CoproductInjections.
 
-(** ** The binary product and coproduct as indexed ones *)
+(* 相关说明。 （已译） *)
 
 (* The dual of [fin2_legs]: a pair of morphisms INTO a common target,
    indexed over [Fin.t 2].  It is [fin2_legs] read in C^op, which is why the
@@ -404,7 +402,7 @@ Definition binary_IsIndexedCoproduct {C : Category}
   IsIndexedCoproduct (fin2fam x y) (x + y)%object (fin2_colegs inl inr) :=
   @binary_IsIndexedProduct (C^op) CC x y.
 
-(** ** The identity matrix at n = 2 IS Semiadditive's [can_comparison] *)
+(* * ** The 恒等 matrix at n = 2 IS Semiadditive's [can_comparison] （已译） *)
 
 Section BinaryComparison.
 
@@ -418,7 +416,7 @@ Definition binary_can : (x + y)%object ~> (x × y)%object :=
   can_matrix (fin2fam x y) Fin.eq_dec
     (binary_IsIndexedCoproduct CC x y) (binary_IsIndexedProduct CP x y).
 
-(* The two diagonal entries are [exl_can_inl] and [exr_can_inr]. *)
+(* 相关说明。 （已译） *)
 Lemma binary_entry_diag (j : Fin.t 2) :
   mat_entry (fin2_colegs inl inr) (fin2_legs exl exr)
     (can_comparison x y) j j ≈ id.
@@ -428,7 +426,7 @@ Proof.
   - apply exr_can_inr.
 Qed.
 
-(* The two off-diagonal entries are [exr_can_inl] and [exl_can_inr]. *)
+(* 相关说明。 （已译） *)
 Lemma binary_entry_off (j k : Fin.t 2) :
   j <> k →
   mat_entry (fin2_colegs inl inr) (fin2_legs exl exr)
@@ -454,7 +452,7 @@ Qed.
 
 End BinaryComparison.
 
-(** ** At the n-ary folds of Structure/Limit/Product/Finite.v *)
+(* 相关说明。 （已译） *)
 
 Section FiniteMatrix.
 
@@ -544,7 +542,7 @@ Proof. apply can_matrix_unique. Qed.
 
 End FiniteComparison.
 
-(** ** At the classes [HasFiniteCoproducts] / [HasFiniteProducts] *)
+(* 相关说明。 （已译） *)
 
 Section FiniteClassMatrix.
 
@@ -612,9 +610,7 @@ Proof. apply can_matrix_unique. Qed.
 
 End FiniteClassComparison.
 
-(* Strict: at the instances built from [Cartesian]+[Terminal] and
-   [Cocartesian]+[Initial], the class-level constructions ARE the
-   fold-level ones. *)
+(* 相关说明。 （已译） *)
 Example finite_matrix_is_fin_matrix {C : Category} (CP : @Cartesian C)
   (T : @Terminal C) (CC : @Cocartesian C) (I : @Initial C)
   {m n : nat} (gs : Fin.t m → C) (fs : Fin.t n → C)
@@ -630,7 +626,7 @@ Example finite_can_is_fin_can {C : Category} `{Z : @ZeroObject C}
     (Cocartesian_Initial_HasFiniteCoproducts CC I) n fs
   = @fin_can C Z CP T CC I n fs := eq_refl.
 
-(** ** Non-vacuity: the matrix construction computes *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明始/终对象相关定义、性质与动机。

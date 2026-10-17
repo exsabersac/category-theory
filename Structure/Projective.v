@@ -18,7 +18,7 @@ Require Import Category.Instance.Two.
 
 Generalizable All Variables.
 
-(** * Projective and injective objects *)
+(* * * Projective injective 对象 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/projective+object
@@ -68,13 +68,12 @@ Example inj_stmt_readback {C : Category} {q a b : C} (m : a ~> b) (f : a ~> q) :
   (∃ h : b ~{C}~> q, h ∘[C] m ≈ f)
     = (∃ h : q ~{C^op}~> b, m ∘[C^op] h ≈ f) := eq_refl.
 
-(** ** The hom-functor characterization *)
+(* * ** The hom-函子 characterization （已译） *)
 
 Example hom_fmap_is_postcomp {C : Category} (p : C) {b c : C} (g : b ~> c)
   (h : p ~> b) : fmap[[Hom p ,─]] g h = g ∘ h := eq_refl.
 
-(* The "surjections of hom-setoids" reading is the DEFINITION unfolded: the
-   lifting clause and the surjectivity of [fmap] agree at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example proj_is_hom_surjectivity {C : Category} (p : C) {b c : C}
   (g : b ~> c) :
   (∀ f : p ~> c, ∃ h : p ~> b, fmap[[Hom p ,─]] g h ≈ f)
@@ -130,7 +129,7 @@ Definition injective_iff_cohom_preserves_mono {C : Category} (q : C) :
   (fun Q a b m Hm => @injective_cohom_epic C q Q a b m Hm,
    @cohom_epic_injective C q).
 
-(** ** Orthogonality: the unique-filler strengthening *)
+(* 相关说明。 （已译） *)
 
 Definition ortho_lift_exists {C : Category} {a b x y : C}
   (e : a ~> b) (m : x ~> y) (O : Orthogonal e m)
@@ -207,7 +206,7 @@ Proof.
     intro a; reflexivity.
 Defined.
 
-(** ** The injective duals, by instantiation at C^op *)
+(* 相关说明。 （已译） *)
 
 Example op_op_Cartesian {C : Category} : @Cartesian C = @Cocartesian (C^op) :=
   eq_refl.
@@ -296,10 +295,10 @@ Definition two_projective_not_all :
   @Projective _2 TwoX * (@Projective _2 TwoY → False) :=
   (TwoX_Projective, TwoY_not_Projective).
 
-(** ** The price of "every object is projective" *)
+(* * ** The price "every 对象 projective" （已译） *)
 
-(* In any category, projectivity of the codomain of an epi splits it: take
-   the identity as the map to lift. *)
+(* In any 范畴, projectivity codomain epi splits it: take
+ 恒等 map lift. （已译） *)
 Definition Projective_codomain_splits {C : Category} {b c : C} (g : b ~> c)
   (P : @Projective C c) (He : Epic g) : Retraction g :=
   {| retract      := `1 (@projective_lift C c P b c g He id)

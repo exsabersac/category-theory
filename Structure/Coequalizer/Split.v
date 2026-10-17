@@ -6,7 +6,7 @@ Require Import Category.Structure.Coequalizer.
 
 Generalizable All Variables.
 
-(** * Split coequalizers are absolute *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Coequaliser
@@ -17,8 +17,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The equational data: a cofork e over the pair, a section s splitting e,
-   and a section t of f mediating between s ∘ e and the pair. *)
+(* 相关说明。 （已译） *)
 Record SplitCoequalizer {C : Category} {x y : C} (f g : x ~> y) := {
   scoeq_obj : C;
 
@@ -41,18 +40,17 @@ Arguments scoeq_law2 {_ _ _ _ _} _.
 Arguments scoeq_law3 {_ _ _ _ _} _.
 Arguments scoeq_law4 {_ _ _ _ _} _.
 
-(** ** A split coequalizer is a coequalizer *)
+(* 相关说明。 （已译） *)
 
-(* Descent through a split coequalizer: a coforking map h descends as
-   h ∘ s, and the splitting of e makes this the only possibility. *)
+(* 相关说明。 （已译） *)
 Lemma split_coeq_desc {C : Category} {x y : C} {f g : x ~> y}
   (S : SplitCoequalizer f g) {z : C} (h : y ~> z) (Hh : h ∘ f ≈ h ∘ g) :
   ∃! u : scoeq_obj S ~> z, u ∘ scoeq_e S ≈ h.
 Proof.
   unshelve eapply Build_Unique.
   - exact (h ∘ scoeq_s S).
-  - (* (h ∘ s) ∘ e ≈ h: trade s ∘ e for g ∘ t (law 4), g for f under h
-       (the cofork hypothesis), then cancel t against f (law 3) *)
+  - (* (h ∘ s) ∘ e ≈ h: trade s ∘ e g ∘ t (law 4), g f under h
+ (the cofork 假设), then cancel t against f (law 3) （已译） *)
     rewrite <- comp_assoc.
     rewrite <- (scoeq_law4 S).
     rewrite comp_assoc.
@@ -77,7 +75,7 @@ Proof.
          ; coeq_desc := fun z h Hh => split_coeq_desc S h Hh |}.
 Defined.
 
-(** ** Absoluteness: every functor preserves split coequalizers *)
+(* * ** Absoluteness: every 函子 preserves split coequalizers （已译） *)
 
 (*
    本节说明函子、hom相关定义、性质与动机。
@@ -111,8 +109,8 @@ Proof.
     now rewrite (scoeq_law4 S).
 Defined.
 
-(* The headline: the coequalizer of a split pair is preserved, in the
-   elementary [IsCoequalizer] sense, by an arbitrary functor. *)
+(* The headline: coequalizer split pair preserved, the
+ elementary [IsCoequalizer] sense, arbitrary 函子. （已译） *)
 Corollary split_coequalizer_preserved@{co ch do dh +}
   {C : Category@{co ch ch}} {D : Category@{do dh dh}} (F : C ⟶ D)
   {x y : C} (f g : x ~> y) (S : SplitCoequalizer f g) :

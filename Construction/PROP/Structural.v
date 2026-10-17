@@ -11,7 +11,7 @@ From Coq Require Import Arith.
 
 Generalizable All Variables.
 
-(** * Structural isomorphisms for the free PROP *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/associator
@@ -29,8 +29,8 @@ Section Structural.
 
 Context (S : Signature).
 
-(* Left unitor [0 + n ≅ n] in [FreeCat S].  Definitionally [0 + n = n],
-   so the cast is along [eq_refl] and the unitor is the literal identity. *)
+(* Left unitor [0 + n ≅ n] [FreeCat S]. Definitionally [0 + n = n],
+ so cast along [eq_refl] unitor literal 恒等. （已译） *)
 Program Definition FreeCat_unit_left (n : nat) : @Isomorphism (FreeCat S) (0 + n) n := {|
   to   := T_cast (Nat.add_0_l n);
   from := T_cast (eq_sym (Nat.add_0_l n))

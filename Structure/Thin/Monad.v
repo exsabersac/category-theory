@@ -16,7 +16,7 @@ Require Import Category.Structure.Thin.
 
 Generalizable All Variables.
 
-(** * Monads and comonads in a thin category *)
+(* * * Monads 余单子 thin 范畴 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/idempotent+monad
@@ -42,7 +42,7 @@ Definition thin_monad@{t o h} {C : Category@{o h h}} (TC : Thin@{t o h} C)
     (fun _ _ _ => TC _ _ _ _) (fun _ => TC _ _ _ _) (fun _ => TC _ _ _ _)
     (fun _ => TC _ _ _ _) (fun _ _ _ => TC _ _ _ _).
 
-(* The unit and multiplication are the given families, on the nose. *)
+(* 相关说明。 （已译） *)
 Example thin_monad_ret@{t o h} {C : Category@{o h h}} (TC : Thin@{t o h} C)
   (T : C ⟶ C) (u : ∀ x : C, x ~> T x) (m : ∀ x : C, T (T x) ~> T x)
   (x : C) : @ret C T (thin_monad TC T u m) x = u x := eq_refl.
@@ -66,9 +66,7 @@ Example thin_talgebra_round@{t o h} {C : Category@{o h h}}
   | (to_arrow, of_arrow) => to_arrow (of_arrow h)
   end = h := eq_refl.
 
-(* Idempotency from thinness.  The inverse of join at x is ret at M x
-   (Mac Lane's "Tx ≤ T(Tx)"), and both composites are endomorphisms,
-   hence identities. *)
+(* 相关说明。 （已译） *)
 Definition thin_join_IsIso@{t o h} {C : Category@{o h h}}
   (TC : Thin@{t o h} C) {M : C ⟶ C} {MM : @Monad C M} (x : C) :
   IsIsomorphism (@join C M MM x) :=
@@ -81,17 +79,15 @@ Definition thin_IdempotentMonad@{t o h} {C : Category@{o h h}}
   @IdempotentMonad C M MM :=
   {| idem_join_iso := thin_join_IsIso TC |}.
 
-(** ** The duals, as the monad constants at C^op *)
+(* * ** The duals, 单子 constants at C^op （已译） *)
 
-(* The interior data: a counit W x ~> x and a comultiplication
-   W x ~> W (W x).  At C^op these ARE the unit and multiplication
-   families, by conversion. *)
+(* 相关说明。 （已译） *)
 Definition thin_comonad@{t o h} {C : Category@{o h h}} (TC : Thin@{t o h} C)
   (W : C ⟶ C) (e : ∀ x : C, W x ~> x) (d : ∀ x : C, W x ~> W (W x)) :
   @Comonad C W :=
   thin_monad (Thin_Opposite TC) (W^op) e d.
 
-(* The comonad is the monad at C^op on the nose. *)
+(* The 余单子 单子 at C^op nose. （已译） *)
 Example thin_comonad_extract@{t o h} {C : Category@{o h h}}
   (TC : Thin@{t o h} C) (W : C ⟶ C) (e : ∀ x : C, W x ~> x)
   (d : ∀ x : C, W x ~> W (W x)) (x : C) :
@@ -126,8 +122,8 @@ Example thin_wcoalgebra_round@{t o h} {C : Category@{o h h}}
   | (to_arrow, of_arrow) => to_arrow (of_arrow h)
   end = h := eq_refl.
 
-(* The inclusion of the counit-fixed objects is coreflective: the dual
-   of the reflection onto the closed elements. *)
+(* The 含入 counit-fixed 对象 coreflective: dual
+ reflection onto closed elements. （已译） *)
 Definition thin_coreflective@{t o h s f | h < s +} {C : Category@{o h h}}
   (TC : Thin@{t o h} C) {W : C ⟶ C} {H : @Comonad C W} :
   Coreflective@{t t s t f h o h} (WLocal_Subcategory H) :=

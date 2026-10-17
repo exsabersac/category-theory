@@ -59,7 +59,7 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* The forgetful functor to the underlying category, dropping the structure. *)
+(* The forgetful 函子 underlying 范畴, dropping structure. （已译） *)
 Program Definition FAlg_Forget `(F : C ⟶ C) : FAlg F ⟶ C := {|
   fobj := fun x => ``x;
   fmap := fun x y f => falg_hom[f]

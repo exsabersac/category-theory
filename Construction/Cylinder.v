@@ -1,4 +1,4 @@
-(** * The cylinder C ∏ 2 and the universal natural transformation *)
+(* * * The cylinder C ∏ 2 universal 自然变换 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -23,7 +23,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The two inclusions and the universal transformation *)
+(* 相关说明。 （已译） *)
 
 Program Definition Cyl_incl0 {C : Category} : C ⟶ C ∏ _2 := {|
   fobj := fun c => (c, TwoX);
@@ -53,15 +53,15 @@ Next Obligation.
   intros C x y z f g; split; simpl; reflexivity.
 Qed.
 
-(* Restriction along the inclusions: the two ends of a functor on the
-   cylinder. *)
+(* Restriction along inclusions: two ends 函子 the
+ cylinder. （已译） *)
 Definition Cyl_restrict0 {C B : Category} (F : C ∏ _2 ⟶ B) : C ⟶ B :=
   F ◯ Cyl_incl0.
 Definition Cyl_restrict1 {C B : Category} (F : C ∏ _2 ⟶ B) : C ⟶ B :=
   F ◯ Cyl_incl1.
 
-(* The universal natural transformation: at each c, the connecting
-   arrow of the cylinder. *)
+(* The universal 自然变换: at each c, connecting
+ arrow cylinder. （已译） *)
 Program Definition Cyl_mu {C : Category} :
   @Cyl_incl0 C ⟹ @Cyl_incl1 C := {|
   transform := fun c => (id[c], TwoXY)
@@ -73,7 +73,7 @@ Next Obligation.
   intros C x y f; split; simpl; [ cat | reflexivity ].
 Qed.
 
-(** ** The classifying functor of a transformation *)
+(* * ** The classifying 函子 transformation （已译） *)
 
 Program Definition Cyl_functor {C B : Category} {S T : C ⟶ B}
         (τ : S ⟹ T) : C ∏ _2 ⟶ B := {|
@@ -102,8 +102,8 @@ Next Obligation.
   destruct t; simpl; apply fmap_id.
 Qed.
 Next Obligation.
-  (* destruct the walking-arrow OBJECTS first, so _2's composition — a
-     match on objects — reduces before the homs are inverted *)
+  (* destruct walking-arrow OBJECTS first, so _2's 复合 — a
+ match 对象 — reduces before homs inverted （已译） *)
   intros C B S T τ [c t] [c' t'] [c'' t''] [f g] [f' g']; simpl in *.
   destruct t, t', t'';
   try contradiction (TwoHom_Y_X_absurd g);
@@ -115,7 +115,7 @@ Next Obligation.
     rewrite fmap_comp.
     rewrite !comp_assoc.
     reflexivity.
-  - (* Y-endomorphism after the crossing: the naturality square *)
+  - (* Y-endomorphism after crossing: 自然性 square （已译） *)
     rewrite fmap_comp.
     rewrite comp_assoc.
     rewrite <- (naturality[τ]).
@@ -126,8 +126,8 @@ Qed.
 
 (** ** The three defining properties *)
 
-(* Restricting the classifying functor to either end recovers the given
-   functor, with definitional components. *)
+(* Restricting classifying 函子 either end recovers given
+ 函子, definitional components. （已译） *)
 Program Definition Cyl_restrict0_eq {C B : Category} {S T : C ⟶ B}
         (τ : S ⟹ T) : Cyl_restrict0 (Cyl_functor τ) ≈ S :=
   existT _ (fun c => iso_id) _.
@@ -142,8 +142,8 @@ Next Obligation.
   intros C B S T τ x y f; simpl; cat.
 Qed.
 
-(* The classifying functor carries the universal transformation to the
-   given one. *)
+(* The classifying 函子 carries universal transformation the
+ given one. （已译） *)
 Lemma Cyl_functor_mu {C B : Category} {S T : C ⟶ B} (τ : S ⟹ T) :
   ∀ c : C, fmap[Cyl_functor τ] (Cyl_mu c) ≈ τ c.
 Proof.
@@ -152,9 +152,9 @@ Qed.
 
 (** ** Uniqueness *)
 
-(* Any functor on the cylinder restricting to S and T and carrying μ to
-   τ — through the chosen restriction isomorphisms, in the intertwining
-   form — is equivalent to the classifying functor. *)
+(* Any 函子 cylinder restricting S T carrying μ to
+ τ — through chosen restriction isomorphisms, intertwining
+ form — equivalent classifying 函子. （已译） *)
 Theorem Cyl_functor_unique {C B : Category} {S T : C ⟶ B} (τ : S ⟹ T)
         (F' : C ∏ _2 ⟶ B)
         (σ0 : Cyl_restrict0 F' ≈ S) (σ1 : Cyl_restrict1 F' ≈ T)
@@ -198,9 +198,9 @@ Proof.
     + exact (`2 σ1 c c' f).
 Qed.
 
-(* The universal property, bundled: τ is classified by a functor on the
-   cylinder restricting to S and T and carrying μ to τ, uniquely up to
-   the ambient functor equivalence. *)
+(* The 普遍性质, bundled: τ classified 函子 the
+ cylinder restricting S T carrying μ τ, uniquely up to
+ ambient 函子 等价. （已译） *)
 Theorem cylinder_universal {C B : Category} {S T : C ⟶ B} (τ : S ⟹ T) :
   { F : C ∏ _2 ⟶ B
   & { σ0 : Cyl_restrict0 F ≈ S
@@ -220,12 +220,12 @@ Proof.
     exact (Cyl_functor_unique τ F' σ0' σ1' Hμ').
 Qed.
 
-(** ** The inverse leg: every cylinder functor classifies its own
-       transformation *)
+(* * ** The inverse leg: every cylinder 函子 classifies own
+ transformation （已译） *)
 
-(* Reading the transformation off a functor on the cylinder: whisker
-   the universal transformation.  Its component at c is
-   [fmap[F] (Cyl_mu c)]. *)
+(* Reading transformation off 函子 cylinder: whisker
+ universal transformation. Its component at c is
+ [fmap[F] (Cyl_mu c)]. （已译） *)
 Definition Cyl_extract {C B : Category} (F : C ∏ _2 ⟶ B) :
   Cyl_restrict0 F ⟹ Cyl_restrict1 F :=
   F ⊳ @Cyl_mu C.

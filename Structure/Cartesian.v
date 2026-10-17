@@ -58,9 +58,9 @@ Class Cartesian := {
   fork_respects : ∀ x y z,            (* ⟨-, -⟩ respects ≈ *)
     Proper (equiv ==> equiv ==> equiv) (@fork x y z);
 
-  (* ump_products: the universal mapping property of the product. The
-     mediating morphism ⟨f, g⟩ is the unique h factoring f and g through the
-     projections exl and exr. *)
+  (* ump_products: 普遍映射性质 product. The
+ mediating 态射 ⟨f, g⟩ unique h factoring f g through the
+ projections exl exr. （已译） *)
   ump_products {x y z} (f : x ~> y) (g : x ~> z) (h : x ~> y × z) :
     h ≈ fork f g ↔ (exl ∘ h ≈ f) * (exr ∘ h ≈ g)
   }.
@@ -79,7 +79,7 @@ Class IsCartesianProduct (x y z : C) := {
   fork'_respects : ∀ a,               (* ⟨-, -⟩ respects ≈ *)
     Proper (equiv ==> equiv ==> equiv) (@fork' a);
 
-  (* ump_product: the universal mapping property for the designated product z. *)
+  (* ump_product: 普遍映射性质 designated product z. （已译） *)
   ump_product {a} (f : a ~> x) (g : a ~> y) (h : a ~> z) :
     h ≈ fork' f g ↔ (exl' ∘ h ≈ f) * (exr' ∘ h ≈ g)
   }.

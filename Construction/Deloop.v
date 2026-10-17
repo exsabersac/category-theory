@@ -5,7 +5,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * Delooping: monoids as one-object categories *)
+(* * * Delooping: monoids one-对象 范畴 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/monoid
@@ -54,8 +54,7 @@ Arguments mon_op_assoc {_} _ _ _.
 Arguments mon_op_unit_l {_} _.
 Arguments mon_op_unit_r {_} _.
 
-(* Associativity in the mirrored orientation, the analogue of
-   [comp_assoc_sym]. *)
+(* 相关说明。 （已译） *)
 Corollary mon_op_assoc_sym (M : MonObject) (a b c : carrier M) :
   mon_op (mon_op a b) c ≈ mon_op a (mon_op b c).
 Proof.
@@ -79,7 +78,7 @@ Proof.
   apply mon_op_unit_l.
 Qed.
 
-(** ** Mac Lane's construction 3: the one-object category B M *)
+(* * ** Mac Lane's construction 3: one-对象 范畴 B M （已译） *)
 
 (*
    本节说明幺半群相关定义、性质与动机。
@@ -102,7 +101,7 @@ Definition Deloop (M : MonObject) : Category := {|
   comp_assoc_sym := fun _ _ _ _ => mon_op_assoc_sym M
 |}.
 
-(** ** The converse: the endomorphism monoid hom(a, a) *)
+(* * ** The converse: endomorphism 幺半群 hom(a, a) （已译） *)
 
 (*
    本节说明hom、幺半群相关定义、性质与动机。
@@ -122,7 +121,7 @@ Definition hom_monoid (C : Category) (a : C) : MonObject := {|
   mon_op_unit_r := @id_right C a a
 |}.
 
-(** ** The correspondence, on the nose *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明幺半群相关定义、性质与动机。
@@ -132,8 +131,7 @@ Definition hom_monoid (C : Category) (a : C) : MonObject := {|
 Example hom_monoid_Deloop (M : MonObject) : hom_monoid (Deloop M) ttt = M :=
   eq_refl.
 
-(* The three data fields separately, for readers who want to see which parts
-   of the round trip are definitional without unfolding the record equation. *)
+(* 相关说明。 （已译） *)
 Example hom_monoid_Deloop_carrier (M : MonObject) :
   carrier (hom_monoid (Deloop M) ttt) = carrier M := eq_refl.
 
@@ -143,7 +141,7 @@ Example hom_monoid_Deloop_unit (M : MonObject) :
 Example hom_monoid_Deloop_op (M : MonObject) :
   @mon_op (hom_monoid (Deloop M) ttt) = @mon_op M := eq_refl.
 
-(** ** Mac Lane's construction 4: the group case *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
@@ -192,7 +190,7 @@ Qed.
 *)
 #[export] Program Instance Deloop_group_invertible (G : GrpObject)
   (x y : Deloop G) (f : x ~{Deloop G}~> y) : IsIsomorphism f := {
-  two_sided_inverse := grp_inv f    (* the group inverse of the element f *)
+  two_sided_inverse := grp_inv f    (* 相关说明。 （已译） *)
 }.
 Next Obligation.
   intros G x y f.                   (* f ∘ f⁻¹ ≈ id  is  a * a⁻¹ ≈ 1 *)
@@ -203,8 +201,8 @@ Next Obligation.
   apply grp_inv_l.
 Qed.
 
-(* The same statement in object form: any two objects of [Deloop G] (there is
-   only one) are isomorphic, and each element of G names such an isomorphism. *)
+(* The same statement 对象 form: any two 对象 [Deloop G] (there is
+ one) isomorphic, each element G names such 同构. （已译） *)
 Definition Deloop_group_iso (G : GrpObject) (x y : Deloop G)
   (f : x ~{Deloop G}~> y) : x ≅ y :=
   IsIsoToIso f (Deloop_group_invertible G x y f).
@@ -287,8 +285,7 @@ Qed.
 Example deloop_nat_compose (a b : Nat_Plus) :
   @compose (Deloop Nat_Plus) ttt ttt ttt a b = (a + b)%nat := eq_refl.
 
-(* And the inverse supplied by [Deloop_group_invertible] really is the group
-   inverse: in Z/2, that of each arrow is the arrow itself. *)
+(* 相关说明。 （已译） *)
 Example deloop_bool_inverse (b : Bool_Xor_Grp) :
   two_sided_inverse
     (IsIsomorphism:=Deloop_group_invertible Bool_Xor_Grp ttt ttt b) = b

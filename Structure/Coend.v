@@ -10,7 +10,7 @@ Require Import Category.Structure.End.
 
 Generalizable All Variables.
 
-(** * Coends: ergonomic covariant accessors *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Coend
@@ -38,13 +38,13 @@ Context {C : Category}.
 Context {D : Category}.
 Context {F : C^op ∏ C ⟶ D}.
 
-(** The coend object `∫^c F(c,c)` of `D`: the apex of the underlying end
-    wedge, read as an object of `D` (objects of `D^op` are objects of `D`). *)
+(** The coend 对象 `∫^c F(c,c)` `D`: apex underlying end
+ wedge, read 对象 `D` (对象 `D^op` 对象 `D`). （已译） *)
 Definition coend_obj (E : Coend F) : D :=
   @Wedge_to_obj (C^op) (D^op) (F^op) (@end_wedge (C^op) (D^op) (F^op) E).
 
-(** The injection `coend_inj_x : F (x, x) ~> coend_obj`: the underlying wedge
-    leg `wedge_obj ~{D^op}~> F^op (x, x)`, read reversed in `D`. *)
+(** 本节：The injection `coend_inj_x : F (x, x) ~> coend_obj`: underlying wedge
+ leg `wedge_obj ~{D^op}~> F^op (x, x)`, read reversed `D`. （已译） *)
 Definition coend_inj (E : Coend F) {x : C} :
   F (x, x) ~{D}~> coend_obj E :=
   @wedge_map (C^op) (D^op) (F^op) (@end_wedge (C^op) (D^op) (F^op) E) x.
@@ -104,7 +104,7 @@ Definition coend_med (E : Coend F) (w : D)
   coend_obj E ~{D}~> w :=
   unique_obj (coend_ump E w i cond).
 
-(** The mediator recovers each leg of the target cowedge. *)
+(** 本节：The mediator recovers each leg target cowedge. （已译） *)
 Lemma coend_med_inj (E : Coend F) (w : D)
   (i : ∀ x : C, F (x, x) ~{D}~> w) (cond : Cowedge_cond w i) (x : C) :
   coend_med E w i cond ∘ coend_inj E ≈ i x.
@@ -113,8 +113,8 @@ Proof.
   exact (unique_property (coend_ump E w i cond) x).
 Qed.
 
-(** Any morphism factoring the injections through the same legs equals the
-    mediator. *)
+(** Any 态射 factoring injections through same legs equals the
+ mediator. （已译） *)
 Lemma coend_med_unique (E : Coend F) (w : D)
   (i : ∀ x : C, F (x, x) ~{D}~> w) (cond : Cowedge_cond w i)
   (v : coend_obj E ~{D}~> w) :
@@ -125,8 +125,8 @@ Proof.
   exact (uniqueness (coend_ump E w i cond) v Hv).
 Qed.
 
-(** Two mediators out of a coend that agree on every injection are equal.
-    This lets one prove `u ≈ v` without exhibiting `coend_med` explicitly. *)
+(** 本节：Two mediators out coend agree every injection equal.
+ This lets one prove `u ≈ v` without exhibiting `coend_med` explicitly. （已译） *)
 Lemma coend_med_eq (E : Coend F) (w : D)
   (i : ∀ x : C, F (x, x) ~{D}~> w) (cond : Cowedge_cond w i)
   (u v : coend_obj E ~{D}~> w) :

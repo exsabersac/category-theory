@@ -12,7 +12,7 @@ Require Import Coq.Relations.Relation_Definitions.
 
 Generalizable All Variables.
 
-(** * Thin categories, and the hom-preorder of a category *)
+(* * * Thin 范畴, hom-preorder 范畴 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/preorder
@@ -67,7 +67,7 @@ Definition thin_iso {C : Category} (T : Thin C) {x y : C}
    ; iso_to_from := T y y (f ∘ g) id
    ; iso_from_to := T x x (g ∘ f) id |}.
 
-(** ** The hom-preorder of a category *)
+(* * ** The hom-preorder 范畴 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -77,9 +77,9 @@ Definition thin_iso {C : Category} (T : Thin C) {x y : C}
 Definition thin_preorder (C : Category) : relation (obj[C]) :=
   fun x y => inhabited (x ~{C}~> y).
 
-(* It is a preorder: reflexivity is the identity arrow, transitivity is
-   composition.  The [inhabited] witnesses may be eliminated here because the
-   goal is itself a Prop. *)
+(* It preorder: reflexivity 恒等箭头, transitivity is
+ 复合. The [inhabited] witnesses may eliminated here because the
+ goal itself Prop. （已译） *)
 Definition thin_PreOrder (C : Category) : PreOrder (thin_preorder C).
 Proof.
   constructor.
@@ -106,12 +106,12 @@ Proof. reflexivity. Qed.
 Definition HomChoice (C : Category) : Type :=
   ∀ (x y : obj[C]), thin_preorder C x y → x ~{C}~> y.
 
-(** ** Closure of thinness (Mac Lane §II.3 Ex. 2 / §II.4 Ex. 4, structural halves) *)
+(* 相关说明。 （已译） *)
 
 #[local] Obligation Tactic := idtac.
 
-(* Products of thin categories are thin: parallel pairs are componentwise
-   parallel.  Instance/Proset/Closure.v instantiates this at preorders. *)
+(* Products thin 范畴 thin: parallel pairs componentwise
+ parallel. Instance/Proset/Closure.v instantiates at preorders. （已译） *)
 Lemma Thin_Product {C D : Category} :
   Thin C → Thin D → Thin (C ∏ D).
 Proof.

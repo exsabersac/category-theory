@@ -11,7 +11,7 @@ Require Import Category.Construction.Karoubi.
 
 Generalizable All Variables.
 
-(** The universal property of the Karoubi envelope, and Cauchy completeness. *)
+(** The 普遍性质 Karoubi envelope, Cauchy completeness. （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/Cauchy+complete+category
@@ -76,9 +76,9 @@ Proof.
     apply (@split_idem_rs C x y S).
 Qed.
 
-(* Inside the envelope, (x, e) is a retract of the embedded object (x, id):
-   the section (x, e) ~> (x, id) and the retraction (x, id) ~> (x, e) are
-   both carried by e itself. *)
+(* Inside envelope, (x, e) retract embedded 对象 (x, id):
+ section (x, e) ~> (x, id) retraction (x, id) ~> (x, e) are
+ both carried e itself. （已译） *)
 Definition Karoubi_section {C : Category} (X : Karoubi C) :
   X ~{Karoubi C}~> Karoubi_Embed (`1 X).
 Proof.
@@ -99,24 +99,23 @@ Proof.
   - apply id_right.
 Defined.
 
-(* Retraction after section is the identity of (x, e): both carriers are e,
-   and e ∘ e ≈ e. *)
+(* Retraction after section 恒等 (x, e): both carriers e,
+ e ∘ e ≈ e. （已译） *)
 Lemma Karoubi_retraction_section {C : Category} (X : Karoubi C) :
   Karoubi_retraction X ∘ Karoubi_section X ≈ id.
 Proof.
   exact (`2 (`2 X)).
 Qed.
 
-(* Section after retraction is the image under the embedding of the
-   idempotent e, viewed as an endomorphism of (x, id). *)
+(* 相关说明。 （已译） *)
 Lemma Karoubi_section_retraction {C : Category} (X : Karoubi C) :
   Karoubi_section X ∘ Karoubi_retraction X ≈ fmap[Karoubi_Embed] (`1 (`2 X)).
 Proof.
   exact (`2 (`2 X)).
 Qed.
 
-(* Every morphism of the envelope factors through the embedding, conjugated
-   by the retract structure of its endpoints. *)
+(* Every 态射 envelope factors through embedding, conjugated
+ retract structure endpoints. （已译） *)
 Lemma Karoubi_factors {C : Category} {X Y : Karoubi C}
       (f : X ~{Karoubi C}~> Y) :
   f ≈ Karoubi_retraction Y ∘ fmap[Karoubi_Embed] (`1 f) ∘ Karoubi_section X.
@@ -133,8 +132,8 @@ Context {C D : Category}.
 Context (G : C ⟶ D).
 Context (S : IdempotentsSplit D).
 
-(* The image under G of the idempotent carried by an object of Split(C) is
-   again idempotent. *)
+(* The image under G idempotent carried 对象 Split(C) is
+ again idempotent. （已译） *)
 Lemma Extend_idem (X : Karoubi C) : Idempotent (fmap[G] (`1 (`2 X))).
 Proof using All.
   constructor.
@@ -142,7 +141,7 @@ Proof using All.
   now rewrite (`2 (`2 X)).
 Qed.
 
-(* The chosen splitting in D of G e, for each object (x, e) of Split(C). *)
+(* The chosen splitting D G e, each 对象 (x, e) Split(C). （已译） *)
 Definition Extend_split (X : Karoubi C) :=
   @split_of D S (G (`1 X)) (fmap[G] (`1 (`2 X))) (Extend_idem X).
 
@@ -174,8 +173,8 @@ Proof using All.
   apply Extend_agree.
 Qed.
 
-(* Conjugating G e by the splitting collapses to the identity of the
-   splitting object: r ∘ G e ∘ s ≈ r ∘ (s ∘ r) ∘ s ≈ (r ∘ s) ∘ (r ∘ s). *)
+(* Conjugating G e splitting collapses 恒等 the
+ splitting 对象: r ∘ G e ∘ s ≈ r ∘ (s ∘ r) ∘ s ≈ (r ∘ s) ∘ (r ∘ s). （已译） *)
 Lemma Extend_conjugate (X : Karoubi C) :
   Extend_r X ∘ fmap[G] (`1 (`2 X)) ∘ Extend_s X ≈ id.
 Proof using All.
@@ -186,8 +185,8 @@ Proof using All.
   apply Extend_rs.
 Qed.
 
-(* The extension of G along the embedding: on objects, the chosen splitting
-   object of G e; on morphisms, conjugation by the splitting data. *)
+(* The extension G along embedding: 对象, chosen splitting
+ 对象 G e; 态射, conjugation splitting data. （已译） *)
 Definition Karoubi_Extend : Karoubi C ⟶ D.
 Proof using All.
   refine {| fobj := Extend_obj
@@ -197,12 +196,12 @@ Proof using All.
     cbn beta.
     simpl in Hfg.
     now rewrite Hfg.
-  - (* identities: the identity of (x, e) is carried by e, and conjugating
-       G e by the splitting collapses to id *)
+  - (* identities: 恒等 (x, e) carried e, conjugating
+ G e splitting collapses id （已译） *)
     intros X.
     exact (Extend_conjugate X).
-  - (* composition: the inner s ∘ r pair regenerates G e at the middle
-       object, which is absorbed by the adjacent factor *)
+  - (* 复合: inner s ∘ r pair regenerates G e at middle
+ 对象, absorbed adjacent factor （已译） *)
     intros X Y Z f g.
     cbn beta.
     change (`1 (f ∘ g)) with (`1 f ∘ `1 g).
@@ -216,9 +215,9 @@ Proof using All.
     reflexivity.
 Defined.
 
-(* At an embedded object (x, id) the splitting of G id ≈ id makes the
-   splitting object isomorphic to G x, with the section and retraction as
-   the two directions. *)
+(* At embedded 对象 (x, id) splitting G id ≈ id makes the
+ splitting 对象 isomorphic G x, section retraction as
+ two directions. （已译） *)
 Definition Karoubi_Extend_embed_iso (x : C) :
   Extend_obj (Karoubi_Embed x) ≅ G x.
 Proof using All.
@@ -229,8 +228,8 @@ Proof using All.
   - exact (Extend_rs (Karoubi_Embed x)).
 Defined.
 
-(* The extension restricts to G along the embedding, up to natural
-   isomorphism (the ≈ of Functor_Setoid). *)
+(* The extension restricts G along embedding, up natural
+ 同构 (≈ Functor_Setoid). （已译） *)
 Theorem Karoubi_Extend_comm : Karoubi_Extend ◯ Karoubi_Embed ≈ G.
 Proof using All.
   exists Karoubi_Extend_embed_iso.
@@ -243,17 +242,17 @@ Section Uniqueness.
 Context (H : Karoubi C ⟶ D).
 Context (eqv : H ◯ Karoubi_Embed ≈ G).
 
-(* The comparison maps between H (x, e) and G x, obtained from the retract
-   presentation of (x, e) over the embedded object and the given
-   identification of H ∘ Embed with G. *)
+(* The comparison maps between H (x, e) G x, obtained retract
+ presentation (x, e) over embedded 对象 given
+ identification H ∘ Embed G. （已译） *)
 Definition extend_unique_u (X : Karoubi C) : H X ~> G (`1 X) :=
   to (`1 eqv (`1 X)) ∘ fmap[H] (Karoubi_section X).
 
 Definition extend_unique_v (X : Karoubi C) : G (`1 X) ~> H X :=
   fmap[H] (Karoubi_retraction X) ∘ from (`1 eqv (`1 X)).
 
-(* The coherence of the given identification, read as transporting the
-   H-image of an embedded morphism across the isomorphism family. *)
+(* The coherence given identification, read transporting the
+ H-image embedded 态射 across 同构 family. （已译） *)
 Lemma extend_unique_transport {x y : C} (g : x ~> y) :
   fmap[H] (fmap[Karoubi_Embed] g)
     ≈ from (`1 eqv y) ∘ fmap[G] g ∘ to (`1 eqv x).
@@ -261,8 +260,8 @@ Proof using All.
   exact (`2 eqv x y g).
 Qed.
 
-(* u ∘ v ≈ G e: the section-retraction composite on the H side transports
-   to G e across the isomorphism family. *)
+(* u ∘ v ≈ G e: section-retraction 复合 H side transports
+ G e across 同构 family. （已译） *)
 Lemma extend_unique_u_v (X : Karoubi C) :
   extend_unique_u X ∘ extend_unique_v X ≈ fmap[G] (`1 (`2 X)).
 Proof using All.
@@ -281,8 +280,8 @@ Proof using All.
   apply id_left.
 Qed.
 
-(* v ∘ u ≈ id: the retraction-section composite is the identity of (x, e),
-   which H preserves. *)
+(* v ∘ u ≈ id: retraction-section 复合 恒等 (x, e),
+ H preserves. （已译） *)
 Lemma extend_unique_v_u (X : Karoubi C) :
   extend_unique_v X ∘ extend_unique_u X ≈ id.
 Proof using All.
@@ -296,8 +295,8 @@ Proof using All.
   apply fmap_id.
 Qed.
 
-(* Conjugation by u and v recovers H on every morphism of the envelope,
-   because every such morphism factors through the embedding. *)
+(* Conjugation u v recovers H every 态射 envelope,
+ because every such 态射 factors through embedding. （已译） *)
 Lemma extend_unique_v_fmap_u (X Y : Karoubi C) (f : X ~{Karoubi C}~> Y) :
   extend_unique_v Y ∘ fmap[G] (`1 f) ∘ extend_unique_u X ≈ fmap[H] f.
 Proof using All.
@@ -355,8 +354,8 @@ Proof using All.
   - apply extend_unique_from_to.
 Defined.
 
-(* Uniqueness of the extension: any functor H : Split(C) ⟶ D restricting to
-   G along the embedding is naturally isomorphic to the chosen extension. *)
+(* Uniqueness extension: any 函子 H : Split(C) ⟶ D restricting to
+ G along embedding naturally isomorphic chosen extension. （已译） *)
 Theorem Karoubi_Extend_unique : H ≈ Karoubi_Extend.
 Proof using All.
   exists extend_unique_iso.
@@ -386,8 +385,8 @@ End Uniqueness.
 
 End KaroubiExtend.
 
-(* Cauchy completeness (for ordinary, Set-enriched categories) is precisely
-   the splitting of idempotents. *)
+(* Cauchy completeness (for ordinary, Set-enriched 范畴) precisely
+ splitting idempotents. （已译） *)
 Definition CauchyComplete (C : Category) := IdempotentsSplit C.
 
 Section Cauchy.
@@ -395,8 +394,8 @@ Section Cauchy.
 Context {C : Category}.
 Context (S : IdempotentsSplit C).
 
-(* The chosen splitting in C of the idempotent carried by an object of the
-   envelope. *)
+(* The chosen splitting C idempotent carried 对象 the
+ envelope. （已译） *)
 Definition Karoubi_split (X : Karoubi C) :=
   @split_of C S (`1 X) (`1 (`2 X)) {| idem := `2 (`2 X) |}.
 
@@ -409,8 +408,8 @@ Definition Karoubi_split_agree (X : Karoubi C) :
   @split_idem C (`1 X) (Karoubi_split_obj X) (Karoubi_split_S X) ≈ `1 (`2 X)
   := `2 (`2 (Karoubi_split X)).
 
-(* The section of the splitting carries a morphism from the embedded
-   splitting object to (x, e): e ∘ s ≈ (s ∘ r) ∘ s ≈ s ∘ (r ∘ s) ≈ s. *)
+(* The section splitting carries 态射 embedded
+ splitting 对象 (x, e): e ∘ s ≈ (s ∘ r) ∘ s ≈ s ∘ (r ∘ s) ≈ s. （已译） *)
 Definition Karoubi_eso_to (X : Karoubi C) :
   Karoubi_Embed (Karoubi_split_obj X) ~{Karoubi C}~> X.
 Proof using All.
@@ -426,8 +425,8 @@ Proof using All.
   - apply id_right.
 Defined.
 
-(* The retraction of the splitting carries the inverse morphism:
-   r ∘ e ≈ r ∘ (s ∘ r) ≈ (r ∘ s) ∘ r ≈ r. *)
+(* The retraction splitting carries inverse 态射:
+ r ∘ e ≈ r ∘ (s ∘ r) ≈ (r ∘ s) ∘ r ≈ r. （已译） *)
 Definition Karoubi_eso_from (X : Karoubi C) :
   X ~{Karoubi C}~> Karoubi_Embed (Karoubi_split_obj X).
 Proof using All.
@@ -443,9 +442,9 @@ Proof using All.
     apply id_left.
 Defined.
 
-(* The two carriers compose to e on (x, e) — its identity — and to id on the
-   embedded splitting object, so each object of the envelope is isomorphic
-   to an embedded one. *)
+(* The two carriers compose e (x, e) — 恒等 — id the
+ embedded splitting 对象, so each 对象 envelope isomorphic
+ embedded one. （已译） *)
 Definition Karoubi_Embed_eso_iso (X : Karoubi C) :
   Karoubi_Embed (Karoubi_split_obj X) ≅[Karoubi C] X.
 Proof using All.

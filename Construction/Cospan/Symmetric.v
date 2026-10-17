@@ -18,7 +18,7 @@ Require Import Category.Construction.Cospan.Hypergraph.
 
 Generalizable All Variables.
 
-(** * Braided and symmetric monoidal structure on [CospanCat C] *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/hypergraph+category
@@ -38,14 +38,14 @@ Context `{H_Coc : @Cocartesian C}.
 Context `{H_Ini : @Initial C}.
 Context (HP : HasPushouts C).
 
-(** ** C-level hexagon ([to] version)
+(* * ** C-level hexagon ([to] version)
 
-    The braid-associator hexagon at the level of coproducts:
+ The braid-associator hexagon at level coproducts:
 
-      α_{y,z,x} ∘ paws_{x+y,z} ∘ α_{x,y,z}
-        ≈ cover id[y] paws_{x,z} ∘ α_{y,x,z} ∘ cover paws_{x,y} id[z]
+ α_{y,z,x} ∘ paws_{x+y,z} ∘ α_{x,y,z}
+ ≈ cover id[y] paws_{x,z} ∘ α_{y,x,z} ∘ cover paws_{x,y} id[z]
 
-    Both sides are morphisms [(x+y)+z ~> y+(z+x)]. *)
+ Both sides 态射 [(x+y)+z ~> y+(z+x)]. （已译） *)
 
 Lemma coprod_hexagon_aux {x y z : C} :
   to (@coprod_assoc C H_Coc y z x) ∘ paws ∘ to (@coprod_assoc C H_Coc x y z)
@@ -200,7 +200,7 @@ Proof.
   - apply cover_paws.
 Defined.
 
-(** ** [paws ∘ paws] lifted to cospans *)
+(* 相关说明。 （已译） *)
 
 Lemma cospan_braid_invol_C {x y : C} :
   cospan_equiv
@@ -234,9 +234,7 @@ Next Obligation.
        ≈ cospan_compose HP (cospan_compose HP paws (id_y ⨂ h)) (g ⨂ id_z)
 
      Outer compose: g_outer = inner-compose, f_outer = paws_or_g_id_z. *)
-  (* On LHS: outer is [compose (compose ...) paws], so f_outer = paws. We want to
-     rewrite the inner [compose] (which is g_outer). Apply respects_aux with
-     refl on f_outer (paws). *)
+  (* 相关说明。 （已译） *)
   eapply cospan_equiv_trans.
   { apply cospan_compose_respects_aux.
     - apply cospan_equiv_refl.   (* f_outer : paws ≈ paws *)

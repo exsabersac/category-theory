@@ -81,13 +81,13 @@ Proof.
   - apply TE_sym, TE_id_right.
 Qed.
 
-(** Proof-irrelevance for nat-equation casts: any two proofs [e1 e2]
-    of [m = n] give equal cast terms.
+(** Proof-irrelevance nat-equation casts: any two proofs [e1 e2]
+ [m = n] give equal cast terms.
 
-    [nat] has decidable equality, hence Uniqueness of Identity Proofs
-    (UIP) holds for it without any axioms — proved by
-    [Eqdep_dec.UIP_dec Nat.eq_dec].  This lets us replace one proof
-    of a [nat] equation by another inside [T_cast]. *)
+ [nat] has decidable equality, hence Uniqueness Identity Proofs
+ (UIP) holds it without any axioms — proved by
+ [Eqdep_dec.UIP_dec Nat.eq_dec]. This lets us replace one 证明
+ [nat] equation another inside [T_cast]. （已译） *)
 Lemma T_cast_irrelevant
   {S : Signature} {m n : nat} (e1 e2 : m = n) :
   T_cast (S := S) e1 = T_cast (S := S) e2.
@@ -96,9 +96,9 @@ Proof.
   reflexivity.
 Qed.
 
-(** Special case: any cast along an equation of [m = m] is the
-    identity, because [eq_refl m] is the canonical proof of [m = m]
-    and [T_cast eq_refl = T_id m] reduces definitionally. *)
+(** Special case: any cast along equation [m = m] the
+ 恒等, because [eq_refl m] canonical 证明 [m = m]
+ [T_cast eq_refl = T_id m] reduces definitionally. （已译） *)
 Lemma T_cast_id
   {S : Signature} {m : nat} (e : m = m) :
   T_cast (S := S) e = T_id m.
@@ -126,9 +126,9 @@ Lemma T_term_eq_rect_destruct
     end.
 Proof. destruct e; reflexivity. Qed.
 
-(** Dual: an [eq_rect_r] transport on the domain index reduces at
-    [eq_refl] to the term itself.  More general transport shapes
-    require a [destruct e] in context. *)
+(** 本节：Dual: [eq_rect_r] transport domain index reduces at
+ [eq_refl] term itself. More general transport shapes
+ require [destruct e] context. （已译） *)
 Lemma T_term_eq_rect_r_refl
   {S : Signature} {m : nat} (t : Term S m m) :
   eq_rect_r (fun k => Term S k m) t (eq_refl m) = t.

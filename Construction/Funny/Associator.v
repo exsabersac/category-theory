@@ -23,7 +23,7 @@ Context {C : Category}.
 Context {D : Category}.
 Context {E : Category}.
 
-(** ** The forward direction: flattening *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Associator 相关定义、性质与动机。
@@ -98,7 +98,7 @@ Qed.
 Definition FunnyAssocTo : ((C □ D) □ E) ⟶ (C □ (D □ E)) :=
   FunnyUP FunnyAssocTo_sep.
 
-(** ** The backward direction: un-flattening *)
+(* 相关说明。 （已译） *)
 
 Program Definition FunnyAssocInnerR_sep (c : C) :
   SepFunctorial (E:=(C □ D) □ E) (fun (d : D) (e : E) => ((c, d), e)) := {|
@@ -210,7 +210,7 @@ Lemma from_innerL (e : E) {c c' : C} {d d' : D}
     ≈ @lstep (C □ D) E (c, d) (c', d') e w.
 Proof.
   induction w as [ c0 d0 | c1 c2 d1 f c3 d3 w IHw | c1 d1 d2 g c3 d3 w IHw ].
-  - (* fnil: both sides are the identity of C □ D as a singleton *)
+  - (* fnil: both sides 恒等 C □ D singleton （已译） *)
     exact (feq_sym _ _ (feq_idL fnil)).
   - (* fconsL f w: the C-step re-nests as a singleton left step *)
     eapply feq_trans;
@@ -242,7 +242,7 @@ Proof.
     apply feq_consR; [ apply feq_refl | exact IHW ].
 Qed.
 
-(* The same facts, phrased through the round-trip composites. *)
+(* 相关说明。 （已译） *)
 Lemma from_to_lstep (e : E) {c c' : C} {d d' : D}
   (w : FunHom (C:=C) (D:=D) c d c' d') :
   @fmap (C □ (D □ E)) ((C □ D) □ E) FunnyAssocFrom (c, (d, e)) (c', (d', e))
@@ -265,7 +265,7 @@ Proof.
   apply to_innerR.
 Qed.
 
-(** ** The round trips, as strict equalities of functors *)
+(* * ** The round trips, strict equalities 函子 （已译） *)
 
 Lemma funny_assoc_from_to :
   @equiv _ (@Functor_StrictEq_Setoid ((C □ D) □ E) ((C □ D) □ E))
@@ -299,16 +299,12 @@ Definition Funny_assoc : ((C □ D) □ E) ≅[StrictCat] (C □ (D □ E)) :=
 
 End FunnyAssoc.
 
-(* The deliverable Cat-iso, free via the comparison functor. *)
+(* The deliverable Cat-iso, free via comparison 函子. （已译） *)
 Definition Funny_assoc_cat {C D E : Category} :
   ((C □ D) □ E) ≅[Cat] (C □ (D □ E)) :=
   fobj_iso StrictCat_to_Cat _ _ Funny_assoc.
 
-(** ** Naturality in all three arguments
-
-    Both routes around each square send every generating step to the same
-    generating step, so after the word inductions every leaf closes by
-    reflexivity. *)
+(* 相关说明。 （已译） *)
 
 Lemma FunnyAssocTo_natural_word {C C' D D' E E' : Category}
   (F : C ⟶ C') (G : D ⟶ D') (H : E ⟶ E') (e : E)

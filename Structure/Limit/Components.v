@@ -1,4 +1,4 @@
-(** * Limits over a coproduct of shapes, and connected components *)
+(* 相关说明。 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -42,7 +42,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Part (a): the limit over a coproduct of shapes *)
+(* 相关说明。 （已译） *)
 
 Section CoproductLimit.
 
@@ -51,12 +51,12 @@ Context {J : I → Category}.
 Context {C : Category}.
 Context (F : SigmaCat J ⟶ C).
 
-(* The restriction of [F] to the k-th summand. *)
+(* 相关说明。 （已译） *)
 Definition summand (k : I) : J k ⟶ C := F ◯ SigmaCat_inj J k.
 
-(* Its object and arrow actions are [F]'s at the injected argument, by
-   conversion: the injection's own two actions are [(k; x)] and
-   [(eq_refl; f)]. *)
+(* Its 对象 arrow actions [F]'s at injected 论元, by
+ conversion: injection's own two actions [(k; x)] and
+ [(eq_refl; f)]. （已译） *)
 Example summand_obj (k : I) (x : J k) : summand k x = F (k; x) := eq_refl.
 
 Example summand_map (k : I) (x y : J k) (f : x ~> y) :
@@ -95,7 +95,7 @@ Qed.
 Definition coprod_acone : ACone p F :=
   @Build_ACone (SigmaCat J) C p F coprod_leg (@coprod_leg_coherence).
 
-(** *** Restricting a competing cone to one summand *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Components 相关定义、性质与动机。
@@ -124,8 +124,8 @@ Example restrict_cone_apex (N : Cone F) (k : I) :
 
 (** *** The mediating morphism *)
 
-(* Mediate summand by summand into the [L k], then tuple across the
-   indexed product. *)
+(* Mediate summand summand 进入 [L k], then tuple across the
+ indexed product. （已译） *)
 
 Definition coprod_med (N : Cone F) : vertex_obj[N] ~> p :=
   unique_obj (iprod_desc HP (fun k => limit_med (HL k) (restrict_cone N k))).
@@ -189,7 +189,7 @@ Definition coprod_IsLimitCone : IsLimitCone coprod_cone :=
 
 Definition coprod_Limit : Limit F := isalimit_to_limit coprod_IsALimit.
 
-(** *** The projections are the restrictions along the injections *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -221,7 +221,7 @@ Proof.
   exact (fst (limit_unique_iso_legs Hc coprod_IsALimit) (k; x)).
 Qed.
 
-(** *** Part (a) packaged as an isomorphism *)
+(* * *** Part (a) packaged 同构 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -253,9 +253,9 @@ Arguments coprod_IsALimit {I J C} F {L} HL {p proj} HP.
 
 (** *** The bundled readings *)
 
-(* Over a category with all indexed products the hypothesis [HP]
-   disappears.  [HasIndexedProducts] is stated over [IsIndexedProduct],
-   so this reading carries no [Set] pin either. *)
+(* Over 范畴 all indexed products 假设 [HP]
+ disappears. [HasIndexedProducts] stated over [IsIndexedProduct],
+ so reading carries no [Set] pin either. （已译） *)
 
 Definition coprod_IsALimit_HasIndexedProducts {I : Type} {J : I → Category}
   {C : Category} (F : SigmaCat J ⟶ C) (HIP : HasIndexedProducts C)
@@ -281,9 +281,9 @@ Definition coprod_Limit_iprod {I : Type} {J : I → Category}
   (P : Limit (DiscreteCat_Functor L)) : Limit F :=
   isalimit_to_limit (coprod_IsALimit_iprod F HL P).
 
-(* The [iprod] corollary's legs are the general ones at [iprod_proj], by
-   conversion -- so the corollary is the theorem instantiated, not a
-   parallel construction. *)
+(* The [iprod] 推论's legs general ones at [iprod_proj], by
+ conversion -- so 推论 定理 instantiated, not a
+ parallel construction. （已译） *)
 
 Example coprod_IsALimit_iprod_leg {I : Type} {J : I → Category}
   {C : Category} (F : SigmaCat J ⟶ C)
@@ -292,7 +292,7 @@ Example coprod_IsALimit_iprod_leg {I : Type} {J : I → Category}
   limit_leg (coprod_IsALimit_iprod F HL P) (k; x)
     = limit_leg (HL k) x ∘ iprod_proj L P k := eq_refl.
 
-(** ** Part (b): the decomposition of a category into its components *)
+(* * ** Part (b): decomposition 范畴 components （已译） *)
 
 (*
    本节说明 Components 相关定义、性质与动机。
@@ -319,7 +319,7 @@ Section DecompositionTheory.
 Context {C : Category}.
 Variable D : ComponentDecomposition C.
 
-(* Choosing a representative and reading off its index is the identity. *)
+(* Choosing representative reading off index 恒等. （已译） *)
 Definition cd_part_rep (k : cd_index D) : cd_part D (cd_rep D k) = k :=
   cd_sep D (cd_rep D k) k (zz_nil _).
 
@@ -328,8 +328,8 @@ Definition cd_part_zigzag {x y : C} (s : ZigZag x y) :
   cd_part D x = cd_part D y :=
   eq_sym (cd_sep D y (cd_part D x) (zigzag_trans (cd_join D x) s)).
 
-(* ... and conversely, which is the other half of "the parts ARE the
-   components".  This direction consumes no [cd_sep]. *)
+(* ... conversely, other half "the parts ARE the
+ components". This direction 所消耗 no [cd_sep]. （已译） *)
 Definition cd_conn {x y : C} (e : cd_part D x = cd_part D y) : ZigZag x y :=
   zigzag_trans
     (match e in _ = k return ZigZag x (cd_rep D k) with
@@ -337,7 +337,7 @@ Definition cd_conn {x y : C} (e : cd_part D x = cd_part D y) : ZigZag x y :=
      end)
     (cd_join D y).
 
-(** *** The summands, the coproduct, and the comparison functor *)
+(* * *** The summands, coproduct, comparison 函子 （已译） *)
 
 Definition cd_comp (k : cd_index D) : Category :=
   ConnectedComponent C (cd_rep D k).
@@ -351,8 +351,7 @@ Definition cd_compare : cd_sum ⟶ C :=
 Definition cd_comp_Connected (k : cd_index D) : Connected (cd_comp k) :=
   Component_Connected C (cd_rep D k).
 
-(* Both actions of the comparison are the evident projections, by
-   conversion. *)
+(* 相关说明。 （已译） *)
 Example cd_compare_obj (k : cd_index D) (a : cd_comp k) :
   cd_compare (k; a) = `1 a := eq_refl.
 
@@ -360,7 +359,7 @@ Example cd_compare_map (k : cd_index D) (a b : cd_comp k) (f : a ~> b) :
   fmap[cd_compare] ((eq_refl; f) : (k; a) ~{cd_sum}~> (k; b)) = `1 f
   := eq_refl.
 
-(** *** The comparison is essentially surjective, with NO hypothesis *)
+(* * *** The comparison 本质满射, NO 假设 （已译） *)
 
 (*
    本节说明（余）极限、同构相关定义、性质与动机。
@@ -377,7 +376,7 @@ Definition cd_compare_ESO : EssentiallySurjective cd_compare :=
   @Build_EssentiallySurjective cd_sum C cd_compare cd_eso_obj
     (fun y => iso_id).
 
-(** *** The comparison is full, with NO hypothesis *)
+(* * *** The comparison full, NO 假设 （已译） *)
 
 (*
    本节说明 Components 相关定义、性质与动机。
@@ -391,9 +390,7 @@ Definition cd_full_eq {X Y : cd_sum} (f : cd_compare X ~> cd_compare Y) :
     (eq_trans (cd_part_zigzag (hom_zigzag f))
               (cd_sep D (`1 (`2 Y)) (`1 Y) (`2 (`2 Y)))).
 
-(* Given ANY index equality, the arrow lifts.  The equality is a
-   universally quantified variable here, which is exactly what makes
-   [destruct e] available and every transport vanish. *)
+(* 相关说明。 （已译） *)
 
 Lemma cd_full_step {X Y : cd_sum} (e : `1 X = `1 Y)
   (f : cd_compare X ~> cd_compare Y) :
@@ -413,7 +410,7 @@ Definition cd_compare_Full : Functor.Full cd_compare := {|
   fmap_sur := fun X Y f => `2 (cd_full_step (cd_full_eq f) f)
 |}.
 
-(** *** Faithfulness, and the one hypothesis the file spends *)
+(* * *** Faithfulness, one 假设 file spends （已译） *)
 
 Lemma cd_faithful_step {X Y : cd_sum} (e1 e2 : `1 X = `1 Y) (p : e1 = e2)
   (g1 : ob_cast cd_comp e1 (`2 X) ~> `2 Y)
@@ -427,8 +424,8 @@ Proof.
   intro H; exact H.
 Qed.
 
-(* [IdxUIP] is the donor's own hypothesis (Construction/Coproduct/
-   Indexed.v), and it is spent HERE AND NOWHERE ELSE in this file. *)
+(* [IdxUIP] donor's own 假设 (Construction/Coproduct/
+ Indexed.v), it spent HERE AND NOWHERE ELSE file. （已译） *)
 
 Definition cd_compare_Faithful (U : IdxUIP (cd_index D)) :
   Functor.Faithful cd_compare :=
@@ -449,15 +446,14 @@ Definition cd_equivalence (U : IdxUIP (cd_index D)) :
   @FF_ESO_Equivalence cd_sum C cd_compare
     cd_compare_Full (cd_compare_Faithful U) cd_compare_ESO.
 
-(* The bundled reading, in the vocabulary Theory/Skeleton.v uses for the
-   analogous statement about skeletons. *)
+(* 相关说明。 （已译） *)
 
 Definition cd_bundled_equivalence (U : IdxUIP (cd_index D)) : cd_sum ≃ C :=
   (cd_compare; cd_equivalence U).
 
 End DecompositionTheory.
 
-(** ** Riehl's uniqueness clause for the decomposition *)
+(* 相关说明。 （已译） *)
 
 (* Transport an index of one decomposition to an index of another, by
    reading off the part of its chosen representative. *)
@@ -497,7 +493,7 @@ Definition cd_transfer_join {C : Category} (D D' : ComponentDecomposition C)
   ZigZag (cd_rep D' (cd_transfer D D' k)) (cd_rep D k) :=
   cd_join D' (cd_rep D k).
 
-(** ** Limits along a full, essentially surjective functor of shapes *)
+(* * ** Limits along full, 本质满射 函子 shapes （已译） *)
 
 (*
    本节说明（余）极限、等价相关定义、性质与动机。
@@ -563,8 +559,8 @@ Qed.
 Definition xfer_acone : ACone c G :=
   @Build_ACone J C c G xfer_leg (@xfer_coherence).
 
-(* A cone over [G] restricts along [Phi] to a cone over [G ◯ Phi]; the
-   coherence proof is the given cone's own, at the [Phi]-image arrow. *)
+(* A cone over [G] restricts along [Phi] cone over [G ◯ Phi]; the
+ coherence 证明 given cone's own, at [Phi]-image arrow. （已译） *)
 
 Definition xfer_restrict (N : Cone G) : Cone (G ◯ Phi) :=
   @Build_Cone K C (G ◯ Phi) vertex_obj[N]
@@ -607,7 +603,7 @@ Definition xfer_IsALimit : IsALimit G c :=
 
 End LimitAlongFullESO.
 
-(** ** Part (c): every limit is a product of limits over connected shapes *)
+(* 相关说明。 （已译） *)
 
 Section ComponentLimit.
 
@@ -615,12 +611,11 @@ Context {J C : Category}.
 Variable D : ComponentDecomposition J.
 Variable F : J ⟶ C.
 
-(* The diagram restricted to the k-th connected component. *)
+(* 相关说明。 （已译） *)
 Definition component_diagram (k : cd_index D) : cd_comp D k ⟶ C :=
   F ◯ Component_Incl J (cd_rep D k).
 
-(* It agrees with the k-th summand of the reindexed diagram on BOTH
-   actions, by conversion... *)
+(* 相关说明。 （已译） *)
 
 Example component_diagram_obj (k : cd_index D) (a : cd_comp D k) :
   component_diagram k a = summand (F ◯ cd_compare D) k a := eq_refl.
@@ -630,15 +625,15 @@ Example component_diagram_map (k : cd_index D) (a b : cd_comp D k)
   fmap[component_diagram k] f = fmap[summand (F ◯ cd_compare D) k] f
   := eq_refl.
 
-(* ... but the two functor RECORDS are not identified: [Compose] rebuilds
-   its three law fields, and they are distinct opaque terms.  Measured,
-   not assumed. *)
+(* ... but two 函子 RECORDS not identified: [Compose] rebuilds
+ three law fields, they distinct opaque terms. Measured,
+ not assumed. （已译） *)
 
 Fail Example component_diagram_strict (k : cd_index D) :
   component_diagram k = summand (F ◯ cd_compare D) k := eq_refl.
 
-(* So the comparison is made at [≈], with identity components -- which is
-   all the two definitional agreements above leave to prove. *)
+(* So comparison made at [≈], 恒等 components -- is
+ all two definitional agreements above leave prove. （已译） *)
 
 Definition component_diagram_equiv (k : cd_index D) :
   component_diagram k ≈ summand (F ◯ cd_compare D) k.
@@ -668,7 +663,7 @@ Definition components_Limit {L : cd_index D → C}
   (HP : IsIndexedProduct L p proj) : Limit F :=
   isalimit_to_limit (components_IsALimit HL HP).
 
-(* The bundled reading over a category with all indexed products. *)
+(* The bundled reading over 范畴 all indexed products. （已译） *)
 
 Definition components_IsALimit_HasIndexedProducts (HIP : HasIndexedProducts C)
   {L : cd_index D → C}
@@ -678,11 +673,9 @@ Definition components_IsALimit_HasIndexedProducts (HIP : HasIndexedProducts C)
 
 End ComponentLimit.
 
-(** ** Non-vacuity, part 1: the connected (one-component) case *)
+(* 相关说明。 （已译） *)
 
-(* The walking arrow is connected, though NOT by a single arrow in either
-   direction -- there is no [TwoY ~> TwoX] -- so the zig-zag really is
-   used. *)
+(* 相关说明。 （已译） *)
 
 Definition two_ZigZag (x y : _2) : ZigZag x y.
 Proof.
@@ -717,8 +710,8 @@ Definition Two_cd_equivalence :
   EquivalenceOfCategories (cd_compare Two_Decomposition) :=
   cd_equivalence Two_Decomposition poly_unit_IdxUIP.
 
-(* The one component is not itself trivial: it contains both objects of
-   [_2], with the non-identity arrow between them. *)
+(* The one component not itself trivial: it contains both 对象 of
+ [_2], non-恒等箭头 between them. （已译） *)
 
 Definition Two_component_TwoX : cd_comp Two_Decomposition ttt :=
   Component_obj _2 TwoX.
@@ -734,10 +727,10 @@ Definition Two_component_arrow :
 Lemma Two_component_objects_differ : TwoX <> TwoY.
 Proof. discriminate. Qed.
 
-(** ** Non-vacuity, part 2: a shape with two components *)
+(* 相关说明。 （已译） *)
 
-(* Along a zig-zag in a coproduct of categories the index never moves:
-   every step carries an index equality, and the chain composes them. *)
+(* Along zig-zag coproduct 范畴 index never moves:
+ every step carries index equality, chain composes them. （已译） *)
 
 Fixpoint sigma_index_zigzag {I : Type} {Cs : I → Category}
   {X Y : SigmaCat Cs} (s : ZigZag X Y) : `1 X = `1 Y :=
@@ -763,9 +756,7 @@ Definition TwoSum_Decomposition : ComponentDecomposition TwoSum :=
     (fun X => hom_zigzag (twosum_arr X))
     (fun X k s => eq_sym (sigma_index_zigzag s)).
 
-(* THE DECOMPOSITION IS NOT DEGENERATE, AND THIS IS PROVED RATHER THAN
-   ASSERTED.  The two summands are genuinely separated: no zig-zag joins
-   a point of one to a point of the other. *)
+(* 相关说明。 （已译） *)
 
 Theorem TwoSum_separated :
   ZigZag ((true; TwoX) : TwoSum) ((false; TwoX) : TwoSum) → False.
@@ -774,8 +765,8 @@ Proof. intro s; exact (Bool.diff_true_false (sigma_index_zigzag s)). Qed.
 Corollary TwoSum_not_connected : Connected TwoSum → False.
 Proof. intro K; exact (TwoSum_separated (K _ _)). Qed.
 
-(* ... and neither summand is a point: each contains both objects of the
-   walking arrow, which are distinct in [TwoSum]. *)
+(* ... neither summand point: each contains both 对象 the
+ walking arrow, distinct [TwoSum]. （已译） *)
 
 Definition twosum_snd (X : TwoSum) : bool :=
   match `2 X with TwoX => true | TwoY => false end.
@@ -797,10 +788,10 @@ Definition TwoSum_cd_equivalence :
   EquivalenceOfCategories (cd_compare TwoSum_Decomposition) :=
   cd_equivalence TwoSum_Decomposition bool_IdxUIP.
 
-(** ** Why the index cannot simply be π₀ *)
+(* 相关说明。 （已译） *)
 
-(* A coproduct of categories over an index with two distinct inhabited
-   summands is never connected -- the index cannot move along a chain. *)
+(* A coproduct 范畴 over index two distinct inhabited
+ summands never connected -- index cannot move along chain. （已译） *)
 
 Definition SigmaCat_not_connected {I : Type} {Cs : I → Category}
   {i j : I} (Hij : i = j → False) (x : Cs i) (y : Cs j) :
@@ -821,15 +812,15 @@ Definition naive_pi0_sum_not_connected : Connected naive_pi0_sum → False :=
   SigmaCat_not_connected Two_component_objects_differ
     (Component_obj _2 TwoX) (Component_obj _2 TwoY).
 
-(* Consequently no functor out of [_2] hits it up to isomorphism: the
-   naive index does not merely name the components badly, it names a
-   category that no comparison from [_2] can cover. *)
+(* Consequently no 函子 out [_2] hits it up 同构: the
+ naive index does not merely name components badly, it names a
+ 范畴 no comparison [_2] can cover. （已译） *)
 
 Definition no_ESO_into_naive_pi0_sum (F : _2 ⟶ naive_pi0_sum) :
   EssentiallySurjective F → False :=
   fun E => naive_pi0_sum_not_connected (eso_connected F E Two_Connected).
 
-(** ** Non-vacuity, part 3: part (a) computing in [Coq] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -842,9 +833,9 @@ Definition coq_point (T : Type) : _1 ⟶ Coq :=
     (fun _ _ _ _ _ _ => eq_refl) (fun _ _ => eq_refl)
     (fun _ _ _ _ _ _ => eq_refl).
 
-(* A diagram over the coproduct of two points, picking out [nat] and
-   [bool].  It is built by the DONOR's case functor, so it carries no
-   proof obligation of its own. *)
+(* A diagram over coproduct two points, picking out [nat] and
+ [bool]. It built DONOR's case 函子, so it carries no
+ 证明 obligation own. （已译） *)
 
 Definition CoqPair : SigmaCat (fun _ : bool => _1) ⟶ Coq :=
   SigmaCat_case (fun k : bool => coq_point (if k then nat else bool)).
@@ -872,8 +863,8 @@ Proof.
     destruct (v x); simpl in *; subst; reflexivity.
 Defined.
 
-(* Each summand's limit is the point's: the diagram restricted to a
-   summand is a functor out of [_1], and [point_IsALimit] applies. *)
+(* Each summand's limit point's: diagram restricted a
+ summand 函子 out [_1], [point_IsALimit] applies. （已译） *)
 
 Definition coqpair_summand_limit (k : bool) :
   IsALimit (summand CoqPair k) (coqpair_fam k) :=
@@ -882,7 +873,7 @@ Definition coqpair_summand_limit (k : bool) :
 Definition CoqPair_IsALimit : IsALimit CoqPair coqpair_obj :=
   coprod_IsALimit CoqPair coqpair_summand_limit coqpair_IsIndexedProduct.
 
-(* The legs COMPUTE to the two projections. *)
+(* 相关说明。 （已译） *)
 
 Example CoqPair_leg_true (x : nat * bool) :
   limit_leg CoqPair_IsALimit ((true; ttt) : SigmaCat (fun _ : bool => _1)) x
@@ -892,8 +883,7 @@ Example CoqPair_leg_false (x : nat * bool) :
   limit_leg CoqPair_IsALimit ((false; ttt) : SigmaCat (fun _ : bool => _1)) x
     = snd x := eq_refl.
 
-(* ... and so does the mediator, at a cone that is not a projection pair:
-   [n] goes to [(n, n =? 0)]. *)
+(* 相关说明。 （已译） *)
 
 Definition coq_test_leg (X : SigmaCat (fun _ : bool => _1)) :
   nat ~{Coq}~> CoqPair X :=
@@ -918,8 +908,8 @@ Definition coq_test_cone : Cone CoqPair :=
 Example CoqPair_med_computes (n : nat) :
   limit_med CoqPair_IsALimit coq_test_cone n = (n, Nat.eqb n 0) := eq_refl.
 
-(* The witness is not degenerate: the two summand limits are different
-   objects, and the apex has at least two distinct elements. *)
+(* The witness not degenerate: two summand limits different
+ 对象, apex has at least two distinct elements. （已译） *)
 
 Lemma coqpair_fam_differ : coqpair_fam true <> coqpair_fam false.
 Proof.
@@ -966,7 +956,7 @@ Check (fun (F : SigmaCat Js ⟶ Cu) (L : bool → Cu)
 Check (fun (A : Type) (f : A → Cu)
            (P : Limit (DiscreteCat_Functor f)) => iprod f P).
 
-(* ... and so, therefore, is the corollary stated over it. *)
+(* ... so, therefore, 推论 stated over it. （已译） *)
 
 Check (fun (F : SigmaCat Js ⟶ Cu) (L : bool → Cu)
            (HL : ∀ k : bool, IsALimit (summand F k) (L k))

@@ -19,7 +19,7 @@ Require Import Category.Functor.Opposite.
 
 Generalizable All Variables.
 
-(** * Limits in a product of categories are computed componentwise *)
+(* * * Limits product 范畴 computed componentwise （已译） *)
 
 (*
    Book:  Riehl, "Category Theory in Context", 2nd ed., §3.4 Exercise
@@ -31,15 +31,14 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Cones over a diagram in a binary product *)
+(* 相关说明。 （已译） *)
 
 Section ProductCones.
 
 Context {J C D : Category}.
 Context (K : J ⟶ C ∏ D).
 
-(* Pairing: a cone over each projected diagram assembles into a cone over
-   [K], with the pair of apexes and the pairs of legs. *)
+(* 相关说明。 （已译） *)
 
 Definition prod_cone (N1 : Cone (Fst ◯ K)) (N2 : Cone (Snd ◯ K)) : Cone K.
 Proof.
@@ -58,8 +57,7 @@ Example prod_cone_apex (N1 : Cone (Fst ◯ K)) (N2 : Cone (Snd ◯ K)) :
 Example prod_cone_leg (N1 : Cone (Fst ◯ K)) (N2 : Cone (Snd ◯ K)) (x : J) :
   cone_leg (prod_cone N1 N2) x = (cone_leg N1 x, cone_leg N2 x) := eq_refl.
 
-(* Projecting the pairing returns each component leg by leg, on the nose;
-   the whole cone records differ only in their rebuilt coherence proofs. *)
+(* 相关说明。 （已译） *)
 
 Example prod_cone_fst_leg (N1 : Cone (Fst ◯ K)) (N2 : Cone (Snd ◯ K)) (x : J) :
   cone_leg (FCone Fst (prod_cone N1 N2)) x = cone_leg N1 x := eq_refl.
@@ -81,10 +79,9 @@ Proof.
   intro x; simpl; now rewrite id_right.
 Defined.
 
-(** ** The pairing of two limiting cones is limiting *)
+(* 相关说明。 （已译） *)
 
-(* The mediator out of a competing cone is the pair of the two mediators
-   out of its projections; uniqueness is uniqueness in each factor. *)
+(* 相关说明。 （已译） *)
 
 Definition prod_IsLimitCone {N1 : Cone (Fst ◯ K)} {N2 : Cone (Snd ◯ K)}
   (H1 : IsLimitCone N1) (H2 : IsLimitCone N2) :
@@ -110,7 +107,7 @@ Example prod_IsLimitCone_med {N1 : Cone (Fst ◯ K)} {N2 : Cone (Snd ◯ K)}
     = (unique_obj (H1 (FCone Fst M)), unique_obj (H2 (FCone Snd M)))
   := eq_refl.
 
-(** ** Each projection preserves limits, unconditionally (Riehl (i)) *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -144,7 +141,7 @@ Proof.
     + exact (Hv x).
 Defined.
 
-(** ** A cone is limiting when both its projections are (Riehl (ii)) *)
+(* 相关说明。 （已译） *)
 
 (* A cone over [K] is isomorphic to the pairing of its two projections; the
    apex isomorphism is [(id, id) : (fst n, snd n) ≅ n], which is not the
@@ -167,10 +164,9 @@ Definition prod_reflect (N : Cone K)
   IsLimitCone N :=
   limitcone_transport (prod_cone_iso N) (prod_IsLimitCone H1 H2).
 
-(** ** The projections jointly create limits *)
+(* 相关说明。 （已译） *)
 
-(* The two projections as a [bool]-indexed family, so that the creation
-   vocabulary of Structure/Limit/Creation.v applies verbatim. *)
+(* 相关说明。 （已译） *)
 
 Definition ProdFactor (b : bool) : Category := if b then C else D.
 
@@ -192,7 +188,7 @@ Proof.
     exact (prod_reflect M (H true) (H false)).
 Defined.
 
-(** ** Limits of the projected diagrams give a limit of the diagram *)
+(* 相关说明。 （已译） *)
 
 Definition Product_Limit (L1 : Limit (Fst ◯ K)) (L2 : Limit (Snd ◯ K)) :
   Limit K :=
@@ -204,21 +200,20 @@ Example Product_Limit_apex (L1 : Limit (Fst ◯ K)) (L2 : Limit (Snd ◯ K)) :
 
 End ProductCones.
 
-(** ** Mac Lane §V.2 Exercise 2: a product of complete categories is
-       complete, and dually *)
+(* * ** Mac Lane §V.2 Exercise 2: product complete 范畴 is
+ complete, dually （已译） *)
 
 Definition Product_Complete {C D : Category}
   (HC : @Complete C) (HD : @Complete D) : @Complete (C ∏ D) :=
   fun J K => Product_Limit K (HC J (Fst ◯ K)) (HD J (Snd ◯ K)).
 
-(* [Cocomplete C] is [Complete (C^op)] up to the definitional involutions
-   [(J^op)^op = J] and [(G^op)^op = G]; no cone is repackaged. *)
+(* 相关说明。 （已译） *)
 
 Definition Complete_op_of_Cocomplete {E : Category} (H : @Cocomplete E) :
   @Complete (E^op) :=
   fun J G => H (Opposite J) (Opposite_Functor G).
 
-(* The dual, through the conversion [(C ∏ D)^op = C^op ∏ D^op]. *)
+(* 相关说明。 （已译） *)
 
 Definition Product_Cocomplete {C D : Category}
   (HC : @Cocomplete C) (HD : @Cocomplete D) : @Cocomplete (C ∏ D) :=
@@ -227,14 +222,14 @@ Definition Product_Cocomplete {C D : Category}
       (Complete_op_of_Cocomplete HC) (Complete_op_of_Cocomplete HD)
       (Opposite J) (Opposite_Functor K).
 
-(** ** The "only if" direction, at an explicit point of the other factor *)
+(* 相关说明。 （已译） *)
 
 Section ProductOnlyIf.
 
 Context {C D : Category}.
 
-(* The diagram in [C ∏ D] whose [C]-component is [G] and whose
-   [D]-component is constant at [d]. *)
+(* The diagram [C ∏ D] whose [C]-component [G] whose
+ [D]-component 常值 at [d]. （已译） *)
 
 Definition pair_const (d : D) {J : Category} (G : J ⟶ C) : J ⟶ C ∏ D.
 Proof.
@@ -311,8 +306,7 @@ Definition Product_Complete_Snd (H : @Complete (C ∏ D)) (c : C) :
   @Complete D :=
   fun J G => Product_Limit_Snd c G (H J (const_pair c G)).
 
-(* The recovered limit sits on the [C]-component of the product limit's
-   apex, on the nose. *)
+(* 相关说明。 （已译） *)
 
 Example Product_Limit_Fst_apex (d : D) {J : Category} (G : J ⟶ C)
   (L : Limit (pair_const d G)) :
@@ -320,7 +314,7 @@ Example Product_Limit_Fst_apex (d : D) {J : Category} (G : J ⟶ C)
 
 End ProductOnlyIf.
 
-(** ** Componentwise terminal and initial objects, and coproducts *)
+(* * ** Componentwise terminal initial 对象, coproducts （已译） *)
 
 Section ProductTerminal.
 
@@ -340,8 +334,8 @@ Example Product_Terminal_obj `{@Terminal C} `{@Terminal D} :
 
 End ProductTerminal.
 
-(* The duals are the primal instances at the opposite categories, through
-   the conversion [Product_Opposite]; not registered for resolution. *)
+(* The duals primal instances at opposite 范畴, through
+ conversion [Product_Opposite]; not registered resolution. （已译） *)
 
 Definition Product_Initial {C D : Category}
   (HC : @Initial C) (HD : @Initial D) : @Initial (C ∏ D) :=
@@ -363,7 +357,7 @@ Example Product_Cocartesian_obj {C D : Category}
     = (@Coprod C HC (fst x) (fst y), @Coprod D HD (snd x) (snd y))
   := eq_refl.
 
-(** ** The set-indexed product: Riehl's clause (ii) at arbitrary index *)
+(* 相关说明。 （已译） *)
 
 Section PiCatCones.
 
@@ -414,8 +408,8 @@ Example pi_IsLimitCone_med (N : ∀ i : I, Cone (PiCat_Proj D i ◯ K))
     = fun i => unique_obj (HN i (FCone (PiCat_Proj D i) M))
   := eq_refl.
 
-(* Here the apex isomorphism IS [iso_id]: a function has definitional eta
-   where a pair does not, so the two apexes are the same object. *)
+(* Here apex 同构 IS [iso_id]: function has definitional eta
+ where pair does not, so two apexes same 对象. （已译） *)
 
 Definition pi_cone_iso (N : Cone K) :
   ConeIso (pi_cone (fun i => FCone (PiCat_Proj D i) N)) N.

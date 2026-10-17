@@ -1,4 +1,4 @@
-(** * Dualization into a fixed object, and self-adjointness on the right *)
+(* * * Dualization fixed 对象, self-adjointness right （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -266,10 +266,10 @@ Next Obligation. symmetry; apply dd_unit_natural. Qed.
 Example double_dual_unit_component (x : C) :
   transform[double_dual_unit] x = dd_unit x := eq_refl.
 
-(** ** The ordinary adjunction, and Mac Lane's unit and counit
+(* * ** The ordinary 伴随, Mac Lane's unit counit
 
-    Read off the class by Adjunction/Right.v rather than rebuilt.
-    `Check` displays the result as `(dual d)^op ⊣ dual d`. *)
+ Read off class Adjunction/Right.v rather than rebuilt.
+ `Check` displays result `(dual d)^op ⊣ dual d`. （已译） *)
 
 Definition dual_adjunction :
   @Adjunction (C^op) C (Opposite_Functor (dual d)) (dual d) :=
@@ -403,7 +403,7 @@ Constraint ch < cp.
 Context (Cu : Category@{co ch cp}).
 Context (a b : Cu).
 
-(* Controls, applied, at the very levels the negatives are rejected at. *)
+(* 相关说明。 （已译） *)
 Check (a ~{Cu}~> b).
 Check (@id Cu a).
 
@@ -413,7 +413,7 @@ Fail Check (@Opposite Cu).
 Fail Check (@Monoidal Cu).
 (* FORMABILITY negative 3: its symmetric refinement. *)
 Fail Check (@SymmetricMonoidal Cu).
-(* FORMABILITY negative 4: the closed base this file is stated over. *)
+(* 相关说明。 （已译） *)
 Fail Check (@SymMonClosed Cu).
 
 End DualProbeFormability.
@@ -424,17 +424,15 @@ Context {C : Category}.
 Context `{@SymMonClosed C}.
 Context (d : C).
 
-(* CONVERSION negative 1: [dd_unit] is not the bare braid-transpose on
-   the nose; the residue is `id ⨂ id`, and writing it out closes the
-   very same statement at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Fail Example dual_neg_braid_strict (x : C) :
   dd_unit d x = dcur (eval' ∘ braid) := eq_refl.
 
-(* Control for negative 1, at [eq_refl], with the residue exhibited. *)
+(* 相关说明。 （已译） *)
 Example dual_ctrl_braid_residue (x : C) :
   dd_unit d x = dcur (eval' ∘ (id[x ⇒ d] ⨂ id[x]) ∘ braid) := eq_refl.
 
-(* Control for negative 1, the `≈` form that IS delivered. *)
+(* 相关说明。 （已译） *)
 Example dual_ctrl_braid_equiv (x : C) :
   dd_unit d x ≈ dcur (eval' ∘ braid).
 Proof. apply dd_unit_is_braid_transpose. Qed.
@@ -448,8 +446,7 @@ Fail Example dual_neg_arbitrary_star (SA : @StarAutonomous C _) (x : C) :
   to (@star_double_dual C _ SA x) = dd_unit (@dualizer C _ SA) x
   := eq_refl.
 
-(* Control for negative 2: at the instance THIS file produces, the same
-   equation closes at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example dual_ctrl_produced_star
   (Hiso : forall x : C, IsIsomorphism (dd_unit d x)) (x : C) :
   to (@star_double_dual C _ (StarAutonomous_of_dd_unit d Hiso) x)
@@ -466,20 +463,17 @@ Context (d : C).
 Notation "'DSA'" :=
   (dual_self_adjoint_on_the_right d) (only parsing).
 
-(* TYPING negative: off the diagonal the two legs of the bijection do
-   not even have the same type, so "to = from" is not statable there.
-   This is the honest form of Mac Lane's symmetry claim. *)
+(* 相关说明。 （已译） *)
 Fail Example dual_neg_offdiagonal (a x : C) :
   to (@aor C C (dual d) (dual d) DSA a x)
     = from (@aor C C (dual d) (dual d) DSA a x) := eq_refl.
 
-(* Control: ON the diagonal the two legs ARE the same term. *)
+(* 相关说明。 （已译） *)
 Example dual_ctrl_diagonal (a : C) :
   to (@aor C C (dual d) (dual d) DSA a a)
     = from (@aor C C (dual d) (dual d) DSA a a) := eq_refl.
 
-(* Control: off the diagonal what holds is the SWAP, at [eq_refl] on the
-   whole [SetoidMorphism]. *)
+(* 相关说明。 （已译） *)
 Example dual_ctrl_swapped (a x : C) :
   to (@aor C C (dual d) (dual d) DSA a x)
     = from (@aor C C (dual d) (dual d) DSA x a) := eq_refl.

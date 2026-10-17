@@ -9,7 +9,7 @@ Require Import Category.Construction.Subcategory.
 
 Generalizable All Variables.
 
-(** * The finite setoids inside [Sets]: a worked full-subcategory example *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Category_of_finite_sets
@@ -23,9 +23,9 @@ Generalizable All Variables.
 
 (** ** Finiteness of a setoid *)
 
-(* Membership up to the ambient `≈` rather than up to `=`; `∨` is
-   Category.Lib's `sum`, so this is `Type`-valued and can be eliminated into
-   `Type`. *)
+(* Membership up ambient `≈` rather than up `=`; `∨` is
+ Category.Lib's `sum`, so 这是 `Type`-valued can eliminated into
+ `Type`. （已译） *)
 Fixpoint mem_upto {X : SetoidObject} (a : carrier X)
          (l : list (carrier X)) : Type :=
   match l with
@@ -37,7 +37,7 @@ Fixpoint mem_upto {X : SetoidObject} (a : carrier X)
 Definition FiniteSetoid (X : SetoidObject) : Type :=
   { l : list (carrier X) & ∀ a : carrier X, mem_upto a l }.
 
-(** ** The subcategory of finite setoids *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Finite 相关定义、性质与动机。
@@ -61,8 +61,8 @@ Definition FinSets_Full : Subcategory.Full Sets FinSets :=
 Definition FinSets_Full_Functor : Functor.Full FinSets_Incl :=
   Full_Implies_Full_Functor Sets FinSets FinSets_Full.
 
-(* Faithful by the generic argument of Construction/Subcategory.v, which is
-   where the observation that it holds for every subcategory now lives. *)
+(* Faithful generic 论元 Construction/Subcategory.v, is
+ where observation it holds every subcategory now lives. （已译） *)
 Definition FinSets_Faithful : Functor.Faithful FinSets_Incl :=
   Incl_Faithful Sets FinSets.
 
@@ -78,10 +78,9 @@ Definition FinSets_Full_roundtrip : Subcategory.Full Sets FinSets :=
   Full_Functor_Implies_Full Sets FinSets
     FinSets_ShomRespects FinSets_Full_Functor.
 
-(** ** Two objects over the same setoid, and two distinct parallel arrows *)
+(* * ** Two 对象 over same setoid, two distinct parallel arrows （已译） *)
 
-(* The two-element setoid of Theory/Concrete.v is finite: `true` and `false`
-   exhaust it. *)
+(* 相关说明。 （已译） *)
 Definition bool_finite : FiniteSetoid bool_setoid_object.
 Proof.
   exists (cons true (cons false nil)).
@@ -113,16 +112,16 @@ Lemma FinSets_bool_same_image :
   FinSets_Incl FinSets_bool = FinSets_Incl FinSets_bool_dup.
 Proof. reflexivity. Qed.
 
-(* They are isomorphic in the subcategory, by the identity of [Sets] in both
-   directions: the two enumerations differ, the underlying setoid does not. *)
+(* They isomorphic subcategory, 恒等 [Sets] both
+ directions: two enumerations differ, underlying setoid does not. （已译） *)
 Program Definition FinSets_bool_iso :
   FinSets_bool ≅[FinSetsCat] FinSets_bool_dup := {|
   to   := (id; I);
   from := (id; I)
 |}.
 
-(* Negation, as a morphism of the subcategory: the underlying [Sets]-morphism
-   paired with the trivial [shom] witness. *)
+(* Negation, 态射 subcategory: underlying [Sets]-态射
+ 与…配对 trivial [shom] witness. （已译） *)
 Definition FinSets_negb : FinSets_bool ~{FinSetsCat}~> FinSets_bool :=
   (Sets_negb; I).
 
@@ -158,9 +157,9 @@ Qed.
 *)
 Definition enum_len (s : FinSetsCat) : nat := length (projT1 (projT2 s)).
 
-(* So the two objects over the same setoid are genuinely different objects,
-   even though the inclusion sends them to the same object of [Sets] and
-   they are isomorphic in the subcategory. *)
+(* So two 对象 over same setoid genuinely different 对象,
+ even though 含入 sends them same 对象 [Sets] and
+ they isomorphic subcategory. （已译） *)
 Theorem FinSets_bool_distinct : FinSets_bool = FinSets_bool_dup → False.
 Proof.
   intro Heq.

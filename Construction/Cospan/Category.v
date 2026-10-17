@@ -6,7 +6,7 @@ Require Import Category.Structure.Pushout.
 
 Generalizable All Variables.
 
-(** * The cospan category (direct construction) *)
+(* * * The cospan 范畴 (direct construction) （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Span_(category_theory)
@@ -20,8 +20,8 @@ Section CospanCategory.
 
 Context {C : Category}.
 
-(* A cospan from [X] to [Y]: an apex [N] together with two legs from [X]
-   and [Y] into the apex. *)
+(* A cospan [X] [Y]: apex [N] together two legs [X]
+ [Y] 进入 apex. （已译） *)
 Record CospanArrow (X Y : C) : Type := {
   cospan_apex : C;                  (* the apex [N] of the cospan *)
   cospan_in1  : X ~> cospan_apex;   (* the leg [X ~> N] *)
@@ -101,7 +101,7 @@ Definition cospan_compose
      cospan_in1  := pushout_in1 P ∘ cospan_in1 f;
      cospan_in2  := pushout_in2 P ∘ cospan_in2 g |}.
 
-(** ** Proper instance for composition (the pushout-pasting lemma) *)
+(* * ** Proper instance 复合 (the pushout-pasting 引理) （已译） *)
 
 Lemma cospan_compose_respects_aux
       {X Y Z : C}
@@ -136,8 +136,7 @@ Proof.
   assert (Hu2 : u ∘ pushout_in2 P ≈ pushout_in2 P' ∘ to psi)
     by (apply pushout_med_in2).
   (* Mediator P' -> P. *)
-  (* We want: (from phi) ∘ cospan_in2 f' ≈ cospan_in2 f,
-     which follows from Hf2 + iso_from_to. *)
+  (* 相关说明。 （已译） *)
   assert (Hf2' : from phi ∘ cospan_in2 f' ≈ cospan_in2 f).
   { rewrite <- Hf2.
     rewrite comp_assoc, iso_from_to, id_left.
@@ -261,7 +260,7 @@ Proof.
     + rewrite comp_assoc, Hm2, id_left; reflexivity.
 Defined.
 
-(** ** Associativity via pushout-pasting *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明拉回/推出相关定义、性质与动机。
@@ -461,7 +460,7 @@ Arguments Build_CospanArrow {C X Y} _ _ _.
                            CospanArrow X Y].
    Downstream uses match this signature directly. *)
 
-(** ** Cospan composition accessors (reflexivity-level) *)
+(* * ** Cospan 复合 accessors (reflexivity-level) （已译） *)
 
 (* These let downstream code unfold composition without having to
    [simpl] the [pushout] applicative machinery. *)
@@ -491,7 +490,7 @@ Proof. reflexivity. Qed.
 
 End CospanCompositionAccessors.
 
-(** ** The cospan category as a [Category] record *)
+(* * ** The cospan 范畴 [Category] record （已译） *)
 Section CospanCatDef.
 Context (C : Category).
 Context (HP : HasPushouts C).

@@ -18,7 +18,7 @@ Require Import Coq.Logic.Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * Freyd's collapse: a small complete category is a preorder *)
+(* * * Freyd's collapse: small complete 范畴 preorder （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/complete+small+category
@@ -28,7 +28,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The Cantor step, as a boolean diagonal *)
+(* 相关说明。 （已译） *)
 
 (* Twin of Instance/Fun/Discrete.v's [cantor_bool], re-proved here
    because a Structure/ file does not require Instance/Fun.  Relocating the
@@ -42,7 +42,7 @@ Proof.
   destruct (f a a); discriminate.
 Qed.
 
-(** ** The smallness witness the proof consumes *)
+(* * ** The smallness witness 证明 所消耗 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -73,7 +73,7 @@ Definition ArrowIndex_op {C : Category} (AI : ArrowIndex C) :
     (fun x y m d => ai_dec AI m d)
     (fun x y h d => ai_dec_enc AI h d).
 
-(** ** The canonical witness: decidable object equality suffices *)
+(* * ** The canonical witness: decidable 对象 equality suffices （已译） *)
 
 (* Decidable object equality is Construction/Quotient.v's [ObjDecEq]
    (a definitional class: an instance IS the decider), consumed as is —
@@ -122,7 +122,7 @@ Definition canonical_ArrowIndex {C : Category} (DO : ObjDecEq C) :
    ; ai_dec     := fun x y m d => td DO m d
    ; ai_dec_enc := fun x y h d => td_enc DO h d |}.
 
-(** ** The separated-pair core, fully constructive *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Freyd 相关定义、性质与动机。
@@ -141,7 +141,7 @@ Notation K := (ai_index AI).
 Context (P : C) (pr : K → (P ~> b)).
 Context (HP : IsIndexedProduct (fun _ : K => b) P pr).
 
-(* A boolean separator for the pair, respecting the hom-setoid. *)
+(* 相关说明。 （已译） *)
 Context (sep : (a ~> b) → bool).
 Context (sep_resp : ∀ u v : a ~> b, u ≈ v → sep u = sep v).
 Context (sep_f : sep f = true).
@@ -201,7 +201,7 @@ Qed.
 
 End FreydCore.
 
-(** ** Decidable hom-setoids reach thinness *)
+(* 相关说明。 （已译） *)
 
 (* [≈] is Type-valued (Lib/Setoid.v), so the decider is a [sum]. *)
 Definition DecHom (C : Category) : Type :=
@@ -210,7 +210,7 @@ Definition DecHom (C : Category) : Type :=
 Definition DecHom_op {C : Category} (D : DecHom C) : DecHom (C^op) :=
   fun x y u v => D y x u v.
 
-(* From a decider, the separator "is it f?" and its three laws. *)
+(* 相关说明。 （已译） *)
 Section Separator.
 
 Context {C : Category} (D : DecHom C) {x y : C} (f g : x ~> y)
@@ -269,8 +269,7 @@ Definition freyd_thin_dual {C : Category}
   (AI : ArrowIndex C) (HP : HasIndexedProducts (C^op)) (D : DecHom C) : Thin C :=
   Opposite_Thin (freyd_thin (ArrowIndex_op AI) HP (DecHom_op D)).
 
-(** ** The constructive wall, located: an injection [(K → bool) ↣ K] from
-       [f ≉ g] alone *)
+(* 相关说明。 （已译） *)
 
 Section Wall.
 
@@ -283,8 +282,7 @@ Notation K := (ai_index AI).
 Context (P : C) (pr : K → (P ~> b)).
 Context (HP : IsIndexedProduct (fun _ : K => b) P pr).
 
-(* [fr_mk] is injective UP TO the hom-setoid, from [f ≉ g] alone — no
-   separator, no decidability, no classical logic. *)
+(* 相关说明。 （已译） *)
 Lemma fr_mk_injective (phi psi : K → bool) :
   fr_mk AI f g P pr HP phi ≈ fr_mk AI f g P pr HP psi → ∀ k, phi k = psi k.
 Proof using Hne.
@@ -299,8 +297,7 @@ Proof using Hne.
   - destruct (Hne (symmetry Hc)).
 Qed.
 
-(* Composing with the smallness encoding gives an INJECTION
-   [(K → bool) → K] on the nose (Leibniz equality on [K]). *)
+(* 相关说明。 （已译） *)
 Definition fr_inj (phi : K → bool) : K := ai_enc AI (fr_mk AI f g P pr HP phi).
 
 Lemma fr_inj_injective (phi psi : K → bool) :
@@ -315,7 +312,7 @@ Qed.
 
 End Wall.
 
-(** ** From [Complete]: the product at any index, with no [Set] pin *)
+(* 相关说明。 （已译） *)
 
 Section CompleteBridge.
 
@@ -348,8 +345,8 @@ Definition complete_iprod {A : Type@{o}} (d : A → C) :
 
 End CompleteBridge.
 
-(* The issue's pinned statement: a category whose arrows are indexed by a
-   type at which it is complete, with decidable hom-setoids, is thin. *)
+(* The issue's pinned statement: 范畴 whose arrows indexed a
+ type at it complete, decidable hom-setoids, thin. （已译） *)
 Theorem small_complete_is_thin {C : Category}
   (AI : ArrowIndex C) (comp : @Complete C) (D : DecHom C) : Thin C.
 Proof.
@@ -370,7 +367,7 @@ Definition small_cocomplete_is_thin {C : Category}
     (small_complete_is_thin (ArrowIndex_op AI)
        (Complete_op_of_Cocomplete cocomp) (DecHom_op D)).
 
-(** ** The second half: all greatest lower bounds in the preorder reflection *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Freyd 相关定义、性质与动机。

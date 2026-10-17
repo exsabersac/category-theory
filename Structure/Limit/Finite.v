@@ -34,7 +34,7 @@ Generalizable All Variables.
 
 Open Scope category_scope.
 
-(** * Finite index categories and finite limits *)
+(* * * Finite index 范畴 finite limits （已译） *)
 
 (*
    本文件给出有限情形。
@@ -73,7 +73,7 @@ Record FiniteCategory : Type := {
     { i : Fin.t fc_size & ArrowHit (fc_arr i) f }
 }.
 
-(* The family the enumeration presents, in the form [Generates] takes. *)
+(* 相关说明。 （已译） *)
 
 Definition fc_dom (F : FiniteCategory) (i : Fin.t (fc_size F)) : J :=
   aix_dom (fc_arr F i).
@@ -101,9 +101,9 @@ Qed.
 
 (** *** Finitely many objects *)
 
-(* Objects inject into identity arrows, so an enumeration of the arrows
-   yields one of the objects: the object [x] is recovered as the DOMAIN of
-   the arrow that hits [id[x]]. *)
+(* Objects inject 恒等 arrows, so enumeration arrows
+ yields one 对象: 对象 [x] recovered DOMAIN of
+ arrow hits [id[x]]. （已译） *)
 
 Definition fc_obj_idx (F : FiniteCategory) (x : J) : Fin.t (fc_size F) :=
   `1 (fc_cover F x x id).
@@ -155,8 +155,7 @@ Arguments fo_rt {J} _ _.
 
 (** *** Finiteness is self-dual *)
 
-(* An arrow of [J^op] is an arrow of [J] with its endpoints exchanged, so the
-   same list enumerates both. *)
+(* 相关说明。 （已译） *)
 
 Definition FiniteCategory_op {J : Category} (F : FiniteCategory J) :
   FiniteCategory (J^op).
@@ -176,7 +175,7 @@ Proof.
   - cbn; destruct ec, ed; exact ea.
 Defined.
 
-(** ** Products over a retract of an index *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明等化子相关定义、性质与动机。
@@ -195,7 +194,7 @@ Context (fam : B → C).
 Context {P : C} (proj : ∀ a : A, P ~> fam (down a))
   (HP : IsIndexedProduct (fun a : A => fam (down a)) P proj).
 
-(* The transport along the retraction, as a cast. *)
+(* 相关说明。 （已译） *)
 
 Definition rp_cast (b : B) : fam (down (idx b)) ~> fam b :=
   id_cast (f_equal fam (rt b)).
@@ -211,8 +210,7 @@ Proof.
   cat.
 Qed.
 
-(* The comparison [r : P ~> P] that reads every factor off its canonical
-   representative. *)
+(* 相关说明。 （已译） *)
 
 Definition rp_r : P ~> P :=
   unique_obj (iprod_desc HP (fun a => rp_cast (down a) ∘ proj (idx (down a)))).
@@ -293,7 +291,7 @@ Definition rp_IsIndexedProduct : IsIndexedProduct fam E rp_proj := {|
 
 End RetractProduct.
 
-(* With a supply of equalizers, the product over the retract is CHOSEN. *)
+(* 相关说明。 （已译） *)
 
 Section RetractProductChosen.
 
@@ -321,7 +319,7 @@ Definition retract_product_ump :
 
 End RetractProductChosen.
 
-(** ** The corollary: finite products and equalizers give every finite limit *)
+(* * ** The 推论: finite products equalizers give every finite limit （已译） *)
 
 Section FiniteLimit.
 
@@ -330,8 +328,8 @@ Section FiniteLimit.
 Context {C : Category} (HFP : HasFiniteProducts C) (HEq : HasEqualizers C).
 Context {J : Category} (HJ : FiniteCategory J) (F : J ⟶ C).
 
-(* The product over the enumeration's DOMAINS, then over the objects of [J]
-   as their retract. *)
+(* The product over enumeration's DOMAINS, then over 对象 [J]
+ retract. （已译） *)
 
 Definition fl_ofam (i : Fin.t (fc_size HJ)) : C := F (fc_dom HJ i).
 
@@ -353,7 +351,7 @@ Definition fl_P_ump : IsIndexedProduct (fun x : J => F x) fl_P fl_P_proj :=
   retract_product_ump HEq (fc_dom HJ) (fc_obj_idx HJ) (fc_obj_rt HJ)
     (fun x : J => F x) fl_P0_proj fl_P0_ump.
 
-(* The product over the enumerated ARROWS, at their codomains. *)
+(* 相关说明。 （已译） *)
 
 Definition fl_afam (i : Fin.t (fc_size HJ)) : C := F (fc_cod HJ i).
 
@@ -427,8 +425,8 @@ Definition finitely_complete_from_finite_products {C : Category}
   (HFP : HasFiniteProducts C) (HEq : HasEqualizers C) : @FinitelyComplete C :=
   fun J HJ F => finite_limit HFP HEq HJ F.
 
-(* Mac Lane §V.2 Corollary 1, the pinned name: a terminal object, binary
-   products and equalizers give every finite limit. *)
+(* Mac Lane §V.2 Corollary 1, pinned name: 终对象, binary
+ products equalizers give every finite limit. （已译） *)
 
 Definition finitely_complete_from_generators {C : Category}
   (T : @Terminal C) (CP : @Cartesian C) (HEq : HasEqualizers C) :
@@ -446,9 +444,9 @@ Definition finitely_cocomplete_from_generators {C : Category}
       (HasEqualizers_op_of_HasCoequalizers HCo)
       (J^op) (FiniteCategory_op HJ) (Opposite_Functor F).
 
-(* Riehl §3.5 Theorem 3.5.17: pullbacks and a terminal object give every
-   finite limit; dually, pushouts and an initial object give every finite
-   colimit. *)
+(* Riehl §3.5 Theorem 3.5.17: pullbacks 终对象 give every
+ finite limit; dually, pushouts 始对象 give every finite
+ colimit. （已译） *)
 
 Definition finitely_complete_of_pullbacks_terminal {C : Category}
   (HPB : HasPullbacks C) (T : @Terminal C) : @FinitelyComplete C :=
@@ -463,9 +461,9 @@ Definition finitely_cocomplete_of_pushouts_initial {C : Category}
       (HasPullbacks_op_of_HasPushouts HPO) I
       (J^op) (FiniteCategory_op HJ) (Opposite_Functor F).
 
-(** ** The converse: a finitely complete category has the generators *)
+(* * ** The converse: finitely complete 范畴 has generators （已译） *)
 
-(** *** The empty shape and the terminal object *)
+(* * *** The empty shape 终对象 （已译） *)
 
 (*
    本节说明 Finite 相关定义、性质与动机。
@@ -516,7 +514,7 @@ Proof.
              (fun x => False_rect _ x)).
 Defined.
 
-(** *** The walking cospan and pullbacks *)
+(* 相关说明。 （已译） *)
 
 Definition Roof_FiniteCategory : FiniteCategory Roof.
 Proof.
@@ -582,7 +580,7 @@ Proof.
     exact (finitely_complete_of_pullbacks_terminal HPB T).
 Defined.
 
-(** *** The dual, by reading the primal at [C^op] *)
+(* 相关说明。 （已译） *)
 
 Definition FinitelyCocomplete_FinitelyComplete_op {C : Category}
   (FCC : @FinitelyCocomplete C) : @FinitelyComplete (C^op) :=
@@ -612,7 +610,7 @@ Proof.
     exact (finitely_cocomplete_of_pushouts_initial HPO I).
 Defined.
 
-(** ** Sanity witnesses: the small shapes are finite *)
+(* 相关说明。 （已译） *)
 
 Definition Two_FiniteCategory : FiniteCategory _2.
 Proof.

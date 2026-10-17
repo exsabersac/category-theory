@@ -34,7 +34,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * The unit-colour bridge: PROPs are one-colour coloured PROPs *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
@@ -44,7 +44,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Layer 0: unit-colour utilities *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 UnitBridge 相关定义、性质与动机。
@@ -91,7 +91,7 @@ Proof.
   now rewrite !id_left, !id_right.
 Qed.
 
-(** ** Layer 1: the class-level transports *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 UnitBridge 相关定义、性质与动机。
@@ -139,8 +139,7 @@ Definition ColouredPROP_unit_to_PROP (Q : ColouredPROP unit) : PROP :=
        eq_trans (@cprop_tensor_app unit Q (repeat tt m) (repeat tt n))
                 (f_equal (@cprop_of_list unit Q) (eq_sym (repeat_app tt m n)))).
 
-(** *** Machine-checked: the transports are structure-preserving on
-    the nose.  Each [Example] is [eq_refl]. *)
+(* 相关说明。 （已译） *)
 
 (** The underlying category is untouched, in both directions. *)
 Example PROP_to_ColouredPROP_cat (Q : PROP) :
@@ -149,9 +148,9 @@ Example PROP_to_ColouredPROP_cat (Q : PROP) :
 Example ColouredPROP_unit_to_PROP_cat (Q : ColouredPROP unit) :
   @prop_cat (ColouredPROP_unit_to_PROP Q) = @cprop_cat unit Q := eq_refl.
 
-(** The strict and symmetric structures, and with them the coherence
-    proof relating the two [Monoidal] paths, are passed through
-    verbatim — no re-proving, no transport. *)
+(** The strict symmetric structures, them coherence
+ 证明 relating two [Monoidal] paths, passed through
+ verbatim — no re-proving, no transport. （已译） *)
 Example PROP_to_ColouredPROP_coherence (Q : PROP) :
   @cprop_monoidal_coherence unit (PROP_to_ColouredPROP Q)
   = @prop_monoidal_coherence Q := eq_refl.
@@ -160,8 +159,8 @@ Example ColouredPROP_unit_to_PROP_coherence (Q : ColouredPROP unit) :
   @prop_monoidal_coherence (ColouredPROP_unit_to_PROP Q)
   = @cprop_monoidal_coherence unit Q := eq_refl.
 
-(** The single wire of the transported coloured PROP is the PROP's
-    1-object. *)
+(** The single wire transported coloured PROP PROP's
+ 1-对象. （已译） *)
 Example PROP_to_ColouredPROP_wire (Q : PROP) :
   wire (P := PROP_to_ColouredPROP Q) tt = @prop_of_nat Q 1 := eq_refl.
 
@@ -179,20 +178,20 @@ Example roundtrip_cprop_of_list_pair (Q : ColouredPROP unit) (u v : unit) :
                  [u; v]
   = @cprop_of_list unit Q [tt; tt] := eq_refl.
 
-(** ** Layer 2: the free-level bridge *)
+(* 相关说明。 （已译） *)
 
 Section UnitBridge.
 
 Context (S : Signature).
 
-(** The unit-coloured signature of a one-sorted signature: a
-    generator with colour-word boundary [(cs, ds)] is a generator of
-    arity [(length cs, length ds)]. *)
+(** 本节：The unit-coloured signature one-sorted signature: a
+ generator colour-word boundary [(cs, ds)] generator of
+ arity [(length cs, length ds)]. （已译） *)
 Definition USig : CSignature unit :=
   fun cs ds : list unit => S (length cs) (length ds).
 
-(** Transport of a generator along arity equalities (the one-sorted
-    mirror of the boundary transports of [Relabel.v]). *)
+(** Transport generator along arity equalities (the one-sorted
+ 镜像 boundary transports [Relabel.v]). （已译） *)
 Definition nsig_cast {m m' n n' : nat} (em : m = m') (en : n = n')
   (g : S m n) : S m' n' :=
   match en in _ = b return S m' b with
@@ -220,9 +219,9 @@ Qed.
 Definition LengthPROP : ColouredPROP unit :=
   PROP_to_ColouredPROP (FreePROP S).
 
-(** The valuation: a [USig]-generator is by definition an [S]-
-    generator at the boundary lengths, so [T_gen] applies on the
-    nose. *)
+(** The valuation: [USig]-generator 定义 [S]-
+ generator at boundary lengths, so [T_gen] applies the
+ nose. （已译） *)
 Definition length_val : CValuation LengthPROP USig :=
   fun (cs ds : list unit) (g : USig cs ds) => T_gen g.
 
@@ -254,16 +253,16 @@ Definition LengthFunctor_SymmetricStrict :
   @CInterpF_SymmetricStrict unit USig unit_dec LengthPROP
     (FreeCat_HomEqProp S) (FreeCat_ObjDecEq S) length_val.
 
-(** Machine-checked behaviour: objects go to their lengths, and
-    generators are relabelled on the nose. *)
+(** Machine-checked behaviour: 对象 go lengths, and
+ generators relabelled nose. （已译） *)
 Example LengthFunctor_fobj (cs : list unit) :
   fobj[LengthFunctor] cs = length cs := eq_refl.
 
 Example LengthFunctor_gen (cs ds : list unit) (g : USig cs ds) :
   fmap[LengthFunctor] (CT_gen g) = T_gen g := eq_refl.
 
-(** The strict object comparison is the [len_app]-shaped tensor
-    field of the layer-1 transport, verbatim. *)
+(** The strict 对象 comparison [len_app]-shaped tensor
+ field layer-1 transport, verbatim. （已译） *)
 Example LengthFunctor_strict_ap_obj (x y : list unit) :
   @strict_ap_obj _ _ _ _ LengthFunctor LengthFunctor_Strict x y
   = @cprop_tensor_app unit LengthPROP x y := eq_refl.
@@ -277,9 +276,9 @@ Example LengthFunctor_strict_ap_obj (x y : list unit) :
 Definition RepeatPROP : PROP :=
   ColouredPROP_unit_to_PROP (FreeColouredPROP USig unit_dec).
 
-(** The valuation: an [S]-generator of arity [(m, n)] becomes a
-    [USig]-generator at boundary [(repeat tt m, repeat tt n)], with
-    the arities corrected by [repeat_length]. *)
+(** 本节：The valuation: [S]-generator arity [(m, n)] becomes a
+ [USig]-generator at boundary [(repeat tt m, repeat tt n)], with
+ arities corrected [repeat_length]. （已译） *)
 Definition repeat_val : Valuation RepeatPROP S :=
   fun (m n : nat) (g : S m n) =>
     CT_gen (nsig_cast (eq_sym (repeat_length tt m))
@@ -315,8 +314,8 @@ Definition RepeatFunctor_SymmetricStrict :
 Example RepeatFunctor_fobj (n : nat) :
   fobj[RepeatFunctor] n = repeat tt n := eq_refl.
 
-(** The strict object comparison is the [repeat_app]-shaped tensor
-    field of the layer-1 transport, verbatim. *)
+(** The strict 对象 comparison [repeat_app]-shaped tensor
+ field layer-1 transport, verbatim. （已译） *)
 Example RepeatFunctor_strict_ap_obj (x y : nat) :
   @strict_ap_obj _ _ _ _ RepeatFunctor RepeatFunctor_Strict x y
   = @prop_tensor_plus RepeatPROP x y := eq_refl.
@@ -348,19 +347,19 @@ Example cstrict_braid_FreeCPROP_eq (x y : list unit) :
 
 (** ** Layer 3: the round-trip laws *)
 
-(** The tautological valuations of the two free instances: each
-    generator names itself. *)
+(** 本节：The tautological valuations two free instances: each
+ generator names itself. （已译） *)
 Definition taut_val : Valuation (FreePROP S) S :=
   fun (m n : nat) (g : S m n) => T_gen g.
 
 Definition ctaut_val : CValuation (FreeColouredPROP USig unit_dec) USig :=
   fun (cs ds : list unit) (g : USig cs ds) => CT_gen g.
 
-(** *** Round trip on the one-sorted side *)
+(* 相关说明。 （已译） *)
 
-(** The composite, packaged strictly by [Compose_StrictMonoidalFunctor]
-    (its object comparisons are the [eq_trans]/[f_equal] composites of
-    the two legs'). *)
+(** The 复合, packaged strictly [Compose_StrictMonoidalFunctor]
+ (its 对象 comparisons [eq_trans]/[f_equal] composites of
+ two legs'). （已译） *)
 Definition LengthRepeat_Strict :
   @StrictMonoidalFunctor (FreeCat S) (FreeCat S)
     (FreeCat_Monoidal S) (MP (FreePROP S))
@@ -414,8 +413,8 @@ Proof.
   apply (braid_conj_close (FreeCat_ObjDecEq S)).
 Qed.
 
-(** The identity competitor's braid square: its tensor comparison is
-    the identity and the target braiding is the braid constructor. *)
+(** The 恒等 competitor's braid square: tensor comparison is
+ 恒等 target braiding braid constructor. （已译） *)
 Lemma Id_SymmetricStrict_free :
   SymmetricStrict S (FreePROP S) Id[FreeCat S]
     (@Id_StrictMonoidalFunctor (FreeCat S) (FreeCat_Monoidal S)).
@@ -439,8 +438,8 @@ Proof.
   reflexivity.
 Qed.
 
-(** Generator transport against [hom_cast], in general position: with
-    both arity equalities destructed the two casts are the identity. *)
+(** Generator transport against [hom_cast], general position: with
+ both arity equalities destructed two casts 恒等. （已译） *)
 Lemma T_gen_cast_agree {m a n b : nat} (em : m = a) (en : n = b)
   (g : S m n) :
   (T_gen (nsig_cast em en g) : a ~{FreeCat S}~> b)
@@ -465,8 +464,8 @@ Proof.
                           (eq_sym (repeat_length tt n)) g).
 Qed.
 
-(** The identity competitor extends the tautological valuation with
-    reflexivity-grade casts. *)
+(** The 恒等 competitor extends tautological valuation with
+ reflexivity-grade casts. （已译） *)
 Lemma Id_gen_agree (m n : nat) (g : S m n) :
   fmap[Id[FreeCat S]] (T_gen g)
     ≈ @hom_cast (FreeCat S) _ _ _ _
@@ -501,7 +500,7 @@ Proof.
            m n t).
 Qed.
 
-(** *** Round trip on the coloured side *)
+(* 相关说明。 （已译） *)
 
 Definition RepeatLength_Strict :
   @StrictMonoidalFunctor (CFreeCat USig) (CFreeCat USig)
@@ -513,7 +512,7 @@ Definition RepeatLength_Strict :
     (MPc (FreeColouredPROP USig unit_dec))
     RepeatFunctor LengthFunctor RepeatFunctor_Strict LengthFunctor_Strict.
 
-(** The mirror braid square, by the same cast calculus. *)
+(** The 镜像 braid square, same cast calculus. （已译） *)
 Lemma RepeatLength_SymmetricStrict :
   CSymmetricStrict USig unit_dec (FreeColouredPROP USig unit_dec)
     (RepeatFunctor ◯ LengthFunctor) RepeatLength_Strict.
@@ -583,9 +582,9 @@ Proof.
   reflexivity.
 Qed.
 
-(** Coloured generator transport against [hom_cast]: the boundary
-    equalities are between colour WORDS; their [length]-images drive
-    the [nsig_cast]. *)
+(** 本节：Coloured generator transport against [hom_cast]: boundary
+ equalities between colour WORDS; [length]-images drive
+ [nsig_cast]. （已译） *)
 Lemma CT_gen_cast_agree {cs a ds b : list unit}
   (ecs : cs = a) (eds : ds = b) (g : USig cs ds) :
   (CT_gen (nsig_cast (f_equal (@length unit) ecs)
@@ -622,8 +621,8 @@ Proof.
                            (eq_sym (unit_list_eta ds)) g).
 Qed.
 
-(** The coloured identity competitor extends the tautological
-    valuation with reflexivity-grade casts. *)
+(** The coloured 恒等 competitor extends tautological
+ valuation reflexivity-grade casts. （已译） *)
 Lemma CId_gen_agree (cs ds : list unit) (g : USig cs ds) :
   fmap[Id[CFreeCat USig]] (CT_gen g)
     ≈ @hom_cast (CFreeCat USig) _ _ _ _

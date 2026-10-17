@@ -51,8 +51,7 @@ Proof.
   rewrites; reflexivity.
 Qed.
 
-(* The following proofs are from the book "Tensor Categories", by Pavel
-   Etingof, Shlomo Gelaki, Dmitri Nikshych, and Victor Ostrik. *)
+(* 相关说明。 （已译） *)
 
 (* Proposition 2.2.2 *)
 
@@ -65,8 +64,8 @@ Qed.
 Proposition id_unit_left {x} :
   id ⨂ unit_left ≈ @unit_left _ _ (I ⨂ x).
 Proof.
-  (* "It follows from naturality of the left unit constraint l that the
-     following diagram commutes..." *)
+  (* "It follows 自然性 left unit constraint l the
+ following diagram commutes..." （已译） *)
   assert (unit_left ∘ id ⨂ unit_left
             << I ⨂ (I ⨂ x) ~~> x >>
             unit_left ∘ unit_left)
@@ -80,20 +79,20 @@ Proof.
   rewrites; reflexivity.
 Qed.
 
-(* The mirror of [id_unit_left] for the right unitor:
-   ρ_x ⨂ id[I] ≈ ρ_{x ⨂ I}, from naturality of ρ and ρ being an iso. *)
+(* The 镜像 [id_unit_left] right unitor:
+ ρ_x ⨂ id[I] ≈ ρ_{x ⨂ I}, 自然性 ρ ρ being iso. （已译） *)
 
 Proposition id_unit_right {x} :
   unit_right ⨂ id ≈ @unit_right _ _ (x ⨂ I).
 Proof.
-  (* "It follows from naturality of the left unit constraint l that the
-     following diagram commutes..." *)
+  (* "It follows 自然性 left unit constraint l the
+ following diagram commutes..." （已译） *)
   assert (unit_right ∘ unit_right ⨂ id
             << (x ⨂ I) ⨂ I ~~> x >>
           unit_right ∘ unit_right)
     by (rewrite to_unit_right_natural; reflexivity).
 
-  (* "The second one follows similarly from naturality of r." *)
+  (* "The second one follows similarly 自然性 r." （已译） *)
   symmetry.
   do 2 (rewrite <- id_left; symmetry).
   rewrite <- (iso_from_to unit_right).
@@ -172,8 +171,8 @@ Theorem triangle_identity_left {x y} :
     << (I ⨂ x) ⨂ y ~~> x ⨂ y >>
   unit_left ∘ tensor_assoc.
 Proof.
-  (* "Setting x = 1 and applying the functor L−1 to the lower right triangle,
-     1 we obtain commutativity of the triangle (2.12)." *)
+  (* "Setting x = 1 applying 函子 L−1 lower right triangle,
+ 1 we obtain commutativity triangle (2.12)." （已译） *)
   pose proof (@bimap_id_unit_left I x y).
   normal.
   apply tensor_id_left_inj in X.
@@ -300,9 +299,9 @@ Proof.
   assumption.
 Qed.
 
-(* [triangle_identity_right] solved for ρ across the forward associator:
-   ρ ≈ (id ⨂ ρ) ∘ α. The α/α⁻¹ pair cancels, so this restates the previous
-   lemma with α on the right rather than α⁻¹. *)
+(* [triangle_identity_right] solved ρ across forward associator:
+ ρ ≈ (id ⨂ ρ) ∘ α. The α/α⁻¹ pair cancels, so restates previous
+ 引理 α right rather than α⁻¹. （已译） *)
 
 Theorem bimap_triangle_right {x y} :
   unit_right
@@ -314,8 +313,7 @@ Proof.
   rewrite iso_from_to; cat.
 Qed.
 
-(* The left companion of [bimap_triangle_right]: λ ≈ (λ ⨂ id) ∘ α⁻¹, i.e.
-   [triangle_identity_left] solved for λ across the inverse associator. *)
+(* 相关说明。 （已译） *)
 
 Theorem bimap_triangle_left {x y} :
   unit_left

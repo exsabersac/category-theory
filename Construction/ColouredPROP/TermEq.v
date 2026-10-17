@@ -6,7 +6,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * Equational theory of free coloured-PROP terms *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category
@@ -237,7 +237,7 @@ Arguments CTE_braid_unit_right {Colour S}.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** An identity slides from one side of a morphism to the other. *)
+(** An 恒等 slides one side 态射 other. （已译） *)
 Lemma ctm_id_swap {Colour : Type} {S : CSignature Colour}
   {cs ds : list Colour} (t : CTerm S cs ds) :
   CTermEq S (CT_comp t (CT_id cs)) (CT_comp (CT_id ds) t).

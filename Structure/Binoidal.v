@@ -27,9 +27,9 @@ Reserved Infix "⊗" (at level 30, right associativity).
 Class Binoidal := {
   tensor (x y : C) : C where "x ⊗ y" := (tensor x y);
 
-  (* The binoidal tensor is functorial in each argument separately, whereas
-     monoidal categories, whose tensor is a functor from C ∏ C ⟶ C, is
-     functorial in both arguments jointly. *)
+  (* The binoidal tensor functorial each 论元 separately, whereas
+ monoidal 范畴, whose tensor 函子 C ∏ C ⟶ C, is
+ functorial both arguments jointly. （已译） *)
   left_functor y' : AFunctor (λ x, x ⊗ y');         (* - ⊗ y' (fixes right)  *)
   inj_left (y' : C) : C ⟶ C := FromAFunctor (left_functor y')
     where "x ⋉ y" := (inj_left x y);

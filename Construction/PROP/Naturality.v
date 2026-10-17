@@ -9,7 +9,7 @@ From Coq Require Import Arith.
 
 Generalizable All Variables.
 
-(** * Naturality lemmas for the structural isomorphisms *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/braided+monoidal+category
@@ -28,12 +28,12 @@ Context (S : Signature).
 
 Open Scope nat_scope.
 
-(** ** Left-unitor naturality
+(* * ** Left-unitor 自然性
 
-    Goal (in [FreeCat S]):
-      g ⊙ unit_left ≈ unit_left ⊙ bimap id g
-    expanded to [Term]:
-      g ⊙ T_cast (Nat.add_0_l x) ≈ T_cast (Nat.add_0_l y) ⊙ (T_id 0 ⊕ g) *)
+ Goal (in [FreeCat S]):
+ g ⊙ unit_left ≈ unit_left ⊙ bimap id g
+ expanded [Term]:
+ g ⊙ T_cast (Nat.add_0_l x) ≈ T_cast (Nat.add_0_l y) ⊙ (T_id 0 ⊕ g) （已译） *)
 
 Lemma left_unit_natural {x y : nat} (g : Term S x y) :
   TermEq S (T_comp g (T_cast (Nat.add_0_l x)))
@@ -52,12 +52,12 @@ Proof.
     + apply TE_tens_id0_left.
 Qed.
 
-(** ** Left-unitor naturality, the [from]-direction
+(* * ** Left-unitor 自然性, [from]-direction
 
-    Goal:  bimap id g ⊙ unit_left⁻¹ ≈ unit_left⁻¹ ⊙ g
-    expanded:
-      (T_id 0 ⊕ g) ⊙ T_cast (eq_sym (Nat.add_0_l x))
-        ≈ T_cast (eq_sym (Nat.add_0_l y)) ⊙ g *)
+ Goal: bimap id g ⊙ unit_left⁻¹ ≈ unit_left⁻¹ ⊙ g
+ expanded:
+ (T_id 0 ⊕ g) ⊙ T_cast (eq_sym (Nat.add_0_l x))
+ ≈ T_cast (eq_sym (Nat.add_0_l y)) ⊙ g （已译） *)
 
 Lemma left_unit_natural_from {x y : nat} (g : Term S x y) :
   TermEq S (T_comp (T_tens (T_id 0) g) (T_cast (eq_sym (Nat.add_0_l x))))
@@ -72,10 +72,10 @@ Proof.
     + apply TE_sym, TE_id_left.
 Qed.
 
-(** ** Simple corollaries of the strict-unit axioms *)
+(* 相关说明。 （已译） *)
 
-(** Tensoring two identity terms with [T_id 0] on the left collapses
-    to a single identity term. *)
+(** Tensoring two 恒等 terms [T_id 0] left collapses
+ single 恒等 term. （已译） *)
 Lemma tens_id0_id (n : nat) :
   TermEq S (T_tens (T_id 0) (T_id n)) (T_id n).
 Proof. apply TE_tens_id0_left. Qed.
@@ -85,12 +85,7 @@ Lemma tens_id0_id0 :
   TermEq S (T_tens (T_id 0) (T_id 0)) (T_id 0).
 Proof. apply TE_tens_id0_left. Qed.
 
-(** ** Strict-PROP right-unit at the [T_cast] level
-
-    [TE_tens_id0_right] states the right-unit law in [eq_rect]
-    transport form.  We can extract its content as a [T_cast]
-    sandwich: pre/post-composing by appropriate casts gives a
-    direct [T_tens f (T_id 0) ↔ f]-style equation. *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明幺半结构、幺半群相关定义、性质与动机。
@@ -119,7 +114,7 @@ Proof.
   exact Hr.
 Qed.
 
-(** ** Arity-specialised right-unit at any concrete (n, n) *)
+(* 相关说明。 （已译） *)
 
 Lemma tens_id0_right_at (n : nat) (f : Term S n n) :
   TermEq S
@@ -128,7 +123,7 @@ Lemma tens_id0_right_at (n : nat) (f : Term S n n) :
     (eq_rect_r (fun k => Term S k n) f (Nat.add_0_r n)).
 Proof. exact (TE_tens_id0_right f). Qed.
 
-(** ** Tensor-associativity at any concrete arities *)
+(* 相关说明。 （已译） *)
 
 Lemma tens_assoc_at {m1 n1 m2 n2 m3 n3 : nat}
                     (f : Term S m1 n1) (g : Term S m2 n2) (h : Term S m3 n3) :

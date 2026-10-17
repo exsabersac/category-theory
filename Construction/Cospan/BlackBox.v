@@ -21,7 +21,7 @@ Require Import Category.Construction.DecoratedCospan.Category.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Section: forgetful black-box on decorated cospans *)
+(* 相关说明。 （已译） *)
 
 Section ForgetDecoration.
 
@@ -37,14 +37,14 @@ Context `{H_Coc : @Cocartesian C}.
 (** The action on objects: identity. *)
 Definition forget_decoration_obj : C -> C := fun X => X.
 
-(** The action on morphisms: project the cospan out of the decorated cospan. *)
+(** The action 态射: project cospan out decorated cospan. （已译） *)
 Definition forget_decoration_morphism
   {X Y : C} (f : DecoratedCospanArrow X Y)
   : CospanArrow X Y := dc_cospan f.
 
-(** [forget_decoration] respects the decorated-cospan equivalence,
-    descending to a well-defined function on the equivalence classes
-    of [DecoratedCospanCat]. *)
+(** [forget_decoration] respects decorated-cospan 等价,
+ descending well-defined function 等价 classes
+ [DecoratedCospanCat]. （已译） *)
 Lemma forget_decoration_morphism_respects
   {X Y : C} (f g : DecoratedCospanArrow X Y) :
   dec_cospan_equiv f g ->
@@ -58,16 +58,16 @@ Context (id_decoration : forall X : C, @I D _ ~{D}~> F X).
 Context (cospan_merge :
           forall (N M : C), (N ⨂[MC] M)%object ~{C}~> (N + M)%object).
 
-(** [forget_decoration] preserves identity: the underlying cospan of the
-    identity-decorated cospan on [X] is the identity cospan on [X]. *)
+(** [forget_decoration] preserves 恒等: underlying cospan the
+ 恒等-decorated cospan [X] 恒等 cospan [X]. （已译） *)
 Lemma forget_decoration_id (X : C) :
   forget_decoration_morphism
     (dec_cospan_id id_decoration X)
   = cospan_id X.
 Proof. reflexivity. Qed.
 
-(** [forget_decoration] preserves composition: the underlying cospan of a
-    composed decorated cospan is the composed cospan. *)
+(** [forget_decoration] preserves 复合: underlying cospan a
+ composed decorated cospan composed cospan. （已译） *)
 Lemma forget_decoration_compose {X Y Z : C}
   (g : DecoratedCospanArrow Y Z)
   (f : DecoratedCospanArrow X Y) :

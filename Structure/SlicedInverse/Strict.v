@@ -28,10 +28,10 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** Right-adjoint-right-inverses ARE left-adjoint-left-inverses *)
+(* 相关说明。 （已译） *)
 
-(* The two records carry the same four fields; only the parameter moves,
-   from the left adjoint to the right one. *)
+(* The two records carry same four fields; parameter moves,
+ 左伴随 right one. （已译） *)
 Definition rari_lali@{oA oC h +} {A : Category@{oA h h}}
   {C : Category@{oC h h}} {S : A ⟶ C}
   (P : RightAdjointRightInverse S) : LeftAdjointLeftInverse (rari_right P) :=
@@ -52,7 +52,7 @@ Example lali_rari_right@{oA oX h +} {A : Category@{oA h h}}
   {X : Category@{oX h h}} {R : A ⟶ X} (P : LeftAdjointLeftInverse R) :
   rari_right (lali_rari P) = R := eq_refl.
 
-(* Both round trips are the identity on the nose (record eta). *)
+(* Both round trips 恒等 nose (record eta). （已译） *)
 Example rari_lali_rari@{oA oC h +} {A : Category@{oA h h}}
   {C : Category@{oC h h}} {S : A ⟶ C} (P : RightAdjointRightInverse S) :
   lali_rari (rari_lali P) = P := eq_refl.
@@ -61,7 +61,7 @@ Example lali_rari_lali@{oA oX h +} {A : Category@{oA h h}}
   {X : Category@{oX h h}} {R : A ⟶ X} (P : LeftAdjointLeftInverse R) :
   rari_lali (lali_rari P) = P := eq_refl.
 
-(** ** The dual of Proposition 1, over left-adjoint-right-inverses *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、等价相关定义、性质与动机。
@@ -98,7 +98,7 @@ Example coequalizers_from_sliced_LARI_arrow@{oA oX h +}
              `1 (`2 (@coeq X HX _ _ (fmap[G] f) (fmap[G] g))))) :=
   eq_refl.
 
-(** ** What the right-inverse clause adds, dually *)
+(* 相关说明。 （已译） *)
 
 Lemma coslice_id_cast_1@{o h +} {C : Category@{o h h}} {u : C}
   {p q : @Coslice C u} (e : p = q) :
@@ -145,7 +145,7 @@ Example lari_coeq_obj :
 Example lari_coeq_arrow :
   cosliced_coeq_arrow G q lari_universal = `2 (lari_left L (Q; q)) := eq_refl.
 
-(* The lifted object sits under Q: Leibniz, from the field [lari_obj]. *)
+(* The lifted 对象 sits under Q: Leibniz, field [lari_obj]. （已译） *)
 Definition lari_under : Q = G (`1 (lari_left L (Q; q))) :=
   f_equal (@projT1 _ _) (eq_sym (lari_obj L (Q; q))).
 
@@ -162,7 +162,7 @@ Proof using Type.
     reflexivity.
 Qed.
 
-(* G carries the lifted coequalizer onto a coequalizer of the images. *)
+(* 相关说明。 （已译） *)
 Definition lari_preserves :
   IsCoequalizer (fmap[G] f) (fmap[G] g)
     (G (`1 (lari_left L (Q; q)))) (fmap[G] (`2 (lari_left L (Q; q)))) :=
@@ -182,7 +182,7 @@ Definition coequalizers_from_sliced_LARI_preserved@{oA oX h +}
   lari_preserves G f g _ (`2 (`2 (@coeq X HX _ _ (fmap[G] f) (fmap[G] g))))
     (L y).
 
-(** ** Faithfulness cannot be dropped from the dual either *)
+(* 相关说明。 （已译） *)
 
 Lemma parallel_pair_uncoforked {q : Parallel} (e : ParY ~{Parallel}~> q) :
   e ∘ par_arrow_one ≈ e ∘ par_arrow_two → False.
@@ -220,8 +220,8 @@ Context (a : Parallel).
 
 #[local] Notation B := (Erase Parallel).
 
-(* The left adjoint of [Cosliced B a] is constant at the initial object
-   (a; id) of the coslice under [a]. *)
+(* The 左伴随 [Cosliced B a] 常值 at 始对象
+ (a; id) coslice under [a]. （已译） *)
 Program Definition erase_coslice_left :
   @Coslice _1 (B a) ⟶ @Coslice Parallel a := {|
   fobj := fun _ => (a; id);
@@ -281,7 +281,7 @@ Definition cosliced_LARI_without_faithfulness :
   (erase_coslice_LARI, One_HasCoequalizers, Erase_Parallel_not_faithful,
    Parallel_no_coequalizers).
 
-(* The dual with the faithfulness hypothesis deleted is false. *)
+(* The dual faithfulness 假设 deleted false. （已译） *)
 Definition prop1_dual_needs_faithfulness :
   (∀ (A X : Category) (G : A ⟶ X), @HasCoequalizers X →
      (∀ a : A, LeftAdjointRightInverse (Cosliced G a)) →

@@ -10,7 +10,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * The free coloured-PROP category on a signature *)
+(* * * The free coloured-PROP 范畴 signature （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/free+category
@@ -27,7 +27,7 @@ Section CFreeCategory.
 Context {Colour : Type}.
 Context (S : CSignature Colour).
 
-(** The hom-setoid: terms are quotiented by [CTermEq]. *)
+(** 本节：The hom-setoid: terms quotiented [CTermEq]. （已译） *)
 #[export] Program Instance CTerm_Setoid {cs ds : list Colour} :
   Setoid (CTerm S cs ds) := {|
   equiv := @CTermEq Colour S cs ds
@@ -78,7 +78,7 @@ Arguments CFreeCat {Colour} S : assert.
 Arguments CT_comp_respects {Colour S cs ds es}.
 Arguments CT_tens_respects {Colour S cs1 ds1 cs2 ds2}.
 
-(** * Parallel-composition bifunctor on CFreeCat *)
+(* * * Parallel-复合 bifunctor CFreeCat （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/monoidal+category

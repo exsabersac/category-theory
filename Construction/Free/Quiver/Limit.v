@@ -11,7 +11,7 @@ Require Import Category.Instance.Coq.
 
 Generalizable All Variables.
 
-(** * Cones and limits over a diagram of graph shape *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:    https://ncatlab.org/nlab/show/cone
@@ -24,14 +24,12 @@ Generalizable All Variables.
 
 (** ** Graph cones *)
 
-(* Mac Lane's def 8, apex parameterized: a leg at every NODE, and one
-   triangle at every EDGE.  There is no clause for composites or identities,
-   because the shape [G] has neither. *)
+(* 相关说明。 （已译） *)
 Class AGraphCone {G : Quiver} {C : Category} (D : Diagram G C)
   (c : obj[C]) := {
-  (* The leg at the node [x]: an arrow from the apex into the label of [x]. *)
+  (* The leg at node [x]: arrow apex 进入 label [x]. （已译） *)
   gvertex_map (x : G) : c ~{C}~> D x;
-  (* One triangle for each drawn edge, and no other condition. *)
+  (* 相关说明。 （已译） *)
   gcone_coherence {x y : G} (e : edges x y) :
     dedge D e ∘ gvertex_map x ≈ gvertex_map y
 }.
@@ -48,9 +46,7 @@ Coercion gvertex_obj : GraphCone >-> obj.
 Notation "gvertex_obj[ N ]" := (@gvertex_obj _ _ _ N)
   (at level 9, format "gvertex_obj[ N ]") : category_scope.
 
-(* The leg of a bundled graph cone at a node, as a first-class function --
-   the covariant accessor, mirroring Structure/Limit/Preservation.v's
-   [cone_leg]. *)
+(* 相关说明。 （已译） *)
 Definition gcone_leg {G : Quiver} {C : Category} {D : Diagram G C}
   (N : GraphCone D) (x : G) : gvertex_obj[N] ~{C}~> D x :=
   @gvertex_map G C D (@gvertex_obj G C D N) (@gconeFrom G C D N) x.
@@ -82,11 +78,9 @@ Lemma gcone_leg_dpath (N : GraphCone D) {x y : G} (p : tlist edges x y) :
   dpath D p ∘ gcone_leg N x ≈ gcone_leg N y.
 Proof. exact (gcone_dpath (@gconeFrom G C D N) p). Qed.
 
-(** ** The correspondence with cones over the extending functor *)
+(* * ** The correspondence cones over extending 函子 （已译） *)
 
-(* Up: a graph cone IS a cone over [FunctorOfDiagram D].  The legs are
-   carried across unchanged; the work is [gcone_dpath], routed through
-   Theory/Diagram.v's [dpath_fmap]. *)
+(* 相关说明。 （已译） *)
 Definition ACone_of_AGraphCone {c : obj[C]} (N : AGraphCone D c) :
   ACone c (FunctorOfDiagram D).
 Proof.
@@ -119,7 +113,7 @@ Definition GraphCone_of_Cone (N : Cone (FunctorOfDiagram D)) : GraphCone D :=
   {| gvertex_obj := @vertex_obj _ _ _ N
    ; gconeFrom   := AGraphCone_of_ACone (@coneFrom _ _ _ N) |}.
 
-(* Apexes and legs cross both ways ON THE NOSE. *)
+(* 相关说明。 （已译） *)
 Example gcone_apex_fwd (N : GraphCone D) :
   vertex_obj[Cone_of_GraphCone N] = gvertex_obj[N] := eq_refl.
 
@@ -132,8 +126,7 @@ Example gcone_apex_bwd (N : Cone (FunctorOfDiagram D)) :
 Example gcone_leg_bwd (N : Cone (FunctorOfDiagram D)) (x : G) :
   gcone_leg (GraphCone_of_Cone N) x = cone_leg N x := eq_refl.
 
-(* ... and so do the legs of both round trips.  The whole RECORDS do not:
-   see measurement (2) of the header. *)
+(* 相关说明。 （已译） *)
 Example gcone_round_graph (N : GraphCone D) (x : G) :
   gcone_leg (GraphCone_of_Cone (Cone_of_GraphCone N)) x = gcone_leg N x
   := eq_refl.
@@ -142,15 +135,15 @@ Example gcone_round_cone (N : Cone (FunctorOfDiagram D)) (x : G) :
   cone_leg (Cone_of_GraphCone (GraphCone_of_Cone N)) x = cone_leg N x
   := eq_refl.
 
-(* The cone-side round trip at the strength the library's cone setoid
-   supports: legs only, [AConeEquiv] ignoring the coherence proof. *)
+(* The cone-side round trip at strength library's cone setoid
+ supports: legs only, [AConeEquiv] ignoring coherence 证明. （已译） *)
 Lemma Cone_of_GraphCone_round (N : Cone (FunctorOfDiagram D)) :
   @coneFrom _ _ _ (Cone_of_GraphCone (GraphCone_of_Cone N))
     ≈ @coneFrom _ _ _ N.
 Proof. intro j; reflexivity. Qed.
 
-(* Where [dpath] and the extending functor's [fmap] DO agree definitionally.
-   At a variable path they do not; measurement (4) of the header. *)
+(* Where [dpath] extending 函子's [fmap] DO agree definitionally.
+ At variable path they do not; measurement (4) header. （已译） *)
 Example dpath_singleton_is_fmap {x y : G} (e : edges x y) :
   dpath D (tlist_singleton e) = fmap[FunctorOfDiagram D] (tlist_singleton e)
   := eq_refl.
@@ -166,9 +159,7 @@ Definition IsLimitGraphCone (N : GraphCone D) : Type :=
   ∀ M : GraphCone D, ∃! u : gvertex_obj[M] ~{C}~> gvertex_obj[N],
     ∀ x : G, gcone_leg N x ∘ u ≈ gcone_leg M x.
 
-(* Remark 6's "limits and limiting cones correspond exactly", both
-   directions, each a term with no tactic: the two statements are
-   convertible. *)
+(* 相关说明。 （已译） *)
 Definition graph_limitcone (N : GraphCone D) (H : IsLimitGraphCone N) :
   IsLimitCone (Cone_of_GraphCone N) :=
   fun M => H (GraphCone_of_Cone M).
@@ -181,14 +172,13 @@ Definition graph_limit_iff_limitcone (N : GraphCone D) :
   IsLimitGraphCone N ↔ IsLimitCone (Cone_of_GraphCone N) :=
   (graph_limitcone N, limitcone_graph_limit N).
 
-(* The same passage starting from an arbitrary limiting cone over the
-   extending functor, rather than from one already in the image. *)
+(* The same passage starting arbitrary limiting cone over the
+ extending 函子, rather than one already image. （已译） *)
 Definition graph_limit_of_limitcone (N : Cone (FunctorOfDiagram D))
   (H : IsLimitCone N) : IsLimitGraphCone (GraphCone_of_Cone N) :=
   fun M => H (Cone_of_GraphCone M).
 
-(* The apex-only READING.  Weaker than the cone-level statement -- its legs
-   are unconstrained -- and no separation between the two is proved here. *)
+(* 相关说明。 （已译） *)
 Definition graph_limit_IsALimit (N : GraphCone D) (H : IsLimitGraphCone N) :
   IsALimit (FunctorOfDiagram D) gvertex_obj[N] :=
   limitcone_isalimit (graph_limitcone N H).
@@ -242,7 +232,7 @@ End Bridge.
 
 Arguments GraphLimit {G C} D.
 
-(** ** Witness one: a limiting graph cone over the walking triangle *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Limit 相关定义、性质与动机。
@@ -290,9 +280,9 @@ Proof.
       rewrite ?comp_assoc; reflexivity.
 Defined.
 
-(* The apex [p] is the limit, over an arbitrary category and arbitrary
-   [u], [v].  The mediator is the competing cone's leg at [TrX]; the
-   coherence instance at the edge Y->Z is never spent. *)
+(* The apex [p] limit, over arbitrary 范畴 arbitrary
+ [u], [v]. The mediator competing cone's leg at [TrX]; the
+ coherence instance at edge Y->Z never spent. （已译） *)
 Theorem triangle_graph_limit : IsLimitGraphCone TriangleGraphCone.
 Proof.
   intro M.
@@ -311,7 +301,7 @@ Defined.
 Example tri_med_is_arrow {c : obj[C]} (f : c ~{C}~> p) :
   graph_limit_med triangle_graph_limit (tri_gcone_of_arrow f) = f := eq_refl.
 
-(** *** No functoriality: the triangles at the two parallel X->Z arrows *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Limit 相关定义、性质与动机。
@@ -331,8 +321,7 @@ End TriangleLimit.
 Example tri_via_Y_len : tlist_length tri_via_Y = 2%nat := eq_refl.
 Example tri_direct_len : tlist_length tri_direct = 1%nat := eq_refl.
 
-(** ** Witness two: the walking loop, one field against infinitely many
-       arrows *)
+(* 相关说明。 （已译） *)
 
 Fixpoint loop_path (n : nat) : tlist (@edges LoopQuiver) LpX LpX :=
   match n with
@@ -346,8 +335,8 @@ Proof.
   apply f_equal; exact IH.
 Qed.
 
-(* The paths are pairwise distinct arrows of the free category, so the
-   endo-hom at the single node is infinite. *)
+(* The paths pairwise distinct arrows free 范畴, so the
+ endo-hom at single node infinite. （已译） *)
 Lemma loop_paths_distinct (n m : nat) :
   (loop_path n ≈[FreeOnQuiver LoopQuiver] loop_path m) → n = m.
 Proof.
@@ -362,8 +351,7 @@ Section LoopCone.
 Context {C : Category}.
 Context {a : C} (e : a ~{C}~> a).
 
-(* A graph cone over the loop diagram is EXACTLY an arrow [psi] with
-   [e ∘ psi ≈ psi]: one datum, one equation. *)
+(* 相关说明。 （已译） *)
 Definition loop_gcone {c : obj[C]} (psi : c ~{C}~> a) (H : e ∘ psi ≈ psi) :
   GraphCone (LoopDiagram e).
 Proof.
@@ -382,15 +370,15 @@ Lemma loop_gcone_fix (N : GraphCone (LoopDiagram e)) :
   e ∘ gcone_leg N LpX ≈ gcone_leg N LpX.
 Proof. exact (@gcone_coherence _ _ _ _ (@gconeFrom _ _ _ N) LpX LpX tt). Qed.
 
-(* ... and that one equation discharges the triangle at EVERY path, hence at
-   every arrow of the free category, by [gcone_dpath] alone. *)
+(* ... one equation discharges triangle at EVERY path, hence at
+ every arrow free 范畴, [gcone_dpath] alone. （已译） *)
 Theorem loop_gcone_every_path (N : GraphCone (LoopDiagram e)) (n : nat) :
   dpath (LoopDiagram e) (loop_path n) ∘ gcone_leg N LpX ≈ gcone_leg N LpX.
 Proof. exact (gcone_leg_dpath N (loop_path n)). Qed.
 
 End LoopCone.
 
-(** ** Witness three: the triangle limit computing in [Coq] *)
+(* 相关说明。 （已译） *)
 
 Definition coq_u : nat ~{Coq}~> nat := S.
 Definition coq_v : nat ~{Coq}~> bool := Nat.even.

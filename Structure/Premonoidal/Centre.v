@@ -30,10 +30,10 @@ Context {C : Category}.
 Context `{B : @Binoidal C}.
 Context `{P : @Premonoidal C B}.
 
-(* Section-local object-level tensor, exactly as in
-   Structure/Premonoidal.v: the unscoped notation makes ⊗ mean the OBJECT
-   tensor everywhere inside this section, while morphism-level interleaved
-   tensoring is always written [composite_ff']. *)
+(* Section-local 对象-level tensor, exactly in
+ Structure/Premonoidal.v: unscoped notation makes ⊗ mean OBJECT
+ tensor everywhere inside section, while 态射-level interleaved
+ tensoring always written [composite_ff']. （已译） *)
 Local Notation "x ⊗ y" := (tensor x y)
   (at level 30, right associativity).
 
@@ -58,8 +58,7 @@ Proof using B C P.
     transitivity
       ((((y ⋊ (y' ⋊ h)) ∘ (y ⋊ (f' ⋉ a))) ∘ (f ⋉ (x' ⊗ a)))
          ∘ to (@premon_assoc C B P x x' a)).
-    { (* Left side: push α through the middle, left and right factors,
-         then swap with the two centralities. *)
+    { (* 相关说明。 （已译） *)
       transitivity
         ((((y ⋊ (f' ⋉ b)) ∘ to (@premon_assoc C B P y x' b))
             ∘ ((f ⋉ x') ⋉ b)) ∘ ((x ⊗ x') ⋊ h)).
@@ -115,8 +114,7 @@ Proof using B C P.
     transitivity
       (((((b ⊗ y) ⋊ f') ∘ ((b ⋊ f) ⋉ x')) ∘ ((h ⋉ x) ⋉ x'))
          ∘ from (@premon_assoc C B P a x x')).
-    { (* Left side: push α⁻¹ through, then swap with the two
-         centralities' second conjuncts. *)
+    { (* 相关说明。 （已译） *)
       transitivity
         (((((h ⋉ y) ⋉ y') ∘ from (@premon_assoc C B P a y y'))
             ∘ (a ⋊ (y ⋊ f'))) ∘ (a ⋊ (f ⋉ x'))).
@@ -151,7 +149,7 @@ Proof using B C P.
       { now rewrite cf2. }
       exact (@fmap_comp C C (@inj_left C B x') (a ⊗ x) (b ⊗ x) (b ⊗ y)
                (fmap[@inj_right C B b] f) (fmap[@inj_left C B x] h)). }
-    { (* Right side: the same three from-direction squares, no swaps. *)
+    { (* 相关说明。 （已译） *)
       symmetry.
       transitivity
         (((((b ⊗ y) ⋊ f') ∘ from (@premon_assoc C B P b y x'))
@@ -184,7 +182,7 @@ Definition Centre_lift_iso {p q : @Centre C B} (i : `1 p ≅[C] `1 q)
     (iso_to_from i)
     (iso_from_to i).
 
-(** ** The tensor bifunctor on the centre *)
+(* 相关说明。 （已译） *)
 
 Definition Centre_Tensor_obj (p : @Centre C B ∏ @Centre C B) :
   @Centre C B := (`1 (fst p) ⊗ `1 (snd p); ttt).
@@ -210,9 +208,9 @@ Proof.
   exact (@fmap_id C C (@inj_right C B (`1 (fst p))) (`1 (snd p))).
 Qed.
 
-(* Joint functoriality: on the centre the one-sided interchange
-   [composite_ff'_comp_l] receives its centrality hypothesis from the
-   hom witness of the first component. *)
+(* Joint functoriality: centre one-sided interchange
+ [composite_ff'_comp_l] receives 中心性 假设 the
+ hom witness first component. （已译） *)
 Lemma Centre_Tensor_comp (p q r : @Centre C B ∏ @Centre C B)
       (fg : q ~{@Centre C B ∏ @Centre C B}~> r)
       (hk : p ~{@Centre C B ∏ @Centre C B}~> q) :

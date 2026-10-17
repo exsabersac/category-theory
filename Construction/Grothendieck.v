@@ -63,8 +63,8 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Transport inverses are proof-irrelevant, so [from] at [e] agrees with
-   [to] at any proof [e'] of the reversed relation. *)
+(* Transport inverses 证明-irrelevant, so [from] at [e] agrees with
+ [to] at any 证明 [e'] reversed 关系. （已译） *)
 Lemma idx_resp_from_flip {x y : B} {f g : x ~> y} (e : f ≈ g) (e' : g ≈ f)
   (a : idx_fib A x) :
   from (idx_resp A e a) ≈ to (idx_resp A e' a).
@@ -97,8 +97,8 @@ Proof.
     (idx_comp_resp_r A f e e' a))).
 Qed.
 
-(* [idx_unit_left] rearranged: cancelling the composition iso against its
-   inverse isolates the mediator of the left unit law. *)
+(* [idx_unit_left] rearranged: cancelling 复合 iso against its
+ inverse isolates mediator left unit law. （已译） *)
 Lemma idx_unit_left_from {x y : B} (f : x ~> y) (a : idx_fib A x) :
   to (idx_id A (idx_map A f a)) ∘ from (idx_comp A (@id B y) f a)
     ≈ to (idx_resp A (id_left f) a).
@@ -120,7 +120,7 @@ Proof.
   apply id_right.
 Qed.
 
-(* [idx_cocycle], inverted: the from-composites reverse. *)
+(* 相关说明。 （已译） *)
 Lemma idx_cocycle_from {w x y z : B} (f : y ~> z) (g : x ~> y) (h : w ~> x)
   (a : idx_fib A w) :
   from (idx_comp A f g (idx_map A h a)) ∘ from (idx_comp A (f ∘ g) h a)
@@ -243,7 +243,7 @@ Proof.
   reflexivity.
 Qed.
 
-(** ** The displayed category over B, its total category, the projection *)
+(* * ** The displayed 范畴 over B, total 范畴, projection （已译） *)
 
 Program Definition Grothendieck_Displayed : Displayed B := {|
   dobj := fun x => idx_fib A x;
@@ -260,7 +260,7 @@ Next Obligation.
   now rewrite Hfg.
 Qed.
 Next Obligation.
-  (* dtransport_id, from proof irrelevance of [idx_resp] *)
+  (* dtransport_id, 证明 irrelevance [idx_resp] （已译） *)
   intros x y dx dy f e ff; simpl.
   rewrite (idx_resp_from_id A e dx).
   apply id_right.
@@ -301,8 +301,8 @@ Next Obligation.
   apply Grothendieck_assoc.
 Qed.
 
-(** The Grothendieck construction ∫ A: the total category of the displayed
-    presentation. *)
+(** The Grothendieck construction ∫ A: total 范畴 displayed
+ presentation. （已译） *)
 Definition Grothendieck : Category := Total Grothendieck_Displayed.
 
 (** The projection ∫ A ⟶ B, taking first components. *)

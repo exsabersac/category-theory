@@ -19,7 +19,7 @@ From Coq Require Import Arith.
 
 Generalizable All Variables.
 
-(** * The free PROP, bundled: the library's first inhabited [PROP] *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/free+category
@@ -48,12 +48,10 @@ Definition FreePROP : PROP := {|
   prop_strict    := FreeCat_Strict S;
   prop_symmetric := FreeCat_Symmetric S;
 
-  (* [strict_is_monoidal (FreeCat_Strict S)] and
-     [braided_is_monoidal (symmetric_is_braided (FreeCat_Symmetric S))]
-     both reduce to the literal term [FreeCat_Monoidal S]. *)
+  (* 相关说明。 （已译） *)
   prop_monoidal_coherence := eq_refl;
 
-  (* Objects of [FreeCat S] are literally the naturals. *)
+  (* 相关说明。 （已译） *)
   prop_of_nat := fun n : nat => n;
 
   (* [I] of [FreeCat_Monoidal S] is the literal [0]. *)
@@ -79,10 +77,7 @@ Definition FreePROP : PROP := {|
 
 #[export] Instance FreeCat_ObjDecEq : ObjDecEq (FreeCat S) := Nat.eq_dec.
 
-(** ** Machine-checked sanity
-
-    Each [Example] holds by [eq_refl], witnessing that the
-    corresponding field of [FreePROP] is definitional. *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明幺半结构、（余）极限、幺半群相关定义、性质与动机。
@@ -92,15 +87,15 @@ Definition FreePROP : PROP := {|
 Example FreePROP_coherence_is_refl :
   @prop_monoidal_coherence FreePROP = eq_refl := eq_refl.
 
-(** The object correspondence is the identity on [nat]. *)
+(** The 对象 correspondence 恒等 [nat]. （已译） *)
 Example FreePROP_of_nat_id (n : nat) :
   @prop_of_nat FreePROP n = n := eq_refl.
 
-(** The monoidal unit is the literal object [0]. *)
+(** The monoidal unit literal 对象 [0]. （已译） *)
 Example FreePROP_I :
   @I _ (@strict_is_monoidal _ (@prop_strict FreePROP)) = 0%nat := eq_refl.
 
-(** Tensor-on-objects is literally addition, with [eq_refl] proof. *)
+(** Tensor-on-对象 literally addition, [eq_refl] 证明. （已译） *)
 Example FreePROP_tensor_plus_is_refl (m n : nat) :
   @prop_tensor_plus FreePROP m n = eq_refl := eq_refl.
 

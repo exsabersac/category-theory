@@ -14,7 +14,7 @@ Require Import Category.Structure.UniversalProperty.
 
 Generalizable All Variables.
 
-(** * Initiality and terminality as universal properties *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出终对象相关。
@@ -46,13 +46,13 @@ Next Obligation.
   now transitivity (unique_obj (y x0)).
 Qed.
 
-(* Any two proofs of initiality agree: the chosen arrows are forced. *)
+(* 相关说明。 （已译） *)
 Lemma IsInitialObj_irrelevant {C : Category} (c : C) (u v : IsInitialObj c) :
   u ≈ v.
 Proof. intro x; symmetry; apply (uniqueness (v x)); exact I. Qed.
 
-(* The functor being represented: the constant functor at the singleton
-   setoid, i.e. the terminal object of [Sets] read as a diagram over C. *)
+(* The 函子 being 已表示的: 常值 函子 at singleton
+ setoid, i.e. 终对象 [Sets] read diagram over C. （已译） *)
 Program Definition ConstOne (C : Category) : C ⟶ Sets := {|
   fobj := fun _ => {| carrier := poly_unit ; is_setoid := Unit_Setoid |};
   fmap := fun _ _ _ => {| morphism := fun u => u |}
@@ -61,15 +61,15 @@ Program Definition ConstOne (C : Category) : C ⟶ Sets := {|
 Section InitialUP.
 Context (C : Category).
 
-(* Hom(c, −) ⟹ 1: the only thing a map into the singleton can be. *)
+(* Hom(c, −) ⟹ 1: thing map 进入 singleton can be. （已译） *)
 Program Definition hom_to_one (c : C) :
   @Transform C Sets [Hom c,─] (ConstOne C) :=
   @Build_Transform' C Sets [Hom c,─] (ConstOne C)
     (fun x => {| morphism := fun _ => ttt |}) _.
 
-(* 1 ⟹ Hom(c, −): pick out the canonical arrow `c ~> x`.  Naturality is
-   precisely uniqueness -- `f ∘ !ₓ ≈ !_y` because both are arrows out of an
-   initial object. *)
+(* 1 ⟹ Hom(c, −): pick out canonical arrow `c ~> x`. Naturality is
+ precisely uniqueness -- `f ∘ !ₓ ≈ !_y` because both arrows out an
+ 始对象. （已译） *)
 Program Definition one_to_hom (c : C) (u : IsInitialObj c) :
   @Transform C Sets (ConstOne C) [Hom c,─] :=
   @Build_Transform' C Sets (ConstOne C) [Hom c,─]
@@ -100,8 +100,8 @@ Next Obligation.
   rewrite id_left in K; exact K.
 Qed.
 
-(* The instance.  Being initial IS representing the constant-singleton
-   functor, as an isomorphism of setoids in [Sets]. *)
+(* The instance. Being initial IS 表示 常值-singleton
+ 函子, 同构 setoids [Sets]. （已译） *)
 Definition InitialIsUniversalProperty :
   IsUniversalProperty C (@IsInitialObj C) (@IsInitialObj_Setoid C).
 Proof.
@@ -109,7 +109,7 @@ Proof.
   intro c; unshelve econstructor.
   - unshelve econstructor.
     + exact (initial_to_repr c).
-    + (* both representations have the same `to`, and inverses are unique *)
+    + (* 相关说明。 （已译） *)
       abstract (repeat intro; apply to_equiv_implies_iso_equiv;
                 intros ? ?; reflexivity).
   - unshelve econstructor.
@@ -155,8 +155,8 @@ Definition IsTerminalObj_op {C : Category} (c : C) :
 Definition op_IsTerminalObj {C : Category} (c : C) :
   @IsInitialObj (C^op) c -> IsTerminalObj c := fun u => u.
 
-(* Terminality is a universal property: literally the initial instance,
-   instantiated at the opposite category. *)
+(* Terminality 普遍性质: literally initial instance,
+ instantiated at opposite 范畴. （已译） *)
 Definition TerminalIsUniversalProperty (C : Category) :
   IsUniversalProperty (C^op) (@IsInitialObj (C^op)) (@IsInitialObj_Setoid (C^op))
   := InitialIsUniversalProperty (C^op).
@@ -197,7 +197,7 @@ Next Obligation.
   split; [ exact K2 | exact K1 ].
 Qed.
 
-(* ---- the bundled structures satisfy the object-level predicates ---- *)
+(* ---- bundled structures satisfy 对象-level predicates ---- （已译） *)
 
 Program Definition Terminal_IsTerminalObj {C : Category} (T : @Terminal C) :
   IsTerminalObj (@terminal_obj C T) :=

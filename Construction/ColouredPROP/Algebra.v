@@ -15,7 +15,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * Algebras (models) of a coloured signature in a coloured PROP *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
@@ -33,9 +33,9 @@ Context (P : ColouredPROP Colour).
 Context {HP : @HomEqProp P}.
 Context {OD : @ObjDecEq P}.
 
-(** The coloured-PROP-object [⟦cs⟧], as in
-    [Construction/ColouredPROP.v] (whose notation is section-local
-    there and must be re-declared per file). *)
+(** The coloured-PROP-对象 [⟦cs⟧], in
+ [Construction/ColouredPROP.v] (whose notation section-local
+ there must re-declared per file). （已译） *)
 Notation "⟦ cs ⟧" := (@cprop_of_list Colour P cs)
   (at level 0, format "⟦ cs ⟧").
 
@@ -51,11 +51,10 @@ Infix "⊞c" := (ctensor_hom P) (at level 30, right associativity).
 Record CModelHom (v w : CValuation P S) : Type := {
   cmh_component : ∀ cs : list Colour, ⟦cs⟧ ~{P}~> ⟦cs⟧;
 
-  (* the component at the monoidal unit is the identity *)
+  (* the component at monoidal unit 恒等 （已译） *)
   cmh_unit : cmh_component [] ≈ id;
 
-  (* components at a concatenation of boundaries are the tensor of
-     components *)
+  (* 相关说明。 （已译） *)
   cmh_tensor : ∀ cs ds : list Colour,
     cmh_component (cs ++ ds) ≈ cmh_component cs ⊞c cmh_component ds;
 
@@ -105,10 +104,10 @@ Proof.
     apply (cmh_gen α).
 Qed.
 
-(** ** The identity model morphism
+(* * ** The 恒等 model 态射
 
-    Componentwise the identity; monoidality is K1 ([ctensor_hom_id])
-    read right-to-left. *)
+ Componentwise 恒等; monoidality K1 ([ctensor_hom_id])
+ read right-to-left. （已译） *)
 
 Lemma cmh_id_unit : id[⟦[]⟧] ≈ id[⟦[]⟧].
 Proof. reflexivity. Qed.
@@ -128,11 +127,11 @@ Definition CModelHom_id (v : CValuation P S) : CModelHom v v := {|
   cmh_gen := cmh_id_gen v
 |}.
 
-(** ** Composition of model morphisms
+(* * ** Composition model 态射
 
-    Componentwise composition; monoidality is the interchange law K2
-    ([ctensor_hom_comp]) read right-to-left, and the generator squares
-    paste. *)
+ Componentwise 复合; monoidality interchange law K2
+ ([ctensor_hom_comp]) read right-to-left, generator squares
+ paste. （已译） *)
 
 Lemma cmh_compose_unit {u v w : CValuation P S}
   (α : CModelHom v w) (β : CModelHom u v) :
@@ -174,10 +173,10 @@ Definition CModelHom_compose {u v w : CValuation P S}
   cmh_gen := cmh_compose_gen α β
 |}.
 
-(** ** The category of models
+(* * ** The 范畴 models
 
-    Hom-equivalence is componentwise; identity, composition and the
-    category laws are inherited pointwise from [P]. *)
+ Hom-等价 componentwise; 恒等, 复合 the
+ 范畴 laws inherited pointwise [P]. （已译） *)
 
 #[export] Program Instance CModelHom_Setoid {v w : CValuation P S} :
   Setoid (CModelHom v w) := {|
@@ -194,8 +193,8 @@ Next Obligation.
     rewrite (Hαβ cs); apply Hβγ.
 Qed.
 
-(** Componentwise congruence of composition.  The [Proper] obligation
-    is discharged by the global obligation tactic ([cat_simpl]). *)
+(** Componentwise congruence 复合. The [Proper] obligation
+ discharged global obligation tactic ([cat_simpl]). （已译） *)
 #[export] Program Instance CModelHom_compose_respects
   {u v w : CValuation P S} :
   Proper (equiv ==> equiv ==> equiv) (@CModelHom_compose u v w).
@@ -217,12 +216,12 @@ Program Definition CAlg : Category := {|
                    (cmh_component γ cs)
 |}.
 
-(** ** Model morphisms as natural transformations
+(* * ** Model 态射 natural transformations
 
-    [cmodel_hom_natural] is exactly the naturality square of a
-    transformation between the interpretation functors of
-    [Construction/ColouredPROP/Universal.v] — components in the
-    orientation [Transform] expects. *)
+ [cmodel_hom_natural] exactly 自然性 square a
+ transformation between interpretation 函子 of
+ [Construction/ColouredPROP/Universal.v] — components the
+ orientation [Transform] expects. （已译） *)
 
 Lemma CModelHom_Transform_natural {v w : CValuation P S}
   (α : CModelHom v w) (cs ds : list Colour) (t : CTerm S cs ds) :

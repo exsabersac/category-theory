@@ -39,8 +39,8 @@ Next Obligation. apply naturality_sym. Qed.
 
 #[local] Obligation Tactic := simpl; intros.
 
-(* section functor D ⟶ (S ↓ T) of both projections  ↦  natural transformation
-   S ⟹ T (the inverse direction of Huq's bijection) *)
+(* section 函子 D ⟶ (S ↓ T) both projections ↦ 自然变换
+ S ⟹ T (the inverse direction Huq's bijection) （已译） *)
 Program Definition Comma_Transform {C D : Category} {S T : D ⟶ C}
         (F : D ⟶ (S ↓ T))
         (proj1 : comma_proj1 ◯ F ≈[Cat] Id)
@@ -85,7 +85,7 @@ Section HuqBijection.
 Context {C D : Category}.
 Context {S T : D ⟶ C}.
 
-(** ** The canonical section witnesses *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -115,11 +115,11 @@ Program Definition Comma_Functor_proj2 (tau : S ⟹ T) :
   comma_proj2 ◯ Comma_Functor tau ≈[Cat] Id := (fun _ => iso_id; _).
 Next Obligation. rewrite id_left, id_right; reflexivity. Qed.
 
-(** ** Round trip 1: recovering a natural transformation *)
+(* * ** Round trip 1: recovering 自然变换 （已译） *)
 
-(* At the canonical witnesses the conjugation of [Comma_Transform] collapses:
-   both isomorphism components are the identity, so the recovered component is
-   [fmap id ∘ tau X ∘ fmap id]. *)
+(* At canonical witnesses conjugation [Comma_Transform] collapses:
+ both 同构 components 恒等, so recovered component is
+ [fmap id ∘ tau X ∘ fmap id]. （已译） *)
 
 Theorem Comma_Transform_Comma_Functor (tau : S ⟹ T) :
   Comma_Transform (Comma_Functor tau)
@@ -182,11 +182,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** ** Round trip 2: recovering the section functor *)
+(* * ** Round trip 2: recovering section 函子 （已译） *)
 
-(* The comparison isomorphism between [Comma_Functor (Comma_Transform F p q) d]
-   — that is, ((d, d); the recovered component) — and [F d]; its legs are the
-   two section witnesses at d. *)
+(* The comparison 同构 between [Comma_Functor (Comma_Transform F p q) d]
+ — is, ((d, d); recovered component) — [F d]; legs the
+ two section witnesses at d. （已译） *)
 
 Program Definition Comma_Functor_Comma_Transform_iso
         (F : D ⟶ (S ↓ T))
@@ -209,8 +209,7 @@ Qed.
 Next Obligation. split; apply iso_from_to. Qed.
 Next Obligation. split; apply iso_to_from. Qed.
 
-(* Naturality of that comparison. Note it uses only the coherence fields of
-   the two witnesses; no property of [Comma_Transform] is needed. *)
+(* 相关说明。 （已译） *)
 
 Lemma Comma_Functor_Comma_Transform_natural
         (F : D ⟶ (S ↓ T))
@@ -234,9 +233,9 @@ Proof.
     reflexivity.
 Qed.
 
-(* Packaged transparently (not by [exists ...; Qed]) so that the components of
-   the natural isomorphism remain observable downstream — [huq_section_
-   compatible] below reads them. *)
+(* Packaged transparently (not [exists ...; Qed]) so components of
+ natural 同构 remain observable downstream — [huq_section_
+ compatible] below reads them. （已译） *)
 
 Definition Comma_Functor_Comma_Transform
         (F : D ⟶ (S ↓ T))
@@ -273,9 +272,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* A section of both projections, packaged with its two witnesses. The
-   witnesses are DATA, not a property: [Comma_Transform] genuinely depends on
-   them ([Comma_Transform_witness_shift] above), so they cannot be discarded. *)
+(* 相关说明。 （已译） *)
 
 Record HuqSection : Type := {
   huq_functor : D ⟶ (S ↓ T);
@@ -314,7 +311,7 @@ Definition HuqCompatible (X Y : HuqSection) : Type :=
     * (∀ d, to (`1 (huq_sec2 X) d)
               ≈ to (`1 (huq_sec2 Y) d) ∘ snd `1 (to (`1 theta d))).
 
-(* Well-definedness of the backward map on the quotient. *)
+(* 相关说明。 （已译） *)
 
 Theorem huq_compatible_transform (X Y : HuqSection) :
   HuqCompatible X Y → huq_transform X ≈ huq_transform Y.
@@ -342,9 +339,7 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Undoing the conjugation on the [S] side: the recovered transformation,
-   precomposed with the first witness, is the comma component of F d
-   postcomposed with the second. *)
+(* 相关说明。 （已译） *)
 Lemma huq_transform_unconj (X : HuqSection) (d : D) :
   huq_transform X d ∘ fmap[S] (to (`1 (huq_sec1 X) d))
     ≈ fmap[T] (to (`1 (huq_sec2 X) d)) ∘ `2 (huq_functor X d).
@@ -486,7 +481,7 @@ Next Obligation. apply huq_transform_section. Qed.
 
 End HuqBijection.
 
-(** ** Witness dependence is not merely formal *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -500,9 +495,9 @@ Definition huq_sep_tau : Id[BZ2] ⟹ Id[BZ2] := nat_id.
 
 Definition huq_sep_F : BZ2 ⟶ (Id[BZ2] ↓ Id[BZ2]) := Comma_Functor huq_sep_tau.
 
-(* The twisted witness: the component is [true], self-inverse in Z/2, and the
-   coherence condition holds because conjugating by [true] on both sides is the
-   identity. *)
+(* The twisted witness: component [true], self-inverse Z/2, the
+ coherence condition holds because conjugating [true] both sides the
+ 恒等. （已译） *)
 Program Definition huq_sep_twist :
   comma_proj1 ◯ huq_sep_F ≈[Cat] Id := (fun _ => {| to := true; from := true |}; _).
 Next Obligation. reflexivity. Qed.
@@ -533,9 +528,9 @@ Proof.
   discriminate.
 Qed.
 
-(* The quotient of [Huq_roundtrip] therefore distinguishes two packaged
-   sections with the SAME underlying functor: [HuqCompatible] is strictly
-   finer than equality of section functors. *)
+(* The quotient [Huq_roundtrip] therefore distinguishes two packaged
+ sections SAME underlying 函子: [HuqCompatible] strictly
+ finer than equality section 函子. （已译） *)
 
 Corollary huq_witness_sections_incompatible :
   HuqCompatible huq_sep_canonical huq_sep_twisted → False.

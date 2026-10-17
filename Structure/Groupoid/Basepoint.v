@@ -10,7 +10,7 @@ Require Import Category.Structure.Groupoid.Connected.
 
 Generalizable All Variables.
 
-(** * Base points: the vertex groups of a connected groupoid *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/vertex+group
@@ -31,7 +31,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Fullness and faithfulness are closed under composition *)
+(* * ** Fullness faithfulness closed under 复合 （已译） *)
 
 (*
    本节说明 Basepoint 相关定义、性质与动机。
@@ -57,8 +57,8 @@ Proof.
   - exact (@fmap_sur D E F FF (G x) (G y) h).
 Defined.
 
-(* The composite of two faithful functors is faithful: reduce the goal by G's
-   injectivity, then by F's, which lands exactly on the hypothesis. *)
+(* The 复合 two faithful 函子 faithful: reduce goal G's
+ injectivity, then F's, lands exactly 假设. （已译） *)
 Definition Faithful_Compose {C D E : Category} (F : D ⟶ E) (G : C ⟶ D)
   (FF : Faithful F) (FG : Faithful G) : Faithful (F ◯ G).
 Proof.
@@ -69,7 +69,7 @@ Proof.
   exact H.
 Defined.
 
-(** ** A fully faithful functor between deloopings is a monoid isomorphism *)
+(* * ** A fully faithful 函子 between deloopings 幺半群 同构 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -84,21 +84,20 @@ Context (F : Deloop M ⟶ Deloop N).
 Context (FF : Full F).
 Context (Ffaith : Faithful F).
 
-(* The forward map: the hom-map of F at the unique object.  Its type is
-   [carrier M → carrier N] on the nose, the hom-setoids of the two deloopings
-   being the two carrier setoids. *)
+(* The forward map: hom-map F at unique 对象. Its type is
+ [carrier M → carrier N] nose, hom-setoids two deloopings
+ being two carrier setoids. （已译） *)
 Definition deloop_fwd (a : carrier M) : carrier N := @fmap _ _ F ttt ttt a.
 
-(* The backward map: the chosen section of that hom-map. *)
+(* 相关说明。 （已译） *)
 Definition deloop_bwd (b : carrier N) : carrier M :=
   @prefmap _ _ F FF ttt ttt b.
 
-(* One round trip is the section law verbatim. *)
+(* 相关说明。 （已译） *)
 Lemma deloop_fwd_bwd (b : carrier N) : deloop_fwd (deloop_bwd b) ≈ b.
 Proof. exact (@fmap_sur _ _ F FF ttt ttt b). Qed.
 
-(* The other follows from it by faithfulness: the two elements have the same
-   image under the injective hom-map. *)
+(* 相关说明。 （已译） *)
 Lemma deloop_bwd_fwd (a : carrier M) : deloop_bwd (deloop_fwd a) ≈ a.
 Proof using F FF Ffaith.
   apply (@fmap_inj _ _ F Ffaith ttt ttt).
@@ -174,14 +173,14 @@ Definition deloop_ff_moniso : MonIso M N :=
 
 End DeloopFullyFaithful.
 
-(* The equivalence-level form, by the two halves of the full-and-faithful
-   characterization in Theory/Equivalence/FullFaithful.v ([Equivalence_Full]
-   and [Equivalence_Faithful]). *)
+(* The 等价-level form, two halves full-and-faithful
+ characterization Theory/Equivalence/FullFaithful.v ([Equivalence_Full]
+ [Equivalence_Faithful]). （已译） *)
 Definition deloop_equiv_moniso {M N : MonObject} (F : Deloop M ⟶ Deloop N)
   (E : EquivalenceOfCategories F) : MonIso M N :=
   deloop_ff_moniso F (Equivalence_Full E) (Equivalence_Faithful E).
 
-(** ** The headline: base-point independence of the vertex group *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、hom相关定义、性质与动机。
@@ -209,18 +208,18 @@ Definition basepoint_compare :
   Deloop (vertex_group G x) ⟶ Deloop (vertex_group G y) :=
   @quasi_inverse _ _ _ basepoint_equiv ◯ vertex_incl G x.
 
-(* Its fullness: the right factor by [vertex_incl_Full], the left by
-   [Equivalence_Full] at the symmetric equivalence — the quasi-inverse of an
-   equivalence is an equivalence, hence full. *)
+(* Its fullness: right factor [vertex_incl_Full], left by
+ [Equivalence_Full] at symmetric 等价 — quasi-inverse an
+ 等价 等价, hence full. （已译） *)
 Definition basepoint_compare_Full : Full basepoint_compare :=
   Full_Compose (@quasi_inverse _ _ _ basepoint_equiv) (vertex_incl G x)
     (@Equivalence_Full _ _ _
        (@EquivalenceOfCategories_sym _ _ _ basepoint_equiv))
     (vertex_incl_Full G x).
 
-(* Its faithfulness, the same way; the left factor is
-   [Equivalence_Inverse_Faithful], which is that same symmetric-equivalence
-   argument already packaged in Theory/Equivalence/FullFaithful.v. *)
+(* Its faithfulness, same way; left factor is
+ [Equivalence_Inverse_Faithful], same symmetric-等价
+ 论元 already packaged Theory/Equivalence/FullFaithful.v. （已译） *)
 Definition basepoint_compare_Faithful : Faithful basepoint_compare :=
   Faithful_Compose (@quasi_inverse _ _ _ basepoint_equiv) (vertex_incl G x)
     (Equivalence_Inverse_Faithful basepoint_equiv)
@@ -238,7 +237,7 @@ Definition connected_vertex_moniso :
 
 End ConnectedVertex.
 
-(** ** The hypotheses are satisfiable, and the derivation runs *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。

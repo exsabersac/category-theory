@@ -31,8 +31,8 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The spine: functors out of a delooping pick an endomorphism
-    monoid *)
+(* * ** The spine: 函子 out delooping pick endomorphism
+ 幺半群 （已译） *)
 
 Section Spine.
 
@@ -63,15 +63,15 @@ Definition hom_monoid_of_functor (F : Deloop M ⟶ C) :
     (@fmap_id _ _ F ttt)
     (fun a b => @fmap_comp _ _ F ttt ttt ttt a b).
 
-(* Round trip on the homomorphism side: the same map, pointwise. *)
+(* 相关说明。 （已译） *)
 Lemma hom_monoid_round (c : C) (h : MonHom M (hom_monoid C c))
   (g : carrier M) :
   mon_map (hom_monoid_of_functor (functor_of_hom_monoid c h)) g
     ≈ mon_map h g.
 Proof. reflexivity. Qed.
 
-(* Round trip on the functor side: the same functor up to natural
-   isomorphism, with identity components. *)
+(* Round trip 函子 side: same 函子 up natural
+ 同构, 恒等 components. （已译） *)
 Lemma functor_round (F : Deloop M ⟶ C) :
   functor_of_hom_monoid (F ttt) (hom_monoid_of_functor F) ≈ F.
 Proof.
@@ -85,7 +85,7 @@ Qed.
 
 End Spine.
 
-(** ** Part (b): functors between deloopings are homomorphisms *)
+(* * ** Part (b): 函子 between deloopings homomorphisms （已译） *)
 
 (*
    本节说明 Functors 相关定义、性质与动机。
@@ -125,7 +125,7 @@ Qed.
 
 End PartB.
 
-(** ** Part (c): permutation representations — actions on setoids *)
+(* 相关说明。 （已译） *)
 
 (* A monoid acting on a setoid; at a [GrpObject] this is a permutation
    representation / G-set (Riehl 1.3.9, left convention: the action law
@@ -194,7 +194,7 @@ Qed.
 
 End PartC.
 
-(** ** Part (c): matrix representations *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明幺半群相关定义、性质与动机。
@@ -222,7 +222,7 @@ Lemma matrix_rep_dimension {M : MonObject} {R : RigObject}
   `1 (matrix_rep_of_functor F) = F ttt.
 Proof. reflexivity. Qed.
 
-(** ** Right actions, along the opposite-monoid identification *)
+(* * ** Right actions, along opposite-幺半群 identification （已译） *)
 
 Section RightActions.
 
@@ -243,16 +243,16 @@ Definition op_functor_of_right_action
 
 End RightActions.
 
-(** ** Riehl 1.3.10: each group element acts by an automorphism *)
+(* 相关说明。 （已译） *)
 
 Section Automorphism.
 
 Context {G : GrpObject}.
 Context {C : Category}.
 
-(* The named instantiation of [fobj_iso] at the delooped group's
-   isomorphisms: the action of g, as an isomorphism of the underlying
-   object. *)
+(* The named instantiation [fobj_iso] at delooped group's
+ isomorphisms: action g, 同构 underlying
+ 对象. （已译） *)
 Definition action_automorphism (F : Deloop G ⟶ C) (g : carrier G) :
   F ttt ≅ F ttt :=
   fobj_iso F ttt ttt (Deloop_group_iso G ttt ttt g).
@@ -262,14 +262,14 @@ Lemma action_automorphism_to (F : Deloop G ⟶ C) (g : carrier G) :
   to (action_automorphism F g) ≈ fmap[F] g.
 Proof. reflexivity. Qed.
 
-(* ...and its inverse is the action of the inverse of g. *)
+(* 相关说明。 （已译） *)
 Lemma action_automorphism_from (F : Deloop G ⟶ C) (g : carrier G) :
   from (action_automorphism F g) ≈ fmap[F] (grp_inv g).
 Proof. reflexivity. Qed.
 
 End Automorphism.
 
-(** ** Awodey §7.1: the cocycle characterization *)
+(* 相关说明。 （已译） *)
 
 Section Cocycle.
 
@@ -343,11 +343,9 @@ Qed.
 
 End Cocycle.
 
-(** ** The worked witness: (ℤ, ≤) into (ℤ, +) by differences *)
+(* 相关说明。 （已译） *)
 
-(* The additive group of the integers, as a [GrpObject] — Awodey's ℝ
-   transposed to ℤ so the instance layer stays axiom-free (the same
-   substitution Theory/Algebra/Rig.v makes for [Int_Ring]). *)
+(* 相关说明。 （已译） *)
 Program Definition Int_Plus : MonObject := {|
   mon_setoid := {| carrier := Z
                  ; is_setoid := {| Setoid.equiv := @eq Z |} |};
@@ -365,8 +363,8 @@ Program Definition Int_Plus_Grp : GrpObject := {|
 Next Obligation. intros a; simpl; now rewrite Z.add_opp_diag_l. Qed.
 Next Obligation. intros a; simpl; now rewrite Z.add_opp_diag_r. Qed.
 
-(* Awodey's cocycle: g_{x,y} = y − x, with the unit condition x − x = 0
-   and the composition condition (z − y) + (y − x) = z − x. *)
+(* Awodey's cocycle: g_{x,y} = y − x, unit condition x − x = 0
+ 复合 condition (z − y) + (y − x) = z − x. （已译） *)
 Program Definition translation_cocycle :
   Cocycle Z.le_preorder Int_Plus := {|
   cocycle := fun x y _ => (y - x)%Z

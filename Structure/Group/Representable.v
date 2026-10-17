@@ -1,4 +1,4 @@
-(** * The functor-of-points criterion for monoid and group objects *)
+(* * * The 函子-of-points criterion 幺半群 group 对象 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/representable+functor
@@ -542,7 +542,7 @@ Qed.
 
 End ToObjectGroup.
 
-(** ** Mac Lane Proposition 1 and remark 2 *)
+(* 相关说明。 （已译） *)
 
 Definition RepresentablyMonoid {C : Category} (e : C) : Type :=
   @MonoidObject ([C^op, Sets]) CC_Monoidal (RepPresheaf e).
@@ -642,7 +642,7 @@ Definition HomGrpFunctor_Forget_agrees (x : C) :
 
 End HomGrpFunctor.
 
-(** ** Round trips, measured strict-first *)
+(* 相关说明。 （已译） *)
 
 Section RoundTrips.
 
@@ -723,11 +723,11 @@ Qed.
 
 End RoundTripsObject.
 
-(** ** Clause (a): the exponential of a group object
+(* * ** Clause (a): exponential group 对象
 
-    The group analogue of [Hom_Monoid] (Structure/Monoid.v),
-    obtained by transporting the hom-set data along curry/uncurry rather
-    than by an internal diagram chase. *)
+ The group analogue [Hom_Monoid] (Structure/Monoid.v),
+ obtained transporting hom-set data along curry/uncurry rather
+ than internal diagram chase. （已译） *)
 
 Section Exponential.
 
@@ -816,7 +816,7 @@ End ExpGroup.
 
 End Exponential.
 
-(** ** Clause (c): the computation in Sets *)
+(* 相关说明。 （已译） *)
 
 Require Import Category.Instance.Sets.Products.
 
@@ -893,9 +893,9 @@ Next Obligation. intro w; exact (grp_mul_inv_l elem_GrpObject (a w)). Qed.
 
 Context (A : Type).
 
-(* [HomGrpObject] is applied at [C := Sets], which is not locally
-   propositional; its hypothesis is discharged from the section's [Pg]
-   through [hom_PropEquiv], which constrains only the CODOMAIN. *)
+(* [HomGrpObject] applied at [C := Sets], not locally
+ propositional; 假设 discharged section's [Pg]
+ through [hom_PropEquiv], constrains CODOMAIN. （已译） *)
 Definition HomGrpA : GrpObject :=
   @HomGrpObject Sets gobj (fun x : Sets => @hom_PropEquiv x gobj Pg)
                 (@group_object_hom_data Sets _ _ gobj G)

@@ -9,7 +9,7 @@ Require Import Category.Instance.Discrete.
 
 Generalizable All Variables.
 
-(** * Indexed coproducts, as indexed products in the opposite category *)
+(* * * Indexed coproducts, indexed products opposite 范畴 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Coproduct

@@ -45,9 +45,9 @@ Class LawvereTheory : Type := {
   law_terminal : @Terminal law_cat;
   law_cartesian : @Cartesian law_cat;
 
-  (** The canonical object correspondence: every natural number names an
-      object of [law_cat], with [0] the terminal object and addition
-      reflecting binary products. *)
+  (** The canonical 对象 correspondence: every natural number names an
+ 对象 [law_cat], [0] 终对象 addition
+ reflecting binary products. （已译） *)
   law_of_nat : nat → law_cat;
 
   law_zero_terminal :

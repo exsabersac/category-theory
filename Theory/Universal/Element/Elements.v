@@ -11,7 +11,7 @@ Require Import Category.Theory.Universal.Element.
 
 Generalizable All Variables.
 
-(** * A universal element is an initial object of the category of elements *)
+(* * * A universal element 始对象 范畴 elements （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/category+of+elements
@@ -37,8 +37,7 @@ Context (H : D ⟶ Sets).
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
-(* Built with [unshelve refine] rather than [Program] so that the names in
-   the uniqueness obligation are this file's and not the elaborator's. *)
+(* 相关说明。 （已译） *)
 Definition Elements_Initial {r : D} (U : AUniversalElement H r)
   : @Initial (Elements H).
 Proof.
@@ -53,7 +52,7 @@ Proof.
     + exact (uniqueness (aue_universal d elt) g Hg).
 Defined.
 
-(* The mediating arrow IS the factorization, by conversion. *)
+(* 相关说明。 （已译） *)
 Lemma Elements_zero_is_med {r : D} (U : AUniversalElement H r) (d : D) (x : H d) :
   `1 (@zero (Elements H) (Elements_Initial U) ((d; x) : Elements H))
     = unique_obj (aue_universal d x).
@@ -82,7 +81,7 @@ Definition UniversalElement_of_Elements_Initial (I : @Initial (Elements H))
   UniversalElement_of_AUniversalElement
     (AUniversalElement_of_Elements_Initial I).
 
-(* Both directions keep the data on the nose. *)
+(* 相关说明。 （已译） *)
 Corollary Elements_Initial_obj {r : D} (U : AUniversalElement H r) :
   `1 (@initial_obj (Elements H) (Elements_Initial U)) = r.
 Proof. reflexivity. Qed.
@@ -96,7 +95,7 @@ Corollary aue_of_Elements_Initial_elem (I : @Initial (Elements H)) :
     = `2 (@initial_obj (Elements H) I).
 Proof. reflexivity. Qed.
 
-(* ... and the element-side round trip closes by [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Corollary Elements_Initial_round {r : D} (U : AUniversalElement H r) :
   @aue_elem D H _
     (AUniversalElement_of_Elements_Initial (Elements_Initial U))

@@ -12,7 +12,7 @@ Require Import Category.Theory.Algebra.Frobenius.
 
 Generalizable All Variables.
 
-(** * Commutative Frobenius algebras in a symmetric monoidal category *)
+(* * * Commutative Frobenius algebras symmetric 幺半范畴 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/Frobenius+algebra
@@ -50,14 +50,7 @@ End CommutativeFrobenius.
 
 Arguments cfrob_frobenius {C S X _}.
 
-(** ** Flat projections
-
-    Convenience aliases paralleling [scfa_mu] / [scfa_eta] /
-    [scfa_delta] / [scfa_epsilon] (in
-    [Theory/Algebra/SpecialCommutativeFrobenius.v]) and [cmon_mu] /
-    [cmon_eta] (in [Theory/Algebra/CommutativeMonoid.v]).  Use these
-    to keep downstream goal states free of deeply-nested
-    instance-projection chains. *)
+(* 相关说明。 （已译） *)
 
 Section CommutativeFrobeniusProjections.
 

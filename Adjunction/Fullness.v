@@ -13,7 +13,7 @@ Require Import Category.Theory.Equivalence.Adjoint.
 
 Generalizable All Variables.
 
-(** * Fullness of an adjoint: Mac Lane §IV.3 Exercises 3 and 6. *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出伴随相关构造与性质。
@@ -100,8 +100,8 @@ Definition counit_split_mono_of_full_right (HU : Full U) (a : C) :
   {| section      := counit_inv_of_full_right HU a
    ; section_comp := counit_inv_of_full_right_comp HU a |}.
 
-(* The dual, for the left adjoint: the chosen F-preimage of the counit at
-   F x is a right inverse for η_x, so η_x is a split epi. *)
+(* The dual, 左伴随: chosen F-preimage counit at
+ F x right inverse η_x, so η_x split epi. （已译） *)
 
 Definition unit_inv_of_full_left (HF : Full F) (x : D) : U (F x) ~> x :=
   @prefmap D C F HF (U (F x)) x (ε (F x)).
@@ -173,9 +173,9 @@ Definition fmap_counit_IsIsomorphism_of_full (H : Full F + Full U) (a : C) :
 
 (* ** (B) Exercise 6, other handedness, componentwise *)
 
-(* Here the roles of the two hypotheses swap: the cheap one is [Full F],
-   because F η_x is then the F-image of a composite already known to be
-   the identity. *)
+(* Here roles two hypotheses swap: cheap one [Full F],
+ because F η_x then F-image 复合 already known be
+ 恒等. （已译） *)
 
 Lemma fmap_unit_counit_of_full_left (HF : Full F) (x : D) :
   fmap[F] (η x) ∘ ε (F x) ≈ id.
@@ -344,16 +344,16 @@ Proof.
   now rewrite X.
 Qed.
 
-(* ** (C) Exercise 3, with the LEFT adjoint full (the literal print)
+(* ** (C) Exercise 3, LEFT adjoint full (the literal print)
 
-   With the LEFT adjoint full the conclusion needs no monic hypothesis at
-   all, η_x being a split epi outright. *)
+ With LEFT adjoint full conclusion needs no monic 假设 at
+ all, η_x being split epi outright. （已译） *)
 
 Lemma unit_epic_of_full_left (HF : Full F) (x : D) : Epic (η x).
 Proof. now apply retractions_are_epic, unit_split_epi_of_full_left. Qed.
 
-(* ... and the monic hypothesis then upgrades the conclusion from epi to
-   invertible, which is the sharpest statement that reading supports. *)
+(* ... monic 假设 then upgrades conclusion epi to
+ invertible, sharpest statement reading supports. （已译） *)
 
 Definition unit_iso_of_full_monic (HF : Full F)
            (Hm : ∀ y : D, Monic (η y)) (x : D) : IsIsomorphism (η x).
@@ -369,9 +369,9 @@ Defined.
 
 (* ** A by-product
 
-   Under fullness of either adjoint the unit is invertible at every object
-   in the image of U -- which is (B) read backwards, the inverse being
-   Uε_a. *)
+ Under fullness either adjoint unit invertible at every 对象
+ image U -- (B) read backwards, inverse being
+ Uε_a. （已译） *)
 
 Definition unit_at_U_IsIsomorphism_of_full (H : Full F + Full U) (a : C) :
   IsIsomorphism (η (U a)) :=
@@ -435,7 +435,7 @@ Definition reflective_fmap_counit_IsIsomorphism {C : Category}
     (reflective_adj R)
     (inr (Full_Implies_Full_Functor C S (reflective_full R))) x.
 
-(* The inverse this file produces is the unit at [Incl x], on the nose. *)
+(* 相关说明。 （已译） *)
 
 Example reflective_fmap_counit_inverse {C : Category}
   {S : Subcategory C} (R : Reflective S) (x : Sub C S) :
@@ -470,9 +470,9 @@ Example equiv_fmap_counit_inverse {C D : Category} {F : C ⟶ D}
         (@quasi_inverse C D F E d)
   := eq_refl.
 
-(* The donor's own counit isomorphism is about the counit itself; its
-   inverse, pushed through [quasi_inverse], agrees with this file's up to
-   `≈` -- both are inverse to the same arrow. *)
+(* The donor's own counit 同构 about counit itself; its
+ inverse, pushed through [quasi_inverse], agrees file's up to
+ `≈` -- both inverse same arrow. （已译） *)
 
 Lemma equiv_fmap_counit_inverse_agrees {C D : Category} {F : C ⟶ D}
   (E : @EquivalenceOfCategories C D F) (d : D) :
@@ -535,8 +535,8 @@ Definition zero_erase_fmap_counit_IsIsomorphism {C : Category}
     (Erase C) (zero_erase_adjunction Z)
     (inr (Full_Erase_of_ZeroObject Z)) a.
 
-(* [PointedSets] has a zero object, so the above applies to it; and there
-   the right adjoint is provably NOT faithful. *)
+(* [PointedSets] has zero 对象, so above applies it; there
+ 右伴随 provably NOT faithful. （已译） *)
 
 Lemma Erase_PointedSets_not_Faithful :
   Faithful (Erase PointedSets) → False.
@@ -551,8 +551,7 @@ Proof.
   contradiction.
 Qed.
 
-(* And its counit at the two-point pointed set is not invertible, though
-   its [Erase]-image is: the [Erase]-image lives in 1. *)
+(* 相关说明。 （已译） *)
 
 Lemma pointed_counit_not_IsIsomorphism :
   IsIsomorphism

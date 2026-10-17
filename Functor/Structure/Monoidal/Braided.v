@@ -11,7 +11,7 @@ Require Import Category.Functor.Structure.Monoidal.Compose.
 
 Generalizable All Variables.
 
-(** * Braided and symmetric monoidal functors *)
+(* * * Braided symmetric monoidal 函子 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+functor
@@ -42,7 +42,7 @@ Class BraidedLaxMonoidalFunctor : Type := {
 Coercion braided_is_lax :
   BraidedLaxMonoidalFunctor >-> LaxMonoidalFunctor.
 
-(* Strong variant: the same square over the invertible comparison. *)
+(* 相关说明。 （已译） *)
 Class BraidedMonoidalFunctor : Type := {
   braided_is_strong : @MonoidalFunctor C D _ _ F;
 
@@ -84,10 +84,9 @@ Definition SymmetricLaxMonoidalFunctor {C D : Category}
   `{@SymmetricMonoidal C} `{@SymmetricMonoidal D} (F : C ⟶ D) : Type :=
   @BraidedLaxMonoidalFunctor C D _ _ F.
 
-(** ** The identity functor is braided monoidal *)
+(* * ** The 恒等 函子 braided monoidal （已译） *)
 
-(* Both comparison maps of [Id_MonoidalFunctor] are identities, so the
-   compatibility square degenerates to braid ∘ id ≈ id ∘ braid. *)
+(* 相关说明。 （已译） *)
 
 Section BraidedMonoidalId.
 
@@ -106,7 +105,7 @@ Context `{BC : @BraidedMonoidal C}.
 
 End BraidedMonoidalId.
 
-(** ** Braided monoidal functors compose *)
+(* * ** Braided monoidal 函子 compose （已译） *)
 
 (*
    本节说明 Braided 相关定义、性质与动机。

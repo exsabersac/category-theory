@@ -23,7 +23,7 @@ Require Import Category.Structure.Coequalizer.Split.
 
 Generalizable All Variables.
 
-(** * Comparisons of two resolutions of one monad *)
+(* * * Comparisons two resolutions one 单子 （已译） *)
 
 (*
    Book: Awodey, "Category Theory", 1st ed. (Carnegie Mellon pre-print,
@@ -36,11 +36,11 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** Definition: a comparison over an identification of the monads *)
+(* * ** Definition: comparison over identification 单子 （已译） *)
 
 Section ComparisonDef.
 
-(* The object and hom levels of [Monads X], kept apart (see UNIVERSES). *)
+(* The 对象 hom levels [Monads X], kept apart (see UNIVERSES). （已译） *)
 Universes m1 m2.
 
 Context {X : Category}.
@@ -50,9 +50,9 @@ Context (θ : @Isomorphism (Monads@{_ _ m1 m2} X)
                (G' ◯ F'; Adjunction_Induced_Monad Adj')
                (G ◯ F; Adjunction_Induced_Monad Adj)).
 
-(* Mac Lane's M F' = F and G M = G', each up to a natural isomorphism, and
-   the identification of the two monads they induce, G' F' ≅ G M F' ≅ G F,
-   is the given one. *)
+(* Mac Lane's M F' = F G M = G', each up natural 同构, and
+ identification two 单子 they induce, G' F' ≅ G M F' ≅ G F,
+ given one. （已译） *)
 Record Comparison : Type := {
   cmp_functor : A' ⟶ A;
   cmp_left : cmp_functor ◯ F' ≈ F;
@@ -73,7 +73,7 @@ Lemma cmp_theta_from_to (x : X) :
 Proof. exact (iso_from_to θ x). Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** A comparison is a map of adjunctions (Adjunction/Map.v) *)
+(* * ** A comparison map 伴随 (Adjunction/Map.v) （已译） *)
 
 Section Squares.
 
@@ -102,7 +102,7 @@ Proof.
   apply id_left.
 Qed.
 
-(* The squares of Map.v's ≈ reading, with K := M and L := Id[X]. *)
+(* 相关说明。 （已译） *)
 Definition Comparison_squares : @WeakAdjSquares A' X F' G' A X F G.
 Proof using P.
   unshelve refine {| wsq_K := M; wsq_L := Id[X] |}.
@@ -119,7 +119,7 @@ Proof using P.
     symmetry. apply id_right.
 Defined.
 
-(* Mac Lane's L η = η' L at L := Id, from the coherence and [mh_ret]. *)
+(* 相关说明。 （已译） *)
 Lemma Comparison_unit : WeakSquaresUnit Adj' Adj Comparison_squares.
 Proof.
   intros x; simpl.
@@ -154,7 +154,7 @@ Proof.
            (wmap_hom Adj' Adj Comparison_map)).
 Qed.
 
-(* The same, with the isomorphisms of the two triangles written out. *)
+(* 相关说明。 （已译） *)
 Theorem Comparison_counit_fused (a : A') :
   fmap[M] (@counit _ _ _ _ Adj' a)
     ≈ @counit _ _ _ _ Adj (M a) ∘ fmap[F] (from (be a)) ∘ to (al (G' a)).
@@ -166,7 +166,7 @@ Proof.
   symmetry. apply id_right.
 Qed.
 
-(* Riehl's (ii): the comparison commutes with adjoint transposition. *)
+(* 相关说明。 （已译） *)
 Theorem Comparison_transpose (x : X) (a : A') (g : x ~> G' a) :
   fmap[M] (from (@adj _ _ _ _ Adj' x a) g) ∘ from (al x)
     ≈ from (@adj _ _ _ _ Adj x (M a)) (from (be a) ∘ g).
@@ -182,7 +182,7 @@ Qed.
 End Squares.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The Lemma, existence: through Beck.v's created coequalizers *)
+(* 相关说明。 （已译） *)
 
 Section Existence.
 
@@ -193,7 +193,7 @@ Local Notation EMT := (@EilenbergMoore X (G ◯ F) T).
 Local Notation th x := (transform[mh_transform (to θ)] x).
 Local Notation ph x := (transform[mh_transform (from θ)] x).
 
-(* The T-algebra on G' a: θ* of the comparison algebra of F' ⊣ G'. *)
+(* 相关说明。 （已译） *)
 Definition Comparison_alg : A' ⟶ EMT := mh_EM (from θ) ◯ EM_Comparison Adj'.
 
 Example Comparison_alg_carrier (a : A') : `1 (Comparison_alg a) = G' a
@@ -203,7 +203,7 @@ Example Comparison_alg_action (a : A') :
   t_alg[`2 (Comparison_alg a)] = fmap[G'] (@counit _ _ _ _ Adj' a) ∘ ph (G' a)
   := eq_refl.
 
-(* M a is the coequalizer G creates over the canonical presentation. *)
+(* 相关说明。 （已译） *)
 Definition Comparison_functor : A' ⟶ A :=
   Beck_Inverse Adj CR ◯ Comparison_alg.
 
@@ -249,7 +249,7 @@ Proof.
   apply id_left.
 Qed.
 
-(* The arrow that exhibits F x as the created object at F' x. *)
+(* The arrow exhibits F x created 对象 at F' x. （已译） *)
 Definition cmp_free_e (x : X) : F (G' (F' x)) ~> F x :=
   @counit _ _ _ _ Adj (F x) ∘ fmap[F] (th x).
 
@@ -288,8 +288,7 @@ Proof.
   apply id_left.
 Qed.
 
-(* Both M (F' x) and F x lie over the split coequalizer, so the two are
-   isomorphic, compatibly with the coequalizing arrows. *)
+(* 相关说明。 （已译） *)
 Definition Comparison_left_data (x : X) :=
   create_coeq_unique CR
     (crude_pair_l Adj (Comparison_alg (F' x)))
@@ -371,7 +370,7 @@ Definition Comparison_exists : Comparison :=
 End Existence.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The Lemma, uniqueness: Mac Lane's canonical presentation *)
+(* 相关说明。 （已译） *)
 
 Section Uniqueness.
 
@@ -451,8 +450,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* M0 a is a coequalizer of the canonical presentation of a: the
-   reflection clause of creation. *)
+(* 相关说明。 （已译） *)
 Definition cmp_e_coeq (a : A') :
   IsCoequalizer (crude_pair_l Adj (Comparison_alg a))
     (crude_pair_r Adj (Comparison_alg a)) (M0 a) (cmp_e a) :=
@@ -499,7 +497,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* The isomorphisms are natural, by the naturality of Mac Lane's k. *)
+(* The isomorphisms natural, 自然性 Mac Lane's k. （已译） *)
 Lemma cmp_unique_iso_natural {a b : A'} (f : a ~> b) :
   fmap[M0] f
     ≈ from (cmp_unique_iso b) ∘ fmap[Comparison_functor CR] f
@@ -532,7 +530,7 @@ Qed.
 End Uniqueness.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The isomorphism is a morphism of comparisons, and the only one *)
+(* * ** The 同构 态射 comparisons, one （已译） *)
 
 Section Cell.
 
@@ -605,7 +603,7 @@ Proof.
   exact Hm.
 Qed.
 
-(* At the constructed comparison, Mac Lane's k is the created arrow. *)
+(* 相关说明。 （已译） *)
 Lemma Comparison_exists_e (a : A') :
   cmp_e (Comparison_exists CR) a ≈ beck_e Adj CR (Comparison_alg a).
 Proof.
@@ -660,7 +658,7 @@ Qed.
 
 End Cell.
 
-(* The Lemma: any two comparisons over θ are isomorphic. *)
+(* 相关说明。 （已译） *)
 Theorem Comparison_unique (CR : CreatesUSplitCoequalizers G)
   (P Q : Comparison) : cmp_functor P ≈ cmp_functor Q.
 Proof.
@@ -689,7 +687,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* ... and is the only natural family of arrows that does. *)
+(* 相关说明。 （已译） *)
 Theorem Comparison_unique_pair_cell (CR : CreatesUSplitCoequalizers G)
   (P Q : Comparison)
   (k : ∀ a : A', cmp_functor P a ~> cmp_functor Q a)
@@ -725,7 +723,7 @@ Qed.
 End ComparisonDef.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The Eilenberg–Moore resolution: terminal in the weak sense *)
+(* 相关说明。 （已译） *)
 
 Section EMResolution.
 
@@ -735,9 +733,9 @@ Context {X : Category} (T : X ⟶ X) `{H : @Monad X T}.
 
 Local Notation TE := (Adjunction_Induced_Monad (@EM_Adjunction X T H)).
 
-(* F^T ⊣ G^T defines T: its unit is id ∘ η and its multiplication
-   μ ∘ T id, so the identity components are a morphism of monads each
-   way. *)
+(* F^T ⊣ G^T defines T: unit id ∘ η multiplication
+ μ ∘ T id, so 恒等 components 态射 单子 each
+ way. （已译） *)
 
 Definition EM_Monad_to : MonadHom TE H.
 Proof.
@@ -839,7 +837,7 @@ Definition EM_Comparison_theta :
 Example EM_Comparison_theta_to (x : X) :
   transform[mh_transform (to EM_Comparison_theta)] x = id := eq_refl.
 
-(* The two triangles of Monad/Comparison.v, read back on the nose. *)
+(* 相关说明。 （已译） *)
 Example EM_Comparison_Forget_components (a : A) :
   `1 (EM_Comparison_Forget Adj) a = iso_id := eq_refl.
 
@@ -872,9 +870,9 @@ Proof.
            (@monadic_creates X (G ◯ F) T) P EM_Comparison_Comparison).
 Qed.
 
-(* ... up to a unique compatible isomorphism: the composite of the two
-   isomorphisms to the constructed comparison is the only natural family
-   commuting with the left triangles. *)
+(* ... up unique compatible 同构: 复合 two
+ isomorphisms constructed comparison natural family
+ commuting left triangles. （已译） *)
 Theorem EM_Comparison_unique_cell
   (P : Comparison EMAdj Adj EM_Comparison_theta)
   (k : ∀ a : A, cmp_functor _ _ _ P a ~> EM_Comparison Adj a)
@@ -894,8 +892,8 @@ Proof.
            k Hk Hl a).
 Qed.
 
-(* Mac Lane: the Lemma at the Eilenberg–Moore resolution "will incidentally
-   provide a new proof of the comparison theorem". *)
+(* Mac Lane: Lemma at Eilenberg–Moore resolution "will incidentally
+ provide new 证明 comparison 定理". （已译） *)
 Definition EM_Comparison_via_Lemma : A ⟶ @EilenbergMoore X (G ◯ F) T :=
   Comparison_functor EMAdj Adj EM_Comparison_theta
     (@monadic_creates X (G ◯ F) T).

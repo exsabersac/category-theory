@@ -51,7 +51,7 @@ Program Instance Compose_Applicative
 }.
 
 Class Traversable := {
-  (* the distributive law F ◯ G ⟹ G ◯ F, natural in the applicative G *)
+  (* 分配律 F ◯ G ⟹ G ◯ F, natural applicative G （已译） *)
   sequence {G : C ⟶ C} `{@Applicative C _ G} : F ◯ G ⟹ G ◯ F;
 
   (* naturality: sequence commutes with applicative transformations N : G ⟹ H *)

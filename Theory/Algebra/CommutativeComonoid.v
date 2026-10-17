@@ -10,7 +10,7 @@ Require Import Category.Theory.Algebra.Comonoid.
 
 Generalizable All Variables.
 
-(** * Commutative comonoids in a symmetric monoidal category *)
+(* * * Commutative comonoids symmetric 幺半范畴 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/comonoid
@@ -28,8 +28,8 @@ Context {C : Category}.
 Context `{S : @SymmetricMonoidal C}.
 
 Class CommutativeComonoid (X : C) : Type := {
-  (* underlying comonoid object, taken in the monoidal category
-     underlying the symmetric structure [S] *)
+  (* underlying comonoid 对象, taken 幺半范畴
+ underlying symmetric structure [S] （已译） *)
   ccomon_comonoid : @Comonoid C
                       (@braided_is_monoidal C
                          (@symmetric_is_braided C S))

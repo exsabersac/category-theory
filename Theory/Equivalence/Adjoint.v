@@ -59,15 +59,13 @@ Qed.
 
 (* ** From an equivalence of categories to an adjoint equivalence *)
 
-(* The forward transpose: f : F x ~> d goes to the chosen fmap-preimage of
-   its conjugate under the inverse counit-cell component at d. *)
+(* 相关说明。 （已译） *)
 Definition equiv_adj_to `(E : @EquivalenceOfCategories C D F)
   {x : C} {d : D} (f : F x ~{D}~> d) :
   x ~{C}~> @quasi_inverse C D F E d :=
   equivalence_prefmap E (from (equivalence_counit_at d) ∘ f).
 
-(* The inverse transpose: g : x ~> quasi_inverse d returns to D through F
-   and closes with the forward counit-cell component at d. *)
+(* 相关说明。 （已译） *)
 Definition equiv_adj_from `(E : @EquivalenceOfCategories C D F)
   {x : C} {d : D} (g : x ~{C}~> @quasi_inverse C D F E d) :
   F x ~{D}~> d :=
@@ -86,7 +84,7 @@ Proof.
   now rewrite Hfg.
 Qed.
 
-(* The inverse transpose is respectful because [fmap] and composition are. *)
+(* The inverse transpose respectful because [fmap] 复合 are. （已译） *)
 Lemma equiv_adj_from_respects `(E : @EquivalenceOfCategories C D F)
   (x : C) (d : D) :
   Proper (equiv ==> equiv) (@equiv_adj_from C D F E x d).
@@ -96,8 +94,8 @@ Proof.
   now rewrite Hfg.
 Qed.
 
-(* The transposes are mutually inverse: reduce to images by faithfulness,
-   then cancel the counit-cell isomorphism. *)
+(* The transposes mutually inverse: reduce images faithfulness,
+ then cancel counit-cell 同构. （已译） *)
 Lemma equiv_adj_to_from `(E : @EquivalenceOfCategories C D F)
   {x : C} {d : D} (g : x ~{C}~> @quasi_inverse C D F E d) :
   equiv_adj_to E (equiv_adj_from E g) ≈ g.
@@ -121,8 +119,8 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* The transposing isomorphism of hom-setoids, one Sets-isomorphism per
-   pair of objects, with the transposes above as underlying maps. *)
+(* The transposing 同构 hom-setoids, one Sets-同构 per
+ pair 对象, transposes above underlying maps. （已译） *)
 Definition equiv_adj_iso `(E : @EquivalenceOfCategories C D F)
   (x : C) (d : D) :
   @Isomorphism Sets
@@ -142,7 +140,7 @@ Proof.
   - exact (@equiv_adj_from_to C D F E x d).
 Defined.
 
-(* Naturality of the forward transpose in the source argument. *)
+(* Naturality forward transpose source 论元. （已译） *)
 Lemma equiv_adj_to_nat_l `(E : @EquivalenceOfCategories C D F)
   (x y : C) (z : D) (f : F y ~{D}~> z) (g : x ~{C}~> y) :
   equiv_adj_to E (f ∘ fmap[F] g) ≈ equiv_adj_to E f ∘ g.
@@ -154,8 +152,8 @@ Proof.
   now rewrite comp_assoc.
 Qed.
 
-(* Naturality of the forward transpose in the target argument: after
-   faithfulness, this is the conjugation coherence of the counit cell. *)
+(* Naturality forward transpose target 论元: after
+ faithfulness, 这是 conjugation coherence counit cell. （已译） *)
 Lemma equiv_adj_to_nat_r `(E : @EquivalenceOfCategories C D F)
   (x : C) (y z : D) (f : y ~{D}~> z) (g : F x ~{D}~> y) :
   equiv_adj_to E (f ∘ g) ≈ fmap[@quasi_inverse C D F E] f ∘ equiv_adj_to E g.
@@ -172,9 +170,9 @@ Proof.
   now rewrite Hnat.
 Qed.
 
-(* The adjunction F ⊣ quasi_inverse, assembled through [Build_Adjunction']
-   (which derives the two inverse-transpose naturality fields from the
-   forward ones). *)
+(* The 伴随 F ⊣ quasi_inverse, assembled through [Build_Adjunction']
+ (which derives two inverse-transpose 自然性 fields the
+ forward ones). （已译） *)
 Definition equiv_adjunction `(E : @EquivalenceOfCategories C D F) :
   F ⊣ @quasi_inverse C D F E :=
   @Build_Adjunction' D C F (@quasi_inverse C D F E)
@@ -182,9 +180,9 @@ Definition equiv_adjunction `(E : @EquivalenceOfCategories C D F) :
     (equiv_adj_to_nat_l E)
     (equiv_adj_to_nat_r E).
 
-(* The counit of [equiv_adjunction] is the counit-cell component: the
-   definitional counit is [to (equivalence_counit_at d) ∘ fmap[F] id], and
-   the trailing identity cancels. *)
+(* The counit [equiv_adjunction] counit-cell component: the
+ definitional counit [to (等价_counit_at d) ∘ fmap[F] id], and
+ trailing 恒等 cancels. （已译） *)
 Corollary equiv_adjunction_counit_at `(E : @EquivalenceOfCategories C D F)
   (d : D) :
   @counit _ _ _ _ (equiv_adjunction E) d ≈ to (equivalence_counit_at d).
@@ -196,9 +194,9 @@ Proof.
     now rewrite id_right.
 Qed.
 
-(* The F-image of the unit of [equiv_adjunction] is the inverse
-   counit-cell component at F x ([equivalence_prefmap_sur], after
-   cancelling the inner identity). *)
+(* The F-image unit [equiv_adjunction] inverse
+ counit-cell component at F x ([equivalence_prefmap_sur], after
+ cancelling inner 恒等). （已译） *)
 Corollary equiv_adjunction_fmap_unit `(E : @EquivalenceOfCategories C D F)
   (x : C) :
   fmap[F] (@unit _ _ _ _ (equiv_adjunction E) x)
@@ -211,14 +209,12 @@ Proof.
     now rewrite id_right.
 Qed.
 
-(* The chosen inverse of the unit component at x: the fmap-preimage of the
-   forward counit-cell component at F x. *)
+(* 相关说明。 （已译） *)
 Definition equiv_adjunction_unit_inv `(E : @EquivalenceOfCategories C D F)
   (x : C) : @quasi_inverse C D F E (F x) ~{C}~> x :=
   equivalence_prefmap E (to (equivalence_counit_at (F x))).
 
-(* The two inverse laws for the unit, both through faithfulness: the
-   images compose to the two counit-cell cancellations at F x. *)
+(* 相关说明。 （已译） *)
 Lemma equiv_adjunction_unit_right_inverse
   `(E : @EquivalenceOfCategories C D F) (x : C) :
   @unit _ _ _ _ (equiv_adjunction E) x ∘ equiv_adjunction_unit_inv E x ≈ id.
@@ -254,8 +250,7 @@ Definition equiv_adjunction_unit_iso `(E : @EquivalenceOfCategories C D F)
     (equiv_adjunction_unit_right_inverse E x)
     (equiv_adjunction_unit_left_inverse E x).
 
-(* The two inverse laws for the counit are the counit-cell cancellations
-   themselves, by [equiv_adjunction_counit_at]. *)
+(* 相关说明。 （已译） *)
 Lemma equiv_adjunction_counit_right_inverse
   `(E : @EquivalenceOfCategories C D F) (d : D) :
   @counit _ _ _ _ (equiv_adjunction E) d ∘ from (equivalence_counit_at d)
@@ -283,8 +278,8 @@ Definition equiv_adjunction_counit_iso `(E : @EquivalenceOfCategories C D F)
     (equiv_adjunction_counit_right_inverse E d)
     (equiv_adjunction_counit_left_inverse E d).
 
-(* The main refinement: every equivalence of categories is an adjoint
-   equivalence between the same functor and its quasi-inverse. *)
+(* The main refinement: every 等价 范畴 adjoint
+ 等价 between same 函子 quasi-inverse. （已译） *)
 Theorem Equivalence_to_AdjointEquivalence
   `(E : @EquivalenceOfCategories C D F) :
   AdjointEquivalence F (@quasi_inverse C D F E).
@@ -297,9 +292,9 @@ Defined.
 
 (* ** From an adjoint equivalence back to an equivalence of categories *)
 
-(* Conjugation coherence of the counit: the [Functor_Setoid] coherence
-   condition for the counit cell, read off the counit's naturality square
-   by inverting its component at the target. *)
+(* Conjugation coherence counit: [Functor_Setoid] coherence
+ condition counit cell, read off counit's 自然性 square
+ inverting component at target. （已译） *)
 Lemma adjoint_equiv_counit_coherence `(A : @AdjointEquivalence C D F U)
   {d d' : D} (g : d ~{D}~> d') :
   fmap[F] (fmap[U] g)
@@ -314,8 +309,8 @@ Proof.
   now rewrite comp_assoc.
 Qed.
 
-(* Conjugation coherence of the unit, dually: invert the unit's component
-   at the target of its naturality square. *)
+(* Conjugation coherence unit, dually: invert unit's component
+ at target 自然性 square. （已译） *)
 Lemma adjoint_equiv_unit_coherence `(A : @AdjointEquivalence C D F U)
   {x y : C} (f : x ~{C}~> y) :
   f ≈ @two_sided_inverse C _ _ _ (@adj_equiv_unit_iso C D F U A y)
@@ -329,8 +324,8 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* The counit cell F ◯ U ≈ Id[D]: componentwise the [IsIsoToIso] packaging
-   of the counit isomorphisms, coherent by the lemma above. *)
+(* The counit cell F ◯ U ≈ Id[D]: componentwise [IsIsoToIso] packaging
+ counit isomorphisms, coherent 引理 above. （已译） *)
 Definition AdjointEquivalence_to_counit `(A : @AdjointEquivalence C D F U) :
   F ◯ U ≈ Id[D].
 Proof.
@@ -348,24 +343,24 @@ Proof.
   exact (adjoint_equiv_unit_coherence A f).
 Defined.
 
-(* An adjoint equivalence yields an equivalence of categories: the right
-   adjoint serves as the quasi-inverse. *)
+(* An adjoint 等价 yields 等价 范畴: right
+ adjoint serves quasi-inverse. （已译） *)
 Definition AdjointEquivalence_to_Equivalence
   `(A : @AdjointEquivalence C D F U) : EquivalenceOfCategories F :=
   @Build_EquivalenceOfCategories C D F U
     (AdjointEquivalence_to_counit A)
     (AdjointEquivalence_to_unit A).
 
-(* Swapping the two sides: U is itself part of an adjoint equivalence with
-   quasi-inverse F, obtained by symmetrizing the induced equivalence of
-   categories and refining it back. *)
+(* Swapping two sides: U itself part adjoint 等价 with
+ quasi-inverse F, obtained symmetrizing induced 等价 of
+ 范畴 refining it back. （已译） *)
 Definition AdjointEquivalence_swap `(A : @AdjointEquivalence C D F U) :
   AdjointEquivalence U F :=
   Equivalence_to_AdjointEquivalence
     (@EquivalenceOfCategories_sym C D F (AdjointEquivalence_to_Equivalence A)).
 
-(* In particular the two adjoints trade places: the swapped adjunction
-   U ⊣ F underlying [AdjointEquivalence_swap]. *)
+(* In particular two adjoints trade places: swapped 伴随
+ U ⊣ F underlying [AdjointEquivalence_swap]. （已译） *)
 Definition AdjointEquivalence_swap_adjunction
   `(A : @AdjointEquivalence C D F U) : U ⊣ F :=
   @adj_equivalence D C U F (AdjointEquivalence_swap A).

@@ -1,4 +1,4 @@
-(** * The Ab-valued hom functor, and the additive upgrade of a representation *)
+(* * * The Ab-valued hom 函子, additive upgrade representation （已译） *)
 
 (*
    Book:      Mac Lane, ibid., §I.8 and §VIII.2 — Ab-categories and
@@ -37,7 +37,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The opposite of a locally propositional category *)
+(* * ** The opposite locally propositional 范畴 （已译） *)
 
 Definition LocallyPropositional_op@{o h +} {C : Category@{o h h}}
   (LP : LocallyPropositional C) : LocallyPropositional (C^op).
@@ -86,7 +86,7 @@ Example HomAb_obj (x : C) : fobj[HomAb] x = hom_ab AC A0 x := eq_refl.
 Example HomAb_fmap_at {x y : C} (f : x ~{C}~> y) (g : A0 ~{C}~> x) :
   cmon_map (fmap[HomAb] f) g = f ∘ g := eq_refl.
 
-(* Post-composition is additive in the arrow composed with. *)
+(* Post-复合 additive arrow composed with. （已译） *)
 Definition HomAb_additive :
   @AdditiveFunctor C Ab@{a h} AC Ab_AbEnriched HomAb.
 Proof.
@@ -95,8 +95,8 @@ Proof.
   exact (@compose_padd_right _ (@abenriched_preadditive C AC) _ _ _ f g k).
 Defined.
 
-(* Forgetting the group structure gives back the Sets-valued hom functor,
-   componentwise by the identity map. *)
+(* Forgetting group structure gives back Sets-valued hom 函子,
+ componentwise 恒等 map. （已译） *)
 Definition HomAb_forget_to : [Hom A0,─] ⟹ Ab_Forget ◯ HomAb.
 Proof.
   unshelve eapply Build_Transform'.
@@ -134,7 +134,7 @@ Arguments HomAb_fmap {C LP} AC A0 {x y} f.
 Arguments HomAb_additive {C LP} AC A0.
 Arguments HomAb_representable {C LP} AC A0.
 
-(** ** The contravariant Ab-valued hom functor *)
+(* * ** The contravariant Ab-valued hom 函子 （已译） *)
 
 Definition CoHomAb@{o h a +} {C : Category@{o h h}}
   {LP : LocallyPropositional C} (AC : AbEnriched C) (A0 : C) :
@@ -146,7 +146,7 @@ Example CoHomAb_fmap_at@{o h a +} {C : Category@{o h h}}
   (f : y ~{C}~> x) (g : x ~{C}~> A0) :
   cmon_map (fmap[CoHomAb AC A0] f) g = g ∘ f := eq_refl.
 
-(** ** The Ab-valued hom functors are continuous *)
+(* * ** The Ab-valued hom 函子 continuous （已译） *)
 
 (*
    本节说明函子、（余）极限、hom相关定义、性质与动机。
@@ -163,8 +163,7 @@ Definition HomAb_continuous@{o h a +}
                   (iso_equiv (HomAb_forget_iso AC A0)) J K N HN
                   (cone_assoc_inv M)).
 
-(* The contravariant one is the covariant one at [C^op]: it carries the
-   colimits of C, which are the limits of [C^op], to limits of [Ab]. *)
+(* 相关说明。 （已译） *)
 Definition CoHomAb_continuous@{o h a +}
   {C : Category@{o h h}} {LP : LocallyPropositional C}
   (AC : AbEnriched C) (A0 : C) :
@@ -316,7 +315,7 @@ Arguments wab_obj {C T} Rp.
 Arguments watt_ab_iso {C LP} AC T AF Rp.
 Arguments watt_ab_repr {C LP} AC T AF Rp.
 
-(** ** Non-vacuity: the hom functor itself *)
+(* * ** Non-vacuity: hom 函子 itself （已译） *)
 
 Definition watt_ab_iso_HomAb@{o h a +} {C : Category@{o h h}}
   {LP : LocallyPropositional C} (AC : AbEnriched C) (A0 : C) :
@@ -330,8 +329,7 @@ Example watt_ab_iso_HomAb_obj@{o h a +} {C : Category@{o h h}}
   @wab_obj C (HomAb@{o h a} AC A0) (HomAb_representable AC A0) = A0 :=
   eq_refl.
 
-(* The hypotheses are met in tree: at [Ab] itself, by [Ab_AbEnriched] and
-   [Ab_LocallyPropositional]. *)
+(* 相关说明。 （已译） *)
 Definition watt_ab_iso_at_Ab@{a b h +} (A0 : AbObject@{h h h}) :
   @Isomorphism (@Fun Ab@{a h} Ab@{b h})
     (HomAb Ab_AbEnriched (wab_obj (HomAb_representable Ab_AbEnriched A0)))

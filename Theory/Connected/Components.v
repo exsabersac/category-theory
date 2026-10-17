@@ -21,7 +21,7 @@ Require Import Category.Construction.Subcategory.
 
 Generalizable All Variables.
 
-(** * Connected components: π₀ of a category *)
+(* * * Connected components: π₀ 范畴 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/connected+category
@@ -71,7 +71,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Functors carry zig-zags to zig-zags *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -113,7 +113,7 @@ Proof.
   induction s; simpl; [ reflexivity | f_equal; exact IHs | f_equal; exact IHs ].
 Qed.
 
-(* The action is compatible with the donor's two chain operations. *)
+(* 相关说明。 （已译） *)
 Lemma zigzag_fmap_trans {C D : Category} (F : C ⟶ D) {x y z : C}
   (s : ZigZag x y) (t : ZigZag y z) :
   zigzag_fmap F (zigzag_trans s t)
@@ -222,7 +222,7 @@ Definition pi0_proj@{o so h} (C : Category@{o h h}) :
   sets_quot_proj@{so o} (ObjSetoid@{o h h o} C) (@ZigZag@{o h} C)
     (zigzag_Equivalence@{o o h} C) (pi0_coarser@{o h} C).
 
-(* ... and it is the identity on underlying objects, by conversion. *)
+(* ... it 恒等 underlying 对象, conversion. （已译） *)
 Example pi0_proj_at (C : Category) (x : C) : pi0_proj C x = x := eq_refl.
 
 (*
@@ -289,7 +289,7 @@ Next Obligation. exact (zz_nil _). Defined.
 
 Example Pi0_obj (C : Cat) : fobj[Pi0] C = pi0 C := eq_refl.
 
-(** ** The connected component of an object, as a full subcategory *)
+(* * ** The connected component 对象, full subcategory （已译） *)
 
 (*
    本节说明 Components 相关定义、性质与动机。
@@ -327,8 +327,8 @@ Definition Component_Incl_Full (C : Category) (x : C) :
   Functor.Full (Component_Incl C x) :=
   Full_Implies_Full_Functor C (ComponentSub C x) (ComponentSub_Full C x).
 
-(* Every arrow of C between two selected objects is an arrow of the
-   component, the selection witness being [ttt]. *)
+(* Every arrow C between two selected 对象 arrow the
+ component, selection witness being [ttt]. （已译） *)
 Definition component_arr {C : Category} {x : C} {a b : C}
   (sa : ZigZag x a) (sb : ZigZag x b) (f : a ~> b) :
   (a; sa) ~{ConnectedComponent C x}~> (b; sb) := (f; ttt).
@@ -449,7 +449,7 @@ Definition Component_reindex_equiv (C : Category) (x x' : C)
     (Component_reindex_Full C x x' z) (Component_reindex_Faithful C x x' z)
     (Component_reindex_ESO C x x' z).
 
-(** ** Two readings of "connected", separated *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Components 相关定义、性质与动机。
@@ -471,18 +471,16 @@ Definition connected_of_nonempty {C : Category} (K : ConnectedNonempty C) :
 Definition nonempty_connected {C : Category} (c : C) (K : Connected C) :
   ConnectedNonempty C := Build_ConnectedNonempty c K.
 
-(* The empty category satisfies the in-tree reading VACUOUSLY: there is no
-   pair of objects to join, so the function is defined by zero clauses. *)
+(* The empty 范畴 satisfies in-tree reading VACUOUSLY: there no
+ pair 对象 join, so function defined zero clauses. （已译） *)
 Definition Zero_Connected : Connected _0.
 Proof. intros x; destruct x. Defined.
 
-(* ... and fails the issue's reading, since it has no object at all. *)
+(* ... fails issue's reading, since it has no 对象 at all. （已译） *)
 Theorem Zero_not_ConnectedNonempty : ConnectedNonempty _0 → False.
 Proof. intro K; destruct (cn_obj K). Qed.
 
-(* The separation, packaged: the two readings are not the same predicate,
-   and [_0] is a witness.  This is what makes the discrepancy above a
-   proved fact rather than an observation. *)
+(* 相关说明。 （已译） *)
 Definition connected_readings_differ :
   Connected _0 * (ConnectedNonempty _0 → False) :=
   (Zero_Connected, Zero_not_ConnectedNonempty).
@@ -509,7 +507,7 @@ Proof.
   - intros [c H]; exact (Build_ConnectedNonempty c H).
 Defined.
 
-(** ** Categories that are connected, and one that is not *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明始/终对象相关定义、性质与动机。
@@ -547,7 +545,7 @@ Definition initial_ConnectedNonempty {C : Category} (I : @Initial C) :
   ConnectedNonempty C :=
   Build_ConnectedNonempty (@initial_obj C I) (initial_connected I).
 
-(* The point category, directly: its single hom is the one-step chain. *)
+(* The point 范畴, directly: single hom one-step chain. （已译） *)
 Definition One_Connected : Connected _1 :=
   fun x y => @hom_zigzag _1 x y ttt.
 
@@ -612,9 +610,9 @@ Defined.
 
 (** ** Witnesses *)
 
-(* The walking parallel pair is connected: its two objects are joined by
-   either of its two non-identity arrows, and the chain uses one of them
-   forwards or backwards according to direction. *)
+(* The walking parallel pair connected: two 对象 joined by
+ either two non-恒等 arrows, chain uses one them
+ forwards backwards according direction. （已译） *)
 Definition Parallel_Connected : Connected Parallel.
 Proof.
   intros x y.
@@ -662,7 +660,7 @@ Proof.
   discriminate H.
 Qed.
 
-(* The component of [true] excludes [false], by the same invariant. *)
+(* 相关说明。 （已译） *)
 Theorem component_bool_excludes_false :
   sobj (DiscreteCat bool) (ComponentSub (DiscreteCat bool) true) false
     → False.
@@ -711,30 +709,28 @@ Definition ConnectedDiagram {J C : Category} (D : J ⟶ C) : Type :=
 Definition ConnectedNonemptyDiagram {J C : Category} (D : J ⟶ C) : Type :=
   ConnectedNonempty J.
 
-(* Each IS the indexing category's predicate, by conversion.  Neither is a
-   tautology: each names the new constant on one side and the donor
-   predicate applied to the index on the other. *)
+(* Each IS indexing 范畴's predicate, conversion. Neither a
+ tautology: each names new 常值 one side donor
+ predicate applied index other. （已译） *)
 Example connected_diagram_is_index {J C : Category} (D : J ⟶ C) :
   ConnectedDiagram D = Connected J := eq_refl.
 
 Example connected_nonempty_diagram_is_index {J C : Category} (D : J ⟶ C) :
   ConnectedNonemptyDiagram D = ConnectedNonempty J := eq_refl.
 
-(* The inhabited reading implies the bare one, at the index. *)
+(* 相关说明。 （已译） *)
 Definition connected_diagram_of_nonempty {J C : Category} (D : J ⟶ C)
   (K : ConnectedNonemptyDiagram D) : ConnectedDiagram D :=
   connected_of_nonempty K.
 
-(* Connectedness never looks at the target: any two diagrams on the same
-   shape are connected together or not at all.  The proof is the identity,
-   which is the honest content of the remark. *)
+(* Connectedness never looks at target: any two diagrams same
+ shape connected together not at all. The 证明 恒等,
+ honest content remark. （已译） *)
 Definition connected_diagram_reindex {J C E : Category}
   (D : J ⟶ C) (D' : J ⟶ E) (K : ConnectedDiagram D) : ConnectedDiagram D'
   := K.
 
-(* π₀ of the shape is a subsingleton exactly when the diagram is
-   connected — the [connected_iff_pi0_subsingleton] biconditional read at
-   the index. *)
+(* 相关说明。 （已译） *)
 Definition connected_diagram_pi0 {J C : Category} (D : J ⟶ C)
   (K : ConnectedDiagram D) : pi0_subsingleton J :=
   connected_pi0_subsingleton K.

@@ -16,7 +16,7 @@ Generalizable All Variables.
 
 Import ApplicativeNotations.
 
-(** Instance characterisations and computation rules for the Coq applicatives *)
+(** 本节：Instance characterisations computation rules Coq applicatives （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/applicative+functor

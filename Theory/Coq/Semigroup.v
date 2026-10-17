@@ -2,7 +2,7 @@ Require Import Category.Lib.
 
 Generalizable All Variables.
 
-(** The Semigroup type class (mappend/⊗), with its categorical reading *)
+(** The Semigroup 类型类 (mappend/⊗), categorical reading （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/semigroup

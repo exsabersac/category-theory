@@ -111,8 +111,7 @@ Definition yo_nat_obj (p : [C, Sets] ∏ C) : Sets :=
 Definition yo_nat_obj_agrees (p : [C, Sets] ∏ C) :
   fobj[YoNat] p = yo_nat_obj p := eq_refl.
 
-(* The hand-written arrow action: whisker on the left by τ, precompose on
-   the right with the representable's action on f. *)
+(* 相关说明。 （已译） *)
 Program Definition yo_nat_map {x y : [C, Sets] ∏ C} (tf : x ~> y) :
   yo_nat_obj x ~{Sets}~> yo_nat_obj y :=
   {| morphism := fun a =>
@@ -138,7 +137,7 @@ Arguments yo_eval_map {C x y} tf.
 Arguments yo_nat_obj {C} p.
 Arguments yo_nat_map {C x y} tf.
 
-(** ** Mac Lane's Lemma 2: N ≅ E, naturally in both variables *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -183,8 +182,8 @@ Next Obligation.
   unfold op; cat.
 Qed.
 
-(* The components ARE the existing pointwise Yoneda isomorphism, in both
-   legs.  Leibniz [eq_refl] — the convertibility exception. *)
+(* The components ARE existing pointwise Yoneda 同构, both
+ legs. Leibniz [eq_refl] — convertibility exception. （已译） *)
 Definition yoneda_natural_to_component
   (C : Category) (F : C ⟶ Sets) (A : C) :
   transform[to (yoneda_natural C)] (F, A) = to (Covariant_Yoneda_Lemma C F A)
@@ -208,15 +207,15 @@ Proof.
            (F, A) (G, B) (tau, f) al).
 Qed.
 
-(* ...and the same square in elementary terms: Mac Lane's two readings of
-   the composite, one going through the representable and one through F. *)
+(* ...and same square elementary terms: Mac Lane's two readings of
+ 复合, one going through representable one through F. （已译） *)
 Corollary yoneda_eval_at_identity (C : Category) (F G : C ⟶ Sets) (A B : C)
       (tau : F ⟹ G) (f : A ~{C}~> B) (al : [Hom A,─] ⟹ F) :
   transform[tau] B (transform[al] B (id ∘ f))
     ≈ transform[tau] B (fmap[F] f (transform[al] A id)).
 Proof. exact (yoneda_natural_square C F G A B tau f al). Qed.
 
-(** ** Riehl's Remark 2.2.7: evaluation at c is representable *)
+(* 相关说明。 （已译） *)
 
 Section EvaluationAt.
 
@@ -265,7 +264,7 @@ Next Obligation.
   apply proper_morphism; cat.
 Qed.
 
-(* The representing object is the representable copresheaf on the nose. *)
+(* The 表示 对象 representable copresheaf nose. （已译） *)
 Definition yo_repr_obj : @repr_obj _ _ YoEvalAt_Representable = [Hom c,─]
   := eq_refl.
 
@@ -344,8 +343,8 @@ Lemma yoneda_lemma_derived_agrees (C : Category) (F : C^op ⟶ Sets) (A : C) :
     ∧ from (Yoneda_Lemma_derived C F A) ≈ from (Yoneda_Lemma C F A).
 Proof. split; simpl; intros; reflexivity. Qed.
 
-(* The components of the presheaf-side natural isomorphism are the in-tree
-   [Yoneda_Lemma]'s maps, pointwise on the nose. *)
+(* The components presheaf-side natural 同构 in-tree
+ [Yoneda_Lemma]'s maps, pointwise nose. （已译） *)
 Definition yoneda_natural_pre_to_component
   (C : Category) (F : C^op ⟶ Sets) (A : C) (x : Presheaves [Hom ─,A] F) :
   transform[to (yoneda_natural_pre C)] (F, A) x = to (Yoneda_Lemma C F A) x
@@ -369,13 +368,13 @@ Section Witness.
 Notation NatCat := (Deloop Nat_Plus).
 Notation NatRep := (fobj[Curried_Hom NatCat] ttt).
 
-(* Two endomorphisms of the representable: precomposition with 5 and with
-   2.  Each is [fmap] of the Yoneda functor at that arrow. *)
+(* Two endomorphisms representable: precomposition 5 with
+ 2. Each [fmap] Yoneda 函子 at arrow. （已译） *)
 Definition yo_wit_alpha (n : nat) : NatRep ⟹ NatRep :=
   @fmap _ _ (Curried_Hom NatCat) ttt ttt n.
 
-(* Evaluation at the identity reads the arrow back off the transformation:
-   the forward leg of the Yoneda isomorphism sends [yo_wit_alpha n] to n. *)
+(* Evaluation at 恒等 reads arrow back off transformation:
+ forward leg Yoneda 同构 sends [yo_wit_alpha n] n. （已译） *)
 Example yo_wit_to_alpha_5 :
   transform[to (yoneda_natural NatCat)] (NatRep, ttt) (yo_wit_alpha 5%nat) = 5%nat
   := eq_refl.
@@ -384,8 +383,8 @@ Example yo_wit_to_alpha_2 :
   transform[to (yoneda_natural NatCat)] (NatRep, ttt) (yo_wit_alpha 2%nat) = 2%nat
   := eq_refl.
 
-(* ...so the forward leg is not constant, and the transformations are
-   distinct: the isomorphism separates them. *)
+(* ...so forward leg not 常值, transformations are
+ distinct: 同构 separates them. （已译） *)
 Lemma yo_wit_alpha_distinct :
   yo_wit_alpha 5%nat ≈ yo_wit_alpha 2%nat → False.
 Proof.
@@ -394,8 +393,8 @@ Proof.
   discriminate.
 Qed.
 
-(* Both components of the pair the square is probed at are non-identity, so
-   the instance below is not a disguised unit law. *)
+(* Both components pair square probed at non-恒等, so
+ instance below not disguised unit law. （已译） *)
 Lemma yo_wit_alpha_not_id :
   yo_wit_alpha 2%nat ≈ @id ([NatCat, Sets]) NatRep → False.
 Proof.
@@ -427,8 +426,8 @@ Example yo_wit_square_right :
     = 10%nat
   := eq_refl.
 
-(* The square itself, at that pair — an instance of the theorem, not of
-   [eq_refl]. *)
+(* The square itself, at pair — instance 定理, not of
+ [eq_refl]. （已译） *)
 Lemma yo_wit_square :
   transform[to (yoneda_natural NatCat)] (NatRep, ttt)
     (@fmap _ _ (YoNat NatCat) (NatRep, ttt) (NatRep, ttt)
@@ -465,14 +464,14 @@ Proof.
   discriminate.
 Qed.
 
-(* ...and the object of E at this pair genuinely has more than one element,
-   so the isomorphism is not between singletons. *)
+(* ...and 对象 E at pair genuinely has more than one element,
+ so 同构 not between singletons. （已译） *)
 Lemma yo_wit_eval_obj_nontrivial :
   ∃ u v : fobj[YoEval NatCat] (NatRep, ttt), u ≈ v → False.
 Proof. exists 0%nat, 1%nat; intro H; discriminate. Qed.
 
-(* Riehl's Remark 2.2.7 at this witness: evaluation at the single object is
-   represented by the representable copresheaf. *)
+(* Riehl's Remark 2.2.7 at witness: evaluation at single 对象 is
+ 已表示的 representable copresheaf. （已译） *)
 Example yo_wit_repr_obj :
   @repr_obj _ _ (YoEvalAt_Representable NatCat ttt)
     = fobj[Curried_Hom NatCat] ttt := eq_refl.

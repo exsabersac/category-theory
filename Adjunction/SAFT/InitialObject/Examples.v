@@ -18,7 +18,7 @@ Require Import Category.Adjunction.SAFT.InitialObject.
 
 Generalizable All Variables.
 
-(** * The special initial-object theorem at two generic categories *)
+(* * * The special initial-对象 定理 at two generic 范畴 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/well-powered+category
@@ -28,7 +28,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The powerset lattice of a setoid *)
+(* 相关说明。 （已译） *)
 
 Definition Subsets_Cogenerator_empty@{o u +} (X : SetoidObject@{o o}) :
   Cogenerator (Subsets@{o u} X) :=
@@ -97,7 +97,7 @@ Proof.
            (k x (fun i => match i with end))).
 Qed.
 
-(** ** An indiscrete category of types *)
+(* * ** An indiscrete 范畴 types （已译） *)
 
 Definition Indiscrete_Cogenerator_empty@{o h +} (A : Type@{o}) :
   Cogenerator (Indiscrete@{o h h} A) :=

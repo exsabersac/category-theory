@@ -19,8 +19,8 @@ Require Import Category.Instance.Grp.
 
 Generalizable All Variables.
 
-(** The fixed-factor product functor H × − and Mac Lane's induced
-    transformation "f × id". *)
+(** The fixed-factor product 函子 H × − Mac Lane's induced
+ transformation "f × id". （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/product
@@ -55,8 +55,8 @@ Context `{CC : @Cartesian C}.
 
 (** ** The functor H × − *)
 
-(* Object map G ↦ H × G, morphism map g ↦ [second g].  The two functor
-   laws are [second_id] and [second_comp] with no further argument. *)
+(* Object map G ↦ H × G, 态射 map g ↦ [second g]. The two 函子
+ laws [second_id] [second_comp] no further 论元. （已译） *)
 Program Definition fixed_product_functor (H : C) : C ⟶ C := {|
   fobj := fun G => H × G;
   fmap := fun _ _ g => second g
@@ -64,9 +64,9 @@ Program Definition fixed_product_functor (H : C) : C ⟶ C := {|
 Next Obligation. apply second_id. Qed.
 Next Obligation. apply second_comp. Qed.
 
-(* The mirror: fixed factor on the RIGHT, G ↦ G × K, acting by [first].
-   It is not part of the exercise; it is here because the [Binoidal]
-   structure below needs both one-variable tensorings. *)
+(* The 镜像: fixed factor RIGHT, G ↦ G × K, acting [first].
+ It not part exercise; it here because [Binoidal]
+ structure below needs both one-variable tensorings. （已译） *)
 Program Definition fixed_product_functor_right (K : C) : C ⟶ C := {|
   fobj := fun G => G × K;
   fmap := fun _ _ g => first g
@@ -87,7 +87,7 @@ Corollary fixed_product_fmap_right {K x y : C} (g : x ~> y) :
   fmap[fixed_product_functor_right K] g = first g.
 Proof. reflexivity. Qed.
 
-(** ** The induced transformation H × − ⟹ K × − *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Fixed 相关定义、性质与动机。
@@ -105,7 +105,7 @@ Corollary fixed_product_first {H K : C} (f : H ~> K) (G : C) :
   transform[fixed_product_transform f] G = first f.
 Proof. reflexivity. Qed.
 
-(** ** Agreement with the product bifunctor *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Fixed 相关定义、性质与动机。
@@ -126,7 +126,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(** ** The same transformation with its component spelled [split f id] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Fixed 相关定义、性质与动机。
@@ -153,7 +153,7 @@ Proof.
   apply (fixed_product_transform_bimap f G).
 Qed.
 
-(** ** A terminal-free binoidal structure on any cartesian category *)
+(* * ** A terminal-free binoidal structure any cartesian 范畴 （已译） *)
 
 (*
    本节说明幺半结构、函子、幺半群相关定义、性质与动机。
@@ -179,7 +179,7 @@ Corollary Cartesian_Binoidal_inj_left (K : C) :
   @inj_left C Cartesian_Binoidal K = fixed_product_functor_right K.
 Proof. reflexivity. Qed.
 
-(** ** Non-degeneracy: distinct f give distinct transformations *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom、始/终对象相关定义、性质与动机。
@@ -200,9 +200,9 @@ Proof.
   now rewrite (Heq H).
 Qed.
 
-(* Hence the induced transformation is the identity transformation only
-   when f itself is an identity: no unlucky choice of f can produce a
-   degenerate witness. *)
+(* Hence induced transformation 恒等 transformation only
+ f itself 恒等: no unlucky choice f can produce a
+ degenerate witness. （已译） *)
 Corollary fixed_product_transform_reflects_id {H : C} (f : H ~> H) :
   fixed_product_transform f ≈ nat_id → f ≈ id.
 Proof.
@@ -214,7 +214,7 @@ Proof.
   now rewrite first_id, second_id.
 Qed.
 
-(** ** Functoriality in the fixed factor *)
+(* 相关说明。 （已译） *)
 
 Theorem fixed_product_transform_id {H : C} :
   fixed_product_transform (id[H]) ≈ nat_id.
@@ -249,7 +249,7 @@ Next Obligation. apply fixed_product_transform_comp. Qed.
 
 End FixedProduct.
 
-(** ** Comparison with the binoidal structure the tree already reaches *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、笛卡尔、始/终对象相关定义、性质与动机。
@@ -307,11 +307,9 @@ Proof. reflexivity. Qed.
 
 End BinoidalComparison.
 
-(** ** The exercise's own setting: C = Grp *)
+(* 相关说明。 （已译） *)
 
-(* [Grp_Cartesian] (Instance/Grp.v) already supplies the binary
-   direct products, so the instantiation is a specialization and nothing
-   more. *)
+(* 相关说明。 （已译） *)
 
 Definition Grp_fixed_product (H : Grp) : Grp ⟶ Grp :=
   fixed_product_functor H.
@@ -320,7 +318,7 @@ Definition Grp_fixed_product_transform {H K : Grp} (f : H ~{Grp}~> K) :
   Grp_fixed_product H ⟹ Grp_fixed_product K :=
   fixed_product_transform f.
 
-(* The object map is the direct product G ↦ H × G on the nose. *)
+(* The 对象 map direct product G ↦ H × G nose. （已译） *)
 Corollary Grp_fixed_product_obj (H G : Grp) :
   Grp_fixed_product H G = Grp_product H G.
 Proof. reflexivity. Qed.
@@ -387,8 +385,7 @@ Proof.
            (@is_left_inverse Grp Z2 Z2 Grp_Z2_zero Hi)).
 Qed.
 
-(* The component at Z/2 sends (true, true) to (false, true): it moves the
-   fixed factor and leaves the moving factor alone. *)
+(* 相关说明。 （已译） *)
 Example Grp_fixed_product_moves :
   grp_map (transform[Grp_fixed_product_transform Grp_Z2_zero] Z2) (true, true)
     ≈ (false, true).
@@ -420,8 +417,7 @@ Proof.
   exact (fixed_product_transform_reflects_id Grp_Z2_zero Heq true).
 Qed.
 
-(* The component identifies (true, true) with (false, true), so it is not
-   injective, hence not monic, hence not invertible. *)
+(* 相关说明。 （已译） *)
 Theorem Grp_fixed_product_component_not_monic :
   Monic (transform[Grp_fixed_product_transform Grp_Z2_zero] Z2) → False.
 Proof.

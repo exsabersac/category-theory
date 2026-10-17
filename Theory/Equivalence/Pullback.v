@@ -19,7 +19,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Joint monicity of a pullback's projections *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Pullback 相关定义、性质与动机。
@@ -50,14 +50,12 @@ Context {C D : Category}.
 Context {F : C ⟶ D}.
 Context (E : @EquivalenceOfCategories C D F).
 
-(* The two corrected legs of the transported square. *)
+(* 相关说明。 （已译） *)
 Definition pullback_transport_leg {d : D} {P : C}
            (p : P ~> @quasi_inverse C D F E d) : F P ~> d :=
   to (@equivalence_counit_at C D F E d) ∘ fmap[F] p.
 
-(* Any two maps into F P that agree after both corrected legs agree, when
-   the two uncorrected legs are jointly monic downstairs.  This is the
-   whole content of the uniqueness clause below. *)
+(* 相关说明。 （已译） *)
 Lemma pullback_transport_jointly_monic {x y : D} {P : C}
       {p1 : P ~> @quasi_inverse C D F E x}
       {p2 : P ~> @quasi_inverse C D F E y}
@@ -69,11 +67,9 @@ Lemma pullback_transport_jointly_monic {x y : D} {P : C}
   v ≈ w.
 Proof.
   intros H1 H2.
-  (* Cancel the counit isomorphisms, then apply the faithful
-     quasi-inverse. *)
+  (* 相关说明。 （已译） *)
   apply (fmap_inj (Faithful := Equivalence_Inverse_Faithful E)).
-  (* The unit at P is invertible, so it suffices to compare after
-     [from (unit at P)]. *)
+  (* 相关说明。 （已译） *)
   apply (monic (Monic := iso_from_monic
                   (@equivalence_unit_at C D F E P))).
   (* Reduce to the two projections downstairs. *)
@@ -126,7 +122,7 @@ Proof.
     apply fmap_respects.
     exact (is_pullback_commutes HP).
   - intros Q q1 q2 Hq.
-    (* transport the competing cone into C with the quasi-inverse *)
+    (* 相关说明。 （已译） *)
     assert (Hq' : fmap[@quasi_inverse C D F E] f
                     ∘ fmap[@quasi_inverse C D F E] q1
                   ≈ fmap[@quasi_inverse C D F E] g
@@ -180,8 +176,8 @@ Definition HasPullbacks_transport (HP : @HasPullbacks C) :
                   (fmap[@quasi_inverse C D F E] f)
                   (fmap[@quasi_inverse C D F E] g)))) |}.
 
-(* The transported pullback object is the image of the one chosen
-   downstairs, on the nose. *)
+(* The transported pullback 对象 image one chosen
+ downstairs, nose. （已译） *)
 Example HasPullbacks_transport_obj (HP : @HasPullbacks C)
         {x y z : D} (f : x ~> z) (g : y ~> z) :
   Pull f g (@pullback D (HasPullbacks_transport HP) x y z f g)

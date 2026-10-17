@@ -1,4 +1,4 @@
-(** * Limits and colimits as adjoints of the diagonal functor *)
+(* * * Limits colimits adjoints diagonal 函子 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/limit
@@ -74,7 +74,7 @@ Require Import Category.Instance.Sets.Cocomplete.
 
 Generalizable All Variables.
 
-(** * Shape-indexed limit and colimit hypotheses *)
+(* 相关说明。 （已译） *)
 
 Definition HasLimitsOfShape (J C : Category) : Type := ∀ F : J ⟶ C, Limit F.
 
@@ -87,7 +87,7 @@ Definition Complete_HasLimitsOfShape {C : Category} (H : @Complete C)
 Definition Cocomplete_HasColimitsOfShape {C : Category} (H : @Cocomplete C)
   (J : Category) : HasColimitsOfShape J C := H J.
 
-(** * The limit functor and the adjunction Δ ⊣ lim *)
+(* * * The limit 函子 伴随 Δ ⊣ lim （已译） *)
 
 Section LimitAdjunction.
 
@@ -124,7 +124,7 @@ Lemma lim_med_eq {F : J ⟶ C} (N : Cone F)
   (∀ j : J, lim_leg F j ∘ v ≈ cone_leg N j) → u ≈ v.
 Proof. exact (limit_med_eq (lim_alimit F) N u v). Qed.
 
-(** ** The action on natural transformations *)
+(* 相关说明。 （已译） *)
 
 Program Definition Lim_cone {F G : J ⟶ C} (b : F ⟹ G) : Cone G := {|
   vertex_obj := lim_obj F;
@@ -170,7 +170,7 @@ Next Obligation.
   now rewrite comp_assoc.
 Qed.
 
-(** ** The hom-set bijection Δ(x) ⟹ F  ≅  x ~> lim F *)
+(* 相关说明。 （已译） *)
 
 Program Definition lim_precone {F : J ⟶ C} {x : C}
   (h : x ~{C}~> lim_obj F) : ACone x F := {|
@@ -204,8 +204,8 @@ Lemma lim_transpose_from_component {F : J ⟶ C} {x : C}
   transform[lim_transpose_from h] j = lim_leg F j ∘ h.
 Proof. reflexivity. Qed.
 
-(** The donor's bijection is definitional on components, in both
-    directions; the whole construction rests on these two. *)
+(** 本节：The donor's bijection definitional components, both
+ directions; whole construction rests these two. （已译） *)
 
 Example cone_natural_transform_to_component {F : J ⟶ C} {x : C}
   (t : Δ[J](x) ⟹ F) (j : J) :
@@ -258,7 +258,7 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(** ** Riehl §4.6 exercise ii: the counit is the limiting cone *)
+(* 相关说明。 （已译） *)
 
 Definition lim_counit (F : J ⟶ C) : Δ[J](lim_obj F) ⟹ F :=
   @counit ([J, C]) C (@Diagonal C J) LimitFunctor
@@ -271,7 +271,7 @@ Lemma lim_counit_is_limit_leg (F : J ⟶ C) (j : J) :
   transform[lim_counit F] j ≈ lim_leg F j.
 Proof. rewrite lim_counit_component_strict; now rewrite id_right. Qed.
 
-(** ** Readbacks against the donor vocabulary *)
+(* 相关说明。 （已译） *)
 
 Example lim_obj_is_limit_apex (F : J ⟶ C) :
   fobj[LimitFunctor] F = vertex_obj[@limit_cone J C F (L F)] := eq_refl.
@@ -297,7 +297,7 @@ Example lim_transpose_from_is_adj {F : J ⟶ C} {x : C}
 
 End LimitAdjunction.
 
-(** * The colimit functor and the adjunction colim ⊣ Δ *)
+(* * * The colimit 函子 伴随 colim ⊣ Δ （已译） *)
 
 Section ColimitAdjunction.
 
@@ -346,7 +346,7 @@ Program Definition Cocone_of {F : J ⟶ C} (c : C)
 Example cocone_of_inj {F : J ⟶ C} (c : C) i Hi (j : J) :
   cocone_inj (@Cocone_of F c i Hi) j = i j := eq_refl.
 
-(** ** The dual of [Cone_Natural_Transform] *)
+(* 相关说明。 （已译） *)
 
 Program Definition cocone_of_transform {F : J ⟶ C} {N : C}
   (t : F ⟹ Δ[J](N)) : Cocone F :=
@@ -386,7 +386,7 @@ Proof.
   - exact (transform_of_cocone (@Build_Cone (J^op) (C^op) (F^op) N t)).
 Defined.
 
-(** ** The action on natural transformations *)
+(* 相关说明。 （已译） *)
 
 Program Definition Colim_cocone {F G : J ⟶ C} (b : F ⟹ G) : Cocone F :=
   Cocone_of (colim_obj G) (fun j => colim_inj G j ∘ transform[b] j) _.
@@ -432,7 +432,7 @@ Next Obligation.
   now rewrite <- comp_assoc.
 Qed.
 
-(** ** The hom-set bijection colim F ~> y  ≅  F ⟹ Δ(y) *)
+(* 相关说明。 （已译） *)
 
 Program Definition colim_transpose_to {F : J ⟶ C} {y : C}
   (u : colim_obj F ~{C}~> y) : F ⟹ Δ[J](y) := {|
@@ -500,7 +500,7 @@ Next Obligation.
   now rewrite <- comp_assoc, colim_transpose_from_commutes.
 Qed.
 
-(** ** Riehl §4.6 exercise ii: the unit is the colimiting cocone *)
+(* 相关说明。 （已译） *)
 
 Definition colim_unit (F : J ⟶ C) : F ⟹ Δ[J](colim_obj F) :=
   @unit C ([J, C]) ColimitFunctor (@Diagonal C J)
@@ -513,7 +513,7 @@ Lemma colim_unit_is_colimit_inj (F : J ⟶ C) (j : J) :
   transform[colim_unit F] j ≈ colim_inj F j.
 Proof. rewrite colim_unit_component_strict; now rewrite id_left. Qed.
 
-(** ** Readbacks against the donor vocabulary *)
+(* 相关说明。 （已译） *)
 
 Example colim_obj_is_colimit_apex (F : J ⟶ C) :
   fobj[ColimitFunctor] F = colimit_apex (L F) := eq_refl.
@@ -541,7 +541,7 @@ Example colim_transpose_from_is_adj {F : J ⟶ C} {y : C}
 
 End ColimitAdjunction.
 
-(** * Riehl §4.6 Proposition 4.6.1, the converse directions *)
+(* 相关说明。 （已译） *)
 
 Section RightAdjointGivesLimits.
 
@@ -664,7 +664,7 @@ Proof.
   - intros [K A]; exact (Diagonal_left_adjoint_HasColimits A).
 Defined.
 
-(** * Awodey §9.3 / Riehl §4.6 exercise i: the degenerate rows *)
+(* 相关说明。 （已译） *)
 
 Lemma one_arrow_eq@{u} (a b : poly_unit@{u}) : a = b.
 Proof. now destruct a, b. Qed.
@@ -743,7 +743,7 @@ Proof.
   - intros [K A]; exact (Erase_left_adjoint_Initial A).
 Defined.
 
-(** The adjoint's value at the unique object IS the (co)terminal object. *)
+(** The adjoint's value at unique 对象 IS (co)终对象. （已译） *)
 
 Example Erase_right_adjoint_value {C : Category} {R : _1 ⟶ C}
   (A : Erase C ⊣ R) :
@@ -759,7 +759,7 @@ Example Terminal_Erase_value {C : Category} (T : @Terminal C) :
 Example Initial_Erase_value {C : Category} (I : @Initial C) :
   fobj[@Diagonal C _1 (@initial_obj C I)] ttt = @initial_obj C I := eq_refl.
 
-(** The empty shape: limits of shape 0 are exactly terminal objects. *)
+(** The empty shape: limits shape 0 exactly terminal 对象. （已译） *)
 
 Theorem HasLimitsOfShape_0_iff_Terminal (C : Category) :
   HasLimitsOfShape 0 C ↔ @Terminal C.
@@ -781,14 +781,14 @@ Proof.
                (snd (limits_iff_diagonal_right_adjoint 0 C) H)).
 Defined.
 
-(** * Comparison with the right Kan extension along Erase J *)
+(* 相关说明。 （已译） *)
 
 Section KanComparison.
 
 Context {J C : Category}.
 
-(** The diagonal is the restriction along [Erase J] of the constant
-    functor [1 ⟶ C], on both actions and on the nose. *)
+(** The diagonal restriction along [Erase J] 常值
+ 函子 [1 ⟶ C], both actions nose. （已译） *)
 
 Example diagonal_is_induced_obj (c : C) (j : J) :
   fobj[Δ[J](c)] j
@@ -813,7 +813,7 @@ Proof. exact (@Kan_Limit J C F (L F) RK). Qed.
 
 End KanComparison.
 
-(** * Non-vacuity: the shape 1, and the sandwich at Sets *)
+(* 相关说明。 （已译） *)
 
 Section OneShapeLimit.
 

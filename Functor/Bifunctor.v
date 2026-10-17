@@ -29,8 +29,7 @@ Context {C : Category}.
 Context {D : Category}.
 Context {E : Category}.
 
-(* A bimap takes two arrows in C and D, and lifts them to an arrow in E over
-   some bifunctor F : C ∏ D ⟶ E. *)
+(* 相关说明。 （已译） *)
 Definition bimap {F : C ∏ D ⟶ E} {x w : C} {y z : D}
            (f : x ~{C}~> w) (g : y ~{D}~> z) :
   F (x, y) ~{E}~> F (w, z) := @fmap (C ∏ D) E F (x, y) (w, z) (f, g).
@@ -74,7 +73,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* Functoriality of the partial functor F(w, -) in the second variable. *)
+(* Functoriality partial 函子 F(w, -) second variable. （已译） *)
 Lemma bimap_comp_id_left {F : C ∏ D ⟶ E} {w}
       `(f : y ~{D}~> z) `(g : x ~{D}~> y) :
   bimap (id[w]) (f ∘ g) ≈ bimap id f ∘ bimap id g.
@@ -85,7 +84,7 @@ Proof.
   split; simpl; cat.
 Qed.
 
-(* Functoriality of the partial functor F(-, w) in the first variable. *)
+(* Functoriality partial 函子 F(-, w) first variable. （已译） *)
 Lemma bimap_comp_id_right {F : C ∏ D ⟶ E} {w}
       `(f : y ~{C}~> z) `(g : x ~{C}~> y) :
   bimap (f ∘ g) (id[w]) ≈ bimap f id ∘ bimap g id.
@@ -111,8 +110,8 @@ Proof.
   split; simpl; cat.
 Qed.
 
-(* Interchange, swap form: acting first in C then in D agrees with the joint
-   action (mirror of [bimap_id_right_left]). *)
+(* Interchange, swap form: acting first C then D agrees joint
+ action (镜像 [bimap_id_right_left]). （已译） *)
 Lemma bimap_id_left_right {F : C ∏ D ⟶ E} {w}
       `(f : z ~{D}~> w) `(g : x ~{C}~> y) :
   bimap id f ∘ bimap g id ≈ bimap g f.
@@ -123,9 +122,9 @@ Proof.
   split; simpl; cat.
 Qed.
 
-(* A bifunctor preserves isomorphisms in each variable: isomorphic inputs in
-   both factors yield isomorphic objects in E, with bimap of the component
-   isos as the witness. *)
+(* A bifunctor preserves isomorphisms each variable: isomorphic inputs in
+ both factors yield isomorphic 对象 E, bimap component
+ isos witness. （已译） *)
 #[export] Program Instance bifunctor_respects {F : C ∏ D ⟶ E} :
   Proper ((fun p q => Isomorphism (fst p) (fst q) ∧
                       Isomorphism (snd p) (snd q))

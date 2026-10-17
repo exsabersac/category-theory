@@ -5,7 +5,7 @@ Require Import Category.Theory.Coq.Monad.
 
 Generalizable All Variables.
 
-(** The Either/sum type [a + b] as bifunctor, and the error monad in [b] *)
+(** The Either/sum type [a + b] bifunctor, error 单子 [b] （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/coproduct
@@ -23,8 +23,7 @@ Notation Right  := inr (only parsing).    (* [inr : b → a + b], right injectio
 Definition isLeft  `(x : a + b) : bool := if x then true else false.
 Definition isRight `(x : a + b) : bool := if x then false else true.
 
-(* The copairing [[f, g] : a + b → c] out of the coproduct: the unique map
-   with [[f, g] ∘ inl = f] and [[f, g] ∘ inr = g] (the eliminator for sums). *)
+(* 相关说明。 （已译） *)
 Definition either `(f : a → c) `(g : b → c) (x : a + b) : c :=
   match x with
   | inl a => f a
@@ -42,16 +41,16 @@ Definition mapLeft `(f : a → c) `(x : a + b) : c + b :=
   | inr r => inr r
   end.
 
-(* The functor [b ↦ E + b] (left summand [E] fixed): [fmap] maps over the
-   [Right] value and propagates [Left e] unchanged. *)
+(* The 函子 [b ↦ E + b] (left summand [E] fixed): [fmap] maps over the
+ [Right] value propagates [Left e] unchanged. （已译） *)
 Definition Either_map {E X Y} (f : X → Y) (x : Either E X) : Either E Y :=
   match x with
   | Left e   => Left e
   | Right x' => Right (f x')
   end.
 
-(* Applicative [ap]: a [Left] in either the function or the argument
-   short-circuits to that [Left] (the function's [Left] taking priority). *)
+(* Applicative [ap]: [Left] either function 论元
+ short-circuits [Left] (the function's [Left] taking priority). （已译） *)
 Definition Either_ap {E X Y} (f : Either E (X → Y)) (x : Either E X)
   : Either E Y :=
   match f with
@@ -62,8 +61,8 @@ Definition Either_ap {E X Y} (f : Either E (X → Y)) (x : Either E X)
     end
   end.
 
-(* The monad multiplication [μ : E + (E + b) → E + b], collapsing the two
-   copies of the error summand [E] (an outer or inner [Left] both yield [Left]). *)
+(* The 单子 multiplication [μ : E + (E + b) → E + b], collapsing two
+ copies error summand [E] (an outer inner [Left] both yield [Left]). （已译） *)
 Definition Either_join {E X} (x : Either E (Either E X)) : Either E X :=
   match x with
   | Left e           => Left e
@@ -71,8 +70,8 @@ Definition Either_join {E X} (x : Either E (Either E X)) : Either E X :=
   | Right (Right x') => Right x'
   end.
 
-(* Monadic [bind] of the exception monad: [Left e] short-circuits (ignoring [f]),
-   [Right x'] continues with [f x']. *)
+(* Monadic [bind] exception 单子: [Left e] short-circuits (ignoring [f]),
+ [Right x'] continues [f x']. （已译） *)
 Definition Either_bind {E X Y} (x : Either E X) (f : X → Either E Y) :
   Either E Y :=
   match x with
@@ -93,7 +92,7 @@ Instance Either_Applicative {E} : Applicative (Either E) := {
   ap := @Either_ap E;
 }.
 
-(* The exception monad in the right argument; the unit [η = ret] is [Right]. *)
+(* The exception 单子 right 论元; unit [η = ret] [Right]. （已译） *)
 #[export]
 Instance Either_Monad {E} : Monad (Either E) := {
   ret := @Right E;

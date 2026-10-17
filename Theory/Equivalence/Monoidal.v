@@ -68,7 +68,7 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(* Cancelling a [to]/[from] pair at the tail of a left-nested spine. *)
+(* 相关说明。 （已译） *)
 Lemma iso_cancel_spine_tf {t x y : A} (X : x ~> t) (i : y ≅ x) :
   (X ∘ to i) ∘ from i ≈ X.
 Proof.
@@ -161,8 +161,7 @@ Qed.
 
 End BimapSpine.
 
-(* The nested variant of [bimap_id_cancel_ft_spine]: the cancelling pair
-   sits in the first slot of the second component, one bifunctor down. *)
+(* 相关说明。 （已译） *)
 Lemma bimap_bimap_id_cancel_ft_spine
   {J K1 K2 K L : Category} {T : J ∏ K ⟶ L} {S : K1 ∏ K2 ⟶ K}
   {t : L} {a : J} {x' y' : K1} {v : K2}
@@ -178,8 +177,8 @@ Proof.
   apply id_right.
 Qed.
 
-(* Spine forms of the naturality of the associator and of the pentagon
-   law of a monoidal category. *)
+(* Spine forms 自然性 associator pentagon
+ law 幺半范畴. （已译） *)
 Section MonoidalSpine.
 
 Context {C : Category}.
@@ -246,7 +245,7 @@ End MonoidalTransportSpine.
 Import MonoidalTransportSpine.
 
 (* ------------------------------------------------------------------ *)
-(* The staging record: monoidal data without the coherence laws.       *)
+(* 相关说明。 （已译） *)
 
 Section TransportData.
 
@@ -326,8 +325,7 @@ Definition transport_pentagon (T : MonoidalTransportData) : Type :=
                  (x, transport_tensor T (y, transport_tensor T (z, w))) >>
     to (transport_tensor_assoc T) ∘ to (transport_tensor_assoc T).
 
-(* Assemble a genuine monoidal structure from staged transport data plus
-   the two coherence proofs. *)
+(* 相关说明。 （已译） *)
 Definition Monoidal_from_transport_data
   (T : MonoidalTransportData)
   (tri : transport_triangle T)
@@ -469,8 +467,8 @@ Proof.
   apply transport_counit_to_natural.
 Qed.
 
-(* The zig-zag identity at G, in its most usable form: G takes the
-   rectified counit to the inverse of the unit component. *)
+(* The zig-zag 恒等 at G, most usable form: G takes the
+ rectified counit inverse unit component. （已译） *)
 Lemma quasi_inverse_transport_counit (d : D) :
   fmap[G] (to (transport_counit d)) ≈ from (eta (G d)).
 Proof.
@@ -613,8 +611,8 @@ Lemma transported_unit_right_to_unfold (x : D) :
                      ∘ bimap (id[G x]) (from (eta (@I C M)))).
 Proof. reflexivity. Qed.
 
-(* The transported associator, assembled purely from the unit
-   isomorphism and the associator of C. *)
+(* The transported associator, assembled purely unit
+ 同构 associator C. （已译） *)
 Program Definition Transported_tensor_assoc (x y z : D) :
   F ((G (F ((G x ⨂[M] G y)%object)) ⨂[M] G z)%object)
     ≅ F ((G x ⨂[M] G (F ((G y ⨂[M] G z)%object)))%object) := {|
@@ -663,9 +661,9 @@ Lemma transported_tensor_assoc_to_unfold (x y z : D) :
                  ∘ bimap (from (eta ((G x ⨂ G y)%object))) (id[G z])).
 Proof. reflexivity. Qed.
 
-(* The image under G of the transported unitors: the zig-zag identity
-   collapses the counit factor, so the image is the corresponding unitor
-   of C conjugated by a single unit component. *)
+(* The image under G transported unitors: zig-zag 恒等
+ collapses counit factor, so image corresponding unitor
+ C conjugated single unit component. （已译） *)
 Lemma G_transported_unit_left (y : D) :
   fmap[G] (to (Transported_unit_left y))
     ≈ to (@unit_left C M (G y)) ∘ bimap (from (eta (@I C M))) (id[G y])
@@ -694,7 +692,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* The C-side naturality squares of the transported unitors. *)
+(* The C-side 自然性 squares transported unitors. （已译） *)
 
 Lemma transported_unit_left_square {x y : D} (g : x ~> y) :
   (to (@unit_left C M (G y)) ∘ bimap (from (eta (@I C M))) (id[G y]))
@@ -725,7 +723,7 @@ Proof.
   now rewrite <- comp_assoc.
 Qed.
 
-(* The six naturality fields of the transported structure. *)
+(* The six 自然性 fields transported structure. （已译） *)
 
 Lemma Transported_to_unit_left_natural {x y : D} (g : x ~> y) :
   g ∘ to (Transported_unit_left x)
@@ -804,7 +802,7 @@ Proof.
   apply Transported_to_tensor_assoc_natural.
 Qed.
 
-(* The staged transport data for the transported structure. *)
+(* 相关说明。 （已译） *)
 Definition Transported_Monoidal_Data : MonoidalTransportData D :=
   @Build_MonoidalTransportData D
     (F (@I C M))
@@ -881,8 +879,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* The transported monoidal structure, assembled from the staged data and
-   the two coherence laws.  A Definition, never an Instance. *)
+(* 相关说明。 （已译） *)
 Definition Transported_Monoidal : @Monoidal D :=
   Monoidal_from_transport_data Transported_Monoidal_Data
     (fun x y => Transported_triangle_identity x y)

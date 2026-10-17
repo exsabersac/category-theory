@@ -20,7 +20,7 @@ Require Import Category.Instance.One.
 
 Generalizable All Variables.
 
-(** * A hypothesis-free instantiation of created limits *)
+(* * * A 假设-free instantiation created limits （已译） *)
 
 (*
    本文件给出例子。
@@ -33,19 +33,19 @@ Definition IdC : Coq ⟶ Coq := Id[Coq].
 Definition Kempty : 0 ⟶ @EilenbergMoore Coq IdC (@Id_Monad Coq) :=
   From_0 _.
 
-(* The terminal object of [Coq], read as the limit of the empty diagram. *)
+(* The 终对象 [Coq], read limit empty diagram. （已译） *)
 
 Definition Lbelow : Limit (EM_Forget IdC ◯ Kempty) :=
   snd (Terminal_Limit Coq (EM_Forget IdC ◯ Kempty)) Coq_Terminal.
 
-(* The created lift, and the fact that it is limiting. *)
+(* 相关说明。 （已译） *)
 
 Definition created_terminal_algebra :
   IsALimit Kempty (em_apex IdC Kempty Lbelow) :=
   em_created IdC Kempty Lbelow.
 
-(* The carrier of the created algebra is the apex of the limit downstairs,
-   definitionally: [EM_Forget]'s object map is the first projection. *)
+(* The carrier created algebra apex limit downstairs,
+ definitionally: [EM_Forget]'s 对象 map first projection. （已译） *)
 
 Definition created_carrier :
   `1 (em_apex IdC Kempty Lbelow) = vertex_obj[Lbelow] := eq_refl.
@@ -58,7 +58,7 @@ Definition created_terminal :
     {| limit_cone := em_cone IdC Kempty Lbelow
      ; ump_limits := @ump_limit _ _ _ _ (em_created IdC Kempty Lbelow) |}.
 
-(** ** Mac Lane's "exactly one pair", on the nose: refuted *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明单子、（余）极限、Eilenberg–Moore相关定义、性质与动机。

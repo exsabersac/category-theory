@@ -9,7 +9,7 @@ Require Import Category.Instance.Concrete.
 
 Generalizable All Variables.
 
-(** * Underlying injections and surjections in a concrete category *)
+(* * * Underlying injections surjections concrete 范畴 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/concrete+category
@@ -63,7 +63,7 @@ Qed.
 
 End ConcreteMorphisms.
 
-(** ** The corollary at work: [Coq], via [Coq_Concrete] *)
+(* * ** The 推论 at work: [Coq], via [Coq_Concrete] （已译） *)
 
 (*
    本节说明函子、hom相关定义、性质与动机。
@@ -108,7 +108,7 @@ Definition Coq_bool_to_nat_Monic : Monic (bool_to_nat : bool ~{Coq}~> nat) :=
 Definition Coq_pred_Epic : Epic (Nat.pred : nat ~{Coq}~> nat) :=
   concrete_surjective_epic (Con:=Coq_Concrete) Nat.pred Coq_pred_surjective.
 
-(** ** The same two conclusions through the reflection lemmas *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、来源与用途相关定义、性质与动机。

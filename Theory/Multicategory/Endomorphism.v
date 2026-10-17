@@ -11,7 +11,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * The endomorphism operad of an object in a cartesian category *)
+(* * * The endomorphism operad 对象 cartesian 范畴 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/endomorphism+operad
@@ -51,7 +51,7 @@ Definition pow_cast {m n : nat} (e : m = n) : pow m ~> pow n :=
 Lemma pow_cast_refl {n : nat} (e : n = n) : pow_cast e ≈ id.
 Proof. now rewrite (UIP_nat _ _ e eq_refl). Qed.
 
-(* Casting does not depend on the proof cast along. *)
+(* Casting does not depend 证明 cast along. （已译） *)
 Lemma pow_cast_irrel {m n : nat} (e e' : m = n) : pow_cast e ≈ pow_cast e'.
 Proof. now rewrite (UIP_nat _ _ e e'). Qed.
 
@@ -121,10 +121,9 @@ Proof.
       now rewrite IHm.
 Qed.
 
-(** ** Naturality of the product associator *)
+(* 相关说明。 （已译） *)
 
-(* The inverse associator is natural in each of its three slots.  All three
-   are elementary fork algebra. *)
+(* 相关说明。 （已译） *)
 Lemma assoc_from_first {x x' y z : C} (u : x ~> x') :
   passoc (x:=x') (y:=y) (z:=z) ∘ first u
     ≈ first (first u) ∘ passoc (x:=x) (y:=y) (z:=z).
@@ -140,8 +139,8 @@ Lemma assoc_from_right {x y z z' : C} (w : z ~> z') :
     ≈ second w ∘ passoc (x:=x) (y:=y) (z:=z).
 Proof. unfold passoc; unfork. Qed.
 
-(* Tail-carrying forms of the naturality lemmas, for rewriting inside
-   right-associated composition chains. *)
+(* Tail-carrying forms 自然性 lemmas, rewriting inside
+ right-associated 复合 chains. （已译） *)
 Lemma assoc_from_mid' {x y y' z w : C} (v : y ~> y') (t : w ~> x × (y × z)) :
   first (second v) ∘ (passoc ∘ t)
     ≈ passoc ∘ (second (first v) ∘ t).
@@ -158,7 +157,7 @@ Proof.
   now rewrite <- assoc_from_right.
 Qed.
 
-(* The pentagon for the inverse associator, with a tail. *)
+(* 相关说明。 （已译） *)
 Lemma pentagon_from' {w x y z v : C} (t : v ~> w × (x × (y × z))) :
   first passoc ∘ (passoc ∘ (second passoc ∘ t))
     ≈ passoc ∘ (passoc ∘ t).
@@ -168,16 +167,14 @@ Proof.
   unfold passoc; unfork.
 Qed.
 
-(* Associativity of block splitting: splitting off an [a]-block and then a
-   [b]-block agrees with splitting at [a + b] and subdividing, up to the
-   product associator and the reindexing cast. *)
+(* 相关说明。 （已译） *)
 Lemma pow_split_assoc (a b c : nat)
   (E : (a + (b + c))%nat = ((a + b) + c)%nat) :
   first (pow_split a b) ∘ pow_split (a + b) c ∘ pow_cast E
     ≈ passoc ∘ second (pow_split b c) ∘ pow_split a (b + c).
 Proof.
   revert E; induction a; intros E; simpl.
-  - (* The cast is a loop, and both sides are elementary fork algebra. *)
+  - (* 相关说明。 （已译） *)
     rewrite pow_cast_refl, id_right.
     unfold passoc; unfork.
     apply fork_respects; [apply fork_respects|]; try reflexivity.
@@ -216,7 +213,7 @@ Proof.
   - now rewrite IHm.
 Qed.
 
-(* Grafting the unary identity operation is the identity. *)
+(* Grafting unary 恒等 operation 恒等. （已译） *)
 Lemma graft_id (m k : nat) : graft m 1 k exl ≈ id.
 Proof.
   induction m; simpl.
@@ -242,10 +239,9 @@ Proof.
   now rewrite assoc_from_first.
 Qed.
 
-(** ** Commuting the graft past block splitting *)
+(* 相关说明。 （已译） *)
 
-(* Grafting inside the FIRST block commutes with splitting off a trailing
-   [n]-block. *)
+(* 相关说明。 （已译） *)
 Lemma split_graft_first (m t k n : nat) (h : pow t ~> X)
   (E1 : (m + S (k + n))%nat = ((m + S k) + n)%nat)
   (E2 : (m + (t + (k + n)))%nat = ((m + (t + k)) + n)%nat) :
@@ -272,8 +268,7 @@ Proof.
     apply IHm.
 Qed.
 
-(* Grafting inside the SECOND block commutes with splitting off a leading
-   [a]-block. *)
+(* 相关说明。 （已译） *)
 Lemma split_graft_second (a m d k : nat) (h : pow d ~> X)
   (E1 : ((a + m) + S k)%nat = (a + (m + S k))%nat)
   (E2 : ((a + m) + (d + k))%nat = (a + (m + (d + k)))%nat) :
@@ -300,8 +295,8 @@ Qed.
 
 (** ** The two associativity cores *)
 
-(* Nested shape: grafting [h] into the block fed to [g'] agrees with
-   grafting [g' ∘ (graft of h)] directly. *)
+(* Nested shape: grafting [h] 进入 block fed [g'] agrees with
+ grafting [g' ∘ (graft h)] directly. （已译） *)
 Lemma graft_nested (m1 m2 k1 k2 t : nat)
   (g' : pow (m2 + S k2) ~> X) (h : pow t ~> X)
   (E1 : ((m1 + m2) + S (k2 + k1))%nat = (m1 + ((m2 + S k2) + k1))%nat)
@@ -382,8 +377,8 @@ Definition len_splice (Γ1 Δ Γ2 : list poly_unit) :
   eq_trans (len_app Γ1 (Δ ++ Γ2))
            (f_equal (λ n, (length Γ1 + n)%nat) (len_app Δ Γ2)).
 
-(* Multimorphisms of End(X): the colour set is the one-point type, and an
-   operation with source list Γ is a morphism out of the |Γ|-th power. *)
+(* Multimorphisms End(X): colour set one-point type, an
+ operation source list Γ 态射 out |Γ|-th power. （已译） *)
 Definition End_hom (Γ : list poly_unit) (_ : poly_unit) : Type :=
   pow (length Γ) ~{C}~> X.
 
@@ -406,8 +401,7 @@ Definition End_mcomp {Γ1 Γ2 Δ : list poly_unit} {b c : poly_unit}
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The braid on the two head factors of a right-nested product:
-   (a, (b, w)) ↦ (b, (a, w)). *)
+(* 相关说明。 （已译） *)
 Definition braid {w : C} : X × (X × w) ~> X × (X × w) :=
   (exl ∘ exr) △ (exl △ (exr ∘ exr)).
 
@@ -425,7 +419,7 @@ Definition End_msym {Γ Δ : list poly_unit} {c : poly_unit}
   (p : tperm Γ Δ) (f : End_hom Γ c) : End_hom Δ c :=
   f ∘ perm_act p.
 
-(** ** The cast pack and respectfulness *)
+(* 相关说明。 （已译） *)
 
 Lemma End_mcast_respects {Γ Γ' : list poly_unit} {c : poly_unit}
   (e : Γ = Γ') :
@@ -573,7 +567,7 @@ Proof.
     apply IHm.
 Qed.
 
-(* The graft is the plugged payload row. *)
+(* 相关说明。 （已译） *)
 Lemma graft_plug (m d k : nat) (g : pow d ~> X) :
   graft m d k g ≈ plug m (s':=S k) (first g ∘ pow_split d k).
 Proof.
@@ -582,8 +576,7 @@ Proof.
   - now rewrite IHm.
 Qed.
 
-(* Splitting after a plugged tail map is the tail map on the second
-   block. *)
+(* 相关说明。 （已译） *)
 Lemma split_plug (a : nat) {s s' : nat} (v : pow s ~> pow s') :
   pow_split a s' ∘ plug a v ≈ second v ∘ pow_split a s.
 Proof.
@@ -624,7 +617,7 @@ Proof.
     apply IHΓ.
 Qed.
 
-(* Splitting off a tail block commutes with the head braid. *)
+(* 相关说明。 （已译） *)
 Lemma split_braid (n m : nat) :
   pow_split (S (S n)) m ∘ braid (w:=pow (n + m))
     ≈ first (braid (w:=pow n)) ∘ pow_split (S (S n)) m.
@@ -632,8 +625,7 @@ Proof.
   simpl; unfold braid, passoc; unfork.
 Qed.
 
-(* [split_braid] with a reindexing cast interposed: stated at the nat
-   level so that the cast can be destructed away. *)
+(* 相关说明。 （已译） *)
 Lemma split_braid_cast (n m j : nat) (e : j = (n + m)%nat)
   (E E' : S (S j) = (S (S n) + m)%nat) :
   pow_split (S (S n)) m ∘ pow_cast E ∘ braid (w:=pow j)
@@ -646,8 +638,7 @@ Proof.
   apply split_braid.
 Qed.
 
-(* Left whiskering: the action of [tperm_app_l p T] is the action of [p]
-   on the first block, seen through the block splitting. *)
+(* 相关说明。 （已译） *)
 Lemma act_app_l_split {Γ Γ' : list poly_unit} (p : tperm Γ Γ')
   (T : list poly_unit)
   (E : length (Γ ++ T) = (length Γ + length T)%nat)
@@ -690,7 +681,7 @@ Proof.
     apply IHp2.
 Qed.
 
-(* Braid conjugation with reindexing casts, at the nat level. *)
+(* 相关说明。 （已译） *)
 Lemma braid_plug_cast {s s' j j' : nat} (w : pow s ~> pow s')
   (e : j = s) (e' : j' = s')
   (E1 : S (S j) = S (S s)) (E2 : S (S j') = S (S s'))
@@ -754,8 +745,7 @@ Proof.
     reflexivity.
 Qed.
 
-(* The payload-level core of the equivariance law: acting on the payload
-   block and on the suffix block commutes with the payload row. *)
+(* 相关说明。 （已译） *)
 Lemma equivariant_core {Δ Δ' Γ2 Γ2' : list poly_unit}
   (q : tperm Δ Δ') (r : tperm Γ2 Γ2') (g : pow (length Δ) ~> X) :
   ((first g ∘ pow_split (length Δ) (length Γ2)) ∘ pow_cast (len_app Δ Γ2))

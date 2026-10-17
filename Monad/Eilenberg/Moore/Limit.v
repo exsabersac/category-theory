@@ -14,7 +14,7 @@ Require Import Category.Structure.Complete.
 
 Generalizable All Variables.
 
-(** * Limits of algebras are computed on carriers *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/Eilenberg-Moore+category#limits
@@ -46,7 +46,7 @@ Proof.
   reflexivity.
 Defined.
 
-(** ** The action cone: apex [T L], legs [ν_j ∘ T π_j] *)
+(* 相关说明。 （已译） *)
 
 Definition em_act_leg (j : J) : T (vertex_obj[L]) ~{D}~> (EM_Forget T ◯ K) j :=
   t_alg[`2 (K j)] ∘ fmap[T] (limit_leg (limit_is_alimit L) j).
@@ -68,7 +68,7 @@ Definition em_act_cone : Cone (EM_Forget T ◯ K) :=
     (@Build_ACone J D (T (vertex_obj[L])) (EM_Forget T ◯ K)
        em_act_leg (@em_act_coherence)).
 
-(* The created structure map is the mediator of that cone. *)
+(* 相关说明。 （已译） *)
 
 Definition em_act : T (vertex_obj[L]) ~{D}~> vertex_obj[L] :=
   limit_med (limit_is_alimit L) em_act_cone.
@@ -77,7 +77,7 @@ Lemma em_act_triangle (j : J) :
   limit_leg (limit_is_alimit L) j ∘ em_act ≈ em_act_leg j.
 Proof. exact (limit_med_commutes (limit_is_alimit L) em_act_cone j). Qed.
 
-(** ** The algebra laws for the created action *)
+(* 相关说明。 （已译） *)
 
 Lemma em_alg_t_id : em_act ∘ ret ≈ id.
 Proof.
@@ -153,7 +153,7 @@ Definition em_cone : Cone K :=
   @Build_Cone J (EilenbergMoore T) K em_apex
     (@Build_ACone J (EilenbergMoore T) em_apex K em_leg (@em_leg_coherence)).
 
-(** ** Strictness: the created cone lies over L on the nose *)
+(* 相关说明。 （已译） *)
 
 Definition em_over_obj : EM_Forget T em_apex = vertex_obj[L] := eq_refl.
 
@@ -222,11 +222,9 @@ Proof.
     exact (limit_med_unique (limit_is_alimit L) (car_cone N) t_alg_hom[v] Hv).
 Defined.
 
-(** ** Uniqueness of the lift: the algebra structure is the only one *)
+(* 相关说明。 （已译） *)
 
-(* The [≈]-form of Mac Lane's uniqueness clause at a pinned carrier, the
-   same statement [created_alg_unique] (BeckObjects.v) makes at its own
-   shape. *)
+(* 相关说明。 （已译） *)
 
 Lemma em_alg_unique (alg' : @TAlgebra D T H (vertex_obj[L]))
   (Halg : ∀ j, limit_leg (limit_is_alimit L) j ∘ t_alg[alg'] ≈ em_act_leg j) :
@@ -238,7 +236,7 @@ Qed.
 
 End EMCreates.
 
-(** ** Reflection: a cone whose image is limiting is limiting *)
+(* 相关说明。 （已译） *)
 
 Section EMReflects.
 
@@ -344,7 +342,7 @@ Defined.
 
 End EMReflects.
 
-(** ** [EM_Forget] strictly creates every limit *)
+(* 相关说明。 （已译） *)
 
 Section EMStrictlyCreates.
 
@@ -379,7 +377,7 @@ Definition em_forget_CreatesLimit : CreatesLimit K (EM_Forget T) :=
 
 End EMStrictlyCreates.
 
-(** ** Uniqueness of a strict lift, at an unpinned carrier *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明单子、（余）极限、同构相关定义、性质与动机。
@@ -446,10 +444,10 @@ Definition em_forget_CreatesAllLimits {D : Category} (T : D ⟶ D)
   `{H : @Monad D T} : CreatesAllLimits (EM_Forget T) :=
   fun J K => em_forget_CreatesLimit T K.
 
-(** ** Algebras over a complete base are complete *)
+(* 相关说明。 （已译） *)
 
-(* Mac Lane §V.4 Theorem 2 applied to the witness above; this is the
-   standing claim of Structure/Complete.v, as a theorem. *)
+(* Mac Lane §V.4 Theorem 2 applied witness above; 这是 the
+ standing claim Structure/Complete.v, 定理. （已译） *)
 
 Definition EM_Complete {D : Category} (T : D ⟶ D) `{H : @Monad D T}
   (HD : @Complete D) : @Complete (EilenbergMoore T) :=

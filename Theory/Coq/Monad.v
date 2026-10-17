@@ -3,7 +3,7 @@ Require Export Category.Theory.Coq.Applicative.
 
 Generalizable All Variables.
 
-(** The Monad type class (bind/return), with its categorical reading *)
+(** The Monad 类型类 (bind/return), categorical reading （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/monad
@@ -120,8 +120,7 @@ Notation "f >=[ M ]=> g" := (@kleisli_compose M _ _ _ _ _ f _ g)
 Notation "f <=[ M ]=< g" := (@kleisli_compose M _ _ _ _ _ g _ f)
   (at level 42, right associativity) : monad_scope.
 
-(* Haskell-style [do] notation: [x <- A ;; B] desugars to [A >>= λ x, B],
-   sequencing the effect [A] and binding its result to [x] in [B]. *)
+(* 相关说明。 （已译） *)
 Notation "x <- A ;; B" := (A >>= (λ x, B))%monad
   (at level 81, A at next level, right associativity) : monad_scope.
 
@@ -136,8 +135,8 @@ Notation "A ;; B" := (A >>= (λ _, B))%monad
 
 End MonadNotations.
 
-(* The identity monad: [F = id], with [ret] and [bind] trivial.  This is the
-   initial object among monads and the unit of monad composition. *)
+(* The 恒等 单子: [F = id], [ret] [bind] trivial. This the
+ 始对象 among 单子 unit 单子 复合. （已译） *)
 #[export]
 Instance Identity_Monad : Monad id | 9 := {
   ret := λ _ x, x;
@@ -206,9 +205,9 @@ Universe d c.
 Context (F : Type@{d} -> Type@{c}).
 Context `{Monad F}.
 
-(* Every monad is a functor, with [fmap = liftM] (= bind _ (ret ∘ f)).  This
-   recovers the underlying endofunctor F of the categorical monad from the
-   bind/return presentation. *)
+(* Every 单子 函子, [fmap = liftM] (= bind _ (ret ∘ f)). This
+ recovers underlying 自函子 F categorical 单子 the
+ bind/return presentation. （已译） *)
 #[export]  Instance Functor_Monad@{} : Functor F | 9 := {
   fmap := @liftM _ _
 }.

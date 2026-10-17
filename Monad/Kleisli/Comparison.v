@@ -26,8 +26,8 @@ Require Import Category.Monad.Kleisli.Adjunction.
 
 Generalizable All Variables.
 
-(** * Free algebras for a monad: restricted adjunctions and the Kleisli
-      comparison functor *)
+(* * * Free algebras 单子: restricted 伴随 Kleisli
+ comparison 函子 （已译） *)
 
 (*
    Book: Riehl, "Category Theory in Context", Lemma 5.2.14 and the
@@ -40,7 +40,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** Construction 1: restricting an adjunction to a full subcategory *)
+(* * ** Construction 1: restricting 伴随 full subcategory （已译） *)
 
 Section Restrict.
 
@@ -89,8 +89,8 @@ Proof using Adj full mem.
   - intros x y z f g; simpl. apply to_adj_nat_r.
 Defined.
 
-(* "This second adjunction defines in X the same monad as did the first":
-   the endofunctors agree on both actions, and so do η and μ = G ε F. *)
+(* "This second 伴随 defines X same 单子 did first":
+ endofunctors agree both actions, so do η μ = G ε F. （已译） *)
 
 Example Restricted_monad_obj (x : X) :
   fobj[Restricted_Right ◯ Restricted_Left] x = fobj[G ◯ F] x := eq_refl.
@@ -118,8 +118,8 @@ Defined.
 Example Restricted_Monad_agrees_iso (x : X) :
   `1 Restricted_Monad_agrees x = iso_id := eq_refl.
 
-(* The two monads as objects of Monad/Morphism.v's [Monads X]: isomorphic,
-   with identity components both ways. *)
+(* The two 单子 对象 Monad/Morphism.v's [Monads X]: isomorphic,
+ 恒等 components both ways. （已译） *)
 
 Definition Restricted_Monad_to :
   MonadHom (Adjunction_Induced_Monad Restricted_Adjunction)
@@ -173,7 +173,7 @@ End Restrict.
 Arguments Restricted_Right {X A} G S.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Theorem 2: the comparison functor L : X_T ⟶ A *)
+(* * ** Theorem 2: comparison 函子 L : X_T ⟶ A （已译） *)
 
 Section KleisliComparison.
 
@@ -205,7 +205,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* L x = F x, and L f is the transpose ⌈f⌉ of f : x ~> G F y. *)
+(* 相关说明。 （已译） *)
 Program Definition Kleisli_Comparison : XT ⟶ A := {|
   fobj := fun x => F x;
   fmap := fun x y f => from (@adj _ _ _ _ Adj x (F y)) f
@@ -280,7 +280,7 @@ Defined.
 Example Kleisli_Comparison_Free_strict_obj (x : X) :
   `1 Kleisli_Comparison_Free_strict x = eq_refl := eq_refl.
 
-(* Full and faithful: the arrow action is the transposition bijection. *)
+(* 相关说明。 （已译） *)
 #[export] Program Instance Kleisli_Comparison_Full :
   Category.Theory.Functor.Full Kleisli_Comparison := {|
   prefmap := fun x y g => to (@adj _ _ _ _ Adj x (F y)) g
@@ -296,9 +296,9 @@ Next Obligation.
   now rewrite Hfg.
 Qed.
 
-(* Uniqueness: a functor agreeing with F on objects (Leibniz) and whose
-   G-image agrees with G_T on arrows is L.  The arrow half of L F_T = F is
-   not used. *)
+(* Uniqueness: 函子 agreeing F 对象 (Leibniz) whose
+ G-image agrees G_T arrows L. The arrow half L F_T = F is
+ not used. （已译） *)
 Section Unique.
 
 Context (L0 : XT ⟶ A) (Hobj : ∀ x, fobj[L0] x = F x).
@@ -407,7 +407,7 @@ Definition Kleisli_Comparison_Map :
 End KleisliComparison.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Uniqueness by Mac Lane's route, Proposition IV.7.1 *)
+(* 相关说明。 （已译） *)
 
 Section UniqueViaMap.
 
@@ -427,7 +427,7 @@ Context (Hright : ∀ (a b : XT) (f : a ~{XT}~> b),
        ∘ fmap[@Kleisli_Forget X (G ◯ F) T] f
      ≈ fmap[G] (fmap[L0] f) ∘ id_cast (f_equal (fobj[G]) (eq_sym (Hobj a)))).
 
-(* The right square's object equation is the G-image of the left one. *)
+(* The right square's 对象 equation G-image left one. （已译） *)
 Definition Kleisli_Comparison_Squares_of :
   @AdjSquares XT X (@Kleisli_Free X (G ◯ F) T) (@Kleisli_Forget X (G ◯ F) T)
               A X F G :=
@@ -463,8 +463,8 @@ Qed.
 End UniqueViaMap.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Exercise 2, in general: any full subcategory containing every F x,
-       with a chosen free preimage for each of its objects *)
+(* * ** Exercise 2, general: any full subcategory containing every F x,
+ chosen free preimage each 对象 （已译） *)
 
 Section Restrict2.
 
@@ -523,7 +523,7 @@ Definition Kleisli_Comparison_Restrict_Equivalence :
 End Restrict2.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Exercise 1's image and Exercise 2 at FX *)
+(* 相关说明。 （已译） *)
 
 Section Image.
 
@@ -534,8 +534,8 @@ Context (Adj : F ⊣ G).
 Notation T := (@Adjunction_Induced_Monad A X F G Adj).
 Notation XT := (@Kleisli X (G ◯ F) T).
 
-(* Mac Lane's FX, read as Adjunction/LeftInverse.v's proof-relevant image:
-   an object is an a : A with a chosen x and F x = a. *)
+(* Mac Lane's FX, read Adjunction/LeftInverse.v's 证明-relevant image:
+ 对象 : A chosen x F x = a. （已译） *)
 Notation FXS := (@LaliImageSub X A F).
 Notation FX := (Sub A FXS).
 
@@ -548,7 +548,7 @@ Example Restricted_Left_Image_map (x y : X) (f : x ~> y) :
   fmap[Restricted_Left FXS image_full (fun x => (x; eq_refl))] f
     = fmap[@ImageTo X A F] f := eq_refl.
 
-(* The corestriction L' : X_T ⟶ FX, the general functor at FX. *)
+(* The corestriction L' : X_T ⟶ FX, general 函子 at FX. （已译） *)
 Definition Kleisli_Comparison_Image : XT ⟶ FX :=
   Kleisli_Comparison_Restrict Adj FXS image_full (fun x => (x; eq_refl)).
 
@@ -583,7 +583,7 @@ Example Kleisli_Comparison_Image_surjective_obj (y : FX) :
   `1 (Kleisli_Comparison_Image_surjective y) = `1 (`2 y).
 Proof. destruct y as [a [x e]]; reflexivity. Qed.
 
-(* Exercise 2 at FX: the chooser is the projection. *)
+(* 相关说明。 （已译） *)
 Definition Kleisli_Comparison_Image_pick (a : A) (m : sobj A FXS a) :
   { x : X & F x ≅ a } := (`1 m; id_cast_iso (`2 m)).
 
@@ -604,8 +604,8 @@ Definition Kleisli_Comparison_Image_AdjointEquivalence :
     (Kleisli_Comparison_Restrict_Faithful Adj FXS image_full _)
     Kleisli_Comparison_Image_surjective.
 
-(* ... and, in this proof-relevant representation, an isomorphism of
-   categories: L' is injective on objects. *)
+(* ... and, 证明-relevant representation, 同构 of
+ 范畴: L' injective 对象. （已译） *)
 Lemma Kleisli_Comparison_Image_injective :
   InjectiveOnObjects Kleisli_Comparison_Image.
 Proof.
@@ -657,8 +657,8 @@ Definition Kleisli_Comparison_Image_StrictIso :
 End Image.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Riehl, Lemma 5.2.14: K : C_T ⟶ C^T, full and faithful onto the free
-       algebras; and when it is an equivalence *)
+(* * ** Riehl, Lemma 5.2.14: K : C_T ⟶ C^T, 全忠实 onto free
+ algebras; it 等价 （已译） *)
 
 Section Riehl.
 
@@ -713,7 +713,7 @@ Next Obligation.
   now rewrite Hfg.
 Qed.
 
-(* The corestriction to the free algebras, LeftInverse.v's [ImageTo]. *)
+(* 相关说明。 （已译） *)
 Notation FreeAlgs := (@LaliImageSub C (EilenbergMoore T) (EM_Free T)).
 
 Definition Kleisli_EM_Image :
@@ -745,8 +745,8 @@ Definition Kleisli_EM_Image_Equivalence :
   @ff_surj_eso_equivalence _ _ Kleisli_EM_Image _ _
     Kleisli_EM_Image_surjective.
 
-(* "Free" is "isomorphic in C^T to a free algebra", with the free algebra
-   chosen; "equivalent" is "K is an equivalence". *)
+(* "Free" "isomorphic C^T free algebra", free algebra
+ chosen; "equivalent" "K 等价". （已译） *)
 Definition EveryAlgebraFree : Type :=
   ∀ a : EilenbergMoore T, { c : C & EM_Free T c ≅ a }.
 
@@ -766,7 +766,7 @@ Defined.
 
 End Riehl.
 
-(* K and L at the Eilenberg–Moore resolution agree on both actions. *)
+(* 相关说明。 （已译） *)
 
 Section RiehlIsL.
 

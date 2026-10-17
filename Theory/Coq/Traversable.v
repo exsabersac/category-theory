@@ -4,7 +4,7 @@ Require Import Category.Theory.Coq.Applicative.
 
 Generalizable All Variables.
 
-(** The Traversable type class (sequence/traverse), with its categorical reading *)
+(** The Traversable 类型类 (sequence/traverse), categorical reading （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/distributive+law
@@ -16,7 +16,7 @@ Generalizable All Variables.
 *)
 
 Class Traversable@{d c} {T : Type@{d} → Type@{c}} :=
-  (* the distributive law T ◯ F ⟹ F ◯ T for any applicative F (Haskell's [sequenceA]) *)
+  (* 分配律 T ◯ F ⟹ F ◯ T any applicative F (Haskell's [sequenceA]) （已译） *)
   sequence : ∀ `{Applicative@{d c} F} {x : Type@{d}}, T (F x) → F (T x).
 
 Arguments Traversable : clear implicits.

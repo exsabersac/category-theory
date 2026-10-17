@@ -93,8 +93,8 @@ Class Adjunction@{o3 p3 so sh sp} := {
     where "⌊ f ⌋" := (to   adj f)
       and "⌈ f ⌉" := (from adj f);
 
-  (* Naturality of the iso in both arguments, stated for the forward transpose
-     ⌊-⌋ = to adj (naturality in x, via F) and ... *)
+  (* Naturality iso both arguments, stated forward transpose
+ ⌊-⌋ = adj (自然性 x, via F) ... （已译） *)
   to_adj_nat_l {x y z} (f : F y ~> z) (g : x ~> y) :
     ⌊f ∘ fmap[F] g⌋ ≈ ⌊f⌋ ∘ g;
   (* ... naturality in y, via U. *)
@@ -317,8 +317,8 @@ Notation "F ⊣ G" := (@Adjunction _ _ F G) (at level 59) : category_scope.
 Notation "adj[ A ]" := (@adj _ _ _ _ A _ _)
   (at level 9, format "adj[ A ]") : morphism_scope.
 
-(* Wikipedia: "If the functor F : C ← D has two right adjoints G and G', then
-   G and G' are naturally isomorphic. The same is true for left adjoints." *)
+(* Wikipedia: "If 函子 F : C ← D has two right adjoints G G', then
+ G G' naturally isomorphic. The same true left adjoints." （已译） *)
 
 Theorem right_adjoint_iso `(F : C ⟶ D) (G G' : D ⟶ C) :
   F ⊣ G → F ⊣ G' → G ≈ G'.
@@ -404,7 +404,7 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Transporting an adjunction along an isomorphism of left adjoints *)
+(* * ** Transporting 伴随 along 同构 left adjoints （已译） *)
 
 (*
    本节说明伴随、函子、等价相关定义、性质与动机。

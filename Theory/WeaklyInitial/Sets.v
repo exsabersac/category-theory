@@ -18,8 +18,8 @@ Definition Sets_initial_characterization :
   @Initial Sets ↔ WeaklyInitialFamily Sets :=
   initial_iff_weakly_initial_family_complete Sets_Complete Sets_HasEqualizers.
 
-(* The round trip: the initial object, as a singleton family, through
-   Freyd's construction, back to an initial object. *)
+(* The round trip: 始对象, singleton family, through
+ Freyd's construction, back 始对象. （已译） *)
 Definition Sets_wif : WeaklyInitialFamily Sets :=
   fst Sets_initial_characterization Sets_Initial.
 
@@ -30,7 +30,7 @@ Definition Sets_roundtrip_iso :
   @initial_obj Sets Sets_initial_recovered ≅ @initial_obj Sets Sets_Initial :=
   initial_unique Sets_initial_recovered Sets_Initial.
 
-(* The family is the singleton at the empty set, on the nose. *)
+(* 相关说明。 （已译） *)
 Example Sets_wif_index : wif_index Sets_wif = poly_unit := eq_refl.
 
 Example Sets_wif_obj (u : poly_unit) :

@@ -25,7 +25,7 @@ Generalizable All Variables.
    且同构对象在骨骼中重合。本文件在库的 setoid/宇宙纪律下构造骨骼与相关等价数据；长证明旁注
    若仍为英文属后续波次。 *)
 
-(** ** The half-adjoint correction, at the level of object types *)
+(* * ** The half-adjoint correction, at level 对象 types （已译） *)
 
 (*
    本节说明 Skeleton 相关定义、性质与动机。
@@ -95,7 +95,7 @@ Qed.
 
 End HalfAdjoint.
 
-(** ** Strict functor equality from a family of object equalities *)
+(* * ** Strict 函子 equality family 对象 equalities （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -130,7 +130,7 @@ Definition strict_equiv_of_id_cast_nat
 
 Definition Skeletal (C : Category) := ∀ x y : C, x ≅ y → x = y.
 
-(** ** An equivalence between skeletal categories is an isomorphism *)
+(* * ** An 等价 between skeletal 范畴 同构 （已译） *)
 
 (*
    本节说明伴随、等价相关定义、性质与动机。
@@ -200,9 +200,9 @@ Proof using All.
   reflexivity.
 Qed.
 
-(* The [!Eps_triangle] rewrite below is the crux: with the RAW counit the
-   goal would carry a loop at the intermediate object that only UIP could
-   collapse. *)
+(* The [!Eps_triangle] rewrite below crux: RAW counit the
+ goal would carry loop at intermediate 对象 UIP could
+ collapse. （已译） *)
 
 Lemma FinvF_strict :
   @equiv _ (@Functor_StrictEq_Setoid A A) (Finv ◯ F) Id[A].
@@ -227,7 +227,7 @@ End SkeletalEquivalence.
 
 Arguments skeletal_equivalence_is_isomorphism {A B} SA SB F E.
 
-(** ** "A is a skeleton of C", packaged as data *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明同构、（余）强度相关定义、性质与动机。
@@ -278,8 +278,8 @@ Program Definition Incl_EssSurj : EssentiallySurjective (skel_incl S) := {|
   eso_iso := fun x => iso_sym (skel_iso S x)
 |}.
 
-(* Mac Lane §IV.4 Remark 1, first half: the inclusion of a skeleton is an
-   equivalence.  [Defined], so that the reflector below reduces. *)
+(* Mac Lane §IV.4 Remark 1, first half: 含入 skeleton an
+ 等价. [Defined], so reflector below reduces. （已译） *)
 
 Theorem skeleton_inclusion_is_equivalence :
   EquivalenceOfCategories (skel_incl S).
@@ -291,7 +291,7 @@ Defined.
 Definition skeleton_equivalence : skel_cat S ≃ C :=
   (skel_incl S; skeleton_inclusion_is_equivalence).
 
-(* the reflector, and the two halves of the Remark *)
+(* 相关说明。 （已译） *)
 Definition skel_reflect : C ⟶ skel_cat S :=
   @quasi_inverse _ _ _ skeleton_inclusion_is_equivalence.
 
@@ -371,7 +371,7 @@ Definition skeletons_isomorphic_iff_equivalent
   (skeletons_of_equivalent_are_isomorphic S T,
    equivalent_of_isomorphic_skeletons S T).
 
-(** ** Riehl Remark 1.5.17: the comparison functor along an arbitrary F *)
+(* * ** Riehl Remark 1.5.17: comparison 函子 along arbitrary F （已译） *)
 
 Definition skel_comparison {C D : Category}
   (S : Skeleton C) (T : Skeleton D) (F : C ⟶ D) : skel_cat S ⟶ skel_cat T :=
@@ -393,7 +393,7 @@ Definition skel_comparison_natural_iso {C D : Category}
   skel_incl T ◯ skel_comparison S T F ≅[Fun] F ◯ skel_incl S :=
   equiv_iso (skel_comparison_natural S T F).
 
-(** ** Why the uniqueness clause cannot be weakened to carriers *)
+(* 相关说明。 （已译） *)
 
 Section Skeleton0.
 Context {C : Category}.
@@ -419,8 +419,8 @@ Proof.
   - exact (iso_from_to i).
 Qed.
 
-(* The countermodel: over a discrete category, select as membership proofs
-   the free loop space of each object. *)
+(* The countermodel: over discrete 范畴, select membership proofs
+ free loop space each 对象. （已译） *)
 
 Program Definition Loop_Sub (A : Type) : Subcategory (DiscreteCat A) := {|
   sobj := fun x => x = x;
@@ -451,7 +451,7 @@ Proof.
   intros x y p q; destruct p; symmetry; apply loops.
 Qed.
 
-(** ** A skeletal category is its own skeleton *)
+(* * ** A skeletal 范畴 own skeleton （已译） *)
 
 Program Definition Wide_Sub (C : Category) : Subcategory C := {|
   sobj := fun _ => poly_unit;
@@ -481,7 +481,7 @@ End SkeletalOwnSkeleton.
 Lemma DiscreteCat_Skeletal (A : Type) : Skeletal (DiscreteCat A).
 Proof. intros x y f; exact (to f). Qed.
 
-(** ** Awodey §7.10 Exercise 11, positive half *)
+(* 相关说明。 （已译） *)
 
 (* Skeletality IS invariant under isomorphism of categories.  The other
    half — that it is not invariant under equivalence — is

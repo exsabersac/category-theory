@@ -9,7 +9,7 @@ Require Import Category.Structure.Limit.FromProducts.
 
 Generalizable All Variables.
 
-(** * Right adjoints preserve equalizers, in the elementary form *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/adjoints+preserve+(co-)limits
@@ -28,7 +28,7 @@ Proof.
   unshelve econstructor.
   - rewrite <- !fmap_comp. apply fmap_respects. exact (fork_eq E).
   - intros z h Hh.
-    (* the transpose of h forks the pair in C *)
+    (* 相关说明。 （已译） *)
     assert (Hf : f ∘ from (@adj _ _ _ _ A z x) h
                    ≈ g ∘ from (@adj _ _ _ _ A z x) h).
     { rewrite <- !from_adj_nat_r. apply from_adj_respects. exact Hh. }

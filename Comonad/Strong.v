@@ -47,7 +47,7 @@ Definition CostrongComonad {C : Category} (M : @Monoidal C) (W : C ⟶ C) : Type
 Existing Class CostrongComonad.
 
 (* ================================================================== *)
-(** ** The covariant API: definitional op-reads of the bundled fields  *)
+(* 相关说明。 （已译） *)
 (* ================================================================== *)
 
 Section CostrongComonadAPI.
@@ -57,7 +57,7 @@ Context {M : @Monoidal C}.
 Context {W : C ⟶ C}.
 Context {CS : CostrongComonad M W}.
 
-(** The underlying comonad: the op-read of [strongmonad_is_monad]. *)
+(** The underlying 余单子: op-read [strongmonad_is_monad]. （已译） *)
 Definition costrong_is_comonad : @Comonad C W :=
   @strongmonad_is_monad (C^op) (@Monoidal_op C M) (W^op) CS.
 
@@ -68,14 +68,14 @@ Definition costrong_is_comonad : @Comonad C W :=
 *)
 #[local] Existing Instance costrong_is_comonad.
 
-(** The underlying strong endofunctor over (C^op, Monoidal_op M): the
-    op-read of [strongmonad_is_strong]. *)
+(** The underlying strong 自函子 over (C^op, Monoidal_op M): the
+ op-read [strongmonad_is_strong]. （已译） *)
 Definition costrong_is_strong :
   @StrongFunctor (C^op) (@Monoidal_op C M) (W^op) :=
   @strongmonad_is_strong (C^op) (@Monoidal_op C M) (W^op) CS.
 
-(** The costrength W (x ⨂ y) ~> x ⨂ W y: the covariant reading of
-    [strength] at (C^op, Monoidal_op M, W^op). *)
+(** 本节：The costrength W (x ⨂ y) ~> x ⨂ W y: covariant reading of
+ [strength] at (C^op, Monoidal_op M, W^op). （已译） *)
 Definition costrength {x y : C} : W (x ⨂ y) ~> x ⨂ W y :=
   @strength (C^op) (@Monoidal_op C M) (W^op) costrong_is_strong x y.
 
@@ -97,9 +97,9 @@ Proof.
   exact SN.
 Qed.
 
-(** Left-unitor coherence: the op-read of [strength_id_left].  Dualization
-    inverts the unitor, so in C the law reads against λ⁻¹: precomposing the
-    costrength with W (λ⁻¹) is λ⁻¹ at W x. *)
+(** 本节：Left-unitor coherence: op-read [strength_id_left]. Dualization
+ inverts unitor, so C law reads against λ⁻¹: precomposing the
+ costrength W (λ⁻¹) λ⁻¹ at W x. （已译） *)
 Lemma costrength_id_left {x : C} :
   costrength ∘ fmap[W] (from (@unit_left C M x))
     ≈ from (@unit_left C M (W x)).
@@ -108,8 +108,8 @@ Proof.
            costrong_is_strong x).
 Qed.
 
-(** Associator coherence: the op-read of [strength_assoc], with α likewise
-    arriving in its inverse orientation. *)
+(** 本节：Associator coherence: op-read [strength_assoc], α likewise
+ arriving inverse orientation. （已译） *)
 Lemma costrength_assoc {x y z : C} :
   costrength ∘ fmap[W] (from (@tensor_assoc C M x y z))
     ≈ from (@tensor_assoc C M x y (W z)) ∘ (id[x] ⨂ costrength) ∘ costrength.
@@ -145,13 +145,13 @@ Qed.
 
 End CostrongComonadAPI.
 
-(* [costrength[W]] names the costrength of a given costrong comonad on W at
-   implicit arguments, mirroring the [strength[F]] convention. *)
+(* [costrength[W]] names costrength given costrong 余单子 W at
+ implicit arguments, mirroring [strength[F]] convention. （已译） *)
 Notation "costrength[ W ]" := (@costrength _ _ W%functor _ _ _)
   (at level 9, format "costrength[ W ]") : morphism_scope.
 
 (* ================================================================== *)
-(** ** Building the bundled structure from covariant data              *)
+(* 相关说明。 （已译） *)
 (* ================================================================== *)
 
 Section BuildCostrongComonad.
@@ -195,8 +195,8 @@ Program Definition Build_CostrongComonad
        (fun x y => sigma x y) _ _ _)
     _ _.
 Next Obligation.
-  (* strength_natural in C^op: merge the separated actions and apply the
-     covariant naturality. *)
+  (* strength_natural C^op: merge separated actions apply the
+ covariant 自然性. （已译） *)
   rewrite <- fmap_comp.
   rewrite bimap_id_right_left.
   rewrite comp_assoc.
@@ -238,8 +238,8 @@ Context (sigma_duplicate : forall x y : C,
   (id[x] ⨂ duplicate (x:=y)) ∘ sigma x y
     ≈ sigma x (W y) ∘ fmap[W] (sigma x y) ∘ duplicate).
 
-(** Reading the costrength back off the assembled structure returns the
-    supplied family on the nose. *)
+(** 本节：Reading costrength back off assembled structure returns the
+ supplied family nose. （已译） *)
 Lemma Build_CostrongComonad_costrength {x y : C} :
   @costrength C M W
     (Build_CostrongComonad H sigma sigma_natural sigma_id_left
@@ -247,7 +247,7 @@ Lemma Build_CostrongComonad_costrength {x y : C} :
     ≈ sigma x y.
 Proof. reflexivity. Qed.
 
-(** The underlying comonad passes through the assembly unchanged. *)
+(** The underlying 余单子 passes through assembly unchanged. （已译） *)
 Lemma Build_CostrongComonad_comonad :
   @costrong_is_comonad C M W
     (Build_CostrongComonad H sigma sigma_natural sigma_id_left
@@ -257,7 +257,7 @@ Proof. reflexivity. Qed.
 End BuildCostrongComonadAgreement.
 
 (* ================================================================== *)
-(** ** Transfers: costrong comonads are strong monads on the opposite  *)
+(* * ** Transfers: costrong 余单子 strong 单子 opposite （已译） *)
 (* ================================================================== *)
 
 (*
@@ -343,8 +343,8 @@ Definition op_CostrongComonad_to_StrongMonad
     (@strength_join ((C^op)^op)
        (@Monoidal_op (C^op) (@Monoidal_op C M)) ((T^op)^op) S).
 
-(** Covariantly read, the costrength of the opposite costrong comonad IS
-    the strength of the strong monad it came from. *)
+(** Covariantly read, costrength opposite costrong 余单子 IS
+ strength strong 单子 it came from. （已译） *)
 Lemma op_costrength_strength (S : @StrongMonad C M T) {x y : C} :
   @costrength (C^op) (@Monoidal_op C M) (T^op)
     (StrongMonad_to_op_CostrongComonad S) x y

@@ -75,7 +75,7 @@ Local Notation e := (lali_obj P).
 
 Definition lali_counit_iso (a : A) : F (G a) ≅ a := id_cast_iso (e a).
 
-(* The counit itself is invertible, its inverse the reverse cast. *)
+(* 相关说明。 （已译） *)
 Program Definition lali_counit_IsIsomorphism (a : A) :
   IsIsomorphism (@counit A X F G (lali_adj P) a) := {|
   two_sided_inverse := id_cast (eq_sym (e a))
@@ -124,7 +124,7 @@ Definition lali_injective_on_objects : InjectiveOnObjects G :=
 
 End Consequences.
 
-(** ** Strict functor equality, in [id_cast] form *)
+(* * ** Strict 函子 equality, [id_cast] form （已译） *)
 
 Definition strict_id_cast_nat {C D : Category} {F H : C ⟶ D}
   (E : @equiv _ (@Functor_StrictEq_Setoid C D) F H)
@@ -133,7 +133,7 @@ Definition strict_id_cast_nat {C D : Category} {F H : C ⟶ D}
   fst (transport_square (`1 E x) (`1 E y) (fmap[F] f) (fmap[H] f))
       (`2 E x y f).
 
-(** ** The inverse of an [id_cast] isomorphism, without [eq_sym_involutive] *)
+(* * ** The inverse [id_cast] 同构, without [eq_sym_involutive] （已译） *)
 
 Program Definition id_cast_iso_sym {C : Category} {x y : C} (e : x = y) :
   y ≅ x := {|
@@ -143,7 +143,7 @@ Program Definition id_cast_iso_sym {C : Category} {x y : C} (e : x = y) :
 Next Obligation. intros; destruct e; cat. Qed.
 Next Obligation. intros; destruct e; cat. Qed.
 
-(** ** An isomorphism of categories is an equivalence of categories *)
+(* * ** An 同构 范畴 等价 范畴 （已译） *)
 
 Section StrictEquivalence.
 
@@ -174,7 +174,7 @@ Qed.
 
 End StrictEquivalence.
 
-(** ** Transporting along a strict equality of the right adjoint *)
+(* * ** Transporting along strict equality 右伴随 （已译） *)
 
 Section RightStrict.
 
@@ -270,7 +270,7 @@ Proof.
   now rewrite id_cast_trans.
 Defined.
 
-(** ** Clause (b): a left adjoint, full, faithful, injective on objects *)
+(* * ** Clause (b): 左伴随, full, faithful, injective 对象 （已译） *)
 
 Record LeftAdjointFFInjective {A X : Category} (G : A ⟶ X) : Type := {
   ffi_left : X ⟶ A;
@@ -381,8 +381,8 @@ Definition ImageIso : @Isomorphism StrictCat A (Sub X LaliImageSub) :=
     image_to_from_strict image_from_to_strict.
 
 
-(** The image subcategory is full and reflective, and [G] factors through
-    its insertion. *)
+(** The image subcategory full reflective, [G] factors through
+ 嵌入. （已译） *)
 
 Definition image_equivalence : @EquivalenceOfCategories A (Sub X LaliImageSub)
     ImageTo :=
@@ -430,7 +430,7 @@ Defined.
 
 End Image.
 
-(** ** Clause (c): a full reflective subcategory and an isomorphism *)
+(* * ** Clause (c): full reflective subcategory 同构 （已译） *)
 
 Record ReflectiveIsoPresentation {A X : Category} (G : A ⟶ X) : Type := {
   ri_sub : Subcategory X;
@@ -453,7 +453,7 @@ Definition ffi_implies_ri {A X : Category} {G : A ⟶ X}
   ri_factor := @image_factor A X G
 |}.
 
-(** ** Transporting a left-adjoint-left-inverse along an isomorphism *)
+(* * ** Transporting left-adjoint-left-inverse along 同构 （已译） *)
 
 Section StrictIsoTransport.
 
@@ -538,7 +538,7 @@ Definition lali_implies_ri {A X : Category} {G : A ⟶ X}
   (P : LeftAdjointLeftInverse G) : ReflectiveIsoPresentation G :=
   ffi_implies_ri (lali_implies_ffi P).
 
-(** ** The insertion of the image subcategory has a left-adjoint-left-inverse *)
+(* * ** The 嵌入 image subcategory has left-adjoint-left-inverse （已译） *)
 
 Section ImageInsertion.
 
@@ -594,8 +594,7 @@ Definition lali_image_insertion :
 
 End ImageInsertion.
 
-(** ** The cycle closes on presentations that come from a left-adjoint-
-       left-inverse *)
+(* 相关说明。 （已译） *)
 
 Definition lali_ri_insertion {A X : Category} {G : A ⟶ X}
   (P : LeftAdjointLeftInverse G) :

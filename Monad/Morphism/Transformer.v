@@ -8,7 +8,7 @@ Require Import Category.Monad.Morphism.
 
 Generalizable All Variables.
 
-(** * Monad transformers are morphisms of monads *)
+(* * * Monad transformers 态射 单子 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/monad+transformer
@@ -52,7 +52,7 @@ Proof.
     apply id_left.
 Qed.
 
-(** ** A transformer gives a morphism of monads M ⟶ T M *)
+(* * ** A transformer gives 态射 单子 M ⟶ T M （已译） *)
 
 Definition transformer_hom@{o h | } {C : Category@{o h h}} {M : C ⟶ C}
   {HM : @Monad C M} {T : (C ⟶ C) → (C ⟶ C)} {HT : @Monad C (T M)}
@@ -77,7 +77,7 @@ Proof.
       apply fmap_respects. apply id_right.
 Defined.
 
-(* Its components are [lift], on the nose. *)
+(* 相关说明。 （已译） *)
 
 Example transformer_hom_lift@{o h | +} {C : Category@{o h h}} {M : C ⟶ C}
   {HM : @Monad C M} {T : (C ⟶ C) → (C ⟶ C)} {HT : @Monad C (T M)}
@@ -85,7 +85,7 @@ Example transformer_hom_lift@{o h | +} {C : Category@{o h h}} {M : C ⟶ C}
   mh_transform (transformer_hom@{o h} L) x = @lift C M HM T HT L x
   := eq_refl.
 
-(** ** A morphism of monads M ⟶ T M satisfies the transformer laws *)
+(* * ** A 态射 单子 M ⟶ T M satisfies transformer laws （已译） *)
 
 Definition hom_transformer@{o h | } {C : Category@{o h h}} {M : C ⟶ C}
   {HM : @Monad C M} {T : (C ⟶ C) → (C ⟶ C)} {HT : @Monad C (T M)}
@@ -115,7 +115,7 @@ Example hom_transformer_lift@{o h | +} {C : Category@{o h h}} {M : C ⟶ C}
   @lift C M HM T HT (hom_transformer@{o h} θ) x = mh_transform θ x
   := eq_refl.
 
-(* The two round trips, on the component family. *)
+(* 相关说明。 （已译） *)
 
 Example transformer_round_trip@{o h | +} {C : Category@{o h h}}
   {M : C ⟶ C} {HM : @Monad C M} {T : (C ⟶ C) → (C ⟶ C)}

@@ -37,8 +37,8 @@ Context `{HG_D : @Hypergraph D SD}.
 
 Context {F : C ⟶ D}.
 
-(* Over the symmetric bases SC and SD this hypothesis is precisely
-   [SymmetricMonoidalFunctor F]. *)
+(* Over symmetric bases SC SD 假设 precisely
+ [SymmetricMonoidalFunctor F]. （已译） *)
 Context `{S : @BraidedMonoidalFunctor C D _ _ F}.
 
 Program Definition SymmetricMonoidalFunctor_HypergraphFunctor

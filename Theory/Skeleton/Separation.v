@@ -13,7 +13,7 @@ Require Import Category.Instance.StrictCat.
 
 Generalizable All Variables.
 
-(** * Skeletality separates equivalence from isomorphism of categories *)
+(* * * Skeletality separates 等价 同构 范畴 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/skeleton
@@ -29,8 +29,7 @@ Generalizable All Variables.
 Lemma One_Skeletal : Skeletal _1.
 Proof. intros x y _; now destruct x, y. Qed.
 
-(* [_2] has no arrow [TwoY ~> TwoX], so its only isomorphisms are the
-   identities. *)
+(* 相关说明。 （已译） *)
 
 Lemma Two_Skeletal : Skeletal _2.
 Proof.
@@ -39,7 +38,7 @@ Proof.
   - destruct (TwoHom_Y_X_absurd (to i)).
 Qed.
 
-(** ** The indiscrete category on [bool] is not skeletal *)
+(* * ** The indiscrete 范畴 [bool] not skeletal （已译） *)
 
 Program Definition Indiscrete_iso {A : Type} (x y : A) :
   @Isomorphism (Indiscrete A) x y := {| to := tt; from := tt |}.
@@ -51,7 +50,7 @@ Proof.
   discriminate.
 Qed.
 
-(** ** ... yet it is equivalent to the terminal category *)
+(* * ** ... yet it equivalent terminal 范畴 （已译） *)
 
 Program Definition Pick : _1 ⟶ Indiscrete bool := {|
   fobj := fun _ => true;
@@ -76,9 +75,9 @@ Next Obligation.
   intros x y f; now destruct x, y, f.
 Defined.
 
-(* Awodey §7.10 Exercise 11, negative half.  The statement mentions neither
-   [Cat] nor [StrictCat] on purpose: phrasing it as an isomorphism in [Cat]
-   would bump a universe level for no gain. *)
+(* Awodey §7.10 Exercise 11, negative half. The statement mentions neither
+ [Cat] nor [StrictCat] purpose: phrasing it 同构 [Cat]
+ would bump universe level no gain. （已译） *)
 
 Theorem skeletality_is_not_equivalence_invariant :
   { C : Category & { D : Category &
@@ -91,7 +90,7 @@ Proof.
   - exact Indiscrete_bool_not_Skeletal.
 Defined.
 
-(** ** Awodey §7.10 Exercise 12: a skeleton of a non-skeletal category *)
+(* * ** Awodey §7.10 Exercise 12: skeleton non-skeletal 范畴 （已译） *)
 
 Program Definition Indiscrete_bool_Sub : Subcategory (Indiscrete bool) := {|
   sobj := fun x => x = true;
@@ -101,9 +100,9 @@ Program Definition Indiscrete_bool_Sub : Subcategory (Indiscrete bool) := {|
 Section IndiscreteWitness.
 #[local] Obligation Tactic := idtac.
 
-(* The uniqueness obligation needs no decidability of [bool] equality: the
-   based path space [y = true] is contractible, so [destruct] on the
-   membership proof closes it. *)
+(* The uniqueness obligation needs no decidability [bool] equality: the
+ based path space [y = true] contractible, so [destruct] the
+ membership 证明 closes it. （已译） *)
 
 Program Definition Indiscrete_bool_Skeleton : Skeleton (Indiscrete bool) := {|
   skel_sub  := Indiscrete_bool_Sub;
@@ -122,9 +121,9 @@ Example Indiscrete_bool_skeleton_has_one_object :
   ∀ X Y : skel_cat Indiscrete_bool_Skeleton, X = Y.
 Proof. intros [x a] [y b]; simpl in *; destruct a, b; reflexivity. Qed.
 
-(* The capstone: the skeleton of the indiscrete category on [bool] IS the
-   point, on the nose — an isomorphism of categories, not merely an
-   equivalence. *)
+(* The capstone: skeleton indiscrete 范畴 [bool] IS the
+ point, nose — 同构 范畴, not merely an
+ 等价. （已译） *)
 
 Definition Indiscrete_bool_skeleton_is_One :
   skel_cat Indiscrete_bool_Skeleton ≅[StrictCat] _1 :=

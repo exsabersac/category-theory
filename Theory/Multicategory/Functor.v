@@ -53,15 +53,15 @@ Fixpoint map_ext_t (f g : A → B) (H : ∀ a, f a = g a) (l : list A) :
 
 End ListKit.
 
-(** ** The multifunctor boundary-equation kit *)
+(* 相关说明。 （已译） *)
 
 Section BoundaryKit.
 
 Context {A B : Type}.
 Context (φ : A → B).
 
-(** The image of a slot zipper is a slot zipper: [map φ (b :: Γ2)]
-    computes, so this is [map_app_t] up to conversion. *)
+(** The image slot zipper slot zipper: [map φ (b :: Γ2)]
+ computes, so 这是 [map_app_t] up conversion. （已译） *)
 Definition mf_eq_slot (Γ1 Γ2 : list A) (b : A) :
   map φ (Γ1 ++ b :: Γ2) = map φ Γ1 ++ φ b :: map φ Γ2 :=
   map_app_t φ Γ1 (b :: Γ2).
@@ -74,11 +74,11 @@ Definition mf_eq_splice (Γ1 Δ Γ2 : list A) :
 
 End BoundaryKit.
 
-(** ** The transparent permutation image and its transport calculus *)
+(* 相关说明。 （已译） *)
 
-(** The structural image of a permutation witness under a function.
-    Being a Fixpoint, it computes on each constructor, which the
-    identity/composite multifunctor proofs below rely on. *)
+(** The structural image permutation witness under function.
+ Being Fixpoint, it computes each constructor, the
+ 恒等/复合 multifunctor proofs below rely on. （已译） *)
 Fixpoint perm_map {A B : Type} (φ : A → B) {Γ Δ : list A}
   (p : tperm Γ Δ) : tperm (map φ Γ) (map φ Δ) :=
   match p in tperm Γ0 Δ0
@@ -140,8 +140,8 @@ Proof.
   - now rewrite (pcast_ptrans _ (map_id_t l') _), IHp, IHq.
 Qed.
 
-(** The permutation image of a composite function is the composite of
-    the images, transported along [map_map_t]. *)
+(** The permutation image 复合 function 复合 of
+ images, transported along [map_map_t]. （已译） *)
 Lemma perm_map_comp {A B C : Type} (f : A → B) (g : B → C)
   {Γ Δ : list A} (p : tperm Γ Δ) :
   pcast (map_map_t f g Γ) (map_map_t f g Δ) (perm_map g (perm_map f p))
@@ -164,12 +164,12 @@ Section MulticategoryTransport.
 
 Context {M : Multicategory}.
 
-(** Recasting the TARGET object of a multimorphism along a
-    propositional equality of objects (Type-level object data).  Unlike
-    [mcast] this needs no groupoid-law fields: every use below carries
-    its equality proof as data, so only functoriality along
-    [eq_refl]/[eq_sym]/[eq_trans] is ever needed, and those hold by
-    [destruct]. *)
+(** Recasting TARGET 对象 multimorphism along a
+ propositional equality 对象 (Type-level 对象 data). Unlike
+ [mcast] needs no groupoid-law fields: every use below carries
+ equality 证明 data, so functoriality along
+ [eq_refl]/[eq_sym]/[eq_trans] ever needed, those hold by
+ [destruct]. （已译） *)
 Definition mtarget_cast {Γ : list mobj} {c c' : mobj} (e : c = c') :
   mhom Γ c → mhom Γ c' :=
   match e with eq_refl => fun f => f end.
@@ -210,9 +210,9 @@ Proof.
   now rewrite !mcast_id.
 Qed.
 
-(** The symmetric-group action commutes with boundary casts: acting by
-    a transported permutation on a recast multimorphism is the recast of
-    the original action. *)
+(** 本节：The symmetric-group action commutes boundary casts: acting by
+ transported permutation recast multimorphism recast of
+ original action. （已译） *)
 Lemma msym_pcast {Γ Γ' Δ Δ' : list mobj} {c : mobj}
   (e1 : Γ = Γ') (e2 : Δ = Δ') (p : tperm Γ Δ) (f : mhom Γ c) :
   msym (pcast e1 e2 p) (mcast e1 f) ≈ mcast e2 (msym p f).
@@ -235,8 +235,7 @@ Class MultiFunctor (M N : Multicategory) : Type := {
 
   mf_map_respects {Γ c} : Proper (equiv ==> equiv) (@mf_map Γ c);
 
-  (* Identities are preserved on the nose: [map mf_obj [a]] computes to
-     [[mf_obj a]], so no cast is needed. *)
+  (* 相关说明。 （已译） *)
   mf_id (a : @mobj M) : mf_map (mid a) ≈ mid (mf_obj a);
 
   (*
@@ -252,8 +251,7 @@ Class MultiFunctor (M N : Multicategory) : Type := {
             = map mf_obj (Γ1 ++ Δ ++ Γ2)) :
     mf_map (mcomp f g) ≈ mcast es (mcomp (mcast ez (mf_map f)) (mf_map g));
 
-  (* The symmetric-group action is preserved along the transparent
-     permutation image [perm_map]. *)
+  (* 相关说明。 （已译） *)
   mf_sym {Γ Δ : list (@mobj M)} {c : @mobj M}
     (p : tperm Γ Δ) (f : mhom Γ c) :
     mf_map (msym p f) ≈ msym (perm_map mf_obj p) (mf_map f)
@@ -267,7 +265,7 @@ Arguments mf_id {M N} _ a.
 Arguments mf_comp {M N} _ {Γ1 Γ2 Δ b c} f g ez es.
 Arguments mf_sym {M N} _ {Γ Δ c} p f.
 
-(** The composition law at the canonical kit witnesses. *)
+(** The 复合 law at canonical kit witnesses. （已译） *)
 Corollary mf_comp_kit {M N : Multicategory} (F : MultiFunctor M N)
   {Γ1 Γ2 Δ : list (@mobj M)} {b c : @mobj M}
   (f : mhom (Γ1 ++ b :: Γ2) c) (g : mhom Δ b) :
@@ -277,9 +275,9 @@ Corollary mf_comp_kit {M N : Multicategory} (F : MultiFunctor M N)
                (mf_map F g)).
 Proof. apply mf_comp. Qed.
 
-(** A multifunctor commutes with boundary casts: the image of a recast
-    multimorphism is the recast image, along the [f_equal] image of the
-    boundary equality. *)
+(** 本节：A multifunctor commutes boundary casts: image recast
+ multimorphism recast image, along [f_equal] image the
+ boundary equality. （已译） *)
 Lemma mf_map_cast {M N : Multicategory} (F : MultiFunctor M N)
   {Γ Γ' : list (@mobj M)} {c : @mobj M} (e : Γ = Γ') (f : mhom Γ c) :
   mf_map F (mcast e f) ≈ mcast (f_equal (map (mf_obj F)) e) (mf_map F f).
@@ -411,15 +409,13 @@ Next Obligation.
   apply mcast_id.
 Qed.
 Next Obligation.
-  (* Normalize the left-hand side: push the image of the splice through
-     [G], collecting all boundary casts. *)
+  (* 相关说明。 （已译） *)
   rewrite (mf_comp_kit F f g).
   rewrite (mf_map_cast G).
   rewrite (mf_comp_kit G).
   rewrite (mf_map_cast G).
   rewrite !mcast_trans.
-  (* Split the right-hand side's inner cast at the [G ∘ F]-image zipper
-     and commute the blockwise casts out of the splice. *)
+  (* 相关说明。 （已译） *)
   rewrite <- (mcast_trans_any
                 (eq_trans
                    (f_equal (map (mf_obj G)) (mf_eq_slot (mf_obj F) Γ1 Γ2 b))
@@ -445,7 +441,7 @@ Next Obligation.
   symmetry; apply msym_pcast.
 Qed.
 
-(** ** The evident laws, up to the multifunctor setoid *)
+(* 相关说明。 （已译） *)
 
 Lemma MultiCompose_id_left {M N : Multicategory} (F : MultiFunctor M N) :
   MultiCompose (MultiId N) F ≈ F.

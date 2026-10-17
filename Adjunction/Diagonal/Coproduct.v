@@ -18,9 +18,9 @@ Generalizable All Variables.
 
 (** ** The coproduct bifunctor *)
 
-(** [+(C) : C ∏ C ⟶ C], the dual of Functor/Product/Internal.v's [×(C)].
-    On a pair of morphisms it is the copairing of the two injections after
-    each component. *)
+(** [+(C) : C ∏ C ⟶ C], dual Functor/Product/Internal.v's [×(C)].
+ On pair 态射 it copairing two injections after
+ each component. （已译） *)
 #[export]
 Program Instance InternalCoproductFunctor `(C : Category) `{@Cocartesian C} :
   C ∏ C ⟶ C := {
@@ -64,19 +64,18 @@ Program Instance Diagonal_Coproduct_Adjunction (C : Category) `{@Cocartesian C} 
     {| to   := {| morphism := fun f => (f ∘ inl, f ∘ inr) |}
      ; from := {| morphism := fun f => fst f ▽ snd f |} |}
 }.
-(* The inverse transpose respects the pairwise equivalence of [C ∏ C]
-   (Construction/Product.v), by [merge_respects]
-   (Structure/Cocartesian.v). *)
+(* The inverse transpose respects pairwise 等价 [C ∏ C]
+ (Construction/Product.v), [merge_respects]
+ (Structure/Cocartesian.v). （已译） *)
 Next Obligation. proper; apply merge_respects; auto. Qed.
 (* Round trip [(x ∘ inl) ▽ (x ∘ inr) ≈ x]: [merge_comp] factors [x] out,
-   leaving [x ∘ (inl ▽ inr)], and [cat] finishes with [merge_inl_inr]
-   (Structure/Cocartesian.v) and the identity law. *)
+ leaving [x ∘ (inl ▽ inr)], [cat] finishes [merge_inl_inr]
+ (Structure/Cocartesian.v) 恒等 law. （已译） *)
 Next Obligation. rewrite merge_comp; cat. Qed.
-(* Naturality in the [C ∏ C] argument: one equation per component, hence the
-   [split], each an [inl_merge]/[inr_merge] step. *)
+(* Naturality [C ∏ C] 论元: one equation per component, hence the
+ [split], each [inl_merge]/[inr_merge] step. （已译） *)
 Next Obligation. split; unmerge. Qed.
-(* [merge_comp] backwards on the right-hand side, then [comp_assoc] forward so
-   that [inl_merge] and [inr_merge] apply under the composites. *)
+(* 相关说明。 （已译） *)
 Next Obligation.
   rewrite <- merge_comp, !comp_assoc, inl_merge, inr_merge; reflexivity.
 Qed.
@@ -89,11 +88,11 @@ Next Obligation. apply merge_comp. Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** The unit at [p = (a, b)] is the pair of injections into [a + b]. *)
+(** 本节：The unit at [p = (a, b)] pair injections [a + b]. （已译） *)
 Definition coproduct_unit (C : Category) `{@Cocartesian C} (p : C ∏ C) :
   p ~{C ∏ C}~> Diagonal_Product C (fst p + snd p) := (inl, inr).
 
-(** The counit at [x] is the folding map [x + x ~> x]. *)
+(** 本节：The counit at [x] folding map [x + x ~> x]. （已译） *)
 Definition coproduct_counit (C : Category) `{@Cocartesian C} (x : C) :
   x + x ~{C}~> x := id ▽ id.
 

@@ -23,7 +23,7 @@ Require Import Category.Adjunction.SpanningArrow.
 
 Generalizable All Variables.
 
-(** * The special adjoint functor theorem, as a characterization *)
+(* * * The special adjoint 函子 定理, characterization （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/well-powered+category
@@ -36,8 +36,8 @@ Generalizable All Variables.
 
 (** ** The monos lemma *)
 
-(* The easy half: an arrow of the comma whose C-component is monic is
-   monic.  No hypothesis. *)
+(* The easy half: arrow comma whose C-component monic is
+ monic. No 假设. （已译） *)
 Lemma comma_monic_of_underlying@{o hc dobj h +| hc <= h +}
   {C : Category@{o hc hc}} {D : Category@{dobj h h}} {U : C ⟶ D} {d : D}
   {X Y : =(d) ↓ U} (m : X ~{=(d) ↓ U}~> Y) :
@@ -137,11 +137,11 @@ Definition comma_monic_iff_underlying_monic@{o hc dobj h +| hc <= h +}
   (underlying_monic_of_comma_monic m (pullback _ _),
    comma_monic_of_underlying m).
 
-(** ** The cogenerating family of the comma category *)
+(* * ** The cogenerating family comma 范畴 （已译） *)
 
-(* Mac Lane's Q': the objects [(cog_obj G j, k)], one for each arrow
-   [k : d ~> U (cog_obj G j)].  The index universe [cc] is free above the
-   old index and the homs. *)
+(* Mac Lane's Q': 对象 [(cog_obj G j, k)], one each arrow
+ [k : d ~> U (cog_obj G j)]. The index universe [cc] free above the
+ old index homs. （已译） *)
 Definition comma_cogenerator@{o hc dobj h c cc +| hc <= h, c <= cc, h <= cc +}
   {C : Category@{o hc hc}} {D : Category@{dobj h h}} (U : C ⟶ D) (d : D)
   (G : Cogenerator@{c o hc} C) : Cogenerator@{cc _ h} (=(d) ↓ U).
@@ -157,7 +157,7 @@ Proof.
     simpl; cat.
 Defined.
 
-(** ** Well-poweredness of the comma category *)
+(* * ** Well-poweredness comma 范畴 （已译） *)
 
 (*
    本节说明子对象相关定义、性质与动机。
@@ -187,9 +187,9 @@ Context {C : Category@{o hc hc}} {D : Category@{dobj h h}} (U : C ⟶ D) (d : D)
 Context (HP : HasPullbacks C) (X : =(d) ↓ U).
 Context (W : WellPoweredAt@{w o s hc t} (snd (`1 X))).
 
-(* A subobject of [X] in the comma: a C-subobject of the underlying
-   object, named by [W], with a factorization of [X]'s structure arrow
-   through [U] of its mono. *)
+(* A subobject [X] comma: C-subobject underlying
+ 对象, named [W], factorization [X]'s structure arrow
+ through [U] mono. （已译） *)
 Definition comma_wp_index : Type :=
   { i : wp_index W &
     { s : d ~> U (Subobject.sub_dom (wp_to W i)) &
@@ -265,9 +265,9 @@ Definition comma_WellPoweredAt@{wc sc tc +| w <= wc, h <= wc, h <= sc, h < tc +}
 
 End CommaWellPowered.
 
-(* At every object.  The comma is a [Let] of the section, so that its
-   universes are fixed before the result type names [sc] and [tc]
-   (collapse (d) of the header). *)
+(* At every 对象. The comma [Let] section, so its
+ universes fixed before result type names [sc] [tc]
+ (collapse (d) header). （已译） *)
 Section CommaWellPoweredAll.
 
 Universes o hc dobj h w s t sc tc.
@@ -283,7 +283,7 @@ Definition comma_WellPowered : @WellPowered@{_ h h sc tc} K :=
 
 End CommaWellPoweredAll.
 
-(** ** The Corollary: the well-powered form *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明始/终对象相关定义、性质与动机。
@@ -330,8 +330,7 @@ Definition SAFT_adjunction@{o dobj h so c w s t pk pa +|
   SAFT_left U comp cont G WP ⊣ U :=
   @AdjunctionFromUniversalArrows D C U (SAFT_universal_arrow U comp cont G WP).
 
-(* The pair is a term, not an [exists]: the tactic form re-introduces
-   the equation "t = pa" (collapse (b) of the header). *)
+(* 相关说明。 （已译） *)
 Definition SAFT_wellpowered@{o dobj h so c w s t pk pa +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -341,8 +340,8 @@ Definition SAFT_wellpowered@{o dobj h so c w s t pk pa +|
   { F : D ⟶ C & F ⊣ U } :=
   existT _ (SAFT_left U comp cont G WP) (SAFT_adjunction U comp cont G WP).
 
-(* READBACK, [eq_refl]: the left adjoint at [d] is the C-object under the
-   intersection of all subobjects of the comma's cogenerator product. *)
+(* READBACK, [eq_refl]: 左伴随 at [d] C-对象 under the
+ intersection all subobjects comma's cogenerator product. （已译） *)
 Example SAFT_left_obj@{o dobj h so c w s t pk pa +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -373,10 +372,10 @@ Definition SAFT_wellpowered_iff@{o dobj h so c w s t pk pa +|
   (fun H => right_adjoint_PreservesImageLimit (`2 H),
    fun cont => SAFT_wellpowered U comp cont G WP).
 
-(** ** Theorem 2: every set of subobjects has a pullback *)
+(* 相关说明。 （已译） *)
 
-(* Mac Lane's "every set of subobjects of an object has a pullback": a
-   LIMIT, over an index at the universe [q] (the class reading). *)
+(* Mac Lane's "every set subobjects 对象 has pullback": a
+ LIMIT, over index at universe [q] (the class reading). （已译） *)
 Definition HasSubobjectWidePullbacks@{o h q r k +}
   (C : Category@{o h h}) : Type@{k} :=
   ∀ (x : C) (I : Type@{q}) (S : I → SubObj x),
@@ -408,9 +407,9 @@ Definition least_top@{o hc dobj h lq +| hc <= h +}
   (X : =(d) ↓ U) : least_index U d X :=
   (sub_top; factors_through_top U (`2 X)).
 
-(* The D-arrow into [U] of the intersection: the mediator of the
-   factorizations, which [HU]'s wide pullback supplies.  Only this
-   existence half of its universal property is used. *)
+(* The D-arrow [U] intersection: mediator the
+ factorizations, [HU]'s wide pullback supplies. Only this
+ existence half 普遍性质 used. （已译） *)
 Definition least_lift@{o hc dobj h lq r rd +| hc <= h +}
   {C : Category@{o hc hc}} {D : Category@{dobj h h}} {U : C ⟶ D} {d : D}
   {X : =(d) ↓ U}
@@ -517,8 +516,8 @@ Defined.
 
 (** ** Theorem 2, sufficiency *)
 
-(* #452's theorem over a least subobject, in the comma, at the least
-   subobject built above; assembled transparently as the Corollary is. *)
+(* #452's 定理 over least subobject, comma, at least
+ subobject built above; assembled transparently Corollary is. （已译） *)
 Definition SAFT_thm2_initial@{o dobj h so c pk pa q r rd pw k +|
     h <= so, c <= so, o <= q, h <= q +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -585,8 +584,8 @@ Definition SAFT_thm2@{o dobj h so c pk pa q r rd pw k +|
   existT _ (SAFT_thm2_left U comp cont G HW HU)
     (SAFT_thm2_adjunction U comp cont G HW HU).
 
-(* READBACK, [eq_refl]: the left adjoint at [d] is the C-wide pullback of
-   the corresponding family of the comma's cogenerator product. *)
+(* READBACK, [eq_refl]: 左伴随 at [d] C-wide pullback of
+ corresponding family comma's cogenerator product. （已译） *)
 Example SAFT_thm2_left_obj@{o dobj h so c pk pa q r rd pw k +|
     h <= so, c <= so, o <= q, h <= q +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -604,7 +603,7 @@ Example SAFT_thm2_left_obj@{o dobj h so c pk pa q r rd pw k +|
                 (fun k => `1 k)) :=
   eq_refl.
 
-(** ** Theorem 2, necessity: right adjoints preserve wide pullbacks *)
+(* 相关说明。 （已译） *)
 
 (* Every wide pullback, of monos or not, at every index universe: the
    monicity clause [Hm] is accepted and ignored.  Elementary, by

@@ -31,15 +31,15 @@ Definition Opposite_Functor `(F : C ⟶ D) : C^op ⟶ D^op :=
     (λ (x y z : C ^op) (f : y ~{ C ^op }~> z)
       (g : x ~{ C ^op }~> y), @fmap_comp _ _ F _ _ _ g f).
 
-(* Mirrors the C^op notation on categories, at the same level/scope. *)
+(* Mirrors C^op notation 范畴, at same level/scope. （已译） *)
 
 Notation "F ^op" := (@Opposite_Functor _ _ F)
   (at level 7, format "F ^op", left associativity) : functor_scope.
 
 Open Scope functor_scope.
 
-(* The op functor is an involution on functors: applying it twice recovers F
-   on the nose. Both sources state (C^op)^op = C, and F^op reuses F's maps. *)
+(* The op 函子 involution 函子: applying it twice recovers F
+ nose. Both sources state (C^op)^op = C, F^op reuses F's maps. （已译） *)
 
 Corollary Opposite_Functor_invol `{F : C ⟶ D} : (F^op)^op = F.
 Proof. reflexivity. Qed.

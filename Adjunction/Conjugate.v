@@ -8,7 +8,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * Conjugate natural transformations *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/adjoint+functor
@@ -36,7 +36,7 @@ Notation "'ε'"  := (@counit _ _ _ _ A).
 Notation "'η²'" := (@unit   _ _ _ _ A') (at level 0).
 Notation "'ε²'" := (@counit _ _ _ _ A') (at level 0).
 
-(* ---- the definition: Mac Lane IV.7 Definition 2, the hom-set square ---- *)
+(* ---- 定义: Mac Lane IV.7 Definition 2, hom-set square ---- （已译） *)
 
 Definition Conjugate (σ : F' ⟹ F) (τ : U ⟹ U') : Type :=
   ∀ (x : D) (a : C) (k : F x ~> a), ⌊ k ∘ σ x ⌋² ≈ τ a ∘ ⌊ k ⌋.
@@ -104,7 +104,7 @@ Definition ConjugateUnit (σ : F' ⟹ F) (τ : U ⟹ U') : Type :=
 Definition ConjugateCounit (σ : F' ⟹ F) (τ : U ⟹ U') : Type :=
   ∀ a : C, ε ∘ σ (U a) ≈ ε² ∘ fmap[F'] (τ a).
 
-(* the pasting spellings, for statement fidelity *)
+(* 相关说明。 （已译） *)
 
 Lemma ConjugateMate_pasting (σ : F' ⟹ F) (τ : U ⟹ U') :
   ConjugateMate σ τ ↔

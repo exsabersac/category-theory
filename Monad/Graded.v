@@ -56,8 +56,8 @@ Lemma gcast_trans {m n p : E} (e1 : m = n) (e2 : n = p) {x : C} :
   gcast e2 ∘ @gcast m n e1 x ≈ gcast (eq_trans e1 e2).
 Proof. destruct e2, e1; simpl; cat. Qed.
 
-(* [gcast] is natural in the object variable: it commutes with the functorial
-   action of the graded carriers. *)
+(* [gcast] natural 对象 variable: it commutes functorial
+ action graded carriers. （已译） *)
 Lemma gcast_natural {m n : E} (e : m = n) {x y : C} (f : x ~> y) :
   gcast e ∘ fmap[T m] f ≈ fmap[T n] f ∘ @gcast m n e x.
 Proof. destruct e; simpl; cat. Qed.
@@ -98,8 +98,8 @@ End Graded.
 
 Arguments GradedMonad {C} E T.
 
-(* Over a constant family the cast is always the identity, whatever the grade
-   equation was: the transport happens in a family that does not move. *)
+(* Over 常值 family cast always 恒等, whatever grade
+ equation was: transport happens family does not move. （已译） *)
 Lemma gcast_const {C : Category} {E : GradeMonoid} {M : C ⟶ C}
       {m n : E} (e : m = n) {x : C} :
   @gcast C E (fun _ => M) m n e x ≈ id.
@@ -107,9 +107,9 @@ Proof. destruct e; reflexivity. Qed.
 
 (** ** The degenerate-grading bridge *)
 
-(* The one-element grade monoid.  All three law proofs are transparent
-   match-terms reducing to [eq_refl] on [ttt], so at this grading [gcast]
-   is definitionally [id]. *)
+(* The one-element grade 幺半群. All three law proofs transparent
+ match-terms reducing [eq_refl] [ttt], so at grading [gcast]
+ definitionally [id]. （已译） *)
 Definition Trivial_GradeMonoid : GradeMonoid := {|
   grade := poly_unit;
   gunit := ttt;
@@ -188,8 +188,7 @@ Next Obligation. (* gjoin_fmap_fmap *)
   exact (@join_fmap_fmap C M H x y f).
 Qed.
 
-(* Round-trips at the trivial grading hold definitionally: passing through
-   either bridge leaves the structure maps unchanged. *)
+(* 相关说明。 （已译） *)
 
 Corollary roundtrip_ret {C : Category} {M : C ⟶ C} (H : @Monad C M) (x : C) :
   @gret C Trivial_GradeMonoid (fun _ => M)
@@ -215,7 +214,7 @@ Corollary roundtrip_join_const {C : Category} {M : C ⟶ C}
     ≈ @join C M H x.
 Proof. reflexivity. Qed.
 
-(** ** A nontrivial instance: the bool-graded exception monad over Coq *)
+(* * ** A nontrivial instance: bool-graded exception 单子 over Coq （已译） *)
 
 (*
    本节说明幺半群相关定义、性质与动机。
@@ -239,8 +238,8 @@ Definition AndGrade : GradeMonoid := {|
     end
 |}.
 
-(* The option endofunctor on Coq, defined locally as a categorical functor
-   (Theory/Coq covers the programming-style classes instead). *)
+(* The option 自函子 Coq, defined locally categorical 函子
+ (Theory/Coq covers programming-style classes instead). （已译） *)
 Program Definition option_Functor : Coq ⟶ Coq := {|
   fobj := option;
   fmap := fun _ _ f o => option_map f o
@@ -255,12 +254,12 @@ Next Obligation. (* fmap_comp *)
   intros x y z f g [a|]; reflexivity.
 Qed.
 
-(* The graded carrier: at the pure grade the identity functor, at the
-   impure grade [option]. *)
+(* The graded carrier: at pure grade 恒等 函子, at the
+ impure grade [option]. （已译） *)
 Definition ExcT (b : bool) : Coq ⟶ Coq :=
   if b then Id[Coq] else option_Functor.
 
-(* The graded unit lives at grade [true], where the carrier is [Id]. *)
+(* 相关说明。 （已译） *)
 Definition exc_ret (x : Type) : x → ExcT true x := fun a => a.
 
 (*

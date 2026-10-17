@@ -20,8 +20,8 @@ Section Coproduct.
 Context {C : Category}.
 Context `{@Cocartesian C}.
 
-(* Object action: both inl x and inr x are sent to x. [const C] is the (non-
-   dependent) motive of [sum_rect]; both branches are the identity on objects. *)
+(* Object action: both inl x inr x sent x. [const C] (non-
+ dependent) motive [sum_rect]; both branches 恒等 对象. （已译） *)
 Definition sum_obj : C ∐ C → C :=
   sum_rect (const C) Datatypes.id Datatypes.id.
 

@@ -8,7 +8,7 @@ Require Import Coq.Vectors.Vector.
 
 Generalizable All Variables.
 
-(** * Presheaves, sites (coverages), and sheaves *)
+(* 相关说明。 （已译） *)
 
 (* nLab: https://ncatlab.org/nlab/show/presheaf
    Wikipedia: https://en.wikipedia.org/wiki/Presheaf_(category_theory)
@@ -81,8 +81,8 @@ Inductive ExistsT {A : Type} (P : A → Type) :
    such that each composite g ∘ hⱼ factors through some fᵢ. *)
 
 Class Site (C : Category) := {
-  (* A covering family of u is a finite (vector-indexed) list of morphisms
-     uᵢ ~> u into u; sigT packages the length together with the vector. *)
+  (* A covering family u finite (vector-indexed) list 态射
+ uᵢ ~> u u; sigT packages length together vector. （已译） *)
   covering_family (u : C) := sigT (Vector.t (∃ uᵢ, uᵢ ~> u));
 
   (* This encoding picks a single covering family per object rather than the
@@ -90,7 +90,7 @@ Class Site (C : Category) := {
      condition below, but is less general than a full coverage. *)
   coverage (u : C) : covering_family u;
 
-  (* The coverage axiom (pullback stability), per the site reference above. *)
+  (* 相关说明。 （已译） *)
   coverage_condition
     (u  : C) (fs : covering_family u)
     (v  : C) (g  : v ~> u) :

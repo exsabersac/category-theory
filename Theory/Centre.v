@@ -35,7 +35,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The centre as a setoid and as a monoid *)
+(* * ** The centre setoid 幺半群 （已译） *)
 
 Section Centre.
 
@@ -58,8 +58,7 @@ Definition centre_setoid : SetoidObject := {|
 *)
 Definition centre_monoid : MonObject := hom_monoid ([C, C]) Id[C].
 
-(* The three data fields, definitionally.  [Set Primitive Projections] gives
-   record eta, so the carrier equation is an equation of records. *)
+(* 相关说明。 （已译） *)
 
 Example centre_monoid_setoid : mon_setoid centre_monoid = centre_setoid
   := eq_refl.
@@ -73,7 +72,7 @@ Example centre_monoid_unit :
 Example centre_monoid_op :
   @mon_op centre_monoid = @nat_compose C C Id[C] Id[C] Id[C] := eq_refl.
 
-(** ** Commutativity, directly from naturality *)
+(* * ** Commutativity, directly 自然性 （已译） *)
 
 (*
    本节说明 Centre 相关定义、性质与动机。
@@ -99,9 +98,9 @@ Proof.
   exact (centre_commutes_at α β x).
 Qed.
 
-(* The same statement read through the monoid packaging, so that a consumer
-   holding [centre_monoid] can quote commutativity in the monoid's own
-   vocabulary. *)
+(* The same statement read through 幺半群 packaging, so consumer
+ holding [centre_monoid] can quote commutativity 幺半群's own
+ vocabulary. （已译） *)
 Corollary centre_monoid_commutative (α β : carrier centre_monoid) :
   mon_op α β ≈ mon_op β α.
 Proof. exact (centre_commutative α β). Qed.
@@ -132,8 +131,7 @@ Definition centre_vcomp (α β : Id[C] ⟹ Id[C]) : Id[C] ⟹ Id[C] :=
 Definition centre_vcomp_op (α β : Id[C] ⟹ Id[C]) : Id[C] ⟹ Id[C] :=
   nat_compose β α.
 
-(* Components, definitionally: `f` composes in the given order, `g` in the
-   opposite one. *)
+(* 相关说明。 （已译） *)
 
 Example centre_vcomp_component (α β : Id[C] ⟹ Id[C]) (x : C) :
   transform[centre_vcomp α β] x = transform[α] x ∘ transform[β] x := eq_refl.
@@ -142,7 +140,7 @@ Example centre_vcomp_op_component (α β : Id[C] ⟹ Id[C]) (x : C) :
   transform[centre_vcomp_op α β] x = transform[β] x ∘ transform[α] x
   := eq_refl.
 
-(** *** The second operation IS the horizontal composite, componentwise *)
+(* * *** The second operation IS horizontal 复合, componentwise （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。
@@ -156,8 +154,8 @@ Example centre_hcompose_is_vcomp (α β : Id[C] ⟹ Id[C]) (x : C) :
 Example centre_vcomp_op_is_hcompose (α β : Id[C] ⟹ Id[C]) (x : C) :
   transform[centre_vcomp_op α β] x = transform[nat_hcompose β α] x := eq_refl.
 
-(* Both whiskerings against the identity functor are the identity on
-   components, which is the other half of the same observation. *)
+(* Both whiskerings against 恒等 函子 恒等 on
+ components, other half same observation. （已译） *)
 
 Example centre_whisker_left (α : Id[C] ⟹ Id[C]) (x : C) :
   transform[Id[C] ⊳ α] x = transform[α] x := eq_refl.
@@ -165,11 +163,11 @@ Example centre_whisker_left (α : Id[C] ⟹ Id[C]) (x : C) :
 Example centre_whisker_right (α : Id[C] ⟹ Id[C]) (x : C) :
   transform[α ⊲ Id[C]] x = transform[α] x := eq_refl.
 
-(** *** The seven hypotheses of [eh_comm] *)
+(* 相关说明。 （已译） *)
 
-(* Respectfulness: both operations are [nat_compose] up to argument order,
-   so both are [nat_compose_respects] (the second with its two arguments
-   exchanged). *)
+(* Respectfulness: both operations [nat_compose] up 论元 order,
+ so both [nat_compose_respects] (the second two arguments
+ exchanged). （已译） *)
 
 Definition centre_vcomp_respects :
   Proper (equiv ==> equiv ==> equiv) centre_vcomp.
@@ -217,8 +215,8 @@ Qed.
 
 (** *** Commutativity via [eh_comm] *)
 
-(* All seven hypotheses discharged, the abstract argument applied.  The
-   conclusion is [centre_commutative] again, reached the long way. *)
+(* All seven hypotheses discharged, abstract 论元 applied. The
+ conclusion [centre_commutative] again, reached long way. （已译） *)
 Theorem centre_commutative_EH (α β : Id[C] ⟹ Id[C]) :
   centre_vcomp α β ≈[Fun] centre_vcomp β α.
 Proof.
@@ -258,7 +256,7 @@ Proof.
            centre_interchange).
 Qed.
 
-(** *** Why the EH route cannot be independent *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Centre 相关定义、性质与动机。
@@ -324,8 +322,8 @@ Proof.
            (centre_Sets_point x) ttt).
 Qed.
 
-(* Packaged form: every centre element of `Sets` IS the identity
-   transformation, in the hom-setoid of `[Sets, Sets]`. *)
+(* Packaged form: every centre element `Sets` IS 恒等
+ transformation, hom-setoid `[Sets, Sets]`. （已译） *)
 Corollary centre_Sets_trivial_nat@{o so}
   (α : Id[Sets@{o so}] ⟹ Id[Sets@{o so}]) : α ≈[Fun] nat_id.
 Proof.
@@ -334,7 +332,7 @@ Proof.
   apply centre_Sets_trivial.
 Qed.
 
-(* Hence the centre of `Sets` is a singleton: it is the trivial monoid. *)
+(* Hence centre `Sets` singleton: it trivial 幺半群. （已译） *)
 Corollary centre_Sets_subsingleton@{o so}
   (α β : Id[Sets@{o so}] ⟹ Id[Sets@{o so}]) : α ≈[Fun] β.
 Proof.

@@ -14,8 +14,8 @@ Require Import Category.Instance.Sets.End.
 
 Generalizable All Variables.
 
-(** Element-level readings of the functor laws for a [Sets]-valued functor,
-    pinning the functor so [apply] discharges applied goals directly. *)
+(** Element-level readings 函子 laws [Sets]-valued 函子,
+ pinning 函子 so [apply] discharges applied goals directly. （已译） *)
 Local Lemma fmap_id_app {D : Category} (G : D ⟶ Sets) {x : D} (z : G x) :
   fmap[G] (@id D x) z ≈ z.
 Proof. exact (@fmap_id D Sets G x z). Qed.
@@ -25,7 +25,7 @@ Local Lemma fmap_comp_app {D : Category} (G : D ⟶ Sets) {x y z : D}
   fmap[G] (g ∘ f) w ≈ fmap[G] g (fmap[G] f w).
 Proof. exact (@fmap_comp D Sets G x y z g f w). Qed.
 
-(** * The ninja-Yoneda lemma in [Sets], both variances *)
+(* * * The ninja-Yoneda 引理 [Sets], both variances （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/co-Yoneda+lemma
@@ -42,7 +42,7 @@ Context {C : Category}.
 Context (F : C ⟶ Sets).
 Context (c : C).
 
-(** ** Form 1: co-Yoneda via the coend *)
+(* 相关说明。 （已译） *)
 
 (** The integrand [YoI (x, y) = C(x, c) × F y]: contravariant in [x] via
     hom-precomposition, covariant in [y] via [fmap[F]]. *)
@@ -85,8 +85,8 @@ Next Obligation.
   - exact (@fmap_respects _ _ F _ _ g g' Hg a').
 Qed.
 
-(** Co-dinaturality of the legs: the cowedge condition, holding by
-    [fmap_comp] plus [fmap_id] and identity laws. *)
+(** Co-dinaturality legs: cowedge condition, holding by
+ [fmap_comp] plus [fmap_id] 恒等 laws. （已译） *)
 Lemma coy_cowedge : Cowedge_cond YoI (F c) coy_leg.
 Proof.
   intros x y f [g a]; simpl.
@@ -114,7 +114,7 @@ Next Obligation.
   - assumption.
 Qed.
 
-(** The co-Yoneda isomorphism on the coend apex. *)
+(** The co-Yoneda 同构 coend apex. （已译） *)
 Program Definition coyoneda_iso :
   @Isomorphism Sets (coend_apex_setoid YoI) (F c) := {|
   to   := coy_to;
@@ -142,7 +142,7 @@ Next Obligation.
       * reflexivity.
 Qed.
 
-(** The primary Form-1 deliverable, stated over the packaged coend. *)
+(** 本节：The primary Form-1 deliverable, stated over packaged coend. （已译） *)
 Definition coyoneda_reduction : coend_obj (SetsCoend YoI) ≅[Sets] F c :=
   coyoneda_iso.
 
@@ -152,9 +152,9 @@ Definition coyoneda_reduction : coend_obj (SetsCoend YoI) ≅[Sets] F c :=
 Let homc (x : C) : SetoidObject :=
   {| carrier := c ~{C}~> x; is_setoid := @homset C c x |}.
 
-(** The integrand [YoE (x, y) = [C(c, x), F y]]: contravariant in [x] by
-    hom-precomposition of the exponent's domain, covariant in [y] via
-    [fmap[F]]. *)
+(** 本节：The integrand [YoE (x, y) = [C(c, x), F y]]: contravariant [x] by
+ hom-precomposition exponent's domain, covariant [y] via
+ [fmap[F]]. （已译） *)
 Program Definition YoE : C^op ∏ C ⟶ Sets := {|
   fobj := fun p =>
     {| carrier   := SetoidMorphism (homc (fst p)) (F (snd p))
@@ -197,7 +197,7 @@ Qed.
 *)
 #[local] Obligation Tactic := idtac.
 
-(** Forward map: evaluate the family at [c] on the identity, [s ↦ (s c) id]. *)
+(** Forward map: evaluate family at [c] 恒等, [s ↦ (s c) id]. （已译） *)
 Program Definition ye_to : SetoidMorphism (Sets_End_obj YoE) (F c) := {|
   morphism := fun s => `1 s c id
 |}.
@@ -206,8 +206,8 @@ Next Obligation.
   exact (Hst c id).
 Qed.
 
-(** The component at [x] of the inverse's natural family: [k ↦ fmap[F] k b],
-    the image of [b : F c] under the Yoneda embedding [C(c,-) ⟹ F]. *)
+(** 本节：The component at [x] inverse's natural family: [k ↦ fmap[F] k b],
+ image [b : F c] under Yoneda embedding [C(c,-) ⟹ F]. （已译） *)
 Program Definition ye_from_fam (b : F c) (x : C) :
   SetoidMorphism (homc x) (F x) := {|
   morphism := fun k => fmap[F] k b
@@ -217,8 +217,8 @@ Next Obligation.
   exact (@fmap_respects _ _ F _ _ k k' Hk b).
 Qed.
 
-(** The inverse's image assembled into a compatible family; its wedge law is
-    the naturality of [k ↦ fmap[F] k b], holding by [fmap_comp] and [fmap_id]. *)
+(** The inverse's image assembled compatible family; wedge law is
+ 自然性 [k ↦ fmap[F] k b], holding [fmap_comp] [fmap_id]. （已译） *)
 Program Definition ye_from_family (b : F c) : end_family YoE :=
   (fun x => ye_from_fam b x; _).
 Next Obligation.
@@ -241,7 +241,7 @@ Next Obligation.
   exact (proper_morphism (fmap[F] k) b b' Hbb').
 Qed.
 
-(** The Yoneda isomorphism on the end apex. *)
+(** The Yoneda 同构 end apex. （已译） *)
 Program Definition yoneda_iso :
   @Isomorphism Sets (Sets_End_obj YoE) (F c) := {|
   to   := ye_to;
@@ -264,8 +264,8 @@ Next Obligation.
       * apply fmap_id_app.
 Qed.
 
-(** The primary Form-2 deliverable, stated over the concrete end object;
-    [Sets_End YoE : End YoE] carries this setoid as its apex. *)
+(** The primary Form-2 deliverable, stated over concrete end 对象;
+ [Sets_End YoE : End YoE] carries setoid apex. （已译） *)
 Definition yoneda_reduction : Sets_End_obj YoE ≅[Sets] F c :=
   yoneda_iso.
 

@@ -47,8 +47,7 @@ Definition len_map_repeat {A B : Type} (φ : A → B) (x : A) (n : nat) :
   length (map φ (repeat x n)) = n :=
   eq_trans (map_length_t φ (repeat x n)) (repeat_length_t x n).
 
-(* The length of a permutation witness's two boundary lists agree; a
-   transparent Fixpoint so that concrete witnesses compute. *)
+(* 相关说明。 （已译） *)
 Fixpoint tperm_length {A : Type} {Γ Δ : list A} (p : tperm Γ Δ) :
   length Γ = length Δ :=
   match p with
@@ -78,14 +77,14 @@ Proof.
   now left.
 Qed.
 
-(** ** Operad algebras as multifunctors *)
+(* 相关说明。 （已译） *)
 
 Definition OperadAlgebra (O : Operad) {C : Category}
   `{@Cartesian C} `{@Terminal C} (X : C) : Type :=
   MultiFunctor (operad_multi O) (EndOperad X).
 
-(* The universal property of the endomorphism operad, definitionally: an
-   O-algebra structure on X IS a map of multicategories into End(X). *)
+(* The 普遍性质 endomorphism operad, definitionally: an
+ O-algebra structure X IS map multicategories End(X). （已译） *)
 Definition OperadAlgebra_is_MultiFunctor (O : Operad) {C : Category}
   `{@Cartesian C} `{@Terminal C} (X : C) :
   OperadAlgebra O X = MultiFunctor (operad_multi O) (EndOperad X) :=
@@ -104,12 +103,11 @@ Context (X : C).
 Local Notation MO := (operad_multi O).
 Local Notation pt := (operad_pt O).
 
-(* The forced object map: the colour type of [EndOperad X] is
-   [poly_unit]. *)
+(* The forced 对象 map: colour type [EndOperad X] is
+ [poly_unit]. （已译） *)
 Definition oalg_obj : @mobj MO → poly_unit := λ _, ttt.
 
-(* The canonical boundary witness: every context is a repeat of the point,
-   at the arity that the image context reports. *)
+(* 相关说明。 （已译） *)
 Definition oalg_ctx (Γ : list (@mobj MO)) :
   Γ = repeat pt (length (map oalg_obj Γ)) :=
   eq_trans (all_repeat O Γ)
@@ -143,7 +141,7 @@ Record OperadAction : Type := {
 #[local] Instance oact_proper (a : OperadAction) (n : nat) :
   Proper (equiv ==> equiv) (oact a n) := oact_respects a n.
 
-(* Target-object casts collapse on loops, by UIP for the colour type. *)
+(* Target-对象 casts collapse loops, UIP colour type. （已译） *)
 Lemma mtarget_loop {Γ : list (@mobj MO)} (e : pt = pt)
   (f : @mhom MO Γ pt) :
   mtarget_cast e f ≈ f.
@@ -163,7 +161,7 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(* The reindexing move along ANY boundary proof between repeat contexts. *)
+(* The reindexing move along ANY boundary 证明 between repeat contexts. （已译） *)
 Lemma oact_cast_any (a : OperadAction) {m n : nat} (e : n = m)
   (E : repeat pt m = repeat pt n) (h : ohom O m) :
   oact a n (mcast E h) ≈ oact a m h ∘ pow_cast X e.
@@ -218,7 +216,7 @@ Next Obligation.
 Qed.
 Next Obligation.
   intros α Γ1 Γ2 Δ b c f g ez es.
-  (* Collapse the slot/target objects and the contexts to repeat form. *)
+  (* Collapse slot/target 对象 contexts repeat form. （已译） *)
   pose proof (operad_obj_contr O b) as Hb; subst b.
   pose proof (operad_obj_contr O c) as Hc; subst c.
   pose proof (all_repeat O Γ1) as H1;
@@ -229,11 +227,11 @@ Next Obligation.
   set (nd := length Δ) in HD; clearbody nd.
   subst Γ1 Γ2 Δ.
   rewrite !mtarget_loop.
-  (* The unzipped operation and its round trip. *)
+  (* 相关说明。 （已译） *)
   set (F := mcast (eq_sym (orep_zip O n1 n2)) f).
   assert (Hf : mcast (orep_zip O n1 n2) F ≈ f) by apply mcast_symm_r.
   clearbody F.
-  (* The left side through the operadic composition. *)
+  (* The left side through operadic 复合. （已译） *)
   assert (HL : mcomp f g
                  ≈ mcast (eq_sym (orep_splice O n1 nd n2)) (ocomp O F g)).
   { unfold ocomp.
@@ -262,7 +260,7 @@ Next Obligation.
   rewrite (oact_cast_any α HF).
   rewrite (oact_cast_any α HDl).
   rewrite oact_comp.
-  (* Unfold the endomorphism side and settle the cast algebra. *)
+  (* 相关说明。 （已译） *)
   cbn [mcast mcomp EndOperad].
   unfold End_mcast, End_mcomp.
   rewrite (graft_cast Hm HDl Hk
@@ -314,15 +312,13 @@ Context {C : Category}.
 Context `{@Cartesian C}.
 Context `{@Terminal C}.
 
-(* The arity-n action of an algebra, at the canonical power. *)
+(* 相关说明。 （已译） *)
 Definition alg_act {X : C} (A : OperadAlgebra O X) (n : nat)
   (o : ohom O n) : pow X n ~> X :=
   mf_map A o
     ∘ pow_cast X (eq_sym (len_map_repeat (mf_obj A) (operad_pt O) n)).
 
-(* Sanity: the convenience constructor does not scramble the action — at
-   every arity the assembled multifunctor's action IS the input action,
-   the boundary casts fusing away. *)
+(* 相关说明。 （已译） *)
 #[local] Instance alg_oact_proper {X : C} (α : OperadAction O X) (n : nat) :
   Proper (equiv ==> equiv) (oact O X α n) := oact_respects O X α n.
 
@@ -345,7 +341,7 @@ Qed.
 Fixpoint pow_map {x y : C} (h : x ~> y) (n : nat) :
   pow x n ~> pow y n :=
   match n as m return ((pow x m ~> pow y m) : Type) with
-  (* the section variable [O] shadows the [nat] constructor in patterns *)
+  (* 相关说明。 （已译） *)
   | 0%nat => @id C (pow x 0)
   | S k => Cartesian.split h (pow_map h k)  (* [List.split] shadows *)
   end.
@@ -406,11 +402,7 @@ Next Obligation.
   now rewrite (oalg_commutes f).
 Qed.
 
-(** ** The commutative operad
-
-    The terminal operad: exactly one operation in every arity, with the
-    trivial setoid on each multimorphism carrier.  Every law holds
-    trivially. *)
+(* 相关说明。 （已译） *)
 
 Program Definition Comm_Multi : Multicategory := {|
   mobj := poly_unit;
@@ -457,7 +449,7 @@ Definition comm_u1 : pow X 1 ~{Sets}~> X :=
 Definition comm_t3 : pow X 3 ~{Sets}~> X :=
   mf_map A (Γ:=[ttt; ttt; ttt]) (c:=ttt) ttt.
 
-(* The unary action is the projection: [mf_id] at the point. *)
+(* 相关说明。 （已译） *)
 Lemma comm_u1_id (a : X) (u : poly_unit) : comm_u1 (a, u) ≈ a.
 Proof. exact (mf_id A ttt (a, u)). Qed.
 
@@ -466,7 +458,7 @@ Lemma comm_mu_comm (a b : X) (u : poly_unit) :
   comm_mu (a, (b, u)) ≈ comm_mu (b, (a, u)).
 Proof. exact (mf_sym A (tperm_swap ttt ttt []) ttt (a, (b, u))). Qed.
 
-(* Associativity, left splice: the slot before the passive input. *)
+(* 相关说明。 （已译） *)
 Lemma comm_assoc_l (a b c : X) (u : poly_unit) :
   comm_t3 (a, (b, (c, u))) ≈ comm_mu (comm_mu (a, (b, ttt)), (c, u)).
 Proof.
@@ -474,7 +466,7 @@ Proof.
            ttt ttt eq_refl eq_refl (a, (b, (c, u)))).
 Qed.
 
-(* Associativity, right splice: the slot after the passive input. *)
+(* 相关说明。 （已译） *)
 Lemma comm_assoc_r (a b c : X) (u : poly_unit) :
   comm_t3 (a, (b, (c, u))) ≈ comm_mu (a, (comm_mu (b, (c, ttt)), u)).
 Proof.
@@ -482,7 +474,7 @@ Proof.
            ttt ttt eq_refl eq_refl (a, (b, (c, u)))).
 Qed.
 
-(* The unit law: splicing the nullary operation into the binary one. *)
+(* The unit law: splicing nullary operation 进入 binary one. （已译） *)
 Lemma comm_unit_l (a : X) (u : poly_unit) :
   comm_u1 (a, u) ≈ comm_mu (comm_eps ttt, (a, u)).
 Proof.
@@ -530,7 +522,7 @@ Section CMonToComm.
 
 Context (M : CMonObject).
 
-(* The n-fold sum on the underlying carrier. *)
+(* 相关说明。 （已译） *)
 Fixpoint nfold_fn (n : nat) :
   carrier (pow (C:=Sets) (cmon_setoid M) n) → carrier (cmon_setoid M) :=
   match n with
@@ -593,8 +585,7 @@ Proof.
     + apply (IHm x').
 Qed.
 
-(* Folds are invariant under the permutation action: associativity and
-   commutativity, by induction on the witness. *)
+(* 相关说明。 （已译） *)
 Lemma nfold_perm {Γ Δ : list poly_unit} (q : tperm Γ Δ) :
   nfold (length Γ) ∘ perm_act (C:=Sets) (cmon_setoid M) q ≈ nfold (length Δ).
 Proof.

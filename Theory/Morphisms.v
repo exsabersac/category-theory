@@ -114,9 +114,9 @@ Class Monic {x y} (f : x ~> y) := {
                                   (* left cancellation: f∘g1 ≈ f∘g2 → g1 ≈ g2 *)
 }.
 
-(* A bimorphism is both epic and monic; a split epi is a retraction and a
-   split mono is a section (the converse implications above hold via
-   retractions_are_epic and sections_are_monic). *)
+(* A bimorphism both epic monic; split epi retraction a
+ split mono section (the converse 蕴含 above hold via
+ retractions_are_epic sections_are_monic). （已译） *)
 
 Definition Bimorphic `(f : x ~> y) := (Epic f * Monic f)%type.
 Definition SplitEpi  `(f : x ~> y) := Retraction f.
@@ -244,7 +244,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Split pairs and the idempotents they produce *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/split+epimorphism
@@ -290,7 +290,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Regular (von Neumann regular) arrows *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Regular_semigroup
@@ -303,8 +303,7 @@ Qed.
 
 Definition RegularMorphism `(f : x ~> y) := ∃ g : y ~> x, f ∘ g ∘ f ≈ f.
 
-(* An arrow with a LEFT inverse is regular: the left inverse is already a
-   pseudoinverse, since f ∘ (s ∘ f) ≈ f ∘ id ≈ f. *)
+(* 相关说明。 （已译） *)
 Definition regular_of_section `(f : x ~> y) : Section f → RegularMorphism f.
 Proof.
   intros [s Hs].
@@ -374,8 +373,7 @@ End Morphisms.
 #[export] Hint Unfold SplitEpi : core.
 #[export] Hint Unfold SplitMono : core.
 
-(* Section/retraction duality: if `section` is the left inverse witnessing
-   that f is a split mono, then f exhibits `section` as a split epi. *)
+(* 相关说明。 （已译） *)
 Definition flip_Section {C : Category} `(f : x ~> y)
            (s : @Section C x y f) : @Retraction C y x section.
 Proof.
@@ -385,8 +383,7 @@ Proof.
   assumption.
 Qed.
 
-(* Dual of flip_Section: if `retract` is the right inverse witnessing that f
-   is a split epi, then f exhibits `retract` as a split mono. *)
+(* 相关说明。 （已译） *)
 Definition flip_Retraction {C : Category} `(f : x ~> y)
            (s : @Retraction C x y f) : @Section C y x retract.
 Proof.

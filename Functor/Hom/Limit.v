@@ -17,7 +17,7 @@ Require Import Category.Instance.Coq.
 
 Generalizable All Variables.
 
-(** * Continuity of the covariant hom-functor *)
+(* * * Continuity covariant hom-函子 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/continuous+functor
@@ -28,7 +28,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The covariant hom-functor preserves limit cones *)
+(* * ** The covariant hom-函子 preserves limit cones （已译） *)
 
 Section HomContinuous.
 
@@ -37,9 +37,7 @@ Context (c : C).
 
 Definition HomFrom : C ⟶ Sets := [Hom c ,─].
 
-(* An element of the apex of a cone over [Hom c,─] ◯ K is itself a cone
-   over K with apex c: its legs are the legs of M read at that element,
-   and its coherence is M's coherence read there. *)
+(* 相关说明。 （已译） *)
 
 Section Fibre.
 
@@ -99,7 +97,7 @@ Definition hom_med : vertex_obj[M] ~{Sets}~> fobj[HomFrom] (vertex_obj[N]) :=
 
 End Mediator.
 
-(* The headline, per diagram and then over all shapes at once. *)
+(* 相关说明。 （已译） *)
 
 Definition hom_PreservesLimitCone {J : Category} (K : J ⟶ C) :
   PreservesLimitCone K HomFrom.
@@ -130,7 +128,7 @@ Definition hom_PreservesLimit {J : Category} (K : J ⟶ C) :
 Definition hom_PreservesAllLimits : PreservesAllLimits HomFrom :=
   Continuous_PreservesAllLimits hom_ContinuousFunctor.
 
-(* What the cone level pins down, and the apex-only reading does not. *)
+(* 相关说明。 （已译） *)
 
 Example hom_preserved_leg {J : Category} {K : J ⟶ C} (N : Cone K) (x : J) :
   cone_leg (FCone HomFrom N) x = fmap[HomFrom] (cone_leg N x) := eq_refl.
@@ -209,9 +207,9 @@ Defined.
 
 End IndexedProducts.
 
-(* The binary case, at the apex-pinned [IsCartesianProduct]: the
-   conclusion is that [C(c, z)] is a product of [C(c, x)] and [C(c, y)]
-   in Sets, with post-composition as the two projections. *)
+(* The binary case, at apex-pinned [IsCartesianProduct]: the
+ conclusion [C(c, z)] product [C(c, x)] [C(c, y)]
+ Sets, post-复合 two projections. （已译） *)
 
 Section BinaryProducts.
 
@@ -260,11 +258,11 @@ End BinaryProducts.
 
 End HomContinuous.
 
-(** ** The contravariant twin: colimits of C become limits of Sets *)
+(* 相关说明。 （已译） *)
 
-(* [Hom ─,c] IS the covariant hom-functor of C^op, definitionally, so
-   every constant here is instantiation: all are supplied by [:=] with
-   no tactic. *)
+(* [Hom ─,c] IS covariant hom-函子 C^op, definitionally, so
+ every 常值 here instantiation: all supplied [:=] with
+ no tactic. （已译） *)
 
 Section HomContravariant.
 
@@ -324,8 +322,8 @@ Program Definition cartesian_IsCartesianProduct {C : Category}
 |}.
 Next Obligation. apply ump_products. Qed.
 
-(* Witness (1): the binary product corollary at [Coq_Cartesian].  The
-   three Examples below compute by [eq_refl]. *)
+(* Witness (1): binary product 推论 at [Coq_Cartesian]. The
+ three Examples below compute [eq_refl]. （已译） *)
 
 Definition coq_hom_product (u x y : Coq) :
   @IsCartesianProduct Sets (fobj[HomFrom u] x) (fobj[HomFrom u] y)

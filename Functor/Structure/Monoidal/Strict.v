@@ -33,7 +33,7 @@ Class StrictMonoidalFunctor : Type := {
   strict_pure_obj : (@I D _) = F (@I C _);
   strict_ap_obj {x y : C} : (F x ⨂ F y)%object = F (x ⨂ y)%object;
 
-  (** The comparison isomorphisms ARE the identity, transported. *)
+  (** The comparison isomorphisms ARE 恒等, transported. （已译） *)
   strict_pure_iso_id :
     to (@pure_iso _ _ _ _ F strict_functor_is_monoidal)
       ≈ match strict_pure_obj in _ = T return (@I D _) ~> T

@@ -1,4 +1,4 @@
-(** * Adjoint on the right: pairs of contravariant functors *)
+(* * * Adjoint right: pairs contravariant 函子 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -738,9 +738,9 @@ End Probes.
 *)
 Fail Example probe_358_instrument : (true = false) := eq_refl.
 
-(* Negatives 6-7: hom = proof has TWO INDEPENDENT donors.  Section-local
-   [Universes]/[Constraint] declarations are measured not to leak (the
-   Instance/Fun/Group.v precedent). *)
+(* Negatives 6-7: hom = 证明 has TWO INDEPENDENT donors. Section-local
+ [Universes]/[Constraint] declarations measured not leak (the
+ Instance/Fun/Group.v precedent). （已译） *)
 Section ProbeHomProof.
 Universes uo uh up.
 Constraint uh < up.
@@ -758,8 +758,8 @@ Fail Check ({| carrier := @hom C x y; is_setoid := @homset C x y |}
 End ProbeHomProof.
 
 (* Negatives 8-9: A's hom = X's hom likewise has TWO INDEPENDENT donors
-   -- the contravariant PAIR itself, and [Sets] with no functor in the
-   command at all. *)
+ -- contravariant PAIR itself, [Sets] no 函子 the
+ command at all. （已译） *)
 Section ProbeCrossHom.
 Universes ao ah ap xo xh xp.
 Constraint ah < xh.

@@ -32,8 +32,8 @@ Program Definition map_iso `(F : C ⟶ D) {x y : C} (i : x ≅ y) : F x ≅ F y 
 Next Obligation. rewrite <- fmap_comp, iso_to_from; apply fmap_id. Qed.
 Next Obligation. rewrite <- fmap_comp, iso_from_to; apply fmap_id. Qed.
 
-(* Isomorphism cancellation, stated in `vcompose`/`bi2id` form for the 2-cells
-   of a hom-category (each is the generic isomorphism law up to conversion). *)
+(* Isomorphism cancellation, stated `vcompose`/`bi2id` form 2-cells
+ hom-范畴 (each generic 同构 law up conversion). （已译） *)
 Lemma bi_iso_to_from {B : Bicategory} {x y : @bi0cell B} {a b : @bicat B x y}
   (i : a ≅ b) : to i ∘∘ from i ≈ bi2id.
 Proof. exact (iso_to_from i). Qed.
@@ -59,9 +59,9 @@ Proof. exact fmap_id. Qed.
 Section Hcomp2.
 Context {B : Bicategory}.
 
-(* The Godement composite of two identity 2-cells is the identity, because
-   `hcomp2` is the functorial action of `hcompose` and `(bi2id, bi2id)` is the
-   identity of the product hom-category. *)
+(* The Godement 复合 two 恒等 2-cells 恒等, because
+ `hcomp2` functorial action `hcompose` `(bi2id, bi2id)` the
+ 恒等 product hom-范畴. （已译） *)
 Lemma hcomp2_id {x y z : @bi0cell B} (g : @bicat B y z) (f : @bicat B x y) :
   hcomp2 (bi2id (a:=g)) (bi2id (a:=f)) ≈ bi2id.
 Proof. exact (@fmap_id _ _ (@hcompose B x y z) (g, f)). Qed.
@@ -87,8 +87,7 @@ Proof.
            (θ1,η1) (θ2,η2) (Hθ, Hη)).
 Qed.
 
-(* The two whiskered specialisations of interchange, closing the residual
-   `bi2id ∘∘ bi2id` by unitality. *)
+(* 相关说明。 （已译） *)
 Lemma hcomp2_comp_left {x y z : @bi0cell B}
   {g g' g'' : @bicat B y z} {f : @bicat B x y}
   (θ' : g' ~> g'') (θ : g ~> g') :
@@ -119,7 +118,7 @@ End Hcomp2.
 Class Pseudofunctor (B B' : Bicategory) := {
   pf0 : @bi0cell B → @bi0cell B';        (* action on 0-cells *)
 
-  (* the hom-functors: functorial action on 1-cells and 2-cells *)
+  (* the hom-函子: functorial action 1-cells 2-cells （已译） *)
   pf1 {x y : @bi0cell B} : @bicat B x y ⟶ @bicat B' (pf0 x) (pf0 y);
 
   (* unitor: identities preserved up to invertible 2-cell *)
@@ -151,15 +150,14 @@ Class Pseudofunctor (B B' : Bicategory) := {
       ∘∘ to (pf_comp h (g ∘∘∘ f))
       ∘∘ fmap[pf1] (to (hassoc h g f));
 
-  (* left-unit coherence: the target left unitor factors through the
-     compositor, the unitor, and pf1 of the source left unitor. *)
+  (* 相关说明。 （已译） *)
   pf_unit_left {x y : @bi0cell B} (f : @bicat B x y) :
     to (hunit_left (pf1 f))
       ≈ fmap[pf1] (to (hunit_left f))
          ∘∘ from (pf_comp (@bi1id B y) f)
          ∘∘ hcomp2 (from pf_id) (bi2id (a:=pf1 f));
 
-  (* right-unit coherence, the mirror image on the other whiskering side *)
+  (* right-unit coherence, 镜像 image other whiskering side （已译） *)
   pf_unit_right {x y : @bi0cell B} (f : @bicat B x y) :
     to (hunit_right (pf1 f))
       ≈ fmap[pf1] (to (hunit_right f))
@@ -289,8 +287,8 @@ Definition comp_pf_comp {x y z : @bi0cell B}
        (@pf1 _ _ F y z g) (@pf1 _ _ F x y f))
     (map_iso (@pf1 _ _ G (pf0 F x) (pf0 F z)) (@pf_comp _ _ F x y z g f)).
 
-(* Reduction lemmas exposing the composite unitor/compositor and hom-functor
-   action in `vcompose` normal form (each holds by conversion). *)
+(* Reduction lemmas exposing 复合 unitor/compositor hom-函子
+ action `vcompose` normal form (each holds conversion). （已译） *)
 Lemma comp_pf1_fmap {x y : @bi0cell B} {a b : @bicat B x y} (u : a ~> b) :
   fmap[@comp_pf1 x y] u
     ≈ fmap[@pf1 _ _ G (pf0 F x) (pf0 F y)] (fmap[@pf1 _ _ F x y] u).
@@ -354,11 +352,11 @@ Proof.
   pose proof (@pf_comp_natural _ _ G _ _ _ _ _ _ _
                 (bi2id (a:=pf1[F] h)) (to (@pf_comp _ _ F w x y g f))) as GN2.
   rewrite (pfmap_id (@pf1 _ _ G (pf0 F y) (pf0 F z))) in GN2.
-  (* GHEX: the associativity hexagon of G at the images of h, g, f. *)
+  (* 相关说明。 （已译） *)
   pose proof (@pf_assoc_coherence _ _ G (pf0 F w) (pf0 F x) (pf0 F y) (pf0 F z)
                 (pf1[F] h) (pf1[F] g) (pf1[F] f)) as GHEX.
-  (* HGMF: the associativity hexagon of F, transported through G's hom-functor
-     `pf1[G]` by merging the three factors, rewriting, and re-splitting. *)
+  (* HGMF: associativity hexagon F, transported through G's hom-函子
+ `pf1[G]` merging three factors, rewriting, re-splitting. （已译） *)
   pose proof (@pf_assoc_coherence _ _ F w x y z h g f) as FHEX.
   assert (HGMF :
     fmap[@pf1 _ _ G (pf0 F w) (pf0 F z)]
@@ -379,8 +377,8 @@ Proof.
     rewrite (pfmap_comp (@pf1 _ _ G (pf0 F w) (pf0 F z))).
     rewrite (pfmap_comp (@pf1 _ _ G (pf0 F w) (pf0 F z))).
     reflexivity. }
-  (* Expose the composite compositors/hom-functor action, fully left-associate,
-     and combine the four facts through the pure-associativity assembler. *)
+  (* Expose 复合 compositors/hom-函子 action, fully left-associate,
+ combine four facts through pure-associativity assembler. （已译） *)
   rewrite !to_comp_pf_comp.
   rewrite comp_pf1_fmap.
   rewrite hcomp2_comp_left.

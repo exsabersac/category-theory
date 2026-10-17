@@ -91,8 +91,8 @@ Instance IsIsoToIso {x y : C} (f : x ~> y) ( _ : IsIsomorphism f) : Isomorphism 
   from := id
 }.
 
-(* Symmetry of ≅: the inverse of an isomorphism is an isomorphism,
-   obtained by swapping `to` and `from` and the two inverse laws. *)
+(* Symmetry ≅: inverse 同构 同构,
+ obtained swapping `to` `from` two inverse laws. （已译） *)
 Program Definition iso_sym {x y : C} `(f : x ≅ y) : y ≅ x := {|
   to   := from f;
   from := to f;
@@ -101,8 +101,8 @@ Program Definition iso_sym {x y : C} `(f : x ≅ y) : y ≅ x := {|
   iso_from_to := iso_to_from f
 |}.
 
-(* Transitivity of ≅: a composite of isomorphisms is an isomorphism, with
-   inverse `from g ∘ from f` (the inverses compose in the opposite order). *)
+(* Transitivity ≅: 复合 isomorphisms 同构, with
+ inverse `from g ∘ f` (the inverses compose opposite order). （已译） *)
 Program Definition iso_compose {x y z : C} `(f : y ≅ z) `(g : x ≅ y) :
   x ≅ z := {|
   to   := to f ∘ to g;

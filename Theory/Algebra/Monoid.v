@@ -7,7 +7,7 @@ Require Import Category.Structure.Monoidal.
 
 Generalizable All Variables.
 
-(** * Internal monoids in a monoidal category *)
+(* * * Internal monoids 幺半范畴 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/monoid+in+a+monoidal+category

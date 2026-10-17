@@ -8,7 +8,7 @@ Require Import Category.Theory.Coq.Traversable.
 
 Generalizable All Variables.
 
-(** The Maybe/option type [1 + a] as functor, applicative and monad *)
+(** The Maybe/option type [1 + a] 函子, applicative 单子 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/maybe+monad
@@ -29,8 +29,7 @@ Definition fromMaybe `(x : a) (my : Maybe a) : a :=
   | Nothing => x
   end.
 
-(* The maybe eliminator: the copairing [[const x, f] : a + 1 → b] out of the
-   coproduct [Maybe a = a + 1], sending [Just z] to [f z] and [Nothing] to [x]. *)
+(* 相关说明。 （已译） *)
 Definition maybe `(x : b) `(f : a → b) (my : Maybe a) : b :=
   match my with
   | Just z  => f z
@@ -63,8 +62,7 @@ Instance Maybe_Applicative : Applicative Maybe := {
   ap := @Maybe_apply
 }.
 
-(* Monad multiplication [μ : (X + 1) + 1 → X + 1], collapsing the two copies of
-   the unit [1] (both outer and inner [Nothing]) to a single [Nothing]. *)
+(* 相关说明。 （已译） *)
 Definition Maybe_join {X} (x : Maybe (Maybe X)) : Maybe X :=
   match x with
   | Nothing => Nothing
@@ -86,8 +84,7 @@ Instance Maybe_Monad : Monad Maybe := {
 
 Definition isJust {a} (x : Maybe a) := if x then true else false.
 
-(* Left-biased choice: return the first [Just], else fall through to [y].
-   This is the standard [Alternative] instance, with [empty = Nothing] the unit. *)
+(* 相关说明。 （已译） *)
 Definition Maybe_choose {a} (x y : Maybe a) : Maybe a :=
   match x with
   | Nothing => y

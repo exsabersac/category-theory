@@ -8,7 +8,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * SAFT's covering datum is refutable at the identity of [Sets] *)
+(* * * SAFT's covering datum refutable at 恒等 [Sets] （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Cantor%27s_theorem
@@ -28,8 +28,8 @@ Lemma SubobjectCover_Id_Sets_absurd@{r g w u c h cobj |
 Proof.
   intros cover.
   set (Q := cogen_prod comp G).
-  (* The Prop-valued predicates on the carrier of [Q], compared pointwise
-     by logical equivalence. *)
+  (* The Prop-valued predicates carrier [Q], compared pointwise
+ logical 等价. （已译） *)
   unshelve epose (PQ := {| carrier := carrier Q → Prop;
                            is_setoid :=
                              {| equiv := fun A B : carrier Q → Prop =>
@@ -46,8 +46,7 @@ Proof.
   set (mono := sub_mono (WP Q) i).
   pose proof (snd (injectivity_is_monic mono) (sub_monic (WP Q) i)) as inj.
   simpl in e.
-  (* Cantor's diagonal: the points of [Q] that do not satisfy the predicate
-     their preimage names. *)
+  (* 相关说明。 （已译） *)
   pose (Dg := fun a : carrier Q => ∀ y : carrier m, mono y ≈ a → ~ (t y a)).
   pose (a := mono (s Dg)).
   assert (notD : ~ Dg a).

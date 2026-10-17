@@ -150,7 +150,7 @@ Proof using A U. exact (adjunction_of_counit_to id). Qed.
 
 End CounitRoundTrip.
 
-(** ** The other composite: couniversal arrows, adjunction, counit *)
+(* * ** The other 复合: couniversal arrows, 伴随, counit （已译） *)
 
 Section CouniversalRoundTrip.
 
@@ -189,8 +189,7 @@ Qed.
 
 End CouniversalRoundTrip.
 
-(** ** Mac Lane's first presentation: a natural unit whose every component
-       is universal *)
+(* 相关说明。 （已译） *)
 
 Section UnitSide.
 

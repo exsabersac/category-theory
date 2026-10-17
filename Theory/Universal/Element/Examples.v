@@ -17,7 +17,7 @@ Require Import Category.Theory.Universal.Element.Elements.
 
 Generalizable All Variables.
 
-(** * Non-vacuity: the natural numbers as a universal element *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出例子。
@@ -25,8 +25,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The universal element of [Endos_Forget], produced by the general class
-   from the representation Instance/Coq/Nat.v builds. *)
+(* 相关说明。 （已译） *)
 Definition nat_UniversalElement : UniversalElement Endos_Forget :=
   UniversalElement_of_Representable nat_succ_Representable.
 
@@ -42,8 +41,8 @@ Proof. reflexivity. Qed.
 Example nat_ue_elem : @ue_elem Endos Endos_Forget nat_UniversalElement = O.
 Proof. reflexivity. Qed.
 
-(* The general equation of which Nat.v's check is the instance, at this
-   representation: the universal element is the image of the identity. *)
+(* The general equation Nat.v's check instance, at this
+ representation: universal element image 恒等. （已译） *)
 Example nat_ue_is_image_of_id :
   @ue_elem Endos Endos_Forget nat_UniversalElement
     = transform (to nat_succ_represents) NatSucc (id{Endos}).

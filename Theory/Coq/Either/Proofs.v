@@ -6,7 +6,7 @@ Require Import Category.Theory.Functor.
 
 Generalizable All Variables.
 
-(** Law proofs for the Either/sum [a + b] instances *)
+(** 本节：Law proofs Either/sum [a + b] instances （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/coproduct

@@ -1,6 +1,6 @@
 Require Import Category.Lib.
 
-(** Aggregator for the applied functional-programming layer over Coq types *)
+(** 本节：Aggregator applied functional-programming layer over Coq types （已译） *)
 
 (* 本模块再导出 [Theory/Coq/] 簇，在 Coq 类型（「类型范畴」）上直接开发熟悉的
    Haskell 风格类型类，并把每一类连到其范畴对应物。导入本单一模块即可把整个

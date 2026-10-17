@@ -10,7 +10,7 @@ Require Import Category.Monad.Distributive.
 
 Generalizable All Variables.
 
-(** * The composite monad M ◯ N from a distributive law *)
+(* * * The 复合 单子 M ◯ N 分配律 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Distributive_law_between_monads

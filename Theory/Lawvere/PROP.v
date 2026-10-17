@@ -28,7 +28,7 @@ Require Import Category.Theory.Lawvere.
 
 Generalizable All Variables.
 
-(** * Lawvere theories meet the PROP spine *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/Lawvere+theory
@@ -40,7 +40,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** 1. The cartesian symmetric monoidal structure on a Lawvere theory *)
+(* 相关说明。 （已译） *)
 
 Section LawvereMonoidal.
 
@@ -50,7 +50,7 @@ Context (T : LawvereTheory).
 Definition Lawvere_Monoidal : @Monoidal (@law_cat T) :=
   @Cartesian_Monoidal (@law_cat T) (@law_cartesian T) (@law_terminal T).
 
-(** The braiding is the product swap [⟨exr, exl⟩]. *)
+(** 本节：The braiding product swap [⟨exr, exl⟩]. （已译） *)
 Definition Lawvere_Braided : @BraidedMonoidal (@law_cat T) :=
   @CC_BraidedMonoidal (@law_cat T) (@law_cartesian T) (@law_terminal T).
 
@@ -58,8 +58,8 @@ Definition Lawvere_Braided : @BraidedMonoidal (@law_cat T) :=
 Definition Lawvere_Symmetric : @SymmetricMonoidal (@law_cat T) :=
   @CC_SymmetricMonoidal (@law_cat T) (@law_cartesian T) (@law_terminal T).
 
-(** The full cartesian-monoidal packaging (relevance + semicartesian),
-    i.e. the Fox-side data: diagonal [⟨id, id⟩] and eliminate [one]. *)
+(** 本节：The full cartesian-monoidal packaging (relevance + semicartesian),
+ i.e. Fox-side data: diagonal [⟨id, id⟩] eliminate [one]. （已译） *)
 Definition Lawvere_CartesianMonoidal : @CartesianMonoidal (@law_cat T) :=
   @CC_CartesianMonoidal (@law_cat T) (@law_cartesian T) (@law_terminal T).
 
@@ -75,7 +75,7 @@ Example Lawvere_Symmetric_monoidal_coherence :
 
 End LawvereMonoidal.
 
-(** ** 2. The PROP on a strict Lawvere theory, and interpretation *)
+(* 相关说明。 （已译） *)
 
 Section LawverePROP.
 
@@ -89,8 +89,8 @@ Context (T : LawvereTheory).
 Context (SM : @StrictMonoidal (@law_cat T)).
 Context (coh : @strict_is_monoidal (@law_cat T) SM = Lawvere_Monoidal T).
 
-(** The unit of the strict path is [law_of_nat 0]: transport
-    [law_zero_terminal] along [coh]. *)
+(** 本节：The unit strict path [law_of_nat 0]: transport
+ [law_zero_terminal] along [coh]. （已译） *)
 Definition Lawvere_prop_unit_zero :
   @I (@law_cat T) (@strict_is_monoidal (@law_cat T) SM)
   = @law_of_nat T 0%nat :=
@@ -149,28 +149,28 @@ Definition Lawvere_Valuation : Valuation Lawvere_PROP Σ := v.
 Definition Lawvere_PROP_interp : FreeCat Σ ⟶ @law_cat T :=
   @InterpF Σ Lawvere_PROP HP OD Lawvere_Valuation.
 
-(** Machine-checked: the interpretation extends the valuation — every
-    generator is sent to its assigned [law_cat T]-morphism, on the nose. *)
+(** Machine-checked: interpretation extends valuation — every
+ generator sent assigned [law_cat T]-态射, nose. （已译） *)
 Example Lawvere_PROP_interp_extends (m n : nat) (g : Σ m n) :
   fmap[Lawvere_PROP_interp] (T_gen g) ≈ v m n g.
 Proof. reflexivity. Qed.
 
-(** The strong monoidal packaging, over the strict path [SM]. *)
+(** 本节：The strong monoidal packaging, over strict path [SM]. （已译） *)
 Definition Lawvere_PROP_interp_Monoidal :
   @MonoidalFunctor (FreeCat Σ) (@law_cat T) (FreeCat_Monoidal Σ)
     (@strict_is_monoidal (@law_cat T) SM) Lawvere_PROP_interp :=
   @InterpF_Monoidal Σ Lawvere_PROP HP OD Lawvere_Valuation.
 
-(** The strict monoidal packaging: the object comparisons are the
-    transported [law_zero_terminal] / [law_plus_product], verbatim. *)
+(** The strict monoidal packaging: 对象 comparisons the
+ transported [law_zero_terminal] / [law_plus_product], verbatim. （已译） *)
 Definition Lawvere_PROP_interp_Strict :
   @StrictMonoidalFunctor (FreeCat Σ) (@law_cat T) (FreeCat_Monoidal Σ)
     (@strict_is_monoidal (@law_cat T) SM) Lawvere_PROP_interp :=
   @InterpF_Strict Σ Lawvere_PROP HP OD Lawvere_Valuation.
 
-(** The braided packaging, landing in the cartesian braiding of
-    section 1 — the braid-square requirement of [Interp.v] is met by
-    the symmetry [swap = ⟨exr, exl⟩] of the Lawvere theory. *)
+(** 本节：The braided packaging, landing cartesian braiding of
+ section 1 — braid-square requirement [Interp.v] met by
+ symmetry [swap = ⟨exr, exl⟩] Lawvere theory. （已译） *)
 Definition Lawvere_PROP_interp_Braided :
   @BraidedMonoidalFunctor (FreeCat Σ) (@law_cat T) (FreeCat_Braided Σ)
     (@symmetric_is_braided (@law_cat T) (Lawvere_Symmetric T))

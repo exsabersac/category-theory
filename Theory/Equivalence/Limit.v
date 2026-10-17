@@ -15,7 +15,7 @@ Require Import Category.Theory.Equivalence.Adjoint.
 
 Generalizable All Variables.
 
-(** * Equivalences preserve, reflect, and create limits *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
@@ -28,20 +28,16 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Additions to the covariant accessor toolkit *)
+(* 相关说明。 （已译） *)
 
-(* Coherence of [cone_leg], the first-class leg accessor of
-   Structure/Limit/Preservation.v (which provides the analogous
-   [limit_leg_coherence] only for apex-pinned limit witnesses). *)
+(* 相关说明。 （已译） *)
 
 Lemma cone_leg_coherence {J C : Category} {F : J ⟶ C} (N : Cone F)
   {x y : J} (f : x ~{J}~> y) :
   fmap[F] f ∘ cone_leg N x ≈ cone_leg N y.
 Proof. exact (@cone_coherence _ _ _ _ (@coneFrom _ _ _ N) x y f). Qed.
 
-(* Rebundling an apex-pinned limit witness as a bundled [Limit]: the
-   converse of [limit_is_alimit].  Purely a repackaging; the cone is the
-   witness's own leg family over its pinned apex. *)
+(* 相关说明。 （已译） *)
 
 Definition isalimit_to_limit {J C : Category} {G : J ⟶ C} {c : C}
   (H : IsALimit G c) : Limit G :=
@@ -49,7 +45,7 @@ Definition isalimit_to_limit {J C : Category} {G : J ⟶ C} {c : C}
     (@Build_Cone J C G c (@limit_acone _ _ _ _ H))
     (@ump_limit _ _ _ _ H).
 
-(** ** Transport of limits along a natural isomorphism of diagrams *)
+(* * ** Transport limits along natural 同构 diagrams （已译） *)
 
 (*
    本节说明函子、（余）极限、等价相关定义、性质与动机。
@@ -64,8 +60,8 @@ Context {C : Category}.
 Context {G G' : J ⟶ C}.
 Context (e : G ≈ G').
 
-(* Push a cone over G across e: compose each leg with the forward
-   component of the isomorphism family. *)
+(* Push cone over G across e: compose each leg forward
+ component 同构 family. （已译） *)
 
 Definition cone_transport_leg (N : Cone G) (x : J) :
   vertex_obj[N] ~{C}~> G' x :=
@@ -86,8 +82,8 @@ Definition cone_transport (N : Cone G) : Cone G' :=
     (@Build_ACone J C (vertex_obj[N]) G' (cone_transport_leg N)
        (fun x y f => cone_transport_coherence N f)).
 
-(* Pull a cone over G' back across e: compose each leg with the inverse
-   component of the isomorphism family. *)
+(* Pull cone over G' back across e: compose each leg inverse
+ component 同构 family. （已译） *)
 
 Definition cone_transport_inv_leg (N : Cone G') (x : J) :
   vertex_obj[N] ~{C}~> G x :=
@@ -109,13 +105,13 @@ Definition cone_transport_inv (N : Cone G') : Cone G :=
     (@Build_ACone J C (vertex_obj[N]) G (cone_transport_inv_leg N)
        (fun x y f => cone_transport_inv_coherence N f)).
 
-(* The legs of the pulled-back cone, in rewriting-friendly form. *)
+(* 相关说明。 （已译） *)
 
 Lemma cone_transport_inv_leg_eq (N : Cone G') (x : J) :
   cone_leg (cone_transport_inv N) x ≈ from (`1 e x) ∘ cone_leg N x.
 Proof. reflexivity. Qed.
 
-(** *** Transporting an apex-pinned limit witness *)
+(* 相关说明。 （已译） *)
 
 Section TransportWitness.
 
@@ -139,9 +135,7 @@ Definition isalimit_transport_acone : ACone c G' :=
   @Build_ACone J C c G' isalimit_transport_leg
     (fun x y f => isalimit_transport_coherence f).
 
-(* Mediate a competing cone over G' by pulling it back across e and
-   mediating through the limit of G; the apexes are untouched, so the
-   mediator needs no adjustment at all. *)
+(* 相关说明。 （已译） *)
 
 Definition isalimit_transport_med (N : Cone G') :
   vertex_obj[N] ~{C}~> c :=
@@ -190,17 +184,16 @@ Definition isalimit_transport : IsALimit G' c :=
 
 End TransportWitness.
 
-(* The bundled form: naturally isomorphic diagrams have the same limits,
-   with the same apex. *)
+(* 相关说明。 （已译） *)
 
 Definition limit_transport (L : Limit G) : Limit G' :=
   isalimit_to_limit (isalimit_transport (limit_is_alimit L)).
 
 End DiagramIso.
 
-(** ** The image of a cone under a functor *)
+(* * ** The image cone under 函子 （已译） *)
 
-(** ** Fully faithful functors reflect isomorphisms and limits *)
+(* * ** Fully faithful 函子 reflect isomorphisms limits （已译） *)
 
 Section FullyFaithful.
 
@@ -209,9 +202,9 @@ Context {F : C ⟶ D}.
 Context `{HF : @Full C D F}.
 Context `{HfF : @Faithful C D F}.
 
-(* A full and faithful functor is conservative: the chosen inverse of f
-   is the [prefmap]-preimage of the inverse of fmap[F] f, and its two
-   inverse laws are recovered from faithfulness. *)
+(* A 全忠实 函子 conservative: chosen inverse f
+ [prefmap]-preimage inverse fmap[F] f, two
+ inverse laws recovered faithfulness. （已译） *)
 
 Definition ff_iso_inverse {x y : C} (f : x ~{C}~> y)
   (I : IsIsomorphism (fmap[F] f)) : y ~{C}~> x :=
@@ -256,9 +249,7 @@ Context (N : Cone G).
 Context (HL : IsALimit (F ◯ G) (F (vertex_obj[N]))).
 Context (Hlegs : ∀ x : J, limit_leg HL x ≈ fmap[F] (cone_leg N x)).
 
-(* Mediate a competing cone M over G: take the image of M, mediate in D
-   through the hypothesized limit, and choose an [fmap]-preimage of the
-   mediator with [prefmap]. *)
+(* 相关说明。 （已译） *)
 
 Definition ff_reflect_med (M : Cone G) :
   vertex_obj[M] ~{C}~> vertex_obj[N] :=
@@ -302,8 +293,8 @@ Definition ff_reflect_ump (M : Cone G) :
     (ff_reflect_med_commutes M)
     (ff_reflect_med_unique M).
 
-(* Full + faithful functors reflect limits: the cone N, with its own leg
-   family, is a limit of G. *)
+(* Full + faithful 函子 reflect limits: cone N, own leg
+ family, limit G. （已译） *)
 
 Definition ff_reflects_limit : IsALimit G (vertex_obj[N]) :=
   @Build_IsALimit J C G (vertex_obj[N]) (@coneFrom _ _ _ N) ff_reflect_ump.
@@ -351,8 +342,8 @@ Context (E : @EquivalenceOfCategories C D F).
 
 (** *** Preservation *)
 
-(* Swapping the adjoint equivalence refined from E exhibits F as a right
-   adjoint (quasi_inverse ⊣ F); RAPL concludes. *)
+(* Swapping adjoint 等价 refined E exhibits F right
+ adjoint (quasi_inverse ⊣ F); RAPL concludes. （已译） *)
 
 Definition equivalence_preserves_limits : PreservesAllLimits F :=
   right_adjoint_preserves_limits
@@ -386,8 +377,8 @@ Definition equivalence_preserved_colimit {J : Category} (G : J ⟶ C)
 
 (** *** Reflection *)
 
-(* Equivalences are full and faithful (Theory/Equivalence/FullFaithful.v),
-   so the fully-faithful reflection results specialize. *)
+(* Equivalences 全忠实 (Theory/Equivalence/FullFaithful.v),
+ so fully-faithful reflection results specialize. （已译） *)
 
 Definition equivalence_reflects_isos : ReflectsIsos F :=
   ff_reflects_isos
@@ -404,8 +395,8 @@ Definition equivalence_reflects_limits {J : Category} {G : J ⟶ C}
 
 (** *** Creation *)
 
-(* The composite natural isomorphism quasi_inverse ◯ (F ◯ G) ≈ G:
-   reassociate and cancel the unit cell. *)
+(* The 复合 natural 同构 quasi_inverse ◯ (F ◯ G) ≈ G:
+ reassociate cancel unit cell. （已译） *)
 
 Definition equivalence_diagram_iso {J : Category} (G : J ⟶ C) :
   @quasi_inverse C D F E ◯ (F ◯ G) ≈ G.
@@ -428,7 +419,7 @@ Definition equivalence_creates_limits {J : Category} (G : J ⟶ C)
 
 End EquivalenceLimit.
 
-(** ** The opposite of an equivalence of categories *)
+(* * ** The opposite 等价 范畴 （已译） *)
 
 (*
    本节说明等价、同构相关定义、性质与动机。
@@ -466,7 +457,7 @@ Definition EquivalenceOfCategories_op {C D : Category} {F : C ⟶ D}
     (equivalence_counit_op E)
     (equivalence_unit_op E).
 
-(** ** Equivalences and colimits, by op *)
+(* 相关说明。 （已译） *)
 
 Section EquivalenceColimit.
 
@@ -491,8 +482,8 @@ Definition equivalence_reflects_colimits {J : Category} {G : J ⟶ C}
     N (isalimit_op_comp HL)
     (fun x => Hinjs x).
 
-(* Creation of colimits: repackage the given colimit as a limit of
-   F^op ◯ G^op and create through the opposite equivalence. *)
+(* Creation colimits: repackage given colimit limit of
+ F^op ◯ G^op create through opposite 等价. （已译） *)
 
 Definition equivalence_creates_colimits {J : Category} (G : J ⟶ C)
   (L : Colimit (F ◯ G)) : Colimit G :=

@@ -5,7 +5,7 @@ Require Import Category.Theory.Monad.
 
 Generalizable All Variables.
 
-(** * Algebras over a monad (Eilenberg–Moore algebras) *)
+(* * * Algebras over 单子 (Eilenberg–Moore algebras) （已译） *)
 
 (* nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)

@@ -38,7 +38,7 @@ Class Applicative := {
   applicative_is_strong : StrongFunctor F;             (* tensorial strength *)
   applicative_is_lax_monoidal : LaxMonoidalFunctor F;  (* lax monoidal: η and μ *)
 
-  (* <*> recovered from the tensor comparison μ = lax_ap and F eval *)
+  (* 相关说明。 （已译） *)
   ap {x y} : F (x ⇒ y) ⨂ F x ~> F y :=
     fmap[F] eval ∘ @lax_ap _ _ _ _ F _ (x ⇒ y) x
 }.

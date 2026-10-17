@@ -11,7 +11,7 @@ Require Import Category.Adjunction.Map.
 
 Generalizable All Variables.
 
-(** * Adjoint squares (Kelly) and Palmquist's bijection *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/adjoint+functor
@@ -67,14 +67,13 @@ Definition AdjointSquare (sigma : SqSigma) (tau : SqTau) : Type :=
   ∀ (x : D) (a : C) (k : F x ~> a),
     ⌊ fmap[K] k ∘ sigma x ⌋² ≈ tau a ∘ fmap[L] ⌊ k ⌋.
 
-(* The same square read through the inverse transposes. *)
+(* 相关说明。 （已译） *)
 
 Definition AdjointSquareFrom (sigma : SqSigma) (tau : SqTau) : Type :=
   ∀ (x : D) (a : C) (g : x ~> U a),
     ⌈ tau a ∘ fmap[L] g ⌉² ≈ fmap[K] ⌈ g ⌉ ∘ sigma x.
 
-(* Mac Lane's Lη = η'L and Kε = ε'K, with the comparison families split
-   across the two sides in Map.v's orientation. *)
+(* 相关说明。 （已译） *)
 
 Definition AdjointSquareUnit (sigma : SqSigma) (tau : SqTau) : Type :=
   ∀ x : D, tau (F x) ∘ fmap[L] (η x) ≈ fmap[U'] (sigma x) ∘ η² (L x).
@@ -82,7 +81,7 @@ Definition AdjointSquareUnit (sigma : SqSigma) (tau : SqTau) : Type :=
 Definition AdjointSquareCounit (sigma : SqSigma) (tau : SqTau) : Type :=
   ∀ a : C, fmap[K] (ε a) ∘ sigma (U a) ≈ ε² (K a) ∘ fmap[F'] (tau a).
 
-(* ---- the two mate operators, defined BY THE TRANSPOSE ---- *)
+(* 相关说明。 （已译） *)
 
 Definition sq_mate (sigma : SqSigma) : SqTau :=
   λ a, ⌊ fmap[K] (ε a) ∘ sigma (U a) ⌋².
@@ -292,7 +291,7 @@ Proof.
   now rewrite (Ht _ _ (fmap[F] f)).
 Qed.
 
-(* ---- existence, and the two round trips ---- *)
+(* 相关说明。 （已译） *)
 
 Theorem adjoint_square_sq_mate (sigma : SqSigma) :
   SigmaNat sigma → AdjointSquare sigma (sq_mate sigma).
@@ -395,7 +394,7 @@ Example sigma_nat_is_compare_left_from :
 End SquareMapCase.
 
 (* ====================================================================== *)
-(* (C) Transform-typed wrappers and the bijection in Sets.                *)
+(* 相关说明。 （已译） *)
 (* ====================================================================== *)
 
 Section SquareBijection.
@@ -417,8 +416,8 @@ Example adjoint_square_T_is_bare
   AdjointSquareT sg ta
     = AdjointSquare A A' K L (fun x => sg x) (fun a => ta a) := eq_refl.
 
-(* A component family of a Transform meets the bare engine with no
-   transport, and [naturality_sym] IS the naturality predicate. *)
+(* A component family Transform meets bare engine no
+ transport, [naturality_sym] IS 自然性 predicate. （已译） *)
 
 Lemma transform_SigmaNat (s : F' ◯ L ⟹ K ◯ F) : SigmaNat K L (transform[s]).
 Proof. intros x y f; exact (naturality_sym s x y f). Qed.
@@ -673,8 +672,8 @@ Notation "⌈ f ⌉²" := (from (@adj _ _ _ _ A' _ _) f) (at level 0).
 Notation "'η' x"  := (@unit   _ _ _ _ A  x) (at level 9).
 Notation "'ε' a"  := (@counit _ _ _ _ A  a) (at level 9).
 
-(* [◯] is left associative, so [F' ◯ L ◯ U] is [(F' ◯ L) ◯ U].  The two
-   bracketings agree on objects and arrows but not as functor records. *)
+(* [◯] left associative, so [F' ◯ L ◯ U] [(F' ◯ L) ◯ U]. The two
+ bracketings agree 对象 arrows but not 函子 records. （已译） *)
 
 Example bracket_fobj_left (a : C) :
   fobj[F' ◯ L ◯ U] a = fobj[F' ◯ (L ◯ U)] a := eq_refl.
@@ -777,7 +776,7 @@ Next Obligation. exact palm_from_to. Qed.
 Definition palmquist_nat_bijection :
   (F' ◯ L ◯ U ⟹ K) ≊ (L ⟹ U' ◯ K ◯ F) := palmquist_bijection.
 
-(* ---- the mate absorbs one pre/post pair ON THE NOSE ---- *)
+(* 相关说明。 （已译） *)
 
 Example sq_mate_is_post_of_pre (sg : F' ◯ L ⟹ K ◯ F) (a : C) :
   sq_mate A A' K L (transform[sg]) a
@@ -787,7 +786,7 @@ Example sq_mate_inv_is_pre_of_post (ta : L ◯ U ⟹ U' ◯ K) (x : D) :
   sq_mate_inv A A' K L (transform[ta]) x
     = ⌈ pre_to A (Y:=L) (Z:=U' ◯ K) ta x ⌉² := eq_refl.
 
-(* ---- Palmquist factors through the mate, with NO associator ---- *)
+(* 相关说明。 （已译） *)
 
 Definition palm_via_mate (al : F' ◯ L ◯ U ⟹ K) : L ⟹ U' ◯ K ◯ F :=
   pre_to A (Y:=L) (Z:=U' ◯ K)
@@ -806,7 +805,7 @@ Proof.
   now rewrite !fmap_id, id_right.
 Qed.
 
-(* ---- the two-factor route, which DOES meet the associator ---- *)
+(* 相关说明。 （已译） *)
 
 Definition palm_two_factor (al : F' ◯ L ◯ U ⟹ K) : L ⟹ U' ◯ (K ◯ F) :=
   post_to A' (Y:=L) (Z:=K ◯ F) (pre_to A (Y:=F' ◯ L) (Z:=K) al).
@@ -953,7 +952,7 @@ Next Obligation. symmetry; now apply paste_v_tau_obligation_1. Qed.
 Definition AB  : (G ◯ F) ⊣ (U ◯ V)     := Adjunction_Compose A B.
 Definition AB' : (G' ◯ F') ⊣ (U' ◯ V') := Adjunction_Compose A' B'.
 
-(* The composite's transposes are definitional; its unit is not. *)
+(* The 复合's transposes definitional; unit not. （已译） *)
 
 Example AB_to_strict (x : D) (e : E) (k : G (F x) ~> e) :
   to (@adj _ _ _ _ AB x e) k

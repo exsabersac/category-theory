@@ -7,7 +7,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * Operads as one-object multicategories *)
+(* * * Operads one-对象 multicategories （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/operad
@@ -17,7 +17,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The transport helper and the bundled record *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Operad 相关定义、性质与动机。
@@ -27,9 +27,7 @@ Generalizable All Variables.
 Definition unit_transport {A : Type} (e : poly_unit = A) : A :=
   match e in _ = T return T with eq_refl => ttt end.
 
-(* Any type equal to [poly_unit] is contractible onto the transported
-   point.  No UIP: [destruct e] abstracts the variable endpoint, and
-   [poly_unit] has a single constructor. *)
+(* 相关说明。 （已译） *)
 Lemma unit_transport_contr {A : Type} (e : poly_unit = A) (x : A) :
   x = unit_transport e.
 Proof.
@@ -37,7 +35,7 @@ Proof.
   now destruct x.
 Qed.
 
-(* The one-object condition: [=] on the Type-level colour data. *)
+(* The one-对象 condition: [=] Type-level colour data. （已译） *)
 Definition IsOperad (M : Multicategory) : Type :=
   @mobj M = poly_unit.
 
@@ -46,10 +44,9 @@ Record Operad : Type := {
   operad_one : IsOperad operad_multi
 }.
 
-(** ** The derived point and object contractibility *)
+(* * ** The derived point 对象 contractibility （已译） *)
 
-(* The unique colour of the operad.  When [operad_one] is [eq_refl]
-   (colour type [poly_unit] on the nose), this reduces to [ttt]. *)
+(* 相关说明。 （已译） *)
 Definition operad_pt (O : Operad) : @mobj (operad_multi O) :=
   unit_transport (eq_sym (operad_one O)).
 
@@ -101,7 +98,7 @@ Definition ohom (n : nat) : Type := @mhom MO (repeat pt n) pt.
 #[export] Instance ohom_setoid (n : nat) : Setoid (ohom n) :=
   @mhomset MO (repeat pt n) pt.
 
-(* The unary identity operation: [repeat pt 1] is [[pt]] on the nose. *)
+(* The unary 恒等 operation: [repeat pt 1] [[pt]] nose. （已译） *)
 Definition oid : ohom 1 := @mid MO pt.
 
 (*
@@ -140,9 +137,7 @@ Proof. apply mcast_symm_r. Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The zipper form of a repeated context: [repeat pt (S j)] is
-   [pt :: repeat pt j] on the nose, so [repeat_app_t] already has the
-   stated type up to conversion. *)
+(* 相关说明。 （已译） *)
 Definition orep_zip (i j : nat) :
   repeat pt (i + S j) = repeat pt i ++ pt :: repeat pt j :=
   repeat_app_t pt i (S j).

@@ -9,7 +9,7 @@ Require Import Category.Theory.Bicategory.Lax.
 
 Generalizable All Variables.
 
-(** Modifications between lax transformations, and the category they form. *)
+(** Modifications between lax transformations, 范畴 they form. （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/modification
@@ -31,9 +31,7 @@ Class Modification {B B' : Bicategory} {F G : Pseudofunctor B B'}
   md (x : @bi0cell B) :
     lt0 σ x ~{ @bicat B' (pf0 F x) (pf0 G x) }~> lt0 τ x;
 
-  (* the modification axiom: the components commute with the naturators of σ
-     and τ, whiskered by pf1[G] f on the source side and pf1[F] f on the
-     target side. *)
+  (* 相关说明。 （已译） *)
   md_natural {x y : @bi0cell B} (f : @bicat B x y) :
     lt1 τ f ∘∘ hcomp2 (bi2id (a:=pf1[G] f)) (md x)
       ≈ hcomp2 (md y) (bi2id (a:=pf1[F] f)) ∘∘ lt1 σ f
@@ -93,9 +91,9 @@ Definition compose_modification {B B' : Bicategory} {F G : Pseudofunctor B B'}
   {| md         := fun x => md n x ∘∘ md m x
    ; md_natural := fun x y f => compose_modification_natural n m f |}.
 
-(* Reduction lemmas for the components of the identity and composite
-   modifications, in `≈` form (each holds by conversion).  They keep the
-   category-law proofs below free of unfolding. *)
+(* Reduction lemmas components 恒等 复合
+ modifications, `≈` form (each holds conversion). They keep the
+ 范畴-law proofs below free unfolding. （已译） *)
 Lemma md_id_modification {B B' : Bicategory} {F G : Pseudofunctor B B'}
       (σ : LaxTransformation F G) (x : @bi0cell B) :
   md (id_modification σ) x ≈ bi2id.
@@ -107,12 +105,12 @@ Lemma md_compose_modification {B B' : Bicategory} {F G : Pseudofunctor B B'}
   md (compose_modification n m) x ≈ md n x ∘∘ md m x.
 Proof. reflexivity. Qed.
 
-(** The hom-setoid of modifications and the category of lax transformations. *)
+(** The hom-setoid modifications 范畴 lax transformations. （已译） *)
 
 #[local] Obligation Tactic := idtac.
 
-(* Two modifications are equal when their components agree at every 0-cell.
-   This is an equivalence relation because `≈` is one at each component. *)
+(* Two modifications equal components agree at every 0-cell.
+ This 等价 关系 because `≈` one at each component. （已译） *)
 Program Definition Modification_Setoid {B B' : Bicategory}
         {F G : Pseudofunctor B B'} (σ τ : LaxTransformation F G) :
   Setoid (Modification σ τ) := {|

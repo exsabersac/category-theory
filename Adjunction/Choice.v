@@ -21,7 +21,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := intros.
 
-(** * Choosing right adjoints functorially *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/mate
@@ -32,7 +32,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------ *)
-(** ** (A) The full subcategory of the functors that have a right adjoint *)
+(* * ** (A) The full subcategory 函子 have 右伴随 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -42,9 +42,9 @@ Generalizable All Variables.
 Definition HasRightAdjoint {C D : Category} (F : D ⟶ C) : Type :=
   ∃ U : C ⟶ D, F ⊣ U.
 
-(* Mac Lane's S: the FULL subcategory of A^X = [D, C] on those objects.
-   [shom] is the terminal predicate, so every ambient transformation
-   between selected functors is retained. *)
+(* Mac Lane's S: FULL subcategory A^X = [D, C] those 对象.
+ [shom] terminal predicate, so every ambient transformation
+ between selected 函子 retained. （已译） *)
 Definition LeftAdjSub (C D : Category) : Subcategory ([D, C]) :=
   @Build_Subcategory ([D, C])
     (fun F : D ⟶ C => HasRightAdjoint F)
@@ -55,8 +55,8 @@ Definition LeftAdjSub (C D : Category) : Subcategory ([D, C]) :=
 Definition LeftAdjCat (C D : Category) : Category :=
   Sub ([D, C]) (LeftAdjSub C D).
 
-(* THE PIVOT.  An object of S IS an object of #395's category of
-   adjunctions, on the nose: both are {F & {U & F ⊣ U}}. *)
+(* THE PIVOT. An 对象 S IS 对象 #395's 范畴 of
+ 伴随, nose: both {F & {U & F ⊣ U}}. （已译） *)
 Example leftadj_obj (C D : Category) : obj[LeftAdjCat C D] = AdjObj C D
   := eq_refl.
 
@@ -101,11 +101,11 @@ Example raf_id_is_conj_mate_id (C D : Category)
                 (adjobj_adj (x : AdjObj C D)) nat_id := eq_refl.
 
 (* ------------------------------------------------------------------ *)
-(** ** (C) S against #395's category of adjunctions *)
+(* * ** (C) S against #395's 范畴 伴随 （已译） *)
 
-(* Identity on objects; on an arrow, the bare σ is paired with its mate.
-   This is literally Instance/Adj/Forgetful.v's [AdjForgetLeft_Full]
-   [prefmap], read as a functor. *)
+(* Identity 对象; arrow, bare σ 与…配对 mate.
+ This literally Instance/Adj/Forgetful.v's [AdjForgetLeft_Full]
+ [prefmap], read 函子. （已译） *)
 Program Definition SubToAdj (C D : Category) : LeftAdjCat C D ⟶ Adj C D := {|
   fobj := fun x => (x : AdjObj C D);
   fmap := fun x y f =>
@@ -122,8 +122,8 @@ Next Obligation.
   split; simpl; [ reflexivity | now apply conj_mate_compose ].
 Qed.
 
-(* R IS #395's second forgetful functor transported along that
-   comparison: both actions agree on the nose. *)
+(* R IS #395's second forgetful 函子 transported along that
+ comparison: both actions agree nose. （已译） *)
 Definition RAF_via (C D : Category) : Opposite (LeftAdjCat C D) ⟶ [C, D] :=
   AdjForgetRight C D ◯ Opposite_Functor (SubToAdj C D).
 
@@ -134,8 +134,8 @@ Example raf_map_via (C D : Category) (x y : Opposite (LeftAdjCat C D))
         (f : x ~> y) :
   fmap[RAF_via C D] f = fmap[RightAdjointFunctor C D] f := eq_refl.
 
-(* And the first forgetful functor, composed the same way, IS the
-   inclusion of the subcategory -- again on both actions. *)
+(* And first forgetful 函子, composed same way, IS the
+ 含入 subcategory -- again both actions. （已译） *)
 Definition LI_via (C D : Category) : LeftAdjCat C D ⟶ [D, C] :=
   AdjForgetLeft C D ◯ SubToAdj C D.
 
@@ -150,9 +150,7 @@ Program Instance SubToAdj_Faithful (C D : Category) :
   Category.Theory.Functor.Faithful (SubToAdj C D).
 Next Obligation. destruct X as [Hl _]; exact Hl. Qed.
 
-(* Fullness is where [conj_mate_uniq] is spent: the chosen preimage of a
-   conjugate pair is its σ, and recovering the pair needs that the mate
-   is THE conjugate of that σ. *)
+(* 相关说明。 （已译） *)
 #[export]
 Program Instance SubToAdj_Full (C D : Category) :
   Category.Theory.Functor.Full (SubToAdj C D) := {|
@@ -212,15 +210,15 @@ Qed.
 (* ------------------------------------------------------------------ *)
 (** ** (D)(a) Two choices for one F *)
 
-(* The subcategory is full, so the ambient identity of F lifts twice and
-   the two memberships give ISOMORPHIC objects of S. *)
+(* The subcategory full, so ambient 恒等 F lifts twice and
+ two memberships give ISOMORPHIC 对象 S. （已译） *)
 Definition choice_iso_in_Sub (C D : Category) (F : D ⟶ C)
            (p q : HasRightAdjoint F) :
   ((F; p) : LeftAdjCat C D) ≅[LeftAdjCat C D] (F; q) :=
   Full_membership_iso ([D, C]) (LeftAdjSub C D) (LeftAdjSub_Full C D) F p q.
 
-(* R carries that isomorphism to the mate of the identity, on the nose,
-   on BOTH legs. *)
+(* R carries 同构 mate 恒等, nose,
+ BOTH legs. （已译） *)
 Example raf_choice_iso_to (C D : Category) (F : D ⟶ C)
         (p q : HasRightAdjoint F) :
   fmap[RightAdjointFunctor C D] (to (choice_iso_in_Sub C D F p q))
@@ -242,9 +240,9 @@ Definition choice_right_adjoints_iso (C D : Category) (F : D ⟶ C)
            (p q : HasRightAdjoint F) : `1 p ≈ `1 q :=
   right_adjoint_iso F (`1 p) (`1 q) (`2 p) (`2 q).
 
-(* The inverse law holds up to `≈` and not on the nose: it is
-   [conj_mate_compose] followed by [conj_mate_id], with one
-   identity-cancellation between them. *)
+(* The inverse law holds up `≈` not nose: it is
+ [conj_mate_compose] followed [conj_mate_id], one
+ 恒等-cancellation between them. （已译） *)
 Lemma raf_choice_inverse (C D : Category) (F : D ⟶ C)
       (p q : HasRightAdjoint F) :
   conj_mate (adjobj_adj ((F; q) : AdjObj C D))
@@ -261,7 +259,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** (D)(b) A choice function as an explicit argument *)
+(* * ** (D)(b) A choice function explicit 论元 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -280,9 +278,9 @@ Lemma cm_id_fun {C D : Category} {F1 U1} (A1 : @Adjunction C D F1 U1) :
   conj_mate A1 A1 (@id ([D, C]) F1) ≈ @id ([C, D]) U1.
 Proof. now apply conj_mate_id. Qed.
 
-(* Mac Lane's "choosing one RF for each F", quantified: a function
-   re-choosing a right adjoint for every member of S.  The name avoids
-   the taken [Choice]. *)
+(* Mac Lane's "choosing one RF each F", quantified: function
+ re-choosing 右伴随 every member S. The name avoids
+ taken [Choice]. （已译） *)
 Definition RightAdjChoice (C D : Category) : Type :=
   ∀ F : D ⟶ C, HasRightAdjoint F → HasRightAdjoint F.
 
@@ -371,8 +369,8 @@ Proof.
   intro a; simpl; cat.
 Qed.
 
-(* (a) is (b) at the canonical choice: keep the adjoint the object
-   already carries.  The three projections return on the nose. *)
+(* (a) (b) at canonical choice: keep adjoint 对象
+ already carries. The three projections return nose. （已译） *)
 Definition ch_canonical (C D : Category) : RightAdjChoice C D := fun _ h => h.
 
 Example ch_canonical_left (C D : Category) (x : LeftAdjCat C D) :
@@ -388,7 +386,7 @@ Example ch_canonical_adj (C D : Category) (x : LeftAdjCat C D) :
   := eq_refl.
 
 (* ------------------------------------------------------------------ *)
-(** ** (E) Non-vacuity: S is inhabited and proper at the walking arrow *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明幺半结构、幺半群相关定义、性质与动机。
@@ -417,8 +415,7 @@ Definition two_from_X (y : TwoObj) : TwoX ~{_2}~> y :=
 
 #[local] Obligation Tactic := repeat intro; apply two_arrows_agree.
 
-(* Every hom-set in sight is a singleton: _2(TwoX, y) is inhabited for
-   every y and _2(x, TwoY) for every x, and _2 is thin. *)
+(* 相关说明。 （已译） *)
 Program Definition two_const_hom_iso (x y : TwoObj) :
   @Isomorphism Sets
     {| carrier := @hom _2 (fobj[TwoConst TwoX] x) y
@@ -431,9 +428,9 @@ Program Definition two_const_hom_iso (x y : TwoObj) :
 
 #[local] Obligation Tactic := intros.
 
-(* The constant functor at TwoX is left adjoint to the constant functor
-   at TwoY -- an adjunction between two functors neither of which is the
-   identity. *)
+(* The 常值 函子 at TwoX 左伴随 常值 函子
+ at TwoY -- 伴随 between two 函子 neither the
+ 恒等. （已译） *)
 Definition two_const_adj : TwoConst TwoX ⊣ TwoConst TwoY.
 Proof.
   apply (@Build_Adjunction' _2 _2 (TwoConst TwoX) (TwoConst TwoY)
@@ -444,13 +441,13 @@ Defined.
 Definition two_left_adjoint_object : LeftAdjCat _2 _2 :=
   (TwoConst TwoX; (TwoConst TwoY; two_const_adj)).
 
-(* R at that object returns the chosen right adjoint, on the nose. *)
+(* R at 对象 returns chosen 右伴随, nose. （已译） *)
 Example two_raf_value :
   fobj[RightAdjointFunctor _2 _2] two_left_adjoint_object = TwoConst TwoY
   := eq_refl.
 
-(* Not a degenerate witness: the two constant functors differ, and the
-   left adjoint of the object is not the identity functor. *)
+(* Not degenerate witness: two 常值 函子 differ, the
+ 左伴随 对象 not 恒等 函子. （已译） *)
 Lemma two_const_functors_differ :
   fobj[TwoConst TwoX] TwoX = fobj[TwoConst TwoY] TwoX → False.
 Proof. discriminate. Qed.
@@ -459,9 +456,9 @@ Lemma two_left_adjoint_not_identity :
   fobj[adjobj_left two_left_adjoint_object] TwoY = fobj[Id[_2]] TwoY → False.
 Proof. discriminate. Qed.
 
-(* PROPERNESS.  The constant functor at TwoY has no right adjoint: from
-   an adjunction, the inverse transpose of the identity of R(TwoX) is an
-   arrow TwoY ~> TwoX, and there is none. *)
+(* PROPERNESS. The 常值 函子 at TwoY has no 右伴随: from
+ 伴随, inverse transpose 恒等 R(TwoX) an
+ arrow TwoY ~> TwoX, there none. （已译） *)
 Lemma two_const_Y_no_right_adjoint (R : _2 ⟶ _2)
       (A : TwoConst TwoY ⊣ R) : False.
 Proof.

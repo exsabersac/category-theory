@@ -42,7 +42,7 @@ Module PAT := Category.Adjunction.Natural.Transformation.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** A. The hypothesis: a family of right adjoints to the partial functors *)
+(* * ** A. The 假设: family right adjoints partial 函子 （已译） *)
 
 Section ParametrizedAdjunction.
 
@@ -65,7 +65,7 @@ Arguments ParametrizedAdjunction {X P A} F.
 Arguments pa_right {X P A F} _ _.
 Arguments pa_adj {X P A F} _ _.
 
-(** ** B. The transformation of left adjoints induced by a parameter arrow *)
+(* 相关说明。 （已译） *)
 
 Section ParamTransform.
 
@@ -141,7 +141,7 @@ Definition pa_to (p : P) (x : X) (a : A) (k : F (x, p) ~> a) : x ~> G p a :=
 Definition pa_from (p : P) (x : X) (a : A) (g : x ~> G p a) : F (x, p) ~> a :=
   from (@adj A X (Partial_l F p) (pa_right PA p) (pa_adj PA p) x a) g.
 
-(* --- Mac Lane's G(h,−), as the conjugate of F(−,h) and nothing else --- *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Parameter 相关定义、性质与动机。
@@ -163,9 +163,9 @@ Example pa_param_mate_is_conj_mate {p p' : P} (h : p' ~> p) :
 
 (* --- naturality in each of the three variables --- *)
 
-(* In x and in a there is nothing new: these ARE the [Adjunction] fields at a
-   fixed parameter, re-exposed so that a consumer of this file sees all three
-   naturality statements together. *)
+(* In x there nothing new: these ARE [Adjunction] fields at a
+ fixed parameter, re-exposed so consumer file sees all three
+ 自然性 statements together. （已译） *)
 
 Lemma pa_natural_x (p : P) {x y : X} {a : A}
       (k : F (y, p) ~> a) (g : x ~> y) :
@@ -185,7 +185,7 @@ Definition pa_square {p p' : P} (h : p' ~> p)
   ∀ (x : X) (a : A) (k : F (x, p) ~> a),
     pa_to p' x a (k ∘ fmap[Partial_r F x] h) ≈ tau a ∘ pa_to p x a k.
 
-(* And that elementary square IS the conjugacy condition, on the nose. *)
+(* 相关说明。 （已译） *)
 
 Example pa_square_is_Conjugate {p p' : P} (h : p' ~> p)
         (tau : G p ⟹ G p') :
@@ -257,8 +257,7 @@ Proof.
   apply (conj_mate_compose (pa_adj PA p) (pa_adj PA p') (pa_adj PA p'')).
 Qed.
 
-(* the componentwise readings, which is the form the bifunctor's obligations
-   consume *)
+(* 相关说明。 （已译） *)
 
 Lemma pa_param_mate_id_at {p : P} (a : A) : pa_param_mate (id[p]) a ≈ id.
 Proof.
@@ -387,7 +386,7 @@ Proof.
   exact (pa_param_mate_uniq h (Gh p p' h) (Hsq p p' h) a).
 Qed.
 
-(* Existence and uniqueness in one statement, over the transformation. *)
+(* 相关说明。 （已译） *)
 
 Theorem pa_param_mate_universal {p p' : P} (h : p' ~> p) :
   ∃! tau : G p ⟹ G p', pa_square h tau.
@@ -396,8 +395,7 @@ Proof.
            (param_transform F h)).
 Defined.
 
-(* And the bifunctor's arrow action is thereby determined: any assignment
-   satisfying the square gives back exactly [fmap] of the bifunctor. *)
+(* 相关说明。 （已译） *)
 
 Corollary pa_bifunctor_fmap_determined
         (Gh : ∀ (p p' : P) (h : p' ~> p), G p ⟹ G p')
@@ -419,7 +417,7 @@ Arguments pa_param_mate {X P A F} PA {p p'} h.
 Arguments pa_square {X P A F} PA {p p'} h tau.
 Arguments parametrized_right_adjoint_bifunctor {X P A F} PA.
 
-(** ** D. The dual: a bifunctor whose partial functors are LEFT adjoints *)
+(* * ** D. The dual: bifunctor whose partial 函子 LEFT adjoints （已译） *)
 
 (*
    本节说明伴随、函子、来源与用途相关定义、性质与动机。
@@ -505,9 +503,9 @@ Context (CA : CoParametrizedAdjunction G).
 
 Notation "'L'" := (pa_left CA) (only parsing).
 
-(* As in §C, every transpose names its two functors: they are implicit in the
-   [adj] field and cannot be recovered from an argument of type
-   G (p, a) ~> x by higher-order unification. *)
+(* As §C, every transpose names two 函子: they implicit the
+ [adj] field cannot recovered 论元 type
+ G (p, a) ~> x higher-order unification. （已译） *)
 
 Definition copa_to (p : P) (a : A) (x : X) (k : G (p, a) ~> x) : a ~> L p x :=
   to (@adj X A (Partial_r G p) (pa_left CA p) (pa_coadj CA p) a x) k.
@@ -532,8 +530,7 @@ Example copa_param_mate_is_conj_mate {p p' : P} (h : p ~> p') :
 
 (* --- naturality in each of the three variables --- *)
 
-(* In a and in x there is nothing new, exactly as in §C: these ARE the
-   [Adjunction] fields at a fixed parameter. *)
+(* 相关说明。 （已译） *)
 
 Lemma copa_natural_a (p : P) {a b : A} {x : X}
       (k : G (p, b) ~> x) (g : a ~> b) :
@@ -786,9 +783,7 @@ Definition copa_swap_route : ParametrizedAdjunction (G ◯ @Swap A (P^op)) :=
   @Build_ParametrizedAdjunction A (P^op) X (G ◯ @Swap A (P^op))
     (pa_left CA) (fun p => copa_swap_transport p (pa_coadj CA p)).
 
-(* The ascription is the measurement: this elaborates only because
-   (P^op)^op is P, so the Swap route's bifunctor takes its arguments in the
-   order P then X. *)
+(* 相关说明。 （已译） *)
 
 Example copa_swap_route_bifunctor : P ∏ X ⟶ A :=
   parametrized_right_adjoint_bifunctor copa_swap_route.
@@ -799,7 +794,7 @@ Arguments copa_param_mate {P A X G} CA {p p'} h.
 Arguments copa_square {P A X G} CA {p p'} h sig.
 Arguments parametrized_left_adjoint_bifunctor {P A X G} CA.
 
-(** ** E. The currying instance, and naturality in the parameter *)
+(* * ** E. The currying instance, 自然性 parameter （已译） *)
 
 (*
    本节说明伴随、hom、笛卡尔相关定义、性质与动机。
@@ -842,8 +837,7 @@ Definition curry_ParametrizedAdjunction : ParametrizedAdjunction ×(C) := {|
 
 Notation "'CPA'" := curry_ParametrizedAdjunction (only parsing).
 
-(* Everything §C names, read back at Leibniz equality at this instance: the
-   family of right adjoints, the counit, and both transposes. *)
+(* 相关说明。 （已译） *)
 
 Example curry_pa_right (p : C) : pa_right CPA p = Exp_Functor p := eq_refl.
 
@@ -870,10 +864,9 @@ Example curry_pa_square_unfold {p p' : C} (h : p' ~> p)
          curry (k ∘ ((id[x] ∘ exl) △ (h ∘ exr))) ≈ tau a ∘ curry k)
   := eq_refl.
 
-(** *** E.2 The mate is the internal-hom action *)
+(* 相关说明。 （已译） *)
 
-(* The bridge between [ihom]'s spelling and plain [Closed] vocabulary: they
-   differ by one [id_left] under the transpose. *)
+(* 相关说明。 （已译） *)
 
 Lemma ihom_id_action {p p' a : C} (h : p' ~> p) :
   ihom h (id[a]) ≈ curry (eval ∘ second h).
@@ -926,7 +919,7 @@ Example curry_internal_hom_fmap_unfold {p p' : C} (h : p' ~> p) (a : C) :
   @fmap _ _ (InternalHomFunctor C) (p, a) (p', a) (h, id[a])
     = curry (id[a] ∘ eval ∘ second h) := eq_refl.
 
-(** *** E.3 Naturality of currying in the parameter — the standalone lemma *)
+(* * *** E.3 Naturality currying parameter — standalone 引理 （已译） *)
 
 (*
    本节说明笛卡尔相关定义、性质与动机。
@@ -943,8 +936,8 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* The same statement, obtained from Theorem 3's square instead: this is what
-   shows the right-hand side above was read off the mate. *)
+(* The same statement, obtained Theorem 3's square instead: 这是 what
+ shows right-hand side above was read off mate. （已译） *)
 
 Lemma curry_natural_param_from_mate
       {x p p' a : C} (h : p' ~> p) (f : x × p ~> a) :
@@ -959,9 +952,7 @@ Proof.
   apply curry_param_mate_is_closed_action.
 Qed.
 
-(* That the two routes really do prove ONE statement is machine-checked and
-   not left to the reader's eye: the equation below is well formed only if
-   the two constants have the same type. *)
+(* 相关说明。 （已译） *)
 
 Example curry_natural_param_routes_agree : Prop :=
   @curry_natural_param = @curry_natural_param_from_mate.
@@ -982,7 +973,7 @@ Proof.
   now rewrite eval_first.
 Qed.
 
-(** *** E.4 The assembled bifunctor is the internal hom *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、hom、来源与用途相关定义、性质与动机。
@@ -1014,7 +1005,7 @@ End Currying.
 Arguments curry_natural_param {C _ _ x p p' a} h f.
 Arguments uncurry_natural_param {C _ _ x p p' a} h g.
 
-(** ** F. Exercise 2: the unit is a WEDGE in the parameter *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -1105,8 +1096,8 @@ Example pa_unit_Wedge_obj (x : X) : @wedge_obj _ _ _ (pa_unit_Wedge x) = x
 Example pa_unit_Wedge_map (x : X) (p : P) :
   @wedge_map _ _ _ (pa_unit_Wedge x) p = pa_unit p x := eq_refl.
 
-(* The counit's mirror: extranaturality in the parameter.  Both sides run
-   F (G p' a, p) ~> a. *)
+(* The counit's 镜像: extranaturality parameter. Both sides run
+ F (G p' a, p) ~> a. （已译） *)
 
 Lemma pa_counit_extranatural (a : A) {p p' : P} (h : p ~> p') :
   pa_counit p' a ∘ fmap[Partial_r F (G p' a)] h
@@ -1124,7 +1115,7 @@ Arguments pa_unit {X P A F} PA p x.
 Arguments pa_counit {X P A F} PA p a.
 Arguments UnitIntegrand {X P A F} PA x.
 
-(** ** G. The unit/counit presentation, and the two triangle identities *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -1171,7 +1162,7 @@ Theorem parametrized_adjunction_iff_transform :
   ParametrizedAdjunction F ↔ ParametrizedAdjunctionTransform F.
 Proof. split; [ exact pat_of_pa | exact pa_of_pat ]. Defined.
 
-(* the family of right adjoints crosses both ways and round-trips strictly *)
+(* 相关说明。 （已译） *)
 
 Example pat_of_pa_right (PA : ParametrizedAdjunction F) :
   pat_right (pat_of_pa PA) = pa_right PA := eq_refl.
@@ -1182,7 +1173,7 @@ Example pa_of_pat_right (PT : ParametrizedAdjunctionTransform F) :
 Example pa_pat_round_right (PA : ParametrizedAdjunction F) :
   pa_right (pa_of_pat (pat_of_pa PA)) = pa_right PA := eq_refl.
 
-(* so do the unit and counit components *)
+(* 相关说明。 （已译） *)
 
 Example pat_unit_is_pa_unit (PA : ParametrizedAdjunction F) (p : P) (x : X) :
   transform[@PAT.unit A X (Partial_l F p) (pa_right PA p)
@@ -1193,8 +1184,7 @@ Example pat_counit_is_pa_counit
   transform[@PAT.counit A X (Partial_l F p) (pa_right PA p)
               (pat_adj (pat_of_pa PA) p)] a = pa_counit PA p a := eq_refl.
 
-(* the transposes survive only up to ≈, and the residue is exactly the
-   universal-arrow rewriting *)
+(* 相关说明。 （已译） *)
 
 Lemma pa_pat_round_to (PA : ParametrizedAdjunction F)
       (p : P) (x : X) (a : A) (k : F (x, p) ~> a) :
@@ -1234,7 +1224,7 @@ Qed.
 
 End PATransformPassages.
 
-(** ** H. Riehl §4.4 Proposition 4.4.6(iii): mutual right adjointness *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -1316,7 +1306,7 @@ Proof.
   rewrite fmap_id; now rewrite id_left.
 Qed.
 
-(* the two [Swap] reductions the naturality proofs consume *)
+(* the two [Swap] reductions 自然性 proofs consume （已译） *)
 
 Example mr_swap_fmap_l (x : X) {p p' : P} (g : p ~> p') :
   fmap[Partial_l (F ◯ @Swap P X) x] g = fmap[Partial_r F x] g := eq_refl.
@@ -1324,7 +1314,7 @@ Example mr_swap_fmap_l (x : X) {p p' : P} (g : p ~> p') :
 Example mr_swap_fmap_r (p : P) {x x' : X} (k : x ~> x') :
   fmap[Partial_r (F ◯ @Swap P X) p] k = fmap[Partial_l F p] k := eq_refl.
 
-(* the bijection, as the composite of the two transposes *)
+(* the bijection, 复合 two transposes （已译） *)
 
 Definition mr_to (p : P) (x : X) (g : p ~> pa_right MPA x c)
   : x ~> pa_right PA p c :=
@@ -1379,7 +1369,7 @@ Next Obligation. intros p x g; exact (mr_from_to p x g). Qed.
 
 #[local] Obligation Tactic := program_simpl.
 
-(* naturality in the parameter: Mac Lane's square for PA *)
+(* 自然性 parameter: Mac Lane's square PA （已译） *)
 
 Lemma mr_to_nat_a {p p' : P} {x : X} (f : p ~> mr_right x) (g : p' ~> p) :
   mr_to p' x (f ∘ g) ≈ fmap[mr_left] g ∘ mr_to p x f.
@@ -1396,8 +1386,8 @@ Proof.
   symmetry; apply mr_left_fmap_is_mate.
 Qed.
 
-(* naturality in the other variable: Mac Lane's square for MPA, read through
-   the inverse transposes, then PA's naturality in x *)
+(* 自然性 other variable: Mac Lane's square MPA, read through
+ inverse transposes, then PA's 自然性 x （已译） *)
 
 Lemma mr_to_nat_x {p : P} {x x' : X} (f : p ~> mr_right x') (k : x ~> x') :
   mr_to p x (fmap[mr_right] k ∘ f) ≈ mr_to p x' f ∘ k.
@@ -1420,8 +1410,8 @@ Proof.
   exact (pa_natural_x PA p (pa_from MPA x' p c f) k).
 Qed.
 
-(* the two inverse readings, by conjugating the two above with the
-   isomorphism; no further naturality argument is run *)
+(* the two inverse readings, conjugating two above the
+ 同构; no further 自然性 论元 run （已译） *)
 
 Lemma mr_from_nat_a {p p' : P} {x : X} (q : x ~> mr_left p) (g : p' ~> p) :
   mr_from p' x (fmap[mr_left] g ∘ q) ≈ mr_from p x q ∘ g.

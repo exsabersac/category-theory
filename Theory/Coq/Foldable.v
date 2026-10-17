@@ -2,7 +2,7 @@ Require Import Category.Lib.
 
 Generalizable All Variables.
 
-(** The Foldable type class (foldr), with its categorical reading *)
+(** The Foldable 类型类 (foldr), categorical reading （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Fold_(higher-order_function)

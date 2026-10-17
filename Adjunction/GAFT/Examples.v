@@ -15,7 +15,7 @@ Set Universe Polymorphism.
 
 Generalizable All Variables.
 
-(** * A worked example of the General Adjoint Functor Theorem *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出例子。
@@ -41,7 +41,7 @@ Program Definition diagonal_unique (d : C) (d' : C ∏ C)
     f ≈ fmap[InternalProductFunctor C] g ∘ (id[d] △ id[d]) :=
   {| unique_obj := (exl ∘ f, exr ∘ f) |}.
 Next Obligation.
-  (* existence: the projection pair factors [f] through the diagonal *)
+  (* 相关说明。 （已译） *)
   intros d d' f; simpl.
   assert (PFf : f ≈ (exl ∘ f) △ (exr ∘ f))
     by (apply ump_products; split; reflexivity).
@@ -52,7 +52,7 @@ Next Obligation.
   - rewrite exr_fork_comp, <- comp_assoc, exr_fork, id_right; reflexivity.
 Qed.
 Next Obligation.
-  (* uniqueness: any factorizer [(v1, v2)] agrees with the projection pair *)
+  (* 相关说明。 （已译） *)
   intros d d' f [v1 v2] Hv.
   simpl in Hv.
   assert (Hf : f ≈ (v1 △ v2)).

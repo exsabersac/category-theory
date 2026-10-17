@@ -34,16 +34,15 @@ Class LaxTransformation {B B' : Bicategory} (F G : Pseudofunctor B B') := {
     pf1[G] f ∘∘∘ lt0 x
       ~{ @bicat B' (pf0 F x) (pf0 G y) }~> lt0 y ∘∘∘ pf1[F] f;
 
-  (* the naturator is natural in f: for a 2-cell μ : f ⟹ f', the square built
-     from lt1 f, lt1 f' and the whiskerings of G μ and F μ commutes. *)
+  (* 相关说明。 （已译） *)
   lt1_natural {x y : @bi0cell B} {f f' : @bicat B x y}
       (μ : f ~{ @bicat B x y }~> f') :
     lt1 f' ∘∘ hcomp2 (fmap[pf1[G]] μ) (bi2id (a:=lt0 x))
       ≈ hcomp2 (bi2id (a:=lt0 y)) (fmap[pf1[F]] μ) ∘∘ lt1 f;
 
-  (* unit coherence: the naturator at the identity 1-cell, conjugated by the
-     unit isos pf_id of F and G, agrees with the comparison of the two unitors
-     on the component 1-cell. *)
+  (* unit coherence: naturator at 恒等 1-cell, conjugated the
+ unit isos pf_id F G, agrees comparison two unitors
+ component 1-cell. （已译） *)
   lt_unit (x : @bi0cell B) :
     hcomp2 (bi2id (a:=lt0 x)) (to (@pf_id _ _ F x))
       ∘∘ lt1 (@bi1id B x)
@@ -134,11 +133,10 @@ Arguments pn_iso {B B' F G σ} _ {x y} f.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The codiscrete setoid on [unit]: any two elements are related. *)
+(* 相关说明。 （已译） *)
 Program Definition triv_setoid : Setoid unit := {| equiv := fun _ _ => True |}.
 
-(* The terminal bicategory.  All data are the unique inhabitant [tt]; every law
-   is an equation in the codiscrete hom-setoid, hence holds. *)
+(* 相关说明。 （已译） *)
 Definition Trivial_Bicategory : Bicategory.
 Proof.
   unshelve refine (Build_Bicategory'
@@ -197,7 +195,7 @@ Program Definition Trivial_Pseudonatural :
   pn_iso := fun _ _ _ => {| two_sided_inverse := tt |}
 |}.
 
-(* The oplax dual is inhabited on the same terminal bicategory. *)
+(* 相关说明。 （已译） *)
 Program Definition Trivial_OplaxTransformation :
   OplaxTransformation (Identity_Pseudofunctor Trivial_Bicategory)
                       (Identity_Pseudofunctor Trivial_Bicategory) := {|

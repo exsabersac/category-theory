@@ -33,10 +33,10 @@ Class ClosedFunctor := {
   exp_in  := fun x y => from (@fobj_exp_iso x y);  (* F y ^ F x ~> F (y^x) *)
   exp_out := fun x y => to   (@fobj_exp_iso x y);  (* comparison: F (y^x) ~> F y ^ F x *)
 
-  (* Coherence: F commutes with currying up to the comparison. *)
+  (* 相关说明。 （已译） *)
   fmap_curry {x y z : C} {f : x × y ~> z} :
     fmap (curry f) ≈ exp_in _ _ ∘ curry (fmap f ∘ prod_in);
-  (* Coherence: F commutes with uncurrying up to the comparison. *)
+  (* 相关说明。 （已译） *)
   fmap_uncurry {x y z : C} (f : x ~> z^y) :
     fmap (uncurry f) ≈ uncurry (exp_out _ _ ∘ fmap f) ∘ prod_out
 }.
@@ -46,9 +46,7 @@ Context `{@ClosedFunctor}.
 Arguments exp_in {_ _ _} /.
 Arguments exp_out {_ _ _} /.
 
-(* F eval factors through the comparison: F eval ≈ uncurry exp_out ∘ prod_out,
-   since curry eval ≈ id. This is the nLab map F (y^x × x) --F eval--> F y read
-   through prod_out and exp_out. *)
+(* 相关说明。 （已译） *)
 Corollary fmap_eval {x y : C} :
   fmap (@eval C _ _ x y) ≈ uncurry (curry eval ∘ exp_out) ∘ prod_out.
 Proof.

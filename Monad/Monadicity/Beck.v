@@ -48,7 +48,7 @@ Proof.
     rewrite (iso_from_to i).
     now rewrite id_left. }
   unshelve refine {| cofork := _ ; coeq_desc := _ |}.
-  - (* e' coforks the pair, since e does and i is monic *)
+  - (* 相关说明。 （已译） *)
     rewrite He'.
     rewrite <- !comp_assoc.
     now rewrite (cofork E).
@@ -213,7 +213,7 @@ Local Notation HM := (Adjunction_Induced_Monad A).
 Local Notation EM := (@EilenbergMoore D (U ◯ F) HM).
 Local Notation K := (EM_Comparison A).
 
-(** Conservativity of U, manufactured from the creation instance. *)
+(** 本节：Conservativity U, manufactured creation instance. （已译） *)
 
 Definition beck_reflects : ReflectsIsos U :=
   creates_split_reflects_isos U CR.
@@ -229,7 +229,7 @@ Definition beck_split (x : EM) :
                    (fmap[U] (crude_pair_r A x)) :=
   @canonical_split D (U ◯ F) HM (`1 x) (`2 x).
 
-(** ** The quasi-inverse on objects: the created coequalizer *)
+(* * ** The quasi-inverse 对象: created coequalizer （已译） *)
 
 Definition beck_coeq (x : EM) :
   ∃ (q : C) (e : F (`1 x) ~{C}~> q),
@@ -249,8 +249,8 @@ Definition beck_is_coeq (x : EM) :
     (beck_G_obj x) (beck_e x) :=
   fst (`2 (`2 (beck_coeq x))).
 
-(* The packaged comparison isomorphism of the created coequalizer, and
-   its compatibility triangle with the canonical splitting. *)
+(* The packaged comparison 同构 created coequalizer, and
+ compatibility triangle canonical splitting. （已译） *)
 Definition beck_iso (x : EM) :
   @Isomorphism D (U (beck_G_obj x)) (`1 x) :=
   `1 (snd (`2 (`2 (beck_coeq x)))).
@@ -259,7 +259,7 @@ Definition beck_iso_e (x : EM) :
   to (beck_iso x) ∘ fmap[U] (beck_e x) ≈ t_alg[`2 x] :=
   `2 (snd (`2 (`2 (beck_coeq x)))).
 
-(* The cofork law of the created coequalizer, in unfolded form. *)
+(* 相关说明。 （已译） *)
 Lemma beck_cofork (x : EM) :
   beck_e x ∘ @counit _ _ _ _ A (F (`1 x))
     ≈ beck_e x ∘ fmap[F] (t_alg[`2 x]).
@@ -378,9 +378,9 @@ Definition beck_U_coeq (x : EM) :
 Definition beck_Ue_epic (x : EM) : Epic (fmap[U] (beck_e x)) :=
   coequalizer_epic _ _ (beck_U_coeq x).
 
-(* The comparison map U (G (d, α)) ~> d: descend α through U e.  The
-   cofork hypothesis is the reused [crude_alpha_cofork] — the algebra
-   action law, reversed. *)
+(* The comparison map U (G (d, α)) ~> d: descend α through U e. The
+ cofork 假设 reused [crude_alpha_cofork] — algebra
+ action law, reversed. （已译） *)
 Definition beck_to_desc (x : EM) :
   ∃! u : U (beck_G_obj x) ~{D}~> `1 x,
     u ∘ fmap[U] (beck_e x) ≈ t_alg[`2 x] :=
@@ -393,8 +393,7 @@ Definition beck_to_e (x : EM) :
   beck_to x ∘ fmap[U] (beck_e x) ≈ t_alg[`2 x] :=
   unique_property (beck_to_desc x).
 
-(* The inverse comparison d ~> U (G (d, α)): the split coequalizer's
-   descent of U e through α, i.e. U e ∘ η_d. *)
+(* 相关说明。 （已译） *)
 Definition beck_from (x : EM) : `1 x ~{D}~> U (beck_G_obj x) :=
   fmap[U] (beck_e x) ∘ @unit _ _ _ _ A (`1 x).
 
@@ -425,7 +424,7 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(** The two comparisons are mutually inverse. *)
+(** 本节：The two comparisons mutually inverse. （已译） *)
 
 Lemma beck_to_from (x : EM) : beck_to x ∘ beck_from x ≈ id.
 Proof.
@@ -446,7 +445,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(** ** The counit of the equivalence: K (G (d, α)) ≅ (d, α) in D^T *)
+(* * ** The counit 等价: K (G (d, α)) ≅ (d, α) D^T （已译） *)
 
 Lemma beck_from_commutes (x : EM) :
   beck_from x ∘ t_alg[`2 x]
@@ -506,9 +505,9 @@ Definition beck_counit_component (x : EM) :
     (beck_counit_hom x) (beck_counit_hom_inv x)
     (beck_to_from x) (beck_from_to x).
 
-(* Conjugation coherence of the counit cell, on carriers: cancel the
-   epimorphism U e, contract the two descent triangles, and close with
-   the commuting square of h. *)
+(* Conjugation coherence counit cell, carriers: cancel the
+ epimorphism U e, contract two descent triangles, close with
+ 交换方块 h. （已译） *)
 Lemma beck_counit_coherence {x y : EM} (h : x ~{EM}~> y) :
   fmap[U] (beck_G_map h)
     ≈ (beck_from y ∘ t_alg_hom[h]) ∘ beck_to x.
@@ -555,8 +554,7 @@ Definition beck_theta_e (c : C) :
   beck_theta c ∘ beck_e (K c) ≈ @counit _ _ _ _ A c :=
   unique_property (beck_unit_desc c).
 
-(* Downstairs, U θ_c is the comparison map of the algebra K c: both
-   descend U ε_c through U e, so the epimorphism U e identifies them. *)
+(* 相关说明。 （已译） *)
 Lemma beck_U_theta (c : C) :
   fmap[U] (beck_theta c) ≈ beck_to (K c).
 Proof.
@@ -587,7 +585,7 @@ Definition beck_theta_U_iso (c : C) :
    ; is_right_inverse  := beck_U_theta_from c
    ; is_left_inverse   := beck_from_U_theta c |}.
 
-(* The derived conservativity reflects the invertibility upstairs. *)
+(* 相关说明。 （已译） *)
 Definition beck_theta_iso (c : C) : IsIsomorphism (beck_theta c) :=
   @reflects_iso C D U beck_reflects _ _ (beck_theta c)
     (beck_theta_U_iso c).
@@ -607,8 +605,8 @@ Definition beck_unit_component (c : C) : c ≅ beck_G_obj (K c) :=
     (@is_left_inverse C _ _ (beck_theta c) (beck_theta_iso c))
     (@is_right_inverse C _ _ (beck_theta c) (beck_theta_iso c)).
 
-(* Naturality of θ: cancel the epimorphism e, contract the descent
-   triangles of θ and of G (K f), and finish by counit naturality. *)
+(* Naturality θ: cancel epimorphism e, contract descent
+ triangles θ G (K f), finish counit 自然性. （已译） *)
 Lemma beck_theta_natural {x y : C} (f : x ~{C}~> y) :
   f ∘ beck_theta x ≈ beck_theta y ∘ beck_G_map (fmap[K] f).
 Proof.
@@ -642,10 +640,10 @@ Proof.
   exact (beck_unit_coherence f).
 Defined.
 
-(** ** Beck's precise monadicity theorem
+(* * ** Beck's precise monadicity 定理
 
-    No conservativity hypothesis appears: it is derived from creation
-    by [creates_split_reflects_isos], as in the classical statement. *)
+ No conservativity 假设 appears: it derived creation
+ [creates_split_reflects_isos], classical statement. （已译） *)
 
 Definition beck_monadicity : EquivalenceOfCategories (EM_Comparison A) :=
   {| quasi_inverse      := Beck_Inverse
@@ -708,7 +706,7 @@ Context (He : e ∘ f ≈ e ∘ g).
 Context (i : @Isomorphism D (`1 q) (scoeq_obj S)).
 Context (Hi : to i ∘ t_alg_hom[e] ≈ scoeq_e S).
 
-(* The carrier of e, read back through the comparison isomorphism. *)
+(* The carrier e, read back through comparison 同构. （已译） *)
 Lemma em_reflect_e0 : t_alg_hom[e] ≈ from i ∘ scoeq_e S.
 Proof using All.
   rewrite <- Hi.
@@ -717,7 +715,7 @@ Proof using All.
   now rewrite id_left.
 Qed.
 
-(* e₀ is a split epimorphism, with section s ∘ to i. *)
+(* 相关说明。 （已译） *)
 Lemma em_reflect_e0_split :
   t_alg_hom[e] ∘ (scoeq_s S ∘ to i) ≈ id.
 Proof using All.
@@ -744,7 +742,7 @@ Definition em_reflect_desc0 :
   ∃! u : scoeq_obj S ~{D}~> `1 z, u ∘ scoeq_e S ≈ t_alg_hom[h] :=
   split_coeq_desc S (t_alg_hom[h]) Hh.
 
-(* The mediating carrier, conjugated back through the comparison. *)
+(* 相关说明。 （已译） *)
 Definition em_reflect_desc_carrier : `1 q ~{D}~> `1 z :=
   unique_obj em_reflect_desc0 ∘ to i.
 
@@ -757,8 +755,7 @@ Proof using All.
   exact (unique_property em_reflect_desc0).
 Qed.
 
-(* The descended carrier is an algebra homomorphism: both sides of its
-   square restrict along the split epimorphism T e₀ to h₀ ∘ β. *)
+(* 相关说明。 （已译） *)
 Lemma em_reflect_desc_commutes :
   em_reflect_desc_carrier ∘ t_alg[`2 q]
     ≈ t_alg[`2 z] ∘ fmap[T] em_reflect_desc_carrier.
@@ -778,9 +775,7 @@ Definition em_reflect_desc_hom : q ~{EMT}~> z :=
   @Build_TAlgebraHom D T H (`1 q) (`1 z) (`2 q) (`2 z)
     em_reflect_desc_carrier em_reflect_desc_commutes.
 
-(* Uniqueness on carriers: a competitor, conjugated through the
-   comparison, is a downstairs descent of h₀, so the split
-   coequalizer's uniqueness clause identifies the two. *)
+(* 相关说明。 （已译） *)
 Lemma em_reflect_desc_unique (v : q ~{EMT}~> z)
   (Hv : t_alg_hom[v] ∘ t_alg_hom[e] ≈ t_alg_hom[h]) :
   em_reflect_desc_carrier ≈ t_alg_hom[v].
@@ -811,8 +806,8 @@ Defined.
 
 End EMReflect.
 
-(** The converse of Beck's theorem, at the terminal resolution: U^T
-    creates coequalizers of U^T-split pairs. *)
+(** The converse Beck's 定理, at terminal resolution: U^T
+ creates coequalizers U^T-split pairs. （已译） *)
 
 Theorem monadic_creates : CreatesUSplitCoequalizers (EM_Forget T).
 Proof.

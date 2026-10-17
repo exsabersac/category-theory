@@ -84,19 +84,19 @@ Proof. destruct M; reflexivity. Qed.
 Lemma Model_pack_unpack (x : Models) : Model_pack (Model_unpack x) = x.
 Proof. destruct x as [F [HC HT]]; reflexivity. Qed.
 
-(** ** Morphisms of models are all natural transformations
+(* * ** Morphisms models all natural transformations
 
-    [Models_sub] is a full subcategory: every natural transformation
-    between the underlying functors of two models is a morphism of
-    models (the [shom] witness is [I]). *)
+ [Models_sub] full subcategory: every 自然变换
+ between underlying 函子 two models 态射 of
+ models ([shom] witness [I]). （已译） *)
 
 Definition Models_Full :
   Construction.Subcategory.Full (@Fun (@law_cat T) C) Models_sub :=
   fun _ _ _ _ _ => I.
 
-(** Concretely: any natural transformation between the underlying
-    functors of two models lifts to a morphism in [Models], and it is
-    sent back to itself by the (faithful) inclusion. *)
+(** Concretely: any 自然变换 between underlying
+ 函子 two models lifts 态射 [Models], it is
+ sent back itself (faithful) 含入. （已译） *)
 
 Definition Model_hom_of_transform (x y : Models) (f : `1 x ⟹ `1 y) :
   x ~{ Models }~> y := (f; I).

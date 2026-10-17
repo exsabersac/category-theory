@@ -38,7 +38,7 @@ S 你不觉得ỡter GTM 5, 1998,建议将第I.1节,“为实现范畴玲就这�
 
 #[local] Existing Instance edgeset.
 
-(** ** Diagrams, path denotation, and the commutativity predicate *)
+(* 相关说明。 （已译） *)
 
 Section DiagramCore.
 
@@ -52,8 +52,8 @@ Definition Diagram : Type := QuiverHomomorphism G (QuiverOfCat C).
 
 Context (D : Diagram).
 
-(* The morphism labelling an edge.  [fnodes] is a coercion, so [D x] is the
-   object labelling the vertex [x]. *)
+(* The 态射 labelling edge. [fnodes] coercion, so [D x] the
+ 对象 labelling vertex [x]. （已译） *)
 Definition dedge {x y : G} (e : edges x y) : D x ~{C}~> D y :=
   @fedgemap G (QuiverOfCat C) D x y e.
 
@@ -93,7 +93,7 @@ Arguments dedge {G C} D {x y} e.
 Arguments dpath {G C} D {x y} p.
 Arguments Commutative {G C} D.
 
-(** ** The diagram-as-functor form of the predicate *)
+(* * ** The diagram-as-函子 form predicate （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -103,21 +103,21 @@ Arguments Commutative {G C} D.
 Definition CommutativeShape {J C : Category} (F : J ⟶ C) : Type :=
   ∀ (x y : J) (f g : x ~{J}~> y), fmap[F] f ≈ fmap[F] g.
 
-(** ** The bridge to the free category *)
+(* * ** The bridge free 范畴 （已译） *)
 
 Section DiagramBridge.
 
 Context {G : Quiver}.
 Context {C : Category}.
 
-(* A diagram extends to a functor on the free category: this is Quiver.v's
-   [InducedFunctor], named here for the correspondence. *)
+(* A diagram extends 函子 free 范畴: 这是 Quiver.v's
+ [InducedFunctor], named here correspondence. （已译） *)
 Definition FunctorOfDiagram (D : Diagram G C) : FreeOnQuiver G ⟶ C :=
   InducedFunctor G D.
 
-(* ... and a functor on the free category restricts to a diagram, by
-   composing with the unit of the free/forgetful adjunction, which sends an
-   edge to the one-edge path. *)
+(* ... 函子 free 范畴 restricts diagram, by
+ composing unit free/forgetful 伴随, sends an
+ edge one-edge path. （已译） *)
 Definition DiagramOfFunctor (F : FreeOnQuiver G ⟶ C) : Diagram G C :=
   QuiverComp (UnitQuiverCatAdjunction G)
              (QuiverHomomorphismOfFunctor (FreeOnQuiver G) C F).
@@ -130,9 +130,9 @@ Proof.
   now rewrite IH.
 Qed.
 
-(* Denoting a path in the restricted diagram is applying the original functor
-   to that path, viewed as a morphism of the free category.  Proved for paths
-   of arbitrary length, by induction. *)
+(* Denoting path restricted diagram applying original 函子
+ path, viewed 态射 free 范畴. Proved paths
+ arbitrary length, induction. （已译） *)
 Lemma dpath_of_functor (F : FreeOnQuiver G ⟶ C) {x y : G} (p : tlist edges x y) :
   dpath (DiagramOfFunctor F) p ≈ fmap[F] p.
 Proof.
@@ -196,7 +196,7 @@ Proof.
       [ apply H | symmetry; apply dpath_fmap ].
 Qed.
 
-(* The same correspondence read from the functor side. *)
+(* The same correspondence read 函子 side. （已译） *)
 Theorem shape_iff_commutative (F : FreeOnQuiver G ⟶ C) :
   CommutativeShape F ↔ Commutative (DiagramOfFunctor F).
 Proof.
@@ -219,9 +219,9 @@ Context {G : Quiver}.
 Context {C : Category}.
 Context (D : Diagram G C).
 
-(* Interpret a formal composite (Construction/Free/Quiver.v) in [C].  The
-   reading of [Comp f g] as [f ∘ g] is the one Solver/Denote.v documents for
-   the untyped [Term] of Solver/Expr.v. *)
+(* Interpret formal 复合 (Construction/Free/Quiver.v) [C]. The
+ reading [Comp f g] [f ∘ g] one Solver/Denote.v documents for
+ untyped [Term] Solver/Expr.v. （已译） *)
 Fixpoint dterm {x y : G} (t : Mor x y) : D x ~{C}~> D y :=
   match t in @Mor _ x0 y0 return D x0 ~{C}~> D y0 with
   | Ident      => id
@@ -229,7 +229,7 @@ Fixpoint dterm {x y : G} (t : Mor x y) : D x ~{C}~> D y :=
   | Comp f g   => dterm f ∘ dterm g
   end.
 
-(* Interpreting a term agrees with denoting the path it normalises to. *)
+(* 相关说明。 （已译） *)
 Lemma dterm_dpath {x y : G} (t : Mor x y) : dterm t ≈ dpath D (morDA t).
 Proof.
   induction t as [ x | x y e | x y z f IHf g IHg ]; simpl.
@@ -252,7 +252,7 @@ End DiagramTerms.
 
 Arguments dterm {G C} D {x y} t.
 
-(** ** Transporting a diagram along a functor *)
+(* * ** Transporting diagram along 函子 （已译） *)
 
 Section DiagramFunctorial.
 
@@ -263,7 +263,7 @@ Context {C E : Category}.
 Definition PostcomposeDiagram (U : C ⟶ E) (D : Diagram G C) : Diagram G E :=
   QuiverComp D (QuiverHomomorphismOfFunctor C E U).
 
-(* The functor commutes with path denotation, for paths of arbitrary length. *)
+(* The 函子 commutes path denotation, paths arbitrary length. （已译） *)
 Lemma dpath_postcompose (U : C ⟶ E) (D : Diagram G C)
       {x y : G} (p : tlist edges x y) :
   dpath (PostcomposeDiagram U D) p ≈ fmap[U] (dpath D p).
@@ -304,8 +304,8 @@ Qed.
 
 End DiagramFunctorial.
 
-(* The same two facts in the diagram-as-functor formulation, where they need
-   no quiver at all: they hold for a diagram indexed by ANY category. *)
+(* The same two facts diagram-as-函子 formulation, where they need
+ no quiver at all: they hold diagram indexed ANY 范畴. （已译） *)
 Theorem functor_preserves_commutative_shape {J C E : Category}
         (U : C ⟶ E) (F : J ⟶ C) :
   CommutativeShape F -> CommutativeShape (U ◯ F).
@@ -325,16 +325,7 @@ Qed.
 
 (** ** The walking square *)
 
-(* Four vertices and four edges,
-
-        A --u--> B
-        |        |
-        h        v
-        |        |
-        v        v
-        C --k--> D
-
-   with no edge out of D and no edge into A. *)
+(* 相关说明。 （已译） *)
 Inductive SqNode : Set := SqA | SqB | SqC | SqD.
 
 Definition sq_edge (i j : SqNode) : Type :=
@@ -348,7 +339,7 @@ Definition sq_edge (i j : SqNode) : Type :=
 
 Definition SquareQuiver : Quiver := Build_Quiver_Standard_Eq SqNode sq_edge.
 
-(* Sanity: the edge sets are the intended ones. *)
+(* 相关说明。 （已译） *)
 Example sq_edge_AB : @edges SquareQuiver SqA SqB = unit := eq_refl.
 Example sq_edge_BD : @edges SquareQuiver SqB SqD = unit := eq_refl.
 Example sq_edge_DA : @edges SquareQuiver SqD SqA = Empty_set := eq_refl.
@@ -426,7 +417,7 @@ Example sq_label_u : dedge SquareDiagram (tt : @edges SquareQuiver SqA SqB) = u
 Example sq_label_k : dedge SquareDiagram (tt : @edges SquareQuiver SqC SqD) = k
   := eq_refl.
 
-(* The composite denoted by each of the two paths. *)
+(* The 复合 denoted each two paths. （已译） *)
 Example sq_denote_via_B : dpath SquareDiagram sq_via_B ≈ v ∘ u.
 Proof. simpl; now rewrite id_left. Qed.
 
@@ -468,7 +459,7 @@ Proof.
       rewrite IH; rewrite ?id_left; try reflexivity; [> symmetry; exact Hsq ].
 Qed.
 
-(* The one equation implies the general predicate over ALL parallel pairs. *)
+(* 相关说明。 （已译） *)
 Theorem square_commutes (Hsq : v ∘ u ≈ k ∘ h) : Commutative SquareDiagram.
 Proof.
   intros x y p q.
@@ -478,8 +469,7 @@ Proof.
     now rewrite Hp, Hq.
 Qed.
 
-(* ... and conversely, instantiating the predicate at the two paths from A to
-   D recovers the equation. *)
+(* 相关说明。 （已译） *)
 Theorem square_commutes_inv : Commutative SquareDiagram -> v ∘ u ≈ k ∘ h.
 Proof.
   intro Hc.
@@ -541,7 +531,7 @@ Proof.
   discriminate Hq.
 Qed.
 
-(* Acyclicity of the triangle, by the same rank argument. *)
+(* Acyclicity triangle, same rank 论元. （已译） *)
 Definition tri_rank (i : TriNode) : nat :=
   match i with TrX => 0 | TrY => 1 | TrZ => 2 end.
 
@@ -623,7 +613,7 @@ Qed.
 
 End WalkingTriangle.
 
-(** ** The walking loop: the empty path carries content *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -670,8 +660,8 @@ Proof.
   - simpl; rewrite IH, id_left; destruct i, m; exact He.
 Qed.
 
-(* The forward direction is the empty-path argument itself: compare the
-   one-edge path against [tnil]. *)
+(* The forward direction empty-path 论元 itself: compare the
+ one-edge path against [tnil]. （已译） *)
 Theorem loop_commutes_inv : Commutative LoopDiagram -> e ≈ id.
 Proof.
   intro Hc.
@@ -687,9 +677,9 @@ Proof.
   now rewrite (loop_paths He _ _ p), (loop_paths He _ _ q).
 Qed.
 
-(* So on the walking loop, commutativity is exactly the statement that the
-   drawn endomorphism is the identity.  This is the header claim about [tnil],
-   proved rather than asserted. *)
+(* So walking loop, commutativity exactly statement the
+ drawn endomorphism 恒等. This header claim about [tnil],
+ proved rather than asserted. （已译） *)
 Theorem loop_commutative_iff : Commutative LoopDiagram ↔ e ≈ id.
 Proof.
   split.
@@ -699,7 +689,7 @@ Qed.
 
 End WalkingLoop.
 
-(** ** The naturality square as a commuting diagram *)
+(* * ** The 自然性 square commuting diagram （已译） *)
 
 Section NaturalitySquare.
 
@@ -721,8 +711,8 @@ Definition NaturalitySquareDiagram {p q : C} (f : p ~> q)
   SquareDiagram (fmap[F] f) (@transform _ _ _ _ alpha q)
                 (@transform _ _ _ _ alpha p) (fmap[G] f).
 
-(* It commutes, by naturality.  [naturality_sym] (Theory/Natural/Transformation.v)
-   is literally the equation [square_commutes] asks for. *)
+(* It commutes, 自然性. [naturality_sym] (Theory/Natural/Transformation.v)
+ literally equation [square_commutes] asks for. （已译） *)
 Theorem naturality_square_commutes {p q : C} (f : p ~> q) :
   Commutative (NaturalitySquareDiagram f).
 Proof.
@@ -730,9 +720,9 @@ Proof.
   apply naturality_sym.
 Qed.
 
-(* And commutativity of that diagram gives naturality back, so for this shape
-   the diagrammatic condition and the naturality equation are the same
-   statement. *)
+(* And commutativity diagram gives 自然性 back, so shape
+ diagrammatic condition 自然性 equation same
+ statement. （已译） *)
 Theorem naturality_of_commutative_square {p q : C} (f : p ~> q) :
   Commutative (NaturalitySquareDiagram f) ->
   @transform _ _ _ _ alpha q ∘ fmap[F] f
@@ -752,7 +742,7 @@ Qed.
 End NaturalitySquare.
 
 
-(** ** Commutativity as factorization through the preorder reflection *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -811,9 +801,9 @@ Proof.
   exact I.
 Qed.
 
-(* And hence for Mac Lane's quiver form of the predicate, through
-   [commutative_iff_shape]: a commuting diagram factors through the preorder
-   reflection of its FREE category. *)
+(* And hence Mac Lane's quiver form predicate, through
+ [commutative_iff_shape]: commuting diagram factors through preorder
+ reflection FREE 范畴. （已译） *)
 Theorem commutative_factors {G : Quiver} {C : Category} (D : Diagram G C)
         (Hc : Commutative D) :
   ∀ (x y : FreeOnQuiver G) (f : x ~> y),
@@ -851,8 +841,7 @@ Proof.
   split.
   - intro Hc.
     exists (ShapeFactor F Hc), (fun _ => eq_refl).
-    (* [hom_cast eq_refl eq_refl] disappears definitionally, and the
-       factorization holds on the nose by [QuotientLift_proj]. *)
+    (* 相关说明。 （已译） *)
     intros x y f; reflexivity.
   - intros [K [Hobj Hfac]].
     exact (factors_commutative_shape' F K Hobj Hfac).

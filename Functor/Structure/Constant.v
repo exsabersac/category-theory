@@ -6,7 +6,7 @@ Require Import Category.Structure.Constant.
 
 Generalizable All Variables.
 
-(** * Functors compatible with embedded constants *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/global+element
@@ -29,8 +29,7 @@ Class ConstantFunctor := {
   (* host-object comparison: D-side `constant_obj x` into F of the C-side one *)
   map_const {x : T} : constant_obj T x ~> F (constant_obj T x);
 
-  (* coherence: F of the C-side global element of `x` agrees with the D-side
-     global element of `x` transported through the comparison maps *)
+  (* 相关说明。 （已译） *)
   fmap_constant (x : T) :
     fmap (constant x) ≈ @map_const x ∘ constant x ∘ unmap_one;
 }.

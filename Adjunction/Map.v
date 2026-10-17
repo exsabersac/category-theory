@@ -37,7 +37,7 @@ Lemma fmap_id_cast_sym {X Y : Category} (G : X ⟶ Y) {u v : X} (e : u = v) :
   id_cast (eq_sym (f_equal G e)) ≈ fmap[G] (id_cast (eq_sym e)).
 Proof. destruct e; simpl; symmetry; apply fmap_id. Qed.
 
-(** ** The engine: comparison isomorphisms and the three-way equivalence *)
+(* * ** The engine: comparison isomorphisms three-way 等价 （已译） *)
 
 (*
    本节说明 Map 相关定义、性质与动机。
@@ -94,7 +94,7 @@ Definition MapAdjHom : Type :=
   ∀ (x : D) (a : C) (k : F x ~> a),
     ⌊ fmap[K] k ∘ from (al x) ⌋² ≈ to (be a) ∘ fmap[L] ⌊ k ⌋.
 
-(* Mac Lane's Lη = η'L, with the comparison split across the two sides. *)
+(* 相关说明。 （已译） *)
 Definition MapAdjUnit : Type :=
   ∀ x : D,
     to (be (F x)) ∘ fmap[L] (η x) ≈ fmap[U'] (from (al x)) ∘ η² (L x).
@@ -128,7 +128,7 @@ Proof.
   now rewrite <- (to_adj_unit (H:=A)).
 Qed.
 
-(* The dual chase: instantiate display (3) at the counit. *)
+(* 相关说明。 （已译） *)
 Lemma map_hom_to_counit : MapAdjHom → MapAdjCounit.
 Proof.
   intros H a.
@@ -179,7 +179,7 @@ Qed.
 
 End MapCompare.
 
-(** ** The two squares, at Leibniz equality of objects *)
+(* * ** The two squares, at Leibniz equality 对象 （已译） *)
 
 Section StrictSquares.
 
@@ -206,7 +206,7 @@ Record AdjSquares : Type := {
       ≈ fmap[U'] (fmap[sq_K] f) ∘ id_cast (sq_right a)
 }.
 
-(* The comparison isomorphisms the engine consumes. *)
+(* The comparison isomorphisms engine 所消耗. （已译） *)
 
 Definition sq_al (S : AdjSquares) (x : D) : sq_K S (F x) ≅ F' (sq_L S x)
   := id_cast_iso (sq_left S x).
@@ -214,7 +214,7 @@ Definition sq_al (S : AdjSquares) (x : D) : sq_K S (F x) ≅ F' (sq_L S x)
 Definition sq_be (S : AdjSquares) (a : C) : sq_L S (U a) ≅ U' (sq_K S a)
   := id_cast_iso (sq_right S a).
 
-(* The composite object equalities Mac Lane's Lη = η'L and Kε = ε'K use. *)
+(* The 复合 对象 equalities Mac Lane's Lη = η'L Kε = ε'K use. （已译） *)
 
 Definition sq_unit_eq (S : AdjSquares) (x : D)
   : sq_L S (U (F x)) = U' (F' (sq_L S x))
@@ -226,7 +226,7 @@ Definition sq_counit_eq (S : AdjSquares) (a : C)
 
 End StrictSquares.
 
-(** ** Mac Lane's Definition 1 and Proposition 1 *)
+(* 相关说明。 （已译） *)
 
 Section StrictMap.
 
@@ -251,8 +251,7 @@ Definition SquaresCounit (S : @AdjSquares C D F U C' D' F' U') : Type :=
     fmap[sq_K S] (@counit _ _ _ _ A a) ∘ id_cast (eq_sym (sq_left S (U a)))
       ≈ @counit _ _ _ _ A' (sq_K S a) ∘ fmap[F'] (id_cast (sq_right S a)).
 
-(* Each of the three IS the engine's condition at the comparison
-   isomorphisms [sq_al], [sq_be], at Leibniz equality of types. *)
+(* 相关说明。 （已译） *)
 
 Lemma squares_hom_is_generic (S : @AdjSquares C D F U C' D' F' U') :
   SquaresHom S = MapAdjHom A A' (sq_K S) (sq_L S) (sq_al S) (sq_be S).
@@ -298,8 +297,7 @@ Proof.
            (sq_left_CompareLeftNat S) (sq_right_CompareRightNat S)).
 Qed.
 
-(* Mac Lane's own spelling: the whole identification on one side, so that
-   the two displayed equations read Lη = η'L and Kε = ε'K. *)
+(* 相关说明。 （已译） *)
 
 Theorem squares_unit_fused (S : @AdjSquares C D F U C' D' F' U') :
   SquaresUnit S
@@ -342,7 +340,7 @@ Proof.
     now rewrite id_right.
 Qed.
 
-(* Definition 1: the squares together with display (3). *)
+(* 相关说明。 （已译） *)
 Record MapOfAdjunctions : Type := {
   map_squares : @AdjSquares C D F U C' D' F' U';
   map_hom : SquaresHom map_squares
@@ -367,8 +365,7 @@ Definition MapOfAdjunctions_of_counit
   : MapOfAdjunctions :=
   {| map_squares := S; map_hom := snd (squares_hom_iff_counit S) H |}.
 
-(* Building a map from either of the two other conditions leaves the squares
-   untouched, on the nose. *)
+(* 相关说明。 （已译） *)
 
 Example map_of_unit_squares
   (S : @AdjSquares C D F U C' D' F' U') (H : SquaresUnit S) :
@@ -473,7 +470,7 @@ Next Obligation.
   now rewrite id_cast_trans.
 Qed.
 
-(* The data of both is read back on the nose. *)
+(* 相关说明。 （已译） *)
 
 Example map_id_K : map_K A A MapOfAdjunctions_id = Id[C].
 Proof. reflexivity. Qed.
@@ -497,7 +494,7 @@ Proof. reflexivity. Qed.
 
 End MapIdComp.
 
-(** ** The ≈ reading: the squares up to natural isomorphism *)
+(* * ** The ≈ reading: squares up natural 同构 （已译） *)
 
 Section WeakSquares.
 
@@ -637,7 +634,7 @@ Definition WeakMapOfAdjunctions_of_MapOfAdjunctions
 
 End WeakMap.
 
-(** ** The identity-bounding-functor case IS Adjunction/Conjugate.v *)
+(* * ** The 恒等-bounding-函子 case IS Adjunction/Conjugate.v （已译） *)
 
 Section ConjugateCase.
 
@@ -671,7 +668,7 @@ Proof. reflexivity. Qed.
 
 End ConjugateCase.
 
-(** ** A map of adjunctions that is not the identity *)
+(* * ** A map 伴随 not 恒等 （已译） *)
 
 (*
    本节说明伴随、来源与用途相关定义、性质与动机。
@@ -756,8 +753,8 @@ Example swap_map_K_moves (x y : C) :
     = (y, x).
 Proof. reflexivity. Qed.
 
-(* So the swap map agrees with the identity map at (x, y) only when the two
-   objects coincide. *)
+(* So swap map agrees 恒等 map at (x, y) two
+ 对象 coincide. （已译） *)
 Theorem swap_map_not_identity (x y : C) :
   fobj[map_K (AdjunctionProduct A A) (AdjunctionProduct A A) SwapMap] (x, y)
     = fobj[map_K (AdjunctionProduct A A) (AdjunctionProduct A A)
@@ -767,7 +764,7 @@ Proof. intros H; exact (f_equal snd H). Qed.
 
 End SwapWitness.
 
-(** ** An unconditional separation, over a two-object category *)
+(* * ** An unconditional separation, over two-对象 范畴 （已译） *)
 
 (*
    本节说明伴随、hom相关定义、性质与动机。

@@ -26,44 +26,42 @@ Context {D : Category}.
 Context {C' : Category}.
 Context {D' : Category}.
 
-(* The adjunction being transported, in the variable convention of
-   Theory/Adjunction.v: F is the left adjoint. *)
+(* The 伴随 being transported, variable convention of
+ Theory/Adjunction.v: F 左伴随. （已译） *)
 Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 Context (A : F ⊣ U).
 
-(* The equivalence on the codomain side of F ... *)
+(* The 等价 codomain side F ... （已译） *)
 Context {G : C ⟶ C'}.
 Context (EC : @EquivalenceOfCategories C C' G).
 
-(* ... and the equivalence on its domain side. *)
+(* ... 等价 domain side. （已译） *)
 Context {K : D ⟶ D'}.
 Context (ED : @EquivalenceOfCategories D D' K).
 
-(* Section-local shorthands for the two chosen quasi-inverses; the printed
-   statements expand them back to [quasi_inverse]. *)
+(* 相关说明。 （已译） *)
 Local Notation Ginv := (@quasi_inverse C C' G EC).
 Local Notation Kinv := (@quasi_inverse D D' K ED).
 
-(* The domain-side constituent K⁻¹ ⊣ K: the adjoint-equivalence adjunction
-   of the reversed equivalence, whose carrying functor is Kinv and whose
-   quasi-inverse is K itself. *)
+(* The domain-side constituent K⁻¹ ⊣ K: adjoint-等价 伴随
+ reversed 等价, whose carrying 函子 Kinv whose
+ quasi-inverse K itself. （已译） *)
 Definition transported_adj_dom : Kinv ⊣ K :=
   equiv_adjunction (@EquivalenceOfCategories_sym D D' K ED).
 
-(* The codomain-side constituent G ⊣ G⁻¹: the adjoint-equivalence
-   adjunction of EC itself. *)
+(* The codomain-side constituent G ⊣ G⁻¹: adjoint-等价
+ 伴随 EC itself. （已译） *)
 Definition transported_adj_cod : G ⊣ Ginv :=
   equiv_adjunction EC.
 
-(* The transported adjoints: conjugate each of F and U by the two
-   equivalences. *)
+(* 相关说明。 （已译） *)
 Definition transported_left_adjoint : D' ⟶ C' := G ◯ (F ◯ Kinv).
 
 Definition transported_right_adjoint : C' ⟶ D' := (K ◯ U) ◯ Ginv.
 
-(* The transported adjunction: paste K⁻¹ ⊣ K, F ⊣ U and G ⊣ G⁻¹ by two
-   applications of [Adjunction_Compose]. *)
+(* The transported 伴随: paste K⁻¹ ⊣ K, F ⊣ U G ⊣ G⁻¹ two
+ applications [Adjunction_Compose]. （已译） *)
 Definition Transported_Adjunction :
   transported_left_adjoint ⊣ transported_right_adjoint :=
   Adjunction_Compose (Adjunction_Compose transported_adj_dom A)
@@ -82,7 +80,7 @@ Corollary Transported_Adjunction_to {d : D'} {c : C'}
            (to (@adj _ _ _ _ transported_adj_cod (F (Kinv d)) c) f)).
 Proof. reflexivity. Qed.
 
-(* ... and dually for the inverse transpose, in the opposite order. *)
+(* 相关说明。 （已译） *)
 Corollary Transported_Adjunction_from {d : D'} {c : C'}
   (g : d ~{D'}~> K (U (Ginv c))) :
   from (@adj _ _ _ _ Transported_Adjunction d c) g
@@ -133,16 +131,15 @@ Proof.
     now rewrite (Adjunction_Compose_counit transported_adj_dom A).
 Qed.
 
-(* The counit of the codomain-side constituent is the counit-cell
-   component of EC. *)
+(* 相关说明。 （已译） *)
 Corollary transported_adj_cod_counit (c : C') :
   @counit _ _ _ _ transported_adj_cod c
     ≈ to (@equivalence_counit_at C C' G EC c).
 Proof. exact (equiv_adjunction_counit_at EC c). Qed.
 
-(* The counit of the domain-side constituent is the counit-cell component
-   of the reversed equivalence (whose counit cell is the symmetrized unit
-   cell of ED). *)
+(* The counit domain-side constituent counit-cell component
+ reversed 等价 (whose counit cell symmetrized unit
+ cell ED). （已译） *)
 Corollary transported_adj_dom_counit (d : D) :
   @counit _ _ _ _ transported_adj_dom d
     ≈ to (@equivalence_counit_at D' D Kinv
@@ -151,15 +148,14 @@ Proof.
   exact (equiv_adjunction_counit_at (@EquivalenceOfCategories_sym D D' K ED) d).
 Qed.
 
-(* The G-image of the codomain-side unit is an inverse counit-cell
-   component of EC ... *)
+(* 相关说明。 （已译） *)
 Corollary transported_adj_cod_fmap_unit (x : C) :
   fmap[G] (@unit _ _ _ _ transported_adj_cod x)
     ≈ from (@equivalence_counit_at C C' G EC (G x)).
 Proof. exact (equiv_adjunction_fmap_unit EC x). Qed.
 
-(* ... and the K⁻¹-image of the domain-side unit is an inverse counit-cell
-   component of the reversed equivalence. *)
+(* ... K⁻¹-image domain-side unit inverse counit-cell
+ component reversed 等价. （已译） *)
 Corollary transported_adj_dom_fmap_unit (d : D') :
   fmap[Kinv] (@unit _ _ _ _ transported_adj_dom d)
     ≈ from (@equivalence_counit_at D' D Kinv

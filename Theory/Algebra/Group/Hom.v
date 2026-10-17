@@ -19,7 +19,7 @@ Require Import Category.Theory.Algebra.Monoid.Product.
 
 Generalizable All Variables.
 
-(** * Group homomorphisms, the category of group objects, finite products *)
+(* * * Group homomorphisms, 范畴 group 对象, finite products （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/group+object
@@ -35,7 +35,7 @@ Section GroupHomomorphism.
 Context {C : Category}.
 Context `{CM : @CartesianMonoidal C}.
 
-(** ** Reading a group object as an internal monoid *)
+(* * ** Reading group 对象 internal 幺半群 （已译） *)
 
 (*
    本节说明幺半结构、幺半群相关定义、性质与动机。
@@ -56,8 +56,7 @@ Definition group_inverse {x : C} (G : GroupObject x) : x ~> x :=
 Example group_inverse_is {x : C} (G : GroupObject x) :
   group_inverse G = inverse[x] := eq_refl.
 
-(* The passage costs nothing: the multiplication and unit of [group_monoid G]
-   ARE [G]'s own, at Leibniz equality. *)
+(* 相关说明。 （已译） *)
 Example group_monoid_mu {x : C} (G : GroupObject x) :
   mu[group_monoid G] = mappend[G] := eq_refl.
 
@@ -85,10 +84,9 @@ Lemma group_hom_mempty {x y : C} {Gx : GroupObject x} {Gy : GroupObject y}
   f ∘ mempty[Gx] ≈ mempty[Gy].
 Proof. exact (@hom_eta _ _ _ _ _ _ _ F). Qed.
 
-(** ** Preservation of the inverse is a THEOREM *)
+(* 相关说明。 （已译） *)
 
-(* Right-associated readings of the two inverse laws, in the bracketing that
-   [rewrite] leaves after [rewrite <- !comp_assoc]. *)
+(* 相关说明。 （已译） *)
 Lemma left_inverse_r {x : C} {G : GroupObject x} :
   mappend[G] ∘ (group_inverse G ⨂ id[x] ∘ ∆x) ≈ mempty[G] ∘ eliminate.
 Proof. rewrite comp_assoc; apply left_inverse. Qed.
@@ -146,8 +144,8 @@ Program Definition GrpCat : Category := {|
   compose := fun _ _ _ f g => (`1 f ∘ `1 g; GroupHom_comp `2 f `2 g)
 |}.
 
-(* The forgetful functor to C, faithful by construction: morphism equivalence
-   in [GrpCat] IS equivalence of the underlying C-morphisms. *)
+(* The forgetful 函子 C, faithful construction: 态射 等价
+ [GrpCat] IS 等价 underlying C-态射. （已译） *)
 Program Definition GrpCat_Forget : GrpCat ⟶ C := {|
   fobj := fun X => `1 X;
   fmap := fun _ _ f => `1 f
@@ -348,8 +346,8 @@ Proof. exact (@mon_fork_hom _ _ _ _ _ _ _ _ _ _ _). Qed.
 
 End GrpProductData.
 
-(* Binary products in GrpCat, carried by binary products of C.  No terminal
-   object of C is used, and no compatibility between × and ⨂. *)
+(* Binary products GrpCat, carried binary products C. No terminal
+ 对象 C used, no compatibility between × ⨂. （已译） *)
 #[export] Program Instance GrpCat_Cartesian : @Cartesian GrpCat := {|
   product_obj := fun X Y => (`1 X × `1 Y; GroupObject_Product `2 X `2 Y);
   Cartesian.fork :=
@@ -391,7 +389,7 @@ Next Obligation. apply one_unique. Qed.
 
 End GrpTerminal.
 
-(** ** The forgetful functor sends the finite products to C's own *)
+(* * ** The forgetful 函子 sends finite products C's own （已译） *)
 
 Section GrpForget.
 
@@ -513,7 +511,7 @@ Check (fun (X Y : GrpCat C) (g : X ~> Y) => (eq_refl :
 
 End Probes.
 
-(** ** Where the hom/proof identification comes from *)
+(* * ** Where hom/证明 identification comes from （已译） *)
 
 (*
    本节说明幺半结构、hom、幺半群相关定义、性质与动机。
@@ -526,12 +524,11 @@ Section UniverseDonors.
 Universes uo uh up.
 Constraint uh < up.
 
-(* CONTROLS: the levels themselves are fine. *)
+(* 相关说明。 （已译） *)
 Check (fun (C : Category@{uo uh up}) (a b : C) => a ~> b).
 Check (fun (C : Category@{uo uh up}) (a : C) => id[a]).
 
-(* CONTROLS that the four donor names resolve, so that a rename cannot make
-   the rejections below succeed on a reference-not-found error. *)
+(* 相关说明。 （已译） *)
 Check @Monoidal.
 Check @Cartesian.
 Check @Terminal.

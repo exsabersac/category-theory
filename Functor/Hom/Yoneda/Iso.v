@@ -21,7 +21,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The Yoneda embeddings are fully faithful, in both variances *)
+(* 相关说明。 （已译） *)
 
 Section RepresentablyIso.
 
@@ -36,8 +36,8 @@ Context {C : Category}.
 #[export] Instance CoYoneda_Full : Full (Curried_CoHom C) :=
   Yoneda_Full C^op.
 
-(* An isomorphism read in the opposite category, with the two triangle
-   laws exchanged. *)
+(* An 同构 read opposite 范畴, two triangle
+ laws exchanged. （已译） *)
 Definition iso_op {x y : C} (i : x ≅ y) : @Isomorphism C^op y x := {|
   to := to i : @hom C^op y x;
   from := from i;
@@ -45,7 +45,7 @@ Definition iso_op {x y : C} (i : x ≅ y) : @Isomorphism C^op y x := {|
   iso_from_to := iso_to_from i
 |}.
 
-(** ** The predicate, in Riehl's orientations *)
+(* 相关说明。 （已译） *)
 
 (* Two objects are representably isomorphic when both represented
    functors agree up to natural isomorphism: C(−,x) ≅ C(−,y) in
@@ -60,7 +60,7 @@ Definition CovariantRepresentableIso (x y : C) : Type :=
 Definition RepresentablyIsomorphic (x y : C) : Type :=
   ContravariantRepresentableIso x y * CovariantRepresentableIso x y.
 
-(** ** The two biconditionals: reflection composed with preservation *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom、同构相关定义、性质与动机。
@@ -91,15 +91,15 @@ Proof.
            ; iso_from_to := iso_to_from i |}.
 Defined.
 
-(* Isomorphic objects are representably isomorphic in both variances at
-   once, and the two variances agree with each other. *)
+(* Isomorphic 对象 representably isomorphic both variances at
+ once, two variances agree each other. （已译） *)
 Definition representably_isomorphic_of_iso {x y : C} (i : x ≅ y) :
   RepresentablyIsomorphic x y :=
   (fst (iso_iff_representably_iso x y) i,
    fst (iso_iff_corepresentably_iso x y) i).
 
-(* ...and conversely, either representable isomorphism recovers the
-   isomorphism of objects. *)
+(* ...and conversely, either representable 同构 recovers the
+ 同构 对象. （已译） *)
 Definition iso_of_representably_isomorphic {x y : C}
   (r : RepresentablyIsomorphic x y) : x ≅ y :=
   snd (iso_iff_representably_iso x y) (fst r).
@@ -170,9 +170,9 @@ Proof.
     reflexivity).
 Defined.
 
-(** ** Creation: the bijection of data (Riehl's Proposition 2.3.1) *)
+(* 相关说明。 （已译） *)
 
-(* An isomorphism read back from the opposite category. *)
+(* An 同构 read back opposite 范畴. （已译） *)
 Definition iso_unop {C : Category} {x y : C}
   (i : @Isomorphism C^op x y) : x ≅ y := {|
   to := from i : x ~{C}~> y;

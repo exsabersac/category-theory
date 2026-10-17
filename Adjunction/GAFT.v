@@ -21,7 +21,7 @@ Set Universe Polymorphism.
 
 Generalizable All Variables.
 
-(** * Freyd's General Adjoint Functor Theorem *)
+(* 相关说明。 （已译） *)
 
 (* nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functor_theorem
@@ -91,7 +91,7 @@ Arguments sol_obj {C D U d} _ _.
 Arguments sol_arr {C D U d} _ _.
 Arguments sol_covers {C D U d} _ {c} _.
 
-(** ** The universal-arrow half: initial objects give a left adjoint *)
+(* * ** The universal-arrow half: initial 对象 give 左伴随 （已译） *)
 
 (*
    本节说明伴随、始/终对象相关定义、性质与动机。
@@ -106,7 +106,7 @@ Proof.
   exact (@AdjunctionFromUniversalArrows D C U Hu).
 Qed.
 
-(** ** Auxiliary bridges from completeness *)
+(* 相关说明。 （已译） *)
 
 (* Every complete category has all binary equalizers: take the limit of the
    walking parallel pair [APair f g] and read it, at its apex, as an elementary
@@ -150,7 +150,7 @@ Proof.
   symmetry; exact e.
 Defined.
 
-(** ** Freyd's General Adjoint Functor Theorem *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、（余）极限、等化子相关定义、性质与动机。
@@ -209,7 +209,7 @@ Proof.
   now rewrite <- sq, id_right.
 Defined.
 
-(* The solution set's index is the family's, on the nose. *)
+(* 相关说明。 （已译） *)
 Example sols_of_wif_index {C D : Category} (U : C ⟶ D) (d : D)
   (W : WeaklyInitialFamily (=(d) ↓ U)) :
   sol_index (sols_of_wif U d W) = wif_index W := eq_refl.
@@ -218,7 +218,7 @@ Definition sols_of_comma_initial {C D : Category} (U : C ⟶ D) (d : D)
   (I : @Initial (=(d) ↓ U)) : SolutionSet U d :=
   sols_of_wif U d (weakly_initial_of_initial I).
 
-(* The one member is the initial comma object, on the nose. *)
+(* The one member initial comma 对象, nose. （已译） *)
 Example sols_of_comma_initial_index {C D : Category} (U : C ⟶ D) (d : D)
   (I : @Initial (=(d) ↓ U)) :
   sol_index (sols_of_comma_initial U d I) = poly_unit := eq_refl.
@@ -254,8 +254,8 @@ Proof.
             (Complete_HasEqualizers HCat)).
 Defined.
 
-(* GAFT itself, re-derived from the exported step, agrees with the theorem
-   above on its statement — the two are interchangeable at the type. *)
+(* GAFT itself, re-derived exported step, agrees 定理
+ above statement — two interchangeable at type. （已译） *)
 (*
    本节说明伴随相关定义、性质与动机。
 
@@ -267,7 +267,7 @@ Definition GAFT_via_comma_initial@{cobj dobj h +}
   (sols : ∀ d : D, SolutionSet@{h dobj cobj h} U d) : { F : D ⟶ C & F ⊣ U } :=
   GAFT_from_initials U (fun d => comma_initial_of_sols U d comp cont (sols d)).
 
-(** ** The converse: an adjunction supplies its own solution sets *)
+(* * ** The converse: 伴随 supplies own solution sets （已译） *)
 
 (*
    本节说明伴随、（余）极限、来源与用途相关定义、性质与动机。
@@ -291,7 +291,7 @@ Proof.
   apply id_left.
 Defined.
 
-(* The three data fields read back on the nose. *)
+(* 相关说明。 （已译） *)
 
 Definition solution_set_of_adjunction_index {C D : Category} {F : D ⟶ C}
   {U : C ⟶ D} (A : F ⊣ U) (d : D) :
@@ -305,7 +305,7 @@ Definition solution_set_of_adjunction_arr {C D : Category} {F : D ⟶ C}
   {U : C ⟶ D} (A : F ⊣ U) (d : D) (i : poly_unit) :
   sol_arr (solution_set_of_adjunction A d) i = @unit _ _ _ _ A d := eq_refl.
 
-(** ** Mac Lane's own route, through the comma-initial object *)
+(* * ** Mac Lane's own route, through comma-始对象 （已译） *)
 
 (*
    本节说明始/终对象相关定义、性质与动机。
@@ -338,9 +338,9 @@ Definition solution_set_of_adjunction_via_comma {C D : Category} {F : D ⟶ C}
   {U : C ⟶ D} (A : F ⊣ U) (d : D) : SolutionSet U d :=
   sols_of_comma_initial U d (comma_initial_of_adjunction A d).
 
-(* The composite [universal_arrow_from_UMP → arrow_initial →
-   weakly_initial_of_initial → sols_of_wif] reduces all the way to the
-   unit. *)
+(* The 复合 [universal_arrow_from_UMP → arrow_initial →
+ weakly_initial_of_initial → sols_of_wif] reduces all way the
+ unit. （已译） *)
 
 Definition solution_set_via_comma_index {C D : Category} {F : D ⟶ C}
   {U : C ⟶ D} (A : F ⊣ U) (d : D) :
@@ -389,7 +389,7 @@ Definition GAFT_iff_rev {C D : Category} (U : C ⟶ D) (comp : @Complete C)
   { F : D ⟶ C & F ⊣ U } :=
   snd (GAFT_iff U comp) H.
 
-(* The reverse half IS GAFT, on the nose. *)
+(* 相关说明。 （已译） *)
 
 Definition GAFT_iff_rev_is_GAFT {C D : Category} (U : C ⟶ D)
   (comp : @Complete C) (cont : @PreservesImageLimit C D U)

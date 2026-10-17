@@ -86,55 +86,53 @@ Defined.
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
-(*
-Program Definition ProductFunctor_Traversable :
-  Traversable F → Traversable G
-    → Traversable (F :*: G) := fun O P => {|
-  sequence := ProductFunctor_Traversable_ap_functor_nat _ _;
-  sequence_naturality  := _;
-  sequence_Id  := _;
-  sequence_Compose  := _
+(* Program Definition ProductFunctor_Traversable :
+ Traversable F → Traversable G
+ → Traversable (F :*: G) := fun O P => {|
+ sequence := ProductFunctor_Traversable_ap_functor_nat _ _;
+ sequence_自然性 := _;
+ sequence_Id := _;
+ sequence_Compose := _
 |}.
 Next Obligation.
-  pose proof (@sequence_naturality _ _ _ _ _ O G0 _ H3 _ _ f X) as X0.
-  pose proof (@sequence_naturality _ _ _ _ _ P G0 _ H3 _ _ f X) as X1.
-  repeat (unfold ap; simpl).
+ pose 证明 (@sequence_自然性 _ _ _ _ _ O G0 _ H3 _ _ f X) X0.
+ pose 证明 (@sequence_自然性 _ _ _ _ _ P G0 _ H3 _ _ f X) X1.
+ repeat (unfold ap; simpl).
 (*
-  pose proof (naturality[@slm_transform _ _ _ _ _ _ _ _ f]).
-  rewrite <- comp_assoc.
-  rewrite <- bimap_comp.
-  rewrites.
-  rewrite bimap_comp.
-  rewrite !comp_assoc.
-  apply compose_respects; [|reflexivity].
-  (* This must be proven based on how slm_transform interacts with ap. *)
+ pose 证明 (自然性[@slm_transform _ _ _ _ _ _ _ _ f]).
+ rewrite <- comp_assoc.
+ rewrite <- bimap_comp.
+ rewrites.
+ rewrite bimap_comp.
+ rewrite !comp_assoc.
+ apply compose_respects; [|reflexivity].
+ (* This must proven based how slm_transform interacts ap. *)
 *)
 Next Obligation.
-  repeat (unfold ap; simpl).
-  rewrite id_left.
-  rewrite (@sequence_Id _ _ _ _ _ O), (@sequence_Id _ _ _ _ _ P).
-  cat.
+ repeat (unfold ap; simpl).
+ rewrite id_left.
+ rewrite (@sequence_Id _ _ _ _ _ O), (@sequence_Id _ _ _ _ _ P).
+ cat.
 Qed.
 (*
 Next Obligation.
-  repeat (unfold lax_ap; simpl).
-  rewrite (@sequence_Compose _ _ _ _ _ O G0 H2 H3 H4 X),
-          (@sequence_Compose _ _ _ _ _ P G0 H2 H3 H4 X).
-  pose proof (naturality[@ap_functor_nat _ _ _ _ G0
-                           (@is_lax_monoidal _ _ _ _ _ H2)]
-                        (F (H3 X), G (H3 X))
-                        (H3 (F X), H3 (G X))
-                        (transform sequence X, transform sequence X)) as X3;
-  simpl in *.
-  rewrite <- !comp_assoc.
-  rewrite (comp_assoc _ (bimap _ _)).
-  rewrites.
-  rewrite !comp_assoc.
-  rewrite <- fmap_comp.
-  reflexivity.
+ repeat (unfold lax_ap; simpl).
+ rewrite (@sequence_Compose _ _ _ _ _ O G0 H2 H3 H4 X),
+ (@sequence_Compose _ _ _ _ _ P G0 H2 H3 H4 X).
+ pose 证明 (自然性[@ap_函子_nat _ _ _ _ G0
+ (@is_lax_monoidal _ _ _ _ _ H2)]
+ (F (H3 X), G (H3 X))
+ (H3 (F X), H3 (G X))
+ (transform sequence X, transform sequence X)) X3;
+ simpl *.
+ rewrite <- !comp_assoc.
+ rewrite (comp_assoc _ (bimap _ _)).
+ rewrites.
+ rewrite !comp_assoc.
+ rewrite <- fmap_comp.
+ reflexivity.
 Qed.
 *)
-Next Obligation.
-*)
+Next Obligation. （已译） *)
 
 End ProductTraversable.

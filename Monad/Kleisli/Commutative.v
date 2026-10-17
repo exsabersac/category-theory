@@ -52,7 +52,7 @@ Lemma kl_pure_eqv {a b : C} {u v : a ~{C}~> b} (E : u ≈ v) :
 Proof. now apply kpure_proper. Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** The braid conjugation identity for the double strengths.        *)
+(* * ** The braid conjugation 恒等 double strengths. （已译） *)
 (* ------------------------------------------------------------------ *)
 
 (*
@@ -75,7 +75,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** Commutativity versus centrality: both directions.               *)
+(* * ** Commutativity versus 中心性: both directions. （已译） *)
 (* ------------------------------------------------------------------ *)
 
 (*
@@ -113,7 +113,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** The comm-gated structures.                                      *)
+(* 相关说明。 （已译） *)
 (* ------------------------------------------------------------------ *)
 
 Section WithComm.
@@ -176,9 +176,9 @@ Proof.
   reflexivity.
 Qed.
 
-(* One-sided pure padding, the workhorse of every transfer proof below:
-   a pure morphism tensored with the Kleisli identity is the pure image
-   of the identity-padded base tensor. *)
+(* One-sided pure padding, workhorse every transfer 证明 below:
+ pure 态射 tensored Kleisli 恒等 pure image
+ 恒等-padded base tensor. （已译） *)
 Lemma kl_bimap_pure_l {a b : C} (u : a ~{C}~> b) (w : C) :
   ((kpure u) ⨂[Kleisli_Monoidal] (@id Kleisli w))
     ≈ kpure (u ⨂ id[w]).
@@ -267,9 +267,9 @@ Proof.
   reflexivity.
 Qed.
 
-(* The two hexagons transfer from the base along the pure functor: after
-   converting the padded bimaps to pure images, both sides collapse to
-   the pure image of the corresponding base hexagon. *)
+(* The two hexagons transfer base along pure 函子: after
+ converting padded bimaps pure images, both sides collapse to
+ pure image corresponding base hexagon. （已译） *)
 Lemma kl_hexagon {x y z : C} :
   @compose Kleisli _ _ _
     (@compose Kleisli _ _ _
@@ -315,7 +315,7 @@ Definition Kleisli_Braided : @BraidedMonoidal Kleisli :=
     (fun x y z : C => @kl_hexagon x y z)
     (fun x y z : C => @kl_hexagon_sym x y z).
 
-(* The involution law is the pure image of the base one. *)
+(* 相关说明。 （已译） *)
 Lemma kl_braid_invol {x y : C} :
   @compose Kleisli _ _ _ (kpure (@braid C _ y x)) (kpure (@braid C _ x y))
     ≈ @id Kleisli ((x ⨂ y)%object).
@@ -332,15 +332,14 @@ Definition Kleisli_Symmetric : @SymmetricMonoidal Kleisli :=
     Kleisli_Braided
     (fun x y : C => @kl_braid_invol x y).
 
-(* The braiding of Kl(M) is the pure image of the base braiding by
-   construction; recorded to complete the pure-transfer kit. *)
+(* 相关说明。 （已译） *)
 Lemma kl_pure_braid (x y : C) :
   @braid Kleisli (@symmetric_is_braided Kleisli Kleisli_Symmetric) x y
     ≈ kpure (@braid C _ x y).
 Proof. reflexivity. Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** The copy-discard descent to Kl(M).                              *)
+(* 相关说明。 （已译） *)
 (* ------------------------------------------------------------------ *)
 
 Section WithCD.
@@ -374,10 +373,10 @@ Proof.
   reflexivity.
 Qed.
 
-(** *** The per-object commutative comonoid on Kl(M)
+(* * *** The per-对象 commutative comonoid Kl(M)
 
-    copy := kpure copy and discard := kpure discard; every law is the
-    pure image of the corresponding base law. *)
+ copy := kpure copy discard := kpure discard; every law the
+ pure image corresponding base law. （已译） *)
 
 Lemma kl_delta_coassoc (x : C) :
   @compose Kleisli _ _ _

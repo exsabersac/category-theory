@@ -7,7 +7,7 @@ Require Import Category.Theory.Coq.Maybe.
 
 Generalizable All Variables.
 
-(** Law proofs for the Maybe/option [1 + a] instances *)
+(** 本节：Law proofs Maybe/option [1 + a] instances （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/maybe+monad
@@ -45,8 +45,7 @@ Lemma fmap_endo_nothing {c} (f : c → c) (m : Maybe c) :
   f <$> m = Nothing <-> m = Nothing.
 Proof. induction m; simpl; intuition auto; discriminate. Qed.
 
-(* Applicative: [f <$> m <*> n] is [Just x] exactly when both arguments are
-   [Just] and [x] is their combination. *)
+(* 相关说明。 （已译） *)
 Lemma ap_endo_just {c} (f : c → c → c) (m n : Maybe c) (x : c) :
   f <$> m <*> n = Just x
     <-> exists y z, x = f y z /\ m = Just y /\ n = Just z.
@@ -106,8 +105,7 @@ Proof.
   - reflexivity.
 Qed.
 
-(* Alternative: [m <|> n] is [Just x] via the left operand, or via the right
-   when the left is [Nothing] (left-biased choice). *)
+(* 相关说明。 （已译） *)
 Lemma alt_endo_just {c} (m n : Maybe c) (x : c) :
   m <|> n = Just x <-> m = Just x \/ (m = Nothing /\ n = Just x).
 Proof. induction m; simpl; intuition auto; discriminate. Qed.

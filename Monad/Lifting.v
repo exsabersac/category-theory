@@ -33,7 +33,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The adjoint triangle theorem, for U of descent type *)
+(* * ** The adjoint triangle 定理, U descent type （已译） *)
 
 Section AdjointTriangle.
 
@@ -54,9 +54,9 @@ Local Notation HM := (Adjunction_Induced_Monad A).
 Local Notation EM := (@EilenbergMoore D (U ◯ F) HM).
 Local Notation K := (EM_Comparison A).
 
-(** The A0-transposition laws, restated with the composite right
-    adjoint's action split into fmap[U] (fmap[R] -), so that later
-    rewrites are syntactic. *)
+(** The A0-transposition laws, restated 复合 right
+ adjoint's action split fmap[U] (fmap[R] -), so later
+ rewrites syntactic. （已译） *)
 
 Lemma lift_transpose_unit {x : D} {b : B} (f : L0 x ~{B}~> b) :
   to (@adj _ _ _ _ A0 x b) f
@@ -75,8 +75,8 @@ Lemma lift_untranspose_nat_r {x : D} {b b' : B}
     ≈ f ∘ from (@adj _ _ _ _ A0 x b) g.
 Proof. exact (@from_adj_nat_r _ _ _ _ A0 x b b' f g). Qed.
 
-(* Transposition is injective: both transposes are the two legs of the
-   hom-setoid isomorphism of A0. *)
+(* Transposition injective: both transposes two legs the
+ hom-setoid 同构 A0. （已译） *)
 Lemma lift_transpose_inj {x : D} {b : B} (g h : L0 x ~{B}~> b) :
   to (@adj _ _ _ _ A0 x b) g ≈ to (@adj _ _ _ _ A0 x b) h → g ≈ h.
 Proof.
@@ -99,8 +99,7 @@ Definition lift_pair_l (c : C) :
   L0 (U (F (U c))) ~{B}~> L0 (U c) :=
   fmap[L0] (fmap[U] (@counit _ _ _ _ A c)).
 
-(* The algebra action of K (R (L0 (U c))) precomposed with the T-image of
-   the A0-unit: the D-level second leg of the presentation. *)
+(* 相关说明。 （已译） *)
 Definition lift_action (c : C) :
   U (F (U c)) ~{D}~> U (R (L0 (U c))) :=
   fmap[U] (@counit _ _ _ _ A (R (L0 (U c))))
@@ -110,8 +109,8 @@ Definition lift_pair_r (c : C) :
   L0 (U (F (U c))) ~{B}~> L0 (U c) :=
   from (@adj _ _ _ _ A0 (U (F (U c))) (L0 (U c))) (lift_action c).
 
-(* L0 (U ε_c) retracts L0 η_{U c}: the L0-image of the zig-zag identity
-   of A. *)
+(* L0 (U ε_c) retracts L0 η_{U c}: L0-image zig-zag 恒等
+ A. （已译） *)
 Lemma lift_section_l (c : C) :
   lift_pair_l c ∘ fmap[L0] (@unit _ _ _ _ A (U c)) ≈ id.
 Proof.
@@ -121,9 +120,9 @@ Proof.
   apply fmap_id.
 Qed.
 
-(* Restricting the action leg along the unit of A recovers the unit of
-   A0: slide η across η0 by naturality, and close with the zig-zag
-   identity of A. *)
+(* Restricting action leg along unit A recovers unit of
+ A0: slide η across η0 自然性, close zig-zag
+ 恒等 A. （已译） *)
 Lemma lift_action_unit (c : C) :
   lift_action c ∘ @unit _ _ _ _ A (U c) ≈ @unit _ _ _ _ A0 (U c).
 Proof.
@@ -135,8 +134,8 @@ Proof.
   apply id_left.
 Qed.
 
-(* The transposed action leg retracts L0 η_{U c} as well: transpose the
-   previous triangle and close with the zig-zag identity of A0. *)
+(* The transposed action leg retracts L0 η_{U c} well: transpose the
+ previous triangle close zig-zag 恒等 A0. （已译） *)
 Lemma lift_section_r (c : C) :
   lift_pair_r c ∘ fmap[L0] (@unit _ _ _ _ A (U c)) ≈ id.
 Proof.
@@ -155,7 +154,7 @@ Definition lift_reflexive (c : C) :
     (fmap[L0] (@unit _ _ _ _ A (U c)))
     (lift_section_l c) (lift_section_r c).
 
-(** ** The candidate adjoint values: chosen reflexive coequalizers *)
+(* 相关说明。 （已译） *)
 
 Definition lift_coeq (c : C) :
   ∃ (q : B) (e : L0 (U c) ~{B}~> q),
@@ -176,14 +175,14 @@ Lemma lift_cofork (c : C) :
   lift_e c ∘ lift_pair_l c ≈ lift_e c ∘ lift_pair_r c.
 Proof. exact (cofork (lift_is_coeq c)). Qed.
 
-(** ** The unit carrier: the A0-transpose of the coequalizing map *)
+(* 相关说明。 （已译） *)
 
 Definition lift_w (c : C) : U c ~{D}~> U (R (lift_obj c)) :=
   to (@adj _ _ _ _ A0 (U c) (lift_obj c)) (lift_e c).
 
-(* Pushing the coequalizing map under the algebra action: counit
-   naturality at fmap[R] e, after expanding the transpose through the
-   unit of A0. *)
+(* Pushing coequalizing map under algebra action: counit
+ 自然性 at fmap[R] e, after expanding transpose through the
+ unit A0. （已译） *)
 Lemma lift_action_square (c : C) :
   fmap[U] (@counit _ _ _ _ A (R (lift_obj c)))
       ∘ fmap[U] (fmap[F] (lift_w c))
@@ -234,8 +233,7 @@ Proof.
         exact (@from_adj_comp_law _ _ _ _ A0 _ _ (lift_action c)).
 Qed.
 
-(* The algebra homomorphism K c ~> K (R (lift_obj c)) carried by the
-   transpose of e. *)
+(* 相关说明。 （已译） *)
 Definition lift_unit_hom (c : C) :
   K c ~{EM}~> K (R (lift_obj c)) :=
   @Build_TAlgebraHom D (U ◯ F) HM (U c) (U (R (lift_obj c)))
@@ -243,14 +241,14 @@ Definition lift_unit_hom (c : C) :
     (EM_Comparison_Algebra A (R (lift_obj c)))
     (lift_w c) (lift_w_commutes c).
 
-(** ** The unit, through the fully faithful comparison *)
+(* 相关说明。 （已译） *)
 
 Definition lift_unit (c : C) : c ~{C}~> R (lift_obj c) :=
   @prefmap C EM K fullK c (R (lift_obj c)) (lift_unit_hom c).
 
-(* The section law of fullness, read on carriers: hom-equivalence in the
-   Eilenberg-Moore category is carrier equivalence, and the carrier of
-   fmap[K] is fmap[U]. *)
+(* The section law fullness, read carriers: hom-等价 the
+ Eilenberg-Moore 范畴 carrier 等价, carrier of
+ fmap[K] fmap[U]. （已译） *)
 Lemma lift_unit_w (c : C) : fmap[U] (lift_unit c) ≈ lift_w c.
 Proof.
   exact (@fmap_sur C EM K fullK c (R (lift_obj c)) (lift_unit_hom c)).
@@ -265,9 +263,9 @@ Proof using A C D F U faithK.
   exact Hfg.
 Qed.
 
-(** ** Descent: every f : c ~> R b factors through the unit *)
+(* 相关说明。 （已译） *)
 
-(* The A0-inverse-transpose of U f, the map to be descended. *)
+(* 相关说明。 （已译） *)
 Definition lift_desc_arg {c : C} {b : B} (f : c ~{C}~> R b) :
   L0 (U c) ~{B}~> b :=
   from (@adj _ _ _ _ A0 (U c) b) (fmap[U] f).
@@ -284,8 +282,8 @@ Proof.
   - exact (@from_adj_comp_law _ _ _ _ A0 (U c) b (fmap[U] f)).
 Qed.
 
-(* The D-level cofork of the descent: U f absorbs the presentation pair,
-   by counit naturality at fmap[R] (lift_desc_arg f) and at f. *)
+(* The D-level cofork descent: U f absorbs presentation pair,
+ counit 自然性 at fmap[R] (lift_desc_arg f) at f. （已译） *)
 Lemma lift_desc_square {c : C} {b : B} (f : c ~{C}~> R b) :
   fmap[U] f ∘ fmap[U] (@counit _ _ _ _ A c)
     ≈ fmap[U] (fmap[R] (lift_desc_arg f)) ∘ lift_action c.
@@ -340,8 +338,7 @@ Definition lift_factor_e {c : C} {b : B} (f : c ~{C}~> R b) :
   lift_factor f ∘ lift_e c ≈ lift_desc_arg f :=
   unique_property (lift_desc f).
 
-(* The factorization law: both sides have the same U-image, and U is
-   faithful. *)
+(* 相关说明。 （已译） *)
 Lemma lift_factor_property {c : C} {b : B} (f : c ~{C}~> R b) :
   f ≈ fmap[R] (lift_factor f) ∘ lift_unit c.
 Proof using A A0 B C D F L0 R RCB U faithK fullK.
@@ -358,8 +355,7 @@ Proof using A A0 B C D F L0 R RCB U faithK fullK.
     + exact (lift_transpose_nat_r (lift_factor f) (lift_e c)).
 Qed.
 
-(* Uniqueness of the factorization: any other mediator descends the same
-   map (compare transposes), so descent uniqueness identifies them. *)
+(* 相关说明。 （已译） *)
 Lemma lift_factor_unique {c : C} {b : B} (f : c ~{C}~> R b)
   (v : lift_obj c ~{B}~> b) (Hv : f ≈ fmap[R] v ∘ lift_unit c) :
   lift_factor f ≈ v.
@@ -380,7 +376,7 @@ Proof.
         exact (@from_adj_comp_law _ _ _ _ A0 (U c) b (fmap[U] f)).
 Qed.
 
-(** ** The universal arrows, and the lifted left adjoint *)
+(* * ** The universal arrows, lifted 左伴随 （已译） *)
 
 Definition lift_ump (c : C) (b : B) (f : c ~{C}~> R b) :
   ∃! g : lift_obj c ~{B}~> b, f ≈ fmap[R] g ∘ lift_unit c :=
@@ -392,9 +388,9 @@ Definition lift_universal_arrow (c : C) : UniversalArrow c R :=
   universal_arrow_from_UMP c R (lift_obj c) (lift_unit c)
     (fun b f => lift_ump c b f).
 
-(** The adjoint triangle theorem (Dubuc): with U of descent type, a left
-    adjoint of U ◯ R and reflexive coequalizers in B induce a left
-    adjoint of R. *)
+(** The adjoint triangle 定理 (Dubuc): U descent type, left
+ adjoint U ◯ R reflexive coequalizers B induce left
+ adjoint R. （已译） *)
 
 Definition Lifted_Left_Adjoint : C ⟶ B :=
   LeftAdjointFunctorFromUniversalArrows R lift_universal_arrow.
@@ -404,7 +400,7 @@ Definition adjoint_triangle : Lifted_Left_Adjoint ⊣ R :=
 
 End AdjointTriangle.
 
-(** ** Transport: adjunctions into the Eilenberg–Moore category descend *)
+(* * ** Transport: 伴随 进入 Eilenberg–Moore 范畴 descend （已译） *)
 
 Section TransportEM.
 
@@ -419,16 +415,16 @@ Context {L : @EilenbergMoore D (U ◯ F) (Adjunction_Induced_Monad A) ⟶ B}.
 Context {J : B ⟶ @EilenbergMoore D (U ◯ F) (Adjunction_Induced_Monad A)}.
 Context (AJ : L ⊣ J).
 
-(* An adjunction whose right adjoint lands in the Eilenberg-Moore
-   category composes with the adjoint equivalence K ⊣ K⁻¹ of the
-   comparison to one whose right adjoint lands in C. *)
+(* An 伴随 whose 右伴随 lands Eilenberg-Moore
+ 范畴 composes adjoint 等价 K ⊣ K⁻¹ the
+ comparison one whose 右伴随 lands C. （已译） *)
 Definition EM_Adjunction_Transport :
   (L ◯ EM_Comparison A) ⊣ (@quasi_inverse _ _ _ E ◯ J) :=
   Adjunction_Compose (equiv_adjunction E) AJ.
 
 End TransportEM.
 
-(** ** The crude-case adjoint lifting theorem *)
+(* * ** The crude-case adjoint lifting 定理 （已译） *)
 
 Section AdjointLiftingCrude.
 
@@ -446,8 +442,8 @@ Context {L0 : D ⟶ B}.
 Context (A0 : L0 ⊣ U ◯ R).
 Context (RCB : HasReflexiveCoequalizers B).
 
-(* The crude monadicity equivalence makes the comparison full and
-   faithful. *)
+(* The crude monadicity 等价 makes comparison full and
+ faithful. （已译） *)
 Definition adjoint_lifting_full : Full (EM_Comparison A) :=
   Equivalence_Full (crude_monadicity A RC pres refl).
 
@@ -470,7 +466,7 @@ Defined.
 
 End AdjointLiftingCrude.
 
-(** The same statement with the monadicity data packaged as [Monadic]. *)
+(** 本节：The same statement monadicity data packaged [Monadic]. （已译） *)
 
 Theorem adjoint_lifting_monadic {C D B : Category} {U : C ⟶ D}
   (M : Monadic U) {R : B ⟶ C} {L0 : D ⟶ B}

@@ -56,8 +56,8 @@ Context {D : Category}.
 
 (** ** The comma-packaged encoding *)
 
-(* A couniversal arrow from F to c.  Definitionally a [UniversalArrow] in the
-   opposite categories; every accessor below reads it back covariantly. *)
+(* A couniversal arrow F c. Definitionally [UniversalArrow] the
+ opposite 范畴; every accessor below reads it back covariantly. （已译） *)
 Definition CouniversalArrow (c : C) (F : D ⟶ C) : Type :=
   @UniversalArrow (C^op) (D^op) c (Opposite_Functor F).
 
@@ -74,13 +74,13 @@ Context {c : C}.
 Context {F : D ⟶ C}.
 Context (U : CouniversalArrow c F).
 
-(* The couniversal object a : D.  Objects of `D^op` ARE objects of `D`, so
-   this is [arrow_obj] with no transport. *)
+(* The couniversal 对象 : D. Objects `D^op` ARE 对象 `D`, so
+ 这是 [arrow_obj] no transport. （已译） *)
 Definition coarrow_obj : D := @arrow_obj (C^op) (D^op) c (Opposite_Functor F) U.
 
-(* The couniversal morphism ε : F a ~> c.  Its op-side type is
-   `c ~{C^op}~> (F^op) a`, which is literally `F a ~{C}~> c`; the covariant
-   ascription below is accepted by conversion alone. *)
+(* The couniversal 态射 ε : F ~> c. Its op-side type is
+ `c ~{C^op}~> (F^op) a`, literally `F ~{C}~> c`; covariant
+ ascription below accepted conversion alone. （已译） *)
 Definition coarrow : F coarrow_obj ~{C}~> c :=
   @arrow (C^op) (D^op) c (Opposite_Functor F) U.
 
@@ -102,15 +102,15 @@ Definition ump_couniversal_arrows {c : C} {F : D ⟶ C}
   ∃! g : d ~{D}~> coarrow_obj U, h ≈ coarrow U ∘ fmap[F] g :=
   @ump_universal_arrows (C^op) (D^op) c (Opposite_Functor F) U d h.
 
-(* Conversely, the couniversal mapping property reconstructs the couniversal
-   arrow.  Again a definitional op-read of [universal_arrow_from_UMP]. *)
+(* Conversely, couniversal 映射 property reconstructs couniversal
+ arrow. Again definitional op-read [universal_arrow_from_UMP]. （已译） *)
 Definition couniversal_arrow_from_UMP (c : C) (F : D ⟶ C) (d : D)
   (ε : F d ~{C}~> c)
   (u : ∀ (d' : D) (f : F d' ~{C}~> c), ∃! g : d' ~{D}~> d, f ≈ ε ∘ fmap[F] g)
   : CouniversalArrow c F :=
   @universal_arrow_from_UMP (C^op) (D^op) c (Opposite_Functor F) d ε u.
 
-(** ** The terminal-object reading (Mac Lane §III.1 Definition 3) *)
+(* * ** The terminal-对象 reading (Mac Lane §III.1 Definition 3) （已译） *)
 
 (*
    本节说明始/终对象、来源与用途相关定义、性质与动机。
@@ -131,9 +131,9 @@ Definition couniversal_arrow_terminal {c : C} {F : D ⟶ C}
   (U : CouniversalArrow c F) : @Terminal (F ↓ =(c)).
 Proof.
   unshelve eapply Build_Terminal.
-  - (* the terminal object is the couniversal pair (a, ε) *)
+  - (* 终对象 couniversal pair (a, ε) （已译） *)
     exact (((coarrow_obj U, ttt); coarrow U)).
-  - (* the unique arrow into it is the UMP mediator *)
+  - (* 唯一箭头 it UMP mediator （已译） *)
     intros [[d u] h]; simpl in *.
     exists (unique_obj (ump_couniversal_arrows U h), ttt).
     simpl.
@@ -141,8 +141,7 @@ Proof.
     rewrite id_left.
     symmetry.
     exact (unique_property (ump_couniversal_arrows U h)).
-  - (* two arrows into it agree: the D-components by UMP uniqueness, the
-       1-components because `1` has exactly one arrow *)
+  - (* 相关说明。 （已译） *)
     intros [[d u] h] [[f1 f2] Hf] [[g1 g2] Hg]; simpl in *.
     rewrite ?fmap_id, ?id_left in Hf, Hg.
     split.
@@ -189,7 +188,7 @@ Proof.
                            ((v, ttt); sq v Hv))).
 Defined.
 
-(** ** Uniqueness up to a unique isomorphism *)
+(* * ** Uniqueness up unique 同构 （已译） *)
 
 (*
    本节说明 Dual 相关定义、性质与动机。
@@ -202,8 +201,8 @@ Section CouniversalArrowUnique.
 Context {c : C}.
 Context {F : D ⟶ C}.
 
-(* The canonical mediating morphism: the unique factorization of the FIRST
-   couniversal arrow through the SECOND (dual to the primal orientation). *)
+(* The canonical mediating 态射: unique factorization FIRST
+ couniversal arrow through SECOND (dual primal orientation). （已译） *)
 Definition cua_med (U1 U2 : CouniversalArrow c F)
   : coarrow_obj U1 ~{D}~> coarrow_obj U2 :=
   @ua_med (C^op) (D^op) c (Opposite_Functor F) U2 U1.
@@ -212,7 +211,7 @@ Lemma cua_med_commutes (U1 U2 : CouniversalArrow c F) :
   coarrow U2 ∘ fmap[F] (cua_med U1 U2) ≈ coarrow U1.
 Proof. exact (@ua_med_commutes (C^op) (D^op) c (Opposite_Functor F) U2 U1). Qed.
 
-(* Any morphism commuting with the two couniversal arrows IS the mediator. *)
+(* Any 态射 commuting two couniversal arrows IS mediator. （已译） *)
 Lemma cua_med_unique (U1 U2 : CouniversalArrow c F)
       (g : coarrow_obj U1 ~{D}~> coarrow_obj U2) :
   coarrow U2 ∘ fmap[F] g ≈ coarrow U1 → cua_med U1 U2 ≈ g.
@@ -255,8 +254,8 @@ Proof.
   now apply cua_med_unique.
 Qed.
 
-(* Awodey's Proposition 1.10, dualized: exactly one isomorphism of the
-   couniversal objects carries the second couniversal arrow to the first. *)
+(* Awodey's Proposition 1.10, dualized: exactly one 同构 the
+ couniversal 对象 carries second couniversal arrow first. （已译） *)
 Program Definition couniversal_arrow_unique
         (U1 U2 : CouniversalArrow c F) :
   Unique (fun i : coarrow_obj U1 ≅ coarrow_obj U2 =>
@@ -268,7 +267,7 @@ Next Obligation. exact (couniversal_arrow_iso_unique U1 U2 v X). Qed.
 
 End CouniversalArrowUnique.
 
-(** ** From couniversal arrows to a right adjoint *)
+(* * ** From couniversal arrows 右伴随 （已译） *)
 
 Context (F : @Functor D C).
 
@@ -283,8 +282,8 @@ Definition RightAdjointFunctorFromCouniversalArrows
     (@LeftAdjointFunctorFromUniversalArrows (C^op) (D^op)
        (Opposite_Functor F) H).
 
-(* The object action is [coarrow_obj] by convertibility -- what makes the
-   op-route usable rather than merely type-correct. *)
+(* The 对象 action [coarrow_obj] convertibility -- what makes the
+ op-route usable rather than merely type-correct. （已译） *)
 Corollary right_adjoint_obj (H : forall c : C, CouniversalArrow c F) (c : C) :
   fobj[RightAdjointFunctorFromCouniversalArrows H] c = coarrow_obj (H c).
 Proof. reflexivity. Qed.
@@ -334,15 +333,15 @@ Definition couniversal_arrow {c : C} {G : D ⟶ C} {a : D}
   (U : ACouniversalArrow c G a) : G a ~{C}~> c :=
   @universal_arrow (C^op) (D^op) c (Opposite_Functor G) a U.
 
-(* ... and its universal property, in the orientation the primal field has
-   ([fmap ∘ arrow ≈ f] there, [arrow ∘ fmap ≈ f] here). *)
+(* ... 普遍性质, orientation primal field has
+ ([fmap ∘ arrow ≈ f] there, [arrow ∘ fmap ≈ f] here). （已译） *)
 Definition couniversal_arrow_couniversal {c : C} {G : D ⟶ C} {a : D}
   (U : ACouniversalArrow c G a) {d : D} {f : G d ~{C}~> c} :
   Unique (fun g : d ~{D}~> a => couniversal_arrow U ∘ fmap[G] g ≈ f) :=
   @universal_arrow_universal (C^op) (D^op) c (Opposite_Functor G) a U d f.
 
-(* Two couniversal arrows at the same object are equivalent when their
-   underlying morphisms agree; the op-read of [AUniversalArrowEquiv]. *)
+(* Two couniversal arrows at same 对象 equivalent their
+ underlying 态射 agree; op-read [AUniversalArrowEquiv]. （已译） *)
 #[export] Instance ACouniversalArrowEquiv (c : C) (G : D ⟶ C) (a : D) :
   Setoid (ACouniversalArrow c G a) :=
   @AUniversalArrowEquiv (C^op) (D^op) c (Opposite_Functor G) a.
@@ -439,7 +438,7 @@ Proof.
              (symmetry Hv)).
 Defined.
 
-(* The passage keeps the arrow on the nose in one direction ... *)
+(* 相关说明。 （已译） *)
 Corollary ACouniversalArrow_of_CouniversalArrow_arrow {c : C} {G : D ⟶ C}
   (U : CouniversalArrow c G) :
   couniversal_arrow (ACouniversalArrow_of_CouniversalArrow U) = coarrow U.

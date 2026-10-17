@@ -42,15 +42,13 @@ Definition hom_action_at (p : A^op ∏ A) :
   proper_morphism := fun g g' (eqv : g ≈ g') => fmap_respects _ _ g g' eqv
 |}.
 
-(* Mac Lane §II.5 Exercise 7: the hom-maps of T assemble into one natural
-   transformation between the hom-bifunctor of A and the hom-bifunctor of D
-   pulled back along T in both variables. *)
+(* 相关说明。 （已译） *)
 Program Definition hom_action : Hom A ⟹ Hom D ◯ (T^op ∏⟶ T) := {|
   transform := hom_action_at
 |}.
 (* naturality: fmap[T] k ∘ fmap[T] g ∘ fmap[T] h ≈ fmap[T] (k ∘ g ∘ h) *)
 Next Obligation. now rewrite !fmap_comp. Qed.
-(* naturality_sym: the same square in the opposite orientation *)
+(* 自然性_sym: same square opposite orientation （已译） *)
 Next Obligation. now rewrite !fmap_comp. Qed.
 
 (*

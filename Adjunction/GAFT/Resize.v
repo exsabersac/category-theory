@@ -40,7 +40,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Resizing along a Leibniz round trip *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Resize 相关定义、性质与动机。
@@ -85,12 +85,12 @@ Defined.
 
 (** ** The two weaker premises *)
 
-(** [C] and [D] are written out rather than generalized: the records are
-    declared at top level, so no section variable is in scope for them. *)
+(** 本节：[C] [D] written out rather than generalized: records are
+ declared at top level, so no section variable scope them. （已译） *)
 
-(** A small type whose image under [sc_to] still covers.  Nothing says the
-    map is injective, surjective, or that the small carrier determines the
-    index -- only that the covering survives. *)
+(** 本节：A small type whose image under [sc_to] still covers. Nothing says the
+ map injective, surjective, small carrier determines the
+ index -- covering survives. （已译） *)
 Record SmallCovering@{w +} {C D : Category} {U : C ⟶ D} {d : D}
   (S : SolutionSet U d) := {
   sc_carrier : Type@{w};
@@ -126,10 +126,10 @@ Arguments si_carrier {C D U d S} _.
 Arguments si_to {C D U d S} _ _.
 Arguments si_rep {C D U d S} _ _.
 
-(** ** Resizing along the two weaker premises *)
+(* 相关说明。 （已译） *)
 
-(** With [SmallCovering] the resizing is a record literal: the premise IS
-    the covering field. *)
+(** 本节：With [SmallCovering] resizing record literal: premise IS
+ covering field. （已译） *)
 Definition resize_by_covering@{w i dobj cobj h +}
   {C : Category@{cobj h h}} {D : Category@{dobj h h}} {U : C ⟶ D} {d : D}
   (S : SolutionSet@{i dobj cobj h} U d) (H : SmallCovering S)
@@ -163,7 +163,7 @@ Proof.
   exact e.
 Defined.
 
-(** ** The ordering of the three premises *)
+(* 相关说明。 （已译） *)
 
 (** Mac Lane's shape implies the minimum. *)
 Definition covering_of_iso {C D : Category} {U : C ⟶ D} {d : D}

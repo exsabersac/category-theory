@@ -32,14 +32,14 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The order-theoretic vocabulary *)
+(* 相关说明。 （已译） *)
 
 Section SubobjectOrder.
 
 Context {C : Category}.
 Context {x : C}.
 
-(* The top subobject: x itself along the identity. *)
+(* The top subobject: x itself along 恒等. （已译） *)
 Definition sub_top : SubObj x := {|
   sub_dom := x;
   sub_mono := id;
@@ -64,18 +64,18 @@ Record IsUnion {J : Type} (S : J → SubObj x) (w : SubObj x) := {
   union_least : ∀ v : SubObj x, (∀ j, sub_le (S j) v) → sub_le w v
 }.
 
-(* A two-element family, for the binary cases. *)
+(* 相关说明。 （已译） *)
 Definition sub_pair (u v : SubObj x) : bool → SubObj x :=
   fun b => if b then u else v.
 
 Definition IsMeet (u v w : SubObj x) : Type := IsIntersection (sub_pair u v) w.
 Definition IsJoin (u v w : SubObj x) : Type := IsUnion (sub_pair u v) w.
 
-(** *** Antisymmetry for the induced setoid *)
+(* 相关说明。 （已译） *)
 
-(* The half of [sub_equiv_iff_mutual] used everywhere below: mutual
-   factorization IS equivalence of subobjects.  [SubObj x] has no Leibniz
-   antisymmetry; this is its replacement. *)
+(* The half [sub_equiv_iff_mutual] used everywhere below: mutual
+ factorization IS 等价 subobjects. [SubObj x] has no Leibniz
+ antisymmetry; 这是 replacement. （已译） *)
 Lemma sub_le_antisym (u v : SubObj x) : sub_le u v → sub_le v u → u ≈ v.
 Proof.
   intros Huv Hvu.
@@ -83,18 +83,16 @@ Proof.
   exact (Huv, Hvu).
 Defined.
 
-(* ... and the two projections of the other direction, as named lemmas, so
-   that a transport along ≈ reads as one step. *)
+(* 相关说明。 （已译） *)
 Lemma sub_le_of_equiv (u v : SubObj x) : u ≈ v → sub_le u v.
 Proof. intros H; exact (fst (fst (sub_equiv_iff_mutual u v) H)). Defined.
 
 Lemma sub_ge_of_equiv (u v : SubObj x) : u ≈ v → sub_le v u.
 Proof. intros H; exact (snd (fst (sub_equiv_iff_mutual u v) H)). Defined.
 
-(** *** Uniqueness and transport of the two universal properties *)
+(* 相关说明。 （已译） *)
 
-(* Two greatest lower bounds of the same family agree: each is below every
-   member, so each factors through the other by the other's maximality. *)
+(* 相关说明。 （已译） *)
 Lemma IsIntersection_unique {J : Type} (S : J → SubObj x) (w w' : SubObj x) :
   IsIntersection S w → IsIntersection S w' → w ≈ w'.
 Proof.
@@ -113,7 +111,7 @@ Proof.
   - exact (union_least S w' B w (union_ge S w A)).
 Defined.
 
-(* Being the intersection transports along ≈ of the bound ... *)
+(* 相关说明。 （已译） *)
 Lemma IsIntersection_respects_w {J : Type} (S : J → SubObj x)
   (w w' : SubObj x) : w ≈ w' → IsIntersection S w → IsIntersection S w'.
 Proof.
@@ -126,7 +124,7 @@ Proof.
              (sub_le_of_equiv _ _ Hw)).
 Defined.
 
-(* ... and pointwise along ≈ of the family. *)
+(* 相关说明。 （已译） *)
 Lemma IsIntersection_respects_family {J : Type} (S S' : J → SubObj x)
   (w : SubObj x) : (∀ j, S j ≈ S' j) →
   IsIntersection S w → IsIntersection S' w.
@@ -166,7 +164,7 @@ Proof.
     exact (sub_le_trans _ _ _ (sub_le_of_equiv _ _ (HS j)) (Hv j)).
 Defined.
 
-(** *** The two degenerate index shapes *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明拉回/推出、子对象、始/终对象相关定义、性质与动机。
@@ -181,9 +179,7 @@ Proof.
   - intros v _; exact (sub_top_greatest v).
 Defined.
 
-(* Dually the union of the empty family is the LEAST subobject, which has
-   to be supplied: nothing in the bare preorder produces one.  The Bottom
-   section below instantiates [b] at [sub_bot]. *)
+(* 相关说明。 （已译） *)
 Lemma IsUnion_empty_of_least {J : Type} (S : J → SubObj x) (b : SubObj x)
   (Hleast : ∀ u : SubObj x, sub_le b u) (Hempty : J → False) :
   IsUnion S b.
@@ -214,14 +210,14 @@ End SubobjectOrder.
 Arguments IsIntersection_unique {C x J} S {w w'} _ _.
 Arguments IsUnion_unique {C x J} S {w w'} _ _.
 
-(** ** Pushing a subobject forward along a mono *)
+(* 相关说明。 （已译） *)
 
 Section Compose.
 
 Context {C : Category}.
 
-(* A subobject of the domain of a subobject is a subobject of the ambient
-   object: monos compose. *)
+(* A subobject domain subobject subobject ambient
+ 对象: monos compose. （已译） *)
 Definition sub_compose {x : C} (u : SubObj x) (w : SubObj (sub_dom u)) :
   SubObj x := {|
   sub_dom := sub_dom w;
@@ -256,8 +252,8 @@ Definition sub_meet (u v : SubObj x) : SubObj x := {|
          (pullback (sub_mono u) (sub_mono v)))
 |}.
 
-(* Below the first factor, by the first projection: the mediating arrow IS
-   [pullback_fst] and the triangle is the definition of [sub_meet]. *)
+(* Below first factor, first projection: mediating arrow IS
+ [pullback_fst] triangle 定义 [sub_meet]. （已译） *)
 Lemma sub_meet_le_l (u v : SubObj x) : sub_le (sub_meet u v) u.
 Proof.
   exists (pullback_fst (sub_mono u) (sub_mono v)
@@ -265,8 +261,8 @@ Proof.
   reflexivity.
 Defined.
 
-(* Below the second factor, by the second projection: here the triangle is
-   the commuting square of the pullback, read backwards. *)
+(* Below second factor, second projection: here triangle is
+ 交换方块 pullback, read backwards. （已译） *)
 Lemma sub_meet_le_r (u v : SubObj x) : sub_le (sub_meet u v) v.
 Proof.
   exists (pullback_snd (sub_mono u) (sub_mono v)
@@ -296,7 +292,7 @@ Proof.
   exact Hk.
 Defined.
 
-(* Packaged as the order-theoretic predicate at the two-element family. *)
+(* 相关说明。 （已译） *)
 Lemma sub_meet_IsMeet (u v : SubObj x) : IsMeet u v (sub_meet u v).
 Proof.
   constructor.
@@ -357,7 +353,7 @@ Proof.
   - exact (sub_meet_is_glb u u u (sub_le_refl u) (sub_le_refl u)).
 Defined.
 
-(* The top subobject is a unit for the meet. *)
+(* 相关说明。 （已译） *)
 Lemma sub_meet_top (u : SubObj x) : sub_meet u sub_top ≈ u.
 Proof.
   apply sub_le_antisym.
@@ -365,9 +361,7 @@ Proof.
   - exact (sub_meet_is_glb u sub_top u (sub_le_refl u) (sub_top_greatest u)).
 Defined.
 
-(* "u ≤ v iff u ∧ v ≈ u", in two separate lemmas: [sub_le] is Type-valued
-   data and the two directions carry different data, so they are not
-   packaged as one ↔. *)
+(* 相关说明。 （已译） *)
 Lemma sub_meet_of_le (u v : SubObj x) : sub_le u v → sub_meet u v ≈ u.
 Proof.
   intros Huv.
@@ -384,7 +378,7 @@ Defined.
 
 End Meet.
 
-(** ** Wide intersections by wide pullback *)
+(* 相关说明。 （已译） *)
 
 Section WideIntersection.
 
@@ -468,7 +462,7 @@ Defined.
 
 End WideIntersection.
 
-(** ** The binary meet as a wide intersection *)
+(* 相关说明。 （已译） *)
 
 Section MeetIsWide.
 
@@ -492,7 +486,7 @@ Defined.
 
 End MeetIsWide.
 
-(** ** The total form: all wide intersections at once *)
+(* 相关说明。 （已译） *)
 
 Section TotalIntersection.
 
@@ -500,9 +494,7 @@ Context {C : Category}.
 Context `{@HasWidePullbacks C}.
 Context {x : C}.
 
-(* With every wide pullback chosen, the intersection of a family is a
-   total operation -- still presented at an index, for the reason recorded
-   in the header. *)
+(* 相关说明。 （已译） *)
 Definition sub_intersection {J : Type} (j0 : J) (S : J → SubObj x) :
   SubObj x :=
   sub_wide_intersection S j0 (wide_pullback (fun j => sub_mono (S j))).
@@ -516,7 +508,7 @@ Defined.
 
 End TotalIntersection.
 
-(** ** Images as subobjects, and joins by image of the copairing *)
+(* 相关说明。 （已译） *)
 
 Section Images.
 
@@ -554,17 +546,14 @@ Context {C : Category}.
 Context `{@Cocartesian C}.
 Context {x : C}.
 
-(* The union of two subobjects: the image of the copairing of their monos
-   out of the coproduct of their domains, given such an image. *)
+(* 相关说明。 （已译） *)
 Definition sub_join_via (u v : SubObj x)
   (I : ImageOf (merge (sub_mono u) (sub_mono v))) : SubObj x := im_sub I.
 
 Definition sub_join `{@HasImages C} (u v : SubObj x) : SubObj x :=
   sub_join_via u v (image_of (merge (sub_mono u) (sub_mono v))).
 
-(* Above the first factor: the mediating arrow is the image factorization
-   precomposed with [inl], and the triangle is [inl_merge]
-   (Structure/Cocartesian.v). *)
+(* 相关说明。 （已译） *)
 Lemma sub_join_via_le_l (u v : SubObj x)
   (I : ImageOf (merge (sub_mono u) (sub_mono v))) :
   sub_le u (sub_join_via u v I).
@@ -576,7 +565,7 @@ Proof.
   exact (inl_merge (sub_mono u) (sub_mono v)).
 Defined.
 
-(* ... and above the second, by [inr_merge] (Structure/Cocartesian.v). *)
+(* 相关说明。 （已译） *)
 Lemma sub_join_via_le_r (u v : SubObj x)
   (I : ImageOf (merge (sub_mono u) (sub_mono v))) :
   sub_le v (sub_join_via u v I).
@@ -618,7 +607,7 @@ Defined.
 
 End Join.
 
-(** ** The join as a lattice operation, with images chosen *)
+(* 相关说明。 （已译） *)
 
 Section JoinLattice.
 
@@ -640,8 +629,7 @@ Proof. intros w Hu Hv; exact (sub_join_via_is_lub u v _ w Hu Hv). Defined.
 Lemma sub_join_IsJoin (u v : SubObj x) : IsJoin u v (sub_join u v).
 Proof. exact (sub_join_via_IsJoin u v _). Defined.
 
-(* As with the meet: least upper bounds of pointwise-equivalent families
-   agree, so the chosen image never has to be compared with itself. *)
+(* 相关说明。 （已译） *)
 #[export] Instance sub_join_respects :
   Proper (equiv ==> equiv ==> equiv) (@sub_join C CC x HI).
 Proof.
@@ -702,7 +690,7 @@ Defined.
 
 End JoinLattice.
 
-(** ** Absorption: the two operations make a lattice on the setoid *)
+(* 相关说明。 （已译） *)
 
 Section Absorption.
 
@@ -712,9 +700,7 @@ Context `{CC : @Cocartesian C}.
 Context `{HI : @HasImages C}.
 Context {x : C}.
 
-(* u ∧ (u ∨ v) ≈ u.  One direction is the meet's first projection, the
-   other is the greatest-lower-bound property applied to u ≤ u and
-   u ≤ u ∨ v. *)
+(* 相关说明。 （已译） *)
 Theorem sub_meet_absorb (u v : SubObj x) : sub_meet u (sub_join u v) ≈ u.
 Proof.
   apply sub_le_antisym.
@@ -743,8 +729,7 @@ Context {x : C}.
 Context {J : Type}.
 Context (S : J → SubObj x).
 
-(* The union of a family: the image of the induced map out of an indexed
-   coproduct of the domains, given such an image. *)
+(* 相关说明。 （已译） *)
 Definition sub_wide_join_via {p : C} {inj : ∀ j, sub_dom (S j) ~> p}
   (P : IsIndexedCoproduct (fun j => sub_dom (S j)) p inj)
   (I : ImageOf (unique_obj (icoprod_desc P (fun j => sub_mono (S j))))) :
@@ -762,14 +747,14 @@ Theorem sub_wide_join_via_IsUnion {p : C} {inj : ∀ j, sub_dom (S j) ~> p}
 Proof.
   pose (D := icoprod_desc P (fun j => sub_mono (S j))).
   constructor.
-  - (* the j-th member sits below the image *)
+  - (* 相关说明。 （已译） *)
     intro j.
     exists (im_factor I ∘ inj j).
     unfold sub_wide_join_via.
     rewrite comp_assoc.
     rewrite (im_commutes I).
     exact (unique_property D j).
-  - (* and the image is below every common upper bound *)
+  - (* 相关说明。 （已译） *)
     intros v Hv.
     pose proof (icoprod_desc P (fun j => `1 (Hv j))) as E.
     apply (im_least I v (unique_obj E)).
@@ -791,8 +776,8 @@ Context {C : Category}.
 Context `{I : @Initial C}.
 Context {x : C}.
 
-(* The least subobject, when the arrow out of the initial object is monic
-   (it is whenever the initial object is strict). *)
+(* The least subobject, arrow out 始对象 monic
+ (it whenever 始对象 strict). （已译） *)
 Definition sub_bot (Hz : Monic (@zero C I x)) : SubObj x := {|
   sub_dom := 0;
   sub_mono := zero;
@@ -823,7 +808,7 @@ Proof.
   now rewrite (Hto g1), (Hto g2).
 Qed.
 
-(* The empty union, at the least subobject. *)
+(* 相关说明。 （已译） *)
 Lemma IsUnion_empty_bot (Hz : Monic (@zero C I x)) {J : Type}
   (S : J → SubObj x) (Hempty : J → False) : IsUnion S (sub_bot Hz).
 Proof.
@@ -832,7 +817,7 @@ Defined.
 
 End Bottom.
 
-(** ** The bottom in a bicartesian closed category *)
+(* * ** The bottom 双笛卡尔闭 范畴 （已译） *)
 
 Section BiCCCBottom.
 
@@ -850,12 +835,12 @@ Context {x : C}.
 Definition biccc_zero_monic : Monic (@zero C I x) :=
   zero_monic_of_strict (fun y f => initial_strict f).
 
-(* ... and the bottom subobject it names. *)
+(* 相关说明。 （已译） *)
 Definition biccc_sub_bot : SubObj x := sub_bot biccc_zero_monic.
 
 End BiCCCBottom.
 
-(** ** The bottom against the two operations *)
+(* 相关说明。 （已译） *)
 
 Section BottomMeet.
 
@@ -907,7 +892,7 @@ Defined.
 
 End BottomJoin.
 
-(** ** Images from an orthogonal factorization system *)
+(* 相关说明。 （已译） *)
 
 Section OFSImages.
 

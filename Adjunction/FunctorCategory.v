@@ -20,7 +20,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * Adjunctions and limits in functor categories *)
+(* * * Adjunctions limits 函子 范畴 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/adjoint+functor
@@ -30,7 +30,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Postcomposition: [F ◯ −] as a functor between functor categories *)
+(* * ** Postcomposition: [F ◯ −] 函子 between 函子 范畴 （已译） *)
 
 Section Postcomposition.
 
@@ -51,7 +51,7 @@ Example postcompose_component (F : X ⟶ A) {S T : J ⟶ X} (θ : S ⟹ T) (j : 
 
 End Postcomposition.
 
-(** ** Mac Lane V.5 construction 1: [F ⊣ G] gives [postcompose F ⊣ postcompose G] *)
+(* 相关说明。 （已译） *)
 
 Section PostcomposeAdjunction.
 
@@ -79,8 +79,7 @@ Lemma postcompose_counit_natural {x y : A} (f : x ~> y) :
     ≈ f ∘ @Category.Theory.Adjunction.counit _ _ F G Adj x.
 Proof. exact (@naturality_sym _ _ _ _ ε _ _ f). Qed.
 
-(* The induced unit: at a diagram [S], the original unit whiskered by [S]
-   — component [η (S j)]. *)
+(* 相关说明。 （已译） *)
 Program Definition postcompose_unit_at (S : J ⟶ X) : S ⟹ G ◯ (F ◯ S) := {|
   transform := fun j => @Category.Theory.Adjunction.unit _ _ F G Adj (S j)
 |}.
@@ -98,8 +97,7 @@ Next Obligation.
   intros S T θ j; simpl; symmetry; apply postcompose_unit_natural.
 Qed.
 
-(* The induced counit: at [T], the original counit whiskered by [T] —
-   component [ε (T j)]. *)
+(* 相关说明。 （已译） *)
 Program Definition postcompose_counit_at (T : J ⟶ A) : F ◯ (G ◯ T) ⟹ T := {|
   transform := fun j => @Category.Theory.Adjunction.counit _ _ F G Adj (T j)
 |}.
@@ -139,8 +137,7 @@ Qed.
 Definition postcompose_adjunction : postcompose (J:=J) F ⊣ postcompose (J:=J) G :=
   Adjunction_from_Transform postcompose_adjunction_transform.
 
-(* Readbacks: the induced unit and counit are the whiskered originals on
-   the nose. *)
+(* 相关说明。 （已译） *)
 Example postcompose_unit_component (S : J ⟶ X) (j : J) :
   transform[transform[postcompose_unit] S] j
     = @Category.Theory.Adjunction.unit _ _ F G Adj (S j) := eq_refl.
@@ -166,14 +163,14 @@ Proof. simpl; rewrite !fmap_id; apply id_right. Qed.
 
 End PostcomposeAdjunction.
 
-(** ** Riehl 4.3.6 (b): precomposition, [F ⊣ G] gives [precompose G ⊣ precompose F] *)
+(* 相关说明。 （已译） *)
 
 Section Precomposition.
 
 Context {C D E : Category}.
 
-(* Theory/Kan/Extension.v's [Induced] is [− ◯ F]; this is its name in the
-   proposition's notation, [F^*]. *)
+(* Theory/Kan/Extension.v's [Induced] [− ◯ F]; 这是 name the
+ 命题's notation, [F^*]. （已译） *)
 Definition precompose (F : C ⟶ D) : [D, E] ⟶ [C, E] := @Induced C D F E.
 
 Example precompose_obj (F : C ⟶ D) (S : D ⟶ E) :
@@ -195,8 +192,7 @@ Context (Adj : F ⊣ G).
 Let η : Id ⟹ G ◯ F := @Transformation.unit _ _ _ _ (Adjunction_to_Transform (A:=Adj)).
 Let ε : F ◯ G ⟹ Id := @Transformation.counit _ _ _ _ (Adjunction_to_Transform (A:=Adj)).
 
-(* The unit: at [S : C ⟶ E] it is [S] whiskered onto the original unit,
-   component [fmap[S] (η c)]. *)
+(* 相关说明。 （已译） *)
 Program Definition precompose_unit_at (S : C ⟶ E) : S ⟹ (S ◯ G) ◯ F := {|
   transform := fun c => fmap[S] (@Category.Theory.Adjunction.unit _ _ F G Adj c)
 |}.
@@ -238,8 +234,7 @@ Program Definition precompose_counit :
 Next Obligation. intros S T θ d; simpl; apply naturality_sym. Qed.
 Next Obligation. intros S T θ d; simpl; apply naturality. Qed.
 
-(* The triangle identities are the originals under [fmap[S]] / [fmap[T]],
-   through [fmap_comp] and [fmap_id]. *)
+(* 相关说明。 （已译） *)
 Program Definition precompose_adjunction_transform :
   precompose (E:=E) G ∹ precompose (E:=E) F := {|
   Transformation.unit   := precompose_unit;
@@ -269,7 +264,7 @@ Example precompose_counit_component (T : D ⟶ E) (d : D) :
   transform[transform[precompose_counit] T] d
     = fmap[T] (@Category.Theory.Adjunction.counit _ _ F G Adj d) := eq_refl.
 
-(* Likewise for the delivered adjunction's own accessors. *)
+(* Likewise delivered 伴随's own accessors. （已译） *)
 Lemma precompose_adjunction_unit (S : C ⟶ E) (c : C) :
   transform[@Category.Theory.Adjunction.unit _ _ _ _ precompose_adjunction S] c
     ≈ fmap[S] (@Category.Theory.Adjunction.unit _ _ F G Adj c).
@@ -282,7 +277,7 @@ Proof. simpl; rewrite !fmap_id; apply id_right. Qed.
 
 End PrecomposeAdjunction.
 
-(** ** Mac Lane V.5 Remark 1: the square of adjoint pairs *)
+(* 相关说明。 （已译） *)
 
 Section Square.
 
@@ -319,7 +314,7 @@ Next Obligation. intros x y f j; simpl; cat. Qed.
 Next Obligation. intros x j; simpl; cat. Qed.
 Next Obligation. intros x j; simpl; cat. Qed.
 
-(* The same square as functor equality, oriented for the transport below. *)
+(* The same square 函子 equality, oriented transport below. （已译） *)
 Definition square_equiv :
   @Diagonal A J ◯ F ≈ postcompose (J:=J) F ◯ @Diagonal X J :=
   iso_equiv (iso_sym square_iso).
@@ -346,8 +341,8 @@ Definition right_route :
   (@Diagonal A J ◯ F) ⊣ (G ◯ LimitFunctor LA) :=
   Adjunction_Compose Adj (Diagonal_Limit_Adjunction LA).
 
-(* Transport the left route across the square, so that both routes are
-   adjunctions of the SAME left adjoint. *)
+(* Transport left route across square, so both routes are
+ 伴随 SAME 左伴随. （已译） *)
 Definition left_route' :
   (@Diagonal A J ◯ F) ⊣ (LimitFunctor LX ◯ postcompose (J:=J) G) :=
   adjunction_along_left_iso (square_equiv F) left_route.

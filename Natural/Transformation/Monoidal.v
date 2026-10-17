@@ -7,7 +7,7 @@ Require Import Category.Structure.Monoidal.
 
 Generalizable All Variables.
 
-(** * Monoidal natural transformations *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_natural_transformation

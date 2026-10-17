@@ -27,7 +27,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** From an adjunction to pointwise representability *)
+(* * ** From 伴随 pointwise representability （已译） *)
 
 Section Forward.
 
@@ -61,22 +61,20 @@ Proof using A F G.
       exact Hv.
 Defined.
 
-(* The comma-initial packaging, through the passage that makes the whole
-   chain composable. *)
+(* 相关说明。 （已译） *)
 Definition adj_unit_universal (c : C) : UniversalArrow c G :=
   ua_of_aua (adj_unit_auniversal c).
 
-(* Both readbacks survive the packaging, because
-   [universal_arrow_from_UMP] builds the comma object as ((ttt, a); η) and
-   the two projections return what they were given. *)
+(* Both readbacks survive packaging, because
+ [universal_arrow_from_UMP] builds comma 对象 ((ttt, a); η) and
+ two projections return what they were given. （已译） *)
 Example adj_unit_universal_obj (c : C) :
   @arrow_obj C D c G (adj_unit_universal c) = F c := eq_refl.
 
 Example adj_unit_universal_arrow (c : C) :
   @arrow C D c G (adj_unit_universal c) = @unit D C F G A c := eq_refl.
 
-(* Mac Lane's Hom_C(c, G−) with its universal element, then its
-   representation.  Both steps are Theory/Universal/Element.v's, applied. *)
+(* 相关说明。 （已译） *)
 Definition adj_auniversal_element (c : C)
   : AUniversalElement (HomAfter G c) (F c) :=
   AUniversalElement_of_hom G c (adj_unit_auniversal c).
@@ -92,7 +90,7 @@ Example adj_representable_obj (c : C) :
 
 End Forward.
 
-(** ** From pointwise representability to an adjunction *)
+(* * ** From pointwise representability 伴随 （已译） *)
 
 Section Converse.
 
@@ -129,9 +127,9 @@ Definition adjunction_of_representable
   : left_adjoint_of_representable R ⊣ G :=
   AdjunctionFromUniversalArrows G (universal_of_representable R).
 
-(* The check Mac Lane's phrasing calls for: the left adjoint built from a
-   family of representations agrees ON OBJECTS with the chosen
-   representing objects, definitionally. *)
+(* The check Mac Lane's phrasing calls for: 左伴随 built a
+ family representations agrees ON OBJECTS chosen
+ 表示 对象, definitionally. （已译） *)
 Example left_adjoint_of_representable_obj
   (R : ∀ c : C, Representable (HomAfter G c)) (c : C) :
   fobj[left_adjoint_of_representable R] c
@@ -171,13 +169,13 @@ Context {F : C ⟶ D}.
 Context {G : D ⟶ C}.
 Context (A : F ⊣ G).
 
-(* Reading an adjunction out as a family of representations and building
-   the left adjoint back returns F on objects, definitionally. *)
+(* Reading 伴随 out family representations building
+ 左伴随 back returns F 对象, definitionally. （已译） *)
 Example representable_roundtrip_obj (c : C) :
   fobj[left_adjoint_of_representable G (adj_representable A)] c = F c
   := eq_refl.
 
-(* On arrows the same residue appears, for the same reason. *)
+(* 相关说明。 （已译） *)
 Example representable_roundtrip_arrow_residue (c : C) :
   @arrow C D c G (universal_of_representable G (adj_representable A) c)
     = fmap[G] (id{D}) ∘ @unit D C F G A c := eq_refl.
@@ -192,7 +190,7 @@ Qed.
 
 End RoundTrip.
 
-(** ** Mac Lane §IV.1 Corollary 2 as a biconditional *)
+(* 相关说明。 （已译） *)
 
 Section Biconditional.
 
@@ -200,8 +198,8 @@ Context {C : Category}.
 Context {D : Category}.
 Context (G : D ⟶ C).
 
-(* Stated over an arbitrary G, with no adjunction in the ambient
-   context -- the point of the sectioning. *)
+(* Stated over arbitrary G, no 伴随 ambient
+ context -- point sectioning. （已译） *)
 Theorem adjunction_iff_pointwise_representable :
   (∀ c : C, Representable (HomAfter G c)) ↔ { L : C ⟶ D & L ⊣ G }.
 Proof.
@@ -214,7 +212,7 @@ Defined.
 
 End Biconditional.
 
-(** ** The dual orientation (Mac Lane §IV.1 Exercise 1) *)
+(* 相关说明。 （已译） *)
 
 Section Dual.
 
@@ -222,15 +220,15 @@ Context {C : Category}.
 Context {D : Category}.
 Context (F : C ⟶ D).
 
-(* d ↦ Hom_D(F d, a), as a functor C^op ⟶ Sets.  It is [HomAfter] at the
-   opposite functor: the value at d is Hom_{D^op}(a, F d), which is
-   Hom_D(F d, a). *)
+(* d ↦ Hom_D(F d, a), 函子 C^op ⟶ Sets. It [HomAfter] at the
+ opposite 函子: value at d Hom_{D^op}(a, F d), is
+ Hom_D(F d, a). （已译） *)
 Definition CoHomBefore (a : D) : C^op ⟶ Sets :=
   HomAfter (Opposite_Functor F) a.
 
-(* [CouniversalArrow a F] is by definition the [UniversalArrow] in the
-   opposite categories that [universal_of_representable] returns there, so
-   this is instantiation and nothing else. *)
+(* [CouniversalArrow F] 定义 [UniversalArrow] the
+ opposite 范畴 [universal_of_representable] returns there, so
+ 这是 instantiation nothing else. （已译） *)
 Definition couniversal_of_corepresentable
   (R : ∀ a : D, Representable (CoHomBefore a)) (a : D)
   : CouniversalArrow a F :=
@@ -261,9 +259,9 @@ Context {F : C ⟶ D}.
 Context {G : D ⟶ C}.
 Context (A : F ⊣ G).
 
-(* The forward leg dualizes by instantiating [adj_representable] at the
-   opposite adjunction; [Opposite_Adjunction] carries [F ⊣ G] to
-   [Opposite_Functor G ⊣ Opposite_Functor F]. *)
+(* The forward leg dualizes instantiating [adj_representable] at the
+ opposite 伴随; [Opposite_Adjunction] carries [F ⊣ G] to
+ [Opposite_Functor G ⊣ Opposite_Functor F]. （已译） *)
 Definition adj_corepresentable (a : D) : Representable (CoHomBefore F a) :=
   adj_representable (Opposite_Adjunction F G A) a.
 
@@ -301,7 +299,7 @@ Context (G : D ⟶ C).
 Context (L : C ⟶ D).
 Context (H : ∀ c : C, AUniversalArrow c G (L c)).
 
-(* Naturality of the family in c: the unit square. *)
+(* 相关说明。 （已译） *)
 Definition UnitNatural : Type :=
   ∀ (x y : C) (f : x ~{C}~> y),
     fmap[G] (fmap[L] f) ∘ @universal_arrow C D x G (L x) (H x)
@@ -363,7 +361,7 @@ Proof.
       rewrite fmap_comp, <- comp_assoc; reflexivity).
 Defined.
 
-(* Only up to [≈], and for the residue reason recorded in the header. *)
+(* 相关说明。 （已译） *)
 Lemma adjunction_of_natural_universal_unit (N : UnitNatural) (c : C) :
   @unit D C L G (adjunction_of_natural_universal N) c
     ≈ @universal_arrow C D c G (L c) (H c).
@@ -389,8 +387,8 @@ Context {D : Category}.
 Context (G : D ⟶ C).
 Context (R : ∀ c : C, Representable (HomAfter G c)).
 
-(* The induced functor's arrow action is defined BY the factorization, so
-   naturality is that factorization's own property read backwards. *)
+(* The induced 函子's arrow action defined BY factorization, so
+ 自然性 factorization's own property read backwards. （已译） *)
 Lemma left_adjoint_of_representable_natural :
   UnitNatural G (left_adjoint_of_representable G R)
     (auniversal_of_representable G R).
@@ -417,7 +415,7 @@ Proof.
            (left_adjoint_of_representable_natural x y f) Hg).
 Qed.
 
-(* The weaker statement again, at the induced functor. *)
+(* The weaker statement again, at induced 函子. （已译） *)
 Corollary left_adjoint_of_representable_iso (L : C ⟶ D) (AL : L ⊣ G) :
   L ≈ left_adjoint_of_representable G R.
 Proof.

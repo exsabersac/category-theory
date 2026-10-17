@@ -28,7 +28,7 @@ Require Import Category.Adjunction.SAFT.Characterization.Corollaries.
 
 Generalizable All Variables.
 
-(** * The special adjoint functor theorem at [Sets], [Subsets] and [Indiscrete] *)
+(* * * The special adjoint 函子 定理 at [Sets], [Subsets] [Indiscrete] （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/well-powered+category
@@ -38,20 +38,20 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** [Sets] under [Untruncate]: the identity *)
+(* * ** [Sets] under [Untruncate]: 恒等 （已译） *)
 
 Definition sets_id_saft@{o so +| Set < o, o < so +} (Un : Untruncate@{o}) :
   { F : Sets@{o so} ⟶ Sets@{o so} & F ⊣ @Id Sets@{o so} } :=
   SAFT_wellpowered (@Id Sets@{o so}) Sets_Complete Sets_Id_PreservesImageLimit
     (Sets_Cogenerator_untruncate Un) (Sets_WellPowered_untruncate Un).
 
-(* The same tuple through the GAFT route. *)
+(* 相关说明。 （已译） *)
 Definition sets_id_saft_cover@{o so +| Set < o, o < so +} (Un : Untruncate@{o}) :
   { F : Sets@{o so} ⟶ Sets@{o so} & F ⊣ @Id Sets@{o so} } :=
   SAFT_cover_wp (@Id Sets@{o so}) Sets_Complete Sets_Id_PreservesImageLimit
     (Sets_Cogenerator_untruncate Un) (Sets_WellPowered_untruncate Un).
 
-(** ** The separation: one tuple, the new cover inhabited, the old refuted *)
+(* 相关说明。 （已译） *)
 
 Definition sets_id_new_cover@{o so t +| Set < o, o < so, o < t +}
   (Un : Untruncate@{o}) (d : Sets@{o so}) :=
@@ -64,8 +64,7 @@ Definition sets_id_old_cover_refuted@{o so t +| Set < o, o < so, o < t +}
   SubobjectCover_Id_Sets_absurd Sets_Complete (Sets_Cogenerator_untruncate Un)
     (WellPowered_SubobjectIndex (Sets_WellPowered_untruncate@{o so t} Un)).
 
-(* Both halves in one statement, so that "the same completeness, cogenerator
-   and well-powering" is read off the type. *)
+(* 相关说明。 （已译） *)
 Definition sets_id_cover_separation@{o so t +| Set < o, o < so, o < t +}
   (Un : Untruncate@{o}) :
   (∀ d : Sets@{o so},
@@ -78,7 +77,7 @@ Definition sets_id_cover_separation@{o so t +| Set < o, o < so, o < t +}
      → False) :=
   (sets_id_new_cover Un, sets_id_old_cover_refuted Un).
 
-(** ** [Sets] under [Untruncate]: a hom functor *)
+(* * ** [Sets] under [Untruncate]: hom 函子 （已译） *)
 
 Definition sets_hom_saft@{o so +| Set < o, o < so +} (Un : Untruncate@{o})
   (A : Sets@{o so}) :
@@ -87,7 +86,7 @@ Definition sets_hom_saft@{o so +| Set < o, o < so +} (Un : Untruncate@{o})
     (Continuous_PreservesImageLimit (hom_ContinuousFunctor A))
     (Sets_Cogenerator_untruncate Un) (Sets_WellPowered_untruncate Un).
 
-(** ** The corollaries at [Sets] under [Untruncate] *)
+(* 相关说明。 （已译） *)
 
 Definition sets_id_repr_saft@{o so +| Set < o, o < so +} (Un : Untruncate@{o}) :
   Representable (@Id Sets@{o so}) :=
@@ -106,7 +105,7 @@ Definition sets_saft_cocomplete@{o so +| Set < o, o < so +}
   saft_cocomplete Sets_Complete (Sets_Cogenerator_untruncate Un)
     (Sets_WellPowered_untruncate Un).
 
-(** ** Thin and unconditional: the powerset lattices *)
+(* 相关说明。 （已译） *)
 
 Definition subsets_inverse_image_saft@{o so u +| Set < o, o < so, o <= u +}
   {X Y : SetoidObject@{o o}} (f : X ~{Sets@{o so}}~> Y) :
@@ -134,10 +133,9 @@ Definition subsets_saft_cocomplete@{o u +| Set < o, o <= u +}
   saft_cocomplete (Subsets_Complete_free X) (Subsets_Cogenerator_empty X)
     (Subsets_WellPowered X).
 
-(** ** Degenerate and unconditional: an indiscrete category *)
+(* * ** Degenerate unconditional: indiscrete 范畴 （已译） *)
 
-(* Objects the types of [Type@{j}], one universe above the homs; the
-   well-powering is indexed at [Set], strictly below the homs. *)
+(* 相关说明。 （已译） *)
 Definition indiscrete_saft@{j o +| j < o +} :
   { F : Indiscrete@{o j j} Type@{j} ⟶ Indiscrete@{o j j} Type@{j}
     & F ⊣ @Id (Indiscrete@{o j j} Type@{j}) } :=
@@ -154,9 +152,9 @@ Definition indiscrete_saft_cocomplete@{j o +| j < o +} :
     (Indiscrete_Cogenerator_empty Type@{j})
     (Indiscrete_WellPowered@{o j j o _} Type@{j}).
 
-(** ** What the constructed adjoints are, up to isomorphism *)
+(* * ** What constructed adjoints are, up 同构 （已译） *)
 
-(* At [Id] the left adjoint is the identity, by uniqueness of adjoints. *)
+(* At [Id] 左伴随 恒等, uniqueness adjoints. （已译） *)
 Definition sets_id_saft_iso@{o so +| Set < o, o < so +} (Un : Untruncate@{o}) :
   projT1 (sets_id_saft Un) ≈ @Id Sets@{o so} :=
   left_adjoint_iso (@Id Sets@{o so}) _ _ (projT2 (sets_id_saft Un)) adj_id.

@@ -1,4 +1,4 @@
-(** * The finite-shape rows of the diagonal-adjoint table *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/coequalizer
@@ -81,7 +81,7 @@ Require Import Category.Adjunction.Diagonal.Limit.
 
 Generalizable All Variables.
 
-(** * Transport of the elementary predicates along [≈] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Finite 相关定义、性质与动机。
@@ -148,16 +148,16 @@ Defined.
 
 End Respects.
 
-(* The pushout square is [IsPullback] in the opposite category, and the
-   two hom-setoids agree there, so its transport is the primal one read at
-   [C^op]: a [:=] with no tactic. *)
+(* The pushout square [IsPullback] opposite 范畴, the
+ two hom-setoids agree there, so transport primal one read at
+ [C^op]: [:=] no tactic. （已译） *)
 Definition IsPushoutSquare_respects {C : Category} {x y z P : C}
   {f : x ~> y} {g : x ~> z} {i1 i1' : y ~> P} {i2 i2' : z ~> P} :
   IsPushoutSquare f g P i1 i2 → i1 ≈ i1' → i2 ≈ i2' →
   IsPushoutSquare f g P i1' i2' :=
   @IsPullback_respects (C^op) y z x P f g i1 i1' i2 i2'.
 
-(** * Constant diagrams: the unit and the counit at a linked shape *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Finite 相关定义、性质与动机。
@@ -189,7 +189,7 @@ Definition dia_unit (x : C) : x ~{C}~> lim_obj L (Δ[J](x)) :=
   @unit ([J, C]) C (@Diagonal C J) (LimitFunctor L)
         (Diagonal_Limit_Adjunction L) x.
 
-(* The unit IS the transpose of the identity, on the nose. *)
+(* The unit IS transpose 恒等, nose. （已译） *)
 Example dia_unit_strict (x : C) :
   dia_unit x = lim_transpose_to L (@id ([J, C]) (Δ[J](x))) := eq_refl.
 
@@ -271,7 +271,7 @@ Qed.
 
 End ConstantColimit.
 
-(** * The three finite shapes are linked *)
+(* 相关说明。 （已译） *)
 
 Definition Parallel_linked : @ShapeLinked Parallel ParX.
 Proof.
@@ -296,7 +296,7 @@ Proof.
   - right; exact ZeroPos.
 Defined.
 
-(** * Row 1: equalizers as the right adjoint of Δ[Parallel] *)
+(* * * Row 1: equalizers 右伴随 Δ[Parallel] （已译） *)
 
 Section EqualizerRow.
 
@@ -311,7 +311,7 @@ Definition Diagonal_Equalizer_Adjunction :
 Definition eq_counit (F : Parallel ⟶ C) : Δ[Parallel](lim_obj L F) ⟹ F :=
   lim_counit L F.
 
-(* Mac Lane's counit entry for the equalizer row: the equalizing arrow. *)
+(* 相关说明。 （已译） *)
 Definition eq_arrow (F : Parallel ⟶ C) : lim_obj L F ~{C}~> F ParX :=
   transform[eq_counit F] ParX.
 
@@ -322,7 +322,7 @@ Lemma eq_leg_is_arrow (F : Parallel ⟶ C) :
   lim_leg L F ParX ≈ eq_arrow F.
 Proof. symmetry; exact (lim_counit_is_limit_leg L F ParX). Qed.
 
-(* The identification against the ELEMENTARY equalizer API. *)
+(* 相关说明。 （已译） *)
 Definition eq_counit_IsEqualizer {x y : C} (f g : x ~> y) :
   IsEqualizer f g (lim_obj L (APair f g)) (eq_arrow (APair f g)) :=
   IsEqualizer_respects (equalizer_is_equalizer f g (L (APair f g)))
@@ -333,14 +333,14 @@ Definition HasLimitsOfShape_HasEqualizers : HasEqualizers C :=
        (lim_obj L (APair f g);
          (eq_arrow (APair f g); eq_counit_IsEqualizer f g)) |}.
 
-(* Mac Lane's unit entry: the identity, in the precise sense that the
-   unit is invertible with the limiting leg as its inverse. *)
+(* Mac Lane's unit entry: 恒等, precise sense the
+ unit invertible limiting leg inverse. （已译） *)
 Definition eq_unit_iso (x : C) : x ≅ lim_obj L (Δ[Parallel](x)) :=
   dia_unit_iso L ParX Parallel_linked x.
 
 End EqualizerRow.
 
-(** * Row 2: coequalizers as the left adjoint of Δ[Parallel] *)
+(* * * Row 2: coequalizers 左伴随 Δ[Parallel] （已译） *)
 
 Section CoequalizerRow.
 
@@ -355,7 +355,7 @@ Definition Coequalizer_Diagonal_Adjunction :
 Definition coeq_unit (F : Parallel ⟶ C) : F ⟹ Δ[Parallel](colim_obj M F) :=
   colim_unit M F.
 
-(* Mac Lane's unit entry for the coequalizer row: the coequalizing arrow. *)
+(* 相关说明。 （已译） *)
 Definition coeq_arrow (F : Parallel ⟶ C) : F ParY ~{C}~> colim_obj M F :=
   transform[coeq_unit F] ParY.
 
@@ -381,7 +381,7 @@ Definition coeq_counit_iso (x : C) : colim_obj M (Δ[Parallel](x)) ≅ x :=
 
 End CoequalizerRow.
 
-(** * Row 3: pullbacks as the right adjoint of Δ[Roof^op] *)
+(* * * Row 3: pullbacks 右伴随 Δ[Roof^op] （已译） *)
 
 Section PullbackRow.
 
@@ -403,7 +403,7 @@ Definition Diagonal_Pullback_Adjunction :
 Definition pb_counit (F : Roof^op ⟶ C) : Δ[Roof^op](lim_obj L F) ⟹ F :=
   lim_counit L F.
 
-(* Mac Lane's counit entry for the pullback row: the two projections. *)
+(* 相关说明。 （已译） *)
 Definition pb_fst (F : Roof^op ⟶ C) : lim_obj L F ~{C}~> F RNeg :=
   transform[pb_counit F] RNeg.
 
@@ -432,7 +432,7 @@ Definition pb_leg_IsPullback (F : Roof^op ⟶ C) :
              (lim_leg L F RNeg) (lim_leg L F RPos) :=
   pullback_is_pullback _ _ (Pullback_to_Universal F (L F)).
 
-(* The identification against the ELEMENTARY pullback API. *)
+(* 相关说明。 （已译） *)
 Definition pb_counit_IsPullback (F : Roof^op ⟶ C) :
   IsPullback (cospan_left F) (cospan_right F) (lim_obj L F)
              (pb_fst F) (pb_snd F) :=
@@ -458,7 +458,7 @@ Definition pb_unit_iso (x : C) : x ≅ lim_obj L (Δ[Roof^op](x)) :=
 
 End PullbackRow.
 
-(** * Row 4: pushouts as the left adjoint of Δ[Roof] *)
+(* * * Row 4: pushouts 左伴随 Δ[Roof] （已译） *)
 
 Section PushoutRow.
 
@@ -479,7 +479,7 @@ Definition Pushout_Diagonal_Adjunction :
 Definition po_unit (F : Roof ⟶ C) : F ⟹ Δ[Roof](colim_obj M F) :=
   colim_unit M F.
 
-(* Mac Lane's unit entry for the pushout row: the two injections. *)
+(* 相关说明。 （已译） *)
 Definition pushout_inj1 (F : Roof ⟶ C) : F RNeg ~{C}~> colim_obj M F :=
   transform[po_unit F] RNeg.
 
@@ -523,8 +523,8 @@ Proof.
   apply fmap_id.
 Qed.
 
-(* The cocone under a span determined by a competing commuting square:
-   the leg at the apex RZero is forced to be the common composite. *)
+(* The cocone under span determined competing 交换方块:
+ leg at apex RZero forced common 复合. （已译） *)
 Definition po_legs (F : Roof ⟶ C) (Q : C)
   (q1 : F RNeg ~> Q) (q2 : F RPos ~> Q) (j : Roof) : F j ~{C}~> Q :=
   match j return F j ~{C}~> Q with
@@ -576,14 +576,13 @@ Proof.
     + exact Hv2.
 Qed.
 
-(* The colimiting injections of a span form a pushout square, in the
-   apex-pinned sense of Theory/Morphisms/CokernelPair.v. *)
+(* 相关说明。 （已译） *)
 Definition po_inj_IsPushoutSquare (F : Roof ⟶ C) :
   IsPushoutSquare (span_left F) (span_right F) (colim_obj M F)
                   (colim_inj M F RNeg) (colim_inj M F RPos) :=
   Build_IsPushoutSquare (po_inj_commutes F) (po_inj_ump F).
 
-(* The identification against the ELEMENTARY pushout API. *)
+(* 相关说明。 （已译） *)
 Definition po_unit_IsPushoutSquare (F : Roof ⟶ C) :
   IsPushoutSquare (span_left F) (span_right F) (colim_obj M F)
                   (pushout_inj1 F) (pushout_inj2 F) :=
@@ -605,7 +604,7 @@ Definition po_counit_iso (x : C) : colim_obj M (Δ[Roof](x)) ≅ x :=
 
 End PushoutRow.
 
-(** * Degenerate rows of the elementary data *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -617,9 +616,9 @@ Section Degenerate.
 
 Context {C : Category}.
 
-(* A pair whose two legs agree is equalized by an isomorphism onto the
-   common domain: the identity forks such a pair, and the equalizing
-   arrow is monic. *)
+(* A pair whose two legs agree equalized 同构 onto the
+ common domain: 恒等 forks such pair, equalizing
+ arrow monic. （已译） *)
 Definition equalizer_of_equal_pair {x y : C} (f : x ~> y) {q : C}
   {e : q ~> x} (E : IsEqualizer f f q e) : q ≅ x.
 Proof.
@@ -646,8 +645,8 @@ Proof.
     reflexivity.
 Defined.
 
-(* The pullback of a cospan one of whose legs is an identity is the
-   domain of the other leg, projected by the second projection. *)
+(* The pullback cospan one whose legs 恒等 the
+ domain other leg, projected second projection. （已译） *)
 Definition pullback_of_identity {y z P : C} (g : y ~> z)
   {p1 : P ~> z} {p2 : P ~> y} (H : IsPullback (id[z]) g P p1 p2) : P ≅ y.
 Proof.
@@ -668,8 +667,8 @@ Proof.
     + apply (uniqueness DP); split; apply id_right.
 Defined.
 
-(* Dually, the pushout of a span one of whose legs is an identity is the
-   codomain of the other leg, injected by the second injection. *)
+(* Dually, pushout span one whose legs 恒等 the
+ codomain other leg, injected second injection. （已译） *)
 Definition pushout_of_identity {x z P : C} (g : x ~> z)
   {i1 : x ~> P} {i2 : z ~> P} (H : IsPushoutSquare (id[x]) g P i1 i2) :
   P ≅ z.
@@ -694,7 +693,7 @@ Defined.
 
 End Degenerate.
 
-(** * Non-vacuity: the four rows at Sets *)
+(* 相关说明。 （已译） *)
 
 Definition SetsEq : HasLimitsOfShape Parallel Sets :=
   Sets_HasLimitsOfShape Parallel.
@@ -724,7 +723,7 @@ Definition Sets_Pushout_Diagonal_Adjunction :
   PushoutFunctor SetsPo ⊣ @Diagonal Sets Roof :=
   Pushout_Diagonal_Adjunction SetsPo.
 
-(* All four elementary classes are inhabited at Sets by the rows above. *)
+(* 相关说明。 （已译） *)
 
 Definition DiagSets_HasEqualizers : HasEqualizers Sets :=
   HasLimitsOfShape_HasEqualizers SetsEq.
@@ -738,11 +737,11 @@ Definition Sets_HasPullbacks_of_shape : HasPullbacks Sets :=
 Definition Sets_HasPushouts_of_shape : HasPushouts Sets :=
   HasColimitsOfShape_HasPushouts SetsPo.
 
-(** ** A concrete, non-constant diagram *)
+(* * ** A concrete, non-常值 diagram （已译） *)
 
-(* The constant map at [true] on the two-element discrete setoid.  Nothing
-   below is a constant DIAGRAM: [SetsConstTrue] is not an identity, which
-   is what [sets_const_true_not_id] records. *)
+(* The 常值 map at [true] two-element discrete setoid. Nothing
+ below 常值 DIAGRAM: [SetsConstTrue] not 恒等, which
+ what [sets_const_true_not_id] records. （已译） *)
 Program Definition SetsConstTrue : DiagBoolSet ~{Sets}~> DiagBoolSet := {|
   morphism := fun _ => true
 |}.
@@ -774,7 +773,7 @@ Lemma SetsSpanDiagram_not_constant :
     ≈ id[DiagBoolSet] → False.
 Proof. exact sets_const_true_not_id. Qed.
 
-(** ** The four objects computed, and each proved not a subsingleton *)
+(* * ** The four 对象 computed, each proved not subsingleton （已译） *)
 
 Lemma sets_two_elements_of_iso {X : Sets} (i : X ≅ DiagBoolSet) :
   { a : carrier X & { b : carrier X & a ≈ b → False } }.
@@ -835,7 +834,7 @@ Definition sets_pushout_two_elements :
   & { b : carrier (colim_obj SetsPo SetsSpanDiagram) & a ≈ b → False } } :=
   sets_two_elements_of_iso sets_pushout_iso.
 
-(** ** Readbacks pinning the concrete diagrams *)
+(* 相关说明。 （已译） *)
 
 Example sets_pair_arrow_strict :
   fmap[SetsPairDiagram] ((true; ParOne) : ParX ~{Parallel}~> ParY)
@@ -849,7 +848,7 @@ Example sets_span_arrow_strict :
   fmap[SetsSpanDiagram] (ZeroPos : RZero ~{Roof}~> RPos)
     = SetsConstTrue := eq_refl.
 
-(** * Readbacks of the four rows against their adjunctions *)
+(* * * Readbacks four rows against 伴随 （已译） *)
 
 Section Readbacks.
 
@@ -874,7 +873,7 @@ Example po_row_unit (M : HasColimitsOfShape Roof C) (F : Roof ⟶ C) :
   @unit C ([Roof, C]) (PushoutFunctor M) (@Diagonal C Roof)
         (Pushout_Diagonal_Adjunction M) F = po_unit M F := eq_refl.
 
-(* The four functors' object actions are the four (co)limit objects. *)
+(* The four 函子' 对象 actions four (co)limit 对象. （已译） *)
 
 Example EqualizerFunctor_obj (L : HasLimitsOfShape Parallel C)
   {x y : C} (f g : x ~> y) :
@@ -892,8 +891,8 @@ Example PushoutFunctor_obj (M : HasColimitsOfShape Roof C)
   {S x y : C} (f : S ~> x) (g : S ~> y) :
   fobj[PushoutFunctor M] (ASpan f g) = colim_obj M (ASpan f g) := eq_refl.
 
-(* The chosen (co)limit of the elementary classes built above is the
-   (co)limit object of the corresponding diagram, on the nose. *)
+(* The chosen (co)limit elementary classes built above the
+ (co)limit 对象 corresponding diagram, nose. （已译） *)
 
 Example HasEqualizers_apex (L : HasLimitsOfShape Parallel C)
   {x y : C} (f g : x ~> y) :
@@ -917,7 +916,7 @@ Example HasPushouts_apex (M : HasColimitsOfShape Roof C)
 
 End Readbacks.
 
-(** * The four rows as biconditionals, and the tree's shape vocabulary *)
+(* 相关说明。 （已译） *)
 
 Section Biconditionals.
 

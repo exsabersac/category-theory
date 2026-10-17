@@ -9,7 +9,7 @@ Require Import Category.Theory.Coq.Monoid.
 
 Generalizable All Variables.
 
-(** The pair/tuple type [A * B], with its product (and writer-monad) reading *)
+(** The pair/tuple type [A * B], product (and writer-单子) reading （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/product
@@ -35,8 +35,7 @@ Definition tuple_swap_a_bc_to_ab_c {A B C} (x : A * (B * C)) : A * B * C :=
 Definition tuple_swap_ab_c_to_a_bc {A B C} (x : A * B * C) : A * (B * C) :=
   match x with ((a, b), c) => (a, (b, c)) end.
 
-(* Pairing maps building a 3-fold product from three components, associated to
-   the left ([(A * B) * C]) and to the right ([A * (B * C)]) respectively. *)
+(* 相关说明。 （已译） *)
 Definition left_triple {A B C} (x : A) (y : B) (z : C) : A * B * C :=
   ((x, y), z).
 
@@ -54,30 +53,30 @@ Definition first `(f : a -> b) `(x : a * z) : b * z :=
 Definition second `(f : a -> b) `(x : z * a) : z * b :=
   match x with (z, b) => (z, f b) end.
 
-(* [curry]/[uncurry] are the two directions of the product/exponential
-   adjunction iso [(a * b) → c  ≅  a → (b → c)], the universal property of the
-   exponential object (currying). *)
+(* [curry]/[uncurry] two directions product/exponential
+ 伴随 iso [(a * b) → c ≅ → (b → c)], 普遍性质 the
+ exponential 对象 (currying). （已译） *)
 Definition curry `(f : a -> b -> c) (x : (a * b)) : c :=
   match x with (a, b) => f a b end.
 
 Definition uncurry {X Y Z} (f : X -> Y -> Z) (xy : X * Y) : Z :=
   match xy with (x, y) => f x y end.
 
-(* [prod_map] is [fmap] for the second-argument functor [(C * −)]: it maps the
-   second component and leaves the first untouched (= [second]). *)
+(* [prod_map] [fmap] second-论元 函子 [(C * −)]: it maps the
+ second component leaves first untouched (= [second]). （已译） *)
 Definition prod_map {A B C : Type} (f : A -> B) (x : C * A) : C * B :=
   match x with (a, b) => (a, f b) end.
 
-(* [(x * −)] is a Functor (the endofunctor fixing the first component); its
-   [fmap] maps the second component via [prod_map]. *)
+(* [(x * −)] Functor (自函子 fixing first component); its
+ [fmap] maps second component via [prod_map]. （已译） *)
 #[export]
 Instance Tuple_Functor x : Functor (Tuple x) := {
   fmap := λ _ _, prod_map   (* hom map: act on the second component only *)
 }.
 
-(* The writer monad as an Applicative, available when the fixed component [x]
-   is a Monoid: [pure] seeds the empty log, [ap] runs both effects and joins
-   their logs with [⊗] (mappend). *)
+(* The writer 单子 Applicative, available fixed component [x]
+ Monoid: [pure] seeds empty log, [ap] runs both effects joins
+ logs [⊗] (mappend). （已译） *)
 #[export]
 Instance Tuple_Applicative x `{Monoid x} : Applicative (Tuple x) := {
   pure := λ _ y, (mempty, y);                         (* empty log [mempty], value [y] *)

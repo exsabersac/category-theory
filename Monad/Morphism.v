@@ -7,7 +7,7 @@ Require Import Category.Instance.Fun.
 
 Generalizable All Variables.
 
-(** * Morphisms of monads, and the category of monads on C *)
+(* * * Morphisms 单子, 范畴 单子 C （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/monad (section "The 2-category of
@@ -21,9 +21,9 @@ Generalizable All Variables.
 
 (** ** Morphisms of monads *)
 
-(* A transformation T ⟹ T' preserving the unit (Mac Lane's fη = η') and
-   the multiplication (his fμ = μ'(f □ f)), the horizontal composite
-   f □ f written in [nat_hcompose]'s form at x. *)
+(* A transformation T ⟹ T' preserving unit (Mac Lane's fη = η') and
+ multiplication (his fμ = μ'(f □ f)), horizontal 复合
+ f □ f written [nat_hcompose]'s form at x. （已译） *)
 
 Class MonadHom@{o h | } {C : Category@{o h h}} {T T' : C ⟶ C}
       (M : @Monad C T) (M' : @Monad C T') := {
@@ -38,7 +38,7 @@ Arguments mh_transform {C T T' M M'} _.
 Arguments mh_ret {C T T' M M'} _ {x}.
 Arguments mh_join {C T T' M M'} _ {x}.
 
-(* The right factor of [mh_join] is the horizontal composite θθ. *)
+(* The right factor [mh_join] horizontal 复合 θθ. （已译） *)
 
 Example mh_join_hcompose@{o h s | h < s +} {C : Category@{o h h}}
   {T T' : C ⟶ C} {M : @Monad C T} {M' : @Monad C T'}
@@ -143,8 +143,8 @@ Example mh_compose_component@{o h | +} {C : Category@{o h h}}
 
 (** ** The category of monads on C *)
 
-(* Objects are monads, arrows are morphisms of monads, and ≈ compares
-   components, as the ≈ of [C, C] does. *)
+(* Objects 单子, arrows 态射 单子, ≈ compares
+ components, ≈ [C, C] does. （已译） *)
 
 Definition Monads@{o h m1 m2 | o <= m1, h <= m1, o <= m2, h <= m2 +}
   (C : Category@{o h h}) : Category@{m1 m2 m2}.
@@ -178,7 +178,7 @@ Example Monads_equiv_is_Fun_equiv@{o h m1 m2 u |
     = @equiv _ (@homset (@Fun@{o h o h m1 m2 u} C C) (projT1 N) (projT1 N'))
         (mh_transform θ) (mh_transform φ) := eq_refl.
 
-(** ** The forgetful functor into [C, C] *)
+(* * ** The forgetful 函子 [C, C] （已译） *)
 
 Definition Monads_Forget@{o h m1 m2 u |
   h < u, o <= m1, h <= m1, o <= m2, h <= m2 +} (C : Category@{o h h}) :
@@ -203,7 +203,7 @@ Example Monads_Forget_map@{o h m1 m2 u |
   (N N' : Monads@{o h m1 m2} C) (θ : N ~{Monads@{o h m1 m2} C}~> N') :
   fmap[Monads_Forget@{o h m1 m2 u} C] θ = mh_transform θ := eq_refl.
 
-(* The composition law at a component: both sides are φ_x ∘ θ_x. *)
+(* The 复合 law at component: both sides φ_x ∘ θ_x. （已译） *)
 
 Example Monads_Forget_comp_component@{o h m1 m2 u |
   h < u, o <= m1, h <= m1, o <= m2, h <= m2 +} (C : Category@{o h h})
@@ -214,7 +214,7 @@ Example Monads_Forget_comp_component@{o h m1 m2 u |
     = transform[fmap[Monads_Forget@{o h m1 m2 u} C] φ
                 ∘ fmap[Monads_Forget@{o h m1 m2 u} C] θ] x := eq_refl.
 
-(* Faithful by conversion: the hypothesis is already the conclusion. *)
+(* Faithful conversion: 假设 already conclusion. （已译） *)
 
 Definition Monads_Forget_Faithful@{o h m1 m2 u |
   h < u, o <= m1, h <= m1, o <= m2, h <= m2 +} (C : Category@{o h h}) :

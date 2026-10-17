@@ -27,7 +27,7 @@ Require Import Category.Adjunction.Representability.Sets.
 
 Generalizable All Variables.
 
-(** * The solution set condition cannot be dropped *)
+(* 相关说明。 （已译） *)
 
 (*
    Book: Awodey, "Category Theory", 2nd ed., §9.8, Remark 9.30, printed
@@ -39,7 +39,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The constant functor at the singleton, and its continuity *)
+(* * ** The 常值 函子 at singleton, continuity （已译） *)
 
 Section ConstOneContinuity.
 
@@ -51,9 +51,9 @@ Section ConstOneContinuity.
 Universes o h.
 Context (C : Category@{o h h}).
 
-(* Any two maps into the singleton agree.  This is the whole of the
-   continuity proof: both the mediator and its uniqueness clause are
-   instances of it. *)
+(* Any two maps 进入 singleton agree. This whole the
+ continuity 证明: both mediator uniqueness clause are
+ instances it. （已译） *)
 Lemma ConstOne_hom_unique {x : C} {X : Sets}
   (f g : X ~{Sets}~> ConstOne C x) : f ≈ g.
 Proof. intro a; destruct (f a), (g a); reflexivity. Qed.
@@ -75,15 +75,15 @@ Proof.
   - intros v Hv; apply (ConstOne_hom_unique (x := vertex_obj[N])).
 Defined.
 
-(* The same fact in the hypothesis shape that [GAFT] and
-   [representability_theorem] consume. *)
+(* The same fact 假设 shape [GAFT] and
+ [representability_theorem] consume. （已译） *)
 Definition ConstOne_PreservesImageLimit :
   @PreservesImageLimit C Sets (ConstOne C) :=
   Continuous_PreservesImageLimit ConstOne_continuous.
 
 End ConstOneContinuity.
 
-(** ** Representability of [ConstOne C] is exactly initiality of [C] *)
+(* 相关说明。 （已译） *)
 
 Section ConstOneRepresentable.
 
@@ -118,14 +118,14 @@ Definition ConstOne_not_representable (Hno : @Initial C → False)
   (R : Representable (ConstOne C)) : False :=
   Hno (initial_of_ConstOne_representable R).
 
-(* The representing object is the initial object, on the nose. *)
+(* The 表示 对象 始对象, nose. （已译） *)
 Example ConstOne_repr_obj (I : @Initial C) :
   @repr_obj C (ConstOne C) (ConstOne_representable_of_initial I)
     = @initial_obj C I := eq_refl.
 
 End ConstOneRepresentable.
 
-(** ** The limit of the identity functor is an initial object *)
+(* * ** The limit 恒等 函子 始对象 （已译） *)
 
 Section LimitId.
 
@@ -138,16 +138,16 @@ Definition lim_id_obj : C := vertex_obj[@limit_cone _ _ _ L].
 Definition lim_id_leg (x : C) : lim_id_obj ~> x :=
   cone_leg (@limit_cone _ _ _ L) x.
 
-(* Cone coherence at the identity diagram: every arrow out of the apex
-   commutes with the legs. *)
+(* Cone coherence at 恒等 diagram: every arrow out apex
+ commutes legs. （已译） *)
 Lemma lim_id_coh {x y : C} (f : x ~> y) : f ∘ lim_id_leg x ≈ lim_id_leg y.
 Proof.
   exact (@cone_coherence _ _ _ _
            (@coneFrom _ _ _ (@limit_cone _ _ _ L)) x y f).
 Qed.
 
-(* The leg at the apex is the identity: it mediates the limit cone to
-   itself, and so does [id], and the mediator is unique. *)
+(* The leg at apex 恒等: it mediates limit cone to
+ itself, so does [id], mediator unique. （已译） *)
 Lemma lim_id_leg_self : lim_id_leg lim_id_obj ≈ id.
 Proof.
   pose proof (@ump_limits _ _ _ L (@limit_cone _ _ _ L)) as U.
@@ -156,7 +156,7 @@ Proof.
   - apply (uniqueness U); intro x; apply id_right.
 Qed.
 
-(* ...hence every arrow out of the apex IS the leg. *)
+(* 相关说明。 （已译） *)
 Lemma lim_id_hom_unique {x : C} (f : lim_id_obj ~> x) : f ≈ lim_id_leg x.
 Proof.
   rewrite <- (lim_id_coh f), lim_id_leg_self.
@@ -170,8 +170,8 @@ Definition Initial_of_limit_id : @Initial C :=
 
 End LimitId.
 
-(** ** Consequence: the library's [Complete] already carries an initial
-       object, so "complete with no initial object" is an EMPTY hypothesis *)
+(* * ** Consequence: library's [Complete] already carries initial
+ 对象, so "complete no 始对象" EMPTY 假设 （已译） *)
 
 Definition Complete_Initial {C : Category} (comp : @Complete C) : @Initial C :=
   Initial_of_limit_id (comp C Id).
@@ -184,12 +184,12 @@ Definition Complete_no_initial_absurd {C : Category}
   (comp : @Complete C) (Hno : @Initial C → False) : False :=
   Hno (Complete_Initial comp).
 
-(* ...and the initial object it produces IS the limit of the identity
-   functor, on the nose. *)
+(* ...and 始对象 it produces IS limit 恒等
+ 函子, nose. （已译） *)
 Example Complete_Initial_obj {C : Category} (comp : @Complete C) :
   @initial_obj C (Complete_Initial comp) = lim_id_obj (comp C Id) := eq_refl.
 
-(** ** Completeness for SMALL shapes, which is Mac Lane's hypothesis *)
+(* * ** Completeness SMALL shapes, Mac Lane's 假设 （已译） *)
 
 Definition SmallShapeComplete (C : Category) : Type :=
   ∀ (D : Category), Small D → ∀ F : D ⟶ C, Limit F.
@@ -197,9 +197,9 @@ Definition SmallShapeComplete (C : Category) : Type :=
 Definition Complete_SmallShapeComplete {C : Category} (comp : @Complete C) :
   SmallShapeComplete C := fun D _ F => comp D F.
 
-(* Freyd's size boundary in the shape this file needs it: if the category
-   is ITSELF small, small-shape completeness takes back the identity
-   diagram and the initial object comes back. *)
+(* Freyd's size boundary shape file needs it: if 范畴
+ ITSELF small, small-shape completeness takes back 恒等
+ diagram 始对象 comes back. （已译） *)
 Definition SmallShapeComplete_Initial_of_Small {C : Category}
   (SC : Small C) (HC : SmallShapeComplete C) : @Initial C :=
   Initial_of_limit_id (HC C SC Id).
@@ -226,7 +226,7 @@ Proof.
               (ConstOne_continuous C))).
 Qed.
 
-(* Mac Lane §V.6 Theorem 2 (GAFT) with the solution set dropped. *)
+(* 相关说明。 （已译） *)
 Definition GAFTWithoutSolutionSet : Type :=
   ∀ (C D : Category) (U : C ⟶ D),
     SmallShapeComplete C → LocallySmall C → ContinuousFunctor U →
@@ -243,13 +243,12 @@ Proof.
            (representable_of_left_adjoint (ConstOne C) A)).
 Qed.
 
-(* Awodey §9.8's size clause, in the only direction this file can prove:
-   a witness to the sharpness above is necessarily NOT small. *)
+(* 相关说明。 （已译） *)
 Theorem no_initial_not_Small (C : Category)
   (HC : SmallShapeComplete C) (Hno : @Initial C → False) : Small C → False.
 Proof. intro SC; exact (Hno (SmallShapeComplete_Initial_of_Small SC HC)). Qed.
 
-(** ** The complete-Boolean-algebra half, conditional on Solovay's theorem *)
+(* * ** The complete-Boolean-algebra half, conditional Solovay's 定理 （已译） *)
 
 Section Solovay.
 

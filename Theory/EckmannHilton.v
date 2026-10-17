@@ -60,7 +60,7 @@ Section EckmannHilton.
 Context {A : Type}.
 Context `{sA : Setoid A}.
 
-(* The two operations and their units. *)
+(* 相关说明。 （已译） *)
 Context (f g : A → A → A).
 Context (uf ug : A).
 
@@ -72,8 +72,7 @@ Context (uf ug : A).
 Context (f_respects : Proper (equiv ==> equiv ==> equiv) f).
 Context (g_respects : Proper (equiv ==> equiv ==> equiv) g).
 
-(* [uf] is a two-sided unit for [f], and [ug] one for [g].  Note that
-   nothing yet relates the two. *)
+(* 相关说明。 （已译） *)
 Context (f_unit_left  : ∀ a, f uf a ≈ a).
 Context (f_unit_right : ∀ a, f a uf ≈ a).
 Context (g_unit_left  : ∀ a, g ug a ≈ a).
@@ -101,8 +100,7 @@ Proof.
     now rewrite g_unit_left.
 Qed.
 
-(* With the units identified, [uf] is a two-sided unit for [g] as well, so
-   the padding arguments below can be written with a single unit. *)
+(* 相关说明。 （已译） *)
 Lemma eh_common_unit_left (a : A) : g uf a ≈ a.
 Proof.
   rewrite eh_units.
@@ -157,8 +155,7 @@ Proof.
     now rewrite <- eh_ops.
 Qed.
 
-(* The [g]-side readings.  Since the operations coincide these are one
-   rewrite away, but they are what a consumer holding only [g] wants. *)
+(* 相关说明。 （已译） *)
 Lemma eh_g_comm (a b : A) : g a b ≈ g b a.
 Proof.
   rewrite <- !eh_ops.

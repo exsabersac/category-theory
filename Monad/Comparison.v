@@ -48,8 +48,8 @@ Proof.
   cat.
 Qed.
 
-(** Naturality of the counit at an arbitrary morphism of C.  (The library's
-    [counit_comp] is the special case whose domain is an object F x.) *)
+(** Naturality counit at arbitrary 态射 C. (The library's
+ [counit_comp] special case whose domain 对象 F x.) （已译） *)
 
 Lemma adj_counit_natural {x y : C} (g : x ~> y) :
   @counit _ _ _ _ A y ∘ fmap[F] (fmap[U] g) ≈ g ∘ @counit _ _ _ _ A x.
@@ -61,8 +61,8 @@ Proof.
   cat.
 Qed.
 
-(** The monad laws for (U ◯ F, η, U ε F), as named lemmas so that the monad
-    below is a fully transparent record. *)
+(** The 单子 laws (U ◯ F, η, U ε F), named lemmas so 单子
+ below fully transparent record. （已译） *)
 
 Lemma Induced_Monad_join_fmap_join (x : D) :
   fmap[U] (@counit _ _ _ _ A (F x))
@@ -94,8 +94,8 @@ Proof.
   apply adj_counit_natural.
 Qed.
 
-(** The monad induced by the adjunction, with transparent unit and
-    multiplication: ret = η and join = U ε F. *)
+(** The 单子 induced 伴随, transparent unit and
+ multiplication: ret = η join = U ε F. （已译） *)
 
 Definition Adjunction_Induced_Monad : @Monad D (U ◯ F) :=
   @Build_Monad D (U ◯ F)
@@ -107,9 +107,9 @@ Definition Adjunction_Induced_Monad : @Monad D (U ◯ F) :=
     (fun x => @fmap_counit_unit _ _ _ _ A (F x))
     (fun x y f => Induced_Monad_join_fmap_fmap f).
 
-(** The comparison algebra on U c: the structure map is U ε_c.  Its unit law
-    is the zig-zag identity, and its action law is the U-image of the counit
-    naturality square at ε_c. *)
+(** The comparison algebra U c: structure map U ε_c. Its unit law
+ zig-zag 恒等, action law U-image counit
+ 自然性 square at ε_c. （已译） *)
 
 Lemma EM_Comparison_Algebra_id (c : C) :
   fmap[U] (@counit _ _ _ _ A c) ∘ @unit _ _ _ _ A (U c) ≈ id.
@@ -132,8 +132,8 @@ Definition EM_Comparison_Algebra (c : C) :
     (EM_Comparison_Algebra_id c)
     (EM_Comparison_Algebra_action c).
 
-(** U h intertwines the comparison algebras: the commuting square is the
-    U-image of counit naturality at h. *)
+(** U h intertwines comparison algebras: 交换方块 the
+ U-image counit 自然性 at h. （已译） *)
 
 Lemma EM_Comparison_fmap_commutes {c c' : C} (h : c ~> c') :
   fmap[U] h ∘ fmap[U] (@counit _ _ _ _ A c)
@@ -157,8 +157,8 @@ Lemma EM_Comparison_fmap_respects {c c' : C} (h h' : c ~> c') (E : h ≈ h') :
   fmap[U] h ≈ fmap[U] h'.
 Proof. now rewrite E. Qed.
 
-(** The comparison functor K : C ⟶ D^T.  Its functor laws are those of U,
-    since morphisms of D^T are compared on their underlying arrows. *)
+(** The comparison 函子 K : C ⟶ D^T. Its 函子 laws those U,
+ since 态射 D^T compared underlying arrows. （已译） *)
 
 Definition EM_Comparison :
   C ⟶ @EilenbergMoore D (U ◯ F) Adjunction_Induced_Monad :=

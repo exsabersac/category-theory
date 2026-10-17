@@ -43,7 +43,7 @@ Lemma mid_swap_inv_swap_inner (x y : C) :
   mid_swap_inv x y ≈ swap_inner x x y y.
 Proof. reflexivity. Qed.
 
-(** *** The comonoid laws of the canonical tensor morphisms *)
+(* * *** The comonoid laws canonical tensor 态射 （已译） *)
 
 Theorem canonical_tensor_delta_coassoc {X Y : C}
         (CX : Comonoid X) (CY : Comonoid Y) :
@@ -55,8 +55,8 @@ Theorem canonical_tensor_delta_coassoc {X Y : C}
 Proof.
   unfold canonical_tensor_delta.
   rewrite !mid_swap_inv_swap_inner.
-  (* Push the doubled comultiplication through the interchange on each
-     side (four-slot naturality), leaving the component redexes. *)
+  (* Push doubled comultiplication through interchange each
+ side (four-slot 自然性), leaving component redexes. （已译） *)
   assert (L : bimap (swap_inner X X Y Y
                        ∘ bimap (@delta _ _ _ CX) (@delta _ _ _ CY))
                     id[(X ⨂ Y)%object]
@@ -103,7 +103,7 @@ Proof.
   rewrite (@delta_coassoc C _ Y CY).
   rewrite !bimap_comp.
   rewrite <- !comp_assoc.
-  (* Peel the shared tail; the residual is the inverted hexagon. *)
+  (* 相关说明。 （已译） *)
   rewrite !comp_assoc.
   comp_right.
   comp_right.
@@ -121,8 +121,7 @@ Proof.
   rewrite mid_swap_inv_swap_inner.
   rewrite bimap_comp_id_right.
   rewrite <- !comp_assoc.
-  (* Push the doubled counit through the interchange, then use the
-     component counit laws. *)
+  (* 相关说明。 （已译） *)
   assert (T : bimap (bimap (@epsilon _ _ _ CX) (@epsilon _ _ _ CY))
                     id[(X ⨂ Y)%object]
                 ∘ (swap_inner X X Y Y
@@ -187,7 +186,7 @@ Definition Comonoid_Tensor {X Y : C} (CX : Comonoid X) (CY : Comonoid Y) :
     (canonical_tensor_delta_counit_left CX CY)
     (canonical_tensor_delta_counit_right CX CY).
 
-(* The projections compute to the canonical morphisms on the nose. *)
+(* The projections compute canonical 态射 nose. （已译） *)
 Lemma Comonoid_Tensor_delta {X Y : C} (CX : Comonoid X) (CY : Comonoid Y) :
   @delta _ _ _ (Comonoid_Tensor CX CY) ≈ canonical_tensor_delta CX CY.
 Proof. reflexivity. Qed.
@@ -196,7 +195,7 @@ Lemma Comonoid_Tensor_epsilon {X Y : C} (CX : Comonoid X) (CY : Comonoid Y) :
   @epsilon _ _ _ (Comonoid_Tensor CX CY) ≈ canonical_tensor_epsilon CX CY.
 Proof. reflexivity. Qed.
 
-(** *** Cocommutativity of the tensor comonoid *)
+(* 相关说明。 （已译） *)
 
 Theorem canonical_tensor_delta_cocomm {X Y : C}
         (CX : CommutativeComonoid X) (CY : CommutativeComonoid Y) :
@@ -204,7 +203,7 @@ Theorem canonical_tensor_delta_cocomm {X Y : C}
 Proof.
   unfold canonical_tensor_delta.
   rewrite !mid_swap_inv_swap_inner.
-  (* The braid slides across the interchange onto the components. *)
+  (* 相关说明。 （已译） *)
   assert (BW : @braid C _ (X ⨂ Y)%object (X ⨂ Y)%object
                  ∘ swap_inner X X Y Y
                ≈ swap_inner X X Y Y

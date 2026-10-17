@@ -1,4 +1,4 @@
-(** * ETAC: the elementary language of an abstract category, and duality *)
+(* * * ETAC: elementary language abstract 范畴, duality （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -18,10 +18,9 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Arrow bundles and endpoint casts *)
+(* 相关说明。 （已译） *)
 
-(* An arrow together with its endpoints: the semantic domain of the
-   language's arrow variables. *)
+(* 相关说明。 （已译） *)
 Definition Arr (C : Category) : Type :=
   { p : obj[C] * obj[C] & fst p ~> snd p }.
 
@@ -39,8 +38,8 @@ Lemma acast_refl {C : Category} {x y : obj[C]} (f : x ~> y) :
   acast eq_refl eq_refl f = f.
 Proof. reflexivity. Qed.
 
-(* Casting in the opposite category is casting with the endpoint
-   equalities exchanged (design note 3). *)
+(* Casting opposite 范畴 casting endpoint
+ equalities exchanged (design note 3). （已译） *)
 Lemma acast_op {C : Category} {x y x' y' : obj[C]}
   (ex : x = x') (ey : y = y') (f : y ~> x) :
   @acast (C^op) x y x' y' ex ey f = @acast C y x y' x' ey ex f.
@@ -69,8 +68,7 @@ Lemma acast_middle {C : Category} {x y y' z : obj[C]}
   f ∘ acast eq_refl e g ≈ acast (eq_sym e) eq_refl f ∘ g.
 Proof. destruct e; simpl; reflexivity. Qed.
 
-(* The endpoint swap: an arrow of C, read as an arrow of C^op.  The
-   underlying arrow is untouched. *)
+(* 相关说明。 （已译） *)
 Definition op_arr {C : Category} (f : Arr C) : Arr (C^op) :=
   ((arr_cod f, arr_dom f); arr_map f).
 
@@ -267,9 +265,7 @@ Definition ocons (x : obj[C]) (ρ : nat → obj[C]) : nat → obj[C] :=
 Definition acons (s : Arr C) (σ : nat → Arr C) : nat → Arr C :=
   fun n => match n with O => s | S k => σ k end.
 
-(* Satisfaction of an atom.  Object comparisons are Leibniz; the three
-   arrow equations are ≈ under endpoint casts carried as data (design
-   note 1). *)
+(* 相关说明。 （已译） *)
 Definition holds_atom (ρ : nat → obj[C]) (σ : nat → Arr C)
   (t : atom) : Type :=
   match t with
@@ -367,8 +363,7 @@ Fixpoint closed_below (ko ka : nat) (p : formula) : Prop :=
 
 Definition sentence (p : formula) : Prop := closed_below 0 0 p.
 
-(* Satisfaction of a formula closed below the bounds depends only on the
-   environments below them. *)
+(* 相关说明。 （已译） *)
 Lemma holds_agree {C : Category} (p : formula) :
   ∀ (ko ka : nat) (ρ ρ' : nat → obj[C]) (σ σ' : nat → Arr C),
   closed_below ko ka p →
@@ -440,9 +435,9 @@ Qed.
 
 (** ** The syntactic dual *)
 
-(* Interchange domain with codomain, reverse composites (Mac Lane
-   §II.1's table); identity, equality, and the propositional structure
-   are self-dual. *)
+(* Interchange domain codomain, reverse composites (Mac Lane
+ §II.1's table); 恒等, equality, propositional structure
+ self-dual. （已译） *)
 Definition dual_atom (t : atom) : atom :=
   match t with
   | ADom f a => ACod f a
@@ -468,7 +463,7 @@ Fixpoint dual (p : formula) : formula :=
   | FExArr p => FExArr (dual p)
   end.
 
-(* Dualizing twice is the identity, on the nose. *)
+(* Dualizing twice 恒等, nose. （已译） *)
 Lemma dual_atom_invol (t : atom) : dual_atom (dual_atom t) = t.
 Proof. destruct t; reflexivity. Qed.
 
@@ -479,7 +474,7 @@ Proof.
   try rewrite dual_atom_invol; reflexivity.
 Qed.
 
-(** ** The semantic duality lemma (Mac Lane §II.2) *)
+(* * ** The semantic duality 引理 (Mac Lane §II.2) （已译） *)
 
 (* Transport an arrow environment to the opposite category. *)
 Definition op_env {C : Category} (σ : nat → Arr C) : nat → Arr (C^op) :=
@@ -551,37 +546,36 @@ Proof.
       * reflexivity.
 Qed.
 
-(* The lemma in its stated form: C satisfies the dual of Σ under an
-   assignment iff C^op satisfies Σ under the transported assignment. *)
+(* The 引理 stated form: C satisfies dual Σ under an
+ assignment iff C^op satisfies Σ under transported assignment. （已译） *)
 Definition holds_dual {C : Category} (p : formula)
   (ρ : nat → obj[C]) (σ : nat → Arr C) :
   holds ρ σ (dual p) ↔ @holds (C^op) ρ (op_env σ) p :=
   (holds_dual_to p ρ σ, holds_dual_from p ρ σ).
 
-(** ** The duality principle (Mac Lane §II.1, Awodey §3.1) *)
+(* 相关说明。 （已译） *)
 
 (* A formula valid in every category under every assignment. *)
 Definition valid (p : formula) : Type :=
   ∀ (C : Category) (ρ : nat → obj[C]) (σ : nat → Arr C), holds ρ σ p.
 
-(* If Σ holds in every category, so does its dual: instantiate the
-   hypothesis at C^op and transport back — no double-op unwinding
-   needed (design note 3). *)
+(* If Σ holds every 范畴, so does dual: instantiate the
+ 假设 at C^op transport back — no double-op unwinding
+ needed (design note 3). （已译） *)
 Theorem duality_principle (p : formula) : valid p → valid (dual p).
 Proof.
   intros V C ρ σ.
   exact (holds_dual_from p ρ σ (V (Opposite C) ρ (op_env σ))).
 Qed.
 
-(* The principle self-composes: applying it twice returns to the
-   original statement, by the syntactic involution. *)
+(* 相关说明。 （已译） *)
 Corollary duality_principle_invol (p : formula) :
   valid p → valid (dual (dual p)).
 Proof.
   intro V; rewrite dual_invol; exact V.
 Qed.
 
-(** ** The one-functor case (maclane:II.1:remark2, scoped) *)
+(* * ** The one-函子 case (maclane:II.1:remark2, scoped) （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。

@@ -5,7 +5,7 @@ Require Import Category.Theory.DoubleCategory.
 
 Generalizable All Variables.
 
-(** * Companions and conjoints in a double category *)
+(* * * Companions conjoints double 范畴 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/companion+pair
@@ -20,9 +20,13 @@ Lemma triple_id {C : Category} {x : C} : id[x] ∘ (id ∘ id) ≈ id.
 Proof. cat. Qed.
 
 (*
-   本节说明 Companion 相关定义、性质与动机。
+   （本文件文首说明见 nLab/Wikipedia 链接。）** 边界强制对纵向 请问
 
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+独 Shortly性论证也对一个因素的 我们现在本国境内的边界
+全套纵向 请问是哪还是  319n ?全套法律 请问:
+[日
+
+   （英文长注释已压缩为中文导言；Coq 标识符未改。）
 *)
 
 Class DoubleCoerceComp (D : DoubleCategory) : Type := {
@@ -53,8 +57,7 @@ Section CompanionTranspose.
 
 Context {a b : dcat} (u : a ~> b) (h : dhor a b).
 
-(* Transpose a square with left edge [u] into a globular square into [h]:
-   paste the unit on its left and normalise by the unitors. *)
+(* 相关说明。 （已译） *)
 Definition companion_name (eta : dsq (dhid a) id u h)
   {h' : dhor a b} (e : dsq h' u id (dhid b)) : dsq h' id id h :=
   dsq_coerce triple_id triple_id
@@ -62,8 +65,7 @@ Definition companion_name (eta : dsq (dhid a) id u h)
        (dsq_vcomp (dunit_right_from h') (dsq_hcomp eta e))
        (dunit_left_to h)).
 
-(* Transpose a globular square into [h] back into a square with left edge
-   [u]: paste the counit underneath. *)
+(* 相关说明。 （已译） *)
 Definition companion_eval (eps : dsq h u id (dhid b))
   {h' : dhor a b} (g : dsq h' id id h) : dsq h' u id (dhid b) :=
   dsq_coerce (id_right u) (id_left id) (dsq_vcomp g eps).
@@ -95,15 +97,14 @@ Record Companion {a b : dcat} (u : a ~> b) : Type := {
   comp_unit : dsq (dhid a) id u comp_hor;
   comp_counit : dsq comp_hor u id (dhid b);
 
-  (* Horizontal zigzag: [η] beside [ε] is the composite of the unitors of
-     the companion 1-cell (pasted side coerced onto plain side). *)
+  (* Horizontal zigzag: [η] beside [ε] 复合 unitors of
+ companion 1-cell (pasted side coerced onto plain side). （已译） *)
   comp_zig :
     dsq_coerce (id_left id) (id_left id)
       (dsq_vcomp (dunit_right_to comp_hor) (dunit_left_from comp_hor))
     ≈ dsq_hcomp comp_unit comp_counit;
 
-  (* Vertical zigzag, in representability form: the two transposes are
-     mutually inverse. *)
+  (* 相关说明。 （已译） *)
   comp_zag_eval : ∀ (h' : dhor a b) (e : dsq h' u id (dhid b)),
     companion_eval u comp_hor comp_counit
       (companion_name u comp_hor comp_unit e) ≈ e;
@@ -135,11 +136,11 @@ Definition companion_compare (P Q : Companion u) :
   dsq (comp_hor P) id id (comp_hor Q) :=
   companion_name u (comp_hor Q) (comp_unit Q) (comp_counit P).
 
-(*
-   本节说明 Companion 相关定义、性质与动机。
-
-   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
-*)
+(* The round trip [P → Q → P] vertical 恒等 square. Proof:
+ both sides fixed transposition bijection [P], under
+ [companion_eval P] 复合 evaluates — one binding 恒等 per
+ companion — back [P]'s counit, evaluation the
+ 恒等 square. （已译） *)
 Lemma companion_compare_zigzag (P Q : Companion u) :
   dsq_coerce (id_left id) (id_left id)
     (dsq_vcomp (companion_compare P Q) (companion_compare Q P))
@@ -168,14 +169,14 @@ Proof using CC D a b u.
           (dsq_vid (comp_hor P)))).
   2: { apply comp_zag_name. }
   apply companion_name_proper.
-  (* The identity square evaluates to the counit. *)
+  (* The 恒等 square evaluates counit. （已译） *)
   transitivity (comp_counit P).
   2: {
     symmetry; unfold companion_eval.
     apply dsq_vid_right_any.
   }
   unfold companion_eval.
-  (* Slide the boundary coercion of the composite out to the left. *)
+  (* Slide boundary coercion 复合 out left. （已译） *)
   rewrite (dsq_coerce_vcomp_l (id_left id) (id_left id) E1 E2 _
              (comp_counit P)).
   rewrite (dsq_coerce_trans_any E1 (id_right u) F1 E2 (id_left id) F2).
@@ -183,10 +184,10 @@ Proof using CC D a b u.
   rewrite <- (dsq_coerce_trans_any A1 H1 F1 A2 H2 F2).
   rewrite (dsq_vassoc_any A1 A2 (companion_compare P Q)
              (companion_compare Q P) (comp_counit P)).
-  (* The lower pair is [companion_eval P] of the comparison [Q → P]. *)
+  (* 相关说明。 （已译） *)
   rewrite (fst (dsq_coerce_flip (id_right u) (id_left id) _ _)
              (comp_zag_eval P _ (comp_counit Q))).
-  (* Slide the residual coercion out to the right and collapse. *)
+  (* 相关说明。 （已译） *)
   rewrite (dsq_coerce_vcomp_r (symmetry (id_right u))
              (symmetry (id_left id)) B1 B2 (companion_compare P Q)
              (comp_counit Q)).
@@ -221,8 +222,7 @@ Section ConjointTranspose.
 
 Context {a b : dcat} (u : a ~> b) (h : dhor b a).
 
-(* Transpose a square with right edge [u] into a globular square into [h]:
-   paste the unit on its right and normalise by the unitors. *)
+(* 相关说明。 （已译） *)
 Definition conjoint_name (eta : dsq (dhid a) u id h)
   {h' : dhor b a} (e : dsq h' id u (dhid b)) : dsq h' id id h :=
   dsq_coerce triple_id triple_id
@@ -230,8 +230,7 @@ Definition conjoint_name (eta : dsq (dhid a) u id h)
        (dsq_vcomp (dunit_left_from h') (dsq_hcomp e eta))
        (dunit_right_to h)).
 
-(* Transpose a globular square into [h] back into a square with right edge
-   [u]: paste the counit underneath. *)
+(* 相关说明。 （已译） *)
 Definition conjoint_eval (eps : dsq h id u (dhid b))
   {h' : dhor b a} (g : dsq h' id id h) : dsq h' id u (dhid b) :=
   dsq_coerce (id_left id) (id_right u) (dsq_vcomp g eps).
@@ -261,8 +260,8 @@ Record Conjoint {a b : dcat} (u : a ~> b) : Type := {
   conj_unit : dsq (dhid a) u id conj_hor;
   conj_counit : dsq conj_hor id u (dhid b);
 
-  (* Horizontal zigzag: [ε] beside [η] is the composite of the unitors of
-     the conjoint 1-cell. *)
+  (* Horizontal zigzag: [ε] beside [η] 复合 unitors of
+ conjoint 1-cell. （已译） *)
   conj_zig :
     dsq_coerce (id_left id) (id_left id)
       (dsq_vcomp (dunit_left_to conj_hor) (dunit_right_from conj_hor))
@@ -327,14 +326,14 @@ Proof using CC D a b u.
           (dsq_vid (conj_hor P)))).
   2: { apply conj_zag_name. }
   apply conjoint_name_proper.
-  (* The identity square evaluates to the counit. *)
+  (* The 恒等 square evaluates counit. （已译） *)
   transitivity (conj_counit P).
   2: {
     symmetry; unfold conjoint_eval.
     apply dsq_vid_right_any.
   }
   unfold conjoint_eval.
-  (* Slide the boundary coercion of the composite out to the left. *)
+  (* Slide boundary coercion 复合 out left. （已译） *)
   rewrite (dsq_coerce_vcomp_l (id_left id) (id_left id) E1 E2 _
              (conj_counit P)).
   rewrite (dsq_coerce_trans_any E1 (id_left id) F1 E2 (id_right u) F2).
@@ -342,10 +341,10 @@ Proof using CC D a b u.
   rewrite <- (dsq_coerce_trans_any A1 H1 F1 A2 H2 F2).
   rewrite (dsq_vassoc_any A1 A2 (conjoint_compare P Q)
              (conjoint_compare Q P) (conj_counit P)).
-  (* The lower pair is [conjoint_eval P] of the comparison [Q → P]. *)
+  (* 相关说明。 （已译） *)
   rewrite (fst (dsq_coerce_flip (id_left id) (id_right u) _ _)
              (conj_zag_eval P _ (conj_counit Q))).
-  (* Slide the residual coercion out to the right and collapse. *)
+  (* 相关说明。 （已译） *)
   rewrite (dsq_coerce_vcomp_r (symmetry (id_left id))
              (symmetry (id_right u)) B1 B2 (conjoint_compare P Q)
              (conj_counit Q)).

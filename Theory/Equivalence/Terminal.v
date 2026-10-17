@@ -30,8 +30,8 @@ Proof.
   apply (@one_unique C T).
 Qed.
 
-(* Existence: cross the counit backwards into the image of the
-   quasi-inverse, then apply F to the unique arrow G d ~> 1. *)
+(* Existence: cross counit backwards 进入 image the
+ quasi-inverse, then apply F 唯一箭头 G d ~> 1. （已译） *)
 Definition terminal_transport_arrow {C D : Category} {F : C ⟶ D}
   (E : @EquivalenceOfCategories C D F) (T : @Terminal C) (d : D) :
   d ~{D}~> F (@terminal_obj C T) :=
@@ -76,7 +76,7 @@ Definition Initial_transport {C D : Category} {F : C ⟶ D}
     (fun d => initial_transport_arrow E I0 d)
     (fun d f g => initial_transport_unique E I0 d f g).
 
-(* The transported structures choose the image of the original, on the nose. *)
+(* 相关说明。 （已译） *)
 Corollary Terminal_transport_obj {C D : Category} {F : C ⟶ D}
   (E : @EquivalenceOfCategories C D F) (T : @Terminal C) :
   @terminal_obj D (Terminal_transport E T) = F (@terminal_obj C T).

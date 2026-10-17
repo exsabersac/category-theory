@@ -9,7 +9,7 @@ Require Import Category.Instance.Fun.
 
 Generalizable All Variables.
 
-(** * Monads are monoids in the category of endofunctors *)
+(* * * Monads monoids 范畴 endofunctors （已译） *)
 
 (* nLab:      https://ncatlab.org/nlab/show/monad
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)

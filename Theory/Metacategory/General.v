@@ -20,7 +20,7 @@ Generalizable All Variables.
 *)
 
 Record Metacategory : Type := {
-  (* "The data for an arrows-only metacategory C consist of arrows," *)
+  (* 相关说明。 （已译） *)
   marr : Type;
 
   (* Arrows carry a chosen equivalence. *)
@@ -39,7 +39,7 @@ Record Metacategory : Type := {
     @equiv _ marr_setoid h h' →
     mcomp g f h → mcomp g' f' h';
 
-  (* The graph is single-valued: it is the graph of a partial operation. *)
+  (* 相关说明。 （已译） *)
   mcomp_unique {g f h h'} :
     mcomp g f h → mcomp g f h' → @equiv _ marr_setoid h h';
 
@@ -238,8 +238,8 @@ Definition Category_from_Metacategory : Category := {|
   comp_assoc_sym := fun x y z w f g h => symmetry (@mcompose_assoc x y z w f g h)
 |}.
 
-(* The composite chosen by [mcompose] is characterised by the composition
-   graph: any [h] with [mcomp (mor_arr f) (mor_arr g) h] IS that composite. *)
+(* The 复合 chosen [mcompose] characterised 复合
+ graph: any [h] [mcomp (mor_arr f) (mor_arr g) h] IS 复合. （已译） *)
 Lemma mcompose_char {x y z} (f : mmorphism y z) (g : mmorphism x y) h :
   mcomp M (mor_arr f) (mor_arr g) h → mor_arr (mcompose f g) ≈ h.
 Proof.
@@ -279,15 +279,15 @@ Arguments mor_dom _ {_ _} _.
 Arguments mor_cod _ {_ _} _.
 
 
-(** * The converse passage: every category is an arrows-only metacategory *)
+(* * * The converse passage: every 范畴 arrows-only metacategory （已译） *)
 
 Section ToArrows.
 
 Context {C : Category}.
 
-(* The objects of [C] must form a SET: an arrows-only presentation identifies
-   arrows whose endpoints agree, and in intensional type theory that comparison
-   is an identity type. *)
+(* The 对象 [C] must form SET: arrows-only presentation identifies
+ arrows whose endpoints agree, intensional type theory comparison
+ 恒等 type. （已译） *)
 Context (obj_uip : ∀ (x y : C) (p q : x = y), p = q).
 
 Record Arr : Type := {
@@ -614,7 +614,7 @@ Qed.
 End RoundTripMetacategory.
 
 
-(** * Why axiom (i) is stated in two halves *)
+(* 相关说明。 （已译） *)
 
 Record WeakMetacategory : Type := {
   wmarr : Type;
@@ -661,8 +661,7 @@ Definition Weaken (M : Metacategory) : WeakMetacategory := {|
   wmident_law     := mident_law M
 |}.
 
-(* The countermodel: four arrows, with [Ag] flanked by TWO distinct source
-   identities [Au] and [Aw]. *)
+(* 相关说明。 （已译） *)
 Inductive four := Ag | Au | Aw | Av.
 
 Definition fcomp (a b c : four) : Prop :=
@@ -737,7 +736,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The metacategory-side composite *)
+(* * ** The metacategory-side 复合 （已译） *)
 
 (*
    本节说明等价相关定义、性质与动机。

@@ -24,9 +24,7 @@ Section SubFunctor.
 Context {C : Category}.
 Context `{@HasPullbacks C}.
 
-(* Reindex a subobject of x along f : y ~> x, via the chosen pullback.  The
-   reindexed mono is the projection opposite sub_mono u, monic because monos
-   are stable under pullback. *)
+(* 相关说明。 （已译） *)
 Definition sub_reindex {x y : C} (f : y ~> x) (u : SubObj x) : SubObj y := {|
   sub_dom  := Pull f (sub_mono u) (pullback f (sub_mono u));
   sub_mono := pullback_fst f (sub_mono u) (pullback f (sub_mono u));
@@ -68,7 +66,7 @@ Proof.
     rewrite (comp_assoc (to i)).
     rewrite iso_to_from; cat.
   - intros Q q1 q2 Hq.
-    (* transport the cone across i and mediate into the chosen pullback *)
+    (* transport cone across i mediate 进入 chosen pullback （已译） *)
     assert (Hq' : f ∘ q1 ≈ sub_mono v ∘ (to i ∘ q2)).
     { rewrite Hq, <- Hi.
       now rewrite comp_assoc. }
@@ -118,8 +116,7 @@ Proof.
   apply pullback_is_pullback.
 Qed.
 
-(* The square with id on top and bottom and m on both sides is a pullback:
-   the mediator for a cone (q1, q2) is q2 itself. *)
+(* 相关说明。 （已译） *)
 Lemma is_pullback_along_id {x y : C} (m : y ~> x) :
   IsPullback id m y m id.
 Proof.
@@ -135,16 +132,16 @@ Proof.
       now rewrite <- Hw2; cat.
 Qed.
 
-(* Reindexing along the identity is the identity on subobjects. *)
+(* Reindexing along 恒等 恒等 subobjects. （已译） *)
 Lemma sub_reindex_id {x : C} (u : SubObj x) : sub_reindex id u ≈ u.
 Proof.
   apply (sub_reindex_transport id u u id).
   apply is_pullback_along_id.
 Qed.
 
-(* Reindexing along a composite g ∘ f is reindexing along g and then along
-   f: pasting the two chosen squares exhibits the double pullback as one
-   pullback square for the composite. *)
+(* Reindexing along 复合 g ∘ f reindexing along g then along
+ f: pasting two chosen squares exhibits double pullback one
+ pullback square 复合. （已译） *)
 Lemma sub_reindex_comp {x y z : C} (g : y ~> x) (f : z ~> y)
       (u : SubObj x) :
   sub_reindex (g ∘ f) u ≈ sub_reindex f (sub_reindex g u).

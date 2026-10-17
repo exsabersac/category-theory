@@ -13,7 +13,7 @@ Require Import Category.Construction.Opposite.
 
 Generalizable All Variables.
 
-(** * Freyd's initial-object construction, through the wide-equalizer API *)
+(* * * Freyd's initial-对象 construction, through wide-equalizer API （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
@@ -71,10 +71,9 @@ Proof.
     exact (wmap x ∘ e).
   - (* uniqueness: any two [f g : I ~> x] agree *)
     intros x f g.
-    (* read the goal in [C]: [f], [g] are [C]-morphisms [I ~> x] *)
+    (* read goal [C]: [f], [g] [C]-态射 [I ~> x] （已译） *)
     change (unop f ≈ unop g).
-    (* the wide equalizer of the two-element family {f, g}; no separate
-       binary-equalizer supply is needed *)
+    (* 相关说明。 （已译） *)
     destruct (@wide_equalizer C E bool I x
                 (fun b : bool => if b then unop f else unop g))
       as [K [k Ek]].
@@ -98,7 +97,7 @@ Proof.
     { transitivity ((k ∘ s) ∘ e).
       - apply comp_assoc.
       - exact Hk. }
-    (* [k] equalizes [f] and [g] and is (split) epic, so [f ≈ g] *)
+    (* 相关说明。 （已译） *)
     transitivity (unop f ∘ (k ∘ (s ∘ e))).
     + transitivity (unop f ∘ id[I]).
       * symmetry; apply id_right.

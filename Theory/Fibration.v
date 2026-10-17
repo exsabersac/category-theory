@@ -50,7 +50,7 @@ Generalizable All Variables.
    在 [f : x ~{C^op}~> y] 上从 [dx] 到 [dy] 的展示态射是在 [C] 底层箭头上从 [dy] 到 [dx]
    的展示态射——[D] 的余劈开是 op-展示范畴的劈开（[OpCleaving]）。 *)
 
-(** ** Cartesian morphisms and cleavings, displayed presentation *)
+(* * ** Cartesian 态射 cleavings, displayed presentation （已译） *)
 
 (* [ff] is cartesian over its base morphism [f] when every displayed
    morphism over a composite [f ∘ g] factors through [ff] by a unique
@@ -62,15 +62,15 @@ Class DCartesian {C : Category} {D : Displayed C} {x y : C} {f : x ~> y}
     ∃! gg : dhom dz dx g, dcomp ff gg ≈ hh
 }.
 
-(* A cleaving: chosen cartesian lifts.  Given [f : x ~> y] and [dy] over
-   the codomain, it selects an object over [x] together with a cartesian
-   morphism over [f] into [dy]. *)
+(* A cleaving: chosen cartesian lifts. Given [f : x ~> y] [dy] over
+ codomain, it selects 对象 over [x] together cartesian
+ 态射 over [f] [dy]. （已译） *)
 Class Cleaving {C : Category} (D : Displayed C) := {
   clift {x y : C} (f : x ~> y) (dy : dobj y) :
     { dx : dobj x & { ff : dhom dx dy f & DCartesian ff } }
 }.
 
-(** ** Cartesian morphisms and cloven fibrations, functor presentation *)
+(* * ** Cartesian 态射 cloven fibrations, 函子 presentation （已译） *)
 
 (*
    本节说明 Fibration 相关定义、性质与动机。
@@ -131,7 +131,7 @@ Class SplitCleaving {C E : Category} (P : E ⟶ C)
             ∘ to (iso_of_eq q) }
 }.
 
-(** ** Bridge: a cleaving makes the total projection a cloven fibration *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、笛卡尔相关定义、性质与动机。
@@ -187,8 +187,8 @@ Program Definition cleaving_total_cloven {C : Category} {D : Displayed C}
                            (`2 (`2 (clift f (`2 e')))) |}
 |}.
 Next Obligation.
-  (* the chosen lift lies over f: the anchoring is [eq_refl], whose
-     induced isomorphism is an identity *)
+  (* the chosen lift lies over f: anchoring [eq_refl], whose
+ induced 同构 恒等 （已译） *)
   now rewrite id_right.
 Qed.
 
@@ -217,7 +217,7 @@ Next Obligation. (* dtransport_id *)
   intros C D x y dx dy f e ff.
   exact (@dtransport_id C D y x dy dx f e ff).
 Qed.
-Next Obligation. (* dtransport_trans: any proof of the endpoints works *)
+Next Obligation. (* dtransport_trans: any 证明 endpoints works （已译） *)
   intros C D x y dx dy f g h e1 e2 ff; simpl.
   apply dtransport_trans_any.
 Qed.

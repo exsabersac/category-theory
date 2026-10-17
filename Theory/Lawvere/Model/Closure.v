@@ -1,4 +1,4 @@
-(** * Models are closed under product-preserving functors *)
+(* * * Models closed under product-preserving 函子 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/Lawvere+theory

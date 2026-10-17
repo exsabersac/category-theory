@@ -40,8 +40,8 @@ Class Semigroupoid := {
 #[export] Existing Instance semi_homset.
 #[export] Existing Instance semi_compose_respects.
 
-(* Every category is a semigroupoid: keep the objects, homs, composition and
-   associativity, and simply discard the identities and unit laws. *)
+(* Every 范畴 semigroupoid: keep 对象, homs, 复合 and
+ associativity, simply discard identities unit laws. （已译） *)
 Definition to_Semigroupoid (C : Category) : Semigroupoid := {|
   semi_obj              := obj;
   semi_hom              := hom;

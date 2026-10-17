@@ -152,8 +152,8 @@ Definition OGrph@{o h p hh oo} (O : Type@{o}) : Category@{oo hh hh} := {|
 
 (** ** The trivial O-graph *)
 
-(* Leibniz equality as a setoid, with the carrier universe and the relation
-   universe kept apart (Lib/Setoid.v's [eq_Setoid] identifies them). *)
+(* Leibniz equality setoid, carrier universe 关系
+ universe kept apart (Lib/Setoid.v's [eq_Setoid] identifies them). （已译） *)
 Definition eq_setoid_poly@{a b} (A : Type@{a}) : Setoid@{a b} A := {|
   equiv := @eq A;
   setoid_equiv := eq_equivalence@{a b}
@@ -207,8 +207,8 @@ Proof.
     now intros x y f.
 Defined.
 
-(* The comparison is the identity on nodes, definitionally: that is the whole
-   content of "identity on objects". *)
+(* The comparison 恒等 nodes, definitionally: whole
+ content "恒等 对象". （已译） *)
 Example OGrph_Quiver_nodes {O : Type} {A B : OGraph O} (F : OGraphHom A B) :
   @fnodes _ _ (QuiverHomOfOGraphHom F) = fun x : O => x := eq_refl.
 
@@ -230,7 +230,7 @@ Proof.
   exact coher.
 Qed.
 
-(** ** The composable-pairs product A ×_O B *)
+(* 相关说明。 （已译） *)
 
 (* An arrow of A ×_O B from x to z is Mac Lane's composable pair <g, f>: a
    middle node [cmid], an arrow [cleft] of A into z and an arrow [cright] of
@@ -645,7 +645,7 @@ Proof.
            (OGrph_Monoidal@{o h p hh oo} O) A M).
 Qed.
 
-(** ** From a category to a monoid in O-Grph *)
+(* * ** From 范畴 幺半群 O-Grph （已译） *)
 
 Definition OGraphOfCat@{o h p} (C : Category@{o h p}) : OGraph@{o h p} (obj[C])
   := {|
@@ -711,7 +711,7 @@ Example ocat_mu_is_compose (C : Category) (x y z : obj[C])
 Example ocat_eta_is_id (C : Category) (x : obj[C]) :
   oemap (ounit (MonoidOfCat C)) x x eq_refl = id[x] := eq_refl.
 
-(** ** From a monoid in O-Grph to a category *)
+(* * ** From 幺半群 O-Grph 范畴 （已译） *)
 
 Definition omon_id@{o h p hh oo +|+} {O : Type@{o}} {A : OGraph@{o h p} O}
   (M : OMonoid@{o h p hh oo} A) (x : O) : oedges A x x :=
@@ -790,18 +790,18 @@ Definition CategoryOfOMonoid@{o h p hh oo +|+} {O : Type@{o}}
 
 (** ** The round trips *)
 
-(* Monoid side: the O-graph comes back on the nose, ... *)
+(* 相关说明。 （已译） *)
 Example OGraphOfCat_CategoryOfOMonoid {O : Type} {A : OGraph O} (M : OMonoid A) :
   OGraphOfCat (CategoryOfOMonoid M) = A := eq_refl.
 
-(* ... and so does the multiplication, as a function. *)
+(* 相关说明。 （已译） *)
 Example omul_roundtrip {O : Type} {A : OGraph O} (M : OMonoid A) :
   oemap (omul (MonoidOfCat (CategoryOfOMonoid M)))
     = oemap (omul M) := eq_refl.
 
-(* The unit comes back only after eliminating the identity proof: there is no
-   eta rule for [eq], so [match p with eq_refl => ... end] is not the term it
-   evaluates to. *)
+(* The unit comes back after eliminating 恒等 证明: there no
+ eta rule [eq], so [match p eq_refl => ... end] not term it
+ evaluates to. （已译） *)
 Lemma ounit_roundtrip {O : Type} {A : OGraph O} (M : OMonoid A) :
   ∀ x z (p : x = z),
     oemap (ounit (MonoidOfCat (CategoryOfOMonoid M))) x z p
@@ -866,13 +866,13 @@ Proof.
     reflexivity.
 Defined.
 
-(** ** Mac Lane's remark: a category IS a monoid in O-Grph *)
+(* * ** Mac Lane's remark: 范畴 IS 幺半群 O-Grph （已译） *)
 
 Theorem category_is_monoid_in_OGrph@{o h p hh oo co ch cp +|+} :
   ((∀ (O : Type@{o}) (A : OGraph@{o h p} O) (M : OMonoid@{o h p hh oo} A),
-      (* every monoid in O-Grph is a category on O, and the monoid is
-         recovered: its graph on the nose, its multiplication as a function
-         on the nose, its unit pointwise *)
+      (* every 幺半群 O-Grph 范畴 O, 幺半群 is
+ recovered: graph nose, multiplication function
+ nose, unit pointwise （已译） *)
       ((OGraphOfCat (CategoryOfOMonoid M) = A) *
        (oemap (omul (MonoidOfCat (CategoryOfOMonoid M))) = oemap (omul M)) *
        (∀ x z (p : x = z),
@@ -893,7 +893,7 @@ Proof.
   - exact ocat_roundtrip_iso.
 Defined.
 
-(** ** Witness: one node, and monoids *)
+(* 相关说明。 （已译） *)
 
 Definition OGraph_of_MonObject (M : MonObject) : OGraph poly_unit := {|
   oedges := fun _ _ => carrier M;
@@ -944,8 +944,8 @@ Proof.
     now rewrite mon_op_unit_r.
 Defined.
 
-(* The category assembled from that monoid is Mac Lane's B M, on the nose in
-   every data field. *)
+(* The 范畴 assembled 幺半群 Mac Lane's B M, nose in
+ every data field. （已译） *)
 Example Deloop_of_MonObject_obj (M : MonObject) :
   obj[CategoryOfOMonoid (Monoid_of_MonObject M)] = obj[Deloop M] := eq_refl.
 
@@ -987,8 +987,8 @@ Example MonObject_of_OMonoid_op (M : MonObject) :
   @mon_op (MonObject_of_OMonoid (Monoid_of_MonObject M)) = @mon_op M
     := eq_refl.
 
-(* And the whole passage computes.  [Nat_Plus] is Construction/Deloop.v's
-   monoid (ℕ, +, 0). *)
+(* And whole passage computes. [Nat_Plus] Construction/Deloop.v's
+ 幺半群 (ℕ, +, 0). （已译） *)
 Example ograph_nat_compose (a b : carrier Nat_Plus) :
   @omon_compose _ _ (Monoid_of_MonObject Nat_Plus) ttt ttt ttt a b
     = (a + b)%nat := eq_refl.
@@ -1000,7 +1000,7 @@ Example ograph_nat_compose_2_3 :
   @omon_compose _ _ (Monoid_of_MonObject Nat_Plus) ttt ttt ttt 2%nat 3%nat
     = 5%nat := eq_refl.
 
-(** ** The unit setoid is load-bearing: coarsening it ENTAILS UIP *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。

@@ -9,7 +9,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * The diagonal–product adjunction Δ ⊣ × *)
+(* * * The diagonal–product 伴随 Δ ⊣ × （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Product_(category_theory)

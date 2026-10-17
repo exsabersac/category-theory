@@ -18,7 +18,7 @@ Require Import Category.Theory.Equivalence.Limit.
 
 Generalizable All Variables.
 
-(** * Equivalences create limits, and right adjoints preserve cones *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/created+limit
@@ -29,7 +29,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Right adjoints preserve limiting cones, not merely limit apexes *)
+(* 相关说明。 （已译） *)
 
 Section EquivCreates.
 
@@ -57,9 +57,9 @@ Definition equivalence_ReflectsLimitCone {J : Category} (K : J ⟶ C) :
     @ff_ReflectsLimitCone C D F (Equivalence_Full E) (Equivalence_Faithful E)
       J K M H.
 
-(* The naming defect of [equivalence_creates_limits], resolved by proof:
-   that constant supplies the lift, and the two remaining clauses are the
-   two lemmas above. *)
+(* The naming defect [equivalence_creates_limits], resolved 证明:
+ 常值 supplies lift, two remaining clauses the
+ two lemmas above. （已译） *)
 
 Definition equivalence_CreatesLimit {J : Category} (K : J ⟶ C) :
   CreatesLimit K F.
@@ -79,7 +79,7 @@ Definition equivalence_CreatesAllLimits : CreatesAllLimits F :=
 
 End EquivCreates.
 
-(** ** The identity functor creates every limit *)
+(* * ** The 恒等 函子 creates every limit （已译） *)
 
 Definition Id_CreatesAllLimits {C : Category} : CreatesAllLimits Id[C] :=
   equivalence_CreatesAllLimits (@EquivalenceOfCategories_Id C).

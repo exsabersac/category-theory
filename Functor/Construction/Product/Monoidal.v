@@ -40,8 +40,8 @@ Context {G : D ⟶ K}.
 
 #[local] Obligation Tactic := program_simpl.
 
-(* The tensor comparison μ for F ∏⟶ G as a natural isomorphism, built
-   componentwise from the tensor comparisons of F (via O) and of G (via P). *)
+(* The tensor comparison μ F ∏⟶ G natural 同构, built
+ componentwise tensor comparisons F (via O) G (via P). （已译） *)
 Program Definition ProductFunctor_Monoidal_ap_functor_iso
   (O : MonoidalFunctor F) (P : MonoidalFunctor G) :
     (⨂) ◯ (F ∏⟶ G) ∏⟶ (F ∏⟶ G) ≅[[(C ∏ D) ∏ (C ∏ D), J ∏ K]] F ∏⟶ G ◯ (⨂) :=
@@ -85,8 +85,8 @@ Next Obligation.
   - apply (iso_from_to (ap_functor_iso[P]) (_, _)).
 Qed.
 
-(* Strong monoidality is closed under the product of functors: if F and G are
-   strong monoidal then so is F ∏⟶ G, with all comparisons formed pairwise. *)
+(* Strong monoidality closed under product 函子: if F G are
+ strong monoidal then so F ∏⟶ G, all comparisons formed pairwise. （已译） *)
 Program Definition ProductFunctor_Monoidal :
   MonoidalFunctor F → MonoidalFunctor G
     → MonoidalFunctor (F ∏⟶ G) := fun _ _ => {|

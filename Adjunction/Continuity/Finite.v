@@ -20,7 +20,7 @@ Require Import Category.Construction.Opposite.
 
 Generalizable All Variables.
 
-(** * Adjoints preserve the terminal object and binary products, packaged *)
+(* * * Adjoints preserve 终对象 binary products, packaged （已译） *)
 
 (*
    本文件给出有限情形。
@@ -35,16 +35,16 @@ Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 Context (A : F ⊣ U).
 
-(* A right adjoint preserves the terminal object: RAPL at the empty
-   discrete diagram, read through Structure/Limit/Comparison.v's bridge
-   into Functor/Structure/Terminal.v's class. *)
+(* A 右伴随 preserves 终对象: RAPL at empty
+ discrete diagram, read through Structure/Limit/Comparison.v's bridge
+ Functor/Structure/Terminal.v's class. （已译） *)
 Definition right_adjoint_preserves_terminal `{@Terminal C} `{@Terminal D} :
   @TerminalFunctor C D U _ _ :=
   snd (terminal_functor_iff_preserves_terminal U)
       (right_adjoint_PreservesLimitCone A (DiscreteCat_Functor' nullary_fam)).
 
-(* A right adjoint preserves binary products: RAPL at the two-object
-   discrete diagrams, through the cartesian bridge. *)
+(* A 右伴随 preserves binary products: RAPL at two-对象
+ discrete diagrams, through cartesian bridge. （已译） *)
 Definition right_adjoint_preserves_binary_products
   `{@Cartesian C} `{@Cartesian D} : @CartesianFunctor C D U _ _ :=
   snd (cartesian_functor_iff_preserves_binary_products U)

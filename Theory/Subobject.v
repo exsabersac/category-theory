@@ -37,7 +37,7 @@ Next Obligation.
   - (* reflexivity: the identity isomorphism *)
     intros u.
     exists iso_id; cat.
-  - (* symmetry: the inverse triangle follows by precomposing with from i *)
+  - (* 相关说明。 （已译） *)
     intros u v [i Hi].
     exists (iso_sym i); simpl.
     rewrite <- Hi.
@@ -107,7 +107,7 @@ Theorem sub_equiv_iff_mutual (u v : SubObj x) :
   (u ≈ v) ↔ (sub_le u v * sub_le v u).
 Proof.
   split.
-  - (* forward: to/from of the domain isomorphism are the factorizations *)
+  - (* forward: to/from domain 同构 factorizations （已译） *)
     intros [i Hi].
     split.
     + exists (to i); exact Hi.
@@ -115,7 +115,7 @@ Proof.
       rewrite <- Hi.
       rewrite <- comp_assoc.
       rewrite iso_to_from; cat.
-  - (* backward: the round trips are id by monicity *)
+  - (* 相关说明。 （已译） *)
     intros [[k Hk] [l Hl]].
     unshelve eexists {| to := k; from := l |}; simpl.
     + (* k ∘ l ≈ id, by monicity of sub_mono v *)

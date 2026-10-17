@@ -26,7 +26,7 @@ Generalizable All Variables.
 *)
 
 (* ================================================================== *)
-(** ** The strong monad class.                                         *)
+(* * ** The strong 单子 class. （已译） *)
 (* ================================================================== *)
 
 Section StrongMonad.
@@ -68,7 +68,7 @@ End StrongMonad.
 Arguments StrongMonad {C} _ M.
 
 (* ================================================================== *)
-(** ** Tier 1 instance: the identity strong monad.                    *)
+(* * ** Tier 1 instance: 恒等 strong 单子. （已译） *)
 (* ================================================================== *)
 
 Section IdStrongMonad.
@@ -98,7 +98,7 @@ Context `{@Monoidal C}.
 End IdStrongMonad.
 
 (* ================================================================== *)
-(** ** Tier 2: validation — η and μ are strong natural transformations *)
+(* 相关说明。 （已译） *)
 (* ================================================================== *)
 
 (*
@@ -122,8 +122,8 @@ Definition Monad_unit : Id[C] ⟹ M :=
   Build_Transform' (F:=Id[C]) (G:=M) (fun _ => ret[M])
     (fun _ _ _ => ltac:(simpl; symmetry; apply fmap_ret)).
 
-(* μ packaged as a natural transformation M ◯ M ⟹ M.  Its naturality square is
-   the multiplication naturality law [join_fmap_fmap] of the monad. *)
+(* μ packaged 自然变换 M ◯ M ⟹ M. Its 自然性 square is
+ multiplication 自然性 law [join_fmap_fmap] 单子. （已译） *)
 Definition Monad_mult : M ◯ M ⟹ M :=
   Build_Transform' (F:=M ◯ M) (G:=M) (fun _ => join[M])
     (fun _ _ _ => ltac:(simpl; symmetry; apply join_fmap_fmap)).
@@ -157,8 +157,8 @@ Qed.
 End StrongMonadValidation.
 
 (* ================================================================== *)
-(** ** Tier 3: right-strong monads, the symmetric bridge,             *)
-(**            commutativity, and the induced double strength.        *)
+(* * ** Tier 3: right-strong 单子, symmetric bridge, （已译） *)
+(**            本节：commutativity, induced double strength. （已译）        *)
 (* ================================================================== *)
 
 (*
@@ -196,7 +196,7 @@ End RightStrongMonad.
 Arguments RightStrongMonad {C} _ M.
 
 (* ------------------------------------------------------------------ *)
-(** ** Commutative strong monads (left and right strengths cohere).    *)
+(* * ** Commutative strong 单子 (left right strengths cohere). （已译） *)
 (* ------------------------------------------------------------------ *)
 
 (*
@@ -215,7 +215,7 @@ Context {M : C ⟶ C}.
 Class CommutativeStrongMonad := {
   comm_is_strong :: @StrongMonad C _ M;
 
-  (* the right strength over the *same* underlying monad *)
+  (* the right strength over *same* underlying 单子 （已译） *)
   comm_is_rstrong : @RightStrongFunctor C _ M;
 
   comm_rstrength_ret {x y} :
@@ -239,8 +239,8 @@ End CommutativeStrongMonad.
 Arguments CommutativeStrongMonad {C} _ M.
 
 (* ------------------------------------------------------------------ *)
-(** ** The symmetric bridge: a strong monad over a symmetric base      *)
-(**     carries a right strength compatible with η and μ.              *)
+(* * ** The symmetric bridge: strong 单子 over symmetric base （已译） *)
+(**     本节：carries right strength compatible η μ. （已译）              *)
 (* ------------------------------------------------------------------ *)
 
 (*
@@ -280,7 +280,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* η-compat for the derived right strength: rstr ∘ (ret ⨂ id) ≈ ret. *)
+(* 相关说明。 （已译） *)
 Lemma rstr_ret {x y} :
   rstr ∘ (ret[M] ⨂ id[y]) ≈ (ret[M] : x ⨂ y ~> M (x ⨂ y)).
 Proof.
@@ -297,8 +297,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* μ-compat for the derived right strength:
-     rstr ∘ (join ⨂ id) ≈ join ∘ fmap rstr ∘ rstr. *)
+(* 相关说明。 （已译） *)
 Lemma rstr_join {x y} :
   rstr ∘ (join[M] ⨂ id[y])
     ≈ (join[M] ∘ fmap[M] rstr ∘ rstr : M (M x) ⨂ y ~> M (x ⨂ y)).
@@ -322,8 +321,8 @@ Proof.
   reflexivity.
 Qed.
 
-(* The induced double strength M x ⨂ M y ~> M (x ⨂ y) built from the left
-   strength and the derived right strength, and its mirror. *)
+(* The induced double strength M x ⨂ M y ~> M (x ⨂ y) built left
+ strength derived right strength, 镜像. （已译） *)
 Definition dstr {x y} : M x ⨂ M y ~> M (x ⨂ y) :=
   join[M] ∘ fmap[M] strength ∘ rstr.
 

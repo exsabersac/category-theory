@@ -54,7 +54,7 @@ Class Displayed (C : Category) := {
   dtransport_respects {x y dx dy} {f g : x ~> y} (e : f ≈ g) :
     Proper (equiv ==> equiv) (@dtransport x y dx dy f g e);
 
-  (* Proof irrelevance: transport along a loop is the identity. *)
+  (* Proof irrelevance: transport along loop 恒等. （已译） *)
   dtransport_id {x y} {dx : dobj x} {dy : dobj y} {f : x ~> y}
     (e : f ≈ f) (ff : dhom dx dy f) :
     dtransport e ff ≈ ff;
@@ -132,8 +132,8 @@ Proof.
   rewrite dtransport_trans; apply dtransport_id.
 Qed.
 
-(* Reorienting a transport equation: a transport may be moved to the other
-   side of [≈] by inverting the proof it rides on. *)
+(* Reorienting transport equation: transport may moved other
+ side [≈] inverting 证明 it rides on. （已译） *)
 Lemma dtransport_flip {x y : C} {dx : dobj x} {dy : dobj y}
   {f g : x ~> y} (e : f ≈ g) (ff : dhom dx dy f) (gg : dhom dx dy g) :
   dtransport e ff ≈ gg ↔ ff ≈ dtransport (symmetry e) gg.
@@ -145,9 +145,9 @@ Proof.
     apply dtransport_symm_r.
 Qed.
 
-(* Transport does not depend on the proof transported along: the groupoid
-   laws [dtransport_id]/[dtransport_trans] force any two parallel proofs to
-   transport identically. *)
+(* Transport does not depend 证明 transported along: groupoid
+ laws [dtransport_id]/[dtransport_trans] force any two parallel proofs to
+ transport identically. （已译） *)
 Lemma dtransport_proof_irrel {x y : C} {dx : dobj x} {dy : dobj y}
   {f g : x ~> y} (e e' : f ≈ g) (ff : dhom dx dy f) :
   dtransport e ff ≈ dtransport e' ff.
@@ -156,8 +156,8 @@ Proof.
   symmetry; rewrite dtransport_trans; apply dtransport_id.
 Qed.
 
-(* [dtransport_trans] with the composite proof replaced by any proof of the
-   endpoints' relation. *)
+(* [dtransport_trans] 复合 证明 replaced any 证明 the
+ endpoints' 关系. （已译） *)
 Lemma dtransport_trans_any {x y : C} {dx : dobj x} {dy : dobj y}
   {f g h : x ~> y} (e1 : f ≈ g) (e2 : g ≈ h) (e3 : f ≈ h)
   (ff : dhom dx dy f) :
@@ -180,8 +180,8 @@ Proof.
   apply dtransport_trans_any.
 Qed.
 
-(* The unit laws in transported orientation, along any proof of the base
-   law: exactly the shape of the total category's unit obligations. *)
+(* The unit laws transported orientation, along any 证明 base
+ law: exactly shape total 范畴's unit obligations. （已译） *)
 Lemma dtransport_did_left {x y : C} {dx : dobj x} {dy : dobj y}
   {f : x ~> y} (e : id ∘ f ≈ f) (ff : dhom dx dy f) :
   dtransport e (dcomp (did dy) ff) ≈ ff.
@@ -196,8 +196,8 @@ Proof.
   rewrite did_right, dtransport_trans; apply dtransport_id.
 Qed.
 
-(* Associativity in transported orientation, along any proof of the base
-   law, in both directions (matching [comp_assoc]/[comp_assoc_sym]). *)
+(* Associativity transported orientation, along any 证明 base
+ law, both directions (matching [comp_assoc]/[comp_assoc_sym]). （已译） *)
 Lemma dtransport_dcomp_assoc {w x y z : C}
   {dw : dobj w} {dx : dobj x} {dy : dobj y} {dz : dobj z}
   {f : y ~> z} {g : x ~> y} {h : w ~> x}

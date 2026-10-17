@@ -9,7 +9,7 @@ Require Import Category.Theory.Algebra.Monoid.Hom.
 
 Generalizable All Variables.
 
-(** * Internal semigroups in a monoidal category, and the category Smgrp *)
+(* * * Internal semigroups 幺半范畴, 范畴 Smgrp （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/semigroup
@@ -97,8 +97,8 @@ Program Definition Smgrp : Category := {|
   compose := fun _ _ _ f g => (`1 f ∘ `1 g; SemigroupHom_comp `2 f `2 g)
 |}.
 
-(* The forgetful functor Smgrp(C) ⟶ C projects out the underlying object
-   and morphism. *)
+(* The forgetful 函子 Smgrp(C) ⟶ C projects out underlying 对象
+ 态射. （已译） *)
 Program Definition Smgrp_Forget : Smgrp ⟶ C := {|
   fobj := fun X => `1 X;
   fmap := fun _ _ f => `1 f
@@ -123,13 +123,13 @@ Definition MonoidHom_SemigroupHom {x y : C} {Mx : Monoid x} {My : Monoid y}
   @Build_SemigroupHom _ _ (Monoid_Semigroup Mx) (Monoid_Semigroup My) f
     (@hom_mu _ _ _ _ _ _ _ H).
 
-(* The functor Mon(C) ⟶ Smgrp(C) that forgets the unit. *)
+(* The 函子 Mon(C) ⟶ Smgrp(C) forgets unit. （已译） *)
 Program Definition Mon_Smgrp : Mon C ⟶ Smgrp := {|
   fobj := fun X => (`1 X; Monoid_Semigroup `2 X);
   fmap := fun _ _ f => (`1 f; MonoidHom_SemigroupHom `2 f)
 |}.
 
-(* Forgetting the unit and then the multiplication is forgetting both. *)
+(* 相关说明。 （已译） *)
 Example Mon_Smgrp_Forget_obj (X : Mon C) :
   fobj[Smgrp_Forget] (fobj[Mon_Smgrp] X) = fobj[Mon_Forget] X := eq_refl.
 

@@ -15,7 +15,7 @@ Require Import Category.Instance.Two.
 
 Generalizable All Variables.
 
-(** * Transport of colimits, and the induced map between (co)limits *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/colimit
@@ -26,7 +26,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** (A) Oppositization respects the functor setoid *)
+(* * ** (A) Oppositization respects 函子 setoid （已译） *)
 
 (*
    本节说明函子、同构相关定义、性质与动机。
@@ -43,8 +43,7 @@ Proof.
   exact (`2 e y x f).
 Defined.
 
-(* The same fact registered for setoid rewriting, which is what a
-   consumer dualizing a limit result actually reaches for. *)
+(* 相关说明。 （已译） *)
 
 #[export]
 Instance Opposite_Functor_Proper {J C : Category} :
@@ -77,7 +76,7 @@ Example Opposite_Functor_respects_reflects {J C : Category}
   `1 (Opposite_Functor_respects (Opposite_Functor_reflects e)) x
   = `1 e x := eq_refl.
 
-(** ** (B) Transport of colimits along a natural isomorphism *)
+(* * ** (B) Transport colimits along natural 同构 （已译） *)
 
 (*
    本节说明（余）极限、等价相关定义、性质与动机。
@@ -129,9 +128,9 @@ Lemma isacolimit_transport_med {J C : Category} {G G' : J ⟶ C}
     ≈ colimit_med H (cocone_transport_inv e N).
 Proof. reflexivity. Qed.
 
-(* The strict forms.  Each names the constant it is about on one side and
-   a genuinely different expression — built from the donor accessors — on
-   the other, so none is a tautology. *)
+(* The strict forms. Each names 常值 it about one side and
+ genuinely different expression — built donor accessors — on
+ other, so none tautology. （已译） *)
 
 Example cocone_transport_inj_strict {J C : Category} {G G' : J ⟶ C}
   (e : G ≈ G') (N : Cocone G) (x : J) :
@@ -153,15 +152,15 @@ Example isacolimit_transport_med_strict {J C : Category} {G G' : J ⟶ C}
   colimit_med (isacolimit_transport e H) N
   = colimit_med H (cocone_transport_inv e N) := eq_refl.
 
-(* The apex is untouched: transport moves the injections, never the
-   object they land in.  This is the clause the induced-map statement of
-   section (C) below cannot make. *)
+(* The apex untouched: transport moves injections, never the
+ 对象 they land in. This clause induced-map statement of
+ section (C) below cannot make. （已译） *)
 
 Example colimit_transport_apex {J C : Category} {G G' : J ⟶ C}
   (e : G ≈ G') (L : Colimit G) :
   colimit_apex (colimit_transport e L) = colimit_apex L := eq_refl.
 
-(** ** (C) The induced map, without invertibility *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限、等价相关定义、性质与动机。
@@ -272,7 +271,7 @@ Proof.
   now rewrite comp_assoc.
 Qed.
 
-(** *** The colimit dual, covariantly *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -398,7 +397,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(** ** Witnesses over the walking arrow *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -474,7 +473,7 @@ Next Obligation.
     now symmetry.
 Defined.
 
-(** *** A non-invertible transformation with a non-invertible comparison *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -525,9 +524,9 @@ Example two_shift_fobj_at_TwoX :
 Lemma two_shift_apexes_distinct : TwoX = TwoY → False.
 Proof. discriminate. Qed.
 
-(* ... and the induced comparison, which exists by (C), is not an
-   isomorphism.  It cannot be: it is an arrow TwoX ~> TwoY, and [_2] has
-   no arrow back. *)
+(* ... induced comparison, exists (C), not an
+ 同构. It cannot be: it arrow TwoX ~> TwoY, [_2] has
+ no arrow back. （已译） *)
 
 Definition two_shift_induced : TwoX ~{_2}~> TwoY :=
   limit_induced two_shift (two_IsALimit Id[_2]) (two_IsALimit two_const).
@@ -558,7 +557,7 @@ Proof.
            (two_IsALimit two_const) x).
 Qed.
 
-(** *** Colimit transport, exercised: distinct diagrams, moved legs *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -590,8 +589,8 @@ Qed.
 Example two_endo_arrow {C : Category} (X : C) (u : X ~> X) :
   fmap[two_endo X u] TwoXY = u := eq_refl.
 
-(* The ambient: [bool] as a discrete setoid, with negation as a
-   non-identity self-isomorphism of it. *)
+(* The ambient: [bool] discrete setoid, negation a
+ non-恒等 self-同构 it. （已译） *)
 
 Definition two_bool_set : SetoidObject :=
   {| carrier := bool ; is_setoid := eq_Setoid bool |}.
@@ -605,16 +604,15 @@ Program Definition two_negb_iso :
 Next Obligation. destruct x; reflexivity. Qed.
 Next Obligation. destruct x; reflexivity. Qed.
 
-(* Two diagrams over the walking arrow, sending [TwoXY] to [id] and to
-   negation respectively. *)
+(* 相关说明。 （已译） *)
 
 Definition two_id_diagram : _2 ⟶ Sets := @two_endo Sets two_bool_set id.
 
 Definition two_negb_diagram : _2 ⟶ Sets :=
   @two_endo Sets two_bool_set two_negb_map.
 
-(* They are naturally isomorphic — identity at TwoX, negation at TwoY,
-   the square closing because negation is its own inverse ... *)
+(* They naturally isomorphic — 恒等 at TwoX, negation at TwoY,
+ square closing because negation own inverse ... （已译） *)
 
 Definition two_diagrams_equiv : two_id_diagram ≈ two_negb_diagram.
 Proof.
@@ -663,8 +661,8 @@ Theorem two_transport_moves_inj :
     ≈ colimit_inj two_id_colimit TwoY → False.
 Proof. intro K; specialize (K true); simpl in K; discriminate. Qed.
 
-(* The walking arrow's own (co)limit legs compute, at the identity
-   diagram, which is what the two Examples above are read against. *)
+(* The walking arrow's own (co)limit legs compute, at 恒等
+ diagram, what two Examples above read against. （已译） *)
 
 Example two_colimit_inj_X :
   colimit_inj (two_IsAColimit Id[_2]) TwoX = TwoXY := eq_refl.

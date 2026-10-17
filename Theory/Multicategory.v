@@ -40,28 +40,28 @@ Section SpliceKit.
 
 Context {A : Type}.
 
-(** Boundary of the left unit law: splicing into [mid] at the unique slot
-    ([Γ1 = Γ2 = []]).  [[] ++ (Δ ++ [])] is definitionally [Δ ++ []], so
-    this is [app_nil_r] up to conversion. *)
+(** Boundary left unit law: splicing [mid] at unique slot
+ ([Γ1 = Γ2 = []]). [[] ++ (Δ ++ [])] definitionally [Δ ++ []], so
+ 这是 [app_nil_r] up conversion. （已译） *)
 Lemma splice_eq_unit_left (Δ : list A) : [] ++ Δ ++ [] = Δ.
 Proof. apply app_nil_r. Qed.
 
-(** Boundary of the right unit law: splicing [mid a] into a slot.
-    [[a] ++ Γ2] is definitionally [a :: Γ2], so this is [eq_refl] up to
-    conversion; kept as a named lemma for uniformity. *)
+(** Boundary right unit law: splicing [mid a] slot.
+ [[a] ++ Γ2] definitionally [a :: Γ2], so 这是 [eq_refl] up to
+ conversion; kept named 引理 uniformity. （已译） *)
 Lemma splice_eq_unit_right (Γ1 Γ2 : list A) (a : A) :
   Γ1 ++ [a] ++ Γ2 = Γ1 ++ a :: Γ2.
 Proof. reflexivity. Qed.
 
-(** Nested associativity, first cast: the context of [mcomp f g] (slot
-    zipper [(Δ1, a, Δ2)] spliced between [Γ1] and [Γ2]) re-expressed as a
-    zipper with the slot [a] on top. *)
+(** 本节：Nested associativity, first cast: context [mcomp f g] (slot
+ zipper [(Δ1, a, Δ2)] spliced between [Γ1] [Γ2]) re-expressed a
+ zipper slot [a] top. （已译） *)
 Lemma splice_eq_nested_slot (Γ1 Δ1 : list A) (a : A) (Δ2 Γ2 : list A) :
   Γ1 ++ (Δ1 ++ a :: Δ2) ++ Γ2 = (Γ1 ++ Δ1) ++ a :: (Δ2 ++ Γ2).
 Proof. rewrite app_comm_cons; now rewrite !app_assoc. Qed.
 
-(** Nested associativity, final cast: the two orders of splicing produce
-    the same context up to reassociation. *)
+(** 本节：Nested associativity, final cast: two orders splicing produce
+ same context up reassociation. （已译） *)
 Lemma splice_eq_nested (Γ1 Δ1 Θ Δ2 Γ2 : list A) :
   Γ1 ++ (Δ1 ++ Θ ++ Δ2) ++ Γ2 = (Γ1 ++ Δ1) ++ Θ ++ (Δ2 ++ Γ2).
 Proof. now rewrite !app_assoc. Qed.
@@ -182,28 +182,28 @@ Class Multicategory : Type := {
   mcast_respects {Γ Γ' c} (e : Γ = Γ') :
     Proper (equiv ==> equiv) (@mcast Γ Γ' c e);
 
-  (* Proof-irrelevance of the boundary: casting along any loop is the
-     identity. *)
+  (* Proof-irrelevance boundary: casting along any loop the
+ 恒等. （已译） *)
   mcast_id {Γ c} (e : Γ = Γ) (f : mhom Γ c) : mcast e f ≈ f;
 
   (* Casts compose. *)
   mcast_trans {Γ Γ' Γ'' c} (e : Γ = Γ') (e' : Γ' = Γ'') (f : mhom Γ c) :
     mcast e' (mcast e f) ≈ mcast (eq_trans e e') f;
 
-  (* The identity multimorphism on the singleton context. *)
+  (* The 恒等 multimorphism singleton context. （已译） *)
   mid (a : mobj) : mhom [a] a;
 
-  (* Single-slot ("circle-i") composition, slot addressed by the zipper
-     [(Γ1, b, Γ2)]: splice [g] into the [b]-slot of [f]. *)
+  (* Single-slot ("circle-i") 复合, slot addressed zipper
+ [(Γ1, b, Γ2)]: splice [g] 进入 [b]-slot [f]. （已译） *)
   mcomp {Γ1 Γ2 Δ : list mobj} {b c : mobj} :
     mhom (Γ1 ++ b :: Γ2) c → mhom Δ b → mhom (Γ1 ++ Δ ++ Γ2) c;
 
   mcomp_respects {Γ1 Γ2 Δ b c} :
     Proper (equiv ==> equiv ==> equiv) (@mcomp Γ1 Γ2 Δ b c);
 
-  (* Left unit: splicing [g] into the unique slot of [mid b]
-     ([Γ1 = Γ2 = []]) gives back [g], up to the cast normalising
-     [[] ++ Δ ++ []] to [Δ]. *)
+  (* Left unit: splicing [g] 进入 unique slot [mid b]
+ ([Γ1 = Γ2 = []]) gives back [g], up cast normalising
+ [[] ++ Δ ++ []] [Δ]. （已译） *)
   mcomp_id_left {Δ : list mobj} {b : mobj} (g : mhom Δ b) :
     mcast (splice_eq_unit_left Δ) (mcomp (Γ1:=[]) (Γ2:=[]) (mid b) g) ≈ g;
 
@@ -254,7 +254,7 @@ Class Multicategory : Type := {
      trivially, so no loop-quantified variant is stated. *)
   msym_id {Γ c} (f : mhom Γ c) : msym (tperm_refl Γ) f ≈ f;
 
-  (* The action is functorial along the [tperm_trans] constructor. *)
+  (* 相关说明。 （已译） *)
   msym_compose {Γ Δ Λ c} (p : tperm Γ Δ) (q : tperm Δ Λ)
     (f : mhom Γ c) :
     msym q (msym p f) ≈ msym (tperm_trans p q) f;
@@ -302,8 +302,7 @@ Proof.
   rewrite mcast_trans; apply mcast_id.
 Qed.
 
-(* Reorienting a cast equation: a cast may be moved to the other side of
-   [≈] by inverting the equality it rides on. *)
+(* 相关说明。 （已译） *)
 Lemma mcast_flip {Γ Γ' : list mobj} {c : mobj} (e : Γ = Γ')
   (f : mhom Γ c) (g : mhom Γ' c) :
   mcast e f ≈ g ↔ f ≈ mcast (eq_sym e) g.
@@ -315,9 +314,9 @@ Proof.
     apply mcast_symm_r.
 Qed.
 
-(* Casting does not depend on the proof cast along: the groupoid laws
-   [mcast_id]/[mcast_trans] force any two parallel proofs to cast
-   identically — no UIP on [list mobj] involved. *)
+(* Casting does not depend 证明 cast along: groupoid laws
+ [mcast_id]/[mcast_trans] force any two parallel proofs cast
+ identically — no UIP [list mobj] involved. （已译） *)
 Lemma mcast_proof_irrel {Γ Γ' : list mobj} {c : mobj} (e1 e2 : Γ = Γ')
   (f : mhom Γ c) :
   mcast e1 f ≈ mcast e2 f.
@@ -326,8 +325,8 @@ Proof.
   symmetry; rewrite mcast_trans; apply mcast_id.
 Qed.
 
-(* [mcast_trans] with the composite proof replaced by any proof of the
-   endpoints' equation. *)
+(* [mcast_trans] 复合 证明 replaced any 证明 the
+ endpoints' equation. （已译） *)
 Lemma mcast_trans_any {Γ Γ' Γ'' : list mobj} {c : mobj}
   (e1 : Γ = Γ') (e2 : Γ' = Γ'') (e3 : Γ = Γ'') (f : mhom Γ c) :
   mcast e2 (mcast e1 f) ≈ mcast e3 f.
@@ -335,7 +334,7 @@ Proof.
   rewrite mcast_trans; apply mcast_proof_irrel.
 Qed.
 
-(* The left unit law along any proof of its boundary equation. *)
+(* The left unit law along any 证明 boundary equation. （已译） *)
 Lemma mcomp_id_left_any {Δ : list mobj} {b : mobj}
   (e : [] ++ Δ ++ [] = Δ) (g : mhom Δ b) :
   mcast e (mcomp (Γ1:=[]) (Γ2:=[]) (mid b) g) ≈ g.
@@ -346,7 +345,7 @@ Proof.
   - apply mcomp_id_left.
 Qed.
 
-(* The right unit law along any proof of its boundary equation. *)
+(* The right unit law along any 证明 boundary equation. （已译） *)
 Lemma mcomp_id_right_any {Γ1 Γ2 : list mobj} {a c : mobj}
   (e : Γ1 ++ [a] ++ Γ2 = Γ1 ++ a :: Γ2) (f : mhom (Γ1 ++ a :: Γ2) c) :
   mcast e (mcomp f (mid a)) ≈ f.
@@ -357,9 +356,7 @@ Proof.
   - apply mcomp_id_right.
 Qed.
 
-(* The right unit law with no cast at all: the boundary equation
-   [Γ1 ++ [a] ++ Γ2 = Γ1 ++ a :: Γ2] is definitional, so the two sides
-   already inhabit convertible hom-setoids. *)
+(* 相关说明。 （已译） *)
 Lemma mcomp_id_right_plain {Γ1 Γ2 : list mobj} {a c : mobj}
   (f : mhom (Γ1 ++ a :: Γ2) c) :
   mcomp f (mid a) ≈ f.

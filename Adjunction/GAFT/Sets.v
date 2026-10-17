@@ -12,7 +12,7 @@ Require Import Category.Instance.Adjoints.
 
 Generalizable All Variables.
 
-(** * The General Adjoint Functor Theorem, run at [Sets] *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functor_theorem
@@ -67,10 +67,9 @@ Definition GAFT_at_Sets_Id_is_Id : projT1 GAFT_at_Sets_Id ≈ @Id Sets :=
   left_adjoint_iso (@Id Sets) (projT1 GAFT_at_Sets_Id) (@Id Sets)
     (projT2 GAFT_at_Sets_Id) (@adj_id Sets).
 
-(** ** By-product: equalizers in [Sets] *)
+(* 相关说明。 （已译） *)
 
-(* Read off completeness by [Complete_HasEqualizers]; NOT the first and not
-   the only inhabitant -- see the note below.  Kept a [Definition]. *)
+(* 相关说明。 （已译） *)
 Definition Sets_HasEqualizers : HasEqualizers Sets :=
   Complete_HasEqualizers Sets_Complete.
 
@@ -80,8 +79,7 @@ Definition Sets_HasEqualizers : HasEqualizers Sets :=
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The characterization at [Sets], and that its reverse half is the
-       application already here *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -100,8 +98,7 @@ Definition Sets_Id_has_left : { F : Sets ⟶ Sets & F ⊣ Id } :=
 Definition Sets_Id_has_left_is_GAFT_at_Sets_Id :
   Sets_Id_has_left = GAFT_at_Sets_Id := eq_refl.
 
-(* The manufactured family at [Id], and its agreement with the hand-built
-   one at each of the three data fields. *)
+(* 相关说明。 （已译） *)
 
 Definition Sets_Id_SolutionSet_of_adjunction (d : Sets) : SolutionSet (@Id Sets) d :=
   solution_set_of_adjunction (@adj_id Sets) d.

@@ -36,7 +36,7 @@ Context {M : C ⟶ C}.
 Context `{SMon : @StrongMonad C _ M}.
 
 (* ------------------------------------------------------------------ *)
-(** ** Naturality corollaries in single-variable rewrite form.          *)
+(* 相关说明。 （已译） *)
 (* ------------------------------------------------------------------ *)
 
 (* Clean the identity components out of a joint naturality square. *)
@@ -85,11 +85,11 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** The double-strength toolkit: unit laws and naturality.           *)
+(* * ** The double-strength toolkit: unit laws 自然性. （已译） *)
 (* ------------------------------------------------------------------ *)
 
-(* Feeding a returned value into the left factor of [dstr] leaves just the
-   left strength: the rstr leg collapses by [rstr_ret] and [join_ret]. *)
+(* Feeding returned value 进入 left factor [dstr] leaves just the
+ left strength: rstr leg collapses [rstr_ret] [join_ret]. （已译） *)
 Lemma dstr_ret_left {x y} :
   dstr ∘ (ret[M] ⨂ id[M y]) ≈ (strength[M] : x ⨂ M y ~> M (x ⨂ y)).
 Proof.
@@ -102,8 +102,8 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* Mirror: feeding a returned value into the right factor of [dstr'] leaves
-   just the derived right strength. *)
+(* Mirror: feeding returned value 进入 right factor [dstr'] leaves
+ just derived right strength. （已译） *)
 Lemma dstr'_ret_right {x y} :
   dstr' ∘ (id[M x] ⨂ ret[M]) ≈ (rstr : M x ⨂ y ~> M (x ⨂ y)).
 Proof.
@@ -149,9 +149,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* Both factors pure at once: the double strength collapses to the unit.
-   Shared by [kl_pure_tensor] (Monad/Kleisli/Commutative.v) and the
-   thunkability development (Monad/Thunkable.v). *)
+(* 相关说明。 （已译） *)
 Lemma dstr_ret_ret {x y} :
   dstr ∘ (ret[M] ⨂ ret[M]) ≈ (ret[M] : x ⨂ y ~{C}~> M (x ⨂ y)).
 Proof.
@@ -209,12 +207,10 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** Führmann's reassociation lemmas.                                 *)
+(* 相关说明。 （已译） *)
 (* ------------------------------------------------------------------ *)
 
-(* Rebracketing [dstr] through an extra M-layer on the left factor: for ANY
-   f, applying [fmap ret] to the left component and then collapsing with
-   join ∘ fmap rstr computes [dstr] again. *)
+(* 相关说明。 （已译） *)
 Lemma dstr_reassoc_left {a b c d} (f : a ~> M b) (g : c ~> M d) :
   join[M] ∘ fmap[M] rstr ∘ dstr ∘ ((fmap[M] ret[M] ∘ f) ⨂ g)
     ≈ dstr ∘ (f ⨂ g).
@@ -236,8 +232,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* The same expression with a bare ret in place of fmap ret instead
-   computes the sibling double strength [dstr']. *)
+(* 相关说明。 （已译） *)
 Lemma dstr_reassoc_left' {a b c d} (f : a ~> M b) (g : c ~> M d) :
   join[M] ∘ fmap[M] rstr ∘ dstr ∘ ((ret[M] ∘ f) ⨂ g)
     ≈ dstr' ∘ (f ⨂ g).
@@ -292,7 +287,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** The two right-strength coherences.                               *)
+(* 相关说明。 （已译） *)
 (* ------------------------------------------------------------------ *)
 
 (*
@@ -328,8 +323,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* The same coherence solved against the associator: precomposing the braid
-   word with to tensor_assoc on the left cancels the inverse associator. *)
+(* 相关说明。 （已译） *)
 Lemma braid_swap_assoc_solved {a b c} :
   to (@tensor_assoc _ _ a b c) ∘ braid ∘ (id[c] ⨂ braid)
     ∘ to (@tensor_assoc _ _ c b a)
@@ -399,7 +393,7 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(* The α-coherence in the [RightStrongFunctor] field orientation. *)
+(* 相关说明。 （已译） *)
 Lemma rstr_assoc {x y z} :
   rstr ∘ bimap rstr id ∘ from (@tensor_assoc _ _ (M x) y z)
     ≈ fmap[M] (from (@tensor_assoc _ _ x y z)) ∘ rstr.
@@ -417,7 +411,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** The mixed associativity coherence.                               *)
+(* 相关说明。 （已译） *)
 (* ------------------------------------------------------------------ *)
 
 (*
@@ -429,7 +423,7 @@ Lemma strength_rstr_assoc {x y z} :
   fmap[M] (to (@tensor_assoc _ _ x y z)) ∘ rstr ∘ bimap strength[M] id
     ≈ strength[M] ∘ bimap id rstr ∘ to (@tensor_assoc _ _ x (M y) z).
 Proof.
-  (* Stage 1: the symmetric hexagon, solved for α⁻¹ ∘ β. *)
+  (* 相关说明。 （已译） *)
   assert (S1 : from (@tensor_assoc _ _ z x (M y))
                  ∘ @braid C _ (x ⨂ M y)%object z
                  ≈ (braid ⨂ id[M y])
@@ -465,7 +459,7 @@ Proof.
   apply compose_respects; [|reflexivity].
   apply compose_respects; [|reflexivity].
   apply fmap_respects.
-  (* Stage 3: the residual braid word is the first hexagon plus invol. *)
+  (* 相关说明。 （已译） *)
   rewrite hexagon_identity.
   rewrite <- comp_assoc.
   rewrite <- bimap_comp.
@@ -476,7 +470,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** Packaging: the right strong functor and right strong monad.      *)
+(* * ** Packaging: right strong 函子 right strong 单子. （已译） *)
 (* ------------------------------------------------------------------ *)
 
 (*
@@ -492,8 +486,7 @@ Proof using C M SM SMon.
   exact (@rstr_natural C SM M SMon x1 y1 x2 y2 f g).
 Defined.
 
-(* The packaging that Monad/Strong.v deferred: rstr, with the ρ- and
-   α-coherences proved above, is a [RightStrongFunctor] structure on M. *)
+(* 相关说明。 （已译） *)
 Definition rstr_RightStrongFunctor : @RightStrongFunctor C _ M :=
   @Build_RightStrongFunctor C _ M
     rstr_nat
@@ -505,9 +498,9 @@ Corollary rstrength_is_rstr {x y} :
   @rstrength C _ M rstr_RightStrongFunctor x y ≈ rstr.
 Proof. reflexivity. Qed.
 
-(* Together with the monad-compatibility laws [rstr_ret] and [rstr_join]
-   from Monad/Strong.v, every strong monad over a symmetric base is a right
-   strong monad. *)
+(* Together 单子-compatibility laws [rstr_ret] [rstr_join]
+ Monad/Strong.v, every strong 单子 over symmetric base right
+ strong 单子. （已译） *)
 Definition rstr_RightStrongMonad : @RightStrongMonad C _ M :=
   @Build_RightStrongMonad C _ M
     strongmonad_is_monad
@@ -516,7 +509,7 @@ Definition rstr_RightStrongMonad : @RightStrongMonad C _ M :=
     (fun x y => @rstr_join C SM M SMon x y).
 
 (* ------------------------------------------------------------------ *)
-(** ** The bridge to [CommutativeStrongMonad].                          *)
+(* 相关说明。 （已译） *)
 (* ------------------------------------------------------------------ *)
 
 (*

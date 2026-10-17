@@ -210,8 +210,8 @@ Instance fobj_respects `(F : C ⟶ D) :
 
 Ltac functor := unshelve (refine {| fobj := _; fmap := _ |}; simpl; intros).
 
-(* The identity functor Id[C] maps every object and morphism to itself; it is
-   the unit for functor composition (see fun_equiv_id_left/right below). *)
+(*((()))通过关于抉择 I 没有将每个对象和 怎么形态很有可能
+做出的承诺者构成为其纲的单位 没错,请参见 fun 的第一次报告。 你是不是在为弄清i units*)
 Program Definition Id {C : Category} : C ⟶ C := {|
   fobj := fun x => x;
   fmap := fun _ _ f => f
@@ -221,8 +221,7 @@ Arguments Id {C} /.
 
 Notation "Id[ C ]" := (@Id C) (at level 0, format "Id[ C ]") : functor_scope.
 
-(* Composition of functors F ◯ G applies G then F on both objects and
-   morphisms. It is associative with Id as unit, making Cat a category. *)
+(* 函子复合 F ◯ G：先 G 后 F，作用于对象与态射；结合且以恒等为两侧单位。（已译） *)
 Program Definition Compose {C D E : Category}
         (F : D ⟶ E) (G : C ⟶ D) : C ⟶ E := {|
   fobj := fun x => fobj (fobj x);
@@ -347,9 +346,7 @@ Defined.
   prefmap := fun _ _ g => prefmap (F:=G) (prefmap (F:=F) g)  (* G's after F's *)
 |}.
 Next Obligation.
-  (* The goal is fmap[F] (fmap[G] (prefmap (prefmap g))) ≈ g.  Cancel G's
-     section underneath fmap[F] — legitimate because [fmap_respects] makes
-     fmap[F] a setoid morphism — and then F's. *)
+  (* 目标为 fmap[F] (fmap[G] (prefmap (prefmap g))) ≈ g；消去 G 在 fmap 下的截面对应。（已译） *)
   rewrite fmap_sur.
   apply fmap_sur.
 Qed.
@@ -359,8 +356,7 @@ Qed.
   Faithful (F ◯ G).
 Proof.
   constructor; intros x y f g Hfg.
-  (* fmap[F ◯ G] h is fmap[F] (fmap[G] h) definitionally, so the hypothesis
-     is already F's injectivity premise at the pair (G x, G y). *)
+  (* fmap[F ◯ G] h 定义上即 fmap[F] (fmap[G] h)，故假设已是 F 的单性形式。（已译） *)
   apply (fmap_inj (F:=G)).
   apply (fmap_inj (F:=F)).
   exact Hfg.

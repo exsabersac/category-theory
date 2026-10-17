@@ -12,7 +12,7 @@ Require Export Category.Theory.Coq.Monad.
 
 Generalizable All Variables.
 
-(** Instance characterisations and lawfulness for the Coq monads *)
+(** Instance characterisations lawfulness Coq 单子 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/monad
@@ -57,9 +57,9 @@ Qed.
 
 Section Compose_Monad.
 
-(* If we have a monad [M] composed with an applicative [N], and we know that
-   they distribute as in [N (M (N a)) ~> M (N a)], then the composition is
-   also a monad. *)
+(* If we have 单子 [M] composed applicative [N], we know that
+ they distribute [N (M (N a)) ~> M (N a)], then 复合 is
+ 单子. （已译） *)
 
 Context `(HF : EndoFunctor F).
 Context `(AF : @Functor.Applicative.Applicative _ _ (FromAFunctor HF)).
@@ -67,9 +67,9 @@ Context `(MF : @Theory.Monad.Monad _ (FromAFunctor HF)).
 Context `(HG : EndoFunctor G).
 Context `(AG : @Functor.Applicative.Applicative _ _ (FromAFunctor HG)).
 
-(* This is the essential condition, as explained by Mark P. Jones and Luc
-   Duponcheel in their article "Composing monads", Research Report
-   YALEU/DCS/RR-1004, December 1993. *)
+(* This essential condition, explained Mark P. Jones Luc
+ Duponcheel article "Composing 单子", Research Report
+ YALEU/DCS/RR-1004, December 1993. （已译） *)
 Context `{D : @Monad_Distributive _ _ (FromAFunctor HF) _ (FromAFunctor HG) _ AG}.
 
 Definition EndoMonad_Distributes : Monad_Distributes F G :=

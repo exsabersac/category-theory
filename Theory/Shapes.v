@@ -29,11 +29,11 @@ Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
 (* ---------------------------------------------------------------------- *)
-(** ** Objects of C versus functors out of the point *)
+(* * ** Objects C versus 函子 out point （已译） *)
 (* ---------------------------------------------------------------------- *)
 
-(* The functor picking out an object: everything goes to [x], the lone
-   arrow of [_1] to [id]. *)
+(* The 函子 picking out 对象: everything goes [x], lone
+ arrow [_1] [id]. （已译） *)
 Program Definition Point {C : Category} (x : C) : _1 ⟶ C := {|
   fobj := fun _ => x;
   fmap := fun _ _ _ => id
@@ -83,9 +83,9 @@ Proof.
     rewrite id_right, iso_from_to; reflexivity.
 Qed.
 
-(* The same correspondence one level up, as functors between categories.
-   [One_Eval] evaluates at the point, [One_Const] is [Point] made
-   functorial. *)
+(* The same correspondence one level up, 函子 between 范畴.
+ [One_Eval] evaluates at point, [One_Const] [Point] made
+ functorial. （已译） *)
 Program Definition One_Eval {C : Category} : [_1, C] ⟶ C := {|
   fobj := fun F => F ttt;
   fmap := fun F G η => transform[η] ttt
@@ -160,11 +160,11 @@ Next Obligation.
 Qed.
 
 (* ---------------------------------------------------------------------- *)
-(** ** Morphisms of C versus functors out of the walking arrow *)
+(* * ** Morphisms C versus 函子 out walking arrow （已译） *)
 (* ---------------------------------------------------------------------- *)
 
-(* The functor materializing a morphism: [TwoX] and [TwoY] go to its
-   endpoints, [TwoXY] to the morphism itself, the two identities to [id]. *)
+(* The 函子 materializing 态射: [TwoX] [TwoY] go its
+ endpoints, [TwoXY] 态射 itself, two identities [id]. （已译） *)
 Program Definition Walk {C : Category} {x y : C} (f : x ~> y) : _2 ⟶ C := {|
   fobj := fun a => match a with TwoX => x | TwoY => y end;
   fmap := fun a b (g : TwoHom a b) =>
@@ -195,7 +195,7 @@ Proof. exact (@fmap_id _ _ F TwoX). Qed.
 Lemma fmap_TwoIdY {C : Category} (F : _2 ⟶ C) : fmap[F] TwoIdY ≈ id.
 Proof. exact (@fmap_id _ _ F TwoY). Qed.
 
-(* ... and the morphism it materializes. *)
+(* ... 态射 it materializes. （已译） *)
 Definition arrow_of {C : Category} (F : _2 ⟶ C) : F TwoX ~> F TwoY := fmap[F] TwoXY.
 
 (*
@@ -235,12 +235,12 @@ Theorem Walk_objects_agree {C : Category} {x y : C} (f g : x ~> y) :
 Proof. intro a; destruct a; reflexivity. Qed.
 
 (* ---------------------------------------------------------------------- *)
-(** ** The comparison [_2, C] versus the arrow category *)
+(* * ** The comparison [_2, C] versus arrow 范畴 （已译） *)
 (* ---------------------------------------------------------------------- *)
 
-(* A functor out of [_2] gives the object of [Arrow C] that its generating
-   arrow names; a natural transformation gives the commuting square, which
-   is precisely its naturality at [TwoXY]. *)
+(* A 函子 out [_2] gives 对象 [Arrow C] generating
+ arrow names; 自然变换 gives 交换方块, which
+ precisely 自然性 at [TwoXY]. （已译） *)
 Program Definition Arrow_of_Fun {C : Category} : [_2, C] ⟶ @Arrow C := {|
   fobj := fun F => ((F TwoX, F TwoY); fmap[F] TwoXY);
   fmap := fun F G η => ((transform[η] TwoX, transform[η] TwoY); _)
@@ -356,7 +356,7 @@ Next Obligation.
 Qed.
 
 (* ---------------------------------------------------------------------- *)
-(** ** Composable pairs versus functors out of the ordinal 3 *)
+(* * ** Composable pairs versus 函子 out ordinal 3 （已译） *)
 (* ---------------------------------------------------------------------- *)
 
 (*
@@ -371,9 +371,9 @@ Definition three_01 : ord3_0 ~{_3}~> ord3_1 := ord_step ord2_0.
 Definition three_12 : ord3_1 ~{_3}~> ord3_2 := ord_step ord2_1.
 Definition three_02 : ord3_0 ~{_3}~> ord3_2 := three_12 ∘ three_01.
 
-(* The object assignment of a composable pair, read off an index.  It is
-   total on [nat] because Instance/Ordinal.v's [OrdSteps] is; the values
-   past 2 are never consulted. *)
+(* The 对象 assignment composable pair, read off index. It is
+ total [nat] because Instance/Ordinal.v's [OrdSteps] is; values
+ past 2 never consulted. （已译） *)
 Definition pair_obj {C : Category} (x y z : C) : nat → C :=
   fun k => match k with O => x | S O => y | _ => z end.
 
@@ -387,9 +387,7 @@ Definition pair_steps {C : Category} (X : nat → C)
         False_rect _ (le_t_zero_absurd (le_t_SS_inv (le_t_SS_inv H)))
     end.
 
-(* A composable pair gives a diagram of shape 3.  This is
-   Instance/Ordinal.v's [Functor_of_Steps] at n = 2, the case one below its
-   [Functor_of_Triple]. *)
+(* 相关说明。 （已译） *)
 Definition Functor_of_Pair {C : Category} {x y z : C}
   (f : x ~> y) (g : y ~> z) : _3 ⟶ C :=
   Functor_of_Steps (pair_steps (pair_obj x y z) f g).
@@ -415,15 +413,15 @@ Proof.
   reflexivity.
 Qed.
 
-(* ... and the composable pair a diagram of shape 3 carries. *)
+(* 相关说明。 （已译） *)
 Definition pair_fst {C : Category} (F : _3 ⟶ C) : F ord3_0 ~> F ord3_1 :=
   fmap[F] three_01.
 Definition pair_snd {C : Category} (F : _3 ⟶ C) : F ord3_1 ~> F ord3_2 :=
   fmap[F] three_12.
 
-(* The comparison isomorphism at each object of [_3].  An object is one of
-   the three, so the three named ones are hit; the fourth branch is the
-   out-of-range index, ruled out by the bound. *)
+(* The comparison 同构 at each 对象 [_3]. An 对象 one of
+ three, so three named ones hit; fourth branch the
+ out-of-range index, ruled out bound. （已译） *)
 Definition pair_theta {C : Category} (F : _3 ⟶ C) (w : Ord_obj 3) :
   Functor_of_Pair (pair_fst F) (pair_snd F) w ≅ F w.
 Proof.
@@ -470,12 +468,12 @@ Require Import Coq.Lists.List.
 Require Import Coq.micromega.Lia.
 
 (* ---------------------------------------------------------------------- *)
-(** ** Seven Sketches §3.3.2, Example 3.36: the correspondence at [_3] *)
+(* 相关说明。 （已译） *)
 (* ---------------------------------------------------------------------- *)
 
-(* [_3] has exactly three non-identity morphisms, and the [_2]-correspondence
-   turns each into a functor [_2 ⟶ _3].  These are the three the example
-   draws. *)
+(* [_3] has exactly three non-恒等 态射, [_2]-correspondence
+ turns each 函子 [_2 ⟶ _3]. These three example
+ draws. （已译） *)
 Definition Two_Three_01 : _2 ⟶ _3 := Walk three_01.
 Definition Two_Three_12 : _2 ⟶ _3 := Walk three_12.
 Definition Two_Three_02 : _2 ⟶ _3 := Walk three_02.
@@ -492,8 +490,8 @@ Example Two_Three_12_cod : Two_Three_12 TwoY = ord3_2 := eq_refl.
 Example Two_Three_02_dom : Two_Three_02 TwoX = ord3_0 := eq_refl.
 Example Two_Three_02_cod : Two_Three_02 TwoY = ord3_2 := eq_refl.
 
-(* The correspondence exercised on this concrete target: each functor gives
-   back the morphism it came from. *)
+(* The correspondence exercised concrete target: each 函子 gives
+ back 态射 it came from. （已译） *)
 Corollary Two_Three_01_arrow : arrow_of Two_Three_01 ≈ three_01.
 Proof. exact (arrow_of_Walk three_01). Qed.
 Corollary Two_Three_12_arrow : arrow_of Two_Three_12 ≈ three_12.
@@ -543,12 +541,12 @@ Theorem two_three_objects_determine (F G : _2 ⟶ _3) (H : ∀ a, F a = G a) :
 Proof. exists H; intros a b f; apply le_t_irr. Qed.
 
 (* ---------------------------------------------------------------------- *)
-(** ** Seven Sketches §3.3.2, Exercise 3.37: there are exactly six *)
+(* 相关说明。 （已译） *)
 (* ---------------------------------------------------------------------- *)
 
-(* The correspondence, packaged at the total space of morphisms of [_3].
-   [OrdMor 3] bundles a morphism with its endpoints, which is exactly the
-   data a functor out of [_2] carries. *)
+(* The correspondence, packaged at total space 态射 [_3].
+ [OrdMor 3] bundles 态射 endpoints, exactly the
+ data 函子 out [_2] carries. （已译） *)
 Definition two_three_mor (F : _2 ⟶ _3) : OrdMor 3 :=
   existT _ (F TwoX) (existT _ (F TwoY) (fmap[F] TwoXY)).
 
@@ -564,9 +562,9 @@ Theorem mor_of_two_three_mor (F : _2 ⟶ _3) :
   @equiv _ Functor_StrictEq_Setoid (mor_two_three (two_three_mor F)) F.
 Proof. exact (Walk_arrow_of_strict F). Qed.
 
-(* A functor [_2 ⟶ _3] read as a pair of indices, THROUGH the
-   correspondence: [ord_coords] is Instance/Ordinal.v's coordinate map on
-   morphisms, and [two_three_mor] is the correspondence. *)
+(* A 函子 [_2 ⟶ _3] read pair indices, THROUGH the
+ correspondence: [ord_coords] Instance/Ordinal.v's coordinate map on
+ 态射, [two_three_mor] correspondence. （已译） *)
 Definition two_three_coords (F : _2 ⟶ _3) : (nat * nat)%type :=
   ord_coords (two_three_mor F).
 
@@ -614,7 +612,7 @@ Proof.
   now rewrite two_three_mor_of_mor.
 Qed.
 
-(* The index list is exactly the pairs i ≤ j < 3. *)
+(* 相关说明。 （已译） *)
 Theorem two_three_index_char (i j : nat) :
   In (i, j) two_three_index ↔ ((i <= j)%nat ∧ (j < 3)%nat).
 Proof.
@@ -623,9 +621,9 @@ Proof.
   - intros [H1 H2]; exact (ord_pairs_complete 3 i j H1 H2).
 Qed.
 
-(* Exercise 3.37, assembled: the functors [_2 ⟶ _3] are classified, up to
-   strict functor equality, by a duplicate-free list of SIX index pairs,
-   one per i ≤ j. *)
+(* Exercise 3.37, assembled: 函子 [_2 ⟶ _3] classified, up to
+ strict 函子 equality, duplicate-free list SIX index pairs,
+ one per i ≤ j. （已译） *)
 Theorem two_three_enumeration :
   ((length two_three_index = 6)%nat *
    NoDup two_three_index *
@@ -640,7 +638,7 @@ Proof.
 Qed.
 
 (* ---------------------------------------------------------------------- *)
-(** ** Seven Sketches §3.3.3, Exercise 3.45: the point into [Sets] *)
+(* 相关说明。 （已译） *)
 (* ---------------------------------------------------------------------- *)
 
 (* Two small setoids used only as witnesses below. *)
@@ -683,9 +681,9 @@ Proof. reflexivity. Qed.
 Corollary Sets_point_of (F : _1 ⟶ Sets) : Point (point_of F) ≈ F.
 Proof. exact (Point_point_of F). Qed.
 
-(* The identification is at the right granularity: two setoids give
-   equivalent functors from the point exactly when they are isomorphic in
-   [Sets]. *)
+(* The identification at right granularity: two setoids give
+ equivalent 函子 point exactly they isomorphic in
+ [Sets]. （已译） *)
 Corollary Sets_point_iso (S T : Sets) :
   (Point S ≈ Point T) ↔ (S ≅[Sets] T).
 Proof. exact (Point_equiv_iso S T). Qed.

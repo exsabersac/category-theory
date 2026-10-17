@@ -8,7 +8,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * Identity and composition of hom-set adjunctions *)
+(* * * Identity 复合 hom-set 伴随 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
@@ -64,9 +64,9 @@ Context {U' : E ⟶ C}.
 Context (A : F ⊣ U).
 Context (A' : F' ⊣ U').
 
-(* The composite transposing isomorphism: paste the two hom-setoid
-   isomorphisms in Sets. Its [to] transposes through A' and then A; its
-   [from] transposes back through A and then A'. *)
+(* The 复合 transposing 同构: paste two hom-setoid
+ isomorphisms Sets. Its [to] transposes through A' then A; its
+ [from] transposes back through A then A'. （已译） *)
 
 Definition adj_compose_iso (x : D) (y : E) :
   @Isomorphism Sets
@@ -74,8 +74,8 @@ Definition adj_compose_iso (x : D) (y : E) :
     {| carrier := @hom D x (U (U' y)) ; is_setoid := @homset D x (U (U' y)) |} :=
   iso_compose (@adj _ _ _ _ A x (U' y)) (@adj _ _ _ _ A' (F x) y).
 
-(* Naturality of the composite's forward transpose in the source argument:
-   inner step by A''s [to_adj_nat_l], outer step by A's. *)
+(* Naturality 复合's forward transpose source 论元:
+ inner step A''s [to_adj_nat_l], outer step A's. （已译） *)
 Lemma adj_compose_to_nat_l (x y : D) (z : E)
       (f : F' (F y) ~> z) (g : x ~> y) :
   to (adj_compose_iso x z) (f ∘ fmap[F'] (fmap[F] g))
@@ -89,8 +89,8 @@ Proof.
   - apply to_adj_nat_l.
 Qed.
 
-(* Naturality of the composite's forward transpose in the target argument:
-   inner step by A''s [to_adj_nat_r], outer step by A's. *)
+(* Naturality 复合's forward transpose target 论元:
+ inner step A''s [to_adj_nat_r], outer step A's. （已译） *)
 Lemma adj_compose_to_nat_r (x : D) (y z : E)
       (f : y ~> z) (g : F' (F x) ~> y) :
   to (adj_compose_iso x z) (f ∘ g)
@@ -146,9 +146,9 @@ Definition Adjunction_Compose : (F' ◯ F) ⊣ (U ◯ U') :=
     adj_compose_from_nat_l
     adj_compose_from_nat_r.
 
-(* The transposes of the composite are the pasted transposes, definitionally:
-   the forward transpose goes through A' and then A, the inverse transpose
-   back through A and then A'. *)
+(* The transposes 复合 pasted transposes, definitionally:
+ forward transpose goes through A' then A, inverse transpose
+ back through A then A'. （已译） *)
 
 Corollary Adjunction_Compose_to {x : D} {y : E} (f : F' (F x) ~> y) :
   to (@adj _ _ _ _ Adjunction_Compose x y) f
@@ -178,8 +178,8 @@ Corollary Adjunction_Compose_adj_comp_from {x : D} {y : E}
     ≈ from (@adj _ _ _ _ (adj_comp F' U' F U A' A) x y) g.
 Proof. reflexivity. Qed.
 
-(* The unit of the composite is A''s unit whiskered by U, after A's unit;
-   dually the counit is A''s counit after A's counit whiskered by F'. *)
+(* The unit 复合 A''s unit whiskered U, after A's unit;
+ dually counit A''s counit after A's counit whiskered F'. （已译） *)
 
 Corollary Adjunction_Compose_unit {x : D} :
   @unit _ _ _ _ Adjunction_Compose x

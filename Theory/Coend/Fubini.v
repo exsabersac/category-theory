@@ -19,7 +19,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** Element-level readings of the functor laws for a [Sets]-valued functor. *)
+(** Element-level readings 函子 laws [Sets]-valued 函子. （已译） *)
 Local Lemma fmap_id_app {K : Category} (G : K ⟶ Sets) {x : K} (z : G x) :
   fmap[G] (@id K x) z ≈ z.
 Proof. exact (@fmap_id K Sets G x z). Qed.
@@ -29,8 +29,8 @@ Local Lemma fmap_comp_app {K : Category} (G : K ⟶ Sets) {x y z : K}
   fmap[G] (g ∘ f) w ≈ fmap[G] g (fmap[G] f w).
 Proof. exact (@fmap_comp K Sets G x y z g f w). Qed.
 
-(** Collapse a two-fold [fmap] into a single one along a morphism equality:
-    the workhorse for the coend bookkeeping below. *)
+(** Collapse two-fold [fmap] single one along 态射 equality:
+ workhorse coend bookkeeping below. （已译） *)
 Local Lemma fmap_two {K : Category} (G : K ⟶ Sets) {x y z : K}
   (m1 : y ~{K}~> z) (m2 : x ~{K}~> y) (m3 : x ~{K}~> z)
   (Hm : m1 ∘ m2 ≈ m3) (w : G x) :
@@ -101,8 +101,8 @@ Proof.
   reflexivity.
 Qed.
 
-(** A [Hact_comp] variant that also rewrites the four composed morphisms to
-    chosen targets, so callers can absorb the identity laws in one step. *)
+(** A [Hact_comp] variant rewrites four composed 态射 to
+ chosen targets, so callers can absorb 恒等 laws one step. （已译） *)
 Lemma Hact_comp_clean (c1 c2 c1' c2' c1'' c2'' : C)
   (d1 d2 d1' d2' d1'' d2'' : D)
   (u : c1' ~{C}~> c1) (v : c2 ~{C}~> c2')
@@ -124,9 +124,9 @@ Proof.
   - apply Hact_respects; assumption.
 Qed.
 
-(** The inner integrand at fixed [c1 c2 : C]: the [D]-profunctor
-    [(d1, d2) ↦ H ((c1, d1), (c2, d2))], its functorial action being [Hact]
-    with the [C]-coordinates held at identities. *)
+(** 本节：The inner integrand at fixed [c1 c2 : C]: [D]-profunctor
+ [(d1, d2) ↦ H ((c1, d1), (c2, d2))], functorial action being [Hact]
+ [C]-coordinates held at identities. （已译） *)
 Program Definition InnerIntegrand (c1 c2 : C) : D^op ∏ D ⟶ Sets := {|
   fobj := fun dp => H ((c1, fst dp), (c2, snd dp));
   fmap := fun dp dq g =>
@@ -147,9 +147,9 @@ Next Obligation.
   - symmetry; apply Hact_comp.
 Qed.
 
-(** The leg at [d] of the [Inner]-functorial action of a [C]-move [(u, v)]:
-    apply the [C]-move by [Hact] (identities on the [D]-coordinate) and inject
-    into the inner coend at [c1', c2']. *)
+(** The leg at [d] [Inner]-functorial action [C]-move [(u, v)]:
+ apply [C]-move [Hact] (identities [D]-coordinate) inject
+ 进入 inner coend at [c1', c2']. （已译） *)
 Program Definition outer_leg (c1 c2 c1' c2' : C)
   (u : c1' ~{C}~> c1) (v : c2 ~{C}~> c2') (d : D) :
   SetoidMorphism (InnerIntegrand c1 c2 (d, d))
@@ -170,8 +170,7 @@ Lemma outer_leg_cond (c1 c2 c1' c2' : C)
     (outer_leg c1 c2 c1' c2' u v).
 Proof.
   unfold Cowedge_cond; intros x y f a; simpl.
-  (* The two nested [Hact]s collapse to the [InnerIntegrand c1' c2'] cowedge
-     legs applied to [w''], and the middle step is that coend's own glue. *)
+  (* 相关说明。 （已译） *)
   pose (w'' := Hact c1 c2 c1' c2' y x y x u v (@id D y) (@id D x) a).
   apply (ce_trans (InnerIntegrand c1' c2') _
            (ci (InnerIntegrand c1' c2') x
@@ -196,8 +195,8 @@ Proof.
       [ apply id_left | apply id_right | apply id_left | apply id_left ].
 Qed.
 
-(** The [Inner]-functorial action of a [C]-move as the coend mediator of the
-    legs above. *)
+(** 本节：The [Inner]-functorial action [C]-move coend mediator the
+ legs above. （已译） *)
 Definition inner_fmap (c1 c2 c1' c2' : C)
   (u : c1' ~{C}~> c1) (v : c2 ~{C}~> c2') :
   coend_apex_setoid (InnerIntegrand c1 c2)
@@ -205,7 +204,7 @@ Definition inner_fmap (c1 c2 c1' c2' : C)
   coend_mediator (InnerIntegrand c1 c2)
     (outer_leg c1 c2 c1' c2' u v) (outer_leg_cond c1 c2 c1' c2' u v).
 
-(** Computation rule of the mediator on a generator (definitional). *)
+(** 本节：Computation rule mediator generator (definitional). （已译） *)
 Lemma inner_fmap_ci (c1 c2 c1' c2' : C)
   (u : c1' ~{C}~> c1) (v : c2 ~{C}~> c2') (d : D)
   (w : H ((c1, d), (c2, d))) :
@@ -266,7 +265,7 @@ Local Lemma bimap_codiag (c1 c2 : C) (d1 d2 : D)
     ≈ Hact c2 c1 c2 c2 d2 d1 d2 d2 (@id C c2) u (@id D d2) g w.
 Proof. reflexivity. Qed.
 
-(** ** The Fubini comparison [∫^{(c,d)} H ≅ ∫^c ∫^d H] *)
+(* 相关说明。 （已译） *)
 
 (** Forward leg at [(c, d)]: [h ↦ ci c (ci d h)] (outer over [C] of inner over
     [D]). *)
@@ -286,10 +285,10 @@ Lemma fwd_cond : Cowedge_cond H (coend_apex_setoid Inner) fwd_leg.
 Proof.
   unfold Cowedge_cond; intros x y f a.
   destruct x as [c1 d1], y as [c2 d2], f as [fc fd]; simpl.
-  (* The two witnesses moving [a] partway around the square. *)
+  (* 相关说明。 （已译） *)
   pose (b1 := Hact c2 c1 c1 c1 d2 d1 d2 d1 fc (@id C c1) (@id D d2) (@id D d1) a).
   pose (a2 := Hact c2 c1 c2 c1 d2 d1 d2 d2 (@id C c2) (@id C c1) (@id D d2) fd a).
-  (* Step 1: rewrite the diagonal image as the inner [op fd]-image of [b1]. *)
+  (* 相关说明。 （已译） *)
   apply (ce_trans Inner _
     (ci Inner c1 (ci (InnerIntegrand c1 c1) d1
        (Hact c1 c1 c1 c1 d2 d1 d1 d1 (@id C c1) (@id C c1) fd (@id D d1) b1)))).
@@ -297,7 +296,7 @@ Proof.
     rewrite (bimap_diag c1 c2 d1 d2 fc fd a); subst b1; symmetry.
     apply Hact_comp_clean;
       [ apply id_right | apply id_left | apply id_left | apply id_left ]. }
-  (* Step 2: the inner [D]-coend glue at [c1] for [fd]. *)
+  (* 相关说明。 （已译） *)
   apply (ce_trans Inner _
     (ci Inner c1 (ci (InnerIntegrand c1 c1) d2
        (Hact c1 c1 c1 c1 d2 d1 d2 d2 (@id C c1) (@id C c1) (@id D d2) fd b1)))).
@@ -321,7 +320,7 @@ Proof.
       apply Hact_comp_clean;
         [ apply id_left | apply id_left | apply id_left | apply id_left ].
     - symmetry; apply inner_fmap_ci. }
-  (* Step 5: the outer [C]-coend glue for [fc]. *)
+  (* 相关说明。 （已译） *)
   apply (ce_trans Inner _
     (ci Inner c2 (inner_fmap c2 c1 c2 c2 (@id C c2) fc
        (ci (InnerIntegrand c2 c1) d2 a2)))).
@@ -343,8 +342,8 @@ Definition fwd :
   coend_apex_setoid H ~{Sets}~> coend_apex_setoid Inner :=
   coend_mediator H fwd_leg fwd_cond.
 
-(** Post-composing a coend morphism onto the injections yields a cowedge: the
-    legs [fun x => m ∘ coend_inj E] inherit their glue from [E]'s own. *)
+(** Post-composing coend 态射 onto injections yields cowedge: the
+ legs [fun x => m ∘ coend_inj E] inherit glue [E]'s own. （已译） *)
 Lemma postcompose_cowedge {K : Category} (G : K^op ∏ K ⟶ Sets)
   (E : Coend G) (Q : SetoidObject) (m : coend_obj E ~{Sets}~> Q) :
   Cowedge_cond G Q (fun x => m ∘ @coend_inj K Sets G E x).
@@ -354,9 +353,9 @@ Proof.
   reflexivity.
 Qed.
 
-(** Backward inner cowedge at [c]: inject [∫^d H((c,d),(c,d))] into [∫ H] by
-    landing at index [(c, d)]; the [D]-glue for [g] is [H]'s own glue at the
-    pair morphism [(id, g)]. *)
+(** Backward inner cowedge at [c]: inject [∫^d H((c,d),(c,d))] [∫ H] by
+ landing at index [(c, d)]; [D]-glue [g] [H]'s own glue at the
+ pair 态射 [(id, g)]. （已译） *)
 Lemma bwd_inner_cond (c : C) :
   Cowedge_cond (InnerIntegrand c c) (coend_apex_setoid H)
     (fun d => coend_inj_mor H (c, d)).

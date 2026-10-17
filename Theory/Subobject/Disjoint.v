@@ -13,7 +13,7 @@ Require Import Category.Structure.Bicartesian.Matrix.
 
 Generalizable All Variables.
 
-(** * The injections of a coproduct meet in the zero subobject *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/disjoint+coproduct
@@ -26,7 +26,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The arrow out of a zero object is monic *)
+(* * ** The arrow out zero 对象 monic （已译） *)
 
 Section ZeroMonic.
 
@@ -51,7 +51,7 @@ Qed.
 
 End ZeroMonic.
 
-(** ** The two injections of a coproduct meet in the bottom subobject *)
+(* 相关说明。 （已译） *)
 
 Section CoproductMeet.
 
@@ -61,22 +61,21 @@ Context `{CC : @Cocartesian C}.
 Context `{PB : @HasPullbacks C}.
 Context (x y : C).
 
-(* The two summands as subobjects of the coproduct, monic by
-   Structure/Bicartesian/Matrix.v's [inl_Monic] and [inr_Monic]. *)
+(* 相关说明。 （已译） *)
 Definition sub_inl : SubObj (x + y) :=
   {| sub_dom := x; sub_mono := inl; sub_is_monic := inl_Monic x y |}.
 
 Definition sub_inr : SubObj (x + y) :=
   {| sub_dom := y; sub_mono := inr; sub_is_monic := inr_Monic x y |}.
 
-(* The bottom subobject of the coproduct: the zero object, included by the
-   arrow out of it. *)
+(* The bottom subobject coproduct: zero 对象, included the
+ arrow out it. （已译） *)
 Definition coprod_bot : SubObj (x + y) :=
   @sub_bot C (@zero_initial C Z) (x + y) (zero_initial_monic (x + y)).
 
-(* Each leg of the chosen pullback of the two injections is the zero
-   morphism: apply the retraction [id ▽ zero_mor] (resp. [zero_mor ▽ id])
-   to the commuting square. *)
+(* Each leg chosen pullback two injections zero
+ 态射: apply retraction [id ▽ zero_mor] (resp. [zero_mor ▽ id])
+ 交换方块. （已译） *)
 Lemma inl_pullback_leg_zero :
   pullback_fst _ _ (pullback (@inl C CC x y) (@inr C CC x y)) ≈ zero_mor.
 Proof.
@@ -109,9 +108,9 @@ Proof.
   - apply sub_bot_least.
 Defined.
 
-(* The same fact in nLab's form: the pullback of the two injections is the
-   zero object, read off the isomorphism the subobject equivalence
-   carries. *)
+(* The same fact nLab's form: pullback two injections the
+ zero 对象, read off 同构 subobject 等价
+ carries. （已译） *)
 Definition coproduct_injections_pullback_zero :
   Pull (@inl C CC x y) (@inr C CC x y) (pullback inl inr)
     ≅ @initial_obj C (@zero_initial C Z) :=

@@ -10,7 +10,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * The Yoneda lemma and the Yoneda embedding. *)
+(* * * The Yoneda 引理 Yoneda embedding. （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Yoneda_lemma
@@ -65,13 +65,13 @@ Next Obligation.
   apply proper_morphism; assumption.
 Qed.
 Next Obligation.
-  (* The result of [from] respects the laws of the functor category. *)
+  (* The result [from] respects laws 函子 范畴. （已译） *)
   autounfold; simpl.
   destruct F; simpl in *.
   apply fmap_id.
 Qed.
 Next Obligation.
-  (* The result of [from] preserves morphism equivalences. *)
+  (* The result [from] preserves 态射 equivalences. （已译） *)
   autounfold.
   destruct F, x; simpl in *; intros.
   autounfold in *.
@@ -114,13 +114,13 @@ Next Obligation.
   apply proper_morphism; assumption.
 Qed.
 Next Obligation.
-  (* The result of [from] respects the laws of the functor category. *)
+  (* The result [from] respects laws 函子 范畴. （已译） *)
   autounfold; simpl.
   destruct F; simpl in *.
   apply fmap_id.
 Qed.
 Next Obligation.
-  (* The result of [from] preserves morphism equivalences. *)
+  (* The result [from] preserves 态射 equivalences. （已译） *)
   autounfold.
   destruct F, x; simpl in *; intros.
   autounfold in *.

@@ -9,7 +9,7 @@ Require Import Category.Functor.Strong.
 
 Generalizable All Variables.
 
-(** * Distributive law for composing monads *)
+(* * * Distributive law composing 单子 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Distributive_law_between_monads
@@ -32,7 +32,7 @@ Context `{@StrongFunctor C _ N}.
 Context `{@LaxMonoidalFunctor C C _ _ N}.
 
 Class Monad_Distributive := {
-  (* The swap/product operation pushing the inner N past the outer M. *)
+  (* 相关说明。 （已译） *)
   mprod {A} : N (M (N A)) ~> M (N A);
 
   (* Naturality of mprod: it is a natural transformation N ◯ M ◯ N ⟹ M ◯ N. *)
@@ -42,8 +42,8 @@ Class Monad_Distributive := {
   mprod_pure {A} : @mprod A ∘ pure[N] ≈ id;
   (* Right unit: applied to the stacked unit ret[M] ∘ pure[N], mprod is ret[M]. *)
   mprod_fmap_pure {A} : @mprod A ∘ fmap[N] (ret[M] ∘ pure[N]) ≈ ret[M];
-  (* Associativity: mprod commutes with the composite multiplication
-     join[M] ∘ fmap[M] mprod, so the induced join on M ◯ N is associative. *)
+  (* Associativity: mprod commutes 复合 multiplication
+ join[M] ∘ fmap[M] mprod, so induced join M ◯ N associative. （已译） *)
   mprod_fmap_join_fmap_mprod {A} :
     @mprod A ∘ fmap[N] (join[M] ∘ fmap[M] (@mprod A))
       ≈ join[M] ∘ fmap[M] (@mprod A) ∘ @mprod (M (N A))

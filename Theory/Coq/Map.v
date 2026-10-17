@@ -389,8 +389,8 @@ End Map.
 
 Arguments Map k v : clear implicits.
 
-(* Functorial action (fmap) of the endofunctor [Map k -]: transport values
-   along [f], leaving keys and structure fixed. *)
+(* Functorial action (fmap) 自函子 [Map k -]: transport values
+ along [f], leaving keys structure fixed. （已译） *)
 Fixpoint map `(f : v → b) `(m : Map k v) : Map k b :=
   match m with
   | Empty => Empty

@@ -26,7 +26,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Quotient objects as subobjects in the opposite category *)
+(* * ** Quotient 对象 subobjects opposite 范畴 （已译） *)
 
 (* Mac Lane §V.7: a quotient object of x is (an equivalence class of) an
    epimorphism out of x.  Since [Epic] in C is [Monic] in C^op
@@ -52,8 +52,7 @@ Definition quot_is_epic (q : QuotObj x) : Epic (quot_epi q) :=
 Definition mk_quot {y : C} (e : x ~> y) (He : Epic e) : QuotObj x :=
   @Build_SubObj (C^op) x y e (op_Monic_of_Epic e He).
 
-(* The setoid and the factorization preorder, read in quotient orientation:
-   q ≤ r when the epi of q factors through the epi of r. *)
+(* 相关说明。 （已译） *)
 #[export] Instance QuotObj_Setoid : Setoid (QuotObj x) :=
   @SubObj_Setoid (C^op) x.
 
@@ -61,7 +60,7 @@ Definition quot_le (q r : QuotObj x) : Type := @sub_le (C^op) x q r.
 
 End QuotientAccessors.
 
-(** ** Isomorphisms carried across the opposite category *)
+(* * ** Isomorphisms carried across opposite 范畴 （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。
@@ -97,7 +96,7 @@ Context {x : C}.
 *)
 Example QuotObj_op_is_SubObj : @QuotObj (C^op) x = @SubObj C x := eq_refl.
 
-(* The factorization order, covariantly, on the nose. *)
+(* 相关说明。 （已译） *)
 Example quot_le_unfold (q r : QuotObj x) :
   quot_le q r
   = { k : quot_cod r ~> quot_cod q & k ∘ quot_epi r ≈ quot_epi q }
@@ -131,7 +130,7 @@ Definition quot_le_epic (q r : QuotObj x) (H : quot_le q r) :
   @Epic_of_op_Monic C (quot_cod r) (quot_cod q) (`1 H)
     (@sub_le_monic (C^op) x q r H).
 
-(* Mediating arrows are unique, by epicness of the epi factored through. *)
+(* 相关说明。 （已译） *)
 Definition quot_le_unique (q r : QuotObj x)
   (k k' : quot_cod r ~> quot_cod q) :
   k ∘ quot_epi r ≈ quot_epi q → k' ∘ quot_epi r ≈ quot_epi q → k ≈ k' :=
@@ -173,8 +172,8 @@ Proof.
     exact Hj.
 Defined.
 
-(* Equivalent epis out of x present the same quotient object, the
-   identity isomorphism witnessing it. *)
+(* Equivalent epis out x present same quotient 对象, the
+ 恒等 同构 witnessing it. （已译） *)
 Definition mk_quot_respects {y : C} (e e' : x ~> y)
   (He : Epic e) (He' : Epic e') : e ≈ e' → mk_quot e He ≈ mk_quot e' He'.
 Proof.
@@ -201,7 +200,7 @@ Defined.
 
 End QuotientCovariant.
 
-(** ** Monic in C^op is Epic in C, both ways *)
+(* 相关说明。 （已译） *)
 
 Definition monic_op_iff_epic {C : Category} {x y : C} (f : x ~> y) :
   (@Monic (C^op) y x f → @Epic C x y f) * (@Epic C x y f → @Monic (C^op) y x f)
@@ -225,15 +224,14 @@ Definition monic_op_of_epic (f : x ~> y) : @Epic C x y f → @Monic (C^op) y x f
 
 End Bridges.
 
-(** ** The top quotient: x by the identity *)
+(* * ** The top quotient: x 恒等 （已译） *)
 
 Section QuotientTop.
 
 Context {C : Category}.
 Context {x : C}.
 
-(* [sub_top] at C^op.  It is the FINEST quotient of x, and the greatest
-   element of [quot_le]: every quotient of x factors through it. *)
+(* 相关说明。 （已译） *)
 Definition quot_top : QuotObj x := @sub_top (C^op) x.
 
 Example quot_top_cod : quot_cod quot_top = x := eq_refl.
@@ -244,7 +242,7 @@ Definition quot_top_greatest (q : QuotObj x) : quot_le q quot_top :=
 
 End QuotientTop.
 
-(** ** The lattice of quotient objects, by transport of the subobject one *)
+(* * ** The lattice quotient 对象, transport subobject one （已译） *)
 
 Section QuotientMeet.
 
@@ -262,7 +260,7 @@ Definition quot_meet (q r : QuotObj x) : QuotObj x :=
 
 End QuotientMeet.
 
-(** *** The meet laws, all instantiated at C^op *)
+(* 相关说明。 （已译） *)
 
 Section QuotientMeetLaws.
 
@@ -309,12 +307,11 @@ Definition quot_meet_assoc (q r s : QuotObj x) :
 Definition quot_meet_idem (q : QuotObj x) : quot_meet q q ≈ q :=
   @sub_meet_idem (C^op) (HasPullbacks_op_of_HasPushouts HP) x q.
 
-(* The identity quotient is a unit for the meet. *)
+(* The 恒等 quotient unit meet. （已译） *)
 Definition quot_meet_top (q : QuotObj x) : quot_meet q quot_top ≈ q :=
   @sub_meet_top (C^op) (HasPullbacks_op_of_HasPushouts HP) x q.
 
-(* "q ≤ r iff q ∧ r ≈ q", in two lemmas: [quot_le] is Type-valued data
-   and the two directions carry different data. *)
+(* 相关说明。 （已译） *)
 Definition quot_meet_of_le (q r : QuotObj x) :
   quot_le q r → quot_meet q r ≈ q :=
   @sub_meet_of_le (C^op) (HasPullbacks_op_of_HasPushouts HP) x q r.
@@ -325,7 +322,7 @@ Definition quot_le_of_meet (q r : QuotObj x) :
 
 End QuotientMeetLaws.
 
-(** *** The bottom quotient, under an epic arrow to the terminal object *)
+(* * *** The bottom quotient, under epic arrow 终对象 （已译） *)
 
 Section QuotientBottom.
 
@@ -361,7 +358,7 @@ Definition one_epic_of_costrict
 
 End QuotientBottom.
 
-(** *** Wide meets, over a wide pullback of C^op *)
+(* 相关说明。 （已译） *)
 
 Section QuotientWideMeet.
 
@@ -394,7 +391,7 @@ Definition quot_wide_meet_index_irrelevant (j0 j1 : J)
 
 End QuotientWideMeet.
 
-(** ** Coimages, and joins by coimage of the pairing *)
+(* 相关说明。 （已译） *)
 
 Section Coimages.
 
@@ -425,14 +422,14 @@ Context {C : Category}.
 Context `{CC : @Cartesian C}.
 Context {x : C}.
 
-(* The copairing of C^op is the pairing of C.  Spelling it in C is what
-   makes [CoimageOf] below pick the right category (see the header). *)
+(* The copairing C^op pairing C. Spelling it C what
+ makes [CoimageOf] below pick right 范畴 (see header). （已译） *)
 Definition quot_pairing (q r : QuotObj x) :
   x ~{C}~> @product_obj C CC (quot_cod q) (quot_cod r) :=
   @fork C CC x (quot_cod q) (quot_cod r) (quot_epi q) (quot_epi r).
 
-(* The join of two quotient objects: the coimage of the pairing of their
-   epis into the product of their codomains, given such a coimage. *)
+(* The join two quotient 对象: coimage pairing their
+ epis 进入 product codomains, given such coimage. （已译） *)
 Definition quot_join_via (q r : QuotObj x)
   (I : CoimageOf (quot_pairing q r)) : QuotObj x :=
   @sub_join_via (C^op) CC x q r I.
@@ -447,7 +444,7 @@ Definition quot_join_via_le_r (q r : QuotObj x)
   quot_le r (quot_join_via q r I) :=
   @sub_join_via_le_r (C^op) CC x q r I.
 
-(* The coimage is the LEAST quotient object above both. *)
+(* The coimage LEAST quotient 对象 above both. （已译） *)
 Definition quot_join_via_is_lub (q r : QuotObj x)
   (I : CoimageOf (quot_pairing q r)) (w : QuotObj x) :
   quot_le q w → quot_le r w → quot_le (quot_join_via q r I) w :=
@@ -460,7 +457,7 @@ Definition quot_join_via_IsJoin (q r : QuotObj x)
 
 End QuotientJoin.
 
-(** *** The join as a lattice operation, with coimages chosen *)
+(* 相关说明。 （已译） *)
 
 Section QuotientJoinLattice.
 
@@ -510,7 +507,7 @@ Definition quot_le_of_join (q r : QuotObj x) :
 
 End QuotientJoinLattice.
 
-(** *** Absorption: the two operations make a lattice on the setoid *)
+(* 相关说明。 （已译） *)
 
 Section QuotientAbsorption.
 

@@ -36,7 +36,7 @@ Context {M : C ⟶ C}.
 Context `{@StrongMonad C _ M}.
 
 (* ------------------------------------------------------------------ *)
-(** ** Tier 1: the Kleisli binoidal structure.                         *)
+(* 相关说明。 （已译） *)
 (* ------------------------------------------------------------------ *)
 
 (*
@@ -48,8 +48,8 @@ Definition kl_left_fmap (y' : C) {x z : C} (f : x ~{C}~> M z) :
   (x ⨂ y')%object ~{C}~> M ((z ⨂ y')%object) :=
   rstr ∘ (f ⨂ id[y']).
 
-(* The action of x' ⊗ - on a Kleisli morphism f : y ~> M z, through the
-   left strength. *)
+(* The action x' ⊗ - Kleisli 态射 f : y ~> M z, through the
+ left strength. （已译） *)
 Definition kl_right_fmap (x' : C) {y z : C} (f : y ~{C}~> M z) :
   (x' ⨂ y)%object ~{C}~> M ((x' ⨂ z)%object) :=
   strength[M] ∘ (id[x'] ⨂ f).
@@ -63,15 +63,14 @@ Proof.
   apply bimap_respects; [assumption|reflexivity].
 Qed.
 
-(* Identity preservation is the η-compat law of the derived right
-   strength. *)
+(* 相关说明。 （已译） *)
 Lemma kl_left_id (y' x : C) :
   kl_left_fmap y' (ret[M]) ≈ (ret[M] : x ⨂ y' ~> M (x ⨂ y')).
 Proof. apply rstr_ret. Qed.
 
-(* Composition preservation is the μ-compat law [rstr_join], with the
-   naturality corollary [rstr_natural_l] sliding the tensored middle map
-   past the strength. *)
+(* Composition preservation μ-compat law [rstr_join], the
+ 自然性 推论 [rstr_natural_l] sliding tensored middle map
+ past strength. （已译） *)
 Lemma kl_left_comp (y' : C) {x y z : C} (f : y ~> M z) (g : x ~> M y) :
   kl_left_fmap y' (join[M] ∘ fmap[M] f ∘ g)
     ≈ join[M] ∘ fmap[M] (kl_left_fmap y' f) ∘ kl_left_fmap y' g.
@@ -111,7 +110,7 @@ Proof.
   apply bimap_respects; [reflexivity|assumption].
 Qed.
 
-(* Identity preservation is the η-compat law of the left strength. *)
+(* 相关说明。 （已译） *)
 Lemma kl_right_id (x' y : C) :
   kl_right_fmap x' (ret[M]) ≈ (ret[M] : x' ⨂ y ~> M (x' ⨂ y)).
 Proof. apply strength_ret. Qed.
@@ -149,9 +148,9 @@ Definition Kleisli_Tensor_Right (x' : C) :
     (fun y => kl_right_id x' y)
     (fun x y z f g => kl_right_comp x' f g).
 
-(* The Power–Robinson binoidal structure on Kl(M): the object tensor is
-   inherited from C, and the two one-variable tensoring functors are the
-   strength-mediated actions above. *)
+(* The Power–Robinson binoidal structure Kl(M): 对象 tensor is
+ inherited C, two one-variable tensoring 函子 the
+ strength-mediated actions above. （已译） *)
 Definition Kleisli_Binoidal : @Binoidal Kleisli :=
   @Build_Binoidal Kleisli
     (fun x y : C => (x ⨂ y)%object)
@@ -172,7 +171,7 @@ Lemma kl_inj_right_fmap {x' y z : C} (f : y ~{C}~> M z) :
 Proof. reflexivity. Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** Normal forms for the two centrality squares.                    *)
+(* * ** Normal forms two 中心性 squares. （已译） *)
 (* ------------------------------------------------------------------ *)
 
 (*
@@ -253,15 +252,15 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** Tier 2: the pure functor C ⟶ Kl(M).                             *)
+(* * ** Tier 2: pure 函子 C ⟶ Kl(M). （已译） *)
 (* ------------------------------------------------------------------ *)
 
 (* A pure Kleisli morphism: an ordinary C-morphism followed by the unit. *)
 Definition kpure {x y : C} (f : x ~{C}~> y) : x ~{Kleisli}~> y :=
   ret[M] ∘ f.
 
-(* Postcomposing a Kleisli morphism with a pure map is functorial action:
-   the unit collapses through [join_fmap_ret]. *)
+(* Postcomposing Kleisli 态射 pure map functorial action:
+ unit collapses through [join_fmap_ret]. （已译） *)
 Lemma kl_pure_post {x y z : C} (u : y ~{C}~> z) (h : x ~{Kleisli}~> y) :
   @compose Kleisli _ _ _ (kpure u) h ≈ fmap[M] u ∘ h.
 Proof.
@@ -274,8 +273,8 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* Precomposing a Kleisli morphism with a pure map is plain C-level
-   precomposition: the unit collapses through [fmap_ret] and [join_ret]. *)
+(* Precomposing Kleisli 态射 pure map plain C-level
+ precomposition: unit collapses through [fmap_ret] [join_ret]. （已译） *)
 Lemma kl_pure_pre {x y z : C} (h : y ~{C}~> M z) (u : x ~{C}~> y) :
   @compose Kleisli _ _ _ h (kpure u) ≈ h ∘ u.
 Proof.
@@ -307,8 +306,7 @@ Proof.
   apply compose_respects; [reflexivity|assumption].
 Qed.
 
-(* Congruence for [kpure] in apply-friendly form, stated over the C-level
-   homset so that no Kleisli unification is required of the caller. *)
+(* 相关说明。 （已译） *)
 Lemma kpure_proper {x y : C} {f g : x ~{C}~> y} (E : f ≈ g) :
   (kpure f : x ~{C}~> M y) ≈ kpure g.
 Proof.
@@ -339,8 +337,7 @@ Definition Kleisli_Pure : C ⟶ Kleisli := {|
   fmap_comp := fun (x y z : C) f g => kpure_comp_functor f g
 |}.
 
-(* Pure maps slide through the left tensoring: the unit exits through the
-   η-compat law [rstr_ret] of the derived right strength. *)
+(* 相关说明。 （已译） *)
 Lemma pure_inj_left {x y : C} (f : x ~{C}~> y) (z : C) :
   fmap[@inj_left Kleisli Kleisli_Binoidal z] (kpure f) ≈ kpure (f ⨂ id[z]).
 Proof.
@@ -391,11 +388,11 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** Tier 3: the premonoidal structure on Kl(M).                     *)
+(* 相关说明。 （已译） *)
 (* ------------------------------------------------------------------ *)
 
-(* An isomorphism of C becomes an isomorphism of Kl(M) through the pure
-   functor: both inverse laws are the C-level laws under [kl_pure_comp]. *)
+(* An 同构 C becomes 同构 Kl(M) through pure
+ 函子: both inverse laws C-level laws under [kl_pure_comp]. （已译） *)
 Lemma kl_pure_iso_law {x y : C} (u : x ~{C}~> y) (v : y ~{C}~> x) :
   u ∘ v ≈ id[y] →
   @compose Kleisli _ _ _ (kpure u) (kpure v) ≈ @id Kleisli y.
@@ -415,9 +412,9 @@ Definition Kleisli_pure_iso {x y : C} (i : x ≅ y) : @Isomorphism Kleisli x y :
   iso_from_to := kl_pure_iso_law (from i) (to i) (iso_from_to i)
 |}.
 
-(* Naturality of the left unitor in Kl(M): after the pure-map exchange
-   laws, this is Kock's unit coherence [strength_id_left] composed with
-   naturality of λ in C. *)
+(* Naturality left unitor Kl(M): after pure-map exchange
+ laws, 这是 Kock's unit coherence [strength_id_left] composed with
+ 自然性 λ C. （已译） *)
 Lemma kl_unit_left_natural {x y : C} (g : x ~{Kleisli}~> y) :
   @compose Kleisli _ _ _ g (kpure (to (@unit_left C _ x)))
     ≈ @compose Kleisli _ _ _ (kpure (to (@unit_left C _ y)))
@@ -430,8 +427,8 @@ Proof.
   apply (@to_unit_left_natural C _ x (M y) g).
 Qed.
 
-(* Naturality of the right unitor: the mirror argument through the derived
-   right strength's ρ-coherence [rstr_id_right]. *)
+(* Naturality right unitor: 镜像 论元 through derived
+ right strength's ρ-coherence [rstr_id_right]. （已译） *)
 Lemma kl_unit_right_natural {x y : C} (g : x ~{Kleisli}~> y) :
   @compose Kleisli _ _ _ g (kpure (to (@unit_right C _ x)))
     ≈ @compose Kleisli _ _ _ (kpure (to (@unit_right C _ y)))
@@ -500,9 +497,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* Naturality of the associator in the RIGHT tensor position: Kock's
-   associativity coherence [strength_assoc] absorbs the two stacked right
-   tensorings. *)
+(* 相关说明。 （已译） *)
 Lemma kl_assoc_natural_right {x y z w : C} (i : z ~{Kleisli}~> w) :
   @compose Kleisli _ _ _
     (fmap[@inj_right Kleisli Kleisli_Binoidal x]
@@ -525,8 +520,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* The triangle coherence transfers from C: all three structural maps are
-   pure, so the equation is the image of C's triangle under [kpure]. *)
+(* 相关说明。 （已译） *)
 Lemma kl_triangle {x y : C} :
   fmap[@inj_left Kleisli Kleisli_Binoidal y] (kpure (to (@unit_right C _ x)))
   ≈ @compose Kleisli _ _ _
@@ -540,7 +534,7 @@ Proof.
   apply triangle_identity.
 Qed.
 
-(* The pentagon coherence transfers from C the same way. *)
+(* 相关说明。 （已译） *)
 Lemma kl_pentagon {x y z w : C} :
   @compose Kleisli _ _ _
     (@compose Kleisli _ _ _

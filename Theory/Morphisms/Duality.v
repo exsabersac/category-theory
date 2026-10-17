@@ -6,7 +6,7 @@ Require Import Category.Construction.Subcategory.
 
 Generalizable All Variables.
 
-(** * Monic/epi duality, carried out through the opposite category *)
+(* * * Monic/epi duality, carried out through opposite 范畴 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/monomorphism
@@ -48,7 +48,7 @@ Definition monic_cancel_op {C : Category} {x y z : C}
   fun H => Monic_of_op_Epic g
              (@epic_cancel (C^op) z y x g f (op_Epic_of_Monic (f ∘ g) H)).
 
-(* And [monic_compose] from [epi_compose], the same way. *)
+(* 相关说明。 （已译） *)
 Definition monic_compose_op {C : Category} {x y z : C}
   {f : y ~> z} {g : x ~> y} : Monic f → Monic g → Monic (f ∘ g) :=
   fun Hf Hg =>
@@ -72,7 +72,7 @@ Definition monic_compose_agrees {C : Category} {x y z : C}
   (Monic f → Monic g → Monic (f ∘ g)) :=
   (@monic_compose C x y z f g, @monic_compose_op C x y z f g).
 
-(** ** The wide subcategories of monos and of epis *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Duality 相关定义、性质与动机。

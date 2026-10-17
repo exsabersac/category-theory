@@ -58,7 +58,7 @@ Class Transform := {
   naturality {x y} (f : x ~> y) :
     fmap[G] f ∘ transform ≈ transform ∘ fmap[F] f;
 
-  (* the symmetric orientation of the naturality square (built-in dual) *)
+  (* the symmetric orientation 自然性 square (built-in dual) （已译） *)
   naturality_sym {x y} (f : x ~> y) :
     transform ∘ fmap[F] f ≈ fmap[G] f ∘ transform
   }.

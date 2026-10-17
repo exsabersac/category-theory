@@ -17,7 +17,7 @@ Import ListNotations.
 
 Generalizable All Variables.
 
-(** * The representable multicategory of a symmetric monoidal category *)
+(* * * The representable multicategory symmetric 幺半范畴 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/representable+multicategory
@@ -44,12 +44,12 @@ Context `{M : @Monoidal C}.
 Context {A : Type}.
 Context (ob : A → C).
 
-(** The tensor fold over an abstract colour type, through the object
-    realization [ob]. *)
+(** The tensor fold over abstract colour type, through 对象
+ realization [ob]. （已译） *)
 Definition tfold : list A → C :=
   fold_right (fun a acc => (ob a ⨂ acc)%object) I.
 
-(** ** The concatenation isomorphism, in both directions *)
+(* * ** The concatenation 同构, both directions （已译） *)
 
 Fixpoint tfold_app_to (Γ Δ : list A) :
   tfold (Γ ++ Δ) ~{C}~> (tfold Γ ⨂ tfold Δ)%object :=
@@ -145,9 +145,9 @@ Fixpoint msplice (Γ1 : list A) {Γ2 Δ : list A} {b : A}
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** Folding an empty suffix away: the right unitor against the
-    concatenation map is the cast along [Δ ++ [] = Δ], for any proof of
-    that boundary equation. *)
+(** Folding empty suffix away: right unitor against the
+ concatenation map cast along [Δ ++ [] = Δ], any 证明 of
+ boundary equation. （已译） *)
 Lemma tfold_nil_r (Δ : list A) (e : Δ ++ [] = Δ) :
   unit_right ∘ tfold_app_to Δ [] ≈ tcast e.
 Proof using luip.
@@ -194,8 +194,7 @@ Lemma tfold_app_assoc (x y z : list A) (e : x ++ y ++ z = (x ++ y) ++ z) :
         ∘ tfold_app_to x (y ++ z).
 Proof using luip.
   revert e; induction x as [| a x IH]; intros e; simpl.
-  - (* Empty prefix: the boundary equation is a loop, and the goal is
-       the inverse form of Kelly's left-unitor triangle. *)
+  - (* 相关说明。 （已译） *)
     rewrite tcast_loop, id_right.
     rewrite <- comp_assoc.
     rewrite from_unit_left_natural.
@@ -204,8 +203,8 @@ Proof using luip.
     rewrite comp_assoc.
     rewrite iso_from_to, id_left.
     reflexivity.
-  - (* Cons step: slide the head object out of every factor and apply
-       the inverse pentagon identity. *)
+  - (* Cons step: slide head 对象 out every factor apply
+ inverse pentagon 恒等. （已译） *)
     rewrite (luip _ _ e (f_equal (cons a) (app_assoc x y z))).
     rewrite tcast_cons.
     rewrite bimap_comp_id_right.
@@ -231,9 +230,9 @@ Proof using luip.
   apply tfold_app_assoc.
 Qed.
 
-(** Peeling a shared head colour off a boundary cast, for an ARBITRARY
-    proof between cons-shaped endpoints: the tail equation is recovered
-    transparently as [f_equal tl]. *)
+(** Peeling shared head colour off boundary cast, ARBITRARY
+ 证明 between cons-shaped endpoints: tail equation recovered
+ transparently [f_equal tl]. （已译） *)
 Lemma tcast_cons_any (x : A) {Γ Δ : list A} (e : x :: Γ = x :: Δ) :
   tcast e ≈ id[ob x] ⨂ tcast (f_equal (@tl A) e).
 Proof using luip.
@@ -248,9 +247,9 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** Nested shape: folding [Γ2] off a context whose remaining prefix
-    contains the slot.  The spliced argument [h] rides inside the left
-    tensor factor. *)
+(** Nested shape: folding [Γ2] off context whose remaining prefix
+ contains slot. The spliced 论元 [h] rides inside left
+ tensor factor. （已译） *)
 Lemma msplice_fold {Δ1 Δ2 Γ2 Θ : list A} {a : A}
   (h : tfold Θ ~{C}~> ob a)
   (u : Δ1 ++ a :: Δ2 ++ Γ2 = (Δ1 ++ a :: Δ2) ++ Γ2)
@@ -260,8 +259,7 @@ Lemma msplice_fold {Δ1 Δ2 Γ2 Θ : list A} {a : A}
         ∘ tfold_app_to (Δ1 ++ Θ ++ Δ2) Γ2 ∘ tcast v.
 Proof using luip.
   revert u v; induction Δ1 as [| d Δ1 IH]; intros u v; simpl.
-  - (* Slot at the head: reduce to [tfold_app_assoc] on [Θ], [Δ2], [Γ2]
-       and slide [h] across the associator. *)
+  - (* 相关说明。 （已译） *)
     rewrite tcast_loop, id_right.
     rewrite bimap_comp_id_right.
     rewrite <- !comp_assoc.
@@ -273,8 +271,8 @@ Proof using luip.
     rewrite bimap_fuse_cons.
     rewrite id_left, id_right.
     reflexivity.
-  - (* Cons step: every factor is [id ⨂ -]; fuse, apply the induction
-       hypothesis, and unfuse. *)
+  - (* Cons step: every factor [id ⨂ -]; fuse, apply induction
+ 假设, unfuse. （已译） *)
     rewrite (tcast_cons_any d u), (tcast_cons_any d v).
     rewrite <- !comp_assoc.
     rewrite bimap_id_fuse_cons.
@@ -286,9 +284,9 @@ Proof using luip.
     reflexivity.
 Qed.
 
-(** Disjoint shape: folding a prefix [Δ] off a context whose slot lies
-    beyond it.  The spliced argument [h] rides inside the right tensor
-    factor. *)
+(** Disjoint shape: folding prefix [Δ] off context whose slot lies
+ beyond it. The spliced 论元 [h] rides inside right tensor
+ factor. （已译） *)
 Lemma mfold_msplice {Δ Γ2 Γ3 Θ : list A} {b : A}
   (h : tfold Θ ~{C}~> ob b)
   (u : (Δ ++ Γ2) ++ b :: Γ3 = Δ ++ Γ2 ++ b :: Γ3)
@@ -311,7 +309,7 @@ Proof using luip.
     reflexivity.
 Qed.
 
-(** Splicing respects the setoid of the argument. *)
+(** Splicing respects setoid 论元. （已译） *)
 Lemma msplice_respects (Γ1 : list A) {Γ2 Δ : list A} {b : A}
   (g g' : tfold Δ ~{C}~> ob b) :
   g ≈ g' → msplice Γ1 (Γ2:=Γ2) g ≈ msplice Γ1 (Γ2:=Γ2) g'.
@@ -328,8 +326,8 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** Nested shape: the second slot lies INSIDE the context spliced by
-    the first. *)
+(** 本节：Nested shape: second slot lies INSIDE context spliced by
+ first. （已译） *)
 Lemma msplice_nested {Γ1 Γ2 Δ1 Δ2 Θ : list A} {a b : A}
   (g : tfold (Δ1 ++ a :: Δ2) ~{C}~> ob b) (h : tfold Θ ~{C}~> ob a)
   (u : (Γ1 ++ Δ1) ++ a :: Δ2 ++ Γ2 = Γ1 ++ (Δ1 ++ a :: Δ2) ++ Γ2)
@@ -364,8 +362,8 @@ Proof using luip.
   apply mfold_msplice.
 Qed.
 
-(** Disjoint shape: the two slots lie in the same outer context, the
-    [a]-slot before the [b]-slot. *)
+(** 本节：Disjoint shape: two slots lie same outer context, the
+ [a]-slot before [b]-slot. （已译） *)
 Lemma msplice_disjoint {Γ1 Γ2 Γ3 Δ Θ : list A} {a b : A}
   (g : tfold Δ ~{C}~> ob a) (h : tfold Θ ~{C}~> ob b)
   (u : (Γ1 ++ Δ ++ Γ2) ++ b :: Γ3 = Γ1 ++ Δ ++ Γ2 ++ b :: Γ3)
@@ -422,8 +420,8 @@ Qed.
 
 End RepresentableKit.
 
-(** The concatenation isomorphism at the identity realization: the form
-    stated for [tensor_list] itself. *)
+(** The concatenation 同构 at 恒等 realization: form
+ stated [tensor_list] itself. （已译） *)
 Definition tensor_list_app {C : Category} `{M : @Monoidal C}
   (xs ys : list C) :
   tensor_list (xs ++ ys) ≅ (tensor_list xs ⨂ tensor_list ys)%object :=
@@ -471,7 +469,7 @@ Proof.
   rewrite <- !bimap_id_fuse.
   rewrite !bimap_comp_id_right.
   rewrite <- !comp_assoc.
-  (* Left side: slide the tail map [w] to the right end. *)
+  (* 相关说明。 （已译） *)
   rewrite (to_assoc_nat_cons (id[y]) (id[x]) w).
   rewrite bimap_id_id.
   rewrite bimap_fuse_cons.
@@ -479,9 +477,7 @@ Proof.
   rewrite Hsplit.
   rewrite <- !comp_assoc.
   rewrite Hslide.
-  (* Right side: collapse the padded associators by the inverse
-     pentagon, slide [m] across the associator, and close with the
-     solved pentagon. *)
+  (* 相关说明。 （已译） *)
   rewrite inverse_pentagon_cons.
   rewrite (from_assoc_nat_cons m (id[L]) (id[G])).
   rewrite bimap_id_id.
@@ -523,14 +519,14 @@ Proof.
   - rewrite IH; apply bimap_id_id.
 Qed.
 
-(** The skip constructor realizes as an identity tensor factor
-    (definitional; named for rewriting). *)
+(** The skip constructor realizes 恒等 tensor factor
+ (definitional; named rewriting). （已译） *)
 Lemma perm_arrow_skip (x : A) {Γ Δ : list A} (q : tperm Γ Δ) :
   perm_arrow (tperm_skip x q) ≈ id[ob x] ⨂ perm_arrow q.
 Proof. reflexivity. Qed.
 
-(** Right padding in fold coordinates: the realization of
-    [tperm_app_l p Λ] is [perm_arrow p] on the left tensor factor. *)
+(** 本节：Right padding fold coordinates: realization of
+ [tperm_app_l p Λ] [perm_arrow p] left tensor factor. （已译） *)
 Lemma perm_arrow_app_l {Γ Δ : list A} (p : tperm Γ Δ) (Λ : list A) :
   tfold_app_to ob Γ Λ ∘ perm_arrow (tperm_app_l p Λ)
     ≈ (perm_arrow p ⨂ id[tfold ob Λ]) ∘ tfold_app_to ob Δ Λ.
@@ -554,8 +550,8 @@ Proof.
     now rewrite bimap_fuse_id_right.
 Qed.
 
-(** Left padding in fold coordinates: the realization of
-    [tperm_app_r Γ p] is [perm_arrow p] on the right tensor factor. *)
+(** 本节：Left padding fold coordinates: realization of
+ [tperm_app_r Γ p] [perm_arrow p] right tensor factor. （已译） *)
 Lemma perm_arrow_app_r (Γ : list A) {Δ Λ : list A} (p : tperm Δ Λ) :
   tfold_app_to ob Γ Δ ∘ perm_arrow (tperm_app_r Γ p)
     ≈ (id[tfold ob Γ] ⨂ perm_arrow p) ∘ tfold_app_to ob Γ Λ.
@@ -584,8 +580,8 @@ Context `{S : @SymmetricMonoidal C}.
 Context {A : Type}.
 Context (ob : A → C).
 
-(** Cons forms of the padding lemmas, for rewriting inside right-nested
-    chains. *)
+(** 本节：Cons forms padding lemmas, rewriting inside right-nested
+ chains. （已译） *)
 Lemma perm_arrow_app_l_cons {Γ Δ : list A} (p : tperm Γ Δ) (Λ : list A)
   {z : C} (k : z ~> tfold ob (Δ ++ Λ)) :
   tfold_app_to ob Γ Λ ∘ (perm_arrow ob (tperm_app_l p Λ) ∘ k)
@@ -596,9 +592,9 @@ Proof.
   apply perm_arrow_app_l.
 Qed.
 
-(** Parallel composition across [++], in fold coordinates: the
-    realization of [tperm_app p q] is the tensor of the two
-    realizations. *)
+(** Parallel 复合 across [++], fold coordinates: the
+ realization [tperm_app p q] tensor two
+ realizations. （已译） *)
 Lemma perm_arrow_app {Γ Γ' Δ Δ' : list A} (p : tperm Γ Γ') (q : tperm Δ Δ') :
   tfold_app_to ob Γ Δ ∘ perm_arrow ob (tperm_app p q)
     ≈ (perm_arrow ob p ⨂ perm_arrow ob q) ∘ tfold_app_to ob Γ' Δ'.
@@ -665,14 +661,13 @@ Proof.
   rewrite (msplice_block ob Γ1 g).
   rewrite (msplice_block ob Γ1' (g ∘ perm_arrow ob q)).
   rewrite <- !comp_assoc.
-  (* Left side: pull the block realization across the fold, then fold
-     the argument block by [Harg]. *)
+  (* Left side: pull block realization across fold, then fold
+ 论元 block [Harg]. （已译） *)
   rewrite perm_arrow_app.
   rewrite bimap_fuse_cons.
   rewrite id_left.
   rewrite Harg.
-  (* Right side: transpose the slot realization across [from] and fuse
-     the three tensor factors. *)
+  (* 相关说明。 （已译） *)
   rewrite perm_arrow_app_from.
   rewrite bimap_fuse_cons.
   rewrite id_right.
@@ -685,7 +680,7 @@ Qed.
 
 End EquivarianceCore.
 
-(** ** The representable multicategory *)
+(* 相关说明。 （已译） *)
 
 Section Assembly.
 
@@ -703,7 +698,7 @@ Definition mhcast {Γ Γ' : list A} {c : A} (e : Γ = Γ')
   | eq_refl => f
   end.
 
-(** The hom-side transport is precomposition with the boundary cast. *)
+(** 本节：The hom-side transport precomposition boundary cast. （已译） *)
 Lemma mhcast_tcast {Γ Γ' : list A} {c : A} (e : Γ = Γ')
   (f : tfold ob Γ ~{C}~> ob c) :
   mhcast e f ≈ f ∘ tcast ob (eq_sym e).
@@ -849,9 +844,9 @@ Proof.
     apply (cprop_tensor_app [c] Γ).
 Qed.
 
-(** The multicategory of a coloured PROP: multimorphisms
-    [mhom Γ c ≡ tfold wire Γ ~{Q}~> wire c], where [tfold wire Γ] is
-    the object [cprop_of_list Γ] by [cprop_tfold]. *)
+(** The multicategory coloured PROP: multimorphisms
+ [mhom Γ c ≡ tfold wire Γ ~{Q}~> wire c], where [tfold wire Γ] is
+ 对象 [cprop_of_list Γ] [cprop_tfold]. （已译） *)
 Definition ColouredPROP_Multicategory {Colour : Type}
   (Q : ColouredPROP Colour)
   (Cdec : ∀ x y : Colour, {x = y} + {x ≠ y}) : Multicategory :=

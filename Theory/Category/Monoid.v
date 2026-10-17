@@ -6,7 +6,7 @@ Require Import Category.Instance.Cat.
 
 Generalizable All Variables.
 
-(** * A category is a monoid in composable pairs (Mac Lane, CWM I.2, Remark 1) *)
+(* * * A 范畴 幺半群 composable pairs (Mac Lane, CWM I.2, Remark 1) （已译） *)
 
 (*
  nLab:  https://ncatlab.org/nlab/show/internal+category
@@ -128,7 +128,7 @@ Lemma Composable_ump_unique {G : Graph} {X : Type} (k k' : X → Composable G) :
   ∀ x, Composable_equiv (k x) (k' x).
 Proof. intros Ho Hi x; split; [ apply Ho | apply Hi ]. Qed.
 
-(** ** The monoid structure on a graph *)
+(* * ** The 幺半群 structure graph （已译） *)
 
 (*
    本节说明拉回/推出相关定义、性质与动机。
@@ -145,8 +145,7 @@ Record SpanMonoid (G : Graph) := {
   sm_mul_dom : ∀ g f p, gdom (sm_mul g f p) = gdom f;  (* dom (m (g,f)) = dom f *)
   sm_mul_cod : ∀ g f p, gcod (sm_mul g f p) = gcod g;  (* cod (m (g,f)) = cod g *)
 
-  (* m is a map out of the pullback setoid: it respects `≈` componentwise and
-     does not depend on the composability witness. *)
+  (* 相关说明。 （已译） *)
   sm_mul_respects : ∀ g g' f f' p p',
     g ≈ g' → f ≈ f' → sm_mul g f p ≈ sm_mul g' f' p';
 
@@ -171,14 +170,13 @@ Arguments sm_id_left {_} _ _ _.
 Arguments sm_id_right {_} _ _ _.
 Arguments sm_assoc {_} _ _ _ _ _ _ _ _.
 
-(* The multiplication as a map out of the composable pairs, which is the shape
-   in which Mac Lane states it. *)
+(* 相关说明。 （已译） *)
 Definition sm_pair_mul {G : Graph} (M : SpanMonoid G) (p : Composable G) : garr G :=
   sm_mul M (cp_outer p) (cp_inner p) (cp_match p).
 
-(* ...and the curried respectfulness field is precisely respectfulness for the
-   pullback setoid.  Both directions, so that neither presentation is
-   privileged. *)
+(* ...and 柯里化的 respectfulness field precisely respectfulness the
+ pullback setoid. Both directions, so neither presentation is
+ privileged. （已译） *)
 Lemma sm_pair_mul_respects {G : Graph} (M : SpanMonoid G) (p q : Composable G) :
   Composable_equiv p q → sm_pair_mul M p ≈ sm_pair_mul M q.
 Proof.
@@ -193,7 +191,7 @@ Lemma sm_mul_of_pair {G : Graph} (M : SpanMonoid G)
   g ≈ g' → f ≈ f' → m (Build_Composable g f p) ≈ m (Build_Composable g' f' p').
 Proof. intros Hg Hf; now apply Hm; split. Qed.
 
-(** ** From the monoid presentation to a [Category] *)
+(* * ** From 幺半群 presentation [Category] （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -209,8 +207,7 @@ Definition sa_dom {G : Graph} {x y : gobj G} (f : SMHom G x y)
 Definition sa_cod {G : Graph} {x y : gobj G} (f : SMHom G x y)
   : gcod (sa_arr f) = y := snd (`2 f).
 
-(* The hom-setoid compares only the underlying arrows: the endpoint proofs are
-   invisible to it. *)
+(* 相关说明。 （已译） *)
 Definition SpanArrow_equiv {G : Graph} {x y : gobj G}
            (f g : SMHom G x y) : Type := sa_arr f ≈ sa_arr g.
 
@@ -225,19 +222,18 @@ Proof.
   - intros f g h H1 H2; transitivity (sa_arr g); assumption.
 Defined.
 
-(* The identity at x is the unit e x, carrying its two boundary laws. *)
+(* The 恒等 at x unit e x, carrying two boundary laws. （已译） *)
 Definition smc_id {G : Graph} (M : SpanMonoid G) (x : gobj G) : SMHom G x x :=
   (sm_unit M x; (sm_unit_dom M x, sm_unit_cod M x)).
 
-(* Two homs that meet at y are composable in the graph: their endpoint proofs
-   compose to the required equation `dom g = cod f`. *)
+(* 相关说明。 （已译） *)
 Definition smc_match {G : Graph} {x y z : gobj G}
            (g : SMHom G y z) (f : SMHom G x y)
   : gdom (sa_arr g) = gcod (sa_arr f) :=
   eq_trans (sa_dom g) (eq_sym (sa_cod f)).
 
-(* Composition is the monoid multiplication; the boundary laws of the
-   multiplication supply the endpoint proofs of the result. *)
+(* Composition 幺半群 multiplication; boundary laws the
+ multiplication supply endpoint proofs result. （已译） *)
 Definition smc_compose {G : Graph} (M : SpanMonoid G) {x y z : gobj G}
            (g : SMHom G y z) (f : SMHom G x y) : SMHom G x z :=
   (sm_mul M (sa_arr g) (sa_arr f) (smc_match g f);
@@ -271,7 +267,7 @@ Proof.
     apply (sm_assoc M).
 Defined.
 
-(** ** Bundled arrows, and transport along object equalities *)
+(* * ** Bundled arrows, transport along 对象 equalities （已译） *)
 
 (* The bundled-arrow sigma ∃ x y, x ~> y, as a record. *)
 Record BundledArrow (C : Category) := {
@@ -311,8 +307,7 @@ Definition hom_transport {C : Category} {x x' y y' : C}
                end
   end.
 
-(* Keep [simpl] from tearing the transports open into raw [match]es: every
-   fact about them below is stated at the level of [hom_transport] itself. *)
+(* 相关说明。 （已译） *)
 Arguments hom_transport : simpl never.
 
 #[export]
@@ -340,8 +335,8 @@ Lemma hom_transport_id {C : Category} {x x' : C} (u : x = x') :
   hom_transport u u (id[x]) = id[x'].
 Proof. destruct u; reflexivity. Qed.
 
-(* Transport of a composite splits into transport of the two outer endpoints;
-   the shared middle object is untouched. *)
+(* Transport 复合 splits transport two outer endpoints;
+ shared middle 对象 untouched. （已译） *)
 Lemma hom_transport_comp {C : Category} {x x' y z z' : C}
       (p : x = x') (r : z = z') (f : y ~> z) (g : x ~> y) :
   hom_transport p r (f ∘ g)
@@ -391,7 +386,7 @@ Proof.
   - intros a b H; exact (`1 (`2 H)).
 Defined.
 
-(** ** Rigidity: when transport does not see which proof it travelled along *)
+(* * ** Rigidity: transport does not see 证明 it travelled along （已译） *)
 
 (*
    本节说明幺半群相关定义、性质与动机。
@@ -436,11 +431,11 @@ Proof.
               (rigid _ _ _ _ dc db (eq_trans (eq_sym P) da) cb β).
 Qed.
 
-(** ** From a [Category] to the monoid presentation *)
+(* * ** From [Category] 幺半群 presentation （已译） *)
 
-(* The unit is the identity arrow; the multiplication is composition, after
-   transporting the inner arrow's codomain to the outer arrow's domain along
-   the composability proof. *)
+(* The unit 恒等箭头; multiplication 复合, after
+ transporting inner arrow's codomain outer arrow's domain along
+ composability 证明. （已译） *)
 Definition arrow_unit {C : Category} (x : C) : BundledArrow C :=
   Build_BundledArrow x x (id[x]).
 
@@ -536,7 +531,7 @@ Proof.
     exact (arrow_mul_assoc rigid h g f pp qq pl pr).
 Defined.
 
-(** ** Round trip I: starting from the monoid presentation *)
+(* * ** Round trip I: starting 幺半群 presentation （已译） *)
 
 Section MonoidRoundTrip.
 
@@ -545,17 +540,17 @@ Context (M : SpanMonoid G).
 
 Notation C' := (Category_from_SpanMonoid M).
 
-(* Objects are literally the same type -- no comparison is needed. *)
+(* 相关说明。 （已译） *)
 Lemma SpanMonoid_roundtrip_obj : obj[C'] = gobj G.
 Proof. reflexivity. Qed.
 
-(* Two homs of the constructed category are identified exactly when their
-   underlying arrows are: the endpoint proofs are invisible. *)
+(* Two homs constructed 范畴 identified exactly their
+ underlying arrows are: endpoint proofs invisible. （已译） *)
 Lemma span_hom_equiv {x y : gobj G} (f g : x ~{C'}~> y) :
   sa_arr f ≈ sa_arr g → f ≈ g.
 Proof. intro H; exact H. Qed.
 
-(* The identity of the constructed category IS the unit of M ... *)
+(* The 恒等 constructed 范畴 IS unit M ... （已译） *)
 Lemma span_id_arr (x : gobj G) : sa_arr (@id C' x) = sm_unit M x.
 Proof. reflexivity. Qed.
 
@@ -569,8 +564,7 @@ Lemma span_compose_arr {x y z : gobj G} (g : y ~{C'}~> z) (f : x ~{C'}~> y)
   sa_arr (g ∘ f) ≈ sm_mul M (sa_arr g) (sa_arr f) pf.
 Proof. apply (sm_mul_respects M); reflexivity. Qed.
 
-(* Now the graph round trip: bundle an arrow with the endpoints its own
-   boundary maps assign to it, and unbundle by forgetting them again. *)
+(* 相关说明。 （已译） *)
 Definition sm_bundle (a : garr G) : garr (Category_Graph C') :=
   @Build_BundledArrow (Category_from_SpanMonoid M)
     (gdom a) (gcod a) (a; (eq_refl, eq_refl)).
@@ -591,15 +585,15 @@ Lemma sm_unbundle_cod (u : garr (Category_Graph C')) :
   gcod (sm_unbundle u) = gcod u.
 Proof. exact (sa_cod (aarr u)). Qed.
 
-(* Transporting a hom of C' along object equalities leaves the underlying
-   arrow alone -- C' stores the endpoints separately from the arrow. *)
+(* Transporting hom C' along 对象 equalities leaves underlying
+ arrow alone -- C' stores endpoints separately arrow. （已译） *)
 Lemma sa_arr_transport {x y x' y' : gobj G} (p : x = x') (q : y = y')
       (h : x ~{C'}~> y) :
   sa_arr (@hom_transport (Category_from_SpanMonoid M) x x' y y' p q h)
     = sa_arr h.
 Proof. destruct p, q; reflexivity. Qed.
 
-(* ONE composite of the round trip is the identity on the nose. *)
+(* ONE 复合 round trip 恒等 nose. （已译） *)
 Lemma sm_unbundle_bundle (a : garr G) : sm_unbundle (sm_bundle a) = a.
 Proof. reflexivity. Qed.
 
@@ -648,7 +642,7 @@ Lemma iso_id_conj {D : Category} {x y : D} (h : x ~> y) :
   from (@iso_id D y) ∘ h ∘ to (@iso_id D x) ≈ h.
 Proof. simpl; now rewrite id_right, id_left. Qed.
 
-(** ** Round trip II: starting from a [Category] *)
+(* 相关说明。 （已译） *)
 
 Section CategoryRoundTrip.
 
@@ -657,7 +651,7 @@ Context (rigid : HomRigid C).
 
 Notation Rebuilt := (Category_from_SpanMonoid (Category_SpanMonoid C rigid)).
 
-(* Objects are literally the same type. *)
+(* 相关说明。 （已译） *)
 Lemma Category_roundtrip_obj : obj[Rebuilt] = obj[C].
 Proof. reflexivity. Qed.
 
@@ -667,11 +661,11 @@ Definition rb_to {x y : C} (f : x ~> y) : x ~{Rebuilt}~> y :=
 Definition rb_from {x y : C} (h : x ~{Rebuilt}~> y) : x ~> y :=
   @hom_transport C _ _ _ _ (sa_dom h) (sa_cod h) (aarr (sa_arr h)).
 
-(* ONE composite is the identity on the nose. *)
+(* ONE 复合 恒等 nose. （已译） *)
 Lemma rb_from_to {x y : C} (f : x ~> y) : rb_from (rb_to f) = f.
 Proof. reflexivity. Qed.
 
-(* THE OTHER only up to `≈`, for the same reason as before. *)
+(* 相关说明。 （已译） *)
 Lemma rb_to_from {x y : C} (h : x ~{Rebuilt}~> y) : rb_to (rb_from h) ≈ h.
 Proof.
   apply (span_hom_equiv (Category_SpanMonoid C rigid)).
@@ -735,7 +729,7 @@ Defined.
 End CategoryRoundTrip.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Necessity of [HomRigid]: a reverse-mathematics theorem *)
+(* * ** Necessity [HomRigid]: reverse-mathematics 定理 （已译） *)
 
 (*
    本节说明 Monoid 相关定义、性质与动机。
@@ -774,7 +768,7 @@ Proof.
   - intros; symmetry; apply etr_assoc.
 Defined.
 
-(** The loop space of [None] is contractible, constructively, for every A. *)
+(** 本节：The loop space [None] contractible, constructively, every A. （已译） *)
 Definition ocode (y : ob) : Type :=
   match y with None => unit | Some _ => Empty_set end.
 
@@ -806,8 +800,8 @@ Lemma ht_pt {x y y' : ob} (q : y = y') (h : x ~{PtCat}~> y) :
   @hom_transport PtCat x x y y' eq_refl q h = eq_trans h (f_equal pt q).
 Proof. destruct q; reflexivity. Qed.
 
-(** The two test arrows: [fA : None -> Some a] and [gA : Some a -> None].
-    Their composite lands in the RIGID corner [None -> None]. *)
+(** The two test arrows: [fA : None -> Some a] [gA : Some -> None].
+ Their 复合 lands RIGID corner [None -> None]. （已译） *)
 Definition fA : BundledArrow PtCat := @Build_BundledArrow PtCat None (Some a) eq_refl.
 Definition gA : BundledArrow PtCat := @Build_BundledArrow PtCat (Some a) None eq_refl.
 
@@ -861,7 +855,7 @@ Theorem arrow_mul_respects_forces_UIP
   forall (A : Type) (a : A) (e : a = a), e = eq_refl.
 Proof. intros A a e; exact (forces_loop A a K e). Qed.
 
-(* ... and hence full UIP / HomRigid for every category. *)
+(* ... hence full UIP / HomRigid every 范畴. （已译） *)
 Corollary arrow_mul_respects_forces_UIP'
   (K : forall (C : Category) (g g' f f' : BundledArrow C)
               (p : asrc g = atgt f) (p' : asrc g' = atgt f'),

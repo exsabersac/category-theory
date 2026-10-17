@@ -68,8 +68,8 @@ Definition crude_pair_r (x : EM) :
   F (U (F (`1 x))) ~{C}~> F (`1 x) :=
   fmap[F] (t_alg[`2 x]).
 
-(* The algebra unit law α ∘ η ≈ id, re-read through the transparent
-   identification ret = η of the induced monad. *)
+(* The algebra unit law α ∘ η ≈ id, re-read through transparent
+ identification ret = η induced 单子. （已译） *)
 Lemma crude_alg_unit (x : EM) :
   t_alg[`2 x] ∘ @unit _ _ _ _ A (`1 x) ≈ id.
 Proof. exact (@t_id D (U ◯ F) HM (`1 x) (`2 x)). Qed.
@@ -79,7 +79,7 @@ Lemma crude_section_l (x : EM) :
   @counit _ _ _ _ A (F (`1 x)) ∘ fmap[F] (@unit _ _ _ _ A (`1 x)) ≈ id.
 Proof. exact (@counit_fmap_unit _ _ _ _ A (`1 x)). Qed.
 
-(* F α retracts F η_d: the F-image of the algebra unit law. *)
+(* 相关说明。 （已译） *)
 Lemma crude_section_r (x : EM) :
   fmap[F] (t_alg[`2 x]) ∘ fmap[F] (@unit _ _ _ _ A (`1 x)) ≈ id.
 Proof.
@@ -94,7 +94,7 @@ Definition crude_reflexive (x : EM) :
     (fmap[F] (@unit _ _ _ _ A (`1 x)))
     (crude_section_l x) (crude_section_r x).
 
-(** ** The quasi-inverse on objects: the chosen reflexive coequalizer *)
+(* * ** The quasi-inverse 对象: chosen reflexive coequalizer （已译） *)
 
 Definition crude_coeq (x : EM) :
   ∃ (q : C) (e : F (`1 x) ~{C}~> q),
@@ -112,7 +112,7 @@ Definition crude_is_coeq (x : EM) :
     (crude_G_obj x) (crude_e x) :=
   `2 (`2 (crude_coeq x)).
 
-(* The cofork law of the chosen coequalizer, in unfolded form. *)
+(* 相关说明。 （已译） *)
 Lemma crude_cofork (x : EM) :
   crude_e x ∘ @counit _ _ _ _ A (F (`1 x))
     ≈ crude_e x ∘ fmap[F] (t_alg[`2 x]).
@@ -121,10 +121,10 @@ Proof. exact (cofork (crude_is_coeq x)). Qed.
 Definition crude_e_epic (x : EM) : Epic (crude_e x) :=
   coequalizer_epic _ _ (crude_is_coeq x).
 
-(** ** The quasi-inverse on morphisms: descent *)
+(* * ** The quasi-inverse 态射: descent （已译） *)
 
-(* The commuting square of an algebra homomorphism, with the action of
-   the composite functor spelled out as fmap[U] (fmap[F] -). *)
+(* The 交换方块 algebra homomorphism, action of
+ 复合 函子 spelled out fmap[U] (fmap[F] -). （已译） *)
 Lemma crude_hom_square {x y : EM} (h : x ~{EM}~> y) :
   t_alg_hom[h] ∘ t_alg[`2 x]
     ≈ t_alg[`2 y] ∘ fmap[U] (fmap[F] (t_alg_hom[h])).
@@ -259,14 +259,14 @@ Definition crude_to_e (x : EM) :
   crude_to x ∘ fmap[U] (crude_e x) ≈ t_alg[`2 x] :=
   unique_property (crude_to_desc x).
 
-(* The inverse comparison d ~> U (G (d, α)): the split coequalizer's
-   descent of U e through α, i.e. U e ∘ η_d (the section of the
-   canonical splitting is the monad unit). *)
+(* The inverse comparison d ~> U (G (d, α)): split coequalizer's
+ descent U e through α, i.e. U e ∘ η_d (the section the
+ canonical splitting 单子 unit). （已译） *)
 Definition crude_from (x : EM) : `1 x ~{D}~> U (crude_G_obj x) :=
   fmap[U] (crude_e x) ∘ @unit _ _ _ _ A (`1 x).
 
-(* Naturality of the unit at the algebra action, with the composite
-   functor spelled out. *)
+(* Naturality unit at algebra action, 复合
+ 函子 spelled out. （已译） *)
 Lemma crude_unit_alpha (x : EM) :
   @unit _ _ _ _ A (`1 x) ∘ t_alg[`2 x]
     ≈ fmap[U] (fmap[F] (t_alg[`2 x])) ∘ @unit _ _ _ _ A (U (F (`1 x))).
@@ -299,7 +299,7 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(** The two comparisons are mutually inverse. *)
+(** 本节：The two comparisons mutually inverse. （已译） *)
 
 Lemma crude_to_from (x : EM) : crude_to x ∘ crude_from x ≈ id.
 Proof.
@@ -380,18 +380,18 @@ Definition crude_counit_hom (x : EM) :
   @em_iso_inverse_hom D (U ◯ F) HM x (K (crude_G_obj x))
     (crude_counit_hom_inv x) (crude_from_is_iso x).
 
-(* The counit component, as an isomorphism of D^T; the inverse laws are
-   those of the carriers, since hom-equivalence upstairs is carrier
-   equivalence. *)
+(* The counit component, 同构 D^T; inverse laws are
+ those carriers, since hom-等价 upstairs carrier
+ 等价. （已译） *)
 Definition crude_counit_component (x : EM) :
   @Isomorphism EM (K (crude_G_obj x)) x :=
   @Build_Isomorphism EM (K (crude_G_obj x)) x
     (crude_counit_hom x) (crude_counit_hom_inv x)
     (crude_to_from x) (crude_from_to x).
 
-(* Conjugation coherence of the counit cell, on carriers: cancel the
-   epimorphism U e, contract the two descent triangles, and close with
-   the commuting square of h. *)
+(* Conjugation coherence counit cell, carriers: cancel the
+ epimorphism U e, contract two descent triangles, close with
+ 交换方块 h. （已译） *)
 Lemma crude_counit_coherence {x y : EM} (h : x ~{EM}~> y) :
   fmap[U] (crude_G_map h)
     ≈ (crude_from y ∘ t_alg_hom[h]) ∘ crude_to x.
@@ -446,8 +446,7 @@ Definition crude_theta_e (c : C) :
   crude_theta c ∘ crude_e (K c) ≈ @counit _ _ _ _ A c :=
   unique_property (crude_unit_desc c).
 
-(* Downstairs, U θ_c is the comparison iso of the algebra K c: both
-   descend U ε_c through U e, so the epimorphism U e identifies them. *)
+(* 相关说明。 （已译） *)
 Lemma crude_U_theta (c : C) :
   fmap[U] (crude_theta c) ≈ crude_to (K c).
 Proof.
@@ -497,8 +496,8 @@ Definition crude_unit_component (c : C) : c ≅ crude_G_obj (K c) :=
     (@is_left_inverse C _ _ (crude_theta c) (crude_theta_iso c))
     (@is_right_inverse C _ _ (crude_theta c) (crude_theta_iso c)).
 
-(* Naturality of θ: cancel the epimorphism e, contract the descent
-   triangles of θ and of G (K f), and finish by counit naturality. *)
+(* Naturality θ: cancel epimorphism e, contract descent
+ triangles θ G (K f), finish counit 自然性. （已译） *)
 Lemma crude_theta_natural {x y : C} (f : x ~{C}~> y) :
   f ∘ crude_theta x ≈ crude_theta y ∘ crude_G_map (fmap[K] f).
 Proof.

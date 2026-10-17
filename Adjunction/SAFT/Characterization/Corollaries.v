@@ -21,7 +21,7 @@ Require Import Category.Adjunction.SAFT.Characterization.Cover.
 
 Generalizable All Variables.
 
-(** * Corollaries of the special adjoint functor theorem *)
+(* * * Corollaries special adjoint 函子 定理 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/representable+functor
@@ -32,7 +32,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Mac Lane's Corollary: continuous [Sets]-valued functors are representable *)
+(* * ** Mac Lane's Corollary: continuous [Sets]-valued 函子 representable （已译） *)
 
 Definition continuous_Set_functor_representable@{o h so c w s t su pl pa ra rt +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t, h < su +}
@@ -43,7 +43,7 @@ Definition continuous_Set_functor_representable@{o h so c w s t su pl pa ra rt +
   Representable@{ra rt su o h} K :=
   representable_of_left_adjoint K (projT2 (SAFT_wellpowered K comp cont G WP)).
 
-(* The representing object is the left adjoint at the singleton. *)
+(* The 表示 对象 左伴随 at singleton. （已译） *)
 Example continuous_Set_functor_representable_obj@{o h so c w s t su pl pa ra rt +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t, h < su +}
   {C : Category@{o h h}} (K : C ⟶ Sets@{h su})
@@ -68,8 +68,8 @@ Proof.
   - intro cont; exact (continuous_Set_functor_representable K comp cont G WP).
 Defined.
 
-(* Riehl's route (the category of elements), with well-poweredness at the
-   ONE object the singleton needs, through the d-dependent cover. *)
+(* Riehl's route (范畴 elements), well-poweredness at the
+ ONE 对象 singleton needs, through d-dependent cover. （已译） *)
 Definition continuous_Set_functor_representable_at@{o h dp cp w s t su pl pa ra rt +|
     h < dp, h < cp, w <= h, h < su +}
   {C : Category@{o h h}} (K : C ⟶ Sets@{h su})
@@ -83,7 +83,7 @@ Definition continuous_Set_functor_representable_at@{o h dp cp w s t su pl pa ra 
        (saft_solution_set_at@{o su h h dp cp w s t pl pa h _ _ _}
           K comp cont G SetsOne W)).
 
-(** ** Riehl 4.7.13: the SAFT hypotheses give cocompleteness *)
+(* 相关说明。 （已译） *)
 
 Definition saft_colim@{o h so c w s t jo fo fa +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t, jo <= h,
@@ -106,7 +106,7 @@ Definition saft_cocomplete@{o h so c w s t jo fo fa +|
                         : { L : @Fun@{jo h o h fo h fa} J C ⟶ C
                           & L ⊣ @Diagonal@{fo h fa jo o h} C J })) F.
 
-(** ** The two routes to the left adjoint agree up to isomorphism *)
+(* * ** The two routes 左伴随 agree up 同构 （已译） *)
 
 Definition SAFT_cover_wp_iso@{o dobj h dp cp w s t pl pa +|
     h < dp, h < cp, w <= h, o <= s, h <= s, h < t +}
@@ -120,10 +120,10 @@ Definition SAFT_cover_wp_iso@{o dobj h dp cp w s t pl pa +|
     (projT2 (SAFT_cover_wp@{o dobj h dp cp w s t pl pa _ _ _} U comp cont G WP))
     (projT2 (SAFT_wellpowered U comp cont G WP)).
 
-(** ** The two routes index the same family *)
+(* 相关说明。 （已译） *)
 
-(* The comma category's cogenerating family is indexed by the arrows out of
-   [d], exactly the index of [saft_prod]. *)
+(* The comma 范畴's cogenerating family indexed arrows out of
+ [d], exactly index [saft_prod]. （已译） *)
 Example comma_cogenerator_index@{o dobj h so +| h <= so +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D) (d : D)
   (G : Cogenerator@{so o h} C) :

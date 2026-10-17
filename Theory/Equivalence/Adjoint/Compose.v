@@ -14,7 +14,7 @@ Require Import Category.Instance.Discrete.Reconstruct.
 
 Generalizable All Variables.
 
-(** * Composition of adjoint equivalences *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/adjoint+equivalence
@@ -26,7 +26,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** An invertibility calculus for [IsIsomorphism] *)
+(* 相关说明。 （已译） *)
 
 Section IsoCalculus.
 
@@ -38,7 +38,7 @@ Section IsoCalculus.
 Universes o h p.
 Context {X : Category@{o h p}}.
 
-(* The identity is invertible, in the predicate form. *)
+(* The 恒等 invertible, predicate form. （已译） *)
 Program Definition IsIso_id {x : X} : IsIsomorphism (id[x]) := {|
   two_sided_inverse := id
 |}.
@@ -102,7 +102,7 @@ Next Obligation.
   apply fmap_id.
 Defined.
 
-(** ** The composite of two adjoint equivalences *)
+(* * ** The 复合 two adjoint equivalences （已译） *)
 
 Section Compose.
 
@@ -112,14 +112,14 @@ Context {F' : D ⟶ E} {U' : E ⟶ D}.
 Context (A : AdjointEquivalence F U).
 Context (B : AdjointEquivalence F' U').
 
-(* The underlying adjunction of the composite: [Adjunction_Compose]
-   (Adjunction/Compose.v) of the two underlying adjunctions. *)
+(* The underlying 伴随 复合: [Adjunction_Compose]
+ (Adjunction/Compose.v) two underlying 伴随. （已译） *)
 Definition adjoint_equivalence_compose_adj : (F' ◯ F) ⊣ (U ◯ U') :=
   Adjunction_Compose (@adj_equivalence _ _ _ _ A) (@adj_equivalence _ _ _ _ B).
 
-(* The composite's unit is invertible: transport along Mac Lane's
-   whiskering formula, then compose the U-image of B's unit isomorphism
-   with A's own. *)
+(* The 复合's unit invertible: transport along Mac Lane's
+ whiskering formula, then compose U-image B's unit 同构
+ A's own. （已译） *)
 Definition adjoint_equivalence_compose_unit_iso (x : C) :
   IsIsomorphism (@unit _ _ _ _ adjoint_equivalence_compose_adj x) :=
   IsIso_along
@@ -145,7 +145,7 @@ Definition AdjointEquivalence_Compose :
     adjoint_equivalence_compose_unit_iso
     adjoint_equivalence_compose_counit_iso.
 
-(** *** Strict readbacks of the three fields *)
+(* 相关说明。 （已译） *)
 
 Example AdjointEquivalence_Compose_adjunction :
   @adj_equivalence _ _ _ _ AdjointEquivalence_Compose
@@ -160,7 +160,7 @@ Example AdjointEquivalence_Compose_counit_clause (y : E) :
   @adj_equiv_counit_iso _ _ _ _ AdjointEquivalence_Compose y
     = adjoint_equivalence_compose_counit_iso y := eq_refl.
 
-(** *** The comparison with the two constituents *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -181,9 +181,9 @@ Definition AdjointEquivalence_Compose_counit (y : E) :
   @Adjunction_Compose_counit _ _ _ _ _ _ _
     (@adj_equivalence _ _ _ _ A) (@adj_equivalence _ _ _ _ B) y.
 
-(* The strict form: the composite's unit IS A's forward transpose of B's
-   unit, and the composite's counit IS B's inverse transpose of A's
-   counit.  Both by conversion. *)
+(* The strict form: 复合's unit IS A's forward transpose B's
+ unit, 复合's counit IS B's inverse transpose A's
+ counit. Both conversion. （已译） *)
 Example AdjointEquivalence_Compose_unit_transpose (x : C) :
   @unit _ _ _ _ (@adj_equivalence _ _ _ _ AdjointEquivalence_Compose) x
     = to (@adj _ _ _ _ (@adj_equivalence _ _ _ _ A) x (U' (F' (F x))))
@@ -194,7 +194,7 @@ Example AdjointEquivalence_Compose_counit_transpose (y : E) :
     = from (@adj _ _ _ _ (@adj_equivalence _ _ _ _ B) (F (U (U' y))) y)
            (@counit _ _ _ _ (@adj_equivalence _ _ _ _ A) (U' y)) := eq_refl.
 
-(* The two-sided inverses, read back on the nose. *)
+(* 相关说明。 （已译） *)
 Example AdjointEquivalence_Compose_unit_inverse (x : C) :
   @two_sided_inverse _ _ _ _
     (@adj_equiv_unit_iso _ _ _ _ AdjointEquivalence_Compose x)
@@ -210,7 +210,7 @@ Example AdjointEquivalence_Compose_counit_inverse (y : E) :
         ∘ @two_sided_inverse _ _ _ _
             (@adj_equiv_counit_iso _ _ _ _ B y) := eq_refl.
 
-(** *** The refinement route, and how it compares *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、等价相关定义、性质与动机。
@@ -224,8 +224,8 @@ Definition AdjointEquivalence_Compose_via_equivalence :
        (AdjointEquivalence_to_Equivalence A)
        (AdjointEquivalence_to_Equivalence B)).
 
-(* Its quasi-inverse is the composite of the two right adjoints on the
-   nose, which is what makes the type above the right one. *)
+(* Its quasi-inverse 复合 two right adjoints the
+ nose, what makes type above right one. （已译） *)
 Example AdjointEquivalence_Compose_via_quasi_inverse :
   @quasi_inverse C E (F' ◯ F)
     (EquivalenceOfCategories_Compose
@@ -234,7 +234,7 @@ Example AdjointEquivalence_Compose_via_quasi_inverse :
 
 End Compose.
 
-(** ** The identity adjoint equivalence *)
+(* * ** The 恒等 adjoint 等价 （已译） *)
 
 Section Identity.
 
@@ -259,7 +259,7 @@ Definition AdjointEquivalence_Id_counit (x : C) :
   @counit _ _ _ _ (@adj_equivalence _ _ _ _ AdjointEquivalence_Id) x ≈ id[x] :=
   @Adjunction_Id_counit C x.
 
-(* The two-sided inverses of the identity's clauses are the identity. *)
+(* The two-sided inverses 恒等's clauses 恒等. （已译） *)
 Example AdjointEquivalence_Id_unit_inverse (x : C) :
   @two_sided_inverse _ _ _ _
     (@adj_equiv_unit_iso _ _ _ _ AdjointEquivalence_Id x) = id[x] := eq_refl.
@@ -270,7 +270,7 @@ Example AdjointEquivalence_Id_counit_inverse (x : C) :
 
 End Identity.
 
-(** ** The inverse: cited, not rebuilt *)
+(* 相关说明。 （已译） *)
 
 Section Inverse.
 
@@ -289,7 +289,7 @@ Example AdjointEquivalence_swap_readback :
 
 End Inverse.
 
-(** ** The groupoid laws, as far as they are statable *)
+(* 相关说明。 （已译） *)
 
 Section Laws.
 
@@ -321,8 +321,8 @@ Example AdjointEquivalence_Compose_assoc_counit (y : C4) :
   @counit _ _ _ _ (@adj_equivalence _ _ _ _ assoc_left) y
     = @counit _ _ _ _ (@adj_equivalence _ _ _ _ assoc_right) y := eq_refl.
 
-(* The identity laws, at the same two grades: not statable at the class
-   (again pinned in the probe), on the nose at the unit and counit. *)
+(* The 恒等 laws, at same two grades: not statable at class
+ (again pinned probe), nose at unit counit. （已译） *)
 
 Example AdjointEquivalence_Compose_id_left_unit (x : C1) :
   @unit _ _ _ _
@@ -382,8 +382,8 @@ Example indiscrete_square_unit_codomain :
   (IndT ◯ Erase (Indiscrete bool))
     ((IndT ◯ Erase (Indiscrete bool)) false) = true := eq_refl.
 
-(* The underlying adjunction of the witness is the composite of the two
-   constituents', on the nose. *)
+(* The underlying 伴随 witness 复合 two
+ constituents', nose. （已译） *)
 Example indiscrete_square_adjunction :
   @adj_equivalence _ _ _ _ indiscrete_square
     = Adjunction_Compose

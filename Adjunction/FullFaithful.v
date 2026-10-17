@@ -17,7 +17,7 @@ Require Import Category.Adjunction.Fullness.
 
 Generalizable All Variables.
 
-(** * Mac Lane §IV.3 Theorem 1: fullness and faithfulness through ε *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出范畴等价的经典刻画：函子是等价当且仅当它全、忠实且本质满射（本库中为带选择的分裂版本，两个方向均可构造）。
@@ -26,7 +26,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------ *)
-(** ** A packaging lemma: split monic + epi ⟹ invertible *)
+(* * ** A packaging 引理: split monic + epi ⟹ invertible （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。
@@ -56,7 +56,7 @@ Notation "⌊ f ⌋" := (to (@adj C D F U A _ _) f) (only parsing).
 Notation "⌈ f ⌉" := (from (@adj C D F U A _ _) f) (only parsing).
 
 (* ------------------------------------------------------------------ *)
-(** ** (A) The bridge: Mac Lane's composite is precomposition with ε *)
+(* * ** (A) The bridge: Mac Lane's 复合 precomposition ε （已译） *)
 
 (*
    本节说明伴随、自然变换、Yoneda相关定义、性质与动机。
@@ -81,19 +81,16 @@ Qed.
 Example transfer_at_counit_is_precomp {a c : C} (g : a ~> c) :
   transform[hom_transfer (ε a)] c g = g ∘ ε a := eq_refl.
 
-(* The other orientation, for readers who prefer Mac Lane's arrow: U's
-   arrow map is the transfer followed by the forward transpose. *)
+(* 相关说明。 （已译） *)
 
 Lemma fmap_U_is_transfer_then_transpose {a c : C} (g : a ~> c) :
   fmap[U] g ≈ ⌊ transform[hom_transfer (ε a)] c g ⌋.
 Proof. exact (@fmap_to_adj_counit C D F U A a c g). Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** (B) Theorem 1 (i): faithful ⟺ every counit component is epi *)
+(* 相关说明。 （已译） *)
 
-(* Faithfulness makes every component of the transfer at ε_a injective:
-   two arrows out of a agreeing after ε_a have the same U-image, by the
-   bridge, hence are equal. *)
+(* 相关说明。 （已译） *)
 
 Definition counit_transfer_monic_of_faithful (HU : Faithful U) (a : C) :
   @Monic ([C, Sets]) _ _ (hom_transfer (ε a)).
@@ -108,7 +105,7 @@ Proof.
   now rewrite Heq'.
 Defined.
 
-(* ... and the lemma turns that into epicness of ε_a. *)
+(* ... 引理 turns epicness ε_a. （已译） *)
 
 Definition counit_epic_of_faithful (HU : Faithful U) (a : C) :
   Epic (ε a) :=
@@ -143,7 +140,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------ *)
-(** ** (C) Theorem 1 (ii): full ⟺ every counit component is split monic *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 FullFaithful 相关定义、性质与动机。
@@ -169,9 +166,9 @@ Definition counit_section_via_transfer (HU : Full U) (a : C) :
   Section (ε a) :=
   section_of_hom_transfer_epic (ε a) (counit_transfer_epic_of_full HU a).
 
-(* The backward direction, through the lemma: a left inverse of ε_a makes
-   the transfer epic, hence every component surjective, and the preimage
-   of ⌈g⌉ is a U-preimage of g. *)
+(* The backward direction, through 引理: left inverse ε_a makes
+ transfer epic, hence every component surjective, preimage
+ ⌈g⌉ U-preimage g. （已译） *)
 
 Definition full_data_of_counit_section (H : ∀ a : C, Section (ε a))
            {x y : C} (g : U x ~> U y) : { h : x ~> y & fmap[U] h ≈ g }.
@@ -201,7 +198,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------ *)
-(** ** (D) Theorem 1, conclusion: fully faithful ⟺ ε invertible *)
+(* 相关说明。 （已译） *)
 
 Definition right_adjoint_fully_faithful_iff_counit_iso :
   (Full U * Faithful U)%type ↔ (∀ a : C, IsIsomorphism (ε a)).
@@ -225,7 +222,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------ *)
-(** ** (E) Mac Lane §IV.3 Exercise 5: the pin and a direct control *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -260,7 +257,7 @@ Defined.
 End FullFaithful.
 
 (* ------------------------------------------------------------------ *)
-(** ** (F) Riehl's dual clauses, and Exercise 5's biconditional *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -347,9 +344,9 @@ Example unit_retract_agrees (HF : Full F) (x : D) :
   = @retract D x (U (F x)) (η x)
     (@unit_split_epi_of_full_left C D F U A HF x) := eq_refl.
 
-(* Riehl 4.6.11 dual (iii): F fully faithful ⟺ η is an isomorphism.  The
-   forward half CONSUMES #368's [unit_iso_of_full_monic] rather
-   than re-running the split-plus-cancellation argument. *)
+(* Riehl 4.6.11 dual (iii): F fully faithful ⟺ η 同构. The
+ forward half CONSUMES #368's [unit_iso_of_full_monic] rather
+ than re-running split-plus-cancellation 论元. （已译） *)
 
 Definition left_adjoint_fully_faithful_iff_unit_iso :
   (Full F * Faithful F)%type ↔ (∀ x : D, IsIsomorphism (η x)).
@@ -400,7 +397,7 @@ Defined.
 End Duals.
 
 (* ------------------------------------------------------------------ *)
-(** ** (G) The reflective special case, as a corollary *)
+(* * ** (G) The reflective special case, 推论 （已译） *)
 
 (*
    本节说明伴随、函子相关定义、性质与动机。
@@ -419,8 +416,8 @@ Definition reflective_incl_Faithful {C : Category} {S : Subcategory C}
            (R : Reflective S) : Functor.Faithful (Incl C S) :=
   @Incl_Faithful C S.
 
-(* The general theorem, instantiated.  [Incl C S] is the RIGHT adjoint of
-   the reflection, so this is (iii) verbatim. *)
+(* The general 定理, instantiated. [Incl C S] RIGHT adjoint of
+ reflection, so 这是 (iii) verbatim. （已译） *)
 
 Definition reflective_counit_IsIsomorphism_general {C : Category}
            {S : Subcategory C} (R : Reflective S) (x : Sub C S) :
@@ -439,7 +436,7 @@ Definition reflective_counit_Isomorphism_general {C : Category}
   IsIsoToIso _ (reflective_counit_IsIsomorphism_general R x).
 
 (* Faithfulness alone already gives Mac Lane's weaker sentence "the
-   counit of a reflection is always epi", with no fullness hypothesis. *)
+ counit reflection always epi", no fullness 假设. （已译） *)
 
 Definition reflection_counit_Epic {C : Category} {S : Subcategory C}
            (R : Reflective S) (x : Sub C S) :

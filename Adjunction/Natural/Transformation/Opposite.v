@@ -6,7 +6,7 @@ Require Import Category.Adjunction.Natural.Transformation.
 
 Generalizable All Variables.
 
-(** * The opposite (dual) of a unit/counit adjunction. *)
+(* * * The opposite (dual) unit/counit 伴随. （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors

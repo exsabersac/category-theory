@@ -42,15 +42,14 @@ Context {C : Category}.
 Context (F : C ⟶ C).
 Context (I : @Initial (FAlg F)).
 
-(* The initial F-algebra: its carrier [μ] is the least fixed point of [F] and
-   its structure map [inα : F μ ~> μ] is the initial structure (Lambek makes it
-   an isomorphism, Theory/Lambek.v). *)
+(* The initial F-algebra: carrier [μ] least fixed point [F] and
+ structure map [inα : F μ ~> μ] initial structure (Lambek makes it
+ 同构, Theory/Lambek.v). （已译） *)
 Let iobj : FAlg F := @initial_obj (FAlg F) I.
 Let μ : C := `1 iobj.
 Let inα : F μ ~> μ := `2 iobj.
 
-(* The catamorphism (fold) into an F-algebra [(a, β)] is the carrier of the
-   unique F-algebra mediator [iobj ~> (a; β)] provided by initiality. *)
+(* 相关说明。 （已译） *)
 Definition cata {a : C} (β : FAlgebra F a) : μ ~> a :=
   falg_hom[ @zero (FAlg F) I (a ; β) ].
 
@@ -110,14 +109,14 @@ Let tobj : FCoalg F := @terminal_obj (FCoalg F) T.
 Let ν : C := `1 tobj.
 Let outγ : ν ~> F ν := `2 tobj.
 
-(* The anamorphism (unfold) out of a coalgebra [(a, γ)] is the catamorphism for
-   [F^op], read back through the definitional identity of the two categories. *)
+(* The anamorphism (unfold) out coalgebra [(a, γ)] catamorphism for
+ [F^op], read back through definitional 恒等 two 范畴. （已译） *)
 Definition ana {a : C} (γ : FCoalgebra F a) : a ~> ν :=
   @cata (C^op) (F^op) T a γ.
 
-(* The defining square, with composition and [fmap] reversed relative to the
-   algebra side; it is [cata_commutes] for [F^op] whose op-composition unfolds
-   to the C-composition displayed here. *)
+(* The defining square, 复合 [fmap] reversed relative the
+ algebra side; it [cata_commutes] [F^op] whose op-复合 unfolds
+ C-复合 displayed here. （已译） *)
 Lemma ana_commutes {a : C} (γ : FCoalgebra F a) :
   outγ ∘ ana γ ≈ fmap[F] (ana γ) ∘ γ.
 Proof.
@@ -131,7 +130,7 @@ Proof.
   exact (@cata_unique (C^op) (F^op) T a γ h Hh).
 Qed.
 
-(* Fusion for the unfold, dual to [cata_fusion]. *)
+(* 相关说明。 （已译） *)
 Lemma ana_fusion {a b : C} (γ : FCoalgebra F a) (δ : FCoalgebra F b)
       (g : b ~> a) (Hg : γ ∘ g ≈ fmap[F] g ∘ δ) :
   ana γ ∘ g ≈ ana δ.

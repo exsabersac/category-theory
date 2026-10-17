@@ -12,7 +12,7 @@ Require Import Category.Instance.Cat.
 
 Generalizable All Variables.
 
-(** * Coalgebras over a comonad; the co-Eilenberg–Moore category *)
+(* * * Coalgebras over 余单子; co-Eilenberg–Moore 范畴 （已译） *)
 
 (* nLab:      https://ncatlab.org/nlab/show/coalgebra+over+a+comonad
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)#Comonads
@@ -101,8 +101,8 @@ Definition TAlgebra_to_WCoalgebra {a : C} (F : @TAlgebra (C^op) (W^op) H a) :
     (@t_id (C^op) (W^op) H a F)
     (@t_action (C^op) (W^op) H a F).
 
-(** The costructure map is untouched by the round trip (and likewise in the
-    other direction): the conversions only repackage fields. *)
+(** 本节：The costructure map untouched round trip (and likewise the
+ other direction): conversions repackage fields. （已译） *)
 
 Lemma WCoalgebra_to_TAlgebra_alg {a : C} (F : @WCoalgebra C W H a) :
   t_alg[WCoalgebra_to_TAlgebra F] ≈ w_coalg[F].
@@ -138,14 +138,14 @@ Definition TAlgebraHom_to_WCoalgebraHom {a b : C}
     (@t_alg_hom (C^op) (W^op) H b a G F f)
     (@t_alg_hom_commutes (C^op) (W^op) H b a G F f).
 
-(** ** The co-Eilenberg–Moore category, by duality *)
+(* * ** The co-Eilenberg–Moore 范畴, duality （已译） *)
 
 Definition CoEilenbergMoore : Category :=
   (@EilenbergMoore (C^op) (W^op) H)^op.
 
-(** The hom-sets of the co-Eilenberg–Moore category are definitionally the
-    algebra homomorphisms of the opposite monad, source and target
-    swapped. *)
+(** The hom-sets co-Eilenberg–Moore 范畴 definitionally the
+ algebra homomorphisms opposite 单子, source target
+ swapped. （已译） *)
 
 Lemma coeilenberg_moore_hom (x y : CoEilenbergMoore) :
   (x ~{CoEilenbergMoore}~> y) =

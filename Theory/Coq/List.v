@@ -15,7 +15,7 @@ Generalizable All Variables.
 Import ListNotations.
 Import MonadNotations.
 
-(** The list type as functor, applicative and monad *)
+(** The list type 函子, applicative 单子 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/list+monad

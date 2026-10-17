@@ -12,7 +12,7 @@ Require Import Category.Functor.Hom.
 
 Generalizable All Variables.
 
-(** * Mac Lane §IV.3's transfer lemma: representable transformations *)
+(* * * Mac Lane §IV.3's transfer 引理: representable transformations （已译） *)
 
 (*
    本文件给出 hom 形式的伴随/同态。
@@ -26,17 +26,17 @@ Context {A : Category}.
 
 (* ** The induced transformation *)
 
-(* Mac Lane's f*: precomposition with f, natural in the second variable
-   because composition is associative. *)
+(* Mac Lane's f*: precomposition f, natural second variable
+ because 复合 associative. （已译） *)
 
 Program Definition hom_transfer {a b : A} (f : b ~> a) :
   [Hom a ,─] ⟹ [Hom b ,─] := {|
   transform := fun c => {| morphism := fun h => h ∘ f |}
 |}.
 
-(* The component's value, at Leibniz equality.  Deliberate strictness:
-   this is one of the file's two uses of [=] on morphisms, and it is an
-   acceptance test rather than a mathematical claim. *)
+(* The component's value, at Leibniz equality. Deliberate strictness:
+ 这是 one file's two uses [=] 态射, it an
+ acceptance test rather than mathematical claim. （已译） *)
 
 Example hom_transfer_component {a b : A} (f : b ~> a) (c : A)
         (h : a ~> c) : transform[hom_transfer f] c h = h ∘ f := eq_refl.
@@ -58,8 +58,7 @@ Lemma hom_transfer_is_fmap {a b : A} (f : b ~> a) :
     ≈[[A, Sets]] fmap[Curried_Hom A] (f : a ~{Opposite A}~> b).
 Proof. intros c h; reflexivity. Qed.
 
-(* The Yoneda-side readback reaches [≈] and no further: the value is
-   `id ∘ f`.  The strict form is refuted, and pinned in the probe. *)
+(* 相关说明。 （已译） *)
 
 Lemma hom_transfer_at_id {a b : A} (f : b ~> a) :
   transform[hom_transfer f] a id ≈ f.

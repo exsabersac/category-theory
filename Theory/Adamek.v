@@ -15,7 +15,7 @@ Require Import Category.Construction.Chain.
 
 Generalizable All Variables.
 
-(** * Adámek's initial-algebra theorem over the ω-chain *)
+(* * * Adámek's initial-algebra 定理 over ω-chain （已译） *)
 
 (* nLab:      https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
    Wikipedia: https://en.wikipedia.org/wiki/Initial_algebra
@@ -40,9 +40,9 @@ Generalizable All Variables.
    [PreservesColimitCocone]（Structure/Limit/Preservation.v）是陈述该消解的词汇；
    在写出之前 ledger 条目保持开放。过渡期内 [AdamekData] 接口是承重契约。 *)
 
-(* Shift of an order proof [m ≤ n] to [S m ≤ S n], by recursion on the
-   derivation.  It only mentions [le_t] (Instance/Omega.v), so it lives above
-   the category-indexed development. *)
+(* Shift order 证明 [m ≤ n] [S m ≤ S n], recursion the
+ derivation. It mentions [le_t] (Instance/Omega.v), so it lives above
+ 范畴-indexed development. （已译） *)
 Fixpoint le_S_shift@{u} {m n} (p : le_t@{u} m n) : le_t@{u} (S m) (S n) :=
   match p in le_t _ n' return le_t@{u} (S m) (S n') with
   | le_t_n    => le_t_n
@@ -69,12 +69,11 @@ Context `{HI : @Initial C}.
 Context (F : C ⟶ C).
 Context (L : Colimit (Chain F)).
 
-(* The colimit apex and its apex-pinned colimit witness, read covariantly. *)
+(* 相关说明。 （已译） *)
 Definition A : C := colimit_apex L.
 Definition HL := colimit_is_acolimit L.
 
-(* Definitional unfolding rules for the chain transports, used to control
-   rewriting without unleashing [simpl] on the ambient fixpoints. *)
+(* 相关说明。 （已译） *)
 Lemma chain_hom_n {m} : chain_hom F (@le_t_n m) = id.
 Proof. reflexivity. Qed.
 
@@ -86,8 +85,8 @@ Lemma chain_step_step (n : nat) :
   chain_step F (S n) = fmap[F] (chain_step F n).
 Proof. reflexivity. Qed.
 
-(* Transporting a shifted order proof is the image under [F] of transporting
-   the original: [chain_hom (S p) ≈ F (chain_hom p)]. *)
+(* Transporting shifted order 证明 image under [F] transporting
+ original: [chain_hom (S p) ≈ F (chain_hom p)]. （已译） *)
 Lemma chain_hom_S {m n} (p : le_t m n) :
   chain_hom F (le_S_shift p) ≈ fmap[F] (chain_hom F p).
 Proof.
@@ -99,8 +98,8 @@ Proof.
     now rewrite fmap_comp.
 Qed.
 
-(* The honest hypothesis: [F A] carries a colimit of the shifted diagram whose
-   injections are exactly the image legs [fmap[F] (colimit_inj HL n)]. *)
+(* The honest 假设: [F A] carries colimit shifted diagram whose
+ injections exactly image legs [fmap[F] (colimit_inj HL n)]. （已译） *)
 Record AdamekData : Type := {
   adamek_colim : IsAColimit (F ◯ Chain F) (F A) ;
   adamek_legs  : ∀ n : nat,
@@ -113,7 +112,7 @@ Context (D : AdamekData).
 
 Local Notation HFL := (adamek_colim D).
 
-(* The shifted cocone over [F ◯ Chain F] with apex [A], legs [inj (S n)]. *)
+(* 相关说明。 （已译） *)
 Program Definition Ashift : Cocone (F ◯ Chain F) :=
   @Build_Cone (Omega^op) (C^op) ((F ◯ Chain F)^op) A
     (@Build_ACone (Omega^op) (C^op) A ((F ◯ Chain F)^op)
@@ -126,11 +125,11 @@ Next Obligation.
   exact (colimit_inj_coherence HL (le_S_shift f)).
 Qed.
 
-(* The [F]-algebra structure map, mediating out of the shifted cocone. *)
+(* 相关说明。 （已译） *)
 Definition alpha : F A ~> A := colimit_med HFL Ashift.
 
-(* The defining step relation of the structure map, phrased through the image
-   legs by folding in the leg agreement [adamek_legs]. *)
+(* The defining step 关系 structure map, phrased through image
+ legs folding leg agreement [adamek_legs]. （已译） *)
 Lemma STEP (n : nat) :
   alpha ∘ fmap[F] (colimit_inj HL n) ≈ colimit_inj HL (S n).
 Proof.
@@ -153,7 +152,7 @@ Fixpoint lam (n : nat) : chain_obj F n ~> ``aβ :=
   | S k => `2 aβ ∘ fmap[F] (lam k)
   end.
 
-(* [lam] respects the generating step of the chain. *)
+(* 相关说明。 （已译） *)
 Lemma LAMSTEP (n : nat) : lam (S n) ∘ chain_step F n ≈ lam n.
 Proof.
   induction n as [| k IH].
@@ -178,7 +177,7 @@ Proof.
     exact IH.
 Qed.
 
-(* The competing cocone itself, over [Chain F] with apex [``aβ]. *)
+(* 相关说明。 （已译） *)
 Program Definition Lam : Cocone (Chain F) :=
   @Build_Cone (Omega^op) (C^op) ((Chain F)^op) (``aβ)
     (@Build_ACone (Omega^op) (C^op) (``aβ) ((Chain F)^op) lam _).
@@ -188,14 +187,13 @@ Next Obligation.
   exact (lam_coh f).
 Qed.
 
-(* The mediating carrier map out of the colimit apex. *)
+(* 相关说明。 （已译） *)
 Definition u : A ~> ``aβ := colimit_med HL Lam.
 
 Lemma u_inj (n : nat) : u ∘ colimit_inj HL n ≈ lam n.
 Proof. exact (colimit_med_commutes HL Lam n). Qed.
 
-(* The shifted competing cocone over [F ◯ Chain F], apex [``aβ], legs
-   [lam (S n)]; its mediators separate the two sides of the algebra square. *)
+(* 相关说明。 （已译） *)
 Program Definition T : Cocone (F ◯ Chain F) :=
   @Build_Cone (Omega^op) (C^op) ((F ◯ Chain F)^op) (``aβ)
     (@Build_ACone (Omega^op) (C^op) (``aβ) ((F ◯ Chain F)^op)
@@ -207,14 +205,12 @@ Next Obligation.
   exact (lam_coh (le_S_shift f)).
 Qed.
 
-(* The mediator [u] is a morphism of [F]-algebras [(A, α) ~> (``aβ, `2 aβ)]:
-   both [u ∘ α] and [`2 aβ ∘ F u] mediate the shifted cocone [T]. *)
+(* The mediator [u] 态射 [F]-algebras [(A, α) ~> (`⟦0⟧2 aβ)]:
+ both [u ∘ α] [`2 aβ ∘ F u] mediate shifted cocone [T]. （已译） *)
 Lemma u_alg : u ∘ alpha ≈ `2 aβ ∘ fmap[F] u.
 Proof.
   apply (colimit_med_eq HFL T).
-  (* The colimit injections of [HFL] have domain [(F ◯ Chain F) n]; folding it
-     to the [F]-image form [F ((Chain F) n)] lets the [F]-image lemmas
-     [STEP]/[fmap_comp] key on the goal. *)
+  (* 相关说明。 （已译） *)
   - intro n.
     rewrite (adamek_legs D n).
     rewrite <- comp_assoc.
@@ -230,8 +226,7 @@ Proof.
     reflexivity.
 Qed.
 
-(* Any [F]-algebra map out of [(A, α)] agrees with the mediator [u] on the
-   underlying carrier, by induction along the chain injections. *)
+(* 相关说明。 （已译） *)
 Lemma hom_is_u (h : @FAlgHom C F A (``aβ) alpha (`2 aβ)) :
   falg_hom[h] ≈ u.
 Proof.

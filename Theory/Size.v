@@ -42,7 +42,7 @@ Require Import Category.Instance.One.
 
 Generalizable All Variables.
 
-(** ** A level-polymorphic identity type for objects *)
+(* * ** A level-polymorphic 恒等 type 对象 （已译） *)
 
 (*
    本节说明 Size 相关定义、性质与动机。
@@ -108,9 +108,9 @@ Definition locally_small_ambient@{o h p | h <= p} (C : Category@{o h p})
 
 (** ** Smallness *)
 
-(** Awodey Definition 1.11 / Riehl Definition 1.1.6: the objects and the arrows
-    are both sets.  Here BOTH constraints are strict, and that is the whole
-    content of the definition. *)
+(** Awodey Definition 1.11 / Riehl Definition 1.1.6: 对象 arrows
+ both sets. Here BOTH constraints strict, whole
+ content 定义. （已译） *)
 Class Small@{o h p uo uh up | h <= p, uh <= up, uo < o, uh < h}
       (C : Category@{o h p}) := {
   small_locally     :: LocallySmall@{o h p uh up} C;
@@ -188,7 +188,7 @@ Definition One_Small : Small _1 :=
     (fun x => match x with ttt => obj_refl ttt end)
     (fun a => match a with ttt => obj_refl ttt end).
 
-(** ** Riehl's arrows-with-domain-and-codomain packaging *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Size 相关定义、性质与动机。
@@ -234,9 +234,9 @@ Definition ArrowQuiverOfCat (C : Category) : ArrowQuiver :=
    ; aq_dom_id := fun x => obj_refl x
    ; aq_cod_id := fun x => obj_refl x |}.
 
-(** The two retraction laws, stated separately so the file records that in this
-    presentation they are DEFINITIONAL rather than assumed -- the point of
-    giving both packagings. *)
+(** 本节：The two retraction laws, stated separately so file records this
+ presentation they DEFINITIONAL rather than assumed -- point of
+ giving both packagings. （已译） *)
 Lemma arrow_quiver_dom_id (C : Category) (x : obj[C]) :
   ObjEq (aq_dom (ArrowQuiverOfCat C) (aq_id (ArrowQuiverOfCat C) x)) x.
 Proof. exact (obj_refl x). Qed.

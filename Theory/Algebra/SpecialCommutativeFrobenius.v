@@ -12,7 +12,7 @@ Require Import Category.Theory.Algebra.CommutativeFrobenius.
 
 Generalizable All Variables.
 
-(** * Special commutative Frobenius algebras (SCFAs) *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/Frobenius+algebra
@@ -47,11 +47,7 @@ End SpecialCommutativeFrobenius.
 
 Arguments scfa_commutative {C S X _}.
 
-(** ** SCFA projection shortcuts
-
-    These collapse the nested projection chain
-    [mu (frob_monoid (cfrob_frobenius (scfa_commutative F)))]
-    down to a single [scfa_mu F]. *)
+(* 相关说明。 （已译） *)
 
 Section SCFAProjections.
 

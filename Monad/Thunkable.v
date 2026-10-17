@@ -41,7 +41,7 @@ Context {M : C ⟶ C}.
 Context `{SMon : @StrongMonad C _ M}.
 
 (* ------------------------------------------------------------------ *)
-(** ** Tier 1: thunkability over a bare strong monad.                  *)
+(* * ** Tier 1: thunkability over bare strong 单子. （已译） *)
 (* ------------------------------------------------------------------ *)
 
 (*
@@ -61,8 +61,8 @@ Proof.
   now rewrite <- E.
 Qed.
 
-(* The Kleisli identity is thunkable: both sides are the unit naturality
-   square [fmap_ret] instantiated at the unit itself. *)
+(* The Kleisli 恒等 thunkable: both sides unit 自然性
+ square [fmap_ret] instantiated at unit itself. （已译） *)
 Lemma thunkable_id {x : C} : thunkable (ret[M] : x ~{C}~> M x).
 Proof.
   unfold thunkable.
@@ -70,8 +70,8 @@ Proof.
   apply fmap_ret.
 Qed.
 
-(* Every pure morphism is thunkable: push the outer unit across f with
-   [fmap_ret]. *)
+(* Every pure 态射 thunkable: push outer unit across f with
+ [fmap_ret]. （已译） *)
 Lemma pure_thunkable {x y : C} (f : x ~{C}~> y) : thunkable (kpure f).
 Proof.
   unfold thunkable, kpure.
@@ -119,9 +119,9 @@ Proof.
     now rewrite id_left.
 Qed.
 
-(* Thunkable morphisms absorb pure postcomposition: fmap u ∘ f is again
-   thunkable.  The unit walks across u by [fmap_ret], meets [tf], and
-   walks back out across fmap u. *)
+(* Thunkable 态射 absorb pure postcomposition: fmap u ∘ f again
+ thunkable. The unit walks across u [fmap_ret], meets [tf], and
+ walks back out across fmap u. （已译） *)
 Lemma thunkable_fmap_post {x y z : C} (u : y ~{C}~> z) {f : x ~> M y} :
   thunkable f → thunkable (fmap[M] u ∘ f).
 Proof.
@@ -164,7 +164,7 @@ Qed.
 *)
 
 (* ------------------------------------------------------------------ *)
-(** ** The wide subcategory Thunk of thunkable morphisms.              *)
+(* * ** The wide subcategory Thunk thunkable 态射. （已译） *)
 (* ------------------------------------------------------------------ *)
 
 (*
@@ -185,11 +185,11 @@ Definition Thunk : Category := Sub Kleisli ThunkableSub.
 Lemma Thunk_wide : Wide Kleisli ThunkableSub.
 Proof. intro x; exact ttt. Qed.
 
-(* The inclusion Thunk ⟶ Kl(M) is the generic faithful
-   [Incl Kleisli ThunkableSub] from Construction/Subcategory.v. *)
+(* The 含入 Thunk ⟶ Kl(M) generic faithful
+ [Incl Kleisli ThunkableSub] Construction/Subcategory.v. （已译） *)
 
 (* ------------------------------------------------------------------ *)
-(** ** Tier 2: copyability and discardability over a CD base.          *)
+(* 相关说明。 （已译） *)
 (* ------------------------------------------------------------------ *)
 
 Section ThunkableCD.
@@ -288,8 +288,8 @@ Proof using C CD M SM SMon discard_nat.
   now rewrite (discard_nat x (M y) f).
 Qed.
 
-(* Pure morphisms are copyable and discardable, through
-   [pure_thunkable]. *)
+(* Pure 态射 copyable discardable, through
+ [pure_thunkable]. （已译） *)
 Corollary pure_copyable {x y : C} (f : x ~{C}~> y) : copyable (kpure f).
 Proof using C CD M SM SMon copy_nat.
   apply thunkable_copyable, pure_thunkable.
@@ -302,7 +302,7 @@ Proof using C CD M SM SMon discard_nat.
 Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** Tier 3: the bridge to the deterministic class of Kl(M).         *)
+(* 相关说明。 （已译） *)
 (* ------------------------------------------------------------------ *)
 
 Section ThunkableDeterministic.
@@ -315,9 +315,7 @@ Section ThunkableDeterministic.
 
 Hypothesis comm : commutative_sm (M:=M).
 
-(* The δ-square of the descended comonoid at f is exactly [copyable] f:
-   the pure exchange laws strip the units, and the induced tensor
-   computes the double strength ([kleisli_bimap_dstr]). *)
+(* 相关说明。 （已译） *)
 Lemma kl_copyable_eq {x y : C} (f : x ~{Kleisli}~> y) :
   (@compose Kleisli _ _ _ (kpure copy[y]) f
      ≈ @compose Kleisli _ _ _
@@ -336,8 +334,7 @@ Proof.
     symmetry; exact E.
 Qed.
 
-(* The ε-square of the descended comonoid at f is exactly
-   [discardable] f. *)
+(* 相关说明。 （已译） *)
 Lemma kl_discardable_eq {x y : C} (f : x ~{Kleisli}~> y) :
   (@compose Kleisli _ _ _ (kpure discard[y]) f ≈ kpure discard[x])
   ↔ discardable f.
@@ -366,9 +363,9 @@ Proof using C CD M SM SMon comm copy_nat discard_nat.
   - exact (snd (kl_discardable_eq f) (thunkable_discardable f tf)).
 Qed.
 
-(* The two squares of a pure image, as standalone transfers: the pure
-   functor carries the base squares to Kl(M) through [kl_pure_comp] and
-   [kl_pure_tensor]. *)
+(* The two squares pure image, standalone transfers: pure
+ 函子 carries base squares Kl(M) through [kl_pure_comp] and
+ [kl_pure_tensor]. （已译） *)
 Lemma pure_hom_delta {x y : C} (f : x ~{C}~> y)
       (Fd : copy[y] ∘ f ≈ (f ⨂ f) ∘ copy[x]) :
   @compose Kleisli _ _ _ (kpure copy[y]) (kpure f)

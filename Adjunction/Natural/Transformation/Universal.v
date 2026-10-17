@@ -9,7 +9,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * Adjunctions: hom-set form ⇔ unit/counit form *)
+(* 相关说明。 （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors

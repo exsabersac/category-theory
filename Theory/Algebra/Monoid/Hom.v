@@ -7,7 +7,7 @@ Require Import Category.Theory.Algebra.Monoid.
 
 Generalizable All Variables.
 
-(** * Monoid homomorphisms and the category of internal monoids *)
+(* * * Monoid homomorphisms 范畴 internal monoids （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/monoid+in+a+monoidal+category
@@ -34,9 +34,9 @@ Class MonoidHom {x y : C} (Mx : Monoid x) (My : Monoid y) (f : x ~> y) :
 Lemma MonoidHom_id {x} (Mx : Monoid x) : MonoidHom Mx Mx id.
 Proof. split; cat. Qed.
 
-(* Monoid homomorphisms are closed under composition: paste the two
-   preservation squares, fusing (f ⨂ f) ∘ (g ⨂ g) into (f ∘ g) ⨂ (f ∘ g)
-   by the interchange law [bimap_comp]. *)
+(* Monoid homomorphisms closed under 复合: paste two
+ preservation squares, fusing (f ⨂ f) ∘ (g ⨂ g) (f ∘ g) ⨂ (f ∘ g)
+ interchange law [bimap_comp]. （已译） *)
 Lemma MonoidHom_comp {x y z} {Mx : Monoid x} {My : Monoid y} {Mz : Monoid z}
       {f : y ~> z} {g : x ~> y} :
   MonoidHom My Mz f → MonoidHom Mx My g → MonoidHom Mx Mz (f ∘ g).
@@ -79,8 +79,8 @@ Program Definition Mon : Category := {|
   compose := fun _ _ _ f g => (`1 f ∘ `1 g; MonoidHom_comp `2 f `2 g)
 |}.
 
-(* The forgetful functor Mon(C) ⟶ C projects out the underlying object and
-   morphism; it is faithful by construction ([Mon_Forget_Faithful] below). *)
+(* The forgetful 函子 Mon(C) ⟶ C projects out underlying 对象 and
+ 态射; it faithful construction ([Mon_Forget_Faithful] below). （已译） *)
 Program Definition Mon_Forget : Mon ⟶ C := {|
   fobj := fun X => `1 X;
   fmap := fun _ _ f => `1 f

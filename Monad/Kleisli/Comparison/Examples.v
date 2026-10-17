@@ -22,7 +22,7 @@ Require Import Category.Monad.Kleisli.Comparison.
 
 Generalizable All Variables.
 
-(** * The one-point monad on Sets: Exercise 3, and every algebra free *)
+(* * * The one-point 单子 Sets: Exercise 3, every algebra free （已译） *)
 
 (*
    Book: Riehl, "Category Theory in Context", the paragraph after Lemma
@@ -120,12 +120,12 @@ Proof.
   exact (Skeletal_StrictCat_invariant (iso_sym i) One_Skeletal).
 Qed.
 
-(* Its chooser: the one object of 1 is F of the one-point setoid. *)
+(* Its chooser: one 对象 1 F one-point setoid. （已译） *)
 Definition kleisli_point_FX_pick (a : _1) (m : sobj _1 kleisli_point_FX a) :
   { x : SetsC & Erase SetsC x ≅ a }.
 Proof. exists kleisli_point_one. destruct a. apply iso_id. Defined.
 
-(* Exercise 2's equivalence X_T → FX, the general theorem at this FX... *)
+(* Exercise 2's 等价 X_T → FX, general 定理 at FX... （已译） *)
 Definition kleisli_point_FX_equivalence :
   EquivalenceOfCategories
     (Kleisli_Comparison_Restrict kleisli_point_adj kleisli_point_FX
@@ -142,8 +142,8 @@ Proof.
   exact (Skeletal_StrictCat_invariant (iso_sym i) kleisli_point_FX_skeletal).
 Qed.
 
-(* Every algebra of the one-point monad is free: its structure map
-   h : T A = 1 ~> A and the unique arrow A ~> 1 are inverse. *)
+(* Every algebra one-point 单子 free: structure map
+ h : T A = 1 ~> A 唯一箭头 A ~> 1 inverse. （已译） *)
 Definition kleisli_point_every_algebra_free : @EveryAlgebraFree SetsC _ T1.
 Proof.
   intros [A alg].

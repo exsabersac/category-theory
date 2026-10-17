@@ -6,7 +6,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * Sieves, and the presheaf of sieves *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出筛与层论相关定义。
@@ -19,8 +19,7 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------ *)
 (** ** Sieves *)
 
-(* A sieve on c: a Prop-valued membership on the arrows into c, closed
-   under [≈] and under precomposition. *)
+(* 相关说明。 （已译） *)
 
 Record Sieve {C : Category} (c : C) := {
   sieve_mem : ∀ (d : C), (d ~> c) → Prop;
@@ -38,7 +37,7 @@ Arguments sieve_mem {C c} _ {d} _.
 Arguments sieve_respects {C c} _ {d} _ _ _ _.
 Arguments sieve_closed {C c} _ {d e} _ _ _.
 
-(* Two sieves are equivalent when they have the same members. *)
+(* 相关说明。 （已译） *)
 Definition sieve_equiv {C : Category} {c : C} : crelation (Sieve c) :=
   fun S T => ∀ (d : C) (f : d ~> c), sieve_mem S f <-> sieve_mem T f.
 
@@ -62,7 +61,7 @@ Definition SieveObj {C : Category} (c : C) : SetoidObject := {|
 |}.
 
 (* ------------------------------------------------------------------ *)
-(** ** The total sieve, and restriction *)
+(* 相关说明。 （已译） *)
 
 (* Awodey's t_C = {f : · → C}: every arrow into c. *)
 Program Definition total_sieve {C : Category} (c : C) : Sieve c := {|
@@ -88,8 +87,8 @@ Next Obligation.
   - now apply sieve_closed.
 Qed.
 
-(* Restriction carries the total sieve to the total sieve; this is the
-   naturality content of the truth point built downstream. *)
+(* Restriction carries total sieve total sieve; 这是 the
+ 自然性 content truth point built downstream. （已译） *)
 Lemma sieve_restrict_total {C : Category} {c d : C} (h : d ~> c) :
   sieve_restrict h (total_sieve c) ≈ total_sieve d.
 Proof. intros e g; split; intro; exact I. Qed.

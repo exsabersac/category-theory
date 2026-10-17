@@ -49,9 +49,9 @@ Next Obligation.
     reflexivity.
 Qed.
 
-(* Shorthand for the internal hom [a, b] = b ^ a as an object of C, with the
-   ambient category inferred; this is the internal counterpart of the external
-   hom-set Hom(a, b). *)
+(* Shorthand internal hom [a, b] = b ^ 对象 C, the
+ ambient 范畴 inferred; 这是 internal counterpart external
+ hom-set Hom(a, b). （已译） *)
 Notation "a ≈> b":= (InternalHomFunctor _ (a, b))
   (at level 89) : category_scope.
 (* As above, but naming the category C explicitly when it cannot be inferred. *)

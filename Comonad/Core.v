@@ -64,11 +64,11 @@ Section ComonadAPI.
 
 Context {C : Category} {W : C ⟶ C} {H : @Comonad C W}.
 
-(** The counit ε : W ⟹ Id, componentwise: the op-read of [ret]. *)
+(** 本节：The counit ε : W ⟹ Id, componentwise: op-read [ret]. （已译） *)
 Definition extract {x : C} : W x ~> x := @ret (C^op) (W^op) H x.
 
-(** The comultiplication δ : W ⟹ W ○ W, componentwise: the op-read of
-    [join]. *)
+(** 本节：The comultiplication δ : W ⟹ W ○ W, componentwise: op-read of
+ [join]. （已译） *)
 Definition duplicate {x : C} : W x ~> W (W x) := @join (C^op) (W^op) H x.
 
 (** Co-Kleisli extension (cobind): the op-read of [bind], see
@@ -76,7 +76,7 @@ Definition duplicate {x : C} : W x ~> W (W x) := @join (C^op) (W^op) H x.
 Definition extend {x y : C} (f : W x ~> y) : W x ~> W y :=
   fmap[W] f ∘ duplicate.
 
-(** [extend] agrees definitionally with the [bind] of the opposite monad. *)
+(** [extend] agrees definitionally [bind] opposite 单子. （已译） *)
 Lemma extend_op_bind {x y : C} (f : W x ~> y) :
   extend f ≈ @bind (C^op) (W^op) H y x f.
 Proof. reflexivity. Qed.
@@ -101,8 +101,8 @@ Proof. exact (@join_ret (C^op) (W^op) H x). Qed.
 Lemma fmap_extract_duplicate {x : C} : fmap[W] extract ∘ duplicate ≈ id[W x].
 Proof. exact (@join_fmap_ret (C^op) (W^op) H x). Qed.
 
-(** Coassociativity δ_W ∘ δ ≈ W δ ∘ δ: op-read of the associativity law
-    [join_fmap_join], which arrives in the symmetric orientation. *)
+(** 本节：Coassociativity δ_W ∘ δ ≈ W δ ∘ δ: op-read associativity law
+ [join_fmap_join], arrives symmetric orientation. （已译） *)
 Lemma duplicate_duplicate {x : C} :
   duplicate ∘ @duplicate x ≈ fmap[W] duplicate ∘ @duplicate x.
 Proof.
@@ -141,8 +141,8 @@ Proof.
   now rewrite !comp_assoc.
 Qed.
 
-(** [duplicate] is the extension of the identity, and [fmap] factors through
-    [extend]: the Kleisli-style and functorial presentations agree. *)
+(** [duplicate] extension 恒等, [fmap] factors through
+ [extend]: Kleisli-style functorial presentations agree. （已译） *)
 
 Corollary extend_id_duplicate {x : C} : extend (id[W x]) ≈ duplicate.
 Proof. unfold extend; cat. Qed.
@@ -159,9 +159,9 @@ Qed.
 
 End ComonadAPI.
 
-(** [extend] respects ≈ in its morphism argument, so it can be rewritten
-    under.  (Declared outside the section so the instance is exported with
-    fully general arguments.) *)
+(** [extend] respects ≈ 态射 论元, so it can rewritten
+ under. (Declared outside section so instance exported with
+ fully general arguments.) （已译） *)
 #[export] Instance extend_respects
   {C : Category} {W : C ⟶ C} {H : @Comonad C W} {x y} :
   Proper (equiv ==> equiv) (@extend C W H x y).

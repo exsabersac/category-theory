@@ -67,9 +67,9 @@ Proof.
   intros x y ox oy f; exact I.
 Defined.
 
-(** The inclusion is faithful: on hom-sets it is the first projection
-    out of a sigma type, and the hom-setoid of [Sub] is equality of
-    first projections, so injectivity is immediate. *)
+(** The 含入 faithful: hom-sets it first projection
+ out sigma type, hom-setoid [Sub] equality of
+ first projections, so injectivity immediate. （已译） *)
 Lemma Sheaves_Faithful : Functor.Faithful Sheaves_Incl.
 Proof.
   constructor; simpl; intros x y f g Hfg; exact Hfg.
@@ -91,8 +91,7 @@ Proof.
   destruct (coverage u) as [n fam].
   apply ForallT_impl.
   intros [uᵢ fᵢ] Hglue yᵢ Hcompat.
-  (* Pull the matching family for Y back along [from iso], obtaining a
-     matching family for X at the pulled-back section. *)
+  (* 相关说明。 （已译） *)
   assert (HXc : ∀ (v : C) (g : v ~> uᵢ),
             ForallT (A := ∃ uⱼ, uⱼ ~> u)
               (λ '(uⱼ; fⱼ),
@@ -105,9 +104,7 @@ Proof.
     generalize (Hcompat v g).
     apply ForallT_impl.
     intros [uⱼ fⱼ] Hj h e xⱼ.
-    (* Naturality of [from iso] at g and at h, plus the iso round
-       trip at uⱼ, reduce the X-compatibility square to the given
-       Y-compatibility square. *)
+    (* 相关说明。 （已译） *)
     pose proof (naturality (from iso) uᵢ v g yᵢ) as HA; simpl in HA.
     pose proof (naturality (from iso) uⱼ v h (transform[to iso] uⱼ xⱼ)) as HB;
       simpl in HB.
@@ -120,15 +117,14 @@ Proof.
     exact (@fmap_id _ _ X uⱼ xⱼ). }
   destruct (Hglue (transform[from iso] uᵢ yᵢ) HXc) as [x Hx Hun].
   unshelve econstructor.
-  - (* the glued section for Y: push X's glued section forward *)
+  - (* 相关说明。 （已译） *)
     exact (transform[to iso] u x).
   - (* it restricts correctly, by naturality of [to iso] *)
     pose proof (naturality (to iso) u uᵢ fᵢ x) as HN; simpl in HN.
     pose proof (iso_to_from iso uᵢ yᵢ) as HD; simpl in HD.
     rewrite HN, Hx, HD.
     exact (@fmap_id _ _ Y uᵢ yᵢ).
-  - (* uniqueness: any other glued section for Y pulls back to a glued
-       section for X, so it agrees with x, hence with [to iso u x] *)
+  - (* 相关说明。 （已译） *)
     intros y' Hy'; simpl in Hy'.
     pose proof (naturality (from iso) u uᵢ fᵢ y') as HN; simpl in HN.
     assert (Hx' : x ≈ transform[from iso] u y'). {

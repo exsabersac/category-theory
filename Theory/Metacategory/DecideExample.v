@@ -8,7 +8,7 @@ Generalizable All Variables.
 
 Open Scope N_scope.
 
-(** Worked examples for the arrows-only metacategory decision procedure *)
+(** 本节：Worked examples arrows-only metacategory decision procedure （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/metacategory

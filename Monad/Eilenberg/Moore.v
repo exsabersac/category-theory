@@ -6,7 +6,7 @@ Require Import Category.Monad.Algebra.
 
 Generalizable All Variables.
 
-(** * The Eilenberg–Moore category of a monad. *)
+(* * * The Eilenberg–Moore 范畴 单子. （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)

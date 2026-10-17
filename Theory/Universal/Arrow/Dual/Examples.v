@@ -17,11 +17,11 @@ Set Universe Polymorphism.
 
 Generalizable All Variables.
 
-(* [=( c )] lives in functor_scope (Functor/Diagonal.v); this file does not
-   import any module that opens it as a side effect, so it is opened here. *)
+(* [=( c )] lives 函子_scope (Functor/Diagonal.v); file does not
+ import any module opens it side effect, so it opened here. （已译） *)
 Open Scope functor_scope.
 
-(** * A worked example of the couniversal-arrow assembly *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出例子。
@@ -56,13 +56,13 @@ Program Definition product_couniversal_unique (p : C ∏ C) (d' : C)
     f ≈ proj_pair p ∘ fmap[Diagonal_Product C] g :=
   {| unique_obj := fst f △ snd f |}.
 Next Obligation.
-  (* existence: the fork factors both components through the projections *)
+  (* 相关说明。 （已译） *)
   intros p d' f; simpl; split.
   - now rewrite exl_fork.
   - now rewrite exr_fork.
 Qed.
 Next Obligation.
-  (* uniqueness: any factorizer agrees with the fork, by [ump_products] *)
+  (* 相关说明。 （已译） *)
   intros p d' f v [Hv1 Hv2]; simpl in *.
   symmetry.
   apply ump_products; split.
@@ -70,17 +70,16 @@ Next Obligation.
   - now symmetry.
 Qed.
 
-(* Packaged as a [CouniversalArrow]: Mac Lane's "a product is a couniversal
-   arrow from the diagonal". *)
+(* 相关说明。 （已译） *)
 Definition product_CUA (p : C ∏ C) :
   CouniversalArrow p (Diagonal_Product C) :=
   couniversal_arrow_from_UMP p (Diagonal_Product C) (fst p × snd p)
     (proj_pair p)
     (product_couniversal_unique p).
 
-(* The couniversal object is the product, and the couniversal arrow is the
-   projection pair -- both by convertibility, since
-   [couniversal_arrow_from_UMP] is [Defined]. *)
+(* The couniversal 对象 product, couniversal arrow the
+ projection pair -- both convertibility, since
+ [couniversal_arrow_from_UMP] [Defined]. （已译） *)
 Corollary product_CUA_obj (p : C ∏ C) :
   coarrow_obj (product_CUA p) = (fst p × snd p).
 Proof. reflexivity. Qed.
@@ -89,7 +88,7 @@ Corollary product_CUA_arrow (p : C ∏ C) :
   coarrow (product_CUA p) = proj_pair p.
 Proof. reflexivity. Qed.
 
-(** ** The terminal-object reading, exercised *)
+(* * ** The terminal-对象 reading, exercised （已译） *)
 
 (* [couniversal_arrow_terminal] applied to a real couniversal arrow: the
    product, with its projections, is a TERMINAL object of the comma category
@@ -102,7 +101,7 @@ Corollary product_terminal_obj (p : C ∏ C) :
   `1 (@terminal_obj _ (product_terminal p)) = (fst p × snd p, ttt).
 Proof. reflexivity. Qed.
 
-(* ... and the passage back keeps both the object and the arrow. *)
+(* ... passage back keeps both 对象 arrow. （已译） *)
 Corollary product_terminal_round (p : C ∏ C) :
   coarrow (couniversal_arrow_of_terminal (product_terminal p))
     = coarrow (product_CUA p).
@@ -120,9 +119,9 @@ Definition product_via_couniversal :
   Diagonal_Product C ⊣ product_via_couniversal_functor :=
   AdjunctionFromCouniversalArrows (Diagonal_Product C) product_CUA.
 
-(* The object action of the produced right adjoint IS the product, on the nose
-   -- the strength the primal GAFT example cannot state, its own functor being
-   [Qed]-opaque. *)
+(* The 对象 action produced 右伴随 IS product, nose
+ -- strength primal GAFT example cannot state, own 函子 being
+ [Qed]-opaque. （已译） *)
 Corollary product_via_couniversal_obj (p : C ∏ C) :
   fobj[product_via_couniversal_functor] p = (fst p × snd p).
 Proof. reflexivity. Qed.

@@ -55,8 +55,7 @@ Record ArrowTransform := {
     τ_arr (g ∘ f) ≈ τ_arr g ∘ fmap[S] f
 }.
 
-(* The two fields chained, i.e. the exercise's displayed equation with its
-   middle term elided. *)
+(* 相关说明。 （已译） *)
 
 Lemma τ_arr_splice (A : ArrowTransform) {c c' c'' : C}
       (g : c' ~> c'') (f : c ~> c') :
@@ -102,8 +101,8 @@ Proof.
   now rewrite Hf.
 Qed.
 
-(* The naturality square of the diagonal family c ↦ τ (id[c]), obtained by
-   reading the previous two lemmas in opposite directions. *)
+(* The 自然性 square diagonal family c ↦ τ (id[c]), obtained by
+ reading previous two lemmas opposite directions. （已译） *)
 
 Lemma τ_arr_diagonal_naturality (A : ArrowTransform) {c c' : C} (f : c ~> c') :
   fmap[T] f ∘ τ_arr A (id[c]) ≈ τ_arr A (id[c']) ∘ fmap[S] f.
@@ -134,9 +133,9 @@ Next Obligation.
     + apply H2.
 Qed.
 
-(* From a transformation to its arrow family: transport along S, then
-   transform.  Both laws are then instances of naturality and
-   functoriality. *)
+(* From transformation arrow family: transport along S, then
+ transform. Both laws then instances 自然性 and
+ functoriality. （已译） *)
 
 Program Definition Transform_to_Arrows (N : S ⟹ T) : ArrowTransform := {|
   τ_arr := fun c c' f => transform[N] c' ∘ fmap[S] f
@@ -176,7 +175,7 @@ Definition Arrows_to_Transform (A : ArrowTransform) : S ⟹ T :=
   Build_Transform' (fun c => τ_arr A (id[c]))
                    (fun c c' f => τ_arr_diagonal_naturality A f).
 
-(* Both composites are the identity up to ≈. *)
+(* Both composites 恒等 up ≈. （已译） *)
 
 Theorem Transform_to_Arrows_to_Transform (N : S ⟹ T) :
   Arrows_to_Transform (Transform_to_Arrows N) ≈ N.
@@ -275,7 +274,7 @@ Proof.
        is discharged by [Transform_to_Arrows_respects] *)
     simpl.
     unshelve refine {| morphism := Transform_to_Arrows |}.
-  - (* from: an arrow family to the transformation on the identities *)
+  - (* 相关说明。 （已译） *)
     simpl.
     unshelve refine {| morphism := Arrows_to_Transform |}.
   - (* to ∘ from ≈ id, pointwise *)
@@ -304,9 +303,7 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* Non-triviality in general: distinct transformations have distinct arrow
-   families.  This is [Transform_determined_by_arrows] contraposed, and a
-   concrete pair of witnesses appears below. *)
+(* 相关说明。 （已译） *)
 
 Corollary distinct_Transforms_distinct_Arrows {C D : Category}
       {S T : C ⟶ D} (N M : S ⟹ T) :
@@ -317,16 +314,16 @@ Proof.
   now apply Transform_determined_by_arrows.
 Qed.
 
-(* The remaining sections need two concrete small categories and the
-   constant functors between them; the requires are placed here to keep
-   the development above free of them. *)
+(* The remaining sections need two concrete small 范畴 the
+ 常值 函子 between them; requires placed here keep
+ development above free them. （已译） *)
 
 Require Import Category.Functor.Diagonal.
 Require Import Category.Instance.Two.
 Require Import Category.Instance.Parallel.
 
-(* The functorial action of a constant functor is an identity; every
-   computation in the two sections below reduces through this lemma. *)
+(* The functorial action 常值 函子 恒等; every
+ computation two sections below reduces through 引理. （已译） *)
 
 Lemma diagonal_fmap {C J : Category} (x : C) {c c' : J} (f : c ~> c') :
   fmap[Δ[J](x)] f ≈ id[x].
@@ -457,7 +454,7 @@ Lemma cod_family_respects {c c' : _2} :
   Proper (equiv ==> equiv) (@cod_family c c').
 Proof. intros f g Hf; reflexivity. Qed.
 
-(* Reading the domain satisfies the left law and refutes the right one. *)
+(* 相关说明。 （已译） *)
 
 Lemma dom_family_left {c c' c'' : _2} (g : c' ~> c'') (f : c ~> c') :
   fmap[ConstY] g ∘ dom_family f ≈ dom_family (g ∘ f).
@@ -473,7 +470,7 @@ Proof.
   exact (H TwoX TwoY TwoY (@id _2 TwoY) TwoXY).
 Qed.
 
-(* Reading the codomain satisfies the right law and refutes the left one. *)
+(* 相关说明。 （已译） *)
 
 Lemma cod_family_right {c c' c'' : _2} (g : c' ~> c'') (f : c ~> c') :
   cod_family (g ∘ f) ≈ cod_family g ∘ fmap[ConstX] f.
@@ -492,7 +489,7 @@ Qed.
 End Independence.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Neither law alone implies respectfulness *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Arrows 相关定义、性质与动机。
@@ -516,8 +513,8 @@ Program Definition BlurLeft : Category := {|
   compose := fun _ _ _ g f => g          (* left-zero: the composite is g *)
 |}.
 
-(* The separating pair is the same one the independence countermodels use:
-   the two distinct arrows ParX ~> ParY of the parallel-pair category. *)
+(* The separating pair same one independence countermodels use:
+ two distinct arrows ParX ~> ParY parallel-pair 范畴. （已译） *)
 Lemma par_one_two_distinct : ¬ (par_one ≈ par_two).
 Proof. intros H; unfold par_one, par_two in H; simpl in H; discriminate. Qed.
 
@@ -529,14 +526,13 @@ Notation TR := (Δ[BlurRight](parY)).
 Definition blur_right_family {c c' : BlurRight} (f : c ~> c') : SR c ~> TR c' :=
   if f then par_one else par_two.
 
-(* It satisfies the LEFT splice law in full generality: with right-zero
-   composition the law reads τ f ≈ τ f. *)
+(* It satisfies LEFT splice law full generality: right-zero
+ 复合 law reads τ f ≈ τ f. （已译） *)
 Lemma blur_right_left {c c' c'' : BlurRight} (g : c' ~> c'') (f : c ~> c') :
   fmap[TR] g ∘ blur_right_family f ≈ blur_right_family (g ∘ f).
 Proof. apply id_left. Qed.
 
-(* Yet it is not respectful: the two arrows are `≈` and their images are
-   not.  So the LEFT law alone does not imply respectfulness. *)
+(* 相关说明。 （已译） *)
 Theorem left_law_alone_gives_no_respect :
   ¬ (∀ c c' : BlurRight, Proper (equiv ==> equiv) (@blur_right_family c c')).
 Proof.
@@ -555,8 +551,8 @@ Notation TL := (Δ[BlurLeft](parY)).
 Definition blur_left_family {c c' : BlurLeft} (f : c ~> c') : SL c ~> TL c' :=
   if f then par_one else par_two.
 
-(* The mirror image: with left-zero composition the RIGHT law reads
-   τ g ≈ τ g. *)
+(* The 镜像 image: left-zero 复合 RIGHT law reads
+ τ g ≈ τ g. （已译） *)
 Lemma blur_left_right {c c' c'' : BlurLeft} (g : c' ~> c'') (f : c ~> c') :
   blur_left_family (g ∘ f) ≈ blur_left_family g ∘ fmap[SL] f.
 Proof. symmetry; apply id_right. Qed.
@@ -571,9 +567,7 @@ Qed.
 
 End RightLawAlone.
 
-(* The countermodels are non-degenerate in the way that matters: the two
-   arrows really are identified by the setoid, and really are distinguished
-   by the family. *)
+(* 相关说明。 （已译） *)
 Example blur_arrows_equivalent :
   (true : @hom BlurRight tt tt) ≈ (false : @hom BlurRight tt tt).
 Proof. exact I. Qed.

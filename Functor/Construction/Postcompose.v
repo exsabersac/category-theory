@@ -17,7 +17,7 @@ Require Import Category.Instance.Cat.Bicategory.
 
 Generalizable All Variables.
 
-(** * Postcomposition, and the invariance of naturality under enlargement *)
+(* * * Postcomposition, invariance 自然性 under enlargement （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/full+subcategory
@@ -29,7 +29,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The transformation setoid, named *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、hom相关定义、性质与动机。
@@ -87,9 +87,9 @@ Example postcompose_fmap_component (K L : D ⟶ E) (θ : K ⟹ L) (x : D) :
 
 (** ** Faithfulness *)
 
-(* Componentwise injectivity of [fmap[J]] is componentwise injectivity of
-   the whiskering, and the hom-setoid of a functor category is
-   componentwise, so there is nothing else to check. *)
+(* Componentwise injectivity [fmap[J]] componentwise injectivity of
+ whiskering, hom-setoid 函子 范畴 is
+ componentwise, so there nothing else check. （已译） *)
 Lemma Postcompose_Faithful : Faithful J → Faithful Postcompose.
 Proof.
   intro JF; constructor; simpl; intros K L θ θ' Hθ x.
@@ -101,7 +101,7 @@ End Postcompose.
 
 Arguments Postcompose {D E E'} J.
 
-(** ** Fullness, and the Nat-setoid isomorphism *)
+(* * ** Fullness, Nat-setoid 同构 （已译） *)
 
 Section PostcomposeFullyFaithful.
 
@@ -138,7 +138,7 @@ Next Obligation.
   exact (@naturality_sym _ _ _ _ φ x y f).
 Qed.
 
-(* The section law is J's own, applied at each component. *)
+(* 相关说明。 （已译） *)
 Program Definition Postcompose_Full : Full (Postcompose (D:=D) J) := {|
   prefmap := fun K L φ => post_prefmap φ
 |}.
@@ -181,9 +181,9 @@ Example postcompose_hom_iso_to (K L : D ⟶ E) (θ : K ⟹ L) :
 Example postcompose_hom_iso_from (K L : D ⟶ E) (φ : J ◯ K ⟹ J ◯ L) :
   from (postcompose_hom_iso K L) φ = post_prefmap φ := eq_refl.
 
-(* The forward leg IS the functor's own action on 2-cells; this is the
-   sentence "the isomorphism is [Postcompose J] restricted to a hom-setoid",
-   machine-checked rather than asserted. *)
+(* The forward leg IS 函子's own action 2-cells; 这是 the
+ sentence "同构 [Postcompose J] restricted hom-setoid",
+ machine-checked rather than asserted. （已译） *)
 Example postcompose_hom_iso_to_is_fmap (K L : D ⟶ E) (θ : K ⟹ L) :
   to (postcompose_hom_iso K L) θ = fmap[Postcompose J] θ := eq_refl.
 
@@ -202,7 +202,7 @@ Arguments Postcompose_Full {D E E'} J JFull JFaith.
 Arguments postcompose_hom_iso {D E E'} J JFull JFaith K L.
 Arguments postcompose_nat_bijection {D E E'} J JFull JFaith K L.
 
-(** ** Comparison with the horizontal-composition bifunctor *)
+(* * ** Comparison horizontal-复合 bifunctor （已译） *)
 
 Section ViaHcompose.
 
@@ -211,8 +211,8 @@ Context (J : E ⟶ E').
 
 #[local] Obligation Tactic := idtac.
 
-(* The postcomposition functor that the tree already had, assembled: freeze
-   the first argument of horizontal composition at J. *)
+(* The postcomposition 函子 tree already had, assembled: freeze
+ first 论元 horizontal 复合 at J. （已译） *)
 Definition PostcomposeViaHcompose : [D, E] ⟶ [D, E'] :=
   Partial_r (@Cat_Hcompose D E E') J.
 
@@ -230,7 +230,7 @@ Example postcompose_via_hcompose_component
   transform[fmap[PostcomposeViaHcompose] θ] x
     = fmap[J] (@id E (L x)) ∘ fmap[J] (transform[θ] x) := eq_refl.
 
-(* Up to `≈` the two agree, the unit being discharged by [fmap_id]. *)
+(* 相关说明。 （已译） *)
 Lemma postcompose_via_hcompose_fmap (K L : D ⟶ E) (θ : K ⟹ L) :
   fmap[PostcomposeViaHcompose] θ ≈ fmap[Postcompose J] θ.
 Proof.
@@ -252,7 +252,7 @@ Qed.
 
 End ViaHcompose.
 
-(** ** Mac Lane's own hypothesis: a full subcategory inclusion *)
+(* * ** Mac Lane's own 假设: full subcategory 含入 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -271,8 +271,8 @@ Context (S : Subcategory C).
 Context (full : Subcategory.Full C S).
 Context {D : Category}.
 
-(* The two donors, by name: every subcategory inclusion is faithful, and a
-   full one is a full functor. *)
+(* The two donors, name: every subcategory 含入 faithful, a
+ full one full 函子. （已译） *)
 Definition sub_Incl_Full : Category.Theory.Functor.Full (Incl C S) :=
   Full_Implies_Full_Functor C S full.
 
@@ -303,7 +303,7 @@ End FullSubcategory.
 Arguments SubPostcompose {C} S {D}.
 Arguments sub_postcompose_hom_iso {C} S full {D} K L.
 
-(** ** The concrete witness: finite setoids inside Sets *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明始/终对象相关定义、性质与动机。
@@ -321,8 +321,8 @@ Definition finpost_hom_iso :
   (finpost_K ⟹ finpost_K) ≊ (FinSets_Incl ◯ finpost_K ⟹ FinSets_Incl ◯ finpost_K) :=
   sub_postcompose_hom_iso FinSets FinSets_Full finpost_K finpost_K.
 
-(* A non-identity transformation upstairs: negation of the two-element
-   setoid, constant over the point. *)
+(* A non-恒等 transformation upstairs: negation two-element
+ setoid, 常值 over point. （已译） *)
 Definition finpost_theta : finpost_K ⟹ finpost_K :=
   fmap[Diagonal _1] FinSets_negb.
 
@@ -365,8 +365,8 @@ Proof.
   exact (H ttt).
 Qed.
 
-(* Non-degeneracy, downstairs: so does the target Nat-setoid, and the
-   witness is the image of [finpost_theta] under the isomorphism. *)
+(* Non-degeneracy, downstairs: so does target Nat-setoid, the
+ witness image [finpost_theta] under 同构. （已译） *)
 Lemma finpost_image_not_id :
   @nat_id _1 Sets (FinSets_Incl ◯ finpost_K) ≈ to finpost_hom_iso finpost_theta → False.
 Proof.
@@ -375,8 +375,8 @@ Proof.
   exact (H ttt).
 Qed.
 
-(* And the backward leg genuinely produces a non-identity: the preimage of
-   [finpost_phi] is not the identity transformation. *)
+(* And backward leg genuinely produces non-恒等: preimage of
+ [finpost_phi] not 恒等 transformation. （已译） *)
 Lemma finpost_preimage_not_id :
   @nat_id _1 FinSetsCat finpost_K ≈ from finpost_hom_iso finpost_phi → False.
 Proof.
@@ -387,13 +387,13 @@ Proof.
   - exact (finpost_preimage_component ttt).
 Qed.
 
-(* The two exhibited transformations correspond under the isomorphism. *)
+(* The two exhibited transformations correspond under 同构. （已译） *)
 Lemma finpost_theta_phi : to finpost_hom_iso finpost_theta ≈ finpost_phi.
 Proof. intro x; simpl; reflexivity. Qed.
 
 End FinSetsWitness.
 
-(** ** A boundary: fullness of J cannot be dropped *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -437,9 +437,9 @@ Next Obligation.
     simpl in Hf, Hg; subst; reflexivity.
 Qed.
 
-(* Faithful: parallel arrows of the discrete category are equal, both being
-   the unique identity constructor at their common endpoint, so the
-   hypothesis is never even consulted. *)
+(* Faithful: parallel arrows discrete 范畴 equal, both being
+ unique 恒等 constructor at common endpoint, so the
+ 假设 never even consulted. （已译） *)
 Lemma DiscToTwo_Faithful : Faithful DiscToTwo.
 Proof.
   constructor; intros x y f g Hfg; destruct x, y;
@@ -456,11 +456,11 @@ Proof.
   exact (TwoDHom_X_Y_absurd (@prefmap _ _ DiscToTwo HF TwoDX TwoDY TwoXY)).
 Qed.
 
-(* The two constant diagrams over the point. *)
+(* The two 常值 diagrams over point. （已译） *)
 Definition DiscX : _1 ⟶ Two_Discrete := @Diagonal Two_Discrete _1 TwoDX.
 Definition DiscY : _1 ⟶ Two_Discrete := @Diagonal Two_Discrete _1 TwoDY.
 
-(* Downstairs the arrow exists, so the target Nat-setoid is inhabited. *)
+(* 相关说明。 （已译） *)
 Program Definition disc_phi : DiscToTwo ◯ DiscX ⟹ DiscToTwo ◯ DiscY := {|
   transform := fun _ => TwoXY
 |}.
@@ -476,8 +476,8 @@ Proof.
            (transform[@prefmap _ _ _ HF DiscX DiscY disc_phi] ttt)).
 Qed.
 
-(* Faithfulness, by contrast, does transfer: the postcomposition functor
-   along the same J is faithful. *)
+(* Faithfulness, contrast, does transfer: postcomposition 函子
+ along same J faithful. （已译） *)
 Definition postcompose_disc_Faithful : Faithful (Postcompose (D:=_1) DiscToTwo) :=
   Postcompose_Faithful DiscToTwo DiscToTwo_Faithful.
 

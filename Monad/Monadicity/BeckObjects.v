@@ -57,9 +57,9 @@ Proof.
     apply fmap_ret.
 Defined.
 
-(** The same canonical pair is reflexive: T η_a is a common section,
-    by the monad law [join_fmap_ret] on the μ side and functoriality
-    over the unit law [t_id] on the T α side. *)
+(** The same canonical pair reflexive: T η_a common section,
+ 单子 law [join_fmap_ret] μ side functoriality
+ over unit law [t_id] T α side. （已译） *)
 
 Definition canonical_reflexive {a : D} (α : TAlgebra T a) :
   ReflexivePair (@join D T H a) (fmap[T] (t_alg[α])).
@@ -73,10 +73,10 @@ Proof.
     apply fmap_id.
 Defined.
 
-(** ** A functor sends split epis to epis
+(* * ** A 函子 sends split epis epis
 
-    The image under T of a morphism with a right inverse is again a
-    split epi, hence epic.  Used below to cancel T e and T (T e). *)
+ The image under T 态射 right inverse again a
+ split epi, hence epic. Used below cancel T e T (T e). （已译） *)
 
 Lemma fmap_split_epic {x y : D} (p : x ~> y) (s : y ~> x)
   (Hps : p ∘ s ≈ id) : Epic (fmap[T] p).
@@ -150,14 +150,14 @@ Context {a b : EilenbergMoore T}.
 Context (f g : a ~{EilenbergMoore T}~> b).
 Context (SC : SplitCoequalizer (t_alg_hom[f]) (t_alg_hom[g])).
 
-(** Split coequalizers are absolute, so T preserves this one. *)
+(** 本节：Split coequalizers absolute, so T preserves one. （已译） *)
 
 Definition beck_image_split :
   SplitCoequalizer (fmap[T] (t_alg_hom[f])) (fmap[T] (t_alg_hom[g])) :=
   functor_preserves_split T (t_alg_hom[f]) (t_alg_hom[g]) SC.
 
-(** The three split epimorphisms we cancel against: e itself, T e (the
-    coequalizing map of the preserved fork), and T (T e). *)
+(** 本节：The three split epimorphisms we cancel against: e itself, T e (the
+ coequalizing map preserved fork), T (T e). （已译） *)
 
 Lemma beck_e_epic : Epic (scoeq_e SC).
 Proof.
@@ -174,8 +174,8 @@ Definition beck_fmap_fmap_e_epic :
   fmap_split_epic (fmap[T] (scoeq_e SC)) (fmap[T] (scoeq_s SC))
     (scoeq_law2 beck_image_split).
 
-(** e ∘ β coforks the T-image pair: push β through the commuting
-    squares of f and g, then use the cofork law of [SC] under e. *)
+(** 本节：e ∘ β coforks T-image pair: push β through commuting
+ squares f g, then use cofork law [SC] under e. （已译） *)
 
 Lemma beck_image_cofork :
   (scoeq_e SC ∘ t_alg[`2 b]) ∘ fmap[T] (t_alg_hom[f])
@@ -189,8 +189,8 @@ Proof.
   reflexivity.
 Qed.
 
-(** The created action: descend e ∘ β through the preserved coequalizer
-    T e.  Its defining triangle γ ∘ T e ≈ e ∘ β is [created_action_sq]. *)
+(** 本节：The created action: descend e ∘ β through preserved coequalizer
+ T e. Its defining triangle γ ∘ T e ≈ e ∘ β [created_action_sq]. （已译） *)
 
 Definition beck_action_desc :
   ∃! u : T (scoeq_obj SC) ~{D}~> scoeq_obj SC,
@@ -205,8 +205,8 @@ Definition created_action_sq :
   created_action ∘ fmap[T] (scoeq_e SC) ≈ scoeq_e SC ∘ t_alg[`2 b] :=
   unique_property beck_action_desc.
 
-(** Unit law for γ: precompose with the epi e, slide η past e by
-    naturality, contract γ ∘ T e, then use the unit law of β. *)
+(** Unit law γ: precompose epi e, slide η past e by
+ 自然性, contract γ ∘ T e, then use unit law β. （已译） *)
 
 Lemma created_action_t_id : created_action ∘ ret ≈ id.
 Proof.
@@ -244,8 +244,8 @@ Proof.
   reflexivity.
 Qed.
 
-(** The created algebra (q, γ), and e as an algebra homomorphism into
-    it.  Its carrier is definitionally the coequalizing map e. *)
+(** 本节：The created algebra (q, γ), e algebra homomorphism into
+ it. Its carrier definitionally coequalizing map e. （已译） *)
 
 Definition created_algebra : @TAlgebra D T H (scoeq_obj SC) :=
   {| t_alg    := created_action
@@ -309,7 +309,7 @@ Proof.
     exact (scoeq_law1 SC).
   - intros z h Hh.
     unshelve refine {| unique_obj := created_desc_hom z h Hh |}.
-    + (* the triangle is the one downstairs *)
+    + (* 相关说明。 （已译） *)
       exact (unique_property (split_coeq_desc SC (t_alg_hom[h]) Hh)).
     + (* uniqueness on carriers is uniqueness downstairs *)
       intros v Hv.
@@ -317,9 +317,9 @@ Proof.
                (t_alg_hom[v]) Hv).
 Defined.
 
-(** Uniqueness of the created action: any algebra structure on q making
-    e a homomorphism satisfies the defining triangle of γ, so descent
-    uniqueness identifies the two actions. *)
+(** 本节：Uniqueness created action: any algebra structure q making
+ e homomorphism satisfies defining triangle γ, so descent
+ uniqueness identifies two actions. （已译） *)
 
 Lemma created_algebra_unique (alg' : @TAlgebra D T H (scoeq_obj SC)) :
   scoeq_e SC ∘ t_alg[`2 b] ≈ t_alg[alg'] ∘ fmap[T] (scoeq_e SC) →
@@ -354,7 +354,7 @@ Proof.
   unshelve refine
     {| created_alg := created_algebra
      ; created_hom := created_e_hom |}.
-  - (* the carrier of the created homomorphism is e on the nose *)
+  - (* 相关说明。 （已译） *)
     reflexivity.
   - exact created_is_coequalizer.
   - exact created_algebra_unique.

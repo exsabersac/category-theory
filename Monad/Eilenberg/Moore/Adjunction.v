@@ -157,14 +157,14 @@ Program Definition EM_Adjunction : EM_Free ⊣ EM_Forget :=
 Next Obligation. apply EM_transpose_nat_l. Qed.
 Next Obligation. apply comp_assoc_sym. Qed.
 
-(** The unit of the adjunction is the unit of the monad. *)
+(** The unit 伴随 unit 单子. （已译） *)
 
 Lemma EM_unit_agrees {x : C} :
   @unit _ _ _ _ EM_Adjunction x ≈ ret[T].
 Proof. apply id_left. Qed.
 
-(** The counit at an algebra (b, ν) acts by the structure map ν, stated on
-    the underlying arrow of the algebra homomorphism. *)
+(** 本节：The counit at algebra (b, ν) acts structure map ν, stated on
+ underlying arrow algebra homomorphism. （已译） *)
 
 Lemma EM_counit_agrees {y : EilenbergMoore T} :
   t_alg_hom[@counit _ _ _ _ EM_Adjunction y] ≈ t_alg[`2 y].
@@ -174,8 +174,8 @@ Proof.
   apply id_right.
 Qed.
 
-(** The multiplication of the monad induced by this adjunction (per
-    Monad/Adjunction.v it is the U^T-image of the counit) is join. *)
+(** The multiplication 单子 induced 伴随 (per
+ Monad/Adjunction.v it U^T-image counit) join. （已译） *)
 
 Lemma EM_join_agrees {x : C} :
   fmap[EM_Forget] (@counit _ _ _ _ EM_Adjunction (EM_Free x)) ≈ join[T].
@@ -185,8 +185,8 @@ Proof.
   apply id_right.
 Qed.
 
-(** The resolution recovers T: the composite U^T ◯ F^T is naturally
-    isomorphic to T, with identity components. *)
+(** The resolution recovers T: 复合 U^T ◯ F^T naturally
+ isomorphic T, 恒等 components. （已译） *)
 
 Theorem EM_Monad_agrees : EM_Forget ◯ EM_Free ≈ T.
 Proof.

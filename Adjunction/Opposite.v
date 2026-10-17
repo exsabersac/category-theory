@@ -7,7 +7,7 @@ Require Import Category.Functor.Opposite.
 
 Generalizable All Variables.
 
-(** * The opposite (dual) of a hom-set adjunction: F ⊣ U yields U^op ⊣ F^op. *)
+(* * * The opposite (dual) hom-set 伴随: F ⊣ U yields U^op ⊣ F^op. （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
@@ -32,7 +32,7 @@ Program Definition Opposite_Adjunction `(F : D ⟶ C) `(U : C ⟶ D)
   from_adj_nat_r := fun _ _ _ f g => @to_adj_nat_l  _ _ _ _ A _ _ _ g f
 |}.
 
-(* Mirrors the F^op notation on functors, at the same level/scope. *)
+(* Mirrors F^op notation 函子, at same level/scope. （已译） *)
 
 Notation "N ^op" := (@Opposite_Adjunction _ _ _ _ N)
   (at level 7, format "N ^op", left associativity) : adjunction_scope.

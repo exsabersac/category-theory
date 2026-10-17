@@ -19,8 +19,8 @@ Definition CategoryEquivalence (C D : Category) : Type :=
 Notation "C ≃ D" := (CategoryEquivalence C%category D%category)
   (at level 91) : category_theory_scope.
 
-(* Covariant accessors: the underlying functor, its equivalence structure,
-   and the chosen quasi-inverse. *)
+(* Covariant accessors: underlying 函子, 等价 structure,
+ chosen quasi-inverse. （已译） *)
 
 Definition equivalence_functor {C D : Category} (E : C ≃ D) : C ⟶ D :=
   `1 E.
@@ -55,7 +55,7 @@ Lemma EquivalenceOfCategories_Compose_counit :
 Proof.
   rewrite <- (fun_equiv_comp_assoc G F (F' ◯ G')).
   rewrite (fun_equiv_comp_assoc F F' G').
-  (* the inner counit cell F ◯ F′ ≈ Id[D] cancels the middle *)
+  (* 相关说明。 （已译） *)
   rewrite (@equivalence_counit C D F HF).
   rewrite (fun_equiv_id_left G').
   exact (@equivalence_counit D E G HG).
@@ -66,7 +66,7 @@ Lemma EquivalenceOfCategories_Compose_unit :
 Proof.
   rewrite <- (fun_equiv_comp_assoc F' G' (G ◯ F)).
   rewrite (fun_equiv_comp_assoc G' G F).
-  (* the inner unit cell Id[D] ≈ G′ ◯ G cancels the middle *)
+  (* 相关说明。 （已译） *)
   rewrite <- (@equivalence_unit D E G HG).
   rewrite (fun_equiv_id_left F).
   exact (@equivalence_unit C D F HF).

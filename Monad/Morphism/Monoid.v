@@ -18,7 +18,7 @@ Require Import Category.Monad.Morphism.
 
 Generalizable All Variables.
 
-(** * The category of monads is Mac Lane's Mon_{C^C} *)
+(* * * The 范畴 单子 Mac Lane's Mon_{C^C} （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/monoid+in+a+monoidal+category
@@ -29,7 +29,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Objects: a monad is a monoid in ⟨[C, C], ◯, Id⟩ *)
+(* * ** Objects: 单子 幺半群 ⟨[C, C], ◯, Id⟩ （已译） *)
 
 Definition monad_monoid@{o h f s | h < s, o <= f, h <= f +}
   {C : Category@{o h h}} {T : C ⟶ C} (M : @Monad C T) :
@@ -54,7 +54,7 @@ Definition monoid_monad@{o h f s | h < s, o <= f, h <= f +}
   fst (@Category.Monad.Monoid.Monoid_Monad@{o h s f} C T)
     (Category.Theory.Algebra.Monoid.Product.MonoidObject_of_Monoid N).
 
-(* Round trips on the data, on the nose. *)
+(* 相关说明。 （已译） *)
 
 Example monoid_monad_ret@{o h f s | h < s, o <= f, h <= f +}
   {C : Category@{o h h}} {T : C ⟶ C} (M : @Monad C T) (x : C) :
@@ -80,7 +80,7 @@ Example monad_monoid_eta_round@{o h f s | h < s, o <= f, h <= f +}
   transform[@eta _ _ _ (monad_monoid@{o h f s} (monoid_monad@{o h f s} N))] x
     = transform[@eta _ _ _ N] x := eq_refl.
 
-(** ** Arrows: [mh_join] IS fμ = μ'(f □ f) *)
+(* 相关说明。 （已译） *)
 
 (* The tensor of Compose_Monoidal on (θ, θ), at x. *)
 
@@ -91,8 +91,8 @@ Example mh_bimap_component@{o h f s | h < s, o <= f, h <= f +}
               _ _ _ _ (mh_transform θ) (mh_transform θ)] x
     = mh_transform θ (T' x) ∘ fmap[T] (mh_transform θ x) := eq_refl.
 
-(* The type of [mh_join], quantified over x, IS the type of the
-   multiplication square of a monoid homomorphism. *)
+(* The type [mh_join], quantified over x, IS type the
+ multiplication square 幺半群 homomorphism. （已译） *)
 
 Example mh_join_is_hom_mu@{o h f s q |
   h < s, o <= f, h <= f, o < q, h < q, f <= q +}
@@ -149,7 +149,7 @@ Example monoidhom_mh_transform@{o h f s | h < s, o <= f, h <= f +}
          T T' (monad_monoid@{o h f s} M) (monad_monoid@{o h f s} M') θ) :
   mh_transform (monoidhom_mh@{o h f s} θ H) = θ := eq_refl.
 
-(** ** The functor Monads C ⟶ Mon [C, C] *)
+(* * ** The 函子 Monads C ⟶ Mon [C, C] （已译） *)
 
 Definition Monads_Mon@{o h m1 m2 f s mo t |
   h < s, f < t, o <= m1, h <= m1, o <= m2, h <= m2, m2 <= f,
@@ -203,8 +203,8 @@ Proof.
   - intros N N' g x. simpl. reflexivity.
 Defined.
 
-(* Every monoid in ⟨[C, C], ◯, Id⟩ is, up to an isomorphism with
-   identity components, the image of the monad it defines. *)
+(* Every 幺半群 ⟨[C, C], ◯, Id⟩ is, up 同构 with
+ 恒等 components, image 单子 it defines. （已译） *)
 
 Definition Monads_Mon_ESO@{o h m1 f s mo t |
   h < s, f < t, o <= m1, h <= m1, o <= f, h <= f, f <= mo +}

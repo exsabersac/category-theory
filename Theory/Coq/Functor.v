@@ -2,7 +2,7 @@ Require Import Category.Lib.
 
 Generalizable All Variables.
 
-(** The Functor type class (fmap), with its categorical reading *)
+(** The Functor 类型类 (fmap), categorical reading （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/functor
@@ -89,16 +89,16 @@ Instance Identity_Functor : Functor id | 9 := {
   fmap := λ _ _, id;
 }.
 
-(* The reader / function functor [λ a, x → a] (Haskell's [(->) x]).  Mapping
-   post-composes, [fmap f g = f ∘ g]; this is the covariant hom functor
-   [Hom(x, −)]. *)
+(* The reader / function 函子 [λ a, x → a] (Haskell's [(->) x]). Mapping
+ post-composes, [fmap f g = f ∘ g]; 这是 covariant hom 函子
+ [Hom(x, −)]. （已译） *)
 #[export]
 Instance arrow_Functor x : Functor (arrow x) := {
   fmap := λ _ _ f x r, f (x r);
 }.
 
-(* The constant functor [Const c], which sends every type to [c] and every
-   morphism to the identity on [c]; [fmap] discards its function argument. *)
+(* The 常值 函子 [Const c], sends every type [c] every
+ 态射 恒等 [c]; [fmap] discards function 论元. （已译） *)
 Inductive Const (c a : Type) := | mkConst : c → Const.
 
 Arguments mkConst {c a} _.
@@ -110,9 +110,9 @@ Instance Const_Functor {x : Type} : Functor (Const x) := {
 
 Import FunctorNotations.
 
-(* Endofunctors are closed under composition: [G ∘ F] is again an endofunctor,
-   with [fmap[G ∘ F] = fmap[G] ∘ fmap[F]].  (Here [F ∘ G] is function
-   composition of the two type constructors.) *)
+(* Endofunctors closed under 复合: [G ∘ F] again 自函子,
+ [fmap[G ∘ F] = fmap[G] ∘ fmap[F]]. (Here [F ∘ G] function
+ 复合 two type constructors.) （已译） *)
 #[export]
 Instance Compose_Functor `{Functor F} `{Functor G} : Functor (F ∘ G) := {
   fmap := λ _ _, fmap[F] ∘ fmap[G];
@@ -129,8 +129,8 @@ Instance Compose_Functor `{Functor F} `{Functor G} : Functor (F ∘ G) := {
 Definition Yoneda@{d c u} (F : Type@{d} → Type@{c}) (x : Type@{u}) :=
   ∀ r : Type@{u}, (x → r) → F r.
 
-(* [Yoneda F] is itself a functor in [x], independently of whether [F] is one:
-   [fmap g] precomposes the bundled continuation with [g]. *)
+(* [Yoneda F] itself 函子 [x], independently whether [F] one:
+ [fmap g] precomposes bundled continuation [g]. （已译） *)
 #[export]
 Instance Yoneda_Functor (F : Type → Type) : Functor (Yoneda F) := {
   fmap := λ _ _ g k _ h, k _ (h ∘ g)

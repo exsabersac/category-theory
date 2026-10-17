@@ -8,7 +8,7 @@ Require Import Category.Theory.Functor.
 
 Generalizable All Variables.
 
-(** Law proofs for the pair/tuple [A * B] instances *)
+(** 本节：Law proofs pair/tuple [A * B] instances （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/product
@@ -25,14 +25,13 @@ Theorem uncurry_works : forall {X Y Z} (x : X) (y : Y) (f : X -> Y -> Z),
   uncurry f (x, y) = f x y.
 Proof. reflexivity. Qed.
 
-(* Surjective pairing (the product η law): rebuilding a pair from its
-   projections recovers the original. *)
+(* 相关说明。 （已译） *)
 Lemma fst_snd : forall a b (z : a * b),
   (let '(x, y) := z in (x, y)) = (fst z, snd z).
 Proof. intros ? ? [?]; auto. Qed.
 
-(* The same η law lifted through [map]: since [fun x => (fst x, snd x)] is the
-   identity on pairs, mapping it over a list is the identity. *)
+(* The same η law lifted through [map]: since [fun x => (fst x, snd x)] the
+ 恒等 pairs, 映射 it over list 恒等. （已译） *)
 Lemma unsplit : forall a b (xs : list (a * b)),
   map (fun x => (fst x, snd x)) xs = xs.
 Proof.

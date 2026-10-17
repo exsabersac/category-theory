@@ -3,7 +3,7 @@ Require Import Category.Theory.Coq.Semigroup.
 
 Generalizable All Variables.
 
-(** The Monoid type class (mempty/mappend), with its categorical reading *)
+(** The Monoid 类型类 (mempty/mappend), categorical reading （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/monoid

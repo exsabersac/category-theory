@@ -8,7 +8,7 @@ Require Import Category.Theory.Algebra.Comonoid.
 
 Generalizable All Variables.
 
-(** * Comonoid homomorphisms and the category of internal comonoids *)
+(* * * Comonoid homomorphisms 范畴 internal comonoids （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/comonoid
@@ -35,9 +35,9 @@ Class ComonoidHom {x y : C} (Cx : Comonoid x) (Cy : Comonoid y)
 Lemma ComonoidHom_id {x} (Cx : Comonoid x) : ComonoidHom Cx Cx id.
 Proof. split; cat. Qed.
 
-(* Comonoid homomorphisms are closed under composition: paste the two
-   preservation squares, fusing (f ⨂ f) ∘ (g ⨂ g) into (f ∘ g) ⨂ (f ∘ g)
-   by the interchange law [bimap_comp]. *)
+(* Comonoid homomorphisms closed under 复合: paste two
+ preservation squares, fusing (f ⨂ f) ∘ (g ⨂ g) (f ∘ g) ⨂ (f ∘ g)
+ interchange law [bimap_comp]. （已译） *)
 Lemma ComonoidHom_comp {x y z} {Cx : Comonoid x} {Cy : Comonoid y}
       {Cz : Comonoid z} {f : y ~> z} {g : x ~> y} :
   ComonoidHom Cy Cz f → ComonoidHom Cx Cy g → ComonoidHom Cx Cz (f ∘ g).
@@ -82,8 +82,8 @@ Program Definition Comonoid_Iso {x y : C} (i : x ≅ y) (Cx : Comonoid x) :
   epsilon := epsilon[Cx] ∘ from i
 |}.
 Next Obligation.
-  (* coassociativity: cancel the conjugating iso on the right, then it is
-     [delta_coassoc] of Cx pushed across the associator's naturality. *)
+  (* coassociativity: cancel conjugating iso right, then it is
+ [delta_coassoc] Cx pushed across associator's 自然性. （已译） *)
   apply (iso_to_epic i).
   rewrite <- !comp_assoc.
   rewrite iso_from_to, id_right.
@@ -104,8 +104,8 @@ Next Obligation.
   reflexivity.
 Qed.
 Next Obligation.
-  (* left counit: cancel the conjugating iso, apply [delta_counit_left] of
-     Cx, and close with naturality of the left unitor's inverse. *)
+  (* left counit: cancel conjugating iso, apply [delta_counit_left] of
+ Cx, close 自然性 left unitor's inverse. （已译） *)
   apply (iso_to_epic i).
   rewrite <- !comp_assoc.
   rewrite iso_from_to, id_right.
@@ -139,8 +139,8 @@ Qed.
 
 #[local] Obligation Tactic := cat_simpl.
 
-(* Both components of the isomorphism are comonoid homomorphisms with
-   respect to the transported structure. *)
+(* Both components 同构 comonoid homomorphisms with
+ respect transported structure. （已译） *)
 Lemma ComonoidHom_Iso_to {x y} (i : x ≅ y) (Cx : Comonoid x) :
   ComonoidHom Cx (Comonoid_Iso i Cx) (to i).
 Proof.
@@ -175,9 +175,9 @@ Program Definition Comon : Category := {|
   compose := fun _ _ _ f g => (`1 f ∘ `1 g; ComonoidHom_comp `2 f `2 g)
 |}.
 
-(* The forgetful functor Comon(C) ⟶ C projects out the underlying object
-   and morphism; it is faithful by construction ([Comon_Forget_Faithful]
-   below). *)
+(* The forgetful 函子 Comon(C) ⟶ C projects out underlying 对象
+ 态射; it faithful construction ([Comon_Forget_Faithful]
+ below). （已译） *)
 Program Definition Comon_Forget : Comon ⟶ C := {|
   fobj := fun X => `1 X;
   fmap := fun _ _ f => `1 f

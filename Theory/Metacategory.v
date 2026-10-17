@@ -3,7 +3,7 @@ From Coq Require Import FMapFacts.
 Require Import Category.Lib.FMapExt.
 From Coq Require Import PeanoNat.
 
-(* Override ++> notation with the crelation-based version. *)
+(* 相关说明。 （已译） *)
 #[local] Set Warnings "-notation-overridden".
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -57,24 +57,24 @@ Module F := P.F.
 
 Definition defined x y := M.In (elt:=nat) (x, y).
 
-(* Mac Lane: "Since the objects of a metacategory correspond exactly to its
-   identity arrows, it is technically possible to dispense altogether with the
-   objects and deal only with arrows." *)
+(* Mac Lane: "Since 对象 metacategory correspond exactly its
+ 恒等 arrows, it technically possible dispense altogether the
+ 对象 deal arrows." （已译） *)
 Record Metacategory := {
-  (* "The data for an arrows-only metacategory C consist of arrows," *)
+  (* 相关说明。 （已译） *)
   arr := nat;
 
   (* "certain ordered pairs ⟨g, f⟩, called the composable pairs of arrows," *)
   pairs : M.t arr;
 
-  (* "and an operation assigning to each composable pair ⟨g, f⟩ an arrow g∙f,
-     called their composite. We say 'g∙f is defined' for '⟨g, f⟩ is a
-     composable pair'". *)
+  (* "and operation assigning each composable pair ⟨g, f⟩ arrow g∙f,
+ called 复合. We say 'g∙f defined' '⟨g, f⟩ a
+ composable pair'". （已译） *)
   composite (f g h : arr) := M.MapsTo (f, g) h pairs;
 
-  (* "With these data one defines an identity of C to be an arrow u such that
-     f∙u = f whenever the composite f∙u is defined and u∙g = g whenever u∙g is
-     defined." *)
+  (* "With these data one defines 恒等 C arrow u such that
+ f∙u = f whenever 复合 f∙u defined u∙g = g whenever u∙g is
+ defined." （已译） *)
   (*
    本节说明 Metacategory 相关定义、性质与动机。
 
@@ -83,13 +83,13 @@ Record Metacategory := {
   identity (u : arr) :=
     (∀ (f : arr), composite f u f) ∧ (∀ (g : arr), composite u g g);
 
-  (* "The data are then required to satisfy the following three axioms:" *)
+  (* 相关说明。 （已译） *)
 
   (* First axiom: *)
 
-  (* "The composite (k∙g)∙f is defined if and only if the composite k∙(g∙f) is
-     defined. When either is defined, they are equal (and this triple
-     composite is written as k∙g∙f)." *)
+  (* "The 复合 (k∙g)∙f defined if if 复合 k∙(g∙f) is
+ defined. When either defined, they equal (and triple
+ 复合 written k∙g∙f)." （已译） *)
   composition_law (k g f kg gf : arr) :
     composite k g kg ->
     composite g f gf ->
@@ -97,16 +97,16 @@ Record Metacategory := {
 
   (* Second axiom: *)
 
-  (* "The triple composite k∙g∙f is defined whenever both composites k∙g and
-     g∙f are defined." *)
+  (* "The triple 复合 k∙g∙f defined whenever both composites k∙g and
+ g∙f defined." （已译） *)
   triple_composition (k g f kg gf : arr) :
     composite k g kg ->
     composite g f gf → (exists kgf : arr, composite kg f kgf)%type;
 
   (* Third axiom: *)
 
-  (* "For each arrow g of C there exist identity arrows u and u' of C such
-     that u'∙g and g∙u are defined." *)
+  (* "For each arrow g C there exist 恒等 arrows u u' C such
+ u'∙g g∙u defined." （已译） *)
   (*
    本节说明 Metacategory 相关定义、性质与动机。
 
@@ -183,13 +183,13 @@ Qed.
 #[local] Obligation Tactic := intros.
 
 Program Definition FromArrows (M : Metacategory) : Category := {|
-  (* The objects of the category are given by all the identity arrows of the
-     arrows-only metacategory. *)
+  (* The 对象 范畴 given all 恒等 arrows the
+ arrows-only metacategory. （已译） *)
   obj := ∃ i : arr M, identity M i;
 
-  (* The morphisms of the category from id[x] to id[y] are given by those
-     arrows whose domain composes with id[x], and whose codomain composes with
-     id[y]. *)
+  (* The 态射 范畴 id[x] id[y] given those
+ arrows whose domain composes id[x], whose codomain composes with
+ id[y]. （已译） *)
   hom := fun x y =>
     ∃ f : arr M, defined f ``x (pairs M) ∧ defined ``y f (pairs M);
 
@@ -365,9 +365,7 @@ Theorem elements_rect {elt} (P : list (M.key * elt) → Type) :
 Proof.
 Abort.
 
-(* jww (2017-06-10): This needs automation. A computational tactic that
-   reflects on map structures would be valuable here, since we are computing
-   on known results. *)
+(* 相关说明。 （已译） *)
 Lemma ThreeArrows_card_3 : cardinality ThreeArrows = 3%nat.
 Proof.
   (* unfold cardinality; simpl. *)

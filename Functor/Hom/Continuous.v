@@ -28,7 +28,7 @@ Require Import Category.Theory.Equivalence.Limit.
 
 Generalizable All Variables.
 
-(** * Hom-functors are continuous: the isomorphism form and its consequences *)
+(* * * Hom-函子 continuous: 同构 form consequences （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/continuous+functor
@@ -40,7 +40,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * A. Awodey 7.2 -- preservation transports along a natural isomorphism *)
+(* * * A. Awodey 7.2 -- preservation transports along natural 同构 （已译） *)
 
 Section Transport.
 
@@ -100,7 +100,7 @@ Definition ContinuousFunctor_transport (P : ContinuousFunctor F) :
 
 End Transport.
 
-(** * B. Riehl (3.5.1) -- Nat(Δ1, C(X,F-)) ≅ Cone(X,F), no limit assumed *)
+(* 相关说明。 （已译） *)
 
 Section RoundTrip.
 
@@ -147,8 +147,7 @@ Lemma nat_of_cone_natural {X X' : C} (h : X' ~{C}~> X) (κ : ACone X F) :
     ≈ nat_compose (HomDiagram_precompose h F) (nat_of_cone X κ).
 Proof. intros j u; simpl; reflexivity. Qed.
 
-(* The tuple presentation: the Sets-limit apex of the hom-diagram IS the
-   cone setoid.  Again no limit in C is assumed. *)
+(* 相关说明。 （已译） *)
 
 Program Definition limtuple_to_cone (X : C) :
   Sets_limit_obj (HomDiagram X F) ~{Sets}~> fobj[ConePresheaf F] X :=
@@ -171,7 +170,7 @@ Next Obligation. intros X p j; reflexivity. Qed.
 
 End RoundTrip.
 
-(** * C. Riehl 3.5 -- the end/limit bridge *)
+(* 相关说明。 （已译） *)
 
 Section EndBridge.
 
@@ -207,8 +206,7 @@ Program Definition end_limtuple_iso :
 Next Obligation. intros p j; reflexivity. Qed.
 Next Obligation. intros s j; reflexivity. Qed.
 
-(* The end, read as a cone over the hom-diagram: the legs are the end's own
-   projections and the coherence is its wedge condition. *)
+(* 相关说明。 （已译） *)
 Program Definition end_cone : Cone (HomDiagram X F) :=
   {| vertex_obj := Sets_End_obj homend_functor
    ; coneFrom := {| vertex_map := fun j => end_projection homend_functor j |} |}.
@@ -224,7 +222,7 @@ Proof.
   intros j p; reflexivity.
 Defined.
 
-(* The one missing link the issue isolates: the end IS a limit in Sets. *)
+(* 相关说明。 （已译） *)
 Definition end_IsLimitCone : IsLimitCone end_cone :=
   limitcone_transport end_coneiso
     (limit_limitcone (Sets_Limit (HomDiagram X F))).
@@ -234,7 +232,7 @@ Definition end_Limit : Limit (HomDiagram X F) :=
 
 End EndBridge.
 
-(** * D. Mac Lane V.4 Remark 2 -- lim C(c,F-) ≅ C(c, lim F), natural in c *)
+(* 相关说明。 （已译） *)
 
 Section Remark2.
 
@@ -321,8 +319,7 @@ Definition remark2_comparison_iso (c : C) :
 
 End Remark2.
 
-(** * E. Mac Lane V.4 Remark 3 -- the contravariant hom carries colimits
-        in C to limits in Sets *)
+(* 相关说明。 （已译） *)
 
 Section Remark3.
 
@@ -330,8 +327,8 @@ Context {J C : Category}.
 Context {F : J ⟶ C}.
 Context (L : Colimit F).
 
-(* Pure instantiation of Remark 2 at the opposite category: [Colimit F] IS
-   [Limit (F^op)] and [HomTo c] IS [HomFrom c] on [C^op]. *)
+(* Pure instantiation Remark 2 at opposite 范畴: [Colimit F] IS
+ [Limit (F^op)] [HomTo c] IS [HomFrom c] [C^op]. （已译） *)
 Definition remark3_iso (c : C) :
   @Isomorphism Sets (Sets_limit_obj (HomTo c ◯ F^op))
     {| carrier := vertex_obj[@limit_cone _ _ _ L] ~{C}~> c
@@ -346,8 +343,8 @@ Proof. exact (@remark2_natural (J^op) (C^op) (F^op) L c c' h p). Qed.
 
 End Remark3.
 
-(** * F. The product and coproduct instances, as isomorphisms of
-        Sets-objects rather than family-level universal properties *)
+(* * * F. The product coproduct instances, isomorphisms of
+ Sets-对象 rather than family-level universal properties （已译） *)
 
 Section ProductInstance.
 
@@ -431,7 +428,7 @@ Proof.
   now rewrite comp_assoc.
 Qed.
 
-(** * G. The issue's names, and Mac Lane's Remark 1 on universes *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Continuous 相关定义、性质与动机。

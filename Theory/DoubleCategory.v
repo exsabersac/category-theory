@@ -44,8 +44,7 @@ Class DoubleCategory : Type := {
   (* Horizontal 1-cells. *)
   dhor : dcat → dcat → Type;
 
-  (* A square with horizontal top [h], bottom [k], left vertical [u], and
-     right vertical [v]. *)
+  (* 相关说明。 （已译） *)
   dsq {a b c d : dcat} :
     dhor a b → (a ~{dcat}~> c) → (b ~{dcat}~> d) → dhor c d → Type;
 
@@ -61,8 +60,8 @@ Class DoubleCategory : Type := {
     {v v' : b ~{dcat}~> d} {k} (eu : u ≈ u') (ev : v ≈ v') :
     Proper (equiv ==> equiv) (@dsq_coerce a b c d h u u' v v' k eu ev);
 
-  (* Proof-irrelevance of the boundary: coercing along a loop is the identity
-     (Phase 10 [dtransport_id] style, stated with [≈] on squares). *)
+  (* Proof-irrelevance boundary: coercing along loop 恒等
+ (Phase 10 [dtransport_id] style, stated [≈] squares). （已译） *)
   dsq_coerce_id {a b c d} {h} {u : a ~{dcat}~> c} {v : b ~{dcat}~> d} {k}
     (eu : u ≈ u) (ev : v ≈ v) (s : dsq h u v k) :
     dsq_coerce eu ev s ≈ s;
@@ -173,17 +172,14 @@ Class DoubleCategory : Type := {
            (dsq_coerce (id_left id) (id_left id) (dsq_vcomp bwd fwd)
               ≈ dsq_vid h) } };
 
-  (* Triangle coherence (square level): whiskering the left unitor equals the
-     associator followed by whiskering the right unitor. *)
+  (* 相关说明。 （已译） *)
   dcoherence_triangle {a b c} (f : dhor a b) (k : dhor b c) :
     dsq_coerce (id_left id) (id_left id)
       (dsq_vcomp (projT1 (dassoc f (dhid b) k))
                  (dsq_hcomp (dsq_vid f) (projT1 (dunit_right k))))
       ≈ dsq_hcomp (projT1 (dunit_left f)) (dsq_vid k);
 
-  (* Pentagon coherence (square level): the two globular paths from
-     [k · (h · (g · f))] to [((k · h) · g) · f] agree, their [id]-boundaries
-     normalised through [dsq_coerce]. *)
+  (* 相关说明。 （已译） *)
   dcoherence_pentagon {a b c d e}
     (f : dhor a b) (g : dhor b c) (h : dhor c d) (k : dhor d e) :
     dsq_coerce (id_left (id ∘ id)) (id_left (id ∘ id))
@@ -200,7 +196,7 @@ Class DoubleCategory : Type := {
 #[export] Existing Instance dsq_vcomp_respects.
 #[export] Existing Instance dsq_hcomp_respects.
 
-(** ** Named accessors for the invertible globular squares. *)
+(* 相关说明。 （已译） *)
 
 Definition dassoc_to `{D : DoubleCategory} {a b c d}
   (f : dhor a b) (g : dhor b c) (h : dhor c d)
@@ -300,8 +296,7 @@ Proof.
   rewrite dsq_coerce_trans; apply dsq_coerce_id.
 Qed.
 
-(* Reorienting a coercion equation: a coercion may be moved to the other
-   side of [≈] by inverting the proofs it rides on. *)
+(* 相关说明。 （已译） *)
 Lemma dsq_coerce_flip {a b c d : dcat} {h : dhor a b}
   {u u' : a ~> c} {v v' : b ~> d} {k : dhor c d}
   (eu : u ≈ u') (ev : v ≈ v') (s : dsq h u v k) (t : dsq h u' v' k) :
@@ -314,9 +309,9 @@ Proof.
     apply dsq_coerce_symm_r.
 Qed.
 
-(* Coercion does not depend on the proofs coerced along: the groupoid laws
-   [dsq_coerce_id]/[dsq_coerce_trans] force any two parallel proof pairs to
-   coerce identically. *)
+(* Coercion does not depend proofs coerced along: groupoid laws
+ [dsq_coerce_id]/[dsq_coerce_trans] force any two parallel 证明 pairs to
+ coerce identically. （已译） *)
 Lemma dsq_coerce_proof_irrel {a b c d : dcat} {h : dhor a b}
   {u u' : a ~> c} {v v' : b ~> d} {k : dhor c d}
   (eu eu' : u ≈ u') (ev ev' : v ≈ v') (s : dsq h u v k) :
@@ -326,8 +321,8 @@ Proof.
   symmetry; rewrite dsq_coerce_trans; apply dsq_coerce_id.
 Qed.
 
-(* [dsq_coerce_trans] with the composite proofs replaced by any proofs of
-   the endpoints' relations. *)
+(* [dsq_coerce_trans] 复合 proofs replaced any proofs of
+ endpoints' relations. （已译） *)
 Lemma dsq_coerce_trans_any {a b c d : dcat} {h : dhor a b}
   {u u' u'' : a ~> c} {v v' v'' : b ~> d} {k : dhor c d}
   (eu1 : u ≈ u') (eu2 : u' ≈ u'') (eu3 : u ≈ u'')
@@ -338,9 +333,9 @@ Proof.
   rewrite dsq_coerce_trans; apply dsq_coerce_proof_irrel.
 Qed.
 
-(* The strict vertical laws along any proofs of the base laws: exactly the
-   shape of the unit/associativity obligations of categories built from
-   squares. *)
+(* The strict vertical laws along any proofs base laws: exactly the
+ shape unit/associativity obligations 范畴 built from
+ squares. （已译） *)
 Lemma dsq_vid_left_any {a b c d : dcat} {h : dhor a b}
   {u : a ~> c} {v : b ~> d} {k : dhor c d}
   (eu : id ∘ u ≈ u) (ev : id ∘ v ≈ v) (s : dsq h u v k) :

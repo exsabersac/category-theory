@@ -55,7 +55,7 @@ Class MonoidalFunctor := {
   (* tensor comparison μ as a natural isomorphism (⨂) ◯ F ∏⟶ F ≅ F ◯ (⨂) *)
   ap_functor_iso : (⨂) ◯ F ∏⟶ F ≅[[C ∏ C, D]] F ◯ (⨂);
 
-  (* the component F x ⨂ F y ≅ F (x ⨂ y) of the tensor comparison *)
+  (* 相关说明。 （已译） *)
   ap_iso {x y} : F x ⨂ F y ≅ F (x ⨂ y) := {|
     to   := transform[to ap_functor_iso] (x, y);
     from := transform[from ap_functor_iso] (x, y);
@@ -66,7 +66,7 @@ Class MonoidalFunctor := {
   pure_iso_left {x}  : I ⨂ F x ≅ F (I ⨂ x);  (* derived iso for left unitality *)
   pure_iso_right {x} : F x ⨂ I ≅ F (x ⨂ I);  (* derived iso for right unitality *)
 
-  (* derived iso for the associativity coherence square *)
+  (* 相关说明。 （已译） *)
   ap_iso_assoc {x y z} : (F x ⨂ F y) ⨂ F z ≅ F (x ⨂ (y ⨂ z));
 
   monoidal_unit_left {x} :         (* left unitality: λ vs. μ and η *)
@@ -88,13 +88,13 @@ Class LaxMonoidalFunctor := {
   (* tensor comparison μ as a natural transformation (⨂) ◯ F ∏⟶ F ⟹ F ◯ (⨂) *)
   ap_functor_nat : ((⨂) ◯ F ∏⟶ F) ~{[C ∏ C, D]}~> (F ◯ (⨂));
 
-  (* the component μ_{x,y} : F x ⨂ F y → F (x ⨂ y) of the tensor comparison *)
+  (* 相关说明。 （已译） *)
   lax_ap {x y} : F x ⨂ F y ~> F (x ⨂ y) := transform[ap_functor_nat] (x, y);
 
   pure_left {x}  : I ⨂ F x ≅ F (I ⨂ x);  (* derived iso for left unitality *)
   pure_right {x} : F x ⨂ I ≅ F (x ⨂ I);  (* derived iso for right unitality *)
 
-  (* derived iso for the associativity coherence square *)
+  (* 相关说明。 （已译） *)
   ap_assoc {x y z} : (F x ⨂ F y) ⨂ F z ≅ F (x ⨂ (y ⨂ z));
 
   lax_monoidal_unit_left {x} :     (* left unitality: λ vs. μ and η *)

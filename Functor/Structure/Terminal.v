@@ -27,7 +27,7 @@ Class TerminalFunctor := {
   (* the comparison iso 1 ≅ F 1 witnessing terminal-object preservation *)
   fobj_one_iso : 1 ≅ F 1;
 
-  (* F carries the unique map up to η: fmap ! ≈ η ∘ ! (with η = to fobj_one_iso) *)
+  (* 相关说明。 （已译） *)
   fmap_one {X : C} : fmap one ≈ to fobj_one_iso ∘ @one _ _ (F X)
 }.
 

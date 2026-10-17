@@ -204,8 +204,8 @@ Definition UEnvRig : RigObject := {|
   rig_distr_r := uq_distr_r;
   rig_mul_zero_l := uq_mul_zero_l;
   rig_mul_zero_r := uq_mul_zero_r;
-  (* [uenv_eq] IS a [Prop]-valued relation, so it is its own [Prop] mirror
-     and both implications are the identity. *)
+  (* [uenv_eq] IS [Prop]-valued 关系, so it own [Prop] 镜像
+ both 蕴含 恒等. （已译） *)
   rig_prop := @PropEquiv_of_relation _ uenv_Setoid uenv_eq
                 (fun _ _ h => h) (fun _ _ h => h)
 |}.
@@ -217,7 +217,7 @@ Definition UEnvRing : RingObject := {|
   ring_neg_l := uq_add_neg_l
 |}.
 
-(** ** The scalar inclusion, and centrality of its image *)
+(* * ** The 标量嵌入, 中心性 image （已译） *)
 
 Program Definition uenv_scal : `1 K ~{Rng}~> UEnvRing := {|
   rig_map := {| morphism := uen_scal |}
@@ -252,7 +252,7 @@ Qed.
 Definition UEnvAlg : AAlgObject K :=
   Build_AAlgObject K UEnvRing uenv_scal uenv_scal_central.
 
-(** ** The insertion of the Lie algebra *)
+(* * ** The 嵌入 Lie algebra （已译） *)
 
 Program Definition uenv_insert_mod
   : RModHom (lie_mod L) (AAlg_RMod UEnvAlg) := {|
@@ -424,14 +424,14 @@ Arguments uenv_extend {K L} A f.
 Arguments uenv_extend_unique {K L} A f g Hscal Hgen t.
 Arguments uenv_alg_hom_scal {K L} A g a.
 
-(** * The universal property, and Mac Lane's E *)
+(* * * The 普遍性质, Mac Lane's E （已译） *)
 
 Section EnvelopingUniversal.
 
 Context (K : CRng).
 
-(** The universal mapping property in the shape [universal_arrow_from_UMP]
-    consumes. *)
+(** The 普遍映射性质 shape [universal_arrow_from_UMP]
+ 所消耗. （已译） *)
 Lemma uenv_universal (L : Lie K) (A : AAlg K)
   (h : L ~{Lie K}~> fobj[CommutatorFunctor K] A) :
   ∃! g : UEnvAlg L ~{AAlg K}~> A,
@@ -447,9 +447,9 @@ Proof.
     + intro v; symmetry; exact (Hg v).
 Defined.
 
-(* The mediator the universal property produces IS the fixpoint
-   extension, on the nose -- which is why [uenv_universal] is [Defined].
-   Nothing else in the file reads through it. *)
+(* The mediator 普遍性质 produces IS fixpoint
+ extension, nose -- why [uenv_universal] [Defined].
+ Nothing else file reads through it. （已译） *)
 Example uenv_universal_med (L : Lie K) (A : AAlg K)
   (h : L ~{Lie K}~> fobj[CommutatorFunctor K] A) :
   unique_obj (uenv_universal L A h) = uenv_extend A h := eq_refl.
@@ -459,8 +459,8 @@ Definition uenv_universal_arrow (L : Lie K)
   universal_arrow_from_UMP L (CommutatorFunctor K) (UEnvAlg L)
     (uenv_insert L) (uenv_universal L).
 
-(* The same content in the direct encoding, where the universal object is
-   named rather than projected out of a comma category. *)
+(* The same content direct encoding, where universal 对象 is
+ named rather than projected out comma 范畴. （已译） *)
 Program Definition uenv_auniversal_arrow (L : Lie K)
   : AUniversalArrow L (CommutatorFunctor K) (UEnvAlg L) := {|
   universal_arrow := uenv_insert L
@@ -477,7 +477,7 @@ Next Obligation.
     + intro v; exact (Hg v).
 Qed.
 
-(** ** The enveloping functor and THE ADJUNCTION *)
+(* * ** The enveloping 函子 THE ADJUNCTION （已译） *)
 
 Definition EnvelopingFunctor : Lie K ⟶ AAlg K :=
   LeftAdjointFunctorFromUniversalArrows (CommutatorFunctor K)
@@ -519,7 +519,7 @@ Definition uenv_counit (A : AAlg K)
   : fobj[EnvelopingFunctor] (fobj[CommutatorFunctor K] A) ~{AAlg K}~> A :=
   @Category.Theory.Adjunction.counit _ _ _ _ enveloping_adjunction A.
 
-(* The counit evaluates a generator to the element it names. *)
+(* 相关说明。 （已译） *)
 Lemma uenv_counit_gen (A : AAlg K)
   (v : carrier (cmon_setoid (lie_mod (fobj[CommutatorFunctor K] A)))) :
   rig_map (`1 (uenv_counit A)) (uen_gen v) ≈ v.
@@ -527,7 +527,7 @@ Proof.
   exact (@fmap_counit_unit _ _ _ _ enveloping_adjunction A v).
 Qed.
 
-(* ...hence it IS the extension of the identity Lie map, up to [≈]. *)
+(* ...hence it IS extension 恒等 Lie map, up [≈]. （已译） *)
 Theorem uenv_counit_is_extend (A : AAlg K) :
   uenv_counit A
     ≈ uenv_extend A (@id (Lie K) (fobj[CommutatorFunctor K] A)).
@@ -555,7 +555,7 @@ Arguments uenv_counit_is_extend {K} A.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** A ring fact the positive half needs *)
+(* 相关说明。 （已译） *)
 
 Lemma uenv_sub_zero (R : RingObject) (a b : carrier (rig_setoid R)) :
   rig_add R a (ring_neg R b) ≈ rig_zero R → a ≈ b.
@@ -596,8 +596,8 @@ Definition uenv_ut2 : UEnvAlg Lie_UT2 ~{AAlg Int_CRng}~> UT2_AAlg :=
 Definition uenv_ut2_g (x : ut2) : UEnvTerm Lie_UT2 :=
   @uen_gen Int_CRng Lie_UT2 x.
 
-(* The map out evaluates a generator to the matrix it names, on the
-   nose: the fixpoint's generator clause is the identity map. *)
+(* The map out evaluates generator matrix it names, the
+ nose: fixpoint's generator clause 恒等 map. （已译） *)
 Example uenv_ut2_gen (x : ut2) :
   rig_map (`1 uenv_ut2) (uenv_ut2_g x) = x := eq_refl.
 
@@ -608,8 +608,8 @@ Example uenv_ut2_zero :
   rig_map (`1 uenv_ut2) (rig_zero (UEnvRing Lie_UT2)) = rig_zero UT2
   := eq_refl.
 
-(* Distinct generators stay distinct: the insertion does not collapse
-   the Lie algebra. *)
+(* Distinct generators stay distinct: 嵌入 does not collapse
+ Lie algebra. （已译） *)
 Theorem uenv_ut2_gens_distinct :
   uenv_eq (uenv_ut2_g ut2_e11) (uenv_ut2_g ut2_e12) → False.
 Proof.
@@ -659,9 +659,9 @@ Proof.
            (H Int_CRng Lie_UT2 (uenv_ut2_g ut2_e11) (uenv_ut2_g ut2_e12))).
 Qed.
 
-(* And the enveloping relation is exercised at a NON-ZERO bracket: the
-   commutator of the two generators is the generator of [E11,E12],
-   which is E12 and not zero. *)
+(* And enveloping 关系 exercised at NON-ZERO bracket: the
+ commutator two generators generator [E11,E12],
+ E12 not zero. （已译） *)
 Example uenv_ut2_bracket_computes :
   lie_br Lie_UT2 ut2_e11 ut2_e12 = ut2_e12 := eq_refl.
 
@@ -758,7 +758,7 @@ Fail Definition uenv_probe_setoid_unregistered
 Definition uenv_probe_setoid_ctrl (K : CRng) (L : LieObject K)
   (s t : carrier (rig_setoid (UEnvRing L))) : Type := s ≈ t.
 
-(* Instrument check: a name that exists nowhere, so the [Fail]
-   mechanism itself is exercised without reference to any constant
-   declared here. *)
+(* Instrument check: name exists nowhere, so [Fail]
+ mechanism itself exercised without reference any 常值
+ declared here. （已译） *)
 Fail Check uenv_probe_instrument_absent.

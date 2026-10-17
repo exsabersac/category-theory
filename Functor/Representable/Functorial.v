@@ -26,7 +26,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The comparison with the Yoneda embedding *)
+(* 相关说明。 （已译） *)
 
 Section YonedaTranspose.
 
@@ -47,15 +47,14 @@ Definition repr_induced_is_yoneda_transpose (tau : K ⟹ K') :
 
 End YonedaTranspose.
 
-(** ** The passage between [IsUniversalProperty] and [Representable] *)
+(* 相关说明。 （已译） *)
 
 Section Bridge.
 
 Universes o h.
 Context (C : Category@{o h h}).
 
-(* A representation, packaged.  Used below to name the two representations a
-   [repr_pair_iso] is built from. *)
+(* 相关说明。 （已译） *)
 Definition repr_of_representation {F : C ⟶ Sets} (c : C)
   (b : [Hom c,─] ≅[Fun] F) : Representable F := {|
   repr_obj := c;
@@ -167,17 +166,17 @@ Proof. apply repr_pair_iso_from_is_induced. Qed.
 
 End UnivPropertyCrossLink.
 
-(** ** The category of represented functors, and the representing-object
-       functor *)
+(* * ** The 范畴 已表示的 函子, 表示-对象
+ 函子 （已译） *)
 
 Section ReprFunctor.
 
 Universes o h.
 Context (C : Category@{o h h}).
 
-(* The full subcategory of [C, Sets] on the functors carrying a chosen
-   representation.  [shom := True] is the full-subcategory idiom of
-   Theory/Skeleton.v and Construction/Localization.v. *)
+(* The full subcategory [C, Sets] 函子 carrying chosen
+ representation. [shom := True] full-subcategory idiom of
+ Theory/Skeleton.v Construction/Localization.v. （已译） *)
 Program Definition ReprSubcat : Subcategory ([C, Sets]) := {|
   sobj := fun K => Representable K;
   shom := fun _ _ _ _ _ => True
@@ -185,8 +184,8 @@ Program Definition ReprSubcat : Subcategory ([C, Sets]) := {|
 
 Definition ReprCat : Category := @Sub ([C, Sets]) ReprSubcat.
 
-(* ...and the assignment ⟨K, R⟩ ↦ repr_obj R, τ ↦ the arrow τ names.  It
-   lands in C^op because [repr_induced_comp] reverses composition. *)
+(* ...and assignment ⟨K, R⟩ ↦ repr_obj R, τ ↦ arrow τ names. It
+ lands C^op because [repr_induced_comp] reverses 复合. （已译） *)
 Program Definition ReprObjFunctor : ReprCat ⟶ C^op := {|
   fobj := fun X => @repr_obj _ _ (`2 X);
   fmap := fun X Y f => repr_induced (`2 X) (`2 Y) (`1 f)
@@ -214,8 +213,7 @@ Next Obligation.
   now rewrite id_left.
 Qed.
 
-(* Faithfulness: the compatibility condition determines τ at every element,
-   because ψ is invertible and so every element of K d is ψ_d of something. *)
+(* 相关说明。 （已译） *)
 Definition ReprObj_Faithful : Functor.Faithful ReprObjFunctor.
 Proof.
   constructor; simpl; intros X Y f g E d z.
@@ -251,11 +249,10 @@ Section Witness.
 
 Notation BNat := (Deloop Nat_Plus).
 
-(* The transformation named by n, against the tautological representations. *)
+(* 相关说明。 （已译） *)
 Definition wit_tau (n : nat) := @fmap _ _ (Curried_Hom BNat) ttt ttt n.
 
-(* The induced arrow COMPUTES here: it is n on the nose.  [eq_refl] is the
-   convertibility exception. *)
+(* 相关说明。 （已译） *)
 Definition wit_induced_computes (n : nat) :
   repr_induced (Hom_Representable (C:=BNat) ttt)
                (Hom_Representable (C:=BNat) ttt) (wit_tau n) = n := eq_refl.

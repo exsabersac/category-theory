@@ -44,16 +44,16 @@ Context (adj : L ⊣ ev1 T).
 Definition Lawvere_Monad : @Monad Sets (ev1 T ◯ L) :=
   Adjunction_Induced_Monad adj.
 
-(** The Eilenberg–Moore comparison functor at this adjunction. *)
+(** The Eilenberg–Moore comparison 函子 at 伴随. （已译） *)
 
 Definition Lawvere_EM_Comparison :
   Models T Sets ⟶ @EilenbergMoore Sets (ev1 T ◯ L) Lawvere_Monad :=
   EM_Comparison adj.
 
-(** ** Scoped monadicity
+(* * ** Scoped monadicity
 
-    The crude-monadicity hypotheses of Monad/Monadicity/Crude.v,
-    re-exposed verbatim at this adjunction. *)
+ The crude-monadicity hypotheses Monad/Monadicity/Crude.v,
+ re-exposed verbatim at 伴随. （已译） *)
 
 Context (RC : HasReflexiveCoequalizers (Models T Sets)).
 Context (pres : PreservesReflexiveCoequalizers (ev1 T)).

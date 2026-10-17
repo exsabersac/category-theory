@@ -60,7 +60,7 @@ Generalizable All Variables.
 Definition global_element {X : Sets} (x : X) : SetsOne ~{Sets}~> X :=
   {| morphism := fun _ => x ; proper_morphism := fun a b _ => reflexivity x |}.
 
-(* The element is recovered on the nose, by conversion. *)
+(* 相关说明。 （已译） *)
 Lemma global_element_at {X : Sets} (x : X) : global_element x ttt = x.
 Proof. reflexivity. Qed.
 
@@ -161,7 +161,7 @@ Definition ue_mate (H : D ⟶ Sets) (r : D) (x : H r)
   : @Curried_Hom D r ~{[D, Sets]}~> H :=
   from (Yoneda_Lemma (D^op) H r) x.
 
-(* Its action, by conversion: this is the [(H k) e] of Mac Lane's clause. *)
+(* Its action, conversion: 这是 [(H k) e] Mac Lane's clause. （已译） *)
 Lemma ue_mate_at (H : D ⟶ Sets) (r : D) (x : H r) (d : D) (k : r ~{D}~> d) :
   transform (ue_mate H r x) d k = fmap[H] k x.
 Proof. reflexivity. Qed.
@@ -237,9 +237,7 @@ Definition ue_unmate (x : H r) (I : IsIsomorphism (ue_mate H r x))
   : H ~{[D, Sets]}~> @Curried_Hom D r :=
   @two_sided_inverse _ _ _ (ue_mate H r x) I.
 
-(* ... and conversely, an invertible mate IS a universal element: the
-   factorization is the inverse's component, its property is one inverse law
-   and its uniqueness the other. *)
+(* 相关说明。 （已译） *)
 Program Definition AUniversalElement_of_mate (x : H r)
   (I : IsIsomorphism (ue_mate H r x)) : AUniversalElement H r :=
   {| aue_elem := x ;
@@ -258,7 +256,7 @@ Next Obligation.
     + apply id_left.
 Qed.
 
-(** ** The representation, built directly *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明Yoneda、hom相关定义、性质与动机。
@@ -284,9 +282,9 @@ Next Obligation.
   exact (@fmap_comp _ _ H _ _ _ f x0 (@aue_elem H r U)).
 Qed.
 
-(* The Yoneda mate IS this transformation, pointwise by [reflexivity] -- but
-   NOT as a term: the two records carry different naturality proofs.  This is
-   the same seam as [ue_mate_covariant]. *)
+(* The Yoneda mate IS transformation, pointwise [reflexivity] -- but
+ NOT term: two records carry different 自然性 proofs. This is
+ same seam [ue_mate_covariant]. （已译） *)
 Lemma ue_mate_is_transform (U : AUniversalElement H r) :
   ue_mate H r (@aue_elem H r U) ≈ ue_transform U.
 Proof. intros d k; reflexivity. Qed.
@@ -344,7 +342,7 @@ Next Obligation.
     + apply id_left.
 Qed.
 
-(** ** Deliverable 2: the two encodings, as an isomorphism of setoids *)
+(* * ** Deliverable 2: two encodings, 同构 setoids （已译） *)
 
 (* The anonymous sigma setoid [representability_by_yoneda] uses, named. *)
 Definition ue_yoneda_obj : SetoidObject :=
@@ -434,7 +432,7 @@ Proof. intros d k; reflexivity. Qed.
 
 End MateIso.
 
-(** ** The bundled form and [Representable] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、Yoneda、同构相关定义、性质与动机。
@@ -461,13 +459,13 @@ Corollary repr_of_ue_obj {H : D ⟶ Sets} (U : UniversalElement H) :
   @repr_obj _ _ (Representable_of_UniversalElement U) = @ue_obj H U.
 Proof. reflexivity. Qed.
 
-(* Mac Lane's Φ_r(id r), for the bundled form. *)
+(* 相关说明。 （已译） *)
 Corollary ue_of_repr_elem {H : D ⟶ Sets} (R : Representable H) :
   @ue_elem H (UniversalElement_of_Representable R)
     = transform (to (@represented _ _ R)) (@repr_obj _ _ R) id{D}.
 Proof. reflexivity. Qed.
 
-(** ** Uniqueness up to a unique isomorphism *)
+(* * ** Uniqueness up unique 同构 （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。
@@ -546,7 +544,7 @@ Next Obligation. exact (universal_element_iso_unique U1 U2 v X). Qed.
 
 End UniversalElementUnique.
 
-(** ** Deliverable 3(a): universal elements are universal arrows from 1 *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Element 相关定义、性质与动机。
@@ -591,7 +589,7 @@ Proof.
       exact (Hv ttt).
 Defined.
 
-(* Both passages keep the datum on the nose. *)
+(* 相关说明。 （已译） *)
 Corollary aue_of_aua_elem (U : AUniversalArrow SetsOne H r) :
   @aue_elem H r (AUniversalElement_of_AUniversalArrow U)
     = @universal_arrow _ _ SetsOne H r U ttt.
@@ -623,7 +621,7 @@ End OnePoint.
 
 End UniversalElement.
 
-(** ** Deliverable 3(b): universal arrows are universal elements of D(c, S−) *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、hom相关定义、性质与动机。
@@ -641,7 +639,7 @@ Context (c : C).
 (* Mac Lane's D(c, S−). *)
 Definition HomAfter : D ⟶ Sets := @Compose D C Sets (fobj[@Curried_Hom C] c) S.
 
-(* The two clauses ARE the same clause. *)
+(* 相关说明。 （已译） *)
 Lemma hom_after_fmap (d d' : D) (k : d ~{D}~> d') (u : c ~{C}~> S d) :
   fmap[HomAfter] k u = fmap[S] k ∘ u.
 Proof. reflexivity. Qed.
@@ -673,7 +671,7 @@ Proof. reflexivity. Qed.
 
 End HomFunctor.
 
-(** ** The subsumption Mac Lane asserts, as one theorem *)
+(* * ** The subsumption Mac Lane asserts, one 定理 （已译） *)
 
 (*
    本节说明 Element 相关定义、性质与动机。
@@ -682,13 +680,13 @@ End HomFunctor.
 *)
 Theorem universal_element_arrow_subsumption
   {C : Category} {D : Category} (S : D ⟶ C) (c : C) (H : D ⟶ Sets) (r : D) :
-  (* (a) a universal element of H is a universal arrow from the one-point
-         setoid to H, and conversely *)
+  (* (a) universal element H 泛箭头 one-point
+ setoid H, conversely （已译） *)
   ((AUniversalArrow SetsOne H r → AUniversalElement H r) *
    (AUniversalElement H r → AUniversalArrow SetsOne H r))
   *
-  (* (b) a universal arrow from c to S is a universal element of D(c, S−),
-         and conversely *)
+  (* (b) 泛箭头 c S universal element D(c, S−),
+ conversely （已译） *)
   ((AUniversalArrow c S r → AUniversalElement (HomAfter S c) r) *
    (AUniversalElement (HomAfter S c) r → AUniversalArrow c S r)).
 Proof.
@@ -712,7 +710,7 @@ Corollary subsumption_composite {C D : Category} (S : D ⟶ C) (c : C) (a : D)
   = @universal_arrow C D c S a U.
 Proof. reflexivity. Qed.
 
-(** ** Naturality of the global-elements isomorphism *)
+(* * ** Naturality global-elements 同构 （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。
@@ -738,14 +736,14 @@ Program Definition global_elements_natural :
   to   := {| transform := global_elements_to |};
   from := {| transform := global_elements_from |}
 |}.
-(* Five of the six obligations -- both naturality squares of each
-   transformation, and one inverse law -- are closed by the file's default
-   obligation tactic.  The sixth is the singleton step. *)
+(* Five six obligations -- both 自然性 squares each
+ transformation, one inverse law -- closed file's default
+ obligation tactic. The sixth singleton step. （已译） *)
 Next Obligation.
   match goal with [ H : poly_unit |- _ ] => destruct H end; reflexivity.
 Qed.
 
-(* Its components are the pre-existing maps, on the nose. *)
+(* 相关说明。 （已译） *)
 Example global_elements_natural_to (X : obj[Sets]) :
   transform[to global_elements_natural] X = global_elements_to X := eq_refl.
 

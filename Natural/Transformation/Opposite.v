@@ -7,7 +7,7 @@ Require Import Category.Functor.Opposite.
 
 Generalizable All Variables.
 
-(** * The opposite (dual) of a natural transformation. *)
+(* * * The opposite (dual) 自然变换. （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Opposite_category

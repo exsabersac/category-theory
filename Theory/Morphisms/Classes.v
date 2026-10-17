@@ -24,15 +24,15 @@ Definition MonoClass {C : Category} : MorphismClass C :=
 Definition EpiClass {C : Category} : MorphismClass C :=
   fun _ _ f => Epic f.
 
-(* The class of isomorphisms: morphisms with a two-sided inverse. *)
+(* The class isomorphisms: 态射 two-sided inverse. （已译） *)
 Definition IsoClass {C : Category} : MorphismClass C :=
   fun _ _ f => IsIsomorphism f.
 
-(* The class of split monomorphisms: morphisms with a left inverse. *)
+(* The class split monomorphisms: 态射 left inverse. （已译） *)
 Definition SplitMonoClass {C : Category} : MorphismClass C :=
   fun _ _ f => Section f.
 
-(* The class of split epimorphisms: morphisms with a right inverse. *)
+(* The class split epimorphisms: 态射 right inverse. （已译） *)
 Definition SplitEpiClass {C : Category} : MorphismClass C :=
   fun _ _ f => Retraction f.
 

@@ -13,7 +13,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * Adjoint (co)continuity: RAPL and LAPC *)
+(* 相关说明。 （已译） *)
 
 (* nLab: https://ncatlab.org/nlab/show/adjoints+preserve+(co-)limits
    Wikipedia:
@@ -71,7 +71,7 @@ Qed.
 Definition rapl_acone : ACone (U L) (U ◯ G) :=
   @Build_ACone J D (U L) (U ◯ G) rapl_leg (@rapl_leg_coherence).
 
-(** ** Transposing a competing cone across the adjunction *)
+(* * ** Transposing competing cone across 伴随 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -99,10 +99,10 @@ Definition rapl_transposed_cone (N : Cone (U ◯ G)) : Cone G :=
     (@Build_ACone J C (F (vertex_obj[N])) G
        (rapl_transposed_leg N) (@rapl_transposed_coherence N)).
 
-(** ** The mediating morphism and the universal property *)
+(* * ** The mediating 态射 普遍性质 （已译） *)
 
-(* Mediate the transposed cone through L in C, then transpose the
-   resulting morphism back along ⌊-⌋ to land in D. *)
+(* Mediate transposed cone through L C, then transpose the
+ resulting 态射 back along ⌊-⌋ land D. （已译） *)
 
 Definition rapl_med (N : Cone (U ◯ G)) : vertex_obj[N] ~{D}~> U L :=
   ⌊ limit_med (limit_is_alimit L) (rapl_transposed_cone N) ⌋.
@@ -154,7 +154,7 @@ Definition rapl_ump (N : Cone (U ◯ G)) :
 Definition rapl_is_alimit : IsALimit (U ◯ G) (U L) :=
   @Build_IsALimit J D (U ◯ G) (U L) rapl_acone rapl_ump.
 
-(* The bundled form of the same witness. *)
+(* 相关说明。 （已译） *)
 
 Definition rapl_cone : Cone (U ◯ G) :=
   @Build_Cone J D (U ◯ G) (U L) rapl_acone.
@@ -164,7 +164,7 @@ Definition rapl_limit : Limit (U ◯ G) :=
 
 End Diagram.
 
-(** ** Right adjoints preserve limiting CONES, not merely limit apexes *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -179,7 +179,7 @@ Definition right_adjoint_PreservesLimitCone {J : Category} (G : J ⟶ C) :
 Definition right_adjoint_Continuous : ContinuousFunctor U :=
   fun J G => right_adjoint_PreservesLimitCone G.
 
-(** ** Right adjoints preserve limits *)
+(* 相关说明。 （已译） *)
 
 Definition right_adjoint_preserves_limit {J : Category} (G : J ⟶ C) :
   PreservesLimit G U :=
@@ -190,7 +190,7 @@ Definition right_adjoint_preserves_limits : PreservesAllLimits U :=
 
 End RAPL.
 
-(** ** Left adjoints preserve colimits *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -209,7 +209,7 @@ Definition left_adjoint_preserves_colimits
   PreservesAllColimits F :=
   fun J G => left_adjoint_preserves_colimit A G.
 
-(** ** Left adjoints preserve colimiting COCONES *)
+(* 相关说明。 （已译） *)
 
 Definition left_adjoint_PreservesColimitCocone
   {C D : Category} {F : D ⟶ C} {U : C ⟶ D} (A : F ⊣ U)

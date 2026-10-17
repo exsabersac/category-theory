@@ -28,8 +28,7 @@ Section SpanningArrow.
 Context {A X : Category}.
 Context (G : A ⟶ X).
 
-(* f : x ~> G a FACTORS THROUGH the subobject m of a when it lifts along
-   G (sub_mono m).  The lift is data, as everywhere in this library. *)
+(* 相关说明。 （已译） *)
 Definition SubFactorsThrough {x : X} {a : A} (f : x ~> G a) (m : SubObj a) :
   Type :=
   { k : x ~> G (sub_dom m) & fmap[G] (sub_mono m) ∘ k ≈ f }.
@@ -62,8 +61,8 @@ Definition PreservesWidePullbacks : Type :=
     IsWidePullback g P p →
     IsWidePullback (fun i => fmap[G] (g i)) (G P) (fun i => fmap[G] (p i)).
 
-(* The index of the solution set the lemma delivers: the spanning arrows
-   out of x, with their codomains. *)
+(* The index solution set 引理 delivers: spanning arrows
+ out x, codomains. （已译） *)
 Definition SpanningArrowsOutOf (x : X) : Type :=
   { a : A & { f : x ~> G a & Spanning f } }.
 
@@ -75,7 +74,7 @@ Arguments spanning_arrow {A X} G {x a} f.
 Arguments PreservesWidePullbacks {A X} G.
 Arguments SpanningArrowsOutOf {A X} G x.
 
-(** ** Elementary closure properties, before any hypothesis on A or G *)
+(* * ** Elementary closure properties, before any 假设 A G （已译） *)
 
 Section SpanningElementary.
 
@@ -157,7 +156,7 @@ End SpanningElementary.
 Arguments sub_le_top_iso {_ _} _ _.
 Arguments spanning_forces_top {_ _} _ {_ _} _ _ _ _.
 
-(** ** Mac Lane's Lemma 2: factoring through a spanning arrow *)
+(* 相关说明。 （已译） *)
 
 Section SpanningLemma.
 
@@ -271,7 +270,7 @@ Definition factors_through_spanning {x : X} {a : A} (f : x ~> G a) :
      (spanning_factor f;
         (spanning_factor_spanning f, spanning_factor_commutes f))).
 
-(** ** The solution set the lemma delivers *)
+(* * ** The solution set 引理 delivers （已译） *)
 
 Definition spanning_solution_set (x : X) : SolutionSet G x.
 Proof using A G GP HWP X.
@@ -286,7 +285,7 @@ Defined.
 
 End SpanningLemma.
 
-(** ** Mac Lane's use of the lemma: GAFT without a separate solution set *)
+(* * ** Mac Lane's use 引理: GAFT without separate solution set （已译） *)
 
 (*
    本节说明伴随、hom相关定义、性质与动机。

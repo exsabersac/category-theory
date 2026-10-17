@@ -31,7 +31,7 @@ Record IsPullback {C : Category} {x y z : C} (f : x ~> z) (g : y ~> z)
 Arguments is_pullback_commutes {C x y z f g P p1 p2} _.
 Arguments is_pullback_ump {C x y z f g P p1 p2} _ Q q1 q2 _.
 
-(* Both conversions with the bundled record are field repackagings. *)
+(* 相关说明。 （已译） *)
 
 Definition pullback_is_pullback {C : Category} {x y z : C}
            (f : x ~> z) (g : y ~> z) (P : Pullback f g) :
@@ -65,8 +65,7 @@ Context {k : a ~> b} {h : b ~> c} {m : y ~> c}.
 Context {Q : C} {q1 : Q ~> b} {q2 : Q ~> y}.
 Context {P : C} {p1 : P ~> a} {p2 : P ~> Q}.
 
-(* Pasting, outward: if the right-hand square is a pullback and the
-   left-hand square is a pullback, then the outer rectangle is a pullback. *)
+(* 相关说明。 （已译） *)
 Lemma pullback_paste
       (HQ : IsPullback h m Q q1 q2)
       (HP : IsPullback k q1 P p1 p2) :
@@ -81,13 +80,13 @@ Proof.
     rewrite <- comp_assoc.
     reflexivity.
   - intros Q0 r1 r2 Hr.
-    (* First mediate into the right-hand square with the cone (k∘r1, r2). *)
+    (* First mediate 进入 right-hand square cone (k∘r1, r2). （已译） *)
     assert (Hr' : h ∘ (k ∘ r1) ≈ m ∘ r2).
     { rewrite comp_assoc.
       exact Hr. }
     pose proof (is_pullback_ump HQ Q0 (k ∘ r1) r2 Hr') as W.
     destruct (unique_property W) as [Wq1 Wq2].
-    (* Then mediate into the left-hand square with the cone (r1, w). *)
+    (* Then mediate 进入 left-hand square cone (r1, w). （已译） *)
     assert (Hw : k ∘ r1 ≈ q1 ∘ unique_obj W).
     { symmetry.
       exact Wq1. }
@@ -100,7 +99,7 @@ Proof.
         rewrite Up2.
         exact Wq2.
     + intros v [Hv1 Hv2].
-      (* p2 ∘ v also mediates the right-hand square, hence agrees with w. *)
+      (* 相关说明。 （已译） *)
       assert (Hvw : unique_obj W ≈ p2 ∘ v).
       { apply (uniqueness W); split.
         - rewrite comp_assoc.
@@ -140,8 +139,7 @@ Proof.
       reflexivity. }
     pose proof (is_pullback_ump HO Q0 r1 (q2 ∘ r2) Hout) as U.
     destruct (unique_property U) as [Up1 Up2].
-    (* Both p2 ∘ u and r2 mediate the right-hand square for the cone
-       (k ∘ r1, q2 ∘ r2), so they agree by its uniqueness clause. *)
+    (* 相关说明。 （已译） *)
     assert (Hrq : h ∘ (k ∘ r1) ≈ m ∘ (q2 ∘ r2)).
     { rewrite comp_assoc.
       exact Hout. }
@@ -198,7 +196,7 @@ Proof.
     rewrite <- !comp_assoc.
     rewrite Heq.
     reflexivity. }
-  (* Both g1 and g2 mediate the cone (fst ∘ g1, snd ∘ g1). *)
+  (* 相关说明。 （已译） *)
   assert (Hcone : f ∘ (pullback_fst f m P ∘ g1)
                     ≈ m ∘ (pullback_snd f m P ∘ g1)).
   { rewrite !comp_assoc.
@@ -218,9 +216,9 @@ Proof.
       exact Hsnd.
 Qed.
 
-(* Isomorphisms are stable under pullback: pulling an isomorphism m back
-   along f yields an isomorphism.  The inverse is the mediator of the cone
-   (id, m⁻¹ ∘ f). *)
+(* Isomorphisms stable under pullback: pulling 同构 m back
+ along f yields 同构. The inverse mediator cone
+ (id, m⁻¹ ∘ f). （已译） *)
 Lemma iso_pullback_stable {C : Category} {x y z : C}
       (f : x ~> z) (m : y ~> z) (Hm : IsIsomorphism m) (P : Pullback f m) :
   IsIsomorphism (pullback_fst f m P).
@@ -234,8 +232,8 @@ Proof.
     reflexivity. }
   pose proof (ump_pullbacks f m P x id (g ∘ f) Hcone) as U.
   destruct (unique_property U) as [Ufst Usnd].
-  (* u ∘ fst mediates the cone (fst, snd) into the pullback itself, and so
-     does id; uniqueness identifies them. *)
+  (* u ∘ fst mediates cone (fst, snd) 进入 pullback itself, so
+ does id; uniqueness identifies them. （已译） *)
   pose proof (ump_pullbacks f m P (Pull f m P)
                             (pullback_fst f m P) (pullback_snd f m P)
                             (pullback_commutes f m P)) as UU.
@@ -303,7 +301,7 @@ Proof.
   destruct (unique_property HF) as [HFfst HFsnd].
   unshelve refine
     {| transport_iso := {| to := unique_obj HT; from := unique_obj HF |} |}.
-  - (* to ∘ from ≈ id, against the self-mediator of P' *)
+  - (* 相关说明。 （已译） *)
     transitivity (unique_obj HQQ).
     + symmetry.
       apply (uniqueness HQQ); split.
@@ -316,7 +314,7 @@ Proof.
     + apply (uniqueness HQQ); split.
       * apply id_right.
       * apply id_right.
-  - (* from ∘ to ≈ id, against the self-mediator of P *)
+  - (* 相关说明。 （已译） *)
     transitivity (unique_obj HPP).
     + symmetry.
       apply (uniqueness HPP); split.
@@ -376,7 +374,7 @@ Proof.
         exact comm.
       * reflexivity.
       * reflexivity.
-  - (* uniqueness: any filler agrees with the mediator on both legs *)
+  - (* 相关说明。 （已译） *)
     intros v0 Hv0.
     destruct Hv0 as [W1 W2].
     assert (F1 : (v0 ∘ pushout_in1 P) ∘ e ≈ u ∘ g).

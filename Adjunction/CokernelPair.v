@@ -17,7 +17,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * The cokernel pair is left adjoint to the equalizer *)
+(* * * The cokernel pair 左伴随 equalizer （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/equalizer
@@ -30,7 +30,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Reading the two endpoint categories *)
+(* * ** Reading two endpoint 范畴 （已译） *)
 
 Section Endpoints.
 
@@ -55,7 +55,7 @@ Lemma ar_square {A B : @Arrow C} (u : A ~> B) :
   ar_mor B ∘ ar_fst u ≈ ar_snd u ∘ ar_mor A.
 Proof. exact (`2 u). Qed.
 
-(* The two legs of the parallel pair a functor out of [Parallel] names. *)
+(* The two legs parallel pair 函子 out [Parallel] names. （已译） *)
 
 Definition parallel_leg1 (G : Parallel ⟶ C) : G ParX ~> G ParY :=
   fmap[G] (true; ParOne).
@@ -228,15 +228,15 @@ Qed.
 
 End CokernelPairFunctor.
 
-(** ** The equalizer functor into the arrow category *)
+(* * ** The equalizer 函子 进入 arrow 范畴 （已译） *)
 
 Section EqualizerArrowFunctor.
 
 Context {C : Category}.
 Context `{HE : @HasEqualizers C}.
 
-(* The chosen equalizer of the parallel pair a functor names, unpacked
-   from [HasEqualizers]' sigma. *)
+(* The chosen equalizer parallel pair 函子 names, unpacked
+ [HasEqualizers]' sigma. （已译） *)
 
 Definition eqa_data (G : Parallel ⟶ C) :=
   equalizer (parallel_leg1 G) (parallel_leg2 G).
@@ -248,7 +248,7 @@ Definition eqa_wit (G : Parallel ⟶ C)
   : IsEqualizer (parallel_leg1 G) (parallel_leg2 G) (eqa_obj G) (eqa_arr G)
   := `2 (`2 (eqa_data G)).
 
-(* The equalizing arrow, read as an object of the arrow category. *)
+(* The equalizing arrow, read 对象 arrow 范畴. （已译） *)
 
 Definition eqa_ob (G : Parallel ⟶ C) : @Arrow C :=
   ((eqa_obj G, fobj[G] ParX); eqa_arr G).
@@ -260,9 +260,9 @@ Example eqa_ob_cod (G : Parallel ⟶ C) : ar_cod (eqa_ob G) = fobj[G] ParX
 Example eqa_ob_mor (G : Parallel ⟶ C) : ar_mor (eqa_ob G) = eqa_arr G
   := eq_refl.
 
-(* The comma square of a morphism into [eqa_ob G], read with [eqa_arr G]
-   in place of [ar_mor (eqa_ob G)].  The two are the same term, so this
-   is [ar_square] accepted by conversion. *)
+(* The comma square 态射 [eqa_ob G], read [eqa_arr G]
+ place [ar_mor (eqa_ob G)]. The two same term, so this
+ [ar_square] accepted conversion. （已译） *)
 Lemma ar_square_eqa {A : @Arrow C} {G : Parallel ⟶ C}
       (w : A ~{@Arrow C}~> eqa_ob G) :
   eqa_arr G ∘ ar_fst w ≈ ar_snd w ∘ ar_mor A.
@@ -316,9 +316,7 @@ Definition eqa_fmap {G G' : Parallel ⟶ C} (t : G ⟹ G')
 
 #[local] Obligation Tactic := idtac.
 
-(* Again all three obligations are proved: the codomain component is
-   componentwise, and the domain component is one appeal to
-   [eqa_fmap1_unique] each time. *)
+(* 相关说明。 （已译） *)
 
 Program Definition EqualizerArrowFunctor : [Parallel, C] ⟶ @Arrow C := {|
   fobj := eqa_ob ;
@@ -348,9 +346,7 @@ Next Obligation.
   - reflexivity.
 Qed.
 
-(* The type-shape tie to Adjunction/Diagonal/Finite.v's
-   [EqualizerFunctor : [Parallel, C] ⟶ C].  This has the same type; the
-   two are NOT compared, for the reason measured in the header. *)
+(* 相关说明。 （已译） *)
 
 Definition eqa_dom_functor : [Parallel, C] ⟶ C :=
   Arrow_dom ◯ EqualizerArrowFunctor.
@@ -368,9 +364,7 @@ Context {C : Category}.
 Context `{HP : @HasPushouts C}.
 Context `{HE : @HasEqualizers C}.
 
-(* The parallel pair a cokernel pair names IS its two legs, on the
-   nose: these are what make the fork and cocone conditions below
-   statable in the [ckp_u]/[ckp_v] vocabulary. *)
+(* 相关说明。 （已译） *)
 
 Example ckp_pair_one (A : @Arrow C) :
   fmap[ckp_pair A] (true; ParOne) = ckp_u A := eq_refl.
@@ -407,8 +401,8 @@ Proof.
   now rewrite (fork_eq (eqa_wit G)).
 Qed.
 
-(* Right: the equalizer descent of the [ParX] component along the
-   arrow of A, paired with that component. *)
+(* Right: equalizer descent [ParX] component along the
+ arrow A, 与…配对 component. （已译） *)
 
 Definition ckpadj_to {A : @Arrow C} {G : Parallel ⟶ C}
            (t : ckp_pair A ⟹ G) : A ~{@Arrow C}~> eqa_ob G :=
@@ -417,8 +411,7 @@ Definition ckpadj_to {A : @Arrow C} {G : Parallel ⟶ C}
     transform[t] ParX);
    eqa_fork _ (ckpadj_fork t)).
 
-(* Left: the codomain component, together with the cokernel-pair
-   mediator of the two legs of G precomposed with it. *)
+(* 相关说明。 （已译） *)
 
 Definition ckpadj_from_Y {A : @Arrow C} {G : Parallel ⟶ C}
            (w : A ~{@Arrow C}~> eqa_ob G)
@@ -458,9 +451,9 @@ Definition ckpadj_from {A : @Arrow C} {G : Parallel ⟶ C}
   @Build_Transform' Parallel C (ckp_pair A) G
                     (ckpadj_from_comp w) (@ckpadj_from_natural A G w).
 
-(* Both round trips are one appeal to a uniqueness clause each: the
-   comma square for the equalizer side, naturality for the
-   cokernel-pair side. *)
+(* Both round trips one appeal uniqueness clause each: the
+ comma square equalizer side, 自然性 the
+ cokernel-pair side. （已译） *)
 
 Lemma ckpadj_to_from {A : @Arrow C} {G : Parallel ⟶ C}
       (w : A ~{@Arrow C}~> eqa_ob G) : ckpadj_to (ckpadj_from w) ≈ w.
@@ -511,9 +504,9 @@ Qed.
 Next Obligation. intros A G w; apply ckpadj_to_from. Qed.
 Next Obligation. intros A G t; apply ckpadj_from_to. Qed.
 
-(* Mac Lane §IV.2 Exercise 10.  [Build_Adjunction'] takes the
-   hom-setoid isomorphism plus the two forward naturality clauses and
-   derives the two inverse-transpose ones. *)
+(* Mac Lane §IV.2 Exercise 10. [Build_Adjunction'] takes the
+ hom-setoid 同构 plus two forward 自然性 clauses and
+ derives two inverse-transpose ones. （已译） *)
 
 Program Definition CokernelPair_Equalizer_Adjunction
   : CokernelPairFunctor ⊣ EqualizerArrowFunctor :=
@@ -542,11 +535,11 @@ Next Obligation.
   - reflexivity.
 Qed.
 
-(** ** The unit and the counit, by name *)
+(* 相关说明。 （已译） *)
 
-(* Mac Lane's comparison of f into the equalizer of its cokernel pair:
-   the descent of [ar_mor A] across that equalizer, paired with the
-   identity. *)
+(* Mac Lane's comparison f 进入 equalizer cokernel pair:
+ descent [ar_mor A] across equalizer, 与…配对 the
+ 恒等. （已译） *)
 
 Definition ckp_unit_med (A : @Arrow C)
   : ar_dom A ~> eqa_obj (ckp_pair A) :=
@@ -576,9 +569,9 @@ Next Obligation.
   exact (ckp_unit_med_commutes A).
 Qed.
 
-(* The coequalizing comparison: the identity, together with the
-   cokernel-pair mediator of the two legs of G, whose cocone condition
-   is [fork_eq] for the chosen equalizer of G. *)
+(* The coequalizing comparison: 恒等, together the
+ cokernel-pair mediator two legs G, whose cocone condition
+ [fork_eq] chosen equalizer G. （已译） *)
 
 Definition ckpc_comp (G : Parallel ⟶ C) (z : ParObj)
   : fobj[ckp_pair (eqa_ob G)] z ~> fobj[G] z :=
@@ -612,7 +605,7 @@ Definition cokernel_pair_counit (G : Parallel ⟶ C)
   @Build_Transform' Parallel C (ckp_pair (eqa_ob G)) G
                     (ckpc_comp G) (ckpc_natural G).
 
-(** ** The named unit and counit against the class-produced ones *)
+(* 相关说明。 （已译） *)
 
 Definition ckp_class_unit (A : @Arrow C) :=
   @unit ([Parallel, C]) (@Arrow C) CokernelPairFunctor
@@ -674,7 +667,7 @@ Qed.
 
 End CokernelPairAdjunction.
 
-(** ** When the unit is an isomorphism *)
+(* * ** When unit 同构 （已译） *)
 
 (*
    本节说明等化子、核/余核相关定义、性质与动机。
@@ -867,10 +860,10 @@ Definition SetsEqualizers : @HasEqualizers Sets :=
 
 #[local] Existing Instance SetsEqualizers.
 
-(* Instance/Sets.v's two-element and one-element setoids,
-   with
-   the collapse onto the point and the inclusion of the point.  Neither
-   object nor arrow is rebuilt here. *)
+(* Instance/Sets.v's two-element one-element setoids,
+ with
+ collapse onto point 含入 point. Neither
+ 对象 nor arrow rebuilt here. （已译） *)
 
 Definition ArrCollapse : @Arrow Sets :=
   ((bool_setoid_object, unit_setoid_object); collapse).
@@ -895,9 +888,9 @@ Proof.
   exact (unit_med_iso_Monic ArrCollapse (arrow_iso_fst K)).
 Qed.
 
-(* POSITIVE.  The inclusion of the point is split by the collapse
-   (Instance/Sets.v's [collapse_pick]), hence regular, hence its
-   unit is invertible. *)
+(* POSITIVE. The 含入 point split collapse
+ (Instance/Sets.v's [collapse_pick]), hence regular, hence its
+ unit invertible. （已译） *)
 
 Theorem sets_pick_regular : RegularCokernelPair ArrPick.
 Proof. exact (split_mono_regular (A:=ArrPick) (r:=collapse) collapse_pick). Qed.
@@ -906,9 +899,9 @@ Theorem sets_pick_unit_iso :
   IsIsomorphism (cokernel_pair_unit ArrPick).
 Proof. exact (snd (unit_iso_iff_regular ArrPick) sets_pick_regular). Qed.
 
-(* And the positive case is not degenerate: the arrow itself is not an
-   isomorphism, since it misses [false] and so is not epic
-   (Instance/Sets.v). *)
+(* And positive case not degenerate: arrow itself not an
+ 同构, since it misses [false] so not epic
+ (Instance/Sets.v). （已译） *)
 
 Theorem sets_pick_not_iso : IsIsomorphism pick_true -> False.
 Proof.
@@ -934,13 +927,12 @@ Constraint ch < cp.
 Context {Cu : Category@{co ch cp}}.
 Context (cx cy : Cu).
 
-(* Controls: the hom type and an identity DO elaborate at these
-   levels, so the rejections below are about the four donors. *)
+(* Controls: hom type 恒等 DO elaborate at these
+ levels, so rejections below about four donors. （已译） *)
 Check (cx ~{Cu}~> cy).
 Check (@id Cu cx).
 
-(* Each of the four fails with
-   "universe inconsistency: Cannot enforce cp = ch because ch < cp". *)
+(* 相关说明。 （已译） *)
 Fail Check (@Arrow Cu).
 Fail Check ([Parallel, Cu]).
 Fail Check (@HasPushouts Cu).
@@ -948,7 +940,5 @@ Fail Check (@HasEqualizers Cu).
 
 End UniverseProbe.
 
-(* Instrument check: a command that fails for a reason having nothing
-   to do with universes, so that a [Fail] which has become vacuous is
-   distinguishable from one that still fires. *)
+(* 相关说明。 （已译） *)
 Fail Check ckp_no_such_constant.

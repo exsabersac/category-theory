@@ -96,7 +96,7 @@ Proof.
   exact (e ttt).
 Defined.
 
-(* Both passages keep the index and the objects on the nose. *)
+(* Both passages keep index 对象 nose. （已译） *)
 Example sols_of_esols_index (E : ElementSolutionSet) :
   sol_index (sols_of_esols E) = esol_index E := eq_refl.
 
@@ -109,7 +109,7 @@ Example esols_of_sols_index (S : SolutionSet K SetsOne) :
 Example esols_of_sols_elem (S : SolutionSet K SetsOne) (i : sol_index S) :
   esol_elem (esols_of_sols S) i = sol_arr S i ttt := eq_refl.
 
-(** ** A representation out of an initial object of the elements comma *)
+(* * ** A representation out 始对象 elements comma （已译） *)
 
 Definition representable_of_comma_initial (I : @Initial (=(SetsOne) ↓ K)) :
   Representable K :=
@@ -138,7 +138,7 @@ Definition representability_theorem@{cobj h su +}
   representable_of_comma_initial K
     (comma_initial_of_sols K SetsOne comp cont (sols_of_esols K E)).
 
-(** ** Transport of a representation along a natural isomorphism *)
+(* * ** Transport representation along natural 同构 （已译） *)
 
 Definition Representable_transport {C : Category} {F G : C ⟶ Sets}
   (i : F ≅[[C, Sets]] G) (R : Representable F) : Representable G :=
@@ -177,13 +177,13 @@ Definition representable_of_left_adjoint {L : Sets ⟶ C} (A : L ⊣ K) :
   Representable K :=
   Representable_transport homafter_one_iso (adj_representable A SetsOne).
 
-(* The representing object is the left adjoint at the singleton. *)
+(* The 表示 对象 左伴随 at singleton. （已译） *)
 Example representable_of_left_adjoint_obj {L : Sets ⟶ C} (A : L ⊣ K) :
   @repr_obj C K (representable_of_left_adjoint A) = L SetsOne := eq_refl.
 
 End Ex81.
 
-(** ** The converse leg: a representable functor is continuous *)
+(* * ** The converse leg: representable 函子 continuous （已译） *)
 
 Definition continuous_of_representable {C : Category} {K : C ⟶ Sets}
   (R : Representable K) : ContinuousFunctor K :=
@@ -234,7 +234,7 @@ Example representability_iff_fst {C : Category} (K : C ⟶ Sets)
   fst (representability_iff K comp) (cont, E)
     = representability_theorem K comp cont E := eq_refl.
 
-(** ** Riehl 4.7.14: SAFT's hypotheses give representability *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -315,11 +315,11 @@ Definition left_adjoint_of_representable_Sets (cop : HasSetsCopowers C) :
 
 End Ex81Converse.
 
-(** ** Witnesses at Sets
+(* * ** Witnesses at Sets
 
-    Two functors, each with every premise discharged in tree. *)
+ Two 函子, each every premise discharged tree. （已译） *)
 
-(** *** The points functor [Hom(1,−)] on Sets *)
+(* * *** The points 函子 [Hom(1,−)] Sets （已译） *)
 
 Definition Sets_points : Sets ⟶ Sets := @HomFrom Sets SetsOne.
 
@@ -336,8 +336,8 @@ Proof.
   reflexivity.
 Defined.
 
-(* The single member is the singleton itself, and the single element is its
-   identity — which is what keeps [Sets_points_esol] transparent. *)
+(* The single member singleton itself, single element its
+ 恒等 — what keeps [Sets_points_esol] transparent. （已译） *)
 Example Sets_points_esol_obj (u : esol_index Sets_points_esol) :
   esol_obj Sets_points_esol u = SetsOne := eq_refl.
 
@@ -348,13 +348,13 @@ Definition Sets_points_repr : Representable Sets_points :=
   representability_theorem Sets_points Sets_Complete Sets_points_cont
     Sets_points_esol.
 
-(* The object the theorem produces represents the same functor as the
-   singleton does, so the two agree up to the canonical isomorphism. *)
+(* The 对象 定理 produces represents same 函子 the
+ singleton does, so two agree up canonical 同构. （已译） *)
 Definition Sets_points_iso :
   @repr_obj Sets Sets_points Sets_points_repr ≅ SetsOne :=
   repr_unique_iso (Hom_Representable SetsOne) Sets_points_repr.
 
-(** *** The identity functor on Sets, both routes *)
+(* * *** The 恒等 函子 Sets, both routes （已译） *)
 
 Definition Sets_Id_esol : ElementSolutionSet (@Id Sets) :=
   esols_of_sols (@Id Sets) (Sets_Id_SolutionSet SetsOne).
@@ -368,7 +368,7 @@ Definition Sets_Id_repr_iso :
   repr_unique_iso (Representable_transport global_elements_natural
                      (Hom_Representable SetsOne)) Sets_Id_repr.
 
-(* And by Exercise V.8.1's forward direction, from GAFT's own adjunction. *)
+(* And Exercise V.8.1's forward direction, GAFT's own 伴随. （已译） *)
 Definition Sets_Id_repr_of_adjoint : Representable (@Id Sets) :=
   representable_of_left_adjoint (@Id Sets) (projT2 GAFT_at_Sets_Id).
 

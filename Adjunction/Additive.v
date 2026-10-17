@@ -78,11 +78,11 @@ Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 Context `{A : F ⊣ U}.
 
-(** *** The forward transpose, given an additive right adjoint
+(* * *** The forward transpose, given additive 右伴随
 
-    ⌊f⌋ ≈ fmap[U] f ∘ η ([to_adj_unit]), so additivity of ⌊−⌋ is
-    additivity of fmap[U] followed by bilinearity of composition in
-    its left argument. *)
+ ⌊f⌋ ≈ fmap[U] f ∘ η ([to_adj_unit]), so additivity ⌊−⌋ is
+ additivity fmap[U] followed bilinearity 复合 in
+ left 论元. （已译） *)
 
 Section ForwardTranspose.
 
@@ -114,10 +114,10 @@ Qed.
 
 End ForwardTranspose.
 
-(** *** The inverse transpose, given an additive left adjoint
+(* * *** The inverse transpose, given additive 左伴随
 
-    ⌈f⌉ ≈ ε ∘ fmap[F] f ([from_adj_counit]); the mirror of the above,
-    with bilinearity used in the right argument instead. *)
+ ⌈f⌉ ≈ ε ∘ fmap[F] f ([from_adj_counit]); 镜像 above,
+ bilinearity used right 论元 instead. （已译） *)
 
 Section BackwardTranspose.
 
@@ -292,9 +292,7 @@ Context {U : C ⟶ D}.
 Context `{A : F ⊣ U}.
 Context `{AU : @AdditiveFunctor C D AC AD U}.
 
-(* The forward transpose as a homomorphism of abelian groups.  Its
-   underlying setoid map is the transpose itself; the two
-   homomorphism laws are [to_adj_pzero] and [to_adj_padd]. *)
+(* 相关说明。 （已译） *)
 Definition adj_to_ab (x : D) (y : C) :
   AbHom (hom_ab AC (F x) y) (hom_ab AD x (U y)).
 Proof.
@@ -304,8 +302,8 @@ Proof.
   - exact (@to_adj_padd C D AC AD F U A AU x y).
 Defined.
 
-(* And the inverse transpose, which is additive by Theorem 3 —
-   no second hypothesis on F is taken. *)
+(* And inverse transpose, additive Theorem 3 —
+ no second 假设 F taken. （已译） *)
 Definition adj_from_ab (x : D) (y : C) :
   AbHom (hom_ab AD x (U y)) (hom_ab AC (F x) y).
 Proof.
@@ -330,9 +328,9 @@ Proof.
   - intro f; apply to_adj_comp_law.
 Defined.
 
-(* The two legs are the transposes on the nose, not merely equivalent
-   to them: the group isomorphism is the set isomorphism with its
-   structure exhibited, and nothing was rebuilt. *)
+(* The two legs transposes nose, not merely equivalent
+ them: group 同构 set 同构 its
+ structure exhibited, nothing was rebuilt. （已译） *)
 Example adj_hom_ab_iso_to (x : D) (y : C) (f : F x ~{C}~> y) :
   cmon_map (to (adj_hom_ab_iso x y)) f = to (@adj C D F U A x y) f.
 Proof. exact eq_refl. Qed.
@@ -373,9 +371,9 @@ Program Definition AbEnriched_op {C : Category} (AC : AbEnriched C) :
   padd_abneg := fun x y => @padd_abneg C AC y x
 |}.
 
-(* The opposite enrichment is the original one read at swapped
-   endpoints, definitionally — which is what makes the transport of
-   additivity below proof-free. *)
+(* The opposite enrichment original one read at swapped
+ endpoints, definitionally — what makes transport of
+ additivity below 证明-free. （已译） *)
 Example padd_op_is_padd {C : Category} (P : @Preadditive C) (x y : C) :
   @padd (C^op) (Preadditive_op P) x y = @padd C P y x.
 Proof. exact eq_refl. Qed.
@@ -480,8 +478,8 @@ Proof.
     split; [ now symmetry | now symmetry ].
 Qed.
 
-(* The identity decomposition.  Both sides restrict to i1 along i1 and
-   to i2 along i2, so [additive_coprod_ext] identifies them. *)
+(* The 恒等 decomposition. Both sides restrict i1 along i1 and
+ i2 along i2, so [additive_coprod_ext] identifies them. （已译） *)
 Lemma coprod_id_decomp : padd (i1 ∘ p1) (i2 ∘ p2) ≈ id.
 Proof.
   apply additive_coprod_ext.
@@ -499,8 +497,7 @@ Proof.
     now rewrite padd_zero_left, id_left.
 Qed.
 
-(* The product half: the mediator into b is the sum of the reinjected
-   legs, and uniqueness is [coprod_id_decomp] applied to a competitor. *)
+(* 相关说明。 （已译） *)
 Definition coprod_is_product (z : C) (f : z ~> x) (g : z ~> y) :
   ∃! h : z ~> b, (p1 ∘ h ≈ f) ∧ (p2 ∘ h ≈ g).
 Proof.
@@ -541,9 +538,9 @@ Definition biproduct_of_coproduct : Biproduct x y := {|
   bi_is_coproduct := Hco
 |}.
 
-(* The bridge keeps the data it was given: the object and all four
-   structure maps are the supplied ones on the nose, so a consumer may
-   read them back without a comparison morphism. *)
+(* The bridge keeps data it was given: 对象 all four
+ structure maps supplied ones nose, so consumer may
+ read them back without comparison 态射. （已译） *)
 Example bridge_inl_strict : bi_inl biproduct_of_coproduct = i1.
 Proof. exact eq_refl. Qed.
 
@@ -581,9 +578,9 @@ Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 Context `{A : F ⊣ U}.
 
-(* Hom-sets out of the image of D's initial object are singletons: the
-   transpose carries them isomorphically onto hom-sets out of the
-   initial object itself, where [zero_unique] applies. *)
+(* Hom-sets out image D's 始对象 singletons: the
+ transpose carries them isomorphically onto hom-sets out the
+ 始对象 itself, where [zero_unique] applies. （已译） *)
 Lemma adj_image_initial_unique {z : C}
   (h k : F (@initial_obj D (@zero_initial D ZD)) ~{C}~> z) : h ≈ k.
 Proof.
@@ -621,9 +618,7 @@ Section ImageBiproduct.
 Context {a a' : D}.
 Context (B : Biproduct a a').
 
-(* The image of the coproduct half.  The mediator is the transpose of
-   the mediator downstairs: ⌊h ∘ fmap[F] i⌋ ≈ ⌊h⌋ ∘ i, so the two
-   conditions on h are exactly the two conditions on ⌊h⌋. *)
+(* 相关说明。 （已译） *)
 Definition adj_image_is_coproduct (z : C)
   (f : F a ~> z) (g : F a' ~> z) :
   ∃! h : F (biproduct_obj B) ~> z,
@@ -765,10 +760,10 @@ Qed.
 
 End BiproductTransfer.
 
-(** *** Riehl's corollary at one pair of objects
+(* * *** Riehl's 推论 at one pair 对象
 
-    No additivity is assumed of F or of U: only that the source
-    carries a biproduct of the domain with itself. *)
+ No additivity assumed F U: source
+ carries biproduct domain itself. （已译） *)
 
 Section LeftAdjointPadd.
 

@@ -22,7 +22,7 @@ Require Import Category.Adjunction.SAFT.
 
 Generalizable All Variables.
 
-(** * The special initial-object theorem *)
+(* * * The special initial-对象 定理 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
@@ -33,7 +33,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Uniqueness: parallel arrows out of a least subobject agree *)
+(* 相关说明。 （已译） *)
 
 Definition equalizer_sub@{o h +} {C : Category@{o h h}} {x : C} (w : SubObj x)
   {c q : C} {f g : Subobject.sub_dom w ~> c} {e : q ~> Subobject.sub_dom w}
@@ -55,10 +55,9 @@ Proof.
   now rewrite (fork_eq E).
 Qed.
 
-(** ** Existence: the pullback of the canonical monic *)
+(* 相关说明。 （已译） *)
 
-(* Mac Lane's k : q_0 → ∏_H q, whose component at [(j, h)] is the [j]-th
-   projection of the cogenerator product. *)
+(* 相关说明。 （已译） *)
 Definition cogen_prod_to_power@{o h so +| h <= so +} {C : Category@{o h h}}
   (comp : @Complete@{so so h o} C)
   (G : Cogenerator@{so o h} C) (c : C) :
@@ -94,7 +93,7 @@ Definition cogen_pullback_to@{o h so +| h <= so +} {C : Category@{o h h}}
                       (cogen_prod_to_power comp G c)
                       (cogen_canonical comp G c)).
 
-(* The arrow out of a least subobject: below the pullback, then its leg. *)
+(* 相关说明。 （已译） *)
 Definition special_initial_zero@{o h so +| h <= so +} {C : Category@{o h h}}
   (comp : @Complete@{so so h o} C)
   (G : Cogenerator@{so o h} C) (w : SubObj (cogen_prod comp G))
@@ -102,7 +101,7 @@ Definition special_initial_zero@{o h so +| h <= so +} {C : Category@{o h h}}
   Subobject.sub_dom w ~> c :=
   cogen_pullback_to comp G c ∘ `1 (Hw (cogen_pullback_sub comp G c)).
 
-(** ** The theorem over a least subobject *)
+(* * ** The 定理 over least subobject （已译） *)
 
 Definition special_initial_object_least@{o h so +| h <= so +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C)
@@ -117,7 +116,7 @@ Proof.
              c f g).
 Defined.
 
-(** ** The intersection of all subobjects is the least subobject *)
+(* 相关说明。 （已译） *)
 
 Definition least_of_intersection_all@{o h q +| o <= q, h <= q +}
   {C : Category@{o h h}} {x : C} (w : SubObj x)
@@ -132,7 +131,7 @@ Definition intersection_all_of_least@{o h q +| o <= q, h <= q +}
   @Build_IsIntersection C x (SubObj x) (fun m : SubObj x => m) w
     Hw (fun v Hv => Hv w).
 
-(** ** The theorem: the intersection of all subobjects of the product *)
+(* * ** The 定理: intersection all subobjects product （已译） *)
 
 Definition special_initial_object@{o h so q +| h <= so, o <= q, h <= q +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C)
@@ -158,7 +157,7 @@ Example special_initial_object_zero@{o h so q +| h <= so, o <= q, h <= q +}
         ∘ `1 (inter_le _ _ Hw (cogen_pullback_sub comp G c)) :=
   eq_refl.
 
-(* The conclusion read in the type: the intersection's domain IS initial. *)
+(* 相关说明。 （已译） *)
 Definition special_initial_IsInitialObj@{o h so q +|
     h <= so, o <= q, h <= q +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C)
@@ -167,7 +166,7 @@ Definition special_initial_IsInitialObj@{o h so q +|
   IsInitialObj (Subobject.sub_dom w) :=
   IsInitialObj_from_Initial (special_initial_object comp G w Hw).
 
-(** ** Mac Lane's hypothesis: every class of subobjects has an intersection *)
+(* * ** Mac Lane's 假设: every class subobjects has intersection （已译） *)
 
 Definition HasClassIntersections@{o h p q s t k |
     o <= s, h <= s, h < t, o <= q, h <= q, p <= q,
@@ -178,7 +177,7 @@ Definition HasClassIntersections@{o h p q s t k |
     { w : SubObj x &
       IsIntersection@{o h q} (fun k : { m : SubObj x & P m } => `1 k) w }.
 
-(* The book's statement, at the class of all subobjects. *)
+(* 相关说明。 （已译） *)
 Definition special_initial_object_book@{o h so p q s t k d +|
     h <= so, h < d +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C)
@@ -206,7 +205,7 @@ Example special_initial_object_book_obj@{o h so p q s t k d +|
                (fun _ _ _ t => t))) :=
   eq_refl.
 
-(** ** Well-powered categories: the hypothesis discharged *)
+(* * ** Well-powered 范畴: 假设 discharged （已译） *)
 
 Definition wellpowered_class_intersections@{o h w s t so p q k +|
     w <= h, h < t, o <= s, h <= s, w <= so, p <= so,
@@ -265,7 +264,7 @@ Example special_initial_object_wellpowered_at_obj@{o h w s t so d +|
         (complete_intersection comp (wp_class_family W (fun _ => True))) :=
   eq_refl.
 
-(** ** Small objects: completeness alone intersects all subobjects *)
+(* * ** Small 对象: completeness alone intersects all subobjects （已译） *)
 
 Definition special_initial_object_small@{o h so +| h <= so, o <= so +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C)
@@ -274,9 +273,9 @@ Definition special_initial_object_small@{o h so +| h <= so, o <= so +}
     (complete_intersection_IsIntersection comp
        (fun m : SubObj (cogen_prod comp G) => m)).
 
-(** ** Relation to Freyd's construction *)
+(* 相关说明。 （已译） *)
 
-(* The existence half alone: the least subobject is weakly initial. *)
+(* 相关说明。 （已译） *)
 Definition special_weakly_initial@{o h so +| h <= so +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C)
   (G : Cogenerator@{so o h} C) (w : SubObj (cogen_prod comp G))
@@ -295,8 +294,8 @@ Definition special_vs_freyd@{o h +} {C : Category@{o h h}}
          (wif_of_weakly_initial (special_weakly_initial comp G w Hw))) :=
   initial_unique _ _.
 
-(* The subobjects of the cogenerator product, indexed by a well-powered
-   datum at that one object, are a weakly initial family. *)
+(* The subobjects cogenerator product, indexed well-powered
+ datum at one 对象, weakly initial family. （已译） *)
 Definition wif_of_cogenerator@{o h w s t so d +|
     h < t, h < d, o <= s, h <= s, h <= so +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C)

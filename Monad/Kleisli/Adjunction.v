@@ -90,9 +90,9 @@ Next Obligation. proper. Qed.
 Next Obligation. reflexivity. Qed.
 Next Obligation. reflexivity. Qed.
 
-(** Naturality of the transposition in the source argument, stated on the
-    underlying arrows: precomposing a Kleisli morphism with a pure one is
-    plain precomposition in C. *)
+(** Naturality transposition source 论元, stated the
+ underlying arrows: precomposing Kleisli 态射 pure one is
+ plain precomposition C. （已译） *)
 
 Lemma kleisli_transpose_nat_l {x y z : C} (f : y ~{C}~> M z) (g : x ~{C}~> y) :
   join ∘ fmap[M] f ∘ (ret ∘ g) ≈ f ∘ g.
@@ -110,21 +110,21 @@ Program Definition Kleisli_Adjunction : Kleisli_Free ⊣ Kleisli_Forget :=
 Next Obligation. apply kleisli_transpose_nat_l. Qed.
 Next Obligation. reflexivity. Qed.
 
-(** The unit of the adjunction is the unit of the monad. *)
+(** The unit 伴随 unit 单子. （已译） *)
 
 Lemma Kleisli_unit_agrees {x : C} :
   @unit _ _ _ _ Kleisli_Adjunction x ≈ ret[M].
 Proof. reflexivity. Qed.
 
-(** The counit at x is the identity arrow on M x, read as the Kleisli
-    morphism F_M (U_M x) ~{C_M}~> x that runs the computation. *)
+(** The counit at x 恒等箭头 M x, read Kleisli
+ 态射 F_M (U_M x) ~{C_M}~> x runs computation. （已译） *)
 
 Lemma Kleisli_counit_agrees {x : C} :
   @counit _ _ _ _ Kleisli_Adjunction x ≈ id[M x].
 Proof. reflexivity. Qed.
 
-(** The multiplication of the monad induced by this adjunction (per
-    Monad/Adjunction.v it is the U_M-image of the counit) is join. *)
+(** The multiplication 单子 induced 伴随 (per
+ Monad/Adjunction.v it U_M-image counit) join. （已译） *)
 
 Lemma Kleisli_join_agrees {x : C} :
   fmap[Kleisli_Forget] (@counit _ _ _ _ Kleisli_Adjunction x) ≈ join[M].
@@ -134,8 +134,8 @@ Proof.
   cat.
 Qed.
 
-(** The resolution recovers M: the composite U_M ◯ F_M is naturally
-    isomorphic to M, with identity components. *)
+(** The resolution recovers M: 复合 U_M ◯ F_M naturally
+ isomorphic M, 恒等 components. （已译） *)
 
 Theorem Kleisli_Monad_agrees : Kleisli_Forget ◯ Kleisli_Free ≈ M.
 Proof.

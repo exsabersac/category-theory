@@ -60,8 +60,7 @@ Example pare_unitor_fobj :
 Example pare_unitor_fmap :
   @fmap A X (Id[X] ◯ G) = @fmap A X G := eq_refl.
 
-(* The four whiskered composites Mac Lane writes.  Each is formable on its
-   own; it is only their vertical composites that are not. *)
+(* 相关说明。 （已译） *)
 Definition pare_Geps : G ◯ (K ◯ G) ⟹ G ◯ Id[A] := G ⊳ (pare_eps P).
 Definition pare_rhoG : Id[X] ◯ G ⟹ (G ◯ K) ◯ G := (pare_rho P) ⊲ G.
 Definition pare_epsK : (K ◯ G) ◯ K ⟹ Id[A] ◯ K := (pare_eps P) ⊲ K.
@@ -148,7 +147,7 @@ Definition pare_idem_Idempotent : @Idempotent ([X, A]) K pare_idem.
 Proof. constructor; intro x; apply pare_idem_idem. Qed.
 
 (* ---------------------------------------------------------------------- *)
-(** ** From a splitting to a left adjoint *)
+(* * ** From splitting 左伴随 （已译） *)
 
 Section FromSplitting.
 
@@ -157,8 +156,8 @@ Context (r : K ⟹ F) (s : F ⟹ K).
 Context (Hsr : ∀ x, s x ∘ r x ≈ pare_idem x).
 Context (Hrs : ∀ x, r x ∘ s x ≈ id).
 
-(* [Hsr] unfolded to the components of εK ∘ Kρ; the two statements are
-   convertible, so this is [Hsr] itself with no proof step. *)
+(* [Hsr] unfolded components εK ∘ Kρ; two statements are
+ convertible, so 这是 [Hsr] itself no 证明 step. （已译） *)
 Lemma pare_split_law (x : X) :
   s x ∘ r x ≈ eps (K x) ∘ fmap[K] (rho x).
 Proof using All. exact (Hsr x). Qed.
@@ -181,8 +180,7 @@ Proof using All.
   rewrite <- comp_assoc.
   rewrite <- pare_s_nat.
   rewrite fmap_comp.
-  (* the next two are not a no-op: they change which subterm the following
-     rewrite matches first. *)
+  (* 相关说明。 （已译） *)
   rewrite <- comp_assoc.
   rewrite comp_assoc.
   rewrite <- pare_eps_nat.
@@ -233,7 +231,7 @@ Example pare_Adjunction_counit_at (a : A) :
 End FromSplitting.
 
 (* ---------------------------------------------------------------------- *)
-(** ** From a left adjoint to a splitting *)
+(* * ** From 左伴随 splitting （已译） *)
 
 Section FromAdjunction.
 
@@ -371,7 +369,7 @@ Qed.
 End FromAdjunction.
 
 (* ---------------------------------------------------------------------- *)
-(** ** The biconditional, and the Cauchy-complete corollary *)
+(* * ** The biconditional, Cauchy-complete 推论 （已译） *)
 
 Definition PareSplits : Type :=
   ∃ (F : X ⟶ A) (S : @SplitIdempotent ([X, A]) K F),
@@ -458,8 +456,8 @@ Lemma pare_of_adjunction_idem {A X : Category} {F : X ⟶ A} {G : A ⟶ X}
       (Adj : F ∹ G) (x : X) : pare_idem (pare_of_adjunction Adj) x ≈ id.
 Proof. exact (@counit_fmap_unit _ _ _ _ Adj x). Qed.
 
-(* A uniform family -- not a closed term, and never instantiated here at
-   a concrete category: everything the identity on a category. *)
+(* A uniform family -- not closed term, never instantiated here at
+ concrete 范畴: everything 恒等 范畴. （已译） *)
 Program Definition pare_triv_rho (C : Category) : Id[C] ⟹ Id[C] ◯ Id[C] :=
   {| transform := λ _, id |}.
 
@@ -477,8 +475,8 @@ Lemma pare_triv_idem (C : Category) (x : C) :
   pare_idem (pare_triv C) x ≈ id.
 Proof. simpl; cat. Qed.
 
-(* The assembly run end to end on that inhabitant: the identity idempotent
-   splits by identities, and what comes back out is Id ∹ Id. *)
+(* The assembly run end end inhabitant: 恒等 idempotent
+ splits identities, what comes back out Id ∹ Id. （已译） *)
 Definition pare_triv_left_adjoint (C : Category) : Id[C] ∹ Id[C].
 Proof.
   refine (pare_Adjunction (pare_triv C) Id[C] nat_id nat_id _ _).

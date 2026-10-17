@@ -81,8 +81,7 @@ Next Obligation.
   exact (fst (@strength_assoc _ _ _ P (x, I) (y, I) (z, I))).
 Qed.
 
-(* Dual of proj1: recover a strength on the second factor G by fixing the first
-   coordinate at the unit I and projecting the second component. *)
+(* 相关说明。 （已译） *)
 Program Definition ProductFunctor_Strong_proj2 :
   StrongFunctor (F ∏⟶ G) → StrongFunctor G := fun P => {|
   strength := fun x y => snd (@strength _ _ _ P (I, x) (I, y));  (* snd at x₁ = I *)

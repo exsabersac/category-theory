@@ -155,8 +155,8 @@ Proof. intros p q H. unfold precomp_to. now rewrite (lwhisker_cong u _ _ H). Qed
   Proper (equiv ==> equiv) (@precomp_from w c d).
 Proof. intros p q H. unfold precomp_from. now rewrite (lwhisker_cong f _ _ H). Qed.
 
-(* The zig cell preΞ(f∘c) ∘∘ (f ⊲ preΘ c) is the identity — whiskered left
-   triangle identity, reduced to adj_triangle_left via the coherence engine. *)
+(* The zig cell preΞ(f∘c) ∘∘ (f ⊲ preΘ c) 恒等 — whiskered left
+ triangle 恒等, reduced adj_triangle_left via coherence engine. （已译） *)
 Lemma precomp_zig_id {w : bi0cell} (c : bicat w x) :
   preΞ (f ∘∘∘ c) ∘∘ lwhisker f (preΘ c) ≈ bi2id.
 Proof.
@@ -216,8 +216,8 @@ Proof.
   now rewrite bi2id_right.
 Qed.
 
-(* The zag cell (u ⊲ preΞ D) ∘∘ preΘ (u∘D) is the identity — whiskered right
-   triangle identity, reduced to adj_triangle_right via the coherence engine. *)
+(* The zag cell (u ⊲ preΞ D) ∘∘ preΘ (u∘D) 恒等 — whiskered right
+ triangle 恒等, reduced adj_triangle_right via coherence engine. （已译） *)
 Lemma precomp_zag_id {w : bi0cell} (D : bicat w y) :
   lwhisker u (preΞ D) ∘∘ preΘ (u ∘∘∘ D) ≈ bi2id.
 Proof.
@@ -243,7 +243,7 @@ Proof.
     + apply rwhisker_id.
 Qed.
 
-(* Mirror naturality slide, for the unit-side cell preΘ. *)
+(* Mirror 自然性 slide, unit-side cell preΘ. （已译） *)
 Lemma precomp_slide' {w : bi0cell} {c : bicat w x} {d : bicat w y}
   (τ : c ~> (u ∘∘∘ d)) :
   lwhisker u (lwhisker f τ) ∘∘ preΘ c ≈ preΘ (u ∘∘∘ d) ∘∘ τ.
@@ -433,11 +433,11 @@ Context {f : bicat x y} {u : bicat y x} (Af : BicatAdjunction f u).
 Context {f' : bicat x' y'} {u' : bicat y' x'} (Af' : BicatAdjunction f' u').
 Context {a : bicat x x'} {b : bicat y y'}.
 
-(* Forward mate: paste η' on the left, whisker σ, paste ε on the right. *)
+(* 相关说明。 （已译） *)
 Definition mate (σ : (f' ∘∘∘ a) ~> (b ∘∘∘ f)) : (a ∘∘∘ u) ~> (u' ∘∘∘ b) :=
   postcomp_to Af (from (hassoc u' b f) ∘∘ precomp_to Af' σ).
 
-(* Backward mate: paste η on the left, whisker τ, paste ε' on the right. *)
+(* 相关说明。 （已译） *)
 Definition mate_inv (τ : (a ∘∘∘ u) ~> (u' ∘∘∘ b)) : (f' ∘∘∘ a) ~> (b ∘∘∘ f) :=
   precomp_from Af' (to (hassoc u' b f) ∘∘ postcomp_from Af τ).
 

@@ -66,8 +66,8 @@ Next Obligation. apply naturality_sym. Qed.
 *)
 
 Class RightKan := {
-  (* jww (2017-06-09): Rename this to ran_functor, RightKan to Ran, and then a
-     coercion from Ran to functor? *)
+  (* jww (2017-06-09): Rename ran_函子, RightKan Ran, then a
+ coercion Ran 函子? （已译） *)
   Ran : [A, C] ⟶ [B, C];           (* the right Kan extension functor       *)
 
   ran_adjoint : Induced ⊣ Ran      (* universal property: Induced ⊣ Ran     *)
@@ -84,8 +84,8 @@ Class LocalRightKan (X : A ⟶ C) := {
 
   ran_transform : LocalRan ◯ F ⟹ X;       (* counit ε : R ◯ F ⟹ X            *)
 
-  (* terminality / universal property: μ factors uniquely through the counit
-     as μ ≈ ran_transform ∙ (δ ⊲ F), with δ the unique mediating arrow *)
+  (* terminality / 普遍性质: μ factors uniquely through counit
+ μ ≈ ran_transform ∙ (δ ⊲ F), δ unique mediating arrow （已译） *)
   ump_ran (M : B ⟶ C) (μ : M ◯ F ⟹ X) :
     (∃! δ, μ ≈ ran_transform ∙ δ ⊲ F);
 }.
@@ -166,8 +166,8 @@ Class LocalLeftKan (X : A ⟶ C) := {
 
   lan_transform : X ⟹ LocalLan ◯ F;       (* unit η : X ⟹ L ◯ F              *)
 
-  (* initiality / universal property: ε factors uniquely through the unit as
-     ε ≈ (δ ⊲ F) ∙ lan_transform, with δ the unique mediating arrow *)
+  (* initiality / 普遍性质: ε factors uniquely through unit as
+ ε ≈ (δ ⊲ F) ∙ lan_transform, δ unique mediating arrow （已译） *)
   ump_lan (M : B ⟶ C) (ε : X ⟹ M ◯ F) :
     ∃! δ, ε ≈ δ ⊲ F ∙ lan_transform;
 }.
@@ -227,10 +227,10 @@ Arguments Lan {_ _} F {_ _}.
 Arguments LocalLeftKan {_ _} F {_} _.
 Arguments LocalLan {_ _} F {_} _ {_}.
 
-(* From "All Concepts are Kan Extensions", by Marina Christina Lehner:
+(* From "All Concepts Kan Extensions", Marina Christina Lehner:
 
-   "A functor preserves a Kan extension when composing then extending is
-   equivalent to extending then composing." *)
+ "A 函子 preserves Kan extension composing then extending is
+ equivalent extending then composing." （已译） *)
 
 (* A functor L preserves left Kan extensions when applying L after extending
    agrees with extending after applying L, i.e. L ◯ Lan K G ≈ Lan K (L ◯ G).

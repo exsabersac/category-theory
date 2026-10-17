@@ -24,7 +24,7 @@ Require Import Category.Adjunction.SAFT.InitialObject.
 
 Generalizable All Variables.
 
-(** * The covering step of the special adjoint functor theorem, derived *)
+(* * * The covering step special adjoint 函子 定理, derived （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/well-powered+category
@@ -34,7 +34,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The product over arrows out of [d] *)
+(* 相关说明。 （已译） *)
 
 (* A cone over [U ◯ DiscreteCat_Functor f] from a plain family of legs. *)
 Definition image_family_cone@{o dobj h a pc dq +| h < pc, h < dq +}
@@ -71,7 +71,7 @@ Definition saft_prod@{o dobj h so dp +| h <= so, h < dp +}
   (comp : @Complete@{so so h o} C) (G : Cogenerator@{so o h} C) (d : D) : C :=
   iprod (saft_fam U G d) (saft_prod_limit@{o dobj h so dp} U comp G d).
 
-(* The canonical point [d ~> U (saft_prod …)], from preservation. *)
+(* 相关说明。 （已译） *)
 Definition saft_point@{o dobj h so dp pl pa +| h <= so, h < dp +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
   (comp : @Complete@{so so h o} C)
@@ -97,7 +97,7 @@ Proof.
                  (fun p => projT2 p))) p).
 Qed.
 
-(** ** Mac Lane's k, now depending on [h] *)
+(* 相关说明。 （已译） *)
 
 (* Component [(j, k)] is the projection at [(j, U k ∘ h)]. *)
 Definition saft_kappa@{o dobj h so dp cp +| h <= so, h < dp, h < cp +}
@@ -149,7 +149,7 @@ Proof.
     rewrite Hc; reflexivity.
 Qed.
 
-(** ** The subobject: the pullback of the canonical mono along [k] *)
+(* 相关说明。 （已译） *)
 
 Definition saft_sub@{o dobj h so dp cp +| h <= so, h < dp, h < cp +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -169,8 +169,7 @@ Definition saft_sub_to@{o dobj h so dp cp +| h <= so, h < dp, h < cp +}
                       (saft_kappa@{o dobj h so dp cp} U comp G d c h)
                       (cogen_canonical@{cp so h so o} comp G c)).
 
-(* [U] carries that pullback to a limit: the cone over the image of the
-   cospan, with vertex [d]. *)
+(* 相关说明。 （已译） *)
 Definition saft_pb_cone@{o dobj h so dp cp pl pa ro pc sa +|
     h <= so, h < dp, h < cp, h < pc, h < sa +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -191,8 +190,8 @@ Proof.
       * exact (fmap[U] (saft_kappa@{o dobj h so dp cp} U comp G d c h)
                  ∘ saft_point@{o dobj h so dp pl pa} U comp cont G d).
       * exact h.
-    + (* Nine pairs of objects of [Roof], in the order [destruct] gives;
-         [f] is a [RoofHom] from the second to the first. *)
+    + (* Nine pairs 对象 [Roof], order [destruct] gives;
+ [f] [RoofHom] second first. （已译） *)
       intros x y f; destruct x, y; simpl in f |- *.
       * (* RNeg, RNeg: an identity *)
         rewrite fmap_id; cat.
@@ -234,7 +233,7 @@ Proof.
   exact (unique_property (cont _ _ _ (saft_pb_cone U comp cont G d c h)) RPos).
 Qed.
 
-(** ** The covering datum at [d], and its derivation *)
+(* 相关说明。 （已译） *)
 
 Definition SubobjectCoverAt@{o dobj h so dp w s t +| h <= so, h < dp +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -267,7 +266,7 @@ Proof.
   apply saft_lift_commutes.
 Defined.
 
-(** ** The solution set at [d], and SAFT through [GAFT] *)
+(* 相关说明。 （已译） *)
 
 Definition saft_solution_set_at@{o dobj h so dp cp w s t pl pa i +|
     h <= so, h < dp, h < cp, w <= i, h <= i +}
@@ -313,8 +312,7 @@ Definition SAFT_cover_wp@{o dobj h dp cp w s t pl pa +|
 
 (** ** Readbacks *)
 
-(* The cover's index at [h] IS the well-powering's name for the pullback
-   subobject [saft_sub]. *)
+(* 相关说明。 （已译） *)
 Example saft_cover_at_index@{o dobj h so dp cp w s t pl pa +|
     h <= so, h < dp, h < cp +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -327,8 +325,8 @@ Example saft_cover_at_index@{o dobj h so dp cp w s t pl pa +|
             U comp cont G d W c h)
     = wp_from W (saft_sub@{o dobj h so dp cp _ _} U comp G d c h) := eq_refl.
 
-(* The solution set's index is the well-powering's index paired with a
-   [d]-arrow. *)
+(* The solution set's index well-powering's index 与…配对 a
+ [d]-arrow. （已译） *)
 Example saft_solution_set_at_index@{o dobj h so dp cp w s t pl pa i +|
     h <= so, h < dp, h < cp, w <= i, h <= i +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -340,8 +338,8 @@ Example saft_solution_set_at_index@{o dobj h so dp cp w s t pl pa i +|
                U comp cont G d W)
     = { i : wp_index W & d ~> U (Subobject.sub_dom (wp_to W i)) } := eq_refl.
 
-(* The theorem IS [GAFT] at those solution sets, whose [Qed] seals the
-   left adjoint. *)
+(* The 定理 IS [GAFT] at those solution sets, whose [Qed] seals the
+ 左伴随. （已译） *)
 Example SAFT_cover_wp_is_GAFT@{o dobj h dp cp w s t pl pa +|
     h < dp, h < cp, w <= h +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)

@@ -33,20 +33,20 @@ Generalizable All Variables.
 Theorem lambek `(F : C ⟶ C) (I : @Initial (FAlg F)) :
   F (`1 (@initial_obj (FAlg F) I)) ≅ `1 (@initial_obj (FAlg F) I).
 Proof.
-  (* The initial algebra [(μ, α)] and the auxiliary algebra [(F μ, fmap α)]. *)
+  (* 相关说明。 （已译） *)
   pose (iobj := @initial_obj (FAlg F) I).
   pose (Falg := ((F (`1 iobj))
                    ; (fmap[F] (`2 iobj) : FAlgebra F (F (`1 iobj))))).
   (* [α] itself is an algebra map [(F μ, fmap α) ~> (μ, α)]. *)
   pose (αHom := {| falg_hom := `2 iobj; falg_commutes := ltac:(reflexivity) |}
                 : Falg ~{FAlg F}~> iobj).
-  (* The unique mediator [h : μ ~> F μ] out of the initial algebra. *)
+  (* 相关说明。 （已译） *)
   pose (hHom := @zero (FAlg F) I Falg).
-  (* The mediator is an algebra map, so its carrier commutes with structures. *)
+  (* 相关说明。 （已译） *)
   assert (Hcomm : falg_hom[hHom] ∘ (`2 iobj)
                     ≈ fmap[F] (`2 iobj) ∘ fmap[F] falg_hom[hHom]).
   { exact (@falg_commutes _ _ _ _ _ _ hHom). }
-  (* [α ∘ h] is an endomorphism of the initial algebra, hence the identity. *)
+  (* [α ∘ h] endomorphism initial algebra, hence 恒等. （已译） *)
   assert (Hαh : (`2 iobj) ∘ falg_hom[hHom] ≈ id).
   { pose proof (zero_unique (αHom ∘ hHom) id) as Huniq; simpl in Huniq;
       exact Huniq. }
@@ -56,7 +56,7 @@ Proof.
     transitivity (fmap[F] ((`2 iobj) ∘ falg_hom[hHom])).
     - symmetry; apply fmap_comp.
     - rewrite Hαh; apply fmap_id. }
-  (* [α] and [h] are mutually inverse: [F μ ≅ μ]. *)
+  (* 相关说明。 （已译） *)
   exact {| to := `2 iobj; from := falg_hom[hHom];
            iso_to_from := Hαh; iso_from_to := Hhα |}.
 Qed.

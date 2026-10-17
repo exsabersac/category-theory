@@ -99,7 +99,7 @@ Proof.
       exact (uniqueness (u d' f) _ h_eq).
 Defined.
 
-(** ** Uniqueness up to a unique isomorphism *)
+(* * ** Uniqueness up unique 同构 （已译） *)
 
 (*
    本节说明幺半群、同构、始/终对象相关定义、性质与动机。
@@ -112,8 +112,8 @@ Section UniversalArrowUnique.
 Context {c : C}.
 Context {F : D ⟶ C}.
 
-(* The canonical mediating morphism: the unique factorization of the second
-   universal arrow through the first. *)
+(* The canonical mediating 态射: unique factorization second
+ 泛箭头 through first. （已译） *)
 Definition ua_med (U1 U2 : UniversalArrow c F)
   : @arrow_obj c F U1 ~{D}~> @arrow_obj c F U2 :=
   unique_obj (@ump_universal_arrows c F U1 (@arrow_obj c F U2) (@arrow c F U2)).
@@ -126,7 +126,7 @@ Proof.
            (@ump_universal_arrows c F U1 (@arrow_obj c F U2) (@arrow c F U2))).
 Qed.
 
-(* Any morphism commuting with the two universal arrows IS the mediator. *)
+(* Any 态射 commuting two universal arrows IS mediator. （已译） *)
 Lemma ua_med_unique (U1 U2 : UniversalArrow c F)
       (g : @arrow_obj c F U1 ~{D}~> @arrow_obj c F U2) :
   fmap[F] g ∘ @arrow c F U1 ≈ @arrow c F U2 → ua_med U1 U2 ≈ g.
@@ -154,8 +154,8 @@ Proof.
   apply ua_med_commutes.
 Qed.
 
-(* The two mediators are mutually inverse, so the universal objects are
-   isomorphic. *)
+(* The two mediators mutually inverse, so universal 对象 are
+ isomorphic. （已译） *)
 Program Definition universal_arrow_iso (U1 U2 : UniversalArrow c F)
   : @arrow_obj c F U1 ≅ @arrow_obj c F U2 := {|
   to   := ua_med U1 U2;
@@ -164,9 +164,9 @@ Program Definition universal_arrow_iso (U1 U2 : UniversalArrow c F)
 Next Obligation. rewrite ua_med_comp; apply ua_med_id. Qed.
 Next Obligation. rewrite ua_med_comp; apply ua_med_id. Qed.
 
-(* An isomorphism is determined by its [to] component
-   ([to_equiv_implies_iso_equiv]), so compatibility with the universal
-   arrows pins it down completely. *)
+(* An 同构 determined [to] component
+ ([to_equiv_implies_iso_equiv]), so compatibility universal
+ arrows pins it down completely. （已译） *)
 Lemma universal_arrow_iso_unique (U1 U2 : UniversalArrow c F)
       (v : @arrow_obj c F U1 ≅ @arrow_obj c F U2) :
   fmap[F] (to v) ∘ @arrow c F U1 ≈ @arrow c F U2 →
@@ -177,8 +177,8 @@ Proof.
   now apply ua_med_unique.
 Qed.
 
-(* Awodey's Proposition 1.10 in general form: exactly one isomorphism of the
-   universal objects carries the first universal arrow to the second. *)
+(* Awodey's Proposition 1.10 general form: exactly one 同构 the
+ universal 对象 carries first 泛箭头 second. （已译） *)
 Program Definition universal_arrow_unique (U1 U2 : UniversalArrow c F) :
   Unique (fun i : @arrow_obj c F U1 ≅ @arrow_obj c F U2 =>
             fmap[F] (to i) ∘ @arrow c F U1 ≈ @arrow c F U2) := {|
@@ -264,8 +264,8 @@ Class AUniversalArrow (c : C) (F : D ⟶ C) (a : D) := {
     Unique (fun g : hom a d => fmap[F] g ∘ universal_arrow ≈ f)
   }.
 
-(* Two universal arrows at the same object are equivalent when their underlying
-   morphisms agree; the uniqueness property carries no further data. *)
+(* Two universal arrows at same 对象 equivalent underlying
+ 态射 agree; uniqueness property carries no further data. （已译） *)
 #[export] Program Instance AUniversalArrowEquiv (c : C) (F : D ⟶ C) (a : D) :
   Setoid (AUniversalArrow c F a) :=
   {| equiv := fun X Y => (@universal_arrow _ _ _ X) ≈ (@universal_arrow _ _ _ Y) |}.
@@ -354,7 +354,7 @@ Next Obligation. exact (auniversal_arrow_iso_unique U1 U2 v X). Qed.
 
 End AUniversalArrowUnique.
 
-(** ** The two packagings of a universal arrow are interchangeable *)
+(* * ** The two packagings 泛箭头 interchangeable （已译） *)
 
 (*
    本节说明伴随、始/终对象相关定义、性质与动机。
@@ -367,9 +367,9 @@ Section UniversalArrowPackaging.
 Context {c : C}.
 Context {F : D ⟶ C}.
 
-(* Naming the object and its factorization property is enough to rebuild the
-   comma-initial packaging: this is [universal_arrow_from_UMP] fed the class's
-   own two fields. *)
+(* Naming 对象 factorization property enough rebuild the
+ comma-initial packaging: 这是 [universal_arrow_from_UMP] fed class's
+ own two fields. （已译） *)
 Definition ua_of_aua {a : D} (W : AUniversalArrow c F a) : UniversalArrow c F.
 Proof.
   unshelve eapply (universal_arrow_from_UMP c F a (@universal_arrow c F a W)).
@@ -383,8 +383,8 @@ Proof.
     now symmetry.
 Defined.
 
-(* And conversely, the projected object and arrow carry the direct form, with
-   the uniqueness clause read off [ump_universal_arrows]. *)
+(* And conversely, projected 对象 arrow carry direct form, with
+ uniqueness clause read off [ump_universal_arrows]. （已译） *)
 Definition aua_of_ua (W : UniversalArrow c F)
   : AUniversalArrow c F (@arrow_obj c F W).
 Proof.
@@ -420,9 +420,9 @@ Example aua_ua_round_arrow {a : D} (W : AUniversalArrow c F a) :
   @universal_arrow c F a (aua_of_ua (ua_of_aua W))
     = @universal_arrow c F a W := eq_refl.
 
-(* Hence at [AUniversalArrowEquiv] — which compares the underlying morphism
-   and nothing else, the uniqueness field carrying no further data — that
-   round trip is the identity. *)
+(* Hence at [AUniversalArrowEquiv] — compares underlying 态射
+ nothing else, uniqueness field carrying no further data — that
+ round trip 恒等. （已译） *)
 Lemma aua_ua_round {a : D} (W : AUniversalArrow c F a) :
   aua_of_ua (ua_of_aua W) ≈ W.
 Proof. simpl; reflexivity. Qed.

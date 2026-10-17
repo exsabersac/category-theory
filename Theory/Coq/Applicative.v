@@ -5,7 +5,7 @@ Require Import Category.Theory.Coq.Monoid.
 
 Generalizable All Variables.
 
-(** The Applicative type class (pure/ap), with its categorical reading *)
+(** The Applicative 类型类 (pure/ap), categorical reading （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/applicative+functor
@@ -18,7 +18,7 @@ Generalizable All Variables.
 
 Class Applicative@{d c} {F : Type@{d} → Type@{c}} := {
   pure {x : Type@{d}} : x → F x;                       (* unit: injects a value (lax-monoidal η) *)
-  ap {x y : Type @{d}} : F (x → y) → F x → F y;         (* application derived from the laxator μ *)
+  ap {x y : Type @{d}} : F (x → y) → F x → F y;         (* 相关说明。 （已译） *)
 }.
 
 Arguments Applicative : clear implicits.
@@ -81,8 +81,8 @@ End ApplicativeNotations.
 
 Import ApplicativeNotations.
 
-(* The identity applicative [Id]: [pure = id] and [ap f x = f x].  As a lax
-   monoidal functor it is the (strict) monoidal identity functor. *)
+(* The 恒等 applicative [Id]: [pure = id] [ap f x = f x]. As lax
+ monoidal 函子 it (strict) monoidal 恒等 函子. （已译） *)
 #[export]
 Instance Identity_Applicative : Applicative id | 9 := {
   pure := λ _, id;

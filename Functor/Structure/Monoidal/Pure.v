@@ -10,7 +10,7 @@ Require Import Category.Functor.Structure.Monoidal.
 
 Generalizable All Variables.
 
-(** The applicative [pure] from a strong lax monoidal functor. *)
+(** The applicative [pure] strong lax monoidal 函子. （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor

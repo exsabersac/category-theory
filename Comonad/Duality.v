@@ -19,7 +19,7 @@ Require Import Category.Comonad.Coalgebra.
 
 Generalizable All Variables.
 
-(** * Duality for comonads: the transfer package and both resolutions *)
+(* * * Duality 余单子: transfer package both resolutions （已译） *)
 
 (* nLab:      https://ncatlab.org/nlab/show/comonad
    nLab:      https://ncatlab.org/nlab/show/co-Kleisli+category
@@ -74,9 +74,9 @@ Lemma op_Monad_of_Comonad_of_op_Monad (H : @Monad (C^op) (W^op)) :
   op_Monad_of_Comonad (Comonad_of_op_Monad H) = H.
 Proof. reflexivity. Qed.
 
-(** Mirrored: a monad on C is the same thing as a comonad on C^op.  Both
-    typecheck because (C^op)^op = C and (W^op)^op = W hold by
-    reflexivity. *)
+(** Mirrored: 单子 C same thing 余单子 C^op. Both
+ typecheck because (C^op)^op = C (W^op)^op = W hold by
+ reflexivity. （已译） *)
 
 Definition op_Comonad_of_Monad (H : @Monad C W) : @Comonad (C^op) (W^op) := H.
 
@@ -156,22 +156,22 @@ Proof. reflexivity. Qed.
 Definition CoKleisli_Adjunction : CoKleisli_Forget ⊣ CoKleisli_Cofree :=
   Opposite_Adjunction _ _ (@Kleisli_Adjunction (C^op) (W^op) H).
 
-(** The counit of the adjunction is the counit of the comonad. *)
+(** The counit 伴随 counit 余单子. （已译） *)
 
 Lemma CoKleisli_counit_agrees {x : C} :
   @counit _ _ _ _ CoKleisli_Adjunction x ≈ @extract C W H x.
 Proof. reflexivity. Qed.
 
-(** The unit at x is the identity arrow on W x, read as the co-Kleisli
-    morphism x ~{CoKleisli}~> CoKleisli_Cofree (W x). *)
+(** The unit at x 恒等箭头 W x, read co-Kleisli
+ 态射 x ~{CoKleisli}~> CoKleisli_Cofree (W x). （已译） *)
 
 Lemma CoKleisli_unit_agrees {x : C} :
   @unit _ _ _ _ CoKleisli_Adjunction x ≈ id[W x].
 Proof. reflexivity. Qed.
 
-(** The comultiplication of the comonad induced by this adjunction (dually
-    to Monad/Adjunction.v it is the CoKleisli_Forget-image of the unit) is
-    duplicate. *)
+(** The comultiplication 余单子 induced 伴随 (dually
+ Monad/Adjunction.v it CoKleisli_Forget-image unit) is
+ duplicate. （已译） *)
 
 Lemma CoKleisli_duplicate_agrees {x : C} :
   fmap[CoKleisli_Forget] (@unit _ _ _ _ CoKleisli_Adjunction x)
@@ -182,8 +182,8 @@ Proof.
   cat.
 Qed.
 
-(** The resolution recovers W: the composite Forget ◯ Cofree is naturally
-    isomorphic to W, with identity components. *)
+(** The resolution recovers W: 复合 Forget ◯ Cofree naturally
+ isomorphic W, 恒等 components. （已译） *)
 
 Theorem CoKleisli_Comonad_agrees : CoKleisli_Forget ◯ CoKleisli_Cofree ≈ W.
 Proof.
@@ -226,7 +226,7 @@ Proof. reflexivity. Qed.
 Lemma CoEM_Cofree_carrier (x : C) : `1 (CoEM_Cofree x) = W x.
 Proof. reflexivity. Qed.
 
-(** The costructure map of the cofree coalgebra on x is duplicate. *)
+(** 本节：The costructure map cofree coalgebra x duplicate. （已译） *)
 
 Lemma CoEM_Cofree_coalg (x : C) :
   t_alg[`2 (CoEM_Cofree x)] ≈ @duplicate C W H x.
@@ -239,7 +239,7 @@ Proof. reflexivity. Qed.
 Definition CoEM_Adjunction : CoEM_Forget ⊣ CoEM_Cofree :=
   Opposite_Adjunction _ _ (@EM_Adjunction (C^op) (W^op) H).
 
-(** The counit of the adjunction is the counit of the comonad. *)
+(** The counit 伴随 counit 余单子. （已译） *)
 
 Lemma CoEM_counit_agrees {x : C} :
   @counit _ _ _ _ CoEM_Adjunction x ≈ @extract C W H x.
@@ -248,8 +248,8 @@ Proof.
   cat.
 Qed.
 
-(** The unit at a coalgebra acts by its costructure map, stated on the
-    underlying arrow of the coalgebra homomorphism. *)
+(** 本节：The unit at coalgebra acts costructure map, stated the
+ underlying arrow coalgebra homomorphism. （已译） *)
 
 Lemma CoEM_unit_agrees {y : @CoEilenbergMoore C W H} :
   t_alg_hom[@unit _ _ _ _ CoEM_Adjunction y] ≈ t_alg[`2 y].
@@ -259,8 +259,8 @@ Proof.
   cat.
 Qed.
 
-(** The comultiplication of the comonad induced by this adjunction is
-    duplicate. *)
+(** The comultiplication 余单子 induced 伴随 is
+ duplicate. （已译） *)
 
 Lemma CoEM_duplicate_agrees {x : C} :
   fmap[CoEM_Forget] (@unit _ _ _ _ CoEM_Adjunction (CoEM_Cofree x))
@@ -271,8 +271,8 @@ Proof.
   cat.
 Qed.
 
-(** The resolution recovers W: the composite Forget ◯ Cofree is naturally
-    isomorphic to W, with identity components. *)
+(** The resolution recovers W: 复合 Forget ◯ Cofree naturally
+ isomorphic W, 恒等 components. （已译） *)
 
 Theorem CoEM_Comonad_agrees : CoEM_Forget ◯ CoEM_Cofree ≈ W.
 Proof.

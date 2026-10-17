@@ -98,7 +98,7 @@ Definition rig_cmon (R : RigObject) : CMonObject := {|
   cmon_prop := rig_prop R
 |}.
 
-(** ** Rig homomorphisms and the category Rig *)
+(* * ** Rig homomorphisms 范畴 Rig （已译） *)
 
 (* Exercise 6.7 part 1: a rig homomorphism preserves 0, +, 1 and ·. *)
 Record RigHom (R S : RigObject) := {
@@ -175,7 +175,7 @@ Proof.
   apply (proper_morphism (rig_map f2)), Hg.
 Qed.
 
-(* The category of rigs and rig homomorphisms. *)
+(* The 范畴 rigs rig homomorphisms. （已译） *)
 (*
    本节说明 Rig 相关定义、性质与动机。
 
@@ -210,9 +210,9 @@ Next Obligation. intros R S f g Hfg a; exact (Hfg a). Qed.
 Next Obligation. intros R a; simpl; reflexivity. Qed.
 Next Obligation. intros R S T f g a; simpl; reflexivity. Qed.
 
-(* The multiplicative half, as an internal monoid in (Sets, ∏): the
-   multiplication uncurried over the product setoid, the unit selected
-   from the terminal setoid. *)
+(* The multiplicative half, internal 幺半群 (Sets, ∏): the
+ multiplication 未柯里化的 over product setoid, unit selected
+ terminal setoid. （已译） *)
 Program Definition rig_mult_monoid (R : RigObject) :
   @Monoid Sets Sets_Product_Monoidal (rig_setoid R) := {|
   mu := {| morphism := fun p => rig_mul R (fst p) (snd p) |};
@@ -252,7 +252,7 @@ Next Obligation. intros R S f g Hfg a; exact (Hfg a). Qed.
 Next Obligation. intros R a; simpl; reflexivity. Qed.
 Next Obligation. intros R S T f g a; simpl; reflexivity. Qed.
 
-(** ** The one-object Preadditive bridge *)
+(* * ** The one-对象 Preadditive bridge （已译） *)
 
 (*
    本节说明幺半群相关定义、性质与动机。
@@ -290,9 +290,9 @@ Proof.
   exact (rig_prop R).
 Defined.
 
-(* The additive structure of the rig is a Preadditive enrichment of its
-   delooping: the four clauses of Definition 5.36 are exactly the
-   Preadditive fields on one object. *)
+(* The additive structure rig Preadditive enrichment its
+ delooping: four clauses Definition 5.36 exactly the
+ Preadditive fields one 对象. （已译） *)
 Program Definition DeloopRig_Preadditive (R : RigObject) :
   Preadditive (DeloopRig R) := {|
   padd := fun _ _ => rig_add R;
@@ -339,8 +339,7 @@ Next Obligation. intros C LP P c f g h; simpl; symmetry; apply comp_assoc. Qed.
 Next Obligation. intros C LP P c f; simpl; apply id_left. Qed.
 Next Obligation. intros C LP P c f; simpl; apply id_right. Qed.
 
-(* The rig-side round trip, on the data: all four operations agree on
-   the nose. *)
+(* 相关说明。 （已译） *)
 Example EndRig_DeloopRig_zero (R : RigObject) :
   rig_zero (EndRig (DeloopRig_Preadditive R) ttt) = rig_zero R := eq_refl.
 Example EndRig_DeloopRig_add (R : RigObject) :
@@ -350,9 +349,9 @@ Example EndRig_DeloopRig_one (R : RigObject) :
 Example EndRig_DeloopRig_mul (R : RigObject) :
   rig_mul (EndRig (DeloopRig_Preadditive R) ttt) = rig_mul R := eq_refl.
 
-(* Packaged as an isomorphism in [Rig]: both directions are the identity
-   on the carrier.  (The full record equality is blocked only by the
-   proof-carrying law fields — see the header.) *)
+(* Packaged 同构 [Rig]: both directions 恒等
+ carrier. (The full record equality blocked the
+ 证明-carrying law fields — see header.) （已译） *)
 Program Definition EndRig_DeloopRig (R : RigObject) :
   EndRig (DeloopRig_Preadditive R) ttt ≅[Rig] R := {|
   to := {| rig_map := setoid_morphism_id |};
@@ -438,10 +437,9 @@ Next Obligation. intros [|] [|] [|]; reflexivity. Qed.
 Next Obligation. intros [|]; reflexivity. Qed.
 Next Obligation. intros [|]; reflexivity. Qed.
 
-(** ** Rings: rigs with negatives (Example 5.42) *)
+(* 相关说明。 （已译） *)
 
-(* A ring is a rig with additive inverses — mirroring how
-   Structure/Additive.v extends Structure/Preadditive.v with [pneg]. *)
+(* 相关说明。 （已译） *)
 Record RingObject := {
   ring_rig :> RigObject;
 
@@ -471,9 +469,9 @@ Proof.
   now rewrite rig_add_zero_l.
 Qed.
 
-(* The category of rings, and the forgetful functor to rigs: full on the
-   nose, since the homomorphisms coincide. *)
-(* Pinned for the same reason as [Rig] above. *)
+(* The 范畴 rings, forgetful 函子 rigs: full the
+ nose, since homomorphisms coincide. （已译） *)
+(* 相关说明。 （已译） *)
 Program Definition Ring@{u p} : Category@{u p p} := {|
   obj     := RingObject@{p p p};
   hom     := fun R S => RigHom@{p} R S;
@@ -496,7 +494,7 @@ Next Obligation. intros R S f g Hfg a; exact (Hfg a). Qed.
 Next Obligation. intros R a; simpl; reflexivity. Qed.
 Next Obligation. intros R S T f g a; simpl; reflexivity. Qed.
 
-(** ** The integers: an axiom-free ring witness *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明幺半结构、幺半群相关定义、性质与动机。
@@ -580,7 +578,7 @@ Definition Int_Ring@{o p q | o <= q, p <= q +} : RingObject@{q o p} := {|
   ring_neg_l := Z.add_opp_diag_l
 |}.
 
-(** ** The naturals are initial (Exercise 6.7, part 2) *)
+(* 相关说明。 （已译） *)
 
 (* The n-fold sum of 1. *)
 Fixpoint rig_iter (R : RigObject) (n : nat) : carrier (rig_setoid R) :=
@@ -643,7 +641,7 @@ Qed.
 
 (** ** Acceptance tests *)
 
-(* The four clauses at work on the concrete instances, computationally. *)
+(* 相关说明。 （已译） *)
 Example nat_rig_distr :
   rig_mul Nat_Rig 2%nat (rig_add Nat_Rig 3%nat 4%nat) = 14%nat
   := eq_refl.

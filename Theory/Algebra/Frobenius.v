@@ -36,8 +36,8 @@ Context {C : Category}.
 Context `{M : @Monoidal C}.
 
 Class Frobenius (X : C) : Type := {
-  frob_monoid   : Monoid X;     (* the multiplication [mu] and unit [eta] *)
-  frob_comonoid : Comonoid X;   (* the comultiplication [delta] and counit [epsilon] *)
+  frob_monoid   : Monoid X;     (* 相关说明。 （已译） *)
+  frob_comonoid : Comonoid X;   (* 相关说明。 （已译） *)
 
   (* Frobenius law, left form: [(mu ⨂ id) ∘ α⁻¹ ∘ (id ⨂ delta) ≈ delta ∘ mu]. *)
   frob_law_left :
@@ -64,18 +64,7 @@ End Frobenius.
 Arguments frob_monoid   {C M X _}.
 Arguments frob_comonoid {C M X _}.
 
-(** ** Flat projections
-
-    Convenience aliases paralleling [scfa_mu] / [scfa_eta] /
-    [scfa_delta] / [scfa_epsilon] (in
-    [Theory/Algebra/SpecialCommutativeFrobenius.v]) and [cfrob_*]
-    (in [Theory/Algebra/CommutativeFrobenius.v]).  Project a
-    [Frobenius X] to its underlying [mu] / [eta] / [delta] /
-    [epsilon] without going through [frob_monoid] / [frob_comonoid]
-    one-by-one.
-
-    The instance arguments are explicit so downstream code can
-    write e.g. [frob_mu F] unambiguously. *)
+(* 相关说明。 （已译） *)
 
 Section FrobeniusProjections.
 

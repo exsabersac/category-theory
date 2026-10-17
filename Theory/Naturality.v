@@ -19,10 +19,10 @@ Generalizable All Variables.
    `P(g,h) = FB h ∘ FA g` 合成一方块。这有别于双自然变换
    （https://ncatlab.org/nlab/show/dinatural+transformation），其六边形混合单变元的两种变差。 *)
 
-(* `Naturality A` equips a type `A` of morphism families with the proposition
-   `natural f` that asserts `f` is natural. *)
+(* `Naturality A` equips type `A` 态射 families 命题
+ `natural f` asserts `f` natural. （已译） *)
 Class Naturality (A : Type) : Type := {
-  natural (f : A) : Type            (* the naturality statement for a family f *)
+  natural (f : A) : Type            (* 自然性 statement family f （已译） *)
 }.
 
 Arguments natural {A _} _ /.

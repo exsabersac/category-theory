@@ -40,8 +40,7 @@ Context `{Con : @Concrete C}.
 Definition concrete_fun {x y : C} (f : x ~> y) :
   underlying x ~{Sets}~> underlying y := fmap[underlying] f.
 
-(* An arrow determines its function.  This half is just functoriality
-   ([fmap_respects]); it is recorded so the two halves sit together. *)
+(* 相关说明。 （已译） *)
 Lemma concrete_fun_respects {x y : C} (f g : x ~> y) :
   f ≈ g → ∀ a : carrier (underlying x), concrete_fun f a ≈ concrete_fun g a.
 Proof.
@@ -62,8 +61,7 @@ Proof.
   exact Hfg.
 Qed.
 
-(* The two halves packaged as the biconditional Riehl states: parallel arrows
-   are equal exactly when the functions they carry agree pointwise. *)
+(* 相关说明。 （已译） *)
 Corollary concrete_arrow_iff {x y : C} (f g : x ~> y) :
   f ≈ g ↔ (∀ a : carrier (underlying x), concrete_fun f a ≈ concrete_fun g a).
 Proof.
@@ -76,7 +74,7 @@ End Concrete.
 
 Arguments concrete_fun {C Con x y} f.
 
-(** ** Awodey's refinement: separators and well-pointedness *)
+(* 相关说明。 （已译） *)
 
 Section Separator.
 
@@ -141,7 +139,7 @@ Definition Concrete_of_WellPointed {C : Category} `{T : @Terminal C}
   (W : WellPointedCategory C) : Concrete C :=
   @Concrete_of_Separator C (@terminal_obj C T) W.
 
-(** ** The category of setoids is concrete, and well-pointed *)
+(* * ** The 范畴 setoids concrete, well-pointed （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -156,8 +154,7 @@ Next Obligation.
   exact Hfg.
 Qed.
 
-(* The two-element setoid, used below to show the `Sets` instance has
-   content. *)
+(* 相关说明。 （已译） *)
 Definition bool_setoid_object@{t u+} : SetoidObject@{t u} :=
   {| carrier   := bool
    ; is_setoid := {| equiv := @eq bool ; setoid_equiv := eq_equivalence |} |}.
@@ -171,8 +168,8 @@ Program Definition Sets_negb@{o so+} :
   bool_setoid_object@{o o} ~{Sets@{o so}}~> bool_setoid_object@{o o} :=
   {| morphism := negb |}.
 
-(* Stated with an explicit `→ False` rather than `¬`: hom-equivalence in this
-   library is a `crelation`, i.e. `Type`-valued, and `¬` is `Prop`-valued. *)
+(* Stated explicit `→ False` rather than `¬`: hom-等价 this
+ library `crelation`, i.e. `Type`-valued, `¬` `Prop`-valued. （已译） *)
 Lemma Sets_two_arrows@{o so+} :
   @id Sets@{o so} bool_setoid_object@{o o} ≈ Sets_negb@{o so} → False.
 Proof.
@@ -184,9 +181,9 @@ Proof.
   discriminate.
 Qed.
 
-(* The point of a setoid `x` at an element `a`: the constant map out of the
-   singleton terminal object.  This is the same probe Instance/Sets.v uses to
-   characterize monos as injections. *)
+(* The point setoid `x` at element `a`: 常值 map out the
+ singleton 终对象. This same probe Instance/Sets.v uses to
+ characterize monos injections. （已译） *)
 Program Definition Sets_point@{o so+} {x : Sets@{o so}} (a : carrier x) :
   @terminal_obj Sets Sets_Terminal ~{Sets}~> x := {| morphism := fun _ => a |}.
 

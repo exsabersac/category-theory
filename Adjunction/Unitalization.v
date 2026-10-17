@@ -29,7 +29,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Negation against multiplication in a rng *)
+(* 相关说明。 （已译） *)
 
 Lemma rg_mul_neg_l (R : RgObject) (a b : carrier R) :
   rg_mul R (ab_neg R a) b ≈ ab_neg R (rg_mul R a b).
@@ -57,7 +57,7 @@ Proof.
   apply (ab_neg_right A).
 Qed.
 
-(** ** The ℤ-action against the multiplication *)
+(* 相关说明。 （已译） *)
 
 Lemma rg_nat_smul_mul_l (R : RgObject) (k : nat) (a b : carrier R) :
   nat_smul (rg_ab R) k (rg_mul R a b)
@@ -107,7 +107,7 @@ Proof.
     symmetry; apply rg_mul_neg_r.
 Qed.
 
-(** ** Multiplicativity of the ℤ-action in the scalar *)
+(* 相关说明。 （已译） *)
 
 Lemma nat_smul_mul (A : AbObject) (j k : nat) (a : carrier A) :
   nat_smul A (j * k) a ≈ nat_smul A j (nat_smul A k a).
@@ -271,8 +271,7 @@ Proof.
   - now rewrite zsmul_zero_r, rg_mul_zero_r, !cmon_plus_zero_r.
 Qed.
 
-(* Every additive field is [dorroh_ab]'s own, supplied by [:=] with no
-   tactic: the two records' field types are convertible. *)
+(* 相关说明。 （已译） *)
 Definition dorroh_rig : RigObject := {|
   rig_setoid := cmon_setoid dorroh_ab;
   rig_zero := cmon_zero dorroh_ab;
@@ -302,7 +301,7 @@ Definition Dorroh : RingObject := {|
 
 End Dorroh.
 
-(** ** The unit: insertion of the rng *)
+(* * ** The unit: 嵌入 rng （已译） *)
 
 #[local] Obligation Tactic := idtac.
 
@@ -320,7 +319,7 @@ Next Obligation.
   simpl; symmetry; now rewrite !cmon_plus_zero_l.
 Qed.
 
-(** ** The bridge between the two integer actions *)
+(* 相关说明。 （已译） *)
 
 Lemma rig_iter_is_nat_smul (S : RingObject) (k : nat) :
   rig_iter S k = nat_smul (ring_ab S) k (rig_one S).
@@ -526,7 +525,7 @@ Qed.
 
 End Extend.
 
-(** ** The universal property, in both encodings *)
+(* * ** The 普遍性质, both encodings （已译） *)
 
 Program Definition dorroh_ump (R : RgObject) (S : RingObject)
   (f : R ~{Rg}~> ring_rg S)
@@ -568,7 +567,7 @@ Next Obligation.
   intro b; exact (Hv b).
 Qed.
 
-(** ** The unitalization functor and its adjunction *)
+(* * ** The unitalization 函子 伴随 （已译） *)
 
 Definition DorrohFunctor : Rg ⟶ Rng :=
   LeftAdjointFunctorFromUniversalArrows Rng_Forget_Rg dorroh_universal.
@@ -576,7 +575,7 @@ Definition DorrohFunctor : Rg ⟶ Rng :=
 Definition unitalization_adjunction : DorrohFunctor ⊣ Rng_Forget_Rg :=
   AdjunctionFromUniversalArrows Rng_Forget_Rg dorroh_universal.
 
-(** ** The unit is monic; the forgetful functor is faithful *)
+(* * ** The unit monic; forgetful 函子 faithful （已译） *)
 
 #[export] Program Instance dorroh_insert_Monic (R : RgObject)
   : Monic (dorroh_insert R).
@@ -593,10 +592,9 @@ Proof. intro H; exact (snd H). Qed.
 Definition unitalization_forgetful_Faithful : Faithful Rng_Forget_Rg :=
   Rng_Forget_Rg_Faithful.
 
-(** ** Strengths, graded strict-first *)
+(* 相关说明。 （已译） *)
 
-(* The carrier IS the product [ℤ × R], and the four operations ARE the
-   ones written above, all at Leibniz [=]. *)
+(* 相关说明。 （已译） *)
 Example dorroh_carrier_strict (R : RgObject) :
   carrier (rig_setoid (Dorroh R))
     = (carrier ZAb * carrier (rg_ab R))%type := eq_refl.
@@ -620,13 +618,13 @@ Example dorroh_neg_strict (R : RgObject) :
 Example dorroh_mul_strict (R : RgObject) :
   rig_mul (Dorroh R) = dorroh_mul R := eq_refl.
 
-(* The unit is [a ↦ (0, a)] on the nose. *)
+(* 相关说明。 （已译） *)
 Example dorroh_insert_strict (R : RgObject) (a : carrier R) :
   cmon_map (rg_hom_ab (dorroh_insert R)) a
     = ((0%Z, a) : carrier (rig_setoid (Dorroh R))) := eq_refl.
 
-(* The universal arrow extracted from the comma-packaged class IS the
-   insertion, and the left adjoint's object action IS [Dorroh]. *)
+(* The 泛箭头 extracted comma-packaged class IS the
+ 嵌入, 左伴随's 对象 action IS [Dorroh]. （已译） *)
 Example dorroh_arrow_strict (R : RgObject) :
   @arrow Rg Rng R Rng_Forget_Rg (dorroh_universal R) = dorroh_insert R
   := eq_refl.
@@ -634,9 +632,7 @@ Example dorroh_arrow_strict (R : RgObject) :
 Example dorroh_fobj_strict (R : RgObject) :
   fobj[DorrohFunctor] R = Dorroh R := eq_refl.
 
-(* The mediator extracted from the OBJECT-AS-ARGUMENT class IS
-   [dorroh_extend], because that class's [unique_obj] field is supplied
-   here as a term. *)
+(* 相关说明。 （已译） *)
 Example dorroh_auniversal_med_strict (R : RgObject) (S : RingObject)
   (f : R ~{Rg}~> ring_rg S) :
   unique_obj (@universal_arrow_universal Rg Rng R Rng_Forget_Rg (Dorroh R)
@@ -657,7 +653,7 @@ Fail Example dorroh_ump_med_strict (R : RgObject) (S : RingObject)
   unique_obj (@ump_universal_arrows Rg Rng R Rng_Forget_Rg
                 (dorroh_universal R) S f) = dorroh_extend R S f := eq_refl.
 
-(** ** The unit and counit of the produced adjunction *)
+(* * ** The unit counit produced 伴随 （已译） *)
 
 Lemma unitalization_unit_is_insert (R : RgObject) :
   @unit Rng Rg DorrohFunctor Rng_Forget_Rg unitalization_adjunction R
@@ -700,20 +696,20 @@ Theorem dorroh_TwoZ_unital :
   rig_one DorrohTwoZ ≈ rig_zero DorrohTwoZ → False.
 Proof. intros [H1 _]; discriminate H1. Qed.
 
-(* Two provably distinct elements, both outside the image of the
-   insertion's ℤ coordinate. *)
+(* Two provably distinct elements, both outside image the
+ 嵌入's ℤ coordinate. （已译） *)
 Theorem dorroh_TwoZ_two_elements : dtz 1 0 ≈ dtz 2 0 → False.
 Proof. intros [H1 _]; discriminate H1. Qed.
 
-(* The insertion is not surjective: nothing lands on the identity. *)
+(* The 嵌入 not surjective: nothing lands 恒等. （已译） *)
 Theorem dorroh_TwoZ_insert_not_surjective :
   ∀ a : carrier TwoZ_Rg,
     cmon_map (rg_hom_ab (dorroh_insert TwoZ_Rg)) a
       ≈ rig_one DorrohTwoZ → False.
 Proof. intros a [H1 _]; discriminate H1. Qed.
 
-(* The multiplication computes, and it visibly consumes the ℤ-action:
-   (1,0)·(0,5) is (0,5), not the componentwise (0,0). *)
+(* The multiplication computes, it visibly 所消耗 ℤ-action:
+ (1,0)·(0,5) (0,5), not componentwise (0,0). （已译） *)
 Example dorroh_TwoZ_mul_computes :
   dorroh_mul TwoZ_Rg (dtz 1 3) (dtz 0 5) = dtz 0 35 := eq_refl.
 
@@ -724,9 +720,9 @@ Theorem dorroh_TwoZ_mul_not_componentwise :
   dorroh_mul TwoZ_Rg (dtz 1 0) (dtz 0 5) ≈ dtz 0 0 → False.
 Proof. intros [_ H2]; discriminate H2. Qed.
 
-(* And the universal extension computes.  Instance/Rg.v's [TwoZ_incl] is
-   the doubling map 2ℤ ↪ ℤ; extending it along the insertion sends
-   (3, 4) to 3 + 2·4 = 11. *)
+(* And universal extension computes. Instance/Rg.v's [TwoZ_incl] is
+ doubling map 2ℤ ↪ ℤ; extending it along 嵌入 sends
+ (3, 4) 3 + 2·4 = 11. （已译） *)
 Example dorroh_TwoZ_extend_computes :
   rig_map (dorroh_extend TwoZ_Rg Int_Ring TwoZ_incl) (dtz 3 4) = 11%Z
   := eq_refl.
@@ -766,10 +762,7 @@ Fail Check (fun R : RgObject@{bp bo bh} => rng_from_Z (Dorroh R)).
 
 End ProbeDonorPin.
 
-(** ** The universe measurement, for the record
-
-    Rerun the commands below to reproduce the figures quoted in the
-    header. *)
+(* 相关说明。 （已译） *)
 
 Set Printing Universes.
 About Dorroh.

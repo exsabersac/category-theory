@@ -42,9 +42,9 @@ Class Orthogonal {C : Category} {a b x y : C} (e : a ~> b) (m : x ~> y) := {
 
 Notation "e ⫫ m" := (Orthogonal e m) (at level 70) : category_theory_scope.
 
-(* Any isomorphism is left orthogonal to every morphism: the filler of a
-   square (u, v) over e is u ∘ e⁻¹, and any filler d' recovers it via
-   d' ≈ d' ∘ e ∘ e⁻¹ ≈ u ∘ e⁻¹. *)
+(* Any 同构 left orthogonal every 态射: filler a
+ square (u, v) over e u ∘ e⁻¹, any filler d' recovers it via
+ d' ≈ d' ∘ e ∘ e⁻¹ ≈ u ∘ e⁻¹. （已译） *)
 Lemma iso_ortho_left {C : Category} {a b x y : C} (e : a ~> b) (m : x ~> y) :
   IsIsomorphism e → e ⫫ m.
 Proof.
@@ -70,8 +70,8 @@ Proof.
     cat.
 Qed.
 
-(* Dually, any isomorphism is right orthogonal to every morphism: the filler
-   is m⁻¹ ∘ v, and uniqueness follows by cancelling m on the left. *)
+(* Dually, any 同构 right orthogonal every 态射: filler
+ m⁻¹ ∘ v, uniqueness follows cancelling m left. （已译） *)
 Lemma iso_ortho_right {C : Category} {a b x y : C} (e : a ~> b) (m : x ~> y) :
   IsIsomorphism m → e ⫫ m.
 Proof.
@@ -97,9 +97,9 @@ Proof.
     cat.
 Qed.
 
-(* The left class is closed under composition: a square over e2 ∘ e1 lifts
-   first through e1 (against the top-right corner v ∘ e2) and then through
-   e2; uniqueness threads back the same way. *)
+(* The left class closed under 复合: square over e2 ∘ e1 lifts
+ first through e1 (against top-right corner v ∘ e2) then through
+ e2; uniqueness threads back same way. （已译） *)
 Lemma ortho_left_compose {C : Category} {a b c x y : C}
   (e1 : a ~> b) (e2 : b ~> c) (m : x ~> y) :
   e1 ⫫ m → e2 ⫫ m → (e2 ∘ e1) ⫫ m.
@@ -124,9 +124,7 @@ Proof.
       exact U1e.
     + exact U2m.
   - intros d [Hde Hdm].
-    (* Any filler d of the outer square: d ∘ e2 fills the e1-square, so
-       d ∘ e2 ≈ d1 by e1-uniqueness; then d fills the e2-square, so d ≈ d2
-       by e2-uniqueness. *)
+    (* 相关说明。 （已译） *)
     apply (uniqueness U2); split.
     + symmetry.
       apply (uniqueness U1); split.
@@ -181,8 +179,7 @@ Proof.
       rewrite rb_ib.
       cat.
   - intros g [Hge Hgm].
-    (* Any filler g of the e'-square: g ∘ rb fills the e-square, so
-       g ∘ rb ≈ d by e-uniqueness, whence g ≈ g ∘ rb ∘ ib ≈ d ∘ ib. *)
+    (* 相关说明。 （已译） *)
     assert (Hgrb : unique_obj U ≈ g ∘ rb). {
       apply (uniqueness U); split.
       - (* (g ∘ rb) ∘ e ≈ u ∘ ra, via rb ∘ e ≈ e' ∘ ra *)

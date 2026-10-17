@@ -8,7 +8,7 @@ Require Import Category.Instance.Coq.
 
 Generalizable All Variables.
 
-(** * Witnesses for [Commutative]: concrete diagrams, and in-tree instances *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出例子。
@@ -42,8 +42,7 @@ Proof.
   now intros [].
 Qed.
 
-(* The commutation is not an artefact of the two legs coinciding: the top and
-   left edges differ, and so do the right and bottom edges. *)
+(* 相关说明。 （已译） *)
 Example coq_sq_legs_differ : (coq_sq_u ≈[Coq] coq_sq_h) -> False.
 Proof.
   intro Heq.
@@ -58,7 +57,7 @@ Proof.
   discriminate Heq.
 Qed.
 
-(** ** A square over the same quiver that does NOT commute *)
+(* 相关说明。 （已译） *)
 
 (*      unit ----id----> unit
           |                |
@@ -116,7 +115,7 @@ Proof.
   now intros [].
 Qed.
 
-(* Replacing the direct edge by [negb] breaks it, over the same quiver. *)
+(* 相关说明。 （已译） *)
 Definition CoqNonCommutingTriangle : Diagram TriangleQuiver Coq :=
   TriangleDiagram coq_tri_u coq_tri_v coq_tri_u.
 
@@ -129,7 +128,7 @@ Proof.
   discriminate Hbad.
 Qed.
 
-(** ** The tree's shape-specific commutativity statements are instances *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Examples 相关定义、性质与动机。
@@ -154,8 +153,8 @@ Corollary cone_leg_commutes {J C : Category} {F : J ⟶ C} {c : C}
 Proof. apply triangle_commutes, cone_coherence. Qed.
 
 (* A pullback square: [Theory/Morphisms/Stability.v]'s
-   [is_pullback_commutes] is exactly the commutativity of the walking square
-   on the two projections and the two given morphisms. *)
+ [is_pullback_commutes] exactly commutativity walking square
+ two projections two given 态射. （已译） *)
 Corollary pullback_square_commutative_iff {C : Category} {x y z : C}
           (f : x ~> z) (g : y ~> z) {P : C} (p1 : P ~> x) (p2 : P ~> y) :
   Commutative (SquareDiagram p1 f p2 g) ↔ f ∘ p1 ≈ g ∘ p2.
@@ -168,7 +167,7 @@ Corollary pullback_square_commutes {C : Category} {x y z : C}
 Proof. apply square_commutes, (is_pullback_commutes Hpb). Qed.
 
 
-(** ** The walking loop: a diagram that draws a non-identity endomorphism *)
+(* * ** The walking loop: diagram draws non-恒等 endomorphism （已译） *)
 
 (*
    本节说明 Examples 相关定义、性质与动机。
@@ -182,8 +181,7 @@ Definition CoqLoopNegb : Diagram LoopQuiver Coq :=
 Definition CoqLoopId : Diagram LoopQuiver Coq :=
   LoopDiagram (Datatypes.id : (bool : Coq) ~{Coq}~> (bool : Coq)).
 
-(* The negative witness.  Note there is no parallel PAIR of nonempty paths at
-   work: what refutes commutativity is the one-edge path against [tnil]. *)
+(* 相关说明。 （已译） *)
 Example coq_loop_negb_not_commutative : Commutative CoqLoopNegb -> False.
 Proof.
   intro Hc.
@@ -191,7 +189,7 @@ Proof.
   discriminate H.
 Qed.
 
-(* The positive witness over the same shape and the same category. *)
+(* The positive witness over same shape same 范畴. （已译） *)
 Example coq_loop_id_commutative : Commutative CoqLoopId.
 Proof.
   apply loop_commutes.

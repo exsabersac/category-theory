@@ -32,8 +32,8 @@ Definition IsFunctor `(Functor F) : Type := EndoFunctor F.
 
 Import FunctorNotations.
 
-(* We can define this instance by appealing to the general [Id] functor. All
-   that is required is for the object and function mappings to coincide. *)
+(* We can define instance appealing general [Id] 函子. All
+ required 对象 function mappings coincide. （已译） *)
 Definition Identity_IsFunctor : IsFunctor Identity_Functor :=
   ToAFunctor Id.
 
@@ -46,9 +46,9 @@ Next Obligation.
   now rewrite H.
 Qed.
 
-(* If [F] and [G] are both functors in Coq, we know that the composition is
-   also a valid functor, and so we can map [Compose_Functor] directly to this
-   composition. *)
+(* If [F] [G] both 函子 Coq, we know 复合 is
+ valid 函子, so we can map [Compose_Functor] directly this
+ 复合. （已译） *)
 Definition Compose_IsFunctor `(HF : EndoFunctor F) `(HG : EndoFunctor G) :
   IsFunctor (@Compose_Functor _ HF _ HG) :=
   ToAFunctor (Compose (FromAFunctor HF) (FromAFunctor HG)).

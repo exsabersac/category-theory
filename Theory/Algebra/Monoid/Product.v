@@ -15,7 +15,7 @@ Require Import Category.Instance.Sets.Cartesian.
 
 Generalizable All Variables.
 
-(** * Finite products in the category of internal monoids *)
+(* * * Finite products 范畴 internal monoids （已译） *)
 
 (*
    本文件给出积（分量）构造。
@@ -34,8 +34,8 @@ Section Binary.
 
 Context `{CA : @Cartesian C}.
 
-(* Two morphisms into a product are recovered from their two components: the
-   eta law for the product, in the form used repeatedly below. *)
+(* Two 态射 product recovered two components: the
+ eta law product, form used repeatedly below. （已译） *)
 Lemma prod_fork_eta {x y z : C} (f : z ~> x × y) :
   (exl ∘ f) △ (exr ∘ f) ≈ f.
 Proof. rewrite fork_comp; now rewrite fork_exl_exr, id_left. Qed.
@@ -44,8 +44,7 @@ Section Data.
 
 Context {x y : C} (X : Monoid x) (Y : Monoid y).
 
-(* The componentwise multiplication on x × y: project both tensor factors to
-   x, multiply there, and likewise on the y side. *)
+(* 相关说明。 （已译） *)
 Definition mon_prod_mu : (x × y) ⨂ (x × y) ~> x × y :=
   (mu[X] ∘ bimap exl exl) △ (mu[Y] ∘ bimap exr exr).
 
@@ -145,7 +144,7 @@ Next Obligation.
   now rewrite fork_exl_exr, id_left.
 Qed.
 
-(* The two projections are monoid homomorphisms. *)
+(* The two projections 幺半群 homomorphisms. （已译） *)
 Lemma mon_exl_hom : MonoidHom Monoid_Product X exl.
 Proof. split; [ apply mon_prod_mu_exl | apply mon_prod_eta_exl ]. Qed.
 
@@ -179,8 +178,8 @@ End Data.
 
 (** ** Mon(C) is cartesian *)
 
-(* Binary products in Mon(C) from binary products in C.  No terminal object of
-   C is used, and no compatibility between × and ⨂. *)
+(* Binary products Mon(C) binary products C. No 终对象 of
+ C used, no compatibility between × ⨂. （已译） *)
 #[export] Program Instance Mon_Cartesian : @Cartesian (Mon C) := {|
   product_obj := fun X Y => (`1 X × `1 Y; Monoid_Product `2 X `2 Y);
   fork := fun _ _ _ f g =>
@@ -224,7 +223,7 @@ Next Obligation. apply one_unique. Qed.
 
 End Nullary.
 
-(** ** The forgetful functor agrees with C's finite products, on the nose *)
+(* * ** The forgetful 函子 agrees C's finite products, nose （已译） *)
 
 Section Forget.
 
@@ -259,7 +258,7 @@ Example Mon_Forget_one (X : Mon C) :
 
 End Forget.
 
-(** ** Reconciling the two monoid-object classes *)
+(* * ** Reconciling two 幺半群-对象 classes （已译） *)
 
 (*
    本节说明幺半结构、幺半群相关定义、性质与动机。
@@ -318,7 +317,7 @@ Fail Check
 
 End AbstractBaseProbe.
 
-(** ** [Product_Monoid] is the cartesian special case *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明幺半结构、幺半群、来源与用途相关定义、性质与动机。
@@ -332,9 +331,9 @@ Context {C : Category}.
 Context `{CA : @Cartesian C}.
 Context `{TE : @Terminal C}.
 
-(* [Structure.Monoid.Monoid x] is by definition [@MonoidObject C CC_Monoidal
-   x]; the passage above turns it into this file's [Monoid] at the same
-   base. *)
+(* [Structure.Monoid.Monoid x] 定义 [@MonoidObject C CC_Monoidal
+ x]; passage above turns it file's [Monoid] at same
+ base. （已译） *)
 
 Example Monoid_Product_eta_is_Product_Monoid
         {x y : C} (X : @MonoidObject C CC_Monoidal x)
@@ -356,9 +355,9 @@ Definition Product_Monoid_as_Monoid {x y : C}
   : @Monoid C CC_Monoidal (x × y)
   := @Monoid_of_MonoidObject C CC_Monoidal (x × y) (Product_Monoid X Y).
 
-(* The multiplications are NOT the same term.  Control:
-   [Monoid_Product_mu_is_Product_Monoid], immediately below, which names every
-   constant occurring in this command. *)
+(* The multiplications NOT same term. Control:
+ [Monoid_Product_mu_is_Product_Monoid], immediately below, names every
+ 常值 occurring command. （已译） *)
 Fail Example Monoid_Product_mu_not_strict
         {x y : C} (X : @MonoidObject C CC_Monoidal x)
         (Y : @MonoidObject C CC_Monoidal y) :
@@ -386,7 +385,7 @@ Qed.
 
 End Comparison.
 
-(** ** A concrete instantiation, and the design claim made concrete *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
@@ -445,9 +444,9 @@ Section UniverseDonors.
 Universes uo uh up.
 Constraint uh < up.
 
-(* CONTROLS: a hom and an identity of such a category are formable at
-   exactly these levels, so the rejections below are about the donors and
-   not about the levels themselves. *)
+(* CONTROLS: hom 恒等 such 范畴 formable at
+ exactly these levels, so rejections below about donors and
+ not about levels themselves. （已译） *)
 Check (fun (C : Category@{uo uh up}) (x y : C) => x ~> y).
 Check (fun (C : Category@{uo uh up}) (x : C) => id[x]).
 

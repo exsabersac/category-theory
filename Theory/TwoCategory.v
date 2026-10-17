@@ -24,7 +24,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The globular presentation (Mac Lane §XII.3, Riehl 1.7.8) *)
+(* 相关说明。 （已译） *)
 
 Class TwoCategory : Type := {
   (* 0-cells and 1-cells, as an ordinary category. *)
@@ -53,8 +53,8 @@ Class TwoCategory : Type := {
     (γ : tcell h k) (β : tcell g h) (α : tcell f g) :
     tvcomp γ (tvcomp β α) ≈ tvcomp (tvcomp γ β) α;
 
-  (* Horizontal composition, lying over composition of 1-cells.  The outer
-     factor comes first, matching the order of `∘`. *)
+  (* Horizontal 复合, lying over 复合 1-cells. The outer
+ factor comes first, matching order `∘`. （已译） *)
   thcomp {a b c : tcat} {f f' : a ~{tcat}~> b} {g g' : b ~{tcat}~> c} :
     tcell g g' → tcell f f' → tcell (g ∘ f) (g' ∘ f');
 
@@ -113,8 +113,8 @@ Class TwoCategory : Type := {
     (β : tcell (f' ∘ id) (f'' ∘ id)) (α : tcell (f ∘ id) (f' ∘ id)) :
     tunitr_cast (tvcomp β α) ≈ tvcomp (tunitr_cast β) (tunitr_cast α);
 
-  (* Horizontal composition is associative and unital ON THE NOSE, modulo
-     the boundary identifications. *)
+  (* Horizontal 复合 associative unital ON THE NOSE, modulo
+ boundary identifications. （已译） *)
   thassoc {a b c d : tcat} {f f' : a ~{tcat}~> b} {g g' : b ~{tcat}~> c}
     {h h' : c ~{tcat}~> d}
     (γ : tcell h h') (β : tcell g g') (α : tcell f f') :
@@ -190,8 +190,8 @@ Proof.
   now apply thcomp_respects.
 Qed.
 
-(* Whiskering by an identity 1-cell is (after the boundary identification)
-   the cell itself: the two unit laws restated in whiskering form. *)
+(* Whiskering 恒等 1-cell (after boundary identification)
+ cell itself: two unit laws restated whiskering form. （已译） *)
 Lemma twhisker_l_id {a b : tcat} {f f' : a ~{tcat}~> b} (α : tcell f f') :
   tunitl_cast (twhisker_l (@id tcat b) α) ≈ α.
 Proof. apply thunit_left. Qed.
@@ -200,9 +200,9 @@ Lemma twhisker_r_id {a b : tcat} {f f' : a ~{tcat}~> b} (α : tcell f f') :
   tunitr_cast (twhisker_r α (@id tcat a)) ≈ α.
 Proof. apply thunit_right. Qed.
 
-(* Whiskering preserves identities and vertical composites: each whiskering
-   is a functor between hom-categories, which is Mac Lane's remark that
-   `S' ∘ (-)` and `(-) ∘ T` are functorial. *)
+(* Whiskering preserves identities vertical composites: each whiskering
+ 函子 between hom-范畴, Mac Lane's remark that
+ `S' ∘ (-)` `(-) ∘ T` functorial. （已译） *)
 Lemma twhisker_l_ident {a b c : tcat} (g : b ~{tcat}~> c)
   (f : a ~{tcat}~> b) : twhisker_l g (tid2 f) ≈ tid2 (g ∘ f).
 Proof. apply thcomp_id. Qed.
@@ -259,9 +259,9 @@ Proof.
   - now rewrite tvid_right.
 Qed.
 
-(* Consequently the two factorisations agree: the Godement square commutes,
-   which is Mac Lane's remark that the horizontal composite is the diagonal
-   of a commuting square. *)
+(* Consequently two factorisations agree: Godement square commutes,
+ Mac Lane's remark horizontal 复合 diagonal
+ 交换方块. （已译） *)
 Corollary tgodement_square {a b c : tcat} {f f' : a ~{tcat}~> b}
   {g g' : b ~{tcat}~> c} (β : tcell g g') (α : tcell f f') :
   tvcomp (twhisker_r β f') (twhisker_l g α)
@@ -271,10 +271,7 @@ Proof.
   apply thcomp_whisker_right.
 Qed.
 
-(** ** The boundary identifications carry identities to identities
-
-    Not fields: each follows from the corresponding strictness law together
-    with [thcomp_id]. *)
+(* 相关说明。 （已译） *)
 
 Lemma tassoc_cast_id {a b c d : tcat} (f : a ~{tcat}~> b)
   (g : b ~{tcat}~> c) (h : c ~{tcat}~> d) :
@@ -316,9 +313,9 @@ Definition IsHUnit {a : tcat} (u : tcell (@id tcat a) (@id tcat a)) : Type :=
   (∀ (b : tcat) (f f' : b ~{tcat}~> a) (α : tcell f f'),
      tunitl_cast (thcomp u α) ≈ α).
 
-(* Mac Lane §II.5 Theorem 1's closing clause, and the condition his def 3
-   abstracts from it: the identity 2-cell on an identity 1-cell is a unit
-   for BOTH compositions. *)
+(* Mac Lane §II.5 Theorem 1's closing clause, condition his def 3
+ abstracts it: 恒等 2-cell 恒等 1-cell unit
+ BOTH compositions. （已译） *)
 Theorem twocategory_def3 (a : tcat) :
   IsVUnit (tid2 (@id tcat a)) ∧ IsHUnit (tid2 (@id tcat a)).
 Proof.
@@ -423,12 +420,12 @@ Definition MetaComp_of_Metacategory (M : Metacategory) :
   mcident_law       := @mident_law M
 |}.
 
-(** *** Definition 2: a double category *)
+(* * *** Definition 2: double 范畴 （已译） *)
 
 Record StrictDoubleCategory : Type := {
-  (* "a set which is the set of arrows for two different composition
-     operations" — here a setoid of cells, since every collection in this
-     library carries its own equality. *)
+  (* "a set set arrows two different 复合
+ operations" — here setoid cells, since every collection this
+ library carries own equality. （已译） *)
   dcell : Type;
   dcell_setoid : Setoid dcell;
 
@@ -470,8 +467,8 @@ Definition dvert_Category (D : StrictDoubleCategory) : Category :=
 Definition dhoriz_Category (D : StrictDoubleCategory) : Category :=
   Category_from_Metacategory (dhoriz_Meta D).
 
-(* The two identity predicates, in Mac Lane's sense of an arrow that is a
-   unit for a composition wherever that composition is defined. *)
+(* The two 恒等 predicates, Mac Lane's sense arrow a
+ unit 复合 wherever 复合 defined. （已译） *)
 
 Definition dvident (D : StrictDoubleCategory) (u : dcell D) : Type :=
   mcident (dvert D) u.
@@ -515,8 +512,8 @@ Definition mkNatSq (t l r b : nat) (H : (b + l = r + t)%nat) : NatSq :=
      nsq_bot   := b;
      nsq_comm  := H |}.
 
-(* Two squares are the same when their four edges are; the commuting proof
-   carries no information beyond them. *)
+(* Two squares same four edges are; commuting 证明
+ carries no information beyond them. （已译） *)
 Definition NatSq_eq (x y : NatSq) : Type :=
   (nsq_top x = nsq_top y) ∧ (nsq_left x = nsq_left y) ∧
   (nsq_right x = nsq_right y) ∧ (nsq_bot x = nsq_bot y).
@@ -540,8 +537,7 @@ Definition NatSq_vcomp (g f h : NatSq) : Type :=
   (nsq_left h = (nsq_left g + nsq_left f)%nat) ∧
   (nsq_right h = (nsq_right g + nsq_right f)%nat).
 
-(* Horizontal pasting: [f] on the left, [g] on the right, matching along
-   [f]'s right edge. *)
+(* 相关说明。 （已译） *)
 Definition NatSq_hcomp (g f h : NatSq) : Type :=
   (nsq_left g = nsq_right f) ∧
   (nsq_left h = nsq_left f) ∧
@@ -575,8 +571,7 @@ Definition NatSq_hident (u : NatSq) : Type :=
   | [ H : NatSq_hdefined _ _ |- _ ] => destruct H as [? ?]
   end; simpl in *.
 
-(* The pasted squares, with their commuting proofs.  Each is arithmetic:
-   the two given conditions plus the matching equation give the third. *)
+(* 相关说明。 （已译） *)
 
 Lemma NatSq_vpaste_comm (g f : NatSq) (Hm : nsq_top g = nsq_bot f) :
   (nsq_bot g + (nsq_left g + nsq_left f)
@@ -634,7 +629,7 @@ Proof.
   split; intros f Hd; nsq_hyps; repeat split; simpl; lia.
 Qed.
 
-(** *** The two compositions, as [MetaComp] structures *)
+(* 相关说明。 （已译） *)
 
 Program Definition NatSq_Vert : MetaComp NatSq_Setoid := {|
   mccomp := NatSq_vcomp
@@ -704,7 +699,7 @@ Next Obligation.                        (* axiom (iii) *)
   - apply NatSq_hcomp_total; now simpl.
 Qed.
 
-(** *** The double category, and the refutation of definition 3 *)
+(* * *** The double 范畴, refutation 定义 3 （已译） *)
 
 Program Definition NatSq_Double : StrictDoubleCategory := {|
   dcell        := NatSq;
@@ -716,7 +711,7 @@ Next Obligation.                        (* the interchange law *)
   nsq_hyps; repeat split; lia.
 Qed.
 
-(* The offending cell: the horizontal identity on the vertical arrow 1. *)
+(* The offending cell: horizontal 恒等 vertical arrow 1. （已译） *)
 Definition NatSq_bad : NatSq := NatSq_hid 1.
 
 Lemma NatSq_bad_hident : dhident NatSq_Double NatSq_bad.
@@ -725,9 +720,9 @@ Proof. apply NatSq_hid_ident. Qed.
 Lemma NatSq_bad_not_vident : dvident NatSq_Double NatSq_bad → False.
 Proof.
   intros [Hsrc _].
-  (* Pasting the cell under itself is defined, its vertical edges being
-     composable; were the cell a vertical identity, that pasting would
-     return it unchanged, forcing 1 = 1 + 1. *)
+  (* Pasting cell under itself defined, vertical edges being
+ composable; were cell vertical 恒等, pasting would
+ return it unchanged, forcing 1 = 1 + 1. （已译） *)
   assert (Hd : NatSq_vdefined NatSq_bad NatSq_bad)
     by (apply NatSq_vcomp_total; now simpl).
   destruct (Hsrc NatSq_bad Hd) as [? [? [? [Hl ?]]]].
@@ -818,8 +813,7 @@ Lemma tr2_cast_respects {x y : tcat} {f f' g g' : x ~{tcat}~> y}
   α ≈ β → tr2_cast ed ec α ≈ tr2_cast ed ec β.
 Proof using Type. destruct ed, ec; intro H; exact H. Qed.
 
-(* A cell of the bundled structure: a 2-cell together with the whole of
-   its boundary.  [Arr] of [ToArrows], one dimension up. *)
+(* 相关说明。 （已译） *)
 Record TwoArr : Type := {
   t0src : tcat;
   t0tgt : tcat;
@@ -838,7 +832,7 @@ Definition TwoArr_eq (a b : TwoArr) : Type :=
     (ec : tr1_tgt (tr1_src (t1cod a) p) q = t1cod b),
     tr2_cast ed ec (tr2_tgt q (tr2_src p (t2cell a))) ≈ t2cell b.
 
-(* The hypothesis pack; see the discussion above. *)
+(* The 假设 pack; see discussion above. （已译） *)
 Record StrictBase : Type := {
   sb_obj_uip : ∀ (x y : @tcat K) (p q : x = y), p = q;
   sb_hom_uip : ∀ (a b : @tcat K) (f g : a ~{tcat}~> b) (p q : f = g), p = q;
@@ -1178,8 +1172,8 @@ Proof using K SB.
     exact (TwoV_respects Hu (reflexivity g) (reflexivity g) (H2 g Hg')).
 Qed.
 
-(* Mac Lane's definition 3, for the bundled structure: every identity for
-   the horizontal composition is an identity for the vertical one. *)
+(* Mac Lane's 定义 3, bundled structure: every 恒等 for
+ horizontal 复合 恒等 vertical one. （已译） *)
 Lemma TwoArr_hident_is_vident (u : TwoArr) : TwoH_ident u → TwoV_ident u.
 Proof using K SB.
   intros Hu.

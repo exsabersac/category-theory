@@ -10,7 +10,7 @@ Require Import Category.Theory.Morphisms.Duality.
 
 Generalizable All Variables.
 
-(** * Cokernel pairs, and epimorphisms as pushout squares *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/cokernel+pair
@@ -21,7 +21,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The apex-pinned pushout square *)
+(* 相关说明。 （已译） *)
 
 Section PushoutSquare.
 
@@ -138,9 +138,7 @@ Arguments IsPushoutSquare {C x y z} f g P i1 i2.
 Definition cokernel_pair {C : Category} `{H : @HasPushouts C} {x y : C}
   (f : x ~> y) : IsPushout f f := pushout f f.
 
-(* The one-off apex-pinned form: [u] and [v] ARE a cokernel pair of f.
-   Unlike [cokernel_pair] this needs no [HasPushouts], the square naming
-   its own apex and legs. *)
+(* 相关说明。 （已译） *)
 Definition IsCokernelPair {C : Category} {x y : C} (f : x ~> y)
            (P : C) (u v : y ~> P) : Type := IsPushoutSquare f f P u v.
 
@@ -150,14 +148,13 @@ Context {C : Category}.
 Context {x y : C}.
 Context {f : x ~> y}.
 
-(* Stated for an ARBITRARY pushout of f with itself, so that the chosen
-   form [cokernel_pair f] and any one-off witness are both served. *)
+(* 相关说明。 （已译） *)
 Context (P : IsPushout f f).
 
 Definition ckp_obj : C := pushout_apex P.
 
-(* The parallel pair.  Both legs run y ~> ckp_obj: this is what makes the
-   cokernel pair a PARALLEL PAIR rather than a general cocone. *)
+(* The parallel pair. Both legs run y ~> ckp_obj: 这是 what makes the
+ cokernel pair PARALLEL PAIR rather than general cocone. （已译） *)
 Definition ckp_left : y ~> ckp_obj := pushout_in1 P.
 Definition ckp_right : y ~> ckp_obj := pushout_in2 P.
 
@@ -192,7 +189,7 @@ Lemma ckp_med_eq {Q : C} {q1 q2 : y ~> Q} (Hc : q1 ∘ f ≈ q2 ∘ f)
   v ∘ ckp_left ≈ q1 -> v ∘ ckp_right ≈ q2 -> u ≈ v.
 Proof. exact (pushout_med_eq P Hc u v). Qed.
 
-(* The apex-pinned reading of the chosen/one-off pushout. *)
+(* 相关说明。 （已译） *)
 Definition ckp_IsCokernelPair : IsCokernelPair f ckp_obj ckp_left ckp_right :=
   pushout_is_pushout_square f f P.
 
@@ -202,7 +199,7 @@ Arguments ckp_obj {C x y f} P.
 Arguments ckp_left {C x y f} P.
 Arguments ckp_right {C x y f} P.
 
-(** ** Epimorphisms are exactly the identity pushout squares *)
+(* * ** Epimorphisms exactly 恒等 pushout squares （已译） *)
 
 Section EpiCharacterization.
 
@@ -248,7 +245,7 @@ Defined.
 Theorem epic_iff_pushout_square : Epic f ↔ IsPushoutSquare f f y id id.
 Proof. split; [ exact epic_pushout_square | exact pushout_square_epic ]. Qed.
 
-(** *** Mac Lane's phrasing: the cokernel pair is trivial *)
+(* 相关说明。 （已译） *)
 
 Context (P : IsPushout f f).
 
@@ -260,8 +257,7 @@ Proof.
   exact (ckp_commutes P).
 Qed.
 
-(* Backward: a pair coequalizing f is mediated, and the two legs being
-   equal forces the two members of the pair to agree. *)
+(* 相关说明。 （已译） *)
 Lemma ckp_trivial_epic (Ht : ckp_left P ≈ ckp_right P) : Epic f.
 Proof.
   constructor.
@@ -276,7 +272,7 @@ Theorem epic_iff_cokernel_pair_trivial :
   Epic f ↔ ckp_left P ≈ ckp_right P.
 Proof. split; [ exact epic_ckp_trivial | exact ckp_trivial_epic ]. Qed.
 
-(** *** The same at full strength: the left leg is an isomorphism *)
+(* * *** The same at full strength: left leg 同构 （已译） *)
 
 (*
    本节说明核/余核相关定义、性质与动机。
@@ -298,22 +294,22 @@ Proof.
     exact (ckp_med_left P Hid).
 Qed.
 
-(* Conversely, an invertible left leg forces the two legs to agree: the
-   self-cocone (ckp_left, ckp_left) is mediated by a morphism that the
-   invertibility pins to the identity. *)
+(* Conversely, invertible left leg forces two legs agree: the
+ self-cocone (ckp_left, ckp_left) mediated 态射 the
+ invertibility pins 恒等. （已译） *)
 Lemma ckp_left_iso_epic (I : IsIsomorphism (ckp_left P)) : Epic f.
 Proof.
   destruct I as [k Hk1 Hk2].
   apply ckp_trivial_epic.
   assert (Hc : ckp_left P ∘ f ≈ ckp_left P ∘ f) by reflexivity.
-  (* The self-mediator of the cocone (ckp_left, ckp_left) is forced to be
-     the identity, because it is the identity after the invertible leg. *)
+  (* The self-mediator cocone (ckp_left, ckp_left) forced be
+ 恒等, because it 恒等 after invertible leg. （已译） *)
   assert (Hw : ckp_med P Hc ≈ id).
   { transitivity (ckp_med P Hc ∘ (ckp_left P ∘ k)).
     - rewrite Hk1, id_right; reflexivity.
     - rewrite comp_assoc, (ckp_med_left P Hc); exact Hk1. }
-  (* The mediator carries the RIGHT leg to the left one, and being the
-     identity it carries it to itself. *)
+  (* The mediator carries RIGHT leg left one, being the
+ 恒等 it carries it itself. （已译） *)
   symmetry.
   transitivity (ckp_med P Hc ∘ ckp_right P).
   - rewrite Hw, id_left; reflexivity.

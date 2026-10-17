@@ -15,7 +15,7 @@ Require Import Category.Instance.Coq.
 
 Generalizable All Variables.
 
-(** * Corollaries of Adámek's initial-algebra theorem *)
+(* * * Corollaries Adámek's initial-algebra 定理 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor

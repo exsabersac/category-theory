@@ -67,15 +67,15 @@ Section Strong.
 Context `{@Monoidal C}.
 Context {F : C ⟶ C}.
 
-(* The identity functor is strong, with the identity as its strength. *)
+(* The 恒等 函子 strong, 恒等 strength. （已译） *)
 #[export] Program Instance Id_StrongFunctor : StrongFunctor Id[C] := {
   strength := fun _ _ => id
 }.
 
 #[local] Obligation Tactic := program_simpl.
 
-(* Strong functors are closed under composition: the strength of F ◯ G is
-   built by first sliding through G, then lifting that through F's strength. *)
+(* Strong 函子 closed under 复合: strength F ◯ G is
+ built first sliding through G, then lifting through F's strength. （已译） *)
 #[export] Program Instance Compose_StrongFunctor (F G : C ⟶ C) :
   StrongFunctor F → StrongFunctor G → StrongFunctor (F ◯ G) := {
   strength := fun _ _ => fmap[F] strength ∘ strength
@@ -128,7 +128,7 @@ Qed.
 
 End Strong.
 
-(* [strength[F]] names the strength of a given strong functor F at implicit
-   arguments, mirroring the [fmap[F]] convention. *)
+(* [strength[F]] names strength given strong 函子 F at implicit
+ arguments, mirroring [fmap[F]] convention. （已译） *)
 Notation "strength[ F ]" := (@strength _ _ F%functor _ _ _)
   (at level 9, format "strength[ F ]") : morphism_scope.

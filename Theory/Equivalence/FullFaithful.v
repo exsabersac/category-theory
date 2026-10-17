@@ -28,7 +28,7 @@ Program Definition ff_eso_inverse `(F : C ⟶ D)
   fmap := fun d d' g => prefmap (from (eso_iso d') ∘ g ∘ to (eso_iso d))
 |}.
 Next Obligation.
-  (* respectfulness of the morphism action, recovered from faithfulness *)
+  (* respectfulness 态射 action, recovered faithfulness （已译） *)
   proper.
   apply fmap_inj.
   rewrite !fmap_sur.
@@ -41,7 +41,7 @@ Next Obligation.
   apply iso_from_to.
 Qed.
 Next Obligation.
-  (* preservation of composition: the middle [to ∘ from] pair cancels *)
+  (* preservation 复合: middle [to ∘ from] pair cancels （已译） *)
   apply fmap_inj.
   rewrite fmap_comp, !fmap_sur.
   rewrite !comp_assoc.
@@ -72,9 +72,9 @@ Next Obligation.
   apply iso_to_from.
 Qed.
 
-(* The counit cell F ◯ ff_eso_inverse F ≈ Id[D].  Its isomorphism family
-   is literally [eso_iso]; the conjugation coherence is exactly the
-   section law [fmap_sur]. *)
+(* The counit cell F ◯ ff_eso_inverse F ≈ Id[D]. Its 同构 family
+ literally [eso_iso]; conjugation coherence exactly the
+ section law [fmap_sur]. （已译） *)
 Definition ff_eso_counit `(F : C ⟶ D)
   `{@Full C D F} `{@Faithful C D F} `{@EssentiallySurjective C D F} :
   F ◯ ff_eso_inverse F ≈ Id[D].
@@ -84,9 +84,9 @@ Proof.
   exact (fmap_sur (from (eso_iso d') ∘ g ∘ to (eso_iso d))).
 Defined.
 
-(* Conjugation coherence of the unit cell, as a standalone (opaque) lemma:
-   only the two [eso_iso (F −)] pairs cancel after pushing [fmap[F]]
-   through with [fmap_sur]. *)
+(* Conjugation coherence unit cell, standalone (opaque) 引理:
+ two [eso_iso (F −)] pairs cancel after pushing [fmap[F]]
+ through [fmap_sur]. （已译） *)
 Lemma ff_eso_unit_coherence `(F : C ⟶ D)
   `{@Full C D F} `{@Faithful C D F} `{@EssentiallySurjective C D F}
   {x y : C} (f : x ~> y) :
@@ -114,8 +114,8 @@ Proof.
   exact (ff_eso_unit_coherence F f).
 Defined.
 
-(* The forward direction of the characterization: full + faithful +
-   essentially surjective functors are equivalences of categories. *)
+(* The forward direction characterization: full + faithful +
+ 本质满射 函子 equivalences 范畴. （已译） *)
 Theorem FF_ESO_Equivalence `(F : C ⟶ D)
   `{@Full C D F} `{@Faithful C D F} `{@EssentiallySurjective C D F} :
   EquivalenceOfCategories F.
@@ -124,8 +124,8 @@ Proof.
            (ff_eso_counit F) (ff_eso_unit F)).
 Defined.
 
-(* The converse direction: every equivalence of categories is faithful,
-   full, and essentially surjective. *)
+(* The converse direction: every 等价 范畴 faithful,
+ full, 本质满射. （已译） *)
 
 Theorem Equivalence_Faithful `(E : @EquivalenceOfCategories C D F) :
   Faithful F.
@@ -138,8 +138,8 @@ Proof.
   now rewrite Hfg.
 Qed.
 
-(* The quasi-inverse is likewise faithful: apply the same argument to the
-   symmetric equivalence, i.e. read it off the counit cell. *)
+(* The quasi-inverse likewise faithful: apply same 论元 the
+ symmetric 等价, i.e. read it off counit cell. （已译） *)
 Corollary Equivalence_Inverse_Faithful
   `(E : @EquivalenceOfCategories C D F) :
   Faithful (@quasi_inverse C D F E).
@@ -147,8 +147,7 @@ Proof.
   exact (Equivalence_Faithful (@EquivalenceOfCategories_sym C D F E)).
 Qed.
 
-(* The chosen preimage of g : F x ~> F y under [fmap[F]]: conjugate
-   [fmap[quasi_inverse] g] with the unit components. *)
+(* 相关说明。 （已译） *)
 Definition equivalence_prefmap `(E : @EquivalenceOfCategories C D F)
   {x y : C} (g : F x ~> F y) : x ~> y :=
   from (equivalence_unit_at y)

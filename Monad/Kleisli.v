@@ -74,8 +74,8 @@ Notation "f <=< g" :=
 Notation "f >=> g" :=
   (kleisli_compose g f) (at level 40, left associativity) : morphism_scope.
 
-(* We can now re-express the monad laws in terms of this category, making the
-   monoid relationship clearer. *)
+(* We can now re-express 单子 laws terms 范畴, making the
+ 幺半群 relationship clearer. （已译） *)
 
 Corollary monad_id_left `(f : x ~{C}~> M y) : ret <=< f ≈ f.
 Proof. unfold kleisli_compose; cat. Qed.

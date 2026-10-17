@@ -8,7 +8,7 @@ Require Import Category.Instance.Fun.
 
 Generalizable All Variables.
 
-(** The diagonal functor Δ : C ⟶ [J, C] (and the binary Δ : C ⟶ C ∏ C). *)
+(** The diagonal 函子 Δ : C ⟶ [J, C] (and binary Δ : C ⟶ C ∏ C). （已译） *)
 
 (*
    Wikipedia: https://en.wikipedia.org/wiki/Diagonal_functor

@@ -9,7 +9,7 @@ Require Import Category.Comonad.Core.
 
 Generalizable All Variables.
 
-(** * The co-Kleisli category of a comonad *)
+(* * * The co-Kleisli 范畴 余单子 （已译） *)
 
 (* nLab:      https://ncatlab.org/nlab/show/co-Kleisli+category
    Wikipedia: https://en.wikipedia.org/wiki/Kleisli_category
@@ -48,12 +48,12 @@ Context {C : Category} {W : C ⟶ C} {H : @Comonad C W}.
 
 Definition CoKleisli : Category := (@Kleisli (C^op) (W^op) H)^op.
 
-(** The hom-sets of the co-Kleisli category are definitionally the
-    covariant hom-sets [W x ~> y] of the base category. *)
+(** The hom-sets co-Kleisli 范畴 definitionally the
+ covariant hom-sets [W x ~> y] base 范畴. （已译） *)
 Lemma cokleisli_hom (x y : C) : (x ~{CoKleisli}~> y) = (W x ~{C}~> y).
 Proof. reflexivity. Qed.
 
-(** The identity at x is the counit ε_x. *)
+(** The 恒等 at x counit ε_x. （已译） *)
 Lemma cokleisli_id {x : C} : @id CoKleisli x ≈ @extract C W H x.
 Proof. reflexivity. Qed.
 

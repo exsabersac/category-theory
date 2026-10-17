@@ -13,7 +13,7 @@ Require Import Category.Instance.Cat.
 
 Generalizable All Variables.
 
-(** * θ*: the functor on algebras induced by a morphism of monads *)
+(* * * θ*: 函子 algebras induced 态射 单子 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/monad (section "The 2-category of
@@ -24,7 +24,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** θ* on objects: (a, h') ↦ (a, h' ∘ θ_a) *)
+(* * ** θ* 对象: (a, h') ↦ (a, h' ∘ θ_a) （已译） *)
 
 Definition mh_algebra@{o h | } {C : Category@{o h h}} {T T' : C ⟶ C}
   {M : @Monad C T} {M' : @Monad C T'} (θ : MonadHom@{o h} M M') {a : C}
@@ -146,7 +146,7 @@ Proof.
   apply id_left.
 Defined.
 
-(* Its isomorphisms are identities, on the nose. *)
+(* 相关说明。 （已译） *)
 
 Example mh_EM_forget_iso_id@{o h e s | h < s, o <= e, h <= e +}
   {C : Category@{o h h}} {T T' : C ⟶ C}
@@ -169,10 +169,9 @@ Proof.
   intros X Y f. reflexivity.
 Defined.
 
-(** ** F^T ⇝ θ* ∘ F^{T'}, the page's direction *)
+(* 相关说明。 （已译） *)
 
-(* The component at x: θ_x as an algebra map from (Tx, μ_x) to
-   θ*(T'x, μ'_x) = (T'x, μ'_x ∘ θ_{T'x}). *)
+(* 相关说明。 （已译） *)
 
 Definition mh_free_component@{o h e s | h < s, o <= e, h <= e +}
   {C : Category@{o h h}} {T T' : C ⟶ C}
@@ -206,7 +205,7 @@ Example mh_EM_free_forget@{o h e s | h < s, o <= e, h <= e +}
   fmap[@EM_Forget@{o h s e} C T M] (transform[mh_EM_free@{o h e s} θ] x)
     = mh_transform θ x := eq_refl.
 
-(* The component is the transpose of η'_x along F^T ⊣ G^T. *)
+(* 相关说明。 （已译） *)
 
 Lemma mh_EM_free_transpose@{o h e s | h < s, o <= e, h <= e +}
   {C : Category@{o h h}} {T T' : C ⟶ C}
@@ -229,8 +228,8 @@ Qed.
 
 (** ** Functoriality in θ *)
 
-(* The identity arrow between two structures on one carrier whose
-   structure maps are ≈. *)
+(* The 恒等箭头 between two structures one carrier whose
+ structure maps ≈. （已译） *)
 
 Definition talg_same@{o h | } {C : Category@{o h h}} {T : C ⟶ C}
   {M : @Monad C T} {a : C} (A B : @TAlgebra C T M a)
@@ -297,7 +296,7 @@ Proof.
     symmetry. etransitivity; [ apply id_right | ]. apply id_left.
 Defined.
 
-(* The isomorphisms of the three laws are identities, on the nose. *)
+(* 相关说明。 （已译） *)
 
 Example mh_EM_respects_iso_id@{o h e s | h < s, o <= e, h <= e +}
   {C : Category@{o h h}} {T T' : C ⟶ C}
@@ -324,7 +323,7 @@ Example mh_EM_compose_iso_id@{o h e s | h < s, o <= e, h <= e +}
    t_alg_hom[from (projT1 (mh_EM_compose@{o h e s} φ θ) X)]) = (id, id)
   := eq_refl.
 
-(** ** The contravariant functor (Monads C)^op ⟶ Cat *)
+(* * ** The contravariant 函子 (Monads C)^op ⟶ Cat （已译） *)
 
 Definition Monads_EM@{o h m1 m2 e s u |
   h < s, h < u, e < u, o <= m1, h <= m1, o <= m2, h <= m2, m2 <= e,

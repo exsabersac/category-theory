@@ -6,7 +6,7 @@ From Coq Require Import Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * Twisting a functor by a family of isomorphisms *)
+(* * * Twisting 函子 family isomorphisms （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/natural+isomorphism
@@ -24,8 +24,8 @@ Context (α : ∀ x : C, x ≅ F x).
 
 #[local] Obligation Tactic := idtac.
 
-(* The twisted functor.  Note [fobj := fun x => x]: the object function is
-   the identity function itself, not merely a function isomorphic to it. *)
+(* The twisted 函子. Note [fobj := fun x => x]: 对象 function is
+ 恒等 function itself, not merely function isomorphic it. （已译） *)
 Program Definition Twist : C ⟶ C := {|
   fobj := fun x => x;
   fmap := fun x y f => (α y)⁻¹ ∘ fmap[F] f ∘ α x
@@ -57,17 +57,17 @@ Qed.
 Lemma Twist_fobj (x : C) : fobj[Twist] x = x.
 Proof. reflexivity. Qed.
 
-(* If α is natural, the twist is strictly equal to the identity functor:
-   the object equalities are all [eq_refl], and the arrow condition is
-   α cancelling itself across f. *)
+(* If α natural, twist strictly equal 恒等 函子:
+ 对象 equalities all [eq_refl], arrow condition is
+ α cancelling itself across f. （已译） *)
 Theorem Twist_natural_strict_id
   (nat : ∀ (x y : C) (f : x ~> y), α y ∘ f ≈ fmap[F] f ∘ α x) :
   @equiv _ Functor_StrictEq_Setoid Twist (@Id C).
 Proof.
   exists (fun _ => eq_refl).
   intros x y f.
-  (* Both transports are along [eq_refl], hence the identity, so the
-     coherence condition reduces by conversion to the arrow maps agreeing. *)
+  (* Both transports along [eq_refl], hence 恒等, so the
+ coherence condition reduces conversion arrow maps agreeing. （已译） *)
   change ((α y)⁻¹ ∘ fmap[F] f ∘ α x ≈ f).
   rewrite <- comp_assoc.
   rewrite <- nat.
@@ -90,7 +90,7 @@ Proof.
   intros x y f.
   pose proof (coherent x y f) as Hc.
   rewrite (uip x (eq_on_obj x)), (uip y (eq_on_obj y)) in Hc.
-  (* with both object equalities [eq_refl] the transports vanish *)
+  (* with both 对象 equalities [eq_refl] transports vanish （已译） *)
   assert (Hred : (α y)⁻¹ ∘ fmap[F] f ∘ α x ≈ f) by exact Hc.
   assert (Hpost : α y ∘ ((α y)⁻¹ ∘ fmap[F] f ∘ α x) ≈ α y ∘ f)
     by (apply compose_respects; [ reflexivity | exact Hred ]).
@@ -100,9 +100,9 @@ Proof.
   reflexivity.
 Qed.
 
-(* The distinctness criterion in the form it is used: a SINGLE morphism at
-   which α is not natural separates the twist from the identity in
-   the strict functor setoid. *)
+(* The distinctness criterion form it used: SINGLE 态射 at
+ α not natural separates twist 恒等 in
+ strict 函子 setoid. （已译） *)
 Corollary Twist_not_strict_id
   (uip : ∀ (x : C) (p : x = x), p = eq_refl)
   {x y : C} {f : x ~> y}

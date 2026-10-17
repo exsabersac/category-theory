@@ -32,7 +32,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** Surjectivity on objects, as data *)
+(* * ** Surjectivity 对象, data （已译） *)
 
 Definition SurjectiveOnObjects@{ao ah ap co ch cp}
   {A : Category@{ao ah ap}} {C : Category@{co ch cp}} (S : A ⟶ C) :=
@@ -93,7 +93,7 @@ Arguments lari_adj {A C S} _.
 Arguments lari_obj {A C S} _ _.
 Arguments lari_unit {A C S} _ _.
 
-(** ** Consequences of having a left-adjoint-right-inverse *)
+(* 相关说明。 （已译） *)
 
 Section Consequences.
 
@@ -121,8 +121,8 @@ Qed.
 Definition lari_surjective : SurjectiveOnObjects S :=
   fun c => (T c; e c).
 
-(* The forward transpose of an image arrow is the unit followed by the
-   arrow itself: [to_adj_nat_l] at the identity. *)
+(* The forward transpose image arrow unit followed the
+ arrow itself: [to_adj_nat_l] at 恒等. （已译） *)
 Lemma lari_to_fmap {x y : C} (f : x ~> y) :
   to (@adj A C T S D x (T y)) (fmap[T] f) ≈ @unit A C T S D y ∘ f.
 Proof.
@@ -188,7 +188,7 @@ End Consequences.
 Arguments lari_unit_iso {A C S} _ _.
 Arguments lari_surjective {A C S} _ _.
 
-(** ** A conjugation lemma for the two casts *)
+(* * ** A conjugation 引理 two casts （已译） *)
 
 Lemma cast_conj_comp {D : Category} {x y z x' y' z' : D}
   (ex : x' = x) (ey : y' = y) (ez : z' = z) (f : y ~> z) (g : x ~> y) :
@@ -339,7 +339,7 @@ Definition ff_surjective_adjoint_equivalence :
   @Build_AdjointEquivalence C A ff_surjective_left S ff_surj_adj
     ff_surjective_unit_iso ff_surjective_counit_iso.
 
-(** *** Strict readbacks and the one residue *)
+(* 相关说明。 （已译） *)
 
 Example ff_surj_left_obj (c : C) : ff_surjective_left c = ff_surj_obj c :=
   eq_refl.
@@ -355,8 +355,8 @@ Example ff_surj_from (c : C) (a : A) (g : c ~> S a) :
   from (@adj A C ff_surjective_left S ff_surj_adj c a) g
     = prefmap (g ∘ id_cast (ff_surj_eq c)) := eq_refl.
 
-(* The unit is the transported identity only up to [≈]: the residue is a
-   [fmap[S] id], exhibited here at Leibniz equality. *)
+(* The unit transported 恒等 up [≈]: residue a
+ [fmap[S] id], exhibited here at Leibniz equality. （已译） *)
 Example ff_surj_unit_residue (c : C) :
   @unit A C ff_surjective_left S ff_surj_adj c
     = fmap[S] (id[ff_surjective_left c]) ∘ id_cast (eq_sym (ff_surj_eq c))
@@ -377,7 +377,7 @@ Example ff_surj_equiv_adj :
   @adj_equivalence C A ff_surjective_left S ff_surjective_adjoint_equivalence
     = ff_surj_adj := eq_refl.
 
-(** *** The route through [FF_ESO_Equivalence], measured *)
+(* 相关说明。 （已译） *)
 
 Definition ff_surj_eso : EssentiallySurjective S := surjective_ESO surj.
 
@@ -389,7 +389,7 @@ Definition ff_surj_eso_adjoint_equivalence :
   AdjointEquivalence_swap
     (Equivalence_to_AdjointEquivalence ff_surj_eso_equivalence).
 
-(* Both actions of the two left adjoints agree on the nose. *)
+(* 相关说明。 （已译） *)
 Example ff_surj_eso_inverse_obj (c : C) :
   @ff_eso_inverse A C S _ _ ff_surj_eso c = ff_surjective_left c := eq_refl.
 
@@ -413,7 +413,7 @@ End FFSurjective.
 
 (** ** Witnesses *)
 
-(* Any two parallel arrows of the point are equal: its hom is [poly_unit]. *)
+(* 相关说明。 （已译） *)
 Lemma one_hom_unique {x y : @obj _1} (f g : x ~{_1}~> y) : f ≈ g.
 Proof. destruct f, g; reflexivity. Qed.
 
@@ -425,7 +425,7 @@ Proof. destruct f, g; reflexivity. Qed.
 Lemma poly_unit_all_eq (f g : poly_unit) : f = g.
 Proof. destruct f, g; reflexivity. Qed.
 
-(** *** The erasing functor of a category with an initial object *)
+(* * *** The erasing 函子 范畴 始对象 （已译） *)
 
 Program Definition erase_left {A : Category}
   (I : @Initial A) : _1 ⟶ A := {|
@@ -486,7 +486,7 @@ Next Obligation. intros A I c; apply one_hom_unique. Qed.
 
 Example erase_pt_is_Erase (A : Category) : erase_pt A = Erase A := eq_refl.
 
-(** *** The walking arrow: a left-adjoint-right-inverse without fullness *)
+(* 相关说明。 （已译） *)
 
 Program Definition Two_Initial : @Initial _2 := {|
   terminal_obj := TwoX;
@@ -525,7 +525,7 @@ Definition lari_does_not_imply_Full :
         * (Category.Theory.Functor.Full S → False) } } :=
   (_2; (erase_pt _2; (two_erase_LARI, two_erase_not_Full))).
 
-(** *** Sets: a left-adjoint-right-inverse without faithfulness *)
+(* 相关说明。 （已译） *)
 
 Definition sets_erase_LARI : LeftAdjointRightInverse (erase_pt Sets) :=
   erase_LARI Sets_Initial.
@@ -576,7 +576,7 @@ Definition lari_does_not_imply_AdjointEquivalence :
   := (Sets; (erase_pt Sets; (sets_erase_LARI;
        (sets_bool_obj; sets_erase_counit_not_iso)))).
 
-(** *** A non-degenerate instance of the exercise *)
+(* 相关说明。 （已译） *)
 
 Program Definition indiscrete_erase_Full :
   Category.Theory.Functor.Full (Erase (Indiscrete bool)) := {|

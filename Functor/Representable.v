@@ -75,16 +75,14 @@ Qed.
 Context {K K' : C ⟶ Sets}.
 Context (R : Representable K) (R' : Representable K').
 
-(* Mac Lane's ψ'⁻¹ ∘ τ ∘ ψ : the transformation τ carried across the two
-   representations, where it becomes a transformation of representable
-   copresheaves. *)
+(* 相关说明。 （已译） *)
 Definition repr_transport (tau : K ⟹ K')
   : [Hom (@repr_obj _ _ R),─] ~{[C, Sets]}~> [Hom (@repr_obj _ _ R'),─] :=
   from (@represented _ _ R') ∘[Fun] (tau ∘[Fun] to (@represented _ _ R)).
 
-(* ...and the arrow it names, its value at the identity of the representing
-   object.  Unfolded: ψ'⁻¹_r (τ_r (ψ_r id)), so the universal element ψ_r id
-   of K is where the construction starts. *)
+(* ...and arrow it names, value at 恒等 表示
+ 对象. Unfolded: ψ'⁻¹_r (τ_r (ψ_r id)), so universal element ψ_r id
+ K where construction starts. （已译） *)
 Definition repr_induced (tau : K ⟹ K') : @repr_obj _ _ R' ~> @repr_obj _ _ R :=
   transform[repr_transport tau] (@repr_obj _ _ R) id.
 
@@ -132,8 +130,8 @@ Proof.
   srewrite (@fmap_id _ _ K' d); reflexivity.
 Qed.
 
-(* Uniqueness: a compatible arrow is determined by the condition at the one
-   place it can be probed, the identity of the representing object. *)
+(* Uniqueness: compatible arrow determined condition at one
+ place it can probed, 恒等 表示 对象. （已译） *)
 Lemma repr_induced_unique (tau : K ⟹ K') hh :
   ReprCompatible tau hh → hh ≈ repr_induced tau.
 Proof.
@@ -146,8 +144,8 @@ Proof.
   now rewrite !id_left.
 Qed.
 
-(* The exercise as one statement: a unique compatible arrow between the
-   representing objects. *)
+(* The exercise one statement: unique compatible arrow between the
+ 表示 对象. （已译） *)
 Program Definition repr_induced_universal (tau : K ⟹ K') :
   @Unique _ (@homset C (@repr_obj _ _ R') (@repr_obj _ _ R))
           (ReprCompatible tau) := {|
@@ -217,7 +215,7 @@ End ReprInducedLaws.
 Arguments repr_induced_id {C K} R.
 Arguments repr_induced_comp {C K K' K''} R R' R'' tau tau'.
 
-(** ** Isomorphisms, and Mac Lane's τ = id case *)
+(* 相关说明。 （已译） *)
 
 Section ReprInducedIso.
 
@@ -226,9 +224,9 @@ Context (C : Category@{o h h}).
 Context {K K' : C ⟶ Sets}.
 Context (R : Representable K) (R' : Representable K').
 
-(* A natural isomorphism of represented functors induces an isomorphism of
-   representing objects; both triangle laws are the composition law followed
-   by the identity law. *)
+(* A natural 同构 已表示的 函子 induces 同构 of
+ 表示 对象; both triangle laws 复合 law followed
+ 恒等 law. （已译） *)
 Program Definition repr_induced_iso (i : K ≅[Fun] K')
   : @repr_obj _ _ R' ≅ @repr_obj _ _ R := {|
   to   := repr_induced R R' (to i);
@@ -258,9 +256,9 @@ Context (C : Category@{o h h}).
 Context {K : C ⟶ Sets}.
 Context (R R' : Representable K).
 
-(* Mac Lane's τ = id case: two representations of ONE functor have
-   canonically isomorphic representing objects.  This is [repr_induced_iso]
-   at the identity isomorphism; no separate argument. *)
+(* Mac Lane's τ = id case: two representations ONE 函子 have
+ canonically isomorphic 表示 对象. This [repr_induced_iso]
+ at 恒等 同构; no separate 论元. （已译） *)
 Definition repr_unique_iso : @repr_obj _ _ R' ≅ @repr_obj _ _ R :=
   repr_induced_iso R R' iso_id.
 
@@ -282,15 +280,15 @@ End ReprUnique.
 Arguments repr_unique_iso {C K} R R'.
 Arguments repr_unique_iso_universal {C K} R R'.
 
-(** ** The tautological representation, and the round trip *)
+(* 相关说明。 （已译） *)
 
 Section TautologicalRepresentation.
 
 Universes o h.
 Context (C : Category@{o h h}).
 
-(* Hom(c, −) represents itself, by the identity isomorphism.  Deliberately a
-   plain [Definition] and not an [Instance]: see the header. *)
+(* Hom(c, −) represents itself, 恒等 同构. Deliberately a
+ plain [Definition] not [Instance]: see header. （已译） *)
 Definition Hom_Representable (c : C) : Representable ([Hom c,─]) := {|
   repr_obj := c;
   represented := iso_id

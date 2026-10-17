@@ -10,7 +10,7 @@ Require Import Category.Structure.BiCCC.
 
 Generalizable All Variables.
 
-(** * Categorified high-school algebra in a bicartesian closed category *)
+(* * * Categorified high-school algebra 双笛卡尔闭 范畴 （已译） *)
 
 (* nLab: https://ncatlab.org/nlab/show/bicartesian+closed+category
    nLab: https://ncatlab.org/nlab/show/rig+category

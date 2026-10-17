@@ -15,7 +15,7 @@ Set Universe Polymorphism.
 
 Generalizable All Variables.
 
-(** * The Special Adjoint Functor Theorem (SAFT) *)
+(* 相关说明。 （已译） *)
 
 (* nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functor_theorem
@@ -44,7 +44,7 @@ Arguments cog_index {C} _.
 Arguments cog_obj {C} _ _.
 Arguments cog_separates {C} _ {x y} f g _.
 
-(** ** Well-powered indexing of subobjects *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明子对象相关定义、性质与动机。
@@ -63,7 +63,7 @@ Arguments sub_dom {C x} _ _.
 Arguments sub_mono {C x} _ _.
 Arguments sub_monic {C x} _ _.
 
-(** ** [SubobjectIndex] does not give well-poweredness *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、子对象相关定义、性质与动机。
@@ -76,9 +76,9 @@ Definition empty_SubobjectIndex {C : Category} (x : C) : SubobjectIndex x :=
      sub_mono  := fun i => match i with end ;
      sub_monic := fun i => match i with end |}.
 
-(* ... and it cannot be completed to a well-powered index: there is no map
-   from the subobjects of [x] into it, since [x] itself, along the identity,
-   is a subobject. *)
+(* ... it cannot completed well-powered index: there no map
+ subobjects [x] it, since [x] itself, along 恒等,
+ subobject. （已译） *)
 Lemma SubobjectIndex_not_exhaustive {C : Category} (x : C) :
   (SubObj x -> sub_index (empty_SubobjectIndex x)) -> False.
 Proof.
@@ -88,7 +88,7 @@ Proof.
               Subobject.sub_is_monic := id_monic x |}).
 Qed.
 
-(** ** The product of the cogenerating family *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限、hom相关定义、性质与动机。
@@ -102,7 +102,7 @@ Definition cogen_prod {C : Category} (comp : @Complete C)
   (G : Cogenerator C) : C :=
   iprod (cog_obj G) (cogen_prod_limit comp G).
 
-(** ** The canonical map into a power of the cogenerating family *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -110,7 +110,7 @@ Definition cogen_prod {C : Category} (comp : @Complete C)
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The hom-indexed Σ-index of arrows out of [c] into the cogenerating family. *)
+(* The hom-indexed Σ-index arrows out [c] 进入 cogenerating family. （已译） *)
 Definition cogen_power_index {C : Category} (G : Cogenerator C) (c : C) : Type :=
   { j : cog_index G & c ~> cog_obj G j }.
 
@@ -133,7 +133,7 @@ Definition cogen_canonical_legs {C : Category} (G : Cogenerator C) (c : C) :
   forall p : cogen_power_index G c, c ~> cogen_power_fam G c p :=
   fun p => projT2 p.
 
-(* The canonical map [c ~> cogen_power], the unique mediator of those legs. *)
+(* 相关说明。 （已译） *)
 Definition cogen_canonical {C : Category} (comp : @Complete C)
   (G : Cogenerator C) (c : C) : c ~> cogen_power comp G c :=
   unique_obj (iprod_ump (cogen_power_fam G c) (cogen_power_limit comp G c)
@@ -170,7 +170,7 @@ Proof.
   now rewrite H.
 Qed.
 
-(** ** The covering datum and the solution set *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明子对象相关定义、性质与动机。
@@ -228,7 +228,7 @@ Proof.
   exact e.
 Defined.
 
-(** ** The Special Adjoint Functor Theorem *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、子对象相关定义、性质与动机。

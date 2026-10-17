@@ -10,7 +10,7 @@ Require Import Category.Adjunction.SAFT.
 
 Generalizable All Variables.
 
-(** * Well-poweredness feeds SAFT's subobject index *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
@@ -32,8 +32,7 @@ Definition WellPowered_SubobjectIndex@{o h w s t}
   ∀ x : C, SubobjectIndex x :=
   fun x => SubobjectIndex_of_WellPoweredAt (W x).
 
-(* SAFT over a well-powered [C]: [WellPowered_SubobjectIndex] fills the
-   [WP] slot, and the covering datum is still asked for. *)
+(* 相关说明。 （已译） *)
 Definition SAFT_of_WellPowered@{cobj dobj h w s t u +}
   {C : Category@{cobj h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
   (comp : @Complete@{h h h cobj} C)

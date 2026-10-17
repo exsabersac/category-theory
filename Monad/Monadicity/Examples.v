@@ -48,9 +48,9 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(** Consequently every C-arrow intertwines any two identity-monad algebra
-    structures: both structure maps are identities, and fmap[T] is the
-    identity on morphisms. *)
+(** Consequently every C-arrow intertwines any two 恒等-单子 algebra
+ structures: both structure maps identities, fmap[T] the
+ 恒等 态射. （已译） *)
 
 Lemma identity_alg_hom_commutes {a b : C}
   (ν : @TAlgebra C T HM a) (ρ : @TAlgebra C T HM b) (f : a ~{C}~> b) :
@@ -101,9 +101,9 @@ Definition identity_counit_iso (X : EM) :
     (identity_counit_to X) (identity_counit_from X)
     (identity_counit_to_from X) (identity_counit_from_to X).
 
-(** The counit cell of the equivalence: comparing after forgetting is the
-    identity of C^T.  Naturality holds on underlying arrows, where all the
-    iso components are identities. *)
+(** The counit cell 等价: comparing after forgetting the
+ 恒等 C^T. Naturality holds underlying arrows, where all the
+ iso components identities. （已译） *)
 
 Theorem identity_equivalence_counit : K ◯ UT ≈ Id[EM].
 Proof.
@@ -112,9 +112,9 @@ Proof.
   cat.
 Qed.
 
-(** The unit cell: forgetting after comparing is U = Id[C] on the nose —
-    this is [EM_Comparison_Forget] at the identity adjunction, read
-    backwards. *)
+(** The unit cell: forgetting after comparing U = Id[C] nose —
+ 这是 [EM_Comparison_Forget] at 恒等 伴随, read
+ backwards. （已译） *)
 
 Theorem identity_equivalence_unit : Id[C] ≈ UT ◯ K.
 Proof.
@@ -122,9 +122,9 @@ Proof.
   exact (EM_Comparison_Forget A).
 Qed.
 
-(** The identity-monad witness: the Eilenberg–Moore comparison functor of
-    the identity adjunction is an equivalence of categories, quasi-inverse
-    the forgetful functor. *)
+(** The 恒等-单子 witness: Eilenberg–Moore comparison 函子 of
+ 恒等 伴随 等价 范畴, quasi-inverse
+ forgetful 函子. （已译） *)
 
 Definition identity_monadic : EquivalenceOfCategories K :=
   @Build_EquivalenceOfCategories C EM K UT
@@ -133,8 +133,8 @@ Definition identity_monadic : EquivalenceOfCategories K :=
 
 End IdentityMonadic.
 
-(** Packaged in the vocabulary of Monad/Comparison.v: the identity functor
-    is monadic. *)
+(** Packaged vocabulary Monad/Comparison.v: 恒等 函子
+ monadic. （已译） *)
 
 Definition Identity_Monadic {C : Category} : Monadic Id[C] :=
   (Id[C]; (Adjunction_Id; identity_monadic)).

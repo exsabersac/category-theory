@@ -45,7 +45,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------ *)
-(** * (A) The counit at a constant diagram is invertible *)
+(* * * (A) The counit at 常值 diagram invertible （已译） *)
 
 Section ConnectedCounit.
 
@@ -53,7 +53,7 @@ Context {J C : Category}.
 Context (L : HasColimitsOfShape J C).
 Context (K : ConnectedNonempty J).
 
-(* The counit of colim ⊣ Δ read at the constant diagram on c. *)
+(* The counit colim ⊣ Δ read at 常值 diagram c. （已译） *)
 
 Definition diagonal_counit (c : C) : colim_obj L Δ[J](c) ~{C}~> c :=
   @counit C ([J, C]) (ColimitFunctor L) (@Diagonal C J)
@@ -62,8 +62,8 @@ Definition diagonal_counit (c : C) : colim_obj L Δ[J](c) ~{C}~> c :=
 Example diagonal_counit_strict (c : C) :
   diagonal_counit c = colim_transpose_from L (id{[J, C]}) := eq_refl.
 
-(* Every triangle of the counit is an identity: the transposition takes
-   the identity transformation, whose components are [fmap[Δ] id]. *)
+(* Every triangle counit 恒等: transposition takes
+ 恒等 transformation, whose components [fmap[Δ] id]. （已译） *)
 
 Lemma diagonal_counit_commutes (c : C) (j : J) :
   diagonal_counit c ∘ colim_inj L Δ[J](c) j ≈ id.
@@ -183,9 +183,7 @@ Proof using K.
   now rewrite id_left.
 Defined.
 
-(* The [Defined] is load-bearing: with [Qed] the component family does
-   not reduce and this readback is lost (measured, by flipping it in a
-   scratch copy). *)
+(* 相关说明。 （已译） *)
 
 Example colim_diagonal_iso_Id_component (c : C) :
   `1 colim_diagonal_iso_Id c = diagonal_counit_Isomorphism L K c
@@ -194,7 +192,7 @@ Example colim_diagonal_iso_Id_component (c : C) :
 End ConnectedNatIso.
 
 (* ------------------------------------------------------------------ *)
-(** * (B) Clauses (b) and (c) of exercise 4, unconditionally *)
+(* 相关说明。 （已译） *)
 
 Section ConnectedFFI.
 
@@ -202,8 +200,8 @@ Context {J C : Category}.
 Context (L : HasColimitsOfShape J C).
 Context (K : ConnectedNonempty J).
 
-(* Injectivity on objects needs only an OBJECT of the shape: the object
-   action of a constant functor at that object IS the constant. *)
+(* Injectivity 对象 needs OBJECT shape: 对象
+ action 常值 函子 at 对象 IS 常值. （已译） *)
 
 Definition Diagonal_InjectiveOnObjects :
   InjectiveOnObjects (@Diagonal C J) :=
@@ -236,7 +234,7 @@ Definition diagonal_fully_faithful_of_counit :
 End ConnectedFFI.
 
 (* ------------------------------------------------------------------ *)
-(** * (C) The choice Mac Lane's sentence makes, and clause (a) *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -261,9 +259,9 @@ Context {J C : Category}.
 Context (j0 : J).
 Context (P : ConstantColimits J C).
 
-(* The counit clause the record does not state is derived from the
-   injection clause at ANY single object of the shape -- so this step
-   needs a point of J and no zig-zag. *)
+(* The counit clause record does not state derived the
+ injection clause at ANY single 对象 shape -- so step
+ needs point J no zig-zag. （已译） *)
 
 Lemma constant_colimits_counit (c : C) :
   diagonal_counit (cc_colim P) c ≈ id_cast (cc_obj P c).
@@ -297,9 +295,9 @@ Definition colimit_lali_ffi : LeftAdjointFFInjective (@Diagonal C J) :=
 Definition colimit_lali_ri : ReflectiveIsoPresentation (@Diagonal C J) :=
   lali_implies_ri colimit_is_lali_of_diagonal.
 
-(* The comparison at STRICT functor equality, which section (A)'s
-   natural isomorphism cannot reach.  The coherence square is
-   [colim_delta_nat] read through the derived counit clause. *)
+(* The comparison at STRICT 函子 equality, section (A)'s
+ natural 同构 cannot reach. The coherence square is
+ [colim_delta_nat] read through derived counit clause. （已译） *)
 
 Definition colim_diagonal_strict_Id :
   @equiv _ (@Functor_StrictEq_Setoid C C)
@@ -314,8 +312,8 @@ Proof using P j0.
   apply colim_delta_nat.
 Defined.
 
-(* Load-bearing for the same reason: the object-equality family of the
-   strict comparison IS the record's own. *)
+(* Load-bearing same reason: 对象-equality family the
+ strict comparison IS record's own. （已译） *)
 
 Example colim_diagonal_strict_Id_obj (c : C) :
   `1 colim_diagonal_strict_Id c = cc_obj P c := eq_refl.
@@ -323,7 +321,7 @@ Example colim_diagonal_strict_Id_obj (c : C) :
 End ConstantChoice.
 
 (* ------------------------------------------------------------------ *)
-(** * (D) The hypothesis is inhabited: shapes with a terminal object *)
+(* * * (D) The 假设 inhabited: shapes 终对象 （已译） *)
 
 Section TerminalShape.
 
@@ -350,17 +348,16 @@ Definition terminal_lali_of_diagonal :
   colimit_is_lali_of_diagonal (@terminal_obj J T)
     terminal_ConstantColimits.
 
-(* And such a shape satisfies the exercise's own hypothesis. *)
+(* And such shape satisfies exercise's own 假设. （已译） *)
 
 Definition terminal_shape_connected : ConnectedNonempty J :=
   terminal_ConnectedNonempty T.
 
 End TerminalShape.
 
-(** ** Evaluation at an object of the shape *)
+(* * ** Evaluation at 对象 shape （已译） *)
 
-(* The one obvious candidate for a strict left inverse of Δ, and the
-   subject of section 4 of the header. *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -391,8 +388,8 @@ Example colimit_is_EvalAt@{jo jh co ch +} {J : Category@{jo jh jh}}
 
 (** ** Concrete witnesses *)
 
-(* [Ordinal (S n)] has a terminal object, so it carries the choice for
-   every ambient category; at [n := 1] the shape is not degenerate. *)
+(* [Ordinal (S n)] has 终对象, so it carries choice for
+ every ambient 范畴; at [n := 1] shape not degenerate. （已译） *)
 
 Definition ordinal_ConstantColimits (n : nat) (C : Category) :
   ConstantColimits (Ordinal (S n)) C :=
@@ -406,7 +403,7 @@ Theorem ordinal_two_not_degenerate :
   ord_top 1 <> ord_bot 1.
 Proof. exact (ord_top_neq_bot 0). Qed.
 
-(* The walking arrow, through the pre-existing [Two_Terminal]. *)
+(* 相关说明。 （已译） *)
 
 Definition two_ConstantColimits (C : Category) : ConstantColimits _2 C :=
   @terminal_ConstantColimits _2 C Two_Terminal.
@@ -416,11 +413,11 @@ Definition two_lali (C : Category) :
   @terminal_lali_of_diagonal _2 C Two_Terminal.
 
 (* ------------------------------------------------------------------ *)
-(** * (E) Evaluation at a NON-terminal object is not a left adjoint *)
+(* * * (E) Evaluation at NON-终对象 not 左伴随 （已译） *)
 
-(* The diagram over the walking arrow carrying the empty type to the
-   booleans.  Built with Theory/Shapes.v's [Walk], so no functor laws
-   are discharged here. *)
+(* The diagram over walking arrow carrying empty type the
+ booleans. Built Theory/Shapes.v's [Walk], so no 函子 laws
+ discharged here. （已译） *)
 
 Definition TwoGap : _2 ⟶ Coq :=
   @Walk Coq (Empty_set : Coq) (bool : Coq)
@@ -429,8 +426,8 @@ Definition TwoGap : _2 ⟶ Coq :=
 Example TwoGap_X : fobj[TwoGap] TwoX = Empty_set := eq_refl.
 Example TwoGap_Y : fobj[TwoGap] TwoY = bool := eq_refl.
 
-(* [_2] is connected and inhabited, so this refutes the candidate at a
-   shape meeting every hypothesis of the exercise. *)
+(* [_2] connected inhabited, so refutes candidate at a
+ shape meeting every 假设 exercise. （已译） *)
 
 Theorem eval_not_left_adjoint :
   @EvalAt _2 Coq TwoX ⊣ @Diagonal Coq _2 → False.
@@ -446,7 +443,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------ *)
-(** * (F) The dual: Δ is a left-adjoint-right-inverse of the limit *)
+(* 相关说明。 （已译） *)
 
 Section ConnectedUnit.
 
@@ -547,8 +544,8 @@ Example lari_obj_strict (c : C) :
 
 End ConstantLimitChoice.
 
-(* Inhabited whenever the SHAPE has an initial object -- the mirror of
-   section (D), and such a shape is connected. *)
+(* Inhabited whenever SHAPE has 始对象 -- 镜像 of
+ section (D), such shape connected. （已译） *)
 
 Section InitialShape.
 
@@ -576,7 +573,7 @@ Definition initial_lari_of_limit :
 
 End InitialShape.
 
-(* Witnesses: the point, and the infinite chain omega. *)
+(* 相关说明。 （已译） *)
 
 Definition one_ConstantLimits (C : Category) : ConstantLimits _1 C :=
   @initial_ConstantLimits _1 C One_Initial.
@@ -591,11 +588,11 @@ Definition omega_lari (C : Category) :
   @initial_lari_of_limit Omega C Omega_Initial.
 
 (* ------------------------------------------------------------------ *)
-(** * (G) The regression: connectedness cannot be dropped *)
+(* 相关说明。 （已译） *)
 
-(* Every statement below is for an ARBITRARY choice of colimits over the
-   two-object discrete shape, so none of them turns on which colimits
-   were chosen. *)
+(* Every statement below ARBITRARY choice colimits over the
+ two-对象 discrete shape, so none them turns colimits
+ were chosen. （已译） *)
 
 Theorem two_discrete_counit_not_iso
   (L : HasColimitsOfShape Two_Discrete Coq) :
@@ -631,8 +628,8 @@ Proof.
            (colimit_is_lali_of_diagonal (TwoDX : Two_Discrete) P)).
 Qed.
 
-(* And the shape is inhabited, so what goes is connectedness and not
-   the point: [TwoDX] above is a genuine object of it. *)
+(* And shape inhabited, so what goes connectedness not
+ point: [TwoDX] above genuine 对象 it. （已译） *)
 
 Theorem two_discrete_objects_distinct : (TwoDX : Two_Discrete) = TwoDY
   → False.

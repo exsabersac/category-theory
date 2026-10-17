@@ -36,9 +36,9 @@ Program Definition Hom `(C : Category) : C^op ∏ C ⟶ Sets := {|
   fobj := fun p => {| carrier   := @hom C (fst p) (snd p)
                     ; is_setoid := @homset (C) (fst p) (snd p) |};
   fmap := fun x y (f : x ~{C^op ∏ C}~> y) =>
-            (* g ↦ snd f ∘ g ∘ fst f: post-compose with the C-component
-               (covariant in the second argument), pre-compose with the
-               C^op-component (contravariant in the first). *)
+            (* g ↦ snd f ∘ g ∘ fst f: post-compose C-component
+ (covariant second 论元), pre-compose the
+ C^op-component (contravariant first). （已译） *)
             {| morphism := fun g => snd f ∘ g ∘ fst f |}
 |}.
 Next Obligation. now rewrite !comp_assoc. Qed.

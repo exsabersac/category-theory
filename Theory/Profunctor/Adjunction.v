@@ -50,8 +50,8 @@ Definition repr_iso_to_adjunction
   (iso : Repr_left F ≅[[D^op ∏ C, Sets]] Repr_right U) : F ⊣ U :=
   @Adjunction_Hom_to_Universal C D F U {| hom_adj := iso |}.
 
-(* The representability criterion for adjunctions as a Type-valued iff (↔ is
-   iffT here), bundling the two conversions above. *)
+(* The representability criterion 伴随 Type-valued iff (↔ is
+ iffT here), bundling two conversions above. （已译） *)
 Definition representable_adjunction :
   (F ⊣ U) ↔ (Repr_left F ≅[[D^op ∏ C, Sets]] Repr_right U) :=
   (adjunction_to_repr_iso, repr_iso_to_adjunction).

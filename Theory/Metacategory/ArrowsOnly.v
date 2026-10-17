@@ -189,9 +189,9 @@ Proof.
   reflexivity.
 Qed.
 
-(* Every meta-category, defined wholly in terms of the axioms of category
-   theory, gives rise to a category interpreted in the context of set
-   theory. *)
+(* Every meta-范畴, defined wholly terms axioms 范畴
+ theory, gives rise 范畴 interpreted context set
+ theory. （已译） *)
 
 Program Definition Category_from_Metacategory : Category := {|
   obj     := object;
@@ -324,7 +324,7 @@ Definition composable_pairs_step (n : N) (z : M.t N) : M.t N :=
 Definition composable_pairs : N → M.t N :=
   N.peano_rect _ (M.empty _) (λ n, composable_pairs_step (N.succ n)).
 
-(* The number of composable pairs, for objects N, is the tetrahedral_number *)
+(* The number composable pairs, 对象 N, tetrahedral_number （已译） *)
 Definition tetrahedral_number (n : N) := (n * (n + 1) * (n + 2)) / 6.
 
 #[local] Obligation Tactic :=

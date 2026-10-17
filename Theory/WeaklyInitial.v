@@ -13,7 +13,7 @@ Require Import Category.Construction.Opposite.
 
 Generalizable All Variables.
 
-(** * From a weakly initial family to a genuine initial object *)
+(* * * From weakly initial family genuine 始对象 （已译） *)
 
 (* nLab:      https://ncatlab.org/nlab/show/initial+object
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functor_theorem
@@ -81,7 +81,7 @@ Theorem initial_from_weakly_initial@{lim idx obj h +}
               => iprod (wif_obj W) P)))
   (E : HasEqualizers C) : @Initial C.
 Proof.
-  (* Abbreviate the product object and fold it into [Pe]'s index. *)
+  (* Abbreviate product 对象 fold it [Pe]'s index. （已译） *)
   set (P0 := iprod (wif_obj W) P) in *.
 
   (* Weak initiality of [P0]: a chosen map into every object.  [wif_obj W] is
@@ -104,7 +104,7 @@ Proof.
   assert (Hd : ∀ u : P0 ~> P0, power_ev_of_limit P0 Pe u ∘ d ≈ id[P0])
     by exact Hd0.
 
-  (* The binary equalizer of the two tuplings. *)
+  (* 相关说明。 （已译） *)
   destruct (@equalizer C E P0 (power_of_limit P0 Pe) m d) as [I [e Eeq]].
 
   (* Every endomorphism of [P0] is absorbed by the equalizer inclusion. *)
@@ -131,9 +131,9 @@ Proof.
     exact (wmap x ∘ e).
   - (* uniqueness: any two [f g : I ~> x] agree *)
     intros x f g.
-    (* read the goal in [C]: [f], [g] are [C]-morphisms [I ~> x] *)
+    (* read goal [C]: [f], [g] [C]-态射 [I ~> x] （已译） *)
     change (unop f ≈ unop g).
-    (* the binary equalizer of the competing pair *)
+    (* 相关说明。 （已译） *)
     destruct (@equalizer C E I x f g) as [K [k Ek]].
     (* weak initiality supplies a map [P0 ~> K] *)
     pose (s := wmap K).
@@ -153,7 +153,7 @@ Proof.
     { transitivity ((k ∘ s) ∘ e).
       - apply comp_assoc.
       - exact Hk. }
-    (* [k] equalizes [f] and [g] and is (split) epic, so [f ≈ g] *)
+    (* 相关说明。 （已译） *)
     transitivity (unop f ∘ (k ∘ (s ∘ e))).
     + transitivity (unop f ∘ id[I]).
       * symmetry; apply id_right.
@@ -175,17 +175,15 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* [Structure.Complete] for the convenience wrapper; [Instance.Parallel]
-   for the separator (already in this file's closure through
-   Structure/Equalizer/Fork.v). *)
+(* 相关说明。 （已译） *)
 Require Import Category.Structure.Complete.
 Require Import Category.Instance.Parallel.
 
-(** ** A weakly initial object (Riehl Definition 4.7.4) *)
+(* * ** A weakly 始对象 (Riehl Definition 4.7.4) （已译） *)
 
-(* One object with an arrow to every object, no uniqueness.  A weakly
-   initial family is the jointly weakly initial version: [wif_cover] picks
-   its own member per target. *)
+(* One 对象 arrow every 对象, no uniqueness. A weakly
+ initial family jointly weakly initial version: [wif_cover] picks
+ own member per target. （已译） *)
 Definition WeaklyInitial {C : Category} (c : C) : Type := ∀ x : C, c ~> x.
 
 Definition weakly_initial_obj_of_initial {C : Category} (I : @Initial C) :
@@ -197,25 +195,24 @@ Definition wif_of_weakly_initial {C : Category} {c : C} (w : WeaklyInitial c) :
    ; wif_obj   := fun _ => c
    ; wif_cover := fun x => (ttt; w x) |}.
 
-(* The product of a weakly initial family is a weakly initial object: the
-   [wmap] the proof above builds inline, now named. *)
+(* The product weakly initial family weakly 始对象: the
+ [wmap] 证明 above builds inline, now named. （已译） *)
 Definition weakly_initial_iprod {C : Category} (W : WeaklyInitialFamily C)
   (P : Limit (DiscreteCat_Functor (wif_obj W))) :
   WeaklyInitial (iprod (wif_obj W) P) :=
   fun c => projT2 (wif_cover W c)
              ∘ iprod_proj (wif_obj W) P (projT1 (wif_cover W c)).
 
-(** ** Necessity: an initial object is a singleton weakly initial family *)
+(* * ** Necessity: 始对象 singleton weakly initial family （已译） *)
 
-(* Written directly rather than through [wif_of_weakly_initial]: the direct
-   form has an empty universe constraint block and one binder fewer. *)
+(* 相关说明。 （已译） *)
 Definition weakly_initial_of_initial {C : Category} (I : @Initial C) :
   WeaklyInitialFamily C :=
   {| wif_index := poly_unit
    ; wif_obj   := fun _ => @initial_obj C I
    ; wif_cover := fun x => (ttt; @zero C I x) |}.
 
-(* The family is built from the initial object, on the nose. *)
+(* The family built 始对象, nose. （已译） *)
 Example weakly_initial_of_initial_index {C : Category} (I : @Initial C) :
   wif_index (weakly_initial_of_initial I) = poly_unit := eq_refl.
 
@@ -229,9 +226,7 @@ Example weakly_initial_of_initial_cover {C : Category} (I : @Initial C)
 
 (** ** The biconditional *)
 
-(* The Freyd inputs, per family, so smallness stays caller-chosen: the
-   product of the family and the product of the endomorphisms of that
-   product (the second index depends on the first). *)
+(* 相关说明。 （已译） *)
 Definition FreydProducts (C : Category) : Type :=
   ∀ W : WeaklyInitialFamily C,
     { P : Limit (DiscreteCat_Functor (wif_obj W))
@@ -239,8 +234,7 @@ Definition FreydProducts (C : Category) : Type :=
                (fun _ : iprod (wif_obj W) P ~> iprod (wif_obj W) P
                 => iprod (wif_obj W) P)) }.
 
-(* Transparent, so that each direction can be read back: the forward one
-   IS [weakly_initial_of_initial]. *)
+(* 相关说明。 （已译） *)
 Definition initial_iff_weakly_initial_family {C : Category}
   (Ps : FreydProducts C) (E : HasEqualizers C) :
   @Initial C ↔ WeaklyInitialFamily C.
@@ -257,7 +251,7 @@ Example initial_iff_weakly_initial_family_fst {C : Category}
   fst (initial_iff_weakly_initial_family Ps E) I = weakly_initial_of_initial I
   := eq_refl.
 
-(** ** The convenience wrapper: the two products from completeness *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、等化子相关定义、性质与动机。
@@ -296,7 +290,7 @@ Example initial_iff_weakly_initial_family_complete_fst {C : Category}
   fst (initial_iff_weakly_initial_family_complete HC E) I
     = weakly_initial_of_initial I := eq_refl.
 
-(** ** Weakly initial is strictly weaker than initial *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明始/终对象相关定义、性质与动机。

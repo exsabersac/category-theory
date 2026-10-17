@@ -16,28 +16,23 @@ Context `{C : Category}.
    nLab: https://ncatlab.org/nlab/show/universal+property
    Wikipedia: https://en.wikipedia.org/wiki/Product_(category_theory)
 
-   A cartesian category is a category equipped with finite products. This
-   class axiomatizes the binary product; the nullary product (the terminal
-   object 1) is supplied separately by [Terminal] and used below for the
-   unitor isomorphisms [prod_one_l] and [prod_one_r].
+   笛卡尔范畴是配备有限积的范畴。本类公理化二元积；零元积（终对象 1）由
+   [Terminal] 另行提供，下文用于单位同构 [prod_one_l] 与 [prod_one_r]。
 
-   The product x × y is characterized by its universal mapping property. It
-   comes with two projections,
+   积 x × y 由其普遍映射性质刻画。它带有两个投影，
 
        exl : x × y ~> x        exr : x × y ~> y,
 
-   and for any object x with morphisms f : x ~> y and g : x ~> z there is a
-   pairing ⟨f, g⟩ (written [fork f g], notation f △ g) factoring f and g
-   through the projections. The UMP records this factorization together with
-   its uniqueness as the biconditional [ump_products]:
+   且对任意对象 x 与态射 f : x ~> y、g : x ~> z，存在配对 ⟨f, g⟩（写作
+   [fork f g]，记号 f △ g），经投影分解 f 与 g。UMP 把该分解及其唯一性记为
+   双条件 [ump_products]：
 
        h ≈ ⟨f, g⟩  ↔  exl ∘ h ≈ f  ∧  exr ∘ h ≈ g.
 
-   Read left-to-right, h = ⟨f, g⟩ satisfies the two projection equations
-   (existence). Read right-to-left, any h satisfying both equations is equal
-   to ⟨f, g⟩ (uniqueness of the mediating morphism). The familiar identities
-   exl ∘ ⟨f, g⟩ ≈ f and exr ∘ ⟨f, g⟩ ≈ g ([exl_fork], [exr_fork]) and the
-   eta law ⟨exl, exr⟩ ≈ id ([fork_exl_exr]) are corollaries derived below. *)
+   从左到右，h = ⟨f, g⟩ 满足两条投影方程（存在性）。从右到左，满足两方程的
+   任意 h 等于 ⟨f, g⟩（中介态射的唯一性）。熟知恒等式 exl ∘ ⟨f, g⟩ ≈ f 与
+   exr ∘ ⟨f, g⟩ ≈ g（[exl_fork]、[exr_fork]）以及 eta 律 ⟨exl, exr⟩ ≈ id
+   （[fork_exl_exr]）是下文派生的推论。 *)
 
 (* Where the product comes from, and what it is for
 

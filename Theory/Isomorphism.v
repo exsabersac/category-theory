@@ -12,27 +12,19 @@ Context {C : Category@{o h p}}.
 (* nLab: https://ncatlab.org/nlab/show/isomorphism
    Wikipedia: https://en.wikipedia.org/wiki/Isomorphism
 
-   An isomorphism `x ≅ y` is a morphism `to : x ~> y` equipped with a
-   two-sided inverse `from : y ~> x`, witnessed by `to ∘ from ≈ id`
-   (iso_to_from) and `from ∘ to ≈ id` (iso_from_to). Because identities are
-   isomorphisms (iso_id), the inverse of an isomorphism is an isomorphism
-   (iso_sym), and a composite of isomorphisms is an isomorphism (iso_compose),
-   the relation `≅` is an equivalence relation on objects (iso_equivalence).
-   As elsewhere in the library the inverse laws use the hom-setoid equivalence
-   `≈` rather than Coq's `=`. *)
+   同构 `x ≅ y` 是配备双侧逆 `from : y ~> x` 的态射 `to : x ~> y`，由
+   `to ∘ from ≈ id`（iso_to_from）与 `from ∘ to ≈ id`（iso_from_to）见证。
+   因恒等是同构（iso_id）、同构的逆是同构（iso_sym）、同构的复合是同构
+   （iso_compose），关系 `≅` 是对象上的等价关系（iso_equivalence）。与库中别处一样，
+   逆定律使用 hom-setoid 等价 `≈` 而非 Coq 的 `=`。 *)
 
-(* This defines what it means for two objects in a category to be
-   "isomorphic". This requires both witnesses to the isomoprhism, and proof
-   their compositions are equivalent to identity in both directions. Since
-   this is a computationally relevant definition, having an isomorphism allows
-   for conversion of objects within definitions.
+(* 这定义范畴中两对象「同构」意味着什么。需要同构的双方见证，以及它们的复合
+   在两方向都等价于恒等的证明。因这是计算相关定义，拥有同构允许在定义内转换对象。
 
-   An isomorphism in Cat is the same as an equivalence of categories. In order
-   to get actual isomorphism between categories, the compositions F ○ G and G
-   ○ F need to be equal, rather than equivalent, to identity. Since this is
-   usually too strong a notion, it does not have its own abstraction here. *)
+   Cat 中的同构与范畴等价相同。要得到范畴之间真正的同构，复合 F ○ G 与 G ○ F
+   需相等（而非等价）于恒等。这通常过强，故此处没有单独抽象。 *)
 
-(* Sameness up to isomorphism: history, principle, and reach
+(* 同构意义下的相同：历史、原则与范围
 
    nLab:  https://ncatlab.org/nlab/show/principle+of+equivalence
    nLab:  https://ncatlab.org/nlab/show/core
@@ -41,80 +33,21 @@ Context {C : Category@{o h p}}.
           Trans. Amer. Math. Soc. 58, 1945
    Essay: Mazur, "When is one thing equal to some other thing?", 2007
 
-   The word predates the theory.  Built from the Greek isos (equal) and
-   morphe (form), it reached mathematics from crystallography: per Jeff
-   Miller's Earliest Known Uses survey, geology texts before 1864 already
-   spoke of the geometrical isomorphism of crystals, Camille Jordan's
-   Traité des substitutions (1870) called one group "isomorphe" to
-   another, and Walther von Dyck used it in his Gruppentheoretische
-   Studien (1882).  The founding paper of category theory then renamed the
-   concept: Eilenberg and Mac Lane (1945) say "equivalence" for an
-   invertible morphism, prove as their Lemma 1.4 that its left and right
-   inverses coincide and are unique, and remark that the resulting
-   relation between objects is reflexive, symmetric and transitive.  This
-   file restates those opening lemmas in setoid form:
-   [comp_inverse_unique] is Lemma 1.4, and [iso_equivalence] is the
-   equivalence-relation remark, recorded on objects as [ob_setoid].
+   该词早于理论。由希腊语 isos（相等）与 morphe（形式）构成，从晶体学进入数学：
+   据 Jeff Miller 的 Earliest Known Uses 调查，1864 年前地质文本已谈晶体的几何同构，
+   Camille Jordan 的 Traité des substitutions (1870) 称一群「isomorphe」于另一群，
+   Walther von Dyck 在 Gruppentheoretische Studien (1882) 中使用。范畴论奠基论文随后
+   重命名该概念：Eilenberg 与 Mac Lane (1945) 对可逆态射说「等价」，作为 Lemma 1.4
+   证明其左右逆重合且唯一，并注记所得对象关系自反、对称、传递。本文件以 setoid 形式
+   重述那些开篇引理：[comp_inverse_unique] 是 Lemma 1.4，[iso_equivalence] 是等价关系
+   注记，在对象上记为 [ob_setoid]。
 
-   The concept decides when two objects are the same for categorical
-   purposes.  "The major concept that replaces equality in the context of
-   categories is isomorphism", and it is "usually either quixotic, or
-   irrelevant" to ask whether two objects are equal; the pertinent request
-   is "a specific isomorphism from X to Y" (Mazur, "When is one thing equal
-   to some other thing?", 2007).  Makkai's Principle of Isomorphism asks
-   that every grammatically correct property of objects be invariant under
-   isomorphism, Aczel's Structure Identity Principle states the same for
-   structures, and Voevodsky's univalence axiom makes the invariance
-   automatic by identifying equivalences with inhabitants of the identity
-   type (nLab, principle of equivalence).  Mazur's insistence on a
-   specific isomorphism is the stance [Isomorphism] takes: a Class landing
-   in Type — the data [to] and [from] with the two inverse laws — rather
-   than a bare existence statement; his example is the two constructions
-   of the algebraic closure of F₂, abstractly isomorphic yet with no way
-   of pinpointing a specific isomorphism.  [IsIsomorphism] keeps the
-   predicate reading available when only invertibility of a given morphism
-   is at issue.
-
-   The payoff theorem is uniqueness of universal objects: "representing
-   objects qua representations are unique up to unique isomorphism.
-   Hence, limits qua limits are unique up to unique isomorphism" (Riehl,
-   "A survey of categorical concepts").  In this library the statement is
-   [univ_property_unique_up_to_unique_iso] in Structure/UniversalProperty.v,
-   and its simplest instance is terminality: the file
-   Structure/UniversalProperty/Terminal.v supplies
-   [TerminalIsUniversalProperty] (and the initial dual
-   [InitialIsUniversalProperty]), from which
-   [terminal_unique_up_to_unique_iso_via_UP]
-   recovers the concrete statement proved directly in
-   Structure/Terminal.v.  Isomorphisms also
-   occur as structure rather than property: the coherence cells
-   [unit_left], [unit_right] and [tensor_assoc] of Structure/Monoidal.v are
-   fields of type ≅, chosen data that a monoidal category carries.
-
-   Discarding the non-invertible morphisms of a category leaves its core,
-   the maximal subgroupoid; the core construction is right adjoint to the
-   inclusion of groupoids into categories (nLab, core).
-   Construction/Groupoid.v builds it from this file directly, taking
-   [iso_setoid] for its hom-setoids and [iso_id] and [iso_compose] for
-   identity and composition.  Groupoids themselves predate category theory:
-   Brandt introduced and named them in a 1926/27 paper on the composition
-   of quadratic forms in four variables, and they have since unified
-   internal and external symmetry, from group actions to Grothendieck's
-   moduli problems (Weinstein, "Groupoids: unifying internal and external
-   symmetry", Notices Amer. Math. Soc. 1996).
-
-   The computational reading extends the remark in the header above.  A
-   term of type x ≅ y is a transport device, the same data as the Iso
-   optic of Haskell's lens library, built "from a pair of inverse
-   functions" (Kmett, Control.Lens.Iso); type isomorphisms — those holding
-   in every cartesian closed category — likewise let function libraries be
-   searched by type modulo isomorphism (Rittri, "Using types as search
-   keys in function libraries", JFP 1991; Di Cosmo, "Isomorphisms of
-   Types", Birkhäuser 1995).  Transport along an isomorphism is well
-   defined because inverses are unique: [to_equiv_implies_iso_equiv] shows
-   an isomorphism is determined up to [iso_equiv] by its [to] component
-   alone, the setoid-local shadow of the homotopy-type-theoretic fact that
-   being an isomorphism is a proposition (nLab, isomorphism). *)
+   该概念决定两对象在范畴目的下何时相同。「在范畴语境中取代相等的主要概念是同构」
+   （nLab, principle of equivalence）：可对同构陈述的性质对同构对象同样成立，而不依赖
+   「严格相等」的选择。本文件的 [iso_to] / [iso_from] 见证与 [ob_setoid] 使库其余部分
+   可按该原则运作；Cat 中的同构是范畴等价（见上文短注），真正的范畴同构需更强
+   （StrictCat）。[iso_compose]、[iso_sym]、[iso_id] 使 ≅ 成为对象上的等价；转换
+   （transport）因定义计算相关而可在构造中使用。 *)
 
 Class Isomorphism (x y : C) : Type := {
   to   : x ~> y;            (* the forward morphism x ~> y *)

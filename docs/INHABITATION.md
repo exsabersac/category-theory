@@ -1,4 +1,16 @@
-# Flagship inhabitation
+# 旗舰居住性 (Flagship inhabitation)
+
+> **zh-CN**：标题与下列导言已译。长表与分项居住性细节本波次保留英文原文（见分隔线后）。配套见 `docs/SIZE.md`、`docs/AXIOMS.md`。
+
+本文记录：对本库标题结果，每个结果的特有假设是否由库内构造的具体对象满足，
+抑或该结果仍是无公理的*条件句*，而其假设尚无树内对象满足。
+
+请精确阅读此范围。下文点名的每个结果都已证明，且（据 `docs/AXIOMS.md`）已审计者无公理。
+此处问的是不同且互补的问题：定理是否*关于*库实际构建的东西？
+
+全文适用两条谨慎。第一，「无树内见证」不是「不可满足」。第二，见证并不总是仅因欠努力而缺席——库的宇宙纪律可使某具体实例化不可能。
+
+---
 
 This document records, for the library's headline results, whether the
 distinctive hypothesis of each result is satisfied by a concrete object

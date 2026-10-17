@@ -6,21 +6,49 @@ Require Import Equations.Prop.Logic.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/functor
-   Wikipedia: https://en.wikipedia.org/wiki/Functor
+(* 函子从何而来，以及用途为何
 
-   A functor F : C ⟶ D assigns to each object x : C an object F x : D and to
-   each morphism f : x ~> y a morphism fmap f : F x ~> F y, subject to the two
-   functoriality laws fmap id ≈ id (fmap_id) and fmap (f ∘ g) ≈ fmap f ∘ fmap g
-   (fmap_comp). Because hom-sets here are setoids, the morphism mapping must
-   also respect ≈ (fmap_respects); the equational laws above use ≈ rather than
-   = throughout. Functoriality forces functors to preserve isomorphisms (see
-   [fobj_iso] below).
+   SEP:  https://plato.stanford.edu/entries/category-theory/
+   nLab: https://ncatlab.org/nlab/show/General+Theory+of+Natural+Equivalences
 
-   Note that there are many species of functor, one each for the various
-   categorical structures (included below), for example, the `CartesianFunctor`
-   that maps products to products and preserves all its structural properties
-   and laws. *)
+   函子是范畴论的创始概念，而非派生概念。范畴、函子与自然变换一同进入数学，
+   见于（Eilenberg, Mac Lane, "General theory of natural equivalences",
+   Transactions of the American Mathematical Society 58, 1945）——nLab 上页
+   称为范畴论奠基文献——提炼自他们 "Group Extensions and Homology"
+   （Annals of Mathematics, 1942）在群层级的计算。作者对观念顺序很明确：
+   「范畴的整个概念本质上是辅助性的」（SEP 条目引述），基本概念是函子与
+   自然变换。范畴存在是为了让函子有定义域与陪域，函子存在是为了能陈述自然性。
+   词本身借自 Rudolf Carnap，他在 The Logical Syntax of Language (1937) 中
+   用于语言学概念，Mac Lane《Categories for the Working Mathematician》
+   （Springer, 1971）第 30 页有记载。
+
+   函子是范畴的同态概念——nLab 将其框为同态概念的水平范畴化——其目的是双面的。
+   向外读，函子把整个局面从一数学世界运到另一世界，同调把空间带到群是创始例子；
+   由 [fobj_iso] 记录的同构保持可知，封装为函子的不变量永远无法区分同构对象。
+   向内读，进入某范畴的函子是图：C 中类型为 J 的图是从 J 到 C 的共变函子
+   （Wikipedia, "Functor"），Structure/Limit.v 正取这样的 F : J ⟶ C 作为形成极限的形状。
+   因 [Compose] 以 [Id] 为单位至多在 [Functor_Setoid] 的自然同构下结合
+   （[fun_equiv_id_left]、[fun_equiv_id_right]、[fun_equiv_comp_assoc]），
+   范畴自身组装成 Instance/Cat.v 的范畴 Cat，函子是其态射。本文件是该组装的定义层。
+
+   应用跟踪两种读法。到 Sets 的反变函子是预层（nLab），其中 Functor/Hom.v 的
+   hom 函子及由其建造的 Yoneda 嵌入是典范例子；从单对象范畴 BG 到向量空间的函子
+   恰是群 G 的线性表示（nLab）；Lawvere 的函子语义通过把理论取为有限积范畴、
+   把模型取为出之的保积函子来重铸泛代数（Lawvere, "Functorial Semantics of
+   Algebraic Theories", PhD thesis, Columbia 1963; TAC Reprints No. 5, 2004），
+   该视角在 Theory/Lawvere/Model.v 中基于本文件实现。文首所宣传的保结构「种」
+   住在 Functor/Structure/ 下。
+
+   计算读法是真实的。在带类型函数式编程中，类型构造子是对象映射、fmap 是态射映射，
+   两条定律留给程序员的证明义务，由等词推理验证（Milewski, "Functors", 2015）；
+   本文件因此附带仅解析用的 Haskell 拼写 <$>、<\$ 与 <&>，Theory/Coq/Functor.v
+   承载该传统的仅 fmap 类，定律按实例消解。在 Haskell 中第二定律冗余，可由第一定律
+   与 fmap 类型的 free theorem 导出（通常需对 bottom 与 seq 谨慎；Luposchainsky,
+   "The second functor law is redundant"）。在带 setoid hom 集的任意范畴上无此参数性，
+   故此处 [fmap_comp] 是类的真正义务，并出现 Haskell 使之不可见的第三定律 [fmap_respects]。
+   同一 setoid 设计决定函子相等意味着什么：不是对象的逐点恒等，而是自然同构
+   （[Functor_Setoid]）；更严格的基于 transport 的替代留到本文件末尾的
+   [Functor_StrictEq_Setoid]。 *)
 
 (* Where functors come from, and what they are for
 

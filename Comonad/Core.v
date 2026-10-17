@@ -7,30 +7,23 @@ Require Import Category.Functor.Opposite.
 
 Generalizable All Variables.
 
-(** * Comonads: the covariant API *)
+(** * 余单子：共变 API *)
 
 (* nLab:      https://ncatlab.org/nlab/show/comonad
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)#Comonads
 
-   A comonad on a category C is an endofunctor W : C ⟶ C equipped with a
-   counit ε : W ⟹ Id (here [extract]) and a comultiplication δ : W ⟹ W ○ W
-   (here [duplicate]), subject to the two counit laws ε ∘ δ ≈ id and
-   W ε ∘ δ ≈ id, and to coassociativity δ ∘ δ ≈ W δ ∘ δ (writing W ε and W δ
-   for the fmap image of a component, and reading each composite through the
-   appropriate instance of W).
+   范畴 C 上的余单子是配备余单位 ε : W ⟹ Id（此处 [extract]）与余乘法
+   δ : W ⟹ W ○ W（此处 [duplicate]）的自函子 W : C ⟶ C，服从两条余单位律
+   ε ∘ δ ≈ id 与 W ε ∘ δ ≈ id，以及余结合律 δ ∘ δ ≈ W δ ∘ δ（写 W ε、W δ 为
+   分量的 fmap 像，各复合经适当 W 实例阅读）。
 
-   Theory/Monad.v defines [Comonad := @Monad (C^op) (W^op)]: a comonad is
-   exactly a monad on the opposite category.  Because duality is built into
-   this library so that C^op^op = C holds by reflexivity, each comonad law IS
-   the corresponding monad law with its composites read backwards — no
-   separate record is needed, and none is introduced here.  This file
-   provides the covariant reading of that definition: the accessors
-   [extract], [duplicate] and [extend] are definitional op-reads of [ret],
-   [join] and [bind], and every law below is the corresponding monad law
-   transported by [exact] (at most up to symmetry of ≈, where the op-read
-   arrives in the reversed orientation). *)
+   Theory/Monad.v 定义 [Comonad := @Monad (C^op) (W^op)]：余单子恰是对偶范畴上的单子。
+   因本库对偶使 C^op^op = C 由 reflexivity 成立，每条余单子定律就是对应单子定律把复合
+   反向阅读——无需单独 record，此处也不引入。本文件提供该定义的共变读法：访问器
+   [extract]、[duplicate] 与 [extend] 是 [ret]、[join] 与 [bind] 的定义性 op-读，
+   下文每条定律是经 [exact] 运送的对应单子定律（至多差 ≈ 的对称，因 op-读以反向到达）。 *)
 
-(* Where comonads come from, and what they are for
+(* 余单子从何而来，以及用途为何
 
    nLab:  https://ncatlab.org/nlab/show/comonad
    Paper: Eilenberg, Moore, "Adjoint functors and triples", Illinois
@@ -38,74 +31,27 @@ Generalizable All Variables.
    Paper: Uustalu, Vene, "Comonadic Notions of Computation", ENTCS 203(5),
           2008
 
-   Three views of the same structure organize everything below: the
-   algebraic, the categorical, and the computational.
+   同一结构的三种视角组织下文一切：代数的、范畴的与计算的。
 
-   Algebraically, a comonad on C is a comonoid in the monoidal category
-   of endofunctors of C, with composition as tensor and Id as unit:
-   [duplicate] is the comultiplication, [extract] is the counit, and the
-   laws below are the comonoid axioms and nothing more.  The reading
-   generalizes to any 2-category E — a comonad on an object X is a
-   comonoid in the hom-category E(X, X) — and this file is the case
-   E = Cat.  The terminology has accumulated in layers: Godement
-   introduced the monad-side notion in 1958 as the "standard
-   construction"; Eilenberg and Moore wrote "triple" in 1965, whence the
-   older synonym "cotriple" for comonads; and the now-standard name
-   "monad" is due to Bénabou (1967).
+   代数上，C 上的余单子是 C 的自函子幺半范畴中的余幺半群，以复合为张量、Id 为单位：
+   [duplicate] 是余乘法，[extract] 是余单位，下文定律恰是余幺半群公理。该读法推广到
+   任意 2-范畴 E——对象 X 上的余单子是 hom-范畴 E(X, X) 中的余幺半群——本文件是 E = Cat
+   的情形。术语层层累积：Godement 1958 在单子侧引入「标准构造」；Eilenberg 与 Moore
+   1965 写「triple」，故余单子有更老同义词「cotriple」；现标准名「monad」归功于
+   Bénabou (1967)。
 
-   Categorically, comonads are the residue that an adjunction leaves on
-   the codomain of its left adjoint.  Every adjunction F ⊣ U induces a
-   comonad there — the endofunctor is F ◯ U, the counit is the
-   adjunction counit ε : F ◯ U ⟹ Id, and the comultiplication is the
-   whiskered unit F η U — an observation that goes back to Huber (1961)
-   and is realized in this library as [Adjunction_Comonad] in
-   Comonad/Duality.v.  Every comonad so arises, and in two canonical
-   ways: the co-Kleisli and co-Eilenberg–Moore resolutions, obtained by
-   duality in Comonad/Duality.v ([CoKleisli_Adjunction],
-   [CoEM_Adjunction]) over the categories built in Comonad/CoKleisli.v
-   and Comonad/Coalgebra.v.
+   范畴上，余单子是伴随在其左伴随陪域上留下的残渣。每个伴随 F ⊣ U 在彼处诱导余单子——
+   自函子是 F ◯ U，余单位是伴随余单位 ε : F ◯ U ⟹ Id，余乘法是 whiskered 单位 F η U——
+   该观察可追溯到 Huber (1961)，本库实现为 Comonad/Duality.v 的 [Adjunction_Comonad]。
+   每个余单子都如此产生，且有两种典范方式：co-Kleisli 与 co-Eilenberg–Moore 分解，
+   由 Comonad/Duality.v（[CoKleisli_Adjunction]、[CoEM_Adjunction]）对偶得到，范畴建于
+   Comonad/CoKleisli.v 与 Comonad/Coalgebra.v。
 
-   Computationally, a comonadic value is a value in an observable
-   context.  Where a monadic value T x is a computation that may perform
-   effects while producing an x, a value W x is an x situated in a
-   context that can be read off and re-exposed: [extract] reads the
-   value at the current context, [duplicate] re-exposes the whole
-   context at every point of itself, and [extend] promotes a
-   context-consuming observation W x ~> y to a context-preserving
-   transformation W x ~> W y by running the observation everywhere.
-   Comonads therefore structure context-dependent computation in the
-   same sense that Moggi-style monads structure effectful computation
-   (Uustalu–Vene 2008), and the coeffect calculi of Petricek, Orchard
-   and Mycroft (ICFP 2014) make the duality a type discipline, tracking
-   what a program requires from its context as effect systems track
-   what it does to its surroundings.
-
-   The applications follow the three views.  From the computational
-   reading come the programming uses: dataflow, where general and causal
-   stream functions are the co-Kleisli arrows of stream comonads
-   (Uustalu–Vene, APLAS 2005; see Comonad/CoKleisli.v); cellular
-   automata, where one step of the automaton is [extend] of the local
-   rule over a zipper of cells (Piponi, 2006); spreadsheet-like
-   recurrences, evaluated by a comonadic fixed point in which every cell
-   observes its own context within the whole (Foner, Haskell Symposium
-   2015); and user interfaces, where a comonad models the space of
-   states of an application, [extract] renders the current one, and a
-   paired monad moves through the space (Freeman, 2016).  From the
-   algebraic reading, through its coalgebras, comes the connection to
-   data access: the coalgebras of the store comonad are exactly the
-   lawful lenses of functional programming (O'Connor, 2011; see
-   Comonad/Coalgebra.v and Instance/Coq/Comonad/Store.v).  From the
-   adjunction reading come the mathematical uses: in linear logic the
-   exponential modality ! is a comonad whose co-Kleisli category
-   interprets intuitionistic logic (Girard 1987; Seely 1989; see
-   Comonad/CoKleisli.v), and in descent theory the descent data along a
-   morphism are (co)algebras over the (co)monad of a base-change
-   adjunction (Bénabou–Roubaud 1970), with the simplicial bar resolution
-   of a comonad founding cotriple cohomology (Barr–Beck, Springer LNM
-   80, 1969; see Comonad/Coalgebra.v).  The earliest use of comonads in
-   programming semantics is Brookes–Geva's computational comonads (LMS
-   Lecture Note Series 177, 1992); the first proposal to program with
-   them in Haskell is Kieburtz (1999). *)
+   计算上，余单子值是可观察上下文中的值。单子值 T x 是可能产生效应并产出 x 的计算，
+   而值 W x 是处于可读取并再暴露上下文中的 x：[extract] 读当前上下文处的值，
+   [duplicate] 在自身每一点再暴露整个上下文，[extend] 把消耗上下文的观察 W x ~> y
+   提升为保持上下文的变换 W x ~> W y（处处运行该观察）。因此余单子在与 Moggi 风格
+   单子结构化效应计算相同的意义上结构化依赖上下文的计算（Uustalu–Vene 2008）。 *)
 
 (* [Comonad C W] is a Definition that unfolds to the class
    [@Monad (C^op) (W^op)], but typeclass resolution keys on the head constant

@@ -1,20 +1,15 @@
-# Axiom audit
+# 公理审计 (Axiom audit)
 
-A complete enumeration of every `Axiom`, `Parameter`, and
-`Conjecture` declaration in the library — what each is, where it
-lives, and why it is acceptable in a library that otherwise aims to be
-axiom-free.
+完整枚举库中每一处 `Axiom`、`Parameter` 与 `Conjecture` 声明——各是什么、在何处、
+以及在一个否则以无公理为目标的库中为何可接受。
 
-## Summary
+## 摘要 (Summary)
 
-The headline definitions checked by the `print-assumptions` make
-target — `Hypergraph`, `PROP`, `Cospan_Hypergraph`,
-`DecoratedCospan_Hypergraph`, `spider_collapse`, `spider_frobenius`,
-`Hypergraph_CompactClosed`, and `ZX_Cat` — together with the phase
-5-17 flagship theorems and the further definitions added to the target,
-all listed under [How to audit](#how-to-audit) — are reported as CLOSED UNDER THE
-GLOBAL CONTEXT (with the sole exception of `ZX_Cat`, which lists the
-three `Phase` parameters described below).  This can be verified by
+`print-assumptions` make 目标所检查的标题定义——`Hypergraph`、`PROP`、`Cospan_Hypergraph`、
+`DecoratedCospan_Hypergraph`、`spider_collapse`、`spider_frobenius`、
+`Hypergraph_CompactClosed` 与 `ZX_Cat`——连同 phase 5–17 旗舰定理及加入该目标的更多定义，
+均列于 [如何审计](#how-to-audit)——报告为在全局上下文下封闭（CLOSED UNDER THE GLOBAL CONTEXT）
+（唯一例外是 `ZX_Cat`，列出下文所述三个 `Phase` 参数）。可用下式验证：
 
 ```coq
 Require Import Category.Structure.Monoidal.Hypergraph.
@@ -22,49 +17,41 @@ Print Assumptions Hypergraph.
 (* prints:  Closed under the global context *)
 ```
 
-and similarly for the other audited definitions.
+对其他已审计定义同理。
 
-Read this scope precisely.  "Closed under the global context" is a
-statement about a *particular* definition's assumption set; it is NOT
-a claim that the library as a whole — every instance, every
-construction — is free of stdlib axioms.  It is not.  Several concrete
-instance layers do invoke stdlib axioms; these are enumerated in the
-[Stdlib axioms](#stdlib-axioms) section below.  See also the
+请精确阅读此范围。「Closed under the global context」是关于*特定*定义假设集的陈述；
+**不是**宣称整个库——每个实例、每个构造——都没有 stdlib 公理。并非如此。若干具体
+实例层确实调用 stdlib 公理；枚举见下方 [Stdlib axioms](#stdlib-axioms) 节。另见
 [Caveats](#caveats-what-closed-under-the-global-context-does-and-does-not-establish)
-section for what the audit does and does not certify.
+节，说明审计认证与不认证什么。
 
-The only `Axiom`/`Parameter` declarations in the library are the
-`Phase` parameterisation in the ZX-calculus instance — a bare phase
-type, a distinguished zero, and a binary addition — which a concrete
-user would realise concretely (e.g. as `R / 2π` for the standard ZX
-calculus or as `bool` for the Clifford fragment).
+库中仅有的 `Axiom`/`Parameter` 声明是 ZX-calculus 实例中的 `Phase` 参数化——裸相位类型、
+一个特出的零、以及二元加法——具体用户会具体实现（例如标准 ZX 用 `R / 2π`，Clifford 片段用 `bool`）。
 
-## Complete list
+## 完整列表 (Complete list)
 
-All declared in `Instance/ZX.v`:
+全部声明于 `Instance/ZX.v`：
 
-| Declaration             | Kind       | Type                              | Purpose                                                 |
+| 声明             | 种类       | 类型                              | 用途                                                 |
 |-------------------------|------------|-----------------------------------|---------------------------------------------------------|
-| `Phase`                 | `Parameter` | `Type`                            | The phase type used to label ZX spiders                 |
-| `phase_zero`            | `Parameter` | `Phase`                           | Neutral phase                                           |
-| `phase_add`             | `Parameter` | `Phase -> Phase -> Phase`         | Phase addition (used by spider fusion)                  |
+| `Phase`                 | `Parameter` | `Type`                            | 用于标记 ZX spider 的相位类型                 |
+| `phase_zero`            | `Parameter` | `Phase`                           | 中性相位                                           |
+| `phase_add`             | `Parameter` | `Phase -> Phase -> Phase`         | 相位加法（spider 融合使用）                  |
 
-That's 3 declarations total: 3 `Parameter`, 0 `Axiom`.  They provide a
-bare phase type, a distinguished zero element, and a binary addition
-operation.  No algebraic laws are declared on them: there is no
-monoid, group, or semiring structure asserted — `phase_add` is not
-even claimed to be associative or to have `phase_zero` as a unit.
-They are simply the data interface that ZX-calculus is generic over.
-Note that [zx_eq] currently compares phases by syntactic equality
-only; the standard real-number-mod-2π equivalence and the
-corresponding congruence rules are a deliberate omission (see the
-header of `Instance/ZX.v` for the full list of missing rules).
+共 3 个声明：3 个 `Parameter`，0 个 `Axiom`。它们提供裸相位类型、特出零元与二元加法。
+其上未声明代数定律：没有断言幺半群、群或半环结构——`phase_add` 甚至未声称结合或以 `phase_zero` 为单位。
+它们只是 ZX-calculus 所泛化的数据接口。注意 [zx_eq] 目前仅按语法相等比较相位；
+标准的实数模 2π 等价及相应合同规则是刻意省略（完整缺失规则列表见 `Instance/ZX.v` 文首）。
 
-A concrete instantiation supplying these (e.g. `Phase := R`,
-`phase_add := Rplus`, `phase_zero := 0`) reduces them all to standard
-Coq stdlib facts.
+给出这些参数的具体实例化（如 `Phase := R`、`phase_add := Rplus`、`phase_zero := 0`）会把它们全部归约为标准 Coq stdlib 事实。
 
-## Caveats: what "Closed under the global context" does and does not establish
+**中文翻译说明（zh-CN）**：摘要与完整列表已译；以下 Caveats 及后续长节保留英文，后续波次继续翻译。
+
+## Caveats：「Closed under the global context」确立与不确立什么
+
+（以下英文原文；标题已中文化。）
+
+ does and does not establish
 
 The audit conflates two genuinely different situations, and it is
 important to keep them apart.

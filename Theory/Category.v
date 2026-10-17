@@ -5,34 +5,53 @@ Generalizable All Variables.
 Reserved Infix "~>" (at level 90, right associativity).
 Reserved Infix "∘" (at level 40, left associativity).
 
-(* nLab: https://ncatlab.org/nlab/show/category
-   Wikipedia: https://en.wikipedia.org/wiki/Category_(mathematics)
+(* 范畴从何而来，以及定义为何
 
-   A category C consists of a collection of objects, a hom `x ~> y` of
-   morphisms for each pair of objects, an identity `id : x ~> x` for each
-   object, and a composition `f ∘ g : x ~> z` for `g : x ~> y` and
-   `f : y ~> z`, subject to the unit laws `id ∘ f ≈ f` and `f ∘ id ≈ f` and
-   the associativity law `f ∘ (g ∘ h) ≈ (f ∘ g) ∘ h`. Here the hom is a
-   setoid (a hom-setoid) rather than a bare set, so morphism equality is the
-   chosen equivalence `≈` rather than Coq's `=`.
+   SEP:   https://plato.stanford.edu/entries/category-theory/
+   nLab:  https://ncatlab.org/nlab/show/E-category
+   nLab:  https://ncatlab.org/nlab/show/Yoneda+lemma
+   Paper: Eilenberg, Mac Lane, "General theory of natural equivalences",
+          Transactions of the American Mathematical Society 58, 1945
 
-   The objects of a category are all of some `Type`.
+   范畴、函子与自然变换一同进入数学，见于 Eilenberg 与 Mac Lane 的
+   "General theory of natural equivalences"（1945）——据 Stanford Encyclopedia，
+   这是他们 "Group Extensions and Homology"（Annals of Mathematics 43, 1942）
+   的抽象，彼处特定函子与自然变换已在群之间运作。动机沿定义反向推进：
+   目标是使「自然」精确，这需要函子，进而需要范畴。用他们自己的话说，
+   「范畴的整个概念本质上是辅助性的；我们的基本概念本质上是函子与自然变换」。
+   甚至名称也是借用的——据同一 Encyclopedia 条目，「函子」来自 Carnap，
+   「范畴」来自 Aristotle、Kant 与 Peirce。
 
-  Morphisms, or arrows, are also of type `Type`, but always in a universe
-  above objects. All of the library has `Universe Polymorphism` enabled,
-  allowing categories whose objects are categories, etc.
+   该辅助概念所隔离的，是使复合有意义的最小结构：对象、态射、恒等、
+   结合的复合，别无其他。Milewski《Category Theory for Programmers》(2014)
+   序言把复合放在「范畴论的根基」。然而定义从不追问对象是什么；每一性质
+   都必须通过出入它的态射表述，而 Yoneda 引理表明这套纪律毫无损失——
+   据 nLab，用 C 的其他对象探测足以区分 C 的对象。回报是高度：「范畴论
+   对数学取鸟瞰视角。从高空细节不可见，但我们能发现地面上不可能察觉的
+   模式」（Leinster, "Basic Category Theory", CUP 2014）。
 
-  The morphisms identified by `A ~> B` form a hom-set, except that in this
-  library it is a hom-setoid, requiring the meaning of (computationally
-  relevant) equivalence between morphisms to be given. This makes it a
-  quotient category C/R over the equivalence relation R, but since this is
-  almost always needed (since equality is very restrictive in Coq's type
-  theory), we call it a [Category] here, and assume the existence of some
-  other category using only equality, with a functor from that category to
-  this.
+   其后历史可读作本库的地图。Grothendieck 使范畴成为同调代数的内在部分
+   （"Sur quelques points d'algèbre homologique", Tôhoku Math. J. 9, 1957）；
+   Kan 分离出伴随函子（"Adjoint Functors", TAMS 87, 1958），即 Theory/Adjunction.v
+   的主题；Lawvere 把代数理论变成范畴、把模型变成函子（"Functorial Semantics
+   of Algebraic Theories", PNAS 50, 1963），此处实现于 Theory/Lawvere.v，并公理化
+   集合范畴（PNAS 52, 1964）；Lambek 把范畴读作演绎系统、把笛卡尔闭范畴读作
+   带类型 λ 演算，即 Structure/Closed.v 与 Instance/Lambda/ 背后的桥梁。Baez 与
+   Stay 把同一词典扩展到物理与拓扑，以闭对称幺半范畴为共同语言
+   （"Physics, Topology, Logic and Computation: A Rosetta Stone", arXiv:0903.0340, 2009）。
 
-  Categories (as distinct from Category/~) are identified by [homset :=
-  Morphism_equality]. *)
+   下方的类即 nLab 所称 E-category：在 setoid 中充实的范畴，以指定等价关系
+   而非恒等类型作为态射相等——每个 hom 携带选定等价，复合携带外延性见证
+   [compose_respects]。Coq 的内涵类型论没有商类型，故不能事后对 hom 取商；
+   关系必须与 hom 同行。这一选择使库能在零公理上运行：Instance/Sets.v 在
+   逐点按陪域 ≈ 一致时把两个 setoid 映射视为同一，故函数外延无需函数外延公理，
+   商范畴只是在同一批 hom 上另选 [homset]（比较 Construction/Quotient.v 的
+   hom-合同商）。代价是持续义务：态射上每个运算都必须证明 Proper，重写经
+   Coq 的广义 setoid rewriting 进行。另有一字段是刻意的：[comp_assoc_sym]
+   以镜像方向重述结合律，使 Construction/Opposite.v 只需交换两字段，从而
+   C^op^op = C 由 reflexivity 成立；[Build_Category'] 再为实例作者恢复冗余字段。
+   库中几乎每个文件都直接或经其直接消费者 Theory/Functor.v 与
+   Theory/Isomorphism.v  Require 本文件。 *)
 
 (* Where categories come from, and what the definition is for
 

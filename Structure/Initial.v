@@ -9,83 +9,24 @@ Generalizable All Variables.
 (* nLab: https://ncatlab.org/nlab/show/initial+object
    Wikipedia: https://en.wikipedia.org/wiki/Initial_and_terminal_objects
 
-   An initial object `0` is an object equipped, for every object `x`, with a
-   morphism `zero : 0 ~> x` (written `¡` in the literature), subject to the
-   universal mapping property that this morphism is unique: any two morphisms
-   `0 ~> x` are equal (zero_unique). This is exactly the dual of a terminal
-   object: an initial object in C is a terminal object in C^op, with all arrows
-   reversed. The dual of `one : x ~> 1` is `zero : 0 ~> x`. An object that is
-   both initial and terminal is a zero object. *)
+   初始对象 `0` 是这样的对象：对每个对象 `x` 配备态射 `zero : 0 ~> x`（文献写作 `¡`），
+   服从普遍映射性质：该态射唯一，任意两态射 `0 ~> x` 相等（zero_unique）。这恰是终对象
+   的对偶：C 中的初始对象是 C^op 中的终对象，所有箭头反向。`one : x ~> 1` 的对偶是
+   `zero : 0 ~> x`。既初始又终结的对象是零对象。 *)
 
-(* Where initial objects come from, and what they are for
+(* 初始对象从何而来，以及用途为何
 
    Wikipedia: https://en.wikipedia.org/wiki/Universal_property
    nLab:      https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
    nLab:      https://ncatlab.org/nlab/show/empty+type
 
-   The initial object is the purest species of universal property: an
-   object characterized not by any internal structure but solely by its
-   relationship to everything else.  Universal mapping properties of
-   this kind were presented by Pierre Samuel in 1948 for topological
-   constructions and subsequently used extensively by Bourbaki, a
-   decade before Kan independently introduced the closely related
-   notion of adjoint functors in 1958 (Wikipedia, "Universal
-   property").  The initial object is the empty case of the whole
-   theory of colimits — the colimit of the empty diagram, equivalently
-   the nullary coproduct — which is why the unit laws [coprod_zero_l]
-   and [coprod_zero_r] of Structure/Cocartesian.v exhibit 0 as the unit
-   of the coproduct.  Any two initial objects are isomorphic by a
-   unique isomorphism, and this uniqueness up to unique isomorphism,
-   shared by every universal construction, is what licenses speaking of
-   THE initial object (Milewski, "Products and Coproducts", 2015).
-   When the initial object moreover coincides with the terminal one,
-   Structure/ZeroObject.v records the coincidence as [zero_coincide],
-   and the additive spine of the library builds on it.
-
-   A substantial portion of category theory reduces to exhibiting an
-   initial object somewhere.  A universal arrow from c to a functor F IS
-   an initial object of a comma category (Wikipedia, "Universal
-   property"), and Theory/Universal/Arrow.v defines it exactly so, as
-   the field [arrow_initial]; a colimit is an initial cocone; and a left
-   adjoint to U exists precisely when each comma category d ↓ U has an
-   initial object, the pivot on which Freyd's adjoint functor theorem
-   turns.  That pivot is load-bearing in-tree: Theory/WeaklyInitial.v
-   promotes a weakly initial family to a genuine initial object by
-   Freyd's product-plus-equalizer construction
-   ([initial_from_weakly_initial]), and Adjunction/GAFT.v concludes the
-   theorem through [GAFT_from_initials].  Even the empty category [_0]
-   of Instance/Zero.v is an instance, initial in Cat via the vacuous
-   functor [From_0].
-
-   The initial object also seeds the categorical account of induction.
-   Adámek constructs the initial F-algebra as the colimit of the ω-chain
-   0 ~> F 0 ~> F² 0 ~> ... based at the initial object (Adámek, "Free
-   algebras and automata realizations in the language of categories",
-   Comment. Math. Univ. Carolinae 1974); in this library the chain of
-   Construction/Chain.v starts at [initial_obj], and Theory/Adamek.v
-   derives the initial algebra as [adamek].  Lambek had already observed
-   that the structure map of any initial algebra is an isomorphism
-   (Lambek, "A Fixpoint Theorem for Complete Categories", Mathematische
-   Zeitschrift 1968), formalized as [lambek] in Theory/Lambek.v; and the
-   unique algebra morphism out of the initial algebra is the fold —
-   [cata] of Theory/Recursion.v — so structural recursion is initiality
-   put to work.  The ADJ group made this the basis of programming
-   language semantics: abstract syntax is an initial algebra, and a
-   semantics is the unique homomorphism into any target algebra, with
-   compositionality following at once (Goguen, Thatcher, Wagner, Wright,
-   "Initial Algebra Semantics and Continuous Algebras", JACM 1977).
-
-   The computational reading of this file is the empty type.  In
-   Instance/Coq.v, [Coq_Initial] witnesses False as the initial object
-   of the category of Coq types, the unique arrow out being [False_rect]
-   — the empty function, Haskell's Void with its absurd (Milewski,
-   "Products and Coproducts", 2015).  Under propositions-as-types the
-   empty type is falsehood, its eliminator is exactly ex falso
-   quodlibet, and the eta-rule supplies the uniqueness half of
-   initiality (nLab, "empty type").  Read this way, [zero_unique] costs
-   nothing: a function out of the empty type is defined by zero clauses,
-   and any two such functions agree because there is no argument on
-   which they could differ. *)
+   初始对象是最纯粹的普遍性质种：对象不由任何内部结构刻画，而仅由其与其他一切的关系刻画。
+   此类普遍映射性质由 Pierre Samuel 于 1948 年为拓扑构造提出，随后被 Bourbaki 广泛使用，
+   比 Kan 1958 年独立引入密切相关的伴随函子概念早十年（Wikipedia, "Universal property"）。
+   初始对象是整个余极限理论的空情形——空图的余极限，等价于零元余积——这正是
+   Structure/Cocartesian.v 的单位律 [coprod_zero_l] 与 [coprod_zero_r] 把 0 展示为余积单位的原因。
+   任意两初始对象由唯一同构同构，而每个普遍构造共有的这种唯一同构下的唯一性，使我们可以说
+   「那个」初始对象（Milewski, "Products and Coproducts", 2015）。 *)
 
 (* To be initial is just to be terminal in the opposite category; but to avoid
    confusion, we'd like a set of notations specific to categories with initial

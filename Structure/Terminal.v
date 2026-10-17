@@ -4,23 +4,18 @@ Require Import Category.Theory.Isomorphism.
 
 Generalizable All Variables.
 
-(** * Category with a terminal object *)
+(** * 带终对象的范畴 *)
 
 (* nLab: https://ncatlab.org/nlab/show/terminal+object
    Wikipedia: https://en.wikipedia.org/wiki/Initial_and_terminal_objects
 
-   A terminal object `1` in a category C is an object such that for every
-   object `x` there is exactly one morphism `! : x ~> 1`. "Exactly one" splits
-   into existence (the morphism [one]) and uniqueness (any two morphisms into
-   `1` agree under `≈`, the law [one_unique]). Equivalently, every hom-setoid
-   `x ~> 1` is contractible (a singleton up to `≈`). A terminal object is the
-   dual of an initial object — it is initial in `C^op` — and is the limit of
-   the empty diagram; see Structure/Initial.v, which derives initial objects
-   from this file by duality. Terminal objects are unique up to (unique)
-   isomorphism whenever they exist: [terminal_unique] below builds the
-   isomorphism, [terminal_arrow_unique] shows it is the only arrow at all
-   between the two objects, and [terminal_unique_up_to_unique_iso] packages
-   the two as a single [Unique]. *)
+   范畴 C 中的终对象 `1` 是这样的对象：对每个对象 `x` 恰有一个态射 `! : x ~> 1`。
+   「恰有一个」拆成存在性（态射 [one]）与唯一性（进入 `1` 的任意两态射在 `≈` 下
+   一致，定律 [one_unique]）。等价地，每个 hom-setoid `x ~> 1` 可收缩（至多 `≈`
+   下的单点）。终对象是初始对象的对偶——它是 `C^op` 中的初始对象——并且是空图的极限；
+   见 Structure/Initial.v，由对偶从本文件导出初始对象。终对象若存在则在（唯一）同构
+   下唯一：下文 [terminal_unique] 构造同构，[terminal_arrow_unique] 表明它是两对象间
+   仅有的箭头，[terminal_unique_up_to_unique_iso] 把两者打包为单个 [Unique]。 *)
 
 (* Where terminal objects come from, and what they are for
 

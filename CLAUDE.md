@@ -1,12 +1,14 @@
 # CLAUDE.md
 
-This codebase is a comprehensive formalization of category theory in Coq/Rocq. It contains 1177 proof files (the `_CoqProject` build set — 1181 `.v` files exist on disk, the difference being three unbuilt probes under `doc/plan/books/probes/` plus the unregistered `Structure/Limit/Preservation/Shapes.v`; the previous figures of 563/566 were long stale, and the stated reason was incomplete as well as the numbers) with over 170,000 lines implementing core categorical concepts with zero axioms in the core theory — spanning the classical canon from categories, functors, and adjunctions through monadicity, the adjoint functor theorems, enriched and higher structures (bicategories, pseudo double categories), Lawvere theories, multicategories and operads, and elementary topos theory.
+本代码库是 Coq/Rocq 中范畴论的全面形式化。含 1177 个证明文件（`_CoqProject` 构建集——磁盘上有 1181 个 `.v` 文件，差额为 `doc/plan/books/probes/` 下三个未构建探测加上未注册的 `Structure/Limit/Preservation/Shapes.v`；此前 563/566 的数字早已过时，所述理由亦不完整）与超过 170,000 行，实现核心范畴概念，核心理论零公理——覆盖从范畴、函子、伴随到单子性、伴随函子定理、充实与高阶结构（双范畴、伪双重范畴）、Lawvere 理论、多范畴与 operad，以及初等 topos 理论的经典典范。
 
-"Zero axioms in the core theory" is narrower than it sounds, and docs/AXIOMS.md is the authority for exactly how narrow. Two separate facts hold. First, the only `Axiom`/`Parameter` declarations anywhere in the library are the three `Phase` parameters of the ZX-calculus instance, all in `Instance/ZX.v`. Second, `Print Assumptions` reports "Closed under the global context" for an ENUMERATED list of headline definitions, audited by `make print-assumptions`. That second fact is *not* a claim about every definition in the library — docs/AXIOMS.md says so in terms — and no directory-wide certification of `Theory/`, `Structure/`, or `Construction/` has been run. The concrete instance layers (`Instance/`, `Theory/Coq/`) do use stdlib axioms, enumerated there. Separately, many of the advanced flagship theorems are proven *parametrically* — as axiom-free conditionals over an abstract structure — and only some are instantiated by a concrete in-tree model; docs/INHABITATION.md records which.
+「核心理论零公理」比听上去更窄，docs/AXIOMS.md 是准确窄度的权威。两件独立事实成立。第一，库中任何地方仅有的 `Axiom`/`Parameter` 声明是 ZX-calculus 实例的三个 `Phase` 参数，全在 `Instance/ZX.v`。第二，`Print Assumptions` 对一份枚举的标题定义列表报告「Closed under the global context」，由 `make print-assumptions` 审计。第二点*不是*对库中每个定义的宣称——docs/AXIOMS.md 按术语如此说明——也未对 `Theory/`、`Structure/` 或 `Construction/` 做目录范围认证。具体实例层（`Instance/`、`Theory/Coq/`）确实使用 stdlib 公理，枚举于彼。另有许多高级旗舰定理是*参数化*证明的——作为抽象结构上的无公理条件句——仅部分由树内具体模型实例化；docs/INHABITATION.md 记录哪些。
 
-## Commands
+**中文翻译说明（zh-CN）**：开篇与下方「命令 / 架构」要点已译；全文很长（约 45 KB），其余英文指导性章节本波次保留，后续可续译。
 
-### Building the Library
+## 命令 (Commands)
+
+### 构建库 (Building the Library)
 
 ```bash
 # Build the entire library (default: Rocq 9.1)
@@ -36,7 +38,7 @@ make claude-md-counts-check
 make index-check
 ```
 
-### Single File Development
+### 单文件开发 (Single File Development)
 
 ```bash
 # Compile a single file
@@ -46,19 +48,19 @@ coqc -R . Category Theory/Category.v
 # Ensure _CoqProject is loaded with: -R . Category
 ```
 
-### Proof Development Patterns
+### 证明开发模式 (Proof Development Patterns)
 
-The library uses custom tactics in `Lib/Tactics.v`:
-- `cat` - standard simplification for category proofs
-- `cat_simpl` - more aggressive simplification with program obligations
-- `proper` - for proving morphism respectfulness
-- `equivalence` - for proving equivalence relations
+本库在 `Lib/Tactics.v` 中使用自定义 tactic：
+- `cat` - 范畴证明的标准化简
+- `cat_simpl` - 更激进的化简，含 program obligation
+- `proper` - 证明态射的尊重性
+- `equivalence` - 证明等价关系
 
-## Architecture
+## 架构 (Architecture)
 
-### Core Abstraction Hierarchy
+### 核心抽象层级 (Core Abstraction Hierarchy)
 
-The library implements category theory through **setoid-based morphisms** where morphisms form equivalence classes rather than using strict equality. This fundamental design choice cascades through the entire architecture:
+本库通过**基于 setoid 的态射**实现范畴论：态射形成等价类，而非使用严格相等。这一基本设计选择贯穿整个架构：
 
 ```
 Category (homsets are setoids with ≈ equivalence)
@@ -70,13 +72,13 @@ Natural Transformation (naturality respects ≈)
 Adjunction/Monad/Kan Extension
 ```
 
-### Universe Polymorphism Strategy
+### 宇宙多态策略 (Universe Polymorphism Strategy)
 
-The library uses three universe parameters `{o h p}` throughout:
-- `o` - objects universe level
-- `h` - hom-sets universe level
-- `p` - proof/proposition universe level
-- Constraint: `h <= p` ensures morphism proofs can reference morphisms
+本库全程使用三个宇宙参数 `{o h p}`：
+- `o` - 对象宇宙层级
+- `h` - hom 集宇宙层级
+- `p` - 证明/命题宇宙层级
+- 约束：`h <= p` 保证态射证明可以引用态射
 
 This allows categories of categories at any level without universe inconsistencies.
 

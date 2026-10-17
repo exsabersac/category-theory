@@ -14,28 +14,16 @@ Generalizable All Variables.
 
 (** Instance characterisations and lawfulness for the Coq monads *)
 
-(* nLab: https://ncatlab.org/nlab/show/monad
+(*
+ nLab: https://ncatlab.org/nlab/show/monad
    nLab: https://ncatlab.org/nlab/show/Kleisli+category
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(functional_programming)
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)
 
-   This file relates the Haskell-style [Monad] class of [Theory.Coq.Monad]
-   (carrying only [ret]/[bind]) to the categorical notion from [Theory.Monad],
-   namely an endofunctor [F] with unit [η = ret : Id ⇒ F] and multiplication
-   [μ = join : F ∘ F ⇒ F] satisfying the unit laws [μ ∘ Fη = μ ∘ ηF = id] and
-   associativity [μ ∘ Fμ = μ ∘ μF].  In Kleisli terms these are the three
-   monad laws: left identity [ret a >>= f ≈ f a], right identity [m >>= ret ≈ m]
-   and associativity [(m >>= f) >>= g ≈ m >>= (λ x, f x >>= g)].
+   本文件给出相应结构的证明。
 
-   [EndoMonad_Monad] builds the bind/return [Monad F] from a categorical monad
-   on the endofunctor [F], using the standard [bind m f = μ (fmap f m)]
-   (Wikipedia: [ma >>= f ↔ (join ∘ map f) ma]).  [IsMonad H A m] is the
-   predicate "this [ret]/[bind] arises from such a lawful categorical monad",
-   and [Identity_IsMonad], [arrow_IsMonad] and [Compose_IsMonad] establish
-   lawfulness of the identity, reader and composite monad instances by
-   exhibiting that structure.  As in the rest of the applied layer, these
-   discharge against Coq's [Type] category and so rest on the pre-existing
-   [functional_extensionality_dep] axiom (not an additional assumption). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition EndoMonad_Monad
   `(H : EndoFunctor F)

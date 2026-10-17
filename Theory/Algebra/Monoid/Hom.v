@@ -9,22 +9,13 @@ Generalizable All Variables.
 
 (** * Monoid homomorphisms and the category of internal monoids *)
 
-(* nLab: https://ncatlab.org/nlab/show/monoid+in+a+monoidal+category
+(*
+ nLab: https://ncatlab.org/nlab/show/monoid+in+a+monoidal+category
 
-   Given internal monoids (x, mu[Mx], eta[Mx]) and (y, mu[My], eta[My]) in a
-   monoidal category (C, ⨂, I), a morphism f : x ~> y is a monoid
-   homomorphism when it commutes with the multiplications and units:
+   本文件给出 hom 形式的伴随/同态。
 
-     multiplication square   f ∘ mu[Mx] ≈ mu[My] ∘ (f ⨂ f)
-     unit triangle           f ∘ eta[Mx] ≈ eta[My]
-
-   Monoid homomorphisms contain the identities and are closed under
-   composition, so internal monoids and their homomorphisms form a category
-   Mon(C), packaged here with sigma objects and homs — the same pattern as
-   [Sub] in Construction/Subcategory.v, where morphism equivalence is
-   equivalence of the underlying C-morphisms.  Projecting out the underlying
-   object and morphism gives the forgetful functor Mon(C) ⟶ C, faithful by
-   construction ([Mon_Forget_Faithful]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section MonoidHom.
 

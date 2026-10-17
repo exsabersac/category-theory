@@ -15,28 +15,11 @@ Require Import Category.Construction.Subcategory.Terminal.
 
 Generalizable All Variables.
 
-(* Riehl, CTiC, Exercise 1.6.ii(ii): terminal objects transport along an
-   equivalence.  Uniqueness first, since it carries the content.
+(*
+   本文件给出终对象相关。
 
-   Given two arrows d ~> F 1, push them through the quasi-inverse G.  The
-   unit component 1 ≅ G (F 1) is invertible, so composing with its
-   [from] leg lands both images in G d ~> 1, where [one_unique] identifies
-   them; cancelling the monic [from] leg gives fmap[G] f ≈ fmap[G] g, and
-   G is faithful ([Equivalence_Inverse_Faithful]), so f ≈ g.
-
-   ROUTE NOTE.  The issue suggested chaining [Terminal_Limit]
-   (Structure/Limit/Terminal.v) with [equivalence_preserves_limits]
-   (Theory/Equivalence/Limit.v).  That route does close in principle --
-   [↔] is [iffT], so the data is extractable, and the empty diagram is
-   the one shape for which the in-tree apex-only [PreservesLimit] is not
-   deficient, its legs being vacuous.  But it costs the empty functor
-   from Instance/Zero.v, a [Cone]/[IsALimit]-to-[Limit] repackaging, the
-   whole RAPL chain behind [equivalence_preserves_limits], and a separate
-   colimit-side argument for the initial dual; and the resulting terminal
-   object is the limit apex, recoverable as F 1 only after unfolding
-   several layers.  The direct transport below is three lemmas, needs no
-   limit machinery at all, dualizes symmetrically, and chooses
-   F 1 definitionally ([Terminal_transport_obj]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma terminal_transport_unique {C D : Category} {F : C ⟶ D}
   (E : @EquivalenceOfCategories C D F) (T : @Terminal C) (d : D)
   (f g : d ~{D}~> F (@terminal_obj C T)) : f ≈ g.

@@ -18,39 +18,14 @@ Require Import Category.Instance.FinSet.Lawvere.
 
 Generalizable All Variables.
 
-(** * Sets-models of a Lawvere theory: the underlying-set functor
+(*
+ nLab:      https://ncatlab.org/nlab/show/Lawvere+theory
+ Wikipedia: https://en.wikipedia.org/wiki/Lawvere_theory
 
-    nLab:      https://ncatlab.org/nlab/show/Lawvere+theory
-    Wikipedia: https://en.wikipedia.org/wiki/Lawvere_theory
+   本文件给出集合相关实例或构造。
 
-    A model of a Lawvere theory [T] in [Sets] has an underlying set: the
-    value of the model at the generic object [law_of_nat 1].  Evaluation
-    at [law_of_nat 1] is a functor [ev1 : Models T Sets ⟶ Sets] — on a
-    natural transformation it takes the component at [law_of_nat 1], and
-    the functor laws hold componentwise.
-
-    ** Faithfulness and the reachability hypothesis
-
-    Classically [ev1] is faithful: a morphism of models is determined by
-    its underlying function, because every object of the theory is a
-    finite power of the generic object and models preserve those powers
-    ("products separate points").  In this library [LawvereTheory]
-    mirrors the relaxed shape of [Construction/PROP.v]'s [PROP] class:
-    [law_of_nat] is NOT required to be surjective on objects, so a
-    theory may contain an object unreachable from the naturals, and two
-    distinct transformations may agree at every [law_of_nat n] while
-    differing at the junk object — the bare faithfulness statement does
-    not hold at this generality.  Following the SAFT precedent
-    (hypothesis-as-data, since the library has no smallness machinery),
-    we take reachability as an explicit hypothesis:
-
-        reach : ∀ x : law_cat T, { n : nat & law_of_nat n = x }
-
-    This is the honest reading forced by the PROP-style relaxation, not
-    a weakening of the theorem: for skeletal theories — the classical
-    notion, where the objects literally are the natural numbers — it is
-    satisfied by [eq_refl], as [FinSetOp_reach] below witnesses for the
-    base theory [FinSetOp_Lawvere]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Products separate points
 

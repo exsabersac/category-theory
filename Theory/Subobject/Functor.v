@@ -11,18 +11,13 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(* The subobject presheaf Sub : C^op ⟶ Sets.
+(*
+ nLab: https://ncatlab.org/nlab/show/subobject
 
-   nLab: https://ncatlab.org/nlab/show/subobject
+   本文件给出函子相关定义或实例。
 
-   In a category with chosen pullbacks, a morphism f : y ~> x induces a
-   reindexing map SubObj x → SubObj y: pull the mono u ↪ x back along f; the
-   projection opposite u is again monic (monic_pullback_stable), so it is a
-   subobject of y.  Reindexing respects the SubObj setoid (equivalent monos
-   pull back to equivalent monos), is the identity on subobjects when f is
-   the identity, and turns composition into composition of reindexings — the
-   last by the pasting law for pullbacks (pullback_paste).  Assembled, this
-   is a contravariant functor from C to the category of setoids. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SubFunctor.
 

@@ -5,33 +5,13 @@ Require Import Category.Theory.Equivalence.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
+(*
+ nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
 
-   The bundled notion of equivalence of categories.  Where
-   [EquivalenceOfCategories F] (Theory/Equivalence.v) is a structure carried
-   by a *given* functor F, the bundle [C ≃ D] defined here packages the
-   functor together with that structure — a sigma type, in the same split,
-   choice-carrying house style as the unbundled classes — so that "C and D
-   are equivalent" becomes a single proof-relevant statement about the two
-   categories themselves.
+   本文件给出打包形式的等价。
 
-   Being equivalent is reflexive ([Equivalence_refl], the identity functor
-   quasi-inverted by itself), symmetric ([Equivalence_sym], the
-   quasi-inverse with the two cells swapped — [EquivalenceOfCategories_sym]
-   of Theory/Equivalence.v), and transitive ([Equivalence_trans], carried
-   by the composite functor).  The composite's witness,
-   [EquivalenceOfCategories_Compose] below, is proved at the unbundled
-   level: the composite of two equivalences is quasi-inverted by the
-   composite of the quasi-inverses in the opposite order, its two cells
-   obtained by reassociating with [fun_equiv_comp_assoc] and cancelling
-   the inner counit/unit cell.
-
-   Naming and hygiene: nothing here is called bare "Equivalence" (that
-   name belongs to the standard library's class of equivalence relations);
-   the [≃] notation is guarded in [category_theory_scope]; and, as
-   everywhere in this development, nothing is registered for instance
-   resolution — a quasi-inverse is a choice, so all constructions below
-   are plain Definitions, passed explicitly at use sites. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition CategoryEquivalence (C D : Category) : Type :=
   ∃ F : C ⟶ D, EquivalenceOfCategories F.

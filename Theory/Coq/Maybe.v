@@ -10,26 +10,14 @@ Generalizable All Variables.
 
 (** The Maybe/option type [1 + a] as functor, applicative and monad *)
 
-(* nLab: https://ncatlab.org/nlab/show/maybe+monad
+(*
+ nLab: https://ncatlab.org/nlab/show/maybe+monad
    Wikipedia: https://en.wikipedia.org/wiki/Option_type
 
-   FP reading.  [Maybe a] (Haskell) / [option a] (Coq, OCaml) adjoins a single
-   distinguished value [Nothing] to [a], modelling an optional/partial result:
-   [Just x] carries a value, [Nothing] signals its absence.  It is the standard
-   way to track failure without exceptions or null references.  As a monad,
-   failure short-circuits: [Nothing >>= f = Nothing] and [Just x >>= f = f x].
+   本文件给出 Maybe 上的范畴论结构。
 
-   Categorical reading.  [Maybe a = a + 1], the coproduct of [a] with the
-   terminal object [1] (the unit type), with [Nothing = inr ()] the injection of
-   [1] and [Just = inl] the injection of [a].  The endofunctor [a ↦ a + 1]
-   carries the maybe (a.k.a. exception/partiality) monad: the unit [η] is [Just]
-   and the multiplication [μ : (a + 1) + 1 → a + 1] (here [Maybe_join]) merges
-   the two copies of [1].  Its Kleisli morphisms [a → b + 1] are precisely the
-   partial functions [a ⇀ b], so the Kleisli category on [Set] is the category
-   of sets and partial functions; its algebras are the pointed objects.
-
-   Following the other [Theory/Coq] classes, the operations are recorded here
-   without their laws; lawfulness is discharged per concrete use. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Notation Maybe   := option.   (* the option type [Maybe a = a + 1] *)
 Notation Nothing := None.     (* [inr ()] : the absent/failure case *)

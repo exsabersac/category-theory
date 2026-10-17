@@ -11,28 +11,14 @@ Set Transparent Obligations.
 
 (** Finite partial maps *)
 
-(* nLab: https://ncatlab.org/nlab/show/partial+function
+(*
+ nLab: https://ncatlab.org/nlab/show/partial+function
    Wikipedia: https://en.wikipedia.org/wiki/Associative_array
 
-   This is a utility library, not a categorical construction: [Map k v] is
-   the abstract data type of a finite partial map (associative array,
-   dictionary, "function with finite domain") from keys [k] to values [v].
-   It is represented concretely as a list of key/value bindings, so it is
-   isomorphic to an association list [list (k * v)] (see [toList]/[fromList]).
-   Later bindings of a key are shadowed by earlier ones, exactly as for an
-   association list scanned front-to-back; [compress] computes the canonical
-   shadow-free representative.
+   本文件给出 Map 相关结构。
 
-   The observational notion of equality is extensional: two maps are
-   equivalent iff they agree on every [lookup] (see [Map_Setoid]), matching
-   the associative-array law
-       lookup k (insert j v m) = if k = j then Some v else lookup k m.
-
-   The API mirrors Haskell's [Data.Map] (containers package): [empty],
-   [singleton], [insert], [delete], [adjust], [alter], [member], [size],
-   [findWithDefault], the [*WithKey] variants, the folds, and the functorial
-   [map]/[mapWithKey].  See
-   https://hackage.haskell.org/package/containers/docs/Data-Map-Lazy.html *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* nLab: https://ncatlab.org/nlab/show/functor
    Wikipedia: https://en.wikipedia.org/wiki/Functor_(functional_programming)

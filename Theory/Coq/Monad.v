@@ -5,29 +5,16 @@ Generalizable All Variables.
 
 (** The Monad type class (bind/return), with its categorical reading *)
 
-(* nLab: https://ncatlab.org/nlab/show/monad
+(*
+ nLab: https://ncatlab.org/nlab/show/monad
    nLab: https://ncatlab.org/nlab/show/Kleisli+category
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(functional_programming)
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)
 
-   FP reading.  A monad on the category of types is a type constructor
-   [F : Type → Type] with [ret : x → F x] (Haskell's [return]/[pure]) and
-   [bind : F x → (x → F y) → F y] (Haskell's [>>=]).  In Kleisli form the
-   three monad laws are: left identity [ret a >>= f ≈ f a]; right identity
-   [m >>= ret ≈ m]; and associativity
-   [(m >>= f) >>= g ≈ m >>= (λ x, f x >>= g)].
+   本文件给出单子相关定义或实例。
 
-   Categorical reading.  The same data is an endofunctor [F] equipped with
-   two natural transformations: the unit [η : Id ⇒ F] (here [ret]) and the
-   multiplication [μ : F ∘ F ⇒ F] (here [join m = bind m id]), subject to
-   [μ ∘ Fη = μ ∘ ηF = id] (unit) and [μ ∘ Fμ = μ ∘ μF] (associativity).
-   The two presentations are interdefinable by [bind m f = μ (fmap f m)]
-   (= [join (liftM f m)] below) and conversely [join = bind _ id],
-   [fmap f = liftM f = bind _ (ret ∘ f)].
-
-   As is usual for these Coq/Haskell-style classes, the laws are NOT recorded
-   as fields here; [Monad] carries only the operations, and lawfulness is an
-   obligation discharged for each concrete instance. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Monad@{d c} {F : Type@{d} → Type@{c}} := {
   ret : ∀ {x : Type@{d}}, x → F x;          (* unit η : Id ⇒ F  (Haskell return/pure) *)

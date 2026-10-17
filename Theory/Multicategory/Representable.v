@@ -19,31 +19,13 @@ Generalizable All Variables.
 
 (** * The representable multicategory of a symmetric monoidal category *)
 
-(* nLab: https://ncatlab.org/nlab/show/representable+multicategory
+(*
+ nLab: https://ncatlab.org/nlab/show/representable+multicategory
 
-   Every symmetric monoidal category [C] carries a multicategory whose
-   multimorphisms [Γ → c] are the ordinary morphisms
-   [tensor_list Γ ~> c] out of the right-nested tensor fold of the
-   source context.  Splicing ([mcomp]) tensors the argument into its
-   slot through the coherence isomorphism
-   [tensor_list (Γ ++ Δ) ≅ tensor_list Γ ⨂ tensor_list Δ], and the
-   symmetric-group action is precomposition with a braiding-built
-   realization of the permutation.
+   本文件给出可表性相关。
 
-   The whole construction is developed once over an object realization
-   [ob : A → C] of an abstract colour type [A], so that the same
-   development yields both the representable multicategory proper
-   ([A := obj C], [ob] the identity) and the multicategory of a
-   coloured PROP ([A := Colour], [ob := wire]) with no duplication.
-
-   Hypothesis note.  The instances are stated over a SYMMETRIC monoidal
-   base — the mathematical headline, per the work order — but the proofs
-   below consume only the braided structure and the [braid] morphism
-   itself (no naturality, no involution, no hexagon).  This mirrors the
-   SCOPE note of Theory/Multicategory.v: the class's witness-indexed
-   symmetric action does not require symmetric-group descent, and the
-   braid involution is exactly what the descent law would consume if a
-   later phase adds it as a field. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The tensor fold *)
 

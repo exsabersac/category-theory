@@ -9,34 +9,14 @@ Require Import Category.Theory.Algebra.Comonoid.
 
 Generalizable All Variables.
 
-(** * Frobenius algebras in a monoidal category
+(*
+ nLab:      https://ncatlab.org/nlab/show/Frobenius+algebra
+ Wikipedia: https://en.wikipedia.org/wiki/Frobenius_algebra
 
-    nLab:      https://ncatlab.org/nlab/show/Frobenius+algebra
-    Wikipedia: https://en.wikipedia.org/wiki/Frobenius_algebra
+   本文件给出 Frobenius 代数/结构相关定义。
 
-    A Frobenius algebra on [X] is a monoid [(X, mu, eta)] and a comonoid
-    [(X, delta, epsilon)] on the same object, satisfying the Frobenius
-    compatibility law:
-
-        (id ⨂ mu) ∘ (delta ⨂ id) ≈ delta ∘ mu ≈ (mu ⨂ id) ∘ (id ⨂ delta)
-
-    (up to suitable insertions of the tensor associator).  Per nLab, the two
-    equalities collapse into the single condition equating the outer
-    composites, [(id ⨂ mu) ∘ (delta ⨂ id) ≈ (mu ⨂ id) ∘ (id ⨂ delta)], with
-    the middle [delta ∘ mu] recovered using (co)unitality; together they
-    encode that [delta] is a bimodule map.
-
-    To keep the statement first-order in the tensor associator (rather than
-    awkward two-sided compositions) we follow the standard nLab convention
-    and rephrase as
-
-        (mu ⨂ id) ∘ α⁻¹ ∘ (id ⨂ delta) ≈ delta ∘ mu
-
-    and dually
-
-        (id ⨂ mu) ∘ α ∘ (delta ⨂ id) ≈ delta ∘ mu.
-
-    Together these two axioms recover the standard double Frobenius equation. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where Frobenius algebras come from, and what they are for
 

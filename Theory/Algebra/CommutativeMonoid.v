@@ -12,31 +12,15 @@ Generalizable All Variables.
 
 (** * Commutative monoids in a symmetric monoidal category *)
 
-(* A commutative monoid in [(C, ⨂, I, σ)] is a [Monoid X] whose
-   multiplication is invariant under the braiding.  This is the
-   "commutative monoid" / "abelian monoid" of the symmetric-monoidal
-   setting.
+(*
+ nLab:      https://ncatlab.org/nlab/show/commutative+monoid
+ nLab:      https://ncatlab.org/nlab/show/braided+monoidal+category
+ Wikipedia: https://en.wikipedia.org/wiki/Monoid_(category_theory)
 
-   In this library's notation, with [braid : X ⨂ X ~> X ⨂ X] the
-   symmetry of the inputs, the commutativity law reads
+   本文件给出交换幺半群对象。
 
-       mu ∘ braid ≈ mu              (commutativity of the multiplication)
-
-   This is the categorical version of [a * b = b * a]: precomposing
-   the multiplication with the swap of its two arguments leaves it
-   unchanged.  Stated for a braiding it makes sense in any braided
-   monoidal category; here we work in the symmetric setting, where the
-   braiding is additionally involutive ([braid ∘ braid ≈ id]).
-
-   nLab:      https://ncatlab.org/nlab/show/commutative+monoid
-   nLab:      https://ncatlab.org/nlab/show/braided+monoidal+category
-   Wikipedia: https://en.wikipedia.org/wiki/Monoid_(category_theory)
-
-   This class is provided independently of [Frobenius] / [Comonoid] so
-   that an object can carry a commutative monoid structure WITHOUT
-   being forced to also carry a comultiplication.  Downstream callers
-   that want to model element-wise multiplication of tensor values
-   (where there is no natural co-multiplication) use this directly. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CommutativeMonoid.
 

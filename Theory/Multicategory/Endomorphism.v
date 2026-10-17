@@ -13,48 +13,13 @@ Generalizable All Variables.
 
 (** * The endomorphism operad of an object in a cartesian category *)
 
-(* nLab: https://ncatlab.org/nlab/show/endomorphism+operad
+(*
+ nLab: https://ncatlab.org/nlab/show/endomorphism+operad
 
-   Given an object [X] of a cartesian category [C], the endomorphism operad
-   End(X) is the one-object multicategory whose n-ary operations are the
-   morphisms [X^n ~> X].  The finite power [X^n] is realised as the
-   right-nested product fold [pow X n] ([pow X 0 := 1],
-   [pow X (S n) := X × pow X n]), so an n-ary operation depends on the source
-   list [Γ] only through its LENGTH.
+   本文件给出自同态相关。
 
-   BOUNDARY CASTS.  Since [mhom Γ c := pow X (length Γ) ~> X], a boundary
-   equality [e : Γ = Γ'] acts through [f_equal length e : nat = nat]-level
-   data, realised as the reindexing morphism [pow_cast].  The groupoid pack
-   ([mcast_id] over an ARBITRARY loop, [mcast_trans]) is discharged by UIP on
-   [nat] — provable without axioms via Hedberg ([UIP_nat] from the stdlib's
-   [Eqdep_dec] development), so the whole instance is axiom-free.
-
-   THE SYMMETRIC ACTION IS GENUINE.  Although [mhom Γ c] depends on the
-   source list only through its LENGTH, the symmetric action [msym p] is
-   NOT the trivial boundary reindexing: it permutes the factors of the
-   power.  The class's witnesses are the Type-valued [tperm] of
-   Theory/Multicategory.v, so [perm_act] is built by structural recursion
-   on the derivation — [tperm_swap] acts by the product braid
-   [(exl ∘ exr) △ (exl △ (exr ∘ exr))] on the two head factors,
-   [tperm_skip] whiskers by [second], and [tperm_trans] composes.  In
-   particular a nontrivial self-permutation acts nontrivially (e.g. the
-   swap on [X × (X × 1)]), which is the whole content of the symmetry;
-   only the canonical [tperm_refl] witness is required to act as the
-   identity ([perm_act_refl]).  Equivariance of splicing is proven by
-   commuting the action generators past the graft: the whiskering
-   combinators become [plug]/[first]/[second] block maps through the
-   splitting ([act_app_l_split], [act_app_r_plug], [act_app_l_plug]),
-   and the braid case is the fork computation [split_braid].
-
-   SPLICING.  Composition [mcomp f g] precomposes [f] with a fork-pasted
-   graft map [pow X (m + (d + k)) ~> pow X (m + S k)] that passes the
-   [m]-block through, feeds the [d]-block to [g], and passes the [k]-block.
-   The graft is built from the block-splitting combinator
-   [pow_split : pow X (m + n) ~> pow X m × pow X n] (an iso; its inverse is
-   not needed here, so only the forward direction is defined) by iterating
-   [second] over the prefix.  The multicategory laws then reduce to fork
-   algebra: associativity of [pow_split] ([pow_split_assoc]), naturality of
-   the product associator, and proof-irrelevant [pow_cast] bookkeeping. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section EndOperad.
 

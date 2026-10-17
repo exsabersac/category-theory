@@ -9,43 +9,13 @@ Generalizable All Variables.
 
 (** Pseudofunctors between bicategories. *)
 
-(* nLab: https://ncatlab.org/nlab/show/pseudofunctor
+(*
+ nLab: https://ncatlab.org/nlab/show/pseudofunctor
 
-   A pseudofunctor (a.k.a. weak 2-functor) F : B ⟶ B' between bicategories
-   sends 0-cells to 0-cells, and provides for each pair of 0-cells a functor
-   of hom-categories
+   本文件给出伪函子。
 
-       pf1 : bicat B x y ⟶ bicat B' (pf0 x) (pf0 y),
-
-   so that on 2-cells it acts functorially (vertical composition and identities
-   are preserved on the nose).  Horizontal composition and identities are
-   preserved only up to coherent invertible 2-cells: the unitor
-
-       pf_id   : pf1 (bi1id) ≅ bi1id,
-
-   and the compositor (natural in both arguments)
-
-       pf_comp : pf1 (g ∘∘∘ f) ≅ pf1 g ∘∘∘ pf1 f.
-
-   These are subject to three coherence laws relating them to the associator
-   and unitors of the two bicategories: one associativity hexagon
-   (`pf_assoc_coherence`) and two unit squares (`pf_unit_left`,
-   `pf_unit_right`).  This mirrors the strong-monoidal-functor coherence of
-   `Functor/Structure/Monoidal.v` under the dictionary tensor ↔ hcompose,
-   I ↔ bi1id, μ ↔ pf_comp, η ↔ pf_id, α ↔ hassoc, λ/ρ ↔ hunit_left/right.
-
-   Notation: `∘∘` is vertical 2-cell composition (`vcompose`), `∘∘∘` is
-   horizontal 1-cell composition (`hcompose`), `hcomp2` the Godement
-   horizontal composite of 2-cells; these follow `Theory/Bicategory.v`.  The
-   `where`-notations of that file are local to its class body, so the two
-   composition infixes are reinstated here (at their reserved levels).
-
-   A hom-category `bicat B x y` is definitionally a `Category`, so the generic
-   category laws hold for its 2-cells; but its composition prints as `vcompose`
-   (`∘∘`) rather than the generic `∘`, and its identity as `bi2id`.  Rewriting
-   therefore uses the bicategory's own `bi2id_left/right`, `vcompose_assoc`
-   and the vcompose-form bridge lemmas below (isomorphism cancellation and
-   functor action), all convertible to their generic counterparts. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Notation "f ∘∘ g" := (vcompose f g).
 Notation "f ∘∘∘ g" := (hcompose (f, g)).

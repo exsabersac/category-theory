@@ -13,38 +13,13 @@ Generalizable All Variables.
 
 (** * A universal element is an initial object of the category of elements *)
 
-(* nLab: https://ncatlab.org/nlab/show/category+of+elements
-   Text: Riehl, "Category Theory in Context", Dover 2016, §2.4,
-         Proposition 2.4.8
+(*
+ nLab: https://ncatlab.org/nlab/show/category+of+elements
 
-   Riehl's Proposition 2.4.8 is the sharpest form of the universal-element
-   idea: a universal element of H : D ⟶ Sets is precisely an INITIAL OBJECT
-   of the category of elements of H.  Both notions are already in the tree --
-   [AUniversalElement] (Theory/Universal/Element.v) and [Elements]
-   (Construction/Elements.v) -- and this file is the two-line-per-direction
-   bridge between them.
+   本文件给出泛元素相关。
 
-   It is kept SEPARATE from Theory/Universal/Element.v for the reason
-   Theory/Universal/Arrow/Dual/Examples.v is kept separate from its parent:
-   the statement costs a dependency on [Structure/Initial.v] and on
-   [Construction/Elements.v]'s category (as opposed to its [SetsOne], which
-   the parent already uses), and a consumer wanting only the subsumption
-   theorem should not inherit them.
-
-   A DOCUMENTATION ERRATUM, found here and REPAIRED IN THE SAME COMMIT at the
-   file that carried it.  Instance/Coq/Nat.v used to say its concrete argument
-   presents "the category of elements ... concretely as [FAlg NatF] rather
-   than built as a general construction, WHICH THE TREE DOES NOT CARRY".  The
-   tree does carry it.  The sentence was true when written (30c01af0,
-   5 August 2026) and went stale four days later, when
-   [Construction/Elements.v] landed (f2177328, 9 August 2026).  Nat.v now
-   carries the correction and its own pointer here; no line citation is given
-   for it, since the two files move independently.  What remains true is the narrower
-   claim -- Nat.v does not USE the general construction, and the comparison
-   [Elements Endos_Forget ≃ FAlg NatF] is not in the tree either.  This file
-   supplies the general theorem the comment was reaching for; it does not
-   supply that comparison, so Nat.v's [repr_initial] is not re-derived here
-   and is not made redundant. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* WHAT IS DELIVERED
 

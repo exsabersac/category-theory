@@ -10,22 +10,16 @@ Generalizable All Variables.
 
 (** Law proofs for the pair/tuple [A * B] instances *)
 
-(* nLab: https://ncatlab.org/nlab/show/product
+(*
+ nLab: https://ncatlab.org/nlab/show/product
    nLab: https://ncatlab.org/nlab/show/functor
    Wikipedia: https://en.wikipedia.org/wiki/Product_(category_theory)
    Wikipedia: https://en.wikipedia.org/wiki/Functor_(functional_programming)
 
-   These are the characterisation/law proofs for the tuple instances defined
-   in [Theory.Coq.Tuple].  [uncurry_works] is the computation (β) rule for
-   [uncurry], one direction of the currying iso [(a * b) → c ≅ a → (b → c)].
-   [fst_snd] and [unsplit] are the surjective-pairing (η) law for the binary
-   product, [⟨fst z, snd z⟩ = z] (nLab's uniqueness/reflection rule
-   [⟨π₁ ∘ g, π₂ ∘ g⟩ = g]), the latter lifted pointwise through [map].
-   [Tuple_Functor] witnesses that the second-argument functor [(x * −)] is a
-   lawful endofunctor on [Coq], packaging it as an [IsFunctor].
+   本文件给出相应结构的证明。
 
-   Equality here is plain Coq [=] (pairs are inductive with decidable
-   structure), and the proofs are axiom-free. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem uncurry_works : forall {X Y Z} (x : X) (y : Y) (f : X -> Y -> Z),
   uncurry f (x, y) = f x y.

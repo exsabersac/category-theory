@@ -50,11 +50,11 @@ Next Obligation.
     now rewrite Hj.
 Qed.
 
-(* The preorder on subobjects: u ≤ v when the mono of u factors through the
-   mono of v. The factorization is automatically monic ([sub_le_monic] below,
-   Awodey §5.1) and unique ([sub_le_unique] below), so this is a genuine
-   preorder whose induced equivalence is exactly the setoid equivalence
-   above. *)
+(*
+   预序 在 子对象s: u ≤ v 当 mo无 的 u fact或s through mo无 的 v.
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sub_le (u v : SubObj x) : Type :=
   { k : sub_dom u ~> sub_dom v & sub_mono v ∘ k ≈ sub_mono u }.
 

@@ -11,24 +11,14 @@ Generalizable All Variables.
 
 (** * Kan extensions *)
 
-(* nLab: https://ncatlab.org/nlab/show/Kan+extension
+(*
+ nLab: https://ncatlab.org/nlab/show/Kan+extension
    Wikipedia: https://en.wikipedia.org/wiki/Kan_extension
 
-   Given a functor F : A ⟶ B, precomposition with F induces the restriction
-   functor Induced := (− ◯ F) : [B, C] ⟶ [A, C]. The Kan extensions along F
-   are its adjoints, when they exist: the left Kan extension Lan is the LEFT
-   adjoint to Induced (Lan ⊣ Induced), and the right Kan extension Ran is the
-   RIGHT adjoint to Induced (Induced ⊣ Ran). Equivalently, by the hom-set
-   adjunctions, [A,C](X, M ◯ F) ≅ [B,C](Lan X, M) naturally in M, and
-   [A,C](M ◯ F, X) ≅ [B,C](M, Ran X) naturally in M.
+   本文件给出 Kan 扩张：沿函子 F 的左/右 Kan 扩张分别为预复合诱导函子的左/右伴随（当存在时）。
 
-   These are the GLOBAL Kan extensions (the adjoint functors). The LOCAL Kan
-   extension of a single functor X : A ⟶ C can exist even when the global
-   adjoint does not; it is the universal pair given by a unit X ⟹ LocalLan ◯ F
-   (left, initial) or a counit LocalRan ◯ F ⟹ X (right, terminal). When C' = 1
-   the left/right Kan extensions specialise to colimits/limits of X. The
-   slogan "all concepts are Kan extensions" (Mac Lane) records that limits,
-   colimits, adjoints, ends, and coends are all instances. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where Kan extensions come from, and what they are for
 

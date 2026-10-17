@@ -8,40 +8,11 @@ Require Import Category.Theory.WeaklyInitial.
 
 Generalizable All Variables.
 
-(** * The initial-object characterization at Sets
+(*
+   本文件给出集合相关实例或构造。
 
-    The witness for Theory/WeaklyInitial.v's biconditional (#435, Mac Lane
-    §V.6 Theorem 1): [Sets] is complete (Instance/Sets/Complete.v
-    [Sets_Complete]) and has equalizers (Adjunction/GAFT/Sets.v
-    [Sets_HasEqualizers]), so [initial_iff_weakly_initial_family_complete]
-    applies, and the round trip runs — the initial object
-    (Instance/Sets.v [Sets_Initial]) becomes the singleton family
-    [Sets_wif], Freyd's product-and-equalizer construction turns that back
-    into an initial object [Sets_initial_recovered], and
-    Structure/Initial.v's [initial_unique] gives the canonical
-    isomorphism [Sets_roundtrip_iso] with the original.  The DERIVED
-    singleton family's index and member read back at [eq_refl], through
-    the transparent biconditional; nothing about the recovered initial
-    object does.
-
-    A separate leaf because of closure: this file's closure is 53 modules
-    (Adjunction/GAFT/Sets.v 15 at the margin, the other six `Require`s 0)
-    against Theory/WeaklyInitial.v's 29, and Adjunction/GAFT*.v [Require]
-    Theory/WeaklyInitial.v, not this satellite, so there is no cycle.  The
-    object-carrier universe lands at [Sets@{Set u}] with `Set < u` on every
-    head, exactly as Adjunction/GAFT/Sets.v's header discloses for GAFT
-    (CORRECTION, #452: that pin was lifted with the one GAFT/Sets.v's
-    RECORDED CORRECTION describes; measured, [About Sets_initial_recovered]
-    reads [@Initial Sets@{u0 u}] with [u0 < u] and no [Set]);
-    the caps `JMeq`, `False_rect` and `projections` arrive with
-    [Sets_Complete].  Six `.glob` heads, all `def`, all "Closed under the
-    global context", zero `Axioms:` lines, no `Qed`, no `Defined`, none of
-    the seven `Require`s droppable, zero name collisions.  NOT delivered:
-    a witness at any other category ([FinSet] would need a [Complete
-    FinSet] that does not exist); any [eq_refl] reading of the round trip
-    beyond the family's index and member (the recovered initial object is
-    Freyd's equalizer of endomorphisms, compared with the original only
-    through [initial_unique]'s [≅]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Sets_initial_characterization :
   @Initial Sets ↔ WeaklyInitialFamily Sets :=

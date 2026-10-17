@@ -19,73 +19,13 @@ Generalizable All Variables.
 
 (** * Operad algebras *)
 
-(* nLab: https://ncatlab.org/nlab/show/algebra+over+an+operad
+(*
+ nLab: https://ncatlab.org/nlab/show/algebra+over+an+operad
 
-   An algebra for an operad [O] on an object [X] of a cartesian category is
-   exactly a multifunctor from the underlying one-object multicategory of
-   [O] to the endomorphism operad [EndOperad X] of
-   Theory/Multicategory/Endomorphism.v.  That IS the definition here
-   ([OperadAlgebra]), so the classical universal property of the
-   endomorphism operad — "an O-algebra structure on X is a map of operads
-   O ⟶ End(X)" — holds definitionally ([OperadAlgebra_is_MultiFunctor]).
+   本文件给出代数结构。
 
-   THE CONVENIENCE CONSTRUCTOR.  The object map of such a multifunctor is
-   forced (the colour type of [EndOperad X] is [poly_unit]), so an algebra
-   is determined by its ACTION MAPS [ohom O n → (pow X n ~> X)] together
-   with identity/composition/symmetry preservation restated at the arity
-   accessors of Theory/Multicategory/Operad.v ([OperadAction]);
-   [Build_OperadAlgebra] assembles the full multifunctor, discharging the
-   boundary bookkeeping once and for all.  The target-object casts ride on
-   axiom-free UIP for the operad's colour type ([operad_obj_UIP]: the
-   colour type is propositionally [poly_unit], and UIP transports along
-   type equality by [destruct]; the [poly_unit] end is Hedberg via
-   [UIP_dec], as in the [UIP_nat] use of
-   Theory/Multicategory/Endomorphism.v).
-
-   THE CATEGORY OF ALGEBRAS.  Morphisms of algebras are carrier maps
-   intertwining the actions at every arity, with the finite-power
-   functoriality [pow_map]; the bundled category [OperadAlgebras] follows
-   the first-projection idiom of Construction/FAlg.v.
-
-   THE COMMUTATIVE OPERAD.  [Comm] is the terminal operad: one operation
-   in every arity ([mhom Γ c := poly_unit], trivial setoid).  Its algebras
-   in [Sets] are commutative monoids in both directions (a full
-   categorical equivalence is not claimed; see the bundled note below):
-   [Comm_algebra_to_CMon] (binary action + nullary action, with
-   associativity/commutativity/unit extracted from the multifunctor laws
-   at concrete contexts) and [CMon_to_Comm_algebra] (n-fold sums via the
-   convenience constructor), bundled as [Comm_algebra_CMon].
-
-   A RECORDED STRENGTH CHANGE, ON THE FORWARD DIRECTION ONLY.  An
-   earlier revision of this paragraph stated that direction
-   unconditionally: every [Comm]-algebra on an [X : Sets] yields a
-   commutative monoid.  Since the PR "algebraic carriers are sets"
-   (2026-09-17) a [CMonObject] carries [cmon_prop], a [PropEquiv] for its
-   carrier setoid, and [Comm_algebra_to_CMon] takes its carrier setoid
-   straight from [X]; an arbitrary object of [Sets] supplies no [Prop]
-   mirror of its `≈`, and there is no [LocallyPropositional Sets] to
-   supply one either (Lib/Setoid/Propositional.v,
-   Instance/Sets/Propositional.v's header records both measurements).  So
-   [Comm_algebra_to_CMon] takes a [PropEquiv (is_setoid X)] as a section
-   hypothesis, and [Comm_algebra_CMon]'s left component asks for it too:
-
-     (∀ (X : Sets) (PX : PropEquiv (is_setoid X)),
-        OperadAlgebra Comm X → CMonObject) * …
-
-   Those two constants are the only ones in this file whose statement
-   changed.  The REVERSE direction is untouched — [CMon_to_Comm_algebra]
-   starts from a [CMonObject], whose carrier supplies its own
-   [cmon_prop] — and so are [Comm], [OperadAlgebra], the convenience
-   constructor and the category of algebras.  The hypothesis sits
-   exactly at the PASSAGE from an operadic action to a concrete
-   algebraic record, not in the operad theory, which keeps the ambient
-   `≈` throughout: the SCOPE paragraph of Structure/Complete.v's size
-   note (item 4), read at this file.  It is supplied rather than
-   resolved here because [X] is a bare object of [Sets]; every concrete
-   carrier in the tree has one, and the analogous hypothesis on a
-   CATEGORY is the class [LocallyPropositional] used by
-   Adjunction/Additive.v's [hom_ab] and Theory/Algebra/Rig.v's
-   [EndRig]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The transparent length kit *)
 

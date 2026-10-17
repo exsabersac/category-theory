@@ -20,34 +20,14 @@ Generalizable All Variables.
 
 (** * Equivalences create limits, and right adjoints preserve cones *)
 
-(* nLab: https://ncatlab.org/nlab/show/created+limit
+(*
+ nLab: https://ncatlab.org/nlab/show/created+limit
    nLab: https://ncatlab.org/nlab/show/adjoint+functor#preservation
 
-   [equivalence_creates_limits] (Theory/Equivalence/Limit.v) transports
-   a limit; on its own it relates neither the apexes nor the legs, and its
-   name has been ahead of its statement.  This file closes the gap in the
-   strong direction, keeping the name: [equivalence_CreatesLimit] exhibits
-   the existing constant as the existence datum of a genuine [CreatesLimit]
-   instance (Structure/Limit/Creation.v), with the comparison supplied by
-   uniqueness of limits up to cone isomorphism and the reflection clause by
-   [ff_reflect_ump] — every equivalence is full and faithful, and the leg
-   hypothesis discharges by [reflexivity] because the legs of [FCone] ARE
-   the image legs.  No constant is renamed, so [equivalence_creates_colimits]
-   (Theory/Equivalence/Limit.v) and every downstream user are untouched.
+   本文件给出极限/余极限的创造。
 
-   The construction above does not give a strict lift: the apex
-   [equivalence_creates_limits] produces is the quasi-inverse of the given
-   apex, related to it only by an isomorphism.  That is the case Riehl's
-   remark on Definition 3.4.7 (Category Theory in Context, 2nd ed., p. 105)
-   has in mind — strict creation is not invariant under equivalence, so no
-   strict witness is available for a general [F].  It is not a claim about
-   every equivalence: [Id[C]] is one, and it strictly creates every limit,
-   both clauses by [reflexivity].  [Id_CreatesAllLimits] below is therefore
-   offered as a [CreatesLimit] witness only; the strict class is witnessed
-   at generality by [EM_Forget] (Monad/Eilenberg/Moore/Limit.v).
-
-   The cone-level reading of RAPL, [right_adjoint_PreservesLimitCone],
-   lives at its natural home in Adjunction/Continuity.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Right adjoints preserve limiting cones, not merely limit apexes *)
 

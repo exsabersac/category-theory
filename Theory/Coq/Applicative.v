@@ -7,35 +7,14 @@ Generalizable All Variables.
 
 (** The Applicative type class (pure/ap), with its categorical reading *)
 
-(* nLab: https://ncatlab.org/nlab/show/applicative+functor
+(*
+ nLab: https://ncatlab.org/nlab/show/applicative+functor
    Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor
 
-   FP reading.  An applicative functor (in the Haskell sense) is a type
-   constructor [F : Type → Type] equipped with [pure : x → F x], injecting a
-   plain value, and [ap : F (x → y) → F x → F y] (Haskell's [<*>]), applying a
-   wrapped function to a wrapped argument.  It is lawful when it satisfies the
-   four applicative laws:
-     identity      [pure id <*> v ≈ v];
-     composition   [pure (∘) <*> u <*> v <*> w ≈ u <*> (v <*> w)];
-     homomorphism  [pure f <*> pure x ≈ pure (f x)];
-     interchange   [u <*> pure y ≈ pure (λ g, g y) <*> u].
-   Every applicative is a functor, with [fmap f x = pure f <*> x] (see
-   [Functor_Applicative] below).
+   本文件给出 Applicative 相关结构及其范畴解读。
 
-   Categorical reading.  This is exactly a lax monoidal endofunctor (with
-   tensorial strength) on the category of Coq types, taken with its cartesian
-   monoidal structure (product [×], unit [unit]).  The two structure morphisms
-   of a lax monoidal functor [F] are the unit [η : 1 → F 1] and the laxator
-   (a natural transformation) [μ : F x ⊗ F y → F (x ⊗ y)].  Here [η] is
-   recovered from [pure] (as [pure tt]) and [μ] from [ap] (as
-   [λ '(u, v), liftA2 pair u v]); conversely [pure x = fmap (const x) (η tt)]
-   and [ap f x = fmap (λ '(g, a), g a) (μ (f, x))].  The four applicative laws
-   above are precisely the lax-monoidal coherence axioms (associativity of [μ]
-   and the two unit constraints involving [η]).
-
-   As is usual for these Coq/Haskell-style classes, the laws are NOT recorded
-   as fields here; [Applicative] carries only [pure] and [ap], and lawfulness
-   is an obligation discharged for each concrete instance. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Applicative@{d c} {F : Type@{d} → Type@{c}} := {
   pure {x : Type@{d}} : x → F x;                       (* unit: injects a value (lax-monoidal η) *)

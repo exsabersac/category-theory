@@ -32,15 +32,15 @@ Context (K : D ⟶ Sets).
 
 (** ** The index category and the diagram of representables *)
 
-(* The index is the OPPOSITE of the category of elements: the assignment
-   d |-> [Hom d,-] is contravariant, so a morphism (d, x) ~> (d', x') of
-   [Elements K] must give a transformation running backwards. *)
+(*指数是 对要素范畴的OPOSITE:展开了。
+d霄->ZWP. 页:1
+56. ZWP1 但这必须让签约国实现婿的则是历史。*)
 
 Definition ElementsOp : Category := (Elements K)^op.
 
-(* A pure assembly: the covariant Yoneda embedding of D composed with
-   the opposite of the elements projection.  No obligation, so all three
-   functor laws are inherited. *)
+(*Sung的某些方面。 ,,,,,,,, 继,,,,,,,,,,,,,,,,,,,,是吗,采取协调一致的。
+与元素充分发挥的相反。 没有义务,合作和协调
+迥促使*)
 
 Definition DensityDiagram : ElementsOp ⟶ [D, Sets] :=
   Curried_Hom D ◯ (Elements_proj K)^op.

@@ -5,22 +5,14 @@ Generalizable All Variables.
 
 (** * Semigroupoid (semicategory) *)
 
-(* nLab: https://ncatlab.org/nlab/show/semicategory
+(*
+ nLab: https://ncatlab.org/nlab/show/semicategory
    Wikipedia: https://en.wikipedia.org/wiki/Semigroupoid
 
-   A semigroupoid (also called a semicategory or non-unital category) is a
-   category without identity morphisms: a collection of objects, a hom
-   `semi_hom x y` of morphisms for each pair of objects, and a composition
-   `semi_compose f g : x ~> z` for `g : x ~> y` and `f : y ~> z`, subject to
-   the associativity law alone. There are no objects' identities and hence no
-   unit laws -- that is the defining difference from a [Category], not a
-   missing axiom. Having identities is an extra property a semigroupoid may or
-   may not possess, not extra structure.
+   本文件给出半范畴相关。
 
-   As in [Category], the hom is a setoid (a hom-setoid) rather than a bare
-   set, so morphism equality is the chosen equivalence `≈` rather than Coq's
-   `=`. Every [Category] is in particular a [Semigroupoid] by forgetting its
-   identities; this is witnessed by the coercion [to_Semigroupoid] below. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Semigroupoid := {
   semi_obj : Type;                      (* collection of objects *)

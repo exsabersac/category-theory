@@ -11,44 +11,14 @@ Generalizable All Variables.
 
 (** Modifications between lax transformations, and the category they form. *)
 
-(* nLab: https://ncatlab.org/nlab/show/modification
+(*
+ nLab: https://ncatlab.org/nlab/show/modification
    Reference: Johnson–Yau, "2-Dimensional Categories", Definition 4.4.1.
 
-   Given two lax transformations σ, τ : F ⟹ G between pseudofunctors
-   F, G : B ⟶ B', a *modification* Γ : σ ⇛ τ consists of a component 2-cell
+   本文件给出修改（modification）。
 
-     Γ_x : σ_x ⟹ τ_x        in the hom-category  bicat B' (F x) (G x)
-
-   for each 0-cell x, subject to one coherence axiom relating the components to
-   the naturators of σ and τ.  With the lax naturator orientation of
-   `Theory/Bicategory/Lax.v`,
-
-     lt1 σ f : G f ∘∘∘ σ_x  ⟹  σ_y ∘∘∘ F f,
-
-   the modification axiom is the commuting square (in the hom-category
-   bicat B' (F x) (G y)) with the two naturators on the sides and the
-   whiskerings of Γ on the other two:
-
-     lt1 τ f ∘∘ (G f ⊲ Γ_x)  ≈  (Γ_y ⊳ F f) ∘∘ lt1 σ f,
-
-   where the left whiskering  G f ⊲ Γ_x  is `hcomp2 (bi2id (a:=pf1[G] f)) (Γ x)`
-   (identity on pf1[G] f, the modification component on the source side) and the
-   right whiskering  Γ_y ⊳ F f  is `hcomp2 (Γ y) (bi2id (a:=pf1[F] f))`
-   (the component on the target side, identity on pf1[F] f).  Both composites
-   are 2-cells  G f ∘∘∘ σ_x ⟹ τ_y ∘∘∘ F f, so the equation is well typed.
-
-   Modifications are the 2-cells of the (strict) hom-2-category whose 0-cells
-   are pseudofunctors, 1-cells are lax transformations, and whose vertical
-   composition of 2-cells is that of the target hom-categories.  This file
-   provides the identity and vertical composite modifications, the hom-setoid
-   in which two modifications agree iff their components agree at every 0-cell,
-   and packages these into the category [LaxTransformation_Category F G] of lax
-   transformations F ⟹ G with modifications between them.
-
-   Notation: `∘∘` is vertical 2-cell composition (`vcompose`), `∘∘∘` horizontal
-   1-cell composition (`hcompose`), `hcomp2` the Godement horizontal composite;
-   `pf1[ ]`, `lt0`, `lt1` are the pseudofunctor hom-functor and the
-   lax-transformation component/naturator accessors of the imported files. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The modification class, at full strength.  Its datum is the component
    2-cell family [md]; its single law is the modification axiom [md_natural],

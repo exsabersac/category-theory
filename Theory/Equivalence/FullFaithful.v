@@ -7,58 +7,14 @@ Require Import Category.Theory.Equivalence.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
+(*
+ nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
    Wikipedia: https://en.wikipedia.org/wiki/Equivalence_of_categories
 
-   The classical characterization of equivalences: a functor F : C ⟶ D is an
-   equivalence of categories exactly when it is full, faithful, and
-   essentially surjective.  Both directions are constructive here, because
-   the library's [Full] and [EssentiallySurjective] are the split,
-   choice-carrying classes ([prefmap] is a chosen section of [fmap[F]];
-   [eso_obj]/[eso_iso] a chosen preimage object with its witnessing
-   isomorphism), so no choice principle is consumed: the quasi-inverse is
-   assembled directly from the carried data.
+   本文件给出范畴等价的经典刻画：函子是等价当且仅当它全、忠实且本质满射（本库中为带选择的分裂版本，两个方向均可构造）。
 
-   Forward direction ([FF_ESO_Equivalence]): the quasi-inverse
-   [ff_eso_inverse] acts by [eso_obj] on objects, and on morphisms by
-   conjugating with the [eso_iso] isomorphisms and then choosing a preimage
-   with [prefmap].  [prefmap] carries no functoriality nor respectfulness of
-   its own (see the issue #118 note in Theory/Functor.v), so every law of
-   [ff_eso_inverse] is instead recovered from faithfulness: apply
-   [fmap_inj], push [fmap[F]] through with [fmap_sur], and conclude among
-   the images in D.  The counit of the resulting equivalence is literally
-   the family [eso_iso]; the unit component at x is the [prefmap]-image of
-   [eso_iso (F x)], inverted ([ff_eso_unit_iso]).
-
-   Converse direction, given [E : EquivalenceOfCategories F]:
-
-   - [Equivalence_Faithful]: injectivity of [fmap[F]] is read off the
-     conjugation coherence of the unit cell ([`2 equivalence_unit]).
-   - [Equivalence_Inverse_Faithful]: the same statement for the
-     quasi-inverse, obtained through [EquivalenceOfCategories_sym] — which
-     is exactly reading it off the counit cell.
-   - [Equivalence_Full]: the chosen preimage of g : F x ~> F y is the
-     unit-conjugate of [fmap[quasi_inverse] g] ([equivalence_prefmap]).
-     The section law is the classical argument: the F-image of the
-     preimage and g itself have the same image under the faithful
-     [quasi_inverse], by naturality of the unit and cancellation of its
-     componentwise isomorphisms ([iso_from_monic]/[iso_to_epic] from
-     Theory/Isomorphism.v).
-   - [Equivalence_EssSurj]: the preimage object of d is
-     [quasi_inverse d], witnessed by the counit component
-     [equivalence_counit_at d].
-
-   Transparency: [FF_ESO_Equivalence], [Equivalence_Full] and
-   [Equivalence_EssSurj] end in [Defined], because their content is data (a
-   functor, a chosen section, a chosen preimage object), and downstream
-   developments — Theory/Equivalence/Adjoint.v builds the adjunction of an
-   adjoint equivalence directly from the [prefmap]/[eso_iso] data extracted
-   here — need those components to reduce.  [Equivalence_Faithful] is pure
-   proof and ends in [Qed].
-
-   Following Theory/Equivalence.v, nothing in this file is registered for
-   instance resolution: quasi-inverses, chosen sections and chosen preimage
-   objects are choices, always passed explicitly at use sites. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The quasi-inverse assembled from a full, faithful, essentially
    surjective functor.  On objects it is the chosen preimage [eso_obj]; on

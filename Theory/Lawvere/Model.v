@@ -15,30 +15,14 @@ Generalizable All Variables.
 
 (** * Models of a Lawvere theory *)
 
-(* nLab:      https://ncatlab.org/nlab/show/Lawvere+theory
+(*
+ nLab:      https://ncatlab.org/nlab/show/Lawvere+theory
    Wikipedia: https://en.wikipedia.org/wiki/Lawvere_theory
 
-   A model (or algebra) of a Lawvere theory [T] in a cartesian category [C]
-   is a finite-product-preserving functor [law_cat T ⟶ C].  In this library
-   product preservation splits into two separate concerns, mirroring the
-   nullary/binary split of finite products themselves:
+   本文件给出 Lawvere 理论的模型。
 
-     - [CartesianFunctor] (Functor/Structure/Cartesian.v): the binary
-       comparison F (x × y) ≅ F x × F y is an isomorphism;
-     - [TerminalFunctor] (Functor/Structure/Terminal.v): the nullary
-       comparison 1 ≅ F 1 is an isomorphism.
-
-   [Model] bundles a functor with both preservation witnesses.
-
-   Morphisms of models are ALL natural transformations between the
-   underlying functors — no compatibility condition is imposed, because
-   product preservation is property-like structure on the objects, not on
-   the morphisms.  Accordingly the category of models [Models T C] is the
-   FULL subcategory of the functor category [law_cat T, C] on the
-   product-preserving functors, built with Construction/Subcategory.v
-   exactly as Construction/Localization.v builds the full subcategory of
-   W-local objects: [sobj] selects the preservation witnesses and [shom]
-   retains every morphism ([True]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Model.
 

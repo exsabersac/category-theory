@@ -7,52 +7,13 @@ Generalizable All Variables.
 
 (** * Companions and conjoints in a double category *)
 
-(* nLab: https://ncatlab.org/nlab/show/companion+pair
+(*
+ nLab: https://ncatlab.org/nlab/show/companion+pair
 
-   In a double category, a COMPANION of a vertical morphism [u : a ~> b] is a
-   horizontal 1-cell [comp_hor : dhor a b] together with two binding squares
+   本文件给出双重范畴中的 companion。
 
-        a ==1a=> a                a --û--> b
-        |        |                |        |
-        id   η   u    and         u    ε   id
-        v        v                v        v
-        a --û--> b                b ==1b=> b
-
-   (the unit [η] and counit [ε]) subject to two zigzag identities: pasting
-   [η] beside [ε] horizontally is the composite of the unitors of [û]
-   ([comp_zig] below), and pasting [η] above [ε] vertically is the horizontal
-   identity square on [u].  The class [DoubleCategory] deliberately has no
-   primitive producing a horizontal identity square on a general vertical
-   morphism (only [dsq_vid], whose vertical edges are identities), so the
-   vertical zigzag is not expressible in its textbook form here.  We state it
-   instead in its standard equivalent REPRESENTABILITY form: the pair
-   [(η, ε)] induces a transposition bijection between squares
-
-        a --h'-> b                 a --h'-> b
-        |        |                 |        |
-        u        id      and       id       id
-        v        v                 v        v
-        b ==1b=> b                 a --û--> b
-
-   ([companion_eval] one way, [companion_name] the other), and the two
-   binding identities [comp_zag_eval]/[comp_zag_name] say the round trips
-   are the identity.  In any double category with horizontal identity
-   squares and natural unitors this is equivalent to the vertical zigzag;
-   here it is exactly the strength needed to make companions unique up to a
-   canonical invertible globular square ([companion_unique] below).
-
-   Strength note: the record captures the POINTWISE-bijection form of the
-   zigzag — the two round trips only, with no naturality of the
-   transposition in [h'] — which is precisely what the uniqueness theorems
-   below consume.  The equivalence with the textbook vertical zigzag quoted
-   above holds against the richer signature (horizontal identity squares on
-   verticals, natural unitors) that [DoubleCategory] deliberately does not
-   require (see the SCOPE note in Theory/DoubleCategory.v), so it is stated
-   for orientation, not re-proven here.
-
-   A CONJOINT of [u] is the horizontal-opposite notion: a 1-cell
-   [conj_hor : dhor b a] with binding squares mirrored left-to-right, and
-   the transposition stated for squares whose RIGHT edge is [u]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* A composite-of-identities collapse used in the transposes' boundaries. *)
 Lemma triple_id {C : Category} {x : C} : id[x] ∘ (id ∘ id) ≈ id.

@@ -12,43 +12,14 @@ Require Import Coq.Vectors.Vector.
 
 Generalizable All Variables.
 
-(** * The category of sheaves over a site
+(*
+ nLab: https://ncatlab.org/nlab/show/category+of+sheaves
+ Wikipedia: https://en.wikipedia.org/wiki/Sheaf_(mathematics)
 
-    nLab: https://ncatlab.org/nlab/show/category+of+sheaves
-    Wikipedia: https://en.wikipedia.org/wiki/Sheaf_(mathematics)
+   本文件给出范畴变体或层范畴等。
 
-    [Sheaves C] is the FULL subcategory of the presheaf category
-    [Presheaves C Sets] (= [C^op, Sets]) on the [Sheaf] predicate of
-    Theory/Sheaf.v, built with Construction/Subcategory.v exactly as
-    Construction/Reflective.v, Construction/Localization.v and
-    Theory/Lawvere/Model.v build their full subcategories: [sobj]
-    selects the sheaf witnesses and [shom] retains every natural
-    transformation ([True]/[I]).
-
-    SCOPE NOTE, stating the weaknesses of the underlying donor
-    precisely.  (i) The [Site] encoding in Theory/Sheaf.v picks a
-    SINGLE covering family per object rather than the usual collection
-    of covering families — less general than a full coverage.  (ii)
-    Deeper, found during this phase's review: the inherited [Sheaf]
-    predicate is NOT the textbook unique-gluing condition even for
-    that one family.  Its gluing clause is per-leg (a single section
-    over one [u_i], not a simultaneous matching family), and its
-    compatibility antecedent quantifies over ALL sections of the other
-    leg — instantiating [v := u_i], [g := h := id] and the SAME leg
-    [j := i] makes the antecedent force [x_i ≈ x_j] for every
-    [x_j : X u_i], so the hypothesis is satisfiable only when [X u_i]
-    is a subsingleton, and the condition is vacuous at any covered
-    object with two inequivalent sections.  "Sheaf" throughout this
-    file therefore means: EXACTLY Theory/Sheaf.v's predicate, no more.
-    Everything below (the category, the fully faithful inclusion,
-    closure under isomorphism) is a genuine theorem about that
-    predicate and survives a future repair structurally; the repair
-    itself — re-founding [Sheaf] on honest matching families — is a
-    named deferral alongside sheafification (ledger entry 1).
-
-    Sheafification (the left adjoint to [Sheaves_Incl], exhibiting
-    [Sheaves C] as a reflective subcategory of presheaves) is a named
-    deferral: LEDGER ENTRY 1. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Pointwise implication for the Type-valued [ForallT] of
     Theory/Sheaf.v: a function of witnesses at every element maps a

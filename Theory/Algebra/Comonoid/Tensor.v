@@ -14,49 +14,16 @@ Require Import Category.Theory.Algebra.CommutativeComonoid.
 
 Generalizable All Variables.
 
-(** * Tensor and unit comonoids in a symmetric monoidal category
+(*
+ nLab:      https://ncatlab.org/nlab/show/comonoid
+ nLab:      https://ncatlab.org/nlab/show/monoidal+functor
+ Reference: Fong & Spivak, "Hypergraph Categories",
+ Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
 
-    In any symmetric monoidal category the (commutative) comonoids are
-    closed under the tensor product and inhabited at the unit object:
+   本文件给出张量相关构造。
 
-    - given comonoids on [X] and [Y], the canonical morphisms
-      [canonical_tensor_delta]/[canonical_tensor_epsilon] of
-      Structure/Monoidal/Hypergraph.v — the doubled comultiplication
-      routed through the middle interchange, and the doubled counit
-      collapsed by the unitor — form a comonoid on [X ⨂ Y]
-      ([Comonoid_Tensor]), cocommutative when the components are
-      ([CommutativeComonoid_Tensor]);
-    - the unit object carries the trivial comonoid [δ := λ⁻¹, ε := id]
-      ([Comonoid_Unit], [CommutativeComonoid_Unit]).
-
-    This is the classical fact that the squaring-style structure maps of
-    the tensor bifunctor make it a symmetric (strong) monoidal functor
-    [C ∏ C ⟶ C], so it carries comonoids to comonoids (Fong–Spivak,
-    "Hypergraph Categories", §2; the [scfa_tensor_*]/[scfa_unit_*]
-    coherence fields of the [Hypergraph] class assert exactly these
-    composites, and Structure/Monoidal/CopyDiscard.v assumes them as the
-    supply-coherence fields).  Here the comonoid laws are PROVED rather
-    than assumed, so downstream developments can derive a comonoid on a
-    composite boundary from per-generator comonoids without any
-    boundary-level axiom.
-
-    Tensoring two DIFFERENT comonoids needs the interchange coherences
-    of Structure/Monoidal/Braided/Proofs.v at mixed arguments: the
-    four-slot naturality [swap_inner_natural], the involution
-    [swap_inner_invol], the unit coherences [swap_inner_unit_left2] /
-    [swap_inner_unit_right2] in their solved and inverse orientations,
-    and the inverted associativity hexagon [swap_inner_assoc_inv].  The
-    diagonal forms consumed by the copy-discard stack are one-line
-    instances of the same lemmas.
-
-    nLab:      https://ncatlab.org/nlab/show/comonoid
-    nLab:      https://ncatlab.org/nlab/show/monoidal+functor
-    Reference: Fong & Spivak, "Hypergraph Categories",
-               J. Pure Appl. Algebra 223(11):4746–4777, 2019
-               (arXiv:1806.08304), §2
-    Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
-               string diagrams", MSCS 29(7):938–971, 2019
-               (arXiv:1709.00322), §2 *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------ *)
 

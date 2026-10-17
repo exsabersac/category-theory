@@ -14,30 +14,15 @@ Generalizable All Variables.
 
 (** * Commutative Frobenius algebras in a symmetric monoidal category *)
 
-(* A Frobenius algebra is commutative when its multiplication is symmetric
-   under the braiding, and equivalently when its comultiplication is
-   cosymmetric.  In our library notation, with [braid : X ⨂ X ~> X ⨂ X] the
-   symmetry, the two laws are
+(*
+ nLab:      https://ncatlab.org/nlab/show/Frobenius+algebra
+ nLab:      https://ncatlab.org/nlab/show/2-dimensional+TQFT
+ Wikipedia: https://en.wikipedia.org/wiki/Frobenius_algebra *)
 
-       mu ∘ braid ≈ mu              (commutativity of the monoid)
-       braid ∘ delta ≈ delta        (cocommutativity of the comonoid)
+   本文件给出交换 Frobenius 结构。
 
-   Over a symmetric monoidal category these two statements are equivalent
-   (the bend/cap of the Frobenius structure turns either one into the
-   other), but we record both as fields because both are useful as
-   left-to-right rewrite rules.
-
-   TQFT correspondence: commutative Frobenius algebras are exactly the
-   algebraic data of (1+1)-dimensional / 2-dimensional TQFTs.  The category
-   of commutative Frobenius algebras over a field [K] is equivalent to the
-   category of symmetric strong monoidal functors from the 2-cobordism
-   category [2Cob] to [Vect_K]: the circle is sent to the algebra, the
-   "pair of pants" cobordism to [mu] (resp. [delta] read backwards), and
-   the cap/cup disks to [eta] / [epsilon].
-
-   nLab:      https://ncatlab.org/nlab/show/Frobenius+algebra
-   nLab:      https://ncatlab.org/nlab/show/2-dimensional+TQFT
-   Wikipedia: https://en.wikipedia.org/wiki/Frobenius_algebra *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CommutativeFrobenius.
 

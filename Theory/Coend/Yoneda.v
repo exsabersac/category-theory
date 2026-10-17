@@ -27,42 +27,14 @@ Proof. exact (@fmap_comp D Sets G x y z g f w). Qed.
 
 (** * The ninja-Yoneda lemma in [Sets], both variances *)
 
-(* nLab: https://ncatlab.org/nlab/show/co-Yoneda+lemma
+(*
+ nLab: https://ncatlab.org/nlab/show/co-Yoneda+lemma
    nLab: https://ncatlab.org/nlab/show/end#yoneda_reduction
 
-   For a covariant functor [F : C ⟶ Sets] and an object [c : C] the Yoneda
-   lemma has two dual "reduction" forms, computing a (co)end of a hom-weighted
-   integrand back to [F c]:
+   本文件给出 Yoneda 相关结果。
 
-     coend form (co-Yoneda) :   ∫^x  C(x,c) × F x   ≅   F c
-       end form   (Yoneda)   :   ∫_x  [ C(c,x) , F x ]   ≅   F c
-
-   Both are realised here concretely in [Sets] over the direct (co)end
-   constructions of Instance/Sets/Coend and Instance/Sets/End, so both are
-   [funext]-free and axiom-closed.
-
-   Form 1 (this file's [coyoneda_reduction]).  The integrand
-   [YoI : C^op ∏ C ⟶ Sets] sends [(x, y)] to the product setoid
-   [C(x,c) × F y], contravariant in [x] by hom-precomposition and covariant in
-   [y] by [fmap[F]].  The forward map is the coend mediator whose leg at [x]
-   is [(g, a) ↦ fmap[F] g a] (co-dinaturality holds by [fmap_comp]); the
-   inverse is [b ↦ ci c (id, b)].  One round trip is [fmap_id]; the other is a
-   single application of the coend glue [ce_glue] (with [id]-law and [fmap_id]
-   bookkeeping), witnessing that every generator [ci x (g, a)] is already
-   identified with [ci c (id, fmap[F] g a)].
-
-   Form 2 (this file's [yoneda_reduction]).  The integrand
-   [YoE : C^op ∏ C ⟶ Sets] sends [(x, y)] to the exponential setoid
-   [ [C(c,x) , F y] ] of setoid maps, contravariant in [x], covariant in [y];
-   an element of [Sets_End YoE] is exactly a family [s x : C(c,x) → F x]
-   satisfying the wedge (naturality) law, i.e. a natural transformation
-   [C(c,-) ⟹ F].  The forward map evaluates at the identity, [s ↦ s c id];
-   the inverse is [b ↦ (fun x g => fmap[F] g b)] (its wedge law holds by
-   [fmap_comp]); the round trips use [fmap_id] and the family's own naturality.
-
-   As with every Sets-valued (co)limit here the indexing category's object
-   level is constrained below Sets' carrier level; these smallness constraints
-   are inferred by universe polymorphism and recorded on the reductions. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Yoneda.
 

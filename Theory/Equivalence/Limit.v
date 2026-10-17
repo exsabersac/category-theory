@@ -17,75 +17,16 @@ Generalizable All Variables.
 
 (** * Equivalences preserve, reflect, and create limits *)
 
-(* nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
+(*
+ nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
    nLab: https://ncatlab.org/nlab/show/preserved+limit
    nLab: https://ncatlab.org/nlab/show/reflected+limit
    nLab: https://ncatlab.org/nlab/show/created+limit
 
-   An equivalence of categories (Theory/Equivalence.v) interacts with
-   limits in every way one could ask: it preserves them, reflects them,
-   and carries any limit of a composite diagram F ◯ G back to a limit of
-   G.  This file proves the three statements, and their colimit duals,
-   packaged in the preservation vocabulary of
-   Structure/Limit/Preservation.v.
+   本文件给出极限相关。
 
-   - Preservation ([equivalence_preserves_limits]) is adjoint continuity:
-     refining E : EquivalenceOfCategories F to an adjoint equivalence
-     (Theory/Equivalence/Adjoint.v) and swapping its two sides exhibits F
-     as a right adjoint — quasi_inverse ⊣ F — so RAPL
-     (Adjunction/Continuity.v) applies.  Dually, F is the left adjoint of
-     F ⊣ quasi_inverse, so LAPC makes it preserve all colimits as well
-     ([equivalence_preserves_colimits]).
-
-   - Reflection ([equivalence_reflects_limits]) needs only that F is full
-     and faithful, so it is proved in that generality first
-     ([ff_reflects_limit]): when the image of a cone N under F underlies
-     a limit of F ◯ G, the cone N itself is a limit of G.  "The image of
-     N is a limit" is stated as an apex-pinned witness
-     [IsALimit (F ◯ G) (F (vertex_obj[N]))] together with the family
-     identifying its legs with the image legs [fmap[F] (cone_leg N x)]
-     (an arbitrary witness at the image apex says nothing about the legs
-     of N, so the family is part of the hypothesis).  The mediating
-     morphism in C is the [prefmap]-preimage of the mediator in D, and
-     both of its laws are recovered from faithfulness — apply [fmap_inj],
-     push [fmap[F]] through with [fmap_sur], and conclude among the
-     images — since [prefmap] itself carries no functoriality (the issue
-     #118 note in Theory/Functor.v).  The same technique gives
-     [ff_reflects_isos] and [equivalence_reflects_isos], witnesses for
-     the conservative-functor class [ReflectsIsos] of
-     Structure/Limit/Preservation.v.  Since #481 the colimit half for a
-     functor that is only full and faithful is [ff_reflects_colimit],
-     and both halves are stated at cone level as well
-     ([ff_ReflectsLimitCone], [ff_ReflectsColimitCocone]): Riehl's Lemma
-     3.4.5.
-
-   - Creation ([equivalence_creates_limits]) takes any limit of F ◯ G to
-     a limit of G itself: the quasi-inverse is a right adjoint
-     (F ⊣ quasi_inverse), so RAPL gives a limit of
-     quasi_inverse ◯ (F ◯ G), which the unit cell identifies with G —
-     the composite natural isomorphism [equivalence_diagram_iso] — and
-     naturally isomorphic diagrams have the same limits: the iso-of-cones
-     transport [limit_transport], proved here in full generality
-     ([isalimit_transport]/[limit_transport], with the cone conjugates
-     [cone_transport]/[cone_transport_inv]).  This produces, for every
-     limit in D of the composite diagram, an actual limit in C of the
-     original diagram; combined with preservation and reflection it is
-     the practical content of "equivalences create limits".
-
-   The colimit statements ride the opposite category, never a second
-   proof: a cocone is a cone over the opposite diagram, [IsAColimit] is
-   [IsALimit] of the opposite diagram, and F^op is an equivalence
-   whenever F is ([EquivalenceOfCategories_op], whose two cells are the
-   pointwise opposites of the cells of E).  The only friction is that
-   (F ◯ G)^op and F^op ◯ G^op are distinct functor records sharing their
-   object and morphism maps, so apex-pinned witnesses are repackaged
-   field by field ([isalimit_op_comp], following the precedent of
-   [preserves_colimit] in Structure/Limit/Preservation.v).
-
-   Following Theory/Equivalence.v, nothing in this file is registered
-   for instance resolution: quasi-inverses, preservation witnesses and
-   reflection witnesses are choices, always passed explicitly at use
-   sites. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Additions to the covariant accessor toolkit *)
 

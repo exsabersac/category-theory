@@ -11,72 +11,15 @@ Generalizable All Variables.
 
 (** * Internal semigroups in a monoidal category, and the category Smgrp *)
 
-(* nLab: https://ncatlab.org/nlab/show/semigroup
+(*
+ nLab: https://ncatlab.org/nlab/show/semigroup
    nLab: https://ncatlab.org/nlab/show/monoid+in+a+monoidal+category
    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer GTM 5, 1998, §VI.4, printed p. 144 (PDF p. 153) —
-         maclane:VI.4:construction1
 
-   Mac Lane opens §VI.4, from the page image: "A semigroup is a set S
-   equipped with an associative binary operation ν: S × S → S", and he
-   writes Smgrp for "the category of all small semigroups", with the
-   forgetful functor G : Smgrp → Set.  This file states the definition
-   internally, as Theory/Algebra/Monoid.v states monoids: a semigroup on
-   an object X of a monoidal category (C, ⨂, I) is a multiplication
-   smu : X ⨂ X ~> X with
+   本文件给出半群对象结构。
 
-     associativity  smu ∘ (smu ⨂ id) ≈ smu ∘ (id ⨂ smu) ∘ α
-
-   (α = to tensor_assoc) and nothing more: no unit, so no unitor.
-   [SemigroupHom] asks of f : x ~> y the multiplication square
-   f ∘ smu ≈ smu ∘ (f ⨂ f) alone.  [Smgrp C] packages the semigroups and
-   their homomorphisms with sigma objects and homs, arrows compared by
-   their underlying arrows, exactly as Theory/Algebra/Monoid/Hom.v
-   packages [Mon C]; [Smgrp_Forget] projects, faithfully by construction
-   ([Smgrp_Forget_Faithful]).  [Mon_Smgrp] : Mon C ⟶ Smgrp C forgets the
-   unit; after the two forgetful functors it is [Mon_Forget] on objects
-   and on arrows at [eq_refl] ([Mon_Smgrp_Forget_obj],
-   [Mon_Smgrp_Forget_map]).  Mac Lane's Smgrp is [Smgrp] at (Sets, ×),
-   Instance/Smgrp.v's [SmgrpSets]; the free semigroup, the word monad W
-   and the monadicity of Smgrp over Set are Instance/Smgrp.v and
-   Instance/Smgrp/Word.v.
-
-   NAMES.  The class [Semigroup] is the sibling of Theory/Algebra/
-   Monoid.v's [Monoid], internal to an arbitrary monoidal category, and
-   not of Structure/Monoid.v's cartesian [MonoidObject], from which
-   Structure/Lattice.v builds its lattice objects.  It shares its short
-   name with Theory/Coq/Semigroup.v's ops-only class, as [Monoid] shares
-   its name with Theory/Coq/Monoid.v's; no file of the tree requires
-   both.  No [PropEquiv] is asked (Lib/Setoid/Propositional.v's regime
-   is that of the algebraic records CMon, Grp and the rest): [Mon] does
-   not carry it either, and no adjoint functor theorem is involved here.
-
-   STRENGTHS.  The two readbacks hold at [eq_refl], and
-   Test/ProbeWord470.v restates them (C1, C2).  The laws of the category
-   and of the two functors are the [Program] obligations of [Smgrp],
-   [Smgrp_Forget] and [Mon_Smgrp], twelve, closed by the ambient tactic as
-   in Theory/Algebra/Monoid/Hom.v; the four lemmas end [Qed], and no proof
-   ends [Defined] (counted by token).  Nothing here is refused.
-
-   UNIVERSES, read off [About].  [Smgrp@{u u0 u1 u2}],
-   [Smgrp_Forget_Faithful] and the two readbacks have exactly the block of
-   [Mon@{u u0 u1 u2}] (u0 < u2, u <= u1, u0 <= u1, with the caps of the
-   standard library's sigma and pair projections), and [Smgrp_Forget],
-   [Mon_Smgrp] and their six obligations that of [Mon_Forget] (u0 < u1,
-   u <= u2, u0 <= u2, with those caps).  The class, the homomorphism
-   record, their constructors and fields, the three homomorphism lemmas,
-   [Monoid_Semigroup], [MonoidHom_SemigroupHom] and four of [Smgrp]'s six
-   obligations bind @{u u0} with caps only; the other two bind @{u u0 u1}
-   with u0 < u1.  No [Set] and no equation.  On Coq 8.20.1 every constant
-   here has the same binder and the same constraints between bound
-   levels; on Coq 8.19.2 so does every constant but the six obligations
-   of [Smgrp], which bind one or two levels more (compared by script,
-   the names of the standard library's caps differing by version).
-
-   NOT DELIVERED.  Free semigroups, limits and colimits of semigroups in
-   this generality; commutative semigroups; the semigroup of a lax
-   monoidal functor; the unit-free variant of Structure/Lattice.v's
-   lattice objects. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Semigroup.
 

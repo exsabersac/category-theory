@@ -18,30 +18,14 @@ Generalizable All Variables.
 
 (** Representable profunctors versus adjunctions. *)
 
-(* nLab: https://ncatlab.org/nlab/show/profunctor
+(*
+ nLab: https://ncatlab.org/nlab/show/profunctor
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
 
-   An adjunction is exactly a natural isomorphism of representable profunctors.
-   For F : D ⟶ C and U : C ⟶ D (the library orients F ⊣ U with F the left
-   adjoint D ⟶ C and U the right adjoint C ⟶ D), the two representable
-   profunctors of Theory/Profunctor.v are
+   本文件给出伴随相关构造与性质。
 
-     Repr_left F  : D ⇸ C,   (d, c) ↦ C(F d, c),
-     Repr_right U : D ⇸ C,   (d, c) ↦ D(d, U c),
-
-   both objects of the profunctor category [D^op ∏ C, Sets]. An adjunction
-   F ⊣ U is precisely a natural isomorphism Repr_left F ≅ Repr_right U in that
-   category: this is the hom-set (transpose) form of an adjunction.
-
-   The witnessing isomorphism is literally the hom-bifunctor isomorphism hom_adj
-   of Adjunction/Hom.v, whose two sides Hom C ◯ (F^op ∏⟶ Id) and
-   Hom D ◯ (Id^op ∏⟶ U) are definitionally Repr_left F and Repr_right U. So
-   this file is a repackaging, through the profunctor vocabulary, of the two
-   conversions already established there — Adjunction_Universal_to_Hom (from the
-   universal-property adjunction Theory/Adjunction.v to the hom-iso form) and
-   Adjunction_Hom_to_Universal (back) — bundled into the Type-valued iff
-   representable_adjunction. Both directions are genuine, so the iff holds at
-   full strength; nothing here is a one-way implication. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section RepresentableAdjunction.
 

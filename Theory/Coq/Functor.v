@@ -4,26 +4,15 @@ Generalizable All Variables.
 
 (** The Functor type class (fmap), with its categorical reading *)
 
-(* nLab: https://ncatlab.org/nlab/show/functor
+(*
+ nLab: https://ncatlab.org/nlab/show/functor
    Wikipedia: https://en.wikipedia.org/wiki/Functor_(functional_programming)
    Wikipedia: https://en.wikipedia.org/wiki/Functor
 
-   FP reading.  A functor (in the Haskell sense) is a type constructor
-   [F : Type → Type] equipped with [fmap : (x → y) → F x → F y], lifting a
-   function on elements to a function on the wrapped type.  It is lawful when
-   it satisfies the two functor laws: identity [fmap id ≈ id] and composition
-   [fmap (g ∘ f) ≈ fmap g ∘ fmap f].
+   本文件给出函子相关定义或实例。
 
-   Categorical reading.  This is exactly an endofunctor on the category of
-   Coq types (the "category of types", Haskell's Hask).  The object map is
-   the type constructor [F] itself, and the morphism (hom) map is [fmap],
-   sending a morphism [f : x → y] to [fmap f : F x → F y].  The two functor
-   laws are precisely preservation of identities [F id = id] and of
-   composition [F (g ∘ f) = F g ∘ F f].
-
-   As is usual for these Coq/Haskell-style classes, the laws are NOT recorded
-   as fields here; [Functor] carries only the [fmap] operation, and
-   lawfulness is an obligation discharged for each concrete instance. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Functor@{d c} {F : Type@{d} → Type@{c}} := {
   fmap : ∀ {x y : Type@{d}}, (x → y) → F x → F y;  (* morphism map of the endofunctor F *)

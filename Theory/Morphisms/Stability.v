@@ -6,36 +6,14 @@ Require Import Category.Structure.Pullback.
 
 Generalizable All Variables.
 
-(* Pullback pasting and stability under base change.
+(*
+ nLab:      https://ncatlab.org/nlab/show/pasting+law+for+pullbacks
+ Wikipedia: https://en.wikipedia.org/wiki/Pullback_(category_theory)
 
-   nLab:      https://ncatlab.org/nlab/show/pasting+law+for+pullbacks
-              https://ncatlab.org/nlab/show/pullback-stable+morphism
-   Wikipedia: https://en.wikipedia.org/wiki/Pullback_(category_theory)
+   本文件给出稳定性相关结果。
 
-   The bundled [Pullback] record of Structure/Pullback.v packages its apex
-   existentially, so it cannot assert that a GIVEN commuting square is a
-   pullback.  This file first introduces the apex-pinned predicate
-   [IsPullback], with conversions in both directions, and on top of it
-   proves:
-
-   - the pasting (composition/cancellation) law for two adjacent squares
-     ([pullback_paste] and [pullback_unpaste]): when the right-hand square
-     is a pullback, the left-hand square is a pullback exactly when the
-     outer rectangle is;
-
-   - monomorphisms are stable under pullback ([monic_pullback_stable]);
-
-   - isomorphisms are stable under pullback ([iso_pullback_stable]);
-
-   - stability of the orthogonal left class under cobase change
-     ([ortho_left_cobase_change], at the end of the file, where the
-     pushout accessors are in scope);
-
-   - a strengthening of [pullback_unique]: any two pullbacks of one cospan
-     are related by an isomorphism of apexes whose triangles with the
-     projections commute ([pullback_transport]).  [pullback_unique] is
-     Qed-opaque, so the mediators are re-derived here from the universal
-     property. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The apex-pinned pullback predicate: the square
 

@@ -14,38 +14,15 @@ Generalizable All Variables.
 
 (** * Special commutative Frobenius algebras (SCFAs) *)
 
-(* A commutative Frobenius algebra (Theory/Algebra/CommutativeFrobenius.v) is
-   "special" when the round trip [mu ∘ delta] is the identity.  In our library
-   notation the special law is
+(*
+ nLab:      https://ncatlab.org/nlab/show/Frobenius+algebra
+ nLab:      https://ncatlab.org/nlab/show/classical+structure
+ Wikipedia: https://en.wikipedia.org/wiki/Frobenius_algebra *)
 
-       mu ∘ delta ≈ id[X]            (the special / "isometric" law)
+   本文件给出特殊交换 Frobenius 结构。
 
-   Equivalently the Frobenius pair has no redundancy: every "spider" with the
-   same number of legs collapses to a single canonical form (this is the
-   normal-form / "spider theorem").  Both nLab and Wikipedia state the law as
-   [prod ∘ coprod = id] (Wikipedia writes [μ ∘ δ = Id_A]); some authors only
-   require [mu ∘ delta = β·id] for a nonzero scalar [β], in which case ours is
-   the strict (β = 1) version.
-
-   Note on neighbouring conditions.  "Special" constrains only [mu ∘ delta]; it
-   does NOT impose the dual unit/counit law [epsilon ∘ eta ≈ id].  That extra
-   law is the separate "extraspecial" (a.k.a. "bone" / "irredundancy") axiom,
-   and we deliberately do not require it here.
-
-   ZX-calculus.  Dagger special commutative Frobenius algebras are exactly the
-   "classical structures" / "observable structures" of categorical quantum
-   mechanics: their morphisms are the ZX-calculus green/red spiders, and the
-   special law is what powers the spider fusion rule.  (Our setting is a plain
-   symmetric monoidal category, without the dagger.)
-
-   Special commutative Frobenius algebras are also the central algebraic object
-   of hypergraph categories: a hypergraph category is a symmetric monoidal
-   category equipped with an SCFA on every object, compatible with the tensor
-   in a canonical way.
-
-   nLab:      https://ncatlab.org/nlab/show/Frobenius+algebra
-   nLab:      https://ncatlab.org/nlab/show/classical+structure
-   Wikipedia: https://en.wikipedia.org/wiki/Frobenius_algebra *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SpecialCommutativeFrobenius.
 

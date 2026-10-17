@@ -18,120 +18,14 @@ Require Import Coq.ZArith.ZArith.
 
 Generalizable All Variables.
 
-(** * Rigs: rings without negatives
+(*
+ nLab: https://ncatlab.org/nlab/show/rig
+ Wikipedia: https://en.wikipedia.org/wiki/Semiring
 
-    Fong and Spivak, "Seven Sketches in Compositionality", §5.3.1:
-    Definition 5.36 with its footnotes [7sketches:5.3.1:def5.36], the
-    naturals (Example 5.37 [7sketches:5.3.1:example5.37]), the booleans
-    (Example 5.38 [7sketches:5.3.1:example5.38]), and rings as rigs with
-    negatives (Example 5.42 [7sketches:5.3.1:example5.42]); §6.2.1
-    Exercise 6.7 [7sketches:6.2.1:ex6.7], the rig homomorphisms, their
-    category, and its initial object.
-    nLab: https://ncatlab.org/nlab/show/rig
-    Wikipedia: https://en.wikipedia.org/wiki/Semiring
+   本文件给出 rig（半环）对象相关结构。
 
-    A rig (or semiring) is a "ring without negatives": a commutative
-    monoid (0, +), a monoid (1, ·) — multiplication deliberately NOT
-    assumed commutative, per Definition 5.36 — with · distributing over +
-    on both sides and 0 annihilating on both sides.  The mnemonic of
-    Example 5.42: a riNg without Negatives.
-
-    NAMING.  Following the set-level algebra precedent of Instance/CMon.v
-    ([CMonObject]/[CMonHom]/[CMon]), the carrier-level structure is
-    [RigObject], its homomorphisms [RigHom], and the category [Rig]; the
-    underlying carrier is a setoid and every law is stated with [≈].
-
-    THE ONE-OBJECT READING.  The library has carried the rig axioms all
-    along, one categorical level up: [Structure/Preadditive.v]'s
-    commutative-monoid enrichment specializes, on a ONE-OBJECT category,
-    to exactly the four clauses of Definition 5.36 — the additive clause
-    is [padd_assoc]/[padd_comm]/[padd_zero_left], the multiplicative
-    monoid is the category structure itself, distributivity is
-    [compose_padd_left]/[compose_padd_right], and annihilation is
-    [compose_pzero_left]/[compose_pzero_right].  This file makes the
-    specialization a theorem in both directions: [DeloopRig] equips the
-    one-object category delooping a rig's multiplicative monoid
-    (Construction/Deloop.v's construction, with composition as
-    multiplication) with a [Preadditive] instance, and [EndRig] reads a
-    rig off the endomorphism hom of ANY object of any LOCALLY
-    PROPOSITIONAL preadditive category — an earlier revision of this
-    sentence said "ANY preadditive category", and the strength-change
-    paragraph below records why it no longer can.  The rig-side round
-    trip is definitional on every DATA
-    field (zero, add, one, mul — the four [eq_refl] acceptance tests) and
-    is packaged as the identity-carrier isomorphism [EndRig_DeloopRig] in
-    [Rig]; unlike Deloop.v's proof-free [hom_monoid_Deloop] the full
-    record equality is not definitional, because [RigObject] carries its
-    laws as fields and the delooping's laws are opaque proof terms.  The
-    category-side composite has no equational form for the same reason as
-    in Deloop.v — [DeloopRig (EndRig P c)] is
-    one-object while the ambient category need not be — and the honest
-    statement (the full subcategory on {c}, preadditively) is deferred
-    exactly as Deloop.v defers its §I.3 dictionary.  The three artifacts
-    are packaged as [rig_iff_one_object_preadditive].
-
-    A RECORDED STRENGTH CHANGE, ON THE CONVERSE HALF OF THAT BRIDGE.
-    An earlier revision of this file stated the one-object reading
-    unconditionally: "rigs are one-object preadditive categories",
-    with [EndRig] applicable to any [Preadditive C].  Since the PR
-    "algebraic carriers are sets" (2026-09-17) a [RigObject] carries
-    [rig_prop], a [PropEquiv] for its carrier setoid, and [EndRig]'s
-    carrier IS the ambient's hom-setoid [c ~> c]; an arbitrary category
-    supplies no [Prop] mirror of its `≈` — in [Cat] an [F ≈ G] IS a
-    family of isomorphisms, so there is none (Lib/Setoid/
-    Propositional.v, Instance/Sets/Propositional.v's header).
-    So [EndRig] and, through it, [rig_iff_one_object_preadditive]'s
-    second and third components now take
-    [{LP : LocallyPropositional C}] (declared at
-    Instance/Sets/Propositional.v).  Those two constants are the
-    only ones in this file whose statement changed; [DeloopRig],
-    [DeloopRig_Preadditive] and the rig side of the bridge are as they
-    were, and so is every instance and the initiality argument.
-
-    The hypothesis sits exactly at the PASSAGE from an internal
-    structure to a concrete algebraic record, not in the internal
-    algebra: [Preadditive] is untouched and keeps the ambient `≈`,
-    which is the SCOPE paragraph of Structure/Complete.v's size note
-    (item 4) read at this file.  Being a class, it is discharged by
-    resolution wherever an instance is in scope, and every use in this
-    file and downstream of it has one: at a delooping by
-    [DeloopRig_LocallyPropositional] below — which is why the four
-    [eq_refl] round-trip [Example]s and [EndRig_DeloopRig] are
-    unchanged — and at [Ab], [RMod R] and [CMon] by
-    [Ab_LocallyPropositional] (Instance/Ab.v),
-    [RMod_LocallyPropositional] (Instance/Mod.v) and
-    [CMon_LocallyPropositional] (Instance/CMon.v).
-
-    INSTANCES.  [Nat_Rig] assembles the stdlib arithmetic lemmas into the
-    rig of Example 5.37; [Bool_Rig] is Example 5.38's (false, ∨, true, ∧),
-    proved by case analysis; both are axiom-free.  [RingObject] extends
-    [RigObject] with additive inverses (mirroring how
-    Structure/Additive.v extends Structure/Preadditive.v), with the
-    forgetful functor [Ring_Forget_Rig]; the concrete witness is the
-    integers [Int_Ring] over stdlib [Z] — axiom-free, unlike the ℝ
-    witness the source suggests, whose stdlib axioms the library's
-    zero-axiom discipline prefers to avoid (docs/AXIOMS.md).  Ring
-    homomorphisms need no extra clause: preservation of negation is a
-    THEOREM ([RigHom_neg]), by uniqueness of additive inverses.
-
-    THE INITIAL OBJECT (Exercise 6.7).  The naturals are initial in
-    [Rig]: the unique homomorphism out of [Nat_Rig] sends n to the n-fold
-    sum of 1 ([rig_iter]), and any homomorphism agrees with it by
-    induction ([Rig_Initial]).
-
-    FORGETTING.  [Rig_Forget_CMon] projects the additive commutative
-    monoid (a functor to Instance/CMon.v's [CMon]); [Rig_Forget_Mon]
-    packages the multiplicative monoid as an internal monoid in
-    (Sets, ∏) and lands in Theory/Algebra/Monoid/Hom.v's [Mon Sets].
-    Their composites with the respective forgetfuls to [Sets] agree on
-    the carrier, definitionally.
-
-    The reconciliation with [Monad/Graded.v]'s [AndGrade] (the
-    multiplicative half of [Bool_Rig]) and with the categorified rig
-    structure of skeletal [FinSet] (whose coproduct and product act on
-    objects exactly as [Nat_Rig]'s operations) live in the companion file
-    Theory/Algebra/Rig/Connections.v, keeping this file's imports to the
-    algebra spine. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Rigs over a setoid carrier *)
 

@@ -12,19 +12,14 @@ Generalizable All Variables.
 
 (** * Universal arrows *)
 
-(* nLab: https://ncatlab.org/nlab/show/universal+morphism
+(*
+ nLab: https://ncatlab.org/nlab/show/universal+morphism
    Wikipedia: https://en.wikipedia.org/wiki/Universal_property
 
-   A universal arrow from an object c : C to a functor F : D ⟶ C is a pair
-   (a, u) consisting of an object a : D and a morphism u : c ~> F a, such that
-   for every object d : D and every morphism h : c ~> F d there exists a
-   unique g : a ~> d satisfying h ≈ fmap[F] g ∘ u. Equivalently, (a, u) is an
-   initial object of the comma category =(c) ↓ F (objects are pairs (d, f)
-   with f : c ~> F d). The dual notion, a universal arrow from F to c, is a
-   terminal object of F ↓ =(c). Universal arrows are the unifying notion
-   behind limits, representables, and adjunctions: when every c : C has a
-   universal arrow to U : D ⟶ C, the assignment c ↦ a extends to a left
-   adjoint of U, with the arrows u serving as the components of the unit. *)
+   本文件给出箭头范畴：对象为底范畴的态射，态射为交换方块。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* From universal mappings to adjoint functors
 

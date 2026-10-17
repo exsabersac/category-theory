@@ -12,30 +12,11 @@ Require Import Category.Instance.CMon.Biproduct.
 
 Generalizable All Variables.
 
-(** * Rig connections: AndGrade, and the FinSet shadow
+(*
+   本文件给出不同代数结构之间的联系与比较。
 
-    The two reconciliations Theory/Algebra/Rig.v's header promises, kept
-    in a companion file so the algebra spine does not import the graded
-    monad machinery or the skeletal finite sets.
-
-    ANDGRADE.  Monad/Graded.v's [AndGrade] is the grading monoid
-    (bool, true, andb) of the exception-graded monad.  It is literally
-    the multiplicative half of [Bool_Rig] — same carrier, same unit, same
-    operation, on the nose — so the two developments cannot drift.
-
-    THE FINSET SHADOW (Example 5.37, categorified).  On the skeletal
-    [FinSet] the objects are literally the naturals, the coproduct object
-    of m and n is [m + n] and the product object is [m * n]
-    (Instance/FinSet.v's [FinSet_Cocartesian],
-    Instance/FinSet/Product.v's [FinSet_Cartesian]).  The rig operations
-    of [Nat_Rig] therefore agree definitionally with the object actions
-    of the (co)cartesian structure: the rig of naturals is the
-    decategorified shadow of finite sets under disjoint union and
-    cartesian product — the direction of agreement the issue asks to
-    record.  (The converse packaging — that the BiCCC isomorphisms of
-    Structure/BiCCC.v descend to the equations of [Nat_Rig] along
-    skeletality — is the deeper statement and remains outside this
-    file's scope.) *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** AndGrade is the multiplicative half of Bool_Rig *)
 

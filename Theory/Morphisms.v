@@ -41,15 +41,14 @@ Proof.
   - rewrite <- X, comp_assoc, invol; cat.
 Qed.
 
-(* nLab: https://ncatlab.org/nlab/show/split+monomorphism
+(*
+ nLab: https://ncatlab.org/nlab/show/split+monomorphism
    Wikipedia: https://en.wikipedia.org/wiki/Section_(category_theory)
 
-   `Section f` witnesses that `f : x ~> y` is a split monomorphism: it has a
-   left inverse `section : y ~> x` with `section ∘ f ≈ id` (section_comp).
-   Equivalently, f is a section of the retraction `section`. Every such f is
-   monic (sections_are_monic). Note the naming convention used here: a value
-   of `Section f` records that f itself splits, the field `section` being the
-   accompanying retraction. *)
+   本文件给出态射类/性质相关。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Section `(f : x ~> y) := {
   section : y ~> x;               (* the retraction (left inverse) of f *)

@@ -5,25 +5,14 @@ Require Import Category.Theory.Isomorphism.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/monomorphism
-         https://ncatlab.org/nlab/show/split+monomorphism
-         https://ncatlab.org/nlab/show/epimorphism
-         https://ncatlab.org/nlab/show/split+epimorphism
-         https://ncatlab.org/nlab/show/isomorphism
+(*
+ nLab: https://ncatlab.org/nlab/show/monomorphism
    Wikipedia: https://en.wikipedia.org/wiki/Morphism
 
-   Classes of morphisms and the inclusions between them. A morphism class on
-   a category C assigns to each pair of objects x, y a collection of the
-   morphisms x ~> y belonging to the class. The classes collected here —
-   monomorphisms, epimorphisms, isomorphisms, split monomorphisms (sections)
-   and split epimorphisms (retractions) — sit in the familiar inclusion
-   diagram
+   本文件给出态射类相关定义。
 
-       Iso ⊆ SplitMono ⊆ Mono
-       Iso ⊆ SplitEpi  ⊆ Epi
-
-   with each inclusion witnessed constructively below. As everywhere in this
-   library, the laws hold up to the hom-setoid equivalence ≈, never Coq's =. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition MorphismClass (C : Category) := ∀ x y : C, (x ~> y) → Type.
 

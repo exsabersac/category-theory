@@ -8,36 +8,15 @@ Generalizable All Variables.
 
 (** * Monic/epi duality, carried out through the opposite category *)
 
-(* nLab: https://ncatlab.org/nlab/show/monomorphism
+(*
+ nLab: https://ncatlab.org/nlab/show/monomorphism
    nLab: https://ncatlab.org/nlab/show/epimorphism
    Book: Riehl, "Category Theory in Context", §1.2 (Lemma 1.2.11)
 
-   Riehl's §1.2 states four facts about monos and epis -- closure under
-   composition and cancellation, each in two variances -- and the point of the
-   section is that only two of them need proving: the other two are their
-   images under C ↦ C^op.  Theory/Morphisms.v proves all four directly, for a
-   reason that is structural rather than stylistic, and this file supplies the
-   dual route that file cannot.
+   本文件给出对偶性。
 
-   WHY NOT IN Theory/Morphisms.v.  Duality needs [Opposite], and
-   Construction/Opposite.v requires Theory/Isomorphism.v, which requires
-   Theory/Morphisms.v.  Adding the import there is therefore a cycle, and Rocq
-   rejects it (the exact message depends on which .vo files are present -- a
-   self-require complaint on a clean tree, an inconsistent-assumptions error
-   against a stale Morphisms.vo -- but it is refused either way).
-   Since the cancellation lemmas are consumed low in the tree (by
-   Structure/Factorization/StrongEpi.v and Theory/Subobject.v), they have to
-   live below the opposite category, and the dual derivation has to live above
-   it.  Hence: direct proofs there, dual derivations here.
-
-   WHAT DUALITY COSTS HERE.  [Monic] and [Epic] are two distinct records, not
-   one notion read in two variances, so `@Epic (C^op) y x f` is not literally
-   `@Monic C x y f` -- Rocq rejects the identity function between them.  What
-   IS true is that their single fields have the same type on the nose, because
-   `x ~{C^op}~> z` reduces to `z ~{C}~> x` and `g ∘[C^op] f` to `f ∘[C] g`.
-   So each bridge below is one constructor application with no proof content,
-   and the derivations that follow genuinely reuse the original argument
-   rather than repeating it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The four bridges *)
 

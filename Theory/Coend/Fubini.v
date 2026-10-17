@@ -13,16 +13,11 @@ Require Import Category.Instance.Sets.Coend.
 
 Generalizable All Variables.
 
-(** * Fubini / interchange for coends, in [Sets]
+(*
+   本文件给出余端的 Fubini 型结果。
 
-    SCOPE.  This file establishes the Fubini isomorphism [coend_fubini]
-    [∫^{(c,d)} H ≅ ∫^c ∫^d H] for a [Sets]-valued integrand
-    [H : (C ∏ D)^op ∏ (C ∏ D) ⟶ Sets], built on the concrete [Sets] coend
-    [SetsCoend] of [Instance/Sets/Coend] (the funext-free inductive quotient).
-    The abstract interchange theorem for coends valued in an arbitrary
-    cocomplete category — which needs a supply of coends and their universal
-    property at the target, rather than the by-hand [Sets] construction used
-    here — is deferred (ledger 6). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Element-level readings of the functor laws for a [Sets]-valued functor. *)
 Local Lemma fmap_id_app {K : Category} (G : K ⟶ Sets) {x : K} (z : G x) :

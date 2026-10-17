@@ -9,28 +9,14 @@ Generalizable All Variables.
 
 (** The arrows-only presentation of natural transformations *)
 
-(* nLab: https://ncatlab.org/nlab/show/natural+transformation
+(*
+ nLab: https://ncatlab.org/nlab/show/natural+transformation
    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer 1998, §I.4 (printed p. 19), exercise 5
 
-   A natural transformation τ : S ⟹ T between functors S T : C ⟶ D is
-   ordinarily a family indexed by the OBJECTS of C — one component
-   τ_c : S c ~> T c for each c — subject to one naturality square per arrow
-   (Theory/Natural/Transformation.v).  Mac Lane's exercise gives the
-   object-free reading of the same data: index instead by the ARROWS of C.
-   To each f : c ~> c' assign a single morphism τ f : S c ~> T c', subject
-   to the chain
+   本文件给出箭头形式的自然变换。
 
-       fmap[T] g ∘ τ f  ≈  τ (g ∘ f)  ≈  τ g ∘ fmap[S] f
-
-   for every composable pair g, f.  [ArrowTransform] below is that record,
-   its two equations being the fields [τ_arr_left] and [τ_arr_right].  The
-   correspondence with [Transform] is [Transform_to_Arrows] and
-   [Arrows_to_Transform]; they are mutually inverse up to ≈
-   ([Transform_to_Arrows_to_Transform], [Arrows_to_Transform_to_Arrows]),
-   each respects the relevant setoid ([Transform_to_Arrows_respects],
-   [Arrows_to_Transform_respects]), and the pair is packaged as an
-   isomorphism of setoids in Sets ([Transform_Arrows_iso]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where the naturality square went
 

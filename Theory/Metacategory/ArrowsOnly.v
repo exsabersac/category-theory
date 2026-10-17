@@ -12,27 +12,15 @@ Set Transparent Obligations.
 
 (** Arrows-only metacategories *)
 
-(* nLab: https://ncatlab.org/nlab/show/category
+(*
+ nLab: https://ncatlab.org/nlab/show/category
    nLab: https://ncatlab.org/nlab/show/metacategory
    Wikipedia: https://en.wikipedia.org/wiki/Category_(mathematics)
 
-   The single-sorted ("arrows-only") axiomatization of a category, due to
-   Mac Lane (Categories for the Working Mathematician, I.1, "arrows-only"
-   description). A category is given purely by a collection of arrows together
-   with a partial composition; there is no separate sort of objects. Objects
-   are recovered as the identity arrows: an arrow [u] is an identity when
-   [f ∘ u ≈ f] for every [f] whose composite with [u] is defined, and dually
-   [u ∘ g ≈ g] for every such [g].
+   本文件给出仅态射视角的元范畴。
 
-   Here the partial composition is represented concretely by a finite map
-   [pairs : M.t arrow] over [arrow := N], where [M.find (f, g) pairs = Some h]
-   records that the composite of the composable pair [(f, g)] is [h]. Thus
-   [composite f g h] is the proposition "g and f compose to h", [defined f g]
-   says their composite exists, and the record's law fields impose Mac Lane's
-   matchability (existence of composites for composable pairs), associativity,
-   and existence of identities. [Category_from_Metacategory] below shows every
-   such metacategory yields a [Category] whose objects are the identity arrows
-   [{i | is_identity i}]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record Metacategory := {
   arrow := N;

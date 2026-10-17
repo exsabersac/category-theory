@@ -9,127 +9,15 @@ Generalizable All Variables.
 
 (** Arrows-only metacategories over an arbitrary type of arrows *)
 
-(* nLab: https://ncatlab.org/nlab/show/metacategory
+(*
+ nLab: https://ncatlab.org/nlab/show/metacategory
    nLab: https://ncatlab.org/nlab/show/category
    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer 1998, I.1 (the "arrows-only" description) and I.8
-   Book: Riehl, "Category Theory in Context", Dover 2016, §1.1
 
-   Mac Lane's single-sorted axiomatization of a category, stated here over an
-   ARBITRARY type of arrows, where Theory/Metacategory.v works over [nat] and
-   Theory/Metacategory/ArrowsOnly.v over [N], each with the composable pairs
-   held in one finite map. The data are arrows, the composable pairs, and the
-   composite assigned to each such pair; there is no separate sort of objects.
-   Objects are recovered as the identity arrows.
-   [Category_from_Metacategory] rebuilds a [Category] from that data and
-   [ToArrows] runs the passage the other way, the two being mutually inverse
-   in the precise senses recorded below — the content of Mac Lane's I.1 and of
-   his remark in I.8.
+   本文件给出一般情形。
 
-   THE DATA. Composition is kept as its GRAPH: [mcomp g f h] reads "g∙f is
-   defined, and equals h", so that the composable pairs and the composite
-   operation are a single datum. This follows Mac Lane's own phrasing
-   ("certain ordered pairs ⟨g, f⟩, called the composable pairs of arrows, and
-   an operation assigning to each composable pair ⟨g, f⟩ an arrow g∙f"), and
-   both sibling files already encode composition this way, as an entry of a
-   finite map ([M.MapsTo (f, g) h pairs], resp. [M.find (f, g) pairs = Some
-   h]). A partial FUNCTION [arrow → arrow → option arrow] was rejected: it
-   makes definedness decidable by construction, since one may always ask
-   whether the value is [None], and decidable definedness is not part of the
-   first-order theory. What the option form would give for free —
-   single-valuedness — is here the explicit field [mcomp_unique], which is
-   what makes the graph the graph of a partial operation.
-
-   Arrows carry a setoid, and this is forced by the converse passage. The
-   arrows of a category are its bundled morphisms, and morphisms in this
-   library are identified only up to the hom-setoid's ≈, never up to Coq's
-   [=]; a metacategory over a bare type could therefore not receive them
-   without collapsing that identification. Every law below is accordingly
-   stated up to ≈.
-
-   THE THREE AXIOMS. Mac Lane requires:
-
-     (i)   the composite (k∙g)∙f is defined if and only if k∙(g∙f) is defined,
-           and when either is defined they are equal;
-     (ii)  the triple composite k∙g∙f is defined whenever both k∙g and g∙f are;
-     (iii) for each arrow g there exist identity arrows u and u' such that g∙u
-           and u'∙g are defined.
-
-   Axiom (i) is stated here as the two fields [mcomp_assoc_l] and
-   [mcomp_assoc_r], at full strength: "(k∙g)∙f is defined" is read as "k∙g is
-   defined AND (k∙g)∙f is defined", so that each half also ASSERTS the
-   definedness of the other association. Both sibling files instead state the
-   biconditional under the hypothesis that k∙g and g∙f are BOTH already
-   defined (Theory/Metacategory.v,
-   Theory/Metacategory/ArrowsOnly.v), which is strictly weaker. The
-   difference is not cosmetic: under the weaker reading Mac Lane's remark that
-   the identities flanking an arrow are unique is refutable, and
-   [weak_identity_not_unique] at the end of this file exhibits a four-arrow
-   countermodel in which one arrow has two distinct source identities. The
-   weak form is recovered from the strong one as [mcomp_law], so nothing is
-   lost; [Weaken] records the implication at the level of records.
-
-   Axiom (iii) is a CONJUNCTION, as Mac Lane states it. Both sibling files
-   encode it with implications where the conjunction belongs, and both say so
-   in place (Theory/Metacategory.v,
-   Theory/Metacategory/ArrowsOnly.v): as written there the axiom is
-   satisfied by any non-identity witness and so constrains nothing. It is a
-   real axiom here, and it is load-bearing — [mident_idem] derives u∙u = u for
-   every identity from it, which is why the objects below need only carry
-   their identity proof, where ArrowsOnly.v's [object] must carry a separate
-   [obj_def] field to exclude arrows that are identities only vacuously.
-
-   THE TWO PASSAGES. [Category_from_Metacategory] takes objects to be the
-   identity arrows and morphisms to be the arrows flanked by the two given
-   identities, with composition read off the graph; single-valuedness makes
-   the choice of composite [Proper], and [mcompose_char] characterizes it.
-   [ToArrows] takes the arrows of a category to be its bundled morphisms
-   [Arr], with composability [atgt b = asrc a] an identity of objects. That
-   identity type is where the two settings genuinely differ: Mac Lane's
-   objects form a SET, so an identification of two objects carries no
-   information, and the faithful translation of that assumption into
-   intensional type theory is the hypothesis [obj_uip] that the objects of [C]
-   are an h-set. The library already threads this assumption where the same
-   issue arises (Construction/Grothendieck/Strict.v, whose constructors take
-   fibrewise UIP and discharge it by an inline axiom-free Hedberg;
-   Theory/Multicategory/Representable.v, which threads UIP on object lists).
-   It is used at exactly TWO places here.  [Arr_comp_unique]: without it the
-   composite of a composable pair is only well defined relative to a chosen
-   identification of the endpoints.  And [ToArrows_fmap_inj] -- which IS
-   [ToArrows_Faithful] -- where it collapses the two homogeneous equality
-   proofs a bundled morphism carries; faithfulness of the comparison rests on
-   it.  Every other field of [ToArrows] is proved without it.
-
-   THE ROUND TRIP, AND ITS EXACT STRENGTH. On the category side,
-   [ToArrows_Equivalence] proves that [ToArrows_Functor], which sends x to the
-   identity arrow at x and f to the bundle of f, is an
-   [EquivalenceOfCategories] between [C] and
-   [Category_from_Metacategory (ToArrows obj_uip)]. It is an EQUIVALENCE and
-   not an isomorphism of categories, and this is not slack in the proof: the
-   objects of the reconstruction are pairs of an arrow and a proof that it is
-   an identity, so an object of [C] is recovered together with a proof
-   component that no functor can strip. The three ingredients are proved
-   separately and are available on their own — [ToArrows_Full],
-   [ToArrows_Faithful], [ToArrows_EssentiallySurjective].
-
-   On the metacategory side the composite passage CAN be formed, under the
-   analogous hypothesis on the reconstruction's objects:
-   [MetaRoundTrip] below applies [ToArrows] to
-   [Category_from_Metacategory M], and [MetaRoundTrip_Equivalence] is the
-   category-level equivalence at that instance.  What this file does NOT
-   define is a notion of equivalence OF METACATEGORIES, so no
-   metacategory-level comparison of [MetaRoundTrip M] with [M] is stated --
-   that comparison has nowhere to live until such a notion exists.  What is
-   proved instead, hypothesis-free, is the content such a comparison would
-   need: [arrow_realized] shows every arrow of [M] underlies a morphism of
-   the reconstruction, and [arrow_endpoints] shows that ≈-equal arrows have
-   ≈-equal endpoints -- the correspondence is surjective up to ≈ with
-   endpoints determined (injectivity up to [Arr_eq] is NOT proved here). That
-   second half is precisely Mac Lane's uniqueness remark
-   ([mident_unique_src], [mident_unique_tgt]) in use, and
-   [arrow_endpoints_iso] upgrades it to canonical isomorphisms of objects via
-   [mobject_iso]. No claim is made that the two passages are mutually inverse
-   on the nose in either direction. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record Metacategory : Type := {
   (* "The data for an arrows-only metacategory C consist of arrows," *)

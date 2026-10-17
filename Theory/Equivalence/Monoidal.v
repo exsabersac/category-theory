@@ -9,54 +9,15 @@ Require Import Category.Theory.Equivalence.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
+(*
+ nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
    nLab: https://ncatlab.org/nlab/show/monoidal+category
    nLab: https://ncatlab.org/nlab/show/transport+of+structure
 
-   Transport of monoidal structure along an equivalence of categories.
-   Given an equivalence F : C ⟶ D with quasi-inverse G and a monoidal
-   structure (I, ⨂, λ, ρ, α) on C, the category D acquires a monoidal
-   structure with unit F I and tensor
+   本文件给出幺半相关结构。
 
-       (d, d') ↦ F (G d ⨂ G d'),
-
-   whose unitors and associator are assembled from the unit and counit
-   isomorphisms of the equivalence together with the images under F of
-   the unitors and associator of C.
-
-   Two design points:
-
-   1. STAGING.  The construction is delivered in two layers.  The record
-      [MonoidalTransportData] packages the data of a monoidal structure
-      *without* the triangle and pentagon coherence laws: unit, tensor,
-      unitors, associator, and the six naturality squares.  The assembler
-      [Monoidal_from_transport_data] upgrades such data to a genuine
-      [Monoidal] once the two coherence laws are supplied.  The transported
-      structure is first built as [Transported_Monoidal_Data]; the laws
-      [Transported_triangle_identity] and [Transported_pentagon_identity]
-      are the final lemmas of the file, and [Transported_Monoidal] puts the
-      pieces together.
-
-   2. THE RECTIFIED COUNIT.  An arbitrary quasi-inverse (G, unit, counit)
-      need not satisfy the zig-zag identities, and the triangle law of the
-      transported structure genuinely needs the zig-zag
-
-          fmap[G] counit'_d ∘ unit_{G d} ≈ id.
-
-      We therefore first correct the counit by the classical adjustment
-          counit'_d := counit_d ∘ fmap[F] (defect_d)⁻¹,
-          defect_d  := fmap[G] counit_d ∘ unit_{G d},
-      which keeps G and the unit and makes the displayed zig-zag hold
-      ([quasi_inverse_transport_counit]).  Consequently
-      [fmap[G]] of the corrected counit *is* the inverse of the unit
-      component, so every coherence computation happens purely in terms of
-      the unit isomorphism and the structure of C.  The pentagon needs no
-      zig-zag at all: the transported associator mentions only the unit.
-
-   Everything here is a Definition, never an Instance (the [Monoidal_op]
-   convention of Construction/Opposite/Monoidal.v): a transported monoidal
-   structure is a choice, made explicitly at use sites.  Nothing in this
-   file is registered for typeclass resolution. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := intros.
 

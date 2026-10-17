@@ -7,30 +7,14 @@ Generalizable All Variables.
 
 (** The Either/sum type [a + b] as bifunctor, and the error monad in [b] *)
 
-(* nLab: https://ncatlab.org/nlab/show/coproduct
+(*
+ nLab: https://ncatlab.org/nlab/show/coproduct
    Wikipedia: https://en.wikipedia.org/wiki/Tagged_union
 
-   FP reading.  [Either a b] (Haskell) / [sum a b], written [a + b] (Coq), is
-   the canonical two-case tagged union: a value is either [Left x] carrying an
-   [a] or [Right y] carrying a [b], with the tag recording which.  It is the
-   standard way to return a result-or-error, [a] conventionally holding the
-   error/exception and [b] the success value.  As a monad in its right argument
-   (the exception/error monad), [Left] short-circuits and [Right] continues:
-   [Left e >>= f = Left e] and [Right x >>= f = f x].
+   本文件给出 Either 上的范畴论结构。
 
-   Categorical reading.  [a + b] is the binary coproduct of [a] and [b], with
-   [Left = inl : a → a + b] and [Right = inr : b → a + b] the coproduct
-   injections.  Its universal property is the copairing: any [f : a → c] and
-   [g : b → c] factor through a unique [[f, g] : a + b → c] (here [either])
-   with [[f, g] ∘ inl = f] and [[f, g] ∘ inr = g].  The sum is a bifunctor
-   [(+) : C × C → C]; fixing the left summand [E] gives the endofunctor
-   [b ↦ E + b] (here [Either_Functor]), which carries the exception monad: the
-   unit [η] is [Right] and the multiplication [μ : E + (E + b) → E + b] (here
-   [Either_join]) collapses the two copies of [E].  [Maybe a = a + 1] is the
-   special case [E = 1].
-
-   Following the other [Theory/Coq] classes, the operations are recorded here
-   without their laws; lawfulness is discharged per concrete use. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Notation Either := sum (only parsing).   (* [Either a b = a + b], the coproduct *)
 Notation Left   := inl (only parsing).    (* [inl : a → a + b], left injection *)

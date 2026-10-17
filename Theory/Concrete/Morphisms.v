@@ -11,42 +11,15 @@ Generalizable All Variables.
 
 (** * Underlying injections and surjections in a concrete category *)
 
-(* nLab:      https://ncatlab.org/nlab/show/concrete+category
+(*
+ nLab:      https://ncatlab.org/nlab/show/concrete+category
    Wikipedia: https://en.wikipedia.org/wiki/Concrete_category
    Book:      Riehl, "Category Theory in Context", Dover 2016, §1.6,
-              Exercise 1.6.iv, printed p. 47, and Definition 1.6.18,
-              printed p. 45
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, Springer 1998, §I.5, Exercise 9, printed p. 21
 
-   Riehl's Exercise 1.6.iv is that a faithful functor reflects monomorphisms
-   and, dually, epimorphisms; that is [faithful_reflects_monic] and
-   [faithful_reflects_epic] in Theory/Functor.v.  She then draws the corollary
-   this file proves: in a CONCRETE category — one paired with a faithful
-   functor to sets, Theory/Concrete.v's [Concrete] — a morphism whose
-   underlying function is injective is a monomorphism, and one whose
-   underlying function is surjective is an epimorphism.
+   本文件给出态射类/性质相关。
 
-   The two proofs are short and symmetric, and both run entirely through
-   Theory/Concrete.v's [concrete_arrow_eq]: to make two arrows of `C`
-   equivalent under `≈` it suffices that their underlying functions agree
-   pointwise, and that is where the injectivity or surjectivity hypothesis is
-   spent.  Note the direction of the corollary.  The converses are out of
-   scope: nothing here says that a monic of a concrete category has injective
-   underlying function, and no counterexample to that is exhibited either.
-
-   Both hypotheses are Lib/Setoid.v's setoid-level classes, so they are stated
-   up to `≈` and not up to `=`: [injective] reads `f a ≈ f b → a ≈ b` in the
-   two underlying setoids, and [surjective] is the split form, carrying a
-   chosen preimage.  The conclusions are Theory/Morphisms.v's [Monic] and
-   [Epic], whose cancellation laws are likewise `≈` throughout; no statement
-   in this file uses `=` on morphisms.
-
-   Layering note: the general lemmas need only Theory/Concrete.v, but the
-   second half of the file instantiates them at the roster of
-   Instance/Concrete.v, so the file as a whole depends on the instance layer.
-   Theory/Concrete.v itself already depends on Instance/Sets.v, since `Sets`
-   is the codomain named in the definition of [Concrete]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ConcreteMorphisms.
 

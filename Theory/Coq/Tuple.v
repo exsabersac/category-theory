@@ -11,32 +11,16 @@ Generalizable All Variables.
 
 (** The pair/tuple type [A * B], with its product (and writer-monad) reading *)
 
-(* nLab: https://ncatlab.org/nlab/show/product
+(*
+ nLab: https://ncatlab.org/nlab/show/product
    nLab: https://ncatlab.org/nlab/show/writer+monad
    Wikipedia: https://en.wikipedia.org/wiki/Product_(category_theory)
    Wikipedia: https://en.wikipedia.org/wiki/Cartesian_product
 
-   FP reading.  [Tuple] is just Coq's pair constructor [prod], i.e. the type
-   [A * B].  Holding the first component fixed, [Tuple x = (x * −)] is a
-   Functor whose [fmap] acts on the second component ([prod_map]); when the
-   fixed component [x] carries a Monoid it becomes the writer monad, which
-   threads (accumulates) a monoidal "log" alongside a value, with [ret]/[pure]
-   seeding the empty log [mempty] and [bind]/[ap] combining logs with [⊗]
-   (mappend).  [first]/[second] give the action of [prod] as a bifunctor on,
-   respectively, the first and second components.
+   本文件给出 Tuple 上的范畴论结构。
 
-   Categorical reading.  [A * B] is the binary product of [A] and [B] in the
-   category of Coq types: it comes with the two projections [fst : A * B → A]
-   and [snd : A * B → B], and for any [f : Q → A], [g : Q → B] the pairing
-   (tupling) map ⟨f, g⟩ = [λ q, (f q, g q)] is the unique mediating morphism
-   with [fst ∘ ⟨f,g⟩ = f] and [snd ∘ ⟨f,g⟩ = g].  This is the Cartesian
-   product of Set, here realized in Coq.  The associators below
-   ([tuple_swap_*]) witness [A * (B * C) ≅ (A * B) * C]; [curry]/[uncurry]
-   witness the product/exponential adjunction [(A * B) → C  ≅  A → (B → C)],
-   the defining isomorphism of a closed structure.
-
-   Equality on this data is plain Coq [=]: pairs are an inductive type with
-   decidable structure, so no setoid [≈] is needed at this layer. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Notation Tuple := prod (only parsing).
 

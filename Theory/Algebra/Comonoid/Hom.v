@@ -10,47 +10,13 @@ Generalizable All Variables.
 
 (** * Comonoid homomorphisms and the category of internal comonoids *)
 
-(* nLab: https://ncatlab.org/nlab/show/comonoid
+(*
+ nLab: https://ncatlab.org/nlab/show/comonoid
 
-   Given internal comonoids (x, delta[Cx], epsilon[Cx]) and
-   (y, delta[Cy], epsilon[Cy]) in a monoidal category (C, ⨂, I), a morphism
-   f : x ~> y is a comonoid homomorphism when it commutes with the
-   comultiplications and counits:
+   本文件给出 hom 形式的伴随/同态。
 
-     comultiplication square   delta[Cy] ∘ f ≈ (f ⨂ f) ∘ delta[Cx]
-     counit triangle           epsilon[Cy] ∘ f ≈ epsilon[Cx]
-
-   This is the exact arrow-reversed mirror of [MonoidHom] in
-   Theory/Algebra/Monoid/Hom.v.  Comonoid homomorphisms contain the
-   identities and are closed under composition, so internal comonoids and
-   their homomorphisms form a category Comon(C), packaged with sigma objects
-   and homs exactly as [Mon] is — morphism equivalence is equivalence of the
-   underlying C-morphisms — and projecting out the underlying object and
-   morphism gives the forgetful functor Comon(C) ⟶ C, faithful by
-   construction ([Comon_Forget_Faithful]).
-
-   Beyond its algebraic role, this class is the predicate behind
-   *determinism* in categorical probability: in a category where every
-   object carries a canonical copy/discard comonoid (the CD-categories of
-   Cho–Jacobs, arXiv:1709.00322 §2), a morphism is called deterministic
-   (Fritz, arXiv:1908.07021, Definition 10.1; the condition goes back to
-   Carboni–Walters) precisely when it is a comonoid homomorphism between
-   the canonical comonoids — copying the output of f is the same as
-   running f twice on a copied input, and discarding the output is the
-   same as discarding the input.
-   Structure/Monoidal/CopyDiscard/Deterministic.v instantiates this class at
-   those canonical comonoids.
-
-   The [Comonoid_Iso] transport at the end moves a comonoid structure across
-   an isomorphism i : x ≅ y by conjugation; both components of i then become
-   comonoid homomorphisms — with respect to the TRANSPORTED structure on the
-   codomain.  It is provided as standalone infrastructure and currently has
-   no in-tree consumer.  In particular,
-   Structure/Monoidal/CopyDiscard/Deterministic.v does NOT use it: the
-   determinism of the structural isomorphisms demands a [ComonoidHom]
-   between the canonical comonoids at BOTH endpoints, whereas the transport
-   only yields homomorphisms into [Comonoid_Iso i Cx], so those lemmas are
-   proved there by direct coherence chases at the canonical supply. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ComonoidHom.
 

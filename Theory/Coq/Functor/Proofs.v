@@ -8,23 +8,14 @@ Generalizable All Variables.
 
 (** Lawfulness of the Coq [Functor] instances, via categorical endofunctors *)
 
-(* nLab: https://ncatlab.org/nlab/show/functor
+(*
+ nLab: https://ncatlab.org/nlab/show/functor
    Wikipedia: https://en.wikipedia.org/wiki/Functor_(functional_programming)
 
-   The bare [Theory.Coq.Functor.Functor] class carries only [fmap], with no
-   laws.  A Coq functor is lawful exactly when it satisfies the two functor
-   laws: identity [fmap id ≈ id] and composition
-   [fmap (g ∘ f) ≈ fmap g ∘ fmap f] (Wikipedia), equivalently when its object
-   map and [fmap] form an endofunctor on the category [Coq] in the categorical
-   sense, preserving identities [F id = id] and composition [F (g ∘ f) = F g ∘
-   F f] (nLab).
+   本文件给出相应结构的证明。
 
-   This file packages "lawful" as [EndoFunctor F := AFunctor Coq Coq F] and
-   [IsFunctor], and exhibits witnesses that the identity, reader/arrow, and
-   composite [Functor] instances are lawful, plus the [compose_fmap]
-   characterisation of [fmap] for a composite.  The proofs that rely on
-   [functional_extensionality_dep] (e.g. [arrow_IsFunctor]) inherit it from
-   the applied/Coq layer; that axiom is expected here, not a regression. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition EndoFunctor := @AFunctor Coq Coq.
 

@@ -8,33 +8,15 @@ Generalizable All Variables.
 
 (** * A category is a monoid in composable pairs (Mac Lane, CWM I.2, Remark 1) *)
 
-(* nLab:  https://ncatlab.org/nlab/show/internal+category
+(*
+ nLab:  https://ncatlab.org/nlab/show/internal+category
    nLab:  https://ncatlab.org/nlab/show/span
    Book:  Mac Lane, Categories for the Working Mathematician, 2nd ed.,
-          Section I.2, Remark 1 (printed p. 10)
 
-   Immediately after giving the set-based definition of a category, Mac Lane
-   observes that the definition says exactly one thing: a category is a MONOID
-   for the product over its object set.  Spelled out, one is given two sets --
-   a set O of objects and a set A of arrows -- together with two functions
-   dom, cod : A -> O; the composable pairs form the fibred product
+   本文件给出幺半范畴中的幺半群对象：乘法 μ、单位 η，以及结合律与左右单位律（插入结合子/单位子使态射可复合）。
 
-       A x_O A  =  { (g, f) in A x A | dom g = cod f },
-
-   and a category structure on the graph (O, A, dom, cod) is precisely a unit
-
-       e : O -> A          with  dom (e x) = cod (e x) = x
-
-   and a multiplication
-
-       m : A x_O A -> A    with  dom (m (g, f)) = dom f,
-                                 cod (m (g, f)) = cod g
-
-   that is associative and unital.  That is the germ of two later notions: a
-   category internal to a category with pullbacks (replace "set" by "object of
-   E" and the fibred product by a pullback), and a monad in the bicategory of
-   spans, whose composition IS the fibred product above (nLab, "internal
-   category"). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* What this file is, and what it is not
 

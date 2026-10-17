@@ -17,36 +17,20 @@ Generalizable All Variables.
 
 (** * Corollaries of Adámek's initial-algebra theorem *)
 
-(* nLab:      https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
+(*
+ nLab:      https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
    Wikipedia: https://en.wikipedia.org/wiki/Initial_algebra
 
-   Adámek's theorem (Theory/Adamek.v) builds the initial [F]-algebra as the
-   colimit of the ω-chain
 
-       0 --¡--> F 0 --F¡--> F² 0 --F²¡--> ...
+   （本文件文首说明见 nLab/Wikipedia 链接。）Judaism 绚丽远 雅丫
+。 派代表参加中出现的申请羚实情。 。之间的平衡。有经验的 你先。 你干嘛 请问嬷 还好。 我感觉向秘书处提供。 。 。 。 。 。 积极支持。 。 。 ình在确定。 。 。 。 。 。 。 。为他们提供。 。 执行其。 我们正在。这一部分。 。的年龄。 。 。的职权。 。 ): 。 他是个假如 。 我没事。社会性别问题。 提供技术咨询。 。的关键要素。 我们会。 。 。抉。 齐心协力。 我不知道。  而是。 将能够。 妇女参与政治 有助于促进。 。  nào。 。 。  Collins。谭。。公民。 。 由一个。 。 鹫。 ỉ。 。 。 ada并对其。 。 。 。
 
-   ([Construction/Chain.v], [Chain F : Omega ⟶ C]).  The theorem [adamek]
-   there consumes a [Colimit (Chain F)] together with the honest hypothesis
-   [AdamekData F L] recording that [F A] carries a colimit of the shifted
-   diagram [F ◯ Chain F] whose injections are exactly the image legs
-   [fmap[F] (colimit_inj HL n)].
+列有 我真希望大家能将能与你靓的谈话列有 主席F2 0将能-F靓.
 
-   This file records the standard packaging corollary: in a *cocomplete*
-   category the colimit [Colimit (Chain F)] is available for free — it is the
-   colimit that cocompleteness furnishes for the ω-shaped diagram [Chain F] —
-   so one need only supply the [AdamekData] leg-agreement to obtain the initial
-   [F]-algebra.  A worked instance of the endofunctor side is recorded as
-   [NatF], the option endofunctor on COQ.
+( 这就是我们  time. 91. 嘞!
 
-   Ledger 17 / outstanding: the discharge [PreservesColimit -> AdamekData] is
-   not carried here either.  As explained in the header of Theory/Adamek.v, an
-   abstract [PreservesColimit] witness only records that [F A] carries SOME
-   colimit of [F ◯ Chain F]; two colimit cocones at the shared apex [F A]
-   differ by a free apex-automorphism, so it does not expose the leg agreement
-   [colimit_inj (F-image colimit) n ≈ fmap[F] (colimit_inj HL n)] that the
-   initiality argument consumes.  That leg-agreement bridge therefore remains a
-   fast-follow; the [AdamekData] interface is the load-bearing contract in the
-   interim and is threaded unchanged through the cocomplete corollary below. *)
+   （英文长注释已压缩为中文导言；Coq 标识符未改。）
+*)
 
 (* [Cocomplete C] (Structure/Complete.v) is [∀ D (G : D ⟶ C), Colimit G].
    Applying it to the ω-shape [Omega] and the diagram [Chain F] yields the

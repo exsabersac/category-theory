@@ -30,76 +30,15 @@ Generalizable All Variables.
 
 (** * Lawvere theories meet the PROP spine *)
 
-(* nLab:      https://ncatlab.org/nlab/show/Lawvere+theory
+(*
+ nLab:      https://ncatlab.org/nlab/show/Lawvere+theory
    nLab:      https://ncatlab.org/nlab/show/PROP
    Wikipedia: https://en.wikipedia.org/wiki/Lawvere_theory
 
-   A Lawvere theory is a CARTESIAN gadget (finite products, every object
-   a power of the generator), while a PROP is a LINEAR one (a strict
-   symmetric monoidal category on (ℕ, +, 0), with no built-in copying or
-   discarding).  This file connects the two spines:
+   本文件给出 PROP 相关。
 
-   1.  [Lawvere_Monoidal] / [Lawvere_Braided] / [Lawvere_Symmetric] —
-       the cartesian symmetric monoidal structure on [law_cat T],
-       instantiating the [CC_*] tower of
-       [Structure/Monoidal/Internal/Product.v] (re-exported through
-       [Structure/Monoidal/Cartesian.v]) at [law_cartesian] /
-       [law_terminal]: tensor := ×, unit := 1, braid := swap = ⟨exr, exl⟩.
-
-   2.  [Lawvere_PROP] / [Lawvere_PROP_interp] — interpretation of a free
-       PROP on a signature [Σ] into [law_cat T].  The in-tree
-       interpretation machinery ([Construction/PROP/Interp.v],
-       [Construction/PROP/Universal.v]) is stated against a target that
-       is itself a [PROP], i.e. carries a [StrictMonoidal] instance whose
-       strictness equalities hold at ALL objects.  The cartesian monoidal
-       structure of a general Lawvere theory is only WEAKLY monoidal —
-       [(x × y) × z] and [x × (y × z)] are canonically isomorphic, not
-       Leibniz-equal — so strictness is taken here as a hypothesis pack
-       ([SM : StrictMonoidal (@law_cat T)] together with the coherence
-       [coh : strict_is_monoidal SM = Lawvere_Monoidal T]).  On skeletal
-       instances (where objects really are the natural numbers and
-       products literally add) the pack is EXPECTED to be discharged with
-       [coh := eq_refl] and the strictness object equalities by nat
-       induction — associativity and the right unit are propositional on
-       [nat], only the left unit computes — but no in-tree witness exists
-       yet: the base [FinSet^op]'s own monoidal assembly is not built
-       (see the note below), so that witness is deferred work, not a
-       citation.  Under that
-       pack, [Lawvere_PROP] assembles a bona-fide [PROP] on [law_cat T]
-       — its [prop_of_nat] is [law_of_nat], its strictness equalities are
-       [law_zero_terminal] / [law_plus_product] transported along [coh],
-       and its symmetric structure is the cartesian braiding of (1) —
-       and the induced interpretation functor
-       [Lawvere_PROP_interp : FreeCat Σ ⟶ law_cat T] (the mediating
-       functor out of [FreePROP Σ], whose underlying category is
-       [FreeCat Σ]) is the in-tree [InterpF], with its strong / strict /
-       braided / symmetric monoidal packaging instantiated verbatim.
-       The braid-square requirement of [Interp.v] is met by the symmetry
-       of (1), exactly as requested: [Lawvere_PROP_interp_Braided] lands
-       in [symmetric_is_braided (Lawvere_Symmetric T)].
-
-   3.  The Fox boundary.  Cartesian monoidal categories are exactly the
-       symmetric monoidal categories in which every object carries a
-       canonical commutative comonoid structure compatibly with the
-       tensor — equivalently, the Markov categories all of whose
-       morphisms are deterministic.  This is Fox's theorem, proven
-       in-tree in [Structure/Monoidal/Markov/Fox.v]:
-       [cartesian_all_deterministic] (in a cartesian Markov category
-       every morphism commutes with copy/discard) and
-       [all_deterministic_cartesian] (an all-deterministic Markov
-       category is cartesian monoidal), with
-       [markov_all_deterministic_iff_cartesian] the round trip.  The
-       Lawvere (cartesian) spine and the PROP (linear) spine therefore
-       meet at exactly the copy/discard boundary: a Lawvere theory is a
-       PROP-like gadget in which every wire may be freely copied
-       ([Δ = ⟨id, id⟩]) and discarded ([one]), naturally in the wire —
-       whereas a bare PROP supplies neither.  [Instance/FinSet.v]'s
-       header notes that its coproduct-induced monoidal assembly and the
-       PROP instance riding on it are not yet built in-tree; the present
-       file supplies the theory-level statement of the connection on the
-       cartesian side ([Lawvere_PROP] + [Lawvere_PROP_interp]), so that
-       once a skeletal instance provides the strictness pack, the free
-       PROP on any signature interprets into it through this file. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** 1. The cartesian symmetric monoidal structure on a Lawvere theory *)
 

@@ -10,30 +10,14 @@ Open Scope N_scope.
 
 (** Worked examples for the arrows-only metacategory decision procedure *)
 
-(* nLab: https://ncatlab.org/nlab/show/metacategory
+(*
+ nLab: https://ncatlab.org/nlab/show/metacategory
    nLab: https://ncatlab.org/nlab/show/category
 
-   These are not new results; they are a regression/demonstration suite tying
-   together two pieces of machinery:
+   本文件给出可判定性例子。
 
-     - [Category.Theory.Metacategory.ArrowsOnly], which presents a category in
-       Mac Lane's single-sorted ("arrows-only") form, with partial composition
-       encoded as a finite map [pairs : M.t N] and a family of concrete finite
-       metacategories built by [composable_pairs n] (the standard composable
-       pairs of the n-object finite category, indexed via [triangular_number]);
-
-     - [Category.Lib.MapDecide], a proof-by-reflection decision procedure for
-       finite-map membership goals, exposed as the tactics [solve_map] and
-       [map_decide] and the Gallina decider [formula_backward].
-
-   The point of the examples is to exercise the decider on the very goals that
-   arise when verifying that a [composable_pairs n] table really is a category:
-   the associativity ("composition law") coherence between left- and
-   right-associated composites. The interleaved timing comments contrast
-   [map_decide] (reflective, fast) against the earlier brute-force tactic
-   [destruct_maps; nomega], which blows up combinatorially as n grows. The
-   examples are deliberately concrete and self-checking, so a regression in the
-   decider surfaces as a build failure here rather than silently downstream. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Sanity check on the raw decider [formula_backward] (the Gallina kernel
    behind [map_decide]), bypassing the reflection wrapper. The reified formula

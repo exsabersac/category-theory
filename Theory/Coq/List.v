@@ -17,19 +17,15 @@ Import MonadNotations.
 
 (** The list type as functor, applicative and monad *)
 
-(* nLab: https://ncatlab.org/nlab/show/list+monad
+(*
+ nLab: https://ncatlab.org/nlab/show/list+monad
    nLab: https://ncatlab.org/nlab/show/free+monoid
    Wikipedia: https://en.wikipedia.org/wiki/Free_monoid
 
-   The functional-programming list type [list A] is, categorically, the
-   underlying set of the free monoid on A: the coproduct of all finite
-   powers of A, with concatenation [app] as multiplication and the empty
-   list as unit.  The list monad is the monad induced by the free-monoid /
-   forgetful adjunction Set <-> Mon: its unit is the singleton [ret x = [x]]
-   and its multiplication is one level of concatenation
-   [join = flatten : list (list A) → list A], so that
-   [bind x f = flatten (map f x)].  Its Eilenberg-Moore algebras are
-   exactly the monoids. *)
+   本文件给出 List 上的范畴论结构。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export]
 Instance list_Functor : Functor list := {

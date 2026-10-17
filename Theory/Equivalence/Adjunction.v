@@ -10,52 +10,14 @@ Require Import Category.Theory.Equivalence.Adjoint.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/adjoint+functor
+(*
+ nLab: https://ncatlab.org/nlab/show/adjoint+functor
    nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
 
-   Adjunctions transport along equivalences of categories.  Given a
-   hom-setoid adjunction F ⊣ U between C and D (Theory/Adjunction.v: the
-   left adjoint is F : D ⟶ C, the right adjoint U : C ⟶ D) together with
-   equivalences of categories G : C ⟶ C' and K : D ⟶ D'
-   (Theory/Equivalence.v), the two conjugated functors
+   本文件给出伴随相关构造与性质。
 
-       G ◯ (F ◯ K⁻¹) : D' ⟶ C'      and      (K ◯ U) ◯ G⁻¹ : C' ⟶ D'
-
-   — where G⁻¹ and K⁻¹ are the chosen quasi-inverses — are again adjoint.
-   [Transported_Adjunction] below is that adjunction, assembled as the
-   three-fold composite (Adjunction/Compose.v) of
-
-       K⁻¹ ⊣ K,   then   F ⊣ U,   then   G ⊣ G⁻¹.
-
-   The two outer constituents are the underlying adjunctions of the
-   adjoint equivalences of Theory/Equivalence/Adjoint.v: on the codomain
-   side, [equiv_adjunction EC] refines the equivalence carried by G
-   directly; on the domain side, the equivalence carried by K is first
-   reversed with [EquivalenceOfCategories_sym] (Theory/Equivalence.v) so
-   that the quasi-inverse K⁻¹ becomes the left adjoint — this is the same
-   pair of constructions that [Equivalence_to_AdjointEquivalence] and
-   [AdjointEquivalence_swap] package with their unit/counit isomorphism
-   witnesses.
-
-   Alongside the composite adjunction we record its two transposes
-   definitionally ([Transported_Adjunction_to]/[_from]: the three-fold
-   pasting of the constituent transposes), the standard whiskering
-   formulas for its unit and counit in terms of the units and counits of
-   the three constituents ([Transported_Adjunction_unit]/[_counit]), and
-   the identification of the outer constituents' counits and F-imaged
-   units with counit-cell components of the respective equivalences
-   ([transported_adj_cod_counit], [transported_adj_dom_counit],
-   [transported_adj_cod_fmap_unit], [transported_adj_dom_fmap_unit] —
-   all instances of [equiv_adjunction_counit_at] and
-   [equiv_adjunction_fmap_unit] from Theory/Equivalence/Adjoint.v).
-
-   Transporting on one side only is the special case in which the other
-   equivalence is the identity equivalence [EquivalenceOfCategories_Id]
-   (Theory/Equivalence.v), whose quasi-inverse is Id.
-
-   Following Theory/Equivalence.v, nothing in this file is registered for
-   instance resolution: the equivalences and the adjunction are data,
-   always passed explicitly at use sites. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section TransportedAdjunction.
 

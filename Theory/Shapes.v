@@ -44,10 +44,11 @@ Next Obligation. intros; symmetry; apply id_left. Qed.
 (* ... and the object it picks out. *)
 Definition point_of {C : Category} (F : _1 ⟶ C) : C := F ttt.
 
-(* First round trip.  This is [=] between OBJECTS, where the library offers
-   no [≈]; it holds by [eq_refl], so it is near-trivial -- [Point x] was
-   built to have [x] as its value.  The evidence that the pair is a
-   correspondence is the other round trip, which is not. *)
+(*
+   本文件给出形状/往返相关引理。 First 往返. This is [=] 之间 OBJECTS, 其中 本库 的fers 无 [≈]; it holds 由 [eq_refl], so it is near-trivial -- [Po在t x] w作为 built 到 have [x] 作为 its value.
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem point_of_Point {C : Category} (x : C) : point_of (Point x) = x.
 Proof. reflexivity. Qed.
 

@@ -9,32 +9,14 @@ Generalizable All Variables.
 
 (** * Internal monoids in a monoidal category *)
 
-(* nLab: https://ncatlab.org/nlab/show/monoid+in+a+monoidal+category
+(*
+ nLab: https://ncatlab.org/nlab/show/monoid+in+a+monoidal+category
    Wikipedia: https://en.wikipedia.org/wiki/Monoid_(category_theory)
 
-   Given a monoidal category (C, ⨂, I), a monoid (object) on an object X : C
-   is a triple (X, mu, eta) with a multiplication mu : X ⨂ X ~> X and a unit
-   eta : I ~> X satisfying the associativity and left/right unit laws, with
-   the associator and unitors inserted to make the maps composable:
+   本文件给出幺半范畴中的幺半群对象：乘法 μ、单位 η，以及结合律与左右单位律（插入结合子/单位子使态射可复合）。
 
-     associativity  mu ∘ (mu ⨂ id) ≈ mu ∘ (id ⨂ mu) ∘ α     (α = to tensor_assoc)
-     left unit      mu ∘ (eta ⨂ id) ≈ λ                       (λ = to unit_left)
-     right unit     mu ∘ (id ⨂ eta) ≈ ρ                       (ρ = to unit_right)
-
-   Here ⨂ on morphisms is [bimap], α : (X ⨂ X) ⨂ X ≅ X ⨂ (X ⨂ X) is the
-   associator, and λ : I ⨂ X ≅ X, ρ : X ⨂ I ≅ X are the left/right unitors;
-   the [to] direction of each isomorphism is the one used above.
-
-   This is the standard nLab/Wikipedia definition of "monoid in a monoidal
-   category". The existing [Structure.Monoid] file gives an equivalent
-   presentation, but its [MonoidObject] is developed alongside the cartesian
-   case using the cartesian unit/associator. Here we factor out the abstract
-   monoid-in-a-monoidal-category form so it can be reused as the building
-   block for Frobenius algebras (and dualised to give comonoids).
-
-   The laws are stated as setoid equalities ([≈]), so that morphisms which
-   are merely equivalent up to the homset equivalence are considered to be
-   "the same" structural map. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Monoid.
 

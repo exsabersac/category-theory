@@ -9,40 +9,14 @@ Generalizable All Variables.
 
 (** * Multifunctors *)
 
-(* nLab: https://ncatlab.org/nlab/show/multicategory
+(*
+ nLab: https://ncatlab.org/nlab/show/multicategory
    Wikipedia: https://en.wikipedia.org/wiki/Multicategory
 
-   A multifunctor [F : M ⟶ N] between multicategories sends objects to
-   objects and a multimorphism [f : mhom Γ c] to
-   [mf_map f : mhom (map mf_obj Γ) (mf_obj c)], preserving identities,
-   single-slot composition, and the symmetric-group action.
+   本文件给出函子相关定义或实例。
 
-   BOUNDARY CASTS.  As in Theory/Multicategory.v, the preservation laws
-   relate multimorphisms whose source lists are PROPOSITIONALLY but not
-   definitionally equal: [map φ (Γ1 ++ b :: Γ2)] versus
-   [map φ Γ1 ++ φ b :: map φ Γ2], and [map φ Γ1 ++ map φ Δ ++ map φ Γ2]
-   versus [map φ (Γ1 ++ Δ ++ Γ2)].  Lists of objects are Type-level
-   object data, so [=] on them is sanctioned; the laws recast along
-   [mcast] and are quantified over ANY proofs of their boundary
-   equations (the [_any] style of Theory/Multicategory.v), with the
-   transparent [mf_eq_*] kit below providing canonical witnesses.
-
-   TRANSPARENT LIST KIT.  The stdlib proofs [map_id]/[map_app]/[map_map]
-   are opaque; the instance proofs below (identity and composite
-   multifunctors) need the boundary equations to COMPUTE on list
-   constructors, so transparent Fixpoint versions [map_id_t]/[map_app_t]
-   /[map_map_t]/[map_ext_t] are defined here.
-
-   PERMUTATION ACTION.  The symmetry-preservation law is
-   witness-relevant in the permutation, and the class action is indexed
-   by the Type-valued [tperm] of Theory/Multicategory.v, so the image of
-   a witness under the object map is the structural [perm_map], a
-   Fixpoint that computes on each constructor.  Comparing the witnesses
-   that arise for the identity and composite multifunctors requires
-   transporting a witness along list equalities ([pcast]) and the
-   commutation lemmas [pcast_skip]/[pcast_swap]/[pcast_ptrans]; the
-   equalities proven between witnesses are [=] on Type-level witness
-   data, never on multimorphisms. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The transparent list kit *)
 

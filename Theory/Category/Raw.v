@@ -6,26 +6,14 @@ Generalizable All Variables.
 Reserved Infix "~>⁻" (at level 90, right associativity).
 Reserved Infix "∘⁻" (at level 40, left associativity).
 
-(* nLab: https://ncatlab.org/nlab/show/category
+(*
+ nLab: https://ncatlab.org/nlab/show/category
    Wikipedia: https://en.wikipedia.org/wiki/Category_(mathematics)
 
-   A [RawCategory] is the bare data of a category -- objects, a hom for each
-   pair of objects, an identity for each object, and a composition -- WITHOUT
-   any of the structure that [Category] (Theory/Category.v) adds on top:
+   本文件给出原始/弱化的范畴数据。
 
-     - there is no [homset] field, so the hom `a ~>⁻ b` is a plain [Type]
-       rather than a setoid, and there is no chosen equivalence `≈` on
-       morphisms; and
-     - there are no unit or associativity laws.
-
-   So a [RawCategory] is a "lawless category": the signature of a category
-   stripped of both the hom-setoid quotient and the categorical axioms. This
-   is the "other category using only equality, with a functor from that
-   category to this" that Theory/Category.v anticipates: rather than discharge
-   the laws directly (often awkward under Coq's restrictive `=`), one defines
-   the raw data here and recovers a lawful [Category] through a [Denotation]
-   (a functor into a lawful category, see below). The decorated notations
-   `~>⁻` and `∘⁻` mirror `~>` and `∘` from Theory/Category.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class RawCategory := {
   r_obj : Type;                         (* collection of objects *)
 

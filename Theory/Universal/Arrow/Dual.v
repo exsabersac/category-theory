@@ -16,30 +16,11 @@ Require Import Category.Adjunction.Opposite.
 
 Generalizable All Variables.
 
-(* NOTATION GUARD.  Three scopes declare the token `_ ^op` at the same level:
-   category_scope (Construction/Opposite.v, [Opposite]), functor_scope
-   (Functor/Opposite.v, [Opposite_Functor]) and adjunction_scope
-   (Adjunction/Opposite.v, [Opposite_Adjunction]).  The last two files each
-   [Open] their own scope as a side effect of being imported, so by the end of
-   the [Require] block above the winning interpretation of `X^op` is the
-   ADJUNCTION one.
+(*
+   本文件给出对偶形式。
 
-   BE PRECISE ABOUT WHICH HALF OF THIS IS FORCED -- an earlier revision of
-   this block was not, and claimed the [Open Scope] below is required.  It is
-   NOT, in this file: [Bind Scope category_scope with Category]
-   (Theory/Category.v) rescues every occurrence of `C^op` here, all of which
-   sit in argument or ascription positions, and deleting the [Open Scope] line
-   leaves the file compiling clean (measured).  The hazard is real in general
-   -- a bare [Definition d := C^op.] after this Require block does fail, with
-   `C` reported as expected to have type `?F ⊣ ?U` -- but this file contains
-   no such occurrence.  So the [Open Scope] is DEFENSIVE, kept because it is
-   cheap, exported, and useful to downstream importers who may write the bare
-   form.
-
-   What IS forced is the other half: `F^op` is rejected under either scope
-   order ([Fail Definition fop := F^op.] succeeds with the guard in place), so
-   every opposite FUNCTOR below is written [Opposite_Functor F] by name.  (The
-   same family of hazard is recorded for Instance/Rng/Mod.v.) *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Open Scope category_scope.
 
 (** * Couniversal arrows *)

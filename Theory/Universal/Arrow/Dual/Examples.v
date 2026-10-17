@@ -23,46 +23,11 @@ Open Scope functor_scope.
 
 (** * A worked example of the couniversal-arrow assembly *)
 
-(* This file is the mirror image of Adjunction/GAFT/Examples.v, and is meant to
-   be read beside it.  There, a family of UNIVERSAL arrows into the product
-   bifunctor ×(C) reconstructs the binary diagonal as a LEFT adjoint,
+(*
+   本文件给出例子。
 
-       diagonal_UA d : UniversalArrow d (×(C))     ⟹     F ⊣ ×(C),  F ≅ Δ.
-
-   Here, a family of COUNIVERSAL arrows out of the binary diagonal
-   Δ = Diagonal_Product C reconstructs the product bifunctor as a RIGHT
-   adjoint,
-
-       product_CUA p : CouniversalArrow p Δ        ⟹     Δ ⊣ R,   R ≅ ×(C).
-
-   The same classical adjunction Δ ⊣ ×, approached from the two opposite
-   sides -- which is the point of the exercise: it demonstrates
-   [AdjunctionFromCouniversalArrows] end to end on a non-degenerate example
-   rather than merely typechecking it.
-
-   The example is the classical one, and Functor/Diagonal.v already quotes it
-   verbatim (from Wikipedia, "Diagonal functor"): "a product a × b is a
-   universal arrow from Δ to ⟨a, b⟩.  The arrow comprises the projection
-   maps."  An arrow FROM a functor TO an object is Mac Lane's couniversal one,
-   so that sentence is exactly [product_CUA] below.  The couniversal morphism
-   is the PROJECTION PAIR (exl, exr), and the mediating factorization is
-   [fork], so the entire universal-property content of
-   [product_couniversal_unique] is [ump_products] (Structure/Cartesian.v) with
-   nothing added.
-
-   ONE STRENGTH DIFFERENCE FROM THE PRIMAL EXAMPLE, worth recording because it
-   runs the other way.  [GAFT_from_initials] ends in [Qed], so the left adjoint
-   the primal file produces is opaque and only PROVABLY the diagonal; that file
-   must exhibit a natural isomorphism to say so.  The assembly here is
-   transparent all the way down, so the object action of the produced right
-   adjoint reduces to the product on the nose --
-   [product_via_couniversal_obj] closes by [eq_refl].  The natural isomorphism
-   to ×(C) is still supplied ([product_via_couniversal_is_product]), because
-   the ARROW action is a chosen unique factorization and there is no reason for
-   it to reduce to ×(C)'s [fmap]; but the object half needs no argument at all.
-
-   The concrete instantiation at [Sets] closes the file, so the family is
-   inhabited by something other than a variable. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CouniversalExample.
 

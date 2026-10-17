@@ -15,89 +15,14 @@ Generalizable All Variables.
 
 (** * Freyd's initial-object construction, through the wide-equalizer API *)
 
-(* nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
+(*
+ nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functor_theorem
 
-   [Theory/WeaklyInitial.v] proves [initial_from_weakly_initial]: a weakly
-   initial family, a product of it, an endomorphism-indexed POWER of that
-   product, and a supply of BINARY equalizers together yield a genuine
-   initial object (Freyd; Mac Lane, Categories for the Working
-   Mathematician, 2nd ed., §V.6).  The power is there for one reason,
-   which that file states in terms: it is the device by which "the wide
-   equalizer of the endomorphism family reduces to one *binary*
-   equalizer".  With wide equalizers available the device is unnecessary,
-   and this file says so — [initial_from_weakly_initial_wide] equalizes
-   ALL endomorphisms of the product directly, which is the form Freyd's
-   argument is usually presented in.
+   本文件给出 wide 相关构造。
 
-   WHAT THIS FILE IS AND IS NOT.  It is ADDITIVE.  [Theory/WeaklyInitial.v]
-   is untouched: [initial_from_weakly_initial] keeps its statement, its
-   proof and its universe constraints, and [Adjunction/GAFT.v],
-   [Adjunction/SAFT.v] and the two GAFT example files keep consuming it
-   unchanged.  Nothing here is claimed to supersede it, and the two are not
-   related by any passage — neither theorem is derived from the other.
-
-   THE TRADE, STATED PLAINLY.  The wide form drops one hypothesis (the
-   power [Pe]) and needs no separate binary-equalizer supply, since the
-   two-element family [fun b : bool => if b then f else g] is a wide family
-   like any other.  What it costs is the shape of the remaining hypothesis:
-   [HasWideEqualizers] is a CLASS whose index [Type] is a universe
-   parameter, and the endomorphism family forces that parameter to sit at
-   or above the ambient hom universe.  [Theory/WeaklyInitial.v] avoids
-   exactly this by passing both limits as explicit hypotheses, on the
-   stated ground that a class quantifying over index [Type]s would
-   over-commit the ambient universes; that reasoning is not withdrawn here.
-   A caller who wants the leaner input keeps the original theorem, and a
-   caller who has wide equalizers uses this one.
-
-   WHERE THE PROOF ACTUALLY GETS SHORTER.  In the original, absorption of
-   endomorphisms ([endo_absorb]) is four rewrites through the two tuplings
-   [m] and [d] and their defining families.  Here it is one instance of the
-   wide fork condition at [u] and [id], followed by [id_left]: the wide
-   equalizer's defining equation IS "every endomorphism agrees with the
-   identity after [e]".  Monicity of the equalizing map, which supplies the
-   uniqueness half, comes from [wide_equalizer_monic] exactly as it came
-   from [equalizer_monic].  The endgame — a weakly initial map into the
-   equalizer of a competing pair, exhibited as a section, then cancellation
-   — is the original's, transcribed.
-
-   UNIVERSES, measured (reproduce with [Set Printing Universes. About
-   initial_from_weakly_initial. About initial_from_weakly_initial_wide.]).
-   RECORDED CORRECTION.  An earlier revision read: "Both theorems are over
-   [C : Category@{u2 Set Set}] — the pin at [Set] is the DONOR's, from
-   [iprod] and not from [Terminal] or the equalizers (both unpinned;
-   measured in #435).  The binder COUNT is the same — both are
-   [@{u u0 u1 u2}], so there is no extra binder: the wide form replaces the
-   power's binder with the class's index binder, which is itself
-   unconstrained, appearing free in [HasWideEqualizers@{u1 u2 Set} C]."
-   The attribution to the donor was right, and the donor has been
-   repaired: [iprod] inherited its [Set] from Instance/Discrete.v's
-   unannotated [DiscreteCat_Functor], annotated in place there in the
-   PR "algebraic carriers are sets" (2026-09-17).  Measured after it,
-
-     initial_from_weakly_initial_wide@{u u0 u1 u2 u3} :
-       ∀ {C : Category@{u2 u3 u3}} (W : WeaklyInitialFamily@{u1 u2 u3} C),
-       Limit@{u0 u1 u3 u2} (DiscreteCat_Functor@{u1 u3 u3 u2 u3 u3 u} …)
-       → HasWideEqualizers@{u3 u2 u3} C → Terminal@{u2 u3}   (* u3 < u *)
-
-   -- no literal [Set], the ambient hom universe [u3] free, and FIVE
-   binders where the old reading counted four (the annotated donor's
-   auxiliary level is the extra one).  [HasWideEqualizers] now reads
-   [@{u3 u2 u3}] where the old text quoted [@{u1 u2 Set}]; whether its
-   index slot is still free of the ambient's levels has NOT been
-   re-measured, and the old claim that it is should not be repeated
-   without re-running [About].  The
-   constraint-block difference runs the other way: the DONOR carries two
-   extra stdlib bounds ([u0 <= eq.u0], [u0 <= Logic_lemmas.equality.u0])
-   from the power's discrete diagram, which the wide form drops.
-
-   NOT DELIVERED.  No [HasWideEqualizers] instance, so this theorem has no
-   in-tree application and is a conditional exactly as its donor is; in
-   particular [Adjunction/GAFT.v] is NOT rerouted through it.  No wide
-   analogue of [Structure/Limit/Product.v]'s indexed products (the product
-   [P] is still an ordinary discrete-diagram limit).  No claim that the two
-   theorems have the same universe constraints — they do not, and the
-   difference is the donor's two extra bounds described above. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* A weakly initial family, a product of it, and a supply of wide
    equalizers yield a genuine initial object.

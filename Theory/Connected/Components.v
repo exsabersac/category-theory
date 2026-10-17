@@ -23,27 +23,17 @@ Generalizable All Variables.
 
 (** * Connected components: π₀ of a category *)
 
-(* nLab:      https://ncatlab.org/nlab/show/connected+category
+(*
+ nLab:      https://ncatlab.org/nlab/show/connected+category
    nLab:      https://ncatlab.org/nlab/show/connected+component
    nLab:      https://ncatlab.org/nlab/show/full+subcategory
    Wikipedia: https://en.wikipedia.org/wiki/Connected_category
    Book:      Riehl, "Category Theory in Context", Dover 2016, §1.5,
-              printed p. 35 (the running definition of a connected
-              category) and Proposition 1.5.13, printed pp. 35-36
-   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, §I.5, printed p. 20 (the remark following Definition 9)
 
-   A category is CONNECTED when any two of its objects are joined by a
-   finite zig-zag of morphisms.  The relation "there is a zig-zag from x to
-   y" is an equivalence relation on the objects, and the quotient by it is
-   the SET OF CONNECTED COMPONENTS, written π₀.  Classically every category
-   is the disjoint union of its components, each of which is connected;
-   that is the sense in which connectedness is not a restriction but a
-   decomposition.  Only the second half of that sentence is proved below
-   ([Component_Connected]); see the NOT-delivered list for the first.
+   本文件给出连通分支相关。
 
-   This file builds π₀ and the components.  It does NOT build the zig-zag
-   relation: that already exists. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** What is consumed, and the correction that goes with it
 

@@ -10,69 +10,14 @@ Require Import Category.Structure.Pullback.
 
 Generalizable All Variables.
 
-(* Pullbacks transport along an equivalence of categories.
+(*
+ nLab:      https://ncatlab.org/nlab/show/equivalence+of+categories
+ Wikipedia: https://en.wikipedia.org/wiki/Equivalence_of_categories
 
-   nLab:      https://ncatlab.org/nlab/show/equivalence+of+categories
-   Wikipedia: https://en.wikipedia.org/wiki/Equivalence_of_categories
+   本文件给出拉回相关。
 
-   Theory/Equivalence/Terminal.v carries [Terminal_transport] and
-   [Initial_transport], their two object readbacks and four lower-case helpers,
-   and nothing else of this NAME shape.  MEASURED, with the five files of this
-   change excluded (this one, the three Structure/Topos/ files and the probe): a
-   whole-tree search for [Terminal_transport], [Cartesian_transport],
-   [HasEqualizers_transport], [HasPullbacks_transport], [Initial_transport] or
-   [Cocartesian_transport] returns 8 lines, ALL in
-   Theory/Equivalence/Terminal.v, naming [Terminal_transport],
-   [Initial_transport], [Terminal_transport_obj] and [Initial_transport_obj];
-   the case-sensitive search does not reach [terminal_transport_unique],
-   [terminal_transport_arrow], [initial_transport_unique] or
-   [initial_transport_arrow], and none of those eight is a transport of a binary
-   universal property.  Read it as a NAME search: other structures ARE carried
-   across an equivalence under other names -- Instance/Proset/Limit.v's
-   [Complete_equivalence_invariant] and [Cocomplete_equivalence_invariant],
-   Theory/Equivalence/Monoidal.v's [Transported_Monoidal] and
-   Theory/Equivalence/Adjunction.v's [Transported_Adjunction] -- so what is new
-   here is the pullback case, not the pattern.  This is the
-   binary-universal-property companion, built to the same recipe -- take the
-   quasi-inverse image of the data, use the structure downstairs, push the
-   answer back with F -- and, like it, with no limit machinery anywhere: no
-   [Cone], no [Limit], no RAPL.
-
-   WHY THAT MATTERS BEYOND ECONOMY.  The [Limit]-shaped route is not merely more
-   expensive here, it is STRICTLY WEAKER, and the measurement is pinned in
-   Test/ProbeToposColimits405.v: [Terminal_Limit] (Structure/Limit/Terminal.v)
-   and [Cartesian_Limit] (Structure/Limit/Cartesian.v) are stated over
-   [Category@{u Set Set}] -- they pin the ambient category's hom AND proof
-   universes to the literal [Set] -- while nothing in this file pins any
-   universe to [Set].  Read off BOTH binder and block, every constant here is
-   over [C : Category@{u u0 u0}] -- hom identified with proof in the BINDER,
-   inherited from [IsPullback] and [HasPullbacks], each refused alone at hom and
-   proof levels declared strictly apart with the hom-set and the identity
-   accepted, pinned in the probe -- and five of the six carry the block equation
-   [u0 = u2] identifying the two categories' hom levels, while
-   [is_pullback_jointly_monic]'s block is LITERALLY EMPTY over that same binder:
-   the binder/block trap in miniature.
-
-   THE HONEST CORE is [IsPullback_transport], which is apex-pinned: a
-   pullback IN C of the quasi-inverse image of a cospan of D is, after
-   applying F and correcting both legs by the counit isomorphisms, a
-   pullback IN D of the original cospan.  [HasPullbacks_transport] merely
-   chooses the pullback downstairs and packages the record.
-
-   WHAT THE PROOF SPENDS.  Existence needs only naturality of the COUNIT
-   ([equivalence_counit_to_natural]) and its invertibility.  Uniqueness needs,
-   in addition, naturality of the UNIT in its conjugated form
-   ([equivalence_unit_conjugate]), invertibility of both cells, and faithfulness
-   of the quasi-inverse ([Equivalence_Inverse_Faithful]).  NO triangle identity
-   is used -- an [EquivalenceOfCategories] carries two natural isomorphisms and
-   no coherence between them, so no such identity is available, and the argument
-   is arranged to avoid needing one.
-
-   NOT DELIVERED: no statement that F PRESERVES pullbacks (an
-   [IsPullback f g P p1 p2] in C carried to one in D at the F-images of
-   f and g); no equalizer, product or general limit transport; no
-   uniqueness of the transported pullback beyond what the universal
-   property itself gives; and no dual (pushouts along an equivalence). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Joint monicity of a pullback's projections *)
 

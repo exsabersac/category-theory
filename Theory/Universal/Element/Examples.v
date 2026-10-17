@@ -19,31 +19,11 @@ Generalizable All Variables.
 
 (** * Non-vacuity: the natural numbers as a universal element *)
 
-(* The class of Theory/Universal/Element.v is inhabited, and by the object
-   the tree already computes with.  Instance/Coq/Nat.v exhibits
-   [nat_succ_Representable : Representable Endos_Forget] -- the pair
-   ⟨(nat, S), 0⟩ representing the forgetful functor from sets-with-an-endomap
-   -- and separately checks by [reflexivity] that the image of the identity
-   under its representing isomorphism is [O] ([nat_universal_element]).
-   That check is the SPECIAL CASE, for one functor, of the general equation
-   [ue_of_repr_elem]; here the general class is run at that representation and
-   the same [O] comes back out, by [eq_refl].
+(*
+   本文件给出例子。
 
-   This is what makes the file's central claim non-vacuous in the strong
-   sense the brief asks for: the general definition is not merely inhabited,
-   it RECOVERS the concrete criterion the tree had computed by hand.
-
-   WHAT IS AND IS NOT RECOVERED.  What is: the universal element itself, on
-   the nose, and -- through Theory/Universal/Element/Elements.v -- the
-   initial object of the category of elements that Riehl's Proposition 2.4.8
-   produces from it.  What is NOT: Instance/Coq/Nat.v's [repr_initial]
-   proper.  That lands in [FAlg NatF], and the passage from
-   [Elements Endos_Forget] to [FAlg NatF] is a comparison of categories the
-   tree does not carry (Nat.v builds the object-level dictionary
-   [alg_of_triple] / [alg_hom_clauses] but no functor).  So [repr_initial] is
-   NOT re-derived, NOT made redundant, and NOT claimed to follow; what is
-   shown is that the general machine produces the same universal element and
-   an initial object of the general elements category. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The universal element of [Endos_Forget], produced by the general class
    from the representation Instance/Coq/Nat.v builds. *)

@@ -10,44 +10,15 @@ Generalizable All Variables.
 
 (** Lax and oplax transformations between pseudofunctors. *)
 
-(* nLab: https://ncatlab.org/nlab/show/lax+natural+transformation
+(*
+ nLab: https://ncatlab.org/nlab/show/lax+natural+transformation
    nLab: https://ncatlab.org/nlab/show/pseudonatural+transformation
    Reference: Johnson–Yau, "2-Dimensional Categories", Definition 4.2.1.
 
-   Given two pseudofunctors F, G : B ⟶ B' between bicategories, a *lax
-   transformation* α : F ⟹ G consists of
+   本文件给出松弛（lax）结构。
 
-     - a component 1-cell   α_x : F x ~~> G x            for each 0-cell x, and
-     - a naturator 2-cell   α_f : G f ∘∘∘ α_x ⟹ α_y ∘∘∘ F f
-                                                          for each 1-cell f : x ~~> y,
-
-   subject to three coherence axioms: the naturator is natural in f (respects
-   2-cells), and it is compatible with the identities and with horizontal
-   composition (the unit and composition laws below).
-
-   Orientation.  We take the standard nLab *lax* orientation, where the
-   naturator points
-
-       lt1 f : pf1[G] f ∘∘∘ lt0 x  ⟹  lt0 y ∘∘∘ pf1[F] f,
-
-   i.e. across the naturality square with F f on top, G f on the bottom, the
-   component 1-cells on the sides, the 2-cell goes from the left-then-bottom
-   composite to the top-then-right composite.  The *oplax* variant reverses
-   every naturator; it is written out in full as [OplaxTransformation] below
-   (there is as yet no in-tree 2-cell-reversal `B^co` to read it off cleanly,
-   so it is given directly rather than as a one-line op-definition).
-
-   This mirrors the strong-monoidal-transformation coherence under the same
-   dictionary used for [Pseudofunctor]: tensor ↔ hcompose, I ↔ bi1id,
-   μ ↔ pf_comp, η ↔ pf_id, α ↔ hassoc, λ/ρ ↔ hunit_left/right.  The naturator
-   family and its coherence are phrased through the Godement composite
-   [hcomp2], the associator [hassoc] and the unitors of the two bicategories,
-   exactly as in `Theory/Bicategory/Pseudofunctor.v`.
-
-   Notation: `∘∘` is vertical 2-cell composition (vcompose), `∘∘∘` is
-   horizontal 1-cell composition (hcompose), `hcomp2` the Godement horizontal
-   composite of 2-cells; the two composition infixes and the `pf1[ ]` accessor
-   are inherited from `Theory/Bicategory/Pseudofunctor.v`. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The lax transformation class, at full strength.  Its data are the component
    1-cells [lt0] and the naturator 2-cells [lt1]; its laws are naturality of

@@ -8,122 +8,15 @@ Require Import Category.Functor.Opposite.
 
 Generalizable All Variables.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §II.1 "Duality" and §II.2 "Contravariance and Opposites",
-              printed pp. 31–33 (PDF pp. 41–43) — maclane:II.1:def1 (the
-              elementary language), maclane:II.1:def2 (the dual of a
-              statement), maclane:II.1:thm1 (the duality principle),
-              maclane:II.1:remark2 (extension to functors),
-              maclane:II.2:lem1 (duality is realized by the opposite)
-   Book:      Awodey, "Category Theory" (1st ed., 2005 pre-print), §3.1,
-              Propositions 3.1 and 3.2, printed pp. 58–59 (PDF pp. 67–68)
-              — awodey:3.1:prop1 (formal duality), awodey:3.1:prop2
-              (conceptual duality): the same two theorems
-   nLab:      https://ncatlab.org/nlab/show/duality
-   Wikipedia: https://en.wikipedia.org/wiki/Dual_(category_theory)
+(*
+ Book:      Awodey, "Category Theory" (1st ed., 2005 pre-print), §3.1,
+ nLab:      https://ncatlab.org/nlab/show/duality
+ Wikipedia: https://en.wikipedia.org/wiki/Dual_(category_theory)
 
-   Mac Lane's §II.1 introduces ETAC, the elementary (first-order) theory
-   of an abstract category: a two-sorted language with equality whose
-   atomic statements say "a is the domain of f", "a is the codomain of
-   f", "u is the identity arrow of a", "h is the composite of g and f",
-   "f and g are equal arrows", and "a and b are equal objects" — the two
-   equality atoms being what let monos and epis be expressed at all —
-   closed under the propositional connectives and quantifiers over both
-   sorts.
-   The DUAL of a statement interchanges domain with codomain and reverses
-   every composite; the duality principle says a statement provable from
-   the category axioms has a provable dual.  §II.2's lemma grounds the
-   principle semantically: a statement holds of arrows in C exactly when
-   its dual holds in C^op.  Awodey's §3.1 states the same pair as formal
-   and conceptual duality.
+   本文件给出 ETAC 相关。
 
-   This file DEEP-EMBEDS the language and proves all of it semantically:
-
-     - [atom]/[formula]: the two-sorted syntax, de Bruijn over object
-       and arrow variables ([FAllOb]/[FExOb] bind the object sort,
-       [FAllArr]/[FExArr] the arrow sort)
-     - [holds]: Type-valued satisfaction over a [Category] and a pair
-       of environments, arrow equality rendered as the hom-setoid [≈];
-       [closed_below]/[sentence] with [holds_sentence_env_irrel] — a
-       closed formula's satisfaction is environment-independent
-     - [dual]/[dual_invol]: the syntactic dual, an involution
-     - [holds_dual]: Mac Lane's §II.2 lemma — C satisfies the dual of
-       Σ exactly when C^op satisfies Σ under the transported
-       environment
-     - [duality_principle]: if a formula holds in every category under
-       every assignment, so does its dual
-     - [functor_statement_duality]: the one-functor case of
-       maclane:II.1:remark2, recorded over [F^op] (design note 4)
-
-   Design:
-
-   1. ARROWS ARE BUNDLED WITH THEIR ENDPOINTS.  The language's arrow
-      variables range over [Arr C := { p : obj × obj & fst p ~> snd p }]
-      — an arrow together with its endpoints, the semantic counterpart
-      of ETAC's untyped arrow sort (in the first-order language nothing
-      forces an arrow variable to have particular endpoints).  Domain
-      and codomain atoms compare endpoints by Leibniz equality of
-      OBJECTS — the reading Mac Lane's object sort carries, and the
-      only relation the language's object atoms mention; the hom-setoid
-      [≈] enters exactly where the book's language has arrow equations:
-      identity, composite, and arrow-equality atoms.  Those three atoms
-      carry their endpoint equalities as sigma-packaged DATA and
-      transport along them with [acast], the endpoint-cast this file
-      defines (the [mcast]/[dsq_coerce] idiom of Theory/Multicategory.v
-      and Theory/DoubleCategory.v, specialized to plain homs).
-
-   2. SATISFACTION IS TYPE-VALUED.  [∃] is [sigT], [∨] is [sum], and
-      the arrow equations are [≈], so [holds] lands in [Type]; the
-      duality lemma is accordingly a Type-valued [iffT].  No
-      decidability, no choice, no axiom: every principal artifact
-      below is closed under the global context.
-
-   3. THE DUALITY LEMMA IS TRANSPORT-FREE.  [op_arr] swaps an arrow
-      bundle's endpoints — the SAME underlying arrow, since
-      [hom (C^op) y x] is definitionally [hom C x y] — and [holds_dual]
-      relates satisfaction in C to satisfaction in C^op through it.
-      The bookkeeping happens in the six [sat_*_op]/[sat_*_unop]
-      transports, whose proofs move to literal-pair bundles along the
-      propositional eta [arr_eta] and then destruct every endpoint
-      equality down to [eq_refl] — no cast lemma is consumed.  (The
-      [acast_op]/[acast_split]/[acast_comm]/[acast_middle] kit below
-      the cast's definition is exported as reusable cast algebra; no
-      proof in this file needs it.)  Because the lemma quantifies over
-      the C-side environment and transports it forward, the duality
-      PRINCIPLE needs no double-op unwinding: instantiating the
-      hypothesis at C^op already yields the dual at C.
-
-   4. THE FUNCTOR EXTENSION IS SCOPED (maclane:II.1:remark2).  Mac
-      Lane remarks that the language extends to several categories
-      connected by functors.  This file records the one-functor case
-      as theorems about [F^op] — the object and arrow actions of
-      [F^op] ARE those of [F], so any functor-statement dualizes by
-      the same environment transport — and defers the two-sorted
-      functor LANGUAGE (atoms "T c = b", "T f = h") to future work:
-      embedding it costs a second indexed syntax with nothing new in
-      the induction, and §IV.3's exercise rows it would serve are
-      already in force in-tree (Functor/Opposite.v's
-      [Opposite_Functor] with involution,
-      Natural/Transformation/Opposite.v's [Opposite_Transform],
-      Adjunction/Opposite.v's [Opposite_Adjunction] with the
-      transposes swapped, and its transformation sibling).  The two
-      rows §IV.3 adds beyond those — fullness and faithfulness across
-      op for an ARBITRARY functor — land in Functor/Opposite.v in this
-      same change ([Full_op]/[Faithful_op] and converses), and the
-      inverse-pair rows land in Theory/Morphisms/Duality.v
-      ([op_Retraction_of_Section] and its three siblings, next to the
-      Monic/Epic quartet).  The one-functor recording below,
-      [arr_fmap_op], is a bundle-level commutation — the honest
-      content of the remark at this scoping is the disclosure plus
-      the definitional agreement of [F^op]'s actions with [F]'s.
-
-   5. VALIDITY IS NOT ISOMORPHISM-INVARIANT.  Because the object atoms
-      compare by Leibniz equality — the only relation this library's
-      [Category] carries on objects — [valid] is a statement about
-      strict structure: a sentence's truth in C can turn on object
-      identity, and nothing here transports [valid] along equivalences
-      of categories.  That is the honest reading of a first-order
-      language with object equality over these models. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Arrow bundles and endpoint casts *)
 

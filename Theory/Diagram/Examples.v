@@ -10,41 +10,11 @@ Generalizable All Variables.
 
 (** * Witnesses for [Commutative]: concrete diagrams, and in-tree instances *)
 
-(* Theory/Diagram.v proves [square_commutative_iff] and its triangle
-   counterpart parametrically, over an arbitrary category and arbitrary
-   morphisms.  This file supplies concrete inhabitants, because a
-   universally quantified predicate can be true for two uninteresting
-   reasons and both must be ruled out for [Commutative] to have been tested:
+(*
+   本文件给出例子。
 
-   1. VACUITY OF THE SHAPE.  If a quiver has no two distinct parallel paths,
-      [Commutative] holds of every diagram over it for lack of anything to
-      check.  [SquareQuiver] escapes this: [sq_via_B_neq_via_C]
-      (Theory/Diagram.v) proves its two routes from [SqA] to [SqD] are
-      DISTINCT morphisms of [FreeOnQuiver SquareQuiver], and
-      [tri_via_Y_neq_direct] does the same for [TriangleQuiver].
-
-   2. VACUITY OF THE TARGET.  If the target category is thin (a preorder --
-      at most one morphism between any two objects) then all parallel
-      composites agree and [Commutative] holds of every diagram into it.  The
-      target used here is [Coq] (Instance/Coq.v: objects are types, morphisms
-      are functions, [f ≈ g] is [∀ x, f x = g x]), and it is NOT thin: the
-      examples below exhibit parallel morphisms that are provably not [≈]
-      ([coq_parallel_not_equiv], [coq_sq_legs_differ],
-      [coq_sq_sides_differ]).
-
-   So the positive witnesses below are commuting diagrams over a shape that
-   has a real parallel pair, into a category that has parallel morphisms it
-   distinguishes; and the negative witnesses are diagrams over the SAME
-   shapes, into the SAME category, for which [Commutative] is refuted.
-
-   The category [Coq] is used rather than a setoid model because its category
-   laws hold with no axioms (Instance/Coq.v, header) and disequality of
-   functions here is decided by computation on [bool].
-
-   The final section is of a different kind: it exhibits two of the tree's own
-   shape-specific commutativity statements as instances of [Commutative], so
-   that the claim in Theory/Diagram.v's header that the predicate generalizes
-   them is a theorem here rather than an assertion. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** A commuting square in [Coq] *)
 

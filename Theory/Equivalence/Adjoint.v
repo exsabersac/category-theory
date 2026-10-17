@@ -9,58 +9,14 @@ Require Import Category.Theory.Equivalence.FullFaithful.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/adjoint+equivalence
+(*
+ nLab: https://ncatlab.org/nlab/show/adjoint+equivalence
    Wikipedia: https://en.wikipedia.org/wiki/Equivalence_of_categories
 
-   An adjoint equivalence is an adjunction whose unit and counit are
-   componentwise isomorphisms.  The class below packages a hom-setoid
-   adjunction F ⊣ U (Theory/Adjunction.v) together with, for every object,
-   an [IsIsomorphism] witness for the unit component and for the counit
-   component — the predicate form of Theory/Isomorphism.v, carrying a
-   chosen [two_sided_inverse] and its two inverse laws about that specific
-   morphism.
+   本文件给出伴随等价相关构造。
 
-   The main theorem [Equivalence_to_AdjointEquivalence] refines any
-   equivalence of categories (Theory/Equivalence.v) into an adjoint
-   equivalence carried by the same functor and the same quasi-inverse.
-   The route is direct — it does not rectify one of the two comparison
-   cells through the triangle identities.  From E : EquivalenceOfCategories
-   F we take the fullness, faithfulness and essential surjectivity of F
-   (Theory/Equivalence/FullFaithful.v) and build the transposing hom-setoid
-   isomorphism outright:
-
-     to   f := prefmap (from (eso_iso d) ∘ f)      ([equiv_adj_to])
-     from g := to (eso_iso d) ∘ fmap[F] g          ([equiv_adj_from])
-
-   For the instances extracted from E, [prefmap] is [equivalence_prefmap E]
-   and [eso_iso d] is [equivalence_counit_at d], both definitionally
-   (because [Equivalence_Full] and [Equivalence_EssSurj] end in [Defined]),
-   so the two transposes are stated in that vocabulary.  [prefmap] carries
-   no respectfulness of its own (the issue #118 note in Theory/Functor.v);
-   every law below is instead recovered from faithfulness: apply
-   [fmap_inj], push [fmap[F]] through with [equivalence_prefmap_sur], and
-   conclude among the images in D.  Naturality in the target argument is
-   the conjugation coherence of the counit cell ([fun_equiv_fmap_from]
-   applied to [equivalence_counit]).  The unit and counit of the resulting
-   adjunction are isomorphisms by construction: the F-image of the unit is
-   an inverse counit-cell component ([equiv_adjunction_fmap_unit]) and the
-   counit is a counit-cell component on the nose
-   ([equiv_adjunction_counit_at]).
-
-   Conversely, [AdjointEquivalence_to_Equivalence] reads an equivalence of
-   categories off an adjoint equivalence: the two cells are the pointwise
-   [IsIsoToIso] isomorphisms, and their conjugation coherence is the
-   naturality of the unit and counit — [adj_unit_naturality] and
-   [adj_counit_naturality] below, the arbitrary-morphism generalizations
-   of [unit_comp] and [counit_comp] from Theory/Adjunction.v.  Composing
-   the two directions through [EquivalenceOfCategories_sym] exchanges the
-   two sides: [AdjointEquivalence_swap] turns an adjoint equivalence
-   between F and U into one between U and F, whose underlying adjunction
-   [AdjointEquivalence_swap_adjunction] is the swapped U ⊣ F.
-
-   Following Theory/Equivalence.v, nothing in this file is registered for
-   instance resolution: an adjoint equivalence is a choice of data, always
-   passed explicitly at use sites. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* An adjoint equivalence: an adjunction both of whose comparison
    transformations are componentwise invertible.  The two extra fields are

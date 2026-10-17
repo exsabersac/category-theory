@@ -9,21 +9,14 @@ Generalizable All Variables.
 
 (** Law proofs for the Maybe/option [1 + a] instances *)
 
-(* nLab: https://ncatlab.org/nlab/show/maybe+monad
+(*
+ nLab: https://ncatlab.org/nlab/show/maybe+monad
    Wikipedia: https://en.wikipedia.org/wiki/Option_type
 
-   The instances themselves live in [Theory/Coq/Maybe.v]; here we record their
-   lawfulness.  The final [Maybe_Functor : IsFunctor] discharges the two functor
-   laws -- identity [fmap id = id] and composition [fmap (g ∘ f) = fmap g ∘ fmap f]
-   -- by exhibiting the operation as a genuine endofunctor on [Coq] (an
-   [AFunctor]), exactly as the sibling [Either] and [Tuple] proof files do.
+   本文件给出相应结构的证明。
 
-   The preceding lemmas are characterisation ("spec") lemmas describing each
-   operation by its action on [Just]/[Nothing].  They make precise the equations
-   the sources give for the functor/applicative/monad/Alternative structure --
-   [fmap f Nothing = Nothing], [Just f <*> Just x = Just (f x)],
-   [Nothing >>= f = Nothing], [Just x >>= f = f x], left-biased [<|>] -- as
-   biconditionals on when a result is [Just x] versus [Nothing]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Import MonadNotations.
 

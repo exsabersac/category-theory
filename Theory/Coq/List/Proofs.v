@@ -12,21 +12,15 @@ Generalizable All Variables.
 
 (** Proofs and lemmas for the Coq list instance *)
 
-(* nLab: https://ncatlab.org/nlab/show/list+monad
+(*
+ nLab: https://ncatlab.org/nlab/show/list+monad
    nLab: https://ncatlab.org/nlab/show/free+monoid
    Wikipedia: https://en.wikipedia.org/wiki/Free_monoid
 
-   This file collects lemmas about the list type whose functor, applicative
-   and monad instances live in the parent module [Theory.Coq.List].  The list
-   type is the underlying set of the free monoid on A, with [app] as the
-   monoid multiplication and [[]] as its unit; the [Forall_append] lemma below
-   witnesses that the predicate [Forall P] respects this multiplication.
+   本文件给出相应结构的证明。
 
-   The remaining lemmas in this range ([olast_*], [Forall_ordered],
-   [StronglySorted_*]) are pure list-algorithm helpers about the last element
-   and about sorted lists.  They are not laws of the monad/free-monoid
-   structure and have no dedicated nLab or Wikipedia page; they support
-   order-theoretic reasoning over lists elsewhere in the library. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (*
 Lemma foldl_cons : forall a (x : a) xs,

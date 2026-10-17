@@ -18,50 +18,15 @@ Generalizable All Variables.
 
 (** * Universal elements *)
 
-(* nLab: https://ncatlab.org/nlab/show/universal+element
+(*
+ nLab: https://ncatlab.org/nlab/show/universal+element
    nLab: https://ncatlab.org/nlab/show/representable+functor
    Wikipedia: https://en.wikipedia.org/wiki/Universal_property
 
-   Mac Lane's Definition 2 of §III.1 (CWM 2nd ed., p. 57): if D is a category
-   and H : D ⟶ Set a functor, a UNIVERSAL ELEMENT of H is a pair ⟨r, e⟩
-   consisting of an object r of D and an element e ∈ H r such that for every
-   pair ⟨d, x⟩ with x ∈ H d there is a unique arrow k : r ~> d of D with
-   (H k) e = x.
+   本文件给出泛元素相关。
 
-   That is the ELEMENTARY form -- one element, one unique-factorization
-   clause, no natural transformation in sight -- and it is the form this file
-   takes as primitive ([aue_universal] / [ue_universal] below).  The library
-   already carried the same content twice over in less elementary encodings:
-   [Functor/Representable.v]'s [Representable] packages a natural isomorphism
-   [Hom r,─] ≅ H and its header records, without proving it, that "by the
-   Yoneda lemma such a Φ is determined by a single universal element of F(A),
-   namely Φ_A(id A)"; and [Structure/UniversalProperty.v]'s
-   [representability_by_yoneda] proves exactly that determination, but states
-   the universal elements as the ANONYMOUS sigma setoid
-
-       { x : F c & IsIsomorphism (from (Yoneda_Lemma C F c) x) },
-
-   a predicate on x phrased in terms of the invertibility of its Yoneda mate
-   rather than in terms of unique factorization.  Neither is a first-class
-   [UniversalElement], and neither exhibits Mac Lane's elementary clause.
-   This file supplies the class and proves the two encodings equivalent.
-
-   Mac Lane's Remark 3 on the following page (p. 58) then asserts a two-way
-   subsumption between universal elements and universal arrows, and it is the
-   substance of this file:
-
-     (a) "Since an element x ∈ H d may be described as a function x : * → H d
-         from a one-point set *, this definition is a special case of that of
-         a universal arrow: ⟨r, e⟩ is universal from * to H."
-
-     (b) "Conversely, the definition of a universal arrow ⟨r, u⟩ from c to
-         S : D ⟶ C can be phrased as: ⟨r, u⟩ is a universal element of the
-         functor D(c, S−) : D ⟶ Set."
-
-   Both halves are proved below, and then STATED TOGETHER as the single
-   biconditional [universal_element_arrow_subsumption], which is the thing the
-   tree lacked: the two directions existed nowhere, and a reader had no way to
-   see that the two notions are interdefinable rather than merely analogous. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where the notion sits, and why it is the elementary one
 

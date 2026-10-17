@@ -9,46 +9,13 @@ Generalizable All Variables.
 
 (** * Operads as one-object multicategories *)
 
-(* nLab: https://ncatlab.org/nlab/show/operad
+(*
+ nLab: https://ncatlab.org/nlab/show/operad
 
-   An operad is a multicategory with a single object (colour), so that a
-   multimorphism is determined by the ARITY of its source list alone.
+   本文件给出 operad 相关。
 
-   BUNDLING.  The one-object condition is recorded as the propositional
-   equality [IsOperad M := @mobj M = poly_unit] — [=] on the Type-level
-   object data of the multicategory, never on morphisms — bundled as a
-   record ([Operad]).  Downstream consumers (operad algebras as
-   multifunctors into the endomorphism multicategory of an object, whose
-   colour type is [poly_unit] DEFINITIONALLY) only need the underlying
-   multicategory, which the projection [operad_multi] exposes.
-
-   THE DERIVED POINT.  Rather than transporting hom-sets along
-   [operad_one], every accessor is phrased over the derived point
-   [operad_pt O : mobj] (the transport of [ttt] backwards along
-   [operad_one]).  Object contractibility [operad_obj_contr] — every
-   object equals the point — is derived with no UIP: the transport
-   lemma is proved by destructing an equality whose right endpoint is a
-   variable.  For an instance whose colour type is [poly_unit]
-   definitionally (so [operad_one := eq_refl]), [operad_pt] reduces to
-   [ttt] and [ohom n] reduces to [mhom (repeat ttt n) ttt], with no
-   transport anywhere.
-
-   ARITY ACCESSORS.  [ohom n := mhom (repeat pt n) pt] is the setoid of
-   n-ary operations; [oid] is the unary identity; [ocomp] is the
-   single-slot operadic composition [∘ᵢ], obtained from the zipper
-   [mcomp] at [Γ1 := repeat pt i], [Γ2 := repeat pt j], recast along the
-   transparent [repeat]-arithmetic kit ([repeat_app_t]).  The
-   symmetric-group action restricts to self-permutations of
-   [repeat pt n]: the witnesses are the Type-valued [tperm] of
-   Theory/Multicategory.v (the class's own index; the stdlib
-   [Permutation] is recoverable through [tperm_Permutation]).
-
-   THE ROUND TRIP.  Every list of objects of an operad is a [repeat] of
-   the point ([all_repeat], by induction from contractibility), so every
-   multimorphism [mhom Γ pt] is an [ohom (length Γ)] up to [mcast]; the
-   two directions ([to_ohom]/[of_ohom]) compose to the identity up to
-   [≈] by the [mcast] groupoid pack ([operad_roundtrip],
-   [operad_roundtrip_inv]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The transport helper and the bundled record *)
 

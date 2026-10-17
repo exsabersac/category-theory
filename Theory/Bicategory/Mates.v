@@ -14,62 +14,13 @@ Notation "f ∘∘∘ g" := (hcompose (f, g)) : category_scope.
 
 (** The mates correspondence in a bicategory *)
 
-(* nLab: https://ncatlab.org/nlab/show/mate
-   Kelly & Street, "Review of the elements of 2-categories", LNM 420 (1974).
-   Johnson & Yau, "2-Dimensional Categories" (2021), §6.
+(*
+ nLab: https://ncatlab.org/nlab/show/mate
 
-   Fix a bicategory `B` and two internal adjunctions `f ⊣ u` (between 0-cells
-   `x, y`) and `f' ⊣ u'` (between `x', y'`), together with 1-cells `a : x ~~> x'`
-   and `b : y ~~> y'`. The mates correspondence is the natural bijection between
-   the 2-cells filling the two squares
+   本文件给出 mate 对应。
 
-        f' ∘ a  ⟹  b ∘ f            (in `bicat x y'`)
-        a  ∘ u  ⟹  u' ∘ b           (in `bicat y x'`)
-
-   sending `σ` to its *mate* `σ̂`, obtained by pasting the unit `η'` of `f' ⊣ u'`
-   on the left, whiskering `σ` in the middle, and pasting the counit `ε` of
-   `f ⊣ u` on the right, everything bracketed by the coherence isomorphisms.
-
-   Rather than manipulate that fivefold paste directly, the mate is factored
-   through two *hom-adjunctions* induced by an internal adjunction — the natural
-   bijections
-
-        precomp :  bicat(f ∘ c, d)  ≅  bicat(c, u ∘ d)       (whisker by η, ε)
-        postcomp:  bicat(c, e ∘ f)  ≅  bicat(c ∘ u, e)       (whisker by ε, η)
-
-   each of which is a genuine bijection by the two triangle (zig-zag) identities
-   of the adjunction, established here as `precomp_left`/`precomp_right` and
-   `postcomp_left`/`postcomp_right`. The mate is then
-
-        mate σ = postcomp (α⁻¹ ∘ precomp σ)
-
-   for the associator iso `α = hassoc u' b f`, and the round trips
-   `mate_roundtrip_left`/`mate_roundtrip_right` fall out of the two
-   hom-adjunction round trips together with `α ∘ α⁻¹ = id`. The bijection is
-   packaged as `mate_iso`, an `Isomorphism` in `Sets` of the two 2-cell
-   hom-setoids.
-
-   Scope: the bijection and its round trips are delivered here at full strength
-   over an arbitrary bicategory. The pasting/composition *functoriality* of
-   mates (the double category of adjunctions) is deliberately out of scope
-   (descope ledger entry 10); it is a follow-on that would ride a double-category
-   framework. That entry is now NARROWED, though not discharged. Its Cat-level
-   content, stated in ordinary-category vocabulary rather than over an arbitrary
-   bicategory, is delivered elsewhere: `Adjunction/Square.v` proves that mates
-   commute with the horizontal and vertical pasting of adjoint squares (#398),
-   and `Instance/Adj/Bicategory.v` proves that horizontal composition of
-   conjugate pairs is a bifunctor and assembles `Adj_Bicategory` (#399). What
-   remains out of scope here is exactly what the entry names and those two files
-   disclaim: the double category of adjunctions, and the statement in an
-   ARBITRARY bicategory.
-
-   The heart of the two hom-adjunctions is a pair of whiskered
-   triangle identities (`precomp_zig_id`/`precomp_zag_id`,
-   `postcomp_zig_id`/`postcomp_zag_id`), each reduced to `adj_triangle_left` or
-   `adj_triangle_right` of the underlying adjunction through the reusable
-   coherence engine of `Theory/Bicategory/Adjunction.v` (unitor/associator
-   naturalities, `pent_solve`, the `*_solve` normal forms) plus the local
-   inverse-coherence helpers assembled in the `Helpers` section below. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Helpers.
 Context {B : Bicategory}.

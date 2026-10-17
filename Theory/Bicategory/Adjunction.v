@@ -7,11 +7,11 @@ Require Import Category.Theory.Bicategory.
 
 Generalizable All Variables.
 
-(* The bicategory composition notations are declared with `where` clauses local
-   to the class body in Theory/Bicategory.v, so they do not persist to importing
-   files. They are reserved globally, however; re-establish the interpretations
-   here (at the reserved levels) so the 2-cell calculus below reads naturally.
-   `∘∘` is vertical 2-cell composition, `∘∘∘` horizontal 1-cell composition. *)
+(*
+   本文件给出伴随相关构造与性质。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Infix "∘∘" := vcompose : category_scope.
 Notation "f ∘∘∘ g" := (hcompose (f, g)) : category_scope.
 

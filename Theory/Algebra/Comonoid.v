@@ -9,28 +9,14 @@ Generalizable All Variables.
 
 (** * Internal comonoids in a monoidal category *)
 
-(* The dual of [Monoid]: a comonoid on [X : C] is a comultiplication
-   [delta : X ~> X ⨂ X] and a counit [epsilon : X ~> I] satisfying the dual
-   of the associativity and unit laws.  Writing [α] for the associator
-   [tensor_assoc], [λ] for [unit_left] and [ρ] for [unit_right], the laws in
-   this library's notation are:
+(*
+ nLab:      https://ncatlab.org/nlab/show/comonoid
+ Wikipedia: https://en.wikipedia.org/wiki/Monoid_(category_theory) *)
 
-     coassociativity   (δ ⨂ 1) ∘ δ ≈ α⁻¹ ∘ (1 ⨂ δ) ∘ δ
-     left counit       (ε ⨂ 1) ∘ δ ≈ λ⁻¹
-     right counit      (1 ⨂ ε) ∘ δ ≈ ρ⁻¹
+   本文件给出幺半范畴中的余幺半群对象（余乘法与余单位及相应定律）。
 
-   These are exactly the [Monoid] axioms with every arrow reversed (and hence
-   every composite read right-to-left, [to] iso directions becoming [from]).
-
-   In principle [Comonoid X] could be obtained as [@Monoid (C^op) _ X], but
-   defining a [Monoidal] instance on [C^op] requires extra machinery (the
-   tensor reverses and the unit/associator flip), and the resulting class
-   members would need to be re-unfolded everywhere.  Following the practice
-   elsewhere in this library (cf. [Cocartesian], [Initial]) we instead state
-   the dual class directly.
-
-   nLab:      https://ncatlab.org/nlab/show/comonoid
-   Wikipedia: https://en.wikipedia.org/wiki/Monoid_(category_theory) *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Comonoid.
 

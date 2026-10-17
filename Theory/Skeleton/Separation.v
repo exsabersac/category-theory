@@ -15,46 +15,14 @@ Generalizable All Variables.
 
 (** * Skeletality separates equivalence from isomorphism of categories *)
 
-(* nLab: https://ncatlab.org/nlab/show/skeleton
+(*
+ nLab: https://ncatlab.org/nlab/show/skeleton
    nLab: https://ncatlab.org/nlab/show/principle+of+equivalence
 
-   Awodey asks (Category Theory, 1st ed., §7.10, Exercise 11, p. 188) which
-   properties of categories respect equivalence, and for one that is
-   invariant under isomorphism of categories but not under equivalence.
-   Skeletality is the canonical answer, and this file supplies the negative
-   half as a theorem: [skeletality_is_not_equivalence_invariant] exhibits
-   the terminal category [1], which is skeletal, equivalent to the
-   indiscrete category on [bool], which is not.  The positive half —
-   skeletality IS carried along an isomorphism of categories — is
-   [Skeletal_StrictCat_invariant] in Theory/Skeleton.v, where it belongs
-   because it needs no witnesses.  Together they turn the prose of
-   Theory/Equivalence.v ("skeletality is not equivalence-invariant") into a
-   pair of proofs.
+   本文件给出骨架分离相关。
 
-   The same pair does double duty for Awodey's Exercise 12 (p. 188), which
-   asks for a skeletal subcategory equivalent to a given category:
-   [Indiscrete_bool_Skeleton] supplies a genuine, non-trivial [Skeleton]
-   datum for a category that is NOT skeletal, and
-   [Indiscrete_bool_skeleton_is_One] then identifies its skeleton with [1]
-   on the nose — an isomorphism in [StrictCat], not merely an equivalence,
-   obtained by feeding two equivalences to
-   [skeletal_equivalence_is_isomorphism].  This is the in-tree witness
-   docs/INHABITATION.md records for the [Skeleton] record: the chosen
-   representative is named outright ([true]), so nothing here smuggles a
-   choice principle, and no existence claim is made for an arbitrary
-   category.
-
-   [One_Skeletal] and [Two_Skeletal] round out the small witnesses;
-   [Two_Skeletal] in particular gives Instance/Two.v's header, which calls a
-   Boolean algebra "a skeletal thin finitely-cocomplete star-autonomous"
-   category, a companion theorem about [_2] itself.
-
-   WHY A SEPARATE FILE.  Theory/Skeleton.v is already a heavyweight Theory
-   module (see its header); the witnesses here additionally need
-   Instance/Discrete/Reconstruct.v for [Indiscrete] and Instance/Two.v for
-   [_2], neither of which any consumer of the core theory has reason to
-   pull in.  This is the split rationale Instance/Discrete/Reconstruct.v
-   records for itself. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Small skeletal categories *)
 

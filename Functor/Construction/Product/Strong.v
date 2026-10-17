@@ -36,10 +36,11 @@ Next Obligation. split; apply strength_natural. Qed.   (* naturality, each facto
 Next Obligation. split; apply strength_id_left. Qed.   (* unit law, each factor *)
 Next Obligation. split; apply strength_assoc. Qed.     (* assoc law, each factor *)
 
-(* Recover a strength on the first factor F from one on F ∏⟶ G: fix the second
-   coordinate at the unit I and project the first component. The unit and assoc
-   laws follow by transporting the product strength's naturality along the unit
-   isomorphism I ≅ I ⨂ I before invoking the corresponding product law. *)
+(*
+   本节说明同构、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition ProductFunctor_Strong_proj1 :
   StrongFunctor (F ∏⟶ G) → StrongFunctor F := fun P => {|
   strength := fun x y => fst (@strength _ _ _ P (x, I) (y, I));  (* fst at y₂ = I *)

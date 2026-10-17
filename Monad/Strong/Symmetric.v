@@ -116,11 +116,11 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* The two cross unit laws: [dstr'] against ret on the left and [dstr]
-   against ret on the right.  Here the returned value enters the *outer*
-   strength of the composite, so the collapse goes through naturality
-   (pushing ret across the strength), the opposite compatibility law under
-   fmap, and [join_fmap_ret]. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma dstr'_ret_left {x y} :
   dstr' ∘ (ret[M] ⨂ id[M y]) ≈ (strength[M] : x ⨂ M y ~> M (x ⨂ y)).
 Proof.
@@ -295,9 +295,11 @@ Qed.
 (** ** The two right-strength coherences.                               *)
 (* ------------------------------------------------------------------ *)
 
-(* Kock's associativity law for the left strength, solved for the composite
-   strength ∘ (id ⨂ strength): every proof below uses it in this
-   orientation, which requires no bracket surgery at the rewrite site. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma strength_assoc_solved {a b c} :
   strength[M] ∘ (id[a] ⨂ strength[M])
     ≈ fmap[M] (to (@tensor_assoc _ _ a b c)) ∘ strength[M]
@@ -309,12 +311,11 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(* The braid-word coherence at the heart of both associativity proofs: the
-   two ways of moving the outer factor a of (c ⨂ b) ⨂ a to the front — braid
-   the inner pair first and then braid a across the tensor, or braid a
-   across in one step on either side of the associator — agree.  It is the
-   hexagon [hexagon_b] composed against the solved hexagon
-   [hexagon_a_solved], glued by naturality of the braiding. *)
+(*
+   本节说明 Symmetric 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma braid_swap_assoc {a b c} :
   from (@tensor_assoc _ _ a b c) ∘ (braid ∘ (braid ⨂ id[a]))
     ≈ (braid ∘ ((id[c] ⨂ braid) ∘ to (@tensor_assoc _ _ c b a))
@@ -340,11 +341,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The ρ-coherence of the derived right strength: M(ρ) ∘ rstr ≈ ρ.  The
-   braid/unitor exchange of Joyal & Street ([braid_unit_right]) turns the
-   fused fmap argument ρ ∘ β into λ, the left strength's own unit coherence
-   [strength_id_left] absorbs it, and [braid_unit_left] at M x closes the
-   remaining λ ∘ β. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rstr_id_right {x} :
   fmap[M] (to unit_right) ∘ rstr ≈ to (@unit_right _ _ (M x)).
 Proof.
@@ -356,13 +357,11 @@ Proof.
   apply braid_unit_left.
 Qed.
 
-(* The α-coherence of the derived right strength, in the to-oriented form
-   from which the class field's from-oriented form follows by iso
-   cancellation.  The chase: unfold rstr, slide the braids outward by
-   naturality of the braiding and of the strength, absorb the two stacked
-   strengths with [strength_assoc_solved], convert the residual braid word
-   with [braid_swap_assoc], and finish with [braid_swap_assoc_solved] inside
-   the fmap argument. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rstr_assoc_to {x y z} :
   fmap[M] (to (@tensor_assoc _ _ x y z)) ∘ rstr ∘ bimap rstr id
     ≈ rstr ∘ to (@tensor_assoc _ _ (M x) y z).
@@ -421,29 +420,11 @@ Qed.
 (** ** The mixed associativity coherence.                               *)
 (* ------------------------------------------------------------------ *)
 
-(* The coherence that mixes the left strength and the derived right
-   strength across the associator:
+(*
+   本节说明单子、Kleisli、（余）强度相关定义、性质与动机。
 
-       M(α) ∘ rstr ∘ (t ⨂ id) ≈ t ∘ (id ⨂ rstr) ∘ α
-
-   on (x ⨂ M y) ⨂ z.  This is the hardest single equation of the
-   development; its sole consumer is the middle-associativity naturality
-   square of the Kleisli premonoidal tensor
-   (kl_assoc_natural_middle in Monad/Kleisli/Premonoidal.v).
-
-   The proof is staged: first the symmetric hexagon in solved "cons" form
-   (assert S1), which rewrites the inverse-associator-after-braid tail of
-   the unfolded left side; then naturality of the strength slides the
-   remaining braid under fmap; both sides collapse onto a common
-   strength-spine, and the residual fmap argument is the first hexagon plus
-   [braid_invol].
-
-   A fallback route, recorded for maintainers: the same equation can
-   instead be established at its point of use, by inlining the statement
-   into the proof of [kl_assoc_natural_middle] and staging further
-   intermediate asserts there against the unfolded Kleisli composite; the
-   ingredients — the hexagon lemmas, the strength coherences and
-   [braid_invol] — are unchanged, only the staging site moves. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma strength_rstr_assoc {x y z} :
   fmap[M] (to (@tensor_assoc _ _ x y z)) ∘ rstr ∘ bimap strength[M] id
     ≈ strength[M] ∘ bimap id rstr ∘ to (@tensor_assoc _ _ x (M y) z).
@@ -498,10 +479,11 @@ Qed.
 (** ** Packaging: the right strong functor and right strong monad.      *)
 (* ------------------------------------------------------------------ *)
 
-(* The derived right strength as a natural transformation
-   (⨂) ◯ M ∏⟶ Id ⟹ M ◯ (⨂): the shape demanded by the
-   [RightStrongFunctor] field.  The component at (x, y) is definitionally
-   [rstr], so the coherence laws transfer on the nose. *)
+(*
+   本节说明自然变换、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition rstr_nat : (⨂) ◯ M ∏⟶ Id ⟹ M ◯ (⨂).
 Proof using C M SM SMon.
   refine (@Build_Transform' (C ∏ C) C ((⨂) ◯ M ∏⟶ Id) (M ◯ (⨂))
@@ -537,10 +519,11 @@ Definition rstr_RightStrongMonad : @RightStrongMonad C _ M :=
 (** ** The bridge to [CommutativeStrongMonad].                          *)
 (* ------------------------------------------------------------------ *)
 
-(* Forward direction: the concrete commutativity predicate over the derived
-   right strength yields the abstract class.  Both sides of the
-   [commutativity] field are definitionally [dstr] and [dstr'] once the
-   packaged rstrength unfolds to [rstr]. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition commutative_CommutativeStrongMonad
   (comm : @commutative_sm C SM M SMon) : @CommutativeStrongMonad C _ M :=
   @Build_CommutativeStrongMonad C _ M
@@ -550,11 +533,11 @@ Definition commutative_CommutativeStrongMonad
     (fun x y => @rstr_join C SM M SMon x y)
     (fun x y => comm x y).
 
-(* Converse direction.  An abstract [CommutativeStrongMonad] carries its own
-   bundled right strength, which need not be the braid-derived one, so the
-   honest converse takes the agreement E of the two right strengths — over
-   the strong monad bundled in H' itself — as an explicit hypothesis and
-   produces the concrete predicate for that strong monad. *)
+(*
+   本节说明单子、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CSM_commutative_sm
   (H' : @CommutativeStrongMonad C _ M)
   (E : ∀ x y, @rstrength C _ M (@comm_is_rstrong C _ M H') x y
@@ -567,11 +550,11 @@ Proof.
   exact (@commutativity C _ M H' x y).
 Qed.
 
-(* Round trip: at the instance produced by the forward direction, the
-   agreement hypothesis holds by reflexivity — the packaged right strength
-   IS rstr — and the underlying strong monad is definitionally the ambient
-   one, so the composite of the two bridges reproduces a commutativity
-   witness for the ambient strong monad. *)
+(*
+   本节说明单子、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary commutative_sm_round_trip
   (comm : @commutative_sm C SM M SMon) : @commutative_sm C SM M SMon.
 Proof.

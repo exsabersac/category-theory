@@ -381,22 +381,11 @@ End EMStrictlyCreates.
 
 (** ** Uniqueness of a strict lift, at an unpinned carrier *)
 
-(* The [≈]-form of the uniqueness clause of Mac Lane's (i) for an
-   arbitrary [StrictLift]: whatever its algebra, the lift is isomorphic in
-   [EilenbergMoore T] to the created apex by an isomorphism lying over
-   the transport [slift_iso].  [em_alg_unique] is the step that pins the
-   structure map; this statement lets the carrier vary with [slift_eq].
-   Its [=]-form is refuted in Monad/Eilenberg/Moore/Limit/Examples.v.
+(*
+   本节说明单子、（余）极限、同构相关定义、性质与动机。
 
-   Universes, read off [About]: [o] and [h] are D's objects and arrows,
-   [jo] J's objects, [eo] and [e] the objects and the level of
-   [EilenbergMoore], and [l], [l0] those of [IsLimitCone]; the bounds are
-   [h < e] and the chain [jo, h <= l0 <= l], [o <= l], [o, h <= eo], with
-   the sigma projections' two caps.  A draft that rewrote under [fmap]
-   also carried three [prod_rect] caps and a phantom level, and one that
-   used [subst] an [EqdepFacts] cap; the proof below destructs the cone
-   [N], so that the transport is a match on a variable, and composes
-   [compose_respects] and [fmap_respects] by hand. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition em_lift_alg_unique@{o h jo eo e l l0} {D : Category@{o h h}}
   (T : D ⟶ D) `{H : @Monad D T} {J : Category@{jo h h}}

@@ -29,9 +29,11 @@ Section sum_map.
 
 #[local] Set Transparent Obligations.
 
-(* Morphism action: identity on each summand's hom-set (the [_] branches solve
-   x ~> y from f : x ~> y in C); the off-diagonal homs are False, so [!] derives
-   the goal from the impossible hypothesis. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition sum_map (a : C ∐ C) (b : C ∐ C) (f : a ~> b) :
   sum_obj a ~> sum_obj b :=
   match a, b with

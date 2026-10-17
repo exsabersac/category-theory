@@ -28,12 +28,11 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------ *)
 (** ** A packaging lemma: split monic + epi ⟹ invertible *)
 
-(* Theory/Isomorphism.v's [Epic_Section_Iso] already runs the
-   cancellation argument, but it concludes with the object-level
-   [Isomorphism].  This repackages it as the predicate [IsIsomorphism]
-   that Theorem 1(iii) is stated with, reusing that instance for the one
-   law ([f ∘ section ≈ id]) that [Section] does not carry as a field;
-   the other law IS [section_comp]. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Epic_Section_IsIsomorphism {E : Category} {x y : E}
            {f : x ~> y} (s : Section f) (e : Epic f) : IsIsomorphism f :=
@@ -59,12 +58,11 @@ Notation "⌈ f ⌉" := (from (@adj C D F U A _ _) f) (only parsing).
 (* ------------------------------------------------------------------ *)
 (** ** (A) The bridge: Mac Lane's composite is precomposition with ε *)
 
-(* "Apply the Yoneda Lemma to the natural transformation (arrow function
-   of G followed by the adjunction) A(a,c) → X(Ga,Gc) → A(FGa,c)."  Read
-   in this library's vocabulary that composite is
-   `g ↦ ⌈fmap[U] g⌉`, and the identification below says it is
-   precomposition with ε_a.  It is one rewrite of [fmap_to_adj_counit]
-   followed by one cancellation. *)
+(*
+   本节说明伴随、自然变换、Yoneda相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma counit_precomp_is_from_adj_fmap_U {a c : C} (g : a ~> c) :
   g ∘ ε a ≈ ⌈ fmap[U] g ⌉.
@@ -74,9 +72,11 @@ Proof.
   exact (@to_adj_comp_law C D F U A (U a) c (g ∘ ε a)).
 Qed.
 
-(* ... and the composite IS the component of the transfer transformation
-   at ε_a, on the nose.  Deliberate strictness: this is what makes the
-   transfer lemma applicable without a comparison map. *)
+(*
+   本节说明 FullFaithful 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example transfer_at_counit_is_precomp {a c : C} (g : a ~> c) :
   transform[hom_transfer (ε a)] c g = g ∘ ε a := eq_refl.
@@ -115,10 +115,11 @@ Definition counit_epic_of_faithful (HU : Faithful U) (a : C) :
   epic_of_hom_transfer_monic (ε a)
     (counit_transfer_monic_of_faithful HU a).
 
-(* Conversely, epicness of every ε_a makes U faithful: the lemma turns it
-   into monicity of the transfer, hence injectivity of each component,
-   and the bridge carries `fmap[U] f ≈ fmap[U] g` to
-   `f ∘ ε ≈ g ∘ ε`. *)
+(*
+   本节说明 FullFaithful 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition faithful_of_counit_epic (H : ∀ a : C, Epic (ε a)) :
   Faithful U.
@@ -144,11 +145,11 @@ Defined.
 (* ------------------------------------------------------------------ *)
 (** ** (C) Theorem 1 (ii): full ⟺ every counit component is split monic *)
 
-(* Mac Lane's route for the forward direction: fullness makes every
-   component of the transfer SURJECTIVE, the preimage of k being the
-   U-preimage of its transpose.  Shipped even though the headline's
-   forward half consumes the cheaper #368 donor, so that the book's proof
-   is present in all four directions. *)
+(*
+   本节说明 FullFaithful 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition counit_transfer_epic_of_full (HU : Full U) (a : C) :
   @Epic ([C, Sets]) _ _ (hom_transfer (ε a)).
@@ -226,29 +227,19 @@ Defined.
 (* ------------------------------------------------------------------ *)
 (** ** (E) Mac Lane §IV.3 Exercise 5: the pin and a direct control *)
 
-(* "prove that G is faithful if and only if φ⁻¹ carries epis to epis."
-   φ⁻¹ is ⌈−⌉.  The BACKWARD direction is the cheap one: id is epi, and
-   ⌈id⌉ IS the counit by definition (Theory/Adjunction.v), so (i)
-   applies.  The identity `⌈id⌉ = ε a` is pinned as an [eq_refl] Example
-   below.
+(*
+   本节说明伴随相关定义、性质与动机。
 
-   The exercise's biconditional [right_adjoint_faithful_iff_from_adj_epic]
-   and the FORWARD half it rests on are NOT here but in section (F): the
-   derivation the issue asks for reads [adj_monic] at the opposite
-   adjunction, and [Opposite_Adjunction] is not in scope until the Require
-   that opens (F).  What section (E) supplies is the definitional pin and
-   a direct proof of the forward half, shipped as a control so that the
-   opposite-adjunction derivation is not the only route in the file.  The
-   two forward proofs are NOT compared: [Epic] is a one-field record whose
-   field is a proof, so an [eq_refl] between them is refuted for the
-   uninformative reason that the two proof terms differ, and there is no
-   setoid on [Epic] in which to state anything weaker. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example from_adj_id_is_counit (a : C) : ⌈ id[U a] ⌉ = ε a := eq_refl.
 
-(* A direct proof of the forward direction, shipped as a control for the
-   derivation that follows: transpose the cancellation hypothesis with
-   [to_adj_nat_r], cancel the epi f, and finish with faithfulness. *)
+(*
+   本节说明 FullFaithful 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition from_adj_epic_of_epic_direct (HU : Faithful U)
            {x : D} {a : C} (f : x ~> U a) (Hf : Epic f) : Epic ⌈f⌉.
@@ -271,36 +262,11 @@ End FullFaithful.
 (* ------------------------------------------------------------------ *)
 (** ** (F) Riehl's dual clauses, and Exercise 5's biconditional *)
 
-(* Everything below the Require needs [Opposite_Adjunction]: Riehl's three
-   dual clauses instantiate (i)-(iii) at it, and Mac Lane's Exercise 5
-   reads [adj_monic] at it.  The three dual clauses are obtained by
-   instantiating (i)-(iii) at the opposite adjunction.  Two definitional
-   coincidences make that free, and both are recorded below at [eq_refl]:
+(*
+   本节说明伴随相关定义、性质与动机。
 
-       counit (Opposite_Adjunction F U A) x  =  unit A x
-       unit   (Opposite_Adjunction F U A) a  =  counit A a
-
-   — because `unit := ⌊id⌋` and `counit := ⌈id⌉` while the opposite
-   adjunction is built by swapping [to] and [from] of the very same
-   isomorphism (Adjunction/Opposite.v).  #368 measured this out of
-   tree and pinned it nowhere; it is pinned here, and again in the probe.
-
-   The remaining transport is the Monic/Epic and Section/Retraction
-   quartets of Theory/Morphisms/Duality.v, and
-   [Full_op]/[Faithful_op]/[Full_of_op]/[Faithful_of_op] of
-   Functor/Opposite.v.  Six of those twelve are record literals
-   with no proof content — the Monic/Epic quartet, which is what
-   Duality.v's "one constructor application" sentence covers, and the
-   two [Faithful] passages; the other six ([op_Retraction_of_Section]
-   and its three siblings, [Full_op], [Full_of_op]) are [Program
-   Definition]s whose single obligation is an [exact] of the other
-   side's law at the swapped indices (Functor/Opposite.v says so
-   of its own two).  None runs an argument of its own, so the dual
-   clauses cost no argument here: no direct proof is cheaper and none is
-   shipped.
-
-   NOTATION HAZARD.  This Require is deferred to here on purpose; see
-   ENGINEERING FINDINGS in the header. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Adjunction.Opposite.
 
@@ -348,9 +314,11 @@ Proof.
     exact (op_Epic_of_Monic (η x) (Hm x)).
 Defined.
 
-(* Riehl 4.6.11 dual (ii): F full ⟺ every unit component is a split epi.
-   The forward half is #368's [unit_split_epi_of_full_left] read through
-   the opposite adjunction; the two are compared below. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition left_adjoint_full_iff_unit_split_epic :
   Full F ↔ (∀ x : D, Retraction (η x)).
@@ -367,11 +335,11 @@ Proof.
     exact (op_Section_of_Retraction (η x) (Hr x)).
 Defined.
 
-(* The op route's right inverse for η_x IS #368's, on the nose: the
-   opposite adjunction's counit at x is η x, [Full_op]'s [prefmap] is the
-   original's at swapped indices, and [Opposite_Functor U] applied to F x
-   is U (F x) — so both sides reduce to
-   `prefmap F HF (U (F x)) x (ε (F x))`. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example unit_retract_agrees (HF : Full F) (x : D) :
   @retract D x (U (F x)) (η x)
@@ -403,16 +371,11 @@ Proof.
       now rewrite Heq.
 Defined.
 
-(* ... and the derivation the issue asks for: the SAME fact is
-   [adj_monic] (Theory/Adjunction.v) read at the opposite adjunction.
-   At `Opposite_Adjunction F U A` the left adjoint is [Opposite_Functor U],
-   so `Faithful F` there is `Faithful U` here (through [Faithful_op]),
-   `Monic f` there is `Epic f` here (through [op_Monic_of_Epic]), the
-   forward transpose ⌊−⌋ there is ⌈−⌉ here, and composition is reversed —
-   so the conclusion `⌊f⌋ ∘ g ≈ ⌊f⌋ ∘ h → g ≈ h` reads, in C, as
-   `g ∘ ⌈f⌉ ≈ h ∘ ⌈f⌉ → g ≈ h`, which is [Epic ⌈f⌉].  Every OTHER step
-   is a conversion: the script is `constructor; intros` and one [exact],
-   whose only non-conversion content is those two transports. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition from_adj_epic_of_epic (HU : Faithful U)
            {x : D} {a : C} (f : x ~> U a) (Hf : Epic f) : Epic ⌈f⌉.
@@ -439,26 +402,11 @@ End Duals.
 (* ------------------------------------------------------------------ *)
 (** ** (G) The reflective special case, as a corollary *)
 
-(* Mac Lane, printed p. 91 (image p367-100.png), immediately after the
-   proof of Theorem 1:
+(*
+   本节说明伴随、函子相关定义、性质与动机。
 
-     "A subcategory A of B is called reflective in B when the inclusion
-      functor K : A → B has a left adjoint F : B → A. ...  Since the
-      inclusion functor K is always faithful, the counit ε of a
-      reflection is always epi. ...  If a full subcategory A ⊂ B is
-      reflective in B, then by Theorem 1 each object a ∈ A is isomorphic
-      to F K a, and hence R a ≅ a for all a."
-
-   That is exactly Construction/Reflective.v's [reflective_counit_iso],
-   and here it becomes a corollary: the inclusion is faithful
-   ([Incl_Faithful], Construction/Subcategory.v) and full as a functor
-   whenever the subcategory is full ([Full_Implies_Full_Functor]),
-   so (iii) applies.
-
-   Two facts about the inclusion are used and nothing else; in
-   particular no property of the reflector, and no subcategory-specific
-   argument.  See DONOR DEFECT in the header for why the result cannot be
-   compared field-by-field with the existing lemma. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Construction.Subcategory.
 Require Import Category.Construction.Reflective.

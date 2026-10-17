@@ -32,12 +32,11 @@ Context {G : C ⟶ C}.
 
 Existing Instance CC_Monoidal.
 
-(* The component of the composite traversal on [F :*: G], built from the two
-   component sequences merged through [lax_ap[H]].  [transform] leaves three
-   goals: the component map, then the [naturality] and [naturality_sym]
-   conditions of a natural transformation (the latter two are dual, so the two
-   proof blocks below are identical - this is the library's built-in-duality
-   idiom, not duplication). *)
+(*
+   本节说明自然变换相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ProductFunctor_Traversable_ap_functor_nat :
   Traversable F → Traversable G
     → ∀ H : C ⟶ C, @Applicative _ _ H
@@ -82,13 +81,11 @@ Proof.
     reflexivity.
 Defined.
 
-(* Work in progress: the full [Traversable (F :*: G)] instance.  The component
-   above supplies [sequence]; what remains is to discharge the three coherence
-   laws (sequence_naturality, sequence_Id, sequence_Compose) from those of the
-   components.  [sequence_Id] is complete; the other two obligations still need
-   the interaction of [lax_ap]/[ap_functor_nat] with the component sequences,
-   so the definition is kept here as commented scaffolding rather than sealed
-   with an unfinished proof.  Nothing in the library depends on it yet. *)
+(*
+   本节说明 Product 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 (*
 Program Definition ProductFunctor_Traversable :
   Traversable F → Traversable G

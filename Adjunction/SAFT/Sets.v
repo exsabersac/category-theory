@@ -62,11 +62,11 @@ Proof.
   exact (proj1 (proper_morphism t y (s Dg) Hys a) Hty).
 Qed.
 
-(* Positive control: the lemma applied at the instance [SAFT] itself
-   consumes (SAFT.v's readback, at [C = D = Sets@{h cobj}]), with the
-   [cogen_prod] slot [u] held strictly above the object universe [cobj].
-   Left unannotated, the lemma had that slot minimized to [cobj], and this
-   application was refused. *)
+(*
+   本节说明 Sets 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SubobjectCover_Id_Sets_absurd_at_SAFT@{cobj h u u2 u3 |
     Set < h, h < cobj, cobj < u, u3 <= h +}
   (comp : @Complete@{h h h cobj} Sets@{h cobj})

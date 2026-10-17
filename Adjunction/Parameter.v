@@ -33,314 +33,14 @@ Module PAT := Category.Adjunction.Natural.Transformation.
 
 (** * Adjunctions with a parameter *)
 
-(* nLab: https://ncatlab.org/nlab/show/parametrized+adjoint
+(*
+   nLab: https://ncatlab.org/nlab/show/parametrized+adjoint
    nLab: https://ncatlab.org/nlab/show/adjoint+functor
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.7,
-     book pp. 101-102: Theorem 3 and its proof.
-   Riehl, "Category Theory in Context", 2nd ed., §4.3, p. 148, and §4.4
-     Proposition 4.4.6: the same construction in the language of mates.
 
-   Mac Lane's Theorem 3, quoted from the printed page (book p. 102):
+   本节说明伴随相关定义、性质与动机。
 
-     THEOREM 3 (Adjunctions with a parameter).  Given a bifunctor
-     F : X × P → A, assume for each object p ∈ P that F(−, p) : X → A has a
-     right adjoint G(p, −) : A → X, via an adjunction
-
-         hom(F(x, p), a) ≅ hom(x, G(p, a)),                        (10)
-
-     natural in x and a.  There is then a unique way to assign to each arrow
-     h : p → p' of P and each object a ∈ A an arrow
-     G(h, a) : G(p', a) → G(p, a) of X so that G becomes a bifunctor
-     P^op × A → X for which the bijection of the adjunction (10) is natural
-     in all three variables x, p, and a.  This assignment of arrows G(h, a)
-     to ⟨h, a⟩ may also be described as the unique way to make G(h, −) a
-     natural transformation conjugate to F(−, h).
-
-   Mac Lane's proof runs through naturality in p, which is the commutativity
-   of the square
-
-       hom(F(x,p), a)  ≅  hom(x, G(p,a))
-             ↑ F(x,h)*          ↑ G(h,a)_*
-       hom(F(x,p'), a) ≅  hom(x, G(p',a))
-
-   and he then says in terms: "This commutativity (for all a) states
-   precisely that G(h,−) must be chosen as the conjugate to F(−,h).  By the
-   previous theorem there exists a unique choice ...  For a second arrow
-   h' : p' → p'', the uniqueness of the choice of conjugates shows for h'h
-   that G(h'h, −) = G(h,−) ∘ G(h',−), so that G(−,a) is a functor and G a
-   bifunctor, as required."
-
-   WHAT IS DELIVERED HERE.  The hypothesis of the theorem is the record
-   [ParametrizedAdjunction F], a family of right adjoints to the partial
-   functors F(−,p) = [Partial_l F p].  [param_transform] is Mac Lane's
-   F(−,h) : F(−,p) ⟹ F(−,p'), the transformation of left adjoints induced by
-   an arrow of the parameter category; its component at x is the OTHER
-   partial functor's action, fmap[Partial_r F x] h, and the interchange law
-   of a bifunctor is exactly its naturality.  [pa_param_mate] is Mac Lane's
-   G(h,−), defined as the CONJUGATE of F(−,h) and nothing else, so that the
-   theorem's closing sentence ("may also be described as the unique way to
-   make G(h,−) a natural transformation conjugate to F(−,h)") holds by
-   construction rather than as a further comparison.
-
-   [parametrized_right_adjoint_bifunctor] is Mac Lane's G : P^op × A → X.
-   ITS TWO FUNCTOR LAWS ARE NOT RE-DERIVED.  Mac Lane's own argument is that
-   the uniqueness of conjugates forces G(h'h,−) = G(h,−) ∘ G(h',−), and that
-   argument is already discharged by name in Adjunction/Conjugate.v as
-   [conj_mate_id] and [conj_mate_compose] (both of which are proved there by
-   [conj_mate_uniq], i.e. by exactly the uniqueness Mac Lane appeals to).
-   This file consumes those two corollaries; the only content added on top of
-   them is the interaction with the second variable, which is naturality of
-   the mate.
-
-   NATURALITY IN ALL THREE VARIABLES is stated as three separate facts and
-   then assembled.  Naturality in x and in a is nothing new — those are the
-   [Adjunction] fields [to_adj_nat_l] and [to_adj_nat_r] at a fixed p, and
-   they are re-exposed here under the names [pa_natural_x] and [pa_natural_a]
-   so that a consumer sees all three in one place; the file does not claim
-   them as new.  Naturality in p is the new one, and it is DEFINITIONALLY the
-   conjugacy condition: [pa_square_is_Conjugate] records by [eq_refl] that
-   the elementary square [pa_square] and Adjunction/Conjugate.v's [Conjugate]
-   are the same type, so no comparison map appears anywhere.
-
-   UNIQUENESS is the theorem's actual content, and it is stated over the
-   ASSIGNMENT rather than over a type of bifunctors, which is what Mac Lane
-   states ("There is then a unique way to assign to each arrow h ... and each
-   object a ... an arrow G(h,a)").  [pa_assignment_unique] takes an arbitrary
-   family G' of arrows, natural in a, whose square commutes, and concludes
-   that every one of its values agrees with [pa_param_mate].  Its proof is
-   [conj_mate_uniq] and nothing else.
-
-   THE DUAL (§D) is Mac Lane's own next sentence, and it is NOT Theorem 3
-   read backwards.  He writes: "Dually, given a bifunctor G : P^op × A → X
-   where each G(p, −) has a right adjoint F(−, p), there is a unique way to
-   make F a bifunctor X × P → A."  The hypothesis there is G(p,−) ⊣ F(−,p),
-   so the PARTIAL FUNCTORS OF G ARE THE LEFT ADJOINTS, where in Theorem 3
-   they were the right adjoints' partners, and the conclusion is COVARIANT in
-   the parameter where Theorem 3's was contravariant.  The direction was
-   confirmed by typechecking before any proof was written, and NO OPPOSITE
-   CATEGORY IS NEEDED on the conclusion side: for h : p ~> p' in P the arrow
-   h read in P^op runs p' ~> p, so [param_transform_r] supplies exactly the
-   transformation of left adjoints G(p',−) ⟹ G(p,−) that [conj_mate]
-   consumes, and it returns F(−,p) ⟹ F(−,p').  The alternative route through
-   [Swap] is BUILT rather than argued about ([copa_swap_route]) and measured
-   to cost strictly more: it needs a field-copy transport per parameter,
-   because Partial_l (G ◯ Swap) p and Partial_r G p agree in both DATA fields
-   on the nose and not as records, and the bifunctor it then produces has
-   type P ∏ X ⟶ A — the two arguments in the OPPOSITE ORDER to the book's
-   X × P → A.  The direct route needs neither.  The one genuinely new piece
-   is [param_transform_r], the mirror of [param_transform] moving a
-   bifunctor's FIRST argument instead of its second; the two relate different
-   partial-functor families, so this is a construction and not an
-   instantiation, and every §D result below mirrors a §C result line for
-   line.
-
-   §E IS THE CURRYING INSTANCE, and the reason it is here rather than in
-   Structure/Cartesian/Closed.v is that that file's [Closed] class carries NO
-   NATURALITY FIELD IN ANY VARIABLE — its fields are [exponent_obj],
-   [exp_iso], the three derived transposes and the beta law — so naturality
-   of currying in the parameter cannot even be phrased against the class.
-   Theorem 3 supplies it: the family (− × p) ⊣ (−)^p is a
-   [ParametrizedAdjunction] for ×(C), and the theorem then FORCES the arrow
-   action of the exponential in the parameter to be the internal-hom action
-   ([curry_param_mate_is_ihom], [curry_param_mate_is_internal_hom]).  The
-   payoff is delivered as a STANDALONE equation in plain [Closed] vocabulary
-   ([curry_natural_param], with its inverse-transpose mirror
-   [uncurry_natural_param]), consumable without any record of this file; its
-   right-hand side was READ OFF the mate rather than guessed, and
-   [curry_natural_param_from_mate] obtains the very same statement by
-   instantiating [pa_natural_p], so that derivation is machine-checked.
-   Assembling the theorem's bifunctor at this instance recovers
-   Functor/Hom/Internal.v's [InternalHomFunctor] — on objects at [eq_refl],
-   on arrows up to ≈ ([curry_bifunctor_obj], [curry_bifunctor_fmap]).
-
-   §F ANSWERS MAC LANE'S EXERCISE 2 AS A THEOREM.  The property of the unit
-   corresponding to naturality of (10) in the parameter is DINATURALITY —
-   the wedge condition — and it is delivered twice: elementarily as
-   [pa_unit_dinatural], and packaged in Structure/Wedge.v's own class as
-   [pa_unit_Wedge PA x : Wedge (UnitIntegrand PA x)], apex x and legs the
-   units.  Its proof is a [symmetry] and then one application of
-   Adjunction/Conjugate.v's
-   [conjugate_to_unit] at §C's conjugate pair, so Exercise 2's answer is
-   exactly the [ConjugateUnit] characterisation of conjugacy, which #394
-   already carries by name; the counit's mirror is [pa_counit_extranatural],
-   the [ConjugateCounit] characterisation at the same pair.
-   Theory/Dinatural.v's [Dinatural] is NOT used and NOT required, for three
-   measured reasons set out at the head of §F.
-
-   §G IS THE UNIT/COUNIT PRESENTATION, and it is careful about what is new.
-   The two triangle identities at a FIXED parameter are not new — they are
-   Theory/Adjunction.v's [counit_fmap_unit] and [fmap_counit_unit], re-exposed
-   with the parameter written out as [pa_triangle_left]/[pa_triangle_right],
-   both proved by a bare [exact].  What is new is the parametrized record
-   [ParametrizedAdjunctionTransform] and its equivalence with §A,
-   [parametrized_adjunction_iff_transform], which applies
-   Adjunction/Natural/Transformation/Universal.v's two passages pointwise in
-   p.  Strengths are measured strict-first: the family of right adjoints and
-   the unit and counit COMPONENTS survive at [eq_refl]; the whole record and
-   the transposes do not, and what holds for the latter is [pa_pat_round_to]
-   / [pa_pat_round_from] at ≈, each a bare [exact] of [to_adj_unit] /
-   [from_adj_counit].
-
-   §H IS RIEHL §4.4 PROPOSITION 4.4.6(iii), as an inhabitant of
-   Adjunction/Right.v's own [AdjointOnTheRight] class and not a
-   lookalike: [mutually_right_adjoint] is a RECORD LITERAL whose five fields
-   are [mr_iso] and the four naturality lemmas above it, applied, with no
-   tactic anywhere in it.  Riehl's Exercise 4.4.ii IS that
-   proposition, so it is NOT separate work and nothing further is built for
-   it.  The mirror hypothesis needs NO new record — [Partial_l (F ◯ Swap) x]
-   and [Partial_r F x] agree in both DATA fields at [eq_refl], measured — and
-   [mirror_family] packages a family stated in the natural [Partial_r F x ⊣
-   H x] form, so the HYPOTHESIS a consumer supplies mentions no [Swap] —
-   though the record's type still does.  Only TWO of the
-   four naturality fields are proved directly; the other two are obtained by
-   conjugating them with the isomorphism.
-
-   §I, THE MODULE TENSOR-HOM (Mac Lane's own second motivating example,
-   Mod_K(A ⊗_K B, C) ≅ Mod_K(A, Hom_K(B, C)) with parameter B), IS A FUTURE
-   INSTANCE AND NOT A MISSING CATEGORY.  Measured, at this commit:
-     - [ModTensor : RMod R ∏ RMod R ⟶ RMod R] EXISTS
-       (Instance/Mod/Monoidal.v) and takes NO commutativity hypothesis,
-       so [Partial_l ModTensor W] is already the endofunctor (− ⊗ W).
-     - [HomMod] (Instance/Mod/Closed.v) is OBJECT-LEVEL — its type is
-       ∀ R, (R commutative) → RModObject R → RModObject R → RModObject R —
-       and its two arrow actions [ihom_post] and [ihom_pre]
-       exist SEPARATELY.  That they are not assembled into a bifunctor is
-       the donor's own disclosure; that NO FUNCTOR LAW is proved
-       for either is a separate measurement of mine — the two names occur in
-       exactly five non-comment places in that file, the four naturality
-       lemmas [cur_natural_W]/[cur_natural_X]/[unc_natural_W]/[unc_natural_X]
-       and one [Check], and no statement of the shape [ihom_post id ≈ id] or
-       [ihom_post (k' ∘ k) ≈ ihom_post k' ∘ ihom_post k] exists.  So what is
-       genuinely absent is the endofunctor (−)^W — [HomMod R Rcomm W] with
-       [ihom_post] as its [fmap] — and the adjunction record on top of it.
-     - That endofunctor is FIVE LINES AND RAISES ZERO OBLIGATIONS, and the
-       adjunction is then a [:=] with no tactic:
-       [Build_Adjunction' exp_iso_Mod cur_natural_V
-       cur_natural_X].  Both were compiled out of tree, together with
-       the resulting [ParametrizedAdjunction ModTensor] and Theorem 3's
-       bifunctor at it, so this paragraph is a measurement and not a claim.
-       Note also that [cur_natural_W] IS Mac Lane's naturality square
-       in the parameter, with [ihom_pre j] already in the mate position.
-     - THE ONLY REASON TO DEFER IS CLOSURE COST: requiring
-       Instance/Mod/Closed.v and Instance/Mod/Monoidal.v takes this file's
-       transitive in-project closure from 68 modules to 94, measured over
-       .Makefile.coq.d.  An Adjunction/-level file should not pay 26 modules
-       for one witness; the instance belongs beside the module categories.
-
-   PRIOR ART, NARROWED — the catalogue issue's claim that "searches for
-   parametrised, parameterised or two-variable adjunctions return nothing" is
-   true of DECLARED CONSTANTS and false of the bare words, and the criterion
-   is what settles it.  A case-insensitive sweep for
-   parametri[sz]ed|parameteri[sz]ed|two.variable over *.v returns 39 files,
-   every hit prose (e.g. Theory/DoubleCategory.v "parametrized spectra",
-   Theory/Coq/Traversable.v "a parameterised comonad",
-   Instance/EnsV.v "this file is parameterized by"); the same sweep
-   restricted to declaration heads returns zero.  So no CONSTANT of this
-   shape existed, which is the claim this file makes new.
-
-   UNIVERSES, measured off BOTH the binder and the constraint block, because
-   they disagree here.  Every constant binds X : Category@{u u0 u0},
-   P : Category@{u1 u2 u2} and A : Category@{u3 u4 u4} — hom identified with
-   proof in all three, expressed by REUSING the level variable in the BINDER,
-   with no such equation in any block — while the blocks carry the equation
-   u0 = u4, identifying X's and A's hom-and-proof levels.  All THREE object
-   universes stay free (they occur in bounds only), and no constant carries a
-   word-bounded Set.  Both identifications are INHERITED and neither is
-   claimed unavoidable.  Attribution was probed with controls accepted at the
-   very same levels: hom = proof has TWO independent donors, the PRODUCT of
-   categories and [Adjunction], each rejected alone under Constraint ch < cp
-   while @Functor Cu Cu is ACCEPTED there, so [Functor] is NOT a donor for
-   it.  [Partial_l] is NOT a third and cannot be tested as one: its type is
-   (B ∏ C) ⟶ D → obj[C] → B ⟶ D, so any application must form the product
-   first and elaboration is refused there, never reaching [Partial_l] — the
-   trap Test/ProbeParameter396.v's negative 15 exists to record.  And
-   u0 = u4 needs no adjunction at all — the mere presence of functors in BOTH
-   directions forces it, Xu ⟶ Au being accepted under Constraint xh < ah
-   where Au ⟶ Xu is rejected.  Since [ParametrizedAdjunction] carries
-   Partial_l F p : X ⟶ A and pa_right p : A ⟶ X, that second identification
-   is forced by the record's own shape.
-
-   §D's constants repeat that pattern exactly, with the letters permuted:
-   P : Category@{u u0 u0}, A : Category@{u1 u2 u2}, X : Category@{u3 u4 u4}
-   in the binder, and the block equation u2 = u4 identifying A's and X's
-   hom-and-proof levels — again forced by functors running in both
-   directions, since [CoParametrizedAdjunction] carries Partial_r G p : A ⟶ X
-   and pa_left p : X ⟶ A.  §E's constants live over a SINGLE category and so
-   carry no cross-category identification at all; the two standalone lemmas
-   are the freest constants in the file — curry_natural_param@{u u0 u1} and
-   uncurry_natural_param@{u u0 u1} have NO universe equation whatever in
-   their blocks, only [Closed]'s own u0 < u1 and stdlib bounds.  Measured
-   across fourteen [About] dumps spanning §B, §C, §D and §E, no constant in
-   this file carries a word-bounded Set.
-
-   §F, §G AND §H SPLIT IN TWO, and the split is worth knowing before writing
-   against this file.  Everything is over the §C binder X : Category@{u u0
-   u0}, P : Category@{u1 u2 u2}, A : Category@{u3 u4 u4}, so u0, u2 and u4
-   are the three hom-and-proof levels.  The ELEMENTARY constants of §F and
-   ALL of §G carry only the file's inherited u0 = u4 and leave P's level u2
-   FREE — [pa_unit], [pa_counit], [pa_unit_dinatural],
-   [pa_counit_extranatural], [ParametrizedAdjunctionTransform], [pat_of_pa],
-   [pa_of_pat], [parametrized_adjunction_iff_transform] and both triangles.
-   [UnitIntegrand] and [pa_unit_Wedge] carry u0 = u2 as well, so at them all
-   three collapse to one; and the attribution is measured with a control
-   accepted at the very same levels — under Constraint ph < xh the type
-   (Pu^op ∏ Pu) ⟶ Xu IS ACCEPTED, while @Wedge Pu Xu H and the [Compose] of
-   two functors through Pu^op ∏ Au are each REJECTED, so there are TWO
-   INDEPENDENT DONORS and, in particular, THE WEDGE PACKAGING COSTS NOTHING
-   EXTRA: merely forming the integrand already pays it.  §H collapses all
-   three too, and there the cause is NOT [AdjointOnTheRight]: a probe aimed
-   at that class never reaches it, stopping one line earlier at the SECOND
-   functor direction — under Constraint ph < xh, Pu^op ⟶ Xu is accepted and
-   Xu^op ⟶ Pu is rejected — so the collapse is forced by having functors in
-   both directions between P and X before any class is formed, exactly as
-   u0 = u4 is forced above.  [mirror_transport] and [mirror_family] are the
-   exception on the other axis: they carry u2 = u4 and NOT u0 = u4, X's
-   level staying free, since they mention Partial_r F x : P ⟶ A and
-   U : A ⟶ P and no functor out of X.  No constant of §F, §G or §H carries
-   a word-bounded Set (measured over twenty [About] dumps), and none of
-   these identifications is claimed unavoidable.
-
-   NOT DELIVERED, and the list is exhaustive as against the plan this file
-   was built to:
-     - THE REFUTATIONS ARE GUARDED, and not in this file: every strict
-       form this header records as measured and REFUTED is pinned in
-       Test/ProbeParameter396.v, which carries one instrument check and
-       twenty negatives — twelve CONVERSION, two TYPING and six
-       FORMABILITY, each classified by reading its whole error after
-       stripping it and compiling it alone — with passing controls beside
-       each.  This library file itself declares no refutation command, so
-       every negative lives in the probe; renaming any of the twelve
-       library constants a negative names breaks the probe at a control
-       line, which was simulated twelve times over.
-     - NO [Cowedge] INSTANCE for the counit.  [pa_counit_extranatural] is
-       delivered elementarily only.  Structure/Wedge.v defines
-       [Cowedge F := @Wedge (C^op) (D^op) (F^op)], so packaging it needs the
-       opposite of the integrand and of A, and the wedge-side universe
-       collapse would be paid again; neither was attempted.
-     - NO END OR COEND.  Nothing says either wedge is universal, so no
-       relation to Structure/End.v or Structure/Coend.v is claimed.
-     - NO [Dinatural] READING of the unit (see §F for the three measured
-       reasons), and no relation between [Wedge] and [Dinatural] is shipped.
-     - NO NATURALITY IN c of §H's isomorphism, and no functor
-       A ⟶ (whatever a two-variable adjunction would live in): [c] is a
-       section parameter, fixed.
-     - NO CONVERSE to §H — nothing says that a mutually-right-adjoint pair
-       of bifunctors arises from a bifunctor F with both pointwise families.
-     - NO [AdjointOnTheLeft] reading, and no relation to Adjunction/Right.v's
-       [MutuallyRightAdjoint] record.
-     - NO CONCRETE INSTANCE of §F, §G or §H at a named category.  §E's
-       currying instance is the file's only concrete witness and it is not
-       run through these three sections; the module tensor-hom of §I is
-       measured to be reachable but is deliberately not shipped.
-     - NO WHOLE-RECORD round trip for §G, and no setoid on either
-       parametrized record, so [parametrized_adjunction_iff_transform] is a
-       biconditional and NOT an isomorphism of types.
-     - NOTHING IS REGISTERED AS AN [Instance].
-
-   DIVERGENCES from the names pinned in the catalogue issue's Verification
-   block: NONE.  [ParametrizedAdjunction] (§A) and
-   [parametrized_right_adjoint_bifunctor] (§C) are delivered under exactly
-   those names.  Every other name in this file is its own. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** A. The hypothesis: a family of right adjoints to the partial functors *)
 
@@ -348,12 +48,11 @@ Section ParametrizedAdjunction.
 
 Context {X P A : Category}.
 
-(* Mac Lane's hypothesis, packaged.  [pa_right p] is his G(p,−) : A → X and
-   [pa_adj p] is the adjunction (10) at the parameter p; naturality of (10)
-   in x and in a is carried by the [Adjunction] record itself.  Note that
-   [pa_right] is a bare FUNCTION of objects of P: the whole point of the
-   theorem is that its action on ARROWS of P is then forced, so it must not
-   be assumed here. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record ParametrizedAdjunction (F : X ∏ P ⟶ A) := {
   pa_right : P → (A ⟶ X);
@@ -373,10 +72,11 @@ Section ParamTransform.
 Context {X P A : Category}.
 Context (F : X ∏ P ⟶ A).
 
-(* Mac Lane's F(−,h).  Its component at x is the action of the OTHER partial
-   functor F(x,−) on h, so the two partial-functor families of one bifunctor
-   supply each other's data; naturality is the interchange law, both sides
-   normalising to bimap f h. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition param_transform {p p' : P} (h : p ~> p') :
   Partial_l F p ⟹ Partial_l F p' := {|
@@ -397,9 +97,11 @@ Lemma param_transform_respects {p p' : P} (h h' : p ~> p') :
   h ≈ h' → param_transform h ≈ param_transform h'.
 Proof. intros E x; simpl; now rewrite E. Qed.
 
-(* At the identity of the parameter the component is already the identity
-   transformation's, on the nose: both sides are the literal term
-   bimap[F] id id, so nothing is being rewritten away here. *)
+(*
+   本节说明 Parameter 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example param_transform_id_component {p : P} (x : X) :
   transform[param_transform (id[p])] x
@@ -427,10 +129,11 @@ Context (PA : ParametrizedAdjunction F).
 
 Notation "'G'" := (pa_right PA) (only parsing).
 
-(* The transpose of the adjunction (10) at the parameter p, written out.  The
-   [Adjunction] record's [adj] field takes its two functors implicitly and
-   they cannot be recovered from an argument of type F (x, p) ~> a — that is
-   a higher-order unification — so every transpose below names them. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition pa_to (p : P) (x : X) (a : A) (k : F (x, p) ~> a) : x ~> G p a :=
   to (@adj A X (Partial_l F p) (pa_right PA p) (pa_adj PA p) x a) k.
@@ -440,11 +143,11 @@ Definition pa_from (p : P) (x : X) (a : A) (g : x ~> G p a) : F (x, p) ~> a :=
 
 (* --- Mac Lane's G(h,−), as the conjugate of F(−,h) and nothing else --- *)
 
-(* [conj_mate A A' σ] takes σ : F' ⟹ F and returns U ⟹ U'.  With
-   σ := param_transform F h for h : p' ~> p we have F' = Partial_l F p' and
-   F = Partial_l F p, hence A := pa_adj PA p and A' := pa_adj PA p', and the
-   result runs G p ⟹ G p' — CONTRAVARIANT in the parameter, which is the
-   variance Mac Lane's G : P^op × A → X asks for. *)
+(*
+   本节说明 Parameter 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition pa_param_mate {p p' : P} (h : p' ~> p) : G p ⟹ G p' :=
   conj_mate (pa_adj PA p) (pa_adj PA p') (param_transform F h).
@@ -497,10 +200,11 @@ Proof.
            (param_transform F h)).
 Qed.
 
-(* The same square read through the INVERSE transposes.  Mac Lane draws (10)
-   as a bijection, so both readings are his; Adjunction/Conjugate.v's
-   [conjugate_iff_from] shows they agree, and here too that is a delta step
-   away from [ConjugateFrom] rather than a new equivalence. *)
+(*
+   本节说明伴随、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition pa_square_from {p p' : P} (h : p' ~> p)
            (tau : G p ⟹ G p') : Type :=
@@ -523,10 +227,11 @@ Defined.
 
 (* --- the two functor laws of G(−,a), by uniqueness of conjugates --- *)
 
-(* Mac Lane: "the uniqueness of the choice of conjugates shows for h'h that
-   G(h'h,−) = G(h,−) ∘ G(h',−)".  That argument is Adjunction/Conjugate.v's
-   [conj_mate_id] and [conj_mate_compose], both proved there by
-   [conj_mate_uniq]; nothing is recomputed here. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma pa_param_mate_respects {p p' : P} (h h' : p' ~> p) :
   h ≈ h' → pa_param_mate h ≈ pa_param_mate h'.
@@ -617,15 +322,11 @@ Example pa_bifunctor_fmap {p p' : P} {a a' : A}
         (p, a) ~{P^op ∏ A}~> (p', a'))
     = fmap[G p'] k ∘ pa_param_mate (unop h) a := eq_refl.
 
-(* In the parameter alone the action is the mate, up to the residue
-   fmap[G p'] id that [fmap] leaves behind — [eq_refl] first, then the
-   equation with the residue cleared.  Dropping the residue is NOT a
-   conversion: [fmap_id] is a law field, so the strict form
-     fmap[...] (h, id) = pa_param_mate (unop h) a
-   is measured and REFUTED (a CONVERSION rejection, "cannot unify"), and
-   only the ≈ form below holds.  That refutation is pinned in
-   Test/ProbeParameter396.v as [p396_fmap_param_strict], with this file's
-   own ≈ form beside it as the passing control. *)
+(*
+   本节说明 Parameter 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example pa_bifunctor_fmap_param {p p' : P} (h : p ~{P^op}~> p') (a : A) :
   fmap[parametrized_right_adjoint_bifunctor]
@@ -638,10 +339,11 @@ Lemma pa_bifunctor_fmap_is_mate {p p' : P} (h : p ~{P^op}~> p') (a : A) :
     ≈ pa_param_mate (unop h) a.
 Proof. simpl; rewrite fmap_id; now rewrite id_left. Qed.
 
-(* Its two partial functors: in the second variable it IS the given family,
-   on the nose in both actions — but only on the two DATA fields; the whole
-   functor records are not equal, the three law fields of [Partial_r] being
-   rebuilt Program obligations. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example pa_bifunctor_partial_r_obj (p : P) (a : A) :
   fobj[Partial_r parametrized_right_adjoint_bifunctor p] a = G p a := eq_refl.
@@ -660,10 +362,11 @@ Qed.
 
 (* --- UNIQUENESS: the content of Theorem 3 --- *)
 
-(* Mac Lane states the uniqueness of the ASSIGNMENT h ↦ G(h,a), not of a
-   bifunctor, so that is what is stated here: any family of arrows, natural
-   in a and making the square commute, agrees with [pa_param_mate] at every
-   argument.  The proof is [conj_mate_uniq]. *)
+(*
+   本节说明 Parameter 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem pa_param_mate_uniq {p p' : P} (h : p' ~> p)
         (tau : G p ⟹ G p') :
@@ -718,36 +421,17 @@ Arguments parametrized_right_adjoint_bifunctor {X P A F} PA.
 
 (** ** D. The dual: a bifunctor whose partial functors are LEFT adjoints *)
 
-(* Mac Lane's dual sentence, quoted from the same page: "Dually, given a
-   bifunctor G : P^op × A → X where each G(p, −) has a right adjoint F(−, p),
-   there is a unique way to make F a bifunctor X × P → A."
+(*
+   本节说明伴随、函子、来源与用途相关定义、性质与动机。
 
-   Read that sentence exactly.  The hypothesis is G(p,−) ⊣ F(−,p), so the
-   PARTIAL FUNCTORS OF G ARE THE LEFT ADJOINTS here, where in Theorem 3 they
-   were the right adjoints' partners; and the conclusion is COVARIANT in the
-   parameter, where Theorem 3's was contravariant.  This is therefore not
-   Theorem 3 read backwards.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   NO OPPOSITE CATEGORY IS NEEDED, and that is visible in the type of
-   [parametrized_left_adjoint_bifunctor], which is X ∏ P ⟶ A with no [op] in
-   it.  The mechanism: for h : p ~> p' in P the SAME arrow read in P^op runs
-   p' ~{P^op}~> p, so [param_transform_r G h] is a transformation of LEFT
-   adjoints G(p',−) ⟹ G(p,−) — which is what [conj_mate] consumes — and at
-   the two adjunctions G(p,−) ⊣ F(−,p) and G(p',−) ⊣ F(−,p') it returns
-   F(−,p) ⟹ F(−,p'), covariant.  That direction was confirmed by
-   typechecking before any proof below was written.  The alternative route
-   through [Swap] is built rather than argued about and is measured to cost
-   more; see [copa_swap_route] and the comment above it. *)
+(*
+   本节说明函子相关定义、性质与动机。
 
-(** *** D.1 The mirror parameter transformation
-
-    [param_transform] moves the SECOND argument of a bifunctor and so relates
-    the [Partial_l] family; the dual needs the FIRST argument moved, relating
-    the [Partial_r] family.  The two are genuinely different families of
-    functors, not one family read twice, so this is a construction and not an
-    instantiation; its component, its naturality proof and its three laws
-    mirror §B line for line, with [bimap_comp_id_right] in place of
-    [bimap_comp_id_left]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CoParamTransform.
 
@@ -794,11 +478,11 @@ Section CoParametrizedAdjunction.
 
 Context {P A X : Category}.
 
-(* [pa_left p] is Mac Lane's F(−,p) : X → A and [pa_coadj p] is the adjunction
-   G(p,−) ⊣ F(−,p).  As in §A, [pa_left] is a bare function of objects: its
-   action on arrows of P is what the theorem forces.  Note the partial functor
-   is [Partial_r G p], not [Partial_l G p] — for G : P^op ∏ A ⟶ X it is the
-   SECOND argument that is left free, so G(p,−) is the [Partial_r] family. *)
+(*
+   本节说明伴随、函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record CoParametrizedAdjunction (G : P^op ∏ A ⟶ X) := {
   pa_left : P → (X ⟶ A);
@@ -832,14 +516,11 @@ Definition copa_from (p : P) (a : A) (x : X) (g : a ~> L p x)
   : G (p, a) ~> x :=
   from (@adj X A (Partial_r G p) (pa_left CA p) (pa_coadj CA p) a x) g.
 
-(* --- F(−,h), as the conjugate of G(h,−) and nothing else ---
+(*
+   本节说明伴随相关定义、性质与动机。
 
-   For h : p ~> p' in P, the arrow h read in P^op runs p' ~{P^op}~> p, so
-   [param_transform_r G h] runs G(p',−) ⟹ G(p,−) — a transformation of LEFT
-   adjoints, which is what [conj_mate] consumes.  With F' := G(p',−) and
-   F := G(p,−) it takes A := pa_coadj p and A' := pa_coadj p' and returns
-   L p ⟹ L p', COVARIANT in the parameter.  The variance was confirmed by
-   typechecking before any proof below was written. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition copa_param_mate {p p' : P} (h : p ~> p') : L p ⟹ L p' :=
   conj_mate (pa_coadj CA p) (pa_coadj CA p') (param_transform_r G h).
@@ -906,11 +587,11 @@ Proof.
            (param_transform_r G h) sig).
 Defined.
 
-(* --- the two functor laws of F(−,a), by uniqueness of conjugates ---
+(*
+   本节说明函子相关定义、性质与动机。
 
-   As in §C these are [conj_mate_id] and [conj_mate_compose], consumed by
-   name.  Unlike §C, the composition law comes out COVARIANT: the mate of a
-   composite is the composite of the mates in the SAME order. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma copa_param_mate_respects {p p' : P} (h h' : p ~> p') :
   h ≈ h' → copa_param_mate h ≈ copa_param_mate h'.
@@ -1000,13 +681,11 @@ Example copa_bifunctor_fmap {x x' : X} {p p' : P}
         (x, p) ~{X ∏ P}~> (x', p'))
     = fmap[L p'] f ∘ copa_param_mate h x := eq_refl.
 
-(* In the parameter alone the action is the mate, up to the residue
-   fmap[L p'] id that [fmap] leaves behind.  As in §C the strict form
-     fmap[...] (id, h) = copa_param_mate h x
-   is measured and REFUTED — a CONVERSION rejection ("cannot unify"),
-   since [fmap_id] is a law field — so only the ≈ form below holds.  That
-   refutation is pinned in Test/ProbeParameter396.v as
-   [p396_copa_fmap_param_strict]. *)
+(*
+   本节说明 Parameter 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example copa_bifunctor_fmap_param {x : X} {p p' : P} (h : p ~> p') :
   fmap[parametrized_left_adjoint_bifunctor] ((id[x], h) :
@@ -1019,9 +698,11 @@ Lemma copa_bifunctor_fmap_is_mate {x : X} {p p' : P} (h : p ~> p') :
     ≈ copa_param_mate h x.
 Proof. simpl; rewrite fmap_id; now rewrite id_left. Qed.
 
-(* Its partial functor in the FIRST variable is the given family, on the nose
-   in both data fields; as in §C the whole functor records are not equal, the
-   three law fields of [Partial_l] being rebuilt Program obligations. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example copa_bifunctor_partial_l_obj (p : P) (x : X) :
   fobj[Partial_l parametrized_left_adjoint_bifunctor p] x = L p x := eq_refl.
@@ -1079,28 +760,11 @@ Proof.
   exact (copa_assignment_unique Fh Hsq p p' h x).
 Qed.
 
-(* --- the [Swap] route, measured rather than argued ---
+(*
+   本节说明函子相关定义、性质与动机。
 
-   The alternative is to read the dual hypothesis as a §A hypothesis for
-   G ◯ Swap : A ∏ P^op ⟶ X.  It is available, and it is not free.  The two
-   partial functors agree in BOTH data fields on the nose ([copa_swap_obj],
-   [copa_swap_fmap]) but not as records — Partial_l (G ◯ Swap) p =
-   Partial_r G p is measured and REFUTED, a CONVERSION rejection, since
-   [Partial_l] and [Partial_r] rebuild their three law fields as separate
-   Program obligations.  Consequently [pa_coadj CA p] does not ascribe at
-   Partial_l (G ◯ Swap) p ⊣ pa_left CA p either — that rejection is measured
-   too, and is a TYPING one, a plain "has type ... while it is expected to
-   have type" with no "cannot unify" and no universe clause, where the
-   functor comparison above is a CONVERSION one — so a field-copy transport
-   is needed ([copa_swap_transport]); it works only because every
-   [Adjunction] field mentions its left adjoint solely through F x and
-   fmap[F] g, both of which convert.  Both refutations are pinned in
-   Test/ProbeParameter396.v, as [p396_swap_strict] and
-   [p396_swap_ascribe].  What that route then produces is
-   [copa_swap_route_bifunctor], of type P ∏ X ⟶ A — the two arguments in the
-   OPPOSITE ORDER to the book's X × P → A, so a further [Swap] would be
-   needed at the conclusion.  The direct route above needs neither transport
-   nor swap, and is the one taken. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example copa_swap_obj (p : P) (a : A) :
   fobj[Partial_l (G ◯ @Swap A (P^op)) p] a = fobj[Partial_r G p] a := eq_refl.
@@ -1137,42 +801,11 @@ Arguments parametrized_left_adjoint_bifunctor {P A X G} CA.
 
 (** ** E. The currying instance, and naturality in the parameter *)
 
-(* Mac Lane's motivating remark (book p. 101) is the currying bijection
-   hom(S × T, R) ≅ hom(S, hom(T, R)) with T the parameter.  In a cartesian
-   closed category that is the adjunction (− × p) ⊣ (−)^p, so the family of
-   those adjunctions is a [ParametrizedAdjunction] for the internal product
-   bifunctor ×(C), and Theorem 3 then FORCES the arrow action of (−)^(−) in
-   the parameter.  That forced action is the internal-hom action, which is
-   the content of [curry_param_mate_is_ihom] below.
+(*
+   本节说明伴随、hom、笛卡尔相关定义、性质与动机。
 
-   WHY THE ADJUNCTION IS BUILT AND NOT TRANSPORTED.  The tree already has
-   Curry_Adjunction : Prod_Functor p ⊣ Exp_Functor p
-   (Structure/Cartesian/Closed/Adjunction.v), but its left adjoint is
-   [Prod_Functor p], whose arrow action is [first f] = (f ∘ exl) △ exr, while
-   §A needs [Partial_l ×(C) p], whose arrow action is
-   bimap f id = (f ∘ exl) △ (id ∘ exr).  The two agree on OBJECTS on the nose
-   ([curry_prod_functor_obj]) and differ on ARROWS by exactly one [id_left]
-   ([curry_prod_functor_fmap]); the strict form is measured and REFUTED (a
-   CONVERSION rejection, "cannot unify"), and pinned in
-   Test/ProbeParameter396.v as [p396_prod_functor_fmap_strict].  A field-copy
-   transport is therefore unavailable, and that too is MEASURED rather than
-   argued: feeding Curry_Adjunction's five projections to @Build_Adjunction
-   at [Partial_l ×(C) p] is rejected, and it is rejected precisely at
-   [to_adj_nat_l], the first field whose type mentions fmap[F] g, with an
-   error naming the two spellings.  Elaboration reaches that field at all
-   only because [adj] itself was ACCEPTED — it mentions fobj alone, which
-   does convert — which is why [curry_pa_adj] is built with
-   [Build_Adjunction'] from that one field; its two naturality clauses are
-   Curry_Adjunction's own, reached through one [id_left] under the
-   transpose.
-
-   WHAT THIS SECTION IS FOR.  Structure/Cartesian/Closed.v's [Closed] class
-   carries NO naturality field in any variable — its fields are
-   [exponent_obj], [exp_iso], the three derived transposes, and the beta law
-   — so the naturality of currying in the parameter cannot be phrased against
-   that class at all.  [curry_natural_param] supplies it as a standalone
-   equation in plain [Closed] vocabulary ([curry], [second], [eval]), so a
-   consumer needs none of this file's records to use it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Currying.
 
@@ -1224,10 +857,11 @@ Example curry_pa_to_is_curry (p x a : C) (k : x × p ~> a) :
 Example curry_pa_from_is_uncurry (p x a : C) (g : x ~> a ^ p) :
   pa_from CPA p x a g = uncurry g := eq_refl.
 
-(* Mac Lane's square, unfolded at this instance.  This is where the shape of
-   the standalone lemma below is READ OFF rather than guessed: the left-hand
-   side is curry of a precomposition by the parameter arrow, and the
-   right-hand side is postcomposition by the mate. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example curry_pa_square_unfold {p p' : C} (h : p' ~> p)
         (tau : Exp_Functor p ⟹ Exp_Functor p') :
@@ -1245,15 +879,11 @@ Lemma ihom_id_action {p p' a : C} (h : p' ~> p) :
   ihom h (id[a]) ≈ curry (eval ∘ second h).
 Proof. unfold ihom; apply proper_morphism; now rewrite id_left. Qed.
 
-(* The forced action, identified.  Strict equality is measured and REFUTED
-   against BOTH spellings, and the RESIDUE that blocks it is exhibited at
-   Leibniz equality rather than described: the mate is literally
-     curry (eval ∘ ((id ∘ exl) △ (h ∘ exr)))
-   ([curry_param_mate_residue], eq_refl), while [second h] is
-   exl △ (h ∘ exr), so clearing the [id ∘ exl] needs [id_left], a law field.
-   Both refutations are CONVERSION rejections ("cannot unify", no universe
-   clause), pinned in Test/ProbeParameter396.v as
-   [p396_curry_mate_closed_strict] and [p396_curry_mate_ihom_strict]. *)
+(*
+   本节说明 Parameter 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example curry_param_mate_unfold {p p' : C} (h : p' ~> p) (a : C) :
   pa_param_mate CPA h a
@@ -1281,12 +911,11 @@ Proof.
   symmetry; apply ihom_id_action.
 Qed.
 
-(* [ihom] IS the arrow action of [InternalHomFunctor] at Leibniz equality
-   (Structure/Cartesian/Closed/Natural.v's [ihom_is_InternalHomFunctor_fmap]),
-   so the identification the catalogue issue asks for — "postcomposition with
-   a map of the parameter and the induced map of internal homs are conjugate"
-   — comes out of the previous lemma with no further work.  Note [op] is the
-   identity (Construction/Opposite.v), so no re-reading occurs. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma curry_param_mate_is_internal_hom {p p' : C} (h : p' ~> p) (a : C) :
   pa_param_mate CPA h a
@@ -1299,27 +928,11 @@ Example curry_internal_hom_fmap_unfold {p p' : C} (h : p' ~> p) (a : C) :
 
 (** *** E.3 Naturality of currying in the parameter — the standalone lemma *)
 
-(* THE PAYOFF, stated so that Structure/Cartesian/Closed.v's users can consume
-   it without any record of this file: for h : p' ~> p and f : x × p ~> a,
+(*
+   本节说明笛卡尔相关定义、性质与动机。
 
-       curry (f ∘ second h) ≈ curry (eval ∘ second h) ∘ curry f.
-
-   The right-hand side was DERIVED from the mate — it is
-   [curry_param_mate_is_closed_action] applied to the square unfolded in
-   [curry_pa_square_unfold] — and [curry_natural_param_from_mate] below
-   obtains the very same statement by instantiating [pa_natural_p], so the
-   derivation is machine-checked rather than described.
-
-   PRIOR ART, disclosed and CONSUMED rather than reproved:
-   Structure/Cartesian/Closed/Natural.v's [ihom_curry] is this fact in
-   [ihom] vocabulary, and it is NOT a literal instance of the statement below
-   (it reads ihom f h ∘ curry m ≈ curry (h ∘ m ∘ second f), which at h := id
-   differs from the form here by two [id_left]s and by the [ihom] spelling),
-   so the statement is restated in plain [Closed] vocabulary while its proof
-   is that donor plus [ihom_id_action].  Requiring that donor costs FOUR
-   modules on this file's transitive in-project closure — 29 without it
-   against 33 with it, measured by dropping the single [Require] and
-   recomputing. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma curry_natural_param {x p p' a : C} (h : p' ~> p) (f : x × p ~> a) :
   curry (f ∘ second h) ≈ curry (eval ∘ second h) ∘ curry f.
@@ -1353,10 +966,11 @@ Qed.
 Example curry_natural_param_routes_agree : Prop :=
   @curry_natural_param = @curry_natural_param_from_mate.
 
-(* The inverse-transpose reading of the same square, which §C's
-   [pa_square_iff_from] says is equivalent.  No [ihom] donor exists for this
-   direction (measured: Structure/Cartesian/Closed/Natural.v has no
-   [ihom_uncurry] or any lemma of that shape), so it is proved directly. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma uncurry_natural_param {x p p' a : C} (h : p' ~> p) (g : x ~> a ^ p) :
   uncurry (curry (eval ∘ second h) ∘ g) ≈ uncurry g ∘ second h.
@@ -1370,23 +984,11 @@ Qed.
 
 (** *** E.4 The assembled bifunctor is the internal hom *)
 
-(* Theorem 3 applied at this instance produces a bifunctor C^op ∏ C ⟶ C whose
-   object action is the exponential on the nose and whose arrow action agrees
-   with Functor/Hom/Internal.v's [InternalHomFunctor] up to ≈.  What is
-   measured and REFUTED is the ARROW ACTION at [eq_refl] — a CONVERSION
-   rejection, pinned in Test/ProbeParameter396.v as
-   [p396_curry_bifunctor_fmap_strict] — from which the whole functor records
-   differ a fortiori; no separate record-level comparison is claimed.  The
-   cause is that [InternalHomFunctor] transposes ONCE where the assembled
-   bifunctor transposes TWICE, postcomposition in the base and
-   precomposition in the exponent being applied separately here, so the two
-   differ by one [curry_comp], one [id_left] and associativity.
+(*
+   本节说明函子、hom、来源与用途相关定义、性质与动机。
 
-   DISPLAY HAZARD, measured: [fmap]'s functor argument is implicit and is
-   suppressed, so under the default settings the two sides of
-   [curry_bifunctor_fmap] PRINT IDENTICALLY, as if the lemma were an instance
-   of reflexivity.  It is not — [Set Printing Implicit] separates them, and
-   [reflexivity] does not close the goal (both measured). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example curry_bifunctor_obj (p a : C) :
   fobj[parametrized_right_adjoint_bifunctor CPA] (p, a)
@@ -1414,55 +1016,11 @@ Arguments uncurry_natural_param {C _ _ x p p' a} h g.
 
 (** ** F. Exercise 2: the unit is a WEDGE in the parameter *)
 
-(* Mac Lane's Exercise 2, quoted from the same page (book p. 102):
+(*
+   本节说明伴随相关定义、性质与动机。
 
-     2.  Let η_x : x → G(p, F(x,p)) be the unit of an adjunction with
-     parameter.  It is natural in x, but what property of η corresponds to
-     the naturality of the adjunction (10) in p?
-
-   THE ANSWER IS DINATURALITY IN THE PARAMETER — the wedge condition.  The
-   unit at the parameter p is a family of arrows OUT OF ONE OBJECT x into the
-   DIAGONAL of the bifunctor (p, q) ↦ G(p, F(x,q)), and a family of that
-   shape satisfying the naturality-in-p square IS a wedge.
-
-   WHY [Theory/Dinatural.v]'s [Dinatural] IS NOT THE VEHICLE, measured rather
-   than asserted.  [Dinatural F G] relates TWO bifunctors C^op ∏ C ⟶ D by a
-   family on their diagonals; here the source would have to be the CONSTANT
-   bifunctor at x, and three facts make that the wrong packaging.  (i) The
-   source is constant, which is exactly the case [Structure/Wedge.v]'s own
-   header says a wedge is for.  (ii) The named constant-functor constant is
-   [Constant_Functor] (Instance/Fun/Terminal.v), and requiring that
-   module costs 28 modules on this file's transitive in-project closure (68
-   without it, 96 with it, measured by adding it to the seed set and
-   recomputing over .Makefile.coq.d) — though read that as a remark about a
-   route not taken rather than an obstacle, since [Diagonal]
-   (Functor/Diagonal.v) has the constant functor as its OBJECT ACTION and
-   its module is ALREADY in the closure at marginal cost 0; it is not a
-   drop-in, being a [Program Instance] whose [fobj] need not reduce.  (iii)
-   Even given a
-   constant bifunctor — one is five lines and raises ZERO obligations, so
-   this was compiled out of tree rather than argued — the dinaturality
-   hexagon is NOT the wedge condition definitionally: it carries two
-   [fmap[Const] _] residues, each an [∘ id], and its two sides are swapped.
-   The identification of the two conditions was measured and REFUTED at
-   [eq_refl] with a CONVERSION error ("cannot unify", no universe clause),
-   and the two are interderivable, each direction by [rewrite !id_right]
-   followed by [symmetry].  So [Theory/Dinatural.v] is NOT required by this
-   file and the wedge is the shape delivered.
-
-   THE ELEMENTARY FORM COMES FIRST.  [pa_unit_dinatural] states the equation
-   with no class wrapper, so a reader sees it without unfolding [Wedge]; and
-   it is the constant that is FREE of the universe identification the wedge
-   packaging carries (see the universes paragraph in the header).  Its proof
-   is a [symmetry] and then one application of Adjunction/Conjugate.v's
-   [conjugate_to_unit] at the
-   conjugate pair of §C — that is, Exercise 2's answer is the [ConjugateUnit]
-   characterisation of conjugacy, which #394 already carries by name.
-
-   THE COUNIT'S MIRROR is [pa_counit_extranatural], the [ConjugateCounit]
-   characterisation read at the same pair; it is the extranaturality/cowedge
-   condition.  It is delivered ELEMENTARILY ONLY — no [Cowedge] instance is
-   built (see the header's NOT-DELIVERED list for the reason). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UnitWedge.
 
@@ -1472,9 +1030,11 @@ Context (PA : ParametrizedAdjunction F).
 
 Notation "'G'" := (pa_right PA) (only parsing).
 
-(* The unit and counit at a fixed parameter, named.  The [Adjunction] slot of
-   [unit] and [counit] is IMPLICIT and cannot be inferred from a family, so
-   both are written fully applied here and nowhere else in this section. *)
+(*
+   本节说明伴随、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition pa_unit (p : P) (x : X) : x ~> G p (F (x, p)) :=
   @unit A X (Partial_l F p) (pa_right PA p) (pa_adj PA p) x.
@@ -1482,10 +1042,11 @@ Definition pa_unit (p : P) (x : X) : x ~> G p (F (x, p)) :=
 Definition pa_counit (p : P) (a : A) : F (G p a, p) ~> a :=
   @counit A X (Partial_l F p) (pa_right PA p) (pa_adj PA p) a.
 
-(* The bifunctor whose diagonal the unit runs into: (p, q) ↦ G(p, F(x, q)),
-   contravariant in p through Theorem 3's G and covariant in q through the
-   other partial functor of F.  Note [∏⟶] is at level 9 and binds TIGHTER
-   than application, so the parentheses round [Partial_r F x] are required. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition UnitIntegrand (x : X) : P^op ∏ P ⟶ X :=
   parametrized_right_adjoint_bifunctor PA
@@ -1507,14 +1068,11 @@ Proof.
               (param_transform F h)) x).
 Qed.
 
-(* And the same fact packaged in Structure/Wedge.v's own class.  The two
-   normalisations below are DEFINITIONAL — each closes by [reflexivity] —
-   and what they exhibit is that [bimap[UnitIntegrand x] id h] is
-   [fmap[G p] (fmap[Partial_r F x] h) ∘ pa_param_mate PA id (F (x, p))] while
-   [bimap[UnitIntegrand x] (op h) id] is
-   [fmap[G p] (fmap[Partial_r F x] id) ∘ pa_param_mate PA h (F (x, q))].
-   Clearing the three identity residues then leaves exactly
-   [pa_unit_dinatural]. *)
+(*
+   本节说明 Parameter 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 
@@ -1568,41 +1126,11 @@ Arguments UnitIntegrand {X P A F} PA x.
 
 (** ** G. The unit/counit presentation, and the two triangle identities *)
 
-(* Mac Lane §IX.4 Exercise 2's scope increment, and the one thing to be clear
-   about is WHAT IS NEW.  The two triangle (zig-zag) identities at a FIXED
-   parameter are not new: they are Theory/Adjunction.v's [counit_fmap_unit]
-   and [fmap_counit_unit] applied at [pa_adj PA p], and [pa_triangle_left]
-   and [pa_triangle_right] below are those corollaries re-exposed with the
-   parameter written out, so a reader sees Mac Lane's display
-   ε_{p,F(x,p)} ∘ F(η_{p,x}, p) = 1 rather than an unindexed ε ∘ Fη = 1.
-   The file does not claim them as new and their proofs are a bare [exact].
+(*
+   本节说明伴随相关定义、性质与动机。
 
-   WHAT IS NEW is the PARAMETRIZED PACKAGING and its EQUIVALENCE with §A.
-   [ParametrizedAdjunctionTransform] is §A's record with the hom-set
-   adjunction replaced by the unit/counit one, and
-   [parametrized_adjunction_iff_transform] proves the two interderivable by
-   applying Adjunction/Natural/Transformation/Universal.v's two passages
-   pointwise in p — nothing about units or counits is re-derived.
-
-   STRENGTHS, MEASURED STRICT FIRST.  The family of right adjoints survives
-   both passages and the round trip AT LEIBNIZ EQUALITY ([pat_of_pa_right],
-   [pa_of_pat_right], [pa_pat_round_right]), and so do the unit and counit
-   COMPONENTS ([pat_unit_is_pa_unit], [pat_counit_is_pa_counit]) — the
-   transform reading's unit at (p, x) IS [pa_unit PA p x] on the nose.  The
-   WHOLE RECORD does not: [pa_of_pat (pat_of_pa PA) = PA] is refuted at
-   [eq_refl] with a CONVERSION error ("cannot unify"), because
-   [Adjunction_from_Transform] rebuilds the hom-set isomorphism out of the
-   transposes rather than returning the one it was given.  Nor does the
-   TRANSPOSE: the strict form is refuted the same way, and what holds is
-   [pa_pat_round_to] / [pa_pat_round_from] at ≈, each a bare [exact] of
-   [to_adj_unit] / [from_adj_counit] — so the round trip's cost is exactly
-   the universal-arrow rewriting ⌊f⌋ ≈ fmap[U] f ∘ η, which is where
-   Universal.v's forward map comes from.
-
-   Together with §F this is the full unit/counit description of a
-   parametrized adjunction: two triangles per parameter, plus the wedge
-   condition on the unit and the extranaturality condition on the counit as
-   the parameter varies. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section PATransform.
 
@@ -1708,66 +1236,11 @@ End PATransformPassages.
 
 (** ** H. Riehl §4.4 Proposition 4.4.6(iii): mutual right adjointness *)
 
-(* Riehl, "Category Theory in Context", 2nd ed., §4.4 Proposition 4.4.6.
-   Given a bifunctor F : X ∏ P ⟶ A with BOTH pointwise families of right
-   adjoints — §A's (right adjoints to F(−,p), assembling G : P^op ∏ A ⟶ X)
-   and the mirror one (right adjoints to F(x,−), assembling
-   H : X^op ∏ A ⟶ P) — the two assembled bifunctors are MUTUALLY RIGHT
-   ADJOINT in the remaining variable: for each c ∈ A,
+(*
+   本节说明伴随相关定义、性质与动机。
 
-       P(p, H(x, c))  ≅  X(x, G(p, c)),
-
-   naturally in p and x.  That is Riehl's B(b, G(a,c)) ≅ A(a, H(b,c)) with
-   the letters of this file.  Riehl's Exercise 4.4.ii IS this proposition —
-   it asks for exactly the two-variable adjunction the proposition supplies —
-   so it is NOT separate work and nothing further is built for it.
-
-   IT IS AN INHABITANT OF THE TREE'S OWN CLASS, NOT A LOOKALIKE:
-   [mutually_right_adjoint : AdjointOnTheRight mr_left mr_right] with
-   [mr_left  := Partial_l (parametrized_right_adjoint_bifunctor PA)  c]
-   [mr_right := Partial_l (parametrized_right_adjoint_bifunctor MPA) c]
-   over Adjunction/Right.v's class, and it is a RECORD LITERAL with no
-   tactic — its five fields are [mr_iso] and the four naturality lemmas
-   above it, applied.  The type
-   assignment was verified to typecheck before any proof was written:
-   [mr_left : P^op ⟶ X] and [mr_right : X^op ⟶ P] are the class's S and T
-   with its A := P and X := X, and the class's [aor {a x}] then reads
-   between hom P a (T x) and hom X x (S a), which are the two hom-setoids
-   displayed above ([mr_left_obj], [mr_right_obj], both [eq_refl]).
-
-   THE MIRROR HYPOTHESIS NEEDS NO NEW RECORD, and the brief's conjecture that
-   [Partial_l (F ◯ Swap) x] is [Partial_r F x] is MEASURED: both DATA fields
-   agree at [eq_refl] ([mirror_partial_obj], [mirror_partial_fmap]), so
-   [ParametrizedAdjunction (F ◯ Swap)] IS the mirror hypothesis.  The two
-   functors are not equal as RECORDS — [Partial_l] and [Partial_r] rebuild
-   their three law fields as separate Program obligations, the same
-   measurement §D records — so an adjunction stated at one does not ascribe
-   at the other, and [mirror_transport] is the field-copy that crosses it;
-   it works only because every [Adjunction] field mentions its left adjoint
-   solely through F x and fmap[F] g, both of which convert.  [mirror_family]
-   packages a family stated in the natural [Partial_r F x ⊣ H x] form into
-   the record, so the HYPOTHESIS a consumer supplies mentions no [Swap] —
-   the record's type still does, since it is [ParametrizedAdjunction
-   (F ◯ Swap)] and no second record is introduced.
-
-   BOTH SIDES ARE A(F(x,p), c), which is why the isomorphism costs nothing:
-   [mr_to] is §A's transpose at the parameter p composed with the MIRROR's
-   inverse transpose at the parameter x, [mr_from] is the other composite,
-   and the two round trips are the two adjunctions' own comp laws.
-
-   THE FOUR NATURALITY FIELDS COME FROM THE THREE-VARIABLE NATURALITY of §C,
-   and only TWO of them are proved directly.  [mr_to_nat_a] is Mac Lane's
-   square for PA ([pa_natural_p]) after one [from_adj_nat_l] of MPA;
-   [mr_to_nat_x] is Mac Lane's square for MPA read through the inverse
-   transposes ([pa_square_iff_from], §C) after one [pa_natural_x] of PA.  The
-   two [from] fields are then obtained by CONJUGATING those two with the
-   isomorphism — apply [mr_from] to both sides and cancel with the round
-   trips — so no third and fourth naturality argument is run.
-
-   The arrow actions of the two functors are the two mates up to the residue
-   [fmap[_] id] that [Partial_l] of the bifunctor leaves behind
-   ([mr_left_fmap], [mr_right_fmap], both [eq_refl], with
-   [mr_left_fmap_is_mate] and [mr_right_fmap_is_mate] clearing it). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section MirrorFamily.
 

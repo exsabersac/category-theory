@@ -46,15 +46,11 @@ Inductive UEnvTerm : Type :=
 
 (** ** The congruence *)
 
-(* AN EARLIER REVISION of this inductive landed in [Type].  Since the PR
-   "algebraic carriers are sets" (2026-09-17) it lands in [Prop], because
-   [RigObject] carries a [rig_prop : PropEquiv (is_setoid rig_setoid)] field
-   and the `≈` of [UEnvRing] IS [uenv_eq]: the relation must BE a [Prop] for
-   that field to be the identity pair of implications.  The cost is one
-   elimination — [uenv_eval_respects] below goes through [pequiv_to] at the
-   target algebra — and the non-degeneracy results are untouched, their
-   conclusions being [False].  Test/ProbeTermModelPropRng.v pins the refusal
-   of the old script. *)
+(*
+   本节说明 Enveloping 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive uenv_eq : UEnvTerm → UEnvTerm → Prop :=
   | uq_scal {a b} : a ≈ b → uenv_eq (uen_scal a) (uen_scal b)
   | uq_gen {v w} : v ≈ w → uenv_eq (uen_gen v) (uen_gen w)
@@ -293,14 +289,11 @@ Fixpoint uenv_eval (t : UEnvTerm) : carrier (rig_setoid (aalg_ring A)) :=
   | uen_mul s t => rig_mul (aalg_ring A) (uenv_eval s) (uenv_eval t)
   end.
 
-(* AN EARLIER REVISION of this proof inducted on [uenv_eq] straight into the
-   [Type]-valued goal `≈`.  Since the PR "algebraic carriers are sets"
-   (2026-09-17) [uenv_eq] is a [Prop] inductive, so the script opens with
-   [apply pequiv_to] at the TARGET algebra's own [rig_prop] and each branch
-   returns to `≈` with [pequiv_from].  The twenty-two cases and the argument
-   in each are unchanged; the induction hypotheses are now [pequiv]-valued,
-   so the branches that consume one spend [pequiv_to] on it.  No hypothesis
-   is added. *)
+(*
+   本节说明 Enveloping 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma uenv_eval_respects (s t : UEnvTerm) :
   uenv_eq s t → uenv_eval s ≈ uenv_eval t.
 Proof.
@@ -511,9 +504,11 @@ Example uenv_unit_is_gen (L : Lie K)
   (v : carrier (cmon_setoid (lie_mod L))) :
   cmon_map (rm_hom (lie_hom (uenv_unit L))) v = uen_gen v := eq_refl.
 
-(* The unit and the insertion agree POINTWISE on the nose, by the
-   [eq_refl] above; the two underlying module homomorphisms are
-   nevertheless not the same record, and the probe section pins that. *)
+(*
+   本节说明 Enveloping 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem uenv_unit_is_insert (L : Lie K) :
   uenv_unit L ≈ uenv_insert L.
 Proof. intro v; reflexivity. Qed.
@@ -554,14 +549,11 @@ Arguments uenv_unit_is_insert {K} L.
 Arguments uenv_counit_gen {K} A v.
 Arguments uenv_counit_is_extend {K} A.
 
-(** * Non-degeneracy
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Nothing below is obtained by induction on [uenv_eq]: an induction on
-    a quotienting relation cannot produce a negative statement.  Every
-    separation is obtained by mapping OUT of U(L) into a concrete
-    algebra where the two candidates have visibly different values --
-    the route Instance/Vect/TensorAlgebra.v, Instance/Rng/Polynomial.v
-    and Instance/Mod/Tensor.v all take for their own negatives. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** A ring fact the positive half needs *)
 
@@ -576,14 +568,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** ** The relation constrains: over an ABELIAN Lie algebra the
-       generators commute
+(*
+   本节说明 Enveloping 相关定义、性质与动机。
 
-    This is the positive half, and it is proved from the generating
-    equation alone: [uq_bracket] at v and w says the commutator of the
-    two generators IS the generator of [v,w], which the abelian bracket
-    makes the generator of zero, which [uq_gen_zero] makes the scalar
-    zero. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem uenv_abelian_gens_commute (K : CRng) (M : RModObject (`1 K))
   (v w : carrier (cmon_setoid M)) :
   uenv_eq
@@ -595,14 +584,11 @@ Proof.
   exact (uq_gen_zero (lie_abelian M)).
 Qed.
 
-(** ** ...and it does not collapse: over [Lie_UT2] they do not
+(*
+   本节说明hom相关定义、性质与动机。
 
-    The witness algebra is Instance/Rng/Algebras/Associative.v's
-    upper-triangular 2x2 integer matrices, whose hom-setoid is Leibniz
-    equality on Z-triples, so every image below REDUCES and each
-    negative closes by [discriminate].  The map out is the extension of
-    the IDENTITY Lie map of [Lie_UT2], which exists because
-    [Lie_UT2] IS [lie_of_aalg UT2_AAlg]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition uenv_ut2 : UEnvAlg Lie_UT2 ~{AAlg Int_CRng}~> UT2_AAlg :=
   uenv_extend UT2_AAlg (@id (Lie Int_CRng) Lie_UT2).
@@ -650,9 +636,11 @@ Proof.
   unfold ut2_eqT in HH; simpl in HH; discriminate.
 Qed.
 
-(* THE SHARP ONE: U(L) is genuinely non-commutative, so the abelian
-   theorem above is not a theorem about every Lie algebra, and the
-   enveloping algebra is not a polynomial algebra in disguise. *)
+(*
+   本节说明 Enveloping 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem uenv_ut2_gens_do_not_commute :
   uenv_eq (uen_mul (uenv_ut2_g ut2_e11) (uenv_ut2_g ut2_e12))
           (uen_mul (uenv_ut2_g ut2_e12) (uenv_ut2_g ut2_e11)) → False.
@@ -684,35 +672,17 @@ Theorem uenv_ut2_bracket_relation :
                                      (uenv_ut2_g ut2_e11)))).
 Proof. exact (@uq_bracket Int_CRng Lie_UT2 ut2_e11 ut2_e12). Qed.
 
-(** * Probes
+(*
+   本节说明 Enveloping 相关定义、性质与动机。
 
-    Each negative is stated beside an APPLIED positive control.  Each
-    was stripped ONE AT A TIME -- the others left as [Fail], since a
-    [Fail] spans several lines and commenting out only its first line
-    yields a syntax error and so a FALSE pass -- compiled alone, and its
-    kind read off the WHOLE error message rather than its tail.  Each
-    was confirmed to fire at ITS OWN command, by reading the reported
-    line back against the source.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-    FIVE NEGATIVES OF THREE KINDS, kept lexically apart: three
-    CONVERSION (1-3, each reporting "cannot unify" between two terms of
-    one type), one TYPING (4, a plain mismatch with NO "cannot unify"
-    and no universe clause -- it reports that [h] has type [RModHom ...]
-    while a [LieHom] is expected), and one RESOLUTION (5, which reports
-    "Cannot infer the implicit parameter Setoid of equiv ... (no type
-    class instance found)" and is the only one whose failure is an
-    instance search rather than a type error), plus a scope-free
-    instrument check.  NO FORMABILITY (universe) negative is delivered,
-    and that is not an oversight: this file declares no universe binder
-    and inspects no constraint block, so there is nothing here whose
-    universes could be measured. *)
+(*
+   本节说明伴随相关定义、性质与动机。
 
-(* Negative 1 -- CONVERSION.  The unit of the adjunction and the
-   insertion agree POINTWISE on the nose ([uenv_unit_is_gen] above, and
-   the control below), but the two underlying module homomorphisms are
-   not the same record: the unit is [⌊id⌋], which composes
-   [fmap[CommutatorFunctor K] id] with the insertion, and
-   [rmod_hom_compose] rebuilds the [rm_map_smul] field. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example uenv_probe_unit_strict (K : CRng) (L : Lie K) :
   lie_hom (uenv_unit L) = lie_hom (uenv_insert L) := eq_refl.
 
@@ -723,10 +693,11 @@ Example uenv_probe_unit_ctrl (K : CRng) (L : Lie K)
 Example uenv_probe_unit_equiv_ctrl (K : CRng) (L : Lie K) :
   uenv_unit L ≈ uenv_insert L := uenv_unit_is_insert L.
 
-(* Negative 2 -- CONVERSION.  The counit is the extension of the
-   identity Lie map only up to [≈]: it is [⌈id⌉], produced by
-   [ump_universal_arrows], which Theory/Universal/Arrow.v closes with
-   [Qed], so nothing about it reduces. *)
+(*
+   本节说明 Enveloping 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example uenv_probe_counit_strict (K : CRng) (A : AAlg K) :
   uenv_counit A = uenv_extend A (@id (Lie K) (fobj[CommutatorFunctor K] A))
   := eq_refl.
@@ -736,14 +707,11 @@ Example uenv_probe_counit_ctrl (K : CRng) (A : AAlg K) :
     ≈ uenv_extend A (@id (Lie K) (fobj[CommutatorFunctor K] A))
   := uenv_counit_is_extend A.
 
-(* Negative 3 -- CONVERSION.  The enveloping relation is a GENERATING
-   EQUATION, not a computation rule: [uenv_eq] is an inductive relation
-   and the two sides are distinct constructors of [UEnvTerm], so the
-   identification fails even at closed [UT2] arguments where the bracket
-   itself computes ([uenv_ut2_bracket_computes] above).  The controls
-   are the [≈] form and an [eq_refl] that DOES hold in the same
-   vocabulary, so the failure is located at the relation and not at the
-   arguments. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Example uenv_probe_bracket_strict :
   uenv_ut2_g ut2_e12
     = uen_add (uen_mul (uenv_ut2_g ut2_e11) (uenv_ut2_g ut2_e12))
@@ -760,12 +728,11 @@ Example uenv_probe_bracket_ctrl :
 Example uenv_probe_gen_ctrl (x : ut2) :
   rig_map (`1 uenv_ut2) (uenv_ut2_g x) = x := eq_refl.
 
-(* Negative 4 -- TYPING.  A bare module homomorphism does not extend:
-   the evaluation's respectfulness proof consumes the bracket clause at
-   the [uq_bracket] case and NOWHERE else, so preservation of the
-   bracket is genuine data the extension needs, not a property
-   recoverable from the module map.  The control supplies the clause and
-   the same extension goes through. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition uenv_probe_needs_bracket
   (K : CRng) (L : LieObject K) (A : AAlgObject K)
   (h : RModHom (lie_mod L) (AAlg_RMod A)) : UEnvAlg L ~{AAlg K}~> A :=
@@ -780,15 +747,11 @@ Definition uenv_probe_bracket_hom_ctrl
   : UEnvAlg L ~{AAlg K}~> A :=
   uenv_extend A (@Build_LieHom K L (lie_of_aalg A) h Hb).
 
-(* Negative 5 -- RESOLUTION.  [uenv_Setoid] is deliberately NOT
-   registered as an instance -- the convention Instance/Ab/Tensor.v,
-   Instance/Rng/Polynomial.v and Instance/Vect/TensorAlgebra.v all
-   follow, so that the [≈] of [UEnvRing] IS [uenv_eq] definitionally and
-   Theory/Algebra/Rig.v's lemmas apply to it unchanged.  The price is
-   that [≈] between two BARE terms does not resolve; read through the
-   ring it does, and the control is that same statement.  This is the
-   one negative here whose report is an INSTANCE failure rather than a
-   type error. *)
+(*
+   本节说明 Enveloping 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Definition uenv_probe_setoid_unregistered
   (K : CRng) (L : LieObject K) (s t : UEnvTerm L) : Type := s ≈ t.
 

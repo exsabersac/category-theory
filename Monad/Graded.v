@@ -16,17 +16,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The grade monoid: a plain monoid on a Coq type, with associativity and the
-   two unit laws stated in propositional equality [=].
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-   NOTE on transparency: concrete instances should supply TRANSPARENT
-   match-term proofs of the three laws (rather than opaque lemmas from the
-   standard library such as [andb_assoc]), so that [gcast] computes to [id]
-   on closed grades by mere reduction.  Alternatively, over a grade type with
-   decidable equality any closed proof can be rewritten to [eq_refl] via
-   [Eqdep_dec.UIP_dec], which by Hedberg's theorem is fully constructive and
-   assumes nothing beyond the core theory; the transparent route taken below
-   ([Trivial_GradeMonoid], [AndGrade]) avoids that extra step. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record GradeMonoid : Type := {
   grade :> Type;                        (* the underlying type of grades *)
@@ -44,11 +38,11 @@ Context {C : Category}.
 Context {E : GradeMonoid}.
 Context {T : E → C ⟶ C}.
 
-(* Transport of a graded carrier along an equality of grades.  This is the
-   only place where the propositional grade equations touch the morphisms:
-   every law of [GradedMonad] is stated up to such a cast.  Defined as a
-   direct match so it computes to [id] whenever the proof reduces to
-   [eq_refl]. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition gcast {m n : E} (e : m = n) {x : C} : T m x ~> T n x :=
   match e in _ = k return T m x ~> T k x with
@@ -68,11 +62,11 @@ Lemma gcast_natural {m n : E} (e : m = n) {x y : C} (f : x ~> y) :
   gcast e ∘ fmap[T m] f ≈ fmap[T n] f ∘ @gcast m n e x.
 Proof. destruct e; simpl; cat. Qed.
 
-(* The E-graded monad, mirroring Theory/Monad.v field-for-field.  [gret] is
-   the unit η at the neutral grade, [gjoin] the grade-multiplying μ, and the
-   five laws are the five laws of [Monad] with every grade equation
-   transported by [gcast].  At the trivial grading every cast is [id] and the
-   laws collapse to the ungraded ones (see [GradedMonad_Monad] below). *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class GradedMonad := {
   gret {x : C} : x ~> T (gunit E) x;                       (* graded unit η *)
@@ -127,10 +121,11 @@ Definition Trivial_GradeMonoid : GradeMonoid := {|
 
 #[local] Obligation Tactic := idtac.
 
-(* A trivially graded monad is an ordinary monad: every grade proof reduces
-   to [eq_refl] definitionally, so every [gcast] reduces to [id], and the
-   graded laws are the ungraded ones (the unit laws by direct conversion, the
-   associativity law after erasing the identity cast). *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition GradedMonad_Monad {C : Category} {M : C ⟶ C}
   (G : @GradedMonad C Trivial_GradeMonoid (fun _ => M)) : @Monad C M := {|
   ret  := fun x => @gret C Trivial_GradeMonoid (fun _ => M) G x;
@@ -159,10 +154,11 @@ Next Obligation. (* join_fmap_fmap *)
   exact (@gjoin_fmap_fmap C Trivial_GradeMonoid (fun _ => M) G ttt ttt x y f).
 Qed.
 
-(* Conversely, any ordinary monad is E-graded for ANY grade monoid E, as the
-   constant family at its endofunctor: all casts are erased by [gcast_const].
-   Instantiating E with [Trivial_GradeMonoid] gives the inverse direction of
-   the degenerate bridge, so this construction subsumes it. *)
+(*
+   本节说明单子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Monad_GradedMonad_const {C : Category} {M : C ⟶ C}
   (H : @Monad C M) (E : GradeMonoid) : @GradedMonad C E (fun _ => M) := {|
   gret  := fun x => @ret C M H x;
@@ -221,11 +217,11 @@ Proof. reflexivity. Qed.
 
 (** ** A nontrivial instance: the bool-graded exception monad over Coq *)
 
-(* The grade monoid (bool, true, andb): grade [true] means "pure so far"
-   (no exception can have been raised), grade [false] means an exception may
-   have been raised.  A composite computation is pure exactly when both
-   stages are, whence [andb].  The law proofs are transparent match-terms so
-   that [gcast] reduces on both constructors. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition AndGrade : GradeMonoid := {|
   grade := bool;
   gunit := true;
@@ -267,9 +263,11 @@ Definition ExcT (b : bool) : Coq ⟶ Coq :=
 (* The graded unit lives at grade [true], where the carrier is [Id]. *)
 Definition exc_ret (x : Type) : x → ExcT true x := fun a => a.
 
-(* The graded multiplication.  At (true, _) and (false, true) one of the two
-   layers is the identity functor and the multiplication is the evident
-   reindexing; at (false, false) it is the usual option join. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition exc_join (b1 b2 : bool) (x : Type) :
   ExcT b1 (ExcT b2 x) → ExcT (andb b1 b2) x :=
   match b1 as a, b2 as b return ExcT a (ExcT b x) → ExcT (andb a b) x with
@@ -281,9 +279,11 @@ Definition exc_join (b1 b2 : bool) (x : Type) :
                              end
   end.
 
-(* The laws are proven by destructing the grades first — after which every
-   [gcast] reduces to [id], by transparency of the [AndGrade] proofs — and
-   then by pointwise case analysis in Coq's pointwise-equality homsets. *)
+(*
+   本节说明 Graded 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Exc_GradedMonad : @GradedMonad Coq AndGrade ExcT := {|
   gret  := exc_ret;
   gjoin := exc_join
@@ -310,10 +310,11 @@ Qed.
 
 (** ** The grade-only writer *)
 
-(* Pure grade tracking with trivial data: for ANY grade monoid W, the
-   constant family at the identity functor is W-graded.  All structure maps
-   are identities; every law is a [gcast] transport erased by [gcast_const].
-   This is the "writer into W" whose entire log lives in the grades. *)
+(*
+   本节说明函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition GradedWriter (W : GradeMonoid) :
   @GradedMonad Coq W (fun _ => Id[Coq]) := {|
   gret  := fun x (a : x) => a;

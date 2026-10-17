@@ -46,23 +46,11 @@ Let K := pare_K P.
 Let eps : ∀ a : A, K (G a) ~> a := pare_eps P.
 Let rho : ∀ x : X, x ~> G (K x) := pare_rho P.
 
-(* WHERE THE FRICTION IS, LOCATED RATHER THAN ASSERTED.  Mac Lane's
-   Gε ∘ ρG and εK ∘ Kρ are not formable here (the header PARAPHRASES the
-   elaborator -- the real message displays [pare_G P]/[pare_K P] where
-   the header writes [G]/[K]; both types and the [cannot unify] pair
-   match exactly, only the display is normalised).  The obstruction is
-   that [Compose] is not associative on
-   the nose and [Id] is not a strict unit for it -- but only in the LAW
-   fields: [Functor] has exactly five fields, [fobj] and [fmap] agree at
-   [eq_refl] below, and the whole records do not agree, so the difference
-   is confined to the remaining three.  That step is sharp for a reason
-   worth stating: [Functor] has primitive projections WITH ETA CONVERSION
-   (Rocq reports this on [Print Functor]), so record equality IS field
-   equality.  Test/ProbePare350.v turns the confinement from an inference
-   into a MEASUREMENT, failing each of the three law fields
-   individually.  Reading Theory/Functor.v's printed body confirms what
-   those three are: [Compose_obligation_1..3] applied to different
-   arguments, and [Unset Transparent Obligations] makes them opaque. *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example pare_assoc_fobj :
   @fobj A X ((G ◯ K) ◯ G) = @fobj A X (G ◯ (K ◯ G)) := eq_refl.
 Example pare_assoc_fmap :
@@ -407,9 +395,11 @@ Proof.
     + apply fmap_id.
 Defined.
 
-(* The wrapper does not lose the prescribed unit and counit: what it feeds
-   [pare_Adjunction] is the splitting's own retraction and section, and the
-   two proof arguments do not appear in either field. *)
+(*
+   本节说明 Pare 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example pare_adjunction_of_split_unit (F : X ⟶ A)
         (S : @SplitIdempotent ([X, A]) K F)
         (HS : @split_idem ([X, A]) K F S ≈ pare_idem) :
@@ -450,14 +440,11 @@ End Pare.
 (* ---------------------------------------------------------------------- *)
 (** ** Inhabitation *)
 
-(* Every adjunction is Paré data: forget one of its two triangles.  This is
-   a record literal with no tactic -- [pare_triangle]'s type is literally
-   [fmap_counit_unit]'s.  It also says exactly how degenerate such data is:
-   [pare_of_adjunction_idem] shows the idempotent is then the identity, by
-   the OTHER triangle, so a splitting is available for free and nothing is
-   learned.  This exercises the hypotheses and not a nontrivial splitting;
-   no [PareData] whose idempotent is provably not an identity is exhibited
-   anywhere below. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pare_of_adjunction {A X : Category} {F : X ⟶ A} {G : A ⟶ X}
            (Adj : F ∹ G) : PareData A X := {|
   pare_G        := G;

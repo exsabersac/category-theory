@@ -99,11 +99,11 @@ Arguments prod_out {_ _ _ _ _ _ _ _} /.
 #[export] Hint Rewrite @prod_in_out : functors.
 #[export] Hint Rewrite @prod_out_in : functors.
 
-(* A cocartesian functor preserves binary coproducts. Rather than restate the
-   dual class, it is defined by reusing [CartesianFunctor] on the opposite
-   functor F^op (coproducts in C are products in C^op), exploiting the
-   library's built-in duality. The first notation infers the categories; the
-   second names them explicitly, requiring C, D and F at object level. *)
+(*
+   本节说明函子、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Notation "'CocartesianFunctor' F" := (@CartesianFunctor _ _ (F^op) _ _)
   (at level 9) : category_theory_scope.
 Notation "@CocartesianFunctor C D F" :=

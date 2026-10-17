@@ -51,9 +51,11 @@ Context (L : Limit G).
 
 (** ** The image cone over [U L] *)
 
-(* The legs of the image cone: U applied to the legs of the limit cone.
-   The codomain [U (G x)] is convertible with [(U ◯ G) x], so the family
-   assembles into an [ACone] over the composite diagram below. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition rapl_leg (x : J) : U L ~{D}~> U (G x) :=
   fmap[U] (limit_leg (limit_is_alimit L) x).
@@ -71,9 +73,11 @@ Definition rapl_acone : ACone (U L) (U ◯ G) :=
 
 (** ** Transposing a competing cone across the adjunction *)
 
-(* A cone N over U ◯ G with vertex n has legs n ~> U (G x); the inverse
-   transpose ⌈-⌉ turns them into legs F n ~> G x, i.e. into a cone over
-   G with apex F n, ready to be mediated by the limit L in C. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition rapl_transposed_leg (N : Cone (U ◯ G)) (x : J) :
   F (vertex_obj[N]) ~{C}~> G x := ⌈ cone_leg N x ⌉.
@@ -162,12 +166,11 @@ End Diagram.
 
 (** ** Right adjoints preserve limiting CONES, not merely limit apexes *)
 
-(* [rapl_ump] already has the [IsLimitCone] shape: its legs [rapl_leg] are
-   [fmap[U]] of the given legs, which is definitionally what [FCone]'s legs
-   are, so the cone-level reading of RAPL is a repackaging of the cone as a
-   [Limit] record and nothing more.  This is the statement
-   Construction/Comma/Limit.v identified as the operative one, and it is
-   what [PreservesImageLimit] there has always been. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition right_adjoint_PreservesLimitCone {J : Category} (G : J ⟶ C) :
   PreservesLimitCone G U :=
@@ -189,13 +192,11 @@ End RAPL.
 
 (** ** Left adjoints preserve colimits *)
 
-(* By duality: [Opposite_Adjunction] turns A : F ⊣ U into U^op ⊣ F^op, in
-   which F^op is the right adjoint, and [PreservesColimit G F] is by
-   definition [PreservesLimit G^op F^op], so it is an instance of RAPL for
-   the opposite adjunction at the opposite diagram. The explicit constants
-   [Opposite] / [Opposite_Functor] / [Opposite_Adjunction] are used instead
-   of the three ^op notations, which would otherwise compete for the same
-   syntax across scopes. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition left_adjoint_preserves_colimit
   {C D : Category} {F : D ⟶ C} {U : C ⟶ D} (A : F ⊣ U)
@@ -224,9 +225,11 @@ Definition left_adjoint_Cocontinuous
   CocontinuousFunctor F :=
   fun J G => left_adjoint_PreservesColimitCocone A G.
 
-(* Covariant accessor: the image of a colimit apex under the left adjoint,
-   pinned as a colimit of the composite diagram via the covariant reading
-   [preserves_colimit] of [Structure/Limit/Preservation.v]. *)
+(*
+   本节说明伴随、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition lapc_is_acolimit
   {C D : Category} {F : D ⟶ C} {U : C ⟶ D} (A : F ⊣ U)

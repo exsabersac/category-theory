@@ -10,301 +10,41 @@
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* What is consumed here, and what is built
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-   CONSUMED, not rebuilt:
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-     - Functor/Diagonal.v: [Diagonal] and the notation Δ[J](c).
-     - Structure/Cone.v: [ACone], [Cone], [Cocone].
-     - Structure/Cone/Const.v: [Cone_Natural_Transform], the hom-set
-       identification on which the whole file rests.  This is its first
-       consumer outside its own module (measured PRE-COMMIT: exactly ONE
-       file, its own, mentioned the name; this commit makes it three,
-       counting the probe).  It is [Defined], and BOTH directions are
-       definitional on components -- pinned in-file as the two [eq_refl]
-       Examples [cone_natural_transform_to_component] and
-       [cone_natural_transform_from_component].
-     - Structure/Limit.v: [Limit], [IsALimit], [Colimit].
-     - Structure/Complete.v: [Complete], [Cocomplete].
-     - Structure/Limit/Preservation.v: the covariant accessor layer --
-       [cone_leg], [limit_leg], [limit_leg_coherence], [limit_med],
-       [limit_med_commutes], [limit_med_unique], [limit_med_eq],
-       [limit_is_alimit], and dually [cocone_inj], [cocone_inj_coherence],
-       [IsAColimit], [colimit_inj], [colimit_inj_coherence],
-       [colimit_med], [colimit_med_commutes], [colimit_med_unique],
-       [colimit_med_eq], [colimit_apex], [colimit_is_acolimit].  This is
-       the single largest saving in the file: it is what lets the colimit
-       half be stated and proved covariantly.  Read the covariance claim
-       exactly: [Colimit_Diagonal_Adjunction], [ColimitFunctor],
-       [Colim_map], [colim_unit], [colimits_iff_diagonal_left_adjoint],
-       [colim_unit_is_colimit_inj] and [cocone_apex] carry no [^op] in
-       their types, but [Cocone_Natural_Transform] DOES -- its right-hand
-       side is an [ACone] over the opposites -- so "no [^op] anywhere a
-       consumer can see" would be false, and an audit caught an earlier
-       draft saying it.
-     - Theory/Adjunction.v: [Adjunction], [unit], [counit],
-       [adj_univ_impl], [to_adj_unit], [to_adj_comp_law],
-       [from_adj_comp_law], [to_adj_respects], [from_adj_respects].
-     - Theory/Kan/Extension.v: [Induced], [Ran], [RightKan];
-       Structure/Limit/Kan/Extension.v: [Kan_Limit].
-     - Structure/Limit/Terminal.v: [Terminal_Limit].
-     - Instance/One.v: [_1], [Erase]; Instance/Zero.v: [_0], [From_0].
-     - Instance/Sets/Complete.v: [Sets_Complete];
-       Instance/Sets/Cocomplete.v: [Sets_Cocomplete].
+(*
+   本节说明（余）强度相关定义、性质与动机。
 
-   BUILT here:
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-     - [HasLimitsOfShape J C] / [HasColimitsOfShape J C], the per-shape
-       hypotheses.  These, rather than [Complete], because the adjunction
-       is about ONE fixed J and taking all shapes would over-assume;
-       [Complete_HasLimitsOfShape] and its dual instantiate [Complete] to
-       them in one line, so nothing is lost.
-     - [LimitFunctor] / [ColimitFunctor] with their arrow parts [Lim_map]
-       and [Colim_map] (Mac Lane §V.2 Ex 3), each with its defining
-       commuting square ([Lim_map_commutes], [Colim_map_commutes]) and its
-       uniqueness clause ([Lim_map_unique], [Colim_map_unique]) as
-       separately named lemmas.  All three functor laws come from
-       uniqueness of the mediator; none inspects an element.
-     - [Diagonal_Limit_Adjunction : Δ[J] ⊣ LimitFunctor] and
-       [Colimit_Diagonal_Adjunction : ColimitFunctor ⊣ Δ[J]], both in the
-       hom-set form of Theory/Adjunction.v.  The colimit statement is
-       COVARIANT: no [^op] occurs in its type.
-     - [Cocone_Natural_Transform], the dual of the donor lemma.  The tree
-       carries only the cone orientation (measured: [Structure/Cone/Const.v]
-       proves [Cone_Natural_Transform] and [Cone_Comma] and nothing else,
-       and no file in the tree mentions a cocone counterpart), so it is
-       built here out of [cocone_of_transform] and [transform_of_cocone],
-       whose component-level round trips hold at [eq_refl] both ways.
-     - Riehl Proposition 4.6.1 as a genuine biconditional in both
-       variances: [limits_iff_diagonal_right_adjoint] and
-       [colimits_iff_diagonal_left_adjoint].  The converse directions are
-       [Diagonal_right_adjoint_HasLimits] and
-       [Diagonal_left_adjoint_HasColimits], which read the limit cone off
-       the counit and the colimit cocone off the unit.
-     - Riehl exercise 4.6.ii: [lim_counit_is_limit_leg] and
-       [colim_unit_is_colimit_inj].
-     - Riehl exercise 4.6.i / Awodey §9.3: the degenerate rows, as
-       [Erase_right_adjoint_iff_Terminal] and
-       [Erase_left_adjoint_iff_Initial], together with the empty-shape
-       corollaries [HasLimitsOfShape_0_iff_Terminal] and
-       [Terminal_iff_Diagonal_0_right_adjoint].
-     - The Kan comparison [lim_Ran_iso], plus the on-the-nose
-       identification of Δ[J](c) with the restriction of the constant
-       functor along [Erase J].
-     - [Diagonal_continuous : ContinuousFunctor (Diagonal J)], added for
-       Mac Lane §V.7's colimits of algebras (#450): the diagonal preserves
-       every limit, computed one component at a time.  It is the
-       preservation hypothesis of the adjoint functor theorem at Δ[J], and
-       the section at the end of the file says how the colimit
-       applications consume it. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-(* Strengths, measured strict-first
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   TWENTY-FIVE identifications hold at Leibniz [eq] and are shipped as
-   [eq_refl] Examples; two further Leibniz equalities,
-   [lim_transpose_from_component] and [colim_transpose_to_component], are
-   proved by [reflexivity] because they are used as rewrite rules.  The
-   ones worth knowing:
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-     - the donor bijection is definitional on components in both
-       directions (the two [cone_natural_transform_*] Examples, and their
-       cocone counterparts [cocone_of_transform_inj] and
-       [transform_of_cocone_component]);
-     - [fobj[LimitFunctor] F] IS [vertex_obj[limit_cone (L F)]], and
-       [fobj[ColimitFunctor] F] IS [colimit_apex (L F)];
-     - the two transposes of each adjunction ARE the named maps
-       ([lim_transpose_to_is_adj] and its three siblings), so a consumer
-       who unfolds [adj] meets the construction rather than a repackaging;
-     - [transform[lim_counit L F] j = lim_leg L F j ∘ id] and
-       [transform[colim_unit M F] j = id ∘ colim_inj M F j];
-     - [fobj[Δ[J](c)] j] and [fmap[Δ[J](c)] f] agree on the nose with the
-       restriction along [Erase J] of the constant functor [1 ⟶ C];
-     - the adjoint produced from a terminal object has that object as its
-       value at [ttt], and conversely [terminal_obj] of the recovered
-       [Terminal] IS [R ttt].
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   FOUR strict attempts were made and REJECTED; each is a CONVERSION
-   failure ("cannot unify"), verified by stripping the guard and reading
-   the error, and each is stated here so it can be pinned as a probe:
+(*
+   本节说明函子、同构、来源与用途相关定义、性质与动机。
 
-     R1. [transform[lim_counit L F] j = lim_leg L F j] -- the counit
-         component carries a residual [∘ id] (the control at
-         [lim_leg L F j ∘ id] succeeds), so Riehl 4.6.ii lands at [≈] and
-         not at [eq].
-     R2. [transform[colim_unit M F] j = colim_inj M F j] -- dually, an
-         [id ∘] residue.
-     R3. [Δ[J](c) = fobj[Induced (Erase J)] (Diagonal 1 c)] as whole
-         records -- both ACTIONS agree at [eq_refl] (shipped as
-         [diagonal_is_induced_obj] and [diagonal_is_induced_map]); what
-         differs is the three [Functor] law fields, [Compose]'s
-         obligations against [Diagonal]'s.  [diagonal_induced_iso] gives
-         the identity-component isomorphism instead.
-     R4. [_0^op = _0] -- the empty category is not its own opposite on the
-         nose (the law fields are rebuilt).  This is why the colimit
-         analogue of [Terminal_Limit] is not available by instantiation;
-         see the not-delivered list.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   The one place a [Qed] blocks further measurement is [Kan_Limit], which
-   Structure/Limit/Kan/Extension.v closes opaquely; consequently
-   [lim_Ran_iso] is opaque too (reported by [About]) and neither of its
-   legs reduces, so no componentwise statement about it is available. *)
+(*
+   本节说明伴随、（余）极限相关定义、性质与动机。
 
-(* Universes, measured off BOTH the binder and the constraint block
-
-   The two readings genuinely disagree in this file, in both directions,
-   which is why both are reported.
-
-     - [HasLimitsOfShape@{u u0 u1 u2 u3}] has a constraint block of BOUNDS
-       ONLY, with no equation anywhere -- yet its BINDER reads
-       [Category@{u1 u2 u2} -> Category@{u3 u2 u2} -> Type@{u}], reusing
-       the single level [u2] for J's homs, J's proofs, C's homs and C's
-       proofs.  A reader who checks only the block concludes "nothing is
-       identified" and is wrong.
-     - [LimitFunctor], [Diagonal_Limit_Adjunction], [ColimitFunctor],
-       [Colimit_Diagonal_Adjunction], [lim_obj], [Lim_map],
-       [Cocone_Natural_Transform], [radj_Limit] and
-       [Diagonal_right_adjoint_HasLimits] run the other way: their BINDERS
-       read [{J : Category@{u u0 u0}} {C : Category@{u1 u2 u2}}], which
-       looks as though J's and C's hom levels are independent, while the
-       BLOCK carries [u0 = u2].  So the identification of the two hom
-       universes is in the block here and in the binder there.
-     - The two headline biconditionals are stated over
-       [J : Category@{u u u}] and [C : Category@{u0 u u}]: the index
-       category's OBJECT universe additionally collapses onto the shared
-       hom level, leaving only C's object universe free.  It enters at the
-       PACKAGING and not in either direction: both
-       [Diagonal_Limit_Adjunction] and [Diagonal_right_adjoint_HasLimits]
-       keep J's object universe free of its hom universe, measured
-       separately.  Which of [iffT] and [sigT] is responsible is NOT
-       separated -- the packaged statement mentions both -- and nothing
-       here says the collapse is unavoidable.
-     - The [Erase] rows carry NO [Set].  They did when first written --
-       [Terminal_Erase_Adjunction] elaborated at [C : Category@{u3 Set Set}]
-       -- and the cause was located rather than guessed: the TYPE
-       [Erase C ⊣ Diagonal 1 (terminal_obj)] is formable in a section
-       declaring [Constraint Set < ch] (checked), and the same proof text
-       compiles there, so the pin was universe minimization at an
-       unannotated [Context {C : Category}] and not content.  Declaring
-       [Universes eo eh ep] on the section lifts it.  Annotating
-       [one_arrow_eq] alone does NOT lift it -- that was tried first and
-       the pin persisted, which is what rules the obvious alternative out.
-     - [HasLimitsOfShape_0_iff_Terminal] and
-       [Terminal_iff_Diagonal_0_right_adjoint] DO carry [Set]:
-       [C : Category@{u7 Set Set}].  This is INHERITED, not introduced --
-       [Instance/Zero.v]'s own signature is
-       [_0@{u u0 u1 u2 u3 u4 u5} : Category@{u Set Set}], its hom type
-       being [Empty_set : Set] under an unannotated declaration -- and it
-       is not repaired here.  Nothing says it is unavoidable.
-     - [Sets_Diagonal_Limit_Adjunction@{u u0 u1}] is over
-       [J : Category@{u1 u1 u1}], inherited from
-       [Sets_Complete@{u u0} : Complete@{u u u u0}].
-     - [sets_bool_lim_two_elements@{u}] carries the single constraint
-       [Set < u], from [bool : Set]. *)
-
-(* Non-vacuity
-
-   [Sets] is both complete and cocomplete in tree, so the whole sandwich
-   is inhabited there at every shape:
-   [Sets_Diagonal_Limit_Adjunction] and [Sets_Colimit_Diagonal_Adjunction].
-   That the witness is not degenerate is proved rather than asserted.
-   [lim_one_iso] shows that over ANY C with limits of shape [1] the limit
-   apex is isomorphic to the value of the diagram at the point; instantiated
-   at [Sets] with the constant diagram at the two-element discrete setoid,
-   [sets_bool_lim_two_elements] exhibits two elements of the limit apex
-   that are provably not [≈]-equal, so the limit functor does not collapse
-   its argument to a subsingleton.  The two elements are obtained by
-   transporting [true] and [false] backwards along the isomorphism, and
-   the separation is discharged by [discriminate] on the underlying
-   [bool]; no induction on a limit construction could yield a negative. *)
-
-(* What is NOT delivered
-
-     - No naturality for the Kan comparison.  [lim_Ran_iso] is a FAMILY of
-       isomorphisms [lim F ≅ Ran (Erase J) F ttt], not a natural
-       isomorphism of functors.  AN EARLIER DRAFT OF THIS BULLET STATED
-       THE OBSTRUCTION WRONGLY IN BOTH CLAUSES; an audit refuted each, and
-       what follows is the measured position.  An evaluation functor DOES
-       exist: Theory/Shapes.v's [One_Eval : [_1, C] ⟶ C], whose
-       constraint block contains no [Set] and leaves C's three levels
-       free.  And [Sets] DOES meet [Category@{o Set Set}] --
-       [Check (@One_Fun_iso Sets)] SUCCEEDS, universe polymorphism
-       instantiating it at [Sets@{Set _}], the same trap Theory/Size.v's
-       erratum records for [Check (Cat : obj[Cat])] -- so "which [Sets]
-       does not meet" was false.  What stands: the transport needs the
-       OTHER variance, [C ⟶ [1, C]], since
-       [Induced (Erase J) : [1,C] ⟶ [J,C]], and both in-tree candidates
-       for that direction ([One_Const], [One_Fun_iso]) ARE pinned at
-       [Category@{_ Set Set}]; and [Kan_Limit] is [Qed], so [lim_Ran_iso]
-       is opaque (confirmed by [About]) and no componentwise access
-       exists.  The transport was NOT attempted; neither obstruction is
-       claimed unavoidable.
-     - No colimit counterpart of the Kan comparison: the tree has no
-       [Kan_Colimit], so nothing relates [ColimitFunctor] to [Lan].
-     - NO RESTRICTED LIMIT FUNCTOR, and the source issue asks for it in
-       its own checkbox: the limit functor on the FULL SUBCATEGORY of
-       [[J, C]] spanned by the diagrams that have limits -- the form
-       Riehl uses for Corollary 3.3.3, and the one that does NOT require C
-       to have all J-shaped limits.  Everything here takes
-       [HasLimitsOfShape J C] as a hypothesis, so that checkbox is NOT
-       discharged.  Theory/Equivalence/Colimit.v's [limit_induced] is the
-       nearest thing in tree -- it needs only the two limits handed to it
-       -- but it is a morphism between two supplied limits, not a functor
-       on a subcategory, and nothing assembles it into one.
-     - No dual of [Terminal_Limit].  Structure/Limit/Terminal.v proves
-       only the limit half, and the obvious instantiation does not
-       typecheck because [_0^op] is not [_0] (rejection R4 above).  So
-       there is no [HasColimitsOfShape 0 C ↔ Initial C] and no
-       [Initial_iff_Diagonal_0_left_adjoint]; the initial-object row is
-       delivered only in its [Erase] form.
-     - No identification of [[0, C]] with [1], hence [Δ[0]] is NOT shown
-       to be [Erase C]; the two degenerate readings are connected only
-       through [Terminal C], via the composite
-       [Terminal_iff_Diagonal_0_right_adjoint].
-     - No uniqueness of the adjoint: [left_adjoint_iso] and
-       [right_adjoint_iso] are not instantiated, so nothing here says
-       [LimitFunctor] is THE right adjoint up to natural isomorphism.
-     - No reflection or creation results, and no instantiation of
-       RAPL/LAPC at this sandwich.  An earlier revision of this bullet also
-       said "no preservation results"; since #450 the file proves that the
-       diagonal preserves limits ([Diagonal_continuous]).  Preservation of
-       COLIMITS by the diagonal, its dual, is not stated.
-     - [LimitFunctor] and [ColimitFunctor] are plain [Definition]s, not
-       registered [Instance]s: they take a [HasLimitsOfShape] parameter,
-       which is not a class, so resolution could never produce it.
-     - The round trips of [Cocone_Natural_Transform] are not proved at the
-       level of the packaged bijection -- only the component-level
-       identities, which are [eq_refl].  The donor lemma is in the same
-       position.
-     - The non-vacuity witness lives at the shape [1] only.  Nothing here
-       exhibits a non-degenerate limit over a shape with more than one
-       object, and the colimit side has no element-level witness at all.
-     - No functoriality of [LimitFunctor] in the shape [J], no comparison
-       with Instance/Cones/Limit.v's [Limit_Cones], and no connection to
-       Structure/Limit/Unique.v. *)
-
-(* Axiom status and counts
-
-   177/177 constants report "Closed under the global context".  Method:
-   [Print Module Category.Adjunction.Diagonal.Limit] enumerates 177 names
-   (90 printed as [Definition], 87 as [Parameter], the latter being the
-   display convention for [Qed] constants, not axioms); the file declares
-   no [Record], [Class] or [Inductive], so there is no unlisted [Build_*]
-   constructor, and the count includes the 60 [Program] obligations that a
-   [.glob] sweep does not record -- the [.glob] shows 117 names, and
-   177 - 117 = 60 is exactly the number of [_obligation_] entries in the
-   module listing.  Each name was queried by its FULLY QUALIFIED name.
-   One measurement anomaly is recorded rather than hidden: a single run of
-   all 177 queries reports 176 occurrences of the message, while nine
-   chunked runs of at most 20 queries each report exactly one per query
-   and cover every name once (20*8 + 17 = 177), as do two halves of 89 and
-   88; the chunked counts are the reliable ones.
-
-   The 177 is the count before #450.  The section added for #450 brings
-   eight more ([diag_eval_cone], [diag_med], [diag_med_commutes],
-   [diag_med_unique], [Diagonal_continuous] and three [Program]
-   obligations), so [Print Module] now enumerates 185 names; each of the
-   eight was queried by its fully qualified name and reports "Closed under
-   the global context". *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -931,10 +671,11 @@ Proof. now destruct a, b. Qed.
 
 Section EraseAdjunctions.
 
-(* The universe binders are declared explicitly: written against an
-   unannotated [Context {C : Category}] the two definitions below minimize
-   C's hom and proof universes to [Set] (measured), which the statement
-   itself does not require. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Universes eo eh ep.
 Context {C : Category@{eo eh ep}}.
 
@@ -1153,29 +894,11 @@ Qed.
 
 (** ** The diagonal preserves limits *)
 
-(* Δ[J] : C ⟶ [J, C] sends a limit cone over G : I ⟶ C to a limit cone
-   over Δ[J] ◯ G, for every shape I and with no hypothesis on C.  The proof
-   is the observation that limits in the functor category are computed one
-   component at a time: evaluating a cone M over Δ[J] ◯ G at j ∈ J gives
-   an ordinary cone over G ([diag_eval_cone]); its mediator into the given
-   limit is the j-th component of the mediating transformation
-   ([diag_med]), whose naturality square is closed by uniqueness of the
-   mediator at the source component.
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
 
-   This is the preservation hypothesis the adjoint functor theorem asks of
-   the diagonal.  With it, Adjunction/GAFT.v's [GAFT] applied to Δ[J]
-   produces a left adjoint of the diagonal, and
-   [Diagonal_left_adjoint_HasColimits] above reads the J-shaped colimits
-   off that adjunction: the route by which Instance/Grp/Colimit.v,
-   Instance/Rng/Colimit.v and Instance/Variety/Colimit.v build colimits
-   of algebras (Mac Lane §V.7, Exercises 1, 2 and 4).
-
-   The explicit binders on [Diagonal_continuous] matter.  Written bare,
-   minimization collapses J to [Category@{u u u}], one level for its
-   objects, homs and C's homs; with the binders J's object universe stays
-   free below the shared hom level ([jo <= h]), which is what the colimit
-   applications need.  J's hom universe cannot be separated from C's:
-   [Fun] identifies them. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section DiagonalContinuous.
 

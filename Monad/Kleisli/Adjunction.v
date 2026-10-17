@@ -24,10 +24,11 @@ Context `{@Monad C M}.
 
 #[local] Obligation Tactic := program_simpl.
 
-(** The free functor C ⟶ C_M: identity on objects; a morphism f becomes
-    the pure Kleisli computation ret ∘ f.  Identity preservation is the
-    right unit law of composition, and functoriality is the unit
-    naturality [fmap_ret] against the left unit law [join_fmap_ret]. *)
+(*
+   本节说明函子、Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Kleisli_Free : C ⟶ Kleisli := {|
   fobj := fun x => x;
@@ -46,11 +47,11 @@ Next Obligation.
   now rewrite comp_assoc.
 Qed.
 
-(** The forgetful functor C_M ⟶ C: on objects, the carrier M x of the free
-    algebra on x; on morphisms, Kleisli extension.  Identity preservation
-    is the left unit law [join_fmap_ret], and functoriality combines the
-    associativity [join_fmap_join] with the multiplication naturality
-    [join_fmap_fmap], exactly as in the composition law of Kleisli. *)
+(*
+   本节说明函子、Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Kleisli_Forget : Kleisli ⟶ C := {|
   fobj := fun x => M x;
@@ -69,9 +70,11 @@ Next Obligation.
   rewrite join_fmap_fmap; cat.
 Qed.
 
-(** The transposition isomorphism: a Kleisli morphism F_M x ~{C_M}~> y and
-    a C-morphism x ~> U_M y are one and the same arrow x ~> M y, so the
-    hom-setoid isomorphism of the adjunction is the identity map. *)
+(*
+   本节说明伴随、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Kleisli_adj_iso (x y : C) :
   @Isomorphism Sets

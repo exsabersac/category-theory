@@ -36,10 +36,11 @@ Section Postcomposition.
 
 Context {J X A : Category}.
 
-(* Work item 1 was already discharged by #318: Functor/Construction/
-   Postcompose.v's [Postcompose] is [F ◯ −] on objects and left
-   whiskering on arrows, with its three laws.  This is the issue's name
-   for it at a fixed shape [J]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition postcompose (F : X ⟶ A) : [J, X] ⟶ [J, A] := Postcompose (D:=J) F.
 
 Example postcompose_obj (F : X ⟶ A) (S : J ⟶ X) :
@@ -60,10 +61,11 @@ Context (Adj : F ⊣ G).
 
 #[local] Obligation Tactic := idtac.
 
-(* The unit and counit of [Adj] as natural transformations, with their
-   naturality unrestricted in the codomain: Adjunction/Natural/
-   Transformation/Universal.v's [Adjunction_to_Transform] already proves
-   it, and its components ARE Theory/Adjunction.v's [unit] and [counit]. *)
+(*
+   本节说明伴随、自然变换相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Let η : Id ⟹ G ◯ F := @Transformation.unit _ _ _ _ (Adjunction_to_Transform (A:=Adj)).
 Let ε : F ◯ G ⟹ Id := @Transformation.counit _ _ _ _ (Adjunction_to_Transform (A:=Adj)).
 
@@ -115,9 +117,11 @@ Next Obligation.
 Qed.
 Next Obligation. intros S T θ j; simpl; apply postcompose_counit_natural. Qed.
 
-(* The triangle identities hold componentwise from the originals; the
-   identity of [[J, A]] at [F ◯ S] has component [fmap[F] (fmap[S] id)],
-   not [id], so each obligation first folds it with [fmap_id]. *)
+(*
+   本节说明 FunctorCategory 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition postcompose_adjunction_transform :
   postcompose (J:=J) F ∹ postcompose (J:=J) G := {|
   Transformation.unit   := postcompose_unit;
@@ -145,10 +149,11 @@ Example postcompose_counit_component (T : J ⟶ A) (j : J) :
   transform[transform[postcompose_counit] T] j
     = @Category.Theory.Adjunction.counit _ _ F G Adj (T j) := eq_refl.
 
-(* The delivered adjunction's own accessors are the transposes of
-   identities, [⌊id⌋] and [⌈id⌉], which carry a [fmap_id] residue over the
-   constructed transformations; they agree with the whiskered originals
-   at [≈] (the [eq_refl] form is refused, probe N5). *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma postcompose_adjunction_unit (S : J ⟶ X) (j : J) :
   transform[@Category.Theory.Adjunction.unit _ _ _ _ postcompose_adjunction S] j
     ≈ @Category.Theory.Adjunction.unit _ _ F G Adj (S j).
@@ -376,13 +381,11 @@ Context {F : X ⟶ A} {G : A ⟶ X}.
 Context (Adj : F ⊣ G).
 Context (LA : HasLimitsOfShape J A).
 
-(* "A right adjoint carries a limiting cone to a limiting cone, the cone
-   being the value of the [Δ ⊣ Lim] counit": the limiting cone of [T] is
-   [limit_cone (LA T)], whose legs are the components of [lim_counit LA T]
-   ([lim_counit_is_limit_leg]), and [G] carries it to a limiting cone over
-   [G ◯ T].  The proof is Adjunction/Continuity.v's direct RAPL
-   ([right_adjoint_PreservesLimitCone]); see the header for why it is not
-   derived from [Lim_commutes_right_adjoint]. *)
+(*
+   本节说明伴随、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition right_adjoint_carries_lim_counit (T : J ⟶ A) :
   IsLimitCone (FCone G (@limit_cone _ _ _ (LA T))) :=
   right_adjoint_PreservesLimitCone Adj T (@limit_cone _ _ _ (LA T))

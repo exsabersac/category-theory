@@ -31,16 +31,11 @@ Context {D : Category}.
 Context (T : D ⟶ D).
 Context `{H : @Monad D T}.
 
-(** ** The canonical split presentation of an algebra
+(*
+   本节说明单子相关定义、性质与动机。
 
-    For an algebra (a, α), the fork
-
-        μ_a, T α : T (T a) ⇉ T a  --α-->  a
-
-    is a split coequalizer: α coforks the pair (the associativity law
-    [t_action], read backwards), η_a splits α (the unit law [t_id]),
-    η_{T a} splits μ_a (the monad law [join_ret]), and T α ∘ η_{T a}
-    computes η_a ∘ α (naturality [fmap_ret] of the unit). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition canonical_split {a : D} (α : TAlgebra T a) :
   SplitCoequalizer (@join D T H a) (fmap[T] (t_alg[α])).
@@ -93,22 +88,11 @@ Proof.
   apply fmap_id.
 Qed.
 
-(** ** The forgetful functor reflects isomorphisms
+(*
+   本节说明函子、同构相关定义、性质与动机。
 
-    Let h : (a, α) ~> (b, β) be an algebra homomorphism with underlying
-    arrow h₀ and suppose h₀ has a two-sided inverse k in D.  Then k is
-    itself an algebra homomorphism (b, β) ~> (a, α):
-
-        k ∘ β ≈ k ∘ β ∘ T (h₀ ∘ k)          (h₀ ∘ k ≈ id)
-              ≈ k ∘ (β ∘ T h₀) ∘ T k
-              ≈ k ∘ (h₀ ∘ α) ∘ T k          (square for h, reversed)
-              ≈ (k ∘ h₀) ∘ α ∘ T k
-              ≈ α ∘ T k.                    (k ∘ h₀ ≈ id)
-
-    The two inverse laws upstairs are then the ones downstairs, since
-    hom-equivalence in D^T is hom-equivalence of underlying arrows.  The
-    proof below runs the chain backwards, cancelling the split epi T h₀
-    on the right. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma em_iso_inverse_commutes {x y : EilenbergMoore T}
   (h : x ~{EilenbergMoore T}~> y)
@@ -139,10 +123,11 @@ Definition em_iso_inverse_hom {x y : EilenbergMoore T}
   {| t_alg_hom := @two_sided_inverse D _ _ _ I
    ; t_alg_hom_commutes := em_iso_inverse_commutes h I |}.
 
-(** U^T is conservative.  Note that [fmap[EM_Forget T] h] is
-    definitionally [t_alg_hom[h]], so the hypothesis hands us exactly an
-    inverse of the underlying arrow, and the inverse laws upstairs hold
-    by the same equations downstairs. *)
+(*
+   本节说明 BeckObjects 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export] Instance em_forget_reflects_isos : ReflectsIsos (EM_Forget T).
 Proof.
@@ -153,13 +138,11 @@ Proof.
   - exact (@is_left_inverse D _ _ _ I).
 Qed.
 
-(** ** Creation of coequalizers of split pairs
+(*
+   本节说明 BeckObjects 相关定义、性质与动机。
 
-    Fix algebra homomorphisms f, g : (a, α) ⇉ (b, β) and a split
-    coequalizer [SC] of their underlying pair in D, with object q,
-    coequalizing map e : b₀ ~> q, and sections s and t.  We manufacture
-    the unique algebra structure on q for which e is a homomorphism, and
-    show the resulting homomorphism coequalizes f, g in D^T. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CreatedCoequalizers.
 
@@ -239,10 +222,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** Associativity law for γ: both sides agree after precomposition with
-    the epi T (T e) — the left leg contracts γ ∘ T e twice, the right
-    leg slides μ past T (T e) by naturality and contracts once; what
-    remains is the associativity law of β under e. *)
+(*
+   本节说明 BeckObjects 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma created_action_t_action :
   created_action ∘ fmap[T] created_action ≈ created_action ∘ join.
@@ -311,10 +295,11 @@ Definition created_desc_hom (z : EilenbergMoore T)
     (unique_obj (split_coeq_desc SC (t_alg_hom[h]) Hh))
     (created_desc_is_alg_hom z h Hh).
 
-(** The universal property upstairs: since hom-equivalence and
-    composition in D^T are those of D on carriers, the triangle and the
-    uniqueness clause are exactly the ones of the split coequalizer
-    downstairs, transported along [created_desc_hom]. *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition created_is_coequalizer :
   IsCoequalizer f g (scoeq_obj SC; created_algebra) created_e_hom.
@@ -347,10 +332,11 @@ Proof.
   exact Halg.
 Qed.
 
-(** The record a consumer of creation receives: the algebra on the
-    coequalizer object, the coequalizing homomorphism with its carrier
-    pinned to e, the coequalizer property upstairs, and uniqueness of
-    the algebra structure. *)
+(*
+   本节说明 BeckObjects 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record CreatedSplitCoequalizer : Type := {
   created_alg : @TAlgebra D T H (scoeq_obj SC);

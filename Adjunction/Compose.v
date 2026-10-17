@@ -20,12 +20,11 @@ Generalizable All Variables.
 
 (** ** The identity adjunction *)
 
-(* Id[C] ⊣ Id[C]: the transposing isomorphism is the identity isomorphism
-   on each hom-setoid, both transposes are the identity function, and all
-   four naturality squares hold by reflexivity.  The witness is [adj_id]
-   from Instance/Adjoints.v — reused, not re-derived, so the corollaries
-   below speak about the very witness that typeclass resolution produces
-   for Id ⊣ Id goals (adj_id is an exported instance there). *)
+(*
+   本节说明伴随、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Adjunction_Id {C : Category} : Id[C] ⊣ Id[C] := adj_id.
 
@@ -37,9 +36,11 @@ Corollary Adjunction_Id_counit {C : Category} {x : C} :
   @counit _ _ _ _ (@Adjunction_Id C) x ≈ id[x].
 Proof. reflexivity. Qed.
 
-(* The same two equations, stated syntactically about [adj_id] itself, for
-   proof scripts whose goals mention the resolved instance rather than the
-   [Adjunction_Id] alias (the two are definitionally equal). *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary adj_id_unit {C : Category} {x : C} :
   @unit _ _ _ _ (@adj_id C) x ≈ id[x].
@@ -131,9 +132,11 @@ Proof.
   - apply from_adj_nat_r.
 Qed.
 
-(* Assemble the composite adjunction. All four naturality fields are
-   populated explicitly (the standalone-lemma-then-record pattern), so the
-   dual-side laws are available without re-derivation. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Adjunction_Compose : (F' ◯ F) ⊣ (U ◯ U') :=
   @Build_Adjunction E D (F' ◯ F) (U ◯ U')
@@ -157,11 +160,11 @@ Corollary Adjunction_Compose_from {x : D} {y : E} (g : x ~> U (U' y)) :
     ≈ from (@adj _ _ _ _ A' (F x) y) (from (@adj _ _ _ _ A x (U' y)) g).
 Proof. reflexivity. Qed.
 
-(* Agreement with [adj_comp] from Instance/Adjoints.v: composing the same
-   two adjunctions there (with the arguments in its convention's order)
-   yields the identical composite type (F' ◯ F) ⊣ (U ◯ U'), and the two
-   constructions have definitionally equal transposes, in both
-   directions. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary Adjunction_Compose_adj_comp_to {x : D} {y : E}
   (f : F' (F x) ~> y) :

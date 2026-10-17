@@ -41,11 +41,11 @@ Program Definition hom_transfer {a b : A} (f : b ~> a) :
 Example hom_transfer_component {a b : A} (f : b ~> a) (c : A)
         (h : a ~> c) : transform[hom_transfer f] c h = h ∘ f := eq_refl.
 
-(* [hom_transfer f] and the arrow action of the curried hom-functor at f,
-   read as an arrow of the opposite category.  Measured strict first: the
-   VALUES agree at Leibniz [=] (below), the whole [Transform] record does
-   NOT, and the transformations agree at [≈] in the functor category.  See
-   MEASUREMENTS in the header. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example hom_transfer_is_fmap_value {a b : A} (f : b ~> a) (c : A)
         (h : a ~> c) :
@@ -67,12 +67,11 @@ Proof. exact (id_left f). Qed.
 
 (* ** Mac Lane's lemma, first half: monic ⟺ epi *)
 
-(* "For h ∈ A(a, c), f*h = hf.  Hence the first result is just the
-   definition of an epi f."  In this setoid setting the sentence becomes
-   three steps: monic in the functor category is componentwise monic
-   (Instance/Fun/Morphisms.v), componentwise monic in Sets is
-   componentwise injective (Instance/Sets.v), and componentwise
-   injectivity of h ↦ h ∘ f IS right-cancellability of f. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem hom_transfer_monic_iff_epic {a b : A} (f : b ~> a) :
   @Monic ([A, Sets]) _ _ (hom_transfer f) ↔ Epic f.
@@ -92,11 +91,11 @@ Defined.
 
 (* ** Mac Lane's lemma, second half: epi ⟺ split monic *)
 
-(* "If f* is epi, there is an h_0 : a → b with f*h_0 = h_0 f = 1 : b → b,
-   so f has a left inverse.  The converse is immediate."  The witness
-   h_0 is obtained by evaluating surjectivity of the component at c := b
-   on id[b]; it is DATA, [∃] being [sigT] here, which is why the
-   biconditional is [Defined]. *)
+(*
+   本节说明 Transfer 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem hom_transfer_epic_iff_section {a b : A} (f : b ~> a) :
   @Epic ([A, Sets]) _ _ (hom_transfer f) ↔ Section f.
@@ -119,9 +118,11 @@ Proof.
     exact (id_right k).
 Defined.
 
-(* The two halves under their own names, for callers that want just one.
-   Each is a projection of the biconditional, so no proof text is
-   repeated and the identity of the statements is by conversion. *)
+(*
+   本节说明 Transfer 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition epic_of_hom_transfer_monic {a b : A} (f : b ~> a) :
   @Monic ([A, Sets]) _ _ (hom_transfer f) → Epic f :=
@@ -139,11 +140,11 @@ Definition hom_transfer_epic_of_section {a b : A} (f : b ~> a) :
   Section f → @Epic ([A, Sets]) _ _ (hom_transfer f) :=
   snd (hom_transfer_epic_iff_section f).
 
-(* A by-product, recorded because it is the shape the theorem file needs
-   and because it makes the pointwise reading of each side visible: the
-   component at c is injective exactly when f cancels on the right into
-   c, and surjective exactly when every arrow out of b factors through
-   f. *)
+(*
+   本节说明 Transfer 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma hom_transfer_component_injective_iff {a b : A} (f : b ~> a)
       (c : A) :

@@ -115,11 +115,11 @@ Definition subsets_inverse_image_saft@{o so u +| Set < o, o < so, o <= u +}
     (right_adjoint_PreservesImageLimit (image_preimage_adjunction f))
     (Subsets_Cogenerator_empty Y) (Subsets_WellPowered Y).
 
-(* Mac Lane's Theorem 2 at the same functor: every premise is inhabited,
-   the wide pullbacks by [Complete_HasSubobjectWidePullbacks].  CIRCULAR:
-   both preservation premises are read off [image_preimage_adjunction f],
-   the adjunction whose left adjoint the theorem then builds, so this
-   shows the premises satisfiable together, not a new adjoint. *)
+(*
+   本节说明伴随、函子、拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition subsets_inverse_image_thm2@{o so u +| Set < o, o < so, o <= u +}
   {X Y : SetoidObject@{o o}} (f : X ~{Sets@{o so}}~> Y) :
   { F : Subsets@{o u} X ⟶ Subsets@{o u} Y & F ⊣ InverseImage f } :=

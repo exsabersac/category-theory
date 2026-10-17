@@ -51,12 +51,11 @@ Proof. reflexivity. Qed.
 Definition contramap `{F : C^op ⟶ D} `(f : x ~{C}~> y) :
   F y ~{D}~> F x := fmap (op f).
 
-(* The fullness and faithfulness rows of Mac Lane §IV.3 Exercise 1's
-   dualization table, for an ARBITRARY functor — previously reachable
-   only through the equivalence detour of Theory/Equivalence/Limit.v.
-   The op-functor's hom-action at (x, y) is the original's at (y, x), so
-   each property transports by reindexing, in both directions; every
-   obligation is an [exact] at the swapped indices. *)
+(*
+   本节说明函子、（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 

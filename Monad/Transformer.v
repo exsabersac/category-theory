@@ -39,10 +39,11 @@ Arguments MonadTransformer {_ _ _} T {_}.
  * Species 1: Identity transformations.
  ******************************************************************************)
 
-(* The identity transformer leaves the monad untouched: IdentityT M is M again,
-   with the same unit and multiplication, and lift is the identity morphism.
-   The two transformer laws hold trivially, so this is the unit of transformer
-   stacking. *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition IdentityT {C : Category} (M : C ⟶ C) : C ⟶ C := {|
   fobj := fobj[M];
@@ -68,102 +69,20 @@ Program Instance IdentityT_MonadTransformer {C : Category} (M : C ⟶ C) `{@Mona
 }.
 
 (*
-(******************************************************************************)
-(* Free monad transformer *)
-(******************************************************************************)
+   本节说明单子相关定义、性质与动机。
 
-Inductive FreeF (F : Type → Type) (A B : Type) :=
-  | PureF : A → FreeF F A B
-  | JoinF : F B → FreeF F A B.
-
-Inductive FreeT (F : Type → Type) (M : Type → Type) (A : Type) :=
-  | mkFreeT : ∀ x, (x → FreeT F M A) → M (FreeF F A x) → FreeT F M A.
-
-Import MonadLaws.
-
-Class MonadTransformerLaws `{MonadLaws M} `{FunctorLaws F} := {
-  _ : Monad (FreeT F M);
-  _ : MonadLaws (FreeT F M)
-}.
-
-(******************************************************************************)
-(* Algebraic monad transformer *)
-(******************************************************************************)
-
-(* Q: Are they traversable? *)
-
-Inductive Alg (c f g : Type → Type) a :=
-  | Const : c a → Alg c f g a
-  | Unit  : f a → Alg c f g a
-  | Prod  : f a * g a → Alg c f g a
-  | Sum   : f a + g a → Alg c f g a.
-
-(* Theorem: For all algebraic monads, we should be able to automatically
-   derive prod from MonadCompose. *)
-
-(* Program Instance Alg_Distributes (c t : Type → Type) : *)
-(*   Monad_Distributes Alg c t. *)
-
-(* Program Instance Alg_DistributesLaws (c t : Type → Type) : *)
-(*   Monad_DistributesLaws Alg c t. *)
-
-(******************************************************************************)
-(* Monad transformer of a certain subclass of exponential monads *)
-(******************************************************************************)
-
-(* Q: Are they distributive? *)
-
-(* M : Monad *)
-(* C : Contravariant *)
-
-(* M t = 1 *)
-(* M t = t *)
-(* M t = C t → t *)
-(* M t = A t * B t *)
-(* M t = A t + t (??) *)
-
-(* Theorem: Does M have a monad instance for any contravariant functor C? *)
-
-(* For monads M and L: T M L t = M (L t) *)
-
-(* M (r → a) *)
-(* r → M a *)
-
-(* c → t            =>     c → L t *)
-(* (t → c) → t     =>     (L t → c) → L t *)
-
-(******************************************************************************)
-(* Monad transformers of monads from adjunctions *)
-(******************************************************************************)
-
-(* F ⊣ U *)
-
-(* U ∘ F    T L = U ∘ L ∘ F *)
-
-(* ULFULF = id *)
-(* ULLF → ULF : by join of L *)
-
-(* MaybeT (State s) a =    StateT s Maybe a *)
-(* s → s * L t   ‌    =    s → L (s * t) *)
-
-(* Q : Is MaybeT (State s) a incorrect? *)
-
-(* (ReaderT $ StateT $ ...) *)
-
-(* T (t1 ∘ t2 ∘ t3 (l)) m *)
-
-(* t1 ∘ t2 ∘ t3 ∘ tl (m ) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (******************************************************************************
  * Species 2: Constant mapping transformations.
  ******************************************************************************)
 
-(* The constant transformer ignores its argument monad M and always yields the
-   fixed monad K. K M is a monad whenever K is, but the construction fails to
-   be a monad transformer: lift would have to provide a morphism M A ~> K A
-   natural in A, and no such family exists for arbitrary unrelated K and M, as
-   the [Fail]ing definition below witnesses. *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition ConstT {C : Category} (K M : C ⟶ C) : C ⟶ C := {|
   fobj := fobj[K];

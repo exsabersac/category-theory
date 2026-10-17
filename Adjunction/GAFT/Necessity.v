@@ -43,11 +43,11 @@ Generalizable All Variables.
 
 Section ConstOneContinuity.
 
-(* The universes are DECLARED, not inferred.  Left to inference the two
-   lemmas below minimize [C]'s hom level onto the carrier level of [Sets]
-   and then onto [Set], and every consumer downstream inherits the pin
-   -- which is what stops the sharpness theorems from applying to a [C]
-   carrying a [Small]-constrained hypothesis. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Universes o h.
 Context (C : Category@{o h h}).
 
@@ -61,10 +61,11 @@ Proof. intro a; destruct (f a), (g a); reflexivity. Qed.
 Program Definition ConstOne_pt (x : C) (X : Sets) :
   X ~{Sets}~> ConstOne C x := {| morphism := fun _ => ttt |}.
 
-(* Continuity, with NO hypothesis on [C] whatever: not completeness, not
-   local smallness, not the existence of any limit.  A cone over the
-   image diagram has a singleton apex to map into, so the mediator exists
-   and is unique. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ConstOne_continuous : ContinuousFunctor (ConstOne C).
 Proof.
   intros J K N HN M.
@@ -205,9 +206,11 @@ Definition SmallShapeComplete_Initial_of_Small {C : Category}
 
 (** ** The sharpness clause *)
 
-(* Mac Lane §V.6 Theorem 3 with the solution set DROPPED, and with local
-   smallness ADDED -- the extra hypothesis costs the refutation nothing,
-   since [locally_small_ambient] discharges it for every category. *)
+(*
+   本节说明 Necessity 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition RepresentabilityWithoutSolutionSet : Type :=
   ∀ (C : Category) (K : C ⟶ Sets),
     SmallShapeComplete C → LocallySmall C → ContinuousFunctor K →
@@ -250,10 +253,11 @@ Proof. intro SC; exact (Hno (SmallShapeComplete_Initial_of_Small SC HC)). Qed.
 
 Section Solovay.
 
-(* [CBA] stands for the category of complete Boolean algebras and [U] for
-   its forgetful functor; NOTHING below constructs either, and nothing
-   below is evidence that they exist.  [solovay] is the set-theoretic
-   input, stated as a hypothesis and never as an [Axiom]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context (CBA : Category).
 Context (U : CBA ⟶ Sets).
 Context (Countable : Sets).

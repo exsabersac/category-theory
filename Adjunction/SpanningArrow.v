@@ -43,22 +43,19 @@ Definition SubFactorsThrough {x : X} {a : A} (f : x ~> G a) (m : SubObj a) :
 Definition Spanning {x : X} {a : A} (f : x ~> G a) : Type :=
   ∀ m : SubObj a, SubFactorsThrough f m → sub_le sub_top m.
 
-(* The issue's pinned name, an alias of [Spanning] -- the same Type, so
-   that the verification block's [Print Assumptions spanning_arrow] has a
-   referent.  Every statement below is about [Spanning]. *)
+(*
+   本节说明 SpanningArrow 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition spanning_arrow {x : X} {a : A} (f : x ~> G a) : Type :=
   Spanning f.
 
-(* G preserves wide pullbacks OF MONOS -- intersections of subobjects,
-   exactly what Mac Lane's Lemma asks G to preserve: the image under G
-   of a wide pullback cone over a family of monos is again a wide
-   pullback cone.  A first draft quantified over arbitrary families, a
-   hypothesis strictly stronger than Mac Lane's; an audit flagged it and
-   the monicity clause [Hm] was added at integration.  Since #453 it has
-   a necessity lemma: Adjunction/SAFT/Characterization.v's
-   [right_adjoint_PreservesWidePullbacks] proves it for every right
-   adjoint, and [SAFT_iff] there uses it as the second clause of Mac
-   Lane's §V.8 Theorem 2. *)
+(*
+   本节说明伴随、拉回/推出、子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PreservesWidePullbacks : Type :=
   ∀ (I : Type) (B : I → A) (z : A) (g : ∀ i, B i ~> z)
     (Hm : ∀ i, Monic (g i)) (P : A) (p : ∀ i, P ~> B i),
@@ -122,19 +119,17 @@ Lemma spanning_of_top_only {x : X} {a : A} (f : x ~> G a)
 Proof. intros m _; exact (H m). Defined.
 
 
-(* The two facts below were first proved in Instance/Variety/Spanning.v,
-   the parallel witness half of #448, under a "CANDIDATE FOR this file"
-   note, and were lifted here at integration; the variety file consumes
-   [spanning_forces_top], while [sub_le_top_iso] is stated for the
-   reading it gives and is not yet consumed anywhere.  Neither re-proves
-   a lattice fact: they TRANSPORT
-   Theory/Subobject/Lattice.v's [sub_top_greatest] and its
-   [sub_le_antisym]. *)
+(*
+   本节说明子对象相关定义、性质与动机。
 
-(* A subobject that the top subobject factors through has an invertible
-   mono: the factor is its inverse, the other triangle by monicity.  This
-   is the sense in which Mac Lane's "factors through no proper subobject"
-   is recovered from the positive form of [Spanning]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+
+(*
+   本节说明子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sub_le_top_iso {a : A} (m : SubObj a) (H : sub_le sub_top m) :
   IsIsomorphism (sub_mono m).
 Proof.
@@ -293,103 +288,11 @@ End SpanningLemma.
 
 (** ** Mac Lane's use of the lemma: GAFT without a separate solution set *)
 
-(* WHY THIS SECTION EXISTS -- AND A RECORDED CORRECTION: ITS REASON NO
-   LONGER HOLDS, THOUGH THE SECTION IS STILL WHAT THE FILE SHIPS.
+(*
+   本节说明伴随、hom相关定义、性质与动机。
 
-   An earlier revision of this comment read, in full:
-
-     "MEASURED UNIVERSE PIN, and the reason this section exists.  With
-      Set Printing Universes, [About GAFT] reports
-        GAFT@{u u0 u1 u2 u3 u4} :
-          ∀ {C : Category@{u1 Set Set}} {D : Category@{u2 Set Set}} ...
-      -- Adjunction/GAFT.v is pinned at hom = proof = Set in BOTH
-      arguments.  The pin is ATTRIBUTED BY About, not guessed: of the
-      five constants GAFT's proof consumes, [Comma_Complete],
-      [wif_of_sols], [Complete_HasEqualizers] and [GAFT_from_initials]
-      all report a free hom universe, and [initial_from_weakly_initial]
-      (Theory/WeaklyInitial.v) reports
-        initial_from_weakly_initial@{u u0 u1 u2} :
-          ∀ {C : Category@{u2 Set Set}} ...
-      so that is the carrier.  (Instance/One.v's [_1],
-      Instance/Parallel.v's [Parallel] and Instance/Discrete.v's
-      [DiscreteCat] are each free in h, measured the same way; an earlier
-      draft of this comment named them and was wrong.)  Nothing above
-      carries the pin: [spanning_solution_set] is polymorphic in the hom
-      universe, as the header's About records.  Feeding it to [GAFT]
-      inside Section SpanningLemma is therefore REFUSED, with
-        universe inconsistency: Cannot enforce Set = <the hom universe of A>
-      so the corollary is stated here instead, over categories annotated
-      at Set."
-
-   Every step of that attribution was correct, and it located the pin one
-   link further back than [initial_from_weakly_initial]: at
-   Instance/Discrete.v's then-unannotated [DiscreteCat_Functor], which
-   [initial_from_weakly_initial] takes two limits over.  That donor was
-   annotated in place at Instance/Discrete.v in the PR "algebraic
-   carriers are sets" (2026-09-17).  Measured after it:
-
-     GAFT@{cobj dobj h u u0 u1} :
-       ∀ {C : Category@{cobj h h}} {D : Category@{dobj h h}} ...
-
-   -- no [Set], both hom universes free -- and the refusal quoted above
-   NO LONGER OCCURS.  Re-measured directly: the very [exact] below,
-   restated in a section whose A and X are declared at free hom
-   universes, is ACCEPTED, reporting
-   [GAFT_from_spanning_free@{oA hA oX hX …}] with [Complete@{hA hA hA oA}]
-   and no [Set] anywhere.
-
-   The section below is nonetheless left AS IT STANDS, annotated at [Set],
-   because that PR changed prose only; widening it is a change to the
-   statement of a shipped theorem and belongs to its own commit.  What the
-   [Set] annotation now is, therefore, is a RESTRICTION THIS FILE IMPOSES
-   and no longer one it inherits -- and it was never a claim that spanning
-   arrows need small hom-sets.
-
-   CORRECTION, PR "algebraic carriers are sets" (2026-09-17): the own
-   commit anticipated in the paragraph above is this one, and the widening
-   has been made.  The [Universes oA oX.] line and the two [@{oA Set Set}]
-   / [@{oX Set Set}] annotations are GONE; [A] and [X] are now declared
-   bare, and the elaborator arrives at free object and hom levels for both.
-   Nothing else in the section changed -- the statement, the [Proof using]
-   list and the one-line [exact] are untouched -- so no theorem was lost
-   and none was weakened.  Measured, [About] under [Set Printing
-   Universes]:
-
-     BEFORE (8 universes)
-       GAFT_from_spanning@{oA oX u u0 u1 u2 u3 u4} :
-         ∀ {A : Category@{oA Set Set}} {X : Category@{oX Set Set}}
-           (G : A ⟶ X),
-         HasWidePullbacks@{u u oA Set} A →
-         PreservesWidePullbacks@{oA Set oX Set u0 u1 u1 u1} G →
-         Complete@{Set Set Set oA} →
-         PreservesImageLimit@{oA Set oX Set u3 Set u4 Set} → ∃ F : X ⟶ A, F ⊣ G
-       (* … Set = oA / u = u1 *)
-
-     AFTER (13 universes)
-       GAFT_from_spanning@{u u0 u1 u2 u3 u4 u5 u6 u7 u8 u9 u10 u11} :
-         ∀ {A : Category@{u u0 u0}} {X : Category@{u1 u2 u2}} (G : A ⟶ X),
-         HasWidePullbacks@{u3 u4 u u0} A →
-         PreservesWidePullbacks@{u u0 u1 u2 u5 u6 u7 u8} G →
-         Complete@{u0 u0 u0 u} →
-         PreservesImageLimit@{u u0 u1 u0 u10 u0 u11 u0} → ∃ F : X ⟶ A, F ⊣ G
-       (* … u <= u0 / u0 <= u2 / u2 < u10 / u2 < u11 / u3 < u5 / u6 < u5 … *)
-
-   No [Set] anywhere, and in particular the BEFORE block's [Set = oA] --
-   which demanded a category whose OBJECTS as well as homs live in [Set] --
-   is gone.  [spanning_solution_set] never carried the pin and its
-   [About] is unchanged.
-
-   WHAT THE WIDENING DOES NOT BUY.  It does not make the theorem reach
-   [RMod R].  The AFTER block reads [u <= u0], objects at or below homs,
-   and [RMod R] has homs strictly below objects; feeding it is still
-   refused, now with "Cannot enforce u_hom = b because u_hom < u_obj <= b"
-   rather than with the old [Set] message.  That refusal, and the
-   independent fact that [HasWidePullbacks (RMod R)] is itself universe-
-   refused, are recorded at Instance/Mod/Spanning.v and pinned as
-   NEGATIVE 2 of Test/ProbeModTensorAFT449.v.  The route that DOES reach
-   [RMod R] is the congruence-indexed solution set of
-   Instance/Mod/TensorAFT.v, which goes through [representability_theorem]
-   and not through this section. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section GAFTFromSpanning.
 

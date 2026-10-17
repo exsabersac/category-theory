@@ -19,34 +19,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Structure/Monoidal/HypergraphFunctor.v formalizes a deliberately weakened
-   version of Fong–Spivak's hypergraph functors: raw comparison isomorphisms
-   plus the four SCFA-preservation equations, WITHOUT the monoidal, unitor or
-   braid coherences (see the "Known scoping limitation" caveat there — the
-   weakened record is NOT in general a symmetric monoidal functor).  The
-   coherence-complete literature notion is exactly: a strong symmetric
-   monoidal functor — [SymmetricMonoidalFunctor] of
-   Functor/Structure/Monoidal/Braided.v — whose comparison isomorphisms
-   preserve the SCFA generators.
+(*
+   本节说明幺半结构、函子、（余）极限相关定义、性质与动机。
 
-   The bridge below packages any such functor as a [HypergraphFunctor], with
-   [pure_iso] and [ap_iso] as the comparison isomorphisms.  Only this
-   forgetful direction is sound; the converse is false by that file's own
-   caveat, since the record does not carry the coherences needed to
-   reconstitute a monoidal functor.
-
-   Be clear about how little is happening here: this is constructor
-   repackaging and nothing more.  The four preservation hypotheses are
-   literally the record's four hf_preserves_* fields, and the
-   [HypergraphFunctor] record has no field that could receive [braid_compat]
-   (nor the monoidal coherences), so the braided hypothesis [S] contributes
-   no checked content to the constructed value — the definition would
-   typecheck verbatim against a bare [MonoidalFunctor].  It is nevertheless
-   stated against the symmetric hypothesis to name the literature notion the
-   forgetting starts from.  In particular this bridge does NOT close
-   HypergraphFunctor.v's coherence gap: forgetting into the record loses the
-   coherences irrecoverably, and every consumer of the record remains
-   subject to the caveat there. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HypergraphBridge.
 

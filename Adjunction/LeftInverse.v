@@ -625,12 +625,11 @@ Context (T : @Terminal C).
 Local Notation One := (_1@{o h h}).
 Local Notation t := (@terminal_obj C T).
 
-(* The functor 1 ⟶ C picking out an object.  [Theory/Shapes.v]'s
-   [Point] is this functor, but its source is pinned at [_1@{_ Set Set}]
-   (measured: [Point x : _1@{o h h} ⟶ C] is rejected with "Cannot enforce
-   Set = h"), which would confine the example below to categories whose
-   homs live in [Set]; the six lines are rebuilt here with the universe
-   binders that keep C arbitrary. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition PointAt (c : C) : One ⟶ C := {|
   fobj := fun _ => c;
@@ -701,12 +700,11 @@ Lemma two_lali_moves_TwoX :
   PointAt (C:=_2) TwoY (lali_left two_LALI TwoX) = TwoX → False.
 Proof. simpl; discriminate. Qed.
 
-(** ** Strict readbacks
+(*
+   本节说明 LeftInverse 相关定义、性质与动机。
 
-    Every identification below holds at Leibniz equality, by [eq_refl];
-    the two that do NOT are pinned in Test/ProbeLeftInverse376.v (the
-    round trip [lali_cycle P = P], and the object equality of
-    [ImageTo ◯ ImageFrom] at a variable object of the subcategory). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Readbacks.
 

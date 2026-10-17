@@ -54,12 +54,11 @@ End StrictMonoidalFunctor.
 
 Arguments StrictMonoidalFunctor {C D _ _} F.
 
-(** ** Transport helpers
+(*
+   本节说明 Strict 相关定义、性质与动机。
 
-    Composites and images of transported identities are again transported
-    identities, along the composite ([eq_trans]) and image ([f_equal])
-    equalities respectively.  These discharge the [Compose] instance below
-    and are reusable by downstream strictness proofs. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma fmap_match_id {C D : Category} (F : C ⟶ D) {x y : C} (e : x = y) :
   fmap[F] (match e in _ = T return x ~> T with eq_refl => id end)
@@ -72,12 +71,11 @@ Lemma match_id_trans {C : Category} {x y z : C} (e1 : x = y) (e2 : y = z) :
     ≈ match eq_trans e1 e2 in _ = T return x ~> T with eq_refl => id end.
 Proof. destruct e2, e1; simpl; cat. Qed.
 
-(** ** Closed-form [from] corollaries
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    As in [Structure/Monoidal/Strict.v], the [from] direction of each
-    comparison iso is the transported identity along the symmetric
-    equality; this is forced by uniqueness of inverses
-    ([transported_iso_from]), not extra structure. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section StrictMonoidalFunctorFrom.
 
@@ -112,14 +110,11 @@ Qed.
 
 End StrictMonoidalFunctorFrom.
 
-(** ** Instances
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    The identity functor is strict (both object equalities are [eq_refl]
-    and the comparisons of [Id_MonoidalFunctor] are identities), and
-    strict monoidal functors compose (object equalities by
-    [eq_trans]/[f_equal]; the composite comparisons reduce with
-    [fmap_match_id] and [match_id_trans]).  These mirror the obligation
-    style of [Functor/Structure/Monoidal/{Id,Compose}.v]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := program_simpl.
 

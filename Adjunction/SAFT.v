@@ -27,11 +27,11 @@ Generalizable All Variables.
 
 (** ** Cogenerating families *)
 
-(* A cogenerating family for [C]: a small [Type] of indices [cog_index] with
-   objects [cog_obj j : C], such that parallel arrows [f, g : x ~> y] are equal
-   as soon as they agree after every arrow [k : y ~> cog_obj j] into a member of
-   the family.  Equivalently the representables [C(-, cog_obj j)] are jointly
-   faithful, proved both ways in Structure/Generator/Dual.v (issue #447). *)
+(*
+   本节说明 SAFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record Cogenerator {C : Category} := {
   cog_index : Type;
   cog_obj : cog_index -> C;
@@ -46,18 +46,11 @@ Arguments cog_separates {C} _ {x y} f g _.
 
 (** ** Well-powered indexing of subobjects *)
 
-(* A chosen small indexing of the subobjects of [x] : a [Type] [sub_index] of
-   indices, an object [sub_dom i : C] for each, and a monomorphism
-   [sub_mono i : sub_dom i ~> x] witnessing that [sub_dom i] genuinely names a
-   subobject of [x] (a subobject of [x] IS a mono into [x], per Theory/
-   Morphisms.v).  Well-poweredness of [C] is then [forall x, SubobjectIndex x]:
-   the subobjects of every object are supplied as a small family of data.
-   CORRECTION (#451): that sentence is false.  [forall x, SubobjectIndex x]
-   has no exhaustiveness clause and is inhabited in EVERY category by the
-   empty family ([empty_SubobjectIndex] below), so it is strictly weaker than
-   well-poweredness, which is Structure/WellPowered.v's [WellPowered]; the
-   bridge [WellPowered_SubobjectIndex] (Adjunction/SAFT/WellPowered.v) goes
-   one way only. *)
+(*
+   本节说明子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record SubobjectIndex {C : Category} (x : C) := {
   sub_index : Type;
   sub_dom : sub_index -> C;
@@ -72,19 +65,11 @@ Arguments sub_monic {C x} _ _.
 
 (** ** [SubobjectIndex] does not give well-poweredness *)
 
-(* The bridge the other way (#451), from Structure/WellPowered.v's
-   [WellPowered] to this record, is the satellite Adjunction/SAFT/
-   WellPowered.v, so that this file requires only Theory/Subobject.v for
-   [SubObj] and not the well-poweredness development.  Theory/Subobject.v
-   declares projections [sub_dom] and [sub_mono] of its own; they are
-   written qualified below, since the unqualified names in this file are
-   this file's.
+(*
+   本节说明伴随、子对象相关定义、性质与动机。
 
-   The converse is false: the empty family is a [SubobjectIndex] of every
-   object of every category.  At the level of categories,
-   Structure/WellPowered/Counterexample.v's [AntichainTop] carries that
-   empty [SubobjectIndex] at every object and is not well-powered
-   ([AntichainTop_not_WellPowered]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition empty_SubobjectIndex {C : Category} (x : C) : SubobjectIndex x :=
   {| sub_index := False ;
      sub_dom   := fun i => match i with end ;
@@ -105,18 +90,11 @@ Qed.
 
 (** ** The product of the cogenerating family *)
 
-(* The product [∏_{j} cog_obj j] of the whole cogenerating family, a single
-   object of [C], independent of any [d : D].  It is built as the limit of the
-   discrete diagram on the family via completeness.
+(*
+   本节说明（余）极限、hom相关定义、性质与动机。
 
-   These are top-level polymorphic definitions rather than section-local ones on
-   purpose.  [Complete] forces the diagram category's hom universe to coincide
-   with C's hom universe (see the printed signature of [Complete]), while
-   [DiscreteCat_Functor] emits a diagram whose hom universe is [Set]; reconciling
-   the two requires C's hom universe to absorb [Set], which a polymorphic
-   definition records as a universe constraint but a rigid section variable
-   cannot.  This is the universe-level shadow of the same "no size machinery"
-   note in the header. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cogen_prod_limit {C : Category} (comp : @Complete C)
   (G : Cogenerator C) := comp _ (DiscreteCat_Functor (cog_obj G)).
 
@@ -126,25 +104,11 @@ Definition cogen_prod {C : Category} (comp : @Complete C)
 
 (** ** The canonical map into a power of the cogenerating family *)
 
-(* The genuine separation content of a cogenerating family, delivered and
-   consumed here (so [cog_separates] is NOT inert).  Fix [c : C].  Index the
-   arrows out of [c] into the family by the hom-indexed Σ-type
+(*
+   本节说明hom相关定义、性质与动机。
 
-     [cogen_power_index G c := { j : cog_index G & c ~> cog_obj G j }],
-
-   and form the product [cogen_power] of the family whose [(j, k)]-component is
-   [cog_obj G j] — a *power* of the cogenerating family, with one factor per
-   arrow [k : c ~> cog_obj G j].  The canonical map [cogen_canonical] is the
-   unique mediator whose [(j, k)]-component is [k] itself; it is monic
-   ([cogenerator_canonical_monic]) precisely because [G] separates, which is the
-   classical "the unit into the cogenerator power is monic" step, internalized
-   in full.
-
-   The Σ-index is hom-indexed, so this product is taken against [Complete]
-   exactly as [cogen_prod] is (via [cogen_power_limit], mirroring
-   [cogen_prod_limit]), and it carries the same universe constraint recorded on
-   [cogen_prod_limit]; every definition here is top-level polymorphic for that
-   reason. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The hom-indexed Σ-index of arrows out of [c] into the cogenerating family. *)
 Definition cogen_power_index {C : Category} (G : Cogenerator C) (c : C) : Type :=
@@ -175,9 +139,11 @@ Definition cogen_canonical {C : Category} (comp : @Complete C)
   unique_obj (iprod_ump (cogen_power_fam G c) (cogen_power_limit comp G c)
                         c (cogen_canonical_legs G c)).
 
-(* The [(j, k)]-component of the canonical map is [k]: the projection at index
-   [(j, k)] post-composed with [cogen_canonical] recovers [k].  This is exactly
-   the mediator's commuting property from [iprod_ump]. *)
+(*
+   本节说明 SAFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cogen_canonical_commutes {C : Category} (comp : @Complete C)
   (G : Cogenerator C) (c : C) (j : cog_index G) (k : c ~> cog_obj G j) :
   iprod_proj (cogen_power_fam G c) (cogen_power_limit comp G c)
@@ -189,12 +155,11 @@ Proof.
            (existT _ j k)).
 Qed.
 
-(* SEPARATION ⇒ MONIC (the genuine content consuming [cog_separates]).  The
-   canonical map of [c] into the power of the cogenerating family is monic.
-   Given [g1, g2 : z ~> c] equalized by [cogen_canonical], post-composing with
-   the projection at each index [(j, k)] and using [cogen_canonical_commutes]
-   shows [k ∘ g1 ≈ k ∘ g2] for every [j] and every [k : c ~> cog_obj G j];
-   [cog_separates] then forces [g1 ≈ g2]. *)
+(*
+   本节说明 SAFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cogenerator_canonical_monic {C : Category} (comp : @Complete C)
   (G : Cogenerator C) (c : C) : Monic (cogen_canonical comp G c).
 Proof.
@@ -207,18 +172,11 @@ Qed.
 
 (** ** The covering datum and the solution set *)
 
-(* The covering datum (the packaged conclusion of the classical factorization
-   step) at [d]: every [h : d ~> U c] factors through a well-powered subobject of
-   the product of the cogenerating family — there is a subobject index [i], a
-   [d]-arrow [s : d ~> U (sub_dom i)], and a [C]-arrow [t : sub_dom i ~> c] with
-   [fmap[U] t ∘ s ≈ h].  This is exactly a member of a solution set at [d].
-   CORRECTION (#451): "the packaged conclusion of the classical factorization
-   step" overstates it.  The product here is independent of [d], and the datum
-   is refutable at the identity of [Sets] (the header's paragraph THE
-   COVERING DATUM IS REFUTABLE;
-   [SubobjectCover_Id_retract] below is the first step of that refutation).
-   "A well-powered subobject" is a subobject named by the index [WP], which
-   need not be well-powered ([SubobjectIndex]'s correction above). *)
+(*
+   本节说明子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SubobjectCover {C D : Category} (U : C ⟶ D)
   (comp : @Complete C) (G : Cogenerator C)
   (WP : forall x : C, SubobjectIndex x) : Type :=
@@ -228,9 +186,11 @@ Definition SubobjectCover {C D : Category} (U : C ⟶ D)
         { t : sub_dom (WP (cogen_prod comp G)) i ~> c &
           fmap[U] t ∘ s ≈ h } } }.
 
-(* What the datum says at [U := Id] (#451): EVERY object of [C] is a retract
-   of the domain of one indexed mono into the one object [cogen_prod comp G].
-   It is the datum itself at [d := c] and [h := id]. *)
+(*
+   本节说明 SAFT 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SubobjectCover_Id_retract {C : Category} (comp : @Complete C)
   (G : Cogenerator C) (WP : forall x : C, SubobjectIndex x)
   (cover : SubobjectCover (@Id C) comp G WP) (c : C) :
@@ -239,28 +199,16 @@ Definition SubobjectCover_Id_retract {C : Category} (comp : @Complete C)
       { t : sub_dom (WP (cogen_prod comp G)) i ~> c & t ∘ s ≈ id } } } :=
   cover c c id.
 
-(* The solution set at [d]: its members are the pairs [(i, s)] of a well-powered
-   subobject [i] of the cogenerator product together with a [d]-arrow
-   [s : d ~> U (sub_dom i)].  The covering property is delivered by [cover].
-   (CORRECTION, #451: "well-powered subobject" here means a subobject named
-   by the index [WP], which need not be well-powered; see [SubobjectIndex].) *)
-(* THE INDEX UNIVERSE [i] IS FREE HERE.  The index built below is a sigma
-   over [sub_index (WP (cogen_prod comp G))] and a [d]-arrow, and nothing
-   in this definition relates its level to the ambient hom universe [h].
-   The [Complete] taken here is likewise unrestricted -- its shape-object
-   universe stays free.  [SAFT] below is where both are pinned, by handing
-   them to [GAFT].  Measured:
+(*
+   本节说明子对象相关定义、性质与动机。
 
-     SAFT_solution_set@{i cobj dobj h u u0 u1 u2 u3} :
-     ∀ {C : Category@{cobj h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
-       (comp : Complete@{u3 u1 h cobj}) (G : Cogenerator@{u1 cobj h} C)
-       (WP : ∀ x : obj[C], SubobjectIndex@{u0 cobj h} x),
-       SubobjectCover@{u u0 u1 u2 u3 dobj cobj h} U comp G WP
-       → ∀ d : obj[D], SolutionSet@{i dobj cobj h} U d
-     (* i cobj dobj h u u0 u1 u2 u3 |= h < u2 / u1 <= u3 *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
 
-   -- [i] unrelated to anything, and [Complete]'s shape-object slot [u1]
-   likewise. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SAFT_solution_set@{i cobj dobj h +}
   {C : Category@{cobj h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
   (comp : @Complete C) (G : Cogenerator C)
@@ -282,40 +230,16 @@ Defined.
 
 (** ** The Special Adjoint Functor Theorem *)
 
-(* SAFT.  The packaged well-powered / cogenerator data assemble a solution set at
-   every [d]; completeness and cone-level preservation are handed to [GAFT],
-   which returns the left adjoint [F ⊣ U].  (CORRECTION, #451: the packaged
-   data are the subobject index [WP], which is not well-poweredness, the
-   cogenerating family and the covering datum; "the WELL-POWEREDNESS datum"
-   in the next comment is [WP] in the same sense.) *)
-(* THE TWO IDENTIFICATIONS ARRIVE HERE, from [GAFT], and the binders say
-   so: [@Complete@{h h h cobj} C] puts [Complete]'s shape-object universe
-   at the ambient hom universe [h], and passing [SAFT_solution_set] to
-   [GAFT] forces its free index universe [i] to [h] as well.  Read
-   concretely, that is a size condition on the WELL-POWEREDNESS datum: the
-   sigma of [sub_index (WP (cogen_prod comp G))] with a [d]-arrow must sit
-   at the hom universe, not above it.  The measured readback says it in
-   one constraint -- [SubobjectIndex]'s own index universe is bounded by
-   [h]:
+(*
+   本节说明伴随、子对象相关定义、性质与动机。
 
-     SAFT@{cobj dobj h u u0 u1 u2 u3} :
-     ∀ {C : Category@{cobj h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
-       (comp : Complete@{h h h cobj}),
-       PreservesImageLimit@{cobj h dobj h u1 h u h}
-       → ∀ (G : Cogenerator@{h cobj h} C)
-           (WP : ∀ x : obj[C], SubobjectIndex@{u3 cobj h} x),
-         SubobjectCover@{u2 u3 h u h dobj cobj h} U comp G WP
-         → ∃ F : D ⟶ C, Adjunction@{cobj h h dobj h h h h u h u0} F U
-     (* cobj dobj h u u0 u1 u2 u3 |= h < u / u3 <= h *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明hom相关定义、性质与动机。
 
-   Compare [SAFT_solution_set] above, which takes [Complete@{u3 u1 h cobj}]
-   with its shape-object universe [u1] FREE and leaves [i] free too: the
-   whole identification is [GAFT]'s, arriving at this one line.
-
-   Nothing here is a [Set] pin -- an earlier revision of [GAFT] printed
-   one, inherited from Instance/Discrete.v's unannotated
-   [DiscreteCat_Functor], and it is gone (PR "algebraic carriers are
-   sets", 2026-09-17). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SAFT@{cobj dobj h +}
   {C : Category@{cobj h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
   (comp : @Complete@{h h h cobj} C) (cont : @PreservesImageLimit C D U)

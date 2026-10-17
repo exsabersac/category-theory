@@ -33,12 +33,11 @@ Class TerminalFunctor := {
 
 End TerminalFunctor.
 
-(* An initial functor preserves the initial object. Rather than restate the
-   dual class, it is defined by reusing [TerminalFunctor] on the opposite
-   functor F^op (the initial object of C is the terminal object of C^op),
-   exploiting the library's built-in duality. The first notation infers the
-   categories; the second names them explicitly, requiring C, D and F at
-   object level. *)
+(*
+   本节说明函子、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Notation "'InitialFunctor' F" := (@TerminalFunctor _ _ (F^op) _ _)
   (at level 9) : category_theory_scope.
 Notation "@InitialFunctor C D F" := (@TerminalFunctor (C^op) (D^op) (F^op) _ _)

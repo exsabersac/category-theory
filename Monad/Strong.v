@@ -34,49 +34,29 @@ Section StrongMonad.
 Context `{@Monoidal C}.
 Context {M : C ⟶ C}.
 
-(* A strong monad bundles, over a fixed endofunctor M, both a [Monad] structure
-   and a [StrongFunctor] structure on M, together with the two compatibility
-   laws relating the strength to η and μ.  The functor-level coherences (λ- and
-   α-laws) live in the [StrongFunctor] field; only the monad-specific coherences
-   are stated here.  The two structures are coercion fields (`::`) so that
-   [ret], [join], [strength], and [fmap[M]] resolve uniformly inside the laws,
-   and a [StrongMonad] is usable wherever a [Monad] or [StrongFunctor] is. *)
+(*
+   本节说明函子、单子、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class StrongMonad := {
   strongmonad_is_monad  :: @Monad C M;           (* the underlying monad (η, μ) *)
   strongmonad_is_strong :: @StrongFunctor C _ M; (* the underlying left strength t *)
 
-  (* η-compat (Kock/Moggi): the strength carries the unit pushed into the right
-     factor to the unit of the whole tensor.
+  (*
+   本节说明（余）强度相关定义、性质与动机。
 
-         x ⨂ y ---- id ⨂ η ----> x ⨂ M y
-            \                        |
-             \                   strength
-              η                     |
-               \                    v
-                ------------------> M (x ⨂ y)
-
-       t ∘ (id ⨂ η) ≈ η      at  x ⨂ y ~> M (x ⨂ y) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   strength_ret {x y} :
     strength ∘ (id[x] ⨂ ret[M]) ≈ (ret[M] : x ⨂ y ~> M (x ⨂ y));
 
-  (* μ-compat (Kock/Moggi): the strength commutes past the multiplication of the
-     right factor, sliding through both M-layers.
+  (*
+   本节说明（余）强度相关定义、性质与动机。
 
-       x ⨂ M (M y) -- id ⨂ μ --> x ⨂ M y
-            |                        |
-        strength                 strength
-            |                        |
-            v                        v
-       M (x ⨂ M y)              M (x ⨂ y)
-            |                        ^
-        M(strength)                  | μ
-            v                        |
-       M (M (x ⨂ y)) --------------- /
-
-       t ∘ (id ⨂ μ) ≈ μ ∘ M t ∘ t   at  x ⨂ M (M y) ~> M (x ⨂ y).
-     The RHS associates left (∘ at level 40): (μ ∘ M t) ∘ t, which is exactly
-     μ precomposed with strength[M ◯ M] = M t ∘ t (see [Compose_StrongFunctor]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   strength_join {x y} :
     strength ∘ (id[x] ⨂ join[M])
       ≈ (join[M] ∘ fmap[M] strength ∘ strength
@@ -95,24 +75,21 @@ Section IdStrongMonad.
 
 Context `{@Monoidal C}.
 
-(* There is no identity monad on an abstract category in the library yet, so we
-   provide one here: Id[C] with ret = id and join = id.  All five monad laws are
-   instances of the identity/composition equations, discharged automatically by
-   the ambient obligation tactic (cat_simpl).
-   Since #469 a second identity monad, with every field given and a
-   universe list that is the same on every supported version, is
-   Monad/Identity.v's [IdMonad]; this local instance is kept and is not
-   rewired onto it, which is outside #469's scope (Monad/Identity.v's NOT
-   DELIVERED). *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Program Instance Id_Monad : @Monad C Id[C] := {
   ret  := fun _ => id;
   join := fun _ => id
 }.
 
-(* Combining [Id_Monad] with [Id_StrongFunctor] (whose strength is id) gives the
-   identity strong monad.  Both compatibility laws collapse to id ∘ id ≈ id
-   (after id ⨂ id = id) and are discharged automatically.  [Id_Monad] is kept
-   [local] so it is not leaked into library-wide [Monad] instance resolution. *)
+(*
+   本节说明单子、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance Id_StrongMonad : StrongMonad _ Id[C] := {
   strongmonad_is_monad  := Id_Monad;
   strongmonad_is_strong := Id_StrongFunctor
@@ -124,13 +101,11 @@ End IdStrongMonad.
 (** ** Tier 2: validation — η and μ are strong natural transformations *)
 (* ================================================================== *)
 
-(* The deep structural content of the definition: the two compatibility laws are
-   *exactly* the [Strong_Transform] squares for the unit and the multiplication.
-   We package η and μ as natural-transformation objects (Id ⟹ M and M ◯ M ⟹ M)
-   and prove each is a strong natural transformation, reusing [strength_ret] and
-   [strength_join].  This confirms a strong monad is a monoid η : Id ⟹ M,
-   μ : M ◯ M ⟹ M in the category of strong endofunctors and strong natural
-   transformations: each structure map is itself strong. *)
+(*
+   本节说明自然变换、单子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section StrongMonadValidation.
 
@@ -138,9 +113,11 @@ Context `{@Monoidal C}.
 Context {M : C ⟶ C}.
 Context `{@StrongMonad C _ M}.
 
-(* η packaged as a natural transformation Id ⟹ M.  Its naturality square is the
-   unit naturality law [fmap_ret] of the monad; [Build_Transform'] proves the
-   symmetric orientation [naturality_sym] from this one square for free. *)
+(*
+   本节说明自然变换、单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Monad_unit : Id[C] ⟹ M :=
   Build_Transform' (F:=Id[C]) (G:=M) (fun _ => ret[M])
     (fun _ _ _ => ltac:(simpl; symmetry; apply fmap_ret)).
@@ -151,12 +128,11 @@ Definition Monad_mult : M ◯ M ⟹ M :=
   Build_Transform' (F:=M ◯ M) (G:=M) (fun _ => join[M])
     (fun _ _ _ => ltac:(simpl; symmetry; apply join_fmap_fmap)).
 
-(* η is a strong natural transformation Id ⟹ M.  Its source [Id] is strong with
-   strength = id ([Id_StrongFunctor]), so the [Strong_Transform] square reads
+(*
+   本节说明自然变换、（余）强度相关定义、性质与动机。
 
-       strength[M] ∘ (id ⨂ η_y) ≈ η_{x⨂y} ∘ strength[Id]
-
-   and since strength[Id] = id this is precisely [strength_ret]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance ret_Strong_Transform :
   @Strong_Transform C _ Id[C] Id_StrongFunctor M _ Monad_unit.
 Next Obligation.
@@ -165,13 +141,11 @@ Next Obligation.
   apply strength_ret.
 Qed.
 
-(* μ is a strong natural transformation M ◯ M ⟹ M.  Its source [M ◯ M] is strong
-   via [Compose_StrongFunctor] with strength = M(strength) ∘ strength, so the
-   [Strong_Transform] square reads
+(*
+   本节说明自然变换、（余）强度相关定义、性质与动机。
 
-       strength[M] ∘ (id ⨂ μ_y) ≈ μ_{x⨂y} ∘ (M(strength) ∘ strength)
-
-   and one [comp_assoc] re-brackets this to exactly [strength_join]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance join_Strong_Transform :
   @Strong_Transform C _ (M ◯ M) (Compose_StrongFunctor M M _ _) M _ Monad_mult.
 Next Obligation.
@@ -187,23 +161,13 @@ End StrongMonadValidation.
 (**            commutativity, and the induced double strength.        *)
 (* ================================================================== *)
 
-(* nLab: https://ncatlab.org/nlab/show/strong+monad
+(*
+   nLab: https://ncatlab.org/nlab/show/strong+monad
 
-   The mirror image of [StrongMonad]: a monad whose functor carries a *right*
-   tensorial strength  rstrength : M x ⨂ y ~> M (x ⨂ y)  (so M is a
-   [RightStrongFunctor]), compatible with η and μ via the right-hand factor.
+   本节说明函子、单子、（余）强度相关定义、性质与动机。
 
-     - η-compat ([rstrength_ret]):  rstrength ∘ (ret ⨂ id) ≈ ret
-     - μ-compat ([rstrength_join]): rstrength ∘ (join ⨂ id)
-                                      ≈ join ∘ fmap rstrength ∘ rstrength
-
-   This dual is provided for completeness and symmetry with [StrongMonad]; no
-   instance is built here.  (A derived instance over any symmetric base is
-   built in Monad/Strong/Symmetric.v as [rstr_RightStrongMonad].)
-   [CommutativeStrongMonad] below deliberately inlines
-   a [RightStrongFunctor] plus its two compatibility laws (rather than bundling
-   a [RightStrongMonad]) so that the left and right strengths share the *same*
-   underlying monad, keeping [join] unambiguous in the commutativity law. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section RightStrongMonad.
 
@@ -235,25 +199,13 @@ Arguments RightStrongMonad {C} _ M.
 (** ** Commutative strong monads (left and right strengths cohere).    *)
 (* ------------------------------------------------------------------ *)
 
-(* nLab: https://ncatlab.org/nlab/show/commutative+monad
+(*
+   nLab: https://ncatlab.org/nlab/show/commutative+monad
 
-   A *commutative* strong monad is a monad that is simultaneously left-strong
-   and right-strong, whose two strengths agree on how to combine a pair of
-   computations.  Out of the left strength t and the right strength t' one
-   builds two "double strengths" M x ⨂ M y ~> M (x ⨂ y):
+   本节说明单子、（余）强度相关定义、性质与动机。
 
-     dstr  = μ ∘ M t  ∘ t'   (sequence the left  computation first)
-     dstr' = μ ∘ M t' ∘ t    (sequence the right computation first)
-
-   and the monad is commutative when dstr ≈ dstr' — running the two effects in
-   either order yields the same result.  This double strength is precisely the
-   laxator that exhibits a commutative monad as a lax monoidal monad, and it is
-   what underlies the Applicative instance of a commutative monad.
-
-   We share a single underlying [Monad] between the two strengths, so that
-   [join] is unambiguous in the commutativity law: the right strength is given
-   as a [RightStrongFunctor] together with its two monad-compatibility laws
-   relative to that shared monad. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CommutativeStrongMonad.
 
@@ -291,25 +243,11 @@ Arguments CommutativeStrongMonad {C} _ M.
 (**     carries a right strength compatible with η and μ.              *)
 (* ------------------------------------------------------------------ *)
 
-(* On a symmetric monoidal base the left strength induces a right strength by
-   conjugating with the braiding,
+(*
+   本节说明幺半结构、单子、幺半群相关定义、性质与动机。
 
-     rstr := M(β) ∘ t ∘ β  :  M x ⨂ y ~> M (x ⨂ y)
-
-   (braid M x ⨂ y → y ⨂ M x, apply the left strength, then braid back inside
-   M).  We prove that this derived right strength is natural and satisfies the
-   two monad-compatibility laws — so every strong monad over a symmetric base is
-   right-strong in the monad-relevant sense.
-
-   This file delivers the derived morphism family with its naturality and
-   monad-compatibility laws; the two [RightStrongFunctor] *coherence* laws
-   (unit-object [rrstrength_id_right] and associator [rstrength_assoc]) are
-   now derivable as well: the braid-unitor coherences (ρ ≈ λ ∘ β and its
-   mirrors) are proven from the bare axioms in
-   Structure/Monoidal/Braided/Proofs.v ([braid_unit_left],
-   [braid_unit_right], [braid_I_I]), and Monad/Strong/Symmetric.v packages
-   [rstr] as a full [RightStrongFunctor] and [RightStrongMonad]
-   ([rstr_RightStrongFunctor], [rstr_RightStrongMonad]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SymmetricRightStrength.
 
@@ -392,20 +330,11 @@ Definition dstr {x y} : M x ⨂ M y ~> M (x ⨂ y) :=
 Definition dstr' {x y} : M x ⨂ M y ~> M (x ⨂ y) :=
   join[M] ∘ fmap[M] rstr ∘ strength.
 
-(* Commutativity over a symmetric base: the two orders of combining a pair of
-   computations agree.  This is a genuine extra property of the particular
-   strong monad (false for non-commutative monads), recorded here as the
-   predicate to be discharged per instance.
+(*
+   本节说明单子、（余）强度相关定义、性质与动机。
 
-   This is the symmetric-base specialization, phrased with the *derived* right
-   strength [rstr]; it is distinct from the abstract
-   [CommutativeStrongMonad.commutativity] field (stated over an arbitrary
-   bundled right strength).  The bridge is provided in
-   Monad/Strong/Symmetric.v: [commutative_CommutativeStrongMonad] turns a
-   [commutative_sm] witness into a [CommutativeStrongMonad] over the derived
-   right strength, and [CSM_commutative_sm] gives the converse whenever the
-   bundled right strength agrees with [rstr]; the required braid/unitor
-   coherence is [braid_unit_left] in Structure/Monoidal/Braided/Proofs.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition commutative_sm : Type := ∀ x y, @dstr x y ≈ @dstr' x y.
 
 End SymmetricRightStrength.

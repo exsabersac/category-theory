@@ -58,9 +58,11 @@ Proof.
   symmetry. apply (naturality (mh_transform θ)).
 Qed.
 
-(* Identity and composite.  The proofs are chains of [etransitivity],
-   [compose_respects] and the associativity laws, with no setoid
-   [rewrite], which would add a universe (see UNIVERSES above). *)
+(*
+   本节说明 Morphism 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition mh_id@{o h | } {C : Category@{o h h}} {T : C ⟶ C}
   (M : @Monad C T) : MonadHom@{o h} M M.

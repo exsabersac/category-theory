@@ -148,11 +148,11 @@ Example CoHomAb_fmap_at@{o h a +} {C : Category@{o h h}}
 
 (** ** The Ab-valued hom functors are continuous *)
 
-(* Forgetting the group structure of [HomAb AC A0] gives the Sets-valued
-   hom functor up to the identity-component iso [HomAb_forget_iso], which
-   is continuous; [Ab_Forget] reflects limit cones, and [cone_assoc_inv]
-   repackages a cone over [Ab_Forget ◯ (HomAb ◯ K)] as one over
-   [(Ab_Forget ◯ HomAb) ◯ K]. *)
+(*
+   本节说明函子、（余）极限、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition HomAb_continuous@{o h a +}
   {C : Category@{o h h}} {LP : LocallyPropositional C}
   (AC : AbEnriched C) (A0 : C) :
@@ -301,10 +301,11 @@ Example watt_ab_iso_from_at (x : C) (t : carrier (cmon_setoid (T x))) :
   cmon_map (transform[from watt_ab_iso] x) t
     = transform[from (@represented _ _ Rp)] x t := eq_refl.
 
-(* Tactic form, kept as a precaution only: the term-mode [existT]
-   spelling, and the anonymous-constructor one, also compile on Coq
-   8.19.2 and 8.20.1 (measured in scratch copies against built 8.19.2 and
-   8.20.1 closures of this file). *)
+(*
+   本节说明 Additive 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition watt_ab_repr :
   { A : C & @Isomorphism (@Fun C Ab@{a h}) (HomAb AC A) T }.
 Proof using AF Rp. exists wab_obj. exact watt_ab_iso. Defined.

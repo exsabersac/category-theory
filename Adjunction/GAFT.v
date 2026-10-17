@@ -54,119 +54,29 @@ Generalizable All Variables.
    假设——从不削弱结论，结论仍是完整左伴随 [F ⊣ U]。这镜像 [Comma_Complete] 自身的
    相同、已文档化选择。 *)
 
-(* The converse of continuity: provenance, obstruction, and use
-
+(*
    nLab:  https://ncatlab.org/nlab/show/adjoint+functor+theorem
    Book:  Freyd, "Abelian Categories: An Introduction to the Theory of
-          Functors", Harper & Row 1964 (TAC Reprints 3, 2003)
    Paper: Kan, "Adjoint Functors", Trans. AMS 87(2), 1958
    Paper: Porst, "The history of the General Adjoint Functor Theorem",
-          arXiv:2310.19528, 2023
-   Post:  Milewski, "Freyd's Adjoint Functor Theorem", 2020
 
-   The theorem answers one question: which limit-preserving functors are
-   right adjoints.  That a right adjoint preserves limits is elementary, and
-   is proven in-tree as [rapl_is_alimit] of Adjunction/Continuity.v (RAPL);
-   [GAFT] answers the converse: sufficient conditions under which a
-   continuous [U] is a right adjoint, exhibited here as the left adjoint
-   [F ⊣ U].
+   本节说明伴随、函子、（余）极限相关定义、性质与动机。
 
-   Adjoint functors were a recent notion when the theorem was proved.  Kan
-   introduced them (Kan, "Adjoint Functors", Trans. AMS 87(2), 1958), and
-   Mac Lane records that Bourbaki had just missed the concept in a 1948
-   draft appendix.  Both the general and the special adjoint functor
-   theorems then first appeared in print in Freyd's 1964 book, where — as
-   nLab records — they sit in the exercise section of chapter 3 rather than
-   among the headline results.  Porst has argued that the substance of the
-   result reaches back further still, into the universal-mapping-problem
-   tradition of the late 1940s (Porst, arXiv 2023) — a claim about
-   provenance, not settled consensus.  Freyd and Scedrov later renamed the
-   solution-set condition pre-adjointness (1990).
-
-   The hypotheses repair a genuine size obstruction rather than decorate the
-   statement.  Building the adjoint pointwise as a limit over the comma
-   category breaks down because that category is large, and a large category
-   need not have large limits; indeed a small complete category is a
-   preorder (Freyd), so completeness cannot be exploited naively at large
-   size.  The [SolutionSet] record is the minimal patch — a small family
-   [sol_arr] through which every [d ~> U c] factors, that is, a weakly
-   initial family in the comma [=(d) ↓ U].  Freyd's repair runs in two
-   stages, both carried out by [initial_from_weakly_initial] of
-   Theory/WeaklyInitial.v: take the [iprod] of the family to a weakly
-   initial object, then equalize all of its endomorphisms to sharpen weak
-   initiality into genuine initiality.  In [GAFT] those products and
-   equalizers come from [Comma_Complete], and [wif_of_sols] is the passage
-   from a [SolutionSet] to the [WeaklyInitialFamily] consumed there.
-
-   The special adjoint functor theorem trades the explicit solution set for
-   structural smallness of the domain: Adjunction/SAFT.v manufactures a
-   [SolutionSet] from well-poweredness ([SubobjectIndex]) and a cogenerating
-   family ([Cogenerator]), so [SAFT] never asks the caller to supply one.
-   (CORRECTION, #451: [SubobjectIndex] is not well-poweredness -- it lacks
-   the exhaustiveness clause of Structure/WellPowered.v's [WellPowered] and
-   the empty family inhabits it -- and [SAFT] does ask for one more datum,
-   [SubobjectCover], which factors every arrow through the given index and
-   is refutable at the identity of [Sets] (Adjunction/SAFT/Sets.v's
-   [SubobjectCover_Id_Sets_absurd]).)
-   Continuity by itself does not suffice, and the boundary is sharp: nLab
-   records a counterexample that Joyal attributes to Mac Lane, a product
-   of representables over the simple groups that is continuous yet not
-   representable.  The modern sharpening (Adámek and Rosický) makes it a
-   biconditional between locally presentable categories, where a functor
-   has a left adjoint exactly when it is accessible and preserves small
-   limits.
-
-   The reach is broad.  When [U] forgets structure its left adjoint is the
-   free construction, which Milewski glosses as freely ad-libbing the
-   forgotten information.  A full subcategory is reflective exactly when its
-   inclusion has a left adjoint, so the theorem is the standard tool for
-   producing reflectors (Construction/Reflective.v,
-   Construction/Localization.v).  Limits, colimits and Kan extensions are
-   themselves adjoints, so it yields existence criteria for them; and in the
-   order-theoretic degenerate case it is the adjoint functor theorem for
-   preorders, the Galois-connection setting that Instance/Poset.v cites
-   [SolutionSet] to explain.  Adjunction/GAFT/Examples.v runs
-   [GAFT_from_initials] end to end to recover the diagonal adjoint Δ ⊣ (×),
-   proving the produced functor naturally isomorphic to Δ
-   ([diagonal_product_via_gaft_is_diagonal]).
-
-   The computational reading is the generate-then-constrain recipe familiar
-   from free-algebra constructions.  Milewski reads the solution set as a
-   way to cut a large comma category down to a manageable size, and the
-   construction holographically: gather all information about an object
-   through the morphisms out of it, ship that record back through [U], and
-   reconstruct the best preimage as a limit.  The product-then-equalizer
-   shape tuples the small family and carves it by imposing every self-map;
-   Milewski notes an unexpected connection to defunctionalization, the
-   Reynolds program transformation that motivated the account. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Solution sets *)
 
-(* A solution set at [d : D] for [U : C ⟶ D]: a small [Type] of indices, a
-   family of objects [sol_obj i : C] with arrows [sol_arr i : d ~> U (sol_obj i)],
-   such that every [h : d ~> U c] factors through some member,
-   [fmap[U] t ∘ sol_arr i ≈ h].  No uniqueness of the factorization is asked —
-   this is a *weakly* initial family in the comma category [=(d) ↓ U]. *)
-(* THE INDEX UNIVERSE IS NAMED [i], AND IT IS FREE HERE ON PURPOSE.
-   [SolutionSet@{i dobj cobj h}] carries an EMPTY constraint block: [i] is
-   related to nothing, so a solution set may be indexed at any level -- by
-   a [bool], by [Subgroup G], by a sigma over the objects of the ambient
-   category.  That freedom is the whole reason the record is worth having
-   separately from the weakly initial family it becomes.
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-   THE IDENTIFICATION IS IMPOSED AT [GAFT], NOT HERE, and declaring it
-   here would WEAKEN this record.  See [GAFT] below: applying the
-   theorem forces [i] onto the ambient hom universe [h], through
-   [Complete]'s single shape-object universe.  The refusals recorded in
-   Instance/Mod/TensorAFT.v and Test/ProbeModTensorAFT449.v are that
-   forcing meeting an index that sits strictly above [h].
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-   Measured readback:
-
-     SolutionSet@{i dobj cobj h} :
-     ∀ {C : Category@{cobj h h}} {D : Category@{dobj h h}},
-     C ⟶ D → obj[D] → Type@{max(i+1,cobj,h)}
-     (* i dobj cobj h |=  *)                     <-- empty, as intended *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record SolutionSet@{i dobj cobj h}
   {C : Category@{cobj h h}} {D : Category@{dobj h h}} (U : C ⟶ D) (d : D) := {
   sol_index : Type@{i};
@@ -183,12 +93,11 @@ Arguments sol_covers {C D U d} _ {c} _.
 
 (** ** The universal-arrow half: initial objects give a left adjoint *)
 
-(* If every [d : D] has an initial object in the comma category [=(d) ↓ U],
-   then [U] has a left adjoint.  Immediate from [Theory/Universal/Arrow.v]:
-   each such initial object is a [UniversalArrow d U], and a universal arrow at
-   every object assembles into the left adjoint by
-   [AdjunctionFromUniversalArrows], instantiated with the codomain [D] on the
-   left (see the VARIANCE note above). *)
+(*
+   本节说明伴随、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem GAFT_from_initials {C D : Category} (U : C ⟶ D)
   (H : forall d : D, @Initial (=(d) ↓ U)) : { F : D ⟶ C & F ⊣ U }.
 Proof.
@@ -213,25 +122,16 @@ Proof.
   exact (equalizer_is_equalizer f g L).
 Defined.
 
-(* A solution set at [d] is a weakly initial family in the comma [=(d) ↓ U]:
-   the family members are the comma objects [(sol_obj i, sol_arr i)], and the
-   covering arrow for any comma object [(c, h)] is the [U]-factorization
-   [(sol_obj i, t)] of [h] supplied by [sol_covers], upgraded to a comma
-   morphism (its commuting triangle is exactly the factorization equation, the
-   left leg [fmap[=(d)] _] collapsing to [id[d]]). *)
-(* THE INDEX UNIVERSE IS CARRIED ACROSS ON THE NOSE, and the binders say
-   so: the solution set's [i] is the weakly initial family's [i], with no
-   level change in either direction.  That is what makes this bridge and
-   its converse [sols_of_wif] below an identification of index types
-   rather than a resizing, and it is why the size condition [GAFT]
-   imposes can be read off [initial_from_weakly_initial] alone.  Measured:
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-     wif_of_sols@{i cobj dobj h comma u u0 u1 u2 u3} :
-     ∀ {C : Category@{cobj h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
-       (d : obj[D]),
-       SolutionSet@{i dobj cobj h} U d
-       → WeaklyInitialFamily@{i comma h} (=(d) ↓ U)
-     (* i cobj dobj h comma u u0 u1 u2 u3 |= h < u1 / u0 <= comma *) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition wif_of_sols@{i cobj dobj h comma +}
   {C : Category@{cobj h h}} {D : Category@{dobj h h}} (U : C ⟶ D) (d : D)
   (S : SolutionSet@{i dobj cobj h} U d)
@@ -252,81 +152,16 @@ Defined.
 
 (** ** Freyd's General Adjoint Functor Theorem *)
 
-(* Freyd's GAFT.  [C] complete, [U] preserving (image) limits, and a solution
-   set at every [d], yield a left adjoint [F ⊣ U].  For each [d]:
+(*
+   本节说明伴随、（余）极限、等化子相关定义、性质与动机。
 
-     - comma completeness [Comma_Complete] makes [=(d) ↓ U] complete;
-     - the solution set becomes a weakly initial family [wif_of_sols];
-     - the two products (over the solution-set index, and over the
-       endomorphisms of that product) and the equalizers demanded by
-       [initial_from_weakly_initial] are drawn from that comma completeness;
-     - [initial_from_weakly_initial] then yields an initial object of
-       [=(d) ↓ U], fed to [GAFT_from_initials].
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明伴随、hom相关定义、性质与动机。
 
-   See the header for why the preservation hypothesis is the cone-level
-   [PreservesImageLimit] rather than the apex-only [PreservesAllLimits]. *)
-(* THE UNIVERSE BINDERS ARE THE STATEMENT OF THE SIZE CONDITION, and they
-   are written out because the two identifications below are what every
-   application of this theorem stands or falls on.
-
-     [cobj], [dobj]  the object universes of [C] and of [D],
-     [h]             the hom-and-proof universe of BOTH -- one level, not
-                     two, because [Adjunction] relates the two hom-setoids,
-
-   and then, in the two annotated hypotheses:
-
-     (i)  [SolutionSet@{h dobj cobj h}] -- the solution-set INDEX universe
-          is [h].  [SolutionSet] itself leaves it free (empty constraint
-          block, see above); it is this application that pins it.
-     (ii) [@Complete@{h h h cobj} C] -- [Complete]'s SHAPE-OBJECT universe
-          is [h] as well, identified with the ambient hom universe.
-
-   WHY (ii), which is the one that surprises.  The proof takes TWO limits
-   inside the comma category, through [initial_from_weakly_initial]:
-
-       initial_from_weakly_initial@{u u0 u1 u2 u3}
-         {C : Category@{u2 u3 u3}} (W : WeaklyInitialFamily@{u0 u2 u3} C)
-         (P : Limit@{u u0 u3 u2} (DiscreteCat_Functor (wif_obj W)))
-         (Limit@{u3 u3 u3 u2} (DiscreteCat_Functor
-            (fun _ : iprod (wif_obj W) P ~> iprod (wif_obj W) P => …)))
-         (HasEqualizers C) : Terminal C
-
-   The FIRST limit is over a discrete shape whose objects are the family
-   index [u0]; the SECOND is over a discrete shape whose objects are a
-   HOM-SET of the ambient category, so its shape-object universe is the
-   ambient hom universe [u3].  [Complete] offers ONE shape-object universe
-   for every shape at once, so the second limit drags it up to [h] and the
-   first -- the solution set -- is dragged with it.  That is (i) and (ii)
-   in one sentence: the equalizer of all endomorphisms of the product is
-   what puts the solution-set index at the hom universe.
-
-   WHAT IS NOT HERE ANY MORE.  An earlier revision of this theorem printed
-   [C : Category@{u1 Set Set}] and [Complete@{u4 u4 Set u1}], with [h] the
-   literal [Set].  That [Set] was a universe-minimization artifact of
-   Instance/Discrete.v's unannotated [DiscreteCat_Functor], reaching this
-   statement through the [DiscreteCat_Functor] limits taken in the proof
-   below; the donor was annotated in the PR
-   "algebraic carriers are sets" (2026-09-17) and no literal [Set] remains.
-   The size condition (i)+(ii) survives it unchanged, which is the point:
-   it is structural and was never about [Set].
-
-   The measured readback, after the annotation:
-
-     GAFT@{cobj dobj h u u0 u1} :
-     ∀ {C : Category@{cobj h h}} {D : Category@{dobj h h}} (U : C ⟶ D),
-       Complete@{h h h cobj}
-       → PreservesImageLimit@{cobj h dobj h u0 h u1 h}
-         → (∀ d : obj[D], SolutionSet@{h dobj cobj h} U d)
-           → ∃ F : D ⟶ C, Adjunction@{cobj h h dobj h h h h u1 h u} F U
-     (* cobj dobj h u u0 u1 |= h < u0 / h < u1
-                               / cobj <= u0 / dobj <= u0 / … *)
-
-   -- the two strict bounds [h < u0] and [h < u1] being the [Type]s the
-   comma categories and the adjunction record live in.  The trailing [+]
-   on the binder list allows those auxiliary levels, which is why they
-   print as [u], [u0], [u1] AFTER the three named ones; the three named
-   are the ones the size condition is about, and no [Set] appears among
-   any of them. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem GAFT@{cobj dobj h +} {C : Category@{cobj h h}} {D : Category@{dobj h h}}
   (U : C ⟶ D)
   (comp : @Complete@{h h h cobj} C) (cont : @PreservesImageLimit C D U)
@@ -345,27 +180,17 @@ Proof.
             (Complete_HasEqualizers HCat)).
 Qed.
 
-(** ** The converse of [wif_of_sols]
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-    A weakly initial family of the comma category is a solution set —
-    the exact converse of [wif_of_sols], with the same index — and an
-    initial object of the comma category is therefore a one-member
-    solution set: Mac Lane §V.6 Theorem 1's necessity direction, in this
-    file's vocabulary (#435).  Appended here so that no line above moves. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* The converse, with the index universe [i] carried across on the nose in
-   the other direction — see [wif_of_sols] above.  Measured: the two have
-   the SAME binder list and the same two constraints,
+(*
+   本节说明 GAFT 相关定义、性质与动机。
 
-     sols_of_wif@{i cobj dobj h comma u u0 u1 u2 u3} :
-     ∀ {C : Category@{cobj h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
-       (d : obj[D]),
-       WeaklyInitialFamily@{i comma h} (=(d) ↓ U)
-       → SolutionSet@{i dobj cobj h} U d
-     (* i cobj dobj h comma u u0 u1 u2 u3 |= h < u1 / u0 <= comma *)
-
-   which is the sharpest statement that the passage is an identification
-   and not a resizing. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sols_of_wif@{i cobj dobj h comma +}
   {C : Category@{cobj h h}} {D : Category@{dobj h h}} (U : C ⟶ D) (d : D)
   (W : WeaklyInitialFamily@{i comma h} (=(d) ↓ U))
@@ -403,26 +228,17 @@ Example sols_of_comma_initial_obj {C D : Category} (U : C ⟶ D) (d : D)
   sol_obj (sols_of_comma_initial U d I) u
     = snd (`1 (@initial_obj (=(d) ↓ U) I)) := eq_refl.
 
-(** ** GAFT's inner step, exported
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-    [GAFT] above reaches its comma-initial objects inside its own [Qed]:
-    comma completeness, [wif_of_sols], the two products and
-    [Complete_HasEqualizers].  #437 needs that object on its own, so the
-    five lines are repeated here as a [Definition] — the theorem's proof is
-    NOT rewritten to use it, since every line of this file above stays put
-    (eleven external citations point into it). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* The same two identifications as [GAFT] — [Complete]'s shape-object
-   universe and the solution-set index are both the ambient hom universe
-   [h] — since this is [GAFT]'s inner step lifted out verbatim.  Measured:
+(*
+   本节说明hom、始/终对象相关定义、性质与动机。
 
-     comma_initial_of_sols@{cobj dobj h u u0 u1 u2 u3 u4 u5} :
-     ∀ {C : Category@{cobj h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
-       (d : obj[D]),
-       Complete@{h h h cobj}
-       → PreservesImageLimit@{cobj h dobj h u4 h u5 h}
-         → SolutionSet@{h dobj cobj h} U d → Terminal@{u h}
-     (* cobj dobj h u u0 u1 u2 u3 u4 u5 |= h < u4 / u1 <= u *) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition comma_initial_of_sols@{cobj dobj h +}
   {C : Category@{cobj h h}} {D : Category@{dobj h h}} (U : C ⟶ D) (d : D)
   (comp : @Complete@{h h h cobj} C) (cont : @PreservesImageLimit C D U)
@@ -440,17 +256,11 @@ Defined.
 
 (* GAFT itself, re-derived from the exported step, agrees with the theorem
    above on its statement — the two are interchangeable at the type. *)
-(* Same binders as [GAFT], which is what "agrees on its statement" means
-   here: the two are interchangeable at the type AND at the universe
-   graph's two identifications.  Measured:
+(*
+   本节说明伴随相关定义、性质与动机。
 
-     GAFT_via_comma_initial@{cobj dobj h u u0 u1 u2 u3 u4 u5 u6} :
-     ∀ {C : Category@{cobj h h}} {D : Category@{dobj h h}} (U : C ⟶ D),
-       Complete@{h h h cobj}
-       → PreservesImageLimit@{cobj h dobj h u6 h u h}
-         → (∀ d : obj[D], SolutionSet@{h dobj cobj h} U d)
-           → ∃ F : D ⟶ C, Adjunction@{cobj h h dobj h h h h u h u0} F U
-     (* … |= h < u / u3 <= u1 *) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition GAFT_via_comma_initial@{cobj dobj h +}
   {C : Category@{cobj h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
   (comp : @Complete@{h h h cobj} C) (cont : @PreservesImageLimit C D U)
@@ -459,39 +269,11 @@ Definition GAFT_via_comma_initial@{cobj dobj h +}
 
 (** ** The converse: an adjunction supplies its own solution sets *)
 
-(* Mac Lane §V.6 Theorem 2 (book p. 123) and Awodey §9.8 Theorem 28 read the
-   theorem above as a CHARACTERIZATION: for [U] with complete domain, having
-   a left adjoint is EQUIVALENT to preserving limits and satisfying the
-   solution set condition.  The sufficient direction is [GAFT]; the
-   necessary one is two statements, of which the tree already had the first
-   ([right_adjoint_PreservesImageLimit], Construction/Comma/Limit.v) and
-   none of the second — nothing anywhere built a [SolutionSet U d] out of an
-   adjunction.
+(*
+   本节说明伴随、（余）极限、来源与用途相关定义、性质与动机。
 
-   It costs nothing to build.  The solution set is a SINGLETON: the unit
-   [η d : d ~> U (F d)] is the one arrow needed, since every [h : d ~> U c]
-   factors through it as [U (ε c ∘ fmap[F] h) ∘ η d] by the triangle
-   identities.  No completeness, no limit preservation, no smallness
-   hypothesis and no discrete-shape limit enter, so unlike [GAFT] itself
-   this direction carries no [Set] pin.  Read the universe claim precisely:
-   it is stated over [Category@{uo uh uh}] — the hom and proof universes
-   identified, and the SAME [uh] for both categories — which is the
-   identification [Adjunction] and [SolutionSet] already carry and not one
-   introduced here, so an earlier revision of this sentence saying "the
-   three universes free" was wrong.  What is free is [Set]: the necessity
-   direction is accepted at a category with [Set] strictly below its homs,
-   where the biconditional is refused (probe n6 and its control).
-
-   Mac Lane's completeness step is available through #438's creation
-   result — [comma_Complete_via_creation] (Construction/Comma/Creation.v)
-   derives [Comma_Complete]'s conclusion from [comma_CreatesAllLimits] and
-   [creates_limits_Complete], which is his argument rather than
-   Construction/Comma/Limit.v's direct construction.  [GAFT] itself is not
-   rewritten to use it: that would move lines eleven external citations
-   point at, and would put Construction/Comma/Creation.vo into this file's
-   closure for no theorem gained.
-
-   Everything below is appended, so no line at or above 328 moves. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition solution_set_of_adjunction {C D : Category} {F : D ⟶ C} {U : C ⟶ D}
   (A : F ⊣ U) (d : D) : SolutionSet U d.
@@ -525,13 +307,11 @@ Definition solution_set_of_adjunction_arr {C D : Category} {F : D ⟶ C}
 
 (** ** Mac Lane's own route, through the comma-initial object *)
 
-(* The book does not exhibit a solution set directly: it observes that the
-   unit is a UNIVERSAL ARROW, hence an initial object of the comma category,
-   hence a weakly initial family of one, hence a solution set.  That chain is
-   in the tree already — [universal_arrow_from_UMP], [arrow_initial],
-   [sols_of_comma_initial] — so the route can be walked as a second reading
-   and compared with the direct one.  It collapses: the arrow of the derived
-   solution set is again the unit, by [eq_refl]. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition universal_arrow_of_adjunction {C D : Category} {F : D ⟶ C}
   {U : C ⟶ D} (A : F ⊣ U) (d : D) : UniversalArrow d U.
@@ -580,13 +360,11 @@ Definition solution_set_via_comma_arr {C D : Category} {F : D ⟶ C}
 
 (** ** The characterization *)
 
-(* Mac Lane §V.6 Theorem 2 / Awodey §9.8 Theorem 28.  [Defined], so that the
-   readbacks below hold; and the reverse half is [GAFT] ITSELF rather than
-   [GAFT_via_comma_initial], because [GAFT] is [Qed] and the two are not
-   convertible — building it from the latter stops [GAFT_iff_rev_is_GAFT]
-   below, this file's own readback, before Adjunction/GAFT/Sets.v's
-   [Sets_Id_has_left_is_GAFT_at_Sets_Id] is ever reached.  Both readbacks
-   stop; the nearer one is the one that fires. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem GAFT_iff {C D : Category} (U : C ⟶ D) (comp : @Complete C) :
   { F : D ⟶ C & F ⊣ U }

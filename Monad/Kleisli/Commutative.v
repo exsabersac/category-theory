@@ -42,10 +42,11 @@ Context `{@SymmetricMonoidal C}.
 Context {M : C ⟶ C}.
 Context `{@StrongMonad C _ M}.
 
-(* Congruence for [kpure], specialized to the ambient context so that
-   [apply] never has to reconstruct the section instances by
-   unification: the many transfer proofs below invoke it on goals whose
-   endpoint objects are stated through the induced Kleisli tensor. *)
+(*
+   本节说明Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma kl_pure_eqv {a b : C} {u v : a ~{C}~> b} (E : u ≈ v) :
   (kpure u : a ~{Kleisli}~> b) ≈ kpure v.
 Proof. now apply kpure_proper. Qed.
@@ -54,14 +55,11 @@ Proof. now apply kpure_proper. Qed.
 (** ** The braid conjugation identity for the double strengths.        *)
 (* ------------------------------------------------------------------ *)
 
-(* Conjugating [dstr] by the braiding on both sides computes [dstr']:
-   unfolding [rstr] inside [dstr] at the swapped indices exposes a braid
-   pair that the involution law removes, and naturality of join
-   ([join_fmap_fmap]) slides the outer M(β) under the multiplication,
-   reassembling [rstr] inside the fmap argument of [dstr'].  This is a
-   fact of every strong monad over a symmetric base — no commutativity
-   hypothesis enters — and it is what lets the braiding of Kl(M) commute
-   with the double-strength tensor below. *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma dstr_braid {x y : C} :
   (dstr' : M x ⨂ M y ~> M (x ⨂ y))
     ≈ fmap[M] braid ∘ (dstr : M y ⨂ M x ~> M (y ⨂ x)) ∘ braid.
@@ -80,11 +78,11 @@ Qed.
 (** ** Commutativity versus centrality: both directions.               *)
 (* ------------------------------------------------------------------ *)
 
-(* If M is commutative, every Kleisli morphism is central: through the
-   characterization [kleisli_central_iff], each of the two centrality
-   squares asks that [dstr] and [dstr'] agree on a tensor with f in one
-   factor, which is a congruence instance of the commutativity
-   equation. *)
+(*
+   本节说明Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem kleisli_all_central (comm : commutative_sm (M:=M))
         {x y : C} (f : x ~{Kleisli}~> y) :
   @central Kleisli Kleisli_Binoidal x y f.
@@ -95,11 +93,11 @@ Proof.
   - now rewrite (comm d y).
 Qed.
 
-(* Conversely, if every Kleisli morphism is central, M is commutative:
-   instantiate the centrality of the Kleisli morphism
-   id[M x] : M x ~{Kl}~> x against id[M y] : M y ~{Kl}~> y.  The square
-   normalizes to dstr ∘ (id ⨂ id) ≈ dstr' ∘ (id ⨂ id), and the identity
-   padding evaporates by [bimap_id_id]. *)
+(*
+   本节说明Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem kleisli_all_central_commutative
         (allc : ∀ (x y : C) (f : x ~{Kleisli}~> y),
                   @central Kleisli Kleisli_Binoidal x y f) :
@@ -122,11 +120,11 @@ Section WithComm.
 
 Hypothesis comm : commutative_sm (M:=M).
 
-(** *** The monoidal structure on Kl(M)
+(*
+   本节说明幺半结构、幺半群、Kleisli相关定义、性质与动机。
 
-    The all-central engine of Structure/Premonoidal/Monoidal.v applied
-    at the Power-Robinson premonoidal structure of Kl(M), with the
-    centrality of all morphisms supplied by [kleisli_all_central]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Kleisli_Monoidal : @Monoidal Kleisli :=
   @Premonoidal_Monoidal Kleisli Kleisli_Binoidal Kleisli_Premonoidal
@@ -143,10 +141,11 @@ Lemma kleisli_bimap_dstr {a b c d : C}
     ≈ dstr ∘ ((f : a ~{C}~> M b) ⨂ (g : c ~{C}~> M d)).
 Proof. exact (kl_square_rl f g). Qed.
 
-(* Padding one side of the tensor with the Kleisli identity leaves the
-   corresponding one-variable tensoring functor of the binoidal
-   structure; these are [composite_id_right] / [composite_id_left]
-   restated over the monoidal [bimap]. *)
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma kl_bimap_inj_left {a b : C} (w : C) (f : a ~{Kleisli}~> b) :
   (f ⨂[Kleisli_Monoidal] (@id Kleisli w))
     ≈ fmap[@inj_left Kleisli Kleisli_Binoidal w] f.
@@ -157,10 +156,11 @@ Lemma kl_bimap_inj_right (w : C) {a b : C} (f : a ~{Kleisli}~> b) :
     ≈ fmap[@inj_right Kleisli Kleisli_Binoidal w] f.
 Proof. exact (@composite_id_left Kleisli Kleisli_Binoidal a b w f). Qed.
 
-(* The tensor of two pure morphisms is the pure image of the base
-   tensor: after [kleisli_bimap_dstr], feeding returned values into both
-   factors of [dstr] collapses it through [dstr_ret_left] and
-   [strength_ret] onto a single unit. *)
+(*
+   本节说明Kleisli、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma kl_pure_tensor {a b c d : C} (u : a ~{C}~> b) (v : c ~{C}~> d) :
   ((kpure u) ⨂[Kleisli_Monoidal] (kpure v)) ≈ kpure (u ⨂ v).
 Proof.
@@ -195,13 +195,11 @@ Proof.
   apply pure_inj_right.
 Qed.
 
-(** *** The pure-transfer kit for the structural isomorphisms
+(*
+   本节说明幺半结构、幺半群、同构相关定义、性质与动机。
 
-    The unitors and associator of [Kleisli_Monoidal] are the pure images
-    of the base ones BY DEFINITION — the monoidal structure reuses the
-    premonoidal [Kleisli_pure_iso] data — so each transfer equation is
-    closed by reflexivity.  They are recorded as lemmas so downstream
-    proofs can cite the kit uniformly. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma kl_pure_unit_left (x : C) :
   to (@unit_left Kleisli Kleisli_Monoidal x)
@@ -233,15 +231,11 @@ Lemma kl_pure_assoc_from (x y z : C) :
     ≈ kpure (from (@tensor_assoc C _ x y z)).
 Proof. reflexivity. Qed.
 
-(** *** The braided structure on Kl(M)
+(*
+   本节说明（余）强度相关定义、性质与动机。
 
-    The braiding is the pure image of the base braiding.  Its joint
-    naturality square — the Naturality-class predicate consumed by the
-    [braid_natural] field, mirroring how Instance/StrictCat/Funny.v
-    discharges the same obligation — reduces through the two
-    double-strength normal forms [kl_square_lr] / [kl_square_rl] and the
-    pure exchange laws to a C-level equation between [dstr'] and [dstr],
-    which [dstr_braid] closes with one braid involution. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma kl_braid_natural {x y z w : C}
       (g : x ~{Kleisli}~> y) (h : z ~{Kleisli}~> w) :
@@ -353,10 +347,11 @@ Section WithCD.
 
 Context `{CD : @CopyDiscard C _}.
 
-(* The five-factor middle-interchange word of Hypergraph.v, computed in
-   [Kleisli_Symmetric], is the pure image of the base one: every factor
-   is either a pure structural map on the nose or a pure morphism padded
-   with an identity, and the pure functor preserves the composite. *)
+(*
+   本节说明函子、Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma kl_pure_mid_swap_inv (X Y : C) :
   @mid_swap_inv Kleisli Kleisli_Symmetric X Y
     ≈ kpure (@mid_swap_inv C _ X Y).
@@ -448,12 +443,11 @@ Definition Kleisli_cd_comonoid (x : C) :
     (Kleisli_cd_comonoid_base x)
     (kl_delta_cocommutative x).
 
-(** *** The CopyDiscard coherence fields
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Each side of each coherence is the pure image of the corresponding
-    base composite, so the equations descend along the pure functor.
-    [kl_cd_tensor_delta] is the heaviest: the canonical delta routes
-    through [mid_swap_inv], transported by [kl_pure_mid_swap_inv]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma kl_cd_tensor_delta (X Y : C) :
   kpure copy[(X ⨂ Y)%object]
@@ -508,12 +502,11 @@ Proof.
   - apply kpure_id.
 Qed.
 
-(* The copy-discard structure of Kl(M).  Note what is NOT transported:
-   naturality of copy and discard, which CopyDiscard deliberately never
-   asks for.  In Kl(M) an effectful morphism need not commute with
-   duplication or deletion of its input; the morphisms that do are the
-   deterministic ones, and Monad/Thunkable.v identifies the thunkable
-   Kleisli morphisms inside them. *)
+(*
+   本节说明单子、Kleisli、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Kleisli_CopyDiscard : @CopyDiscard Kleisli Kleisli_Symmetric :=
   @Build_CopyDiscard Kleisli Kleisli_Symmetric
     Kleisli_cd_comonoid

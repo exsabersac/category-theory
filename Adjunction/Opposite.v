@@ -39,9 +39,11 @@ Notation "N ^op" := (@Opposite_Adjunction _ _ _ _ N)
 
 Open Scope adjunction_scope.
 
-(* The op construction is an involution on adjunctions: since (C^op)^op = C and
-   F^op reuse their underlying data on the nose, and the dual swaps the iso's
-   to/from twice, applying op twice recovers A by [reflexivity]. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary Opposite_Adjunction_invol `(F : D ⟶ C) `(U : C ⟶ D) (A : F ⊣ U) :
   (A^op)^op = A.

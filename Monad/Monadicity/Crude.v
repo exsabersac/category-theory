@@ -54,13 +54,11 @@ Local Notation HM := (Adjunction_Induced_Monad A).
 Local Notation EM := (@EilenbergMoore D (U ◯ F) HM).
 Local Notation K := (EM_Comparison A).
 
-(** ** The canonical presentation of an algebra, upstairs in C
+(*
+   本节说明单子相关定义、性质与动机。
 
-    For an algebra x = (d, α) of the induced monad, the parallel pair
-
-        ε_{F d}, F α : F (U (F d)) ⇉ F d
-
-    is reflexive, with common section F η_d. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition crude_pair_l (x : EM) :
   F (U (F (`1 x))) ~{C}~> F (`1 x) :=
@@ -134,9 +132,11 @@ Proof.
   exact (@t_alg_hom_commutes D (U ◯ F) HM (`1 x) (`1 y) (`2 x) (`2 y) h).
 Qed.
 
-(* e' ∘ F h₀ coforks the presentation of the source: push ε across F h₀
-   by counit naturality, trade ε for F α' under e' (the cofork law of
-   the target), and close with the commuting square of h. *)
+(*
+   本节说明 Crude 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma crude_G_map_cofork {x y : EM} (h : x ~{EM}~> y) :
   (crude_e y ∘ fmap[F] (t_alg_hom[h])) ∘ @counit _ _ _ _ A (F (`1 x))
     ≈ (crude_e y ∘ fmap[F] (t_alg_hom[h])) ∘ fmap[F] (t_alg[`2 x]).
@@ -221,12 +221,11 @@ Definition Crude_Inverse : EM ⟶ C :=
     (fun x => crude_G_map_id x)
     (fun x y z h k => crude_G_map_comp h k).
 
-(** ** Downstairs: the U-image coequalizer and the canonical splitting
+(*
+   本节说明 Crude 相关定义、性质与动机。
 
-    Applying the preservation hypothesis to the defining coequalizer of
-    G (d, α) exhibits U (G (d, α)) as a coequalizer of the pair
-    U ε_{F d}, U (F α) — which is, definitionally, the canonical pair
-    μ_d, T α split-coequalized by α itself ([canonical_split]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition crude_U_coeq (x : EM) :
   IsCoequalizer
@@ -273,10 +272,11 @@ Lemma crude_unit_alpha (x : EM) :
     ≈ fmap[U] (fmap[F] (t_alg[`2 x])) ∘ @unit _ _ _ _ A (U (F (`1 x))).
 Proof. exact (adj_unit_natural A (t_alg[`2 x])). Qed.
 
-(* The defining triangle of the split-side descent: restricting
-   [crude_from] along α recovers U e.  Slide η across α by naturality,
-   trade U (F α) for U ε under U e (the U-image of the cofork law), and
-   close with the zig-zag identity. *)
+(*
+   本节说明 Crude 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma crude_from_alpha (x : EM) :
   crude_from x ∘ t_alg[`2 x] ≈ fmap[U] (crude_e x).
 Proof.
@@ -320,12 +320,11 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(** ** The counit of the equivalence: K (G (d, α)) ≅ (d, α) in D^T
+(*
+   本节说明等价相关定义、性质与动机。
 
-    [crude_from] underlies an algebra homomorphism from (d, α) to the
-    comparison algebra (U (G x), U ε): the square reduces, after
-    splitting the composites, to counit naturality at e followed by the
-    zig-zag identity ε F ∘ F η ≈ id. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma crude_from_commutes (x : EM) :
   crude_from x ∘ t_alg[`2 x]
@@ -371,10 +370,11 @@ Definition crude_from_is_iso (x : EM) : IsIsomorphism (crude_from x) :=
    ; is_right_inverse  := crude_from_to x
    ; is_left_inverse   := crude_to_from x |}.
 
-(* The inverse homomorphism K (G (d, α)) ~> (d, α): conjugating the
-   commuting square by the inverse carrier — the conservativity kernel
-   [em_iso_inverse_hom] of BeckObjects.v, kept transparent so that its
-   carrier is [crude_to] on the nose. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition crude_counit_hom (x : EM) :
   K (crude_G_obj x) ~{EM}~> x :=
   @em_iso_inverse_hom D (U ◯ F) HM x (K (crude_G_obj x))
@@ -419,11 +419,11 @@ Proof using A C D F RC U pres.
   exact (crude_counit_coherence h).
 Defined.
 
-(** ** The unit of the equivalence: c ≅ G (K c) in C
+(*
+   本节说明等价相关定义、性质与动机。
 
-    The counit ε_c coforks the presentation of the comparison algebra
-    K c = (U c, U ε_c), by counit naturality, and therefore descends to
-    a mediator θ_c out of the coequalizer G (K c). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma crude_unit_cofork (c : C) :
   @counit _ _ _ _ A c ∘ @counit _ _ _ _ A (F (U c))

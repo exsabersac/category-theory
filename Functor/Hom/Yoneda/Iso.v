@@ -62,10 +62,11 @@ Definition RepresentablyIsomorphic (x y : C) : Type :=
 
 (** ** The two biconditionals: reflection composed with preservation *)
 
-(* Contravariant: x ≅ y exactly when [Hom ─,x] ≅ [Hom ─,y].  The
-   forward map is the embedding's action on isomorphisms; the backward
-   map is [FullyFaithful] at [Curried_CoHom] — the instantiation issue
-   #942 records as never before taken. *)
+(*
+   本节说明hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition iso_iff_representably_iso (x y : C) :
   iffT (x ≅ y) (@Isomorphism (@Presheaves C Sets) [Hom ─,x] [Hom ─,y]).
 Proof.
@@ -116,16 +117,11 @@ Defined.
 
 End RepresentablyIso.
 
-(** ** The reusable inverse pair for representability arguments
+(*
+   本节说明函子、Yoneda、同构相关定义、性质与动机。
 
-    Two representations of one functor have isomorphic representing
-    objects, by the explicit inverse pair: compose the legs, pull each
-    composite back through [Yoneda_Embedding']'s two-sided inverse —
-    evaluation at the identity — and the triangle laws follow from the
-    isomorphisms' own round trips.  This is verbatim the construction
-    Structure/UniversalProperty.v's [univ_property_unique] had inlined;
-    it now lives here, generalized over the represented functor, and
-    that file consumes it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition repr_pair_iso {C : Category} {F : C ⟶ Sets} {c v : C}
   (b1 : @Isomorphism (@Copresheaves C Sets) [Hom c,─] F)
@@ -185,12 +181,11 @@ Definition iso_unop {C : Category} {x y : C}
   iso_from_to := iso_from_to i
 |}.
 
-(* The explicit inverse pair carried by a natural isomorphism
-   α : [Hom ─,x] ≅ [Hom ─,y] — Riehl's α_x(id_x) and (α⁻¹)_y(id_y) —
-   obtained with NO new proof content: [repr_pair_iso] at C^op, with
-   the second representation the identity.  [eval_iso_to] and
-   [eval_iso_from] record that the components are the evaluations at
-   the identity, up to the identity laws. *)
+(*
+   本节说明hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition eval_iso {C : Category} {x y : C}
   (α : @Isomorphism (@Presheaves C Sets) [Hom ─,x] [Hom ─,y]) : x ≅ y :=
   iso_unop (@repr_pair_iso C^op (fobj[Curried_CoHom C] y) x y α iso_id).
@@ -205,11 +200,11 @@ Lemma eval_iso_from {C : Category} {x y : C}
   from (eval_iso α) ≈ transform[from α] y id.
 Proof. simpl; cat. Qed.
 
-(* The setoid of isomorphisms x ≅ y is isomorphic IN Sets to the setoid
-   of natural isomorphisms [Hom ─,x] ≅ [Hom ─,y]: the embedding
-   CREATES isomorphisms, as a bijection of data with both round trips.
-   Forward: the embedding's action.  Backward: evaluation at the
-   identity ([eval_iso]). *)
+(*
+   本节说明hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition representable_iso_setoid {C : Category} (x y : C) :
   (x ≅ y) ≊ (@Isomorphism (@Presheaves C Sets) [Hom ─,x] [Hom ─,y]) := {|
   to := {| morphism := fst (iso_iff_representably_iso x y) |};

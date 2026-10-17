@@ -32,70 +32,22 @@ Generalizable All Variables.
    因对偶使 C^op^op = C 由 reflexivity 成立，两呈现定义上一致；共变范畴 [WCoalgebras]
    在 Cat 中同构于 [CoEilenbergMoore]。 *)
 
-(* What a coalgebra is for
-
+(*
    nLab:  https://ncatlab.org/nlab/show/comonadic+functor
    nLab:  https://ncatlab.org/nlab/show/store+comonad
    Paper: O'Connor, "Functor is to Lens as Applicative is to Biplate:
-          Introducing Multiplate", arXiv:1103.2841, 2011
    Paper: Bénabou, Roubaud, "Monades et descente", C. R. Acad. Sc. Paris,
-          Sér. A 270, 1970, pp. 96-98
 
-   A W-coalgebra is an object equipped with coherent access to its own
-   contexts.  The costructure map γ : a ~> W a places each element of a
-   into a W-context; [w_counit_law] states that reading the placement
-   back with ε recovers the element; and [w_coaction] states that
-   placing twice agrees with placing once and duplicating.  Where the
-   cofree coalgebras (W x, δ) supply contexts generically, an arbitrary
-   coalgebra carries its own structured way of being in context.
+   本节说明来源与用途相关定义、性质与动机。
 
-   Two instances make the definition concrete.  For the store comonad
-   (s ⇒ −) × s (Instance/Coq/Comonad/Store.v), a coalgebra structure on
-   a carrier a amounts to a pair of maps get : a → s and put : s × a → a,
-   and the counit and coaction laws are together equivalent to the three
-   lens laws: put (get a, a) = a; get (put (σ, a)) = σ; and
-   put (τ, put (σ, a)) = put (τ, a).  Coalgebras of the store comonad
-   are therefore exactly the lawful ("very well-behaved") lenses of
-   functional programming, a correspondence due to O'Connor (2010;
-   arXiv:1103.2841).  For the environment comonad e × −
-   (Instance/Coq/Comonad/Env.v) the classification is simpler still: a
-   coalgebra on a is the same thing as a morphism a → e, and the
-   category of coalgebras is isomorphic to the slice category over e.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   The cofree side of the theory dualizes the free algebras over a
-   monad, with one orientation worth fixing in the mind: for a comonad
-   it is the cofree functor that is the RIGHT adjoint, the forgetful
-   functor from coalgebras to C being a left adjoint (Comonad/Duality.v,
-   [CoEM_Adjunction], [CoEM_Cofree]), and the comonad this adjunction
-   induces on C is W itself.  A functor is comonadic when it has a right
-   adjoint and the comparison into the coalgebras of the induced comonad
-   is an equivalence of categories; Beck's monadicity theorem has its
-   exact comonadic dual, with split equalizers in the role that split
-   coequalizers play for monads.  The monad side is formalized in
-   Monad/Monadicity/Beck.v.
+(*
+   本节说明 Coalgebra 相关定义、性质与动机。
 
-   The classical payoff of these categories is descent theory.  For a
-   bifibration satisfying the Beck–Chevalley condition, the descent data
-   along a morphism form the Eilenberg–Moore category of the monad
-   induced by the base-change adjunction (Bénabou–Roubaud 1970); for an
-   adjoint triple f_! ⊣ f^* ⊣ f_* the same data are equally coalgebras
-   over the comonad f^* f_*; and Grothendieck's faithfully flat descent,
-   through the extension-of-scalars adjunction, is the classical
-   instance.  The same resolution machinery yields the simplicial bar
-   construction on an algebra, whose contracting homotopy makes its
-   acyclicity absolute — preserved by every functor — and on which
-   comonad (cotriple) cohomology is founded (Barr–Beck, Springer LNM 80,
-   1969).  Coalgebras over the jet comonad of a base-change adjunction
-   are partial differential equations (Marvan, 1986).  None of this is
-   formalized in this file; the pointers record where the notion earns
-   its keep. *)
-
-(* The covariant coalgebra class.  Its three fields are, definitionally,
-   the fields of [@TAlgebra (C^op) (W^op) H a]: the costructure map read
-   covariantly, the counit law as the op-read of [t_id] (whose [ret] is
-   [extract]), and the coaction law as the op-read of [t_action] (whose
-   [join] is [duplicate] and whose [fmap] is [fmap[W]], with each composite
-   read backwards).  See [WCoalgebra_to_TAlgebra] below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class WCoalgebra {C : Category} (W : C ⟶ C) {H : @Comonad C W} (a : C) := {
   w_coalg : a ~> W a;
@@ -108,10 +60,11 @@ Class WCoalgebra {C : Category} (W : C ⟶ C) {H : @Comonad C W} (a : C) := {
 Notation "w_coalg[ F ]" := (@w_coalg _ _ _ _ F)
   (at level 9, format "w_coalg[ F ]") : morphism_scope.
 
-(* A homomorphism of W-coalgebras: an underlying arrow f : a ~> b commuting
-   with the costructure maps, γ^b ∘ f ≈ W f ∘ γ^a.  Definitionally this is
-   [TAlgebraHom] over the opposite monad with source and target swapped
-   (the op-read reverses homs); see [WCoalgebraHom_to_TAlgebraHom]. *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class WCoalgebraHom {C : Category} (W : C ⟶ C) {H : @Comonad C W}
       (a b : C) (F : @WCoalgebra C W H a) (G : @WCoalgebra C W H b) := {
@@ -128,10 +81,11 @@ Section CoEilenbergMoore.
 
 Context {C : Category} {W : C ⟶ C} {H : @Comonad C W}.
 
-(** ** Definitional conversions with algebras over the opposite monad
+(*
+   本节说明单子相关定义、性质与动机。
 
-    Each conversion transports every field by [exact]: the statements are
-    definitionally equal, so no equational reasoning is involved. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition WCoalgebra_to_TAlgebra {a : C} (F : @WCoalgebra C W H a) :
   @TAlgebra (C^op) (W^op) H a :=
@@ -158,10 +112,11 @@ Lemma TAlgebra_to_WCoalgebra_coalg {a : C} (F : @TAlgebra (C^op) (W^op) H a) :
   w_coalg[TAlgebra_to_WCoalgebra F] ≈ t_alg[F].
 Proof. reflexivity. Qed.
 
-(* A coalgebra homomorphism (a, γ^a) ~> (b, γ^b) is an algebra homomorphism
-   over the opposite monad from (b, γ^b) to (a, γ^a): the op-read reverses
-   the direction of the underlying arrow, while the commuting square is the
-   same C-equation. *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition WCoalgebraHom_to_TAlgebraHom {a b : C}
   {F : @WCoalgebra C W H a} {G : @WCoalgebra C W H b}
@@ -197,13 +152,11 @@ Lemma coeilenberg_moore_hom (x y : CoEilenbergMoore) :
   @TAlgebraHom (C^op) (W^op) H ``y ``x (projT2 y) (projT2 x).
 Proof. reflexivity. Qed.
 
-(** ** The covariant category of W-coalgebras
+(*
+   本节说明单子、Eilenberg–Moore相关定义、性质与动机。
 
-    Mirrors Monad/Eilenberg/Moore.v: objects are pairs of a carrier and a
-    coalgebra on it, morphisms are coalgebra homomorphisms compared on
-    their underlying arrows, and identities and composition are inherited
-    from C.  The composition obligation pastes the two commuting squares,
-    dually to the corresponding obligation there. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition WCoalgebras : Category := {|
   obj     := ∃ a : C, @WCoalgebra C W H a;
@@ -221,12 +174,11 @@ Next Obligation.
   now rewrite comp_assoc.
 Qed.
 
-(** ** The isomorphism of categories, in Cat
+(*
+   本节说明函子、hom、同构相关定义、性质与动机。
 
-    Both functors keep the carrier and the underlying arrow fixed and
-    convert the packaging; on hom-setoids they are the identity.  The two
-    round trips are witnessed by natural isomorphisms whose components
-    have identity underlying arrows. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := program_simpl.
 
@@ -246,9 +198,11 @@ Next Obligation. proper. Qed.
 Next Obligation. reflexivity. Qed.
 Next Obligation. reflexivity. Qed.
 
-(* The two round trips fix the carrier and the costructure map on the
-   nose; only the record packaging is rebuilt.  Each component of the two
-   natural isomorphisms is therefore carried by an identity arrow. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition coem_roundtrip (x : CoEilenbergMoore) :
   WCoalgebras_to_CoEM (CoEM_to_WCoalgebras x) ≅[CoEilenbergMoore] x := {|

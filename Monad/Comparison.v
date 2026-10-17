@@ -32,9 +32,11 @@ Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 Context (A : F ⊣ U).
 
-(** Naturality of the unit at an arbitrary morphism of D.  (The library's
-    [unit_comp] is the special case whose codomain is an object U y; the
-    proof below is the same transposition argument.) *)
+(*
+   本节说明 Comparison 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma adj_unit_natural {x y : D} (f : x ~> y) :
   @unit _ _ _ _ A y ∘ f ≈ fmap[U] (fmap[F] f) ∘ @unit _ _ _ _ A x.
@@ -167,9 +169,11 @@ Definition EM_Comparison :
     (fun c => @fmap_id C D U c)
     (fun c c' c'' f g => @fmap_comp C D U c c' c'' f g).
 
-(** Forgetting after comparing is U, on the nose: the iso family is the
-    identity, mirroring [EM_Monad_agrees].  It ends [Defined] (#482):
-    Monad/Comparison/Resolution.v reads the identity components back. *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem EM_Comparison_Forget :
   @EM_Forget D (U ◯ F) Adjunction_Induced_Monad ◯ EM_Comparison ≈ U.
@@ -179,12 +183,11 @@ Proof.
   cat.
 Defined.
 
-(** Comparing after F is the free-algebra functor F^T.  At each d : D both
-    sides yield the carrier U (F d) with structure map U ε_{F d} — the free
-    algebra's join reads off exactly so, as in [EM_join_agrees] — but the
-    two TAlgebra records package distinct proofs of the algebra laws, so the
-    objects are not literally equal; the identity arrow of D underlies an
-    isomorphism between them. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma EM_Comparison_Free_id_commutes (d : D) :
   id ∘ fmap[U] (@counit _ _ _ _ A (F d))

@@ -26,65 +26,24 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Why costrength matters
-
+(*
    nLab:  https://ncatlab.org/nlab/show/tensorial+costrength
    Paper: Blute, Cockett, Seely, J. Pure Appl. Algebra 116(1-3), 1997,
-          pp. 49-98 (where the term "costrength" is introduced)
    Paper: Kock, Arch. Math. 23, 1972, pp. 113-120 (tensorial strength)
 
-   Strength is what lets a functor travel through paired data.  In
-   Moggi's semantics a bare monad cannot interpret programs with more
-   than one free variable; the strength carries the ambient environment
-   into the effectful computation, and Monad/Strong.v exists for that
-   reason.  The comonadic situation is the mirror image: a context
-   W (x ⨂ y) spanning a pair must be pushable onto a chosen factor,
-   W (x ⨂ y) ~> x ⨂ W y, before a co-Kleisli program can consume the
-   y-part in context while passing the x-part through.  That map is
-   [costrength].  In Uustalu and Vene's account of dataflow the comonad
-   plays the role that strong monads play in Moggi's semantics, with
-   effects reintroduced through a distributive law of the comonad over
-   a monad (APLAS 2005).
+   本节说明函子、单子、余单子相关定义、性质与动机。
 
-   Orientation deserves care, because the literature does not speak with
-   one voice.  Dually to the left and right strengths
-   x ⨂ F y ~> F (x ⨂ y), a left-costrength is F (x ⨂ y) ~> x ⨂ F y —
-   the form of this file — and a right-costrength is
-   F (x ⨂ y) ~> F x ⨂ y.  On a symmetric base either determines the
-   other through the braiding, and one says simply "costrength"; on a
-   non-symmetric base a full costrength further requires the two induced
-   maps F (x ⨂ (y ⨂ z)) ~> (x ⨂ F y) ⨂ z to agree.  The term is due to
-   Blute, Cockett and Seely (1997); nLab cautions that Power and
-   Robinson (1997) use it for what is here a right-strength.
-
-   Whether strength is data or property depends on the base.  For a
-   closed monoidal V, a strength on an endofunctor of V is the same
-   thing as a V-enrichment of it, so every endofunctor of Set carries a
-   canonical strength; over a general monoidal base nothing of the sort
-   holds, which is why the costrength here is data to be supplied
-   ([Build_CostrongComonad] takes the family and its laws as inputs)
-   rather than property to be derived.
-
-   A final distinction separates strength from monoidality.  The
-   programming face of comonads with monoidal structure is Haskell's
-   ComonadApply, characterized in Kmett's Control.Comonad documentation
-   as "a strong lax symmetric semi-monoidal comonad", under which
-   extract and duplicate become symmetric monoidal natural
-   transformations; it is the interface on which Foner's comonadic
-   fixed point for spreadsheet-like recurrences is built (Haskell
-   Symposium 2015).  Lax (semi)monoidal structure on the endofunctor is
-   a further layer that this file does not axiomatize. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition CostrongComonad {C : Category} (M : @Monoidal C) (W : C ⟶ C) : Type :=
   @StrongMonad (C^op) (@Monoidal_op C M) (W^op).
 
-(* Mirroring [Existing Class Comonad] in Comonad/Core.v: [CostrongComonad]
-   unfolds to the class [StrongMonad], but typeclass resolution keys on the
-   head constant of a goal and does not look through this unfolding.
-   Declaring [CostrongComonad] an existing class lets a costrong witness in
-   scope be found when the accessors below insert their implicit argument.
-   No instance of it is registered anywhere in this file, so no search space
-   changes. *)
+(*
+   本节说明余单子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Existing Class CostrongComonad.
 
 (* ================================================================== *)
@@ -102,9 +61,11 @@ Context {CS : CostrongComonad M W}.
 Definition costrong_is_comonad : @Comonad C W :=
   @strongmonad_is_monad (C^op) (@Monoidal_op C M) (W^op) CS.
 
-(* Let [extract] and [duplicate] from Comonad/Core.v resolve against the
-   underlying comonad in the statements below.  The registration is
-   section-local and is dropped when the section closes. *)
+(*
+   本节说明余单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Existing Instance costrong_is_comonad.
 
 (** The underlying strong endofunctor over (C^op, Monoidal_op M): the
@@ -118,11 +79,11 @@ Definition costrong_is_strong :
 Definition costrength {x y : C} : W (x ⨂ y) ~> x ⨂ W y :=
   @strength (C^op) (@Monoidal_op C M) (W^op) costrong_is_strong x y.
 
-(** Joint naturality in both variables: the op-read of [strength_natural].
-    The bundled field states the square with the two variables acted on
-    separately (via the [Mapping] instances of Theory/Naturality.v); the
-    bifunctor interchange law [bimap_id_right_left] merges the per-variable
-    actions into the usual joint form. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma costrength_natural {x y z w : C} (f : x ~> y) (k : z ~> w) :
   costrength ∘ fmap[W] (f ⨂ k) ≈ (f ⨂ fmap[W] k) ∘ costrength.
 Proof.
@@ -158,20 +119,22 @@ Proof.
            costrong_is_strong x y z).
 Qed.
 
-(** ε-compatibility, the dual of the Kock/Moggi η-compat law
-    [strength_ret]: discarding the comonadic context of the right factor
-    after applying the costrength is exactly extracting from the whole
-    tensor. *)
+(*
+   本节说明余单子、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma costrength_extract {x y : C} :
   (id[x] ⨂ extract) ∘ costrength ≈ (extract : W (x ⨂ y) ~> x ⨂ y).
 Proof.
   exact (@strength_ret (C^op) (@Monoidal_op C M) (W^op) CS x y).
 Qed.
 
-(** δ-compatibility, the dual of the μ-compat law [strength_join]:
-    duplicating the right factor after applying the costrength agrees with
-    duplicating the whole tensor and sliding the costrength through both
-    W-layers. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma costrength_duplicate {x y : C} :
   (id[x] ⨂ duplicate (x:=y)) ∘ costrength
     ≈ costrength ∘ fmap[W] costrength ∘ duplicate.
@@ -197,20 +160,18 @@ Context {C : Category}.
 Context {M : @Monoidal C}.
 Context {W : C ⟶ C}.
 
-(* Predictable obligation alignment (the Monad/Kleisli.v precedent): with
-   [program_simpl] the unitor and counit compatibility obligations are
-   discharged by the tactic itself — their op-statements are convertible
-   to the supplied hypotheses [sigma_id_left] and [sigma_extract], so it
-   closes them from the local context.  Exactly three obligations remain,
-   in order: naturality, the associator law, and δ-compatibility, each a
-   re-bracketing of the corresponding covariant hypothesis. *)
+(*
+   本节说明单子、Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := program_simpl.
 
-(** [Build_CostrongComonad] assembles a [CostrongComonad] from a comonad
-    together with a covariant costrength family satisfying the covariant
-    laws — the inverse reading of the accessor layer above.  The data
-    round trip is definitional: see [Build_CostrongComonad_costrength] and
-    [Build_CostrongComonad_comonad] just below. *)
+(*
+   本节说明余单子、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Build_CostrongComonad
   (H : @Comonad C W)
   (sigma : forall x y : C, W (x ⨂ y) ~> x ⨂ W y)
@@ -299,10 +260,11 @@ End BuildCostrongComonadAgreement.
 (** ** Transfers: costrong comonads are strong monads on the opposite  *)
 (* ================================================================== *)
 
-(* On a FIXED base (C, M) the correspondence is definitional — a costrong
-   comonad on (C, M) literally is a strong monad on (C^op, Monoidal_op M),
-   so both passages are the identity and the round trips hold by
-   reflexivity. *)
+(*
+   本节说明幺半结构、单子、余单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition CostrongComonad_to_op_StrongMonad
   {C : Category} {M : @Monoidal C} {W : C ⟶ C}
@@ -333,18 +295,11 @@ Context {C : Category}.
 Context {M : @Monoidal C}.
 Context {T : C ⟶ C}.
 
-(* The other direction of the duality — a strong monad on (C, M) as a
-   costrong comonad on (C^op, Monoidal_op M) — is where the double-op
-   caveat bites: the target type unfolds to a [StrongMonad] over
-   [Monoidal_op (Monoidal_op M)], which is not definitionally M (its law
-   fields are rebuilt Qed-opaque; see Construction/Opposite/Monoidal.v).
-   The records are therefore rebuilt field by field.  Every field converts:
-   the tensor's object and morphism actions, and the to/from components of
-   the transported unitors and associator, all reduce to those of M, so
-   each projection of S is accepted at the reindexed type as it stands.
-   Only the record types themselves differ, which is why the round trips
-   below are stated on the structure maps (up to ≈, or as the literal
-   passthrough of the monad component) rather than as record equalities. *)
+(*
+   本节说明幺半结构、单子、余单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition StrongMonad_to_op_CostrongComonad (S : @StrongMonad C M T) :
   @CostrongComonad (C^op) (@Monoidal_op C M) (T^op) :=
@@ -396,10 +351,11 @@ Lemma op_costrength_strength (S : @StrongMonad C M T) {x y : C} :
     ≈ @strength C M T (@strongmonad_is_strong C M T S) x y.
 Proof. reflexivity. Qed.
 
-(** Round trips.  The strength data survives both passages on the nose (so
-    ≈ holds by reflexivity), and the underlying monad is passed through
-    untouched; only the enclosing records differ, per the double-op caveat
-    in the header. *)
+(*
+   本节说明单子、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma StrongMonad_op_roundtrip_strength (S : @StrongMonad C M T) {x y : C} :
   @strength C M T

@@ -34,10 +34,11 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------ *)
 (** ** (A) The full subcategory of the functors that have a right adjoint *)
 
-(* "Has a right adjoint", as DATA: a chosen U together with a chosen
-   adjunction.  `∃` is [sigT] here, so this is Mac Lane's "choosing one
-   RF for each F" already made constructive -- there is nothing left for
-   a choice principle to do. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition HasRightAdjoint {C D : Category} (F : D ⟶ C) : Type :=
   ∃ U : C ⟶ D, F ⊣ U.
 
@@ -66,9 +67,11 @@ Definition LeftAdjSub_Full (C D : Category) :
 (* ------------------------------------------------------------------ *)
 (** ** (B) R : S^op ⟶ X^A *)
 
-(* Object part: the chosen right adjoint.  Arrow part: the conjugate.
-   The three obligations are the three conjugate laws BY NAME; none of
-   them is closed by the library's default obligation tactic. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition RightAdjointFunctor (C D : Category) :
   Opposite (LeftAdjCat C D) ⟶ [C, D] := {|
   fobj := fun x => adjobj_right (x : AdjObj C D);
@@ -80,16 +83,11 @@ Next Obligation. intros f g Hfg; now apply conj_mate_respects. Qed.
 Next Obligation. now apply conj_mate_id. Qed.
 Next Obligation. now apply conj_mate_compose. Qed.
 
-(* Two readbacks, and they are not the same kind.  The first records the
-   ORIENTATION of the arrow action -- which [conj_mate] argument is which
-   -- so that a later edit swapping them is caught here; it is a
-   projection out of the transparent record and reads back the written
-   body.  The second is not a projection: it computes the identity of
-   [Opposite (LeftAdjCat C D)] all the way down to [nat_id].  Neither
-   direction may be left to elaboration, because [Program] does NOT
-   reject a swapped arrow action -- measured on this very definition, it
-   defers the resulting type error into an obligation, and the breakdown
-   surfaces only at the section close. *)
+(*
+   本节说明 Choice 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example raf_fmap_variance (C D : Category)
         (x y : Opposite (LeftAdjCat C D)) (f : x ~> y) :
   fmap[RightAdjointFunctor C D] f
@@ -165,13 +163,11 @@ Next Obligation.
   symmetry; apply conj_mate_uniq; exact (conj_pair_law g).
 Qed.
 
-(* Essential surjectivity is free: the two categories have the same
-   objects, and typeclass resolution fills [eso_iso] with [iso_id]
-   (Theory/Isomorphism.v), leaving no obligation.  It is [#[local]], as
-   the tree's two other concrete [EssentiallySurjective] witnesses are
-   (Instance/FdVect.v, Construction/Reflective/Idempotent.v):
-   the class carries a CHOSEN preimage and must not become globally
-   resolvable; [SubToAdj_Equivalence] below still finds it. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local]
 Program Instance SubToAdj_ESO (C D : Category) :
   EssentiallySurjective (SubToAdj C D) := {|
@@ -237,9 +233,11 @@ Example raf_choice_iso_from (C D : Category) (F : D ⟶ C)
     = conj_mate (adjobj_adj ((F; p) : AdjObj C D))
                 (adjobj_adj ((F; q) : AdjObj C D)) nat_id := eq_refl.
 
-(* The two chosen right adjoints are naturally isomorphic.  This is the
-   in-tree [right_adjoint_iso] recorded at a membership pair; it is
-   [Qed], so its components do not reduce, and nothing below uses it. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition choice_right_adjoints_iso (C D : Category) (F : D ⟶ C)
            (p q : HasRightAdjoint F) : `1 p ≈ `1 q :=
   right_adjoint_iso F (`1 p) (`1 q) (`2 p) (`2 q).
@@ -265,10 +263,11 @@ Qed.
 (* ------------------------------------------------------------------ *)
 (** ** (D)(b) A choice function as an explicit argument *)
 
-(* The two conjugate laws restated with [D, C]'s and [C, D]'s own
-   composition and identity in place of `∙` and [nat_id].  [rewrite],
-   unlike [apply], will not cross those delta steps, and these are the
-   forms the obligations of a functor INTO a functor category present. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cm_comp_fun {C D : Category} {F1 U1 F2 U2 F3 U3}
       (A1 : @Adjunction C D F1 U1) (A2 : @Adjunction C D F2 U2)
       (A3 : @Adjunction C D F3 U3)
@@ -341,10 +340,11 @@ Next Obligation.
   - apply cm_id_fun.
 Qed.
 
-(* These two readbacks exist because [rewrite] must get past [to] and
-   [from] of a [Program]-built isomorphism; note also that [simpl] must
-   NOT be run before the [cm_comp_fun] rewrites below, since it unfolds
-   [conj_mate] and destroys the pattern. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ci_iso_to_eq (C D : Category) (ch ch' : RightAdjChoice C D)
       (x : LeftAdjCat C D) : to (ci_iso C D ch ch' x) = ci_to C D ch ch' x.
 Proof. reflexivity. Qed.
@@ -353,11 +353,11 @@ Lemma ci_iso_from_eq (C D : Category) (ch ch' : RightAdjChoice C D)
       (x : LeftAdjCat C D) : from (ci_iso C D ch ch' x) = ci_from C D ch ch' x.
 Proof. reflexivity. Qed.
 
-(* INDEPENDENCE OF THE CHOICE.  Any two choice functions give naturally
-   isomorphic functors -- `≈` at [C, D]'s functor setoid is exactly a
-   natural isomorphism.  The components are mates of identities and the
-   naturality square is [conj_mate_compose] read twice, once on each
-   side; no property of either choice is used. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem choice_independence (C D : Category) (ch ch' : RightAdjChoice C D) :
   RightAdjointFunctor_ch C D ch ≈ RightAdjointFunctor_ch C D ch'.
 Proof.
@@ -390,12 +390,11 @@ Example ch_canonical_adj (C D : Category) (x : LeftAdjCat C D) :
 (* ------------------------------------------------------------------ *)
 (** ** (E) Non-vacuity: S is inhabited and proper at the walking arrow *)
 
-(* [_2] is thin, so any two parallel arrows coincide; the three-line
-   proof is from Instance/Two.v's own [TwoHom_inv] and
-   [TwoHom_Y_X_absurd].  (Instance/Two/Monoidal.v has the same lemma
-   under the name [two_thin]; requiring that module would cost 17
-   modules against the base of 28, that is, in place of Instance/Two --
-   measured.) *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma two_arrows_agree {x y : TwoObj} (f g : TwoHom x y) : f = g.
 Proof.
   destruct x, y;

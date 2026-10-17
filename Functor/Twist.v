@@ -49,10 +49,11 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* The object function is the identity, by computation.  The [=] is on
-   OBJECTS, which is where this library does use propositional equality --
-   it is what [Functor_StrictEq_Setoid] compares; morphisms are compared
-   with ≈ everywhere. *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Twist_fobj (x : C) : fobj[Twist] x = x.
 Proof. reflexivity. Qed.
 
@@ -75,10 +76,11 @@ Proof.
   apply id_left.
 Qed.
 
-(* The converse, given uniqueness of identity proofs on the objects of C.
-   The hypothesis is needed because the strict setoid allows an ARBITRARY
-   proof of [x = x] as the object component; without [uip] a nontrivial
-   loop could in principle scramble the transports. *)
+(*
+   本节说明 Twist 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Twist_strict_id_natural
   (uip : ∀ (x : C) (p : x = x), p = eq_refl)
   (H : @equiv _ Functor_StrictEq_Setoid Twist (@Id C)) :
@@ -115,10 +117,11 @@ End Twist.
 
 Arguments Twist {C} F α.
 
-(* Uniqueness of identity proofs from decidable equality of objects
-   (Hedberg's argument, via the stdlib's axiom-free [UIP_dec]); this is
-   how the [uip] hypothesis above is discharged for the concrete
-   categories used as witnesses. *)
+(*
+   本节说明 Twist 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition uip_of_dec {A : Type}
   (dec : ∀ x y : A, {x = y} + {x <> y}) (x : A) (p : x = x) : p = eq_refl :=
   UIP_dec dec p eq_refl.
@@ -128,11 +131,11 @@ Section TwistId.
 Context {C : Category}.
 Context (α : ∀ x : C, x ≅ x).
 
-(* The twist of the IDENTITY functor is always naturally isomorphic to the
-   identity functor -- α is the natural isomorphism, and the coherence
-   condition of [Functor_Setoid] is literally the definition of the
-   twisted arrow map.  Hence the weak setoid, which is the hom-setoid of
-   [Cat], never separates this pair, however far α is from being natural. *)
+(*
+   本节说明函子、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Twist_Id_weak_equiv :
   @equiv _ Functor_Setoid (Twist (@Id C) α) (@Id C).
 Proof.

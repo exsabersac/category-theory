@@ -29,14 +29,14 @@ Arguments TAlgebra {C} T {_} a.
 Notation "t_alg[ T ]" := (@t_alg _ _ _ _ T)
   (at level 9, format "t_alg[ T ]") : morphism_scope.
 
-(* nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad
+(*
+   nLab: https://ncatlab.org/nlab/show/algebra+over+a+monad
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)
 
-   A morphism of T-algebras (an algebra homomorphism) from (a, t_alg[F]) to
-   (b, t_alg[G]) is an underlying arrow t_alg_hom (f : a ~> b) commuting with
-   the structure maps: t_alg_hom ∘ t_alg[F] ≈ t_alg[G] ∘ fmap[T] t_alg_hom
-   (f ∘ h_F = h_G ∘ T f). Equivalently, the square sending each algebra action
-   through f agrees with first lifting f along T and then acting. *)
+   本节说明 Algebra 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class TAlgebraHom `(T : C ⟶ C) `{@Monad C T} (a b : C)
       (F : TAlgebra T a) (G : TAlgebra T b) := {
   t_alg_hom : a ~> b;

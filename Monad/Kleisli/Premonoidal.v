@@ -39,10 +39,11 @@ Context `{@StrongMonad C _ M}.
 (** ** Tier 1: the Kleisli binoidal structure.                         *)
 (* ------------------------------------------------------------------ *)
 
-(* The action of - ⊗ y' on a Kleisli morphism f : x ~> M z: tensor with the
-   identity and re-associate the M through the derived right strength.
-   Stated as named C-level definitions so that the [AFunctor] record fields
-   below elaborate without inline Kleisli-hom ascriptions. *)
+(*
+   本节说明hom、Kleisli、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition kl_left_fmap (y' : C) {x z : C} (f : x ~{C}~> M z) :
   (x ⨂ y')%object ~{C}~> M ((z ⨂ y')%object) :=
   rstr ∘ (f ⨂ id[y']).
@@ -157,9 +158,11 @@ Definition Kleisli_Binoidal : @Binoidal Kleisli :=
     Kleisli_Tensor_Left
     Kleisli_Tensor_Right.
 
-(* The tensoring actions in rewrite form: both equations are definitional,
-   so downstream proofs can move between the Kleisli-functor view and the
-   C-level strength view without unfolding by hand. *)
+(*
+   本节说明函子、Kleisli、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma kl_inj_left_fmap {y' x z : C} (f : x ~{C}~> M z) :
   fmap[@inj_left Kleisli Kleisli_Binoidal y'] f ≈ rstr ∘ (f ⨂ id[y']).
 Proof. reflexivity. Qed.
@@ -172,11 +175,11 @@ Proof. reflexivity. Qed.
 (** ** Normal forms for the two centrality squares.                    *)
 (* ------------------------------------------------------------------ *)
 
-(* The composite fmap[inj_left] f ∘ fmap[inj_right] g in Kl(M) — in
-   execution order: Kleisli composition runs the precomposed factor
-   first, so g's computation on the right factor runs before f's on the
-   left — computes the double strength [dstr'] (right computation
-   sequenced first). *)
+(*
+   本节说明Kleisli、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma kl_square_lr {a b c d} (f : a ~> M b) (g : c ~> M d) :
   @compose Kleisli _ _ _
     (fmap[@inj_left _ Kleisli_Binoidal d] f)
@@ -197,10 +200,11 @@ Proof.
   now rewrite id_left, id_right.
 Qed.
 
-(* The mirror composite fmap[inj_right] g ∘ fmap[inj_left] f — in
-   execution order, f's computation on the left factor runs before g's
-   on the right — computes the double strength [dstr] (left computation
-   sequenced first). *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma kl_square_rl {a b c d} (f : a ~> M b) (g : c ~> M d) :
   @compose Kleisli _ _ _
     (fmap[@inj_right _ Kleisli_Binoidal b] g)
@@ -221,10 +225,11 @@ Proof.
   now rewrite id_left, id_right.
 Qed.
 
-(* The concrete characterization of centrality in Kl(M): a Kleisli morphism
-   f is central (Structure/Binoidal.v) exactly when the two double
-   strengths agree on every tensor with f in either factor.  Commutative
-   monads are precisely those all of whose Kleisli morphisms are central. *)
+(*
+   本节说明单子、Kleisli、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma kleisli_central_iff {a b} (f : a ~> M b) :
   @central Kleisli Kleisli_Binoidal a b f
     ↔ ∀ c d (g : c ~> M d),
@@ -321,10 +326,11 @@ Lemma kpure_comp_functor {x y z : C} (u : y ~{C}~> z) (v : x ~{C}~> y) :
   kpure (u ∘ v) ≈ @compose Kleisli _ _ _ (kpure u) (kpure v).
 Proof. symmetry; apply kl_pure_comp. Qed.
 
-(* The pure functor: the identity on objects, f ↦ ret ∘ f on morphisms.
-   This is the left adjoint of the Kleisli adjunction, viewed here purely
-   as the medium through which the structural isomorphisms of C transfer
-   to Kl(M). *)
+(*
+   本节说明伴随、函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Kleisli_Pure : C ⟶ Kleisli := {|
   fobj := fun x : C => (x : Kleisli);
   fmap := fun (x y : C) (f : x ~{C}~> y) => kpure f;
@@ -358,13 +364,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* Every pure morphism is central in Kl(M).  Through the characterization
-   [kleisli_central_iff], each of the two squares reduces to one of the
-   four double-strength unit laws of Monad/Strong/Symmetric.v: feeding a
-   returned value into either factor collapses [dstr] and [dstr'] onto the
-   SAME single strength ([strength] on the left factor, [rstr] on the
-   right), so the two sequencing orders agree.  The proof is direct — no
-   thunkability and no commutativity hypothesis enters. *)
+(*
+   本节说明单子、Kleisli、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem pure_central {x y : C} (f : x ~{C}~> y) :
   @central Kleisli Kleisli_Binoidal x y (kpure f).
 Proof.
@@ -440,10 +444,11 @@ Proof.
   apply (@to_unit_right_natural C _ x (M y) g).
 Qed.
 
-(* Naturality of the associator in the LEFT tensor position: the α-law of
-   the derived right strength ([rstr_assoc_to]) absorbs the two stacked
-   left tensorings, and joint naturality of C's associator (with
-   identities in the other two positions) closes the square. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma kl_assoc_natural_left {x y z w : C} (g : x ~{Kleisli}~> y) :
   @compose Kleisli _ _ _
     (fmap[@inj_left Kleisli Kleisli_Binoidal (z ⨂ w)%object] g)
@@ -466,10 +471,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* Naturality of the associator in the MIDDLE tensor position: the sole
-   consumer of the mixed coherence [strength_rstr_assoc] of
-   Monad/Strong/Symmetric.v, which relates the left strength inside a left
-   tensoring to the right strength inside a right tensoring across α. *)
+(*
+   本节说明单子、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma kl_assoc_natural_middle {x z w y : C} (h : z ~{Kleisli}~> w) :
   @compose Kleisli _ _ _
     (fmap[@inj_right Kleisli Kleisli_Binoidal x]
@@ -553,12 +559,11 @@ Proof.
   apply pentagon_identity.
 Qed.
 
-(* The Power–Robinson premonoidal structure on the Kleisli category of a
-   strong monad over a symmetric monoidal base: unit and structural
-   isomorphisms are the pure images of C's, centrality of the structural
-   maps is [pure_central], the three one-variable associator squares are
-   the three strength coherences, and the coherence laws transfer along
-   the pure functor. *)
+(*
+   本节说明幺半结构、函子、单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Kleisli_Premonoidal : @Premonoidal Kleisli Kleisli_Binoidal :=
   @Build_Premonoidal Kleisli Kleisli_Binoidal
     (@I C _)

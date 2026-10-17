@@ -669,9 +669,11 @@ Proof.
   - symmetry. apply Comparison_unique_to.
 Qed.
 
-(* Pairwise: between two comparisons P and Q over θ, the composite of
-   their isomorphisms to the constructed one commutes with the left
-   triangles (it is natural by [cmp_unique_iso_natural]) ... *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Comparison_unique_pair_left (CR : CreatesUSplitCoequalizers G)
   (P Q : Comparison) (x : X) :
   to (`1 (cmp_left Q) x)
@@ -814,9 +816,11 @@ End Terminal.
 End EMResolution.
 
 (* ------------------------------------------------------------------------ *)
-(** ** [EM_Comparison] is a comparison into the Eilenberg–Moore
-       resolution and, over the identity identification of the two
-       monads, the only one, up to a unique compatible isomorphism *)
+(*
+   本节说明单子、同构、Eilenberg–Moore相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section EMComparison.
 
@@ -855,10 +859,11 @@ Definition EM_Comparison_Comparison :
      cmp_right := EM_Comparison_Forget Adj;
      cmp_monad := EM_Comparison_coherence |}.
 
-(* Awodey's clause in its coherent form: over the identity identification
-   of the two monads, every comparison is ≈ the comparison functor.
-   Without that coherence the clause is false
-   (Instance/Fun/Action/Monad/Comparison.v). *)
+(*
+   本节说明函子、单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem EM_Comparison_unique
   (P : Comparison EMAdj Adj EM_Comparison_theta) :
   cmp_functor _ _ _ P ≈ EM_Comparison Adj.

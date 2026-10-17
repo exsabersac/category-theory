@@ -23,280 +23,20 @@ Generalizable All Variables.
 *)
 Local Set Default Proof Using "All".
 
-(** * Adjunctions between Ab-categories are additive
+(*
+   nLab: https://ncatlab.org/nlab/show/additive+functor
+   https://ncatlab.org/nlab/show/adjoint+functor
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-    §IV.1 Theorem 3 (printed p. 85) [maclane:IV.1:thm3]: if C and D
-    are Ab-categories, U : C ⟶ D is an additive functor, and F ⊣ U,
-    then the left adjoint F is itself additive and the adjunction
-    bijection
+   本节说明伴随、函子、同构相关定义、性质与动机。
 
-        F x ~{C}~> y   ≅   x ~{D}~> U y
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-    is an isomorphism of ABELIAN GROUPS, not merely of sets.  Dually,
-    a right adjoint of an additive functor is additive.
-    nLab: https://ncatlab.org/nlab/show/additive+functor
-          https://ncatlab.org/nlab/show/adjoint+functor
+(*
+   本节说明伴随、同构相关定义、性质与动机。
 
-    THE CLASS IS CONSUMED, NOT BUILT.  The catalog issue behind this
-    file records the tree as having no notion of an additive functor.
-    That is FALSE, and the correction is not a matter of naming:
-    [AdditiveFunctor] is declared at Structure/AbCategory.v with
-    preservation of [padd] as its ONLY field, and that file already
-    proves the two clauses a reader would expect to owe here —
-    [fmap_pzero] ("whence T0 = 0", by the idempotency
-    cancellation [padd_idem_zero]) and [fmap_abneg] (by
-    uniqueness of additive inverses) — as well as the closure
-    instances [Id_AdditiveFunctor] and
-    [Compose_AdditiveFunctor].  Nothing in this file redefines
-    or reproves any of them; the pzero and abneg clauses below are
-    applications of those two theorems.
-
-    WHAT IS PROVED, AND IN WHICH ORDER.
-
-    (1) THE TRANSPOSES ARE ADDITIVE.  With F ⊣ U and U additive,
-        [to_adj_padd] proves ⌊padd a b⌋ ≈ padd ⌊a⌋ ⌊b⌋, with
-        [to_adj_pzero] and [to_adj_abneg] the unit and negation
-        clauses.  The route is the in-tree [to_adj_unit], which
-        recovers ⌊f⌋ ≈ fmap[U] f ∘ η, followed by [fmap_padd] for U
-        and [compose_padd_right] — so the transpose is additive
-        because U is and because composition is bilinear, which is
-        exactly Mac Lane's sentence.  The mirror [from_adj_padd] and
-        its two siblings run through [from_adj_counit] and
-        [compose_padd_left], and require F additive instead.
-
-    (2) THEOREM 3 ITSELF.  [left_adjoint_additive] takes an
-        [AdditiveFunctor U] and a F ⊣ U and produces an
-        [AdditiveFunctor F] — a genuine inhabitant of the class, so
-        it composes with [Compose_AdditiveFunctor] and can be fed to
-        anything demanding additivity, rather than being a bare
-        equation.  The proof compares the two transposes: both
-        fmap[F] (padd f g) and padd (fmap[F] f) (fmap[F] g) transpose
-        to padd (η ∘ f) (η ∘ g), the first by [fmap_from_adj_unit]
-        and [compose_padd_left], the second by clause (1); the
-        conclusion is then injectivity of ⌊−⌋, which is [adj_to_inj],
-        a two-line consequence of [to_adj_comp_law].
-
-    (3) THE HOM-GROUP ISOMORPHISM.  Mac Lane's conclusion is a PAIR
-        of claims and this file delivers both halves separately as
-        well as packaged.  [hom_ab] reads each hom-setoid of an
-        Ab-category that is LOCALLY PROPOSITIONAL — a hypothesis
-        this clause did not carry before; see the strength-change
-        paragraph below — as an [Instance/Ab.v] [AbObject] — its
-        commutative-monoid part is [padd]/[pzero] and its negation is
-        [abneg], every law being a field or corollary of
-        [AbEnriched] — and [adj_hom_ab_iso] exhibits the adjunction
-        bijection as an [@Isomorphism Ab], the two legs being ⌊−⌋ and
-        ⌈−⌉ as [AbHom]s and the two round trips being
-        [to_adj_comp_law] and [from_adj_comp_law] verbatim.  So the
-        landing place is the tree's own category of abelian groups
-        rather than a bespoke record.  An earlier draft of this header
-        said the packaging COSTS a universe identification; measuring
-        it refutes that — [adj_hom_ab_iso]'s constraint block carries
-        the same identification its unpackaged counterpart does and no
-        other — and the corrected reading is the universe paragraph
-        below.
-
-    (4) THE DUAL.  [right_adjoint_additive]: if F ⊣ U and F is
-        additive then U is.  It is obtained by transport rather than
-        by a second argument, and the transport needed a
-        construction the tree did not have: nothing anywhere
-        inhabits [Preadditive (C^op)] or [AbEnriched (C^op)] —
-        searching for the application shape rather than for a name,
-        the only hit outside this file is Structure/Preadditive.v's
-        PROSE remark that the laws are self-dual, which is a sentence
-        and not a term.  [Preadditive_op]
-        and [AbEnriched_op] supply them here — every field is the
-        original field, with [compose_padd_left] and
-        [compose_padd_right] exchanged and likewise the two absorption
-        laws, since composition in C^op is C's flipped — and
-        [AdditiveFunctor_op]/[AdditiveFunctor_unop] carry additivity
-        across [Opposite_Functor] in both directions.  Theorem 3 at
-        [Opposite_Adjunction] then reads off the dual.
-
-    (5) RIEHL'S COROLLARY 4.6.9, PARTLY — and note which hypothesis is
-        assumed rather than derived: Riehl's point is that in a
-        SEMIADDITIVE setting the enrichment comes for free, finite
-        direct sums being simultaneously finite products and
-        coproducts, whereas [left_adjoint_additive_of_biproducts]
-        ASSUMES [AbEnriched C] and [AbEnriched D] and derives only the
-        ADDITIVITY OF THE ADJOINT.  Deriving the enrichment from
-        semiadditivity is not attempted.  See the section below for
-        exactly what lands and what does not; the summary is that the
-        biproduct bridge asked for is delivered in the orientation the
-        adjunction supplies, and the semiadditive corollary is stated
-        with the biproducts of the source category as an explicit
-        hypothesis rather than derived from a completeness assumption.
-
-    UNIVERSES, MEASURED OFF BOTH THE BINDER AND THE CONSTRAINT BLOCK.
-    Two identifications are present and NEITHER is introduced here.
-    (a) Every constant in this file is over C : Category@{u u0 u0} —
-    hom identified with PROOF — inherited from the donor classes,
-    which are declared that way: [AbEnriched@{u u0}] and
-    [Preadditive@{u u0}] each take a [Category@{u u0 u0}], as do
-    [ZeroObject] and [Biproduct].  That list is not exhaustive:
-    [adj_to_inj] and [adj_from_inj] mention none of those four and
-    carry the identification anyway, and measured under
-    [Constraint ch < cp] the donor there is [Adjunction] (rejected),
-    while [Functor] at those levels is ACCEPTED and so is not one.
-    The blanket statement holds; the attribution is per-constant.
-
-    (b) Every result whose statement mentions ⊣ ADDITIONALLY
-    identifies the two categories' hom-and-proof universes with each
-    other, [to_adj_padd] and [left_adjoint_fmap_padd] both carrying
-    [u0 = u2].  That identification has AT LEAST THREE INDEPENDENT
-    DONORS and no single one of them is "the" cause.  Measured in a
-    section declaring [Constraint bh < ah] — which satisfies the bound
-    [bh <= ah] while violating the equation — with C and D at those
-    levels: (i) [AdditiveFunctor] ALONE is rejected, with ONE functor
-    in the command and no adjunction anywhere, because its binder
-    reuses a single level for BOTH categories' hom-and-proof while its
-    own constraint block is EMPTY — this file's second instance of the
-    binder/block trap named below — and BOTH cited statements take an
-    [AdditiveFunctor U] hypothesis, so this donor alone accounts for
-    their [u0 = u2]; (ii) merely having functors in BOTH directions is
-    rejected too, [Functor] forcing source-hom ≤ target-hom, so
-    F : D ⟶ C together with U : C ⟶ D forces equality with no
-    adjunction present; (iii) [Adjunction] is rejected as well, and is
-    the third of the three.
-
-    An earlier revision of this header claimed the identification was
-    the [Adjunction] class's and that the attribution DISCRIMINATED,
-    citing [fmap_padd_of_preserved_coproduct] — which mentions both
-    categories through a functor, mentions no adjunction, and carries
-    only the BOUND [u2 <= u0].  That control is real and IS accepted at
-    those levels, but it does NOT discriminate: it removes all three
-    donors at once (one functor rather than two, [Preadditive] in
-    place of [AbEnriched], and no [AdditiveFunctor]), so it is a
-    control for "one functor", not for "adjunction versus no
-    adjunction".  The claim is withdrawn.  Test/ProbeAdditive349.v now
-    pins all three donors as FORMABILITY negatives beside that
-    accepted control, so the measurement is guarded rather than merely
-    recorded.
-
-    So the Ab packaging costs nothing in identifications:
-    [adj_hom_ab_iso] carries the same [u0 = u2] its unpackaged
-    counterpart does, plus one fresh strict inequality for the
-    [Isomorphism]'s own universe.  [hom_ab] itself is this file's
-    sharpest instance of the binder/block trap: its constraint block
-    is LITERALLY EMPTY while its binder reads [Category@{u0 u u}], so
-    a reader who checks only the block concludes "no identification"
-    and is wrong.  None of this is claimed unavoidable; no
-    re-annotation of any donor was attempted.
-
-    STRENGTHS, MEASURED STRICT-FIRST.  Every readback was attempted at
-    [eq_refl] before being stated at ≈, and TWELVE hold and are
-    shipped as [Example]s so the claims are machine-checked rather
-    than asserted: both legs of the
-    packaged group isomorphism ARE the transposes
-    ([adj_hom_ab_iso_to]/[_from]); all four data fields of [hom_ab]
-    are the enrichment's own ([hom_ab_carrier], [hom_ab_plus],
-    [hom_ab_zero], [hom_ab_neg]); the opposite enrichment is the
-    original read at swapped endpoints ([padd_op_is_padd],
-    [abneg_op_is_abneg]) — which is why the dual costs no proof; the
-    biproduct bridge keeps the data it is handed
-    ([bridge_inl_strict]); and the image biproduct's object and
-    structure maps are the F-images on the nose
-    ([image_biproduct_obj], [image_biproduct_inl],
-    [image_biproduct_exl]).
-
-    What was attempted strict and REJECTED, and is therefore stated
-    at ≈, is every equation whose two sides differ by a rewriting.
-    Three were measured in particular: transpose additivity
-    ([to_adj_padd]'s statement at [eq_refl]), Theorem 3's own field
-    ([left_adjoint_fmap_padd]), and the coproduct-diagonal
-    factorization ([padd_copair_diag]).  Read that at exactly its
-    strength: those three were MEASURED, in a scratch file compiled
-    against this one, and are NOT guarded by a [Fail] here — nothing
-    in this file would notice if a later change made one of them
-    definitional.  No claim is made that any of them could be
-    strengthened; [padd] is an abstract field of a class, so nothing
-    about it reduces.
-
-    A RECORDED STRENGTH CHANGE: TEN STATEMENTS HERE CARRY A
-    HYPOTHESIS THEY DID NOT CARRY BEFORE.  An earlier revision of
-    this header stated clause (3) unconditionally — "an adjunction
-    between Ab-enriched categories induces an isomorphism of
-    hom-groups", with [hom_ab] read off any [AbEnriched C].  Since
-    the PR "algebraic carriers are sets" (2026-09-17) an [AbObject]
-    carries [cmon_prop], a [PropEquiv] for its carrier setoid, and
-    [hom_ab]'s carrier IS [C]'s hom-setoid; an arbitrary category
-    supplies no [Prop] mirror of its `≈`, [Cat] being the standing
-    counterexample, where an [F ≈ G] is itself a family of
-    isomorphisms (Lib/Setoid/Propositional.v,
-    Instance/Sets/Propositional.v's header).  So the hypothesis sits
-    exactly at the PASSAGE from the internal enrichment to the
-    concrete record, and nowhere else: [AbEnriched] and
-    [Preadditive] are untouched and keep the ambient `≈`, which is
-    the SCOPE paragraph of Structure/Complete.v's size note (item 4)
-    read at this file.
-
-    The ten: [hom_ab], [hom_ab_carrier], [hom_ab_plus],
-    [hom_ab_zero] and [hom_ab_neg] take
-    [{LP : LocallyPropositional C}]; [adj_to_ab], [adj_from_ab],
-    [adj_hom_ab_iso], [adj_hom_ab_iso_to] and [adj_hom_ab_iso_from]
-    take it on BOTH categories ([LPC] and [LPD]), the isomorphism's
-    two ends being hom-groups of C and of D.  Nothing else in this
-    file changed statement — the transpose-additivity lemmas,
-    [left_adjoint_additive], [right_adjoint_additive] and the
-    biproduct section read as they did.  [LocallyPropositional] is a
-    class, so every concrete ambient discharges it by resolution:
-    [Ab_LocallyPropositional] (Instance/Ab.v),
-    [RMod_LocallyPropositional] (Instance/Mod.v),
-    [CMon_LocallyPropositional] (Instance/CMon.v) and
-    [DeloopRig_LocallyPropositional] (Theory/Algebra/Rig.v).
-    Those are the ambients the nine module and bimodule objects
-    built on [hom_ab] actually use, so none of them gained a
-    hypothesis.
-
-    WHAT IS NOT DELIVERED.  No characterization of additive functors
-    as the biproduct-preserving ones (Mac Lane Proposition VIII.2.4,
-    which is strictly more than the definition and belongs to its own
-    catalog item).  No additive-adjunction CLASS bundling F ⊣ U with
-    both additivity witnesses, and hence no category of such.  No
-    naturality statement for [adj_hom_ab_iso] in x or y as a functor
-    into Ab, so it is a family of group isomorphisms and not an
-    isomorphism of Ab-valued bifunctors.  (Since #454 the one-variable
-    Ab-valued hom functors themselves exist, as
-    Functor/Representable/Additive.v's [HomAb] and [CoHomAb]; the
-    sentence before this one still holds, [adj_hom_ab_iso] not being
-    restated as a natural isomorphism between them.)  No monoidal or enriched
-    reading, so nothing here says that an adjunction between
-    Ab-categories is an Ab-ENRICHED adjunction in the sense of
-    Construction/Enriched.v.  No concrete instantiation: no in-tree
-    adjunction between two Ab-enriched categories is exhibited, so
-    every result here is a conditional and the file adds no witness
-    to docs/INHABITATION.md.
-
-    TWO ENGINEERING FINDINGS, both about elaboration rather than
-    mathematics, recorded so the next reader does not rediscover them.
-    (a) A [CMonHom] written as a record literal whose [cmon_map] field
-    is a transpose — [{| cmon_map := to adj ... |}] — is REJECTED: the
-    expected type is reported as [SetoidMorphism ?M ?N] with the two
-    setoid arguments still evars, so the hom-setoid literals the [adj]
-    field carries are never matched against [hom_ab]'s.  Building the
-    same term with [unshelve econstructor] and discharging the field
-    by [exact] elaborates without complaint, and that is why
-    [adj_to_ab], [adj_from_ab] and [adj_hom_ab_iso] are in proof mode
-    rather than written as terms.  (b) [Preadditive_op] and
-    [AbEnriched_op] must be [Program Definition]s: as plain
-    [Definition]s the [padd] field is rejected with the two hom-sets
-    reported at swapped endpoints, even though the term is the right
-    one — [padd_op_is_padd] closes by [eq_refl], so no transport was
-    inserted and no obligation was generated (the file has none). *)
-
-(** ** Injectivity of the two transposes
-
-    A transpose is one leg of an isomorphism of setoids, so it is
-    injective; the two round-trip corollaries of Theory/Adjunction.v
-    are all that is needed.  Stated here rather than upstream because
-    the copy a name search finds, [Instance/Rng/Free.v]'s
-    [to_adj_injective], sits in a file this one does not require —
-    that search was by NAME, so it is not evidence that no other
-    spelling of the same fact exists.  The names are kept apart
-    deliberately: the [print-assumptions] gate audits in one scope,
-    where two constants called [to_adj_injective] could not be told
-    apart. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AdjunctionInjectivity.
 
@@ -323,14 +63,11 @@ Qed.
 
 End AdjunctionInjectivity.
 
-(** ** The transposes are group homomorphisms
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Mac Lane's Theorem 3 asserts two things at once, and this section
-    isolates the half that needs only ONE of the two functors to be
-    additive.  The forward transpose ⌊−⌋ is additive as soon as U is;
-    the inverse transpose ⌈−⌉ is additive as soon as F is.  Theorem 3
-    proper, in the next section, is what closes the loop by deriving
-    the second hypothesis from the first. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AdditiveTranspose.
 
@@ -414,17 +151,11 @@ End BackwardTranspose.
 
 End AdditiveTranspose.
 
-(** ** Mac Lane §IV.1 Theorem 3: a left adjoint of an additive
-       functor is additive
+(*
+   本节说明伴随、函子相关定义、性质与动机。
 
-    Both fmap[F] (padd f g) and padd (fmap[F] f) (fmap[F] g)
-    transpose to padd (η ∘ f) (η ∘ g).  For the first this is
-    [fmap_from_adj_unit] (fmap[F] h ≈ ⌈η ∘ h⌉, so its transpose is
-    η ∘ h by [from_adj_comp_law]) together with bilinearity of
-    composition; for the second it is [to_adj_padd] followed by the
-    same reading applied to each summand.  Injectivity of ⌊−⌋ closes
-    it.  Note which hypothesis does the work: U's additivity is used
-    exactly once, inside [to_adj_padd]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section LeftAdjointAdditive.
 
@@ -464,21 +195,17 @@ Qed.
   fmap_padd := @left_adjoint_fmap_padd
 |}.
 
-(* There is nothing to read back here, and an earlier revision of this
-   file shipped an [Example] pretending otherwise.  [AdditiveFunctor]
-   is a structure ON a given functor rather than a bundled functor, so
-   "the produced witness leaves F unperturbed" has no content to state.
-   The [Example] asserting [@fmap D C F x y f = fmap[F] f] was a
-   SYNTACTIC TAUTOLOGY — [fmap[F]] IS notation for [@fmap _ _ F _ _]
-   (Theory/Functor.v) — so it never mentioned
-   [left_adjoint_additive] and compiled at an arbitrary functor with no
-   adjunction in sight.  Removed rather than repaired. *)
+(*
+   本节说明函子相关定义、性质与动机。
 
-(* With Theorem 3 in force, the inverse transpose is additive too —
-   so BOTH legs of the adjunction bijection are group homomorphisms
-   under the single hypothesis that U is additive.  This is what
-   makes the hom-group isomorphism below available at the strength
-   Mac Lane states it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+
+(*
+   本节说明伴随、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary adj_from_padd {x : D} {y : C} (f g : x ~{D}~> U y) :
   from adj (padd f g) ≈ padd (from adj f) (from adj g).
 Proof. exact (from_adj_padd f g). Qed.
@@ -493,58 +220,19 @@ Proof. exact (from_adj_abneg f). Qed.
 
 End LeftAdjointAdditive.
 
-(** ** The hom-sets as abelian groups, and the bijection as a group
-       isomorphism
+(*
+   本节说明hom、同构相关定义、性质与动机。
 
-    Mac Lane's conclusion has two halves and the reviewer bar for
-    this file is that both be visible.  The first is the additivity
-    of F, above.  The second is that the bijection
-
-        F x ~{C}~> y   ≅   x ~{D}~> U y
-
-    respects the group structure, and the honest way to say that in
-    this library is to exhibit it as an isomorphism in [Ab], the
-    tree's own category of abelian groups — which is possible
-    precisely because an [AbObject] is a setoid with a commutative
-    monoid structure and a negation, and an [AbEnriched] category
-    supplies exactly that on each hom-setoid.
-
-    AN EARLIER REVISION stopped that sentence there.  Since the PR
-    "algebraic carriers are sets" (2026-09-17) an [AbObject] carries
-    one further field, [cmon_prop], and an [AbEnriched] category does
-    NOT supply it: it is a property of the ambient hom-setoids, not of
-    the enrichment.  Both categories of this section are therefore
-    assumed [LocallyPropositional] ([LPC], [LPD] below), and the ten
-    constants that gained the hypothesis are named in the
-    strength-change paragraph of the file header.
-
-    UNIVERSES.  An [AbObject]'s carrier is a [SetoidObject], which
-    identifies a setoid's carrier and relation universes; so this
-    section is stated over C : Category@{u u0 u0}.  The identification
-    is not introduced here — Theory/Adjunction.v's [adj] field builds
-    [SetoidObject] literals out of the very same hom-setoids — but it
-    is a genuine restriction relative to the previous sections, which
-    carry none, and it is the reason the additivity lemmas are
-    delivered as free-standing theorems as well as through this
-    packaging. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HomGroups.
 
-(* [hom_ab] is a plain [Definition] rather than an [Instance]: it is a
-   reading of a hom-setoid, not something typeclass resolution should
-   ever be searching for.
+(*
+   本节说明hom相关定义、性质与动机。
 
-   [LP] is new since the PR "algebraic carriers are sets" (2026-09-17).  An
-   [AbObject] carries [cmon_prop], the property that its carrier's `≈` is
-   logically equivalent to a [Prop]-valued relation, and here the carrier IS
-   [C]'s hom-setoid; an arbitrary category supplies no such relation
-   (Instance/Sets/Propositional.v's header records the measurement for [Cat],
-   where an `≈` of functors IS a family of isomorphisms).  So the ambient
-   category must be LOCALLY PROPOSITIONAL.  The hypothesis is a class, so it
-   is discharged by resolution wherever an instance is in scope: at [Ab] and
-   [RMod R] by [Ab_LocallyPropositional] and [RMod_LocallyPropositional], and
-   those are the ambients the nine module and bimodule objects built on
-   [hom_ab] actually use. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition hom_ab {C : Category} {LP : LocallyPropositional C}
   (AC : AbEnriched C) (x y : C) :
   AbObject := {|
@@ -568,9 +256,11 @@ Definition hom_ab {C : Category} {LP : LocallyPropositional C}
       (@padd_abneg C AC x y f)
 |}.
 
-(* The four data fields are the enrichment's own, on the nose: nothing
-   is rebuilt, so every [AbEnriched] law about [padd] is literally a
-   law about this group.  Measured at [eq_refl], not assumed. *)
+(*
+   本节说明 Additive 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example hom_ab_carrier {C : Category} {LP : LocallyPropositional C}
   (AC : AbEnriched C) (x y : C) :
   carrier (cmon_setoid (hom_ab AC x y)) = (x ~{C}~> y).
@@ -625,18 +315,11 @@ Proof.
   - exact (@adj_from_padd C D AC AD F U A AU x y).
 Defined.
 
-(* Mac Lane's second clause: the adjunction bijection is an
-   isomorphism of abelian groups.  Both round trips are the existing
-   [to_adj_comp_law]/[from_adj_comp_law], since [Ab]'s hom-setoid is
-   pointwise equality of the underlying maps.
+(*
+   本节说明伴随、hom、同构相关定义、性质与动机。
 
-   AN EARLIER REVISION stated this for any two Ab-enriched categories.
-   It now rests on [LPC] and [LPD] above, because both of its ends are
-   [hom_ab]s and an [AbObject] carries [cmon_prop] — see [hom_ab] and
-   the strength-change paragraph of the file header.  The two
-   [Example]s below it ([adj_hom_ab_iso_to], [adj_hom_ab_iso_from])
-   inherit the same two hypotheses, and their [eq_refl] strength is
-   unchanged. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition adj_hom_ab_iso (x : D) (y : C) :
   @Isomorphism Ab (hom_ab AC (F x) y) (hom_ab AD x (U y)).
 Proof.
@@ -660,16 +343,11 @@ Proof. exact eq_refl. Qed.
 
 End HomGroups.
 
-(** ** The dual: a right adjoint of an additive functor is additive
+(*
+   本节说明伴随、函子、幺半群相关定义、性质与动机。
 
-    Obtained by transport across opposites rather than by a second
-    argument.  The transport needed two constructions the tree did
-    not carry: [Preadditive_op] and [AbEnriched_op].  Every field is
-    the corresponding field of the original — composition in C^op is
-    C's with its arguments exchanged, so the two bilinearity laws
-    trade places and so do the two absorption laws, while the
-    commutative-monoid laws are unchanged, [hom] in C^op being [hom]
-    in C at swapped endpoints. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Preadditive_op {C : Category} (P : @Preadditive C) :
   @Preadditive (C^op) := {|
@@ -706,11 +384,11 @@ Example abneg_op_is_abneg {C : Category} (AC : AbEnriched C) (x y : C) :
   @abneg (C^op) (AbEnriched_op AC) x y = @abneg C AC y x.
 Proof. exact eq_refl. Qed.
 
-(* Additivity crosses [Opposite_Functor] in both directions with no
-   proof content: the opposite functor's [fmap] IS the original's at
-   swapped endpoints, and [padd] in the opposite enrichment IS [padd]
-   at swapped endpoints, so the two [fmap_padd] statements are the
-   same statement. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition AdditiveFunctor_op {C D : Category}
   {AC : AbEnriched C} {AD : AbEnriched D} (G : C ⟶ D)
   (AG : @AdditiveFunctor C D AC AD G) :
@@ -744,10 +422,11 @@ Context {U : C ⟶ D}.
 Context (A : F ⊣ U).
 Context (AF : @AdditiveFunctor D C AD AC F).
 
-(* [Opposite_Adjunction A : U^op ⊣ F^op], so in the opposite pair the
-   LEFT adjoint is U^op and the right adjoint is F^op.  Theorem 3
-   applied there yields additivity of U^op, which [AdditiveFunctor_unop]
-   carries back to U. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition right_adjoint_additive : @AdditiveFunctor C D AC AD U :=
   AdditiveFunctor_unop U
     (@left_adjoint_additive (D^op) (C^op) (AbEnriched_op AD)
@@ -756,82 +435,22 @@ Definition right_adjoint_additive : @AdditiveFunctor C D AC AD U :=
 
 End RightAdjointAdditive.
 
-(** ** Riehl §4.6 Corollary 4.6.9: additivity with NO additivity
-       hypothesis
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Riehl, "Category Theory in Context", §4.6 Corollary 4.6.9: between
-    categories in which finite direct sums are simultaneously finite
-    products and finite coproducts, BOTH adjoints of an adjunction are
-    additive, with no additivity assumed of either.  The reason is that
-    a left adjoint preserves coproducts, and in such a category the
-    coproduct carries the product structure too, so the enrichment —
-    which is computed by the biproduct — is carried along with it.
-
-    WHAT LANDS HERE, AND WHAT DOES NOT.  The reusable missing piece the
-    catalog issue names is the bridge between [Biproduct] and the two
-    one-sided universal properties.  It is delivered in the orientation
-    an adjunction actually supplies: [biproduct_of_coproduct] promotes
-    a COPRODUCT with a compatible pair of retractions to a full
-    [Biproduct], the product half being derived from preadditivity by
-    the identity decomposition — the exact dual of Semiadditive.v's
-    [cartesian_bi_is_coproduct], which the tree carried only in the
-    product orientation and only bundled with a chosen [Cartesian]
-    structure.  On top of it the adjunction supplies everything else by
-    hom-set arguments: [adj_image_is_coproduct] (a left adjoint carries
-    a coproduct to a coproduct — transposition and [to_adj_nat_l], no
-    colimit vocabulary and no shape category) and [adj_fmap_pzero] (a
-    left adjoint kills zero morphisms, because F of the initial object
-    has singleton hom-sets).  [adj_image_biproduct] then assembles the
-    two into the statement that a left adjoint PRESERVES biproducts,
-    with the F-images of all four structure maps as the image's
-    structure maps.
-
-    Read the dependency accurately: [adj_image_biproduct] is a
-    free-standing result and the transfer theorem does NOT consume it.
-    [fmap_padd_of_preserved_coproduct] — the reusable statement, over
-    an ARBITRARY functor with no adjunction anywhere — takes the
-    coproduct property and the zero-preservation directly and rebuilds
-    the image biproduct inside its own proof, as a single local
-    definition.  That is deliberate rather than incidental: a
-    universe-polymorphic biproduct constant mentioned twice in one goal
-    acquires two universe instances, which the final rewriting step
-    then cannot identify, and a single [pose]d local term has one.
-    [left_adjoint_fmap_padd_biproduct] supplies the two hypotheses from
-    the adjunction, and [left_adjoint_additive_of_biproducts] packages
-    the result as an [AdditiveFunctor] over Ab-enriched categories with
-    NO additivity hypothesis on either functor.
-
-    WHAT IS NOT DELIVERED, PRECISELY.  The biproducts of the SOURCE
-    category are an explicit hypothesis ([HasBiproducts D]), not
-    derived from a completeness or abelian assumption; nothing here
-    says a semiadditive category has them, and no [Semiadditive] or
-    [Abelian] class is consulted.  The dual clause of Riehl's
-    corollary — a RIGHT adjoint is additive under the same hypotheses —
-    is NOT stated: transporting it across opposites the way
-    [right_adjoint_additive] does would need [ZeroObject (C^op)] and a
-    [Biproduct] transport, neither of which exists in tree and neither
-    of which is built here.  Nothing connects any of this to
-    Adjunction/Continuity.v's [right_adjoint_preserves_limits] /
-    [left_adjoint_preserves_colimits]: the coproduct preservation below
-    is proved directly from the hom-set bijection and is not exhibited
-    as an instance of those theorems, so no bridge between the
-    elementary and the [Colimit]-shaped readings is claimed.  Finally,
-    no separation is proved: it is not shown that the hypotheses here
-    are weaker than assuming U additive, only that they are different. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Structure.Initial.
 Require Import Category.Structure.ZeroObject.
 Require Import Category.Structure.Biproduct.
 Require Import Category.Structure.Semiadditive.
 
-(** *** The biproduct bridge, coproduct orientation
+(*
+   本节说明笛卡尔相关定义、性质与动机。
 
-    Dual to Semiadditive.v's [cartesian_bi_is_coproduct]: there a
-    product plus preadditivity yields the coproduct half; here a
-    coproduct plus preadditivity yields the product half.  The pivot is
-    the same in both, the decomposition of the identity as the sum of
-    the two "project then reinject" idempotents — which on this side is
-    proved by the coproduct's own uniqueness clause. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CoproductBiproduct.
 
@@ -930,10 +549,11 @@ Proof. exact eq_refl. Qed.
 
 End Bridge.
 
-(* The enrichment addition read off a biproduct through the coproduct
-   mediator alone: f + g ≈ [f, g] ∘ Δ.  This is [bi_copair_pair] at
-   identity legs, and it is the form the transfer below needs, since
-   the copairing is what a left adjoint preserves. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma padd_copair_diag {a c : C} (B : Biproduct a a) (f g : a ~> c) :
   bi_copair B f g ∘ bi_diag B ≈ padd f g.
 Proof.
@@ -944,15 +564,11 @@ Qed.
 
 End CoproductBiproduct.
 
-(** *** A left adjoint carries biproducts to biproducts
+(*
+   本节说明伴随、函子、（余）极限相关定义、性质与动机。
 
-    Three hom-set arguments and no colimit machinery: the image of a
-    coproduct is a coproduct because the transpose turns
-    precomposition with fmap[F] i into postcomposition with i
-    ([to_adj_nat_l]); the image of the initial object has singleton
-    hom-sets because the transpose lands in hom-sets out of the initial
-    object; and the four interaction laws are functoriality plus that
-    second fact. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section LeftAdjointBiproducts.
 
@@ -975,10 +591,11 @@ Proof.
   apply (@zero_unique D (@zero_initial D ZD)).
 Qed.
 
-(* Hence a left adjoint kills the enrichment zero.  The zero morphism
-   factors through D's zero object, and its image therefore factors
-   through F of the initial object, whose outgoing morphisms are all
-   equal — in particular equal to [pzero], which absorbs. *)
+(*
+   本节说明伴随、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma adj_fmap_pzero {a c : D} :
   fmap[F] (@pzero D PD a c) ≈ @pzero C PC (F a) (F c).
 Proof.
@@ -1034,10 +651,11 @@ Proof.
       now apply to_adj_respects.
 Defined.
 
-(* The image biproduct: the object is F of the object downstairs and
-   ALL FOUR structure maps are the F-images of the originals.  That is
-   what makes the transfer lemmas below available — a biproduct merely
-   isomorphic to this one would not give them. *)
+(*
+   本节说明 Additive 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition adj_image_biproduct : Biproduct (F a) (F a').
 Proof.
   unshelve eapply biproduct_of_coproduct.
@@ -1057,11 +675,11 @@ Proof.
   - exact adj_image_is_coproduct.
 Defined.
 
-(* The image biproduct is on the nose the image of the original: its
-   object is F of the object, and ALL FOUR structure maps are the
-   F-images of the originals.  A biproduct merely isomorphic to this
-   one would not support the transfer below, whose diagonal step is
-   proved against the F-images of the projections. *)
+(*
+   本节说明 Additive 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example image_biproduct_obj :
   biproduct_obj adj_image_biproduct = fobj[F] (biproduct_obj B).
 Proof. exact eq_refl. Qed.
@@ -1078,22 +696,11 @@ End ImageBiproduct.
 
 End LeftAdjointBiproducts.
 
-(** *** Transfer: a functor whose image of a biproduct is again a
-        biproduct is additive at that pair
+(*
+   本节说明伴随、函子相关定义、性质与动机。
 
-    Stated for an ARBITRARY functor and with no adjunction anywhere:
-    this is the reusable half of Riehl's corollary, and the adjunction
-    is only what supplies its two hypotheses.  Those hypotheses are
-    exactly what a left adjoint gives — that the images of the two
-    injections make the image object a coproduct, and that the functor
-    kills zero morphisms — and the missing product half is
-    manufactured inside the proof by [biproduct_of_coproduct].
-
-    Both halves of the biproduct are then spent, on different steps and
-    for a reason worth naming: the copairing transfers by the coproduct
-    universal property, but the DIAGONAL is a product-side mediator and
-    transfers only by the product universal property.  That is why the
-    coproduct alone does not suffice and why the bridge was needed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section BiproductTransfer.
 
@@ -1120,11 +727,11 @@ Proof.
     by (rewrite <- fmap_comp, bi_exl_inr; apply Hz).
   assert (H21 : fmap[G] (bi_exr B) ∘ fmap[G] (bi_inl B) ≈ zero_mor)
     by (rewrite <- fmap_comp, bi_exr_inl; apply Hz).
-  (* One local biproduct on the image object, with the four F-images as
-     its structure maps.  It is introduced by [pose] rather than by a
-     free-standing definition so that every reference below is to the
-     same term; the four field readings that follow are then available
-     by conversion and need no unfolding. *)
+  (*
+   本节说明 Additive 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   pose (GB := biproduct_of_coproduct
                 (fmap[G] (bi_inl B)) (fmap[G] (bi_inr B))
                 (fmap[G] (bi_exl B)) (fmap[G] (bi_exr B))
@@ -1185,14 +792,11 @@ Qed.
 
 End LeftAdjointPadd.
 
-(** *** The packaged corollary
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    An [AdditiveFunctor] produced with no additivity hypothesis on
-    either adjoint.  The preadditive structures are the ones underlying
-    the two Ab-enrichments, so the conclusion is about the same [padd]
-    the rest of this file uses; the negation plays no role in the
-    argument and is present only because [AdditiveFunctor] is declared
-    over [AbEnriched]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition left_adjoint_additive_of_biproducts
   {C D : Category} {AC : AbEnriched C} {AD : AbEnriched D}

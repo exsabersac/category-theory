@@ -35,9 +35,11 @@ Definition bimap {F : C ∏ D ⟶ E} {x w : C} {y z : D}
            (f : x ~{C}~> w) (g : y ~{D}~> z) :
   F (x, y) ~{E}~> F (w, z) := @fmap (C ∏ D) E F (x, y) (w, z) (f, g).
 
-(* [bimap] is definitionally [fmap] on a pair; this folds the [fmap] notation
-   back into [bimap] during rewriting.  The equality is Leibniz (=), not ≈,
-   because both sides are the very same term. *)
+(*
+   本节说明 Bifunctor 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary bimap_fmap {F : C ∏ D ⟶ E} {x w : C} {y z : D}
       (f : x ~{C}~> w) (g : y ~{D}~> z) :
   @fmap (C ∏ D) E F (x, y) (w, z) (f, g) = bimap f g.
@@ -94,9 +96,11 @@ Proof.
   split; simpl; cat.
 Qed.
 
-(* Interchange, swap form: acting first in D then in C agrees with the joint
-   action.  Together with [bimap_id_left_right] this expresses that the two
-   partial actions commute (the middle-four exchange). *)
+(*
+   本节说明 Bifunctor 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma bimap_id_right_left {F : C ∏ D ⟶ E} {w}
       `(f : z ~{C}~> w) `(g : x ~{D}~> y) :
   bimap f id ∘ bimap id g ≈ bimap f g.

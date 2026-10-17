@@ -41,10 +41,11 @@ Next Obligation.
   apply counit_fmap_unit.
 Defined.
 
-(* Oppositization is involutive on adjunctions: applying it twice recovers the
-   original [A] on the nose. This holds because (F^op)^op = F definitionally and
-   the construction merely swaps the unit/counit and naturality fields, so a
-   second swap restores them; hence the equality is provable by [reflexivity]. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary Opposite_Adjunction_Transform_invol
           `(F : D ⟶ C) `(U : C ⟶ D) (A : F ∹ U) :

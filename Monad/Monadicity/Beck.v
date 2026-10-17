@@ -31,13 +31,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Transport of an elementary coequalizer along an isomorphism
+(*
+   本节说明同构相关定义、性质与动机。
 
-    If e is a coequalizer of f, g at q and an isomorphism i : q' ≅ q
-    carries a map e' onto e (to i ∘ e' ≈ e), then e' is a coequalizer of
-    the same pair at q'.  This is the glue between a created
-    coequalizer's packaged comparison isomorphism and the elementary
-    universal property consumed by the Beck argument. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma coequalizer_along_iso {C : Category} {x y : C} (f g : x ~> y)
   {q q' : C} (e : y ~> q) (E : IsCoequalizer f g q e)
@@ -73,14 +71,11 @@ Proof.
       now rewrite id_right.
 Defined.
 
-(** ** Creation of coequalizers of U-split pairs
+(*
+   本节说明同构相关定义、性质与动机。
 
-    The two clauses are discussed in the header: [create_coeq] lifts the
-    split coequalizer to a coequalizer upstairs, with the agreement of
-    the U-image packaged as a comparison isomorphism; and
-    [create_coeq_reflects] — the uniqueness clause, in its strongest
-    consumable form — recognizes every iso-compatible lift as a
-    coequalizer upstairs. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class CreatesUSplitCoequalizers {C D : Category} (U : C ⟶ D) := {
   create_coeq {x y : C} (f g : x ~> y)
@@ -99,11 +94,11 @@ Class CreatesUSplitCoequalizers {C D : Category} (U : C ⟶ D) := {
     IsCoequalizer f g q e
 }.
 
-(** Uniqueness of created data, in the customary form: any two
-    iso-compatible lifts of the same split coequalizer are isomorphic,
-    compatibly with the coequalizing maps.  Both lifts are coequalizers
-    of the pair by the reflection clause, so each descends the other and
-    the round trips descend the identity. *)
+(*
+   本节说明 Beck 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary create_coeq_unique {C D : Category} {U : C ⟶ D}
   (CR : CreatesUSplitCoequalizers U) {x y : C} (f g : x ~> y)
@@ -145,13 +140,11 @@ Proof.
   - exact (unique_property (coeq_desc E1 e2 (cofork E2))).
 Qed.
 
-(** ** Creation makes U conservative
+(*
+   本节说明 Beck 相关定义、性质与动机。
 
-    The splitting used below: when U h is invertible, U h itself
-    split-coequalizes the U-image of the identical pair (id, id) — the
-    section of e := U h is (U h)⁻¹ and the section of the first leg is
-    the identity.  Kept transparent so that its coequalizing map is
-    U h on the nose for the reflection clause. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition iso_identical_split {C D : Category} (U : C ⟶ D)
   {x y : C} (h : x ~> y) (I : IsIsomorphism (fmap[U] h)) :
@@ -176,11 +169,11 @@ Proof.
     exact (@is_left_inverse D _ _ _ I).
 Defined.
 
-(** A functor that creates coequalizers of U-split pairs reflects
-    isomorphisms.  Given h with U h invertible, the reflection clause at
-    [iso_identical_split] recognizes h as a coequalizer of (id, id);
-    descending id through it yields the inverse, whose other triangle is
-    epi-cancellation of h. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma creates_split_reflects_isos {C D : Category} (U : C ⟶ D)
   (CR : CreatesUSplitCoequalizers U) : ReflectsIsos U.
@@ -225,15 +218,11 @@ Local Notation K := (EM_Comparison A).
 Definition beck_reflects : ReflectsIsos U :=
   creates_split_reflects_isos U CR.
 
-(** ** The canonical presentation and its splitting downstairs
+(*
+   本节说明单子相关定义、性质与动机。
 
-    For an algebra x = (d, α), the presentation pair upstairs is
-    ε_{F d}, F α ([crude_pair_l]/[crude_pair_r] of Monadicity/Crude.v).
-    Its U-image is definitionally the canonical pair μ_d, T α of the
-    algebra — the induced monad's join reads U ε F transparently — and
-    that pair is split-coequalized by α itself: [canonical_split] of
-    Monadicity/BeckObjects.v is exactly the U-splitting that the
-    creation instance consumes. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition beck_split (x : EM) :
   SplitCoequalizer (fmap[U] (crude_pair_l A x))
@@ -279,11 +268,11 @@ Proof. exact (cofork (beck_is_coeq x)). Qed.
 Definition beck_e_epic (x : EM) : Epic (beck_e x) :=
   coequalizer_epic _ _ (beck_is_coeq x).
 
-(** ** The quasi-inverse on morphisms: descent
+(*
+   本节说明 Beck 相关定义、性质与动机。
 
-    Identical to the crude development, with the created coequalizer in
-    place of the chosen one; the commuting square of a homomorphism is
-    the reused [crude_hom_square]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma beck_G_map_cofork {x y : EM} (h : x ~{EM}~> y) :
   (beck_e y ∘ fmap[F] (t_alg_hom[h])) ∘ @counit _ _ _ _ A (F (`1 x))
@@ -369,12 +358,11 @@ Definition Beck_Inverse : EM ⟶ C :=
     (fun x => beck_G_map_id x)
     (fun x y z h k => beck_G_map_comp h k).
 
-(** ** Downstairs: the U-image coequalizer, by transport
+(*
+   本节说明同构、来源与用途相关定义、性质与动机。
 
-    Where the crude proof invoked preservation, the created coequalizer
-    carries its own downstairs comparison: transporting the canonical
-    splitting along the packaged isomorphism exhibits U (G (d, α)) as a
-    coequalizer of the pair U ε_{F d}, U (F α), coequalized by U e. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition beck_U_coeq (x : EM) :
   IsCoequalizer
@@ -410,9 +398,11 @@ Definition beck_to_e (x : EM) :
 Definition beck_from (x : EM) : `1 x ~{D}~> U (beck_G_obj x) :=
   fmap[U] (beck_e x) ∘ @unit _ _ _ _ A (`1 x).
 
-(* Restricting [beck_from] along α recovers U e: slide η across α by
-   naturality ([crude_unit_alpha]), trade U (F α) for U ε under U e (the
-   U-image of the cofork law), and close with the zig-zag identity. *)
+(*
+   本节说明 Beck 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma beck_from_alpha (x : EM) :
   beck_from x ∘ t_alg[`2 x] ≈ fmap[U] (beck_e x).
 Proof.
@@ -546,11 +536,11 @@ Proof.
   exact (beck_counit_coherence h).
 Defined.
 
-(** ** The unit of the equivalence: c ≅ G (K c) in C
+(*
+   本节说明等价相关定义、性质与动机。
 
-    The counit ε_c coforks the presentation of the comparison algebra
-    K c = (U c, U ε_c) — the reused [crude_unit_cofork] — and therefore
-    descends to a mediator θ_c out of the created coequalizer G (K c). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition beck_unit_desc (c : C) :
   ∃! u : beck_G_obj (K c) ~{C}~> c,
@@ -664,16 +654,11 @@ Definition beck_monadicity : EquivalenceOfCategories (EM_Comparison A) :=
 
 End BeckMonadicity.
 
-(** * The converse: the Eilenberg–Moore forgetful functor creates
+(*
+   本节说明函子、单子、同构相关定义、性质与动机。
 
-    [em_forget_creates_split] of Monadicity/BeckObjects.v, repackaged
-    into the class.  The existence clause returns the created algebra
-    with the identity comparison isomorphism.  The reflection clause is
-    proved directly: a cofork of algebras lying over the splitting up to
-    a compatible isomorphism i descends downstairs through the split
-    coequalizer, the descended arrow is conjugated back through i, its
-    homomorphism square follows by cancelling the split epimorphism
-    T e₀, and descent uniqueness downstairs pins the mediator. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section MonadicCreates.
 

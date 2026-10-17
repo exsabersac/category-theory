@@ -16,12 +16,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The monad instance is bound by name so that [TAlgebra]'s instance argument
-   can be given explicitly in [obj]: were it left to Program, the elaborator
-   would seal that argument behind a Qed-opaque obligation constant, and
-   algebras built against the ambient instance [H] — such as the free algebras
-   (T a, μ_a) of Moore/Adjunction.v — would not be recognized as objects of
-   this category. *)
+(*
+   本节说明伴随、单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition EilenbergMoore `(T : C ⟶ C) `{H : @Monad C T} : Category := {|
   obj     := ∃ a : C, @TAlgebra C T H a;

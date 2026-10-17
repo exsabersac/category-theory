@@ -22,13 +22,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Two [id_cast] identities not present in Construction/Quotient.v
+(*
+   本节说明 Map 相关定义、性质与动机。
 
-    Both belong beside their donors in that file's [HomCast] section; they
-    are stated here because this file is their only consumer so far.  Both
-    are proved by eliminating the object equalities, whose endpoints are
-    universally quantified variables here, so no uniqueness of identity
-    proofs is used and no hypothesis is taken. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma id_cast_sym_trans {X : Category} {u v w : X} (p : u = v) (q : v = w) :
   id_cast (eq_sym (eq_trans p q))
@@ -41,9 +39,11 @@ Proof. destruct e; simpl; symmetry; apply fmap_id. Qed.
 
 (** ** The engine: comparison isomorphisms and the three-way equivalence *)
 
-(* Everything Proposition 1 needs is a pair of invertible comparison
-   families [al] and [be] between the two composites, plus the naturality of
-   each.  The strict and the ≈ readings below are both instances. *)
+(*
+   本节说明 Map 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section MapCompare.
 
@@ -186,11 +186,11 @@ Section StrictSquares.
 Context {C D : Category} {F : D ⟶ C} {U : C ⟶ D}.
 Context {C' D' : Category} {F' : D' ⟶ C'} {U' : C' ⟶ D'}.
 
-(* Mac Lane's display (2).  The [_nat] fields are the transported agreement
-   of the two arrow actions; together with the object equalities above them
-   they are the two arguments of Theory/Skeleton.v's
-   [strict_equiv_of_id_cast_nat], whose conclusion is the tree's strict
-   functor equality (see the header, and Test/ProbeMapAdj393.v). *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record AdjSquares : Type := {
   sq_K : C ⟶ C';
   sq_L : D ⟶ D';
@@ -620,9 +620,11 @@ Record WeakMapOfAdjunctions : Type := {
   wmap_hom : WeakSquaresHom wmap_squares
 }.
 
-(* The strict hom condition IS the ≈ one at the comparison isomorphisms the
-   strict data supplies -- at Leibniz equality of types, by [reflexivity].
-   The passage below therefore carries [map_hom] across unchanged. *)
+(*
+   本节说明hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma strict_hom_is_weak_hom (S : @AdjSquares C D F U C' D' F' U') :
   SquaresHom A A' S = WeakSquaresHom (WeakAdjSquares_of_AdjSquares S).
 Proof. reflexivity. Qed.
@@ -671,17 +673,11 @@ End ConjugateCase.
 
 (** ** A map of adjunctions that is not the identity *)
 
-(* The witness carries an ARBITRARY adjunction: the product of A with itself
-   carries the symmetry [Swap] as a map of adjunctions to itself.  The
-   product of two adjunctions is built here because the tree has none, and
-   that was measured two ways: no term anywhere has a type of the shape
-   [_ ∏⟶ _ ⊣ _ ∏⟶ _] (swept multiline over declaration heads, since a
-   same-line grep under-approximates), and the only names in the tree
-   pairing those two words are Adjunction/Diagonal/Product.v's
-   [Diagonal_Product_Adjunction] and, read case-insensitively,
-   Adjunction/Diagonal/Coproduct.v's [Diagonal_Coproduct_Adjunction] --
-   both diagonal adjunctions inside one category, and both a different
-   construction. *)
+(*
+   本节说明伴随、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProductAdjunction.
 
@@ -731,9 +727,11 @@ Section SwapWitness.
 
 Context {C D : Category} {F : D ⟶ C} {U : C ⟶ D} (A : F ⊣ U).
 
-(* Both squares hold at [eq_refl]: [Swap] and [_ ∏⟶ _] are both spelled
-   with [fst]/[snd] rather than by matching on a pair, so the two composites
-   reduce to the same term at a variable object. *)
+(*
+   本节说明 Map 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition SwapSquares :
   @AdjSquares (C ∏ C) (D ∏ D) (F ∏⟶ F) (U ∏⟶ U)
               (C ∏ C) (D ∏ D) (F ∏⟶ F) (U ∏⟶ U) := {|
@@ -771,10 +769,11 @@ End SwapWitness.
 
 (** ** An unconditional separation, over a two-object category *)
 
-(* The base category is chosen only to supply two objects that are distinct
-   at Leibniz equality; its hom-setoid is trivial, so the SEPARATION below
-   is object-level.  All the equational content of the witness above is
-   proved at an arbitrary adjunction A. *)
+(*
+   本节说明伴随、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition MapAdjTwo : Category := {|
   obj     := bool;

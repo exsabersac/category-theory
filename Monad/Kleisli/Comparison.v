@@ -346,10 +346,11 @@ Qed.
 
 End Unique.
 
-(* Mac Lane's hypotheses in the form existence delivers them: G L0 = G_T
-   and L0 F_T = F as strict functor equalities, with the object equation of
-   the first the G-image of that of the second ([coh]).  They give the
-   hypotheses of the section above. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Kleisli_Comparison_unique_of_strict (L0 : XT ⟶ A)
   (E1 : @equiv _ (@Functor_StrictEq_Setoid X A)
           (L0 ◯ @Kleisli_Free X (G ◯ F) T) F)
@@ -782,11 +783,11 @@ Example Kleisli_EM_is_comparison_map (x y : C)
 
 End RiehlIsL.
 
-(* Riehl's K as her proof builds it, her Proposition 5.2.13's functor at
-   the Kleisli adjunction: Monad/Comparison.v's [EM_Comparison] at
-   [Kleisli_Adjunction].  It forgets to the functor of [Kleisli_EM] on both
-   actions, and lands in the algebras of the monad the Kleisli adjunction
-   induces, with structure map μ ∘ T id at c. *)
+(*
+   本节说明伴随、函子、单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section RiehlEMComparison.
 

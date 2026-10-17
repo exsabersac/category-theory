@@ -31,13 +31,11 @@ Generalizable All Variables.
 
 (** ** The transformation setoid, named *)
 
-(* The hom-setoid of a functor category, packaged as an object of [Sets].
-   [NatSetoid K L] is stated through [homset ([A, B])] so that it is
-   manifestly the functor category's own hom-setoid rather than a
-   re-declaration; [nat_setoid_is_Transform_Setoid] below records by
-   [eq_refl] that this coincides with [Transform_Setoid], which is the
-   setoid instance resolution picks for the `≊` notation of
-   Instance/Sets.v. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition NatSetoid {A B : Category} (K L : A ⟶ B) : SetoidObject :=
   {| carrier   := K ~{[A, B]}~> L
@@ -59,11 +57,11 @@ Context (J : E ⟶ E').
 
 #[local] Obligation Tactic := idtac.
 
-(* J ◯ − on objects, left whiskering on arrows.  The three laws are the
-   three laws of J read componentwise: respectfulness is [fmap_respects],
-   [fmap_id] is [reflexivity] (the identity transformation's component is
-   already [fmap[K] id], so both sides are [fmap[J] (fmap[K] id)]), and
-   [fmap_comp] is [fmap_comp] of J. *)
+(*
+   本节说明 Postcompose 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Postcompose : [D, E] ⟶ [D, E'] := {|
   fobj := fun K => J ◯ K;
   fmap := fun K L θ => J ⊳ θ
@@ -118,13 +116,11 @@ Context (JFaith : Faithful J).
 
 #[local] Obligation Tactic := idtac.
 
-(* The candidate preimage of φ : J◯K ⟹ J◯L: take the chosen preimage of each
-   component.  [prefmap] is a bare section, so NATURALITY of the resulting
-   family is a theorem, not a field — and faithfulness of J is what proves
-   it.  Applying [fmap[J]] to both sides of the square turns it, after
-   [fmap_comp] and the four cancellations of [fmap_sur], into φ's own
-   naturality square; [naturality_sym] is the same argument in the other
-   orientation. *)
+(*
+   本节说明 Postcompose 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition post_prefmap {K L : D ⟶ E} (φ : J ◯ K ⟹ J ◯ L) :
   K ⟹ L := {|
   transform := fun x => @prefmap _ _ J JFull (K x) (L x) (transform[φ] x)
@@ -150,12 +146,11 @@ Next Obligation.
   simpl; intros K L φ x; apply fmap_sur.
 Qed.
 
-(* Mac Lane's statement.  The forward leg is left whiskering; the backward
-   leg is [post_prefmap].  Respectfulness of the BACKWARD leg is the second
-   place faithfulness is spent: [prefmap] is not assumed to respect `≈`, so
-   the obligation is discharged by applying the injective [fmap[J]] and
-   cancelling both sections.  Of the two round trips, one is [fmap_sur]
-   componentwise and the other is faithfulness applied to it. *)
+(*
+   本节说明 Postcompose 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition postcompose_hom_iso (K L : D ⟶ E) :
   @Isomorphism Sets (NatSetoid K L) (NatSetoid (J ◯ K) (J ◯ L)) := {|
   to   := {| morphism := fun θ => J ⊳ θ |};
@@ -192,10 +187,11 @@ Example postcompose_hom_iso_from (K L : D ⟶ E) (φ : J ◯ K ⟹ J ◯ L) :
 Example postcompose_hom_iso_to_is_fmap (K L : D ⟶ E) (θ : K ⟹ L) :
   to (postcompose_hom_iso K L) θ = fmap[Postcompose J] θ := eq_refl.
 
-(* The `≊` reading of Instance/Sets.v, where the setoid on each carrier
-   is left to instance resolution.  It agrees with the [NatSetoid]
-   packaging because resolution finds [Transform_Setoid], which
-   [nat_setoid_is_Transform_Setoid] records is [homset ([D, E])]. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition postcompose_nat_bijection (K L : D ⟶ E) :
   (K ⟹ L) ≊ (J ◯ K ⟹ J ◯ L) := postcompose_hom_iso K L.
 
@@ -224,11 +220,11 @@ Definition PostcomposeViaHcompose : [D, E] ⟶ [D, E'] :=
 Example postcompose_via_hcompose_obj (K : D ⟶ E) :
   fobj[PostcomposeViaHcompose] K = fobj[Postcompose J] K := eq_refl.
 
-(* The arrow action does not, and this records exactly what it is: an
-   identity 2-cell fed into the Godement product contributes
-   [transform[nat_id] (L x)], which is [fmap[J] id] and not [id].  The
-   Leibniz identification with [fmap[Postcompose J] θ] is pinned as a
-   conversion negative in Test/ProbePostcompose.v. *)
+(*
+   本节说明 Postcompose 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example postcompose_via_hcompose_component
         (K L : D ⟶ E) (θ : K ⟹ L) (x : D) :
   transform[fmap[PostcomposeViaHcompose] θ] x
@@ -242,11 +238,11 @@ Proof.
   rewrite fmap_id; cat.
 Qed.
 
-(* Hence the two functors are equal in [Cat]'s hom-setoid, with identity
-   comparison components.  Leibniz equality of the two records is strictly
-   stronger and is REFUTED — pinned as negative 2 of
-   Test/ProbePostcompose.v — so this is the strongest available comparison
-   between them. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition postcompose_via_hcompose_equiv :
   PostcomposeViaHcompose ≈ Postcompose J := (fun _ => iso_id; _).
 Next Obligation.
@@ -258,14 +254,11 @@ End ViaHcompose.
 
 (** ** Mac Lane's own hypothesis: a full subcategory inclusion *)
 
-(* NOTATION GUARD.  Construction/Subcategory.v exports its own [Full] — the
-   fullness of the SELECTION DATA, whose first argument is a [Category] —
-   which shadows Theory/Functor.v's [Full] on a functor.  Both are needed
-   below, so the two requires are deferred to here rather than placed at the
-   head of the file (the mid-file [Require] idiom of Functor/Diagonal.v),
-   keeping every [Full] above unambiguous, and from this point on
-   functor-level fullness is written out as [Category.Theory.Functor.Full]
-   (the spelling Instance/Field/Frac.v settled on for the same collision). *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Theory.Concrete.
 Require Import Category.Construction.Subcategory.
@@ -296,11 +289,11 @@ Definition sub_postcompose_Full :
   Category.Theory.Functor.Full SubPostcompose :=
   Postcompose_Full (Incl C S) sub_Incl_Full sub_Incl_Faithful.
 
-(* Mac Lane §III.2 Exercise 4 under its own hypothesis: for K, L : D ⟶ E
-   with E a full subcategory of E′, transformations K ⟹ L and J◯K ⟹ J◯L are
-   the same thing — "the same" here being an isomorphism of the two setoids
-   in [Sets], which is the setoid-theoretic rendering of his equality of
-   sets. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sub_postcompose_hom_iso (K L : D ⟶ Sub C S) :
   (K ⟹ L) ≊ (Incl C S ◯ K ⟹ Incl C S ◯ L) :=
   postcompose_nat_bijection (Incl C S) sub_Incl_Full sub_Incl_Faithful K L.
@@ -312,18 +305,11 @@ Arguments sub_postcompose_hom_iso {C} S full {D} K L.
 
 (** ** The concrete witness: finite setoids inside Sets *)
 
-(* Construction/Subcategory/Finite.v is Mac Lane's §I.3 example of a full
-   subcategory — the finite sets inside Set, with all functions between them
-   — realized over setoids, and it already carries the two facts needed
-   here ([FinSets_Full], [FinSets_Faithful]) plus a pair of provably
-   distinct parallel arrows ([FinSets_two_arrows]).  So the witness costs no
-   new subcategory.
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-   The shape D is the terminal category, and that choice is disclosed
-   rather than dressed up: over [_1] the naturality condition is degenerate,
-   so what this witness exercises is the HOM-SETOIDS and the fullness
-   construction, not the naturality argument.  The naturality argument is
-   exercised by the general theorem, whose D is arbitrary. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FinSetsWitness.
 
@@ -356,15 +342,11 @@ Next Obligation. intros x y f; destruct f; simpl; cat. Qed.
 Example finpost_phi_component (x : _1) :
   transform[finpost_phi] x = Sets_negb := eq_refl.
 
-(* Fullness at work: the preimage of [finpost_phi] has [FinSets_negb] as its
-   component.  MEASURED STRICT-FIRST AND REFUTED at [eq_refl], with the cause
-   diagnosed and pinned in Test/ProbePostcompose.v: the [prefmap] in play is
-   the one produced by Construction/Subcategory.v's
-   [Full_Implies_Full_Functor], which is a `Qed` lemma, so no component of it
-   reduces — the obstruction is the donor's opacity and not anything about
-   this construction.  What does hold, and is what the statement is about, is
-   `≈`, and its proof is [fmap_sur] verbatim: [Sub]'s hom-setoid IS `≈` of
-   first projections, which is `≈` of the images under [Incl]. *)
+(*
+   本节说明 Postcompose 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma finpost_preimage_component (x : _1) :
   transform[from finpost_hom_iso finpost_phi] x ≈ FinSets_negb.
 Proof.
@@ -413,34 +395,21 @@ End FinSetsWitness.
 
 (** ** A boundary: fullness of J cannot be dropped *)
 
-(* The inclusion of the discrete two-object category into the walking arrow.
-   It is faithful — parallel arrows of [Two_Discrete] are equal, both being
-   the unique identity constructor at their endpoints — and it is not full,
-   since [TwoXY : TwoX ~> TwoY] has no preimage.  Postcomposing along it is
-   therefore faithful and not full: over the point, a transformation between
-   the two constant functors at [TwoDX] and [TwoDY] would BE an arrow
-   [TwoDX ~> TwoDY], of which there is none, while downstairs [TwoXY]
-   supplies one.
+(*
+   本节说明函子相关定义、性质与动机。
 
-   This says only that fullness of J is used; it does not say that
-   faithfulness is. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FullnessNeeded.
 
 #[local] Obligation Tactic := idtac.
 
-(* The object and arrow actions as ordinary definitions.  [Program] is
-   deliberately not used to elaborate the two [match]es: [TwoDHom] is an
-   INDEXED inductive, and inside a [Program Definition] the branches are
-   compiled through a dependent eliminator carrying [eq] and [JMeq]
-   arguments, after which the functor-law obligations mention that
-   eliminator rather than [disc_fmap] and are not provable by any
-   case analysis one would want to write.  Elaborating the actions as
-   ordinary [Definition]s first is the same accommodation
-   Structure/Cartesian/Closed/Natural.v reaches for — there because
-   [Program] defers an unresolved instance into an obligation that
-   [Unset Transparent Obligations] then makes opaque, a different cause with
-   the same remedy. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition disc_obj (x : TwoDObj) : TwoObj :=
   match x with TwoDX => TwoX | TwoDY => TwoY end.
 

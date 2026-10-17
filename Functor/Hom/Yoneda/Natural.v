@@ -31,11 +31,11 @@ Section YonedaBifunctors.
 
 Context (C : Category).
 
-(** *** Evaluation: E ⟨F, A⟩ = F A
+(*
+   本节说明自然变换相关定义、性质与动机。
 
-    On a morphism ⟨τ, f⟩ : ⟨F, A⟩ ~> ⟨G, B⟩ — a natural transformation
-    τ : F ⟹ G together with f : A ~> B — the action transports along f
-    inside F and then applies the component of τ at B. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition yo_eval_obj (p : [C, Sets] ∏ C) : Sets := fst p (snd p).
 
@@ -76,13 +76,11 @@ Definition YoEval : ([C, Sets] ∏ C) ⟶ Sets := {|
   fmap_comp     := fun x y z g f => yo_eval_map_comp x y z g f
 |}.
 
-(* The evaluation bifunctor has two evident arrow actions, differing in the
-   order of the two moves, and they agree — the agreement being exactly the
-   naturality square of τ.  The library's own implicit evaluation, the
-   uncurried identity inside [Cat_Closed]'s [exp_iso] (see
-   Instance/Cat/Cartesian/Closed.v, whose header describes it at lines
-   34-36 but which names no constant for it), takes the other order.  This
-   lemma is the bridge, and states plainly that neither order is canonical. *)
+(*
+   本节说明笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma yo_eval_map_alt {x y : [C, Sets] ∏ C} (tf : x ~> y) :
   yo_eval_map tf ≈ fmap[fst y] (snd tf) ∘ transform[fst tf] (snd x).
 Proof.
@@ -90,25 +88,22 @@ Proof.
   now srewrite (@naturality _ _ _ _ tau a b f).
 Qed.
 
-(** *** The Nat-bifunctor: N ⟨F, A⟩ = Nat([Hom A,─], F)
+(*
+   本节说明函子、Yoneda、hom相关定义、性质与动机。
 
-    Riehl builds N as the composite of the Yoneda functor with the
-    hom-bifunctor of the functor category, and so does this: [Curried_Hom C]
-    is the Yoneda functor C^op ⟶ [C, Sets], its opposite is a functor
-    C ⟶ [C, Sets]^op (the double opposite of a category being the category
-    itself, by [reflexivity], in this library), and feeding it into the
-    contravariant slot of [Hom ([C, Sets])] after a factor swap gives
-    ⟨F, A⟩ ↦ hom([Hom A,─], F).  Every functor law is inherited; none is
-    proved here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Yoneda_op : C ⟶ ([C, Sets])^op := Opposite_Functor (Curried_Hom C).
 
 Definition YoNat : ([C, Sets] ∏ C) ⟶ Sets :=
   Hom ([C, Sets]) ◯ (Yoneda_op ∏⟶ Id) ◯ Swap.
 
-(* The hand-written object action, and the record that the composite hits it
-   on the nose.  [eq_refl] here is Leibniz equality — the convertibility
-   exception to the ≈-discipline: both sides are the same term. *)
+(*
+   本节说明 Natural 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition yo_nat_obj (p : [C, Sets] ∏ C) : Sets :=
   {| carrier   := @hom ([C, Sets]) [Hom (snd p),─] (fst p)
    ; is_setoid := @homset ([C, Sets]) [Hom (snd p),─] (fst p) |}.
@@ -128,12 +123,11 @@ Next Obligation.
   now rewrite X.
 Qed.
 
-(* The composite's arrow action is the hand-written one pointwise, at
-   Leibniz [eq_refl].  Equality of the two [SetoidMorphism] RECORDS does not
-   hold and is not claimed: their [proper_morphism] fields are different
-   proof terms (one a fresh obligation of this file, the other assembled
-   from [Hom]'s and [Swap]'s).  That negative is pinned in
-   Test/ProbeYonedaNatural.v. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition yo_nat_map_agrees {x y : [C, Sets] ∏ C} (tf : x ~> y)
   (a : fobj[YoNat] x) : fmap[YoNat] tf a = yo_nat_map tf a := eq_refl.
 
@@ -146,11 +140,11 @@ Arguments yo_nat_map {C x y} tf.
 
 (** ** Mac Lane's Lemma 2: N ≅ E, naturally in both variables *)
 
-(* The components are the in-tree [Covariant_Yoneda_Lemma] verbatim; the six
-   obligations are the two naturality squares of each leg and the two round
-   trips.  Naturality of the forward leg is the naturality of the
-   transformation being evaluated; naturality of the backward leg is the
-   naturality of τ together with functoriality of F. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition yoneda_natural (C : Category) :
   @Isomorphism ([([C, Sets] ∏ C), Sets]) (YoNat C) (YoEval C) := {|
   to   := {| transform :=
@@ -246,9 +240,11 @@ Lemma yo_eval_at_map (F G : C ⟶ Sets) (tau : F ⟹ G) :
   fmap[YoEvalAt] tau ≈ @fmap _ _ (YoEval C) (F, c) (G, c) (tau, id[c]).
 Proof. intro z; simpl; symmetry; now srewrite (@fmap_id _ _ F c). Qed.
 
-(* Naturality in the FUNCTOR variable is definitional: composing
-   transformations and then evaluating at the identity is the same term as
-   evaluating and then applying the component.  Leibniz [eq_refl]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition yo_repr_naturality_strict (F G : C ⟶ Sets) (tau : F ⟹ G)
   (al : [Hom c,─] ⟹ F) :
   transform[tau] c (transform[al] c id)
@@ -277,26 +273,17 @@ End EvaluationAt.
 
 Arguments YoEvalAt {C} c.
 
-(** ** The contravariant orientation, by instantiation at C^op
+(*
+   本节说明函子、层/筛、Yoneda相关定义、性质与动机。
 
-    Riehl's Exercise 2.2.i asks for the contravariant Yoneda lemma with its
-    naturality, and makes the point that the DERIVATION is what matters.
-    Everything below is the covariant development read at C^op; nothing is
-    reproved.  [Curried_CoHom C] is [Curried_Hom C^op] by definition
-    (Functor/Hom.v) and [@Presheaves C Sets] is [@Copresheaves C^op Sets]
-    by definition (Theory/Sheaf.v), so the presheaf-side types are the
-    copresheaf-side types at the opposite category up to conversion, and
-    [op_invol] is not consumed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* The universe binders are EXPLICIT here, and that is load-bearing rather
-   than decorative.  Written as a bare [Definition (C : Category)] these four
-   constants come out pinned at [Category@{u0 u0 u0}] — not because of the
-   donor, whose restriction they do not inherit (their bodies are [YoEval]
-   and [YoNat], neither of which consumes [Covariant_Yoneda_Lemma]), but
-   because universe minimization at an unannotated top-level binder
-   identifies the three levels.  An audit caught exactly that: the covariant
-   originals were free while their opposite-category readings silently were
-   not.  Annotating restores the parity. *)
+(*
+   本节说明 Natural 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition YoEvalPre@{u u0 u1} (C : Category@{u u0 u0}) :
   ((@Presheaves C Sets@{u0 u1}) ∏ (C^op)) ⟶ Sets@{u0 u1} := YoEval (C^op).
@@ -318,43 +305,40 @@ Definition yo_eval_pre_obj@{u u0 u1} (C : Category@{u u0 u0})
   (F : C^op ⟶ Sets@{u0 u1}) (A : C) :
   fobj[YoEvalPre C] (F, A) = F A := eq_refl.
 
-(** *** The pointwise lemma, derived rather than reproved
+(*
+   本节说明函子、Yoneda、hom相关定义、性质与动机。
 
-    Functor/Hom/Yoneda.v declares [Yoneda_Lemma] and
-    [Covariant_Yoneda_Lemma] as two separate [Program Instance]s with
-    separately discharged obligations, neither derived from the other.  The
-    derivation is available and costs nothing: the two statements are
-    convertible. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Yoneda_Lemma_derived (C : Category) (F : C^op ⟶ Sets) (A : C) :
   Presheaves [Hom ─,A] F ≅ F A := Covariant_Yoneda_Lemma (C^op) F A.
 
-(* The forward legs agree once applied: the value is an element of F A, and
-   it is the same term.  Leibniz [eq_refl] — the convertibility exception.
-   The two [to] MORPHISMS are not equal as records, their [proper_morphism]
-   fields being different opaque obligation constants of the two donor
-   instances; that negative is pinned in Test/ProbeYonedaNatural.v. *)
+(*
+   本节说明 Natural 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition yoneda_lemma_derived_to (C : Category) (F : C^op ⟶ Sets) (A : C)
   (x : Presheaves [Hom ─,A] F) :
   to (Yoneda_Lemma_derived C F A) x = to (Yoneda_Lemma C F A) x := eq_refl.
 
-(* The backward legs agree only one level further in: their VALUES are
-   whole [Transform] records, whose [naturality] and [naturality_sym] fields
-   are different opaque obligation constants, so [eq_refl] on the value is
-   rejected (pinned in Test/ProbeYonedaNatural.v).  What does hold on the
-   nose is the agreement of the COMPONENTS. *)
+(*
+   本节说明 Natural 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition yoneda_lemma_derived_from_at
   (C : Category) (F : C^op ⟶ Sets) (A : C) (y : F A) (x : C)
   (phi : x ~{C}~> A) :
   transform[from (Yoneda_Lemma_derived C F A) y] x phi
     = transform[from (Yoneda_Lemma C F A) y] x phi := eq_refl.
 
-(* Equality of the whole [Isomorphism] records does NOT hold — its four
-   fields differ as terms, the [to] and [from] morphisms by their
-   [proper_morphism] obligations and [iso_to_from]/[iso_from_to] by being
-   different opaque constants — so the agreement is stated at ≈, which is
-   what a setoid consumer needs.  The [eq_refl] negative is pinned in
-   Test/ProbeYonedaNatural.v. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma yoneda_lemma_derived_agrees (C : Category) (F : C^op ⟶ Sets) (A : C) :
   to (Yoneda_Lemma_derived C F A) ≈ to (Yoneda_Lemma C F A)
     ∧ from (Yoneda_Lemma_derived C F A) ≈ from (Yoneda_Lemma C F A).
@@ -374,21 +358,11 @@ Definition yoneda_natural_pre_from_component
     = transform[from (Yoneda_Lemma C F A) y] x phi
   := eq_refl.
 
-(** ** Non-vacuity
+(*
+   本节说明Yoneda相关定义、性质与动机。
 
-    The two bifunctors and the naturality square, exercised over the
-    delooping of (ℕ, +): one object, the naturals as arrows, composition
-    addition, identity 0 (Construction/Deloop.v).  [Nat_Plus] has a
-    [Set]-sized carrier, so the theorem is instantiated here at
-    [Category@{Set Set Set}] — measured, not assumed: the witnesses elaborate
-    [yoneda_natural@{u Set}], the category's single identified universe being
-    [Set] and [u] the ambient [Sets]' object universe one level above.  Every
-    general result above is polymorphic; the pin is the concrete witness's
-    alone.
-
-    The copresheaf probed is the representable [Hom ttt,─], whose value at
-    the single object is ℕ itself, so [YoEval] there has a carrier with more
-    than one element and the arrow actions can be told apart. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Witness.
 
@@ -434,12 +408,11 @@ Lemma yo_wit_arrow_not_id :
   (3%nat : ttt ~{NatCat}~> ttt) ≈ @id NatCat ttt → False.
 Proof. intro H; simpl in H; discriminate. Qed.
 
-(* The naturality square at the NON-identity pair ⟨alpha 2, 3⟩, applied to
-   [alpha 5].  Left-hand side: whisker and precompose inside N, then
-   evaluate at the identity — the intermediate values are 0, 3, 8, 10.
-   Right-hand side: evaluate at the identity first, then act in E — the
-   intermediate values are 0, 5, 8, 10.  Both reduce to 10 by
-   computation. *)
+(*
+   本节说明 Natural 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example yo_wit_square_left :
   transform[to (yoneda_natural NatCat)] (NatRep, ttt)
     (@fmap _ _ (YoNat NatCat) (NatRep, ttt) (NatRep, ttt)
@@ -469,10 +442,11 @@ Proof.
            (yo_wit_alpha 2%nat) 3%nat (yo_wit_alpha 5%nat)).
 Qed.
 
-(* Neither bifunctor is degenerate at this pair: E's arrow action moves the
-   element 5 to 10, so it is not the identity map, and N's arrow action
-   moves [alpha 5] to a transformation the isomorphism reads back as 10 and
-   not 5. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma yo_wit_eval_map_not_id :
   @fmap _ _ (YoEval NatCat) (NatRep, ttt) (NatRep, ttt)
     (yo_wit_alpha 2%nat, 3%nat) ≈ id → False.

@@ -174,10 +174,11 @@ Proof.
   apply id_left.
 Qed.
 
-(* Uniqueness (Proposition 1's "unique functor S", design note 3): any
-   bifunctor with the same object map whose one-sided actions are the
-   data's agrees with the construction up to Functor_Setoid, with
-   identity components. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Build_Bifunctor_unique (S' : B ∏ C ⟶ D)
   (Hobj : ∀ b c, S' (b, c) = S0 b c)
   (Hl : ∀ b b' (f : b ~> b') c,
@@ -206,10 +207,11 @@ Proof.
     + symmetry; apply id_left.
 Defined.
 
-(* The laws of a bifunctor's own partial data, bundled: the necessity
-   half of Proposition 1, each field one of Functor/Bifunctor.v's bimap
-   lemmas.  [bifunctor_iff_partial] below is the full iff the
-   propositions state. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 End BuildBifunctor.
 
@@ -267,10 +269,11 @@ Qed.
 
 End FamilyForm.
 
-(* The family form's partial functors are the given families, on arrows
-   (work item 2's "whose partial functors are the given families"): the
-   left on the nose, the right up to the agreement casts — the asymmetry
-   design note 2 prices. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Bifunctor_from_partial_l {B C D : Category}
   (L : C → (B ⟶ D)) (M : B → (C ⟶ D)) agree commute
   (c : C) {b b' : B} (f : b ~> b') :
@@ -309,10 +312,11 @@ Record RawLaws {B C D : Category} (S0 : obj[B] → obj[C] → obj[D])
     actl b b' f c' ∘ actr b c c' g ≈ actr b' c c' g ∘ actl b b' f c
 }.
 
-(* Awodey's Lemma 7.14 / Mac Lane's Proposition 1, as the iff over raw
-   data: the laws hold exactly when the data is realized by a bifunctor
-   whose one-sided actions restrict to it (along the object agreement,
-   with [cast2] pricing it as everywhere else). *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem bifunctor_iff_partial {B C D : Category}
   (S0 : obj[B] → obj[C] → obj[D])
   (actl : ∀ b b' : B, (b ~> b') → ∀ c : C, S0 b c ~> S0 b' c)

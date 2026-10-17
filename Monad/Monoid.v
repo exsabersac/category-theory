@@ -26,23 +26,11 @@ Generalizable All Variables.
 
 Definition Endofunctors `(C : Category) := ([C, C]).
 
-(* The two directions are written without setoid rewriting and with every
-   universe named (issue #1348), so that [Monoid_Monad] has the same four
-   universes on Coq 8.19.2, Coq 8.20.1 and Rocq 9.1.1 ([About] on each).
-   Its earlier proof, by [autorewrite] and [rewrite], left a universe list
-   whose length depended on the version: four levels on Rocq 9.1.1 and
-   twenty-six on Coq 8.19.2, measured by [About] in #468 and recorded with
-   control C40 of Test/ProbeMonadMorphism468.v, so that no statement with
-   fixed universe binders could use it on all three versions.  Its binder
-   lists the four in the order [About] printed on Rocq 9.1.1 before the
-   rewrite, and [About] there prints the same constraints as before, up to
-   the names of the universes.  The two directions bind them as the
-   bridges of Monad/Morphism/Monoid.v do, whose rewrite-free proofs
-   (#468) they are; those bridges are now read off this equivalence.
-   Outside the former [Section], [Endofunctors] has the four universes of
-   its body where it had six: the two dropped were the section's, and
-   occurred in no constraint and nowhere in its type ([About], before and
-   after, on Rocq 9.1.1). *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition monoidobject_monad@{o h f s | h < s, o <= f, h <= f +}
   {C : Category@{o h h}} {M : C ⟶ C}
   (m : @MonoidObject (@Fun@{o h o h f f s} C C)

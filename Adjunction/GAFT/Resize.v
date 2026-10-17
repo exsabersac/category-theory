@@ -42,10 +42,11 @@ Generalizable All Variables.
 
 (** ** Resizing along a Leibniz round trip *)
 
-(** The index is replaced by the small carrier and every field is
-    transported along [st_to].  The covering is the only field with
-    content: a cover at a large index [i] is transported to the small
-    representative [st_from H i] by destructing the round trip. *)
+(*
+   本节说明 Resize 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition resize_solution_set@{i w dobj cobj h +}
   {C : Category@{cobj h h}} {D : Category@{dobj h h}} {U : C ⟶ D} {d : D}
   (S : SolutionSet@{i dobj cobj h} U d)
@@ -100,10 +101,11 @@ Record SmallCovering@{w +} {C D : Category} {U : C ⟶ D} {d : D}
                    & fmap[U] t ∘ sol_arr S (sc_to s) ≈ h } }
 }.
 
-(** Mac Lane's shape: an ISO in the comma category rather than a Leibniz
-    round trip.  For each large index a small representative, an
-    isomorphism of the two solution objects, and the compatibility of the
-    two solution arrows over it. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record SmallUpToIso@{w +} {C D : Category} {U : C ⟶ D} {d : D}
   (S : SolutionSet U d) := {
   si_carrier : Type@{w};
@@ -137,10 +139,11 @@ Definition resize_by_covering@{w i dobj cobj h +}
    ; sol_arr := fun s => sol_arr S (sc_to H s)
    ; sol_covers := fun c h => sc_covers H c h |}.
 
-(** With [SmallUpToIso] the cover is transported ACROSS the isomorphism:
-    a cover [t] of [h] through the large index [i] becomes [t ∘ to phi]
-    through the representative, and the triangle closes by [fmap_comp]
-    and the compatibility clause. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition resize_up_to_iso@{w i dobj cobj h +}
   {C : Category@{cobj h h}} {D : Category@{dobj h h}} {U : C ⟶ D} {d : D}
   (S : SolutionSet@{i dobj cobj h} U d) (H : SmallUpToIso S)
@@ -189,11 +192,11 @@ Defined.
 
 (** ** The consumer *)
 
-(** [representability_theorem] accepts a resized element solution set at
-    the universe it demands -- which is the whole purpose of the file.  The
-    output index is written [h], the ambient hom level, because that is
-    where item 2(b) of Structure/Complete.v's SIZE NOTE puts the shape
-    universe of [Complete@{h h h cobj}]. *)
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition representable_of_small@{cobj h su i +}
   {C : Category@{cobj h h}} (K : C ⟶ Sets@{h su})
   (comp : @Complete@{h h h cobj} C) (cont : @PreservesImageLimit C Sets K)

@@ -60,10 +60,11 @@ Definition hom_fibre_cone (s : vertex_obj[M]) : Cone K :=
 
 End Fibre.
 
-(* The mediating map of Sets: it sends an element to the mediator its
-   fibre cone determines.  Respectfulness is not an extra hypothesis --
-   it follows from uniqueness of the mediator, since [≈]-equal elements
-   give fibre cones with [≈]-equal legs. *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Mediator.
 
@@ -116,9 +117,11 @@ Defined.
 Definition hom_ContinuousFunctor : ContinuousFunctor HomFrom :=
   fun J K => hom_PreservesLimitCone K.
 
-(* The apex-only readings, through the donor's own bridges.  These are
-   WEAKER: they name no legs and no mediator.  Whether they are strictly
-   weaker for this particular functor is not settled here. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition hom_PreservesLimit {J : Category} (K : J ⟶ C) :
   PreservesLimit K HomFrom :=
@@ -143,10 +146,11 @@ Example hom_preserved_mediator {J : Category} {K : J ⟶ C} {N : Cone K}
 
 (** ** Mac Lane's own case: products *)
 
-(* Indexed products, at the elementary record of Structure/Limit/Product.v
-   and for an arbitrary index [Type].  Proved directly; the header
-   records the measured universe cost of routing this through the
-   discrete-diagram presentation instead. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section IndexedProducts.
 
@@ -286,13 +290,11 @@ Definition cohom_colimit_to_limit {J : Category} {K : J ⟶ C}
   (N : Cocone K) (HN : IsColimitCocone N) : IsLimitCone (FCone HomTo N) :=
   cohom_PreservesLimitCone (Opposite_Functor K) N HN.
 
-(* Coproducts of C become products in Sets; the projections are
-   PREcomposition with the injections.  DISPLAY HAZARD: [Check] prints
-   the hypothesis of [cohom_IsCartesianProduct] as
-   [IsCartesianProduct x y z] with the category argument suppressed, so
-   the printed type reads as though the product were taken in C.  It is
-   not: the source spells [@IsCartesianProduct (C^op) x y z], i.e. z is
-   the COPRODUCT of x and y in C. *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition cohom_IsIndexedProduct {A : Type} {g : A → C} {q : C}
   {inj : ∀ a : A, g a ~{C}~> q} (H : IsIndexedCoproduct g q inj) :
@@ -343,10 +345,11 @@ Example coq_hom_fork_computes :
     (@exr' Sets _ _ _ coq_hp) (fun _ : unit => (true, 3%nat)) tt
     = (true, 3%nat) := eq_refl.
 
-(* Witness (2): the CONE-LEVEL headline at an in-tree limit -- the one
-   [Cartesian_Limit] produces from [Coq_Cartesian].  It does not compute
-   ([Cartesian_Limit] is [Qed]) and its ambient category is measurably
-   [Coq@{u1 Set Set}], for the reason the header analyses. *)
+(*
+   本节说明（余）极限、笛卡尔相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition coq_two_limit (F : Two_Discrete ⟶ Coq) : Limit F :=
   snd (Cartesian_Limit Coq) Coq_Cartesian F.

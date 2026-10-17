@@ -89,11 +89,11 @@ Proof.
     + exact (@to_adj_comp_law _ _ _ _ A0 x b h).
 Qed.
 
-(** ** The presentation pair, transported along L0
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    The canonical presentation of the comparison algebra K c is the pair
-    U ε_c, U F (η0) followed by the free action; transported through the
-    adjunction L0 ⊣ U ◯ R it becomes a reflexive pair in B. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition lift_pair_l (c : C) :
   L0 (U (F (U c))) ~{B}~> L0 (U c) :=
@@ -208,9 +208,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The commuting square of the transposed coequalizing map: it is an
-   algebra homomorphism K c ~> K (R (lift_obj c)).  Transpose the cofork
-   law of the coequalizer and contract with [lift_action_square]. *)
+(*
+   本节说明 Lifting 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma lift_w_commutes (c : C) :
   lift_w c ∘ fmap[U] (@counit _ _ _ _ A c)
     ≈ fmap[U] (@counit _ _ _ _ A (R (lift_obj c)))
@@ -452,10 +454,11 @@ Definition adjoint_lifting_full : Full (EM_Comparison A) :=
 Definition adjoint_lifting_faithful : Faithful (EM_Comparison A) :=
   Equivalence_Faithful (crude_monadicity A RC pres refl).
 
-(** The adjoint lifting theorem, crude case: if F ⊣ U satisfies the
-    crude monadicity hypotheses, then any functor R into C whose
-    composite with U has a left adjoint itself has a left adjoint,
-    provided the domain of R has reflexive coequalizers. *)
+(*
+   本节说明伴随、函子、单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem adjoint_lifting : ∃ L : C ⟶ B, L ⊣ R.
 Proof using A A0 B C D F L0 R RC RCB U pres refl.

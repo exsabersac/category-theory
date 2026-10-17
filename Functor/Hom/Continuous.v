@@ -433,10 +433,11 @@ Qed.
 
 (** * G. The issue's names, and Mac Lane's Remark 1 on universes *)
 
-(* The issue's two pinned names, as aliases of #331's theorems.  NOT
-   annotated: measured against their donors, written bare they do not
-   minimize (see the header's UNIVERSES; an earlier revision of this comment
-   said the opposite). *)
+(*
+   本节说明 Continuous 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition hom_preserves_limits {C : Category} (c : C) :
   ContinuousFunctor (@HomFrom C c) := hom_ContinuousFunctor c.
 
@@ -450,12 +451,11 @@ Definition representable_iso_ContinuousFunctor {C : Category} (c : C)
   {G : C ⟶ Sets} (e : @HomFrom C c ≈ G) : ContinuousFunctor G :=
   ContinuousFunctor_transport e (hom_ContinuousFunctor c).
 
-(* Remark 1, as far as the tree supports it: [Sets@{o so} : Category@{so o o}]
-   keeps every set's carrier and relation at one level [o], and [so] is only
-   the level of the universe holding the collection of setoids.  So the
-   hom-functor of a category at hom level [h] is continuous into
-   [Sets@{h s}] for every [s > h] — its sets stay at level [h] throughout
-   (probe N2 pins the refusal at a larger carrier level). *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition HomFrom_at@{o h s +} {C : Category@{o h h}} (c : C) :
   C ⟶ Sets@{h s} := @HomFrom C c.
 

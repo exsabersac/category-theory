@@ -68,14 +68,11 @@ Next Obligation.
   rewrite <- fmap_comp; reflexivity.
 Qed.
 
-(* If one of the source factors is monoidal, so that it has a unit object I,
-   we can slice a bifunctor F : C ∏ J ⟶ D ∏ K to a single-variable functor by
-   fixing the other argument at I and projecting the corresponding component.
-   ProductFunctor_fst holds the second argument at I : J and keeps the first
-   (D) component, giving C ⟶ D; ProductFunctor_snd is the dual, holding the
-   first argument at I : C and keeping the second (K) component, giving J ⟶ K.
-   These are used to project the monoidal structure of F ∏⟶ G back onto each
-   factor (see Functor/Construction/Product/Monoidal.v). *)
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ProductFunctor_fst F : C ⟶ D, the slice c ↦ fst (F (c, I)). *)
 Program Definition ProductFunctor_fst

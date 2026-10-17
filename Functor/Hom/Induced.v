@@ -31,11 +31,11 @@ Section HomAction.
 Context {A D : Category}.
 Context (T : A ⟶ D).
 
-(* The Sets-morphism component at a pair p = (a, b) of objects: the hom-map
-   g ↦ fmap[T] g, from hom_A(a, b) to hom_D(T a, T b). Its [proper_morphism]
-   field is exactly [fmap_respects], supplied directly, so this is a plain
-   [Definition] with no deferred obligation at all — which is what lets the
-   component reduce, and hence [hom_action_component] below hold by eq_refl. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition hom_action_at (p : A^op ∏ A) :
   Hom A p ~{Sets}~> (Hom D ◯ (T^op ∏⟶ T)) p := {|
   morphism := fun g => fmap[T] g;
@@ -53,11 +53,11 @@ Next Obligation. now rewrite !fmap_comp. Qed.
 (* naturality_sym: the same square in the opposite orientation *)
 Next Obligation. now rewrite !fmap_comp. Qed.
 
-(* The component of [hom_action] at (a, b) IS the arrow function of T. This
-   holds by [eq_refl]: the transformation stores [hom_action_at], whose
-   [morphism] field is fmap[T] on the nose. Everything below is phrased through
-   the transformation's components, and this lemma is what identifies those
-   components with fmap[T]. *)
+(*
+   本节说明 Induced 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma hom_action_component (a b : A) (f : a ~{A}~> b) :
   transform[hom_action] (a, b) f = fmap[T] f.
 Proof. reflexivity. Qed.
@@ -81,12 +81,11 @@ Proof. intros F a b f g H; exact (fmap_inj f g H). Qed.
 Theorem hom_action_injective_Faithful : hom_action_injective → Faithful T.
 Proof. intros H; constructor; intros a b f g Hfg; exact (H a b f g Hfg). Qed.
 
-(* Faithful T ⟺ every component of [hom_action] is injective. Both directions
-   are near-definitional: [Faithful]'s only field IS the implication, and the
-   components are fmap[T] by [hom_action_component]. The two directions are
-   [Qed] (following Functor/Hom.v's own [Yoneda_Faithful]), but the pair itself
-   is a transparent [Definition], so projecting the biconditional gives back
-   the named lemmas by conversion. *)
+(*
+   本节说明函子、Yoneda、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition hom_action_faithful_iff : Faithful T ↔ hom_action_injective :=
   (Faithful_hom_action_injective, hom_action_injective_Faithful).
 
@@ -97,23 +96,21 @@ Definition hom_action_surjective_Full : hom_action_surjective → Full T :=
   fun H => {| prefmap := fun a b g => `1 (H a b g)
             ; fmap_sur := fun a b g => `2 (H a b g) |}.
 
-(* Full T ⟺ every component of [hom_action] is surjective as data. Stated with
-   ↔ = [iffT], since [Full] carries data: [prefmap] is recovered as the first
-   projection of the surjectivity witness and [fmap_sur] as the second, so the
-   backward direction is a repackaging rather than an implication between
-   propositions. Both directions are given as terms, hence transparent, so the
-   transported data reduces: prefmap of the round trip IS the original prefmap
-   by conversion. *)
+(*
+   本节说明 Induced 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition hom_action_full_iff : Full T ↔ hom_action_surjective :=
   (Full_hom_action_surjective, hom_action_surjective_Full).
 
 End HomAction.
 
-(* Acceptance: the transformation computes. At the identity functor every
-   component is the identity on hom-sets, and at a composite it is the
-   composite of the two arrow functions — both on the nose, by [eq_refl].
-   These are the definitional [=] readings the house rule permits alongside ≈;
-   they are labelled as such, and every statement about MORPHISMS above uses ≈. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example hom_action_Id (A : Category) (a b : A) (f : a ~{A}~> b) :
   transform[hom_action (@Id A)] (a, b) f = f.

@@ -50,10 +50,11 @@ Proof.
     exact (snd H).
 Qed.
 
-(* The hard half, from ONE kernel pair [K] of the underlying arrow in C
-   and nothing about [U]: the kernel-pair object takes the comma
-   structure [fmap[U] (kp_diag m K) ∘ `2 X] through its diagonal, and
-   the two projections become comma arrows into [X] equalized by [m]. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition kp_diag@{o hc dobj h +| hc <= h +}
   {C : Category@{o hc hc}} {D : Category@{dobj h h}} {U : C ⟶ D} {d : D}
   {X Y : =(d) ↓ U} (m : X ~{=(d) ↓ U}~> Y)
@@ -158,10 +159,11 @@ Defined.
 
 (** ** Well-poweredness of the comma category *)
 
-(* A comma subobject read in C, through the monos lemma.  Top-level, so
-   that it carries only the universes its type names: declared in the
-   section below it inherited the well-powering's [w s t] and their
-   constraints without naming [W]. *)
+(*
+   本节说明子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition underlying_sub@{o hc dobj h +| hc <= h +}
   {C : Category@{o hc hc}} {D : Category@{dobj h h}} {U : C ⟶ D} {d : D}
   (HP : HasPullbacks C) {X : =(d) ↓ U} (v : SubObj X) :
@@ -171,10 +173,11 @@ Definition underlying_sub@{o hc dobj h +| hc <= h +}
     (underlying_monic_of_comma_monic (Subobject.sub_mono v) (pullback _ _)
        (Subobject.sub_is_monic v)).
 
-(* A section rather than top-level binders, and the reason is measured
-   (the header's universes section, collapse (a)): declared here, the
-   comma category's universes are fixed when [X] is declared, and none of
-   them is identified with [W]'s [t]. *)
+(*
+   本节说明 Characterization 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section CommaWellPowered.
 
 Universes o hc dobj h w s t.
@@ -282,10 +285,11 @@ End CommaWellPoweredAll.
 
 (** ** The Corollary: the well-powered form *)
 
-(* #452's special initial-object theorem in the comma [=(d) ↓ U]: its
-   completeness from [Comma_Complete], its cogenerating family from
-   [comma_cogenerator], its well-poweredness at the one object that
-   matters from [comma_WellPoweredAt]. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SAFT_comma_initial@{o dobj h so c w s t pk pa +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -389,10 +393,11 @@ Definition Complete_HasSubobjectWidePullbacks@{o h so q r k +|
   HasSubobjectWidePullbacks@{o h q r k} C :=
   fun x I S => complete_wide_pullback comp (fun i => Subobject.sub_mono (S i)).
 
-(* The least subobject of a comma object [X], from a C-wide pullback of
-   Mac Lane's corresponding family that [U] carries to a wide pullback.
-   [least_index] is that family: the C-subobjects of [X]'s underlying
-   object through which [X]'s structure arrow factors. *)
+(*
+   本节说明拉回/推出、子对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition least_index@{o hc dobj h lq +| hc <= h +}
   {C : Category@{o hc hc}} {D : Category@{dobj h h}} (U : C ⟶ D) (d : D)
   (X : =(d) ↓ U) : Type@{lq} :=

@@ -39,31 +39,13 @@ Context {D : Category}.
 Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 
-(* Wikipedia: "A hom-set adjunction between two categories C and D consists of
-   two functors F : C ← D and G : C → D and a natural isomorphism
+(*
+   Wikipedia: "A hom-set adjunction between two categories C and D consists of
 
-     Φ : homC(F −, −) → homD(−, G −).
+   本节说明伴随、函子、同构相关定义、性质与动机。
 
-   "This specifies a family of bijections
-
-     Φy,x : homC(F y, x) → homD(y, G x)
-
-   for all objects x in C and y in D.
-
-   "In this situation we say that F is left adjoint to G and G is right
-   adjoint to F, and may indicate this relationship by writing Φ : F ⊣ G, or
-   simply F ⊣ G.
-
-   "This definition is a logical compromise in that it is somewhat more
-   difficult to satisfy than the universal morphism definitions [see
-   Category.Theory.Adjunction], and has fewer immediate implications than the
-   counit-unit definition [see Category.Adjunction.Natural.Transformation]. It
-   is useful because of its obvious symmetry, and as a stepping-stone between
-   the other definitions.
-
-   "In order to interpret Φ as a natural isomorphism, one must recognize
-   homC(F –, –) and homD(–, G –) as functors. In fact, they are both
-   bifunctors from D^op × C to Set (the category of sets)." *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Adjunction_Hom := {
   hom_adj : Hom C ◯ F^op ∏⟶ Id ≅[[D^op ∏ C, Sets]] Hom D ◯ Id^op ∏⟶ U

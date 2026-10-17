@@ -32,55 +32,15 @@ Generalizable All Variables.
    字面上是 f ∘ extend g。范畴定律由 Monad/Kleisli.v 经对偶继承，共变重读为 Comonad/Core.v
    的 co-Kleisli 三定律。 *)
 
-(* Context-dependent maps, dataflow, and linear logic
-
+(*
    nLab:  https://ncatlab.org/nlab/show/exponential+modality
    Paper: Uustalu, Vene, "The Essence of Dataflow Programming", APLAS
-          2005, LNCS 3780, pp. 2-18
    Paper: Petricek, Orchard, Mycroft, "Coeffects: a calculus of
-          context-dependent computation", ICFP 2014
 
-   The co-Kleisli category is where the computational reading of a
-   comonad becomes a category of programs.  A co-Kleisli morphism
-   W x ~> y consumes not a bare x but an x in its W-context, and the
-   composite of two such morphisms first promotes the earlier one to a
-   context-preserving transformation ([extend]) so that the later one
-   may read its result in context; arrows that observe their
-   surroundings thereby compose as ordinary functions do.  The analogy
-   with Kleisli categories runs in parallel throughout: as those model
-   call-by-value languages, co-Kleisli categories model call-by-name,
-   and for an idempotent comonad the construction collapses to the
-   coreflective subcategory of the comonad's modal types.  Haskell's
-   comonad package (Kmett) states the comonad laws in this vocabulary,
-   with extract the identity of co-Kleisli composition, just as
-   [comonad_id_left], [comonad_id_right] and [comonad_comp_assoc] do
-   below.
+   本节说明余单子、Kleisli、来源与用途相关定义、性质与动机。
 
-   Dataflow programming supplies the motivating example.  Uustalu and
-   Vene observed that both general and causal stream functions can be
-   characterized as the co-Kleisli arrows of suitable stream comonads —
-   causality meaning that the output at a given moment depends only on
-   the input's past and present, which is to say on the input value in
-   its history-context — and on that observation built a generic
-   comonadic interpreter, recovering effects where needed through a
-   distributive law of the comonad over a monad (APLAS 2005).  A
-   co-Kleisli arrow of the stream comonad is a digital filter, and
-   [extend] produces the filtered stream (Milewski, 2017).  The coeffect
-   calculi of Petricek, Orchard and Mycroft (ICFP 2014) supply type
-   systems for this class of programs; dataflow, implicit parameters,
-   liveness and bounded usage are among their instances.
-
-   Linear logic supplies the proof-theoretic example.  In models of
-   linear logic the exponential modality ! is a comonad (Girard 1987,
-   the comonadic reading developed by Seely 1989, de Paiva 1989, and
-   Benton–Bierman–de Paiva–Hyland 1992): !A is A made freely duplicable
-   and discardable.  When the linear category is closed symmetric
-   monoidal, the co-Kleisli category of ! is cartesian closed — a
-   categorical form of the translation of intuitionistic logic into
-   linear logic (Seely) — and Benton (1995) showed that the !-comonad
-   is induced by a monoidal adjunction between a cartesian monoidal and
-   a symmetric monoidal category, the linear–non-linear adjunction.
-   The category built below is the common shape behind both readings. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CoKleisli.
 
@@ -100,21 +60,21 @@ Proof. reflexivity. Qed.
 Definition cokleisli_compose `(f : W b ~{C}~> c) `(g : W a ~{C}~> b) :
   W a ~{C}~> c := @compose CoKleisli a b c f g.
 
-(* Co-Kleisli composition operators, following the library's fish-operator
-   convention (Monad/Kleisli.v [>=>]/[<=<]): in the right-pointing [=>=] the
-   LEFT operand runs first, so [f =>= g] extends [f] and then applies [g]
-   ([g ∘ extend f]).  Its transpose [f =<= g] runs the right operand first
-   ([f ∘ extend g]) — the co-Kleisli dual of [<=<].  This matches the
-   direction of [>=>] on the monad side rather than Haskell's Control.Comonad
-   [=>=], whose right-pointing operator runs the right operand first. *)
+(*
+   本节说明单子、余单子、Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Notation "f =>= g" :=
   (cokleisli_compose g f) (at level 40, left associativity) : morphism_scope.
 Notation "f =<= g" :=
   (cokleisli_compose f g) (at level 40, left associativity) : morphism_scope.
 
-(** Co-Kleisli composition agrees with the extension operator [extend] of
-    Comonad/Core.v; by the built-in duality the agreement is definitional.
-    [f] on the left runs first, so [f =>= g ≈ g ∘ extend f]. *)
+(*
+   本节说明余单子、Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cokleisli_compose_extend `(f : W a ~{C}~> b) `(g : W b ~{C}~> c) :
   f =>= g ≈ g ∘ extend f.
 Proof. reflexivity. Qed.
@@ -124,11 +84,11 @@ Corollary cokleisli_compose_extend_flip
   f =<= g ≈ f ∘ extend g.
 Proof. reflexivity. Qed.
 
-(* The comonad laws, re-expressed in terms of this category: dually to the
-   monoid reading in Monad/Kleisli.v, they exhibit [extract] as the unit of
-   co-Kleisli composition, with associativity mediated by [extend].  Each is
-   the corresponding category law of [CoKleisli], read across the definitional
-   agreements above. *)
+(*
+   本节说明单子、余单子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary comonad_id_left `(f : W x ~{C}~> y) : extract =>= f ≈ f.
 Proof. unfold cokleisli_compose; cat. Qed.

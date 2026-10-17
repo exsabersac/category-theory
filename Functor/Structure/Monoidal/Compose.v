@@ -34,11 +34,11 @@ Context {F : D ⟶ E}.
 #[local] Set Transparent Obligations.
 #[local] Obligation Tactic := program_simpl.
 
-(* Any two strong monoidal functors compose to create a strong monoidal
-   functor. This is composition of 1-morphisms in the sub-2-category
-   MonCat_strong of monoidal categories and strong monoidal functors. The
-   composite comparison maps are F μ^G ∘ μ^F and F η^G ∘ η^F (F outer), and
-   remain invertible because each factor's are. *)
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export] Program Instance Compose_MonoidalFunctor
        `(M : @MonoidalFunctor D E _ _ F)
@@ -266,11 +266,11 @@ Next Obligation.
   apply XM.
 Qed.
 
-(* Likewise, any two lax monoidal functors compose to create a lax monoidal
-   functor. This is composition of 1-morphisms in the 2-category MonCat_lax of
-   monoidal categories and lax monoidal functors. The composite comparison
-   maps are F μ^G ∘ μ^F and F η^G ∘ η^F (F outer), exactly as in the strong
-   case but without requiring invertibility. *)
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export] Program Instance Compose_LaxMonoidalFunctor
        `(M : @LaxMonoidalFunctor D E _ _ F)

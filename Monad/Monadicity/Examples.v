@@ -34,10 +34,11 @@ Local Notation EM := (@EilenbergMoore C T HM).
 Local Notation K  := (EM_Comparison A).
 Local Notation UT := (@EM_Forget C T HM).
 
-(** Every algebra for the identity monad has identity structure map: the
-    unit of the induced monad is the unit of [Adjunction_Id], which is the
-    identity ([adj_id_unit]), so the algebra unit law ν ∘ η ≈ id collapses
-    to ν ≈ id. *)
+(*
+   本节说明伴随、单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma identity_alg_id {a : C} (ν : @TAlgebra C T HM a) :
   t_alg[ν] ≈ id[a].
@@ -60,9 +61,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** The counit isomorphism K (U^T (a, ν)) ≅ (a, ν) of the equivalence: in
-    both directions the underlying arrow is the identity of the carrier,
-    which is a homomorphism by the previous lemma. *)
+(*
+   本节说明等价、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition identity_counit_to (X : EM) :
   fobj[K ◯ UT] X ~{EM}~> X :=

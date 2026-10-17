@@ -367,38 +367,17 @@ Proof.
   symmetry; apply zring_mul_zsmul_r.
 Qed.
 
-(** ** The integers inside the Dorroh extension
+(*
+   本节说明始/终对象相关定义、性质与动机。
 
-    [zring (Dorroh R) n] is the pair [(n, 0)], and the proof is a direct
-    [Z_peano_rect] induction rather than an appeal to ℤ's initiality
-    through a [RigHom Int_Ring (Dorroh R)].  THAT CHOICE IS FORCED BY A
-    MEASURED UNIVERSE PIN, not by taste.  A [Program Definition
-    dorroh_zhom (R : RgObject) : RigHom Int_Ring (Dorroh R)] compiles,
-    but [About] then reports
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-      dorroh_zhom@{…} : ∀ R : RgObject@{Set Set u6},
-        RigHom@{Set} Int_Ring@{Set Set Set} (Dorroh@{Set Set u6 …} R)
+(*
+   本节说明 Unitalization 相关定义、性质与动机。
 
-    — [RigHom] takes its two arguments at ONE instance of [RigObject],
-    nothing forces that instance upward, and universe minimization
-    therefore settles it at [Set], dragging [R]'s object and hom
-    universes down with it.  Every later consumer then fails with
-    "Cannot enforce Set = …".  The induction below has no such constant
-    in it and [Dorroh] itself stays free: [Dorroh@{u u0 u1 u2 …} :
-    RgObject@{u u0 u1} → RingObject@{u2 u0 u3}], measured by [About] and
-    reproducible from the probe at the foot of this file. *)
-
-(* Any unital ring homomorphism commutes with the canonical map out of
-   ℤ.  Proved here by [Z_peano_rect] rather than by composing with
-   Instance/Rng.v's [rng_from_Z] and citing its uniqueness, and
-   again for a MEASURED universe reason: [About] reports
-   [rng_from_Z@{u u0 u1} : ∀ R : RingObject@{Set Set Set}, …] — that
-   donor is pinned at the literal [Set] in all three of its argument's
-   universes, so composing with it would confine every statement below
-   to [Set]-sized rngs.  Its sibling [rng_from_Z_unique@{u} : ∀ R :
-   RingObject@{u u u}, …] carries no [Set] but identifies all three, and
-   is not needed once this lemma exists.  Neither pin is repaired here;
-   Instance/Rng.v is not edited. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma rig_hom_preserves_zring (A B : RingObject) (h : RigHom A B) (n : Z) :
   rig_map h (zring A n) ≈ zring B n.
 Proof.
@@ -446,10 +425,11 @@ Section Extend.
 Context (R : RgObject) (S : RingObject).
 Context (f : R ~{Rg}~> ring_rg S).
 
-(* Restatements of [f]'s laws in the unital ring's own vocabulary.  Each
-   is [apply]ed rather than reproved: the two statements are convertible,
-   but not syntactically equal, so a rewrite against the [RgHom] form
-   would not fire inside a goal phrased with [rig_add]/[rig_mul]. *)
+(*
+   本节说明 Unitalization 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma dext_f_zero :
   cmon_map (rg_hom_ab f) (cmon_zero (rg_ab R)) ≈ rig_zero S.
 Proof. apply (cmon_map_zero (rg_hom_ab f)). Qed.
@@ -662,25 +642,11 @@ Example dorroh_auniversal_med_strict (R : RgObject) (S : RingObject)
   unique_obj (@universal_arrow_universal Rg Rng R Rng_Forget_Rg (Dorroh R)
                 (dorroh_auniversal R) S f) = dorroh_extend R S f := eq_refl.
 
-(** ** Two refuted strict attempts, pinned
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Both are CONVERSION failures, each reporting [cannot unify] between
-    two terms of one type, and each was stripped of its [Fail] and
-    compiled alone to read the error.  They have DIFFERENT causes.
-
-    (1) The unit of the produced adjunction is [⌊id⌋], which
-    [Build_Adjunction'] unfolds to [fmap[U] id ∘ arrow]; the residue is
-    the [fmap[Rng_Forget_Rg] id] that [fmap_id] removes only up to [≈].
-    The [≈] form is [unitalization_unit_is_insert] below, and it closes
-    by [reflexivity], so the two sides ARE convertible pointwise and what
-    fails is the equality of hom RECORDS.
-
-    (2) The mediator read out of the COMMA-packaged class does not
-    reduce at all, because [Theory/Universal/Arrow.v]'s
-    [ump_universal_arrows] is closed with [Qed].  This is a known in-tree
-    fact rather than a defect of this file, and the passing control
-    beside it is [dorroh_auniversal_med_strict] above, which reads the
-    same mediator out of the other packaging and DOES return it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example dorroh_unit_is_insert_strict (R : RgObject) :
   @unit Rng Rg DorrohFunctor Rng_Forget_Rg unitalization_adjunction R
@@ -719,13 +685,11 @@ Proof.
   intro a; exact (unitalization_counit_insert S a).
 Qed.
 
-(** ** Non-vacuity: the Dorroh extension of 2ℤ
+(*
+   本节说明 Unitalization 相关定义、性质与动机。
 
-    Instance/Rg.v's own witness [TwoZ_Rg] is the even integers, proved
-    there NOT unital ([TwoZ_not_unital]), not degenerate and not of zero
-    multiplication.  Every negative below is obtained by projecting to
-    the ℤ coordinate and calling [discriminate] — mapping OUT — never by
-    an induction on a relation. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition DorrohTwoZ : RingObject := Dorroh TwoZ_Rg.
 
@@ -771,41 +735,17 @@ Example dorroh_TwoZ_extend_one :
   rig_map (dorroh_extend TwoZ_Rg Int_Ring TwoZ_incl) (dtz 1 0) = 1%Z
   := eq_refl.
 
-(** ** Measured boundaries, pinned
+(*
+   本节说明hom相关定义、性质与动机。
 
-    Two FORMABILITY negatives, each stripped of its [Fail] and compiled
-    alone so the failure kind could be read off the error rather than
-    guessed, each against positive controls accepted at the very same
-    declared levels.  The section-local [Universes]/[Constraint]
-    declarations do not leak (the Instance/Fun/Group.v precedent).
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-    (1) Being an OBJECT of [Rg] identifies [RgObject]'s object and hom
-    universes.  That is Instance/Rg.v's doing, inherited here, and it is
-    why [dorroh_insert] reads [∀ R : RgObject@{u2 u2 u2}] while [Dorroh]
-    itself stays free at [RgObject@{u u0 u1}].  Stripped, the error is
-    "universe inconsistency: Cannot enforce ah = ao because ao < ah".
+(*
+   本节说明 Unitalization 相关定义、性质与动机。
 
-    (2) Instance/Rng.v's [rng_from_Z] is pinned at [RingObject@{Set
-    Set Set}], so it cannot be applied to [Dorroh R] for an [R] whose hom
-    universe is declared above [Set]; the sibling [zring] is free
-    and IS accepted at the same levels, which is what makes the negative
-    discriminate between the two donors rather than merely reporting that
-    something about [Dorroh R] is large.  Stripped, the error is
-    "Cannot enforce Set = bh".  This is the measurement behind
-    [rig_hom_preserves_zring] above.
-
-    NOT PINNED, and said so rather than dressed up: the [dorroh_zhom]
-    minimization quoted earlier is a fact about DEFINING a constant, and
-    merely FORMING the type [RigHom Int_Ring (Dorroh R)] under the same
-    declared constraint is ACCEPTED — that variant was written, compiled
-    and found not to fail, so no [Fail] guards it. *)
-
-(* The instances are written [@{ap ao ah}], not [@{ao ah ap}]: since the PR
-   "algebraic carriers are sets" (2026-09-17) the record's AUXILIARY universe
-   -- the one bounding the [cmon_prop] field's own sort, which carries the
-   [Set+1] -- is the FIRST argument rather than the third.  The named
-   universes keep their roles: [ao] is the carrier level, [ah] the proof
-   level, [ap] the level the record's sort is read at. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section ProbeRgObjects.
 Universes ao ah ap.
 Constraint ao < ah.

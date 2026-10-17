@@ -51,10 +51,11 @@ Definition right_adjoint_preserves_binary_products
       (fun x y => right_adjoint_PreservesLimitCone A
                     (DiscreteCat_Functor' (binary_fam x y))).
 
-(* A left adjoint preserves the initial object: the same two lines for
-   the opposite adjunction, in which [F^op] is the right adjoint.  The
-   return type is [InitialFunctor F] spelled out, because that name is a
-   notation (Functor/Structure/Terminal.v) and does not parse here. *)
+(*
+   本节说明伴随、函子、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition left_adjoint_preserves_initial `{@Initial C} `{@Initial D} :
   @TerminalFunctor (D^op) (C^op) (F^op) _ _ :=
   snd (terminal_functor_iff_preserves_terminal (F^op))

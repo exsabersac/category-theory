@@ -13,413 +13,41 @@
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* What is consumed here, and what is built
+(*
+   本节说明伴随、（余）极限相关定义、性质与动机。
 
-   CONSUMED, not rebuilt:
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-     - Adjunction/Diagonal/Limit.v, in full: [HasLimitsOfShape],
-       [HasColimitsOfShape], [LimitFunctor], [ColimitFunctor],
-       [Diagonal_Limit_Adjunction], [Colimit_Diagonal_Adjunction],
-       [lim_counit], [colim_unit], [lim_counit_is_limit_leg],
-       [colim_unit_is_colimit_inj], [lim_transpose_to],
-       [lim_transpose_to_commutes], [colim_transpose_from],
-       [colim_transpose_from_commutes], [Cocone_of], [lim_leg],
-       [lim_med_eq], [colim_inj], [colim_med_eq], [colim_med_commutes],
-       [colim_med_unique], [lim_leg_coherence], [colim_inj_coherence],
-       [limits_iff_diagonal_right_adjoint],
-       [colimits_iff_diagonal_left_adjoint], [Sets_HasLimitsOfShape],
-       [Sets_HasColimitsOfShape], and its witness object [DiagBoolSet].
-       Not one general limit or colimit result is re-proved; every row
-       below is that file applied at a fixed shape.  The issue's
-       Current-state section says "Adjunction/Diagonal/Product.v only
-       covers the binary-product shape"; that is STALE, since
-       Adjunction/Diagonal/Limit.v covers every shape.  A second entry of
-       that section is stale differently: it lists Structure/Cocone.v
-       among the in-tree donors, and NO SUCH FILE EXISTS -- [Cocone] and
-       [ACocone] are declared in Structure/Cone.v, which is the donor
-       actually consumed here.
-     - Instance/Parallel.v: [Parallel], [ParObj], [ParX], [ParY],
-       [ParOne], [APair].
-     - Instance/Roof.v: [Roof], [RoofObj], [RNeg], [RZero], [RPos],
-       [ZeroNeg], [ZeroPos], [IdZero], and the [roof_laws] hint database.
-     - Structure/Span.v: [ASpan], [Span], [Cospan].
-     - Structure/Equalizer.v: [Equalizer], [Coequalizer].
-     - Structure/Equalizer/Fork.v: [IsEqualizer], [HasEqualizers],
-       [fork_eq], [eq_desc], [equalizer_monic],
-       [equalizer_is_equalizer].
-     - Structure/Coequalizer.v: [IsCoequalizer], [HasCoequalizers],
-       [cofork], [coeq_desc], [coequalizer_epic],
-       [coequalizer_is_coequalizer].
-     - Theory/Morphisms/Stability.v: [IsPullback], [is_pullback_commutes],
-       [is_pullback_ump], [is_pullback_pullback], [pullback_is_pullback].
-     - Structure/Pullback.v: [Pullback], [Pull], [HasPullbacks].
-     - Structure/Pullback/Limit.v: [Pullback_to_Universal],
-       [Pullback_Limit], [Pushout_Limit].
-     - Structure/Pushout.v: [IsPushout], [pushout_apex], [HasPushouts].
-     - Theory/Morphisms/CokernelPair.v: [IsPushoutSquare],
-       [Build_IsPushoutSquare], [is_pushout_square_commutes],
-       [is_pushout_square_ump], [is_pushout_square_pushout].
-     - Theory/Morphisms.v: [Monic], [Epic], [monic], [epic].
+(*
+   本节说明（余）强度相关定义、性质与动机。
 
-   BUILT here:
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-     - The four rows: [EqualizerFunctor], [CoequalizerFunctor],
-       [PullbackFunctor], [PushoutFunctor], each with its adjunction
-       ([Diagonal_Equalizer_Adjunction], [Coequalizer_Diagonal_Adjunction],
-       [Diagonal_Pullback_Adjunction], [Pushout_Diagonal_Adjunction]) and
-       its named unit or counit.  Every statement is COVARIANT: no [^op]
-       occurs in the type of the coequalizer or pushout row, and the
-       [Roof^op] that occurs in the pullback row is the SHAPE, not a
-       dualized ambient category.
-     - The identifications the exercise asks for, against the ELEMENTARY
-       APIs rather than the cone machinery: [eq_counit_IsEqualizer],
-       [coeq_unit_IsCoequalizer], [pb_counit_IsPullback] and
-       [po_unit_IsPushoutSquare].
-     - Their packagings [HasLimitsOfShape_HasEqualizers],
-       [HasColimitsOfShape_HasCoequalizers],
-       [HasLimitsOfShape_HasPullbacks] and
-       [HasColimitsOfShape_HasPushouts], so a consumer who has limits of
-       one of these shapes gets the elementary class whose chosen arrow IS
-       the counit (dually the unit) component.
-     - [ShapeLinked] with [dia_unit_iso] and [dia_counit_iso]: the
-       "identity" entries of the table, at their true strength.  Those
-       three head a general constant-diagram development of ELEVEN
-       constants over an arbitrary [J] and [C], the other eight being
-       [lim_const_legs], [colim_const_injs], [dia_unit],
-       [dia_unit_strict], [dia_unit_leg], [dia_counit],
-       [dia_counit_strict] and [dia_counit_inj].  [ShapeLinked] itself
-       carries only BOUNDS ([u0 <= u], [u1 <= u]) and no equation; the
-       other ten, with the four obligations of the two [_iso] constants,
-       are exactly the fourteen constants carrying [u0 = u2], as the
-       universes section below records.
-     - Four transports, [IsEqualizer_respects], [IsCoequalizer_respects],
-       [IsPullback_respects] and [IsPushoutSquare_respects].  None of the
-       three elementary records is stated up to [≈] in its distinguished
-       arrow, and each is needed here at an arrow that differs by a unit
-       residue from the one the tree's own conversions produce, so the
-       transports are not optional.  The last of the four is the primal
-       one read at [C^op] -- a [:=] with no tactic.
-     - The pushout half of the shape/elementary bridge:
-       [po_inj_commutes], [po_legs], [po_legs_coherence], [po_cocone],
-       [po_inj_ump] and [po_inj_IsPushoutSquare].  THE TREE HAS THE
-       PULLBACK BRIDGE AND NOT THE PUSHOUT ONE, measured:
-       Structure/Pullback/Limit.v gives [Pullback_to_Universal], but its
-       [Pushout_Limit] is a bare alias for [Colimit] with no
-       conversion to any pushout universal property, and outside this file
-       [IsPushoutSquare] occurs only in Theory/Morphisms/CokernelPair.v,
-       its probe, and Instance/Sets/CokernelPair.v, none of which builds
-       one from a colimit.  So the pullback row is REUSE and the pushout
-       row is CONSTRUCTION, and the two are not symmetric in cost.
-     - Four degenerate readings used by the witnesses:
-       [equalizer_of_equal_pair], [coequalizer_of_equal_pair],
-       [pullback_of_identity], [pushout_of_identity].
-     - [ACospan], the cospan of a pair of morphisms as a diagram of shape
-       [Roof^op].  It is [ASpan] in [C^op], opposed -- not a new functor:
-       Structure/Pullback/Limit.v already writes that composite inline,
-       and it is given a name here because three results need it.
-     - The four biconditionals by instantiation, and the readbacks tying
-       the two Roof rows to Structure/Span.v's [Span] and [Cospan] and the
-       two Parallel rows to Structure/Equalizer.v's [Equalizer] and
-       [Coequalizer], all at [eq_refl].
+(*
+   本节说明hom相关定义、性质与动机。
 
-   NO EQUALIZER, COEQUALIZER, PULLBACK OR PUSHOUT FUNCTOR EXISTED IN THE
-   TREE.  That absence was measured by the issue's author with a
-   multi-line-aware sweep over the TYPES of every constant in the tree's
-   802 [.v] files (803 with this one), finding seven constants whose name
-   mentions one of those words and whose type contains [⟶], in all seven
-   of which the [⟶] is in an ARGUMENT
-   (a diagram [Parallel ⟶ C]) rather than in the constant's own type.  A
-   first run of that sweep reported SIX: it keyed on
-   [Definition|Theorem|Lemma|Instance] and so missed
-   [Structure/Coequalizer/Split.v]'s [split_coequalizer_preserved],
-   which is declared with [Corollary].  Widening the keyword list is what
-   yields seven, and the characterization is unchanged by it -- that
-   constant's own type is an [IsCoequalizer], its [F : C ⟶ D] being an
-   argument.  The
-   check re-run here is weaker and only corroborating: a name sweep for a
-   [Definition] or [Program Definition] called [EqualizerFunctor],
-   [CoequalizerFunctor], [PullbackFunctor] or [PushoutFunctor] returns
-   nothing outside this file. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* Strengths, measured strict-first
+(*
+   本节说明 Finite 相关定义、性质与动机。
 
-   THIRTY-THREE identifications hold at Leibniz [eq] and are shipped as
-   [eq_refl] Examples -- every [Example] in the file is one.  The ones
-   worth knowing:
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-     - the unit of Δ ⊣ lim IS the transpose of the identity
-       ([dia_unit_strict]), and dually the counit of colim ⊣ Δ IS the
-       transpose of the identity ([dia_counit_strict]);
-     - each row's unit or counit IS the general one
-       ([eq_row_counit], [coeq_row_unit], [pb_row_counit],
-       [po_row_unit]);
-     - each row functor's object action IS the (co)limit object
-       ([EqualizerFunctor_obj] and its three siblings);
-     - the chosen apex of each derived elementary class IS the (co)limit
-       object ([HasEqualizers_apex] and its three siblings);
-     - the six counit/unit components of the four rows (1+1+2+2) are
-       the six legs with a unit residue ([eq_arrow_strict],
-       [coeq_arrow_strict], [pb_fst_strict], [pb_snd_strict],
-       [po_in1_strict], [po_in2_strict]);
-     - the legs of [ACospan f g] and [ASpan f g] ARE f and g
-       ([acospan_left], [acospan_right], [aspan_left], [aspan_right]);
-     - the two Roof-indexed functor categories' objects ARE [Cospan C]
-       and [Span C], and all four shape hypotheses ARE the tree's own
-       aliases ([pullback_shape_hypothesis] and its three siblings).
+(*
+   本节说明伴随相关定义、性质与动机。
 
-   [pb_leg_IsPullback] is not an [eq_refl] but is the same kind of fact:
-   it is Structure/Pullback/Limit.v's [Pullback_to_Universal] read through
-   the apex-pinned predicate, supplied by [:=] WITH NO TACTIC, so the
-   limit apex and both limiting legs land on the pullback's apex and
-   projections by conversion alone.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   SEVEN strict attempts were made and REJECTED.  Every one was verified
-   by STRIPPING the guard and reading the whole error; [Fail]'s own
-   message is INVISIBLE under this repository's [coqc] invocation (a
-   [Fail] command that succeeds prints nothing at all), so reading the
-   stripped error is the only way to learn the failure kind here.  Six are
-   CONVERSION failures ("cannot unify") and one is a TYPING failure; each
-   is stated so it can be pinned as a probe.
+(*
+   本节说明伴随相关定义、性质与动机。
 
-     R1. [eq_arrow L F = lim_leg L F ParX] -- the counit component carries
-         a residual [∘ id]; the control at [lim_leg L F ParX ∘ id]
-         succeeds.  This is Adjunction/Diagonal/Limit.v's own rejection R1
-         instantiated at [Parallel], not a new phenomenon.
-     R2. [coeq_arrow M F = colim_inj M F ParY] -- dually, an [id ∘]
-         residue; control at [id ∘ colim_inj M F ParY].
-     R3. [pb_fst P F = lim_leg P F RNeg] -- as R1 at [Roof^op].
-     R4. [pushout_inj1 Q F = colim_inj Q F RNeg] -- as R2 at [Roof].
-     R5. [dia_unit L x = id[x]] -- a TYPING failure, and the sharpest
-         measurement in the file: the two sides have codomains
-         [lim_obj L (Δ[J](x))] and [x], so the table's "unit = identity"
-         entry is not a proposition one can even state at [eq].  What
-         replaces it is [dia_unit_iso].
-     R6. [Opposite Roof = Roof] -- the walking span is not its own
-         opposite on the nose, which is why the pullback and pushout rows
-         are two separate sections over two different shapes rather than
-         one section read twice.
-     R7. [Opposite Parallel = Parallel] -- likewise for the walking
-         parallel pair; the equalizer and coequalizer rows share a SHAPE
-         but not a variance, and it is [Colimit F := Limit (F^op)] that
-         dualizes, not the shape.
-
-   A NOTATION HAZARD BIT WHILE MEASURING R6 AND R7, AND IT PRODUCED A
-   FALSE PASS.  Written [Roof^op = Roof], the negative fails with "The
-   term Roof has type Category while it is expected to have type ?C ⟶ ?D"
-   -- Functor/Opposite.v opens [functor_scope], and in the argument of an
-   [eq] there is no expected type for [Bind Scope category_scope with
-   Category] to rescue, so [^op] parses as the FUNCTOR opposite and the
-   command fails on notation rather than on the mathematics.  Both
-   negatives must be spelled [Opposite Roof] and [Opposite Parallel].
-   Inside the file the same [Roof^op] is harmless, every occurrence
-   sitting in an argument or ascription position whose expected type is
-   [Category]. *)
-
-(* Universes, measured off BOTH the binder and the constraint block
-
-   Every [Category@{...}] occurrence in the file -- 119 of them, swept
-   over the printed signatures of all 140 constants -- identifies the hom
-   universe with the proof universe.  That is entirely the donors' doing,
-   and the attribution is probed rather than assumed: in a section
-   declaring [Universes uo uh up] with [Constraint uh < up], NINE donors
-   are each rejected ALONE with "Cannot enforce up = uh" --
-   [HasLimitsOfShape], [Limit], [Diagonal], [Fun] (as [[Parallel, D]]),
-   [Opposite], [IsEqualizer], [IsCoequalizer], [IsPullback] and
-   [IsPushoutSquare].  At most EIGHT of the nine are independent:
-   [HasLimitsOfShape] is defined as [∀ F, Limit F], so its rejection does
-   not discriminate against [Limit]'s.  Meanwhile the hom type
-   [x ~{D}~> y], the identity
-   [id[x]] AND [Cone] are all ACCEPTED at those very levels.  The [Cone]
-   control is what makes the attribution discriminate: the cone RECORD is
-   innocent, so "the cone vocabulary" would be the wrong cause.  Nothing
-   in this file adds to the identification, and none of it is claimed
-   unavoidable.
-
-   FOURTEEN constants carry a universe EQUATION, all of them [u0 = u2],
-   and they are exactly the two GENERIC constant-diagram sections:
-   [lim_const_legs], [colim_const_injs], [dia_unit], [dia_unit_strict],
-   [dia_unit_leg], [dia_unit_iso] with its two obligations, and the five
-   [dia_counit] counterparts.  The equation identifies the shape's
-   hom-and-proof universe with the ambient category's; it is INHERITED
-   from Adjunction/Diagonal/Limit.v, whose header records exactly [u0 = u2]
-   for [LimitFunctor] and its neighbours, and whose binder-versus-block
-   disagreement is inherited too -- [dia_unit]'s binder reads
-   [{J : Category@{u u0 u0}} {C : Category@{u1 u2 u2}}], which looks as
-   though the two hom levels are independent, while the block carries
-   [u0 = u2].
-
-   THE FOUR ROW SECTIONS CARRY NO UNIVERSE EQUATION AT ALL.  Their blocks
-   are bounds only.  Read that at its true strength, which is smaller than
-   it looks: nothing is thereby made more general.  The identification the
-   general theorem records as an equation is DISCHARGED BY INSTANTIATION
-   -- the row constants read [Parallel@{u3 u0}] and [Roof@{u3 u0}], taking
-   C's hom universe as the shape's own -- which they may do because both
-   shapes are universe-polymorphic with an EMPTY constraint block
-   ([Parallel@{u u0} : Category@{u u0 u0}] and likewise [Roof], measured).
-   What a consumer gains is only that no equation between two categories
-   THEY declared ever appears.
-
-   Neither finite shape carries [Set].  This is worth saying because the
-   degenerate rows of the same table do: Adjunction/Diagonal/Limit.v
-   records that [_0]'s own signature is [Category@{u Set Set}], so its
-   empty-shape corollaries inherit a [Set] pin.  [Parallel] and [Roof] do
-   not, and so neither does any general result below.
-
-   TWENTY constants carry the literal [Set], and they are exactly the
-   concrete [Sets] witness block, from [SetsConstTrue] onwards.  The token
-   appears in universe INSTANCES in the signature ([Sets@{Set u}],
-   [DiagBoolSet@{u Set}]); the only [Set] in any constraint BLOCK is the
-   bound [Set < u].  The cause is the two-element carrier: [DiagBoolSet]
-   is itself polymorphic ([DiagBoolSet@{u u0} : obj[Sets@{u0 u}]], no
-   [Set] in its binder), and it is universe MINIMIZATION at the use site
-   that instantiates its relation universe at [Set].  The obvious
-   alternative explanation is ruled out by a control: this tree records a
-   hazard by which a [Sets]-morphism whose [proper_morphism] is left to
-   instance resolution pins the carrier universe, with the repair being to
-   supply the certificate as an explicit pointwise term -- BOTH forms were
-   compiled here and BOTH give the identical [Sets@{Set u}], so the
-   resolution hazard is not what is happening.  A third variant, the same
-   morphism inside a section declaring [Constraint Set < o], elaborates at
-   [Sets@{o so}] with [Set] appearing only as a strict lower bound, so the
-   pin is liftable.  It is NOT lifted here: the witness block is a
-   witness, and Adjunction/Diagonal/Limit.v's own [Sets] witness carries
-   the same [Set < u].  Not claimed unavoidable.
-
-   The four [Sets_*] adjunctions and the four [Sets_Has*] classes are
-   [Set]-FREE -- the pin begins only where [bool] does. *)
-
-(* Non-vacuity
-
-   All four rows are inhabited at [Sets], which is both complete and
-   cocomplete in tree: [Sets_Diagonal_Equalizer_Adjunction],
-   [Sets_Coequalizer_Diagonal_Adjunction],
-   [Sets_Diagonal_Pullback_Adjunction] and
-   [Sets_Pushout_Diagonal_Adjunction], with the four elementary classes
-   [DiagSets_HasEqualizers], [DiagSets_HasCoequalizers],
-   [Sets_HasPullbacks_of_shape] and [Sets_HasPushouts_of_shape] falling
-   out of the rows.
-
-   That the witnesses are not degenerate is PROVED, in two senses and for
-   all four rows.  First, the diagrams are not constant: each is built
-   from [SetsConstTrue], the constant map at [true] on the two-element
-   discrete setoid, and [SetsPairDiagram_not_constant],
-   [SetsCospanDiagram_not_constant] and [SetsSpanDiagram_not_constant]
-   show that the arrow the diagram carries is not an identity (each is
-   [sets_const_true_not_id] by conversion, the conversion itself pinned by
-   [sets_pair_arrow_strict] and its two siblings).  A constant diagram
-   sends every arrow to an identity, so none of the three is one.  Second,
-   the four objects produced are not subsingletons:
-   [sets_equalizer_two_elements], [sets_coequalizer_two_elements],
-   [sets_pullback_two_elements] and [sets_pushout_two_elements] each
-   exhibit two elements that are provably not [≈]-equal.  The two elements
-   are obtained by transporting [true] and [false] backwards along the
-   four isomorphisms [sets_equalizer_iso], [sets_coequalizer_iso],
-   [sets_pullback_iso] and [sets_pushout_iso], and the separation is
-   discharged by [discriminate] on the underlying [bool]; no induction on
-   a (co)limit construction could yield a negative.  Those four
-   isomorphisms are not assumed either -- each is an instance of one of
-   the four degenerate readings, so what is computed is the equalizer of a
-   pair whose legs agree, the pullback of a cospan one of whose legs is an
-   identity, and their duals.
-
-   The route the witnesses do NOT take is worth naming: they use the
-   UNIVERSAL PROPERTY, not the construction, so nothing here computes the
-   compatible-family setoid of Instance/Sets/Complete.v or the inductive
-   quotient of Instance/Sets/Cocomplete.v.  No [eq_refl] below evaluates a
-   (co)limit element. *)
-
-(* What is NOT delivered
-
-     - THE FOUR [Sets]-LEVEL CLASSES ARE SECOND INHABITANTS, AND NO
-       AGREEMENT WITH THE FIRST IS CLAIMED.  Each of
-       [DiagSets_HasEqualizers], [DiagSets_HasCoequalizers],
-       [Sets_HasPullbacks_of_shape] and [Sets_HasPushouts_of_shape]
-       duplicates a pre-existing inhabitant of its class --
-       [Adjunction/GAFT/Sets.v]'s [Sets_HasEqualizers],
-       [Instance/Sets/Coequalizer.v]'s [Sets_HasCoequalizers],
-       [Instance/Sets/Pullback.v]'s [Sets_HasPullbacks] and
-       [Instance/Sets/Pushout.v]'s [Sets_HasPushouts].  The four
-       built here come from the general theorem applied to
-       [Sets_HasLimitsOfShape]; the four pre-existing ones are direct
-       constructions.  NOTHING relates the two -- no isomorphism, no
-       [≈], not even a comparison of chosen apexes -- so these are a
-       second route to the same classes and not an identification of
-       the tree's own objects.  The names differ deliberately, and the
-       four here are plain [Definition]s rather than [Instance]s, so
-       the pre-existing exported instances still win every resolution.
-     - NO CONVERSE for any of the four packagings.  Nothing builds
-       [HasLimitsOfShape Parallel C] from [HasEqualizers C], nor any of
-       the other three directions.  The obstruction is real rather than
-       neglect: the elementary classes quantify over PAIRS and SPANS,
-       whose diagrams are [APair f g], [ASpan f g] and [ACospan f g], and
-       a general [F : Parallel ⟶ C] is not one of those records on the
-       nose; transporting a limit along an isomorphism of diagrams is not
-       attempted and no such transport is used.  So each [Has*] result
-       here runs one way only.  CORRECTION (#477): accurate when written;
-       for the coequalizer row a converse now exists outside this file.
-       Structure/Coequalizer.v's [HasCoequalizers_HasColimitsOfShape]
-       builds a colimit of every [F : Parallel ⟶ C] from
-       [HasCoequalizers C], its type being [HasColimitsOfShape Parallel C]
-       by δ (Test/ProbeAbsolute477.v, C31), and it identifies F with no
-       [APair] record: it takes the elementary coequalizer of the pair F
-       names, the images of the two arrows, and reads the colimiting
-       cocone off it.  The equalizer, pullback and pushout rows still
-       have no converse.
-     - No uniqueness for any of the four functors.  [left_adjoint_iso] and
-       [right_adjoint_iso] are not instantiated, so nothing says
-       [EqualizerFunctor] is THE right adjoint of [Δ[Parallel]] up to
-       natural isomorphism, and the four biconditionals assert only the
-       EXISTENCE of an adjoint, not that it is the one named.
-     - No naturality for any identification.  [eq_counit_IsEqualizer] and
-       its three siblings are statements about one diagram at a time;
-       nothing exhibits the assignment as natural in the diagram, and
-       there is no comparison of the four elementary APIs as functors.
-     - Nothing about preservation, reflection or creation of these four
-       shapes, and no instantiation of RAPL or LAPC at these rows.
-     - The pushout row is NOT derived from the pullback row.  It could
-       have been: [fun H F => H (Opposite_Functor F)] inhabits
-       [HasLimitsOfShape (Opposite Roof) (Opposite C) →
-       HasColimitsOfShape Roof C], and that was compiled to check.  It is
-       not used, because every statement downstream would then be about
-       [C^op] and the covariance the issue asks for would be lost.
-     - [ShapeLinked] is a SUFFICIENT condition and is not claimed to be
-       connectedness.  No general theory of connected shapes is developed,
-       nothing relates it to Structure/Groupoid/Connected.v's [Connected],
-       and no shape is exhibited that fails it.
-     - The four row functors and the four [Has*] results are plain
-       [Definition]s, NOT registered [Instance]s: each takes a
-       [HasLimitsOfShape] or [HasColimitsOfShape] parameter, which is not
-       a class, so resolution could never produce it.  This follows
-       Adjunction/Diagonal/Limit.v, which gives the same reason for
-       [LimitFunctor].
-     - No wide equalizers or wide pullbacks: Structure/Equalizer/Wide.v
-       and Structure/Pullback/Wide.v are untouched, and nothing here says
-       anything about the shapes they use.
-     - No relation to Structure/Pullback/Reduction.v's interdefinability
-       results, so nothing connects these four rows to each other.
-     - No concrete computation of any of the four objects: the witnesses
-       are up to isomorphism only, and no element of any (co)limit is
-       evaluated.
-     - Nothing at a shape other than these three, and no finite-shape
-       row for the terminal or initial object -- those are the degenerate
-       rows Adjunction/Diagonal/Limit.v already delivers. *)
-
-(* Axiom status and counts
-
-   140/140 constants report "Closed under the global context".  Method:
-   [Print Module Category.Adjunction.Diagonal.Finite] with whitespace
-   FLATTENED before matching (it wraps long entries onto their own lines)
-   enumerates 140 names; the file declares no [Record], [Class] or
-   [Inductive], so there is no unlisted [Build_*] constructor, and the
-   count decomposes as 136 source-declared names plus the 4 [Program]
-   obligations of [dia_unit_iso] and [dia_counit_iso], which a [.glob]
-   sweep does not record.  The file's third [Program], [SetsConstTrue],
-   generates no obligation at all -- its [proper_morphism] is discharged
-   during elaboration.  Each name was queried by its FULLY QUALIFIED name,
-   in seven chunks of twenty, and the same chunking was used to pair every
-   [About] output with its constant (an unchunked run cannot be parsed
-   reliably: [About]'s record boundaries are ambiguous, and interleaving
-   [Print Assumptions] gives a separator that is). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -455,10 +83,11 @@ Generalizable All Variables.
 
 (** * Transport of the elementary predicates along [≈] *)
 
-(* None of the three elementary records is stated up to [≈] in its
-   distinguished arrow, and each is needed here at an arrow that differs
-   from the one the tree's conversions produce by a unit residue.  These
-   four transports supply exactly that. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Respects.
 
@@ -530,14 +159,11 @@ Definition IsPushoutSquare_respects {C : Category} {x y z P : C}
 
 (** * Constant diagrams: the unit and the counit at a linked shape *)
 
-(* [j0] links the shape [J] when every object of [J] is joined to it by a
-   single arrow, in one direction or the other.  Over a CONSTANT diagram
-   any such arrow becomes an equation between two legs, because the
-   constant diagram sends every arrow to an identity; so over a linked
-   shape all the legs of a cone (dually, all the injections of a cocone)
-   over a constant diagram agree.  This is a sufficient condition for
-   connectedness of the shape, not the general one, and it is all three
-   finite shapes below need. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ShapeLinked {J : Category} (j0 : J) : Type :=
   ∀ j : J, (j0 ~{J}~> j) + (j ~{J}~> j0).
 
@@ -574,9 +200,11 @@ Proof.
            (@id ([J, C]) (Δ[J](x))) j).
 Qed.
 
-(* Over a linked shape the unit is invertible, its inverse being the
-   limiting leg at the linking object.  This is the precise sense in
-   which the unit of the equalizer and pullback rows "is the identity". *)
+(*
+   本节说明（余）极限、拉回/推出、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition dia_unit_iso (j0 : J) (Hl : ShapeLinked j0) (x : C) :
   x ≅ lim_obj L (Δ[J](x)) := {|
   to   := dia_unit x;
@@ -794,10 +422,11 @@ Proof. symmetry; exact (lim_counit_is_limit_leg L F RNeg). Qed.
 Lemma pb_leg_is_snd (F : Roof^op ⟶ C) : lim_leg L F RPos ≈ pb_snd F.
 Proof. symmetry; exact (lim_counit_is_limit_leg L F RPos). Qed.
 
-(* The limiting legs of a cospan ARE its pullback projections.  This is
-   Structure/Pullback/Limit.v's [Pullback_to_Universal] read through the
-   apex-pinned predicate: a [:=] with no tactic, the apex and both
-   projections landing on the nose. *)
+(*
+   本节说明（余）极限、拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pb_leg_IsPullback (F : Roof^op ⟶ C) :
   IsPullback (cospan_left F) (cospan_right F) (lim_obj L F)
              (lim_leg L F RNeg) (lim_leg L F RPos) :=
@@ -978,9 +607,11 @@ End PushoutRow.
 
 (** * Degenerate rows of the elementary data *)
 
-(* Four small readings of the elementary predicates, used below to compute
-   the four (co)limit objects at a concrete witness.  Each is proved from
-   the descent property alone, with no reference to the shape categories. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Degenerate.
 
@@ -1292,9 +923,11 @@ Section Biconditionals.
 
 Context (C : Category).
 
-(* Riehl's Proposition 4.6.1 at the three finite shapes, by instantiation.
-   Read the right-hand sides exactly: they assert the EXISTENCE of an
-   adjoint functor, not that it is the one named above. *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition equalizers_iff_diagonal_right_adjoint :
   HasLimitsOfShape Parallel C
@@ -1316,10 +949,11 @@ Definition pushouts_iff_diagonal_left_adjoint :
     ↔ { K : [Roof, C] ⟶ C & K ⊣ @Diagonal C Roof } :=
   colimits_iff_diagonal_left_adjoint Roof C.
 
-(* The objects of the two Roof-indexed functor categories ARE the tree's
-   spans and cospans, and the two shape hypotheses ARE "every cospan has
-   a pullback-limit" and "every span has a pushout-colimit", in the
-   vocabulary of Structure/Span.v and Structure/Pullback/Limit.v. *)
+(*
+   本节说明函子、（余）极限、拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example cospan_is_pullback_shape : obj[[Roof^op, C]] = Cospan C := eq_refl.
 

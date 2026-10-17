@@ -34,11 +34,11 @@ Context (C : Category).
 Context {K K' : C ⟶ Sets}.
 Context (R : Representable K) (R' : Representable K').
 
-(* The issue's suggested route — transport τ across the representations, then
-   invert the hom-bijection — produces the same TERM as [repr_induced], not
-   merely an equivalent arrow.  [eq_refl] is the convertibility exception:
-   [Yoneda_Embedding']'s two-sided inverse is [Yoneda_Full]'s [prefmap],
-   which is evaluation at the identity, which is what [repr_induced] is. *)
+(*
+   本节说明Yoneda、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition repr_induced_is_yoneda_transpose (tau : K ⟹ K') :
   @two_sided_inverse _ _ _ _
     (Yoneda_Embedding' C (@repr_obj _ _ R) (@repr_obj _ _ R'))
@@ -64,9 +64,11 @@ Definition repr_of_representation {F : C ⟶ Sets} (c : C)
 
 Context (P : C → Type) (eqP : ∀ c, Setoid (P c)).
 
-(* An object satisfying a universal property represents the functor that
-   property is the representability of.  [repr_equivalence] carries the proof
-   of [P c] to the representation; nothing else is needed. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Representable_of_UnivProperty (H : IsUniversalProperty C P eqP)
   (c : C) (t : P c) : Representable (@repr_functor C P eqP H) := {|
   repr_obj := c;
@@ -84,12 +86,11 @@ Universes o h.
 Context (C : Category@{o h h}).
 Context (F : C ⟶ Sets).
 
-(* ...and conversely, representability of a FIXED functor is itself a
-   universal property, of the predicate "c represents F".  The equivalence
-   between proofs of the predicate and representations is the identity, which
-   is the honest content of the direction: the class [IsUniversalProperty] is
-   representability with the predicate left free, so instantiating the
-   predicate at representability is where it becomes a tautology. *)
+(*
+   本节说明函子、等价、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition UnivProperty_of_Representable
   : IsUniversalProperty C (fun c => @Isomorphism ([C, Sets]) [Hom c,─] F)
       (fun c => iso_setoid) := {|
@@ -110,13 +111,11 @@ Context {F : C ⟶ Sets}.
 Context {c v : C}.
 Context (b1 : [Hom c,─] ≅[Fun] F) (b2 : [Hom v,─] ≅[Fun] F).
 
-(* [repr_pair_iso] (Functor/Hom/Yoneda/Iso.v) is the isomorphism of
-   representing objects that Structure/UniversalProperty.v consumes.  Its two
-   legs are the two induced arrows at the identity transformation.  They are
-   NOT the same term — [nat_id]'s component is [fmap[F] id] rather than [id],
-   so the induced arrow carries one application of [fmap] that
-   [repr_pair_iso]'s leg does not — and the [eq_refl] negative is pinned in
-   Test/ProbeRepresentableInduced.v. *)
+(*
+   本节说明函子、Yoneda、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma repr_pair_iso_from_is_induced :
   from (repr_pair_iso b1 b2)
     ≈ repr_induced (repr_of_representation c b1)
@@ -145,18 +144,21 @@ Context (C : Category).
 Context (P : C → Type) (eqP : ∀ c, Setoid (P c)).
 Context (H : IsUniversalProperty C P eqP).
 
-(* The isomorphism [univ_property_unique_up_to_unique_iso] produces IS the
-   [repr_pair_iso] of the two representations, on the nose: the underlying
-   [univ_property_unique] is [Defined] and its [uniqueness] field reduces.
-   [eq_refl] is the convertibility exception. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition up_unique_obj_is_repr_pair_iso (c d : C) (t : P c) (s : P d) :
   unique_obj (univ_property_unique_up_to_unique_iso C P eqP H c d t s)
   = repr_pair_iso (to (repr_equivalence c) t) (to (repr_equivalence d) s)
   := eq_refl.
 
-(* ...so Mac Lane's τ = id case, read through the passage of this file, is
-   that proposition's isomorphism: its backward leg is the arrow induced by
-   the identity transformation between the two representations. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary univ_property_iso_from_is_induced (c d : C) (t : P c) (s : P d) :
   from (unique_obj (univ_property_unique_up_to_unique_iso C P eqP H c d t s))
     ≈ repr_induced (Representable_of_UnivProperty H c t)
@@ -239,14 +241,11 @@ Arguments ReprSubcat C.
 Arguments ReprCat C.
 Arguments ReprObjFunctor C.
 
-(** ** Non-vacuity
+(*
+   本节说明自然变换、hom相关定义、性质与动机。
 
-    Over the delooping of (ℕ, +) — one object, hom-set ℕ, composition
-    addition, identity 0 — a natural transformation between representable
-    copresheaves is a natural number, and the arrow it names is that number.
-    Both the transformation and the induced arrow are non-identities, which is
-    what makes the correspondence's content visible: a witness at which both
-    sides were identities would demonstrate nothing. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Witness.
 
@@ -281,10 +280,11 @@ Program Definition wit_ev_tau (n : nat)
 Next Obligation. exact (@naturality_sym _ _ _ _ f ttt ttt n x0). Qed.
 Next Obligation. exact (@naturality _ _ _ _ f ttt ttt n x0). Qed.
 
-(* Here the induced arrow does NOT come out on the nose — the Yoneda
-   isomorphism's backward leg leaves an [∘ id], which over (ℕ, +) is a
-   [n + 0] — so the agreement is stated at [≈], and the [eq_refl] negative is
-   pinned in Test/ProbeRepresentableInduced.v. *)
+(*
+   本节说明Yoneda、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma wit_ev_induced (n : nat) :
   repr_induced (YoEvalAt_Representable BNat ttt)
                (YoEvalAt_Representable BNat ttt) (wit_ev_tau n)

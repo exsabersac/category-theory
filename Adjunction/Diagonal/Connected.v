@@ -73,10 +73,11 @@ Proof.
   simpl; reflexivity.
 Qed.
 
-(* The injections of the colimit of a CONSTANT diagram all agree: the
-   coherence condition reads [inj y ∘ id ≈ inj x] along every arrow, and
-   [leg_zigzag] propagates that along a zig-zag.  This is the one place
-   connectedness is spent in this section. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma colim_const_inj_agree (c : C) (x y : J) :
   colim_inj L Δ[J](c) x ≈ colim_inj L Δ[J](c) y.
@@ -89,10 +90,11 @@ Proof using K.
   - exact (cn_zigzag K x y).
 Qed.
 
-(* The inverse is the injection at the chosen object.  Nothing here
-   appeals to essential uniqueness of colimits: one composite is a
-   triangle, the other is proved by the colimit's own uniqueness
-   clause against the colimit cocone. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition diagonal_counit_inverse (c : C) :
   c ~{C}~> colim_obj L Δ[J](c) := colim_inj L Δ[J](c) (cn_obj K).
@@ -129,10 +131,11 @@ Example diagonal_counit_Isomorphism_to (c : C) :
 
 End ConnectedCounit.
 
-(* Naturality of the counit at constant diagrams.  This costs NO
-   connectedness -- it is the naturality square of the counit, proved
-   through the colimit's uniqueness clause -- and it is what upgrades
-   the family of isomorphisms above to a natural one. *)
+(*
+   本节说明（余）极限、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CounitNaturality.
 
@@ -217,11 +220,11 @@ Definition diagonal_FFI : LeftAdjointFFInjective (@Diagonal C J) := {|
 Definition diagonal_RI : ReflectiveIsoPresentation (@Diagonal C J) :=
   ffi_implies_ri diagonal_FFI.
 
-(* Cross-check against #367: fullness and faithfulness of Δ read off
-   the invertible counit rather than off Structure/Limit/Constant.v.
-   The two [Full] records are NOT compared -- their sections are
-   distinct opaque terms -- so this is a second route to the same
-   statement, not an identification. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition diagonal_fully_faithful_of_counit :
   (Full (@Diagonal C J) * Faithful (@Diagonal C J))%type :=
@@ -235,11 +238,11 @@ End ConnectedFFI.
 (* ------------------------------------------------------------------ *)
 (** * (C) The choice Mac Lane's sentence makes, and clause (a) *)
 
-(* The hypothesis is a statement about the CHOSEN colimit data at
-   constant diagrams: its apex is the constant on the nose, and its
-   injections are the corresponding cast.  Section 2 of the header
-   explains why no such choice is derivable from a bare
-   [HasColimitsOfShape]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record ConstantColimits (J C : Category) : Type := {
   cc_colim : HasColimitsOfShape J C;
@@ -359,10 +362,11 @@ End TerminalShape.
 (* The one obvious candidate for a strict left inverse of Δ, and the
    subject of section 4 of the header. *)
 
-(* The explicit binders are LOAD-BEARING: written unannotated the same
-   body minimizes to [J : Category@{u u u}], identifying the shape's
-   OBJECT universe with its hom universe for no reason of its own.
-   Annotated, the only equation left is [jh = ch], which is [Fun]'s. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition EvalAt@{jo jh co ch +} {J : Category@{jo jh jh}}
   {C : Category@{co ch ch}} (j : J) : [J, C] ⟶ C := {|
@@ -374,11 +378,11 @@ Example EvalAt_retracts@{jo jh co ch +} {J : Category@{jo jh jh}}
   {C : Category@{co ch ch}} (j : J) (c : C) :
   fobj[@EvalAt J C j] Δ[J](c) = c := eq_refl.
 
-(* When the object IS terminal, evaluation there is the colimit functor
-   on the nose ON OBJECTS.  The two arrow actions are the colimit
-   mediator and the component, different terms that do not convert; the
-   strict form is refuted and pinned in the probe, and no [≈] form is
-   stated. *)
+(*
+   本节说明函子、（余）极限、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example colimit_is_EvalAt@{jo jh co ch +} {J : Category@{jo jh jh}}
   {C : Category@{co ch ch}} (T : @Terminal J) (F : [J, C]) :
@@ -495,11 +499,11 @@ Qed.
 
 End ConnectedUnit.
 
-(* The dual hypothesis, and the dual headline.  Note that no new record
-   is introduced for the conclusion: Theory/Equivalence/Strict.v's
-   [LeftAdjointRightInverse S], read at [S := LimitFunctor], IS the
-   statement that Δ is a right-inverse of the limit functor and left
-   adjoint to it. *)
+(*
+   本节说明伴随、函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record ConstantLimits (J C : Category) : Type := {
   cl_limit : HasLimitsOfShape J C;

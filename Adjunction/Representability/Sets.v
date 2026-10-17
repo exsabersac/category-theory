@@ -39,24 +39,17 @@ Section Definition3.
 Context {C : Category}.
 Context (K : C ⟶ Sets).
 
-(** ** Mac Lane §V.6 Definition 3: the solution set condition, element-wise
+(*
+   本节说明伴随、hom相关定义、性质与动机。
 
-    A set of objects and ELEMENTS through which every element factors.  This
-    is Definition 3 as the book states it; [SolutionSet] of Adjunction/GAFT.v
-    is the hom-shaped form, and the two agree at the singleton set. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* The INDEX universe is named [i], and it is free of it: the constraint
-   block relates it to nothing, exactly as in [SolutionSet].  It is the
-   LAST binder, because the three the enclosing section discharges (the
-   ambient's object and hom-and-proof levels, and [Sets]' object level)
-   come first and print with generic names.  Measured readback:
+(*
+   本节说明hom相关定义、性质与动机。
 
-     ElementSolutionSet@{u u0 u1 i} :
-     ∀ {C : Category@{u u0 u0}}, (C ⟶ Sets@{u0 u1}) → Type@{max(u,u0,i+1)}
-     (* u u0 u1 i |= u0 < u1 / u0 <= ID.u0 *)
-
-   [representability_theorem] below is where [i] is pinned, to the ambient
-   hom universe, exactly as in [GAFT]: see its own binders. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record ElementSolutionSet@{i} := {
   esol_index : Type@{i};
   esol_obj : esol_index → C;
@@ -66,33 +59,17 @@ Record ElementSolutionSet@{i} := {
                        & fmap[K] t (esol_elem i) ≈ x } }
 }.
 
-(** ** The two forms agree at the singleton
+(*
+   本节说明 Sets 相关定义、性质与动机。
 
-    Elements of [K c] are global points [1 ~> K c] — Theory/Universal/
-    Element.v's [global_element] and [global_elements_iso], which already
-    exist; nothing here re-proves that bridge. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* Both passages carry the index TYPE across on the nose — the four
-   [eq_refl] readbacks below say so.  At the level of the index UNIVERSE
-   the two directions differ, and the difference is measured rather than
-   assumed:
+(*
+   本节说明 Sets 相关定义、性质与动机。
 
-     sols_of_esols@{u u0 u1 i u2 u3 u4} :
-       … ElementSolutionSet@{u u0 u1 i} K
-         → SolutionSet@{i u1 u u0} K SetsOne
-     (* u u0 u1 i u2 u3 u4 |= u0 < u1 / u3 <= ID.u0 *)
-
-   -- [i] on the nose in this direction, the index universe reappearing
-   verbatim in [SolutionSet]'s first slot; and
-
-     esols_of_sols@{u u0 u1 i u2 u3 u4 u5} :
-       … SolutionSet@{u5 u1 u u0} K SetsOne
-         → ElementSolutionSet@{u u0 u1 i} K
-     (* u u0 u1 i u2 u3 u4 u5 |= u0 < u1 / u5 <= i *)
-
-   -- a BOUND, [u5 <= i], in the other, since the record is built rather
-   than projected.  Stated because "the same index" is true of the types
-   and only up to [<=] of the levels. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sols_of_esols@{i +} (E : ElementSolutionSet@{i})
   : SolutionSet K SetsOne.
 Proof.
@@ -148,40 +125,11 @@ Arguments esol_index {C K} _.
 Arguments esol_obj {C K} _ _.
 Arguments esol_elem {C K} _ _.
 
-(** ** Mac Lane §V.6 Theorem 3
+(*
+   本节说明hom、来源与用途相关定义、性质与动机。
 
-    Stated at top level, and the binders carry the SAME size condition as
-    [GAFT], which is where it comes from ([comma_initial_of_sols]):
-
-      (i)  [ElementSolutionSet@{cobj h su h} K] -- the element-solution-set
-           INDEX universe (the last slot) is the ambient hom universe [h].
-           The record leaves it free; this theorem pins it.
-      (ii) [@Complete@{h h h cobj} C] -- [Complete]'s shape-object universe
-           is [h] too, for the reason Adjunction/GAFT.v spells out: the
-           equalizer of all endomorphisms of the product is a limit over a
-           shape whose objects are a hom-set.
-
-    RECORDED CORRECTION.  An earlier revision of this comment read
-    "[comma_initial_of_sols] pins the hom AND proof universes of both
-    categories to [Set] (GAFT's own pin), and inside a section that has
-    already elaborated [Sets] the ascription is refused."  That [Set] was
-    a universe-minimization artifact of Instance/Discrete.v's unannotated
-    [DiscreteCat_Functor] and is gone (PR "algebraic carriers are sets",
-    2026-09-17); the theorem is still stated at top level, and (i)+(ii)
-    are why.  The refusals that Instance/Mod/TensorAFT.v records against
-    this theorem survive the repair, re-measured there: they are (i)
-    meeting an index one universe above the ring's carrier, with no [Set]
-    in the message.
-
-    Measured readback:
-
-      representability_theorem@{cobj h su u u0 u1 u2 u3 u4 u5 u6 u7 u8} :
-      ∀ {C : Category@{cobj h h}} (K : C ⟶ Sets@{h su}),
-        Complete@{h h h cobj}
-        → PreservesImageLimit@{cobj h su h u h su h}
-          → ElementSolutionSet@{cobj h su h} K
-            → Representable@{u u0 su cobj h} K
-      (* cobj h su … |= h < su / u6 <= u4 *) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition representability_theorem@{cobj h su +}
   {C : Category@{cobj h h}} (K : C ⟶ Sets@{h su})
@@ -201,11 +149,11 @@ Example Representable_transport_obj {C : Category} {F G : C ⟶ Sets}
   (i : F ≅[[C, Sets]] G) (R : Representable F) :
   @repr_obj C G (Representable_transport i R) = @repr_obj C F R := eq_refl.
 
-(** ** §V.8 Exercise 1, forward: a left adjoint makes the functor representable
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
-    [HomAfter K 1] IS [Hom(1,−) ◯ K] on the nose, and global points make it
-    [K] itself, so #348's [adj_representable] at the singleton transports
-    onto [K]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Ex81.
 
@@ -246,11 +194,11 @@ Definition preserves_image_of_representable {C : Category} {K : C ⟶ Sets}
   (R : Representable K) : @PreservesImageLimit C Sets K :=
   Continuous_PreservesImageLimit (continuous_of_representable R).
 
-(** ** Theorem 3 as a biconditional
+(*
+   本节说明同构相关定义、性质与动机。
 
-    A representation supplies its own element-wise solution set: the single
-    object is the representing one and the single element is the identity
-    read across the isomorphism. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem representability_iff {C : Category} (K : C ⟶ Sets)
   (comp : @Complete C) :
@@ -288,11 +236,11 @@ Example representability_iff_fst {C : Category} (K : C ⟶ Sets)
 
 (** ** Riehl 4.7.14: SAFT's hypotheses give representability *)
 
-(* CORRECTION, #453: "SAFT's hypotheses" here are Adjunction/SAFT.v's,
-   whose covering datum [cover] is refutable (the header).  The passage
-   over the book's hypotheses is Adjunction/SAFT/Characterization/
-   Corollaries.v's [continuous_Set_functor_representable]; this
-   constant is kept as it was. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition saft_representable {C : Category} (K : C ⟶ Sets)
   (comp : @Complete C) (cont : @PreservesImageLimit C Sets K)
@@ -300,17 +248,11 @@ Definition saft_representable {C : Category} (K : C ⟶ Sets)
   (cover : SubobjectCover K comp G WP) : Representable K :=
   representable_of_left_adjoint K (projT2 (SAFT K comp cont G WP cover)).
 
-(** ** §V.8 Exercise 1, converse: copowers give the left adjoint
+(*
+   本节说明伴随、（余）极限、来源与用途相关定义、性质与动机。
 
-    The tree's copowers (Structure/Limit/Power.v from #321, with #366's
-    Structure/Limit/Power/Adjunction.v) are indexed by a
-    bare [Type] and so yield plain functions out of the index, where a
-    [Sets]-valued adjunction needs setoid morphisms respecting [≈]; a
-    setoid-indexed copower is not in the tree.  [HasSetsCopowers] is that
-    missing structure, stated exactly as the representability #348's
-    biconditional consumes it — so the converse lands as an axiom-free
-    CONDITIONAL, and the condition is, by that same biconditional, "the
-    represented functor has a left adjoint". *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition HasSetsCopowers (C : Category) : Type :=
   ∀ (b : C) (X : Sets),

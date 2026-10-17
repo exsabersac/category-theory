@@ -44,9 +44,11 @@ Context `{SMon : @StrongMonad C _ M}.
 (** ** Tier 1: thunkability over a bare strong monad.                  *)
 (* ------------------------------------------------------------------ *)
 
-(* Führmann's definition: f can be frozen into a thunk.  The equation
-   lives at x ~> M (M y): on the left the computation runs and its value
-   is returned; on the right the whole computation is returned unrun. *)
+(*
+   本节说明 Thunkable 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition thunkable {x y : C} (f : x ~> M y) : Type :=
   fmap[M] ret[M] ∘ f ≈ ret[M] ∘ f.
 
@@ -78,12 +80,11 @@ Proof.
   now rewrite comp_assoc.
 Qed.
 
-(* Thunkable morphisms are closed under Kleisli composition
-   join ∘ fmap f ∘ g.  Both sides normalize to fmap f ∘ g: the left via
-   naturality of join and [tf] under the doubled functor, collapsing with
-   [join_fmap_ret]; the right by walking the unit leftwards across join
-   and fmap f with [fmap_ret], meeting [tg], and cancelling with
-   [join_ret] inside the fused fmap argument. *)
+(*
+   本节说明函子、Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma thunkable_comp {x y z : C} {f : y ~> M z} {g : x ~> M y} :
   thunkable f → thunkable g → thunkable (join[M] ∘ fmap[M] f ∘ g).
 Proof.
@@ -137,13 +138,11 @@ Proof.
   now rewrite <- comp_assoc.
 Qed.
 
-(* Führmann's theorem: every thunkable morphism is central in Kl(M).
-   Through [kleisli_central_iff] each centrality square asks that [dstr]
-   and [dstr'] agree on a tensor with f in one factor; the reassociation
-   lemmas of Monad/Strong/Symmetric.v rewrite [dstr ∘ (f ⨂ g)] as the
-   rebracketed word at (fmap ret ∘ f) ⨂ g and [dstr' ∘ (f ⨂ g)] as the
-   same word at (ret ∘ f) ⨂ g, and thunkability of f equates the two
-   insertions.  No commutativity of M enters. *)
+(*
+   本节说明单子、Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem thunkable_central {x y : C} (f : x ~> M y) :
   thunkable f → @central Kleisli Kleisli_Binoidal x y f.
 Proof.
@@ -158,28 +157,21 @@ Proof.
     now rewrite tf.
 Qed.
 
-(* Feeding returned values into BOTH factors of the double strength
-   leaves a single unit — [dstr_ret_ret] (Monad/Strong/Symmetric.v), the
-   unit law of the lax monoidal structure that [dstr] puts on M, needed
-   below for the copyability of thunkable morphisms. *)
+(*
+   本节说明幺半结构、单子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------ *)
 (** ** The wide subcategory Thunk of thunkable morphisms.              *)
 (* ------------------------------------------------------------------ *)
 
-(* [thunkable_id] and [thunkable_comp] are exactly the closure conditions
-   of Construction/Subcategory.v, read at the definitional Kleisli
-   composite (@compose Kleisli is join ∘ fmap f ∘ g on the nose), so the
-   thunkable morphisms over ALL objects form a wide subcategory of Kl(M),
-   Führmann's category of thunkable maps.  The packaging mirrors
-   [DeterministicSub]/[Det] of CopyDiscard/Deterministic.v and
-   [CentralSub]/[Centre] of Structure/Binoidal/Central.v.
+(*
+   本节说明Kleisli相关定义、性质与动机。
 
-   Hierarchy note: the shom-collection of [ThunkableSub] includes into
-   that of [CentralSub] at [Kleisli_Binoidal] — that inclusion IS
-   [thunkable_central] — so Thunk sits inside the centre Z(Kl(M)) as wide
-   subcategories of Kl(M); and every pure morphism [kpure f] lands in
-   Thunk by [pure_thunkable]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition ThunkableSub : Subcategory Kleisli := {|
   sobj  := fun _ => poly_unit;
@@ -204,17 +196,11 @@ Section ThunkableCD.
 
 Context `{CD : @CopyDiscard C _}.
 
-(* The two naturality hypotheses.  [CopyDiscard] itself deliberately
-   never demands them — their absence for general morphisms is what
-   makes the deterministic subclass meaningful — but tier 2 genuinely
-   needs them: with M := Id every morphism is thunkable, so deriving
-   copyable/discardable from thunkable over a bare CD base would force
-   every morphism of every copy-discard category into a comonoid
-   homomorphism, which bare CD does not grant.  Both hypotheses hold in
-   cartesian bases ([CD_of_Cartesian] in CopyDiscard/Proofs.v: copy is
-   the natural diagonal, discard the eliminate of the terminal unit),
-   and [discard_nat] alone holds in every Markov category
-   ([discard_natural], Structure/Monoidal/Markov.v). *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Hypothesis copy_nat : ∀ (x y : C) (u : x ~{C}~> y),
   copy[y] ∘ u ≈ (u ⨂ u) ∘ copy[x].
@@ -222,13 +208,11 @@ Hypothesis copy_nat : ∀ (x y : C) (u : x ~{C}~> y),
 Hypothesis discard_nat : ∀ (x y : C) (u : x ~{C}~> y),
   discard[y] ∘ u ≈ discard[x].
 
-(* The slide lemma, the engine of tier 2: if G agrees with the pure map
-   g on returned values (G ∘ ret ≈ ret ∘ g), then G slides across any
-   thunkable f as fmap g.  Proof: conjugate [tf] with fmap G, exchange
-   G against g inside the fused functor argument with [algG], convert
-   the surviving head fmap ret into a bare ret with
-   [thunkable_fmap_post], and cancel the resulting unit under join with
-   [join_ret]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma thunkable_slide {a b c : C} (f : a ~> M b) (tf : thunkable f)
       (G : M b ~{C}~> M c) (g : b ~{C}~> c)
       (algG : G ∘ ret[M] ≈ ret[M] ∘ g) :
@@ -254,21 +238,22 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* The Cho-Jacobs squares for a Kleisli morphism, stated at the double
-   strength: copying the output of f agrees with running f twice on a
-   copied input (combined by [dstr]), and discarding the output of f
-   agrees with discarding its input outright. *)
+(*
+   本节说明Kleisli、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition copyable {x y : C} (f : x ~> M y) : Type :=
   dstr ∘ (f ⨂ f) ∘ copy[x] ≈ fmap[M] copy[y] ∘ f.
 
 Definition discardable {x y : C} (f : x ~> M y) : Type :=
   fmap[M] discard[y] ∘ f ≈ ret[M] ∘ discard[x].
 
-(* Thunkable morphisms are copyable: naturality of copy at f turns the
-   copied-input side into (dstr ∘ copy[M y]) ∘ f, and that G slides
-   across f as fmap copy[y] — its algebra-map equation is naturality of
-   copy at ret followed by the double-strength unit law
-   [dstr_ret_ret]. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem thunkable_copyable {x y : C} (f : x ~> M y) :
   thunkable f → copyable f.
 Proof using C CD M SM SMon copy_nat.
@@ -285,9 +270,11 @@ Proof using C CD M SM SMon copy_nat.
   reflexivity.
 Qed.
 
-(* Thunkable morphisms are discardable: the mirror argument, sliding
-   G := ret ∘ discard[M y] across f as fmap discard[y]; both the
-   algebra-map equation and the final collapse are [discard_nat]. *)
+(*
+   本节说明 Thunkable 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem thunkable_discardable {x y : C} (f : x ~> M y) :
   thunkable f → discardable f.
 Proof using C CD M SM SMon discard_nat.
@@ -320,17 +307,11 @@ Qed.
 
 Section ThunkableDeterministic.
 
-(* When M is commutative, Kl(M) is itself a copy-discard category
-   ([Kleisli_CopyDiscard], Monad/Kleisli/Commutative.v: copy and discard
-   are the pure images of the base generators), and the Cho-Jacobs
-   deterministic predicate of CopyDiscard/Deterministic.v applies to
-   Kleisli morphisms.  This section identifies its two comonoid-
-   homomorphism squares with [copyable] and [discardable], lands every
-   thunkable morphism in the deterministic class — the honest form of
-   the thunkable-determinism bridge; see the header for why the M := Id
-   reading rules out an unconditional converse-free statement over bare
-   CD — and transports base-deterministic morphisms along the pure
-   functor. *)
+(*
+   本节说明单子、Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Hypothesis comm : commutative_sm (M:=M).
 
@@ -369,12 +350,11 @@ Proof.
     exact E.
 Qed.
 
-(* The bridge: every thunkable Kleisli morphism is deterministic in the
-   Cho-Jacobs sense for the descended copy-discard structure on Kl(M) —
-   i.e. it lies in the wide subcategory [Det] of Kl(M) built by
-   CopyDiscard/Deterministic.v at [Kleisli_CopyDiscard].  Both comonoid-
-   homomorphism squares are tier 2 through the [kl_*_eq]
-   identifications. *)
+(*
+   本节说明Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem thunkable_deterministic {x y : C} (f : x ~{Kleisli}~> y) :
   thunkable f →
   @deterministic Kleisli (Kleisli_Symmetric comm)

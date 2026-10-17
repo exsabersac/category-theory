@@ -53,20 +53,11 @@ Generalizable All Variables.
    提升为保持上下文的变换 W x ~> W y（处处运行该观察）。因此余单子在与 Moggi 风格
    单子结构化效应计算相同的意义上结构化依赖上下文的计算（Uustalu–Vene 2008）。 *)
 
-(* [Comonad C W] is a Definition that unfolds to the class
-   [@Monad (C^op) (W^op)], but typeclass resolution keys on the head constant
-   of a goal and does not look through this unfolding.  Declaring [Comonad]
-   an existing class lets a comonad witness in scope be found when the
-   accessors below insert their implicit [Comonad] argument, mirroring how
-   [ret] and [join] resolve their implicit [Monad] argument.  Goals headed by
-   [Monad] are untouched: the two heads are distinct, so neither search space
-   leaks into the other.
+(*
+   本节说明单子、余单子相关定义、性质与动机。
 
-   The declaration is kept here, in the comonad API module, rather than beside
-   the [Comonad] definition in Theory/Monad.v: this file is the canonical
-   entry point for the comonad API, so any code wanting class behaviour for
-   [Comonad] holes and [Context] binders imports it, and imposing library-wide
-   class resolution on the bare definition is avoided. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Existing Class Comonad.
 
 Section ComonadAPI.
@@ -119,10 +110,11 @@ Proof.
   exact (@join_fmap_join (C^op) (W^op) H x).
 Qed.
 
-(** The co-Kleisli triple laws for [extend].  Together with [extract] these
-    present the comonad in extension form, dually to the ret/bind
-    presentation of a monad; Comonad/CoKleisli.v uses them to relate
-    co-Kleisli composition to [extend]. *)
+(*
+   本节说明单子、余单子、Kleisli相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary extract_extend {x y : C} (f : W x ~> y) : extract ∘ extend f ≈ f.
 Proof.

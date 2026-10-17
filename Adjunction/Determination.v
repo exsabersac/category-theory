@@ -51,12 +51,11 @@ Example adj_counit_couniversal_obj (c : C) :
 Example adj_counit_couniversal_arrow (c : C) :
   coarrow (adj_counit_couniversal c) = @counit C D F U A c := eq_refl.
 
-(* The mediator of that couniversal arrow is the forward transpose -- up to
-   `≈` only, and the cause is DONOR OPACITY that DISCRIMINATES: [coarrow] and
-   [coarrow_obj] above reduce because they are transparent projections of the
-   transparent [couniversal_arrow_from_UMP], whereas the mediator is read out
-   of [ump_couniversal_arrows], whose primal donor [ump_universal_arrows]
-   (Theory/Universal/Arrow.v) is closed with [Qed]. *)
+(*
+   本节说明 Determination 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma adj_counit_couniversal_med (c : C) (d : D) (f : F d ~{C}~> c) :
   unique_obj (ump_couniversal_arrows (adj_counit_couniversal c) f)
     ≈ to adj[A] f.

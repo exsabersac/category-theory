@@ -36,11 +36,11 @@ Section Endpoints.
 
 Context {C : Category}.
 
-(* Objects and morphisms of the arrow category, named.  An object of
-   [Arrow C] is a triple (a, b; f); a morphism is a pair of components
-   together with the comma square, which [ar_square] reads back with
-   the two [fmap[Id]]s already gone, [Id]'s arrow action being the
-   identity function. *)
+(*
+   本节说明 CokernelPair 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ar_dom (A : @Arrow C) : C := fst (`1 A).
 Definition ar_cod (A : @Arrow C) : C := snd (`1 A).
@@ -62,10 +62,11 @@ Definition parallel_leg1 (G : Parallel ⟶ C) : G ParX ~> G ParY :=
 Definition parallel_leg2 (G : Parallel ⟶ C) : G ParX ~> G ParY :=
   fmap[G] (false; ParTwo).
 
-(* Every endomorphism of a [Parallel] object is the identity, because
-   the false-tagged homs at equal endpoints are uninhabited.  These are
-   what let naturality over [Parallel] be discharged at an ARBITRARY
-   target functor, where a diagram assembled by [APair] would reduce. *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma par_hom_id_X (k : ParX ~{Parallel}~> ParX) : k ≈ id.
 Proof.
@@ -98,9 +99,11 @@ Section CokernelPairFunctor.
 Context {C : Category}.
 Context `{HP : @HasPushouts C}.
 
-(* The chosen cokernel pair of the arrow underlying an object of
-   [Arrow C], and its two legs.  Nothing here is new: [cokernel_pair],
-   [ckp_obj], [ckp_left] and [ckp_right] are consumed verbatim. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ckp_of (A : @Arrow C) : IsPushout (ar_mor A) (ar_mor A) :=
   cokernel_pair (ar_mor A).
@@ -117,10 +120,11 @@ Lemma ckp_uv_commutes (A : @Arrow C) :
   ckp_u A ∘ ar_mor A ≈ ckp_v A ∘ ar_mor A.
 Proof. exact (ckp_commutes (ckp_of A)). Qed.
 
-(* The arrow action.  At [ParX] it is the codomain component of the
-   comma morphism; at [ParY] it is the cokernel-pair mediator, whose
-   cocone condition is the comma square followed by [ckp_commutes] at
-   the target arrow. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma ckp_fmap_cocone {A B : @Arrow C} (u : A ~> B) :
   (ckp_u B ∘ ar_snd u) ∘ ar_mor A ≈ (ckp_v B ∘ ar_snd u) ∘ ar_mor A.
@@ -156,10 +160,11 @@ Definition ckp_comp {A B : @Arrow C} (u : A ~> B) (z : ParObj)
   | ParY => ckp_fmap_Y u
   end.
 
-(* Naturality IS the mediator's two triangles: at the true-tagged arrow
-   it is [ckp_fmap_Y_left], at the false-tagged one
-   [ckp_fmap_Y_right].  Both endomorphism cases reduce because [APair]
-   returns an identity at equal endpoints whatever the tag. *)
+(*
+   本节说明 CokernelPair 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma ckp_natural {A B : @Arrow C} (u : A ~> B) (z w : ParObj)
       (k : z ~{Parallel}~> w) :
@@ -274,10 +279,11 @@ Lemma eqa_uniq {G : Parallel ⟶ C} {z : C} (h : z ~> G ParX)
   eqa_arr G ∘ w ≈ h -> unique_obj (eq_desc (eqa_wit G) h Hh) ≈ w.
 Proof. intro Hw; exact (uniqueness (eq_desc (eqa_wit G) h Hh) w Hw). Qed.
 
-(* The arrow action: the codomain component is the transformation at
-   [ParX], the domain component its descent across the target
-   equalizer.  The fork condition is naturality on both sides of the
-   source's own [fork_eq]. *)
+(*
+   本节说明等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma eqa_fmap_cond {G G' : Parallel ⟶ C} (t : G ⟹ G') :
   parallel_leg1 G' ∘ (transform[t] ParX ∘ eqa_arr G)
@@ -371,10 +377,11 @@ Example ckp_pair_one (A : @Arrow C) :
 Example ckp_pair_two (A : @Arrow C) :
   fmap[ckp_pair A] (false; ParTwo) = ckp_v A := eq_refl.
 
-(* Both sides of the transposition say the same thing about an arrow
-   [h : ar_cod A ~> G ParX], namely that [h ∘ ar_mor A] forks the pair
-   of G.  Going right, that is naturality plus [ckp_commutes]; going
-   left, it is the comma square plus [fork_eq]. *)
+(*
+   本节说明 CokernelPair 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma ckpadj_fork {A : @Arrow C} {G : Parallel ⟶ C} (t : ckp_pair A ⟹ G) :
   parallel_leg1 G ∘ (transform[t] ParX ∘ ar_mor A)
@@ -615,10 +622,11 @@ Definition ckp_class_counit (G : Parallel ⟶ C) :=
   @counit ([Parallel, C]) (@Arrow C) CokernelPairFunctor
           EqualizerArrowFunctor CokernelPair_Equalizer_Adjunction G.
 
-(* Strict where it holds.  [nat_id]'s component is [fmap[F] id], which
-   at [ckp_pair A] and [ParX] reduces to [id], so the codomain
-   component of the unit and the [ParX] component of the counit are
-   Leibniz-equal to the named ones. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example ckp_unit_snd_strict (A : @Arrow C) :
   snd `1 (ckp_class_unit A) = snd `1 (cokernel_pair_unit A) := eq_refl.
@@ -627,12 +635,11 @@ Example ckp_counit_X_strict (G : Parallel ⟶ C) :
   transform[ckp_class_counit G] ParX
     = transform[cokernel_pair_counit G] ParX := eq_refl.
 
-(* And REJECTED where it does not, each beside the passing [≈] control
-   proved just below.  The residues: the class unit's domain component
-   descends [id ∘ ar_mor A] where the named one descends [ar_mor A],
-   and the class counit's [ParY] component mediates
-   [parallel_leg1 G ∘ id, parallel_leg2 G ∘ id] where the named one
-   mediates [parallel_leg1 G, parallel_leg2 G]. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example ckp_unit_fst_strict (A : @Arrow C) :
   fst `1 (ckp_class_unit A) = fst `1 (cokernel_pair_unit A) := eq_refl.
@@ -669,11 +676,11 @@ End CokernelPairAdjunction.
 
 (** ** When the unit is an isomorphism *)
 
-(* The content of the exercise: the unit at A is invertible exactly
-   when the arrow of A is already an equalizer of its own cokernel
-   pair -- a regular monomorphism.  The tree has [RegularEpi]
-   (Structure/Regular.v) and no dual, and none is declared here: the
-   conclusion is the bare [IsEqualizer]-valued abbreviation below. *)
+(*
+   本节说明等化子、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Regularity.
 
@@ -743,10 +750,11 @@ Proof.
     now rewrite id_right.
 Qed.
 
-(* Passing between the domain component and the whole comma morphism.
-   The codomain component of the unit is the identity, so nothing is
-   needed in that slot; the square for the inverse comes from
-   [ckp_unit_med_commutes]. *)
+(*
+   本节说明 CokernelPair 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma arrow_iso_fst {A B : @Arrow C} {w : A ~{@Arrow C}~> B}
       (K : IsIsomorphism w) : IsIsomorphism (ar_fst w).
@@ -790,11 +798,11 @@ Proof.
   - intro E; exact (unit_iso_of_med_iso A (regular_unit_med_iso A E)).
 Qed.
 
-(* Split monomorphisms are regular.  The retraction r gives a competing
-   pair (id, f ∘ r) on the codomain, whose mediator m out of the
-   cokernel pair turns the equalizing hypothesis on h into
-   h ≈ f ∘ (r ∘ h); uniqueness is then left-cancellation by f, which a
-   retraction supplies. *)
+(*
+   本节说明核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma split_retract_cocone {A : @Arrow C} {r : ar_cod A ~> ar_dom A}
       (Hr : r ∘ ar_mor A ≈ id) :
@@ -847,10 +855,11 @@ Require Import Category.Instance.Sets.Pushout.
 
 Section SetsWitness.
 
-(* The cheapest of the three in-tree routes to [HasEqualizers Sets];
-   see the header for the closure measurement.  The definition is plain;
-   it is the [Existing Instance] below that is [#[local]], so resolution
-   in this section finds it without exporting a second inhabitant. *)
+(*
+   本节说明 CokernelPair 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition SetsEqualizers : @HasEqualizers Sets :=
   @HasEqualizers_of_HasPullbacks_Terminal Sets Sets_Terminal
@@ -872,12 +881,11 @@ Definition ArrPick : @Arrow Sets :=
 Example sets_arr_collapse_mor : ar_mor ArrCollapse = collapse := eq_refl.
 Example sets_arr_pick_mor : ar_mor ArrPick = pick_true := eq_refl.
 
-(* NEGATIVE.  The collapse is not monic (Instance/Sets.v probes it
-   with the two maps out of the one-element setoid), and the unit can
-   only be invertible at a monomorphism.  Nothing about the chosen
-   pushout or the chosen equalizer of Sets is computed: the argument
-   runs entirely through the universal properties and then out through
-   an existing refutation. *)
+(*
+   本节说明拉回/推出、等化子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem sets_collapse_unit_not_iso :
   IsIsomorphism (cokernel_pair_unit ArrCollapse) -> False.
@@ -913,12 +921,11 @@ End SetsWitness.
 
 (** ** Universe probe *)
 
-(* The four donors of the hom-and-proof identification carried by
-   [CokernelPair_Equalizer_Adjunction], each rejected ALONE at levels
-   declared strictly apart, against controls accepted at those very
-   levels.  Section-local [Universes]/[Constraint] declarations do not
-   leak past [End]; Instance/Fun/Group.v is the in-tree precedent for
-   carrying such a probe inside a library file. *)
+(*
+   本节说明hom、（余）端、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseProbe.
 

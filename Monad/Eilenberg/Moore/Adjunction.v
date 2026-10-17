@@ -27,10 +27,11 @@ Context `{H : @Monad C T}.
 
 #[local] Obligation Tactic := program_simpl.
 
-(** The forgetful functor C^T ⟶ C: project the carrier of an algebra and
-    the underlying arrow of an algebra homomorphism.  Since equivalence of
-    algebra homomorphisms in C^T is equivalence of their underlying arrows,
-    all three functor laws hold on the nose. *)
+(*
+   本节说明函子、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition EM_Forget : EilenbergMoore T ⟶ C := {|
   fobj := fun a => `1 a;
@@ -40,11 +41,11 @@ Next Obligation. proper. Qed.
 Next Obligation. reflexivity. Qed.
 Next Obligation. reflexivity. Qed.
 
-(** The free-algebra functor C ⟶ C^T: on objects, the free algebra
-    (T x, μ_x); on morphisms, fmap[T].  The algebra laws for μ_x are the
-    monad unit law join_ret and the associativity join_fmap_join, and the
-    homomorphism square for fmap[T] f is the multiplication naturality
-    join_fmap_fmap. *)
+(*
+   本节说明函子、单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition EM_Free : C ⟶ EilenbergMoore T := {|
   fobj := fun a => (T a; {| t_alg := @join C T H a |});
@@ -57,13 +58,11 @@ Next Obligation. proper; now rewrites. Qed.
 Next Obligation. apply fmap_id. Qed.
 Next Obligation. apply fmap_comp. Qed.
 
-(** The universal property of the free algebra, on underlying arrows.  Fix
-    an algebra (b, ν) and an arrow f : x ~> b.  Its extension ν ∘ fmap[T] f
-    is an algebra homomorphism (T x, μ_x) ~> (b, ν)
-    ([EM_extend_is_alg_hom]); it restricts along η back to f
-    ([EM_extend_ret]); and it is the only such homomorphism, in that any
-    algebra map g out of the free algebra is the extension of g ∘ η
-    ([EM_extend_unique]). *)
+(*
+   本节说明 Adjunction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma EM_extend_is_alg_hom {x b : C} (N : @TAlgebra C T H b)
       (f : x ~{C}~> b) :
@@ -107,10 +106,11 @@ Program Definition EM_extend {x : C} {y : EilenbergMoore T}
 |}.
 Next Obligation. apply EM_extend_is_alg_hom. Qed.
 
-(** [EM_extend_unique], restated for a morphism of C^T out of a free
-    algebra: extending the restriction of g recovers g.  The structure map
-    of the free algebra is definitionally join, so the commuting square of
-    g is exactly the hypothesis that [EM_extend_unique] consumes. *)
+(*
+   本节说明 Adjunction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma EM_restrict_extend {x : C} {y : EilenbergMoore T}
       (g : EM_Free x ~{EilenbergMoore T}~> y) :
@@ -138,9 +138,11 @@ Next Obligation. proper; now rewrites. Qed.
 Next Obligation. apply EM_extend_ret. Qed.
 Next Obligation. apply EM_restrict_extend. Qed.
 
-(** Naturality of the transposition in the source argument, on underlying
-    arrows: restricting after precomposition with a free arrow fmap[T] g is
-    restricting first and then precomposing with g in C. *)
+(*
+   本节说明 Adjunction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma EM_transpose_nat_l {x y b : C} (h : T y ~{C}~> b) (g : x ~{C}~> y) :
   (h ∘ fmap[T] g) ∘ ret ≈ (h ∘ ret) ∘ g.

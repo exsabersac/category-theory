@@ -55,10 +55,11 @@ Class BraidedMonoidalFunctor : Type := {
 Coercion braided_is_strong :
   BraidedMonoidalFunctor >-> MonoidalFunctor.
 
-(* A braided strong monoidal functor is in particular braided lax monoidal:
-   forgetting invertibility of the comparisons preserves the compatibility
-   square, since the lax comparison of [MonoidalFunctor_Is_Lax] is the [to]
-   component of [ap_iso]. *)
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition BraidedMonoidalFunctor_Is_Lax
   (S : BraidedMonoidalFunctor) : BraidedLaxMonoidalFunctor := {|
   braided_is_lax := MonoidalFunctor_Is_Lax braided_is_strong
@@ -70,11 +71,11 @@ End BraidedMonoidalFunctor.
 Arguments BraidedLaxMonoidalFunctor {C D _ _} F.
 Arguments BraidedMonoidalFunctor {C D _ _} F.
 
-(* Over symmetric bases the braided compatibility IS the symmetric
-   condition — a symmetric monoidal functor is just a braided monoidal
-   functor between symmetric monoidal categories, with no new data or
-   axioms (nLab: symmetric+monoidal+functor).  The braided structures are
-   selected through the [symmetric_is_braided] instances. *)
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SymmetricMonoidalFunctor {C D : Category}
   `{@SymmetricMonoidal C} `{@SymmetricMonoidal D} (F : C ⟶ D) : Type :=
   @BraidedMonoidalFunctor C D _ _ F.
@@ -107,10 +108,11 @@ End BraidedMonoidalId.
 
 (** ** Braided monoidal functors compose *)
 
-(* The composite comparison of [Compose_MonoidalFunctor] is
-   fmap[G] μ^F ∘ μ^G (G outer, F inner).  Its compatibility square is the
-   pasting of the outer square (for G, at F x and F y) with the image
-   under fmap[G] of the inner square (for F, at x and y). *)
+(*
+   本节说明 Braided 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section BraidedMonoidalCompose.
 
@@ -164,8 +166,8 @@ Qed.
 
 End BraidedMonoidalCompose.
 
-(* The bridge packaging a symmetric (strong) monoidal functor that
-   preserves the SCFA generators as a weakened Fong–Spivak hypergraph
-   functor, [SymmetricMonoidalFunctor_HypergraphFunctor], lives in
-   Functor/Structure/Monoidal/Hypergraph.v, keeping this class file
-   independent of the Frobenius/hypergraph chain. *)
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

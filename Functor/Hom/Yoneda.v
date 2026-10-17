@@ -20,91 +20,15 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Where the lemma comes from, and what follows from it
+(*
+   关于the lemma的来源与用途
 
-   Memoir: Yoshiki Kinoshita, categories mailing list, 23 April 1996,
-           https://mta.ca/~cat-dist/catlist/1999/yoneda
-   Text:   Emily Riehl, "Category Theory in Context", Dover 2016, §2.2
+   https://mta.ca/~cat-dist/catlist/1999/yoneda
 
-   The lemma entered mathematics by conversation rather than by
-   publication.  Kinoshita's memorial post records the circumstances:
-   Saunders Mac Lane, anxious to learn from Nobuo Yoneda during a visit to
-   Paris — dated to 1954 by Mac Lane's later account — interviewed him in
-   a café at the Gare du Nord, and the interview continued on Yoneda's
-   train until its departure.  Mac Lane learned the result there and later
-   baptized it, publishing his own brief telling (Mac Lane, "The Yoneda
-   lemma", Mathematica Japonica 47, 1998) beside Kinoshita's obituary; the
-   French nickname "le lemme de la Gare du Nord" survives (Wikipedia).
-   Its first appearance in print is in Grothendieck's descent seminar
-   (Grothendieck, "Technique de descente et théorèmes d'existence en
-   géométrie algébriques", Séminaire Bourbaki 1960; Riehl, §2.2, footnote
-   9) — the same functor-of-points program that studies a scheme through
-   the presheaf it represents, and that rests on this lemma for its
-   faithfulness.
+   本节说明Yoneda、来源与用途相关定义、性质与动机。
 
-   Riehl calls the result "arguably the most important result in category
-   theory", and its weight is carried by a chain of corollaries.  Full
-   faithfulness of the embedding ([Yoneda_Full] and [Yoneda_Faithful] in
-   Functor/Hom.v) yields that [Hom ─,A] ≅ [Hom ─,B] exactly when A ≅ B —
-   stated and proved, with the data-level bijection, as
-   Functor/Hom/Yoneda/Iso.v's [iso_iff_representably_iso] and
-   [representable_iso_setoid].  An object is determined, up to isomorphism, by the totality of maps
-   into it — probes by the other objects of the category suffice to
-   distinguish it (nLab, Corollary II).  Tai-Danae Bradley states the
-   perspective as slogans: mathematical objects are completely determined
-   by their relationships to other objects, so the properties of an
-   object matter more than any particular presentation of it (Bradley,
-   "The Yoneda Perspective", 2017).  Two classical specializations.  At a
-   one-object category, full faithfulness of the covariant embedding is
-   Cayley's theorem — every group embeds into a permutation group (Riehl,
-   Corollary 2.2.11) — and Construction/Cayley.v builds the Cayley
-   representation of an arbitrary category on
-   [Covariant_Yoneda_Embedding] below.  And every row operation defined
-   uniformly on matrices with n rows is left multiplication by a fixed
-   matrix, found by applying the operation to the identity matrix —
-   evaluation at the identity being precisely the forward map of the
-   lemma (Riehl, Corollary 2.2.10); no longer only prose: this is
-   Instance/Matr/Yoneda.v's [row_operations_are_left_multiplication],
-   derived from [Yoneda_Embedding] below over the matrix category of
-   Instance/Matr.v.
-
-   Within the library the lemma is the engine of representability.
-   Structure/UniversalProperty.v consumes [Yoneda_Lemma] and
-   Functor/Hom.v's [Yoneda_Embedding'] to identify universal properties
-   with representations and to conclude that universal objects are unique
-   up to unique isomorphism, a program continued for limits and universal
-   arrows in Structure/UniversalProperty/Limit.v and
-   Structure/UniversalProperty/Universal/Arrow.v.  The end/coend form of
-   the lemma — the ninja Yoneda reductions of Theory/Coend/Yoneda.v —
-   drives the Day convolution unitors of Construction/Day.v, and the
-   profunctor unit laws of Construction/Profunctor/Laws.v perform the
-   same co-Yoneda collapse inline.
-
-   The computational reading is genuine, and this library carries it out.
-   In programming terms the lemma says that f a ≅ ∀ r, (a → r) → f r for
-   any functor f: a machine that accepts a handler a → r and uniformly
-   produces an f r can only operate by holding an f a and mapping the
-   handler over it, since it has no other means of manufacturing results
-   (Piponi, "Reverse Engineering Machines with the Yoneda Lemma", 2006,
-   which calls the lemma "the hardest trivial thing in mathematics").  At
-   the identity functor this reads ∀ r, (a → r) → r ≅ a: a value is
-   interchangeable with its continuation-passing form (Milewski, "The
-   Yoneda Lemma", 2015).  Because the handler is an accumulating
-   parameter, the encoding fuses successive uses of fmap into one — the
-   optimization shipped as Data.Functor.Yoneda in the kan-extensions
-   package (Kmett, "Free Monads for Less, Part 2: Yoneda", 2011) — and
-   difference lists are the same idea one categorical level down, the
-   Cayley representation of the list monoid (Rivas and Jaskelioff,
-   "Notions of Computation as Monoids", 2014).  Theory/Coq/Functor.v
-   realizes the encoding as [Yoneda] with [Yoneda_Functor], a functor in
-   its argument whether or not F is one, and Theory/Coq/Applicative.v and
-   Theory/Coq/Monad.v transport the Applicative and Monad structures
-   across the isomorphism Yoneda F ≅ F.  There is a coda: on the advice
-   of his thesis advisor Shokiti Iyanaga, Yoneda spent much of his career
-   in computing, serving on the ALGOL 68 committee and teaching
-   information science at the University of Tokyo (Kinoshita, 1996) — the
-   man behind the lemma worked in the field where its
-   continuation-passing reading now lives. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export]
 Program Instance Yoneda_Lemma `(C : Category) `(F : C^op ⟶ Sets) :

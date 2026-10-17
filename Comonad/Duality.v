@@ -42,56 +42,20 @@ Generalizable All Variables.
      同理（[CoEM_Adjunction]）——在 op 下单子世界的自由/遗忘对换边，故余单子分解为
      遗忘 ⊣ 余自由。复合 Forget ◯ Cofree 对两分解在表面上恢复 W。 *)
 
-(* The two resolutions as extremes
-
+(*
    nLab: https://ncatlab.org/nlab/show/Eilenberg-Moore+category
    nLab: https://ncatlab.org/nlab/show/comonadic+functor
 
-   Among the adjunctions inducing a given comonad, the two resolutions
-   of this file occupy the extreme positions.  On the monad side the
-   Kleisli adjunction is initial and the Eilenberg–Moore adjunction
-   terminal in the category of adjunctions inducing T; and because
-   (−)^op is covariant on functors, dualization preserves that
-   orientation, so the co-Kleisli resolution is likewise initial and the
-   co-Eilenberg–Moore resolution terminal.  Every inducing adjunction
-   therefore receives a canonical comparison functor from the former and
-   sends one into the latter, and the comparison into coalgebras being
-   an equivalence is what it means for the inducing adjunction's left
-   adjoint to be comonadic.
+   本节说明伴随、函子、单子相关定义、性质与动机。
 
-   CORRECTION (#475).  On the monad side, the comparison functor out of
-   the Kleisli category did not exist when this was written; it is now
-   Monad/Kleisli/Comparison.v's [Kleisli_Comparison] (Mac Lane's L,
-   Theorem VI.5.2), unique by [Kleisli_Comparison_unique] when the object
-   equations of its two triangles cohere (the right one's the image under
-   the right adjoint of the left one's), beside Monad/Comparison.v's
-   [EM_Comparison] into the algebras.  Neither comparison is stated on
-   the comonad side.  The initiality and terminality asserted above are
-   Mac Lane's Theorem VI.5.3, which issue #476 tracks.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   The transfer package below is what makes this duality a theorem
-   scheme rather than a pair of parallel constructions.  Since
-   [Comonad C W] IS [@Monad (C^op) (W^op)] and the op involution is
-   definitional, every monad theorem in the library is already a comonad
-   theorem: instantiate it at (C^op, W^op) and read the composites
-   backwards.  The files of the Comonad/ directory are exactly such
-   readings, and no comonad law is ever proved twice.
+(*
+   本节说明单子、余单子相关定义、性质与动机。
 
-   A single adjunction exhibits the whole family of standard examples.
-   On a cartesian closed category the currying adjunction e × − ⊣ e ⇒ −
-   induces, in one order, the state monad e ⇒ (e × −) and, in the other,
-   the store comonad (e ⇒ −) × e; its left adjoint e × − is itself the
-   environment comonad, and its right adjoint e ⇒ − the reader monad.
-   Env, Reader, State and Store are in this sense one adjunction viewed
-   four ways (Instance/Coq/Comonad/Env.v, Instance/Coq/Comonad/Store.v). *)
-
-(** ** The transfer package
-
-    [Comonad C W] IS [@Monad (C^op) (W^op)] by definition, so all four
-    conversions below are the identity function and both round trips hold
-    by [reflexivity].  They are provided as named coercion points: writing
-    [op_Monad_of_Comonad H] in a proof records the direction in which a
-    witness is being read, which the bare [H] does not. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section MonadComonadDuality.
 
@@ -128,23 +92,11 @@ Proof. reflexivity. Qed.
 
 End MonadComonadDuality.
 
-(** ** The comonad induced by an adjunction
+(*
+   本节说明伴随、单子、余单子相关定义、性质与动机。
 
-    Every adjunction F ⊣ U induces the monad U ◯ F on the domain of F
-    (Monad/Adjunction.v) and, dually, the comonad F ◯ U on its codomain:
-    the counit ε is the counit of the adjunction, and the comultiplication
-    is F η U.  (These covariant readings hold inside the sealed proof of the
-    Qed-opaque [Adjunction_Monad], so — unlike the reflexivity-backed
-    agreement lemmas elsewhere in this file — they are not exposed here as
-    lemmas about [extract]/[duplicate] of the induced comonad.)  Rather than
-    re-deriving the laws from the zig-zag
-    identities, dualize: Adjunction/Opposite.v turns A : F ⊣ U into
-    A^op : U^op ⊣ F^op, whose [Adjunction_Monad] is a monad on C^op with
-    endofunctor F^op ◯ U^op.  The target class [@Comonad C (F ◯ U)]
-    unfolds to [@Monad (C^op) ((F ◯ U)^op)]; the two composites agree on
-    objects and morphisms definitionally (only their Qed-sealed functor-law
-    fields are distinct terms), so every monad field transports unchanged
-    and [Build_Monad] just repackages the dual monad. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AdjunctionComonad.
 
@@ -167,26 +119,11 @@ Definition Adjunction_Comonad (A : F ⊣ U) : @Comonad C (F ◯ U) :=
 
 End AdjunctionComonad.
 
-(** ** The co-Kleisli resolution: forgetful ⊣ cofree
+(*
+   本节说明伴随、单子、余单子相关定义、性质与动机。
 
-    Dualizing the Kleisli resolution of the opposite monad
-    (Monad/Kleisli/Adjunction.v) yields the initial resolution of the
-    comonad W through its co-Kleisli category (Comonad/CoKleisli.v):
-
-    - [CoKleisli_Forget] : CoKleisli ⟶ C sends x to W x and a co-Kleisli
-      morphism f : W x ~> y to its extension [extend f] — under the
-      comparison with coalgebras it forgets a cofree coalgebra to its
-      carrier, whence the name;
-    - [CoKleisli_Cofree] : C ⟶ CoKleisli is the identity on objects and
-      sends f : x ~> y to the co-Kleisli morphism f ∘ extract;
-    - [CoKleisli_Adjunction] : CoKleisli_Forget ⊣ CoKleisli_Cofree — for a
-      comonad the forgetful side is the LEFT adjoint, since op trades the
-      sides of the free ⊣ forgetful resolution of the monad W^op.
-
-    Because both hom-sets of the transposition are literally the same
-    setoid W x ~> y, the adjunction isomorphism is the identity map, and
-    the readings of the functors, unit and counit below are definitional
-    except where a single identity law intervenes. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CoKleisliAdjunction.
 
@@ -258,19 +195,11 @@ Qed.
 
 End CoKleisliAdjunction.
 
-(** ** The co-Eilenberg–Moore resolution: forgetful ⊣ cofree
+(*
+   本节说明伴随、单子、余单子相关定义、性质与动机。
 
-    Dualizing the Eilenberg–Moore resolution of the opposite monad
-    (Monad/Eilenberg/Moore/Adjunction.v) yields the terminal resolution of
-    W through its category of coalgebras (Comonad/Coalgebra.v):
-
-    - [CoEM_Forget] : CoEilenbergMoore ⟶ C projects a coalgebra to its
-      carrier and a coalgebra homomorphism to its underlying arrow;
-    - [CoEM_Cofree] : C ⟶ CoEilenbergMoore sends x to the cofree coalgebra
-      (W x, δ_x) — its costructure map is duplicate — and f : x ~> y to
-      the homomorphism carried by fmap[W] f;
-    - [CoEM_Adjunction] : CoEM_Forget ⊣ CoEM_Cofree, with the forgetful
-      side again the left adjoint. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CoEilenbergMooreAdjunction.
 

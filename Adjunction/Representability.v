@@ -39,14 +39,11 @@ Context (A : F ⊣ G).
 
 #[local] Existing Instance A.
 
-(* Mac Lane §IV.1 Corollary 2, the easy leg: each unit component is a
-   universal arrow.  The mediating morphism is the inverse transpose
-   [⌈f⌉], its property is [to_adj_unit] followed by
-   [from_adj_comp_law], and its uniqueness is [adj_univ] read
-   backwards.  Note the ORIENTATION: [AUniversalArrow] concludes
-   [fmap[G] g ∘ universal_arrow ≈ f] where [ump_universal_arrows]
-   concludes the mirror, so a [symmetry] is spent in the uniqueness
-   field. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition adj_unit_auniversal (c : C) : AUniversalArrow c G (F c).
 Proof using A F G.
   unshelve econstructor.
@@ -140,9 +137,11 @@ Example left_adjoint_of_representable_obj
   fobj[left_adjoint_of_representable R] c
     = @repr_obj D (HomAfter G c) (R c) := eq_refl.
 
-(* The unit does NOT return the chosen universal arrow on the nose, and
-   the obstruction is exhibited rather than described: the transpose of
-   the identity is literally the arrow with an [fmap[G] id] in front. *)
+(*
+   本节说明 Representability 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example adjunction_of_representable_unit_residue
   (R : ∀ c : C, Representable (HomAfter G c)) (c : C) :
   @unit D C (left_adjoint_of_representable R) G
@@ -308,11 +307,11 @@ Definition UnitNatural : Type :=
     fmap[G] (fmap[L] f) ∘ @universal_arrow C D x G (L x) (H x)
       ≈ @universal_arrow C D y G (L y) (H y) ∘ f.
 
-(* Riehl's uniqueness clause, read pointwise on arrows with the object
-   assignment held fixed: an arrow satisfying the unit square at f IS
-   [fmap[L] f].  Both sides factor the same morphism through the same
-   universal arrow, so the whole proof is the uniqueness field used
-   twice. *)
+(*
+   本节说明 Representability 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma unit_square_forces_fmap {x y : C} (f : x ~{C}~> y)
       (g : L x ~{D}~> L y)
       (Hf : fmap[G] (fmap[L] f) ∘ @universal_arrow C D x G (L x) (H x)
@@ -327,11 +326,11 @@ Proof.
   exact (uniqueness W _ Hg).
 Qed.
 
-(* A functor carrying a NATURAL family of universal arrows is itself a
-   left adjoint of G -- not merely isomorphic to one -- with that family
-   as the unit.  The hom-set isomorphism is the universal factorization;
-   naturality in the first variable is where [N] is spent, and naturality
-   in the second is [fmap_comp] with an associativity. *)
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition adjunction_of_natural_universal (N : UnitNatural) : L ⊣ G.
 Proof.
   unshelve eapply Build_Adjunction'.

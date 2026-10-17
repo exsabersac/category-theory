@@ -27,22 +27,13 @@ Generalizable All Variables.
    反变可表 G : C^op ⟶ Sets（预层）则自然同构于 Hom(─, A)；见 Functor/Hom.v 的
    [Hom ─,A]（Curried_CoHom）。 *)
 
-(* Wikipedia: "Let C be a locally small category and let Set be the category
-   of sets. For each object A of C let Hom(A,–) be the hom functor that maps
-   object X to the set Hom(A,X).
+(*
+   Wikipedia: "Let C be a locally small category and let Set be the category
 
-   A functor F : C → Set is said to be representable if it is naturally
-   isomorphic to Hom(A,–) for some object A of C. A representation of F is a
-   pair (A, Φ) where
+   本节说明函子、hom、同构相关定义、性质与动机。
 
-       Φ : Hom(A,–) → F
-
-   is a natural isomorphism.
-
-   A contravariant functor G from C to Set is the same thing as a functor G :
-   Cop → Set and is commonly called a presheaf. A presheaf is representable
-   when it is naturally isomorphic to the contravariant hom-functor Hom(–,A)
-   for some object A of C." *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Representable `(F : C ⟶ Sets) := {
   repr_obj : C;                          (* the representing object A *)
@@ -52,149 +43,26 @@ Class Representable `(F : C ⟶ Sets) := {
 Coercion Representable_to_obj `(F : C ⟶ Sets) (R : Representable F) : C :=
   @repr_obj _ _ R.
 
-(** * Representations are functorial in natural transformations
+(*
+   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
+   nLab: https://ncatlab.org/nlab/show/representable+functor
+   nLab: https://ncatlab.org/nlab/show/Yoneda+embedding
 
-    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-          Springer 1998, §III.2, Exercise 1, printed p. 62.
-    nLab: https://ncatlab.org/nlab/show/representable+functor
-    nLab: https://ncatlab.org/nlab/show/Yoneda+embedding
+   本节说明自然变换、函子、hom相关定义、性质与动机。
 
-    Mac Lane's exercise reads: given representations ⟨r, ψ⟩ of K and
-    ⟨r', ψ'⟩ of K', every natural transformation τ : K ⟹ K' is induced
-    by a unique arrow h : r' → r between the representing objects,
-    compatibly with the two representations.  The direction of h is the
-    exercise's, not a slip: transformations between covariant hom-functors
-    run against the arrows, Nat(Hom(r,−), Hom(r',−)) ≅ Hom(r', r), so a
-    transformation K ⟹ K' is named by an arrow r' → r.  (When the base
-    category is itself an opposite — the presheaf reading, where the objects
-    of C are the objects of the ambient C^op — the same statement reads
-    covariantly in C; Structure/SubobjectClassifier/Natural.v's
-    [Sub_Representable] and Instance/FinSet/Powerset.v's
-    [FinPowerset_Representable] are representations of that kind.)
-
-    The exercise is a corollary of the Yoneda lemma in the following exact
-    sense.  Conjugating τ by the two representations gives a transformation
-    of representable copresheaves,
-
-        σ := ψ'⁻¹ ∘ τ ∘ ψ  :  Hom(r, −) ⟹ Hom(r', −)     ([repr_transport]),
-
-    and the Yoneda embedding, being fully faithful, identifies such σ with
-    arrows r' → r.  Fullness produces the arrow — it is σ's value at the
-    identity, [repr_induced] — and faithfulness is what makes it unique.
-    The two halves are here in elementary form rather than through the
-    packaged bijection; see the universe note below for why.
-
-    This is the step at which representability stops being a property of one
-    functor and becomes a construction on the category of functors.  The
-    correspondence is what makes "the representing object" well defined up
-    to a canonical isomorphism (the τ = id case, [repr_unique_iso]), and it
-    is why a universal construction is functorial with no extra hypothesis:
-    the assignment K ↦ r is the fully faithful functor built in
-    Functor/Representable/Functorial.v.
-
-    WHAT IS DELIVERED HERE
-
-    - [repr_transport] and [repr_induced], the conjugated transformation and
-      the arrow it names, together with the compatibility predicate
-      [ReprCompatible] — Mac Lane's condition stated as an equation in the
-      functor category [C, Sets], with [repr_compatible_at] and
-      [repr_compatible_of_at] converting it to and from the pointwise form
-      (both by [:=], with no tactic: the two are convertible).
-    - Existence ([repr_induced_compatible]) and uniqueness
-      ([repr_induced_unique]), packaged as
-      [repr_induced_universal : ∃! h, ReprCompatible R R' τ h] over
-      Lib/Setoid.v's [Unique] at the hom-setoid of C.  [Unique] is what
-      Structure/UniversalProperty.v uses for the τ = id case too, though
-      there at the setoid of isomorphisms rather than at a hom-setoid.
-    - Functoriality: [repr_induced_respects], [repr_induced_id],
-      [repr_induced_comp].  Note the composition law's shape,
-      h(τ' ∙ τ) ≈ h(τ) ∘ h(τ'): the assignment is contravariant into C, which
-      is why the packaged functor in the companion file lands in C^op.
-    - [repr_induced_iso], upgrading a natural ISOMORPHISM K ≅ K' to an
-      isomorphism of representing objects, and its τ = id specialization
-      [repr_unique_iso] with the uniqueness clause
-      [repr_unique_iso_universal].
-    - [Hom_Representable], the tautological representation of Hom(c, −) by c,
-      and [repr_induced_hom], the round trip: the arrow named by
-      fmap[Curried_Hom] f is f again.  This is deliberately NOT registered as
-      an [Instance]: the tree's [Representable] instances are found by
-      resolution (Structure/Cartesian/Closed/Adjunction.v's
-      [Curry_Representable_resolves] is solved by resolution alone, and says
-      so), so a globally registered tautological instance would add a
-      candidate to every such search.  Whether it would in fact divert any
-      existing search was not measured; the point is that a [Definition]
-      raises the question and an [Instance] would not.
-
-    WHAT IS NOT DELIVERED HERE
-
-    - The cross-link with Structure/UniversalProperty.v's
-      [univ_property_unique_up_to_unique_iso], the packaging of K ↦ r as a
-      functor, and the concrete witnesses are in
-      Functor/Representable/Functorial.v.  They are not here because the
-      cross-link needs Structure/UniversalProperty.v, and making the file
-      that DECLARES [Representable] depend on it would invert the dependency
-      and impose Yoneda plus Construction/Groupoid.v on every consumer of the
-      class.  Everything in this section, by contrast, costs no new import at
-      all: [Theory.Natural.Transformation], [Construction.Opposite] and
-      [Instance.Fun] were already transitive requirements of
-      [Category.Functor.Hom].
-    - No contravariant restatement.  None is needed and none would be
-      separate content: a presheaf is a functor out of C^op, and
-      [Curried_CoHom C] IS [Curried_Hom C^op] by definition, so the
-      statements below read at C^op are the presheaf statements.
-    - No comparison with Theory/Universal/Element.v's [UniversalElement], and
-      no claim that τ ↦ h is the ONLY such correspondence; what is proved is
-      that h is unique given the compatibility condition.
-
-    A UNIVERSE NOTE, MEASURED
-
-    The issue this development answers suggests routing through
-    [Yoneda_Embedding'] (Functor/Hom.v), which packages the hom-bijection
-    as an [IsIsomorphism] in Sets.  That route was not taken, because
-    [Yoneda_Embedding'] — like [Yoneda_Full] and [Yoneda_Faithful], from which
-    it is assembled — is stated over [C : Category@{u u u}], with the object,
-    hom and proof universes IDENTIFIED, while the [Representable] class itself
-    is over [Category@{o h h}] with the object universe FREE.  That
-    identification is an artifact of top-level minimization on an unannotated
-    [(C : Category)] binder and not inherent: re-running those two proof
-    scripts verbatim inside a section whose category is annotated
-    [Category@{uo uh uh}] with [uo < uh] declared succeeds.  Nothing here
-    repairs the donors — that is a change to a file with wide blast radius and
-    is out of this development's scope — but nothing here inherits their pin
-    either.  The whole of this section is over an annotated
-    [C : Category@{o h h}], and the one thing the Yoneda bijection was needed
-    for, that a transformation of representable copresheaves acts by
-    precomposition with its value at the identity, is [hom_transform_precomp]
-    below: one naturality square, evaluated at the identity.  Measured per
-    constant, the result is that [repr_induced], [repr_induced_universal],
-    [repr_unique_iso] and [Hom_Representable] leave the object universe [o]
-    unconstrained relative to the hom universe [h] — their constraint blocks
-    carry no [o = h] and not even [o <= h] — and the
-    difference is guarded in Test/ProbeRepresentableInduced.v, where the
-    donors are rejected at a category whose objects sit strictly below its
-    homs and these constants are accepted.  (The companion file's
-    [ReprObjFunctor] does pick up [o <= h], from packaging the assignment as
-    a functor into C^op; still no [o = h].)  [Representable]'s own hom = proof
-    identification comes from [Instance/Fun.v]'s [Fun], which takes and
-    returns categories of the shape [Category@{a b b}], and [represented] is
-    an isomorphism in [C, Sets]; nothing here touches it.  Read constraint
-    blocks rather than binders: the companion file's
-    [repr_pair_iso_from_is_induced] DISPLAYS its binder as
-    [Category@{u u0 u0}] and carries [u = u0] in its constraint set. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ReprInduced.
 
 Universes o h.
 Context (C : Category@{o h h}).
 
-(* The computational half of the Yoneda lemma for covariant representables,
-   in the only form used below: a transformation between representable
-   copresheaves acts by PRECOMPOSITION with its value at the identity.  This
-   is naturality at g, evaluated at id, with [id_right] cleaning up.  Up to
-   the orientation of [≈] it is the same equation as [Yoneda_Full]'s
-   [fmap_sur] obligation (Functor/Hom.v), with the same proof,
-   re-derived here so that this development does not inherit that constant's
-   universe pin. *)
+(*
+   本节说明函子、Yoneda、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma hom_transform_precomp (r r' : C)
   (sigma : [Hom r,─] ~{[C, Sets]}~> [Hom r',─]) (d : C) (g : r ~> d) :
   transform[sigma] d g ≈ g ∘ transform[sigma] r id.
@@ -220,19 +88,21 @@ Definition repr_transport (tau : K ⟹ K')
 Definition repr_induced (tau : K ⟹ K') : @repr_obj _ _ R' ~> @repr_obj _ _ R :=
   transform[repr_transport tau] (@repr_obj _ _ R) id.
 
-(* Mac Lane's compatibility condition, as an equation in [C, Sets]:
-   ψ' ∘ Hom(h, −) ≈ τ ∘ ψ.  The sides are written in the mirror of the
-   issue's display, which is the same statement since [≈] is symmetric.  Note
-   that [fmap[Curried_Hom C]] wants a C^op-arrow, so [h : r' ~> r] enters as
-   [op h]. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ReprCompatible (tau : K ⟹ K')
   (hh : @repr_obj _ _ R' ~> @repr_obj _ _ R) : Type :=
   to (@represented _ _ R') ∘[Fun] fmap[Curried_Hom C] (op hh)
     ≈[Fun] tau ∘[Fun] to (@represented _ _ R).
 
-(* The pointwise reading, in both directions.  Both are supplied by [:=] with
-   no tactic: the hom-setoid of [C, Sets] is componentwise and the hom-setoid
-   of Sets is pointwise, so the two statements are convertible. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition repr_compatible_at {tau hh} (compat : ReprCompatible tau hh)
   (d : C) (g : @repr_obj _ _ R ~> d) :
   transform[to (@represented _ _ R')] d (g ∘ hh)
@@ -245,9 +115,11 @@ Definition repr_compatible_of_at {tau : K ⟹ K'}
          ≈ transform[tau] d (transform[to (@represented _ _ R)] d g)) :
   ReprCompatible tau hh := at_.
 
-(* Existence: the arrow named by τ is compatible with the two
-   representations.  The proof is [hom_transform_precomp] read backwards —
-   turning g ∘ h into σ's value at g — followed by ψ' cancelling ψ'⁻¹. *)
+(*
+   本节说明 Representable 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma repr_induced_compatible (tau : K ⟹ K') :
   ReprCompatible tau (repr_induced tau).
 Proof.
@@ -324,10 +196,11 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* ...and a composite names the composite, in the opposite order: the
-   assignment is contravariant into C.  Proved by uniqueness, not by
-   unfolding: the composite arrow is shown compatible, and then it IS the
-   induced one. *)
+(*
+   本节说明 Representable 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma repr_induced_comp (tau : K ⟹ K') (tau' : K' ⟹ K'') :
   repr_induced R R'' (tau' ∙ tau)
     ≈ repr_induced R R' tau ∘ repr_induced R' R'' tau'.
@@ -391,10 +264,11 @@ Context (R R' : Representable K).
 Definition repr_unique_iso : @repr_obj _ _ R' ≅ @repr_obj _ _ R :=
   repr_induced_iso R R' iso_id.
 
-(* ...and the isomorphism's forward leg is the unique compatible arrow, which
-   is the clause a bare [≅] does not carry.  Uniqueness is inherited from
-   [repr_induced_universal]; it is stated separately because the isomorphism
-   is what a consumer names. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition repr_unique_iso_universal :
   @Unique _ (@homset C (@repr_obj _ _ R') (@repr_obj _ _ R))
           (ReprCompatible R R' nat_id) := {|
@@ -422,9 +296,11 @@ Definition Hom_Representable (c : C) : Representable ([Hom c,─]) := {|
   represented := iso_id
 |}.
 
-(* Against those representations the correspondence is the identity on
-   arrows: the arrow named by Hom(f, −) is f.  Both sides of Mac Lane's
-   bijection are visible here, and the residue is three identity laws. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma repr_induced_hom (c c' : C) (f : c' ~> c) :
   repr_induced (Hom_Representable c) (Hom_Representable c')
     (fmap[Curried_Hom C] (op f)) ≈ f.

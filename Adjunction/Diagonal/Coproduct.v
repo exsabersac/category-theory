@@ -34,11 +34,11 @@ Next Obligation.
   reflexivity.
 Qed.
 Next Obligation.
-  (* [merge_comp] (Structure/Cocartesian.v) reads
-     [(g ∘ f) ▽ (g ∘ h) ≈ g ∘ f ▽ h]: the common factor stands on the LEFT,
-     the mirror of [fork_comp]'s right one.  The script below therefore uses
-     [comp_assoc] forward before [inl_merge]/[inr_merge]; the corresponding
-     step of Functor/Product/Internal.v uses it backwards. *)
+  (*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   simpl in *.
   rewrite <- merge_comp.
   rewrite !comp_assoc.
@@ -52,25 +52,11 @@ Notation "+( C )" := (@InternalCoproductFunctor C _)
 
 (** ** The adjunction *)
 
-(** [+(C) ⊣ Δ].  The forward transpose splits a map out of a coproduct into
-    its two restrictions, [f ↦ (f ∘ inl, f ∘ inr)]; the inverse copairs a pair
-    of maps, [g ↦ fst g ▽ snd g].  Read in [C^op] these are the transposes of
-    Adjunction/Diagonal/Product.v.
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    The global obligation tactic of Lib/Tactics.v ([cat_simpl]) is left in
-    force, as in the product file, and five scripts remain: the [Proper] of
-    the inverse transpose, one round trip, and three of the four naturality
-    squares.  Program re-runs the obligation tactic as obligations become
-    unblocked, so these five scripts are not in bijection with the five fields
-    of Theory/Adjunction.v.  The first three mirror
-    Adjunction/Diagonal/Product.v with [merge] for [fork].
-    The last two are [merge_comp] orientation steps, written out explicitly.
-    [unmerge] (Structure/Cocartesian.v -- an unfold/simpl prefix followed
-    by [repeat (rewrite <- !merge_comp; cat; rewrite <- !comp_assoc; cat)])
-    closes the second of them but not the first: its final rewrite
-    right-associates composites, the direction suited to [fork_comp]'s common
-    RIGHT factor, while [merge_comp] factors on the LEFT.  Both are written
-    out so the orientation is visible rather than split across two styles. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance Diagonal_Coproduct_Adjunction (C : Category) `{@Cocartesian C} :
   +(C) ⊣ Diagonal_Product C := {
@@ -97,14 +83,11 @@ Qed.
 (* This square is [merge_comp] itself. *)
 Next Obligation. apply merge_comp. Qed.
 
-(** ** Unit and counit
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Theory/Adjunction.v defines [unit := ⌊id⌋] and [counit := ⌈id⌉] as
-    plain MORPHISMS; the class at Theory/Adjunction.v carries no
-    natural-transformation field, so the identifications below are single [≈]
-    equations quantified over the object.  The notations [⌊-⌋], [⌈-⌉], [η] and
-    [ε] are local to the section in Theory/Adjunction.v, so [unit] and
-    [counit] are spelled out here with their four implicit arguments. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The unit at [p = (a, b)] is the pair of injections into [a + b]. *)
 Definition coproduct_unit (C : Category) `{@Cocartesian C} (p : C ∏ C) :
@@ -119,9 +102,11 @@ Lemma coproduct_unit_is_unit (C : Category) `{@Cocartesian C} (p : C ∏ C) :
     ≈ coproduct_unit C p.
 Proof. unfold coproduct_unit; simpl; split; cat. Qed.
 
-(** The componentwise reading of the same equation: equivalence in [C ∏ C] is
-    the pair of the two component equivalences (Construction/Product.v),
-    so this and [coproduct_unit_is_unit] are one statement. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma coproduct_unit_components (C : Category) `{@Cocartesian C}
       (p : C ∏ C) :
   fst (@unit _ _ +(C) (Diagonal_Product C)
@@ -130,25 +115,21 @@ Lemma coproduct_unit_components (C : Category) `{@Cocartesian C}
          (Diagonal_Coproduct_Adjunction C) p) ≈ inr.
 Proof. simpl; split; cat. Qed.
 
-(** A definitional check, not a use of any coproduct law: [counit] is [⌈id⌉],
-    which unfolds to [fst (id, id) ▽ snd (id, id)], so the two sides are
-    convertible and [reflexivity] closes the goal. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma coproduct_counit_is_counit (C : Category) `{@Cocartesian C} (x : C) :
   @counit _ _ +(C) (Diagonal_Product C) (Diagonal_Coproduct_Adjunction C) x
     ≈ coproduct_counit C x.
 Proof. unfold coproduct_counit; reflexivity. Qed.
 
-(** ** Sanity: the adjunction at two concrete cocartesian categories
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Issue #351's work item 4 asks for a sanity example so that the prose
-    promise in Adjunction/GAFT/Examples.v points at real code; the
-    GAFT-side reconstruction itself remains not undertaken, as that file
-    says.  These two instantiations also make the non-vacuity of the
-    hypothesis class an in-tree, build-checked fact rather than an ad-hoc
-    observation: [Coq] (Instance/Coq.v) and [Sets]
-    (Instance/Sets/Cocartesian.v) both carry [Cocartesian] instances,
-    and the adjunction specializes to each.  Importing concrete instances
-    into an Adjunction/ file follows the precedent of Adjunction/GAFT/Sets.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Instance.Coq.
 Require Import Category.Instance.Sets.

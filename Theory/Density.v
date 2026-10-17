@@ -16,7 +16,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** Every set-valued functor is canonically a colimit of representables. *)
+(** 每个取值于集合的函子典范地是 representable 的余极限。 *)
 
 (* nLab: https://ncatlab.org/nlab/show/density+theorem
    nLab: https://ncatlab.org/nlab/show/co-Yoneda+lemma

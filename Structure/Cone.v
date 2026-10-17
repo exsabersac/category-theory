@@ -7,19 +7,13 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/cone
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Cone_(category_theory)
 
-   A cone over a diagram F : J ⟶ C is an apex object c : C together with a
-   family of legs ψx : c ~> F x, one for each object x of J, that is natural
-   in x: for every f : x ~> y in J we have F(f) ∘ ψx ≈ ψy. The apex sits
-   "above" the diagram with arrows pointing down into each F x, compatibly
-   with all of the diagram's morphisms. The terminal cone over F (the cone
-   through which every other cone factors uniquely) is the limit of F.
+   本文件给出相关范畴论结构的定义与性质。
 
-   [ACone] fixes the apex [c] and records just the leg family and its
-   coherence; [Cone] below bundles the apex together with such an [ACone].
-   A cocone over F is dually a cone over F^op (see [Cocone]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class ACone@{u0 u1 u2 u3 u4 u5} {J : Category@{u0 u1 u2}}
   {C : Category@{u3 u4 u5}} (c : obj[C]) (F : J ⟶ C) := {

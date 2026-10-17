@@ -12,35 +12,14 @@ Require Import Category.Structure.Monoidal.Braided.Proofs.
 
 Generalizable All Variables.
 
-(** * The Drinfeld centre Z(C) of a monoidal category
-
+(*
     nLab: https://ncatlab.org/nlab/show/Drinfeld+center
     Wikipedia: https://en.wikipedia.org/wiki/Center_(category_theory)
 
-    This is NOT the premonoidal centre already in the tree.
-    Structure/Binoidal/Central.v and Structure/Premonoidal/Centre.v build
-    the centre of a *premonoidal* category as the *wide subcategory* of
-    *central morphisms* — same objects as the base, morphisms restricted to
-    those that commute past the tensor.  The Drinfeld centre is a different
-    construction on a *monoidal* category: its OBJECTS are pairs
+   本文件给出幺半相关结构。
 
-        (z, a half-braiding on z),
-
-    where a half-braiding is a natural family of isomorphisms
-    [half_braid x : z ⨂ x ≅ x ⨂ z] coherent with the tensor (the hexagon
-    [half_braid_tensor]), and its morphisms are the base morphisms that
-    intertwine the two half-braidings.  Unlike the premonoidal centre — which
-    is merely monoidal — the Drinfeld centre is *braided* monoidal, with the
-    braiding at ((z, σ), (z', σ')) supplied by the half-braiding component
-    [σ z' : z ⨂ z' → z' ⨂ z].  The forgetful functor Z(C) ⟶ C drops the
-    half-braiding.
-
-    Orientation matches Structure/Monoidal.v throughout: the associator is
-    [tensor_assoc : (x ⨂ y) ⨂ z ≅ x ⨂ (y ⨂ z)] (its [to] points to the
-    right-nested bracketing), the unitors are [unit_left : I ⨂ x ≅ x] and
-    [unit_right : x ⨂ I ≅ x].  The pentagon/associator-naturality shuffles
-    and iso-cancellation "cons" lemmas of Structure/Monoidal/Braided/Proofs.v
-    (all stated over a bare [Monoidal]) carry the coherence chases. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Drinfeld.
 

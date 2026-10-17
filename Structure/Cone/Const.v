@@ -9,46 +9,15 @@ Require Import Category.Instance.Fun.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/cone
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Cone_(category_theory)
    nLab: https://ncatlab.org/nlab/show/diagonal+functor
-
-   A cone over a diagram F : J ⟶ C with apex N is the same data as a natural
-   transformation Δ(N) ⟹ F out of the constant (diagonal) functor at N, and
-   the same data as an object of the comma category (Δ ↓ F). The two lemmas
-   below realise the first two of these equivalences in library notation:
-   [Cone_Natural_Transform] proves Δ[J](N) ⟹ F ↔ Cone[N] F (a leg family with
-   apex N), and [Cone_Comma] proves (Δ ↓ Δ(F)) ↔ Cone F (the diagram F is
-   encoded as the constant functor Δ(F) : 1 ⟶ [J, C] so that both sides of the
-   comma share a codomain). Limits arise as the universal/terminal such cone,
-   equivalently as the right adjoint Δ ⊣ lim of the diagonal functor.
-
    Wikipedia: "At first glance cones seem to be slightly abnormal
-   constructions in category theory. They are maps from an object to a functor
-   (or vice versa). In keeping with the spirit of category theory we would
-   like to define them as morphisms or objects in some suitable category. In
-   fact, we can do both.
 
-   "Let J be a small category and let Cᴶ be the category of diagrams of type J
-   in C (this is nothing more than a functor category). Define the diagonal
-   functor Δ : C → Cᴶ as follows: Δ(N) : J → C is the constant functor to N
-   for all N in C.
+   本文件给出相关范畴论结构的定义与性质。
 
-   "If F is a diagram of type J in C, the following statements are equivalent:
-
-     - ψ is a cone from N to F
-     - ψ is a natural transformation from Δ(N) to F
-     - (N, ψ) is an object in the comma category (Δ ↓ F)
-
-   "The dual statements are also equivalent:
-
-     - ψ is a co-cone from F to N
-     - ψ is a natural transformation from F to Δ(N)
-     - (N, ψ) is an object in the comma category (F ↓ Δ)
-
-   "These statements can all be verified by a straightforward application of
-   the definitions. Thinking of cones as natural transformations we see that
-   they are just morphisms in Cᴶ with source (or target) a constant functor." *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Cone_Natural_Transform `(F : [J, C]) :
   ∀ N : C, Δ[J](N) ⟹ F ↔ Cone[N] F.

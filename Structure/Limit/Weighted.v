@@ -14,24 +14,13 @@ Require Import Category.Functor.Opposite.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/weighted+limit
+(*
+ nLab: https://ncatlab.org/nlab/show/weighted+limit
 
-   * Honest scope of this file.
+   本文件给出极限相关。
 
-   A weight for a limit of shape J is a functor W : J ⟶ V into some base V; the
-   W-weighted limit of a diagram F : J ⟶ C is the object representing the
-   V-object of "W-cones", i.e. the presheaf
-
-       c ↦ V-natural-transformations W ⟹ C(c, F -).
-
-   Here we treat exclusively the case V = Sets, i.e. *Sets-valued (ordinary)
-   weights*. A general V-weight valued in an arbitrary (closed) monoidal V needs
-   the end calculus (the V-object ∫_j [W j, C(c, F j)]) together with the
-   enriched hom of V, neither of which is committed to here; that genuine
-   V-enriched form is deferred (ledger entry 11). This scoping does not weaken
-   the payload of the file: [conical_weighted] below is proved at full strength
-   in *both* directions, exhibiting the ordinary (conical) limit as the
-   Sets-weighted limit weighted by the constant-singleton weight. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* * The covariant hom-diagram and its reindexing. *)
 

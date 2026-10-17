@@ -10,27 +10,14 @@ Generalizable All Variables.
 
 (** Product (componentwise) monoidal structure on C ∏ D *)
 
-(* nLab: https://ncatlab.org/nlab/show/monoidal+category
+(*
    nLab: https://ncatlab.org/nlab/show/MonCat
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
 
-   Given monoidal categories (C, ⊗_C, I_C) and (D, ⊗_D, I_D), the product
-   category C ∏ D carries the pointwise monoidal structure:
+   本文件给出积（分量）构造。
 
-       tensor:  (c, d) ⊗ (c', d')  =  (c ⊗_C c', d ⊗_D d')
-       unit:    I                  =  (I_C, I_D)
-
-   The associator and the left/right unitors act componentwise, pairing the
-   corresponding isomorphism from C with the one from D; likewise their
-   naturality squares. The triangle and pentagon coherence laws hold in C ∏ D
-   because they already hold in each factor and equivalence in C ∏ D is the
-   componentwise conjunction (see Construction.Product). This construction is
-   the cartesian product in the (2-)category MonCat of monoidal categories.
-
-   Note: this is the *product* monoidal structure (a pointwise tensor built
-   from two given monoidal structures), not the *cartesian* monoidal structure
-   (tensor = categorical product, unit = terminal object), which is a distinct
-   notion. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := simpl; intros; simplify; simpl in *.
 

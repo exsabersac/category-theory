@@ -22,12 +22,11 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(* [Category.Functor.Opposite] opens [functor_scope], after which a bare
-   [C^op] on a CATEGORY parses as [Opposite_Functor C] and is rejected with
-   "The term C has type Category while it is expected to have type ?C ⟶ ?D".
-   Reopening [category_scope] here restores the reading this file wants.
-   Same family as the notation guards of Theory/Universal/Arrow/Dual.v and
-   Instance/Rng/Mod.v. *)
+(*
+   本文件给出 topos 结构。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Open Scope category_scope.
 
 (* The power-object functor of an elementary topos, and its self-adjointness

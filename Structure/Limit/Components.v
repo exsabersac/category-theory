@@ -22,9 +22,11 @@ Require Import Category.Instance.One.
 Require Import Category.Instance.Two.
 Require Import Category.Instance.Coq.
 Require Import Category.Structure.Limit.Initial.
-(* PORTABILITY: the [Coq.Logic.] spelling, not [From Stdlib], for the
-   reason Construction/Coproduct/Indexed.v records -- the [Stdlib]
-   prefix does not exist on the 8.x line the tree still builds on. *)
+(*
+   本文件给出连通分支相关。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Coq.Logic.Eqdep_dec.
 
 Generalizable All Variables.

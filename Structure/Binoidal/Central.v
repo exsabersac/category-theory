@@ -12,50 +12,13 @@ Set Primitive Projections.
 Set Universe Polymorphism.
 Set Transparent Obligations.
 
-(** * The centrality closure kit for binoidal categories
-
+(*
     nLab: https://ncatlab.org/nlab/show/premonoidal+category
-    (centrality and the centre are discussed there; bare binoidal
-    categories have no dedicated nLab page and are covered under
-    premonoidal categories)
 
-    Structure/Binoidal.v defines when a morphism [f : x ~> y] of a
-    binoidal category is [central]: tensoring [f] with any morphism [f']
-    in either order gives the same composite, on both the [x ⊗ x'] and
-    the [x' ⊗ x] side.  This file develops the closure properties of that
-    predicate that are available in a BARE binoidal category — no unit,
-    no associator:
+   本文件给出相关范畴论结构的定义与性质。
 
-      - [central_id]        : identities are central;
-      - [central_respects]  : centrality respects ≈;
-      - [central_comp]      : central morphisms compose;
-      - [central_iso_from]  : the inverse of a central isomorphism is
-                              central;
-
-    together with the interaction of [composite_ff'] with identities
-    ([composite_id_left] / [composite_id_right]) and with composition
-    under a single centrality hypothesis ([composite_ff'_comp_l] /
-    [composite_ff'_comp_r]).  The last two isolate the exact "middle
-    interchange" that one-sided functoriality of the tensor needs; both
-    reduce to the same square, read off one conjunct of the centrality of
-    [f] or of [g'].
-
-    The closure properties package the central morphisms as the centre
-    Z(C) — here [Centre] — a wide subcategory of [C] built through
-    Construction/Subcategory.v, mirroring the deterministic subcategory
-    [Det] of Structure/Monoidal/CopyDiscard/Deterministic.v.
-
-    What is deliberately NOT here: closure of centrality under the tensor
-    [composite_ff'] itself.  For central [f] and [f'], commuting
-    [composite_ff' f f'] past a right-tensored morphism is a square at
-    the nested tensor [(x ⊗ x') ⊗ a], and a bare binoidal category
-    carries no morphism relating the two nesting levels, so that square
-    is unreachable from the single-level centrality data.  Once an
-    associator is present the chase goes through; the closure lemma
-    [composite_ff'_central] therefore lives in
-    Structure/Premonoidal/Centre.v, where Z(C) is also shown to be
-    monoidal ([Centre_Monoidal]), discharging the promise recorded in the
-    comment above [central] in Structure/Binoidal.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CentralKit.
 

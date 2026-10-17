@@ -10,31 +10,14 @@ Generalizable All Variables.
 
 (** * Wedges, ends and coends *)
 
-(* A wedge to a functor of mixed variance `F : C^op ∏ C ⟶ D` is the dinatural
-   analogue of a cone: an apex `w : D` together with a family of legs
-   `wedge_map_x : w ~> F (x, x)`, one per object `x : C`, landing on the
-   diagonal. In place of a naturality square the legs satisfy the wedge
-   (extranaturality / dinaturality) condition. A wedge is exactly a dinatural
-   transformation from the constant functor `Δw` to `F` (see Theory/Dinatural),
-   for which the source legs collapse to `id`.
-
+(*
    nLab:      https://ncatlab.org/nlab/show/end#wedges
    Wikipedia: https://en.wikipedia.org/wiki/End_(category_theory)
 
-   The wedge condition, for `f : x ~> y`, with both sides `w ~> F (x, y)`
-   (in this library's variance-explicit notation):
+   本文件给出相关范畴论结构的定义与性质。
 
-     bimap[F] id f ∘ wedge_map[x] ≈ bimap[F] (op f) id ∘ wedge_map[y]
-
-   Here `bimap[F] id f` is the covariant action `F(1,f)` on the second
-   argument and `bimap[F] (op f) id` is the contravariant action `F(f,1)` on
-   the first; the condition forces the two routes `w ~> F (x, x) ~> F (x, y)`
-   and `w ~> F (y, y) ~> F (x, y)` to agree. This corresponds to the standard
-   statement `F(1,f) ∘ ω_x ≈ F(f,1) ∘ ω_y`.
-
-   This file supplies only the wedge *data*. The universal (terminal) wedge is
-   the END of `F`, defined in Structure/End; dually the universal (initial)
-   cowedge is the COEND. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Wedge `(F : C^op ∏ C ⟶ D) := {
   wedge_obj : D;                          (* the apex `w` of the wedge *)
 

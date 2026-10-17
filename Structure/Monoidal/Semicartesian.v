@@ -10,29 +10,13 @@ Section SemicartesianMonoidal.
 
 Context {C : Category}.
 
-(* nLab: https://ncatlab.org/nlab/show/semicartesian+monoidal+category
+(*
    Wikipedia: no dedicated article; the notion is described under
-   https://en.wikipedia.org/wiki/Cartesian_monoidal_category
 
-   A semicartesian (also affine) monoidal category is a monoidal category
-   whose unit object I is terminal. Spelled out in this library's notation,
-   that is the pair of conditions
+   本文件给出幺半相关结构。
 
-       eliminate      : x ~> I             (a map into I for every x),
-       unit_terminal  : f ≈ g              (any two x ~> I agree),
-
-   so that I has exactly one map from each object: it is terminal. It is
-   strictly weaker than cartesian monoidal, where the tensor is the
-   categorical product; here only the discard maps into I are guaranteed,
-   not the diagonals (cartesian = semicartesian + coherent diagonals). The
-   internal logic is affine logic: weakening (discarding) but not in general
-   contraction (copying).
-
-   The terminality of I equips every tensor with projection maps, defined
-   exactly as on nLab from a discard on one factor and the matching unitor,
-
-       proj_left  = rho    ∘ (id ⨂ eliminate) : x ⨂ y ~> x,
-       proj_right = lambda ∘ (eliminate ⨂ id) : x ⨂ y ~> y. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class SemicartesianMonoidal `{@Monoidal C} := {
   (* the discard / projection-to-unit map, the unique x ~> I *)

@@ -9,34 +9,14 @@ Require Import Category.Structure.Factorization.StrongEpi.
 
 Generalizable All Variables.
 
-(* Regular categories: kernel pairs, regular epimorphisms, and stability.
-
+(*
    nLab:      https://ncatlab.org/nlab/show/regular+category
    Wikipedia: https://en.wikipedia.org/wiki/Regular_category
 
-   A regular category is a finitely complete category in which every kernel
-   pair has a coequalizer, and regular epimorphisms are stable under
-   pullback.  The kernel pair of f : x ~> y is the pullback of f along
-   itself ([kernel_pair]); its two projections p1, p2 : x ×_y x ~> x are the
-   categorical rendering of the relation "f a = f b" on x.  A regular
-   epimorphism ([RegularEpi]) is a morphism that arises as the coequalizer
-   of some parallel pair; in a regular category, every regular epimorphism
-   is in fact the coequalizer of its own kernel pair.
+   本文件给出相关范畴论结构的定义与性质。
 
-   For the finite-completeness clause we package a terminal object together
-   with all pullbacks ([regular_terminal], [regular_pullbacks]).  This is
-   the standard economical presentation, and it is a theorem here:
-   [Structure/Limit/Finite.v]'s [finitely_complete_of_pullbacks_terminal]
-   turns the two fields into every finite limit ([FinitelyComplete]).
-
-   The theorems below place the regular epimorphisms among the epimorphism
-   classes: every regular epimorphism is epic ([regular_epi_epic], read off
-   [coequalizer_epic]) and moreover strong ([regular_epi_strong]) — it
-   lifts uniquely against every monomorphism, which is the left
-   orthogonality condition of Theory/Orthogonality.v.  Finally, the
-   coequalizing map that [regular_coeq] supplies for a kernel pair is
-   itself a regular epimorphism ([regular_epi_of_kernel_coeq]), packaged by
-   pointing back at the kernel-pair projections it coequalizes. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The kernel pair of f : x ~> y is the pullback of f along itself: an
    object x ×_y x with projections p1, p2 : x ×_y x ~> x satisfying

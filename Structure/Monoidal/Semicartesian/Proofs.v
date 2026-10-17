@@ -9,31 +9,14 @@ Require Import Category.Structure.Monoidal.Semicartesian.
 
 Generalizable All Variables.
 
-(* Derived equalities for the semicartesian (affine) monoidal structure: a
-   monoidal category whose unit object I is terminal.  Terminality of I gives,
-   for every object, a unique discard map `eliminate` x ~> I, and from it the
-   two projections
-
-       proj_left  = unit_right ∘ id ⨂ eliminate : x ⨂ y ~> x,
-       proj_right = unit_left  ∘ eliminate ⨂ id : x ⨂ y ~> y.
-
-   The lemmas below are the projection calculus that follows purely from this
-   data, with no diagonal/copying assumed (that extra structure is what would
-   make the category cartesian).  They split into three groups: the associator
-   compatibilities proj_left_tensor_id / proj_right_tensor_id, the iterated
-   projection equations proj_left_left / proj_right_right, and the projection
-   naturality corollaries proj_left_natural / proj_right_natural.  Every step is
-   discharged from the monoidal coherence axioms together with the terminality
-   of I (used only through `eliminate` and `unit_terminal`/`eliminate_comp`).
-
+(*
    nLab:      https://ncatlab.org/nlab/show/semicartesian+monoidal+category
    Wikipedia: no dedicated article; the unit-terminal condition is noted under
-              https://en.wikipedia.org/wiki/Cartesian_monoidal_category
 
-   These establish that the projection maps a semicartesian category carries are
-   natural and associate coherently with the tensor, i.e. that x ⨂ y behaves
-   like a (weak, non-universal) "product-with-discarding" already at the affine
-   level, before any diagonal is added. *)
+   本文件给出相应结构的证明。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SemicartesianProofs.
 

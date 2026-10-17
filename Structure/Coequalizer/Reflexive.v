@@ -7,38 +7,13 @@ Generalizable All Variables.
 
 (** * Reflexive pairs and reflexive coequalizers *)
 
-(* nLab:      https://ncatlab.org/nlab/show/reflexive+coequalizer
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Coequaliser
 
-   A parallel pair f, g : x ~> y is *reflexive* when the two maps share a
-   common section s : y ~> x, i.e.
+   本文件给出相关范畴论结构的定义与性质。
 
-       f ∘ s ≈ id   and   g ∘ s ≈ id.
-
-   The name comes from the motivating example: when x is the total object
-   of a relation on y with projections f and g — say a congruence being
-   quotiented — a common section is precisely a reflexivity witness,
-   embedding y into the relation along the diagonal.
-
-   A *reflexive coequalizer* is a coequalizer of a reflexive pair.
-   [HasReflexiveCoequalizers] packages a choice of elementary coequalizer
-   (in the [IsCoequalizer] sense of [Structure/Coequalizer.v]) for every
-   reflexive pair; it is the reflexive analogue of [HasCoequalizers], and
-   a strictly weaker demand on the category.  Reflexive coequalizers are
-   the workhorse of the theory of algebras: the canonical presentation of
-   an algebra by free algebras is a reflexive pair, so categories of
-   algebras are as cocomplete as their reflexive coequalizers allow
-   (Linton, "Coequalizers in categories of algebras", 1969).
-
-   Being given by two equations with no quantification over the ambient
-   category, reflexive pairs are preserved by arbitrary functors
-   ([functor_preserves_reflexive]), just as split coequalizers are in
-   [Structure/Coequalizer/Split.v] — although the *coequalizer* of a
-   reflexive pair, unlike that of a split one, need not be preserved.
-
-   Beck's contractible pairs, Structure/Coequalizer/Contractible.v
-   (#480), are another equational condition on a parallel pair; the two
-   are incomparable (Test/ProbeContractible480.v, in both directions). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The equational data: one map that both f and g retract. *)
 Record ReflexivePair {C : Category} {x y : C} (f g : x ~> y) := {

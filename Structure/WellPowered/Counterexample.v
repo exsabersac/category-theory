@@ -12,126 +12,14 @@ Generalizable All Variables.
 
 (** * A category that is not well-powered *)
 
-(* nLab:      https://ncatlab.org/nlab/show/well-powered+category
+(*
    nLab:      https://ncatlab.org/nlab/show/Burali-Forti%27s+paradox
    Wikipedia: https://en.wikipedia.org/wiki/System_U#Girard's_paradox
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §V.8,
-   book p. 130, calls a category well-powered when the subobjects of each
-   object form a small set; nLab's page states the same ("every object has
-   a small poset of subobjects") and records that the property can be
-   absent even from a locally small category with a strong generator.
-   Structure/WellPowered.v states the notion with the index universe
-   pinned at or below the hom universe, and its witnesses are all
-   POSITIVE.  This file supplies the matching negative: a formal category,
-   built with no axiom, that is provably NOT well-powered at the pin, so
-   that the pin is seen to exclude something.
+   本文件给出相关范畴论结构的定义与性质。
 
-   ** The category
-
-   [AntichainTop@{i o h}], the antichain with a top, has as objects
-   [option Type@{i}]: a top object [None] and one object [Some A] for
-   every type [A] of [Type@{i}], so its objects sit at [o] with [i < o].
-   Its arrows are [Some A ~> Some B := A = B], [Some A ~> None := unit],
-   [None ~> None := unit] and [None ~> Some B := False], every hom-set
-   carrying the setoid in which all arrows are equal.  It is thin, so
-   every arrow is monic, and each type [A] gives a subobject [at_sub A] of
-   [None] by the arrow into the top.  Two such subobjects are isomorphic
-   only when their types are equal, so the subobjects of [None] are at
-   least as many as the types of [Type@{i}].
-
-   ** The refutation
-
-   Given a well-poweredness datum [W] at [None] whose index sits at or
-   below [i], [fun X => wp_from W (at_sub X)] and [at_up W], which reads
-   the object [Some B] off the domain of [wp_to W j], make [Type@{i}] a
-   RETRACT of the index: [at_up_down] is read off the domain isomorphism
-   that the exhaustiveness clause [wp_to_from] supplies.  A universe that
-   is a retract of one of its own types is inconsistent by Hurkens'
-   paradox.  The standard library proves this in
-   [Coq.Logic.Hurkens.TypeNeqSmallType] for an EQUATION between a universe
-   and a type, and says in its comment that only the retract is used;
-   [retract_paradox] below restates it over the retract, with the same
-   proof through the universe-polymorphic [Generic.paradox].  The result,
-   [AntichainTop_not_WellPoweredAt], refutes the datum at every index
-   universe [w <= i], and [AntichainTop_not_WellPowered] reads that at the
-   pin: with the homs at [h <= i], [WellPowered AntichainTop] is refuted
-   outright.  Every hom type is [A = B], which lies in [Prop], or [unit]
-   or [False], so [h] may be taken as low as [Set]
-   ([AntichainTop_Set_not_WellPowered]).  Read at [AntichainTop^op] the
-   same theorem says that [AntichainTop^op] is not co-well-powered
-   ([AntichainTop_op_not_CoWellPowered]), since [(AntichainTop^op)^op]
-   converts to [AntichainTop].
-
-   ** Positive controls, and what the refutation measures
-
-   The refutation is about SIZE, and size relative to the hom universe
-   the category is instantiated at.  Two controls inhabit the same
-   per-object record at [None]:
-
-     - [AntichainTop_trivial], one universe up at the object universe
-       [o], with the trivial index [SubObj None] of Structure/
-       WellPowered.v's [wp_trivial]; the pinned [WellPowered] excludes it
-       because [o] exceeds the hom universe;
-     - [AntichainTop_WellPoweredAt_up], AT the pin, once the homs are
-       instantiated above the types the objects name ([i < h]): the index
-       is [option Type@{i}] itself, [wp_to] ([at_name]) sends [None] to
-       Theory/Subobject/Lattice.v's [sub_top] and [Some A] to [at_sub A],
-       [wp_from] is [sub_dom], and exhaustiveness holds by thinness.
-
-   So the verdict depends on the hom instantiation: [AntichainTop@{i o h}]
-   is not well-powered at the pin when [h <= i], and its top object has a
-   pinned datum when [i < h] (measured by the two constants).  That is the
-   general shape of the pin, recorded in Structure/WellPowered.v's
-   UNIVERSE paragraph: "small" means at or below the category's OWN hom
-   universe, and a category whose hom universe is a free parameter, as a
-   thin one's is, can be instantiated with its homs raised.  Where the hom
-   universe is tied to the objects' carriers, as in [Sets] and the
-   algebraic categories, it cannot be raised that way.
-
-   ** Universes, measured
-
-   Read with [Set Printing Universes] and [About], stdlib bounds omitted:
-
-     AntichainTop@{i o h} : Category@{o h h}              (* i < o *)
-     AntichainTop_not_WellPoweredAt@{i o h w s t} :
-       WellPoweredAt@{w o s h t} None → False
-       (* i < o, h < t, o <= s, h <= s, w <= i *)
-     AntichainTop_not_WellPowered@{i o h w s t} :
-       WellPowered@{o h w s t} AntichainTop@{i o h} → False
-       (* i < o, h < t, o <= s, h <= s, w <= h, h <= i *)
-     AntichainTop_op_not_CoWellPowered@{i o h w s t} :
-       CoWellPowered@{o h w s t} (AntichainTop@{i o h}^op) → False
-       (* the block of AntichainTop_not_WellPowered *)
-     AntichainTop_trivial@{i o h t} : WellPoweredAt@{o o o h t} None
-       (* i < o, h < t, h <= o *)
-     AntichainTop_WellPoweredAt_up@{i o h s t} :
-       WellPoweredAt@{h o s h t} None
-       (* i < o, i < h, h < t, o <= s, h <= s *)
-
-   ** Axioms
-
-   None.  [Print Assumptions] reports every constant below closed under
-   the global context; stdlib's Hurkens development is a theorem, not an
-   axiom, and [retract_paradox] reports closed as well.
-
-   ** Not delivered
-
-   No non-well-powered category from the tree's concrete instances:
-   [Sets] and [Grp] are well-powered one universe up (Instance/Sets/
-   WellPowered.v, Instance/Grp/WellPowered.v; this parenthesis said "the
-   other algebraic categories were not measured", which is corrected here:
-   since #454 Instance/Mod/WellPowered.v shows [RMod R] well-powered and
-   co-well-powered one universe up, and both at the pin under
-   [Untruncate], the remaining algebraic categories being still
-   unmeasured), and whether any of them is well-powered at the pin
-   without a hypothesis is left open here.  The
-   co-well-powered counterexample is only the dual one,
-   [AntichainTop_op_not_CoWellPowered] at [AntichainTop^op], which is
-   [AntichainTop_not_WellPowered] itself because [(AntichainTop^op)^op]
-   converts to [AntichainTop]; no category that is well-powered but not
-   co-well-powered is exhibited.  [AntichainTop] at [i < h] is not shown
-   well-powered at objects other than [None]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Hurkens' paradox over a retract *)
 

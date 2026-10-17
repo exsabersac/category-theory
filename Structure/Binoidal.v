@@ -17,28 +17,13 @@ Reserved Infix "⋉" (at level 15, right associativity).
 Reserved Infix "⋊" (at level 15, right associativity).
 Reserved Infix "⊗" (at level 30, right associativity).
 
-(* nLab: https://ncatlab.org/nlab/show/binoidal+category
+(*
    Wikipedia: none (no "binoidal category" article; the notion is covered
-   under https://en.wikipedia.org/wiki/Premonoidal_category)
 
-   A binoidal category is a category C with an object x ⊗ y for each pair of
-   objects that is functorial in each argument *separately* rather than
-   jointly. Where a monoidal tensor is a single bifunctor C ∏ C ⟶ C, the
-   binoidal tensor provides, for each fixed object, two one-argument
-   tensoring functors,
+   本文件给出相关范畴论结构的定义与性质。
 
-       x ⋉ -  : C ⟶ C   maps z to z ⊗ x      ([inj_left x],  - ⊗ x fixed right)
-       x ⋊ -  : C ⟶ C   maps z to x ⊗ z      ([inj_right x], x ⊗ - fixed left)
-
-   These need not assemble into a bifunctor: tensoring f : a ~> b on the left
-   and f' : a' ~> b' on the right may be applied in two orders, giving in
-   general distinct composites a ⊗ a' ~> b ⊗ b'. This is the "premagmoidal"
-   precursor to a premonoidal category, which adds a unit and central
-   coherence isomorphisms. The premonoidal successor is
-   Structure/Premonoidal.v; the funny-tensor characterization of
-   separately-functorial tensors is Instance/StrictCat/Premonoid.v. The
-   naming here follows the rest of the library; the symbols ⋉ / ⋊ match the
-   nLab convention for the right/left tensoring functors. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Binoidal := {
   tensor (x y : C) : C where "x ⊗ y" := (tensor x y);
 

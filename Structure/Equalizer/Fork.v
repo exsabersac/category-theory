@@ -13,39 +13,13 @@ Generalizable All Variables.
 
 (** * Equalizers, elementarily: forks and descent *)
 
-(* nLab:      https://ncatlab.org/nlab/show/equalizer
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Equaliser_(mathematics)
 
-   Given a parallel pair f, g : x ~> y in C, an equalizer is an object q
-   together with an equalizing map e : q ~> x forming a "fork" under the
-   pair,
+   本文件给出等化子结构。
 
-       f ∘ e ≈ g ∘ e,
-
-   that is universal with this property: every h : z ~> x with
-   f ∘ h ≈ g ∘ h factors uniquely through e, i.e. there is a unique
-   u : z ~> q with e ∘ u ≈ h (Wikipedia; nLab presents the same universal
-   property as the limit of the parallel pair).
-
-   [Structure/Equalizer.v] already presents the equalizer as a limit over
-   the walking parallel pair ([Equalizer (APair f g) := Limit (APair f g)]).
-   This file provides the elementary, fork-shaped presentation
-   [IsEqualizer] together with conversions in both directions showing that
-   the two presentations coincide:
-
-     - [equalizer_is_equalizer] reads a limit of [APair f g] as an
-       elementary equalizer at its apex, equalized by the limit leg over
-       [ParX];
-     - [is_equalizer_limit] rebuilds the bundled limit from the elementary
-       data.
-
-   Uniqueness of the equalizer object up to isomorphism
-   ([equalizer_unique]) and the classical fact that equalizing maps are
-   monomorphisms ([equalizer_monic]; Wikipedia: "every equaliser is a
-   monomorphism") complete the API.  [HasEqualizers] packages a choice of
-   elementary equalizer for every parallel pair.  This file is the
-   limit-side sibling of [Structure/Coequalizer.v], with no opposite
-   categories anywhere: everything is phrased directly in C. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The elementary universal property: e forks the pair f, g at q, and
    every forking map h into x factors uniquely across e. *)

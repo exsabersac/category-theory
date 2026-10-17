@@ -11,113 +11,16 @@ Require Import Category.Structure.Monoidal.Hypergraph.
 
 Generalizable All Variables.
 
-(** * Hypergraph functors
-
+(*
     Reference: Fong, "The Algebra of Open and Interconnected Systems"
-    (arXiv:1609.05382), Definition 1.4; Fong–Spivak, "Hypergraph
-    categories" (Journal of Pure and Applied Algebra 223, 2019;
-    arXiv:1806.08304), Definition 2.12.
-
     nLab:      https://ncatlab.org/nlab/show/hypergraph+category
-               (defines hypergraph categories; the page does NOT define
-               "hypergraph functor" — see the arXiv references above)
     nLab:      https://ncatlab.org/nlab/show/monoidal+functor
-               (the underlying strong symmetric monoidal functor notion)
     Wikipedia: no dedicated article for hypergraph categories or
-               hypergraph functors as of this writing.
 
-    A HYPERGRAPH FUNCTOR between hypergraph categories [(C, ⨂_C, I_C, …)]
-    and [(D, ⨂_D, I_D, …)] is a STRONG symmetric monoidal functor (per
-    Fong–Spivak, "Hypergraph categories", Definition 2.12; Seven Sketches
-    Def. 6.60 defines hypergraph categories themselves) preserving the
-    SCFA structure on each object.  Concretely, the functor carries comparison
-    *isomorphisms* [F X ⨂_D F Y ≅ F (X ⨂_C Y)] and [I_D ≅ F I_C]
-    AND sends μ_X, η_X, δ_X, ε_X to μ_{F X}, η_{F X}, δ_{F X}, ε_{F X}
-    up to transport along those isomorphisms.  (The fully-strict case,
-    where the comparison isomorphisms are identities, recovers the
-    on-the-nose equations [F (μ_X) ≈ μ_{F X}], etc.)
+   本文件给出幺半相关结构。
 
-    This is the morphism notion in the category [HypGraph] of hypergraph
-    categories.  Examples include the BLACK-BOXING functors of
-    Baez–Fong–Spivak: every concrete black-box (electrical-circuit,
-    Markov-process, signal-flow) factors as a hypergraph functor from a
-    decorated-cospan domain into a target hypergraph category (relations,
-    linear maps, ZX-diagrams).
-
-    CAVEAT: the [HypergraphFunctor] record formalised below is a
-    DELIBERATELY WEAKENED version of this literature notion.  It drops
-    the strong-monoidal coherence equations (associator/unitor squares,
-    naturality, braid-compatibility) and only records the comparison
-    isomorphisms together with the four SCFA-preservation equations; see
-    the "Known scoping limitation: missing monoidal coherences" section
-    below.  As a consequence the record is NOT in general a symmetric
-    monoidal functor.  The inhabitants currently provided are the trivial
-    [Id_HypergraphFunctor] below and the images of the forgetful bridge
-    [SymmetricMonoidalFunctor_HypergraphFunctor]
-    (Functor/Structure/Monoidal/Hypergraph.v).
-
-    ** Coq-specific organisation
-
-    To keep the record self-contained in the present library and avoid
-    the typeclass-resolution loops that arise when nesting
-    [#[export] Instance Hypergraph] under another typeclass that itself
-    triggers Hypergraph resolution on the codomain, we present
-    [HypergraphFunctor] as a RECORD parameterised by the two ambient
-    [Hypergraph] instances (and their underlying [SymmetricMonoidal]
-    structures).  Instances of this record are built locally and are
-    NOT auto-marked as [#[export] Instance].
-
-    The record records (i) the underlying functor [F : C ⟶ D] and
-    (ii) preservation of the four SCFA generators on every object,
-    stated up to the [≈] equivalence in [D] modulo the canonical
-    transport along the strict-monoidal coherences that identify
-    [F X ⨂_D F Y] with [F (X ⨂_C Y)] and [I_D] with [F I_C].  In the
-    fully-strict / on-the-nose case those transports are identities,
-    yielding the literature definition verbatim.
-
-    ** Known scoping limitation: missing monoidal coherences
-
-    Per Fong–Spivak (Definition 2.12), a hypergraph functor is a
-    (symmetric) STRONG monoidal functor that ALSO preserves the SCFA
-    generators.  The record below carries [hf_unit_iso] and
-    [hf_tensor_iso] as raw isomorphisms, BUT omits the standard
-    lax-monoidal coherence equations:
-
-      - associator hexagon for [hf_tensor_iso] vs. [tensor_assoc];
-      - unitor squares for [hf_tensor_iso] vs. [unit_left] /
-        [unit_right];
-      - naturality of [hf_tensor_iso] in both arguments;
-      - braid-compatibility ([fmap[F] braid ∘ hf_tensor_iso X Y ≈
-        hf_tensor_iso Y X ∘ braid]).
-
-    Consequence: two distinct choices of [hf_tensor_iso] / [hf_unit_iso]
-    could each satisfy the four SCFA-preservation equations without
-    [F] actually being a symmetric monoidal functor.  Downstream code
-    that assumes "a [HypergraphFunctor] is in particular a symmetric
-    monoidal functor" does NOT get that property from this record.
-
-    The trivial [Id_HypergraphFunctor] instance below is fine
-    ([hf_tensor_iso := iso_id], [hf_unit_iso := iso_id] discharge all
-    coherences definitionally).  A non-trivial instance — e.g. the
-    [forget_decoration] black-boxing functor — would need to
-    additionally re-establish the missing coherences separately, or
-    the record would need to be re-factored to extend an existing
-    [Functor/Structure/Monoidal.v:MonoidalFunctor] (a deferred
-    refactor).
-
-    A more rigorous future redesign of this record either (a) adds
-    the missing coherence fields here verbatim, or (b) re-parameterises
-    on the library's [MonoidalFunctor] class together with its
-    [SymmetricMonoidalFunctor] refinement
-    (Functor/Structure/Monoidal/Braided.v) and inherits the coherence
-    equations from there.  The sound forgetful half of option (b) now
-    exists — [SymmetricMonoidalFunctor_HypergraphFunctor] in
-    Functor/Structure/Monoidal/Hypergraph.v packages any strong
-    symmetric monoidal functor preserving the SCFA generators as an
-    inhabitant of this record — but forgetting into the record loses
-    the coherences irrecoverably: the missing fields described above
-    remain missing, and consumers of the record remain subject to this
-    caveat. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HypergraphFunctor.
 

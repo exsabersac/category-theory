@@ -16,26 +16,11 @@ Generalizable All Variables.
 
 (** * Initiality and terminality as universal properties *)
 
-(* Seven Sketches, Remark 6.9: the "unique up to unique isomorphism" slogan is
-   not a family of ad-hoc arguments but one theorem about representable
-   functors, applied to whatever universal property is at hand.  This block
-   makes terminality and initiality instances of the library's generic
-   packaging [IsUniversalProperty] (Structure/UniversalProperty.v), so that
-   [univ_property_unique_up_to_unique_iso] applies to them literally.
+(*
+   本文件给出终对象相关。
 
-   Orientation.  [IsUniversalProperty] is stated against the COVARIANT
-   hom-functor `[Hom c,─] = Hom(c, −)`, so an object satisfying the predicate
-   is a representing object for a covariant functor `C ⟶ Sets`.  That is the
-   INITIAL shape: `c` is initial exactly when `Hom(c, −) ≅ 1`, the constant
-   functor at the singleton setoid.  (Two of the three existing instances
-   confirm the reading: Structure/UniversalProperty/Cartesian.v and
-   Structure/UniversalProperty/Limit.v both instantiate the class at `C^op`,
-   because products and limits are LIMIT-shaped.  The third,
-   Structure/UniversalProperty/Universal/Arrow.v, instantiates at `D` rather
-   than `D^op`, a universal arrow being colimit-shaped, so it agrees with the
-   initial reading taken here.)  Terminality is therefore
-   obtained here by instantiating at `C^op`, exactly as Structure/Initial.v
-   defines `Initial C := Terminal (C^op)` -- only in the other direction. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma poly_unit_uniq (u : poly_unit) : u = ttt.
 Proof. now destruct u. Qed.

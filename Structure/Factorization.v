@@ -8,38 +8,14 @@ Require Import Category.Instance.Fact.
 
 Generalizable All Variables.
 
-(* Orthogonal factorization systems.
-
+(*
    nLab:      https://ncatlab.org/nlab/show/orthogonal+factorization+system
-              https://ncatlab.org/nlab/show/factorization+system
    Wikipedia: https://en.wikipedia.org/wiki/Factorization_system
 
-   An (E, M)-factorization of a morphism f : x ~> y, for two classes of
-   morphisms E and M on C, is a middle object together with an E-morphism
-   followed by an M-morphism composing to f:
+   本文件给出相关范畴论结构的定义与性质。
 
-        x --e--> mid --m--> y,        m ∘ e ≈ f.
-
-   An orthogonal factorization system (OFS) on C consists of two such
-   classes E and M, each respecting the hom-setoid equivalence ≈, such that
-   every morphism carries an (E, M)-factorization and every E-morphism is
-   orthogonal to every M-morphism in the sense of Theory/Orthogonality.v:
-   each commuting square with an E-morphism on the left and an M-morphism
-   on the right has a unique diagonal filler.
-
-   The classical consequences developed here:
-
-   - [factorization_unique]: any two (E, M)-factorizations of the same
-     morphism are connected by an isomorphism of middle objects commuting
-     with both legs, so factorizations are unique up to isomorphism.
-
-   - [ofs_m_char] / [ofs_e_char]: a morphism orthogonal on the appropriate
-     side against one whole class belongs to the other class, granted an
-     explicit closure hypothesis discussed at the statements.
-
-   - [factorization_fact_iso]: the comparison isomorphism, read inside the
-     factorization category Fact f of Instance/Fact.v, connects the two
-     factorizations as objects of Fact f. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The image paradigm, its history, and its reach
 

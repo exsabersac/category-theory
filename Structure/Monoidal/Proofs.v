@@ -7,32 +7,14 @@ Require Import Category.Structure.Monoidal.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/monoidal+category
+(*
    nLab: https://ncatlab.org/nlab/show/coherence+theorem+for+monoidal+categories
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
 
-   These are the derived unit-coherence lemmas of a monoidal category: the
-   consequences of the triangle and pentagon axioms (and the naturality of
-   the unitors and associator) that Mac Lane's coherence theorem guarantees
-   without making them part of the data. They are sometimes called Kelly's
-   lemmas, after G. M. Kelly, "On MacLane's conditions for coherence of
-   natural associativities, commutativities, etc." (J. Algebra 1, 1964),
-   which showed that several of the original Mac Lane axioms are redundant.
-   What is established here:
+   本文件给出相应结构的证明。
 
-     - left/right tensoring by id[I] is injective on morphisms;
-     - id ⨂ λ ≈ λ and ρ ⨂ id ≈ ρ at the appropriate objects
-       (Etingof et al., Proposition 2.2.2);
-     - the variant triangle identities relating each unitor to the
-       associator (e.g. λ ⨂ id ≈ λ ∘ α);
-     - the pentagon identity in the inverse (α⁻¹) direction;
-     - λ_I ≈ ρ_I, the two unitors agree on the unit object
-       (Kelly 1964; [unit_identity]).
-
-   Orientation note: as in [Structure/Monoidal.v], the associator is taken
-   as α : (x ⨂ y) ⨂ z ≅ x ⨂ (y ⨂ z), following nLab. Some sources use the
-   opposite orientation; the statements below differ from those only by
-   inverses. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section MonoidalProofs.
 

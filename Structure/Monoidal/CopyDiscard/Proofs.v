@@ -20,36 +20,14 @@ Require Import Category.Theory.Algebra.SpecialCommutativeFrobenius.
 
 Generalizable All Variables.
 
-(** * Copy-discard categories: lemma kit and sound generic instances
-
-    Derived facts about the [CopyDiscard] class of
-    Structure/Monoidal/CopyDiscard.v:
-
-    - naturality of the middle-interchange map [mid_swap_inv] in both
-      of its (diagonal) arguments — the workhorse behind closure of
-      deterministic morphisms under ⨂;
-    - the bridge identifying [RelevanceMonoidal]'s [braid2] at
-      (x, x, y, y) with [mid_swap_inv x y];
-    - rewrite-friendly forms of the tensor- and unit-coherence fields
-      ([copy_tensor], [discard_tensor], [copy_unit], [discard_unit]);
-    - the two SOUND generic instances:
-        [CD_of_Cartesian]  : CartesianMonoidal ⇒ CopyDiscard
-          (Fox's projection laws proj_*_diagonal supply the comonoid
-          counit laws), and
-        [CD_of_Hypergraph] : Hypergraph ⇒ CopyDiscard
-          (forget the monoid half of each SCFA; the coherence fields
-          are literally the scfa_tensor and scfa_unit fields).
-
-    There is deliberately NO instance from [RelevanceMonoidal] (with or
-    without [SemicartesianMonoidal]): a relevance diagonal comes with no
-    counit whatsoever, and the comonoid counit laws
-    [(ε ⨂ id) ∘ δ ≈ λ⁻¹] are exactly Fox's [proj_right_diagonal] /
-    [proj_left_diagonal] axioms — underivable without them.
-
+(*
     Reference: Fritz, "A synthetic approach to Markov kernels ..."
-               (arXiv:1908.07021), §2
     Reference: Fox, "Coalgebras and cartesian categories",
-               Comm. Algebra 4(7):665–667, 1976 *)
+
+   本文件给出相应结构的证明。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section MidSwapNatural.
 

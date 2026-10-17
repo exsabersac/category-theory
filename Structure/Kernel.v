@@ -12,36 +12,13 @@ Generalizable All Variables.
 
 (** * Kernels and cokernels *)
 
-(* nLab:      https://ncatlab.org/nlab/show/kernel
-              https://ncatlab.org/nlab/show/cokernel
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Kernel_(category_theory)
-              https://en.wikipedia.org/wiki/Cokernel
 
-   In a category with a zero object, the kernel of f : x ~> y is the
-   equalizer of f with the zero morphism, and the cokernel of f is the
-   coequalizer of f with the zero morphism (nLab; Wikipedia).  With the
-   elementary presentations [IsEqualizer] (Structure/Equalizer/Fork.v) and
-   [IsCoequalizer] (Structure/Coequalizer.v) in hand, both notions are one
-   definition each: [IsKernel f i := IsEqualizer f zero_mor k i] and
-   [IsCokernel f e := IsCoequalizer f zero_mor q e].
+   本文件给出相关范畴论结构的定义与性质。
 
-   The frozen plan sketched obtaining the cokernel by transfer along the
-   opposite category, but Phase 8's covariant [IsCoequalizer] already lives
-   directly in C, so the direct definition below is exactly the accessor
-   form that plan asked for.
-
-   The classical facts follow immediately from the donor lemmas: kernels
-   are monomorphisms ([kernel_monic], via [equalizer_monic]) and cokernels
-   are epimorphisms ([cokernel_epic], via [coequalizer_epic]).  The descent
-   lemmas [kernel_desc] and [cokernel_desc] restate the universal
-   properties in the zero-composite phrasing preferred downstream: any h
-   with f ∘ h ≈ 0 factors uniquely through the kernel, and dually.  A
-   monomorphism is *normal* when it arises as a kernel ([normal_mono]), an
-   epimorphism *conormal* when it arises as a cokernel ([normal_epi]);
-   these feed the abelian-category axioms.  Finally,
-   [cokernel_regular_epi] records that every cokernel map is a regular
-   epimorphism — it manifestly coequalizes the pair (f, 0) — which is the
-   bridge Abelian.v uses to reach the strong-epi/mono factorization. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Kernel.
 

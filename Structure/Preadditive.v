@@ -8,30 +8,13 @@ Generalizable All Variables.
 
 (** * Preadditive categories *)
 
-(* nLab:      https://ncatlab.org/nlab/show/preadditive+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Preadditive_category
 
-   A preadditive category in the classical sense is a category enriched in
-   abelian groups: every hom-set is an abelian group and composition is
-   bilinear.  The class below records the additive skeleton of that notion
-   in setoid form: each hom-setoid carries a commutative monoid structure
-   ([padd] with unit [pzero]) that respects ≈, composition distributes over
-   addition on both sides, and the zero morphism absorbs composition on
-   both sides.  Additive inverses are deliberately not demanded, so the
-   class is precisely enrichment in commutative monoids (CMon-enrichment);
-   every Ab-enriched category is an instance (the standalone
-   Ab-enriched class — this plus negation, nothing more — is
-   Structure/AbCategory.v's [AbEnriched]), and this much structure
-   already supports biproducts and the matrix calculus.  The laws are
-   self-dual, so C^op is preadditive whenever C is.
+   本文件给出相关范畴论结构的定义与性质。
 
-   The additive notations live in their own [addition_scope] (key %padd),
-   keeping `+` and `0` untouched elsewhere; users opt in locally with
-   `Open Scope addition_scope` or the %padd scope key.
-
-   When the category also has a zero object, the enrichment zero agrees
-   with the tunnelled zero morphism of Structure/ZeroObject.v; this is
-   [pzero_zero_mor] below. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Preadditive (C : Category) := {
   padd {x y : C} : (x ~> y) -> (x ~> y) -> (x ~> y);

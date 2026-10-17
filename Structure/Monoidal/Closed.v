@@ -11,35 +11,14 @@ Section Closed.
 
 Context {C : Category}.
 
-(* nLab: https://ncatlab.org/nlab/show/closed+monoidal+category
+(*
    nLab: https://ncatlab.org/nlab/show/internal+hom
    Wikipedia: https://en.wikipedia.org/wiki/Closed_monoidal_category
 
-   A closed monoidal category is a monoidal category in which every functor
-   - ⨂ y has a right adjoint y ⇒ -, the internal hom. Equivalently, for all
-   objects y, z there is an internal hom object y ⇒ z equipped with an
-   evaluation map
+   本文件给出闭结构。
 
-       eval : (y ⇒ z) ⨂ y ~> z
-
-   that is universal: for every f : x ⨂ y ~> z there is a unique transpose
-   (the curry) curry f : x ~> y ⇒ z with eval ∘ (curry f ⨂ id) ≈ f.
-
-   Packaged as an adjunction, the universal property is the tensor-hom
-   bijection
-
-       Hom(x ⨂ y, z) ≅ Hom(x, y ⇒ z)         ([exp_iso])
-
-   natural in x, y and z, expressing (- ⨂ y) ⊣ (y ⇒ -). Currying is the
-   left-to-right direction, uncurrying its inverse, and eval is the image of
-   the identity on y ⇒ z (the counit of the adjunction). Because the right
-   tensor factor - ⨂ y is the one given the right adjoint, this is the
-   right-closed structure; when C is braided the two tensorings agree and
-   [flip] transports the transpose across the braiding.
-
-   This file requires the cartesian (in fact biproduct-style) monoidal
-   structure of [CartesianMonoidal] rather than bare [Monoidal], so that the
-   pairing used by the substitution lemmas below is available. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Reserved Infix "⇒" (at level 30, right associativity).
 

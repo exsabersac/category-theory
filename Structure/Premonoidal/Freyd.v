@@ -22,81 +22,13 @@ Set Primitive Projections.
 Set Universe Polymorphism.
 Set Transparent Obligations.
 
-(** * Freyd categories and effectful functors
-
+(*
     nLab: https://ncatlab.org/nlab/show/Freyd+category
 
-    Levy–Power–Thielecke ("Modelling environments in call-by-value
-    programming languages", Inf. Comput. 185(2), 2003) and Power–Thielecke
-    ("Closed Freyd- and kappa-categories", ICALP 1999) distil the
-    categorical semantics of call-by-value effects into a FREYD CATEGORY:
-    an identity-on-objects functor J : V ⟶ K from a monoidal category of
-    values into a premonoidal category of computations, strictly
-    preserving the premonoidal structure and landing in the centre Z(K).
-    Every strong monad on a symmetric monoidal base produces one — the
-    Kleisli premonoidal structure of Monad/Kleisli/Premonoidal.v — and
-    Freyd categories are exactly the monad-independent formulation of
-    that situation.
+   本文件给出相关范畴论结构的定义与性质。
 
-    A caveat on the name: both papers ask for more than this file
-    formalizes.  They additionally require finite products on V (a
-    CARTESIAN category of values), a symmetry on the premonoidal K, and
-    strict preservation of that symmetry by J.  Symmetric premonoidal
-    structure is not yet formalized in this library, so the [Freyd]
-    class below drops all three requirements.  What it captures is the
-    (strict) EFFECTFUL CATEGORY of Levy and Román, of which the
-    classical Freyd category is the cartesian/symmetric special case.
-
-    The notion is delivered in two layers:
-
-      - [EffectfulFunctor]: the centrality half alone — a functor whose
-        image consists of central morphisms (Structure/Binoidal.v).  Such
-        a functor factors through the centre ([Effectful_Centre]) as a
-        functor V ⟶ Z(K), and the factorization J = Incl ∘ Effectful_Centre
-        holds definitionally ([Effectful_Centre_factors]).  Since Z(K) is
-        monoidal (Structure/Premonoidal/Centre.v, [Centre_Monoidal]), an
-        effectful functor out of a monoidal V is the raw material of a
-        monoidal-to-monoidal comparison.
-
-      - [Freyd]: the full packaging.  Identity-on-objects is rendered
-        strictly, as a section/retraction pair of Leibniz object
-        equalities ([freyd_obj_section]/[freyd_obj_eq]/[freyd_sec_eq]),
-        and strict preservation of unit and tensor is rendered with the
-        library's transported-identity discipline: object-level
-        equalities [freyd_obj_I]/[freyd_obj_tensor], plus morphism-level
-        laws transported along them by [id_cast]
-        (Construction/Quotient.v).  This is the same [match]-shaped
-        formulation as the "Formulation note" of
-        Structure/Monoidal/Strict.v and the strict monoidal functors of
-        Functor/Structure/Monoidal/Strict.v; [id_cast] is deliberately
-        spelled so those fields and these read alike.  In both instances
-        below every object equality is [eq_refl], so every cast reduces
-        to [id] definitionally and the morphism-level fields collapse to
-        the underlying coherence facts.
-
-    Two instances close the file:
-
-      - [Freyd_Kleisli], the flagship (Power–Thielecke 1999,
-        Levy–Power–Thielecke 2003): for a strong monad M on a symmetric
-        monoidal category C, the pure functor
-        [Kleisli_Pure] : C ⟶ Kl(M) of Monad/Kleisli/Premonoidal.v is a
-        Freyd category over [Kleisli_Binoidal]/[Kleisli_Premonoidal].
-        Objects of Kl(M) ARE the objects of C, so all object equalities
-        are [eq_refl]; centrality of the image is [pure_central]; the
-        two tensoring strictness fields are the pure-morphism transfer
-        laws [pure_inj_left]/[pure_inj_right]; and the structural-map
-        fields hold at reflexivity level because the premonoidal unitors
-        and associator of Kl(M) are themselves [kpure] images.
-
-      - [Freyd_Id], the degenerate example: any monoidal category over
-        itself through [Monoidal_Binoidal]/[Monoidal_Premonoidal]
-        (Structure/Premonoidal/Monoidal.v), with J the identity functor
-        and centrality supplied by [Monoidal_all_central].  For a
-        cartesian V — take [CC_Monoidal] of
-        Structure/Monoidal/Internal/Product.v, or its alias
-        [Cartesian_Monoidal] — this recovers the classical Freyd-category
-        reading "cartesian values inside effectful computations", here at
-        the trivial effect. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Effectful functors
 

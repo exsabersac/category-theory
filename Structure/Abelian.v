@@ -21,43 +21,13 @@ Generalizable All Variables.
 
 (** * Abelian categories *)
 
-(* nLab:      https://ncatlab.org/nlab/show/abelian+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Abelian_category
 
-   An abelian category is an additive category in which every morphism has
-   a kernel and a cokernel, every monomorphism is normal (it is a kernel),
-   and every epimorphism is conormal (it is a cokernel).  [Abelian]
-   packages exactly these data over the additive structure of
-   Structure/Additive.v and the kernel/cokernel vocabulary of
-   Structure/Kernel.v.  The normality fields pin each monomorphism as a
-   kernel of its chosen cokernel and each epimorphism as a cokernel of its
-   chosen kernel, spelled with the sigma projections of the
-   [HasKernels]/[HasCokernels] choices; that this carries full generality
-   is a theorem, not a remark: a kernel of anything is a kernel of every
-   cokernel of itself ([kernel_of_any_cokernel] and its dual and their
-   chosen-instance corollaries, Structure/Kernel.v).
+   本文件定义阿贝尔范畴：加性范畴中每个态射有核与余核，且每个单态射正规、每个满态射余正规。
 
-   The development follows the classical route (Freyd, "Abelian
-   Categories"; Borceux vol. 2, ch. 1):
-
-   - [monic_iff_kernel_pzero] / [epic_iff_cokernel_pzero]: additivity
-     turns the cancellation property into a vanishing test — a morphism f
-     is monic exactly when every composite f ∘ u ≈ 0 forces u ≈ 0, and
-     dually for epimorphisms.
-
-   - The image factorization: for f : x ~> y, the kernel of the chosen
-     cokernel of f is the image of f; f factors through it by kernel
-     descent, the inclusion is monic, and the mediator is epic
-     ([image_mediator_epic], the Freyd/Borceux diagram chase).  Hence
-     every morphism factors as an epimorphism followed by a monomorphism
-     ([abelian_epi_mono_factorization]).
-
-   - [Abelian_OFS]: (Epi, Mono) is an orthogonal factorization system in
-     the sense of Structure/Factorization.v.  The lifting half routes
-     through Phase 8: every epimorphism is conormal, hence a regular
-     epimorphism ([cokernel_regular_epi]), hence a strong one
-     ([regular_epi_strong]), and strong epimorphisms lift uniquely
-     against monomorphisms. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where abelian categories come from, and what they are for
 

@@ -14,62 +14,16 @@ Generalizable All Variables.
 
 (** * Connected categories, and the structure of a connected groupoid *)
 
-(* nLab:      https://ncatlab.org/nlab/show/connected+category
+(*
    nLab:      https://ncatlab.org/nlab/show/groupoid
    Wikipedia: https://en.wikipedia.org/wiki/Groupoid
    Book:      Riehl, "Category Theory in Context", §1.5, printed p. 35 (the
-              running definition of a connected category) and Proposition
-              1.5.13, printed pp. 35-36
    Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, §I.5, printed p. 20 (the remark following Definition 9)
 
-   A category is CONNECTED when any two objects are joined by a finite
-   zig-zag of morphisms: a chain
+   本文件给出连通性相关。
 
-       x --> a_1 <-- a_2 --> ... <-- y
-
-   in which each step points either forwards or backwards.  [ZigZag] below is
-   that chain as an inductive type and [Connected C] is the statement that one
-   exists between every pair of objects.
-
-   COLLAPSE TO THE ONE-ARROW FORM.  In a groupoid the zig-zag form and the
-   much simpler "there is an arrow x ~> y" agree, because a backward step can
-   be inverted and the chain composed: [zigzag_hom] does exactly that, and
-   [hom_zigzag] is the trivial converse.  Outside groupoids the two forms come
-   apart, and the difference is not a technicality — [Roof] (the walking span
-   RNeg <-- RZero --> RPos) is connected in the zig-zag sense while carrying
-   no arrow whatever between RNeg and RPos.  That is proved below
-   ([Roof_Connected], [Roof_no_arrow_neg_pos], [Roof_not_groupoid]), so the
-   zig-zag form is not merely the more general definition on paper; it is
-   strictly more general in this library, and it is the form that will be
-   reusable for connected limits.
-
-   ALTERNATION.  Riehl's chain alternates direction.  Requiring strict
-   alternation costs nothing: [Fence] below is the strictly alternating form
-   (each step a span x --> m <-- y), and [fence_zigzag]/[zigzag_fence] convert
-   between the two in both directions — the interesting direction pads a lone
-   step with an identity arrow.  So [Connected] is stated with the free chain
-   without loss.
-
-   Contents:
-
-       ZigZag x y             a finite chain of arrows in either direction
-       Connected C            a zig-zag between every pair of objects
-       Fence x y              the strictly alternating (span-chain) form
-       fence_zigzag, zigzag_fence   the two forms are interderivable
-       zigzag_hom G           collapse of a zig-zag in a groupoid
-       connected_arrow        Connected + IsGroupoid gives an arrow x ~> y
-       arrow_connected        and conversely
-       vertex_incl G x        B (hom(x,x)) ⟶ C, fully faithful
-       connected_deloop_equiv Riehl Proposition 1.5.13
-       deloop_equiv_connected its converse: the hypothesis is necessary
-       connected_iff_deloop_equiv       the two directions together
-       WideDeloop M A         a concrete connected groupoid with |A| objects
-       Bool_Wide_structure    the structure theorem at a two-object groupoid
-       Roof_Connected         a connected category that is NOT a groupoid
-       Two_Discrete_no_deloop_equivalence  a groupoid where the conclusion
-                                           is false, connectedness having
-                                           been dropped *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* What the structure theorem says, and what it does not
 

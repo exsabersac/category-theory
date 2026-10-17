@@ -14,32 +14,13 @@ Generalizable All Variables.
 
 (** * Monoid objects in a monoidal category *)
 
-(* nLab:      https://ncatlab.org/nlab/show/monoid+in+a+monoidal+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Monoid_(category_theory)
 
-   Given a monoidal category (C, ⨂, I), a monoid object on an object [mon : C]
-   is a triple (mon, mappend, mempty) consisting of a multiplication
-   [mappend : mon ⨂ mon ~> mon] and a unit [mempty : I ~> mon] subject to the
-   associativity and left/right unit laws, with the associator and unitors
-   inserted so the maps compose:
+   本文件给出幺半范畴中的幺半群对象：乘法 μ、单位 η，以及结合律与左右单位律（插入结合子/单位子使态射可复合）。
 
-     associativity  mappend ∘ (mappend ⨂ id) ≈ mappend ∘ (id ⨂ mappend) ∘ α
-     left unit      mappend ∘ (mempty ⨂ id)  ≈ λ
-     right unit     mappend ∘ (id ⨂ mempty)  ≈ ρ
-
-   Here ⨂ on morphisms is [bimap], α = [to tensor_assoc] is the associator
-   (mon ⨂ mon) ⨂ mon ≅ mon ⨂ (mon ⨂ mon), and λ = [to unit_left],
-   ρ = [to unit_right] are the left/right unitors I ⨂ mon ≅ mon and
-   mon ⨂ I ≅ mon. This is exactly the nLab/Wikipedia definition (the names
-   [mempty]/[mappend] echo Haskell's [Monoid] type class).
-
-   Relationship to [Theory.Algebra.Monoid]: that file defines the very same
-   structure under the name [Monoid] with fields [mu]/[eta], as a standalone
-   abstract building block (used for Frobenius algebras and dualised to give
-   comonoids). This file is the older, richer development: it specialises the
-   monoid object to a cartesian monoidal category (giving an ordinary monoid)
-   and proves closure under products ([Product_Monoid]) and exponentials
-   ([Hom_Monoid]). The two definitions are equivalent up to field renaming. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* One definition, many algebras: what internalization is for
 

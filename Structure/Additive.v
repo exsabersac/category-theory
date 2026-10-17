@@ -10,29 +10,13 @@ Generalizable All Variables.
 
 (** * Additive categories *)
 
-(* nLab:      https://ncatlab.org/nlab/show/additive+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Additive_category
 
-   An additive category is a preadditive category — one enriched in abelian
-   groups — with a zero object and all binary biproducts.  The library's
-   [Preadditive] class records only commutative-monoid enrichment
-   (CMon-enrichment), so the abelian-group half of the classical definition
-   is completed here: [Additive] packages a zero object, a preadditive
-   structure, a chosen biproduct for every pair of objects, and an additive
-   inverse [pneg] turning each hom commutative monoid into an abelian group
-   ([padd_pneg]).
+   本文件给出加性相关。
 
-   The group axioms alone yield the familiar calculus of negation:
-   cancellation ([padd_cancel_right]), uniqueness of inverses
-   ([pneg_unique]), involutivity ([pneg_pneg]), preservation of zero
-   ([pneg_pzero]), and compatibility of negation with composition on either
-   side ([compose_pneg_left], [compose_pneg_right]), extending the
-   bilinearity of composition from addition to subtraction.  Subtraction
-   [psub] is sugar for adding the negation; it joins `+` and `0` in
-   [addition_scope].
-   The bare Ab-enriched notion — group homs with bilinear composition
-   and NO zero object or biproducts — is Structure/AbCategory.v's
-   [AbEnriched]; every [Additive] category is an instance of it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Additive (C : Category) := {
   additive_zero : @ZeroObject C;

@@ -14,119 +14,14 @@ Generalizable All Variables.
 
 (** * Wide equalizers, elementarily: wide forks and descent *)
 
-(* nLab:      https://ncatlab.org/nlab/show/equalizer
+(*
    nLab:      https://ncatlab.org/nlab/show/wide+pullback
    Wikipedia: https://en.wikipedia.org/wiki/Equaliser_(mathematics)
 
-   Mac Lane presents the coequalizer as a universal arrow over the walking
-   parallel pair and then remarks that coequalizers of an ARBITRARY SET of
-   parallel maps a → b are defined in the same way (Categories for the
-   Working Mathematician, 2nd ed., §III.3, pp. 64-65).  This file and its
-   dual [Structure/Coequalizer/Wide.v] carry out "the same way" on the
-   limit side.  Given a family f : I → (x ~> y), a wide equalizer is an
-   object q with a map e : q ~> x on which all the f i agree,
+   本文件给出 wide 相关构造。
 
-       ∀ i j,  f i ∘ e ≈ f j ∘ e,
-
-   universal with that property: every h : z ~> x on which they agree
-   factors uniquely through e.  Eckmann and Hilton defined equalizers for
-   arbitrary families from the start, under the name "left equalizers"
-   (Mathematische Annalen 151, 1963); the binary case of
-   [Structure/Equalizer/Fork.v] is I = 2.
-
-   WHAT IS DELIVERED, AND AT WHAT STRENGTH.
-
-     - [IsWideEqualizer], the elementary record, is the literal
-       generalization of [IsEqualizer]: one equation-family field and one
-       descent field, no extra data.
-     - [wide_equalizer_monic] and [wide_equalizer_unique] are the wide forms
-       of [equalizer_monic] and [equalizer_unique].  Neither consumes an
-       inhabitant of I; both hold for EVERY index type, empty included.
-     - [wide_limit_equalizes] reads the fork equations off a limit.  It also
-       needs no inhabitant.
-     - The two ROUND TRIPS, [wide_equalizer_is_equalizer] and
-       [is_wide_equalizer_limit], DO take an explicit inhabitant [i0 : I].
-       They live in a section that fixes one.  For [is_wide_equalizer_limit]
-       — the ELEMENTARY-to-LIMIT direction — that hypothesis is PROVED
-       NECESSARY rather than assumed (see below).  For
-       [wide_equalizer_is_equalizer], the LIMIT-to-ELEMENTARY direction, it
-       is ASSUMED: nothing here refutes an unpointed version of it, and none
-       is claimed.  The same asymmetry holds on the coequalizer side.
-
-   WHY THE ROUND TRIPS NEED A POINT OF THE INDEX, and why that is a fact
-   about the mathematics rather than about this proof.  A cone over
-   [AWide fs] with apex z is a PAIR of legs, one into x and one into y,
-   subject to [∀ i, f i ∘ legX ≈ legY].  When I is inhabited the second leg
-   is determined by the first, and the cone condition collapses to the fork
-   equations — which is what makes the elementary record equivalent to the
-   limit.  When I is EMPTY the second leg is unconstrained, so a cone is
-   just a pair of maps and the limit over the shape is the binary PRODUCT
-   of x and y (an orientation, not a theorem — that identification is NOT
-   formalized), while the elementary record, whose fork condition is then
-   vacuous, is satisfied by [e := id[x]] and so pins down x itself.  The
-   two notions come apart exactly there, and THAT is what is proved.  The
-   binary donor never meets this because its index is [bool], and its
-   [fork_legs] silently uses the distinguished member f:
-   [fork_legs h ParY := f ∘ h].
-
-   The necessity is machine-checked in three steps, all at the end of this
-   file.  [wide_empty_id_IsWideEqualizer] exhibits the identity as an
-   elementary wide equalizer over an empty index;
-   [wide_unpointed_round_trip_gives_hom] shows that an unpointed round trip
-   would therefore manufacture an arrow x ~> y out of nothing; and
-   [wide_round_trip_needs_point] instantiates that at the walking arrow
-   [Instance/Two.v]'s [_2], whose hom-set [TwoY ~> TwoX] is empty, deriving
-   False.  So no reformulation of the PROOF removes the hypothesis; only a
-   different elementary record (one carrying the second leg as data) would,
-   and that record is not built here.
-
-   UNIVERSES, measured in the constraint blocks rather than read off the
-   binders (reproduce with [Set Printing Universes. About
-   wide_equalizer_is_equalizer. About is_wide_equalizer_limit.]).  Both
-   round trips come out over [C : Category@{u u0 u0}] with [I : Type@{u1}]
-   and [u0 = u1]: the ambient hom and proof universes are identified, as
-   they already are in the binary donor ([equalizer_is_equalizer] is over
-   the same [Category@{u u0 u0}]), and the INDEX universe is identified
-   with them as well.  Where the second identification ENTERS is measured,
-   and it is NOT inherited from [Structure/Cone.v]: with the index and hom
-   universes declared SEPARATELY, forming [Cone (AWide fs)] and writing
-   [cone_leg N ParX] both yield only the BOUND [u1 <= u0], as do this
-   file's own cone-building constants [wfork_cone],
-   [is_wide_equalizer_cone] and [is_wide_equalizer_cone_ump].  The
-   identification first appears at [wide_limit_equalizer_desc] below and at
-   the assembly of the [Limit] record, both local to this file.  (An
-   earlier draft of this header offered the [cone_leg] probe as evidence of
-   inheritance; that probe collapses the two universes only under
-   minimization, and the claim was wrong.  Whether any rearrangement of
-   these proofs avoids the identification is UNTESTED.)  It also
-   costs a consumer nothing, since a type at level l can be typed at any
-   level above l, so the identification is satisfiable exactly when the
-   [<=] form would be.  [IsWideEqualizer] ITSELF has an EMPTY constraint
-   block, with the index universe free.
-
-   CONSUMER.  [Theory/WeaklyInitial/Wide.v] runs Freyd's initial-object
-   construction over [HasWideEqualizers], equalizing all endomorphisms of a
-   product at once; it uses [wfork_eq] and [wide_equalizer_monic] and needs
-   neither round trip, so it never meets the [i0] hypothesis.  It is an
-   ADDITIVE second theorem: [Theory/WeaklyInitial.v] is untouched.
-
-   NOT DELIVERED.  No second, leg-carrying elementary record that would
-   round-trip unconditionally.  No identification of the limit over an
-   empty-index wide shape with a binary product — the sharpness argument
-   goes through an empty hom-set instead and needs no such theorem.  No
-   [HasWideEqualizers] instance for any concrete category (the class is
-   declared, not inhabited; the tree's only [HasEqualizers] inhabitant is
-   [Sets_HasEqualizers], derived from completeness in Adjunction/GAFT.v,
-   and no wide analogue is derived — so [Theory/WeaklyInitial/Wide.v] is a
-   conditional exactly as its donor is).  No wide analogue of
-   [Structure/Limit/Unique.v]'s leg-carrying essential
-   uniqueness — [wide_equalizer_unique] delivers a bare [≅], exactly as its
-   binary donor does.  No preservation or creation statements.  No
-   comparison between the wide equalizer at I := bool and the binary
-   equalizer of [Structure/Equalizer/Fork.v]: the SHAPES are compared, in
-   [Instance/Parallel/Wide.v]'s [WideParallel_bool_Parallel] and
-   [AWide_bool_APair], but the two elementary records are not related by
-   any passage here. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The wide equalizer of a diagram of shape [WideParallel I]: a terminal
    cone, exactly as [Structure/Equalizer.v]'s [Equalizer] is over the

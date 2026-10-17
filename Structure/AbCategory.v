@@ -15,62 +15,13 @@ Generalizable All Variables.
 
 Open Scope addition_scope.
 
-(** * Ab-categories and additive functors
-
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.8
-    (printed pp. 28–29) [maclane:I.8:def4, maclane:I.8:def6,
-    maclane:I.8:construction1], restated verbatim in §VIII.2 (printed
-    pp. 194, 197) [maclane:VIII.2:def1, maclane:VIII.2:def4]: an
-    Ab-CATEGORY has abelian-group hom-sets with bilinear composition; a
-    functor between Ab-categories is ADDITIVE when its hom-actions are
-    group homomorphisms; additive functors compose, identities are
-    additive, and small Ab-categories with additive functors form the
-    category Ab-cat.
+(*
     nLab: https://ncatlab.org/nlab/show/Ab-enriched+category
-          https://ncatlab.org/nlab/show/additive+functor
 
-    THE EXACT CLASS.  Neither in-tree neighbour is Mac Lane's notion:
-    [Preadditive] (Structure/Preadditive.v) is deliberately
-    commutative-MONOID enrichment — additive inverses are not demanded
-    — while [Additive] (Structure/Additive.v) has the group homs but
-    bundles a zero object and chosen biproducts, which an Ab-category
-    need not carry.  [AbEnriched] below is the exact intermediate:
-    [Preadditive] plus negation and the inverse law, NOTHING MORE — no
-    zero object, no biproducts — with negation's bilinearity DERIVED
-    from uniqueness of additive inverses ([compose_abneg_left]/
-    [_right]), not demanded.  Every [Additive] category is an instance
-    ([Additive_AbEnriched]); the standalone concrete witness is [Ab]
-    itself ([Ab_Preadditive], [Ab_AbEnriched] — pointwise addition and
-    negation of homomorphisms, closing the gap Instance/Ab.v's header
-    records as "available and ... not attempted").
+   本文件定义 Ab-范畴相关结构。
 
-    ADDITIVE FUNCTORS ([AdditiveFunctor]): preservation of [padd] is
-    the only field; preservation of [pzero] and [abneg] are THEOREMS
-    ([fmap_pzero], [fmap_abneg] — cancel by the inverse, respectively
-    uniqueness of inverses), exactly Mac Lane's "whence T0 = 0".
-    Identity and composition closure are instances
-    ([Id_AdditiveFunctor], [Compose_AdditiveFunctor]).
-
-    AB-CAT ([AbCat]): objects are categories bundled with an
-    [AbEnriched] structure, morphisms are functors bundled with an
-    [AdditiveFunctor] witness — the class is what the category is
-    built from, its identity and composition instances supplying
-    [AbCat]'s — compared by [Functor_Setoid] on the underlying
-    functors.  That is the same natural-isomorphism hom-equivalence
-    as [Cat], and the same deliberate deviation: Mac Lane's Ab-cat,
-    like his Cat, is strict, and this is its
-    natural-isomorphism-quotiented reading (a strict variant would
-    mirror [StrictCat]).  Universe-polymorphic like [Cat]: "small" is
-    whatever the instantiated universe says.
-
-    NAMING.  The negation field is [abneg]/[padd_abneg] rather than
-    the issue's suggested [pneg]/[padd_pneg] because
-    Structure/Additive.v — imported here for [Additive_AbEnriched] —
-    already owns those names as fields of [Additive].
-
-    The biproduct-preservation characterization of additive functors
-    (Mac Lane Proposition VIII.2.4) demands strictly more than the
-    definition and is a separate catalog item depending on this one. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The Ab-enriched class *)
 

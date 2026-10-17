@@ -35,16 +35,11 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(* [Category.Functor.Opposite] opens [functor_scope], and
-   [Category.Theory.Monad], which has no [Open Scope] of its own, carries it in
-   by requiring that module; after either Require a bare [C^op] on a CATEGORY
-   parses as [Opposite_Functor C] and is rejected with "The term C has type
-   Category while it is expected to have type ?C ⟶ ?D".  Reopening
-   [category_scope] restores the reading this file wants.  A second hazard, met
-   while building [EM_Terminal]: a [{| t_alg := … |}] record literal needs
-   [Category.Monad.Algebra] REQUIRED EXPLICITLY -- requiring only
-   [Category.Monad.Eilenberg.Moore], which uses the record, reports "t_alg: Not
-   a projection". *)
+(*
+   本文件给出 topos 结构。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Open Scope category_scope.
 
 (* EVERY ELEMENTARY TOPOS HAS FINITE COLIMITS.

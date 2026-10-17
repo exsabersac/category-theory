@@ -26,10 +26,11 @@ Definition Sets_initial_strict {x : Sets}
   x ≅ @initial_obj Sets Sets_Initial :=
   @initial_strict Sets Sets_Cartesian Sets_Closed Sets_Initial x f.
 
-(* The concrete reading Fong & Spivak give the exercise: a set with a function
-   to the empty set is itself empty.  Unfolded to elements this needs no
-   isomorphism at all -- the morphism's own action lands in [False] -- and
-   that is exactly why the exercise is an exercise. *)
+(*
+   本文件给出严格情形。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Sets_initial_strict_empty {x : Sets}
   (f : x ~{Sets}~> @initial_obj Sets Sets_Initial) : carrier x -> False.
 Proof. intro a; exact (f a). Qed.

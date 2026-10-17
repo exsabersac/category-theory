@@ -16,80 +16,14 @@ Generalizable All Variables.
 
 (** * Naturality of the exponential laws *)
 
-(* nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
+(*
    nLab: https://ncatlab.org/nlab/show/exponential+object
    nLab: https://ncatlab.org/nlab/show/natural+transformation
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §II.5
-   Exercise 2 (printed p. 44), asks that the familiar exponential laws
+   本文件给出自然变换相关。
 
-       z^(x × y) ≅ (z^y)^x,      (y × z)^x ≅ y^x × z^x,
-       x × (y + z) ≅ x × y + x × z,   x^(y + z) ≅ x^y × x^z
-
-   be shown NATURAL in each of their variables.  Riehl, "Category Theory in
-   Context", §1.4 Example 1.4.11 (printed p. 29) reads the same four laws in
-   the groupoid of finite sets and observes that applying the cardinality
-   functor decategorifies them into the arithmetic identities
-   z^(xy) = (z^y)^x, (yz)^x = y^x z^x, x(y+z) = xy + xz and x^(y+z) = x^y x^z;
-   that half of the example is Instance/FinSet/Decategorify.v.
-
-   The four isomorphisms themselves are already in the tree, as POINTWISE
-   families indexed by three objects:
-
-     - [exp_prod_l]     (Structure/Cartesian/Closed.v)  z^(x × y) ≅ (z^y)^x
-     - [exp_prod_r]     (Structure/Cartesian/Closed.v)  (y × z)^x ≅ y^x × z^x
-     - [prod_coprod_r]  (Structure/BiCCC.v)             x × (y+z) ≅ x×y + x×z
-     - [exp_coprod]     (Structure/BiCCC.v)             x^(y+z) ≅ x^y × x^z
-
-   What was missing is the statement that each family is a NATURAL
-   isomorphism, i.e. an isomorphism in a functor category between the two
-   sides read as functors of their three variables.  This file supplies that,
-   as an UPGRADE and not as a replacement: every component of every
-   transformation below is literally the [to] or [from] leg of the existing
-   pointwise instance (recorded by the eight [_component] lemmas -- one per
-   leg per law -- each of which holds by [reflexivity]), so nothing is rebuilt
-   and the pointwise isos keep all their consumers.  The object action of
-   each of the eight functors is likewise recorded by an [Example] holding by
-   [eq_refl].
-
-   ** Variances and domains
-
-   Exponentiation is contravariant in the exponent and covariant in the base,
-   so the four laws live over three different product categories.  The domains
-   chosen here are
-
-     - [exp_prod_l]     ((x, y), z) over ((C^op ∏ C^op) ∏ C)
-     - [exp_prod_r]     (x, (y, z)) over (C^op ∏ (C ∏ C))
-     - [prod_coprod_r]  (x, (y, z)) over (C ∏ (C ∏ C))
-     - [exp_coprod]     ((y, z), x) over ((C^op ∏ C^op) ∏ C)
-
-   with the bracketing of each domain matching the bracketing of the objects
-   in the corresponding statement.  In each case both sides are given as
-   DIRECT functor records (concrete [fobj] and [fmap]) rather than as
-   composites of the internal-hom and product bifunctors; this keeps the
-   naturality squares stated in the curry/eval calculus of
-   Structure/Cartesian/Closed.v with no opposite-of-a-product bookkeeping.
-
-   The arrow actions of the eight functors are built from three combinators:
-   [ihom] below -- the action of the internal hom, exactly the [fmap] of
-   [InternalHomFunctor] (Functor/Hom/Internal.v) written in C with no [op]
-   coercion, an identification machine-checked below at Leibniz [eq_refl]
-   ([ihom_is_InternalHomFunctor_fmap]) -- together with [split]
-   (Structure/Cartesian.v) and [cover] (Structure/Cocartesian.v) for the
-   product and coproduct actions.  The two Law-3 functors, whose statement
-   has no exponentials, use only the latter two.
-
-   ** The transpose triangle
-
-   The final section relates the internal law [exp_prod_l] to the EXTERNAL
-   currying bijection [exp_iso : x × y ~> z ≊ x ~> z^y] of
-   Structure/Cartesian/Closed.v, whose two legs are [curry] and [uncurry]:
-   postcomposition by [to exp_prod_l] computes, on an arbitrary generalized
-   element f : w ~> z^(x × y), as a composite of [exp_iso] transposes -- one
-   [uncurry], then two [curry]s -- through the associator, and dually for
-   [from exp_prod_l].  So the
-   internal iso is CARRIED by the external bijection; see
-   [exp_prod_l_transpose] and [exp_prod_l_untranspose]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Packaging a pointwise family of isomorphisms as a natural isomorphism
 

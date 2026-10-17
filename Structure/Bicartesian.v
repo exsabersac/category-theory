@@ -8,23 +8,13 @@ Generalizable All Variables.
 
 Section Bicartesian.
 
-(* nLab: https://ncatlab.org/nlab/show/bicartesian+category
+(*
    Wikipedia: none-exists (the term appears only within related articles such
-   as "Distributive category" and "Cartesian closed category")
 
-   A bicartesian category is a category that is both cartesian and cocartesian:
-   it has finite products (× with terminal unit 1) and finite coproducts (+ with
-   initial unit 0), where the two structures need not coincide. (When they do
-   coincide as biproducts the category is semiadditive: every semiadditive
-   category is bicartesian, but not conversely.) The two directions of that
-   remark are made precise in Structure/Semiadditive.v ([biproduct_addition],
-   [bicartesian_preadditive]).
+   本文件给出相关范畴论结构的定义与性质。
 
-   This file does not introduce a [Bicartesian] class; the structure is simply
-   the conjunction of [Cartesian] and [Cocartesian] in context, declared below.
-   What it adds is [fork_merge], an interchange law relating the product pairing
-   △ ([fork]) to the coproduct copairing ▽ ([merge]) — a fact available only
-   when both structures are present. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Context {C : Category}.
 Context `{@Cartesian C}.     (* finite products:   x × y, terminal 1 *)

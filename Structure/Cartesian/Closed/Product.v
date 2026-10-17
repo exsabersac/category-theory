@@ -9,27 +9,14 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
+(*
    nLab: https://ncatlab.org/nlab/show/product+category
    Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
 
-   The product C ∏ D of two cartesian closed categories is again cartesian
-   closed, with all of the structure computed componentwise. Neither
-   reference states this closure result directly; it is the standard
-   corollary that limits and exponentials in a product category are taken
-   factorwise (see [product+category]: objects, morphisms, and composition
-   of C ∏ D are pairs handled componentwise).
+   本文件给出积（分量）构造。
 
-   Recall from [Closed] that exponent_obj x y is displayed as y ^ x. The
-   exponential of (c, d) over (c', d') is therefore taken in each factor:
-
-       (e, f) ^ (c, d) = (e ^ c, f ^ d)
-
-   so [exponent_obj (c,d) (e,f)] = (fst·^fst·, snd·^snd·) below. The
-   product-exponential adjunction (- × y) ⊣ (- ^ y) holds factorwise: the
-   currying iso Hom((c,d)×(c',d'), e) ≅ Hom((c,d), e^(c',d')) is the
-   pointwise pairing of the two component isos [exp_iso] of C and D, so
-   evaluation and currying both act componentwise. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProductClosed.
 

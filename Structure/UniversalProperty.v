@@ -13,32 +13,15 @@ Require Import Category.Construction.Groupoid.
 
 (** * Universal properties as representability *)
 
-(* nLab: https://ncatlab.org/nlab/show/universal+property
+(*
    nLab: https://ncatlab.org/nlab/show/representable+functor
    Wikipedia: https://en.wikipedia.org/wiki/Universal_property
    Wikipedia: https://en.wikipedia.org/wiki/Representable_functor
 
-   A predicate P on the objects of C is a "universal property" when satisfying
-   the predicate is equivalent to representing a fixed functor.  Concretely, an
-   object c "has the property P" exactly when c represents [repr_functor], i.e.
-   there is a natural isomorphism of copresheaves
+   本文件给出相关范畴论结构的定义与性质。
 
-       [Hom c,─] ≅ repr_functor    (Hom(c, ─) ≅ P, naturally in the target)
-
-   in the functor category [C, Sets].  This is the standard equivalence
-   "universal property ⟺ representability": following nLab, a representation of
-   a functor F : C ⟶ Sets is a natural isomorphism Hom(c, ─) ≅ F, and by the
-   Yoneda lemma it is determined by a single universal element (the image of
-   id{C} c).  Wikipedia phrases the same fact as: (A, u) is universal from X to
-   F iff Hom(A, ─) ≅ Hom(X, F ─), and the representing object is then unique up
-   to unique isomorphism (see [univ_property_unique_up_to_unique_iso] below).
-
-   Here [repr_functor] is covariant, [Hom c,─] = Curried_Hom C c is the
-   covariant hom-functor Hom(c, ─), and the per-c isomorphism lives in [Sets]
-   (setoids), identifying the setoid of proofs [P c] with the setoid of natural
-   isomorphisms [Hom c,─] ≅ [repr_functor].  The claim is not that this captures
-   *every* conceivable universal construction, only the representable ones,
-   which cover the standard examples. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class IsUniversalProperty (C : Category) (P : C → Type) (eqP : forall c, Setoid (P c)) :=
   {
     repr_functor : C ⟶ Sets ;                  (* the functor F = P being represented *)

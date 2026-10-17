@@ -22,12 +22,11 @@ Require Import Category.Instance.Coq.
 
 Generalizable All Variables.
 
-(* Every lemma below sits in a section whose hypotheses ([inj]/[proj],
-   [HQ]/[HP], [dec]) frequently do not appear in the statement, so the file
-   opts into the [Default Proof Using "All"] discipline of
-   Theory/EckmannHilton.v rather than annotating each proof.  Definitions are
-   unaffected: they abstract only the section variables they actually use, so
-   e.g. [matrix_row] takes [HP] alone while [matrix_mor] takes both. *)
+(*
+   本文件给出相关范畴论结构的定义与性质。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Set Default Proof Using "All".
 
 (** * Matrices of morphisms between finite coproducts and products *)

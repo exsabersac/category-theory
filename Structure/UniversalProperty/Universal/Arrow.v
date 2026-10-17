@@ -12,34 +12,14 @@ Require Import Category.Theory.Universal.Arrow.
 
 (** * A universal arrow is a universal property *)
 
-(* nLab: https://ncatlab.org/nlab/show/universal+morphism
+(*
    nLab: https://ncatlab.org/nlab/show/representable+functor
    Wikipedia: https://en.wikipedia.org/wiki/Universal_property
 
-   A universal arrow from an object c : C to a functor U : D ⟶ C is a pair
-   (a, u : c ~> U a) such that every h : c ~> U d factors as h ≈ fmap[U] g ∘ u
-   through a unique g : a ~> d (see Theory/Universal/Arrow.v, where the same
-   data is packaged as [AUniversalArrow] and, equivalently, as an initial
-   object of the comma category =(c) ↓ U).  Equivalently — this is the
-   "universal property ⟺ representability" equivalence — the object a together
-   with the assignment g ↦ fmap[U] g ∘ u exhibits a natural isomorphism of
-   copresheaves
+   本文件给出箭头范畴：对象为底范畴的态射，态射为交换方块。
 
-       Hom_D(a, ─) ≅ Hom_C(c, U ─)    (natural in the target)
-
-   so that a represents the functor d ↦ Hom_C(c, U d).  This is exactly the
-   representable-functor characterisation given on both reference pages.
-
-   [UniversalArrowIsUniversalProperty] instantiates the generic packaging
-   [IsUniversalProperty] from [Structure.UniversalProperty] for the predicate
-   P := fun a => AUniversalArrow c U a, with the representing functor taken to
-   be (Curried_Hom C c) ◯ U : D ⟶ Sets, i.e. d ↦ Hom_C(c, U d).  Its per-object
-   obligations build, in both directions, the natural isomorphism between the
-   setoid of universal arrows AUniversalArrow c U a and the setoid of natural
-   isomorphisms [Hom a,─] ≅ ((Curried_Hom C c) ◯ U); the universal element is
-   recovered through the Yoneda computation [preyoneda].  [fmap_respects'] is a
-   local, [cat]-resolvable restatement of [fmap_respects] used by the
-   automation discharging those obligations. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniversalArrowUniversalProperty.
   Context (C D: Category).

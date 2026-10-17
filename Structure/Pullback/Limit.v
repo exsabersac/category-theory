@@ -11,42 +11,14 @@ Require Import Category.Instance.Roof.
 
 Generalizable All Variables.
 
-(* This file connects the universal-property definition of a pullback (see
-   [Structure/Pullback.v]) with the general theory of limits (see
-   [Structure/Limit.v]), realizing the standard fact that a pullback is the
-   limit of a cospan diagram.
-
+(*
    nLab:      https://ncatlab.org/nlab/show/pullback
    Wikipedia: https://en.wikipedia.org/wiki/Pullback_(category_theory)
-              https://ncatlab.org/nlab/show/limit
 
-   A cospan in C is a functor [F : Roof^op ⟶ C] (see [Structure/Span.v]). Since
-   the non-identity arrows of [Roof] are [ZeroNeg : RZero ~> RNeg] and
-   [ZeroPos : RZero ~> RPos], in [Roof^op] they flip to [ZeroNeg : RNeg ~> RZero]
-   and [ZeroPos : RPos ~> RZero], so [F] picks out the cospan
+   本文件给出极限相关。
 
-       F RNeg --(fmap ZeroNeg)--> F RZero <--(fmap ZeroPos)-- F RPos
-
-   i.e. a diagram of shape `b → a ← c` with a = F RZero, b = F RNeg,
-   c = F RPos. (The [unop] coercions below merely re-read these C-morphisms
-   through the [op]/[unop] discipline; they leave the underlying arrow
-   unchanged, as [unop f := f].)
-
-   The pullback ↔ limit-of-cospan correspondence, in this library's notation:
-
-     - a [Cone F] over the cospan is an apex with legs ψ_RNeg, ψ_RZero, ψ_RPos
-       satisfying cone coherence; coherence at ZeroNeg/ZeroPos forces the
-       commuting square fmap[F] ZeroNeg ∘ ψ_RNeg ≈ ψ_RZero ≈
-       fmap[F] ZeroPos ∘ ψ_RPos (the diagonal ψ_RZero being determined);
-
-     - the limit's legs over the apex are exactly the pullback projections:
-       vertex_map RNeg = pullback_fst and vertex_map RPos = pullback_snd;
-
-     - the limit's universal property (every cone factors through a unique
-       mediating morphism) is exactly the pullback's [ump_pullbacks].
-
-   [Pullback_to_Universal] and [Pullback_from_Universal] below make this
-   correspondence explicit in both directions. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* A pullback of a cospan F is just the limit of F. This is a definitional
    alias introduced to name the cospan-limit and to read its legs/UMP as

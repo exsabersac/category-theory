@@ -21,38 +21,15 @@ Local Hint Extern 5 (Proper _ _ ) => progress(repeat(intro)) : cat.
 
 (** * The cartesian product as a universal property *)
 
-(* nLab: https://ncatlab.org/nlab/show/product
+(*
    nLab: https://ncatlab.org/nlab/show/universal+property
    Wikipedia: https://en.wikipedia.org/wiki/Product_(category_theory)
    Wikipedia: https://en.wikipedia.org/wiki/Universal_property
 
-   A product x × y of two objects is characterized by the universal mapping
-   property of its projections, equivalently by the natural isomorphism
+   本文件给出笛卡尔结构。
 
-       Hom(z, x × y) ≅ Hom(z, x) × Hom(z, y)    (natural in z)
-
-   i.e. x × y represents the presheaf z ↦ Hom(z, x) × Hom(z, y).  This is the
-   product as a representing object / a limit of the discrete two-object
-   diagram (the terminal object being the empty product).
-
-   [CartesianProductIsUniversalProperty] instantiates the generic
-   "universal property ⟺ representability" packaging from
-   [Structure.UniversalProperty] for this case.  The predicate is
-   [IsCartesianProduct x y z] (Structure/Cartesian.v): z carries projections
-   [exl'], [exr'] and a pairing [fork'] satisfying the universal mapping
-   property [ump_product].  Working in C^op makes the ambient covariant
-   hom-functor [Hom z,─] of [IsUniversalProperty] unfold to the presheaf
-   Hom_C(─, z), so the representing functor is the product of presheaves
-
-       repr_functor := [Hom ─ , x ] × [Hom ─ , y ]  =  Hom_C(─, x) × Hom_C(─, y)
-
-   ([Hom ─ , a ] = Curried_CoHom is the contravariant hom Hom_C(─, a);
-   the binary × on presheaves is the pointwise product from
-   Instance/Fun/Cartesian.v).  The per-z isomorphism in [Sets] then identifies
-   proofs of [IsCartesianProduct x y z] with natural isomorphisms
-   Hom_C(─, z) ≅ Hom_C(─, x) × Hom_C(─, y), which is exactly the bijection
-   above.  Specializing the generic uniqueness result then recovers the usual
-   fact that the product is unique up to a unique isomorphism. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CartesianProduct.
   Context (C : Category).

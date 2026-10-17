@@ -16,34 +16,10 @@ Require Import Category.Structure.Monoidal.Hypergraph.Spider.
 
 Generalizable All Variables.
 
-(** * Hint database for hypergraph-level rewrites
+(*
+   本文件给出幺半相关结构。
 
-    Bundles the simplification-direction (LHS more complex than RHS)
-    spider lemmas into a single [hypergraph] hint database.
-
-    Downstream code can write
-
-      autorewrite with hypergraph.
-
-    to apply all of these rewrites until fixpoint.  Combined with
-    [autorewrite with categories] and the library's [cat] tactic, this
-    gives a fast path for closing routine SCFA-algebra goals.
-
-    Bidirectional lemmas — [spider_mu_assoc], [spider_delta_coassoc],
-    [spider_frobenius], [spider_frobenius_sym], [spider_2_to_2],
-    [spider_3_to_1], [spider_1_to_3] — are NOT in this database because
-    [autorewrite] would loop on them.  Use them manually with
-    [rewrite].
-
-    The lemmas registered here are exactly:
-
-      spider_collapse              μ ∘ δ ≈ id
-      spider_mu_unit_left          μ ∘ bimap η id ≈ to unit_left
-      spider_mu_unit_right         μ ∘ bimap id η ≈ to unit_right
-      spider_delta_counit_left     bimap ε id ∘ δ ≈ from unit_left
-      spider_delta_counit_right    bimap id ε ∘ δ ≈ from unit_right
-      spider_mu_commutative        μ ∘ braid ≈ μ
-      spider_delta_cocommutative   braid ∘ δ ≈ δ
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 #[export] Hint Rewrite

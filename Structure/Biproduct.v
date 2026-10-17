@@ -9,27 +9,13 @@ Generalizable All Variables.
 
 (** * Biproducts *)
 
-(* nLab:      https://ncatlab.org/nlab/show/biproduct
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Biproduct
 
-   In a category with a zero object, a biproduct of two objects x and y is a
-   single object x ⊕ y that is at once a product and a coproduct of the
-   pair, with the injections and projections interacting through identity
-   and zero morphisms (Wikipedia lists exactly these four equations; nLab
-   states the same compatibility conditions):
+   本文件给出相关范畴论结构的定义与性质。
 
-       exl ∘ inl ≈ id        exr ∘ inr ≈ id
-       exl ∘ inr ≈ 0         exr ∘ inl ≈ 0
-
-   [Biproduct x y] packages the object together with both universal
-   properties and the four interaction laws, and [HasBiproducts] chooses a
-   biproduct for every pair of objects.  The satellite API mirrors the
-   mediating-morphism trios of [Structure/Limit/Preservation.v]: [bi_pair]
-   and [bi_copair] extract the product and coproduct mediators, each with
-   two commutation lemmas and a uniqueness restatement; [bimap] is the
-   action of the biproduct on a pair of morphisms; [bi_diag] and
-   [bi_codiag] are the diagonal and codiagonal, the raw material for the
-   semiadditive convolution downstream. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Biproduct.
 

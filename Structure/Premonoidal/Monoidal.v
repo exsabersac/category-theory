@@ -16,46 +16,14 @@ Set Primitive Projections.
 Set Universe Polymorphism.
 Set Transparent Obligations.
 
-(** * Monoidal categories versus premonoidal categories
-
+(*
     nLab: https://ncatlab.org/nlab/show/premonoidal+category
     Wikipedia: https://en.wikipedia.org/wiki/Premonoidal_category
 
-    Power–Robinson ("Premonoidal categories and notions of computation",
-    Math. Structures Comput. Sci. 7(5), 1997) observe that a monoidal
-    category is precisely a premonoidal category in which every morphism
-    is central.  This file delivers both directions of that comparison.
+   本文件给出幺半相关结构。
 
-    Direction 1 ([Monoidal_Premonoidal]).  A monoidal structure on [C]
-    restricts to a binoidal one, [Monoidal_Binoidal]: the two one-sided
-    tensoring functors are the partial applications [- ⨂ w] and [w ⨂ -]
-    of the tensor bifunctor, packaged as [AFunctor]s so that the object
-    maps stay definitionally the monoidal tensor.  The middle-four
-    interchange laws of a bifunctor ([bimap_id_right_left] /
-    [bimap_id_left_right]) say exactly that the two orders of tensoring
-    a pair of morphisms agree, so EVERY morphism is central
-    ([Monoidal_all_central]).  The monoidal unitors and associator then
-    populate a premonoidal structure field-for-field: the one-variable
-    naturality squares are instances of the joint ones with identities
-    in the untouched positions, and triangle/pentagon carry over
-    verbatim.
-
-    Direction 2 ([Premonoidal_Monoidal], the all-central engine).  In a
-    premonoidal category together with a witness that every morphism is
-    central, the interleaved tensor [composite_ff'] becomes a genuine
-    bifunctor [Premonoidal_Tensor] on [C ∏ C]: interchange in the middle
-    of [fmap_comp] is discharged by [composite_ff'_comp_l], the single
-    point where the centrality witness is consumed.  All remaining
-    [Build_Monoidal] fields are the [composite_ff']-phrased corollaries
-    already derived in Structure/Premonoidal.v — in particular the joint
-    associator naturality [premon_joint_assoc_natural], which needs no
-    centrality at all.
-
-    Downstream, Direction 2 is the funnel that makes the Kleisli
-    category of a commutative strong monad monoidal
-    (Monad/Kleisli/Commutative.v), and Direction 1 supplies the
-    premonoidal reading of a monoidal base category used by Freyd
-    categories (Structure/Premonoidal/Freyd.v). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Direction 1: a monoidal category is premonoidal *)
 

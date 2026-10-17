@@ -10,50 +10,18 @@ Generalizable All Variables.
 
 (** * Groupoids: the property, and the vertex-group structure *)
 
-(* nLab:      https://ncatlab.org/nlab/show/groupoid
+(*
    nLab:      https://ncatlab.org/nlab/show/vertex+group
    Wikipedia: https://en.wikipedia.org/wiki/Groupoid
    Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, §I.5, printed p. 20 (Definition 9 and the remark
-              following it)
    Book:      Awodey, "Category Theory", 1st ed. (Carnegie Mellon pre-print,
-              September 2005), §7.7, printed p. 175
    Book:      Riehl, "Category Theory in Context", Definition 1.1.12 and
-              Example 1.1.13(i), printed p. 8
    Book:      Fong, Spivak, "Seven Sketches in Compositionality", CUP 2019,
-              §3.2.5 Exercise 3.32, printed pp. 88-89
 
-   A groupoid is a category in which every morphism is invertible.  This file
-   supplies the PREDICATE saying so — [IsGroupoid] — and the local structure
-   theory that Mac Lane records immediately after the definition: each object
-   x of a groupoid carries a vertex group hom(x, x), and any arrow f : x ~> x'
-   conjugates hom(x, x) isomorphically onto hom(x', x').
+   本文件给出相关范畴论结构的定义与性质。
 
-   Until now the name [Groupoid] was bound in-tree to a CONSTRUCTION —
-   Construction/Groupoid.v builds the core (maximal subgroupoid) of a
-   category — with no property for it to satisfy.  [core_is_groupoid] below
-   closes that gap.
-
-   Contents:
-
-       IsGroupoid C            every morphism of C is an isomorphism
-       ginv G f                the chosen inverse of f, with its calculus
-       core_is_groupoid        the core of any category is a groupoid
-       IsGroupoid_op           C^op is a groupoid whenever C is
-       MonInverses M           a two-sided inverse operation on a monoid
-       deloop_groupoid_iff     M is a group  <->  B M is a groupoid
-       vertex_group G x        hom(x, x) as a group
-       MonHom, MonIso          monoid homomorphisms and isomorphisms
-       conjugation_iso G f     hom(x, x) ≅ hom(x', x') by conjugation
-       deloop_nat_not_groupoid B (ℕ, +) is NOT a groupoid
-       deloop_bool_groupoid    B (Z/2) is
-       Z3_Grp                  Z/3, the smallest group whose inversion map
-                               is not the identity function
-
-   The connectedness predicate and the structure theorem it feeds — a
-   connected groupoid is equivalent to the delooping of any one of its vertex
-   groups — are in Structure/Groupoid/Connected.v; the inversion isomorphism
-   C ≅ C^op is in Structure/Groupoid/Inversion.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Why the vertex group, and what connectedness adds
 

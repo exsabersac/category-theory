@@ -19,96 +19,14 @@ Generalizable All Variables.
 
 (** * Kernels as universal elements *)
 
-(* nLab:      https://ncatlab.org/nlab/show/kernel
-              https://ncatlab.org/nlab/show/universal+element
-              https://ncatlab.org/nlab/show/representable+functor
-              https://ncatlab.org/nlab/show/category+with+zero+morphisms
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Kernel_(category_theory)
-
-   [Structure/Kernel.v] defines the kernel of f : x ~> y as an equalizer of
-   f against the zero morphism, and states its universal property in the
-   zero-composite phrasing ([kernel_desc]): any h : d ~> x with f ∘ h ≈ 0
-   factors uniquely through the kernel inclusion.  Read that clause with the
-   quantifier over d out front and it is no longer a statement about one
-   object but about a PRESHEAF: for each d the set
-
-       Kill_f(d)  =  { h : d ~> x  |  f ∘ h ≈ 0 }
-
-   of maps into x that f kills, contravariant in d by precomposition
-   (nLab, "kernel": "the kernel of f is the representing object of the
-   functor sending d to the set of morphisms h : d → x such that
-   f ∘ h = 0").  [kernel_desc] then says exactly that the pair ⟨k, i⟩ --
-   the kernel object together with its inclusion, which is an ELEMENT of
-   Kill_f(k) because f ∘ i ≈ 0 -- is a universal element of that presheaf
-   in the sense of Mac Lane's Definition 2 of §III.1 (CWM 2nd ed., p. 57):
-   every element of every Kill_f(d) is (Kill_f u)(i) for a unique
-   u : d ~> k.
-
-   This file proves the two readings equivalent, using the class
-   [AUniversalElement] of Theory/Universal/Element.v (issue #303) rather
-   than a bespoke unique-factorization clause.  "Equivalent" is delivered
-   at three different strengths, which are three different claims and are
-   kept apart below: the two passages with their round trips (no universe
-   restriction), the representability statement Hom(─, k) ≅ Kill_f in
-   [C^op, Sets] (no universe restriction), and the bundling of the two
-   record types as an isomorphism of SETOIDS in [Sets] (which carries
-   one, and which the concrete witnesses therefore do not use).  The
-   catalog files the result as maclane:III.1:remark4.  NOTE ON
-   ATTRIBUTION: nothing below quotes the wording of that remark, and no
-   claim is made here about what Mac Lane wrote at that spot; what is
-   cited above is §III.1's Definition 2, which the file does use, and the
-   nLab's statement of the kernel's universal property, which is what the
-   file proves.
-
-   Where the notion sits, and why the presheaf packaging is the durable one
-
-   Text:  Mac Lane, "Categories for the Working Mathematician", Springer
-          1998, §III.1 (pp. 55-59), §VIII.1
-   Text:  Riehl, "Category Theory in Context", Dover 2016, §2.4
-   Text:  Awodey, "Category Theory", Oxford 2010, §2.9
    Paper: Kan, "Adjoint functors", Trans. Amer. Math. Soc. 87, 1958
 
-   The kernel is the oldest universal construction in algebra and the one
-   whose element-free rendering cost the most.  In group theory a kernel
-   is a SUBSET -- the preimage of the identity -- and the categorical
-   definition has to say the same thing without mentioning elements or
-   the identity.  Two moves accomplish it.  The first is to replace "the
-   identity of the target" by the zero morphism, which requires the
-   ambient category to have one; the second is to replace "the subset of
-   things sent to zero" by the universal property of the equalizer.  The
-   present file performs a third: it puts the quantifier over the probing
-   object back in front, which turns the universal property into the
-   assertion that ONE presheaf is representable.
+   本文件给出泛构造相关。
 
-   That third move is not decoration.  A universal property stated as a
-   factorization clause is a statement about the chosen object k; stated
-   as representability it is a statement about the functor Kill_f, which
-   exists whether or not k does.  So the presheaf is defined for every f
-   in every category with zero morphisms, and "f has a kernel" becomes
-   "Kill_f is representable" -- a property of an object of the presheaf
-   category rather than a piece of data attached to f.  This is the form
-   in which kernels generalize: the kernel presheaf of a map of sheaves is
-   already a sheaf (a kernel is a limit, and limits of sheaves are
-   computed presheaf-wise), and in a general topos the subobject it names
-   is defined by exactly this representability -- Mac Lane's §VIII.1
-   subobject classifier being the same device applied to monomorphisms
-   rather than to killed maps.
-
-   And it is the form that survives the loss of the zero morphism.  Mac
-   Lane's Rng -- unital rings with unit-preserving homomorphisms -- has
-   no zero object and no zero morphisms at all: a ring homomorphism must
-   send 1 to 1, so the constant-zero map is a homomorphism only into the
-   trivial ring, and there is no morphism whatever from the trivial ring
-   to Z.  (Those are theorems, not remarks: [Rng_no_hom_zero_to_Z],
-   [Rng_no_zero_morphisms] and [Rng_no_zero_object] in the companion file
-   Structure/Kernel/Universal/Examples.v.)  Kernels in the categorical
-   sense therefore do not exist in Rng; what does exist, for any parallel
-   pair f, g, is the presheaf of maps on which f and g agree, and its
-   representing object is the equalizer.  The two presheaves below --
-   [KillPresheaf] over a zero-morphism structure and [ForkPresheaf] over
-   a bare parallel pair -- are that observation made into definitions,
-   and the [kill_fork_iso] between them is the exact statement of how
-   much the zero morphism buys. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* WHAT IS DELIVERED
 

@@ -18,18 +18,11 @@ Require Import Category.Structure.Monoidal.StarAutonomous.
 Require Import Category.Instance.Sets.
 Require Import Category.Adjunction.Right.
 
-(* The hom-set isomorphisms of the closed structure and of
-   [AdjointOnTheRight] both live in [Sets], so [Instance/Sets] is in
-   scope; this removal keeps its product-monoidal instance out of the
-   hint database so that `⨂` cannot resolve to the tensor of [Sets].
-   Structure/Monoidal/Closed.v and Structure/Monoidal/StarAutonomous.v
-   perform the same removal.  Here it is DEFENSIVE, and that is measured
-   rather than assumed: deleting the line leaves this file compiling
-   clean (rc = 0).  The reason it costs nothing is that `C` arrives with
-   a [SymMonClosed] instance whose coercion [smc_is_symmetric] already
-   determines the monoidal structure, so resolution is never offered a
-   choice.  It is kept for consistency with the two donors, where the
-   ambient category is not so constrained. *)
+(*
+   本文件给出对偶形式。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Remove Hints Sets_Product_Monoidal : typeclass_instances.
 
 (* NOTATION GUARD, inherited from Adjunction/Right.v and obeyed

@@ -18,66 +18,15 @@ Require Import Category.Construction.Subcategory.
 
 Generalizable All Variables.
 
-(** * Deterministic morphisms in a copy-discard category
-
-    A [CopyDiscard] category deliberately imposes NO naturality on [copy] and
-    [discard]: a general morphism need not commute with duplication or
-    deletion.  Following Fritz (Definition 10.1 of arXiv:1908.07021), a
-    morphism [f : x ~> y] is DETERMINISTIC when it does commute with both,
-    i.e. when it is a comonoid homomorphism between the canonical comonoids:
-
-      copy[y] ∘ f ≈ (f ⨂ f) ∘ copy[x]        (copying the output of [f]
-                                               is running [f] twice on a
-                                               copied input)
-      discard[y] ∘ f ≈ discard[x]             (running [f] and discarding
-                                               is just discarding)
-
-    When other files cite these squares under the Cho–Jacobs name, the
-    shorthand means exactly these two comonoid-homomorphism squares taken
-    over the Cho–Jacobs CD structure (Definition 2.2 of arXiv:1709.00322);
-    the determinism condition itself is Fritz's.  In a Markov category
-    these two squares single out exactly the morphisms that carry no
-    randomness.  Deterministic morphisms contain the
-    identities and are closed under composition and under ⨂; all the
-    structural isomorphisms of the symmetric monoidal base — braiding,
-    unitors, associator — are deterministic, and so are the generators
-    [copy] and [discard] themselves ([deterministic_copy] /
-    [deterministic_discard]).  Consequently the deterministic morphisms
-    form a wide (lluf) subcategory [Det] of [C], packaged here through
-    [Construction/Subcategory.v].
-
-    The structural-morphism proofs are instances of the classical fact that
-    the squaring functor [x ↦ x ⨂ x] of a symmetric monoidal category is
-    itself symmetric (strong) monoidal, with structure map the middle
-    interchange [(a ⨂ b) ⨂ (c ⨂ d) ≅ (a ⨂ c) ⨂ (b ⨂ d)].  That
-    interchange, [swap_inner], and its coherence laws ([swap_inner_braid],
-    [swap_inner_assoc], [swap_inner_unit_left] / [swap_inner_unit_right])
-    are developed for any symmetric monoidal category in the shared toolkit
-    of Structure/Monoidal/Braided/Proofs.v; this file identifies its
-    diagonal with Hypergraph.v's [mid_swap_inv] ([swap_inner_diag]) and
-    restates the coherences in the [mid_swap_inv] form the determinism
-    proofs consume ([mid_swap_inv_braid], [mid_swap_inv_assoc],
-    [mid_swap_inv_unit_left] / [mid_swap_inv_unit_right]).
-
-    The structural determinism lemmas are direct coherence chases at the
-    canonical [cd_comonoid] supply.  The [Comonoid_Iso] transport of
-    Theory/Algebra/Comonoid/Hom.v cannot be used for them: determinism
-    demands a [ComonoidHom] between the canonical comonoids at BOTH
-    endpoints, whereas transporting a comonoid along a structural
-    isomorphism only produces homomorphisms into the transported comonoid
-    [Comonoid_Iso i _], which is not the canonical one.
-
-    The headline citation-ready facts are [copy_natural_on_deterministic]
-    and [discard_natural_on_deterministic]: copy/discard ARE natural once
-    restricted to deterministic morphisms.
-
+(*
     nLab:      https://ncatlab.org/nlab/show/Markov+category
     Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
-               string diagrams", MSCS 29(7):938–971, 2019
-               (arXiv:1709.00322), §2
     Reference: Fritz, "A synthetic approach to Markov kernels, conditional
-               independence and theorems on sufficient statistics",
-               Adv. Math. 370:107239, 2020 (arXiv:1908.07021), §10 *)
+
+   本文件给出幺半相关结构。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------ *)
 

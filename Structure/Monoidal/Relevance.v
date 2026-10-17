@@ -12,35 +12,13 @@ Section RelevanceMonoidal.
 
 Context {C : Category}.
 
-(* nLab: https://ncatlab.org/nlab/show/relevance+monoidal+category
+(*
    Wikipedia: (no dedicated article; see Symmetric monoidal category and
-   Relevance logic / structural rule of contraction)
 
-   A relevance (relevant) monoidal category is a symmetric monoidal category
-   equipped with a natural diagonal (copying/contraction) map
+   本文件给出幺半相关结构。
 
-       ∆x : x ~> x ⨂ x
-
-   satisfying coherence laws that make every object a cocommutative
-   cosemigroup — coassociative and cocommutative comultiplication, but with
-   no counit x ~> I. Modelling-wise this is the categorical counterpart of
-   relevance logic: a substructural logic with the contraction rule (copying,
-   the diagonal) but without weakening (projection/deletion, which would be a
-   counit). Adding both diagonals and projections would make the category
-   cartesian; adding projections alone would make it semicartesian.
-
-   The axioms below follow Kosta Došen and Zoran Petrić, "Relevant Categories
-   and Partial Functions" (2007), arXiv:math/0504133, in this library's
-   notation:
-
-       naturality:    (f ⨂ f) ∘ ∆x ≈ ∆y ∘ f             (f : x ~> y)
-       unit:          ∆I ≈ unit_left⁻¹                   (I ≅ I ⨂ I)
-       coassoc:       id ⨂ ∆ ∘ ∆ ≈ α ∘ ∆ ⨂ id ∘ ∆
-       cocomm:        braid ∘ ∆ ≈ ∆                       (σ_{x,x} ∘ ∆ = ∆)
-       tensor-compat: ∆(x ⨂ y) ≈ braid2 ∘ (∆ ⨂ ∆)
-
-   where braid2 is the middle-four interchange iso permuting the inner two
-   factors of (x ⨂ y) ⨂ (z ⨂ w) to (x ⨂ z) ⨂ (y ⨂ w). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class RelevanceMonoidal := {
   (* The underlying symmetric monoidal structure (braiding + symmetry). *)

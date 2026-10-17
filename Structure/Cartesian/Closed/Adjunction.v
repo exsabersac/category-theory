@@ -18,60 +18,16 @@ Generalizable All Variables.
 
 (** * The currying adjunction (- × S) ⊣ (-)^S, and evaluation as its counit *)
 
-(* nLab: https://ncatlab.org/nlab/show/exponential+object
+(*
    nLab: https://ncatlab.org/nlab/show/adjoint+functor
    nLab: https://ncatlab.org/nlab/show/representable+functor
    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer 1998; §I.4 (Natural Transformations) and Chapter IV
-         (Adjoints), §6 (Cartesian Closed Categories)
    Book: Riehl, "Category Theory in Context", Dover 2016; §2.1
-         (Representable functors), Example 2.1.6(iv)
 
-   Structure/Cartesian/Closed.v already carries the currying bijection: the
-   field [exp_iso] of [Closed] is the setoid isomorphism
+   本文件给出伴随相关构造与性质。
 
-       (x × S ~> z)  ≊  (x ~> z^S),
-
-   with [curry] its forward direction, [uncurry] its inverse, and
-   [eval := uncurry id]. What that class does NOT do is exhibit the two sides
-   as functors and the bijection as natural in x and z; the [Closed] class
-   states the bijection objectwise and recovers the substitution laws
-   ([curry_comp_l], [curry_comp], [uncurry_comp], [uncurry_comp_r]) as
-   corollaries. This file assembles those corollaries into the structure they
-   are the naturality squares of.
-
-   Fixing an object S of a cartesian closed C, this file builds:
-
-     - [Prod_Functor S] : C ⟶ C, the endofunctor (- × S), acting on arrows by
-       [first];
-     - [Exp_Functor S] : C ⟶ C, the endofunctor (-)^S, acting on arrows by
-       f ↦ curry (f ∘ eval) — the internal-hom bifunctor of
-       Functor/Hom/Internal.v with its contravariant argument held at S, as
-       [Exp_Functor_InternalHom] records;
-     - [eval_natural], the naturality of evaluation in its target (base)
-       variable: f ∘ eval ≈ eval ∘ (curry (f ∘ eval) × id[S]);
-     - [eval_Transform] : Prod_Functor S ◯ Exp_Functor S ⟹ Id[C], that same
-       square bundled as a natural transformation with components [eval];
-     - [Curry_Adjunction] : Prod_Functor S ⊣ Exp_Functor S, the adjunction in
-       the hom-set form of Theory/Adjunction.v, whose transposes are [curry]
-       and [uncurry] and whose counit is [eval] and unit [curry id] — both
-       recorded below and both holding by [reflexivity], not merely up to ≈;
-     - [Curry_Representable], an instance of [Representable] for the presheaf
-       X ↦ C(X × S, B), with representing object B^S — the first inhabitant
-       of that class in the tree, found by typeclass resolution
-       ([Curry_Representable_resolves]) and read back through the class's
-       own coercion ([Curry_repr_obj]).
-
-   Note on the exponential's argument order: [exponent_obj x y] is displayed
-   y ^ x, so the endofunctor (-)^S is [fun x => x ^ S], i.e.
-   [fun x => exponent_obj S x], and [eval] at x is the arrow x^S × S ~> x.
-
-   The header of Theory/Adjunction.v (in the paragraph beginning
-   "For the functional programmer") says in prose that "the function type
-   arises from − × a ⊣ (−)^a with eval as counit". [Curry_Adjunction] and
-   [curry_adj_counit] are that sentence as a theorem. The Sets model — where
-   the counit computes to e(h, s) = h s — is
-   Instance/Sets/Cartesian/Closed/Adjunction.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Currying, naturality, and representability
 

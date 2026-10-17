@@ -10,39 +10,13 @@ Generalizable All Variables.
 
 (** * Indexed products as limits of discrete diagrams *)
 
-(* nLab:      https://ncatlab.org/nlab/show/product
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Product_(category_theory)
 
-   An [A]-indexed product of a family [f : A → C] is an object [p] together
-   with a family of projections [proj a : p ~> f a] that is universal: every
-   competing family [pi a : c ~> f a] factors through the projections by a
-   unique mediating map [u : c ~> p] with [proj a ∘ u ≈ pi a] for all [a].
-   This is exactly the limit of the discrete diagram [DiscreteCat_Functor f]
-   (Instance/Discrete.v): a cone over that diagram is precisely a family of
-   legs [c ~> f a] — the discrete category has only identity morphisms, so
-   the cone-coherence condition is vacuous — and the terminal such cone is
-   the indexed product.
+   本文件给出积（分量）构造。
 
-   This file plays, for indexed products, the role that
-   [Structure/Equalizer/Fork.v] plays for equalizers: it wraps the bundled
-   limit ([Structure/Limit.v]) in elementary, fork-shaped accessors that
-   insulate callers from all cone plumbing.  [IsIndexedProduct] records the
-   universal property directly on a family [proj]; [iprod]/[iprod_proj]/
-   [iprod_ump] read a [Limit (DiscreteCat_Functor f)] as such a product at
-   its apex, translating a plain family to and from a cone over the discrete
-   diagram; [limit_is_indexed_product] bundles those three into the record;
-   and [HasIndexedProducts] packages a choice of indexed product for every
-   family.  No finiteness is assumed: [A] is an arbitrary [Type].
-
-   STATUS: axiom-free.  The discrete cone-coherence proof merely destructs an
-   equality witness, and nothing here Requires funext, choice, or classical
-   logic.  Universe note: because the hom-setoid of [DiscreteCat A] is strict
-   equality, forming [Limit (DiscreteCat_Functor f)] pins the hom/proof
-   universes of [C] accordingly; every definition below is universe
-   polymorphic (via [Category.Lib]) and simply carries that constraint, so no
-   single ambient category is over-committed.  For that reason the accessors
-   are top-level definitions parameterized by [C], [A], [f], rather than a
-   shared [Section] context. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The elementary universal property of an indexed product: the family [proj]
    of projections is universal, so every competing family [pi] factors

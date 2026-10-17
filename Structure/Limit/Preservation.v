@@ -11,75 +11,15 @@ Generalizable All Variables.
 
 (** * Preservation of limits and colimits; reflection of isomorphisms *)
 
-(* nLab:      https://ncatlab.org/nlab/show/preserved+limit
+(*
    nLab:      https://ncatlab.org/nlab/show/continuous+functor
    nLab:      https://ncatlab.org/nlab/show/conservative+functor
-   Mac Lane:  Categories for the Working Mathematician, 2nd ed. (GTM 5),
-              §V.4 "Preservation of limits" (book p. 117), with Exercise 1
-   Awodey:    Category Theory, 2nd ed., §5.5 (the canonical comparison map)
-              and §5.6 Definition 5.31 (p. 119)
-   Riehl:     Category Theory in Context, 2nd ed., §3.3 and §3.4
    Wikipedia:
-   https://en.wikipedia.org/wiki/Limit_(category_theory)#Preservation_of_limits
 
-   WHICH OF THE TWO READINGS IS THE DEFINITION.  Mac Lane's §V.4 says that a
-   functor F preserves the limit of a diagram K when it carries a LIMITING
-   CONE over K to a LIMITING CONE over F ◯ K: the image cone — apex F L,
-   legs fmap[F] of the legs of L — must itself be universal.  That is
-   [PreservesLimitCone] below, and it is what this file leads with.
+   本文件给出极限相关。
 
-   The class [PreservesLimit] records something visibly weaker: that the
-   image APEX F L carries SOME limit structure of F ◯ K, whose legs are
-   unconstrained and need not be the image legs.  The two notions are
-   genuinely different.  [PreservesLimitCone_PreservesLimit] goes one way,
-   and the converse is refuted by an explicit countermodel in
-   Structure/Limit/Preservation/Separation.v: over the walking span
-   (Instance/Roof.v), the functor sending both legs to the first projection
-   of bool × bool satisfies [PreservesLimit] and provably not
-   [PreservesLimitCone] — the image cone and the genuine product cone share
-   an apex and differ by precomposition with the non-invertible
-   [fun p => (fst p, fst p)].  The prose of Construction/Comma/Limit.v and
-   its consumers asserted exactly this about apex-only preservation; it is
-   now a theorem.
-
-   CONTINUITY.  A functor is continuous when it preserves the limits of all
-   diagrams of all shapes IN THE CONE SENSE: [ContinuousFunctor] below is
-   [PreservesLimitCone] quantified over every shape and diagram, and that is
-   what the word means in Mac Lane §V.4, Awodey §5.6 and Riehl §3.3.  The
-   apex-only quantification [PreservesAllLimits] is kept, because
-   Adjunction/Continuity.v and Theory/Equivalence/Limit.v export it, but it
-   is a CONSEQUENCE — [Continuous_PreservesAllLimits] — and not the
-   definition.  An earlier version of this header called it "continuous";
-   that presentation was wrong and this paragraph is the correction.  The
-   name [ContinuousFunctor] rather than [Continuous] avoids the clash with
-   Instance/Top.v, exactly as [obj_eq_iso] avoids [iso_of_eq]
-   (Structure/Limit/Creation.v).  [ContinuousFunctor] is also,
-   definitionally, the hypothesis [PreservesImageLimit] that
-   Construction/Comma/Limit.v introduced and that Adjunction/GAFT.v and
-   Adjunction/SAFT.v consume; the two bridges are identity functions at
-   Construction/Comma/Creation.v.
-
-   THE CANONICAL COMPARISON MAP (Awodey §5.5).  Given a cone N over K and a
-   limiting cone M over F ◯ K, the universal property of M sends the image
-   cone to a unique [cone_comparison F N : F (lim K) ~> lim (F ◯ K)].
-   Cone-level preservation is exactly invertibility of that map
-   ([LimitCone_comparison_iso] and its converse [comparison_iso_LimitCone]),
-   which pins down the sense in which apex-only preservation is weak: it
-   yields SOME isomorphism F L ≅ lim (F ◯ K) ([apex_iso_of_PreservesLimit])
-   and says nothing about the canonical one.
-
-   Issue #427 asked for these under the names [PreservesConeLimit] and
-   [PreservesConeColimit]; the tree's [PreservesLimitCone] and
-   [PreservesColimitCocone] are those constants, with the words in the
-   library's order.
-
-   Quantification over a fixed shape and over an arbitrary class of shapes
-   is here; finite shapes and the discrete (product) case are in
-   Structure/Limit/Preservation/Shapes.v, which may import the named shape
-   categories that this file must not.
-
-   None of the classes below is registered for instance resolution:
-   preservation witnesses are always passed explicitly. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Preservation of limits *)
 

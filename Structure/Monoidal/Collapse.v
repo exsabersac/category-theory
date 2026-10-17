@@ -19,25 +19,14 @@ Require Import Category.Theory.Algebra.Frobenius.
 
 Generalizable All Variables.
 
-(** * Collapse theorems for over-structured tensors
-
-    Two classical "no-go" results delimiting how much algebraic structure a
-    monoidal category can carry before it degenerates.  Both are theorems
-    about *seam discipline*: they are the mathematical reason copying
-    (comonoid/Frobenius) structure must be withheld from a tensor that is
-    already cartesian, and uniform copying must be withheld from a tensor
-    that is compact closed.
-
-    1. Frobenius collapse: a Frobenius object in a semicartesian (in
-       particular, cartesian) monoidal category is isomorphic to the unit.
-
-    2. Abramsky's no-cloning theorem (arXiv:0910.2401): in a compact closed
-       category, uniform copying — a natural, monoidal, coassociative,
-       cocommutative diagonal, i.e. exactly a [RelevanceMonoidal] structure —
-       forces the braiding at every diagonal square to be the identity.
-
+(*
     nLab: https://ncatlab.org/nlab/show/Frobenius+algebra
     nLab: https://ncatlab.org/nlab/show/no-cloning+theorem *)
+
+   本文件给出幺半相关结构。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Frobenius objects collapse in (semi)cartesian monoidal categories
 

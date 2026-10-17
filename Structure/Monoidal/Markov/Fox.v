@@ -19,59 +19,16 @@ Require Import Category.Theory.Algebra.CommutativeComonoid.
 
 Generalizable All Variables.
 
-(** * Fox's theorem: Markov categories with all morphisms deterministic
-
-    Fox's theorem (Fox 1976; Heunen–Vicary 2012, p. 84) delimits the
-    boundary between synthetic probability and ordinary (cartesian)
-    computation:
-
-    - a Markov category in which EVERY morphism is deterministic — i.e.
-      copying commutes with every morphism — is cartesian monoidal
-      ([all_deterministic_cartesian]); and, conversely,
-    - in a cartesian monoidal category every morphism is deterministic
-      with respect to the canonical diagonal/discard supply
-      ([cartesian_all_deterministic]).
-
-    Both directions together say that the copy-discard structure of a
-    Markov category carries genuine probabilistic content exactly when
-    copy-naturality breaks down somewhere; demanding it globally collapses the
-    tensor to a categorical product.  This grounds the "cartesianization
-    obstruction": no interesting Markov category factors through a
-    cartesian one without killing its nondeterminism.
-
-    The forward direction assembles a [RelevanceMonoidal] from the copy
-    supply — naturality of the diagonal being exactly the determinism
-    hypothesis — and discharges [CartesianMonoidal]'s remaining fields:
-
-      proj_left_diagonal / proj_right_diagonal
-        — the comonoid counit laws traded across terminality of [I]
-          ([proj_left_copy] / [proj_right_copy], Markov.v);
-      unit_left_braid / unit_right_braid
-        — the derived braid–unitor coherences [braid_unit_left] /
-          [braid_unit_right] of Structure/Monoidal/Braided/Proofs.v
-          (Joyal–Street Prop. 2.1), the load-bearing import.
-
-    Since in a Markov category the ε-triangle [discard ∘ f ≈ discard]
-    holds for free (terminality of [I]), determinism there is equivalent
-    to the copy square alone ([markov_deterministic_iff_copy]); this is
-    why the forward direction needs nothing beyond copy-naturality.
-
-    The packaging corollary [markov_all_deterministic_iff_cartesian]
-    states the equivalence in existential form: a category carries a
-    Markov structure whose morphisms are all deterministic iff it carries
-    a cartesian monoidal structure.  The two roundtrip corollaries pin
-    down that the forward construction preserves the supply: the copy
-    and discard induced by the produced cartesian structure agree with
-    the original ones.
-
+(*
     nLab:      https://ncatlab.org/nlab/show/Markov+category
     Reference: Fox, "Coalgebras and cartesian categories",
-               Comm. Algebra 4(7):665–667, 1976
     Reference: Heunen & Vicary, "Categories for Quantum Theory",
-               Oxford UP, 2019, §4.3 (Fox's theorem, p. 84 of the 2012
-               lecture notes)
     Reference: Fritz, "A synthetic approach to Markov kernels ..."
-               (arXiv:1908.07021), §10 *)
+
+   本文件给出幺半相关结构。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Fox.
 

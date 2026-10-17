@@ -12,33 +12,15 @@ Section Closed.
 Context {C : Category}.
 Context `{@Cartesian C}.
 
-(* nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
+(*
    nLab: https://ncatlab.org/nlab/show/exponential+object
    Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
    Wikipedia: https://en.wikipedia.org/wiki/Exponential_object
 
-   A cartesian closed category (CCC) is a cartesian category in which every
-   functor - × y has a right adjoint - ^ y, the exponential (internal hom).
-   Equivalently, for all objects y, z there is an exponential object z^y
-   equipped with an evaluation map
+   本文件给出闭结构。
 
-       eval : z^y × y ~> z
-
-   that is universal: for every f : x × y ~> z there is a unique transpose
-   (the curry) curry f : x ~> z^y with eval ∘ (curry f × id) ≈ f.
-
-   Packaged as an adjunction, the universal property is the bijection
-
-       Hom(x × y, z) ≅ Hom(x, z^y)         ([exp_iso])
-
-   natural in x, y and z, expressing (- × y) ⊣ (- ^ y). Currying is the
-   left-to-right direction, uncurrying its inverse, and eval is the image of
-   the identity on z^y (the counit of the adjunction). CCCs are the
-   categorical semantics of the simply-typed lambda calculus.
-
-   Note on argument order: [exponent_obj x y] is displayed as y ^ x, so the
-   exponential z^y is [exponent_obj y z] and z^y × y ~> z is the hom of the
-   left adjoint applied to z. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Closed := {
   exponent_obj : obj → obj → obj    (* internal hom; y ^ x = exponent_obj x y *)

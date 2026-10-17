@@ -6,32 +6,14 @@ Require Import Category.Theory.Orthogonality.
 
 Generalizable All Variables.
 
-(* Strong epimorphisms.
-
+(*
    nLab:      https://ncatlab.org/nlab/show/strong+epimorphism
    Wikipedia: https://en.wikipedia.org/wiki/Epimorphism
 
-   An epimorphism f : x ~> y is *strong* when it is left orthogonal to every
-   monomorphism: for every monic m : u ~> v, every commuting square
+   本文件给出相关范畴论结构的定义与性质。
 
-            p
-        x ----> u
-        |       |
-      f |       | m
-        v       v
-        y ----> v
-            q
-
-   (that is, m ∘ p ≈ q ∘ f) has a unique diagonal filler d : y ~> u with
-   d ∘ f ≈ p and m ∘ d ≈ q. Strong epimorphisms sit between the split and
-   the plain epimorphisms: every split epimorphism is strong
-   (split_epi_strong), the class is closed under composition
-   (strong_epi_compose) and under right cancellation — if f ∘ g is strong
-   then so is f (strong_epi_cancel) — and a morphism that is both a strong
-   epimorphism and a monomorphism is an isomorphism
-   (strong_epi_mono_is_iso). These are exactly the closure properties
-   enjoyed by the left class of an orthogonal factorization system, of
-   which (strong epi, mono) is the motivating example. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record StrongEpi {C : Category} {x y : C} (f : x ~> y) := {
   strong_epic : Epic f;

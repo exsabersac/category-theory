@@ -12,48 +12,13 @@ Generalizable All Variables.
 
 (** * Coends: ergonomic covariant accessors *)
 
-(* nLab:      https://ncatlab.org/nlab/show/coend
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Coend
 
-   The COEND of a functor of mixed variance `F : C^op ∏ C ⟶ D`, written
-   `∫^c F(c,c)`, is the UNIVERSAL (initial) COWEDGE: an object `coend_obj : D`
-   together with injections `coend_inj_x : F (x, x) ~> coend_obj`, one per
-   object `x : C`, satisfying the covariant (co)dinaturality condition and
-   through which every other cowedge factors uniquely. It is the dinatural
-   analogue of a colimit, dual to the END of Structure/End.
+   本文件给出相关范畴论结构的定义与性质。
 
-   In this library a coend is DEFINED as an end in the opposite categories,
-
-     Coend F := @End (C^op) (D^op) (F^op)          (Structure/End.v)
-
-   so its underlying datum is a `Wedge F^op` (equivalently a `Cowedge F`, see
-   Structure/Wedge) whose legs `F (x, x) ~{D}~> coend_obj` are the reversed
-   wedge legs and whose universal property runs OUT of the coend. Reasoning
-   directly with that opposite-category packaging forces every morphism to be
-   read reversed, which is awkward downstream.
-
-   This file supplies a thin convenience layer, in the exact spirit of
-   Structure/Pushout (a covariant reader over the dualized `Pullback`): the
-   accessors `coend_obj` and `coend_inj`, the covariant cowedge condition
-   `coend_cowedge`, the universal property `coend_ump`, the mediator
-   `coend_med` (with its computation and uniqueness rules), and a smart
-   constructor `Build_Coend` assembling a coend from covariant cowedge data.
-   Each accessor is an op-read of the corresponding `End`/`Wedge` accessor
-   (`end_wedge`, `wedge_map`, `ump_wedges`, `ump_ends`) with the morphisms
-   inverted, so downstream code can reason entirely in `C` and `D`. Nothing
-   here alters Structure/End.
-
-   The covariant cowedge condition, for `f : x ~> y`, both sides
-   `F (y, x) ~> coend_obj`:
-
-     coend_inj_x ∘ bimap[F] (op f) id ≈ coend_inj_y ∘ bimap[F] id f
-
-   This is the dual of the wedge condition of Structure/Wedge: the leg at `x`
-   precomposed with the contravariant action `F(f, 1)` agrees with the leg at
-   `y` precomposed with the covariant action `F(1, f)`. Because `Coend`,
-   `F^op`, `op` and the reversed hom-sets are all involutive on the nose, the
-   op-reads below are the underlying `End`/`Wedge` data up to one `symmetry`,
-   with no coherence obligations of their own. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The coend calculus, its history, and the existential reading
 

@@ -12,57 +12,18 @@ Generalizable All Variables.
 
 (** * Base points: the vertex groups of a connected groupoid *)
 
-(* nLab:      https://ncatlab.org/nlab/show/groupoid
+(*
    nLab:      https://ncatlab.org/nlab/show/vertex+group
    nLab:      https://ncatlab.org/nlab/show/delooping
    nLab:      https://ncatlab.org/nlab/show/fully+faithful+functor
    nLab:      https://ncatlab.org/nlab/show/equivalence+of+categories
    Book:      Riehl, "Category Theory in Context", Corollary 1.5.14, printed
-              p. 36 (PDF p. 56), the corollary drawn there from Proposition
-              1.5.13 (printed pp. 35-36)
    Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, §I.5, printed p. 20 (the remark following Definition 9)
 
-   In a connected groupoid the vertex groups at any two objects are isomorphic
-   as GROUPS.  Riehl records this at the location above as a corollary of the
-   structure theorem for connected groupoids — her Proposition 1.5.13, which is
-   Structure/Groupoid/Connected.v's [connected_deloop_equiv].  That
-   sentence, and everything else this file says about what a printed source
-   states, is a paraphrase of the statement at the cited location and not a
-   quotation; the proof below is this library's own.
+   本文件给出相关范畴论结构的定义与性质。
 
-   Contents:
-
-       Full_Compose             fullness is closed under functor composition
-       Faithful_Compose         and so is faithfulness
-       deloop_ff_moniso         a fully faithful functor between one-object
-                                categories is a monoid isomorphism
-       deloop_equiv_moniso      the same for an equivalence, via Full+Faithful
-       connected_vertex_moniso  the headline: vertex groups at any two objects
-                                of a connected groupoid are isomorphic
-       Bool_Wide_vertex_moniso  the headline instantiated at a groupoid with
-                                two distinct objects, both of whose vertex
-                                groups are Z/2
-       Bool_Wide_vertex_groups_agree,
-       Bool_Wide_vertex_moniso_trivial
-                                and the measurement of exactly how much that
-                                instantiation demonstrates: not much
-
-   EXPORTED, WITH NO CURRENT CONSUMER.  Counted from the `.glob` reference
-   records rather than by reading, seven of the 27 constants below are
-   referenced by nothing in the tree, this file included.  Six of them are
-   terminal by design — [Bool_Wide_objects_distinct],
-   [Bool_Wide_vertex_monoid_false], [Bool_Wide_vertex_inv_false],
-   [Bool_Wide_vertex_groups_agree], [Bool_Wide_vertex_moniso_trivial] and
-   [Bool_Wide_vertex_moniso] exist precisely to be the end of a chain.  The
-   seventh, [deloop_equiv_moniso], is a genuine orphan: it is the
-   equivalence-level form of [deloop_ff_moniso], and the headline does not go
-   through it because [connected_vertex_moniso] has [Full] and [Faithful] of a
-   COMPOSITE in hand rather than an [EquivalenceOfCategories] of it, so it
-   calls [deloop_ff_moniso] directly.  It completes the pair and is kept;
-   nothing here is removed on this file's own judgement, and the decision to
-   keep or drop is the maintainer's.  (The headline [connected_vertex_moniso]
-   itself is not in that list: Instance/Top/FundamentalGroupoid.v uses it.) *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Two routes to the same type, and why this file takes the longer one
 

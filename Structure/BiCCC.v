@@ -10,31 +10,14 @@ Require Import Category.Structure.Distributive.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/bicartesian+closed+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
    Wikipedia: https://en.wikipedia.org/wiki/Distributive_category
 
-   A bicartesian closed category (BiCCC) is a cartesian closed category that
-   also has finite coproducts: it is simultaneously cartesian (finite products
-   ×, terminal object 1), closed (exponentials →, written `y^x` here), and
-   cocartesian (finite coproducts +, initial object 0). It is the categorical
-   model of the simply-typed lambda calculus with sums - the internal language
-   is a type theory with the type formers ×, →, +, 1 and 0.
+   本文件给出双笛卡尔闭范畴结构。
 
-   This file does not introduce a `BiCCC` class: rather than bundle a fourth
-   redundant record, a BiCCC is obtained simply by assuming all four pieces of
-   structure together (Cartesian, Closed, Cocartesian and Initial in the same
-   Context), exactly as the section header below does.
-
-   The mathematical content of the file is that this combination is forced to
-   be distributive. Distributivity is not an extra axiom: because the category
-   is closed, each functor `_ × x` has a right adjoint `_ ^ x`, hence preserves
-   all colimits, in particular finite coproducts and the initial object. The
-   canonical comparison maps are therefore isomorphisms, and the section
-   derives them as concrete instances `prod_coprod_l`, `prod_coprod_r`,
-   `prod_zero_l`, `prod_zero_r`, `exp_coprod` and `exp_zero`. The final
-   instance [BiCCC_Distributive] packages the relevant ones as a
-   [Distributive] structure. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section BiCCC.
 

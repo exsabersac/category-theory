@@ -12,60 +12,14 @@ Set Primitive Projections.
 Set Universe Polymorphism.
 Set Transparent Obligations.
 
-(** * Premonoidal categories
-
+(*
     nLab: https://ncatlab.org/nlab/show/premonoidal+category
     Wikipedia: https://en.wikipedia.org/wiki/Premonoidal_category
 
-    A premonoidal category (Power–Robinson, "Premonoidal categories and
-    notions of computation", Math. Structures Comput. Sci. 7(5), 1997) is a
-    binoidal category — Structure/Binoidal.v — together with
+   本文件给出相关范畴论结构的定义与性质。
 
-      - a unit object [premon_I];
-      - unitor isomorphisms  lambda : I ⊗ x ≅ x   ([premon_unit_left])
-                             rho    : x ⊗ I ≅ x   ([premon_unit_right]);
-      - an associator alpha : (x ⊗ y) ⊗ z ≅ x ⊗ (y ⊗ z)  ([premon_assoc]);
-
-    such that the forward components of lambda, rho and alpha are CENTRAL
-    (Structure/Binoidal.v, [central]), each family is natural in every
-    variable SEPARATELY, and the triangle and pentagon coherence laws hold.
-    The iso orientations and the naturality-square orientations mirror
-    Structure/Monoidal.v exactly, so that a monoidal category yields a
-    premonoidal one field-for-field (Structure/Premonoidal/Monoidal.v).
-
-    Design of the field set:
-
-      - Naturality is one variable at a time.  In a binoidal category the
-        tensor is only separately functorial, so a jointly-natural square in
-        the style of Monoidal.v's [to_tensor_assoc_natural] is not the
-        primitive notion; the three one-variable associator squares
-        ([premon_assoc_natural_left]/[_middle]/[_right]) are.  Remarkably,
-        the JOINT square for the interleaved composite [composite_ff'] is
-        still derivable from them with no centrality hypothesis at all
-        ([premon_joint_assoc_natural] below).
-
-      - Only the forward (to) directions are data.  The from-direction
-        centralities follow by [central_iso_from], and the from-direction
-        naturality squares follow by conjugating the to-squares with the
-        isomorphisms ([premon_square_from]).  Keeping the class minimal
-        means fewer obligations for instance builders; the derived lemmas
-        below restore the full Monoidal.v-style surface.
-
-      - Centrality of the structural isomorphisms is what separates a
-        premonoidal category from a mere "binoidal category with coherent
-        isos": it makes the unitors and associator morphisms of the centre
-        Z(C), so that Z(C) becomes a genuine monoidal category
-        (Structure/Premonoidal/Centre.v), and it is exactly what the
-        one-sided interchange lemmas [composite_ff'_comp_l]/[_r] of
-        Structure/Binoidal/Central.v consume.
-
-    The [composite_ff']-phrased translation lemmas at the end of this file
-    ([premon_unit_left_natural_ff'], [premon_unit_right_natural_ff'],
-    [premon_triangle_ff'], [premon_pentagon_ff'], and the unitor from-forms)
-    restate the class fields with identity padding, which is the exact shape
-    [Build_Monoidal] needs when every morphism is central
-    (Structure/Premonoidal/Monoidal.v) and when the tensor is restricted to
-    the centre (Structure/Premonoidal/Centre.v). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Effects, interchange, and the premonoidal programme
 

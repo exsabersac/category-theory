@@ -28,16 +28,11 @@ Require Import Category.Instance.Two.Discrete.
 Require Import Category.Instance.Coq.
 Require Import Category.Structure.Limit.Absolute.
 
-(* NOTATION GUARD, and it is REQUIRED here rather than defensive.  Three
-   scopes declare [_ ^op] -- category, functor and adjunction -- and
-   Category.Functor.Opposite opens [functor_scope], so after the Require
-   block above a BINDER [{x y : J^op}] parses [J] as a functor and fails
-   with "The term J has type Category while it is expected to have type
-   ?C ⟶ ?D", naming neither culprit.  Measured: deleting the line below
-   breaks this file at its first opposite-category binder.  Contrast
-   Theory/Universal/Arrow/Dual.v, whose own guard is DEFENSIVE because
-   every [C^op] there sits in an argument or ascription position, which
-   [Bind Scope category_scope with Category] already rescues. *)
+(*
+   本文件给出极限相关。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Open Scope category_scope.
 
 Generalizable All Variables.

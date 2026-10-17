@@ -9,54 +9,13 @@ Require Import Category.Structure.Monoidal.Symmetric.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/braided+monoidal+category
+(*
+ nLab: https://ncatlab.org/nlab/show/braided+monoidal+category
 
-   Derived coherence between the braiding and the unitors. In any braided
-   monoidal category the two unit isomorphisms are exchanged by the braiding:
+   本文件给出相应结构的证明。
 
-       rho ≈ lambda ∘ beta        ([braid_unit_left]),
-       lambda ≈ rho ∘ beta        ([braid_unit_right]),
-
-   i.e. ρ_x ≈ λ_x ∘ β_{x,I} and λ_x ≈ ρ_x ∘ β_{I,x}. This is Proposition 2.1
-   of Joyal & Street, "Braided tensor categories" (Adv. Math. 102, 1993). Like
-   the Kelly lemmas of Structure/Monoidal/Proofs.v, these are not part of the
-   braided data: they follow from the hexagon identity, the triangle identity,
-   and naturality of the braiding and the unitors.
-
-   The argument instantiates the first hexagon at (x, I, I), post-composes
-   with id ⨂ λ, and contracts both sides with the triangle identities and
-   naturality until the braid-free composite ρ remains; the auxiliary
-   tensorings by id[I] are then cancelled with [tensor_id_left_inj] and the
-   invertible structural maps.
-
-   The proofs are carried out for a *symmetric* monoidal category: this
-   library's [BraidedMonoidal] class exposes the braiding as a natural family
-   of morphisms without an inverse, so the cancellation of a trailing
-   [braid ⨂ id] is obtained from the symmetry law [braid_invol]. (In the
-   braided-but-not-symmetric case the same argument goes through once the
-   braiding is packaged as an isomorphism; every consumer in this development
-   is symmetric.)
-
-   This supplies the coherence needed to package the derived right strength
-   of a strong monad over a symmetric base (ρ ≈ λ ∘ β):
-   Monad/Strong/Symmetric.v consumes it to build [rstr_RightStrongFunctor]
-   and [rstr_RightStrongMonad].  It also discharges the braid-unitor
-   compatibilities that a cartesian monoidal structure must satisfy.
-
-   Beyond the braid-unitor coherence, this file hosts the shared
-   monoidal/symmetric coherence toolkit consumed by the copy-discard stack
-   (the files under Structure/Monoidal/CopyDiscard) and the collapse theorems
-   (Structure/Monoidal/Collapse.v): iso-cancellation lemmas in
-   mid-composition ("cons") position, bimap fusion and associator-naturality
-   shuffles with solved pentagon and triangle forms, and the four-object
-   middle interchange [swap_inner] with its braiding, associativity and unit
-   coherences.  Everything is stated for a bare [Monoidal] or
-   [SymmetricMonoidal] structure — deliberately independent of the
-   copy-discard and hypergraph stacks, so later developments can import the
-   kit without dragging in those dependencies.  (The identification of
-   [swap_inner]'s diagonal with Hypergraph.v's [mid_swap_inv] lives in
-   Structure/Monoidal/CopyDiscard/Deterministic.v for exactly this
-   reason.) *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------ *)
 

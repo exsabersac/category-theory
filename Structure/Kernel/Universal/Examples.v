@@ -29,64 +29,11 @@ Generalizable All Variables.
 
 (** * Witnesses for kernels as universal elements *)
 
-(* Companion to Structure/Kernel/Universal.v.  Two witnesses, one positive
-   and one negative, and they are the two halves of the same point.
+(*
+   本文件给出例子。
 
-   POSITIVE.  [Instance/Ab.v] already builds the kernel of a homomorphism
-   of abelian groups as a SUB-SETOID -- [AbKernel f], with its inclusion
-   [ab_kernel_incl f] -- and uses it as the probe object for the monic
-   half of Mac Lane's §I.7 proposition.  What it never states is that this
-   object IS a kernel in the categorical sense, i.e. that it satisfies
-   [Structure/Kernel.v]'s [IsKernel].  [ab_kernel_IsKernel] supplies that,
-   and with it the whole apparatus of the companion file lands on a
-   concrete algebraic category: the kill-f presheaf of a homomorphism of
-   abelian groups is representable, and its representing object is the
-   subgroup of elements killed by f.
-
-   (This corrects the issue's own "Current state", which says that none of
-   the remark's concrete algebraic categories exists in tree to
-   instantiate the result.  All four do -- Instance/Ab.v, Instance/Grp.v,
-   Instance/Rng.v, Instance/Mod.v -- and Ab and RMod already carry
-   concrete kernel OBJECTS.  What was genuinely missing is the universal
-   property of those objects, which is supplied here.)
-
-   The witness is proved non-degenerate rather than asserted to be so.
-   [Ab_Z2] is Z/2 on [bool] under exclusive-or, [ab_parity] the parity
-   homomorphism Z ⟶ Z/2, and its kernel is the even integers: a PROPER,
-   NONTRIVIAL subgroup -- [ab_parity_kernel_has_two] exhibits two distinct
-   elements of it and [ab_parity_kernel_proper] shows 1 is not one of
-   them.  So neither the presheaf nor its representing object is a
-   singleton, and the universal-element clause is not vacuously satisfied.
-   The mediator computes: [ab_parity_med_computes] evaluates the unique
-   factorization of the doubling map at 3 and gets 6, by [eq_refl].
-
-   NEGATIVE.  [Rng_no_zero_morphisms] proves that Mac Lane's Rng -- unital
-   rings, unit-preserving homomorphisms -- has NO zero-morphism family
-   at all, hence no zero object, hence no kernels in the sense of
-   Structure/Kernel.v.  The argument needs nothing about zero morphisms
-   specifically: the terminal ring is the zero ring, in which 1 ≈ 0, and a
-   homomorphism out of it into Z would carry that equation to 1 = 0 in Z.
-   So the hom-set Rng(0-ring, Z) is EMPTY, and in particular contains no
-   distinguished morphism.
-
-   That is what makes the companion file's [ForkPresheaf] a necessity
-   rather than a generalization for its own sake: over Rng the kill-f
-   presheaf cannot even be written down, while the fork presheaf of a
-   parallel pair can, and [equalizer_universal_element_iso] applies to it
-   unchanged.  [Rng_fork_presheaf] records that the presheaf is formable
-   at Rng, which is the whole content of the "survives without a zero
-   object" clause.
-
-   A UNIVERSE NOTE, since it dictates the shape of everything below.
-   [Ab_Zero@{u}] carries ONE universe parameter where [Ab@{u u0}] carries
-   two: it pins the second to [Set].  Inside a [Section], a
-   [Context {A B : AbObject}] fixes that second universe rigidly before
-   [Ab_Zero] is ever mentioned, and the later mention is then rejected
-   ("Cannot enforce Set = ...", measured).  Every definition below is
-   therefore stated at TOP LEVEL with its own [{A B : AbObject} (f)]
-   binders, so that the objects' universes and [Ab_Zero]'s are unified in
-   one elaboration.  This is a restriction inherited from Instance/Ab.v,
-   not one introduced here, and nothing below shows it unavoidable. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* WHAT IS DELIVERED
 

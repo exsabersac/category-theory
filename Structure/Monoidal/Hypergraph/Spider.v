@@ -15,41 +15,15 @@ Require Import Category.Structure.Monoidal.Hypergraph.
 
 Generalizable All Variables.
 
-(** * Core spider lemmas for hypergraph categories
-
-    In a hypergraph category, each object [X] carries a special commutative
-    Frobenius algebra (SCFA).  "Spider" diagrams — vertices with arbitrarily
-    many input and output legs built from [scfa_mu] / [scfa_eta] /
-    [scfa_delta] / [scfa_epsilon] — collapse to canonical normal forms that
-    depend only on the leg count, not on how the spider was assembled.
-
-    References:
+(*
       nLab:      https://ncatlab.org/nlab/show/Frobenius+algebra
       nLab:      https://ncatlab.org/nlab/show/classical+structure
       Wikipedia: https://en.wikipedia.org/wiki/ZX-calculus
       Wikipedia: https://en.wikipedia.org/wiki/Frobenius_algebra
 
-    The spider [S_{n,m} : X^⨂n ~> X^⨂m] (here [canonical_spider X n m]) is the
-    canonical SCFA morphism with [n] input legs and [m] output legs.  The
-    SPIDER FUSION law — composing two same-object spiders along a shared leg
-    merges them, [S_{k,m} ∘ S_{n,k} ≈ S_{n,m}] — is exactly the equational
-    content powered by the SCFA laws below: associativity/coassociativity
-    reassociate the legs, the Frobenius law turns a δ-then-μ into the I-shape,
-    and the special law [μ ∘ δ ≈ id[X]] ([spider_collapse]) cancels the shared
-    internal wire.  (In ZX-calculus terms these are the green/red spiders and
-    their fusion rule; this file works in a plain symmetric monoidal category,
-    without the dagger or phases.)
+   本文件给出幺半相关结构。
 
-    The full "spider theorem" (Lack's normal form for SCFA expressions) is
-    a non-trivial induction and is deferred to a later milestone.  This file
-    provides the workhorse lemmas that downstream proofs typically reach for:
-
-      - [spider_frobenius]    — the Frobenius law at the [scfa_*] level
-      - [spider_frobenius_sym] — its dual via [frob_law_right]
-      - [spider_collapse]     — specialness ([μ ∘ δ ≈ id])
-      - [spider_mu_assoc]     — monoid associativity of [scfa_mu]
-      - [spider_3_to_1]       — the 3-into-1 spider, the workhorse case
-      - [spider_delta_coassoc] — comonoid associativity of [scfa_delta]
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 Section Spider.

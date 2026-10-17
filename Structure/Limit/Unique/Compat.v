@@ -21,44 +21,11 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * Essential uniqueness of limits: reconciliations
+(*
+   本文件给出极限相关。
 
-    Structure/Limit/Unique.v proves Riehl's Proposition 3.1.7 from the
-    mediator calculus.  This satellite ties the three pre-existing
-    routes to it, so they stop being unrelated developments:
-
-    - [equalizer_unique] (Structure/Equalizer/Fork.v) and
-      [pullback_unique] (Structure/Pullback.v) are the hand-rolled
-      shape-specific results, each concluding a bare ≅ from its own
-      universal property.  Through the in-tree bridges
-      ([is_equalizer_limit], [Pullback_from_Universal]) both are shown
-      to AGREE with [limit_unique_iso]: the isomorphisms have the same
-      forward component ([equalizer_unique_agrees],
-      [pullback_unique_agrees]).  Their terminating [Qed]s become
-      [Defined]s for exactly this purpose — the statements say nothing
-      about the components, so agreement is expressible only against
-      the transparent terms; no proof text changed.  In particular the
-      general theorem strictly subsumes both: it adds the
-      leg-commutation equations and the uniqueness clause the bare ≅
-      lacked.
-
-    - [univ_property_unique_up_to_unique_iso]
-      (Structure/UniversalProperty.v) is the generic representability
-      route, in tree instantiated only at terminal and initial objects
-      (Structure/UniversalProperty/Terminal.v) and never at limits —
-      the gap issue #950 records.  [limit_unique_up_to_transport_iso]
-      takes it at [LimitIsUniversalProperty]: two limit witnesses of one diagram
-      are related by an isomorphism (in C^op) UNIQUE among those
-      transporting one witness's representation to the other's.  The
-      identification of that transport with precomposition of the limit
-      legs — which would let the generic isomorphism be compared
-      componentwise with [limit_unique_iso] — is NOT proved here: the
-      generic route's representation equivalence is assembled by hint
-      automation, and no in-tree lemma characterises its action on leg
-      families (the gap issue #950 itself documents).  What this file
-      contributes is the instantiation, so the generic statement is
-      finally available at limits at all; the componentwise comparison
-      remains open alongside that characterisation. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Equalizers: the elementary uniqueness agrees *)
 

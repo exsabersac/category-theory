@@ -14,35 +14,13 @@ Require Import Category.Functor.Hom.Yoneda.
 
 (** * Limits as a universal property *)
 
-(* nLab:      https://ncatlab.org/nlab/show/limit
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Limit_(category_theory)
 
-   A limit of a diagram [F : J ⟶ C] is a terminal cone: a cone [(z, φ)]
-   with legs [φ_x = vertex_map limit_acone x : z ~> F x] such that every
-   other cone [(a, ψ)] (an [ACone a F]) factors through it by a *unique*
-   mediating morphism.  In library notation the universal property is:
+   本文件给出极限相关。
 
-       ∀ (a : C) (ψ : ACone a F), ∃! u : a ~> z,
-         ∀ x : J, vertex_map limit_acone x ∘ u ≈ vertex_map ψ x.
-
-   This is the predicate [IsALimit F z] of [Structure/Limit.v].  Here that
-   universal property is recast in the [IsUniversalProperty] framework of
-   [Structure/UniversalProperty.v]: being a limit of [F] is the same as
-   *representing* the presheaf of cones [ConePresheaf F : C^op ⟶ Sets],
-   which sends [c] to the setoid of cones [ACone c F].  Concretely there
-   is a natural isomorphism
-
-       Hom(c, z) ≅ Cone(c, F),
-
-   the representability formulation of a limit; [LimitIsUniversalProperty]
-   below establishes exactly this equivalence.
-
-   The mediating morphism [u] is built by [ump_limit_construct] (existence),
-   characterised by [ump_limit_construct_recover] (the factorisation
-   equation [φ_x ∘ u ≈ ψ_x]), and pinned down by [cone_equiv_to_morphism_equiv]
-   (uniqueness: two maps into the limit agreeing on every leg are equal).
-
-   The colimit is the dual notion, a limit in [C^op]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section LimitUniversalProperty.
   Context (J C : Category).

@@ -12,39 +12,13 @@ Generalizable All Variables.
 
 (** * Derived identities for group objects *)
 
-(* nLab:      https://ncatlab.org/nlab/show/group+object
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Group_object
 
-   A group object on [grp : C] (see [Structure.Group]) is a monoid object
-   [(grp, mappend, mempty)] equipped with an inversion map [inverse : grp ~> grp]
-   satisfying the two-sided inverse laws
+   本文件给出相应结构的证明。
 
-     mappend ∘ inverse ⨂ id ∘ ∆ grp ≈ mempty ∘ eliminate   (left_inverse)
-     mappend ∘ id ⨂ inverse ∘ ∆ grp ≈ mempty ∘ eliminate   (right_inverse)
-
-   where ∆ is the cartesian diagonal and [eliminate] is the unique map to the
-   tensor unit (terminal object). These are exactly the diagrammatic inverse
-   axioms of the nLab/Wikipedia definition, with [mempty ∘ eliminate] playing
-   the role of the constant map e ∘ p sending everything to the identity element.
-
-   This file proves the two standard group facts that follow from those axioms,
-   each carried out diagrammatically in an arbitrary cartesian monoidal category:
-
-     - [left_inverse_unique]: uniqueness of (left) inverses — if
-       [mappend ∘ f_inv ⨂ f ∘ ∆ X ≈ mempty ∘ eliminate], i.e. f_inv is a
-       left inverse of f, then f_inv ≈ inverse[grp] ∘ f. This is the internal
-       form of "yx = I implies y = x⁻¹".
-
-     - [mappend_inverse]: the inversion map is an anti-homomorphism,
-       mappend ∘ inverse ⨂ inverse ≈ inverse ∘ mappend ∘ braid, i.e.
-       a⁻¹·b⁻¹ = (b·a)⁻¹, the internal form of the classical (xy)⁻¹ = y⁻¹x⁻¹.
-       Wikipedia/nLab do not spell these consequences out as separate diagrams;
-       they are the standard derived group identities.
-
-   The [CartesianMonoid] section first records two helper identities about a
-   plain monoid object (collapsing a [mempty ∘ eliminate] half of a diagonal to
-   the identity), which the group proofs reuse. Each lemma below is annotated
-   with the ordinary-algebra calculation it mirrors. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CartesianMonoid.
 

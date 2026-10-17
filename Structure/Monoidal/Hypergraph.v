@@ -15,47 +15,15 @@ Require Import Category.Theory.Algebra.SpecialCommutativeFrobenius.
 
 Generalizable All Variables.
 
-(** * Hypergraph categories
-
-    A hypergraph category is a symmetric monoidal category [(C, ⨂, I, σ)]
-    equipped with a special commutative Frobenius algebra (SCFA) on every
-    object, such that the SCFA on [X ⨂ Y] is canonically constructed from
-    those on [X] and [Y].
-
-    Following Carboni–Walters and Fong–Spivak, the canonical SCFA on the
-    tensor is built from the "middle-interchange" isomorphism
-    [(X ⨂ Y) ⨂ (X ⨂ Y) ≅ (X ⨂ X) ⨂ (Y ⨂ Y)] obtained by braiding the
-    middle two factors:
-
-      μ_{X⨂Y} : (X⨂Y) ⨂ (X⨂Y) -mid-> (X⨂X) ⨂ (Y⨂Y) -μ⊗μ-> X⨂Y
-      η_{X⨂Y} : I = I⨂I -η⊗η-> X⨂Y
-      δ_{X⨂Y} : X⨂Y -δ⊗δ-> (X⨂X) ⨂ (Y⨂Y) -mid-> (X⨂Y) ⨂ (X⨂Y)
-      ε_{X⨂Y} : X⨂Y -ε⊗ε-> I⨂I = I
-
-    Each of these is definable in terms of the [braid], [tensor_assoc],
-    [unit_left] and [unit_right] structure of the symmetric monoidal
-    category.
-
-    Mathematical comments:
-
-    - The middle-interchange iso is what nLab denotes "Tau" or
-      "swap-inner-two-of-four".
-    - On the unit object [I] the canonical SCFA is trivial:
-      μ = unit_left, η = id, δ = unit_left⁻¹, ε = id.  These four
-      coherence axioms are stated as the [scfa_unit_*] fields of the
-      [Hypergraph] class.  Fong–Spivak prove this is the *only* Frobenius
-      structure on [I] with η_I = id = ε_I (and λ_I = ρ_I on the unit, so
-      [unit_left] and [unit_right] agree there).
-
+(*
     nLab:      https://ncatlab.org/nlab/show/hypergraph+category
     Wikipedia: no dedicated article (the underlying special commutative
-               Frobenius algebra is covered at
-               https://en.wikipedia.org/wiki/Frobenius_algebra)
     Reference: Fong & Spivak, "Hypergraph Categories",
-               J. Pure Appl. Algebra 223(11):4746–4777, 2019
-               (arXiv:1806.08304) — the compatibility law
-               μ_{X⨂Y} = (μ_X ⨂ μ_Y) ∘ (1_X ⨂ σ_{Y,X} ⨂ 1_Y) is the
-               [scfa_tensor_mu]/[mid_swap] coherence below. *)
+
+   本文件给出幺半相关结构。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Hypergraph.
 

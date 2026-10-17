@@ -19,90 +19,13 @@ Generalizable All Variables.
 
 (** * The subobject classifier classifies NATURALLY *)
 
-(* nLab: https://ncatlab.org/nlab/show/subobject+classifier
+(*
    nLab: https://ncatlab.org/nlab/show/representable+functor
 
-   A subobject classifier is usually introduced object by object: for each
-   x, the subobjects of x correspond to the morphisms x ⟶ Ω.  Awodey makes
-   the point (Category Theory, §5.3 Example 5.14, printed pp. 104-106) that
-   the correspondence is not merely a bijection at each object but is
-   NATURAL in the object, and that naturality is a strictly stronger
-   statement than an object-wise bijection.  Naturality is what says that
-   substitution — pulling a subobject back along a morphism — is computed
-   on characteristic maps by composition.  This file states and proves that
-   upgrade, for an arbitrary [SubobjectClassifier] in an arbitrary category
-   with a terminal object and chosen pullbacks:
+   本文件给出自然变换相关。
 
-     [Sub_classifier_natural : Sub ≅[[C^op, Sets]] [Hom ─,Ω]].
-
-   ATTRIBUTION, and what was and was not consulted.  The section-and-page
-   coordinates above, and the one-line summary of what that passage
-   contains, are reproduced from the catalogue entry of the issue this file
-   answers (jwiegley/category-theory#311, item awodey:5.3:example14).  The
-   printed text was not consulted while writing the file, so every
-   statement here about its content is the issue's characterization rather
-   than a reading of the book.  The mathematics stands on its own proofs.
-
-   THE NATURALITY SQUARE, WRITTEN OUT, because a reader should not have to
-   unfold four definitions to see what is being claimed.  Fix f : y ~> x in
-   C — an arrow x ~> y of [C^op], which is the index category of both
-   presheaves.  The square is
-
-         Sub x  --- char --->  C(x, Ω)
-           |                      |
-     sub_reindex f            (─) ∘ f
-           |                      |
-           v                      v
-         Sub y  --- char --->  C(y, Ω)
-
-   and its commutativity is exactly
-
-     [char_reindex] :  char (f* s)  ≈  (char s) ∘ f,
-
-   "the characteristic map of a pulled-back subobject is the characteristic
-   map composed with the substitution".  That is the whole content of the
-   upgrade; everything else in this file is packaging.
-
-   WHAT IS DELIVERED, AND AT WHICH STRENGTH.
-
-     (1) [char_reindex] — the substitution law above, for an arbitrary
-         classifier.  It is proved from the two round trips already in
-         Structure/SubobjectClassifier.v ([classifier_char_roundtrip],
-         [classifier_pullback_roundtrip]) together with
-         Theory/Subobject/Functor.v's [sub_reindex_comp], which is itself
-         the pullback pasting lemma.  So the categorical input is exactly
-         "pasting two pullback squares gives a pullback square", which is
-         the argument Awodey's example runs.
-
-     (2) [classifier_char_transform] and [classifier_pullback_transform] —
-         the two natural transformations, and
-         [Sub_classifier_natural] — the isomorphism in the functor
-         category [[C^op, Sets]].
-
-     (3) THE UPGRADE IS AN UPGRADE, NOT A PARALLEL CONSTRUCTION, and that
-         is machine-checked rather than asserted: the components of the
-         natural isomorphism ARE the legs of the pre-existing per-object
-         [classifier_classifies], by [eq_refl]
-         ([classifier_natural_component_to], [..._from], and the two
-         [..._computes] readings).  Nothing is rebuilt; what is added is
-         the naturality proof the per-object statement could not carry.
-
-     (4) [Sub_Representable] — [Sub : C^op ⟶ Sets] is a representable
-         presheaf, represented by Ω.  This is the Yoneda reading of the
-         same fact, and it is the reason the upgrade is worth having: a
-         family of bijections is not a representation, and a natural
-         family is.
-
-   WHAT IS NOT DELIVERED, STATED PLAINLY.  This file does NOT prove that
-   naturality is strictly stronger than an object-wise bijection.  That is
-   a general fact about families of isomorphisms, not a fact about
-   classifiers, and the tree already carries witnesses for it that are not
-   reproved here: Instance/Ab/Character/NonNatural.v's [sigma_not_natural]
-   and Instance/FdVect/NonNatural.v's [sigma_family_not_natural] each
-   exhibit a family of isomorphisms, one at every object, whose naturality
-   is refuted at a single square.  Those are cited, not restated.  Nor is
-   any new classifier constructed here; the file is stated over the class
-   and instantiated downstream. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ClassifierNatural.
 

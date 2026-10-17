@@ -10,46 +10,13 @@ Require Import Category.Structure.Limit.Preservation.
 
 Generalizable All Variables.
 
-(** * Essential uniqueness of limits and colimits
-
-    Riehl, "Category Theory in Context", 2nd ed., §3.1, Proposition
-    3.1.7 (printed p. 84) [riehl:3.1:prop7]: any two limit cones over a
-    common diagram are related by a UNIQUE isomorphism of apexes
-    commuting with the legs.  Both cones are terminal objects of the
-    category of cones, and terminal objects form a contractible
-    groupoid; the apex may still have non-trivial automorphisms, but
-    only the identity commutes with a fixed limit cone.
+(*
     nLab: https://ncatlab.org/nlab/show/limit
 
-    The proof is the leg-level argument, taken DIRECTLY from the
-    mediator calculus of Structure/Limit/Preservation.v —
-    [limit_med] / [limit_med_commutes] / [limit_med_unique] /
-    [limit_med_eq] — with no detour through representability: each
-    witness's cone factors through the other by a mediator, the two
-    composites agree with the identity on every leg and are therefore
-    identities ([limit_med_eq]), and the leg-commutation equations are
-    the mediators' own defining property.  Riehl's actual content is
-    the UNIQUENESS CLAUSE: the isomorphism is unique among morphisms
-    commuting with the two leg families ([limit_unique_iso_unique]),
-    with the automorphism remark as its one-witness corollary
-    ([limit_endo_id]).  The colimit statements are literal op-instances
-    of the limit ones — each is the corresponding limit constant at
-    (J^op, C^op, F^op), re-typed through Preservation.v's covariant
-    [colimit_inj] vocabulary; the forward mediator is even
-    definitionally the opposite side's backward one
-    ([colimit_unique_to_is_op]).  Not a second proof.
+   本文件给出极限相关。
 
-    Downstream reconciliation lives in Structure/Limit/Unique/Compat.v:
-    the shape-specific [equalizer_unique] (Structure/Equalizer/Fork.v)
-    and [pullback_unique] (Structure/Pullback.v) agree with this
-    theorem through the in-tree bridges, and the never-instantiated
-    generic route [univ_property_unique_up_to_unique_iso] — in tree
-    instantiated only at terminal/initial objects
-    (Structure/UniversalProperty/Terminal.v) — is taken at
-    [LimitIsUniversalProperty] there, its first instantiation at
-    limits.  (Split into a satellite so this
-    file stays importable from the elementary files' own dependency
-    level.) *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** A limit witness, read as a competing cone at its own apex *)
 

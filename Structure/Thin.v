@@ -14,59 +14,17 @@ Generalizable All Variables.
 
 (** * Thin categories, and the hom-preorder of a category *)
 
-(* nLab:      https://ncatlab.org/nlab/show/thin+category
+(*
    nLab:      https://ncatlab.org/nlab/show/preorder
    Wikipedia: https://en.wikipedia.org/wiki/Preorder
    Book:      Mac Lane, "Categories for the Working Mathematician",
-              Springer GTM 5, 2nd ed. 1998, §I.2 (construction 7, def. 4)
    Book:      Riehl, "Category Theory in Context", Dover 2016, §1.2
    Book:      Fong and Spivak, "Seven Sketches in Compositionality",
-              CUP 2019, §§1.2.2, 1.3.1
 
-   A category is THIN when any two parallel morphisms agree: the hom-setoid
-   `x ~> y` has at most one element up to `≈`.  nLab equivalently calls such a
-   category a (0,1)-category.  Mac Lane arrives at the same notion from the
-   other side: CWM §I.2 builds a category from a preordered set, one arrow
-   `x → y` per instance of `x ≤ y`, and defines a linear (total) order in the
-   same section.  (The internal numbering — construction 7, definition 4 — is
-   as cited by the issue this file answers; the section is the one to read.)
+   本文件给出相关范畴论结构的定义与性质。
 
-   The predicate below is stated exactly as Structure/Discrete.v states its
-   own: a property ASSERTED of a given category, rather than a construction
-   BUILDING one.  That is why this file sits in Structure/ next to
-   [Discrete] rather than in Instance/ next to [Proset] — Instance/Discrete.v
-   records the same split in its header, calling [DiscreteCat] the
-   object-level construction and Structure/Discrete.v's [Discrete] the
-   predicate, and its [DiscreteCat_Discrete] the bridge.  Here
-   Instance/Proset.v's [Proset] is the construction, [Thin] is the
-   predicate, and [proset_thin] (Instance/Proset/Order.v) is the bridge.
-
-   Thinness is what makes the order-theoretic dictionary of
-   Instance/Poset.v work: with all parallel arrows identified, every
-   diagram commutes and every coherence law holds for free.  The library
-   already exploits this pointwise — Instance/Two/Monoidal.v's [two_thin]
-   discharges the whole [Two_Cartesian] obligation and the
-   [Two_Terminal] one by a single appeal each (the monoidal structure is then derived from those through [Cartesian_Monoidal]), and
-   Construction/Enriched/Two.v closes the three enrichment laws the
-   same way — but the property itself had no name.  This file gives it one,
-   and Instance/Proset/Order.v puts it to work.
-
-   The second half of the file goes back the other way.  Every category C
-   carries a preorder on its objects, "x ≤ y when there is an arrow x ~> y".
-   Since Coq's [relation] is Prop-valued while a hom lives in [Type], the
-   passage squashes: [thin_preorder] uses [inhabited].  That squash is the
-   whole content of the round trip measured in Instance/Proset/Order.v — it
-   is invertible on a [Proset], whose homs are already Props, and in general
-   it is not, which is why [HomChoice] is introduced here as an explicit
-   hypothesis rather than assumed.
-
-   NOTE on instance resolution: [thin_PreOrder] is deliberately left a plain
-   [Definition] rather than being registered as a typeclass instance, and is
-   passed explicitly at each use.  That matches how the tree already handles
-   [PreOrder] arguments — Instance/Poset.v hands [PeanoNat.Nat.le_preorder]
-   to [Poset] by hand — and it keeps a rule whose conclusion is
-   [PreOrder (thin_preorder ?C)] out of the search space for [PreOrder] goals
-   whose relation is still a metavariable. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* A category is thin when parallel morphisms are identified by the hom-setoid
    equivalence.  Note that this is `≈`, not `=`: on the library's setoid

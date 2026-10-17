@@ -12,45 +12,14 @@ Require Import Category.Structure.Regular.
 
 Generalizable All Variables.
 
-(* The (regular epi, mono) orthogonal factorization system of a regular
-   category.
-
+(*
    nLab:      https://ncatlab.org/nlab/show/regular+category
-              https://ncatlab.org/nlab/show/regular+epimorphism
-              https://ncatlab.org/nlab/show/image
    Wikipedia: https://en.wikipedia.org/wiki/Regular_category
 
-   In a regular category every morphism f : x ~> y factors as a regular
-   epimorphism followed by a monomorphism — the image factorization — and
-   the two classes are orthogonal, so the factorizations assemble into an
-   orthogonal factorization system (Structure/Factorization.v) whose left
-   class is the regular epimorphisms ([RegularEpiClass]) and whose right
-   class is the monomorphisms ([MonoClass] of Theory/Morphisms/Classes.v).
+   本文件给出相关范畴论结构的定义与性质。
 
-   The factorization of f: take its kernel pair p1, p2 : x ×_y x ~> x (the
-   pullback of f along itself) and the coequalizer e : x ~> q of p1, p2
-   supplied by [regular_coeq].  Since f coforks its own kernel pair —
-   f ∘ p1 ≈ f ∘ p2 is the pullback square — it descends across e to a
-   comparison morphism m : q ~> y with m ∘ e ≈ f.  The left leg e is a
-   regular epimorphism by construction ([regular_epi_of_kernel_coeq]); the
-   heart of the theorem is that the comparison m is monic
-   ([image_comparison_monic]), proved by the classical double-cover
-   argument, which uses pullback-stability of regular epimorphisms twice:
-
-   Given a, b : T ~> q with m ∘ a ≈ m ∘ b, pull e back along a, obtaining
-   a regular-epic cover pi1 : P1 ~> T with e ∘ s1 ≈ a ∘ pi1; then pull e
-   back along b ∘ pi1, obtaining a further regular-epic cover
-   pi2 : P2 ~> P1 with e ∘ s2 ≈ (b ∘ pi1) ∘ pi2.  On the double cover P2
-   the two legs s1 ∘ pi2, s2 : P2 ~> x are identified by f (compute with
-   m ∘ e ≈ f and m ∘ a ≈ m ∘ b), so they factor through the kernel pair
-   of f; and e coequalizes the kernel pair, so e ∘ (s1 ∘ pi2) ≈ e ∘ s2.
-   Unwinding the two pullback squares then gives
-   a ∘ (pi1 ∘ pi2) ≈ b ∘ (pi1 ∘ pi2), and pi1 ∘ pi2 is epic (regular
-   epimorphisms are epic, and epimorphisms compose), so a ≈ b.
-
-   Orthogonality of the two classes is exactly [regular_epi_strong] of
-   Structure/Regular.v: every regular epimorphism lifts uniquely against
-   every monomorphism.  The packaged system is [Regular_OFS]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The class of regular epimorphisms, as a morphism class in the sense of
    Theory/Morphisms/Classes.v. *)

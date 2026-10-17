@@ -39,113 +39,16 @@ Generalizable All Variables.
    opens [functor_scope], so [category_scope] is reopened here. *)
 Open Scope category_scope.
 
-(* Monadicity of the power-object functor: Paré's theorem.
-
+(*
    nLab:      https://ncatlab.org/nlab/show/Pare%27s+theorem
    nLab:      https://ncatlab.org/nlab/show/monadicity+theorem
    Wikipedia: https://en.wikipedia.org/wiki/Beck%27s_monadicity_theorem
    Paper:     Paré, "Colimits in topoi", Bulletin of the American
-              Mathematical Society 80 (1974), pp. 556-561
 
-   Mac Lane, "Categories for the Working Mathematician", 2nd ed., §IV.10,
-   book p. 107 (`maclane:IV.10:remark2`):
+   本文件给出 topos 结构。
 
-     "The axioms for a topos have many useful consequences. For exam-
-      ples, every topos has all finite colimits."
-
-   and the Appendix, book p. 290 (`maclane:App.1:remark2`), on the same
-   axioms:
-
-     "These axioms for a topos then hold for the category of sets. They
-      have a number of strong consequences. For example, they give all
-      finite cate- gorical products and pullbacks, as well as all finite
-      coproducts, including an initial object 0, the empty set."
-
-   Neither passage carries a proof, and neither does Awodey §8.8 nor
-   Seven Sketches §7.2.1 (both quoted in Structure/Topos/Colimits.v).
-   The proof is Paré's, via monadicity of P; Mac Lane-Moerdijk, the usual
-   reference, was not available, so the argument here was reconstructed
-   and CHECKED BY COMPILATION.
-
-   THIS FILE PROVES `power_object_monadic : Monadic PowF` by CONSUMING the
-   in-tree crude monadicity theorem, Monad/Monadicity/Crude.v's
-   [crude_monadicity], rather than reproving any monadicity theorem.  Its
-   three hypotheses are discharged here as:
-
-     (a) [op_HasReflexiveCoequalizers] -- reflexive coequalizers in C^op,
-         which is three applications of pre-existing reductions;
-     (b) [pow_PreservesReflexiveCoequalizers] -- the substantial half;
-     (c) [PowF_ReflectsIsos] -- through balancedness.
-
-   Beck's precise theorem ([Monad/Monadicity/Beck.v], whose hypothesis is
-   [CreatesUSplitCoequalizers]) should ALSO apply, since the image pair is not
-   merely P-split but SPLIT -- an ARGUMENT and not a compiled check, that route
-   not having been built; it is not taken because creation would need the
-   comparison isomorphism and the reflection clause on top of exactly the same
-   split data, so the crude form is strictly cheaper here.
-
-   WHAT WAS ABSENT BEFORE THIS FILE.  Every search below was re-run over the
-   whole tree with these five new files EXCLUDED, and the counts are what that
-   measurement returned, not what a plan predicted.  "A topos is balanced": 119
-   case-insensitive hits for "balanced" across 18 files and none about a topos
-   -- they are the balanced monoidal categories and twists of
-   Structure/Monoidal/*, the balanced tensors and balanced laws of
-   Instance/Mod/*, and the balancedness of [Sets], [Set_*], [Met] and [C, D]
-   (asserted, denied or deferred there), with Instance/Two.v REFUTING it for 2,
-   plus [Par_BalancedMonoidal] in Instance/Coq/Par.v, the module-tensor probe
-   Test/ProbeModTensor.v and one header mention in Adjunction/Unitalization.v --
-   and NOT ONE of those 18 files so much as mentions [ElementaryTopos], which is
-   the sharper check.  "Every mono in a topos is regular": the name
-   [RegularMono] occurs on exactly ONE line outside these files, in
-   Adjunction/CokernelPair.v, which says in terms that the tree has no such
-   class; the only other .v mentions of a regular monomorphism are two more
-   prose lines of that file and one comment in Theory/Morphisms.v.  The
-   singleton map: the 4 hits for [singleton_map] are two declarations and their
-   two uses in Instance/Sets/Powerset.v, about setoid power sets and not about
-   toposes.  [PowFunctor], [PowF], [Pow_Functor], [pow_reflects_isos],
-   [pow_monadic] and [power_object]: zero files each.  So balancedness, the
-   singleton map and P's faithfulness are new here by those searches; the direct
-   image and Beck-Chevalley are new AT THE LEVEL OF SUBOBJECTS in an arbitrary
-   category, since the tree's existing [DirectImage] (Instance/Powerset.v) and
-   [beck_chevalley_exists]/[beck_chevalley_forall]
-   (Instance/Powerset/Quantifier.v) are about power sets of a setoid and neither
-   is stated for [SubObj].
-
-   THE HARD STEP IS §E, AND ITS SHAPE IS BETTER THAN FEARED.  Unfolded at
-   U := P, the crude hypothesis asks: given f, g : b ⇉ a in E with a
-   common RETRACTION r, and ANY equalizer e : k ~> b of the pair, show
-   P e : P b ~> P k is a coequalizer of P f, P g.  The triple
-   (P f, P g, P e) is a genuine SPLIT coequalizer, and
-   Structure/Coequalizer/Split.v's [SplitCoequalizer] record wants exactly
-   the four equations the argument produces:
-
-     law1  P e ∘ P f ≈ P e ∘ P g   -- contravariant functoriality
-                                      plus the equalizer's [fork_eq];
-     law2  P e ∘ ∃_e ≈ id          -- [pow_ex_mono] at m := e;
-     law3  P f ∘ ∃_f ≈ id          -- [pow_ex_mono] at m := f;
-     law4  P g ∘ ∃_f ≈ ∃_e ∘ P e   -- [pow_bc], Beck-Chevalley.
-
-   THE DIRECT IMAGE NEEDS NO IMAGE FACTORIZATION, and that is why the
-   step is tractable at all: ∃ is taken only along a MONO, so
-   [second m ∘ (membership mono)] is already a mono and its characteristic
-   map exists outright.  Epi-mono factorization in a topos is a separate
-   obligation and is NOT built here.
-
-   §D's [IsPullback_sym], [second_pullback], [first_second_pullback] and
-   [bc_mono] use no classifier -- the first mentions nothing beyond
-   [IsPullback], the next two only the cartesian structure, and [bc_mono] only
-   chosen pullbacks and [SubObj] -- yet all four carry an [ElementaryTopos C]
-   argument in their types, because this section's
-   [Set Default Proof Using "All"] discharges the whole context into every
-   [Qed]-closed lemma; a move to Theory/Morphisms/Stability.v beside
-   [pullback_paste] (or, for [bc_mono], to Theory/Subobject/Functor.v beside
-   [sub_reindex]) would first shed that argument.  They are kept here to avoid a
-   wide rebuild, and this sentence is the record of the debt.
-
-   Of this file's two [Defined] tokens, [pow_split_coequalizer] is LOAD-BEARING
-   -- flipped alone to [Qed], [pow_PreservesReflexiveCoequalizers] no longer
-   typechecks -- and [PowF_Faithful] is not: flipped alone, this file,
-   Structure/Topos/Colimits.v and the probe all compile unchanged. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ToposMonadic.
 

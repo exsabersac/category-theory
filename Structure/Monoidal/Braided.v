@@ -15,36 +15,13 @@ Context {C : Category}.
 
 (** Braided monoidal category. *)
 
-(* nLab: https://ncatlab.org/nlab/show/braided+monoidal+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Braided_monoidal_category
 
-   A braided monoidal category is a monoidal category equipped with a natural
-   isomorphism, the braiding,
+   本文件给出幺半相关结构。
 
-       beta : x ⊗ y ≅ y ⊗ x              ([braid]),
-
-   that is compatible with the associator (alpha = [tensor_assoc]) by way of
-   two hexagon identities. Writing the equations in this library's notation
-   (composition reads right to left), they are
-
-       alpha ∘ beta ∘ alpha
-         = (id ⨂ beta) ∘ alpha ∘ (beta ⨂ id)
-                                          ([hexagon_identity]),
-
-       alpha⁻¹ ∘ beta ∘ alpha⁻¹
-         = (beta ⨂ id) ∘ alpha⁻¹ ∘ (id ⨂ beta)
-                                          ([hexagon_identity_sym]),
-
-   where on the upper path the middle [braid] is the braiding of one object
-   past a whole tensor product (B_{x, y⊗z} and B_{x⊗y, z} respectively). The
-   first hexagon braids x past y ⊗ z; the second braids x ⊗ y past z, and uses
-   the inverse associator throughout. Both follow the nLab orientation; the
-   coherence consequence on triple tensors is the Yang-Baxter equation proved
-   below. Adding the further axiom beta ∘ beta = id yields a symmetric
-   monoidal category (see Structure/Monoidal/Symmetric.v).
-
-   Only the braiding's naturality is asked for: the two hexagons are equations
-   between fixed composites and so need no separate respectfulness. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where the braiding comes from, and what it is for
 

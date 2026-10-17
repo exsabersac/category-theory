@@ -16,76 +16,13 @@ Require Import Category.Instance.One.
 
 Generalizable All Variables.
 
-(** * The pointwise (co)limit formula for Kan extensions
-
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §X.3
-    "The Kan Extension" (book pp. 237-240): Theorem 1 [maclane:X.3:thm1] —
-    the right Kan extension computed pointwise as a limit over the comma
-    category — and the dual pointwise colimit formula for the left
-    extension [maclane:X.3:def2].
-    Riehl, "Category Theory in Context", §6.2, Theorem 6.2.1 with displays
-    (6.2.2)/(6.2.3) [riehl:6.2:thm1]: the same theorem in both
-    handednesses, with the unit/counit read off the (co)limit-cone leg at
-    the identity and the action on morphisms induced by reindexing.
+(*
     nLab: https://ncatlab.org/nlab/show/Kan+extension
 
-    Theory/Kan/Extension.v carries the abstract theory — the global
-    extensions as adjoints of the restriction functor [Induced], and the
-    local universal properties [LocalRightKan]/[LocalLeftKan] — and its
-    header had flagged the pointwise formulas (comma-category and
-    coend/end alike) as a bridge not yet formalized.  This file builds
-    the COMMA-CATEGORY half of that bridge; the Kelly coend/end route
-    through Structure/Coend.v remains open.  The construction is in the
-    LOCAL form: the pointwise formula needs exactly one (co)limit per
-    object of the target, and Mac Lane's global packaging (Theorem 1's
-    "A small, C complete" reading, assembling every local extension into
-    the adjoint [RightKan]) is deliberately not attempted here:
+   本文件给出 Kan 扩张相关。
 
-      - given F : A ⟶ B, X : A ⟶ C, and a limit of
-        X ◯ comma_proj2 : (=(b) ↓ F) ⟶ C for every b : B, the assignment
-        R b := Lim (X ◯ comma_proj2) extends to a functor B ⟶ C whose
-        counit component at a is the limit-cone leg at (a, id[F a]), and
-        ⟨R, ε⟩ inhabits [LocalRightKan F X]  ([Pointwise_LocalRightKan]);
-
-      - dually, colimits of X ◯ comma_proj1 : (F ↓ =(b)) ⟶ C for every b
-        assemble into L b := Colim (X ◯ comma_proj1) with unit component
-        the injection at (a, id[F a]), and ⟨L, η⟩ inhabits
-        [LocalLeftKan F X]  ([Pointwise_LocalLeftKan]).
-
-    THE ACTION ON MORPHISMS is induced by reindexing, exactly as in
-    Riehl's proof: a morphism g : b ~> b' of B precomposes the comma
-    component, giving [ran_reindex g : (=(b') ↓ F) ⟶ (=(b) ↓ F)] (note
-    the flip: limits are contravariant in the shape restriction, so R
-    comes out covariant), and dually [lan_reindex g] postcomposes.  The
-    reindexing functors here are deliberately minimal — just what
-    functoriality needs; the standing issue #1021 will develop the comma
-    reindexing calculus in its own right, and nothing here blocks on it.
-
-    TWO WORKHORSES keep every proof short.  The legs of a limit cone are
-    JOINTLY MONIC ([ran_jointly_monic]) — two morphisms into the limit
-    agreeing under every leg are equal, by factoring both through the
-    probe cone they induce — and legs TRANSPORT along the comma morphism
-    (id, id) between objects whose components are ≈-equal
-    ([ran_leg_transport]): the comma square for (id, id) demands only
-    f' ≈ F id ∘ f, so ≈-equal components are connected by a genuine comma
-    morphism even though they are distinct objects, and cone coherence
-    along it moves a leg from one to the other.  Every functor law and
-    every naturality below is "compose with the legs and compute" through
-    these two.  The colimit side has the dual pair
-    ([lan_jointly_epic], [lan_inj_transport]), phrased through the
-    covariant cocone accessors of Structure/Limit/Preservation.v
-    ([cocone_inj], [colimitcocone_ump]) so that no TACTIC PROOF below
-    manipulates an opposite category.  (The three cocone-building
-    definitions on the left side do name (F ↓ =(b))^op — a [Cocone] IS a
-    cone over the opposite diagram, and the tree has no covariant cocone
-    constructor; the op stays confined to those [Build_Cone] wrappers.)
-
-    WHAT "the counit is the leg at the identity" MEANS FORMALLY: the
-    [ran_transform] of [Pointwise_LocalRightKan] is BY CONSTRUCTION the
-    family of legs at (a, id[F a]) — recorded as definitional equalities
-    in the acceptance tests — and dually for [lan_transform].  This is
-    the issue's third work item: the abstract counit/unit of the packaged
-    local extension agree with the concrete (co)limit data on the nose. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 

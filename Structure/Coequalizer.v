@@ -15,46 +15,13 @@ Generalizable All Variables.
 
 (** * Coequalizers, elementarily: coforks and descent *)
 
-(* nLab:      https://ncatlab.org/nlab/show/coequalizer
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Coequaliser
 
-   Given a parallel pair f, g : x ~> y in C, a coequalizer is an object q
-   together with a coequalizing map e : y ~> q forming a "cofork" over the
-   pair,
+   本文件给出相关范畴论结构的定义与性质。
 
-       e ∘ f ≈ e ∘ g,
-
-   that is universal with this property: every h : y ~> z with
-   h ∘ f ≈ h ∘ g descends uniquely through e, i.e. there is a unique
-   u : q ~> z with u ∘ e ≈ h (Wikipedia; nLab presents the same universal
-   property as the pushout-style colimit of the parallel pair).
-
-   [Structure/Equalizer.v] already presents the coequalizer as a colimit
-   over the walking parallel pair ([Coequalizer (APair f g) :=
-   Colimit (APair f g)]).  This file provides the elementary, fork-shaped
-   presentation [IsCoequalizer] together with conversions in both
-   directions showing that the two presentations coincide:
-
-     - [coequalizer_is_coequalizer] reads a colimit of [APair f g] as an
-       elementary coequalizer at its apex, coequalized by the colimit
-       injection over [ParY];
-     - [is_coequalizer_colimit] rebuilds the bundled colimit from the
-       elementary data.
-
-   Uniqueness of the coequalizer object up to isomorphism
-   ([coequalizer_unique]) and the classical fact that coequalizing maps
-   are epimorphisms ([coequalizer_epic]; Wikipedia: "every coequalizer is
-   an epimorphism") complete the API.  [HasCoequalizers] packages a choice
-   of elementary coequalizer for every parallel pair.
-
-   Since #477 both conversions also hold for an arbitrary diagram
-   [K : Parallel ⟶ C], at the pair it names ([parallel_coequalizer_colimit]
-   and [parallel_colimit_coequalizer], in the last section), and
-   [HasCoequalizers_HasColimitsOfShape] turns a choice of elementary
-   coequalizers into a colimit of every such diagram.  Since #481,
-   [parallel_cocone_coequalizer_colimit] reads a GIVEN cocone over such
-   a diagram as colimiting when its injection over [ParY] is an
-   elementary coequalizer of the pair. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The elementary universal property: e coforks the pair f, g at q, and
    every coforking map h out of y descends uniquely across e. *)

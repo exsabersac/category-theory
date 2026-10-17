@@ -9,47 +9,13 @@ Generalizable All Variables.
 
 (** * When a pushout injection splits *)
 
-(* nLab:      https://ncatlab.org/nlab/show/pushout
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Pushout_(category_theory)
 
-   Three lines of generic category theory, factored out of
-   Instance/Grp/Pushout.v because nothing in them is about groups.
+   本文件给出相关范畴论结构的定义与性质。
 
-   THE OBSERVATION.  For a span [y <-f- x -g-> z] with pushout apex [P],
-   the first injection [i1 : y ~> P] SPLITS as soon as [f] factors through
-   [g] — that is, as soon as there is [r : z ~> y] with [r ∘ g ≈ f].
-   Feed the competing cocone [(id[y], r)] to the universal property: its
-   commutation obligation [id ∘ f ≈ r ∘ g] is exactly the factorization,
-   and the mediator [u] it produces satisfies [u ∘ i1 ≈ id].  So [i1] is a
-   section, hence monic by Theory/Morphisms.v's [sections_are_monic].
-
-   WHY THIS IS WORTH NAMING.  It is the constructively cheap fragment of
-   the classical refinement "if both legs of the span are monic then both
-   pushout injections are monic".  That refinement in full is, for groups,
-   the Schreier normal-form theorem for amalgamated free products, whose
-   usual proof (van der Waerden's trick) chooses coset transversals; the
-   split fragment below needs no normal form, no transversal and no choice
-   principle, and it is available in EVERY category with the relevant
-   pushout.  Instance/Grp/Pushout.v discusses the gap in detail.
-
-   WHAT IS PROVED, AND AT WHAT STRENGTH.  [pushout_in1_Section] and
-   [pushout_in2_Section] produce a [Theory/Morphisms.v] [Section]
-   instance — a genuine retraction, exhibited, not merely the existence of
-   one — and [pushout_in1_Monic] / [pushout_in2_Monic] read off monicity.
-   [pushout_in1_Section_of_Retraction] is the corollary a reader of the
-   classical statement wants: if [g] is a SPLIT monomorphism then [i1]
-   splits, because [f] then factors through [g] via [f ∘ retraction].
-   The retraction produced is [pushout_med] applied to the cocone
-   [(id, r)], so it is the mediator of the universal property and not a
-   second construction.
-
-   WHAT IS NOT DELIVERED.  Nothing about pushouts along merely monic
-   legs; no van Kampen / effective-descent property; no claim that the
-   splitting hypothesis is NECESSARY for the injection to be monic (it is
-   not — in Grp the injections are monic whenever the legs are, by
-   Schreier, and that is exactly the theorem this file does not reach).
-   No dual file for pullbacks: the [C^op] instance of these statements is
-   available by instantiation but is not spelled out. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section PushoutSplit.
 

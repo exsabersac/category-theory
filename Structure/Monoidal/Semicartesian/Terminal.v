@@ -7,27 +7,13 @@ Generalizable All Variables.
 
 (** * The unit of a semicartesian monoidal category is terminal *)
 
-(* nLab: https://ncatlab.org/nlab/show/semicartesian+monoidal+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Cartesian_monoidal_category
 
-   A semicartesian (affine) monoidal category is a monoidal category whose
-   unit object I is terminal: every object x has the discard map eliminate :
-   x ~> I, and any two maps x ~> I agree (unit_terminal). This file repackages
-   exactly that data as a Terminal structure on I,
+   本文件给出终对象相关。
 
-       terminal_obj := I,
-       one          := eliminate    (the unique x ~> I),
-       one_unique   := unit_terminal (any two x ~> I agree under ≈),
-
-   matching nLab ("the unit for the tensor product is a terminal object") and
-   Wikipedia ("in any cartesian monoidal category, the terminal object is the
-   monoidal unit"; cartesian ⊆ semicartesian).
-
-   The same definition, with the same name, is given at top level in
-   Structure/Monoidal/Semicartesian.v; that copy is the one downstream files
-   (e.g. Instance/Coq/Par.v) use. The version here is section-local, hence
-   lives in the distinct module Category.Structure.Monoidal.Semicartesian.
-   Terminal. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SemicartesianMonoidalTerminal.
 

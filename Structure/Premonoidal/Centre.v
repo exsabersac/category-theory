@@ -16,46 +16,13 @@ Set Primitive Projections.
 Set Universe Polymorphism.
 Set Transparent Obligations.
 
-(** * The centre of a premonoidal category is monoidal
-
+(*
     nLab: https://ncatlab.org/nlab/show/premonoidal+category
-    (the centre Z(C) and its monoidal structure are discussed there)
 
-    Structure/Binoidal/Central.v packages the central morphisms of a
-    binoidal category as a wide subcategory Z(C) = [Centre C], and records
-    why closure of centrality under the interleaved tensor [composite_ff']
-    is out of reach in a bare binoidal category: the required commuting
-    square lives at the nested tensor (x ⊗ x') ⊗ a, and without structural
-    morphisms there is nothing connecting the two nesting levels.  A
-    premonoidal category (Structure/Premonoidal.v) supplies exactly the
-    missing ingredient — a central associator, natural in each variable
-    separately — and this file completes the development:
+   本文件给出相关范畴论结构的定义与性质。
 
-      - [composite_ff'_central]: if f and f' are central, so is
-        [composite_ff' f f'].  Each defining square of the composite is
-        conjugated by the associator, trading the single unreachable
-        square at the nested tensor for three one-variable naturality
-        squares plus two single-level centrality squares (Power–Robinson,
-        "Premonoidal categories and notions of computation", 1997).
-
-      - [Centre_Tensor]: the tensor restricts to a genuine bifunctor
-        Z(C) ∏ Z(C) ⟶ Z(C).  On the centre, [composite_ff'] is jointly
-        functorial because the one-sided interchange lemma
-        [composite_ff'_comp_l] of Structure/Binoidal/Central.v receives
-        its centrality hypothesis from the hom witnesses, and the tensor
-        of two central morphisms is again central by the closure theorem.
-
-      - [Centre_Monoidal]: Z(C) is a monoidal category.  Unit, unitors
-        and associator are inherited from the premonoidal structure (the
-        forward components are central by the class fields, the inverses
-        by [central_iso_from]); every coherence field is an equation
-        between underlying morphisms of C because [Sub]-homsets compare
-        first projections, so the [composite_ff']-phrased translation
-        lemmas of Structure/Premonoidal.v discharge them verbatim.
-
-    Together these discharge the promise recorded above [central] in
-    Structure/Binoidal.v: the central morphisms form the centre, a
-    monoidal subcategory of C. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section PremonoidalCentre.
 

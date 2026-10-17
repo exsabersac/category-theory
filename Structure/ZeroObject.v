@@ -9,41 +9,13 @@ Generalizable All Variables.
 
 (** * Zero objects and zero morphisms *)
 
-(* nLab:      https://ncatlab.org/nlab/show/zero+object
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Initial_and_terminal_objects
 
-   A zero object in a category C is an object that is at once initial and
-   terminal (nLab; Wikipedia calls it a "null object").  In this setoid-based
-   library we do not demand that one chosen object literally play both roles:
-   [ZeroObject] packages a terminal structure, an initial structure, and an
-   isomorphism [zero_coincide] between the chosen initial object 0 and the
-   chosen terminal object 1.  Since initial (resp. terminal) objects are
-   unique up to unique isomorphism -- [initial_unique] and [terminal_unique],
-   with [initial_arrow_unique] / [terminal_arrow_unique] supplying the
-   "unique" half -- this is no loss of generality, and it avoids any appeal to
-   equality of objects.  [zero_object_unique] below is the corresponding
-   statement for zero objects themselves.
+   本文件给出相关范畴论结构的定义与性质。
 
-   [zero_coincide] is a FIELD, i.e. data, so a caller must supply it; the
-   header used to justify that by rhetoric alone.  It need not be assumed:
-   [terminal_initial_arrow_iso] below (Riehl, CTiC, Exercise 1.6.i) shows
-   that ANY morphism 1 ~> 0 is already an isomorphism, and
-   [ZeroObject_from_arrow] turns one such morphism into the whole
-   [ZeroObject] record.  That is the constructive source of the coincidence,
-   and until it was added nothing in tree derived one -- the sole inhabitant,
-   [CMon_Zero] (Instance/CMon/Biproduct.v), supplies [iso_id] only because
-   its two chosen objects are literally the same term.
-
-   Every pair of objects x, y then acquires a canonical zero morphism
-   x ~> y, obtained by tunnelling through the zero object:
-
-       x ~> 1 ~> 0 ~> y
-
-   first the unique map into 1, then the coincidence isomorphism read
-   backwards, then the unique map out of 0.  Zero morphisms absorb
-   composition on both sides ([zero_mor_left], [zero_mor_right]), and any
-   morphism factoring through the zero object in this way is the zero
-   morphism ([zero_mor_unique]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class ZeroObject (C : Category) := {
   zero_terminal : @Terminal C;

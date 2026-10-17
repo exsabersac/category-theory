@@ -12,49 +12,11 @@ Require Import Category.Instance.Coq.
 
 Generalizable All Variables.
 
-(** * Apex-only preservation is strictly weaker than cone-level preservation
+(*
+   本文件给出骨架分离相关。
 
-    The library has said for some time — in prose — that the apex-only
-    preservation class is too weak: Construction/Comma/Limit.v's STATUS
-    header records that two cone structures on one apex can differ by a
-    non-invertible endomorphism, so knowing that the image APEX carries some
-    limit structure does not make the image CONE universal.  This file turns
-    that standing paragraph into theorems, with the cheapest concrete
-    witness the tree affords and no hand-rolled categories:
-
-      C := Roof            (Instance/Roof.v — the walking span)
-      J := Two_Discrete    (Instance/Two/Discrete.v — two objects, no arrows)
-      D := Coq             (Instance/Coq.v)
-      K := Pick_Two RNeg RPos          (the two feet of the span)
-      F := ASpan fst fst   (Structure/Span.v — both legs to first projection)
-
-    Upstairs, RZero with the legs ZeroNeg/ZeroPos is the limiting cone of K
-    — the span has no other object with maps to both feet.  Downstairs the
-    composite diagram picks out (bool, bool), whose limit is bool × bool
-    with the two genuine projections.  But F sends BOTH legs of the limiting
-    cone to fst, so the image cone at bool × bool has legs (fst, fst) — and
-    a cone whose two legs disagree, such as (id, negb) at apex bool, has
-    no mediator through it ([sep_image_not_limiting]).
-
-    The results, in increasing strength:
-    [apex_limit_without_limit_cone] — the image apex DOES carry a limit of
-    the composite diagram while the image cone at that very apex is not
-    universal (per-diagram separation); [sep_PreservesLimit] +
-    [sep_not_PreservesLimitCone] — the apex-only class is inhabited at
-    (K, F) while the cone-level class is refuted (class-level separation);
-    [PreservesLimit_not_PreservesLimitCone] — no uniform strengthening
-    exists; [sep_comparison_is_dup] / [sep_comparison_not_iso] /
-    [sep_apex_iso] — the documented endomorphism exhibited: the canonical
-    comparison IS the duplicator (w, w') ↦ (w, w), not invertible, even
-    though the apex-only witness still yields SOME isomorphism between the
-    same two objects.  The weak class produces an isomorphism; it just
-    cannot promise the canonical one.
-
-    The other half of the comparison story — cone-level preservation IS
-    invertibility of the canonical comparison — is
-    [LimitCone_comparison_iso] / [comparison_iso_LimitCone] in
-    Structure/Limit/Preservation.v; this file supplies the strictness of
-    the inclusion. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** A coherence helper for the two-object discrete shape *)
 

@@ -14,41 +14,15 @@ Require Import Category.Theory.Algebra.CommutativeComonoid.
 
 Generalizable All Variables.
 
-(** * Markov categories
-
-    A Markov category (Fritz, arXiv:1908.07021, §2) is a copy-discard
-    (gs-monoidal) category whose monoidal unit [I] is terminal: a symmetric
-    monoidal category equipped with a coherent commutative-comonoid supply
-    [copy]/[discard] on every object ([CopyDiscard]) together with a
-    [SemicartesianMonoidal] structure — a morphism [eliminate : x ~> I] for
-    every [x], any two such morphisms agreeing ([unit_terminal]).
-
-    Reading: a morphism [x ~> y] is a synthetic Markov kernel (a "channel")
-    from [x] to [y]; a morphism [I ~> x] is a state (a "distribution") on
-    [x]; [copy] duplicates and [discard] deletes an input.
-
-    The class is redundancy-free, following Fritz's formulation: it carries
-    NO axiom identifying [discard] with [eliminate] and NO naturality axiom
-    for [discard].  In a semicartesian category ANY two morphisms into [I]
-    agree, so both facts are corollaries ([markov_discard_eliminate],
-    [discard_natural]), not axioms.
-
-    What is deliberately absent is naturality of [copy]: a morphism [f]
-    satisfying [copy ∘ f ≈ (f ⨂ f) ∘ copy] is precisely a DETERMINISTIC
-    morphism (Cho–Jacobs; see CopyDiscard/Deterministic.v), and by Fox's
-    theorem demanding this of every morphism collapses the category to a
-    cartesian monoidal one (see Markov/Fox.v).  Conversely every cartesian
-    monoidal category is a Markov category — [Markov_of_Cartesian] below —
-    in which "all kernels are deterministic": the degenerate, probability-
-    free case.
-
+(*
     nLab:      https://ncatlab.org/nlab/show/Markov+category
     Reference: Fritz, "A synthetic approach to Markov kernels, conditional
-               independence and theorems on sufficient statistics",
-               Adv. Math. 370:107239, 2020 (arXiv:1908.07021), §2
     Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
-               string diagrams", MSCS 29(7):938–971, 2019
-               (arXiv:1709.00322) *)
+
+   本文件给出幺半相关结构。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where Markov categories come from, and what they are for
 

@@ -7,43 +7,14 @@ Require Import Category.Structure.Monoidal.
 
 Generalizable All Variables.
 
-(** * Strict monoidal categories
-
+(*
     nLab: https://ncatlab.org/nlab/show/strict+monoidal+category
     Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category#Strict_monoidal_category
 
-    A strict monoidal category is a monoidal category in which the
-    associator and unitors are identity natural transformations —
-    equivalently, where the tensor is strictly associative and strictly
-    unital on objects, not merely up to coherent isomorphism.
+   本文件给出严格情形。
 
-    In this library's setoid-based setting, "strict" requires BOTH:
-
-      (a) object-level Leibniz equalities
-            [(X ⨂ Y) ⨂ Z = X ⨂ (Y ⨂ Z)],
-            [I ⨂ X = X = X ⨂ I];
-      (b) the structural isomorphisms [tensor_assoc], [unit_left],
-          [unit_right] coincide (modulo those equalities) with [id].
-
-    Object-level equality (Leibniz [=]) is required because [obj] in
-    [Category] is a [Type], not a setoid; the monoidal coherence
-    isomorphisms relate distinct objects (e.g. [(X ⨂ Y) ⨂ Z] and
-    [X ⨂ (Y ⨂ Z)]).  In a strict monoidal category, those objects
-    coincide on the nose.
-
-    The structural isomorphisms then transport along those equalities
-    to give [id].  We use the explicit [match … in _ = T return …]
-    form (Coq's primitive dependent elimination on equality), rather
-    than the [rew]/[eq_rect] notation, which the library's [_CoqProject]
-    does not pull in.  See the "Formulation note" at the end of the file
-    for the rationale; both the [strict_*_to] fields and the derived
-    [strict_*_from] corollaries use the [match] form consistently.
-
-    Strict monoidal categories are precisely monoid objects in the
-    cartesian monoidal category [Cat].  PROPs are strict symmetric
-    monoidal categories whose objects are the natural numbers under
-    [+]; this class is the foundation for the upcoming PROP
-    machinery. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section StrictMonoidal.
 

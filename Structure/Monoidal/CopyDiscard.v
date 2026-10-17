@@ -12,67 +12,16 @@ Require Import Category.Theory.Algebra.CommutativeComonoid.
 
 Generalizable All Variables.
 
-(** * Copy-discard (gs-monoidal) categories
-
-    A copy-discard category — also called a gs-monoidal category ("garbage
-    and sharing") — is a symmetric monoidal category [(C, ⨂, I, σ)] equipped
-    with a chosen commutative comonoid
-
-      copy[X]    : X ~> X ⨂ X      (comultiplication, "duplicate the wire")
-      discard[X] : X ~> I          (counit, "delete the wire")
-
-    on every object, such that the comonoid on [X ⨂ Y] is canonically
-    assembled from those on [X] and [Y] (via the middle-interchange
-    isomorphism), and the comonoid on [I] is the trivial one.
-
-    THE defining negative space of this class: there is deliberately NO
-    naturality condition on [copy] or [discard].  A morphism [f] need not
-    satisfy [copy ∘ f ≈ (f ⨂ f) ∘ copy] nor [discard ∘ f ≈ discard]; the
-    two squares together are precisely what single out the DETERMINISTIC
-    morphisms (Cho–Jacobs; see CopyDiscard/Deterministic.v).  The two
-    omissions carry different weight.  Imposing the discard square on ALL
-    morphisms is exactly semicartesianness — it says any map into [I]
-    agrees with [discard], i.e. [I] is terminal — which is the Markov case,
-    not a degeneracy: Structure/Monoidal/Markov.v derives [discard_natural]
-    for every morphism as a corollary of [unit_terminal].  Imposing the
-    copy square on ALL morphisms makes [copy] a natural diagonal, yielding
-    [RelevanceMonoidal]'s naturality together with the counits that class
-    lacks; imposing both squares globally is Fox's theorem territory: the
-    structure collapses to cartesian monoidal (see Heunen_Vicary.v and
-    Markov/Fox.v).  This class is therefore INCOMPARABLE with
-    [RelevanceMonoidal], not below it: [CopyDiscard] carries counits that
-    [RelevanceMonoidal] lacks, while [RelevanceMonoidal] carries the
-    naturality that [CopyDiscard] deliberately drops.  What both strengthen
-    is the bare per-object [CommutativeComonoid] supply with no coherence
-    at all.
-
-    Accordingly [RelevanceMonoidal] is NOT a source of instances for this
-    class: its diagonal comes with no counit whatsoever, so the comonoid
-    counit laws [(ε ⨂ id) ∘ δ ≈ λ⁻¹] are underivable there.  The sound
-    generic instances — from [CartesianMonoidal] (Fox's projection laws
-    supply the counits) and from [Hypergraph] (forget the monoid half of
-    each SCFA) — live in Structure/Monoidal/CopyDiscard/Proofs.v.
-
-    The class shape mirrors Hypergraph.v's SCFA supply verbatim: a
-    per-object structure field, canonical-tensor coherence, and unit
-    coherence, reusing [canonical_tensor_delta] / [canonical_tensor_epsilon]
-    (stated there for plain [Comonoid] arguments; [CommutativeComonoid]
-    coerces).  The Hypergraph.v import supplies only that
-    middle-interchange vocabulary ([mid_swap_inv] and the two
-    [canonical_tensor_*] composites) — symmetric-monoidal-level material
-    with no Frobenius content.  Conceptually the dependency runs the
-    other way: every hypergraph category is a copy-discard category
-    ([CD_of_Hypergraph] in CopyDiscard/Proofs.v).
-
+(*
     nLab:      https://ncatlab.org/nlab/show/copy-discard+category
     Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
-               string diagrams", MSCS 29(7):938–971, 2019 (arXiv:1709.00322)
     Reference: Fritz, "A synthetic approach to Markov kernels, conditional
-               independence and theorems on sufficient statistics",
-               Adv. Math. 370:107239, 2020 (arXiv:1908.07021), §2
     Reference: Corradini & Gadducci, "An algebraic presentation of term
-               graphs, via gs-monoidal categories", Appl. Categ. Structures
-               7(4):299–331, 1999 *)
+
+   本文件给出幺半相关结构。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CopyDiscard.
 

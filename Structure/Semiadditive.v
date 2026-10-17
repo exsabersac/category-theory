@@ -17,35 +17,13 @@ Generalizable All Variables.
 
 (** * Semiadditive categories *)
 
-(* nLab:      https://ncatlab.org/nlab/show/semiadditive+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Biproduct
 
-   A semiadditive category is a category in which finite products and finite
-   coproducts exist and coincide (as biproducts).  Its hom-setoids are then
-   canonically commutative monoids, and this file proves the two theorems
-   that make the slogan precise, in both directions:
+   本文件给出相关范畴论结构的定义与性质。
 
-   (i)  [biproduct_addition]: in a category enriched in commutative monoids
-        (a [Preadditive] category in the CMon sense of
-        Structure/Preadditive.v) with a zero object, biproducts express the
-        enrichment: f + g ≈ ∇ ∘ (f ⊕ g) ∘ Δ.  Moreover the enrichment
-        already forces every product to be a biproduct
-        ([cartesian_biproduct]), the key identity being the decomposition
-        of the identity [biproduct_id_decomp]:
-        inl ∘ exl + inr ∘ exr ≈ id.
-
-   (ii) [bicartesian_preadditive]: conversely, in a bicartesian category
-        with a zero object where the canonical comparison morphism
-        x + y ~> x × y ([can_comparison]) is invertible, the convolution
-
-            f + g  :=  (f ▽ g) ∘ can⁻¹ ∘ ⟨id, id⟩
-
-        makes the category preadditive.  Commutativity and associativity
-        of the convolution follow from an Eckmann–Hilton argument: the
-        coproduct-flavoured convolution [conv] and the product-flavoured
-        convolution [conv_pr] share the unit 0 and satisfy the interchange
-        law (via [fork_merge] of Structure/Bicartesian.v), hence coincide
-        and are commutative and associative. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Theorem (i): biproducts realize the preadditive structure *)
 

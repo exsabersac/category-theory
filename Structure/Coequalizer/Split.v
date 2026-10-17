@@ -8,43 +8,14 @@ Generalizable All Variables.
 
 (** * Split coequalizers are absolute *)
 
-(* nLab:      https://ncatlab.org/nlab/show/split+coequalizer
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Coequaliser
-
-   A split coequalizer of a parallel pair f, g : x ~> y is a coforking map
-   e : y ~> q (law 1: e ∘ f ≈ e ∘ g) equipped with a section s : q ~> y of
-   e (law 2: e ∘ s ≈ id) and a section t : y ~> x of f (law 3: f ∘ t ≈ id)
-   such that the idempotent s ∘ e on y is computed by the pair through t
-   (law 4: g ∘ t ≈ s ∘ e).
-
-   The four equations force e to be a coequalizer of f and g
-   ([split_coequalizer_is_coequalizer]): a coforking map h : y ~> z
-   descends through e as h ∘ s, since
-
-       (h ∘ s) ∘ e ≈ h ∘ (g ∘ t) ≈ (h ∘ f) ∘ t ≈ h,
-
-   and law 2 pins the descent down uniquely.
-
-   Because the definition is purely equational — no quantification over
-   the ambient category — every functor carries split coequalizers to
-   split coequalizers ([functor_preserves_split]), hence to coequalizers
-   ([split_coequalizer_preserved]).  Colimits preserved by all functors in
-   this way are called *absolute* (Paré, "On absolute colimits", 1971;
    nLab: absolute colimit), and split coequalizers are the archetypal
-   example.  They are the engine of Beck's monadicity theorem, where the
-   canonical presentation of an algebra by free algebras is a split
-   coequalizer after applying the forgetful functor.
 
-   The predicate is Structure/Coequalizer/Absolute.v's
-   [AbsoluteCoequalizer] (#477), Mac Lane's §VI.6 definition, where
-   [split_coequalizer_absolute] reads the corollary below as
-   absoluteness; the cone-level reading of absolute colimits in general
-   is Structure/Limit/Absolute.v's [AbsoluteColimitCocone].
+   本文件给出相关范畴论结构的定义与性质。
 
-   The condition on the pair alone that t witnesses, Beck's contractible
-   pair, is Structure/Coequalizer/Contractible.v's [ContractiblePair]
-   (#480): a pair has a split coequalizer exactly when it is contractible
-   and has a coequalizer. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The equational data: a cofork e over the pair, a section s splitting e,
    and a section t of f mediating between s ∘ e and the pair. *)

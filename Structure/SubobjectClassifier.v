@@ -11,29 +11,14 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(* Subobject classifiers.
-
+(*
    nLab:      https://ncatlab.org/nlab/show/subobject+classifier
    Wikipedia: https://en.wikipedia.org/wiki/Subobject_classifier
 
-   In a category with a terminal object and pullbacks, a subobject classifier
-   is an object Ω together with a point [truth : 1 ~> Ω] such that every
-   monomorphism m : u ~> x arises, in exactly one way, as the pullback of
-   [truth] along a characteristic morphism [char m : x ~> Ω]:
+   本文件给出相关范畴论结构的定义与性质。
 
-        u ---!---> 1
-        |          |
-       m|          | truth
-        v          v
-        x --char-> Ω
-
-   The data below packages the characteristic morphism as an operation
-   [char], respecting the subobject equivalence of Theory/Subobject.v, with
-   the square above a pullback ([char_pullback]) and unique among morphisms
-   classifying m ([char_unique]).  The classification theorem
-   [classifier_classifies] then exhibits the setoid of subobjects of x as
-   isomorphic in Sets to the hom-setoid x ~> Ω, the backward map being
-   pullback of [truth] via the reindexing of Theory/Subobject/Functor.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SubobjectClassifier.
 

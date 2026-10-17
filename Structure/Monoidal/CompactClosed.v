@@ -17,39 +17,13 @@ Generalizable All Variables.
 
 (** * Compact closed categories *)
 
-(* nLab: https://ncatlab.org/nlab/show/compact+closed+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Compact_closed_category
 
-   A compact closed category is a symmetric monoidal category in which every
-   object [X] has a (chosen) dual [X^*], i.e. it is a rigid (autonomous)
-   symmetric monoidal category. Symmetry forces the left and right duals to
-   coincide, so a single dual [X^*] suffices. The structure comprises:
+   本文件给出幺半相关结构。
 
-       dual X       X^*                         (the chosen dual object)
-       cc_unit X    η_X : I ~> X^* ⨂ X          (unit / coevaluation / "cup")
-       cc_counit X  ε_X : X ⨂ X^* ~> I          (counit / evaluation / "cap")
-
-   subject to the two snake / zigzag (triangle, "yanking") identities. In this
-   library's notation, with λ = [unit_left], ρ = [unit_right], α =
-   [tensor_assoc], and [to]/[from] the forward/inverse iso components:
-
-     snake_left  (= id[X]):
-       λ_X ∘ (ε ⨂ id) ∘ α⁻¹_{X,X^*,X} ∘ (id ⨂ η) ∘ ρ⁻¹_X
-
-     snake_right (= id[X^*]):
-       ρ_{X^*} ∘ (id ⨂ ε) ∘ α_{X^*,X,X^*} ∘ (η ⨂ id) ∘ λ⁻¹_{X^*}
-
-   These match the Wikipedia statements λ ∘ (ε⊗id) ∘ α⁻¹ ∘ (id⊗η) ∘ ρ⁻¹ = id_A
-   and ρ ∘ (id⊗ε) ∘ α ∘ (η⊗id) ∘ λ⁻¹ = id_{A^*}; the unitors here are folded
-   into the identity rather than written as a separate [λ ∘ ρ⁻¹] coherence.
-
-   Compact closed categories are the setting for finite-dimensional vector
-   spaces (FdVect), the category Rel of relations, and — once a compatible
-   dagger is added (a dagger-compact category) — the ZX-calculus.
-
-   Hypergraph categories are a special case: every object is its own dual via
-   [X^* := X], with unit and counit built from the special commutative
-   Frobenius (SCFA) structure as [η := δ ∘ η_X] and [ε := ε_X ∘ μ]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Duals as internal adjunctions: history, applications, and neighbours
 

@@ -11,39 +11,13 @@ Section SemicocartesianMonoidal.
 
 Context {C : Category}.
 
-(* nLab: https://ncatlab.org/nlab/show/semicartesian+monoidal+category
+(*
    Wikipedia: no dedicated article; the dual notion is described under
-   https://en.wikipedia.org/wiki/Cartesian_monoidal_category
 
-   A semicocartesian (also coaffine) monoidal category is the dual of a
-   semicartesian one: a monoidal category whose unit object I is initial
-   (nLab, same page: "a monoidal category is semicocartesian if the unit for
-   the tensor product is an initial object"). Spelled out in this library's
-   notation, that is the pair of conditions
+   本文件给出幺半相关结构。
 
-       generate      : I ~> x             (a map out of I for every x),
-       unit_initial  : f ≈ g              (any two I ~> x agree),
-
-   so that I has exactly one map into each object: it is initial. It is the
-   weaker companion to cocartesian monoidal, where the tensor is the
-   categorical coproduct; here only the create maps out of I are guaranteed,
-   not the codiagonals.
-
-   With [Monoidal_op] from Construction/Opposite/Monoidal.v this could
-   instead read
-
-       Definition SemicocartesianMonoidal `{M : @Monoidal C} :=
-         @SemicartesianMonoidal (C^op) Monoidal_op.
-
-   but the derived instance's members would need re-unfolding at every use
-   site — the same trade-off documented in Theory/Algebra/Comonoid.v — so
-   the direct (dual-by-hand) class below mirrors the
-   [SemicartesianMonoidal] fields with directions flipped. Just as initiality
-   of I equips every tensor with coprojection maps, defined dually to the
-   semicartesian projections from a create on one factor and a unitor inverse,
-
-       embed_left  = (id ⨂ generate) ∘ rho^-1    : x ~> x ⨂ y,
-       embed_right = (generate ⨂ id) ∘ lambda^-1 : y ~> x ⨂ y. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class SemicocartesianMonoidal `{@Monoidal C} := {
   (* the create / coprojection-from-unit map, the unique I ~> x *)

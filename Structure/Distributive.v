@@ -7,32 +7,13 @@ Require Import Category.Structure.Initial.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/distributive+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Distributive_category
 
-   A (finitary) distributive category is a category with finite products and
-   finite coproducts in which products distribute over coproducts. Concretely,
-   for all objects the canonical morphism
+   本文件给出 Beck 分配律：使两单子可复合为单子的额外数据。
 
-       x × y + x × z ~> x × (y + z),
-
-   induced by the coproduct injections via x × inl and x × inr, is an
-   isomorphism (the binary distributivity law), and likewise the canonical
-   morphism
-
-       0 ~> x × 0
-
-   into the nullary product is an isomorphism (the nullary law, equivalently
-   x × 0 ≅ 0). Together these say that the functor x × - preserves finite
-   coproducts. The two sources state the canonical map in the direction
-   x × y + x × z ~> x × (y + z); since we record an [Isomorphism] rather than a
-   directed map, the orientation chosen below is immaterial.
-
-   The nullary law does not follow from binary distributivity in general (it
-   must be assumed), and one of its consequences is that the initial object of
-   a distributive category is strict. Every bicartesian closed category is
-   distributive, because x × - then has a right adjoint and so preserves all
-   colimits (see [Structure.BiCCC]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Distributive.
 

@@ -12,42 +12,13 @@ Context {C : Category}.
 
 (** Traced monoidal category. *)
 
-(* nLab: https://ncatlab.org/nlab/show/traced+monoidal+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Traced_monoidal_category
 
-   A traced monoidal category is a (balanced or, as here, symmetric) monoidal
-   category equipped with a trace, or "partial trace"/"feedback", operator
+   本文件给出幺半相关结构。
 
-       Tr^u_{x,y} : Hom(x ⨂ u, y ⨂ u) → Hom(x, y)              ([trace]),
-
-   that contracts the shared object u against itself, leaving x ~> y. Here u is
-   left implicit and inferred from the morphism, so a single polymorphic
-   [trace] stands for the whole family Tr^u_{x,y}. Writing the laws in this
-   library's notation (composition reads right to left, ⨂ is the tensor on
-   morphisms), the axioms are, following Joyal-Street-Verity:
-
-       trace (f ∘ g ⨂ id)  ≈  trace f ∘ g       (naturality in x / left
-                                                  tightening,
-                                                  [trace_natural_in_x]),
-       trace (g ⨂ id ∘ f)  ≈  g ∘ trace f       (naturality in y / right
-                                                  tightening,
-                                                  [trace_natural_in_y]),
-       trace (id ⨂ g ∘ f)  ≈  trace (f ∘ id ⨂ g)
-                                                 (dinaturality in u / sliding,
-                                                  [trace_natural_in_u]),
-       trace (unit_right⁻¹ ∘ f ∘ unit_right)  ≈  f
-                                                 (vanishing I, [vanishing_unit]),
-       trace f  ≈  trace (trace (tensor_assoc⁻¹ ∘ f ∘ tensor_assoc))
-                                                 (vanishing ⨂, [vanishing_tensor]),
-       trace (tensor_assoc⁻¹ ∘ id[c] ⨂ f ∘ tensor_assoc)  ≈  id[c] ⨂ trace f
-                                                 (superposing, [superposing]),
-       trace braid  ≈  id[x]                     (yanking, [yanking]).
-
-   The unitor [unit_right] and associator [tensor_assoc] conjugations make the
-   non-strict (coherent) statements of vanishing and superposing typecheck;
-   under strictness they reduce to nLab's Tr^I(f) = f, Tr^{u⨂v}(f) =
-   Tr^u(Tr^v(f)), and Tr^u(id_c ⨂ f) = id_c ⨂ Tr^u(f). Yanking uses the
-   symmetry [braid] at {x, x}, recovering the identity by tracing the swap. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Feedback, fixed points, and the geometry of interaction
 

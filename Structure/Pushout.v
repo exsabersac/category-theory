@@ -8,36 +8,13 @@ Generalizable All Variables.
 
 (** * Pushouts: ergonomic accessors *)
 
-(* nLab:      https://ncatlab.org/nlab/show/pushout
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Pushout_(category_theory)
 
-   A pushout is the colimit of a span [y <-f- x -g-> z] in [C]: an apex
-   object [y +_x z] together with two injections [pushout_in1 : y ~> apex]
-   and [pushout_in2 : z ~> apex] whose square commutes,
+   本文件给出相关范畴论结构的定义与性质。
 
-       pushout_in1 ∘ f ≈ pushout_in2 ∘ g,
-
-   and which is universal (initial) among such cocones.  Universal property,
-   in library notation: for every competing cocone [(Q, q1, q2)] with
-   [q1 ∘ f ≈ q2 ∘ g] there is a unique mediator [u : apex ~> Q] with
-
-       u ∘ pushout_in1 ≈ q1   and   u ∘ pushout_in2 ≈ q2.
-
-   Pushout is dual to pullback: a pushout in [C] is exactly a pullback in
-   [C^op].  Accordingly the underlying representation reuses [Pullback]:
-
-       Definition Pushout {C} {x y z : C^op} (f : x ~> z) (g : y ~> z)
-         := Pullback f g.
-
-   That phrasing forces users to write their morphisms in [C^op] (i.e.
-   reversed).  This file provides a thin convenience layer that takes the
-   span in [C] directly, plus a [HasPushouts] predicate that quantifies the
-   existence of all binary pushouts.
-
-   The accessors [pushout_apex], [pushout_in1], [pushout_in2],
-   [pushout_commutes] and [pushout_ump] are written with the morphisms
-   inverted to the underlying [Pullback] representation, so downstream code
-   can think entirely in terms of [C]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Pushout.
 

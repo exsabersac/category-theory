@@ -12,24 +12,11 @@ Require Import Coq.Lists.List.
 
 Generalizable All Variables.
 
-(** * Preservation over a class of diagram shapes (Riehl §3.4)
+(*
+   本文件给出形状/往返相关引理（对象上的 [=] 往返等）。
 
-    Riehl's Definition 3.4.1 speaks of functors preserving the limits of all
-    diagrams "of a given shape, or of a given size" — a quantification the
-    tree has had no vocabulary for: the per-diagram classes and the
-    all-shapes ContinuousFunctor existed, with nothing between.  This file
-    supplies the intermediate forms.  For products the shape class is the
-    discrete categories; for FINITE limits the tree has had no finiteness
-    predicate on shapes at all (Structure/Limit/Creation.v records the gap,
-    and Structure/Topos.v spells "finite limits" as terminal + products +
-    pullbacks instead).  [FiniteShape] is that predicate, in the enumeration
-    form the setoid setting supports: finitely many objects, and finitely
-    many arrows in each hom UP TO ≈.  The lists are data, so the record is a
-    [Type] and its inhabitants compute; the three witnesses at the bottom —
-    the empty shape, the discrete pair, and the walking span — are exactly
-    the shapes whose limits are the terminal object, binary products and
-    pullbacks, tying the new predicate to the topos-layer reading of
-    "finitely complete". *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Products: the discrete-shape case *)
 

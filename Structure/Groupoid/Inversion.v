@@ -15,48 +15,14 @@ Generalizable All Variables.
 
 (** * A groupoid is isomorphic to its opposite *)
 
-(* nLab:      https://ncatlab.org/nlab/show/groupoid
+(*
    nLab:      https://ncatlab.org/nlab/show/opposite+category
    Book:      Riehl, "Category Theory in Context", Example 1.3.14, clauses
-              (i) and (ii), printed pp. 21-22
 
-   Riehl records that any groupoid is isomorphic to its opposite, by the
-   identity-on-objects functor sending each morphism to its inverse; clause
-   (i) is the one-object case, the device by which a right action of a group
-   is presented as a left action.  This file builds that functor
-   ([Inversion]) and proves the isomorphism ([Inversion_iso]).
+   本文件给出相关范畴论结构的定义与性质。
 
-   HOW STRONG THE ISOMORPHISM IS.  In this library `≅[Cat]` is NOT an
-   isomorphism of categories: the hom-setoid of [Cat] is [Functor_Setoid],
-   which identifies functors up to natural isomorphism, so an isomorphism in
-   [Cat] IS an equivalence of categories — Theory/Equivalence.v says exactly
-   that, and its [Equivalence_to_Cat_Iso]/[Cat_Iso_to_Equivalence] repack the
-   two notions into one another.  The statement below is therefore made in
-   [StrictCat] (Instance/StrictCat.v), whose hom-setoid is
-   [Functor_StrictEq_Setoid]: two functors are identified there when their
-   object maps are propositionally EQUAL and their morphism maps agree, after
-   transport along that equality, up to `≈`.  So [Inversion_iso] says
-
-     - the two composites are the identity on objects on the nose, and
-     - each composite sends every morphism to one equivalent to itself,
-
-   which is what "isomorphism of categories" can mean in a setoid library
-   without function extensionality (Leibniz equality of the two functors is
-   not available, and is not claimed).  It implies the [Cat]-level statement,
-   through [Inversion_Cat_iso] below; the converse implication does not hold
-   in general, since equivalent categories need not be isomorphic — the
-   essay heading Theory/Equivalence.v cites finite-dimensional vector spaces
-   against the small category of natural numbers and matrices.
-
-   Contents:
-
-       Inversion G         the identity-on-objects functor C ⟶ C^op
-       Inversion_iso       C ≅[StrictCat] C^op
-       Inversion_Cat_iso   the weaker C ≅[Cat] statement, derived
-       Deloop_Inversion_iso  Riehl's clause (i): B G ≅ (B G)^op
-       core_Inversion_iso    the same for the core of any category
-       Z3_inversion_not_identity  an instance where the morphism map really
-                                  moves an arrow *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Why inversion is a functor at all, and what it is used for
 

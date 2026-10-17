@@ -11,11 +11,11 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(* The homset isomorphisms of the closed structure live in [Sets], so
-   [Instance/Sets] is in scope; suppress its product-monoidal instance as a
-   typeclass hint so that `⨂` resolves to the ambient [SymMonClosed]/[Monoidal]
-   structure on `C` rather than the tensor of [Sets].  Structure/Monoidal/Closed
-   performs the same removal for exactly this reason. *)
+(*
+   本文件给出幺半相关结构。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Remove Hints Sets_Product_Monoidal : typeclass_instances.
 
 (** * Star-autonomous categories (definition level) *)

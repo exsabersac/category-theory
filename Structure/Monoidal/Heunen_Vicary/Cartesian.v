@@ -18,29 +18,13 @@ Generalizable All Variables.
 
 (** The cartesian-monoidal tensor is the categorical product. *)
 
-(* nLab:      https://ncatlab.org/nlab/show/cartesian+monoidal+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Cartesian_monoidal_category
 
-   This is the "Fox's theorem" direction made concrete: a symmetric monoidal
-   category equipped with a natural diagonal ∆ (RelevanceMonoidal, copying)
-   and a terminal unit / augmentation `eliminate` (SemicartesianMonoidal,
-   discarding), subject to the counit laws proj_*_diagonal, has its tensor
-   x ⨂ y serve as the categorical product x × y.  Fox 1976, "Coalgebras and
-   cartesian categories", Comm. Algebra 4(7):665-667.
+   本文件给出笛卡尔结构。
 
-   The construction reads off a [Cartesian] structure on C from the
-   CartesianMonoidal data, transporting along
-
-       product_obj x y := x ⨂ y      (tensor is the product object)
-       fork f g        := (f ⨂ g) ∘ ∆ (the pairing ⟨f, g⟩, from Relevance)
-       exl             := proj_left   = unit_right ∘ id ⨂ eliminate
-       exr             := proj_right   = unit_left  ∘ eliminate ⨂ id
-
-   The single obligation discharges the universal mapping property
-   ump_products, h ≈ ⟨f, g⟩ ↔ exl ∘ h ≈ f ∧ exr ∘ h ≈ g, from projection
-   naturality (proj_*_natural), the counit laws (proj_*_diagonal) and the
-   fork/projection round-trip proj_left_right_diagonal.  The closing coercion
-   then lets every CartesianMonoidal category be used as a Cartesian one. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CartesianMonoidalCartesian.
 

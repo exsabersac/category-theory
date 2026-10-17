@@ -8,22 +8,11 @@ Require Import Category.Structure.Monoidal.Strict.
 
 Generalizable All Variables.
 
-(** * Tactics for strict monoidal categories
+(*
+   本文件给出严格情形。
 
-    In a [StrictMonoidal] category, the structural isomorphisms
-    [tensor_assoc], [unit_left], [unit_right] are identities
-    (transported along the object-level Leibniz equalities
-    [strict_assoc_obj], [strict_unit_left_obj], [strict_unit_right_obj]).
-
-    The [strict_collapse] tactic rewrites these isomorphisms to their
-    transported-identity forms.  After [strict_collapse], the goal is
-    free of explicit [tensor_assoc] / [unit_left] / [unit_right]
-    references — what remains are dependent-transport-of-identity
-    expressions.  In a CONCRETE strict monoidal category where the
-    object-level equations are [eq_refl], these transports reduce
-    further via [cbn] / [simpl]; in an ABSTRACT setting the transport
-    is opaque but can be reasoned about via the [transported_iso_*]
-    lemmas in [Strict.v]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** [strict_collapse]: replace structural isos with transported-id form
 

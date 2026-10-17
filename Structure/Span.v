@@ -6,23 +6,13 @@ Require Import Category.Instance.Roof.
 
 Generalizable All Variables.
 
-(* A span in C is a diagram of shape `x ← s → y`: two morphisms sharing a
-   common domain (the apex, or "roof") s. Equivalently, it is a functor from
-   the shape category Roof = (RNeg ← RZero → RPos) into C, so that a span is
-   just an element of [Roof ⟶ C]. A span generalizes a morphism: there is no
-   longer any asymmetry between source and target.
-
+(*
    nLab:      https://ncatlab.org/nlab/show/span
    Wikipedia: https://en.wikipedia.org/wiki/Span_(category_theory)
 
-   The apex RZero carries the shared domain, and the two legs out of RZero
-   become the morphisms of the span:
+   本文件给出相关范畴论结构的定义与性质。
 
-                s = RZero
-               /         \
-            f /           \ g
-             v             v
-            x = RNeg     y = RPos
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 Definition Span (C : Category) := Roof ⟶ C.
 

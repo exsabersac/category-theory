@@ -11,38 +11,14 @@ Section CartesianMonoidal.
 
 Context {C : Category}.
 
-(* nLab: https://ncatlab.org/nlab/show/cartesian+monoidal+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Cartesian_monoidal_category
-
-   A cartesian monoidal category is a monoidal category whose tensor is the
-   categorical product and whose unit is a terminal object. In this library's
-   notation that means
-
-       x ⨂ y   is the product  x × y,
-       I       is the terminal object  1,
-
-   with the associator, unitors and braiding all induced by the universal
-   property of products. We do not assume products outright; instead we
-   characterise the same structure from the two halves that, combined, force
-   the tensor to be a product: a coherent diagonal (RelevanceMonoidal,
-   copying) and a terminal unit (SemicartesianMonoidal, discarding). The two
-   proj_*_diagonal laws below are exactly the missing compatibility that makes
-   the result cartesian — this is Fox's theorem (Fox 1976), stated on nLab as:
-   a symmetric monoidal category with natural diagonals ∆ and augmentations e
-   is cartesian iff proj_left ∘ ∆ ≈ id and proj_right ∘ ∆ ≈ id, where
-   proj_left = unit_right ∘ id ⨂ eliminate and proj_right = unit_left ∘
-   eliminate ⨂ id (see Semicartesian.v).
-
    Wikipedia: "Cartesian monoidal categories have a number of special and
-   important properties, such as the existence of diagonal maps (Δ) x : x → x
-   ⨂ x and augmentations (e) x : x → I for any object x. In applications to
-   computer science we can think of (Δ) as 'duplicating data' and (e) as
-   'deleting' data. These maps make any object into a comonoid. In fact, any
-   object in a cartesian monoidal category becomes a comonoid in a unique way.
 
-   Moreover, one can show (e.g. Heunen-Vicary 12, p. 84) that any symmetric
-   monoidal category equipped with suitably well-behaved diagonals and
-   augmentations must in fact be cartesian monoidal." *)
+   本文件给出幺半相关结构。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class CartesianMonoidal := {
   cartesian_is_relevance     : @RelevanceMonoidal C;

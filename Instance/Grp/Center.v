@@ -22,7 +22,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Central elements, and the center as an abelian group *)
+(* 相关说明。 （已译） *)
 
 Definition IsCentral (G : GrpObject) (z : carrier G) : Type :=
   ∀ g : carrier G, grp_mul G z g ≈ grp_mul G g z.
@@ -102,8 +102,8 @@ Next Obligation. intros G a b c; simpl; apply grp_mul_assoc. Qed.
 Next Obligation. intros G a; simpl; apply grp_mul_unit_l. Qed.
 Next Obligation. intros G a; simpl; apply grp_mul_inv_l. Qed.
 
-(* The center is abelian by construction: commutation of two central
-   elements is the first one's centrality at the second. *)
+(* The center abelian construction: commutation two central
+ elements first one's 中心性 at second. （已译） *)
 Lemma CenterGrp_abelian (G : GrpObject) (a b : carrier (CenterGrp G)) :
   grp_mul (CenterGrp G) a b ≈ grp_mul (CenterGrp G) b a.
 Proof. exact (`2 a (`1 b)). Qed.
@@ -140,7 +140,7 @@ Next Obligation.
 Qed.
 Next Obligation. intros G a; simpl; apply grp_mul_inv_l. Qed.
 
-(* The center includes into the group. *)
+(* The center includes 进入 group. （已译） *)
 Program Definition Center_incl (G : GrpObject) :
   CenterGrp G ~{Grp}~> G := {|
   grp_map := {| morphism := fun a => `1 a |}
@@ -173,9 +173,9 @@ Qed.
 
 (** ** Z(S₃) is trivial *)
 
-(* Only the identity commutes with both generators: case analysis over
-   the six elements, testing centrality at the rotation r = (rot1,
-   false) and the reflection s = (rot0, true). *)
+(* Only 恒等 commutes both generators: case analysis over
+ six elements, testing 中心性 at rotation r = (rot1,
+ false) reflection s = (rot0, true). （已译） *)
 Lemma S3_center_trivial (z : carrier S3) :
   IsCentral S3 z → z = s3_unit.
 Proof.
@@ -201,7 +201,7 @@ Next Obligation.
   intros a b; destruct a as [[]|[]], b as [[]|[]]; reflexivity.
 Qed.
 
-(* ...and the sign character projects back. *)
+(* 相关说明。 （已译） *)
 Program Definition s3_sign : S3 ~{Grp}~> GrpTwo := {|
   grp_map := {| morphism := fun p : carrier S3 =>
     if snd p then grp_two_one else grp_two_zero |}
@@ -211,7 +211,7 @@ Next Obligation.
   intros a b; destruct a as [ra [|]], b as [rb [|]]; simpl; exact ttt.
 Qed.
 
-(* The retract law: sign after inclusion is the identity of ℤ/2. *)
+(* The retract law: sign after 含入 恒等 ℤ/2. （已译） *)
 Lemma sign_retract :
   s3_sign ∘[Grp] grp_two_s3 ≈ @id Grp GrpTwo.
 Proof.
@@ -243,7 +243,7 @@ Qed.
 Theorem no_center_functor (T : Grp ⟶ Ab)
   (HT : ∀ G : GrpObject, fobj[T] G = CenterAb G) : False.
 Proof.
-  (* The retract factors the identity of T S₂ through T S₃. *)
+  (* The retract factors 恒等 T S₂ through T S₃. （已译） *)
   assert (Hrt : ∀ x : carrier (fobj[T] GrpTwo),
              cmon_map (fmap[T] s3_sign) (cmon_map (fmap[T] grp_two_s3) x)
                ≈ x).

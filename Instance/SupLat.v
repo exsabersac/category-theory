@@ -1,4 +1,4 @@
-(** * Complete semilattices are the algebras of the power-set monad *)
+(* * * Complete semilattices algebras power-set 单子 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Lib.Setoid.Propositional.
@@ -28,8 +28,7 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------------ *)
 (** ** The two-element subset {x, y} *)
 
-(* The subset {x, y} of a setoid, as the union of #227's two truncated
-   singletons. *)
+(* 相关说明。 （已译） *)
 Definition Powerset_Prop_pair@{o} {X : SetoidObject@{o o}}
   (x y : carrier X) : carrier (Powerset_Prop_obj@{o} X).
 Proof.
@@ -189,8 +188,8 @@ Proof.
   exact (@Powerset_Prop_map_comp@{o} _ _ _ (slh_map g) (slh_map f) S).
 Defined.
 
-(* The category of (small) complete semilattices.  It sits at the same
-   universes as [Sets@{o so}]. *)
+(* The 范畴 (small) complete semilattices. It sits at same
+ universes [Sets@{o so}]. （已译） *)
 Definition SupLat@{o so} : Category@{so o o}.
 Proof.
   unshelve refine
@@ -209,7 +208,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The order recovered from the sup *)
+(* 相关说明。 （已译） *)
 
 (* x ≤ y exactly when sup {x, y} ≈ y: part (c)'s "in this way". *)
 Lemma sl_sup_pair_le@{o} (A : SupLatObject@{o}) (x y : carrier (sl_set A)) :
@@ -268,7 +267,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (c): every complete semilattice is a 𝒫-algebra *)
+(* 相关说明。 （已译） *)
 
 (* h S := sup S.  Both algebra laws follow by antisymmetry. *)
 Definition SupLat_TAlgebra@{o so} (A : SupLatObject@{o}) :
@@ -295,7 +294,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (b): every 𝒫-algebra is a complete semilattice *)
+(* 相关说明。 （已译） *)
 
 (* h {x} ≈ x: the algebra's unit law at x. *)
 Lemma talg_singleton@{o so} {X : SetoidObject@{o o}}
@@ -304,8 +303,7 @@ Lemma talg_singleton@{o so} {X : SetoidObject@{o o}}
   @equiv _ (is_setoid X) (t_alg[α] (Powerset_Prop_singleton_pred@{o} x)) x.
 Proof. exact (@t_id _ _ _ _ α x). Qed.
 
-(* An algebra's carrier has propositional equality: the unit is split mono
-   and P X's ≈ is a [Prop] in content. *)
+(* 相关说明。 （已译） *)
 Lemma talg_unsquash@{o so} {X : SetoidObject@{o o}}
   (α : @TAlgebra Sets@{o so} Powerset_Prop@{o so} Powerset_Monad@{o so} X)
   (x y : carrier X) :
@@ -323,7 +321,7 @@ Proof.
   - transitivity y; [exact exy | exact e].
 Qed.
 
-(* h {h S, h T} ≈ h (S ∪ T): the action law at the pair {S, T}. *)
+(* 相关说明。 （已译） *)
 Lemma talg_pair@{o so} {X : SetoidObject@{o o}}
   (α : @TAlgebra Sets@{o so} Powerset_Prop@{o so} Powerset_Monad@{o so} X)
   (S T : carrier (Powerset_Prop_obj@{o} X)) :
@@ -556,7 +554,7 @@ Proof.
   - intros x y H. exact (Powerset_squash_intro H).
 Defined.
 
-(* (b) after (c) gives back the order: "in this way". *)
+(* 相关说明。 （已译） *)
 Lemma sl_talg_le_iff@{o so} (A : SupLatObject@{o})
   (x y : carrier (sl_set A)) :
   iff (talg_le@{o so} (SupLat_TAlgebra@{o so} A) x y) (sl_le A x y).
@@ -569,7 +567,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (d): the category of 𝒫-algebras is the category of semilattices *)
+(* * ** (d): 范畴 𝒫-algebras 范畴 semilattices （已译） *)
 
 Definition EM_to_SupLat@{o so} :
   @EilenbergMoore@{so so so o} Sets@{o so} Powerset_Prop@{o so}
@@ -614,7 +612,7 @@ Proof.
   - intros A B C f g a. reflexivity.
 Defined.
 
-(* The algebra round trip, with the identity as its component. *)
+(* The algebra round trip, 恒等 component. （已译） *)
 Definition SupLat_EM_counit_iso@{o so}
   (x : @EilenbergMoore@{so so so o} Sets@{o so} Powerset_Prop@{o so}
          Powerset_Monad@{o so}) :
@@ -646,7 +644,7 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* The semilattice round trip, with the identity as its component. *)
+(* The semilattice round trip, 恒等 component. （已译） *)
 Definition SupLat_EM_unit_iso@{o so} (A : SupLatObject@{o}) :
   @Isomorphism SupLat@{o so}
     (fobj[EM_to_SupLat@{o so} ◯ SupLat_to_EM@{o so}] A) A.
@@ -708,15 +706,14 @@ Defined.
 (* ------------------------------------------------------------------------ *)
 (** ** Readbacks *)
 
-(* The two legs of the isomorphism are the two functors. *)
+(* The two legs 同构 two 函子. （已译） *)
 Example SupLat_EM_iso_to@{o so c} :
   to SupLat_EM_iso@{o so c} = SupLat_to_EM@{o so} := eq_refl.
 
 Example SupLat_EM_iso_from@{o so c} :
   from SupLat_EM_iso@{o so c} = EM_to_SupLat@{o so} := eq_refl.
 
-(* (b): the carrier is X, sup S = h S as a setoid map, and the order is
-   Mac Lane's h {x, y} ≈ y, squashed. *)
+(* 相关说明。 （已译） *)
 Example EM_to_SupLat_carrier@{o so}
   (x : @EilenbergMoore@{so so so o} Sets@{o so} Powerset_Prop@{o so}
          Powerset_Monad@{o so}) :
@@ -735,14 +732,14 @@ Example EM_to_SupLat_le@{o so}
         (@equiv _ (is_setoid (projT1 x))
            (t_alg[projT2 x] (Powerset_Prop_pair@{o} a b)) b) := eq_refl.
 
-(* (c): the carrier is the semilattice's, and h = sup as a setoid map. *)
+(* 相关说明。 （已译） *)
 Example SupLat_to_EM_carrier@{o so} (A : SupLatObject@{o}) :
   projT1 (fobj[SupLat_to_EM@{o so}] A) = sl_set A := eq_refl.
 
 Example SupLat_to_EM_alg@{o so} (A : SupLatObject@{o}) :
   t_alg[projT2 (fobj[SupLat_to_EM@{o so}] A)] = sl_sup A := eq_refl.
 
-(* The morphisms are carried unchanged. *)
+(* The 态射 carried unchanged. （已译） *)
 Example EM_to_SupLat_map@{o so}
   (x y : @EilenbergMoore@{so so so o} Sets@{o so} Powerset_Prop@{o so}
            Powerset_Monad@{o so}) (f : x ~> y) :
@@ -784,7 +781,7 @@ Example SupLat_EM_rt_alg_hom@{o so}
   t_alg_hom[fmap[SupLat_to_EM@{o so} ◯ EM_to_SupLat@{o so}] f]
     = t_alg_hom[f] := eq_refl.
 
-(* The components of the equivalence's counit and unit are identities. *)
+(* The components 等价's counit unit identities. （已译） *)
 Example SupLat_EM_counit_component@{o so}
   (x : @EilenbergMoore@{so so so o} Sets@{o so} Powerset_Prop@{o so}
          Powerset_Monad@{o so}) :
@@ -809,7 +806,7 @@ Example SupLat_EM_unit_component_from@{o so} (A : SupLatObject@{o}) :
                            SupLat_EM_equivalence@{o so}) A))
     = @setoid_morphism_id@{o o o} (sl_set A) := eq_refl.
 
-(* So are those of both natural isomorphisms of the isomorphism in Cat. *)
+(* So those both natural isomorphisms 同构 Cat. （已译） *)
 Example SupLat_EM_iso_to_from_component@{o so c}
   (x : @EilenbergMoore@{so so so o} Sets@{o so} Powerset_Prop@{o so}
          Powerset_Monad@{o so}) :

@@ -9,7 +9,7 @@ Require Import Category.Instance.Sets.Image.
 
 Generalizable All Variables.
 
-(** * The cross-universe subobject classifier of [Sets] *)
+(* 相关说明。 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Subobject_classifier
@@ -20,7 +20,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** Lifting setoids one universe up *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明等价相关定义、性质与动机。
@@ -60,8 +60,8 @@ Definition Setoid_Lift@{o so} (X : SetoidObject@{o o}) : SetoidObject@{so so} :=
   {| carrier   := carrier X
    ; is_setoid := Setoid_Lift_instance@{o so} (is_setoid X) |}.
 
-(* A setoid morphism between level-o setoids re-typechecks between their
-   lifts: carrier function and respectfulness are reused verbatim. *)
+(* A setoid 态射 between level-o setoids re-typechecks between their
+ lifts: carrier function respectfulness reused verbatim. （已译） *)
 Definition SetoidMorphism_Lift@{o so} {X Y : SetoidObject@{o o}}
   (f : SetoidMorphism@{o o o} X Y) :
   SetoidMorphism@{so so so} (Setoid_Lift@{o so} X) (Setoid_Lift@{o so} Y) :=
@@ -72,7 +72,7 @@ Definition SetoidMorphism_Lift@{o so} {X Y : SetoidObject@{o o}}
     (λ a b Hab, @proper_morphism _ _ _ _ f a b Hab).
 
 (* ------------------------------------------------------------------------ *)
-(** ** The truth-value object, one universe up *)
+(* * ** The truth-value 对象, one universe up （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -92,8 +92,7 @@ Definition PropSetoid@{o so} : SetoidObject@{so so} :=
    ; is_setoid := {| equiv        := PropSetoid_equiv@{o so}
                    ; setoid_equiv := PropSetoid_equivalence@{o so} |} |}.
 
-(* The point true : 1 ~> Ω, selecting the (canonically) inhabited truth
-   value [poly_unit].  Any inhabited type would do, up to iffT. *)
+(* 相关说明。 （已译） *)
 Definition sets_true@{o so} :
   SetoidMorphism@{so so so} unit_setoid_object@{so so} PropSetoid@{o so}.
 Proof.
@@ -105,7 +104,7 @@ Proof.
   intros ? ? ?; split; intros ?; exact ttt.
 Defined.
 
-(* The terminal map: every setoid maps to the singleton. *)
+(* 相关说明。 （已译） *)
 Definition sets_to_unit@{so} {X : SetoidObject@{so so}} :
   SetoidMorphism@{so so so} X unit_setoid_object@{so so} :=
   @Build_SetoidMorphism@{so so so}
@@ -140,7 +139,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The classifying pullback square *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明拉回/推出、子对象、（余）强度相关定义、性质与动机。
@@ -157,16 +156,14 @@ Theorem sets_char_pullback@{o so sso} {A B : SetoidObject@{o o}}
 Proof.
   pose proof (snd (injectivity_is_monic m) Hm) as inj.
   constructor.
-  - (* the square commutes: for a : A, "m a is in the image of m" iff ⊤ *)
+  - (* 相关说明。 （已译） *)
     intro a; split.
     + intros _; exact ttt.
     + intros _; exists a; reflexivity.
   - (* the universal property *)
     intros Q q1 q2 Hq.
     simpl in Hq.
-    (* Each x : Q comes with the truth of "q1 x is in the image of m";
-       extracting its witness defines the mediator.  Monicity makes the
-       extraction respect ≈. *)
+    (* 相关说明。 （已译） *)
     given (u : SetoidMorphism@{so so so} Q (Setoid_Lift@{o so} A)). {
       unshelve refine
         (@Build_SetoidMorphism@{so so so}
@@ -197,7 +194,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Uniqueness of the characteristic map *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明拉回/推出、hom、等价相关定义、性质与动机。
@@ -251,7 +248,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The one-level shadow: the classified subobject *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明拉回/推出、同构、子对象相关定义、性质与动机。
@@ -266,7 +263,7 @@ Theorem sets_char_subobject@{o so} {A B : SetoidObject@{o o}}
        (Sets_Image_mono_monic m)).
 Proof.
   pose proof (snd (injectivity_is_monic m) Hm) as inj.
-  (* the inverse of the epi leg, available because m is monic *)
+  (* 相关说明。 （已译） *)
   given (h : Sets_Image m ~{Sets@{o so}}~> A). {
     unshelve refine {| morphism := λ p, `1 `2 p |}.
     intros p q Hpq.
@@ -291,7 +288,7 @@ Proof.
   exact (Sets_Image_comm m).
 Defined.
 
-(** ** The lift is inert for epicness *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明核/余核、来源与用途相关定义、性质与动机。
@@ -299,7 +296,7 @@ Defined.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The constantly-true probe: the terminal map followed by [sets_true]. *)
+(* 相关说明。 （已译） *)
 Definition sets_all_true@{o so sso} (X : SetoidObject@{so so}) :
   X ~{Sets@{so sso}}~> PropSetoid@{o so} :=
   sets_true@{o so} ∘[Sets@{so sso}] sets_to_unit@{so}.

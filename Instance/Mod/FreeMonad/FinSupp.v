@@ -16,7 +16,7 @@ Require Import Coq.ZArith.ZArith.
 
 Generalizable All Variables.
 
-(** * T_R X as the finitely supported functions X → R *)
+(* 相关说明。 （已译） *)
 
 (*
  Book: Riehl, "Category Theory in Context", Example 5.1.4(iii),
@@ -133,7 +133,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The generators a combination names, and its coefficients there *)
+(* 相关说明。 （已译） *)
 
 Fixpoint fv_gens@{+} (t : @FVTerm R X) : list (carrier X) :=
   match t with
@@ -192,9 +192,7 @@ Proof.
   exact (fe_zero_l _).
 Qed.
 
-(* The middle-four interchange (p + q) + (r + s) ≈ (p + r) + (q + s) is
-   Instance/CMon/Biproduct.v's [cmon_plus_interchange], at the free
-   module. *)
+(* 相关说明。 （已译） *)
 Lemma fv_lsum_plus@{+} (cf cg : carrier X → scalar) (D : list (carrier X)) :
   fv_eq (fv_lsum (fun y => radd (cf y) (cg y)) D)
         (fv_plus (fv_lsum cf D) (fv_lsum cg D)).
@@ -229,7 +227,7 @@ Proof.
   exact (IH (fun y0 m => H y0 (inr m))).
 Qed.
 
-(* Σ_{y ∈ D} (e_x)_y·e_y ≈ e_x, for D duplicate-free and naming x. *)
+(* 相关说明。 （已译） *)
 Lemma fv_lsum_indicator@{+} (x : carrier X) (D : list (carrier X)) :
   fs_nodup D → fs_mem x D →
   fv_eq (fv_lsum (fun y => fv_coef R Xdec y (fv_gen x)) D) (fv_gen x).
@@ -256,7 +254,7 @@ Proof.
     exact (fe_zero_l _).
 Qed.
 
-(* The coefficients of a weighted sum: zero off the list ... *)
+(* 相关说明。 （已译） *)
 Lemma fv_coef_lsum_out@{+} (cf : carrier X → scalar) (D : list (carrier X))
   (z : carrier X) :
   (fs_mem z D → False) → fv_coef R Xdec z (fv_lsum cf D) ≈ rzero.
@@ -272,7 +270,7 @@ Proof.
   apply (rig_add_zero_l (ring_rig R)).
 Qed.
 
-(* ... and the weight on it, for a duplicate-free list. *)
+(* 相关说明。 （已译） *)
 Lemma fv_coef_lsum_in@{+} (cf : carrier X → scalar)
   (cr : ∀ y y', y ≈ y' → cf y ≈ cf y') (D : list (carrier X))
   (z : carrier X) :
@@ -299,11 +297,11 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Collecting like terms, and coefficient uniqueness *)
+(* 相关说明。 （已译） *)
 
-(* The coefficient of z in Σ rᵢ·⟨xᵢ⟩ is the sum of the rᵢ with xᵢ ≈ z:
-   the fibre sum at the identity, by the induction [fv_coef_map_lc]
-   uses ([fv_eval_fibre_lc]). *)
+(* The coefficient z Σ rᵢ·⟨xᵢ⟩ sum rᵢ xᵢ ≈ z:
+ fibre sum at 恒等, induction [fv_coef_map_lc]
+ uses ([fv_eval_fibre_lc]). （已译） *)
 Lemma fv_coef_lc@{+} (z : carrier X) (l : list (fv_pair R X)) :
   fv_coef R Xdec z (fv_lc l) ≈ fv_fibre_sum R Xdec (@id Sets@{c so} X) z l.
 Proof. exact (fv_eval_fibre_lc R Xdec (@id Sets@{c so} X) l z). Qed.
@@ -344,8 +342,7 @@ Proof.
     exact (fe_sym (fv_lsum_smul r _ D)).
 Qed.
 
-(* A combination is determined by its coefficients: the converse of
-   [fv_lc_unique], from [fv_collect]. *)
+(* 相关说明。 （已译） *)
 Theorem fv_coef_injective@{+} (s t : @FVTerm R X) :
   (∀ z, fv_coef R Xdec z s ≈ fv_coef R Xdec z t) → fv_eq s t.
 Proof.
@@ -359,7 +356,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The finitely supported functions, and T_R X ≅ them in Sets *)
+(* 相关说明。 （已译） *)
 
 (* A ≈-respecting f : X → R with a list outside which it vanishes. *)
 Record FinSupp : Type := {
@@ -420,8 +417,7 @@ Proof.
                    (fun x m => fs_dedup_mem x _ m))).
 Qed.
 
-(* Mac Lane's T_R X, "the set of all those functions f : X → R with only a
-   finite number of non-zero values". *)
+(* 相关说明。 （已译） *)
 Definition TR_FinSupp_iso@{+} :
   @Isomorphism Sets@{c so} (fobj[FreeModF R] X) FinSuppObj.
 Proof using R X Xdec.
@@ -437,8 +433,8 @@ Proof using R X Xdec.
   - intros t. exact (finsupp_from_to t).
 Defined.
 
-(* The isomorphism sends a combination to its coefficient function, and
-   a function to Σ f(y)·e_y over its support, duplicates removed. *)
+(* The 同构 sends combination coefficient function, and
+ function Σ f(y)·e_y over support, duplicates removed. （已译） *)
 Example TR_FinSupp_iso_to@{+} (t : @FVTerm R X) :
   to TR_FinSupp_iso t = to_finsupp t := eq_refl.
 
@@ -458,9 +454,7 @@ End FinSupp.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* [FVTerm]'s index arguments are implicit and a literal has nothing to
-   propagate them from; these NOTATIONS, not definitions, fix them.  The
-   second three build combinations of combinations. *)
+(* 相关说明。 （已译） *)
 Local Notation zgen := (@fv_gen Int_Ring TwoGens).
 Local Notation zsmul := (@fv_smul Int_Ring TwoGens).
 Local Notation zplus := (@fv_plus Int_Ring TwoGens).
@@ -471,7 +465,7 @@ Local Notation zsmul2 :=
 Local Notation zplus2 :=
   (@fv_plus Int_Ring (RMod_Forget Int_Ring (FreeModObject TwoGens))).
 
-(* The coefficients of 2·e_true + e_false are 2 and 1 ... *)
+(* 相关说明。 （已译） *)
 Example TR_coef_Z_true :
   fv_coef Int_Ring two_gens_dec true
     (zplus (zsmul 2%Z (zgen true)) (zgen false)) = 2%Z := eq_refl.

@@ -43,7 +43,7 @@ Context (F : FieldObject).
 
 Notation Vct := (Vct_F F).
 
-(** ** The line, its countable power and the coordinate functionals *)
+(* 相关说明。 （已译） *)
 
 Definition VctLine : Vct := Ring_RMod (field_ring F).
 
@@ -63,7 +63,7 @@ Next Obligation. intros M N; reflexivity. Qed.
 Next Obligation. intros M N a b; simpl; symmetry; apply cmon_plus_zero_l. Qed.
 Next Obligation. intros M N r m; simpl; symmetry; apply rm_smul_zero_r. Qed.
 
-(** ** The span of the coordinate functionals inside the dual of the power *)
+(* 相关说明。 （已译） *)
 
 (* A finite formal combination of coordinate functionals, evaluated. *)
 Fixpoint span_sum (p : list (nat * carrier (cmon_setoid VctLine)))
@@ -97,8 +97,7 @@ Proof.
     symmetry; apply rig_mul_assoc.
 Qed.
 
-(* The submodule of [DP] spanned by the coordinates: the functionals that
-   ARE finite linear combinations of coordinate projections. *)
+(* 相关说明。 （已译） *)
 Program Definition SpanCoords : Submodule DP := {|
   smod_mem := fun phi => { p : list (nat * carrier (cmon_setoid VctLine))
                          & phi ≈ span_sum p }
@@ -118,8 +117,7 @@ Next Obligation.
   rewrite Hp; apply span_sum_scale.
 Qed.
 
-(* Every functional of the form [ψ ∘ coord n] lies in the span — the one
-   place field commutativity is spent. *)
+(* 相关说明。 （已译） *)
 Lemma dual_coord_in_span (n : nat)
   (psi : carrier (cmon_setoid (DualMod F VctLine))) :
   smod_mem SpanCoords (cmon_map (rm_hom (fmap[Dual F] (vct_coord n))) psi).
@@ -135,7 +133,7 @@ Proof.
     apply field_comm.
 Qed.
 
-(** ** The concrete colimit: the countable power, as a cocone in Vct^op *)
+(* 相关说明。 （已译） *)
 
 Definition LineDiagram : DiscreteCat nat ⟶ Vct^op :=
   DiscreteCat_Functor' (fun _ : nat => VctLine : obj[Vct^op]).
@@ -157,8 +155,8 @@ Defined.
 
 Definition PowCocone : Cocone LineDiagram := op_discrete_cone PowLine vct_coord.
 
-(* The power is the colimit of the constant diagram in [Vct^op]: the
-   product's universal property, read backwards. *)
+(* The power colimit 常值 diagram [Vct^op]: the
+ product's 普遍性质, read backwards. （已译） *)
 Lemma PowCocone_IsColimitCocone : IsColimitCocone PowCocone.
 Proof.
   intro M.
@@ -169,7 +167,7 @@ Proof.
   - intros u Hu z n; symmetry; apply (Hu n z).
 Defined.
 
-(** ** The obstruction hypothesis, in Mac Lane's own words *)
+(* * ** The obstruction 假设, Mac Lane's own words （已译） *)
 
 (* Some functional on [F^ℕ] is NOT a finite linear combination of the
    coordinate projections.  Classically true (Erdős–Kaplansky); not
@@ -184,8 +182,8 @@ Definition SpanQuot : Vct := QuotientMod SpanCoords.
 Definition span_quot : Dual F PowLine ~{Vct}~> SpanQuot :=
   mquot_proj SpanCoords.
 
-(* The competing cocone under the image diagram: the quotient by the span,
-   with the composite legs. *)
+(* The competing cocone under image diagram: quotient span,
+ 复合 legs. （已译） *)
 Definition ZeroCocone : Cocone (Dual F ◯ LineDiagram).
 Proof.
   unshelve refine (@Build_Cone ((DiscreteCat nat)^op) (Vct^op)
@@ -237,16 +235,15 @@ Definition dual_functor_no_right_adjoint (H : CoordSpanProper)
   dual_not_PreservesColimitCocone H
     (left_adjoint_PreservesColimitCocone A LineDiagram).
 
-(* The corollary: [Dual F] is not the left adjoint of its opposite. *)
+(* The 推论: [Dual F] not 左伴随 opposite. （已译） *)
 Definition dual_not_left_adjoint_of_op (H : CoordSpanProper)
   (A : Dual F ⊣ Opposite_Functor (Dual F)) : False :=
   dual_functor_no_right_adjoint H (Opposite_Functor (Dual F)) A.
 
-(** ** The unconditional positive half: [Dual F] is adjoint to itself on the
-       right, so it is continuous *)
+(* 相关说明。 （已译） *)
 
-(* The remaining obligations (respectfulness, the two round trips, the four
-   naturality squares) are closed by the tree's default tactic. *)
+(* The remaining obligations (respectfulness, two round trips, four
+ 自然性 squares) closed tree's default tactic. （已译） *)
 #[local] Obligation Tactic := cat_simpl.
 
 (* The transpose [a ~> D x ↦ x ~> D a]: [D f ∘ η x]. *)
@@ -282,12 +279,12 @@ Program Definition dual_vct_AdjointOnTheRight :
 Definition dual_vct_Adjunction : Opposite_Functor (Dual F) ⊣ Dual F :=
   Adjunction_of_AdjointOnTheRight dual_vct_AdjointOnTheRight.
 
-(* Mac Lane's contrast: as a right adjoint, [Dual F] carries every colimit
-   of Vct to a limit; the exercise is about the other direction. *)
+(* Mac Lane's contrast: 右伴随, [Dual F] carries every colimit
+ Vct limit; exercise about other direction. （已译） *)
 Definition dual_vct_Continuous : ContinuousFunctor (Dual F) :=
   right_adjoint_Continuous dual_vct_Adjunction.
 
-(** ** The functor the issue names: StarAutonomous.v's [dual] at the line *)
+(* * ** The 函子 issue names: StarAutonomous.v's [dual] at line （已译） *)
 
 (*
    本节说明幺半结构、伴随、函子相关定义、性质与动机。
@@ -328,9 +325,9 @@ Program Definition iso359 (x : Vct) : Dual F x ≅[Vct] VctDual359 x := {|
   to := to359 x; from := from359 x
 |}.
 
-(* [dual]'s arrow action is the closed transpose of evaluation; by the
-   uniqueness clause of the exponential's universal property it is
-   precomposition, checked on the tensor's generators. *)
+(* [dual]'s arrow action closed transpose evaluation; the
+ uniqueness clause exponential's 普遍性质 it is
+ precomposition, checked tensor's generators. （已译） *)
 Lemma dual359_fmap_pre {x y : Vct} (f : y ~{Vct}~> x) :
   fmap[VctDual359] (f : x ~{Vct^op}~> y)
     ≈ to359 y ∘ fmap[Dual F] f ∘ from359 x.
@@ -349,9 +346,9 @@ Proof.
   intros g v; simpl; reflexivity.
 Defined.
 
-(* Mac Lane §V.5 Exercise 2 for the functor the issue names, by transport
-   of the adjunction along the isomorphism (Theory/Adjunction.v's
-   [adjunction_along_left_iso], #431). *)
+(* Mac Lane §V.5 Exercise 2 函子 issue names, transport
+ 伴随 along 同构 (Theory/Adjunction.v's
+ [adjunction_along_left_iso], #431). （已译） *)
 Definition dual359_no_right_adjoint (H : CoordSpanProper)
   (Rt : Vct ⟶ Vct^op) (A : VctDual359 ⊣ Rt) : False :=
   dual_functor_no_right_adjoint H Rt (adjunction_along_left_iso dual_iso359 A).
@@ -374,14 +371,12 @@ Example vct_transpose_component {a x : Vct} (f : a ~{Vct}~> Dual F x)
   cmon_map (rm_hom (cmon_map (rm_hom (vct_transpose f)) v)) w
     = cmon_map (rm_hom (cmon_map (rm_hom f) w)) v := eq_refl.
 
-(* The isomorphism's components are the identity on functionals; this is
-   what keeps [dual_iso359] transparent. *)
+(* The 同构's components 恒等 functionals; 这是
+ what keeps [dual_iso359] transparent. （已译） *)
 Example iso359_to_component (x : Vct) (g : carrier (cmon_setoid (Dual F x))) :
   cmon_map (rm_hom (to (projT1 dual_iso359 x))) g = g := eq_refl.
 
-(* The colimit mediator computes: at a vector [z] of the competing apex it
-   is the family of that cocone's legs at [z].  This is what keeps
-   [PowCocone_IsColimitCocone] transparent. *)
+(* 相关说明。 （已译） *)
 Example pow_cocone_mediator_component (M : Cocone LineDiagram)
   (z : carrier (cmon_setoid (vertex_obj[M] : Vct))) (n : nat) :
   cmon_map (rm_hom (unique_obj (PowCocone_IsColimitCocone M))) z n

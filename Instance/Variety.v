@@ -7,7 +7,7 @@ Require Import Category.Instance.Comp.
 
 Generalizable All Variables.
 
-(** * The category of algebras of a variety *)
+(* * * The 范畴 algebras variety （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/algebraic+theory
@@ -30,7 +30,7 @@ Section Variety.
 Context (S : UA.OpSignature).
 Context (E : UA.EqSignature S).
 
-(** ** Satisfaction, and the full subcategory it cuts out *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Variety 相关定义、性质与动机。
@@ -51,8 +51,8 @@ Definition Variety_sub : Subcategory (@UA.Algs S) :=
 
 Definition Variety : Category := Sub (@UA.Algs S) Variety_sub.
 
-(* Full: every homomorphism between algebras that satisfy the laws is a
-   morphism of the variety. *)
+(* Full: every homomorphism between algebras satisfy laws a
+ 态射 variety. （已译） *)
 Definition Variety_Full : Full (@UA.Algs S) Variety_sub :=
   fun _ _ _ _ _ => I.
 
@@ -61,13 +61,13 @@ Definition Variety_Incl : Variety ⟶ @UA.Algs S := Incl (@UA.Algs S) Variety_su
 Definition Variety_Incl_Faithful : Functor.Faithful Variety_Incl :=
   Incl_Faithful (@UA.Algs S) Variety_sub.
 
-(* The inclusion is FULL as a functor, not merely full as a subcategory:
-   Construction/Subcategory.v already turns the one into the other, and
-   an audit pointed out that this costs one line. *)
+(* The 含入 FULL 函子, not merely full subcategory:
+ Construction/Subcategory.v already turns one 进入 other, and
+ audit pointed out costs one line. （已译） *)
 Definition Variety_Incl_Full : Functor.Full Variety_Incl :=
   Full_Implies_Full_Functor (@UA.Algs S) Variety_sub Variety_Full.
 
-(** ** The record presentation, and its round trips *)
+(* 相关说明。 （已译） *)
 
 Definition Variety_pack (A : UA.Algebra S E) : Variety :=
   (UA.alg S E A; UA.equations S E A).
@@ -75,8 +75,8 @@ Definition Variety_pack (A : UA.Algebra S E) : Variety :=
 Definition Variety_unpack (x : Variety) : UA.Algebra S E :=
   {| UA.alg := `1 x ; UA.equations := `2 x |}.
 
-(* Propositional [=] on the packed OBJECT data — the sanctioned case; no
-   morphism equality is asserted. *)
+(* Propositional [=] packed OBJECT data — sanctioned case; no
+ 态射 equality asserted. （已译） *)
 
 Lemma Variety_unpack_pack (A : UA.Algebra S E) :
   Variety_unpack (Variety_pack A) = A.
@@ -129,8 +129,8 @@ Arguments Variety_Forget_Faithful {_} _.
 
 Definition GroupVariety : Category := Variety UA.GroupEq.
 
-(* ℤ/2 under exclusive or, the witness Instance/Comp.v already builds,
-   as an OBJECT of the category rather than an inhabitant of a type. *)
+(* ℤ/2 under exclusive or, witness Instance/Comp.v already builds,
+ OBJECT 范畴 rather than inhabitant type. （已译） *)
 Definition GroupVariety_Bool : GroupVariety := Variety_pack UA.Bool.
 
 (*

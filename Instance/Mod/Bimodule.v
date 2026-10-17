@@ -1,4 +1,4 @@
-(** * The bimodule tensor-hom adjunction, and its parameter *)
+(* * * The bimodule tensor-hom 伴随, parameter （已译） *)
 
 (*
  Book:      Mac Lane, ibid., §IV.7 Theorem 3, printed pp. 101–102 —
@@ -50,7 +50,7 @@ Open Scope category_scope.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** A. The balanced tensor of a right module and a left module *)
+(* 相关说明。 （已译） *)
 
 Section BalancedTensor.
 
@@ -83,9 +83,9 @@ Inductive bsum : Type :=
   | bs_plus : bsum → bsum → bsum
   | bs_neg  : bsum → bsum.
 
-(* The quotienting relation: Instance/Ab/Tensor.v's eleven constructors
-   plus ONE balance rule, (n · x) ⊗ m ≈ n ⊗ (x · m).  Reflexivity is
-   derived. *)
+(* The quotienting 关系: Instance/Ab/Tensor.v's eleven constructors
+ plus ONE balance rule, (n · x) ⊗ m ≈ n ⊗ (x · m). Reflexivity is
+ derived. （已译） *)
 Inductive bs_eq : bsum → bsum → Prop :=
   | be_gen {n n' : NC} {m m' : MC} :
       n ≈ n' → m ≈ m' → bs_eq (bs_gen n m) (bs_gen n' m')
@@ -130,8 +130,8 @@ Definition bs_Setoid : Setoid bsum := {|
   setoid_equiv := bs_eq_Equivalence
 |}.
 
-(* The balanced tensor as an abelian group: every group law is a
-   constructor of the relation. *)
+(* The balanced tensor abelian group: every group law a
+ constructor 关系. （已译） *)
 Definition BalTensor : AbObject := {|
   ab_cmon := {|
     cmon_setoid := {| carrier := bsum; is_setoid := bs_Setoid |};
@@ -150,7 +150,7 @@ Definition BalTensor : AbObject := {|
   ab_neg_left := be_neg_l
 |}.
 
-(** ** Balanced biadditive maps and the universal property *)
+(* * ** Balanced biadditive maps 普遍性质 （已译） *)
 
 (*
    本节说明幺半群相关定义、性质与动机。
@@ -176,14 +176,13 @@ Arguments bal_add_l {A} _ _ _ _.
 Arguments bal_add_r {A} _ _ _ _.
 Arguments bal_balance {A} _ _ _ _.
 
-(* The universal balanced map: the generator former itself. *)
+(* 相关说明。 （已译） *)
 Definition bal_gen : BalBiadditive BalTensor :=
   @Build_BalBiadditive BalTensor bs_gen
     (fun _ _ Hn _ _ Hm => be_gen Hn Hm)
     be_add_l be_add_r be_balance.
 
-(* The mediator: fold a formal sum through the target's operations.  It
-   computes on constructors. *)
+(* 相关说明。 （已译） *)
 Fixpoint bal_med_fun {A : AbObject} (β : BalBiadditive A) (s : bsum) :
   carrier (cmon_setoid A) :=
   match s with
@@ -242,9 +241,7 @@ Example bal_med_gen {A : AbObject} (β : BalBiadditive A)
   (n : NC) (m : MC) :
   cmon_map (bal_med β) (bs_gen n m) = bal_map β n m := eq_refl.
 
-(* Uniqueness in its consumable form: homomorphisms out of the balanced
-   tensor that agree on generators agree everywhere.  The [bs_neg] case
-   is Instance/Ab.v's [ab_map_neg]. *)
+(* 相关说明。 （已译） *)
 Lemma bal_hom_ext {A : AbObject} (f g : AbHom BalTensor A) :
   (∀ (n : NC) (m : MC),
       cmon_map f (bs_gen n m) ≈ cmon_map g (bs_gen n m)) →
@@ -273,9 +270,9 @@ Proof.
   intros n m; exact (Hgen n m).
 Qed.
 
-(* A generator with a zero coordinate is the zero of the tensor.  Both
-   halves are needed downstream: the transposes of the adjunction are
-   additive because of them. *)
+(* A generator zero coordinate zero tensor. Both
+ halves needed downstream: transposes 伴随 are
+ additive because them. （已译） *)
 Lemma bal_gen_zero_l (m : MC) :
   (bs_gen (cmon_zero (rm_ab N)) m : carrier (cmon_setoid BalTensor))
     ≈ cmon_zero BalTensor.
@@ -345,9 +342,9 @@ Arguments bal_med_unique {X N M A} β f _.
 Arguments bal_gen_zero_l {X} N M m.
 Arguments bal_gen_zero_r {X} N M n.
 
-(** ** B. Mac Lane part (a): − ⊗_R E and hom_S(E, −) *)
+(* 相关说明。 （已译） *)
 
-(** *** The Ab-enrichment of a module category *)
+(* * *** The Ab-enrichment module 范畴 （已译） *)
 
 (*
    本节说明 Bimodule 相关定义、性质与动机。
@@ -393,7 +390,7 @@ Local Notation SC := (carrier (rig_setoid (ring_rig S))).
 Local Notation EC := (carrier (cmon_setoid (rm_ab (bm_left E)))).
 Local Notation EE := (bimodule_right_RMod E).
 
-(** *** The right S-action on N ⊗_R E *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -437,7 +434,7 @@ Example rt_act_gen (N : RModObject (Ring_op R)) (s : SC)
   (n : carrier (cmon_setoid (rm_ab N))) (e : EC) :
   rt_act N s (bs_gen n e) = bs_gen n (bm_rsmul E e s) := eq_refl.
 
-(** *** The four module laws, each by agreement on generators *)
+(* 相关说明。 （已译） *)
 
 Lemma rt_act_scalar (N : RModObject (Ring_op R)) (s s' : SC) :
   s ≈ s' → ∀ x, rt_act N s x ≈ rt_act N s' x.
@@ -528,7 +525,7 @@ Example rt_smul_gen (N : RModObject (Ring_op R)) (s : SC)
   rm_smul (RTensor N) s (bs_gen n e) = bs_gen n (bm_rsmul E e s)
   := eq_refl.
 
-(** *** The arrow action, and the functor − ⊗_R E *)
+(* * *** The arrow action, 函子 − ⊗_R E （已译） *)
 
 Program Definition rt_map_bal {N N' : RModObject (Ring_op R)}
   (f : RModHom N N') :
@@ -603,7 +600,7 @@ Example tw_fmap_gen {N N' : RModObject (Ring_op R)}
   cmon_map (rm_hom (fmap[TensorWith] f)) (bs_gen n e)
     = bs_gen (cmon_map (rm_hom f) n) e := eq_refl.
 
-(** *** hom_S(E, M) and its right R-action *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -655,8 +652,7 @@ Next Obligation.
   - exact (cmon_map_plus (rm_hom f) _ _).
 Qed.
 Next Obligation.
-  (* [rm_map_smul] for the translated map: the ONLY use of [bm_compat]
-     in this block, followed by [f]'s own linearity. *)
+  (* 相关说明。 （已译） *)
   intros M r f s e; simpl.
   transitivity (cmon_map (rm_hom f)
                   (bm_rsmul E (rm_smul (bm_left E) r e) s)).
@@ -701,9 +697,7 @@ Proof.
   - exact (cmon_map_plus (rm_hom f) _ _).
 Qed.
 
-(* Associativity ONLY: at e the two sides are f ((r' r) · e) and
-   f (r' · (r · e)), and [rm_smul_assoc] of E's LEFT module is all that
-   is consumed. *)
+(* 相关说明。 （已译） *)
 Lemma hs_act_assoc (M : RModObject (Ring_op S)) (r r' : RC)
   (f : EE ~{ModR S}~> M) :
   hs_act M (rig_mul (ring_rig (Ring_op R)) r r') f
@@ -733,7 +727,7 @@ Definition HomSObj (M : RModObject (Ring_op S)) :
     (hs_act_assoc M)
     (hs_act_one M).
 
-(** *** The arrow action, and the functor hom_S(E, −) *)
+(* * *** The arrow action, 函子 hom_S(E, −) （已译） *)
 
 Program Definition hs_map_ab {M M' : RModObject (Ring_op S)}
   (g : M ~{ModR S}~> M') : AbHom (hs_group M) (hs_group M') := {|
@@ -779,7 +773,7 @@ Example hs_fmap_at {M M' : RModObject (Ring_op S)}
   cmon_map (rm_hom (cmon_map (rm_hom (fmap[HomS] g)) f)) e
     = cmon_map (rm_hom g) (cmon_map (rm_hom f) e) := eq_refl.
 
-(** *** The two transposes and the adjunction *)
+(* * *** The two transposes 伴随 （已译） *)
 
 Program Definition bth_to_inner {N : RModObject (Ring_op R)}
   {M : RModObject (Ring_op S)} (g : RTensor N ~{ModR S}~> M)
@@ -810,8 +804,8 @@ Next Obligation.
   - exact (cmon_map_plus (rm_hom g) _ _).
 Qed.
 Next Obligation.
-  (* n ⊗ (e ⊲ s) IS s ·[RTensor N] (n ⊗ e) on the nose, so this is
-     [g]'s own linearity with no rewriting. *)
+  (* n ⊗ (e ⊲ s) IS s ·[RTensor N] (n ⊗ e) nose, so 这是
+ [g]'s own linearity no rewriting. （已译） *)
   intros N M g n s e.
   exact (rm_map_smul g s (bs_gen n e)).
 Qed.
@@ -844,8 +838,7 @@ Next Obligation.
   - exact (cmon_map_plus (rm_hom g) _ _).
 Qed.
 
-(* The forward transpose is R-linear BECAUSE of the balance rule: at e
-   the two sides are g ((r · n) ⊗ e) and g (n ⊗ (r · e)). *)
+(* 相关说明。 （已译） *)
 Program Definition bth_to {N : RModObject (Ring_op R)}
   {M : RModObject (Ring_op S)} (g : RTensor N ~{ModR S}~> M) :
   N ~{ModR R}~> HomSObj M := {|
@@ -885,8 +878,7 @@ Next Obligation.
   exact (rm_map_smul h r n e).
 Qed.
 
-(* Multiplication by a scalar, as a homomorphism of the underlying
-   group; the Instance/Mod/BaseChange.v idiom. *)
+(* 相关说明。 （已译） *)
 Program Definition bth_lmul (M : RModObject (Ring_op S)) (s : SC) :
   AbHom (rm_ab M) (rm_ab M) := {|
   cmon_map := {| morphism := fun m => rm_smul M s m |}
@@ -954,9 +946,7 @@ Next Obligation.
   intros n e; exact (Hh n e).
 Qed.
 
-(* Both round trips close by [reflexivity]: the forward transpose reads
-   a generator and the backward one writes one, so nothing residual is
-   left behind on either side. *)
+(* 相关说明。 （已译） *)
 Program Definition bth_adj (N : RModObject (Ring_op R))
   (M : RModObject (Ring_op S)) :
   @Isomorphism Sets
@@ -997,8 +987,7 @@ Definition bth_counit (M : RModObject (Ring_op S)) :
   @counit (ModR S) (ModR R) TensorWith HomS
     bimodule_tensor_hom_adjunction M.
 
-(* THE REVIEWER CHECK.  The unit IS n ↦ (e ↦ n ⊗ e) and the counit IS
-   f ⊗ e ↦ f e, both on the nose. *)
+(* 相关说明。 （已译） *)
 Example bth_unit_is_gen (N : RModObject (Ring_op R))
   (n : carrier (cmon_setoid (rm_ab N))) (e : EC) :
   cmon_map (rm_hom (cmon_map (rm_hom (bth_unit N)) n)) e
@@ -1022,7 +1011,7 @@ Example bth_adj_from_is_bth_from (N : RModObject (Ring_op R))
 
 End BimoduleTensorHom.
 
-(** ** C. The category of bimodules, the bifunctor, and Theorem 3 *)
+(* * ** C. The 范畴 bimodules, bifunctor, Theorem 3 （已译） *)
 
 Section BimoduleCategory.
 
@@ -1130,7 +1119,7 @@ Example bimodcat_id_map (E : Bimodule R S)
   (e : carrier (cmon_setoid (rm_ab (bm_left E)))) :
   cmon_map (rm_hom (bh_hom (@id BimodCat E))) e = e := eq_refl.
 
-(** *** The tensor as a bifunctor of both variables *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、函子相关定义、性质与动机。
@@ -1166,7 +1155,7 @@ Next Obligation.
                      (cmon_map (rm_hom (bh_hom h)) e'))).
 Qed.
 Next Obligation.
-  (* The balance clause spends [f]'s linearity and then [h]'s. *)
+  (* 相关说明。 （已译） *)
   intros N N' E E' f h r n e.
   exact (be_trans
            (be_trans
@@ -1236,7 +1225,7 @@ Example bimod_tensor_partial_gen (E : Bimodule R S)
   cmon_map (rm_hom (fmap[Partial_l BimodTensor E] f)) (bs_gen n e)
     = bs_gen (cmon_map (rm_hom f) n) e := eq_refl.
 
-(** *** Mac Lane part (b): the adjunction with a parameter *)
+(* * *** Mac Lane part (b): 伴随 parameter （已译） *)
 
 (*
    本节说明函子、hom、同构相关定义、性质与动机。
@@ -1263,9 +1252,7 @@ Example bimod_pa_right (E : Bimodule R S) :
 Example bimod_pa_adj (E : Bimodule R S) :
   pa_adj bimodule_parametrized_adjunction E = bt_partial_adj E := eq_refl.
 
-(* Mac Lane's G : P^op × A → X.  Its arrow action in the BIMODULE
-   variable is #396's [pa_param_mate] and is therefore FORCED by
-   Theorem 3; nothing here re-proves functoriality in E. *)
+(* 相关说明。 （已译） *)
 Definition bimodule_hom_bifunctor :
   (BimodCat)^op ∏ ModR S ⟶ ModR R :=
   parametrized_right_adjoint_bifunctor bimodule_parametrized_adjunction.
@@ -1278,11 +1265,9 @@ End BimoduleCategory.
 
 Arguments BimodHom {R S} E E'.
 
-(** ** D. Part (c): the tensor of two bimodules, and the composite *)
+(* * ** D. Part (c): tensor two bimodules, 复合 （已译） *)
 
-(* Two readings of the generator former as a homomorphism of ONE of its
-   two variables.  They belong beside §A and are declared here only
-   because §D is their first consumer. *)
+(* 相关说明。 （已译） *)
 
 Section BalancedGenerators.
 
@@ -1317,7 +1302,7 @@ End BalancedGenerators.
 Arguments bal_gen_right {X} N M n.
 Arguments bal_gen_left {X} N M m.
 
-(** *** The left R-action on a balanced tensor over S *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Bimodule 相关定义、性质与动机。
@@ -1496,8 +1481,7 @@ Proof.
   exact (rm_smul_respects btb_right t t' Ht x y Hxy).
 Qed.
 
-(* The ONE clause with content, and it has none: [bal_hom_ext] reduces it
-   to a reflexivity on generators. *)
+(* 相关说明。 （已译） *)
 Lemma btb_compat (r : RC) (x : carrier (cmon_setoid BTC)) (t : TC) :
   rm_smul btb_right t (rm_smul btb_left r x)
     ≈ rm_smul btb_left r (rm_smul btb_right t x).
@@ -1544,7 +1528,7 @@ Arguments btb_left {R S T} E E1.
 Arguments btb_right {R S T} E E1.
 Arguments BimodTensorBimod {R S T} E E1.
 
-(** *** Mac Lane part (c): the composite adjunction *)
+(* * *** Mac Lane part (c): 复合 伴随 （已译） *)
 
 Section BimoduleAdjunctionComposite.
 
@@ -1554,9 +1538,9 @@ Context (E1 : Bimodule S T).
 
 Local Notation EE := (bimodule_right_RMod E).
 
-(* Adjunction/Compose.v, applied.  Nothing is re-proved: the composite
-   of two hom-setoid bijections is one, and all four naturality fields are
-   that file's. *)
+(* Adjunction/Compose.v, applied. Nothing re-proved: 复合
+ two hom-setoid bijections one, all four 自然性 fields are
+ file's. （已译） *)
 Definition bimodule_adjunction_composite :
   (TensorWith E1 ◯ TensorWith E) ⊣ (HomS E ◯ HomS E1) :=
   Adjunction_Compose (bimodule_tensor_hom_adjunction E)
@@ -1572,8 +1556,8 @@ Definition bac_counit (M : RModObject (Ring_op T)) :
   @counit (ModR T) (ModR R) (TensorWith E1 ◯ TensorWith E)
     (HomS E ◯ HomS E1) bimodule_adjunction_composite M.
 
-(* The composite's unit is the DOUBLE generator and its counit DOUBLE
-   evaluation, both on the nose. *)
+(* The 复合's unit DOUBLE generator counit DOUBLE
+ evaluation, both nose. （已译） *)
 Example bac_unit_is_gen (N : RModObject (Ring_op R))
   (n : carrier (cmon_setoid (rm_ab N)))
   (e : carrier (cmon_setoid (rm_ab (bm_left E))))
@@ -1592,8 +1576,8 @@ Example bac_counit_is_eval (M : RModObject (Ring_op T))
          (@bs_gen R (HomSObj E (HomSObj E1 M)) (bm_left E) f e) e1)
     = cmon_map (rm_hom (cmon_map (rm_hom f) e)) e1 := eq_refl.
 
-(* Mac Lane's own description of the composite's unit and counit, read
-   off Adjunction/Compose.v's own two lemmas. *)
+(* Mac Lane's own description 复合's unit counit, read
+ off Adjunction/Compose.v's own two lemmas. （已译） *)
 Lemma bac_unit_whiskered (N : RModObject (Ring_op R)) :
   bac_unit N
     ≈ fmap[HomS E]
@@ -1626,7 +1610,7 @@ End BimoduleAdjunctionComposite.
 
 Arguments bimodule_adjunction_composite {R S T} E E1.
 
-(** *** The associativity comparison, and part (c)'s conclusion *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Bimodule 相关定义、性质与动机。
@@ -1878,7 +1862,7 @@ Example ta_from_gen (n : NC) (e : EC) (e1 : E1C) :
 
 End TensorAssocAt.
 
-(** *** Extensionality at the double tensor, and the natural comparison *)
+(* 相关说明。 （已译） *)
 
 Section TensorAssocNatural.
 
@@ -1933,9 +1917,9 @@ Proof.
   intros e e1; exact (H n e e1).
 Qed.
 
-(* THE COMPARISON.  [≈] at a functor category is Theory/Functor.v's
-   [Functor_Setoid]: a family of isomorphisms together with the coherence
-   square, and both halves are supplied here. *)
+(* THE COMPARISON. [≈] at 函子 范畴 Theory/Functor.v's
+ [Functor_Setoid]: family isomorphisms together coherence
+ square, both halves supplied here. （已译） *)
 Definition tensor_assoc_iso :
   (TensorWith E1 ◯ TensorWith E : ModR R ⟶ ModR T)
     ≈ TensorWith (BimodTensorBimod E E1).
@@ -1954,7 +1938,7 @@ End TensorAssocNatural.
 
 Arguments tensor_assoc_iso {R S T} E E1.
 
-(** *** Transporting an adjunction along an isomorphism of left adjoints *)
+(* * *** Transporting 伴随 along 同构 left adjoints （已译） *)
 
 (*
    本节说明伴随、函子、（余）端相关定义、性质与动机。
@@ -1962,7 +1946,7 @@ Arguments tensor_assoc_iso {R S T} E E1.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** *** Mac Lane's "describe the composite" *)
+(* * *** Mac Lane's "describe 复合" （已译） *)
 
 Section BimoduleCompositeConclusion.
 
@@ -1989,8 +1973,8 @@ Definition bimodule_hom_composite_iso :
     bimodule_tensor_bimod_adjunction
     (bimodule_tensor_hom_adjunction (BimodTensorBimod E E1)).
 
-(* The transported transpose is the composite's own, precomposed with
-   the comparison; on a generator the comparison is [ta_from]. *)
+(* The transported transpose 复合's own, precomposed with
+ comparison; generator comparison [ta_from]. （已译） *)
 Example btba_to_is_transposed (N : RModObject (Ring_op R))
   (M : RModObject (Ring_op T))
   (g : RTensor (BimodTensorBimod E E1) N ~{ModR T}~> M) :
@@ -2006,7 +1990,7 @@ End BimoduleCompositeConclusion.
 Arguments bimodule_tensor_bimod_adjunction {R S T} E E1.
 Arguments bimodule_hom_composite_iso {R S T} E E1.
 
-(** ** E. The left-module mirror, and Riehl's Corollary 4.6.10 *)
+(* * ** E. The left-module 镜像, Riehl's Corollary 4.6.10 （已译） *)
 
 (*
    本节说明阿贝尔范畴、伴随、函子相关定义、性质与动机。
@@ -2014,9 +1998,7 @@ Arguments bimodule_hom_composite_iso {R S T} E E1.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Multiplication by a scalar as an endomorphism of the underlying
-   group, over an ARBITRARY ring.  [bth_lmul] of §B is its instance at
-   an opposite ring, and is left as it stands. *)
+(* 相关说明。 （已译） *)
 Program Definition rmod_lmul {X : RingObject} (M : RModObject X)
   (x : carrier (rig_setoid (ring_rig X))) :
   AbHom (rm_ab M) (rm_ab M) := {|
@@ -2120,7 +2102,7 @@ Example ltw_fmap_gen {N N' : RModObject S} (f : N ~{RMod S}~> N')
       (@bs_gen S EE N e n)
     = @bs_gen S EE N' e (cmon_map (rm_hom f) n) := eq_refl.
 
-(** *** hom_R(E, M) and its left S-action *)
+(* 相关说明。 （已译） *)
 
 Definition lhs_group (M : RModObject R) : AbObject :=
   hom_ab (RMod_AbEnriched R) (bm_left E) M.
@@ -2129,8 +2111,8 @@ Example lhs_group_carrier (M : RModObject R) :
   carrier (cmon_setoid (lhs_group M)) = (bm_left E ~{RMod R}~> M)
   := eq_refl.
 
-(* (s · f)(e) = f (e ⊲ s): translation through the RIGHT action, the
-   mirror of §B's (f ⊲ r)(e) = f (r · e). *)
+(* (s · f)(e) = f (e ⊲ s): translation through RIGHT action, the
+ 镜像 §B's (f ⊲ r)(e) = f (r · e). （已译） *)
 Program Definition lhs_act (M : RModObject R) (s : SC)
   (f : bm_left E ~{RMod R}~> M) : bm_left E ~{RMod R}~> M := {|
   rm_hom := {| cmon_map := {| morphism := fun e =>
@@ -2158,7 +2140,7 @@ Next Obligation.
   - exact (cmon_map_plus (rm_hom f) _ _).
 Qed.
 Next Obligation.
-  (* the ONLY use of [bm_compat] in this block *)
+  (* 相关说明。 （已译） *)
   intros M s f r e; simpl.
   transitivity (cmon_map (rm_hom f)
                   (rm_smul (bm_left E) r (bm_rsmul E e s))).
@@ -2262,7 +2244,7 @@ Next Obligation. intros M M' M'' g g' f e; reflexivity. Qed.
 
 End BimoduleLeftTensorHom.
 
-(** *** The left-module tensor-hom adjunction *)
+(* * *** The left-module tensor-hom 伴随 （已译） *)
 
 Section BimoduleLeftAdjunction.
 
@@ -2335,7 +2317,7 @@ Next Obligation.
   - exact (cmon_map_plus (rm_hom g) _ _).
 Qed.
 
-(* The forward transpose is S-linear BECAUSE of the balance rule. *)
+(* 相关说明。 （已译） *)
 Program Definition blt_to {N : RModObject S} {M : RModObject R}
   (g : LTensor E N ~{RMod R}~> M) : N ~{RMod S}~> LHomSObj E M := {|
   rm_hom := blt_to_ab g
@@ -2455,7 +2437,7 @@ Example blt_counit_is_eval (M : RModObject R)
 
 End BimoduleLeftAdjunction.
 
-(** *** Riehl 4.6.10, at the strength the tree can state *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、（余）极限相关定义、性质与动机。
@@ -2473,8 +2455,8 @@ Definition bimodule_tensor_preserves_colimits
   PreservesAllColimits (TensorWith E) :=
   left_adjoint_preserves_colimits (bimodule_tensor_hom_adjunction E).
 
-(* The composite of part (c) is a left adjoint too, so it preserves all
-   colimits by the same one-line reading. *)
+(* The 复合 part (c) 左伴随 too, so it preserves all
+ colimits same one-line reading. （已译） *)
 Definition bimodule_tensor_bimod_preserves_colimits
   {R S T : RingObject} (E : Bimodule R S) (E1 : Bimodule S T) :
   PreservesAllColimits (TensorWith (BimodTensorBimod E E1)) :=
@@ -2488,7 +2470,7 @@ Definition bimodule_tensor_bimod_preserves_colimits
 Arguments bh_hom {R S E E'} b.
 Arguments bh_right {R S E E'} b m s.
 
-(** ** F. The second closure, and the two-variable adjunction *)
+(* * ** F. The second closure, two-variable 伴随 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -2628,8 +2610,7 @@ Lemma hab_ract_one (f : rm_ab N ~{Ab}~> rm_ab M) :
   hab_ract f (rig_one (ring_rig S)) ≈ f.
 Proof. intro n; simpl; exact (rm_smul_one M _). Qed.
 
-(* The compatibility law holds POINTWISE, with no law of either module
-   consumed: both sides send n to (f (n ⊲ r)) ⊲ s. *)
+(* 相关说明。 （已译） *)
 Lemma hab_compat (r : RC) (f : rm_ab N ~{Ab}~> rm_ab M) (s : SC) :
   hab_ract (hab_lact r f) s ≈ hab_lact r (hab_ract f s).
 Proof. intro n; reflexivity. Qed.
@@ -2655,7 +2636,7 @@ Arguments hab_group {R S} N M.
 Arguments hab_left {R S} N M.
 Arguments HomAbBimod {R S} N M.
 
-(** *** The second closure as a functor, and the mirror adjunction *)
+(* * *** The second closure 函子, 镜像 伴随 （已译） *)
 
 Section HomAbFunctorSection.
 
@@ -2708,7 +2689,7 @@ Next Obligation. intros M M' M'' g g' f n; reflexivity. Qed.
 Example hab_functor_obj (M : RModObject (Ring_op S)) :
   fobj[HomAbFunctor] M = HomAbBimod N M := eq_refl.
 
-(** *** The bijection: bimodule maps into hom_Ab(N, M) *)
+(* 相关说明。 （已译） *)
 
 Program Definition hbt_to_inner {E : Bimodule R S}
   {M : RModObject (Ring_op S)} (g : RTensor E N ~{ModR S}~> M)
@@ -2770,7 +2751,7 @@ Next Obligation.
   - exact (cmon_map_plus (rm_hom g) _ _).
 Qed.
 Next Obligation.
-  (* R-linearity of the transpose IS the balance rule, again. *)
+  (* 相关说明。 （已译） *)
   intros E M g r e n; simpl.
   refine (proper_morphism (cmon_map (rm_hom g)) _ _ _).
   exact (symmetry (@be_balance R N (bm_left E) r n e)).
@@ -2868,7 +2849,7 @@ End HomAbFunctorSection.
 
 Arguments HomAbFunctor {R S} N.
 
-(** *** All three legs of Riehl's Definition 4.4.7 *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、来源与用途相关定义、性质与动机。
@@ -2922,7 +2903,7 @@ Definition bimodule_third_leg {R S : RingObject}
     (mr_right (@bimodule_mirror_family R S) M)
     (bimodule_two_variable_adjunction M) E N.
 
-(** ** G. A concrete witness at a named pair of rings *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Bimodule 相关定义、性质与动机。
@@ -2958,12 +2939,10 @@ Example z_tensor_counit_computes :
          (bm_left Int_Bimodule) (@id (ModR Int_Ring) ZRight) 7%Z)
     = 7%Z := eq_refl.
 
-(* Multiplication is balanced and biadditive, so it descends; it is what
-   SEPARATES two generators, since no induction over the quotienting
-   relation could produce a negative. *)
-(* Every field is a rig law of ℤ applied, so the record literal raises no
-   obligation at all: multiplication is biadditive by distributivity and
-   balanced by associativity. *)
+(* Multiplication balanced biadditive, so it descends; it what
+ SEPARATES two generators, since no induction over quotienting
+ 关系 could produce negative. （已译） *)
+(* 相关说明。 （已译） *)
 Definition int_mult_bal :
   BalBiadditive ZRight (bm_left Int_Bimodule) (ring_ab Int_Ring) :=
   @Build_BalBiadditive Int_Ring ZRight (bm_left Int_Bimodule)
@@ -2989,7 +2968,7 @@ Proof.
   simpl in Hm; discriminate Hm.
 Qed.
 
-(** *** The tensor of two bimodules, and the comparison, at ℤ *)
+(* 相关说明。 （已译） *)
 
 Local Notation ZZ := (BimodTensorBimod Int_Bimodule Int_Bimodule).
 Local Notation ZGG :=
@@ -3014,7 +2993,7 @@ Example z_assoc_from_computes (a b c : ZC) :
     = @bs_gen Int_Ring (RTensor Int_Bimodule ZRight)
         (bm_left Int_Bimodule) (ZG a b) c := eq_refl.
 
-(** *** The left-module mirror, and the second closure, at ℤ *)
+(* * *** The left-module 镜像, second closure, at ℤ （已译） *)
 
 Example z_ltensor_smul_gen (a b r : ZC) :
   rm_smul (LTensor Int_Bimodule (Ring_RMod Int_Ring)) r

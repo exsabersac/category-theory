@@ -3,7 +3,7 @@ Require Import Category.Instance.Comp.
 
 Generalizable All Variables.
 
-(** * Derived operators: the clone of a signature *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/Lawvere+theory
@@ -20,7 +20,7 @@ Section Clone.
 
 Context (S : UA.OpSignature).
 
-(** ** The arity-graded derived operators *)
+(* 相关说明。 （已译） *)
 
 Definition DerivedOperators (n : nat) : Type := UA.Tree S (Fin.t n).
 
@@ -31,12 +31,7 @@ Definition clone_op {n} (o : UA.operation S)
   (args : UA.arity o → DerivedOperators n) : DerivedOperators n :=
   UA.node S (Fin.t n) o args.
 
-(** ** Closure under substitution, along an ARBITRARY map of arities
-
-    [clone_subst] is Instance/Comp.v's [induced_map] at the free
-    algebra on [Fin.t n]; [clone_rename] is substitution by variables, and
-    it is where "arbitrary function between finite arities" — duplication
-    and deletion included, not merely a braid — enters. *)
+(* 相关说明。 （已译） *)
 
 Definition clone_subst {m n} (s : Fin.t m → DerivedOperators n)
   : DerivedOperators m → DerivedOperators n :=
@@ -46,7 +41,7 @@ Definition clone_rename {m n} (phi : Fin.t m → Fin.t n)
   : DerivedOperators m → DerivedOperators n :=
   clone_subst (fun i => clone_var (phi i)).
 
-(** ** Actions, up to a setoid on the target *)
+(* 相关说明。 （已译） *)
 
 Record SetoidAction := {
   sact_carrier : Type;
@@ -54,7 +49,7 @@ Record SetoidAction := {
   sact_op      : ∀ o : UA.operation S,
                   (UA.arity o → sact_carrier) → sact_carrier;
 
-  (* the congruence field that replaces functional extensionality *)
+  (* 相关说明。 （已译） *)
   sact_op_respects : ∀ (o : UA.operation S) (k1 k2 : UA.arity o → sact_carrier),
     (∀ j, @equiv _ sact_setoid (k1 j) (k2 j)) →
     @equiv _ sact_setoid (sact_op o k1) (sact_op o k2)
@@ -68,8 +63,7 @@ Record SetoidAction := {
 #[local] Notation "x ≈[ A ] y" := (@equiv _ (sact_setoid A) x y)
   (at level 79, only parsing).
 
-(* Every [SetoidAction] has an underlying [OpAlgebra]: the setoid and its
-   congruence field are extra structure, not a weakening. *)
+(* 相关说明。 （已译） *)
 Definition sact_alg (A : SetoidAction) : UA.OpAlgebra S :=
   {| UA.carrier := sact_carrier A ; UA.op := sact_op A |}.
 
@@ -118,7 +112,7 @@ Proof.
     apply IH.
 Qed.
 
-(** ** The substitution and renaming laws for the action *)
+(* 相关说明。 （已译） *)
 
 Lemma clone_act_subst {m n} (A : SetoidAction)
   (s : Fin.t m → DerivedOperators n) (t : DerivedOperators m)

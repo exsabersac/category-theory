@@ -32,10 +32,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The quiver
-
-    Two nodes and two edges, one in each direction.  Awodey draws them
-    as f : A → B and g : B → A. *)
+(* 相关说明。 （已译） *)
 
 Inductive WIsoNode : Set := WI_A | WI_B.
 
@@ -46,7 +43,7 @@ Inductive WIsoEdge : WIsoNode -> WIsoNode -> Set :=
 Definition WIsoQuiver : Quiver :=
   Build_Quiver_Standard_Eq WIsoNode WIsoEdge.
 
-(** The free category on it: paths are alternating words in f and g. *)
+(** The free 范畴 it: paths alternating words f g. （已译） *)
 Definition FreeWIso : Category := FreeOnQuiver WIsoQuiver.
 
 (** The two generating edges, as one-step paths. *)
@@ -80,8 +77,8 @@ Definition wi_AB (n : nat) : WI_A ~{FreeWIso}~> WI_B :=
 Definition wi_BA (n : nat) : WI_B ~{FreeWIso}~> WI_A :=
   tcons (B:=@edges WIsoQuiver) _ WI_g (wi_AA n).
 
-(** The empty path is the length-zero loop, and each generator is the
-    length-one path of its own family. *)
+(** 本节：The empty path length-zero loop, each generator the
+ length-one path own family. （已译） *)
 Example wi_AA_0 : wi_AA 0 = @id FreeWIso WI_A := eq_refl.
 Example wi_BB_0 : wi_BB 0 = @id FreeWIso WI_B := eq_refl.
 Example wi_AB_0 : wi_AB 0 = wi_f := eq_refl.
@@ -126,13 +123,7 @@ Proof.
     + exists (S n); reflexivity.
 Qed.
 
-(** ** The presentation
-
-    Two nodes, two edges, TWO relations — one at each loop.  Finiteness
-    is carried as data throughout, in the shape
-    [Construction/Free/Quiver/Presented.v] fixes: [Fin.t] indices with
-    retractions, no existence claim over lists, hence no choice
-    principle anywhere. *)
+(* 相关说明。 （已译） *)
 
 Definition WIsoEqn_count (x y : WIsoQuiver) : nat :=
   match x, y with
@@ -205,23 +196,23 @@ Definition WalkingIsoPresentation : FinitePresentation := {|
 Definition WalkingIso : Category :=
   FinitelyPresented WalkingIsoPresentation.
 
-(** ...which is the presented category of the quiver and the relation,
-    definitionally. *)
+(** ...which presented 范畴 quiver 关系,
+ definitionally. （已译） *)
 Example WalkingIso_is_presented :
   WalkingIso = PresentedQuiver WIsoQuiver (fe_rel WIsoEqns) := eq_refl.
 
-(** The hom TYPES of [WalkingIso] are the free ones: equations merge,
-    and never add.  This is what makes the trap in the header
-    possible. *)
+(** 本节：The hom TYPES [WalkingIso] free ones: equations merge,
+ never add. This what makes trap header
+ possible. （已译） *)
 Example WalkingIso_hom_is_free (x y : WIsoNode) :
   (x ~{WalkingIso}~> y) = (x ~{FreeWIso}~> y) := eq_refl.
 
-(** Composition is the free category's, on the nose. *)
+(** Composition free 范畴's, nose. （已译） *)
 Example WalkingIso_compose_is_free {x y z : WIsoNode}
   (p : y ~{FreeWIso}~> z) (q : x ~{FreeWIso}~> y) :
   @compose WalkingIso x y z p q = @compose FreeWIso x y z p q := eq_refl.
 
-(** ** The generators, and the two relations *)
+(* 相关说明。 （已译） *)
 
 Definition iso_f : WI_A ~{WalkingIso}~> WI_B :=
   @pgen WIsoQuiver (fe_rel WIsoEqns) _ _ WI_f.
@@ -274,9 +265,9 @@ Example walking_iso_from : from walking_iso = iso_g := eq_refl.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** Consing an edge onto a path IS composing with the corresponding
-    generator, at Leibniz equality — [Lib/TList.v]'s [tlist_app_cons]
-    read at this quiver. *)
+(** 本节：Consing edge onto path IS composing corresponding
+ generator, at Leibniz equality — [Lib/TList.v]'s [tlist_app_cons]
+ read at quiver. （已译） *)
 Lemma wi_cons_f {y : WIsoNode} (t : WI_B ~{FreeWIso}~> y) :
   tcons (B:=@edges WIsoQuiver) _ WI_f t = @compose FreeWIso _ _ _ t wi_f.
 Proof. exact (tlist_app_cons WI_f t). Qed.
@@ -285,9 +276,9 @@ Lemma wi_cons_g {y : WIsoNode} (t : WI_A ~{FreeWIso}~> y) :
   tcons (B:=@edges WIsoQuiver) _ WI_g t = @compose FreeWIso _ _ _ t wi_g.
 Proof. exact (tlist_app_cons WI_g t). Qed.
 
-(** Hence each loop is its predecessor followed by the round trip.
-    Supplied as a term rather than by tactics: [simpl] unfolds the
-    generators past the pattern the rewrite is looking for. *)
+(** 本节：Hence each loop predecessor followed round trip.
+ Supplied term rather than tactics: [simpl] unfolds the
+ generators past pattern rewrite looking for. （已译） *)
 Definition wi_AA_step (n : nat) :
   wi_AA (S n) = @compose FreeWIso _ _ _
                   (@compose FreeWIso _ _ _ (wi_AA n) wi_g) wi_f :=
@@ -302,8 +293,8 @@ Definition wi_BB_step (n : nat) :
            (f_equal (fun t => @compose FreeWIso _ _ _ t wi_g)
                     (wi_cons_f (wi_BB n))).
 
-(** Every loop at A collapses to the identity.  The appeal to
-    associativity names [WalkingIso] explicitly; see the header. *)
+(** Every loop at A collapses 恒等. The appeal to
+ associativity names [WalkingIso] explicitly; see header. （已译） *)
 Lemma wi_AA_collapse (n : nat) :
   @equiv _ (@homset WalkingIso WI_A WI_A) (wi_AA n) (@id WalkingIso WI_A).
 Proof.
@@ -342,10 +333,10 @@ Proof.
   rewrite wi_AA_collapse; apply id_left.
 Qed.
 
-(** ** Thinness: every hom-set of [WalkingIso] is a singleton *)
+(* 相关说明。 （已译） *)
 
-(** Any two parallel arrows agree.  Each of the four cases classifies
-    both arrows and collapses each to the same normal form. *)
+(** 本节：Any two parallel arrows agree. Each four cases classifies
+ both arrows collapses each same normal form. （已译） *)
 Theorem WalkingIso_Thin : Thin WalkingIso.
 Proof.
   intros x y p q; destruct x, y;
@@ -380,8 +371,8 @@ Theorem wiso_hom_singleton (x y : WIsoNode) :
    (forall p q : x ~{WalkingIso}~> y, p ≈ q))%type.
 Proof. exact (wiso_arrow x y, WalkingIso_Thin x y). Qed.
 
-(** Every endomorphism is the identity: there are no nontrivial loops
-    downstairs, though there are infinitely many upstairs. *)
+(** Every endomorphism 恒等: there no nontrivial loops
+ downstairs, though there infinitely many upstairs. （已译） *)
 Corollary wiso_endo_id {x : WalkingIso} (p : x ~> x) : p ≈ id.
 Proof. exact (WalkingIso_Thin x x p id). Qed.
 
@@ -405,9 +396,9 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** Equivalent paths of the free category have equal length —
-    [tlist'_equiv_lengths] ([Construction/Free/Quiver.v]) at this
-    quiver. *)
+(** Equivalent paths free 范畴 have equal length —
+ [tlist'_equiv_lengths] ([Construction/Free/Quiver.v]) at this
+ quiver. （已译） *)
 Lemma wi_equiv_length {x y : WIsoNode} (p q : x ~{FreeWIso}~> y) :
   p ≈ q -> tlist_length p = tlist_length q.
 Proof. intro H; exact (tlist'_equiv_lengths _ _ _ _ _ _ _ H). Qed.
@@ -468,17 +459,17 @@ Corollary free_wi_AA_distinct (m n : nat) (Hmn : m <> n) :
   @equiv _ (@homset FreeWIso WI_A WI_A) (wi_AA m) (wi_AA n) -> False.
 Proof. intro H; exact (Hmn (free_wi_AA_inj m n H)). Qed.
 
-(** The presenting projection.  It is the identity on objects and on
-    morphisms; only the hom-setoid coarsens. *)
+(** The presenting projection. It 恒等 对象 on
+ 态射; hom-setoid coarsens. （已译） *)
 Definition WalkingIsoProj : FreeWIso ⟶ WalkingIso :=
   @PresentedQuiverProj WIsoQuiver (fe_rel WIsoEqns).
 
 Example WalkingIsoProj_hom {x y : WIsoNode} (p : x ~{FreeWIso}~> y) :
   fmap[WalkingIsoProj] p = p := eq_refl.
 
-(** The two sides of the contrast at one concrete pair: the round trip
-    (gf) and the empty path are distinct arrows of [FreeWIso] and the
-    same arrow of [WalkingIso]. *)
+(** 本节：The two sides contrast at one concrete pair: round trip
+ (gf) empty path distinct arrows [FreeWIso] the
+ same arrow [WalkingIso]. （已译） *)
 Theorem walking_iso_merges_the_loops :
   ((@equiv _ (@homset FreeWIso WI_A WI_A) (wi_AA 1) (wi_AA 0) -> False) *
    (@equiv _ (@homset WalkingIso WI_A WI_A) (wi_AA 1) (wi_AA 0)))%type.
@@ -527,9 +518,9 @@ Example wi_all_pairs_4 : length wi_all_pairs = 4%nat := eq_refl.
 Lemma wi_all_pairs_complete (x y : WIsoNode) : In (x, y) wi_all_pairs.
 Proof. apply in_prod; apply wi_nodes_complete. Qed.
 
-(** Every hom-set has exactly one arrow — the constant is what
-    [wiso_hom_singleton] licenses, and nothing else in this section
-    depends on which pair is being counted. *)
+(** Every hom-set has exactly one arrow — 常值 what
+ [wiso_hom_singleton] licenses, nothing else section
+ depends pair being counted. （已译） *)
 Definition wiso_homcount (x y : WIsoNode) : nat := 1%nat.
 
 Definition wiso_arrow_total : nat :=
@@ -550,12 +541,12 @@ Proof. reflexivity. Qed.
 Definition wiso_nonidentity_total : nat :=
   (wiso_arrow_total - wiso_identity_total)%nat.
 
-(** ...and two of them not: [iso_f] and [iso_g]. *)
+(** 本节：...and two them not: [iso_f] [iso_g]. （已译） *)
 Theorem wiso_nonidentity_total_2 : wiso_nonidentity_total = 2%nat.
 Proof. reflexivity. Qed.
 
-(** The two non-identity arrows are not identities, because their
-    endpoints differ. *)
+(** The two non-恒等 arrows not identities, because their
+ endpoints differ. （已译） *)
 Lemma wiso_nonidentity_endpoints : WI_A <> WI_B.
 Proof. discriminate. Qed.
 
@@ -601,9 +592,9 @@ Proof.
   - intros x y u v Huv; simpl in Huv; subst; reflexivity.
 Defined.
 
-(** The two imposed relations are merged: they are exactly the two
-    inverse laws, modulo the trailing identity a [tlist] fold leaves
-    behind. *)
+(** The two imposed relations merged: they exactly two
+ inverse laws, modulo trailing 恒等 [tlist] fold leaves
+ behind. （已译） *)
 Lemma wiso_quiver_hom_merges {a b : C} (i : a ≅ b) :
   forall x y (p q : x ~{FreeWIso}~> y), fe_rel WIsoEqns x y p q ->
     fmap[@InducedFunctor WIsoQuiver C (wiso_quiver_hom i)] p
@@ -640,9 +631,9 @@ Proof.
            (wiso_quiver_hom i) (wiso_quiver_hom_merges i) _ _ WI_g).
 Qed.
 
-(** The converse: a functor out of [WalkingIso] carries the two
-    generators to an inverse pair, the two laws coming from [wiso_fg]
-    and [wiso_gf] under [fmap_respects]. *)
+(** The converse: 函子 out [WalkingIso] carries two
+ generators inverse pair, two laws coming [wiso_fg]
+ [wiso_gf] under [fmap_respects]. （已译） *)
 Lemma functor_iso_to_from (F : WalkingIso ⟶ C) :
   fmap[F] iso_f ∘ fmap[F] iso_g ≈ id.
 Proof.
@@ -667,8 +658,8 @@ Definition IsoOfFunctor (F : WalkingIso ⟶ C) :
   iso_from_to := functor_iso_from_to F
 |}.
 
-(** Round trip one, on the isomorphism side: the objects come back on
-    the nose and the two morphisms up to [≈]. *)
+(** Round trip one, 同构 side: 对象 come back on
+ nose two 态射 up [≈]. （已译） *)
 Example wiso_round_obj_a {a b : C} (i : a ≅ b) :
   fobj[WalkingIsoFunctor i] WI_A = a := eq_refl.
 Example wiso_round_obj_b {a b : C} (i : a ≅ b) :
@@ -709,9 +700,9 @@ Proof.
   exact (wiso_functor_round F).
 Qed.
 
-(** The universal property, bundled: to give a functor out of
-    [WalkingIso] is exactly to give an isomorphism, and the functor is
-    unique at strict strength. *)
+(** The 普遍性质, bundled: give 函子 out of
+ [WalkingIso] exactly give 同构, 函子 is
+ unique at strict strength. （已译） *)
 Theorem walking_iso_universal {a b : C} (i : a ≅ b) :
   { F : WalkingIso ⟶ C &
   { Hobj : forall x : WIsoNode, fobj[F] x = wiso_node i x &

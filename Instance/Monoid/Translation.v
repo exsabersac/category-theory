@@ -1,4 +1,4 @@
-(** * Translation endofunctors of a monoid, and their adjoints *)
+(* * * Translation endofunctors 幺半群, adjoints （已译） *)
 
 From Coq Require Import Eqdep_dec.
 
@@ -29,7 +29,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Block A: the discrete category on a monoid *)
+(* * ** Block A: discrete 范畴 幺半群 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -54,7 +54,7 @@ Lemma MonDiscrete_thin (M : MonObject) (x y : MonDiscrete M)
   (f g : x ~> y) : f ≈ g.
 Proof. exact I. Qed.
 
-(** ** Block B: multiplication as a bifunctor, and the translations *)
+(* 相关说明。 （已译） *)
 
 #[local] Obligation Tactic := repeat intro; exact I.
 
@@ -106,7 +106,7 @@ Example rt_partial_fmap (M : MonObject) (a : carrier M) :
   @fmap _ _ (RightTranslation M a) = @fmap _ _ (Partial_l (MonMult M) a)
   := eq_refl.
 
-(** ** Block C: the cancellation calculus of a chosen inverse *)
+(* 相关说明。 （已译） *)
 
 Section Cancel.
 Context (M : MonObject) (Inv : MonInverses M) (a : carrier M).
@@ -141,7 +141,7 @@ Qed.
 
 End Cancel.
 
-(** ** Block D: inversion supplies the right adjoints *)
+(* 相关说明。 （已译） *)
 
 Section Adjoints.
 Context (M : MonObject) (Inv : MonInverses M) (a : carrier M).
@@ -196,7 +196,7 @@ Program Definition right_translation_adjunction :
 
 End Adjoints.
 
-(** ** Block E: the converse, and the biconditionals *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明幺半群相关定义、性质与动机。
@@ -215,7 +215,7 @@ Proof.
   - apply Hr.
 Defined.
 
-(* The mirror, for the right translations: all left inverses gives a group. *)
+(* The 镜像, right translations: all left inverses gives group. （已译） *)
 Lemma MonInverses_of_left_inverses (M : MonObject)
   (l : carrier M → carrier M)
   (Hl : ∀ a : carrier M, mon_op (l a) a ≈ mon_unit) : MonInverses M.
@@ -229,9 +229,9 @@ Proof.
   - apply Hl.
 Defined.
 
-(* "Every left translation has a right adjoint", as DATA.  The library's ∃ is
-   [sigT], so this is a function and no choice principle is consumed when the
-   inverse operation is read off it. *)
+(* "Every left translation has 右伴随", DATA. The library's ∃ is
+ [sigT], so 这是 function no choice principle consumed the
+ inverse operation read off it. （已译） *)
 Definition LeftTranslationAdjoints (M : MonObject) : Type :=
   ∀ a : carrier M,
     { R : MonDiscrete M ⟶ MonDiscrete M & LeftTranslation M a ⊣ R }.
@@ -277,11 +277,9 @@ Proof.
              (reflexivity _)).
 Defined.
 
-(** ** Block F: the same over [DiscreteCat], where homs are Rocq's `=` *)
+(* 相关说明。 （已译） *)
 
-(* The two hypotheses, in the shape of Construction/Comma/Special.v's
-   [HomStrict] and [HomUIP].  Sufficient for the forward direction below; NOT
-   shown necessary. *)
+(* 相关说明。 （已译） *)
 Definition MonStrict (M : MonObject) : Type :=
   ∀ x y : carrier M, x ≈ y → x = y.
 
@@ -292,8 +290,8 @@ Definition MonUIP (M : MonObject) : Type :=
 Definition MonUIP_dec (M : MonObject)
   (dec : ∀ x y : carrier M, {x = y} + {x <> y}) : MonUIP M := UIP_dec dec.
 
-(* The explicit binders are load-bearing: unannotated, this body minimizes so
-   as to identify the hom and proof universes of the result. *)
+(* The explicit binders load-bearing: unannotated, body minimizes so
+ identify hom 证明 universes result. （已译） *)
 Definition MonDiscreteStrict@{o h p m1 m2} (M : MonObject@{o m1 m2}) :
   Category@{o h p} := DiscreteCat@{o h p} (carrier M).
 
@@ -338,8 +336,8 @@ Definition left_untranspose_strict (x y : carrier M)
   (q : x = mon_op (minv Inv a) y) : mon_op a x = y :=
   eq_trans (f_equal (mon_op a) q) (strict_cancel_r y).
 
-(* And this is where [MonUIP] is spent: every remaining field is an equation
-   between two equality proofs. *)
+(* And 这是 where [MonUIP] spent: every remaining field equation
+ between two equality proofs. （已译） *)
 #[local] Obligation Tactic := repeat intro; now apply HU.
 
 Program Definition left_translation_strict_adjunction :
@@ -384,7 +382,7 @@ Proof.
   - exact (strict_left_translation_adjoints_MonInverses M).
 Defined.
 
-(** ** Block G: comparing the two discrete categories *)
+(* * ** Block G: comparing two discrete 范畴 （已译） *)
 
 #[local] Obligation Tactic := repeat intro; exact I.
 

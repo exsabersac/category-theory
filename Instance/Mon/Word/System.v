@@ -20,7 +20,7 @@ Require Import Category.Instance.Mon.Word.
 
 Generalizable All Variables.
 
-(** * W₀-algebras as strings of operations ν₀, ν₁, … *)
+(* 相关说明。 （已译） *)
 
 (*
  Book: Riehl, "Category Theory in Context", Example 5.2.6(iii),
@@ -33,7 +33,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** Families ν₀, ν₁, …: ν₀ an element, and #470's [NAry] for n ≥ 1 *)
+(* 相关说明。 （已译） *)
 
 Record NAry0@{o} (X : SetoidObject@{o o}) : Type@{o} := {
   nu_zero : X;
@@ -51,7 +51,7 @@ Definition nu0@{o} {X : SetoidObject@{o o}} (ν : NAry0@{o} X) (n : nat) :
   | S n' => nu (nu_pos ν) n'
   end.
 
-(* The family read on W₀ X = lists: the copairing ∐_{n≥0} Xⁿ → X. *)
+(* 相关说明。 （已译） *)
 Definition nu0_list@{o} {X : SetoidObject@{o o}} (ν : NAry0@{o} X)
   (l : list X) : X :=
   nu0 ν (length l) (list_to_tup0 l).
@@ -77,8 +77,7 @@ Definition NAry0_hom@{o so} {X Y : SetoidObject@{o o}} (ν : NAry0@{o} X)
   (ν' : NAry0@{o} Y) (f : X ~{Sets@{o so}}~> Y) : Type@{o} :=
   (f (nu_zero ν) ≈ nu_zero ν') * NAry_hom (nu_pos ν) (nu_pos ν') f.
 
-(* ν on the list of a tuple is ν on the tuple, up to ≈ (the length of the
-   list is stuck on n, so not on the nose). *)
+(* 相关说明。 （已译） *)
 Lemma nu0_list_tup_to_list@{o} {X : SetoidObject@{o o}} (ν : NAry0@{o} X)
   (n : nat) (t : Tup@{o} X n) :
   nu0_list ν (tup_to_list n t) ≈ nu (nu_pos ν) n t.
@@ -96,7 +95,7 @@ Lemma tmap_tup_to_list@{o} {X Y : SetoidObject@{o o}} (f : X → Y)
 Proof. induction n as [|n IH]; simpl; [ reflexivity | now rewrite IH ]. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The two conditions, and the correspondence with W₀-algebras *)
+(* 相关说明。 （已译） *)
 
 Section W0Systems.
 
@@ -133,8 +132,8 @@ Example alg_NAry0_at@{+} {X : obj[Sets@{o so}]}
   (α : @TAlgebra Sets@{o so} W0F W0 X) (n : nat) (t : Tup@{o} X n) :
   nu (nu_pos (alg_NAry0 α)) n t = t_alg[α] (tup_to_list n t) := eq_refl.
 
-(* ν₀ is the unit of the monoid of the algebra, and ν₂ its
-   multiplication. *)
+(* ν₀ unit 幺半群 algebra, ν₂ its
+ multiplication. （已译） *)
 Example alg_nu0_is_unit@{+} {X : obj[Sets@{o so}]}
   (α : @TAlgebra Sets@{o so} W0F W0 X) :
   nu_zero (alg_NAry0 α) = mon_one (alg_monoid α) := eq_refl.
@@ -144,7 +143,7 @@ Example alg_nu2_is_mul@{+} {X : obj[Sets@{o so}]}
   nu (nu_pos (alg_NAry0 α)) 1 (a, b) = mon_mul (alg_monoid α) a b
   := eq_refl.
 
-(* The family read back on lists is the structure map, up to ≈. *)
+(* 相关说明。 （已译） *)
 Lemma alg_nu0_list@{+} {X : obj[Sets@{o so}]}
   (α : @TAlgebra Sets@{o so} W0F W0 X) (l : list X) :
   nu0_list (alg_NAry0 α) l ≈ t_alg[α] l.
@@ -176,7 +175,7 @@ Proof.
   symmetry. apply alg_nu0_list.
 Qed.
 
-(* "νₙ is the n-fold product" in the monoid of the algebra. *)
+(* "νₙ n-fold product" 幺半群 algebra. （已译） *)
 Lemma alg_nu_is_fold@{+} {X : obj[Sets@{o so}]}
   (α : @TAlgebra Sets@{o so} W0F W0 X) (n : nat) (t : Tup0@{o} X n) :
   nu0 (alg_NAry0 α) n t
@@ -186,9 +185,7 @@ Proof.
   simpl. symmetry. exact (alg_fold α (tup_to_list n t)).
 Qed.
 
-(* A family with ν₁ = 1 and (2) is an algebra: its structure map is the
-   copairing [nu0_list], its unit law IS ν₁ = 1 by conversion, and its
-   action law is (2) modulo [W0_map]. *)
+(* 相关说明。 （已译） *)
 Definition NAry0_alg@{+} {X : obj[Sets@{o so}]} (ν : NAry0@{o} X)
   (Hu : nu_unit (nu_pos ν)) (Ha : nu0_assoc ν) :
   @TAlgebra Sets@{o so} W0F W0 X.
@@ -209,8 +206,7 @@ Example NAry0_alg_map@{+} {X : obj[Sets@{o so}]} (ν : NAry0@{o} X)
   (Hu : nu_unit (nu_pos ν)) (Ha : nu0_assoc ν) (l : list X) :
   t_alg[NAry0_alg ν Hu Ha] l = nu0_list ν l := eq_refl.
 
-(* Family → algebra → family: ν₀ on the nose, ν_{n+1} at ≈ only (the
-   length of the list of a tuple is stuck on n). *)
+(* 相关说明。 （已译） *)
 Example NAry0_rt_zero@{+} {X : obj[Sets@{o so}]} (ν : NAry0@{o} X)
   (Hu : nu_unit (nu_pos ν)) (Ha : nu0_assoc ν) :
   nu_zero (alg_NAry0 (NAry0_alg ν Hu Ha)) = nu_zero ν := eq_refl.
@@ -232,8 +228,8 @@ Lemma alg_round_trip0@{+} {X : obj[Sets@{o so}]}
     ≈ t_alg[α].
 Proof. intro l. exact (alg_nu0_list α l). Qed.
 
-(* The morphism clause, both ways: an algebra map commutes with every νₙ,
-   n ≥ 0, and conversely. *)
+(* The 态射 clause, both ways: algebra map commutes every νₙ,
+ n ≥ 0, conversely. （已译） *)
 Lemma alg_hom_NAry0_hom@{+} {X Y : obj[Sets@{o so}]}
   (α : @TAlgebra Sets@{o so} W0F W0 X) (β : @TAlgebra Sets@{o so} W0F W0 Y)
   (f : X ~{Sets@{o so}}~> Y) :
@@ -272,7 +268,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The systems ⟨S, ν₀, ν₁, …⟩ as a category, isomorphic to Set^{W₀} *)
+(* * ** The systems ⟨S, ν₀, ν₁, …⟩ 范畴, isomorphic Set^{W₀} （已译） *)
 
 Record W0System@{+} : Type@{so} := {
   ws0_set : obj[Sets@{o so}];
@@ -377,8 +373,8 @@ Proof.
   - intros x y z f g a. reflexivity.
 Defined.
 
-(* The algebra round trip through the systems, with the identity as its
-   component. *)
+(* The algebra round trip through systems, 恒等 its
+ component. （已译） *)
 Definition W0Sys_EM_counit_iso@{+} (x : W0Alg) :
   @Isomorphism W0Alg (fobj[W0Sys_to_EM ◯ EM_to_W0Sys] x) x.
 Proof.
@@ -404,7 +400,7 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* The system round trip, with the identity as its component. *)
+(* The system round trip, 恒等 component. （已译） *)
 Definition W0Sys_EM_unit_iso@{+} (A : W0Sys) :
   @Isomorphism W0Sys (fobj[EM_to_W0Sys ◯ W0Sys_to_EM] A) A.
 Proof.
@@ -428,8 +424,8 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* The systems ⟨S, ν₀, ν₁, …⟩ with ν₁ = 1 and (2) are isomorphic in Cat to
-   Set^{W₀}, every component of both natural isomorphisms the identity. *)
+(* The systems ⟨S, ν₀, ν₁, …⟩ ν₁ = 1 (2) isomorphic Cat to
+ Set^{W₀}, every component both natural isomorphisms 恒等. （已译） *)
 Definition W0Sys_EM_iso@{c +} :
   @Isomorphism Cat@{c so so so o} W0Sys W0Alg.
 Proof.
@@ -442,7 +438,7 @@ Proof.
     intros A B f a. reflexivity.
 Defined.
 
-(* Mac Lane's Exercise 1 as a category: the systems are the monoids. *)
+(* Mac Lane's Exercise 1 范畴: systems monoids. （已译） *)
 Definition Mon_W0Sys_iso@{c +} :
   @Isomorphism Cat@{c so so so o} MonOS W0Sys :=
   iso_compose (iso_sym W0Sys_EM_iso) Mon_EM_iso.
@@ -455,8 +451,7 @@ Example W0Sys_EM_iso_to@{+} : to W0Sys_EM_iso = W0Sys_to_EM := eq_refl.
 Example W0Sys_EM_iso_from@{+} : from W0Sys_EM_iso = EM_to_W0Sys
   := eq_refl.
 
-(* A system's structure map is the copairing of its family, and an
-   algebra's νₙ is its structure map on Sⁿ. *)
+(* 相关说明。 （已译） *)
 Example W0Sys_to_EM_alg@{+} (A : W0Sys) (l : list (ws0_set A)) :
   t_alg[projT2 (fobj[W0Sys_to_EM] A)] l = nu0_list (ws0_nu A) l := eq_refl.
 
@@ -467,7 +462,7 @@ Example EM_to_W0Sys_nu@{+} (x : W0Alg) (n : nat) (t : Tup@{o} (projT1 x) n) :
   nu (nu_pos (ws0_nu (fobj[EM_to_W0Sys] x))) n t
     = t_alg[projT2 x] (tup_to_list n t) := eq_refl.
 
-(* The system round trip keeps the set, ν₀ and the maps on the nose. *)
+(* 相关说明。 （已译） *)
 Example W0Sys_rt_set@{+} (A : W0Sys) :
   ws0_set (fobj[EM_to_W0Sys ◯ W0Sys_to_EM] A) = ws0_set A := eq_refl.
 
@@ -496,8 +491,8 @@ Example W0Sys_EM_iso_from_to_component@{+} (A : W0Sys) :
     = (@setoid_morphism_id@{o o o} (ws0_set A),
        @setoid_morphism_id@{o o o} (ws0_set A)) := eq_refl.
 
-(* The system of a monoid M: ν₀ is the unit of M, ν₂(x, y) = x · (y · 1),
-   and νₙ is the n-fold product. *)
+(* The system 幺半群 M: ν₀ unit M, ν₂(x, y) = x · (y · 1),
+ νₙ n-fold product. （已译） *)
 Example Mon_system_zero@{+} (M : MonOS) :
   nu_zero (ws0_nu (fobj[EM_to_W0Sys ◯ Mon_K] M)) = mon_one M := eq_refl.
 

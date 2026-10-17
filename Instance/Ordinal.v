@@ -9,7 +9,7 @@ Require Import Coq.Logic.Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * The finite ordinals as categories *)
+(* * * The finite ordinals 范畴 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/simplex+category
@@ -130,8 +130,8 @@ Arguments ord_at {n} _ _.
 Arguments ord_val {n} _.
 Arguments ord_bound {n} _.
 
-(* The category laws are Omega's, transported along [ord_val]; the proof
-   script is the one Instance/Omega.v uses for [Omega] itself. *)
+(* The 范畴 laws Omega's, transported along [ord_val]; 证明
+ script one Instance/Omega.v uses [Omega] itself. （已译） *)
 Program Definition Ordinal@{o h p} (n : nat) : Category@{o h p} := {|
   obj     := Ord_obj@{o} n;
   hom     := fun x y => le_t@{h} (ord_val x) (ord_val y);
@@ -144,12 +144,12 @@ Solve All Obligations with
    rewrite ?le_t_trans_id_l, ?le_t_trans_id_r, ?le_t_trans_assoc;
    try reflexivity).
 
-(* Thinness of [Ordinal n]: any two parallel arrows are equal, on the nose.
-   This one lemma discharges essentially every coherence obligation below. *)
+(* Thinness [Ordinal n]: any two parallel arrows equal, nose.
+ This one 引理 discharges essentially every coherence obligation below. （已译） *)
 Lemma ord_thin {n} {x y : Ordinal n} (f g : x ~> y) : f = g.
 Proof. exact (le_t_irr f g). Qed.
 
-(* Objects, too, are determined by their values, the bound being irrelevant. *)
+(* 相关说明。 （已译） *)
 Lemma ord_obj_eq {n} {x y : Ord_obj n} : ord_val x = ord_val y → x = y.
 Proof.
   destruct x as [i Hi], y as [j Hj]; simpl; intro e.
@@ -166,7 +166,7 @@ Definition ord_iso_of_eq {n} {x y : Ord_obj n} (e : x = y) :
 Definition ord_iso {n} {x y : Ord_obj n} (e : ord_val x = ord_val y) :
   @Isomorphism (Ordinal n) x y := ord_iso_of_eq (ord_obj_eq e).
 
-(* ---------- distinguished objects and the generating steps ---------- *)
+(* ---------- distinguished 对象 generating steps ---------- （已译） *)
 
 (*
    本节说明 Ordinal 相关定义、性质与动机。
@@ -245,9 +245,9 @@ Fixpoint chain_fmap {C : Category} {n : nat} {X : nat → C} (s : OrdSteps n X)
   | le_t_S f' => fun H => s _ H ∘ chain_fmap s f' (le_t_trans (le_t_S le_t_n) H)
   end.
 
-(* Definitional sanity pin (unused below; the [eq_refl]-style check that the
-   fold sends reflexivity to the identity, kept so a refactor that breaks it
-   is caught here rather than downstream). *)
+(* Definitional sanity pin (unused below; [eq_refl]-style check the
+ fold sends reflexivity 恒等, kept so refactor breaks it
+ caught here rather than downstream). （已译） *)
 Lemma chain_fmap_id {C : Category} {n} {X : nat → C} (s : OrdSteps n X)
   (i : nat) (H : le_t i n) : chain_fmap s (@le_t_n i) H ≈ id.
 Proof. reflexivity. Qed.
@@ -264,8 +264,8 @@ Proof.
     now rewrite (IH Hj (le_t_trans (le_t_S le_t_n) Hk)).
 Qed.
 
-(* A path of n arrows gives a genuine functor out of the ordinal on n+1
-   objects, whose action on objects is [X] read off the index. *)
+(* A path n arrows gives genuine 函子 out ordinal n+1
+ 对象, whose action 对象 [X] read off index. （已译） *)
 Program Definition Functor_of_Steps {C : Category} {n : nat} {X : nat → C}
   (s : OrdSteps n X) : Ordinal (S n) ⟶ C := {|
   fobj := fun x => X (ord_val x);
@@ -288,7 +288,7 @@ Definition steps_of_arrows {C : Category} {n} {X : nat → C} (u : OrdArrows n X
 Definition arrows_of_steps {C : Category} {n} {X : nat → C} (s : OrdSteps n X) :
   OrdArrows n X := fun i j H f => chain_fmap s f H.
 
-(* Restricting the generated action back to the steps returns the path. *)
+(* 相关说明。 （已译） *)
 Theorem steps_arrows_steps {C : Category} {n} {X : nat → C} (s : OrdSteps n X) :
   ∀ k H, steps_of_arrows (arrows_of_steps s) k H ≈ s k H.
 Proof.
@@ -296,7 +296,7 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(* And a functorial action is determined by its steps: this is the freeness. *)
+(* And functorial action determined steps: 这是 freeness. （已译） *)
 Theorem arrows_steps_arrows {C : Category} {n} {X : nat → C} (u : OrdArrows n X)
   (Hid : ∀ i (H : le_t i n), u i i H le_t_n ≈ id)
   (Hcomp : ∀ i j k (Hj : le_t j n) (Hk : le_t k n) (g : le_t i j) (f : le_t j k),
@@ -315,13 +315,13 @@ Proof.
     now rewrite E.
 Qed.
 
-(* Record eta on [Ord_obj]: an object is its value paired with its bound,
-   definitionally.  This is what lets the value-indexed naturality lemma below
-   be applied at an arbitrary object. *)
+(* Record eta [Ord_obj]: 对象 value 与…配对 bound,
+ definitionally. This what lets value-indexed 自然性 引理 below
+ applied at arbitrary 对象. （已译） *)
 Example ord_eta {n} (x : Ord_obj n) : ord_at (ord_val x) (ord_bound x) = x := eq_refl.
 
-(* The uniqueness half of freeness, in the form the setoid discipline wants:
-   naturality need only be checked on the n generating steps. *)
+(* The uniqueness half freeness, form setoid discipline wants:
+ 自然性 need checked n generating steps. （已译） *)
 Theorem ord_naturality_from_steps {C : Category} {n : nat}
   (F G : Ordinal (S n) ⟶ C) (θ : ∀ x : Ord_obj (S n), F x ≅ G x)
   (Hgen : ∀ k : Ord_obj n,
@@ -426,8 +426,8 @@ Definition ord_mor_of_eq {n} {x y : Ord_obj n} (e : x = y) :
   | eq_refl => le_t_n
   end.
 
-(* Equal objects of a thin category have a canonical isomorphism, and a functor
-   carries it over; the inverse laws follow from thinness alone. *)
+(* Equal 对象 thin 范畴 have canonical 同构, 函子
+ carries it over; inverse laws follow thinness alone. （已译） *)
 Program Definition ord_functor_iso {n} {C : Category} (F : Ordinal n ⟶ C)
   {x y : Ord_obj n} (e : x = y) : F x ≅ F y := {|
   to   := fmap[F] (ord_mor_of_eq e);
@@ -449,8 +449,8 @@ Proof.
   exact (le_t_S le_t_n).
 Defined.
 
-(* The path underlying a functor: its objects at the clamped indices, its
-   arrows at the n generating steps. *)
+(* The path underlying 函子: 对象 at clamped indices, its
+ arrows at n generating steps. （已译） *)
 Definition steps_of_functor {n} {C : Category} (F : Ordinal (S n) ⟶ C) :
   OrdSteps n (fun k => F (@ord_clamp n k)) :=
   fun k H => fmap[F] (ord_clamp_step k H).
@@ -496,15 +496,15 @@ Proof.
   lia.
 Qed.
 
-(* The total space of all morphisms of [Ordinal n], bundled with endpoints. *)
+(* The total space all 态射 [Ordinal n], bundled endpoints. （已译） *)
 Definition OrdMor (n : nat) : Type :=
   { x : Ord_obj n & { y : Ord_obj n & @hom (Ordinal n) x y } }.
 
 Definition ord_coords {n} (m : OrdMor n) : (nat * nat)%type :=
   (ord_val (projT1 m), ord_val (projT1 (projT2 m))).
 
-(* A morphism is determined by its pair of endpoint indices: both the objects
-   (their bounds being irrelevant) and the arrow between them (thinness). *)
+(* A 态射 determined pair endpoint indices: both 对象
+ (their bounds being irrelevant) arrow between them (thinness). （已译） *)
 Theorem ord_coords_inj {n} (a b : OrdMor n) : ord_coords a = ord_coords b → a = b.
 Proof.
   destruct a as [x [y f]], b as [x' [y' f']].
@@ -517,7 +517,7 @@ Proof.
   now rewrite (le_t_irr f f').
 Qed.
 
-(* Conversely the pairs that arise are exactly those with i ≤ j < n. *)
+(* 相关说明。 （已译） *)
 Theorem ord_coords_range {n} (m : OrdMor n) :
   (le_t (fst (ord_coords m)) (snd (ord_coords m)) *
    le_t (S (snd (ord_coords m))) n)%type.
@@ -531,14 +531,12 @@ Definition ord_mor_of_coords {n} (i j : nat) (f : le_t i j) (H : le_t (S j) n) :
   existT _ (ord_at i (le_t_trans (le_t_SS f) H))
            (existT _ (ord_at j H) f).
 
-(* Definitional sanity pin for the coordinate round trip (unused below;
-   [ord_mor_of_pair] re-derives the fact inline where it is consumed). *)
+(* 相关说明。 （已译） *)
 Theorem ord_coords_onto {n} (i j : nat) (f : le_t i j) (H : le_t (S j) n) :
   ord_coords (ord_mor_of_coords i j f H) = (i, j).
 Proof. reflexivity. Qed.
 
-(* The enumeration of those pairs.  [ord_downto k] lists k, k-1, ..., 0, and
-   [ord_pairs n] lists, for each target k < n, every source i ≤ k. *)
+(* 相关说明。 （已译） *)
 Fixpoint ord_downto (k : nat) : list nat :=
   match k with
   | O    => cons O nil
@@ -639,9 +637,7 @@ Proof.
   now rewrite ord_len_app, ord_len_map, ord_downto_length, IH.
 Qed.
 
-(* The closed formula, by induction on n rather than case by case.  It is
-   stated in the doubled form because n * (n + 1) / 2 in [nat] would have to
-   divide by hand. *)
+(* 相关说明。 （已译） *)
 Theorem ord_tri_closed (n : nat) : (2 * ord_tri n = n * (n + 1))%nat.
 Proof.
   induction n as [| k IH]; simpl; [ reflexivity |].
@@ -695,9 +691,9 @@ Proof.
       destruct (ord_pairs_sound k i k Hin2); lia.
 Qed.
 
-(* The count, assembled: [ord_coords] is an injection from the morphisms of
-   [Ordinal n] ONTO the elements of [ord_pairs n], a list without repetitions
-   whose length t satisfies 2t = n(n+1). *)
+(* The count, assembled: [ord_coords] injection 态射 of
+ [Ordinal n] ONTO elements [ord_pairs n], list without repetitions
+ whose length t satisfies 2t = n(n+1). （已译） *)
 Theorem ord_coords_in_pairs {n} (m : OrdMor n) : In (ord_coords m) (ord_pairs n).
 Proof.
   destruct (ord_coords_range m) as [Hle Hlt].
@@ -722,7 +718,7 @@ Example ord_tri_3 : ord_tri 3 = 6%nat := eq_refl.
 Example ord_pairs_3 : length (ord_pairs 3) = 6%nat := eq_refl.
 Example ord_tri_4 : ord_tri 4 = 10%nat := eq_refl.
 
-(* ---------- the carrier is the standard finite ordinal [Fin.t n] ---------- *)
+(* 相关说明。 （已译） *)
 
 Require Import Coq.Vectors.Fin.
 
@@ -780,7 +776,7 @@ Proof.
     exact IH.
 Qed.
 
-(* ---------- agreement with the hand-built small ordinals ---------- *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Ordinal 相关定义、性质与动机。
@@ -913,7 +909,7 @@ Next Obligation.
   intros x y f; apply le_t_irr.
 Qed.
 
-(* ---------- the next two ordinals, and diagrams of shape 4 ---------- *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Ordinal 相关定义、性质与动机。
@@ -950,7 +946,7 @@ Definition ord3_0 : Ord_obj 3 := ord_at 0%nat (le_t_S (le_t_S le_t_n)).
 Definition ord3_1 : Ord_obj 3 := ord_at 1%nat (le_t_S le_t_n).
 Definition ord3_2 : Ord_obj 3 := ord_at 2%nat le_t_n.
 
-(* ... which restricts on the three generating steps to the three morphisms. *)
+(* ... restricts three generating steps three 态射. （已译） *)
 Theorem Functor_of_Triple_step0 {C : Category} (X : nat → C)
   (f0 : X 0%nat ~> X 1%nat) (f1 : X 1%nat ~> X 2%nat) (f2 : X 2%nat ~> X 3%nat) :
   fmap[Functor_of_Triple X f0 f1 f2] (ord_step ord3_0) ≈ f0.
@@ -966,14 +962,12 @@ Theorem Functor_of_Triple_step2 {C : Category} (X : nat → C)
   fmap[Functor_of_Triple X f0 f1 f2] (ord_step ord3_2) ≈ f2.
 Proof. exact (Functor_of_Steps_step (three_steps X f0 f1 f2) ord3_2). Qed.
 
-(* And conversely every diagram of shape 4 arises this way. *)
+(* 相关说明。 （已译） *)
 Corollary shape_4_from_diagram {C : Category} (F : _4 ⟶ C) :
   Functor_of_Steps (steps_of_functor F) ≈ F.
 Proof. exact (Functor_of_Steps_of_Functor F). Qed.
 
-(* The composites are forced, and every triangle in a shape-4 diagram commutes
-   automatically: the source is thin, so any two parallel arrows of [_4] are
-   equal and have the same image. *)
+(* 相关说明。 （已译） *)
 Theorem ord_4_commutes {C : Category} (F : _4 ⟶ C) (x y : Ord_obj 4)
   (f g : @hom (Ordinal 4) x y) : fmap[F] f ≈ fmap[F] g.
 Proof. now rewrite (le_t_irr f g). Qed.

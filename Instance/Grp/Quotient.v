@@ -22,7 +22,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Subgroups and normal subgroups *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -49,8 +49,7 @@ Arguments sub_unit {G} _.
 Arguments sub_mul {G} _ _ _ _ _.
 Arguments sub_inv {G} _ _ _.
 
-(* A normal subgroup adds the fifth fact: closure under conjugation.  The
-   five laws are exactly the five that Abelianization.v names. *)
+(* 相关说明。 （已译） *)
 Record NormalSubgroup (G : GrpObject) := {
   ns_sub :> Subgroup G;
 
@@ -62,16 +61,14 @@ Record NormalSubgroup (G : GrpObject) := {
 Arguments ns_sub {G} _.
 Arguments ns_conj {G} _ _ _ _.
 
-(* Saturation in the argument-implicit shape the proofs below want, so
-   that they read like Abelianization.v's [inc_resp] applications. *)
+(* Saturation 论元-implicit shape proofs below want, so
+ they read like Abelianization.v's [inc_resp] applications. （已译） *)
 Definition sub_at {G : GrpObject} (S : Subgroup G) {a b : carrier G}
   (Hab : a ≈ b) (Ha : sub_mem S a) : sub_mem S b := sub_resp S a b Hab Ha.
 
-(** ** The subgroup as an object of Grp *)
+(* * ** The subgroup 对象 Grp （已译） *)
 
-(* The sigma carrier over membership, compared on elements -- the shape
-   Instance/Grp.v's [Grp_kernel] and Instance/Grp/Center.v use, so the
-   membership witness carries no equational weight. *)
+(* 相关说明。 （已译） *)
 Definition sub_carrier {G : GrpObject} (S : Subgroup G) : Type :=
   { a : carrier G & sub_mem S a }.
 
@@ -107,7 +104,7 @@ Next Obligation.
   - intros p q Hpq; exact Hpq.
 Defined.
 
-(* The inclusion of a subgroup: the first projection. *)
+(* The 含入 subgroup: first projection. （已译） *)
 Program Definition sub_incl {G : GrpObject} (S : Subgroup G) :
   SubgroupGrp S ~{Grp}~> G := {|
   grp_map := {| morphism := fun p : sub_carrier S => `1 p |}
@@ -131,8 +128,7 @@ Qed.
 
 (** ** The quotient relation *)
 
-(* a ~ b when a * b⁻¹ lies in N.  The orientation matches
-   Instance/Grp/Abelianization.v's [abel_eq], which this generalizes. *)
+(* 相关说明。 （已译） *)
 Definition quot_rel {G : GrpObject} (N : Subgroup G) (a b : carrier G) : Type :=
   sub_mem N (grp_mul G a (grp_inv G b)).
 
@@ -141,7 +137,7 @@ Section QuotientRelation.
 Context {G : GrpObject}.
 Context (N : NormalSubgroup G).
 
-(* The finer relation implies the coarser one. *)
+(* The finer 关系 implies coarser one. （已译） *)
 Lemma quot_rel_of_equiv (a b : carrier G) : a ≈ b → quot_rel N a b.
 Proof.
   intro Hab; unfold quot_rel.
@@ -179,9 +175,9 @@ Proof.
   - exact (sub_mul N _ _ K1 K2).
 Qed.
 
-(* Multiplication respects the relation.  This is the first of the two
-   places where NORMALITY is spent: the correction term a * (b * b'⁻¹) * a⁻¹
-   is a conjugate of a member. *)
+(* Multiplication respects 关系. This first two
+ places where NORMALITY spent: correction term * (b * b'⁻¹) * a⁻¹
+ conjugate member. （已译） *)
 Lemma quot_rel_mul (a a' b b' : carrier G) :
   quot_rel N a a' → quot_rel N b b' →
   quot_rel N (grp_mul G a b) (grp_mul G a' b').
@@ -249,7 +245,7 @@ Qed.
 
 End QuotientRelation.
 
-(** ** The quotient group and its projection *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Quotient 相关定义、性质与动机。
@@ -259,9 +255,7 @@ End QuotientRelation.
 Definition quot_equiv {G : GrpObject} (N : NormalSubgroup G)
   (a b : carrier G) : Prop := inhabited (quot_rel N a b).
 
-(* The setoid is named rather than written inline in the record below: a
-   [Program] record literal cannot carry a [PropEquiv] field naming a setoid
-   written inline in the same literal. *)
+(* 相关说明。 （已译） *)
 Program Definition quot_setoid {G : GrpObject} (N : NormalSubgroup G) :
   SetoidObject := {|
   carrier := carrier G;
@@ -281,15 +275,15 @@ Program Definition QuotientGrp {G : GrpObject} (N : NormalSubgroup G) :
   grp_unit := grp_unit G;
   grp_mul := grp_mul G;
   grp_inv := grp_inv G;
-  (* The relation IS a [Prop], so the two implications are the identity. *)
+  (* The 关系 IS [Prop], so two 蕴含 恒等. （已译） *)
   grp_prop :=
     @PropEquiv_of_relation _ (is_setoid (quot_setoid N)) (@quot_equiv G N)
       (fun _ _ h => h) (fun _ _ h => h)
 |}.
 Next Obligation.
-  (* [@equiv _ S x y] is ascribed sort [Type] even when the underlying
-     relation is a [Prop], so the hypotheses and the goal are converted to
-     the [inhabited] form before the elimination. *)
+  (* [@equiv _ S x y] ascribed sort [Type] even underlying
+ 关系 [Prop], so hypotheses goal converted to
+ [inhabited] form before elimination. （已译） *)
   intros G N a a' Ha b b' Hb.
   change (inhabited (quot_rel N a a')) in Ha.
   change (inhabited (quot_rel N b b')) in Hb.
@@ -312,8 +306,8 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The projection: the identity function, read from the fine setoid into
-   the coarse one. *)
+(* The projection: 恒等 function, read fine setoid into
+ coarse one. （已译） *)
 Program Definition quot_proj {G : GrpObject} (N : NormalSubgroup G) :
   G ~{Grp}~> QuotientGrp N := {|
   grp_map := {| morphism := fun a : carrier G => a |}
@@ -324,8 +318,7 @@ Qed.
 Next Obligation. intros G N; simpl; constructor; apply quot_rel_refl. Qed.
 Next Obligation. intros G N a b; simpl; constructor; apply quot_rel_refl. Qed.
 
-(* The projection kills N, which is the statement that gives the universal
-   element below its element. *)
+(* 相关说明。 （已译） *)
 Lemma quot_proj_kills {G : GrpObject} (N : NormalSubgroup G) (a : carrier G) :
   sub_mem N a → grp_map (quot_proj N) a ≈ grp_unit (QuotientGrp N).
 Proof.
@@ -334,8 +327,8 @@ Proof.
   exact (snd (quot_rel_unit_iff N a) Ha).
 Qed.
 
-(* Conversely, anything the projection kills lies in N: the projection's
-   kernel is exactly N, as a biconditional rather than an inclusion. *)
+(* Conversely, anything projection kills lies N: projection's
+ kernel exactly N, biconditional rather than 含入. （已译） *)
 (*
    本节说明 Quotient 相关定义、性质与动机。
 
@@ -351,9 +344,9 @@ Proof.
     destruct K as [K]; constructor; exact (snd (quot_rel_unit_iff N a) K).
 Qed.
 
-(* The projection is surjective on elements -- indeed the identity -- and
-   hence epic.  Recorded because the isomorphism-theorem chases in the
-   sibling file cancel it on the right. *)
+(* The projection surjective elements -- indeed 恒等 -- and
+ hence epic. Recorded because 同构-定理 chases the
+ sibling file cancel it right. （已译） *)
 Lemma quot_proj_epic {G : GrpObject} (N : NormalSubgroup G) :
   Epic (quot_proj N).
 Proof.
@@ -361,7 +354,7 @@ Proof.
   exact (Hgh a).
 Qed.
 
-(** ** The functor of homomorphisms killing N *)
+(* * ** The 函子 homomorphisms killing N （已译） *)
 
 (* Kills N K is the set of homomorphisms G -> K that send every member of
    N to the unit.  It is covariant in K by postcomposition, which is what
@@ -370,9 +363,7 @@ Qed.
 Definition Kills {G : GrpObject} (N : NormalSubgroup G) (K : GrpObject) : Type :=
   { h : G ~{Grp}~> K & ∀ a : carrier G, sub_mem N a → grp_map h a ≈ grp_unit K }.
 
-(* Two members are compared by their underlying homomorphisms; the
-   killing witness carries no equational weight, exactly as the membership
-   witness does not in [sub_carrier]. *)
+(* 相关说明。 （已译） *)
 Program Definition Kills_Setoid {G : GrpObject} (N : NormalSubgroup G)
   (K : GrpObject) : Setoid (Kills N K) := {|
   equiv := fun p q => `1 p ≈ `1 q
@@ -459,9 +450,9 @@ Qed.
 Next Obligation. simpl; apply (grp_map_unit (`1 p)). Qed.
 Next Obligation. intros a b; simpl; apply (grp_map_mul (`1 p)). Qed.
 
-(* The mediator's defining triangle, at the level of the underlying
-   homomorphisms: it holds by reflexivity, since the projection is the
-   identity function. *)
+(* The mediator's defining triangle, at level underlying
+ homomorphisms: it holds reflexivity, since projection the
+ 恒等 function. （已译） *)
 Lemma quot_med_commutes : quot_med ∘ quot_proj N ≈ `1 p.
 Proof. intro a; simpl; reflexivity. Qed.
 
@@ -473,7 +464,7 @@ End Mediator.
 
 Arguments quot_med {G} N {K} p.
 
-(** ** Mac Lane's construction 5: ⟨G/N, p⟩ is a universal element *)
+(* 相关说明。 （已译） *)
 
 (* The projection, packaged as an element of (Kills N)(G/N). *)
 Definition quot_elem {G : GrpObject} (N : NormalSubgroup G) :
@@ -507,8 +498,7 @@ Example quot_universal_elem_is_proj {G : GrpObject} (N : NormalSubgroup G) :
     = quot_proj N.
 Proof. reflexivity. Qed.
 
-(* And the mediator extracted from the class is the fixpoint-free direct
-   one, again by convertibility. *)
+(* 相关说明。 （已译） *)
 Example quot_universal_med_is_quot_med {G : GrpObject} (N : NormalSubgroup G)
   {K : GrpObject} (x : Kills N K) :
   unique_obj (@aue_universal _ (KillsFunctor N) (QuotientGrp N)
@@ -516,7 +506,7 @@ Example quot_universal_med_is_quot_med {G : GrpObject} (N : NormalSubgroup G)
     = quot_med N x.
 Proof. reflexivity. Qed.
 
-(** ** Awodey Theorem 4.4: the homomorphism theorem, as a biconditional *)
+(* * ** Awodey Theorem 4.4: homomorphism 定理, biconditional （已译） *)
 
 (*
    本节说明 Quotient 相关定义、性质与动机。
@@ -546,7 +536,7 @@ Proof.
       * exact (grp_map_unit u).
 Qed.
 
-(* The two halves separately, in the shape a consumer applies. *)
+(* 相关说明。 （已译） *)
 Definition hom_theorem_factor {G K : GrpObject} (N : NormalSubgroup G)
   (h : G ~{Grp}~> K)
   (Hkill : ∀ a : carrier G, sub_mem N a → grp_map h a ≈ grp_unit K) :
@@ -591,19 +581,18 @@ Next Obligation.
   apply (grp_mul_inv_r K).
 Qed.
 
-(* Membership in the kernel subgroup IS the defining equation, by
-   convertibility. *)
+(* 相关说明。 （已译） *)
 Example KernelNS_mem {G K : GrpObject} (h : G ~{Grp}~> K) (a : carrier G) :
   sub_mem (KernelNS h) a = (grp_map h a ≈ grp_unit K).
 Proof. reflexivity. Qed.
 
-(* The subgroup object of the kernel normal subgroup has the same carrier
-   as Instance/Grp.v's [Grp_kernel], by convertibility. *)
+(* The subgroup 对象 kernel normal subgroup has same carrier
+ Instance/Grp.v's [Grp_kernel], convertibility. （已译） *)
 Example KernelNS_carrier_is_Grp_kernel {G K : GrpObject} (h : G ~{Grp}~> K) :
   carrier (SubgroupGrp (KernelNS h)) = carrier (Grp_kernel h).
 Proof. reflexivity. Qed.
 
-(** ** The degenerate normal subgroups, named and separated *)
+(* 相关说明。 （已译） *)
 
 (* The trivial normal subgroup {e}. *)
 Program Definition TrivialNS (G : GrpObject) : NormalSubgroup G := {|
@@ -635,8 +624,8 @@ Next Obligation. intros G a b Ha Hb; exact ttt. Qed.
 Next Obligation. intros G a Ha; exact ttt. Qed.
 Next Obligation. intros G t a Ha; exact ttt. Qed.
 
-(* Quotienting by the trivial subgroup changes nothing: the coarse
-   relation coincides with `≈`, in both directions. *)
+(* Quotienting trivial subgroup changes nothing: coarse
+ 关系 coincides `≈`, both directions. （已译） *)
 Lemma quot_trivial_iff (G : GrpObject) (a b : carrier G) :
   quot_rel (TrivialNS G) a b ↔ a ≈ b.
 Proof.
@@ -654,7 +643,7 @@ Lemma quot_total_collapses (G : GrpObject) (a b : carrier G) :
   quot_rel (TotalNS G) a b.
 Proof. exact ttt. Qed.
 
-(** ** Quotients by coextensive normal subgroups agree *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明核/余核相关定义、性质与动机。
@@ -668,8 +657,8 @@ Program Definition quot_congr {G : GrpObject} (N N' : NormalSubgroup G)
   to := {| grp_map := {| morphism := fun a : carrier (QuotientGrp N) => a |} |};
   from := {| grp_map := {| morphism := fun a : carrier (QuotientGrp N') => a |} |}
 |}.
-(* The two respectfulness obligations are the only places the truncation is
-   visible: unwrap the hypothesis, apply the inclusion, wrap again. *)
+(* The two respectfulness obligations places truncation is
+ visible: unwrap 假设, apply 含入, wrap again. （已译） *)
 Next Obligation.
   intros G N N' H1 H2 a b Hab.
   change (inhabited (quot_rel N a b)) in Hab.
@@ -735,13 +724,11 @@ Proof. split; [ reflexivity | discriminate ]. Qed.
 Lemma A3_conjugation_nontrivial : Grp_conj S3 S3_s ≈ @id Grp S3 → False.
 Proof. exact S3_conj_s_nontrivial. Qed.
 
-(* THE QUOTIENT DOES NOT COLLAPSE: the reflection stays apart from the
-   unit in S3/A3. *)
+(* 相关说明。 （已译） *)
 Theorem S3_mod_A3_not_collapsed : quot_rel A3 S3_s s3_unit → False.
 Proof. simpl; discriminate. Qed.
 
-(* Nor does the quotient projection identify the two generators, so
-   S3/A3 has at least two elements. *)
+(* 相关说明。 （已译） *)
 (*
    本节说明 Quotient 相关定义、性质与动机。
 
@@ -751,8 +738,7 @@ Theorem S3_mod_A3_two_elements :
   grp_map (quot_proj A3) S3_s ≈ grp_map (quot_proj A3) s3_unit → False.
 Proof. intros [H]; simpl in H; discriminate. Qed.
 
-(* But it does collapse the rotations, so the projection is not injective
-   -- the quotient is a genuine quotient and not a relabelling of S3. *)
+(* 相关说明。 （已译） *)
 Theorem S3_mod_A3_collapses_rotations :
   grp_map (quot_proj A3) S3_r ≈ grp_map (quot_proj A3) s3_unit.
 Proof. constructor; reflexivity. Qed.

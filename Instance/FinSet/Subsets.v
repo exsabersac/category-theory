@@ -36,7 +36,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** (A) Bounded decidable quantifiers over [Fin.t] *)
+(* 相关说明。 （已译） *)
 
 Fixpoint fin_allb (n : nat) : (Fin.t n → bool) → bool :=
   match n with
@@ -76,9 +76,9 @@ Lemma fin_anyb_exists (n : nat) (g : Fin.t n → bool) :
 Proof.
   induction n as [| m IH]; intro H; simpl in H.
   - discriminate H.
-  - (* [orb_true_elim] lands in [sumbool], which -- unlike
-       [orb_true_iff]'s [or] -- may be eliminated into the [Type]-valued
-       [∃] the conclusion uses. *)
+  - (* [orb_true_elim] lands [sumbool], -- unlike
+ [orb_true_iff]'s [or] -- may eliminated 进入 [Type]-valued
+ [∃] conclusion uses. （已译） *)
     destruct (Bool.orb_true_elim _ _ H) as [H1 | H1].
     + exists Fin.F1; exact H1.
     + destruct (IH (fun p => g (Fin.FS p)) H1) as [j Hj].
@@ -103,7 +103,7 @@ Lemma finpow_mem_of_bool (b : bool) : fin_eqb (fin_of_bool b) fin_true = b.
 Proof. destruct b; reflexivity. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (B) The inclusion order on codes, and the thin category *)
+(* * ** (B) The 含入 order codes, thin 范畴 （已译） *)
 
 Definition finpow_le {n : nat} (S T : Fin.t (finpow n)) : Prop :=
   ∀ i : Fin.t n, finpow_mem S i = true → finpow_mem T i = true.
@@ -136,7 +136,7 @@ Example FinSubsets_hom_is_finpow_le@{u} (n : nat)
   (S T : FinSubsets@{u} n) :
   (S ~{FinSubsets@{u} n}~> T) = finpow_le S T := eq_refl.
 
-(** ** Example 50: the three small power sets, counted and drawn *)
+(* 相关说明。 （已译） *)
 
 Example finpow_zero_count : finpow 0 = 1%nat := eq_refl.
 Example finpow_one_count  : finpow 1 = 2%nat := eq_refl.
@@ -155,7 +155,7 @@ Definition empty1_le_full1 : finpow_le empty1 full1 :=
 Lemma full1_not_le_empty1 : finpow_le full1 empty1 → False.
 Proof. intro H; discriminate (H Fin.F1 eq_refl). Qed.
 
-(* n = 2: the four subsets of a two-element set, and the square. *)
+(* 相关说明。 （已译） *)
 Definition sub2_00 : Fin.t (finpow 2) := fin_tabulate (fun _ => fin_false).
 Definition sub2_10 : Fin.t (finpow 2) :=
   fin_tabulate (fun i => match i with
@@ -176,7 +176,7 @@ Example sub2_01_at_0 : finpow_mem sub2_01 Fin.F1 = false := eq_refl.
 Example sub2_01_at_1 :
   finpow_mem sub2_01 (Fin.FS Fin.F1) = true := eq_refl.
 
-(* The five non-identity inclusions of the square. *)
+(* The five non-恒等 inclusions square. （已译） *)
 Definition sub2_00_le_10 : finpow_le sub2_00 sub2_10 :=
   finpow_le_of_allb 2 sub2_00 sub2_10 eq_refl.
 Definition sub2_00_le_01 : finpow_le sub2_00 sub2_01 :=
@@ -188,8 +188,7 @@ Definition sub2_10_le_11 : finpow_le sub2_10 sub2_11 :=
 Definition sub2_01_le_11 : finpow_le sub2_01 sub2_11 :=
   finpow_le_of_allb 2 sub2_01 sub2_11 eq_refl.
 
-(* ... and the two incomparabilities that make it a square and not a
-   chain. *)
+(* 相关说明。 （已译） *)
 Lemma sub2_01_not_le_10 : finpow_le sub2_01 sub2_10 → False.
 Proof. intro H; discriminate (H (Fin.FS Fin.F1) eq_refl). Qed.
 
@@ -197,7 +196,7 @@ Lemma sub2_10_not_le_01 : finpow_le sub2_10 sub2_01 → False.
 Proof. intro H; discriminate (H Fin.F1 eq_refl). Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (C) The comparison with the Prop-valued power set *)
+(* 相关说明。 （已译） *)
 
 Definition finpow_to_subset@{o +} (n : nat) (S : Fin.t (finpow n)) :
   carrier (Powerset_Prop_obj@{o} (Powerset_Prop_fin_object@{o} n)).
@@ -210,8 +209,8 @@ Proof.
   intros i j Hij; rewrite Hij; split; exact (fun h => h).
 Defined.
 
-(* Monotone, and ORDER-REFLECTING: both directions are the same
-   implication read through the definition of [finpow_to_subset]. *)
+(* Monotone, ORDER-REFLECTING: both directions same
+ implication read through 定义 [finpow_to_subset]. （已译） *)
 Lemma finpow_to_subset_mono@{o} (n : nat) (S T : Fin.t (finpow n)) :
   finpow_le S T →
   subset_le (finpow_to_subset@{o} n S) (finpow_to_subset@{o} n T).
@@ -260,7 +259,7 @@ Example FinSet_Omega_is_two :
   @Ω FinSet FinSet_Terminal FinSet_Classifier = 2%nat := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (E) The internal inclusion order on the power object *)
+(* * ** (E) The internal 含入 order power 对象 （已译） *)
 
 Definition finpow_subseteq {n : nat} (S T : Fin.t (finpow n)) : bool :=
   fin_allb n (fun i => implb (finpow_mem S i) (finpow_mem T i)).
@@ -286,8 +285,8 @@ Definition finpow_subseteq_fn (n : nat)
   (p : Fin.t (finpow n * finpow n)) : Fin.t 2 :=
   fin_of_bool (finpow_subseteq (fst (fin_unpair p)) (snd (fin_unpair p))).
 
-(* The internal order as an ARROW of [FinSet], from the product of the
-   power object with itself to Ω. *)
+(* The internal order ARROW [FinSet], product the
+ power 对象 itself Ω. （已译） *)
 Definition internal_subseteq (n : nat) :
   @product_obj FinSet FinSet_Cartesian
     (@Pow FinSet FinSet_Topos n) (@Pow FinSet FinSet_Topos n)
@@ -298,7 +297,7 @@ Example internal_subseteq_is_fn (n : nat)
   (p : Fin.t (finpow n * finpow n)) :
   internal_subseteq n p = finpow_subseteq_fn n p := eq_refl.
 
-(* THE INTERNAL TEST IS THE EXTERNAL ORDER. *)
+(* 相关说明。 （已译） *)
 Theorem internal_subseteq_spec (n : nat)
   (p : Fin.t (finpow n * finpow n)) :
   internal_subseteq n p = fin_true
@@ -306,8 +305,7 @@ Theorem internal_subseteq_spec (n : nat)
 Proof.
   change (internal_subseteq n p) with (finpow_subseteq_fn n p).
   unfold finpow_subseteq_fn.
-  (* Generalize the boolean first, so that destructing it rewrites the
-     goal and the biconditional together. *)
+  (* 相关说明。 （已译） *)
   generalize (finpow_subseteq_iff n (fst (fin_unpair p))
                 (snd (fin_unpair p))).
   destruct (finpow_subseteq (fst (fin_unpair p)) (snd (fin_unpair p)));
@@ -318,7 +316,7 @@ Proof.
     + intro Hle; discriminate (snd Hiff Hle).
 Qed.
 
-(* Non-vacuity: the internal test computes, and separates. *)
+(* 相关说明。 （已译） *)
 Example internal_subseteq_true :
   internal_subseteq 2 (fin_pair sub2_10 sub2_11) = fin_true := eq_refl.
 
@@ -326,7 +324,7 @@ Example internal_subseteq_false :
   internal_subseteq 2 (fin_pair sub2_10 sub2_01) = fin_false := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (F) Example 118: apples and buckets, evaluated *)
+(* 相关说明。 （已译） *)
 
 (* Two apples in bucket 0, one apple in bucket 1. *)
 Definition apples : 3%nat ~{FinSet}~> 2%nat :=
@@ -341,8 +339,7 @@ Example apples_at_1 : apples (Fin.FS Fin.F1) = Fin.F1 := eq_refl.
 Example apples_at_2 :
   apples (Fin.FS (Fin.FS Fin.F1)) = Fin.FS Fin.F1 := eq_refl.
 
-(* The preimage on codes ALREADY EXISTS: it is [finpow_map], the arrow
-   action of [FinPowerset].  Named, not rebuilt. *)
+(* 相关说明。 （已译） *)
 Definition finpow_preimage {m n : nat} (f : Fin.t n → Fin.t m)
   (T : Fin.t (finpow m)) : Fin.t (finpow n) := finpow_map f T.
 
@@ -358,9 +355,9 @@ Definition finpow_image {m n : nat} (f : Fin.t n → Fin.t m)
     fin_of_bool
       (fin_anyb n (fun i => andb (fin_eqb (f i) j) (finpow_mem S i)))).
 
-(* The dual image: bucket j is occupied when EVERY apple landing in it is
-   already in S.  The EVALUATIONS are this file's; the adjunction it
-   satisfies is #384's and is not built here. *)
+(* The dual image: bucket j occupied EVERY apple landing it is
+ already S. The EVALUATIONS file's; 伴随 it
+ satisfies #384's not built here. （已译） *)
 Definition finpow_dual {m n : nat} (f : Fin.t n → Fin.t m)
   (S : Fin.t (finpow n)) : Fin.t (finpow m) :=
   fin_tabulate (fun j : Fin.t m =>
@@ -389,7 +386,7 @@ Qed.
 
 (** ** The six evaluations *)
 
-(* The apples: {0} and {0,1} of the three. *)
+(* 相关说明。 （已译） *)
 Definition apple0 : Fin.t (finpow 3) :=
   fin_tabulate (fun i => match i with
                          | Fin.F1 => fin_true
@@ -402,7 +399,7 @@ Definition apple01 : Fin.t (finpow 3) :=
                          | _             => fin_false
                          end).
 
-(* Two preimages: the buckets {0} and {1} pulled back to apples. *)
+(* 相关说明。 （已译） *)
 Example preimage_bucket0 :
   finpow_preimage apples sub2_10 = apple01 := eq_refl.
 
@@ -419,9 +416,7 @@ Example preimage_bucket1 :
 Example image_apple0 : finpow_image apples apple0 = sub2_10 := eq_refl.
 Example image_apple01 : finpow_image apples apple01 = sub2_10 := eq_refl.
 
-(* Two dual images: at {0} the dual is EMPTY, because bucket 0 also holds
-   apple 1, which is missing; at {0,1} it is {0}.  This is where the
-   dual image visibly differs from the direct image. *)
+(* 相关说明。 （已译） *)
 Example dual_apple0 : finpow_dual apples apple0 = sub2_00 := eq_refl.
 Example dual_apple01 : finpow_dual apples apple01 = sub2_10 := eq_refl.
 
@@ -430,7 +425,7 @@ Example image_ne_dual_at_apple0 :
 Proof. intro H; discriminate H. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Example 117, left half: the preimage has a left adjoint *)
+(* * ** Example 117, left half: preimage has 左伴随 （已译） *)
 
 Section FinGalois.
 

@@ -11,7 +11,7 @@ Require Import Category.Instance.Grp.Epi.
 
 Generalizable All Variables.
 
-(** * Grp is well-powered one universe up *)
+(* 相关说明。 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Subgroup

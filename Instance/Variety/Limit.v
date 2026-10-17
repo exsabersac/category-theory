@@ -16,7 +16,7 @@ Require Import Category.Instance.Variety.Free.
 
 Generalizable All Variables.
 
-(** * Limits in the setoid variety are computed on underlying sets *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/variety+of+algebras
@@ -41,7 +41,7 @@ Context (F : J ⟶ SVariety E).
 (* The underlying diagram of setoids. *)
 Definition svlim_UF : J ⟶ Sets := SVariety_Forget E ◯ F.
 
-(* The carrier: the compatible families of Instance/Sets/Complete.v. *)
+(* 相关说明。 （已译） *)
 Definition svlim_obj : SetoidObject := Sets_limit_obj svlim_UF.
 
 (*
@@ -61,9 +61,9 @@ Proof.
     exact (`2 (k i) d d' f).
 Defined.
 
-(* The propositional equality is Instance/Sets/Propositional.v's limit
-   transport, supplied from the components' own [soa_prop] with no
-   hypothesis on the limit. *)
+(* The propositional equality Instance/Sets/Propositional.v's limit
+ transport, supplied components' own [soa_prop] no
+ 假设 limit. （已译） *)
 Definition svlim_soa : SetoidOpAlgebra S := {|
   soa_obj := svlim_obj;
   soa_op := svlim_op;
@@ -72,16 +72,12 @@ Definition svlim_soa : SetoidOpAlgebra S := {|
   soa_prop := limit_PropEquiv svlim_UF (fun d => soa_prop (`1 (F d)))
 |}.
 
-(* Evaluation at [d] is a LEIBNIZ homomorphism of Instance/Comp.v: the
-   limit's operation at [d] is the component's operation on the nose, so
-   [op_commute] is [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Definition svlim_eval (d : J) :
   UA.AlgHom (soa_alg svlim_soa) (soa_alg (`1 (F d))).
 Proof. exists (fun p => `1 p d). intros o args; reflexivity. Defined.
 
-(* The equations hold pointwise: each component is [F d]'s own
-   satisfaction transported along [svlim_eval d] by [lhs_natural] and
-   [rhs_natural], consuming those fields and never proving one. *)
+(* 相关说明。 （已译） *)
 Lemma svlim_satisfies : ssatisfies E svlim_soa.
 Proof.
   intros e args d.
@@ -198,7 +194,7 @@ Context (G : J ⟶ SVariety E).
 Context (N : Cone G) (HN : IsLimitCone N).
 Context (M : Cone (SVariety_Forget E ◯ G)).
 
-(* The comparison from the computed limit to [N]. *)
+(* 相关说明。 （已译） *)
 Definition svf_to : svlim_alg E G ~{SVariety E}~> vertex_obj[N] :=
   unique_obj (HN (svlim_cone E G)).
 
@@ -206,8 +202,8 @@ Lemma svf_to_legs (d : J) (p : carrier (svlim_obj E G)) :
   salg_map (`1 (cone_leg N d)) (salg_map (`1 svf_to) p) ≈ `1 p d.
 Proof. exact (unique_property (HN (svlim_cone E G)) d p). Qed.
 
-(* It is a retraction of [svlim_med]: [svf_to ∘ svlim_med N] and the
-   identity are both mediators from [N] to itself. *)
+(* It retraction [svlim_med]: [svf_to ∘ svlim_med N] the
+ 恒等 both mediators [N] itself. （已译） *)
 Lemma svf_to_med (y : carrier (soa_obj (`1 (vertex_obj[N])))) :
   salg_map (`1 svf_to) (salg_map (`1 (svlim_med E G N)) y) ≈ y.
 Proof.
@@ -219,10 +215,10 @@ Proof.
   exact (transitivity (symmetry (Hcomp y)) (Hid y)).
 Qed.
 
-(* The compatible family of the legs of [M]. *)
+(* 相关说明。 （已译） *)
 Definition svf_family (x : carrier (vertex_obj[M])) : carrier (svlim_obj E G).
 Proof.
-  (* Tactic form for the reason given at [svlim_med_map]. *)
+  (* 相关说明。 （已译） *)
   exists (fun d => cone_leg M d x).
   intros d d' f.
   exact (@cone_coherence _ _ _ _ (@coneFrom _ _ _ M) d d' f x).

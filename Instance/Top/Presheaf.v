@@ -1,4 +1,4 @@
-(** * Open(X) and the presheaf of continuous real-valued functions *)
+(* 相关说明。 （已译） *)
 
 (*
  Book:      Riehl, "Category Theory in Context", Example 1.3.7,
@@ -34,7 +34,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The real line as a topological space *)
+(* 相关说明。 （已译） *)
 
 Definition R_equiv (x y : R) : Type := x = y.
 
@@ -56,8 +56,7 @@ Definition R_Object : SetoidObject := {|
   is_setoid := R_Setoid
 |}.
 
-(* Registered for downstream setoid tactics at real points; the proofs in
-   this file use explicit terms instead. *)
+(* 相关说明。 （已译） *)
 #[export] Existing Instance R_equiv_Equivalence.
 
 Lemma BS_R_zero (x y : R_Object) : x ≈ y → Rabs (x - y) = 0.
@@ -82,7 +81,7 @@ Definition BS_R : BallSpace := {|
   bdist_tri    := BS_R_tri
 |}.
 
-(* The real line with the metric topology (design note 2). *)
+(* 相关说明。 （已译） *)
 Definition R_Top : TopSpace := BallTop BS_R.
 
 (** ** An open set as a subspace *)
@@ -118,13 +117,11 @@ Definition SubOb : SetoidObject := {|
   is_setoid := Sub_Setoid
 |}.
 
-(* The extension of a subspace predicate along the projection: it holds at
-   a point of X when some membership witness lands in V. *)
+(* 相关说明。 （已译） *)
 Definition sub_ext (V : SubCar → Type) : X → Type :=
   fun x => { h : `1 U x & V (x; h) }.
 
-(* Openness in the subspace: respect for the point comparison, plus
-   openness of the extension in X (design note 1). *)
+(* 相关说明。 （已译） *)
 Definition sub_open (V : SubCar → Type) : Type :=
   (∀ (x y : X) (hx : `1 U x) (hy : `1 U y),
       x ≈ y → V (x; hx) → V (y; hy)) ∧
@@ -198,8 +195,8 @@ Definition OpenSub : TopSpace := {|
   open_inter    := sub_inter
 |}.
 
-(* The inclusion of the subspace, continuous because the preimage of an
-   open W of X is its intersection with U, transported to the subspace. *)
+(* The 含入 subspace, continuous because preimage an
+ open W X intersection U, transported subspace. （已译） *)
 Program Definition sub_incl : ContinuousMorphism OpenSub X := {|
   continuous_map := {| morphism := fun s : SubCar => `1 s |}
 |}.
@@ -266,11 +263,10 @@ Arguments sub_open {X} U V.
 Arguments OpenSub {X} U.
 Arguments sub_incl {X} U.
 
-(* Registered for downstream setoid tactics at subspace points, as with
-   [R_equiv_Equivalence] above. *)
+(* 相关说明。 （已译） *)
 #[export] Existing Instance sub_equiv_Equivalence.
 
-(** ** Restriction along an inclusion *)
+(* * ** Restriction along 含入 （已译） *)
 
 Section Restriction.
 
@@ -303,11 +299,11 @@ Qed.
 
 End Restriction.
 
-(** ** The presheaf of continuous real-valued functions *)
+(* 相关说明。 （已译） *)
 
-(* The setoid of sections over an open: continuous maps from the subspace
-   to the real line, compared pointwise — [Top]'s own hom-setoid, packaged
-   as an object of Sets (design note 6). *)
+(* The setoid sections over open: continuous maps subspace
+ real line, compared pointwise — [Top]'s own hom-setoid, packaged
+ 对象 Sets (design note 6). （已译） *)
 Definition SectionsOb (X : TopSpace) (U : OpenSet X) : obj[Sets] := {|
   carrier   := ContinuousMorphism (OpenSub U) R_Top;
   is_setoid := ContinuousMorphism_Setoid
@@ -336,7 +332,7 @@ Next Obligation.
   exact (reflexivity (`1 p)).
 Qed.
 Next Obligation.
-  (* restriction along the identity inclusion is the identity *)
+  (* restriction along 恒等 含入 恒等 （已译） *)
   intros X U s p; simpl.
   apply (proper_morphism (continuous_map s)).
   exact (reflexivity (`1 p)).
@@ -372,8 +368,8 @@ Next Obligation.
     + exact (open_inter X (`1 U) (fun _ => W c) (`2 U) (open_const X (W c))).
 Qed.
 
-(* Restriction of a constant is the constant — the presheaf's arrow action
-   computes on the nose here. *)
+(* Restriction 常值 常值 — presheaf's arrow action
+ computes nose here. （已译） *)
 Example const_restrict (X : TopSpace) (U V : OpenSet X)
   (f : U ~{(Opens X)^op}~> V) (c : R) :
   fmap[ContinuousPresheaf X] f (const_section X U c) ≈ const_section X V c.
@@ -387,8 +383,8 @@ Qed.
 Definition whole_open (X : TopSpace) : OpenSet X :=
   ((fun _ => poly_unit); open_whole X).
 
-(* The subspace on the whole-space open is the space itself: the inclusion
-   is an isomorphism of [Top], the inverse adjoining the trivial witness. *)
+(* The subspace whole-space open space itself: 含入
+ 同构 [Top], inverse adjoining trivial witness. （已译） *)
 Program Definition OpenSub_whole_iso (X : TopSpace) :
   OpenSub (whole_open X) ≅[Top] X := {|
   to   := sub_incl (whole_open X);

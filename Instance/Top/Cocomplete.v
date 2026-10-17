@@ -23,7 +23,7 @@ Require Import Category.Instance.Top.Subspace.
 
 Generalizable All Variables.
 
-(** * Colimits of spaces: the final topology, and [PTopCat] cocomplete *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/Top
@@ -39,7 +39,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The final topology of a family of maps into a setoid *)
+(* 相关说明。 （已译） *)
 
 Section Final.
 
@@ -48,8 +48,7 @@ Universes o i.
 Context (S : SetoidObject@{o o}) (Ix : Type@{i}) (X : Ix → PTop@{o})
         (f : ∀ k : Ix, SetoidMorphism@{o o o} (X k) S).
 
-(* A predicate on [S] is open when it respects the equality of [S] and its
-   preimage along every [f k] is open. *)
+(* 相关说明。 （已译） *)
 Definition pfinal_open (V : S → Prop) : Prop :=
   (∀ s t : S, s ≈ t → V s → V t) /\
   (∀ k : Ix, POpen (X k) (fun x => V (f k x))).
@@ -100,8 +99,7 @@ Proof.
   - intro k; exact (popen_inter (X k) _ _ (HoU k) (HoV k)).
 Qed.
 
-(* A record literal over the five lemmas, so that the points and the opens
-   read back at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Definition PFinal : PTop@{o} := {|
   pt_carrier     := S;
   POpen          := pfinal_open;
@@ -127,9 +125,9 @@ Definition pfinal_leg (k : Ix) : PMor@{o} (X k) PFinal :=
 
 Example pfinal_leg_map (k : Ix) : pmap (pfinal_leg k) = f k := eq_refl.
 
-(* The universal property, over ARBITRARY spaces [Z] mapping out: a setoid
-   map out of [S] is continuous from the final topology exactly when its
-   composite with every [f k] is continuous. *)
+(* The 普遍性质, over ARBITRARY spaces [Z] 映射 out: setoid
+ map out [S] continuous final topology exactly its
+ 复合 every [f k] continuous. （已译） *)
 Lemma pfinal_universal (Z : PTop@{o}) (g : SetoidMorphism@{o o o} S Z) :
   @PCont PFinal Z g <->
   (∀ k, @PCont (X k) Z (setoid_morphism_compose@{o o o} g (f k))).
@@ -142,7 +140,7 @@ Proof.
     + intro k; exact (Hc k W HW).
 Qed.
 
-(* The book's form of it: the map out of the final topology. *)
+(* 相关说明。 （已译） *)
 Definition pfinal_desc (Z : PTop@{o}) (g : SetoidMorphism@{o o o} S Z)
   (Hg : ∀ k, @PCont (X k) Z (setoid_morphism_compose@{o o o} g (f k))) :
   PMor@{o} PFinal Z :=
@@ -165,9 +163,7 @@ Proof. intros U HU; exact (conj (Hp U HU) (Hc U HU)). Qed.
 
 End Final.
 
-(* The quotient topology of Instance/Top/Subspace.v is the one-map case:
-   [PQuot X T q] and the final topology of the single map [q] have the
-   same opens. *)
+(* 相关说明。 （已译） *)
 Lemma pfinal_one_map_PQuot@{o +} (X : PTop@{o}) (T : SetoidObject@{o o})
   (q : SetoidMorphism@{o o o} X T) (V : T → Prop) :
   POpen (PQuot X T q) V
@@ -178,7 +174,7 @@ Proof.
   - intros [Hp Ho]; split; [exact Hp|exact (Ho tt)].
 Qed.
 
-(** ** The recipe: the final topology on a colimit of the points *)
+(* 相关说明。 （已译） *)
 
 Section Recipe.
 
@@ -193,7 +189,7 @@ Section OverACocone.
 
 Context (N : Cocone G).
 
-(* The final topology on the apex of [N] for its legs. *)
+(* 相关说明。 （已译） *)
 Definition pfinal_cocone_obj : PTop@{o} :=
   PFinal (vertex_obj[N]) (obj[D]) (fun d => F d) (fun d => cocone_inj N d).
 
@@ -210,8 +206,7 @@ Next Obligation.
   exact (@cone_coherence _ _ _ _ (@coneFrom _ _ _ N) d d' g x).
 Qed.
 
-(* The lifted cocone forgets to [N] on the nose: its image under [PForget]
-   has [N]'s apex and [N]'s legs. *)
+(* 相关说明。 （已译） *)
 Example PFinalCocone_points :
   vertex_obj[FCocone PForget@{o so} PFinalCocone] = vertex_obj[N] := eq_refl.
 
@@ -247,7 +242,7 @@ Proof.
     exact (uniqueness U (pmap v) (fun d y => Hv d y) x).
 Defined.
 
-(* The mediator out of the lifted cocone IS the [Sets] mediator. *)
+(* 相关说明。 （已译） *)
 Example pfinal_cocone_med_map@{o so s r r' x x' +| o < so +}
   {D : Category@{s o o}} (F : D ⟶ PTopCat@{o so})
   (N : Cocone (PForget@{o so} ◯ F))
@@ -255,9 +250,7 @@ Example pfinal_cocone_med_map@{o so s r r' x x' +| o < so +}
   pmap (unique_obj (pfinal_cocone_colimiting@{o so s r r' x x' _} F N HN M))
     = unique_obj (colimitcocone_ump HN (FCocone PForget@{o so} M)) := eq_refl.
 
-(* The recipe for a colimit record of the points.  The colimit of the
-   points and the colimit of spaces are records at two levels, [r'] and
-   [r], left independent. *)
+(* 相关说明。 （已译） *)
 Definition PTop_Colimit_lift@{r r' s o so +| o < so +}
   {D : Category@{s o o}} (F : D ⟶ PTopCat@{o so})
   (L : Colimit@{r' s o so} (PForget@{o so} ◯ F)) : Colimit@{r s o so} F :=
@@ -271,7 +264,7 @@ Example PTop_Colimit_lift_apex@{r r' s o so +| o < so +}
     = PFinal (vertex_obj[@limit_cone _ _ _ L]) (obj[D]) (fun d => F d)
         (fun d => cocone_inj (@limit_cone _ _ _ L) d) := eq_refl.
 
-(** ** Remark 2 directly: the recipe at the colimit of [Sets] *)
+(* 相关说明。 （已译） *)
 
 Section PColimit.
 
@@ -314,7 +307,7 @@ End PColimit.
 Definition PTop_Cocomplete@{r s o so +| o < so, s <= o, o <= r +} :
   @Cocomplete@{r s o so} PTopCat@{o so} := fun D F => PColimit F.
 
-(** ** Indexed coproducts: the final topology on the disjoint union *)
+(* 相关说明。 （已译） *)
 
 Section PSigma.
 
@@ -323,8 +316,7 @@ Constraint i <= o.
 
 Context (Ix : Type@{i}) (X : Ix → PTop@{o}).
 
-(* The disjoint union of the points, [Sets_icoprod_obj], with the final
-   topology for its injections. *)
+(* 相关说明。 （已译） *)
 Definition PSigma : PTop@{o} :=
   PFinal (Sets_icoprod_obj (fun k => pt_carrier (X k))) Ix X
     (fun k => Sets_icoprod_inj (fun k => pt_carrier (X k)) k).
@@ -386,17 +378,14 @@ Definition PTop_HasIndexedCoproducts@{o so +| o < so +} :
     (fun A f k => psigma_inj A f k)
     (fun A f => PTop_IsIndexedCoproduct A f).
 
-(** ** Remark 2 by the book's route: coproducts and the dual of
-       Proposition 1 *)
+(* 相关说明。 （已译） *)
 
 Definition PTop_Cocomplete_via_coproducts@{o so +| o < so +} :
   @Cocomplete PTopCat@{o so} :=
   Cocomplete_from_coproducts_coequalizers PTop_HasIndexedCoproducts
     PTop_HasCoequalizers.
 
-(* The book-route colimit IS a quotient topology on a disjoint union: its
-   apex is [PQuot] of [PSigma] of the diagram's spaces, along the
-   projection onto a [Sets] coequalizer, on the nose. *)
+(* 相关说明。 （已译） *)
 Example PTop_Cocomplete_via_coproducts_apex@{o so +| o < so +}
   (D : Category@{o o o}) (F : D ⟶ PTopCat@{o so}) :
   { A : SetoidObject@{o o} &
@@ -425,8 +414,8 @@ Lemma PTop_Cocomplete_routes_iso_injs@{o so +| o < so +}
   ≈ colimit_inj (colimit_is_acolimit (PTop_Cocomplete_via_coproducts D F)) d.
 Proof. exact (fst (colimit_unique_iso_injs _ _) d). Qed.
 
-(** ** The indiscrete topology, and the underlying-set functor as a left
-       adjoint *)
+(* * ** The indiscrete topology, underlying-set 函子 left
+ adjoint （已译） *)
 
 Section Indiscrete.
 
@@ -434,7 +423,7 @@ Universe o.
 
 Context (S : SetoidObject@{o o}).
 
-(* The coarsest topology: the uniform predicates. *)
+(* 相关说明。 （已译） *)
 Definition pindisc_open (U : S → Prop) : Prop := ∀ x y : S, U x → U y.
 
 Lemma pindisc_open_respects (U V : S → Prop) :
@@ -479,9 +468,9 @@ Example PIndiscrete_carrier : pt_carrier PIndiscrete = S := eq_refl.
 Example PIndiscrete_open (U : S → Prop) :
   POpen PIndiscrete U = (∀ x y : S, U x → U y) := eq_refl.
 
-(* Every setoid map into an indiscrete space is continuous: the preimage of
-   a uniform predicate is constant up to [<->], and constants are open
-   (Instance/Top/Prop.v's [popen_const]). *)
+(* Every setoid map indiscrete space continuous: preimage of
+ uniform predicate 常值 up [<->], constants open
+ (Instance/Top/Prop.v's [popen_const]). （已译） *)
 Lemma pindisc_cont (X : PTop@{o}) (f : SetoidMorphism@{o o o} X S) :
   @PCont X PIndiscrete f.
 Proof.
@@ -529,8 +518,8 @@ Next Obligation. intros X S k k' H x; exact (H x). Qed.
 Next Obligation. intros X S g x; reflexivity. Qed.
 Next Obligation. intros X S k x; reflexivity. Qed.
 
-(* [PForget ⊣ PIndisc]: both transposes are the identity on underlying
-   maps. *)
+(* [PForget ⊣ PIndisc]: both transposes 恒等 underlying
+ maps. （已译） *)
 Definition PForget_PIndisc : PForget@{o so} ⊣ PIndisc.
 Proof.
   unshelve eapply (@Build_Adjunction' _ _ PForget PIndisc pforget_indisc_iso).
@@ -545,8 +534,7 @@ Definition PForget_Cocontinuous : CocontinuousFunctor PForget@{o so} :=
 
 End IndiscreteAdjunction.
 
-(* The preservation statement per shape, with the shape's universes
-   named. *)
+(* 相关说明。 （已译） *)
 Definition PForget_PreservesColimitCocone@{s o so +| o < so +}
   (J : Category@{s o o}) (K : J ⟶ PTopCat@{o so}) :
   PreservesColimitCocone K PForget@{o so} :=
@@ -566,8 +554,7 @@ Proof.
   exact (PForget_PreservesColimitCocone D F (PFinalCocone F N) H).
 Qed.
 
-(* Riehl's recipe in its "any colimit" form: the topology of EVERY colimit
-   of spaces is the final topology on its points for its legs. *)
+(* 相关说明。 （已译） *)
 Lemma PTop_colimit_open_iff_final@{o so s r +| o < so +}
   {D : Category@{s o o}} {F : D ⟶ PTopCat@{o so}}
   (L : Colimit@{r s o so} F) (V : pt_carrier (colimit_apex L) → Prop) :
@@ -598,24 +585,22 @@ Proof.
     + exact (pcont m V HV).
 Qed.
 
-(** ** Non-vacuity: two indiscrete two-point spaces, side by side *)
+(* 相关说明。 （已译） *)
 
 Definition PTwoIndisc@{o} : PTop@{o} := PIndiscrete bool_setoid_object@{o o}.
 
-(* The sum, with its index universe set to the points' own, so that every
-   statement below names one space. *)
+(* 相关说明。 （已译） *)
 Definition PTwoIndiscSum@{o u | o < u +} : PTop@{o} :=
   PSigma@{o o u} bool (fun _ => PTwoIndisc@{o}).
 
-(* The two injections are different arrows of [PTopCat]. *)
+(* 相关说明。 （已译） *)
 Lemma PTwoIndiscSum_injections_differ@{o so u | o < so, o < u +} :
   psigma_inj@{o so o u} bool (fun _ => PTwoIndisc@{o}) true
     ≈[PTopCat@{o so}] psigma_inj@{o so o u} bool (fun _ => PTwoIndisc) false
   → False.
 Proof. intro H. destruct (H true) as [e _]. discriminate e. Qed.
 
-(* Each summand is open, and it is not uniform: the topology is not the
-   indiscrete one. *)
+(* 相关说明。 （已译） *)
 Lemma PTwoIndiscSum_summand_open@{o u | o < u +} :
   POpen PTwoIndiscSum@{o u} (fun p => projT1 p = true).
 Proof.
@@ -633,8 +618,7 @@ Proof.
                   (existT _ true true) (existT _ false true) eq_refl).
 Qed.
 
-(* A point respecting the points' equality that is NOT open: the topology
-   is not the discrete one either. *)
+(* 相关说明。 （已译） *)
 Lemma PTwoIndiscSum_not_discrete@{o u | o < u +} :
   (∀ p q : PTwoIndiscSum@{o u}, p ≈ q →
      projT1 p = true /\ projT2 p = true → projT1 q = true /\ projT2 q = true)

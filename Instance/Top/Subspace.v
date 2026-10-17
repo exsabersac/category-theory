@@ -18,7 +18,7 @@ Require Import Category.Instance.Top.Prop.
 
 Generalizable All Variables.
 
-(** * Subspace and quotient topologies as sliced adjoint inverses *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/subspace+topology
@@ -34,7 +34,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The subspace (initial) topology along a function *)
+(* 相关说明。 （已译） *)
 
 Section Subspace.
 
@@ -65,9 +65,7 @@ Proof.
            (proj1 (HUB s) u)).
 Qed.
 
-(* The union of a family of subspace-opens is the preimage of the union of
-   the family of ALL the opens of X witnessing a member: a Prop-valued
-   family, so no choice of witnesses is made. *)
+(* 相关说明。 （已译） *)
 Lemma psub_open_union (F : (S → Prop) → Prop) :
   (∀ V, F V → psub_open V) →
   psub_open (fun s => ex (fun V => F V /\ V s)).
@@ -114,7 +112,7 @@ Definition PSub : PTop@{o} := {|
   popen_inter    := psub_open_inter
 |}.
 
-(* The subspace's points are [S] and its opens are the book's, verbatim. *)
+(* 相关说明。 （已译） *)
 Example PSub_carrier : pt_carrier PSub = S := eq_refl.
 
 Example PSub_open (V : S → Prop) :
@@ -131,9 +129,9 @@ Qed.
 Definition psub_incl : PMor@{o} PSub X :=
   @Build_PMor PSub X h psub_incl_cont.
 
-(* The universal property, over ARBITRARY spaces [Z] mapping in: a setoid
-   map into the subspace is continuous exactly when its composite with [h]
-   is. *)
+(* The 普遍性质, over ARBITRARY spaces [Z] 映射 in: setoid
+ map 进入 subspace continuous exactly 复合 [h]
+ is. （已译） *)
 Lemma psub_universal (Z : PTop@{o}) (g : SetoidMorphism@{o o o} Z S) :
   @PCont Z PSub g <-> @PCont Z X (setoid_morphism_compose h g).
 Proof.
@@ -145,8 +143,8 @@ Proof.
     + exact (Hc U HU).
 Qed.
 
-(* The book's form: a continuous [f : Z → X] whose underlying function
-   factors as [h ∘ g] has [g] continuous into the subspace. *)
+(* The book's form: continuous [f : Z → X] whose underlying function
+ factors [h ∘ g] has [g] continuous 进入 subspace. （已译） *)
 Definition psub_lift (Z : PTop@{o}) (f : PMor@{o} Z X)
   (g : SetoidMorphism@{o o o} Z S) (Hfg : ∀ z, pmap f z ≈ h (g z)) :
   PMor@{o} Z PSub :=
@@ -165,7 +163,7 @@ Proof. intro z; symmetry; exact (Hfg z). Qed.
 
 End Subspace.
 
-(** ** Seven Sketches, Exercise 7.32: the subspace topology on a subset *)
+(* 相关说明。 （已译） *)
 
 Section Ex732.
 
@@ -173,7 +171,7 @@ Universe o.
 
 Context (X : PTop@{o}) (P : X → Prop).
 
-(* The subset [Y ⊆ X], with the equality of [X]. *)
+(* 相关说明。 （已译） *)
 Program Definition ex732_Y : SetoidObject@{o o} := {|
   carrier := { x : X | P x };
   is_setoid := {| equiv := fun a b => proj1_sig a ≈ proj1_sig b |}
@@ -192,8 +190,8 @@ Next Obligation. intros a b H; exact H. Qed.
 
 Definition ex732_Sub : PTop@{o} := PSub X ex732_Y ex732_incl.
 
-(* The definition: [A ⊆ Y] is open iff [A = B ∩ Y] for some open [B] of
-   [X]. *)
+(* The 定义: [A ⊆ Y] open iff [A = B ∩ Y] some open [B] of
+ [X]. （已译） *)
 Example ex732_def (A : ex732_Y → Prop) :
   POpen ex732_Sub A
   = ex (fun B : X → Prop =>
@@ -211,9 +209,7 @@ Proof.
     intro y; exact (iff_refl _).
 Qed.
 
-(* Part 2: the three axioms of Seven Sketches' Definition 7.25 -- the whole
-   set, binary intersections, and unions of families indexed by any set [I],
-   here any type at any universe. *)
+(* 相关说明。 （已译） *)
 Lemma ex732_part2 :
   POpen ex732_Sub (fun _ => True)
   /\ (∀ A B : ex732_Y → Prop, POpen ex732_Sub A → POpen ex732_Sub B →
@@ -235,7 +231,7 @@ Definition ex732_incl_mor : PMor@{o} ex732_Sub X :=
 
 End Ex732.
 
-(** ** The quotient (final) topology along a function *)
+(* 相关说明。 （已译） *)
 
 Section Quotient.
 
@@ -244,8 +240,7 @@ Universe o.
 Context (X : PTop@{o}) (T : SetoidObject@{o o})
         (q : SetoidMorphism@{o o o} X T).
 
-(* Mac Lane's predicate, V open when its preimage along [q] is, together
-   with the setoid bookkeeping: V respects the equality of [T]. *)
+(* 相关说明。 （已译） *)
 Definition pquot_open (V : T → Prop) : Prop :=
   (∀ t t' : T, t ≈ t' → V t → V t') /\ POpen X (fun x => V (q x)).
 
@@ -317,9 +312,9 @@ Proof. intros V HV; exact (proj2 HV). Qed.
 Definition pquot_proj : PMor@{o} X PQuot :=
   @Build_PMor X PQuot q pquot_proj_cont.
 
-(* The universal property, over ARBITRARY spaces [Z] mapping out: a setoid
-   map out of the quotient is continuous exactly when its composite with
-   [q] is. *)
+(* The 普遍性质, over ARBITRARY spaces [Z] 映射 out: setoid
+ map out quotient continuous exactly 复合 with
+ [q] is. （已译） *)
 Lemma pquot_universal (Z : PTop@{o}) (k : SetoidMorphism@{o o o} T Z) :
   @PCont PQuot Z k <-> @PCont X Z (setoid_morphism_compose k q).
 Proof.
@@ -331,8 +326,7 @@ Proof.
     + exact (Hc W HW).
 Qed.
 
-(* The book's form: a continuous [f : X → Z] whose underlying function
-   factors as [k ∘ q] has [k] continuous out of the quotient. *)
+(* 相关说明。 （已译） *)
 Definition pquot_desc (Z : PTop@{o}) (f : PMor@{o} X Z)
   (k : SetoidMorphism@{o o o} T Z) (Hfk : ∀ x, pmap f x ≈ k (q x)) :
   PMor@{o} PQuot Z :=
@@ -351,7 +345,7 @@ Proof. intro x; symmetry; exact (Hfk x). Qed.
 
 End Quotient.
 
-(** ** The sliced forgetful functors and the sliced adjunctions *)
+(* * ** The sliced forgetful 函子 sliced 伴随 （已译） *)
 
 Section SliceAdjunctions.
 
@@ -371,8 +365,8 @@ Local Notation G := PForget@{o so}.
 Definition PForget_over : @Slice PT X ⟶ @Slice Sets@{o so} (G X) :=
   Sliced G X.
 
-(* The forgetful functor sliced under [X], Mac Lane's [X ↓ G]: the generic
-   [Cosliced] at [PForget]. *)
+(* The forgetful 函子 sliced under [X], Mac Lane's [X ↓ G]: generic
+ [Cosliced] at [PForget]. （已译） *)
 Definition PForget_under : @Coslice PT X ⟶ @Coslice Sets@{o so} (G X) :=
   Cosliced G X.
 
@@ -380,8 +374,8 @@ Example PForget_over_Sliced : PForget_over = Sliced G X := eq_refl.
 
 Example PForget_under_Cosliced : PForget_under = Cosliced G X := eq_refl.
 
-(* Mac Lane's [L]: the subspace along each function into the points of
-   [X]. *)
+(* Mac Lane's [L]: subspace along each function 进入 points of
+ [X]. （已译） *)
 Program Definition PSub_Functor :
   @Slice Sets@{o so} (G X) ⟶ @Slice PT X := {|
   fobj := fun c => (PSub X (`1 c) (`2 c); psub_incl X (`1 c) (`2 c));
@@ -402,8 +396,8 @@ Next Obligation. intros c d e m n s; simpl. reflexivity. Qed.
 Example PSub_Functor_obj (c : @Slice Sets@{o so} (G X)) :
   `1 (PSub_Functor c) = PSub X (`1 c) (`2 c) := eq_refl.
 
-(* The hom-set bijection of [G ↓ X ⊣ L]: a map over [X] into the subspace
-   IS its underlying map, continuity coming from [psub_universal]. *)
+(* The hom-set bijection [G ↓ X ⊣ L]: map over [X] 进入 subspace
+ IS underlying map, continuity coming [psub_universal]. （已译） *)
 Program Definition psub_adj_iso (x : @Slice PT X)
   (y : @Slice Sets@{o so} (G X)) :
   @Isomorphism Sets
@@ -427,7 +421,7 @@ Next Obligation. intros x y k k' H z; simpl in *. exact (H z). Qed.
 Next Obligation. intros x y k z; simpl. reflexivity. Qed.
 Next Obligation. intros x y k z; simpl. reflexivity. Qed.
 
-(* Both transposes are the identity on underlying maps. *)
+(* Both transposes 恒等 underlying maps. （已译） *)
 Example psub_adj_to_map (x : @Slice PT X) (y : @Slice Sets@{o so} (G X))
   (k : PForget_over x ~{@Slice Sets@{o so} (G X)}~> y) :
   pmap (`1 (to (psub_adj_iso x y) k)) = `1 k := eq_refl.
@@ -444,8 +438,8 @@ Proof.
   - intros x y z f g t; simpl. reflexivity.
 Defined.
 
-(* [(G ↓ X) ∘ L = Id] on objects: Leibniz, after destructing the pair;
-   [Defined], so that the [id_cast] below reduces. *)
+(* [(G ↓ X) ∘ L = Id] 对象: Leibniz, after destructing pair;
+ [Defined], so [id_cast] below reduces. （已译） *)
 Lemma psub_obj (c : @Slice Sets@{o so} (G X)) :
   PForget_over (PSub_Functor c) = c.
 Proof. destruct c; reflexivity. Defined.
@@ -454,13 +448,12 @@ Example psub_obj_pair (S : SetoidObject@{o o})
   (h : S ~{Sets@{o so}}~> G X) :
   PForget_over (PSub_Functor (S; h)) = (S; h) := eq_refl.
 
-(* The counit is the identity, transported along [psub_obj]. *)
+(* The counit 恒等, transported along [psub_obj]. （已译） *)
 Lemma psub_counit (c : @Slice Sets@{o so} (G X)) :
   @counit _ _ _ _ psub_adjunction c ≈ id_cast (psub_obj c).
 Proof. destruct c; intro t; simpl. reflexivity. Qed.
 
-(* Mac Lane's [M]: the quotient along each function out of the points of
-   [X]. *)
+(* 相关说明。 （已译） *)
 Program Definition PQuot_Functor :
   @Coslice Sets@{o so} (G X) ⟶ @Coslice PT X := {|
   fobj := fun c => (PQuot X (`1 c) (`2 c); pquot_proj X (`1 c) (`2 c));
@@ -480,9 +473,7 @@ Next Obligation. intros c d e m n t; simpl. reflexivity. Qed.
 Example PQuot_Functor_obj (c : @Coslice Sets@{o so} (G X)) :
   `1 (PQuot_Functor c) = PQuot X (`1 c) (`2 c) := eq_refl.
 
-(* The hom-set bijection of [M ⊣ X ↓ G]: a map under [X] out of the
-   quotient IS its underlying map, continuity coming from
-   [pquot_universal]. *)
+(* 相关说明。 （已译） *)
 Program Definition pquot_adj_iso (x : @Coslice Sets@{o so} (G X))
   (y : @Coslice PT X) :
   @Isomorphism Sets
@@ -533,7 +524,7 @@ Example pquot_obj_pair (T : SetoidObject@{o o})
   (q : G X ~{Sets@{o so}}~> T) :
   PForget_under (PQuot_Functor (T; q)) = (T; q) := eq_refl.
 
-(* The unit is the identity, transported along [pquot_obj]. *)
+(* The unit 恒等, transported along [pquot_obj]. （已译） *)
 Lemma pquot_unit (c : @Coslice Sets@{o so} (G X)) :
   @unit _ _ _ _ pquot_adjunction c ≈ id_cast (eq_sym (pquot_obj c)).
 Proof. destruct c; intro t; simpl. reflexivity. Qed.
@@ -551,9 +542,9 @@ Definition subspace_RARI : RightAdjointRightInverse (Sliced G X) := {|
 Example subspace_RARI_right : rari_right subspace_RARI = PSub_Functor :=
   eq_refl.
 
-(* The quotient construction packaged: [M] is a left-adjoint-right-inverse
-   of [X ↓ G], in Theory/Equivalence/Strict.v's record, which is what the
-   dual of Proposition 1 consumes. *)
+(* The quotient construction packaged: [M] left-adjoint-right-inverse
+ [X ↓ G], Theory/Equivalence/Strict.v's record, what the
+ dual Proposition 1 所消耗. （已译） *)
 Definition quotient_LARI : LeftAdjointRightInverse (Cosliced G X) := {|
   lari_left := PQuot_Functor;
   lari_adj  := pquot_adjunction;
@@ -566,7 +557,7 @@ Example quotient_LARI_left : lari_left quotient_LARI = PQuot_Functor :=
 
 End SliceAdjunctions.
 
-(** ** Equalizers and coequalizers of spaces, by Proposition 1 and its dual *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、拉回/推出、等化子相关定义、性质与动机。
@@ -577,8 +568,7 @@ End SliceAdjunctions.
   (@HasEqualizers_of_HasPullbacks_Terminal Sets Sets_Terminal
      Sets_HasPullbacks).
 
-(* Mac Lane's Proposition 1 at [PForget]: the equalizer of two continuous
-   maps is the subspace on their equalizer in [Sets]. *)
+(* 相关说明。 （已译） *)
 Definition PTop_HasEqualizers@{o so + | o < so +} :
   @HasEqualizers PTopCat@{o so} :=
   @equalizers_from_sliced_RARI _ _ PForget@{o so} PForget_Faithful SetsEq
@@ -621,11 +611,9 @@ Example PTop_coequalizer_arrow@{o so + | o < so +} {x y : PTopCat@{o so}}
     = pquot_proj y (SetsCoeq (fmap[PForget] f) (fmap[PForget] g))
         (sets_coeq_proj (fmap[PForget] f) (fmap[PForget] g)) := eq_refl.
 
-(** ** Applied at concrete spaces: an equalizer and a coequalizer of two
-       different maps *)
+(* 相关说明。 （已译） *)
 
-(* The two constructions at the concrete two-point space [PBool] of
-   Instance/Top/Prop.v, which the two witnesses below consume. *)
+(* 相关说明。 （已译） *)
 Definition PBool_subspace_RARI@{o so +| o < so +} :
   RightAdjointRightInverse (Sliced PForget@{o so} PBool@{o}) :=
   subspace_RARI PBool.
@@ -634,8 +622,8 @@ Definition PBool_quotient_LARI@{o so +| o < so +} :
   LeftAdjointRightInverse (Cosliced PForget@{o so} PBool@{o}) :=
   quotient_LARI PBool.
 
-(* The constant map at [true] on [PBool]; it differs from the identity, at
-   [false]. *)
+(* The 常值 map at [true] [PBool]; it differs 恒等, at
+ [false]. （已译） *)
 Definition pbool_true@{o} : PMor@{o} PBool PBool :=
   pdisc_mor bool_setoid_object PBool (pconst bool_setoid_object PBool true).
 
@@ -689,8 +677,7 @@ Proof.
     exists (pmap u ttt). exact (Hu ttt).
 Qed.
 
-(* The two points of [PBool], as maps out of the one-point space; they
-   differ. *)
+(* 相关说明。 （已译） *)
 Definition ppoint_false@{o} : PMor@{o} PPoint PBool :=
   pdisc_mor unit_setoid_object PBool (pconst unit_setoid_object PBool false).
 
@@ -727,9 +714,7 @@ Example PBool_coequalizer_lari@{o so +| o < so +} :
                             (pconst unit_setoid_object PBool true)))
   := eq_refl.
 
-(* In the coequalizer every point is identified with [true], so the two
-   points [PBool] separates ([PBool_points_distinct]) are glued: a proper
-   quotient, to one point up to its equality. *)
+(* 相关说明。 （已译） *)
 Lemma PBool_coequalizer_points@{o so +| o < so +} (b : bool) :
   @equiv _ (`1 PBool_coequalizer@{o so _ _ _ _ _ _}) b true.
 Proof.

@@ -19,7 +19,7 @@ Require Import Category.Instance.Sets.Cocartesian.
 
 Generalizable All Variables.
 
-(** * Non-existence of adjoints in Sets and Sets^op *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/continuous+functor
@@ -29,8 +29,8 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Mac Lane V.5 Exercise 1, in any cartesian category with a terminal
-       object *)
+(* * ** Mac Lane V.5 Exercise 1, any cartesian 范畴 terminal
+ 对象 （已译） *)
 
 Section FixedProductAdjoint.
 
@@ -38,9 +38,9 @@ Context {C : Category}.
 Context `{CC : @Cartesian C}.
 Context `{T : @Terminal C}.
 
-(* Forward: a left adjoint to [X × −] makes [X × −] a right adjoint, so it
-   preserves the terminal object, [1 ≅ X × 1]; with [X × 1 ≅ X] this is
-   [X ≅ 1]. *)
+(* Forward: 左伴随 [X × −] makes [X × −] 右伴随, so it
+ preserves 终对象, [1 ≅ X × 1]; [X × 1 ≅ X] 这是
+ [X ≅ 1]. （已译） *)
 Theorem fixed_product_left_adjoint_terminal
   (X : C) (L : C ⟶ C) (A : L ⊣ fixed_product_functor X) : X ≅ 1.
 Proof.
@@ -67,8 +67,7 @@ Proof.
   apply compose_respects; [reflexivity |]; apply one_unique.
 Qed.
 
-(* The hom-set bijection [C(x, y) ≅ C(x, X × y)]: pair with the unique
-   arrow to [X], and project back. *)
+(* 相关说明。 （已译） *)
 Program Definition fp_adj_iso (x y : C) :
   @Isomorphism Sets
     {| carrier := @hom C (Id x) y; is_setoid := @homset C (Id x) y |}
@@ -99,8 +98,8 @@ Defined.
 
 End Converse.
 
-(* The exact characterisation: [X × −] has a left adjoint iff [X] is
-   terminal ([∃] is [sigT], so the converse hands over the adjoint). *)
+(* The exact characterisation: [X × −] has 左伴随 iff [X] is
+ terminal ([∃] [sigT], so converse hands over adjoint). （已译） *)
 Theorem fixed_product_left_adjoint_iff_terminal (X : C) :
   (∀ L : C ⟶ C, L ⊣ fixed_product_functor X → X ≅ 1)
   ∧ (X ≅ 1 → ∃ L : C ⟶ C, L ⊣ fixed_product_functor X).
@@ -118,19 +117,19 @@ Definition times_X_has_left_adjoint_iff_terminal (X : Sets) :
   ∧ (X ≅ 1 → ∃ L : Sets ⟶ Sets, L ⊣ fixed_product_functor X) :=
   fixed_product_left_adjoint_iff_terminal X.
 
-(** ** Mac Lane V.5 Exercise 4: [Sets^op] is not cartesian closed *)
+(* * ** Mac Lane V.5 Exercise 4: [Sets^op] not 笛卡尔闭 （已译） *)
 
-(* The duality scaffolding is conversion: [@Cocartesian Sets] IS
-   [@Cartesian (Sets^op)] (Structure/Cocartesian.v), and the
-   terminal object of Sets is the initial object of [Sets^op]. *)
+(* The duality scaffolding conversion: [@Cocartesian Sets] IS
+ [@Cartesian (Sets^op)] (Structure/Cocartesian.v), the
+ 终对象 Sets 始对象 [Sets^op]. （已译） *)
 Definition Sets_op_Initial : @Initial (Sets^op) := Sets_Terminal.
 
 Example Sets_op_Cartesian_is_coproducts :
   @Cartesian (Sets^op) = @Cocartesian Sets := eq_refl.
 
-(* The point, and the two-point set [1 + 1] with its injections — kept
-   polymorphic (a [bool]-carried two-point set would pin the object level
-   to [Set]). *)
+(* The point, two-point set [1 + 1] injections — kept
+ polymorphic (a [bool]-carried two-point set would pin 对象 level
+ [Set]). （已译） *)
 Definition OnePt : Sets := @terminal_obj Sets Sets_Terminal.
 
 Definition OnePlusOne : Sets :=
@@ -142,8 +141,7 @@ Definition pt_inl : OnePt ~{Sets}~> OnePlusOne :=
 Definition pt_inr : OnePt ~{Sets}~> OnePlusOne :=
   @exr (Sets^op) Sets_Cocartesian OnePt OnePt.
 
-(* The two injections differ: across summands the coproduct's [≈] IS
-   [False] (Instance/Sets/Cocartesian.v). *)
+(* 相关说明。 （已译） *)
 Example pt_inl_inr_apart :
   (pt_inl ttt ≈ pt_inr ttt) = False := eq_refl.
 

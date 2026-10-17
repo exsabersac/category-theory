@@ -1,4 +1,4 @@
-(** * (R-Mod, ⊗, R) is symmetric monoidal CLOSED: the tensor-hom adjunction *)
+(* * * (R-Mod, ⊗, R) symmetric monoidal CLOSED: tensor-hom 伴随 （已译） *)
 
 (*
  Book:      Mac Lane, ibid., §IV.6, printed p. 98 — the tensor-hom
@@ -157,10 +157,7 @@ Next Obligation.
   now rewrite Hvw.
 Qed.
 
-(** *** The internal hom module
-
-    Every module law below is the corresponding law of W read at each
-    vector; none of them needs [Rcomm] again. *)
+(* 相关说明。 （已译） *)
 Program Definition HomMod (V W : RModObject R) : RModObject R := {|
   rm_ab   := hm_ab V W;
   rm_smul := hm_smul V W
@@ -174,7 +171,7 @@ Next Obligation. intros V W r s f v; simpl; apply rm_smul_distr_r. Qed.
 Next Obligation. intros V W r s f v; simpl; apply rm_smul_assoc. Qed.
 Next Obligation. intros V W f v; simpl; apply rm_smul_one. Qed.
 
-(* The carrier IS the hom-set, on the nose. *)
+(* 相关说明。 （已译） *)
 Example HomMod_carrier (V W : RModObject R) :
   carrier (cmon_setoid (HomMod V W)) = RModHom V W := eq_refl.
 
@@ -199,8 +196,7 @@ Section Curry.
 Context {V W X : RModObject R}.
 Context (f : TensorMod V W ~{RMod R}~> X).
 
-(* [mval] is Instance/Mod/Monoidal.v's name for the underlying function of
-   a module homomorphism; it is imported, not redeclared. *)
+(* 相关说明。 （已译） *)
 Definition cur_fun (v : carrier (cmon_setoid V))
   (w : carrier (cmon_setoid W)) : carrier (cmon_setoid X) :=
   mval f (mt_gen v w).
@@ -251,8 +247,7 @@ Next Obligation.
   apply proper_morphism, (rbl_respects tensor_gen); [reflexivity | exact Hw].
 Qed.
 
-(* And v ↦ cur_at v is a module homomorphism V ⟶ IH W X: the same three
-   clauses of [tensor_gen] in the OTHER variable. *)
+(* 相关说明。 （已译） *)
 
 Lemma cur_out_zero : cur_at (cmon_zero V) ≈ cmon_zero (IH W X).
 Proof.
@@ -363,7 +358,7 @@ Proof. intros v w; reflexivity. Qed.
 
 End Adjunction.
 
-(** ** The bijection, evaluation, and the universal property *)
+(* * ** The bijection, evaluation, 普遍性质 （已译） *)
 
 Section ExpIso.
 
@@ -410,8 +405,8 @@ Next Obligation.
   intros V W X f; exact (hm_uncurry_curry R Rcomm f).
 Qed.
 
-(** Evaluation is the uncurried identity — which is exactly what the class
-    takes [eval'] to be, so [smc_eval] below is `eq_refl`. *)
+(** Evaluation 未柯里化的 恒等 — exactly what class
+ takes [eval'] be, so [smc_eval] below `eq_refl`. （已译） *)
 Definition eval_Mod (W X : RModObject R) :
   TensorMod (IH W X) W ~{RMod R}~> X :=
   unc (@id (RMod R) (IH W X)).
@@ -420,8 +415,7 @@ Example eval_Mod_gen (W X : RModObject R)
   (phi : carrier (cmon_setoid (IH W X))) (w : carrier (cmon_setoid W)) :
   mval (eval_Mod W X) (mt_gen phi w) = mval phi w := eq_refl.
 
-(* The beta law.  [mt_fmap] is Instance/Mod/Monoidal.v's arrow action, and
-   `bimap h id` reduces to it — see [smc_bimap] below. *)
+(* 相关说明。 （已译） *)
 Lemma ump_beta (V W X : RModObject R) (f : TensorMod V W ~{RMod R}~> X) :
   f ≈ eval_Mod W X ∘ mt_fmap (cur f) (@id (RMod R) W).
 Proof.
@@ -508,10 +502,7 @@ Example smc_bimap (V W X : RModObject R)
 
 End Slot.
 
-(** ** Naturality in all three variables
-
-    The internal hom's two arrow actions, and then the six squares.  See
-    the header for why both legs are stated. *)
+(* 相关说明。 （已译） *)
 
 Section Naturality.
 
@@ -567,22 +558,19 @@ Next Obligation. intros W W' X j r phi w; simpl; reflexivity. Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* (a) In V, contravariantly: precomposing with i ⊗ id downstairs is
-       precomposing with i upstairs. *)
+(* 相关说明。 （已译） *)
 Theorem cur_natural_V {V V' W X : RModObject R}
   (i : V' ~{RMod R}~> V) (f : TensorMod V W ~{RMod R}~> X) :
   cur (f ∘ mt_fmap i (@id (RMod R) W)) ≈ cur f ∘ i.
 Proof. intros v w; reflexivity. Qed.
 
-(* (b) In W, contravariantly: precomposing with id ⊗ j downstairs is
-       postcomposing with [ihom_pre j] upstairs. *)
+(* 相关说明。 （已译） *)
 Theorem cur_natural_W {V W W' X : RModObject R}
   (j : W' ~{RMod R}~> W) (f : TensorMod V W ~{RMod R}~> X) :
   cur (f ∘ mt_fmap (@id (RMod R) V) j) ≈ ihom_pre j ∘ cur f.
 Proof. intros v w; reflexivity. Qed.
 
-(* (c) In X, covariantly: postcomposing with k downstairs is
-       postcomposing with [ihom_post k] upstairs. *)
+(* 相关说明。 （已译） *)
 Theorem cur_natural_X {V W X X' : RModObject R}
   (k : X ~{RMod R}~> X') (f : TensorMod V W ~{RMod R}~> X) :
   cur (k ∘ f) ≈ ihom_post k ∘ cur f.
@@ -643,8 +631,7 @@ Example Zsmul_computes :
   mval (rm_smul ZEnd 3%Z (@id (RMod Int_Ring) Int_RMod)) 5%Z = 15%Z
   := eq_refl.
 
-(* Two elements of the internal hom that are provably distinct, so it is
-   not a subsingleton and the computations above are not degenerate. *)
+(* 相关说明。 （已译） *)
 Example ZEnd_nontrivial :
   mval (rm_smul ZEnd 3%Z (@id (RMod Int_Ring) Int_RMod)) 1%Z
     ≈ mval (@id (RMod Int_Ring) Int_RMod) 1%Z → False.
@@ -659,7 +646,7 @@ Example Zcur_computes :
   mval (mval (hm_curry Int_Ring Zc Zmul_tensor_hom) 2%Z) 3%Z = 6%Z
   := eq_refl.
 
-(* And so does the round trip, at a generator. *)
+(* 相关说明。 （已译） *)
 Example Zuncur_computes :
   mval (hm_uncurry Int_Ring Zc (hm_curry Int_Ring Zc Zmul_tensor_hom))
        (zg 4%Z 5%Z) = 20%Z := eq_refl.
@@ -671,7 +658,7 @@ Example Zeval_computes :
           (rm_smul ZEnd 3%Z (@id (RMod Int_Ring) Int_RMod)) 5%Z)
     = 15%Z := eq_refl.
 
-(* ... and through the CLASS's [eval'], which is the same term. *)
+(* 相关说明。 （已译） *)
 Example Zsmc_eval :
   mval (@eval' (RMod Int_Ring) Int_Mod_SymMonClosed Int_RMod Int_RMod)
        (@mt_gen Int_Ring ZEnd Int_RMod
@@ -714,9 +701,9 @@ Check (@hm_smul_plus R V W r f).
 
 End ProbeTyping.
 
-(* NEGATIVE 2.  Engineering note: [mt_gen] at a hom-module needs explicit
-   indices — the inner generator elaborates before the outer tensor is
-   known, and the error blames the second argument. *)
+(* NEGATIVE 2. Engineering note: [mt_gen] at hom-module needs explicit
+ indices — inner generator elaborates before outer tensor is
+ known, error blames second 论元. （已译） *)
 Fail Check (mt_gen (rm_smul ZEnd 3%Z (@id (RMod Int_Ring) Int_RMod)) 5%Z).
 
 (* CONTROL: the annotated form. *)
@@ -734,8 +721,8 @@ Fail Example probe_rt_strict :
   hm_uncurry Int_Ring Zc (hm_curry Int_Ring Zc Zmul_tensor_hom)
     = Zmul_tensor_hom := eq_refl.
 
-(* CONTROL: at a generator it IS a Leibniz identity, so the obstruction is
-   exactly extensionality and not the generator computation. *)
+(* CONTROL: at generator it IS Leibniz 恒等, so obstruction is
+ exactly extensionality not generator computation. （已译） *)
 Example probe_rt_gen :
   mval (hm_uncurry Int_Ring Zc (hm_curry Int_Ring Zc Zmul_tensor_hom))
        (zg 2%Z 3%Z)
@@ -751,8 +738,8 @@ Context (i : V' ~{RMod R}~> V).
 Context (g : V ~{RMod R}~> HomMod R Rcomm W X).
 Context (v : carrier (cmon_setoid V')) (w : carrier (cmon_setoid W)).
 
-(* NEGATIVE 4.  [unc_natural_V] at Leibniz strength: refuted.  This is
-   what the [tensor_hom_ext] in its proof is buying. *)
+(* NEGATIVE 4. [unc_natural_V] at Leibniz strength: refuted. This is
+ what [tensor_hom_ext] 证明 buying. （已译） *)
 Fail Example probe_unc_nat_strict :
   hm_uncurry R Rcomm (g ∘ i)
     = hm_uncurry R Rcomm g ∘ mt_fmap i (@id (RMod R) W) := eq_refl.
@@ -798,8 +785,7 @@ Context (Rcu : ∀ a b : carrier (rig_setoid (ring_rig Ru)),
             rig_mul (ring_rig Ru) a b ≈ rig_mul (ring_rig Ru) b a).
 Context (V W : RModObject Ru).
 
-(* CONTROLS: formable with the ring's first and third universes declared
-   strictly apart. *)
+(* 相关说明。 （已译） *)
 Check (RMod Ru).
 Check (TensorMod V W).
 Check (@tensor_gen Ru V W).
@@ -857,16 +843,13 @@ Check (HomMod Ru Rcu V W).
 Check (@exp_iso_Mod Ru Rcu).
 Check (@ump_exponents_Mod Ru Rcu).
 
-(* NEGATIVE 11.  The donor: Instance/Mod/Monoidal.v's packaged monoidal
-   structure, which identifies the first two where none of its own
-   components does. *)
+(* 相关说明。 （已译） *)
 Fail Check (@ModMonoidal Ru Rcu).
 
 (* NEGATIVE 12.  Inherited by the symmetric packaging. *)
 Fail Check (@ModSymmetric Ru Rcu).
 
-(* NEGATIVE 13.  And hence by the headline — whose own constraint block
-   is still empty, the equation living in the binder alone. *)
+(* 相关说明。 （已译） *)
 Fail Check (@RMod_SymMonClosed Ru Rcu).
 
 End ProbeMiddleUniverse.

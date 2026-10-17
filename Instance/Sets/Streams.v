@@ -13,7 +13,7 @@ Require Import Category.Instance.Sets.Cartesian.
 
 Generalizable All Variables.
 
-(** * Streams as the final coalgebra of [StreamF] over [Sets] *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/bisimulation
@@ -30,18 +30,16 @@ Section Streams.
 
 Context (A : SetoidObject).
 
-(* Infinite streams over the carrier of [A]: a head element and a tail
-   stream, produced coinductively. *)
+(* 相关说明。 （已译） *)
 CoInductive Stream : Type := SCons { shead : carrier A ; stail : Stream }.
 
-(* Bisimilarity: the largest relation equating heads under [A]'s [≈] and
-   relating tails.  It is [Type]-valued so it can be the carrier setoid's
-   relation. *)
+(* Bisimilarity: largest 关系 equating heads under [A]'s [≈] and
+ relating tails. It [Type]-valued so it can carrier setoid's
+ 关系. （已译） *)
 CoInductive bisim : Stream → Stream → Type :=
   Bisim : ∀ s t, shead s ≈ shead t → bisim (stail s) (stail t) → bisim s t.
 
-(* Head and tail projections of a bisimilarity witness (an [in]-annotated
-   match, so the indices need not be variables). *)
+(* 相关说明。 （已译） *)
 Definition bisim_head {s t : Stream} (H : bisim s t) : shead s ≈ shead t :=
   match H in bisim s0 t0 return shead s0 ≈ shead t0 with
   | Bisim _ _ h _ => h
@@ -53,9 +51,7 @@ Definition bisim_tail {s t : Stream} (H : bisim s t) :
   | Bisim _ _ _ tl => tl
   end.
 
-(* Reflexivity, symmetry and transitivity of bisimilarity by guarded
-   corecursion: in each case the corecursive call sits directly under the
-   [Bisim] constructor. *)
+(* 相关说明。 （已译） *)
 Lemma bisim_refl : ∀ s, bisim s s.
 Proof.
   cofix CIH.
@@ -99,9 +95,9 @@ Definition bisim_equivalence : Equivalence bisim :=
 Definition Stream_SO : SetoidObject :=
   {| carrier := Stream ; is_setoid := Stream_Setoid |}.
 
-(* The head/tail endofunctor [StreamF X = A × X].  Objects use the product
-   setoid of [Sets]; on morphisms it keeps the head and applies [f] to the
-   tail component. *)
+(* The head/tail 自函子 [StreamF X = A × X]. Objects use product
+ setoid [Sets]; 态射 it keeps head applies [f] the
+ tail component. （已译） *)
 
 #[local] Obligation Tactic := idtac.
 
@@ -201,15 +197,15 @@ Proof.
                 Htail (Hh2 x))).
 Qed.
 
-(* [Stream_coalg] is the final object of [FCoalg StreamF]: for every coalgebra
-   there is exactly one coalgebra map into the streams (up to bisimilarity). *)
+(* [Stream_coalg] final 对象 [FCoalg StreamF]: every coalgebra
+ there exactly one coalgebra map 进入 streams (up bisimilarity). （已译） *)
 Definition Stream_final : @Terminal (FCoalg StreamF).
 Proof.
   unshelve refine {| terminal_obj := Stream_coalg |}.
-  - (* the unique coalgebra map is the anamorphism *)
+  - (* 相关说明。 （已译） *)
     intro y.
     refine {| falg_hom := (ana (`1 y) (`2 y) : Stream_SO ~{(Sets^op)}~> `1 y) |}.
-    (* the coalgebra-hom square, componentwise by the corecursive equation *)
+    (* 相关说明。 （已译） *)
     intro x.
     split.
     + reflexivity.

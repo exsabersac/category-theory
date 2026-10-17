@@ -17,7 +17,7 @@ Generalizable All Variables.
 *)
 #[local] Obligation Tactic := idtac.
 
-(** * The concrete-category roster: Coq, CMon, and Rel *)
+(* * * The concrete-范畴 roster: Coq, CMon, Rel （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/concrete+category
@@ -50,8 +50,8 @@ Next Obligation. intros A B f g Hfg a; exact (Hfg a). Qed.
 Next Obligation. intros A a; reflexivity. Qed.
 Next Obligation. intros A B C f g a; reflexivity. Qed.
 
-(* Faithfulness is the identity implication: both `≈`s unfold to pointwise
-   Leibniz equality of the same function. *)
+(* Faithfulness 恒等 implication: both `≈`s unfold pointwise
+ Leibniz equality same function. （已译） *)
 #[export] Instance Coq_Underlying_Faithful@{u u0 +} :
   Faithful Coq_Underlying@{u u0} .
 Proof.
@@ -79,10 +79,10 @@ Qed.
 
 (** ** CMon: commutative monoids *)
 
-(* The proof Instance/CMon.v itself only asserts.  Equivalence of
-   homomorphisms in `CMon` (`CMonHom_Setoid`) is by definition pointwise
-   equivalence of the underlying setoid maps, which is what `CMon_Forget`
-   records, so injectivity of its hom-map is the identity implication. *)
+(* The 证明 Instance/CMon.v itself asserts. Equivalence of
+ homomorphisms `CMon` (`CMonHom_Setoid`) 定义 pointwise
+ 等价 underlying setoid maps, what `CMon_Forget`
+ records, so injectivity hom-map 恒等 implication. （已译） *)
 #[export] Instance CMon_Forget_Faithful : Faithful CMon_Forget.
 Proof.
   constructor; simpl; intros M N f g Hfg a.
@@ -99,8 +99,8 @@ Definition nat_setoid_object : SetoidObject :=
   {| carrier   := nat
    ; is_setoid := {| equiv := @eq nat ; setoid_equiv := eq_equivalence |} |}.
 
-(* The additive monoid of natural numbers, used only to show that `CMon` has
-   parallel morphisms that differ. *)
+(* The additive 幺半群 natural numbers, used show `CMon` has
+ parallel 态射 differ. （已译） *)
 Definition nat_CMon : CMonObject.
 Proof.
   unshelve refine {| cmon_setoid := nat_setoid_object
@@ -116,8 +116,8 @@ Proof.
 *)
 Defined.
 
-(* The constant-zero endomorphism of `nat_CMon`; it preserves the unit and the
-   operation, so it is a genuine homomorphism. *)
+(* The 常值-zero endomorphism `nat_CMon`; it preserves unit the
+ operation, so it genuine homomorphism. （已译） *)
 Definition nat_CMon_zero_hom : CMonHom nat_CMon nat_CMon.
 Proof.
   unshelve refine (Build_CMonHom nat_CMon nat_CMon _ _ _).
@@ -139,10 +139,9 @@ Proof.
   discriminate.
 Qed.
 
-(** ** Rel: sets and relations, the negative half *)
+(* 相关说明。 （已译） *)
 
-(* An auxiliary arithmetic fact, proved here to keep the file's dependencies
-   to the ones already present in Instance/Rel.v. *)
+(* 相关说明。 （已译） *)
 Lemma nat_neq_succ (n : nat) : n = S n → False.
 Proof.
   induction n as [|n IH]; intro Hn.
@@ -202,7 +201,7 @@ Proof.
   apply Hsub.
 Qed.
 
-(** ** Rel: sets and relations, the positive half *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、单子、Kleisli相关定义、性质与动机。
@@ -217,8 +216,7 @@ Program Definition Rel_Powerset : Rel ⟶ Sets := {|
 |}.
 Next Obligation.
   (* the powerset setoid: pointwise `↔` is an equivalence *)
-  (* `↔` here is Category.Lib's `iffT`, a pair of maps, so the two directions
-     are reached with [fst] and [snd] rather than [proj1]/[proj2]. *)
+  (* 相关说明。 （已译） *)
   intros X; constructor.
   - intros S a; split; intro Ha; exact Ha.
   - intros S T HST a; split; [ exact (snd (HST a)) | exact (fst (HST a)) ].
@@ -245,7 +243,7 @@ Next Obligation.
   - exact (snd (HRR' a b) HR).
 Qed.
 Next Obligation.
-  (* the direct image along the diagonal is the identity on subsets *)
+  (* the direct image along diagonal 恒等 subsets （已译） *)
   intros X S a; split; intro Hin.
   - destruct Hin as [b [HSb Hdiag]].
     now destruct Hdiag.
@@ -261,9 +259,7 @@ Next Obligation.
     exists a; split; [ exact Ha | exists b; split; assumption ].
 Qed.
 
-(* Faithfulness: probe the direct-image map with the singleton subsets.  If
-   `R` and `R'` have the same direct images then they agree on every
-   `{x}`, hence everywhere. *)
+(* 相关说明。 （已译） *)
 #[export] Instance Rel_Powerset_Faithful : Faithful Rel_Powerset.
 Proof.
   constructor; simpl; intros X Y R R' Himg x y.

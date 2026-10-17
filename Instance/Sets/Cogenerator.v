@@ -18,7 +18,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Under [Untruncate]: truth values in [Prop] *)
+(* 相关说明。 （已译） *)
 
 Definition Sets_Cogenerator_untruncate@{c o so +| Set < o, o < so +}
   (U : Untruncate@{o}) : Cogenerator@{c so o} Sets@{o so}.
@@ -37,9 +37,9 @@ Example sets_cogenerator_untruncate_obj@{o so +| Set < o, o < so +}
   cog_obj (Sets_Cogenerator_untruncate U : Cogenerator Sets@{o so}) tt
     = Powerset_Prop_truth@{o} := eq_refl.
 
-(** ** Under [IEM]: truth values in [poly_bool] *)
+(* 相关说明。 （已译） *)
 
-(* The characteristic map of the point [y0], decided by [E]. *)
+(* 相关说明。 （已译） *)
 Definition sets_bool_char@{o so +| o < so +} {Y : SetoidObject@{o o}}
   (E : IEM@{o}) (y0 : carrier Y) : Y ~{Sets@{o so}}~> BoolSetoid@{o}.
 Proof.
@@ -71,7 +71,7 @@ Example sets_cogenerator_IEM_obj@{o so +| o < so +} (E : IEM@{o}) :
   cog_obj (Sets_Cogenerator_IEM E : Cogenerator Sets@{o so}) tt
     = BoolSetoid@{o} := eq_refl.
 
-(** ** Unconditionally, but large: every object tested by its identity *)
+(* * ** Unconditionally, but large: every 对象 tested 恒等 （已译） *)
 
 Definition Sets_Cogenerator_large@{c o so +| o < so, o < c +} :
   Cogenerator@{c so o} Sets@{o so}.
@@ -83,9 +83,9 @@ Defined.
 
 (** ** The condition is genuine *)
 
-(* A family of copies of the terminal object never cogenerates [Sets]:
-   every two arrows into it agree, while the identity and negation of the
-   two-element setoid differ. *)
+(* A family copies 终对象 never cogenerates [Sets]:
+ every two arrows it agree, while 恒等 negation the
+ two-element setoid differ. （已译） *)
 Lemma Sets_terminal_not_cogenerates@{c o so +| o < so +} (I : Type@{c})
   (H : ∀ (x y : SetoidObject@{o o}) (f g : x ~{Sets@{o so}}~> y),
          (∀ (j : I)

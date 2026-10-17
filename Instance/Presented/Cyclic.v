@@ -45,7 +45,7 @@ Proof.
   rewrite rho_nf_ge by lia. rewrite Nat.sub_diag, Nat.Div0.mod_0_l. lia.
 Qed.
 
-(* The generating relation is respected: s^(t+c) and s^t have one rho_nf. *)
+(* The generating 关系 respected: s^(t+c) s^t have one rho_nf. （已译） *)
 Lemma rho_nf_rel : rho_nf (t + c) = rho_nf t.
 Proof.
   rewrite rho_nf_t, rho_nf_ge by lia.
@@ -53,7 +53,7 @@ Proof.
   rewrite Nat.Div0.mod_same. lia.
 Qed.
 
-(* Below t + c the normal form is the identity. *)
+(* Below t + c normal form 恒等. （已译） *)
 Lemma rho_nf_small (Hc : 0 < c) (k : nat) : k < t + c -> rho_nf k = k.
 Proof.
   intros H. destruct (Nat.ltb_spec k t) as [Hk | Hk].
@@ -142,9 +142,7 @@ Lemma spath_at_length (x y : OneGen) (k : nat) :
   tlist_length (spath_at x y k) = k.
 Proof. destruct x, y; simpl; apply spath_length. Qed.
 
-(* The [Instance/Square.v] [wsq_classify] idiom: put the endpoint
-   analysis in the SPECIFICATION, then induct on the path.  A bare
-   [induction] is ill-typed here. *)
+(* 相关说明。 （已译） *)
 Definition sp_spec (j i : OneGen) (p : i ~{FreeOnQuiver OneGen}~> j) : Prop :=
   match i, j return (i ~{FreeOnQuiver OneGen}~> j) -> Prop with
   | ttt, ttt => fun q => q = spath (tlist_length q)
@@ -159,8 +157,7 @@ Proof.
     now rewrite <- IH.
 Qed.
 
-(* So the free hom-set is EXACTLY [nat]: every path IS [spath] of its
-   length, at Leibniz equality and not merely up to [≈]. *)
+(* 相关说明。 （已译） *)
 Corollary spath_complete (p : ttt ~{FreeOnQuiver OneGen}~> ttt) :
   p = spath (tlist_length p).
 Proof. exact (spath_classify ttt ttt p). Qed.
@@ -211,9 +208,9 @@ Context (t c : nat).
 
 Notation SR := (fe_rel OneGen (SEqns t c)).
 
-(* [≈] in the presented category IS the congruence closure, by the
-   definition of [Quotient] -- recorded so the theorem below is visibly
-   about the category and not about a lookalike. *)
+(* [≈] presented 范畴 IS congruence closure, the
+ 定义 [Quotient] -- recorded so 定理 below visibly
+ about 范畴 not about lookalike. （已译） *)
 Example scat_equiv_is_closure (x y : OneGen)
   (f g : x ~{FreeOnQuiver OneGen}~> y) :
   (@equiv _ (@homset (SCat t c) x y) f g)
@@ -255,7 +252,7 @@ Context (t c : nat).
 
 Notation SEq := (@equiv _ (@homset (SCat t c) ttt ttt)).
 
-(* The generating relation, as an equation of the presented category. *)
+(* The generating 关系, equation presented 范畴. （已译） *)
 Lemma spath_rel : SEq (spath (t + c)) (spath t).
 Proof using .
   apply (Quotient.cc_gen (R:=fe_rel (SEqns t c))).
@@ -265,7 +262,7 @@ Qed.
 Lemma spath_refl (k : nat) : SEq (spath k) (spath k).
 Proof using . apply Quotient.cc_equiv. reflexivity. Qed.
 
-(* Precomposing the relation with s^a. *)
+(* Precomposing 关系 s^a. （已译） *)
 Lemma step_down (a : nat) : SEq (spath (a + (t + c))) (spath (a + t)).
 Proof using .
   assert (H : SEq (spath (t + c) ∘ spath a) (spath t ∘ spath a))
@@ -315,15 +312,15 @@ Proof using Hc.
   apply Quotient.cc_sym, spath_nf.
 Qed.
 
-(* THE DECISION PROCEDURE: two words are equal in the presented category
-   exactly when their normal forms agree. *)
+(* THE DECISION PROCEDURE: two words equal presented 范畴
+ exactly normal forms agree. （已译） *)
 Theorem spath_iff (i j : nat) :
   SEq (spath i) (spath j) ↔ rho_nf t c i = rho_nf t c j.
 Proof using Hc.
   split; [ apply rho_nf_of_spath_eq | apply spath_eq_of_rho_nf ].
 Qed.
 
-(* ENUMERATION.  Below [t + c] the words are pairwise distinct... *)
+(* 相关说明。 （已译） *)
 Lemma spath_distinct (i j : nat) :
   i < t + c -> j < t + c -> SEq (spath i) (spath j) -> i = j.
 Proof using Hc.
@@ -331,9 +328,7 @@ Proof using Hc.
   rewrite (rho_nf_small t c Hc i Hi), (rho_nf_small t c Hc j Hj) in H. exact H.
 Qed.
 
-(* ...and every word equals one of them, so the hom-set has exactly
-   [t + c] elements.  The witness is DATA ([∃] is [sigT] here), so
-   nothing is chosen. *)
+(* 相关说明。 （已译） *)
 Lemma spath_exhaust (k : nat) :
   { r : nat & ((r < t + c) * SEq (spath k) (spath r))%type }.
 Proof using Hc.
@@ -342,7 +337,7 @@ Proof using Hc.
   - apply spath_nf.
 Qed.
 
-(* Every arrow of the presented category is one of the [t + c] words. *)
+(* Every arrow presented 范畴 one [t + c] words. （已译） *)
 Lemma scat_arrow_normal (p : ttt ~{SCat t c}~> ttt) :
   { r : nat & ((r < t + c) * SEq p (spath r))%type }.
 Proof using Hc.
@@ -364,7 +359,7 @@ Definition SEqAt (t c : nat)
   (p q : ttt ~{FreeOnQuiver OneGen}~> ttt) : Type :=
   @equiv _ (@homset (SCat t c) ttt ttt) p q.
 
-(** ** (a) Z/2Z -- Awodey's [f∘f = 1], Seven Sketches' [s∘s = id] *)
+(* 相关说明。 （已译） *)
 
 Definition Z2Cat : Category := SCat 0 2.
 
@@ -378,7 +373,7 @@ Proof. apply spath_eq_of_rho_nf; [ lia | reflexivity ]. Qed.
 Lemma z2_fourth : SEqAt 0 2 (spath 4) (spath 0).
 Proof. apply spath_eq_of_rho_nf; [ lia | reflexivity ]. Qed.
 
-(* ...and the collapse: exactly two morphisms, [id] and [s]. *)
+(* ...and collapse: exactly two 态射, [id] [s]. （已译） *)
 Lemma z2_distinct : SEqAt 0 2 (spath 0) (spath 1) -> False.
 Proof.
   intro H. apply (rho_nf_of_spath_eq 0 2) in H. discriminate.
@@ -388,7 +383,7 @@ Lemma z2_exhaust (p : ttt ~{Z2Cat}~> ttt) :
   { r : nat & ((r < 2)%nat * SEqAt 0 2 p (spath r))%type }.
 Proof. apply (scat_arrow_normal 0 2 ltac:(lia)). Qed.
 
-(** ** (b) The two-element idempotent monoid -- Awodey's [f∘f = f] *)
+(* * ** (b) The two-element idempotent 幺半群 -- Awodey's [f∘f = f] （已译） *)
 
 Definition IdemCat : Category := SCat 1 1.
 
@@ -404,7 +399,7 @@ Lemma idem_exhaust (p : ttt ~{IdemCat}~> ttt) :
   { r : nat & ((r < 2)%nat * SEqAt 1 1 p (spath r))%type }.
 Proof. apply (scat_arrow_normal 1 1 ltac:(lia)). Qed.
 
-(** ** (c) The cyclic group Z_n -- Awodey's [f^n = 1] *)
+(* 相关说明。 （已译） *)
 
 Definition CycCat (n : nat) : Category := SCat 0 n.
 
@@ -420,7 +415,7 @@ Lemma cyc_exhaust (n : nat) (Hn : (0 < n)%nat)
   { r : nat & ((r < 0 + n)%nat * SEqAt 0 n p (spath r))%type }.
 Proof. apply (scat_arrow_normal 0 n Hn). Qed.
 
-(** ** (d) [s^5 = s^2] -- Seven Sketches §3.2.2 Exercise 3.19 *)
+(* 相关说明。 （已译） *)
 
 Definition TailCat : Category := SCat 2 3.
 
@@ -431,13 +426,12 @@ Lemma tail_exhaust (p : ttt ~{TailCat}~> ttt) :
   { r : nat & ((r < 5)%nat * SEqAt 2 3 p (spath r))%type }.
 Proof. apply (scat_arrow_normal 2 3 ltac:(lia)). Qed.
 
-(* Its five words are pairwise distinct, so the count is exactly five. *)
+(* 相关说明。 （已译） *)
 Lemma tail_distinct (i j : nat) :
   (i < 5)%nat -> (j < 5)%nat -> SEqAt 2 3 (spath i) (spath j) -> i = j.
 Proof. apply (spath_distinct 2 3 ltac:(lia)). Qed.
 
-(* And, unlike every other example here, it is NOT a group: the
-   generator has no right inverse. *)
+(* 相关说明。 （已译） *)
 Lemma tail_not_group (k : nat) :
   SEqAt 2 3 (spath 1 ∘ spath k)%morphism (spath 0) -> False.
 Proof.
@@ -452,19 +446,19 @@ Qed.
 (* ================================================================== *)
 (*  Z/2Z, related to the group already in tree.                        *)
 (*                                                                     *)
-(*  Seven Sketches §3.2.2 asks that the presentation and the equational *)
+(* 相关说明。 （已译） *)
 (*  construction not be left as two unconnected objects.                *)
 (*  [Instance/Comp.v]'s [UniversalAlgebra.Bool : Group] is that     *)
-(*  object: the booleans under [xor], as an algebra for the group       *)
+(* 对象: booleans under [xor], algebra group （已译） *)
 (*  signature.  Its underlying [OpAlgebra] is [BoolOp].          *)
 (*                                                                     *)
 (*  AXIOM DISCLOSURE, MEASURED rather than assumed: [BoolOp] and [xor]  *)
-(*  are BOTH "Closed under the global context", while [Bool] itself     *)
-(*  carries [functional_extensionality_dep] -- it is the proof of the   *)
+(* 相关说明。 （已译） *)
+(* carries [functional_extensionality_dep] -- it 证明 the （已译） *)
 (*  group EQUATIONS that spends it, in a module whose header already    *)
-(*  records the two funext sites.  So the bridge below is built to      *)
+(* 相关说明。 （已译） *)
 (*  [BoolOp], which costs nothing; anything mentioning [Bool] would     *)
-(*  inherit that axiom, and this file states no such constant.  The     *)
+(* inherit axiom, file states no such 常值. The （已译） *)
 (*  requirement costs the closure exactly TWO modules (34 -> 36).       *)
 (* ================================================================== *)
 
@@ -472,7 +466,7 @@ Qed.
 Definition z2_bool (p : ttt ~{FreeOnQuiver OneGen}~> ttt) : bool :=
   Nat.eqb (rho_nf 0 2 (tlist_length p)) 1.
 
-(* It is well defined on the presented category -- soundness IS this. *)
+(* It well defined presented 范畴 -- soundness IS this. （已译） *)
 Lemma z2_bool_respects (p q : ttt ~{FreeOnQuiver OneGen}~> ttt) :
   SEqAt 0 2 p q -> z2_bool p = z2_bool q.
 Proof.
@@ -491,8 +485,8 @@ Proof.
   destruct (rho_nf 0 2 k) as [| [| n]]; [ now left | now right | ]. lia.
 Qed.
 
-(* Composition goes to [xor] -- so the presented monoid IS the boolean
-   one, and [xor] here is [BoolOp]'s own multiplication. *)
+(* Composition goes [xor] -- so presented 幺半群 IS boolean
+ one, [xor] here [BoolOp]'s own multiplication. （已译） *)
 Lemma z2_bool_compose (p q : ttt ~{FreeOnQuiver OneGen}~> ttt) :
   z2_bool (p ∘ q)%morphism
     = UniversalAlgebra.xor (z2_bool p) (z2_bool q).
@@ -507,7 +501,7 @@ Proof.
     rewrite Hq, Hp; reflexivity.
 Qed.
 
-(* And those two really are [BoolOp]'s operations, on the nose. *)
+(* 相关说明。 （已译） *)
 Example boolop_mul
   (args : @UniversalAlgebra.arity UniversalAlgebra.GroupOp
             UniversalAlgebra.mul -> bool) :
@@ -523,8 +517,8 @@ Example boolop_one
 
 (* ================================================================== *)
 (*  The one-object reading, in Presented.v's own monoid vocabulary.    *)
-(*  [FreeMonoidOn] and [PresentedMonoidOn] were declared there and had *)
-(*  NO consumer anywhere in the tree before this file.                 *)
+(* 相关说明。 （已译） *)
+(* 相关说明。 （已译） *)
 (* ================================================================== *)
 
 Definition RhoMon (t c : nat) : MonObject :=
@@ -533,7 +527,7 @@ Definition RhoMon (t c : nat) : MonObject :=
 Example smon_is_hom_monoid (t c : nat) :
   RhoMon t c = hom_monoid (SCat t c) ttt := eq_refl.
 
-(* ...and the FREE one-generator monoid is the free category's hom
-   monoid, which [spath_complete] identifies with (nat, +, 0). *)
+(* ...and FREE one-generator 幺半群 free 范畴's hom
+ 幺半群, [spath_complete] identifies (nat, +, 0). （已译） *)
 Example free_mon_is_hom_monoid :
   FreeMonoidOn unit = hom_monoid (FreeOnQuiver OneGen) ttt := eq_refl.

@@ -18,7 +18,7 @@ Require Import Category.Instance.Ab.Free.
 
 Generalizable All Variables.
 
-(** * The free abelian group monad ℤ[−] on Set, and Ab ≅ Set^{ℤ[−]} *)
+(* * * The free abelian group 单子 ℤ[−] Set, Ab ≅ Set^{ℤ[−]} （已译） *)
 
 (*
  Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
@@ -37,30 +37,30 @@ Universes c so.
 (* ℤ[−] = U ◯ F, with F Instance/Ab/Free.v's [FreeAb]. *)
 Definition FreeAbF@{+} : Sets@{c so} ⟶ Sets@{c so} := Ab_Forget ◯ FreeAb.
 
-(* ℤ[−], the monad of the hom-set form of the free-forgetful
-   adjunction. *)
+(* ℤ[−], 单子 hom-set form free-forgetful
+ 伴随. （已译） *)
 Definition FreeAbMonad@{+} : @Monad Sets@{c so} FreeAbF :=
   Adjunction_Induced_Monad free_ab_adjunction_hom.
 
-(* The relabelling of a formal sum along u: the fold of insert ∘ u. *)
+(* 相关说明。 （已译） *)
 Definition fa_relabel@{+} {X Y : Sets@{c so}} (u : X ~{Sets@{c so}}~> Y)
   (t : FATerm X) : FATerm Y :=
   fa_eval (A := FreeAbObject Y) (free_ab_insert Y ∘ u) t.
 
-(* A formal sum of formal sums, flattened: the fold of the identity. *)
+(* A formal sum formal sums, flattened: fold 恒等. （已译） *)
 Definition fa_flatten@{+} {X : Sets@{c so}}
   (k : FATerm (Ab_Forget (FreeAbObject X))) : FATerm X :=
   fa_eval (A := FreeAbObject X)
     (@id Sets@{c so} (Ab_Forget (FreeAbObject X))) k.
 
-(* ℤ[X] is the free group's setoid, whose carrier is the formal sums. *)
+(* 相关说明。 （已译） *)
 Example ZM_obj@{+} (X : Sets@{c so}) :
   fobj[FreeAbF] X = Ab_Forget (FreeAbObject X) := eq_refl.
 
 Example ZM_carrier@{+} (X : Sets@{c so}) :
   carrier (fobj[FreeAbF] X) = FATerm X := eq_refl.
 
-(* η_X is the insertion of generators, as a setoid map, and x ↦ ⟨x⟩. *)
+(* η_X 嵌入 generators, setoid map, x ↦ ⟨x⟩. （已译） *)
 Example ZM_ret@{+} (X : Sets@{c so}) :
   @ret _ _ FreeAbMonad X = free_ab_insert X := eq_refl.
 
@@ -95,15 +95,15 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The comparison functor Ab → Set^{ℤ[−]} *)
+(* * ** The comparison 函子 Ab → Set^{ℤ[−]} （已译） *)
 
 Definition ZMAlg@{+} : Category@{so c c} :=
   @EilenbergMoore@{so so so c} Sets@{c so} FreeAbF FreeAbMonad.
 
 Definition Ab_K@{+} : Ab ⟶ ZMAlg := EM_Comparison free_ab_adjunction_hom.
 
-(* Riehl's "commutes with the left and right adjoints": Monad/
-   Comparison.v's two triangles, at this adjunction. *)
+(* Riehl's "commutes left right adjoints": Monad/
+ Comparison.v's two triangles, at 伴随. （已译） *)
 Theorem Ab_K_Forget@{+} :
   @EM_Forget Sets@{c so} FreeAbF FreeAbMonad ◯ Ab_K ≈ Ab_Forget.
 Proof. exact (EM_Comparison_Forget free_ab_adjunction_hom). Qed.
@@ -117,8 +117,7 @@ Section Algebra.
 Context {A : Sets@{c so}}.
 Context (α : @TAlgebra Sets@{c so} FreeAbF FreeAbMonad A).
 
-(* The group operations of an algebra (A, ev): 0 = ev⟨⟩,
-   a + b = ev(⟨a⟩ + ⟨b⟩) and −a = ev(−⟨a⟩). *)
+(* 相关说明。 （已译） *)
 Definition zm_alg_zero@{+} : carrier A := t_alg[α] (@fa_zero A).
 
 Definition zm_alg_plus@{+} (x y : carrier A) : carrier A :=
@@ -127,7 +126,7 @@ Definition zm_alg_plus@{+} (x y : carrier A) : carrier A :=
 Definition zm_alg_neg@{+} (x : carrier A) : carrier A :=
   t_alg[α] (@fa_neg A (fa_gen x)).
 
-(* The sum the formal sum names, through the operations just defined. *)
+(* 相关说明。 （已译） *)
 Fixpoint zm_alg_eval@{+} (t : FATerm A) : carrier A :=
   match t with
   | fa_gen x    => x
@@ -163,7 +162,7 @@ Proof.
   exact (proper_morphism t_alg[α] _ _ (fae_neg (fae_gen Hx))).
 Qed.
 
-(* The evaluation IS the sum in the derived group. *)
+(* 相关说明。 （已译） *)
 Lemma zm_alg_fold@{+} (t : FATerm A) : t_alg[α] t ≈ zm_alg_eval t.
 Proof.
   induction t as [ x | | s IHs u IHu | s IHs ]; simpl.
@@ -230,8 +229,7 @@ Definition zm_alg_ab@{+} : AbObject := {|
 
 End Algebra.
 
-(* An algebra map is additive: Riehl's "a function f : A → B that
-   preserves the evaluation of formal sums, i.e., a group homomorphism". *)
+(* 相关说明。 （已译） *)
 Lemma zm_alg_hom_step@{+} {x y : ZMAlg} (f : x ~{ZMAlg}~> y)
   (t : FATerm (projT1 x)) :
   t_alg_hom[f] (t_alg[projT2 x] t)
@@ -262,8 +260,8 @@ Proof.
   - intros x y z f g a. reflexivity.
 Defined.
 
-(* The fold of the identity in the derived group IS [zm_alg_eval]
-   (Leibniz, by induction). *)
+(* The fold 恒等 derived group IS [zm_alg_eval]
+ (Leibniz, induction). （已译） *)
 Lemma zm_fold_is_alg_eval@{+} {A : Sets@{c so}}
   (α : @TAlgebra Sets@{c so} FreeAbF FreeAbMonad A) (t : FATerm A) :
   fa_eval (A := zm_alg_ab α) (@id Sets@{c so} (Ab_Forget (zm_alg_ab α))) t
@@ -273,7 +271,7 @@ Proof.
     try rewrite IHs; try rewrite IHu; reflexivity.
 Qed.
 
-(* The algebra round trip, with the identity as its component. *)
+(* The algebra round trip, 恒等 component. （已译） *)
 Definition Ab_EM_counit_iso@{+} (x : ZMAlg) :
   @Isomorphism ZMAlg (fobj[Ab_K ◯ EM_to_AbS] x) x.
 Proof.
@@ -308,8 +306,8 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* The group round trip, with the identity as its component: on a group
-   the derived operations ARE its own. *)
+(* The group round trip, 恒等 component: group
+ derived operations ARE own. （已译） *)
 Definition Ab_EM_unit_iso@{+} (G : Ab) :
   @Isomorphism Ab (fobj[EM_to_AbS ◯ Ab_K] G) G.
 Proof.
@@ -337,7 +335,7 @@ Proof.
   exists FreeAb. exists free_ab_adjunction_hom. exact Ab_EM_equivalence.
 Defined.
 
-(* Ab ≅ Set^{ℤ[−]} in Cat, from the two component isomorphisms. *)
+(* 相关说明。 （已译） *)
 Definition Ab_EM_iso@{k +} : @Isomorphism Cat@{k so so so c} Ab ZMAlg.
 Proof.
   unshelve refine
@@ -377,13 +375,12 @@ Example Ab_K_alg_plus@{+} (G : Ab) (x y : carrier (Ab_Forget G)) :
 Example Ab_K_alg_neg@{+} (G : Ab) (x : carrier (Ab_Forget G)) :
   t_alg[projT2 (fobj[Ab_K] G)] (fa_neg (fa_gen x)) = ab_neg G x := eq_refl.
 
-(* The legs of the isomorphism in Cat. *)
+(* The legs 同构 Cat. （已译） *)
 Example Ab_EM_iso_to@{+} : to Ab_EM_iso = Ab_K := eq_refl.
 
 Example Ab_EM_iso_from@{+} : from Ab_EM_iso = EM_to_AbS := eq_refl.
 
-(* The group of an algebra: its carrier, its [Prop] equality and its
-   operations. *)
+(* 相关说明。 （已译） *)
 Example EM_to_AbS_prop@{+} (x : ZMAlg) (a b : carrier (projT1 x)) :
   @pequiv _ _ (cmon_prop (fobj[EM_to_AbS] x)) a b
     = @fa_eq (projT1 x) (fa_gen a) (fa_gen b) := eq_refl.
@@ -405,7 +402,7 @@ Example EM_to_AbS_neg@{+} (x : ZMAlg) (a : carrier (projT1 x)) :
 Example EM_to_AbS_map@{+} {x y : ZMAlg} (f : x ~{ZMAlg}~> y) :
   cmon_map (fmap[EM_to_AbS] f) = t_alg_hom[f] := eq_refl.
 
-(* The round trips keep every operation on the nose ... *)
+(* 相关说明。 （已译） *)
 Example Ab_rt_carrier@{+} (G : Ab) :
   cmon_setoid (fobj[EM_to_AbS ◯ Ab_K] G) = cmon_setoid G := eq_refl.
 
@@ -421,7 +418,7 @@ Example Ab_rt_neg@{+} (G : Ab) :
 Example Ab_rt_hom@{+} {G H : Ab} (f : G ~{Ab}~> H) :
   cmon_map (fmap[EM_to_AbS ◯ Ab_K] f) = cmon_map f := eq_refl.
 
-(* ... and so do the carrier and the maps of the algebra round trip. *)
+(* 相关说明。 （已译） *)
 Example ZMAlg_rt_carrier@{+} (x : ZMAlg) :
   projT1 (fobj[Ab_K ◯ EM_to_AbS] x) = projT1 x := eq_refl.
 
@@ -434,7 +431,7 @@ Example ZMAlg_rt_alg_fun@{+} (x : ZMAlg) (t : FATerm (projT1 x)) :
 Example ZMAlg_rt_alg_hom@{+} {x y : ZMAlg} (f : x ~{ZMAlg}~> y) :
   t_alg_hom[fmap[Ab_K ◯ EM_to_AbS] f] = t_alg_hom[f] := eq_refl.
 
-(* Every component of the two natural isomorphisms is the identity. *)
+(* Every component two natural isomorphisms 恒等. （已译） *)
 Example Ab_EM_iso_to_from_component@{+} (x : ZMAlg) :
   (t_alg_hom[to (projT1 (iso_to_from Ab_EM_iso) x)],
    t_alg_hom[from (projT1 (iso_to_from Ab_EM_iso) x)])
@@ -446,7 +443,7 @@ Example Ab_EM_iso_from_to_component@{+} (G : Ab) :
     = (@id Sets@{c so} (Ab_Forget G), @id Sets@{c so} (Ab_Forget G))
   := eq_refl.
 
-(* ...and so is every component of the equivalence's counit and unit. *)
+(* ...and so every component 等价's counit unit. （已译） *)
 Example Ab_EM_counit_component@{+} (x : ZMAlg) :
   (t_alg_hom[to (projT1 (@equivalence_counit _ _ _ Ab_EM_equivalence) x)],
    t_alg_hom[from (projT1 (@equivalence_counit _ _ _ Ab_EM_equivalence) x)])

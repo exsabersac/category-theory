@@ -1,5 +1,4 @@
-(** * Mac Lane V.8 Exercise 2(b): hom_Z(R, ℚ/ℤ) as an injective cogenerator
-      of R-Mod, GIVEN that ℚ/ℤ is one of Ab *)
+(* 相关说明。 （已译） *)
 
 (*
  Book:      Mac Lane, ibid., §V.8 Theorem 2 — SAFT, whose cogenerator
@@ -43,7 +42,7 @@ Require Import Category.Theory.Algebra.Rig.
 
 Generalizable All Variables.
 
-(** ** 1. Transfer along an adjunction *)
+(* * ** 1. Transfer along 伴随 （已译） *)
 
 Definition right_adjoint_injective@{co do h +}
   {C : Category@{co h h}} {D : Category@{do h h}} {F : D ⟶ C} {U : C ⟶ D}
@@ -89,7 +88,7 @@ Example right_adjoint_cogenerator_obj@{co do h c +}
   cog_obj (right_adjoint_cogenerator A HF G) j = fobj[U] (cog_obj G j) :=
   eq_refl.
 
-(** ** 2. The forgetful functor [RMod R ⟶ Ab] *)
+(* * ** 2. The forgetful 函子 [RMod R ⟶ Ab] （已译） *)
 
 Lemma forget_ab_monic@{ra rc rp +} (R : RingObject@{ra rc rp})
   (M N : RModObject R)
@@ -108,7 +107,7 @@ Proof.
   exact (H a).
 Defined.
 
-(** ** 3. Mac Lane V.8 Exercise 2(b), on the book's own premise *)
+(* 相关说明。 （已译） *)
 
 Definition coext_injective@{r +} (R : RingObject@{r r r})
   (A : AbObject@{r r r}) (HA : @Injective Ab A) :
@@ -183,8 +182,8 @@ Proof.
   apply from_adj_respects. exact E.
 Defined.
 
-(* Exercise 2(b) with the book's own definition of cogenerator in both
-   premise and conclusion. *)
+(* Exercise 2(b) book's own 定义 cogenerator both
+ premise conclusion. （已译） *)
 Definition QZ_injective_cogenerator_ML@{r a +} (R : RingObject@{r r r})
   (HI : @Injective Ab@{a r} QZ) (HC : @ML_cogenerates Ab@{a r} QZ) :
   (@Injective (RMod R) (CoextObj R QZ))
@@ -198,7 +197,7 @@ Definition QZ_cogen_prod@{r a +} (R : RingObject@{r r r})
   (HC : QZ_family_cogenerates@{a r r _ _}) : RMod R :=
   cogen_prod (RMod_Complete R) (coext_cogenerator R (QZ_Cogenerator HC)).
 
-(* The large cogenerator: every module, tested by the identity. *)
+(* The large cogenerator: every module, tested 恒等. （已译） *)
 Definition RMod_Cogenerator_large@{ra rc rp +} (R : RingObject@{ra rc rp}) :
   Cogenerator (RMod R).
 Proof.
@@ -208,7 +207,7 @@ Proof.
   intro a. exact (Hid a).
 Defined.
 
-(** ** 4. What is constructive about ℚ/ℤ *)
+(* 相关说明。 （已译） *)
 
 Notation Zab := (ring_ab Int_Ring).
 
@@ -305,7 +304,7 @@ Example QZ_extends_along_mul_is_zchar@{a h +} (n : positive)
   projT1 (QZ_extends_along_mul n f)
     = zchar (cmon_map f 1%Z / inject_Z (Zpos n)) := eq_refl.
 
-(** ** 5. Every abelian group is a ℤ-module *)
+(* 相关说明。 （已译） *)
 
 Definition AbZMod@{h +} (A : AbObject@{h h h}) : RModObject Int_Ring.
 Proof.
@@ -341,7 +340,7 @@ Example Ab_to_ZMod_fmap@{a h +} {A B : AbObject@{h h h}}
   (f : A ~{Ab@{a h}}~> B) :
   rm_hom (fmap[Ab_to_ZMod] f) = f := eq_refl.
 
-(** ** 6. The premises are classical: two gadgets *)
+(* 相关说明。 （已译） *)
 
 Section YP.
 

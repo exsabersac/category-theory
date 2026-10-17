@@ -14,7 +14,7 @@ Section Sound.
 
 Generalizable All Variables.
 
-(** Soundness of the CCC semantics for the small-step reduction of the STLC *)
+(** 本节：Soundness CCC semantics small-step reduction STLC （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/beta-reduction

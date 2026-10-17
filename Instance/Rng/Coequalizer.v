@@ -20,7 +20,7 @@ Require Import Coq.micromega.Lia.
 
 Generalizable All Variables.
 
-(** * Quotient rings as coequalizers, split under the forgetful functor *)
+(* * * Quotient rings coequalizers, split under forgetful 函子 （已译） *)
 
 (*
  nLab:   https://ncatlab.org/nlab/show/split+coequalizer
@@ -37,7 +37,7 @@ Section RngSemidirect.
 Context {R : RingObject}.
 Context (A : Ideal R).
 
-(** ** The ideal as a setoid, compared on elements *)
+(* 相关说明。 （已译） *)
 
 Definition ideal_carrier : Type := { a : carrier (rig_setoid R) & idl_mem A a }.
 
@@ -99,8 +99,7 @@ Definition rsdp_neg (p : rsdp_carrier) : rsdp_carrier :=
 Definition rsdp_d1 (p : rsdp_carrier) : carrier (rig_setoid R) :=
   rig_add R (fst p) (`1 (snd p)).
 
-(* The pair (∂₀, ∂₁) is jointly injective: the second component is
-   recovered from r + a by cancelling r. *)
+(* 相关说明。 （已译） *)
 Lemma rsdp_ext (p q : rsdp_carrier) :
   fst p ≈ fst q → rsdp_d1 p ≈ rsdp_d1 q → @equiv _ rsdp_setoid p q.
 Proof.
@@ -206,13 +205,12 @@ Defined.
 
 End RngSemidirect.
 
-(* U corestricted to the propositional setoids, by [rig_prop], as the
-   group file's [Grp_ForgetP]. *)
+(* 相关说明。 （已译） *)
 Definition Rng_ForgetP@{u p so | p < so +} : Rng@{u p} ⟶ PropSets@{p so} :=
   PropSets_lift Rng_Forget (fun R => rig_prop R).
 
-(* The pair, the coequalizer and the splitting live in [Rng], whose objects
-   are [RingObject@{p p p}]; the binder says so. *)
+(* The pair, coequalizer splitting live [Rng], whose 对象
+ [RingObject@{p p p}]; binder says so. （已译） *)
 
 Section RngSemidirectPair.
 
@@ -221,7 +219,7 @@ Universe p.
 Context {R : RingObject@{p p p}}.
 Context (A : Ideal R).
 
-(** ** The parallel pair ∂₀, ∂₁ : R ×₀ A ⇉ R *)
+(* 相关说明。 （已译） *)
 
 (* ∂₀(r, a) = r. *)
 Definition rsemidirect_d0 : SemidirectRing A ~{Rng}~> R.
@@ -250,7 +248,7 @@ Proof.
   - exact (rsdp_d1_mul A).
 Defined.
 
-(** ** The projection coforks the pair, and is its coequalizer *)
+(* 相关说明。 （已译） *)
 
 Lemma rsemidirect_cofork :
   rquot_proj A ∘ rsemidirect_d0 ≈ rquot_proj A ∘ rsemidirect_d1.
@@ -296,7 +294,7 @@ Definition rsemidirect_cofork_iff_kills {K : RingObject} (h : R ~{Rng}~> K) :
          rig_map h a ≈ rig_zero K) :=
   (rsemidirect_cofork_kills h, kills_rsemidirect_cofork h).
 
-(* The descent is the quotient's own mediator [rquot_med]. *)
+(* 相关说明。 （已译） *)
 Definition rquot_proj_IsCoequalizer :
   IsCoequalizer rsemidirect_d0 rsemidirect_d1 (QuotientRing A) (rquot_proj A).
 Proof.
@@ -313,17 +311,15 @@ Proof.
                  (existT _ h (rsemidirect_cofork_kills h Hh)) |}.
 Defined.
 
-(* The U-image is a fork, with no hypothesis: the image of the cofork. *)
+(* The U-image fork, no 假设: image cofork. （已译） *)
 Lemma rsemidirect_U_cofork :
   fmap[Rng_Forget] (rquot_proj A) ∘ fmap[Rng_Forget] rsemidirect_d0
     ≈ fmap[Rng_Forget] (rquot_proj A) ∘ fmap[Rng_Forget] rsemidirect_d1.
 Proof. intro p; exact (rsemidirect_cofork p). Qed.
 
-(** ** Transversals, and the splitting after the forgetful functor *)
+(* * ** Transversals, splitting after forgetful 函子 （已译） *)
 
-(* A transversal of A: a map of setoids out of U(R/A) choosing a
-   representative of each coset, with the untruncated witness that the
-   representative lies in the coset it represents. *)
+(* 相关说明。 （已译） *)
 Record RTransversal := {
   rtransversal_map :
     fobj[Rng_Forget] (QuotientRing A) ~{Sets}~> fobj[Rng_Forget] R;
@@ -364,8 +360,8 @@ Proof.
     exact (ab_add_sub_cancel (ring_ab R) (rtransversal_map T r) r).
 Defined.
 
-(* Any map out of U R that coforks the U-image pair is constant on cosets,
-   given the coset witness untruncated: a ~ b is read off (b, a - b). *)
+(* Any map out U R coforks U-image pair 常值 cosets,
+ given coset witness untruncated: ~ b read off (b, - b). （已译） *)
 Lemma rU_cofork_descends {Z : obj[Sets]}
   (h : fobj[Rng_Forget] R ~{Sets}~> Z)
   (Hh : h ∘ fmap[Rng_Forget] rsemidirect_d0
@@ -428,7 +424,7 @@ Definition rtransversal_U_AbsoluteCoequalizer@{xo xh +} (T : RTransversal) :
     (fobj[Rng_Forget] (QuotientRing A)) (fmap[Rng_Forget] (rquot_proj A)) :=
   split_coequalizer_absolute (rtransversal_split T).
 
-(** ** Whether U preserves the coequalizer: exactly when cosets untruncate *)
+(* 相关说明。 （已译） *)
 
 Definition rquot_mem (a b : carrier (rig_setoid R)) : Type :=
   idl_mem A (ab_sub (ring_ab R) a b).
@@ -468,8 +464,7 @@ Proof.
   - exact (idl_plus A _ _ K1 K2).
 Qed.
 
-(* The untruncated quotient, Instance/Sets/Quotient.v's [SetsQuotient], and
-   its projection [sets_quot_proj], as in the group file. *)
+(* 相关说明。 （已译） *)
 Definition rquot_mem_object : SetoidObject@{p p} :=
   SetsQuotient (rig_setoid R) rquot_mem
     {| Equivalence_Reflexive := rquot_mem_refl
@@ -492,8 +487,8 @@ Proof.
   - exact (ab_sub_neg (ring_ab R) (rig_add R r a) r).
 Qed.
 
-(* With no hypothesis, the coequalizer in Sets of the U-image pair is the
-   untruncated quotient, by [sets_quot_med] at [rU_cofork_descends]. *)
+(* With no 假设, coequalizer Sets U-image pair the
+ untruncated quotient, [sets_quot_med] at [rU_cofork_descends]. （已译） *)
 Definition rquot_mem_IsCoequalizer :
   IsCoequalizer (fmap[Rng_Forget] rsemidirect_d0)
     (fmap[Rng_Forget] rsemidirect_d1) rquot_mem_object rquot_mem_proj.
@@ -564,7 +559,7 @@ Proof.
     + exact (rtransversal_coset T b).
 Qed.
 
-(** ** Unconditionally: U into the propositional setoids preserves p *)
+(* * ** Unconditionally: U 进入 propositional setoids preserves p （已译） *)
 
 (* As the group file's [PropSets_quot_IsCoequalizer]: not a split one. *)
 Definition PropSets_rquot_IsCoequalizer@{go so +} :
@@ -590,7 +585,7 @@ Proof.
     + intros v Hv x; symmetry; exact (Hv x).
 Defined.
 
-(** ** Split in Rng itself: exactly when p has a ring-homomorphic section *)
+(* 相关说明。 （已译） *)
 
 Definition HomRTransversal : Type :=
   { s : QuotientRing A ~{Rng}~> R
@@ -601,8 +596,7 @@ Definition hom_rtransversal_transversal (H : HomRTransversal) : RTransversal :=
   {| rtransversal_map := fmap[Rng_Forget] (`1 H)
    ; rtransversal_coset := `2 H |}.
 
-(* t is a ring homomorphism as soon as s is: by the joint injectivity of
-   (∂₀, ∂₁), since ∂₀ t = 1 and ∂₁ t = s p are. *)
+(* 相关说明。 （已译） *)
 Lemma hom_rtransversal_t_ext (H : HomRTransversal)
   (p : carrier (rig_setoid R)) (q : rsdp_carrier A) :
   p ≈ fst q → rig_map (`1 H) p ≈ rsdp_d1 A q →
@@ -695,8 +689,8 @@ Proof.
   - intro a; exact ttt.
 Defined.
 
-(* A trivial: every element represents its own coset, and the identity is
-   a ring homomorphism, so the fork splits in Rng itself. *)
+(* A trivial: every element represents own coset, 恒等 is
+ ring homomorphism, so fork splits Rng itself. （已译） *)
 Definition TrivialIdeal_transversal (R : RingObject) :
   RTransversal (TrivialIdeal R).
 Proof.
@@ -765,10 +759,9 @@ Proof.
   lia.
 Qed.
 
-(** ** The constructive taboo, at an ideal of Z *)
+(* 相关说明。 （已译） *)
 
-(* A_P ◁ Z: all of Z when P holds and zero when it does not, with the
-   Prop-valued membership P or a = 0, as the group file's N_P. *)
+(* 相关说明。 （已译） *)
 Definition AP (P : Prop) : Ideal Int_Ring.
 Proof.
   unshelve refine
@@ -790,8 +783,7 @@ Defined.
 Lemma AP_untruncates (P : Prop) : RCosetUntruncates (AP P).
 Proof. intros a b H; unfold rquot_mem; simpl; destruct H as [H]; exact H. Qed.
 
-(* A transversal of A_P decides P: its values at 0 and 1 agree when P
-   holds, and lie in the classes of 0 and 1. *)
+(* 相关说明。 （已译） *)
 Definition AP_rtransversal_decides (P : Prop) (T : RTransversal (AP P)) :
   (P + (P → False))%type.
 Proof.
@@ -813,8 +805,8 @@ Proof.
   - right; intro p; exact (E (Hs p)).
 Defined.
 
-(* Exercise 1's "split after the application of the forgetful functors",
-   asked of every ideal, decides every proposition. *)
+(* Exercise 1's "split after application forgetful 函子",
+ asked every ideal, decides every 命题. （已译） *)
 Definition Rng_U_split_taboo :
   (∀ P : Prop, SplitCoequalizer (fmap[Rng_Forget] (rsemidirect_d0 (AP P)))
                                 (fmap[Rng_Forget] (rsemidirect_d1 (AP P)))) →

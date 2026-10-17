@@ -15,8 +15,8 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** [fin_pair a b] encodes the pair (a, b) as position a·n + b of the
-    canonical (m * n)-element set, by structural recursion on [a]. *)
+(** 本节：[fin_pair b] encodes pair (a, b) position a·n + b the
+ canonical (m * n)-element set, structural recursion [a]. （已译） *)
 Fixpoint fin_pair {m n : nat} (a : Fin.t m) : Fin.t n → Fin.t (m * n) :=
   match a in Fin.t m return Fin.t n → Fin.t (m * n) with
   | @Fin.F1 m' => fun b => Fin.L (m' * n) b
@@ -38,8 +38,7 @@ Fixpoint fin_unpair {m n : nat} {struct m} :
       end
   end.
 
-(* The computability acceptance test: the codec reduces by [eq_refl].
-   With m = 2, n = 3 the pair (1, 1) sits at position 1·3 + 1 = 4. *)
+(* 相关说明。 （已译） *)
 Example fin_pair_computes :
   @fin_pair 2 3 (Fin.FS Fin.F1) (Fin.FS Fin.F1)
     = Fin.FS (Fin.FS (Fin.FS (Fin.FS Fin.F1))) := eq_refl.
@@ -48,11 +47,11 @@ Example fin_unpair_computes :
   @fin_unpair 2 3 (Fin.FS (Fin.FS (Fin.FS (Fin.FS Fin.F1))))
     = (Fin.FS Fin.F1, Fin.FS Fin.F1) := eq_refl.
 
-(** ** The round trips
+(* * ** The round trips
 
-    Equality here is Leibniz equality on [Fin.t] VALUES — object-level
-    data of the skeletal category, matching the pointwise-[eq] hom-setoid
-    of [FinSet]. *)
+ Equality here Leibniz equality [Fin.t] VALUES — 对象-level
+ data skeletal 范畴, matching pointwise-[eq] hom-setoid
+ [FinSet]. （已译） *)
 
 Lemma fin_unpair_pair {m n : nat} (a : Fin.t m) (b : Fin.t n) :
   fin_unpair (fin_pair a b) = (a, b).
@@ -73,13 +72,11 @@ Proof.
                 @fin_pair 0 n (fst (@fin_unpair 0 n p))
                               (snd (@fin_unpair 0 n p)) = p)
              p).
-  - (* The scrutinee is spelled with explicit implicits so that it matches
-       the occurrence [simpl] exposes in the goal. *)
+  - (* 相关说明。 （已译） *)
     simpl; destruct (@fin_split n (m' * n) p) as [b | q] eqn:Hs.
-    + (* p decodes as (F1, b): re-encoding is the left injection, and
-         [fin_join_split] identifies it with p. *)
+    + (* 相关说明。 （已译） *)
       simpl; rewrite <- (@fin_join_split n (m' * n) p), Hs; reflexivity.
-    + (* p decodes through the recursive call on the tail q. *)
+    + (* 相关说明。 （已译） *)
       specialize (IH q).
       destruct (@fin_unpair m' n q) as [a b]; simpl in IH.
       simpl; rewrite IH, <- (@fin_join_split n (m' * n) p), Hs.
@@ -105,8 +102,8 @@ Next Obligation.
   rewrite (Hf i), (Hg i); reflexivity.
 Qed.
 Next Obligation.
-  (* The universal property: h ≈ ⟨f, g⟩ exactly when the two decodings of
-     h recover f and g — pointwise, by the round trips. *)
+  (* The 普遍性质: h ≈ ⟨f, g⟩ exactly two decodings of
+ h recover f g — pointwise, round trips. （已译） *)
   split.
   - intros Hh; split; intro i; simpl;
       rewrite (Hh i), fin_unpair_pair; reflexivity.

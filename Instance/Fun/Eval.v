@@ -10,7 +10,7 @@ Require Import Category.Instance.Fun.
 
 Generalizable All Variables.
 
-(** * The evaluation functor on a functor category *)
+(* * * The evaluation 函子 函子 范畴 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/functor+category
@@ -26,7 +26,7 @@ Universe jo jh co ch.
 
 Context {P : Category@{jo jh jh}} {X : Category@{co ch ch}}.
 
-(** ** The evaluation functor at a fixed object *)
+(* * ** The evaluation 函子 at fixed 对象 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -62,14 +62,14 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(** ** Partial application agrees with the fixed-object evaluation *)
+(* * ** Partial application agrees fixed-对象 evaluation （已译） *)
 
 (* On objects: on the nose. *)
 Definition eval_partial_obj (p : P) (H : [P, X]) :
   fobj[Eval p] H = fobj[Partial_l EvalBi p] H := eq_refl.
 
-(* On arrows: up to ≈ only — [Partial_l]'s action is [bimap s id], which
-   still carries the [fmap id] the functor law removes (probe). *)
+(* On arrows: up ≈ — [Partial_l]'s action [bimap s id], which
+ still carries [fmap id] 函子 law removes (probe). （已译） *)
 Lemma eval_partial_map (p : P) (H K : [P, X]) (s : H ~{[P, X]}~> K) :
   fmap[Eval p] s ≈ fmap[Partial_l EvalBi p] s.
 Proof. simpl; unfold bimap; simpl; cat. Qed.
@@ -82,7 +82,7 @@ Program Definition eval_partial_iso (p : P) :
   from := {| transform := fun H => id |}
 |}.
 
-(* The other partial application is the functor itself. *)
+(* The other partial application 函子 itself. （已译） *)
 Definition eval_partial_r_obj (H : [P, X]) (p : P) :
   fobj[Partial_r EvalBi H] p = fobj[H] p := eq_refl.
 
@@ -90,11 +90,11 @@ Lemma eval_partial_r_map (H : [P, X]) (p q : P) (f : p ~> q) :
   fmap[Partial_r EvalBi H] f ≈ fmap[H] f.
 Proof. simpl; unfold bimap; simpl; cat. Qed.
 
-(** ** Naturality in the evaluated object *)
+(* * ** Naturality evaluated 对象 （已译） *)
 
-(* Each arrow of P gives a transformation between evaluation functors,
-   with component [fmap[H] f] at H; both naturality fields are the
-   naturality of the transformation being evaluated. *)
+(* Each arrow P gives transformation between evaluation 函子,
+ component [fmap[H] f] at H; both 自然性 fields the
+ 自然性 transformation being evaluated. （已译） *)
 Program Definition Eval_nat {p q : P} (f : p ~> q) : Eval p ⟹ Eval q := {|
   transform := fun H => fmap[H] f
 |}.

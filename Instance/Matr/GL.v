@@ -28,7 +28,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The group of units of a monoid *)
+(* * ** The group units 幺半群 （已译） *)
 
 Definition unit_carrier (M : MonObject) : Type :=
   { u : carrier M
@@ -105,8 +105,7 @@ Next Obligation.
   - intros p q Hpq; exact Hpq.
 Defined.
 
-(* Monoid homomorphisms restrict to the unit groups: the image of a
-   two-sided inverse is a two-sided inverse of the image. *)
+(* 相关说明。 （已译） *)
 Program Definition UnitsOf_map {M N : MonObject}
   {PM : PropEquiv (is_setoid (mon_setoid M))}
   {PN : PropEquiv (is_setoid (mon_setoid N))} (h : MonHom M N) :
@@ -140,7 +139,7 @@ Next Obligation.
   apply mon_map_op.
 Qed.
 
-(** ** The units functor on commutative rings *)
+(* * ** The units 函子 commutative rings （已译） *)
 
 (* The multiplicative monoid of a ring. *)
 Program Definition Ring_mul_mon (K : RingObject) : MonObject := {|
@@ -170,15 +169,15 @@ Next Obligation.
   intros K K' h a b; apply rig_map_mul.
 Qed.
 
-(* The witness [UnitsOf] asks for at a ring's multiplicative monoid: the
-   monoid's carrier setoid IS the rig's, so it is [rig_prop]. *)
+(* The witness [UnitsOf] asks at ring's multiplicative 幺半群: the
+ 幺半群's carrier setoid IS rig's, so it [rig_prop]. （已译） *)
 Definition ring_mul_mon_prop (K : RingObject) :
   PropEquiv (is_setoid (mon_setoid (Ring_mul_mon K))) :=
   rig_prop (ring_rig K).
 
-(* (−)^* : CRng ⟶ Grp — the group of units, functorially.  A CRng
-   morphism is a Subcategory hom: the underlying RigHom carrying a
-   (trivial) membership witness. *)
+(* (−)^* : CRng ⟶ Grp — group units, functorially. A CRng
+ 态射 Subcategory hom: underlying RigHom carrying a
+ (trivial) membership witness. （已译） *)
 Program Definition Units_Functor : CRng ⟶ Grp := {|
   fobj := fun K => UnitsOf (Ring_mul_mon (`1 K)) (ring_mul_mon_prop (`1 K));
   fmap := fun K K' h => UnitsOf_map (mul_MonHom (`1 h))
@@ -196,10 +195,10 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(** ** The general linear group functor *)
+(* * ** The general linear group 函子 （已译） *)
 
-(* The n × n matrix monoid over a ring: the endomorphism monoid of the
-   object n of Matr. *)
+(* The n × n matrix 幺半群 over ring: endomorphism 幺半群 the
+ 对象 n Matr. （已译） *)
 Definition mat_mon (K : RingObject) (n : nat) : MonObject :=
   hom_monoid (Matr (ring_rig K)) n.
 
@@ -214,7 +213,7 @@ Definition Matr_LocallyPropositional (R : RigObject) :
     (fun n m A B H i j => pequiv_to _ _ (H i j))
     (fun n m A B H i j => pequiv_from _ _ (H i j)).
 
-(* The witness [UnitsOf] asks for at the matrix monoid. *)
+(* The witness [UnitsOf] asks at matrix 幺半群. （已译） *)
 Definition mat_mon_prop (K : RingObject) (n : nat) :
   PropEquiv (is_setoid (mon_setoid (mat_mon K n))) :=
   @locally_prop (Matr (ring_rig K)) (Matr_LocallyPropositional (ring_rig K))
@@ -278,11 +277,11 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(** ** The determinant as a natural transformation *)
+(* * ** The determinant 自然变换 （已译） *)
 
-(* det restricted to the unit groups: an invertible matrix has a unit
-   determinant — the inverse matrix's determinant inverts it, by
-   multiplicativity and det of the identity. *)
+(* det restricted unit groups: invertible matrix has unit
+ determinant — inverse matrix's determinant inverts it, by
+ multiplicativity det 恒等. （已译） *)
 Program Definition det_GrpHom (n : nat) (K : obj[CRng]) :
   GrpHom (UnitsOf (mat_mon (`1 K) n) (mat_mon_prop (`1 K) n))
          (UnitsOf (Ring_mul_mon (`1 K)) (ring_mul_mon_prop (`1 K))) := {|

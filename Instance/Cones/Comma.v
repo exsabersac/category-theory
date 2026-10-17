@@ -12,7 +12,7 @@ Require Import Category.Instance.Cat.
 
 Generalizable All Variables.
 
-(** * The category of cones over F is the comma category (Δ ↓ F) *)
+(* * * The 范畴 cones over F comma 范畴 (Δ ↓ F) （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Cone_(category_theory)

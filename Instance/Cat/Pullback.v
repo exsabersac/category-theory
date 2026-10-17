@@ -23,7 +23,7 @@ Require Import Coq.Logic.Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * The fibre product of categories, and pullbacks of categories *)
+(* * * The fibre product 范畴, pullbacks 范畴 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/comma+object
@@ -37,17 +37,17 @@ Generalizable All Variables.
 
 (** ** A small transport kit *)
 
-(* Functors commute with [hom_cast], the endpoints being relabelled by
-   [f_equal] of the object map.  Both sides become [fmap[P] f] once the two
-   equalities are eliminated. *)
+(* Functors commute [hom_cast], endpoints being relabelled by
+ [f_equal] 对象 map. Both sides become [fmap[P] f] once two
+ equalities eliminated. （已译） *)
 Lemma fmap_hom_cast {X Y : Category} (P : X ⟶ Y) {a b a' b' : X}
       (ea : a = a') (eb : b = b') (f : a ~> b) :
   fmap[P] (hom_cast ea eb f)
     ≈ hom_cast (f_equal (fobj[P]) ea) (f_equal (fobj[P]) eb) (fmap[P] f).
 Proof. destruct ea, eb; reflexivity. Qed.
 
-(* Reading a [hom_cast] equation as a conjugation, in the orientation the
-   natural-isomorphism coherence of [Functor_Setoid] wants. *)
+(* Reading [hom_cast] equation conjugation, orientation the
+ natural-同构 coherence [Functor_Setoid] wants. （已译） *)
 Lemma hom_cast_shift {X : Category} {a b a' b' : X}
       (ea : a = a') (eb : b = b') (f : a ~> b) (g : a' ~> b') :
   hom_cast ea eb f ≈ g → f ≈ id_cast (eq_sym eb) ∘ g ∘ id_cast ea.
@@ -66,7 +66,7 @@ Lemma cast_of_hom_cast {X : Category} {a a' b b' : X}
   hom_cast ea eb g ≈ h → id_cast eb ∘ g ≈ h ∘ id_cast ea.
 Proof. destruct ea, eb; simpl; intros Hg; rewrite id_left, id_right; auto. Qed.
 
-(* A [hom_cast] that relabels only the codomain is a postcomposition. *)
+(* 相关说明。 （已译） *)
 Lemma hom_cast_left_refl {X : Category} {a b b' : X} (eb : b = b')
       (g : a ~> b) : hom_cast eq_refl eb g ≈ id_cast eb ∘ g.
 Proof. destruct eb; cat. Qed.
@@ -88,7 +88,7 @@ Lemma slice_arrow_eta {D : Category} (d : D) (h : @Arrow D)
   ((fst ``h, d); hom_cast eq_refl eh (`2 h)) = h.
 Proof. destruct h as [[a b] g]; simpl in *; destruct eh; reflexivity. Defined.
 
-(* Dually, one that relabels only the domain is a precomposition. *)
+(* 相关说明。 （已译） *)
 Lemma hom_cast_right_refl {X : Category} {a a' b : X} (ea : a = a')
       (g : a ~> b) : hom_cast ea eq_refl g ≈ g ∘ id_cast (eq_sym ea).
 Proof. destruct ea; cat. Qed.
@@ -166,7 +166,7 @@ Next Obligation. now intros ? ? ? ? [e0 e1]. Qed.
 Next Obligation. now repeat intro. Qed.
 Next Obligation. now repeat intro. Qed.
 
-(** ** Object equality in the fibre product *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Pullback 相关定义、性质与动机。
@@ -183,18 +183,18 @@ Proof.
   exists eq_refl; split; reflexivity.
 Defined.
 
-(** ** The projection square commutes, in both ambient categories *)
+(* * ** The projection square commutes, both ambient 范畴 （已译） *)
 
-(* Strictly: the object component IS the equality carried by the object, and
-   the morphism component IS the equation carried by the morphism. *)
+(* Strictly: 对象 component IS equality carried 对象, and
+ 态射 component IS equation carried 态射. （已译） *)
 Definition FP_commutes_strict :
   F ∘[StrictCat] FP_fst ≈[StrictCat] G ∘[StrictCat] FP_snd :=
   @Build_strict_eq FibreProduct C (F ◯ FP_fst) (G ◯ FP_snd)
                    (fun x : FibreProduct => `2 x)
                    (fun (x y : FibreProduct) (f : x ~> y) => `2 f).
 
-(* Weakly: the same data read as a natural isomorphism, each component the
-   [id_cast] of the object's equality. *)
+(* Weakly: same data read natural 同构, each component the
+ [id_cast] 对象's equality. （已译） *)
 Program Definition FP_commutes_cat :
   F ∘[Cat] FP_fst ≈[Cat] G ∘[Cat] FP_snd :=
   (fun x => id_cast_iso (`2 x); _).
@@ -205,7 +205,7 @@ Next Obligation.
   now apply hom_cast_shift.
 Qed.
 
-(** ** The mediator, its triangles, and its uniqueness *)
+(* 相关说明。 （已译） *)
 
 Section Mediator.
 
@@ -221,8 +221,8 @@ Next Obligation. intros x y f g Hfg; split; simpl; now rewrite Hfg. Qed.
 Next Obligation. intros x; split; simpl; apply fmap_id. Qed.
 Next Obligation. intros x y z f g; split; simpl; apply fmap_comp. Qed.
 
-(* Both triangles hold with an [eq_refl] object component: the mediator's
-   first coordinate IS [q1] and its second IS [q2], definitionally. *)
+(* Both triangles hold [eq_refl] 对象 component: mediator's
+ first coordinate IS [q1] second IS [q2], definitionally. （已译） *)
 Definition FP_med_fst : FP_fst ∘[StrictCat] FP_med ≈[StrictCat] q1.
 Proof.
   refine (@Build_strict_eq Q A (FP_fst ◯ FP_med) q1 (fun _ => eq_refl) _).
@@ -286,7 +286,7 @@ Definition FibreProduct_Pullback (uip : ObjUIP C) :
 
 End FibreProduct.
 
-(** ** Packaging: all pullbacks in StrictCat, under a blanket hypothesis *)
+(* * ** Packaging: all pullbacks StrictCat, under blanket 假设 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -313,18 +313,18 @@ Proof.
   exact (FibreProduct_Pullback F G (uip C)).
 Defined.
 
-(** ** The weak ambient: what happens in Ho(Cat) *)
+(* 相关说明。 （已译） *)
 
 Section CatMeasurement.
 
-(* Any two functors into the terminal category are naturally isomorphic; this
-   is [one_unique] at [Cat_Terminal], and it is all the universal property of
-   the cospans below needs. *)
+(* Any two 函子 进入 terminal 范畴 naturally isomorphic; this
+ [one_unique] at [Cat_Terminal], it all 普遍性质 of
+ cospans below needs. （已译） *)
 Lemma one_functors_equiv {Q : Category} (u v : Q ⟶ _1) : u ≈[Cat] v.
 Proof. now apply (@one_unique Cat Cat_Terminal). Qed.
 
-(* A cospan of two points of C, with an isomorphism between them supplying
-   the commuting square in Cat. *)
+(* A cospan two points C, 同构 between them supplying
+ 交换方块 Cat. （已译） *)
 Program Definition point_cospan_square {C : Category} {x y : C} (i : x ≅ y) :
   Diagonal _1 x ∘[Cat] Id[_1] ≈[Cat] Diagonal _1 y ∘[Cat] Id[_1] :=
   (fun _ => i; _).
@@ -357,7 +357,7 @@ Program Definition IB_iso : @Isomorphism IB true false := {| to := tt;
 Definition IBtrue  : _1 ⟶ IB := @Diagonal IB _1 true.
 Definition IBfalse : _1 ⟶ IB := @Diagonal IB _1 false.
 
-(* The strict fibre product of that cospan has NO objects at all. *)
+(* The strict fibre product cospan has NO 对象 at all. （已译） *)
 Lemma IB_FibreProduct_empty : obj[FibreProduct IBtrue IBfalse] → False.
 Proof. intros x; pose proof (`2 x) as Hx; simpl in Hx; discriminate. Qed.
 
@@ -379,13 +379,13 @@ Qed.
 
 End CatMeasurement.
 
-(** ** Necessity: uniform uniqueness IS the hypothesis *)
+(* * ** Necessity: uniform uniqueness IS 假设 （已译） *)
 
 Section Necessity.
 
-(* The indiscrete category on X has object type X, so a loop at a point of X
-   is literally a loop at an object.  Its homs are [unit], which keeps every
-   morphism obligation below trivial. *)
+(* The indiscrete 范畴 X has 对象 type X, so loop at point X
+ literally loop at 对象. Its homs [unit], keeps every
+ 态射 obligation below trivial. （已译） *)
 Definition IX (X : Type) : Category := Indiscrete X.
 
 Lemma punit_eq (u : poly_unit) : ttt = u.
@@ -393,8 +393,8 @@ Proof. now destruct u. Defined.
 
 Definition IXpt {X : Type} (x : X) : _1 ⟶ IX X := @Diagonal (IX X) _1 x.
 
-(* Each loop [p : x = x] names a functor into the fibre product of the cospan
-   1 --x--> IX X <--x-- 1, and every such functor satisfies both triangles. *)
+(* Each loop [p : x = x] names 函子 进入 fibre product cospan
+ 1 --x--> IX X <--x-- 1, every such 函子 satisfies both triangles. （已译） *)
 Program Definition loop_functor {X : Type} {x : X} (p : x = x) :
   _1 ⟶ FibreProduct (IXpt x) (IXpt x) := {|
   fobj := fun _ => ((ttt, ttt); p);
@@ -456,7 +456,7 @@ Qed.
 End Necessity.
 
 
-(** ** Comma categories as pullbacks of the arrow-category projections *)
+(* * ** Comma 范畴 pullbacks arrow-范畴 projections （已译） *)
 
 Section SliceAsPullback.
 
@@ -474,8 +474,7 @@ Context (uip : ObjUIP C).
 *)
 Local Set Default Proof Using "All".
 
-(* The evident projection [C/c ⟶ C]; used only to read the hom-setoid of the
-   slice as a hom-setoid of C, which is what [fmap_hom_cast] needs. *)
+(* 相关说明。 （已译） *)
 Program Definition Slice_proj : Slice C c ⟶ C := {|
   fobj := fun x => `1 x;
   fmap := fun _ _ f => `1 f
@@ -484,7 +483,7 @@ Next Obligation. now repeat intro. Qed.
 Next Obligation. now intros. Qed.
 Next Obligation. now intros. Qed.
 
-(* The first leg: an object of the slice IS an arrow with codomain c. *)
+(* The first leg: 对象 slice IS arrow codomain c. （已译） *)
 Program Definition Slice_Arrow : Slice C c ⟶ @Arrow C := {|
   fobj := fun x => ((`1 x, c); `2 x);
   fmap := fun _ _ f => ((`1 f, id); _)
@@ -496,8 +495,8 @@ Next Obligation.
   intros x y z f g; split; simpl; [ reflexivity | now rewrite id_left ].
 Qed.
 
-(* A strict functor equality into the slice is settled by its [Slice_proj]
-   reading, the slice hom-setoid being that of C on the underlying arrow. *)
+(* A strict 函子 equality 进入 slice settled [Slice_proj]
+ reading, slice hom-setoid being C underlying arrow. （已译） *)
 Lemma slice_strict_eq {Q : Category} (u v : Q ⟶ Slice C c)
       (eo : ∀ z, u z = v z)
       (em : ∀ z w (f : z ~> w),
@@ -660,7 +659,7 @@ Next Obligation. now repeat intro. Qed.
 Next Obligation. now intros. Qed.
 Next Obligation. now intros. Qed.
 
-(* The first leg: an object of the coslice IS an arrow with domain c. *)
+(* The first leg: 对象 coslice IS arrow domain c. （已译） *)
 Program Definition Coslice_Arrow : Coslice C c ⟶ @Arrow C := {|
   fobj := fun x => ((c, `1 x); `2 x);
   fmap := fun _ _ f => ((id, `1 f); _)

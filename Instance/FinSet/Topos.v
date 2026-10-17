@@ -46,7 +46,7 @@ Example FinSet_Pow_two : @Pow FinSet FinSet_Topos 2%nat = 4%nat := eq_refl.
 
 Example FinSet_Pow_zero : @Pow FinSet FinSet_Topos 0%nat = 1%nat := eq_refl.
 
-(** The truth point evaluates to [fin_true] on the sole element of 1. *)
+(** 本节：The truth point evaluates [fin_true] sole element 1. （已译） *)
 
 Example FinSet_truth_computes :
   @truth FinSet FinSet_Terminal FinSet_Classifier Fin.F1 = fin_true

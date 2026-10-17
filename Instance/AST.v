@@ -24,8 +24,8 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := cat_simpl.
 
-(* The syntax of objects: the closed type formers of a bicartesian closed
-   category (1, ×, ^, 0, +). [denote] reads each former off in a model C. *)
+(* The syntax 对象: closed type formers 双笛卡尔闭
+ 范畴 (1, ×, ^, 0, +). [denote] reads each former off model C. （已译） *)
 Inductive Obj : Set :=
   | One_    : Obj                       (* terminal object 1 *)
   | Prod_   : Obj → Obj → Obj           (* product x × y *)
@@ -128,7 +128,7 @@ Next Obligation.
   transitivity (interp y); auto.
 Qed.
 
-(* Terminal object 1 = [One_], with the unique arrow into it given by [One']. *)
+(* Terminal 对象 1 = [One_], 唯一箭头 it given [One']. （已译） *)
 #[export]
 Program Instance Hom_Terminal : @Terminal AST := {
   terminal_obj := One_;
@@ -136,8 +136,8 @@ Program Instance Hom_Terminal : @Terminal AST := {
 }.
 Next Obligation. apply one_unique. Qed.
 
-(* Binary products x × y = [Prod_], with pairing [Fork] and projections
-   [Exl]/[Exr]; the universal property holds under every interpretation. *)
+(* Binary products x × y = [Prod_], pairing [Fork] projections
+ [Exl]/[Exr]; 普遍性质 holds under every interpretation. （已译） *)
 #[export]
 Program Instance Hom_Cartesian : @Cartesian AST := {
   product_obj := Prod_;
@@ -155,8 +155,8 @@ Next Obligation.
     rewrite fork_comp; cat.
 Qed.
 
-(* Exponentials z ^ y = [Exp_], with the currying isomorphism realised by the
-   mutually-inverse syntactic transposes [Curry] and [Uncurry]. *)
+(* Exponentials z ^ y = [Exp_], currying 同构 realised the
+ mutually-inverse syntactic transposes [Curry] [Uncurry]. （已译） *)
 #[export]
 Program Instance Hom_Closed : @Closed AST _ := {
   exponent_obj := Exp_;

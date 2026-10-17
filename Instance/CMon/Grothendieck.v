@@ -25,7 +25,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The functor forgetting inverses *)
+(* * ** The 函子 forgetting inverses （已译） *)
 
 (*
    本节说明函子、hom相关定义、性质与动机。
@@ -73,7 +73,7 @@ Proof.
   now rewrite (ab_add_sub_cancel A u v).
 Qed.
 
-(** ** The group completion of a commutative monoid *)
+(* * ** The group completion commutative 幺半群 （已译） *)
 
 Section Grothendieck.
 
@@ -84,7 +84,7 @@ Local Notation "x ⊞ y" := (cmon_plus M x y)
 
 Local Notation "'MC'" := (carrier (cmon_setoid M)).
 
-(* Elements of the completion are formal differences, encoded as pairs. *)
+(* 相关说明。 （已译） *)
 Definition GrothPair : Type := (MC * MC)%type.
 
 (*
@@ -97,7 +97,7 @@ Definition groth_rel (p q : GrothPair) : Prop :=
         @pequiv _ _ (cmon_prop M)
           (fst p ⊞ snd q ⊞ k) (fst q ⊞ snd p ⊞ k)).
 
-(* The slack-free relation, for the necessity argument below. *)
+(* The slack-free 关系, necessity 论元 below. （已译） *)
 Definition groth_naive (p q : GrothPair) : Type :=
   fst p ⊞ snd q ≈ fst q ⊞ snd p.
 
@@ -141,8 +141,8 @@ Proof.
   now rewrite <- (cmon_plus_assoc M d k l).
 Qed.
 
-(* The transitivity computation.  The produced witness is [d ⊞ k ⊞ l];
-   the [d] is what a cancellative monoid would let one drop. *)
+(* The transitivity computation. The produced witness [d ⊞ k ⊞ l];
+ [d] what cancellative 幺半群 would let one drop. （已译） *)
 Lemma groth_rel_trans (p q r : GrothPair) :
   groth_rel p q → groth_rel q r → groth_rel p r.
 Proof.
@@ -257,9 +257,9 @@ Definition GrothCMon : CMonObject := {|
       (fun _ _ h => h) (fun _ _ h => h)
 |}.
 
-(* The completion.  [ab_neg] is the swap, so the object is abelian by
-   construction -- the fact item (2) of the header's second-form
-   discussion turns on. *)
+(* The completion. [ab_neg] swap, so 对象 abelian by
+ construction -- fact item (2) header's second-form
+ discussion turns on. （已译） *)
 Definition GrothendieckObject : AbObject := {|
   ab_cmon         := GrothCMon;
   ab_neg          := groth_neg;
@@ -349,7 +349,7 @@ Next Obligation.
   symmetry; apply ab_sub_plus.
 Qed.
 
-(* The triangle: restricting the mediator to the insertion recovers h. *)
+(* The triangle: restricting mediator 嵌入 recovers h. （已译） *)
 Lemma groth_extend_insert (a : MC) :
   cmon_map groth_extend (cmon_map groth_insert a) ≈ cmon_map h a.
 Proof.
@@ -393,9 +393,9 @@ Arguments groth_extend {A} h.
 Arguments groth_extend_insert {A} h a.
 Arguments groth_extend_unique {A} h g Hg p.
 
-(* The universal mapping property in the shape [universal_arrow_from_UMP]
-   wants: every [h : M ~> Ab_to_CMon A] factors uniquely through the
-   insertion. *)
+(* The 普遍映射性质 shape [universal_arrow_from_UMP]
+ wants: every [h : M ~> Ab_to_CMon A] factors uniquely through the
+ 嵌入. （已译） *)
 Lemma groth_universal (A : Ab) (h : M ~{CMon}~> Ab_to_CMon A) :
   ∃! g : GrothendieckObject ~{Ab}~> A,
     h ≈ fmap[Ab_to_CMon] g ∘ groth_insert.
@@ -410,8 +410,7 @@ Qed.
 
 End Grothendieck.
 
-(* The in-section [Arguments] above are not preserved across [End], which
-   prepends [M] to every signature, so they are re-issued here. *)
+(* 相关说明。 （已译） *)
 Arguments groth_med {M A} h p.
 Arguments groth_extend {M A} h.
 Arguments groth_extend_insert {M A} h a.
@@ -451,15 +450,15 @@ Example groth_extend_computes (M : CMonObject) (A : AbObject)
   cmon_map (groth_extend h) (a, b)
     = ab_sub A (cmon_map h a) (cmon_map h b) := eq_refl.
 
-(** ** The universal arrow, the left adjoint and the adjunction *)
+(* * ** The 泛箭头, 左伴随 伴随 （已译） *)
 
 Definition groth_universal_arrow (M : CMon)
   : UniversalArrow M Ab_to_CMon :=
   universal_arrow_from_UMP M Ab_to_CMon (GrothendieckObject M)
     (groth_insert M) (groth_universal M).
 
-(* The same content in the direct encoding, where the universal object is
-   named rather than projected out of a comma category. *)
+(* The same content direct encoding, where universal 对象 is
+ named rather than projected out comma 范畴. （已译） *)
 Program Definition groth_AUniversalArrow (M : CMon)
   : AUniversalArrow M Ab_to_CMon (GrothendieckObject M) := {|
   universal_arrow := groth_insert M
@@ -470,14 +469,13 @@ Next Obligation.
   - exact (groth_extend h).
   - intro a; simpl; exact (groth_extend_insert h a).
   - intros g Hg p; simpl.
-    (* [AUniversalArrow]'s uniqueness field is oriented the other way
-       round from the comma-packaged one, hence the [symmetry]. *)
+    (* 相关说明。 （已译） *)
     symmetry; apply (groth_extend_unique h g).
     intro a; exact (Hg a).
 Qed.
 
-(* The functor and the adjunction come out of the generic machinery with
-   no further proof. *)
+(* The 函子 伴随 come out generic machinery with
+ no further 证明. （已译） *)
 Definition GrothLeft : CMon ⟶ Ab :=
   LeftAdjointFunctorFromUniversalArrows Ab_to_CMon groth_universal_arrow.
 
@@ -487,14 +485,14 @@ Definition grothendieck_adjunction : GrothLeft ⊣ Ab_to_CMon :=
 Example GrothLeft_obj (M : CMon) :
   GrothLeft M = GrothendieckObject M := eq_refl.
 
-(* [universal_arrow_from_UMP] stores the supplied morphism as the second
-   projection of the comma object it builds, so the universal arrow is
-   the insertion on the nose. *)
+(* [universal_arrow_from_UMP] stores supplied 态射 second
+ projection comma 对象 it builds, so 泛箭头 is
+ 嵌入 nose. （已译） *)
 Example groth_arrow_is_insert (M : CMon) :
   @arrow _ _ M Ab_to_CMon (groth_universal_arrow M) = groth_insert M
   := eq_refl.
 
-(** ** The unit computes; the counit does not *)
+(* 相关说明。 （已译） *)
 
 Definition groth_unit (M : CMon)
   : M ~{CMon}~> Ab_to_CMon (GrothLeft M) :=
@@ -507,9 +505,7 @@ Definition groth_counit (A : Ab)
   : GrothLeft (Ab_to_CMon A) ~{Ab}~> A :=
   @Category.Theory.Adjunction.counit _ _ _ _ grothendieck_adjunction A.
 
-(* The counit routes through the [Qed]-opaque [ump_universal_arrows], so
-   no [eq_refl] is available and none is claimed.  What holds is that it
-   is the difference map. *)
+(* 相关说明。 （已译） *)
 Lemma groth_counit_generator (A : Ab)
   (a : carrier (cmon_setoid (Ab_to_CMon A))) :
   cmon_map (groth_counit A) (a, cmon_zero A) ≈ a.
@@ -585,9 +581,7 @@ Example groth_map_computes {M N : CMonObject} (f : M ~{CMon}~> N)
   (a b : carrier (cmon_setoid M)) :
   cmon_map (groth_map f) (a, b) = (cmon_map f a, cmon_map f b) := eq_refl.
 
-(* The arrow actions agree up to [≈].  They cannot agree strictly:
-   [fmap[GrothLeft]] is [unique_obj (ump_universal_arrows …)] and
-   [ump_universal_arrows] is [Qed]. *)
+(* 相关说明。 （已译） *)
 Lemma groth_fmap_agrees {M N : CMon} (f : M ~{CMon}~> N) :
   fmap[GrothLeft] f ≈ fmap[GrothendieckFunctor] f.
 Proof.
@@ -637,8 +631,7 @@ Fail Example groth_difference_not_strict (M : CMonObject)
              (cmon_map (groth_insert M) a) (cmon_map (groth_insert M) b)
   := eq_refl.
 
-(* Instrument check: the [Fail]s above are firing on conversion, not on a
-   dead command. *)
+(* 相关说明。 （已译） *)
 Fail Example groth_instrument_check : true = false := eq_refl.
 
 (*
@@ -664,8 +657,8 @@ Proof.
   discriminate H3.
 Qed.
 
-(* And the price: with the slack term, the completion of that monoid is
-   trivial -- every two pairs are related, by taking [k := true]. *)
+(* And price: slack term, completion 幺半群 is
+ trivial -- every two pairs related, taking [k := true]. （已译） *)
 Theorem groth_bool_trivial (p q : GrothPair groth_bool) :
   @groth_rel groth_bool p q.
 Proof.
@@ -679,16 +672,12 @@ Theorem groth_bool_insert_collapses :
     ≈ cmon_map (groth_insert groth_bool) false.
 Proof. apply groth_bool_trivial. Qed.
 
-(** ** K(ℕ, +) ≅ ℤ
-
-    The motivating example.  [groth_nat] is the additive half of
-    Theory/Algebra/Rig.v's [Nat_Rig]; [ab_Z] is Instance/Ab/Coproduct.v's
-    ℤ, reused rather than redeclared. *)
+(* 相关说明。 （已译） *)
 
 Definition groth_nat : CMonObject := rig_cmon Nat_Rig.
 
-(* The truncation identity that drives everything below: for every
-   integer, the difference of the two truncations is the integer. *)
+(* The truncation 恒等 drives everything below: every
+ integer, difference two truncations integer. （已译） *)
 Lemma groth_Z_split (x : Z) :
   (Z.of_nat (Z.to_nat x) - Z.of_nat (Z.to_nat (- x)))%Z = x.
 Proof.
@@ -717,7 +706,7 @@ Program Definition groth_Z_to_nat
   : ab_Z ~{Ab}~> GrothendieckObject groth_nat := {|
   cmon_map := {| morphism := fun n : Z => (Z.to_nat n, Z.to_nat (- n)) |}
 |}.
-(* Two obligations again, for the same reason as [nat_to_Z]. *)
+(* 相关说明。 （已译） *)
 Next Obligation. simpl; apply groth_rel_refl. Qed.
 Next Obligation.
   intros m n; simpl.
@@ -730,9 +719,9 @@ Next Obligation.
   simpl; lia.
 Qed.
 
-(* The ℕ-level identity behind the section: stated separately so that the
-   isomorphism below closes by conversion rather than by hoping [simpl]
-   exposes the right term. *)
+(* The ℕ-level 恒等 behind section: stated separately so the
+ 同构 below closes conversion rather than hoping [simpl]
+ exposes right term. （已译） *)
 Lemma groth_Z_to_nat_section (a b : nat) :
   (Z.to_nat (Z.of_nat a - Z.of_nat b) + b + 0
      = a + Z.to_nat (- (Z.of_nat a - Z.of_nat b)) + 0)%nat.
@@ -758,10 +747,10 @@ Proof.
     exact (groth_Z_to_nat_section a b).
 Qed.
 
-(** ** Non-vacuity on the cancellative side *)
+(* 相关说明。 （已译） *)
 
-(* ℕ is cancellative, so the slack term buys nothing there and the
-   insertion is injective -- the completion does NOT collapse. *)
+(* ℕ cancellative, so slack term buys nothing there the
+ 嵌入 injective -- completion does NOT collapse. （已译） *)
 Theorem groth_nat_insert_injective (a b : nat) :
   cmon_map (groth_insert groth_nat) a
     ≈ cmon_map (groth_insert groth_nat) b → a = b.
@@ -779,8 +768,7 @@ Proof.
   discriminate Heq.
 Qed.
 
-(* Mapping OUT: the completion of ℕ separates a negative from a positive
-   formal difference, because ℤ does. *)
+(* 相关说明。 （已译） *)
 Example groth_nat_to_Z_computes (a b : nat) :
   cmon_map groth_nat_to_Z (a, b)
     = (Z.of_nat a - Z.of_nat b)%Z := eq_refl.

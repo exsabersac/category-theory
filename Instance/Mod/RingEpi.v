@@ -34,7 +34,7 @@ Generalizable All Variables.
 
 Open Scope category_scope.
 
-(** * Ring epimorphisms, restriction of scalars, and T-Mod in R-Mod *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:  https://ncatlab.org/nlab/show/restriction+of+scalars
@@ -48,7 +48,7 @@ Open Scope category_scope.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The endomorphism ring of an abelian group *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 RingEpi 相关定义、性质与动机。
@@ -66,7 +66,7 @@ Proof.
     apply ab_neg_left.
 Defined.
 
-(** ** Conjugation by an automorphism is a rig endomorphism *)
+(* 相关说明。 （已译） *)
 
 Definition EndRig_conj@{o h +} {C : Category@{o h h}}
   {LP : LocallyPropositional C} (P : Preadditive C) {c : C} (i : c ≅ c) :
@@ -90,7 +90,7 @@ Proof.
     reflexivity.
 Defined.
 
-(** ** A module structure is a ring map into the endomorphisms *)
+(* * ** A module structure ring map 进入 endomorphisms （已译） *)
 
 Definition smul_endo@{u p +} {T : obj[Rng@{u p}]} (M : obj[RMod T])
   (t : carrier (rig_setoid (ring_rig T))) : rm_ab M ~{Ab@{u p}}~> rm_ab M.
@@ -121,7 +121,7 @@ Proof.
     apply rm_smul_assoc.
 Defined.
 
-(** ** The shear of M ⊕ N along an additive map *)
+(* 相关说明。 （已译） *)
 
 Section Shear.
 
@@ -185,7 +185,7 @@ Proof.
     apply ab_sub_add_cancel.
 Defined.
 
-(* The diagonal action of T on M ⊕ N, conjugated by the shear. *)
+(* 相关说明。 （已译） *)
 Definition twisted_rep : T ~{Rng}~> AbEndRing (rm_ab MN) :=
   (EndRig_conj Ab_Preadditive shear_iso
      : AbEndRing (rm_ab MN) ~{Rng}~> AbEndRing (rm_ab MN))
@@ -200,7 +200,7 @@ Example twisted_rep_value (t : carrier (rig_setoid (ring_rig T)))
        cmon_plus N (rm_smul N t (ab_sub N n (cmon_map f m)))
                    (cmon_map f (rm_smul M t m))) := eq_refl.
 
-(* Where f commutes with t, the twisted action at t IS the plain one. *)
+(* 相关说明。 （已译） *)
 Lemma twist_fixed_of_linear (t : carrier (rig_setoid (ring_rig T)))
   (Hlin : ∀ m, cmon_map f (rm_smul M t m) ≈ rm_smul N t (cmon_map f m)) :
   rig_map twisted_rep t ≈ rig_map (module_rep MN) t.
@@ -215,8 +215,7 @@ Proof.
   apply ab_add_sub_cancel.
 Qed.
 
-(* Conversely, agreement at t forces f to commute with t: evaluate at
-   the pair (m, f m). *)
+(* 相关说明。 （已译） *)
 Lemma linear_of_twist_fixed (t : carrier (rig_setoid (ring_rig T)))
   (H : rig_map twisted_rep t ≈ rig_map (module_rep MN) t) :
   ∀ m, cmon_map f (rm_smul M t m) ≈ rm_smul N t (cmon_map f m).
@@ -229,7 +228,7 @@ Qed.
 
 End Shear.
 
-(** ** Riehl 4.6.13 (iv): restriction is faithful, and full iff phi is epi *)
+(* 相关说明。 （已译） *)
 
 Section RingEpi.
 
@@ -241,8 +240,8 @@ Context (phi : R ~{Rng@{u p}}~> T).
 Definition Restrict_Faithful : Faithful (Restrict phi).
 Proof. constructor; intros M N f g H a; exact (H a). Qed.
 
-(* The identity of S, read as an R-linear map between the two
-   phi-restrictions of S along g1 and along g2. *)
+(* The 恒等 S, read R-linear map between two
+ phi-restrictions S along g1 along g2. （已译） *)
 Definition two_actions_id {S : obj[Rng@{u p}]} (g1 g2 : T ~{Rng@{u p}}~> S)
   (Hg : g1 ∘ phi ≈ g2 ∘ phi) :
   RestrictObj phi (RestrictObj g1 (Ring_RMod S))
@@ -295,7 +294,7 @@ Proof.
     reflexivity.
 Defined.
 
-(* The preimage IS the given additive map: nothing is rebuilt. *)
+(* 相关说明。 （已译） *)
 Example Epic_Restrict_Full_prefmap (He : Epic phi) (M N : obj[RMod T])
   (f : Restrict phi M ~> Restrict phi N) :
   rm_hom (@prefmap _ _ _ (Epic_Restrict_Full He) M N f) = rm_hom f
@@ -306,7 +305,7 @@ Definition Restrict_Full_iff_Epic : Functor.Full (Restrict phi) ↔ Epic phi :=
 
 End RingEpi.
 
-(** ** For an epimorphism, T-Mod is reflective in R-Mod *)
+(* 相关说明。 （已译） *)
 
 Section Reflection.
 
@@ -338,8 +337,8 @@ Defined.
 Definition TMod_Reflective_in_RMod : Reflective (UnitFixed A) :=
   unit_fixed_reflective_of_idempotent A restrict_idempotent.
 
-(* The record's adjunction, as its own constant: the reflector left
-   adjoint to the inclusion of the unit-fixed modules. *)
+(* The record's 伴随, own 常值: reflector left
+ adjoint 含入 unit-fixed modules. （已译） *)
 Definition TMod_adj :
   reflector TMod_Reflective_in_RMod ⊣ Incl (RMod R) (UnitFixed A) :=
   reflective_adj TMod_Reflective_in_RMod.
@@ -348,14 +347,13 @@ Example TMod_reflector_obj (M : RMod R) :
   `1 (fobj[reflector TMod_Reflective_in_RMod] M)
     = RestrictObj phi (ExtendObj phi Hc M) := eq_refl.
 
-(* The unit is Riehl's m ↦ 1 ⊗ m, pointwise on the nose. *)
+(* 相关说明。 （已译） *)
 Example TMod_unit_pointwise (M : RMod R) (m : carrier (cmon_setoid M)) :
   cmon_map
     (rm_hom (@unit _ _ _ _ (reflective_adj TMod_Reflective_in_RMod) M)) m
     = ext_gen phi M (rig_one (ring_rig T)) m := eq_refl.
 
-(* Restriction lands in the unit-fixed subcategory and identifies T-Mod
-   with it. *)
+(* 相关说明。 （已译） *)
 Definition Restrict_UnitFixed_obj (N : RMod T) :
   Sub (RMod R) (UnitFixed A) :=
   (Restrict phi N; unit_iso_of_counit_iso A N (restrict_counit_iso N)).
@@ -411,7 +409,7 @@ Definition TMod_equiv_UnitFixed :
 
 End Reflection.
 
-(** ** The witness: Q-modules in Z-modules *)
+(* 相关说明。 （已译） *)
 
 Definition Restrict_ZtoQ_Full@{+} : Functor.Full (Restrict ZtoQ) :=
   Epic_Restrict_Full ZtoQ ZtoQ_epic.
@@ -425,7 +423,7 @@ Definition QMod_equiv_UnitFixed@{+} :
     (Restrict_UnitFixed ZtoQ Q_central ZtoQ_epic) :=
   TMod_equiv_UnitFixed ZtoQ Q_central ZtoQ_epic.
 
-(** ** Localizations are epimorphisms *)
+(* 相关说明。 （已译） *)
 
 Section Localization.
 
@@ -442,15 +440,14 @@ Definition InvertsSet {W : obj[Rng@{u p}]} (psi : R ~{Rng@{u p}}~> W) : Type :=
     (rig_mul (ring_rig W) (rig_map psi s) v ≈ rig_one (ring_rig W)) ∧
     (rig_mul (ring_rig W) v (rig_map psi s) ≈ rig_one (ring_rig W)).
 
-(* Riehl's "initial object in the category whose objects are ring
-   homomorphisms R → T that carry all of the elements of S to units". *)
+(* Riehl's "始对象 范畴 whose 对象 ring
+ homomorphisms R → T carry all elements S units". （已译） *)
 Definition IsLocalization : Type :=
   InvertsSet phi ∧
   (∀ (W : obj[Rng@{u p}]) (psi : R ~{Rng@{u p}}~> W),
       InvertsSet psi → ∃! chi : L ~{Rng@{u p}}~> W, chi ∘ phi ≈ psi).
 
-(* Only the uniqueness half is spent: g1 ∘ phi inverts S, and g1, g2
-   both factor it. *)
+(* 相关说明。 （已译） *)
 Theorem localization_epic : IsLocalization → Epic phi.
 Proof.
   intros [Hphi Huniv].
@@ -473,10 +470,9 @@ Qed.
 
 End Localization.
 
-(** ** The witness: Z -> Q is the localization at the positive integers *)
+(* 相关说明。 （已译） *)
 
-(* Required here rather than at the head of the file, for the reason
-   Instance/Mod/Extension.v gives: QArith's import shadows [equiv]. *)
+(* 相关说明。 （已译） *)
 Require Import Coq.QArith.QArith.
 
 Definition PosZ@{s +} (z : Z) : Type@{s} := ∃ p : positive, z = Z.pos p.
@@ -506,7 +502,7 @@ Local Notation "x · y" := (rig_mul (ring_rig W) x y)
   (at level 40, left associativity).
 Local Notation ps := (rig_map psi).
 
-(* The chosen inverse of psi b, for b a positive integer. *)
+(* 相关说明。 （已译） *)
 Definition loc_inv (b : positive) : carrier (rig_setoid (ring_rig W)) :=
   `1 (Hpsi (Z.pos b) (b; eq_refl)).
 
@@ -518,9 +514,9 @@ Lemma loc_inv_l (b : positive) :
   loc_inv b · ps (Z.pos b) ≈ rig_one (ring_rig W).
 Proof. exact (snd `2 (Hpsi (Z.pos b) (b; eq_refl))). Qed.
 
-(* The image of Z is commutative, whatever W is: the hypothesis [Hpsi]
-   is not used, and the explicit [Proof using] keeps it out of the
-   lemma's type. *)
+(* The image Z commutative, whatever W is: 假设 [Hpsi]
+ not used, explicit [Proof using] keeps it out the
+ 引理's type. （已译） *)
 Lemma loc_images_commute (a b : Z) : ps a · ps b ≈ ps b · ps a.
 Proof using W psi.
   rewrite <- !rig_map_mul.
@@ -648,8 +644,7 @@ Proof.
   apply rig_mul_one_r.
 Qed.
 
-(* Uniqueness, directly and not through [ZtoQ_epic]: any factorization
-   satisfies [loc_fun]'s defining equation, and that equation cancels. *)
+(* 相关说明。 （已译） *)
 Lemma loc_hom_unique (v : Q_Ring ~{Rng}~> W) :
   (∀ z : Z, rig_map v (inject_Z z) ≈ ps z) → loc_hom ≈ v.
 Proof.
@@ -677,11 +672,11 @@ Proof.
     intro z; exact (Hv z).
 Defined.
 
-(* A second proof of Instance/Rng.v's [ZtoQ_epic], through the lemma. *)
+(* A second 证明 Instance/Rng.v's [ZtoQ_epic], through 引理. （已译） *)
 Definition ZtoQ_epic_of_localization@{+} : Epic ZtoQ :=
   localization_epic ZtoQ PosZ ZtoQ_IsLocalization.
 
-(** ** The reflection at ℤ → ℚ is proper *)
+(* 相关说明。 （已译） *)
 
 Require Import Coq.micromega.Lia.
 

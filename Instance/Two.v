@@ -4,7 +4,7 @@ Require Import Category.Theory.Functor.
 
 Generalizable All Variables.
 
-(** The interval category 2 (the "walking arrow"). *)
+(** The interval 范畴 2 ("walking arrow"). （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/walking+structure (walking morphism)
@@ -95,7 +95,7 @@ Next Obligation. destruct x, y, z, w; auto with two_laws; intuition; auto with *
 Next Obligation. destruct x, y, z, w; auto with two_laws; intuition. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** A bimorphism that is not an isomorphism *)
+(* * ** A bimorphism not 同构 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -144,15 +144,15 @@ Definition two_bimorphic_not_iso :
 Lemma TwoXY_not_regular : @RegularMorphism _2 TwoX TwoY TwoXY → False.
 Proof. intros [g _]; exact (TwoHom_Y_X_absurd g). Qed.
 
-(* Both one-sided splittings are ruled out through regularity, rather than by
-   repeating the argument: a section or a retraction is regular. *)
+(* Both one-sided splittings ruled out through regularity, rather than by
+ repeating 论元: section retraction regular. （已译） *)
 Lemma TwoXY_not_retraction : @Retraction _2 TwoX TwoY TwoXY → False.
 Proof. intro R; exact (TwoXY_not_regular (regular_of_retraction _ R)). Qed.
 
 Lemma TwoXY_not_section : @Section _2 TwoX TwoY TwoXY → False.
 Proof. intro S; exact (TwoXY_not_regular (regular_of_section _ S)). Qed.
 
-(* Packaged: an arrow that is epic, does not split, and is not regular. *)
+(* 相关说明。 （已译） *)
 Definition two_epic_not_regular :
   @Epic _2 TwoX TwoY TwoXY
   * (@Retraction _2 TwoX TwoY TwoXY → False)
@@ -162,8 +162,8 @@ Definition two_epic_not_regular :
 
 Require Import Category.Instance.Sets.
 
-(* A functor 2 ⟶ Sets is precisely a morphism of Sets; this one picks out the
-   unique map (the empty function) from False to True, sending TwoXY there. *)
+(* A 函子 2 ⟶ Sets precisely 态射 Sets; one picks out the
+ unique map (the empty function) False True, sending TwoXY there. （已译） *)
 
 Program Definition _2_as_Set : _2 ⟶ Sets := {|
   fobj := fun x =>

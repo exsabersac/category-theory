@@ -49,8 +49,7 @@ Record Ideal (R : RingObject) := {
   (* (4) absorption on the left *)
   idl_absorb_l : ∀ r a : carrier (rig_setoid R),
     idl_mem a → idl_mem (rig_mul R r a);
-  (* (5) absorption on the RIGHT -- the field a one-sided ideal drops,
-     and the one Instance/Rng/Quotient/OneSided.v proves indispensable *)
+  (* 相关说明。 （已译） *)
   idl_absorb_r : ∀ a r : carrier (rig_setoid R),
     idl_mem a → idl_mem (rig_mul R a r)
 }.
@@ -62,8 +61,7 @@ Arguments idl_plus {R} _ _ _ _ _.
 Arguments idl_absorb_l {R} _ _ _ _.
 Arguments idl_absorb_r {R} _ _ _ _.
 
-(* A LEFT ideal: the same record with [idl_absorb_r] dropped.  It exists
-   in order to be refuted. *)
+(* 相关说明。 （已译） *)
 Record LeftIdeal (R : RingObject) := {
   lidl_mem : carrier (rig_setoid R) → Type;
 
@@ -82,8 +80,7 @@ Arguments lidl_zero {R} _.
 Arguments lidl_plus {R} _ _ _ _ _.
 Arguments lidl_absorb_l {R} _ _ _ _.
 
-(* Every two-sided ideal is in particular a left ideal, so the refutation
-   downstream is genuinely about the WEAKER notion. *)
+(* 相关说明。 （已译） *)
 Definition Ideal_LeftIdeal {R : RingObject} (I : Ideal R) : LeftIdeal R :=
   {| lidl_mem := idl_mem I
    ; lidl_resp := idl_resp I
@@ -91,7 +88,7 @@ Definition Ideal_LeftIdeal {R : RingObject} (I : Ideal R) : LeftIdeal R :=
    ; lidl_plus := idl_plus I
    ; lidl_absorb_l := idl_absorb_l I |}.
 
-(* Saturation in the argument-implicit shape the proofs below want. *)
+(* Saturation 论元-implicit shape proofs below want. （已译） *)
 Definition idl_at {R : RingObject} (I : Ideal R)
   {a b : carrier (rig_setoid R)} (Hab : a ≈ b) (Ha : idl_mem I a) :
   idl_mem I b := idl_resp I a b Hab Ha.
@@ -100,8 +97,7 @@ Definition lidl_at {R : RingObject} (L : LeftIdeal R)
   {a b : carrier (rig_setoid R)} (Hab : a ≈ b) (Ha : lidl_mem L a) :
   lidl_mem L b := lidl_resp L a b Hab Ha.
 
-(* THE SIXTH FIELD THAT IS NOT A FIELD: closure under negation, because
-   -a is (-1)·a.  Only LEFT absorption is spent. *)
+(* 相关说明。 （已译） *)
 Lemma idl_neg {R : RingObject} (I : Ideal R) (a : carrier (rig_setoid R)) :
   idl_mem I a → idl_mem I (ring_neg R a).
 Proof.
@@ -273,7 +269,7 @@ Proof.
   - exact (idl_neg I _ K).
 Qed.
 
-(* THE PLACE BOTH ABSORPTION LAWS ARE SPENT, one apiece. *)
+(* 相关说明。 （已译） *)
 Lemma rquot_rel_mul (x x' y y' : carrier (rig_setoid R)) :
   rquot_rel I x x' → rquot_rel I y y' →
   rquot_rel I (rig_mul R x y) (rig_mul R x' y').
@@ -302,8 +298,8 @@ Proof.
   - exact (idl_at I (symmetry (ab_sub_zero_r (ring_ab R) x)) K).
 Qed.
 
-(* The half of the biconditional that keeps its [Type]-valued hypothesis:
-   nothing is truncated on the way in. *)
+(* The half biconditional keeps [Type]-valued 假设:
+ nothing truncated way in. （已译） *)
 Lemma rquot_rel_of_mem (x : carrier (rig_setoid R)) :
   idl_mem I x → rquot_rel I x (rig_zero R).
 Proof.
@@ -325,9 +321,7 @@ End QuotientRelation.
 
 Arguments rquot_setoid {R} I.
 
-(* The property the two-sided condition buys, named so that
-   Instance/Rng/Quotient/OneSided.v can refute it for the one-sided
-   notion. *)
+(* 相关说明。 （已译） *)
 Definition IdealMulCongruence {R : RingObject} (I : Ideal R) : Type :=
   ∀ x x' y y' : carrier (rig_setoid R),
     rquot_rel I x x' → rquot_rel I y y' →
@@ -360,7 +354,7 @@ Example lquot_rel_is_rquot_rel {R : RingObject} (I : Ideal R)
   lquot_rel (Ideal_LeftIdeal I) x y = rquot_rel I x y.
 Proof. reflexivity. Qed.
 
-(** ** The quotient ring and its projection *)
+(* 相关说明。 （已译） *)
 
 Definition QuotientRing {R : RingObject} (I : Ideal R) : RingObject.
 Proof.
@@ -431,8 +425,7 @@ Lemma rquot_proj_kills {R : RingObject} (I : Ideal R)
   idl_mem I x → rig_map (rquot_proj I) x ≈ rig_zero (QuotientRing I).
 Proof.
   intro Hx; simpl.
-  (* The [Type]-valued direction: [rquot_rel_of_mem] rather than the
-     truncated biconditional, so nothing is lost on the way in. *)
+  (* 相关说明。 （已译） *)
   exact (rquot_rel_of_mem I x Hx).
 Qed.
 
@@ -455,7 +448,7 @@ Lemma rquot_proj_epic {R : RingObject} (I : Ideal R) :
   Epic (rquot_proj I).
 Proof. apply rng_surjective_epic, rquot_proj_surjective. Qed.
 
-(** ** The functor of homomorphisms killing I *)
+(* * ** The 函子 homomorphisms killing I （已译） *)
 
 Definition RKills {R : RingObject} (I : Ideal R) (K : RingObject) : Type :=
   { h : R ~{Rng}~> K
@@ -556,7 +549,7 @@ End Mediator.
 
 Arguments rquot_med {R} I {K} p.
 
-(** ** Mac Lane §III.1 Exercise 6: ⟨R/I, p⟩ is a universal element *)
+(* 相关说明。 （已译） *)
 
 Definition rquot_elem {R : RingObject} (I : Ideal R) :
   RKills I (QuotientRing I) :=
@@ -591,7 +584,7 @@ Example rquot_universal_med_is_rquot_med {R : RingObject} (I : Ideal R)
     = rquot_med I x.
 Proof. reflexivity. Qed.
 
-(** ** The homomorphism theorem, as a biconditional *)
+(* * ** The homomorphism 定理, biconditional （已译） *)
 
 Theorem ring_hom_theorem {R K : RingObject} (I : Ideal R)
   (h : R ~{Rng}~> K) :
@@ -665,7 +658,7 @@ Example KernelIdeal_mem {R S : RingObject} (f : R ~{Rng}~> S)
   idl_mem (KernelIdeal f) a = (rig_map f a ≈ rig_zero S).
 Proof. reflexivity. Qed.
 
-(** ** Quotients by coextensive ideals agree *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Quotient 相关定义、性质与动机。
@@ -703,7 +696,7 @@ Next Obligation. intros R I I' H1 H2 x y; simpl; apply rquot_rel_refl. Qed.
 Next Obligation. intros R I I' H1 H2 x; simpl; apply rquot_rel_refl. Qed.
 Next Obligation. intros R I I' H1 H2 x; simpl; apply rquot_rel_refl. Qed.
 
-(** ** The degenerate ideals, named and separated *)
+(* 相关说明。 （已译） *)
 
 Program Definition TrivialIdeal (R : RingObject) : Ideal R := {|
   idl_mem := fun a : carrier (rig_setoid R) => a ≈ rig_zero R
@@ -755,9 +748,7 @@ Lemma rquot_total_collapses (R : RingObject)
   (x y : carrier (rig_setoid R)) : rquot_rel (TotalIdeal R) x y.
 Proof. constructor; exact ttt. Qed.
 
-(* Quotienting by the whole ring gives a ring in which 1 ≈ 0, which is
-   the zero ring up to the identification [rquot_total_collapses]
-   supplies. *)
+(* 相关说明。 （已译） *)
 Lemma rquot_total_one_is_zero (R : RingObject) :
   rig_one (QuotientRing (TotalIdeal R))
     ≈ rig_zero (QuotientRing (TotalIdeal R)).
@@ -769,8 +760,7 @@ Proof. exact (rquot_total_collapses R _ _). Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* ℤ's ring operations, pinned by convertibility -- what lets [ring] and
-   [lia] see the goals below, neither tactic seeing through [carrier]. *)
+(* 相关说明。 （已译） *)
 Example zring_zero_is_0 : rig_zero Int_Ring = 0%Z := eq_refl.
 Example zring_one_is_1 : rig_one Int_Ring = 1%Z := eq_refl.
 Example zring_add_is_add (a b : Z) : rig_add Int_Ring a b = (a + b)%Z :=
@@ -819,13 +809,10 @@ Proof.
   - simpl; discriminate.
 Qed.
 
-(* THE QUOTIENT DOES NOT COLLAPSE: 1 stays apart from 0 in ℤ/2ℤ, i.e.
-   ℤ/2ℤ is not the zero ring. *)
+(* 相关说明。 （已译） *)
 Theorem Z2_ring_not_collapsed : rquot_rel EvenIdeal 1%Z 0%Z → False.
 Proof.
-  (* One extra layer since the PR "algebraic carriers are sets"
-     (2026-09-17): [rquot_rel] is the truncation of membership, and the
-     goal [False] is a [Prop], so the elimination is allowed. *)
+  (* 相关说明。 （已译） *)
   intros [[k Hk]].
   assert (Hz : (1 - 0 = 2 * k)%Z) by exact Hk.
   lia.
@@ -836,8 +823,7 @@ Theorem Z2_ring_nonzero :
     → False.
 Proof. exact Z2_ring_not_collapsed. Qed.
 
-(* ...but it does collapse 2 into 0, so the projection is not injective
-   and the quotient is a genuine quotient rather than a relabelling. *)
+(* 相关说明。 （已译） *)
 Theorem Z2_ring_collapses_two :
   rig_map (rquot_proj EvenIdeal) 2%Z ≈ rig_map (rquot_proj EvenIdeal) 0%Z.
 Proof. constructor; exists 1%Z; reflexivity. Qed.
@@ -852,9 +838,7 @@ Proof.
   discriminate E.
 Qed.
 
-(* ℤ/2ℤ's ARITHMETIC, computed: 1 + 1 ≈ 0 and 1 · 1 ≈ 1, so the
-   MULTIPLICATIVE structure survives the quotient nondegenerately and
-   the ring is not merely an abelian group in disguise. *)
+(* 相关说明。 （已译） *)
 Theorem Z2_ring_one_plus_one :
   rig_add (QuotientRing EvenIdeal) 1%Z 1%Z
     ≈ rig_zero (QuotientRing EvenIdeal).
@@ -916,9 +900,7 @@ Proof.
   intros [k Hk].
   constructor.
   exists (3 * k)%Z.
-  (* The membership equation is CONVERTIBLE to one about plain ℤ, and
-     [exact] is what performs the conversion; [lia] and [ring] see
-     through neither [carrier] nor [rig_zero]. *)
+  (* 相关说明。 （已译） *)
   assert (Hz : (a - 0 = 2 * (3 * k))%Z) by lia.
   exact Hz.
 Qed.
@@ -929,7 +911,7 @@ Definition six_to_two : RKills SixIdeal (QuotientRing EvenIdeal) :=
 Definition Z6_to_Z2 : QuotientRing SixIdeal ~{Rng}~> QuotientRing EvenIdeal :=
   rquot_med SixIdeal six_to_two.
 
-(* The mediator is the one the CLASS produces, by convertibility. *)
+(* 相关说明。 （已译） *)
 Example Z6_to_Z2_is_the_mediator :
   unique_obj (@aue_universal _ (RKillsFunctor SixIdeal)
                 (QuotientRing SixIdeal) (rquot_universal_element SixIdeal)
@@ -937,8 +919,7 @@ Example Z6_to_Z2_is_the_mediator :
     = Z6_to_Z2.
 Proof. reflexivity. Qed.
 
-(* Its triangle, and its value: the class of 5 in ℤ/6ℤ goes to the class
-   of 1 in ℤ/2ℤ, and not to 0. *)
+(* 相关说明。 （已译） *)
 Lemma Z6_to_Z2_triangle : Z6_to_Z2 ∘ rquot_proj SixIdeal
     ≈ rquot_proj EvenIdeal.
 Proof. exact (rquot_med_commutes SixIdeal six_to_two). Qed.
@@ -955,9 +936,7 @@ Proof.
   lia.
 Qed.
 
-(* And the mediator is NOT injective: 3 and 1 are apart in ℤ/6ℤ but
-   agree in ℤ/2ℤ, so the factorization is genuinely a further
-   quotient. *)
+(* 相关说明。 （已译） *)
 Theorem Z6_three_apart_from_one : rquot_rel SixIdeal 3%Z 1%Z → False.
 Proof.
   intros [[k Hk]].

@@ -25,7 +25,7 @@ Generalizable All Variables.
 
 Open Scope R_scope.
 
-(** * Metric spaces with uniformly continuous maps; Mac Lane §IV.3 *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:  https://ncatlab.org/nlab/show/complete+metric+space
@@ -111,7 +111,7 @@ Program Definition MetU@{u o | o < u +} : Category@{u o o} := {|
   compose_respects := @umet_compose_respects
 |}.
 
-(** ** The complete spaces, a full subcategory *)
+(* 相关说明。 （已译） *)
 
 Definition CompleteSpacesU@{u o +} : Subcategory MetU@{u o} :=
   @Build_Subcategory MetU
@@ -129,7 +129,7 @@ Definition CMetU_Full@{u o +} :
   Construction.Subcategory.Full MetU@{u o} CompleteSpacesU :=
   fun _ _ _ _ _ => I.
 
-(** ** Isometries are uniformly continuous: the comparison Met ⟶ MetU *)
+(* 相关说明。 （已译） *)
 
 Definition iso_umap@{o +} {X Y : MetricSpace@{o}} (f : Isometry X Y) :
   UMap X Y.
@@ -174,7 +174,7 @@ Proof.
   discriminate H.
 Qed.
 
-(** ** Uniformly continuous maps preserve limits *)
+(* 相关说明。 （已译） *)
 
 Lemma umap_MConverges@{o +} {X Y : MetricSpace@{o}} (f : UMap X Y)
   (u : nat → X) (l : X) :
@@ -196,7 +196,7 @@ Proof.
   specialize (H r Hlt); lra.
 Qed.
 
-(** ** The extension of a uniformly continuous map to the completion *)
+(* 相关说明。 （已译） *)
 
 Section Extend.
 
@@ -320,7 +320,7 @@ Qed.
 
 End Extend.
 
-(** ** The completion as a universal arrow in MetU *)
+(* * ** The completion 泛箭头 MetU （已译） *)
 
 Definition CompletionU@{u o +} (X : MetricSpace@{o}) :
   Sub MetU@{u o} CompleteSpacesU :=
@@ -343,7 +343,7 @@ Proof.
     exact (uext_unique X (`1 d) (`2 d) f (`1 v) (fun a => symmetry (Hv a)) x).
 Defined.
 
-(** ** Mac Lane §IV.3: complete spaces are reflective in MetU *)
+(* 相关说明。 （已译） *)
 
 Definition CMet_Reflective_in_MetU@{u o +} :
   @Reflective MetU@{u o} CompleteSpacesU :=
@@ -361,7 +361,7 @@ Example completionU_reflector_obj@{u o +} (X : MetU@{u o}) :
 Example completionU_unit_pointwise@{u o +} (X : MetU@{u o}) (a : X) :
   umap (@unit _ _ _ _ completionU_adj X) a = eta_seq X a := eq_refl.
 
-(** ** The isometric companion: complete spaces reflective in Met *)
+(* 相关说明。 （已译） *)
 
 Definition CMet_Reflective_in_Met@{u o +} :
   @Reflective Met@{u o} CompleteSpaces :=
@@ -381,7 +381,7 @@ Example completion_unit_pointwise@{u o +} (X : Met@{u o}) (a : X) :
   isometry_map (@unit _ _ _ _ completion_adj X) a = eta_seq X a
   := eq_refl.
 
-(* The two reflections build the same space. *)
+(* 相关说明。 （已译） *)
 Example completion_reflectors_agree@{u o +} (X : MetricSpace@{o}) :
   `1 (fobj[@reflector MetU@{u o} _ CMet_Reflective_in_MetU] X)
     = `1 (fobj[@reflector Met@{u o} _ CMet_Reflective_in_Met] X) := eq_refl.

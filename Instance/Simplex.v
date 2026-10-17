@@ -9,7 +9,7 @@ Require Import Coq.micromega.Lia.
 
 Generalizable All Variables.
 
-(** * Simplex, the simplicial category Δ *)
+(* * * Simplex, simplicial 范畴 Δ （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Simplicial_category
@@ -110,13 +110,13 @@ Program Definition Simplex_FinSet : Simplex ⟶ FinSet := {|
   fmap := fun m n f => mono_map f
 |}.
 
-(* Wide: the inclusion is the identity on objects, so every object of
-   FinSet is hit, and hit exactly once. *)
+(* Wide: 含入 恒等 对象, so every 对象 of
+ FinSet hit, hit exactly once. （已译） *)
 Lemma Simplex_FinSet_wide (n : nat) : Simplex_FinSet n = n.
 Proof. reflexivity. Qed.
 
-(* Faithful: the hom-setoid of [Simplex] compares exactly the data the
-   inclusion retains, so its hom-maps are injective on the nose. *)
+(* Faithful: hom-setoid [Simplex] compares exactly data the
+ 含入 retains, so hom-maps injective nose. （已译） *)
 Lemma Simplex_fmap_inj {m n : nat} (f g : @hom Simplex m n) :
   (∀ i, mono_map f i = mono_map g i) → f ≈ g.
 Proof. intro H; exact H. Qed.
@@ -148,8 +148,8 @@ Proof.
   unfold fin_le, fin_nat in Hle; simpl in Hle; lia.
 Qed.
 
-(* Non-fullness follows: a [Full] structure would supply exactly such a
-   morphism as the chosen preimage of the swap. *)
+(* Non-fullness follows: [Full] structure would supply exactly such a
+ 态射 chosen preimage swap. （已译） *)
 Lemma Simplex_FinSet_not_Full : Full Simplex_FinSet → False.
 Proof.
   intro H.
@@ -253,7 +253,7 @@ Definition sdegen {n : nat} (i : Fin.t n) : @hom Simplex (S n) n :=
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* δ_1 : 2 ~> 3 omits the value 1 — it sends 0 ↦ 0 and 1 ↦ 2. *)
+(* 相关说明。 （已译） *)
 Example sface_skips_at_0 :
   fin_nat (mono_map (@sface 2%nat (Fin.FS Fin.F1)) Fin.F1) = 0%nat := eq_refl.
 
@@ -261,7 +261,7 @@ Example sface_skips_at_1 :
   fin_nat (mono_map (@sface 2%nat (Fin.FS Fin.F1)) (Fin.FS Fin.F1))
     = 2%nat := eq_refl.
 
-(* σ_1 : 3 ~> 2 repeats the value 1 — it sends 0 ↦ 0, 1 ↦ 1 and 2 ↦ 1. *)
+(* 相关说明。 （已译） *)
 Example sdegen_repeats_at_0 :
   fin_nat (mono_map (@sdegen 2%nat (Fin.FS Fin.F1)) Fin.F1) = 0%nat := eq_refl.
 

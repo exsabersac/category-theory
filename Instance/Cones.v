@@ -6,7 +6,7 @@ Require Import Category.Structure.Cone.
 
 Generalizable All Variables.
 
-(** * The category of cones over a diagram *)
+(* * * The 范畴 cones over diagram （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Cone_(category_theory)

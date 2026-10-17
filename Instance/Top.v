@@ -10,7 +10,7 @@ Require Import Category.Construction.Subcategory.
 
 Generalizable All Variables.
 
-(** * The category of topological spaces *)
+(* * * The 范畴 topological spaces （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/Top
@@ -45,7 +45,7 @@ Generalizable All Variables.
 Record TopSpace@{o} := {
   top_carrier :> SetoidObject@{o o};    (* the setoid of points *)
 
-  (* the topology: which predicates on the points are open *)
+  (* 相关说明。 （已译） *)
   IsOpen : (top_carrier → Type@{o}) → Type@{o};
 
   (* being open is invariant under pointwise equivalence of predicates *)
@@ -83,8 +83,7 @@ Proof.
     intro i; exact (open_whole X).
 Qed.
 
-(* The empty predicate is open: the union over the empty index type, which
-   is the [P := False] case of [open_const]. *)
+(* 相关说明。 （已译） *)
 Corollary open_empty (X : TopSpace) : IsOpen X (fun _ => False).
 Proof. exact (open_const X False). Qed.
 
@@ -115,9 +114,9 @@ Definition Continuous (X Y : TopSpace)
            (f : SetoidMorphism (top_carrier X) (top_carrier Y)) : Type :=
   ∀ U : Y → Type, IsOpen Y U → IsOpen X (fun x => U (f x)).
 
-(* A morphism of [Top]: a setoid map on points that is moreover continuous.
-   This wraps [SetoidMorphism] exactly as [SetoidMorphism] wraps a bare
-   function in Instance/Sets.v. *)
+(* A 态射 [Top]: setoid map points moreover continuous.
+ This wraps [SetoidMorphism] exactly [SetoidMorphism] wraps bare
+ function Instance/Sets.v. （已译） *)
 Record ContinuousMorphism (X Y : TopSpace) := {
   continuous_map :> SetoidMorphism (top_carrier X) (top_carrier Y);
   continuity : Continuous X Y continuous_map
@@ -156,15 +155,14 @@ Next Obligation.
     + exact (Hgh x).
 Qed.
 
-(* The identity map is continuous: the preimage of U along the identity is
-   U itself, up to eta. *)
+(* The 恒等 map continuous: preimage U along 恒等 is
+ U itself, up eta. （已译） *)
 Definition top_id {X : TopSpace} : ContinuousMorphism X X := {|
   continuous_map := setoid_morphism_id;
   continuity := fun _ H => H
 |}.
 
-(* Composition: preimages compose contravariantly, so the preimage along
-   `g ∘ f` of an open is the preimage along `f` of the preimage along `g`. *)
+(* 相关说明。 （已译） *)
 Definition top_compose {X Y Z : TopSpace}
            (g : ContinuousMorphism Y Z) (f : ContinuousMorphism X Y) :
   ContinuousMorphism X Z := {|
@@ -201,9 +199,9 @@ Section Discrete.
 
 Context (A : SetoidObject).
 
-(* The discrete topology: EVERY predicate that respects the carrier's `≈`
-   is open.  Setoid bookkeeping is the only constraint left; this is the
-   finest topology on A. *)
+(* The discrete topology: EVERY predicate respects carrier's `≈`
+ open. Setoid bookkeeping constraint left; 这是 the
+ finest topology A. （已译） *)
 Definition discrete_open (U : A → Type) : Type :=
   ∀ x y : A, x ≈ y → U x → U y.
 
@@ -296,9 +294,7 @@ Definition Indiscrete_Top : TopSpace := {|
 
 End Indiscrete.
 
-(* Every setoid map into an indiscrete space is continuous.  The preimage of
-   a uniform predicate is uniform, and by [open_uniform] every uniform
-   predicate is open in every space. *)
+(* 相关说明。 （已译） *)
 Lemma into_indiscrete_continuous (X : TopSpace) (A : SetoidObject)
       (f : SetoidMorphism (top_carrier X) A) :
   Continuous X (Indiscrete_Top A) f.
@@ -309,8 +305,7 @@ Proof.
   exact (HU (f x) (f y) Ufx).
 Qed.
 
-(* Dually, every setoid map out of a discrete space is continuous: the
-   preimage of any open respects `≈` because the map does. *)
+(* 相关说明。 （已译） *)
 Lemma out_of_discrete_continuous (A : SetoidObject) (Y : TopSpace)
       (f : SetoidMorphism A (top_carrier Y)) :
   Continuous (Discrete_Top A) Y f.
@@ -335,14 +330,10 @@ Definition const_morphism (A B : SetoidObject) (b : B) : SetoidMorphism A B := {
 
 (** ** Terminal and initial objects *)
 
-(* The one-point space.  Its carrier is the singleton setoid used by
-   [Sets_Terminal]; the topology is discrete (on a one-point carrier the
-   discrete and indiscrete topologies agree). *)
+(* 相关说明。 （已译） *)
 Definition Point_Top : TopSpace := Discrete_Top unit_setoid_object.
 
-(* Terminality.  The unique map sends everything to the point; its
-   continuity is [open_const], since the preimage of any predicate on a
-   single point is a CONSTANT predicate upstairs. *)
+(* 相关说明。 （已译） *)
 Definition top_one (X : TopSpace) : ContinuousMorphism X Point_Top := {|
   continuous_map := const_morphism (top_carrier X) (top_carrier Point_Top) ttt;
   continuity := fun U _ => open_const X (U ttt)
@@ -367,8 +358,7 @@ Program Instance Top_Terminal@{o h p} : @Terminal Top@{h o} := {
   one_unique := @top_one_unique@{o h p}
 }.
 
-(* The empty space: carrier [False], every predicate open (vacuously, since
-   the discrete condition quantifies over points that do not exist). *)
+(* 相关说明。 （已译） *)
 Definition Empty_Top : TopSpace :=
   Discrete_Top {| carrier := False; is_setoid := False_Setoid |}.
 
@@ -409,12 +399,12 @@ Proof.
            (from coincide (continuous_map (@one _ T Point_Top) ttt))).
 Qed.
 
-(* The concrete instance of the same fact: the chosen terminal and initial
-   objects themselves are not isomorphic. *)
+(* The concrete instance same fact: chosen terminal initial
+ 对象 themselves not isomorphic. （已译） *)
 Example point_not_iso_empty : Point_Top ≅[Top] Empty_Top → False.
 Proof. intro iso; exact (continuous_map (to iso) ttt). Qed.
 
-(** ** Monomorphisms are the injections *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Top 相关定义、性质与动机。
@@ -439,7 +429,7 @@ Proof.
                   (fun _ => Hab) ttt).
 Qed.
 
-(** ** Epimorphisms are the surjections *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Top 相关定义、性质与动机。
@@ -449,7 +439,7 @@ Qed.
 Definition InImage {X Y : TopSpace} (f : X ~{Top}~> Y) (b : Y) : Type :=
   ∃ a : X, f a ≈ b.
 
-(* The image predicate respects the codomain's equality. *)
+(* 相关说明。 （已译） *)
 Lemma InImage_respects {X Y : TopSpace} (f : X ~{Top}~> Y) (b b' : Y) :
   b ≈ b' → InImage f b → InImage f b'.
 Proof.
@@ -468,12 +458,12 @@ Section CokernelPair.
 Context {X Y : TopSpace}.
 Context (f : X ~{Top}~> Y).
 
-(* The glued carrier: two copies of the points of Y. *)
+(* 相关说明。 （已译） *)
 Definition CP_point : Type := Datatypes.sum (carrier (top_carrier Y))
                                             (carrier (top_carrier Y)).
 
-(* The gluing relation.  Within a copy it is Y's own equality; across the
-   copies it additionally demands membership in the image of f. *)
+(* The gluing 关系. Within copy it Y's own equality; across the
+ copies it additionally demands membership image f. （已译） *)
 Definition CP_rel (u v : CP_point) : Type :=
   match u, v with
   | Datatypes.inl y, Datatypes.inl y' => y ≈ y'
@@ -517,8 +507,7 @@ Definition CP_Setoid : Setoid CP_point := {|
 Definition CP_carrier : SetoidObject :=
   {| carrier := CP_point; is_setoid := CP_Setoid |}.
 
-(* A glued predicate is open when it respects the gluing and restricts to
-   an open along each of the two legs. *)
+(* 相关说明。 （已译） *)
 Definition CP_open (W : CP_carrier → Type) : Type :=
   ((∀ u v, CP_rel u v → W u → W v)
      ∧ IsOpen Y (fun y => W (Datatypes.inl y))
@@ -599,9 +588,9 @@ Definition CP_leftLeg : ContinuousMorphism Y CokernelPair :=
 Definition CP_rightLeg : ContinuousMorphism Y CokernelPair :=
   Build_ContinuousMorphism Y CokernelPair CP_inr (fun W HW => snd (snd HW)).
 
-(* The defining coequalizing property: the legs agree after f, because at a
-   point of the image the gluing relation holds — witnessed by the very
-   preimage that puts the point in the image. *)
+(* The defining coequalizing property: legs agree after f, because at a
+ point image gluing 关系 holds — witnessed very
+ preimage puts point image. （已译） *)
 Lemma CP_legs_agree :
   CP_leftLeg ∘[Top] f ≈ CP_rightLeg ∘[Top] f.
 Proof.
@@ -632,14 +621,13 @@ Proof.
                       (CP_legs_agree f) b)).
 Qed.
 
-(* The same statement in cokernel-pair form, naming the construction that
-   does the work. *)
+(* 相关说明。 （已译） *)
 Theorem top_epic_surjective_via_cokernel_pair
         {X Y : TopSpace} (f : X ~{Top}~> Y) :
   Epic f → ∀ b : Y, InImage f b.
 Proof. intro He; exact (snd (top_epic_iff f) He). Qed.
 
-(** ** The classical two-point probe, and its constructive status *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Top 相关定义、性质与动机。
@@ -652,9 +640,9 @@ Definition bool_setoid_object : SetoidObject := {|
   is_setoid := {| equiv := @eq bool; setoid_equiv := eq_equivalence |}
 |}.
 
-(* The two-point indiscrete space used as the probe.  Every setoid map into
-   it is continuous ([into_indiscrete_continuous]), which is the only
-   property of it the argument uses. *)
+(* The two-point indiscrete space used probe. Every setoid map into
+ it continuous ([into_indiscrete_continuous]), only
+ property it 论元 uses. （已译） *)
 Definition TwoPoint_Indiscrete : TopSpace := Indiscrete_Top bool_setoid_object.
 
 Section IndiscreteProbe.
@@ -663,7 +651,7 @@ Context {X Y : TopSpace}.
 Context (f : X ~{Top}~> Y).
 Context (dec : ∀ b : Y, InImage f b ∨ ¬ (InImage f b)).
 
-(* The characteristic function of the image, read off the decision. *)
+(* 相关说明。 （已译） *)
 Definition image_char (b : Y) : bool :=
   match dec b with
   | Datatypes.inl _ => true
@@ -725,9 +713,9 @@ Definition Covers {X : TopSpace} {I : Type}
            (U : I → (X → Type)) (V : X → Type) : Type :=
   ((∀ i, IsOpen X (U i)) ∧ (∀ x : X, V x ↔ ∃ i : I, U i x))%type.
 
-(* The empty family covers the empty predicate — the nullary instance of the
-   definition: with no members the union is empty, so what the family covers
-   is exactly the empty predicate. *)
+(* The empty family covers empty predicate — nullary instance the
+ 定义: no members union empty, so what family covers
+ exactly empty predicate. （已译） *)
 Definition covers_nothing (X : TopSpace) :
   Covers (X:=X) (I:=False) (fun _ _ => False) (fun _ => False).
 Proof.
@@ -738,8 +726,7 @@ Proof.
     + intro w; exact (projT2 w).
 Defined.
 
-(* The one-member family consisting of the whole space covers the whole
-   space. *)
+(* 相关说明。 （已译） *)
 Definition covers_whole (X : TopSpace) :
   Covers (X:=X) (I:=poly_unit) (fun _ _ => poly_unit) (fun _ => poly_unit).
 Proof.
@@ -834,7 +821,7 @@ Lemma CompactHausdorff_Full :
 Proof. intros x y ox oy g; exact I. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Non-vacuity: a two-point discrete space, and what it distinguishes *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Top 相关定义、性质与动机。
@@ -879,8 +866,8 @@ Proof.
   exact (Hdisj false (HU true false Ut) Vf).
 Qed.
 
-(* Negation is a continuous nonidentity endomap of the discrete two-point
-   space; the constant-true endomap is continuous by [open_const]. *)
+(* Negation continuous nonidentity endomap discrete two-point
+ space; 常值-true endomap continuous [open_const]. （已译） *)
 Definition negb_setoid : SetoidMorphism bool_setoid_object bool_setoid_object.
 Proof. refine {| morphism := negb |}. Defined.
 

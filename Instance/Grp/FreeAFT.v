@@ -20,7 +20,7 @@ Require Import Category.Instance.Grp.Limit.
 
 Generalizable All Variables.
 
-(** * The free group functor, read through the adjoint functor theorem *)
+(* * * The free group 函子, read through adjoint 函子 定理 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/free+group
@@ -30,8 +30,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** [Prop] congruences on the free group's carrier: a solution set AT
-       the carrier universe *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -58,8 +57,8 @@ Record IsGrpCongruence (Rq : FGWord X → FGWord X → Prop) : Prop := {
 Definition FGCongIdx : Type :=
   { Rq : FGWord X → FGWord X → Prop & IsGrpCongruence Rq }.
 
-(* NAMED, or [PropEquiv_of_relation] picks the ambient setoid by resolution
-   and both implications are refused. *)
+(* NAMED, [PropEquiv_of_relation] picks ambient setoid resolution
+ both 蕴含 refused. （已译） *)
 Definition QGrp_Setoid (Rq : FGWord X → FGWord X → Prop)
   (H : IsGrpCongruence Rq) : Setoid (FGWord X) :=
   {| equiv := Rq
@@ -90,8 +89,8 @@ Definition QGrp (Rq : FGWord X → FGWord X → Prop)
                    (fun _ _ h => h) (fun _ _ h => h)
   |}.
 
-(* The insertion of generators into the quotient.  Written as a TACTIC
-   proof: the record field expects `≈`, which is [Rq] only after delta. *)
+(* The 嵌入 generators 进入 quotient. Written TACTIC
+ 证明: record field expects `≈`, [Rq] after delta. （已译） *)
 Definition QGrp_insert (Rq : FGWord X → FGWord X → Prop)
   (H : IsGrpCongruence Rq) : X ~{Sets}~> Grp_Forget (QGrp Rq H).
 Proof.
@@ -172,7 +171,7 @@ Arguments fg_ker_is_cong {X G} h.
 Arguments fg_ker_idx {X G} h.
 Arguments fg_ker_med {X G} h.
 
-(** ** The solution set, and the application *)
+(* 相关说明。 （已译） *)
 
 (* NAMED so that both record fields elaborate [QGrp] at ONE universe
    instance; written inline they mint two. *)
@@ -182,9 +181,7 @@ Definition QGrpOf {X : Sets} (i : FGCongIdx X) : obj[Grp] :=
 Definition QGrpInsertOf {X : Sets} (i : FGCongIdx X)
   : X ~{Sets}~> Grp_Forget (QGrpOf i) := QGrp_insert (`1 i) (`2 i).
 
-(* THE NON-CIRCULAR SOLUTION SET.  The covering of an [h : X ~> U c] is its
-   own kernel congruence, and the covering equation is
-   [free_grp_extend_generators] on the nose. *)
+(* 相关说明。 （已译） *)
 Definition Grp_Forget_solution_set_prop (X : Sets) : SolutionSet Grp_Forget X.
 Proof.
   unshelve refine (@Build_SolutionSet Grp Sets Grp_Forget X
@@ -204,16 +201,14 @@ Definition Grp_Forget_solution_set_from_adjunction (X : Sets) :
   SolutionSet Grp_Forget X :=
   solution_set_of_adjunction free_group_adjunction X.
 
-(* UNCONDITIONAL and non-circular since this PR.  The statement is
-   unchanged; only the fourth argument moved. *)
+(* UNCONDITIONAL non-circular since PR. The statement is
+ unchanged; fourth 论元 moved. （已译） *)
 Definition free_group_via_GAFT : ∃ F : Sets ⟶ Grp, F ⊣ Grp_Forget :=
   GAFT Grp_Forget Grp_Complete
        (Continuous_PreservesImageLimit Grp_Forget_continuous)
        Grp_Forget_solution_set_prop.
 
-(* The circular reading of the same application, kept under a name that
-   says so.  Its type is the type [free_group_via_GAFT] always had, which
-   is why nothing downstream had to change. *)
+(* 相关说明。 （已译） *)
 Definition free_group_via_GAFT_from_adjunction :
   ∃ F : Sets ⟶ Grp, F ⊣ Grp_Forget :=
   GAFT Grp_Forget Grp_Complete
@@ -235,7 +230,7 @@ Definition free_group_via_GAFT_agrees : `1 free_group_via_GAFT ≈ FreeGrp :=
   left_adjoint_iso Grp_Forget _ FreeGrp (`2 free_group_via_GAFT)
                    free_group_adjunction.
 
-(** ** Riehl §5.1: the induced monad on Sets *)
+(* * ** Riehl §5.1: induced 单子 Sets （已译） *)
 
 Definition free_group_monad : @Monad Sets (Grp_Forget ◯ FreeGrp) :=
   Adjunction_Induced_Monad free_group_adjunction.
@@ -255,9 +250,9 @@ Example free_group_monad_join (X : Sets) :
     = fmap[Grp_Forget] (free_group_counit (FreeGrp X))
   := eq_refl.
 
-(* ...and Riehl's description of the underlying endofunctor — a set goes to
-   the words in its letters and their formal inverses — is the carrier of
-   [(U ◯ F) X], on the nose. *)
+(* ...and Riehl's description underlying 自函子 — set goes to
+ words letters formal inverses — carrier of
+ [(U ◯ F) X], nose. （已译） *)
 Example free_group_monad_carrier (X : Sets) :
   carrier ((Grp_Forget ◯ FreeGrp) X) = FGWord X := eq_refl.
 
@@ -281,9 +276,7 @@ Notation SetOne := unit_setoid_object.
 Notation grp_adj G :=
   (@adj Grp Sets FreeGrp Grp_Forget free_group_adjunction SetOne G).
 
-(* The two directions are lifted out of the record literal: inside
-   [{| to := … |}] the names [to] and [from] resolve to the fields being
-   defined, not to [Isomorphism]'s projections. *)
+(* 相关说明。 （已译） *)
 
 Program Definition grp_repr_const (G : Grp) (a : carrier (Grp_Forget G)) :
   SetOne ~{Sets}~> Grp_Forget G := {| morphism := fun _ => a |}.
@@ -336,9 +329,9 @@ Next Obligation.
 Qed.
 Next Obligation. symmetry; exact (grp_repr_from_natural f x0 a). Qed.
 Next Obligation. exact (grp_repr_from_natural f x0 a). Qed.
-(* The two isomorphism laws are the adjunction's own, read at [ttt].  In
-   [Sets] an equation between morphisms is pointwise, so each is the
-   corresponding [iso_?_from] applied to a point. *)
+(* The two 同构 laws 伴随's own, read at [ttt]. In
+ [Sets] equation between 态射 pointwise, so each the
+ corresponding [iso_?_from] applied point. （已译） *)
 Next Obligation. exact (iso_to_from (grp_adj x) (grp_repr_const x x0) ttt). Qed.
 Next Obligation.
   unfold grp_repr_from, grp_repr_to.
@@ -359,8 +352,7 @@ Qed.
 Notation grp_adj_at X H :=
   (@adj Grp Sets FreeGrp Grp_Forget free_group_adjunction X H).
 
-(* The transpose of [g] agrees with [g] at the unit.  This is
-   [to_adj_unit] composed with [iso_to_from], read pointwise. *)
+(* 相关说明。 （已译） *)
 Lemma free_group_transpose_at_unit {X : Sets} (H : Grp)
       (g : X ~{Sets}~> Grp_Forget H) (a : carrier X) :
   g a ≈ fmap[Grp_Forget] (from (grp_adj_at X H) g) (free_group_unit X a).
@@ -397,34 +389,31 @@ Qed.
 Definition SetoidDecidable (X : Sets) : Type :=
   ∀ a b : carrier X, (a ≈ b) + ((a ≈ b) → False).
 
-(* The characteristic map of [a], the separating map of Mac Lane's
-   argument.  This is the step that needs [dec]: without it there is no
-   function at all, respectfulness aside. *)
+(* The characteristic map [a], separating map Mac Lane's
+ 论元. This step needs [dec]: without it there no
+ function at all, respectfulness aside. （已译） *)
 Program Definition grp_chi {X : Sets} (dec : SetoidDecidable X)
         (a : carrier X) : X ~{Sets}~> Grp_Forget Z2 := {|
   morphism := fun x => if dec x a then true else false
 |}.
 Next Obligation.
   proper.
-  (* Name the premise by its shape: since #450 made [Z2]'s setoid
-     universe-polymorphic the goal reads [Proper (equiv ==> eq)] and
-     [proper] no longer calls the premise [H]. *)
+  (* 相关说明。 （已译） *)
   match goal with Hxy : @equiv _ _ _ _ |- _ => rename Hxy into H end.
   destruct (dec x a) as [e1|n1], (dec y a) as [e2|n2]; auto.
   - now destruct (n2 (transitivity (symmetry H) e1)).
   - now destruct (n1 (transitivity H e2)).
 Qed.
 
-(** Mac Lane's separation argument, with the decision procedure it needs
-    made explicit.  Distinct generators stay distinct in the free group. *)
+(** Mac Lane's separation 论元, decision procedure it needs
+ made explicit. Distinct generators stay distinct free group. （已译） *)
 Theorem free_group_unit_injective_dec {X : Sets} (dec : SetoidDecidable X)
         (a b : carrier X) :
   free_group_unit X a ≈ free_group_unit X b → a ≈ b.
 Proof.
   intro Heq.
   destruct (dec a b) as [Hab|Hab]; [exact Hab|].
-  (* The two sides disagree at [grp_chi dec a], which the transpose
-     forbids. *)
+  (* 相关说明。 （已译） *)
   assert (Hchi : grp_chi dec a a ≈ grp_chi dec a b).
   { transitivity (fmap[Grp_Forget]
                     (from (grp_adj_at X Z2) (grp_chi dec a))

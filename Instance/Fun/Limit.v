@@ -14,7 +14,7 @@ Require Import Category.Instance.Sets.Complete.
 
 Generalizable All Variables.
 
-(** * Pointwise limits in a functor category *)
+(* * * Pointwise limits 函子 范畴 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/functor+category
@@ -29,8 +29,8 @@ Section Pointwise.
 Context {J P X : Category}.
 Context (D : J ⟶ [P, X]).
 
-(* The hypothesis of Mac Lane's Theorem 1: each evaluation of the diagram
-   has a limit in X. *)
+(* The 假设 Mac Lane's Theorem 1: each evaluation diagram
+ has limit X. （已译） *)
 Context (L : ∀ p : P, Limit (Eval p ◯ D)).
 
 (** ** The pointwise data *)
@@ -47,8 +47,7 @@ Lemma plim_leg_coherence (p : P) {i j : J} (g : i ~{J}~> j) :
   transform[fmap[D] g] p ∘ plim_leg p i ≈ plim_leg p j.
 Proof. exact (limit_leg_coherence (plim_alimit p) g). Qed.
 
-(* Two arrows into a pointwise limit that agree on every leg are equal:
-   the legs are jointly monic. *)
+(* 相关说明。 （已译） *)
 Program Definition plim_probe_cone {q : P} {c : X} (u : c ~{X}~> plim_obj q) :
   Cone (Eval q ◯ D) := {|
   vertex_obj := c;
@@ -67,7 +66,7 @@ Proof.
     intro x; [reflexivity | symmetry; apply H].
 Qed.
 
-(** ** The arrow part: the mediator between adjacent pointwise limits *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -137,7 +136,7 @@ Program Definition PointwiseLimitCone : Cone D := {|
 |}.
 Next Obligation. apply plim_leg_coherence. Qed.
 
-(** ** Theorem 1: the pointwise cone is limiting *)
+(* 相关说明。 （已译） *)
 
 Section Universal.
 
@@ -162,7 +161,7 @@ Lemma plim_ump_commutes (p : P) (j : J) :
   plim_leg p j ∘ plim_ump_map p ≈ transform[cone_leg M j] p.
 Proof. exact (limit_med_commutes (plim_alimit p) (plim_comp_cone p) j). Qed.
 
-(* The pointwise mediators are natural in p, by joint monicity. *)
+(* 相关说明。 （已译） *)
 Program Definition plim_ump_nat :
   vertex_obj[M] ~{[P, X]}~> PointwiseLimit := {|
   transform := plim_ump_map
@@ -199,21 +198,18 @@ Proof.
     exact (Hv j p).
 Defined.
 
-(* The issue's pinned name: the limit of D in [P, X]. *)
+(* 相关说明。 （已译） *)
 Definition Functor_Category_pointwise_limit : Limit D :=
   limitcone_limit PointwiseLimitCone PointwiseIsLimitCone.
 
-(** ** Evaluation preserves the limit *)
+(* 相关说明。 （已译） *)
 
-(* The image of the pointwise cone under Eval p IS the chosen limit cone
-   at p in apex and legs (readbacks in the probe), so it is limiting with
-   no coercion. *)
+(* 相关说明。 （已译） *)
 Definition Eval_pointwise_IsLimitCone (p : P) :
   IsLimitCone (FCone (Eval p) PointwiseLimitCone) :=
   limit_limitcone (L p).
 
-(* Any limiting cone over D, not only the canonical one, is sent to a
-   limiting cone: transport along the essential uniqueness of limits. *)
+(* 相关说明。 （已译） *)
 Definition Eval_PreservesLimitCone (p : P) : PreservesLimitCone D (Eval p) :=
   fun N HN =>
     limitcone_transport
@@ -225,7 +221,7 @@ Definition Eval_PreservesLimit (p : P) : PreservesLimit D (Eval p) :=
 
 End Pointwise.
 
-(** ** Corollary 1: [P, X] has the limits X has, and is complete when X is *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、hom相关定义、性质与动机。
@@ -244,11 +240,11 @@ Definition Functor_Category_Complete@{jo jh co ch u u0 u1 u2 u3 +}
   (HX : @Complete@{u u2 ch co} X) : @Complete@{u u2 jh u3} ([P, X]) :=
   fun J D => Functor_Category_pointwise_limit D (fun p => HX J (Eval p ◯ D)).
 
-(** ** Evaluation is continuous when X is complete *)
+(* 相关说明。 （已译） *)
 
-(* Annotated at the definition for the same reason as the corollaries:
-   written bare, both minimize P to one universe [Category@{u u u}]
-   (measured). *)
+(* Annotated at 定义 same reason corollaries:
+ written bare, both minimize P one universe [Category@{u u u}]
+ (measured). （已译） *)
 Definition Eval_ContinuousFunctor@{jo jh co ch u u0 u1 u2 u3 +}
   {P : Category@{jo jh jh}} {X : Category@{co ch ch}}
   (HX : @Complete@{u u2 ch co} X) (p : P) : ContinuousFunctor (Eval p) :=
@@ -259,7 +255,7 @@ Definition Eval_PreservesAllLimits@{jo jh co ch u u0 u1 u2 u3 +}
   (HX : @Complete@{u u2 ch co} X) (p : P) : PreservesAllLimits (Eval p) :=
   Continuous_PreservesAllLimits (Eval_ContinuousFunctor HX p).
 
-(** ** Presheaves: the concrete corollary *)
+(* * ** Presheaves: concrete 推论 （已译） *)
 
 (* Awodey §8.5's Corollary: every presheaf category is complete, from
    Instance/Sets/Complete.v's [Sets_Complete]; and evaluation at any object

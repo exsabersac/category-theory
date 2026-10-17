@@ -16,8 +16,7 @@ Require Import Category.Instance.Top.Complete.
 
 Generalizable All Variables.
 
-(** * Where completeness of spaces stops: [PTopCat], and [Top] below its
-      homs *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/complete+small+category
@@ -28,7 +27,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Evaluation at the point separates the two points of [PBool] *)
+(* 相关说明。 （已译） *)
 
 Definition pbool_eval_pt@{o so +| o < so +}
   (f : PPoint@{o} ~{PTopCat@{o so}}~> PBool@{o}) : bool :=
@@ -39,7 +38,7 @@ Lemma pbool_eval_pt_resp@{o so +| o < so +}
   u ≈ v → pbool_eval_pt u = pbool_eval_pt v.
 Proof. intro H. exact (H ttt). Qed.
 
-(** ** Freyd's core at an arbitrary arrow index *)
+(* 相关说明。 （已译） *)
 
 Theorem PTop_not_complete_Freyd@{r s o so +| o < so +}
   (AI : ArrowIndex@{s so o} PTopCat@{o so})
@@ -58,8 +57,8 @@ Proof.
            (canonical_ArrowIndex (ObjDecEq_of_IEM E PTopCat@{o so})) comp).
 Qed.
 
-(* The objects and homs of [PTopCat@{o so1}] and [PTopCat@{o so2}] are the
-   same [PTop@{o}] and [PMor@{o}], so an arrow index moves between them. *)
+(* The 对象 homs [PTopCat@{o so1}] [PTopCat@{o so2}] the
+ same [PTop@{o}] [PMor@{o}], so arrow index moves between them. （已译） *)
 Definition PTop_ArrowIndex_transport@{s o so1 so2 +| o < so1, o < so2 +}
   (AI : ArrowIndex@{s so1 o} PTopCat@{o so1}) :
   ArrowIndex@{s so2 o} PTopCat@{o so2} :=
@@ -68,8 +67,7 @@ Definition PTop_ArrowIndex_transport@{s o so1 so2 +| o < so1, o < so2 +}
     (fun x y m d => @ai_dec PTopCat@{o so1} AI x y m d)
     (fun x y f d => @ai_dec_enc PTopCat@{o so1} AI x y f d).
 
-(* Every shape universe strictly above the points: decidable equality of
-   spaces, transported to the canonical index at [s]. *)
+(* 相关说明。 （已译） *)
 Theorem PTop_not_complete_ObjDecEq@{r s o so +| o < so, o < s +}
   (DO : ObjDecEq PTopCat@{o so})
   (comp : @Complete@{r s o so} PTopCat@{o so}) : False.
@@ -86,7 +84,7 @@ Proof.
   exact (PTop_not_complete_ObjDecEq (ObjDecEq_of_IEM E PTopCat@{o so}) comp).
 Qed.
 
-(** ** No arrow index at or below the points, constructively *)
+(* 相关说明。 （已译） *)
 
 Definition PTop_no_ArrowIndex_at_points@{o so +| o < so +}
   (AI : ArrowIndex@{o so o} PTopCat@{o so}) : False :=
@@ -110,10 +108,10 @@ Proof.
            pbool_eval_pt pbool_eval_pt_resp eq_refl eq_refl).
 Qed.
 
-(** ** The Type-valued [Top]: products at and above the hom universe *)
+(* 相关说明。 （已译） *)
 
-(* The canonical index of [Top@{h o}] sits at its object universe [h], and
-   indexes at every [s] with [h <= s]. *)
+(* The canonical index [Top@{h o}] sits at 对象 universe [h], and
+ indexes at every [s] [h <= s]. （已译） *)
 Theorem Top_iprod_refuted_IEM_canonical@{e s h o +| o < h, h <= s +}
   (E : IEM@{e}) (HP : @HasIndexedProducts@{s s s s h h} Top@{h o}) : False.
 Proof.
@@ -125,7 +123,7 @@ Proof.
            eq_refl eq_refl).
 Qed.
 
-(** ** The Type-valued [Top]: an arrow index moves between hom universes *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Refutations 相关定义、性质与动机。
@@ -137,8 +135,7 @@ Definition top_rebuild@{o h1 h2 | o < h1, o < h2 +} {X Y : TopSpace@{o}}
   {| continuous_map := continuous_map f;
      continuity := fun U HU => continuity f U HU |}.
 
-(* The index never mentions a hom universe: encode and decode through the
-   rebuild, both ways; the decoding law is pointwise. *)
+(* 相关说明。 （已译） *)
 Definition Top_ArrowIndex_transport@{s o h1 h2 | o < h1, o < h2 +}
   (AI : ArrowIndex@{s h1 h1} Top@{h1 o}) :
   ArrowIndex@{s h2 h2} Top@{h2 o} :=
@@ -149,9 +146,7 @@ Definition Top_ArrowIndex_transport@{s o h1 h2 | o < h1, o < h2 +}
     (fun x y f d z => @ai_dec_enc Top@{h1 o} AI x y (top_rebuild@{o h2 h1} f)
                         (top_rebuild@{o h2 h1} d) z).
 
-(* Every shape universe strictly above the points, the shapes below the
-   homs included: the canonical index is built at [Top@{s o}] and
-   transported to [Top@{h o}]. *)
+(* 相关说明。 （已译） *)
 Theorem Top_not_complete_below_ObjDecEq@{r s h o +| o < h, o < s +}
   (DE : ObjDecEq Top@{h o}) (comp : @Complete@{r s h h} Top@{h o}) : False.
 Proof.
@@ -167,9 +162,7 @@ Proof.
   exact (Top_not_complete_below_ObjDecEq (ObjDecEq_of_IEM E Top@{h o}) comp).
 Qed.
 
-(* Products indexed strictly above the points and at or below the homs:
-   the reading of [HasIndexedProducts] whose fourth slot is the hom
-   universe. *)
+(* 相关说明。 （已译） *)
 Theorem Top_iprod_refuted_below_IEM@{e s h o +| o < h, o < s, s <= h +}
   (E : IEM@{e}) (HP : @HasIndexedProducts@{s s s h h h} Top@{h o}) : False.
 Proof.
@@ -183,9 +176,7 @@ Proof.
            eq_refl eq_refl).
 Qed.
 
-(* #455's [CompHaus_ArrowIndex_of_Top] after the transport: [Complete
-   CompHaus] refuted under [IEM] at every shape universe strictly above
-   the points, the shapes below the homs included. *)
+(* 相关说明。 （已译） *)
 Theorem CompHaus_not_complete_below_IEM@{e r s c h o +| o < h, o < s +}
   (E : IEM@{e})
   (comp : @Complete@{r s h c} (CompHaus : Category@{c h h})) : False.

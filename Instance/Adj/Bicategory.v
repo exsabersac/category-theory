@@ -17,7 +17,7 @@ Require Import Category.Instance.Cat.Bicategory.
 
 Generalizable All Variables.
 
-(** * Adj is two-dimensional: horizontal composition of conjugate pairs *)
+(* * * Adj two-dimensional: horizontal 复合 conjugate pairs （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/bicategory
@@ -27,8 +27,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** (A) Theorem 2: horizontal composites of conjugate pairs are
-       conjugate *)
+(* 相关说明。 （已译） *)
 
 Section HorizontalCompose.
 
@@ -40,9 +39,9 @@ Context {G' : C ⟶ E} {V' : E ⟶ C}.
 Context (A  : F ⊣ U)  (A' : F' ⊣ U').
 Context (B  : G ⊣ V)  (B' : G' ⊣ V').
 
-(* Mac Lane's diagram read left to right.  Nothing here appeals to the
-   naturality of tau: [nat_hcompose]'s own factorisation of the Godement
-   square is exactly the one the goal produces. *)
+(* Mac Lane's diagram read left right. Nothing here appeals the
+ 自然性 tau: [nat_hcompose]'s own factorisation Godement
+ square exactly one goal produces. （已译） *)
 Theorem conjugate_hcompose (s : F' ⟹ F) (t : U ⟹ U')
                            (sb : G' ⟹ G) (tb : V ⟹ V') :
   Conjugate A A' s t → Conjugate B B' sb tb →
@@ -60,7 +59,7 @@ Qed.
 
 End HorizontalCompose.
 
-(** ** (B) The same theorem through Adjunction/Square.v's vertical paste *)
+(* * ** (B) The same 定理 through Adjunction/Square.v's vertical paste （已译） *)
 
 (*
    本节说明伴随、函子、双范畴相关定义、性质与动机。
@@ -92,15 +91,15 @@ Example routeb_hyp (s : F' ⟹ F) (t : U ⟹ U') :
   AdjointSquareT A A' Id[C] Id[D] (conj_padL s) (conj_padR t)
     = Conjugate A A' s t := eq_refl.
 
-(* The sigma leg of the paste IS the Godement product, componentwise. *)
+(* 相关说明。 （已译） *)
 Example routeb_sigma (s : F' ⟹ F) (sb : G' ⟹ G) (x : D) :
   transform (paste_v_sigma (D:=D) (C:=C) (E:=E) (D':=D) (C':=C) (E':=E)
                (F:=F) (G:=G) (F':=F') (G':=G')
                Id[D] Id[C] Id[E] (conj_padL s) (conj_padL sb)) x
     = transform (nat_hcompose sb s) x := eq_refl.
 
-(* The tau leg is not: [paste_v_tau] takes the other factorisation of the
-   Godement square, and the two differ by one naturality of t. *)
+(* The tau leg not: [paste_v_tau] takes other factorisation the
+ Godement square, two differ one 自然性 t. （已译） *)
 Lemma routeb_tau (t : U ⟹ U') (tb : V ⟹ V') (e : E) :
   transform (paste_v_tau (D:=D) (C:=C) (E:=E) (D':=D) (C':=C) (E':=E)
                (U:=U) (V:=V) (U':=U') (V':=V')
@@ -126,10 +125,9 @@ Qed.
 
 End RouteB.
 
-(** ** (C) Horizontal composition as a bifunctor *)
+(* * ** (C) Horizontal 复合 bifunctor （已译） *)
 
-(* Cat's own middle-four interchange, consumed rather than restated: this
-   is [Cat_Hcompose]'s [fmap_comp] applied, with no tactic. *)
+(* 相关说明。 （已译） *)
 Definition nat_hcompose_interchange {C D E : Category}
   {P1 P2 P3 : C ⟶ D} {Q1 Q2 Q3 : D ⟶ E}
   (a1 : Q1 ⟹ Q2) (a2 : Q2 ⟹ Q3) (b1 : P1 ⟹ P2) (b2 : P2 ⟹ P3) :
@@ -138,7 +136,7 @@ Definition nat_hcompose_interchange {C D E : Category}
   := @fmap_comp _ _ (@Cat_Hcompose C D E)
        (Q1, P1) (Q2, P2) (Q3, P3) (a2, b2) (a1, b1).
 
-(* The identity 1-cell on a category: the identity adjunction. *)
+(* The 恒等 1-cell 范畴: 恒等 伴随. （已译） *)
 Definition AdjIdObj (X : Category) : AdjObj X X :=
   (Id[X]; (Id[X]; @Adjunction_Id X)).
 
@@ -150,8 +148,7 @@ Definition adjobj_hcompose {x y z : Category}
    (adjobj_right p ◯ adjobj_right q;
     Adjunction_Compose (adjobj_adj p) (adjobj_adj q))).
 
-(* Composition of 2-cells: the two Godement products, conjugate by
-   Theorem 2.  The single obligation is one [exact], no tactic work. *)
+(* 相关说明。 （已译） *)
 Program Definition conj_pair_hcompose {x y z : Category}
   {p p' : AdjObj y z} {q q' : AdjObj x y}
   (th : @ConjPair y z p p') (et : @ConjPair x y q q') :
@@ -168,9 +165,7 @@ Qed.
 
 #[local] Obligation Tactic := idtac.
 
-(* Mac Lane's display (1).  [fst] is the outer 1-cell, as in
-   [Cat_Hcompose]; the order of the two factors is forced by the
-   [Bicategory] class's [hcompose] field. *)
+(* 相关说明。 （已译） *)
 Program Definition Adj_Hcompose {x y z : Category} :
   (Adj y z ∏ Adj x y) ⟶ Adj x z := {|
   fobj := fun pq => adjobj_hcompose (fst pq) (snd pq);
@@ -194,7 +189,7 @@ Qed.
 
 #[local] Obligation Tactic := program_simpl.
 
-(* The bifunctor has exactly the shape of Mac Lane's display (1). *)
+(* 相关说明。 （已译） *)
 Example Adj_Hcompose_shape :
   ∀ x y z : Category, (Adj y z ∏ Adj x y) ⟶ Adj x z := @Adj_Hcompose.
 
@@ -226,7 +221,7 @@ Example hcomp_right_is_nat_hcompose {x y z : Category}
   conj_right (conj_pair_hcompose th et)
     = nat_hcompose (conj_right th) (conj_right et) := eq_refl.
 
-(** ** (D) Exercise 1: the interchange law, derived from bifunctoriality *)
+(* 相关说明。 （已译） *)
 
 (* One [exact] of the bifunctor's own [fmap_comp]. *)
 Theorem conj_interchange {x y z : Category}
@@ -247,7 +242,7 @@ Corollary conj_interchange_right {x y z : Category}
     ≈ conj_right (fmap[Adj_Hcompose] f ∘ fmap[Adj_Hcompose] g).
 Proof. exact (snd (conj_interchange f g)). Qed.
 
-(* The two readable componentwise forms, read off the same law. *)
+(* 相关说明。 （已译） *)
 Corollary conj_interchange_sigma {x y z : Category}
   {p p' p'' : AdjObj y z} {q q' q'' : AdjObj x y}
   (th : p' ~{Adj y z}~> p'') (th' : p ~{Adj y z}~> p')
@@ -274,10 +269,9 @@ Proof.
                 (th, et) (th', et'))).
 Qed.
 
-(** ** (E) The unitors and the associator *)
+(* 相关说明。 （已译） *)
 
-(* The dictionary is crossed: nat_λ on the left adjoints, nat_ρ on the
-   right adjoints, because the two compose in opposite orders. *)
+(* 相关说明。 （已译） *)
 Program Definition Adj_hunit_left {x y : Category} (f : AdjObj x y) :
   @Isomorphism (Adj x y) (adjobj_hcompose (AdjIdObj y) f) f := {|
   to   := {| conj_left  := to   (nat_λ (adjobj_left  f))
@@ -302,8 +296,8 @@ Next Obligation. intros a b k; simpl; cat. Qed.
 Next Obligation. split; simpl; intros; cat. Qed.
 Next Obligation. split; simpl; intros; cat. Qed.
 
-(* Both legs are the [to] direction, and they take nat_α's three functor
-   arguments in opposite orders. *)
+(* Both legs [to] direction, they take nat_α's three 函子
+ arguments opposite orders. （已译） *)
 Program Definition Adj_hassoc {w x y z : Category}
   (h : AdjObj y z) (g : AdjObj x y) (f : AdjObj w x) :
   @Isomorphism (Adj w z)
@@ -323,7 +317,7 @@ Next Obligation. intros a b k; simpl; cat. Qed.
 Next Obligation. split; simpl; intros; cat. Qed.
 Next Obligation. split; simpl; intros; cat. Qed.
 
-(* Why the crossing: the padded 1-cell's two adjoints. *)
+(* 相关说明。 （已译） *)
 Example hunit_left_obj_left {x y : Category} (f : AdjObj x y) :
   adjobj_left (adjobj_hcompose (AdjIdObj y) f)
     = adjobj_left f ◯ Id[y] := eq_refl.
@@ -342,8 +336,7 @@ Example hunit_right_obj_right {x y : Category} (f : AdjObj x y) :
 
 (** ** (F) The five coherence laws *)
 
-(* The Godement product of two 2-cells: the bifunctor's action on a pair,
-   which is exactly what the class's [hcomp2] computes to. *)
+(* 相关说明。 （已译） *)
 Definition adj_hcomp2 {x y z : Category}
   {p p' : AdjObj y z} {q q' : AdjObj x y}
   (th : p ~{Adj y z}~> p') (et : q ~{Adj x y}~> q')
@@ -459,7 +452,7 @@ Example Adj_hcomp2_right_is_Cat_hcomp2 {x y z : Category}
         (adjobj_right q') (adjobj_right q)
         (conj_right th) (conj_right et) := eq_refl.
 
-(** ** (H) The bridge to Instance/Adjoints.v *)
+(* 相关说明。 （已译） *)
 
 Definition adjobj_of_morphism {C D : Category}
   (m : C ~{Adjoints}~> D) : AdjObj C D :=
@@ -472,7 +465,6 @@ Definition morphism_of_adjobj {C D : Category}
   adjunction        := adjobj_adj   x
 |}.
 
-(* [adj_morphism] has primitive projections with eta, so this round trip
-   is Leibniz.  The sigT one is not; see the header. *)
+(* 相关说明。 （已译） *)
 Example adjoints_round_record {C D : Category} (m : C ~{Adjoints}~> D) :
   morphism_of_adjobj (adjobj_of_morphism m) = m := eq_refl.

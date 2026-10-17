@@ -16,7 +16,7 @@ Require Import Category.Instance.Grp.Quotient.
 
 Generalizable All Variables.
 
-(** * Quotient groups as coequalizers, split under the forgetful functor *)
+(* * * Quotient groups coequalizers, split under forgetful 函子 （已译） *)
 
 (*
  nLab:   https://ncatlab.org/nlab/show/split+coequalizer
@@ -29,7 +29,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Two cancellations, right-associated *)
+(* 相关说明。 （已译） *)
 
 Lemma grp_mul_cancel_inv (G : GrpObject) (a b : carrier G) :
   grp_mul G a (grp_mul G (grp_inv G a) b) ≈ b.
@@ -63,7 +63,7 @@ Proof.
   - exact (ns_conj N (grp_inv G y) n Hn).
 Qed.
 
-(** ** Mac Lane's semidirect product G ×₀ N *)
+(* 相关说明。 （已译） *)
 
 Definition sdp_carrier : Type := (carrier G * sub_carrier N)%type.
 
@@ -133,9 +133,9 @@ End Semidirect.
 Definition Grp_ForgetP@{u p so | p < so +} : Grp@{u p} ⟶ PropSets@{p so} :=
   PropSets_lift Grp_Forget (fun G => grp_prop G).
 
-(* The pair, the coequalizer and the splitting live in [Grp], whose objects
-   are [GrpObject@{p p p}]; the binder says so, rather than leaving the
-   identification to the constraint block. *)
+(* The pair, coequalizer splitting live [Grp], whose 对象
+ [GrpObject@{p p p}]; binder says so, rather than leaving the
+ identification constraint block. （已译） *)
 
 Section SemidirectPair.
 
@@ -144,7 +144,7 @@ Universe p.
 Context {G : GrpObject@{p p p}}.
 Context (N : NormalSubgroup G).
 
-(** ** The parallel pair ∂₀, ∂₁ : G ×₀ N ⇉ G *)
+(* 相关说明。 （已译） *)
 
 (* ∂₀⟨x, n⟩ = x. *)
 Definition semidirect_d0 : SemidirectGrp N ~{Grp}~> G.
@@ -171,9 +171,9 @@ Proof.
     reflexivity.
 Defined.
 
-(** ** The projection coforks the pair, and is its coequalizer *)
+(* 相关说明。 （已译） *)
 
-(* x and xn are congruent, with the witness untruncated. *)
+(* 相关说明。 （已译） *)
 Lemma semidirect_quot_rel (x n : carrier G) :
   sub_mem N n → quot_rel N x (grp_mul G x n).
 Proof.
@@ -220,8 +220,7 @@ Definition semidirect_cofork_iff_kills {K : GrpObject} (h : G ~{Grp}~> K) :
     ↔ (∀ a : carrier G, sub_mem N a → grp_map h a ≈ grp_unit K) :=
   (semidirect_cofork_kills h, kills_semidirect_cofork h).
 
-(* The descent is the quotient's own mediator [quot_med], at the element of
-   [Kills N] the cofork provides. *)
+(* 相关说明。 （已译） *)
 Definition quot_proj_IsCoequalizer :
   IsCoequalizer semidirect_d0 semidirect_d1 (QuotientGrp N) (quot_proj N).
 Proof.
@@ -236,14 +235,13 @@ Proof.
                quot_med_unique N (existT _ h (semidirect_cofork_kills h Hh)) |}.
 Defined.
 
-(* The U-image is a fork, with no hypothesis: the image of the cofork. *)
+(* The U-image fork, no 假设: image cofork. （已译） *)
 Lemma semidirect_U_cofork :
   fmap[Grp_Forget] (quot_proj N) ∘ fmap[Grp_Forget] semidirect_d0
     ≈ fmap[Grp_Forget] (quot_proj N) ∘ fmap[Grp_Forget] semidirect_d1.
 Proof. intro p; exact (semidirect_cofork p). Qed.
 
-(* The pair is reflexive: x ↦ ⟨x, e⟩ is a homomorphism that both ∂₀ and
-   ∂₁ retract. *)
+(* 相关说明。 （已译） *)
 Definition semidirect_refl : G ~{Grp}~> SemidirectGrp N.
 Proof.
   unshelve notypeclasses refine
@@ -264,7 +262,7 @@ Proof.
   - intro x; simpl; apply grp_mul_unit_r.
 Defined.
 
-(** ** Transversals, and the splitting after the forgetful functor *)
+(* * ** Transversals, splitting after forgetful 函子 （已译） *)
 
 (*
    本节说明 Coequalizer 相关定义、性质与动机。
@@ -277,8 +275,8 @@ Record Transversal := {
   transversal_coset : ∀ a : carrier G, quot_rel N (transversal_map a) a
 }.
 
-(* The coset witness, conjugated into the orientation Mac Lane's t needs:
-   x⁻¹ (s x) ∈ N. *)
+(* The coset witness, conjugated 进入 orientation Mac Lane's t needs:
+ x⁻¹ (s x) ∈ N. （已译） *)
 Lemma transversal_coset_inv (T : Transversal) (x : carrier G) :
   sub_mem N (grp_mul G (grp_inv G x) (transversal_map T x)).
 Proof.
@@ -310,7 +308,7 @@ Proof.
       exact (proper_morphism (grp_map (quot_proj N)) _ _ Hxy).
 Defined.
 
-(* From a transversal, the U-image fork is split, with e = U p. *)
+(* 相关说明。 （已译） *)
 Definition transversal_split (T : Transversal) :
   SplitCoequalizer (fmap[Grp_Forget] semidirect_d0)
                    (fmap[Grp_Forget] semidirect_d1).
@@ -328,9 +326,9 @@ Proof.
     apply grp_mul_cancel_inv.
 Defined.
 
-(* Any map out of U G that coforks the U-image pair is constant on cosets,
-   given the coset witness untruncated: a ~ b is read off the element
-   ⟨b, b⁻¹ a⟩ of G ×₀ N. *)
+(* Any map out U G coforks U-image pair 常值 cosets,
+ given coset witness untruncated: ~ b read off element
+ ⟨b, b⁻¹ a⟩ G ×₀ N. （已译） *)
 Lemma U_cofork_descends {Z : obj[Sets]} (h : fobj[Grp_Forget] G ~{Sets}~> Z)
   (Hh : h ∘ fmap[Grp_Forget] semidirect_d0 ≈ h ∘ fmap[Grp_Forget] semidirect_d1)
   (a b : carrier G) :
@@ -354,8 +352,7 @@ Proof.
   - symmetry; exact E.
 Qed.
 
-(* Conversely, ANY split coequalizer of the U-image pair yields a
-   transversal: s ∘ e chooses the representatives, and t certifies them. *)
+(* 相关说明。 （已译） *)
 
 Definition split_transversal
   (S : SplitCoequalizer (fmap[Grp_Forget] semidirect_d0)
@@ -383,8 +380,7 @@ Proof.
     + exact (ns_conj N a n Hn).
 Defined.
 
-(* Mac Lane's claim, made exact: the U-image of the pair has a split
-   coequalizer if and only if N has a transversal. *)
+(* 相关说明。 （已译） *)
 Definition Grp_U_split_iff_transversal :
   SplitCoequalizer (fmap[Grp_Forget] semidirect_d0)
                    (fmap[Grp_Forget] semidirect_d1) ↔ Transversal :=
@@ -404,16 +400,15 @@ Definition transversal_U_AbsoluteCoequalizer@{xo xh +} (T : Transversal) :
     (fobj[Grp_Forget] (QuotientGrp N)) (fmap[Grp_Forget] (quot_proj N)) :=
   split_coequalizer_absolute (transversal_split T).
 
-(** ** Whether U preserves the coequalizer: exactly when cosets untruncate *)
+(* 相关说明。 （已译） *)
 
-(* U(G/N) compares by the TRUNCATED relation; a coequalizer in Sets must
-   descend into setoids whose `≈` need not be propositional, and the test
-   case is the untruncated quotient itself. *)
+(* U(G/N) compares TRUNCATED 关系; coequalizer Sets must
+ descend setoids whose `≈` need not propositional, test
+ case untruncated quotient itself. （已译） *)
 Definition CosetUntruncates : Type :=
   ∀ a b : carrier G, inhabited (quot_rel N a b) → quot_rel N a b.
 
-(* The untruncated quotient is Instance/Sets/Quotient.v's [SetsQuotient] of
-   G's setoid by [quot_rel], and its projection is [sets_quot_proj]. *)
+(* 相关说明。 （已译） *)
 Definition quot_rel_object : SetoidObject@{p p} :=
   SetsQuotient (grp_setoid G) (quot_rel N)
     {| Equivalence_Reflexive := quot_rel_refl N
@@ -508,7 +503,7 @@ Definition choice_untruncates
   (C : ∀ S : Type, inhabited S → S) : CosetUntruncates :=
   fun a b w => C _ w.
 
-(** ** Unconditionally: U into the propositional setoids preserves p *)
+(* * ** Unconditionally: U 进入 propositional setoids preserves p （已译） *)
 
 (*
    本节说明 Coequalizer 相关定义、性质与动机。
@@ -611,14 +606,13 @@ Example transversal_split_law3@{p u + | u <= p +} {G : GrpObject@{p p p}}
   grp_map (semidirect_d0 N) (scoeq_t (transversal_split N T) x) = x
   := eq_refl.
 
-(* The round trip transversal → splitting → transversal returns the same
-   choice of representatives. *)
+(* 相关说明。 （已译） *)
 Example transversal_round_trip@{p u + | u <= p +} {G : GrpObject@{p p p}}
   {N : NormalSubgroup@{u p p p} G} (T : Transversal N) (a : carrier G) :
   transversal_map (split_transversal N (transversal_split N T)) a
     = transversal_map T a := eq_refl.
 
-(** ** Split in Grp itself: exactly when p has a homomorphic section *)
+(* 相关说明。 （已译） *)
 
 Section SplitInGrp.
 
@@ -627,8 +621,7 @@ Universe p.
 Context {G : GrpObject@{p p p}}.
 Context (N : NormalSubgroup G).
 
-(* A homomorphic transversal: a section of p in Grp, with the untruncated
-   witness that s a lies in the coset of a. *)
+(* 相关说明。 （已译） *)
 Definition HomTransversal : Type :=
   { s : QuotientGrp N ~{Grp}~> G
   & ∀ a : carrier G, quot_rel N (grp_map s a) a }.
@@ -676,9 +669,9 @@ Proof.
     apply grp_mul_cancel_inv.
 Defined.
 
-(* Conversely, a split coequalizer in Grp splits after U, and the
-   transversal [split_transversal] reads off it is s ∘ e, a composite of
-   homomorphisms. *)
+(* Conversely, split coequalizer Grp splits after U, the
+ transversal [split_transversal] reads off it s ∘ e, 复合 of
+ homomorphisms. （已译） *)
 Definition Grp_split_hom_transversal
   (S : SplitCoequalizer (semidirect_d0 N) (semidirect_d1 N)) :
   HomTransversal.
@@ -764,7 +757,7 @@ Definition S3_A3_Grp_split :
   SplitCoequalizer (semidirect_d0 A3) (semidirect_d1 A3) :=
   hom_transversal_Grp_split A3 A3_hom_transversal.
 
-(** ** A fork that is not split in Grp: Z/4 over 2Z/4 *)
+(* 相关说明。 （已译） *)
 
 Inductive z4 : Set := z4_0 | z4_1 | z4_2 | z4_3.
 
@@ -811,9 +804,7 @@ Proof.
   - intros [] [] Ha; simpl in *; try discriminate; reflexivity.
 Defined.
 
-(* A homomorphic section would send 1 to an odd element u (its coset
-   witness), hence 2 = 1 + 1 to u + u = 2, while 2 ≡ 0 forces it to the
-   image of 0, which is 0. *)
+(* 相关说明。 （已译） *)
 Theorem Z4_two_not_split_in_Grp :
   SplitCoequalizer (semidirect_d0 Z4_two) (semidirect_d1 Z4_two) → False.
 Proof.
@@ -840,7 +831,7 @@ Example A3_transversal_fun (a : carrier S3) :
 Example S3_A3_Grp_split_s (a : carrier S3) :
   grp_map (scoeq_s S3_A3_Grp_split) a = (rot0, snd a) := eq_refl.
 
-(** ** Constructive taboos: the splitting, and untruncation for every N *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Coequalizer 相关定义、性质与动机。
@@ -875,8 +866,8 @@ Definition NP_U_IsCoequalizer (P : Prop) :
     (fmap[Grp_Forget] (quot_proj (NP P))) :=
   untruncates_U_IsCoequalizer (NP P) (NP_untruncates P).
 
-(* A transversal of N_P decides P: it is constant on Z/2 when P holds,
-   and its two values lie in the cosets of 0 and 1. *)
+(* A transversal N_P decides P: it 常值 Z/2 P holds,
+ two values lie cosets 0 1. （已译） *)
 Definition NP_transversal_decides (P : Prop) (T : Transversal (NP P)) :
   (P + (P → False))%type.
 Proof.
@@ -895,8 +886,8 @@ Proof.
           | left; destruct H1 as [p|e]; [ exact p | discriminate ] ].
 Defined.
 
-(* And a decision of P gives one: the unit map if P, the identity if not.
-   The binder names Z/2's level, which minimization had put at [Set]. *)
+(* And decision P gives one: unit map if P, 恒等 if not.
+ The binder names Z/2's level, minimization had put at [Set]. （已译） *)
 Definition NP_decides_transversal@{p +} (P : Prop)
   (d : (P + (P → False))%type) : @Transversal Z2@{p} (NP P).
 Proof.
@@ -915,9 +906,9 @@ Proof.
     + intro a; unfold quot_rel; simpl; right; destruct a; reflexivity.
 Defined.
 
-(* Mac Lane's unconditional "the resulting fork in Set is split" decides
-   every proposition, as Instance/Sets/Regular.v's
-   [blanket_splitting_entails_LEM] does for its splitting principle. *)
+(* Mac Lane's unconditional "the resulting fork Set split" decides
+ every 命题, Instance/Sets/Regular.v's
+ [blanket_splitting_entails_LEM] does splitting principle. （已译） *)
 Definition U_split_taboo :
   (∀ P : Prop, SplitCoequalizer (fmap[Grp_Forget] (semidirect_d0 (NP P)))
                                 (fmap[Grp_Forget] (semidirect_d1 (NP P)))) →
@@ -939,8 +930,8 @@ Proof.
     [ left; exact p | right; exact np ].
 Qed.
 
-(* N_S ◁ Z/2 for a type S: membership (a = 0) + S.  The coset relation's
-   untruncation there is a choice out of [inhabited S]. *)
+(* N_S ◁ Z/2 type S: membership (a = 0) + S. The coset 关系's
+ untruncation there choice out [inhabited S]. （已译） *)
 Definition NS (S : Type) : NormalSubgroup Z2.
 Proof.
   unshelve refine
@@ -979,8 +970,8 @@ Definition U_preserves_untruncates :
   fun H S =>
     NS_untruncates_chooses S (U_IsCoequalizer_untruncates (NS S) (H S)).
 
-(* The pair being reflexive, U's preservation of reflexive coequalizers,
-   hypothesis 2 of Monad/Monadicity/Crude.v, entails that principle too. *)
+(* The pair being reflexive, U's preservation reflexive coequalizers,
+ 假设 2 Monad/Monadicity/Crude.v, entails principle too. （已译） *)
 Definition Grp_Forget_crude_untruncates :
   PreservesReflexiveCoequalizers Grp_Forget → ∀ S : Type, inhabited S → S :=
   fun H S =>

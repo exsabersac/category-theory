@@ -33,7 +33,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** A trivial homomorphism, and rigidity of free groups *)
+(* 相关说明。 （已译） *)
 
 Definition grp_trivial_hom (G H : GrpObject) : G ~{Grp}~> H :=
   @Build_GrpHom' G H
@@ -70,7 +70,7 @@ Section Completion.
 
 Context (M : MonSets).
 
-(* The free group on the underlying setoid of M. *)
+(* 相关说明。 （已译） *)
 Definition comp_free : GrpObject := FreeGrpObject (mcar M).
 
 Definition comp_gen (a : carrier (mcar M)) : carrier comp_free :=
@@ -82,8 +82,8 @@ Definition comp_gen (a : carrier (mcar M)) : carrier comp_free :=
 #[local] Instance comp_mop_respects
   : Proper (equiv ==> equiv ==> equiv) (mop M) := mop_respects M.
 
-(* The relator word attached to a pair: what must become trivial for the
-   insertion to be multiplicative. *)
+(* The relator word attached pair: what must become trivial the
+ 嵌入 multiplicative. （已译） *)
 Definition comp_rel_word (a b : carrier (mcar M)) : carrier comp_free :=
   grp_mul comp_free (grp_mul comp_free (comp_gen a) (comp_gen b))
     (grp_inv comp_free (comp_gen (mop M a b))).
@@ -121,9 +121,7 @@ Definition comp_relator_map : CompRelIdx ~{Sets}~> Grp_Forget comp_free :=
        comp_rel_word_respects (fst p) (fst q) (snd p) (snd q)
          (fst H) (snd H) |}.
 
-(* Read as a homomorphism out of the free group on the relator index, so
-   that [NormalClosure] -- which closes the IMAGE of a homomorphism --
-   applies verbatim. *)
+(* 相关说明。 （已译） *)
 Definition comp_relator_hom : FreeGrpObject CompRelIdx ~{Grp}~> comp_free :=
   free_grp_extend comp_relator_map.
 
@@ -163,7 +161,7 @@ Lemma comp_class_respects (a b : carrier (mcar M)) :
   a ≈ b → comp_class a ≈ comp_class b.
 Proof. intro Hab; apply comp_quot_of_equiv; now rewrite Hab. Qed.
 
-(* The insertion is multiplicative: this is exactly the relator, inverted. *)
+(* The 嵌入 multiplicative: 这是 exactly relator, inverted. （已译） *)
 Lemma comp_class_op (a b : carrier (mcar M)) :
   comp_class (mop M a b)
     ≈ grp_mul CompletionObject (comp_class a) (comp_class b).
@@ -208,7 +206,7 @@ Definition completion_insert (M : MonSets)
     (comp_class M) (comp_class_respects M) (comp_class_op M)
     (comp_class_one M).
 
-(** ** The extension of a monoid homomorphism into a group *)
+(* * ** The extension 幺半群 homomorphism group （已译） *)
 
 Section Extend.
 
@@ -298,7 +296,7 @@ Proof.
     exact (completion_extend_unique h g (fun a => symmetry (Hg a))).
 Qed.
 
-(** ** The universal arrow, in both encodings *)
+(* * ** The 泛箭头, both encodings （已译） *)
 
 Definition completion_universal_arrow (M : MonSets)
   : UniversalArrow M Grp_MonSets :=
@@ -320,7 +318,7 @@ Next Obligation.
     exact (completion_extend_unique h g Hg).
 Qed.
 
-(** ** The completion functor, built directly *)
+(* * ** The completion 函子, built directly （已译） *)
 
 Program Definition CompletionFunctor : MonSets ⟶ Grp := {|
   fobj := CompletionObject;
@@ -362,7 +360,7 @@ Definition CompletionLeft : MonSets ⟶ Grp :=
 Definition completion_adjunction : CompletionLeft ⊣ Grp_MonSets :=
   AdjunctionFromUniversalArrows Grp_MonSets completion_universal_arrow.
 
-(** ** Strengths, measured strict-first *)
+(* 相关说明。 （已译） *)
 
 Example completion_class_is_generator (M : MonSets) (a : carrier (mcar M)) :
   comp_class M a = fg_insert (mcar M) a := eq_refl.
@@ -401,7 +399,7 @@ Definition completion_unit (M : MonSets)
 Example completion_unit_is_insert (M : MonSets) (a : carrier (mcar M)) :
   mmap (completion_unit M) a = comp_class M a := eq_refl.
 
-(** ** The counit evaluates a word, and the triangle identities *)
+(* 相关说明。 （已译） *)
 
 Definition completion_counit (H : Grp)
   : CompletionLeft (Grp_MonSets H) ~{Grp}~> H :=
@@ -443,7 +441,7 @@ Proof.
   exact (completion_extend_gen (completion_insert Y ∘ f) a).
 Qed.
 
-(** ** Non-vacuity: the completion can be non-abelian *)
+(* 相关说明。 （已译） *)
 
 Definition S3Mon : MonSets := Grp_MonSets S3.
 
@@ -459,8 +457,8 @@ Lemma comp_S3_down_class (a : carrier S3) :
   grp_map comp_S3_down (comp_class S3Mon a) ≈ a.
 Proof. exact (completion_extend_gen (@id MonSets S3Mon) a). Qed.
 
-(* The insertion of a GROUP's underlying monoid is injective, because the
-   completion retracts onto it. *)
+(* The 嵌入 GROUP's underlying 幺半群 injective, because the
+ completion retracts onto it. （已译） *)
 Theorem completion_S3_insert_injective (a b : carrier S3) :
   comp_class S3Mon a ≈ comp_class S3Mon b → a ≈ b.
 Proof.
@@ -538,9 +536,7 @@ Definition completion_free_monoid_iso (X : Sets)
   @universal_arrow_iso Sets Grp X Grp_Forget
     (comp_free_mon_universal_arrow X) (free_group_universal_arrow X).
 
-(* The comparison carries the class of a one-letter word to the
-   corresponding free generator -- the leg equation a bare [≅] would not
-   carry. *)
+(* 相关说明。 （已译） *)
 Lemma completion_free_monoid_iso_gen (X : Sets) (a : carrier X) :
   grp_map (to (completion_free_monoid_iso X))
     (comp_class (FreeMonSetsObject X) (free_mon_insert X a))
@@ -550,8 +546,7 @@ Proof.
            (free_group_universal_arrow X) a).
 Qed.
 
-(* Hence the canonical non-abelian instance, transported from
-   [Instance/Grp/Free.v]'s witness rather than reproved. *)
+(* 相关说明。 （已译） *)
 Theorem completion_free_mon_two_nonabelian :
   grp_mul (CompletionObject (FreeMonSetsObject TwoLetters))
     (comp_class (FreeMonSetsObject TwoLetters)
@@ -631,9 +626,7 @@ Check (fun G : GrpObject@{uo uh up} => grp_setoid G).
 Check (fun G : GrpObject@{uo uh up} =>
          @Monoid Sets Sets_Product_Monoidal (grp_setoid G)).
 
-(* Control: [grp_monoid] must be named OUTSIDE a [Fail], or renaming it
-   would turn the negative below vacuously green on "reference not
-   found" while this file still compiled. *)
+(* 相关说明。 （已译） *)
 Check @grp_monoid.
 
 Fail Check (fun G : GrpObject@{uo uh up} => grp_monoid G).

@@ -20,7 +20,7 @@ Require Import Category.Instance.Mod.
 
 Generalizable All Variables.
 
-(** * The direct sum is the coproduct in R-Mod *)
+(* 相关说明。 （已译） *)
 
 (*
  Book: Riehl, "Category Theory in Context" (2nd ed.), §3.1,
@@ -38,10 +38,9 @@ Generalizable All Variables.
 *)
 #[local] Obligation Tactic := idtac.
 
-(** ** The direct sum as an object of R-Mod *)
+(* * ** The direct sum 对象 R-Mod （已译） *)
 
-(* The underlying abelian group is Instance/Ab/Coproduct.v's
-   [Ab_product]; all that is added is the componentwise action. *)
+(* 相关说明。 （已译） *)
 Program Definition RMod_product {R : RingObject}
   (M N : RModObject R) : RModObject R := {|
   rm_ab := Ab_product M N;
@@ -72,8 +71,8 @@ Qed.
 
 (** ** The four structural morphisms *)
 
-(* Each wraps the corresponding morphism of Ab; the single new obligation
-   is compatibility with the action. *)
+(* Each wraps corresponding 态射 Ab; single new obligation
+ compatibility action. （已译） *)
 Program Definition RMod_inl {R : RingObject} (M N : RModObject R) :
   M ~{RMod R}~> RMod_product M N := {|
   rm_hom := Ab_inl M N
@@ -124,8 +123,7 @@ Next Obligation.
   - apply (rm_map_smul g).
 Qed.
 
-(* The copairing (a, b) ↦ f a + g b.  Its action obligation is the one
-   place [rm_smul_distr_l] is spent. *)
+(* 相关说明。 （已译） *)
 Program Definition RMod_copair {R : RingObject} {M N P : RModObject R}
   (f : M ~{RMod R}~> P) (g : N ~{RMod R}~> P) :
   RMod_product M N ~{RMod R}~> P := {|
@@ -138,7 +136,7 @@ Next Obligation.
   apply rm_smul_distr_l.
 Qed.
 
-(** ** The zero morphism of R-Mod is CMon's *)
+(* * ** The zero 态射 R-Mod CMon's （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -159,7 +157,7 @@ Proof.
   apply (cmon_map_zero (Ab_zero_hom N)).
 Qed.
 
-(** ** The four interaction laws, all four inherited on the nose *)
+(* 相关说明。 （已译） *)
 
 Definition RMod_exl_inl {R : RingObject} (M N : RModObject R) :
   RMod_exl M N ∘ RMod_inl M N ≈ id := CMon_exl_inl M N.
@@ -210,7 +208,7 @@ Proof.
              (rm_hom v) Hv).
 Defined.
 
-(** ** The biproduct, and with it the product and coproduct structures *)
+(* 相关说明。 （已译） *)
 
 Definition RMod_Biproduct {R : RingObject} (M N : RModObject R) :
   @Biproduct (RMod R) (RMod_Zero R) M N :=
@@ -247,9 +245,7 @@ Example RMod_coprod_is_prod (R : RingObject) (M N : RModObject R) :
 Example RMod_coprod_obj (R : RingObject) (M N : RModObject R) :
   @Coprod (RMod R) (RMod_Cocartesian R) M N = RMod_product M N := eq_refl.
 
-(* The two roster entries agree: the underlying abelian group of the
-   direct sum of modules IS the direct sum of the underlying groups, as
-   built in Instance/Ab/Coproduct.v. *)
+(* 相关说明。 （已译） *)
 Example RMod_coprod_ab (R : RingObject) (M N : RModObject R) :
   rm_ab (@Coprod (RMod R) (RMod_Cocartesian R) M N)
     = Ab_product M N := eq_refl.
@@ -260,7 +256,7 @@ Example RMod_inl_is_Ab_inl (R : RingObject) (M N : RModObject R) :
 Example RMod_inr_is_Ab_inr (R : RingObject) (M N : RModObject R) :
   rm_hom (@inr (RMod R) (RMod_Cocartesian R) M N) = Ab_inr M N := eq_refl.
 
-(** ** Non-vacuity over ℤ ⊕ ℤ as a ℤ-module *)
+(* 相关说明。 （已译） *)
 
 Definition zmod : RModObject Int_Ring := Ring_RMod Int_Ring.
 
@@ -280,7 +276,7 @@ Example rmod_coprod_merge_computes :
                            zmod zmod zmod id id)) (2%Z, 3%Z) = 5%Z :=
   eq_refl.
 
-(* The action on the direct sum is componentwise, and computes. *)
+(* 相关说明。 （已译） *)
 Example rmod_coprod_smul_computes :
   rm_smul (RMod_product zmod zmod) 4%Z (2%Z, 3%Z) = (8%Z, 12%Z) := eq_refl.
 

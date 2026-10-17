@@ -17,7 +17,7 @@ Require Import Coq.Relations.Relation_Definitions.
 
 Generalizable All Variables.
 
-(** * The large thin preorder of small ordinals *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/adjoint+functor+theorem
@@ -29,15 +29,11 @@ Generalizable All Variables.
 
 (** ** The type of small ordinals *)
 
-(* An ordinal is a [Type@{u}]-indexed family of ordinals.  The result lives
-   at [Type@{u+1}], one level above the types that may index it: that gap
-   is the whole subject of this file. *)
+(* 相关说明。 （已译） *)
 Inductive SmallOrd@{u} : Type@{u+1} :=
   osup : forall (Ix : Type@{u}), (Ix -> SmallOrd) -> SmallOrd.
 
-(* The index type of an ordinal, and its indexed family of elements.  The
-   index binder is written [A] and never [I]: see the trap recorded in the
-   header. *)
+(* 相关说明。 （已译） *)
 Definition oidx@{u} (x : SmallOrd@{u}) : Type@{u} :=
   match x return Type@{u} with osup A _ => A end.
 
@@ -66,9 +62,9 @@ Fixpoint ole@{u} (x : SmallOrd@{u}) : SmallOrd@{u} -> Prop :=
                end
   end.
 
-(* The destructor-shaped reading of [ole].  Every proof below goes through
-   this rather than destructing an ordinal, which is what keeps the
-   induction hypotheses usable. *)
+(* The destructor-shaped reading [ole]. Every 证明 below goes through
+ rather than destructing ordinal, what keeps the
+ induction hypotheses usable. （已译） *)
 Lemma ole_unfold@{u} (x y : SmallOrd@{u}) :
   ole x y <-> (forall a : oidx x, exists b : oidx y, ole (oelt x a) (oelt y b)).
 Proof. destruct x, y; simpl; split; exact (fun h => h). Qed.
@@ -94,8 +90,8 @@ Proof.
   exists c; exact (IH a _ _ Hb Hc).
 Qed.
 
-(* A preorder, and deliberately no more: [ole] is not antisymmetric, and a
-   thin category needs only reflexivity and transitivity. *)
+(* A preorder, deliberately no more: [ole] not antisymmetric, a
+ thin 范畴 needs reflexivity transitivity. （已译） *)
 Definition ole_preorder@{u} : PreOrder ole@{u} :=
   {| PreOrder_Reflexive  := ole_refl@{u}
    ; PreOrder_Transitive := ole_trans@{u} |}.
@@ -107,19 +103,17 @@ Definition olt@{u} (x y : SmallOrd@{u}) : Prop :=
 Lemma olt_ole@{u} (x y : SmallOrd@{u}) : olt x y -> ole x y.
 Proof. intros [b Hb]; exact (ole_trans _ _ _ Hb (ole_elem y b)). Qed.
 
-(* No ordinal precedes one of its own elements.  This is the only genuinely
-   inductive negative fact in the file, and everything that says "there is
-   no top" reduces to it. *)
+(* 相关说明。 （已译） *)
 Lemma olt_irrefl@{u} (x : SmallOrd@{u}) : olt x x -> False.
 Proof.
   induction x as [A f IH]; intros [a Ha].
   exact (IH a (proj1 (ole_unfold _ _) Ha a)).
 Qed.
 
-(** ** The thin category, and its opposite *)
+(* * ** The thin 范畴, opposite （已译） *)
 
-(* The objects are the small ordinals -- a [Type@{u+1}] -- and a hom-set is
-   the PROPOSITION [ole x y]. *)
+(* The 对象 small ordinals -- [Type@{u+1}] -- hom-set is
+ PROPOSITION [ole x y]. （已译） *)
 Definition SmallOrd_Proset : Category := @Proset SmallOrd ole ole_preorder.
 
 (*
@@ -130,9 +124,9 @@ Definition SmallOrd_Proset : Category := @Proset SmallOrd ole ole_preorder.
 Definition SmallOrd_op_Proset : Category :=
   @Proset SmallOrd (op_rel ole) (op_PreOrder ole_preorder).
 
-(* Hom-sets are subsingletons on the nose: the hom-setoid of a proset
-   relates any two parallel morphisms by [True], and that holds by
-   reduction. *)
+(* Hom-sets subsingletons nose: hom-setoid proset
+ relates any two parallel 态射 [True], holds by
+ reduction. （已译） *)
 Example smallord_equiv_is_True (x y : SmallOrd)
   (f g : x ~{SmallOrd_Proset}~> y) : (f ≈ g) = True := eq_refl.
 
@@ -179,17 +173,13 @@ Definition ojoin_IsLUB@{u +} (A : Type@{u}) (f : A -> SmallOrd@{u}) :
   IsLUB ole f (ojoin A f) :=
   (ojoin_ub A f, fun n Hn => ojoin_least A f n Hn).
 
-(* The least ordinal: the empty family.  [False] serves as the empty index
-   type at every level, by cumulativity, so no [Set]-level empty type is
-   pinned here. *)
+(* 相关说明。 （已译） *)
 Definition ozero@{u} : SmallOrd@{u} := osup False (fun e => match e with end).
 
 Lemma ozero_least@{u} (x : SmallOrd@{u}) : ole ozero x.
 Proof. apply ole_unfold; intros []. Qed.
 
-(* The successor: a one-element family.  [poly_unit] is the library's
-   universe-polymorphic unit (Lib/Setoid.v); [unit] would pin the index
-   type to [Set]. *)
+(* 相关说明。 （已译） *)
 Definition osucc@{u} (x : SmallOrd@{u}) : SmallOrd@{u} :=
   osup poly_unit@{u} (fun _ => x).
 
@@ -199,11 +189,11 @@ Proof. exact (ole_elem (osucc x) ttt). Qed.
 Lemma olt_osucc@{u} (x : SmallOrd@{u}) : olt x (osucc x).
 Proof. exists ttt; exact (ole_refl x). Qed.
 
-(* The successor is STRICTLY above: this is [olt_irrefl] read at [x]. *)
+(* The successor STRICTLY above: 这是 [olt_irrefl] read at [x]. （已译） *)
 Lemma osucc_not_ole@{u} (x : SmallOrd@{u}) : ole (osucc x) x -> False.
 Proof. intro H; exact (olt_irrefl x (proj1 (ole_unfold _ _) H ttt)). Qed.
 
-(** ** Small-completeness of the opposite category *)
+(* * ** Small-completeness opposite 范畴 （已译） *)
 
 (*
    本节说明 Large 相关定义、性质与动机。
@@ -219,17 +209,17 @@ Definition SmallOrd_HasAllJoins : HasAllJoins ole :=
 Definition SmallOrd_op_Complete : @Complete SmallOrd_op_Proset :=
   Proset_op_Complete_of_all_joins ole_preorder SmallOrd_HasAllJoins.
 
-(* The indexed-product reading of one family, through
-   Instance/Proset/Limit.v's [Proset_LUB_Limit]: the limit in
-   [SmallOrd^op] of a discrete diagram is the join of its objects. *)
+(* The indexed-product reading one family, through
+ Instance/Proset/Limit.v's [Proset_LUB_Limit]: limit in
+ [SmallOrd^op] discrete diagram join 对象. （已译） *)
 Definition SmallOrd_op_indexed_limit@{u +}
   (A : Type@{u}) (d : A -> SmallOrd@{u}) :
   Limit (DiscreteCat_Functor (C:=SmallOrd_op_Proset) d) :=
   Proset_LUB_Limit ole_preorder d (ojoin A d) (ojoin_IsLUB A d).
 
-(* The nullary case: the terminal object of [SmallOrd^op] is the least
-   ordinal.  (The INITIAL object of [SmallOrd^op] would be a greatest
-   ordinal, and is refuted below.) *)
+(* The nullary case: 终对象 [SmallOrd^op] least
+ ordinal. (The INITIAL 对象 [SmallOrd^op] would greatest
+ ordinal, refuted below.) （已译） *)
 Definition SmallOrd_op_Terminal : @Terminal SmallOrd_op_Proset :=
   Proset_Terminal (op_PreOrder ole_preorder) ozero ozero_least.
 
@@ -242,10 +232,9 @@ Lemma smallord_lub_not_zero@{u +} :
   -> False.
 Proof. intros [Hub _]; exact (osucc_not_ole ozero (Hub false)). Qed.
 
-(** ** No greatest ordinal, and where the universe gap does the work *)
+(* 相关说明。 （已译） *)
 
-(* There is no greatest small ordinal: the successor of a candidate would
-   have to precede it, and [olt_irrefl] refutes that. *)
+(* 相关说明。 （已译） *)
 Theorem SmallOrd_no_greatest@{u} (m : SmallOrd@{u})
   (H : forall x : SmallOrd@{u}, ole x m) : False.
 Proof. exact (osucc_not_ole m (H (osucc m))). Qed.

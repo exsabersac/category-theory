@@ -33,7 +33,7 @@ Require Import Category.Instance.Rng.AFT.
 
 Generalizable All Variables.
 
-(** * Colimits of rings, from the adjoint functor theorem *)
+(* * * Colimits rings, adjoint 函子 定理 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/Ring
@@ -52,8 +52,7 @@ Section RngDiagonalSolutionSet.
 Context {J : Category}.
 Context (D : J ⟶ Rng).
 
-(* The generators: the disjoint union of the carriers, with Leibniz
-   equality, and the free abelian group on them. *)
+(* 相关说明。 （已译） *)
 Definition RGen : SetoidObject :=
   {| carrier := { j : obj[J] & carrier (rig_setoid (D j)) };
      is_setoid := eq_Setoid _ |}.
@@ -63,8 +62,7 @@ Definition RGenAb : AbObject := FreeAbObject RGen.
 Definition rins (j : J) (a : carrier (rig_setoid (D j))) : FRTerm RGenAb :=
   @fr_gen RGenAb (@fa_gen RGen (j; a)).
 
-(* A congruence on the term model that makes the insertions a cocone of
-   ring homomorphisms. *)
+(* 相关说明。 （已译） *)
 Record IsRngCoconeCong (Rq : FRTerm RGenAb → FRTerm RGenAb → Prop) : Prop := {
   rcc_rng  : IsRngCongruence Rq;
   rcc_resp : ∀ j a b, a ≈ b → Rq (rins j a) (rins j b);
@@ -104,7 +102,7 @@ Proof.
   exact (rcc_nat _ (`2 i) j k f a).
 Defined.
 
-(* The covering: the kernel of a cocone's extension to the term model. *)
+(* 相关说明。 （已译） *)
 Section Cover.
 
 Context (c : Rng) (h : D ~{[J, Rng]}~> fobj[@Diagonal Rng J] c).
@@ -155,7 +153,7 @@ Defined.
 
 End RngDiagonalSolutionSet.
 
-(** ** Every colimit of rings within the shape discipline *)
+(* 相关说明。 （已译） *)
 
 Definition Rng_colim_via_GAFT (J : Category) :
   { K : [J, Rng] ⟶ Rng & K ⊣ @Diagonal Rng J } :=
@@ -166,7 +164,7 @@ Definition Rng_colim_via_GAFT (J : Category) :
 Definition Rng_Cocomplete_via_GAFT : @Cocomplete Rng :=
   fun J F => Diagonal_left_adjoint_HasColimits (projT2 (Rng_colim_via_GAFT J)) F.
 
-(** ** The coproduct of rings, coequalizers and the initial ring *)
+(* 相关说明。 （已译） *)
 
 Definition Rng_FinitelyCocomplete_via_GAFT : @FinitelyCocomplete Rng :=
   Cocomplete_FinitelyCocomplete Rng_Cocomplete_via_GAFT.

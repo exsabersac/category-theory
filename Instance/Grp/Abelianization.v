@@ -25,7 +25,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Commutators and the generated subgroup *)
+(* 相关说明。 （已译） *)
 
 Definition gcomm (G : GrpObject) (g h : carrier G) : carrier G :=
   grp_mul G (grp_mul G (grp_mul G g h) (grp_inv G g)) (grp_inv G h).
@@ -48,9 +48,7 @@ Arguments inc_mul {G a b} _ _.
 Arguments inc_inv {G a} _.
 Arguments inc_resp {G a b} _ _.
 
-(* Every homomorphism pushes the commutator subgroup forward: the one
-   induction that serves functoriality, normality (via [Grp_conj]),
-   and the descent germ below. *)
+(* 相关说明。 （已译） *)
 Lemma hom_commutator {G H : GrpObject} (f : GrpHom G H)
   (x : carrier G) : InCommutator G x → InCommutator H (grp_map f x).
 Proof.
@@ -74,8 +72,8 @@ Lemma conj_commutator (G : GrpObject) (t x : carrier G) :
   InCommutator G (grp_mul G (grp_mul G t x) (grp_inv G t)).
 Proof. exact (hom_commutator (Grp_conj G t) x). Qed.
 
-(* Homomorphisms into abelian groups kill commutator elements — the
-   descent germ for the (future) adjunction. *)
+(* Homomorphisms abelian groups kill commutator elements — the
+ descent germ (future) 伴随. （已译） *)
 Lemma hom_to_abelian_kills {G H : GrpObject}
   (comm : ∀ a b : carrier H, grp_mul H a b ≈ grp_mul H b a)
   (f : GrpHom G H) (x : carrier G) :
@@ -103,7 +101,7 @@ Proof.
   - now rewrite <- (proper_morphism (grp_map f) a b Hab).
 Qed.
 
-(** ** The commutator subgroup as a normal subgroup *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Abelianization 相关定义、性质与动机。
@@ -137,7 +135,7 @@ Example abel_eq_is_quot_rel (G : GrpObject) (a b : carrier G) :
   abel_eq G a b = inhabited (quot_rel (CommutatorNS G) a b).
 Proof. reflexivity. Qed.
 
-(* The finer relation implies the coarser one. *)
+(* The finer 关系 implies coarser one. （已译） *)
 Lemma abel_eq_of_eq (G : GrpObject) (a b : carrier G) :
   a ≈ b → abel_eq G a b.
 Proof. intro H; constructor; exact (quot_rel_of_equiv (CommutatorNS G) a b H). Qed.
@@ -156,8 +154,8 @@ Proof.
   exact (quot_rel_trans (CommutatorNS G) a b c H1 H2).
 Qed.
 
-(* The operations respect the quotient relation; multiplication and
-   inversion are where normality earns its keep. *)
+(* The operations respect quotient 关系; multiplication and
+ inversion where normality earns keep. （已译） *)
 Lemma abel_eq_mul (G : GrpObject) (a a' b b' : carrier G) :
   abel_eq G a a' → abel_eq G b b' →
   abel_eq G (grp_mul G a b) (grp_mul G a' b').
@@ -190,8 +188,8 @@ Next Obligation.
   - now apply (abel_eq_trans G x y).
 Qed.
 
-(* [abel_eq] IS a [Prop] relation, so the quotient supplies its own
-   [cmon_prop] and no hypothesis is taken anywhere. *)
+(* [abel_eq] IS [Prop] 关系, so quotient supplies own
+ [cmon_prop] no 假设 taken anywhere. （已译） *)
 Definition abel_PropEquiv (G : GrpObject) : PropEquiv (abel_setoid G) :=
   @PropEquiv_of_relation _ (abel_setoid G) (abel_eq G)
     (fun _ _ h => h) (fun _ _ h => h).
@@ -232,7 +230,7 @@ Next Obligation.
   intros G a; apply abel_eq_of_eq, grp_mul_inv_l.
 Qed.
 
-(** ** The commutator subgroup, as a functor Grp ⟶ Grp *)
+(* * ** The commutator subgroup, 函子 Grp ⟶ Grp （已译） *)
 
 Definition commutator_carrier (G : GrpObject) : Type :=
   { x : carrier G & InCommutator G x }.
@@ -297,7 +295,7 @@ Program Definition Ab_to_GrpOb (A : AbObject) : GrpObject := {|
   grp_unit := cmon_zero A;
   grp_mul := cmon_plus A;
   grp_inv := ab_neg A;
-  (* Inherited: the same carrier setoid, so the same witness. *)
+  (* 相关说明。 （已译） *)
   grp_prop := cmon_prop A
 |}.
 Next Obligation. intros A a b c; apply cmon_plus_assoc. Qed.
@@ -324,7 +322,7 @@ Program Definition Abelianization_Functor : Grp ⟶ Ab := {|
      |}
 |}.
 Next Obligation.
-  (* respect for the coarser relations: push the witness forward *)
+  (* 相关说明。 （已译） *)
   intros G H f a b Hab; simpl in *.
   unfold abel_eq in *.
   destruct Hab as [Hab]; constructor.
@@ -351,8 +349,8 @@ Next Obligation. intros G H K f g a; simpl; apply abel_eq_refl. Qed.
 
 (** ** The natural projection *)
 
-(* The component at G: the identity function, read from the fine
-   setoid into the coarse one. *)
+(* The component at G: 恒等 function, read fine
+ setoid 进入 coarse one. （已译） *)
 Program Definition abel_proj (G : GrpObject) :
   G ~{Grp}~> Ab_to_GrpOb (AbelianizationOb G) := {|
   grp_map := {| morphism := fun a : carrier G => a |}
@@ -361,8 +359,8 @@ Next Obligation. intros G a b Hab; apply abel_eq_of_eq, Hab. Qed.
 Next Obligation. intros G; simpl; apply abel_eq_refl. Qed.
 Next Obligation. intros G a b; simpl; apply abel_eq_refl. Qed.
 
-(* Mac Lane's naturality square p_H ∘ f ≈ f' ∘ p_G, with both legs the
-   identity on elements: reflexivity of the coarser relation. *)
+(* Mac Lane's 自然性 square p_H ∘ f ≈ f' ∘ p_G, both legs the
+ 恒等 elements: reflexivity coarser 关系. （已译） *)
 Program Definition abel_projection :
   @Id Grp ⟹ Ab_to_Grp ◯ Abelianization_Functor := {|
   transform := abel_proj
@@ -376,8 +374,7 @@ Qed.
 
 (** ** Non-degeneracy witnesses *)
 
-(* In an abelian group the commutator subgroup misses the nonidentity:
-   [InCommutator] does not collapse to the total predicate. *)
+(* 相关说明。 （已译） *)
 Lemma commutator_GrpTwo_proper :
   InCommutator GrpTwo grp_two_one → False.
 Proof.
@@ -387,8 +384,8 @@ Proof.
   exact E.
 Qed.
 
-(* In S₃ the subgroup is nontrivial: the commutator of the two
-   generators is a member and is not the identity. *)
+(* In S₃ subgroup nontrivial: commutator two
+ generators member not 恒等. （已译） *)
 Lemma commutator_S3_nontrivial :
   InCommutator S3 (gcomm S3 S3_r S3_s) *
   (gcomm S3 S3_r S3_s ≈ s3_unit → False).
@@ -398,9 +395,7 @@ Proof.
   - intro E; vm_compute in E; discriminate E.
 Qed.
 
-(* The abelianization of the nonabelian S₃ does not collapse: the
-   reflection stays apart from the unit in the quotient, because the
-   sign character kills commutators but not the reflection. *)
+(* 相关说明。 （已译） *)
 Lemma abelianization_S3_nontrivial :
   abel_eq S3 S3_s s3_unit → False.
 Proof.

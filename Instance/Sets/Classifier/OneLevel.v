@@ -18,7 +18,7 @@ Require Import Category.Instance.FinSet.Classifier.
 
 Generalizable All Variables.
 
-(** * A one-level subobject classifier for [Sets], conditionally *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出集合范畴相关实例。
@@ -27,7 +27,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** (B) The image predicate, and subobjects of the terminal setoid *)
+(* 相关说明。 （已译） *)
 
    (*
    本节说明子对象、始/终对象相关定义、性质与动机。
@@ -67,7 +67,7 @@ Lemma subone_incl_monic@{o so} (P : Type@{o}) :
 Proof. constructor; intros z g1 g2 _ ?; exact ttt. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (C) The three hypotheses, and the passages between them *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明始/终对象相关定义、性质与动机。
@@ -137,7 +137,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (D) The resizing characterisation *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 OneLevel 相关定义、性质与动机。
@@ -404,7 +404,7 @@ Definition classifier_iff_small@{o so} :
   := (small_of_classifier@{o so}, classifier_of_small@{o so}).
 
 (* ------------------------------------------------------------------------ *)
-(** ** (E) The [Untruncate] instance, and the two-element small classifier *)
+(* 相关说明。 （已译） *)
 
 (* [Sets_Classifier] is the issue's Verification-block name.  Its Ω is
    [Powerset_Omega] and its truth [Powerset_truth_point], both by
@@ -456,7 +456,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (F) The per-mono characteristic map, and the [DecImage] instance *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 OneLevel 相关定义、性质与动机。
@@ -625,7 +625,7 @@ Definition Sets_Classifier_IEM@{o so} (E : IEM@{o}) :
   Sets_Classifier@{o so} (untruncate_of_IEM@{o} E).
 
 (* ------------------------------------------------------------------------ *)
-(** ** (G) The bridge to the cross-universe characteristic map *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 OneLevel 相关定义、性质与动机。
@@ -633,14 +633,14 @@ Definition Sets_Classifier_IEM@{o so} (E : IEM@{o}) :
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* the value grade, pointwise on the carrier of Omega, at eq_refl *)
+(* 相关说明。 （已译） *)
 Example bridge_pointwise@{o so} (U : Untruncate@{o})
   {u x : SetoidObject@{o o}} (m : u ~{Sets@{o so}}~> x)
   (M : @Monic Sets@{o so} u x m) (b : carrier x) :
   @char Sets@{o so} Sets_Terminal@{so o} (Sets_Classifier@{o so} U) u x m M b
     = Powerset_squash@{o} (char_setoid@{o so} m b) := eq_refl.
 
-(* the same grade, unfolded: the value IS the truncation of sets_in_image *)
+(* 相关说明。 （已译） *)
 Example bridge_value@{o so} (U : Untruncate@{o})
   {u x : SetoidObject@{o o}} (m : u ~{Sets@{o so}}~> x)
   (M : @Monic Sets@{o so} u x m) (b : carrier x) :
@@ -678,9 +678,9 @@ Lemma bridge_record_equiv@{o so sso} (U : Untruncate@{o})
 Proof. intro b; simpl; split; intro H; exact H. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (H) The book's rule: char m b is truth exactly on the image *)
+(* 相关说明。 （已译） *)
 
-(* Mac Lane's (1) with the 0 ↔ 1 swap, and Seven Sketches' ⌜m⌝ rule. *)
+(* 相关说明。 （已译） *)
 
 Lemma classifier_of_small_char_iff@{o so} (S : SmallClassifierExt@{o})
   {u x : SetoidObject@{o o}} (m : u ~{Sets@{o so}}~> x)
@@ -715,7 +715,7 @@ Definition sets_classifier_dec_char_iff@{o so} (D : DecImage@{o so})
   := char_of_dec_iff@{o so} m M (D u x m M) b.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (I) The two round trips, against [Sets_HasPullbacks] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明拉回/推出、hom、来源与用途相关定义、性质与动机。
@@ -757,7 +757,7 @@ Definition sets_pullback_roundtrip@{o so} (U : Untruncate@{o})
        Sets_HasPullbacks@{so o} (Sets_Classifier@{o so} U) x s.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (J) A concrete decidable mono, with no global hypothesis *)
+(* * ** (J) A concrete decidable mono, no global 假设 （已译） *)
 
 (*
    本节说明子对象、始/终对象相关定义、性质与动机。
@@ -819,7 +819,7 @@ Example char_of_dec_from_DecImage@{o so} (D : DecImage@{o so}) :
       (D _ _ dec_false@{o so} (point_monic@{o so} dec_false@{o so})) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (K) [FinSet]: display (7.15) where Ω really is the two-element set *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 OneLevel 相关定义、性质与动机。

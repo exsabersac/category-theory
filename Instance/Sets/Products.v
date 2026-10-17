@@ -17,7 +17,7 @@ Generalizable All Variables.
 
 Import EqNotations.
 
-(** * Small products and coproducts in [Sets] *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/coproduct
@@ -37,7 +37,7 @@ Import EqNotations.
 *)
 #[local] Obligation Tactic := idtac.
 
-(** ** Indexed products: the dependent-function setoid *)
+(* 相关说明。 （已译） *)
 
 Definition Sets_iprod_equiv {A : Type} (F : A → SetoidObject) :
   crelation (∀ i : A, F i) :=
@@ -103,7 +103,7 @@ Definition Sets_endo_iprod_ump (P : obj[Sets]) :
                    (indexed_product_proj (fun _ : P ~{Sets}~> P => P)) :=
   indexed_product_ump (fun _ : P ~{Sets}~> P => P).
 
-(** ** Indexed coproducts: the sigma setoid *)
+(* 相关说明。 （已译） *)
 
 Definition Sets_icoprod_carrier {A : Type}
   (F : A → SetoidObject) : Type := { i : A & F i }.
@@ -170,7 +170,7 @@ Instance Sets_HasIndexedCoproducts : @HasIndexedCoproducts Sets :=
     (@Sets_icoprod_obj) (@Sets_icoprod_inj)
     (@Sets_IsIndexedCoproduct).
 
-(** ** Awodey 2.9 Exercise 7(b): the function set as a constant-family product *)
+(* * ** Awodey 2.9 Exercise 7(b): function set 常值-family product （已译） *)
 
 Definition Sets_discrete (I : Type) : obj[Sets] :=
   {| carrier := I; is_setoid := eq_Setoid I |}.
@@ -347,7 +347,7 @@ Proof.
   - intros [i x]; destruct i; exists eq_refl; reflexivity.
 Defined.
 
-(** ** Non-degenerate indices: two distinct indices, and an infinite index *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明笛卡尔相关定义、性质与动机。
@@ -416,8 +416,7 @@ Proof.
   - intros g n; destruct n; reflexivity.
 Defined.
 
-(* The coproduct counterpart of [Sets_iprod_bool]: the sigma setoid over
-   [bool] is the binary coproduct of Instance/Sets/Cocartesian.v. *)
+(* 相关说明。 （已译） *)
 
 Definition Sets_icoprod_bool_to (F : bool → obj[Sets]) :
   indexed_coproduct F ~{Sets}~> (F true + F false)%object.
@@ -455,8 +454,7 @@ Proof.
   - intros [i x]; destruct i; exists eq_refl; reflexivity.
 Defined.
 
-(* The coproduct counterpart of [Sets_iprod_nat]: the sigma setoid over [nat]
-   splits off its zeroth summand and reproduces itself underneath. *)
+(* 相关说明。 （已译） *)
 
 Definition Sets_icoprod_nat_to (F : nat → obj[Sets]) :
   indexed_coproduct F
@@ -529,8 +527,7 @@ Proof.
         | exfalso; apply Hyz; apply Hb; rewrite Hy, Hz; reflexivity ].
 Qed.
 
-(* Three elements of the [nat]-indexed product of two-element setoids: the
-   constantly-[false] tuple, and the tuples true at index 0 and at index 1. *)
+(* 相关说明。 （已译） *)
 Definition Sets_iprod_pt0 :
   carrier (indexed_product (fun _ : nat => Sets_bool)) := fun _ => false.
 
@@ -569,9 +566,7 @@ Proof.
         | exfalso; apply Hyz; apply Hb; rewrite Hy, Hz; reflexivity ].
 Qed.
 
-(* The [k]-th summand's [true].  Identifying two of these calls for an
-   equality of the two indices, which is what the refutation below turns
-   on. *)
+(* 相关说明。 （已译） *)
 Definition Sets_icoprod_pt (k : nat) :
   carrier (indexed_coproduct (fun _ : nat => Sets_bool)) :=
   existT (fun _ : nat => carrier Sets_bool) k true.

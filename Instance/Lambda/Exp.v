@@ -11,7 +11,7 @@ Generalizable All Variables.
 Set Transparent Obligations.
 Unset Uniform Inductive Parameters.
 
-(** Intrinsically-typed de Bruijn syntax for the simply-typed lambda calculus *)
+(** 本节：Intrinsically-typed de Bruijn syntax simply-typed lambda calculus （已译） *)
 
 (*
    本文件给出 λ 演算相关实例。
@@ -25,8 +25,7 @@ Import ListNotations.
 
 Open Scope Ty_scope.
 
-(* A typing context: the list of types of the in-scope variables, with the
-   most recently bound variable at the head (de Bruijn index 0). *)
+(* 相关说明。 （已译） *)
 Definition Env := list Ty.
 
 (*
@@ -40,8 +39,7 @@ Inductive Var : Env → Ty → Set :=
 
 Derive Signature NoConfusion EqDec for Var.
 
-(* Well-typed terms: [Exp Γ τ] is a derivation of Γ ⊢ τ.  Each constructor is
-   one STLC typing rule, so the GADT contains exactly the well-typed terms. *)
+(* 相关说明。 （已译） *)
 Inductive Exp Γ : Ty → Set :=
   | EUnit         : Exp Γ TyUnit                              (* unit introduction *)
 
@@ -55,8 +53,7 @@ Inductive Exp Γ : Ty → Set :=
 
 Derive Signature NoConfusionHom Subterm EqDec for Exp.
 
-(* Structural size of a term, counting one for every node.  Used as a
-   well-founded measure for size-decreasing recursions elsewhere. *)
+(* 相关说明。 （已译） *)
 Fixpoint Exp_size {Γ τ} (e : Exp Γ τ) : nat :=
   match e with
   | EUnit _       => 1
@@ -82,6 +79,6 @@ Arguments VAR {Γ τ} _.
 Arguments LAM {Γ dom cod} _.
 Arguments APP {Γ dom cod} _ _.
 
-(* Judgement notation: [Γ ∋ τ] for a variable, [Γ ⊢ τ] for a well-typed term. *)
+(* 相关说明。 （已译） *)
 Notation "Γ ∋ τ" := (Var Γ τ) (at level 10).
 Notation "Γ ⊢ τ" := (Exp Γ τ) (at level 10).

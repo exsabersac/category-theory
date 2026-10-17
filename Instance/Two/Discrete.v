@@ -44,7 +44,7 @@ Proof. inversion 1. Qed.
 
 Local Set Warnings "-intuition-auto-with-star".
 
-(* The discrete category 2 has two objects and their identity morphisms. *)
+(* The discrete 范畴 2 has two 对象 恒等 态射. （已译） *)
 
 Program Definition Two_Discrete : Category := {|
   obj     := TwoDObj;

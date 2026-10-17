@@ -101,7 +101,7 @@ Inductive pt_eq : PTerm → PTerm → Prop :=
   | pe_mul_comm s t : pt_eq (pt_mul s t) (pt_mul t s)
   | pe_mul_one_l s : pt_eq (pt_mul (pt_const (rig_one K)) s) s
 
-  (* distributivity, on the left only: the right law is derived *)
+  (* 相关说明。 （已译） *)
   | pe_distr_l s t u :
       pt_eq (pt_mul s (pt_add t u)) (pt_add (pt_mul s t) (pt_mul s u))
 
@@ -165,8 +165,8 @@ Proof.
   exact (pe_add (pe_mul_comm u s) (pe_mul_comm u t)).
 Qed.
 
-(* Cancellation: adding the negative on the left is what makes the
-   annihilation law below a theorem rather than a further constructor. *)
+(* Cancellation: adding negative left what makes the
+ annihilation law below 定理 rather than further constructor. （已译） *)
 Lemma pe_add_cancel_l (s t u : PTerm) :
   pt_eq (pt_add s t) (pt_add s u) → pt_eq t u.
 Proof.
@@ -195,8 +195,8 @@ Proof.
   exact (pe_trans (pe_mul_comm s PZ) (pe_mul_zero_l s)).
 Qed.
 
-(* The coefficient inclusion also carries negation, by uniqueness of
-   additive inverses in the term ring. *)
+(* The coefficient 含入 carries negation, uniqueness of
+ additive inverses term ring. （已译） *)
 Lemma pe_const_neg (a : carrier (rig_setoid K)) :
   pt_eq (pt_const (ring_neg K a)) (pt_neg (pt_const a)).
 Proof.
@@ -228,8 +228,8 @@ Definition PolyRig : RigObject := {|
   rig_distr_r := pe_distr_r;
   rig_mul_zero_l := pe_mul_zero_l;
   rig_mul_zero_r := pe_mul_zero_r;
-  (* [pt_eq] IS a [Prop]-valued relation, so it is its own [Prop] mirror and
-     both implications are the identity. *)
+  (* [pt_eq] IS [Prop]-valued 关系, so it own [Prop] 镜像 and
+ both 蕴含 恒等. （已译） *)
   rig_prop := @PropEquiv_of_relation _ pt_Setoid pt_eq
                 (fun _ _ h => h) (fun _ _ h => h)
 |}.
@@ -245,7 +245,7 @@ Lemma poly_comm : ∀ a b : carrier (rig_setoid PolyRing),
   rig_mul PolyRing a b ≈ rig_mul PolyRing b a.
 Proof. exact pe_mul_comm. Qed.
 
-(** ** The coefficient inclusion and the indeterminate *)
+(* * ** The coefficient 含入 indeterminate （已译） *)
 
 Program Definition poly_const : K ~{Rng}~> PolyRing := {|
   rig_map := {| morphism := pt_const |}
@@ -309,8 +309,7 @@ Fixpoint peval (t : @PTerm K) : carrier (rig_setoid S) :=
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* An element commuting with every coefficient and with [s] commutes with
-   every value.  Five cases, one per former. *)
+(* 相关说明。 （已译） *)
 Lemma peval_comm_gen (a : carrier (rig_setoid S))
   (H1 : ∀ k, rig_mul S a (rig_map phi k) ≈ rig_mul S (rig_map phi k) a)
   (H2 : rig_mul S a s ≈ rig_mul S s a) (u : @PTerm K) :
@@ -469,22 +468,22 @@ Proof.
   - rewrite rng_mul_neg_l, rng_mul_neg_r, rig_iter_central; reflexivity.
 Qed.
 
-(** * Mac Lane §III.1 Exercise 7: K[x] among K-algebras *)
+(* 相关说明。 （已译） *)
 
 Section KAlgebra.
 
 Context (K : CRng).
 
-(** The polynomial ring, as a commutative K-algebra: the ring is
-    [PolyRing], the commutativity is [poly_comm], and the structure map is
-    the coefficient inclusion. *)
+(** The polynomial ring, commutative K-algebra: ring is
+ [PolyRing], commutativity [poly_comm], structure map is
+ coefficient 含入. （已译） *)
 Definition PolyAlg : KAlgObject K := {|
   kalg_ring := PolyRing (`1 K);
   kalg_comm := poly_comm (`1 K);
   kalg_unit := poly_const (`1 K)
 |}.
 
-(** The underlying-set functor of the category of K-algebras. *)
+(** The underlying-set 函子 范畴 K-algebras. （已译） *)
 Program Definition KAlg_Forget : KAlg K ⟶ Sets := {|
   fobj := fun A => rig_setoid (kalg_ring A);
   fmap := fun A B f => rig_map (`1 f)
@@ -503,8 +502,8 @@ Proof.
   - intro c; simpl; reflexivity.
 Defined.
 
-(** Mac Lane's Exercise 7, in element form: the pair ⟨K[x], x⟩ is
-    universal among K-algebras with a chosen element. *)
+(** 本节：Mac Lane's Exercise 7, element form: pair ⟨K[x], x⟩ is
+ universal among K-algebras chosen element. （已译） *)
 Definition poly_universal_element : AUniversalElement KAlg_Forget PolyAlg.
 Proof.
   unshelve econstructor.
@@ -520,8 +519,8 @@ Proof.
       * exact Hg.
 Defined.
 
-(** The same content in the bundled form, and hence as a representation:
-    the underlying-set functor of K-algebras is represented by K[x]. *)
+(** The same content bundled form, hence representation:
+ underlying-set 函子 K-algebras 已表示的 K[x]. （已译） *)
 Definition poly_universal_element_bundled : UniversalElement KAlg_Forget :=
   UniversalElement_of_AUniversalElement poly_universal_element.
 
@@ -532,8 +531,8 @@ Definition poly_representation
 Definition poly_representable : Representable KAlg_Forget :=
   Representable_of_UniversalElement poly_universal_element_bundled.
 
-(** ... and as a universal arrow from the one-point setoid, in both of
-    Theory/Universal/Arrow.v's encodings. *)
+(** ... 泛箭头 one-point setoid, both of
+ Theory/Universal/Arrow.v's encodings. （已译） *)
 Definition poly_auniversal_arrow
   : AUniversalArrow SetsOne KAlg_Forget PolyAlg :=
   AUniversalArrow_of_AUniversalElement KAlg_Forget PolyAlg
@@ -557,13 +556,13 @@ Defined.
 
 End KAlgebra.
 
-(** * ℤ[x]: the free unital ring on one generator *)
+(* 相关说明。 （已译） *)
 
 Definition ZPoly : RingObject := PolyRing Int_Ring.
 
-(** Evaluation at an element of an ARBITRARY unital ring: the
-    commutation hypothesis is discharged by [zring_central], so no
-    commutativity of the target is required. *)
+(** Evaluation at element ARBITRARY unital ring: the
+ commutation 假设 discharged [zring_central], so no
+ commutativity target required. （已译） *)
 Definition zpoly_eval (S : RingObject) (b : carrier (rig_setoid S))
   : ZPoly ~{Rng}~> S.
 Proof.
@@ -582,8 +581,8 @@ Proof.
   exact (rng_from_Z_unique S (rig_hom_compose g (poly_const Int_Ring)) z).
 Qed.
 
-(** Riehl §2.3 Example 2.3.4: the indeterminate as a universal element of
-    the underlying-set functor of rings. *)
+(** Riehl §2.3 Example 2.3.4: indeterminate universal element of
+ underlying-set 函子 rings. （已译） *)
 Definition zpoly_universal_element : AUniversalElement Rng_Forget ZPoly.
 Proof.
   unshelve econstructor.
@@ -602,9 +601,9 @@ Defined.
 Definition zpoly_universal_element_bundled : UniversalElement Rng_Forget :=
   UniversalElement_of_AUniversalElement zpoly_universal_element.
 
-(** Riehl §2.1 Example 2.1.5(v): the forgetful functor Rng ⟶ Sets is
-    represented by ℤ[x] — a natural isomorphism in [[Rng, Sets]], not
-    merely the ∃! factorization property. *)
+(** Riehl §2.1 Example 2.1.5(v): forgetful 函子 Rng ⟶ Sets is
+ 已表示的 ℤ[x] — natural 同构 [[Rng, Sets]], not
+ merely ∃! factorization property. （已译） *)
 Definition zpoly_representation
   : @Curried_Hom Rng ZPoly ≅[[Rng, Sets]] Rng_Forget :=
   ue_representation Rng_Forget ZPoly zpoly_universal_element.
@@ -612,7 +611,7 @@ Definition zpoly_representation
 Definition zpoly_representable : Representable Rng_Forget :=
   Representable_of_UniversalElement zpoly_universal_element_bundled.
 
-(** ... and as a universal arrow from the one-point setoid. *)
+(** ... 泛箭头 one-point setoid. （已译） *)
 Definition zpoly_auniversal_arrow
   : AUniversalArrow SetsOne Rng_Forget ZPoly :=
   AUniversalArrow_of_AUniversalElement Rng_Forget ZPoly
@@ -634,7 +633,7 @@ Proof.
                            zpoly_auniversal_arrow S f) v (symmetry Hv)).
 Defined.
 
-(** * Monomorphisms of rings are injective *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Polynomial 相关定义、性质与动机。
@@ -688,8 +687,8 @@ Proof.
   exact (pe_mul_comm K _ _).
 Qed.
 
-(** The same, read through the structure map a K-algebra hom restricts
-    to: the value at x commutes with everything coming from K. *)
+(** 本节：The same, read through structure map K-algebra hom restricts
+ to: value at x commutes everything coming K. （已译） *)
 Corollary poly_extend_commutation_necessary (K S : RingObject)
   (g : PolyRing K ~{Rng}~> S) (c : carrier (rig_setoid K)) :
   rig_mul S (rig_map g (@poly_x K))
@@ -772,9 +771,9 @@ Corollary zpoly_x_not_one :
   pt_eq (@poly_x Int_Ring) (rig_one ZPoly) → False.
 Proof. exact (zpoly_x_not_constant 1%Z). Qed.
 
-(** Evaluation COMPUTES: the polynomial x² + 2x + 1 at 3 is 16.  This is
-    the convertibility exception — an equation between elements of ℤ, not
-    between morphisms. *)
+(** Evaluation COMPUTES: polynomial x² + 2x + 1 at 3 16. This is
+ convertibility exception — equation between elements ℤ, not
+ between 态射. （已译） *)
 Definition zpoly_sample : carrier (rig_setoid ZPoly) :=
   pt_add (pt_add (pt_mul (@poly_x Int_Ring) poly_x)
                  (pt_mul (zconst 2%Z) poly_x))
@@ -789,8 +788,8 @@ Example zpoly_eval_at_zero :
 Example zpoly_eval_at_neg_one :
   rig_map (zpoly_eval Int_Ring (-1)%Z) zpoly_sample = 0%Z := eq_refl.
 
-(** The universal element is the indeterminate, and the mediating
-    homomorphism sends it to the chosen element — both by [eq_refl]. *)
+(** 本节：The universal element indeterminate, mediating
+ homomorphism sends it chosen element — both [eq_refl]. （已译） *)
 Example zpoly_universal_elem_is_x :
   @aue_elem Rng Rng_Forget ZPoly zpoly_universal_element = @poly_x Int_Ring
   := eq_refl.

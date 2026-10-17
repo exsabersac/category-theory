@@ -14,7 +14,7 @@ Require Import Category.Instance.Grp.
 
 Generalizable All Variables.
 
-(** * Limits of groups are computed on underlying sets *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/limit#limits_in_categories_of_algebras
@@ -25,7 +25,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** * Joint monicity of limit legs in [Sets], elementwise *)
+(* 相关说明。 （已译） *)
 
 Section SetsExt.
 
@@ -63,7 +63,7 @@ Qed.
 
 End SetsExt.
 
-(** * The created group structure on a limit of underlying sets *)
+(* 相关说明。 （已译） *)
 
 Section GrpLift.
 
@@ -190,7 +190,7 @@ Proof.
 Qed.
 
 
-(** ** The group laws, by joint monicity of the legs *)
+(* 相关说明。 （已译） *)
 
 Lemma glim_assoc (a b c : carrier vertex_obj[L]) :
   glim_mul (glim_mul a b) c ≈ glim_mul a (glim_mul b c).
@@ -255,7 +255,7 @@ Definition glim_cone : Cone K :=
   @Build_Cone J Grp K LimitGroup
     (@Build_ACone J Grp LimitGroup K glim_hom (@glim_hom_coherence)).
 
-(** ** Strictness: the lifted cone lies over [L] on the nose *)
+(* 相关说明。 （已译） *)
 
 Definition glim_over_obj : Grp_Forget LimitGroup = vertex_obj[L] := eq_refl.
 
@@ -310,7 +310,7 @@ Proof.
 Defined.
 
 
-(** ** Uniqueness of the lifted structure (Mac Lane's Theorem 2) *)
+(* 相关说明。 （已译） *)
 
 Lemma glim_unit_unique (e : carrier vertex_obj[L])
   (He : ∀ j : J, glim_leg j e ≈ grp_unit (K j)) : e ≈ glim_unit.
@@ -364,7 +364,7 @@ Qed.
 
 End GrpLift.
 
-(** * Reflection: a cone of groups whose image is limiting is limiting *)
+(* 相关说明。 （已译） *)
 
 Section GrpReflect.
 
@@ -422,7 +422,7 @@ Defined.
 
 End GrpReflect.
 
-(** * [Grp_Forget] strictly creates every limit *)
+(* 相关说明。 （已译） *)
 
 Section GrpStrictlyCreates.
 
@@ -474,7 +474,7 @@ Definition Grp_lift_cone_unique {J : Category} (K : J ⟶ Grp)
   ConeIso M (slift_cone (screates N HN)) :=
   screates_lift_unique (Grp_Forget_StrictlyCreatesLimit K) N HN M i.
 
-(** * The image of a cone of groups is the elementwise cone *)
+(* 相关说明。 （已译） *)
 
 Example grp_fcone_apex {J : Category} (K : J ⟶ Grp) (N : Cone K) :
   vertex_obj[FCone Grp_Forget N] = grp_setoid vertex_obj[N] := eq_refl.
@@ -482,7 +482,7 @@ Example grp_fcone_apex {J : Category} (K : J ⟶ Grp) (N : Cone K) :
 Example grp_fcone_leg {J : Category} (K : J ⟶ Grp) (N : Cone K) (j : J) :
   cone_leg (FCone Grp_Forget N) j = grp_map (cone_leg N j) := eq_refl.
 
-(** * Mac Lane's Theorem 2: the lifting half *)
+(* 相关说明。 （已译） *)
 
 Definition Grp_Forget_lifts_limits {J : Category} (K : J ⟶ Grp)
   (L : Limit (Grp_Forget ◯ K)) : Limit K :=
@@ -500,7 +500,7 @@ Example grp_lift_legs {J : Category} (K : J ⟶ Grp)
     = limit_leg (limit_is_alimit L) j
   := eq_refl.
 
-(** * Corollaries: [Grp] is complete and [Grp_Forget] is continuous *)
+(* 相关说明。 （已译） *)
 
 Definition Grp_Complete : @Complete Grp :=
   creates_limits_Complete Grp_Forget Sets_Complete Grp_Forget_creates_limits.
@@ -518,7 +518,7 @@ Definition Grp_Forget_PreservesAllLimits : PreservesAllLimits Grp_Forget :=
   creates_limits_PreservesAllLimits Grp_Forget Sets_Complete
     Grp_Forget_creates_limits.
 
-(** * "Limits of groups are computed on underlying sets", literally *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。

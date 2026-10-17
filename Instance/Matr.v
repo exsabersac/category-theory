@@ -84,8 +84,7 @@ Proof.
     now rewrite <- fin_sum_add.
 Qed.
 
-(* Bilinearity: multiplication distributes over Σ on both sides — the
-   two clauses of distributivity, and annihilation at n = 0. *)
+(* 相关说明。 （已译） *)
 Lemma fin_sum_mul_l {n : nat} (x : carrier (rig_setoid R))
   (f : Fin.t n → carrier (rig_setoid R)) :
   rig_mul R x (fin_sum f) ≈ fin_sum (fun i => rig_mul R x (f i)).
@@ -104,7 +103,7 @@ Proof.
   - now rewrite rig_distr_r, IHn.
 Qed.
 
-(** ** The Kronecker delta and its collapse *)
+(* 相关说明。 （已译） *)
 
 Definition delta {n : nat} (i j : Fin.t n) : carrier (rig_setoid R) :=
   match Fin.eq_dec i j with
@@ -278,7 +277,7 @@ Qed.
 
 End Matr.
 
-(** ** Awodey's instance: matrices over the rig ℕ *)
+(* 相关说明。 （已译） *)
 
 Definition Matr_N : Category := Matr Nat_Rig.
 
@@ -291,7 +290,7 @@ Example Matr_N_prod :
   (@compose Matr_N 1%nat 1%nat 1%nat (fun _ _ => 3%nat) (fun _ _ => 4%nat))
     Fin.F1 Fin.F1 = 12%nat := eq_refl.
 
-(** ** The transpose self-duality (commutative base) *)
+(* 相关说明。 （已译） *)
 
 Section Transpose.
 
@@ -323,8 +322,8 @@ Next Obligation.
   apply comm.
 Qed.
 
-(* Transposition is involutive on the nose, so the same functor read
-   backwards inverts it; the pair is an isomorphism of categories. *)
+(* Transposition involutive nose, so same 函子 read
+ backwards inverts it; pair 同构 范畴. （已译） *)
 Program Definition Matr_Transpose_op : (Matr R)^op ⟶ Matr R := {|
   fobj := fun n : nat => n;
   fmap := fun n m A => fun j i => A i j
@@ -372,12 +371,11 @@ End Transpose.
 
 (** ** Acceptance tests *)
 
-(* The naturals are a commutative rig, so Matr_N is self-dual. *)
+(* 相关说明。 （已译） *)
 Definition Matr_N_transpose_iso : Matr_N ≅[Cat] Matr_N^op :=
   Matr_transpose_iso Nat_Rig (fun a b => Nat.mul_comm a b).
 
-(* Mac Lane's own headline case: matrices over a commutative RING — the
-   integers, with the transpose self-duality at Z.mul_comm. *)
+(* 相关说明。 （已译） *)
 Definition Matr_Z : Category := Matr Int_Rig.
 Definition Matr_Z_transpose_iso : Matr_Z ≅[Cat] Matr_Z^op :=
   Matr_transpose_iso Int_Rig (fun a b => Z.mul_comm a b).
@@ -391,5 +389,5 @@ Example Matr_zero_collapse (n m : nat)
   (A B : n ~{Matr Zero_Rig}~> m) : A ≈ B.
 Proof. intros i j; exact I. Qed.
 
-(* Objects really are bare naturals, and the identity is Kronecker. *)
+(* Objects really bare naturals, 恒等 Kronecker. （已译） *)
 Example Matr_obj (R : RigObject) : obj[Matr R] = nat := eq_refl.

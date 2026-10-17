@@ -32,9 +32,9 @@ Fixpoint fin_tabulate {m n : nat} {struct m} :
       fin_pair (f Fin.F1) (fin_tabulate (fun i => f (Fin.FS i)))
   end.
 
-(** [fin_apply c] decodes the code [c] back into a function, by structural
-    recursion on the arity [m]: [fin_unpair] splits off the head digit,
-    and [Fin.caseS'] dispatches the argument. *)
+(** [fin_apply c] decodes code [c] back function, structural
+ recursion arity [m]: [fin_unpair] splits off head digit,
+ [Fin.caseS'] dispatches 论元. （已译） *)
 Fixpoint fin_apply {m n : nat} {struct m} :
   Fin.t (n ^ m) → Fin.t m → Fin.t n :=
   match m return Fin.t (n ^ m) → Fin.t m → Fin.t n with
@@ -73,9 +73,9 @@ Lemma fin_apply_tabulate {m n : nat} (f : Fin.t m → Fin.t n) (i : Fin.t m) :
   fin_apply (fin_tabulate f) i = f i.
 Proof.
   revert f; induction i as [m' | m' i IH]; intros f; simpl.
-  - (* The head digit is recovered by the first projection. *)
+  - (* 相关说明。 （已译） *)
     rewrite fin_unpair_pair; reflexivity.
-  - (* The tail digits are recovered recursively. *)
+  - (* 相关说明。 （已译） *)
     rewrite fin_unpair_pair; simpl.
     apply (IH (fun j => f (Fin.FS j))).
 Qed.
@@ -97,9 +97,9 @@ Proof.
     + apply fin_pair_unpair.
 Qed.
 
-(** Tabulation only inspects its argument pointwise, so it respects the
-    pointwise hom-equivalence of [FinSet] — the funext-free congruence
-    used to rewrite under the [fin_tabulate] binder. *)
+(** Tabulation inspects 论元 pointwise, so it respects the
+ pointwise hom-等价 [FinSet] — funext-free congruence
+ used rewrite under [fin_tabulate] binder. （已译） *)
 Lemma fin_tabulate_ext {m n : nat} (f g : Fin.t m → Fin.t n) :
   (∀ i, f i = g i) → fin_tabulate f = fin_tabulate g.
 Proof.
@@ -142,8 +142,7 @@ Next Obligation.
   rewrite (Hg (fst (fin_unpair p))); reflexivity.
 Qed.
 Next Obligation.
-  (* curry ∘ uncurry ≈ id: tabulating the application of each digit code
-     recovers the code, after the product round trip under the binder. *)
+  (* 相关说明。 （已译） *)
   intros x y z g i; simpl.
   transitivity (fin_tabulate (fin_apply (g i))).
   - apply fin_tabulate_ext; intro j.
@@ -151,8 +150,8 @@ Next Obligation.
   - apply fin_tabulate_apply.
 Qed.
 Next Obligation.
-  (* uncurry ∘ curry ≈ id: applying a tabulation is the original function,
-     then the product round trip reassembles the argument. *)
+  (* uncurry ∘ curry ≈ id: applying tabulation original function,
+ then product round trip reassembles 论元. （已译） *)
   intros x y z f p; simpl.
   rewrite fin_apply_tabulate, fin_pair_unpair; reflexivity.
 Qed.

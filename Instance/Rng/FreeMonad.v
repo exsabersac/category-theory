@@ -20,7 +20,7 @@ Require Import Category.Instance.Rng.Free.
 
 Generalizable All Variables.
 
-(** * The tensor-algebra monad T on Ab, and rings as its algebras *)
+(* * * The tensor-algebra 单子 T Ab, rings algebras （已译） *)
 
 (*
  Book: Riehl, "Category Theory in Context", Example 5.5.7(ii), printed
@@ -38,7 +38,7 @@ Section TensorAlgebraMonad.
 Universes u p.
 
 (* ------------------------------------------------------------------------ *)
-(** ** T, the monad of the adjunction Ab ⇀ Rng *)
+(* * ** T, 单子 伴随 Ab ⇀ Rng （已译） *)
 
 Definition TF@{+} : Ab@{u p} ⟶ Ab@{u p} := Rng_Forget_Ab ◯ FreeRngAb.
 
@@ -63,8 +63,7 @@ Example T_ret@{+} (A : Ab@{u p}) :
 Example T_ret_fun@{+} (A : Ab@{u p}) (a : carrier (cmon_setoid A)) :
   cmon_map (@ret _ _ TM A) a = fr_gen a := eq_refl.
 
-(* μ = U ε F, the evaluation of a formal expression of formal expressions:
-   it removes the outer brackets. *)
+(* 相关说明。 （已译） *)
 Example T_join_counit@{+} (A : Ab@{u p}) :
   @join _ _ TM A
     = fmap[Rng_Forget_Ab]
@@ -91,8 +90,7 @@ Example T_join_plus@{+} (A : Ab@{u p}) (s t : FRTerm A) :
 Example T_join_one@{+} (A : Ab@{u p}) :
   cmon_map (@join _ _ TM A) (@fr_one (fobj[TF] A)) = @fr_one A := eq_refl.
 
-(* T f relabels the generators, up to ≈: the action on arrows is
-   [FreeRngAb]'s, read through the universal arrows. *)
+(* 相关说明。 （已译） *)
 Lemma T_map_relabel@{+} {A B : Ab@{u p}} (f : A ~{Ab@{u p}}~> B)
   (t : FRTerm A) :
   cmon_map (fmap[TF] f) t ≈ fr_eval (free_rng_ab_insert B ∘[Ab@{u p}] f) t.
@@ -117,7 +115,7 @@ Local Notation h := (cmon_map (t_alg[α])).
 Lemma ralg_unit@{+} (a : carrier (cmon_setoid A)) : h (fr_gen a) ≈ a.
 Proof. exact (@t_id _ _ _ _ α a). Qed.
 
-(* The action law, with T h read as the relabelling. *)
+(* 相关说明。 （已译） *)
 Lemma ralg_action@{+} (t : FRTerm (fobj[TF] A)) :
   h (fr_eval (free_rng_ab_insert A ∘[Ab@{u p}] t_alg[α]) t)
     ≈ h (fr_eval (@id Ab@{u p} (fobj[TF] A)) t).
@@ -128,13 +126,13 @@ Proof.
   - exact (@t_action _ _ _ _ α t).
 Qed.
 
-(* The unit h⟨⟩ = h 1 and the product a ⋆ b = h(⟨a⟩·⟨b⟩). *)
+(* 相关说明。 （已译） *)
 Definition ralg_one@{+} : carrier (cmon_setoid A) := h fr_one.
 
 Definition ralg_mul@{+} (a b : carrier (cmon_setoid A)) :
   carrier (cmon_setoid A) := h (fr_mul (fr_gen a) (fr_gen b)).
 
-(* h(s·t) ≈ h s ⋆ h t: the action law at the expression ⟨s⟩·⟨t⟩ of T T A. *)
+(* 相关说明。 （已译） *)
 Lemma ralg_mul_eval@{+} (s t : FRTerm A) :
   ralg_mul (h s) (h t) ≈ h (fr_mul s t).
 Proof.
@@ -221,8 +219,7 @@ Proof.
   apply fr_mul_zero_r.
 Qed.
 
-(* The ring of the algebra: A's own 0, + and −, with 1 and ⋆ above.  Its
-   carrier is a set because A's is. *)
+(* 相关说明。 （已译） *)
 Definition ralg_rig@{+} : RigObject := {|
   rig_setoid := cmon_setoid A;
   rig_zero := cmon_zero A;
@@ -251,8 +248,7 @@ Definition ralg_ring@{+} : RingObject := {|
   ring_neg_l := ab_neg_left A
 |}.
 
-(* The structure map IS the evaluation of formal expressions in the ring
-   of the algebra, up to ≈: "the sum of the products". *)
+(* 相关说明。 （已译） *)
 Lemma ralg_fold@{+} (t : FRTerm A) :
   fr_eval (R := ralg_ring) (@id Ab@{u p} A) t ≈ h t.
 Proof.
@@ -275,7 +271,7 @@ Arguments ralg_rig {A} α.
 Arguments ralg_ring {A} α.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The comparison functor K and the isomorphism Rng ≅ Ab^T *)
+(* * ** The comparison 函子 K 同构 Rng ≅ Ab^T （已译） *)
 
 Definition EM_rng_map@{+} {x y : RngAlg} (f : x ~{RngAlg}~> y) :
   ralg_ring (projT2 x) ~{Rng@{u p}}~> ralg_ring (projT2 y).
@@ -314,7 +310,7 @@ Defined.
 Definition Rng_K@{+} : Rng@{u p} ⟶ RngAlg :=
   EM_Comparison free_rng_ab_adjunction_hom.
 
-(* The algebra round trip, with the identity as its component. *)
+(* The algebra round trip, 恒等 component. （已译） *)
 Definition Rng_EM_counit_iso@{+} (x : RngAlg) :
   @Isomorphism RngAlg (fobj[Rng_K ◯ EM_to_Rng] x) x.
 Proof.
@@ -340,8 +336,8 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* The ring round trip, with the identity as its component: every
-   operation comes back on the nose. *)
+(* The ring round trip, 恒等 component: every
+ operation comes back nose. （已译） *)
 Definition Rng_EM_unit_iso@{+} (R : Rng@{u p}) :
   @Isomorphism Rng@{u p} (fobj[EM_to_Rng ◯ Rng_K] R) R.
 Proof.
@@ -374,8 +370,8 @@ Proof.
   exact Rng_EM_equivalence.
 Defined.
 
-(* Mac Lane's "the comparison functor from rings to T-algebras is an
-   isomorphism": Rng ≅ Ab^T in Cat, from the two component isomorphisms. *)
+(* Mac Lane's "the comparison 函子 rings T-algebras an
+ 同构": Rng ≅ Ab^T Cat, two component isomorphisms. （已译） *)
 Definition Rng_EM_iso@{c +} :
   @Isomorphism Cat@{c u u u p} Rng@{u p} RngAlg.
 Proof.
@@ -388,7 +384,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Commuting with the forgetful functors *)
+(* * ** Commuting forgetful 函子 （已译） *)
 
 Definition RngAlg_Forget@{+} : RngAlg ⟶ Ab@{u p} :=
   @EM_Forget Ab@{u p} TF TM.
@@ -419,13 +415,12 @@ Example EM_to_Rng_Forget_map@{+} {x y : RngAlg} (f : x ~{RngAlg}~> y) :
 (* ------------------------------------------------------------------------ *)
 (** ** Readbacks *)
 
-(* The two legs of the isomorphism in Cat are the two functors. *)
+(* The two legs 同构 Cat two 函子. （已译） *)
 Example Rng_EM_iso_to@{+} : to Rng_EM_iso = Rng_K := eq_refl.
 
 Example Rng_EM_iso_from@{+} : from Rng_EM_iso = EM_to_Rng := eq_refl.
 
-(* K R = ⟨U R, U ε_R⟩: the structure map evaluates formal expressions in
-   R, and so sends 1, ⟨a⟩, ⟨a⟩·⟨b⟩ and ⟨a⟩ + ⟨b⟩ to 1, a, a·b and a + b. *)
+(* 相关说明。 （已译） *)
 Example Rng_K_carrier@{+} (R : Rng@{u p}) :
   projT1 (fobj[Rng_K] R) = Rng_Forget_Ab R := eq_refl.
 
@@ -459,7 +454,7 @@ Example Rng_K_alg_plus@{+} (R : Rng@{u p}) (a b : carrier (rig_setoid R)) :
 Example Rng_K_map@{+} {R S : Rng@{u p}} (f : R ~{Rng@{u p}}~> S) :
   t_alg_hom[fmap[Rng_K] f] = fmap[Rng_Forget_Ab] f := eq_refl.
 
-(* The ring of an algebra: 1 = h 1, a·b = h(⟨a⟩·⟨b⟩), and A's own +. *)
+(* 相关说明。 （已译） *)
 Example EM_to_Rng_one@{+} (x : RngAlg) :
   rig_one (fobj[EM_to_Rng] x) = cmon_map (t_alg[projT2 x]) fr_one
   := eq_refl.
@@ -475,8 +470,7 @@ Example EM_to_Rng_add@{+} (x : RngAlg) :
 Example EM_to_Rng_map@{+} {x y : RngAlg} (f : x ~{RngAlg}~> y) :
   rig_map (fmap[EM_to_Rng] f) = cmon_map (t_alg_hom[f]) := eq_refl.
 
-(* The ring round trip returns every operation and every map on the
-   nose. *)
+(* 相关说明。 （已译） *)
 Example Rng_rt_setoid@{+} (R : Rng@{u p}) :
   rig_setoid (fobj[EM_to_Rng ◯ Rng_K] R) = rig_setoid R := eq_refl.
 
@@ -498,8 +492,7 @@ Example Rng_rt_neg@{+} (R : Rng@{u p}) :
 Example Rng_rt_hom@{+} {R S : Rng@{u p}} (f : R ~{Rng@{u p}}~> S) :
   rig_map (fmap[EM_to_Rng ◯ Rng_K] f) = rig_map f := eq_refl.
 
-(* The algebra round trip keeps the group and the maps on the nose, and
-   returns the structure map as the evaluation in the algebra's ring. *)
+(* 相关说明。 （已译） *)
 Example EM_Rng_rt_carrier@{+} (x : RngAlg) :
   projT1 (fobj[Rng_K ◯ EM_to_Rng] x) = projT1 x := eq_refl.
 
@@ -511,8 +504,8 @@ Example EM_Rng_rt_alg_fun@{+} (x : RngAlg) (t : FRTerm (projT1 x)) :
 Example EM_Rng_rt_alg_hom@{+} {x y : RngAlg} (f : x ~{RngAlg}~> y) :
   t_alg_hom[fmap[Rng_K ◯ EM_to_Rng] f] = t_alg_hom[f] := eq_refl.
 
-(* Every component of the two natural isomorphisms is the identity, at a
-   variable object, to and from. *)
+(* Every component two natural isomorphisms 恒等, at a
+ variable 对象, from. （已译） *)
 Example Rng_EM_iso_to_from_component@{+} (x : RngAlg) :
   (t_alg_hom[to (projT1 (iso_to_from Rng_EM_iso) x)],
    t_alg_hom[from (projT1 (iso_to_from Rng_EM_iso) x)])

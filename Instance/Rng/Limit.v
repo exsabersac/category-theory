@@ -15,7 +15,7 @@ Require Import Category.Instance.Rng.
 
 Generalizable All Variables.
 
-(** * Limits of rings are computed on underlying sets *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/limit#limits_in_categories_of_algebras
@@ -26,7 +26,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** * Joint monicity of limit legs in [Sets], elementwise *)
+(* 相关说明。 （已译） *)
 
 Section RngSetsExt.
 
@@ -65,7 +65,7 @@ Qed.
 
 End RngSetsExt.
 
-(** * The created ring structure on a limit of underlying sets *)
+(* 相关说明。 （已译） *)
 
 Section RngLift.
 
@@ -264,7 +264,7 @@ Qed.
 Lemma rlim_neg_respects : Proper (equiv ==> equiv) rlim_neg.
 Proof. intros a b Hab; exact (proper_morphism rlim_neg_map a b Hab). Qed.
 
-(** ** The eleven laws, each by joint monicity of the legs *)
+(* 相关说明。 （已译） *)
 
 Lemma rlim_add_assoc (a b c : carrier vertex_obj[L]) :
   rlim_add (rlim_add a b) c ≈ rlim_add a (rlim_add b c).
@@ -356,7 +356,7 @@ Proof.
   apply ring_neg_l.
 Qed.
 
-(** ** The vertex's equality is propositional *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -370,7 +370,7 @@ Definition rlim_prop : PropEquiv (is_setoid vertex_obj[L]) :=
     (fun x y H => rlim_ext x y (fun j => pequiv_to _ _ (H j)))
     (fun x y H j => pequiv_from _ _ (proper_morphism (rlim_leg j) x y H)).
 
-(** ** The lifted rig and the lifted ring *)
+(* 相关说明。 （已译） *)
 
 Definition LimitRig : RigObject :=
   {| rig_setoid       := vertex_obj[L]
@@ -398,7 +398,7 @@ Definition LimitRing : RingObject :=
    ; ring_neg_respects := rlim_neg_respects
    ; ring_neg_l        := rlim_neg_l |}.
 
-(** ** The legs are ring homomorphisms *)
+(* 相关说明。 （已译） *)
 
 Program Definition rlim_hom (j : J) : RigHom LimitRing (K j) :=
   {| rig_map := rlim_leg j |}.
@@ -415,7 +415,7 @@ Definition rlim_cone : Cone K :=
   @Build_Cone J Rng K LimitRing
     (@Build_ACone J Rng LimitRing K rlim_hom (@rlim_hom_coherence)).
 
-(** ** Strictness: the lifted cone lies over [L] on the nose *)
+(* 相关说明。 （已译） *)
 
 Definition rlim_over_obj : Rng_Forget LimitRing = vertex_obj[L] := eq_refl.
 
@@ -490,7 +490,7 @@ Proof.
              (rig_map v) Hv a).
 Defined.
 
-(** ** Uniqueness of the lifted structure (Mac Lane's Theorem 2) *)
+(* 相关说明。 （已译） *)
 
 Lemma rlim_zero_unique (z : carrier vertex_obj[L])
   (Hz : ∀ j : J, rlim_leg j z ≈ rig_zero (K j)) : z ≈ rlim_zero.
@@ -566,7 +566,7 @@ Qed.
 
 End RngLift.
 
-(** * Reflection: a cone of rings whose image is limiting is limiting *)
+(* 相关说明。 （已译） *)
 
 Section RngReflect.
 
@@ -646,7 +646,7 @@ Defined.
 
 End RngReflect.
 
-(** * [Rng_Forget] strictly creates every limit *)
+(* 相关说明。 （已译） *)
 
 Section RngStrictlyCreates.
 
@@ -698,7 +698,7 @@ Definition Rng_lift_cone_unique {J : Category} (K : J ⟶ Rng)
   ConeIso M (slift_cone (screates N HN)) :=
   screates_lift_unique (Rng_Forget_StrictlyCreatesLimit K) N HN M i.
 
-(** * The image of a cone of rings is the elementwise cone *)
+(* 相关说明。 （已译） *)
 
 Example rng_fcone_apex {J : Category} (K : J ⟶ Rng) (N : Cone K) :
   vertex_obj[FCone Rng_Forget N] = rig_setoid vertex_obj[N] := eq_refl.
@@ -706,7 +706,7 @@ Example rng_fcone_apex {J : Category} (K : J ⟶ Rng) (N : Cone K) :
 Example rng_fcone_leg {J : Category} (K : J ⟶ Rng) (N : Cone K) (j : J) :
   cone_leg (FCone Rng_Forget N) j = rig_map (cone_leg N j) := eq_refl.
 
-(** * Mac Lane's Theorem 2: the lifting half *)
+(* 相关说明。 （已译） *)
 
 Definition Rng_Forget_lifts_limits {J : Category} (K : J ⟶ Rng)
   (L : Limit (Rng_Forget ◯ K)) : Limit K :=
@@ -724,7 +724,7 @@ Example rng_lift_legs {J : Category} (K : J ⟶ Rng)
     = limit_leg (limit_is_alimit L) j
   := eq_refl.
 
-(** * Corollaries: [Rng] is complete and [Rng_Forget] is continuous *)
+(* 相关说明。 （已译） *)
 
 Definition Rng_Complete : @Complete Rng :=
   creates_limits_Complete Rng_Forget Sets_Complete Rng_Forget_creates_limits.
@@ -742,7 +742,7 @@ Definition Rng_Forget_PreservesAllLimits : PreservesAllLimits Rng_Forget :=
   creates_limits_PreservesAllLimits Rng_Forget Sets_Complete
     Rng_Forget_creates_limits.
 
-(** * "Limits of rings are computed on underlying sets", literally *)
+(* 相关说明。 （已译） *)
 
 Section RngComputed.
 

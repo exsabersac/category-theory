@@ -25,7 +25,7 @@ Generalizable All Variables.
 *)
 Set Default Proof Using "All".
 
-(** * Loops in a topological group, and the abelian fundamental group *)
+(* 相关说明。 （已译） *)
 
 (*
    Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
@@ -41,11 +41,9 @@ Set Default Proof Using "All".
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Topological monoids and topological groups *)
+(* 相关说明。 （已译） *)
 
-(* An H-space with a strict unit, in the exact strength the exercises
-   consume.  [htm_mult_cont] is joint continuity in the two-open form
-   forced by the absence of products (header). *)
+(* 相关说明。 （已译） *)
 Record HTopMonoid := {
   htm_space :> TopSpace;
 
@@ -67,9 +65,9 @@ Record HTopMonoid := {
                U x' → W y' → V (htm_mult x' y')))%type })%type }
 }.
 
-(* Mac Lane's named object: a group in [Top].  The inverse's continuity is
-   stated in the ordinary preimage form, which for a map of one variable is
-   available and is literally [Continuous]. *)
+(* Mac Lane's named 对象: group [Top]. The inverse's continuity is
+ stated ordinary preimage form, map one variable is
+ available literally [Continuous]. （已译） *)
 Record TopGroup := {
   tg_monoid :> HTopMonoid;
 
@@ -105,7 +103,7 @@ Proof.
   - intros y Hy; exact Hy.
 Qed.
 
-(** ** A predicate with an open neighbourhood at each of its points is open *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 LoopSpace 相关定义、性质与动机。
@@ -132,7 +130,7 @@ Proof.
     exact (fst (projT2 (H (projT1 w) (projT2 w)))).
 Qed.
 
-(** ** The pointwise product of two arrows into a topological monoid *)
+(* * ** The pointwise product two arrows topological 幺半群 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -184,8 +182,7 @@ Definition mult_arrow : D ~{Top}~> G := {|
   continuity     := mult_open
 |}.
 
-(* The defining equation, by [reflexivity]: the arrow's value IS the product
-   of the two values. *)
+(* 相关说明。 （已译） *)
 Lemma mult_arrow_eval (z : D) : mult_arrow z ≈ htm_mult G (p z) (q z).
 Proof. reflexivity. Qed.
 
@@ -194,15 +191,13 @@ End PointwiseProduct.
 Arguments mult_fun G {D} p q z.
 Arguments mult_arrow G {D} p q.
 
-(** ** Pointwise multiplication of loops *)
+(* 相关说明。 （已译） *)
 
 Section Loops.
 
 Context (G : HTopMonoid).
 
-(* Both endpoint conditions come from the same computation: the value at an
-   endpoint is the product of the two endpoint values, which are both the
-   unit, and the unit is strict. *)
+(* 相关说明。 （已译） *)
 Lemma loop_mult_src (p q : Path G (htm_unit G) (htm_unit G)) :
   mult_arrow G (path_map p) (path_map q) I_zero ≈ htm_unit G.
 Proof.
@@ -219,7 +214,7 @@ Proof.
   - exact (htm_unit_left G (htm_unit G)).
 Qed.
 
-(* The pointwise product of two loops at the unit, as a loop at the unit. *)
+(* 相关说明。 （已译） *)
 Definition loop_mult (p q : Path G (htm_unit G) (htm_unit G)) :
   Path G (htm_unit G) (htm_unit G) := {|
   path_map := mult_arrow G (path_map p) (path_map q);
@@ -231,7 +226,7 @@ Lemma loop_mult_eval (p q : Path G (htm_unit G) (htm_unit G)) (t : Ipt) :
   path_map (loop_mult p q) t ≈ htm_mult G (path_map p t) (path_map q t).
 Proof. reflexivity. Qed.
 
-(** ** Pointwise multiplication respects homotopy *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 LoopSpace 相关定义、性质与动机。
@@ -260,10 +255,9 @@ Proof.
     + exact (htm_unit_left G (htm_unit G)).
 Defined.
 
-(** ** The constant loop is a STRICT unit for pointwise multiplication *)
+(* * ** The 常值 loop STRICT unit pointwise multiplication （已译） *)
 
-(* Strict at the level of points; the homotopy is then [pointwise_homotopic]
-   and nothing is deformed. *)
+(* 相关说明。 （已译） *)
 Definition loop_mult_unit_left (p : Path G (htm_unit G) (htm_unit G)) :
   PathHomotopy (loop_mult (const_path (htm_unit G)) p) p.
 Proof.
@@ -280,7 +274,7 @@ Proof.
   exact (htm_unit_right G (path_map p t)).
 Defined.
 
-(** ** Mac Lane §II.5 Exercise 4: the interchange law *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 LoopSpace 相关定义、性质与动机。
@@ -309,7 +303,7 @@ Proof.
       apply concat_second; [ lra | rewrite I_dbl'_eval; Rlin ].
 Qed.
 
-(** ** Mac Lane §II.5 Exercise 6: Eckmann–Hilton at the loops *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 LoopSpace 相关定义、性质与动机。
@@ -387,7 +381,7 @@ Arguments loop_mult {G} p q.
 Arguments loop_interchange {G} a b c d.
 Arguments loop_concat_comm {G} p q.
 
-(** ** The headline: π₁ of a topological group is abelian *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 LoopSpace 相关定义、性质与动机。
@@ -464,8 +458,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* Joint continuity of addition, in the two-open form: split the target
-   radius in half between the two factors. *)
+(* 相关说明。 （已译） *)
 Lemma R_plus_cont (V : R_Top → Type) (HV : IsOpen R_Top V)
       (x y : R_Top) (Hxy : V (Rplus x y)) :
   { U : R_Top → Type &
@@ -539,8 +532,7 @@ Definition R_TopGroup : TopGroup := {|
   tg_inv_cont := R_opp_cont
 |}.
 
-(* Acceptance: the record's data are the additive ones on the nose, and the
-   pointwise product of two loops is pointwise addition. *)
+(* 相关说明。 （已译） *)
 Example R_unit_is_zero : htm_unit R_TopMonoid = 0%R := eq_refl.
 
 Example R_mult_is_plus : htm_mult R_TopMonoid = Rplus := eq_refl.
@@ -553,7 +545,7 @@ Example R_loop_mult_eval
   path_map (loop_mult p q) t ≈ (path_map p t + path_map q t)%R.
 Proof. reflexivity. Qed.
 
-(* And the headline instantiated at the reals. *)
+(* 相关说明。 （已译） *)
 Corollary pi1_R_abelian
           (p q : fundamental_group R_TopMonoid (htm_unit R_TopMonoid)) :
   mon_op p q ≈ mon_op q p.

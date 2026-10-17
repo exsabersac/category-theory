@@ -18,7 +18,7 @@ Require Import Category.Instance.Mon.Free.
 
 Generalizable All Variables.
 
-(** * The free commutative monoid on a setoid, and its monad *)
+(* * * The free commutative 幺半群 setoid, 单子 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/commutative+monoid
@@ -31,7 +31,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** Finite multisets: lists modulo permutation, letters up to ≈ *)
+(* 相关说明。 （已译） *)
 
 (* A Prop-valued congruence that stores Type-valued ≈ premises. *)
 Inductive perm_eq@{o} {X : SetoidObject@{o o}} : list X → list X → Prop :=
@@ -118,8 +118,8 @@ Proof.
   - exact (pe_transitive _ _ _ IH1 IH2).
 Qed.
 
-(* Leibniz: mapping commutes with concatenation, and the identity map is
-   the identity. *)
+(* Leibniz: 映射 commutes concatenation, 恒等 map is
+ 恒等. （已译） *)
 Lemma wmap_wapp@{o} {X Y : SetoidObject@{o o}} (f : X → Y) (l m : list X) :
   wmap f (wapp l m) = wapp (wmap f l) (wmap f m).
 Proof. induction l as [|a l IH]; simpl; [ reflexivity | now rewrite IH ]. Qed.
@@ -129,7 +129,7 @@ Lemma wmap_id@{o} {X : SetoidObject@{o o}} (l : list X) :
 Proof. induction l as [|a l IH]; simpl; [ reflexivity | now rewrite IH ]. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The free commutative monoid, its adjunction and its monad *)
+(* * ** The free commutative 幺半群, 伴随 单子 （已译） *)
 
 Section FreeCMon.
 
@@ -138,8 +138,7 @@ Universes o so.
 Local Notation CMonOS := CMon@{so o}.
 Local Notation UCMon := (CMon_Forget : CMon@{so o} ⟶ Sets@{o so}).
 
-(* The multisets over X under concatenation; ≈ is the Prop congruence
-   [perm_eq] itself, so the PropEquiv field is free. *)
+(* 相关说明。 （已译） *)
 Definition FreeCMonObject@{+} (X : obj[Sets@{o so}]) : CMonOS.
 Proof.
   unshelve refine
@@ -173,7 +172,7 @@ Proof.
   intros a b H. exact (pe_skip a b _ _ H pe_nil).
 Defined.
 
-(* The extension of h along the insertion: the sum h(x1) + ⋯ + h(xn). *)
+(* The extension h along 嵌入: sum h(x1) + ⋯ + h(xn). （已译） *)
 Fixpoint cfold@{+} {X : obj[Sets@{o so}]} {L : CMonOS} (h : X → L)
   (l : list X) : L :=
   match l with
@@ -181,7 +180,7 @@ Fixpoint cfold@{+} {X : obj[Sets@{o so}]} {L : CMonOS} (h : X → L)
   | Datatypes.cons a l' => cmon_plus L (h a) (cfold h l')
   end.
 
-(* The Prop congruence is eliminated into the Prop mirror of L's ≈. *)
+(* The Prop congruence eliminated 进入 Prop 镜像 L's ≈. （已译） *)
 Lemma cfold_respects@{+} {X : obj[Sets@{o so}]} {L : CMonOS} (h : X → L)
   (hp : Proper (equiv ==> equiv) h) (l l' : list X) :
   perm_eq l l' → cfold h l ≈ cfold h l'.
@@ -218,8 +217,8 @@ Proof.
   - intros l m. exact (cfold_app h l m).
 Defined.
 
-(* A homomorphism out of the free commutative monoid is the fold of its
-   values on the letters. *)
+(* A homomorphism out free commutative 幺半群 fold its
+ values letters. （已译） *)
 Lemma cfold_unique@{+} {X : obj[Sets@{o so}]} {L : CMonOS}
   (g : CMonHom (FreeCMonObject X) L) (l : list X) :
   g l ≈ cfold (fun a => g (Datatypes.cons a Datatypes.nil)) l.
@@ -243,7 +242,7 @@ Proof.
   - intros l m. simpl. rewrite wmap_wapp. apply perm_eq_refl.
 Defined.
 
-(* The free functor; on arrows it maps the letters. *)
+(* The free 函子; arrows it maps letters. （已译） *)
 Definition FreeCMon@{+} : Sets@{o so} ⟶ CMonOS.
 Proof.
   unshelve refine
@@ -290,7 +289,7 @@ Proof.
   - intros g l. simpl. symmetry. exact (cfold_unique g l).
 Defined.
 
-(* FreeCMon ⊣ CMon_Forget, in hom-set form, so that the counit computes. *)
+(* 相关说明。 （已译） *)
 Definition FreeCMon_adj@{+} :
   @Adjunction@{so o o so o o o o so o so} CMonOS Sets@{o so} FreeCMon UCMon.
 Proof.
@@ -327,12 +326,12 @@ Example Bag_join_counit@{+} (X : obj[Sets@{o so}]) :
 Example Bag_join@{+} (X : obj[Sets@{o so}]) (ll : list (list X)) :
   @join _ _ BagMonad X ll = bconcat ll := eq_refl.
 
-(* The Eilenberg–Moore category of the multiset monad. *)
+(* The Eilenberg–Moore 范畴 multiset 单子. （已译） *)
 Definition BagAlg@{+} : Category@{so o o} :=
   @EilenbergMoore@{so so so o} Sets@{o so} BagF BagMonad.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Every algebra is a commutative monoid, on a set *)
+(* * ** Every algebra commutative 幺半群, set （已译） *)
 
 Lemma balg_unit@{+} {S : obj[Sets@{o so}]}
   (α : @TAlgebra Sets@{o so} BagF BagMonad S) (a : S) :
@@ -419,8 +418,8 @@ Proof.
   exact (balg_unit α a).
 Qed.
 
-(* The carrier of every algebra is a SET: x ≈ y iff ⟨x⟩ and ⟨y⟩ are equal
-   multisets, so EM_to_CMon needs no hypothesis. *)
+(* The carrier every algebra SET: x ≈ y iff ⟨x⟩ ⟨y⟩ equal
+ multisets, so EM_to_CMon needs no 假设. （已译） *)
 Definition balg_prop@{+} {S : obj[Sets@{o so}]}
   (α : @TAlgebra Sets@{o so} BagF BagMonad S) : PropEquiv (is_setoid S).
 Proof.
@@ -448,7 +447,7 @@ Definition balg_cmon@{+} {S : obj[Sets@{o so}]}
    ; cmon_plus_zero_l := balg_zero_l α
    ; cmon_prop := balg_prop α |}.
 
-(* The algebra comes from its commutative monoid: α⟨m1 … mn⟩ ≈ m1 + ⋯ + mn. *)
+(* The algebra comes commutative 幺半群: α⟨m1 … mn⟩ ≈ m1 + ⋯ + mn. （已译） *)
 Lemma balg_fold@{+} {S : obj[Sets@{o so}]}
   (α : @TAlgebra Sets@{o so} BagF BagMonad S) (l : list S) :
   cfold (L := balg_cmon α) (fun x => x) l ≈ t_alg[α] l.
@@ -475,7 +474,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The Eilenberg–Moore category of the multiset monad is CMon *)
+(* * ** The Eilenberg–Moore 范畴 multiset 单子 CMon （已译） *)
 
 Definition EM_cmon_map@{+} {x y : BagAlg} (f : x ~{BagAlg}~> y) :
   CMonHom (balg_cmon (projT2 x)) (balg_cmon (projT2 y)).
@@ -519,7 +518,7 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* The commutative monoid round trip: the sum comes back as a + (b + 0). *)
+(* The commutative 幺半群 round trip: sum comes back + (b + 0). （已译） *)
 Definition CMon_EM_unit_iso@{+} (M : CMonOS) :
   @Isomorphism CMonOS (fobj[EM_to_CMon ◯ CMon_K] M) M.
 Proof.
@@ -556,7 +555,7 @@ Proof.
   exists FreeCMon. exists FreeCMon_adj. exact CMon_EM_equivalence.
 Defined.
 
-(* CMon ≅ Set^Bag in Cat, from the two component isomorphisms. *)
+(* 相关说明。 （已译） *)
 Definition CMon_EM_iso@{c +} : @Isomorphism Cat@{c so so so o} CMonOS BagAlg.
 Proof.
   unshelve refine
@@ -566,7 +565,7 @@ Proof.
   - exists (fun M => CMon_EM_unit_iso M). intros M N f a. reflexivity.
 Defined.
 
-(* Commuting with the forgetful functors. *)
+(* Commuting forgetful 函子. （已译） *)
 Theorem CMon_K_Forget@{+} :
   @EM_Forget Sets@{o so} BagF BagMonad ◯ CMon_K ≈ UCMon.
 Proof. exact (EM_Comparison_Forget FreeCMon_adj). Qed.
@@ -585,7 +584,7 @@ Example CMon_EM_iso_to@{+} : to CMon_EM_iso = CMon_K := eq_refl.
 
 Example CMon_EM_iso_from@{+} : from CMon_EM_iso = EM_to_CMon := eq_refl.
 
-(* K M = ⟨M, U ε_M⟩, the structure map the fold of the identity. *)
+(* K M = ⟨M, U ε_M⟩, structure map fold 恒等. （已译） *)
 Example CMon_K_alg_fun@{+} (M : CMonOS) (l : list (cmon_setoid M)) :
   t_alg[projT2 (fobj[CMon_K] M)] l = cfold (L := M) (fun x => x) l
   := eq_refl.
@@ -636,7 +635,7 @@ Example CMon_EM_iso_from_to_component@{+} (M : CMonOS) :
     = (@setoid_morphism_id@{o o o} (cmon_setoid M),
        @setoid_morphism_id@{o o o} (cmon_setoid M)) := eq_refl.
 
-(* The Prop mirror of an algebra's carrier: ⟨x⟩ and ⟨y⟩ as multisets. *)
+(* The Prop 镜像 algebra's carrier: ⟨x⟩ ⟨y⟩ multisets. （已译） *)
 Example balg_prop_is@{+} (x : BagAlg) (a b : projT1 x) :
   @pequiv _ _ (cmon_prop (fobj[EM_to_CMon] x)) a b
     = perm_eq (Datatypes.cons a Datatypes.nil)

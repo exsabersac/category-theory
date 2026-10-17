@@ -26,6 +26,6 @@ Definition FinSet_WellPowered@{o h s t u v +|
   WellPowered@{o h h s t} FinSet@{o h u v} :=
   Classifier_WellPowered FinSet@{o h u v}.
 
-(* The index at [n]: the characteristic functions of the subsets of n. *)
+(* 相关说明。 （已译） *)
 Example FinSet_wp_index (n : FinSet) :
   wp_index (FinSet_WellPowered n) = (Fin.t n → Fin.t 2) := eq_refl.

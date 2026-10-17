@@ -32,7 +32,7 @@ Generalizable All Variables.
 *)
 Set Default Proof Using "All".
 
-(** * Mac Lane's Exercise 2 at a Galois connection between posets *)
+(* 相关说明。 （已译） *)
 
 (*
    Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
@@ -45,7 +45,7 @@ Set Default Proof Using "All".
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** (E) The dictionary, the equivalence, and Mac Lane's bijection *)
+(* * ** (E) The dictionary, 等价, Mac Lane's bijection （已译） *)
 
 Section GaloisFixed.
 
@@ -81,8 +81,8 @@ Proof.
     exact (@Build_IsIsomorphism (Proset PB) _ _ _ H I I).
 Defined.
 
-(* The exercise's closing question, answered at a Galois connection by
-   pure instantiation of the general theorem. *)
+(* The exercise's closing question, answered at Galois connection by
+ pure instantiation general 定理. （已译） *)
 Definition galois_fixed_point_equivalence :
   EquivalenceOfCategories (FixedL GAdj) :=
   adjunction_fixed_point_equivalence GAdj.
@@ -91,7 +91,7 @@ Definition galois_fixed_point_equivalence_swap :
   EquivalenceOfCategories (FixedR GAdj) :=
   fixed_point_equivalence_swap GAdj.
 
-(** *** Riehl Corollary 4.2.10, the thin fixed-point formulae *)
+(* 相关说明。 （已译） *)
 
 Lemma gal_lrl_eq (antiB : @Antisymmetric B eq eq_equiv RB) (a : A) :
   gal_l G (gal_r G (gal_l G a)) = gal_l G a.
@@ -111,9 +111,9 @@ Proof.
            (gal_rlr_below PA G b) (gal_rlr_above PB G b) I I).
 Qed.
 
-(** *** Mac Lane's two subsets, elementwise *)
+(* 相关说明。 （已译） *)
 
-(* "{p | p = RLp}", with the equation oriented as Mac Lane writes it. *)
+(* 相关说明。 （已译） *)
 Lemma closed_r_eq (antiA : @Antisymmetric A eq eq_equiv RA) (a : A) :
   GalClosed_r G a ↔ gal_r G (gal_l G a) = a.
 Proof.
@@ -163,7 +163,7 @@ Proof.
     exact (gal_closed_l_image PB G a).
 Qed.
 
-(** *** The bijection between the two sets of closed elements *)
+(* 相关说明。 （已译） *)
 
 Definition closed_r_to_l (p : ∃ a : A, GalClosed_r G a) :
   ∃ b : B, GalClosed_l G b :=
@@ -173,9 +173,9 @@ Definition closed_l_to_r (q : ∃ b : B, GalClosed_l G b) :
   ∃ a : A, GalClosed_r G a :=
   (gal_r G `1 q; gal_closed_r_image PA G `1 q).
 
-(* Both round trips return the underlying element on the nose.  The whole
-   sigma is not compared: the second component is a [Prop] and no proof
-   irrelevance is available. *)
+(* Both round trips return underlying element nose. The whole
+ sigma not compared: second component [Prop] no 证明
+ irrelevance available. （已译） *)
 Lemma closed_round_r (antiA : @Antisymmetric A eq eq_equiv RA)
   (p : ∃ a : A, GalClosed_r G a) :
   `1 (closed_l_to_r (closed_r_to_l p)) = `1 p.
@@ -188,7 +188,7 @@ Proof. exact (fst (closed_l_eq antiB `1 q) `2 q). Qed.
 
 End GaloisFixed.
 
-(** ** (F) Riehl's illustration: the direct-image / inverse-image pair *)
+(* 相关说明。 （已译） *)
 
 Section PowersetFixed.
 
@@ -221,8 +221,7 @@ Proof.
              (image_preimage_galois f) T).
 Qed.
 
-(* Every direct image is closed on the right-hand side, every inverse
-   image on the left: the two instances of the general closure facts. *)
+(* 相关说明。 （已译） *)
 Definition image_closed_l (S : carrier (Powerset_Prop_obj X)) :
   GalClosed_l (image_preimage_galois f) (Powerset_Prop_image f S) :=
   gal_closed_l_image (subset_le_preorder Y) (image_preimage_galois f) S.
@@ -233,7 +232,7 @@ Definition preimage_closed_r (T : carrier (Powerset_Prop_obj Y)) :
 
 End PowersetFixed.
 
-(** ** (G) A computing witness on the naturals *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 FixedPoints 相关定义、性质与动机。
@@ -251,8 +250,7 @@ Lemma nat_shift_closed_l_all (k b : nat) :
   GalClosed_l (nat_shift_galois k) b.
 Proof. unfold GalClosed_l; simpl; lia. Qed.
 
-(* The left-hand closed elements are a PROPER subset: [1] is outside and
-   [5] is inside, at [k := 2]. *)
+(* 相关说明。 （已译） *)
 Example nat_shift_two_one_not_closed :
   GalClosed_r (nat_shift_galois 2%nat) 1%nat → False.
 Proof. intro H; pose proof (fst (nat_shift_closed_r_iff 2 1) H); lia. Qed.
@@ -264,8 +262,8 @@ Definition nat_shift_five_closed :
 Example nat_shift_gal_l_five :
   gal_l (nat_shift_galois 2%nat) 5%nat = 3%nat := eq_refl.
 
-(* [5] as an object of the unit-fixed subcategory of the shift
-   adjunction, and the restricted left adjoint's value there. *)
+(* [5] 对象 unit-fixed subcategory shift
+ 伴随, restricted 左伴随's value there. （已译） *)
 Definition nat_shift_five_fixed :
   obj[Sub (Proset Nat.le_preorder)
         (UnitFixed (nat_shift_adjunction 2%nat))] :=
@@ -276,7 +274,7 @@ Example nat_shift_FixedL_obj :
   `1 (fobj[FixedL (nat_shift_adjunction 2%nat)] nat_shift_five_fixed)
     = 3%nat := eq_refl.
 
-(** ** (H) Mac Lane's "what are these sets", for a group action *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 FixedPoints 相关定义、性质与动机。

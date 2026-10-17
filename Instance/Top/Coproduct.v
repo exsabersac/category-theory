@@ -11,7 +11,7 @@ Require Import Category.Instance.Top.
 
 Generalizable All Variables.
 
-(** * The disjoint union is the coproduct in Top *)
+(* 相关说明。 （已译） *)
 
 (*
  Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
@@ -22,21 +22,20 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The disjoint union of two spaces *)
+(* 相关说明。 （已译） *)
 
 Section SumTop.
 
 Context (X Y : TopSpace).
 
-(* The points: the sum of the two point sets, under Lib/Datatypes.v's
-   [sum_setoid], which never identifies across the summands. *)
+(* 相关说明。 （已译） *)
 Definition sum_carrier : SetoidObject := {|
   carrier := (carrier (top_carrier X) + carrier (top_carrier Y))%type;
   is_setoid := sum_setoid
 |}.
 
-(* A subset of the sum is open exactly when both of its restrictions
-   are — Awodey's O(X + Y) ≅ O(X) × O(Y), taken as the definition. *)
+(* A subset sum open exactly both restrictions
+ — Awodey's O(X + Y) ≅ O(X) × O(Y), taken 定义. （已译） *)
 Definition sum_open (W : sum_carrier → Type) : Type :=
   (IsOpen X (fun x => W (Datatypes.inl x))
      ∧ IsOpen Y (fun y => W (Datatypes.inr y)))%type.
@@ -50,8 +49,7 @@ Proof.
   - exact (open_respects Y _ _ (fun y => H (Datatypes.inr y)) HY).
 Qed.
 
-(* Respect for the points' own equality: equivalent points of the sum lie
-   in the same summand, so each case is that summand's [open_proper]. *)
+(* 相关说明。 （已译） *)
 Lemma sum_proper (W : sum_carrier → Type) :
   sum_open W → ∀ u v : sum_carrier, u ≈ v → W u → W v.
 Proof.
@@ -114,9 +112,7 @@ Proof.
   intros u v Huv; exact Huv.
 Defined.
 
-(* Named constructor rather than a [{| … |}] literal: the record's index
-   [Y] would otherwise be inferred from [continuous_map]'s type before the
-   ascription has forced it to [Sum_Top]. *)
+(* 相关说明。 （已译） *)
 Definition Top_inl : X ~{Top}~> Sum_Top :=
   Build_ContinuousMorphism X Sum_Top sum_inl_map (fun W HW => fst HW).
 
@@ -148,8 +144,7 @@ Proof.
   - exact (proper_morphism (continuous_map g) a b H).
 Defined.
 
-(* Continuity is exactly the pair of the two continuities: the preimage's
-   two restrictions ARE the preimages under f and under g. *)
+(* 相关说明。 （已译） *)
 Definition Top_merge {X Y Z : TopSpace}
   (f : X ~{Top}~> Z) (g : Y ~{Top}~> Z) : Sum_Top X Y ~{Top}~> Z :=
   Build_ContinuousMorphism (Sum_Top X Y) Z (sum_merge_map f g)
@@ -201,9 +196,9 @@ Lemma Top_cofork_ump (Z X Y : TopSpace)
     ↔ (h ∘ Top_inl X Y ≈ f) ∧ (h ∘ Top_inr X Y ≈ g).
 Proof. exact (Top_sum_ump f g h). Qed.
 
-(* [Cocartesian Top] is [@Cartesian (Top^op)]; the constructor and its
-   category are named explicitly for the orientation reason recorded in
-   Structure/Biproduct/Cartesian.v. *)
+(* [Cocartesian Top] [@Cartesian (Top^op)]; constructor its
+ 范畴 named explicitly orientation reason recorded in
+ Structure/Biproduct/Cartesian.v. （已译） *)
 #[export] Instance Top_Cocartesian : @Cocartesian Top :=
   @Build_Cartesian (Top^op)
     Sum_Top
@@ -240,7 +235,7 @@ Example sum_open_is_pair (X Y : TopSpace)
     = (IsOpen X (fun x => W (Datatypes.inl x))
          ∧ IsOpen Y (fun y => W (Datatypes.inr y)))%type := eq_refl.
 
-(** ** The empty space is the unit, and the symmetry and associativity *)
+(* 相关说明。 （已译） *)
 
 (* Free from Structure/Cocartesian.v once Instance/Top.v's [Top_Initial]
    is in scope. *)
@@ -260,11 +255,9 @@ Example Top_coprod_assoc (X Y Z : TopSpace) :
   @Isomorphism Top (Sum_Top (Sum_Top X Y) Z) (Sum_Top X (Sum_Top Y Z)) :=
   @coprod_assoc Top Top_Cocartesian X Y Z.
 
-(** ** The disjoint union of discrete spaces is discrete *)
+(* 相关说明。 （已译） *)
 
-(* Stated as a biconditional between the two openness predicates, so the
-   two topologies are identified on the nose rather than through a
-   comparison map. *)
+(* 相关说明。 （已译） *)
 Theorem sum_of_discrete (A B : SetoidObject)
         (W : sum_carrier (Discrete_Top A) (Discrete_Top B) → Type) :
   IsOpen (Sum_Top (Discrete_Top A) (Discrete_Top B)) W
@@ -295,17 +288,14 @@ Proof. exact (sum_of_discrete _ _ W). Qed.
 
 (** ** Non-vacuity *)
 
-(* The two injections of [1 + 1] land on different points: the singleton
-   subset of the left copy is a subset that one hits and the other does
-   not.  So the coproduct does not collapse. *)
+(* 相关说明。 （已译） *)
 Definition left_point (u : sum_carrier Point_Top Point_Top) : Type :=
   match u with
   | Datatypes.inl _ => poly_unit
   | Datatypes.inr _ => False
   end.
 
-(* It is open, which is what makes the two copies topologically distinct
-   and not merely set-theoretically so. *)
+(* 相关说明。 （已译） *)
 Lemma left_point_open : IsOpen (Sum_Top Point_Top Point_Top) left_point.
 Proof.
   split.

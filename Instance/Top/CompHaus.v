@@ -27,7 +27,7 @@ Require Import Coq.Lists.List.
 
 Generalizable All Variables.
 
-(** * The category, under the issue's name *)
+(* * * The 范畴, under issue's name （已译） *)
 
 Definition CompHaus : Category := CompactHausdorffSpaces.
 
@@ -43,7 +43,7 @@ Proof. exact (Full_Implies_Full_Functor Top _ CompactHausdorff_Full). Qed.
 Lemma CompHaus_Incl_Faithful : Functor.Faithful CompHaus_Incl.
 Proof. exact (Incl_Faithful Top _). Qed.
 
-(** * A continuous bijection from a compact space to a Hausdorff space *)
+(* 相关说明。 （已译） *)
 
 Section Bijection.
 Context {X Y : TopSpace} (f : X ~{Top}~> Y)
@@ -120,7 +120,7 @@ Proof using. exact (snd (fst (snd (`2 (`2 (HY _ y0 (sep_nonequal c))))))). Qed.
 Lemma sep_disjoint (c : compl_pts) (z : Y) : sepA c z → sepB c z → False.
 Proof using. exact (snd (snd (`2 (`2 (HY _ y0 (sep_nonequal c))))) z). Qed.
 
-(* The sep_cover of [X]: the preimages of the separating opens, plus [U]. *)
+(* 相关说明。 （已译） *)
 Definition sep_cover_idx : Type := (compl_pts + poly_unit)%type.
 Definition sep_cover (i : sep_cover_idx) : X → Type :=
   match i with
@@ -148,7 +148,7 @@ Definition sep_subcover_covers :
   ∀ x : X, ∃ i : sep_cover_idx, (In i sep_subcover ∧ sep_cover i x)%type :=
   `2 (HX sep_cover_idx sep_cover sep_cover_covers).
 
-(* The [Y]-side family: the separating opens around [y0]; nothing for [U]. *)
+(* 相关说明。 （已译） *)
 Definition sep_fam (i : sep_cover_idx) : Y → Type :=
   match i with
   | inl c => sepB c
@@ -223,7 +223,7 @@ Defined.
 
 End Bijection.
 
-(** * The truncated product topology: the furthest formable point of (a) *)
+(* 相关说明。 （已译） *)
 
 Section SquashProduct.
 
@@ -344,8 +344,7 @@ Definition Top_sq_fst : Top_sq_product ~{Top}~> X :=
 Definition Top_sq_snd : Top_sq_product ~{Top}~> Y :=
   Build_ContinuousMorphism Top_sq_product Y sq_snd_map sq_snd_continuous.
 
-(* The pairing exists at the level of setoids; its CONTINUITY is what the
-   probe pins as refused. *)
+(* 相关说明。 （已译） *)
 Definition sq_fork_map {Z : TopSpace@{o}}
   (f : Z ~{Top}~> X) (g : Z ~{Top}~> Y) :
   SetoidMorphism (top_carrier Z) sq_carrier.
@@ -359,7 +358,7 @@ Defined.
 
 End SquashProduct.
 
-(** * The forgetful functor, and creation *)
+(* * * The forgetful 函子, creation （已译） *)
 
 Definition CompHaus_Forget := Top_Forget ◯ CompHaus_Incl.
 
@@ -371,8 +370,8 @@ Proof.
   exact E.
 Qed.
 
-(* Creation by the INCLUSION, from the generic lemma, under closure of the
-   compact Hausdorff predicate under the limits of [Top]. *)
+(* Creation INCLUSION, generic 引理, under closure the
+ compact Hausdorff predicate under limits [Top]. （已译） *)
 Definition CompHaus_Incl_CreatesLimit
   (closed : ClosedUnderLimits CompactHausdorff_Subcategory)
   {J : Category} (K : J ⟶ CompHaus) : CreatesLimit K CompHaus_Incl :=

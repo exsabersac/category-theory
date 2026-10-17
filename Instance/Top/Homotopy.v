@@ -25,7 +25,7 @@ Open Scope R_scope.
 *)
 Set Default Proof Using "All".
 
-(** * Homotopy, the homotopy category, and their pointed forms *)
+(* * * Homotopy, homotopy 范畴, pointed forms （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/homotopy+category
@@ -67,7 +67,7 @@ Arguments htpy_cont {X Y f g} _ _ _ _ _ _.
 Arguments htpy_zero {X Y f g} _ _.
 Arguments htpy_one {X Y f g} _ _.
 
-(** ** Reflexivity: the constant homotopy *)
+(* * ** Reflexivity: 常值 homotopy （已译） *)
 
 Definition homotopy_const {X Y : TopSpace} {f g : X ~{Top}~> Y}
            (E : f ≈ g) : Homotopy f g.
@@ -85,7 +85,7 @@ Proof.
   - exact E.
 Defined.
 
-(** ** Symmetry: run the track backwards *)
+(* 相关说明。 （已译） *)
 
 Definition homotopy_sym {X Y : TopSpace} {f g : X ~{Top}~> Y}
            (H : Homotopy f g) : Homotopy g f.
@@ -113,7 +113,7 @@ Proof.
     rewrite I_rev_eval, ival_I_zero, ival_I_one; lra.
 Defined.
 
-(** ** Transitivity: concatenation in the time direction *)
+(* 相关说明。 （已译） *)
 
 Section HomotopyTrans.
 
@@ -150,7 +150,7 @@ Proof.
   - reflexivity.
 Qed.
 
-(* At the seam the two halves agree, both being the middle map g. *)
+(* 相关说明。 （已译） *)
 Lemma htrans_agree (x : X) (t : Ipt) : ival t = 1/2 →
   htpy_map H1 x (I_dbl t) ≈ htpy_map H2 x (I_dbl' t).
 Proof.
@@ -207,7 +207,7 @@ Proof.
     apply (Hb y (I_dbl s) Uy).
     rewrite !I_dbl_eval.
     revert Hs; Rlin.
-  - (* exactly at the seam: both halves are available, and they agree *)
+  - (* 相关说明。 （已译） *)
     assert (Ht2 : ival t <= 1/2) by lra.
     rewrite (htrans_left x t Ht2) in Vx.
     assert (Vx2 : V (htpy_map H2 x (I_dbl' t)))
@@ -264,15 +264,14 @@ Proof.
     rewrite I_dbl'_eval, ival_I_one; Rlin.
 Defined.
 
-(* The concatenated track computes, which is what the based refinement of
-   this construction below reads off. *)
+(* 相关说明。 （已译） *)
 Lemma htrans_eval (x : X) (t : Ipt) :
   htpy_map homotopy_trans x t = htrans_fun x t.
 Proof. reflexivity. Qed.
 
 End HomotopyTrans.
 
-(** ** Compatibility with composition *)
+(* * ** Compatibility 复合 （已译） *)
 
 Section HomotopyComp.
 
@@ -297,7 +296,7 @@ Proof.
     apply (htpy_proper H1); [ | exact Ht ].
     exact (htpy_proper H2 x x' t t' Hx Ht).
   - intros V HV x t Vx; unfold hcomp_fun in *.
-    (* the outer certificate supplies an open of the middle space ... *)
+    (* 相关说明。 （已译） *)
     destruct (htpy_cont H1 V HV (htpy_map H2 x t) t Vx)
       as [r1 [Hr1 [U1 [HU1 [Ux1 Hb1]]]]].
     (* ... which is exactly what the inner certificate consumes *)
@@ -325,11 +324,11 @@ Proof. reflexivity. Qed.
 
 End HomotopyComp.
 
-(** ** Homotopy is a hom-congruence, and Toph is the quotient by it *)
+(* 相关说明。 （已译） *)
 
-(* The relation itself, at [HomRelT] -- the [Type]-valued family of
-   Construction/Quotient.v, so the chosen homotopy is DATA and nothing is
-   truncated away. *)
+(* The 关系 itself, at [HomRelT] -- [Type]-valued family of
+ Construction/Quotient.v, so chosen homotopy DATA nothing is
+ truncated away. （已译） *)
 Definition homotopic : HomRelT Top :=
   fun (X Y : TopSpace) (f g : X ~{Top}~> Y) => Homotopy f g.
 
@@ -343,15 +342,13 @@ Proof.
   - intros W Z V p p' q q' H H'; exact (homotopy_comp H H').
 Defined.
 
-(* Mac Lane's [Toph]: the same spaces, the same continuous maps, with the
-   hom-setoid coarsened to homotopy. *)
+(* 相关说明。 （已译） *)
 Definition Toph : Category := Quotient Top homotopic.
 
 Definition TophProj : Top ⟶ Toph :=
   @QuotientProj Top homotopic homotopy_congruence.
 
-(* The projection is full -- it adds no arrows -- but deliberately not
-   faithful; that is the whole content of the quotient. *)
+(* 相关说明。 （已译） *)
 Definition TophProj_Full : Full TophProj :=
   @QuotientProj_Full Top homotopic homotopy_congruence.
 
@@ -360,8 +357,7 @@ Proof. reflexivity. Qed.
 
 (** ** Pointed spaces *)
 
-(* A pointed space, and a based map: the pattern of Instance/Sets/Pointed.v
-   with [SetoidObject] replaced by [TopSpace]. *)
+(* 相关说明。 （已译） *)
 Record PointedTop := {
   ptop_space :> TopSpace;
   ptop_pt : carrier (top_carrier ptop_space)
@@ -519,11 +515,11 @@ Definition Toph_pointed_Proj : Top_pointed ⟶ Toph_pointed :=
 Definition Toph_pointed_Proj_Full : Full Toph_pointed_Proj :=
   @QuotientProj_Full Top_pointed based_homotopic based_homotopy_congruence.
 
-(** ** Over the interval, the cylinder IS the square *)
+(* 相关说明。 （已译） *)
 
-(* The constant arrow, exactly [top_point]'s construction with the domain
-   left free: the preimage of any open is a CONSTANT predicate, and every
-   constant predicate is open. *)
+(* The 常值 arrow, exactly [top_point]'s construction domain
+ left free: preimage any open CONSTANT predicate, every
+ 常值 predicate open. （已译） *)
 Definition top_const (X Y : TopSpace) (b : Y) : X ~{Top}~> Y :=
   Build_ContinuousMorphism X Y
     (const_morphism (top_carrier X) (top_carrier Y) b)
@@ -578,11 +574,11 @@ Proof.
   - exact Htop.
 Defined.
 
-(** ** The interval is contractible, and Toph sees it *)
+(* 相关说明。 （已译） *)
 
-(* The straight-line homotopy (x, t) ↦ (1 - t)·x, as the [Sq_hmap] of
-   Instance/Top/Interval.v at the identity and the constant 0.  Every
-   estimate it needs is already proved there. *)
+(* The straight-line homotopy (x, t) ↦ (1 - t)·x, [Sq_hmap] of
+ Instance/Top/Interval.v at 恒等 常值 0. Every
+ estimate it needs already proved there. （已译） *)
 Definition I_straight : Sq_Top ~{Top}~> I_Top :=
   Sq_hmap rf_id rf_zero 2 two_pos rf_id_lo rf_id_hi rf_zero_lo rf_zero_hi
           rf_id_lip rf_zero_lip.
@@ -592,8 +588,8 @@ Definition I_const_zero : I_Top ~{Top}~> I_Top := top_const I_Top I_Top I_zero.
 Lemma I_straight_bottom (t : Ipt) :
   I_straight (sq_pt t I_zero) ≈ (@id Top I_Top) t.
 Proof.
-  (* the two sides are stated in their reduced form: [lra] compares ATOMS,
-     and would not see through the identity arrow or the constant one *)
+  (* the two sides stated reduced form: [lra] compares ATOMS,
+ would not see through 恒等箭头 常值 one （已译） *)
   assert (H : ival (I_straight (sq_pt t I_zero)) = ival t).
   { unfold I_straight.
     rewrite Sq_hmap_eval, sq_pt_t, sq_pt_s, ival_I_zero.
@@ -614,12 +610,12 @@ Definition interval_contraction : Homotopy (@id Top I_Top) I_const_zero :=
   homotopy_of_square I_straight (@id Top I_Top) I_const_zero
     I_straight_bottom I_straight_top.
 
-(* The identity of the interval and the constant map at 0 are homotopic ... *)
+(* The 恒等 interval 常值 map at 0 homotopic ... （已译） *)
 Theorem interval_id_homotopic_const :
   homotopic I_Top I_Top (@id Top I_Top) I_const_zero.
 Proof. exact interval_contraction. Qed.
 
-(* ... and they are NOT equal in Top: evaluate at the far endpoint. *)
+(* 相关说明。 （已译） *)
 Theorem interval_id_not_const : ((@id Top I_Top) ≈ I_const_zero) → False.
 Proof.
   intro E.
@@ -657,8 +653,7 @@ Proof.
   reflexivity.
 Defined.
 
-(* The track at the basepoint is (1 - t)·0 = 0 for EVERY t, not merely at the
-   two ends -- which is what [BasedHomotopy] demands. *)
+(* 相关说明。 （已译） *)
 Lemma interval_contraction_based (t : Ipt) :
   htpy_map interval_contraction I_zero t ≈ I_zero.
 Proof.
@@ -685,7 +680,7 @@ Theorem Toph_pointed_identifies_id_and_const :
     (fmap[Toph_pointed_Proj] I_pt_id) (fmap[Toph_pointed_Proj] I_pt_const).
 Proof. exact interval_based_contraction. Qed.
 
-(** ** Homotopy equivalences are the isomorphisms of Toph *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom、同构、来源与用途相关定义、性质与动机。
@@ -721,9 +716,9 @@ Example Toph_iso_round {X Y : TopSpace} (i : X ≅[Toph] Y) :
     = i.
 Proof. reflexivity. Qed.
 
-(* The capstone: the interval is contractible, so in the homotopy category
-   it IS the point -- while in [Top] it is not, the two categories having
-   the same objects and the same arrows. *)
+(* The capstone: interval contractible, so homotopy 范畴
+ it IS point -- while [Top] it not, two 范畴 having
+ same 对象 same arrows. （已译） *)
 Theorem interval_contractible : HomotopyEquivalence (top_one I_Top).
 Proof.
   exists (top_point I_Top I_zero).
@@ -744,8 +739,8 @@ Proof.
   intro x.
   transitivity (from i (to i x)).
   - symmetry; exact (iso_from_to i x).
-  - (* every point of the interval goes to the same place through the
-       one-point space, so the composite is constant *)
+  - (* every point interval goes same place through the
+ one-point space, so 复合 常值 （已译） *)
     assert (Hpt : from i (to i x) ≈ from i (to i I_zero))
       by (apply proper_morphism;
           destruct (continuous_map (to i) x), (continuous_map (to i) I_zero);

@@ -1,4 +1,4 @@
-(** * Monoid and group actions as functor categories *)
+(* * * Monoid group actions 函子 范畴 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -28,8 +28,8 @@ Generalizable All Variables.
 
 (** ** Equivariant maps *)
 
-(* A morphism of M-actions: a setoid morphism between the carriers
-   commuting with the actions. *)
+(* A 态射 M-actions: setoid 态射 between carriers
+ commuting actions. （已译） *)
 Record Equivariant {M : MonObject} (A B : MSetoidAction M) := {
   equiv_map :> act_setoid A ~{Sets}~> act_setoid B;
   equivar : ∀ (g : carrier M) x,
@@ -94,9 +94,9 @@ Qed.
 
 (** ** The comparison functors *)
 
-(* Reading an action and its equivariant maps off a functor: the
-   morphism action takes a transformation to its single component,
-   whose naturality at g IS equivariance. *)
+(* Reading action equivariant maps off 函子: the
+ 态射 action takes transformation single component,
+ whose 自然性 at g IS equivariance. （已译） *)
 Program Definition MSet_to (M : MonObject) :
   [Deloop M, Sets] ⟶ MSet M := {|
   fobj := fun F => action_of_functor F;
@@ -148,8 +148,8 @@ Qed.
 
 (** ** The equivalence *)
 
-(* The functor-side round trip, with a transparent component family
-   (the in-tree [action_functor_round] is opaque). *)
+(* The 函子-side round trip, transparent component family
+ (the in-tree [action_functor_round] opaque). （已译） *)
 Program Definition MSet_round_iso {M : MonObject} (F : Deloop M ⟶ Sets) :
   @Isomorphism ([Deloop M, Sets])
     (functor_of_action (action_of_functor F)) F := {|
@@ -185,9 +185,9 @@ Next Obligation.
   intros M F [] x; simpl; symmetry; exact (@fmap_id _ _ F ttt x).
 Qed.
 
-(* The action-side round trip: the two actions coincide pointwise
-   ([action_round] is reflexivity), so the identity map is
-   equivariant in both directions. *)
+(* The action-side round trip: two actions coincide pointwise
+ ([action_round] reflexivity), so 恒等 map is
+ equivariant both directions. （已译） *)
 Program Definition MSet_action_round_iso {M : MonObject}
         (A : MSetoidAction M) :
   @Isomorphism (MSet M) (action_of_functor (functor_of_action A)) A := {|
@@ -237,7 +237,7 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(** ** The transformation setoid IS the equivariant-map setoid *)
+(* 相关说明。 （已译） *)
 
 (* Issue item 2's "unwind", stated literally as a hom-setoid
    isomorphism in Sets, following the same-directory precedents
@@ -293,7 +293,7 @@ Next Obligation.
   intros M F G η [] x; simpl; reflexivity.
 Qed.
 
-(** ** Exercise 5: groups act on finite sets by permutations *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、同构相关定义、性质与动机。

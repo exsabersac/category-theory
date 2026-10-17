@@ -15,7 +15,7 @@ Require Import Coq.Relations.Relation_Definitions.
 
 Generalizable All Variables.
 
-(** * Natural transformations into a preorder *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:  https://ncatlab.org/nlab/show/thin+category
@@ -39,7 +39,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Mac Lane §I.4, exercise 4: existence and uniqueness *)
+(* 相关说明。 （已译） *)
 
 Section ProsetTransform.
 
@@ -68,7 +68,7 @@ Definition proset_transform {S T : C ⟶ Proset P}
   @Build_Transform C (Proset P) S T (fun c => H c)
                    (fun _ _ _ => I) (fun _ _ _ => I).
 
-(* Left to right: read the pointwise witnesses off the components. *)
+(* 相关说明。 （已译） *)
 
 Definition proset_pointwise_of {S T : C ⟶ Proset P}
            (N : S ⟹ T) : proset_pointwise S T :=
@@ -118,7 +118,7 @@ Theorem proset_transform_subsingleton (S T : C ⟶ Proset P) :
   ((S ⟹ T) ↔ proset_pointwise S T) ∧ (∀ α β : S ⟹ T, α ≈ β).
 Proof. exact (proset_transform_iff S T, @proset_transform_unique S T). Qed.
 
-(** ** Seven Sketches Example 3.57: the functor category is thin *)
+(* * ** Seven Sketches Example 3.57: 函子 范畴 thin （已译） *)
 
 (*
    本节说明函子、来源与用途相关定义、性质与动机。
@@ -130,8 +130,8 @@ Theorem Fun_Proset_thin (S T : [C, Proset P])
         (α β : S ~{[C, Proset P]}~> T) : α ≈ β.
 Proof. exact (fun _ => I). Qed.
 
-(* Hence a preorder.  The pointwise order on functors is reflexive and
-   transitive because [R] is, so it presents [[C, Proset P]] as a proset. *)
+(* Hence preorder. The pointwise order 函子 reflexive and
+ transitive because [R] is, so it presents [[C, Proset P]] proset. （已译） *)
 
 (*
    本节说明 Transform 相关定义、性质与动机。
@@ -202,7 +202,7 @@ Defined.
 
 End ProsetTransform.
 
-(** ** Riehl Exercise 1.4.iii: the preorder-to-preorder case *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Transform 相关定义、性质与动机。
@@ -223,7 +223,7 @@ Corollary proset_to_proset_transform_unique
           {S T : Proset Q ⟶ Proset P} (α β : S ⟹ T) : α ≈ β.
 Proof. exact (proset_transform_unique α β). Qed.
 
-(** ** Seven Sketches Example 3.57 at the naturals: monotone maps *)
+(* 相关说明。 （已译） *)
 
 (* [Nat_Proset] is the preorder [(ℕ, ≤)] as a category: the example
    [LessThanEqualTo_Category] of Instance/Proset.v.  Instance/Poset.v exports a
@@ -276,8 +276,8 @@ Program Definition endo_of_monotone (m : Monotone) : Nat_Proset ⟶ Nat_Proset :
   fmap := fun x y h => `2 m x y h
 |}.
 
-(* One round trip holds on the nose: rebuilding a monotone map through its
-   endofunctor returns it up to eta of the sigma pair. *)
+(* One round trip holds nose: rebuilding monotone map through its
+ 自函子 returns it up eta sigma pair. （已译） *)
 
 Theorem monotone_of_endo_of_monotone (m : Monotone) :
   monotone_of_endo (endo_of_monotone m) = m.
@@ -356,7 +356,7 @@ Proof.
     + intros; exact (fun _ => I).
 Defined.
 
-(** ** The criterion has teeth: existence and non-existence *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明自然变换相关定义、性质与动机。
@@ -381,8 +381,7 @@ Defined.
 Definition Endo_zero : Nat_Proset ⟶ Nat_Proset := endo_of_monotone monotone_zero.
 Definition Endo_id : Nat_Proset ⟶ Nat_Proset := endo_of_monotone monotone_id.
 
-(* [0 ≤ n] holds pointwise, so a transformation exists (and by
-   [proset_transform_unique] it is the only one up to [≈]). *)
+(* 相关说明。 （已译） *)
 
 Definition zero_le_id : proset_pointwise Endo_zero Endo_id.
 Proof.
@@ -393,8 +392,7 @@ Defined.
 Definition transform_zero_to_id : Endo_zero ⟹ Endo_id :=
   proset_transform zero_le_id.
 
-(* The converse pointwise order breaks down at [1], so by the criterion there
-   is no transformation in the other direction. *)
+(* 相关说明。 （已译） *)
 
 Theorem not_id_le_zero : ¬ proset_pointwise Endo_id Endo_zero.
 Proof.
@@ -410,7 +408,7 @@ Proof.
   exact (not_id_le_zero (proset_pointwise_of N)).
 Qed.
 
-(** ** Seven Sketches Exercise 3.58, clause 2: the dual is refuted *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。

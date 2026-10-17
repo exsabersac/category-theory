@@ -8,7 +8,7 @@ Require Import Category.Instance.StrictCat.
 
 Generalizable All Variables.
 
-(** * The comparison functor [StrictCat ⟶ Cat] *)
+(* * * The comparison 函子 [StrictCat ⟶ Cat] （已译） *)
 
 (*
    本文件给出具体实例。
@@ -26,14 +26,14 @@ Definition iso_of_eq {C : Category} {x y : C} (p : x = y) : x ≅ y :=
   | eq_refl => iso_id
   end.
 
-(* Transporting a morphism along an equality of its codomain is the same as
-   post-composing with the induced isomorphism. *)
+(* Transporting 态射 along equality codomain same as
+ post-composing induced 同构. （已译） *)
 Lemma transport_cod_to_iso {C : Category} {c a b : C} (p : a = b) (g : c ~> a) :
   transport (fun z => hom c z) p g ≈ to (iso_of_eq p) ∘ g.
 Proof. destruct p; simpl; now rewrite id_left. Qed.
 
-(* Dually, transporting along an equality of the domain (via [transport_r]) is
-   pre-composition with the induced isomorphism. *)
+(* Dually, transporting along equality domain (via [transport_r]) is
+ pre-复合 induced 同构. （已译） *)
 Lemma transport_r_dom_to_iso {C : Category} {a b d : C} (p : a = b) (g : b ~> d) :
   transport_r (fun z => hom z d) p g ≈ g ∘ to (iso_of_eq p).
 Proof. destruct p; unfold transport_r; simpl; now rewrite id_right. Qed.
@@ -60,8 +60,8 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* The comparison functor is the identity on both objects and morphisms; the
-   only content is that it sends strict equality to natural isomorphism. *)
+(* The comparison 函子 恒等 both 对象 态射; the
+ content it sends strict equality natural 同构. （已译） *)
 Program Definition StrictCat_to_Cat : StrictCat ⟶ Cat := {|
   fobj := fun C => C;
   fmap := fun _ _ F => F

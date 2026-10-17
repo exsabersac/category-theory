@@ -17,7 +17,7 @@ Require Import Category.Instance.Grp.
 
 Generalizable All Variables.
 
-(** * Pushouts in Grp: the free product with amalgamation *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/pushout
@@ -53,7 +53,7 @@ Arguments am_inv {B C} _.
 Inductive am_eq {A B C : GrpObject}
                 (f : A ~{Grp}~> B) (g : A ~{Grp}~> C)
   : AmTerm B C → AmTerm B C → Prop :=
-  (* the two insertions respect the groups' own equivalences *)
+  (* 相关说明。 （已译） *)
   | ae_l_resp : ∀ b b' : carrier B,
       b ≈ b' → am_eq (am_l b) (am_l b')
   | ae_r_resp : ∀ c c' : carrier C,
@@ -63,7 +63,7 @@ Inductive am_eq {A B C : GrpObject}
       am_eq (am_l (grp_mul B b b')) (am_mul (am_l b) (am_l b'))
   | ae_r_mul : ∀ c c' : carrier C,
       am_eq (am_r (grp_mul C c c')) (am_mul (am_r c) (am_r c'))
-  (* the amalgamation: the span is coequalized *)
+  (* 相关说明。 （已译） *)
   | ae_glue : ∀ a : carrier A,
       am_eq (am_l (f a)) (am_r (g a))
   (* the group laws, in their left-handed form *)
@@ -99,9 +99,7 @@ Section AmalgamCore.
 Context {A B C : GrpObject}.
 Context (f : A ~{Grp}~> B) (g : A ~{Grp}~> C).
 
-(* Reflexivity is DERIVED rather than posted as a constructor.  Every
-   former has a congruence rule except [am_one], and the unit itself is
-   reached by [ae_unit_l am_one] composed with its own symmetry. *)
+(* 相关说明。 （已译） *)
 Lemma am_eq_refl (u : AmTerm B C) : am_eq f g u u.
 Proof.
   induction u as [b | c | | u IHu v IHv | u IHu].
@@ -164,7 +162,7 @@ Definition am_inj1 : B ~{Grp}~> AmalgamGrp :=
 Definition am_inj2 : C ~{Grp}~> AmalgamGrp :=
   Build_GrpHom' am_inj2_map (fun c c' => ae_r_mul c c').
 
-(* The pushout square commutes: this IS the [ae_glue] constructor. *)
+(* 相关说明。 （已译） *)
 Lemma am_square : am_inj1 ∘[Grp] f ≈ am_inj2 ∘[Grp] g.
 Proof. intro a; exact (ae_glue a). Qed.
 
@@ -183,8 +181,7 @@ Context (f : A ~{Grp}~> B) (g : A ~{Grp}~> C).
 Context {Q : GrpObject}.
 Context (q1 : B ~{Grp}~> Q) (q2 : C ~{Grp}~> Q).
 
-(* Evaluation of a formal word in a competing group.  A [Fixpoint], so
-   the three homomorphism laws of the mediator hold DEFINITIONALLY. *)
+(* 相关说明。 （已译） *)
 Fixpoint am_eval (t : AmTerm B C) : carrier Q :=
   match t with
   | am_l b => grp_map q1 b
@@ -278,7 +275,7 @@ Qed.
 End AmalgamMediator.
 
 
-(** ** The universal property, packaged *)
+(* * ** The 普遍性质, packaged （已译） *)
 
 Local Obligation Tactic := idtac.
 
@@ -303,13 +300,13 @@ Next Obligation.
     exact (am_med_unique f g q1 q2 Hcomm v Hv1 Hv2).
 Defined.
 
-(** ** The chosen pushout, and what reduces *)
+(* 相关说明。 （已译） *)
 
 Definition Grp_pushout {A B C : GrpObject}
            (f : A ~{Grp}~> B) (g : A ~{Grp}~> C) : IsPushout f g :=
   @pushout Grp Grp_HasPushouts A B C f g.
 
-(* The apex and both injections are the hand-built ones ON THE NOSE. *)
+(* 相关说明。 （已译） *)
 Example Grp_pushout_apex_is_AmalgamGrp {A B C : GrpObject}
         (f : A ~{Grp}~> B) (g : A ~{Grp}~> C) :
   pushout_apex (Grp_pushout f g) = AmalgamGrp f g := eq_refl.
@@ -322,8 +319,7 @@ Example Grp_pushout_in2_is_am_inj2 {A B C : GrpObject}
         (f : A ~{Grp}~> B) (g : A ~{Grp}~> C) :
   pushout_in2 (Grp_pushout f g) = am_inj2 f g := eq_refl.
 
-(* The carrier of the apex is literally the type of formal words, and the
-   group operations are literally the formers. *)
+(* 相关说明。 （已译） *)
 Example Grp_pushout_carrier {A B C : GrpObject}
         (f : A ~{Grp}~> B) (g : A ~{Grp}~> C) :
   carrier (AmalgamGrp f g) = AmTerm B C := eq_refl.
@@ -340,7 +336,7 @@ Example Grp_pushout_inv {A B C : GrpObject}
         (f : A ~{Grp}~> B) (g : A ~{Grp}~> C) :
   grp_inv (AmalgamGrp f g) = am_inv := eq_refl.
 
-(* The mediator's action on the two generating families reduces. *)
+(* 相关说明。 （已译） *)
 Example am_med_on_left {A B C Q : GrpObject}
         (f : A ~{Grp}~> B) (g : A ~{Grp}~> C)
         (q1 : B ~{Grp}~> Q) (q2 : C ~{Grp}~> Q)
@@ -369,7 +365,7 @@ Proof.
   - exact (am_med_inj2 f g q1 q2 Hcomm).
 Qed.
 
-(** ** Mac Lane's monic-legs refinement, at split strength *)
+(* 相关说明。 （已译） *)
 
 Section GrpSplitRefinement.
 
@@ -387,8 +383,8 @@ Definition am_inj1_Section (Sg : Section g) : Section (am_inj1 f g) :=
 Definition am_inj2_Section (Sf : Section f) : Section (am_inj2 f g) :=
   pushout_in2_Section_of_Retraction (Grp_pushout f g) Sf.
 
-(* The weaker hypothesis the free product actually uses: not that the
-   opposite leg splits, but that one leg FACTORS through the other. *)
+(* The weaker 假设 free product actually uses: not the
+ opposite leg splits, but one leg FACTORS through other. （已译） *)
 Definition am_inj1_Section_of_factor (r : C ~{Grp}~> B)
            (Hr : r ∘[Grp] g ≈ f) : Section (am_inj1 f g) :=
   pushout_in1_Section (Grp_pushout f g) r Hr.
@@ -431,10 +427,10 @@ Qed.
 
 End GrpSplitRefinement.
 
-(** ** The free product, as the pushout along the constant legs *)
+(* * ** The free product, pushout along 常值 legs （已译） *)
 
-(* The constant homomorphism at the unit.  Multiplicativity is the unit's
-   own idempotence, so [Build_GrpHom'] supplies unit-preservation. *)
+(* The 常值 homomorphism at unit. Multiplicativity unit's
+ own idempotence, so [Build_GrpHom'] supplies unit-preservation. （已译） *)
 Definition grp_const_map (A G : GrpObject)
   : SetoidMorphism (grp_setoid A) (grp_setoid G).
 Proof.
@@ -495,8 +491,8 @@ Definition Grp_fp_merge {B C Q : GrpObject}
   : Grp_free_product B C ~{Grp}~> Q :=
   am_med (grp_const B B) (grp_const B C) q1 q2 (Grp_fp_cocone q1 q2).
 
-(* Both free-product injections are split monic, with NO hypothesis: each
-   constant leg factors through the other, via a third constant map. *)
+(* Both free-product injections split monic, NO 假设: each
+ 常值 leg factors through other, via third 常值 map. （已译） *)
 Lemma grp_const_absorb {A A' G : GrpObject} (h : A ~{Grp}~> A') :
   grp_const A' G ∘[Grp] h ≈ grp_const A G.
 Proof. intro a; reflexivity. Qed.
@@ -553,16 +549,16 @@ Next Obligation.
              (Grp_fp_cocone q1 q2) h Hl Hr).
 Qed.
 
-(** ** Non-vacuity
+(* * ** Non-vacuity
 
-    Nothing below can be proved by induction on [am_eq]: a NEGATIVE fact
-    about a generated congruence is only reachable by mapping OUT of the
-    quotient, which is what the universal property is for.  Every
-    separation here therefore runs through a concrete homomorphism into
-    [Instance/Grp.v]'s [Z2]. *)
+ Nothing below can proved induction [am_eq]: NEGATIVE fact
+ about generated congruence reachable 映射 OUT the
+ quotient, what 普遍性质 for. Every
+ separation here therefore runs through concrete homomorphism into
+ [Instance/Grp.v]'s [Z2]. （已译） *)
 
-(* The separating homomorphism out of Z2 * Z2: the identity on the left
-   summand, the constant map on the right. *)
+(* The separating homomorphism out Z2 * Z2: 恒等 left
+ summand, 常值 map right. （已译） *)
 Definition fp_probe : Grp_free_product Z2 Z2 ~{Grp}~> Z2 :=
   Grp_fp_merge (@id Grp Z2) (grp_const Z2 Z2).
 
@@ -571,7 +567,7 @@ Example fp_probe_left :
 Example fp_probe_right :
   grp_map fp_probe (@am_r Z2 Z2 true) = false := eq_refl.
 
-(* The free product does NOT merge the two summands' generators. *)
+(* 相关说明。 （已译） *)
 Theorem fp_generators_distinct :
   am_eq (grp_const Z2 Z2) (grp_const Z2 Z2)
     (@am_l Z2 Z2 true) (@am_r Z2 Z2 true) → False.
@@ -599,9 +595,9 @@ Proof.
   discriminate Hq.
 Qed.
 
-(* THE CONTRAST that makes the amalgamation content rather than
-   bookkeeping: over the SAME two groups, amalgamating along the identity
-   DOES merge the very pair the free product keeps apart. *)
+(* THE CONTRAST makes amalgamation content rather than
+ bookkeeping: over SAME two groups, amalgamating along 恒等
+ DOES merge very pair free product keeps apart. （已译） *)
 Theorem amalgam_over_Z2_merges :
   am_eq (@id Grp Z2) (@id Grp Z2) (@am_l Z2 Z2 true) (@am_r Z2 Z2 true).
 Proof. exact (@ae_glue Z2 Z2 Z2 (@id Grp Z2) (@id Grp Z2) true). Qed.

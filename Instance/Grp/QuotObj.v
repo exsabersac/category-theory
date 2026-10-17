@@ -16,8 +16,8 @@ Require Import Category.Instance.Grp.Quotient.Isomorphism.
 
 Generalizable All Variables.
 
-(** * Mac Lane's group illustration: the quotient objects of G are the
-      G/N *)
+(* * * Mac Lane's group illustration: quotient 对象 G the
+ G/N （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/quotient+group
@@ -28,7 +28,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Mac Lane's illustration: the quotient objects of a group *)
+(* * ** Mac Lane's illustration: quotient 对象 group （已译） *)
 
 (*
    本节说明同构、子对象相关定义、性质与动机。
@@ -36,9 +36,9 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Instance/Grp/Quotient.v's [QuotientGrp N] with its projection, which
-   is epic because it is the identity function on
-   the carrier.  This is the whole of Mac Lane's example in one line. *)
+(* Instance/Grp/Quotient.v's [QuotientGrp N] projection, which
+ epic because it 恒等 function on
+ carrier. This whole Mac Lane's example one line. （已译） *)
 Definition grp_quot_of_normal {G : GrpObject} (N : NormalSubgroup G) :
   @QuotObj Grp G :=
   mk_quot (quot_proj N) (quot_proj_epic N).
@@ -55,9 +55,9 @@ Proof.
   unshelve eexists.
   - unshelve refine {| grp_map := {| morphism :=
       fun a : carrier (QuotientGrp N) => a : carrier (QuotientGrp N') |} |}.
-    (* The quotient's `≈` is the truncation of [quot_rel] since the PR
-       "algebraic carriers are sets" (2026-09-17): the inclusion is applied
-       under it, [Prop] to [Prop]. *)
+    (* The quotient's `≈` truncation [quot_rel] since PR
+ "algebraic carriers sets" (2026-09-17): 含入 applied
+ under it, [Prop] [Prop]. （已译） *)
     + intros a b Hab.
       change (inhabited (quot_rel N a b)) in Hab.
       change (inhabited (quot_rel N' a b)).
@@ -67,7 +67,7 @@ Proof.
   - intro a; simpl; constructor; apply quot_rel_refl.
 Defined.
 
-(** ** The converse, and the hypothesis it costs *)
+(* * ** The converse, 假设 it costs （已译） *)
 
 Section Converse.
 
@@ -83,9 +83,9 @@ Definition grp_quot_surjective_of_stable (q : @QuotObj Grp G)
   GrpSurjective (quot_epi q) :=
   grp_epic_is_surjective (quot_epi q) Hst (quot_is_epic q).
 
-(* The comparison: G/ker e ≅ im e ≅ Q, the first isomorphism theorem
-   (Instance/Grp/Quotient/Isomorphism.v) followed by the
-   identification of the image with the codomain of a surjection. *)
+(* The comparison: G/ker e ≅ im e ≅ Q, first 同构 定理
+ (Instance/Grp/Quotient/Isomorphism.v) followed the
+ identification image codomain surjection. （已译） *)
 Definition grp_quot_kernel_iso (q : @QuotObj Grp G)
   (Hs : GrpSurjective (quot_epi q)) :
   QuotientGrp (KernelNS (quot_epi q)) ≅[Grp] quot_cod q :=
@@ -124,9 +124,9 @@ Proof.
            (grp_quot_kernel_iso q Hs) (grp_quot_kernel_triangle q Hs)).
 Qed.
 
-(* The same statement with the stability hypothesis in place of
-   surjectivity, so that the cost of the classical reading is visible in
-   the type rather than hidden in a side condition. *)
+(* The same statement stability 假设 place of
+ surjectivity, so cost classical reading visible in
+ type rather than hidden side condition. （已译） *)
 Theorem grp_quot_is_quot_by_kernel_stable (q : @QuotObj Grp G)
   (Hst : @GrpImageStable G (quot_cod q) (quot_epi q)) :
   q ≈ grp_quot_of_normal (KernelNS (quot_epi q)).
@@ -149,8 +149,8 @@ Lemma grp_quot_S3_A3_not_collapsed :
   quot_rel A3 S3_s s3_unit → False.
 Proof. exact (S3_mod_A3_not_collapsed). Qed.
 
-(* The trivial normal subgroup sits below A3, so the identity quotient is
-   above it in the factorization order -- the order lemma, inhabited. *)
+(* The trivial normal subgroup sits below A3, so 恒等 quotient is
+ above it factorization order -- order 引理, inhabited. （已译） *)
 Lemma grp_quot_S3_trivial_le_A3 :
   @quot_le Grp S3 (grp_quot_of_normal A3) (grp_quot_of_normal (TrivialNS S3)).
 Proof. exact (grp_quot_le_of_included (TrivialNS S3) A3 trivial_in_A3). Qed.

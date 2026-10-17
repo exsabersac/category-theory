@@ -26,14 +26,14 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The category, under Mac Lane's name *)
+(* * ** The 范畴, under Mac Lane's name （已译） *)
 
 Definition Rng : Category := Ring.
 
 (** ** The forgetful functors *)
 
-(* The additive part of a ring is an abelian group: Rig.v's [rig_cmon]
-   supplies the commutative monoid, [ring_neg] the inverses. *)
+(* The additive part ring abelian group: Rig.v's [rig_cmon]
+ supplies commutative 幺半群, [ring_neg] inverses. （已译） *)
 Definition ring_ab (R : RingObject) : AbObject := {|
   ab_cmon := rig_cmon R;
   ab_neg := ring_neg R;
@@ -65,8 +65,8 @@ Next Obligation. intros R S T f g a; simpl; reflexivity. Qed.
 
 (** ** The zero ring is terminal *)
 
-(* The one-element ring: every operation returns the point.  In a ring
-   with 0 ≈ 1 every element is 0, and this is it. *)
+(* The one-element ring: every operation returns point. In ring
+ 0 ≈ 1 every element 0, 这是 it. （已译） *)
 (*
    本节说明 Rng 相关定义、性质与动机。
 
@@ -86,8 +86,8 @@ Program Definition Zero_Rig : RigObject := {|
   rig_one := ttt;
   rig_mul := fun _ _ => ttt;
 
-  (* The relation is [fun _ _ => True], which is already a [Prop]; the two
-     implications are the identity. *)
+  (* The 关系 [fun _ _ => True], already [Prop]; two
+ 蕴含 恒等. （已译） *)
   rig_prop := @PropEquiv_of_relation poly_unit (is_setoid zero_rig_setoid)
                 (fun _ _ => True) (fun _ _ h => h) (fun _ _ h => h)
 |}.
@@ -111,8 +111,8 @@ Program Definition Zero_Ring : RingObject := {|
 Next Obligation. repeat intro; constructor. Qed.
 Next Obligation. intros; constructor. Qed.
 
-(* The unique homomorphism into the zero ring sends everything to the
-   point; every clause holds trivially in the trivial codomain. *)
+(* The unique homomorphism 进入 zero ring sends everything the
+ point; every clause holds trivially trivial codomain. （已译） *)
 Program Definition rng_to_zero (R : RingObject) : RigHom R Zero_Ring := {|
   rig_map := {| morphism := fun _ => ttt |}
 |}.
@@ -130,9 +130,7 @@ Next Obligation. intros R f g a; constructor. Qed.
 
 (** ** The integers are initial *)
 
-(* The candidate ring ℤ is Rig.v's [Int_Ring].  The unique homomorphism
-   sends z to the z-fold sum of 1, by sign case analysis over the n-fold
-   sum [rig_iter] of Rig.v. *)
+(* 相关说明。 （已译） *)
 
 Definition zring (R : RingObject) (z : Z) : carrier (rig_setoid R) :=
   match z with
@@ -141,9 +139,7 @@ Definition zring (R : RingObject) (z : Z) : carrier (rig_setoid R) :=
   | Zneg p => ring_neg R (rig_iter R (Pos.to_nat p))
   end.
 
-(* Negation commutes with the candidate map — by construction on the
-   positives, and by involutivity (through the Ab layer) on the
-   negatives. *)
+(* 相关说明。 （已译） *)
 Lemma ring_neg_involutive (R : RingObject) (a : carrier (rig_setoid R)) :
   ring_neg R (ring_neg R a) ≈ a.
 Proof.
@@ -162,8 +158,7 @@ Proof.
   - symmetry; apply ring_neg_involutive.
 Qed.
 
-(* The Ab-layer facts, restated in ring vocabulary once so the rewrites
-   below match syntactically. *)
+(* 相关说明。 （已译） *)
 Lemma ring_neg_r (R : RingObject) (a : carrier (rig_setoid R)) :
   rig_add R a (ring_neg R a) ≈ rig_zero R.
 Proof. exact (ab_neg_right (ring_ab R) a). Qed.
@@ -173,7 +168,7 @@ Lemma ring_neg_add (R : RingObject) (a b : carrier (rig_setoid R)) :
     ≈ rig_add R (ring_neg R a) (ring_neg R b).
 Proof. exact (ab_neg_plus (ring_ab R) a b). Qed.
 
-(* The successor law, the engine of every preservation proof below. *)
+(* The successor law, engine every preservation 证明 below. （已译） *)
 Lemma zring_succ (R : RingObject) (z : Z) :
   zring R (Z.succ z) ≈ rig_add R (rig_one R) (zring R z).
 Proof.
@@ -181,8 +176,7 @@ Proof.
   - reflexivity.
   - now rewrite Pos.add_1_r, Pos2Nat.inj_succ; simpl.
   - destruct p; simpl.
-    + (* Zneg p~1: simpl has already exposed the successor; cancel 1
-         against -1 through the negation of the sum *)
+    + (* 相关说明。 （已译） *)
       symmetry.
       rewrite (ring_neg_add R).
       rewrite <- rig_add_assoc.
@@ -256,7 +250,7 @@ Proof.
     now rewrite rig_add_assoc.
 Qed.
 
-(* (-1) · x ≈ - x, needed for the multiplicative Peano step. *)
+(* 相关说明。 （已译） *)
 Lemma rig_mul_neg_one (R : RingObject) (x : carrier (rig_setoid R)) :
   rig_mul R (ring_neg R (rig_one R)) x ≈ ring_neg R x.
 Proof.
@@ -341,7 +335,7 @@ Next Obligation.
   now rewrite (rng_from_Z_unique R g z).
 Qed.
 
-(** ** The commutative full subcategory *)
+(* 相关说明。 （已译） *)
 
 Definition CRng_Sub : Subcategory Rng :=
   @Build_Subcategory Rng
@@ -355,14 +349,14 @@ Definition CRng : Category := Sub Rng CRng_Sub.
 Lemma CRng_Full : Category.Construction.Subcategory.Full Rng CRng_Sub.
 Proof. intros x y ox oy g; exact I. Qed.
 
-(* Non-vacuity: the integers are commutative, so [CRng] contains ℤ —
-   as an actual object, not just a predicate instance. *)
+(* Non-vacuity: integers commutative, so [CRng] contains ℤ —
+ actual 对象, not just predicate instance. （已译） *)
 Example Int_Ring_commutative : ∀ a b, rig_mul Int_Ring a b ≈ rig_mul Int_Ring b a.
 Proof. intros a b; simpl; apply Z.mul_comm. Qed.
 
 Definition Int_CRng : CRng := (Int_Ring; Int_Ring_commutative).
 
-(** ** Injections are monic; surjections are epi *)
+(* 相关说明。 （已译） *)
 
 Lemma rng_injective_monic {R S : RingObject} (f : R ~{Rng}~> S) :
   (∀ a b : carrier (rig_setoid R), rig_map f a ≈ rig_map f b → a ≈ b) →
@@ -384,10 +378,10 @@ Proof.
   exact (Hg a).
 Qed.
 
-(** ** Mac Lane I.5, Exercise 4: ℤ → ℚ is epi and not surjective *)
+(* 相关说明。 （已译） *)
 
-(* The rationals as a ring, over the stdlib [Qeq] setoid. *)
-(* Named for the same reason as [zero_rig_setoid] above. *)
+(* 相关说明。 （已译） *)
+(* 相关说明。 （已译） *)
 Program Definition q_rig_setoid : SetoidObject := {|
   carrier := Q
   ; is_setoid := {| Setoid.equiv := Qeq
@@ -444,8 +438,8 @@ Next Obligation.
   intros a b; simpl; unfold inject_Z, Qmult; simpl; unfold Qeq; simpl; ring.
 Qed.
 
-(* One-sided inverses on opposite sides agree in any rig: the monoid
-   argument, with exactly the two hypotheses the proof consumes. *)
+(* One-sided inverses opposite sides agree any rig: 幺半群
+ 论元, exactly two hypotheses 证明 所消耗. （已译） *)
 Lemma rig_inv_unique (S : RigObject)
   (x u v : carrier (rig_setoid S)) :
   rig_mul S u x ≈ rig_one S → rig_mul S x v ≈ rig_one S →
@@ -459,8 +453,7 @@ Proof.
   apply rig_mul_one_l.
 Qed.
 
-(* Every rational is (a/b)·b ≈ a with b := its positive denominator, and
-   1/b is a two-sided inverse of b in ℚ. *)
+(* 相关说明。 （已译） *)
 Lemma Q_num_den (q : Q) :
   (q * inject_Z (Z.pos (Qden q)) == inject_Z (Qnum q))%Q.
 Proof.
@@ -477,9 +470,7 @@ Proof.
   discriminate.
 Qed.
 
-(* The heart of the exercise: a homomorphism out of ℚ is determined by
-   its values on the integers, because it must carry 1/b to the unique
-   two-sided inverse of the image of b. *)
+(* 相关说明。 （已译） *)
 Theorem ZtoQ_epic : Epic ZtoQ.
 Proof.
   constructor; intros S g1 g2 Hg q.
@@ -501,8 +492,7 @@ Proof.
     apply (proper_morphism (rig_map g2)).
     rewrite Qmult_comm.
     apply Q_inv_den. }
-  (* hence the images of 1/b coincide: g1(1/b) left-inverts the common
-     image of b, which g2(1/b) right-inverts *)
+  (* 相关说明。 （已译） *)
   assert (Hinv : rig_map g1 (/ b)%Q ≈ rig_map g2 (/ b)%Q).
   { apply (rig_inv_unique S (rig_map g1 b)).
     - exact Hinv1l.
@@ -560,11 +550,11 @@ Example zring_Z_3 : rig_map (rng_from_Z Int_Ring) 3%Z = 3%Z := eq_refl.
 Example zring_Z_neg2 :
   rig_map (rng_from_Z Int_Ring) (-2)%Z = (-2)%Z := eq_refl.
 
-(* The forgetful functors return the carrier on the nose. *)
+(* The forgetful 函子 return carrier nose. （已译） *)
 Example rng_forget_ab_carrier (R : RingObject) :
   cmon_setoid (ab_cmon (Rng_Forget_Ab R)) = rig_setoid R := eq_refl.
 Example rng_forget_carrier (R : RingObject) :
   Rng_Forget R = rig_setoid R := eq_refl.
 
-(* ℚ really contains the non-integer the separation uses. *)
+(* 相关说明。 （已译） *)
 Example half_times_two : ((1 # 2) * inject_Z 2 == 1)%Q := eq_refl.

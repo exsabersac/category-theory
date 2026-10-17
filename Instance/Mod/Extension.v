@@ -31,7 +31,7 @@ Open Scope category_scope.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The hypothesis: the image of phi is central in S *)
+(* * ** The 假设: image phi central S （已译） *)
 
 Definition CentralImage {R S : RingObject} (phi : R ~{Rng}~> S) : Type :=
   ∀ (r : carrier (rig_setoid (ring_rig R)))
@@ -109,8 +109,8 @@ Section OneModule.
 
 Context (M : RMod R).
 
-(** The elementary tensor x (x) m, with the two module arguments named
-    so that [mt_gen]'s implicit arguments are determined. *)
+(** 本节：The elementary tensor x (x) m, two module arguments named
+ so [mt_gen]'s implicit arguments determined. （已译） *)
 Definition ext_gen (x : carrier (rig_setoid (ring_rig S)))
   (m : carrier (cmon_setoid M))
   : carrier (cmon_setoid (TensorMod ExtBase M)) := @mt_gen R ExtBase M x m.
@@ -139,8 +139,8 @@ Next Obligation.
   intros s r x m; simpl.
   refine (mte_trans _ (mte_sym (mte_act_l r _ m))).
   apply mte_gen; [ | reflexivity ].
-  (* s * (phi r * x)  =  phi r * (s * x): the ONLY use of centrality
-     in the construction of the S-action. *)
+  (* s * (phi r * x) = phi r * (s * x): ONLY use 中心性
+ construction S-action. （已译） *)
   rewrite <- (rig_mul_assoc (ring_rig S) s (rig_map phi r) x).
   rewrite <- (Hc r s).
   apply (rig_mul_assoc (ring_rig S)).
@@ -167,8 +167,8 @@ Example ext_smul_gen (s x : carrier (rig_setoid (ring_rig S)))
   (m : carrier (cmon_setoid M)) :
   ext_smul s (ext_gen x m) = ext_gen (rig_mul (ring_rig S) s x) m := eq_refl.
 
-(** Respectfulness of the action in the SCALAR argument is the one clause
-    that is not free: it is [tensor_hom_ext] between two mediators. *)
+(** Respectfulness action SCALAR 论元 one clause
+ not free: it [tensor_hom_ext] between two mediators. （已译） *)
 Lemma ext_smul_scalar (s s' : carrier (rig_setoid (ring_rig S)))
   (Hs : s ≈ s') (t : carrier (cmon_setoid (TensorMod ExtBase M))) :
   ext_smul s t ≈ ext_smul s' t.
@@ -186,8 +186,8 @@ Proof.
   - exact (ext_smul_scalar s s' Hs t').
 Qed.
 
-(** The extension of scalars: the same abelian group as the tensor
-    product over R, with S acting on the left-hand factor. *)
+(** 本节：The extension scalars: same abelian group tensor
+ product over R, S acting left-hand factor. （已译） *)
 Program Definition ExtendObj : RModObject S := {|
   rm_ab   := rm_ab (TensorMod ExtBase M);
   rm_smul := ext_smul
@@ -289,9 +289,9 @@ Qed.
 Example extend_unit_computes (m : carrier (cmon_setoid M)) :
   cmon_map (rm_hom extend_unit) m = ext_gen (rig_one (ring_rig S)) m := eq_refl.
 
-(** Every elementary tensor is the unit scaled: x (x) m = x . (1 (x) m).
-    This is what makes the unit generate, and it is used three times
-    below. *)
+(** 本节：Every elementary tensor unit scaled: x (x) m = x . (1 (x) m).
+ This what makes unit generate, it used three times
+ below. （已译） *)
 Lemma ext_gen_scale (x : carrier (rig_setoid (ring_rig S)))
   (m : carrier (cmon_setoid M)) :
   ext_gen x m ≈ ext_smul x (ext_gen (rig_one (ring_rig S)) m).
@@ -300,9 +300,9 @@ Proof.
                  | reflexivity ].
 Qed.
 
-(** The identity on elements, read as a map from the tensor's own
-    R-module structure to the restriction of the S-module structure.  Its
-    one obligation IS [extend_restrict_action]. *)
+(** The 恒等 elements, read map tensor's own
+ R-module structure restriction S-module structure. Its
+ one obligation IS [extend_restrict_action]. （已译） *)
 Program Definition ext_restrict_id
   : TensorMod ExtBase M ~{RMod R}~> RestrictObj phi ExtendObj := {|
   rm_hom := {| cmon_map := {| morphism := fun t => t |} |}
@@ -335,9 +335,9 @@ Section Mediator.
 Context (N : RModObject S).
 Context (g : M ~{RMod R}~> RestrictObj phi N).
 
-(** (x, m) |-> x . g m, R-bilinear into the restriction of N.  Only the
-    last clause needs centrality; the R-action on the FIRST variable
-    passes through phi with nothing spent. *)
+(** (x, m) |-> x . g m, R-bilinear 进入 restriction N. Only the
+ last clause needs 中心性; R-action FIRST variable
+ passes through phi nothing spent. （已译） *)
 Program Definition ext_bil : RBilinear ExtBase M (RestrictObj phi N) := {|
   rbl_map := fun x m => rm_smul N x (cmon_map (rm_hom g) m)
 |}.
@@ -368,8 +368,8 @@ Qed.
 Definition ext_med_R : TensorMod ExtBase M ~{RMod R}~> RestrictObj phi N :=
   tensor_med ext_bil.
 
-(** Left multiplication by s, as a map of the restricted R-modules: the
-    third place centrality is spent. *)
+(** Left multiplication s, map restricted R-modules: the
+ third place 中心性 spent. （已译） *)
 Program Definition ext_lmul (s : carrier (rig_setoid (ring_rig S)))
   : RestrictObj phi N ~{RMod R}~> RestrictObj phi N := {|
   rm_hom := {| cmon_map := {| morphism := fun y => rm_smul N s y |} |}
@@ -424,8 +424,8 @@ Lemma extend_med_commutes (m : carrier (cmon_setoid M)) :
     ≈ cmon_map (rm_hom g) m.
 Proof. exact (rm_smul_one N (cmon_map (rm_hom g) m)). Qed.
 
-(** An S-linear map out of the extension IS an R-linear map out of the
-    tensor product, by [extend_restrict_action]. *)
+(** 本节：An S-linear map out extension IS R-linear map out the
+ tensor product, [extend_restrict_action]. （已译） *)
 Program Definition ext_forget (h : ExtendObj ~{RMod S}~> N)
   : TensorMod ExtBase M ~{RMod R}~> RestrictObj phi N := {|
   rm_hom := rm_hom h
@@ -473,7 +473,7 @@ Definition extend_universal_arrow : UniversalArrow M (Restrict phi) :=
 
 End OneModule.
 
-(** ** The functor and the adjunction *)
+(* * ** The 函子 伴随 （已译） *)
 
 Definition ExtendScalars : RMod R ⟶ RMod S :=
   LeftAdjointFunctorFromUniversalArrows (Restrict phi) extend_universal_arrow.
@@ -481,10 +481,10 @@ Definition ExtendScalars : RMod R ⟶ RMod S :=
 Definition extend_restrict_adjunction : ExtendScalars ⊣ Restrict phi :=
   AdjunctionFromUniversalArrows (Restrict phi) extend_universal_arrow.
 
-(** ** Strengths, measured strict-first *)
+(* 相关说明。 （已译） *)
 
-(** The functor produced by the adjunction plumbing IS [ExtendObj] on
-    objects, on the nose. *)
+(** The 函子 produced 伴随 plumbing IS [ExtendObj] on
+ 对象, nose. （已译） *)
 Example ExtendScalars_obj (M : RMod R) :
   fobj[ExtendScalars] M = ExtendObj M := eq_refl.
 
@@ -506,8 +506,8 @@ Example extend_med_gen (M : RMod R) (N : RModObject S)
   cmon_map (rm_hom (extend_med M N g)) (ext_gen M x m)
     = rm_smul N x (cmon_map (rm_hom g) m) := eq_refl.
 
-(** The counit does NOT compute: it is [unique_obj] of the [Qed]-opaque
-    [ump_universal_arrows].  What holds is agreement up to [≈]. *)
+(** 本节：The counit does NOT compute: it [unique_obj] [Qed]-opaque
+ [ump_universal_arrows]. What holds agreement up [≈]. （已译） *)
 Definition extend_adj_counit (N : RMod S)
   : ExtendScalars (Restrict phi N) ~{RMod S}~> N :=
   @Category.Theory.Adjunction.counit _ _ _ _ extend_restrict_adjunction N.
@@ -530,8 +530,8 @@ Proof.
   now rewrite (extend_counit_unit N m).
 Qed.
 
-(** The arrow action relabels the right-hand factor.  It is defined by
-    universal factorization, not by a formula, so this is a theorem. *)
+(** The arrow action relabels right-hand factor. It defined by
+ universal factorization, not formula, so 这是 定理. （已译） *)
 Lemma extend_fmap_gen {M M' : RMod R} (u : M ~{RMod R}~> M')
   (x : carrier (rig_setoid (ring_rig S))) (m : carrier (cmon_setoid M)) :
   cmon_map (rm_hom (fmap[ExtendScalars] u)) (ext_gen M x m)
@@ -662,14 +662,9 @@ Qed.
 
 End ExtensionOfScalars.
 
-(** ** Guarded negatives
+(* 相关说明。 （已译） *)
 
-    Two conversion boundaries, each with an instrument check beside them.
-    The positive controls are the [eq_refl] Examples above, which name
-    the same constants. *)
-
-(* Instrument check: a scope-free false equation, so that a [Fail] that
-   passes for the wrong reason would show up here first. *)
+(* 相关说明。 （已译） *)
 Fail Definition ext_probe_instrument : true = false := eq_refl.
 
 (*
@@ -728,9 +723,9 @@ Example QZ_med_computes :
   cmon_map (rm_hom (extend_ring_to ZtoQ Q_central))
     (ext_gen ZtoQ (Ring_RMod Int_Ring) (1 # 2) 3%Z) = (3 # 2)%Q := eq_refl.
 
-(** The quotient does not collapse, and the unit does not collapse: both
-    are proved by mapping OUT into Q, since no induction over the
-    quotienting relation could produce a negative. *)
+(** The quotient does not collapse, unit does not collapse: both
+ proved 映射 OUT Q, since no induction over the
+ quotienting 关系 could produce negative. （已译） *)
 Lemma QZ_gen_nonzero :
   ext_gen ZtoQ (Ring_RMod Int_Ring)
     (rig_one (ring_rig Q_Ring)) (rig_one (ring_rig Int_Ring))

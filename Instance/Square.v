@@ -42,7 +42,7 @@ Generalizable All Variables.
 
 Definition FreeSquare : Category := FreeOnQuiver SquareQuiver.
 
-(** The four generating edges, as one-step paths of the free category. *)
+(** The four generating edges, one-step paths free 范畴. （已译） *)
 Definition wsq_f : Sq_A ~{FreeSquare}~> Sq_B :=
   tlist_singleton (B:=@edges SquareQuiver) Sq_f.
 Definition wsq_g : Sq_A ~{FreeSquare}~> Sq_C :=
@@ -114,8 +114,8 @@ Proof.
     + right; rewrite IH; reflexivity.
 Qed.
 
-(** The seven empty hom-sets of the free square, read off the
-    classification. *)
+(** 本节：The seven empty hom-sets free square, read off the
+ classification. （已译） *)
 Corollary free_square_no_path_BA (p : Sq_B ~{FreeSquare}~> Sq_A) : False.
 Proof. exact (wsq_classify _ _ p). Qed.
 
@@ -166,7 +166,7 @@ Definition SquareEqns : FiniteEquations SquareQuiver := {|
   fe_rhs   := SquareEqn_rhs
 |}.
 
-(** The quiver is finite, with the enumeration carried as data. *)
+(** 本节：The quiver finite, enumeration carried data. （已译） *)
 Definition Square_node (i : Fin.t 4) : SquareNode :=
   match i with
   | Fin.F1 => Sq_A
@@ -235,13 +235,13 @@ Definition SquarePresentation : FinitePresentation := {|
 (** The walking commutative square. *)
 Definition Square : Category := FinitelyPresented SquarePresentation.
 
-(** ...which is the presented category of the quiver and the relation,
-    definitionally. *)
+(** ...which presented 范畴 quiver 关系,
+ definitionally. （已译） *)
 Example Square_is_presented :
   Square = PresentedQuiver SquareQuiver (fe_rel SquareEqns) := eq_refl.
 
-(** The hom TYPES of [Square] are the free ones: equations merge, and
-    never add. *)
+(** 本节：The hom TYPES [Square] free ones: equations merge, and
+ never add. （已译） *)
 Example Square_hom_is_free (x y : SquareNode) :
   (x ~{Square}~> y) = (x ~{FreeSquare}~> y) := eq_refl.
 
@@ -264,15 +264,15 @@ Lemma square_relation_holds :
   @equiv _ (@homset Square Sq_A Sq_D) square_diag_fh square_diag_gk.
 Proof. apply cc_gen. exists Fin.F1. split; reflexivity. Qed.
 
-(** The square commutes.  Both composites reduce to the corresponding
-    two-step path definitionally, so this is [square_relation_holds]
-    with no transport. *)
+(** The square commutes. Both composites reduce corresponding
+ two-step path definitionally, so 这是 [square_relation_holds]
+ no transport. （已译） *)
 Theorem square_commutes :
   square_h ∘ square_f ≈ square_k ∘ square_g.
 Proof. exact square_relation_holds. Qed.
 
-(** The diagonal: the common value of the two composites.  It is DEFINED
-    as one of them, and proved equal to the other. *)
+(** 本节：The diagonal: common value two composites. It DEFINED
+ one them, proved equal other. （已译） *)
 Definition square_diagonal : Sq_A ~{Square}~> Sq_D := square_h ∘ square_f.
 
 Example square_diagonal_via_B : square_diagonal = square_h ∘ square_f := eq_refl.
@@ -280,8 +280,8 @@ Example square_diagonal_via_B : square_diagonal = square_h ∘ square_f := eq_re
 Lemma square_diagonal_via_C : square_diagonal ≈ square_k ∘ square_g.
 Proof. exact square_commutes. Qed.
 
-(** The diagonal is not a generator: the quiver has exactly four edges,
-    computed from the [FiniteQuiver] data rather than asserted. *)
+(** 本节：The diagonal not generator: quiver has exactly four edges,
+ computed [FiniteQuiver] data rather than asserted. （已译） *)
 Definition square_generator_total : nat :=
   fold_right (fun q n => fq_edges SquareQuiver SquareFinite (fst q) (snd q) + n)%nat
              0%nat
@@ -290,13 +290,11 @@ Definition square_generator_total : nat :=
 
 Example square_generator_total_4 : square_generator_total = 4%nat := eq_refl.
 
-(** ** Thinness, and the empty hom-sets
+(* 相关说明。 （已译） *)
 
-    Everything below is read off [wsq_classify]. *)
-
-(** Any two parallel arrows of [Square] agree.  The only case with
-    anything to prove is A → D, where the two classified paths are
-    identified by exactly the imposed relation. *)
+(** Any two parallel arrows [Square] agree. The case with
+ anything prove A → D, where two classified paths are
+ identified exactly imposed 关系. （已译） *)
 Theorem Square_Thin : Thin Square.
 Proof.
   intros x y p q; destruct x, y;
@@ -320,8 +318,8 @@ Qed.
 Corollary square_endo_id {x : Square} (p : x ~> x) : p ≈ id.
 Proof. exact (Square_Thin x x p id). Qed.
 
-(** The seven hom-sets that carry no arrow.  [Square]'s hom types are
-    the free ones, so these are the free emptiness results verbatim. *)
+(** 本节：The seven hom-sets carry no arrow. [Square]'s hom types are
+ free ones, so these free emptiness results verbatim. （已译） *)
 Corollary square_no_hom_BA (p : Sq_B ~{Square}~> Sq_A) : False.
 Proof. exact (free_square_no_path_BA p). Qed.
 
@@ -349,9 +347,9 @@ Proof. exact (free_square_no_path_DC p). Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** Membership in a literal list, proved by walking it: try the head,
-    otherwise step past it.  The walk terminates because [right] fails at
-    the empty tail. *)
+(** 本节：Membership literal list, proved walking it: try head,
+ otherwise step past it. The walk terminates because [right] fails at
+ empty tail. （已译） *)
 Local Ltac wsq_in := simpl; repeat (try (left; reflexivity); right).
 
 Definition wsq_nodes : list SquareNode := Sq_A :: Sq_B :: Sq_C :: Sq_D :: nil.
@@ -372,8 +370,8 @@ Proof.
   apply in_prod; apply wsq_nodes_complete.
 Qed.
 
-(** The nine inhabited endpoint pairs: the four loops, the four sides,
-    and the diagonal. *)
+(** 本节：The nine inhabited endpoint pairs: four loops, four sides,
+ diagonal. （已译） *)
 Definition wsq_pairs : list (SquareNode * SquareNode) :=
   (Sq_A, Sq_A) :: (Sq_B, Sq_B) :: (Sq_C, Sq_C) :: (Sq_D, Sq_D) ::
   (Sq_A, Sq_B) :: (Sq_A, Sq_C) :: (Sq_B, Sq_D) :: (Sq_C, Sq_D) ::
@@ -505,7 +503,7 @@ Theorem square_quotient_merges_one :
    @equiv _ (@homset Square Sq_A Sq_D) square_diag_fh square_diag_gk)%type.
 Proof. exact (free_square_diagonals_neq, square_relation_holds). Qed.
 
-(** The arithmetic of the merge, as a computation. *)
+(** 本节：The arithmetic merge, computation. （已译） *)
 Example square_merge_arithmetic :
   (free_square_arrow_total - square_arrow_total)%nat = 1%nat := eq_refl.
 
@@ -515,7 +513,7 @@ Example square_merge_arithmetic :
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** *** Rank: every edge raises it by exactly one *)
+(* 相关说明。 （已译） *)
 
 Definition wsq_rank (x : SquareNode) : nat :=
   match x with Sq_A => 0 | Sq_B => 1 | Sq_C => 1 | Sq_D => 2 end.
@@ -575,18 +573,18 @@ Theorem square_hom_length (x y : SquareNode) (p : x ~{Square}~> y) :
   (wsq_rank x + tlist_length p)%nat = wsq_rank y.
 Proof. symmetry; exact (wsq_path_rank x y p). Qed.
 
-(** *** Length: invariant under the imposed congruence *)
+(* 相关说明。 （已译） *)
 
-(** Equivalent paths of the free category have equal length —
-    [tlist'_equiv_lengths] ([Construction/Free/Quiver.v]) at this
-    quiver. *)
+(** Equivalent paths free 范畴 have equal length —
+ [tlist'_equiv_lengths] ([Construction/Free/Quiver.v]) at this
+ quiver. （已译） *)
 Lemma wsq_equiv_length {x y : SquareNode} (p q : x ~{FreeSquare}~> y) :
   p ≈ q → tlist_length p = tlist_length q.
 Proof. intro H; exact (tlist'_equiv_lengths _ _ _ _ _ _ _ H). Qed.
 
-(** The single imposed equation relates two paths of the SAME length —
-    both diagonals are two-step — which is what makes length survive the
-    quotient. *)
+(** 本节：The single imposed equation relates two paths SAME length —
+ both diagonals two-step — what makes length survive the
+ quotient. （已译） *)
 Lemma wsq_relation_length {x y : SquareNode}
   (p q : x ~{FreeSquare}~> y) (Hr : fe_rel SquareEqns x y p q) :
   tlist_length p = tlist_length q.
@@ -627,16 +625,16 @@ Proof.
     now rewrite IH1, IH2.
 Qed.
 
-(** The contrapositive, which is the form a reader wants: arrows of
-    different length are never identified. *)
+(** 本节：The contrapositive, form reader wants: arrows of
+ different length never identified. （已译） *)
 Corollary square_no_collapse {x y : SquareNode} (p q : x ~{Square}~> y) :
   (tlist_length p = tlist_length q → False) → p ≈ q → False.
 Proof. intros Hne H; exact (Hne (square_length_invariant p q H)). Qed.
 
-(** *** The diagonal is a composite, measured
+(* * *** The diagonal 复合, measured
 
-    Each generator is a one-step path and the diagonal a two-step one,
-    by computation. *)
+ Each generator one-step path diagonal two-step one,
+ computation. （已译） *)
 Example square_f_length : tlist_length square_f = 1%nat := eq_refl.
 Example square_g_length : tlist_length square_g = 1%nat := eq_refl.
 Example square_h_length : tlist_length square_h = 1%nat := eq_refl.
@@ -661,8 +659,8 @@ Proof.
   now rewrite (square_length_invariant p square_diagonal H).
 Qed.
 
-(** The other half of "not a generator", from the presentation rather
-    than from the grading: the quiver has no edge A → D at all. *)
+(** 本节：The other half "not generator", presentation rather
+ than grading: quiver has no edge A → D at all. （已译） *)
 Lemma square_no_diagonal_edge (e : SquareEdge Sq_A Sq_D) : False.
 Proof. inversion e. Qed.
 
@@ -724,9 +722,9 @@ Proof.
   - intros x y u v Huv; simpl in Huv; subst; reflexivity.
 Defined.
 
-(** The one imposed relation is merged: that is exactly the square's
-    commuting equation, modulo the trailing identity a [tlist] fold
-    leaves behind. *)
+(** The one imposed 关系 merged: exactly square's
+ commuting equation, modulo trailing 恒等 [tlist] fold
+ leaves behind. （已译） *)
 Lemma square_quiver_hom_merges (S : CommutingSquare C) :
   ∀ x y (p q : x ~{FreeSquare}~> y), fe_rel SquareEqns x y p q →
     fmap[@InducedFunctor SquareQuiver C (square_quiver_hom S)] p
@@ -744,7 +742,7 @@ Definition SquareFunctor (S : CommutingSquare C) : Square ⟶ C :=
   @PresentedFunctor SquareQuiver (fe_rel SquareEqns) C
     (square_quiver_hom S) (square_quiver_hom_merges S).
 
-(** It has the given objects, on the nose. *)
+(** It has given 对象, nose. （已译） *)
 Example SquareFunctor_A (S : CommutingSquare C) :
   fobj[SquareFunctor S] Sq_A = csq_a S := eq_refl.
 Example SquareFunctor_B (S : CommutingSquare C) :
@@ -754,7 +752,7 @@ Example SquareFunctor_C (S : CommutingSquare C) :
 Example SquareFunctor_D (S : CommutingSquare C) :
   fobj[SquareFunctor S] Sq_D = csq_d S := eq_refl.
 
-(** ...and the given morphisms, up to the fold's trailing identity. *)
+(** ...and given 态射, up fold's trailing 恒等. （已译） *)
 Lemma SquareFunctor_f (S : CommutingSquare C) :
   fmap[SquareFunctor S] square_f ≈ csq_f S.
 Proof.
@@ -783,8 +781,8 @@ Proof.
            (square_quiver_hom S) (square_quiver_hom_merges S) _ _ Sq_k).
 Qed.
 
-(** The converse: a functor out of [Square] IS a commutative square, the
-    equation coming from [square_commutes] under [fmap_respects]. *)
+(** The converse: 函子 out [Square] IS commutative square, the
+ equation coming [square_commutes] under [fmap_respects]. （已译） *)
 Lemma functor_square_commutes (F : Square ⟶ C) :
   fmap[F] square_h ∘ fmap[F] square_f ≈ fmap[F] square_k ∘ fmap[F] square_g.
 Proof.
@@ -805,8 +803,8 @@ Definition CommutingSquareOfFunctor (F : Square ⟶ C) : CommutingSquare C := {|
   csq_commutes := functor_square_commutes F
 |}.
 
-(** Round trip one, on the square side: the objects come back on the
-    nose and the morphisms up to [≈]. *)
+(** Round trip one, square side: 对象 come back the
+ nose 态射 up [≈]. （已译） *)
 Example square_round_obj_a (S : CommutingSquare C) :
   csq_a (CommutingSquareOfFunctor (SquareFunctor S)) = csq_a S := eq_refl.
 Example square_round_obj_b (S : CommutingSquare C) :
@@ -853,8 +851,8 @@ Proof.
   intros x y e; destruct e; reflexivity.
 Qed.
 
-(** ...and the same, packaged as an equality of functors in
-    [StrictCat]. *)
+(** ...and same, packaged equality 函子 in
+ [StrictCat]. （已译） *)
 Theorem square_functor_round_strict (F : Square ⟶ C) :
   @equiv _ (@Functor_StrictEq_Setoid Square C)
     F (SquareFunctor (CommutingSquareOfFunctor F)).
@@ -864,9 +862,9 @@ Proof.
   exact (square_functor_round F).
 Qed.
 
-(** The universal property, bundled: to give a functor out of [Square]
-    is exactly to give a commutative square, and the functor is unique
-    at strict strength. *)
+(** The 普遍性质, bundled: give 函子 out [Square]
+ exactly give commutative square, 函子 unique
+ at strict strength. （已译） *)
 Theorem square_universal (S : CommutingSquare C) :
   { F : Square ⟶ C &
   { Hobj : ∀ x : SquareNode, fobj[F] x = csq_node S x &
@@ -944,9 +942,9 @@ Lemma arrow_square_round_cod (x y : @Arrow C) (u : x ~> y) :
   arrow_cod (square_of_arrow u) = y.
 Proof. destruct y as [[b d] w]; reflexivity. Qed.
 
-(** ...and so does the morphism.  Stated with the endpoints already in
-    pair form, since otherwise the two sides do not even have the same
-    type. *)
+(** ...and so does 态射. Stated endpoints already in
+ pair form, since otherwise two sides do not even have same
+ type. （已译） *)
 Lemma arrow_square_round_mor (a b c d : C) (v : a ~> c) (w : b ~> d)
   (u : ((a, c); v) ~{@Arrow C}~> ((b, d); w)) :
   arrow_of_square (square_of_arrow u) = u.

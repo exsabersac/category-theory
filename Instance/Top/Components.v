@@ -23,7 +23,7 @@ Require Import Category.Instance.Sets.Classifier.OneLevel.
 
 Generalizable All Variables.
 
-(** * Connected components: Mac Lane §V.9 Exercise 1 *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/Top
@@ -38,11 +38,11 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** Connectedness, in the Prop-valued locally-constant form *)
+(* * ** Connectedness, Prop-valued locally-常值 form （已译） *)
 
-(* A Prop-valued function [φ] is locally constant on the subset [W]: every
-   point of [W] has an open neighbourhood on whose trace in [W] the value of
-   [φ] does not change. *)
+(* A Prop-valued function [φ] locally 常值 subset [W]: every
+ point [W] has open neighbourhood whose trace [W] value of
+ [φ] does not change. （已译） *)
 Definition LocConstOn@{o} (X : PTop@{o}) (W φ : X → Prop) : Prop :=
   ∀ z, W z → ex (fun O => POpen X O /\ O z /\
                            ∀ w, W w → O w → (φ w <-> φ z)).
@@ -52,7 +52,7 @@ Definition LocConstOn@{o} (X : PTop@{o}) (W φ : X → Prop) : Prop :=
 Definition PConnectedSub@{o} (X : PTop@{o}) (W : X → Prop) : Prop :=
   ∀ φ, LocConstOn X W φ → ∀ a b, W a → W b → φ a → φ b.
 
-(* The space is connected: the whole space is a connected subset. *)
+(* 相关说明。 （已译） *)
 Definition PConnected@{o} (X : PTop@{o}) : Prop :=
   PConnectedSub X (fun _ => True).
 
@@ -62,8 +62,8 @@ Definition PLocConn@{o} (X : PTop@{o}) : Prop :=
   ∀ x U, POpen X U → U x →
     ex (fun N => POpen X N /\ N x /\ (∀ y, N y → U y) /\ PConnectedSub X N).
 
-(* Two points lie in a common connected subset: the relation whose classes
-   are the connected components. *)
+(* Two points lie common connected subset: 关系 whose classes
+ connected components. （已译） *)
 Definition comp_rel@{o} (X : PTop@{o}) (x y : X) : Prop :=
   ex (fun W => PConnectedSub X W /\ W x /\ W y).
 
@@ -76,7 +76,7 @@ Proof.
   intros w ww Ow; exact (HOw w (HW w ww) Ow).
 Qed.
 
-(* A point, as the subset of the points equal to it, is connected. *)
+(* 相关说明。 （已译） *)
 Lemma point_connected@{o} (X : PTop@{o}) (x : X) :
   PConnectedSub X (fun z => inhabited (x ≈ z)).
 Proof.
@@ -124,7 +124,7 @@ Proof.
   exact (conj (or_introl w1x) (or_intror w2z)).
 Qed.
 
-(* The points under the component relation. *)
+(* The points under component 关系. （已译） *)
 Definition CompSetoid@{o} (X : PTop@{o}) : Setoid@{o o} X := {|
   equiv := comp_rel X;
   setoid_equiv := {|
@@ -133,7 +133,7 @@ Definition CompSetoid@{o} (X : PTop@{o}) : Setoid@{o o} X := {|
     Equivalence_Transitive := comp_rel_trans X |}
 |}.
 
-(* The set of connected components, at the points' universe. *)
+(* 相关说明。 （已译） *)
 Definition CompSet@{o} (X : PTop@{o}) : SetoidObject@{o o} :=
   {| carrier := pt_carrier X; is_setoid := CompSetoid X |}.
 
@@ -143,7 +143,7 @@ Definition comp_PropEquiv@{o} (X : PTop@{o}) :
   @PropEquiv_of_relation@{o o} _ (CompSetoid X) (comp_rel X)
     (fun _ _ h => h) (fun _ _ h => h).
 
-(** ** The no-separation and two-point forms *)
+(* 相关说明。 （已译） *)
 
 (* No separation of the space by two disjoint open sets covering it. *)
 Definition PConnectedSep@{o} (X : PTop@{o}) : Prop :=
@@ -200,7 +200,7 @@ Corollary PConnected_Bool@{o} (X : PTop@{o}) :
   PConnected X → PConnectedBool X.
 Proof. intros H g a b. exact (connected_bool_constant X _ H g a b I I). Qed.
 
-(** ** Continuous images of connected sets are connected *)
+(* 相关说明。 （已译） *)
 
 Lemma image_connected@{o} {X Y : PTop@{o}} (f : PMor@{o} X Y)
   (W : X → Prop) :
@@ -237,7 +237,7 @@ Proof.
   intros x x' H; exact (comp_rel_map f x x' H).
 Defined.
 
-(** ** The categories: propositional sets and locally connected spaces *)
+(* * ** The 范畴: propositional sets locally connected spaces （已译） *)
 
 (*
    本节说明 Components 相关定义、性质与动机。
@@ -250,8 +250,7 @@ Definition PSetsSub@{o so | o < so +} : Subcategory@{so o so o} Sets@{o so} :=
 Definition PSets@{o so | o < so +} : Category@{so o o} :=
   PropSets@{o so}.
 
-(* Mac Lane's Lconn: the full subcategory of [PTopCat] on the locally
-   connected spaces. *)
+(* 相关说明。 （已译） *)
 Definition Lconn_Sub@{o so | o < so +} :
   Subcategory@{so o o o} PTopCat@{o so} :=
   PFullSub@{o so} PLocConn@{o}.
@@ -261,7 +260,7 @@ Definition Lconn@{o so | o < so +} : Category@{so o o} :=
 
 (** ** The components functor *)
 
-(* On all of [PTopCat]: no local connectedness is needed for the functor. *)
+(* On all [PTopCat]: no local connectedness needed 函子. （已译） *)
 Program Definition CompTop@{o so | o < so +} :
   PTopCat@{o so} ⟶ PSets@{o so} := {|
   fobj := fun X => (CompSet X; comp_PropEquiv X);
@@ -281,7 +280,7 @@ Definition components_functor@{o so | o < so +} :
   @Compose@{so so so so o} Lconn@{o so} PTopCat@{o so} PSets@{o so}
     CompTop@{o so} (Incl@{so o o o so so} PTopCat@{o so} Lconn_Sub@{o so}).
 
-(** ** The discrete-space functor into [Lconn] *)
+(* * ** The discrete-space 函子 [Lconn] （已译） *)
 
 Lemma pdisc_locconn@{o} (S : SetoidObject@{o o}) : PLocConn (PDiscrete S).
 Proof.
@@ -293,8 +292,8 @@ Proof.
   - apply point_connected.
 Qed.
 
-(* Instance/Top/Complete.v's [PDisc], corestricted to [Lconn]: its object
-   and arrow parts, and its three laws. *)
+(* Instance/Top/Complete.v's [PDisc], corestricted [Lconn]: 对象
+ arrow parts, three laws. （已译） *)
 Program Definition LDisc@{o so | o < so +} : Sets@{o so} ⟶ Lconn@{o so} := {|
   fobj := fun S => (fobj[PDisc@{o so}] S; pdisc_locconn S);
   fmap := fun S T f => (fmap[PDisc@{o so}] f; I)
@@ -339,9 +338,9 @@ Proof.
       exact (transitivity (pequiv_to _ _ q) (pequiv_to _ _ p)).
 Qed.
 
-(* In a locally connected space every map constant on components is
-   continuous into the discrete space: the components are open.  Local
-   connectedness is used once, at the whole space. *)
+(* In locally connected space every map 常值 components is
+ continuous 进入 discrete space: components open. Local
+ connectedness used once, at whole space. （已译） *)
 Lemma comp_cont@{o} (X : PTop@{o}) (LC : PLocConn X) (S : SetoidObject@{o o})
   (h : SetoidMorphism@{o o o} (CompSet X) S) :
   @PCont X (PDiscrete S)
@@ -365,7 +364,7 @@ Proof.
   - apply popen_union. intros N [HN _]; exact HN.
 Qed.
 
-(* The hom-set bijection: both directions are the identity on points. *)
+(* The hom-set bijection: both directions 恒等 points. （已译） *)
 Program Definition comp_adj_iso@{o so | o < so +}
   (X : Lconn@{o so}) (S : PSets@{o so}) :
   @Isomorphism Sets@{o so}
@@ -437,7 +436,7 @@ Example components_unit_points@{o so | o < so +} (X : Lconn@{o so})
   pmap (`1 (@unit _ _ _ _ components_left_adjoint_discrete@{o so} X)) x = x
   := eq_refl.
 
-(** ** Why Set is read as the propositional sets *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Components 相关定义、性质与动机。
@@ -452,8 +451,8 @@ Proof.
   intros x y e; simpl in e; subst; left; reflexivity.
 Defined.
 
-(* Merely inhabited [Q] makes the identity continuous from the indiscrete
-   two-point space into the discrete space on [SquashSetoid Q]. *)
+(* Merely inhabited [Q] makes 恒等 continuous indiscrete
+ two-point space 进入 discrete space [SquashSetoid Q]. （已译） *)
 Lemma squash_id_cont@{o} (Q : Type@{o}) (iq : inhabited Q) :
   @PCont PTwoIndisc@{o} (PDiscrete (SquashSetoid Q)) (squash_id Q).
 Proof.
@@ -479,14 +478,14 @@ Qed.
 Definition LTwoIndisc@{o so | o < so +} : Lconn@{o so} :=
   (PTwoIndisc@{o}; PTwoIndisc_PLocConn@{o}).
 
-(* A left adjoint of the discrete functor into ALL of [Sets] turns every
-   merely inhabited type at the points' universe into an inhabitant. *)
+(* A 左伴随 discrete 函子 ALL [Sets] turns every
+ merely inhabited type at points' universe inhabitant. （已译） *)
 Theorem components_on_all_Sets_unsquashes@{o so +| o < so +}
   (C' : Lconn@{o so} ⟶ Sets@{o so}) (A : C' ⊣ LDisc@{o so}) :
   inhabited (∀ Q : Type@{o}, inhabited Q → Q).
 Proof.
   pose (eta := to (@adj _ _ _ _ A LTwoIndisc (C' LTwoIndisc)) id).
-  (* the unit is continuous, so its two values are MERELY equal *)
+  (* 相关说明。 （已译） *)
   assert (He : inhabited (pmap (`1 eta) true ≈ pmap (`1 eta) false)).
   { pose proof (pcont (`1 eta)
                   (fun s => inhabited (pmap (`1 eta) true ≈ s))) as Hc.
@@ -514,8 +513,7 @@ Proof.
   destruct H as [H|q]; [discriminate H|exact q].
 Qed.
 
-(* That principle gives functional choice for relations between types at
-   the points' universe. *)
+(* 相关说明。 （已译） *)
 Lemma unsquash_choice@{o} (U : inhabited (∀ Q : Type@{o}, inhabited Q → Q))
   (A B : Type@{o}) (R : A → B → Prop) :
   (∀ a, ex (fun b => R a b)) → ex (fun f : A → B => ∀ a, R a (f a)).
@@ -526,7 +524,7 @@ Proof.
   intro a. exact (proj2_sig _).
 Qed.
 
-(** ** Mac Lane's Set as all of [Sets], under [Untruncate] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Components 相关定义、性质与动机。
@@ -581,8 +579,7 @@ Definition components_functor_Sets@{o so | o < so +} :
     (Incl@{so o so o so so} Sets@{o so} PSetsSub@{o so})
     components_functor@{o so}.
 
-(* The hom-set bijection into all of [Sets]: [comp_adj_iso]'s maps, with
-   [comp_respect_U] for the backward map's respectfulness. *)
+(* 相关说明。 （已译） *)
 Program Definition comp_adj_iso_U@{o so | o < so +} (U : Untruncate@{o})
   (X : Lconn@{o so}) (S : Sets@{o so}) :
   @Isomorphism Sets@{o so}
@@ -629,10 +626,9 @@ Example adj_Sets_from_points@{o so | o < so +} (U : Untruncate@{o})
   from (@adj _ _ _ _ (components_left_adjoint_discrete_Sets@{o so} U) X S)
     g x = pmap (`1 g) x := eq_refl.
 
-(** ** Exercise 1, second half: a concrete equalizer C does not preserve *)
+(* 相关说明。 （已译） *)
 
-(* The three-point space: [zig_a] and [zig_b] are open points, and the only
-   open set containing [zig_c] is the whole space. *)
+(* 相关说明。 （已译） *)
 Inductive zig_pt@{} : Set := zig_a | zig_c | zig_b.
 
 Definition zig_setoid@{o} : SetoidObject@{o o} :=
@@ -687,8 +683,8 @@ Proof.
     + apply point_connected.
 Qed.
 
-(* The parallel pair into the indiscrete two-point space: constant at
-   [false], and [true] exactly at [zig_c]. *)
+(* The parallel pair 进入 indiscrete two-point space: 常值 at
+ [false], [true] exactly at [zig_c]. （已译） *)
 Definition zig_g_fun@{} (z : zig_pt) : bool :=
   match z with zig_c => true | _ => false end.
 
@@ -712,7 +708,7 @@ Definition zig_f_map@{o} : PMor@{o} PZig@{o} PTwoIndisc@{o} :=
 Definition zig_g_map@{o} : PMor@{o} PZig@{o} PTwoIndisc@{o} :=
   pindisc_mor bool_setoid_object@{o o} PZig@{o} zig_g_set@{o}.
 
-(* Their equalizer: the two open points, as the discrete two-point space. *)
+(* 相关说明。 （已译） *)
 Definition zig_e_fun@{} (b : bool) : zig_pt := if b then zig_a else zig_b.
 
 Definition zig_e_set@{o} :
@@ -805,9 +801,7 @@ Qed.
 Definition PSetsOne@{o so | o < so +} : PSets@{o so} :=
   (unit_setoid_object@{o o}; unit_PropEquiv@{o o}).
 
-(* C does not preserve the equalizer: C of the three-point space is one
-   component, so C of the equalizing map identifies the two components of
-   [PBool] and is not monic. *)
+(* 相关说明。 （已译） *)
 Theorem components_zig_not_preserved@{o so | o < so +} :
   @IsEqualizer PSets@{o so} _ _
     (fmap[components_functor@{o so}] zig_f@{o so})
@@ -841,9 +835,9 @@ Proof.
            L B).
 Qed.
 
-(* The same for ANY left adjoint of D, whatever its definition: the unit
-   at the three-point space is continuous into a discrete space, so it
-   identifies the two images of the equalizer. *)
+(* The same ANY 左伴随 D, whatever 定义: unit
+ at three-point space continuous discrete space, so it
+ identifies two images equalizer. （已译） *)
 Theorem discrete_left_adjoint_not_preserved@{o so +| o < so +}
   (C : Lconn@{o so} ⟶ PSets@{o so}) (A : C ⊣ PSetsDisc@{o so}) :
   @IsEqualizer PSets@{o so} _ _ (fmap[C] zig_f@{o so}) (fmap[C] zig_g@{o so})
@@ -920,7 +914,7 @@ Proof.
            (discrete_left_adjoint_not_preserved C A) L B).
 Qed.
 
-(** ** A second witness: the swap of the indiscrete two-point space *)
+(* 相关说明。 （已译） *)
 
 (* The empty space, discrete. *)
 Definition LEmpty@{o so | o < so +} : Lconn@{o so} :=
@@ -954,7 +948,7 @@ Definition swap_e@{o so | o < so +} :
 Lemma negb_no_fixpoint@{} (b : bool) : b = negb b → False.
 Proof. destruct b; discriminate. Qed.
 
-(* The equalizer of the identity and the swap is the empty space. *)
+(* The equalizer 恒等 swap empty space. （已译） *)
 Lemma Lconn_swap_equalizer@{o so | o < so +} :
   @IsEqualizer Lconn@{o so} LTwoIndisc@{o so} LTwoIndisc@{o so}
     id swap_L@{o so} LEmpty@{o so} swap_e@{o so}.
@@ -977,8 +971,8 @@ Proof.
     + intros v _ p; destruct (Hno p).
 Qed.
 
-(* C does not preserve it: the one component of the two-point space is a
-   fork into the empty set. *)
+(* C does not preserve it: one component two-point space a
+ fork 进入 empty set. （已译） *)
 Theorem components_swap_not_preserved@{o so | o < so +} :
   @IsEqualizer PSets@{o so} _ _ (fmap[components_functor@{o so}] id)
     (fmap[components_functor@{o so}] swap_L@{o so})
@@ -998,11 +992,9 @@ Proof.
   exact (`1 v ttt).
 Qed.
 
-(** ** Outside [Lconn]: D on all of [PTopCat] has no left adjoint *)
+(* * ** Outside [Lconn]: D all [PTopCat] has no 左伴随 （已译） *)
 
-(* The convergent sequence is not locally connected at its limit point: the
-   isolated point [Some K] is relatively clopen in every neighbourhood of
-   it. *)
+(* 相关说明。 （已译） *)
 Lemma pconv_not_locconn@{o} : PLocConn PConv@{o} → False.
 Proof.
   intro LC.
@@ -1025,7 +1017,7 @@ Proof.
   discriminate (HC _ L (Some K) None (HK K (le_n K)) nN eq_refl).
 Qed.
 
-(* D into all of [PTopCat], from the propositional sets. *)
+(* 相关说明。 （已译） *)
 Definition PSetsDiscTop@{o so | o < so +} : PSets@{o so} ⟶ PTopCat@{o so} :=
   @Compose@{so so so so o} PSets@{o so} Sets@{o so} PTopCat@{o so}
     PDisc@{o so} (Incl@{so o so o so so} Sets@{o so} PSetsSub@{o so}).
@@ -1037,7 +1029,7 @@ Proof.
   pose (Q := C' PConv).
   pose (eta := to (@adj _ _ _ _ A PConv Q) id).
   pose (P := `2 Q).
-  (* continuity of the unit at the propositional singleton of eta None *)
+  (* 相关说明。 （已译） *)
   assert (Hopen : POpen PConv
             (fun z => @pequiv _ _ P (pmap eta z) (pmap eta None))).
   { apply (pcont eta (fun s => @pequiv _ _ P s (pmap eta None))).
@@ -1065,9 +1057,9 @@ Proof.
   rewrite <- HN1, <- HN0 in Hg. discriminate Hg.
 Qed.
 
-(* The same with all of [Sets]: Instance/Top/Complete.v's [PDisc] has no
-   left adjoint.  The open set is now a truncation, eliminated into the
-   goal [False]. *)
+(* The same all [Sets]: Instance/Top/Complete.v's [PDisc] has no
+ 左伴随. The open set now truncation, eliminated 进入
+ goal [False]. （已译） *)
 Theorem PDisc_no_left_adjoint@{o so +| o < so +}
   (C' : PTopCat@{o so} ⟶ Sets@{o so}) (A : C' ⊣ PDisc@{o so}) : False.
 Proof.

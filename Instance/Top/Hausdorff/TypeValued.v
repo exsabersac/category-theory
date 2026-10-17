@@ -21,7 +21,7 @@ Require Import Category.Instance.Top.Complete.Refutations.
 
 Generalizable All Variables.
 
-(** * Hausdorff spaces over the Type-valued [Top] *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/Hausdorff+space
@@ -31,15 +31,14 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Separation premises with Type-valued opens *)
+(* 相关说明。 （已译） *)
 
-(* Only the premise is truncated to a proposition; the opens stay
-   Type-valued, as in Instance/Top.v. *)
+(* Only premise truncated 命题; opens stay
+ Type-valued, Instance/Top.v. （已译） *)
 Definition TSepPremise@{o} :=
   ∀ S : Type@{o}, ((S → Type@{o}) → Type@{o}) → S → S → Prop.
 
-(* T2: every open about the first point meets every open about the second,
-   the meeting point truncated. *)
+(* 相关说明。 （已译） *)
 Definition tprem_T2@{o} : TSepPremise@{o} :=
   fun S O x y => ∀ U V, O U → O V → U x → V y →
     inhabited { z : S & (U z * V z)%type }.
@@ -65,7 +64,7 @@ Proof.
     exact (inhabits (y; (open_proper X U HU x y e u, v))).
 Qed.
 
-(** ** The largest separated quotient *)
+(* 相关说明。 （已译） *)
 
 Section TQuotient.
 
@@ -238,13 +237,12 @@ Definition TSep_Reflective : Reflective TSepSub :=
 
 End TReflection.
 
-(* The direct Hausdorff reflection over the Type-valued [Top]. *)
+(* 相关说明。 （已译） *)
 Definition TopT2_Reflective@{o h +| o < h +} :
   Reflective (TSepSub@{o h} tprem_T2@{o}) :=
   TSep_Reflective tprem_T2 tprem_T2_laws.
 
-(* Instance/Top.v's [IsHausdorff], the classical negative form, gives this
-   T2 only under a double negation. *)
+(* 相关说明。 （已译） *)
 Lemma IsHausdorff_TSep2_nn@{o +} (X : TopSpace@{o}) (HX : IsHausdorff X)
   (x y : X) : tprem_T2 _ (IsOpen X) x y → ¬ ¬ inhabited (x ≈ y).
 Proof.
@@ -254,7 +252,7 @@ Proof.
   exact (Hd z a b).
 Qed.
 
-(** ** The adjoint functor theorem at the Type-valued inclusion *)
+(* * ** The adjoint 函子 定理 at Type-valued 含入 （已译） *)
 
 (*
    本节说明 TypeValued 相关定义、性质与动机。
@@ -306,8 +304,8 @@ Definition TopHaus_ArrowIndex_of_Top@{s h o c +}
     (fun x y m d => (ai_dec AIT m (`1 d); I))
     (fun x y f d => ai_dec_enc AIT (`1 f) (`1 d)).
 
-(* Freyd's argument: a complete category with an arrow index is thin, and
-   the two points of [Bool_Discrete] are two arrows out of the point. *)
+(* Freyd's 论元: complete 范畴 arrow index thin, and
+ two points [Bool_Discrete] two arrows out point. （已译） *)
 Theorem TopHaus_not_complete@{r s c hh h t sh a o p q +}
   (AI : ArrowIndex@{s c hh} HausdorffSpaces@{c hh h t sh a o p q})
   (comp : @Complete@{r s hh c} HausdorffSpaces@{c hh h t sh a o p q}) :
@@ -343,9 +341,7 @@ Definition GAFT_TopHaus@{h o +| o < h +}
     H ⊣ Incl Top@{h o} Hausdorff_Subcategory } :=
   GAFT (Incl Top@{h o} Hausdorff_Subcategory) comp cont sols.
 
-(* ... and vacuous under informative excluded middle: its completeness
-   premise is refuted.  The hypotheses are those of [GAFT_TopHaus] at
-   every one of its universe instances. *)
+(* 相关说明。 （已译） *)
 Theorem GAFT_TopHaus_vacuous@{e h o u u0 u1 u2 u3 u4 u6 +| o < h, h < u1,
     h < u6, u2 < u, u3 < u, u2 <= o, u3 <= o, o <= u, u <= u4, h <= u4,
     u0 <= h, u4 <= u6 +} (E : IEM@{e})

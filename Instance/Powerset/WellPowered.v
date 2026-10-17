@@ -15,7 +15,7 @@ Require Import Category.Instance.Powerset.
 
 Generalizable All Variables.
 
-(** * The intersection theorem at the powerset lattice of a setoid *)
+(* * * The intersection 定理 at powerset lattice setoid （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/power+set
@@ -35,7 +35,7 @@ Definition Subsets_WellPowered@{o u t | o <= u, u < t +}
   (X : SetoidObject@{o o}) : WellPowered@{o u u u t} (Subsets@{o u} X) :=
   trivial_small _.
 
-(* The consequence at [Subsets X], for a [Prop]-class of subobjects. *)
+(* 相关说明。 （已译） *)
 Definition Subsets_has_intersections@{o u +} (X : SetoidObject@{o o})
   (S : Subsets@{o u} X) (P : SubObj S → Prop)
   (HP : ∀ m m' : SubObj S, m ≈ m' → P m → P m') :
@@ -51,8 +51,8 @@ Definition Subsets_intersection_all@{o u +} (X : SetoidObject@{o o})
   wellpowered_complete_intersection_all
     (Subsets_WellPowered X) (Subsets_Complete_free X) S.
 
-(* The empty subset, as a subobject of the full one.  Every arrow of
-   [Subsets X] is monic, the category being thin. *)
+(* The empty subset, subobject full one. Every arrow of
+ [Subsets X] monic, 范畴 being thin. （已译） *)
 Definition subsets_sub_bot@{o u +} (X : SetoidObject@{o o}) :
   @SubObj (Subsets@{o u} X) subset_top :=
   {| sub_dom := (subset_bot : obj[Subsets@{o u} X]);
@@ -61,8 +61,7 @@ Definition subsets_sub_bot@{o u +} (X : SetoidObject@{o o}) :
      sub_is_monic := @Build_Monic (Subsets@{o u} X) _ _
                        (subset_bot_least subset_top) (fun _ _ _ _ => I) |}.
 
-(* Non-degeneracy: at a pointed [X], the intersection of all subobjects of
-   the full subset lies below [subsets_sub_bot], so it is not the top. *)
+(* 相关说明。 （已译） *)
 Lemma Subsets_intersection_all_not_top@{o u +} (X : SetoidObject@{o o})
   (x : carrier X) :
   `1 (Subsets_intersection_all X (subset_top : obj[Subsets@{o u} X]))

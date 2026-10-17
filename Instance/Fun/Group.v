@@ -23,7 +23,7 @@ Require Import Category.Instance.Grp.
 
 Generalizable All Variables.
 
-(** * Group objects in a functor category are pointwise groups *)
+(* * * Group 对象 函子 范畴 pointwise groups （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/functor+category
@@ -348,7 +348,7 @@ Defined.
 (* Strength: what holds on the nose                                    *)
 (* ------------------------------------------------------------------ *)
 
-(* The extracted operations ARE the components of the structure maps. *)
+(* 相关说明。 （已译） *)
 Example pointwise_mul_is_component
   (M : @MonoidObject ([B, Sets]) CC_Monoidal T) (b : B)
   (u v : carrier (T b)) :
@@ -366,8 +366,8 @@ Example pointwise_inv_is_component
   pg_inv (group_object_pointwise G) b u
     = transform[@Category.Structure.Group.inverse _ _ _ G] b u := eq_refl.
 
-(* Round trip, pointwise datum -> object -> pointwise datum: the three
-   operations return ON THE NOSE. *)
+(* Round trip, pointwise datum -> 对象 -> pointwise datum: three
+ operations return ON THE NOSE. （已译） *)
 Example roundtrip_unit (P : PointwiseGroup T) (b : B) :
   pw_unit (monoid_object_pointwise (pointwise_MonoidObject P)) b
     = pw_unit P b := eq_refl.
@@ -380,8 +380,8 @@ Example roundtrip_inv (P : PointwiseGroup T) (b : B) (u : carrier (T b)) :
   pg_inv (group_object_pointwise (pointwise_GroupObject P)) b u
     = pg_inv P b u := eq_refl.
 
-(* Round trip, object -> pointwise datum -> object: the structure maps
-   agree on VALUES, on the nose ... *)
+(* Round trip, 对象 -> pointwise datum -> 对象: structure maps
+ agree VALUES, nose ... （已译） *)
 Example roundtrip_obj_unit
   (G : @GroupObject ([B, Sets]) CC_CartesianMonoidal T) (b : B) :
   transform[@mempty _ _ _
@@ -495,8 +495,7 @@ Fail Example roundtrip_obj_whole
   (G : @GroupObject ([B, Sets]) CC_CartesianMonoidal T) :
   pointwise_GroupObject (group_object_pointwise G) = G := eq_refl.
 
-(* Positive control for the instrument itself: a true [eq_refl] of the
-   same shape at the same types is accepted. *)
+(* 相关说明。 （已译） *)
 Example probe_instrument_control
   (G : @GroupObject ([B, Sets]) CC_CartesianMonoidal T) : G = G := eq_refl.
 
@@ -551,8 +550,7 @@ Section UniverseBoundary.
 
 Universes ubo ubh ubp uo uso.
 Constraint ubh < ubp.
-(* Deliberately ONLY this constraint: with [ubh < uo] also declared the
-   section could not show that the first half suffices on its own. *)
+(* 相关说明。 （已译） *)
 
 Context (Bu : Category@{ubo ubh ubp}).
 Context (Tu : Bu ⟶ Sets@{uo uso}).
@@ -617,9 +615,9 @@ Definition representably_group_iff_pointwise {C : Category} (e : C) :
 
 Section Witness.
 
-(* The trivial endomorphism of Z/2: a genuine group homomorphism that is
-   not the identity.  It costs no obligations -- the constant-at-the-unit
-   map preserves everything. *)
+(* The trivial endomorphism Z/2: genuine group homomorphism is
+ not 恒等. It costs no obligations -- 常值-at-the-unit
+ map preserves everything. （已译） *)
 Program Definition Z2_triv : Z2 ~{Grp}~> Z2 := {|
   grp_map := {| morphism := fun _ => grp_unit Z2 |}
 |}.
@@ -654,17 +652,16 @@ Example und_inv_computes :
 Lemma und_nontrivial : (@equiv _ (Und Z2) true false) → False.
 Proof. simpl; discriminate. Qed.
 
-(* The arrow action is not an identity at [Z2_triv], so the two
-   homomorphism clauses of [PointwiseMonoid] are not vacuous: they are
-   applied to a map that genuinely moves an element. *)
+(* The arrow action not 恒等 at [Z2_triv], so two
+ homomorphism clauses [PointwiseMonoid] not vacuous: they are
+ applied map genuinely moves element. （已译） *)
 Example und_fmap_computes : fmap[Und] Z2_triv true = false := eq_refl.
 
 Lemma und_fmap_not_id :
   (@equiv _ (Und Z2) (fmap[Und] Z2_triv true) true) → False.
 Proof. simpl; discriminate. Qed.
 
-(* And the clause itself, at that arrow, is a true statement with two
-   sides that are not syntactically equal. *)
+(* 相关说明。 （已译） *)
 Example und_map_mul_at_triv :
   fmap[Und] Z2_triv (pw_mul Und_Pointwise Z2 true false)
     = pw_mul Und_Pointwise Z2

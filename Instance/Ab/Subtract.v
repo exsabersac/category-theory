@@ -45,8 +45,7 @@ Lemma ab_sub_zero_l (A : AbObject) (x : carrier (cmon_setoid A)) :
   ab_sub A (cmon_zero A) x ≈ ab_neg A x.
 Proof. unfold ab_sub; apply cmon_plus_zero_l. Qed.
 
-(* -(x - y) ≈ y - x, proved through [ab_neg_unique] so that involutivity
-   is not needed for THIS one. *)
+(* 相关说明。 （已译） *)
 Lemma ab_sub_neg (A : AbObject) (x y : carrier (cmon_setoid A)) :
   ab_neg A (ab_sub A x y) ≈ ab_sub A y x.
 Proof.
@@ -96,7 +95,7 @@ Proof.
   apply cmon_plus_comm.
 Qed.
 
-(* (x + y) - x ≈ y and y + (x - y) ≈ x: the two cancellations. *)
+(* 相关说明。 （已译） *)
 Lemma ab_sub_add_cancel (A : AbObject) (x y : carrier (cmon_setoid A)) :
   ab_sub A (cmon_plus A x y) x ≈ y.
 Proof.

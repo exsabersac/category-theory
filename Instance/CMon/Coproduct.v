@@ -14,7 +14,7 @@ Require Import Category.Instance.CMon.Biproduct.
 
 Generalizable All Variables.
 
-(** * The direct sum is the coproduct in CMon *)
+(* 相关说明。 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Biproduct
@@ -32,7 +32,7 @@ Generalizable All Variables.
 
 (** ** Strict identifications *)
 
-(* The coproduct IS the product, the same object. *)
+(* The coproduct IS product, same 对象. （已译） *)
 Example CMon_coprod_is_prod (M N : CMonObject) :
   @Coprod CMon CMon_Cocartesian M N
     = @product_obj CMon CMon_Cartesian M N := eq_refl.

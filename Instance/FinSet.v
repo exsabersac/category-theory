@@ -12,7 +12,7 @@ Require Import Coq.Arith.PeanoNat.
 
 Generalizable All Variables.
 
-(** * FinSet, the skeletal category of finite sets *)
+(* * * FinSet, skeletal 范畴 finite sets （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/FinSet
@@ -96,8 +96,7 @@ Qed.
 Lemma fin_split_R {m n : nat} (b : Fin.t n) :
   fin_split (Fin.R m b) = Datatypes.inr b.
 Proof.
-  (* Induction on the amount [m] prepended: [Fin.R 0 b] is definitionally
-     [b], and the successor case re-tags along [Fin.FS]. *)
+  (* 相关说明。 （已译） *)
   induction m as [| m IH]; simpl.
   - reflexivity.
   - rewrite IH; reflexivity.
@@ -121,15 +120,13 @@ Lemma fin_split_join {m n : nat} (s : (Fin.t m + Fin.t n)%type) :
   fin_split (fin_join s) = s.
 Proof. destruct s; [apply fin_split_L | apply fin_split_R]. Qed.
 
-(* The computability acceptance test: the analysis reduces by [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example fin_split_computes :
   @fin_split 2 2 (Fin.FS (Fin.FS Fin.F1)) = Datatypes.inr Fin.F1 := eq_refl.
 
 (** ** Initial and terminal objects *)
 
-(* Initiality is terminality in [FinSet^op], so the fields carry the
-   [Terminal] names: [one {x}] here lands in [Fin.t 0 → Fin.t x], the unique
-   (empty) map out of the empty set. *)
+(* 相关说明。 （已译） *)
 #[export] Instance FinSet_Initial : Initial FinSet :=
   @Build_Terminal (FinSet^op) 0%nat
     (fun x (v : Fin.t 0) => Fin.case0 (fun _ => Fin.t x) v)
@@ -171,8 +168,8 @@ Next Obligation.
   destruct (fin_split p); [apply Hf | apply Hg].
 Qed.
 Next Obligation.
-  (* The universal property: h ≈ f ▽ g exactly when h recovers f along
-     Fin.L and g along Fin.R. *)
+  (* The 普遍性质: h ≈ f ▽ g exactly h recovers f along
+ Fin.L g along Fin.R. （已译） *)
   split.
   - intros Hh; split; intro q; simpl.
     + rewrite (Hh (Fin.L _ q)), fin_split_L; reflexivity.

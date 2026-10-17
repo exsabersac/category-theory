@@ -22,7 +22,7 @@ Require Import Category.Instance.Mon.Word.
 
 Generalizable All Variables.
 
-(** * Every monoid is a coequalizer of free monoids *)
+(* * * Every 幺半群 coequalizer free monoids （已译） *)
 
 (*
  nLab:   https://ncatlab.org/nlab/show/monadic+functor
@@ -43,15 +43,14 @@ Local Notation MonOS :=
 Local Notation UMonOS :=
   (@Mon_Forget@{so o so so} Sets@{o so} Sets_Product_Monoidal@{so o}).
 
-(* Awodey's ε : T²M → TM, "using the multiplication in TM": the counit at
-   the free monoid TM, which concatenates a word of words. *)
+(* Awodey's ε : T²M → TM, "using multiplication TM": counit at
+ free 幺半群 TM, concatenates word words. （已译） *)
 Definition Mon_flatten@{+} (M : MonOS) :
   FreeMonSets (UMonOS (FreeMonSets (UMonOS M)))
     ~{MonOS}~> FreeMonSets (UMonOS M) :=
   @counit _ _ _ _ free_mon_sets_adjunction_hom (FreeMonSets (UMonOS M)).
 
-(* Awodey's μ = Tπ, "using the multiplication in M": the free map of the
-   evaluation, which evaluates each inner word. *)
+(* 相关说明。 （已译） *)
 Definition Mon_free_evaluate@{+} (M : MonOS) :
   FreeMonSets (UMonOS (FreeMonSets (UMonOS M)))
     ~{MonOS}~> FreeMonSets (UMonOS M) :=
@@ -63,13 +62,13 @@ Definition Mon_evaluate@{+} (M : MonOS) :
   FreeMonSets (UMonOS M) ~{MonOS}~> M :=
   @counit _ _ _ _ free_mon_sets_adjunction_hom M.
 
-(* π coforks the pair: naturality of the counit, as Monad/Monadicity/
-   Crude.v's [crude_unit_cofork] states it for any adjunction. *)
+(* π coforks pair: 自然性 counit, Monad/Monadicity/
+ Crude.v's [crude_unit_cofork] states it any 伴随. （已译） *)
 Lemma Mon_canonical_cofork@{+} (M : MonOS) :
   Mon_evaluate M ∘ Mon_flatten M ≈ Mon_evaluate M ∘ Mon_free_evaluate M.
 Proof. exact (crude_unit_cofork free_mon_sets_adjunction_hom M). Qed.
 
-(* Two monoid maps out of a free monoid that agree on the letters agree. *)
+(* Two 幺半群 maps out free 幺半群 agree letters agree. （已译） *)
 Lemma Mon_free_hom_ext@{+} {X : obj[Sets@{o so}]} {L : MonOS}
   (g1 g2 : FreeMonSets X ~{MonOS}~> L) :
   (∀ a : X, mon_fun g1 (word1 a) ≈ mon_fun g2 (word1 a)) → g1 ≈ g2.
@@ -82,7 +81,7 @@ Proof.
     intro a; reflexivity.
 Qed.
 
-(** ** The descent: k ↦ k ∘ i, Awodey's h̄ = h ∘ i *)
+(* 相关说明。 （已译） *)
 
 Section Descent.
 
@@ -90,7 +89,7 @@ Context (M : MonOS) {c : MonOS}.
 Context (k : FreeMonSets (UMonOS M) ~{MonOS}~> c).
 Context (Hk : k ∘ Mon_flatten M ≈ k ∘ Mon_free_evaluate M).
 
-(* The cofork read at the word of words [[x, y]]: k⟨x y⟩ ≈ k⟨x(y·1)⟩. *)
+(* 相关说明。 （已译） *)
 Lemma Mon_canonical_desc_mul@{+} (x y : mon_ob M) :
   mon_fun k (word1 (mon_mul M x y))
     ≈ mon_mul c (mon_fun k (word1 x)) (mon_fun k (word1 y)).
@@ -172,7 +171,7 @@ Definition Mon_presented_iso@{+} (M : MonOS) {q : MonOS}
   M ≅[MonOS] q :=
   coequalizer_unique _ _ (Mon_canonical_presentation M) E.
 
-(** ** Awodey, §3.5 Exercise 3: the forgetful functor preserves it *)
+(* * ** Awodey, §3.5 Exercise 3: forgetful 函子 preserves it （已译） *)
 
 (*
    本节说明 Presentation 相关定义、性质与动机。

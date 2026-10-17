@@ -29,7 +29,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** * Discrete spaces: separation, and compactness as finite enumerability *)
+(* 相关说明。 （已译） *)
 
 Lemma Discrete_Hausdorff@{h o +| o < h +} (A : SetoidObject@{o o}) :
   IsHausdorff@{h o o o} (Discrete_Top@{o o} A).
@@ -62,8 +62,7 @@ Proof.
   - exact (fst HU _ y x (symmetry Hxy) (`2 (fst (snd HU y) ttt))).
 Qed.
 
-(* Conversely, the cover by the singleton classes has a finite subcover,
-   which is a finite enumeration. *)
+(* 相关说明。 （已译） *)
 Lemma FinEnum_of_Discrete_Compact@{o +} (A : SetoidObject@{o o})
   (C : IsCompact (Discrete_Top@{o o} A)) : FinEnum A.
 Proof.
@@ -103,8 +102,8 @@ Theorem Discrete_nat_not_compact@{o +} :
   IsCompact (Discrete_Top@{o o} sc_nat_setoid) → False.
 Proof. intro C. exact (nat_not_FinEnum (FinEnum_of_Discrete_Compact _ C)). Qed.
 
-(* The two-point and one-point discrete spaces as objects of [CompHaus],
-   at every carrier universe. *)
+(* The two-point one-point discrete spaces 对象 [CompHaus],
+ at every carrier universe. （已译） *)
 Lemma bool_FinEnum@{o +} : FinEnum bool_setoid_object@{o o}.
 Proof.
   exists (true :: false :: nil). intros [|].
@@ -119,7 +118,7 @@ Definition Bool_CH@{o +} : CompHaus :=
 Definition Point_CH@{o +} : CompHaus :=
   (Point_Top@{o}; (Point_Compact, Discrete_Hausdorff _)).
 
-(** * The finite case: the discrete space is its own compactification *)
+(* 相关说明。 （已译） *)
 
 Definition Discrete_CH@{o +} (X : SetoidObject@{o o}) (FX : FinEnum X) :
   CompHaus :=
@@ -130,7 +129,7 @@ Definition sc_fin_unit@{o h +} (X : SetoidObject@{o o}) (FX : FinEnum X) :
   Setoid_Lift@{o h} X ~{Sets}~> CompHaus_Forget (Discrete_CH X FX) :=
   @id Sets (Setoid_Lift@{o h} X).
 
-(* A map out of the lifted setoid, read back at the points' universe. *)
+(* 相关说明。 （已译） *)
 Definition sc_unlift@{o h +} (X : SetoidObject@{o o}) {d : CompHaus}
   (f : Setoid_Lift@{o h} X ~{Sets}~> CompHaus_Forget d) :
   SetoidMorphism@{o o o} X (top_carrier (`1 d)) :=
@@ -170,10 +169,9 @@ Example StoneCech_finite_unit@{o h +} (X : SetoidObject@{o o})
   @arrow Sets _ (Setoid_Lift@{o h} X) _ (StoneCech_finite X FX)
     = sc_fin_unit X FX := eq_refl.
 
-(** * The reduction: continuity is free, and so is the solution set *)
+(* 相关说明。 （已译） *)
 
-(* An element [n] of a cone over [CompHaus_Forget ◯ G] is a cone over [G]
-   from the one-point space. *)
+(* 相关说明。 （已译） *)
 Definition sc_pt_cone@{j h +} {J : Category@{j h h}} (G : J ⟶ CompHaus)
   (N : Cone (CompHaus_Forget ◯ G)) (n : vertex_obj[N]) : Cone G.
 Proof.
@@ -226,8 +224,8 @@ Proof.
     apply sc_pt_const_med. intro x. exact (Hv x n).
 Qed.
 
-(* Every object with every arrow: legal at the hom universe, because the
-   whole object type of [CompHaus] lives there. *)
+(* Every 对象 every arrow: legal at hom universe, because the
+ whole 对象 type [CompHaus] lives there. （已译） *)
 Definition taut_sols@{h s +} (d : obj[Sets@{h s}]) :
   SolutionSet CompHaus_Forget d.
 Proof.
@@ -239,15 +237,15 @@ Proof.
   intro x. simpl. apply reflexive_lift.
 Defined.
 
-(* GAFT with completeness as the one remaining hypothesis.  That hypothesis
-   is refuted under [IEM] (Refutations.v); this is the measured reduction,
-   not a construction. *)
+(* GAFT completeness one remaining 假设. That 假设
+ refuted under [IEM] (Refutations.v); 这是 measured reduction,
+ not construction. （已译） *)
 Definition GAFT_CompHaus_only_complete@{h s +}
   (comp : @Complete@{h h h h} CompHaus) :
   { F : Sets@{h s} ⟶ CompHaus & F ⊣ CompHaus_Forget } :=
   GAFT CompHaus_Forget comp CompHaus_Forget_PreservesImageLimit taut_sols.
 
-(** * Exercise 4 at the level of universal arrows *)
+(* 相关说明。 （已译） *)
 
 Theorem unit_injective_of_separated@{o h +} (X : SetoidObject@{o o})
   (UA : UniversalArrow (C:=Sets) (Setoid_Lift@{o h} X) CompHaus_Forget) :
@@ -272,7 +270,7 @@ Theorem separated_of_unit_injective@{o h +} (X : SetoidObject@{o o})
              → x ≈ y.
 Proof. intros Hinj x y H. apply Hinj. exact (H _ (@arrow _ _ _ _ UA)). Qed.
 
-(* The characteristic map of a point, into the two-point space. *)
+(* The characteristic map point, 进入 two-point space. （已译） *)
 Definition sc_chi@{o h +} (X : SetoidObject@{o o})
   (dec : ∀ x y : X, (x ≈ y) + ((x ≈ y) → False)) (x : X) :
   Setoid_Lift@{o h} X ~{Sets}~> CompHaus_Forget Bool_CH.
@@ -296,7 +294,7 @@ Proof.
   destruct (dec y x) as [hy|ny]; [exact (symmetry hy) | discriminate Hc].
 Qed.
 
-(* Non-vacuity: the premises are met by a universal arrow built above. *)
+(* Non-vacuity: premises met 泛箭头 built above. （已译） *)
 Definition sc_bool_dec@{o +} (x y : bool_setoid_object@{o o}) :
   (x ≈ y) + ((x ≈ y) → False).
 Proof.
@@ -312,10 +310,10 @@ Definition StoneCech_finite_bool_injective@{o h +} :=
          CompHaus_Forget)
     sc_bool_dec.
 
-(** * Exercise 4 at a space: the unit of the inclusion *)
+(* * * Exercise 4 at space: unit 含入 （已译） *)
 
-(* The maps from [X] into [K] separate the points of [X].  At [K] = [0,1]
-   this is the point-separating half of complete regularity. *)
+(* The maps [X] [K] separate points [X]. At [K] = [0,1]
+ 这是 point-separating half complete regularity. （已译） *)
 Definition KSeparated@{h o +} (K : CompHaus) (X : Top@{h o}) : Type@{h} :=
   ∀ x y : top_carrier X,
     (∀ k : X ~{Top}~> CompHaus_Incl K, continuous_map k x ≈ continuous_map k y)
@@ -379,8 +377,8 @@ Proof.
   exact (Hk (fmap[CompHaus_Incl] k ∘ @arrow _ _ _ _ UA)).
 Qed.
 
-(* Non-vacuity of the pair of premises: at a compact Hausdorff space the
-   identity is universal, and the space is separated by itself. *)
+(* Non-vacuity pair premises: at compact Hausdorff space the
+ 恒等 universal, space separated itself. （已译） *)
 Definition CompHaus_Incl_universal@{h o +} (K : CompHaus) :
   UniversalArrow (C:=Top@{h o}) (CompHaus_Incl K) CompHaus_Incl.
 Proof.
@@ -404,9 +402,9 @@ Definition StoneCech_unit_injective_at_CompHaus@{h o +} (K : CompHaus) :=
     (CompHaus_Incl K : obj[Top@{h o}]) (KSeparated_self K)
     (CompHaus_Incl_universal K).
 
-(* Non-vacuity of the local converse: its three premises are met at the
-   identity universal arrow, the injectivity of the unit by the theorem
-   just applied. *)
+(* Non-vacuity local converse: three premises met at the
+ 恒等 泛箭头, injectivity unit 定理
+ just applied. （已译） *)
 Definition KSeparated_of_unit_injective_local_at_CompHaus@{h o +}
   (K : CompHaus) : KSeparated K (CompHaus_Incl K : obj[Top@{h o}]) :=
   KSeparated_of_unit_injective_local K (CompHaus_Incl K : obj[Top@{h o}])

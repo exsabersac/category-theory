@@ -11,7 +11,7 @@ Set Equations With UIP.
 
 Generalizable All Variables.
 
-(** A CEK abstract machine for the de Bruijn STLC *)
+(** 本节：A CEK abstract machine de Bruijn STLC （已译） *)
 
 (*
    本文件给出 λ 演算相关实例。
@@ -42,9 +42,7 @@ with Value : Ty → Set :=
 
 Derive Signature NoConfusion NoConfusionHom Subterm for ClEnv Closed Value.
 
-(* Environment lookup: project the [Value] bound to variable [v].  Total by
-   intrinsic typing -- [NoCl] has no variables, so the empty-env cases are
-   absurd and elided by Equations. *)
+(* 相关说明。 （已译） *)
 Equations get_val `(s : ClEnv Γ) `(v : Var Γ τ) : Value τ :=
   get_val (AddCl x _)  ZV     := x;
   get_val (AddCl _ xs) (SV v) := get_val xs v.
@@ -83,8 +81,8 @@ Inductive EvalContext : Ty → Ty → Set :=
 
 Derive Signature NoConfusion NoConfusionHom Subterm for EvalContext.
 
-(* A machine state: a control [Closed] of type [u] together with a continuation
-   that will turn a [u]-result into the final [τ]-result. *)
+(* A machine state: control [Closed] type [u] together continuation
+ will turn [u]-result 进入 final [τ]-result. （已译） *)
 Inductive Σ : Ty → Set :=
   | MkΣ {u    : Ty}
         (exp  : Closed u)
@@ -121,19 +119,19 @@ Equations step {τ : Ty} (s : Σ τ) : Σ τ :=
   step (MkΣ (Closure y ρ) (PAIR_FST (Closure x ρ') κ)) :=
     MkΣ (Closure (Pair (liftL _ x) (liftR _ y)) (combine ρ' ρ)) κ;
 
-  (* A variable might lookup a lambda, in which case continue evaluating down
-     that vein; otherwise, if no continuation, this is as far as we can go. *)
+  (* A variable might lookup lambda, case continue evaluating down
+ vein; otherwise, if no continuation, 这是 far we can go. （已译） *)
   step (MkΣ (Closure (VAR v) ρ) κ) with get_val ρ v := {
     | Val val _ ρ' := MkΣ (Closure val ρ') κ
   };
 
-  (* If a lambda is passed, call it with the continuation *)
+  (* 相关说明。 （已译） *)
   step (MkΣ (Closure (LAM e) ρ) (AR a κ)) :=
     MkΣ a (FN (Val (LAM e) (LambdaP _) ρ) κ);
   step (MkΣ (Closure (LAM e) ρ) (FN (Val (LAM f) _ ρ') κ)) :=
     MkΣ (Closure f (AddCl (Val (LAM e) (LambdaP _) ρ) ρ')) κ;
 
-  (* Application evaluates the lambda and then the argument *)
+  (* Application evaluates lambda then 论元 （已译） *)
   step (MkΣ (Closure (APP f x) ρ) κ) :=
     MkΣ (Closure f ρ) (AR (Closure x ρ) κ);
 
@@ -148,12 +146,12 @@ Equations loop (gas : nat) {τ : Ty} (s : Σ τ) : Σ τ :=
   loop O s := s;
   loop (S gas') s := loop gas' (step s).
 
-(* Load a closed term into the initial machine state: the empty environment
-   [NoCl] closes its (nonexistent) free variables, and the halt continuation
-   [MT] will receive the final value. *)
+(* Load closed term 进入 initial machine state: empty environment
+ [NoCl] closes (nonexistent) free variables, halt continuation
+ [MT] will receive final value. （已译） *)
 Definition inject {τ : Ty} (e : Exp [] τ) : Σ τ := MkΣ (Closure e NoCl) MT.
 
-(* Evaluate a closed term for [gas] steps from its initial state. *)
+(* 相关说明。 （已译） *)
 Definition run (gas : nat) {τ : Ty} (e : Exp [] τ) : Σ τ := loop gas (inject e).
 
 (*

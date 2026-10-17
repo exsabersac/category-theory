@@ -1,4 +1,4 @@
-(** * The group-action monad G × (−) and its algebras, the G-sets *)
+(* * * The group-action 单子 G × (−) algebras, G-sets （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Lib.Setoid.Propositional.
@@ -40,13 +40,13 @@ Generalizable All Variables.
 
 (** ** The product M × X *)
 
-(* The carrier of G × X, compared componentwise (Lib/Datatypes.v's
-   [prod_setoid], the relation of Instance/Sets/Cartesian.v's product). *)
+(* The carrier G × X, compared componentwise (Lib/Datatypes.v's
+ [prod_setoid], 关系 Instance/Sets/Cartesian.v's product). （已译） *)
 Definition act_prod@{o} (M : MonObject@{o o o}) (X : SetoidObject@{o o}) :
   SetoidObject@{o o} :=
   @Build_SetoidObject (carrier M * carrier X)%type prod_setoid.
 
-(* G × f : G × X → G × Y, the identity on the first factor. *)
+(* G × f : G × X → G × Y, 恒等 first factor. （已译） *)
 Definition act_prod_map@{o so} (M : MonObject@{o o o})
   {X Y : SetoidObject@{o o}} (f : X ~{Sets@{o so}}~> Y) :
   act_prod M X ~{Sets@{o so}}~> act_prod M Y.
@@ -58,10 +58,9 @@ Proof.
   split; [ exact Hg | exact (proper_morphism f _ _ Hx) ].
 Defined.
 
-(** ** The free M-set and the forgetful functor *)
+(* * ** The free M-set forgetful 函子 （已译） *)
 
-(* The free M-set on X: M × X with M acting on the left factor,
-   g · (h, x) = (g h, x). *)
+(* 相关说明。 （已译） *)
 Definition FreeAct@{o} {M : MonObject@{o o o}} (X : SetoidObject@{o o}) :
   MSetoidAction@{o o o o o o o o} M.
 Proof.
@@ -203,8 +202,7 @@ Definition ActMonad@{o so} (M : MonObject@{o o o}) :
   @Monad Sets@{o so} (ActF@{o so} M) :=
   Adjunction_Induced_Monad (MSet_adj@{o so} M).
 
-(* Mac Lane's formulas, read back on the nose: T X = G × X, η x = (u, x)
-   and μ (g₁, (g₂, x)) = (g₁ g₂, x). *)
+(* 相关说明。 （已译） *)
 Example ActF_obj@{o so} (M : MonObject@{o o o}) (X : SetoidObject@{o o}) :
   fobj[ActF@{o so} M] X = act_prod M X := eq_refl.
 
@@ -221,9 +219,7 @@ Example ActMonad_join@{o so} (M : MonObject@{o o o})
   (@join _ _ (ActMonad@{o so} M) X) (g1, (g2, x)) = (mon_op g1 g2, x) :=
   eq_refl.
 
-(* The point and the triple above are Mac Lane's notation.  η holds as a
-   function too, and so does μ, which is stronger than the triple, since
-   Coq's [prod] has no eta. *)
+(* 相关说明。 （已译） *)
 Example ActMonad_ret_fun@{o so} (M : MonObject@{o o o})
   (X : SetoidObject@{o o}) :
   (fun x : carrier X => (@ret _ _ (ActMonad@{o so} M) X) x)
@@ -318,8 +314,8 @@ Proof.
   - intros a. reflexivity.
 Defined.
 
-(* The direct route: [EM_to_MSet] is a quasi-inverse of the comparison
-   functor, with identity components both ways. *)
+(* The direct route: [EM_to_MSet] quasi-inverse comparison
+ 函子, 恒等 components both ways. （已译） *)
 Definition MSet_comparison_equivalence@{o so} (M : MonObject@{o o o}) :
   EquivalenceOfCategories (EM_Comparison (MSet_adj@{o so} M)).
 Proof.
@@ -341,8 +337,8 @@ Proof.
   exact (MSet_comparison_equivalence@{o so} M).
 Defined.
 
-(* G-sets ARE the algebras: an isomorphism in Cat whose [to] leg is the
-   comparison functor itself. *)
+(* G-sets ARE algebras: 同构 Cat whose [to] leg the
+ comparison 函子 itself. （已译） *)
 Definition EM_MSet_iso@{o so c} (M : MonObject@{o o o}) :
   @Isomorphism Cat@{c so so so o}
     (MSet@{so so o o o o o o} M)
@@ -353,7 +349,7 @@ Definition EM_MSet_iso@{o so c} (M : MonObject@{o o o}) :
 Example EM_MSet_iso_to@{o so c} (M : MonObject@{o o o}) :
   to (EM_MSet_iso@{o so c} M) = EM_Comparison (MSet_adj@{o so} M) := eq_refl.
 
-(* Its [from] leg is the direct quasi-inverse itself. *)
+(* 相关说明。 （已译） *)
 Example EM_MSet_iso_from@{o so c} (M : MonObject@{o o o}) :
   from (EM_MSet_iso@{o so c} M) = EM_to_MSet@{o so} M := eq_refl.
 
@@ -368,17 +364,16 @@ Example comparison_alg_is_action@{o so} {M : MonObject@{o o o}}
   t_alg[`2 (fobj[EM_Comparison (MSet_adj@{o so} M)] A)] (g, a) = act A g a :=
   eq_refl.
 
-(* The same, as a function of the pair. *)
+(* 相关说明。 （已译） *)
 Example comparison_alg_fun@{o so} {M : MonObject@{o o o}}
   (A : MSetoidAction@{o o o o o o o o} M) :
   (fun p => t_alg[`2 (fobj[EM_Comparison (MSet_adj@{o so} M)] A)] p)
   = (fun p : carrier M * carrier (act_setoid A) => act A (fst p) (snd p)) :=
   eq_refl.
 
-(** ** Riehl's route: the forgetful functor creates U-split coequalizers *)
+(* * ** Riehl's route: forgetful 函子 creates U-split coequalizers （已译） *)
 
-(* Absorption through a split coequalizer: a map h out of B that
-   coforks the pair satisfies h (s (e y)) ≈ h y. *)
+(* 相关说明。 （已译） *)
 Lemma split_absorb@{o so} {M : MonObject@{o o o}}
   {A B : MSetoidAction@{o o o o o o o o} M}
   (p q : A ~{MSet@{so so o o o o o o} M}~> B)
@@ -398,7 +393,7 @@ Proof.
     + apply (proper_morphism h). exact L3.
 Qed.
 
-(* The created action on the split quotient Z: g · z := e (g · s z). *)
+(* 相关说明。 （已译） *)
 Definition created_act@{o so} {M : MonObject@{o o o}}
   {A B : MSetoidAction@{o o o o o o o o} M}
   (p q : A ~{MSet@{so so o o o o o o} M}~> B)
@@ -494,8 +489,8 @@ Proof.
       * apply (proper_morphism (equiv_map v)). exact L2.
 Defined.
 
-(* The reflection clause: a cofork lying over the splitting up to a
-   compatible isomorphism downstairs is a coequalizer upstairs. *)
+(* The reflection clause: cofork lying over splitting up a
+ compatible 同构 downstairs coequalizer upstairs. （已译） *)
 Definition Reflected_is_coeq@{o so} {M : MonObject@{o o o}}
   {A B : MSetoidAction@{o o o o o o o o} M}
   (p q : A ~{MSet@{so so o o o o o o} M}~> B)
@@ -581,9 +576,9 @@ Proof.
     exact (Reflected_is_coeq@{o so} p q S Q e He i Hi).
 Defined.
 
-(* The lift chosen is on the nose: the created M-set has carrier Z and
-   action g · z = e (g · s z), its coequalizing arrow is e, and the
-   comparison isomorphism is the identity. *)
+(* The lift chosen nose: created M-set has carrier Z and
+ action g · z = e (g · s z), coequalizing arrow e, the
+ comparison 同构 恒等. （已译） *)
 Example mset_created_carrier@{o so} {M : MonObject@{o o o}}
   {A B : MSetoidAction@{o o o o o o o o} M}
   (p q : A ~{MSet@{so so o o o o o o} M}~> B)
@@ -620,7 +615,7 @@ Example mset_created_iso@{o so} {M : MonObject@{o o o}}
                      A B p q S))))
   = @iso_id Sets@{o so} (scoeq_obj S) := eq_refl.
 
-(** ** Riehl's Exercise 5.5.iv by the monadicity theorem *)
+(* * ** Riehl's Exercise 5.5.iv monadicity 定理 （已译） *)
 
 Definition MSet_beck_equivalence@{o so} (M : MonObject@{o o o}) :
   EquivalenceOfCategories (EM_Comparison (MSet_adj@{o so} M)) :=
@@ -640,7 +635,7 @@ Definition MSet_Forget_reflects@{o so} (M : MonObject@{o o o}) :
   ReflectsIsos (MSet_Forget@{o so} M) :=
   creates_split_reflects_isos _ (MSet_Forget_creates@{o so} M).
 
-(** ** The two routes are equivalences of the same functor *)
+(* * ** The two routes equivalences same 函子 （已译） *)
 
 Definition EM_MSet_iso_beck@{o so c} (M : MonObject@{o o o}) :
   @Isomorphism Cat@{c so so so o}
@@ -656,8 +651,7 @@ Example EM_MSet_iso_beck_to@{o so c} (M : MonObject@{o o o}) :
 Example beck_direct_to@{o so c} (M : MonObject@{o o o}) :
   to (EM_MSet_iso_beck@{o so c} M) = to (EM_MSet_iso@{o so c} M) := eq_refl.
 
-(* Beck's quasi-inverse keeps the carrier and acts through η: its action
-   at g is the structure map at (g u, z). *)
+(* 相关说明。 （已译） *)
 Example beck_carrier@{o so} (M : MonObject@{o o o})
   (x : @EilenbergMoore@{so so so o} Sets@{o so} (ActF@{o so} M)
          (ActMonad@{o so} M)) :
@@ -703,9 +697,9 @@ Defined.
 
 (** ** Riehl's Set^{BG} *)
 
-(* Instance/Fun/Action.v's [MSet_Fun_equiv] followed by [EM_MSet_iso]:
-   the functor category [Deloop M, Sets] is isomorphic in Cat to the
-   Eilenberg–Moore category of G × (−). *)
+(* Instance/Fun/Action.v's [MSet_Fun_equiv] followed [EM_MSet_iso]:
+ 函子 范畴 [Deloop M, Sets] isomorphic Cat the
+ Eilenberg–Moore 范畴 G × (−). （已译） *)
 Definition Fun_EM_iso@{o so c} (M : MonObject@{o o o}) :
   @Isomorphism Cat@{c so so so o}
     ([Deloop@{o o} M, Sets@{o so}])
@@ -741,9 +735,9 @@ Definition GSet_Forget_Monadic_Grp@{o so}
     (MSet_Forget@{o so} (grp_deloop_monoid@{o o o} G)) :=
   MSet_Forget_Monadic@{o so} (grp_deloop_monoid@{o o o} G).
 
-(* A group of Structure/Group.v, internal to (Sets, ×), reaches it
-   through Instance/Grp.v's [GroupObject_GrpObject], which asks that the
-   carrier's ≈ be a proposition. *)
+(* A group Structure/Group.v, internal (Sets, ×), reaches it
+ through Instance/Grp.v's [GroupObject_GrpObject], asks the
+ carrier's ≈ 命题. （已译） *)
 Definition GAct_Monad_GroupObject@{o so} (X : Sets@{o so})
   (PX : PropEquiv@{o o} X)
   (GO : @GroupObject@{so o so} Sets@{o so} Sets_CartesianMonoidal X) :

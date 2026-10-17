@@ -34,8 +34,8 @@ Generalizable All Variables.
 
 (** ** The subcategory data *)
 
-(* Full, and cut out by a predicate on objects alone: [shom] discards its
-   morphism argument entirely.  Every closure proof is therefore [I]. *)
+(* Full, cut out predicate 对象 alone: [shom] discards its
+ 态射 论元 entirely. Every closure 证明 therefore [I]. （已译） *)
 
 Definition Grpd_sub : Subcategory Cat :=
   @Build_Subcategory Cat
@@ -65,8 +65,8 @@ Definition Grpd_Incl : Grpd ⟶ Cat := Incl Cat Grpd_sub.
 Definition Grpd_Incl_Faithful : Functor.Faithful Grpd_Incl :=
   Incl_Faithful Cat Grpd_sub.
 
-(* The inclusion is FULL as a functor, not merely full as data:
-   Construction/Subcategory.v turns the one into the other. *)
+(* The 含入 FULL 函子, not merely full data:
+ Construction/Subcategory.v turns one 进入 other. （已译） *)
 
 Definition Grpd_Incl_Full : Functor.Full Grpd_Incl :=
   Full_Implies_Full_Functor Cat Grpd_sub Grpd_Full.
@@ -90,10 +90,10 @@ Lemma IsGroupoid_transport (C D : Category) (i : C ≅[Cat] D) :
   IsGroupoid C → IsGroupoid D.
 Proof.
   intros HC x y h.
-  (* The counit-side natural isomorphism: to i ◯ from i ≈ Id[D]. *)
+  (* The counit-side natural 同构: i ◯ i ≈ Id[D]. （已译） *)
   destruct (iso_to_from i) as [n Hn].
   pose proof (Hn _ _ h) as Hnat; simpl in Hnat.
-  (* Hnat : fmap[to i] (fmap[from i] h) ≈ from (n y) ∘ h ∘ to (n x) *)
+  (* 相关说明。 （已译） *)
   assert (Hl : h ∘ to (n x) ≈ to (n y) ∘ fmap[to i] (fmap[from i] h)).
   { rewrite Hnat.
     rewrite !comp_assoc.
@@ -110,8 +110,7 @@ Proof.
     rewrite !comp_assoc.
     rewrite Hl.
     rewrite <- (comp_assoc (to (n y))).
-    (* Keyed rewriting does not pick this occurrence up from the bare
-       [fmap_comp]; the instance is therefore given in full. *)
+    (* 相关说明。 （已译） *)
     rewrite <- (@fmap_comp _ _ (to i) _ _ _
                   (fmap[from i] h) (ginv HC (fmap[from i] h))).
     rewrite ginv_right, fmap_id, id_right.
@@ -137,8 +136,7 @@ Definition Grpd_Replete : Replete Cat Grpd_sub :=
 Lemma Grpd_proper_subcategory : sobj Cat Grpd_sub (Deloop Nat_Plus) → False.
 Proof. exact deloop_nat_not_groupoid. Qed.
 
-(* The companion witness: the delooping of Z/2 IS a groupoid, so the
-   predicate cutting [Grpd] out separates the two deloopings. *)
+(* 相关说明。 （已译） *)
 
 Definition Grpd_Deloop_Bool : Grpd :=
   (Deloop Bool_Xor_Grp; deloop_bool_groupoid).

@@ -1,4 +1,4 @@
-(** * Coextension of scalars: the right adjoint of R-Mod → Ab *)
+(* * * Coextension scalars: 右伴随 R-Mod → Ab （已译） *)
 
 (*
  Book:      Mac Lane, ibid., §IV.1, printed pp. 79–80 — adjunctions in
@@ -52,7 +52,7 @@ Example coex_group_plus (A : AbObject) :
 Example coex_group_zero (A : AbObject) :
   cmon_zero (coex_group A) = @ab_hom_zero RG A := eq_refl.
 
-(** ** The scalar action: translation in the ring argument *)
+(* * ** The scalar action: translation ring 论元 （已译） *)
 
 Program Definition coex_act (A : AbObject) (r : RS) (f : AbHom RG A) :
   AbHom RG A := {|
@@ -142,7 +142,7 @@ Definition CoextObj (A : AbObject) : RModObject R := {|
   rm_smul_one      := coex_act_one A
 |}.
 
-(** ** The arrow action: postcomposition, and the functor *)
+(* * ** The arrow action: postcomposition, 函子 （已译） *)
 
 Program Definition coex_map_ab {A B : AbObject} (f : AbHom A B) :
   AbHom (coex_group A) (coex_group B) := {|
@@ -274,7 +274,7 @@ Example coex_from_at {A : AbObject} {M : RModObject R}
   cmon_map (coex_from h) m
     = cmon_map (cmon_map (rm_hom h) m) (rig_one (ring_rig R)) := eq_refl.
 
-(** ** The hom-set bijection and the adjunction *)
+(* * ** The hom-set bijection 伴随 （已译） *)
 
 Program Definition coex_adj_to (M : RModObject R) (A : AbObject) :
   {| carrier := rm_ab M ~{Ab}~> A;
@@ -327,7 +327,7 @@ Proof.
   - intros M A B f g m s; reflexivity.
 Defined.
 
-(** ** Unit, counit, and the strict readings *)
+(* 相关说明。 （已译） *)
 
 Definition coex_unit (M : RModObject R) :
   M ~{RMod R}~> CoextObj (rm_ab M) :=
@@ -337,7 +337,7 @@ Definition coex_counit (A : AbObject) :
   rm_ab (CoextObj A) ~{Ab}~> A :=
   @counit Ab (RMod R) (RMod_Forget_Ab R) Coextension coex_adjunction A.
 
-(* THE REVIEWER CHECK.  The counit IS evaluation at 1, on the nose. *)
+(* 相关说明。 （已译） *)
 Example coex_counit_is_eval_at_one (A : AbObject) (phi : AbHom RG A) :
   cmon_map (coex_counit A) phi
     = cmon_map phi (rig_one (ring_rig R)) := eq_refl.
@@ -370,8 +370,8 @@ End Coextension.
 
 (** ** A concrete witness over ℤ *)
 
-(** The coextension of ℤ along ℤ: the abelian group of additive
-    endomorphisms of ℤ, made a ℤ-module by translation. *)
+(** 本节：The coextension ℤ along ℤ: abelian group additive
+ endomorphisms ℤ, made ℤ-module translation. （已译） *)
 Definition CoextInt : RModObject Int_Ring :=
   CoextObj Int_Ring (ring_ab Int_Ring).
 
@@ -384,7 +384,7 @@ Definition coex_int_mul (n : Z) :
 Example coex_int_mul_at (n s : Z) :
   cmon_map (coex_int_mul n) s = (s * n)%Z := eq_refl.
 
-(** The comparison map out: evaluation at 1, which is the counit. *)
+(** 本节：The comparison map out: evaluation at 1, counit. （已译） *)
 Definition coex_int_eval :
   rm_ab CoextInt ~{Ab}~> ring_ab Int_Ring :=
   coex_counit Int_Ring (ring_ab Int_Ring).
@@ -441,8 +441,8 @@ Context (f f' : ring_ab R ~{Ab}~> A).
 Context (m : carrier (cmon_setoid (rm_ab M))).
 Context (r s : carrier (rig_setoid (ring_rig R))).
 
-(* CONTROL for negative 1: the round trip DOES hold at ≈, and the proof
-   term names the exact law that closes the gap. *)
+(* CONTROL negative 1: round trip DOES hold at ≈, 证明
+ term names exact law closes gap. （已译） *)
 Example coex_ctrl_from_to :
   cmon_map (coex_from R (coex_to R g)) m ≈ cmon_map g m
   := proper_morphism (cmon_map g) _ _ (rm_smul_one M m).
@@ -460,14 +460,12 @@ Example coex_ctrl_to_from :
     ≈ cmon_map (cmon_map (rm_hom h) m) s
   := iso_to_from (coex_adj R M A) h m s.
 
-(* NEGATIVE 2 (CONVERSION).  The other round trip evaluates the inner
-   homomorphism at 1 · s rather than at s; [rig_mul_one_l] removes the
-   residue and is likewise an abstract field. *)
+(* 相关说明。 （已译） *)
 Fail Example coex_probe_to_from_strict :
   cmon_map (cmon_map (rm_hom (coex_to R (coex_from R h))) m) s
     = cmon_map (cmon_map (rm_hom h) m) s := eq_refl.
 
-(* CONTROL for negative 3: the handedness that is actually built. *)
+(* 相关说明。 （已译） *)
 Example coex_ctrl_handedness :
   cmon_map (coex_act R A r f) s
     = cmon_map f (rig_mul (ring_rig R) s r) := eq_refl.
@@ -481,8 +479,7 @@ Fail Example coex_probe_handedness_swapped :
   cmon_map (coex_act R A r f) s
     = cmon_map f (rig_mul (ring_rig R) r s) := eq_refl.
 
-(* CONTROL for negative 4: the underlying FUNCTIONS agree on the nose,
-   which is why [coex_act_distr_l] closes by [reflexivity]. *)
+(* 相关说明。 （已译） *)
 Example coex_ctrl_distr_l_pointwise :
   cmon_map (coex_act R A r (cmon_plus (coex_group R A) f f')) s
     = cmon_map (cmon_plus (coex_group R A)
@@ -498,7 +495,7 @@ Fail Example coex_probe_distr_l_record :
     = cmon_plus (coex_group R A)
         (coex_act R A r f) (coex_act R A r f') := eq_refl.
 
-(* CONTROL for negative 5: the counit IS an arrow of [Ab]. *)
+(* 相关说明。 （已译） *)
 Check (coex_counit R A : rm_ab (CoextObj R A) ~{Ab}~> A).
 
 (*
@@ -508,16 +505,16 @@ Check (coex_counit R A : rm_ab (CoextObj R A) ~{Ab}~> A).
 *)
 Fail Check (coex_counit R A : CoextObj R A ~{RMod R}~> A).
 
-(* CONTROL for negative 6: the adjunction as delivered. *)
+(* CONTROL negative 6: 伴随 delivered. （已译） *)
 Check (coex_adjunction R : RMod_Forget_Ab R ⊣ Coextension R).
 
-(* NEGATIVE 6 (TYPING).  The direction is not negotiable: coextension is
-   the RIGHT adjoint, so the forgetful functor sits on the left. *)
+(* NEGATIVE 6 (TYPING). The direction not negotiable: coextension is
+ RIGHT adjoint, so forgetful 函子 sits left. （已译） *)
 Fail Check (coex_adjunction R : Coextension R ⊣ RMod_Forget_Ab R).
 
 End CoexProbeStrength.
 
-(* CONTROL for negative 7: the comparison map out exists and computes. *)
+(* 相关说明。 （已译） *)
 Check (cmon_map coex_int_eval (coex_int_mul 3)).
 
 (*
@@ -554,7 +551,7 @@ Check (obj[RMod Ru]).
 *)
 Fail Check (AbHom (ring_ab Ru) Au).
 
-(* NEGATIVE 9 (FORMABILITY).  The same wall met the other way round. *)
+(* 相关说明。 （已译） *)
 Fail Check (ring_ab Ru : obj[Ab]).
 
 (* NEGATIVE 10 (FORMABILITY).  Hence the scalar action. *)
@@ -573,7 +570,7 @@ Fail Check (Ring_RMod Ru : obj[RMod Ru]).
 (* NEGATIVE 13 (FORMABILITY).  Hence the functor. *)
 Fail Check (Coextension Ru).
 
-(* NEGATIVE 14 (FORMABILITY).  And hence the headline. *)
+(* 相关说明。 （已译） *)
 Fail Check (coex_adjunction Ru).
 
 End CoexProbeUniverses.

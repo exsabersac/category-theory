@@ -21,8 +21,7 @@ Require Import Category.Instance.Proset.Galois.
 Require Import Category.Instance.Proset.Monotone.
 Require Import Category.Instance.Proset.Limit.
 
-(* Same two as Instance/Proset.v and Instance/Proset/Galois.v: [relation]
-   and [PreOrder] below are the stdlib Prop-valued ones, not [crelation]. *)
+(* 相关说明。 （已译） *)
 Require Import Coq.Classes.Equivalence.
 Require Import Coq.Relations.Relation_Definitions.
 
@@ -41,11 +40,11 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** (A) The inclusion order, and the thin category *)
+(* * ** (A) The 含入 order, thin 范畴 （已译） *)
 
-(* Inclusion of Prop-valued subsets.  This IS a [relation] on the carrier,
-   which is what [Proset] and [GaloisConnection] require and what the
-   proof-relevant carrier cannot supply. *)
+(* Inclusion Prop-valued subsets. This IS [relation] carrier,
+ what [Proset] [GaloisConnection] require what the
+ 证明-relevant carrier cannot supply. （已译） *)
 Definition subset_le@{o} {X : SetoidObject@{o o}}
   (S T : carrier (Powerset_Prop_obj@{o} X)) : Prop := ∀ x, S x → T x.
 
@@ -71,9 +70,7 @@ Example Subsets_hom_is_subset_le@{o u} (X : SetoidObject@{o o})
   (S T : Subsets@{o u} X) : (S ~{Subsets@{o u} X}~> T) = subset_le S T
   := eq_refl.
 
-(* Thin, by construction.  [Thin] is Instance/Proset/Galois.v's; the tree
-   also has Structure/Thin.v's predicate of the same name, and
-   Instance/Proset/Limit.v deliberately introduces none. *)
+(* 相关说明。 （已译） *)
 Definition Subsets_thin@{o u +} (X : SetoidObject@{o o}) :
   Thin (Subsets@{o u} X) := proset_thin (subset_le_preorder@{o} X).
 
@@ -83,8 +80,8 @@ Example subsets_equiv_is_True@{o u} {X : SetoidObject@{o o}}
   {S T : Subsets@{o u} X} (f g : S ~{Subsets@{o u} X}~> T) :
   (f ≈ g) = True := eq_refl.
 
-(* Two [≈]-equal subsets are DISTINCT objects, isomorphic in the category:
-   the setoid point of the header, as a construction. *)
+(* Two [≈]-equal subsets DISTINCT 对象, isomorphic 范畴:
+ setoid point header, construction. （已译） *)
 Definition subsets_iso_of_equiv@{o u +} {X : SetoidObject@{o o}}
   {S T : carrier (Powerset_Prop_obj@{o} X)} (H : S ≈ T) :
   @Isomorphism (Subsets@{o u} X) S T.
@@ -97,7 +94,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (B), (C) Monotonicity, the Galois connection, the adjunction *)
+(* * ** (B), (C) Monotonicity, Galois connection, 伴随 （已译） *)
 
 Section Images.
 
@@ -107,8 +104,7 @@ Constraint o < so.
 Context {X Y : SetoidObject@{o o}}.
 Context (f : X ~{Sets@{o so}}~> Y).
 
-(* The direct image is order-preserving.  Opening the truncation is legal
-   because the goal is a [Prop]. *)
+(* 相关说明。 （已译） *)
 Lemma image_monotone (S T : carrier (Powerset_Prop_obj@{o} X)) :
   subset_le S T →
   subset_le (Powerset_Prop_image@{o} f S) (Powerset_Prop_image@{o} f T).
@@ -124,8 +120,7 @@ Lemma preimage_monotone (S T : carrier (Powerset_Prop_obj@{o} Y)) :
   subset_le (Powerset_Prop_preimage@{o} f S) (Powerset_Prop_preimage@{o} f T).
 Proof. intros H x Hx; exact (H (f x) Hx). Qed.
 
-(* Mac Lane's displayed line, left to right: from f_* S subset T infer
-   S subset f^* T.  The witness is [x] itself, at [f x], by reflexivity. *)
+(* 相关说明。 （已译） *)
 Lemma image_transpose_to (S : carrier (Powerset_Prop_obj@{o} X))
   (T : carrier (Powerset_Prop_obj@{o} Y)) :
   subset_le (Powerset_Prop_image@{o} f S) T →
@@ -137,8 +132,7 @@ Proof.
     [ exact Hx | reflexivity ].
 Qed.
 
-(* ... and right to left.  This is where [T]'s own respectfulness is
-   spent: the witness [x] gives [T (f x)], and [f x ≈ y] transports it. *)
+(* 相关说明。 （已译） *)
 Lemma image_transpose_from (S : carrier (Powerset_Prop_obj@{o} X))
   (T : carrier (Powerset_Prop_obj@{o} Y)) :
   subset_le S (Powerset_Prop_preimage@{o} f T) →
@@ -149,7 +143,7 @@ Proof.
   exact (proj1 (@proper_morphism _ _ _ _ T (f x) y Hfx) (H x Hx)).
 Qed.
 
-(* THE GALOIS CONNECTION.  All six fields are supplied by name. *)
+(* 相关说明。 （已译） *)
 Definition image_preimage_galois :
   GaloisConnection (@subset_le@{o} X) (@subset_le@{o} Y) :=
   {| gal_l := Powerset_Prop_image@{o} f
@@ -159,7 +153,7 @@ Definition image_preimage_galois :
    ; gal_to   := image_transpose_to
    ; gal_from := image_transpose_from |}.
 
-(* The two functors, and the adjunction: #380 applied, nothing rebuilt. *)
+(* The two 函子, 伴随: #380 applied, nothing rebuilt. （已译） *)
 Definition DirectImage : Subsets@{o u} X ⟶ Subsets@{o u} Y :=
   GaloisFunctor_l (subset_le_preorder@{o} X) (subset_le_preorder@{o} Y)
     image_preimage_galois.
@@ -205,7 +199,7 @@ Example image_galois_round_trip :
     DirectImage InverseImage image_preimage_adjunction
   = image_preimage_galois := eq_refl.
 
-(** ** (D) The unit and the counit ARE the two inclusions *)
+(* 相关说明。 （已译） *)
 
 (* Mac Lane's two inequalities, proved directly. *)
 Lemma unit_incl (S : carrier (Powerset_Prop_obj@{o} X)) :
@@ -264,9 +258,7 @@ Universe o u.
 
 Context {X : SetoidObject@{o o}}.
 
-(* Intersection of an arbitrary family.  A universally quantified [Prop]
-   is a [Prop], so no truncation is needed and respectfulness is the
-   family's, pointwise. *)
+(* 相关说明。 （已译） *)
 Definition subset_inter {Idx : Type}
   (S : Idx → carrier (Powerset_Prop_obj@{o} X)) :
   carrier (Powerset_Prop_obj@{o} X).
@@ -316,7 +308,7 @@ Proof.
   - intros n Hn x Hi; destruct Hi as [i Hi]; exact (Hn i x Hi).
 Defined.
 
-(* The binary and nullary specializations. *)
+(* 相关说明。 （已译） *)
 Definition subset_meet (S T : carrier (Powerset_Prop_obj@{o} X)) :
   carrier (Powerset_Prop_obj@{o} X) := subset_inter (pair_family S T).
 
@@ -369,9 +361,7 @@ Lemma subset_bot_least (S : carrier (Powerset_Prop_obj@{o} X)) :
   subset_le subset_bot S.
 Proof. intros x Hx; destruct Hx as [i _]; destruct i. Qed.
 
-(* The four structures, and bicompleteness.  Plain [Definition]s, never
-   [Instance]s: the donors' own convention for [Proset_Cartesian] and
-   [Proset_Terminal]. *)
+(* 相关说明。 （已译） *)
 Definition Subsets_Cartesian : @Cartesian (Subsets@{o u} X) :=
   Proset_Cartesian (subset_le_preorder@{o} X)
     subset_meet subset_meet_l subset_meet_r subset_meet_greatest.
@@ -418,9 +408,7 @@ Constraint o < so.
 Context {X Y : SetoidObject@{o o}}.
 Context (f : X ~{Sets@{o so}}~> Y).
 
-(* Riehl §4.6.3's right-adjoint half, DIRECTLY: a preimage is a
-   substitution and a meet is a universal quantifier, so the second clause
-   is the transpose of the family's own second clause. *)
+(* 相关说明。 （已译） *)
 Theorem inverse_image_preserves_meets {Idx : Type}
   (T : Idx → carrier (Powerset_Prop_obj@{o} Y))
   (m : carrier (Powerset_Prop_obj@{o} Y))
@@ -479,7 +467,7 @@ Qed.
 End Preservation.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (F) again: the same two statements read off RAPL and LAPC *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -509,7 +497,7 @@ Definition inverse_image_preserves_meets_via_RAPL {Idx : Type}
           (DiscreteCat_Functor (C:=Subsets Y) T))
        (Proset_Limit (subset_le_preorder@{o} Y) T m H)).
 
-(* The two routes inhabit ONE type: the pair typechecks. *)
+(* 相关说明。 （已译） *)
 Definition inverse_image_meet_routes_agree {Idx : Type}
   (T : Idx → carrier (Powerset_Prop_obj@{o} Y))
   (m : carrier (Powerset_Prop_obj@{o} Y))
@@ -556,7 +544,7 @@ Definition direct_image_join_routes_agree {Idx : Type}
 End RAPLRoute.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (G) Awodey §9.9 Exercise 4: the same thing as monotone maps *)
+(* 相关说明。 （已译） *)
 
 Section MonotoneReading.
 
@@ -608,8 +596,8 @@ Definition powerset_sng0@{o +} :
   carrier (Powerset_Prop_obj@{o} powerset_fin2@{o}) :=
   Powerset_Prop_singleton_pred@{o} (X:=powerset_fin2@{o}) Fin.F1.
 
-(* The unit at {1} is not invertible: its target f^*(f_* {1}) is the WHOLE
-   two-element set, since the constant map lands everything at 0. *)
+(* The unit at {1} not invertible: target f^*(f_* {1}) WHOLE
+ two-element set, since 常值 map lands everything at 0. （已译） *)
 Theorem unit_not_iso@{o so +} :
   subset_le
     (Powerset_Prop_preimage@{o} powerset_const0@{o so}

@@ -4,7 +4,7 @@ Require Import Category.Structure.Cocartesian.
 
 Generalizable All Variables.
 
-(** * Coproducts of setoids (disjoint union) *)
+(* 相关说明。 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Coproduct

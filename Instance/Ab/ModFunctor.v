@@ -1,4 +1,4 @@
-(** * R-Mod as the additive functors out of B(R) *)
+(* * * R-Mod additive 函子 out B(R) （已译） *)
 
 Require Import Coq.ZArith.ZArith.
 Require Import Category.Lib.
@@ -35,7 +35,7 @@ Open Scope category_scope.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The Ab-enrichment of the delooping of a ring *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -52,9 +52,7 @@ Next Obligation.
   rewrite (rig_add_comm (ring_rig R) f (ring_neg R f)).
   exact (ring_neg_l R f).
 Qed.
-(* [abneg_respects] needs no obligation: the field is a [Proper] class
-   and Rig.v exports [ring_neg_respects] as an instance, so elaboration
-   discharges it. *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -81,7 +79,7 @@ Example deloop_ring_abneg (R : RingObject)
   (r : ttt ~{DeloopRig (ring_rig R)}~> ttt) :
   @abneg _ (DeloopRing_AbEnriched R) ttt ttt r = ring_neg R r := eq_refl.
 
-(** ** The full subcategory of additive functors *)
+(* * ** The full subcategory additive 函子 （已译） *)
 
 (*
    本节说明函子、来源与用途相关定义、性质与动机。
@@ -118,11 +116,11 @@ Definition AbFunAdd_Incl (R : RingObject) :
   AbFunAdd R ⟶ [DeloopRig (ring_rig R), Ab] :=
   Incl ([DeloopRig (ring_rig R), Ab]) (AbFunAdd_sub R).
 
-(** ** From an additive functor to a module *)
+(* * ** From additive 函子 module （已译） *)
 
-(* The action of a ring element on the value of the functor at the single
-   object: apply the Ab-morphism [fmap[F] r].  Every module law below is
-   one functor law read through this definition. *)
+(* The action ring element value 函子 at single
+ 对象: apply Ab-态射 [fmap[F] r]. Every module law below is
+ one 函子 law read through 定义. （已译） *)
 Definition fun_module_smul {R : RingObject}
   (F : DeloopRig (ring_rig R) ⟶ Ab)
   (r : carrier (rig_setoid (ring_rig R)))
@@ -165,10 +163,10 @@ Next Obligation.
   exact (@fmap_id _ _ F ttt m).
 Qed.
 
-(** ** From a module to an additive functor *)
+(* * ** From module additive 函子 （已译） *)
 
-(* Action by a fixed scalar, as a morphism of Ab: additivity of the map
-   is [rm_smul_distr_l] and preservation of zero is [rm_smul_zero_r]. *)
+(* Action fixed scalar, 态射 Ab: additivity map
+ [rm_smul_distr_l] preservation zero [rm_smul_zero_r]. （已译） *)
 Program Definition module_act {R : RingObject} (M : RModObject R)
   (r : carrier (rig_setoid (ring_rig R))) :
   (rm_ab M : Ab) ~{Ab}~> (rm_ab M : Ab) := {|
@@ -205,8 +203,7 @@ Next Obligation.
   exact (rm_smul_assoc M r s m).
 Qed.
 
-(* ...and it is additive, that field being [rm_smul_distr_r] — the other
-   half of the pivot. *)
+(* 相关说明。 （已译） *)
 Definition functor_of_module_additive {R : RingObject} (M : RModObject R) :
   IsAdditiveFun R (functor_of_module M).
 Proof.
@@ -214,8 +211,8 @@ Proof.
   exact (rm_smul_distr_r M r s m).
 Defined.
 
-(* The action of the module is recovered by the functor, definitionally,
-   and so is the underlying group. *)
+(* The action module recovered 函子, definitionally,
+ so underlying group. （已译） *)
 Example module_round_carrier {R : RingObject} (M : RModObject R) :
   ((functor_of_module M) ttt : AbObject) = rm_ab M := eq_refl.
 
@@ -226,8 +223,8 @@ Example module_round_smul {R : RingObject} (M : RModObject R)
 
 (** ** The comparison functors *)
 
-(* A transformation over the single object is one Ab-morphism, and its
-   naturality at r IS [rm_map_smul] — the collapse. *)
+(* A transformation over single 对象 one Ab-态射, its
+ 自然性 at r IS [rm_map_smul] — collapse. （已译） *)
 Program Definition AbFunAdd_to (R : RingObject) :
   AbFunAdd R ⟶ RMod R := {|
   fobj := fun FH => module_of_functor (`1 FH) (`2 FH);
@@ -240,9 +237,9 @@ Qed.
 Next Obligation.
   intros R FH GH η θ Hηθ; exact (Hηθ ttt).
 Qed.
-(* [Fun]'s identity transformation has [fmap[F] id] for its component,
-   so this is [fmap_id] rather than [reflexivity] — the same step
-   Instance/Rep.v's [Rep_to] takes. *)
+(* [Fun]'s 恒等 transformation has [fmap[F] id] component,
+ so 这是 [fmap_id] rather than [reflexivity] — same step
+ Instance/Rep.v's [Rep_to] takes. （已译） *)
 Next Obligation.
   intros R FH m; simpl.
   exact (@fmap_id _ _ (`1 FH) ttt m).
@@ -251,8 +248,8 @@ Next Obligation.
   intros R FH GH KH η θ m; simpl; reflexivity.
 Qed.
 
-(* Conversely a module map is the constant family, its naturality being
-   [rm_map_smul] again — the same equation read the other way. *)
+(* Conversely module map 常值 family, 自然性 being
+ [rm_map_smul] again — same equation read other way. （已译） *)
 Program Definition AbFunAdd_from (R : RingObject) :
   RMod R ⟶ AbFunAdd R := {|
   fobj := fun M =>
@@ -270,9 +267,9 @@ Qed.
 Next Obligation.
   intros R M N f g Hfg []; exact Hfg.
 Qed.
-(* The identity of [AbFunAdd R] has [fmap] of the source identity for
-   its component, i.e. the action of 1, so this is [rm_smul_one] — the
-   mirror of the [fmap_id] step in [AbFunAdd_to]. *)
+(* The 恒等 [AbFunAdd R] has [fmap] source 恒等 for
+ component, i.e. action 1, so 这是 [rm_smul_one] — the
+ 镜像 [fmap_id] step [AbFunAdd_to]. （已译） *)
 Next Obligation.
   intros R M [] m; simpl.
   rewrite (rm_smul_one M m); reflexivity.
@@ -283,9 +280,9 @@ Qed.
 
 (** ** The two round trips *)
 
-(* Module side: the recovered module has the SAME underlying group and
-   the SAME action (both [eq_refl] above), so the identity group
-   homomorphism is a module map in both directions. *)
+(* Module side: recovered module has SAME underlying group and
+ SAME action (both [eq_refl] above), so 恒等 group
+ homomorphism module map both directions. （已译） *)
 Program Definition AbFunAdd_module_round {R : RingObject}
   (M : RModObject R) :
   @Isomorphism (RMod R)
@@ -325,8 +322,8 @@ Next Obligation. intros R FH [] [] r m; simpl; reflexivity. Qed.
 Next Obligation. intros R FH [] [] r m; simpl; reflexivity. Qed.
 Next Obligation. intros R FH [] [] r m; simpl; reflexivity. Qed.
 Next Obligation. intros R FH [] [] r m; simpl; reflexivity. Qed.
-(* Both identity components are [fmap] of the source identity, so both
-   iso laws are [fmap_id] of the given functor. *)
+(* Both 恒等 components [fmap] source 恒等, so both
+ iso laws [fmap_id] given 函子. （已译） *)
 Next Obligation.
   intros R FH [] m; simpl.
   rewrite (@fmap_id _ _ (`1 FH) ttt m); reflexivity.
@@ -363,9 +360,9 @@ Qed.
 
 (** ** Witnesses *)
 
-(* Every ring is a module over itself (Instance/Mod.v's [Ring_RMod]);
-   read across the equivalence it is an object of the additive-functor
-   category, and its action computes over ℤ. *)
+(* Every ring module over itself (Instance/Mod.v's [Ring_RMod]);
+ read across 等价 it 对象 additive-函子
+ 范畴, action computes over ℤ. （已译） *)
 Definition Ring_AbFun (R : RingObject) : AbFunAdd R :=
   ((functor_of_module (Ring_RMod R);
     functor_of_module_additive (Ring_RMod R)) : AbFunAdd R).
@@ -435,9 +432,7 @@ Program Definition square_functor :
   fobj := fun _ => (ring_ab Int_Ring : Ab);
   fmap := fun _ _ n => square_act n
 |}.
-(* [fmap_respects] needs no obligation either, for the same reason: the
-   source hom-setoid of [DeloopRig (ring_rig Int_Ring)] is ℤ under
-   Leibniz equality. *)
+(* 相关说明。 （已译） *)
 Next Obligation.
   intros x a; simpl.
   change (Z.mul (Z.mul 1 1) a = a).

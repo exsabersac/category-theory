@@ -39,12 +39,12 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Alternating linear maps
+(* * ** Alternating linear maps
 
-    The data the universal property of Λ(V) consumes: a K-linear map whose
-    values SQUARE TO ZERO.  Stated at [AAlgLinear] plus one field, so that
-    everything Instance/Rng/Algebras/Associative.v proves about linear maps
-    applies unchanged. *)
+ The data 普遍性质 Λ(V) 所消耗: K-linear map whose
+ values SQUARE TO ZERO. Stated at [AAlgLinear] plus one field, so that
+ everything Instance/Rng/Algebras/Associative.v proves about linear maps
+ applies unchanged. （已译） *)
 
 Record AltLinear {K : CRng} (V : RModObject (`1 K)) (A : AAlgObject K) := {
   alt_lin :> AAlgLinear V A;
@@ -69,9 +69,9 @@ Next Obligation.
       [ apply Hfg | apply Hgh ].
 Qed.
 
-(* Postcomposing an alternating map with an algebra morphism keeps it
-   alternating: the morphism carries the square to the square and the zero
-   to the zero. *)
+(* Postcomposing alternating map algebra 态射 keeps it
+ alternating: 态射 carries square square zero
+ zero. （已译） *)
 Program Definition alt_compose {K : CRng} {V : RModObject (`1 K)}
   {A B : AAlgObject K} (g : AAlgHom A B) (f : AltLinear V A)
   : AltLinear V B := {|
@@ -84,8 +84,8 @@ Next Obligation.
   apply (rig_map_zero (`1 g)).
 Qed.
 
-(* The functor of alternating maps out of V.  Λ(V) is what represents it,
-   and that is [ext_universal_element] below. *)
+(* The 函子 alternating maps out V. Λ(V) what represents it,
+ [ext_universal_element] below. （已译） *)
 Program Definition AltFunctor {K : CRng} (V : RModObject (`1 K))
   : AAlg K ⟶ Sets := {|
   fobj := fun A => {| carrier := AltLinear V A;
@@ -134,7 +134,7 @@ Inductive TTerm : Type :=
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 Inductive tt_eq : TTerm → TTerm → Prop :=
-  (* congruence for each former, saturating under the two source setoids *)
+  (* 相关说明。 （已译） *)
   | te_scal {a b} : a ≈ b → tt_eq (tt_scal a) (tt_scal b)
   | te_gen {v w} : v ≈ w → tt_eq (tt_gen v) (tt_gen w)
   | te_add {s s' t t'} :
@@ -253,9 +253,7 @@ Proof.
   exact (te_scal (rig_add_zero_l (`1 K) (rig_zero (`1 K)))).
 Qed.
 
-(* The generator of the zero vector IS the scalar zero — additivity plus
-   cancellation.  This is the second degeneracy named in the header: over
-   the zero module every generator is a scalar. *)
+(* 相关说明。 （已译） *)
 Lemma te_gen_zero : tt_eq (tt_gen (cmon_zero V)) TZ.
 Proof.
   apply (te_add_cancel_l (tt_gen (cmon_zero V))).
@@ -284,8 +282,8 @@ Definition TensorRig : RigObject := {|
   rig_distr_r := te_distr_r;
   rig_mul_zero_l := te_mul_zero_l;
   rig_mul_zero_r := te_mul_zero_r;
-  (* [tt_eq] IS a [Prop]-valued relation, so it is its own [Prop] mirror and
-     both implications are the identity. *)
+  (* [tt_eq] IS [Prop]-valued 关系, so it own [Prop] 镜像 and
+ both 蕴含 恒等. （已译） *)
   rig_prop := @PropEquiv_of_relation _ tt_Setoid tt_eq
                 (fun _ _ h => h) (fun _ _ h => h)
 |}.
@@ -297,7 +295,7 @@ Definition TensorRing : RingObject := {|
   ring_neg_l := te_add_neg_l
 |}.
 
-(** ** The scalar inclusion and the generator insertion *)
+(* * ** The 标量嵌入 generator 嵌入 （已译） *)
 
 Program Definition tensor_scal : `1 K ~{Rng}~> TensorRing := {|
   rig_map := {| morphism := tt_scal |}
@@ -338,8 +336,8 @@ Qed.
 Definition TensorAlg : AAlgObject K :=
   Build_AAlgObject K TensorRing tensor_scal tensor_scal_central.
 
-(** The insertion of the generators, K-linear by two of the generating
-    equations. *)
+(** The 嵌入 generators, K-linear two generating
+ equations. （已译） *)
 Program Definition tensor_insert : AAlgLinear V TensorAlg := {|
   alin_map := {| morphism := tt_gen |}
 |}.
@@ -347,7 +345,7 @@ Next Obligation. intros v w H; exact (te_gen H). Qed.
 Next Obligation. intros v w; exact (te_gen_add v w). Qed.
 Next Obligation. intros r v; exact (te_gen_smul_l r v). Qed.
 
-(** * Evaluation: the universal property in element form *)
+(* * * Evaluation: 普遍性质 element form （已译） *)
 
 Section TensorEvaluation.
 
@@ -473,8 +471,8 @@ Qed.
 
 End TensorEvaluation.
 
-(* A morphism of algebras out of T(V) automatically agrees with the
-   structure map on scalars: that is exactly its triangle. *)
+(* A 态射 algebras out T(V) automatically agrees the
+ structure map scalars: exactly triangle. （已译） *)
 Lemma tensor_alg_hom_scal (A : AAlgObject K) (g : TensorAlg ~{AAlg K}~> A)
   (a : carrier (rig_setoid (`1 K))) :
   rig_map (`1 g) (tt_scal a) ≈ rig_map (aalg_unit A) a.
@@ -486,8 +484,7 @@ Proof. symmetry; exact (`2 g a). Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* In [Prop] since the PR "algebraic carriers are sets" (2026-09-17), in
-   lockstep with [tt_eq], which [ee_base] embeds. *)
+(* 相关说明。 （已译） *)
 Inductive et_eq : TTerm → TTerm → Prop :=
   | ee_base {s t} : tt_eq s t → et_eq s t
 
@@ -520,9 +517,9 @@ Definition et_Setoid : Setoid TTerm := {|
   setoid_equiv := et_eq_Equivalence
 |}.
 
-(** Every law is [ee_base] of the corresponding law of T(V): the ring
-    structure is inherited wholesale, which is the formal content of "Λ(V)
-    is a quotient of T(V)". *)
+(** 本节：Every law [ee_base] corresponding law T(V): ring
+ structure inherited wholesale, formal content "Λ(V)
+ quotient T(V)". （已译） *)
 
 Definition ExtRig : RigObject := {|
   rig_setoid := {| carrier := TTerm; is_setoid := et_Setoid |};
@@ -542,8 +539,8 @@ Definition ExtRig : RigObject := {|
   rig_distr_r := fun s t u => ee_base (te_distr_r s t u);
   rig_mul_zero_l := fun s => ee_base (te_mul_zero_l s);
   rig_mul_zero_r := fun s => ee_base (te_mul_zero_r s);
-  (* [et_eq] IS a [Prop]-valued relation, so it is its own [Prop] mirror and
-     both implications are the identity. *)
+  (* [et_eq] IS [Prop]-valued 关系, so it own [Prop] 镜像 and
+ both 蕴含 恒等. （已译） *)
   rig_prop := @PropEquiv_of_relation _ et_Setoid et_eq
                 (fun _ _ h => h) (fun _ _ h => h)
 |}.
@@ -578,7 +575,7 @@ Next Obligation. intros v w H; exact (ee_base (te_gen H)). Qed.
 Next Obligation. intros v w; exact (ee_base (te_gen_add v w)). Qed.
 Next Obligation. intros r v; exact (ee_base (te_gen_smul_l r v)). Qed.
 
-(** The defining relation, in the vocabulary of the algebra. *)
+(** The defining 关系, vocabulary algebra. （已译） *)
 Lemma ext_alt (v : carrier (cmon_setoid V)) :
   rig_mul ExtRing (tt_gen v) (tt_gen v) ≈ rig_zero ExtRing.
 Proof. exact (ee_alt v). Qed.
@@ -612,8 +609,8 @@ Proof.
   exact H.
 Qed.
 
-(** The projection T(V) → Λ(V) is the identity on terms; only the
-    equivalence relation coarsens. *)
+(** The projection T(V) → Λ(V) 恒等 terms; the
+ 等价 关系 coarsens. （已译） *)
 Program Definition ext_proj : TensorAlg ~{AAlg K}~> ExtAlg :=
   (({| rig_map := {| morphism := fun t : TTerm => t |} |}
      : TensorRing ~{Rng}~> ExtRing); _).
@@ -694,9 +691,9 @@ Example ext_extend_gen (v : carrier (cmon_setoid V)) :
 Example ext_extend_scal (a : carrier (rig_setoid (`1 K))) :
   rig_map (`1 ext_extend) (tt_scal a) = rig_map (aalg_unit A) a := eq_refl.
 
-(* Uniqueness is [tensor_extend_unique] read at the coarser relation: the
-   induction is on the TERM, not on the relation, so nothing about the
-   quotient enters. *)
+(* Uniqueness [tensor_extend_unique] read at coarser 关系: the
+ induction TERM, not 关系, so nothing about the
+ quotient enters. （已译） *)
 Lemma ext_extend_unique (g : ExtRing ~{Rng}~> AR)
   (Hscal : ∀ a, rig_map g (tt_scal a) ≈ rig_map (aalg_unit A) a)
   (Hgen : ∀ v, rig_map g (tt_gen v) ≈ alin_map (alt_lin f) v) (t : TTerm) :
@@ -718,10 +715,10 @@ Lemma ext_alg_hom_scal (A : AAlgObject K) (g : ExtAlg ~{AAlg K}~> A)
   rig_map (`1 g) (tt_scal a) ≈ rig_map (aalg_unit A) a.
 Proof. symmetry; exact (`2 g a). Qed.
 
-(** ** Mac Lane §III.1 Exercise 1 for Λ(V), in universal-arrow form
+(* * ** Mac Lane §III.1 Exercise 1 Λ(V), universal-arrow form
 
-    Λ(V) represents the functor of alternating maps out of V, with the
-    insertion as the universal element. *)
+ Λ(V) represents 函子 alternating maps out V, the
+ 嵌入 universal element. （已译） *)
 
 Definition ext_universal_element : AUniversalElement (AltFunctor V) ExtAlg.
 Proof.
@@ -818,8 +815,8 @@ Proof.
   - intro v; exact (et_refl _).
 Qed.
 
-(** * Mac Lane §III.1 Exercise 1: the tensor algebra as a universal arrow,
-      and §IV.2 Exercise 1's left adjoint *)
+(* * * Mac Lane §III.1 Exercise 1: tensor algebra 泛箭头,
+ §IV.2 Exercise 1's 左伴随 （已译） *)
 
 Section TensorUniversal.
 
@@ -850,8 +847,8 @@ Definition tensor_universal_arrow (V : RMod (`1 K))
   universal_arrow_from_UMP V (AAlg_Forget_Mod K) (TensorAlg V)
     (module_hom_of_aalg_linear (tensor_insert V)) (tensor_universal V).
 
-(* The same content in the direct encoding, where the universal object is
-   named rather than projected out of a comma category. *)
+(* The same content direct encoding, where universal 对象 is
+ named rather than projected out comma 范畴. （已译） *)
 Program Definition tensor_auniversal_arrow (V : RMod (`1 K))
   : AUniversalArrow V (AAlg_Forget_Mod K) (TensorAlg V) := {|
   universal_arrow := module_hom_of_aalg_linear (tensor_insert V)
@@ -892,9 +889,9 @@ Example tensor_arrow_is_insert (V : RMod (`1 K)) :
   @arrow _ _ V (AAlg_Forget_Mod K) (tensor_universal_arrow V)
     = module_hom_of_aalg_linear (tensor_insert V) := eq_refl.
 
-(** The unit of the adjunction is the generator insertion, on the nose:
-    [unit] is DERIVED in Theory/Adjunction.v as the transpose of the
-    identity, so what it computes to has to be checked. *)
+(** The unit 伴随 generator 嵌入, nose:
+ [unit] DERIVED Theory/Adjunction.v transpose the
+ 恒等, so what it computes has checked. （已译） *)
 Definition tensor_unit (V : RMod (`1 K))
   : V ~{RMod (`1 K)}~> fobj[AAlg_Forget_Mod K] (fobj[TensorFunctor] V) :=
   @Category.Theory.Adjunction.unit _ _ _ _ tensor_adjunction V.
@@ -922,7 +919,7 @@ Definition tensor_to_UT2
   : @TensorAlg Int_CRng UT2_Mod ~{AAlg Int_CRng}~> UT2_AAlg :=
   tensor_extend UT2_AAlg (alin_id UT2_AAlg).
 
-(* The extension computes on generators and on products of them. *)
+(* 相关说明。 （已译） *)
 Example tensor_to_UT2_gen (x : ut2) :
   rig_map (`1 tensor_to_UT2) (@tt_gen Int_CRng UT2_Mod x) = x := eq_refl.
 
@@ -943,8 +940,7 @@ Proof.
   exact (proper_morphism (rig_map (`1 tensor_to_UT2)) _ _ H).
 Qed.
 
-(* A generator is not a scalar: the module used is not the zero module,
-   which is the degeneracy the header names. *)
+(* 相关说明。 （已译） *)
 Theorem tensor_gen_not_scalar (r : Z) :
   tt_eq (@tt_gen Int_CRng UT2_Mod ut2_e12) (@tt_scal Int_CRng UT2_Mod r) → False.
 Proof.
@@ -954,7 +950,7 @@ Proof.
   inversion H2.
 Qed.
 
-(* ...and the base ring is not the trivial ring: 1 ≉ 0 already in T(V). *)
+(* 相关说明。 （已译） *)
 Theorem tensor_nontrivial :
   tt_eq (@tt_scal Int_CRng UT2_Mod 1%Z) (@tt_scal Int_CRng UT2_Mod 0%Z)
     → False.
@@ -1099,7 +1095,7 @@ Proof. intros k [ [ [ s x ] y ] p ]; lam2_crunch. Qed.
 Definition Lam2_AAlg : AAlgObject Int_CRng :=
   Build_AAlgObject Int_CRng Lam2 lam2_scalar lam2_scalar_central.
 
-(* The two generators, and the products that separate. *)
+(* 相关说明。 （已译） *)
 Definition lam2_e1 : lam2 := (0, 1, 0, 0)%Z.
 Definition lam2_e2 : lam2 := (0, 0, 1, 0)%Z.
 
@@ -1171,9 +1167,9 @@ Proof.
   inversion H2.
 Qed.
 
-(* A generator of Λ(V) is not a scalar — so the alternating relation does
-   not force the generators into the base ring, and in particular
-   v ∧ v ≈ 0 does not force v ≈ 0. *)
+(* A generator Λ(V) not scalar — so alternating 关系 does
+ not force generators 进入 base ring, particular
+ v ∧ v ≈ 0 does not force v ≈ 0. （已译） *)
 Theorem ext_gen_not_scalar (r : Z) :
   et_eq (@tt_gen Int_CRng Lam2_Mod lam2_e1) (@tt_scal Int_CRng Lam2_Mod r) → False.
 Proof.
@@ -1198,8 +1194,7 @@ Proof.
   inversion H2.
 Qed.
 
-(* ...and the generators themselves are distinct, so the pair above is a
-   genuine pair. *)
+(* 相关说明。 （已译） *)
 Theorem ext_gens_distinct :
   et_eq (@tt_gen Int_CRng Lam2_Mod lam2_e1) (@tt_gen Int_CRng Lam2_Mod lam2_e2) → False.
 Proof.

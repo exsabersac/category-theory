@@ -89,7 +89,7 @@ Proof. reflexivity. Qed.
 Lemma Rinf_plus_RInf_r (a : Rinf) : Rinf_plus a RInf = RInf.
 Proof. now destruct a. Qed.
 
-(** ** The four axioms, with distance in [0, ∞] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Extended 相关定义、性质与动机。
@@ -115,8 +115,7 @@ Arguments edist_separates {X} _ _ _ : rename.
 Arguments edist_sym {X} _ _ : rename.
 Arguments edist_triangle {X} _ _ _ : rename.
 
-(* Non-negativity is derived, as in the ordinary case, and it has an extra
-   clause here: an infinite distance is vacuously non-negative. *)
+(* 相关说明。 （已译） *)
 Lemma edist_nonneg {E : ExtMetricSpace} (x y : E) (r : R) :
   edist x y = RFin r → 0 <= r.
 Proof.
@@ -128,7 +127,7 @@ Proof.
   lra.
 Qed.
 
-(** ** Finiteness, and the identification with ordinary metric spaces *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Extended 相关定义、性质与动机。
@@ -151,7 +150,7 @@ Proof.
     + now destruct (Hnot x y Hinf).
 Qed.
 
-(** *** Every metric space is an extended metric space *)
+(* 相关说明。 （已译） *)
 
 Section OfMetric.
 
@@ -193,7 +192,7 @@ Definition ExtMetric_of_Metric : ExtMetricSpace :=
      edist_sym       := emet_of_sym;
      edist_triangle  := emet_of_triangle |}.
 
-(* ... and it is finite, with the real value read off on the nose. *)
+(* 相关说明。 （已译） *)
 Definition ExtMetric_of_Metric_EFinite : EFinite ExtMetric_of_Metric :=
   fun x y => (dist x y; eq_refl).
 
@@ -202,7 +201,7 @@ End OfMetric.
 Arguments ExtMetric_of_Metric X : clear implicits.
 Arguments ExtMetric_of_Metric_EFinite X : clear implicits.
 
-(** *** Every finite extended metric space is a metric space *)
+(* 相关说明。 （已译） *)
 
 Section OfExtended.
 
@@ -216,8 +215,7 @@ Definition efin (x y : E) : R := `1 (Hfin x y).
 Lemma efin_spec (x y : E) : edist x y = RFin (efin x y).
 Proof. exact (`2 (Hfin x y)). Qed.
 
-(* Every clause transfers by pushing [efin_spec] through the constructor and
-   using its injectivity; no new mathematics happens here. *)
+(* 相关说明。 （已译） *)
 Lemma efin_proper : ∀ x x' y y', x ≈ x' → y ≈ y' → efin x y = efin x' y'.
 Proof.
   intros a b c d Hab Hcd.
@@ -268,7 +266,7 @@ End OfExtended.
 
 Arguments Metric_of_EFinite E Hfin : clear implicits.
 
-(** ** The two passages are mutually inverse *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Extended 相关定义、性质与动机。
@@ -313,18 +311,16 @@ Proof.
     exact (d x y; Hd x y).
 Qed.
 
-(* A presentation is a metric space on the same carrier — the upgrade from
-   the bare distance function to a [MetricSpace] record. *)
+(* 相关说明。 （已译） *)
 Definition Metric_of_presentation (E : ExtMetricSpace)
            (P : MetricPresentation E) : MetricSpace :=
   Metric_of_EFinite E (snd (metric_iff_finite_extended E) P).
 
-(* Read the other way: the extended metric spaces arising from ordinary ones
-   are exactly the finite ones. *)
+(* 相关说明。 （已译） *)
 Definition EFinite_of_Metric (X : MetricSpace) :
   EFinite (ExtMetric_of_Metric X) := ExtMetric_of_Metric_EFinite X.
 
-(** ** Non-vacuity: an extended metric space that is not a metric space *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Extended 相关定义、性质与动机。
@@ -374,8 +370,8 @@ Definition TwoFar : ExtMetricSpace :=
 
 Example TwoFar_infinite : edist (X := TwoFar) true false = RInf := eq_refl.
 
-(* So the inclusion of metric spaces into extended ones is PROPER: [TwoFar]
-   is an extended metric space that no ordinary metric space presents. *)
+(* So 含入 metric spaces extended ones PROPER: [TwoFar]
+ extended metric space no ordinary metric space presents. （已译） *)
 Theorem TwoFar_not_EFinite : EFinite TwoFar → False.
 Proof.
   intro Hfin.

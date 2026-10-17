@@ -10,7 +10,7 @@ Require Import Coq.Relations.Relation_Definitions.
 
 Generalizable All Variables.
 
-(** * Partial orders are exactly the skeletal preorders *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/skeleton
@@ -26,7 +26,7 @@ Context {A : Type}.
 Context {R : relation A}.
 Variable P : PreOrder R.
 
-(** ** Seven Sketches §1.2.2 remark 35, both directions *)
+(* 相关说明。 （已译） *)
 
 Theorem Proset_Skeletal_iff_Antisymmetric :
   (Skeletal (Proset P) → @Antisymmetric A eq eq_equiv R) *
@@ -44,8 +44,8 @@ Theorem Poset_Skeletal `{Anti : @Antisymmetric A eq eq_equiv R} :
   Skeletal (@Poset A R P Anti).
 Proof. intros x y i. exact (Anti x y (to i) (from i)). Qed.
 
-(* Both Instance/Proset.v and Instance/Poset.v define a constant of this
-   name, and this file imports both, so the name is qualified explicitly rather than left to import order. *)
+(* Both Instance/Proset.v Instance/Poset.v define 常值 this
+ name, file imports both, so name qualified explicitly rather than left import order. （已译） *)
 
 Lemma Nat_le_Skeletal : Skeletal Poset.LessThanEqualTo_Category.
 Proof.
@@ -53,7 +53,7 @@ Proof.
   exact (partial_order_antisym PeanoNat.Nat.le_partialorder x y (to i) (from i)).
 Qed.
 
-(** ** Riehl Example 1.5.18: the skeleton of a preorder is a poset *)
+(* 相关说明。 （已译） *)
 
 Theorem skeleton_of_proset_antisymmetric (S : Skeleton (Proset P))
         (a b : skel_cat S) :

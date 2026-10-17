@@ -9,7 +9,7 @@ Generalizable All Variables.
 
 Local Set Warnings "-intuition-auto-with-star".
 
-(** The category REL of sets and binary relations. *)
+(** The 范畴 REL sets binary relations. （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Category_of_relations
@@ -132,8 +132,8 @@ Next Obligation. autounfold in *; apply proof_irrelevance. Qed.
 Next Obligation. autounfold in *; apply proof_irrelevance. Qed.
 *)
 
-(* A sample non-functional morphism: the strict-order relation `<` on nat,
-   a genuine relation of REL that is not the graph of any function. *)
+(* A sample non-functional 态射: strict-order 关系 `<` nat,
+ genuine 关系 REL not graph any function. （已译） *)
 Definition some_number : nat ~{Rel}~> nat := fun x y => (x < y)%nat.
 
 (* The wide embedding of functions as relations, `Coq ⟶ Rel`: a function `f`

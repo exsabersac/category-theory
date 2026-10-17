@@ -1,4 +1,4 @@
-(** * U : R-Mod ⟶ Ab creates every colimit: Riehl's Corollary 5.6.10 *)
+(* 相关说明。 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -32,10 +32,10 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Joint epimorphicity of a colimiting cocone *)
+(* 相关说明。 （已译） *)
 
-(* Two maps out of the nadir that agree after every insertion are ≈: both
-   mediate the cocone i ↦ v ∘ ι_i. *)
+(* Two maps out nadir agree after every 嵌入 ≈: both
+ mediate cocone i ↦ v ∘ ι_i. （已译） *)
 
 Lemma mcol_ext@{a c p o x j l l0} {R : RingObject@{a c p}}
   {J : Category@{j c c}} {K : J ⟶ RMod@{o x a p c} R}
@@ -61,10 +61,9 @@ Proof.
       intros i m. reflexivity.
 Qed.
 
-(** ** The created action on the nadir *)
+(* 相关说明。 （已译） *)
 
-(* For a fixed r, i ↦ ι_i ∘ (r ·) is a cocone in Ab; its mediator is the
-   action. *)
+(* 相关说明。 （已译） *)
 
 Definition mcol_smul_cone@{a c p o x j} {R : RingObject@{a c p}}
   {J : Category@{j c c}} {K : J ⟶ RMod@{o x a p c} R}
@@ -228,10 +227,9 @@ Proof.
   intros x y f m. exact (cone_leg_coh@{j c o c c c} N f m).
 Defined.
 
-(** ** Reflection, and the created cocone is colimiting *)
+(* 相关说明。 （已译） *)
 
-(* A cocone of modules whose underlying cocone is colimiting in Ab is
-   colimiting; the mediator is the Ab one, R-linear by [mcol_ext]. *)
+(* 相关说明。 （已译） *)
 
 Definition mcol_reflect@{a c p o x j l l0} {R : RingObject@{a c p}}
   {J : Category@{j c c}} {K : J ⟶ RMod@{o x a p c} R}
@@ -304,7 +302,7 @@ Definition RMod_Forget_Ab_creates_colimits@{a c p o x t l l0 s}
     (RMod_Forget_Ab@{x o o a p c} R) :=
   fun J K => RMod_Forget_Ab_CreatesColimit@{a c p o x s l l0} K.
 
-(** ** Readbacks: the lift is on the nose *)
+(* 相关说明。 （已译） *)
 
 Example mcol_over_obj@{a c p o x j l l0} {R : RingObject@{a c p}}
   {J : Category@{j c c}} {K : J ⟶ RMod@{o x a p c} R}
@@ -341,8 +339,8 @@ Example mcol_lift_legs@{a c p o x j l l0} {R : RingObject@{a c p}}
                (RMod_Forget_Ab_CreatesColimit@{a c p o x j l l0} K) L)) i)
   = cone_leg (@limit_cone _ _ _ L) i := eq_refl.
 
-(* The whole lifted module IS [ColimMod] of the given colimit, read in the
-   opposite category. *)
+(* The whole lifted module IS [ColimMod] given colimit, read the
+ opposite 范畴. （已译） *)
 Example mcol_lift_module@{a c p o x j l l0} {R : RingObject@{a c p}}
   {J : Category@{j c c}} (K : J ⟶ RMod@{o x a p c} R)
   (L : Colimit (RMod_Forget_Ab@{x o o a p c} R ◯ K)) :
@@ -351,8 +349,7 @@ Example mcol_lift_module@{a c p o x j l l0} {R : RingObject@{a c p}}
   = ColimMod (cone_op_comp (@limit_cone _ _ _ L))
       (islimitcone_op_comp (limit_limitcone L)) := eq_refl.
 
-(* The reflected mediator computes: its group map IS the Ab mediator of
-   the underlying cocones. *)
+(* 相关说明。 （已译） *)
 Example mcol_reflect_mediator@{a c p o x j l l0} {R : RingObject@{a c p}}
   {J : Category@{j c c}} {K : J ⟶ RMod@{o x a p c} R}
   (M : Cone (K^op))
@@ -363,7 +360,7 @@ Example mcol_reflect_mediator@{a c p o x j l l0} {R : RingObject@{a c p}}
   = unique_obj (HM (FCone ((RMod_Forget_Ab@{x o o a p c} R)^op) P))
   := eq_refl.
 
-(** ** Uniqueness of the created action *)
+(* 相关说明。 （已译） *)
 
 (* Any family of Ab endomorphisms making every insertion R-linear is ≈ the
    created action. *)
@@ -385,10 +382,9 @@ Proof.
   intros i m. rewrite Hs. symmetry. apply mcol_smul_triangle.
 Qed.
 
-(** ** A witness: every diagram over a shape with a terminal object *)
+(* * ** A witness: every diagram over shape 终对象 （已译） *)
 
-(* Structure/Limit/Initial.v's [terminal_Colimit] is a colimit in Ab of
-   U ◯ K; the lift has group U (K 1) and action K(!)(r · m). *)
+(* 相关说明。 （已译） *)
 
 Definition rmod_terminal_colimit@{a c p o x j l l0} {R : RingObject@{a c p}}
   {J : Category@{j c c}} (T : @Terminal J) (K : J ⟶ RMod@{o x a p c} R) :

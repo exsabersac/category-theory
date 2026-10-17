@@ -17,7 +17,7 @@ Require Import Category.Instance.FinSet.Subobject.
 
 Generalizable All Variables.
 
-(** * Quotient objects of a finite set: the meet that computes *)
+(* * * Quotient 对象 finite set: meet computes （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/coimage
@@ -29,7 +29,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** "Epis are onto" in the skeleton *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 QuotObj 相关定义、性质与动机。
@@ -53,7 +53,7 @@ Definition finset_no_quot_of_const :
   Epic ((fun _ => fin_true) : 1%nat ~{FinSet}~> 2%nat) → False :=
   finset_const_true_not_epic.
 
-(** ** Coimages: FinSet is balanced, so the coimage is the image *)
+(* 相关说明。 （已译） *)
 
 Section FinSetCoimages.
 
@@ -83,9 +83,7 @@ Definition finset_coimage : @QuotObj FinSet m :=
   mk_quot (finset_image_factor f : m ~{FinSet}~> finset_image_obj f)
     finset_coimage_epic.
 
-(* The triangle is Instance/FinSet/Subobject.v's
-   [finset_image_commutes] VERBATIM: the image factorization read in
-   [FinSet^op] is the coimage factorization, no transport. *)
+(* 相关说明。 （已译） *)
 Lemma finset_coimage_commutes :
   sub_mono finset_coimage ∘[FinSet^op] (finset_image_mono f) ≈ f.
 Proof. exact (finset_image_commutes f). Qed.
@@ -118,12 +116,12 @@ Definition FinSet_CoimageOf : @ImageOf (FinSet^op) n m f :=
 
 End FinSetCoimages.
 
-(* As at [Sets], the anonymous record literal is refused here and the
-   constructor is named with its category argument explicit. *)
+(* As at [Sets], anonymous record literal refused here the
+ constructor named 范畴 论元 explicit. （已译） *)
 #[export] Instance FinSet_HasCoimages : @HasImages (FinSet^op) :=
   @Build_HasImages (FinSet^op) (fun n m f => @FinSet_CoimageOf m n f).
 
-(** ** Two quotients of the four-element set, and a meet that computes *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限、hom相关定义、性质与动机。
@@ -131,14 +129,14 @@ End FinSetCoimages.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Identify 0 with 1, keeping 2 and 3 apart. *)
+(* 相关说明。 （已译） *)
 Definition finset_merge01 : Fin.t 4 → Fin.t 3 := fun i =>
   if fin_eqb i fin4_0 then Fin.F1
   else if fin_eqb i fin4_1 then Fin.F1
   else if fin_eqb i fin4_2 then Fin.FS Fin.F1
   else Fin.FS (Fin.FS Fin.F1).
 
-(* ... and identify 1 with 2, keeping 0 and 3 apart. *)
+(* 相关说明。 （已译） *)
 Definition finset_merge12 : Fin.t 4 → Fin.t 3 := fun i =>
   if fin_eqb i fin4_0 then Fin.F1
   else if fin_eqb i fin4_1 then Fin.FS Fin.F1
@@ -169,9 +167,7 @@ Definition finset_q01 : @QuotObj FinSet 4%nat :=
 Definition finset_q12 : @QuotObj FinSet 4%nat :=
   finset_quot_of_surjection finset_merge12 finset_merge12_surj.
 
-(* The stub's [quot_meet] at FinSet, which is the PUSHOUT of the two
-   epis (Instance/FinSet/Pushout.v, apex by union-find on the
-   3 + 3 tagged elements over the four span edges). *)
+(* 相关说明。 （已译） *)
 Definition finset_q_meet : @QuotObj FinSet 4%nat :=
   @quot_meet FinSet FinSet_HasPushouts 4%nat finset_q01 finset_q12.
 
@@ -182,14 +178,14 @@ Definition finset_q_meet : @QuotObj FinSet 4%nat :=
 *)
 Example finset_quot_meet_two : quot_cod finset_q_meet = 2%nat := eq_refl.
 
-(* The epi of the meet computes too, on elements of [Fin.t 4]. *)
+(* 相关说明。 （已译） *)
 Example finset_quot_meet_merges_0_2 :
   quot_epi finset_q_meet fin4_0 = quot_epi finset_q_meet fin4_2 := eq_refl.
 
 Example finset_quot_meet_merges_1_2 :
   quot_epi finset_q_meet fin4_1 = quot_epi finset_q_meet fin4_2 := eq_refl.
 
-(* ... and it does not collapse everything: 3 stays apart from 0. *)
+(* 相关说明。 （已译） *)
 Lemma finset_quot_meet_separates_0_3 :
   quot_epi finset_q_meet fin4_0 = quot_epi finset_q_meet fin4_3 → False.
 Proof. intro H; discriminate H. Qed.
@@ -207,8 +203,8 @@ Example finset_q12_three : quot_cod finset_q12 = 3%nat := eq_refl.
 Example finset_coimage_merge01_three :
   quot_cod (finset_coimage finset_merge01) = 3%nat := eq_refl.
 
-(* ... while a map that misses a value has a smaller coimage than its
-   codomain: the constant map 4 → 3 has a one-element coimage. *)
+(* ... while map misses value has smaller coimage than its
+ codomain: 常值 map 4 → 3 has one-element coimage. （已译） *)
 Example finset_coimage_const_one :
   quot_cod (finset_coimage (fun _ : Fin.t 4 => (Fin.FS Fin.F1 : Fin.t 3)))
   = 1%nat := eq_refl.

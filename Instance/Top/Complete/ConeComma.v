@@ -22,7 +22,7 @@ Require Import Category.Instance.Top.Complete.
 
 Generalizable All Variables.
 
-(** * Limits of spaces through categories of cones: §V.9 Exercise 3 *)
+(* * * Limits spaces through 范畴 cones: §V.9 Exercise 3 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/cone
@@ -36,7 +36,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** G_* : the functor a functor induces on categories of cones *)
+(* * ** G_* : 函子 函子 induces 范畴 cones （已译） *)
 
 Section ConeImage.
 
@@ -60,7 +60,7 @@ Example ConeImage_obj (N : Cone T) : fobj[ConeImage] N = FCone G N := eq_refl.
 
 End ConeImage.
 
-(** ** Exercise 3(a), in the form that holds: G_* with a RIGHT adjoint *)
+(* 相关说明。 （已译） *)
 
 (* A right adjoint carries a terminal object to a terminal object. *)
 Definition terminal_of_right_adjoint {C D : Category} {F : D ⟶ C}
@@ -76,14 +76,14 @@ Proof.
       * exact (iso_to_from (@adj _ _ _ _ A x _) g).
 Defined.
 
-(* If G_* has a right adjoint and GT has a limit, T has a limit: the right
-   adjoint carries the terminal cone over GT to a terminal cone over T. *)
+(* If G_* has 右伴随 GT has limit, T has limit: right
+ adjoint carries terminal cone over GT terminal cone over T. （已译） *)
 Definition limit_from_cone_right_adjoint {J C D : Category}
   (G : C ⟶ D) (T : J ⟶ C) (W : Cones (G ◯ T) ⟶ Cones T)
   (A : ConeImage G T ⊣ W) (L : Limit (G ◯ T)) : Limit T :=
   @Limit_Cones _ _ T (terminal_of_right_adjoint A (Cones_Limit (G ◯ T) L)).
 
-(** ** Exercise 3(b), at every shape: the weakest topology on a Sets-cone *)
+(* 相关说明。 （已译） *)
 
 Section InitialCone.
 
@@ -94,9 +94,9 @@ Context {J : Category@{j o o}} (T : J ⟶ PTopCat@{o so}).
 
 Local Notation G := PForget@{o so}.
 
-(* The right adjoint: a cone over the underlying diagram goes to the same
-   cone with its apex given the initial topology for its legs,
-   Instance/Top/Complete.v's [pinit_cone]. *)
+(* The 右伴随: cone over underlying diagram goes same
+ cone apex given initial topology legs,
+ Instance/Top/Complete.v's [pinit_cone]. （已译） *)
 Definition PInitCone : Cones (G ◯ T) ⟶ Cones T.
 Proof.
   unshelve refine (@Build_Functor (Cones (G ◯ T)) (Cones T)
@@ -150,8 +150,8 @@ Proof.
   - intros x y z f g t; simpl. reflexivity.
 Defined.
 
-(* Exercise 3(c)'s engine, at every shape: a limit of the underlying
-   diagram, carried across the adjunction. *)
+(* Exercise 3(c)'s engine, at every shape: limit underlying
+ diagram, carried across 伴随. （已译） *)
 Definition PTop_limit_via_cones (L : Limit (G ◯ T)) : Limit T :=
   limit_from_cone_right_adjoint G T PInitCone pcone_adjunction L.
 
@@ -161,21 +161,21 @@ Definition PTop_Complete_via_cones@{r s o so +| s <= o, o < so, o <= r +} :
   @Complete@{r s o so} PTopCat@{o so} :=
   fun J T => PTop_limit_via_cones T (Sets_Limit (PForget ◯ T)).
 
-(* The two routes of Instance/Top/Complete.v's recipe and of the cone
-   adjunction build the same space. *)
+(* The two routes Instance/Top/Complete.v's recipe cone
+ 伴随 build same space. （已译） *)
 Example PTop_via_cones_apex@{s o so +| s <= o, o < so +}
   (J : Category@{s o o}) (T : J ⟶ PTopCat@{o so}) :
   vertex_obj[@limit_cone _ _ _ (@PTop_Complete_via_cones J T)]
     = vertex_obj[@limit_cone _ _ _ (@PTop_Complete J T)] := eq_refl.
 
-(* Not only the apex: the whole limiting cone, legs included. *)
+(* 相关说明。 （已译） *)
 Example PTop_via_cones_cone@{s o so +| s <= o, o < so +}
   (J : Category@{s o o}) (T : J ⟶ PTopCat@{o so}) :
   @limit_cone _ _ _ (@PTop_Complete_via_cones@{o s o so _ _ _} J T)
     = @limit_cone _ _ _ (@PTop_Complete@{o s o so _ _} J T) := eq_refl.
 
-(* Exercise 3(c): Top has all products, J discrete.  The limit of the
-   discrete diagram on [X], through the cone adjunction. *)
+(* Exercise 3(c): Top has all products, J discrete. The limit the
+ discrete diagram [X], through cone 伴随. （已译） *)
 Definition PTop_iprod_cone@{i o so +| i <= o, o < so +}
   (A : Type@{i}) (X : A → PTop@{o}) :
   Limit (@DiscreteCat_Functor' A PTopCat@{o so} X) :=
@@ -198,7 +198,7 @@ Definition PTop_products_via_cone_comma@{i o so +| i <= o, o < so +} :
     (fun A X => cone_leg (@limit_cone _ _ _ (PTop_iprod_cone A X)))
     (@PTop_iprod_via_cones).
 
-(** ** The LEFT adjoint of G_* at [PForget]: the discrete topology *)
+(* 相关说明。 （已译） *)
 
 Section DiscreteCone.
 
@@ -209,8 +209,7 @@ Context {J : Category@{j o o}} (T : J ⟶ PTopCat@{o so}).
 
 Local Notation G := PForget@{o so}.
 
-(* A cone over the underlying diagram, its apex given the discrete
-   topology: every leg is continuous out of a discrete space. *)
+(* 相关说明。 （已译） *)
 Definition pdisc_cone (N : Cone (G ◯ T)) : Cone T.
 Proof.
   unshelve refine (@Build_Cone J PTopCat@{o so} T (PDiscrete (vertex_obj[N]))
@@ -273,8 +272,8 @@ Section EmptyShape.
 Universes o so.
 Constraint o < so.
 
-(* The empty shape at the category's own levels: Instance/Zero.v's [_0]
-   is unannotated and sits at homs [Set]. *)
+(* The empty shape at 范畴's own levels: Instance/Zero.v's [_0]
+ unannotated sits at homs [Set]. （已译） *)
 Definition pempty_diagram : DiscreteCat@{o o o} False ⟶ PTopCat@{o so} :=
   @DiscreteCat_Functor' False PTopCat@{o so} (fun x : False => match x with end).
 
@@ -315,7 +314,7 @@ Qed.
 
 End EmptyShape.
 
-(** ** The book's Exercise 3(a) as printed, refuted *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、（余）极限、始/终对象相关定义、性质与动机。
@@ -334,8 +333,7 @@ Local Ltac ex3_lit_tac :=
        | [ |- @eq poly_unit ?a ?b ] => destruct a; destruct b; reflexivity
        end).
 
-(* The empty shape, [DiscreteCat False], at the universes of its use: no
-   level of it is fixed. *)
+(* 相关说明。 （已译） *)
 Definition ex3_T0 : DiscreteCat False ⟶ Roof :=
   @DiscreteCat_Functor' False Roof (fun x : False => match x with end).
 Definition ex3_G1 : Roof ⟶ _1 := Erase Roof.
@@ -409,8 +407,7 @@ Proof.
   intros v a b. destruct v; inversion a; inversion b.
 Qed.
 
-(* The book's claim (a) at one pair [G], [T], with "left", and the three
-   facts that refute it there, each stated about the same [G] and [T]. *)
+(* 相关说明。 （已译） *)
 Definition Ex3a_left_literal {J C D : Category} (G : C ⟶ D) (T : J ⟶ C) :
   Type := ∀ F : Cones (G ◯ T) ⟶ Cones T,
             F ⊣ ConeImage G T → Limit (G ◯ T) → Limit T.

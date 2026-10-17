@@ -29,7 +29,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* ---------- (A) presentations that generate the same congruence ---------- *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Three 相关定义、性质与动机。
@@ -74,9 +74,9 @@ Next Obligation. intros a b f g H; exact (pq_cc_mono S R HSR H). Qed.
 Next Obligation. intros; apply cc_refl. Qed.
 Next Obligation. intros; apply cc_refl. Qed.
 
-(* Two presentations over ONE quiver whose relations generate the same
-   congruence present isomorphic categories -- and at [StrictCat], since
-   the object components are [eq_refl]. *)
+(* Two presentations over ONE quiver whose relations generate same
+ congruence present isomorphic 范畴 -- at [StrictCat], since
+ 对象 components [eq_refl]. （已译） *)
 Program Definition pq_same_iso :
   QuotientCong C R ≅[StrictCat] QuotientCong C S := {|
   to := pq_same_to;
@@ -96,8 +96,8 @@ Section Trivial.
 Context {C : Category} (R : HomRelT C).
 Context (HF : ∀ x y (f g : x ~> y), R x y f g → f ≈ g).
 
-(* The degenerate case: relations that assert nothing new.  [Id] merges
-   them, so the library's own lift is the collapsing functor. *)
+(* The degenerate case: relations assert nothing new. [Id] merges
+ them, so library's own lift collapsing 函子. （已译） *)
 Definition pq_collapse : QuotientCong C R ⟶ C :=
   QuotientCongLift R Id[C] HF.
 
@@ -116,9 +116,7 @@ End Trivial.
 
 (* ---------- (B) the three objects of 3 ---------- *)
 
-(* [Ord_obj 3] is a record over [nat] with a bound, not a three-constructor
-   inductive, so case analysis on it has to be proved.  The fourth branch
-   is where the bound is spent. *)
+(* 相关说明。 （已译） *)
 Lemma ord3_cases (x : Ord_obj 3) :
   ((x = ord3_0) + (x = ord3_1) + (x = ord3_2))%type.
 Proof.
@@ -168,10 +166,10 @@ Lemma three_all_pairs_complete (x y : Ord_obj 3) :
   In (x, y) three_all_pairs.
 Proof. apply in_prod; apply three_nodes_complete. Qed.
 
-(* ---------- (C) the six morphisms of 3, and the composition table ------- *)
+(* ---------- (C) six 态射 3, 复合 table ------- （已译） *)
 
-(* Seven Sketches Exercise 3.10.  The two generating steps and the one
-   composite; the three identities are the category's own. *)
+(* Seven Sketches Exercise 3.10. The two generating steps one
+ 复合; three identities 范畴's own. （已译） *)
 Definition three_a : ord3_0 ~{_3}~> ord3_1 := le_t_S le_t_n.
 Definition three_b : ord3_1 ~{_3}~> ord3_2 := le_t_S le_t_n.
 Definition three_c : ord3_0 ~{_3}~> ord3_2 := le_t_S (le_t_S le_t_n).
@@ -189,9 +187,7 @@ Definition three_id0 : ord3_0 ~{_3}~> ord3_0 := id.
 Definition three_id1 : ord3_1 ~{_3}~> ord3_1 := id.
 Definition three_id2 : ord3_2 ~{_3}~> ord3_2 := id.
 
-(* The three descending hom-sets are empty.  This is what keeps 3 from
-   being a preorder in which everything is related, and it is used again
-   below to prove the enumeration complete. *)
+(* 相关说明。 （已译） *)
 Theorem three_no_10 (p : ord3_1 ~{_3}~> ord3_0) : False.
 Proof. exact (le_t_zero_absurd p). Qed.
 
@@ -219,13 +215,12 @@ Example three_table_id0 : three_id0 ∘ three_id0 = three_id0 := eq_refl.
 Example three_table_id1 : three_id1 ∘ three_id1 = three_id1 := eq_refl.
 Example three_table_id2 : three_id2 ∘ three_id2 = three_id2 := eq_refl.
 
-(* Every parallel pair agrees, so the table above is the whole of it: no
-   further entry could name a different arrow. *)
+(* 相关说明。 （已译） *)
 Theorem three_thin (x y : Ord_obj 3) (p q : x ~{_3}~> y) : p = q.
 Proof. exact (ord_thin p q). Qed.
 
-(* The six inhabited endpoint pairs: three loops, the two steps, and the
-   composite. *)
+(* The six inhabited endpoint pairs: three loops, two steps, the
+ 复合. （已译） *)
 Definition three_pairs : list (Ord_obj 3 * Ord_obj 3) :=
   (ord3_0, ord3_0) :: (ord3_1, ord3_1) :: (ord3_2, ord3_2) ::
   (ord3_0, ord3_1) :: (ord3_1, ord3_2) :: (ord3_0, ord3_2) :: nil.
@@ -303,7 +298,7 @@ Proof. reflexivity. Qed.
 Definition three_nonidentity_total : nat :=
   (three_arrow_total - three_identity_total)%nat.
 
-(* ...and three of them not: the two generating steps and the composite. *)
+(* ...and three them not: two generating steps 复合. （已译） *)
 Theorem three_nonidentity_total_3 : three_nonidentity_total = 3%nat.
 Proof. reflexivity. Qed.
 
@@ -353,8 +348,8 @@ Defined.
 Definition three_equiv_dec (x y : Ord_obj 3) (p q : x ~{_3}~> y) :
   ((p ≈ q) + (p ≈ q → False))%type := inl (three_thin x y p q).
 
-(* Non-vacuity of the count of six.  A category with fewer objects, or one
-   in which the step a were invertible, would count differently. *)
+(* Non-vacuity count six. A 范畴 fewer 对象, one
+ step were invertible, would count differently. （已译） *)
 Theorem three_a_not_iso : @IsIsomorphism _3 ord3_0 ord3_1 three_a → False.
 Proof. intros [g _ _]; exact (three_no_10 g). Qed.
 
@@ -501,8 +496,8 @@ Definition o3_node (k : nat) : Ord3Node :=
   | _ => Ord3_2
   end.
 
-(* The comparison out of 3.  The three descending cases are refuted by the
-   [le_t] argument, which is where the order of 3 is spent. *)
+(* The comparison out 3. The three descending cases refuted the
+ [le_t] 论元, where order 3 spent. （已译） *)
 Definition o3_arr : ∀ i j : nat, le_t i j → (o3_node i ~{Ord3}~> o3_node j).
 Proof.
   intros i j; destruct i as [| [| i]]; destruct j as [| [| j]]; intro H.
@@ -586,9 +581,9 @@ Example ord3_merge_arithmetic :
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
-(* [Examples.v]'s [chain_free] IS this constant -- same type, same
-   body -- so it is aliased rather than restated; the local name is kept
-   so this section reads without a cross-file alias. *)
+(* [Examples.v]'s [chain_free] IS 常值 -- same type, same
+ body -- so it aliased rather than restated; local name kept
+ so section reads without cross-file alias. （已译） *)
 Definition three_is_free : FreeOnQuiver (LinQuiver 3) ≅[StrictCat] _3 :=
   chain_free.
 
@@ -605,8 +600,7 @@ Example three_composite_length : tlist_length chain_e10 = 2%nat :=
 Example three_composite_is_composite : chain_e10 = chain_e1 ∘ chain_e0 :=
   eq_refl.
 
-(* The same thing as a PRESENTATION: the linear quiver, made finite, with
-   the empty family of equations. *)
+(* 相关说明。 （已译） *)
 Definition lin3_ecount (x y : LinQuiver 3) : nat :=
   if Nat.eq_dec (S (ord_val x)) (ord_val y) then 1%nat else 0%nat.
 
@@ -704,8 +698,7 @@ Lemma ord3_rev_relation_holds :
   @equiv _ (@homset Ord3Rev Ord3_0 Ord3_2) ord3_path_ab ord3_path_c.
 Proof. apply cc_gen. exists Fin.F1. split; reflexivity. Qed.
 
-(* Each presentation's generating equation is DERIVABLE in the other -- one
-   [cc_sym] apiece -- so [pq_same_iso] applies with no path analysis. *)
+(* 相关说明。 （已译） *)
 Lemma ord3_rev_into_ord3 (x y : Ord3Quiver)
   (f g : x ~{FreeOnQuiver Ord3Quiver}~> y) :
   fe_rel Ord3RevEqns x y f g → CongClosure (fe_rel Ord3Eqns) x y f g.
@@ -921,9 +914,9 @@ Proof. apply cc_gen. exists Fin.F1. split; reflexivity. Qed.
 Lemma tri4_d_ab : @equiv _ (@homset Tri4 Ord3_0 Ord3_2) t4_d t4_ab.
 Proof. apply cc_gen. exists (Fin.FS Fin.F1). split; reflexivity. Qed.
 
-(* The two relations collapse the three-element 0 -> 2 hom-set of the free
-   category to one class; every other hom-set was already a singleton or
-   empty, so the presented category is thin. *)
+(* The two relations collapse three-element 0 -> 2 hom-set free
+ 范畴 one class; every other hom-set was already singleton or
+ empty, so presented 范畴 thin. （已译） *)
 Theorem tri4_thin (x y : Ord3Node) (p q : x ~{Tri4}~> y) : p ≈ q.
 Proof.
   pose proof (t4_classify y x p) as Hp.
@@ -1049,8 +1042,8 @@ Definition tri4_gen_total : nat :=
 Theorem tri4_gen_total_4 : tri4_gen_total = 4%nat.
 Proof. reflexivity. Qed.
 
-(* Relation counts, likewise.  Presentations (i) and (iii) share their
-   quiver, hence their generator count and their relation count. *)
+(* Relation counts, likewise. Presentations (i) (iii) share their
+ quiver, hence generator count 关系 count. （已译） *)
 Definition lin3_rel_total : nat :=
   fold_right (fun q n => @fe_count _ Lin3Eqns (fst q) (snd q) + n)%nat 0%nat
     three_all_pairs.
@@ -1097,9 +1090,9 @@ Qed.
 Example ord3_rev_shares_ord3_quiver :
   fp_quiver Ord3RevPresentation = fp_quiver Ord3Presentation := eq_refl.
 
-(* (i) and (iii) agree on both counts, so what tells them apart is the
-   equation itself: the left-hand side of (i)'s is the generator c and of
-   (iii)'s is the composite path b ∘ a... *)
+(* (i) (iii) agree both counts, so what tells them apart the
+ equation itself: left-hand side (i)'s generator c of
+ (iii)'s 复合 path b ∘ a... （已译） *)
 Example ord3_lhs_is_c :
   @fe_lhs _ Ord3Eqns Ord3_0 Ord3_2 Fin.F1 = ord3_path_c := eq_refl.
 

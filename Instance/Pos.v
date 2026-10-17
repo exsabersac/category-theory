@@ -14,8 +14,8 @@ Generalizable All Variables.
 
 (** ** Objects *)
 
-(** A poset over a setoid carrier: a relation that respects [≈], is reflexive
-    and transitive, and is antisymmetric UP TO [≈]. *)
+(** A poset over setoid carrier: 关系 respects [≈], reflexive
+ transitive, antisymmetric UP TO [≈]. （已译） *)
 Record PosetObject := {
   pos_setoid :> SetoidObject;
 
@@ -32,8 +32,8 @@ Record PosetObject := {
 
 (** ** Morphisms *)
 
-(** A monotone map: a setoid morphism preserving the order.  Respect for [≈]
-    comes from [SetoidMorphism]; monotonicity is the added field. *)
+(** A monotone map: setoid 态射 preserving order. Respect [≈]
+ comes [SetoidMorphism]; monotonicity added field. （已译） *)
 Record MonoHom (P Q : PosetObject) := {
   mono_fn :> SetoidMorphism (pos_setoid P) (pos_setoid Q);
   mono_le : ∀ x y, pos_le P x y → pos_le Q (mono_fn x) (mono_fn y)
@@ -44,8 +44,8 @@ Arguments mono_le {P Q} _ _ _ _.
 
 #[local] Obligation Tactic := idtac.
 
-(** Monotone maps are compared pointwise up to the codomain's [≈], as in
-    Instance/CMon.v and Instance/Sets.v -- never by Leibniz equality. *)
+(** 本节：Monotone maps compared pointwise up codomain's [≈], in
+ Instance/CMon.v Instance/Sets.v -- never Leibniz equality. （已译） *)
 #[export]
 Program Instance MonoHom_Setoid {P Q : PosetObject} : Setoid (MonoHom P Q) := {|
   equiv := fun f g => ∀ a, mono_fn f a ≈ mono_fn g a
@@ -57,9 +57,9 @@ Next Obligation.
   - intros f g h Hfg Hgh a; transitivity (mono_fn g a); [apply Hfg|apply Hgh].
 Qed.
 
-(** Awodey's two closure facts: the identity is monotone, and composites of
-    monotone maps are monotone.  Both are the [Next Obligation]s below, so they
-    are proved rather than assumed. *)
+(** Awodey's two closure facts: 恒等 monotone, composites of
+ monotone maps monotone. Both [Next Obligation]s below, so they
+ proved rather than assumed. （已译） *)
 Program Definition mono_hom_id {P : PosetObject} : MonoHom P P := {|
   mono_fn := setoid_morphism_id
 |}.
@@ -98,7 +98,7 @@ Next Obligation. intros x y f a; simpl; reflexivity. Qed.
 Next Obligation. intros x y z w f g h a; simpl; reflexivity. Qed.
 Next Obligation. intros x y z w f g h a; simpl; reflexivity. Qed.
 
-(** The underlying-set functor, forgetting the order. *)
+(** The underlying-set 函子, forgetting order. （已译） *)
 Program Definition Pos_Forget : Pos ⟶ Sets := {|
   fobj := fun P => pos_setoid P;
   fmap := fun _ _ f => mono_fn f
@@ -107,7 +107,7 @@ Next Obligation. intros P Q f g Hfg a; simpl; exact (Hfg a). Qed.
 Next Obligation. intros P a; simpl; reflexivity. Qed.
 Next Obligation. intros P Q R f g a; simpl; reflexivity. Qed.
 
-(** ** The link between the two readings *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -138,14 +138,14 @@ Program Definition MonotoneAsFunctor {P Q : PosetObject} (f : MonoHom P Q)
   fobj := fun x => mono_fn f x;
   fmap := fun x y h => mono_le f x y h
 |}.
-(* The file sets [Obligation Tactic := idtac] above, so these are discharged
-   explicitly rather than silently.  All three are equations between parallel
-   morphisms in a thin target, hence [I]. *)
+(* The file sets [Obligation Tactic := idtac] above, so these discharged
+ explicitly rather than silently. All three equations between parallel
+ 态射 thin target, hence [I]. （已译） *)
 Next Obligation. intros P Q f x y g h Hgh; exact I. Qed.
 Next Obligation. intros P Q f x; exact I. Qed.
 Next Obligation. intros P Q f x y z g h; exact I. Qed.
 
-(** Sanity: the induced functor's object action IS the underlying map. *)
+(** Sanity: induced 函子's 对象 action IS underlying map. （已译） *)
 Example monotone_functor_fobj {P Q : PosetObject} (f : MonoHom P Q)
   (x : carrier (pos_setoid P)) :
   fobj[MonotoneAsFunctor f] x = mono_fn f x := eq_refl.

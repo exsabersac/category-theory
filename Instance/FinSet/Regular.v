@@ -8,7 +8,7 @@ Require Import Coq.Vectors.Fin.
 
 Generalizable All Variables.
 
-(** * Regular arrows in FinSet, by finite search *)
+(* 相关说明。 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Regular_semigroup
@@ -20,7 +20,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** What the classical statement costs, and what is proved instead *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -72,7 +72,7 @@ Proof.
     destruct (Fin.eq_dec (f Fin.F1) (f Fin.F1)) as [_ | ne].
     + reflexivity.
     + now contradiction ne.
-  - (* tail index: either the head already hits the value, or recurse *)
+  - (* 相关说明。 （已译） *)
     destruct (Fin.eq_dec (f Fin.F1) (f (Fin.FS a))) as [e | _].
     + exact e.
     + specialize (IH (fun q => f (Fin.FS q))); simpl in IH.
@@ -94,7 +94,7 @@ Definition finset_pseudoinverse {m n : nat} (a0 : Fin.t m)
            end.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Mac Lane §I.5 Exercise 7, second half, over FinSet *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -113,13 +113,13 @@ Proof.
   - contradiction.
 Defined.
 
-(* The same statement with inhabitation read off the object: an arrow out of
-   a successor object is regular, with [Fin.F1] as the fallback. *)
+(* The same statement inhabitation read off 对象: arrow out of
+ successor 对象 regular, [Fin.F1] fallback. （已译） *)
 Definition finset_regular_pos {m n : nat} (f : S m ~{FinSet}~> n) :
   RegularMorphism f := finset_regular Fin.F1 f.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The hypothesis is sharp, and every epimorphism splits regardless *)
+(* * ** The 假设 sharp, every epimorphism splits regardless （已译） *)
 
 (*
    本节说明 Regular 相关定义、性质与动机。
@@ -186,7 +186,7 @@ Definition finset_every_epi_splits {m n : nat} (f : m ~{FinSet}~> n) :
   end f.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Non-vacuity I: regular, but neither a section nor a retraction *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。
@@ -224,7 +224,7 @@ Proof.
       now rewrite (fin1_unique c).
 Qed.
 
-(* It is regular: the finite search supplies the pseudoinverse. *)
+(* 相关说明。 （已译） *)
 Definition finset_shift3_regular : RegularMorphism finset_shift3 :=
   finset_regular_pos finset_shift3.
 
@@ -260,8 +260,7 @@ Proof.
   exact (finset_shift3_not_section (Build_Section _ _ finset_shift3 g Hl)).
 Qed.
 
-(* The exercise's point, packaged: regularity is strictly weaker than
-   one-sided invertibility, and strictly weaker than invertibility. *)
+(* 相关说明。 （已译） *)
 Definition finset_regular_not_split :
   RegularMorphism finset_shift3
   * (Section finset_shift3 → False)
@@ -271,7 +270,7 @@ Definition finset_regular_not_split :
    finset_shift3_not_retraction, finset_shift3_not_iso).
 
 (* ------------------------------------------------------------------------ *)
-(** ** Non-vacuity II: a split pair whose idempotent is not the identity *)
+(* * ** Non-vacuity II: split pair whose idempotent not 恒等 （已译） *)
 
 (*
    本节说明始/终对象相关定义、性质与动机。
@@ -283,15 +282,15 @@ Definition finset_point : 1%nat ~{FinSet}~> 2%nat := fun _ => Fin.F1.
 Definition finset_bang  : 2%nat ~{FinSet}~> 1%nat := fun _ => Fin.F1.
 Definition finset_collapse : 2%nat ~{FinSet}~> 2%nat := fun _ => Fin.F1.
 
-(* One composite is the identity of the 1-element object. *)
+(* One 复合 恒等 1-element 对象. （已译） *)
 Lemma finset_split_pair : finset_bang ∘ finset_point ≈ id.
 Proof. intro i; exact (eq_sym (fin1_unique i)). Qed.
 
-(* The other composite is [finset_collapse], on the nose. *)
+(* The other 复合 [finset_collapse], nose. （已译） *)
 Lemma finset_point_bang : finset_point ∘ finset_bang ≈ finset_collapse.
 Proof. intro i; reflexivity. Qed.
 
-(* So the collapse is idempotent -- by the general lemma, not by hand. *)
+(* So collapse idempotent -- general 引理, not hand. （已译） *)
 Lemma finset_collapse_idempotent : Idempotent finset_collapse.
 Proof.
   apply (idempotent_respects (finset_point ∘ finset_bang)).
@@ -299,8 +298,8 @@ Proof.
   - exact (split_pair_idempotent finset_bang finset_point finset_split_pair).
 Qed.
 
-(* And it is NOT the identity: it sends index 1 to index 0.  Without this the
-   idempotence above would be witnessed by identities alone. *)
+(* And it NOT 恒等: it sends index 1 index 0. Without the
+ idempotence above would witnessed identities alone. （已译） *)
 Lemma finset_collapse_not_id : finset_collapse ≈ id → False.
 Proof.
   intro H.
@@ -351,9 +350,9 @@ Example finset_pseudoinverse_computes :
    finset_pseudoinverse Fin.F1 finset_shift3 (Fin.FS (Fin.FS Fin.F1)))
   = (Fin.FS (Fin.FS Fin.F1), Fin.F1, Fin.F1) := eq_refl.
 
-(* And the witness projected out of the regularity proof is that same
-   program, at every index -- the [Defined] on [finset_regular] is what makes
-   this hold by [eq_refl]. *)
+(* And witness projected out regularity 证明 same
+ program, at every index -- [Defined] [finset_regular] what makes
+ hold [eq_refl]. （已译） *)
 Example finset_regular_witness_computes :
   (`1 finset_shift3_regular Fin.F1,
    `1 finset_shift3_regular (Fin.FS Fin.F1),

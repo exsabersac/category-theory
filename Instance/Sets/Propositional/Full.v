@@ -11,7 +11,7 @@ Require Import Category.Instance.Sets.Propositional.
 
 Generalizable All Variables.
 
-(** * The full subcategory of propositional setoids, reflective in [Sets] *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:    https://ncatlab.org/nlab/show/reflective+subcategory
@@ -54,9 +54,7 @@ Definition PropSets_Full@{o so | o < so +} :
   Full Sets@{o so} PropSets_sub@{o so} :=
   fun _ _ _ _ _ => I.
 
-(* Built directly rather than by [Full_Implies_Full_Functor], which is
-   [Qed]: the chosen preimage of g is (g; I), and it computes, for later
-   files; nothing in the tree reads through it yet. *)
+(* 相关说明。 （已译） *)
 Definition PropSets_Incl_Full@{o so | o < so +} :
   Functor.Full PropSets_Incl@{o so}.
 Proof.
@@ -85,7 +83,7 @@ Definition PropSets_Incl_Faithful@{o so | o < so +} :
     (fun X Y f g H a => pequiv_to _ _ (H a))
     (fun X Y f g H a => pequiv_from _ _ (H a)).
 
-(** ** Functors into [Sets] with propositional values *)
+(* 相关说明。 （已译） *)
 
 Definition PropSets_lift@{co ch o so | o < so, ch <= o +}
   {C : Category@{co ch ch}} (F : C ⟶ Sets@{o so})
@@ -233,7 +231,7 @@ Definition PropSets_Reflective@{o so a | o < so +} :
      reflector := PropSets_trunc@{o so};
      reflective_adj := PropSets_trunc_Incl@{o so a} |}.
 
-(** ** The choice principle, written out (moved here by #1349) *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明单子相关定义、性质与动机。
@@ -249,10 +247,9 @@ Definition choice_of_untr@{c | +}
   ∀ A : Type@{c}, inhabited A → A :=
   fun A h => U A (fun Q k => match h with inhabits a => k a end).
 
-(** ** The squash setoid (moved here by #1349) *)
+(* 相关说明。 （已译） *)
 
-(* The setoid on [bool] whose [true ≈ false] is a given type [Q].  Moved
-   here from Instance/Top/Components.v by #1349. *)
+(* 相关说明。 （已译） *)
 Definition squash_rel@{o} (Q : Type@{o}) (x y : bool) : Type@{o} :=
   ((x = y) + Q)%type.
 

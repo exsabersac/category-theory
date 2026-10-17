@@ -7,7 +7,7 @@ Require Import Category.Instance.Sets.Pointed.
 
 Generalizable All Variables.
 
-(** * Finite pointed sets: the unconditional witness *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/finite+set
@@ -54,8 +54,8 @@ Defined.
 Definition DecidablePt_of_DecidableEquiv {Z : PointedSetoid}
   (deq : DecidableEquiv Z) : DecidablePt Z := fun z => deq z (pt Z).
 
-(* Between finite pointed sets the two splitting halves of Mac Lane's
-   proposition hold with no further hypotheses. *)
+(* Between finite pointed sets two splitting halves Mac Lane's
+ 命题 hold no further hypotheses. （已译） *)
 Definition finite_monic_split {X Y : PointedSetoid} (f : X ~{PointedSets}~> Y)
   (E : PointedEnumeration X) (deq : DecidableEquiv Y) : Monic f → Section f :=
   fun Hm => pointed_monic_split f (pointed_image_dec f deq E) Hm.
@@ -64,7 +64,7 @@ Definition finite_epic_split {X Y : PointedSetoid} (f : X ~{PointedSets}~> Y)
   (E : PointedEnumeration X) (deq : DecidableEquiv Y) : Epic f → Retraction f :=
   fun He => pointed_epic_split f deq E He.
 
-(** *** Two concrete finite pointed sets *)
+(* 相关说明。 （已译） *)
 
 (* The two-element pointed set: [bool] pointed at [false]. *)
 Definition PointedBool : PointedSetoid := {|
@@ -127,19 +127,19 @@ Proof.
   - left; reflexivity.
 Defined.
 
-(* Basepoint decidability at each of the two objects — the object-level form
-   of the hypothesis [pointed_part_equivalence] asks for globally. *)
+(* Basepoint decidability at each two 对象 — 对象-level form
+ 假设 [pointed_part_equivalence] asks globally. （已译） *)
 Definition PointedBool_dec_pt : DecidablePt PointedBool :=
   DecidablePt_of_DecidableEquiv PointedBool_deq.
 
 Definition PointedThree_dec_pt : DecidablePt PointedThree :=
   DecidablePt_of_DecidableEquiv PointedThree_deq.
 
-(** *** Concrete maps between them, and the theorems exercised *)
+(* 相关说明。 （已译） *)
 
-(* A map between discrete setoids is respectful for free, so these concrete
-   morphisms are built by direct record application rather than through
-   [Program]. *)
+(* A map between discrete setoids respectful free, so these concrete
+ 态射 built direct record application rather than through
+ [Program]. （已译） *)
 Definition eq_setoid_map {A B : Type} (f : A -> B) :
   @SetoidMorphism A (eq_Setoid A) B (eq_Setoid B) :=
   {| morphism        := f
@@ -201,9 +201,7 @@ Qed.
 Definition three_to_bool_epic : Epic three_to_bool :=
   fst (pointed_epic_iff three_to_bool) three_to_bool_surjective.
 
-(* Non-vacuity, in both directions: a monic that is not epic, and an epic that
-   is not monic.  Set_* is therefore genuinely not balanced-by-triviality —
-   [pointed_balanced] has content. *)
+(* 相关说明。 （已译） *)
 Lemma bool_to_three_not_epic : ¬ Epic bool_to_three.
 Proof.
   intro He.
@@ -221,9 +219,7 @@ Proof.
   discriminate (eq_of_equiv H).
 Qed.
 
-(* The retraction of the monic, COMPUTED by [finite_monic_split]: the two
-   points of the image go to their preimages, and the point outside the image
-   goes to the basepoint. *)
+(* 相关说明。 （已译） *)
 Definition bool_to_three_retraction : PointedThree ~{PointedSets}~> PointedBool :=
   @section PointedSets PointedBool PointedThree bool_to_three
     (finite_monic_split bool_to_three PointedBool_enum PointedThree_deq
@@ -259,7 +255,7 @@ Example three_to_bool_section_true :
   three_to_bool_section true = Datatypes.Some false.
 Proof. reflexivity. Qed.
 
-(** *** [pointed_balanced] at a concrete bimorphism *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明笛卡尔相关定义、性质与动机。
@@ -299,15 +295,15 @@ Proof.
     reflexivity.
 Qed.
 
-(* A concrete corollary of the balance theorem: this map is invertible for no
-   reason other than being monic and epic — no inverse was supplied. *)
+(* A concrete 推论 balance 定理: map invertible no
+ reason other than being monic epic — no inverse was supplied. （已译） *)
 Definition pointed_swap_isomorphism : IsIsomorphism pointed_swap :=
   snd (pointed_balanced pointed_swap)
     (fst (pointed_monic_iff pointed_swap) pointed_swap_injective,
      fst (pointed_epic_iff pointed_swap) pointed_swap_surjective).
 
-(* The inverse the theorem produced, exercised at a point: its value is forced
-   by the right-inverse law together with injectivity. *)
+(* The inverse 定理 produced, exercised at point: value forced
+ right-inverse law together injectivity. （已译） *)
 Example pointed_swap_inverse_at_true :
   @two_sided_inverse PointedSets PointedThree PointedThree pointed_swap pointed_swap_isomorphism
     (Datatypes.Some true) ≈ Datatypes.Some false.

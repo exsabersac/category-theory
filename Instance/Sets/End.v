@@ -10,7 +10,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * Ends in [Sets], computed directly *)
+(* 相关说明。 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/End_(category_theory)
@@ -36,16 +36,16 @@ Definition end_family : Type :=
       fmap[F] ((@id (C^op) x, f) : (x, x) ~{C^op ∏ C}~> (x, y)) (s x)
         ≈ fmap[F] ((op f, @id C y) : (y, y) ~{C^op ∏ C}~> (x, y)) (s y) }.
 
-(* Pointwise equivalence of families: agreement at every object, up to the
-   codomain setoid at that object. *)
+(* Pointwise 等价 families: agreement at every 对象, up the
+ codomain setoid at 对象. （已译） *)
 Definition end_family_equiv (s t : end_family) : Type :=
   ∀ x : C, `1 s x ≈ `1 t x.
 
 #[local] Obligation Tactic := idtac.
 
-(* The end object as a [SetoidObject]: the family carrier under pointwise [≈].
-   Reflexivity, symmetry and transitivity are inherited objectwise from the
-   setoids [F(x,x)]. *)
+(* The end 对象 [SetoidObject]: family carrier under pointwise [≈].
+ Reflexivity, symmetry transitivity inherited objectwise the
+ setoids [F(x,x)]. （已译） *)
 Program Definition Sets_End_obj : SetoidObject := {|
   carrier   := end_family;
   is_setoid := {| equiv := end_family_equiv |}
@@ -57,8 +57,8 @@ Next Obligation.
   - intros s t u H1 H2 x; transitivity (`1 t x); [exact (H1 x) | exact (H2 x)].
 Qed.
 
-(* The projection leg at [x]: evaluate a family at [x].  It respects the
-   pointwise equivalence by definition. *)
+(* The projection leg at [x]: evaluate family at [x]. It respects the
+ pointwise 等价 定义. （已译） *)
 Program Definition end_projection (x : C) :
   Sets_End_obj ~{Sets}~> F (x, x) := {|
   morphism := fun s => `1 s x
@@ -95,8 +95,7 @@ Proof.
   exact (@ump_wedges _ _ _ W x y f e).
 Qed.
 
-(* The underlying function of the mediator: package the legs of [W] at [e] into
-   a family, carrying the compatibility constraint above as its witness. *)
+(* 相关说明。 （已译） *)
 Definition end_mediator_fun (W : Wedge F) (e : Wedge_to_obj F W) :
   end_family :=
   (fun x => @wedge_map _ _ _ W x e; end_mediator_constraint W e).

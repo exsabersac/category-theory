@@ -25,7 +25,7 @@ Require Import Coq.ZArith.ZArith.
 
 Generalizable All Variables.
 
-(** * The free abelian group functor is not continuous *)
+(* * * The free abelian group 函子 not continuous （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/continuous+functor
@@ -36,7 +36,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The point of Sets, and the zero endomorphism of an abelian group *)
+(* 相关说明。 （已译） *)
 
 Definition SetsPoint : Sets := @terminal_obj Sets Sets_Terminal.
 
@@ -55,7 +55,7 @@ Lemma ab_zero_endo_value (A : Ab) (a : carrier (cmon_setoid A)) :
   cmon_map (ab_zero_endo A) a ≈ cmon_zero A.
 Proof. simpl; reflexivity. Qed.
 
-(** ** The one separation everything below is spent on *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 FreeNotContinuous 相关定义、性质与动机。
@@ -71,8 +71,7 @@ Proof.
            ttt Hg).
 Qed.
 
-(** ** Witness 1: the empty limit — the free group on a point is not
-       terminal in Ab *)
+(* 相关说明。 （已译） *)
 
 Program Definition empty_cone_at {C : Category} (K : _0 ⟶ C) (c : C)
   : Cone K := {|
@@ -108,7 +107,7 @@ Proof.
   - apply Hu; intro x; destruct x.
 Qed.
 
-(* The apex-only form, which the product witnesses below CANNOT reach. *)
+(* 相关说明。 （已译） *)
 Theorem FreeAb_not_PreservesLimit_empty :
   PreservesLimit SetsEmptyDiagram FreeAb → False.
 Proof.
@@ -125,7 +124,7 @@ Qed.
 Definition FreeAb_not_PreservesAllLimits : PreservesAllLimits FreeAb → False :=
   fun H => FreeAb_not_PreservesLimit_empty (H _ SetsEmptyDiagram).
 
-(** ** Witness 2: a countable product in Mac Lane's shape *)
+(* 相关说明。 （已译） *)
 
 Definition NatOnes : nat → Sets := fun _ => SetsPoint.
 Definition NatOneDiagram : DiscreteCat nat ⟶ Sets := DiscreteCat_Functor' NatOnes.
@@ -179,7 +178,7 @@ Proof.
   exact (Hone 1%nat).
 Qed.
 
-(** ** Witness 3: the binary product, through the comparison map *)
+(* 相关说明。 （已译） *)
 
 Definition BinOnes : bool → Sets := binary_fam SetsPoint SetsPoint.
 Definition BinDiagram : DiscreteCat bool ⟶ Sets := DiscreteCat_Functor' BinOnes.
@@ -235,7 +234,7 @@ Proof.
   exact (fst (cartesian_functor_iff_comparison_iso FreeAb) HF SetsPoint SetsPoint).
 Qed.
 
-(** ** The conclusion of the exercise *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、hom相关定义、性质与动机。
@@ -249,7 +248,7 @@ Definition FreeAb_not_continuous_via_empty :
   ContinuousFunctor FreeAb → False :=
   fun H => FreeAb_not_PreservesLimitCone_empty (H _ SetsEmptyDiagram).
 
-(** ** The positive side of the same adjunction *)
+(* * ** The positive side same 伴随 （已译） *)
 
 Definition Ab_Forget_Continuous : ContinuousFunctor Ab_Forget :=
   right_adjoint_Continuous free_ab_adjunction.

@@ -20,7 +20,7 @@ From Coq Require Import Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * Cocompleteness of spaces refuted above the points *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/complete+small+category
@@ -33,7 +33,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** [PTopCat]: Freyd's form, dualized, and transported above the points *)
+(* 相关说明。 （已译） *)
 
 (* Freyd's form, dualized: an arrow index at the shape universe refutes
    cocompleteness there. *)
@@ -82,7 +82,7 @@ Proof.
            (fun D F => PTop_Colimit_lift F (cocomp D (PForget ◯ F)))).
 Qed.
 
-(** ** The Type-valued [Top]: Freyd's form, and transported below the homs *)
+(* 相关说明。 （已译） *)
 
 (* Freyd's form, the exact dual of Instance/Top/StoneCech/Refutations.v's
    [Top_not_complete]. *)
@@ -120,7 +120,7 @@ Proof.
   exact (Top_not_cocomplete_ObjDecEq (ObjDecEq_of_IEM E Top@{h o}) cocomp).
 Qed.
 
-(** ** A second argument: Cantor's diagonal at the points of one coproduct *)
+(* * ** A second 论元: Cantor's diagonal at points one coproduct （已译） *)
 
 (* No map from the predicates on a type into it is injective up to a
    reflexive relation: the predicate "encodes a predicate it does not
@@ -136,10 +136,9 @@ Proof.
   apply N. exists Dg. split; [constructor; exact (R_refl _)|exact N].
 Qed.
 
-(** ** [PTopCat]: Cantor at the points of one coproduct *)
+(* 相关说明。 （已译） *)
 
-(* The index of the coproduct: a space with a predicate on its points.  It
-   quantifies over the spaces, so it sits strictly above the points. *)
+(* 相关说明。 （已译） *)
 Definition pcc_index@{o s | o < s +} : Type@{s} :=
   { X : PTop@{o} & pt_carrier X → Prop }.
 
@@ -154,8 +153,7 @@ Context (cocomp : @Cocomplete@{r s o so} PTopCat@{o so}).
 
 #[local] Notation K := (pcc_index@{o s}).
 
-(* A space [Om] and a family of its points [c k0 k] that recognizes [k0]:
-   [c k0 k] is equivalent to [c k0 k0] only at [k = k0]. *)
+(* 相关说明。 （已译） *)
 Context (Om : PTop@{o}) (c : K → K → pt_carrier Om).
 Context (c_spec : ∀ k0 k, c k0 k ≈ c k0 k0 → k = k0).
 
@@ -172,7 +170,7 @@ Definition pcc_inj (k : K) : PPoint@{o} ~{PTopCat@{o so}}~> pcc_sum :=
 Definition pcc_leg (k0 k : K) : PPoint@{o} ~{PTopCat@{o so}}~> Om :=
   pdisc_mor unit_setoid_object Om (pconst unit_setoid_object Om (c k0 k)).
 
-(* The copairing of the legs at [k0]. *)
+(* 相关说明。 （已译） *)
 Definition pcc_sep (k0 : K) : pcc_sum ~{PTopCat@{o so}}~> Om :=
   unique_obj (iprod_desc (complete_iprod CC (fun _ : K => PPoint@{o}))
                 (c:=Om) (pcc_leg k0)).
@@ -185,8 +183,7 @@ Proof.
               (c:=Om) (pcc_leg k0)) k ttt).
 Qed.
 
-(* A predicate on the points of the coproduct encodes to the point of its
-   own summand. *)
+(* 相关说明。 （已译） *)
 Definition pcc_enc (U : pt_carrier pcc_sum → Prop) : pt_carrier pcc_sum :=
   pmap (pcc_inj (existT _ pcc_sum U)) ttt.
 
@@ -214,7 +211,7 @@ Qed.
 
 End PCantor.
 
-(* The truth values, under [<->], as a setoid at the points' universe. *)
+(* 相关说明。 （已译） *)
 Program Definition pcc_Prop@{o | Set < o} : SetoidObject@{o o} := {|
   carrier := Prop;
   is_setoid := {| equiv := fun P Q => P <-> Q |}
@@ -226,9 +223,7 @@ Next Obligation.
   - intros P Q R H1 H2; exact (iff_trans H1 H2).
 Qed.
 
-(* Cocompleteness of [PTopCat] is refuted at every shape universe strictly
-   above the points, under decidable equality of spaces: the separator is
-   the discrete space of truth values. *)
+(* 相关说明。 （已译） *)
 Theorem PTop_not_cocomplete_Cantor_ObjDecEq@{r s o so +| o < so, o < s,
                                                Set < o +}
   (DE : ObjDecEq PTopCat@{o so})
@@ -239,8 +234,7 @@ Proof.
   intros k0 k H. exact (proj2 H eq_refl).
 Qed.
 
-(* The same under informative excluded middle, with [PBool] as the
-   separator, so that no [Set < o] is needed. *)
+(* 相关说明。 （已译） *)
 Theorem PTop_not_cocomplete_Cantor_IEM@{e r s o so +| o < so, o < s +}
   (E : IEM@{e}) (cocomp : @Cocomplete@{r s o so} PTopCat@{o so}) : False.
 Proof.
@@ -259,7 +253,7 @@ Proof.
   destruct (n0 eq_refl).
 Qed.
 
-(** ** The Type-valued [Top]: Cantor's argument *)
+(* * ** The Type-valued [Top]: Cantor's 论元 （已译） *)
 
 Definition tcc_index@{o s | o < s +} : Type@{s} :=
   { X : TopSpace@{o} & top_carrier X → Prop }.

@@ -3,7 +3,7 @@ Require Import Category.Theory.Category.
 
 Generalizable All Variables.
 
-(** * The ordinal ω as a thin category *)
+(* * * The ordinal ω thin 范畴 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Total_order
@@ -20,8 +20,8 @@ Inductive le_t@{u} (n : nat) : nat → Type@{u} :=
 Arguments le_t_n {n}.
 Arguments le_t_S {n m} _.
 
-(* Transitivity, by recursion on the second derivation, so that composition in
-   [Omega] reduces on closed inputs (needed by [chain_hom]). *)
+(* Transitivity, recursion second derivation, so 复合 in
+ [Omega] reduces closed inputs (needed [chain_hom]). （已译） *)
 Fixpoint le_t_trans@{u} {m n k} (f : le_t@{u} m n) (g : le_t@{u} n k) :
   le_t@{u} m k :=
   match g in le_t _ k' return le_t@{u} m k' with

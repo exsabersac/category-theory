@@ -27,7 +27,7 @@ Require Import Coq.Arith.PeanoNat.
 
 Generalizable All Variables.
 
-(** * Limits in a preorder are greatest lower bounds *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/thin+category
@@ -116,8 +116,8 @@ Definition least_iff_empty_lub {A : Type} (R : relation A) (bot : A) :
   (∀ x, R bot x) ↔ IsLUB R (@empty_family A) bot :=
   greatest_iff_empty_glb (op_rel R) bot.
 
-(* Completeness of the order, in the form the bicompleteness statement
-   consumes below. *)
+(* Completeness order, form bicompleteness statement
+ 所消耗 below. （已译） *)
 Definition HasAllMeets {A : Type} (R : relation A) : Type :=
   ∀ (Ix : Type) (d : Ix → A), { m : A & IsGLB R d m }.
 
@@ -203,7 +203,7 @@ Proof.
     exact (@fork ((Proset P)^op) CP n x y (Hn true) (Hn false)).
 Qed.
 
-(** ** Terminal is greatest, initial is least *)
+(* 相关说明。 （已译） *)
 
 Program Definition Proset_Terminal (top : A) (Htop : ∀ x, R x top) :
   @Terminal (Proset P) := {| terminal_obj := top; one := Htop |}.
@@ -211,9 +211,7 @@ Program Definition Proset_Terminal (top : A) (Htop : ∀ x, R x top) :
 Definition terminal_is_greatest (T : @Terminal (Proset P)) :
   ∀ x, R x (@terminal_obj (Proset P) T) := fun x => @one (Proset P) T x.
 
-(* [Initial C] is notation for [@Terminal (C^op)] (Structure/Initial.v),
-   so the record is built with the field names [terminal_obj] and [one],
-   whose op-reading gives [R bot x]. *)
+(* 相关说明。 （已译） *)
 Program Definition Proset_Initial (bot : A) (Hbot : ∀ x, R bot x) :
   @Initial (Proset P) := {| terminal_obj := bot; one := Hbot |}.
 
@@ -221,8 +219,7 @@ Definition initial_is_least (Iobj : @Initial (Proset P)) :
   ∀ x, R (@terminal_obj ((Proset P)^op) Iobj) x :=
   fun x => @one ((Proset P)^op) Iobj x.
 
-(* The nullary case of the identification is [greatest_iff_empty_glb]
-   above, stated over the bare preorder. *)
+(* 相关说明。 （已译） *)
 
 (** ** Cones over a thin category *)
 
@@ -256,7 +253,7 @@ Proof.
     + intros x y f; exact Logic.I.
 Defined.
 
-(** ** The identification, at an arbitrary diagram shape *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -295,7 +292,7 @@ Proof.
   - exact (Proset_IsALimit F c).
 Defined.
 
-(* The unpinned form, for callers holding the [Limit] class. *)
+(* 相关说明。 （已译） *)
 Program Definition Proset_Limit_general {J : Category} (F : J ⟶ Proset P)
   (m : A) (H : IsGLB R (fobj[F]) m) : Limit F := {|
   limit_cone := proset_cone F m (fst H)
@@ -347,7 +344,7 @@ Proof.
   - exact (Proset_IsAColimit F c).
 Defined.
 
-(** ** The discrete case: indexed products are indexed meets *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、（余）极限相关定义、性质与动机。
@@ -370,9 +367,7 @@ Proof.
     exact (unique_obj (iprod_ump (C:=Proset P) d L n Hn)).
 Defined.
 
-(* The elementary indexed-product reading, for callers that prefer the
-   [IsIndexedProduct] record of Structure/Limit/Product.v to the [Limit]
-   class. *)
+(* 相关说明。 （已译） *)
 Definition Proset_IsIndexedProduct {Ix : Type} (d : Ix → A) (m : A)
   (H : IsGLB R d m) :
   IsIndexedProduct (C:=Proset P) d m (fst H).
@@ -433,8 +428,7 @@ Next Obligation.
     + intros v Hv; exact Logic.I.
 Defined.
 
-(* Conversely, any pushout apex in [Proset P] is a join of the two feet
-   of the span. *)
+(* 相关说明。 （已译） *)
 Lemma proset_pushout_IsLUB {x y z : A}
   (f : x ~{Proset P}~> y) (g : x ~{Proset P}~> z)
   (Q : IsPushout (C:=Proset P) f g) :
@@ -502,8 +496,8 @@ Definition Proset_LUB_Limit {A : Type} {R : relation A} (P : PreOrder R)
   Limit (DiscreteCat_Functor (C:=Proset (op_PreOrder P)) d) :=
   Proset_Limit (op_PreOrder P) d m H.
 
-(* Named for what it concludes: [Complete] at the REVERSED preorder.  The
-   genuine cocompleteness corollary follows from the biconditional above. *)
+(* Named what it concludes: [Complete] at REVERSED preorder. The
+ genuine cocompleteness 推论 follows biconditional above. （已译） *)
 Definition Proset_op_Complete_of_all_joins {A : Type} {R : relation A}
   (P : PreOrder R) (H : HasAllJoins R) :
   @Complete (Proset (op_PreOrder P)) :=
@@ -514,7 +508,7 @@ Definition Proset_Cocomplete_of_all_joins {A : Type} {R : relation A}
   @Cocomplete (Proset P) :=
   snd (proset_Cocomplete_iff_all_joins P) H.
 
-(** ** Equivalence-invariance of completeness *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限、等价相关定义、性质与动机。
@@ -543,7 +537,7 @@ Definition Cocomplete_equivalence_invariant (HC : @Cocomplete C) :
 
 End Complete_Invariance.
 
-(** ** The two existing thin witnesses, read through the identification *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -593,7 +587,7 @@ Definition props_coproduct_is_lub (p q : Prop) :=
 Definition two_product_is_glb (x y : TwoObj) :=
   cartesian_is_glb _2 Two_Cartesian x y.
 
-(** ** A concrete witness: the natural numbers under [<=] *)
+(* 相关说明。 （已译） *)
 
 (* [Instance/Proset.v]'s [LessThanEqualTo_Category] is the thin category
    of [(nat, <=)]. The name is also defined in Instance/Poset.v, over
@@ -602,8 +596,8 @@ Definition two_product_is_glb (x y : TwoObj) :=
 Definition Nat_Proset : Category :=
   Category.Instance.Proset.LessThanEqualTo_Category.
 
-(* [Nat.min] is the binary meet for [<=], so it produces a genuine
-   cartesian structure on that thin category. *)
+(* [Nat.min] binary meet [<=], so it produces genuine
+ cartesian structure thin 范畴. （已译） *)
 Definition Nat_Cartesian : @Cartesian Nat_Proset :=
   Proset_Cartesian Nat.le_preorder Nat.min
     Nat.le_min_l Nat.le_min_r
@@ -644,8 +638,7 @@ Qed.
 Definition Nat_Initial : @Initial Nat_Proset :=
   Proset_Initial Nat.le_preorder 0%nat Nat.le_0_l.
 
-(* Registered as an instance, which is what the Seven Sketches §6.2.1
-   checkbox asks for; usable by typeclass search as well as by name. *)
+(* 相关说明。 （已译） *)
 #[export] Existing Instance Nat_Initial.
 
 (* A terminal object of this thin category would be an upper bound of
@@ -663,7 +656,7 @@ Definition nat_indexed_limit (x y : nat) :
   Proset_Limit Nat.le_preorder (pair_family x y) (Nat.min x y)
     (nat_product_IsGLB x y).
 
-(** ** A preorder with no least element, and no binary meets *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Limit 相关定义、性质与动机。

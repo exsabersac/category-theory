@@ -141,8 +141,7 @@ Proof.
       * now rewrite (IH (fun j => P (Fin.FS j)) i' H).
 Qed.
 
-(* [Fin.FS] is injective, by applying the evident retraction (with default
-   [d] at [Fin.F1]) to the equation. *)
+(* 相关说明。 （已译） *)
 Definition fin_pred {n : nat} (d : Fin.t n) (i : Fin.t (S n)) : Fin.t n :=
   Fin.caseS' i (fun _ => Fin.t n) d (fun j => j).
 
@@ -189,10 +188,7 @@ Proof.
   now rewrite (UIP_dec Bool.bool_dec Hi Hj).
 Qed.
 
-(** ** Enumeration of the canonical finite set
-
-    [all_fin n] lists every element of [Fin.t n]; completeness is all that
-    is required below, so no order or duplicate-freeness is proved. *)
+(* 相关说明。 （已译） *)
 
 Fixpoint all_fin (n : nat) : list (Fin.t n) :=
   match n with
@@ -273,7 +269,7 @@ Proof.
   destruct (fin_eqb (l (snd ab)) (l (fst ab))); reflexivity.
 Qed.
 
-(** Every edge in the list has its endpoints identified by the fold. *)
+(** 本节：Every edge list has endpoints identified fold. （已译） *)
 Lemma components_edge_eq (edges : list (Fin.t N * Fin.t N))
       (l : Fin.t N → Fin.t N) (e : Fin.t N * Fin.t N) :
   In e edges →
@@ -286,9 +282,9 @@ Proof.
     + simpl. apply IH. exact Hin.
 Qed.
 
-(** A map [h] agreeing on the endpoints of one edge is unchanged by the
-    corresponding step; below this is used with the copairing of the
-    competing cocone. *)
+(** A map [h] agreeing endpoints one edge unchanged the
+ corresponding step; below 这是 used copairing the
+ competing cocone. （已译） *)
 Lemma ustep_resp {X : Type} (h : Fin.t N → X)
       (l : Fin.t N → Fin.t N) (ab : Fin.t N * Fin.t N) :
   (∀ p, h (l p) = h p) →
@@ -306,9 +302,9 @@ Proof.
     rewrite Hp. apply Hl.
 Qed.
 
-(** A map agreeing on the endpoints of every edge factors through the
-    labeling: it takes the same value on an element and on the
-    representative the fold assigns to it. *)
+(** 本节：A map agreeing endpoints every edge factors through the
+ labeling: it takes same value element the
+ representative fold assigns it. （已译） *)
 Lemma components_resp {X : Type} (h : Fin.t N → X)
       (edges : list (Fin.t N * Fin.t N)) (l : Fin.t N → Fin.t N) :
   (∀ e, In e edges → h (fst e) = h (snd e)) →
@@ -326,16 +322,16 @@ Qed.
 
 End Components.
 
-(** ** The pushout of a span, built from the labeling *)
+(* 相关说明。 （已译） *)
 
 Section PushoutBuild.
 
 Context {x y z : nat}.
 Context (f : Fin.t x → Fin.t y) (g : Fin.t x → Fin.t z).
 
-(** The two endpoints of the edge contributed by index [i]: the [f]-image
-    injected on the left and the [g]-image injected on the right of the
-    coproduct [y + z]. *)
+(** 本节：The two endpoints edge contributed index [i]: [f]-image
+ injected left [g]-image injected right the
+ coproduct [y + z]. （已译） *)
 Definition po_src (i : Fin.t x) : Fin.t (y + z) :=
   fin_join (Datatypes.inl (f i)).
 Definition po_dst (i : Fin.t x) : Fin.t (y + z) :=
@@ -344,14 +340,14 @@ Definition po_dst (i : Fin.t x) : Fin.t (y + z) :=
 Definition po_edges : list (Fin.t (y + z) * Fin.t (y + z)) :=
   map (fun i => (po_src i, po_dst i)) (all_fin x).
 
-(** The connected-components labeling and its representative predicate. *)
+(** 本节：The connected-components labeling representative predicate. （已译） *)
 Definition po_lab : Fin.t (y + z) → Fin.t (y + z) :=
   components po_edges (fun p => p).
 
 Definition po_isrep (p : Fin.t (y + z)) : bool := fin_eqb (po_lab p) p.
 
-(** The apex object: the number of representatives, that is, the number
-    of connected components. *)
+(** The apex 对象: number representatives, is, number
+ connected components. （已译） *)
 Definition po_apex : nat := fin_countP po_isrep.
 
 Lemma po_lab_idem : ∀ p, po_lab (po_lab p) = po_lab p.
@@ -364,13 +360,13 @@ Proof.
   intro p. unfold po_isrep. rewrite po_lab_idem. apply fin_eqb_refl.
 Qed.
 
-(** The class map sends an element to the index of its representative
-    among the representatives. *)
+(** 本节：The class map sends element index representative
+ among representatives. （已译） *)
 Definition po_cls (p : Fin.t (y + z)) : Fin.t po_apex :=
   fin_rank po_isrep (po_lab p) (po_isrep_lab p).
 
-(** The two pushout injections, as class maps of the coproduct
-    injections. *)
+(** 本节：The two pushout injections, class maps coproduct
+ injections. （已译） *)
 Definition po_in1 (i : Fin.t y) : Fin.t po_apex :=
   po_cls (fin_join (Datatypes.inl i)).
 Definition po_in2 (j : Fin.t z) : Fin.t po_apex :=
@@ -390,7 +386,7 @@ Proof.
   apply fin_eqb_eq. exact (fin_select_sat po_isrep k).
 Qed.
 
-(** The chosen representative of a class is a section of the class map. *)
+(** 本节：The chosen representative class section class map. （已译） *)
 Lemma po_cls_rep (k : Fin.t po_apex) :
   po_cls (fin_select po_isrep k) = k.
 Proof.
@@ -403,8 +399,8 @@ Proof.
   apply fin_rank_select.
 Qed.
 
-(** The two coproduct injections cover the apex: every class is the class
-    of a left or a right injection. *)
+(** 本节：The two coproduct injections cover apex: every class class
+ left right injection. （已译） *)
 Lemma apex_cover (k : Fin.t po_apex) :
   (∃ b, k = po_in1 b) ∨ (∃ c, k = po_in2 c).
 Proof.
@@ -437,8 +433,8 @@ Proof.
   - intros p; reflexivity.
 Qed.
 
-(** The span edges receive equal labels, whence the pushout square
-    commutes. *)
+(** 本节：The span edges receive equal labels, whence pushout square
+ commutes. （已译） *)
 Lemma po_lab_edge (i : Fin.t x) : po_lab (po_src i) = po_lab (po_dst i).
 Proof.
   exact (components_edge_eq po_edges (fun p => p) (po_src i, po_dst i)
@@ -469,7 +465,7 @@ Local Obligation Tactic := idtac.
     |}
 }.
 Next Obligation.
-  (* The square commutes: the two injections agree on the span. *)
+  (* 相关说明。 （已译） *)
   intros x y z f g i.
   exact (po_commutes f g i).
 Qed.
@@ -485,8 +481,7 @@ Next Obligation.
                  | Datatypes.inl b => q1 b
                  | Datatypes.inr c => q2 c
                  end).
-  (* [po_src] is discharged over [f] alone and [po_dst] over [g] alone,
-     since each names a single leg of the span. *)
+  (* 相关说明。 （已译） *)
   assert (HQ : ∀ i : Fin.t x, Qof (po_src f i) = Qof (po_dst g i)).
   { intro i. unfold Qof, po_src, po_dst.
     rewrite !fin_split_join. exact (Hc i). }

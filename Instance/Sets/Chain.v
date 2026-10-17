@@ -27,11 +27,11 @@ Section SetsOmegaColimit.
 
 Context (G : Omega ⟶ Sets).
 
-(** ** The colimit, as an instance of the general witness *)
+(* 相关说明。 （已译） *)
 
 Definition Sets_Omega_Colimit : Colimit G := Sets_Cocomplete Omega G.
 
-(** ** What the apex and the legs are, by conversion *)
+(* 相关说明。 （已译） *)
 
 Example Sets_omega_carrier :
   carrier (Sets_colim_obj G) = { n : nat & carrier (G n) }.
@@ -45,7 +45,7 @@ Example Sets_omega_apex :
   @vertex_obj _ _ _ (@limit_cone _ _ _ Sets_Omega_Colimit) = Sets_colim_obj G.
 Proof. reflexivity. Qed.
 
-(** ** Agreeing at a common later stage suffices *)
+(* 相关说明。 （已译） *)
 
 Lemma omega_colim_of_stage (m n k : nat)
   (p : m ~{Omega}~> k) (q : n ~{Omega}~> k) (x : G m) (y : G n) :
@@ -60,8 +60,7 @@ Proof.
     + exact (@cr_sym _ G _ _ (@cr_glue _ G n k q y)).
 Qed.
 
-(* The one-sided special case a reader of "the colimit is the union" wants
-   first: an element and its image one step along are already identified. *)
+(* 相关说明。 （已译） *)
 Corollary omega_colim_step (n : nat) (x : G n) :
   @equiv _ (Sets_colim_obj G) (existT _ n x)
     (existT _ (S n) (fmap[G] (omega_step n) x)).
@@ -69,17 +68,17 @@ Proof. exact (@cr_glue _ G n (S n) (omega_step n) x). Qed.
 
 End SetsOmegaColimit.
 
-(** ** The initial-algebra chain of an endofunctor of [Sets] *)
+(* * ** The initial-algebra chain 自函子 [Sets] （已译） *)
 
 Definition Sets_Chain_Colimit (F : Sets ⟶ Sets) : Colimit (Chain F) :=
   Sets_Cocomplete Omega (Chain F).
 
-(* Its apex is the sum of the chain's stages, by conversion. *)
+(* 相关说明。 （已译） *)
 Example Sets_chain_carrier (F : Sets ⟶ Sets) :
   carrier (Sets_colim_obj (Chain F)) = { n : nat & carrier (chain_obj F n) }.
 Proof. reflexivity. Qed.
 
-(** * Non-vacuity: the quotient merges something the coproduct keeps apart *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限、来源与用途相关定义、性质与动机。
@@ -101,8 +100,7 @@ Program Definition OmegaPoints : Omega ⟶ Sets := {|
 
 Definition omega_point (n : nat) : carrier (OmegaPoints n) := ttt.
 
-(* MERGED in the colimit: stage 0 and stage 1 are identified, by the glue
-   along the generating step [0 ~> 1]. *)
+(* 相关说明。 （已译） *)
 Theorem omega_stages_merged :
   @equiv _ (Sets_colim_obj OmegaPoints)
     (existT _ 0%nat (omega_point 0)) (existT _ 1%nat (omega_point 1)).

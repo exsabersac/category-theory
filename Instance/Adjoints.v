@@ -19,8 +19,8 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The identity functor is its own left and right adjoint: the transpose iso
-   F x ~> y ≅ x ~> U y is the identity on hom-sets when F = U = Id. *)
+(* The 恒等 函子 own left 右伴随: transpose iso
+ F x ~> y ≅ x ~> U y 恒等 hom-sets F = U = Id. （已译） *)
 #[export]
 Program Instance adj_id {C : Category} : Id ⊣ Id := {
   adj := fun _ _ =>

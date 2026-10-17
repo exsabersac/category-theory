@@ -11,7 +11,7 @@ Generalizable All Variables.
 
 Set Transparent Obligations.
 
-(** Renaming (variable renaming / weakening) for the de Bruijn calculus *)
+(** 本节：Renaming (variable renaming / weakening) de Bruijn calculus （已译） *)
 
 (*
    本文件给出 λ 演算相关实例。
@@ -42,11 +42,11 @@ Fixpoint idRen {Γ} : Ren Γ Γ :=
   | τ :: Γ => Keep idRen
   end.
 
-(* Keeping the head of an identity renaming is again the identity. *)
+(* Keeping head 恒等 renaming again 恒等. （已译） *)
 Lemma Keep_idRen {Γ τ} : Keep (τ:=τ) (@idRen Γ) = idRen.
 Proof. now induction Γ. Qed.
 
-(* The unique thinning into the empty context: drop every slot. *)
+(* The unique thinning 进入 empty context: drop every slot. （已译） *)
 Equations DropAll {Γ} : Ren Γ [] :=
   DropAll (Γ:=[])      := NoRen;
   DropAll (Γ:=_ :: xs) := Drop (DropAll (Γ:=xs)).
@@ -60,8 +60,8 @@ Proof. reflexivity. Qed.
 (* Single-variable weakening: drop one fresh slot τ, keep the rest. *)
 Definition skip1 {Γ τ} : Ren (τ :: Γ) Γ := Drop idRen.
 
-(* Composition of renamings (diagrammatic in the OPE category): RcR r r'
-   first applies the inner thinning r' then the outer r. *)
+(* Composition renamings (diagrammatic OPE 范畴): RcR r r'
+ first applies inner thinning r' then outer r. （已译） *)
 Equations RcR {Γ Γ' Γ''} (r : Ren Γ' Γ'') (r' : Ren Γ Γ') : Ren Γ Γ'' :=
   RcR σ        NoRen    := σ;
   RcR σ        (Drop δ) := Drop (RcR σ δ);
@@ -100,9 +100,7 @@ Proof.
       now rewrite IHν.
 Qed.
 
-(* Action of a renaming on a variable (contravariant: Var Γ' → Var Γ).
-   A dropped slot shifts the index by one (SV); a kept slot passes the
-   most-local variable through unchanged. *)
+(* 相关说明。 （已译） *)
 Equations RenVar {τ Γ Γ'} (r : Ren Γ Γ') (v : Var Γ' τ) : Var Γ τ :=
   RenVar NoRen    v      := v;
   RenVar (Drop σ) v      := SV (RenVar σ v);
@@ -139,9 +137,9 @@ Proof.
       now rewrite IHδ.
 Qed.
 
-(* Keep commutes with composition: extending both factors by a kept slot
-   and composing equals composing then keeping (used to push renamings
-   under binders). *)
+(* Keep commutes 复合: extending both factors kept slot
+ composing equals composing then keeping (used push renamings
+ under binders). （已译） *)
 Lemma Keep_RcR Γ Γ' Γ'' τ (r : Ren Γ' Γ'') (r' : Ren Γ Γ') :
   Keep (τ := τ) (RcR r r') = RcR (Keep r) (Keep r').
 Proof.
@@ -149,8 +147,8 @@ Proof.
   now induction r'.
 Qed.
 
-(* Action of a renaming on a term (the renaming functor on Exp); LAM pushes
-   the renaming under the binder via Keep. *)
+(* Action renaming term (the renaming 函子 Exp); LAM pushes
+ renaming under binder via Keep. （已译） *)
 Fixpoint RenExp {Γ Γ' τ} (r : Ren Γ Γ') (e : Exp Γ' τ) : Exp Γ τ :=
   match e with
   | EUnit         => EUnit
@@ -171,7 +169,7 @@ Proof.
   now induction e; simpl; simp RcR; simpl; intros; auto.
 Qed.
 
-(* Identity law of the renaming functor: idRen acts as the identity on terms. *)
+(* Identity law renaming 函子: idRen acts 恒等 terms. （已译） *)
 Lemma RenExp_idRen {τ Γ} (e : Exp Γ τ) :
   RenExp idRen e = e.
 Proof.
@@ -181,7 +179,7 @@ Proof.
   - now rewrite Keep_idRen, IHe.
 Qed.
 
-(* A closed term is fixed by the (unique) thinning out of the empty context. *)
+(* 相关说明。 （已译） *)
 Lemma RenExp_DropAll {τ} (e : Exp [] τ) :
   RenExp DropAll e = e.
 Proof.
@@ -201,8 +199,7 @@ Proof.
   - now rewrite <- IHe; simp RcR.
 Qed.
 
-(* Renaming preserves values: the image of a value under any renaming is a
-   value of the same shape.  Kept transparent (Defined) as it is computational. *)
+(* 相关说明。 （已译） *)
 Lemma RenExp_ValueP {Γ Γ' τ} {v : Exp Γ τ} (σ : Ren Γ' Γ) :
   ValueP v → ValueP (RenExp σ v).
 Proof.

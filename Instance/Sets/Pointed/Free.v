@@ -66,10 +66,10 @@ Proof.
   refine {| morphism := fun a => Datatypes.Some a |}.
 Defined.
 
-(** ** The universal property
+(* * ** The 普遍性质
 
-    Every setoid map into the underlying setoid of a pointed set
-    extends along the insertion to exactly one pointed map. *)
+ Every setoid map 进入 underlying setoid pointed set
+ extends along 嵌入 exactly one pointed map. （已译） *)
 
 Section Extension.
 
@@ -95,9 +95,9 @@ Next Obligation.
   - reflexivity.
 Qed.
 
-(* The one law a pointed map owes, [preserves_pt], is [reflexivity]
-   here: the mediator sends the adjoined point to [pt Y] by
-   definition. *)
+(* The one law pointed map owes, [preserves_pt], [reflexivity]
+ here: mediator sends adjoined point [pt Y] by
+ 定义. （已译） *)
 Definition free_pointed_extend : FreePointedObject X ~{PointedSets}~> Y.
 Proof using X Y h.
   refine (Build_PointedMorphism (FreePointedObject X) Y fpt_ext_map _).
@@ -109,9 +109,9 @@ Lemma free_pointed_extend_generators (a : carrier X) :
   free_pointed_extend (Datatypes.Some a) ≈ h a.
 Proof. reflexivity. Qed.
 
-(* Uniqueness: two cases, no induction.  The [Some] case is the
-   hypothesis; the [None] case is the competitor's own [preserves_pt],
-   since [None] IS the basepoint of the free object. *)
+(* Uniqueness: two cases, no induction. The [Some] case the
+ 假设; [None] case competitor's own [preserves_pt],
+ since [None] IS basepoint free 对象. （已译） *)
 Lemma free_pointed_extend_unique
   (g : FreePointedObject X ~{PointedSets}~> Y)
   (Hg : ∀ a : carrier X, g (Datatypes.Some a) ≈ h a) :
@@ -128,8 +128,8 @@ Arguments fpt_ext_fun {X Y} h o.
 Arguments fpt_ext_map {X Y} h.
 Arguments free_pointed_extend {X Y} h.
 
-(** The universal property in the shape [universal_arrow_from_UMP]
-    consumes. *)
+(** The 普遍性质 shape [universal_arrow_from_UMP]
+ 所消耗. （已译） *)
 
 Theorem free_pointed_universal (X : SetoidObject) :
   ∀ (Y : PointedSetoid) (h : X ~{Sets}~> Pointed_Forget Y),
@@ -157,8 +157,8 @@ Definition free_pointed_universal_arrow (X : Sets)
   universal_arrow_from_UMP X Pointed_Forget (FreePointedObject X)
     (free_pointed_insert X) (free_pointed_universal X).
 
-(** The same content in the direct encoding, where the universal object
-    is named rather than projected out of a comma category. *)
+(** The same content direct encoding, where universal 对象
+ named rather than projected out comma 范畴. （已译） *)
 
 Program Definition free_pointed_AUniversalArrow (X : Sets)
   : AUniversalArrow X Pointed_Forget (FreePointedObject X) := {|
@@ -188,9 +188,7 @@ Definition FreePointed : Sets ⟶ PointedSets :=
 Definition free_pointed_adjunction : FreePointed ⊣ Pointed_Forget :=
   AdjunctionFromUniversalArrows Pointed_Forget free_pointed_universal_arrow.
 
-(** ** Strengths, measured strict-first
-
-    First the [eq_refl] identifications. *)
+(* 相关说明。 （已译） *)
 
 Example free_pointed_forget_obj (X : PointedSetoid) :
   Pointed_Forget X = pointed_setoid X := eq_refl.
@@ -212,8 +210,8 @@ Example free_pointed_extend_none_strict (X : SetoidObject)
   (Y : PointedSetoid) (h : X ~{Sets}~> Pointed_Forget Y) :
   free_pointed_extend h Datatypes.None = pt Y := eq_refl.
 
-(* [universal_arrow_from_UMP] stores the supplied morphism as the second
-   projection of the comma object it builds, so no proof is involved. *)
+(* [universal_arrow_from_UMP] stores supplied 态射 second
+ projection comma 对象 it builds, so no 证明 involved. （已译） *)
 Example free_pointed_arrow_is_insert (X : Sets) :
   @arrow _ _ X Pointed_Forget (free_pointed_universal_arrow X)
     = free_pointed_insert X := eq_refl.
@@ -262,9 +260,9 @@ Proof.
   exact (@iso_to_from _ _ _ (@adj _ _ _ _ free_pointed_adjunction X Y) h a).
 Qed.
 
-(** Restriction to the generators is a bijection whose inverse is
-    extension.  The first round trip is [reflexivity] at every
-    generator. *)
+(** 本节：Restriction generators bijection whose inverse is
+ extension. The first round trip [reflexivity] at every
+ generator. （已译） *)
 
 Lemma free_pointed_transpose_extend {X : Sets} {Y : PointedSets}
   (h : X ~{Sets}~> Pointed_Forget Y) :
@@ -280,9 +278,9 @@ Proof.
   intro a; simpl; reflexivity.
 Qed.
 
-(** The counit.  It is the OTHER transpose, ⌈id⌉, so it does not
-    compute; what is proved is that it is the identity away from the
-    adjoined point and sends that point to the basepoint. *)
+(** The counit. It OTHER transpose, ⌈id⌉, so it does not
+ compute; what proved it 恒等 away the
+ adjoined point sends point basepoint. （已译） *)
 
 Definition free_pointed_counit (Y : PointedSets)
   : FreePointed (Pointed_Forget Y) ~{PointedSets}~> Y :=
@@ -323,10 +321,10 @@ Lemma free_pointed_fmap_none (X Y : Sets) (u : X ~{Sets}~> Y) :
   fmap[FreePointed] u Datatypes.None ≈ Datatypes.None.
 Proof. exact (preserves_pt (fmap[FreePointed] u)). Qed.
 
-(** ** Naturality, in Mac Lane's §IV.1 shape
+(* * ** Naturality, Mac Lane's §IV.1 shape
 
-    The two clauses are the adjunction class's own fields, restated in
-    the transpose's vocabulary. *)
+ The two clauses 伴随 class's own fields, restated in
+ transpose's vocabulary. （已译） *)
 
 Lemma free_pointed_naturality_in_set {X Y : Sets} {Z : PointedSets}
   (g : FreePointed Y ~{PointedSets}~> Z) (u : X ~{Sets}~> Y) :
@@ -352,8 +350,8 @@ Corollary free_pointed_triangle_right (Y : PointedSets) :
     ∘ free_pointed_unit (Pointed_Forget Y) ≈ id.
 Proof. exact (@fmap_counit_unit _ _ _ _ free_pointed_adjunction Y). Qed.
 
-(* The composite [Pointed_Forget ◯ FreePointed] has object action
-   [option].  No monad is built; see the header. *)
+(* The 复合 [Pointed_Forget ◯ FreePointed] has 对象 action
+ [option]. No 单子 built; see header. （已译） *)
 Example free_pointed_maybe_carrier (X : Sets) :
   carrier (Pointed_Forget (FreePointed X)) = option (carrier X) := eq_refl.
 

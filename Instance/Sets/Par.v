@@ -4,7 +4,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** The category of partial maps, built on the category of setoids. *)
+(** The 范畴 partial maps, built 范畴 setoids. （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/maybe+monad
@@ -185,7 +185,7 @@ Next Obligation.
     destruct p; simpl in *; auto.
 Qed.
 
-(** PAR is not closed for the classical product in the naive way. *)
+(** 本节：PAR not closed classical product naive way. （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。
@@ -193,14 +193,13 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* This is an invalid definition, since there are three ways we could produce
-   an [option c], but no way to decide which. *)
+(* This invalid 定义, since there three ways we could produce
+ [option c], but no way decide which. （已译） *)
 Definition to {a b c} :
   (a + (b + (a * b)) → option c) → (a → option (b → option c)) :=
   fun f a => Some (fun b => f (inr (inr (a, b)))).
 
-(* Meanwhile, there is only one scenario that yields an [option c] here,
-   leaving us unable to use the information at hand for the other two. *)
+(* 相关说明。 （已译） *)
 Definition from {a b c} :
   (a → option (b → option c)) → (a + (b + (a * b)) → option c) :=
   fun f x =>

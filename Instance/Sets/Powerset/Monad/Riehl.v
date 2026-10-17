@@ -1,4 +1,4 @@
-(** * Riehl's route to the naturality of the union *)
+(* * * Riehl's route 自然性 union （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -23,10 +23,10 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** The union as a least upper bound *)
+(* 相关说明。 （已译） *)
 
-(* ⋃ SS is the least upper bound, under inclusion, of the family of its
-   members, indexed by the members themselves. *)
+(* ⋃ SS least upper bound, under 含入, family its
+ members, indexed members themselves. （已译） *)
 Lemma Powerset_union_IsLUB@{o} {X : SetoidObject@{o o}}
   (SS : carrier (Powerset_Prop_obj@{o} (Powerset_Prop_obj@{o} X))) :
   IsLUB@{o o Set Set Set} (@subset_le@{o} X)
@@ -51,10 +51,9 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The naturality of μ, through the direct image as a left adjoint *)
+(* * ** The 自然性 μ, through direct image 左伴随 （已译） *)
 
-(* Through #382's [direct_image_preserves_joins]: the image of a least upper
-   bound is the least upper bound of the images. *)
+(* 相关说明。 （已译） *)
 Lemma join_natural_via_image@{o so} {X Y : SetoidObject@{o o}}
   (f : X ~{Sets@{o so}}~> Y)
   (SS : carrier (Powerset_Prop_obj@{o} (Powerset_Prop_obj@{o} X))) :
@@ -78,8 +77,8 @@ Proof.
 Qed.
 
 (* Through #382's [direct_image_preserves_joins_via_LAPC]: Riehl's Corollary
-   4.6.3 read off the left adjoint's preservation of colimits, at the
-   canonical union of the members. *)
+ 4.6.3 read off 左伴随's preservation colimits, at the
+ canonical union members. （已译） *)
 Lemma join_natural_via_LAPC@{o so} {X Y : SetoidObject@{o o}}
   (f : X ~{Sets@{o so}}~> Y)
   (SS : carrier (Powerset_Prop_obj@{o} (Powerset_Prop_obj@{o} X))) :
@@ -107,7 +106,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The three proofs inhabit the monad's naturality field *)
+(* * ** The three proofs inhabit 单子's 自然性 field （已译） *)
 
 (* The type of [Powerset_Monad]'s field [join_fmap_fmap] at f. *)
 Definition Powerset_join_natural_statement@{o so} {X Y : SetoidObject@{o o}}
@@ -116,8 +115,8 @@ Definition Powerset_join_natural_statement@{o so} {X Y : SetoidObject@{o o}}
     ∘ fmap[Powerset_Prop@{o so}] (fmap[Powerset_Prop@{o so}] f)
   ≈ fmap[Powerset_Prop@{o so}] f ∘ @join _ _ Powerset_Monad@{o so} X.
 
-(* The field itself, the direct lemma, and both of Riehl's routes: the
-   quadruple is well typed, so each route proves the field's statement. *)
+(* The field itself, direct 引理, both Riehl's routes: the
+ quadruple well typed, so each route proves field's statement. （已译） *)
 Definition join_natural_routes_agree@{o so} {X Y : SetoidObject@{o o}}
   (f : X ~{Sets@{o so}}~> Y) :
   Powerset_join_natural_statement@{o so} f

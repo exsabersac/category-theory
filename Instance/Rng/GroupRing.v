@@ -94,7 +94,7 @@ Next Obligation. intros G H f g Hfg a; exact (Hfg a). Qed.
 Next Obligation. intros G a; simpl; reflexivity. Qed.
 Next Obligation. intros G H K f g a; simpl; reflexivity. Qed.
 
-(* The element-level readings, on the nose. *)
+(* 相关说明。 （已译） *)
 Example grp_monsets_carrier (G : Grp) :
   mcar (Grp_MonSets G) = grp_setoid G := eq_refl.
 Example grp_monsets_op (G : Grp) (a b : carrier (grp_setoid G)) :
@@ -150,7 +150,7 @@ Definition monoid_hom_of_units_hom (G : Grp) (S : Rng)
     (fun a b => grp_map_mul h a b)
     (grp_map_unit h).
 
-(* Both passages leave the underlying map alone, on the nose. *)
+(* 相关说明。 （已译） *)
 Example units_hom_round (G : Grp) (S : Rng)
   (psi : Grp_MonSets G ~{MonSets}~> Rng_Forget_Mon S)
   (g : carrier (grp_setoid G)) :
@@ -167,8 +167,8 @@ Example monoid_hom_round (G : Grp) (S : Rng) (h : G ~{Grp}~> Rng_Units S)
 
 Definition GrpRing (G : Grp) : Rng := ZMonRing (Grp_MonSets G).
 
-(** The insertion of the group: the generator, with the generator of the
-    inverse as its chosen two-sided inverse. *)
+(** The 嵌入 group: generator, generator the
+ inverse chosen two-sided inverse. （已译） *)
 Definition grp_ring_insert (G : Grp) : G ~{Grp}~> Rng_Units (GrpRing G) :=
   units_hom_of_monoid_hom G (GrpRing G) (zmring_insert (Grp_MonSets G)).
 
@@ -222,8 +222,8 @@ Next Obligation.
     + intro g; exact (Hk g).
 Qed.
 
-(** The left-adjoint reading: the integral group ring is left adjoint to
-    the group-of-units functor. *)
+(** The left-adjoint reading: integral group ring 左伴随 to
+ group-of-units 函子. （已译） *)
 Definition GroupRingFunctor : Grp ⟶ Rng :=
   LeftAdjointFunctorFromUniversalArrows Rng_Units grp_ring_universal_arrow.
 

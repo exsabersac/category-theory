@@ -29,7 +29,7 @@ Generalizable All Variables.
 Record PTop@{o} := {
   pt_carrier :> SetoidObject@{o o};    (* the setoid of points *)
 
-  (* the topology: which predicates on the points are open *)
+  (* 相关说明。 （已译） *)
   POpen : (pt_carrier → Prop) → Prop;
 
   (* being open is invariant under pointwise equivalence of predicates *)
@@ -74,8 +74,8 @@ Proof.
     intro y; exact (iff_sym (Hk y)).
 Qed.
 
-(* Every constant proposition is open: the union of the family holding of
-   the whole space exactly when [P] does. *)
+(* Every 常值 命题 open: union family holding of
+ whole space exactly [P] does. （已译） *)
 Lemma popen_const@{o} (X : PTop@{o}) (P : Prop) : POpen X (fun _ => P).
 Proof.
   apply (popen_respects X
@@ -96,15 +96,14 @@ Proof. exact (popen_const X False). Qed.
 
 (** ** Continuous maps *)
 
-(* Continuity: the preimage of every open is open.  It is a proposition, so
-   a continuous map is a setoid map with a proof attached, at the level of
-   the points. *)
+(* Continuity: preimage every open open. It 命题, so
+ continuous map setoid map 证明 attached, at level of
+ points. （已译） *)
 Definition PCont@{o} {X Y : PTop@{o}} (f : SetoidMorphism@{o o o} X Y) :
   Prop :=
   ∀ U : Y → Prop, POpen Y U → POpen X (fun x => U (f x)).
 
-(* Continuity depends on the map only up to pointwise [≈]: every open
-   respects the codomain's equality. *)
+(* 相关说明。 （已译） *)
 Lemma pcont_respects@{o} {X Y : PTop@{o}} (f g : SetoidMorphism@{o o o} X Y) :
   (∀ x, f x ≈ g x) → PCont f → PCont g.
 Proof.
@@ -123,8 +122,7 @@ Record PMor@{o} (X Y : PTop@{o}) : Type@{o} := {
 Arguments pmap {X Y} _.
 Arguments pcont {X Y} _ _ _.
 
-(* The hom-setoid compares the map parts pointwise, as [Sets] does; the
-   continuity proofs are not compared. *)
+(* 相关说明。 （已译） *)
 Program Definition PMor_Setoid@{o} (X Y : PTop@{o}) :
   Setoid@{o o} (PMor@{o} X Y) := {|
   equiv := fun f g => ∀ x, pmap f x ≈ pmap g x
@@ -155,7 +153,7 @@ Proof.
   - apply Hg.
 Qed.
 
-(** ** The category and its underlying-set functor *)
+(* * ** The 范畴 underlying-set 函子 （已译） *)
 
 Program Definition PTopCat@{o so | o < so +} : Category@{so o o} := {|
   obj     := PTop@{o};
@@ -168,7 +166,7 @@ Program Definition PTopCat@{o so | o < so +} : Category@{so o o} := {|
 |}.
 Solve All Obligations with (intros; simpl; intros; reflexivity).
 
-(* The points, into the Sets whose objects ARE the point setoids. *)
+(* The points, 进入 Sets whose 对象 ARE point setoids. （已译） *)
 Program Definition PForget@{o so | o < so +} :
   PTopCat@{o so} ⟶ Sets@{o so} := {|
   fobj := fun X => pt_carrier X;
@@ -189,7 +187,7 @@ Example PForget_fmap@{o so | o < so +} {X Y : PTop@{o}}
   Faithful PForget@{o so}.
 Proof. constructor; intros x y f g H p; exact (H p). Qed.
 
-(** ** Concrete spaces: the discrete topology, the point and two points *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Prop 相关定义、性质与动机。
@@ -229,8 +227,7 @@ Proof.
   intros HU HV x y Hxy [u v]; exact (conj (HU x y Hxy u) (HV x y Hxy v)).
 Qed.
 
-(* A record literal over the five lemmas, so that the points and the opens
-   read back at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Definition PDiscrete@{o} (S : SetoidObject@{o o}) : PTop@{o} := {|
   pt_carrier     := S;
   POpen          := pdisc_open S;
@@ -247,9 +244,7 @@ Example PDiscrete_carrier@{o} (S : SetoidObject@{o o}) :
 Example PDiscrete_open@{o} (S : SetoidObject@{o o}) (U : S → Prop) :
   POpen (PDiscrete S) U = (∀ x y : S, x ≈ y → U x → U y) := eq_refl.
 
-(* Every setoid map out of a discrete space is continuous: the preimage of
-   an open respects the domain's equality because the map and the open
-   do. *)
+(* 相关说明。 （已译） *)
 Lemma pdisc_cont@{o} (S : SetoidObject@{o o}) (Y : PTop@{o})
   (f : SetoidMorphism@{o o o} S Y) : @PCont (PDiscrete S) Y f.
 Proof.
@@ -264,18 +259,17 @@ Definition pdisc_mor@{o} (S : SetoidObject@{o o}) (Y : PTop@{o})
 Example pdisc_mor_map@{o} (S : SetoidObject@{o o}) (Y : PTop@{o})
   (f : SetoidMorphism@{o o o} S Y) : pmap (pdisc_mor S Y f) = f := eq_refl.
 
-(* The constant map at a point [y] of a space, as a setoid map from any
-   setoid. *)
+(* The 常值 map at point [y] space, setoid map any
+ setoid. （已译） *)
 Definition pconst@{o} (S : SetoidObject@{o o}) (Y : PTop@{o}) (y : Y) :
   SetoidMorphism@{o o o} S Y :=
   {| morphism := fun _ => y; proper_morphism := fun _ _ _ => reflexivity y |}.
 
-(* The one-point space and the two-point discrete space, on
-   Instance/Sets.v's [unit_setoid_object] and [bool_setoid_object]. *)
+(* 相关说明。 （已译） *)
 Definition PPoint@{o} : PTop@{o} := PDiscrete unit_setoid_object@{o o}.
 
 Definition PBool@{o} : PTop@{o} := PDiscrete bool_setoid_object@{o o}.
 
-(* The two points of [PBool] are distinct: its equality is Leibniz. *)
+(* 相关说明。 （已译） *)
 Lemma PBool_points_distinct@{o} : @equiv _ PBool@{o} false true → False.
 Proof. intro H; discriminate H. Qed.

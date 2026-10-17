@@ -31,7 +31,7 @@ Open Scope category_scope.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The category of graded abelian groups *)
+(* * ** The 范畴 graded abelian groups （已译） *)
 
 (* Objects are ℕ-indexed families of abelian groups; an arrow is a
    homomorphism in each degree; everything is checked degreewise. *)
@@ -51,8 +51,8 @@ Next Obligation.
     transitivity (g n); [ exact (H1 n) | exact (H2 n) ].
 Qed.
 Next Obligation.
-  (* [Ab]'s hom-setoid unfolds to [CMonHom_Setoid], so the ambient
-     category of the [Proper] instance has to be named. *)
+  (* [Ab]'s hom-setoid unfolds [CMonHom_Setoid], so ambient
+ 范畴 [Proper] instance has named. （已译） *)
   intros F G H f f' Hf g g' Hg n.
   exact (@compose_respects Ab (F n) (G n) (H n) _ _ (Hf n) _ _ (Hg n)).
 Qed.
@@ -69,7 +69,7 @@ Next Obligation.
   intros F G H K f g h n; exact (comp_assoc_sym (f n) (g n) (h n)).
 Qed.
 
-(** ** The measurement against the indexed product *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -94,7 +94,7 @@ Example graded_compose_definitional (F G H : obj[GradedAb]) :
   @compose GradedAb F G H
     = @compose (PiCat (fun _ : nat => Ab)) F G H := eq_refl.
 
-(** ** The two spellings compared in Cat *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -131,8 +131,8 @@ Next Obligation.
   intros F G H f g n; reflexivity.
 Qed.
 
-(* Oriented towards [GradedAb], so that it composes on the left of the
-   donor isomorphism below. *)
+(* Oriented towards [GradedAb], so it composes left the
+ donor 同构 below. （已译） *)
 Program Definition PiCat_GradedAb_iso :
   PiCat (fun _ : nat => Ab) ≅[Cat] GradedAb := {|
   to   := PiCat_GradedAb;
@@ -160,9 +160,9 @@ Definition Graded_Fun_equiv :
 
 (** ** The degree shift *)
 
-(* Reindexing along the successor: an endofunctor, since the arrows are
-   degreewise and reindexing them needs no more than reindexing the
-   objects. *)
+(* Reindexing along successor: 自函子, since arrows are
+ degreewise reindexing them needs no more than reindexing the
+ 对象. （已译） *)
 Program Definition GradedAb_shift : GradedAb ⟶ GradedAb := {|
   fobj := fun F n => F (S n);
   fmap := fun F G f n => f (S n)
@@ -177,8 +177,8 @@ Next Obligation.
   intros F G H f g n; reflexivity.
 Qed.
 
-(* Maps of degree one are not outside the category: they are ordinary
-   arrows into the shift, definitionally. *)
+(* Maps degree one not outside 范畴: they ordinary
+ arrows 进入 shift, definitionally. （已译） *)
 Example graded_degree_one (F G : obj[GradedAb]) :
   (∀ n : nat, F n ~{Ab}~> G (S n))
     = (F ~{GradedAb}~> fobj[GradedAb_shift] G) := eq_refl.
@@ -232,13 +232,12 @@ Example graded_deg_mul_at_3 :
 Example graded_deg_mul_at_0 :
   cmon_map (graded_deg_mul 0%nat) 5%Z = 0%Z := eq_refl.
 
-(* Shifting relabels the degrees: the component in degree 2 of the
-   shifted map is the component in degree 3 of the original. *)
+(* 相关说明。 （已译） *)
 Example shift_deg_mul_at_2 :
   cmon_map (fmap[GradedAb_shift] graded_deg_mul 2%nat) 5%Z = 15%Z := eq_refl.
 
-(* A group concentrated in degree zero — the standard example of a
-   graded object that is not constant. *)
+(* A group concentrated degree zero — standard example a
+ graded 对象 not 常值. （已译） *)
 Definition conc0 : obj[GradedAb] :=
   fun n => match n with
            | O   => Zgroup
@@ -247,14 +246,13 @@ Definition conc0 : obj[GradedAb] :=
 
 Example conc0_at_0 : conc0 0%nat = Zgroup := eq_refl.
 
-(* Shifting a group concentrated in degree zero leaves nothing behind:
-   every degree of the shift is the trivial group. *)
+(* 相关说明。 （已译） *)
 Example shift_conc0_at_0 :
   fobj[GradedAb_shift] conc0 0%nat = Ab_trivial := eq_refl.
 
 Example shift_conc0_at_3 :
   fobj[GradedAb_shift] conc0 3%nat = Ab_trivial := eq_refl.
 
-(* Iterating the shift is reindexing twice, on the nose. *)
+(* 相关说明。 （已译） *)
 Example shift_twice (F : obj[GradedAb]) (n : nat) :
   fobj[GradedAb_shift] (fobj[GradedAb_shift] F) n = F (S (S n)) := eq_refl.

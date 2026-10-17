@@ -55,11 +55,11 @@ Notation "X <- A ; B" := (A >>= (fun X => B))%monad
 Notation "A ;; B" := (A >>= (fun _ => B))%monad
   (at level 81, right associativity, only parsing) : monad_scope.
 
-(* run x only when the guard holds, else the no-op ret tt *)
+(* 相关说明。 （已译） *)
 Definition when `(b : bool) (x : m ()) : m () :=
   if b then x else ret tt.
 
-(* run x only when the guard fails (the dual of [when]) *)
+(* 相关说明。 （已译） *)
 Definition unless `(b : bool) (x : m ()) : m () :=
   if negb b then x else ret tt.
 

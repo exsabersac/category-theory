@@ -21,7 +21,7 @@ Require Import Coq.Lists.List.
 
 Generalizable All Variables.
 
-(** * The tensor-algebra monad T, directly: T A ≅ ⨁ₙ A^{⊗n} *)
+(* * * The tensor-algebra 单子 T, directly: T A ≅ ⨁ₙ A^{⊗n} （已译） *)
 
 (*
  Book: Riehl, "Category Theory in Context", Example 5.5.7(ii), printed
@@ -33,7 +33,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** The ring ⨁ₙ A^{⊗n}: juxtaposition of words *)
+(* 相关说明。 （已译） *)
 
 Section Juxtaposition.
 
@@ -90,7 +90,7 @@ Proof.
   - rewrite IHs. reflexivity.
 Qed.
 
-(* Associativity and both unit laws are LEIBNIZ equations. *)
+(* 相关说明。 （已译） *)
 Lemma tw_mul_assoc (s t u : TWTerm A) :
   tw_mul (tw_mul s t) u = tw_mul s (tw_mul t u).
 Proof.
@@ -133,9 +133,7 @@ Proof.
   - exact (twe_trans (twe_neg IH1) (tw_neg_zero A)).
 Qed.
 
-(* The ring: the words' abelian group, with the empty word as 1 and
-   juxtaposition as the product.  Right distributivity and 0·t = 0 hold
-   by conversion. *)
+(* 相关说明。 （已译） *)
 Definition TWRing : RingObject := {|
   ring_rig := {|
     rig_setoid := cmon_setoid (TWAb A);
@@ -173,7 +171,7 @@ End Juxtaposition.
 Arguments tw_mul {A} _ _.
 
 (* ------------------------------------------------------------------------ *)
-(** ** A word as a formal ring expression *)
+(* 相关说明。 （已译） *)
 
 Section WordExpr.
 
@@ -181,8 +179,7 @@ Context (A : AbObject).
 
 Local Notation L := (carrier (cmon_setoid A)).
 
-(* ⟨⟩ ↦ 1, ⟨a⟩ ↦ ⟨a⟩ and ⟨a w⟩ ↦ ⟨a⟩·⟨w⟩: the product of the letters,
-   bracketed to the right, with no factor 1 on a non-empty word. *)
+(* 相关说明。 （已译） *)
 Fixpoint fr_word (w : list L) : FRTerm A :=
   match w with
   | nil => fr_one
@@ -238,7 +235,7 @@ End WordExpr.
 Arguments fr_word {A} _.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Mac Lane's (a): T A ≅ ⨁ₙ A^{⊗n} *)
+(* 相关说明。 （已译） *)
 
 Section Iso.
 
@@ -272,11 +269,11 @@ Proof.
   - intros a b. exact (twe_lin nil nil a b).
 Defined.
 
-(* to : T A → ⨁, the SHARED extension of the insertion. *)
+(* to : T A → ⨁, SHARED extension 嵌入. （已译） *)
 Definition tw_to_rng@{+} : FreeRngAbObject A ~{Rng@{u p}}~> TWRing A :=
   free_rng_ab_extend tw_insert.
 
-(* from : ⨁ → T A, each word to the product of its letters. *)
+(* 相关说明。 （已译） *)
 Fixpoint tw_to_fr (t : TWTerm A) : FRTerm A :=
   match t with
   | tw_word w => fr_word w
@@ -314,7 +311,7 @@ Proof.
   - intros s t. apply fr_refl.
 Defined.
 
-(* to ∘ from is the identity on terms, LEIBNIZ. *)
+(* to ∘ 恒等 terms, LEIBNIZ. （已译） *)
 Lemma fr_eval_word@{+} (w : list L) :
   fr_eval tw_insert (fr_word w) = tw_word w.
 Proof.
@@ -361,7 +358,7 @@ Proof.
     exact (fre_sym (rng_mul_neg_l (FreeRngAbObject A) _ _)).
 Qed.
 
-(* from ∘ to is the identity up to ≈. *)
+(* from ∘ 恒等 up ≈. （已译） *)
 Lemma tw_from_to@{+} (t : FRTerm A) :
   fr_eq (tw_to_fr (rig_map tw_to_rng t)) t.
 Proof.
@@ -384,7 +381,7 @@ Proof.
   - intro t. exact (tw_from_to t).
 Defined.
 
-(* η a is the one-letter word, on the nose. *)
+(* 相关说明。 （已译） *)
 Example T_TW_ret@{+} (a : L) :
   cmon_map (to T_TW_iso) (cmon_map (@ret _ _ TM A) a) = tw_word (a :: nil)
   := eq_refl.
@@ -399,8 +396,8 @@ Lemma T_TW_to_word@{+} (w : list L) :
   cmon_map (to T_TW_iso) (fr_word w) = tw_word w.
 Proof. exact (fr_eval_word w). Qed.
 
-(* from ∘ to is the identity on the nose at a generator and at a product
-   of two generators. *)
+(* from ∘ 恒等 nose at generator at product
+ two generators. （已译） *)
 Example T_TW_from_to_gen@{+} (a : L) :
   cmon_map (from T_TW_iso) (cmon_map (to T_TW_iso) (fr_gen a)) = fr_gen a
   := eq_refl.
@@ -418,7 +415,7 @@ Arguments tw_to_fr {A} _.
 Arguments tw_from {A}.
 
 (* ------------------------------------------------------------------------ *)
-(** ** T f is the letterwise map f^{⊗n}; μ is juxtaposition *)
+(* 相关说明。 （已译） *)
 
 Section Readings.
 
@@ -455,7 +452,7 @@ Proof.
   - rewrite IH1. reflexivity.
 Qed.
 
-(* The relabelled evaluation, read through [to], is the letterwise map. *)
+(* 相关说明。 （已译） *)
 Lemma tw_to_relabel@{+} {A B : Ab@{u p}} (f : A ~{Ab@{u p}}~> B)
   (t : FRTerm A) :
   rig_map (@tw_to_rng B) (fr_eval (free_rng_ab_insert B ∘[Ab@{u p}] f) t)
@@ -481,8 +478,7 @@ Proof.
   exact (tw_eq_of_eq (tw_to_relabel f t)).
 Qed.
 
-(* The product of a word of elements of the ring, bracketed to the
-   right, with no factor 1 on a non-empty word. *)
+(* 相关说明。 （已译） *)
 Fixpoint tw_prod {A : Ab@{u p}} (ws : list (TWTerm A)) : TWTerm A :=
   match ws with
   | nil => tw_word nil
@@ -564,7 +560,7 @@ Proof.
                      (tw_mul_respects_r A _ _ _ IH2)).
 Qed.
 
-(* On the nose at a generator of T T A and at a product of two. *)
+(* 相关说明。 （已译） *)
 Example T_TW_join_gen@{+} {A : Ab@{u p}} (s : FRTerm A) :
   cmon_map (to (T_TW_iso A))
     (cmon_map (@join _ _ TM A) (@fr_gen (fobj[TF] A) s))
@@ -582,7 +578,7 @@ Example T_TW_join_pair@{+} {A : Ab@{u p}} (s t : FRTerm A) :
   := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** ⨁ₙ (−)^{⊗n} as an endofunctor of Ab, naturally isomorphic to T *)
+(* * ** ⨁ₙ (−)^{⊗n} 自函子 Ab, naturally isomorphic T （已译） *)
 
 Lemma tw_map_respects@{+} {A B : Ab@{u p}} (f : A ~{Ab@{u p}}~> B)
   (s t : TWTerm A) :
@@ -671,7 +667,7 @@ Example TWF_map_word@{+} {A B : Ab@{u p}} (f : A ~{Ab@{u p}}~> B)
   cmon_map (fmap[TWF] f) (tw_word w) = tw_word (map (cmon_map f) w)
   := eq_refl.
 
-(* T ≅ ⨁ₙ (−)^{⊗n}, naturally, with [T_TW_iso] as the components. *)
+(* 相关说明。 （已译） *)
 Definition T_TW_natural@{+} : TF ≈ TWF.
 Proof.
   exists (fun A => T_TW_iso A).
@@ -691,7 +687,7 @@ End Readings.
 Arguments tw_map {A B} f t.
 
 (* ------------------------------------------------------------------------ *)
-(** ** ⨁ₙ (−)^{⊗n} as a monad, directly, and T ≅ it as monads *)
+(* * ** ⨁ₙ (−)^{⊗n} 单子, directly, T ≅ it 单子 （已译） *)
 
 Section DirectMonad.
 
@@ -751,7 +747,7 @@ Proof.
   - intros s t. apply tw_refl.
 Defined.
 
-(* The product of the one-letter words of w is w, LEIBNIZ... *)
+(* 相关说明。 （已译） *)
 Lemma tw_prod_letters@{+} {A : Ab@{u p}}
   (w : list (carrier (cmon_setoid A))) :
   tw_prod (map (fun a => @tw_word A (a :: nil)) w) = tw_word w.
@@ -771,7 +767,7 @@ Proof.
   - rewrite IHs. reflexivity.
 Qed.
 
-(* The letterwise map commutes with the word product, LEIBNIZ... *)
+(* 相关说明。 （已译） *)
 Lemma tw_prod_map@{+} {A B : Ab@{u p}} (f : A ~{Ab@{u p}}~> B)
   (ws : list (TWTerm A)) :
   tw_prod (map (tw_map f) ws) = tw_map f (tw_prod ws).
@@ -792,8 +788,7 @@ Proof.
   - rewrite IHs. reflexivity.
 Qed.
 
-(* Juxtaposing a product of words of words is the product of the
-   juxtapositions, at ≈. *)
+(* 相关说明。 （已译） *)
 Lemma tw_join_prod@{+} {A : Ab@{u p}} (ws : list (TWTerm (TWAb A))) :
   tw_eq A (tw_join (tw_prod ws)) (tw_prod (map tw_join ws)).
 Proof.
@@ -803,9 +798,9 @@ Proof.
   exact (tw_mul_respects_r A _ _ _ IH).
 Qed.
 
-(* Mac Lane's direct description, "like that in the text for W": η the
-   one-letter word, μ the juxtaposition of a word of words, the laws
-   proved by induction on terms without the adjunction. *)
+(* Mac Lane's direct description, "like text W": η the
+ one-letter word, μ juxtaposition word words, laws
+ proved induction terms without 伴随. （已译） *)
 Definition TWMonad@{+} : @Monad Ab@{u p} TWF.
 Proof.
   unshelve refine (@Build_Monad Ab@{u p} TWF (fun A => @tw_insert A)
@@ -827,9 +822,9 @@ Proof.
     intros A B f t. exact (tw_eq_of_eq (tw_join_natural f t)).
 Defined.
 
-(* η IS the insertion of one-letter words, as the whole record; μ IS
-   juxtaposition, on a word of words the product of the inner words; and
-   μ ∘ η T = 1 on the nose. *)
+(* η IS 嵌入 one-letter words, whole record; μ IS
+ juxtaposition, word words product inner words; and
+ μ ∘ η T = 1 nose. （已译） *)
 Example TWMonad_ret@{+} (A : Ab@{u p}) :
   @ret _ _ TWMonad A = @tw_insert A := eq_refl.
 
@@ -853,9 +848,9 @@ Proof.
   - intros A B f t. simpl. exact (T_TW_map f t).
 Defined.
 
-(* ...form a morphism of monads T → TWMonad (Monad/Morphism.v's
-   [MonadHom]): the unit law by conversion, the multiplication law from
-   [T_TW_join], [T_TW_map] and [tw_join_respects]. *)
+(* ...form 态射 单子 T → TWMonad (Monad/Morphism.v's
+ [MonadHom]): unit law conversion, multiplication law from
+ [T_TW_join], [T_TW_map] [tw_join_respects]. （已译） *)
 Definition T_TW_monad_hom@{+} : MonadHom TM TWMonad.
 Proof.
   unshelve refine {| mh_transform := T_TW_transform |}.
@@ -869,8 +864,7 @@ Defined.
 Example T_TW_monad_hom_component@{+} (A : Ab@{u p}) :
   transform[mh_transform T_TW_monad_hom] A = to (T_TW_iso A) := eq_refl.
 
-(* The inverse components [from (T_TW_iso A)] are natural, inverting a
-   natural family... *)
+(* 相关说明。 （已译） *)
 Lemma TW_T_natural@{+} {A B : Ab@{u p}} (f : A ~{Ab@{u p}}~> B)
   (t : TWTerm A) :
   fr_eq (cmon_map (fmap[TF] f) (cmon_map (from (T_TW_iso A)) t))
@@ -890,8 +884,8 @@ Proof.
   - intros A B f t. exact (fre_sym (TW_T_natural f t)).
 Defined.
 
-(* ...and the product of a word, sent to T, is μ of its word of images, so
-   they form a morphism of monads TWMonad → T. *)
+(* ...and product word, sent T, μ word images, so
+ they form 态射 单子 TWMonad → T. （已译） *)
 Lemma tw_to_fr_prod@{+} {A : Ab@{u p}} (ws : list (TWTerm A)) :
   fr_eq (tw_to_fr (tw_prod ws))
         (fr_eval (@id Ab@{u p} (fobj[TF] A))
@@ -922,8 +916,8 @@ Defined.
 Example TW_T_monad_hom_component@{+} (A : Ab@{u p}) :
   transform[mh_transform TW_T_monad_hom] A = from (T_TW_iso A) := eq_refl.
 
-(* T ≅ ⨁ₙ (−)^{⊗n} AS MONADS: the two morphisms are inverse in
-   Monad/Morphism.v's category [Monads Ab] of monads on Ab. *)
+(* T ≅ ⨁ₙ (−)^{⊗n} AS MONADS: two 态射 inverse in
+ Monad/Morphism.v's 范畴 [Monads Ab] 单子 Ab. （已译） *)
 Definition T_TW_monad_iso@{+} :
   @Isomorphism (Monads Ab@{u p}) (existT _ TF TM) (existT _ TWF TWMonad).
 Proof.

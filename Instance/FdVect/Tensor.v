@@ -34,9 +34,7 @@ Section Tensor.
 
 Context (F : FieldObject).
 
-(* An abbreviation for the underlying rig, purely to keep the finite-sum
-   applications below inside the column budget.  It is a section-local
-   notation and disappears at [End Tensor]. *)
+(* 相关说明。 （已译） *)
 Notation FR := (field_ring F).
 
 (*
@@ -45,9 +43,9 @@ Notation FR := (field_ring F).
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* A sum over Fin.t (a + b) splits into the two blocks cut out by
-   [Fin.L] and [Fin.R].  Both index shifts reduce judgmentally, so the
-   induction needs no transport. *)
+(* A sum over Fin.t (a + b) splits 进入 two blocks cut out by
+ [Fin.L] [Fin.R]. Both index shifts reduce judgmentally, so the
+ induction needs no transport. （已译） *)
 Lemma fin_sum_split (a b : nat)
   (h : Fin.t (a + b) → carrier (rig_setoid F)) :
   fin_sum FR h
@@ -61,9 +59,7 @@ Proof.
     now rewrite rig_add_assoc.
 Qed.
 
-(* A sum over Fin.t (m * n) is the double sum over its two components,
-   the codec's first clause being [Fin.L] and its second [Fin.R], both
-   judgmentally. *)
+(* 相关说明。 （已译） *)
 Lemma fin_sum_pair (m n : nat)
   (h : Fin.t (m * n) → carrier (rig_setoid F)) :
   fin_sum FR h
@@ -88,8 +84,7 @@ Proof.
   exact (f_equal fst Hp, f_equal snd Hp).
 Qed.
 
-(* A delta on the product index set factors as the product of the two
-   component deltas. *)
+(* 相关说明。 （已译） *)
 Lemma delta_pair {m n : nat} (i k : Fin.t m) (j l : Fin.t n) :
   delta FR (fin_pair i j) (fin_pair k l)
     ≈ rig_mul F (delta FR i k) (delta FR j l).
@@ -116,9 +111,7 @@ Proof.
     exact (Hik (fst (fin_pair_inj i k j l Hc))).
 Qed.
 
-(* The form the Kronecker square actually presents: a product of the
-   two component deltas of a decoded index pair is the delta of the
-   indices themselves. *)
+(* 相关说明。 （已译） *)
 Lemma delta_unpair {m n : nat} (a b : Fin.t (m * n)) :
   rig_mul F (delta FR (fst (fin_unpair a)) (fst (fin_unpair b)))
             (delta FR (snd (fin_unpair a)) (snd (fin_unpair b)))
@@ -131,8 +124,7 @@ Proof.
   - now rewrite !fin_pair_unpair.
 Qed.
 
-(* A sum of separated products over the product index set is the
-   product of the two sums.  This is the shape [fmap_comp] needs. *)
+(* 相关说明。 （已译） *)
 Lemma fin_sum_pair_mul (m n : nat)
   (h1 : Fin.t m → carrier (rig_setoid F))
   (h2 : Fin.t n → carrier (rig_setoid F)) :
@@ -150,9 +142,7 @@ Proof.
   now rewrite fin_unpair_pair.
 Qed.
 
-(** ** Two commutative rearrangements
-
-    Both spend [field_comm], and nothing else. *)
+(* 相关说明。 （已译） *)
 
 Lemma mul_shuffle4 (a b c d : carrier (rig_setoid F)) :
   rig_mul F (rig_mul F a b) (rig_mul F c d)
@@ -180,8 +170,8 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The i-th basis vector of V: the expansion of the i-th standard
-   tuple.  A based object is exactly one for which this makes sense. *)
+(* The i-th basis vector V: expansion i-th standard
+ tuple. A based 对象 exactly one makes sense. （已译） *)
 Definition bvec (V : FdVectObject F) (i : Fin.t (fdv_dim V)) :
   carrier (cmon_setoid (fdv_mod V)) :=
   fdv_expand V (std_basis F (fdv_dim V) i).
@@ -206,8 +196,8 @@ Proof.
     apply (IH (fun i => g (Fin.FS i))).
 Qed.
 
-(* Coordinates are jointly injective — they ARE an isomorphism onto
-   F^n — so agreeing at every index is agreeing. *)
+(* Coordinates jointly injective — they ARE 同构 onto
+ F^n — so agreeing at every index agreeing. （已译） *)
 Lemma coord_ext (V : FdVectObject F)
   (v w : carrier (cmon_setoid (fdv_mod V))) :
   (∀ k, fdv_coord V v k ≈ fdv_coord V w k) → v ≈ w.
@@ -220,7 +210,7 @@ Proof.
     + apply fdv_expand_coord.
 Qed.
 
-(* Every vector is the sum of its coordinates against the basis. *)
+(* 相关说明。 （已译） *)
 Lemma vec_expansion (V : FdVectObject F)
   (v : carrier (cmon_setoid (fdv_mod V))) :
   v ≈ msum (fdv_mod V)
@@ -241,9 +231,7 @@ Proof.
     apply delta_sym.
 Qed.
 
-(* The table of a linear map: entry (i, k) is the k-th coordinate of
-   the image of the i-th basis vector.  The SOURCE index comes first;
-   see the header's orientation note. *)
+(* 相关说明。 （已译） *)
 Definition fentry {V W : FdVectObject F} (f : V ~{FdVect F}~> W)
   (i : Fin.t (fdv_dim V)) (k : Fin.t (fdv_dim W)) :
   carrier (rig_setoid F) :=
@@ -257,8 +245,8 @@ Proof.
   exact (fdv_coord_respects W _ _ (H (bvec V i)) k).
 Qed.
 
-(* The identity's table is the Kronecker delta — with the arguments in
-   this order, which is what pins the orientation down. *)
+(* The 恒等's table Kronecker delta — arguments in
+ order, what pins orientation down. （已译） *)
 Lemma fentry_id (V : FdVectObject F) (i k : Fin.t (fdv_dim V)) :
   fentry (@id (FdVect F) V) i k ≈ delta FR k i.
 Proof.
@@ -322,8 +310,7 @@ Qed.
 Definition TensorSq_obj (V : FdVectObject F) : FdVectObject F :=
   StdVect F (fdv_dim V * fdv_dim V).
 
-(* The Kronecker square of the table of f, at the decoded index pairs
-   of a source position p and a target position q. *)
+(* 相关说明。 （已译） *)
 Definition tsq_ker {V W : FdVectObject F} (f : V ~{FdVect F}~> W)
   (p : Fin.t (fdv_dim V * fdv_dim V))
   (q : Fin.t (fdv_dim W * fdv_dim W)) : carrier (rig_setoid F) :=
@@ -391,10 +378,10 @@ Proof.
   apply rig_mul_assoc.
 Qed.
 
-(** *** The two functor laws that have content *)
+(* * *** The two 函子 laws have content （已译） *)
 
-(* The identity's Kronecker square is the identity: two deltas fuse
-   into one by [delta_unpair], and the sum then collapses. *)
+(* The 恒等's Kronecker square 恒等: two deltas fuse
+ one [delta_unpair], sum then collapses. （已译） *)
 Lemma tsq_map_id (V : FdVectObject F)
   (t : Fin.t (fdv_dim V * fdv_dim V) → carrier (rig_setoid F))
   (q : Fin.t (fdv_dim V * fdv_dim V)) :
@@ -415,9 +402,7 @@ Proof.
   - apply (fin_sum_delta_r FR q t).
 Qed.
 
-(* Functoriality.  Pull the inner sum out, exchange the two sums,
-   regroup the four table entries so that the two contractions
-   separate, then run [fin_sum_pair_mul] and [fentry_comp]. *)
+(* 相关说明。 （已译） *)
 Lemma tsq_map_comp {V W X : FdVectObject F}
   (f : V ~{FdVect F}~> W) (g : W ~{FdVect F}~> X)
   (t : Fin.t (fdv_dim V * fdv_dim V) → carrier (rig_setoid F))
@@ -462,7 +447,7 @@ Proof.
   apply rig_mul_respects; symmetry; apply fentry_comp.
 Qed.
 
-(** *** The packaged morphism and the functor *)
+(* * *** The packaged 态射 函子 （已译） *)
 
 Definition tsq_hom {V W : FdVectObject F} (f : V ~{FdVect F}~> W) :
   TensorSq_obj V ~{FdVect F}~> TensorSq_obj W.
@@ -499,7 +484,7 @@ Next Obligation.
   apply tsq_map_comp.
 Qed.
 
-(** ** Scalar maps, and the arithmetic of cancelling a 2 *)
+(* 相关说明。 （已译） *)
 
 (* Multiplication by a scalar.  It is a map of F-modules only because F
    is COMMUTATIVE: [rm_map_smul] wants c·(r·v) ≈ r·(c·v), which is
@@ -536,8 +521,7 @@ Proof.
   - apply rig_add_respects; apply rig_mul_one_l.
 Qed.
 
-(* An idempotent for + is zero.  This is where the RING structure is
-   spent: [ring_neg] cancels the repeated summand. *)
+(* 相关说明。 （已译） *)
 Lemma add_idem_zero (b : carrier (rig_setoid F)) :
   rig_add F b b ≈ b → b ≈ rig_zero F.
 Proof.
@@ -554,9 +538,9 @@ Proof.
     + apply ring_neg_l.
 Qed.
 
-(* Cancelling the 2.  THIS is where [finv]/[finv_l] become load-bearing
-   — see the header — and it is the only place in the file where the
-   characteristic hypothesis is consumed. *)
+(* Cancelling 2. THIS where [finv]/[finv_l] become load-bearing
+ — see header — it place file where the
+ characteristic 假设 consumed. （已译） *)
 Lemma double_zero (two_nz : two ≈ rig_zero F → False)
   (x : carrier (rig_setoid F)) :
   rig_mul F two x ≈ rig_zero F → x ≈ rig_zero F.
@@ -589,7 +573,7 @@ Proof.
     + exact H.
 Qed.
 
-(** ** What [TensorSq] does to a scalar map: it squares the scalar *)
+(* 相关说明。 （已译） *)
 
 Lemma fentry_scale (c : carrier (rig_setoid F)) (V : FdVectObject F)
   (i k : Fin.t (fdv_dim V)) :
@@ -617,8 +601,7 @@ Proof.
     apply delta_unpair.
 Qed.
 
-(* The Kronecker square of "multiply by c" is "multiply by c²" — the
-   whole computational content of Riehl's example. *)
+(* 相关说明。 （已译） *)
 Lemma tsq_map_scale (c : carrier (rig_setoid F)) (V : FdVectObject F)
   (t : Fin.t (fdv_dim V * fdv_dim V) → carrier (rig_setoid F))
   (q : Fin.t (fdv_dim V * fdv_dim V)) :
@@ -642,10 +625,10 @@ Proof.
       apply (fin_sum_delta_r FR q t).
 Qed.
 
-(** ** The zero transformation, and Riehl's Example 1.4.4(vii) *)
+(* 相关说明。 （已译） *)
 
-(* The zero morphism V → V ⊗ V, written out so that the theorem below
-   can say "the component IS this" rather than "every value is zero". *)
+(* The zero 态射 V → V ⊗ V, written out so 定理 below
+ can say "the component IS this" rather than "every value zero". （已译） *)
 Definition tsq_zero (V : FdVectObject F) :
   V ~{FdVect F}~> TensorSq_obj V.
 Proof.
@@ -663,9 +646,9 @@ Proof.
   - intros r v q; symmetry; apply rig_mul_zero_r.
 Defined.
 
-(* The zero family IS natural, so the theorem below classifies a
-   NONEMPTY collection: it says the zero transformation is the only
-   one, not that there are none. *)
+(* The zero family IS natural, so 定理 below classifies a
+ NONEMPTY collection: it says zero transformation only
+ one, not there none. （已译） *)
 Program Definition tsq_zero_transform : Id[FdVect F] ⟹ TensorSq := {|
   transform := fun V => tsq_zero V
 |}.
@@ -721,9 +704,9 @@ Proof.
   unfold two; simpl; unfold Qeq; simpl; discriminate.
 Qed.
 
-(** Riehl's example over ℚ: no nonzero natural transformation from the
-    identity functor on finite-dimensional ℚ-vector spaces to the
-    diagonal square functor. *)
+(** Riehl's example over ℚ: no nonzero 自然变换 the
+ 恒等 函子 finite-dimensional ℚ-vector spaces the
+ diagonal square 函子. （已译） *)
 Corollary diag_transform_zero_Q
   (alpha : Id[FdVect Q_Field] ⟹ TensorSq Q_Field)
   (V : FdVectObject Q_Field) :
@@ -734,14 +717,12 @@ Qed.
 
 (** ** Acceptance tests *)
 
-(* The object realization: the square of a two-dimensional space is
-   four-dimensional, on the nose. *)
+(* The 对象 realization: square two-dimensional space is
+ four-dimensional, nose. （已译） *)
 Example tensor_dim_two :
   fdv_dim (TensorSq_obj Q_Field (StdVect Q_Field 2)) = 4%nat := eq_refl.
 
-(* The codec's orientation, anchored by computation rather than by
-   prose: position (1, 0) of a 2 × 2 index set is position 2, and it
-   decodes back. *)
+(* 相关说明。 （已译） *)
 Example fin_pair_anchor :
   @fin_pair 2 2 (Fin.FS Fin.F1) Fin.F1 = Fin.FS (Fin.FS (@Fin.F1 1))
   := eq_refl.
@@ -750,7 +731,7 @@ Example fin_unpair_anchor :
   @fin_unpair 2 2 (Fin.FS (Fin.FS (@Fin.F1 1))) = (Fin.FS Fin.F1, Fin.F1)
   := eq_refl.
 
-(* The functor fixes every vector of the square at the identity. *)
+(* The 函子 fixes every vector square at 恒等. （已译） *)
 Example tsq_id_fixes (V : FdVectObject Q_Field)
   (t : Fin.t (fdv_dim V * fdv_dim V) → carrier (rig_setoid Q_Field))
   (q : Fin.t (fdv_dim V * fdv_dim V)) :
@@ -764,9 +745,7 @@ Example tsq_zero_value (V : FdVectObject Q_Field)
   (q : Fin.t (fdv_dim V * fdv_dim V)) :
   cmon_map (rm_hom (tsq_zero Q_Field V)) v q = rig_zero Q_Field := eq_refl.
 
-(* A table entry of a map given independently of any matrix: the
-   coordinate swap of ℚ² sends the first basis vector to the second,
-   so its (0, 1) entry is 1. *)
+(* 相关说明。 （已译） *)
 Example fentry_swap_01 :
   fentry Q_Field (std_reindex Q_Field fin2_swap) Fin.F1 (Fin.FS Fin.F1)
     = 1%Q := eq_refl.

@@ -1,4 +1,4 @@
-(** * Complete semilattices: the free ones, [Prop], and the chain 0 < 1 *)
+(* 相关说明。 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -26,7 +26,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** P X, the free complete semilattice *)
+(* 相关说明。 （已译） *)
 
 Example FreeSL_set@{o} (X : SetoidObject@{o o}) :
   sl_set (FreeSL@{o} X) = Powerset_Prop_obj@{o} X := eq_refl.
@@ -38,8 +38,7 @@ Example FreeSL_le@{o} (X : SetoidObject@{o o})
 Example FreeSL_sup@{o} (X : SetoidObject@{o o}) :
   sl_sup (FreeSL@{o} X) = @Powerset_union@{o} X := eq_refl.
 
-(* (c) at P X has the structure map of the free algebra (P X, μ_X); as a
-   whole algebra it is refused (E3 of Test/ProbeSupLat466.v). *)
+(* 相关说明。 （已译） *)
 Example FreeSL_alg@{o so} (X : SetoidObject@{o o}) :
   t_alg[projT2 (fobj[SupLat_to_EM@{o so}] (FreeSL@{o} X))]
     = t_alg[projT2 (fobj[@EM_Free Sets@{o so} Powerset_Prop@{o so}
@@ -58,8 +57,8 @@ Lemma FreeSL_talg_le_iff@{o so} (X : SetoidObject@{o o})
       (sl_le (FreeSL@{o} X) S T).
 Proof. exact (sl_talg_le_iff@{o so} (FreeSL@{o} X) S T). Qed.
 
-(* The universal property of P X, elementwise: a map ψ into a complete
-   semilattice extends along the singletons, and uniquely so. *)
+(* The 普遍性质 P X, elementwise: map ψ complete
+ semilattice extends along singletons, uniquely so. （已译） *)
 Lemma FreeSL_extend_singleton@{o so} {X : SetoidObject@{o o}}
   {A : SupLatObject@{o}} (ψ : X ~{Sets@{o so}}~> sl_set A) (x : carrier X) :
   @equiv _ (is_setoid (sl_set A))
@@ -122,7 +121,7 @@ Example Prop_SupLat_sup@{o}
   (S : carrier (Powerset_Prop_obj@{o} Powerset_Prop_truth@{o})) :
   sl_sup Prop_SupLat@{o} S = ex (fun Q : Prop => S Q /\ Q) := eq_refl.
 
-(* Two comparable points that are not equal: False ≤ True. *)
+(* 相关说明。 （已译） *)
 Lemma Prop_SupLat_nontrivial@{o} :
   sl_le Prop_SupLat@{o} False True
   * (@equiv _ (is_setoid (sl_set Prop_SupLat@{o})) True False → False).
@@ -132,7 +131,7 @@ Proof.
   - intros [H _]. exact (H I).
 Qed.
 
-(* The one-point set, and the constant subsets on it. *)
+(* The one-point set, 常值 subsets it. （已译） *)
 Definition Prop_to_P1_pred@{o} (Q : Prop) :
   carrier (Powerset_Prop_obj@{o} unit_setoid_object@{o o}).
 Proof.
@@ -195,7 +194,7 @@ Proof.
   - intros Q. split; intro r; exact r.
 Defined.
 
-(* Q goes to the constant subset Q, and back to Q itself. *)
+(* Q goes 常值 subset Q, back Q itself. （已译） *)
 Example Prop_to_P1_at@{o} (Q : Prop) (u : poly_unit@{o}) :
   slh_map Prop_to_P1@{o} Q u = Q := eq_refl.
 
@@ -203,7 +202,7 @@ Example Prop_P1_round_trip@{o} (Q : Prop) :
   slh_map P1_to_Prop@{o} (slh_map Prop_to_P1@{o} Q) = Q := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Two comparable points decide ¬Q or ¬¬Q *)
+(* 相关说明。 （已译） *)
 
 (* The subset { x | Q ∧ x ≈ top }. *)
 Definition two_points_probe@{o} (A : SupLatObject@{o})
@@ -247,8 +246,8 @@ Proof.
       exact (Powerset_squash_intro (reflexivity top)).
 Qed.
 
-(* Prop satisfies every hypothesis but the decidability of ≈, and with it
-   the theorem gives informative weak excluded middle. *)
+(* Prop satisfies every 假设 but decidability ≈, it
+ 定理 gives informative weak excluded middle. （已译） *)
 Corollary Prop_SupLat_decidable_WLEM@{o}
   (Hdec : ∀ P Q : Prop, @equiv _ (is_setoid (sl_set Prop_SupLat@{o})) P Q
                         + (@equiv _ (is_setoid (sl_set Prop_SupLat@{o})) P Q
@@ -260,14 +259,13 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The chain false ≤ true on [bool] *)
+(* 相关说明。 （已译） *)
 
 (* The carrier is Instance/Sets.v's two-element setoid [bool_setoid_object],
    compared by [eq]. *)
 Definition bool_chain_le@{} (b c : bool) : Prop := b = true → c = true.
 
-(* The chain with a given supremum operator: its four order axioms, proved
-   once for the two uses below. *)
+(* 相关说明。 （已译） *)
 Definition bool_chain_SupLat@{o}
   (sup : SetoidMorphism@{o o o}
            (Powerset_Prop_obj@{o} bool_setoid_object@{o o})
@@ -290,8 +288,7 @@ Proof.
     + exact (H2 eq_refl).
 Defined.
 
-(* Any sup operator for this order on bool gives informative weak
-   excluded middle. *)
+(* 相关说明。 （已译） *)
 Theorem bool_SupLat_WLEM@{o}
   (sup : SetoidMorphism@{o o o}
            (Powerset_Prop_obj@{o} bool_setoid_object@{o o})
@@ -311,8 +308,7 @@ Proof.
   - intros [|] [|]; (left; reflexivity) || (right; intro H; discriminate H).
 Qed.
 
-(* Conversely, under informative weak excluded middle the chain IS a
-   complete semilattice, with sup S = true exactly when ¬¬(true ∈ S). *)
+(* 相关说明。 （已译） *)
 Definition bool_chain_sup_fun@{o}
   (wlem : ∀ Q : Prop, (~ Q) + (~ ~ Q))
   (S : carrier (Powerset_Prop_obj@{o} bool_setoid_object@{o o})) : bool :=

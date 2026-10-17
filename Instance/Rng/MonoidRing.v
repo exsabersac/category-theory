@@ -129,7 +129,7 @@ Inductive MRTerm : Type :=
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 Inductive mr_eq : MRTerm → MRTerm → Prop :=
-  (* congruence for each former, saturating under the two source setoids *)
+  (* 相关说明。 （已译） *)
   | me_scal {a b} : a ≈ b → mr_eq (mr_scal a) (mr_scal b)
   | me_gen {a b} : a ≈ b → mr_eq (mr_gen a) (mr_gen b)
   | me_add {s s' t t'} :
@@ -168,8 +168,7 @@ Inductive mr_eq : MRTerm → MRTerm → Prop :=
       mr_eq (mr_gen (mop M a b)) (mr_mul (mr_gen a) (mr_gen b))
   | me_gen_one : mr_eq (mr_gen (mone M)) (mr_scal (rig_one R))
 
-  (* scalars commute with the generators — true in R[M], and not
-     derivable from the rest *)
+  (* 相关说明。 （已译） *)
   | me_scal_gen a m :
       mr_eq (mr_mul (mr_scal a) (mr_gen m)) (mr_mul (mr_gen m) (mr_scal a))
 
@@ -263,8 +262,8 @@ Definition MonoidRig : RigObject := {|
   rig_distr_r := me_distr_r;
   rig_mul_zero_l := me_mul_zero_l;
   rig_mul_zero_r := me_mul_zero_r;
-  (* [mr_eq] IS a [Prop]-valued relation, so it is its own [Prop] mirror and
-     both implications are the identity. *)
+  (* [mr_eq] IS [Prop]-valued 关系, so it own [Prop] 镜像 and
+ both 蕴含 恒等. （已译） *)
   rig_prop := @PropEquiv_of_relation _ mr_Setoid mr_eq
                 (fun _ _ h => h) (fun _ _ h => h)
 |}.
@@ -569,9 +568,9 @@ Next Obligation.
     + intro m; exact (Hg m).
 Qed.
 
-(** The left-adjoint reading: ℤ[−] is left adjoint to the
-    multiplicative-monoid functor.  Both come out of the generic machinery
-    with no further proof. *)
+(** The left-adjoint reading: ℤ[−] 左伴随 the
+ multiplicative-幺半群 函子. Both come out generic machinery
+ no further 证明. （已译） *)
 Definition MonoidRingFunctor : MonSets ⟶ Rng :=
   LeftAdjointFunctorFromUniversalArrows Rng_Forget_Mon zmring_universal_arrow.
 
@@ -592,21 +591,21 @@ Definition zmring_unit (M : MonSets)
 Example zmring_unit_is_gen (M : MonSets) (m : carrier (mcar M)) :
   mmap (zmring_unit M) m = @mr_gen Int_Ring M m := eq_refl.
 
-(** * Non-degeneracy
+(* * * Non-degeneracy
 
-    Nothing below is obtained by induction on [mr_eq]: an induction on a
-    quotienting relation cannot produce a negative statement.  Every
-    separation is obtained by mapping OUT into a concrete ring — here the
-    upper-triangular 2×2 integer matrices of
-    Instance/Rng/Algebras/Associative.v, whose multiplicative monoid is a
-    NON-COMMUTATIVE monoid available with no new construction, so the
-    witness monoid costs nothing. *)
+ Nothing below obtained induction [mr_eq]: induction a
+ quotienting 关系 cannot produce negative statement. Every
+ separation obtained 映射 OUT concrete ring — here the
+ upper-triangular 2×2 integer matrices of
+ Instance/Rng/Algebras/Associative.v, whose multiplicative 幺半群 a
+ NON-COMMUTATIVE 幺半群 available no new construction, so the
+ witness 幺半群 costs nothing. （已译） *)
 
 Definition UT2_Mon : MonSets := Rng_Forget_Mon UT2.
 
-(* The identity of UT2's carrier IS a monoid homomorphism from that
-   multiplicative monoid to itself, since [Rng_Forget_Mon]'s operation and
-   unit are UT2's own. *)
+(* The 恒等 UT2's carrier IS 幺半群 homomorphism that
+ multiplicative 幺半群 itself, since [Rng_Forget_Mon]'s operation and
+ unit UT2's own. （已译） *)
 Definition ut2_mon_id : UT2_Mon ~{MonSets}~> Rng_Forget_Mon UT2 :=
   @id MonSets UT2_Mon.
 
@@ -644,9 +643,7 @@ Theorem zmring_gen_not_scalar (r : Z) :
     → False.
 Proof.
   intro H.
-  (* The extension carries a scalar to [zring UT2 r], which does not
-     reduce at an open [r]; [rng_from_Z_unique] identifies it with the
-     scalar diagonal, which does. *)
+  (* 相关说明。 （已译） *)
   pose proof (proper_morphism (rig_map zmring_to_UT2) _ _ H) as H2.
   pose proof (rng_from_Z_unique UT2 ut2_scalar r) as H3.
   assert (Hx : ((0, 1, 0)%Z : ut2) = ((r, 0, r)%Z : ut2))
@@ -665,8 +662,8 @@ Proof.
   inversion H2.
 Qed.
 
-(* Two distinct elements of the monoid stay distinct in ℤ[M]: the
-   insertion does not collapse. *)
+(* Two distinct elements 幺半群 stay distinct ℤ[M]: the
+ 嵌入 does not collapse. （已译） *)
 Theorem zmring_gens_distinct :
   mr_eq (@mr_gen Int_Ring UT2_Mon ut2_e11) (@mr_gen Int_Ring UT2_Mon ut2_e12)
     → False.

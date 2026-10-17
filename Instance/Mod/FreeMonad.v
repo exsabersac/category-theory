@@ -21,7 +21,7 @@ Require Import Category.Instance.Mod.Free.
 
 Generalizable All Variables.
 
-(** * The free R-module monad T_R on Set and its algebras, the R-modules *)
+(* * * The free R-module 单子 T_R Set algebras, R-modules （已译） *)
 
 (*
  Book: Riehl, "Category Theory in Context", Example 5.1.4(iii),
@@ -35,7 +35,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** T_R, the monad of the adjunction Set ⇀ R-Mod *)
+(* * ** T_R, 单子 伴随 Set ⇀ R-Mod （已译） *)
 
 Section FreeModMonad.
 
@@ -48,30 +48,29 @@ Local Notation scalar := (carrier (rig_setoid (ring_rig R))).
 Definition FreeModF@{+} : Sets@{c so} ⟶ Sets@{c so} :=
   RMod_Forget R ◯ FreeMod R.
 
-(* T_R, the monad of the hom-set form of the free-forgetful adjunction. *)
+(* T_R, 单子 hom-set form free-forgetful 伴随. （已译） *)
 Definition FreeModMonad@{+} : @Monad Sets@{c so} FreeModF :=
   Adjunction_Induced_Monad (free_module_adjunction_hom R).
 
-(* The relabelling of a combination along u: the fold of insert ∘ u. *)
+(* 相关说明。 （已译） *)
 Definition fv_relabel@{+} {X Y : Sets@{c so}} (u : X ~{Sets@{c so}}~> Y)
   (t : @FVTerm R X) : @FVTerm R Y :=
   fv_eval (W := FreeModObject Y) (fv_insert Y ∘ u) t.
 
-(* A combination of combinations, flattened: the fold of the identity. *)
+(* A combination combinations, flattened: fold 恒等. （已译） *)
 Definition fv_flatten@{+} {X : Sets@{c so}}
   (k : @FVTerm R (RMod_Forget R (FreeModObject X))) : @FVTerm R X :=
   fv_eval (W := FreeModObject X)
     (@id Sets@{c so} (RMod_Forget R (FreeModObject X))) k.
 
-(* T_R X is the free module's setoid, whose carrier is the formal
-   combinations. *)
+(* 相关说明。 （已译） *)
 Example TR_obj@{+} (X : Sets@{c so}) :
   fobj[FreeModF] X = RMod_Forget R (FreeModObject X) := eq_refl.
 
 Example TR_carrier@{+} (X : Sets@{c so}) :
   carrier (fobj[FreeModF] X) = @FVTerm R X := eq_refl.
 
-(* η_X is the insertion of the basis, as a setoid map, and x ↦ ⟨x⟩. *)
+(* η_X 嵌入 basis, setoid map, x ↦ ⟨x⟩. （已译） *)
 Example TR_ret@{+} (X : Sets@{c so}) :
   @ret _ _ FreeModMonad X = fv_insert X := eq_refl.
 
@@ -85,7 +84,7 @@ Example TR_join_counit@{+} (X : Sets@{c so}) :
         (@counit _ _ _ _ (free_module_adjunction_hom R) (FreeMod R X))
   := eq_refl.
 
-(* μ flattens: ⟨t⟩ ↦ t, and in general the fold of the identity. *)
+(* μ flattens: ⟨t⟩ ↦ t, general fold 恒等. （已译） *)
 Example TR_join_gen@{+} (X : Sets@{c so}) (t : @FVTerm R X) :
   @join _ _ FreeModMonad X (@fv_gen R (RMod_Forget R (FreeModObject X)) t)
     = t := eq_refl.
@@ -105,8 +104,8 @@ Example TR_join_lc@{+} (X : Sets@{c so}) (r s : scalar)
              (fv_smul s (@fv_gen R (RMod_Forget R (FreeModObject X)) t')))
     = fv_plus (fv_smul r t) (fv_smul s t') := eq_refl.
 
-(* T_R u relabels, up to ≈: the free functor's action on arrows is read
-   through the universal arrows. *)
+(* T_R u relabels, up ≈: free 函子's action arrows read
+ through universal arrows. （已译） *)
 Lemma TR_map_equiv@{+} {X Y : Sets@{c so}} (u : X ~{Sets@{c so}}~> Y)
   (t : @FVTerm R X) : fmap[FreeModF] u t ≈ fv_relabel u t.
 Proof.
@@ -116,7 +115,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Part (a), first reading: formal linear combinations *)
+(* 相关说明。 （已译） *)
 
 (* Evaluating a relabelled combination (Leibniz, by induction). *)
 Lemma fv_eval_relabel@{+} {X Y : Sets@{c so}} {W : RMod R}
@@ -207,7 +206,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Part (b): the monad laws verified directly *)
+(* * ** Part (b): 单子 laws verified directly （已译） *)
 
 (* A Leibniz equality of combinations is an [fv_eq]. *)
 Lemma fv_eq_of_eq@{+} {X : Sets@{c so}} (s t : @FVTerm R X) :
@@ -287,8 +286,8 @@ Proof using R.
   - intros X Y Z g f t. exact (fv_eq_of_eq _ _ (fv_relabel_comp g f t)).
 Defined.
 
-(* The monad laws, each by the Leibniz lemmas above; no adjunction is
-   cited. *)
+(* The 单子 laws, each Leibniz lemmas above; no 伴随 is
+ cited. （已译） *)
 Definition FreeModMonad_direct@{+} : @Monad Sets@{c so} FreeModF_direct.
 Proof.
   unshelve refine
@@ -308,8 +307,7 @@ Proof.
     intros X Y u K. exact (fv_eq_of_eq _ _ (fv_flatten_natural u K)).
 Defined.
 
-(* Its unit and multiplication ARE T_R's, and its action on arrows is the
-   relabelling. *)
+(* 相关说明。 （已译） *)
 Example TR_direct_ret@{+} (X : Sets@{c so}) :
   @ret _ _ FreeModMonad_direct X = @ret _ _ FreeModMonad X := eq_refl.
 
@@ -327,7 +325,7 @@ Example TR_direct_map_gen@{+} {X Y : Sets@{c so}}
   (u : X ~{Sets@{c so}}~> Y) (x : carrier X) :
   fmap[FreeModF_direct] u (fv_gen x) = fv_gen (u x) := eq_refl.
 
-(* The two endofunctors agree, with identity components. *)
+(* The two endofunctors agree, 恒等 components. （已译） *)
 Definition FreeModF_direct_iso@{+} : FreeModF_direct ≈ FreeModF.
 Proof.
   exists (fun X => @iso_id Sets@{c so} (fobj[FreeModF] X)).
@@ -341,7 +339,7 @@ Example TR_direct_iso_component@{+} (X : Sets@{c so}) :
   := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Part (c): the algebras of T_R are the R-modules *)
+(* 相关说明。 （已译） *)
 
 Definition TRAlg@{+} : Category@{so c c} :=
   @EilenbergMoore@{so so so c} Sets@{c so} FreeModF FreeModMonad.
@@ -350,8 +348,8 @@ Definition TRAlg@{+} : Category@{so c c} :=
 Definition RMod_K@{+} : RMod R ⟶ TRAlg :=
   EM_Comparison (free_module_adjunction_hom R).
 
-(* K commutes with the right adjoints and with the left ones: Monad/
-   Comparison.v's two triangles, at this adjunction. *)
+(* K commutes right adjoints left ones: Monad/
+ Comparison.v's two triangles, at 伴随. （已译） *)
 Theorem RMod_K_Forget@{+} :
   @EM_Forget Sets@{c so} FreeModF FreeModMonad ◯ RMod_K ≈ RMod_Forget R.
 Proof. exact (EM_Comparison_Forget (free_module_adjunction_hom R)). Qed.
@@ -365,8 +363,7 @@ Section Algebra.
 Context {A : Sets@{c so}}.
 Context (α : @TAlgebra Sets@{c so} FreeModF FreeModMonad A).
 
-(* The module operations of an algebra (A, h): 0 = h⟨⟩, a + b =
-   h(⟨a⟩ + ⟨b⟩), −a = h(−⟨a⟩) and r·a = h(r·⟨a⟩). *)
+(* 相关说明。 （已译） *)
 Definition tr_alg_zero@{+} : carrier A := t_alg[α] (@fv_zero R A).
 
 Definition tr_alg_plus@{+} (x y : carrier A) : carrier A :=
@@ -378,8 +375,7 @@ Definition tr_alg_neg@{+} (x : carrier A) : carrier A :=
 Definition tr_alg_smul@{+} (r : scalar) (x : carrier A) : carrier A :=
   t_alg[α] (@fv_smul R A r (fv_gen x)).
 
-(* The linear combination with the coefficients of the term, through the
-   operations just defined. *)
+(* 相关说明。 （已译） *)
 Fixpoint tr_alg_eval@{+} (t : @FVTerm R A) : carrier A :=
   match t with
   | fv_gen x    => x
@@ -421,7 +417,7 @@ Proof.
   exact (proper_morphism t_alg[α] _ _ (fe_smul Hr (fe_gen Hx))).
 Qed.
 
-(* The structure map IS linear combination in the derived module. *)
+(* 相关说明。 （已译） *)
 Lemma tr_alg_fold@{+} (t : @FVTerm R A) : t_alg[α] t ≈ tr_alg_eval t.
 Proof.
   induction t as [ x | | s IHs u IHu | s IHs | r s IHs ]; simpl.
@@ -468,8 +464,7 @@ Proof using R A α.
   - intros x y H. exact (fe_gen H).
 Defined.
 
-(* The R-module of the algebra: each law is one instance of
-   [tr_alg_eval_respects] at a constructor of [fv_eq]. *)
+(* 相关说明。 （已译） *)
 Definition tr_alg_rmod@{+} : RModObject R := {|
   rm_ab := {|
     ab_cmon := {|
@@ -536,8 +531,8 @@ Proof.
   - intros x y z f g a. reflexivity.
 Defined.
 
-(* The fold of the identity in the derived module IS [tr_alg_eval]
-   (Leibniz, by induction). *)
+(* The fold 恒等 derived module IS [tr_alg_eval]
+ (Leibniz, induction). （已译） *)
 Lemma tr_fold_is_alg_eval@{+} {A : Sets@{c so}}
   (α : @TAlgebra Sets@{c so} FreeModF FreeModMonad A) (t : @FVTerm R A) :
   fv_eval (W := tr_alg_rmod α)
@@ -548,7 +543,7 @@ Proof.
     try rewrite IHs; try rewrite IHu; reflexivity.
 Qed.
 
-(* The algebra round trip, with the identity as its component. *)
+(* The algebra round trip, 恒等 component. （已译） *)
 Definition RMod_EM_counit_iso@{+} (x : TRAlg) :
   @Isomorphism TRAlg (fobj[RMod_K ◯ EM_to_RModS] x) x.
 Proof.
@@ -583,8 +578,8 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* The module round trip, with the identity as its component: on a module
-   M the derived operations ARE M's. *)
+(* The module round trip, 恒等 component: module
+ M derived operations ARE M's. （已译） *)
 Definition RMod_EM_unit_iso@{+} (M : RMod R) :
   @Isomorphism (RMod R) (fobj[EM_to_RModS ◯ RMod_K] M) M.
 Proof.
@@ -617,7 +612,7 @@ Proof.
   exact RMod_EM_equivalence.
 Defined.
 
-(* R-Mod ≅ Set^{T_R} in Cat, from the two component isomorphisms. *)
+(* 相关说明。 （已译） *)
 Definition RMod_EM_iso@{k +} :
   @Isomorphism Cat@{k so so so c} (RMod R) TRAlg.
 Proof.
@@ -631,8 +626,8 @@ Defined.
 (* ------------------------------------------------------------------------ *)
 (** ** Readbacks *)
 
-(* K M is ⟨M, U ε_M⟩: the structure map is the fold of the identity,
-   the linear combination in M. *)
+(* K M ⟨M, U ε_M⟩: structure map fold 恒等,
+ linear combination M. （已译） *)
 Example RMod_K_carrier@{+} (M : RMod R) :
   projT1 (fobj[RMod_K] M) = RMod_Forget R M := eq_refl.
 
@@ -668,22 +663,21 @@ Example RMod_K_alg_smul@{+} (M : RMod R) (r : scalar)
   t_alg[projT2 (fobj[RMod_K] M)] (fv_smul r (fv_gen x)) = rm_smul M r x
   := eq_refl.
 
-(* h at Σ rᵢ·⟨xᵢ⟩ is the fold of the identity there, [RMod_K_alg_fun] at
-   a combination; for a given list it unfolds to the linear combination
-   r₁·x₁ + (r₂·x₂ + (… + 0)) in M. *)
+(* h at Σ rᵢ·⟨xᵢ⟩ fold 恒等 there, [RMod_K_alg_fun] at
+ combination; given list it unfolds linear combination
+ r₁·x₁ + (r₂·x₂ + (… + 0)) M. （已译） *)
 Example RMod_K_alg_lc@{+} (M : RMod R)
   (l : list (fv_pair R (RMod_Forget R M))) :
   t_alg[projT2 (fobj[RMod_K] M)] (fv_lc l)
     = fv_eval (@id Sets@{c so} (RMod_Forget R M)) (fv_lc l) := eq_refl.
 
-(* The legs of the isomorphism in Cat. *)
+(* The legs 同构 Cat. （已译） *)
 Example RMod_EM_iso_to@{+} : to RMod_EM_iso = RMod_K := eq_refl.
 
 Example RMod_EM_iso_from@{+} : from RMod_EM_iso = EM_to_RModS
   := eq_refl.
 
-(* The module of an algebra: its carrier, its [Prop] equality and its
-   operations. *)
+(* 相关说明。 （已译） *)
 Example EM_to_RModS_prop@{+} (x : TRAlg) (a b : carrier (projT1 x)) :
   @pequiv _ _ (cmon_prop (fobj[EM_to_RModS] x)) a b
     = @fv_eq R (projT1 x) (fv_gen a) (fv_gen b) := eq_refl.
@@ -710,7 +704,7 @@ Example EM_to_RModS_smul@{+} (x : TRAlg) (r : scalar)
 Example EM_to_RModS_map@{+} {x y : TRAlg} (f : x ~{TRAlg}~> y) :
   cmon_map (rm_hom (fmap[EM_to_RModS] f)) = t_alg_hom[f] := eq_refl.
 
-(* The round trips keep every operation on the nose... *)
+(* 相关说明。 （已译） *)
 Example RMod_rt_carrier@{+} (M : RMod R) :
   cmon_setoid (fobj[EM_to_RModS ◯ RMod_K] M) = cmon_setoid M := eq_refl.
 
@@ -730,7 +724,7 @@ Example RMod_rt_hom@{+} {M N : RMod R} (f : M ~{RMod R}~> N) :
   cmon_map (rm_hom (fmap[EM_to_RModS ◯ RMod_K] f)) = cmon_map (rm_hom f)
   := eq_refl.
 
-(* ...and so do the carrier and the maps of the algebra round trip. *)
+(* 相关说明。 （已译） *)
 Example TRAlg_rt_carrier@{+} (x : TRAlg) :
   projT1 (fobj[RMod_K ◯ EM_to_RModS] x) = projT1 x := eq_refl.
 
@@ -743,8 +737,8 @@ Example TRAlg_rt_alg_fun@{+} (x : TRAlg) (t : @FVTerm R (projT1 x)) :
 Example TRAlg_rt_alg_hom@{+} {x y : TRAlg} (f : x ~{TRAlg}~> y) :
   t_alg_hom[fmap[RMod_K ◯ EM_to_RModS] f] = t_alg_hom[f] := eq_refl.
 
-(* Every component of the two natural isomorphisms is the identity, at a
-   variable object, to and from. *)
+(* Every component two natural isomorphisms 恒等, at a
+ variable 对象, from. （已译） *)
 Example RMod_EM_iso_to_from_component@{+} (x : TRAlg) :
   (t_alg_hom[to (projT1 (iso_to_from RMod_EM_iso) x)],
    t_alg_hom[from (projT1 (iso_to_from RMod_EM_iso) x)])
@@ -756,7 +750,7 @@ Example RMod_EM_iso_from_to_component@{+} (M : RMod R) :
     = (@id Sets@{c so} (RMod_Forget R M), @id Sets@{c so} (RMod_Forget R M))
   := eq_refl.
 
-(* ...and so is every component of the equivalence's counit and unit. *)
+(* ...and so every component 等价's counit unit. （已译） *)
 Example RMod_EM_counit_component@{+} (x : TRAlg) :
   (t_alg_hom[to (projT1 (@equivalence_counit _ _ _ RMod_EM_equivalence) x)],
    t_alg_hom[from (projT1 (@equivalence_counit _ _ _
@@ -807,7 +801,7 @@ Proof.
   destruct (n (reflexivity x)).
 Qed.
 
-(* ... and (η_X x)_{x'} = 0 for x' ≉ x (Leibniz). *)
+(* 相关说明。 （已译） *)
 Lemma fv_coef_ret_other@{+} {X : Sets@{c so}} (Xdec : decider_on X)
   (x x' : carrier X) :
   (x' ≈ x → False) → fv_coef Xdec x' (@ret _ _ (FreeModMonad R) X x) = rzero.
@@ -816,8 +810,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* [(T_R t) f]_y is the linear functional "f evaluated on the indicator
-   of the fibre t⁻¹(y)" ... *)
+(* 相关说明。 （已译） *)
 Lemma fv_coef_map@{+} {X Y : Sets@{c so}} (Ydec : decider_on Y)
   (t : X ~{Sets@{c so}}~> Y) (f : @FVTerm R X) (y : carrier Y) :
   fv_coef Ydec y (fmap[FreeModF R] t f)
@@ -831,8 +824,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* ... which on a combination is the literal sum Σ' f_x over the pairs
-   (f_x, x) of f with t x ≈ y. *)
+(* 相关说明。 （已译） *)
 Fixpoint fv_fibre_sum@{+} {X Y : Sets@{c so}} (Ydec : decider_on Y)
   (t : X ~{Sets@{c so}}~> Y) (y : carrier Y) (l : list (fv_pair R X))
   : scalar :=
@@ -845,8 +837,7 @@ Fixpoint fv_fibre_sum@{+} {X Y : Sets@{c so}} (Ydec : decider_on Y)
       end
   end.
 
-(* The indicator of the fibre over y, evaluated at Σ rᵢ·⟨xᵢ⟩: the one
-   induction that [fv_coef_map_lc] and FinSupp.v's [fv_coef_lc] share. *)
+(* 相关说明。 （已译） *)
 Lemma fv_eval_fibre_lc@{+} {X Y : Sets@{c so}} (Ydec : decider_on Y)
   (t : X ~{Sets@{c so}}~> Y) (l : list (fv_pair R X)) (y : carrier Y) :
   fv_eval (fv_probe_at R Y Ydec y ∘ t) (fv_lc l) ≈ fv_fibre_sum Ydec t y l.
@@ -867,8 +858,7 @@ Proof.
            (fv_eval_fibre_lc Ydec t l y)).
 Qed.
 
-(* (μ_X k)_x = Σ_f k_f f_x: the coefficient of x in μ k is the linear
-   extension of f ↦ f_x, evaluated at k, on the nose ... *)
+(* 相关说明。 （已译） *)
 Lemma fv_coef_join@{+} {X : Sets@{c so}} (Xdec : decider_on X)
   (x : carrier X) (k : @FVTerm R (RMod_Forget R (FreeModObject X))) :
   fv_coef Xdec x (@join _ _ (FreeModMonad R) X k)
@@ -912,8 +902,7 @@ Proof.
   - f_equal; assumption.
 Qed.
 
-(* ... and vanishes at every point that no pair of a combination
-   names: T_R X's elements are finitely supported. *)
+(* 相关说明。 （已译） *)
 Fixpoint fv_avoids@{+} {X : Sets@{c so}} (y : carrier X)
   (l : list (fv_pair R X)) : Type@{c} :=
   match l with

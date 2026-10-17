@@ -7,7 +7,7 @@ Require Import Coq.Relations.Relation_Definitions.
 
 Generalizable All Variables.
 
-(** * The category of a partially-ordered set. *)
+(* * * The 范畴 partially-ordered set. （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Partially_ordered_set

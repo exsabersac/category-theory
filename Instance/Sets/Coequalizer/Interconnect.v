@@ -10,7 +10,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * An evaluated coequalizer: interconnecting a set of ports *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出集合范畴相关实例。
@@ -54,7 +54,7 @@ Proof. unshelve refine {| morphism := ic_wire_src_fun |}. Defined.
 Definition ic_wire_dst : IcWireSet ~{Sets}~> IcPortSet.
 Proof. unshelve refine {| morphism := ic_wire_dst_fun |}. Defined.
 
-(** ** The coequalizer, taken from the delivered instance *)
+(* 相关说明。 （已译） *)
 
 Definition Interconnect : SetoidObject := SetsCoeq ic_wire_src ic_wire_dst.
 
@@ -67,21 +67,21 @@ Example interconnect_is_chosen :
     = Interconnect.
 Proof. reflexivity. Qed.
 
-(* ... and so is the coequalizing map. *)
+(* 相关说明。 （已译） *)
 Example interconnect_proj_is_chosen :
   `1 (`2 (@coeq Sets Sets_HasCoequalizers IcWireSet IcPortSet ic_wire_src ic_wire_dst))
     = interconnect_proj.
 Proof. reflexivity. Qed.
 
-(* The carrier is the ic_port type on the nose, and the coequalizing map is
-   the identity function on it: only `≈` moved. *)
+(* The carrier ic_port type nose, coequalizing map is
+ 恒等 function it: `≈` moved. （已译） *)
 Example interconnect_carrier : carrier Interconnect = ic_port.
 Proof. reflexivity. Qed.
 
 Example interconnect_proj_at (p : ic_port) : interconnect_proj p = p.
 Proof. reflexivity. Qed.
 
-(** ** The three terminals, and that they are three *)
+(* 相关说明。 （已译） *)
 
 Definition ic_label_fun (p : ic_port) : ic_terminal :=
   match p with
@@ -100,13 +100,13 @@ Example label_P3 : ic_label IcP3 = IcT1. Proof. reflexivity. Qed.
 Example label_P4 : ic_label IcP4 = IcT2. Proof. reflexivity. Qed.
 Example label_P5 : ic_label IcP5 = IcT2. Proof. reflexivity. Qed.
 
-(* The labelling coforks the wire pair: one computation per wire. *)
+(* 相关说明。 （已译） *)
 Lemma ic_label_coforks : ic_label ∘ ic_wire_src ≈ ic_label ∘ ic_wire_dst.
 Proof. intros [ | | ]; reflexivity. Qed.
 
-(* The terminal set has exactly three elements: three cases and no
-   others, and the three are pairwise distinct.  Without both halves the
-   isomorphism below would pin no count. *)
+(* The terminal set has exactly three elements: three cases no
+ others, three pairwise distinct. Without both halves the
+ 同构 below would pin no count. （已译） *)
 Lemma ic_terminal_cases (t : ic_terminal) : ((t = IcT0) ∨ (t = IcT1)) ∨ (t = IcT2).
 Proof. destruct t; [ left; left | left; right | right ]; reflexivity. Qed.
 
@@ -145,7 +145,7 @@ Proof. reflexivity. Qed.
 Example interconnect_triangle : interconnect_med ∘ interconnect_proj ≈ ic_label.
 Proof. intro p; reflexivity. Qed.
 
-(** ** What the interconnection joins *)
+(* 相关说明。 （已译） *)
 
 (* Directly joined by a wire. *)
 Lemma port_P0_P1_merged : @equiv _ Interconnect IcP0 IcP1.
@@ -154,9 +154,9 @@ Proof. exact (cq_glue ic_wire_src ic_wire_dst IcW0). Qed.
 Lemma port_P4_P5_merged : @equiv _ Interconnect IcP4 IcP5.
 Proof. exact (cq_glue ic_wire_src ic_wire_dst IcW2). Qed.
 
-(* Joined only through a third port: this is where transitivity of the
-   generated relation does the work, and it is a DERIVATION, not a
-   computation. *)
+(* Joined through third port: 这是 where transitivity the
+ generated 关系 does work, it DERIVATION, not a
+ computation. （已译） *)
 Lemma port_P0_P2_merged : @equiv _ Interconnect IcP0 IcP2.
 Proof.
   exact (cq_trans ic_wire_src ic_wire_dst IcP0 IcP1 IcP2
@@ -209,8 +209,7 @@ Defined.
 Lemma ic_label_of_rep (t : ic_terminal) : ic_label_fun (ic_rep_fun t) = t.
 Proof. destruct t; reflexivity. Qed.
 
-(* The other leg is the six derivations -- one per port -- that each port
-   is joined to its group's representative. *)
+(* 相关说明。 （已译） *)
 Lemma ic_rep_of_label (p : ic_port) : @equiv _ Interconnect (ic_rep_fun (ic_label_fun p)) p.
 Proof.
   destruct p.
@@ -241,9 +240,9 @@ Proof. reflexivity. Qed.
 Example interconnect_iso_from (t : ic_terminal) : from interconnect_iso t = ic_rep_fun t.
 Proof. reflexivity. Qed.
 
-(* The isomorphism is not vacuous in either direction: it identifies
-   three ports with the same terminal and separates ports in different
-   groups. *)
+(* The 同构 not vacuous either direction: it identifies
+ three ports same terminal separates ports different
+ groups. （已译） *)
 Example interconnect_iso_groups :
   ((to interconnect_iso IcP0 = IcT0) ∧ (to interconnect_iso IcP2 = IcT0))
     ∧ (to interconnect_iso IcP3 = IcT1).

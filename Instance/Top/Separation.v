@@ -14,7 +14,7 @@ Require Import Category.Instance.Top.Cocomplete.
 
 Generalizable All Variables.
 
-(** * The separation axioms T0, T1, T2 over [PTopCat], and their reflections *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/separation+axioms
@@ -26,7 +26,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Separation premises and the positive separation axioms *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Separation 相关定义、性质与动机。
@@ -36,16 +36,15 @@ Generalizable All Variables.
 Definition SepPremise@{o} :=
   ∀ S : Type@{o}, ((S → Prop) → Prop) → S → S → Prop.
 
-(* T0: the two points lie in the same opens. *)
+(* 相关说明。 （已译） *)
 Definition prem_T0@{o} : SepPremise@{o} :=
   fun S O x y => ∀ U, O U → (U x <-> U y).
 
-(* T1: every open containing the first point contains the second. *)
+(* 相关说明。 （已译） *)
 Definition prem_T1@{o} : SepPremise@{o} :=
   fun S O x y => ∀ U, O U → U x → U y.
 
-(* T2: no two opens separate the points: every open about the first meets
-   every open about the second. *)
+(* 相关说明。 （已译） *)
 Definition prem_T2@{o} : SepPremise@{o} :=
   fun S O x y => ∀ U V, O U → O V → U x → V y → ex (fun z => U z /\ V z).
 
@@ -59,16 +58,13 @@ Definition PT1@{o} (X : PTop@{o}) : Type@{o} := PSep@{o} prem_T1@{o} X.
 Definition PNotSep@{o} (X : PTop@{o}) (x y : X) : Prop :=
   prem_T2@{o} _ (POpen X) x y.
 
-(* Hausdorff, in the positive form: points that no two opens separate are
-   equal. *)
+(* 相关说明。 （已译） *)
 Definition PHaus@{o} (X : PTop@{o}) : Type@{o} := PSep@{o} prem_T2@{o} X.
 
 Example PHaus_unfold@{o} (X : PTop@{o}) :
   PHaus X = (∀ x y : X, PNotSep X x y → x ≈ y) := eq_refl.
 
-(* The classical Hausdorff axiom, the negative form, which Mac Lane uses
-   without defining it (book p. 158, §VI.9): distinct points have
-   disjoint neighbourhoods. *)
+(* 相关说明。 （已译） *)
 Definition PIsHausdorff@{o} (X : PTop@{o}) : Prop :=
   ∀ x y : X, (x ≈ y → False) →
     ex (fun U => ex (fun V => POpen X U /\ POpen X V /\ U x /\ V y /\
@@ -142,8 +138,7 @@ Proof.
     exact (conj (popen_proper X U HU x y e u) v).
 Qed.
 
-(* The premise pulled back along a continuous map: what [sl_pull] and
-   [sl_anti] give together, for the opens of two spaces. *)
+(* 相关说明。 （已译） *)
 Lemma sep_pull_cont@{o} (prem : SepPremise@{o}) (L : SepLaws@{o} prem)
   (X Y : PTop@{o}) (f : PMor@{o} X Y) (x y : X) :
   prem _ (POpen X) x y → prem _ (POpen Y) (pmap f x) (pmap f y).
@@ -159,7 +154,7 @@ Qed.
 
 (** ** Full subcategories of spaces *)
 
-(* The full subcategory of [PTopCat] on the spaces with a property. *)
+(* 相关说明。 （已译） *)
 Definition PFullSub@{o so | o < so +} (Pr : PTop@{o} → Type@{o}) :
   Subcategory@{so o o o} PTopCat@{o so} :=
   @Build_Subcategory@{so o o o} PTopCat@{o so} Pr
@@ -171,7 +166,7 @@ Lemma PFullSub_Full@{o so | o < so +} (Pr : PTop@{o} → Type@{o}) :
   Construction.Subcategory.Full@{so o o o so} PTopCat@{o so} (PFullSub Pr).
 Proof. intros x y ox oy g; exact I. Qed.
 
-(** ** The largest separated quotient, directly *)
+(* 相关说明。 （已译） *)
 
 Section Quot.
 
@@ -184,12 +179,12 @@ Context (X : PTop@{o}).
 
 Local Notation P := (carrier (pt_carrier X)).
 
-(* The opens of X saturated for a relation. *)
+(* The opens X saturated 关系. （已译） *)
 Definition sep_qopen (R : P → P → Prop) (U : P → Prop) : Prop :=
   POpen X U /\ ∀ a b, R a b → U a → U b.
 
-(* A separating relation: an equivalence coarser than the points' own,
-   which the premise read in the saturated opens forces. *)
+(* A separating 关系: 等价 coarser than points' own,
+ premise read saturated opens forces. （已译） *)
 Definition SepRel (R : P → P → Prop) : Prop :=
   (∀ a, R a a) /\ (∀ a b, R a b → R b a) /\
   (∀ a b c, R a b → R b c → R a c) /\
@@ -226,7 +221,7 @@ Definition sep_q :
   @Build_SetoidMorphism _ (is_setoid (pt_carrier X)) _ (is_setoid sep_setoid)
     (fun x => x) sepeq_of_equiv.
 
-(* The quotient: X's points under [sepeq], with the quotient topology. *)
+(* 相关说明。 （已译） *)
 Definition SepQuot : PTop@{o} := PQuot X sep_setoid sep_q.
 
 Lemma SepQuot_sep : PSep prem SepQuot.
@@ -243,8 +238,8 @@ Section Med.
 
 Context (H : PTop@{o}) (HH : PSep prem H) (f : PMor@{o} X H).
 
-(* The kernel of [f], read through the premise: a proposition, and
-   equivalent to [pmap f a ≈ pmap f b] since [H] is separated. *)
+(* The kernel [f], read through premise: 命题, and
+ equivalent [pmap f ≈ pmap f b] since [H] separated. （已译） *)
 Definition sep_ker (a b : P) : Prop :=
   prem _ (POpen H) (pmap f a) (pmap f b).
 
@@ -301,7 +296,7 @@ Constraint o < so.
 Variable prem : SepPremise@{o}.
 Variable L : SepLaws@{o} prem.
 
-(* The full subcategory of separated spaces, and the reflection into it. *)
+(* 相关说明。 （已译） *)
 Definition PSepSub : Subcategory PTopCat@{o so} := PFullSub (PSep prem).
 
 Definition PSepSpaces : Category := Sub PTopCat@{o so} PSepSub.
@@ -342,11 +337,9 @@ Definition PSep_Reflective : Reflective PSepSub :=
 
 End Reflection.
 
-(** ** Restricting a reflection to an intermediate full subcategory *)
+(* 相关说明。 （已译） *)
 
-(* If B ⊆ A are full subcategories of C and B is reflective in C, then B,
-   read as a full subcategory of A, is reflective in A: reflect in C and
-   read the result back in A. *)
+(* 相关说明。 （已译） *)
 Section Restrict.
 
 (*
@@ -427,7 +420,7 @@ Definition restrict_Reflective : Reflective restrict_sub :=
 
 End Restrict.
 
-(** ** The reflections into T0, T1 and T2 spaces, and Exercise 4 at n = 0, 1 *)
+(* 相关说明。 （已译） *)
 
 Definition PT0_Reflective@{o so +} :
   Reflective (PSepSub@{o so} prem_T0@{o}) :=
@@ -456,10 +449,9 @@ Definition PHaus_in_PT1_Reflective@{o so +} :
   restrict_Reflective (PSepSub prem_T1) (PSepSub prem_T2)
     (PFullSub_Full _) PHaus_PT1 PT2_Reflective.
 
-(** ** Readbacks of the direct reflection *)
+(* 相关说明。 （已译） *)
 
-(* The quotient keeps X's points, coarsens their equality to [sepeq], and
-   the reflector and its unit compute to it on the nose. *)
+(* 相关说明。 （已译） *)
 Example SepQuot_carrier@{o} (prem : SepPremise@{o}) (X : PTop@{o}) :
   carrier (pt_carrier (SepQuot prem X)) = carrier (pt_carrier X) := eq_refl.
 
@@ -476,9 +468,9 @@ Example PSep_unit_point@{o so +} (prem : SepPremise@{o})
   (L : SepLaws@{o} prem) (X : PTopCat@{o so}) (x : carrier (pt_carrier X)) :
   pmap (@unit _ _ _ _ (PSep_adj prem L) X) x = x := eq_refl.
 
-(* The restricted reflection computes the same way: Exercise 4's reflector
-   at n = 0 sends a T0 space to its largest T1 quotient, and its unit is
-   the identity on points. *)
+(* The restricted reflection computes same way: Exercise 4's reflector
+ at n = 0 sends T0 space largest T1 quotient, unit is
+ 恒等 points. （已译） *)
 Example PT1_in_PT0_obj@{o so +}
   (X : Sub PTopCat@{o so} (PSepSub@{o so} prem_T0@{o})) :
   `1 (`1 (fobj[reflector PT1_in_PT0_Reflective] X)) = SepQuot prem_T1 (`1 X)
@@ -490,7 +482,7 @@ Example PT1_in_PT0_unit_point@{o so +}
   pmap (`1 (@unit _ _ _ _ (reflective_adj PT1_in_PT0_Reflective) X)) x = x
   := eq_refl.
 
-(** ** A retract of a separated space is separated *)
+(* 相关说明。 （已译） *)
 
 Lemma PSep_retract@{o} (prem : SepPremise@{o}) (L : SepLaws@{o} prem)
   (X R : PTop@{o}) (u : PMor@{o} X R) (e : PMor@{o} R X)
@@ -514,7 +506,7 @@ Proof.
   pose proof (H _ _ Hp) as e. simpl in e. discriminate e.
 Qed.
 
-(* T0 but not T1: Sierpiński space, the two points with [true] open. *)
+(* 相关说明。 （已译） *)
 Section Sierpinski.
 
 Universe o.
@@ -572,9 +564,7 @@ Qed.
 
 End Sierpinski.
 
-(* T1 but not T2: the cofinite topology on the naturals, whose nonempty
-   opens are the sets containing a tail [N, ∞).  The arithmetic is proved
-   from the prelude alone. *)
+(* 相关说明。 （已译） *)
 Section NatArith.
 
 Local Open Scope nat_scope.
@@ -654,8 +644,7 @@ Definition PCofinite : PTop@{o} := {|
   popen_inter    := cof_open_inter
 |}.
 
-(* The open "x, or the tail above x + y": if it must contain y, then
-   y = x, the tail lying strictly above y. *)
+(* 相关说明。 （已译） *)
 Lemma PCofinite_PT1 : PT1 PCofinite.
 Proof.
   intros x y H. change (x = y).
@@ -681,8 +670,7 @@ Qed.
 
 End Cofinite.
 
-(* The discrete two-point space is Hausdorff: its equality is Leibniz, and
-   the two singletons are open. *)
+(* 相关说明。 （已译） *)
 Lemma PBool_PHaus@{o} : PHaus PBool@{o}.
 Proof.
   intros a b H. change (a = b).
@@ -694,10 +682,9 @@ Proof.
   - congruence.
 Qed.
 
-(** ** The classical negative Hausdorff axiom against the positive one *)
+(* 相关说明。 （已译） *)
 
-(* Negative to positive, given that the points' equality is stable under
-   double negation. *)
+(* 相关说明。 （已译） *)
 Lemma PIsHausdorff_PHaus@{o} (X : PTop@{o})
   (stab : ∀ x y : X, ((x ≈ y → False) → False) → x ≈ y) :
   PIsHausdorff X → PHaus X.

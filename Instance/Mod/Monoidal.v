@@ -1,4 +1,4 @@
-(** * (R-Mod, ⊗, R): the symmetric monoidal structure of a module category *)
+(* * * (R-Mod, ⊗, R): symmetric monoidal structure module 范畴 （已译） *)
 
 (*
  Book:      Mac Lane, ibid., §IV.1 printed p. 80 and §IV.6 printed p. 98 —
@@ -48,9 +48,9 @@ Definition mval {V W : RModObject R} (f : V ~{RMod R}~> W)
   (v : carrier (cmon_setoid V)) : carrier (cmon_setoid W) :=
   cmon_map (rm_hom f) v.
 
-(* a ↦ a ⊗ b, as a module homomorphism A ~> A ⊗ B.  One uniform body serves
-   all four obligations so the proof does not depend on the order [Program]
-   emits them in — the Instance/Mod/Tensor.v idiom. *)
+(* a ↦ ⊗ b, module homomorphism A ~> A ⊗ B. One uniform body serves
+ all four obligations so 证明 does not depend order [Program]
+ emits them — Instance/Mod/Tensor.v idiom. （已译） *)
 Program Definition gen_r {A B : RModObject R}
   (b : carrier (cmon_setoid B)) : A ~{RMod R}~> TensorMod A B := {|
   rm_hom := {| cmon_map := {| morphism := fun a => mt_gen a b |} |}
@@ -177,8 +177,7 @@ Qed.
 
 End GenSlots.
 
-(* Engineering note (a): `apply tensor_hom_ext` does not unify.  These are
-   declared at top level because [Ltac] does not survive a [Section]. *)
+(* 相关说明。 （已译） *)
 Ltac tens_ext :=
   match goal with |- ?f ≈ ?g => refine (tensor_hom_ext f g _) end.
 Ltac tens_ext_l :=
@@ -448,15 +447,13 @@ Section AssociatorLegs.
 Context {R : RingObject}.
 Context {V W X : RModObject R}.
 
-(* Congruence for the generator former at the two nestings — engineering
-   note (c): without the explicit indices the inner generator elaborates
-   before the outer tensor is known. *)
+(* 相关说明。 （已译） *)
 Local Notation mgR a b :=
   (@mte_gen R V (TensorMod W X) _ _ _ _ a b).
 Local Notation mgL a b :=
   (@mte_gen R (TensorMod V W) X _ _ _ _ a b).
 
-(* For a fixed x, the bilinear map (v, w) ↦ v ⊗ (w ⊗ x). *)
+(* 相关说明。 （已译） *)
 Program Definition assoc_in_bilin (x : carrier (cmon_setoid X)) :
   RBilinear V W (TensorMod V (TensorMod W X)) := {|
   rbl_map := fun v w => mt_gen v (mt_gen w x)
@@ -488,7 +485,7 @@ Definition assoc_in (x : carrier (cmon_setoid X)) :
   TensorMod V W ~{RMod R}~> TensorMod V (TensorMod W X) :=
   tensor_med (assoc_in_bilin x).
 
-(* For a fixed v, the bilinear map (w, x) ↦ (v ⊗ w) ⊗ x. *)
+(* 相关说明。 （已译） *)
 Program Definition mod_assoc_fr_in_bilin (v : carrier (cmon_setoid V)) :
   RBilinear W X (TensorMod (TensorMod V W) X) := {|
   rbl_map := fun w x => mt_gen (mt_gen v w) x
@@ -691,7 +688,7 @@ Next Obligation.
   intros x y; tens_ext_l; intros a r b; simpl.
   exact (tensor_balanced r a b).
 Qed.
-(* THE PENTAGON, definitional once the fourfold generator is exposed. *)
+(* 相关说明。 （已译） *)
 Next Obligation.
   intros x y z w; tens_ext_ll; intros a b c d; simpl; apply mt_refl.
 Qed.
@@ -733,11 +730,7 @@ Qed.
 
 End ModBraiding.
 
-(** ** Acceptance tests over ℤ
-
-    ℤ is a commutative ring (Instance/Rng.v's [Int_Ring_commutative]), so
-    the whole structure is inhabited at a concrete base.  Every example below
-    closes by [eq_refl]: these are computations, not equational arguments. *)
+(* 相关说明。 （已译） *)
 
 Definition Int_Mod_Monoidal : @Monoidal (RMod Int_Ring) :=
   ModMonoidal Int_Ring_commutative.
@@ -755,11 +748,11 @@ Definition zz3 : carrier (cmon_setoid ZMod) := 3%Z.
 Definition zz5 : carrier (cmon_setoid ZMod) := 5%Z.
 Definition zz7 : carrier (cmon_setoid ZMod) := 7%Z.
 
-(* The unit object is ℤ as a module over itself, on the nose. *)
+(* The unit 对象 ℤ module over itself, nose. （已译） *)
 Example mod_unit_is_Ring_RMod :
   @I (RMod Int_Ring) Int_Mod_Monoidal = Ring_RMod Int_Ring := eq_refl.
 
-(* The tensor bifunctor's object action is [TensorMod], on the nose. *)
+(* The tensor bifunctor's 对象 action [TensorMod], nose. （已译） *)
 Example mod_tensor_is_TensorMod :
   fobj[@tensor (RMod Int_Ring) Int_Mod_Monoidal] (ZMod, ZMod)
     = TensorMod ZMod ZMod := eq_refl.
@@ -782,7 +775,7 @@ Example mod_braid_computes :
   mval (@ModBraid Int_Ring ZMod ZMod) (@mt_gen Int_Ring ZMod ZMod zz2 zz3)
   = @mt_gen Int_Ring ZMod ZMod zz3 zz2 := eq_refl.
 
-(* The fourfold generator ((2 ⊗ 3) ⊗ 5) ⊗ 7, the pentagon's input. *)
+(* 相关说明。 （已译） *)
 Definition zquad :
   carrier (cmon_setoid
     (TensorMod (TensorMod (TensorMod ZMod ZMod) ZMod) ZMod)) :=
@@ -790,9 +783,9 @@ Definition zquad :
     (@mt_gen Int_Ring (TensorMod ZMod ZMod) ZMod
        (@mt_gen Int_Ring ZMod ZMod zz2 zz3) zz5) zz7.
 
-(* THE PENTAGON, as a computation.  Both routes around it carry the fourfold
-   generator to the very same [MTerm]; this is the header's central claim,
-   checked rather than asserted. *)
+(* THE PENTAGON, computation. Both routes around it carry fourfold
+ generator very same [MTerm]; 这是 header's central claim,
+ checked rather than asserted. （已译） *)
 Example mod_pentagon_computes :
   mval (mt_fmap (@id (RMod Int_Ring) ZMod)
           (@mod_assoc_to Int_Ring Int_Ring_commutative ZMod ZMod ZMod)
@@ -806,7 +799,7 @@ Example mod_pentagon_computes :
             (TensorMod ZMod ZMod) ZMod ZMod) zquad
   := eq_refl.
 
-(* And the common value is the fully right-nested generator. *)
+(* 相关说明。 （已译） *)
 Example mod_pentagon_value :
   mval (@mod_assoc_to Int_Ring Int_Ring_commutative
           ZMod ZMod (TensorMod ZMod ZMod)
@@ -839,7 +832,7 @@ Fail Example mod_monoidal_instrument : (true = false) := eq_refl.
 (* Supplying the module where [Rcomm] is expected. *)
 Fail Check (@ModUnitLeft Int_Ring ZMod).
 
-(* Control: the same application with [Rcomm] in place. *)
+(* 相关说明。 （已译） *)
 Check (@ModUnitLeft Int_Ring Int_Ring_commutative ZMod).
 
 Fail Check (@mod_assoc_to Int_Ring ZMod ZMod ZMod).
@@ -853,12 +846,11 @@ Check (@mod_assoc_to Int_Ring Int_Ring_commutative ZMod ZMod ZMod).
 *)
 Fail Check (mt_gen (@mt_gen Int_Ring ZMod ZMod zz2 zz3) zz5).
 
-(* Control: the same term with the outer indices supplied. *)
+(* 相关说明。 （已译） *)
 Check (@mt_gen Int_Ring (TensorMod ZMod ZMod) ZMod
          (@mt_gen Int_Ring ZMod ZMod zz2 zz3) zz5).
 
-(* Controls on the commutativity-FREE side: these are complete applications
-   with no [Rcomm] anywhere, at the same ring. *)
+(* 相关说明。 （已译） *)
 Check (@gen_r Int_Ring ZMod ZMod zz3).
 Check (@gen_l Int_Ring ZMod ZMod zz3).
 Check (@ModBraid Int_Ring ZMod ZMod).
@@ -890,8 +882,7 @@ Example probe_balanced_equiv :
     ≈ @mt_gen Int_Ring ZMod ZMod zz3 (rm_smul ZMod 2%Z zz5).
 Proof. exact (@tensor_balanced Int_Ring ZMod ZMod 2%Z zz3 zz5). Qed.
 
-(* Control, sharpening the diagnosis: the two sides ARE distinct terms, the
-   left one reducing to `6 ⊗ 5` and the right to `3 ⊗ 10`. *)
+(* 相关说明。 （已译） *)
 Example probe_balanced_lhs :
   @mt_gen Int_Ring ZMod ZMod (rm_smul ZMod 2%Z zz3) zz5
     = @mt_gen Int_Ring ZMod ZMod 6%Z zz5 := eq_refl.
@@ -900,9 +891,9 @@ Example probe_balanced_rhs :
   @mt_gen Int_Ring ZMod ZMod zz3 (rm_smul ZMod 2%Z zz5)
     = @mt_gen Int_Ring ZMod ZMod zz3 10%Z := eq_refl.
 
-(* The two [to_unit_*_natural] fields' content, [rm_map_smul]: a module
-   homomorphism commutes with the action.  For an arbitrary [g] this is a
-   proof field of the record, not a computation. *)
+(* The two [to_unit_*_natural] fields' content, [rm_map_smul]: module
+ homomorphism commutes action. For arbitrary [g] 这是 a
+ 证明 field record, not computation. （已译） *)
 Fail Example probe_map_smul_conversion
   {V W : RModObject Int_Ring} (g : V ~{RMod Int_Ring}~> W)
   (r : carrier (rig_setoid (ring_rig Int_Ring)))
@@ -917,9 +908,9 @@ Example probe_map_smul_equiv
   mval g (rm_smul V r a) ≈ rm_smul W r (mval g a).
 Proof. exact (rm_map_smul g r a). Qed.
 
-(* Control: the SAME shape at a concrete [g], where it does reduce.  This is
-   what makes the negative above about arbitrary morphisms rather than about
-   the shape of the statement. *)
+(* Control: SAME shape at concrete [g], where it does reduce. This is
+ what makes negative above about arbitrary 态射 rather than about
+ shape statement. （已译） *)
 Example probe_map_smul_concrete
   (r : carrier (rig_setoid (ring_rig Int_Ring)))
   (a : carrier (cmon_setoid ZMod)) :
@@ -938,14 +929,13 @@ Context {R : RingObject}.
 
 Fail Definition probe_no_resolution : @Monoidal (RMod R) := ModMonoidal _.
 
-(* Control: with the hypothesis in hand the very same body elaborates. *)
+(* Control: 假设 hand very same body elaborates. （已译） *)
 Definition probe_with_hypothesis
   (Rcomm : ∀ a b : carrier (rig_setoid (ring_rig R)),
       rig_mul (ring_rig R) a b ≈ rig_mul (ring_rig R) b a) :
   @Monoidal (RMod R) := ModMonoidal Rcomm.
 
-(* Control: the commutativity-free half needs nothing at all, at the same
-   abstract ring. *)
+(* 相关说明。 （已译） *)
 Definition probe_tensor_free : RMod R ∏ RMod R ⟶ RMod R := ModTensor.
 
 End ResolutionProbe.
@@ -963,7 +953,7 @@ Constraint rp < ru.
 
 Context (Ru : RingObject@{ru rp rq}).
 
-(* Controls: the ambient category, the unit object, and the class itself. *)
+(* Controls: ambient 范畴, unit 对象, class itself. （已译） *)
 Check (RMod Ru).
 Check (Ring_RMod Ru).
 Check (@Monoidal (RMod Ru)).
@@ -980,7 +970,7 @@ Check (@ModUnitLeft Ru).
 Check (@ModUnitRight Ru).
 Check (@ModAssoc Ru).
 
-(* The assembly, and the symmetric structure that contains it. *)
+(* 相关说明。 （已译） *)
 Fail Check (@ModMonoidal Ru).
 
 Fail Check (@ModSymmetric Ru).

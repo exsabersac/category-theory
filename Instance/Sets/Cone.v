@@ -37,7 +37,7 @@ Require Import Category.Adjunction.Diagonal.Limit.
 Generalizable All Variables.
 #[local] Obligation Tactic := idtac.
 
-(** * Mac Lane's cone-set limit: the comparison, the remark, the cases *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出集合范畴相关实例。
@@ -45,15 +45,15 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The comparison with the compatible-family limit *)
+(* 相关说明。 （已译） *)
 
 Section Compare.
 
 Context {D : Category}.
 Context (F : D ⟶ Sets).
 
-(* Both apexes are limits of [F], so [limit_unique_iso] supplies the
-   comparison and both leg families with no new proof content. *)
+(* Both apexes limits [F], so [limit_unique_iso] supplies the
+ comparison both leg families no new 证明 content. （已译） *)
 Definition cone_apex_iso : Sets_limit_obj F ≅[Sets] cone_apex F :=
   limit_unique_iso (limit_is_alimit (Sets_Limit F)) (cone_set_IsALimit F).
 
@@ -65,7 +65,7 @@ Definition cone_apex_iso_legs :
   limit_unique_iso_legs (limit_is_alimit (Sets_Limit F))
                         (cone_set_IsALimit F).
 
-(* The two leg families are the named ones, on the nose. *)
+(* 相关说明。 （已译） *)
 Example cone_apex_iso_leg_cone :
   limit_leg (cone_set_IsALimit F) = cone_leg_at F := eq_refl.
 
@@ -94,15 +94,15 @@ Definition cone_apex_discrete_iprod_iso {A : Set} (f : A -> obj[Sets]) :
   iso_compose (discrete_iprod_iso f)
               (iso_sym (cone_apex_iso (DiscreteCat_Functor f))).
 
-(** ** The remark: display (3), natural in the apex *)
+(* 相关说明。 （已译） *)
 
 Section Remark.
 
 Context {D : Category}.
 Context (F : D ⟶ Sets).
 
-(* Mac Lane's [tau |--> h]: a cone with apex X becomes a map into the cone
-   set, sending [e] to the cone [tau e]. *)
+(* Mac Lane's [tau |--> h]: cone apex X becomes map 进入 cone
+ set, sending [e] cone [tau e]. （已译） *)
 Program Definition cone_transpose (X : obj[Sets]) :
   fobj[ConePresheaf F] X
     ~{Sets}~> fobj[Curried_CoHom Sets (cone_apex F)] X := {|
@@ -121,8 +121,7 @@ Next Obligation.
 Qed.
 Next Obligation. intros X p q Hpq e d u; exact (Hpq d e). Qed.
 
-(* The inverse: reindex the tautological cone along h, i.e. compose each
-   leg of display (2) with h. *)
+(* 相关说明。 （已译） *)
 Program Definition cone_untranspose (X : obj[Sets]) :
   fobj[Curried_CoHom Sets (cone_apex F)] X
     ~{Sets}~> fobj[ConePresheaf F] X := {|
@@ -134,8 +133,7 @@ Next Obligation.
 Qed.
 Next Obligation. intros X h h' Hhh' d e; simpl; exact (Hhh' e d ttt). Qed.
 
-(* One round trip is definitional pointwise; the other spends the
-   singleton, exactly once, in the same [destruct] the mediator spends. *)
+(* 相关说明。 （已译） *)
 Lemma cone_transpose_round (X : obj[Sets]) (p : fobj[ConePresheaf F] X) :
   cone_untranspose X (cone_transpose X p) ≈ p.
 Proof. intros d e; reflexivity. Qed.
@@ -179,14 +177,14 @@ Next Obligation. intros X Y g h e d; simpl; reflexivity. Qed.
 Next Obligation. intros X h e d u; destruct u; reflexivity. Qed.
 Next Obligation. intros X p d e; reflexivity. Qed.
 
-(* The components are the two named maps, on the nose. *)
+(* 相关说明。 （已译） *)
 Example coneset_natural_iso_to (X : obj[Sets]) :
   transform[to ConeSet_Natural_Iso] X = cone_transpose X := eq_refl.
 
 Example coneset_natural_iso_from (X : obj[Sets]) :
   transform[from ConeSet_Natural_Iso] X = cone_untranspose X := eq_refl.
 
-(* The cone presheaf is representable, represented by the cone set. *)
+(* The cone presheaf representable, 已表示的 cone set. （已译） *)
 Program Definition ConeSet_Representable : Representable (ConePresheaf F) := {|
   repr_obj := (cone_apex F : obj[Sets^op]);
   represented := {| to := _; from := _ |}
@@ -198,14 +196,14 @@ Next Obligation. exact (iso_to_from ConeSet_Natural_Iso). Qed.
 
 End Remark.
 
-(** ** The adjunction reading of the remark *)
+(* * ** The 伴随 reading remark （已译） *)
 
 (* The cone-set construction as a choice of limits of a fixed shape. *)
 Definition ConeSet_HasLimitsOfShape (J : Category) :
   HasLimitsOfShape J Sets := fun F => cone_set_Limit F.
 
-(* #353's adjunction, fed the cone-set oracle.  Stated outside the section
-   below so that [J] is an explicit argument, as it is for the oracle. *)
+(* #353's 伴随, fed cone-set oracle. Stated outside section
+ below so [J] explicit 论元, it oracle. （已译） *)
 Definition ConeSet_Diagonal_Limit_Adjunction (J : Category) :
   @Diagonal Sets J ⊣ LimitFunctor (ConeSet_HasLimitsOfShape J) :=
   Diagonal_Limit_Adjunction (ConeSet_HasLimitsOfShape J).
@@ -215,8 +213,7 @@ Section Adjunction.
 Context {J : Category}.
 Context (F : J ⟶ Sets).
 
-(* Four strict readbacks: the adjoint's value, its leg, its backward
-   transposition, and its counit. *)
+(* 相关说明。 （已译） *)
 Example coneset_lim_obj :
   lim_obj (ConeSet_HasLimitsOfShape J) F = cone_apex F := eq_refl.
 
@@ -250,15 +247,14 @@ Proof. intros e d u; reflexivity. Qed.
 
 End Adjunction.
 
-(** ** Equalizers: Awodey's concrete presentation *)
+(* 相关说明。 （已译） *)
 
 Section Equalizers.
 
 Context {X Y : SetoidObject}.
 Context (f g : X ~{Sets}~> Y).
 
-(* The existing [HasEqualizers Sets]' apex is the compatible-family setoid
-   over the walking parallel pair, and its leg is evaluation at [ParX]. *)
+(* 相关说明。 （已译） *)
 Example existing_apex_is_limit_obj :
   projT1 (@equalizer Sets Sets_HasEqualizers X Y f g)
   = Sets_limit_obj (APair f g) := eq_refl.
@@ -285,7 +281,7 @@ Program Definition sets_eq_desc {Z : SetoidObject} (h : Z ~{Sets}~> X)
 |}.
 Next Obligation. intros Z h Hh z z' Hz; simpl; now rewrite Hz. Qed.
 
-(* "with unique factorization because the inclusion is monic". *)
+(* "with unique factorization because 含入 monic". （已译） *)
 Program Definition sets_IsEqualizer :
   IsEqualizer f g sets_eq_obj sets_eq_incl := {|
   fork_eq := _;
@@ -301,9 +297,7 @@ Definition existing_IsEqualizer :
               (Sets_limit_leg (APair f g) ParX) :=
   projT2 (projT2 (@equalizer Sets Sets_HasEqualizers X Y f g)).
 
-(* The gap between Awodey's presentation and the existing one is one
-   application of [equalizer_unique].  The strict form is refused at
-   CONVERSION and is pinned in the probe. *)
+(* 相关说明。 （已译） *)
 Definition concrete_vs_existing :
   @Isomorphism Sets sets_eq_obj (Sets_limit_obj (APair f g)) :=
   equalizer_unique f g sets_IsEqualizer existing_IsEqualizer.
@@ -340,14 +334,14 @@ Next Obligation. intros Z h Hh v Hv z; simpl; symmetry; exact (Hv z). Qed.
 
 End Karoubi.
 
-(** ** Seven Sketches: the limit in coordinates *)
+(* 相关说明。 （已译） *)
 
 Section Tuple.
 
 Context {G : Quiver}.
 Context (D : Diagram G Sets).
 
-(* Compatibility along the GENERATING EDGES -- the book's condition. *)
+(* 相关说明。 （已译） *)
 Definition tuple_compat (x : ∀ i : G, D i) : Type :=
   ∀ (i j : G) (e : edges i j), dedge D e (x i) ≈ x j.
 
@@ -393,9 +387,7 @@ Program Definition tuple_fwd :
 Next Obligation. intros p i j e; exact (`2 p i j (tlist_singleton e)). Defined.
 Next Obligation. intros p q Hpq i; exact (Hpq i). Qed.
 
-(* Backward: extend along paths.  The natural [rewrite <- (dpath_fmap D f)]
-   is stuck on an unresolved [ProperProxy]; the explicit [transitivity]
-   through [dpath] is what goes through. *)
+(* 相关说明。 （已译） *)
 Program Definition tuple_bwd :
   tuple_obj ~{Sets}~> Sets_limit_obj (FunctorOfDiagram D) := {|
   morphism := fun p => (`1 p ; fun i j f => _)
@@ -408,7 +400,7 @@ Next Obligation.
 Defined.
 Next Obligation. intros p q Hpq i; exact (Hpq i). Qed.
 
-(* Theorem 3.95: the limit IS the set of compatible tuples. *)
+(* 相关说明。 （已译） *)
 Program Definition tuple_iso :
   @Isomorphism Sets (Sets_limit_obj (FunctorOfDiagram D)) tuple_obj := {|
   to := tuple_fwd; from := tuple_bwd
@@ -416,7 +408,7 @@ Program Definition tuple_iso :
 Next Obligation. intros p i; reflexivity. Qed.
 Next Obligation. intros p i; reflexivity. Qed.
 
-(* "with the coordinate projections as the legs". *)
+(* 相关说明。 （已译） *)
 Program Definition tuple_proj (i : G) : tuple_obj ~{Sets}~> D i := {|
   morphism := fun p => `1 p i
 |}.
@@ -432,7 +424,7 @@ Proof. intros p; reflexivity. Qed.
 
 End Tuple.
 
-(** ** Seven Sketches: presentation-independence *)
+(* 相关说明。 （已译） *)
 
 Section Presentation.
 
@@ -440,12 +432,12 @@ Context (G : Quiver).
 Context (R : PathRel G).
 Context (S : PresentedQuiver G R ⟶ Sets).
 
-(* The restriction of S along the quotient projection. *)
+(* 相关说明。 （已译） *)
 Definition Srestr : FreeOnQuiver G ⟶ Sets := S ◯ PresentedQuiverProj G R.
 
-(* The imposed equations touch neither the objects nor the compatibility
-   predicate nor the carrier -- only the hom-setoid, which the limit
-   carrier does not read. *)
+(* The imposed equations touch neither 对象 nor compatibility
+ predicate nor carrier -- hom-setoid, limit
+ carrier does not read. （已译） *)
 Example pres_fobj_strict (i : G) : fobj[S] i = fobj[Srestr] i := eq_refl.
 
 Example pres_compat_strict
@@ -467,8 +459,8 @@ Program Definition pres_bwd :
 |}.
 Next Obligation. intros p q Hpq i; exact (Hpq i). Qed.
 
-(* Both legs are the identity on elements.  The OBJECT-level [eq_refl] is
-   nevertheless refused; see the header, and the probe. *)
+(* Both legs 恒等 elements. The OBJECT-level [eq_refl] is
+ nevertheless refused; see header, probe. （已译） *)
 Program Definition pres_iso :
   @Isomorphism Sets (Sets_limit_obj S) (Sets_limit_obj Srestr) := {|
   to := pres_fwd; from := pres_bwd

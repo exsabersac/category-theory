@@ -26,11 +26,10 @@ Require Import Coq.micromega.Lia.
 Generalizable All Variables.
 Open Scope category_scope.
 
-(* Obligations are written out rather than left to the tree default, so
-   each [intros] pattern is predictable -- the Instance/Sets/Cone.v idiom. *)
+(* 相关说明。 （已译） *)
 #[local] Obligation Tactic := idtac.
 
-(** * Principal ideals, and the residue tower of a ring element *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/p-adic+integer
@@ -53,7 +52,7 @@ Open Scope category_scope.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** (A) The principal ideal of a ring element *)
+(* 相关说明。 （已译） *)
 
 Definition RingComm (R : RingObject) : Type :=
   ∀ a b : carrier (rig_setoid R), rig_mul R a b ≈ rig_mul R b a.
@@ -72,8 +71,7 @@ Context {R : RingObject}.
 Context (Rcomm : RingComm R).
 Context (d : carrier (rig_setoid R)).
 
-(* Membership is divisibility, with the cofactor carried as DATA (the
-   library's [∃] is [sigT]), so nothing is chosen anywhere below. *)
+(* 相关说明。 （已译） *)
 Definition divides (a : carrier (rig_setoid R)) : Type :=
   { k : carrier (rig_setoid R) & a ≈ rig_mul R d k }.
 
@@ -102,8 +100,7 @@ Next Obligation.
   rewrite Hk; now rewrite (rig_mul_assoc R d k r).
 Qed.
 
-(* The generator is in its own ideal, and the ideal is exactly the
-   multiples. *)
+(* 相关说明。 （已译） *)
 Definition principal_generator : idl_mem PrincipalIdeal d.
 Proof. exists (rig_one R); now rewrite (rig_mul_one_r R d). Defined.
 
@@ -112,7 +109,7 @@ End Principal.
 Arguments PrincipalIdeal {R} Rcomm d.
 Arguments divides {R} d a.
 
-(** ** (B) The residue tower of a ring element *)
+(* 相关说明。 （已译） *)
 
 Section Tower.
 
@@ -171,15 +168,13 @@ Defined.
 Definition res_proj (n : nat) : ResRing (S n) ~{Rng}~> ResRing n :=
   rquot_med (ResIdeal (S n)) (res_kills n).
 
-(* The transition is the quotient projection read downstairs: composing it
-   with the (n+1)-st projection gives the n-th, on the nose from the
-   mediator's own commutation. *)
+(* 相关说明。 （已译） *)
 Lemma res_proj_commutes (n : nat) :
   res_proj n ∘ rquot_proj (ResIdeal (S n)) ≈ rquot_proj (ResIdeal n).
 Proof. exact (rquot_med_commutes (ResIdeal (S n)) (res_kills n)). Qed.
 
-(* The action on an arbitrary order proof, by recursion on the derivation
-   -- the [Construction/Chain.v] idiom, one shape down. *)
+(* The action arbitrary order 证明, recursion derivation
+ -- [Construction/Chain.v] idiom, one shape down. （已译） *)
 Fixpoint res_hom {m n : nat} (f : le_t m n) : ResRing n ~{Rng}~> ResRing m :=
   match f with
   | le_t_n     => id
@@ -194,8 +189,8 @@ Proof.
   - cbn [res_hom le_t_trans]; rewrite IH; now rewrite comp_assoc.
 Qed.
 
-(* Stated at exactly the functor's shape, so the obligation below needs no
-   conversion of [Omega^op]'s composition. *)
+(* Stated at exactly 函子's shape, so obligation below needs no
+ conversion [Omega^op]'s 复合. （已译） *)
 Lemma res_hom_comp {x y z : nat}
   (f : y ~{Omega^op}~> z) (g : x ~{Omega^op}~> y) :
   res_hom (f ∘ g) ≈ res_hom f ∘ res_hom g.
@@ -223,7 +218,7 @@ Definition ResTower : Omega^op ⟶ Rng :=
 
 End Tower.
 
-(** ** (C) The limit of the tower, and its forced ring structure *)
+(* 相关说明。 （已译） *)
 
 Section Limit.
 
@@ -254,8 +249,7 @@ Definition zp_PropEquiv : PropEquiv (is_setoid ZpCarrier) :=
     (iprod_PropEquiv (fun n : nat => fobj[USetTower] n)
        (fun n => rig_prop (ResRing Rcomm d n))).
 
-(* Each operation is coordinatewise, and its compatibility is the
-   corresponding homomorphism law of the transition map. *)
+(* 相关说明。 （已译） *)
 Definition zp_zero : carrier ZpCarrier.
 Proof.
   exists (fun n => rig_zero (ResRing Rcomm d n)).
@@ -295,8 +289,8 @@ Proof.
            (ring_neg_respects (ResRing Rcomm d n) _ _ (`2 p n))).
 Defined.
 
-(* Every law is the stage's law read at each coordinate; the file proves no
-   ring identity of its own. *)
+(* Every law stage's law read at each coordinate; file proves no
+ ring 恒等 own. （已译） *)
 Program Definition ZpRig : RigObject := {|
   rig_setoid := ZpCarrier;
   rig_zero   := zp_zero;
@@ -331,17 +325,16 @@ Program Definition Zp : RingObject := {|
 Next Obligation. intros p q Hpq n; apply ring_neg_respects; exact (Hpq n). Qed.
 Next Obligation. intros a n; apply ring_neg_l. Qed.
 
-(* The carrier IS #408's matching-string setoid, on the nose. *)
+(* 相关说明。 （已译） *)
 Example zp_carrier_is_tower :
   rig_setoid Zp = tower_obj USetTower := eq_refl.
 
 Example zp_carrier_is_inverse_limit :
   rig_setoid Zp = inverse_limit USetTower := eq_refl.
 
-(** *** The projections, and the limit in [Rng] *)
+(* 相关说明。 （已译） *)
 
-(* Each projection is a ring homomorphism BECAUSE the operations are
-   coordinatewise: every law below is [reflexivity]. *)
+(* 相关说明。 （已译） *)
 Program Definition zp_proj (n : nat) : Zp ~{Rng}~> ResRing Rcomm d n := {|
   rig_map := tower_proj USetTower n
 |}.
@@ -357,8 +350,7 @@ Next Obligation.
   intros m n f p; exact (tower_compat_all USetTower (`1 p) (`2 p) f).
 Qed.
 
-(* The mediator out of a competing cone of RINGS: the underlying map is
-   #408's, and it is a homomorphism because every leg of the cone is. *)
+(* 相关说明。 （已译） *)
 Program Definition zp_med (N : Cone (ResTower Rcomm d)) :
   vertex_obj[N] ~{Rng}~> Zp := {|
   rig_map := {| morphism := fun e =>
@@ -383,7 +375,7 @@ Program Definition Zp_limit : IsALimit (ResTower Rcomm d) Zp := {|
 Next Obligation. intros N n e; reflexivity. Qed.
 Next Obligation. intros N v Hv e n; symmetry; exact (Hv n e). Qed.
 
-(** *** Riehl §5.6: the ring structure is FORCED, not chosen *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、（余）极限相关定义、性质与动机。
@@ -417,7 +409,7 @@ Proof. intro n; exact (H n p). Qed.
 
 End Limit.
 
-(** ** (D) The two instantiations: p-adic integers, and formal power series *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -449,7 +441,7 @@ Example zp_int_stage (p : Z) (n : nat) :
    after unfolding.  Consumed, not reproved. *)
 Definition ZPolyComm : RingComm ZPoly := poly_comm Int_Ring.
 
-(* Exercise 7: the tower Z[x]/(x) <- Z[x]/(x²) <- ... and its limit. *)
+(* 相关说明。 （已译） *)
 Definition PowerSeriesTower : Omega^op ⟶ Rng :=
   ResTower ZPolyComm (@poly_x Int_Ring).
 
@@ -458,8 +450,8 @@ Definition PowerSeries : RingObject := Zp ZPolyComm (@poly_x Int_Ring).
 Definition PowerSeries_limit : IsALimit PowerSeriesTower PowerSeries :=
   Zp_limit ZPolyComm (@poly_x Int_Ring).
 
-(* Both are the same term at two generators, which is what makes the
-   exercise a corollary rather than a second development. *)
+(* Both same term at two generators, what makes the
+ exercise 推论 rather than second development. （已译） *)
 Example padic_and_series_share_the_construction (p : Z) :
   (Zp_int p = Zp ZComm p) * (PowerSeries = Zp ZPolyComm (@poly_x Int_Ring))
   := (eq_refl, eq_refl).
@@ -478,10 +470,10 @@ Context (Hp : (1 < p)%Z).
 Local Notation P n := (@dpow Int_Ring p n).
 Local Notation Zpc := (ZpCarrier ZComm p).
 
-(** *** What sections (A)-(D) leave to be measured *)
+(* 相关说明。 （已译） *)
 
-(* The transition map of the residue tower does not move an integer: the
-   quotient map ℤ/d^(n+1) → ℤ/d^n is induced by the identity of ℤ. *)
+(* The transition map residue tower does not move integer: the
+ quotient map ℤ/d^(n+1) → ℤ/d^n induced 恒等 ℤ. （已译） *)
 Example digit_transition_is_id (n : nat) (x : Z) :
   fmap[USetTower ZComm p] (tower_step n) x = x := eq_refl.
 
@@ -510,7 +502,7 @@ Qed.
 Lemma dpow_nz (n : nat) : (P n <> 0)%Z.
 Proof using Hp p. pose proof (dpow_pos n); lia. Qed.
 
-(** *** The two directions of the residue relation, as integer statements *)
+(* * *** The two directions residue 关系, integer statements （已译） *)
 
 Lemma res_of_dvd (n : nat) (x y k : Z) (H : (x + - y)%Z = (P n * k)%Z) :
   @equiv _ (rig_setoid (ResRing ZComm p n)) x y.
@@ -567,8 +559,7 @@ Proof using Hp p.
   rewrite Z.mul_sub_distr_l; lia.
 Qed.
 
-(* (x mod (c * b)) mod b = x mod b, the one modular fact the invariant
-   below needs and the stdlib states only for equal moduli. *)
+(* 相关说明。 （已译） *)
 Lemma mod_mod_mul (b c x : Z) (Hb : (0 < b)%Z) (Hc : (0 < c)%Z) :
   ((x mod (c * b)) mod b)%Z = (x mod b)%Z.
 Proof.
@@ -580,7 +571,7 @@ Proof.
   now rewrite Z_mod_plus_full.
 Qed.
 
-(** *** The digits of a p-adic integer, and the value of a digit string *)
+(* 相关说明。 （已译） *)
 
 Definition zpd (f : Zpc) (i : nat) : Z :=
   (((`1 f (S i)) mod P (S i)) / P i)%Z.
@@ -613,8 +604,7 @@ Proof using Hp p.
     rewrite dpow_S; nia.
 Qed.
 
-(* A digit string is a p-adic integer with no compatibility obligation of
-   its own: the n-th partial sum differs from the (n+1)-st by [a n * d^n]. *)
+(* 相关说明。 （已译） *)
 Lemma dsum_compat (a : nat -> Z) (n : nat) :
   (dsum a (S n) + - dsum a n)%Z = (P n * a n)%Z.
 Proof. cbn [dsum]; ring. Qed.
@@ -633,7 +623,7 @@ Defined.
 Example digits_to_zp_stage (a : nat -> Z) (n : nat) :
   `1 (digits_to_zp a) n = dsum a n := eq_refl.
 
-(** *** The invariant: the digits of [f] rebuild its canonical representative *)
+(* 相关说明。 （已译） *)
 
 Lemma zpd_dsum (f : Zpc) (n : nat) :
   dsum (zpd f) n = ((`1 f n) mod P n)%Z.
@@ -675,7 +665,7 @@ Proof using Hp p.
   rewrite Z.mul_opp_r; lia.
 Qed.
 
-(** *** The bijection (Exercise 6, first half) *)
+(* 相关说明。 （已译） *)
 
 Definition DigitCarrier : Type := { a : nat -> Z & ∀ i, (0 <= a i < p)%Z }.
 
@@ -721,8 +711,8 @@ Program Definition Zp_digits_iso
 Next Obligation. intros a i; exact (digits_round (`1 a) (`2 a) i). Qed.
 Next Obligation. intro f; exact (zp_round f). Qed.
 
-(* The two legs ARE the named morphisms, so the two correspondence
-   theorems below are about this bijection and not about a lookalike. *)
+(* The two legs ARE named 态射, so two correspondence
+ theorems below about bijection not about lookalike. （已译） *)
 Example zp_digits_iso_to_leg : to Zp_digits_iso = zp_to_digits := eq_refl.
 
 Example zp_digits_iso_from_leg :
@@ -751,7 +741,7 @@ Definition dnorm (c : nat -> Z) (i : nat) : Z := ((c i + ncarry c i) mod p)%Z.
 Lemma dnorm_bound (c : nat -> Z) (i : nat) : (0 <= dnorm c i < p)%Z.
 Proof using Hp p. apply Z.mod_pos_bound; lia. Qed.
 
-(* The value is preserved exactly, up to the carry out of position n. *)
+(* 相关说明。 （已译） *)
 Lemma dnorm_dsum (c : nat -> Z) (n : nat) :
   (dsum (dnorm c) n + ncarry c n * P n)%Z = dsum c n.
 Proof using Hp p.
@@ -774,8 +764,7 @@ Proof using p.
   induction n as [|k IH]; cbn [dsum]; [ring | rewrite IH; ring].
 Qed.
 
-(* Carry-propagating addition of digit strings IS addition of p-adic
-   integers: the two agree at every stage of the tower. *)
+(* 相关说明。 （已译） *)
 Lemma dadd_correct (a b : nat -> Z) (n : nat) :
   @equiv _ (rig_setoid (ResRing ZComm p n))
     (dsum (dadd a b) n) (dsum a n + dsum b n)%Z.
@@ -798,8 +787,7 @@ Theorem Zp_digits_add (a b : DigitCarrier) :
     (rig_add (Zp ZComm p) (digits_to_zp_mor a) (digits_to_zp_mor b)).
 Proof using Hp p. intro n; exact (dadd_correct (`1 a) (`1 b) n). Qed.
 
-(* The digit of a sum at position i is Mac Lane's schoolbook digit: the
-   residue mod p of the two digits plus the incoming carry. *)
+(* 相关说明。 （已译） *)
 Example dadd_digit (a b : DigitCarrier) (i : nat) :
   `1 (dadd_seq a b) i
     = ((`1 a i + `1 b i + ncarry (fun j => (`1 a j + `1 b j)%Z) i) mod p)%Z
@@ -823,7 +811,7 @@ Fixpoint mraw (a b : nat -> Z) (n : nat) : Z :=
   | S k => (a 0%nat * b (S k) + mraw (fun i => a (S i)) b k)%Z
   end.
 
-(* The convolution, at the first two positions. *)
+(* 相关说明。 （已译） *)
 Example mraw_0 (a b : nat -> Z) : mraw a b 0%nat = (a 0%nat * b 0%nat)%Z
   := eq_refl.
 
@@ -841,8 +829,8 @@ Proof using p.
   induction n as [|k IH]; cbn [dsum]; [ring | rewrite IH; ring].
 Qed.
 
-(* Peeling the units digit: this is what turns the convolution's
-   reindexing into an induction the shifted sequence carries. *)
+(* Peeling units digit: 这是 what turns convolution's
+ reindexing induction shifted sequence carries. （已译） *)
 Lemma dsum_shift (a : nat -> Z) (n : nat) :
   dsum a (S n) = (a 0%nat + p * dsum (fun i => a (S i)) n)%Z.
 Proof using p.
@@ -851,7 +839,7 @@ Proof using p.
   - cbn [dsum] in IH; rewrite IH, dpow_S; ring.
 Qed.
 
-(* The convolution computes the product of the truncations, modulo d^n. *)
+(* 相关说明。 （已译） *)
 Lemma mraw_correct (n : nat) : ∀ a b : nat -> Z,
   { k : Z & (dsum a n * dsum b n - dsum (mraw a b) n)%Z = (P n * k)%Z }.
 Proof using Hp p.
@@ -908,8 +896,7 @@ Theorem Zp_digits_mul (a b : DigitCarrier) :
     (rig_mul (Zp ZComm p) (digits_to_zp_mor a) (digits_to_zp_mor b)).
 Proof using Hp p. intro n; exact (dmul_correct (`1 a) (`1 b) n). Qed.
 
-(* Schoolbook multiplication: the digit at position i is the residue mod p
-   of the i-th convolution coefficient plus the incoming carry. *)
+(* 相关说明。 （已译） *)
 Example dmul_digit (a b : DigitCarrier) (i : nat) :
   `1 (dmul_seq a b) i
     = ((mraw (`1 a) (`1 b) i + ncarry (mraw (`1 a) (`1 b)) i) mod p)%Z
@@ -952,8 +939,7 @@ Proof using Hp p.
   rewrite (Z.div_small (P i - 1) (P i)) by lia; lia.
 Qed.
 
-(* The all-(p−1) string is therefore a digit expansion, and it is the one
-   the ring's own additive inverse of 1 has. *)
+(* 相关说明。 （已译） *)
 Lemma zp_const_neg_one_is_neg_one :
   @equiv _ (rig_setoid (Zp ZComm p))
     (zp_const (-1)%Z) (ring_neg (Zp ZComm p) (rig_one (Zp ZComm p))).
@@ -966,15 +952,12 @@ Proof using p.
 Qed.
 End Digits.
 
-(** ** (F) Base ten: schoolbook carrying, computed
-
-    Every statement below closes by [eq_refl], so the carry recursion is
-    exercised rather than described. *)
+(* 相关说明。 （已译） *)
 
 Definition d7 : nat -> Z := fun i => match i with O => 7%Z | _ => 0%Z end.
 Definition d5 : nat -> Z := fun i => match i with O => 5%Z | _ => 0%Z end.
 
-(* 7 + 5 = 12: units digit 2, and the carry lands in the tens place. *)
+(* 相关说明。 （已译） *)
 Example base_ten_add_units : dadd 10%Z d7 d5 0%nat = 2%Z := eq_refl.
 Example base_ten_add_tens  : dadd 10%Z d7 d5 1%nat = 1%Z := eq_refl.
 Example base_ten_add_hundreds : dadd 10%Z d7 d5 2%nat = 0%Z := eq_refl.
@@ -983,7 +966,7 @@ Example base_ten_add_hundreds : dadd 10%Z d7 d5 2%nat = 0%Z := eq_refl.
 Example base_ten_mul_units : dmul 10%Z d7 d5 0%nat = 5%Z := eq_refl.
 Example base_ten_mul_tens  : dmul 10%Z d7 d5 1%nat = 3%Z := eq_refl.
 
-(* The carry out of the units place is genuinely 1, not 0. *)
+(* 相关说明。 （已译） *)
 Example base_ten_carry_one :
   ncarry 10%Z (fun i => (d7 i + d5 i)%Z) 1%nat = 1%Z := eq_refl.
 

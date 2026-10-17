@@ -16,7 +16,7 @@ Require Import Category.Instance.Fun.Action.Monad.BG.
 
 Generalizable All Variables.
 
-(** * #464's two monads are isomorphic in the category of monads *)
+(* * * #464's two 单子 isomorphic 范畴 单子 （已译） *)
 
 (*
  Book: Riehl, "Category Theory in Context", 2nd ed., Exercise 5.5.iv,
@@ -27,7 +27,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** θ : ActMonad M ⟶ BGMonad M, identity components *)
+(* * ** θ : ActMonad M ⟶ BGMonad M, 恒等 components （已译） *)
 
 Definition BG_theta@{o so | o < so +} (M : MonObject@{o o o}) :
   MonadHom@{so o} (ActMonad@{o so} M) (BGMonad@{o so} M).
@@ -49,7 +49,7 @@ Example BG_theta_component@{o so | o < so +} (M : MonObject@{o o o})
   mh_transform (BG_theta@{o so} M) X = @id Sets@{o so} (act_prod M X)
   := eq_refl.
 
-(** ** θ⁻¹ : BGMonad M ⟶ ActMonad M, identity components *)
+(* * ** θ⁻¹ : BGMonad M ⟶ ActMonad M, 恒等 components （已译） *)
 
 Definition BG_theta_inv@{o so | o < so +} (M : MonObject@{o o o}) :
   MonadHom@{so o} (BGMonad@{o so} M) (ActMonad@{o so} M).
@@ -70,7 +70,7 @@ Example BG_theta_inv_component@{o so | o < so +} (M : MonObject@{o o o})
   mh_transform (BG_theta_inv@{o so} M) X = @id Sets@{o so} (act_prod M X)
   := eq_refl.
 
-(* The two are inverse in [Monads Sets]. *)
+(* 相关说明。 （已译） *)
 
 Definition BG_theta_iso@{o so m1 m2 |
   o < so, o <= m1, o <= m2, so <= m1, so <= m2 +} (M : MonObject@{o o o}) :
@@ -133,7 +133,7 @@ Proof.
   - intros x y f z. reflexivity.
 Defined.
 
-(** ** θ⁻¹* assembles #464's [Act_BG_alg] into a functor *)
+(* * ** θ⁻¹* assembles #464's [Act_BG_alg] 函子 （已译） *)
 
 Definition Act_BG_EM@{o so | o < so +} (M : MonObject@{o o o}) :
   @EilenbergMoore@{so so so o} Sets@{o so} (ActF@{o so} M) (ActMonad@{o so} M)

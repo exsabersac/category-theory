@@ -1,4 +1,4 @@
-(** * R ⊗ (−) is a left adjoint: the premises of Riehl's Corollary 5.6.10 *)
+(* * * R ⊗ (−) 左伴随: premises Riehl's Corollary 5.6.10 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -101,7 +101,7 @@ Proof.
   exact (rig_mul_one_l (ring_rig R) r).
 Qed.
 
-(** ** The square of the monad is a left adjoint *)
+(* * ** The square 单子 左伴随 （已译） *)
 
 Definition TensorF2_left_adjoint@{c o x} (R : RingObject@{c c c}) :
   @Adjunction@{o c c o c c c c x c o} Ab@{o c} Ab@{o c}
@@ -111,7 +111,7 @@ Definition TensorF2_left_adjoint@{c o x} (R : RingObject@{c c c}) :
   Adjunction_Compose (TensorF_left_adjoint@{c o x} R)
     (TensorF_left_adjoint@{c o x} R).
 
-(** ** Cocontinuity, cone-level and apex-level *)
+(* 相关说明。 （已译） *)
 
 (* Left adjoints preserve colimits: Riehl's Theorem 4.6.2, here
    Adjunction/Continuity.v. *)
@@ -140,10 +140,10 @@ Definition TensorF2_preserves_colimits@{c o x t l l0 s}
   left_adjoint_preserves_colimits@{t l x l0 o c t o s c o}
     (TensorF2_left_adjoint@{c o x} R).
 
-(** ** The forgetful functor against U^T ◯ K *)
+(* * ** The forgetful 函子 against U^T ◯ K （已译） *)
 
-(* EM_Forget ◯ EM_Comparison agrees with U on objects and arrows on the
-   nose, and is isomorphic to it with identity components. *)
+(* EM_Forget ◯ EM_Comparison agrees U 对象 arrows the
+ nose, isomorphic it 恒等 components. （已译） *)
 
 Example rmod_forget_comparison_obj@{a c p o x} (R : RingObject@{a c p})
   (M : obj[RMod@{o x a p c} R]) :

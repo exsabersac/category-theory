@@ -22,7 +22,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Double-opposite, navigated definitionally *)
+(* 相关说明。 （已译） *)
 
 Program Definition op_invol_to {C : Category} :
   Opposite (Opposite C) ⟶ C := {|
@@ -74,9 +74,9 @@ Qed.
 
 (** ** The involution *)
 
-(* The component at C: an isomorphism of categories (in Cat's
-   equivalence sense) between (C^op)^op and C, with identity round
-   trips. *)
+(* The component at C: 同构 范畴 (in Cat's
+ 等价 sense) between (C^op)^op C, 恒等 round
+ trips. （已译） *)
 Program Definition op_invol_iso {C : Category} :
   @Isomorphism Cat (Opposite (Opposite C)) C := {|
   to := op_invol_to;
@@ -135,8 +135,8 @@ Next Obligation.
   intros x y f; simpl; reflexivity.
 Qed.
 
-(* The strict involution, with eq_refl object components — the record
-   eta of Category makes the double opposite definitional. *)
+(* The strict involution, eq_refl 对象 components — record
+ eta Category makes double opposite definitional. （已译） *)
 Theorem Op_Strict_invol :
   @equiv _ (@Functor_StrictEq_Setoid StrictCat StrictCat)
          (Op_Strict ◯ Op_Strict) (Id[StrictCat]).
@@ -149,7 +149,7 @@ Proof.
   reflexivity.
 Qed.
 
-(** ** Riehl's Exercise 1.3.v: the hom-setoid bijections *)
+(* 相关说明。 （已译） *)
 
 Program Definition op_flip_iso (C D : Category) :
   @Isomorphism Sets

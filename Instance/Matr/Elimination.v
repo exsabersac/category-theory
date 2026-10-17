@@ -62,7 +62,7 @@ Proof.
         now rewrite fin_delete_FS_FS, Hr.
 Qed.
 
-(* An index is either the pivot or lies in the image of [fin_delete]. *)
+(* 相关说明。 （已译） *)
 Lemma fin_pivot_cases {n : nat} (p j : Fin.t (S n)) :
   (j = p) + { r : Fin.t n & fin_delete p r = j }.
 Proof.
@@ -73,10 +73,10 @@ Qed.
 
 Section Elimination.
 
-(** ** The base: a field with a zero test
+(* * ** The base: field zero test
 
-    [Kdec] has the type Instance/Field.v's [field_dec_stable] takes; see
-    the header for why no weaker hypothesis will do. *)
+ [Kdec] has type Instance/Field.v's [field_dec_stable] takes; see
+ header why no weaker 假设 will do. （已译） *)
 
 Context (K : FieldObject).
 Context (Kdec : ∀ a b : carrier (rig_setoid K), (a ≈ b) + (a ≈ b → False)).
@@ -128,10 +128,10 @@ Example mat_id_is_id (a : nat) : mat_id a = @id (Matr K) a := eq_refl.
 Example mat_equiv_is_homset_equiv {a b : nat} (A B : Matrix K a b) :
   (A ≈ B) = (A ≈[Matr K] B) := eq_refl.
 
-(** ** Matrix algebra
+(* * ** Matrix algebra
 
-    Associativity and the unit laws are the category's, cited by the
-    identifications above.  Everything else is a finite-sum computation. *)
+ Associativity unit laws 范畴's, cited the
+ identifications above. Everything else finite-sum computation. （已译） *)
 
 #[local] Instance mat_mul_respects {a b c : nat} :
   Proper (equiv ==> equiv ==> equiv) (@mat_mul a b c) :=
@@ -206,9 +206,7 @@ Proof.
         now rewrite fin_delete_FS_FS.
 Qed.
 
-(* Deleting the same index from both arguments leaves the Kronecker
-   delta unchanged: injectivity of [fin_delete p] in one direction, and
-   nothing at all in the other. *)
+(* 相关说明。 （已译） *)
 Lemma delta_delete {n : nat} (p : Fin.t (S n)) (r s : Fin.t n) :
   delta K (fin_delete p r) (fin_delete p s) ≈ delta K r s.
 Proof.
@@ -253,8 +251,7 @@ Definition pivot_basis {m' : nat} (c : Fin.t (S m') → Kc)
   fun r j => delta K (fin_delete p r) j
              ⊕ ⊖ (pivot_coeff c p r ⊗ delta K p j).
 
-(* Multiplying row r of the pivot basis into an arbitrary column g: the
-   delta collapses pick out the [d r] and p entries of g. *)
+(* 相关说明。 （已译） *)
 Lemma fin_sum_pivot_row {m' : nat} (c : Fin.t (S m') → Kc)
   (p : Fin.t (S m')) (r : Fin.t m') (g : Fin.t (S m') → Kc) :
   fin_sum K (fun l => pivot_basis c p r l ⊗ g l)
@@ -284,8 +281,8 @@ Proof.
   reflexivity.
 Qed.
 
-(* Every row of the pivot basis kills the column it was built from —
-   this is where [finv_l] is spent, and where [Hp] pays for its guard. *)
+(* Every row pivot basis kills column it was built —
+ 这是 where [finv_l] spent, where [Hp] pays guard. （已译） *)
 Lemma pivot_basis_annihilates {m' : nat} (c : Fin.t (S m') → Kc)
   (p : Fin.t (S m')) (Hp : c p ≈ 0K → False) (r : Fin.t m') :
   fin_sum K (fun l => pivot_basis c p r l ⊗ c l) ≈ 0K.
@@ -298,7 +295,7 @@ Proof.
   apply ring_neg_r.
 Qed.
 
-(* The pivot column of a combination of the basis rows. *)
+(* 相关说明。 （已译） *)
 Lemma pivot_col_pivot {m' : nat} (c : Fin.t (S m') → Kc)
   (p : Fin.t (S m')) (v : Fin.t m' → Kc) :
   fin_sum K (fun r => v r ⊗ pivot_basis c p r p)
@@ -312,8 +309,8 @@ Proof.
   apply ring_neg_mul_r.
 Qed.
 
-(* Every other column of a combination of the basis rows reads off the
-   corresponding coefficient — this is the independence half. *)
+(* Every other column combination basis rows reads off the
+ corresponding coefficient — 这是 independence half. （已译） *)
 Lemma pivot_col_other {m' : nat} (c : Fin.t (S m') → Kc)
   (p : Fin.t (S m')) (v : Fin.t m' → Kc) (r0 : Fin.t m') :
   fin_sum K (fun r => v r ⊗ pivot_basis c p r (fin_delete p r0)) ≈ v r0.
@@ -550,8 +547,7 @@ Fixpoint lnb_rec (n : nat) :
            (mat_mul (lnb_basis B1) (mat_tail M)))
   end.
 
-(* THE HEADLINE: every matrix over a field with a zero test has a basis
-   of its left null space, with the universal clause. *)
+(* 相关说明。 （已译） *)
 Definition left_null_basis {m n : nat} (M : Matrix K m n) :
   LeftNullBasis M := lnb_rec n m M.
 
@@ -670,8 +666,7 @@ Defined.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The 2 × 1 column (1, 1).  Its left null space is the line spanned by
-   (1, 1) — over F₂ that is the only nonzero vector killing it. *)
+(* 相关说明。 （已译） *)
 Definition f2_col : Matrix F2_Field 2 1 := fun _ _ => true.
 
 Definition f2_col_lnb : LeftNullBasis F2_Field f2_col :=
@@ -700,17 +695,15 @@ Definition f2_h : Matrix F2_Field 1 2 := fun _ _ => true.
 Lemma f2_h_kills : mat_mul F2_Field f2_h f2_col ≈ mat_zero F2_Field.
 Proof. intros i j; reflexivity. Qed.
 
-(* Stated without an ascription: writing the [∃!] out again would
-   elaborate [f2_col_lnb] at fresh universes and the two would not
-   unify — measured, and the reason the type is left inferred. *)
+(* 相关说明。 （已译） *)
 Definition f2_mediator := lnb_univ f2_col_lnb 1 f2_h f2_h_kills.
 
 Example f2_mediator_computes :
   unique_obj f2_mediator Fin.F1 Fin.F1 = true := eq_refl.
 
-(* The dimension responds to the matrix, which is what makes the search
-   for a pivot load-bearing: the 2 × 2 identity has NO nonzero row
-   vector in its left null space... *)
+(* The dimension responds matrix, what makes search
+ pivot load-bearing: 2 × 2 恒等 has NO nonzero row
+ vector left null space... （已译） *)
 Definition f2_id2 : Matrix F2_Field 2 2 :=
   fun i j => delta F2_Field i j.
 

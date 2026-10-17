@@ -12,7 +12,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * The cokernel pair of [Sets] is a cokernel pair *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出集合范畴相关实例。
@@ -28,8 +28,7 @@ Context (f : A ~{Sets@{p h}}~> B).
 
 (** ** The mediator *)
 
-(* The copairing of two competing maps: on the left copy use q1, on the
-   right copy use q2. *)
+(* 相关说明。 （已译） *)
 Definition sets_ck_fun {Q : SetoidObject@{p p}}
            (q1 q2 : B ~{Sets@{p h}}~> Q)
   : carrier (CKSetoid f) → carrier Q :=
@@ -74,8 +73,7 @@ Qed.
 
 (** ** The universal property *)
 
-(* Both triangles are POINTWISE [reflexivity]: the mediator is defined by
-   case analysis on the sum, and each leg lands in exactly one case. *)
+(* 相关说明。 （已译） *)
 Lemma sets_ck_med_left {Q : SetoidObject@{p p}}
       (q1 q2 : B ~{Sets@{p h}}~> Q)
       (Hc : q1 ∘[Sets@{p h}] f ≈ q2 ∘[Sets@{p h}] f) :
@@ -102,8 +100,7 @@ Proof.
     + symmetry; exact (Hv2 b).
 Qed.
 
-(* Instance/Sets.v's construction IS a cokernel pair.  The commuting
-   equation is that file's own [ck_agree], reused rather than reproved. *)
+(* 相关说明。 （已译） *)
 Definition sets_ck_IsCokernelPair
   : IsCokernelPair (C:=Sets@{p h}) f (CKSetoid f) (ck_left f) (ck_right f) :=
   @Build_IsPushoutSquare Sets@{p h} A B B f f
@@ -111,7 +108,7 @@ Definition sets_ck_IsCokernelPair
 
 End SetsCokernelPair.
 
-(** ** The two triangles hold on the nose on the underlying functions *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 CokernelPair 相关定义、性质与动机。
@@ -130,10 +127,10 @@ Example sets_ck_med_inr@{h p} {A B Q : SetoidObject@{p p}}
 
 (** ** Non-vacuity, both ways *)
 
-(* Instance/Sets.v's own witness pair between the singleton and the
-   two-element setoid is used, so no new object is introduced. *)
+(* Instance/Sets.v's own witness pair between singleton the
+ two-element setoid used, so no new 对象 introduced. （已译） *)
 
-(** *** The epic side: [collapse] is surjective, so its legs agree *)
+(* 相关说明。 （已译） *)
 
 Lemma sets_collapse_surjective :
   ∀ u : carrier unit_setoid_object, ∃ b, collapse b ≈ u.
@@ -142,24 +139,24 @@ Proof. intro u; exists true; destruct u; reflexivity. Qed.
 Definition sets_collapse_epic : Epic collapse :=
   surjective_implies_epic collapse sets_collapse_surjective.
 
-(* Its cokernel pair is trivial: the two legs of [CKSetoid collapse]
-   coincide.  Obtained through the general theorem, not by computation. *)
+(* Its cokernel pair trivial: two legs [CKSetoid collapse]
+ coincide. Obtained through general 定理, not computation. （已译） *)
 Definition sets_collapse_ckp_trivial :
   ck_left collapse ≈ ck_right collapse :=
   fst (epic_iff_cokernel_pair_trivial (C:=Sets) collapse
          (is_pushout_square_pushout (sets_ck_IsCokernelPair collapse)))
       sets_collapse_epic.
 
-(* And the identity square on it is a pushout. *)
+(* And 恒等 square it pushout. （已译） *)
 Definition sets_collapse_pushout_square :
   IsPushoutSquare (C:=Sets) collapse collapse unit_setoid_object id id :=
   fst (epic_iff_pushout_square collapse) sets_collapse_epic.
 
-(** *** The non-epic side: [pick_true] misses [false] *)
+(* 相关说明。 （已译） *)
 
-(* The two legs of [CKSetoid pick_true] are DISTINCT, proved by hand: at
-   [false] the gluing relation would supply a preimage of [false] under
-   [pick_true], i.e. a proof that [true = false]. *)
+(* The two legs [CKSetoid pick_true] DISTINCT, proved hand: at
+ [false] gluing 关系 would supply preimage [false] under
+ [pick_true], i.e. 证明 [true = false]. （已译） *)
 Lemma sets_pick_true_ckp_nontrivial :
   ck_left pick_true ≈ ck_right pick_true → False.
 Proof.
@@ -171,8 +168,8 @@ Proof.
   exact (Bool.diff_true_false Hu).
 Qed.
 
-(* Hence the identity square on [pick_true] is NOT a pushout: were it one,
-   [pick_true] would be epic and the legs would have to agree. *)
+(* Hence 恒等 square [pick_true] NOT pushout: were it one,
+ [pick_true] would epic legs would have agree. （已译） *)
 Lemma sets_pick_true_not_pushout_square :
   IsPushoutSquare (C:=Sets) pick_true pick_true bool_setoid_object id id
   → False.

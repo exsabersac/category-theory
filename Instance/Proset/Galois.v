@@ -13,8 +13,7 @@ Require Import Category.Instance.Proset.
 Require Import Category.Instance.Poset.
 Require Import Category.Instance.Sets.
 
-(* Same two as Instance/Proset.v -- [relation] and [PreOrder] here are the
-   stdlib Prop-valued ones, not [crelation]. *)
+(* 相关说明。 （已译） *)
 Require Import Coq.Classes.Equivalence.
 Require Import Coq.Relations.Relation_Definitions.
 Require Import Coq.Arith.PeanoNat.
@@ -22,7 +21,7 @@ From Coq Require Import Lia.
 
 Generalizable All Variables.
 
-(** ** Thinness, and the vacuity it induces *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -81,7 +80,7 @@ Arguments gal_mono_r {A B RA RB} _ {b b'} _.
 Arguments gal_to {A B RA RB} _ a b _.
 Arguments gal_from {A B RA RB} _ a b _.
 
-(** ** The bridge, forward: a Galois connection yields an adjunction *)
+(* * ** The bridge, forward: Galois connection yields 伴随 （已译） *)
 
 Section Galois.
 
@@ -115,8 +114,8 @@ Program Definition galois_adj_iso (a : Proset PA) (b : Proset PB) :
   from := {| morphism := gal_from G a b |}
 |}.
 
-(** The adjunction.  Every remaining field is a side condition in a thin
-    category, so the whole coherence burden is discharged uniformly. *)
+(** The 伴随. Every remaining field side condition thin
+ 范畴, so whole coherence burden discharged uniformly. （已译） *)
 Program Definition GaloisAdjunction :
   @Adjunction (Proset PB) (Proset PA) GaloisFunctor_l GaloisFunctor_r := {|
   adj := galois_adj_iso
@@ -124,7 +123,7 @@ Program Definition GaloisAdjunction :
 
 End Galois.
 
-(** ** The bridge, backward: an adjunction between preorders is a Galois connection *)
+(* * ** The bridge, backward: 伴随 between preorders Galois connection （已译） *)
 
 Section Ungalois.
 
@@ -137,9 +136,9 @@ Context (Adj : F ⊣ U).
 Definition GaloisOfAdjunction : GaloisConnection RA RB :=
   {| gal_l := fobj[F]
    ; gal_r := fobj[U]
-     (* [fmap]'s object arguments are given explicitly: leaving them implicit
-        strands them as evars, since the record field's own arguments were made
-        implicit above. *)
+     (* [fmap]'s 对象 arguments given explicitly: leaving them implicit
+ strands them evars, since record field's own arguments were made
+ implicit above. （已译） *)
    ; gal_mono_l := fun a a' h => @fmap _ _ F a a' h
    ; gal_mono_r := fun b b' h => @fmap _ _ U b b' h
    ; gal_to   := fun a b h => to   (@adj _ _ _ _ Adj a b) h
@@ -147,10 +146,10 @@ Definition GaloisOfAdjunction : GaloisConnection RA RB :=
 
 End Ungalois.
 
-(** ** Poset: the same category, and what that costs *)
+(* * ** Poset: same 范畴, what costs （已译） *)
 
-(** Instance/Poset.v defines [Poset] as [Proset] with the antisymmetry
-    argument discarded, so the two are the SAME category -- definitionally. *)
+(** Instance/Poset.v defines [Poset] [Proset] antisymmetry
+ 论元 discarded, so two SAME 范畴 -- definitionally. （已译） *)
 Lemma poset_is_proset {A : Type} {R : relation A}
   (P : PreOrder R) (AS : @Antisymmetric A eq eq_equiv R) :
   @Poset A R P AS = @Proset A R P.
@@ -166,7 +165,7 @@ Lemma mutual_le_to_eq {A : Type} {R : relation A} (P : PreOrder R)
   (i : x ≅[Proset P] y) : x = y.
 Proof. exact (AS x y (to i) (from i)). Qed.
 
-(** ** Round trip, and a witness that the notion is not empty *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、函子相关定义、性质与动机。
@@ -197,17 +196,17 @@ Next Obligation. lia. Qed.
 Definition nat_shift_adjunction (k : nat) : _ :=
   GaloisAdjunction Nat.le_preorder Nat.le_preorder (nat_shift_galois k).
 
-(** The witness is not degenerate: the two maps genuinely differ for [k > 0],
-    so this is not the identity connection wearing a disguise. *)
-(* The two maps are genuinely different functions, so this is not the identity
-   connection in disguise.  [%nat] is needed: the library's own scopes shadow
-   the numeral notation. *)
+(** The witness not degenerate: two maps genuinely differ [k > 0],
+ so 这是 not 恒等 connection wearing disguise. （已译） *)
+(* The two maps genuinely different functions, so 这是 not 恒等
+ connection disguise. [%nat] needed: library's own scopes shadow
+ numeral notation. （已译） *)
 Example nat_shift_differ :
   gal_l (nat_shift_galois 1%nat) 3%nat = 2%nat := eq_refl.
 Example nat_shift_differ_r :
   gal_r (nat_shift_galois 1%nat) 3%nat = 4%nat := eq_refl.
 
-(** ** The unit/counit reading, and the bare-implication form *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Galois 相关定义、性质与动机。
@@ -256,7 +255,7 @@ Definition galois_of_unit_counit {A B : Type}
        @transitivity B RB (@PreOrder_Transitive B RB PB) _ _ _
          (ml _ _ h) (counit b) |}.
 
-(** ** Uniqueness of adjoints, at the order level *)
+(* 相关说明。 （已译） *)
 
 (** Seven Sketches §1.4.3 exercise 1.110: two left adjoints of the same map
     agree, and dually.  In an order "agree" is mutual comparability -- which is
@@ -274,7 +273,7 @@ Proof.
     rewrite <- Hr. exact (gal_unit G PB a).
 Qed.
 
-(** ** What does NOT collapse: adjointness is a real constraint *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。

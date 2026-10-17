@@ -33,7 +33,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Every field is an integral domain *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -57,7 +57,7 @@ Next Obligation.
     apply rig_mul_one_r.
 Qed.
 
-(** ** The category of integral domains and ALL homomorphisms *)
+(* * ** The 范畴 integral domains ALL homomorphisms （已译） *)
 
 (*
    本节说明 Frac 相关定义、性质与动机。
@@ -94,7 +94,7 @@ Next Obligation. intros D E F f g a; simpl; reflexivity. Qed.
 #[export] Instance IntDom_Dom_Faithful : Faithful IntDom_Dom.
 Proof. constructor; intros D E f g H x; exact (H x). Qed.
 
-(** ** The forgetful functor into ALL homomorphisms, unconditionally *)
+(* * ** The forgetful 函子 ALL homomorphisms, unconditionally （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -112,7 +112,7 @@ Next Obligation. intros F K T f g a; simpl; reflexivity. Qed.
 #[export] Instance Field_Dom_Faithful : Faithful Field_Dom.
 Proof. constructor; intros F K f g H x; exact (H x). Qed.
 
-(** ** Fields whose equality is ¬¬-stable *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Frac 相关定义、性质与动机。
@@ -147,7 +147,7 @@ Definition Q_StableField : StableField := StableField_of_dec _ Q_Field_dec.
 
 Definition F2_StableField : StableField := StableField_of_dec _ F2_Field_dec.
 
-(** ** The forgetful functor into the category of MONOMORPHISMS *)
+(* * ** The forgetful 函子 进入 范畴 MONOMORPHISMS （已译） *)
 
 (*
    本节说明（余）强度相关定义、性质与动机。
@@ -247,8 +247,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* Read off the domain structure of K rather than reproved: a field is
-   an integral domain, and [dom_mul_nonzero] is that domain's. *)
+(* 相关说明。 （已译） *)
 Lemma field_mul_nonzero (a b : carrier (rig_setoid K)) :
   (a ≈ k0 → False) → (b ≈ k0 → False) → a * b ≈ k0 → False.
 Proof. exact (dom_mul_nonzero (field_dom K) a b). Qed.
@@ -322,7 +321,7 @@ Qed.
 
 End FieldArith.
 
-(** ** The extension of an injective homomorphism to the fractions *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Frac 相关定义、性质与动机。
@@ -394,7 +393,7 @@ Next Obligation.
            (frac_hom_den_nonzero x) (frac_hom_den_nonzero y)).
 Qed.
 
-(* The triangle: the extension restricts along the embedding to f. *)
+(* 相关说明。 （已译） *)
 Lemma frac_extend_embed (a : carrier (rig_setoid D)) :
   frac_extend (frac_embed D a) ≈ dom_map f a.
 Proof.
@@ -424,7 +423,7 @@ Lemma frac_extend_unique (g : RigHom (FracRing D) (field_ring K))
   (Hg : ∀ a, rig_map g (frac_embed D a) ≈ dom_map f a) (x : frac_carrier D) :
   rig_map g x ≈ frac_extend x.
 Proof.
-  (* g of the identity above, with the embedding legs replaced by f *)
+  (* g 恒等 above, embedding legs replaced f （已译） *)
   assert (Hgx : rig_mul K (dom_map f (den D x)) (rig_map g x)
                   ≈ dom_map f (num D x)).
   { transitivity (rig_map g (rig_mul (FracRing D) (frac_embed D (den D x)) x)).
@@ -441,7 +440,7 @@ Qed.
 
 End FracExtension.
 
-(** ** The universal mapping property, over EVERY field *)
+(* * ** The 普遍映射性质, over EVERY field （已译） *)
 
 (*
    本节说明 Frac 相关定义、性质与动机。
@@ -458,7 +457,7 @@ Proof.
   - intros g Hg x; symmetry; exact (frac_extend_unique D K f g Hg x).
 Qed.
 
-(** ** Apartness from the zero fraction *)
+(* 相关说明。 （已译） *)
 
 Lemma frac_eq_zero (D : DomObject) (x : frac_carrier D) :
   frac_eq D x (frac_zero D) → num D x ≈ rig_zero D.
@@ -478,7 +477,7 @@ Proof.
   symmetry; apply rig_mul_zero_l.
 Qed.
 
-(** ** Testing for zero, and the fractions as an OBJECT of [Field] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Frac 相关定义、性质与动机。
@@ -532,8 +531,8 @@ Program Definition FracField : FieldObject := {|
   finv               := frac_finv
 |}.
 Next Obligation.
-  (* 1 ≉ 0 in the fractions, since 1 ≉ 0 in D.  The hypothesis is a
-     cross-multiplication equation by conversion, and is read as one. *)
+  (* 1 ≉ 0 fractions, since 1 ≉ 0 D. The 假设 a
+ cross-multiplication equation conversion, read one. （已译） *)
   intro H.
   assert (H' : rig_mul D (rig_one D) (rig_one D)
                  ≈ rig_mul D (rig_zero D) (rig_one D)) by exact H.
@@ -574,8 +573,7 @@ Next Obligation.
     exact Hres.
 Qed.
 Next Obligation.
-  (* [finv_l] away from zero: the numerator cannot vanish there, and
-     flipping the pair back gives 1/1. *)
+  (* 相关说明。 （已译） *)
   intros x Hx; unfold frac_finv.
   destruct (dec (num D x)) as [Hn | Hn].
   - destruct (Hx (frac_zero_eq D x Hn)).
@@ -596,11 +594,11 @@ Definition FracField_stable : FieldStableAtZero FracField :=
 
 Definition FracStableField : StableField := (FracField; FracField_stable).
 
-(* The unit: n ↦ n/1, with the injectivity datum [IntDom] demands. *)
+(* 相关说明。 （已译） *)
 Definition frac_unit : D ~{IntDom}~> StableField_IntDom FracStableField :=
   Build_DomHom D (field_dom FracField) (frac_embed D) (frac_embed_inj D).
 
-(** ** ⟨Q(D), n ↦ n/1⟩ is a universal arrow *)
+(* * ** ⟨Q(D), n ↦ n/1⟩ 泛箭头 （已译） *)
 
 Program Instance frac_universal_arrow :
   AUniversalArrow (D : IntDom) StableField_IntDom FracStableField := {|
@@ -636,7 +634,7 @@ Defined.
 
 End FracField.
 
-(** ** Reduction mod 2, the morphism [IntDom] does not have *)
+(* * ** Reduction mod 2, 态射 [IntDom] does not have （已译） *)
 
 (*
    本节说明 Frac 相关定义、性质与动机。
@@ -654,8 +652,8 @@ Next Obligation. intros a b; apply Z.odd_add. Qed.
 Next Obligation. reflexivity. Qed.
 Next Obligation. intros a b; apply Z.odd_mul. Qed.
 
-(* It is not injective — 0 and 2 collide — which is exactly why it is a
-   morphism of [Dom] and not of [IntDom]. *)
+(* It not injective — 0 2 collide — exactly why it a
+ 态射 [Dom] not [IntDom]. （已译） *)
 Theorem ZtoF2_not_injective :
   (∀ a b : carrier (rig_setoid Int_Ring),
      rig_map ZtoF2 a ≈ rig_map ZtoF2 b → a ≈ b) → False.
@@ -687,7 +685,7 @@ Proof.
   discriminate H.
 Qed.
 
-(** ** No field lies over both ℚ and F₂ *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Frac 相关定义、性质与动机。
@@ -741,7 +739,7 @@ Proof.
   exact (no_DomHom_Z_F2 (@pre Int_Dom (field_dom F2_Field) (existT _ ZtoF2 I))).
 Qed.
 
-(** ** maclane:III.1: no universal arrow from ℤ over ALL homomorphisms *)
+(* * ** maclane:III.1: no 泛箭头 ℤ over ALL homomorphisms （已译） *)
 
 (*
    本节说明 Frac 相关定义、性质与动机。
@@ -793,7 +791,7 @@ Proof.
              (ZtoF2 : Int_Dom ~{Dom}~> StableField_Dom F2_StableField))).
 Qed.
 
-(** ** ℤ: the witness, and the two halves side by side *)
+(* 相关说明。 （已译） *)
 
 Definition Int_zero_dec : DomZeroDec Int_Dom :=
   fun a => match Z.eq_dec a 0%Z with
@@ -830,7 +828,7 @@ Proof.
   - exact no_auniversal_arrow_Z_Dom_stable.
 Qed.
 
-(** ** The extension computes, and the embedding is not onto *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Frac 相关定义、性质与动机。

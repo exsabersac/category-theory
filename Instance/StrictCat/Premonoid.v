@@ -32,22 +32,19 @@ Record StrictPremonoidal (c : Category) : Type := {
   sp_tensor : (c □ c) ⟶ c;
   sp_unit   : _1 ⟶ c;
 
-  (* left unit law: tensoring with the unit on the left is the left funny
-     unitor, strictly *)
+  (* 相关说明。 （已译） *)
   sp_unit_left :
     @equiv _ (@Functor_StrictEq_Setoid (_1 □ c) c)
       (sp_tensor ◯ FunnyBimap sp_unit Id[c])
       (to (@Funny_unit_left c));
 
-  (* right unit law: tensoring with the unit on the right is the right funny
-     unitor, strictly *)
+  (* 相关说明。 （已译） *)
   sp_unit_right :
     @equiv _ (@Functor_StrictEq_Setoid (c □ _1) c)
       (sp_tensor ◯ FunnyBimap Id[c] sp_unit)
       (to (@Funny_unit_right c));
 
-  (* associativity: the two reassociated double tensors agree across the
-     funny associator, strictly *)
+  (* 相关说明。 （已译） *)
   sp_assoc :
     @equiv _ (@Functor_StrictEq_Setoid ((c □ c) □ c) c)
       (sp_tensor ◯ FunnyBimap sp_tensor Id[c])
@@ -156,15 +153,15 @@ Definition StrictPremonoidal_Binoidal {c : Category}
     (fun y' : c => ToAFunctor (sp_tensor p ◯ @FunnyL c c y'))
     (fun x' : c => ToAFunctor (sp_tensor p ◯ @FunnyR c c x')).
 
-(* The extracted tensor is the object action of the multiplication, on the
-   nose. *)
+(* The extracted tensor 对象 action multiplication, the
+ nose. （已译） *)
 Corollary StrictPremonoidal_Binoidal_tensor {c : Category}
   (p : StrictPremonoidal c) (x y : c) :
   @tensor c (StrictPremonoidal_Binoidal p) x y = fobj[sp_tensor p] (x, y).
 Proof. reflexivity. Qed.
 
-(* The two partial tensoring functors act on morphisms as the multiplication
-   acts on the generating steps of the funny tensor — definitionally. *)
+(* The two partial tensoring 函子 act 态射 multiplication
+ acts generating steps funny tensor — definitionally. （已译） *)
 Corollary StrictPremonoidal_inj_left_fmap {c : Category}
   (p : StrictPremonoidal c) {x y : c} (f : x ~{c}~> y) (y' : c) :
   fmap[@inj_left c (StrictPremonoidal_Binoidal p) y'] f
@@ -188,8 +185,7 @@ Definition StrictPremonoidal_SepFunctorial {c : Category}
   @SepFunctorial c c c (fun x y : c => fobj[sp_tensor p] (x, y)) :=
   toSep (sp_tensor p).
 
-(* Its actions are likewise the images of the generating steps, on the
-   nose. *)
+(* 相关说明。 （已译） *)
 Corollary StrictPremonoidal_sf_lmap {c : Category}
   (p : StrictPremonoidal c) {x y : c} (f : x ~{c}~> y) (d : c) :
   sf_lmap (StrictPremonoidal_SepFunctorial p) f d

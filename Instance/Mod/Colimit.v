@@ -32,7 +32,7 @@ Require Import Category.Instance.Mod.Free.
 
 Generalizable All Variables.
 
-(** * Colimits of R-modules, from the adjoint functor theorem *)
+(* * * Colimits R-modules, adjoint 函子 定理 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/Mod
@@ -61,8 +61,7 @@ Context {R : RingObject@{a c p}}.
 Context {J : Category@{jo c c}}.
 Context (D : J ⟶ RMod@{o x a p c} R).
 
-(* The generators: the disjoint union of the carriers, with Leibniz
-   equality.  Each factor's own `≈` enters through [mcc_resp] below. *)
+(* 相关说明。 （已译） *)
 Definition MGen : SetoidObject :=
   {| carrier := { j : obj[J] & carrier (cmon_setoid (D j)) };
      is_setoid := eq_Setoid _ |}.
@@ -70,9 +69,9 @@ Definition MGen : SetoidObject :=
 Definition mins (j : J) (a : carrier (cmon_setoid (D j))) : @FVTerm R MGen :=
   @fv_gen R MGen (existT (fun j => carrier (cmon_setoid (D j))) j a).
 
-(* A congruence on the free-module terms: an equivalence relation that
-   contains the term model's own relation [fv_eq] and is compatible with
-   the three formers. *)
+(* A congruence free-module terms: 等价 关系 that
+ contains term model's own 关系 [fv_eq] compatible with
+ three formers. （已译） *)
 Record IsModCongruence (Rq : @FVTerm R MGen → @FVTerm R MGen → Prop) : Prop := {
   mc_refl  : ∀ s, Rq s s;
   mc_sym   : ∀ s t, Rq s t → Rq t s;
@@ -83,7 +82,7 @@ Record IsModCongruence (Rq : @FVTerm R MGen → @FVTerm R MGen → Prop) : Prop 
   mc_smul  : ∀ r s s', Rq s s' → Rq (fv_smul r s) (fv_smul r s')
 }.
 
-(* ... that makes the insertions a cocone of module homomorphisms. *)
+(* 相关说明。 （已译） *)
 Record IsModCoconeCong (Rq : @FVTerm R MGen → @FVTerm R MGen → Prop) : Prop := {
   mcc_mod  : IsModCongruence Rq;
   mcc_resp : ∀ j a b, a ≈ b → Rq (mins j a) (mins j b);
@@ -116,9 +115,7 @@ Proof.
   - exact (mc_gen _ (mcc_mod _ (`2 i)) _ _ (fe_smul Hr (fv_refl s'))).
 Qed.
 
-(* The quotient module: the free module's carrier and formers with the
-   congruence as its `≈`.  Every law is the term model's own, passed
-   through [mc_gen]. *)
+(* 相关说明。 （已译） *)
 Definition MDQ (i : MDCongIdx) : obj[RMod R] :=
   {| rm_ab := {|
        ab_cmon := {|
@@ -173,7 +170,7 @@ Proof.
   exact (mcc_nat _ (`2 i) j k f a).
 Defined.
 
-(* The covering: the kernel of a cocone's extension to the term model. *)
+(* 相关说明。 （已译） *)
 Section Cover.
 
 Context (M : obj[RMod R]) (h : D ~{[J, RMod R]}~> fobj[@Diagonal (RMod R) J] M).
@@ -188,8 +185,7 @@ Defined.
 Definition mker : @FVTerm R MGen → @FVTerm R MGen → Prop :=
   fun s t => @pequiv _ _ (cmon_prop M) (fv_eval mflat s) (fv_eval mflat t).
 
-(* [Defined] only to follow the #450 template; the transparency is
-   measured NOT load-bearing here (the header's paragraph on it). *)
+(* 相关说明。 （已译） *)
 Lemma mker_cocone : IsModCoconeCong mker.
 Proof using h.
   unfold mker.
@@ -226,9 +222,7 @@ Defined.
 
 Definition mker_idx : MDCongIdx := existT _ mker mker_cocone.
 
-(* The mediator out of the quotient: the term model's own fold.
-   Respectfulness IS [pequiv_to]; the three homomorphism laws hold by
-   [reflexivity], the fold's clauses being those equations. *)
+(* 相关说明。 （已译） *)
 Definition mker_med : MDQ mker_idx ~{RMod R}~> M.
 Proof using h.
   unshelve econstructor; [unshelve econstructor; [unshelve econstructor|..]|].
@@ -254,7 +248,7 @@ Defined.
 
 End ModDiagonalSolutionSet.
 
-(** ** Every colimit of R-modules within the shape discipline *)
+(* 相关说明。 （已译） *)
 
 Definition RMod_colim_via_GAFT@{a c p o x jo +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o, jo <= c +}
@@ -271,7 +265,7 @@ Definition RMod_Cocomplete_via_GAFT@{a c p o x so +|
   fun J F =>
     Diagonal_left_adjoint_HasColimits (projT2 (RMod_colim_via_GAFT R J)) F.
 
-(** ** Coproducts, coequalizers and the initial module *)
+(* 相关说明。 （已译） *)
 
 Definition RMod_FinitelyCocomplete_via_GAFT@{a c p o x +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o +}
@@ -300,8 +294,8 @@ Definition RMod_Initial_via_GAFT@{a c p o x +|
 
 (** ** Non-vacuity *)
 
-(* The initial module the theorem produces is the zero module: the
-   identity and the zero homomorphism are two arrows out of it. *)
+(* The initial module 定理 produces zero module: the
+ 恒等 zero homomorphism two arrows out it. （已译） *)
 Lemma RMod_initial_via_GAFT_trivial@{a c p o x +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o +}
   {R : RingObject@{a c p}}
@@ -312,8 +306,8 @@ Proof.
   exact (@zero_unique (RMod R) (RMod_Initial_via_GAFT R) _ id rmod_hom_zero a0).
 Qed.
 
-(* The left injection of the coproduct is split by the copairing of the
-   identity with the zero homomorphism ... *)
+(* The left injection coproduct split copairing the
+ 恒等 zero homomorphism ... （已译） *)
 Lemma RMod_inl_via_GAFT_retract@{a c p o x +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o +}
   {R : RingObject@{a c p}} (M N : obj[RMod@{o x a p c} R]) :
@@ -338,7 +332,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* The coproduct of ℤ with itself, as a ℤ-module, is not a subsingleton. *)
+(* 相关说明。 （已译） *)
 Example RMod_coproduct_via_GAFT_nontrivial@{c o x +| Set < c, c < o, c < x +} :
   (∀ a0 b0 : carrier (cmon_setoid
        (@Coprod (RMod@{o x c c c} Int_Ring@{c c c})

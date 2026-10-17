@@ -8,7 +8,7 @@ Set Equations With UIP.
 
 Generalizable All Variables.
 
-(** The values (canonical forms) of the call-by-value de Bruijn STLC. *)
+(** 本节：The values (canonical forms) call-by-value de Bruijn STLC. （已译） *)
 
 (*
    本文件给出 λ 演算相关实例。
@@ -21,8 +21,7 @@ Import ListNotations.
 
 Open Scope Ty_scope.
 
-(* [ValueP] is an inductive predicate that indicates whether an expression
-   represents a value, i.e., that it does not reduce any further. *)
+(* 相关说明。 （已译） *)
 Inductive ValueP Γ : ∀ {τ}, Exp Γ τ → Set :=
   | UnitP : ValueP EUnit                          (* () is a value *)
   | PairP {τ1 τ2} {x : Exp Γ τ1} {y : Exp Γ τ2} :

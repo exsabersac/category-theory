@@ -31,7 +31,7 @@ Require Import Coq.micromega.Lia.
 
 Generalizable All Variables.
 
-(** * Comonads on a preorder are interior operators *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/comonad
@@ -44,13 +44,13 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Interior operators: closure operators on the reversed order *)
+(* 相关说明。 （已译） *)
 
 Definition InteriorOperator@{u} {A : Type@{u}} {R : relation A}
   (P : PreOrder R) : Type@{u} :=
   ClosureOperator@{u} (flip_PreOrder P).
 
-(* Monotone maps for an order are monotone maps for its reverse. *)
+(* 相关说明。 （已译） *)
 Definition flip_mono@{u v} {A : Type@{u}} {B : Type@{v}} {R : relation A}
   {S : relation B} (f : @MonotoneFun@{u v} A R B S) :
   @MonotoneFun@{u v} A (Basics.flip R) B (Basics.flip S) :=
@@ -71,8 +71,7 @@ Example unflip_flip_mono@{u v} {A : Type@{u}} {B : Type@{v}}
   {R : relation A} {S : relation B} (f : @MonotoneFun@{u v} A R B S) :
   unflip_mono (flip_mono f) = f := eq_refl.
 
-(* The fields of the reversed-order record, read in the original order.
-   Each is the field itself, by conversion. *)
+(* 相关说明。 （已译） *)
 Definition int_defl@{u} {A : Type@{u}} {R : relation A} {P : PreOrder R}
   (j : InteriorOperator@{u} P) (x : A) : R (cl_fun j x) x :=
   cl_ext j x.
@@ -87,8 +86,8 @@ Definition int_mono@{u} {A : Type@{u}} {R : relation A} {P : PreOrder R}
   R (cl_fun j x) (cl_fun j y) :=
   mono_pres (cl_fun j) y x h.
 
-(* Riehl's "K p = K² p", up to ≅ over a preorder: the isomorphism
-   [cl_idem] of the reversed order, read backwards. *)
+(* Riehl's "K p = K² p", up ≅ over preorder: 同构
+ [cl_idem] reversed order, read backwards. （已译） *)
 Definition int_idem@{u h} {A : Type@{u}} {R : relation A} {P : PreOrder R}
   (j : InteriorOperator@{u} P) (x : A) :
   cl_fun j (cl_fun j x) ≅[Proset@{u h} P] cl_fun j x :=
@@ -112,8 +111,8 @@ Definition interior_functor@{u h} {A : Type@{u}} {R : relation A}
   Proset@{u h} P ⟶ Proset@{u h} P :=
   Functor_of_monotone P P (unflip_mono (cl_fun j)).
 
-(* Interior → comonad: at (Proset P)^op the counit and comultiplication
-   families ARE the two fields, by conversion; every law is [I]. *)
+(* Interior → 余单子: at (Proset P)^op counit comultiplication
+ families ARE two fields, conversion; every law [I]. （已译） *)
 Definition interior_comonad@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (j : InteriorOperator@{u} P) :
   @Comonad (Proset@{u h} P) (interior_functor j) :=
@@ -137,7 +136,7 @@ Example interior_comonad_duplicate@{u h t} {A : Type@{u}}
                         (interior_functor@{u h} j) (cl_ext j) (cl_mult j)) x
   := eq_refl.
 
-(* Comonad → interior: the counit and comultiplication are the fields. *)
+(* 相关说明。 （已译） *)
 Definition interior_of_comonad@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (W : Proset@{u h} P ⟶ Proset@{u h} P)
   {H : @Comonad (Proset@{u h} P) W} : InteriorOperator@{u} P :=
@@ -154,7 +153,7 @@ Definition comonad_interior_iff@{u h +} {A : Type@{u}} {R : relation A}
                       @Comonad (Proset@{u h} P) W)
               (interior_functor j) (interior_comonad j)).
 
-(* interior → comonad → interior is the identity on the WHOLE record. *)
+(* interior → 余单子 → interior 恒等 WHOLE record. （已译） *)
 Example interior_round_trip@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (j : InteriorOperator@{u} P) :
   interior_of_comonad@{u h} (interior_functor@{u h} j)
@@ -180,7 +179,7 @@ Example comonad_round_trip_fmap@{u h} {A : Type@{u}} {R : relation A}
   fmap[interior_functor (interior_of_comonad W (H := H))] f = fmap[W] f
   := eq_refl.
 
-(* ...and the comonad it rebuilds has W's counit and comultiplication. *)
+(* ...and 余单子 it rebuilds has W's counit comultiplication. （已译） *)
 Example comonad_round_trip_extract@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (W : Proset@{u h} P ⟶ Proset@{u h} P)
   {H : @Comonad (Proset@{u h} P) W} (x : A) :
@@ -193,7 +192,7 @@ Example comonad_round_trip_duplicate@{u h} {A : Type@{u}}
   @duplicate _ _ (interior_comonad (interior_of_comonad W (H := H))) x
     = @duplicate _ W H x := eq_refl.
 
-(** ** Riehl's route: a comonad on P is a monad on the reversed order *)
+(* * ** Riehl's route: 余单子 P 单子 reversed order （已译） *)
 
 Definition flip_functor@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (W : Proset@{u h} P ⟶ Proset@{u h} P) :
@@ -201,9 +200,9 @@ Definition flip_functor@{u h} {A : Type@{u}} {R : relation A}
   Functor_of_monotone (flip_PreOrder P) (flip_PreOrder P)
     (flip_mono (monotone_of_Functor P P W)).
 
-(* The monad on the reversed order is Instance/Proset/Monad.v's
-   [closure_monad] at the interior operator: its unit is extract and its
-   multiplication duplicate. *)
+(* The 单子 reversed order Instance/Proset/Monad.v's
+ [closure_monad] at interior operator: unit extract its
+ multiplication duplicate. （已译） *)
 Definition comonad_flip_monad@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (W : Proset@{u h} P ⟶ Proset@{u h} P)
   {H : @Comonad (Proset@{u h} P) W} :
@@ -222,8 +221,7 @@ Example comonad_flip_join@{u h} {A : Type@{u}} {R : relation A}
   @join _ _ (comonad_flip_monad W (H := H)) x = @duplicate _ W H x
   := eq_refl.
 
-(* It is also Structure/Thin/Monad.v's [thin_monad] on the reversed
-   order, on the WHOLE record. *)
+(* 相关说明。 （已译） *)
 Example comonad_flip_monad_is_thin@{u h t} {A : Type@{u}}
   {R : relation A} {P : PreOrder R} (W : Proset@{u h} P ⟶ Proset@{u h} P)
   {H : @Comonad (Proset@{u h} P) W} :
@@ -233,7 +231,7 @@ Example comonad_flip_monad_is_thin@{u h t} {A : Type@{u}}
         (fun x => @extract _ W H x) (fun x => @duplicate _ W H x)
   := eq_refl.
 
-(* The interior operator of W IS the closure operator of that monad. *)
+(* The interior operator W IS closure operator 单子. （已译） *)
 Example interior_is_flip_closure@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (W : Proset@{u h} P ⟶ Proset@{u h} P)
   {H : @Comonad (Proset@{u h} P) W} :
@@ -261,10 +259,10 @@ Lemma flip_functor_is_op@{u h m n | h < n, u <= m, h <= m +}
   flip_functor W ≈ Proset_op_to P ◯ W^op ◯ Proset_op_from P.
 Proof. exists (fun x => iso_id). intros; exact I. Qed.
 
-(** ** Coalgebras are the open elements *)
+(* 相关说明。 （已译） *)
 
-(* A coalgebra of W is an algebra of the reversed-order monad: the two
-   records carry the same structure map, and every law is [I]. *)
+(* A coalgebra W algebra reversed-order 单子: two
+ records carry same structure map, every law [I]. （已译） *)
 Definition wcoalgebra_iff_flip_talgebra@{u h} {A : Type@{u}}
   {R : relation A} {P : PreOrder R} (W : Proset@{u h} P ⟶ Proset@{u h} P)
   {H : @Comonad (Proset@{u h} P) W} (x : A) :
@@ -277,8 +275,7 @@ Definition wcoalgebra_iff_flip_talgebra@{u h} {A : Type@{u}}
    fun a => @Build_WCoalgebra (Proset@{u h} P) W H x
               (@t_alg _ _ (comonad_flip_monad W (H := H)) x a) I I).
 
-(* So the coalgebra characterisation is Instance/Proset/Monad.v's
-   [talgebra_iff_closed] at the reversed order. *)
+(* 相关说明。 （已译） *)
 Definition wcoalgebra_iff_open@{u h p} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (W : Proset@{u h} P ⟶ Proset@{u h} P)
   {H : @Comonad (Proset@{u h} P) W} (x : A) :
@@ -297,8 +294,8 @@ Example wcoalgebra_round@{u h p} {A : Type@{u}} {R : relation A}
   end = h := eq_refl.
 
 (* The second route: Structure/Thin/Monad.v's [thin_wcoalgebra_iff],
-   which is the monad statement at (Proset P)^op.  [Qed]: transparent,
-   it carries the sort level of [Thin] in its body only. *)
+ 单子 statement at (Proset P)^op. [Qed]: transparent,
+ it carries sort level [Thin] body only. （已译） *)
 Lemma wcoalgebra_iff_open_via_thin@{u h +} {A : Type@{u}}
   {R : relation A} {P : PreOrder R} (W : Proset@{u h} P ⟶ Proset@{u h} P)
   {H : @Comonad (Proset@{u h} P) W} (x : A) :
@@ -323,8 +320,8 @@ Lemma open_eq@{u h} {A : Type@{u}} {R : relation A} {P : PreOrder R}
   (x : A) : @WCoalgebra (Proset@{u h} P) W H x → W x = x.
 Proof. intro c. exact (AS _ _ (@extract _ W H x) (@w_coalg _ W H x c)). Qed.
 
-(* FixedPoints.v's W-local objects (extract invertible) are the open
-   ones. *)
+(* FixedPoints.v's W-local 对象 (extract invertible) open
+ ones. （已译） *)
 Definition wlocal_iff_open@{u h +} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (W : Proset@{u h} P ⟶ Proset@{u h} P)
   {H : @Comonad (Proset@{u h} P) W} (x : A) :
@@ -333,15 +330,14 @@ Definition wlocal_iff_open@{u h +} {A : Type@{u}} {R : relation A}
    fun h => @Build_IsIsomorphism ((Proset@{u h} P)^op) x (W x)
               (@extract _ W H x) h I I).
 
-(* The coreflection onto the open elements: Structure/Thin/Monad.v's
-   [thin_coreflective] at the proset. *)
+(* 相关说明。 （已译） *)
 Definition proset_open_coreflective@{u h t s f | h < s, u <= t, h <= t +}
   {A : Type@{u}} {R : relation A} {P : PreOrder R}
   (W : Proset@{u h} P ⟶ Proset@{u h} P)
   {H : @Comonad (Proset@{u h} P) W} :=
   @thin_coreflective@{t u h s f} (Proset@{u h} P) (fun _ _ _ _ => I) W H.
 
-(** ** Seven Sketches SS 1.4.4: both composites of ONE adjunction *)
+(* * ** Seven Sketches SS 1.4.4: both composites ONE 伴随 （已译） *)
 
 Definition adj_closure@{a b h s w | h < s +} {A : Type@{a}} {B : Type@{b}}
   {RA : relation A} {RB : relation B} {PA : PreOrder RA}
@@ -391,13 +387,13 @@ Lemma shift_closure_is_max@{n h s w | h < s +} (k m : nat) :
     = cl_fun (max_closure@{n} k) m.
 Proof. simpl. lia. Qed.
 
-(* ...and the interior is the identity: a degenerate witness. *)
+(* ...and interior 恒等: degenerate witness. （已译） *)
 Lemma shift_interior_is_id@{n h s w | h < s +} (k m : nat) :
   cl_fun (adj_interior@{n n h s w} (nat_shift_adjunction@{n n s w h} k)) m
     = m.
 Proof. simpl. lia. Qed.
 
-(** ** A non-degenerate interior operator: n ↦ min n k *)
+(* 相关说明。 （已译） *)
 
 Definition min_mono@{u} (k : nat) :
   @MonotoneFun@{u u} nat (Basics.flip Nat.le) nat (Basics.flip Nat.le) :=
@@ -415,7 +411,7 @@ Definition min_interior@{u} (k : nat) :
    ; cl_ext  := fun n => Nat.le_min_l n k
    ; cl_mult := fun n => min_comult k n |}.
 
-(* Its coalgebras (open elements) are exactly the n below k. *)
+(* 相关说明。 （已译） *)
 Lemma min_open_iff@{u h +} (k n : nat) :
   @WCoalgebra (Proset@{u h} Nat.le_preorder)
     (interior_functor@{u h} (min_interior@{u} k))

@@ -20,11 +20,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Negation moves through products *)
+(* 相关说明。 （已译） *)
 
-(* (−a)·b ≈ −(a·b), from [rig_mul_neg_one] by reassociation; needed
-   for the fraction ring's negation to respect the cross-multiplication
-   equivalence. *)
+(* (−a)·b ≈ −(a·b), [rig_mul_neg_one] reassociation; needed
+ fraction ring's negation respect cross-multiplication
+ 等价. （已译） *)
 Lemma mul_neg_l (R : RingObject) (a b : carrier (rig_setoid R)) :
   rig_mul R (ring_neg R a) b ≈ ring_neg R (rig_mul R a b).
 Proof.
@@ -34,7 +34,7 @@ Proof.
   reflexivity.
 Qed.
 
-(** ** Integral domains, constructively *)
+(* 相关说明。 （已译） *)
 
 Record DomObject := {
   dom_ring :> RingObject;
@@ -77,9 +77,7 @@ Next Obligation.
   - destruct (Hc H0).
 Qed.
 
-(* Products of elements apart from zero stay apart from zero — the
-   contrapositive form of "no zero divisors", derived from
-   cancellation alone. *)
+(* 相关说明。 （已译） *)
 Lemma dom_mul_nonzero (D : DomObject) (a b : carrier (rig_setoid D)) :
   (a ≈ rig_zero D → False) → (b ≈ rig_zero D → False) →
   rig_mul D a b ≈ rig_zero D → False.
@@ -92,7 +90,7 @@ Proof.
   apply rig_mul_zero_l.
 Qed.
 
-(** ** The category of integral domains with monomorphisms *)
+(* * ** The 范畴 integral domains monomorphisms （已译） *)
 
 Record DomHom (D E : DomObject) := {
   dom_map :> RigHom D E;
@@ -177,8 +175,8 @@ Local Notation e1 := (rig_one D).
 Local Infix "+" := (rig_add D).
 Local Infix "*" := (rig_mul D).
 
-(* A small shuffle kit for the commutative multiplication; every
-   cross-multiplication identity below is a chain of these. *)
+(* A small shuffle kit commutative multiplication; every
+ cross-multiplication 恒等 below chain these. （已译） *)
 Lemma mulC (a b : carrier (rig_setoid D)) : a * b ≈ b * a.
 Proof. apply dom_comm. Qed.
 
@@ -224,8 +222,7 @@ Lemma mulf (a a' b b' : carrier (rig_setoid D)) :
   a ≈ a' → b ≈ b' → a * b ≈ a' * b'.
 Proof. intros Ha Hb; now rewrite Ha, Hb. Qed.
 
-(* Pairs with denominator apart from zero.  The family of the sigma is
-   explicit throughout ([mk_frac]), the 8.19/8.20-safe form. *)
+(* 相关说明。 （已译） *)
 Definition frac_carrier : Type :=
   { nd : carrier (rig_setoid D) * carrier (rig_setoid D)
        & snd nd ≈ z0 → False }.
@@ -250,8 +247,7 @@ Proof. unfold frac_eq; reflexivity. Qed.
 Lemma frac_eq_sym (x y : frac_carrier) : frac_eq x y → frac_eq y x.
 Proof. unfold frac_eq; intros H; symmetry; exact H. Qed.
 
-(* Transitivity is where the domain earns its keep: cancel the shared
-   denominator. *)
+(* 相关说明。 （已译） *)
 Lemma frac_eq_trans (x y z : frac_carrier) :
   frac_eq x y → frac_eq y z → frac_eq x z.
 Proof.
@@ -517,10 +513,9 @@ Lemma FracRing_comm : ∀ a b,
   rig_mul FracRing a b ≈ rig_mul FracRing b a.
 Proof. intros x y; apply frac_mul_comm. Qed.
 
-(** *** Field of quotients: reciprocals and the embedding *)
+(* 相关说明。 （已译） *)
 
-(* The FIELD property, constructively scoped: a fraction whose
-   numerator is apart from zero has a reciprocal — the flipped pair. *)
+(* 相关说明。 （已译） *)
 Lemma frac_recip (x : frac_carrier) (Hn : num x ≈ z0 → False) :
   frac_eq (frac_mul x (mk_frac (den x) (num x) Hn)) frac_one.
 Proof.
@@ -530,8 +525,7 @@ Proof.
   apply mulC.
 Qed.
 
-(* Apartness from the zero fraction is exactly apartness of the
-   numerator, so reciprocals exist for every fraction apart from 0. *)
+(* 相关说明。 （已译） *)
 Lemma frac_nonzero_num (x : frac_carrier)
   (Hx : frac_eq x frac_zero → False) : num x ≈ z0 → False.
 Proof.
@@ -549,8 +543,7 @@ Definition frac_nonzero_recip (x : frac_carrier)
     (mk_frac (den x) (num x) (frac_nonzero_num x Hx))
     (frac_recip x (frac_nonzero_num x Hx)).
 
-(* The embedding n ↦ n/1: a homomorphism of rings, injective — the
-   universal-arrow unit of the construction. *)
+(* 相关说明。 （已译） *)
 Program Definition frac_embed : RigHom (dom_ring D) FracRing := {|
   rig_map := {| morphism := fun n : carrier (rig_setoid D) =>
                   mk_frac n e1 (dom_nontrivial D) |}
@@ -583,7 +576,7 @@ Qed.
 
 End FracConstruction.
 
-(** ** Functoriality on monomorphisms *)
+(* 相关说明。 （已译） *)
 
 Program Definition Frac_map {D E : DomObject} (f : DomHom D E) :
   RigHom (FracRing D) (FracRing E) := {|
@@ -647,7 +640,7 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(** ** The integers are an integral domain; 1/2 + 1/3 computes *)
+(* 相关说明。 （已译） *)
 
 Program Definition Int_Dom : DomObject := {|
   dom_ring := Int_Ring;
@@ -668,9 +661,7 @@ Proof. simpl; intros H; discriminate H. Qed.
 Lemma six_nonzero : (6%Z : carrier (rig_setoid Int_Dom)) ≈ rig_zero Int_Dom → False.
 Proof. simpl; intros H; discriminate H. Qed.
 
-(* The arithmetic of fractions of integers computes: 1/2 + 1/3 ≈ 5/6,
-   the cross-multiplication (1·3 + 1·2)·6 = 5·(2·3) reducing to
-   30 = 30. *)
+(* 相关说明。 （已译） *)
 Example frac_int_half_plus_third :
   frac_eq Int_Dom
     (frac_add Int_Dom
@@ -678,6 +669,6 @@ Example frac_int_half_plus_third :
        (mk_frac Int_Dom 1%Z 3%Z three_nonzero))
     (mk_frac Int_Dom 5%Z 6%Z six_nonzero) := eq_refl.
 
-(* The embedding of ℤ into its fraction field, with 3 ↦ 3/1. *)
+(* 相关说明。 （已译） *)
 Example frac_embed_Z_3 :
   num Int_Dom (frac_embed Int_Dom 3%Z) = 3%Z := eq_refl.

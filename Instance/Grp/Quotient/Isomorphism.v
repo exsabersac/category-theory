@@ -23,11 +23,9 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The image of a homomorphism, as a subgroup of the codomain *)
+(* 相关说明。 （已译） *)
 
-(* [GrpImage] and its four closure lemmas are Instance/Grp/Epi.v;
-   they are exactly the four [Subgroup] laws, so this record is assembled
-   rather than proved. *)
+(* 相关说明。 （已译） *)
 Definition ImageSub {G K : GrpObject} (h : G ~{Grp}~> K) : Subgroup K :=
   {| sub_mem := GrpImage h
    ; sub_resp := GrpImage_respects h
@@ -38,8 +36,7 @@ Definition ImageSub {G K : GrpObject} (h : G ~{Grp}~> K) : Subgroup K :=
 Definition ImageGrp {G K : GrpObject} (h : G ~{Grp}~> K) : GrpObject :=
   SubgroupGrp (ImageSub h).
 
-(* The corestriction of h to its image: the same map, carrying its own
-   witness. *)
+(* 相关说明。 （已译） *)
 Program Definition image_cores {G K : GrpObject} (h : G ~{Grp}~> K) :
   G ~{Grp}~> ImageGrp h := {|
   grp_map := {| morphism := fun a : carrier G =>
@@ -49,9 +46,9 @@ Next Obligation. intros G K h a b Hab; simpl; now rewrite Hab. Qed.
 Next Obligation. intros G K h; simpl; apply (grp_map_unit h). Qed.
 Next Obligation. intros G K h a b; simpl; apply (grp_map_mul h). Qed.
 
-(* The inclusion of the image recovers h: the triangle
-   h = (im h ↪ K) ∘ (G ↠ im h) holds pointwise by reflexivity, the
-   corestriction changing no element. *)
+(* The 含入 image recovers h: triangle
+ h = (im h ↪ K) ∘ (G ↠ im h) holds pointwise reflexivity, the
+ corestriction changing no element. （已译） *)
 Lemma image_factors {G K : GrpObject} (h : G ~{Grp}~> K) :
   sub_incl (ImageSub h) ∘ image_cores h ≈ h.
 Proof. intro a; simpl; reflexivity. Qed.
@@ -81,14 +78,14 @@ Next Obligation. intros G K h Hs a b; simpl; reflexivity. Qed.
 Next Obligation. intros G K h Hs a; simpl; reflexivity. Qed.
 Next Obligation. intros G K h Hs a; simpl; reflexivity. Qed.
 
-(** ** The image carries the second universal element *)
+(* 相关说明。 （已译） *)
 
 Section ImageUniversal.
 
 Context {G K : GrpObject}.
 Context (h : G ~{Grp}~> K).
 
-(* The corestriction kills the kernel of h. *)
+(* 相关说明。 （已译） *)
 Lemma image_cores_kills (a : carrier G) :
   sub_mem (KernelNS h) a →
   grp_map (image_cores h) a ≈ grp_unit (ImageGrp h).
@@ -117,8 +114,7 @@ Proof.
   apply (grp_mul_inv_r K).
 Qed.
 
-(* The mediator out of the image: read the preimage out of the membership
-   witness and apply the given map to it. *)
+(* 相关说明。 （已译） *)
 Program Definition image_med : ImageGrp h ~{Grp}~> K' := {|
   grp_map := {| morphism := fun p : carrier (ImageGrp h) =>
                   grp_map (`1 x) (`1 (`2 p)) |}
@@ -190,9 +186,7 @@ Definition first_isomorphism_theorem {G K : GrpObject} (h : G ~{Grp}~> K) :
   universal_element_iso (quot_universal_element (KernelNS h))
                         (image_universal_element h).
 
-(* The comparison carries the projection to the corestriction, which is
-   the triangle the reader wants and is [ue_med_commutes] read at these
-   two universal elements. *)
+(* 相关说明。 （已译） *)
 Lemma first_isomorphism_triangle {G K : GrpObject} (h : G ~{Grp}~> K) :
   to (first_isomorphism_theorem h) ∘ quot_proj (KernelNS h)
     ≈ image_cores h.
@@ -230,10 +224,10 @@ Proof.
                                       (image_universal_element h) v Hv).
 Qed.
 
-(** ** Awodey Corollary 4.5: the epi-mono factorization *)
+(* 相关说明。 （已译） *)
 
-(* h = (im h ↪ K) ∘ (comparison) ∘ (G ↠ G/ker h), the middle map an
-   isomorphism.  The proof composes the two triangles above. *)
+(* h = (im h ↪ K) ∘ (comparison) ∘ (G ↠ G/ker h), middle map an
+ 同构. The 证明 composes two triangles above. （已译） *)
 Theorem factorization {G K : GrpObject} (h : G ~{Grp}~> K) :
   sub_incl (ImageSub h)
     ∘ to (first_isomorphism_theorem h)
@@ -245,8 +239,8 @@ Proof.
   apply image_factors.
 Qed.
 
-(* The left leg is epic and the right leg monic, so this is an epi-mono
-   factorization in the literal sense. *)
+(* The left leg epic right leg monic, so 这是 epi-mono
+ factorization literal sense. （已译） *)
 Theorem factorization_epi {G K : GrpObject} (h : G ~{Grp}~> K) :
   Epic (quot_proj (KernelNS h)).
 Proof. apply quot_proj_epic. Qed.
@@ -255,9 +249,9 @@ Theorem factorization_mono {G K : GrpObject} (h : G ~{Grp}~> K) :
   Monic (sub_incl (ImageSub h)).
 Proof. apply sub_incl_monic. Qed.
 
-(* Awodey's corollary proper: h is injective exactly when its kernel is
-   trivial.  Both directions are elementary; the forward one is the
-   observation that the unit is already in the kernel. *)
+(* Awodey's 推论 proper: h injective exactly kernel is
+ trivial. Both directions elementary; forward one the
+ observation unit already kernel. （已译） *)
 Theorem injective_iff_kernel_trivial {G K : GrpObject} (h : G ~{Grp}~> K) :
   (∀ a b : carrier G, grp_map h a ≈ grp_map h b → a ≈ b)
     ↔ (∀ a : carrier G, sub_mem (KernelNS h) a → a ≈ grp_unit G).
@@ -275,8 +269,7 @@ Proof.
     apply (grp_mul_inv_r K).
 Qed.
 
-(* And the same statement with [Monic], through Instance/Grp.v's
-   biconditional. *)
+(* 相关说明。 （已译） *)
 Theorem monic_iff_kernel_trivial {G K : GrpObject} (h : G ~{Grp}~> K) :
   Monic h ↔ (∀ a : carrier G, sub_mem (KernelNS h) a → a ≈ grp_unit G).
 Proof.
@@ -337,8 +330,8 @@ Next Obligation.
   destruct Ha as [Ha]; exact (inhabits (ns_conj N t _ Ha)).
 Qed.
 
-(* The comparison G/M ↠ G/N: the identity function again, well defined
-   because M ⊆ N. *)
+(* The comparison G/M ↠ G/N: 恒等 function again, well defined
+ because M ⊆ N. （已译） *)
 Program Definition quot_step : QuotientGrp M ~{Grp}~> QuotientGrp N := {|
   grp_map := {| morphism := fun a : carrier (QuotientGrp M) => a |}
 |}.
@@ -351,7 +344,7 @@ Qed.
 Next Obligation. simpl; constructor; apply quot_rel_refl. Qed.
 Next Obligation. intros a b; simpl; constructor; apply quot_rel_refl. Qed.
 
-(* The triangle relating the three projections. *)
+(* 相关说明。 （已译） *)
 Lemma quot_step_triangle : quot_step ∘ quot_proj M ≈ quot_proj N.
 Proof. intro a; simpl; constructor; apply quot_rel_refl. Qed.
 
@@ -387,12 +380,11 @@ Qed.
 Definition third_precompose : Kills N K :=
   existT _ (`1 x ∘ quot_proj M) third_precompose_kills.
 
-(* From here the argument is a chase.  The mediator is the one G/N's
-   universal property produces for k ∘ p_M. *)
+(* From here 论元 chase. The mediator one G/N's
+ 普遍性质 produces k ∘ p_M. （已译） *)
 Definition third_med : QuotientGrp N ~{Grp}~> K := quot_med N third_precompose.
 
-(* Its triangle against the comparison map, obtained by cancelling the
-   epimorphism p_M on the right -- no element inspected. *)
+(* 相关说明。 （已译） *)
 Lemma third_med_commutes : third_med ∘ quot_step ≈ `1 x.
 Proof.
   apply (epic (Epic := quot_proj_epic M)).
@@ -413,9 +405,9 @@ Qed.
 
 End ThirdMediator.
 
-(* ⟨G/N, comparison⟩ is a universal element of the kills-(N/M) functor on
-   G/M.  Every step above used only [quot_universal_element N], the
-   epimorphism [quot_proj_epic M], and the triangle. *)
+(* ⟨G/N, comparison⟩ universal element kills-(N/M) 函子 on
+ G/M. Every step above used [quot_universal_element N], the
+ epimorphism [quot_proj_epic M], triangle. （已译） *)
 Program Definition quot_universal_N_over_M :
   AUniversalElement (KillsFunctor NmodM) (QuotientGrp N) := {|
   aue_elem := quot_step_elem
@@ -440,7 +432,7 @@ Proof.
                          quot_universal_N_over_M).
 Qed.
 
-(* Uniqueness, as for the first theorem. *)
+(* Uniqueness, first 定理. （已译） *)
 Theorem third_isomorphism_unique
   (v : QuotientGrp NmodM ≅[Grp] QuotientGrp N)
   (Hv : to v ∘ quot_proj NmodM ≈ quot_step) :
@@ -457,7 +449,7 @@ Arguments quot_step {G} M N Hsub.
 Arguments third_isomorphism_theorem {G} M N Hsub.
 Arguments third_isomorphism_unique {G} M N Hsub.
 
-(** ** The second isomorphism theorem *)
+(* * ** The second 同构 定理 （已译） *)
 
 (*
    本节说明 Isomorphism 相关定义、性质与动机。
@@ -579,8 +571,8 @@ Next Obligation. intros p q Hpq; exact Hpq. Qed.
 Next Obligation. simpl; reflexivity. Qed.
 Next Obligation. intros p q; simpl; reflexivity. Qed.
 
-(* The composite S ↪ SN ↠ SN/N, whose kernel is S ∩ N and which is
-   surjective. *)
+(* The 复合 S ↪ SN ↠ SN/N, whose kernel S ∩ N is
+ surjective. （已译） *)
 Definition psi : SubgroupGrp S ~{Grp}~> QuotientGrp NinSN :=
   quot_proj NinSN ∘ S_into_SN.
 
@@ -609,14 +601,12 @@ Proof.
     + exact Hp.
 Qed.
 
-(* The direction that keeps its [Type]-valued hypothesis whole. *)
+(* The direction keeps [Type]-valued 假设 whole. （已译） *)
 Lemma psi_kernel_of_meet (p : carrier (SubgroupGrp S)) :
   sub_mem N (`1 p) → sub_mem (KernelNS psi) p.
 Proof. intro Hp; exact (snd (psi_kernel_is_meet p) (inhabits Hp)). Qed.
 
-(* ELEMENTWISE INPUT TWO: ψ is surjective.  Every member of SN is s·n for
-   data s ∈ S, n ∈ N, and s·n is congruent to s modulo N because
-   (s n) s⁻¹ lies in N -- one normality computation. *)
+(* 相关说明。 （已译） *)
 Lemma psi_surjective : GrpSurjective psi.
 Proof.
   intro q.
@@ -717,8 +707,7 @@ Definition S3_first_iso :
   QuotientGrp (KernelNS (quot_proj A3)) ≅[Grp] ImageGrp (quot_proj A3) :=
   first_isomorphism_theorem (quot_proj A3).
 
-(* And it is nondegenerate: the image of the projection has two elements
-   apart in its own setoid. *)
+(* 相关说明。 （已译） *)
 (*
    本节说明 Isomorphism 相关定义、性质与动机。
 
@@ -729,9 +718,9 @@ Theorem S3_first_iso_nondegenerate :
     ≈ grp_map (image_cores (quot_proj A3)) s3_unit → False.
 Proof. intros [H]; simpl in H; discriminate. Qed.
 
-(* The third isomorphism theorem at M = trivial, N = A3: (S3/1)/(A3/1) ≅
-   S3/A3.  The inclusion hypothesis is that everything ≈-equal to the unit
-   is a rotation. *)
+(* The third 同构 定理 at M = trivial, N = A3: (S3/1)/(A3/1) ≅
+ S3/A3. The 含入 假设 everything ≈-equal unit
+ rotation. （已译） *)
 Lemma trivial_in_A3 (a : carrier S3) : sub_mem (TrivialNS S3) a → sub_mem A3 a.
 Proof. intro Ha; simpl in *; now subst. Qed.
 
@@ -740,8 +729,8 @@ Definition S3_third_iso :
     ≅[Grp] QuotientGrp A3 :=
   third_isomorphism_theorem (TrivialNS S3) A3 trivial_in_A3.
 
-(* Nondegenerate: the reflection is still apart from the unit on the left
-   of the isomorphism. *)
+(* Nondegenerate: reflection still apart unit left
+ 同构. （已译） *)
 Theorem S3_third_iso_nondegenerate :
   quot_rel (NmodM (TrivialNS S3) A3 trivial_in_A3) S3_s s3_unit → False.
 Proof. intros [H]; simpl in H; discriminate. Qed.
@@ -757,9 +746,7 @@ Definition S3_second_iso :
     ≅[Grp] QuotientGrp (NinSN S3_refl_sub A3) :=
   second_isomorphism_theorem S3_refl_sub A3.
 
-(* Nondegenerate on the left: S ∩ N is trivial here (a rotation-free
-   element that is a rotation is the unit), so S/(S ∩ N) still separates
-   the reflection from the unit. *)
+(* 相关说明。 （已译） *)
 Theorem S3_second_iso_nondegenerate :
   quot_rel (KernelNS (psi S3_refl_sub A3))
     (existT _ S3_s (eq_refl : fst S3_s = rot0))

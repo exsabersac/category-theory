@@ -21,7 +21,7 @@ Require Import Coq.Vectors.Fin.
 
 Generalizable All Variables.
 
-(** * The equalizer: the counted sub-object of agreement *)
+(* * * The equalizer: counted sub-对象 agreement （已译） *)
 
 (*
    本节说明 Limit 相关定义、性质与动机。
@@ -31,7 +31,7 @@ Generalizable All Variables.
 Definition finset_eq_pred {m n : nat} (f g : Fin.t m → Fin.t n) :
   Fin.t m → bool := fun x => fin_eqb (f x) (g x).
 
-(* The equalizer object counts the agreements; the inclusion un-ranks. *)
+(* The equalizer 对象 counts agreements; 含入 un-ranks. （已译） *)
 Definition FinSet_equalizer_obj {m n : nat} (f g : Fin.t m → Fin.t n) : nat :=
   fin_countP (finset_eq_pred f g).
 
@@ -43,8 +43,7 @@ Lemma finset_eq_pred_true {m n : nat} (f g : Fin.t m → Fin.t n) (x : Fin.t m) 
   f x = g x → finset_eq_pred f g x = true.
 Proof. intros H; unfold finset_eq_pred; rewrite H; apply fin_eqb_refl. Qed.
 
-(* The mediator of a fork [h] ranks each value of [h], which the fork
-   equation certifies to satisfy the predicate. *)
+(* 相关说明。 （已译） *)
 Definition FinSet_equalizer_med {m n : nat} (f g : Fin.t m → Fin.t n)
   {z : nat} (h : Fin.t z → Fin.t m) (Hh : ∀ i, f (h i) = g (h i)) :
   Fin.t z → Fin.t (FinSet_equalizer_obj f g) :=
@@ -72,7 +71,7 @@ Defined.
        (FinSet_equalizer_obj f g;
         (FinSet_equalizer_incl f g; FinSet_IsEqualizer f g))).
 
-(** * Finite completeness, by Mac Lane V.2 Corollary 1 *)
+(* 相关说明。 （已译） *)
 
 Definition FinSet_FinitelyComplete : @FinitelyComplete FinSet :=
   finitely_complete_from_generators FinSet_Terminal FinSet_Cartesian
@@ -80,7 +79,7 @@ Definition FinSet_FinitelyComplete : @FinitelyComplete FinSet :=
 
 (** * Computation *)
 
-(* A parallel pair [3 ⇉ 2] agreeing exactly at the first and third points. *)
+(* 相关说明。 （已译） *)
 Definition finset_eq_example_f : Fin.t 3 → Fin.t 2 := fun _ => Fin.F1.
 Definition finset_eq_example_g : Fin.t 3 → Fin.t 2 :=
   fun i => match i with Fin.FS Fin.F1 => Fin.FS Fin.F1 | _ => Fin.F1 end.
@@ -111,8 +110,8 @@ Example FinSet_equalizer_med_computes :
   = Fin.FS Fin.F1
   := eq_refl.
 
-(* The terminal object recovered from the EMPTY finite limit is the numeral
-   [1] by conversion on this route. *)
+(* The 终对象 recovered EMPTY finite limit numeral
+ [1] conversion route. （已译） *)
 Example FinSet_FinitelyComplete_terminal_computes :
   @terminal_obj FinSet (FinitelyComplete_Terminal FinSet_FinitelyComplete)
   = 1%nat

@@ -34,13 +34,13 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** The plan-prescribed action on raw types: apply f to every observation,
-    keep the focus. *)
+(** 本节：The plan-prescribed action raw types: apply f every observation,
+ keep focus. （已译） *)
 Definition coq_store_map {s x y : Type} (f : x → y) (p : (s → x) * s) :
   (s → y) * s :=
   match p with (h, s0) => ((λ σ, f (h σ)), s0) end.
 
-(** The counit on raw types: observe at the current focus. *)
+(** 本节：The counit raw types: observe at current focus. （已译） *)
 Definition coq_store_extract {s x : Type} (p : (s → x) * s) : x :=
   match p with (h, s0) => h s0 end.
 
@@ -49,8 +49,8 @@ Definition coq_store_duplicate {s x : Type} (p : (s → x) * s) :
   (s → (s → x) * s) * s :=
   match p with (h, s0) => ((λ σ, (h, σ)), s0) end.
 
-(** Both functor equations hold pointwise; eta for functions is part of
-    Coq's definitional equality, so destructuring the pair suffices. *)
+(** Both 函子 equations hold pointwise; eta functions part of
+ Coq's definitional equality, so destructuring pair suffices. （已译） *)
 
 Lemma coq_store_map_id {s x : Type} (p : (s → x) * s) :
   coq_store_map (λ v : x, v) p = p.
@@ -143,8 +143,8 @@ Qed.
 
 (** ** The functorial action *)
 
-(* Post-composition under the observation map: f is applied to every
-   observation, the focus is kept. *)
+(* Post-复合 under observation map: f applied every
+ observation, focus kept. （已译） *)
 Program Definition store_map {s x y : SetoidObject} (f : SetoidMorphism x y) :
   SetoidMorphism (store_obj s x) (store_obj s y) := {|
   morphism := λ p, (setoid_morphism_compose f (fst p), snd p)
@@ -156,8 +156,8 @@ Next Obligation.
   - exact Hs.
 Qed.
 
-(** [store_map] respects ≈ pointwise — the field whose COQ counterpart is
-    the funext-entailing obligation above; here it is immediate. *)
+(** 本节：[store_map] respects ≈ pointwise — field whose COQ counterpart is
+ funext-entailing obligation above; here it immediate. （已译） *)
 Lemma store_map_respects {s x y : SetoidObject} (f g : SetoidMorphism x y) :
   (∀ v : carrier x, f v ≈ g v) →
   ∀ p : SetoidMorphism s x * carrier s,
@@ -200,7 +200,7 @@ Definition StoreF (s : SetoidObject) : Sets ⟶ Sets := @Build_Functor Sets Sets
 
 (** ** The comonad structure *)
 
-(** The counit ε: observe at the current focus. *)
+(** 本节：The counit ε: observe at current focus. （已译） *)
 Program Definition store_extract {s x : SetoidObject} :
   SetoidMorphism (store_obj s x) x := {|
   morphism := λ p, fst p (snd p)
@@ -212,8 +212,7 @@ Next Obligation.
   - now apply proper_morphism.
 Qed.
 
-(* Refocusing: pair the observation map with every position — the
-   observation component of [duplicate]. *)
+(* 相关说明。 （已译） *)
 Program Definition store_seek {s x : SetoidObject} (h : SetoidMorphism s x) :
   SetoidMorphism s (store_obj s x) := {|
   morphism := λ σ, (h, σ)
@@ -237,7 +236,7 @@ Next Obligation.
   - exact Hs.
 Qed.
 
-(** Naturality of the counit — the op-read of [fmap_ret]. *)
+(** 本节：Naturality counit — op-read [fmap_ret]. （已译） *)
 Lemma store_extract_natural {s x y : SetoidObject} (f : SetoidMorphism x y)
   (p : SetoidMorphism s x * carrier s) :
   f (store_extract p) ≈ store_extract (store_map f p).
@@ -274,7 +273,7 @@ Proof.
   - reflexivity.
 Qed.
 
-(** Naturality of the comultiplication — the op-read of [join_fmap_fmap]. *)
+(** 本节：Naturality comultiplication — op-read [join_fmap_fmap]. （已译） *)
 Lemma store_duplicate_natural {s x y : SetoidObject} (f : SetoidMorphism x y)
   (p : SetoidMorphism s x * carrier s) :
   store_equiv (store_map (store_map f) (store_duplicate p))

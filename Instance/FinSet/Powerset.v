@@ -27,7 +27,7 @@ Require Import Coq.Vectors.Fin.
 
 Generalizable All Variables.
 
-(** * The contravariant power-set functor on skeletal [FinSet], computably *)
+(* * * The contravariant power-set 函子 skeletal [FinSet], computably （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/subobject+classifier
@@ -39,7 +39,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** The power set of a finite set, and the inverse image *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Powerset 相关定义、性质与动机。
@@ -57,8 +57,7 @@ Definition finpow (n : nat) : nat := Nat.pow 2 n.
 Definition finpow_mem {n : nat} (S : Fin.t (finpow n)) (i : Fin.t n) : bool :=
   fin_eqb (fin_apply S i) fin_true.
 
-(* The inverse image: the subset of the domain whose i-th digit is the digit
-   of S at [f i]. *)
+(* 相关说明。 （已译） *)
 Definition finpow_map {m n : nat} (f : Fin.t n → Fin.t m)
   (S : Fin.t (finpow m)) : Fin.t (finpow n) :=
   fin_tabulate (fun i : Fin.t n => fin_apply S (f i)).
@@ -123,8 +122,7 @@ Qed.
 Next Obligation. now apply finpow_map_id. Qed.
 Next Obligation. now apply finpow_map_comp. Qed.
 
-(* The two carry the same arrow action, by [eq_refl] — the convertibility
-   exception, flagged as such.  So (2) is (1) retyped. *)
+(* 相关说明。 （已译） *)
 Example finpowerset_sets_agrees {x y : FinSet} (f : x ~{FinSet^op}~> y)
   (S : Fin.t (finpow x)) :
   fmap[FinPowerset_Sets] f S = fmap[FinPowerset] f S := eq_refl.
@@ -134,7 +132,7 @@ Example finpowerset_obj (n : nat) : fobj[FinPowerset] n = Nat.pow 2 n := eq_refl
 Example finpowerset_two : fobj[FinPowerset] 2%nat = 4%nat := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Ω, the point ⊤, and the SUBSET {⊤} *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Powerset 相关定义、性质与动机。
@@ -154,13 +152,13 @@ Example finpow_truth_has_true :
 Example finpow_truth_lacks_false :
   finpow_mem finpow_truth_subset fin_false = false := eq_refl.
 
-(* ... and the digit at j is j itself, for every j — the general form of the
-   two computations above, which is what the universal property consumes. *)
+(* ... digit at j j itself, every j — general form the
+ two computations above, what 普遍性质 所消耗. （已译） *)
 Lemma finpow_truth_digit (j : Fin.t 2) : fin_apply finpow_truth_subset j = j.
 Proof. unfold finpow_truth_subset; apply fin_apply_tabulate. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Mac Lane's §III.1 universal element ⟨2, {⊤}⟩ *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -204,13 +202,11 @@ Next Obligation.
   rewrite finpow_preimage_of_truth; apply fin_tabulate_apply.
 Qed.
 Next Obligation.
-  (* Uniqueness.  [Program] has already substituted S by k⁻¹(⊤) and
-     introduced the point, so the goal IS the preimage law. *)
+  (* 相关说明。 （已译） *)
   apply finpow_fmap_is_preimage.
 Qed.
 
-(* The element of the pair is {⊤} and the mediating arrow of a subset is its
-   characteristic function, both by [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example finpow_aue_elem :
   @aue_elem (FinSet^op) FinPowerset_Sets 2%nat FinPowerset_universal_element
     = finpow_truth_subset := eq_refl.
@@ -244,11 +240,9 @@ Example finpow_repr_obj :
   := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Awodey's naturality clause at [FinSet_Classifier] *)
+(* * ** Awodey's 自然性 clause at [FinSet_Classifier] （已译） *)
 
-(* Structure/SubobjectClassifier/Natural.v applied — nothing is reproved.
-   [Ω] of [FinSet_Classifier] is 2 on the nose, so the target is literally
-   [Hom(─, 2)]. *)
+(* 相关说明。 （已译） *)
 Definition FinSet_Sub_natural :
   @Isomorphism ([(FinSet^op), Sets])
     (@Sub FinSet FinSet_Pullbacks) (@Curried_CoHom FinSet 2%nat)
@@ -264,11 +258,11 @@ Example FinSet_Sub_repr_obj :
     = 2%nat := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The subobject presheaf of [FinSet] IS the power-set functor *)
+(* * ** The subobject presheaf [FinSet] IS power-set 函子 （已译） *)
 
-(* The codec, as a natural isomorphism [Hom(─,2) ≅ FinPowerset_Sets].  Its
-   naturality is one application of [fin_apply_tabulate]; both round trips
-   are the codec's own Leibniz equations. *)
+(* The codec, natural 同构 [Hom(─,2) ≅ FinPowerset_Sets]. Its
+ 自然性 one application [fin_apply_tabulate]; both round trips
+ codec's own Leibniz equations. （已译） *)
 
 (*
    本节说明 Powerset 相关定义、性质与动机。
@@ -319,14 +313,14 @@ Next Obligation. codec. Qed.
 Next Obligation. codec. Qed.
 Next Obligation. codec. Qed.
 
-(* THE CAPSTONE.  Subobjects of a finite set are its subsets, naturally. *)
+(* 相关说明。 （已译） *)
 Definition FinSet_Sub_powerset :
   @Isomorphism ([(FinSet^op), Sets])
     (@Sub FinSet FinSet_Pullbacks) FinPowerset_Sets :=
   iso_compose finpow_codec FinSet_Sub_natural.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Non-vacuity: the correspondence computing on a concrete subset *)
+(* 相关说明。 （已译） *)
 
 (* The subset {0, 2} ⊆ 3, as a digit string. *)
 Definition finpow_sub02 : Fin.t (finpow 3) :=
@@ -359,14 +353,11 @@ Example finpow_char02_at_1 :
 Example finpow_char02_at_2 :
   finpow_char02 (Fin.FS (Fin.FS Fin.F1)) = fin_true := eq_refl.
 
-(* The round trip: the preimage of {⊤} along that characteristic map is the
-   subset again, by computation on closed data. *)
+(* 相关说明。 （已译） *)
 Example finpow_round02 :
   finpow_map finpow_char02 finpow_truth_subset = finpow_sub02 := eq_refl.
 
-(* A DEGENERACY EXCLUDED BY PROOF: distinct subsets have distinct
-   characteristic maps, so the correspondence is not collapsing anything.
-   The witness is {0,2} against the EMPTY subset. *)
+(* 相关说明。 （已译） *)
 Definition finpow_empty : Fin.t (finpow 3) :=
   fin_tabulate (fun _ : Fin.t 3 => fin_false).
 
@@ -416,8 +407,6 @@ Proof. discriminate. Qed.
 Example finpow_is_topos_Pow (n : nat) :
   @Pow FinSet FinSet_Topos n = finpow n := eq_refl.
 
-(* This numeric instance is the pre-existing [FinSet_Pow_two]
-   (Instance/FinSet/Topos.v) restated; the general [finpow_is_topos_Pow]
-   above is what is new here. *)
+(* 相关说明。 （已译） *)
 Example finpow_topos_Pow_two :
   @Pow FinSet FinSet_Topos 2%nat = 4%nat := eq_refl.

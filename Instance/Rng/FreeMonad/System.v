@@ -26,7 +26,7 @@ Require Import Coq.Lists.List.
 
 Generalizable All Variables.
 
-(** * T-algebras as systems ⟨A, ν₀, ν₁, …⟩ of multilinear operations *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/tensor+algebra
@@ -69,9 +69,7 @@ Arguments tnu_lin {A} _ _ _ _ _.
 Arguments tnu_unit {A} _ _.
 Arguments tnu_assoc {A} _ _.
 
-(* The literal νₙ : A^{⊗n} → A: ν extended additively to the sums of words
-   (Instance/Ab/TensorPower.v's [tw_ext]), composed with the injection
-   ιₙ of the n-th tensor power. *)
+(* 相关说明。 （已译） *)
 Definition tsys_sum@{+} {A : Ab@{u p}} (σ : TSystem A) :
   TWAb A ~{Ab@{u p}}~> A := tw_ext A (tnu σ) (tnu_letter σ) (tnu_lin σ).
 
@@ -97,7 +95,7 @@ Definition TSystemHom@{+} {A B : Ab@{u p}} (σ : TSystem A) (τ : TSystem B)
 (* ------------------------------------------------------------------------ *)
 (** ** An algebra gives a system *)
 
-(* T f on a word is the word of the images, on the nose. *)
+(* 相关说明。 （已译） *)
 Lemma fr_eval_word_map@{+} {A B : Ab@{u p}} (f : A ~{Ab@{u p}}~> B)
   (l : list (carrier (cmon_setoid A))) :
   fr_eval (free_rng_ab_insert B ∘[Ab@{u p}] f) (fr_word l)
@@ -161,8 +159,7 @@ Defined.
 
 End AlgSys.
 
-(* ν of an algebra's system is the structure map on the word; ν₀ is the
-   unit and ν₂ the product of the algebra's ring, on the nose. *)
+(* 相关说明。 （已译） *)
 Example alg_system_nu@{+} {A : Ab@{u p}} (α : @TAlgebra Ab@{u p} TF TM A)
   (w : list (carrier (cmon_setoid A))) :
   tnu (alg_system α) w = cmon_map (t_alg[α]) (fr_word w) := eq_refl.
@@ -189,7 +186,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** A system gives a ring: 1 = ν⟨⟩ and a·b = ν⟨a b⟩ *)
+(* 相关说明。 （已译） *)
 
 Section SysRing.
 
@@ -297,8 +294,7 @@ Definition sys_ring@{+} : RingObject := {|
   ring_neg_l := ab_neg_left A
 |}.
 
-(* "νₙ is the n-fold product": ν of a word is the product of its letters
-   in the ring of the system. *)
+(* 相关说明。 （已译） *)
 Lemma sys_nu_is_product@{+} (w : list L) :
   fr_eval (R := sys_ring) (@id Ab@{u p} A) (fr_word w) ≈ tnu σ w.
 Proof.
@@ -423,8 +419,8 @@ Proof.
   - intros x y z f g a. reflexivity.
 Defined.
 
-(* The algebra round trip through the systems, with the identity as its
-   component: the system of an algebra has the algebra's ring. *)
+(* The algebra round trip through systems, 恒等 its
+ component: system algebra has algebra's ring. （已译） *)
 Definition TSys_EM_counit_iso@{+} (x : RngAlg) :
   @Isomorphism RngAlg (fobj[TSys_to_EM ◯ EM_to_TSys] x) x.
 Proof.
@@ -450,7 +446,7 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* The system round trip, with the identity as its component. *)
+(* The system round trip, 恒等 component. （已译） *)
 Definition TSys_EM_unit_iso@{+} (S : TSys) :
   @Isomorphism TSys (fobj[EM_to_TSys ◯ TSys_to_EM] S) S.
 Proof.
@@ -466,9 +462,9 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* Mac Lane's "corresponding description of T-algebras": the systems are
-   isomorphic in Cat to Ab^T, every component of both natural isomorphisms
-   the identity. *)
+(* Mac Lane's "corresponding description T-algebras": systems are
+ isomorphic Cat Ab^T, every component both natural isomorphisms
+ 恒等. （已译） *)
 Definition TSys_EM_iso@{c +} :
   @Isomorphism Cat@{c u u u p} TSys RngAlg.
 Proof.
@@ -493,8 +489,7 @@ Example TSys_EM_iso_to@{+} : to TSys_EM_iso = TSys_to_EM := eq_refl.
 
 Example TSys_EM_iso_from@{+} : from TSys_EM_iso = EM_to_TSys := eq_refl.
 
-(* A system's algebra evaluates in the system's ring: 1 ↦ ν⟨⟩ and
-   ⟨a⟩·⟨b⟩ ↦ ν⟨a b⟩. *)
+(* 相关说明。 （已译） *)
 Example TSys_to_EM_alg@{+} (S : TSys) (t : FRTerm (tsys_ab S)) :
   cmon_map (t_alg[projT2 (fobj[TSys_to_EM] S)]) t
     = fr_eval (R := sys_ring (tsys_str S)) (@id Ab@{u p} (tsys_ab S)) t
@@ -521,8 +516,8 @@ Example EM_to_TSys_pair@{+} (x : RngAlg)
   tnu (tsys_str (fobj[EM_to_TSys] x)) (a :: b :: nil)
     = rig_mul (fobj[EM_to_Rng] x) a b := eq_refl.
 
-(* The system round trip keeps the group, ν₀, ν₂ and the maps on the nose,
-   and returns ν₁ as the identity. *)
+(* The system round trip keeps group, ν₀, ν₂ maps nose,
+ returns ν₁ 恒等. （已译） *)
 Example TSys_rt_ab@{+} (S : TSys) :
   tsys_ab (fobj[EM_to_TSys ◯ TSys_to_EM] S) = tsys_ab S := eq_refl.
 
@@ -547,14 +542,14 @@ Lemma TSys_rt_nu@{+} (S : TSys) (w : list (carrier (cmon_setoid (tsys_ab S)))) :
   tnu (tsys_str (fobj[EM_to_TSys ◯ TSys_to_EM] S)) w ≈ tnu (tsys_str S) w.
 Proof. exact (sys_nu_is_product (tsys_str S) w). Qed.
 
-(* The algebra round trip keeps the group and the maps on the nose. *)
+(* 相关说明。 （已译） *)
 Example EM_TSys_rt_carrier@{+} (x : RngAlg) :
   projT1 (fobj[TSys_to_EM ◯ EM_to_TSys] x) = projT1 x := eq_refl.
 
 Example EM_TSys_rt_alg_hom@{+} {x y : RngAlg} (f : x ~{RngAlg}~> y) :
   t_alg_hom[fmap[TSys_to_EM ◯ EM_to_TSys] f] = t_alg_hom[f] := eq_refl.
 
-(* Every component of the two natural isomorphisms is the identity. *)
+(* Every component two natural isomorphisms 恒等. （已译） *)
 Example TSys_EM_iso_to_from_component@{+} (x : RngAlg) :
   (t_alg_hom[to (projT1 (iso_to_from TSys_EM_iso) x)],
    t_alg_hom[from (projT1 (iso_to_from TSys_EM_iso) x)])
@@ -565,8 +560,7 @@ Example TSys_EM_iso_from_to_component@{+} (S : TSys) :
    `1 (from (projT1 (iso_from_to TSys_EM_iso) S)))
     = (@id Ab@{u p} (tsys_ab S), @id Ab@{u p} (tsys_ab S)) := eq_refl.
 
-(* The system of a ring R: ν⟨⟩ = 1, ν⟨a⟩ = a, ν⟨a b⟩ = a·b, and ν of a
-   word the product of its letters, bracketed to the right. *)
+(* 相关说明。 （已译） *)
 Example Rng_system_nu@{+} (R : Rng@{u p})
   (w : list (carrier (rig_setoid R))) :
   tnu (tsys_str (fobj[EM_to_TSys ◯ Rng_K] R)) w

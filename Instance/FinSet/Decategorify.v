@@ -20,7 +20,7 @@ Require Import Coq.Arith.PeanoNat.
 
 Generalizable All Variables.
 
-(** * Decategorifying the exponential laws: the groupoid of finite sets *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/categorification
@@ -31,7 +31,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The cardinality functor on the groupoid of finite sets *)
+(* * ** The cardinality 函子 groupoid finite sets （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -47,9 +47,9 @@ Solve All Obligations with
 
 (** ** The skeletal companion *)
 
-(* On the skeleton the object action is the identity: [FinSet]'s objects are
-   already the naturals, and the whole functor is [FinSet_skeletal] read as an
-   arrow action. *)
+(* On skeleton 对象 action 恒等: [FinSet]'s 对象 are
+ already naturals, whole 函子 [FinSet_skeletal] read an
+ arrow action. （已译） *)
 Program Definition Card_FinSet : Groupoid FinSet ⟶ DiscreteCat nat := {|
   fobj := fun n => n;
   fmap := fun m n i => @FinSet_skeletal m n i
@@ -57,7 +57,7 @@ Program Definition Card_FinSet : Groupoid FinSet ⟶ DiscreteCat nat := {|
 Solve All Obligations with
   (try proper; apply (UIP_dec PeanoNat.Nat.eq_dec)).
 
-(* The object action is the identity on the nose. *)
+(* The 对象 action 恒等 nose. （已译） *)
 Example Card_FinSet_identity_on_objects (n : FinSet) :
   fobj[Card_FinSet] n = n := eq_refl.
 
@@ -82,9 +82,9 @@ Definition nat_exp_coprod (x y z : nat) :
   (x ^ (y + z))%nat = (x ^ y * x ^ z)%nat :=
   FinSet_skeletal (@exp_coprod FinSet _ _ _ x y z).
 
-(* Each identity IS the functor's action on the isomorphism; stated for one
-   of the four, since [fmap[Card_FinSet]] is [FinSet_skeletal] by
-   construction. *)
+(* Each 恒等 IS 函子's action 同构; stated one
+ four, since [fmap[Card_FinSet]] [FinSet_skeletal] by
+ construction. （已译） *)
 Example nat_exp_coprod_is_Card_image (x y z : nat) :
   nat_exp_coprod x y z = fmap[Card_FinSet] (@exp_coprod FinSet _ _ _ x y z)
   := eq_refl.
@@ -102,7 +102,7 @@ Corollary Card_FinSet_squares_commute {m n : FinSet}
   fmap[Card_FinSet] i ≈ fmap[Card_FinSet] j.
 Proof. apply DiscreteCat_nat_Thin. Qed.
 
-(** ** Sanity: the functors and the identities compute *)
+(* * ** Sanity: 函子 identities compute （已译） *)
 
 (* [parity_two] (Instance/FinSet/Skeleton.v) is [nat] under equality of
    parity: an infinite carrier of cardinality 2. *)

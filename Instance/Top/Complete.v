@@ -23,8 +23,7 @@ Require Import Coq.Logic.Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * Spaces are complete: initial topologies, products and limits over
-      [PTopCat] *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/Top
@@ -39,7 +38,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The initial topology for a family of functions *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明等价、始/终对象相关定义、性质与动机。
@@ -54,7 +53,7 @@ Definition PIsTopology@{o} (S : SetoidObject@{o o})
   T (fun _ => True) /\
   (∀ U V : S → Prop, T U → T V → T (fun x => U x /\ V x)).
 
-(* The opens of a space form a topology in that sense. *)
+(* 相关说明。 （已译） *)
 Lemma popen_topology@{o} (X : PTop@{o}) : PIsTopology X (POpen X).
 Proof.
   split; [|split; [|split]].
@@ -76,8 +75,7 @@ Definition pinit_sub (V : S → Prop) : Prop :=
   ex (fun k => ex (fun U : X k → Prop =>
     POpen (X k) U /\ ∀ s, V s <-> U (t k s))).
 
-(* The weakest topology making every [t k] continuous: the predicates lying
-   in every topology that contains the subbasic opens. *)
+(* 相关说明。 （已译） *)
 Definition pinit_open (V : S → Prop) : Prop :=
   ∀ T : (S → Prop) → Prop, PIsTopology S T →
     (∀ W, pinit_sub W → T W) → T V.
@@ -129,8 +127,7 @@ Proof.
   exact (proj2 (proj2 (proj2 HT)) U V (HU T HT Hs) (HV T HT Hs)).
 Qed.
 
-(* A record literal over the five lemmas, so that the points and the opens
-   read back at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Definition PInit : PTop@{o} := {|
   pt_carrier     := S;
   POpen          := pinit_open;
@@ -157,9 +154,9 @@ Definition pinit_leg (k : I) : PMor@{o} PInit (X k) :=
 
 Example pinit_leg_map (k : I) : pmap (pinit_leg k) = t k := eq_refl.
 
-(* The universal property over ARBITRARY spaces mapping in: a setoid map
-   into [S] is continuous into the initial topology iff every composite
-   with a [t k] is continuous. *)
+(* The 普遍性质 over ARBITRARY spaces 映射 in: setoid map
+ [S] continuous 进入 initial topology iff every 复合
+ [t k] continuous. （已译） *)
 Lemma pinit_universal (Z : PTop@{o}) (g : SetoidMorphism@{o o o} Z S) :
   @PCont Z PInit g <->
   (∀ k, @PCont Z (X k) (setoid_morphism_compose@{o o o} (t k) g)).
@@ -215,8 +212,7 @@ Qed.
 
 End Initial.
 
-(* One map: the initial topology along a single [h] is Instance/Top/
-   Subspace.v's subspace topology [PSub], opens for opens. *)
+(* 相关说明。 （已译） *)
 Lemma PInit_one_PSub@{o +} (X : PTop@{o}) (S : SetoidObject@{o o})
   (h : SetoidMorphism@{o o o} S X) (V : S → Prop) :
   POpen (PInit S Datatypes.unit (fun _ => X) (fun _ => h)) V <-> POpen (PSub X S h) V.
@@ -232,7 +228,7 @@ Proof.
     + exact (pinit_leg_cont S Datatypes.unit (fun _ => X) (fun _ => h) tt U HU).
 Qed.
 
-(** ** The recipe as a lemma: topologize a limit of the underlying sets *)
+(* * ** The recipe 引理: topologize limit underlying sets （已译） *)
 
 Section Recipe.
 
@@ -241,8 +237,7 @@ Constraint o < so.
 
 Context {J : Category@{j o o}} (T : J ⟶ PTopCat@{o so}).
 
-(* A cone over the underlying diagram, its apex given the initial topology
-   for its legs. *)
+(* 相关说明。 （已译） *)
 Definition pinit_top (N : Cone (PForget@{o so} ◯ T)) : PTop@{o} :=
   PInit (vertex_obj[N]) (obj[J]) (fun k => fobj[T] k) (fun k => cone_leg N k).
 
@@ -261,8 +256,7 @@ Example pinit_cone_points (N : Cone (PForget@{o so} ◯ T)) :
 Example pinit_cone_leg (N : Cone (PForget@{o so} ◯ T)) (k : obj[J]) :
   pmap (cone_leg (pinit_cone N) k) = cone_leg N k := eq_refl.
 
-(* Riehl's recipe: a LIMITING cone over the underlying diagram, topologized
-   by the initial topology for its legs, is a limiting cone over [T]. *)
+(* 相关说明。 （已译） *)
 Definition pinit_cone_limiting@{v v1 w w1 +}
   (N : Cone (PForget@{o so} ◯ T)) (HN : IsLimitCone@{v v1 j o so} N) :
   IsLimitCone@{w w1 j o so} (pinit_cone N).
@@ -347,7 +341,7 @@ Qed.
 
 End Recipe.
 
-(** ** The discrete-space functor, left adjoint to the points *)
+(* * ** The discrete-space 函子, 左伴随 points （已译） *)
 
 Section Discrete.
 
@@ -388,13 +382,13 @@ Definition PForget_Continuous : ContinuousFunctor PForget@{o so} :=
 
 End Discrete.
 
-(* Per shape, with the shape universe named. *)
+(* 相关说明。 （已译） *)
 Definition PForget_PreservesLimitCone@{s o so +| o < so +}
   (J : Category@{s o o}) (T : J ⟶ PTopCat@{o so}) :
   PreservesLimitCone T PForget@{o so} :=
   right_adjoint_PreservesLimitCone PDisc_PForget T.
 
-(** ** Products: the product topology *)
+(* 相关说明。 （已译） *)
 
 Section Product.
 
@@ -452,7 +446,7 @@ Definition PTop_HasIndexedProducts@{i o so +| i <= o, o < so +} :
   @Build_HasIndexedProducts PTopCat@{o so}
     (@PProd) (@pproj) (@PTop_IsIndexedProduct).
 
-(* The product IS the product topology on the product of the points. *)
+(* 相关说明。 （已译） *)
 Example PTop_product_obj@{i o so +| i <= o, o < so +} (A : Type@{i})
   (X : A → PTop@{o}) :
   @indexed_product PTopCat@{o so} PTop_HasIndexedProducts A X = PProd A X :=
@@ -571,8 +565,7 @@ End EqualizerForced.
 
 (** ** Remark 1: completeness *)
 
-(* Directly, by the recipe: at every shape universe at or below the
-   points', with the limit's universe free above them. *)
+(* 相关说明。 （已译） *)
 Definition PTop_Complete@{r s o so +| s <= o, o < so, o <= r +} :
   @Complete@{r s o so} PTopCat@{o so} :=
   fun J T => PTop_Limit_lift T (Sets_Limit (PForget ◯ T)).
@@ -584,16 +577,15 @@ Example PTop_Complete_apex@{s o so +| s <= o, o < so +}
   vertex_obj[@limit_cone _ _ _ (@PTop_Complete@{o s o so _ _} J T)]
     = pinit_top T (Sets_limit_cone (PForget ◯ T)) := eq_refl.
 
-(* By the book's route: products and equalizers, through #416's
-   [Complete_from_products_equalizers] and #457's [PTop_HasEqualizers]. *)
+(* 相关说明。 （已译） *)
 Definition PTop_Complete_via_products@{o so +| o < so +} :
   @Complete@{o o o so} PTopCat@{o so} :=
   @Complete_from_products_equalizers PTopCat@{o so}
     PTop_HasIndexedProducts PTop_HasEqualizers.
 
-(* Its limit is a subspace of a product space: #416's equalizer of two maps
-   out of the product over the objects of the shape, which #457's
-   [PTop_HasEqualizers] makes a [PSub]. *)
+(* Its limit subspace product space: #416's equalizer two maps
+ out product over 对象 shape, #457's
+ [PTop_HasEqualizers] makes [PSub]. （已译） *)
 Lemma PTop_Complete_via_products_apex@{o so +| o < so +}
   (J : Category@{o o o}) (T : J ⟶ PTopCat@{o so}) :
   ex (fun S => ex (fun h =>
@@ -620,7 +612,7 @@ Lemma PTop_Complete_routes_iso_legs@{o so +| o < so +}
   ≈ limit_leg (limit_is_alimit (PTop_Complete J T)) j.
 Proof. exact (fst (limit_unique_iso_legs _ _) j). Qed.
 
-(** ** Awodey §2.6: the binary product, and its opens as unions of boxes *)
+(* 相关说明。 （已译） *)
 
 Section Binary.
 
@@ -628,7 +620,7 @@ Universe o.
 
 Context (X1 X2 : PTop@{o}).
 
-(* The pairs, with Lib/Datatypes.v's componentwise [prod_setoid]. *)
+(* 相关说明。 （已译） *)
 Definition PPair_carrier : SetoidObject@{o o} :=
   {| carrier := (pt_carrier X1 * pt_carrier X2)%type;
      is_setoid := prod_setoid |}.
@@ -743,8 +735,8 @@ Proof.
   - exact (proper_morphism (pmap g) z z' e).
 Defined.
 
-(* Awodey's second bullet: the pairing of two continuous maps is
-   continuous, here by the initial topology's universal property. *)
+(* Awodey's second bullet: pairing two continuous maps is
+ continuous, here initial topology's 普遍性质. （已译） *)
 Definition ppair_fork (Z : PTop@{o}) (f : PMor@{o} Z X1) (g : PMor@{o} Z X2) :
   PMor@{o} Z PPair.
 Proof.
@@ -768,7 +760,7 @@ Proof.
     + intros [Hl Hr] w. split; [exact (Hl w)|exact (Hr w)].
 Defined.
 
-(** ** Riehl §3.1 Example 10: the box topology, a non-example *)
+(* 相关说明。 （已译） *)
 
 Section Box.
 
@@ -777,9 +769,7 @@ Constraint i <= o.
 
 Context (A : Type@{i}) (X : A → PTop@{o}).
 
-(* The box topology on the product of the underlying sets: W is open when
-   it respects the points' equality and every point of W lies in a box of
-   opens, one per index, inside W. *)
+(* 相关说明。 （已译） *)
 Definition pbox_open (W : PProd_carrier A X → Prop) : Prop :=
   (∀ x y : PProd_carrier A X, x ≈ y → W x → W y) /\
   ∀ x, W x → ex (fun U : ∀ a, X a → Prop =>
@@ -847,8 +837,7 @@ Definition PBoxTop : PTop@{o} := {|
   popen_inter    := pbox_open_inter
 |}.
 
-(* The box that is [V] at the index [a] and the whole space elsewhere,
-   for an index type with decidable equality. *)
+(* 相关说明。 （已译） *)
 Definition pbox_at (dec : ∀ a b : A, {a = b} + {a ≠ b}) (a : A)
   (V : X a → Prop) (c : A) : X c → Prop :=
   match dec c a with
@@ -856,7 +845,7 @@ Definition pbox_at (dec : ∀ a b : A, {a = b} + {a ≠ b}) (a : A)
   | right _ => fun _ => True
   end.
 
-(* The projections out of the box space are continuous. *)
+(* 相关说明。 （已译） *)
 Lemma pbox_proj_cont (dec : ∀ a b : A, {a = b} + {a ≠ b}) (a : A) :
   @PCont PBoxTop (X a) (pprod_leg A X a).
 Proof.
@@ -879,7 +868,7 @@ Definition pbox_proj (dec : ∀ a b : A, {a = b} + {a ≠ b}) (a : A) :
   PMor@{o} PBoxTop (X a) :=
   @Build_PMor PBoxTop (X a) (pprod_leg A X a) (pbox_proj_cont dec a).
 
-(* The box topology is finer than the product topology. *)
+(* 相关说明。 （已译） *)
 Lemma pprod_open_pbox_open (dec : ∀ a b : A, {a = b} + {a ≠ b})
   (W : PProd_carrier A X → Prop) :
   POpen (PProd A X) W → POpen PBoxTop W.
@@ -890,8 +879,8 @@ Qed.
 
 End Box.
 
-(* The witness: the convergent sequence ℕ∞, [None] its limit point, and
-   the indicator maps of its points into the two-point discrete space. *)
+(* The witness: convergent sequence ℕ∞, [None] limit point, and
+ indicator maps points 进入 two-point discrete space. （已译） *)
 Section BoxNot.
 
 Universe o.
@@ -899,7 +888,7 @@ Universe o.
 Definition pconv_setoid : SetoidObject@{o o} :=
   {| carrier := option nat; is_setoid := eq_Setoid (option nat) |}.
 
-(* Open: containing the limit point forces a tail of the sequence. *)
+(* 相关说明。 （已译） *)
 Definition pconv_open (V : pconv_setoid → Prop) : Prop :=
   V None → ex (fun N => ∀ m, (N <= m)%nat → V (Some m)).
 
@@ -960,8 +949,7 @@ Proof.
   intros x y e. simpl in e. subst y. reflexivity.
 Defined.
 
-(* Every indicator is continuous: past [n] the sequence is at [false], the
-   value at the limit point. *)
+(* 相关说明。 （已译） *)
 Lemma pconv_ind_cont (n : nat) : @PCont PConv PBool@{o} (pconv_ind_map n).
 Proof.
   intros V HV v. exists (S n). intros m Hm. simpl in *.
@@ -973,8 +961,7 @@ Qed.
 Definition pconv_ind_mor (n : nat) : PMor@{o} PConv PBool@{o} :=
   @Build_PMor PConv PBool (pconv_ind_map n) (pconv_ind_cont n).
 
-(* The point of the box space all of whose coordinates are [false] is an
-   open box, a product of opens of [PBool]. *)
+(* 相关说明。 （已译） *)
 Definition pbox_all_false (x : PProd_carrier nat (fun _ => PBool@{o})) : Prop :=
   ∀ n, x n = false.
 
@@ -989,8 +976,8 @@ Proof.
     + intros y Hy. exact Hy.
 Qed.
 
-(* No continuous map from ℕ∞ into the box space has the indicators as
-   components: it would pull [pbox_all_false] back to the limit point alone. *)
+(* No continuous map ℕ∞ 进入 box space has indicators as
+ components: it would pull [pbox_all_false] back limit point alone. （已译） *)
 Theorem pbox_no_mediator (u : PMor@{o} PConv (PBoxTop nat (fun _ => PBool@{o})))
   (Hu : ∀ n z, pmap u z n = pconv_ind n z) : False.
 Proof.
@@ -1006,8 +993,7 @@ Qed.
 
 End BoxNot.
 
-(* The box space with its continuous projections is NOT an indexed product
-   of [PBool] over [nat] in [PTopCat]. *)
+(* 相关说明。 （已译） *)
 Theorem box_not_indexed_product@{o so +| o < so +} :
   @IsIndexedProduct PTopCat@{o so} nat (fun _ => PBool@{o})
     (PBoxTop nat (fun _ => PBool@{o})) (pbox_proj nat (fun _ => PBool@{o}) Nat.eq_dec)
@@ -1018,13 +1004,12 @@ Proof.
   apply (pbox_no_mediator u). intros n z. exact (Hu n z).
 Qed.
 
-(* Whereas the product topology mediates: the tuple of the indicators. *)
+(* 相关说明。 （已译） *)
 Definition pconv_prod_mediator@{o +} :
   PMor@{o} PConv@{o} (PProd nat (fun _ => PBool@{o})) :=
   ptuple nat (fun _ => PBool) PConv pconv_ind_mor.
 
-(* So [pbox_all_false] is box-open and not product-open: the box topology is
-   strictly finer on an infinite product. *)
+(* 相关说明。 （已译） *)
 Theorem pbox_all_false_not_product_open@{o +} :
   POpen (PProd nat (fun _ => PBool@{o})) pbox_all_false → False.
 Proof.

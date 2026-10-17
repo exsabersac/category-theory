@@ -20,7 +20,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The extension of a setoid map to the discrete space *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Discrete 相关定义、性质与动机。
@@ -37,7 +37,7 @@ Example disc_extend_map (A : SetoidObject) (Y : TopSpace)
   (g : SetoidMorphism A (top_carrier Y)) (a : carrier A) :
   disc_extend A Y g a = g a := eq_refl.
 
-(** ** The universal property (Mac Lane §III.1 Exercise 3, row three) *)
+(* * ** The 普遍性质 (Mac Lane §III.1 Exercise 3, row three) （已译） *)
 
 Theorem discrete_universal (A : SetoidObject) (Y : TopSpace)
   (g : SetoidMorphism A (top_carrier Y)) :
@@ -48,7 +48,7 @@ Proof.
   - intros f' Hf' a; simpl; symmetry; exact (Hf' a).
 Qed.
 
-(** ** The unit X → U(X_disc), and that it is the identity *)
+(* * ** The unit X → U(X_disc), it 恒等 （已译） *)
 
 Example disc_unit_target_strict (A : SetoidObject) :
   fobj[Top_Forget] (fobj[Top_Discrete] A) = Setoid_Lift A := eq_refl.
@@ -59,10 +59,9 @@ Definition disc_unit (A : SetoidObject)
 Example disc_unit_is_id (A : SetoidObject) (a : carrier A) :
   disc_unit A a = a := eq_refl.
 
-(** ** Agreement with the pre-existing transposition isomorphism *)
+(* * ** Agreement pre-existing transposition 同构 （已译） *)
 
-(* [discrete_adj]'s forward leg strips a continuous map to its underlying
-   setoid map; on an extension it returns the map it started from. *)
+(* 相关说明。 （已译） *)
 Example disc_extend_is_adj_from (A : SetoidObject) (Y : TopSpace)
   (g : SetoidMorphism A (top_carrier Y)) :
   to (discrete_adj A Y) (disc_extend A Y g) = g := eq_refl.
@@ -80,8 +79,8 @@ Example disc_universal_at_indiscrete
     ∀ a, f a ≈ g a :=
   discrete_universal bool_setoid_object TwoPoint_Indiscrete g.
 
-(* And the extension really is the identity on points, so the universal
-   property is not collapsing anything. *)
+(* And extension really 恒等 points, so universal
+ property not collapsing anything. （已译） *)
 Example disc_extend_indiscrete_computes
   (g : SetoidMorphism bool_setoid_object
          (top_carrier TwoPoint_Indiscrete)) (b : bool) :

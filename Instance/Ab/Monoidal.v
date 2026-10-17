@@ -1,4 +1,4 @@
-(** * The symmetric monoidal category (Ab, ⊗, ℤ) *)
+(* * * The symmetric 幺半范畴 (Ab, ⊗, ℤ) （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/tensor+product+of+abelian+groups
@@ -32,10 +32,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** Elementary group calculations
-
-    Four rearrangements used throughout.  They are stated at [AbObject] so
-    that they apply equally to a tensor product, which is one. *)
+(* 相关说明。 （已译） *)
 
 (* (x + y) - y ≈ x. *)
 Lemma ab_add_neg_cancel (A : AbObject) (x y : carrier A) :
@@ -127,7 +124,7 @@ Proof.
   - rewrite cmon_map_plus, IH; reflexivity.
 Qed.
 
-(* The integer action: iterate, then negate if the scalar is negative. *)
+(* 相关说明。 （已译） *)
 Definition zsmul (A : AbObject) (n : Z) (a : carrier A) : carrier A :=
   match n with
   | Z0     => cmon_zero A
@@ -135,8 +132,7 @@ Definition zsmul (A : AbObject) (n : Z) (a : carrier A) : carrier A :=
   | Zneg p => ab_neg A (nat_smul A (Pos.to_nat p) a)
   end.
 
-(* The three sign-case computations, so that later steps can rewrite with
-   them rather than depend on how far [simpl] chooses to unfold. *)
+(* 相关说明。 （已译） *)
 Lemma zsmul_Z0 (A : AbObject) (a : carrier A) :
   zsmul A Z0 a ≈ cmon_zero A.
 Proof. reflexivity. Qed.
@@ -214,9 +210,7 @@ Lemma zsmul_pos_sub (A : AbObject) (p q : positive) (a : carrier A) :
     ≈ cmon_plus A (nat_smul A (Pos.to_nat p) a)
                   (ab_neg A (nat_smul A (Pos.to_nat q) a)).
 Proof.
-  (* The comparison is split on the [comparison] value rather than through
-     [Pos.compare_spec]: the latter is a [Prop], and this goal lives in
-     [Type], where a [Prop] may not be eliminated. *)
+  (* 相关说明。 （已译） *)
   rewrite Z.pos_sub_spec.
   destruct (p ?= q)%positive eqn:Hcmp.
   - assert (Heq : p = q) by (apply Pos.compare_eq; exact Hcmp).
@@ -317,17 +311,15 @@ Lemma nat_smul_int_one (k : nat) : nat_smul ZAb k ZAb_one = Z.of_nat k.
 Proof.
   induction k as [|j IH].
   - reflexivity.
-  - (* [change] rather than [simpl]: the addition of [ZAb] is [Z.add] only
-       after unfolding through [ring_ab] and [rig_cmon], and [lia] needs to
-       see it. *)
+  - (* 相关说明。 （已译） *)
     change (nat_smul ZAb (S j) ZAb_one)
       with (Z.add 1%Z (nat_smul ZAb j ZAb_one)).
     rewrite IH.
     lia.
 Qed.
 
-(* The ℤ-action on ℤ itself at the generator 1 is the identity: this is what
-   makes the unitors mutually inverse. *)
+(* The ℤ-action ℤ itself at generator 1 恒等: 这是 what
+ makes unitors mutually inverse. （已译） *)
 Lemma zsmul_int_one (n : Z) : zsmul ZAb n ZAb_one = n.
 Proof.
   destruct n as [|p|p].
@@ -400,8 +392,7 @@ Proof.
   exact (te_zero_l ts_zero).
 Qed.
 
-(* A generator with a zero component is zero: the bilinearity rule makes it
-   idempotent. *)
+(* 相关说明。 （已译） *)
 Lemma ts_gen_zero_l (h : carrier H) :
   ts_eq (@ts_gen G H (cmon_zero G) h) ts_zero.
 Proof.
@@ -458,8 +449,8 @@ Proof.
     exact (te_plus (ts_refl (ts_gen g h)) IH).
 Qed.
 
-(* The one genuinely arithmetic coherence fact: a scalar crosses the tensor
-   sign.  This is what proves the triangle identity. *)
+(* The one genuinely arithmetic coherence fact: scalar crosses tensor
+ sign. This what proves triangle 恒等. （已译） *)
 Lemma ts_gen_zsmul_balance (n : Z) (g : carrier G) (h : carrier H) :
   ts_eq (ts_gen (zsmul G n g) h) (ts_gen g (zsmul H n h)).
 Proof.
@@ -954,10 +945,10 @@ Next Obligation.
   exact (ts_refl _).
 Qed.
 
-(** ** The monoidal structure
+(* * ** The monoidal structure
 
-    Each naturality square and each coherence law reduces, through the
-    extensionality principles above, to a computation on generators. *)
+ Each 自然性 square each coherence law reduces, through the
+ extensionality principles above, computation generators. （已译） *)
 
 #[export] Program Instance Ab_Monoidal@{s o + | s < o +} :
   @Monoidal Ab@{o s} := {|

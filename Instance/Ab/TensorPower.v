@@ -16,8 +16,7 @@ Require Import Coq.Lists.List.
 
 Generalizable All Variables.
 
-(** * ⨁ₙ A^{⊗n}: words modulo multilinearity, and the direct sum of the
-      tensor powers *)
+(* 相关说明。 （已译） *)
 
 (*
  Book: Riehl, "Category Theory in Context", Example 5.5.7(ii), printed
@@ -31,7 +30,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** Formal sums of words, modulo multilinearity in each letter *)
+(* 相关说明。 （已译） *)
 
 Section Words.
 
@@ -45,9 +44,7 @@ Inductive TWTerm : Type :=
   | tw_plus : TWTerm → TWTerm → TWTerm
   | tw_neg  : TWTerm → TWTerm.
 
-(* The congruence: the abelian-group laws, congruence for the two
-   formers, and in each letter of a word saturation under A's own `≈`
-   and additivity.  Reflexivity is derived ([tw_refl]). *)
+(* 相关说明。 （已译） *)
 Inductive tw_eq : TWTerm → TWTerm → Prop :=
   | twe_letter (u v : list L) {a b : L} :
       a ≈ b → tw_eq (tw_word (u ++ a :: v)) (tw_word (u ++ b :: v))
@@ -97,8 +94,8 @@ Definition TWAb : AbObject := {|
     cmon_plus_assoc := twe_assoc;
     cmon_plus_comm := twe_comm;
     cmon_plus_zero_l := twe_zero_l;
-    (* [tw_eq] IS a [Prop]-valued relation, so it is its own [Prop]
-       mirror and both implications are the identity. *)
+    (* [tw_eq] IS [Prop]-valued 关系, so it own [Prop]
+ 镜像 both 蕴含 恒等. （已译） *)
     cmon_prop := @PropEquiv_of_relation _ tw_Setoid tw_eq
                    (fun _ _ h => h) (fun _ _ h => h)
   |};
@@ -167,7 +164,7 @@ Proof. exact (ab_neg_zero TWAb). Qed.
 Lemma tw_zero_zero : tw_eq tw_zero (tw_plus tw_zero tw_zero).
 Proof. exact (twe_sym (twe_zero_l tw_zero)). Qed.
 
-(* Juxtaposition on the left respects the letters on the right... *)
+(* 相关说明。 （已译） *)
 Lemma tw_lmul_letter (u v : list L) (a b : L) (H : a ≈ b) (t : TWTerm) :
   tw_eq (tw_lmul (u ++ a :: v) t) (tw_lmul (u ++ b :: v) t).
 Proof.
@@ -211,9 +208,7 @@ Arguments twe_zero_l {A} s.
 Arguments twe_neg_l {A} s.
 Arguments tw_eq_of_eq {A s t} _.
 
-(* A function on words that respects each letter and is additive in each
-   letter extends to a homomorphism out of [TWAb]: the universal
-   property of the presentation. *)
+(* 相关说明。 （已译） *)
 Section Extension.
 
 Context (A c : Ab).
@@ -276,7 +271,7 @@ End Extension.
 Arguments tw_ext {A} c ν Hletter Hlin.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The n-fold tensor powers, and the words as their direct sum *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明幺半结构、幺半群相关定义、性质与动机。
@@ -327,7 +322,7 @@ Proof.
     exact (tw_lmul_respects_r A _ _ _ (cmon_map_plus ι x x')).
 Defined.
 
-(* The injections ιₙ : A^{⊗n} → ⨁, by the tensor's universal property. *)
+(* The injections ιₙ : A^{⊗n} → ⨁, tensor's 普遍性质. （已译） *)
 Fixpoint tw_iota (n : nat) : A ^⨂ n ~{Ab}~> TWAb A :=
   match n with
   | O => tw_iota0
@@ -386,9 +381,7 @@ Fixpoint tw_desc_fun (iota : ∀ n : nat, A ^⨂ n ~{Ab}~> c) (t : TWTerm A) :
   | tw_neg s => ab_neg c (tw_desc_fun iota s)
   end.
 
-(* The copairing respects a letter and is additive in it.  The induction
-   is on the prefix, generalized over the whole family, so no transport
-   along the length of a word is needed. *)
+(* 相关说明。 （已译） *)
 Lemma tw_desc_letter (u : list L) : ∀ (iota : ∀ n : nat, A ^⨂ n ~{Ab}~> c)
   (v : list L) (a b : L), a ≈ b →
   cmon_map (iota (length (u ++ a :: v))) (tw_pure (u ++ a :: v))
@@ -449,7 +442,7 @@ Proof.
   - intros s t. reflexivity.
 Defined.
 
-(* Juxtaposition on the left by one letter shifts the family, LEIBNIZ. *)
+(* 相关说明。 （已译） *)
 Lemma tw_desc_lmul (iota : ∀ n : nat, A ^⨂ n ~{Ab}~> c) (a : L)
   (t : TWTerm A) :
   tw_desc_fun iota (tw_lmul (a :: nil) t) = tw_desc_fun (tw_shift iota a) t.
@@ -461,7 +454,7 @@ Proof.
   - rewrite IHs. reflexivity.
 Qed.
 
-(* The copairing composed with ιₙ is the n-th map of the family. *)
+(* 相关说明。 （已译） *)
 Lemma tw_desc_iota (n : nat) : ∀ (iota : ∀ n : nat, A ^⨂ n ~{Ab}~> c)
   (x : carrier (A ^⨂ n)),
   cmon_map (tw_desc iota) (cmon_map (tw_iota n) x) ≈ cmon_map (iota n) x.
@@ -480,7 +473,7 @@ Proof.
     exact (IH (tw_shift iota a) y).
 Qed.
 
-(* ...and it is the only such homomorphism. *)
+(* 相关说明。 （已译） *)
 Lemma tw_desc_unique (iota : ∀ n : nat, A ^⨂ n ~{Ab}~> c)
   (g : TWAb A ~{Ab}~> c)
   (H : ∀ n : nat, g ∘[Ab] tw_iota n ≈ iota n) (t : TWTerm A) :
@@ -499,8 +492,7 @@ Qed.
 
 End Desc.
 
-(* Mac Lane's "(infinite) direct sum of the n-fold tensor powers": the
-   words are the coproduct in Ab of the A^{⊗n}, with the injections ιₙ. *)
+(* 相关说明。 （已译） *)
 Definition TW_is_tensor_coproduct (A : Ab) :
   @IsIndexedCoproduct Ab nat (fun n => A ^⨂ n) (TWAb A) (@tw_iota A).
 Proof.

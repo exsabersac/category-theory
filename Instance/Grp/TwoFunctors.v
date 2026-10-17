@@ -11,7 +11,7 @@ Require Import Category.Instance.Grp.
 
 Generalizable All Variables.
 
-(** * Two functors with the same object function, over groups *)
+(* * * Two 函子 same 对象 function, over groups （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/functor
@@ -50,8 +50,7 @@ Proof.
     reflexivity.
 Defined.
 
-(* Conjugation by t and by t⁻¹ are mutually inverse, so conjugation is an
-   automorphism -- an INNER automorphism of G. *)
+(* 相关说明。 （已译） *)
 Definition Grp_conj_iso (G : GrpObject) (t : carrier G) :
   @Isomorphism Grp G G.
 Proof.
@@ -79,9 +78,9 @@ Proof.
     apply grp_mul_unit_r.
 Defined.
 
-(* THE DEGENERACY CHECK, PROVED.  Over an abelian group every conjugation
-   is the identity morphism, so a twist by an inner automorphism there is
-   the identity functor and separates nothing. *)
+(* THE DEGENERACY CHECK, PROVED. Over abelian group every conjugation
+ 恒等 态射, so twist inner automorphism there is
+ 恒等 函子 separates nothing. （已译） *)
 Lemma Grp_conj_abelian (G : GrpObject)
   (comm : ∀ a b : carrier G, grp_mul G a b ≈ grp_mul G b a)
   (t : carrier G) : Grp_conj G t ≈ @id Grp G.
@@ -93,7 +92,7 @@ Proof.
   apply grp_mul_unit_r.
 Qed.
 
-(* The in-tree abelian witness is Z/2, and it does collapse. *)
+(* 相关说明。 （已译） *)
 Example Z2_conj_trivial (t : carrier Z2) : Grp_conj Z2 t ≈ @id Grp Z2.
 Proof.
   apply Grp_conj_abelian.
@@ -101,7 +100,7 @@ Proof.
   now destruct a, b.
 Qed.
 
-(** ** The symmetric group on three letters *)
+(* 相关说明。 （已译） *)
 
 (* Z/3, written additively, as the rotation part. *)
 Inductive rot : Type := rot0 | rot1 | rot2.
@@ -134,8 +133,7 @@ Definition s3_unit : S3carrier := (rot0, false).
 
 Program Definition s3_setoid : Setoid S3carrier := {| equiv := @eq S3carrier |}.
 
-(* Every law is a finite check: associativity is 216 cases, the unit and
-   inverse laws 6 each. *)
+(* 相关说明。 （已译） *)
 Definition S3 : GrpObject.
 Proof.
   unshelve notypeclasses refine {|
@@ -164,13 +162,13 @@ Example S3_eq_is_equiv (a b : carrier S3) (H : a = b) : a ≈ b := H.
 Definition S3_r : carrier S3 := (rot1, false).
 Definition S3_s : carrier S3 := (rot0, true).
 
-(* S3 is nonabelian: r * s and s * r are different reflections. *)
+(* 相关说明。 （已译） *)
 Lemma S3_nonabelian :
   grp_mul S3 S3_r S3_s ≈ grp_mul S3 S3_s S3_r → False.
 Proof. simpl; discriminate. Qed.
 
-(* Consequently conjugation by the reflection is not the identity: it
-   inverts the rotation. *)
+(* Consequently conjugation reflection not 恒等: it
+ inverts rotation. （已译） *)
 Lemma S3_conj_s_nontrivial : Grp_conj S3 S3_s ≈ @id Grp S3 → False.
 Proof.
   intro H.
@@ -179,10 +177,10 @@ Proof.
   discriminate.
 Qed.
 
-(** ** The full subcategory of Grp on a single group *)
+(* 相关说明。 （已译） *)
 
-(* One object, whose endomorphism monoid in [Grp] supplies the morphisms;
-   the category laws are those of [Grp] at the object G. *)
+(* One 对象, whose endomorphism 幺半群 [Grp] supplies 态射;
+ 范畴 laws those [Grp] at 对象 G. （已译） *)
 Program Definition GrpAt (G : GrpObject) : Category := {|
   obj     := poly_unit;
   hom     := fun _ _ => G ~{Grp}~> G;
@@ -190,9 +188,9 @@ Program Definition GrpAt (G : GrpObject) : Category := {|
   id      := fun _ => @id Grp G;
   compose := fun _ _ _ f g => f ∘ g
 |}.
-(* [compose_respects] is discharged by typeclass resolution from [Grp]'s own
-   instance; the four remaining obligations are the category laws, which are
-   [Grp]'s laws at the object G. *)
+(* [compose_respects] discharged typeclass resolution [Grp]'s own
+ instance; four remaining obligations 范畴 laws, are
+ [Grp]'s laws at 对象 G. （已译） *)
 Next Obligation.
   intros G x y f.
   apply id_left.
@@ -257,22 +255,22 @@ Proof.
   reflexivity.
 Qed.
 
-(* An isomorphism of G with itself in [Grp] is one in [GrpAt G]: the
-   morphisms, composition, identity and hom-setoids agree definitionally. *)
+(* An 同构 G itself [Grp] one [GrpAt G]: the
+ 态射, 复合, 恒等 hom-setoids agree definitionally. （已译） *)
 Definition GrpAt_iso {G : GrpObject} (i : @Isomorphism Grp G G)
   (x : GrpAt G) : @Isomorphism (GrpAt G) x x :=
   @Build_Isomorphism (GrpAt G) x x (to i) (from i)
     (iso_to_from i) (iso_from_to i).
 
-(* Uniqueness of identity proofs on the single object, by Hedberg from the
-   (trivially) decidable equality of [poly_unit]. *)
+(* Uniqueness 恒等 proofs single 对象, Hedberg the
+ (trivially) decidable equality [poly_unit]. （已译） *)
 Definition poly_unit_eq_dec (x y : poly_unit) : {x = y} + {x <> y} :=
   left (match x, y with ttt, ttt => eq_refl end).
 
 (** ** The two functors *)
 
-(* The twist of the identity functor of the full subcategory on S3 by
-   conjugation with the reflection. *)
+(* The twist 恒等 函子 full subcategory S3 by
+ conjugation reflection. （已译） *)
 Definition S3_twist_family : ∀ x : GrpAt S3, x ≅ x :=
   GrpAt_iso (Grp_conj_iso S3 S3_s).
 
@@ -287,8 +285,8 @@ Definition S3_Twist : GrpAt S3 ⟶ GrpAt S3 :=
 Lemma S3_Twist_fobj (x : GrpAt S3) : fobj[S3_Twist] x = fobj[@Id (GrpAt S3)] x.
 Proof. reflexivity. Qed.
 
-(* Indeed the object functions agree as FUNCTIONS, not merely pointwise:
-   both are [fun x => x] after unfolding. *)
+(* Indeed 对象 functions agree FUNCTIONS, not merely pointwise:
+ both [fun x => x] after unfolding. （已译） *)
 Example S3_Twist_object_function :
   fobj[S3_Twist] = fobj[@Id (GrpAt S3)].
 Proof. reflexivity. Qed.
@@ -300,8 +298,8 @@ Proof. reflexivity. Qed.
 *)
 Definition S3_conj_r : ttt ~{GrpAt S3}~> ttt := Grp_conj S3 S3_r.
 
-(* The concrete separating datum: at that morphism, the two functors take
-   different values on the reflection. *)
+(* The concrete separating datum: at 态射, two 函子 take
+ different values reflection. （已译） *)
 Example S3_twist_value :
   grp_map (fmap[S3_Twist] S3_conj_r) S3_s ≈ (rot1, true).
 Proof. reflexivity. Qed.
@@ -354,9 +352,9 @@ Proof.
            (f:=S3_conj_r) S3_conj_not_central).
 Qed.
 
-(* And they are IDENTIFIED by the weak setoid, the hom-setoid of [Cat]:
-   the conjugation family is itself the natural isomorphism.  This is why
-   the statement above has to be made strictly. *)
+(* And they IDENTIFIED weak setoid, hom-setoid [Cat]:
+ conjugation family itself natural 同构. This why
+ statement above has made strictly. （已译） *)
 Theorem S3_two_functors_weakly_equal :
   @equiv _ Functor_Setoid S3_Twist (@Id (GrpAt S3)).
 Proof. exact (Twist_Id_weak_equiv S3_twist_family). Qed.
@@ -375,10 +373,10 @@ Theorem S3_pair_distinct_in_StrictCat :
     S3_Twist (@Id (GrpAt S3)) → False.
 Proof. exact S3_two_functors_distinct. Qed.
 
-(** ** The uniform candidate over all of Grp, and its collapse *)
+(* 相关说明。 （已译） *)
 
-(* Inversion as an isomorphism from a group to its opposite
-   (Instance/Grp.v); both round trips are [grp_inv_inv]. *)
+(* Inversion 同构 group opposite
+ (Instance/Grp.v); both round trips [grp_inv_inv]. （已译） *)
 Definition Grp_inv_iso (G : GrpObject) : @Isomorphism Grp G (Grp_Op G).
 Proof.
   unshelve notypeclasses refine
@@ -391,9 +389,9 @@ Proof.
     apply grp_inv_inv.
 Defined.
 
-(* Twisting the opposite-group functor by inversion gives an endofunctor of
-   the WHOLE of [Grp] whose object function is the identity -- the shape
-   Mac Lane's exercise asks for. *)
+(* Twisting opposite-group 函子 inversion gives 自函子 of
+ WHOLE [Grp] whose 对象 function 恒等 -- shape
+ Mac Lane's exercise asks for. （已译） *)
 Definition Grp_op_twist : Grp ⟶ Grp := Twist Grp_Op Grp_inv_iso.
 
 Lemma Grp_op_twist_fobj (G : Grp) : fobj[Grp_op_twist] G = G.

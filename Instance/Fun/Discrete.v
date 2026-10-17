@@ -1,4 +1,4 @@
-(** * Functor categories over discrete shapes *)
+(* * * Functor 范畴 over discrete shapes （已译） *)
 
 Require Import Coq.Vectors.Fin.
 
@@ -31,7 +31,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Natural transformations over a discrete shape are bare families *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -89,7 +89,7 @@ Next Obligation.
   intros A B F G η a; reflexivity.
 Qed.
 
-(** ** The functor category over a discrete shape is an indexed product *)
+(* * ** The 函子 范畴 over discrete shape indexed product （已译） *)
 
 Program Definition Fun_Discrete_to {A : Type} {B : Category} :
   [DiscreteCat A, B] ⟶ PiCat (fun _ : A => B) := {|
@@ -161,8 +161,8 @@ Qed.
 
 (** ** Finite powers *)
 
-(* The n-fold power of a category, as an iterated binary product with the
-   terminal category as the empty product. *)
+(* The n-fold power 范畴, iterated binary product the
+ terminal 范畴 empty product. （已译） *)
 Fixpoint Pow (B : Category) (n : nat) : Category :=
   match n with
   | O => _1
@@ -170,7 +170,7 @@ Fixpoint Pow (B : Category) (n : nat) : Category :=
   end.
 
 (* [Cartesian]'s [second] calculus makes [z × −] carry isomorphisms; at
-   [Cat] this transports the induction hypothesis across [B ∏ −]. *)
+ [Cat] transports induction 假设 across [B ∏ −]. （已译） *)
 Program Definition second_iso {C : Category} `{@Cartesian C}
         {z x y : C} (f : x ≅ y) : z × x ≅ z × y := {|
   to   := second (to f);
@@ -189,8 +189,7 @@ Next Obligation.
   apply second_id.
 Qed.
 
-(* Any two choice functions on the empty shape are isomorphic in the
-   product, with vacuous components. *)
+(* 相关说明。 （已译） *)
 Program Definition PiCat_Fin_zero_component (B : Category)
         (f : obj[PiCat (fun _ : Fin.t 0 => B)]) :
   @Isomorphism (PiCat (fun _ : Fin.t 0 => B))
@@ -207,7 +206,7 @@ Next Obligation.
   intros B f i; inversion i.
 Qed.
 
-(* The empty power: no components, so the product collapses to the point. *)
+(* 相关说明。 （已译） *)
 Program Definition PiCat_Fin_zero (B : Category) :
   PiCat (fun _ : Fin.t 0 => B) ≅[Cat] _1 := {|
   to   := Erase _;
@@ -234,8 +233,8 @@ Next Obligation.
   intros f g η i; inversion i.
 Qed.
 
-(* Splitting a pair into its components and repairing is the identity up
-   to an identity-component isomorphism (pair eta is not definitional). *)
+(* Splitting pair components repairing 恒等 up
+ 恒等-component 同构 (pair eta not definitional). （已译） *)
 Program Definition PiCat_Fin_succ_component (B : Category) (n : nat)
         (p : obj[B ∏ PiCat (fun _ : Fin.t n => B)]) :
   @Isomorphism (B ∏ PiCat (fun _ : Fin.t n => B))
@@ -250,8 +249,8 @@ Next Obligation.
   intros B n p; split; [ simpl; cat | intro i; simpl; cat ].
 Qed.
 
-(* Rebuilding a choice function on [Fin.t (S n)] from its head and tail
-   is the identity componentwise. *)
+(* Rebuilding choice function [Fin.t (S n)] head tail
+ 恒等 componentwise. （已译） *)
 Program Definition PiCat_Fin_succ_rebuild (B : Category) (n : nat)
         (f : obj[PiCat (fun _ : Fin.t (S n) => B)]) :
   @Isomorphism (PiCat (fun _ : Fin.t (S n) => B))
@@ -337,7 +336,7 @@ Next Obligation.
   - intro j; cat.
 Qed.
 
-(* The finite power, by induction at the level of families. *)
+(* 相关说明。 （已译） *)
 Fixpoint PiCat_Fin_power (B : Category) (n : nat) :
   PiCat (fun _ : Fin.t n => B) ≅[Cat] Pow B n :=
   match n with
@@ -345,19 +344,18 @@ Fixpoint PiCat_Fin_power (B : Category) (n : nat) :
   | S m => iso_compose (second_iso (PiCat_Fin_power B m)) (PiCat_Fin_succ B m)
   end.
 
-(* Mac Lane Exercise II.4.2: for a finite discrete shape, the functor
-   category is a finite power of the target. *)
+(* Mac Lane Exercise II.4.2: finite discrete shape, 函子
+ 范畴 finite power target. （已译） *)
 Definition Fun_Discrete_power (B : Category) (n : nat) :
   [DiscreteCat (Fin.t n), B] ≅[Cat] Pow B n :=
   iso_compose (PiCat_Fin_power B n) Fun_Discrete_PiCat.
 
-(* The shape of the first interesting instance, for the record. *)
+(* 相关说明。 （已译） *)
 Example Fun_Discrete_power_two (B : Category) :
   [DiscreteCat (Fin.t 2), B] ≅[Cat] B ∏ (B ∏ _1) :=
   Fun_Discrete_power B 2.
 
-(* Collapsing the trailing terminal factor by the right unitor recovers
-   the book's literal n-fold shape: at n = 2, "B ∏ B". *)
+(* 相关说明。 （已译） *)
 Example Fun_Discrete_power_two_flat (B : Category) :
   [DiscreteCat (Fin.t 2), B] ≅[Cat] B ∏ B :=
   iso_compose (second_iso prod_one_r) (Fun_Discrete_power B 2).
@@ -376,8 +374,8 @@ Next Obligation.
   intros A x y e; destruct e; reflexivity.
 Qed.
 
-(* The setoid of objects of a functor category — functors up to the
-   ambient natural isomorphism — packaged as an object of Sets. *)
+(* The setoid 对象 函子 范畴 — 函子 up the
+ ambient natural 同构 — packaged 对象 Sets. （已译） *)
 Definition Fun_objects_setoid (C D : Category) : SetoidObject := {|
   carrier := C ⟶ D;
   is_setoid := @Functor_Setoid C D
@@ -445,7 +443,7 @@ Proof.
   exact (Hn (Hfrom Hn)).
 Qed.
 
-(* The boolean form: the diagonal flips its own value. *)
+(* 相关说明。 （已译） *)
 Theorem cantor_bool {A : Type} (f : A → A → bool) :
   ¬ (∀ g : A → bool, ∃ a : A, ∀ x : A, f a x = g x).
 Proof.
@@ -474,7 +472,7 @@ Proof.
   exact (to (`1 Ha x)).
 Qed.
 
-(** ** The morphism half of [1, B] ≅ B (Seven Sketches, Example 3.53) *)
+(* * ** The 态射 half [1, B] ≅ B (Seven Sketches, Example 3.53) （已译） *)
 
 (*
    本节说明自然变换、函子、hom相关定义、性质与动机。

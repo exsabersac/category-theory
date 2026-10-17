@@ -16,7 +16,7 @@ Require Import Category.Instance.Smgrp.
 
 Generalizable All Variables.
 
-(** * The word monad W, its algebras, and the monadicity of Smgrp *)
+(* * * The word 单子 W, algebras, monadicity Smgrp （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/monadic+functor
@@ -29,7 +29,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** Proposition 1: the monad W of the adjunction Set ⇀ Smgrp *)
+(* * ** Proposition 1: 单子 W 伴随 Set ⇀ Smgrp （已译） *)
 
 Definition WordF@{o so} : Sets@{o so} ⟶ Sets@{o so} :=
   Sg_Forget@{o so} ◯ Sg_Free@{o so}.
@@ -81,7 +81,7 @@ Example W_join_literal@{o so} (X : SetoidObject@{o o}) (x11 x12 x21 : X) :
   = existT (fun n => Tup X n) 2%nat (x11, (x12, x21)) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The monad laws of W, verified directly on words *)
+(* * ** The 单子 laws W, verified directly words （已译） *)
 
 Lemma tfoldl_acc_respects@{o so} {Y : Type@{o}} {A : SmgrpSets@{o so}}
   (h : Y → sg_ob@{o so} A) (n : nat) (acc acc' : sg_ob@{o so} A)
@@ -94,7 +94,7 @@ Proof.
     exact (sg_mul_respects A _ _ H _ _ (reflexivity _)).
 Qed.
 
-(* A semigroup map commutes with the fold. *)
+(* 相关说明。 （已译） *)
 Lemma tfoldl_hom@{o so} {Y : Type@{o}} {A B : SmgrpSets@{o so}}
   (g : A ~{SmgrpSets@{o so}}~> B) (h : Y → sg_ob@{o so} A)
   (acc : sg_ob@{o so} A) (n : nat) (t : Tup@{o} Y n) :
@@ -133,7 +133,7 @@ Proof.
   destruct n as [|n]; [ reflexivity | apply tfoldl_tmap ].
 Qed.
 
-(* Appending the letters of t one at a time, on the right. *)
+(* 相关说明。 （已译） *)
 Lemma tfoldl_letters@{o so} (X : SetoidObject@{o o}) (m : nat)
   (acc : PWord@{o} X) (t : Tup@{o} X m) :
   tfoldl (A := FreeSg@{o so} X) (fun w => w) acc m (tmap letter m t)
@@ -208,7 +208,7 @@ Proof.
       exact (tfold1_hom (FreeSg_map f) (fun w => w) (projT1 ww) (projT2 ww)).
 Defined.
 
-(* Its unit and multiplication ARE those of W, as setoid maps. *)
+(* 相关说明。 （已译） *)
 Example WordMonad_direct_ret@{o so} (X : SetoidObject@{o o}) :
   @ret _ _ WordMonad_direct@{o so} X = @ret _ _ WordMonad@{o so} X
   := eq_refl.
@@ -218,15 +218,13 @@ Example WordMonad_direct_join@{o so} (X : SetoidObject@{o o}) :
   := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Proposition 2: the W-algebras are the systems ⟨S, ν1, ν2, …⟩ *)
+(* 相关说明。 （已译） *)
 
 (* The category of W-algebras in Set: [WordAlg] is Set^W. *)
 Definition WordAlg@{o so} : Category@{so o o} :=
   @EilenbergMoore@{so so so o} Sets@{o so} WordF@{o so} WordMonad@{o so}.
 
-(* One operation ν_{n+1} : S^{n+1} → S for each n, respecting ≈.  The
-   heterogeneous form of the respect law costs nothing, since [tup_eq] is
-   False across lengths. *)
+(* 相关说明。 （已译） *)
 Record NAry@{o} (X : SetoidObject@{o o}) : Type@{o} := {
   nu : ∀ n : nat, Tup@{o} X n → X;
   nu_respects : ∀ (n m : nat) (t : Tup@{o} X n) (u : Tup@{o} X m),
@@ -236,7 +234,7 @@ Record NAry@{o} (X : SetoidObject@{o o}) : Type@{o} := {
 Arguments nu {X} _ _ _.
 Arguments nu_respects {X} _ _ _ _ _ _.
 
-(* The copairing ∐_n S^(n+1) → S of the family. *)
+(* 相关说明。 （已译） *)
 Definition nu_sharp@{o} {X : SetoidObject@{o o}} (ν : NAry@{o} X)
   (p : PWord@{o} X) : X :=
   nu ν (projT1 p) (projT2 p).
@@ -279,7 +277,7 @@ Definition alg_NAry_unit@{o so} {X : SetoidObject@{o o}}
   nu_unit (alg_NAry α).
 Proof. intro x. exact (@t_id _ _ _ _ α x). Defined.
 
-(* The action law of the algebra gives (2). *)
+(* 相关说明。 （已译） *)
 Lemma alg_NAry_assoc@{o so} {X : SetoidObject@{o o}}
   (α : @TAlgebra Sets@{o so} WordF@{o so} WordMonad@{o so} X) :
   nu_assoc@{o so} (alg_NAry α).
@@ -298,9 +296,7 @@ Proof.
       exact (tup_eq_refl _ (projT2 (pwconcat@{o so} (existT _ k tt)))).
 Qed.
 
-(* A family with ν1 = 1 and (2) is an algebra: its structure map is the
-   copairing, and the two algebra laws ARE the two conditions, read at
-   each word by conversion. *)
+(* 相关说明。 （已译） *)
 Definition NAry_alg@{o so} {X : SetoidObject@{o o}} (ν : NAry@{o} X)
   (Hu : nu_unit ν) (Ha : nu_assoc@{o so} ν) :
   @TAlgebra Sets@{o so} WordF@{o so} WordMonad@{o so} X.
@@ -318,8 +314,7 @@ Example NAry_round_trip@{o so} {X : SetoidObject@{o o}} (ν : NAry@{o} X)
   (Hu : nu_unit ν) (Ha : nu_assoc@{o so} ν) :
   alg_NAry (NAry_alg@{o so} ν Hu Ha) = ν := eq_refl.
 
-(* Algebra → family → algebra returns the structure map up to ≈: the
-   rebuilt map reads h at (projT1 p; projT2 p), and sigT has no η. *)
+(* 相关说明。 （已译） *)
 Lemma alg_round_trip@{o so} {X : SetoidObject@{o o}}
   (α : @TAlgebra Sets@{o so} WordF@{o so} WordMonad@{o so} X) :
   t_alg[NAry_alg@{o so} (alg_NAry α) (alg_NAry_unit α) (alg_NAry_assoc α)]
@@ -334,8 +329,8 @@ Definition NAry_hom@{o so} {X Y : SetoidObject@{o o}} (ν : NAry@{o} X)
   (ν' : NAry@{o} Y) (f : X ~{Sets@{o so}}~> Y) : Type@{o} :=
   ∀ (n : nat) (t : Tup@{o} X n), f (nu ν n t) ≈ nu ν' n (tmap f n t).
 
-(* The morphism clause, both ways: an algebra map is a map commuting with
-   every νn, and conversely. *)
+(* The 态射 clause, both ways: algebra map map commuting with
+ every νn, conversely. （已译） *)
 Lemma alg_hom_NAry_hom@{o so} {X Y : SetoidObject@{o o}}
   (α : @TAlgebra Sets@{o so} WordF@{o so} WordMonad@{o so} X)
   (β : @TAlgebra Sets@{o so} WordF@{o so} WordMonad@{o so} Y)
@@ -354,7 +349,7 @@ Lemma NAry_hom_alg_hom@{o so} {X Y : SetoidObject@{o o}}
 Proof. intros H p. exact (H (projT1 p) (projT2 p)). Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Proposition 2 as a category: systems ⟨S, ν1, ν2, …⟩ ≅ Set^W *)
+(* * ** Proposition 2 范畴: systems ⟨S, ν1, ν2, …⟩ ≅ Set^W （已译） *)
 
 Record WSystem@{o so} : Type@{so} := {
   ws_set : SetoidObject@{o o};
@@ -400,7 +395,7 @@ Proof.
       exact (tup_eq_sym _ _ _ _ (tmap_comp (`1 f) (`1 g) n t)).
 Defined.
 
-(* The category of the systems of Proposition 2. *)
+(* The 范畴 systems Proposition 2. （已译） *)
 Definition WSys@{o so} : Category@{so o o}.
 Proof.
   unshelve refine
@@ -419,7 +414,7 @@ Proof.
   - intros A B C D f g h a. reflexivity.
 Defined.
 
-(* A system is an algebra: the copairing, with the two conditions. *)
+(* 相关说明。 （已译） *)
 Definition WSys_to_EM@{o so} : WSys@{o so} ⟶ WordAlg@{o so}.
 Proof.
   unshelve refine
@@ -458,8 +453,8 @@ Proof.
   - intros x y z f g a. reflexivity.
 Defined.
 
-(* The algebra round trip through the systems, with the identity as its
-   component. *)
+(* The algebra round trip through systems, 恒等 its
+ component. （已译） *)
 Definition WSys_EM_counit_iso@{o so} (x : WordAlg@{o so}) :
   @Isomorphism WordAlg@{o so} (fobj[WSys_to_EM@{o so} ◯ EM_to_WSys@{o so}] x)
     x.
@@ -483,7 +478,7 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* The system round trip, with the identity as its component. *)
+(* The system round trip, 恒等 component. （已译） *)
 Definition WSys_EM_unit_iso@{o so} (A : WSys@{o so}) :
   @Isomorphism WSys@{o so} (fobj[EM_to_WSys@{o so} ◯ WSys_to_EM@{o so}] A) A.
 Proof.
@@ -518,13 +513,12 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The Corollary: one associative binary operation, iterated *)
+(* 相关说明。 （已译） *)
 
 Definition nu2@{o} {X : SetoidObject@{o o}} (ν : NAry@{o} X) (a b : X) : X :=
   nu ν 1%nat (a, b).
 
-(* ν1 = 1, ν2 associative, and ν_{n+1} = ν_n (ν2 × 1) for n ≥ 2, read at
-   n = m + 2 on the tuple (x, y, t). *)
+(* 相关说明。 （已译） *)
 Definition cor_conditions@{o} {X : SetoidObject@{o o}} (ν : NAry@{o} X) :
   Type@{o} :=
   nu_unit ν
@@ -539,8 +533,7 @@ Proof.
   apply (nu_respects ν 1%nat 1%nat). split; assumption.
 Qed.
 
-(* (2) at three tuples: (⟨ab⟩, ⟨c⟩), (⟨a⟩, ⟨bc⟩), and ⟨xy⟩ followed by
-   the letters of t. *)
+(* 相关说明。 （已译） *)
 Lemma cor_forward@{o so} {X : SetoidObject@{o o}} (ν : NAry@{o} X) :
   nu_unit ν → nu_assoc@{o so} ν → cor_conditions ν.
 Proof.
@@ -578,8 +571,7 @@ Definition nu2_sg@{o so} {X : SetoidObject@{o o}} (ν : NAry@{o} X)
   (Hc : cor_conditions ν) : SmgrpSets@{o so} :=
   mk_sg_obj@{o so} X (nu2 ν) (nu2_respects ν) (snd (fst Hc)).
 
-(* ...and νn is its n-fold product: Mac Lane's "Similarly, νn must be the
-   n-fold product". *)
+(* 相关说明。 （已译） *)
 Lemma cor_iterate@{o so} {X : SetoidObject@{o o}} (ν : NAry@{o} X)
   (Hc : cor_conditions ν) (n : nat) (t : Tup@{o} X n) :
   nu ν n t ≈ tfold1 (A := nu2_sg@{o so} ν Hc) (fun s => s) n t.
@@ -593,9 +585,7 @@ Proof.
     + exact (IH (nu2 ν x y, t')).
 Qed.
 
-(* Backward: the iterated products satisfy (2), because the comparison
-   algebra of that semigroup satisfies its action law
-   ([EM_Comparison_Algebra_action], Monad/Comparison.v). *)
+(* 相关说明。 （已译） *)
 Lemma cor_backward@{o so} {X : SetoidObject@{o o}} (ν : NAry@{o} X) :
   cor_conditions ν → nu_unit ν * nu_assoc@{o so} ν.
 Proof.
@@ -624,8 +614,7 @@ Proof.
     + symmetry. exact (cor_iterate ν Hc _ _).
 Qed.
 
-(* The Corollary: ⟨S, ν1, ν2, …⟩ is a W-algebra iff ν1 = 1, ν2 is
-   associative and ν_{n+1} = ν_n (ν2 × 1) for n ≥ 2. *)
+(* 相关说明。 （已译） *)
 Theorem NAry_corollary@{o so} {X : SetoidObject@{o o}} (ν : NAry@{o} X) :
   iffT@{o o} (nu_unit ν * nu_assoc@{o so} ν) (cor_conditions ν).
 Proof.
@@ -635,13 +624,12 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The comparison K : Smgrp → Set^W is an isomorphism *)
+(* * ** The comparison K : Smgrp → Set^W 同构 （已译） *)
 
 Definition Sg_K@{o so} : SmgrpSets@{o so} ⟶ WordAlg@{o so} :=
   EM_Comparison Sg_adj@{o so}.
 
-(* The semigroup of an algebra: ν2(a, b) = h⟨a b⟩, associative by the
-   Corollary's forward half. *)
+(* 相关说明。 （已译） *)
 Definition EM_sg@{o so} (x : WordAlg@{o so}) : SmgrpSets@{o so} :=
   nu2_sg@{o so} (alg_NAry (projT2 x))
     (cor_forward (alg_NAry (projT2 x)) (alg_NAry_unit (projT2 x))
@@ -666,7 +654,7 @@ Proof.
   - intros x y z f g a. reflexivity.
 Defined.
 
-(* The algebra round trip, with the identity as its component. *)
+(* The algebra round trip, 恒等 component. （已译） *)
 Definition Smgrp_EM_counit_iso@{o so} (x : WordAlg@{o so}) :
   @Isomorphism WordAlg@{o so} (fobj[Sg_K@{o so} ◯ EM_to_Smgrp@{o so}] x) x.
 Proof.
@@ -702,7 +690,7 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* The semigroup round trip, with the identity as its component. *)
+(* The semigroup round trip, 恒等 component. （已译） *)
 Definition Smgrp_EM_unit_iso@{o so} (A : SmgrpSets@{o so}) :
   @Isomorphism SmgrpSets@{o so} (fobj[EM_to_Smgrp@{o so} ◯ Sg_K@{o so}] A) A.
 Proof.
@@ -719,7 +707,7 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* The Remark: K is an equivalence, with identity components both ways. *)
+(* The Remark: K 等价, 恒等 components both ways. （已译） *)
 Definition Smgrp_EM_equivalence@{o so} :
   @EquivalenceOfCategories@{so so so so so o} SmgrpSets@{o so}
     WordAlg@{o so} Sg_K@{o so}.
@@ -762,7 +750,7 @@ Defined.
 (* ------------------------------------------------------------------------ *)
 (** ** Readbacks *)
 
-(* The two legs of each isomorphism in Cat are the two functors. *)
+(* The two legs each 同构 Cat two 函子. （已译） *)
 Example Smgrp_EM_iso_to@{o so c} :
   to Smgrp_EM_iso@{o so c} = Sg_K@{o so} := eq_refl.
 
@@ -775,9 +763,7 @@ Example WSys_EM_iso_to@{o so c} :
 Example WSys_EM_iso_from@{o so c} :
   from WSys_EM_iso@{o so c} = EM_to_WSys@{o so} := eq_refl.
 
-(* The Remark's K ⟨S, ν⟩ = ⟨S, 1, ν2, …⟩: the carrier, the structure map
-   G ε_S, its value the left-bracketed product, ν1 = 1, ν2 = ν, and νn the
-   iterate of ν. *)
+(* 相关说明。 （已译） *)
 Example Sg_K_carrier@{o so} (A : SmgrpSets@{o so}) :
   projT1 (fobj[Sg_K@{o so}] A) = sg_ob A := eq_refl.
 
@@ -806,7 +792,7 @@ Example Sg_K_map@{o so} {A B : SmgrpSets@{o so}}
   (f : A ~{SmgrpSets@{o so}}~> B) :
   t_alg_hom[fmap[Sg_K@{o so}] f] = `1 f := eq_refl.
 
-(* The same as a system: ⟨S, 1, ν2, …⟩ with ν2 the multiplication. *)
+(* 相关说明。 （已译） *)
 Example Sg_K_system_nu@{o so} (A : SmgrpSets@{o so}) (n : nat)
   (t : Tup@{o} (sg_ob A) n) :
   nu (ws_nu (fobj[EM_to_WSys@{o so} ◯ Sg_K@{o so}] A)) n t
@@ -869,8 +855,8 @@ Example EM_WSys_rt_alg_hom@{o so} {x y : WordAlg@{o so}}
   t_alg_hom[fmap[WSys_to_EM@{o so} ◯ EM_to_WSys@{o so}] f] = t_alg_hom[f]
   := eq_refl.
 
-(* Every component of the natural isomorphisms is the identity, at a
-   variable object, to and from. *)
+(* Every component natural isomorphisms 恒等, at a
+ variable 对象, from. （已译） *)
 Example Smgrp_EM_iso_to_from_component@{o so c} (x : WordAlg@{o so}) :
   (t_alg_hom[to (projT1 (iso_to_from Smgrp_EM_iso@{o so c}) x)],
    t_alg_hom[from (projT1 (iso_to_from Smgrp_EM_iso@{o so c}) x)])

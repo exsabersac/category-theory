@@ -38,7 +38,7 @@ Section RingRepresents.
 
 Context (R : RingObject).
 
-(** ** The module map determined by an element *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Representable 相关定义、性质与动机。
@@ -70,9 +70,9 @@ Qed.
 
 (** ** Riehl's Example 2.1.5(iv) *)
 
-(** The unit of R is a universal element of the underlying-set functor.
-    The factorization is [rmod_by_element], the commutation is
-    [rm_smul_one], and the uniqueness is [rmod_out_of_ring]. *)
+(** The unit R universal element underlying-set 函子.
+ The factorization [rmod_by_element], commutation is
+ [rm_smul_one], uniqueness [rmod_out_of_ring]. （已译） *)
 Definition ring_universal_element
   : AUniversalElement (RMod_Forget R) (Ring_RMod R).
 Proof.
@@ -92,8 +92,8 @@ Defined.
 Definition ring_universal_element_bundled : UniversalElement (RMod_Forget R) :=
   UniversalElement_of_AUniversalElement ring_universal_element.
 
-(** The representation as a NATURAL isomorphism in [[RMod R, Sets]] —
-    Riehl's packaging, not merely the ∃! factorization property. *)
+(** The representation NATURAL 同构 [[RMod R, Sets]] —
+ Riehl's packaging, not merely ∃! factorization property. （已译） *)
 Definition rmod_representation
   : @Curried_Hom (RMod R) (Ring_RMod R) ≅[[RMod R, Sets]] RMod_Forget R :=
   ue_representation (RMod_Forget R) (Ring_RMod R) ring_universal_element.
@@ -101,8 +101,8 @@ Definition rmod_representation
 Definition rmod_representable : Representable (RMod_Forget R) :=
   Representable_of_UniversalElement ring_universal_element_bundled.
 
-(** The same content as a universal arrow from the one-point setoid, in
-    both of Theory/Universal/Arrow.v's encodings. *)
+(** The same content 泛箭头 one-point setoid, in
+ both Theory/Universal/Arrow.v's encodings. （已译） *)
 Definition ring_auniversal_arrow
   : AUniversalArrow SetsOne (RMod_Forget R) (Ring_RMod R) :=
   AUniversalArrow_of_AUniversalElement (RMod_Forget R) (Ring_RMod R)
@@ -141,8 +141,8 @@ Definition free_one_generator_iso
   : @FreeModObject R SetsOne ≅[RMod R] Ring_RMod R :=
   universal_element_iso free_one_universal_element ring_universal_element.
 
-(** The isomorphism carrying the basis vector to 1 is the ONLY one: a
-    bare [≅] would leave the free module's automorphisms in play. *)
+(** The 同构 carrying basis vector 1 ONLY one: a
+ bare [≅] would leave free module's automorphisms play. （已译） *)
 Definition free_one_generator_iso_unique
   : Unique (fun i : @FreeModObject R SetsOne ≅[RMod R] Ring_RMod R =>
               fmap[RMod_Forget R] (to i)
@@ -150,19 +150,19 @@ Definition free_one_generator_iso_unique
                 ≈ rig_one R) :=
   universal_element_unique free_one_universal_element ring_universal_element.
 
-(** The universal element of the free-module side is the basis vector at
-    the unique point, definitionally. *)
+(** 本节：The universal element free-module side basis vector at
+ unique point, definitionally. （已译） *)
 Example free_one_universal_elem_is_generator :
   @aue_elem _ (RMod_Forget R) _ free_one_universal_element
     = @fv_gen R SetsOne ttt := eq_refl.
 
 End RingRepresents.
 
-(** ** The witness at ℤ
+(* * ** The witness at ℤ
 
-    The represented set of the ℤ-module ℤ is the integers, and the
-    mediating map is multiplication by the chosen integer, which
-    computes. *)
+ The 已表示的 set ℤ-module ℤ integers, the
+ mediating map multiplication chosen integer, which
+ computes. （已译） *)
 
 Example int_universal_elem : @aue_elem _ (RMod_Forget Int_Ring) _
   (ring_universal_element Int_Ring) = 1%Z := eq_refl.

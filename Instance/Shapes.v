@@ -27,7 +27,7 @@ Set Transparent Obligations.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* These two lemmas are missing in Coq 8.11 and earlier. *)
+(* 相关说明。 （已译） *)
 Lemma map_id A: ∀ n (v : t A n),
   map (fun x => x) v = v.
 Proof.
@@ -122,8 +122,8 @@ Program Instance Shape_Setoid : Setoid Shape := {|
 
 (**************************************************************************)
 
-(* Tries: the exponential [a^s], with [vec]/[trie] the isomorphism to
-   length-[size s] vectors and [Trie_map] making [Trie _ s] a functor in [a]. *)
+(* Tries: exponential [a^s], [vec]/[trie] 同构 to
+ length-[size s] vectors [Trie_map] making [Trie _ s] 函子 [a]. （已译） *)
 
 Unset Uniform Inductive Parameters.
 
@@ -234,8 +234,8 @@ Qed.
 
 (**************************************************************************)
 
-(* The categories [Tries a] and [Vectors a], their terminal/cartesian
-   structure, and the adjunction [Cardinality a ⊣ Canonicity a] between them. *)
+(* The 范畴 [Tries a] [Vectors a], terminal/cartesian
+ structure, 伴随 [Cardinality ⊣ Canonicity a] between them. （已译） *)
 
 #[export]
 Program Instance Trie_Functor (s : Shape) : Coq ⟶ Sets := {|

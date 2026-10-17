@@ -30,7 +30,7 @@ Generalizable All Variables.
 
 Set Default Proof Using "All".
 
-(** * The subobject classifier of a set-valued functor category *)
+(* * * The subobject classifier set-valued 函子 范畴 （已译） *)
 
 (*
    本文件给出具体实例。
@@ -140,7 +140,7 @@ Next Obligation.
     rewrite Ha; [ symmetry; exact Hc | exact Hc ].
 Qed.
 
-(* the square commutes, with no hypothesis at all *)
+(* the square commutes, no 假设 at all （已译） *)
 Theorem char_square :
   char_nat ∘[[C^op, Sets]] theta
     ≈ sieve_truth C ∘[[C^op, Sets]]
@@ -758,7 +758,7 @@ Definition fun_pullback_roundtrip {C : Category} (UT : Untruncate)
        (Fun_HasPullbacks Sets_HasPullbacks) (Fun_Classifier UT) x s.
 
 (* ------------------------------------------------------------------ *)
-(** ** (I) The classification theorem, at objects <= homs *)
+(* * ** (I) The classification 定理, at 对象 <= homs （已译） *)
 
 Section Small.
 Universes co o so OO HH.

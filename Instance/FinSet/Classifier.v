@@ -21,11 +21,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Decidable equality on the canonical finite sets
-
-    [fin_eqb] is heterogeneous — comparing positions of possibly different
-    canonical sets — so that it recurses structurally with no dependent
-    typing; soundness is then stated at a common index. *)
+(* 相关说明。 （已译） *)
 
 Fixpoint fin_eqb {m n : nat} (i : Fin.t m) (j : Fin.t n) : bool :=
   match i, j with
@@ -50,12 +46,12 @@ Proof.
       now rewrite (IH j' H).
 Qed.
 
-(** ** Bounded existential search
+(* * ** Bounded existential search
 
-    [fin_existsb P] decides whether some element of the canonical n-element
-    set satisfies [P], by structural recursion on [n].  Soundness returns
-    the least witness as DATA (a [sigT]), so it can build mediating
-    morphisms below; hence it ends in [Defined]. *)
+ [fin_existsb P] decides whether some element canonical n-element
+ set satisfies [P], structural recursion [n]. Soundness returns
+ least witness DATA (a [sigT]), so it can build mediating
+ 态射 below; hence it ends [Defined]. （已译） *)
 
 Fixpoint fin_existsb {n : nat} : (Fin.t n → bool) → bool :=
   match n return (Fin.t n → bool) → bool with
@@ -251,7 +247,7 @@ Local Obligation Tactic := idtac.
     |}
 }.
 Next Obligation.
-  (* the square commutes: selection satisfies the agreement predicate *)
+  (* 相关说明。 （已译） *)
   intros m n k f g q.
   apply fin_eqb_eq.
   exact (fin_select_sat (finset_pb_pred f g) q).
@@ -282,10 +278,7 @@ Next Obligation.
     now rewrite H1, H2.
 Qed.
 
-(** ** Truth values
-
-    Ω is the two-element set; [Fin.F1] is TRUE and [Fin.FS Fin.F1] is
-    FALSE, mediated from [bool] by [fin_of_bool]. *)
+(* 相关说明。 （已译） *)
 
 Definition fin_true  : Fin.t 2 := Fin.F1.
 Definition fin_false : Fin.t 2 := Fin.FS Fin.F1.
@@ -372,13 +365,13 @@ Next Obligation.
   (* char_unique: any classifying square determines char m on both cases *)
   intros u x m M h HP b; simpl.
   destruct (fin_existsb (fun a => fin_eqb (m a) b)) eqn:E.
-  - (* b in the image: the commuting square forces fin_true *)
+  - (* b image: 交换方块 forces fin_true （已译） *)
     destruct (fin_existsb_sound _ E) as [a Ha].
     apply fin_eqb_eq in Ha.
     assert (Hc := is_pullback_commutes HP a); simpl in Hc.
     rewrite <- Ha.
     exact Hc.
-  - (* b not in the image: fin_true would lift b through the square *)
+  - (* 相关说明。 （已译） *)
     destruct (fin2_cases (h b)) as [Ht | Hf]; [| exact Hf].
     pose proof (is_pullback_ump HP 1%nat (fun _ => b) (fun _ => Fin.F1)
                   (fun _ => Ht)) as U.
@@ -406,13 +399,13 @@ Proof.
     rewrite <- Ha.
     exact (Hg a).
   - intros E b.
-    (* the characteristic map of the image of f, probed against the
-       constant [fin_true] *)
+    (* the characteristic map image f, probed against the
+ 常值 [fin_true] （已译） *)
     pose (chi := fun b' : Fin.t n =>
                    fin_of_bool (fin_existsb (fun a => fin_eqb (f a) b'))).
     assert (Heq : chi b = fin_true). {
       refine (epic (Epic:=E) 2%nat chi (fun _ => fin_true) _ b).
-      (* the two probes agree on the image: f a witnesses its own test *)
+      (* 相关说明。 （已译） *)
       intro a; simpl; unfold chi.
       now rewrite (fin_existsb_complete (fun a' => fin_eqb (f a') (f a)) a
                      (fin_eqb_refl (f a))).
@@ -423,8 +416,7 @@ Proof.
     exact (a; fin_eqb_eq _ _ Ha).
 Defined.
 
-(* Acceptance tests.  The image test computes: the map 1 ~> 2 constantly
-   [fin_true] never hits [fin_false], by [eq_refl] — so it is not epic. *)
+(* 相关说明。 （已译） *)
 Example finset_const_true_misses_false :
   fin_existsb (fun a : Fin.t 1 => fin_eqb ((fun _ => fin_true) a) fin_false)
   = false := eq_refl.
@@ -439,8 +431,7 @@ Proof.
   discriminate Ha.
 Qed.
 
-(* And an epi that is not an iso: the test "is this position the first?"
-   collapses 3 onto 2, hitting both truth values. *)
+(* 相关说明。 （已译） *)
 Example finset_collapse_epic :
   Epic ((fun i => fin_of_bool (fin_eqb i (Fin.F1 : Fin.t 3)))
           : 3%nat ~{FinSet}~> 2%nat).

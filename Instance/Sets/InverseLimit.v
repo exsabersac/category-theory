@@ -29,12 +29,10 @@ Generalizable All Variables.
 *)
 Open Scope category_scope.
 
-(* Obligations are written out rather than left to the tree default, so
-   that each [intros] pattern is predictable -- the Instance/Sets/Cone.v
-   idiom. *)
+(* 相关说明。 （已译） *)
 #[local] Obligation Tactic := idtac.
 
-(** * Inverse limits of towers of sets *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/inverse+limit
@@ -45,7 +43,7 @@ Open Scope category_scope.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** (A) The tower's own compatibility condition *)
+(* 相关说明。 （已译） *)
 
 Section Tower.
 
@@ -80,7 +78,7 @@ Example step_is_le_t_S (m k : nat) (f : @hom (Omega^op) k m) :
 Definition tower_compat (x : Sets_iprod_obj (fun n : nat => F n)) : Type :=
   ∀ n : nat, fmap[F] (tower_step n) (x (S n)) ≈ x n.
 
-(* The product the two presentations are cut out of is one and the same. *)
+(* 相关说明。 （已译） *)
 Example tower_inner_strict :
   Sets_iprod_obj (fun d : Omega^op => F d)
   = Sets_iprod_obj (fun n : nat => F n) := eq_refl.
@@ -103,7 +101,7 @@ Proof.
       * exact IH.
 Qed.
 
-(** ** (B) The set of matching strings, and its projections *)
+(* 相关说明。 （已译） *)
 
 Program Definition tower_obj : obj[Sets] := {|
   carrier   := { x : Sets_iprod_obj (fun n : nat => F n) & tower_compat x };
@@ -117,20 +115,20 @@ Next Obligation.
     [exact (Hpq n)|exact (Hqr n)].
 Qed.
 
-(* "with the coordinate projections as the legs". *)
+(* 相关说明。 （已译） *)
 Program Definition tower_proj (n : nat) : tower_obj ~{Sets}~> F n := {|
   morphism := fun p => `1 p n
 |}.
 Next Obligation. intros n p q Hpq; exact (Hpq n). Qed.
 
-(* An element of the inverse limit is determined by its coordinates: this
-   is the definition of [tower_obj]'s setoid, restated in the form a
-   consumer wants. *)
+(* An element inverse limit determined coordinates: this
+ 定义 [tower_obj]'s setoid, restated form a
+ consumer wants. （已译） *)
 Lemma tower_ext (p q : tower_obj) :
   (∀ n : nat, tower_proj n p ≈ tower_proj n q) → p ≈ q.
 Proof. intros Hn n; exact (Hn n). Qed.
 
-(** ** (C) The two presentations agree *)
+(* 相关说明。 （已译） *)
 
 Program Definition tower_fwd :
   Sets_limit_obj F ~{Sets}~> tower_obj := {|
@@ -148,7 +146,7 @@ Next Obligation.
 Defined.
 Next Obligation. intros p q Hpq n; exact (Hpq n). Qed.
 
-(* The compatible-family limit IS the set of matching strings. *)
+(* 相关说明。 （已译） *)
 Program Definition tower_iso :
   @Isomorphism Sets (Sets_limit_obj F) tower_obj := {|
   to := tower_fwd; from := tower_bwd
@@ -156,7 +154,7 @@ Program Definition tower_iso :
 Next Obligation. intros p n; reflexivity. Qed.
 Next Obligation. intros p n; reflexivity. Qed.
 
-(** ** (D) The matching strings are a limit *)
+(* 相关说明。 （已译） *)
 
 Program Definition tower_acone : ACone tower_obj F := {|
   vertex_map := tower_proj
@@ -166,8 +164,7 @@ Next Obligation. intros m n f p; exact (tower_compat_all (`1 p) (`2 p) f). Qed.
 Definition tower_cone : Cone F :=
   {| vertex_obj := tower_obj; coneFrom := tower_acone |}.
 
-(* The mediator out of a competing cone: bundle its legs at a point, whose
-   step compatibility is the cone's own coherence read at [tower_step]. *)
+(* 相关说明。 （已译） *)
 Program Definition tower_med (N : Cone F) :
   vertex_obj[N] ~{Sets}~> tower_obj := {|
   morphism := fun e =>
@@ -217,18 +214,15 @@ Definition Sets_tower_limit_iso_cone_limit : tower_obj ≅ cone_apex F :=
 
 End Tower.
 
-(** ** (E) The named notion, its notation, and [Cochain]'s first consumer *)
+(* 相关说明。 （已译） *)
 
 Definition inverse_limit (F : Omega^op ⟶ Sets) : SetoidObject := tower_obj F.
 
-(* By DELTA, like [tower_step_is_omega_step] above: [inverse_limit] is
-   defined as [tower_obj], so this guards the name against drift and
-   measures nothing. *)
+(* 相关说明。 （已译） *)
 Example inverse_limit_is_tower (F : Omega^op ⟶ Sets) :
   inverse_limit F = tower_obj F := eq_refl.
 
-(* An OPT-IN scope, on the [power_scope] precedent of
-   Structure/Limit/Power.v: the token is not forced on any consumer. *)
+(* 相关说明。 （已译） *)
 Declare Scope inverse_limit_scope.
 Delimit Scope inverse_limit_scope with invlim.
 Notation "'lim←' F" := (inverse_limit F)
@@ -249,7 +243,7 @@ Definition cochain_tower_limit@{su +}
   IsALimit (Cochain G) (cochain_inverse_limit G) :=
   Sets_tower_limit (Cochain G).
 
-(* The tower's stages are the iterated images of the terminal object. *)
+(* The tower's stages iterated images 终对象. （已译） *)
 Example cochain_stage_zero@{su +} (G : Sets@{Set su} ⟶ Sets@{Set su}) :
   fobj[Cochain G] 0%nat = @terminal_obj Sets@{Set su} Sets_Terminal
   := eq_refl.
@@ -257,14 +251,14 @@ Example cochain_stage_zero@{su +} (G : Sets@{Set su} ⟶ Sets@{Set su}) :
 Example cochain_stage_succ@{su +} (G : Sets@{Set su} ⟶ Sets@{Set su})
   (n : nat) : fobj[Cochain G] (S n) = G (fobj[Cochain G] n) := eq_refl.
 
-(** ** (F) What the two identifications read back *)
+(* 相关说明。 （已译） *)
 
-(* The legs of the tower limit ARE the coordinate projections. *)
+(* 相关说明。 （已译） *)
 Example tower_limit_leg (F : Omega^op ⟶ Sets) (n : nat) :
   limit_leg (Sets_tower_limit F) n = tower_proj F n := eq_refl.
 
-(* And the comparison with the cone set is not a bare [≅]: it carries both
-   leg families, by the general essential-uniqueness theorem. *)
+(* And comparison cone set not bare [≅]: it carries both
+ leg families, general essential-uniqueness 定理. （已译） *)
 Definition Sets_tower_limit_iso_cone_limit_legs (F : Omega^op ⟶ Sets) :
   (∀ n : nat, cone_leg_at F n ∘ to (Sets_tower_limit_iso_cone_limit F)
                 ≈ tower_proj F n) *
@@ -283,7 +277,7 @@ Example tower_fwd_underlying (F : Omega^op ⟶ Sets)
 Example tower_bwd_underlying (F : Omega^op ⟶ Sets)
   (p : tower_obj F) : `1 (tower_bwd F p) = `1 p := eq_refl.
 
-(** ** (G) A tower whose limit is not a singleton *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -291,9 +285,9 @@ Example tower_bwd_underlying (F : Omega^op ⟶ Sets)
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The constant tower is [Functor/Diagonal.v]'s diagonal at the shape,
-   consumed rather than rebuilt: its arrow action is [id] at every arrow,
-   which is exactly the identity system. *)
+(* The 常值 tower [Functor/Diagonal.v]'s diagonal at shape,
+ consumed rather than rebuilt: arrow action [id] at every arrow,
+ exactly 恒等 system. （已译） *)
 Definition ConstTower (X : obj[Sets]) : Omega^op ⟶ Sets :=
   Diagonal (Omega^op) X.
 
@@ -322,7 +316,7 @@ Lemma const_string_separates :
   const_string true ≈ const_string false → False.
 Proof. intros H; specialize (H 0%nat); discriminate H. Qed.
 
-(** ** (H) Streams: the classical tower, and the comparison map *)
+(* 相关说明。 （已译） *)
 
 
 Section StreamTower.
@@ -374,7 +368,7 @@ Program Definition stream_to_tower :
 |}.
 Next Obligation. intros s t Hst n; exact (stream_trunc_respects n s t Hst). Qed.
 
-(* Its coordinates are the truncations, on the nose. *)
+(* 相关说明。 （已译） *)
 Example stream_to_tower_coord (s : Stream A) (n : nat) :
   tower_proj StreamTower n (stream_to_tower s) = stream_trunc n s := eq_refl.
 

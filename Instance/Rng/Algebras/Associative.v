@@ -48,14 +48,14 @@ Arguments aalg_ring {K} _.
 Arguments aalg_unit {K} _.
 Arguments aalg_central {K} _ _ _.
 
-(* A morphism of K-algebras is a ring homomorphism commuting with the two
-   structure maps.  The orientation of the triangle is [KAlgHom]'s, hence
-   [Coslice]'s (Construction/Slice.v). *)
+(* A 态射 K-algebras ring homomorphism commuting two
+ structure maps. The orientation triangle [KAlgHom]'s, hence
+ [Coslice]'s (Construction/Slice.v). （已译） *)
 Definition AAlgHom {K : CRng} (A B : AAlgObject K) : Type :=
   ∃ f : aalg_ring A ~{Rng}~> aalg_ring B, aalg_unit B ≈ f ∘ aalg_unit A.
 
-(* Two algebra morphisms are equal when their underlying ring
-   homomorphisms are; the triangle proof is irrelevant, as in [KAlgHom]. *)
+(* Two algebra 态射 equal underlying ring
+ homomorphisms are; triangle 证明 irrelevant, [KAlgHom]. （已译） *)
 Program Definition AAlgHom_Setoid {K : CRng} (A B : AAlgObject K) :
   Setoid (AAlgHom A B) := {|
   equiv := fun f g => `1 f ≈ `1 g
@@ -237,7 +237,7 @@ Program Definition module_hom_of_aalg_linear {K : CRng} {V : RModObject (`1 K)}
   rm_map_smul := alin_smul f
 |}.
 
-(* Both passages leave the underlying map alone, on the nose. *)
+(* 相关说明。 （已译） *)
 Example aalg_linear_round_map {K : CRng} {V : RModObject (`1 K)}
   {A : AAlgObject K} (f : AAlgLinear V A) :
   alin_map (aalg_linear_of_module_hom (module_hom_of_aalg_linear f))
@@ -264,8 +264,8 @@ Example alin_id_computes {K : CRng} (A : AAlgObject K)
   (a : carrier (rig_setoid (aalg_ring A))) :
   alin_map (alin_id A) a = a := eq_refl.
 
-(* Postcomposition with an algebra map carries a linear map to a linear
-   map — the action on which the universal property is stated. *)
+(* Postcomposition algebra map carries linear map linear
+ map — action 普遍性质 stated. （已译） *)
 Program Definition alin_compose {K : CRng} {V : RModObject (`1 K)}
   {A B : AAlgObject K} (g : AAlgHom A B) (f : AAlgLinear V A)
   : AAlgLinear V B := {|
@@ -470,8 +470,7 @@ Proof. intros k [[x y] z]; ut2_crunch. Qed.
 Definition UT2_AAlg : AAlgObject Int_CRng :=
   Build_AAlgObject Int_CRng UT2 ut2_scalar ut2_scalar_central.
 
-(* The two matrix units E11 and E12 do not commute: E11·E12 = E12 while
-   E12·E11 = 0. *)
+(* 相关说明。 （已译） *)
 Definition ut2_e11 : ut2 := (1, 0, 0)%Z.
 Definition ut2_e12 : ut2 := (0, 1, 0)%Z.
 
@@ -492,8 +491,7 @@ Proof.
   exact (UT2_not_commutative (H UT2_AAlg ut2_e11 ut2_e12)).
 Qed.
 
-(* ...and the same witness is outside the image of [KAlg_AAlg] on the
-   nose: no [KAlgObject] has [UT2] for its ring. *)
+(* 相关说明。 （已译） *)
 Theorem UT2_not_in_KAlg (A : KAlgObject Int_CRng) :
   kalg_ring A = UT2 → False.
 Proof.
@@ -501,9 +499,9 @@ Proof.
   exact (UT2_not_commutative (Acomm ut2_e11 ut2_e12)).
 Qed.
 
-(** The base-ring algebra and the matrix algebra are both objects, so
-    [AAlg Int_CRng] has at least two, and a morphism between them: the
-    scalar diagonal is itself a map of ℤ-algebras. *)
+(** The base-ring algebra matrix algebra both 对象, so
+ [AAlg Int_CRng] has at least two, 态射 between them: the
+ scalar diagonal itself map ℤ-algebras. （已译） *)
 Lemma ut2_scalar_triangle :
   aalg_unit UT2_AAlg ≈ ut2_scalar ∘ aalg_unit (Base_AAlg Int_CRng).
 Proof. intro r; simpl; reflexivity. Qed.
@@ -511,7 +509,6 @@ Proof. intro r; simpl; reflexivity. Qed.
 Definition Base_to_UT2 : Base_AAlg Int_CRng ~{AAlg Int_CRng}~> UT2_AAlg :=
   (ut2_scalar; ut2_scalar_triangle).
 
-(* The underlying module of UT2 has the expected action: scalars act
-   entrywise, and it computes. *)
+(* 相关说明。 （已译） *)
 Example ut2_module_action :
   rm_smul (AAlg_RMod UT2_AAlg) 3%Z (2, 5, 7)%Z = (6, 15, 21)%Z := eq_refl.

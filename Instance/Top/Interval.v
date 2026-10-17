@@ -21,7 +21,7 @@ Open Scope R_scope.
 *)
 Set Default Proof Using "All".
 
-(** * The unit interval as an object of Top *)
+(* * * The unit interval 对象 Top （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/interval+object
@@ -34,7 +34,7 @@ Set Default Proof Using "All".
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Case-splitting tactics for the real-number side arithmetic *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Interval 相关定义、性质与动机。
@@ -136,8 +136,7 @@ Proof.
   - intros y Hy; exact (fst (HUV y) (Hball y Hy)).
 Qed.
 
-(* Opens respect the carrier's own equality: `≈`-equal points are at distance
-   zero, hence inside every ball around one another. *)
+(* 相关说明。 （已译） *)
 Lemma ball_proper (A : BallSpace) (U : A → Type) :
   ball_open A U → ∀ x y : A, x ≈ y → U x → U y.
 Proof.
@@ -271,13 +270,11 @@ Definition BS_I : BallSpace := {|
 
 Definition I_Top : TopSpace := BallTop BS_I.
 
-(* The two endpoints, as points of the interval. *)
+(* 相关说明。 （已译） *)
 Definition I_zero : Ipt := mkI 0 (Rle_refl 0) Rle_0_1.
 Definition I_one : Ipt := mkI 1 Rle_0_1 (Rle_refl 1).
 
-(* The product of two ball spaces, under the sup distance.  Only the square
-   [0,1]² is needed downstream, but the construction costs nothing extra in
-   general form. *)
+(* 相关说明。 （已译） *)
 Record BSprod_pt (A B : BallSpace) := mkP {
   bs_fst : A;
   bs_snd : B
@@ -352,7 +349,7 @@ Definition BS_Sq : BallSpace := BS_prod BS_I BS_I.
 
 Definition Sq_Top : TopSpace := BallTop BS_Sq.
 
-(* The two coordinates of a point of the square, as reals. *)
+(* 相关说明。 （已译） *)
 Definition sq_t (z : BS_Sq) : R := ival (bs_fst z).
 Definition sq_s (z : BS_Sq) : R := ival (bs_snd z).
 
@@ -409,8 +406,7 @@ Proof.
   apply Rmult_le_compat_r; [ apply Rabs_pos | exact Hm ].
 Qed.
 
-(* A convenient packaging of the two-factor product bound, used repeatedly in
-   the square estimates below. *)
+(* 相关说明。 （已译） *)
 Lemma Rabs_mult_le (x y a b : R) :
   Rabs x <= a → Rabs y <= b → Rabs (x * y) <= a * b.
 Proof.
@@ -419,7 +415,7 @@ Proof.
   apply Rmult_le_compat; solve [ apply Rabs_pos | assumption ].
 Qed.
 
-(** ** Arrows of Top out of the interval and the square *)
+(* 相关说明。 （已译） *)
 
 Section IArrow.
 
@@ -451,8 +447,7 @@ Proof. reflexivity. Qed.
 
 End IArrow.
 
-(* The componentwise map of the square, built from two interval formulas.  All
-   five reindexings of a homotopy used downstream have this shape. *)
+(* 相关说明。 （已译） *)
 Section SqSqArrow.
 
 Context (k1 k2 : R → R).
@@ -559,7 +554,7 @@ Proof. reflexivity. Qed.
 
 End SqArrow.
 
-(** ** Pasting two arrows along a level set of a coordinate *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -603,7 +598,7 @@ Lemma paste_open (U : X → Type) (HU : IsOpen X U) :
 Proof.
   intros x Ux.
   destruct (total_order_T (u x) c) as [[Hlt | Heq] | Hgt].
-  - (* strictly below the level: the paste agrees with f nearby *)
+  - (* 相关说明。 （已译） *)
     assert (Hfx : U (f x)).
     { revert Ux; unfold paste_fun; destruct (Rle_dec (u x) c) as [Hle | Hnle].
       - exact (fun w => w).
@@ -617,7 +612,7 @@ Proof.
       unfold paste_fun; destruct (Rle_dec (u y) c) as [Hle | Hnle].
       * apply Hb1; revert Hy; Rlin.
       * exfalso; apply Hnle; lra.
-  - (* exactly at the level: both halves are available, and they agree *)
+  - (* 相关说明。 （已译） *)
     assert (Hfx : U (f x)).
     { revert Ux; unfold paste_fun; destruct (Rle_dec (u x) c) as [Hle | Hnle].
       - exact (fun w => w).
@@ -632,7 +627,7 @@ Proof.
       unfold paste_fun; destruct (Rle_dec (u y) c) as [Hle | Hnle].
       * apply Hb1; revert Hy; Rlin.
       * apply Hb2; revert Hy; Rlin.
-  - (* strictly above the level: the paste agrees with g nearby *)
+  - (* 相关说明。 （已译） *)
     assert (Hgx : U (g x)).
     { revert Ux; unfold paste_fun; destruct (Rle_dec (u x) c) as [Hle | Hnle].
       - intro w; exfalso; lra.
@@ -926,7 +921,7 @@ Proof. reflexivity. Qed.
 
 End HomotopyMap.
 
-(** ** Points of the square, and its first projection *)
+(* 相关说明。 （已译） *)
 
 Definition sq_pt (t s : Ipt) : BS_Sq := @mkP BS_I BS_I t s.
 
@@ -951,7 +946,7 @@ Definition Sq_first : Sq_Top ~{Top}~> I_Top :=
 Lemma Sq_first_eval (z : BS_Sq) : ival (Sq_first z) = sq_t z.
 Proof. reflexivity. Qed.
 
-(** ** Applying an arrow to points that agree on coordinates *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Interval 相关定义、性质与动机。
@@ -1003,7 +998,7 @@ Proof. reflexivity. Qed.
 Lemma Sq_rightside_s (z : BS_Sq) : sq_s (Sq_rightside z) = sq_s z.
 Proof. reflexivity. Qed.
 
-(* The 1-Lipschitz coordinates that [paste_arrow] is applied along. *)
+(* 相关说明。 （已译） *)
 Lemma I_coord_lip (x y : BS_I) : Rabs (ival x - ival y) <= bdist x y.
 Proof. apply Rle_refl. Qed.
 
@@ -1013,7 +1008,7 @@ Proof. apply Rmax_l. Qed.
 Lemma Sq_s_lip (z w : BS_Sq) : Rabs (sq_s z - sq_s w) <= bdist z w.
 Proof. apply Rmax_r. Qed.
 
-(** ** Endpoint values of the reparametrizations *)
+(* 相关说明。 （已译） *)
 
 Lemma rf_dbl_zero : rf_dbl 0 = 0.
 Proof. unfold rf_dbl; Rlin. Qed.

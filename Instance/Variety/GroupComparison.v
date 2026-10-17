@@ -10,7 +10,7 @@ Require Import Category.Instance.Variety.
 
 Generalizable All Variables.
 
-(** * Comparing the group variety with the category of groups *)
+(* * * Comparing group variety 范畴 groups （已译） *)
 
 (*
    本文件给出具体实例。
@@ -20,10 +20,7 @@ Generalizable All Variables.
 
 Module UA := Category.Instance.Comp.UniversalAlgebra.
 
-(** ** Turning an algebra homomorphism into a group homomorphism
-
-    Both lemmas are [op_commute] followed by a bundle rebuild, which is
-    where the extensionality enters. *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -68,9 +65,7 @@ Qed.
 
 Section ToGrp.
 
-(* The three group laws [Grp] asks for, read off the variety's own
-   [equations] field at the corresponding equation name.  [assoc] arrives
-   the other way round, hence the [symmetry]. *)
+(* 相关说明。 （已译） *)
 
 Program Definition GroupVariety_obj_to_Grp (x : GroupVariety) : GrpObject := {|
   grp_setoid := {| carrier   := UA.carrier (`1 x)
@@ -103,8 +98,7 @@ Program Definition GroupVariety_hom_to_Grp {x y : GroupVariety} (f : x ~> y) :
   GrpHom (GroupVariety_obj_to_Grp x) (GroupVariety_obj_to_Grp y) := {|
   grp_map := {| morphism := UA.map (`1 f) |}
 |}.
-(* Here too the binders are pre-bound and the sigma destructed, so [f] is
-   the underlying [AlgHom] and not the pair. *)
+(* 相关说明。 （已译） *)
 Next Obligation.
   exact (alg_hom_one f).
 Qed.
@@ -133,8 +127,7 @@ Program Definition GroupVariety_hom_from_Grp {x y : GroupVariety}
   ({| UA.map := grp_map g |}; I).
 Next Obligation.
   destruct o; simpl.
-  - (* one: nullary.  Normalise both bundles to the empty match, after
-       which the goal IS [grp_map_unit] by conversion. *)
+  - (* 相关说明。 （已译） *)
     rewrite (nullary_bundle (fun i => grp_map g (args i))).
     rewrite (nullary_bundle args).
     exact (grp_map_unit g).

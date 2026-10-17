@@ -9,7 +9,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := intros.
 
-(** * The category of adjunctions between two fixed categories *)
+(* * * The 范畴 伴随 between two fixed 范畴 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
@@ -19,9 +19,9 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* An object of the category: a left adjoint, a right adjoint, and an
-   adjunction between them.  `∃` here is [sigT], so the adjunction is data
-   and no choice principle is involved. *)
+(* An 对象 范畴: 左伴随, 右伴随, an
+ 伴随 between them. `∃` here [sigT], so 伴随 data
+ no choice principle involved. （已译） *)
 Definition AdjObj (C D : Category) : Type :=
   ∃ (F : D ⟶ C) (U : C ⟶ D), F ⊣ U.
 
@@ -30,9 +30,7 @@ Definition adjobj_right {C D : Category} (x : AdjObj C D) : C ⟶ D := `1 `2 x.
 Definition adjobj_adj {C D : Category} (x : AdjObj C D) :
   adjobj_left x ⊣ adjobj_right x := `2 `2 x.
 
-(* An arrow x ⟶ y: Mac Lane's conjugate pair <sigma, tau>, with sigma
-   forward on the left adjoints, tau backward on the right adjoints, and
-   the hom-set square relating them. *)
+(* 相关说明。 （已译） *)
 Record ConjPair {C D : Category} {x y : AdjObj C D} : Type := {
   conj_left  : adjobj_left x ⟹ adjobj_left y;
   conj_right : adjobj_right y ⟹ adjobj_right x;
@@ -40,9 +38,9 @@ Record ConjPair {C D : Category} {x y : AdjObj C D} : Type := {
     Conjugate (adjobj_adj y) (adjobj_adj x) conj_left conj_right
 }.
 
-(* Two conjugate pairs agree when both components agree; by
-   [conj_pair_right_unique] and [conj_pair_left_unique] below, comparing
-   either component alone would give the same relation. *)
+(* Two conjugate pairs agree both components agree; by
+ [conj_pair_right_unique] [conj_pair_left_unique] below, comparing
+ either component alone would give same 关系. （已译） *)
 #[export]
 Program Instance ConjPair_Setoid {C D : Category} {x y : AdjObj C D} :
   Setoid (@ConjPair C D x y) := {|
@@ -67,8 +65,8 @@ Program Definition Adj (C D : Category) : Category := {|
 |}.
 (* The identity pair is conjugate: Conjugate.v's [conjugate_id]. *)
 Next Obligation. exact (conjugate_id (adjobj_adj x)). Qed.
-(* The composite pair is conjugate: Conjugate.v's [conjugate_compose],
-   whose conclusion already composes the second component backward. *)
+(* The 复合 pair conjugate: Conjugate.v's [conjugate_compose],
+ whose conclusion already composes second component backward. （已译） *)
 Next Obligation.
   exact (conjugate_compose (adjobj_adj z) (adjobj_adj y) (adjobj_adj x)
            _ _ _ _ (conj_pair_law f) (conj_pair_law g)).
@@ -79,8 +77,7 @@ Next Obligation. split; simpl; intros; cat. Qed.
 Next Obligation. split; simpl; intros; cat. Qed.
 Next Obligation. split; simpl; intros; cat. Qed.
 
-(* Either leg of a conjugate pair determines the other, so the hom-setoid
-   above could have compared just one of them. *)
+(* 相关说明。 （已译） *)
 Section Determined.
 Context {C D : Category} {x y : AdjObj C D}.
 

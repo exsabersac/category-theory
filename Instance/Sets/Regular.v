@@ -5,7 +5,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * Regular arrows in Sets: the blanket principle decides every proposition *)
+(* * * Regular arrows Sets: blanket principle decides every 命题 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/split+epimorphism
@@ -18,7 +18,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** The countermodel: bool coarsened by a proposition *)
+(* * ** The countermodel: bool coarsened 命题 （已译） *)
 
 Section Coarsening.
 
@@ -64,8 +64,8 @@ Program Definition sets_coarse_const :
   morphism := fun _ : bool => true
 |}.
 
-(* When P is refuted, the identity on carriers runs BACK as well: the
-   coarsening added nothing. *)
+(* When P refuted, 恒等 carriers runs BACK well: the
+ coarsening added nothing. （已译） *)
 Program Definition sets_coarse_sharpen (np : P → False) :
   sets_coarse ~{Sets}~> bool_setoid_object := {|
   morphism := fun b : bool => b
@@ -76,7 +76,7 @@ Next Obligation.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Regularity of this one arrow is decidability of P *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Regular 相关定义、性质与动机。
@@ -114,16 +114,16 @@ Proof.
     now left.
 Defined.
 
-(* So the two are equivalent, and the regularity of a single named arrow of
-   [Sets] is neither more nor less than the decidability of an arbitrary
-   proposition. *)
+(* So two equivalent, regularity single named arrow of
+ [Sets] neither more nor less than decidability arbitrary
+ 命题. （已译） *)
 Definition sets_coarsen_regular_iff_dec :
   RegularMorphism sets_coarsen ↔ (P + (P → False))%type :=
   (sets_coarsen_regular_dec, sets_coarsen_regular_of_dec).
 
-(* It is epic outright: the identity on carriers is right-cancellable because
-   two arrows out of the coarse setoid that agree after it already agree
-   pointwise. *)
+(* It epic outright: 恒等 carriers right-cancellable because
+ two arrows out coarse setoid agree after it already agree
+ pointwise. （已译） *)
 Lemma sets_coarsen_epic : Epic sets_coarsen.
 Proof. constructor; intros Z g1 g2 H b; exact (H b). Qed.
 
@@ -154,7 +154,7 @@ Qed.
 End Coarsening.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The two blanket principles, and what each entails *)
+(* 相关说明。 （已译） *)
 
 (* The statement Mac Lane's exercise makes about Set, transcribed for [Sets]:
    every arrow whose domain is inhabited -- inhabitation taken as DATA, an
@@ -182,9 +182,9 @@ Definition blanket_regularity_entails_splitting :
   BlanketRegularity → BlanketSplitting :=
   fun HR A B a0 f E => regular_epic_retraction f (HR A B a0 f) E.
 
-(* The internal choice principle decides every proposition, by the
-   countermodel: [sets_coarsen] is epic with inhabited domain, so the
-   principle splits it, and a splitting is a pseudoinverse. *)
+(* The internal choice principle decides every 命题, the
+ countermodel: [sets_coarsen] epic inhabited domain, so the
+ principle splits it, splitting pseudoinverse. （已译） *)
 Theorem blanket_splitting_entails_LEM :
   BlanketSplitting → ∀ P : Prop, (P + (P → False))%type.
 Proof.

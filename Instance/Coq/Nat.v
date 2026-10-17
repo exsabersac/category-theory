@@ -17,7 +17,7 @@ Require Import Category.Theory.Adamek.Corollaries.
 
 Generalizable All Variables.
 
-(** * The natural numbers as the initial algebra of [NatF] over COQ *)
+(* 相关说明。 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Initial_algebra
@@ -49,12 +49,12 @@ Generalizable All Variables.
 *)
 #[local] Obligation Tactic := idtac.
 
-(** ** Mac Lane's triples: algebras of [NatF] are points with an endomap *)
+(* 相关说明。 （已译） *)
 
-(* The point of an algebra: the image of the [None] summand. *)
+(* 相关说明。 （已译） *)
 Definition alg_pt {X : Type} (α : FAlgebra NatF X) : X := α None.
 
-(* The endomap of an algebra: the restriction to the [Some] summand. *)
+(* 相关说明。 （已译） *)
 Definition alg_step {X : Type} (α : FAlgebra NatF X) : X ~{Coq}~> X :=
   fun x => α (Some x).
 
@@ -84,9 +84,9 @@ Lemma alg_of_triple_eta {X : Type} (α : FAlgebra NatF X) :
   alg_of_triple (alg_pt α) (alg_step α) ≈ α.
 Proof. intro o; destruct o as [x|]; reflexivity. Qed.
 
-(* At the level of arrows, the commuting square of an algebra map is exactly
-   Riehl's pair of clauses: the map carries point to point and intertwines the
-   two endomaps. *)
+(* At level arrows, 交换方块 algebra map exactly
+ Riehl's pair clauses: map carries point point intertwines the
+ two endomaps. （已译） *)
 
 Lemma alg_hom_clauses {X Y : Type}
       (α : FAlgebra NatF X) (β : FAlgebra NatF Y) (h : X ~{Coq}~> Y) :
@@ -109,15 +109,12 @@ Proof.
   - exact H0.
 Qed.
 
-(** ** The algebra (nat, [O, S]) and its initiality *)
+(* 相关说明。 （已译） *)
 
-(* The structure map of the natural-numbers algebra: [None] is [O] and
-   [Some k] is [S k].  This is Mac Lane's triple ⟨ℕ, 0, successor⟩. *)
+(* 相关说明。 （已译） *)
 Definition nat_alg : FAlgebra NatF nat := alg_of_triple O S.
 
-(* The catamorphism (fold) determined by an algebra [β : 1 + Y ~> Y].  This is
-   primitive recursion, and it is the carrier of the unique algebra map out of
-   [(nat, nat_alg)]. *)
+(* 相关说明。 （已译） *)
 Fixpoint nat_fold {Y : Type} (beta : FAlgebra NatF Y) (n : nat) : Y :=
   match n with
   | O   => alg_pt beta
@@ -141,8 +138,8 @@ Proof.
     exact (Hh (Some k)).
 Qed.
 
-(* The unique algebra map from [(nat, nat_alg)] to an arbitrary algebra [y],
-   packaging the fold together with its commuting square. *)
+(* The unique algebra map [(nat, nat_alg)] arbitrary algebra [y],
+ packaging fold together 交换方块. （已译） *)
 Program Definition nat_alg_hom (y : FAlg NatF)
   : (nat; nat_alg) ~{FAlg NatF}~> y :=
   {| falg_hom := nat_fold (`2 y) |}.
@@ -151,15 +148,14 @@ Next Obligation.
   intros y o; destruct o as [k|]; reflexivity.
 Qed.
 
-(* [nat] together with [nat_alg] is the initial [NatF]-algebra: it is the
-   terminal object of the opposite of the algebra category. *)
+(* [nat] together [nat_alg] initial [NatF]-algebra: it the
+ 终对象 opposite algebra 范畴. （已译） *)
 Program Definition nat_initial : @Initial (FAlg NatF) := {|
   terminal_obj := (nat; nat_alg);
   one := fun y => nat_alg_hom y
 |}.
 Next Obligation.
-  (* uniqueness: any two algebra maps out of [(nat, nat_alg)] agree, since each
-     coincides with the fold determined by the target algebra *)
+  (* 相关说明。 （已译） *)
   intros x f g.
   destruct f as [hf Hf], g as [hg Hg].
   intro n; simpl.
@@ -186,17 +182,17 @@ Qed.
 
 (** ** Lambek's lemma at [nat] *)
 
-(* The initial structure map is invertible, so [nat] is a fixed point of
-   [1 + (-)]: the isomorphism [option nat ≅ nat] whose forward direction is
-   [nat_alg] itself. *)
+(* The initial structure map invertible, so [nat] fixed point of
+ [1 + (-)]: 同构 [option nat ≅ nat] whose forward direction is
+ [nat_alg] itself. （已译） *)
 Corollary nat_lambek : NatF nat ≅ nat.
 Proof. exact (lambek NatF nat_initial). Qed.
 
-(* The same isomorphism in the orientation [nat ≅ 1 + nat]. *)
+(* The same 同构 orientation [nat ≅ 1 + nat]. （已译） *)
 Corollary nat_lambek_sym : nat ≅ NatF nat.
 Proof. exact (iso_sym nat_lambek). Qed.
 
-(** ** Awodey Ex 10.6.1(c): the characterisation up to isomorphism *)
+(* * ** Awodey Ex 10.6.1(c): characterisation up 同构 （已译） *)
 
 (*
    本节说明同构、始/终对象相关定义、性质与动机。
@@ -228,7 +224,7 @@ Proof.
   - exact (iso_from_to iso).
 Qed.
 
-(** ** Riehl Example 2.4.11: the representability reading *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Nat 相关定义、性质与动机。
@@ -251,22 +247,22 @@ Next Obligation. intros x y f g Hfg a; exact (Hfg a). Qed.
 Next Obligation. intros x a; reflexivity. Qed.
 Next Obligation. intros x y z f g a; reflexivity. Qed.
 
-(* The candidate representing object: the naturals with successor, no point. *)
+(* The candidate 表示 对象: naturals successor, no point. （已译） *)
 Definition nat_succ : FAlgebra Id[Coq] nat := S.
 
 Definition NatSucc : Endos := (nat; nat_succ).
 
 #[local] Notation HomNS := (@Curried_Hom Endos NatSucc).
 
-(* Iteration: the [n]-fold application of the endomap to the point. *)
+(* 相关说明。 （已译） *)
 Fixpoint nat_iter {X : Type} (x0 : X) (f : X ~{Coq}~> X) (n : nat) : X :=
   match n with
   | O   => x0
   | S k => f (nat_iter x0 f k)
   end.
 
-(* Iteration is natural in the object of [Endos]: an endomorphism-preserving
-   map carries the iterate of a point to the iterate of its image. *)
+(* Iteration natural 对象 [Endos]: endomorphism-preserving
+ map carries iterate point iterate image. （已译） *)
 Lemma nat_iter_natural {y z : Endos} (g : y ~{Endos}~> z) (y0 : ``y) (n : nat) :
   falg_hom[g] (nat_iter y0 (`2 y) n) = nat_iter (falg_hom[g] y0) (`2 z) n.
 Proof.
@@ -277,8 +273,7 @@ Proof.
     + f_equal; exact IH.
 Qed.
 
-(* Every endomorphism-preserving map out of [(nat, S)] is the iterate of its
-   own value at zero.  This is the injectivity half of the representation. *)
+(* 相关说明。 （已译） *)
 Lemma nat_iter_eval {y : Endos} (h : NatSucc ~{Endos}~> y) (n : nat) :
   nat_iter (falg_hom[h] O) (`2 y) n = falg_hom[h] n.
 Proof.
@@ -295,9 +290,9 @@ Program Definition nat_eval_at_zero (y : Endos)
   {| morphism := fun h => falg_hom[h] O |}.
 Next Obligation. intros y h k Hhk; exact (Hhk O). Qed.
 
-(* Ψ: send a point to the iterate along the endomap, which is automatically an
-   endomorphism-preserving map because [nat_iter x0 f (S n)] is [f] applied to
-   [nat_iter x0 f n] by definition. *)
+(* Ψ: send point iterate along endomap, automatically an
+ endomorphism-preserving map because [nat_iter x0 f (S n)] [f] applied to
+ [nat_iter x0 f n] 定义. （已译） *)
 Program Definition nat_iterate (y : Endos)
   : Endos_Forget y ~{Sets}~> HomNS y :=
   {| morphism := fun y0 => {| falg_hom := nat_iter y0 (`2 y) |} |}.
@@ -311,9 +306,9 @@ Program Definition nat_iterate_transform : Endos_Forget ⟹ HomNS :=
   Build_Transform' nat_iterate _.
 Next Obligation. intros y z g y0 n; exact (nat_iter_natural g y0 n). Qed.
 
-(* The representation: [Hom((nat, S), ─) ≅ Endos_Forget] in [[Endos, Sets]].
-   Evaluation at zero and iteration are mutually inverse, naturally in the
-   object of [Endos]. *)
+(* The representation: [Hom((nat, S), ─) ≅ Endos_Forget] [[Endos, Sets]].
+ Evaluation at zero iteration mutually inverse, naturally the
+ 对象 [Endos]. （已译） *)
 Program Definition nat_succ_represents
   : HomNS ≅[[Endos, Sets]] Endos_Forget :=
   {| to := nat_eval_transform; from := nat_iterate_transform |}.
@@ -326,14 +321,14 @@ Next Obligation. intros y h n; exact (nat_iter_eval h n). Qed.
   represented := nat_succ_represents
 |}.
 
-(* The universal element of the representation, in the sense of the Yoneda
-   lemma: the image of the identity under the representing isomorphism.  It is
-   zero, on the nose. *)
+(* The universal element representation, sense Yoneda
+ 引理: image 恒等 under 表示 同构. It is
+ zero, nose. （已译） *)
 Lemma nat_universal_element :
   transform (to nat_succ_represents) NatSucc (id{Endos}) = O.
 Proof. reflexivity. Qed.
 
-(** ** The universal-element criterion *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、始/终对象相关定义、性质与动机。
@@ -353,10 +348,10 @@ Context (Repr : Representable Endos_Forget).
 Notation RObj := (@repr_obj _ _ Repr).
 Notation RIso := (@represented _ _ Repr).
 
-(* The universal element: the image of the identity. *)
+(* The universal element: image 恒等. （已译） *)
 Definition repr_element : ``RObj := transform (to RIso) RObj (id{Endos}).
 
-(* The algebra of the representing object pointed at its universal element. *)
+(* The algebra 表示 对象 pointed at universal element. （已译） *)
 Definition repr_alg : FAlg NatF :=
   (``RObj ; alg_of_triple repr_element (`2 RObj)).
 
@@ -378,12 +373,11 @@ Qed.
 Definition endo_of (y : FAlg NatF) : Endos :=
   (``y ; (alg_step (`2 y) : FAlgebra Id[Coq] ``y)).
 
-(* The mediating arrow: the inverse of the representation applied to the point
-   of the target algebra. *)
+(* 相关说明。 （已译） *)
 Definition repr_med (y : FAlg NatF) : RObj ~{Endos}~> endo_of y :=
   transform (from RIso) (endo_of y) (alg_pt (`2 y)).
 
-(* It carries the universal element to the point of the target. *)
+(* 相关说明。 （已译） *)
 Lemma repr_med_pt (y : FAlg NatF) :
   falg_hom[repr_med y] repr_element = alg_pt (`2 y).
 Proof.
@@ -392,8 +386,7 @@ Proof.
   - exact (iso_to_from RIso (endo_of y) (alg_pt (`2 y))).
 Qed.
 
-(* Hence it is an algebra map out of [repr_alg], by the triple dictionary: the
-   point clause is [repr_med_pt] and the step clause is its [Endos] square. *)
+(* 相关说明。 （已译） *)
 Program Definition repr_alg_hom (y : FAlg NatF)
   : repr_alg ~{FAlg NatF}~> y :=
   {| falg_hom := falg_hom[repr_med y] |}.
@@ -404,8 +397,7 @@ Next Obligation.
   - exact (@falg_commutes _ _ _ _ _ _ (repr_med y)).
 Qed.
 
-(* Conversely every algebra map out of [repr_alg] is an [Endos] arrow, by the
-   step clause of the same dictionary. *)
+(* 相关说明。 （已译） *)
 Program Definition endo_of_alg_hom {y : FAlg NatF}
         (f : repr_alg ~{FAlg NatF}~> y) : RObj ~{Endos}~> endo_of y :=
   {| falg_hom := falg_hom[f] |}.
@@ -414,8 +406,8 @@ Next Obligation.
   exact (snd (alg_hom_clauses _ _ _ (@falg_commutes _ _ _ _ _ _ f))).
 Qed.
 
-(* An arrow out of the representing object is determined by its image under
-   the representation, since that is an isomorphism at every object. *)
+(* An arrow out 表示 对象 determined image under
+ representation, since 同构 at every 对象. （已译） *)
 Lemma repr_hom_determined {y : Endos} (k l : RObj ~{Endos}~> y)
       (H : transform (to RIso) y k = transform (to RIso) y l) : k ≈ l.
 Proof.
@@ -426,9 +418,9 @@ Proof.
     + exact (iso_from_to RIso y l).
 Qed.
 
-(* Every algebra map out of [repr_alg] sends the universal element to the
-   point of the target: that is the point clause of its commuting square,
-   transported along [repr_eval]. *)
+(* Every algebra map out [repr_alg] sends universal element the
+ point target: point clause 交换方块,
+ transported along [repr_eval]. （已译） *)
 Lemma repr_alg_hom_pt {y : FAlg NatF} (f : repr_alg ~{FAlg NatF}~> y) :
   transform (to RIso) (endo_of y) (endo_of_alg_hom f) = alg_pt (`2 y).
 Proof.

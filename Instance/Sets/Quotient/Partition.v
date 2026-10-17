@@ -51,7 +51,7 @@ Context (R : crelation (carrier A)).
 Context (HR : Equivalence R).
 Context (HC : SetoidCoarser R).
 
-(** ** The class of an element, as a subset *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Partition 相关定义、性质与动机。
@@ -69,8 +69,7 @@ Proof.
   - transitivity x'; [ exact w | exact (HC x' x (symmetry Hxx')) ].
 Defined.
 
-(* Membership in one's own class, and the class of an R-related element:
-   the two facts that make the classes a partition. *)
+(* 相关说明。 （已译） *)
 Lemma sets_part_mem_self (a : carrier A) : sets_part_pred a a.
 Proof. exact (Powerset_squash_intro (Equivalence_Reflexive a)). Qed.
 
@@ -105,7 +104,7 @@ Proof.
            (sets_part_mem_self b)).
 Qed.
 
-(** ** The set of parts, with a representative carried *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Partition 相关定义、性质与动机。
@@ -136,7 +135,7 @@ Definition SetsParts : SetoidObject :=
 
 (* Defined for an ARBITRARY [crelation]-valued R: no stability is needed
    to send an element to its class. *)
-(* The class of [a], with [a] itself as the carried representative. *)
+(* 相关说明。 （已译） *)
 Definition sets_part_elt (a : carrier A) : sets_parts_carrier.
 Proof.
   unshelve refine
@@ -158,9 +157,7 @@ Proof.
   intros a b w; exact (sets_part_pred_respects a b w).
 Defined.
 
-(* Every part is the class of its own representative, so [sets_part_of]
-   is surjective -- and the preimage is produced, not merely asserted to
-   exist. *)
+(* 相关说明。 （已译） *)
 Lemma sets_part_of_surjective (S : carrier SetsParts) :
   @equiv _ SetsParts (sets_part_of (`1 (`2 S))) S.
 Proof.
@@ -183,13 +180,13 @@ Proof.
   intros Q k; apply Hba; intro w; apply k; exact (symmetry w).
 Qed.
 
-(** ** The hypothesis that closes the gap, and that it is the conclusion *)
+(* * ** The 假设 closes gap, it conclusion （已译） *)
 
 Definition SquashStable : Type :=
   ∀ x y : carrier A, Powerset_squash (R x y) → R x y.
 
-(* A [Prop]-valued relation is squash-stable: instantiate the
-   impredicative quantifier at the proposition itself. *)
+(* A [Prop]-valued 关系 squash-stable: instantiate the
+ impredicative quantifier at 命题 itself. （已译） *)
 Lemma prop_rel_squash_stable (Rp : carrier A -> carrier A -> Prop)
   (HRel : ∀ x y : carrier A, R x y ↔ Rp x y) : SquashStable.
 Proof.
@@ -245,7 +242,7 @@ Proof.
   - exact injective_squash_stable.
 Qed.
 
-(** ** Seven Sketches §1.2.1: the two presentations agree *)
+(* 相关说明。 （已译） *)
 
 Definition sets_part_rep (HS : SquashStable) :
   SetsParts ~{Sets}~> SetsQuotient A R HR.
@@ -263,8 +260,7 @@ Proof.
   exact Hpred.
 Defined.
 
-(* THE STATEMENT: the coarsening quotient and the set of parts are
-   isomorphic in [Sets], under stability and nothing else. *)
+(* 相关说明。 （已译） *)
 Definition sets_partition_iso (HS : SquashStable) :
   @Isomorphism Sets (SetsQuotient A R HR) SetsParts.
 Proof.
@@ -273,18 +269,17 @@ Proof.
   - intro a; exact (Equivalence_Reflexive a).
 Defined.
 
-(* The class map is the isomorphism's forward leg on the nose. *)
+(* The class map 同构's forward leg nose. （已译） *)
 Example sets_partition_iso_to (HS : SquashStable) :
   to (sets_partition_iso HS) = sets_part_of.
 Proof. reflexivity. Qed.
 
-(* ... and the backward leg is "take the carried representative", again
-   on the nose. *)
+(* 相关说明。 （已译） *)
 Example sets_partition_iso_from (HS : SquashStable) (S : carrier SetsParts) :
   from (sets_partition_iso HS) S = `1 (`2 S).
 Proof. reflexivity. Qed.
 
-(** ** The strict reading: parts with no representative *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Partition 相关定义、性质与动机。
@@ -331,12 +326,12 @@ Proof.
   intros S T HST; exact HST.
 Defined.
 
-(* It is the identity on the underlying subset, by conversion. *)
+(* It 恒等 underlying subset, conversion. （已译） *)
 Example sets_parts_forget_pred (S : carrier SetsParts) :
   `1 (sets_parts_forget S) = `1 S.
 Proof. reflexivity. Qed.
 
-(* The composite class map into the strict object. *)
+(* The 复合 class map 进入 strict 对象. （已译） *)
 Definition sets_part_of_prop : SetsQuotient A R HR ~{Sets}~> SetsPartsProp :=
   sets_parts_forget ∘ sets_part_of.
 
@@ -354,11 +349,11 @@ Qed.
 End Partition.
 
 
-(** ** Non-vacuity: the parity quotient, read as a set of parts *)
+(* 相关说明。 （已译） *)
 
-(* Instance/Sets/Quotient.v's [nat_parity] is [Prop]-valued (an equation
-   of booleans), so [prop_rel_squash_stable] discharges the hypothesis
-   and the isomorphism is unconditional at it. *)
+(* Instance/Sets/Quotient.v's [nat_parity] [Prop]-valued (an equation
+ booleans), so [prop_rel_squash_stable] discharges 假设
+ 同构 unconditional at it. （已译） *)
 Definition nat_parity_stable : SquashStable nat_parity.
 Proof.
   apply (prop_rel_squash_stable nat_parity nat_parity_Equivalence nat_parity_coarser

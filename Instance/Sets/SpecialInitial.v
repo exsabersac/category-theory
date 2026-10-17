@@ -90,7 +90,7 @@ Definition setsop_terminal_IsInitialObj@{o so +| o < so +} :
   special_initial_IsInitialObj setsop_comp setsop_cog setsop_L
     (intersection_all_of_least setsop_L setsop_L_least).
 
-(** ** Sets, under Untruncate: the least subobject *)
+(* 相关说明。 （已译） *)
 
 Definition sets_special_initial_untruncate@{o so +| Set < o, o < so +}
   (U : Untruncate@{o}) : @Initial Sets@{o so} :=
@@ -103,7 +103,7 @@ Example sets_special_untruncate_obj@{o so +| Set < o, o < so +}
   @initial_obj Sets@{o so} (sets_special_initial_untruncate U)
     = @initial_obj Sets@{o so} Sets_Initial := eq_refl.
 
-(** ** Sets, under Untruncate: the well-powered corollary *)
+(* * ** Sets, under Untruncate: well-powered 推论 （已译） *)
 
 Definition sets_special_initial_wellpowered@{o so +| Set < o, o < so +}
   (U : Untruncate@{o}) : @Initial Sets@{o so} :=
@@ -134,7 +134,7 @@ Definition sets_special_wellpowered_empty@{o so +| Set < o, o < so +}
   match @zero Sets@{o so} (sets_special_initial_wellpowered U)
           (@initial_obj Sets@{o so} Sets_Initial) a with end.
 
-(** ** Sets, under Untruncate: the book's blanket hypothesis *)
+(* * ** Sets, under Untruncate: book's blanket 假设 （已译） *)
 
 Definition Sets_HasClassIntersections_untruncate@{o so +| Set < o, o < so +}
   (U : Untruncate@{o}) : HasClassIntersections Sets@{o so} :=

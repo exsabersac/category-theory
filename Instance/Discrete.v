@@ -7,7 +7,7 @@ Generalizable All Variables.
 
 Import EqNotations.
 
-(** * The discrete category on a Type *)
+(* * * The discrete 范畴 Type （已译） *)
 
 (*
    本文件给出离散范畴实例。
@@ -59,6 +59,6 @@ Lemma DiscreteCat_Discrete@{o h p} (A : Type@{o}) :
   Discrete (DiscreteCat@{o h p} A).
 Proof.
   intros x y e.
-  exists e.                     (* the equality witness is the morphism itself *)
+  exists e.                     (* the equality witness 态射 itself （已译） *)
   now destruct e.               (* [e ≈ rew e in eq_refl] by destructing [e] *)
 Qed.

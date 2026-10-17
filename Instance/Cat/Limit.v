@@ -80,8 +80,8 @@ Context (F G : C ⟶ D).
 
 #[local] Obligation Tactic := idtac.
 
-(* The subcategory of C on the objects where F and G agree, and the arrows
-   on which they agree up to the cast along those object agreements. *)
+(* The subcategory C 对象 where F G agree, arrows
+ they agree up cast along those 对象 agreements. （已译） *)
 Program Definition EqSub : Subcategory C := {|
   sobj := fun c => F c = G c;
   shom := fun c c' (p : F c = G c) (p' : F c' = G c') (f : c ~> c') =>
@@ -102,17 +102,17 @@ Qed.
 Definition EqCat : Category := Sub C EqSub.
 Definition EqIncl : EqCat ⟶ C := Incl C EqSub.
 
-(* The inclusion equalizes F and G, strictly: the object component IS the
-   membership equality each object carries, the morphism component IS the
-   equation each morphism carries. *)
+(* The 含入 equalizes F G, strictly: 对象 component IS the
+ membership equality each 对象 carries, 态射 component IS the
+ equation each 态射 carries. （已译） *)
 Definition Eq_commutes :
   F ∘[StrictCat] EqIncl ≈[StrictCat] G ∘[StrictCat] EqIncl :=
   @Build_strict_eq EqCat D (F ◯ EqIncl) (G ◯ EqIncl)
                    (fun x : EqCat => `2 x)
                    (fun (x y : EqCat) (f : x ~> y) => `2 f).
 
-(* Two objects of the equalizer with the same underlying object are equal --
-   PROVIDED the two membership proofs can be identified, which is [ObjUIP D]. *)
+(* Two 对象 equalizer same underlying 对象 equal --
+ PROVIDED two membership proofs can identified, [ObjUIP D]. （已译） *)
 Lemma Eq_obj_eq (uip : ObjUIP D) (x y : EqCat) (e : `1 x = `1 y) :
   { E : x = y & f_equal (fobj[EqIncl]) E = e }.
 Proof.
@@ -140,9 +140,9 @@ Proof.
   intros x y f; reflexivity.
 Defined.
 
-(* [EqCat]'s hom-setoid compares underlying morphisms, so an equation between
-   the inclusion's images IS an equation in [EqCat]; the proof is the
-   identity. *)
+(* [EqCat]'s hom-setoid compares underlying 态射, so equation between
+ 含入's images IS equation [EqCat]; 证明 the
+ 恒等. （已译） *)
 Definition EqCat_equiv_of_incl {x y : EqCat} (f g : x ~> y)
   (H : fmap[EqIncl] f ≈ fmap[EqIncl] g) : f ≈ g := H.
 
@@ -195,8 +195,8 @@ Section StrictProduct.
 
 Context {I : Type} (C : I → Category).
 
-(* The triangle holds on the nose: projecting the pairing IS the component,
-   on objects and on arrows. *)
+(* The triangle holds nose: projecting pairing IS component,
+ 对象 arrows. （已译） *)
 Definition PiCat_Pair_Proj_strict {D : Category} (R : ∀ i : I, D ⟶ C i)
   (i : I) : PiCat_Proj C i ∘[StrictCat] PiCat_Pair R ≈[StrictCat] R i.
 Proof.
@@ -220,8 +220,7 @@ Proof.
   intro i; apply uip.
 Defined.
 
-(* A cast in the product, read at one index, once the two whole-family
-   equalities are known to project to given component equalities. *)
+(* 相关说明。 （已译） *)
 Lemma hom_cast_pi_ext {a b a' b' : PiCat C} (ea : a = a') (eb : b = b')
   (e1 : ∀ i : I, a i = a' i) (e2 : ∀ i : I, b i = b' i)
   (H1 : ∀ i : I, f_equal (fun g => g i) ea = e1 i)
@@ -286,7 +285,7 @@ Definition StrictCat_Complete
   Complete_from_products_equalizers
     (StrictCat_HasIndexedProducts uip fe) (StrictCat_HasEqualizers uip).
 
-(** ** The two hypotheses are necessary *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -321,15 +320,15 @@ Universe o h.
   repeat intro; simpl;
   first [ reflexivity | match goal with |- ?a = ?b => now destruct a, b end ].
 
-(* The functor out of the terminal category picking a point. *)
+(* The 函子 out terminal 范畴 picking point. （已译） *)
 Program Definition ChaoticPt {X : Type@{o}} (x : X) :
   _1@{o h h} ⟶ Chaotic@{o h h} X := {|
   fobj := fun _ => x;
   fmap := fun _ _ _ => ttt
 |}.
 
-(* Each loop [p : x = x] names a functor into the equalizer of [ChaoticPt x]
-   with itself, and every such functor satisfies the triangle. *)
+(* Each loop [p : x = x] names 函子 进入 equalizer [ChaoticPt x]
+ itself, every such 函子 satisfies triangle. （已译） *)
 Program Definition eq_loop_functor {X : Type@{o}} {x : X} (p : x = x) :
   _1@{o h h} ⟶ EqCat (ChaoticPt x) (ChaoticPt x) := {|
   fobj := fun _ => (ttt; p);
@@ -375,7 +374,7 @@ End NecessityUIP.
 
 Section NecessityFunext.
 
-(* The same ambient, with the index types of its products at [i]. *)
+(* 相关说明。 （已译） *)
 Universe i o h.
 Constraint i <= o.
 Constraint i <= h.
@@ -384,8 +383,8 @@ Constraint i <= h.
   repeat intro; simpl;
   first [ reflexivity | match goal with |- ?a = ?b => now destruct a, b end ].
 
-(* A family [f : ∀ i, P i] names a functor from the terminal category into
-   the product of the chaotic categories on the [P i]. *)
+(* A family [f : ∀ i, P i] names 函子 terminal 范畴 into
+ product chaotic 范畴 [P i]. （已译） *)
 Program Definition pi_point {I : Type@{i}} {P : I → Type@{o}} (f : ∀ i, P i) :
   _1@{o h h} ⟶ PiCat (fun i => Chaotic@{o h h} (P i)) := {|
   fobj := fun _ => f;
@@ -428,7 +427,7 @@ Qed.
 
 End NecessityFunext.
 
-(** ** The weak ambient: the strict equalizer is not an equalizer in Cat *)
+(* 相关说明。 （已译） *)
 
 Section WeakAmbient.
 
@@ -440,9 +439,9 @@ Definition ChaoticBool : Category := Chaotic bool.
 Definition ChaoticBool_true  : _1 ⟶ ChaoticBool := ChaoticPt true.
 Definition ChaoticBool_false : _1 ⟶ ChaoticBool := ChaoticPt false.
 
-(* In Ho(Cat) the two points are the SAME morphism: every hom-set of the
-   chaotic category is a singleton, so the family of its unique arrows is a
-   natural isomorphism. *)
+(* In Ho(Cat) two points SAME 态射: every hom-set the
+ chaotic 范畴 singleton, so family unique arrows a
+ natural 同构. （已译） *)
 Program Definition ChaoticBool_points_equiv :
   ChaoticBool_true ≈[Cat] ChaoticBool_false :=
   (fun _ => {| to := ttt; from := ttt |}; _).

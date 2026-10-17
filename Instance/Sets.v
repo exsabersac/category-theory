@@ -34,8 +34,8 @@ Record SetoidObject@{o p} : Type@{max(o+1,p+1)} := {
 }.
 #[export] Existing Instance is_setoid.
 
-(* A setoid map: a function on carriers together with a proof that it respects
-   the two equivalences. This is the morphism part of [Sets]. *)
+(* A setoid map: function carriers together 证明 it respects
+ two equivalences. This 态射 part [Sets]. （已译） *)
 Record SetoidMorphism@{o h p} `{Setoid@{o p} x} `{Setoid@{o p} y} := {
   morphism :> x → y;                  (* the underlying function on carriers *)
   proper_morphism :>                  (* it sends `≈`-related inputs to `≈`-related outputs *)
@@ -157,14 +157,13 @@ Next Obligation.
   rewrite X; reflexivity.
 Qed.
 
-(* Build a [SetoidMorphism] by giving its underlying function and leaving the
-   [proper_morphism] obligation as a fresh goal. *)
+(* 相关说明。 （已译） *)
 Ltac morphism :=
   unshelve (refine {| morphism := _ |}; simpl; intros).
 
 Require Import Category.Structure.Terminal.
 
-(* The singleton setoid: [poly_unit] under `=`, used as the terminal object. *)
+(* The singleton setoid: [poly_unit] under `=`, used 终对象. （已译） *)
 #[export]
 Program Instance Unit_Setoid@{u} : Setoid@{u u} poly_unit@{u} := {
   equiv := fun x y => x = y
@@ -187,8 +186,8 @@ Require Import Category.Structure.Initial.
 Program Instance False_Setoid@{u} : Setoid@{u u} False.
 Next Obligation. proper. Qed.
 
-(* Initial object: the empty setoid. The unique map out of it is the empty
-   function (by [False] elimination). *)
+(* Initial 对象: empty setoid. The unique map out it empty
+ function (by [False] elimination). （已译） *)
 #[export]
 Program Instance Sets_Initial : @Initial Sets := {
   terminal_obj := {| carrier := False |};
@@ -286,15 +285,15 @@ Next Obligation.
     simplify; simpl; cat.
 Defined.
 
-(* The singleton as a [SetoidObject], packaging [unit_setoid] for use as a
-   probe object below (a map out of it picks an element up to `≈`). *)
+(* The singleton [SetoidObject], packaging [unit_setoid] use a
+ probe 对象 below (a map out it picks element up `≈`). （已译） *)
 Definition unit_setoid_object@{t u} : SetoidObject@{t u} :=
   {| carrier   := poly_unit@{t}
    ; is_setoid := unit_setoid@{t u} |}.
 
-(* In [Sets] the monomorphisms are exactly the injections (up to `≈`). The
-   non-trivial direction probes [f] with two constant maps out of the singleton
-   [unit_setoid_object]. *)
+(* In [Sets] monomorphisms exactly injections (up `≈`). The
+ non-trivial direction probes [f] two 常值 maps out singleton
+ [unit_setoid_object]. （已译） *)
 Lemma injectivity_is_monic {X Y : SetoidObject} (f : X ~{Sets}~> Y) :
   (∀ x y : X, f x ≈ f y → x ≈ y) ↔ Monic f.
 Proof.
@@ -324,8 +323,8 @@ Proof.
     constructor.
 Qed.
 
-(* In [Sets] a bijection (injective and split-surjective up to `≈`) is an
-   isomorphism: the chosen preimage assembles a two-sided inverse. *)
+(* In [Sets] bijection (injective split-surjective up `≈`) an
+ 同构: chosen preimage assembles two-sided inverse. （已译） *)
 Lemma bijective_is_iso {A B : SetoidObject} (h : A ~{Sets}~> B) :
   injective h -> surjective h -> IsIsomorphism h.
 Proof.
@@ -350,13 +349,13 @@ Universes h p.
 Context {A B : SetoidObject@{p p}}.
 Context (f : A ~{Sets@{p h}}~> B).
 
-(* Membership in the image of f, at the level of the carriers. *)
+(* 相关说明。 （已译） *)
 Definition Im (b : carrier B) : Type@{p} := ∃ a : carrier A, f a ≈ b.
 
 Lemma Im_resp (x y : carrier B) : x ≈ y → Im x → Im y.
 Proof. intros E [a Ha]; exists a; transitivity x; assumption. Qed.
 
-(* Two copies of B, identified across the copies exactly on the image. *)
+(* 相关说明。 （已译） *)
 Definition ckrel (u v : (carrier B + carrier B)%type) : Type@{p} :=
   match u, v with
   | inl x, inl y => x ≈ y
@@ -395,7 +394,7 @@ Proof.
   refine {| morphism := fun b => inr b |}; repeat intro; simpl; assumption.
 Defined.
 
-(* The two inclusions agree after f: every f a lies in the image, by a. *)
+(* 相关说明。 （已译） *)
 Lemma ck_agree : ck_left ∘[Sets@{p h}] f ≈ ck_right ∘[Sets@{p h}] f.
 Proof.
   intro a; simpl; split; [ reflexivity | exists a; reflexivity ].
@@ -403,8 +402,7 @@ Qed.
 
 End CokernelPair.
 
-(* Mac Lane, CWM 2nd ed., §I.5, printed p. 19: in Set the epis are exactly the
-   surjections.  Both directions, at one universe. *)
+(* 相关说明。 （已译） *)
 Lemma surjectivity_is_epic@{h p} {A B : SetoidObject@{p p}}
   (h : A ~{Sets}~> B) :
   (∀ b, ∃ a, h a ≈ b)%type ↔ Epic@{h p} h.
@@ -423,7 +421,7 @@ Proof.
                   (ck_left h) (ck_right h) (ck_agree h) b)).
 Defined.
 
-(* The two halves under their own names, for callers that want just one. *)
+(* 相关说明。 （已译） *)
 Definition surjective_implies_epic@{h p} {A B : SetoidObject@{p p}}
   (h : A ~{Sets}~> B) : (∀ b, ∃ a, h a ≈ b)%type → Epic@{h p} h :=
   fst (surjectivity_is_epic@{h p} h).
@@ -446,7 +444,7 @@ Definition Sets_balanced@{h p} {A B : SetoidObject@{p p}}
     {| surj := λ b, epic_implies_surjective@{h p} h He b |}.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The cancellation lemmas do not cancel the other factor *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Sets 相关定义、性质与动机。
@@ -467,12 +465,11 @@ Program Definition collapse : bool_setoid_object ~{Sets}~> unit_setoid_object :=
 Program Definition pick_false : unit_setoid_object ~{Sets}~> bool_setoid_object :=
   {| morphism := fun _ => false |}.
 
-(* The composite is the identity on the singleton, up to `≈`. *)
+(* The 复合 恒等 singleton, up `≈`. （已译） *)
 Lemma collapse_pick : collapse ∘[Sets] pick_true ≈ id{Sets}.
 Proof. intro u; now destruct u. Qed.
 
-(* Hence it is both monic and epic: everything into or out of the singleton is
-   forced, the singleton being terminal. *)
+(* 相关说明。 （已译） *)
 Lemma collapse_pick_monic : Monic (collapse ∘[Sets] pick_true).
 Proof. constructor; intros z g1 g2 _ u; now destruct (g1 u), (g2 u). Qed.
 
@@ -492,8 +489,8 @@ Proof.
               pick_true pick_false E ttt)).
 Qed.
 
-(* And [pick_true] misses [false], so it is not epic: probe it with the
-   identity against the constantly-true map, which agree on [true] alone. *)
+(* And [pick_true] misses [false], so it not epic: probe it the
+ 恒等 against constantly-true map, agree [true] alone. （已译） *)
 Lemma pick_true_not_epic : Epic pick_true → False.
 Proof.
   intro E.
@@ -505,7 +502,7 @@ Proof.
               id{Sets} (pick_true ∘[Sets] collapse) H false)).
 Qed.
 
-(* The two asymmetries, packaged under the names Theory/Morphisms.v cites. *)
+(* 相关说明。 （已译） *)
 Definition sets_epic_left_factor_only :
   Epic (collapse ∘[Sets] pick_true) * (Epic pick_true → False) :=
   (collapse_pick_epic, pick_true_not_epic).

@@ -1,4 +1,4 @@
-(** * Mac Lane V.8 Exercise 2(a): the hom-tensor adjunctions over any ring *)
+(* * * Mac Lane V.8 Exercise 2(a): hom-tensor 伴随 over any ring （已译） *)
 
 (*
  Book:      Mac Lane, ibid., §IV.1, printed pp. 79–80 — adjunctions in
@@ -230,7 +230,7 @@ Next Obligation.
   - exact (cmon_map_plus psi _ _).
 Qed.
 
-(* R-linearity of the transpose IS the balance relation. *)
+(* R-linearity transpose IS balance 关系. （已译） *)
 Program Definition ht_to {A : RModObject R} {G : AbObject}
   (psi : BalTensor B A ~{Ab}~> G) : A ~{RMod R}~> HomZL G := {|
   rm_hom := ht_to_ab psi
@@ -583,9 +583,7 @@ Example hom_hom_swap_iso_from_at (chi : B ~{ModR R}~> HomZR A G) a b :
 
 End HomHomSwap.
 
-(* The swap is natural in the abelian group: post-composing with
-   k : G → G' before or after swapping gives the same map, pointwise at
-   the level of elements. *)
+(* 相关说明。 （已译） *)
 Lemma hom_hom_swap_natural@{ra rc rp +} {R : RingObject@{ra rc rp}}
   (A : RModObject R) (B : RModObject (Ring_op R)) {G G' : AbObject}
   (k : G ~{Ab}~> G') (phi : A ~{RMod R}~> HomZL B G) :
@@ -706,7 +704,7 @@ Example hom_tensor_adjunction_right_to_at {B : RModObject (Ring_op R)}
 
 End TensorHomRightAFT.
 
-(** ** Mac Lane's B := R: the coextension module *)
+(* 相关说明。 （已译） *)
 
 Example homzl_ring_group@{ra +} (R : RingObject@{ra ra ra}) (G : AbObject) :
   rm_ab (HomZL (Ring_RMod (Ring_op R)) G) = rm_ab (CoextObj R G) := eq_refl.
@@ -715,7 +713,7 @@ Example homzl_ring_act@{ra +} (R : RingObject@{ra ra ra}) (G : AbObject) r f s :
   cmon_map (rm_smul (HomZL (Ring_RMod (Ring_op R)) G) r f) s
     = cmon_map (rm_smul (CoextObj R G) r f) s := eq_refl.
 
-(** ** Mac Lane's route to Exercise 2(b): B := R and R ⊗_R A ≅ A *)
+(* 相关说明。 （已译） *)
 
 Section RingUnit.
 
@@ -775,7 +773,7 @@ Example ring_unit_iso_from_at (A : RModObject R) a :
   cmon_map (from (ring_unit_iso A)) a
     = @bs_gen R RR A (rig_one (ring_rig R)) a := eq_refl.
 
-(** The forgetful functor IS the tensor with R, up to natural isomorphism. *)
+(** The forgetful 函子 IS tensor R, up natural 同构. （已译） *)
 Definition ring_unit_nat : RMod_Forget_Ab R ≈ TensorBF RR.
 Proof.
   exists (fun A => iso_sym (ring_unit_iso A)).
@@ -809,7 +807,7 @@ Context {R : RingObject@{r r r}}.
 
 Local Notation RR := (Ring_RMod (Ring_op R)).
 
-(* The same transpose as the coextension adjunction's, pointwise. *)
+(* The same transpose coextension 伴随's, pointwise. （已译） *)
 Example homzl_ring_adjunction_is_coex_at {A : RModObject R} {G : AbObject}
   (psi : rm_ab A ~{Ab}~> G) a s :
   cmon_map (cmon_map (rm_hom
@@ -817,8 +815,8 @@ Example homzl_ring_adjunction_is_coex_at {A : RModObject R} {G : AbObject}
     = cmon_map (cmon_map (rm_hom
         (to (@adj _ _ _ _ (coex_adjunction R) A G) psi)) a) s := eq_refl.
 
-(** hom_Z(R, G) read through Exercise 2(a) and through the coextension
-    are isomorphic modules, the identity map both ways. *)
+(** hom_Z(R, G) read through Exercise 2(a) through coextension
+ isomorphic modules, 恒等 map both ways. （已译） *)
 Program Definition homzl_coext_to (G : AbObject) :
   HomZL RR G ~{RMod R}~> CoextObj R G := {|
   rm_hom := {| cmon_map := {| morphism := fun f => f |} |}

@@ -19,7 +19,7 @@ Require Import Category.Instance.One.
 
 Generalizable All Variables.
 
-(** * The conjugate bijection is the mates bijection at identity bounding cells *)
+(* * * The conjugate bijection mates bijection at 恒等 bounding cells （已译） *)
 
 (*
    本文件给出双范畴实例。
@@ -131,8 +131,8 @@ Theorem Cat_conj_mate_inv_agrees (τ : U ⟹ U') :
   Cat_conj_mate_inv τ ≈ conj_mate_inv A A' τ.
 Proof. intro Z; apply Cat_conj_mate_inv_component. Qed.
 
-(* the pad/unpad pair as a Sets isomorphism, so that conjugate_bijection is
-   literally mate_iso conjugated by padding *)
+(* the pad/unpad pair Sets 同构, so conjugate_bijection is
+ literally mate_iso conjugated padding （已译） *)
 
 Program Definition Cat_conj_padL_iso :
   @Isomorphism Sets (conj_dom (F:=F) (F':=F'))
@@ -167,8 +167,8 @@ Proof. intro Z; symmetry; apply Cat_conj_mate_component. Qed.
 
 End Agreement.
 
-(* ---- the boundary: with non-identity bounding cells the mate of an
-       invertible 2-cell need not be invertible ---- *)
+(* ---- boundary: non-恒等 bounding cells mate an
+ invertible 2-cell need not invertible ---- （已译） *)
 
 Program Definition ConstY : _1 ⟶ _2 := {|
   fobj := fun _ => TwoY;

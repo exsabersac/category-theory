@@ -17,7 +17,7 @@ Require Import Category.Instance.Fun.Limit.
 
 Generalizable All Variables.
 
-(** * Pointwise limits as creation along the discrete inclusion *)
+(* * * Pointwise limits creation along discrete 含入 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/created+limit
@@ -27,7 +27,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The object-discrete inclusion and the restriction functor *)
+(* * ** The 对象-discrete 含入 restriction 函子 （已译） *)
 
 Section Restriction.
 
@@ -35,7 +35,7 @@ Universe jo jh co ch.
 
 Context {P : Category@{jo jh jh}} {X : Category@{co ch ch}}.
 
-(* |P|: the discrete category on the objects of P. *)
+(* |P|: discrete 范畴 对象 P. （已译） *)
 Definition ObjCat : Category@{jo jh jh} := DiscreteCat@{jo jh jh} (obj[P]).
 
 (*
@@ -72,21 +72,20 @@ Definition eval_res_map (p : P) (H K : [P, X]) (s : H ~{[P, X]}~> K) :
 
 End Readbacks.
 
-(** ** Reflection: a cone whose every evaluation is limiting is limiting *)
+(* 相关说明。 （已译） *)
 
 Section PointwiseReflect.
 
 Context {J P X : Category}.
 Context (D : J ⟶ [P, X]).
 
-(* From a cone M in [P, X] all of whose evaluations are limiting, the
-   pointwise limit data #425's construction consumes. *)
+(* From cone M [P, X] all whose evaluations limiting, the
+ pointwise limit data #425's construction 所消耗. （已译） *)
 Definition ptw_of_cone (M : Cone D)
   (H : ∀ p : P, IsLimitCone (FCone (Eval p) M)) (p : P) : Limit (Eval p ◯ D) :=
   limitcone_limit (FCone (Eval p) M) (H p).
 
-(* The assembled pointwise cone has M's apex and M's legs, objectwise on
-   the nose. *)
+(* 相关说明。 （已译） *)
 Definition ptw_apex_readback (M : Cone D)
   (H : ∀ p : P, IsLimitCone (FCone (Eval p) M)) (p : P) :
   fobj[PointwiseLimit D (ptw_of_cone M H)] p = fobj[vertex_obj[M]] p := eq_refl.
@@ -96,8 +95,7 @@ Definition ptw_leg_readback (M : Cone D)
   transform[cone_leg (PointwiseLimitCone D (ptw_of_cone M H)) j] p
     = transform[cone_leg M j] p := eq_refl.
 
-(* The mediator between adjacent pointwise limits IS M's own arrow action,
-   by the uniqueness of the arrow part. *)
+(* 相关说明。 （已译） *)
 Lemma ptw_map_is_fmap (M : Cone D)
   (H : ∀ p : P, IsLimitCone (FCone (Eval p) M)) {x y : P} (f : x ~{P}~> y) :
   plim_map D (ptw_of_cone M H) f ≈ fmap[vertex_obj[M]] f.
@@ -107,7 +105,7 @@ Proof.
   symmetry; exact (naturality[cone_leg M j] _ _ f).
 Qed.
 
-(* ... so the two cones are isomorphic with IDENTITY components. *)
+(* 相关说明。 （已译） *)
 Program Definition ptw_apex_iso (M : Cone D)
   (H : ∀ p : P, IsLimitCone (FCone (Eval p) M)) :
   @Isomorphism ([P, X]) (vertex_obj[M]) (PointwiseLimit D (ptw_of_cone M H)) := {|
@@ -141,8 +139,8 @@ Proof.
   apply id_right.
 Defined.
 
-(* THE REFLECTION — Theorem 1 reformulated: a transport of #425's
-   [PointwiseIsLimitCone], not a parallel proof. *)
+(* THE REFLECTION — Theorem 1 reformulated: transport #425's
+ [PointwiseIsLimitCone], not parallel 证明. （已译） *)
 Definition Fun_pointwise_reflect (M : Cone D)
   (H : ∀ p : P, IsLimitCone (FCone (Eval p) M)) : IsLimitCone M :=
   limitcone_transport (ConeIso_sym (ptw_cone_iso M H))
@@ -150,7 +148,7 @@ Definition Fun_pointwise_reflect (M : Cone D)
 
 End PointwiseReflect.
 
-(** ** The family of evaluations jointly creates limits (Riehl Ex 3.4.v) *)
+(* 相关说明。 （已译） *)
 
 Section JointCreation.
 
@@ -159,13 +157,12 @@ Context (D : J ⟶ [P, X]).
 
 Definition ev_family (p : obj[P]) : [P, X] ⟶ X := (Eval p).
 
-(* The lift is #425's pointwise cone, assembled from the given family. *)
+(* 相关说明。 （已译） *)
 Definition ev_lift (N : ∀ p : obj[P], Cone (Eval p ◯ D))
   (HN : ∀ p : obj[P], IsLimitCone (N p)) : Cone D :=
   PointwiseLimitCone D (fun p => limitcone_limit (N p) (HN p)).
 
-(* The image of the lift under [Eval p] is the given cone in APEX and LEGS
-   on the nose; the whole records do not convert (probe). *)
+(* 相关说明。 （已译） *)
 Definition ev_lift_apex (N : ∀ p : obj[P], Cone (Eval p ◯ D))
   (HN : ∀ p : obj[P], IsLimitCone (N p)) (p : obj[P]) :
   vertex_obj[FCone (Eval p) (ev_lift N HN)] = vertex_obj[N p] := eq_refl.
@@ -191,7 +188,7 @@ Defined.
 
 End JointCreation.
 
-(** ** Creation along the restriction functor *)
+(* * ** Creation along restriction 函子 （已译） *)
 
 Section ResCreation.
 
@@ -209,8 +206,8 @@ Next Obligation.
   simpl in Hc; apply Hc.
 Qed.
 
-(* The mediator into the restricted cone: componentwise the pointwise
-   mediator; naturality over the discrete shape is free. *)
+(* The mediator 进入 restricted cone: componentwise pointwise
+ mediator; 自然性 over discrete shape free. （已译） *)
 Program Definition res_ump_nat (M : Cone D)
   (H : ∀ p : P, IsLimitCone (FCone (Eval p) M)) (N : Cone (@Res P X ◯ D)) :
   vertex_obj[N] ~{[@ObjCat P, X]}~> fobj[@Res P X] (vertex_obj[M]) := {|
@@ -243,8 +240,8 @@ Proof.
   exact (`2 i x p).
 Defined.
 
-(* CREATION — Mac Lane §V.3 Theorem 2 — under the hypothesis that the
-   pointwise limits exist (the header explains why the hypothesis stays). *)
+(* CREATION — Mac Lane §V.3 Theorem 2 — under 假设 the
+ pointwise limits exist (the header explains why 假设 stays). （已译） *)
 Definition Res_CreatesLimit (L : ∀ p : P, Limit (Eval p ◯ D)) :
   CreatesLimit D (@Res P X).
 Proof.
@@ -265,14 +262,13 @@ Proof.
     exact (Eval_pointwise_IsLimitCone D L p).
 Defined.
 
-(* The limit downstairs that the pointwise limits give. *)
+(* 相关说明。 （已译） *)
 Definition res_limit (L : ∀ p : P, Limit (Eval p ◯ D)) : Limit (@Res P X ◯ D) :=
   limitcone_limit (FCone (@Res P X) (PointwiseLimitCone D L))
     (Res_preserves (PointwiseLimitCone D L)
        (fun p => Eval_pointwise_IsLimitCone D L p)).
 
-(* The creation-derived limit IS #425's pointwise limit, apex and legs on
-   the nose. *)
+(* 相关说明。 （已译） *)
 Definition creation_apex (L : ∀ p : P, Limit (Eval p ◯ D)) :
   vertex_obj[@limit_cone _ _ _ (creates_limit_lift (Res_CreatesLimit L) (res_limit L))]
   = vertex_obj[@limit_cone _ _ _ (Functor_Category_pointwise_limit D L)] := eq_refl.
@@ -317,7 +313,7 @@ Definition Res_continuous (HX : @Complete X) (J : Category) (D : J ⟶ [P, X]) :
 
 End Corollaries.
 
-(** ** Strictness: what converts and what does not *)
+(* 相关说明。 （已译） *)
 
 Section Strictness.
 

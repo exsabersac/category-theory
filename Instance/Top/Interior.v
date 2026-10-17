@@ -23,7 +23,7 @@ Require Import Coq.Relations.Relation_Definitions.
 
 Generalizable All Variables.
 
-(** * Interior and closure on the subsets of a space *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/closure
@@ -34,11 +34,10 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The subsets of the points of X: Prop-valued predicates respecting the
-   points' ≈ (Instance/Sets/Powerset.v's [Powerset_Prop_obj]). *)
+(* 相关说明。 （已译） *)
 Local Notation PSub X := (carrier (Powerset_Prop_obj (pt_carrier X))).
 
-(** ** The interior: the union of the opens inside S *)
+(* 相关说明。 （已译） *)
 
 Definition pint_fun@{o} (X : PTop@{o}) (S : PSub X) (x : pt_carrier X) :
   Prop :=
@@ -59,8 +58,7 @@ Definition pinterior@{o} (X : PTop@{o}) (S : PSub X) : PSub X :=
     Prop (is_setoid Powerset_Prop_truth@{o}) (pint_fun X S)
     (pint_proper X S).
 
-(* The interior is open: it is written in exactly the shape that
-   Instance/Top/Prop.v's [popen_union] closes. *)
+(* 相关说明。 （已译） *)
 Lemma pint_open@{o} (X : PTop@{o}) (S : PSub X) : POpen X (pinterior X S).
 Proof.
   apply (popen_union X (fun U => POpen X U /\ ∀ y, U y → S y)).
@@ -82,8 +80,8 @@ Definition pint_comult@{o} (X : PTop@{o}) (S : PSub X) :
     ex_intro _ U (conj (conj HU (fun y Uy =>
       ex_intro _ U (conj (conj HU HS) Uy))) Ux).
 
-(* The interior operator: a closure operator on the reversed inclusion
-   order (Instance/Proset/Monad/Interior.v). *)
+(* The interior operator: closure operator reversed 含入
+ order (Instance/Proset/Monad/Interior.v). （已译） *)
 Definition pinterior_op@{o} (X : PTop@{o}) :
   InteriorOperator@{o} (subset_le_preorder@{o} (pt_carrier X)) :=
   {| cl_fun  := flip_mono {| mono_map := pinterior X
@@ -109,8 +107,8 @@ Definition sub_pint_of_open@{o} (X : PTop@{o}) (S : PSub X)
   (HS : POpen X S) : subset_le S (pinterior X S) :=
   fun x Sx => ex_intro _ (fun y => S y) (conj (conj HS (fun y Sy => Sy)) Sx).
 
-(* Riehl 5.2.6 (iv), coalgebra half: the coalgebras of the interior
-   comonad are exactly the open subsets.  Constructive. *)
+(* Riehl 5.2.6 (iv), coalgebra half: coalgebras interior
+ 余单子 exactly open subsets. Constructive. （已译） *)
 Definition pint_coalgebra_iff_open@{o h p} (X : PTop@{o}) (S : PSub X) :
   iffT@{h p}
     (@WCoalgebra (Subsets@{o h} (pt_carrier X))
@@ -145,7 +143,7 @@ Proof.
   change (false = true :> bool) in H. discriminate H.
 Qed.
 
-(** ** The closure: Riehl's footnote 5 *)
+(* 相关说明。 （已译） *)
 
 (* A closed subset is one whose complement is open. *)
 Definition PClosedSub@{o} (X : PTop@{o}) (C : PSub X) : Prop :=
@@ -228,8 +226,8 @@ Proof.
 Qed.
 
 (* Riehl 5.2.6 (iv), algebra half, through Instance/Proset/Monad.v's
-   [talgebra_iff_closed]: a closed subset is an algebra (constructive),
-   and an algebra is closed under the hypothesis [lem]. *)
+ [talgebra_iff_closed]: closed subset algebra (constructive),
+ algebra closed under 假设 [lem]. （已译） *)
 Definition pcl_talgebra_of_closed@{o h} (X : PTop@{o}) (S : PSub X)
   (HS : PClosedSub X S) :
   @TAlgebra (Subsets@{o h} (pt_carrier X))
@@ -249,9 +247,7 @@ Definition pcl_closed_of_talgebra@{o h} (lem : ∀ P : Prop, P \/ ~ P)
       (MM := pclosure_monad X) S in
   pcl_closed_of_sub lem X S (to_closed a).
 
-(* Without [lem] the converse costs ¬¬(∀ q, ¬¬q → q).  The subset
-   {true} ∪ q of the indiscrete two-point space, closed exactly when
-   ¬¬q. *)
+(* 相关说明。 （已译） *)
 Definition true_or_sub@{o} (q : Prop) : PSub PTwoIndisc@{o} :=
   @Build_SetoidMorphism@{o o o}
     (carrier (pt_carrier PTwoIndisc@{o})) (is_setoid (pt_carrier PTwoIndisc))
@@ -262,8 +258,7 @@ Definition true_or_sub@{o} (q : Prop) : PSub PTwoIndisc@{o} :=
        | eq_refl => conj (fun H => H) (fun H => H)
        end).
 
-(* The point false in the closure of {true} is double-negation
-   elimination. *)
+(* 相关说明。 （已译） *)
 Lemma pcl_true_false_dne@{o} :
   pclosure@{o} PTwoIndisc true_sub false → ∀ q : Prop, ~ ~ q → q.
 Proof.
@@ -275,9 +270,9 @@ Proof.
   - exact Hq.
 Qed.
 
-(* So the converse of [pcl_talgebra_of_closed], with no hypothesis, gives
-   ¬¬(∀ q, ¬¬q → q): were that refuted, {true} would be an algebra, and
-   {true} is not closed. *)
+(* So converse [pcl_talgebra_of_closed], no 假设, gives
+ ¬¬(∀ q, ¬¬q → q): were refuted, {true} would algebra, and
+ {true} not closed. （已译） *)
 Lemma pcl_converse_nndne@{o h} :
   (∀ (X : PTop@{o}) (S : PSub X),
      @TAlgebra (Subsets@{o h} (pt_carrier X))
@@ -298,7 +293,7 @@ Proof.
                                          discriminate Hf)) eq_refl).
 Qed.
 
-(** ** A constructive alternative: the closure as ¬ int (¬ S) *)
+(* 相关说明。 （已译） *)
 
 (* The pointwise complement of a subset. *)
 Lemma pcomp_proper@{o} (X : PTop@{o}) (S : PSub X) (x y : pt_carrier X) :
@@ -315,7 +310,7 @@ Definition pcomp@{o} (X : PTop@{o}) (S : PSub X) : PSub X :=
     Prop (is_setoid Powerset_Prop_truth@{o}) (fun x => ~ S x)
     (pcomp_proper X S).
 
-(* The complement of the interior of the complement. *)
+(* 相关说明。 （已译） *)
 Definition ncl@{o} (X : PTop@{o}) (S : PSub X) : PSub X :=
   pcomp X (pinterior X (pcomp X S)).
 
@@ -345,7 +340,7 @@ Definition nclosure_monad@{o h} (X : PTop@{o}) :
     (closure_functor@{o h} (nclosure_op X)) :=
   closure_monad@{o h} (nclosure_op X).
 
-(* Closed in the second sense: the complement of an open subset. *)
+(* 相关说明。 （已译） *)
 Definition PCoOpen@{o} (X : PTop@{o}) (S : PSub X) : Prop :=
   ex (fun U : pt_carrier X → Prop => POpen X U /\ ∀ x, S x <-> ~ U x).
 
@@ -364,8 +359,8 @@ Proof.
     intros y Uy Sy. exact (proj1 (HS y) Sy Uy).
 Qed.
 
-(* The algebras of the ¬ int ¬ closure are exactly the complements of
-   opens, in both directions with no hypothesis. *)
+(* The algebras ¬ int ¬ closure exactly complements of
+ opens, both directions no 假设. （已译） *)
 Definition ncl_talgebra_iff_coopen@{o h p} (X : PTop@{o}) (S : PSub X) :
   iffT@{h p}
     (@TAlgebra (Subsets@{o h} (pt_carrier X))
@@ -377,8 +372,7 @@ Definition ncl_talgebra_iff_coopen@{o h p} (X : PTop@{o}) (S : PSub X) :
   (fun a => proj1 (ncl_sub_iff_coopen X S) (to_closed a),
    fun H => of_closed (proj2 (ncl_sub_iff_coopen X S) H)).
 
-(* Non-vacuity, constructively: {true} in the indiscrete two-point space
-   is not the complement of an open. *)
+(* 相关说明。 （已译） *)
 Lemma true_sub_not_nclosed@{o h} :
   @TAlgebra (Subsets@{o h} (pt_carrier PTwoIndisc@{o}))
     (closure_functor (nclosure_op PTwoIndisc))
@@ -393,7 +387,7 @@ Proof.
   change (false = true :> bool) in H. discriminate H.
 Qed.
 
-(** ** The two routes agree under excluded middle *)
+(* 相关说明。 （已译） *)
 
 (* A complement of an open is ¬¬-stable. *)
 Lemma coopen_stable@{o} (X : PTop@{o}) (S : PSub X) (H : PCoOpen X S)

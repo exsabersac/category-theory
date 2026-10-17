@@ -28,13 +28,12 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The image of a homomorphism, as an object of [RMod R] *)
+(* * ** The image homomorphism, 对象 [RMod R] （已译） *)
 
 Definition ImageMod {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : RModObject R := SubmoduleMod (ImageSubmod f).
 
-(* The corestriction of f to its image: the same map, carrying its own
-   witness. *)
+(* 相关说明。 （已译） *)
 Program Definition mod_image_cores {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : M ~{RMod R}~> ImageMod f := {|
   rm_hom := {| cmon_map := {| morphism := fun a : carrier (cmon_setoid M) =>
@@ -49,9 +48,9 @@ Next Obligation.
 Qed.
 Next Obligation. intros R M N f r a; simpl; apply (rm_map_smul f). Qed.
 
-(* The inclusion of the image recovers f: the triangle
-   f = (im f ↪ N) ∘ (M ↠ im f) holds pointwise by reflexivity, the
-   corestriction changing no element. *)
+(* The 含入 image recovers f: triangle
+ f = (im f ↪ N) ∘ (M ↠ im f) holds pointwise reflexivity, the
+ corestriction changing no element. （已译） *)
 Lemma mod_image_factors {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) :
   smod_incl (ImageSubmod f) ∘ mod_image_cores f ≈ f.
@@ -65,9 +64,7 @@ Proof.
   exact (`2 (`2 p)).
 Qed.
 
-(* A surjective homomorphism identifies its image with its codomain.  The
-   inverse map sends b to b together with its preimage witness, which is
-   DATA, so nothing is chosen. *)
+(* 相关说明。 （已译） *)
 Program Definition mod_surjective_image_iso {R : RingObject}
   {M N : RModObject R} (f : M ~{RMod R}~> N) (Hs : RModSurjective f) :
   ImageMod f ≅[RMod R] N := {|
@@ -83,7 +80,7 @@ Next Obligation. intros R M N f Hs r a; simpl; reflexivity. Qed.
 Next Obligation. intros R M N f Hs a; simpl; reflexivity. Qed.
 Next Obligation. intros R M N f Hs a; simpl; reflexivity. Qed.
 
-(** ** The image carries the second universal element *)
+(* 相关说明。 （已译） *)
 
 Section ImageUniversal.
 
@@ -115,9 +112,9 @@ Lemma mod_image_med_wd (a b : carrier (cmon_setoid M)) :
 Proof.
   intro Hab.
   apply (mkills_descends (KernelSub f) x).
-  (* [mquot_rel] is the [inhabited] truncation of membership since the PR
-     "algebraic carriers are sets" (2026-09-17), so one [constructor] is owed
-     before the membership proof itself. *)
+  (* [mquot_rel] [inhabited] truncation membership since PR
+ "algebraic carriers sets" (2026-09-17), so one [constructor] owed
+ before membership 证明 itself. （已译） *)
   unfold mquot_rel; simpl.
   constructor.
   rewrite (ab_map_sub (rm_hom f) a b), Hab.
@@ -231,8 +228,8 @@ Example mod_first_isomorphism_from_is_image_med {R : RingObject}
     = mod_image_med f (mquot_elem (KernelSub f)).
 Proof. reflexivity. Qed.
 
-(* UNIQUENESS, proved rather than cited: any isomorphism carrying the
-   projection to the corestriction IS this one. *)
+(* UNIQUENESS, proved rather than cited: any 同构 carrying the
+ projection corestriction IS one. （已译） *)
 Theorem mod_first_isomorphism_unique {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N)
   (v : QuotientMod (KernelSub f) ≅[RMod R] ImageMod f)
@@ -244,7 +241,7 @@ Proof.
            (mod_image_universal_element f) v Hv).
 Qed.
 
-(** ** The epi-mono mod_factorization *)
+(* 相关说明。 （已译） *)
 
 Theorem mod_factorization {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) :
@@ -320,7 +317,7 @@ Program Definition TmodS : Submodule (QuotientMod S) := {|
 Next Obligation.
   intros a b Hab Ha; simpl in *.
   destruct Hab as [Hab], Ha as [Ha]; constructor.
-  (* b ≈ a - (a - b), and both a and a - b lie in T *)
+  (* 相关说明。 （已译） *)
   apply (smod_at T (a := ab_sub M a (ab_sub M a b))).
   - unfold ab_sub.
     rewrite ab_neg_plus.
@@ -342,8 +339,8 @@ Next Obligation.
   exact (smod_smul T _ _ Ha).
 Qed.
 
-(* The comparison M/S ↠ M/T: the identity function again, well defined
-   because S ⊆ T. *)
+(* The comparison M/S ↠ M/T: 恒等 function again, well defined
+ because S ⊆ T. （已译） *)
 Program Definition mquot_step : QuotientMod S ~{RMod R}~> QuotientMod T := {|
   rm_hom := {| cmon_map :=
     {| morphism := fun a : carrier (cmon_setoid (QuotientMod S)) => a |} |}
@@ -395,8 +392,7 @@ Definition mod_third_precompose : MKills T K :=
 Definition mod_third_med : QuotientMod T ~{RMod R}~> K :=
   mquot_med T mod_third_precompose.
 
-(* Its triangle against the comparison map, obtained by cancelling the
-   epimorphism p_S on the right -- no element inspected. *)
+(* 相关说明。 （已译） *)
 Lemma mod_third_med_commutes : mod_third_med ∘ mquot_step ≈ `1 x.
 Proof.
   apply (epic (Epic := mquot_proj_epic S)).
@@ -456,7 +452,7 @@ Arguments mquot_step {R M} S T Hsub.
 Arguments mod_third_isomorphism_theorem {R M} S T Hsub.
 Arguments mod_third_isomorphism_unique {R M} S T Hsub.
 
-(** ** The second isomorphism theorem *)
+(* * ** The second 同构 定理 （已译） *)
 
 Section Second.
 
@@ -656,9 +652,9 @@ Arguments mod_psi {R M} S T.
 Arguments mod_second_isomorphism_theorem {R M} S T.
 Arguments mod_second_isomorphism_theorem_literal {R M} S T.
 
-(* The sum is SYMMETRIC in its two arguments, which the group-level
-   [SubgroupProduct] cannot be (there the second argument must be
-   normal).  Both directions, at the level of membership. *)
+(* The sum SYMMETRIC two arguments, group-level
+ [SubgroupProduct] cannot (there second 论元 must be
+ normal). Both directions, at level membership. （已译） *)
 Lemma SubmoduleSum_comm {R : RingObject} {M : RModObject R}
   (S T : Submodule M) (x : carrier (cmon_setoid M)) :
   smod_mem (SubmoduleSum S T) x → smod_mem (SubmoduleSum T S) x.
@@ -734,16 +730,13 @@ Definition Z_first_iso :
     ≅[RMod Int_Ring] ImageMod (mquot_proj EvenSub) :=
   mod_first_isomorphism_theorem (mquot_proj EvenSub).
 
-(* The kernel of the projection is exactly 2ℤ, in both directions, so
-   the left-hand side really is ℤ/2ℤ. *)
-(* Restated up to the truncation, in lockstep with
-   Instance/Mod/Quotient.v's [mquot_proj_kernel]. *)
+(* 相关说明。 （已译） *)
+(* 相关说明。 （已译） *)
 Lemma Z_proj_kernel_is_EvenSub (a : Z) :
   smod_mem (KernelSub (mquot_proj EvenSub)) a ↔ inhabited (smod_mem EvenSub a).
 Proof. exact (mquot_proj_kernel EvenSub a). Qed.
 
-(* Nondegenerate: the image of the projection has two elements apart in
-   its own setoid. *)
+(* 相关说明。 （已译） *)
 Theorem Z_first_iso_nondegenerate :
   cmon_map (rm_hom (mod_image_cores (mquot_proj EvenSub))) 1%Z
     ≈ cmon_map (rm_hom (mod_image_cores (mquot_proj EvenSub))) 0%Z → False.
@@ -759,8 +752,7 @@ Definition Z_third_iso :
     ≅[RMod Int_Ring] QuotientMod EvenSub :=
   mod_third_isomorphism_theorem FourSub EvenSub four_in_even.
 
-(* Nondegenerate on the left: 1 is still apart from 0 in
-   (ℤ/4ℤ)/(2ℤ/4ℤ). *)
+(* 相关说明。 （已译） *)
 Theorem Z_third_iso_nondegenerate :
   mquot_rel (TmodS FourSub EvenSub four_in_even) 1%Z 0%Z → False.
 Proof.
@@ -774,9 +766,9 @@ Proof.
   lia.
 Qed.
 
-(* And the middle quotient is not the whole of ℤ/4ℤ either: 1 is not in
-   2ℤ/4ℤ, while 2 is -- so the theorem is not being applied at a
-   degenerate inclusion. *)
+(* And middle quotient not whole ℤ/4ℤ either: 1 not in
+ 2ℤ/4ℤ, while 2 -- so 定理 not being applied at a
+ degenerate 含入. （已译） *)
 Theorem Z_third_middle_proper :
   smod_mem (TmodS FourSub EvenSub four_in_even) 1%Z → False.
 Proof.
@@ -812,8 +804,7 @@ Proof. intros [k Hk]; lia. Qed.
 Theorem ThreeSub_not_in_EvenSub : smod_mem EvenSub 3%Z → False.
 Proof. intros [k Hk]; lia. Qed.
 
-(* 1 lies in 2ℤ + 3ℤ (as 3 + (-2)), so the sum is all of ℤ and is
-   strictly larger than either summand. *)
+(* 相关说明。 （已译） *)
 Theorem one_in_sum : smod_mem (SubmoduleSum EvenSub ThreeSub) 1%Z.
 Proof.
   exists (-2)%Z, 3%Z.
@@ -824,23 +815,20 @@ Proof.
   - reflexivity.
 Qed.
 
-(* Nondegenerate on the left: 2ℤ ∩ 3ℤ is 6ℤ, so 2 stays apart from 0 in
-   2ℤ/(2ℤ ∩ 3ℤ). *)
+(* 相关说明。 （已译） *)
 Theorem Z_second_iso_nondegenerate :
   mquot_rel (MeetSub EvenSub ThreeSub)
     (existT _ 2%Z (existT (fun k : Z => 2%Z = (2 * k)%Z) 1%Z eq_refl))
     (cmon_zero (SubmoduleMod EvenSub))
   → False.
 Proof.
-  (* Three layers: [mquot_rel] is [inhabited], [MeetSub]'s membership is
-     [inhabited] of [ThreeSub]'s, and that is the sigma. *)
+  (* 相关说明。 （已译） *)
   intros [[[k Hk]]].
   assert (Hz : (2 = 3 * k)%Z) by exact Hk.
   lia.
 Qed.
 
-(* And on the RIGHT: 1, read as an element of 2ℤ + 3ℤ, stays apart from
-   0 in (2ℤ + 3ℤ)/3ℤ.  So both sides have at least two elements. *)
+(* 相关说明。 （已译） *)
 Definition Z_one_in_sum :
   carrier (cmon_setoid (SubmoduleMod (SubmoduleSum EvenSub ThreeSub))) :=
   existT _ 1%Z one_in_sum.
@@ -850,8 +838,7 @@ Theorem Z_second_iso_codomain_nondegenerate :
     (cmon_zero (SubmoduleMod (SubmoduleSum EvenSub ThreeSub)))
   → False.
 Proof.
-  (* Two layers: [mquot_rel] is [inhabited], and [TinSum]'s membership is the
-     sigma. *)
+  (* 相关说明。 （已译） *)
   intros [[k Hk]].
   assert (Hz : (1 = 3 * k)%Z) by exact Hk.
   lia.

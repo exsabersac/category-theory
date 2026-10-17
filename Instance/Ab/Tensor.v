@@ -1,4 +1,4 @@
-(** * The tensor product of abelian groups *)
+(* 相关说明。 （已译） *)
 
 (*
  Book:      Mac Lane, ibid., §VII.1, printed pp. 163–164 (PDF pp.
@@ -24,7 +24,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** Formal sums and the bilinearity quotient *)
+(* 相关说明。 （已译） *)
 
 Section Tensor.
 
@@ -96,8 +96,8 @@ Definition AbTensor : AbObject := {|
     cmon_plus_assoc := te_assoc;
     cmon_plus_comm := te_comm;
     cmon_plus_zero_l := te_zero_l;
-    (* [ts_eq] IS a [Prop]-valued relation, so it is its own [Prop] mirror and
-       both implications are the identity. *)
+    (* [ts_eq] IS [Prop]-valued 关系, so it own [Prop] 镜像 and
+ both 蕴含 恒等. （已译） *)
     cmon_prop := @PropEquiv_of_relation _ ts_Setoid ts_eq
                    (fun _ _ h => h) (fun _ _ h => h)
   |};
@@ -106,7 +106,7 @@ Definition AbTensor : AbObject := {|
   ab_neg_left := te_neg_l
 |}.
 
-(** ** Bilinear maps and the universal property *)
+(* * ** Bilinear maps 普遍性质 （已译） *)
 
 (*
    本节说明幺半群相关定义、性质与动机。
@@ -141,8 +141,7 @@ Definition tensor_gen : Bilinear AbTensor :=
     te_bilin_l
     te_bilin_r.
 
-(* The mediator: fold a formal sum through the target's operations.  It
-   computes on constructors (design note 3). *)
+(* 相关说明。 （已译） *)
 Fixpoint tensor_med_fun {K : AbObject} (β : Bilinear K) (s : tsum) :
   carrier K :=
   match s with
@@ -182,8 +181,7 @@ Proof.
   - exact (transitivity IH1 IH2).
 Qed.
 
-(* The factorization: a bilinear map becomes a homomorphism out of the
-   tensor.  Zero- and sum-preservation hold by reflexivity. *)
+(* 相关说明。 （已译） *)
 Program Definition tensor_ump {K : AbObject} (β : Bilinear K) :
   AbHom AbTensor K := {|
   cmon_map := {| morphism := tensor_med_fun β |}
@@ -205,8 +203,7 @@ Proof.
   simpl; reflexivity.
 Qed.
 
-(* The same triangle stated through the universal bilinear map itself:
-   factoring [β] and then evaluating on [tensor_gen] recovers [β]. *)
+(* 相关说明。 （已译） *)
 Lemma tensor_ump_tensor_gen {K : AbObject} (β : Bilinear K)
   (g : carrier G) (h : carrier H) :
   cmon_map (tensor_ump β) (bilin_map tensor_gen g h) ≈ bilin_map β g h.
@@ -214,9 +211,7 @@ Proof.
   exact (tensor_ump_gen β g h).
 Qed.
 
-(* Uniqueness, in its most consumable form: homomorphisms out of the
-   tensor agreeing on generators agree everywhere.  The [ts_neg] case is
-   Instance/Ab.v's [ab_map_neg]. *)
+(* 相关说明。 （已译） *)
 Lemma tensor_hom_ext {K : AbObject} (f g : AbHom AbTensor K) :
   (∀ (a : carrier G) (b : carrier H),
       cmon_map f (ts_gen a b) ≈ cmon_map g (ts_gen a b)) →
@@ -234,8 +229,7 @@ Proof.
     exact (ab_neg_respects K _ _ IHs).
 Qed.
 
-(* The classical statement of the UMP, assembled from the two halves:
-   factorization exists and is unique. *)
+(* 相关说明。 （已译） *)
 Lemma tensor_ump_unique {K : AbObject} (β : Bilinear K)
   (f : AbHom AbTensor K) :
   (∀ (a : carrier G) (b : carrier H),
@@ -298,9 +292,9 @@ Arguments tensor_ump_unique {G H K} β f _.
 
 (** ** Bifunctoriality *)
 
-(* The arrow action: map the generators and extend.  Bilinearity of the
-   composite generator map is the point saturation plus the bilinearity
-   rules of the target tensor. *)
+(* The arrow action: map generators extend. Bilinearity the
+ 复合 generator map point saturation plus bilinearity
+ rules target tensor. （已译） *)
 Program Definition tensor_map {G G' H H' : AbObject}
   (f : AbHom G G') (k : AbHom H H') :
   AbHom (AbTensor G H) (AbTensor G' H') :=

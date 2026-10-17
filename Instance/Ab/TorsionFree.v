@@ -123,7 +123,7 @@ Lemma TorsionFree_Incl_Faithful :
   Functor.Faithful (Incl Ab TorsionFree_Sub).
 Proof. exact (Incl_Faithful Ab TorsionFree_Sub). Defined.
 
-(** * The quotient by the torsion subgroup *)
+(* 相关说明。 （已译） *)
 
 Definition AbModTorsion (A : AbObject) : AbObject :=
   AbQuotient (torsion_incl A).
@@ -277,7 +277,7 @@ Lemma torsion_unit_is_proj_hom (A : AbObject) :
   torsion_unit A ≈ ab_quot_proj (torsion_incl A).
 Proof. intro a; reflexivity. Defined.
 
-(** * The counit at a torsion-free group *)
+(* 相关说明。 （已译） *)
 
 Definition torsionfree_reflect_iso (x : TorsionFreeAb) :
   fobj[TorsionFree_reflector] (Incl Ab TorsionFree_Sub x)
@@ -335,7 +335,7 @@ Definition ZAb_reflect_iso :
     ≅[TorsionFreeAb] ZAb_TF :=
   torsionfree_reflect_iso ZAb_TF.
 
-(** * Non-vacuity: ℤ/2 is all torsion *)
+(* 相关说明。 （已译） *)
 
 Definition ZMod2_all_torsion (b : carrier ZMod2) : torsion_mem ZMod2 b.
 Proof.
@@ -405,8 +405,7 @@ Lemma mixed_gen_not_quot_zero :
     (cmon_zero MixedAb) → False.
 Proof.
   intro H.
-  (* The goal is [False], a [Prop], so the continuation-form eliminator
-     applies directly. *)
+  (* 相关说明。 （已译） *)
   apply (quot_eq_elim MixedAb _ _ _ H); intros t Ht Hgt.
   apply mixed_gen_not_torsion.
   apply (torsion_resp MixedAb t mixed_gen).

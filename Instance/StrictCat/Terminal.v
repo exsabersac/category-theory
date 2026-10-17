@@ -7,7 +7,7 @@ Require Import Category.Instance.StrictCat.
 
 Generalizable All Variables.
 
-(** * 1 is the terminal object of StrictCat *)
+(* * * 1 终对象 StrictCat （已译） *)
 
 (*
    本文件给出终对象实例。

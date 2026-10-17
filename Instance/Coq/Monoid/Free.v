@@ -24,7 +24,7 @@ Require Import List.
 
 Generalizable All Variables.
 
-(** * The free monoid on a type, and its universal property *)
+(* * * The free 幺半群 type, 普遍性质 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Free_monoid
@@ -77,7 +77,7 @@ End Elements.
 Arguments mmul {L} a b.
 Arguments mone {L}.
 
-(* The two homomorphism laws in the same element-level form. *)
+(* 相关说明。 （已译） *)
 Lemma hom_mmul {L N : MonCoq} (g : L ~{MonCoq}~> N) (a b : `1 L) :
   `1 g (mmul a b) = mmul (`1 g a) (`1 g b).
 Proof. exact (@hom_mu Coq Coq_Monoidal _ _ _ _ _ (`2 g) (a, b)). Qed.
@@ -112,16 +112,15 @@ Qed.
 (* The free monoid on [X] as an object of [Mon Coq]. *)
 Definition FreeMon (X : Coq) : MonCoq := (list X; FreeMonoidStructure X).
 
-(* Its multiplication and unit are concatenation and the empty word, on the
-   nose. *)
+(* 相关说明。 （已译） *)
 Example free_mmul_is_app (X : Coq) (u v : list X) :
   mmul (L:=FreeMon X) u v = (u ++ v)%list := eq_refl.
 
 Example free_mone_is_nil (X : Coq) : @mone (FreeMon X) = @nil X := eq_refl.
 
-(** ** The insertion of generators
+(* * ** The 嵌入 generators
 
-    Awodey's [i : A → A*], sending a letter to the one-letter word. *)
+ Awodey's [i : A → A*], sending letter one-letter word. （已译） *)
 
 Definition insert (X : Coq) : X ~{Coq}~> UMon (FreeMon X) :=
   fun a => (a :: nil)%list.
@@ -139,8 +138,7 @@ Fixpoint free_ext {X : Coq} {L : MonCoq} (h : X → `1 L) (l : list X)
   | cons a l' => mmul (h a) (free_ext h l')
   end.
 
-(* The extension carries concatenation to multiplication: induction on the
-   left word, using the left unit law at [nil] and associativity at [cons]. *)
+(* 相关说明。 （已译） *)
 Lemma free_ext_app {X : Coq} {L : MonCoq} (h : X → `1 L) (u v : list X) :
   free_ext h (u ++ v)%list = mmul (free_ext h u) (free_ext h v).
 Proof.
@@ -149,7 +147,7 @@ Proof.
   - rewrite IH; symmetry; apply mmul_assoc.
 Qed.
 
-(* ... and it agrees with [h] on the generators, by computation. *)
+(* 相关说明。 （已译） *)
 Lemma free_ext_generators {X : Coq} {L : MonCoq} (h : X → `1 L) (a : X) :
   free_ext h (insert X a) = h a.
 Proof. simpl; apply mone_right. Qed.
@@ -207,15 +205,15 @@ Proof.
     intro b; symmetry; exact (Hg b).
 Qed.
 
-(* The free monoid packaged as a universal arrow from [X] to [Mon_Forget].
-   By [Theory/Universal/Arrow.v] this IS an initial object of the comma
-   category [=(X) ↓ Mon_Forget]. *)
+(* The free 幺半群 packaged 泛箭头 [X] [Mon_Forget].
+ By [Theory/Universal/Arrow.v] IS 始对象 comma
+ 范畴 [=(X) ↓ Mon_Forget]. （已译） *)
 Definition free_monoid_universal_arrow (X : Coq) : UniversalArrow X UMon :=
   universal_arrow_from_UMP X UMon (FreeMon X) (insert X)
                            (free_monoid_universal X).
 
-(* The same content in the direct encoding, where the universal object is
-   named rather than projected. *)
+(* The same content direct encoding, where universal 对象 is
+ named rather than projected. （已译） *)
 Program Definition free_monoid_AUniversalArrow (X : Coq)
   : AUniversalArrow X UMon (FreeMon X) := {|
   universal_arrow := insert X
@@ -242,7 +240,7 @@ Definition FreeMonoid : Coq ⟶ MonCoq :=
 Definition free_monoid_adjunction : FreeMonoid ⊣ UMon :=
   AdjunctionFromUniversalArrows UMon free_monoid_universal_arrow.
 
-(* The free functor's object part is the word monoid, definitionally. *)
+(* The free 函子's 对象 part word 幺半群, definitionally. （已译） *)
 Example FreeMonoid_obj (X : Coq) : FreeMonoid X = FreeMon X := eq_refl.
 
 (*
@@ -253,8 +251,8 @@ Example FreeMonoid_obj (X : Coq) : FreeMonoid X = FreeMon X := eq_refl.
 Example free_arrow_is_insert (X : Coq) :
   @arrow _ _ X UMon (free_monoid_universal_arrow X) = insert X := eq_refl.
 
-(* Hence so is the unit of the adjunction: the transpose of the identity is
-   [fmap[U] id ∘ arrow], and [fmap[U] id] is the identity function. *)
+(* Hence so unit 伴随: transpose 恒等 is
+ [fmap[U] id ∘ arrow], [fmap[U] id] 恒等 function. （已译） *)
 Example free_monoid_unit_is_insert (X : Coq) (a : X) :
   @Category.Theory.Adjunction.unit _ _ _ _ free_monoid_adjunction X a
     = insert X a := eq_refl.
@@ -274,7 +272,7 @@ Proof.
               (@arrow _ _ Y UMon (free_monoid_universal_arrow Y) ∘ f)) a).
 Qed.
 
-(* The fold of [a ↦ [f a]] into the free monoid on Y is [map f]. *)
+(* The fold [a ↦ [f a]] 进入 free 幺半群 Y [map f]. （已译） *)
 Lemma free_ext_insert {X Y : Coq} (f : X ~{Coq}~> Y) (l : list X) :
   free_ext (L:=FreeMon Y) (fun a => insert Y (f a)) l = map f l.
 Proof.
@@ -330,8 +328,7 @@ Corollary free_monoid_transposition_at {X : Coq} {L : MonCoq}
   to (@adj _ _ _ _ free_monoid_adjunction X L) g a = `1 g (insert X a).
 Proof. exact (free_monoid_transposition g a). Qed.
 
-(* The inverse direction is the fold: transposing a function back gives the
-   homomorphism that extends it. *)
+(* 相关说明。 （已译） *)
 Corollary free_monoid_transposition_inv {X : Coq} {L : MonCoq}
       (h : X ~{Coq}~> UMon L) (l : list X) :
   `1 (from (@adj _ _ _ _ free_monoid_adjunction X L) h) l = free_ext h l.
@@ -359,7 +356,7 @@ Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 Context (A : F ⊣ U).
 
-(* (a) [U ε] splits, with the unit as its section. *)
+(* 相关说明。 （已译） *)
 Program Definition adjunction_counit_underlying_retraction (x : C) :
   Retraction (fmap[U] (@Category.Theory.Adjunction.counit _ _ _ _ A x)) := {|
   retract := @Category.Theory.Adjunction.unit _ _ _ _ A (U x)
@@ -369,8 +366,8 @@ Next Obligation.
   exact (@Category.Theory.Adjunction.fmap_counit_unit _ _ _ _ A x).
 Qed.
 
-(* (b) A faithful right adjoint makes the counit epic: transport the
-   cancellation through U, where the split from (a) does the work. *)
+(* (b) A faithful 右伴随 makes counit epic: transport the
+ cancellation through U, where split (a) does work. （已译） *)
 Program Definition adjunction_counit_epic (FU : Faithful U) (x : C) :
   Epic (@Category.Theory.Adjunction.counit _ _ _ _ A x) := {| epic := _ |}.
 Next Obligation.
@@ -396,15 +393,14 @@ Definition free_monoid_counit_epic (L : MonCoq) :
   adjunction_counit_epic free_monoid_adjunction
     (@Mon_Forget_Faithful Coq Coq_Monoidal) L.
 
-(* Concretely: every element of L is the value of its own one-letter word, so
-   the underlying map of the counit is surjective with a chosen preimage. *)
+(* 相关说明。 （已译） *)
 Corollary free_monoid_counit_surjective (L : MonCoq) (m : `1 L) :
   `1 (@Category.Theory.Adjunction.counit _ _ _ _ free_monoid_adjunction L)
      (insert (UMon L) m) = m.
 Proof. exact (@Category.Theory.Adjunction.fmap_counit_unit _ _ _ _ free_monoid_adjunction L m). Qed.
 
-(* And the counit is the evaluation of a word in L: the fold of the identity
-   map on the underlying type. *)
+(* And counit evaluation word L: fold 恒等
+ map underlying type. （已译） *)
 Theorem free_monoid_counit_is_free_ext (L : MonCoq) (w : list (`1 L)) :
   `1 (@Category.Theory.Adjunction.counit _ _ _ _ free_monoid_adjunction L) w
     = free_ext (fun m : `1 L => m) w.
@@ -426,8 +422,8 @@ Definition free_monoid_unique {X : Coq} {M N : MonCoq}
               ≈ @universal_arrow _ _ X UMon N UN) :=
   auniversal_arrow_unique UM UN.
 
-(* At the word monoid: any monoid with the free-monoid UMP on X is uniquely
-   isomorphic to [FreeMon X] over the insertion of generators. *)
+(* At word 幺半群: any 幺半群 free-幺半群 UMP X uniquely
+ isomorphic [FreeMon X] over 嵌入 generators. （已译） *)
 Definition free_monoid_unique_iso {X : Coq} {N : MonCoq}
       (UN : AUniversalArrow X UMon N) :
   Unique (fun i : FreeMon X ≅ N =>
@@ -533,8 +529,8 @@ Qed.
 
 Definition XorMon : MonCoq := (bool; XorMonoidStructure).
 
-(* The extension of the identity map on letters counts the parity of the word,
-   and computes. *)
+(* The extension 恒等 map letters counts parity word,
+ computes. （已译） *)
 Example fold_into_xor_1 :
   free_ext (L:=XorMon) (fun b : bool => b) (true :: false :: true :: nil)%list
     = false := eq_refl.
@@ -543,8 +539,8 @@ Example fold_into_xor_2 :
   `1 (free_hom (L:=XorMon) (fun b : bool => b))
      (mmul (L:=FreeMon bool) wa wb) = true := eq_refl.
 
-(* And it really is a monoid homomorphism out of the word monoid, computed on
-   a concatenation. *)
+(* And it really 幺半群 homomorphism out word 幺半群, computed on
+ concatenation. （已译） *)
 Example fold_into_xor_hom :
   `1 (free_hom (L:=XorMon) (fun b : bool => b))
      (mmul (L:=FreeMon bool) (mmul (L:=FreeMon bool) wa wa) wb)
@@ -575,16 +571,15 @@ Proof.
   induction l as [|a l IH]; simpl; [reflexivity|now rewrite IH].
 Qed.
 
-(* The unique [ListF X]-algebra map out of [(list X, alg X)] into the induced
-   algebra is the free-monoid extension. *)
+(* The unique [ListF X]-algebra map out [(list X, alg X)] 进入 induced
+ algebra free-幺半群 extension. （已译） *)
 Theorem free_ext_is_initial_algebra_map {X : Coq} {L : MonCoq}
         (h : X → `1 L) (l : list X) :
   falg_hom[@zero (FAlg (ListF X)) (list_initial X) (monoid_FAlg h)] l
     = free_ext h l.
 Proof. symmetry; apply free_ext_is_fold. Qed.
 
-(* Stated without the [FAlg] packaging: any map satisfying the algebra square
-   is the extension. *)
+(* 相关说明。 （已译） *)
 Corollary free_ext_is_the_unique_algebra_map {X : Coq} {L : MonCoq}
         (h : X → `1 L) (g : list X → `1 L)
         (Hg : forall o, g (alg X o) = monoid_ListF_alg h (fmap[ListF X] g o))

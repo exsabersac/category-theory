@@ -14,7 +14,7 @@ Require Import Category.Instance.Top.Coproduct.
 
 Generalizable All Variables.
 
-(** * Pushouts in Top: the quotient topology, and adjunction spaces *)
+(* * * Pushouts Top: quotient topology, 伴随 spaces （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/pushout
@@ -159,7 +159,7 @@ Definition Top_po_in2 : C ~{Top}~> Pushout_Top :=
   Build_ContinuousMorphism C Pushout_Top tp_inr_map
     (fun W HW => snd (snd HW)).
 
-(* The square commutes: this IS the [tpr_glue] constructor. *)
+(* 相关说明。 （已译） *)
 Lemma Top_po_square : Top_po_in1 ∘[Top] f ≈ Top_po_in2 ∘[Top] g.
 Proof using All. intro a; exact (tpr_glue a). Qed.
 
@@ -189,8 +189,8 @@ Definition tp_med_fun (u : @tp_point B C) : carrier (top_carrier Q) :=
 
 Context (Hcomm : q1 ∘[Top] f ≈ q2 ∘[Top] g).
 
-(* Well-definedness on the quotient, by induction on the derivation.  The
-   glue case is the ONLY one that consumes [Hcomm]. *)
+(* Well-definedness quotient, induction derivation. The
+ glue case ONLY one 所消耗 [Hcomm]. （已译） *)
 Lemma tp_med_respects (u v : @tp_point B C) (H : tp_rel f g u v) :
   tp_med_fun u ≈ tp_med_fun v.
 Proof using All.
@@ -248,7 +248,7 @@ End TopPushoutMediator.
 
 Arguments Top_po_med {A B C} f g {Q} q1 q2 Hcomm.
 
-(** ** The universal property, packaged *)
+(* * ** The 普遍性质, packaged （已译） *)
 
 Local Obligation Tactic := idtac.
 
@@ -273,7 +273,7 @@ Next Obligation.
     exact (Top_po_med_unique f g q1 q2 Hcomm v Hv1 Hv2).
 Defined.
 
-(** ** The chosen pushout, and what reduces *)
+(* 相关说明。 （已译） *)
 
 Definition Top_pushout {A B C : TopSpace}
            (f : A ~{Top}~> B) (g : A ~{Top}~> C) : IsPushout f g :=
@@ -291,9 +291,7 @@ Example Top_pushout_in2_is_Top_po_in2 {A B C : TopSpace}
         (f : A ~{Top}~> B) (g : A ~{Top}~> C) :
   pushout_in2 (Top_pushout f g) = Top_po_in2 f g := eq_refl.
 
-(* The glued point set is the coproduct's point set on the nose: the
-   pushout topology differs from the coproduct topology only in the
-   respect-the-gluing clause, not in its points. *)
+(* 相关说明。 （已译） *)
 Example Top_pushout_carrier {A B C : TopSpace}
         (f : A ~{Top}~> B) (g : A ~{Top}~> C) :
   carrier (top_carrier (Pushout_Top f g))
@@ -317,14 +315,13 @@ Definition adjunction_in_attached {A X Y : TopSpace}
            (i : A ~{Top}~> X) (f : A ~{Top}~> Y)
   : Y ~{Top}~> AdjunctionSpace i f := Top_po_in2 i f.
 
-(* The attaching identification, which is what the construction exists
-   for: a point of [A] and its image under [f] become the same point. *)
+(* 相关说明。 （已译） *)
 Lemma adjunction_glues {A X Y : TopSpace}
       (i : A ~{Top}~> X) (f : A ~{Top}~> Y) (a : carrier (top_carrier A)) :
   adjunction_in_base i f (i a) ≈ adjunction_in_attached i f (f a).
 Proof. exact (@tpr_glue A X Y i f a). Qed.
 
-(** ** Non-vacuity: the gluing is real, and it is confined to the span *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明等价相关定义、性质与动机。
@@ -348,8 +345,8 @@ Proof.
   - now transitivity (tp_side v).
 Qed.
 
-(* Over the EMPTY span the two summands stay apart: the glue constructor
-   is unusable, its argument being a point of the empty space. *)
+(* Over EMPTY span two summands stay apart: glue constructor
+ unusable, 论元 being point empty space. （已译） *)
 Theorem empty_span_keeps_summands_apart {B C : TopSpace}
         (f : Empty_Top ~{Top}~> B) (g : Empty_Top ~{Top}~> C)
         (b : carrier (top_carrier B)) (c : carrier (top_carrier C)) :

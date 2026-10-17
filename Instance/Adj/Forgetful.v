@@ -12,7 +12,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := intros.
 
-(** * The two forgetful functors off the category of adjunctions *)
+(* * * The two forgetful 函子 off 范畴 伴随 （已译） *)
 
 (*
    本文件给出遗忘函子相关。
@@ -30,8 +30,8 @@ Next Obligation. intros f g [Hl _]; exact Hl. Qed.
 Next Obligation. reflexivity. Qed.
 Next Obligation. reflexivity. Qed.
 
-(* The second, on the OPPOSITE of the category of adjunctions: an
-   adjunction to its right adjoint, a conjugate pair to its tau. *)
+(* The second, OPPOSITE 范畴 伴随: an
+ 伴随 右伴随, conjugate pair tau. （已译） *)
 Program Definition AdjForgetRight (C D : Category) :
   (Adj C D)^op ⟶ [C, D] := {|
   fobj := fun x => adjobj_right x;

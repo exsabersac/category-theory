@@ -15,7 +15,7 @@ Require Import Category.Instance.Ab.
 
 Generalizable All Variables.
 
-(** * Limits of abelian groups are computed on underlying sets *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/limit#limits_in_categories_of_algebras
@@ -27,7 +27,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** * Joint monicity of limit legs in [Sets], elementwise *)
+(* 相关说明。 （已译） *)
 
 Section AbSetsExt.
 
@@ -65,7 +65,7 @@ Qed.
 
 End AbSetsExt.
 
-(** * The created abelian-group structure on a limit of underlying sets *)
+(* 相关说明。 （已译） *)
 
 Section AbLift.
 
@@ -199,7 +199,7 @@ Proof.
   exact (proper_morphism alim_neg_map a a' Ha).
 Qed.
 
-(** ** The abelian-group laws, by joint monicity of the legs *)
+(* 相关说明。 （已译） *)
 
 Lemma alim_assoc (a b c : carrier vertex_obj[L]) :
   alim_plus (alim_plus a b) c ≈ alim_plus a (alim_plus b c).
@@ -209,9 +209,7 @@ Proof.
   apply cmon_plus_assoc.
 Qed.
 
-(* The one law with no counterpart in the group template, and it costs
-   exactly what the others cost: joint monicity does not care what the law
-   says. *)
+(* 相关说明。 （已译） *)
 Lemma alim_comm (a b : carrier vertex_obj[L]) :
   alim_plus a b ≈ alim_plus b a.
 Proof.
@@ -235,7 +233,7 @@ Proof.
   apply ab_neg_left.
 Qed.
 
-(** ** The vertex's equality is propositional *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -267,9 +265,9 @@ Definition LimitAb : AbObject :=
 
 (** ** The legs are homomorphisms *)
 
-(* Only [cmon_map_zero] and [cmon_map_plus] are owed: [AbHom] IS [CMonHom]
-   (Instance/Ab.v), and preservation of negation is the theorem
-   [ab_map_neg] rather than a field. *)
+(* Only [cmon_map_zero] [cmon_map_plus] owed: [AbHom] IS [CMonHom]
+ (Instance/Ab.v), preservation negation 定理
+ [ab_map_neg] rather than field. （已译） *)
 Program Definition alim_hom (j : J) : AbHom LimitAb (K j) :=
   {| cmon_map := alim_leg j |}.
 Next Obligation. apply alim_zero_triangle. Qed.
@@ -283,7 +281,7 @@ Definition alim_cone : Cone K :=
   @Build_Cone J Ab K LimitAb
     (@Build_ACone J Ab LimitAb K alim_hom (@alim_hom_coherence)).
 
-(** ** Strictness: the lifted cone lies over [L] on the nose *)
+(* 相关说明。 （已译） *)
 
 Definition alim_over_obj : Ab_Forget LimitAb = vertex_obj[L] := eq_refl.
 
@@ -336,7 +334,7 @@ Proof.
              (cmon_map v) Hv a).
 Defined.
 
-(** ** Uniqueness of the lifted structure (Mac Lane's Theorem 2) *)
+(* 相关说明。 （已译） *)
 
 Lemma alim_zero_unique (e : carrier vertex_obj[L])
   (He : ∀ j : J, alim_leg j e ≈ cmon_zero (K j)) : e ≈ alim_zero.
@@ -389,8 +387,7 @@ Qed.
 
 End AbLift.
 
-(** * Reflection: a cone of abelian groups whose image is limiting is
-      limiting *)
+(* 相关说明。 （已译） *)
 
 Section AbReflect.
 
@@ -449,7 +446,7 @@ Defined.
 
 End AbReflect.
 
-(** * [Ab_Forget] strictly creates every limit *)
+(* 相关说明。 （已译） *)
 
 Section AbStrictlyCreates.
 
@@ -501,7 +498,7 @@ Definition Ab_lift_cone_unique {J : Category} (K : J ⟶ Ab)
   ConeIso M (slift_cone (screates N HN)) :=
   screates_lift_unique (Ab_Forget_StrictlyCreatesLimit K) N HN M i.
 
-(** * The image of a cone of abelian groups is the elementwise cone *)
+(* 相关说明。 （已译） *)
 
 Example ab_fcone_apex {J : Category} (K : J ⟶ Ab) (N : Cone K) :
   vertex_obj[FCone Ab_Forget N] = cmon_setoid (ab_cmon vertex_obj[N])
@@ -510,7 +507,7 @@ Example ab_fcone_apex {J : Category} (K : J ⟶ Ab) (N : Cone K) :
 Example ab_fcone_leg {J : Category} (K : J ⟶ Ab) (N : Cone K) (j : J) :
   cone_leg (FCone Ab_Forget N) j = cmon_map (cone_leg N j) := eq_refl.
 
-(** * Mac Lane's Theorem 2: the lifting half *)
+(* 相关说明。 （已译） *)
 
 Definition Ab_Forget_lifts_limits {J : Category} (K : J ⟶ Ab)
   (L : Limit (Ab_Forget ◯ K)) : Limit K :=
@@ -528,7 +525,7 @@ Example ab_lift_legs {J : Category} (K : J ⟶ Ab)
     = limit_leg (limit_is_alimit L) j
   := eq_refl.
 
-(** * Corollaries: [Ab] is complete and [Ab_Forget] is continuous *)
+(* 相关说明。 （已译） *)
 
 Definition Ab_Complete : @Complete Ab :=
   creates_limits_Complete Ab_Forget Sets_Complete Ab_Forget_creates_limits.
@@ -546,7 +543,7 @@ Definition Ab_Forget_PreservesAllLimits : PreservesAllLimits Ab_Forget :=
   creates_limits_PreservesAllLimits Ab_Forget Sets_Complete
     Ab_Forget_creates_limits.
 
-(** * "Limits of abelian groups are computed on underlying sets", literally *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。

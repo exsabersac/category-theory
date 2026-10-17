@@ -102,8 +102,8 @@ Proof.
   apply (cmon_plus_zero_r M (rm_smul M r (cmon_zero M))).
 Qed.
 
-(** (−r)·m ≈ −(r·m): the scalar negation IS a left inverse of r·m, and
-    Instance/Ab.v's [ab_neg_unique] says that is enough. *)
+(** 本节：(−r)·m ≈ −(r·m): scalar negation IS left inverse r·m, and
+ Instance/Ab.v's [ab_neg_unique] says enough. （已译） *)
 Lemma rm_smul_neg_l {R : RingObject} (M : RModObject R)
   (r : carrier (rig_setoid (ring_rig R))) (m : carrier (cmon_setoid M)) :
   rm_smul M (ring_neg R r) m ≈ ab_neg M (rm_smul M r m).
@@ -114,7 +114,7 @@ Proof.
   apply rm_smul_zero_l.
 Qed.
 
-(** r·(−m) ≈ −(r·m), by the same argument on the other side. *)
+(** r·(−m) ≈ −(r·m), same 论元 other side. （已译） *)
 Lemma rm_smul_neg_r {R : RingObject} (M : RModObject R)
   (r : carrier (rig_setoid (ring_rig R))) (m : carrier (cmon_setoid M)) :
   rm_smul M r (ab_neg M m) ≈ ab_neg M (rm_smul M r m).
@@ -189,8 +189,8 @@ Proof.
   - intros f g H a; exact (pequiv_from _ _ (H a)).
 Defined.
 
-(** The identity: the identity group homomorphism, which commutes with the
-    action on the nose. *)
+(** The 恒等: 恒等 group homomorphism, commutes the
+ action nose. （已译） *)
 Program Definition rmod_hom_id {R : RingObject} {M : RModObject R} :
   RModHom M M := {|
   rm_hom := @cmon_hom_id M
@@ -200,8 +200,8 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(** Composition: the composite of the group homomorphisms; commuting with
-    the action composes. *)
+(** Composition: 复合 group homomorphisms; commuting with
+ action composes. （已译） *)
 Program Definition rmod_hom_compose {R : RingObject} {M N P : RModObject R}
         (f : RModHom N P) (g : RModHom M N) : RModHom M P := {|
   rm_hom := cmon_hom_compose (rm_hom f) (rm_hom g)
@@ -277,10 +277,10 @@ Next Obligation. intros R M N f g Hfg a; exact (Hfg a). Qed.
 Next Obligation. intros R M a; simpl; reflexivity. Qed.
 Next Obligation. intros R M N P f g a; simpl; reflexivity. Qed.
 
-(** ** The zero module as a zero object *)
+(* * ** The zero module zero 对象 （已译） *)
 
-(** The one-element module: Instance/Ab.v's [Ab_trivial] with the only
-    action available.  Every law holds by computation. *)
+(** 本节：The one-element module: Instance/Ab.v's [Ab_trivial] only
+ action available. Every law holds computation. （已译） *)
 Definition RMod_trivial (R : RingObject) : RModObject R.
 Proof.
   unshelve notypeclasses refine {|
@@ -299,7 +299,7 @@ Proof.
     intros m; destruct m; reflexivity.
 Defined.
 
-(** Everything maps to the point, and only one map does. *)
+(** 本节：Everything maps point, one map does. （已译） *)
 Program Definition RMod_one {R : RingObject} (M : RModObject R) :
   M ~{RMod R}~> RMod_trivial R := {|
   rm_hom := Ab_one M
@@ -319,8 +319,8 @@ Next Obligation.
   now rewrite (RMod_one_unique _ f), (RMod_one_unique _ g).
 Qed.
 
-(** Dually, the unique map out of the point sends it to zero — and the
-    action has nothing to say, since r·0 ≈ 0 ([rm_smul_zero_r]). *)
+(** 本节：Dually, unique map out point sends it zero — the
+ action has nothing say, since r·0 ≈ 0 ([rm_smul_zero_r]). （已译） *)
 Program Definition RMod_zero_hom {R : RingObject} (M : RModObject R) :
   RMod_trivial R ~{RMod R}~> M := {|
   rm_hom := Ab_zero_hom M
@@ -349,11 +349,11 @@ Next Obligation.
     [ apply RMod_zero_hom_unique | symmetry; apply RMod_zero_hom_unique ].
 Qed.
 
-(** The same object is both, so the coincidence iso is the identity. *)
+(** The same 对象 both, so coincidence iso 恒等. （已译） *)
 #[export] Instance RMod_Zero (R : RingObject) : ZeroObject (RMod R) :=
   @Build_ZeroObject (RMod R) (RMod_Terminal R) (RMod_Initial R) iso_id.
 
-(** ** Mac Lane's §I.7 proposition: monic = injective, epic = surjective *)
+(* * ** Mac Lane's §I.7 命题: monic = injective, epic = surjective （已译） *)
 
 Definition RModInjective {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Type :=
@@ -364,10 +364,10 @@ Definition RModSurjective {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Type :=
   ∀ b : carrier (cmon_setoid N), { a & cmon_map (rm_hom f) a ≈ b }.
 
-(** *** The kernel submodule, the probe object for the monic half *)
+(* * *** The kernel submodule, probe 对象 monic half （已译） *)
 
-(** Instance/Ab.v's [AbKernel] carries the group; all that is added is that
-    the kernel is closed under the action, which is [rm_smul_zero_r]. *)
+(** 本节：Instance/Ab.v's [AbKernel] carries group; all added that
+ kernel closed under action, [rm_smul_zero_r]. （已译） *)
 
 Section Kernel.
 
@@ -404,7 +404,7 @@ Proof using R M N f.
     intros p; simpl; apply rm_smul_one.
 Defined.
 
-(** The inclusion and the zero map, which [f] equalizes. *)
+(** The 含入 zero map, [f] equalizes. （已译） *)
 Program Definition rmod_kernel_incl : RModKernel ~{RMod R}~> M := {|
   rm_hom := ab_kernel_incl (rm_hom f)
 |}.
@@ -435,7 +435,7 @@ Lemma rmod_monic_injective {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Monic f → RModInjective f.
 Proof.
   intros Hm x y Hxy.
-  (* Step 1: monic collapses the two maps out of the kernel. *)
+  (* 相关说明。 （已译） *)
   assert (Hk : ∀ p : carrier (cmon_setoid (RModKernel f)),
                  projT1 p ≈ cmon_zero M).
   { apply (@monic _ _ _ f Hm (RModKernel f)
@@ -473,7 +473,7 @@ Proof.
   split; [ apply rmod_monic_injective | apply rmod_injective_monic ].
 Qed.
 
-(** *** The quotient module N/fM, the probe object for the epic half *)
+(* * *** The quotient module N/fM, probe 对象 epic half （已译） *)
 
 (*
    本节说明等价、来源与用途相关定义、性质与动机。
@@ -532,8 +532,8 @@ Proof using R M N f.
     apply rmod_coset_of_equiv, (rm_smul_one N x).
 Defined.
 
-(** The projection (identity on carriers, coarser equality) and the zero
-    map, which [f] equalizes. *)
+(** The projection (恒等 carriers, coarser equality) zero
+ map, [f] equalizes. （已译） *)
 Program Definition rmod_quot_proj : N ~{RMod R}~> RModQuotient := {|
   rm_hom := ab_quot_proj (rm_hom f)
 |}.
@@ -607,8 +607,8 @@ Proof.
   exact (Hgh a).
 Qed.
 
-(** The same implication from the propositional notion: drop into [pequiv]
-    with [pequiv_to], destruct there, and come back with [pequiv_from]. *)
+(** 本节：The same implication propositional notion: drop [pequiv]
+ [pequiv_to], destruct there, come back [pequiv_from]. （已译） *)
 Lemma rmod_prop_surjective_epic {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : RModPropSurjective f → Epic f.
 Proof.
@@ -630,7 +630,7 @@ Proof.
   split; [ apply rmod_epic_surjective | apply rmod_prop_surjective_epic ].
 Qed.
 
-(** The spellings the issue's verification snippet uses. *)
+(** 本节：The spellings issue's verification snippet uses. （已译） *)
 Definition rmod_monic_iff {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Monic f ↔ RModInjective f :=
   rmod_monic_iff_injective f.
@@ -639,7 +639,7 @@ Definition rmod_epic_iff {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Epic f ↔ RModPropSurjective f :=
   rmod_epic_iff_surjective f.
 
-(** ** The opposite ring, right modules, and bimodules *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Mod 相关定义、性质与动机。
@@ -677,7 +677,7 @@ Definition Rig_op (R : RigObject) : RigObject := {|
   rig_add_zero_l   := rig_add_zero_l R;
 
   rig_mul_assoc    := rig_op_mul_assoc R;
-  (* The two unit laws and the two distributive laws swap sides. *)
+  (* 相关说明。 （已译） *)
   rig_mul_one_l    := fun a => rig_mul_one_r R a;
   rig_mul_one_r    := fun a => rig_mul_one_l R a;
   rig_distr_l      := fun a b c => rig_distr_r R b c a;
@@ -693,8 +693,8 @@ Definition Ring_op (R : RingObject) : RingObject := {|
   ring_neg_l        := ring_neg_l R
 |}.
 
-(** The additive structure of the opposite ring is the original one on the
-    nose, not merely isomorphic to it. *)
+(** 本节：The additive structure opposite ring original one the
+ nose, not merely isomorphic it. （已译） *)
 Example Ring_op_additive_agrees (R : RingObject) :
   rig_setoid (ring_rig (Ring_op R)) = rig_setoid (ring_rig R) := eq_refl.
 Example Ring_op_zero_agrees (R : RingObject) :
@@ -845,7 +845,7 @@ Next Obligation.
   apply cmon_map_zero.
 Qed.
 
-(** ** A concrete witness: a ring as a module over itself *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Mod 相关定义、性质与动机。
@@ -863,12 +863,10 @@ Definition Ring_RMod (R : RingObject) : RModObject R := {|
   rm_smul_one      := rig_mul_one_l (ring_rig R)
 |}.
 
-(** The integers as a ℤ-module.  The action computes. *)
+(** 本节：The integers ℤ-module. The action computes. （已译） *)
 Definition Int_RMod : RModObject Int_Ring := Ring_RMod Int_Ring.
 
-(* The compatibility law is inhabited: every ring is an (R,R)-bimodule
-   over itself — both actions the multiplication, [bm_compat] being
-   exactly associativity (an audit-supplied witness). *)
+(* 相关说明。 （已译） *)
 Definition Ring_Bimodule (R : RingObject) : Bimodule R R.
 Proof.
   unshelve notypeclasses refine
@@ -897,8 +895,8 @@ Example int_rmod_distr :
 Example int_rmod_neg :
   rm_smul Int_RMod (ring_neg Int_Ring 3%Z) 4%Z = (-12)%Z := eq_refl.
 
-(** The zero object's carrier really is the trivial group: both the
-    terminal and the initial object are [RMod_trivial], by [eq_refl]. *)
+(** The zero 对象's carrier really trivial group: both the
+ terminal 始对象 [RMod_trivial], [eq_refl]. （已译） *)
 Example rmod_zero_terminal_is_trivial (R : RingObject) :
   @terminal_obj (RMod R) (RMod_Terminal R) = RMod_trivial R := eq_refl.
 

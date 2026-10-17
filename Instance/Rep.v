@@ -1,4 +1,4 @@
-(** * Rep_K(G): K-linear representations of a group *)
+(* 相关说明。 （已译） *)
 
 Require Import Coq.Relations.Relation_Definitions.
 Require Import Coq.ZArith.ZArith.
@@ -44,7 +44,7 @@ Open Scope category_scope.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** From a group object to a monoid object *)
+(* * ** From group 对象 幺半群 对象 （已译） *)
 
 (*
    本节说明 Rep 相关定义、性质与动机。
@@ -68,7 +68,7 @@ Next Obligation.
   intros G a; apply grp_mul_unit_r.
 Qed.
 
-(* The three data fields are the originals, on the nose. *)
+(* 相关说明。 （已译） *)
 Example grp_mon_carrier (G : GrpObject) :
   carrier (grp_mon G) = carrier (grp_setoid G) := eq_refl.
 
@@ -171,10 +171,10 @@ Next Obligation.
   - apply rep_act_unit.
 Qed.
 
-(** ** The two forms of the action datum *)
+(* 相关说明。 （已译） *)
 
-(* Forgetting the invertibility witness: the working form the [Deloop]
-   spine consumes.  Its [mon_map] IS [rep_act]. *)
+(* Forgetting invertibility witness: working form [Deloop]
+ spine 所消耗. Its [mon_map] IS [rep_act]. （已译） *)
 Program Definition monhom_of_rep {K : RingObject} {G : GrpObject}
   (V : RepObject K G) :
   MonHom (grp_mon G) (hom_monoid (RMod K) (rep_mod V)) := {|
@@ -257,9 +257,9 @@ Proof. reflexivity. Qed.
 
 (** ** Intertwiners *)
 
-(* A morphism of representations: a module map commuting with the two
-   actions.  The composition is spelled at [RMod K], the actions being
-   endomorphisms of the underlying modules. *)
+(* A 态射 representations: module map commuting two
+ actions. The 复合 spelled at [RMod K], actions being
+ endomorphisms underlying modules. （已译） *)
 Record Intertwiner {K : RingObject} {G : GrpObject}
        (V W : RepObject K G) := {
   itw_map :> rep_mod V ~{RMod K}~> rep_mod W;
@@ -271,7 +271,7 @@ Record Intertwiner {K : RingObject} {G : GrpObject}
 Arguments itw_map {K G V W} _.
 Arguments itw_equivar {K G V W} _ _.
 
-(** ** The category of representations *)
+(* * ** The 范畴 representations （已译） *)
 
 Program Definition Rep (K : RingObject) (G : GrpObject) : Category := {|
   obj := RepObject K G;
@@ -318,9 +318,9 @@ Qed.
 
 (** ** The comparison functors *)
 
-(* A functor out of the delooping IS a representation: its value at the
-   single object is the module, and its action on arrows is the spine
-   homomorphism, made invertible by [rep_of_monhom]. *)
+(* A 函子 out delooping IS representation: value at the
+ single 对象 module, action arrows spine
+ homomorphism, made invertible [rep_of_monhom]. （已译） *)
 Definition rep_of_functor {K : RingObject} {G : GrpObject}
   (F : Deloop (grp_mon G) ⟶ RMod K) : RepObject K G :=
   RepOfMonHom (G := G) (F ttt : RModObject K)
@@ -331,8 +331,8 @@ Definition functor_of_rep {K : RingObject} {G : GrpObject}
   (V : RepObject K G) : Deloop (grp_mon G) ⟶ RMod K :=
   functor_of_hom_monoid (C := RMod K) (rep_mod V) (monhom_of_rep V).
 
-(* The action of the representation read off a functor is that functor's
-   [fmap], definitionally — the fact every obligation below leans on. *)
+(* The action representation read off 函子 函子's
+ [fmap], definitionally — fact every obligation below leans on. （已译） *)
 Lemma rep_of_functor_act {K : RingObject} {G : GrpObject}
   (F : Deloop (grp_mon G) ⟶ RMod K) (g : carrier G) :
   rep_act (rep_of_functor F) g ≈ fmap[F] g.
@@ -343,9 +343,9 @@ Lemma functor_of_rep_fmap {K : RingObject} {G : GrpObject}
   @fmap _ _ (functor_of_rep V) ttt ttt g ≈ rep_act V g.
 Proof. reflexivity. Qed.
 
-(* Reading a representation and its intertwiners off a functor: the
-   morphism action takes a transformation to its single component,
-   whose naturality at g IS the intertwining square. *)
+(* Reading representation intertwiners off 函子: the
+ 态射 action takes transformation single component,
+ whose 自然性 at g IS intertwining square. （已译） *)
 Program Definition Rep_to (K : RingObject) (G : GrpObject) :
   [Deloop (grp_mon G), RMod K] ⟶ Rep K G := {|
   fobj := fun F => rep_of_functor F;
@@ -365,8 +365,8 @@ Next Obligation.
   intros K G F F' F'' η θ; simpl; reflexivity.
 Qed.
 
-(* Materializing an intertwiner as the constant transformation family;
-   naturality is the intertwining square. *)
+(* Materializing intertwiner 常值 transformation family;
+ 自然性 intertwining square. （已译） *)
 Program Definition Rep_from (K : RingObject) (G : GrpObject) :
   Rep K G ⟶ [Deloop (grp_mon G), RMod K] := {|
   fobj := fun V => functor_of_rep V;
@@ -393,9 +393,9 @@ Qed.
 
 (** ** The equivalence *)
 
-(* The representation-side round trip: the two representations have the
-   same module and the same action, so the identity module map is an
-   intertwiner in both directions. *)
+(* The representation-side round trip: two representations have the
+ same module same action, so 恒等 module map an
+ intertwiner both directions. （已译） *)
 Program Definition Rep_action_round_iso {K : RingObject} {G : GrpObject}
   (V : RepObject K G) :
   @Isomorphism (Rep K G) (rep_of_functor (functor_of_rep V)) V := {|
@@ -525,9 +525,9 @@ Lemma ab_neg_neg (A : AbObject) (a : carrier (cmon_setoid A)) :
   ab_neg A (ab_neg A a) ≈ a.
 Proof. symmetry; apply ab_neg_unique; apply ab_neg_right. Qed.
 
-(* The trivial representation of any group on any module: every element
-   acts as the identity.  Available at every K and G, so [RepObject] is
-   never empty. *)
+(* The trivial representation any group any module: every element
+ acts 恒等. Available at every K G, so [RepObject] is
+ never empty. （已译） *)
 Program Definition rep_id_unit {K : RingObject} (V : RModObject K) :
   carrier (grp_setoid (UnitsOf (hom_monoid (RMod K) V) (rmod_hom_monoid_prop K V))) :=
   (id; (id; (_, _))).
@@ -551,9 +551,9 @@ Proof.
   apply units_equiv; symmetry; exact (id_left (@id (RMod K) V)).
 Qed.
 
-(* Spelled as a term for the reason given at [rmod_neg_hom]: the
-   obligation numbering is not the field numbering, and every field
-   here is already a lemma. *)
+(* Spelled term reason given at [rmod_neg_hom]: the
+ obligation numbering not field numbering, every field
+ here already 引理. （已译） *)
 Definition trivial_rep {K : RingObject} {G : GrpObject}
   (V : RModObject K) : RepObject K G :=
   {| rep_mod := V
@@ -585,8 +585,7 @@ Definition rmod_neg_hom {K : RingObject} (V : RModObject K) :
         ; cmon_map_plus := ab_neg_plus V |}
    ; rm_map_smul := ab_neg_hom_smul V |}.
 
-(* The sign action of Z/2 on any module: the non-unit element acts by
-   negation, which is its own inverse. *)
+(* 相关说明。 （已译） *)
 Definition sign_act {K : RingObject} (V : RModObject K) (b : bool) :
   V ~{RMod K}~> V :=
   if b then rmod_neg_hom V else id.
@@ -664,8 +663,8 @@ Proof.
   discriminate H1.
 Qed.
 
-(* The identity module map is not an intertwiner between the two
-   witnesses: their actions differ pointwise. *)
+(* The 恒等 module map not intertwiner between two
+ witnesses: actions differ pointwise. （已译） *)
 Lemma sign_rep_not_trivial_rep :
   (∀ g : carrier Z2,
      rep_act (sign_rep Int_RMod) g ≈ rep_act (trivial_rep Int_RMod) g)

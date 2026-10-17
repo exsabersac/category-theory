@@ -31,7 +31,7 @@ Require Import Category.Adjunction.Diagonal.Limit.
 
 Generalizable All Variables.
 
-(** * Colimits in the setoid variety, from the adjoint functor theorem *)
+(* * * Colimits setoid variety, adjoint 函子 定理 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/variety+of+algebras
@@ -48,7 +48,7 @@ Module UA := Category.Instance.Comp.UniversalAlgebra.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** Block A: a solution set for the diagonal *)
+(* 相关说明。 （已译） *)
 
 Section DiagonalSolutionSet.
 
@@ -100,9 +100,7 @@ Definition VQ_setoid (i : VCongIdx) : Setoid (UA.Tree S SVGen) :=
                       ; Equivalence_Symmetric  := vc_sym   (`1 i) (`2 i)
                       ; Equivalence_Transitive := vc_trans (`1 i) (`2 i) |} |}.
 
-(* The member at index [i]: the term algebra with `≈` the congruence.  Its
-   [PropEquiv] is the congruence itself, and its satisfaction of [E] is
-   [vc_law]. *)
+(* 相关说明。 （已译） *)
 Definition VQ_soa (i : VCongIdx) : SetoidOpAlgebra S := {|
   soa_obj := {| carrier := UA.Tree S SVGen ; is_setoid := VQ_setoid i |};
   soa_op := UA.node S SVGen;
@@ -121,8 +119,8 @@ Proof.
   - intros o k; exact (vc_hom (`1 i) (`2 i) j o k).
 Defined.
 
-(* The arrow of the solution set: the cocone of insertions, as an arrow of
-   [[J, SVariety E]] into the constant diagram. *)
+(* The arrow solution set: cocone insertions, arrow of
+ [[J, SVariety E]] 进入 常值 diagram. （已译） *)
 Definition vq_arr (i : VCongIdx) :
   D ~{[J, SVariety E]}~> fobj[@Diagonal (SVariety E) J] (VQ_alg i).
 Proof.
@@ -224,7 +222,7 @@ Arguments vker_idx {_} _ {_} _ _ _.
 Arguments vker_med {_} _ {_} _ _ _.
 Arguments Diagonal_SVariety_solution_set {_} _ {_} _.
 
-(** ** Block B: the adjoint functor theorem at the diagonal *)
+(* * ** Block B: adjoint 函子 定理 at diagonal （已译） *)
 
 Definition SVariety_colim_via_GAFT {S : UA.OpSignature} (E : UA.EqSignature S)
   (J : Category) :
@@ -256,10 +254,10 @@ Definition SVariety_Initial_via_GAFT {S : UA.OpSignature}
   FinitelyCocomplete_Initial
     (Cocomplete_FinitelyCocomplete (SVariety_Cocomplete_via_GAFT E)).
 
-(** ** Block C: the initial algebra is the free algebra on the empty set *)
+(* 相关说明。 （已译） *)
 
-(* The category is never empty: the limit of the empty diagram is a
-   terminal object, and Instance/Variety/Limit.v computes it. *)
+(* The 范畴 never empty: limit empty diagram a
+ 终对象, Instance/Variety/Limit.v computes it. （已译） *)
 Definition SVariety_Terminal {S : UA.OpSignature} (E : UA.EqSignature S) :
   @Terminal (SVariety E) :=
   FinitelyComplete_Terminal (Complete_FinitelyComplete (SVariety_Complete E)).
@@ -282,7 +280,7 @@ Definition SVariety_Initial_agrees {S : UA.OpSignature} (E : UA.EqSignature S) :
     ≅ @initial_obj (SVariety E) (SVariety_Initial_via_GAFT E) :=
   initial_unique (SVariety_Initial E) (SVariety_Initial_via_GAFT E).
 
-(** ** Block D: when the initial algebra's carrier is empty *)
+(* 相关说明。 （已译） *)
 
 Section ClosedTerms.
 
@@ -357,7 +355,7 @@ Proof.
   - right; exact n.
 Qed.
 
-(** ** Block E: the Leibniz variety, where coequalizers are quotients *)
+(* 相关说明。 （已译） *)
 
 Definition NoOp : UA.OpSignature :=
   {| UA.operation := Empty_set ; UA.arity := fun o => match o with end |}.
@@ -394,8 +392,7 @@ Definition QuotElim : Type :=
        (∀ (B : Type) (g g' : Q → B), (∀ a, g (q a) = g' (q a)) →
           ∀ z, g z = g' z))%type } }.
 
-(* Any function out of the carrier of an algebra of the empty signature
-   is a homomorphism: there is no operation to commute with. *)
+(* 相关说明。 （已译） *)
 Definition noop_hom {x y : Variety NoEq}
   (f : UA.carrier (`1 x) → UA.carrier (`1 y)) : x ~{Variety NoEq}~> y :=
   (@UA.Build_AlgHom NoOp (`1 x) (`1 y) f (fun o => match o with end); I).
@@ -457,7 +454,7 @@ Proof.
   - exact quotients_give_leibniz_coequalizers.
 Defined.
 
-(** ** Block F: non-vacuity at a presentation built without extensionality *)
+(* 相关说明。 （已译） *)
 
 Definition CommMagma_Cocartesian : @Cocartesian (SVariety CommEq) :=
   SVariety_Cocartesian_via_GAFT CommEq.
@@ -465,7 +462,7 @@ Definition CommMagma_Cocartesian : @Cocartesian (SVariety CommEq) :=
 Definition CommMagma_coequalizers : HasCoequalizers (SVariety CommEq) :=
   SVariety_coequalizers_via_GAFT CommEq.
 
-(** ** Block G: Mac Lane's own route to the free algebra *)
+(* 相关说明。 （已译） *)
 
 Section ForgetSolutionSet.
 
@@ -473,9 +470,9 @@ Context {S : UA.OpSignature}.
 Context (E : UA.EqSignature S).
 Context (X : Sets).
 
-(* The same indexing as Block A, at the forgetful functor: [Prop]-valued
-   congruences on the term algebra over [X] that satisfy [E] and respect
-   the generators' `≈`. *)
+(* The same indexing Block A, at forgetful 函子: [Prop]-valued
+ congruences term algebra over [X] satisfy [E] respect
+ generators' `≈`. （已译） *)
 Record IsFCong (Rq : UA.Tree S X → UA.Tree S X → Prop) : Prop := {
   fc_refl  : ∀ t, Rq t t;
   fc_sym   : ∀ t u, Rq t u → Rq u t;

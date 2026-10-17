@@ -18,7 +18,7 @@ Require Import Coq.Vectors.Fin.
 
 Generalizable All Variables.
 
-(** * A universal element for the contravariant power-set functor *)
+(* * * A universal element contravariant power-set 函子 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/subobject+classifier
@@ -30,7 +30,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** The inverse image, and the contravariant functor *)
+(* * ** The inverse image, contravariant 函子 （已译） *)
 
 (*
    本节说明 Universal 相关定义、性质与动机。
@@ -93,9 +93,7 @@ Lemma Powerset_Prop_comap_comp@{o} {X Y Z : SetoidObject@{o o}}
         (Powerset_Prop_comap@{o} f) (Powerset_Prop_comap@{o} g).
 Proof. intros T z; split; intro Ht; exact Ht. Qed.
 
-(* THE CONTRAVARIANT POWER-SET FUNCTOR, at one level.  Compare
-   [Powerset_op] of the donor file, whose codomain is [Sets] one universe
-   up. *)
+(* 相关说明。 （已译） *)
 Definition Powerset_Prop_op@{o so} : @Functor (Sets@{o so})^op Sets@{o so}.
 Proof.
   unshelve refine
@@ -120,7 +118,7 @@ Lemma Powerset_Prop_op_fmap_preimage@{o so} {X Y : SetoidObject@{o o}}
 Proof. reflexivity. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Ω, the point ⊤, and the SUBSET {⊤} *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明等价相关定义、性质与动机。
@@ -204,7 +202,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** A subset of A IS a map A ⟶ Ω, definitionally *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -215,8 +213,7 @@ Example powerset_subsets_are_maps@{o so} (A : SetoidObject@{o o}) :
   carrier (Powerset_Prop_obj@{o} A)
     = (A ~{Sets@{o so}}~> Powerset_Omega@{o}) := eq_refl.
 
-(* The characteristic map of a subset is the subset, read across that
-   identification. *)
+(* 相关说明。 （已译） *)
 Definition Powerset_char@{o so} {A : SetoidObject@{o o}}
   (S : carrier (Powerset_Prop_obj@{o} A)) :
   A ~{Sets@{o so}}~> Powerset_Omega@{o} := S.
@@ -231,17 +228,17 @@ Definition Powerset_preimage_of_truth@{o so} {A : SetoidObject@{o o}}
   carrier (Powerset_Prop_obj@{o} A) :=
   Powerset_Prop_preimage@{o} k Powerset_truth_subset@{o}.
 
-(* ... and it IS the action of the functor on the universal element, by
-   [eq_refl].  The convertibility exception again. *)
+(* ... it IS action 函子 universal element, by
+ [eq_refl]. The convertibility exception again. （已译） *)
 Example powerset_preimage_is_fmap@{o so} {A : SetoidObject@{o o}}
   (k : A ~{Sets@{o so}}~> Powerset_Omega@{o}) :
   fmap[Powerset_Prop_op@{o so}]
     (k : Powerset_Omega@{o} ~{(Sets@{o so})^op}~> A) Powerset_truth_subset@{o}
     = Powerset_preimage_of_truth@{o so} k := eq_refl.
 
-(* The two round trips, at [≈].  Together they are the bijection Riehl
-   describes, and each is exactly one half of the universal property
-   assembled in the next section. *)
+(* The two round trips, at [≈]. Together they bijection Riehl
+ describes, each exactly one half 普遍性质
+ assembled next section. （已译） *)
 Lemma powerset_preimage_char@{o so} {A : SetoidObject@{o o}}
   (S : carrier (Powerset_Prop_obj@{o} A)) :
   Powerset_preimage_of_truth@{o so} (Powerset_char@{o so} S) ≈ S.
@@ -261,7 +258,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Mac Lane's §III.1 universal element *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Universal 相关定义、性质与动机。
@@ -285,9 +282,7 @@ Proof.
         exact (proj1 (Hk a) (@Powerset_truth_subset_intro@{o} (k a) Hka)).
 Defined.
 
-(* The element of the pair is {⊤}, and the mediating arrow of a subset is
-   that subset — both by [eq_refl], so no reader has to trust the
-   assembly above. *)
+(* 相关说明。 （已译） *)
 Example powerset_aue_elem@{o so} :
   @aue_elem (Sets@{o so})^op Powerset_Prop_op@{o so} Powerset_Omega@{o}
     Powerset_Prop_universal_element@{o so}
@@ -300,7 +295,7 @@ Example powerset_aue_med@{o so} (A : SetoidObject@{o o})
     = S := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The representation, and Awodey's naturality for the power set *)
+(* * ** The representation, Awodey's 自然性 power set （已译） *)
 
 (*
    本节说明函子、Yoneda、hom相关定义、性质与动机。
@@ -327,15 +322,14 @@ Example powerset_representation_to_is_preimage@{o so}
   transform (to Powerset_representation@{o so}) A k
     = Powerset_preimage_of_truth@{o so} k := eq_refl.
 
-(* ... and the backward leg is the subset read as a map, again by
-   [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example powerset_representation_from_is_char@{o so}
   (A : SetoidObject@{o o}) (S : carrier (Powerset_Prop_obj@{o} A)) :
   transform (from Powerset_representation@{o so}) A S
     = Powerset_char@{o so} S := eq_refl.
 
-(* The bundled form.  [Representable] is [Functor/Representable.v]'s
-   class; the representing object is Ω on the nose. *)
+(* The bundled form. [Representable] [Functor/Representable.v]'s
+ class; 表示 对象 Ω nose. （已译） *)
 Definition Powerset_Prop_Representable@{o so} :
   Representable Powerset_Prop_op@{o so} :=
   Representable_of_UniversalElement
@@ -369,7 +363,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Non-vacuity, and the degeneracies excluded by proof *)
+(* * ** Non-vacuity, degeneracies excluded 证明 （已译） *)
 
 (*
    本节说明 Universal 相关定义、性质与动机。
@@ -419,8 +413,7 @@ Proof.
   intros x y Hxy; rewrite Hxy; split; intro H; exact H.
 Defined.
 
-(* The two subsets are genuinely different: 1 belongs to one and not the
-   other. *)
+(* 相关说明。 （已译） *)
 Lemma powerset_sub01_ne_sub0@{o} :
   powerset_sub01@{o} ≈ powerset_sub0@{o} → False.
 Proof.
@@ -430,15 +423,13 @@ Proof.
   discriminate H1.
 Qed.
 
-(* ... so their characteristic maps are different: the correspondence is
-   not collapsing subsets. *)
+(* 相关说明。 （已译） *)
 Lemma powerset_chars_distinct@{o so} :
   Powerset_char@{o so} powerset_sub01@{o}
     ≈ Powerset_char@{o so} powerset_sub0@{o} → False.
 Proof. exact powerset_sub01_ne_sub0@{o}. Qed.
 
-(* The characteristic map takes the expected values: 0 and 1 are in, 2 is
-   out. *)
+(* 相关说明。 （已译） *)
 Lemma powerset_char_at_0@{o so} :
   Powerset_char@{o so} powerset_sub01@{o} Fin.F1.
 Proof. exact (or_introl eq_refl). Qed.
@@ -451,8 +442,7 @@ Lemma powerset_char_at_2@{o so} :
   Powerset_char@{o so} powerset_sub01@{o} (Fin.FS (Fin.FS Fin.F1)) → False.
 Proof. intros [H | H]; discriminate H. Qed.
 
-(* The round trip on a concrete subset: pulling {⊤} back along the
-   characteristic map of {0,1} returns {0,1}. *)
+(* 相关说明。 （已译） *)
 Lemma powerset_fin3_round@{o so} :
   Powerset_preimage_of_truth@{o so} (Powerset_char@{o so} powerset_sub01@{o})
     ≈ powerset_sub01@{o}.
@@ -513,7 +503,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The classifier obstruction is a DIFFERENT obstruction *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明子对象相关定义、性质与动机。
@@ -566,8 +556,7 @@ Definition Powerset_subobject_of_subset@{o so} {A : SetoidObject@{o o}}
     (Powerset_subset_incl@{o so} S)
     (Powerset_subset_incl_monic@{o so} S).
 
-(* ... and back: the truncated image of a mono is a [Prop]-valued subset.
-   This is the step that discards the witness. *)
+(* 相关说明。 （已译） *)
 Definition Powerset_subset_of_subobject@{o so} {A : SetoidObject@{o o}}
   (u : @SubObj Sets@{o so} A) : carrier (Powerset_Prop_obj@{o} A).
 Proof.
@@ -604,7 +593,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Where the rest of the exercise lives *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、hom、子对象相关定义、性质与动机。

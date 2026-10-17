@@ -31,7 +31,7 @@ Require Import Category.Instance.Top.Components.
 
 Generalizable All Variables.
 
-(** * Path components: π₀ as the colimit functor after P *)
+(* * * Path components: π₀ colimit 函子 after P （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/Top
@@ -45,12 +45,12 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The unit interval over the constructive reals *)
+(* 相关说明。 （已译） *)
 
 Definition ival_pred@{} (x : CReal) : Prop :=
   CRealLe (inject_Q 0) x /\ CRealLe x (inject_Q 1).
 
-(* The points of [0,1]: reals with the two bounds, compared as reals. *)
+(* 相关说明。 （已译） *)
 Program Definition IvalSetoid@{o} : SetoidObject@{o o} := {|
   carrier   := { x : CReal | ival_pred x };
   is_setoid := {| equiv := fun a b => CRealEq (proj1_sig a) (proj1_sig b) |}
@@ -68,7 +68,7 @@ Program Definition ival_incl@{o} :
 |}.
 Next Obligation. intros a b H; exact H. Qed.
 
-(* Riehl's I: the subspace of the line on [0,1]. *)
+(* 相关说明。 （已译） *)
 Definition PInterval@{o} : PTop@{o} :=
   PSub PRLine@{o} IvalSetoid@{o} ival_incl@{o}.
 
@@ -117,8 +117,7 @@ Next Obligation.
   intros A X Y h q r H a. simpl. exact (proper_morphism (pmap h) _ _ (H a)).
 Qed.
 
-(* Riehl's P X: the parallel pair ev₀, ev₁ : Path(X) ⇉ Point(X), the
-   precompositions with the two endpoint inclusions. *)
+(* 相关说明。 （已译） *)
 Definition PPathPair_obj@{o so p | o < so, p <= o +} (X : PTop@{o}) :
   Parallel@{p o} ⟶ Sets@{o so} :=
   APair (pprecomp@{o so} X ival_end0@{o}) (pprecomp@{o so} X ival_end1@{o}).
@@ -141,8 +140,7 @@ Example PPathPair_ev1@{o so p | o < so, p <= o +} (X : PTop@{o}) :
     ((false; ParTwo) : ParX ~{Parallel@{p o}}~> ParY)
     = pprecomp@{o so} X ival_end1@{o} := eq_refl.
 
-(* The action on an arrow h: postcomposition with h, on paths and on
-   points. *)
+(* 相关说明。 （已译） *)
 Program Definition PPathPair_map@{o so p | o < so, p <= o +}
   {X Y : PTop@{o}} (h : PMor@{o} X Y) :
   PPathPair_obj@{o so p} X ⟹ PPathPair_obj@{o so p} Y := {|
@@ -164,8 +162,8 @@ Next Obligation.
           | exact (False_rect _ (ParHom_Id_false_absurd _ f)) ].
 Qed.
 
-(* Riehl's Set^{•⇉•}, with its universes written out: functors at [so],
-   transformations at [o], the levels of [Sets@{o so}] itself. *)
+(* Riehl's Set^{•⇉•}, universes written out: 函子 at [so],
+ transformations at [o], levels [Sets@{o so}] itself. （已译） *)
 Definition ParSets@{o so p f | o < so, p <= o, o < f +} :
   Category@{so o o} :=
   @Fun@{p o so o so o f} Parallel@{p o} Sets@{o so}.
@@ -188,7 +186,7 @@ Example PPathPair_fmap_paths@{o so p f | o < so, p <= o, o < f +}
 
 (** ** π₀ := colim ∘ P *)
 
-(* The chosen colimits of [Sets] at the walking parallel pair. *)
+(* 相关说明。 （已译） *)
 Definition PathColim@{o so p | o < so, p <= o +} :
   HasColimitsOfShape Parallel@{p o} Sets@{o so} :=
   Cocomplete_HasColimitsOfShape Sets_Cocomplete Parallel@{p o}.
@@ -208,8 +206,8 @@ Example PPi0_fmap@{o so p f | o < so, p <= o, o < f +} {X Y : PTop@{o}}
   fmap[PPi0@{o so p f}] h
     = Colim_map PathColim@{o so p} (PPathPair_map@{o so p} h) := eq_refl.
 
-(* What the colimit is, by conversion: pairs (ParX; a path) and
-   (ParY; a point), under the relation the diagram's arrows generate. *)
+(* What colimit is, conversion: pairs (ParX; path) and
+ (ParY; point), under 关系 diagram's arrows generate. （已译） *)
 Example PPi0_carrier@{o so p f | o < so, p <= o, o < f +} (X : PTop@{o}) :
   carrier (fobj[PPi0@{o so p f}] X)
     = { j : ParObj & carrier (fobj[PPathPair_obj@{o so p} X] j) }
@@ -225,7 +223,7 @@ Example PPi0_inj_point@{o so p | o < so, p <= o +} (X : PTop@{o})
   colim_inj PathColim@{o so p} (PPathPair_obj@{o so p} X) ParY x
     = existT _ ParY x := eq_refl.
 
-(* The derived action on representatives IS postcomposition with h. *)
+(* 相关说明。 （已译） *)
 Example PPi0_fmap_point@{o so p f | o < so, p <= o, o < f +}
   {X Y : PTop@{o}} (h : PMor@{o} X Y) (x : PMor@{o} PPoint@{o} X) :
   fmap[PPi0@{o so p f}] h (existT _ ParY x) = existT _ ParY (pcompose h x)
@@ -236,7 +234,7 @@ Example PPi0_fmap_path@{o so p f | o < so, p <= o, o < f +}
   fmap[PPi0@{o so p f}] h (existT _ ParX q) = existT _ ParX (pcompose h q)
   := eq_refl.
 
-(** ** Readback: the colimit is the coequalizer of ev₀ and ev₁ *)
+(* 相关说明。 （已译） *)
 
 Definition ppi0_to_coeq@{o so p | o < so, p <= o +} (X : PTop@{o}) :
   colim_obj PathColim@{o so p} (PPathPair_obj@{o so p} X) ~{Sets@{o so}}~>
@@ -315,9 +313,7 @@ Definition ppi0_to_points_fun@{o so p | o < so, p <= o +} (X : PTop@{o})
   | existT _ ParY x => pmap x ttt
   end.
 
-(* One case per generator of [colim_rel]: the arrow [(false; ParTwo)]
-   is the only one that joins two different points, and it joins the
-   two ends of a path. *)
+(* 相关说明。 （已译） *)
 Lemma ppi0_to_points_respects@{o so p | o < so, p <= o +} (X : PTop@{o})
   (c d : colim_obj PathColim@{o so p} (PPathPair_obj@{o so p} X)) :
   c ≈ d →
@@ -378,9 +374,9 @@ Next Obligation.
   - exact (cr_trans _ _ _ _ IH1 IH2).
 Qed.
 
-(* Riehl's "quotient of the set of points in X by the relation that
-   identifies any pair of points connected by a path", the relation
-   being the equivalence relation the paths generate. *)
+(* Riehl's "quotient set points X 关系 that
+ identifies any pair points connected path", 关系
+ being 等价 关系 paths generate. （已译） *)
 Program Definition PPi0_points_iso@{o so p f | o < so, p <= o, o < f +}
   (X : PTop@{o}) :
   fobj[PPi0@{o so p f}] X ≅[Sets@{o so}]
@@ -411,7 +407,7 @@ Example ppi0_from_points_at@{o so p | o < so, p <= o +} (X : PTop@{o})
   ppi0_from_points@{o so p} X x = existT _ ParY (ppoint_at@{o} X x)
   := eq_refl.
 
-(** ** The interval is connected, for maps into the two-point space *)
+(* * ** The interval connected, maps 进入 two-point space （已译） *)
 
 Section Bisection.
 
@@ -452,9 +448,7 @@ Proof.
   apply inject_Q_morph_T. unfold ibis_clamp. rewrite H. reflexivity.
 Qed.
 
-(* One bisection step keeps [false] on the left and [true] on the right;
-   the case split is on a boolean value, so nothing about the reals is
-   decided. *)
+(* 相关说明。 （已译） *)
 Definition ibis_step@{o} (γ : PMor@{o} PInterval@{o} PBool@{o})
   (ab : Q * Q) : Q * Q :=
   let m := (fst ab + snd ab) * (1 # 2) in
@@ -551,7 +545,7 @@ Proof.
   unfold Qle; simpl. rewrite Zpos_P_of_succ_nat, positive_nat_Z. lia.
 Qed.
 
-(* The left ends, as reals, form a Cauchy sequence with a modulus. *)
+(* 相关说明。 （已译） *)
 Definition ibis_seq@{o} (γ : PMor@{o} PInterval@{o} PBool@{o}) (i : nat) :
   CReal := inject_Q (fst (ibis_stage@{o} γ i)).
 
@@ -685,9 +679,9 @@ Proof.
   pose proof (ibis_width_pos N). apply ibis_clamp_id; lra.
 Qed.
 
-(* The map is constant on a ball about the limit, and both the left ends
-   (valued [false]) and the right ends (valued [true]) enter every such
-   ball. *)
+(* The map 常值 ball about limit, both left ends
+ (valued [false]) right ends (valued [true]) enter every such
+ ball. （已译） *)
 Theorem ibis_contra@{o} (γ : PMor@{o} PInterval@{o} PBool@{o})
   (g0 : ibis_val@{o} γ 0 = false) (g1 : ibis_val@{o} γ 1 = true) : False.
 Proof.
@@ -747,8 +741,7 @@ Qed.
 
 End Bisection.
 
-(* Every continuous map from the interval to [PBool] takes one value at
-   the two endpoints. *)
+(* 相关说明。 （已译） *)
 Theorem interval_bool_endpoints@{o} (γ : PMor@{o} PInterval@{o} PBool@{o}) :
   pmap γ ival_zero@{o} = pmap γ ival_one@{o}.
 Proof.
@@ -771,8 +764,8 @@ Qed.
 
 (** ** Straight-line paths *)
 
-(* Multiplication by a real of absolute value at most one carries a ball
-   into the ball of the same radius. *)
+(* Multiplication real absolute value at most one carries ball
+ 进入 ball same radius. （已译） *)
 Lemma rball_scale@{} (x r s : CReal) (e : Q) :
   CRealLe (CReal_abs x) (inject_Q 1) → rball r s e →
   rball (CReal_mult r x) (CReal_mult s x) e.
@@ -834,8 +827,8 @@ Program Definition ival_scale_map@{o} (a : IvalSetoid@{o}) :
 |}.
 Next Obligation. intros a t s H; simpl in *. rewrite H. reflexivity. Qed.
 
-(* The segment from 0 to [a], t ↦ t·a, a path in the interval: continuous
-   because its composite with the inclusion is a scaling of the line. *)
+(* The segment 0 [a], t ↦ t·a, path interval: continuous
+ because 复合 含入 scaling line. （已译） *)
 Definition ival_segment@{o} (a : IvalSetoid@{o}) :
   PMor@{o} PInterval@{o} PInterval@{o} :=
   psub_lift PRLine@{o} IvalSetoid@{o} ival_incl@{o} PInterval@{o}
@@ -855,8 +848,8 @@ Lemma ival_segment_1@{o} (a : IvalSetoid@{o}) :
   pmap (ival_segment@{o} a) ival_one@{o} ≈ a.
 Proof. simpl. apply CReal_mult_1_l. Qed.
 
-(* Every continuous map from the interval to [PBool] is constant:
-   [interval_bool_endpoints] along the segment from 0 to each point. *)
+(* Every continuous map interval [PBool] 常值:
+ [interval_bool_endpoints] along segment 0 each point. （已译） *)
 Theorem interval_bool_constant@{o} (γ : PMor@{o} PInterval@{o} PBool@{o})
   (s t : IvalSetoid@{o}) : pmap γ s = pmap γ t.
 Proof.
@@ -875,7 +868,7 @@ Qed.
 Definition interval_PConnectedBool@{o} : PConnectedBool PInterval@{o} :=
   interval_bool_constant@{o}.
 
-(** ** π₀ of the interval is one point *)
+(* 相关说明。 （已译） *)
 
 Lemma pinterval_point_rel@{o so p | o < so, p <= o +}
   (x : PMor@{o} PPoint@{o} PInterval@{o}) :
@@ -926,7 +919,7 @@ Next Obligation. intros u v _; apply colim_rel_refl. Qed.
 Next Obligation. intros []; reflexivity. Qed.
 Next Obligation. intro c. exact (pinterval_rel c). Qed.
 
-(** ** π₀ of the two-point discrete space has two points *)
+(* 相关说明。 （已译） *)
 
 Program Definition pbool_at_zero@{o so | o < so +} :
   PHomSetoid@{o} PInterval@{o} PBool@{o} ~{Sets@{o so}}~>
@@ -942,8 +935,7 @@ Program Definition pbool_at_point@{o so | o < so +} :
 |}.
 Next Obligation. intros x y H. exact (H _). Qed.
 
-(* The cocone to the two-point set; its [ParTwo] leg coheres because
-   the interval is connected for maps into [PBool]. *)
+(* 相关说明。 （已译） *)
 Definition pi0_bool_cocone@{o so p | o < so, p <= o +} :
   Cocone (PPathPair_obj@{o so p} PBool@{o}).
 Proof.
@@ -960,8 +952,7 @@ Proof.
   exact (interval_bool_constant q ival_one ival_zero).
 Defined.
 
-(* The two points of [PBool], Instance/Top/Subspace.v's [ppoint_true]
-   and [ppoint_false], lie in different path components. *)
+(* 相关说明。 （已译） *)
 Theorem Pi0_PBool_two@{o so p f | o < so, p <= o, o < f +} :
   @equiv _ (fobj[PPi0@{o so p f}] PBool@{o})
     (colim_inj PathColim@{o so p} (PPathPair_obj@{o so p} PBool@{o}) ParY

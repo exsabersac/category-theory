@@ -14,7 +14,7 @@ Require Import Category.Instance.Props.
 
 Generalizable All Variables.
 
-(** * The Lindenbaum category of an elementary theory *)
+(* * * The Lindenbaum 范畴 elementary theory （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/Lindenbaum-Tarski+algebra
@@ -31,8 +31,7 @@ Generalizable All Variables.
 
 (** ** (A) Syntax *)
 
-(* Atoms, truth, conjunction, implication.  Nothing else; see the scope
-   note in the header. *)
+(* 相关说明。 （已译） *)
 Inductive Sent (V : Type) : Type :=
   | s_var : V -> Sent
   | s_top : Sent
@@ -48,17 +47,17 @@ Arguments s_imp {V} _ _.
    to be deductively closed, consistent, or inhabited. *)
 Definition Theo (V : Type) : Type := Sent V -> Prop.
 
-(** ** (B) Entailment relative to a theory *)
+(* 相关说明。 （已译） *)
 
-(* Mac Lane's "q is a consequence of p on the basis of the axioms of T".
-   Prop-valued, so [Proset] accepts it and the category below is thin
-   without any truncation. *)
+(* Mac Lane's "q consequence p basis axioms T".
+ Prop-valued, so [Proset] accepts it 范畴 below thin
+ without any truncation. （已译） *)
 Inductive Entails {V : Type} (T : Theo V) : Sent V -> Sent V -> Prop :=
   (* assumption / reflexivity *)
   | ent_refl p : Entails p p
   (* cut / transitivity *)
   | ent_cut p q r : Entails p q -> Entails q r -> Entails p r
-  (* the axiom rule: an axiom of T follows from anything *)
+  (* 相关说明。 （已译） *)
   | ent_ax p a : T a -> Entails p a
   (* ⊤-introduction *)
   | ent_top p : Entails p s_top
@@ -83,7 +82,7 @@ Definition entails_PreOrder {V} (T : Theo V) :
    ; RelationClasses.PreOrder_Transitive :=
        fun p q r H K => ent_cut T p q r H K |}.
 
-(** ** (C) The category of sentences ordered by entailment *)
+(* * ** (C) The 范畴 sentences ordered entailment （已译） *)
 
 Definition Lind {V} (T : Theo V) : Category :=
   Proset (entails_PreOrder T).
@@ -117,7 +116,7 @@ Definition lind_any_Faithful {V} (T : Theo V) {D : Category}
   (F : Lind T ⟶ D) : Faithful F :=
   @Build_Faithful (Lind T) D F (fun x y f g _ => I).
 
-(** ** (D) Terminal, cartesian and closed *)
+(* 相关说明。 （已译） *)
 
 (* Terminal object: truth.  [one] is ⊤-introduction; [one_unique] is
    free by thinness. *)
@@ -127,9 +126,7 @@ Definition lind_any_Faithful {V} (T : Theo V) {D : Category}
   one := fun p => ent_top T p
 }.
 
-(* Product: conjunction, exactly as the exercise says.  [fork] is
-   ∧-introduction, the projections are the two ∧-eliminations;
-   [fork_respects] and [ump_products] are free by thinness. *)
+(* 相关说明。 （已译） *)
 #[export] Program Instance Lind_Cartesian {V} (T : Theo V) :
   @Cartesian (Lind T) := {
   product_obj := s_and;
@@ -164,8 +161,7 @@ Definition lind_uncurry {V} {T : Theo V} {p q r : Sent V}
      ; from := {| morphism := fun f => lind_uncurry f |} |}
 }.
 
-(* The exercise's three identifications, pinned so that a later edit
-   cannot drift away from them. *)
+(* 相关说明。 （已译） *)
 Example lind_terminal_is_top {V} (T : Theo V) :
   @terminal_obj (Lind T) (Lind_Terminal T) = s_top := eq_refl.
 
@@ -176,22 +172,20 @@ Example lind_exponent_is_imp {V} (T : Theo V) (p q : Sent V) :
   @exponent_obj (Lind T) (Lind_Cartesian T) (Lind_Closed T) p q
     = s_imp p q := eq_refl.
 
-(* Currying IS the deduction rule, on the nose. *)
+(* 相关说明。 （已译） *)
 Example lind_curry_is_rule {V} (T : Theo V) (p q r : Sent V)
   (f : Entails T (s_and p q) r) :
   @curry (Lind T) (Lind_Cartesian T) (Lind_Closed T) p q r f
     = ent_curry T p q r f := eq_refl.
 
-(* ...and the counit is [lind_uncurry] at the identity derivation. *)
+(* ...and counit [lind_uncurry] at 恒等 derivation. （已译） *)
 Example lind_eval_unfold {V} (T : Theo V) (q r : Sent V) :
   @eval (Lind T) (Lind_Cartesian T) (Lind_Closed T) q r
     = lind_uncurry (ent_refl T (s_imp q r)) := eq_refl.
 
-(** ** (E) Soundness under a valuation *)
+(* 相关说明。 （已译） *)
 
-(* The interpretation of a sentence under a valuation of the atoms.
-   Conjunction goes to /\ and implication to ->, which is what makes
-   section (F)'s three preservation statements hold at eq_refl. *)
+(* 相关说明。 （已译） *)
 Fixpoint sdenote {V} (val : V -> Prop) (p : Sent V) : Prop :=
   match p with
   | s_var v   => val v
@@ -213,10 +207,10 @@ Proof.
   - intros _; exact (HT a H).
 Qed.
 
-(** ** (F) The comparison functor into Instance/Props.v *)
+(* * ** (F) The comparison 函子 Instance/Props.v （已译） *)
 
-(* The soundness map packaged as a functor.  All three functor laws are
-   free: Props is thin, so every equation between its arrows is True. *)
+(* The soundness map packaged 函子. All three 函子 laws are
+ free: Props thin, so every equation between arrows True. （已译） *)
 Program Definition LindSound {V} (T : Theo V) (val : V -> Prop)
   (HT : forall a, T a -> sdenote val a) : Lind T ⟶ Props := {|
   fobj := sdenote val;
@@ -243,14 +237,14 @@ Example sound_exponent {V} (T : Theo V) val HT (p q : Sent V) :
         (fobj[LindSound T val HT] p) (fobj[LindSound T val HT] q)
   := eq_refl.
 
-(* Faithful, but VACUOUSLY so: this IS [lind_any_Faithful], so nothing
-   about soundness is consulted and the vacuity is not a claim about the
-   proof but the definition itself. *)
+(* Faithful, but VACUOUSLY so: IS [lind_any_Faithful], so nothing
+ about soundness consulted vacuity not claim about the
+ 证明 but 定义 itself. （已译） *)
 #[export] Instance LindSound_Faithful {V} (T : Theo V) val HT :
   Faithful (LindSound T val HT) :=
   lind_any_Faithful T (LindSound T val HT).
 
-(** ** (G) Two axiom sets, two categories *)
+(* * ** (G) Two axiom sets, two 范畴 （已译） *)
 
 (*
    本节说明 Lindenbaum 相关定义、性质与动机。
@@ -279,22 +273,20 @@ Program Definition LindWeaken {V} {T T' : Theo V}
   fmap := fun p q f => entails_weaken HTT f
 |}.
 
-(* Two atoms, and three theories over them: no axioms, the single
-   implication between the atoms, and every sentence an axiom. *)
+(* 相关说明。 （已译） *)
 Definition sv (b : bool) : Sent bool := s_var b.
 
 Definition T_empty : Theo bool := fun _ => False.
 Definition T_mp : Theo bool := fun s => s = s_imp (sv true) (sv false).
 Definition T_all : Theo bool := fun _ => True.
 
-(* The separating valuation: the first atom true, the second not. *)
+(* 相关说明。 （已译） *)
 Definition val_sep (b : bool) : Prop := b = true.
 
 Lemma val_sep_empty : forall a, T_empty a -> sdenote val_sep a.
 Proof. intros a []. Qed.
 
-(* Non-derivability at the empty theory, by soundness at [val_sep].
-   This is the half that cannot be got by exhibiting a derivation. *)
+(* 相关说明。 （已译） *)
 Theorem not_entails_empty :
   Entails T_empty (sv true) (sv false) -> False.
 Proof.
@@ -320,8 +312,8 @@ Defined.
 Definition empty_sub_mp : forall a, T_empty a -> T_mp a :=
   fun a H => match H return T_mp a with end.
 
-(* The comparison functor between the two categories is identity on
-   objects, and it is NOT full: [entails_mp] has no preimage. *)
+(* The comparison 函子 between two 范畴 恒等 on
+ 对象, it NOT full: [entails_mp] has no preimage. （已译） *)
 Theorem weaken_not_Full : Full (LindWeaken empty_sub_mp) -> False.
 Proof.
   intros [pre _].
@@ -362,7 +354,7 @@ Proof.
   exact (no_full_functor_empty_to_all F (Equivalence_Full E)).
 Qed.
 
-(** ** (H) The comparison with Props is not an equivalence *)
+(* * ** (H) The comparison Props not 等价 （已译） *)
 
 (* The valuation under which every atom, hence every sentence, holds. *)
 Definition val_true (b : bool) : Prop := True.
@@ -377,8 +369,7 @@ Proof.
     [ apply Hv | exact I | split; assumption | intros _; assumption ].
 Qed.
 
-(* Not full: fullness at this valuation would be completeness, and it
-   would hand back the underivable entailment of [not_entails_empty]. *)
+(* 相关说明。 （已译） *)
 Theorem sound_not_Full :
   Full (LindSound T_empty val_true val_true_empty) -> False.
 Proof.
@@ -386,8 +377,8 @@ Proof.
   exact (not_entails_empty (pre (sv true) (sv false) (fun x => x))).
 Qed.
 
-(* Every object in the image of this comparison is inhabited, so none of
-   them is isomorphic to False in Props. *)
+(* Every 对象 image comparison inhabited, so none of
+ them isomorphic False Props. （已译） *)
 Theorem sound_misses_False (p : Sent bool) :
   @Isomorphism Props (sdenote val_true p) False -> False.
 Proof.

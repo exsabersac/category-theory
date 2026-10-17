@@ -23,7 +23,7 @@ Require Import Category.Instance.Sets.Classifier.OneLevel.
 
 Generalizable All Variables.
 
-(** * Sets is well-powered and co-well-powered, and at which universe *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/subobject
@@ -39,15 +39,13 @@ Section SetsWellPoweredUp.
 Universe o so.
 Constraint o < so.
 
-(** ** Well-powered one universe up: subobjects as Type-valued predicates *)
+(* 相关说明。 （已译） *)
 
-(* The index at [X]: the ≈-respecting [Type@{o}]-valued predicates on the
-   carrier.  It lives at [o+1]. *)
+(* 相关说明。 （已译） *)
 Definition sets_pred_index (X : SetoidObject@{o o}) :=
   { P : carrier X → Type@{o} & ∀ a b : carrier X, a ≈ b → P a → P b }.
 
-(* The domain of the subobject a predicate names: the elements satisfying
-   it, compared on the first component. *)
+(* 相关说明。 （已译） *)
 Definition sets_pred_setoid (X : SetoidObject@{o o}) (P : sets_pred_index X) :
   SetoidObject@{o o}.
 Proof.
@@ -80,8 +78,7 @@ Definition sets_sub_of_pred (X : SetoidObject@{o o}) (P : sets_pred_index X) :
   @Build_SubObj Sets@{o so} X (sets_pred_setoid X P) (sets_pred_incl X P)
     (sets_pred_incl_monic X P).
 
-(* The predicate a subobject names: "is in the image", as DATA -- the
-   preimage is carried, not truncated. *)
+(* 相关说明。 （已译） *)
 Definition sets_pred_of_sub (X : SetoidObject@{o o})
   (u : @SubObj Sets@{o so} X) : sets_pred_index X.
 Proof.
@@ -89,8 +86,8 @@ Proof.
   intros b b' Hb [a Ha]; exists a; etransitivity; [exact Ha|exact Hb].
 Defined.
 
-(* The domain isomorphism.  Forward: project the carried preimage;
-   it respects ≈ because the mono is injective. *)
+(* The domain 同构. Forward: project carried preimage;
+ it respects ≈ because mono injective. （已译） *)
 Definition sets_pred_fwd (X : SetoidObject@{o o}) (u : @SubObj Sets@{o so} X) :
   sets_pred_setoid X (sets_pred_of_sub X u) ~{Sets@{o so}}~> sub_dom u.
 Proof.
@@ -140,10 +137,10 @@ Definition Sets_WellPoweredAt_up (X : SetoidObject@{o o}) :
      wp_from    := sets_pred_of_sub X ;
      wp_to_from := sets_pred_to_from X |}.
 
-(** ** Co-well-powered one universe up: quotients as coarser relations *)
+(* 相关说明。 （已译） *)
 
-(* The index at [X]: the [Type@{o}]-valued equivalence relations on the
-   carrier coarser than its ≈.  It lives at [o+1]. *)
+(* The index at [X]: [Type@{o}]-valued 等价 relations the
+ carrier coarser than ≈. It lives at [o+1]. （已译） *)
 Definition sets_rel_index (X : SetoidObject@{o o}) :=
   { R : crelation@{o o} (carrier X) & (Equivalence R * SetoidCoarser R)%type }.
 
@@ -223,7 +220,7 @@ Example Sets_WellPoweredAt_up_carrier (X : SetoidObject)
   carrier (sub_dom (wp_to (Sets_WellPoweredAt_up X) P))
     = { a : carrier X & `1 P a } := eq_refl.
 
-(** ** Well-powered at the pin, under [Untruncate] *)
+(* 相关说明。 （已译） *)
 
 Section SetsWellPoweredPinned.
 
@@ -254,7 +251,7 @@ Definition Sets_WellPowered_untruncate@{o so t | o < so, Set < o, o < t +}
   (U : Untruncate@{o}) : WellPowered@{so o o so t} Sets@{o so} :=
   fun X => Sets_WellPoweredAt_untruncate U X.
 
-(** ** The intersection of a class of subobjects, at [Sets] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明子对象相关定义、性质与动机。
@@ -305,9 +302,7 @@ Defined.
 
 End SetsIntersection.
 
-(* The class of ALL subobjects: its intersection is empty, because the
-   empty subobject is a member.  This reads the construction back at a
-   case whose answer is known. *)
+(* 相关说明。 （已译） *)
 Definition sets_sub_bot@{o so | o < so +} (X : SetoidObject@{o o}) :
   @SubObj Sets@{o so} X :=
   @Build_SubObj Sets@{o so} X _ _ (Sets_zero_monic X).

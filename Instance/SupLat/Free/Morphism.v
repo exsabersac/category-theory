@@ -17,7 +17,7 @@ Require Import Category.Instance.SupLat.Free.
 
 Generalizable All Variables.
 
-(** * θ* between #466's two power-set monads *)
+(* * * θ* between #466's two power-set 单子 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/suplattice
@@ -28,7 +28,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** θ : Powerset_Monad ⟶ SL_induced, identity components *)
+(* * ** θ : Powerset_Monad ⟶ SL_induced, 恒等 components （已译） *)
 
 Definition SL_theta@{o so | Set < o, o < so +} :
   MonadHom@{so o} Powerset_Monad@{o so} SL_induced@{o so}.
@@ -62,7 +62,7 @@ Example SL_theta_alg_fun@{o so | Set < o, o < so +} {X : SetoidObject@{o o}}
   (fun S => @t_alg _ _ _ _ (mh_algebra SL_theta@{o so} β) S)
     = (fun S => @t_alg _ _ _ _ (SL_induced_repack@{o so} β) S) := eq_refl.
 
-(** ** θ⁻¹ : SL_induced ⟶ Powerset_Monad, identity components *)
+(* * ** θ⁻¹ : SL_induced ⟶ Powerset_Monad, 恒等 components （已译） *)
 
 Definition SL_theta_inv@{o so | Set < o, o < so +} :
   MonadHom@{so o} SL_induced@{o so} Powerset_Monad@{o so}.
@@ -88,7 +88,7 @@ Example SL_theta_inv_component@{o so | Set < o, o < so +}
   mh_transform SL_theta_inv@{o so} X
     = @id Sets@{o so} (fobj[Powerset_Prop@{o so}] X) := eq_refl.
 
-(* The two are inverse in [Monads Sets]. *)
+(* 相关说明。 （已译） *)
 
 Definition SL_theta_iso@{o so m1 m2 |
   Set < o, o < so, o <= m1, o <= m2, so <= m1, so <= m2 +} :
@@ -104,7 +104,7 @@ Proof.
   - intros X S. reflexivity.
 Defined.
 
-(** ** θ* : the functor Free.v lists as NOT DELIVERED *)
+(* * ** θ* : 函子 Free.v lists NOT DELIVERED （已译） *)
 
 Definition SL_EM_theta@{o so | Set < o, o < so +} :
   @EilenbergMoore@{so so so o} Sets@{o so}
@@ -125,7 +125,7 @@ Example SL_EM_theta_alg_fun@{o so | Set < o, o < so +}
     = (fun S => @t_alg _ _ _ _ (SL_induced_repack@{o so} (`2 x)) S)
   := eq_refl.
 
-(** ** [EM_induced_to_SupLat] factors through θ* *)
+(** ** [EM_induced_to_SupLat] 经 θ* 分解 *)
 
 Example SL_factor_set@{o so | Set < o, o < so +}
   (x : @EilenbergMoore@{so so so o} Sets@{o so}

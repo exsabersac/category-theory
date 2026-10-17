@@ -16,7 +16,7 @@ Require Import Category.Theory.Adjunction.
 
 Generalizable All Variables.
 
-(** Adjunctions and mates in the bicategory `Cat` *)
+(** 本节：Adjunctions mates bicategory `Cat` （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/mate
@@ -27,7 +27,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------ *)
-(* 1. Internal adjunctions in `Cat` coincide with `F ∹ U` and `F ⊣ U`. *)
+(* 1. Internal 伴随 `Cat` coincide `F ∹ U` `F ⊣ U`. （已译） *)
 (* ------------------------------------------------------------------ *)
 
 Section CatAdjunction.
@@ -43,8 +43,8 @@ Context {U : D ⟶ C}.
 *)
 #[local] Obligation Tactic := idtac.
 
-(* Forward: an internal adjunction supplies the unit/counit data directly, and
-   its bicategorical triangle identities give the two zig-zag identities. *)
+(* Forward: internal 伴随 supplies unit/counit data directly, and
+ bicategorical triangle identities give two zig-zag identities. （已译） *)
 Program Definition Cat_BicatAdjunction_to_Transform
   (H : BicatAdjunction (B:=Cat_Bicategory) F U) : F ∹ U := {|
   Transformation.unit   := adj_unit   (B:=Cat_Bicategory) F U;
@@ -107,8 +107,8 @@ Proof.
   - exact Cat_Transform_to_BicatAdjunction.
 Qed.
 
-(* Composing with the `F ∹ U ↔ F ⊣ U` bridge (Universal.v): an internal
-   adjunction in `Cat` yields a hom-set adjunction, and conversely. *)
+(* Composing `F ∹ U ↔ F ⊣ U` bridge (Universal.v): internal
+ 伴随 `Cat` yields hom-set 伴随, conversely. （已译） *)
 Definition Cat_BicatAdjunction_Adjunction
   (H : BicatAdjunction (B:=Cat_Bicategory) F U) : F ⊣ U :=
   Adjunction_from_Transform (Cat_BicatAdjunction_to_Transform H).
@@ -128,7 +128,7 @@ Qed.
 End CatAdjunction.
 
 (* ------------------------------------------------------------------ *)
-(* 2. The two hom-adjunctions in `Cat` are the transpose and the       *)
+(* 2. The two hom-伴随 `Cat` transpose the （已译） *)
 (*    counit whiskering.                                                *)
 (* ------------------------------------------------------------------ *)
 
@@ -183,7 +183,7 @@ Qed.
 End CatHomAdjunction.
 
 (* ------------------------------------------------------------------ *)
-(* 3. Mates in `Cat` unfold to the transposes (the payoff).            *)
+(* 相关说明。 （已译） *)
 (* ------------------------------------------------------------------ *)
 
 Section CatMates.

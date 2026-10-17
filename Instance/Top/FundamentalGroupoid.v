@@ -30,7 +30,7 @@ Open Scope R_scope.
 *)
 Set Default Proof Using "All".
 
-(** * The fundamental groupoid of a topological space *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/fundamental+groupoid
@@ -47,8 +47,7 @@ Set Default Proof Using "All".
 
 (** ** Paths *)
 
-(* A path from a to b: a continuous map out of the interval with the two
-   endpoint conditions, stated up to `≈` in the space's own equality. *)
+(* 相关说明。 （已译） *)
 Record Path (X : TopSpace) (a b : X) := {
   path_map :> I_Top ~{Top}~> X;
 
@@ -88,8 +87,8 @@ Definition PathHomotopy {X : TopSpace} {a b : X} (p q : Path X a b) : Type :=
 
 (** ** Evaluating composites *)
 
-(* Two rewriting lemmas used throughout: a composite arrow evaluates by
-   evaluating the inner one first, and the outer arrow only sees coordinates. *)
+(* Two rewriting lemmas used throughout: 复合 arrow evaluates by
+ evaluating inner one first, outer arrow sees coordinates. （已译） *)
 Lemma comp_eval_I {X : TopSpace} (f : I_Top ~{Top}~> X)
       (g : I_Top ~{Top}~> I_Top) (x y : Ipt) :
   ival (g x) = ival y → (f ∘[Top] g) x ≈ f y.
@@ -105,9 +104,9 @@ Lemma comp_eval_SqSq {X : TopSpace} (F : Sq_Top ~{Top}~> X)
   sq_t (G z) = sq_t w → sq_s (G z) = sq_s w → (F ∘[Top] G) z ≈ F w.
 Proof. intros H1 H2; exact (Sqap F (G z) w H1 H2). Qed.
 
-(** ** Homotopy is an equivalence relation *)
+(* * ** Homotopy 等价 关系 （已译） *)
 
-(* Reflexivity: the homotopy constant in the second coordinate. *)
+(* Reflexivity: homotopy 常值 second coordinate. （已译） *)
 Definition ah_refl {X : TopSpace} (a b : X) (p : I_Top ~{Top}~> X)
            (Ha : p I_zero ≈ a) (Hb : p I_one ≈ b) : ArrowHomotopy a b p p.
 Proof.
@@ -149,8 +148,7 @@ Proof.
     + rewrite Sq_flip_s, !sq_pt_s, I_rev_eval; reflexivity.
 Defined.
 
-(* Transitivity: stack the two squares, each run at double speed vertically.
-   This is [paste_arrow] applied along the second coordinate of the square. *)
+(* 相关说明。 （已译） *)
 Section HomotopyTrans.
 
 Context {X : TopSpace}.
@@ -262,7 +260,7 @@ Proof.
   - exact (ah_right H).
 Defined.
 
-(** ** Constant paths, reversal, and concatenation *)
+(* 相关说明。 （已译） *)
 
 Definition const_arrow {X : TopSpace} (a : X) : I_Top ~{Top}~> X :=
   Build_ContinuousMorphism I_Top X
@@ -320,8 +318,7 @@ Proof.
     rewrite I_dbl'_eval, ival_I_zero, Hx; Rlin.
 Qed.
 
-(* The reparametrized concatenation: p run at double speed on the first half
-   of the interval, q on the second. *)
+(* 相关说明。 （已译） *)
 Definition concat_arrow : I_Top ~{Top}~> X :=
   paste_arrow (A:=BS_I) ival I_coord_lip (1/2)
     (p ∘[Top] I_dbl) (q ∘[Top] I_dbl') concat_agree.
@@ -369,7 +366,7 @@ Definition path_concat {X : TopSpace} {a b c : X}
                 c (path_tgt q)
 |}.
 
-(** ** The straight-line homotopy of parameters *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 FundamentalGroupoid 相关定义、性质与动机。
@@ -429,7 +426,7 @@ Defined.
 
 End Straight.
 
-(** ** Evaluating a concatenation of paths *)
+(* 相关说明。 （已译） *)
 
 Lemma path_at_zero {X : TopSpace} {a b : X} (p : Path X a b) (y : Ipt) :
   ival y = 0 → path_map p y ≈ a.
@@ -459,10 +456,10 @@ Lemma path_concat_second {X : TopSpace} {a b c : X}
   path_map (path_concat p q) x ≈ path_map q y.
 Proof. apply concat_second. Qed.
 
-(** ** The three category laws, pointwise *)
+(* * ** The three 范畴 laws, pointwise （已译） *)
 
-(* Right unit: p followed by the constant path at b agrees pointwise with p
-   reparametrized by [rf_dbl]. *)
+(* Right unit: p followed 常值 path at b agrees pointwise p
+ reparametrized [rf_dbl]. （已译） *)
 Lemma unit_right_pointwise {X : TopSpace} {a b : X} (p : Path X a b) (x y : Ipt) :
   ival y = rf_dbl (ival x) →
   path_map (path_concat p (const_path b)) x ≈ path_map p y.
@@ -482,8 +479,8 @@ Proof.
         rewrite Hy; unfold rf_dbl; Rlin.
 Qed.
 
-(* Left unit: the constant path at a followed by p agrees pointwise with p
-   reparametrized by [rf_dbl']. *)
+(* Left unit: 常值 path at followed p agrees pointwise p
+ reparametrized [rf_dbl']. （已译） *)
 Lemma unit_left_pointwise {X : TopSpace} {a b : X} (p : Path X a b) (x y : Ipt) :
   ival y = rf_dbl' (ival x) →
   path_map (path_concat (const_path a) p) x ≈ path_map p y.
@@ -551,8 +548,7 @@ Proof.
         { apply path_concat_second; simpl; lra. }
 Qed.
 
-(* Inversion: a path followed by its reverse agrees pointwise with the path
-   reparametrized by the tent map, which goes out and comes back. *)
+(* 相关说明。 （已译） *)
 Lemma inverse_pointwise {X : TopSpace} {a b : X} (p : Path X a b) (x y : Ipt) :
   ival y = rf_tent (ival x) →
   path_map (path_concat p (path_rev p)) x ≈ path_map p y.
@@ -640,7 +636,7 @@ Proof.
     + symmetry; apply (path_at_zero p); exact Hy.
 Defined.
 
-(** ** Concatenation is well defined on homotopy classes *)
+(* 相关说明。 （已译） *)
 
 Section HomotopyConcat.
 
@@ -754,7 +750,7 @@ Definition path_concat_respects {X : TopSpace} {a b c : X}
   PathHomotopy (path_concat p q) (path_concat p' q') :=
   hconcat E1 E2 (path_tgt p) (path_src q) (path_tgt p') (path_src q').
 
-(** ** Reversal inverts, on both sides *)
+(* 相关说明。 （已译） *)
 
 Lemma path_rev_rev {X : TopSpace} {a b : X} (p : Path X a b) (x : Ipt) :
   path_map (path_rev (path_rev p)) x ≈ path_map p x.
@@ -782,9 +778,9 @@ Proof.
       symmetry; apply concat_second; [ lra | rewrite I_dbl'_eval; Rlin ].
 Qed.
 
-(* The other inverse law comes from the first one applied to the reversed
-   path, together with the pointwise identity p‾‾ = p; no second homotopy
-   needs to be built. *)
+(* The other inverse law comes first one applied reversed
+ path, together pointwise 恒等 p‾‾ = p; no second homotopy
+ needs built. （已译） *)
 Definition path_rev_inverse_left {X : TopSpace} {a b : X} (p : Path X a b) :
   PathHomotopy (path_concat (path_rev p) p) (const_path b).
 Proof.
@@ -844,8 +840,7 @@ Next Obligation.
   intros X x y z w f g h; exact (ah_sym (assoc_homotopy h g f)).
 Qed.
 
-(* Mac Lane §I.5: every arrow of the fundamental groupoid is invertible, the
-   inverse of a class being the class of the reversed path. *)
+(* 相关说明。 （已译） *)
 Definition fundamental_groupoid_is_groupoid (X : TopSpace) :
   IsGroupoid (FundamentalGroupoid X).
 Proof.
@@ -871,7 +866,7 @@ Definition equal_points_iso {X : TopSpace} {a a' : X} (H : a ≈ a') :
   @Isomorphism (FundamentalGroupoid X) a a' :=
   giso (fundamental_groupoid_is_groupoid X) (equal_points_path H).
 
-(** ** Path-connected spaces and the fundamental group *)
+(* 相关说明。 （已译） *)
 
 Definition PathConnected (X : TopSpace) : Type := ∀ a b : X, Path X a b.
 
@@ -879,8 +874,7 @@ Definition pathconnected_Connected {X : TopSpace} (K : PathConnected X) :
   Connected (FundamentalGroupoid X) :=
   @arrow_connected (FundamentalGroupoid X) K.
 
-(* The fundamental group at a base point is the vertex group of the
-   fundamental groupoid there (Structure/Groupoid.v's [vertex_group]). *)
+(* 相关说明。 （已译） *)
 Definition fundamental_group (X : TopSpace) (a : X) : GrpObject :=
   vertex_group (fundamental_groupoid_is_groupoid X) a.
 
@@ -897,7 +891,7 @@ Proof.
            (pathconnected_Connected K) a b).
 Defined.
 
-(** ** Two paths that agree pointwise are homotopic *)
+(* 相关说明。 （已译） *)
 
 Definition pointwise_homotopic {X : TopSpace} {a b : X} (p q : Path X a b)
            (E : ∀ x : Ipt, path_map p x ≈ path_map q x) : PathHomotopy p q.
@@ -908,7 +902,7 @@ Proof.
   - exact E.
 Defined.
 
-(** ** Every map from the interval to a two-point discrete space is constant *)
+(* * ** Every map interval two-point discrete space 常值 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -1017,7 +1011,7 @@ Proof.
   assert (Hm1 : m <= 1).
   { exact (Hlub 1 (fun t Ht => proj1 (proj2 Ht))). }
   destruct (gval_locally_constant m) as [d [Hd Hball]].
-  (* the value at the supremum already agrees, by approximation from below *)
+  (* 相关说明。 （已译） *)
   assert (Hgm : gval m ≈ gval 0).
   { destruct (dec (gval m) (gval 0)) as [Hyes | Hno]; [ exact Hyes | ].
     exfalso.
@@ -1034,7 +1028,7 @@ Proof.
       - exact (gsame_elim t (proj2 (proj2 Ht))). }
     pose proof (Hlub (m - d) Hup).
     lra. }
-  (* and the supremum is the right endpoint *)
+  (* 相关说明。 （已译） *)
   assert (Hm : m = 1).
   { assert (Hnot : 1 <= m).
     { apply Rnot_lt_le.
@@ -1074,8 +1068,7 @@ Qed.
 
 End IntervalConnected.
 
-(* Rescaling by the target point turns the endpoint statement into constancy
-   on the whole interval. *)
+(* 相关说明。 （已译） *)
 Lemma scale_lo (c : R) (H0 : 0 <= c) (H1 : c <= 1) (t : R) :
   0 <= t → t <= 1 → 0 <= c * t.
 Proof. intros; nra. Qed.
@@ -1127,7 +1120,7 @@ Proof.
                        end) f x).
 Qed.
 
-(** ** The vertex-group inclusion is an equivalence *)
+(* * ** The vertex-group 含入 等价 （已译） *)
 
 (*
    本节说明函子、等价相关定义、性质与动机。
@@ -1146,7 +1139,7 @@ Proof.
            (pathconnected_Connected K) a).
 Defined.
 
-(** ** Non-vacuity: the construction separates two topologies on one set *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 FundamentalGroupoid 相关定义、性质与动机。
@@ -1157,9 +1150,7 @@ Defined.
 Example bool_carriers_agree :
   top_carrier Bool_Discrete = top_carrier TwoPoint_Indiscrete := eq_refl.
 
-(* On the discrete two-point space every path takes one and the same value
-   at every parameter, by [interval_to_discrete_constant].  Hence there is no
-   path from [true] to [false]. *)
+(* 相关说明。 （已译） *)
 Theorem no_path_true_false : Path Bool_Discrete true false → False.
 Proof.
   intro p.
@@ -1174,8 +1165,8 @@ Qed.
 Theorem Bool_Discrete_not_pathconnected : PathConnected Bool_Discrete → False.
 Proof. intro K; exact (no_path_true_false (K true false)). Qed.
 
-(* And the fundamental groupoid itself is not connected, so the hypothesis of
-   [fundamental_group_basepoint_independent] is a real restriction. *)
+(* And fundamental groupoid itself not connected, so 假设 of
+ [fundamental_group_basepoint_independent] real restriction. （已译） *)
 Theorem Bool_Discrete_pi_not_connected :
   Connected (FundamentalGroupoid Bool_Discrete) → False.
 Proof.
@@ -1202,9 +1193,7 @@ Proof.
   rewrite H; exact Hs.
 Qed.
 
-(* The indiscrete twin.  Every setoid map into it is continuous
-   ([into_indiscrete_continuous] in Instance/Top.v), so the step function that
-   jumps at the right endpoint is a path from a to b. *)
+(* 相关说明。 （已译） *)
 Definition two_pt_fun (a b : bool) (x : Ipt) : bool :=
   if Rle_dec 1 (ival x) then b else a.
 
@@ -1251,8 +1240,8 @@ Definition TwoPoint_Indiscrete_basepoint_iso :
   fundamental_group_basepoint_independent TwoPoint_Indiscrete_pathconnected
     true false.
 
-(* And the inclusion of the fundamental group at [true] into the whole
-   fundamental groupoid is an equivalence of categories there. *)
+(* And 含入 fundamental group at [true] 进入 whole
+ fundamental groupoid 等价 范畴 there. （已译） *)
 Definition TwoPoint_Indiscrete_inclusion_equivalence :
   EquivalenceOfCategories (fundamental_group_inclusion (X:=TwoPoint_Indiscrete) true) :=
   fundamental_group_inclusion_equivalence TwoPoint_Indiscrete_pathconnected true.

@@ -1,4 +1,4 @@
-(** * The objects functor on the category of categories *)
+(* * * The 对象 函子 范畴 范畴 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -28,7 +28,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** §1. The discrete extension, with its universes written out *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、hom相关定义、性质与动机。
@@ -203,7 +203,7 @@ Next Obligation.
   exact (iso_from_to (disc_adj_iso x (StrictCat_Disc y)) g).
 Defined.
 
-(** ** §6. Why the source is [StrictCat] and not [Cat] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、hom相关定义、性质与动机。
@@ -214,8 +214,7 @@ Definition ObjRespectsCat : Type :=
   ∀ (C D : Category) (F G : C ⟶ D),
     @equiv _ (@homset Cat C D) F G → ∀ x : C, F x = G x.
 
-(* Over [StrictCat] it is the FIRST PROJECTION of the hom-setoid: a [:=]
-   with no tactic. *)
+(* 相关说明。 （已译） *)
 Definition objects_respects_StrictCat :
   ∀ (C D : Category) (F G : C ⟶ D),
     @equiv _ (@homset StrictCat C D) F G → ∀ x : C, F x = G x :=
@@ -255,7 +254,7 @@ Proof.
            (K _ _ (Id[Indiscrete bool]) SwapI swap_iso_in_Cat true)).
 Qed.
 
-(** ** §7. Why the target is [Coq] and not [Sets] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）端相关定义、性质与动机。
@@ -368,14 +367,14 @@ Section SetPin.
   Constraint Set < uh.
   Context (A : Type@{uo}) (C : Category@{uo uh uh}) (f : A → obj[C]).
 
-  (* controls: the shape and the functor type ARE formable here, and both
-     donors ARE nameable. *)
+  (* controls: shape 函子 type ARE formable here, both
+ donors ARE nameable. （已译） *)
   Check (DiscreteCat@{uo uh uh} A).
   Check (DiscreteCat@{uo uh uh} A ⟶ C).
   Check (DiscreteCat_Functor f).
   Check (Indiscrete A).
 
-  (* and, since the annotation, both donors also REACH these levels *)
+  (* 相关说明。 （已译） *)
   Check (DiscreteCat_Functor f : DiscreteCat@{uo uh uh} A ⟶ C).
   Check (Indiscrete@{uo uh uh} : Type@{uo} → Category@{uo uh uh}).
 
@@ -413,7 +412,7 @@ Section AdjunctionUniversesSeparated.
   Check (StrictCat_Disc@{a b c f e f} ⊣ StrictCat_Objects@{a c f e f b}).
 End AdjunctionUniversesSeparated.
 
-(** ** §9. The objects functor genuinely forgets *)
+(* * ** §9. The 对象 函子 genuinely forgets （已译） *)
 
 (*
    本节说明函子、hom、幺半群相关定义、性质与动机。
@@ -440,9 +439,9 @@ Program Definition ZeroF : BoolMon ⟶ BoolMon := {|
   fmap := fun _ _ _ => false
 |}.
 
-(* [poly_unit] has decidable equality, so Hedberg applies and the
-   transport in [Functor_StrictEq_Setoid]'s coherence field can be
-   eliminated; the argument is axiom-free. *)
+(* [poly_unit] has decidable equality, so Hedberg applies the
+ transport [Functor_StrictEq_Setoid]'s coherence field can be
+ eliminated; 论元 axiom-free. （已译） *)
 Lemma poly_unit_uip (p : @eq poly_unit ttt ttt) : p = eq_refl.
 Proof.
   apply (Eqdep_dec.UIP_dec (fun x y : poly_unit => left

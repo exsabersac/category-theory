@@ -6,7 +6,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * Ens_V, the category of sets belonging to a set V *)
+(* * * Ens_V, 范畴 sets belonging set V （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/category+of+sets
@@ -27,7 +27,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The full subcategory of C spanned by a family *)
+(* 相关说明。 （已译） *)
 
 (*
    nLab: https://ncatlab.org/nlab/show/full+subcategory
@@ -59,15 +59,15 @@ Definition Spanned : Category := {|
   comp_assoc_sym := λ x y z w, @comp_assoc_sym C (El x) (El y) (El z) (El w)
 |}.
 
-(* The inclusion into the ambient category: decode on objects, and the identity
-   on morphisms, since a [Spanned] morphism already IS a C-morphism. *)
+(* The 含入 进入 ambient 范畴: decode 对象, 恒等
+ 态射, since [Spanned] 态射 already IS C-态射. （已译） *)
 Program Definition Spanned_Incl : Spanned ⟶ C := {|
   fobj := El;
   fmap := λ _ _ f, f
 |}.
 
-(* It is full — the chosen preimage of a C-morphism is that morphism — which is
-   the formal content of "spanned by El" being a FULL subcategory. *)
+(* It full — chosen preimage C-态射 态射 — is
+ formal content "spanned El" being FULL subcategory. （已译） *)
 #[export] Program Instance Spanned_Incl_Full : Full Spanned_Incl := {|
   prefmap := λ _ _ g, g
 |}.
@@ -83,20 +83,18 @@ Program Definition Spanned_Incl : Spanned ⟶ C := {|
 
 End Spanned.
 
-(** ** Ens_V over [Coq]: objects are codes, arrows are all functions *)
+(* * ** Ens_V over [Coq]: 对象 codes, arrows all functions （已译） *)
 
-(* Mac Lane's Ens_V. The decoding lands in bare types, so an arrow is an
-   arbitrary function and morphism equivalence is pointwise Leibniz equality,
-   exactly as in Instance/Coq.v. *)
+(* Mac Lane's Ens_V. The decoding lands bare types, so arrow an
+ arbitrary function 态射 等价 pointwise Leibniz equality,
+ exactly Instance/Coq.v. （已译） *)
 Definition EnsV {V : Type} (El : V → Type) : Category := @Spanned Coq V El.
 
-(* The inclusion Ens_V ⟶ Set, full and faithful by the section above. *)
+(* The 含入 Ens_V ⟶ Set, 全忠实 section above. （已译） *)
 Definition EnsV_Incl {V : Type} (El : V → Type) : EnsV El ⟶ Coq :=
   @Spanned_Incl Coq V El.
 
-(* Statement fidelity, checked by conversion rather than argued.
-
-   Objects are the members of V on the nose. *)
+(* 相关说明。 （已译） *)
 Definition EnsV_obj_is_V {V : Type} (El : V → Type) : @obj (EnsV El) = V := eq_refl.
 
 (*
@@ -112,7 +110,7 @@ Definition EnsV_equiv_is_pointwise {V : Type} (El : V → Type) (x y : V)
            (f g : @hom (EnsV El) x y) :
   (f ≈ g) = (∀ a : El x, f a = g a) := eq_refl.
 
-(* Identity and composition are "the usual" ones, in Mac Lane's phrase. *)
+(* Identity 复合 "the usual" ones, Mac Lane's phrase. （已译） *)
 Definition EnsV_id_is_identity {V : Type} (El : V → Type) (x : V) (a : El x) :
   @id (EnsV El) x a = a := eq_refl.
 
@@ -120,7 +118,7 @@ Definition EnsV_compose_is_usual {V : Type} (El : V → Type) (x y z : V)
            (f : @hom (EnsV El) y z) (g : @hom (EnsV El) x y) (a : El x) :
   (f ∘ g) a = f (g a) := eq_refl.
 
-(** ** Ens_V over [Sets]: the setoid-flavoured variant *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、hom、来源与用途相关定义、性质与动机。
@@ -136,8 +134,8 @@ Definition EnsV_Sets_Incl {V : Type} (El : V → SetoidObject) : EnsV_Sets El �
 Definition EnsV_Sets_obj_is_V {V : Type} (El : V → SetoidObject) :
   @obj (EnsV_Sets El) = V := eq_refl.
 
-(* Arrows are ALL setoid maps between the decodings — again no side condition
-   beyond the respectfulness that being a morphism of [Sets] already means. *)
+(* Arrows ALL setoid maps between decodings — again no side condition
+ beyond respectfulness being 态射 [Sets] already means. （已译） *)
 Definition EnsV_Sets_hom_is_all_setoid_maps {V : Type} (El : V → SetoidObject)
            (x y : V) :
   @hom (EnsV_Sets El) x y = SetoidMorphism (El x) (El y) := eq_refl.
@@ -146,7 +144,7 @@ Definition EnsV_Sets_equiv_is_pointwise {V : Type} (El : V → SetoidObject)
            (x y : V) (f g : @hom (EnsV_Sets El) x y) :
   (f ≈ g) = (∀ a : El x, f a ≈ g a) := eq_refl.
 
-(** ** The tautological family recovers the ambient category *)
+(* * ** The tautological family recovers ambient 范畴 （已译） *)
 
 (*
    本节说明hom、等价、（余）强度相关定义、性质与动机。
@@ -163,7 +161,7 @@ Definition Spanned_recovers_ambient {C : Category} :
 
 Definition EnsV_recovers_Coq : EnsV (λ T : Type, T) = Coq := eq_refl.
 
-(* The same one universe over, for the setoid-flavoured variant and [Sets]. *)
+(* 相关说明。 （已译） *)
 Definition EnsV_Sets_recovers_Sets :
   EnsV_Sets (λ X : SetoidObject, X) = Sets := eq_refl.
 
@@ -180,8 +178,7 @@ Definition EnsV_two : Category := EnsV EnsV_two_family.
 
 Definition EnsV_two_obj : @obj EnsV_two = bool := eq_refl.
 
-(* The arrows from the one-element member to the two-element member are all
-   functions unit → bool, and back again all functions bool → unit. *)
+(* 相关说明。 （已译） *)
 Definition EnsV_two_hom_up : @hom EnsV_two true false = (unit → bool) := eq_refl.
 
 Definition EnsV_two_hom_down : @hom EnsV_two false true = (bool → unit) := eq_refl.

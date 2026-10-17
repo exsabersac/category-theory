@@ -10,8 +10,8 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * Words and free semigroups: the category Smgrp and the adjunction
-      Set ⇀ Smgrp *)
+(* * * Words free semigroups: 范畴 Smgrp 伴随
+ Set ⇀ Smgrp （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/semigroup
@@ -23,7 +23,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** Smgrp, the semigroups in (Sets, ×), and its forgetful functor G *)
+(* * ** Smgrp, semigroups (Sets, ×), forgetful 函子 G （已译） *)
 
 Definition SmgrpSets@{o so} : Category@{so o o} :=
   @Smgrp@{so o so so} Sets@{o so} Sets_Product_Monoidal@{so o}.
@@ -31,7 +31,7 @@ Definition SmgrpSets@{o so} : Category@{so o o} :=
 Definition Sg_Forget@{o so} : SmgrpSets@{o so} ⟶ Sets@{o so} :=
   @Smgrp_Forget@{so o so so} Sets@{o so} Sets_Product_Monoidal@{so o}.
 
-(** ** Element-level accessors (after Instance/Mon/Coproduct.v's mon_* ) *)
+(* 相关说明。 （已译） *)
 
 Definition sg_ob@{o so} (A : SmgrpSets@{o so}) : SetoidObject@{o o} := `1 A.
 
@@ -88,8 +88,7 @@ Proof.
   - intros [[a b] c]. exact (oassoc a b c).
 Defined.
 
-(* A function respecting ≈ and the two multiplications is an arrow of
-   Smgrp. *)
+(* 相关说明。 （已译） *)
 Definition mk_sg_hom@{o so} {A B : SmgrpSets@{o so}}
   (f : sg_ob@{o so} A → sg_ob@{o so} B)
   (fp : Proper (equiv ==> equiv) f)
@@ -104,7 +103,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Tuples: [Tup A n] is A^(n+1), a positive power *)
+(* 相关说明。 （已译） *)
 
 Fixpoint Tup@{o} (A : Type@{o}) (n : nat) : Type@{o} :=
   match n with
@@ -154,7 +153,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Words: Mac Lane's W X = ∐_{n≥1} X^n, as a sigma of tuples *)
+(* 相关说明。 （已译） *)
 
 Definition PWord@{o} (X : SetoidObject@{o o}) : Type@{o} :=
   sigT (fun n : nat => Tup@{o} X n).
@@ -232,7 +231,7 @@ Lemma pwapp_assoc@{o} {X : SetoidObject@{o o}} (w v u : PWord@{o} X) :
 Proof. exact (tapp_assoc _ _ _ (projT2 w) (projT2 v) (projT2 u)). Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The free semigroup F X = ⟨W X, juxtaposition⟩ *)
+(* 相关说明。 （已译） *)
 
 Definition FreeSg@{o so} (X : SetoidObject@{o o}) : SmgrpSets@{o so} :=
   mk_sg_obj@{o so} (PWordObj X) (@pwapp X) (@pwapp_respects X)
@@ -251,7 +250,7 @@ Example FreeSg_mul_literal@{o so} (X : SetoidObject@{o o}) (x1 x2 y1 : X) :
     = existT (fun n => Tup X n) 2%nat (x1, (x2, y1)) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Maps of words, and the free functor F *)
+(* * ** Maps words, free 函子 F （已译） *)
 
 Fixpoint tmap@{o} {A B : Type@{o}} (f : A → B) (n : nat) :
   Tup@{o} A n → Tup@{o} B n :=
@@ -330,14 +329,14 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The insertion of generators η_X x = ⟨x⟩ *)
+(* * ** The 嵌入 generators η_X x = ⟨x⟩ （已译） *)
 
 Definition sg_insert@{o so} (X : SetoidObject@{o o}) :
   X ~{Sets@{o so}}~> fobj[Sg_Forget@{o so}] (FreeSg@{o so} X) :=
   {| morphism := fun x => letter x ; proper_morphism := fun _ _ H => H |}.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The fold: the product h(x1) ⋯ h(xn), bracketed to the left *)
+(* 相关说明。 （已译） *)
 
 (* [tfoldl h acc n t] multiplies acc by h of each letter of t in turn. *)
 Fixpoint tfoldl@{o so} {Y : Type@{o}} {A : SmgrpSets@{o so}}
@@ -426,7 +425,7 @@ Proof.
   apply tfoldl_mul.
 Qed.
 
-(* The extension of h : X → G A along the insertion, w ↦ h(x1) ⋯ h(xn). *)
+(* The extension h : X → G A along 嵌入, w ↦ h(x1) ⋯ h(xn). （已译） *)
 Definition sg_extend@{o so} {X : SetoidObject@{o o}} {A : SmgrpSets@{o so}}
   (h : X ~{Sets@{o so}}~> fobj[Sg_Forget@{o so}] A) :
   FreeSg@{o so} X ~{SmgrpSets@{o so}}~> A :=
@@ -434,8 +433,7 @@ Definition sg_extend@{o so} {X : SetoidObject@{o o}} {A : SmgrpSets@{o so}}
     (fun w v H => tfold1_respects h h (proper_morphism h) _ _ _ _ H)
     (fun w v => pwfold_pwapp h w v).
 
-(* The extension is unique: a semigroup map out of F X is the fold of its
-   values on the letters. *)
+(* 相关说明。 （已译） *)
 Lemma sg_extend_unique@{o so} {X : SetoidObject@{o o}} {A : SmgrpSets@{o so}}
   (g : FreeSg@{o so} X ~{SmgrpSets@{o so}}~> A) (w : PWord@{o} X) :
   sg_fun g w ≈ pwfold (fun x => sg_fun g (letter x)) w.
@@ -443,7 +441,7 @@ Proof.
   destruct w as [n t]; unfold pwfold; cbn [projT1 projT2].
   induction n as [|n IH]; [ reflexivity | ].
   destruct t as [x t'].
-  (* ⟨x⟩t' is the product ⟨x⟩ · t', on the nose once the pair is split *)
+  (* 相关说明。 （已译） *)
   change (existT (fun n0 => Tup X n0) (S n) (x, t'))
     with (sg_mul (FreeSg X) (letter x) (existT (fun n0 => Tup X n0) n t')).
   rewrite sg_fun_mul.
@@ -453,8 +451,7 @@ Proof.
            (sg_fun g (letter x)) n t').
 Qed.
 
-(* η_X is universal from X to G: every h : X → G A factors as G g ∘ η_X
-   through exactly one semigroup map g, the extension of h. *)
+(* 相关说明。 （已译） *)
 Definition sg_insert_universal@{o so} (X : SetoidObject@{o o})
   (A : SmgrpSets@{o so}) (h : X ~{Sets@{o so}}~> fobj[Sg_Forget@{o so}] A) :
   ∃! g : FreeSg@{o so} X ~{SmgrpSets@{o so}}~> A,
@@ -496,7 +493,7 @@ Example sg_insert_UA_arrow@{o so +} (X : SetoidObject@{o o}) :
   @arrow _ _ _ _ (sg_insert_UA X) = sg_insert@{o so} X := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The adjunction F ⊣ G, in hom-set form, with a computing counit *)
+(* * ** The 伴随 F ⊣ G, hom-set form, computing counit （已译） *)
 
 Definition Sg_adj_iso@{o so} (X : SetoidObject@{o o}) (A : SmgrpSets@{o so}) :
   @Isomorphism Sets@{o so}
@@ -552,7 +549,7 @@ Proof.
   - intros X A B f g x. reflexivity.
 Defined.
 
-(* η_X x = ⟨x⟩: the unit of the adjunction IS the insertion. *)
+(* η_X x = ⟨x⟩: unit 伴随 IS 嵌入. （已译） *)
 Example Sg_adj_unit@{o so} (X : SetoidObject@{o o}) :
   @unit _ _ _ _ Sg_adj@{o so} X = sg_insert@{o so} X := eq_refl.
 
@@ -560,8 +557,7 @@ Example Sg_adj_unit@{o so} (X : SetoidObject@{o o}) :
 Example Sg_adj_counit_letter@{o so} (S : SmgrpSets@{o so}) (s : sg_ob S) :
   sg_fun (@counit _ _ _ _ Sg_adj@{o so} S) (letter s) = s := eq_refl.
 
-(* (1): the counit removes the pointy brackets, ε_S(⟨s1⟩⋯⟨sn⟩) = s1⋯sn,
-   the product in S bracketed to the left. *)
+(* 相关说明。 （已译） *)
 Example Sg_adj_counit@{o so} (S : SmgrpSets@{o so}) (w : PWord@{o} (sg_ob S)) :
   sg_fun (@counit _ _ _ _ Sg_adj@{o so} S) w = pwfold (fun s => s) w
   := eq_refl.

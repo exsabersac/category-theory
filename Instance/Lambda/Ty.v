@@ -5,7 +5,7 @@ Set Equations With UIP.
 
 Set Transparent Obligations.
 
-(** Simple types for the de Bruijn STLC *)
+(** 本节：Simple types de Bruijn STLC （已译） *)
 
 (*
    本文件给出 λ 演算相关实例。

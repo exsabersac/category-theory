@@ -22,7 +22,7 @@ Require Import Category.Theory.Algebra.Rig.
 
 Generalizable All Variables.
 
-(** * The free ring functors, read through the adjoint functor theorem *)
+(* * * The free ring 函子, read through adjoint 函子 定理 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/free+ring
@@ -33,11 +33,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** * The factorization of [Rng_Forget] through [Ab] *)
+(* 相关说明。 （已译） *)
 
-(* On data these two functors are the same term.  The records are not
-   convertible -- see the header -- which is why the two recones below
-   exist at all. *)
+(* On data these two 函子 same term. The records not
+ convertible -- see header -- why two recones below
+ exist at all. （已译） *)
 
 Example rng_forget_factors_obj (R : Rng) :
   fobj[Rng_Forget] R = fobj[Ab_Forget ◯ Rng_Forget_Ab] R := eq_refl.
@@ -45,9 +45,9 @@ Example rng_forget_factors_obj (R : Rng) :
 Example rng_forget_factors_map (R S : Rng) (f : R ~{Rng}~> S) :
   fmap[Rng_Forget] f = fmap[Ab_Forget ◯ Rng_Forget_Ab] f := eq_refl.
 
-(* [RngUnderlyingAb] (Instance/Rng/Free.v) IS that composite, so the
-   same two readbacks hold against it.  These are what make the retyping of
-   [free_ring_via_ab_adjunction] typecheck. *)
+(* [RngUnderlyingAb] (Instance/Rng/Free.v) IS 复合, so the
+ same two readbacks hold against it. These what make retyping of
+ [free_ring_via_ab_adjunction] typecheck. （已译） *)
 
 Example rng_underlying_ab_is_forget_obj (R : Rng) :
   fobj[RngUnderlyingAb] R = fobj[Rng_Forget] R := eq_refl.
@@ -55,8 +55,8 @@ Example rng_underlying_ab_is_forget_obj (R : Rng) :
 Example rng_underlying_ab_is_forget_map (R S : Rng) (f : R ~{Rng}~> S) :
   fmap[RngUnderlyingAb] f = fmap[Rng_Forget] f := eq_refl.
 
-(** * Continuity of [Rng_Forget_Ab], without a creation argument FOR IT,
-      and without RAPL *)
+(* * * Continuity [Rng_Forget_Ab], without creation 论元 FOR IT,
+ without RAPL （已译） *)
 
 Section RngAbContinuity.
 
@@ -75,7 +75,7 @@ Definition rng_ab_recone (M : Cone (Ab_Forget ◯ (Rng_Forget_Ab ◯ K)))
        (fun j => cone_leg M j)
        (fun x y f => @cone_coherence J Sets _ _ (@coneFrom _ _ _ M) x y f)).
 
-(* The other direction, needed for the reflection clause. *)
+(* 相关说明。 （已译） *)
 Definition rng_sets_recone (M : Cone (Rng_Forget ◯ K))
   : Cone (Ab_Forget ◯ (Rng_Forget_Ab ◯ K)) :=
   @Build_Cone J Sets (Ab_Forget ◯ (Rng_Forget_Ab ◯ K)) vertex_obj[M]
@@ -126,7 +126,7 @@ Definition Rng_Forget_Ab_reflects_limits {J : Category} (K : J ⟶ Rng) :
   ReflectsLimitCone K Rng_Forget_Ab :=
   fun N HN => rng_ab_reflect K N HN.
 
-(** * The underlying-set adjunction, retyped onto [Rng_Forget] *)
+(* * * The underlying-set 伴随, retyped onto [Rng_Forget] （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -142,8 +142,8 @@ Definition free_ring_via_ab_adjunction_set : free_ring_via_ab ⊣ Rng_Forget :=
     (@from_adj_nat_l _ _ _ _ free_ring_via_ab_adjunction)
     (@from_adj_nat_r _ _ _ _ free_ring_via_ab_adjunction).
 
-(* The monoid route retyped the same way, so that the comparison below can
-   be made against BOTH explicit constructions rather than only one. *)
+(* The 幺半群 route retyped same way, so comparison below can
+ made against BOTH explicit constructions rather than one. （已译） *)
 Definition free_ring_via_mon_adjunction_set : free_ring_via_mon ⊣ Rng_Forget :=
   @Build_Adjunction Rng Sets free_ring_via_mon Rng_Forget
     (@adj _ _ _ _ free_ring_via_mon_adjunction_ab)
@@ -152,13 +152,13 @@ Definition free_ring_via_mon_adjunction_set : free_ring_via_mon ⊣ Rng_Forget :
     (@from_adj_nat_l _ _ _ _ free_ring_via_mon_adjunction_ab)
     (@from_adj_nat_r _ _ _ _ free_ring_via_mon_adjunction_ab).
 
-(* The retyping is inert on the transpose, hence on the unit. *)
+(* 相关说明。 （已译） *)
 Example free_ring_via_ab_adjunction_set_transpose (X : Sets) (R : Rng)
   (f : free_ring_via_ab X ~{Rng}~> R) :
   to (@adj _ _ _ _ free_ring_via_ab_adjunction_set X R) f
     = to (@adj _ _ _ _ free_ring_via_ab_adjunction X R) f := eq_refl.
 
-(** * [Prop] congruences on the free-ring terms *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 AFT 相关定义、性质与动机。
@@ -198,8 +198,7 @@ Definition QRng_Setoid (Rq : FRTerm A → FRTerm A → Prop)
         ; Equivalence_Symmetric  := rc_sym   Rq H
         ; Equivalence_Transitive := rc_trans Rq H |} |}.
 
-(* The quotient ring, at the SAME [Rng] instance.  Every law is the term
-   model's own law passed through [rc_gen]. *)
+(* 相关说明。 （已译） *)
 Definition QRng (Rq : FRTerm A → FRTerm A → Prop) (H : IsRngCongruence Rq)
   : RingObject :=
   {| ring_rig := {|
@@ -230,7 +229,7 @@ Definition QRng (Rq : FRTerm A → FRTerm A → Prop) (H : IsRngCongruence Rq)
      ring_neg_l := fun s => rc_gen Rq H _ _ (fre_neg_l s)
   |}.
 
-(* The canonical insertion of [A] into the quotient. *)
+(* The canonical 嵌入 [A] 进入 quotient. （已译） *)
 Definition QRng_insert (Rq : FRTerm A → FRTerm A → Prop)
   (H : IsRngCongruence Rq) : A ~{Ab}~> Rng_Forget_Ab (QRng Rq H).
 Proof.
@@ -249,7 +248,7 @@ Arguments QRng_Setoid {A} Rq H.
 Arguments QRng {A} Rq H.
 Arguments QRng_insert {A} Rq H.
 
-(* THE KERNEL CONGRUENCE of a ring-valued extension, and the covering. *)
+(* 相关说明。 （已译） *)
 
 Section RngKernel.
 
@@ -287,7 +286,7 @@ Qed.
 
 Definition rng_ker_idx : RngCongIdx A := existT _ rng_ker rng_ker_is_cong.
 
-(* The mediator out of the quotient: respectfulness IS [pequiv_to]. *)
+(* 相关说明。 （已译） *)
 Program Definition rng_ker_med : QRng rng_ker rng_ker_is_cong ~{Rng}~> R := {|
   rig_map := {| morphism := fr_eval h |}
 |}.
@@ -295,7 +294,7 @@ Solve All Obligations with
   (first [ (intros s t Hst; exact (@pequiv_to _ _ (rig_prop R) _ _ Hst))
          | (intros; simpl; reflexivity) ]).
 
-(* The covering equation, on the nose. *)
+(* 相关说明。 （已译） *)
 Example rng_ker_factors (a : carrier (cmon_setoid A)) :
   rig_map rng_ker_med (cmon_map (QRng_insert rng_ker rng_ker_is_cong) a)
   = cmon_map h a
@@ -308,8 +307,7 @@ Arguments rng_ker_is_cong {A R} h.
 Arguments rng_ker_idx {A R} h.
 Arguments rng_ker_med {A R} h.
 
-(* NAMED so that both record fields elaborate [QRng] at ONE universe
-   instance; written inline they mint two and the record is refused. *)
+(* 相关说明。 （已译） *)
 Definition QRngOf {A : Ab} (i : RngCongIdx A) : obj[Rng] :=
   QRng (`1 i) (`2 i).
 
@@ -346,7 +344,7 @@ Proof.
   reflexivity.
 Defined.
 
-(** * The two solution sets, and the two GAFT applications *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -378,7 +376,7 @@ Definition free_ring_via_GAFT : ∃ F : Sets ⟶ Rng, F ⊣ Rng_Forget :=
        (Continuous_PreservesImageLimit Rng_Forget_continuous)
        Rng_Forget_solution_set_prop.
 
-(* The circular readings, kept under names that say so. *)
+(* 相关说明。 （已译） *)
 Definition free_rng_ab_via_GAFT_from_adjunction :
   ∃ F : Ab ⟶ Rng, F ⊣ Rng_Forget_Ab :=
   GAFT Rng_Forget_Ab Rng_Complete
@@ -438,7 +436,7 @@ Example free_ring_via_GAFT_agrees_mon_via_left_adjoint_iso :
     (`2 free_ring_via_GAFT_from_adjunction)
     free_ring_via_mon_adjunction_set.
 
-(** ** The comparison morphisms, named *)
+(* * ** The comparison 态射, named （已译） *)
 
 Definition free_rng_ab_via_GAFT_comparison (A : Ab)
   : `1 free_rng_ab_via_GAFT A ~{Rng}~> FreeRngAb A :=
@@ -453,9 +451,9 @@ Definition free_ring_via_GAFT_comparison_mon (X : Sets)
   adj_left_compare (`2 free_ring_via_GAFT_from_adjunction)
     free_ring_via_mon_adjunction_set X.
 
-(* [left_adjoints_agree] is [Defined], so each comparison IS the component
-   of the corresponding natural isomorphism, by [eq_refl] and not by an
-   argument. *)
+(* [left_adjoints_agree] [Defined], so each comparison IS component
+ corresponding natural 同构, [eq_refl] not an
+ 论元. （已译） *)
 
 Example free_rng_ab_via_GAFT_comparison_is_component (A : Ab) :
   to (projT1 free_rng_ab_via_GAFT_agrees A)

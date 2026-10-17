@@ -36,7 +36,7 @@ Require Import Category.Instance.Ab.TorsionFree.
 
 Generalizable All Variables.
 
-(** ** The full subcategory of torsion groups *)
+(* 相关说明。 （已译） *)
 
 Definition IsTorsion@{a c p +} (A : AbObject@{a c p}) : Type :=
   ∀ x : carrier A, torsion_mem A x.
@@ -53,8 +53,7 @@ Definition Torsion_Full@{u p +} :
   Category.Construction.Subcategory.Full Ab@{u p} Torsion_Sub :=
   fun _ _ _ _ _ => I.
 
-(* TA is torsion.  Equality in the subgroup compares first projections,
-   so the exponent of a member is the exponent it was built with. *)
+(* 相关说明。 （已译） *)
 Definition TorsionAb_IsTorsion@{p +} (A : AbObject@{p p p}) :
   IsTorsion (TorsionAb A).
 Proof.
@@ -70,10 +69,9 @@ Defined.
 Definition TorsionPart@{u p +} (A : Ab@{u p}) : TorsionCat :=
   (TorsionAb A; TorsionAb_IsTorsion A).
 
-(** ** The couniversal property of the torsion subgroup *)
+(* 相关说明。 （已译） *)
 
-(* A homomorphism carries an element of finite order to one of finite
-   order, with the same exponent. *)
+(* 相关说明。 （已译） *)
 Definition torsion_map@{u p +} {A B : Ab@{u p}} (f : A ~{Ab@{u p}}~> B)
   (a : carrier A) :
   torsion_mem A a → torsion_mem B (cmon_map f a).
@@ -111,7 +109,7 @@ Definition torsion_couniversal_arrow@{u p +} (A : Ab@{u p})
   @couniversal_arrow_from_UMP Ab@{u p} TorsionCat A (Incl Ab@{u p} Torsion_Sub)
     (TorsionPart A) (torsion_incl A) (torsion_couniversal A).
 
-(** ** The coreflection, stated covariantly *)
+(* 相关说明。 （已译） *)
 
 Definition torsion_coreflector@{u p +} : Ab@{u p} ⟶ TorsionCat :=
   RightAdjointFunctorFromCouniversalArrows (Incl Ab@{u p} Torsion_Sub)
@@ -123,13 +121,12 @@ Definition torsion_coreflection@{u p +} :
   AdjunctionFromCouniversalArrows (Incl Ab@{u p} Torsion_Sub)
     torsion_couniversal_arrow.
 
-(* The packaged record of Construction/Reflective.v, built from the
-   covariant data through Construction/Reflective/Coreflective.v. *)
+(* 相关说明。 （已译） *)
 Definition Torsion_Coreflective@{u p +} : @Coreflective Ab@{u p} Torsion_Sub :=
   Coreflective_of_adjunction Torsion_Full torsion_coreflector
     torsion_coreflection.
 
-(** ** Readbacks: the counit is the inclusion of TA *)
+(* * ** Readbacks: counit 含入 TA （已译） *)
 
 Example torsion_coreflector_obj@{u p +} (A : Ab@{u p}) :
   `1 (fobj[torsion_coreflector] A) = TorsionAb A := eq_refl.
@@ -154,8 +151,8 @@ Proof.
            torsion_couniversal_arrow A).
 Qed.
 
-(* Read back from the record, the coreflector and the adjunction are the
-   covariant ones on the nose. *)
+(* Read back record, coreflector 伴随 the
+ covariant ones nose. （已译） *)
 Example torsion_record_coreflector@{u p +} :
   @coreflector Ab@{u p} Torsion_Sub Torsion_Coreflective
     = torsion_coreflector := eq_refl.
@@ -166,8 +163,8 @@ Example torsion_record_adj@{u p +} :
 
 (** ** Non-vacuity *)
 
-(* ℤ/2 is torsion, so it is an object of the subcategory, and the unit of
-   the coreflection there is invertible. *)
+(* ℤ/2 torsion, so it 对象 subcategory, unit of
+ coreflection there invertible. （已译） *)
 Definition ZMod2_IsTorsion@{a +} : IsTorsion (ZMod2 : AbObject@{a Set Set}) :=
   ZMod2_all_torsion.
 
@@ -193,8 +190,7 @@ Lemma mixed_tors_in_TA_nonzero@{+} :
     (cmon_zero (TorsionAb MixedAb)) → False.
 Proof. exact mixed_tors_not_zero. Qed.
 
-(* ...and the counit there is not invertible: an inverse would carry the
-   generator (1, 0) into TA and back, making it torsion. *)
+(* 相关说明。 （已译） *)
 Theorem torsion_counit_MixedAb_not_iso@{u +} :
   IsIsomorphism (torsion_counit (MixedAb : Ab@{u Set})) → False.
 Proof.
@@ -210,7 +206,7 @@ Lemma ZAb_TA_trivial@{+} (x : carrier (TorsionAb ZAb)) :
   @equiv (carrier (TorsionAb ZAb)) _ x (cmon_zero (TorsionAb ZAb)).
 Proof. exact (ZAb_torsion_trivial (projT1 x) (projT2 x)). Qed.
 
-(** ** Riehl 5.3.ii at the torsion-free reflection (Mac Lane §IV.3 Ex. 2) *)
+(* 相关说明。 （已译） *)
 
 Definition TorsionFree_Monad@{u p +} :
   @Monad Ab@{u p} (Incl Ab@{u p} TorsionFree_Sub ◯ TorsionFree_reflector) :=
@@ -227,15 +223,15 @@ Example torsionfree_monad_obj@{u p +} (A : Ab@{u p}) :
     = AbModTorsion A
   := eq_refl.
 
-(* Idempotent.v's correspondence, fed a concrete record: the algebras of
-   the induced monad are equivalent to its M-local objects... *)
+(* Idempotent.v's correspondence, fed concrete record: algebras of
+ induced 单子 equivalent M-local 对象... （已译） *)
 Definition TorsionFree_EM_MLocal@{u p +} :
   EquivalenceOfCategories
     (@idem_G Ab@{u p} _ TorsionFree_Monad TorsionFree_IdempotentMonad) :=
   @Idempotent_EM_Equivalence Ab@{u p} _ TorsionFree_Monad
     TorsionFree_IdempotentMonad.
 
-(* ...and, Riehl's Proposition 5.3.3 (ii), to the subcategory itself. *)
+(* 相关说明。 （已译） *)
 Definition TorsionFree_EM_Equivalence@{u p +} :
   EquivalenceOfCategories
     (@reflective_comparison Ab@{u p} _ TorsionFree_Reflective) :=

@@ -11,7 +11,7 @@ Require Import Category.Instance.Top.Subspace.TypeValued.
 
 Generalizable All Variables.
 
-(** * Collapsing a subset to a point: X/A as a wide coequalizer in [Top] *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/Top
@@ -26,10 +26,10 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** Small wide coequalizers of the Type-valued [Top] *)
+(* 相关说明。 （已译） *)
 
-(* The relation a family of setoid maps generates: the wide analogue of
-   Instance/Sets/Coequalizer.v's [coeq_rel]. *)
+(* The 关系 family setoid maps generates: wide analogue of
+ Instance/Sets/Coequalizer.v's [coeq_rel]. （已译） *)
 Inductive wcoeq_rel@{i o} {I : Type@{i}} {A B : SetoidObject@{o o}}
   (fs : I → SetoidMorphism@{o o o} A B) : B → B → Type@{o} :=
   | wcq_base  : ∀ b1 b2 : B, b1 ≈ b2 → wcoeq_rel b1 b2
@@ -47,7 +47,7 @@ Proof.
   - intros b1 b2 b3 H1 H2; exact (wcq_trans _ _ _ _ H1 H2).
 Qed.
 
-(* The quotient setoid: the points of [B] under the generated relation. *)
+(* The quotient setoid: points [B] under generated 关系. （已译） *)
 Definition WSetsCoeq@{i o} {I : Type@{i}} {A B : SetoidObject@{o o}}
   (fs : I → SetoidMorphism@{o o o} A B) : SetoidObject@{o o} := {|
   carrier := carrier B;
@@ -61,7 +61,7 @@ Definition wsets_coeq_proj@{i o} {I : Type@{i}} {A B : SetoidObject@{o o}}
   @Build_SetoidMorphism _ (is_setoid B) _ (is_setoid (WSetsCoeq@{i o} fs))
     (fun b => b) (fun b1 b2 (e : b1 ≈ b2) => wcq_base fs b1 b2 e).
 
-(* A map absorbing the family respects the generated relation. *)
+(* A map absorbing family respects generated 关系. （已译） *)
 Lemma wcoeq_rel_of_cofork@{i o} {I : Type@{i}} {A B Z : SetoidObject@{o o}}
   (fs : I → SetoidMorphism@{o o o} A B) (k : SetoidMorphism@{o o o} B Z)
   (Hk : ∀ i j a, k (fs i a) ≈ k (fs j a)) :
@@ -128,10 +128,10 @@ Example Top_wide_coequalizer_obj@{i o h | i <= o, o < h +}
     = TQuot y (WSetsCoeq@{i o} (fun i => continuous_map (fs i)))
         (wsets_coeq_proj@{i o} (fun i => continuous_map (fs i))) := eq_refl.
 
-(** ** Construction 5: collapsing the image of a family of points *)
+(* 相关说明。 （已译） *)
 
-(* [x] lies in the image of [p], up to the points' equality: the saturated
-   image, so no properness hypothesis on the family is needed. *)
+(* [x] lies image [p], up points' equality: saturated
+ image, so no properness 假设 family needed. （已译） *)
 Definition collapse_image@{o} (X : TopSpace@{o}) (I : Type@{o}) (p : I → X)
   (x : X) : Type@{o} := { i : I & p i ≈ x }.
 
@@ -140,8 +140,7 @@ Lemma collapse_image_respects@{o} (X : TopSpace@{o}) (I : Type@{o})
   x ≈ x' → collapse_image X I p x → collapse_image X I p x'.
 Proof. intros e [i ei]. exists i. exact (transitivity ei e). Qed.
 
-(* Two points are identified when they are equal, or when both lie in the
-   image. *)
+(* 相关说明。 （已译） *)
 Definition collapse_rel@{o} (X : TopSpace@{o}) (I : Type@{o}) (p : I → X)
   (x x' : X) : Type@{o} :=
   ((x ≈ x') + (collapse_image X I p x * collapse_image X I p x'))%type.
@@ -173,8 +172,7 @@ Definition collapse_carrier@{o} (X : TopSpace@{o}) (I : Type@{o})
   is_setoid := collapse_setoid X I p
 |}.
 
-(* The instances are named: the collapsed carrier has the same underlying
-   type as [X], and resolution would otherwise pick [X]'s equality. *)
+(* 相关说明。 （已译） *)
 Definition collapse_q@{o} (X : TopSpace@{o}) (I : Type@{o}) (p : I → X) :
   SetoidMorphism@{o o o} (top_carrier X) (collapse_carrier X I p) :=
   @Build_SetoidMorphism _ (is_setoid (top_carrier X)) _ (collapse_setoid X I p)
@@ -184,7 +182,7 @@ Definition collapse_q@{o} (X : TopSpace@{o}) (I : Type@{o}) (p : I → X) :
 Definition Top_collapse@{o} (X : TopSpace@{o}) (I : Type@{o}) (p : I → X) :
   TopSpace@{o} := TQuot X (collapse_carrier X I p) (collapse_q X I p).
 
-(* The points of X/A are those of X, and their equality IS [collapse_rel]. *)
+(* 相关说明。 （已译） *)
 Example Top_collapse_equiv@{o} (X : TopSpace@{o}) (I : Type@{o}) (p : I → X)
   (x y : X) :
   @equiv _ (is_setoid (top_carrier (Top_collapse X I p))) x y
@@ -194,7 +192,7 @@ Definition collapse_proj@{o h | o < h +} (X : TopSpace@{o}) (I : Type@{o})
   (p : I → X) : X ~{Top@{h o}}~> Top_collapse X I p :=
   tquot_proj X (collapse_carrier X I p) (collapse_q X I p).
 
-(* The family of point-inclusions [* ~> X], one for each index. *)
+(* 相关说明。 （已译） *)
 Definition collapse_family@{o h | o < h +} (X : TopSpace@{o}) (I : Type@{o})
   (p : I → X) (i : I) : Point_Top@{o} ~{Top@{h o}}~> X :=
   top_point@{h o} X (p i).
@@ -238,7 +236,7 @@ Definition collapse_desc_map@{o h | o < h +} (X : TopSpace@{o})
   tquot_desc X (collapse_carrier X I p) (collapse_q X I p) Z k
     (collapse_med X I p k Hk) (fun x => reflexivity _).
 
-(* The mediator is [k] itself on points, on the nose. *)
+(* 相关说明。 （已译） *)
 Example collapse_desc_map_points@{o h | o < h +} (X : TopSpace@{o})
   (I : Type@{o}) (p : I → X) {Z : Top@{h o}} (k : X ~{Top@{h o}}~> Z)
   (Hk : ∀ i j : I, k ∘ collapse_family X I p i ≈ k ∘ collapse_family X I p j) :
@@ -281,13 +279,13 @@ Definition collapse_family_colimit@{o h | o < h +} (X : TopSpace@{o})
   is_wide_coequalizer_colimit (collapse_family X I p) i0
     (collapse_family_coequalizer@{o h h} X I p).
 
-(* The collapse map is epic, from the wide-coequalizer vocabulary. *)
+(* 相关说明。 （已译） *)
 Definition collapse_proj_epic@{o h | o < h +} (X : TopSpace@{o})
   (I : Type@{o}) (p : I → X) : Epic (collapse_proj X I p) :=
   wide_coequalizer_epic _ (collapse_family_coequalizer@{o h o} X I p).
 
-(* The direct collapse and the generic small wide coequalizer of its
-   family agree, and the comparison is the identity on points. *)
+(* The direct collapse generic small wide coequalizer its
+ family agree, comparison 恒等 points. （已译） *)
 Definition collapse_iso_generic@{o h u | o < h, h < u +} (X : TopSpace@{o})
   (I : Type@{o}) (p : I → X) :
   Top_collapse X I p ≅[Top@{h o}] twcoeq_obj@{o o h} (collapse_family X I p) :=
@@ -304,8 +302,7 @@ Example collapse_iso_generic_from@{o h u | o < h, h < u +} (X : TopSpace@{o})
 
 (** ** Mac Lane's subset form *)
 
-(* A subset of the points of X, as a Type-valued predicate; its points
-   index the family. *)
+(* 相关说明。 （已译） *)
 Definition collapse_sub_points@{o} (X : TopSpace@{o}) (A : X → Type@{o}) :
   Type@{o} := { x : X & A x }.
 
@@ -321,15 +318,13 @@ Definition collapse_sub_proj@{o h | o < h +} (X : TopSpace@{o})
   (A : X → Type@{o}) : X ~{Top@{h o}}~> Top_collapse_sub X A :=
   collapse_proj X (collapse_sub_points X A) (collapse_sub_incl X A).
 
-(* "the set of all the arrows sending the one point space * to one of the
-   points a ∈ A" *)
+(* 相关说明。 （已译） *)
 Definition collapse_sub_family@{o h | o < h +} (X : TopSpace@{o})
   (A : X → Type@{o}) (a : collapse_sub_points X A) :
   Point_Top@{o} ~{Top@{h o}}~> X :=
   collapse_family X (collapse_sub_points X A) (collapse_sub_incl X A) a.
 
-(* Construction 5 in the elementary form: X ~> X/A is an elementary wide
-   coequalizer of that family, for every subset. *)
+(* 相关说明。 （已译） *)
 Definition collapse_coequalizer@{o h i | o < h, o <= i +} (X : TopSpace@{o})
   (A : X → Type@{o}) :
   IsWideCoequalizer@{i h h} (C := Top@{h o}) (collapse_sub_family X A)
@@ -343,8 +338,7 @@ Definition collapse_colimit@{o h | o < h +} (X : TopSpace@{o})
   collapse_family_colimit X (collapse_sub_points X A) (collapse_sub_incl X A)
     a0.
 
-(* In the elementary form collapsing the empty subset changes nothing:
-   X/∅ ≅ X ... *)
+(* 相关说明。 （已译） *)
 Definition collapse_empty_iso@{o h u | o < h, h < u +} (X : TopSpace@{o}) :
   Top_collapse_sub X (fun _ => False) ≅[Top@{h o}] X :=
   wide_coequalizer_unique _ (collapse_coequalizer@{o h o} X (fun _ => False))

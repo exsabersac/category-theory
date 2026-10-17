@@ -10,7 +10,7 @@ Require Import Category.Instance.Sets.Complete.
 
 Generalizable All Variables.
 
-(** * Propositional equality for the objects and homs of [Sets] *)
+(* * * Propositional equality 对象 homs [Sets] （已译） *)
 
 (*
  nLab:    https://ncatlab.org/nlab/show/h-set
@@ -22,7 +22,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The property, at the level of a [Sets] object *)
+(* * ** The property, at level [Sets] 对象 （已译） *)
 
 (*
    本节说明 Propositional 相关定义、性质与动机。
@@ -48,13 +48,11 @@ Proof.
   - intros f g H a; exact (pequiv_from _ _ (H a)).
 Defined.
 
-(* The hom-setoid of [Sets] IS [SetoidMorphism_Setoid] on the nose
-   (Instance/Sets.v), so the instance above is an instance for [Sets]'s
-   [homset] without further work. *)
+(* 相关说明。 （已译） *)
 Example hom_PropEquiv_is_Sets_homset (x y : SetoidObject) :
   @SetoidMorphism_Setoid x y = @homset Sets x y := eq_refl.
 
-(* The relation it supplies is the pointwise one, read back at [eq_refl]. *)
+(* The 关系 it supplies pointwise one, read back at [eq_refl]. （已译） *)
 Example hom_pequiv_is_pointwise {x y : SetoidObject}
   (Py : PropEquiv (is_setoid y)) (f g : x ~{Sets}~> y) :
   @pequiv _ _ (hom_PropEquiv Py) f g
@@ -132,7 +130,7 @@ Example limit_pequiv_is_pointwise {D : Category} (F : D ⟶ Sets)
   @pequiv _ _ (limit_PropEquiv F H) p q
     = (forall d : D, @pequiv _ _ (H d) (`1 p d) (`1 q d)) := eq_refl.
 
-(** ** Locally propositional categories *)
+(* * ** Locally propositional 范畴 （已译） *)
 
 (*
    本节说明函子、hom相关定义、性质与动机。

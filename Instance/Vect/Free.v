@@ -52,17 +52,17 @@ Definition Vct_Forget : Vct_F F ⟶ Sets := RMod_Forget (field_ring F).
 Example Vct_Forget_is_RMod_Forget :
   Vct_Forget = RMod_Forget (field_ring F) := eq_refl.
 
-(** ** The free vector space on a set, and its basis insertion *)
+(* * ** The free vector space set, basis 嵌入 （已译） *)
 
 Definition FreeVectObject (X : Sets) : Vct_F F := FreeModObject X.
 
 Definition free_vect_insert (X : Sets)
   : X ~{Sets}~> Vct_Forget (FreeVectObject X) := fv_insert X.
 
-(** ** Mac Lane §III.1: ⟨V_X, j⟩ is a universal arrow
+(* * ** Mac Lane §III.1: ⟨V_X, j⟩ 泛箭头
 
-    Every function from X into the underlying set of a vector space W
-    extends to one and only one linear map V_X ⟶ W. *)
+ Every function X 进入 underlying set vector space W
+ extends one one linear map V_X ⟶ W. （已译） *)
 Theorem free_vect_universal (X : Sets) :
   ∀ (W : Vct_F F) (h : X ~{Sets}~> Vct_Forget W),
     ∃! g : FreeVectObject X ~{Vct_F F}~> W,
@@ -72,15 +72,15 @@ Proof. exact (free_module_universal X). Qed.
 Definition free_vect_universal_arrow (X : Sets)
   : UniversalArrow X Vct_Forget := free_module_universal_arrow X.
 
-(** The same content in the direct encoding, where the universal object
-    is named rather than projected out of a comma category. *)
+(** The same content direct encoding, where universal 对象
+ named rather than projected out comma 范畴. （已译） *)
 Definition free_vect_AUniversalArrow (X : Sets)
   : AUniversalArrow X Vct_Forget (FreeVectObject X) :=
   free_module_AUniversalArrow (field_ring F) X.
 
-(** ** Mac Lane §IV.1 and Riehl §4.0: the adjunction
+(* * ** Mac Lane §IV.1 Riehl §4.0: 伴随
 
-    The principal artifact of this issue. *)
+ The principal artifact issue. （已译） *)
 
 Definition FreeVect : Sets ⟶ Vct_F F := FreeMod (field_ring F).
 
@@ -116,9 +116,7 @@ Theorem free_vect_counit_evaluates (W : Vct_F F)
     ≈ fv_eval (@id Sets (Vct_Forget W)) t.
 Proof. exact (free_module_counit_evaluates (field_ring F) W t). Qed.
 
-(** ** Riehl's functoriality on maps of generating sets
-
-    Relabelling the generating set relabels the basis vectors. *)
+(* 相关说明。 （已译） *)
 Lemma free_vect_fmap_generators {X Y : Sets} (u : X ~{Sets}~> Y)
   (x : carrier X) :
   cmon_map (rm_hom (fmap[FreeVect] u)) (fv_gen x) ≈ fv_gen (u x).
@@ -147,13 +145,13 @@ Lemma free_vect_extend_restrict {X : Sets} {W : Vct_F F}
   (g : FreeVect X ~{Vct_F F}~> W) : fv_extend (free_vect_restrict g) ≈ g.
 Proof. exact (fv_extend_transpose (field_ring F) g). Qed.
 
-(** *** Naturality in the set variable *)
+(* 相关说明。 （已译） *)
 Theorem free_vect_naturality_in_set {X Y : Sets} {W : Vct_F F}
   (g : FreeVect Y ~{Vct_F F}~> W) (u : X ~{Sets}~> Y) :
   free_vect_restrict (g ∘ fmap[FreeVect] u) ≈ free_vect_restrict g ∘ u.
 Proof. exact (free_module_naturality_in_set (field_ring F) g u). Qed.
 
-(** *** Naturality in the target space *)
+(* 相关说明。 （已译） *)
 Theorem free_vect_naturality_in_space {X : Sets} {W W' : Vct_F F}
   (k : W ~{Vct_F F}~> W') (g : FreeVect X ~{Vct_F F}~> W) :
   free_vect_restrict (k ∘ g) ≈ fmap[Vct_Forget] k ∘ free_vect_restrict g.
@@ -183,8 +181,7 @@ Proof. exact (fv_normal_form t). Qed.
 
 End FreeVect.
 
-(* Only the one that changes anything: everything else discharged from
-   the section already has [F] explicit. *)
+(* 相关说明。 （已译） *)
 Arguments free_vect_restrict {F X W} g.
 
 (*
@@ -193,8 +190,7 @@ Arguments free_vect_restrict {F X W} g.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Index arguments supplied once, as NOTATIONS (so each unfolds to the
-   constructor itself) — see the same device in Instance/Mod/Free.v. *)
+(* 相关说明。 （已译） *)
 Local Notation qgen  := (@fv_gen (field_ring Q_Field) TwoGens).
 Local Notation qsmul := (@fv_smul (field_ring Q_Field) TwoGens).
 Local Notation qplus := (@fv_plus (field_ring Q_Field) TwoGens).
@@ -210,9 +206,9 @@ Proof.
   all: intros x y H; simpl in H; subst y; reflexivity.
 Defined.
 
-(** The linear extension computes: 2·e₀ + e₁ ↦ 2·3 + 5 = 11.  This is
-    [eq_refl] on the CARRIER ℚ — the convertibility exception, not a
-    statement about morphisms. *)
+(** The linear extension computes: 2·e₀ + e₁ ↦ 2·3 + 5 = 11. This is
+ [eq_refl] CARRIER ℚ — convertibility exception, not a
+ statement about 态射. （已译） *)
 Example q_free_extend_computes :
   fv_eval q_probe (qplus (qsmul (2 # 1)%Q (qgen true)) (qgen false))
   = (11 # 1)%Q := eq_refl.
@@ -229,11 +225,11 @@ Example q_free_extend_generator_false :
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** *** The basis insertion does not collapse
+(* * *** The basis 嵌入 does not collapse
 
-    The [1 ≉ 0] premise of Instance/Mod/Free.v's general theorem is
-    [field_one_neq_zero], a FIELD of [FieldObject], so over a field it
-    costs nothing; only the decider is supplied. *)
+ The [1 ≉ 0] premise Instance/Mod/Free.v's general 定理 is
+ [field_one_neq_zero], FIELD [FieldObject], so over field it
+ costs nothing; decider supplied. （已译） *)
 Theorem free_vect_basis_distinct :
   fv_eq (qgen true) (qgen false) → False.
 Proof.

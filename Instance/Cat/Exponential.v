@@ -18,7 +18,7 @@ Require Import Category.Instance.Cat.Cocartesian.
 
 Generalizable All Variables.
 
-(** * The exponential laws at Cat: isomorphisms of functor categories *)
+(* * * The exponential laws at Cat: isomorphisms 函子 范畴 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
@@ -30,7 +30,7 @@ Generalizable All Variables.
 
 Section CatExponential.
 
-(** ** The four laws, read as isomorphisms of functor categories *)
+(* * ** The four laws, read isomorphisms 函子 范畴 （已译） *)
 
 (* Currying: a functor out of a product category is a functor into a functor
    category. *)

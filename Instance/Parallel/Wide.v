@@ -22,11 +22,11 @@ Generalizable All Variables.
 
 (** ** The shape *)
 
-(* A universe-polymorphic empty type, for the hom-set ParY ~> ParX. *)
+(* 相关说明。 （已译） *)
 Inductive WParVoid@{i} : Type@{i} := .
 
-(* The hom-family of the wide shape, computed from the two objects.  Note
-   [WParHom I ParX ParY] reduces to [I] itself. *)
+(* The hom-family wide shape, computed two 对象. Note
+ [WParHom I ParX ParY] reduces [I] itself. （已译） *)
 Definition WParHom@{i} (I : Type@{i}) (x y : ParObj) : Type@{i} :=
   match x, y with
   | ParX, ParX => poly_unit@{i}
@@ -35,17 +35,16 @@ Definition WParHom@{i} (I : Type@{i}) (x y : ParObj) : Type@{i} :=
   | ParY, ParX => WParVoid@{i}
   end.
 
-(* There is no arrow ParY ~> ParX; the analogue of the donor's
-   [ParHom_Y_X_absurd]. *)
+(* 相关说明。 （已译） *)
 Lemma WParHom_Y_X_absurd@{i} {I : Type@{i}} : WParHom@{i} I ParY ParX → False.
 Proof. intro e; destruct e. Qed.
 
 Definition wpar_id@{i} {I : Type@{i}} (x : ParObj) : WParHom@{i} I x x :=
   match x with ParX => ttt | ParY => ttt end.
 
-(* Composition is forced: an identity on either side returns the other
-   argument, and the four object triples that would need an arrow
-   ParY ~> ParX are refuted by its empty hom-set. *)
+(* Composition forced: 恒等 either side returns other
+ 论元, four 对象 triples would need arrow
+ ParY ~> ParX refuted empty hom-set. （已译） *)
 Definition wpar_compose@{i} {I : Type@{i}} {x y z : ParObj} :
   WParHom@{i} I y z → WParHom@{i} I x y → WParHom@{i} I x z :=
   match x, y, z
@@ -85,21 +84,20 @@ Next Obligation.
   try destruct f; try destruct g; try destruct h; reflexivity.
 Qed.
 
-(* An arrow ParX ~> ParY of the shape IS an index, and the two endomorphism
-   hom-sets are singletons. *)
+(* 相关说明。 （已译） *)
 Example wide_hom_XY (I : Type) : (ParX ~{WideParallel I}~> ParY) = I := eq_refl.
 Example wide_hom_XX (I : Type) :
   (ParX ~{WideParallel I}~> ParX) = poly_unit := eq_refl.
 Example wide_hom_YY (I : Type) :
   (ParY ~{WideParallel I}~> ParY) = poly_unit := eq_refl.
 
-(** ** The diagram of a family of parallel arrows *)
+(* 相关说明。 （已译） *)
 
 (* Object action: ParX ↦ x, ParY ↦ y. *)
 Definition wdiag@{o h p} {C : Category@{o h p}} (x y : C) (p : ParObj) : C :=
   match p with ParX => x | ParY => y end.
 
-(* Arrow action: the index i is sent to the member f i of the family. *)
+(* 相关说明。 （已译） *)
 Definition awide_fmap@{i o h p} {I : Type@{i}} {C : Category@{o h p}} {x y : C}
   (fs : I → x ~{C}~> y) {a b : ParObj} :
   WParHom@{i} I a b → wdiag@{o h p} x y a ~{C}~> wdiag@{o h p} x y b :=
@@ -126,7 +124,7 @@ Proof.
   try destruct f; try destruct g; cat.
 Qed.
 
-(* The diagram of the family [fs], the wide analogue of [APair]. *)
+(* 相关说明。 （已译） *)
 Program Definition AWide@{i k o h p}
   {I : Type@{i}} {C : Category@{o h p}} {x y : C}
   (fs : I → x ~{C}~> y) : WideParallel@{i k} I ⟶ C := {|
@@ -136,7 +134,7 @@ Program Definition AWide@{i k o h p}
   fmap_comp := fun a b c f g => awide_fmap_comp@{i o h p} fs a b c f g
 |}.
 
-(* The arrow action is the family itself, definitionally. *)
+(* 相关说明。 （已译） *)
 Example awide_fmap_arr {I : Type} {C : Category} {x y : C}
   (fs : I → x ~> y) (i : I) :
   fmap[AWide fs] (i : ParX ~{WideParallel I}~> ParY) = fs i := eq_refl.
@@ -146,7 +144,7 @@ Example awide_obj_X {I : Type} {C : Category} {x y : C} (fs : I → x ~> y) :
 Example awide_obj_Y {I : Type} {C : Category} {x y : C} (fs : I → x ~> y) :
   fobj[AWide fs] ParY = y := eq_refl.
 
-(** ** Comparison with the two-arrow shape *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、hom、来源与用途相关定义、性质与动机。
@@ -202,8 +200,7 @@ Next Obligation.
   try destruct f; try destruct g; reflexivity.
 Qed.
 
-(* In [Parallel] the tag of an endomorphism is forced to [true]: the two
-   [false]-tagged cases of [ParHom_inv_t] at equal endpoints are [False]. *)
+(* 相关说明。 （已译） *)
 Lemma par_endo_tag (a : ParObj) (f : a ~{Parallel}~> a) : ``f = true.
 Proof.
   destruct f as [bf hf]; destruct a, bf; simpl; try reflexivity;
@@ -251,8 +248,8 @@ Program Definition WideParallel_bool_Parallel :
 Next Obligation. exact Par_of_Wide_Wide_of_Par. Qed.
 Next Obligation. exact Wide_of_Par_Par_of_Wide. Qed.
 
-(* The weaker reading, derived: an isomorphism in [Cat] is an EQUIVALENCE of
-   categories, so this says strictly less than the statement above. *)
+(* The weaker reading, derived: 同构 [Cat] EQUIVALENCE of
+ 范畴, so says strictly less than statement above. （已译） *)
 Program Definition WideParallel_bool_Parallel_Cat :
   @Isomorphism Cat (WideParallel bool) Parallel := {|
   to   := Par_of_Wide;

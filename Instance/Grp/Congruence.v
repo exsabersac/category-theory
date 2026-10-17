@@ -76,11 +76,7 @@ Example grp_deloop_ginv (H : GrpObject) (a : carrier H) :
 Example grp_deloop_ginv_Free (H : GrpObject) (a : carrier H) :
   ginv (grp_deloop_IsGroupoid H) (x:=ttt) (y:=ttt) a = grp_inv H a := eq_refl.
 
-(** ** Arithmetic of the delooping
-
-    Every one of these is [eq_refl]; they are recorded so that the
-    congruence proofs below can be read as group computations without
-    unfolding [Deloop]. *)
+(* 相关说明。 （已译） *)
 
 Section DeloopArithmetic.
 
@@ -110,8 +106,8 @@ End DeloopArithmetic.
 Definition ns_rel {G : GrpObject} (N : NormalSubgroup G)
   : HomRelT (grp_deloop G) := fun _ _ f g => quot_rel N f g.
 
-(** The relation IS [quot_rel], by convertibility -- so every lemma #313
-    proves about [quot_rel] is a lemma about this congruence. *)
+(** The 关系 IS [quot_rel], convertibility -- so every 引理 #313
+ proves about [quot_rel] 引理 about congruence. （已译） *)
 Example ns_rel_is_quot_rel {G : GrpObject} (N : NormalSubgroup G)
   (f g : carrier G) : ns_rel N ttt ttt f g = quot_rel N f g := eq_refl.
 
@@ -139,9 +135,7 @@ Example ns_prel_is_truncation {G : GrpObject} (N : NormalSubgroup G)
   (f g : carrier G) :
   ns_prel N ttt ttt f g = inhabited (ns_rel N ttt ttt f g) := eq_refl.
 
-(* Built tactically rather than as a term: a bare [match] on [inhabited] is
-   elaborated with a [Type] motive and is refused, even where the branch's
-   result is a [Prop]. *)
+(* 相关说明。 （已译） *)
 Definition ns_prel_congruence {G : GrpObject} (N : NormalSubgroup G)
   : @HomCongruence (grp_deloop G) (ns_prel N).
 Proof.
@@ -159,8 +153,8 @@ Proof.
       exact (inhabits (quot_rel_mul N f f' g g' h1 h2)).
 Defined.
 
-(** The quotient category of the delooping.  The congruence witness is
-    passed explicitly, since [ns_prel_congruence] is not an instance. *)
+(** The quotient 范畴 delooping. The congruence witness is
+ passed explicitly, since [ns_prel_congruence] not instance. （已译） *)
 Definition deloop_quotient {G : GrpObject} (N : NormalSubgroup G) : Category :=
   @Quotient (grp_deloop G) (ns_prel N) (ns_prel_congruence N).
 
@@ -255,9 +249,9 @@ Next Obligation.                       (* closure under inverse *)
                (id_right _)).
 Qed.
 
-(** Normality is the fifth field, and it is where the congruence's
-    two-sided compatibility with composition is spent: t on the left and
-    t⁻¹ on the right. *)
+(** Normality fifth field, it where congruence's
+ two-sided compatibility 复合 spent: t left and
+ t⁻¹ right. （已译） *)
 Program Definition cong_ns : NormalSubgroup G := {|
   ns_sub := cong_sub
 |}.
@@ -279,14 +273,14 @@ Qed.
 
 End Converse.
 
-(** Membership in the recovered subgroup IS relatedness to the identity,
-    by convertibility. *)
+(** Membership recovered subgroup IS relatedness 恒等,
+ convertibility. （已译） *)
 Example cong_mem_is_class_of_id {G : GrpObject} (R : HomRelT (grp_deloop G))
   `{HR : @HomCongruence (grp_deloop G) R} (a : carrier G) :
   sub_mem (@cong_ns G R HR) a = R ttt ttt (deloop_arr a) (@id (grp_deloop G) ttt)
   := eq_refl.
 
-(** ** The two maps are mutually inverse *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明核/余核相关定义、性质与动机。
@@ -340,7 +334,7 @@ Section Packaging.
 
 Context {G : GrpObject}.
 
-(** A congruence, as data: the relation together with its four laws. *)
+(** A congruence, data: 关系 together four laws. （已译） *)
 Definition CongData : Type :=
   { R : HomRelT (grp_deloop G) & HomCongruence R }.
 
@@ -389,8 +383,8 @@ Next Obligation.
   - exact (snd (H ttt ttt a (@id (grp_deloop G) ttt)) Ha).
 Qed.
 
-(** Mac Lane §II.8 Exercise 2, as a bijection: the normal subgroups of G
-    are the congruences on its delooping. *)
+(** 本节：Mac Lane §II.8 Exercise 2, bijection: normal subgroups G
+ congruences delooping. （已译） *)
 Program Definition ns_cong_iso : NS_Setoid ≅[Sets] Cong_Setoid := {|
   to := ns_to_cong;
   from := cong_to_ns
@@ -499,8 +493,8 @@ Definition deloop_to_quot : grp_deloop (QuotientGrp N) ⟶ deloop_quotient N :=
     (fun x => inhabits (quot_rel_refl N _))
     (fun x y z f g => inhabits (quot_rel_refl N _)).
 
-(** Both functors are the identity on objects and on arrows, so both round
-    trips have [eq_refl] object components. *)
+(** Both 函子 恒等 对象 arrows, so both round
+ trips have [eq_refl] 对象 components. （已译） *)
 Lemma deloop_quotient_round_to :
   @equiv _ (@Functor_StrictEq_Setoid (deloop_quotient N) (deloop_quotient N))
     (deloop_to_quot ◯ quot_to_deloop) (Id[deloop_quotient N]).
@@ -524,8 +518,8 @@ Definition deloop_quotient_iso
     quot_to_deloop deloop_to_quot
     deloop_quotient_round_from deloop_quotient_round_to.
 
-(** The weaker [Cat] reading, derived.  [≅[Cat]] IS equivalence of
-    categories here; the [StrictCat] statement above is the strong one. *)
+(** The weaker [Cat] reading, derived. [≅[Cat]] IS 等价 of
+ 范畴 here; [StrictCat] statement above strong one. （已译） *)
 Definition deloop_quotient_Cat_iso
   : deloop_quotient N ≅[Cat] grp_deloop (QuotientGrp N) :=
   @Build_Isomorphism Cat (deloop_quotient N) (grp_deloop (QuotientGrp N))
@@ -535,24 +529,24 @@ Definition deloop_quotient_Cat_iso
 
 End Corollary.
 
-(** ** Group homomorphisms as functors between deloopings *)
+(* * ** Group homomorphisms 函子 between deloopings （已译） *)
 
 Section Homomorphisms.
 
 Context {G K : GrpObject}.
 
-(** A group homomorphism is a monoid homomorphism of the delooped
-    monoids: unit and product preservation are its two fields, and
-    respectfulness is the underlying setoid morphism's. *)
+(** A group homomorphism 幺半群 homomorphism delooped
+ monoids: unit product preservation two fields, and
+ respectfulness underlying setoid 态射's. （已译） *)
 Definition hom_MonHom (h : G ~{Grp}~> K)
   : MonHom (grp_deloop_monoid G) (grp_deloop_monoid K) :=
   @Build_MonHom (grp_deloop_monoid G) (grp_deloop_monoid K)
     (grp_map h) (proper_morphism (grp_map h))
     (grp_map_unit h) (grp_map_mul h).
 
-(** ...hence a functor, by [Construction/Deloop/Transform.v]'s
-    [Deloop_map]; nothing here is new, and the action on arrows is the
-    homomorphism's action on elements by convertibility. *)
+(** ...hence 函子, [Construction/Deloop/Transform.v]'s
+ [Deloop_map]; nothing here new, action arrows the
+ homomorphism's action elements convertibility. （已译） *)
 Definition deloop_hom (h : G ~{Grp}~> K) : grp_deloop G ⟶ grp_deloop K :=
   Deloop_map (hom_MonHom h).
 
@@ -625,9 +619,9 @@ Context {G K : GrpObject}.
 Context (N : NormalSubgroup G).
 Context (p : Kills N K).
 
-(** The hypothesis of the categorical theorem, discharged by #313's
-    descent lemma with no reshaping.  It is stated over the UNTRUNCATED
-    [ns_rel], which is what #313's descent lemma proves. *)
+(** The 假设 categorical 定理, discharged #313's
+ descent 引理 no reshaping. It stated over UNTRUNCATED
+ [ns_rel], what #313's descent 引理 proves. （已译） *)
 Definition deloop_kills
   : ∀ x y (f g : x ~{grp_deloop G}~> y), ns_rel N x y f g →
       fmap[deloop_hom (`1 p)] f ≈ fmap[deloop_hom (`1 p)] g :=
@@ -732,18 +726,18 @@ Proof. destruct x; reflexivity. Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** The congruence merges: the rotation is related to the identity arrow
-    (which is [s3_unit], since [grp_unit S3 = s3_unit] and
-    [deloop_id_is_unit] holds by [eq_refl]). *)
+(** The congruence merges: rotation related 恒等箭头
+ (which [s3_unit], since [grp_unit S3 = s3_unit] and
+ [deloop_id_is_unit] holds [eq_refl]). （已译） *)
 Example A3_relates_rotation : ns_rel A3 ttt ttt S3_r s3_unit := eq_refl.
 
-(** ...and separates: the reflection is not. *)
+(** 本节：...and separates: reflection not. （已译） *)
 Theorem A3_separates_reflection : ns_rel A3 ttt ttt S3_s s3_unit → False.
 Proof. simpl; discriminate. Qed.
 
-(** So the projection functor is not faithful -- which is the whole point
-    of a quotient category, and Fong and Spivak's "equations merge, never
-    add" read at one object. *)
+(** So projection 函子 not faithful -- whole point
+ quotient 范畴, Fong Spivak's "equations merge, never
+ add" read at one 对象. （已译） *)
 Theorem A3_proj_not_faithful :
   (∀ (x y : grp_deloop S3) (f g : x ~> y),
      ns_rel A3 x y f g → f ≈ g) → False.
@@ -780,8 +774,8 @@ Proof.
            (fst (congruence_iff_normal S3_refl_sub) HR)).
 Qed.
 
-(** The recovered normal subgroup of A3's congruence has A3's members,
-    at the concrete witness: both directions, computed. *)
+(** 本节：The recovered normal subgroup A3's congruence has A3's members,
+ at concrete witness: both directions, computed. （已译） *)
 Example A3_round_forward :
   sub_mem (@cong_ns S3 (ns_rel A3) (ns_congruence A3)) S3_r := eq_refl.
 

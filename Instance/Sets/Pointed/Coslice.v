@@ -10,7 +10,7 @@ Require Import Category.Instance.Sets.Pointed.
 
 Generalizable All Variables.
 
-(** * Pointed sets as the coslice of Sets under the one-point set *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/under+category
@@ -31,9 +31,9 @@ Generalizable All Variables.
 *)
 Definition SetsOne : SetoidObject := @terminal_obj Sets Sets_Terminal.
 
-(* A basepoint, read as a global element.  The one-point pointed set has the
-   terminal setoid underneath it, so the constant map at the basepoint already
-   has the right type. *)
+(* A basepoint, read global element. The one-point pointed set has the
+ terminal setoid underneath it, so 常值 map at basepoint already
+ has right type. （已译） *)
 Definition pt_global (X : PointedSetoid) :
   SetsOne ~{Sets}~> pointed_setoid X := const_pt_map PointedOne X.
 
@@ -113,8 +113,8 @@ Proof.
   reflexivity.
 Qed.
 
-(* Set_* IS the coslice of Sets under the one-point setoid — an isomorphism of
-   categories, not merely an equivalence. *)
+(* Set_* IS coslice Sets under one-point setoid — 同构 of
+ 范畴, not merely 等价. （已译） *)
 Definition Pointed_Coslice_iso : PointedSets ≅[Cat] Coslice Sets SetsOne :=
   @Build_Isomorphism Cat PointedSets (Coslice Sets SetsOne)
     Pointed_to_Coslice Coslice_to_Pointed

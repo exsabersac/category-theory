@@ -44,8 +44,8 @@ Inductive coend_eq : coend_sum -> coend_sum -> Type :=
   | ce_trans : forall s t u : coend_sum,
       coend_eq s t -> coend_eq t u -> coend_eq s u.
 
-(** Reflexivity comes from [ce_point] applied to the fibre setoid's own
-    reflexivity. *)
+(** 本节：Reflexivity comes [ce_point] applied fibre setoid's own
+ reflexivity. （已译） *)
 Lemma coend_eq_refl (s : coend_sum) : coend_eq s s.
 Proof.
   destruct s as [x a].
@@ -63,8 +63,8 @@ Next Obligation.
   - intros s t u H1 H2. eapply ce_trans; [ exact H1 | exact H2 ].
 Qed.
 
-(** The injection leg at [x]: send [a : F (x, x)] to [ci x a].  It respects
-    the fibre equivalence by [ce_point]. *)
+(** The injection leg at [x]: send [a : F (x, x)] [ci x a]. It respects
+ fibre 等价 [ce_point]. （已译） *)
 Program Definition coend_inj_mor (x : C) :
   SetoidMorphism (F (x, x)) coend_apex_setoid :=
   {| morphism := fun a => ci x a |}.
@@ -73,8 +73,8 @@ Next Obligation.
   apply ce_point; exact Hab.
 Qed.
 
-(** The universal cowedge condition of the injections is exactly [ce_glue],
-    read pointwise. *)
+(** 本节：The universal cowedge condition injections exactly [ce_glue],
+ read pointwise. （已译） *)
 Lemma coend_apex_cowedge :
   Cowedge_cond F coend_apex_setoid coend_inj_mor.
 Proof.
@@ -82,8 +82,8 @@ Proof.
   exact (ce_glue x y f a).
 Qed.
 
-(** The underlying function of the mediator into a competing cowedge [(Q, i')]:
-    send [ci x a] to [i' x a]. *)
+(** 本节：The underlying function mediator competing cowedge [(Q, i')]:
+ send [ci x a] [i' x a]. （已译） *)
 Definition coend_med_fun {Q : SetoidObject}
   (i' : forall x : C, SetoidMorphism (F (x, x)) Q) (s : coend_sum) : Q :=
   match s with ci x a => i' x a end.

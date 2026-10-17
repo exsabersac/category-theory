@@ -13,7 +13,7 @@ Require Import Category.Instance.Top.Homotopy.
 
 Generalizable All Variables.
 
-(** * The wedge sum is the coproduct in Top∗ *)
+(* 相关说明。 （已译） *)
 
 (*
  Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
@@ -34,8 +34,7 @@ Definition wpoint : Type :=
   (carrier (top_carrier (ptop_space X))
      + carrier (top_carrier (ptop_space Y)))%type.
 
-(* Two points are identified when they agree inside a summand, or when
-   both are basepoints. *)
+(* 相关说明。 （已译） *)
 Definition wedge_rel (u v : wpoint) : Type :=
   match u, v with
   | Datatypes.inl a, Datatypes.inl a' => a ≈ a'
@@ -80,8 +79,7 @@ Definition wedge_carrier : SetoidObject := {|
 
 (** ** The quotient topology *)
 
-(* The [CP_open] shape of Instance/Top.v: a respect-the-gluing clause
-   plus the two restrictions. *)
+(* 相关说明。 （已译） *)
 Definition wedge_open (W : wedge_carrier → Type) : Type :=
   ((∀ u v : wedge_carrier, wedge_rel u v → W u → W v)
      ∧ IsOpen (ptop_space X) (fun a => W (Datatypes.inl a))
@@ -177,8 +175,7 @@ Definition wedge_inr_cont : ptop_space Y ~{Top}~> Wedge_Top :=
   Build_ContinuousMorphism (ptop_space Y) Wedge_Top wedge_inr_map
     (fun W HW => snd (snd HW)).
 
-(* The left injection preserves the basepoint on the nose; the right one
-   preserves it BY THE GLUING, which is the whole point of the wedge. *)
+(* 相关说明。 （已译） *)
 Definition Wedge_inl : X ~{Top_pointed}~> WedgeSum :=
   Build_PointedMap X WedgeSum wedge_inl_cont (reflexivity _).
 
@@ -273,8 +270,7 @@ Proof.
     + exact (Hr a).
 Qed.
 
-(* Field-shaped wrappers: [@Cartesian (Top_pointed^op)]'s [fork] binds the
-   target first, then the two summands. *)
+(* 相关说明。 （已译） *)
 Definition Wedge_cofork (Z X Y : PointedTop)
   (f : X ~{Top_pointed}~> Z) (g : Y ~{Top_pointed}~> Z) :
   WedgeSum X Y ~{Top_pointed}~> Z := Wedge_merge f g.
@@ -324,14 +320,14 @@ Example Wedge_merge_is_merge (X Y Z : PointedTop)
   @merge Top_pointed Top_pointed_Cocartesian Z X Y f g = Wedge_merge f g :=
   eq_refl.
 
-(* The basepoint of the wedge IS the image of X's basepoint. *)
+(* 相关说明。 （已译） *)
 Example Wedge_basepoint (X Y : PointedTop) :
   ptop_pt (@Coprod Top_pointed Top_pointed_Cocartesian X Y)
     = Datatypes.inl (ptop_pt X) := eq_refl.
 
-(* Symmetry and associativity come free from the cocartesian structure;
-   the unit laws do not, there being no initial object of [Top_pointed]
-   in tree. *)
+(* Symmetry associativity come free cocartesian structure;
+ unit laws do not, there being no 始对象 [Top_pointed]
+ tree. （已译） *)
 Example Wedge_comm (X Y : PointedTop) :
   @Isomorphism Top_pointed (WedgeSum X Y) (WedgeSum Y X) :=
   @coprod_comm Top_pointed Top_pointed_Cocartesian X Y.
@@ -341,10 +337,9 @@ Example Wedge_assoc (X Y Z : PointedTop) :
     (WedgeSum (WedgeSum X Y) Z) (WedgeSum X (WedgeSum Y Z)) :=
   @coprod_assoc Top_pointed Top_pointed_Cocartesian X Y Z.
 
-(** ** The gluing is real, and it is what distinguishes the two rosters *)
+(* 相关说明。 （已译） *)
 
-(* The two injections agree at the basepoints — the defining property of
-   the wedge. *)
+(* 相关说明。 （已译） *)
 Lemma wedge_basepoints_identified (X Y : PointedTop) :
   continuous_map (ptop_map (Wedge_inl X Y)) (ptop_pt X)
     ≈ continuous_map (ptop_map (Wedge_inr X Y)) (ptop_pt Y).
@@ -361,10 +356,9 @@ Lemma wedge_is_not_sum (X Y : PointedTop) :
   → False.
 Proof. exact (fun H => H). Qed.
 
-(** ** Non-vacuity: away from the basepoints nothing else is glued *)
+(* 相关说明。 （已译） *)
 
-(* A two-point discrete space, built from Instance/Top/Coproduct.v's own
-   coproduct of two copies of the point, pointed at its left point. *)
+(* 相关说明。 （已译） *)
 Definition TwoPt : PointedTop := {|
   ptop_space := Sum_Top Point_Top Point_Top;
   ptop_pt := Datatypes.inl ttt
@@ -378,7 +372,7 @@ Lemma wedge_non_basepoints_differ :
   → False.
 Proof. exact (fun H => fst H). Qed.
 
-(* While the basepoints are glued, in the same space. *)
+(* 相关说明。 （已译） *)
 Example wedge_two_pt_basepoints :
   @wedge_rel TwoPt TwoPt
     (Datatypes.inl (Datatypes.inl ttt))

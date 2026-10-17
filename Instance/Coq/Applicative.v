@@ -5,7 +5,7 @@ Require Import Category.Instance.Coq.
 
 Generalizable All Variables.
 
-(** Applicative endofunctors on COQ, with the four laws as class fields. *)
+(** 本节：Applicative endofunctors COQ, four laws class fields. （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor

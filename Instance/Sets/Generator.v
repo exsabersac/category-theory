@@ -51,16 +51,16 @@ Definition Sets_Generator@{o so+} : Generator Sets@{o so} :=
 
 (** ** The terminal object separates *)
 
-(* The same constant map, but out of [Sets_Terminal]'s object rather than
-   out of [unit_setoid_object].  It has to be built separately: the two
-   objects do not convert, as the header measures. *)
+(* The same 常值 map, but out [Sets_Terminal]'s 对象 rather than
+ out [unit_setoid_object]. It has built separately: two
+ 对象 do not convert, header measures. （已译） *)
 Program Definition sets_elem_term@{o so+} {X : SetoidObject@{o o}}
   (x : carrier X) :
   @terminal_obj Sets@{o so} Sets_Terminal@{so o} ~{Sets@{o so}}~> X :=
   {| morphism := fun _ => x |}.
 
-(* Route 1, the delivered constant: the direct proof.  This is issue
-   #447's pinned name. *)
+(* Route 1, delivered 常值: direct 证明. This issue
+ #447's pinned name. （已译） *)
 Lemma Sets_terminal_separates@{o so+} :
   @IsSeparator Sets@{o so}
     (@terminal_obj Sets@{o so} Sets_Terminal@{so o}).
@@ -91,9 +91,9 @@ Proof.
   - intro u; now destruct u.
 Defined.
 
-(* Route 2: transport along that isomorphism, in the direction
-   [unit_setoid_object ≅ terminal_obj], through Structure/Generator.v's
-   [separator_iso]. *)
+(* Route 2: transport along 同构, direction
+ [unit_setoid_object ≅ terminal_obj], through Structure/Generator.v's
+ [separator_iso]. （已译） *)
 Definition Sets_terminal_separates_by_transport@{o so+} :
   @IsSeparator Sets@{o so}
     (@terminal_obj Sets@{o so} Sets_Terminal@{so o}) :=
@@ -110,7 +110,7 @@ Definition Sets_terminal_separates_from_Concrete@{o so+} :
   IsSeparator_of_Separator
     (@terminal_obj Sets@{o so} Sets_Terminal@{so o}) Sets_Separator@{o so}.
 
-(** ** The initial object does not separate *)
+(* * ** The 始对象 does not separate （已译） *)
 
 (*
    本节说明 Generator 相关定义、性质与动机。
@@ -127,8 +127,8 @@ Proof.
   intros k u; destruct u.
 Qed.
 
-(* The same theorem by the route issue #447 named, and pinned at object
-   universe [Set] by its donors, as the header attributes. *)
+(* The same 定理 route issue #447 named, pinned at 对象
+ universe [Set] donors, header attributes. （已译） *)
 Lemma Sets_empty_not_separates_pick@{so+} :
   @IsSeparator Sets@{Set so}
     (@terminal_obj (Sets@{Set so}^op) Sets_Initial@{so Set}) → False.

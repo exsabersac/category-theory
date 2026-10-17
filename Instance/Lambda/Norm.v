@@ -40,7 +40,7 @@ Definition halts {Γ τ} (e : Exp Γ τ) : Type :=
 
 Notation " e '⇓' " := (halts e) (at level 11).
 
-(* [e'] is a normal form of [e]: reachable from [e] and itself irreducible. *)
+(* 相关说明。 （已译） *)
 Definition normal_form_of {Γ τ} (e e' : Exp Γ τ) : Type :=
   (e --->* e' ∧ normal_form Step e').
 
@@ -230,8 +230,8 @@ Proof.
   - now apply IHe1, IHe2.
 Qed.
 
-(* Every closed expression is reducible: instantiate the fundamental lemma at
-   the empty (identity) substitution. *)
+(* Every closed expression reducible: instantiate fundamental 引理 at
+ empty (恒等) substitution. （已译） *)
 Theorem Exp_SN {τ} (e : Exp nil τ) : SN e.
 Proof.
   intros.

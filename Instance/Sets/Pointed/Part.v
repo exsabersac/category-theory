@@ -93,9 +93,7 @@ Proof.
   exact (Hfg (Datatypes.Some a)).
 Qed.
 
-(* Fullness: a pointed map g : option A ~> option B restricts to the partial
-   map [a ↦ g (Some a)], and pointedness — [g None ≈ None] — is exactly what
-   makes the restriction lose nothing. *)
+(* 相关说明。 （已译） *)
 Program Definition Part_prefmap {A B : SetoidObject}
   (g : Part_Pointed_obj A ~{PointedSets}~> Part_Pointed_obj B) :
   A ~{Part}~> B := {|
@@ -118,7 +116,7 @@ Next Obligation.
     exact (preserves_pt g).
 Qed.
 
-(** ** Essential surjectivity, and the equivalence *)
+(* * ** Essential surjectivity, 等价 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。

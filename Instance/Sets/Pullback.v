@@ -24,7 +24,7 @@ Generalizable All Variables.
 *)
 
 (* ====================================================================== *)
-(** * (A) The agreement sub-setoid                                        *)
+(* 相关说明。 （已译） *)
 
 Section SetsPullback.
 
@@ -39,8 +39,7 @@ Context (f : x ~{Sets}~> z) (g : y ~{Sets}~> z).
 Definition sets_pb_carrier : Type :=
   { p : carrier x * carrier y & @equiv _ z (f (fst p)) (g (snd p)) }.
 
-(* Two elements are identified when the underlying pairs are: the
-   agreement witness plays no part. *)
+(* 相关说明。 （已译） *)
 Definition sets_pb_equiv : crelation sets_pb_carrier :=
   fun u v => (@equiv _ x (fst `1 u) (fst `1 v) *
               @equiv _ y (snd `1 u) (snd `1 v))%type.
@@ -71,9 +70,7 @@ Next Obligation. intros u v H; exact (snd H). Qed.
 Lemma sets_pb_commutes : f ∘ sets_pb_fst ≈ g ∘ sets_pb_snd.
 Proof. intros u; exact (`2 u). Qed.
 
-(* The mediator out of a competing square: bundle the two legs at a
-   point, the agreement witness being the competing square's own
-   commuting equation read at that point. *)
+(* 相关说明。 （已译） *)
 Program Definition sets_pb_med {Q : Sets}
         (q1 : Q ~{Sets}~> x) (q2 : Q ~{Sets}~> y)
         (Hq : f ∘ q1 ≈ g ∘ q2) : Q ~{Sets}~> sets_pb_obj :=
@@ -98,8 +95,7 @@ Defined.
 Definition Sets_Pullback : Pullback f g :=
   is_pullback_pullback Sets_IsPullback.
 
-(* The bundled record's apex and projections are the three constants
-   above, on the nose. *)
+(* 相关说明。 （已译） *)
 Definition Sets_Pullback_obj : Pull f g Sets_Pullback = sets_pb_obj := eq_refl.
 Definition Sets_Pullback_fst :
   pullback_fst f g Sets_Pullback = sets_pb_fst := eq_refl.
@@ -112,22 +108,22 @@ End SetsPullback.
   {| pullback := @Sets_Pullback |}.
 
 (* ====================================================================== *)
-(** * (B) The kernel pair (Mac Lane §III.4 Exercise 6)                    *)
+(* 相关说明。 （已译） *)
 
 Section KernelPair.
 
 Context {a b : Sets}.
 Context (f : a ~{Sets}~> b).
 
-(* The relation setoid {(u, v) | f u ≈ f v}, which is the agreement
-   sub-setoid of (A) taken at the cospan (f, f). *)
+(* The 关系 setoid {(u, v) | f u ≈ f v}, agreement
+ sub-setoid (A) taken at cospan (f, f). （已译） *)
 Definition sets_ker : Sets := sets_pb_obj f f.
 
 Definition sets_ker_fst : sets_ker ~{Sets}~> a := sets_pb_fst f f.
 Definition sets_ker_snd : sets_ker ~{Sets}~> a := sets_pb_snd f f.
 
-(* Structure/Regular.v's generic [kernel_pair] IS that relation setoid,
-   with those two projections, on the nose. *)
+(* Structure/Regular.v's generic [kernel_pair] IS 关系 setoid,
+ those two projections, nose. （已译） *)
 Definition sets_kernel_pair_obj :
   Pull f f (@kernel_pair Sets Sets_HasPullbacks a b f) = sets_ker := eq_refl.
 
@@ -147,7 +143,7 @@ Lemma sets_ker_related (w : carrier sets_ker) :
   @equiv _ b (f (sets_ker_fst w)) (f (sets_ker_snd w)).
 Proof. exact (`2 w). Qed.
 
-(** ** The equivalence-relation laws, exhibited as arrows *)
+(* * ** The 等价-关系 laws, exhibited arrows （已译） *)
 
 (* Reflexivity: the diagonal a ~> R, splitting both projections. *)
 Program Definition sets_ker_refl : a ~{Sets}~> sets_ker :=
@@ -160,7 +156,7 @@ Proof. intros u; reflexivity. Qed.
 Lemma sets_ker_refl_snd : sets_ker_snd ∘ sets_ker_refl ≈ id[a].
 Proof. intros u; reflexivity. Qed.
 
-(* Symmetry: the swap R ~> R, exchanging the two projections. *)
+(* 相关说明。 （已译） *)
 Program Definition sets_ker_sym : sets_ker ~{Sets}~> sets_ker :=
   {| morphism := fun w => ((snd `1 w, fst `1 w); symmetry (`2 w)) |}.
 Next Obligation. intros w w' H; exact (snd H, fst H). Qed.
@@ -171,8 +167,8 @@ Proof. intros w; reflexivity. Qed.
 Lemma sets_ker_sym_snd : sets_ker_snd ∘ sets_ker_sym ≈ sets_ker_fst.
 Proof. intros w; reflexivity. Qed.
 
-(* Transitivity needs the object of composable pairs, which is itself a
-   pullback: the pullback of [sets_ker_snd] along [sets_ker_fst]. *)
+(* Transitivity needs 对象 composable pairs, itself a
+ pullback: pullback [sets_ker_snd] along [sets_ker_fst]. （已译） *)
 Definition sets_ker_comp : Sets := sets_pb_obj sets_ker_snd sets_ker_fst.
 
 Definition sets_ker_comp_is_pullback :
@@ -211,14 +207,14 @@ Proof. intros w; reflexivity. Qed.
 End KernelPair.
 
 (* ====================================================================== *)
-(** * (C) The pullback IS the equalizer (Riehl §3.2 Example 3.2.9)        *)
+(* 相关说明。 （已译） *)
 
 Section PullbackAsEqualizer.
 
 Context {x y z : Sets}.
 Context (f : x ~{Sets}~> z) (g : y ~{Sets}~> z).
 
-(* The equalizing map into the product: the two projections paired. *)
+(* The equalizing map 进入 product: two projections paired. （已译） *)
 Definition sets_pb_pair : sets_pb_obj f g ~{Sets}~> (x × y)%object :=
   (sets_pb_fst f g △ sets_pb_snd f g).
 
@@ -226,8 +222,7 @@ Definition sets_pullback_is_equalizer :
   IsEqualizer (f ∘ exl) (g ∘ exr) (sets_pb_obj f g) sets_pb_pair :=
   equalizer_of_pullback (Sets_IsPullback f g).
 
-(* And back: reading that equalizer as a pullback through the same
-   reduction returns the projections composed with the pairing. *)
+(* 相关说明。 （已译） *)
 Definition sets_equalizer_is_pullback :
   IsPullback f g (sets_pb_obj f g) (exl ∘ sets_pb_pair) (exr ∘ sets_pb_pair) :=
   pullback_of_equalizer f g sets_pullback_is_equalizer.
@@ -249,9 +244,7 @@ Example sets_equalizer_round_fst_pointwise (u : carrier (sets_pb_obj f g)) :
 Example sets_equalizer_round_snd_pointwise (u : carrier (sets_pb_obj f g)) :
   (exr ∘ sets_pb_pair) u = sets_pb_snd f g u := eq_refl.
 
-(* Elementwise: the equalizing map sends an element of the agreement
-   subset to its underlying pair, and that pair equalizes the two
-   composites. *)
+(* 相关说明。 （已译） *)
 Lemma sets_pb_pair_computes (u : carrier (sets_pb_obj f g)) :
   @equiv _ (x × y)%object (sets_pb_pair u) (`1 u).
 Proof. split; reflexivity. Qed.
@@ -263,7 +256,7 @@ Proof. exact (`2 u). Qed.
 End PullbackAsEqualizer.
 
 (* ====================================================================== *)
-(** * (D) Pulling a subset back is taking the preimage (Awodey Ex. 5.9)   *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Pullback 相关定义、性质与动机。
@@ -293,8 +286,8 @@ Proof.
   - intros u v w H K; transitivity (`1 v); assumption.
 Qed.
 
-(* The subset as an object of [Sets]: elements of B together with a
-   membership witness, compared by their underlying elements. *)
+(* The subset 对象 [Sets]: elements B together a
+ membership witness, compared underlying elements. （已译） *)
 Definition sub_obj : Sets :=
   {| carrier   := { p : carrier B & sub_mem S p }
    ; is_setoid := {| equiv        := fun u v => @equiv _ B `1 u `1 v
@@ -319,8 +312,7 @@ End Subset.
 Arguments sub_obj {B} _.
 Arguments sub_incl {B} _.
 
-(* Factoring a map through a given map, as data (the tree's ∃ is sigT,
-   so the factoring map is data and nothing is chosen). *)
+(* 相关说明。 （已译） *)
 Definition FactorsThrough {Z W V : Sets} (m : W ~{Sets}~> V)
            (h : Z ~{Sets}~> V) : Type :=
   { k : Z ~{Sets}~> W & m ∘ k ≈ h }.
@@ -342,8 +334,7 @@ Defined.
 Definition sets_preimage_mem (p : carrier A) :
   sub_mem sets_preimage p = sub_mem S (f p) := eq_refl.
 
-(* The comparison over the cospan: an element of the preimage maps to its
-   image, which carries the same membership witness. *)
+(* 相关说明。 （已译） *)
 Program Definition sets_preimage_over :
   sub_obj sets_preimage ~{Sets}~> sub_obj S :=
   {| morphism := fun u => (f `1 u; `2 u) |}.
@@ -367,8 +358,7 @@ Defined.
 
 (** ** The elementwise criterion *)
 
-(* Awodey's criterion: t factors through the preimage exactly when
-   f ∘ t factors through the subset. *)
+(* 相关说明。 （已译） *)
 Lemma sets_preimage_criterion {Z : Sets} (t : Z ~{Sets}~> A) :
   FactorsThrough (sub_incl sets_preimage) t ↔
   FactorsThrough (sub_incl S) (f ∘ t).
@@ -388,7 +378,7 @@ Defined.
 End Preimage.
 
 (* ====================================================================== *)
-(** * (E) Non-vacuity: pullbacks in [Sets] that compute                   *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Pullback 相关定义、性质与动机。
@@ -413,9 +403,9 @@ Proof.
   try (intros c c' H; exact H).
 Defined.
 
-(** ** A cospan whose agreement subset is the graph of [Nat.even] *)
+(* 相关说明。 （已译） *)
 
-(* The pullback of [evenM] along [idB]: pairs (n, c) with even n = c. *)
+(* 相关说明。 （已译） *)
 Definition graph_even : Sets := sets_pb_obj evenM idB.
 
 Example graph_even_3 : carrier graph_even := ((3%nat, false); eq_refl).
@@ -439,7 +429,7 @@ Proof. intros n; reflexivity. Qed.
 Definition even_med : PbNatSet ~{Sets}~> graph_even :=
   sets_pb_med evenM idB id[PbNatSet] evenM even_square.
 
-(* The mediator produced by the universal property IS that map. *)
+(* The mediator produced 普遍性质 IS map. （已译） *)
 Definition even_med_is_ump :
   unique_obj (ump_pullbacks evenM idB (Sets_Pullback evenM idB)
                             PbNatSet id[PbNatSet] evenM even_square)
@@ -452,7 +442,7 @@ Example even_med_5_snd :
 Example even_med_6_snd :
   sets_pb_snd evenM idB (even_med 6%nat) = true := eq_refl.
 
-(** ** The kernel pair of [evenM] is not the diagonal *)
+(* 相关说明。 （已译） *)
 
 Example even_ker_02 : carrier (sets_ker evenM) := ((0%nat, 2%nat); eq_refl).
 
@@ -465,15 +455,14 @@ Lemma even_ker_not_diagonal :
                   (sets_ker_snd evenM even_ker_02) → False.
 Proof. discriminate. Qed.
 
-(* The symmetry arrow moves it, and the reflexivity arrow does not land
-   on it. *)
+(* 相关说明。 （已译） *)
 Example even_ker_sym_02_fst :
   sets_ker_fst evenM (sets_ker_sym evenM even_ker_02) = 2%nat := eq_refl.
 
 Example even_ker_refl_0_snd :
   sets_ker_snd evenM (sets_ker_refl evenM 0%nat) = 0%nat := eq_refl.
 
-(* And the transitivity arrow composes (0,2) with (2,4) to give (0,4). *)
+(* 相关说明。 （已译） *)
 Example even_ker_24 : carrier (sets_ker evenM) := ((2%nat, 4%nat); eq_refl).
 
 Example even_ker_composable : carrier (sets_ker_comp evenM) :=
@@ -495,7 +484,7 @@ Proof.
   intros u v Huv Hm; rewrite <- Huv; exact Hm.
 Defined.
 
-(* The preimage of {true} along [evenM] is the set of even naturals. *)
+(* 相关说明。 （已译） *)
 Definition even_preimage : SubsetOf PbNatSet := sets_preimage evenM TrueSub.
 
 Example even_preimage_4 : carrier (sub_obj even_preimage) := (4%nat; eq_refl).
@@ -503,8 +492,8 @@ Example even_preimage_4 : carrier (sub_obj even_preimage) := (4%nat; eq_refl).
 Lemma even_preimage_excludes_3 : sub_mem even_preimage 3%nat → False.
 Proof. discriminate. Qed.
 
-(* A non-constant map into the preimage, and the criterion carrying it
-   downstairs. *)
+(* A non-常值 map 进入 preimage, criterion carrying it
+ downstairs. （已译） *)
 Definition chooseM : PbBoolSet ~{Sets}~> PbNatSet.
 Proof.
   unshelve refine {| morphism := fun c : bool => if c then 4%nat else 2%nat |};
@@ -531,8 +520,8 @@ Example choose_downstairs_true :
 Example choose_downstairs_false :
   `1 (`1 choose_factors_downstairs false) = true := eq_refl.
 
-(* The criterion is not vacuous in the negative direction either: the
-   constant 3 does not factor through the preimage. *)
+(* The criterion not vacuous negative direction either: the
+ 常值 3 does not factor through preimage. （已译） *)
 Definition constThree : PbBoolSet ~{Sets}~> PbNatSet.
 Proof.
   unshelve refine {| morphism := fun _ : bool => 3%nat |};

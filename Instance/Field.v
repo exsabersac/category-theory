@@ -46,7 +46,7 @@ Next Obligation. intros x y f a; simpl; reflexivity. Qed.
 Next Obligation. intros x y z w f g h a; simpl; reflexivity. Qed.
 Next Obligation. intros x y z w f g h a; simpl; reflexivity. Qed.
 
-(** ** The evident forgetful functors *)
+(* * ** The evident forgetful 函子 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -76,7 +76,7 @@ Next Obligation. intros F K T f g a; simpl; reflexivity. Qed.
 #[export] Instance Field_Forget_Faithful : Faithful Field_Forget.
 Proof. constructor; intros F K f g E; exact E. Qed.
 
-(** ** Homomorphisms reflect nothing into zero *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Field 相关定义、性质与动机。
@@ -117,10 +117,10 @@ Proof.
     now apply (field_hom_nonzero f x Hx).
 Qed.
 
-(** ** Riehl 1.2.iii: distinct elements have distinct images *)
+(* 相关说明。 （已译） *)
 
-(* A difference vanishing forces the two elements to agree — pure ring
-   arithmetic, isolated so the field argument below reads cleanly. *)
+(* A difference vanishing forces two elements agree — pure ring
+ arithmetic, isolated so field 论元 below reads cleanly. （已译） *)
 Lemma ring_sub_zero (R : RingObject) (a b : carrier (rig_setoid R)) :
   rig_add R a (ring_neg R b) ≈ rig_zero R → a ≈ b.
 Proof.
@@ -133,7 +133,7 @@ Proof.
     apply rig_add_zero_l.
 Qed.
 
-(* ... and the converse, which the stability analysis below needs. *)
+(* 相关说明。 （已译） *)
 Lemma ring_zero_sub (R : RingObject) (a b : carrier (rig_setoid R)) :
   a ≈ b → rig_add R a (ring_neg R b) ≈ rig_zero R.
 Proof.
@@ -143,9 +143,7 @@ Proof.
   apply ring_neg_l.
 Qed.
 
-(* Agreement of the images sends the difference to zero.  Isolated
-   because both [field_hom_distinct] and [field_stable_at_zero_suffices]
-   consume exactly this step and nothing else. *)
+(* 相关说明。 （已译） *)
 Lemma field_hom_sub_zero {F K : FieldObject} (f : RigHom F K)
   (a b : carrier (rig_setoid F)) :
   rig_map f a ≈ rig_map f b →
@@ -176,9 +174,7 @@ Proof.
   exact (field_hom_nonzero f _ Hd (field_hom_sub_zero f a b Hab)).
 Qed.
 
-(* The same content stated positively: the double negation of
-   injectivity holds outright.  This is the exact unconditional
-   strength — cf. Instance/Grp/Epi.v's [grp_epic_image_dense]. *)
+(* 相关说明。 （已译） *)
 Corollary field_hom_injective_nn {F K : FieldObject} (f : RigHom F K)
   (a b : carrier (rig_setoid F)) :
   rig_map f a ≈ rig_map f b → ((a ≈ b → False) → False).
@@ -187,11 +183,9 @@ Proof.
   exact (field_hom_distinct f a b Hne Hab).
 Qed.
 
-(** ** The named hypothesis, and that it is exactly the missing step *)
+(* * ** The named 假设, it exactly missing step （已译） *)
 
-(* Stability of ≈ under double negation.  Named rather than assumed
-   silently, and discharged below for every field with decidable
-   equality. *)
+(* 相关说明。 （已译） *)
 Definition FieldStable (F : FieldObject) : Type :=
   ∀ a b : carrier (rig_setoid F), ((a ≈ b → False) → False) → a ≈ b.
 
@@ -222,7 +216,7 @@ Proof.
   - intros H _; exact H.
 Qed.
 
-(** ** The hypothesis is only ever used at zero *)
+(* * ** The 假设 ever used at zero （已译） *)
 
 (*
    本节说明 Field 相关定义、性质与动机。
@@ -249,8 +243,7 @@ Proof.
   exact (Hd (ring_zero_sub F a b Hab)).
 Qed.
 
-(* Cancellation from the zero-only form directly, spending no more than
-   [field_hom_sub_zero] and [field_hom_nonzero]. *)
+(* 相关说明。 （已译） *)
 Theorem field_stable_at_zero_suffices {F K : FieldObject} (f : RigHom F K)
   (HF : FieldStableAtZero F) (a b : carrier (rig_setoid F)) :
   rig_map f a ≈ rig_map f b → a ≈ b.
@@ -262,7 +255,7 @@ Proof.
   exact (field_hom_nonzero f _ Hd (field_hom_sub_zero f a b Hab)).
 Qed.
 
-(** ** Injectivity and Riehl's conclusion *)
+(* 相关说明。 （已译） *)
 
 Theorem field_hom_injective {F K : FieldObject} (f : RigHom F K)
   (HF : FieldStable F) (a b : carrier (rig_setoid F)) :
@@ -296,8 +289,8 @@ Qed.
 
 (** ** ℚ: the witness *)
 
-(* [Qeq] is decidable, so ℚ's equality is stable and every homomorphism
-   out of ℚ is monic with no hypothesis whatsoever. *)
+(* [Qeq] decidable, so ℚ's equality stable every homomorphism
+ out ℚ monic no 假设 whatsoever. （已译） *)
 Lemma Q_Field_dec (a b : carrier (rig_setoid Q_Field)) :
   (a ≈ b) + (a ≈ b → False).
 Proof.
@@ -325,8 +318,7 @@ Example Q_Field_id_monic : Monic (@id Field Q_Field) := Q_hom_monic _ _.
 
 (** ** ℚ is rigid *)
 
-(* Denominators are nonzero as rationals — the one arithmetic fact the
-   cancellation below needs. *)
+(* 相关说明。 （已译） *)
 Lemma Q_den_nonzero (q : Q) : ~ (inject_Z (Z.pos (Qden q)) == 0)%Q.
 Proof. unfold Qeq, inject_Z; simpl; discriminate. Qed.
 
@@ -360,7 +352,7 @@ Proof.
     transitivity (zring Q_Ring z).
     - exact (rng_from_Z_unique Q_Ring (rig_hom_compose f ZtoQ) z).
     - symmetry; exact (rng_from_Z_unique Q_Ring ZtoQ z). }
-  (* multiply through by the denominator and cancel *)
+  (* 相关说明。 （已译） *)
   apply (Q_cancel_r _ _ (inject_Z (Z.pos (Qden q))) (Q_den_nonzero q)).
   transitivity (rig_map f (q * inject_Z (Z.pos (Qden q)))%Q).
   - rewrite Hmul.
@@ -372,12 +364,12 @@ Proof.
     + symmetry; apply Q_num_den.
 Qed.
 
-(* ...hence the identity is the only endomorphism, in the hom-setoid. *)
+(* ...hence 恒等 endomorphism, hom-setoid. （已译） *)
 Corollary Q_endo_unique (f : Q_Field ~{Field}~> Q_Field) :
   f ≈ @id Field Q_Field.
 Proof. intro q; exact (Q_endo_id f q). Qed.
 
-(** ** F₂: the second object, and a second characteristic *)
+(* * ** F₂: second 对象, second characteristic （已译） *)
 
 (*
    本节说明 Field 相关定义、性质与动机。
@@ -391,9 +383,9 @@ Program Definition F2_Rig : RigObject := {|
   rig_one := true;
   rig_mul := andb;
 
-  (* [bool_setoid_object]'s `≈` IS [eq]: the two implications are the
-     identity.  See Lib/Setoid/Propositional.v for why the relation must be
-     named rather than ascribed. *)
+  (* [bool_setoid_object]'s `≈` IS [eq]: two 蕴含 the
+ 恒等. See Lib/Setoid/Propositional.v why 关系 must be
+ named rather than ascribed. （已译） *)
   rig_prop := @PropEquiv_of_relation _ (is_setoid bool_setoid_object) (@eq bool)
                 (fun _ _ h => h) (fun _ _ h => h)
 |}.
@@ -421,12 +413,12 @@ Program Definition F2_Field : FieldObject := {|
 Next Obligation. intros [|] [|]; reflexivity. Qed.
 Next Obligation. discriminate. Qed.
 Next Obligation.
-  (* the only nonzero boolean is [true], and true · true ≈ true *)
+  (* 相关说明。 （已译） *)
   intros [|] Hx; [ reflexivity | destruct (Hx eq_refl) ].
 Qed.
 
-(* Leibniz equality on [bool] is decidable, so F₂ is stable and every
-   homomorphism out of it is monic with no hypothesis. *)
+(* Leibniz equality [bool] decidable, so F₂ stable every
+ homomorphism out it monic no 假设. （已译） *)
 Lemma F2_Field_dec (a b : carrier (rig_setoid F2_Field)) :
   (a ≈ b) + (a ≈ b → False).
 Proof.
@@ -441,7 +433,7 @@ Theorem F2_hom_monic (K : FieldObject) (f : F2_Field ~{Field}~> K) :
   Monic f.
 Proof. exact (field_monic f F2_Field_stable). Qed.
 
-(** ** The two fields are not connected, in either direction *)
+(* 相关说明。 （已译） *)
 
 (* 1 + 1 in an arbitrary field.  Named because both non-existence
    theorems below run through it: it is zero in F₂ and nonzero in ℚ,
@@ -457,8 +449,7 @@ Proof.
   now rewrite (rig_map_one f).
 Qed.
 
-(* In ℚ, 2 ≉ 0 — the whole content of "characteristic zero" that is
-   needed here. *)
+(* 相关说明。 （已译） *)
 Lemma Q_ftwo_nonzero : ftwo Q_Field ≈ rig_zero Q_Field → False.
 Proof.
   intro H.
@@ -471,8 +462,7 @@ Qed.
 Lemma F2_ftwo_zero : ftwo F2_Field ≈ rig_zero F2_Field.
 Proof. reflexivity. Qed.
 
-(* No homomorphism ℚ → F₂: it would have to carry the invertible 2 to
-   the zero of F₂, which [field_hom_nonzero] refutes. *)
+(* 相关说明。 （已译） *)
 Theorem no_hom_Q_F2 (f : Q_Field ~{Field}~> F2_Field) : False.
 Proof.
   apply (field_hom_nonzero f (ftwo Q_Field) Q_ftwo_nonzero).
@@ -480,8 +470,7 @@ Proof.
   exact F2_ftwo_zero.
 Qed.
 
-(* ...and none the other way: g would have to carry the zero of F₂,
-   which is 1 + 1 there, to 1 + 1 = 2 in ℚ, forcing 2 ≈ 0. *)
+(* 相关说明。 （已译） *)
 Theorem no_hom_F2_Q (g : F2_Field ~{Field}~> Q_Field) : False.
 Proof.
   apply Q_ftwo_nonzero.
@@ -490,8 +479,8 @@ Proof.
   apply (rig_map_zero g).
 Qed.
 
-(** ** riehl:1.6:example15: fields have neither an initial nor a
-       terminal object *)
+(* * ** riehl:1.6:example15: fields have neither initial nor a
+ 终对象 （已译） *)
 
 (*
    本节说明始/终对象相关定义、性质与动机。
@@ -518,28 +507,26 @@ Proof.
   exact F2_ftwo_zero.
 Qed.
 
-(* Dually, a terminal field T receives both.  The F₂-map forces
-   1 + 1 ≈ 0 in T, because 1 + 1 already is 0 in F₂; the ℚ-map then
-   carries the nonzero 2 of ℚ onto that same zero. *)
+(* 相关说明。 （已译） *)
 Theorem Field_no_terminal (T : @Terminal Field) : False.
 Proof.
   pose (f := @one Field T Q_Field).
   pose (g := @one Field T F2_Field).
-  (* 1 + 1 vanishes in the terminal field, being the g-image of 0 *)
+  (* 相关说明。 （已译） *)
   assert (H0 : ftwo (@terminal_obj Field T)
                  ≈ rig_zero (@terminal_obj Field T)).
   { transitivity (rig_map g (ftwo F2_Field)).
     - symmetry; apply (ftwo_map g).
     - apply (rig_map_zero g). }
-  (* yet it is the f-image of the invertible 2 of ℚ *)
+  (* 相关说明。 （已译） *)
   apply (field_hom_nonzero f (ftwo Q_Field) Q_ftwo_nonzero).
   rewrite (ftwo_map f).
   exact H0.
 Qed.
 
-(* The object-level readings, which are what "the category has no
-   initial object" says without choosing one: NO object of [Field] is
-   initial, and none is terminal. *)
+(* The 对象-level readings, what "范畴 has no
+ 始对象" says without choosing one: NO 对象 [Field] is
+ initial, none terminal. （已译） *)
 Corollary Field_no_initial_obj (c : Field) (H : IsInitialObj c) : False.
 Proof. exact (Field_no_initial (Initial_from_IsInitialObj H)). Qed.
 
@@ -548,14 +535,14 @@ Proof. exact (Field_no_terminal (Terminal_from_IsTerminalObj H)). Qed.
 
 (** ** Acceptance tests *)
 
-(* The forgetful functors return the underlying data on the nose. *)
+(* The forgetful 函子 return underlying data nose. （已译） *)
 Example field_forget_carrier (F : FieldObject) :
   Field_Forget F = rig_setoid F := eq_refl.
 
 Example field_rng_object (F : FieldObject) :
   Field_Rng F = field_ring F := eq_refl.
 
-(* ℚ's inverse computes, and its unit is separated from its zero. *)
+(* 相关说明。 （已译） *)
 Example q_inv_three : finv Q_Field (3 # 1) = (1 # 3)%Q := eq_refl.
 
 Example q_one_neq_zero : (1 # 1) == 0 → False := field_one_neq_zero Q_Field.

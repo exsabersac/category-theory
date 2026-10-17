@@ -14,7 +14,7 @@ Generalizable All Variables.
 
 Import EqNotations.
 
-(** * Reconstructing a discrete category from its set of objects *)
+(* * * Reconstructing discrete 范畴 set 对象 （已译） *)
 
 (*
  Reference: Saunders Mac Lane, "Categories for the Working Mathematician",
@@ -33,13 +33,13 @@ Import EqNotations.
 
 (** ** Transported identities *)
 
-(* Composing transported identities transports along the concatenated proof. *)
+(* Composing transported identities transports along concatenated 证明. （已译） *)
 Lemma rew_id_trans {C : Category} {x y z : C} (H : x = y) (H' : y = z) :
   rew H' in id ∘ rew H in id ≈ rew (eq_trans H H') in id.
 Proof. destruct H, H'; cat. Qed.
 
-(* A transported identity is invertible, its inverse being the identity
-   transported along the reversed proof. *)
+(* A transported 恒等 invertible, inverse being 恒等
+ transported along reversed 证明. （已译） *)
 Lemma rew_id_iso_to {C : Category} {x y : C} (H : x = y) :
   rew (eq_sym H) in id ∘ rew H in id ≈ id.
 Proof. destruct H; cat. Qed.
@@ -68,29 +68,29 @@ Proof.
   - intros x y z H H'; symmetry; apply rew_id_trans.
 Defined.
 
-(* The action on morphisms, in the [rew] shape used by Structure/Discrete.v. *)
+(* The action 态射, [rew] shape used Structure/Discrete.v. （已译） *)
 Lemma fmap_Discrete_Compare {C : Category} {x y : C} (e : x = y) :
   fmap[Discrete_Compare C] e ≈ rew e in id.
 Proof. reflexivity. Qed.
 
-(* Fullness is exactly the [Discrete] predicate: the witness it produces for an
-   arrow [g] is a preimage of [g] under [fmap].  No further hypothesis. *)
+(* Fullness exactly [Discrete] predicate: witness it produces an
+ arrow [g] preimage [g] under [fmap]. No further 假设. （已译） *)
 Program Definition Discrete_Compare_Full (C : Category) (D : Discrete C) :
   Full (Discrete_Compare C) := {|
   prefmap := fun x y g => `1 (D x y g)
 |}.
 Next Obligation. symmetry; exact (`2 (D x y g)). Qed.
 
-(** ** Rigidity: faithfulness of the comparison functor *)
+(* * ** Rigidity: faithfulness comparison 函子 （已译） *)
 
-(* The reconstruction hypothesis: an equality proof is recoverable from the
-   identity it transports.  Equivalently (see below) the comparison functor is
-   faithful. *)
+(* The reconstruction 假设: equality 证明 recoverable the
+ 恒等 it transports. Equivalently (see below) comparison 函子 is
+ faithful. （已译） *)
 Definition DiscreteRigid (C : Category) : Type :=
   ∀ (x y : C) (H H' : x = y),
     fmap[Discrete_Compare C] H ≈ fmap[Discrete_Compare C] H' → H = H'.
 
-(* The same condition spelled out without the functor. *)
+(* The same condition spelled out without 函子. （已译） *)
 Lemma DiscreteRigid_elementary (C : Category) :
   DiscreteRigid C ↔
     (∀ (x y : C) (H H' : x = y),
@@ -106,8 +106,8 @@ Proof.
   - intros x y H H' e; exact (@fmap_inj _ _ _ r x y H H' e).
 Qed.
 
-(* Uniqueness of identity proofs on the objects is one sufficient condition:
-   under it the hypothesis of rigidity is discarded outright. *)
+(* Uniqueness 恒等 proofs 对象 one sufficient condition:
+ under it 假设 rigidity discarded outright. （已译） *)
 Definition DiscreteRigid_UIP (C : Category)
   (uip : ∀ (x y : C) (H H' : x = y), H = H') : DiscreteRigid C :=
   fun x y H H' _ => uip x y H H'.
@@ -117,14 +117,14 @@ Definition DiscreteRigid_dec (C : Category)
   (dec : ∀ x y : C, {x = y} + {x <> y}) : DiscreteRigid C :=
   DiscreteRigid_UIP C (@UIP_dec (obj[C]) dec).
 
-(* On a discrete category the comparison functor acts as the identity on
-   morphisms, since there [rew H in id] reduces to [H] itself. *)
+(* On discrete 范畴 comparison 函子 acts 恒等 on
+ 态射, since there [rew H id] reduces [H] itself. （已译） *)
 Lemma DiscreteCat_rew_id {A : Type} {x y : A} (H : x = y) :
   fmap[Discrete_Compare (DiscreteCat A)] H = H.
 Proof. destruct H; reflexivity. Qed.
 
-(* Hence every [DiscreteCat A] is rigid, for every [A], with no hypothesis —
-   the gain over phrasing the theorem with UIP. *)
+(* Hence every [DiscreteCat A] rigid, every [A], no 假设 —
+ gain over phrasing 定理 UIP. （已译） *)
 Lemma DiscreteCat_Rigid (A : Type) : DiscreteRigid (DiscreteCat A).
 Proof.
   intros x y H H' e.
@@ -132,7 +132,7 @@ Proof.
   exact e.
 Qed.
 
-(** ** The reconstruction functor and the correspondence *)
+(* * ** The reconstruction 函子 correspondence （已译） *)
 
 Section Reconstruction.
 
@@ -140,7 +140,7 @@ Context {C : Category}.
 Context (Dis : Discrete C).
 Context (rigid : DiscreteRigid C).
 
-(* The equality proof that [Discrete] attaches to an arrow. *)
+(* The equality 证明 [Discrete] attaches arrow. （已译） *)
 Definition disc_eq {x y : C} (f : x ~> y) : x = y := `1 (Dis x y f).
 
 (* ... and its defining property, in comparison-functor form. *)
@@ -215,14 +215,14 @@ Proof.
   - apply rew_id_iso_to.
 Qed.
 
-(* The equivalence-respecting reading of discreteness: hom-setoids are
-   subsingletons and every arrow is invertible.  No object equality appears. *)
+(* The 等价-respecting reading discreteness: hom-setoids are
+ subsingletons every arrow invertible. No 对象 equality appears. （已译） *)
 Definition DiscreteUpToIso (C : Category) : Type :=
   (∀ (x y : C) (f g : x ~> y), f ≈ g)
     ∧ (∀ (x y : C) (f : x ~> y), ∃ g : y ~> x, (f ∘ g ≈ id) ∧ (g ∘ f ≈ id)).
 
-(* [Discrete] implies the restatement once the objects have UIP: the two
-   witnesses attached to two parallel arrows are then the same proof. *)
+(* [Discrete] implies restatement once 对象 have UIP: two
+ witnesses attached two parallel arrows then same 证明. （已译） *)
 Theorem Discrete_DiscreteUpToIso (C : Category) (D : Discrete C)
   (uip : ∀ (x y : C) (H H' : x = y), H = H') : DiscreteUpToIso C.
 Proof.
@@ -265,11 +265,11 @@ Proof.
   apply K, DiscreteCat_Discrete.
 Qed.
 
-(** ** The indiscrete category separates the two predicates *)
+(* * ** The indiscrete 范畴 separates two predicates （已译） *)
 
-(* One arrow between any two objects; the codiscrete/indiscrete right adjoint
-   to the underlying-set functor, included here only as the separating
-   witness. *)
+(* One arrow between any two 对象; codiscrete/indiscrete 右伴随
+ underlying-set 函子, included here separating
+ witness. （已译） *)
 (*
    本节说明hom相关定义、性质与动机。
 
@@ -309,11 +309,10 @@ Program Definition Indiscrete@{o h p} (A : Type@{o}) : Category@{o h p} := {|
   id      := fun _ => tt;
   compose := fun _ _ _ _ _ => tt
 |}.
-(* All category laws are equations in [unit] and are discharged by the default
-   obligation tactic. *)
+(* All 范畴 laws equations [unit] discharged default
+ obligation tactic. （已译） *)
 
-(* It satisfies the restatement for every [A]: [unit] is a subsingleton and
-   [tt] inverts [tt]. *)
+(* 相关说明。 （已译） *)
 Lemma Indiscrete_DiscreteUpToIso (A : Type) : DiscreteUpToIso (Indiscrete A).
 Proof.
   split.

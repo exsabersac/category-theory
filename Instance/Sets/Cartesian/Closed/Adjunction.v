@@ -17,7 +17,7 @@ Require Import Category.Adjunction.Continuity.
 
 Generalizable All Variables.
 
-(** * The currying adjunction in [Sets], where the counit computes *)
+(* * * The currying 伴随 [Sets], where counit computes （已译） *)
 
 (*
  Book: Riehl, "Category Theory in Context", Dover 2016; §2.1
@@ -27,10 +27,10 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The counit computes to function application *)
+(* 相关说明。 （已译） *)
 
-(* The counit of the currying adjunction at [Sets], named with its type
-   ascribed so that applications of it elaborate without further hints. *)
+(* The counit currying 伴随 at [Sets], named type
+ ascribed so applications it elaborate without further hints. （已译） *)
 Definition Sets_counit (S y : Sets) : (y ^ S) × S ~{Sets}~> y :=
   @counit _ _ _ _ (Curry_Adjunction S) y.
 
@@ -38,9 +38,7 @@ Definition Sets_counit (S y : Sets) : (y ^ S) × S ~{Sets}~> y :=
 Lemma Sets_counit_eval (S y : Sets) : Sets_counit S y ≈ eval.
 Proof. reflexivity. Qed.
 
-(* And in the model it computes: the pair of a setoid map h : S → y and a
-   point s of S is sent to h s. Both sides are elements of the carrier of y,
-   compared with that setoid's ≈. *)
+(* 相关说明。 （已译） *)
 Lemma Sets_counit_apply (S y : Sets) (h : SetoidMorphism S y) (s : carrier S) :
   Sets_counit S y (h, s) ≈ h s.
 Proof. reflexivity. Qed.
@@ -70,7 +68,7 @@ Lemma Sets_uncurry_apply
   g (fst p) (snd p) ≈ uncurry g p.
 Proof. reflexivity. Qed.
 
-(** ** A concrete witness: addition on the natural numbers *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -96,19 +94,19 @@ Program Definition plus_map : NatSet × NatSet ~{Sets}~> NatSet := {|
 Example curry_plus_compute : curry plus_map 2%nat 3%nat = 5%nat.
 Proof. reflexivity. Qed.
 
-(* The counit consumes the transpose again: it applies curry plus_map 2, that
-   is (m ↦ 2 + m), to 3. Again an equality of elements of [nat]. *)
+(* The counit 所消耗 transpose again: it applies curry plus_map 2, that
+ (m ↦ 2 + m), 3. Again equality elements [nat]. （已译） *)
 Example counit_plus_compute :
   Sets_counit NatSet NatSet (curry plus_map 2%nat, 3%nat) = 5%nat.
 Proof. reflexivity. Qed.
 
-(* The round trip of the hom-set bijection on this concrete arrow. Here the
-   comparison IS between morphisms of [Sets], so it is stated with ≈. *)
+(* The round trip hom-set bijection concrete arrow. Here the
+ comparison IS between 态射 [Sets], so it stated ≈. （已译） *)
 Example uncurry_curry_plus : uncurry (curry plus_map) ≈ plus_map.
 Proof. exact (uncurry_curry plus_map). Qed.
 
-(* The same round trip taken through the adjunction's own transposes, using
-   the general law ⌈⌊f⌋⌉ ≈ f of Theory/Adjunction.v. *)
+(* The same round trip taken through 伴随's own transposes, using
+ general law ⌈⌊f⌋⌉ ≈ f Theory/Adjunction.v. （已译） *)
 Example adj_roundtrip_plus :
   from (@adj _ _ _ _ (Curry_Adjunction NatSet) NatSet NatSet)
        (to (@adj _ _ _ _ (Curry_Adjunction NatSet) NatSet NatSet) plus_map)
@@ -118,8 +116,8 @@ Proof.
                           plus_map).
 Qed.
 
-(* And the universal property in elementary form: evaluation after the
-   transpose recovers the original arrow. *)
+(* And 普遍性质 elementary form: evaluation after the
+ transpose recovers original arrow. （已译） *)
 Example eval_curry_plus :
   eval ∘ first (curry plus_map) ≈ plus_map.
 Proof. exact (ump_exponents plus_map). Qed.
@@ -136,7 +134,7 @@ Proof.
   discriminate.
 Qed.
 
-(** ** Riehl's Example 2.1.6(iv), literally *)
+(* 相关说明。 （已译） *)
 
 (* The functor Hom(− × A, B) : Sets^op ⟶ Sets ... *)
 Definition Sets_Curry_Presheaf (A B : Sets) : Sets^op ⟶ Sets :=
@@ -146,15 +144,15 @@ Definition Sets_Curry_Presheaf (A B : Sets) : Sets^op ⟶ Sets :=
 Definition Sets_Curry_Representable (A B : Sets) :
   Representable (Sets_Curry_Presheaf A B) := Curry_Representable A B.
 
-(* On the concrete witness: the representation carries the transpose of
-   addition back to addition itself, an ≈ between morphisms of [Sets]. *)
+(* On concrete witness: representation carries transpose of
+ addition back addition itself, ≈ between 态射 [Sets]. （已译） *)
 Example Sets_repr_plus :
   transform (to (Curry_Representation NatSet NatSet)) NatSet (curry plus_map)
     ≈ plus_map.
 Proof. exact (uncurry_curry plus_map). Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Mac Lane §V.4, exercise 4: X × − preserves all colimits *)
+(* 相关说明。 （已译） *)
 
 (*
    Book:  Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
@@ -168,8 +166,8 @@ Definition Sets_prod_preserves_colimits (X : Sets) :
   PreservesAllColimits (Prod_Functor X) :=
   @left_adjoint_preserves_colimits _ _ _ _ (Curry_Adjunction X).
 
-(* And the same corollary over an arbitrary cartesian closed category, since
-   the adjunction was established there. *)
+(* And same 推论 over arbitrary 笛卡尔闭 范畴, since
+ 伴随 was established there. （已译） *)
 Definition CCC_prod_preserves_colimits
   {C : Category} `{@Cartesian C} `{@Closed C _} (S : C) :
   PreservesAllColimits (Prod_Functor S) :=

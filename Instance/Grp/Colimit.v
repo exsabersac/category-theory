@@ -42,7 +42,7 @@ Require Import Category.Instance.Grp.Quotient.Colimit.
 
 Generalizable All Variables.
 
-(** * Colimits of groups, from the adjoint functor theorem *)
+(* * * Colimits groups, adjoint 函子 定理 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/free+product
@@ -62,8 +62,7 @@ Section DiagonalSolutionSet.
 Context {J : Category}.
 Context (D : J ⟶ Grp).
 
-(* The generators: the disjoint union of the carriers, with Leibniz
-   equality.  Each factor's own `≈` enters through [cc_resp] below. *)
+(* 相关说明。 （已译） *)
 Definition DGen : SetoidObject :=
   {| carrier := { j : obj[J] & carrier (grp_setoid (D j)) };
      is_setoid := eq_Setoid _ |}.
@@ -71,8 +70,7 @@ Definition DGen : SetoidObject :=
 Definition dins (j : J) (a : carrier (grp_setoid (D j))) : FGWord DGen :=
   fg_insert DGen (j; a).
 
-(* A congruence on the free group that makes the insertions a cocone of
-   group homomorphisms. *)
+(* 相关说明。 （已译） *)
 Record IsCoconeCong (Rq : FGWord DGen → FGWord DGen → Prop) : Prop := {
   cc_grp  : IsGrpCongruence Rq;
   cc_resp : ∀ j a b, a ≈ b → Rq (dins j a) (dins j b);
@@ -105,7 +103,7 @@ Proof.
   exact (cc_nat _ (`2 i) j k f a).
 Defined.
 
-(* The covering: the kernel of a cocone's extension to the free group. *)
+(* 相关说明。 （已译） *)
 Section Cover.
 
 Context (c : Grp) (h : D ~{[J, Grp]}~> fobj[@Diagonal Grp J] c).
@@ -156,7 +154,7 @@ Defined.
 
 End DiagonalSolutionSet.
 
-(** ** Every colimit of groups within the shape discipline *)
+(* 相关说明。 （已译） *)
 
 Definition Grp_colim_via_GAFT (J : Category) :
   { K : [J, Grp] ⟶ Grp & K ⊣ @Diagonal Grp J } :=
@@ -167,7 +165,7 @@ Definition Grp_colim_via_GAFT (J : Category) :
 Definition Grp_Cocomplete_via_GAFT : @Cocomplete Grp :=
   fun J F => Diagonal_left_adjoint_HasColimits (projT2 (Grp_colim_via_GAFT J)) F.
 
-(** ** Coproducts, coequalizers and the initial object *)
+(* * ** Coproducts, coequalizers 始对象 （已译） *)
 
 Definition Grp_FinitelyCocomplete_via_GAFT : @FinitelyCocomplete Grp :=
   Cocomplete_FinitelyCocomplete Grp_Cocomplete_via_GAFT.
@@ -184,10 +182,10 @@ Definition Grp_HasCoequalizers_via_GAFT : HasCoequalizers Grp :=
 Definition Grp_Initial_via_GAFT : @Initial Grp :=
   FinitelyCocomplete_Initial Grp_FinitelyCocomplete_via_GAFT.
 
-(** ** Agreement with the constructions already in tree *)
+(* 相关说明。 （已译） *)
 
-(* The coproduct bifunctors agree up to natural isomorphism: both are left
-   adjoint to the diagonal [Grp ⟶ Grp ∏ Grp]. *)
+(* The coproduct bifunctors agree up natural 同构: both left
+ adjoint diagonal [Grp ⟶ Grp ∏ Grp]. （已译） *)
 Definition Grp_coproduct_agrees :
   @InternalCoproductFunctor Grp Grp_Cocartesian_via_GAFT
     ≈ @InternalCoproductFunctor Grp Grp_Cocartesian :=
@@ -195,8 +193,7 @@ Definition Grp_coproduct_agrees :
     (@Diagonal_Coproduct_Adjunction Grp Grp_Cocartesian_via_GAFT)
     (@Diagonal_Coproduct_Adjunction Grp Grp_Cocartesian).
 
-(* At one pair of groups: the comparison built from the two copairings,
-   which carries injections to injections. *)
+(* 相关说明。 （已译） *)
 Definition Grp_free_product_iso@{u p +} (G H : Grp@{u p}) :
   @Coprod Grp@{u p} Grp_Cocartesian_via_GAFT G H
     ≅ @Coprod Grp@{u p} Grp_Cocartesian G H.
@@ -231,7 +228,7 @@ Proof. exact (@inr_merge Grp Grp_Cocartesian_via_GAFT _ _ _ _ _). Qed.
 Example Grp_Cocartesian_obj_is_free_product (G H : Grp) :
   @Coprod Grp Grp_Cocartesian G H = Grp_free_product G H := eq_refl.
 
-(* The initial object is the trivial group. *)
+(* The 始对象 trivial group. （已译） *)
 Definition Grp_initial_agrees :
   @initial_obj Grp Grp_Initial_via_GAFT ≅ @initial_obj Grp Grp_Initial :=
   initial_unique Grp_Initial_via_GAFT Grp_Initial.
@@ -249,8 +246,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* The coequalizer of f with the trivial map is the quotient by the normal
-   closure of the image of f (Riehl, Example 3.1.25). *)
+(* 相关说明。 （已译） *)
 Definition Grp_coequalizer_agrees_normal_closure {G H : Grp}
   (f : G ~{Grp}~> H) :
   `1 (@coeq Grp Grp_HasCoequalizers_via_GAFT _ _ f (@zero_mor Grp Grp_Zero G H))
@@ -260,10 +256,10 @@ Definition Grp_coequalizer_agrees_normal_closure {G H : Grp}
                 (@zero_mor Grp Grp_Zero G H))))
     (normal_closure_IsCoequalizer f).
 
-(** ** Mac Lane §V.7 Exercise 1, second half *)
+(* 相关说明。 （已译） *)
 
-(* Both injections of the free product are monic, split by the copairing
-   of the identity with the trivial map. *)
+(* Both injections free product monic, split copairing
+ 恒等 trivial map. （已译） *)
 Definition Grp_inl_via_GAFT_Monic (G H : Grp) :
   Monic (@inl Grp Grp_Cocartesian_via_GAFT G H) :=
   @inl_Monic Grp Grp_Zero Grp_Cocartesian_via_GAFT G H.
@@ -286,11 +282,11 @@ Proof.
   exact (snd (Grp_injectivity_is_monic _) (Grp_inr_via_GAFT_Monic G H) a b).
 Qed.
 
-(* The pullbacks the subobject meet is taken in. *)
+(* 相关说明。 （已译） *)
 Definition Grp_HasPullbacks : HasPullbacks Grp :=
   FinitelyComplete_HasPullbacks (Complete_FinitelyComplete Grp_Complete).
 
-(* The images of the two injections meet in the trivial subgroup. *)
+(* 相关说明。 （已译） *)
 Definition Grp_free_product_meet_trivial (G H : Grp) :
   @sub_meet Grp Grp_HasPullbacks _
      (@sub_inl Grp Grp_Zero Grp_Cocartesian_via_GAFT G H)

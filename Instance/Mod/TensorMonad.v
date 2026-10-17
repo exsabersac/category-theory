@@ -1,4 +1,4 @@
-(** * The monad R ⊗ (−) on Ab and its algebras, the left R-modules *)
+(* * * The 单子 R ⊗ (−) Ab algebras, left R-modules （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Lib.Setoid.Propositional.
@@ -42,8 +42,8 @@ Generalizable All Variables.
 
 (** ** The monad R ⊗ (−) on Ab *)
 
-(* T is the composite U ◯ F of the free/forgetful adjunction; the monad is
-   Monad/Comparison.v's, whose ret is η and whose join is U ε F. *)
+(* T 复合 U ◯ F free/forgetful 伴随; 单子 is
+ Monad/Comparison.v's, whose ret η whose join U ε F. （已译） *)
 Definition TensorF@{a c p o x} (R : RingObject@{a c p}) :
   Ab@{o c} ⟶ Ab@{o c} :=
   RMod_Forget_Ab@{x o o a p c} R ◯ ZExt@{a c p x o a o c} R.
@@ -52,9 +52,7 @@ Definition TensorMonad@{a c p o x} (R : RingObject@{a c p}) :
   @Monad Ab@{o c} (TensorF@{a c p o x} R) :=
   Adjunction_Induced_Monad (zext_adjunction@{a c p o o x a a} R).
 
-(* Mac Lane's formulas, read back on the nose: TA = R ⊗ A, T f = 1 ⊗ f
-   (BaseChange.v's [zext_map_ab]), η a = 1 ⊗ a, and
-   μ (r₁ ⊗ (r₂ ⊗ a)) = r₁r₂ ⊗ a. *)
+(* 相关说明。 （已译） *)
 Example TensorF_obj@{a c p o x} (R : RingObject@{a c p}) (A : obj[Ab@{o c}]) :
   fobj[TensorF@{a c p o x} R] A = AbTensor (ring_ab R) A := eq_refl.
 
@@ -75,9 +73,9 @@ Example TensorMonad_join@{a c p o x} (R : RingObject@{a c p})
        (@ts_gen (ring_ab R) A r2 a))
   = @ts_gen (ring_ab R) A (rig_mul (ring_rig R) r1 r2) a := eq_refl.
 
-(* μ IS the adjunction's counit at the free module R ⊗ A, as a
-   homomorphism of abelian groups, and on each generator r ⊗ y it is the
-   free module's own action r · y. *)
+(* μ IS 伴随's counit at free module R ⊗ A, a
+ homomorphism abelian groups, each generator r ⊗ y it the
+ free module's own action r · y. （已译） *)
 Example TensorMonad_join_counit@{a c p o x} (R : RingObject@{a c p})
   (A : obj[Ab@{o c}]) :
   @join _ _ (TensorMonad@{a c p o x} R) A
@@ -100,8 +98,7 @@ Example TensorMonad_join_Z@{o x} (a : Z) :
 
 (** ** Algebras are left modules *)
 
-(* An algebra (A, h) acts by r · m := h (r ⊗ m).  Riehl's "ℤ-bilinear
-   map (r, a) ↦ r·a" is h composed with the universal bilinear map. *)
+(* 相关说明。 （已译） *)
 Definition em_smul@{a c p o x} {R : RingObject@{a c p}}
   (X : @EilenbergMoore@{o o x c} Ab@{o c} (TensorF@{a c p o x} R)
          (TensorMonad@{a c p o x} R))
@@ -119,7 +116,7 @@ Proof.
            (@te_gen (ring_ab R) (`1 X) _ _ _ _ Hr Hm)).
 Qed.
 
-(* Additivity in m and in r: h is additive and ⊗ is bilinear. *)
+(* 相关说明。 （已译） *)
 Lemma em_smul_distr_l@{a c p o x} {R : RingObject@{a c p}}
   (X : @EilenbergMoore@{o o x c} Ab@{o c} (TensorF@{a c p o x} R)
          (TensorMonad@{a c p o x} R))
@@ -154,8 +151,7 @@ Proof.
   - exact (cmon_map_plus (t_alg[`2 X]) _ _).
 Qed.
 
-(* Mac Lane's μ-law of the algebra, read at r ⊗ (s ⊗ m), is associativity
-   of the action; [t_action] states it with the two sides exchanged. *)
+(* 相关说明。 （已译） *)
 Lemma em_smul_assoc@{a c p o x} {R : RingObject@{a c p}}
   (X : @EilenbergMoore@{o o x c} Ab@{o c} (TensorF@{a c p o x} R)
          (TensorMonad@{a c p o x} R))
@@ -168,7 +164,7 @@ Proof.
               (@ts_gen (ring_ab R) (`1 X) s m))).
 Qed.
 
-(* The η-law of the algebra is 1 · m ≈ m. *)
+(* 相关说明。 （已译） *)
 Lemma em_smul_one@{a c p o x} {R : RingObject@{a c p}}
   (X : @EilenbergMoore@{o o x c} Ab@{o c} (TensorF@{a c p o x} R)
          (TensorMonad@{a c p o x} R))
@@ -217,7 +213,7 @@ Example EM_mod_smul@{a c p o x} {R : RingObject@{a c p}}
   rm_smul (EM_mod X) r m
   = cmon_map (t_alg[`2 X]) (@ts_gen (ring_ab R) (`1 X) r m) := eq_refl.
 
-(** ** The comparison functor is an equivalence *)
+(* * ** The comparison 函子 等价 （已译） *)
 
 (* Module round trip: identity components, both laws by reflexivity. *)
 Definition RMod_counit_iso@{a c p o x} {R : RingObject@{a c p}}
@@ -323,8 +319,7 @@ Example EM_RMod_iso_to@{a c p o x k} (R : RingObject@{a c p}) :
 Example EM_RMod_iso_from@{a c p o x k} (R : RingObject@{a c p}) :
   from (EM_RMod_iso@{a c p o x k} R) = EM_to_RMod@{a c p o x} R := eq_refl.
 
-(* The comparison algebra on a module M is U ε_M: on r ⊗ m it is r · m,
-   and as a homomorphism it IS the counit at M. *)
+(* 相关说明。 （已译） *)
 Example comparison_alg_is_smul@{a c p o x} {R : RingObject@{a c p}}
   (M : obj[RMod@{o x a p c} R]) (r : carrier (rig_setoid (ring_rig R)))
   (m : carrier (rm_ab M)) :
@@ -338,7 +333,7 @@ Example comparison_alg_counit@{a c p o x} {R : RingObject@{a c p}}
   t_alg[`2 (fobj[EM_Comparison (zext_adjunction@{a c p o o x a a} R)] M)]
   = rm_hom (zext_counit@{a c p o x a o a} R M) := eq_refl.
 
-(** ** Riehl's Theorem 5.5.1: the creation of U-split coequalizers *)
+(* 相关说明。 （已译） *)
 
 (* Absorption: a map h out of U B coforking the pair satisfies
    h (s (e y)) ≈ h y. *)
@@ -362,7 +357,7 @@ Proof.
     + apply (proper_morphism (cmon_map h)). exact L3.
 Qed.
 
-(* The created action on the split coequalizer Z: r · z := e (r · s z). *)
+(* 相关说明。 （已译） *)
 Definition rmod_created_smul@{a c p o x} {R : RingObject@{a c p}}
   {A B : obj[RMod@{o x a p c} R]} (f g : A ~{RMod@{o x a p c} R}~> B)
   (S : @SplitCoequalizer Ab@{o c} _ _
@@ -587,9 +582,9 @@ Proof.
     exact (RModReflected_is_coeq f g S Q e He i Hi).
 Defined.
 
-(* The lift chosen is on the nose: its group IS Z, its action IS
-   e (r · s z), its coequalizing arrow IS e and its comparison isomorphism
-   IS the identity. *)
+(* The lift chosen nose: group IS Z, action IS
+ e (r · s z), coequalizing arrow IS e comparison 同构
+ IS 恒等. （已译） *)
 Example rmod_created_carrier@{a c p o x} {R : RingObject@{a c p}}
   {A B : obj[RMod@{o x a p c} R]} (f g : A ~{RMod@{o x a p c} R}~> B)
   (S : @SplitCoequalizer Ab@{o c} _ _
@@ -657,19 +652,17 @@ Definition EM_RMod_iso_beck@{a c p o x k} (R : RingObject@{a c p}) :
        (TensorMonad@{a c p o x} R)) :=
   Equivalence_to_Cat_Iso (RMod_beck_equivalence@{a c p o x} R).
 
-(* The Beck Cat iso's [to] leg IS the comparison functor. *)
+(* The Beck Cat iso's [to] leg IS comparison 函子. （已译） *)
 Example EM_RMod_iso_beck_to@{a c p o x k} (R : RingObject@{a c p}) :
   to (EM_RMod_iso_beck@{a c p o x k} R)
   = EM_Comparison (zext_adjunction@{a c p o o x a a} R) := eq_refl.
 
-(* The two routes' [to] legs are one term. *)
+(* 相关说明。 （已译） *)
 Example rmod_beck_direct_to@{a c p o x k} (R : RingObject@{a c p}) :
   to (EM_RMod_iso_beck@{a c p o x k} R) = to (EM_RMod_iso@{a c p o x k} R)
   := eq_refl.
 
-(* Beck's quasi-inverse keeps the carrier and acts through η:
-   r · m = h ((r · 1) ⊗ m).  It is ≈ to [EM_to_RMod], by [rig_mul_one_r]
-   in the scalar slot. *)
+(* 相关说明。 （已译） *)
 Example rmod_beck_carrier@{a c p o x} {R : RingObject@{a c p}}
   (X : @EilenbergMoore@{o o x c} Ab@{o c} (TensorF@{a c p o x} R)
          (TensorMonad@{a c p o x} R)) :

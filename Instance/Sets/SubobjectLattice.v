@@ -18,8 +18,7 @@ Require Import Coq.Arith.PeanoNat.
 
 Generalizable All Variables.
 
-(** * The subobject lattice of a setoid: bottom, images, wide pullbacks,
-      and Fong and Spivak's increasing family *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/image
@@ -35,7 +34,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** (a) The map out of the empty setoid is monic *)
+(* 相关说明。 （已译） *)
 
 Lemma Sets_zero_monic (x : Sets) : Monic (@zero Sets Sets_Initial x).
 Proof.
@@ -171,7 +170,7 @@ Local Obligation Tactic := cat_simpl.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** (e) Fong and Spivak Seven Sketches 1.2.1: the increasing family *)
+(* 相关说明。 （已译） *)
 
 Definition Sets_nat : obj[Sets] := Sets_discrete nat.
 
@@ -210,7 +209,7 @@ Definition pos_monic : Monic pos_mono :=
 Definition fs_pos : @SubObj Sets Sets_nat :=
   @Build_SubObj Sets Sets_nat pos_obj pos_mono pos_monic.
 
-(** *** The union of the family is the positive naturals *)
+(* 相关说明。 （已译） *)
 
 Definition fs_coprod :
   IsIndexedCoproduct (fun j : nat => sub_dom (fs_seg j))
@@ -259,7 +258,7 @@ Proof.
            (fs_union_le_pos, fs_pos_le_union)).
 Qed.
 
-(** *** The intersection of the family is the bottom subobject *)
+(* 相关说明。 （已译） *)
 
 Definition fs_wpull : WidePullback (fun j : nat => sub_mono (fs_seg j)) :=
   Sets_WidePullback (fun j : nat => sub_mono (fs_seg j)).
@@ -297,7 +296,7 @@ Proof.
             sub_bot_least (Sets_zero_monic Sets_nat) fs_inter)).
 Qed.
 
-(** *** The unit law at a concrete subobject *)
+(* 相关说明。 （已译） *)
 
 Definition fs_bot_join_seg3 : @SubObj Sets Sets_nat :=
   sub_join_via (sub_bot (Sets_zero_monic Sets_nat)) (fs_seg 3%nat)

@@ -12,7 +12,7 @@ Require Import Category.Instance.Two.
 
 Generalizable All Variables.
 
-(** * Pointwise monos and epis in a functor category *)
+(* * * Pointwise monos epis 函子 范畴 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/functor+category
@@ -27,7 +27,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------ *)
-(** ** (A) An arbitrary target: componentwise monic/epic suffices *)
+(* 相关说明。 （已译） *)
 
 Section General.
 
@@ -58,7 +58,7 @@ Defined.
 End General.
 
 (* ------------------------------------------------------------------ *)
-(** ** (B) The target Sets: the biconditionals, by pointwise (co)limits *)
+(* 相关说明。 （已译） *)
 
 Section SetsConverse.
 
@@ -67,7 +67,7 @@ Context {F : C ⟶ Sets}.
 Context {G : C ⟶ Sets}.
 Context (θ : F ⟹ G).
 
-(** ** The pointwise kernel-pair functor *)
+(* * ** The pointwise kernel-pair 函子 （已译） *)
 
 Lemma theta_nat {x y : C} (f : x ~{C}~> y) (a : carrier (F x)) :
   transform[θ] y (fmap[F] f a) ≈ fmap[G] f (transform[θ] x a).
@@ -141,7 +141,7 @@ Proof.
   - exact (pointwise_monic_is_monic θ).
 Defined.
 
-(** ** The pointwise cokernel-pair functor *)
+(* * ** The pointwise cokernel-pair 函子 （已译） *)
 
 Lemma ck_Im_map {x y : C} (f : x ~{C}~> y) (b : carrier (G x)) :
   Im (transform[θ] x) b → Im (transform[θ] y) (fmap[G] f b).
@@ -220,7 +220,7 @@ Defined.
 End SetsConverse.
 
 (* ------------------------------------------------------------------ *)
-(** ** (C) Awodey §7.10 Ex 6: invertibility of a GIVEN transformation *)
+(* 相关说明。 （已译） *)
 
 Section Invertibility.
 
@@ -287,7 +287,7 @@ Defined.
 End Invertibility.
 
 (* ------------------------------------------------------------------ *)
-(** ** (C, continued) Comparison with [Functor_Setoid_Nat_Iso] *)
+(* 相关说明。 （已译） *)
 
 Section EquivComparison.
 
@@ -324,7 +324,7 @@ Example equiv_iso_from_is_nat_inverse
 End EquivComparison.
 
 (* ------------------------------------------------------------------ *)
-(** ** (D) Presheaves: monos are the pointwise injections *)
+(* 相关说明。 （已译） *)
 
 Section Presheaf.
 

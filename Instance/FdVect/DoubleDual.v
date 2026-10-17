@@ -62,8 +62,8 @@ Definition dual_setoid (V : RModObject (field_ring F)) : SetoidObject := {|
   is_setoid := @RModHom_Setoid (field_ring F) V (Ring_RMod (field_ring F))
 |}.
 
-(** Addition and the zero functional are Instance/Mod.v's, so every
-    monoid law is the corresponding law of F applied at each vector. *)
+(** Addition zero functional Instance/Mod.v's, so every
+ 幺半群 law corresponding law F applied at each vector. （已译） *)
 Program Definition dual_cmon (V : RModObject (field_ring F)) :
   CMonObject := {|
   cmon_setoid := dual_setoid V;
@@ -142,8 +142,8 @@ Next Obligation.
   now rewrite Hvw.
 Qed.
 
-(** Mac Lane §II.2 construction 3's object assignment: the dual of an
-    ARBITRARY F-module, with no finiteness hypothesis. *)
+(** Mac Lane §II.2 construction 3's 对象 assignment: dual an
+ ARBITRARY F-module, no finiteness 假设. （已译） *)
 Program Definition DualMod (V : RModObject (field_ring F)) :
   RModObject (field_ring F) := {|
   rm_ab   := dual_ab V;
@@ -158,12 +158,12 @@ Next Obligation. intros V r s f v; simpl; apply rig_distr_r. Qed.
 Next Obligation. intros V r s f v; simpl; apply rig_mul_assoc. Qed.
 Next Obligation. intros V f v; simpl; apply rig_mul_one_l. Qed.
 
-(** ** The dual functor
+(* * ** The dual 函子
 
-    On arrows the dual acts by PRECOMPOSITION, which is why it is
-    contravariant: f : V → W carries a functional on W to one on V.
-    Every law below is [reflexivity] at each vector, composition of
-    functions being associative on the nose. *)
+ On arrows dual acts PRECOMPOSITION, why it is
+ contravariant: f : V → W carries functional W one V.
+ Every law below [reflexivity] at each vector, 复合 of
+ functions being associative nose. （已译） *)
 
 Definition dual_precompose {V W : RModObject (field_ring F)}
   (f : RModHom V W) : RModHom (DualMod W) (DualMod V).
@@ -194,17 +194,12 @@ Qed.
 Next Obligation. intros V f v; simpl; reflexivity. Qed.
 Next Obligation. intros V W X f g h v; simpl; reflexivity. Qed.
 
-(** The double dual, in the shape Structure/Monoidal/StarAutonomous.v
-    gives [double_dual]: the contravariant functor composed with its own
-    opposite, which is covariant. *)
+(** The double dual, shape Structure/Monoidal/StarAutonomous.v
+ gives [double_dual]: contravariant 函子 composed own
+ opposite, covariant. （已译） *)
 Definition DoubleDual : Vct_F F ⟶ Vct_F F := Dual ◯ Dual^op.
 
-(** ** Evaluation
-
-    [eta V] sends a vector to "evaluate at it".  Each law is the
-    corresponding law of the functional being evaluated, so the family
-    is defined without reference to any basis — which is what will make
-    it natural. *)
+(* 相关说明。 （已译） *)
 
 Program Definition dual_ev (V : RModObject (field_ring F))
         (v : carrier (cmon_setoid V)) :
@@ -425,8 +420,8 @@ Next Obligation.
   exact (fdv_coord_respects V v w Hvw j).
 Qed.
 
-(** The first round trip: the coefficients of an expanded tuple are the
-    tuple back, because the j-th basis vector has coordinates delta. *)
+(** 本节：The first round trip: coefficients expanded tuple the
+ tuple back, because j-th basis vector has coordinates delta. （已译） *)
 Lemma dual_coord_expand (V : FdVectObject F)
   (c : Fin.t (fdv_dim V) → carrier (rig_setoid F))
   (i : Fin.t (fdv_dim V)) :
@@ -466,8 +461,8 @@ Proof.
   apply (dual_apply_expand V f (fdv_coord V v)).
 Qed.
 
-(** V* with coordinates: same dimension, the j-th coordinate of a
-    functional being its value at the j-th basis vector. *)
+(** 本节：V* coordinates: same dimension, j-th coordinate a
+ functional being value at j-th basis vector. （已译） *)
 Program Definition DualFdObj (V : FdVectObject F) : FdVectObject F := {|
   fdv_mod    := DualMod F (fdv_mod V);
   fdv_dim    := fdv_dim V;
@@ -485,9 +480,9 @@ Next Obligation. intros V f v; apply dual_expand_coord. Qed.
 Next Obligation. intros V f g i; simpl; reflexivity. Qed.
 Next Obligation. intros V r f i; simpl; reflexivity. Qed.
 
-(** The dual functor restricted to the finite-dimensional category: the
-    same arrow action, precomposition, since a hom of [FdVect F] IS a
-    hom of the underlying modules. *)
+(** The dual 函子 restricted finite-dimensional 范畴: the
+ same arrow action, precomposition, since hom [FdVect F] IS a
+ hom underlying modules. （已译） *)
 Program Definition DualFd : (FdVect F)^op ⟶ FdVect F := {|
   fobj := DualFdObj;
   fmap := fun V W (f : W ~{FdVect F}~> V) => dual_precompose F f
@@ -500,8 +495,8 @@ Qed.
 Next Obligation. intros V f v; simpl; reflexivity. Qed.
 Next Obligation. intros V W X f g h v; simpl; reflexivity. Qed.
 
-(** The j-th vector of the dual basis is the j-th coordinate
-    functional — the equation that names it a dual basis. *)
+(** 本节：The j-th vector dual basis j-th coordinate
+ functional — equation names it dual basis. （已译） *)
 Lemma dual_basis_coord (V : FdVectObject F) (j : Fin.t (fdv_dim V))
   (v : carrier (cmon_setoid (fdv_mod V))) :
   cmon_map (rm_hom (fdv_basis (DualFdObj V) j)) v ≈ fdv_coord V v j.
@@ -627,11 +622,11 @@ Example transform_is_eta (F : FieldObject)
   (V : RModObject (field_ring F)) :
   transform[double_dual_natural F] V = eta F V := eq_refl.
 
-(** *** Dimension two over the rationals
+(* * *** Dimension two over rationals
 
-    [StdVect Q_Field 2] is ℚ², whose chosen coordinates are the
-    identity, so every value below reduces to a rational literal by
-    computation. *)
+ [StdVect Q_Field 2] ℚ², whose chosen coordinates the
+ 恒等, so every value below reduces rational literal by
+ computation. （已译） *)
 
 Definition q2 : FdVectObject Q_Field := StdVect Q_Field 2.
 
@@ -659,13 +654,13 @@ Example q_eta_apply :
   cmon_map (rm_hom (cmon_map (rm_hom (eta Q_Field (fdv_mod q2))) qvec))
     qphi = (5 # 1)%Q := eq_refl.
 
-(** The first dual basis vector of the DOUBLE dual. *)
+(** 本节：The first dual basis vector DOUBLE dual. （已译） *)
 Definition qPhi : carrier (cmon_setoid
   (fdv_mod (DualFdObj Q_Field (DualFdObj Q_Field q2)))) :=
   fdv_basis Q_Field (DualFdObj Q_Field (DualFdObj Q_Field q2)) Fin.F1.
 
-(** The inverse of evaluation carries it back to the first basis vector
-    of ℚ², namely (1, 0) — computed, not asserted. *)
+(** 本节：The inverse evaluation carries it back first basis vector
+ ℚ², namely (1, 0) — computed, not asserted. （已译） *)
 Example q_eta_inv_first :
   cmon_map (rm_hom (eta_inv Q_Field q2)) qPhi Fin.F1 = (1 # 1)%Q := eq_refl.
 
@@ -673,15 +668,15 @@ Example q_eta_inv_second :
   cmon_map (rm_hom (eta_inv Q_Field q2)) qPhi (Fin.FS Fin.F1)
     = (0 # 1)%Q := eq_refl.
 
-(** ... and evaluating that vector recovers Φ: an instance of
-    [double_dual_iso]'s right triangle whose two sides compute. *)
+(** 本节：... evaluating vector recovers Φ: instance of
+ [double_dual_iso]'s right triangle whose two sides compute. （已译） *)
 Example q_double_dual_roundtrip :
   cmon_map (rm_hom (cmon_map (rm_hom (eta Q_Field (fdv_mod q2)))
     (cmon_map (rm_hom (eta_inv Q_Field q2)) qPhi))) qphi
     = cmon_map (rm_hom qPhi) qphi := eq_refl.
 
-(** The basis-dependent isomorphism ℚ² ≅ (ℚ²)*: it carries (5,6) to the
-    functional 5x + 6y, whose value at (5,6) is 61. *)
+(** The basis-dependent 同构 ℚ² ≅ (ℚ²)*: it carries (5,6) the
+ functional 5x + 6y, whose value at (5,6) 61. （已译） *)
 Example q_pointwise_iso :
   cmon_map (rm_hom (cmon_map
     (rm_hom (to (fd_dual_pointwise_iso Q_Field q2))) qvec)) qvec

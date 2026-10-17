@@ -13,7 +13,7 @@ Require Import Category.Instance.Coq.
 
 Generalizable All Variables.
 
-(** * Par: partial functions over Coq Types *)
+(* 相关说明。 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Partial_function

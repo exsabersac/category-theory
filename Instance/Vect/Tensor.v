@@ -38,11 +38,11 @@ Section VectTensor.
 
 Context (F : FieldObject).
 
-(** ** Bilinear maps of vector spaces *)
+(* 相关说明。 （已译） *)
 
-(** The bilinear maps V × V' → W, at the vector-space level.  This is
-    Instance/Mod/Tensor.v's [RBilinear] read through
-    [Vct_F F = RMod (field_ring F)]. *)
+(** 本节：The bilinear maps V × V' → W, at vector-space level. This is
+ Instance/Mod/Tensor.v's [RBilinear] read through
+ [Vct_F F = RMod (field_ring F)]. （已译） *)
 Definition VctBilinear (V V' W : Vct_F F) : Type := RBilinear V V' W.
 
 Example VctBilinear_is_RBilinear (V V' W : Vct_F F) :
@@ -51,17 +51,14 @@ Example VctBilinear_is_RBilinear (V V' W : Vct_F F) :
 (** The bilinear-maps FUNCTOR Bilin(V, V'; −) : Vct_F F ⟶ Sets. *)
 Definition VctBilin (V V' : Vct_F F) : Vct_F F ⟶ Sets := Bilin V V'.
 
-(** ** The tensor product, and its canonical bilinear map *)
+(* 相关说明。 （已译） *)
 
 Definition VctTensor (V V' : Vct_F F) : Vct_F F := TensorMod V V'.
 
 Definition vct_tensor_gen (V V' : Vct_F F) :
   VctBilinear V V' (VctTensor V V') := tensor_gen.
 
-(** ** Mac Lane §III.1 / Riehl §2.3: ⟨V ⊗ V', ⊗⟩ is a universal element
-
-    For every vector space W and every bilinear map β : V × V' → W there
-    is one and only one linear map V ⊗ V' ⟶ W carrying ⊗ to β. *)
+(* 相关说明。 （已译） *)
 Definition vct_tensor_universal_element (V V' : Vct_F F) :
   AUniversalElement (VctBilin V V') (VctTensor V V') :=
   tensor_universal_element V V'.
@@ -74,7 +71,7 @@ Example vct_tensor_UniversalElement_obj (V V' : Vct_F F) :
   @ue_obj (Vct_F F) (VctBilin V V') (vct_tensor_UniversalElement V V')
     = VctTensor V V' := eq_refl.
 
-(** ** Unique factorization, elementwise *)
+(* 相关说明。 （已译） *)
 
 Definition vct_tensor_factor {V V' W : Vct_F F} (β : VctBilinear V V' W) :
   VctTensor V V' ~{Vct_F F}~> W := tensor_factor β.
@@ -123,8 +120,7 @@ Arguments vct_tensor_factor {F V V' W} β.
 
 Definition Q_Vct : Vct_F Q_Field := Ring_RMod (field_ring Q_Field).
 
-(* Index arguments supplied once, as NOTATIONS (so each unfolds to the
-   constructor itself) — the device Instance/Mod/Free.v uses. *)
+(* 相关说明。 （已译） *)
 Local Notation qgen  := (@mt_gen (field_ring Q_Field) Q_Vct Q_Vct).
 Local Notation qzero := (@mt_zero (field_ring Q_Field) Q_Vct Q_Vct).
 Local Notation qsmul := (@mt_smul (field_ring Q_Field) Q_Vct Q_Vct).
@@ -143,7 +139,7 @@ Proof.
     intros v w w'; simpl; ring.
   - (* rbl_smul_l *)
     intros r v w; simpl; ring.
-  - (* rbl_smul_r: the clause that spends commutativity of ℚ *)
+  - (* 相关说明。 （已译） *)
     intros r v w; simpl; ring.
 Defined.
 
@@ -199,8 +195,8 @@ Proof.
   discriminate Hq.
 Qed.
 
-(** ℚ ⊗_ℚ ℚ ≅ ℚ in [Vct_F Q_Field], by the same two legs as the ℤ case:
-    multiplication one way, q ↦ q ⊗ 1 the other. *)
+(** 本节：ℚ ⊗_ℚ ℚ ≅ ℚ [Vct_F Q_Field], same two legs ℤ case:
+ multiplication one way, q ↦ q ⊗ 1 other. （已译） *)
 Program Definition q_tensor_unit :
   Q_Vct ~{Vct_F Q_Field}~> VctTensor Q_Vct Q_Vct := {|
   rm_hom := {| cmon_map := {|

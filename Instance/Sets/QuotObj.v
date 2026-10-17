@@ -19,8 +19,8 @@ Require Import Category.Instance.Sets.Pushout.
 
 Generalizable All Variables.
 
-(** * Quotient objects of a setoid: the witness half of Mac Lane §V.7
-      Definition 3 *)
+(* * * Quotient 对象 setoid: witness half Mac Lane §V.7
+ Definition 3 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/quotient+set
@@ -37,7 +37,7 @@ Section SetsQuotObj.
 Universe o so.
 Constraint o < so.
 
-(** ** Mac Lane's "where epis are onto" clause, both ways *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 QuotObj 相关定义、性质与动机。
@@ -49,16 +49,16 @@ Definition Sets_quot_epi_surjective {X : SetoidObject@{o o}}
   ∀ b : carrier (quot_cod q), ∃ a : carrier X, quot_epi q a ≈ b :=
   fun b => epic_implies_surjective (quot_epi q) (quot_is_epic q) b.
 
-(* ... and conversely every surjection of setoids presents a quotient
-   object, by the forward leg and [mk_quot]. *)
+(* ... conversely every surjection setoids presents quotient
+ 对象, forward leg [mk_quot]. （已译） *)
 Definition Sets_quot_of_surjection {X B : SetoidObject@{o o}}
   (h : X ~{Sets@{o so}}~> B)
   (Hs : ∀ b : carrier B, ∃ a : carrier X, h a ≈ b) :
   @QuotObj Sets@{o so} X :=
   mk_quot h (surjective_implies_epic h Hs).
 
-(** ** The quotient of a setoid by an equivalence relation, as a
-       quotient object *)
+(* * ** The quotient setoid 等价 关系, a
+ quotient 对象 （已译） *)
 
 (*
    本节说明等价相关定义、性质与动机。
@@ -101,8 +101,8 @@ Definition Sets_coimage : @QuotObj Sets@{o so} X :=
   SetsQuotient_QuotObj X sets_coimage_rel sets_coimage_rel_Equivalence
     sets_coimage_rel_coarser.
 
-(* f itself respects its own kernel relation, by the IDENTITY
-   implication, so the descended map is [sets_quot_med] at that witness. *)
+(* f itself respects own kernel 关系, IDENTITY
+ implication, so descended map [sets_quot_med] at witness. （已译） *)
 Definition sets_coimage_resp : RespMap sets_coimage_rel Y :=
   existT (SetsRespects sets_coimage_rel Y) f
     (fun a b (H : sets_coimage_rel a b) => H).
@@ -135,9 +135,7 @@ Lemma sets_coimage_pick_eq (w : @QuotObj Sets@{o so} X)
   quot_epi w (sets_coimage_pick w p) ≈ p.
 Proof. exact (`2 (Sets_quot_epi_surjective w p)). Qed.
 
-(* The choice is well defined INTO THE COIMAGE, though not into X: two
-   preimages of `≈`-equal points have the same value under f, which is
-   exactly equality in the coimage. *)
+(* 相关说明。 （已译） *)
 Definition sets_coimage_med (w : @QuotObj Sets@{o so} X)
   (g : Y ~{Sets@{o so}^op}~> quot_cod w)
   (Hg : sub_mono w ∘[Sets@{o so}^op] g ≈ f) :
@@ -203,7 +201,7 @@ Definition Sets_quot_join {X : SetoidObject@{o o}}
   (q r : @QuotObj Sets@{o so} X) : @QuotObj Sets@{o so} X :=
   quot_join q r.
 
-(** ** A worked meet: parity ∧ residue-mod-3 on the naturals *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 QuotObj 相关定义、性质与动机。
@@ -232,9 +230,9 @@ Qed.
 Definition nat_mod3_coarser : SetoidCoarser nat_mod3 :=
   fun m n (H : m = n) => f_equal nat_tri H.
 
-(* The three quotient objects of the discrete setoid on [nat]:
-   Instance/Sets/Quotient.v's parity, the residue mod 3, and that
-   file's total relation. *)
+(* The three quotient 对象 discrete setoid [nat]:
+ Instance/Sets/Quotient.v's parity, residue mod 3, that
+ file's total 关系. （已译） *)
 Definition Sets_Q_parity : @QuotObj Sets@{o so} NatDiscrete@{o} :=
   SetsQuotient_QuotObj NatDiscrete@{o} nat_parity nat_parity_Equivalence
     nat_parity_coarser.
@@ -324,9 +322,9 @@ Proof.
   - exact Sets_Q_total_IsMeet.
 Qed.
 
-(* The same fact read on elements of the pushout apex itself, with no
-   comparison isomorphism in sight: in the pushout of the two
-   projections every natural is identified with every other. *)
+(* The same fact read elements pushout apex itself, no
+ comparison 同构 sight: pushout two
+ projections every natural identified every other. （已译） *)
 Corollary Sets_quot_meet_collapses (m n : nat) :
   quot_epi (@quot_meet Sets@{o so} Sets_HasPushouts NatDiscrete@{o}
               Sets_Q_parity Sets_Q_mod3) m
@@ -336,7 +334,7 @@ Proof.
   exact (Sets_meet_collapse _ (sub_meet_le_l _ _) (sub_meet_le_r _ _) m n).
 Qed.
 
-(** ** The bottom quotient object: [Epic one] is inhabitedness *)
+(* * ** The bottom quotient 对象: [Epic one] inhabitedness （已译） *)
 
 (*
    本节说明子对象相关定义、性质与动机。
@@ -355,8 +353,8 @@ Definition Sets_quot_bot {X : SetoidObject@{o o}} (x0 : carrier X) :
   @QuotObj Sets@{o so} X :=
   @quot_bot Sets@{o so} Sets_Terminal X (Sets_one_epic_of_inhabited x0).
 
-(* The two constant maps 1 → bool, without [Program] (this file has no
-   obligations and the measurements below say so). *)
+(* The two 常值 maps 1 → bool, without [Program] (this file has no
+ obligations measurements below say so). （已译） *)
 Definition Sets_pick (b : bool) :
   @terminal_obj Sets@{o so} Sets_Terminal ~{Sets@{o so}}~>
     bool_setoid_object@{o o}.

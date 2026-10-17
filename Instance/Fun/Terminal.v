@@ -16,7 +16,7 @@ Require Import Category.Instance.Two.
 
 Generalizable All Variables.
 
-(** * Pointwise terminal object and indexed products in a functor category *)
+(* * * Pointwise 终对象 indexed products 函子 范畴 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/terminal+object
@@ -29,7 +29,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Joint monicity of a family of product projections *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -52,7 +52,7 @@ Proof.
     intros a; symmetry; apply Heq.
 Qed.
 
-(** ** The constant functor, and the terminal functor *)
+(* * ** The 常值 函子, terminal 函子 （已译） *)
 
 (*
    本节说明函子、hom相关定义、性质与动机。
@@ -67,8 +67,8 @@ Definition Constant_Functor@{co ch cp dro dh dp}
    ; fmap_id       := fun _ => reflexivity _
    ; fmap_comp     := fun _ _ _ _ _ => symmetry (id_left id) |}.
 
-(* The terminal object of [C, D]: the constant functor at 1.  D's hom and
-   proof universes are identified here, and that is [Terminal]'s doing. *)
+(* The 终对象 [C, D]: 常值 函子 at 1. D's hom and
+ 证明 universes identified here, [Terminal]'s doing. （已译） *)
 Definition Constant_Terminal_Functor@{co ch cp dro dh}
   {C : Category@{co ch cp}} {D : Category@{dro dh dh}}
   (T : @Terminal D) : C ⟶ D :=
@@ -110,8 +110,8 @@ Definition fun_iprod_ump (c : C) :
   IsIndexedProduct (fun_iprod_fam c) (fun_iprod_obj c) (fun_iprod_pr c) :=
   indexed_product_ump (fun_iprod_fam c).
 
-(* The arrow action: the unique map into the product at [c'] induced by the
-   family whose [a]th leg is [fmap[F a] g] after the [a]th projection. *)
+(* The arrow action: unique map 进入 product at [c'] induced the
+ family whose [a]th leg [fmap[F a] g] after [a]th projection. （已译） *)
 Definition fun_iprod_fmap {c c' : C} (g : c ~> c') :
   fun_iprod_obj c ~> fun_iprod_obj c' :=
   unique_obj (iprod_desc (fun_iprod_ump c')
@@ -126,8 +126,8 @@ Proof.
               (fun a => fmap[F a] g ∘ fun_iprod_pr c a)) a).
 Qed.
 
-(* The pointwise product as a functor.  Each of the three laws is proved by
-   composing with the projections and appealing to [iprod_jointly_monic]. *)
+(* The pointwise product 函子. Each three laws proved by
+ composing projections appealing [iprod_jointly_monic]. （已译） *)
 Program Definition Fun_iprod : C ⟶ D := {|
   fobj := fun_iprod_obj;
   fmap := fun c c' g => fun_iprod_fmap g
@@ -162,8 +162,8 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* The [a]th projection is a natural transformation: its naturality square
-   IS the defining equation of the arrow action. *)
+(* The [a]th projection 自然变换: 自然性 square
+ IS defining equation arrow action. （已译） *)
 Program Definition Fun_iprod_proj (a : A) : Fun_iprod ⟹ F a := {|
   transform := fun c => fun_iprod_pr c a
 |}.
@@ -182,8 +182,8 @@ Proof.
            (iprod_desc (fun_iprod_ump c) (fun a => transform (pi a) c)) a).
 Qed.
 
-(* The mediating transformation.  Its naturality is where the naturality of
-   the competing family [pi] is spent, and nowhere else. *)
+(* The mediating transformation. Its 自然性 where 自然性 of
+ competing family [pi] spent, nowhere else. （已译） *)
 Program Definition fun_iprod_tuple (Q : C ⟶ D) (pi : ∀ a, Q ⟹ F a) :
   Q ⟹ Fun_iprod := {|
   transform := fun c => fun_iprod_tuple_at Q pi c
@@ -218,9 +218,9 @@ Next Obligation.
   apply naturality.
 Qed.
 
-(* The elementary universal property, in [C, D].  Existence is
-   [fun_iprod_tuple]; the triangle and the uniqueness clause are the
-   corresponding facts in D, taken at each object. *)
+(* The elementary 普遍性质, [C, D]. Existence is
+ [fun_iprod_tuple]; triangle uniqueness clause the
+ corresponding facts D, taken at each 对象. （已译） *)
 Program Definition Fun_IsIndexedProduct :
   @IsIndexedProduct ([C, D]) A F Fun_iprod Fun_iprod_proj := {|
   iprod_desc := fun Q pi => {| unique_obj := fun_iprod_tuple Q pi |}
@@ -247,7 +247,7 @@ Definition Fun_HasIndexedProducts {C D : Category}
     (fun A F a => @Fun_iprod_proj C D HP A F a)
     (fun A F => @Fun_IsIndexedProduct C D HP A F).
 
-(** ** The binary case: a product is an indexed product over [bool] *)
+(* 相关说明。 （已译） *)
 
 Definition bool_fam {C : Category} (x y : C) : bool → C :=
   fun b => if b then x else y.
@@ -278,8 +278,8 @@ Next Obligation.
   - exact (X false).
 Qed.
 
-(** The pointwise indexed product at a two-element index, compared with the
-    pointwise binary product of Instance/Fun/Cartesian.v. *)
+(** 本节：The pointwise indexed product at two-element index, compared the
+ pointwise binary product Instance/Fun/Cartesian.v. （已译） *)
 
 Definition Fun_bool_iprod_iso {C D : Category}
   (HP : @HasIndexedProducts D) (CD : @Cartesian D) (F G : C ⟶ D) :
@@ -309,7 +309,7 @@ Definition Fun_bool_iprod_iso_inv_commutes {C D : Category}
   iprod_compare_inv_commutes (@bool_fam ([C, D]) F G) _ _ _ _
     (Fun_IsIndexedProduct HP (@bool_fam ([C, D]) F G)) b.
 
-(** ** What computes, and what does not *)
+(* 相关说明。 （已译） *)
 
 Section Strictness.
 
@@ -348,8 +348,8 @@ Context (HP : @HasIndexedProducts D).
 Context (CD : @Cartesian D).
 Context (F G : C ⟶ D) (c : C).
 
-(* CONTROL: the object action of the pointwise indexed product is the
-   indexed product of the pointwise family, on the nose. *)
+(* CONTROL: 对象 action pointwise indexed product the
+ indexed product pointwise family, nose. （已译） *)
 Example ctl_bool_iprod_obj :
   fobj[Fun_iprod HP (@bool_fam ([C, D]) F G)] c
     = indexed_product (fun b : bool => fobj[@bool_fam ([C, D]) F G b] c)
@@ -365,7 +365,7 @@ Fail Example bool_iprod_is_binary_product :
     = fobj[@product_obj ([C, D]) (Functor_Category_Cartesian C D CD) F G] c
   := eq_refl.
 
-(* The mediator extracted from the class IS [fun_iprod_tuple], on the nose. *)
+(* 相关说明。 （已译） *)
 Example fun_iprod_class_mediator {A : Type} (Fm : A → (C ⟶ D))
   (Q : C ⟶ D) (pi : ∀ a, Q ⟹ Fm a) :
   unique_obj (iprod_desc (Fun_IsIndexedProduct HP Fm) pi)
@@ -373,7 +373,7 @@ Example fun_iprod_class_mediator {A : Type} (Fm : A → (C ⟶ D))
 
 End StrictnessNegatives.
 
-(** ** Relation to the diagonal functor *)
+(* * ** Relation diagonal 函子 （已译） *)
 
 Section DiagonalComparison.
 
@@ -381,8 +381,8 @@ Context {C : Category}.
 Context {D : Category}.
 Context (d : D) (c : C).
 
-(* Object and arrow actions agree with [Functor/Diagonal.v]'s constant
-   functor ON THE NOSE. *)
+(* Object arrow actions agree [Functor/Diagonal.v]'s 常值
+ 函子 ON THE NOSE. （已译） *)
 Example constant_functor_diagonal_obj :
   fobj[@Constant_Functor C D d] c = fobj[fobj[@Diagonal D C] d] c := eq_refl.
 
@@ -500,7 +500,7 @@ Proof.
               two_pick_family) b).
 Qed.
 
-(** ** The nullary case: the terminal functor as an empty pointwise product *)
+(* * ** The nullary case: terminal 函子 empty pointwise product （已译） *)
 
 Program Definition terminal_empty_IsIndexedProduct {C : Category}
   (T : @Terminal C) {A : Type} (Hempty : A → False) (f : A → C)

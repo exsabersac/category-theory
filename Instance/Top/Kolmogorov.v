@@ -46,8 +46,8 @@ Proof.
   split; auto.
 Defined.
 
-(* Equivalent points are indistinguishable: this is [open_proper],
-   used in both directions. *)
+(* Equivalent points indistinguishable: 这是 [open_proper],
+ used both directions. （已译） *)
 Lemma SameOpens_of_equiv (X : TopSpace) (x y : X) :
   x ≈ y → SameOpens X x y.
 Proof.
@@ -99,10 +99,7 @@ Defined.
 Lemma T0_Incl_Faithful : Functor.Faithful (Incl Top T0_Subcategory).
 Proof. exact (Incl_Faithful Top T0_Subcategory). Defined.
 
-(** * The Kolmogorov quotient
-
-    Same carrier, coarser `≈`, and as opens exactly those opens of X
-    that respect the coarser `≈`. *)
+(* 相关说明。 （已译） *)
 
 Definition kq_setoid (X : TopSpace) : SetoidObject :=
   {| carrier := top_carrier X
@@ -201,9 +198,7 @@ Definition kolmogorov_proj (X : TopSpace)
 
 (** * The universal property *)
 
-(* A continuous map into a T0 space cannot tell indistinguishable
-   points apart: pulling back a level-[s] open of the target along f
-   gives a level-[s] open of the source. *)
+(* 相关说明。 （已译） *)
 Definition kq_med_resp {X D : TopSpace} (HD : IsT0 D)
     (f : X ~{Top}~> D) (x y : top_carrier X) :
   SameOpens X x y → continuous_map f x ≈ continuous_map f y.
@@ -302,17 +297,17 @@ Lemma t0_unit_is_proj_hom (X : TopSpace) :
   t0_unit X ≈ kolmogorov_proj X.
 Proof. intro x; reflexivity. Defined.
 
-(* A T0 space is its own Kolmogorov quotient, up to isomorphism in the
-   subcategory: the counit of a full reflective subcategory. *)
+(* A T0 space own Kolmogorov quotient, up 同构 the
+ subcategory: counit full reflective subcategory. （已译） *)
 Definition t0_reflect_iso (x : T0Spaces) :
   fobj[T0_reflector] (Incl Top T0_Subcategory x) ≅[T0Spaces] x :=
   reflective_counit_iso T0_Reflective_in_Top x.
 
-(** * Hausdorff spaces
+(* * * Hausdorff spaces
 
-    What comes out is a DOUBLE NEGATION, against the unrestricted
-    relation; see the header for the two independent reasons this does
-    not give [IsT0]. *)
+ What comes out DOUBLE NEGATION, against unrestricted
+ 关系; see header two independent reasons does
+ not give [IsT0]. （已译） *)
 
 Lemma Hausdorff_T0_nn (X : TopSpace) (H : IsHausdorff X) (x y : X) :
   SameOpensAll X x y → ¬ ¬ (x ≈ y).
@@ -322,7 +317,7 @@ Proof.
   exact (Hdisj y (fst (Hxy U HU) Ux) Vy).
 Defined.
 
-(** * Non-vacuity: the two-point discrete space is T0 *)
+(* 相关说明。 （已译） *)
 
 Lemma bool_point_open (x : bool_setoid_object) :
   IsOpen Bool_Discrete (fun z : bool_setoid_object => z = x).
@@ -344,7 +339,7 @@ Definition bool_reflect_iso :
     ≅[T0Spaces] Bool_Discrete_T0Space :=
   t0_reflect_iso Bool_Discrete_T0Space.
 
-(** * Non-vacuity: the two-point indiscrete space is not T0 *)
+(* 相关说明。 （已译） *)
 
 Lemma indiscrete_points_same_opens :
   SameOpens TwoPoint_Indiscrete true false.

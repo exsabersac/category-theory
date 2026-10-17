@@ -17,7 +17,7 @@ Set Equations With UIP.
 
 Generalizable All Variables.
 
-(** The syntactic cartesian closed category of the simply-typed lambda calculus. *)
+(** The syntactic 笛卡尔闭 范畴 simply-typed lambda calculus. （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/cartesian+closed+category
@@ -149,7 +149,7 @@ Program Definition Lambda Γ : Category := {|
 
 #[export]
 Program Instance Lambda_Terminal Γ : @Terminal (Lambda Γ) := {
-  terminal_obj := TyUnit;            (* the unit type is the terminal object *)
+  terminal_obj := TyUnit;            (* the unit type 终对象 （已译） *)
   one := λ _, LAM EUnit              (* the unique map `λ_. ()` into it *)
 }.
 Next Obligation.
@@ -159,7 +159,7 @@ Qed.
 
 #[export]
 Program Instance Lambda_Cartesian Γ : @Cartesian (Lambda Γ) := {
-  product_obj := TyPair;             (* the pair type is the categorical product *)
+  product_obj := TyPair;             (* 相关说明。 （已译） *)
   fork := λ _ _ _ f g,               (* `⟨f, g⟩ := λx. (f x, g x)` *)
     LAM (Pair (APP (wk f) (VAR ZV)) (APP (wk g) (VAR ZV)));
   exl  := λ _ _, LAM (Fst (VAR ZV)); (* first projection `λp. fst p` *)
@@ -198,7 +198,7 @@ Definition uncurry {Γ a b c} (f : Exp Γ (a ⟶ b ⟶ c)) : Exp Γ (a × b ⟶ 
 
 #[export]
 Program Instance Lambda_Closed Γ : @Closed (Lambda Γ) _ := {
-  exponent_obj := TyArrow;           (* the function type is the exponential object *)
+  exponent_obj := TyArrow;           (* the function type exponential 对象 （已译） *)
   exp_iso := λ _ _ _,                (* the natural iso `Hom(a×b,c) ≅ Hom(a,b⟶c)` *)
     {| to   := {| morphism := curry |}
      ; from := {| morphism := uncurry |} |}

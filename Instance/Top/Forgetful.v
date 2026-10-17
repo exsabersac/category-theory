@@ -49,7 +49,7 @@ Next Obligation. intros; intro p; reflexivity. Qed.
 #[export] Instance Top_Forget_Faithful : Faithful Top_Forget.
 Proof. constructor; intros x y f g H p; exact (H p). Qed.
 
-(** ** The discrete-topology functor and its transposition *)
+(* * ** The discrete-topology 函子 transposition （已译） *)
 
 Program Definition Top_Discrete@{o h so | o < h, o < so +} :
   Sets@{o so} ⟶ Top@{h o} := {|
@@ -114,7 +114,7 @@ Lemma discrete_adj_inv_nat_r (A : SetoidObject) (Y Z : TopSpace)
     ≈ f ∘[Top] from (discrete_adj A Y) g.
 Proof. intro p; reflexivity. Qed.
 
-(** ** The indiscrete-topology functor and its transposition *)
+(* * ** The indiscrete-topology 函子 transposition （已译） *)
 
 Program Definition Top_Indiscrete@{o h so | o < h, o < so +} :
   Sets@{o so} ⟶ Top@{h o} := {|
@@ -240,9 +240,7 @@ Proof.
                  (fun j q => Hv j q) p).
 Defined.
 
-(* Stripping preserves colimiting cocones, dually: a raw Sets-side
-   cocone competitor transposes along the indiscrete topology.  LAPC for
-   Forget ⊣ Indiscrete. *)
+(* 相关说明。 （已译） *)
 Theorem Forget_preserves_colimit_cocone {J : Category} {K : J ⟶ Top}
   (N : Cocone K) (HN : IsColimitCocone N)
   (A : SetoidObject) (injs : ∀ j : J, top_carrier (K j) ~{Sets}~> A)
@@ -267,7 +265,7 @@ Proof.
                  (fun j q => Hv j q) p).
 Defined.
 
-(** ** Exercise 2: the indiscrete functor has no right adjoint *)
+(* * ** Exercise 2: indiscrete 函子 has no 右伴随 （已译） *)
 
 (*
    本节说明（余）极限、hom相关定义、性质与动机。
@@ -275,8 +273,8 @@ Defined.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Coherence of a cocone over a discrete shape, in any category: the only
-   arrows are (transported) identities. *)
+(* Coherence cocone over discrete shape, any 范畴: only
+ arrows (transported) identities. （已译） *)
 Lemma discrete_cocone_coherence {A : Type} {C : Category}
   (H : DiscreteCat A ⟶ C) (c : C) (inj : ∀ x : A, H x ~{C}~> c)
   {x y : A} (f : y ~{DiscreteCat A}~> x) :
@@ -291,8 +289,7 @@ Qed.
 Definition unit_pair_diagram : DiscreteCat bool ⟶ Sets :=
   @DiscreteCat_Functor bool Sets (fun _ => unit_setoid_object).
 
-(* The coproduct cocone: apex the two-point setoid, injections the two
-   constants. *)
+(* 相关说明。 （已译） *)
 Definition bool_cocone : Cocone unit_pair_diagram :=
   @Build_Cone ((DiscreteCat bool)^op) (Sets^op) (unit_pair_diagram^op)
     bool_setoid_object
@@ -333,8 +330,7 @@ Next Obligation. intros x y f g H p; reflexivity. Qed.
 Next Obligation. intros x p; reflexivity. Qed.
 Next Obligation. intros x y z f g p; reflexivity. Qed.
 
-(* The indiscrete image of the coproduct cocone: apex the two-point
-   indiscrete space, injections the images of the two constants. *)
+(* 相关说明。 （已译） *)
 Definition indiscrete_image_cocone : Cocone indiscrete_pair_diagram :=
   @Build_Cone ((DiscreteCat bool)^op) (Top^op) (indiscrete_pair_diagram^op)
     TwoPoint_Indiscrete
@@ -407,7 +403,7 @@ Proof.
   (* the transposed legs, as points of R₀ Bool_Discrete *)
   pose (r := fun b : bool =>
                to (φ unit_setoid_object Bool_Discrete) (disc_leg b) ttt).
-  (* the induced map out of the coproduct, and its transpose back *)
+  (* 相关说明。 （已译） *)
   assert (sp : Proper (respectful (@equiv _ (is_setoid bool_setoid_object))
                                   (@equiv _ (is_setoid (R₀ Bool_Discrete))))
                  (fun b : bool => if b then r true else r false)).
@@ -416,8 +412,7 @@ Proof.
               ; proper_morphism := sp |}
              : bool_setoid_object ~{Sets}~> R₀ Bool_Discrete).
   pose (h := from (φ bool_setoid_object Bool_Discrete) s).
-  (* h restricts along each injection to the corresponding leg: transpose,
-     compute through the bijection's round trips, transpose back *)
+  (* 相关说明。 （已译） *)
   assert (Hleg : ∀ b : bool,
     h ∘[Top] fmap[Top_Indiscrete]
         (const_morphism unit_setoid_object bool_setoid_object b)
@@ -456,19 +451,17 @@ Proof.
   discriminate (eq_trans (eq_sym Hf) (HO Ht)).
 Qed.
 
-(** ** Acceptance tests
+(* 相关说明。 （已译） *)
 
-    The definitional facts the header claims really are definitional. *)
-
-(* Both adjoints are sections of the forgetful functor on objects, on the
-   nose: forgetting either extreme topology returns the very lift of the
-   original setoid. *)
+(* Both adjoints sections forgetful 函子 对象, the
+ nose: forgetting either extreme topology returns very lift the
+ original setoid. （已译） *)
 Example forget_discrete_on_objects (A : SetoidObject) :
   Top_Forget (Top_Discrete A) = Setoid_Lift A := eq_refl.
 Example forget_indiscrete_on_objects (A : SetoidObject) :
   Top_Forget (Top_Indiscrete A) = Setoid_Lift A := eq_refl.
 
-(* Both transposition bijections are the identity on underlying maps. *)
+(* Both transposition bijections 恒等 underlying maps. （已译） *)
 Example discrete_transpose_identity (A : SetoidObject) (Y : TopSpace)
   (f : Top_Discrete A ~{Top}~> Y) :
   to (discrete_adj A Y) f = continuous_map f := eq_refl.
@@ -476,8 +469,7 @@ Example indiscrete_transpose_identity (X : TopSpace) (B : SetoidObject)
   (f : X ~{Top}~> Top_Indiscrete B) :
   from (indiscrete_adj X B) f = continuous_map f := eq_refl.
 
-(* The indiscrete image of the coproduct apex is exactly the two-point
-   indiscrete probe space of Instance/Top.v. *)
+(* 相关说明。 （已译） *)
 Example image_apex_is_TwoPoint_Indiscrete :
   vertex_obj[indiscrete_image_cocone] = TwoPoint_Indiscrete := eq_refl.
 Example image_apex_is_indiscrete_of_bool :

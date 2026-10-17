@@ -22,7 +22,7 @@ Generalizable All Variables.
 Lemma two_thin {x y : TwoObj} (f g : TwoHom x y) : f = g.
 Proof. exact (Two_thin f g). Qed.
 
-(* The binary meet (product object): TwoX is the bottom, TwoY the top. *)
+(* The binary meet (product 对象): TwoX bottom, TwoY top. （已译） *)
 Definition two_meet (x y : TwoObj) : TwoObj :=
   match x with
   | TwoX => TwoX
@@ -76,7 +76,7 @@ Next Obligation.
   split; intros; try split; apply two_thin.
 Qed.
 
-(* The unique morphism  x ~> TwoY  into the top object. *)
+(* The unique 态射 x ~> TwoY 进入 top 对象. （已译） *)
 Definition two_one (x : TwoObj) : TwoHom x TwoY :=
   match x with
   | TwoX => TwoXY

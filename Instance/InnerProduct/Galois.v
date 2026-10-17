@@ -1,4 +1,4 @@
-(** * The orthogonal complement as a Galois connection *)
+(* 相关说明。 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -34,7 +34,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** (A) The orthogonality relation *)
+(* * ** (A) The orthogonality 关系 （已译） *)
 
 (*
    本节说明等价相关定义、性质与动机。
@@ -51,9 +51,9 @@ Arguments perp {X} p x y.
 Arguments perp_sym {X} p x y _.
 Arguments perp_respects {X} p x x' y y' _ _ _.
 
-(* The [Proper (equiv ==> equiv ==> iff)] reading, as a theorem rather
-   than as a field: the record carries one implication, and both
-   directions follow from it by symmetry of [≈]. *)
+(* The [Proper (equiv ==> equiv ==> iff)] reading, 定理 rather
+ than field: record carries one implication, both
+ directions follow it symmetry [≈]. （已译） *)
 Lemma perp_respects_iff@{o +} {X : SetoidObject@{o o}} (P : PerpRel@{o} X)
   (x x' y y' : carrier X) (Hx : x ≈ x') (Hy : y ≈ y') :
   perp P x y ↔ perp P x' y'.
@@ -64,7 +64,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (B) The orthogonal complement, and the transposition *)
+(* 相关说明。 （已译） *)
 
 Section Perp.
 
@@ -96,8 +96,8 @@ Proof using P.
       [ reflexivity | now symmetry ].
 Defined.
 
-(* Membership, on the nose.  An equation between [Prop]s, that is between
-   OBJECTS of the power set, not between morphisms. *)
+(* Membership, nose. An equation between [Prop]s, between
+ OBJECTS power set, not between 态射. （已译） *)
 Example perp_set_mem (S : carrier (Powerset_Prop_obj@{o} X))
   (x : carrier X) : perp_set S x = (∀ s, S s → perp P s x) := eq_refl.
 
@@ -110,16 +110,12 @@ Definition perp_transpose (S T : carrier (Powerset_Prop_obj@{o} X))
   (H : subset_le@{o} S (perp_set T)) : subset_le@{o} T (perp_set S) :=
   fun y Hy s Hs => perp_sym P y s (H s Hs y Hy).
 
-(* Order-reversal, in the elementary form.  The connection reads it at
-   [op_rel], where it becomes the covariant field the donor record asks
-   for. *)
+(* 相关说明。 （已译） *)
 Lemma perp_set_antitone (S T : carrier (Powerset_Prop_obj@{o} X)) :
   subset_le@{o} S T → subset_le@{o} (perp_set T) (perp_set S).
 Proof using P. intros H x Hx s Hs; exact (Hx s (H s Hs)). Qed.
 
-(* Both operators of a Galois connection respect the carriers' own [≈];
-   here there is one operator, and order-reversal read both ways gives
-   it. *)
+(* 相关说明。 （已译） *)
 Lemma perp_set_respects (S T : carrier (Powerset_Prop_obj@{o} X))
   (H : S ≈ T) : perp_set S ≈ perp_set T.
 Proof using P.
@@ -152,13 +148,12 @@ Example perp_galois_l_is_r :
 Example perp_galois_l_is_perp_set :
   gal_l perp_galois = perp_set := eq_refl.
 
-(* The two halves of the biconditional are the same function at swapped
-   arguments -- so "if and only if" costs one term, not two. *)
+(* 相关说明。 （已译） *)
 Example perp_to_is_from_swapped (S T : carrier (Powerset_Prop_obj@{o} X))
   (H : subset_le@{o} T (perp_set S)) :
   gal_to perp_galois S T H = gal_from perp_galois T S H := eq_refl.
 
-(* The two preorders the connection is read at. *)
+(* 相关说明。 （已译） *)
 Definition perp_PreOrder_l : PreOrder (@subset_le@{o} X) :=
   subset_le_preorder@{o} X.
 
@@ -166,7 +161,7 @@ Definition perp_PreOrder_r : PreOrder (op_rel (@subset_le@{o} X)) :=
   op_PreOrder (subset_le_preorder@{o} X).
 
 (* ------------------------------------------------------------------------ *)
-(** ** (D) Mac Lane's display (2), at this connection *)
+(* 相关说明。 （已译） *)
 
 (* [S] is contained in its double complement.  This is #380's [gal_unit]
    applied; no argument is written here. *)
@@ -174,9 +169,9 @@ Definition perp_unit (S : carrier (Powerset_Prop_obj@{o} X)) :
   subset_le@{o} S (perp_set (perp_set S)) :=
   gal_unit perp_galois perp_PreOrder_r S.
 
-(* The counit, at the SAME type: reading [gal_counit] at the reversed
-   order turns it into the very inequality [gal_unit] gives, and the two
-   are the same term. *)
+(* The counit, at SAME type: reading [gal_counit] at reversed
+ order turns it 进入 very inequality [gal_unit] gives, two
+ same term. （已译） *)
 Definition perp_counit (S : carrier (Powerset_Prop_obj@{o} X)) :
   subset_le@{o} S (perp_set (perp_set S)) :=
   gal_counit perp_galois perp_PreOrder_l S.
@@ -200,13 +195,12 @@ Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** (E) The closed elements *)
 
-(* One inclusion of [S ≈ S^⊥⊥] is free ([perp_unit]), so the predicate
-   records only the direction that is not. *)
+(* One 含入 [S ≈ S^⊥⊥] free ([perp_unit]), so predicate
+ records direction not. （已译） *)
 Definition ClosedPerp (S : carrier (Powerset_Prop_obj@{o} X)) : Prop :=
   subset_le@{o} (perp_set (perp_set S)) S.
 
-(* Section (A)'s two predicates coincide here, since [gal_l] and [gal_r]
-   are one map and the second order is the first reversed. *)
+(* 相关说明。 （已译） *)
 Example ClosedPerp_is_GalClosed_r (S : carrier (Powerset_Prop_obj@{o} X)) :
   ClosedPerp S = GalClosed_r perp_galois S := eq_refl.
 
@@ -306,7 +300,7 @@ Arguments perp_set {X} P S.
 Arguments ClosedPerp {X} P S.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (G) A witness: ℤ² with the dot product *)
+(* 相关说明。 （已译） *)
 
 (* The setoid of integer pairs, at ONE universe.  [eq_Setoid]
    (Lib/Setoid.v) is polymorphic in exactly the level [Subsets] needs,
@@ -315,7 +309,7 @@ Arguments ClosedPerp {X} P S.
 Definition zz_setoid@{wo} : SetoidObject@{wo wo} :=
   {| carrier := (Z * Z)%type ; is_setoid := eq_Setoid@{wo} (Z * Z)%type |}.
 
-(* The ordinary dot product, and the orthogonality relation it induces. *)
+(* The ordinary dot product, orthogonality 关系 it induces. （已译） *)
 Definition zdot (p q : Z * Z) : Prop :=
   (fst p * fst q + snd p * snd q = 0)%Z.
 
@@ -349,8 +343,7 @@ Definition zz_yaxis@{wo} : carrier (Powerset_Prop_obj@{wo} zz_setoid@{wo}) :=
 Definition zz_xaxis@{wo} : carrier (Powerset_Prop_obj@{wo} zz_setoid@{wo}) :=
   zz_sub@{wo} (fun v => snd v = 0%Z).
 
-(* THE COMPLEMENT OF THE SINGLETON {(1,0)} IS THE SECOND AXIS.  Both
-   inclusions are one instantiation and one arithmetic step. *)
+(* 相关说明。 （已译） *)
 Lemma zz_perp_e1_is_yaxis : perp_set ZZPerp zz_e1 ≈ zz_yaxis.
 Proof.
   apply subset_le_antisym.
@@ -362,7 +355,7 @@ Proof.
     change ((1 * fst x + 0 * snd x)%Z = 0%Z); lia.
 Qed.
 
-(* Two named points, one in the complement and one out of it. *)
+(* 相关说明。 （已译） *)
 Example zz_perp_e1_contains : perp_set ZZPerp zz_e1 (0%Z, 5%Z).
 Proof.
   intros s Hs; change (s = (1%Z, 0%Z)) in Hs; subst s.
@@ -388,8 +381,7 @@ Proof.
   change ((1 * 1 + 0 * 0)%Z = 0%Z) in H; lia.
 Qed.
 
-(* THE SINGLETON IS NOT CLOSED: its double complement is the first axis,
-   which contains [(2,0)]. *)
+(* 相关说明。 （已译） *)
 Lemma zz_double_perp_e1_has_20 :
   perp_set ZZPerp (perp_set ZZPerp zz_e1) (2%Z, 0%Z).
 Proof.
@@ -406,17 +398,16 @@ Proof.
   injection Hin; intros; lia.
 Qed.
 
-(* THE AXIS IS CLOSED, and the proof exercises the general
-   characterisation rather than recomputing: it is a complement, and every
-   complement is closed. *)
+(* THE AXIS IS CLOSED, 证明 exercises general
+ characterisation rather than recomputing: it complement, every
+ complement closed. （已译） *)
 Theorem zz_yaxis_ClosedPerp : ClosedPerp ZZPerp zz_yaxis.
 Proof.
   refine (snd (closed_perp_iff ZZPerp zz_yaxis) _).
   exists zz_e1; exact zz_perp_e1_is_yaxis.
 Qed.
 
-(* The complement of the second axis is the first, which pins the double
-   complement of the singleton exactly. *)
+(* 相关说明。 （已译） *)
 Lemma zz_perp_yaxis_is_xaxis : perp_set ZZPerp zz_yaxis ≈ zz_xaxis.
 Proof.
   apply subset_le_antisym.
@@ -429,8 +420,7 @@ Proof.
     rewrite Hs, Hx; lia.
 Qed.
 
-(* The two axes are distinct subsets, so the witness is not degenerate on
-   the axis that matters: the complement moves. *)
+(* 相关说明。 （已译） *)
 Example zz_axes_differ : zz_yaxis ≈ zz_xaxis → False.
 Proof.
   intro H; pose proof (proj1 (H (0%Z, 1%Z)) eq_refl) as Hin.

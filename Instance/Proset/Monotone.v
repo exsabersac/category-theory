@@ -19,15 +19,14 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Monotone maps, and the correspondence *)
+(* 相关说明。 （已译） *)
 
 Section Monotone.
 
 Context {A : Type} {R : relation A} (P : PreOrder R).
 Context {B : Type} {S : relation B} (Q : PreOrder S).
 
-(* A monotone map between the underlying preorders: no decidability, no
-   packaging — just the order-preserving function. *)
+(* 相关说明。 （已译） *)
 Record MonotoneFun := {
   mono_map :> A → B;
   mono_pres : ∀ x y, R x y → S (mono_map x) (mono_map y)
@@ -47,21 +46,21 @@ Next Obligation. intros f x y g h Hgh; exact I. Qed.
 Next Obligation. intros f x; exact I. Qed.
 Next Obligation. intros f x y z g h; exact I. Qed.
 
-(* The forward leg: a functor restricts to a monotone map on objects,
-   monotonicity being the action on (unique) arrows. *)
+(* The forward leg: 函子 restricts monotone map 对象,
+ monotonicity being action (unique) arrows. （已译） *)
 Definition monotone_of_Functor (F : Proset P ⟶ Proset Q) : MonotoneFun := {|
   mono_map := fobj[F];
   mono_pres := fun x y h => fmap[F] h
 |}.
 
-(* Round trip on the monotone side: the same map, on the nose. *)
+(* 相关说明。 （已译） *)
 Lemma monotone_of_Functor_of_monotone (f : MonotoneFun) :
   mono_map (monotone_of_Functor (Functor_of_monotone f)) = mono_map f.
 Proof. reflexivity. Qed.
 
-(* Round trip on the functor side: the same functor up to the thin
-   identification — a [Functor_Setoid] natural isomorphism whose
-   components are identity arrows. *)
+(* Round trip 函子 side: same 函子 up thin
+ identification — [Functor_Setoid] natural 同构 whose
+ components 恒等 arrows. （已译） *)
 Lemma Functor_of_monotone_of_Functor (F : Proset P ⟶ Proset Q) :
   Functor_of_monotone (monotone_of_Functor F) ≈ F.
 Proof.
@@ -72,7 +71,7 @@ Qed.
 
 End Monotone.
 
-(** ** Example 60: the 17/24 monotone map *)
+(* 相关说明。 （已译） *)
 
 (* The two-element order as a preorder on [bool]: false ≤ true. *)
 Definition bool_le (a b : bool) : Prop := a = true → b = true.
@@ -84,7 +83,7 @@ Proof.
   - intros a b c Hab Hbc H; exact (Hbc (Hab H)).
 Qed.
 
-(* The monotone map itself — the notion's first concrete inhabitant. *)
+(* 相关说明。 （已译） *)
 Program Definition seventeen_twentyfour :
   @MonotoneFun bool bool_le nat Nat.le := {|
   mono_map := fun b : bool => if b then 24%nat else 17%nat
@@ -97,7 +96,7 @@ Next Obligation.
   - exact (le_n 17).
 Qed.
 
-(* ...and its functor, through the smart constructor. *)
+(* ...and 函子, through smart constructor. （已译） *)
 Definition Seventeen_TwentyFour_Proset :
   Proset bool_le_preorder ⟶ LessThanEqualTo_Category :=
   Functor_of_monotone bool_le_preorder Nat.le_preorder
@@ -124,9 +123,9 @@ Next Obligation.
   - inversion f.
   - exact (le_n 24).
 Defined.
-(* [_2]'s homset is strict equality, so the [Proper] law is inferred
-   during elaboration; only the two remaining laws obligate, each an
-   equation between parallel morphisms in a thin target. *)
+(* [_2]'s homset strict equality, so [Proper] law inferred
+ during elaboration; two remaining laws obligate, each an
+ equation between parallel 态射 thin target. （已译） *)
 Next Obligation. intros x; exact I. Qed.
 Next Obligation. intros x y z f g; exact I. Qed.
 
@@ -135,8 +134,7 @@ Example Seventeen_TwentyFour_bot : Seventeen_TwentyFour TwoX = 17%nat
 Example Seventeen_TwentyFour_top : Seventeen_TwentyFour TwoY = 24%nat
   := eq_refl.
 
-(** ** Example 3.42's payload: endofunctors of (ℕ, ≤) are the
-    non-decreasing sequences *)
+(* 相关说明。 （已译） *)
 
 Definition nondecreasing (f : nat → nat) : Type :=
   ∀ m n : nat, (m <= n)%nat → (f m <= f n)%nat.
@@ -162,7 +160,7 @@ Definition endo_of_nondecreasing
 Example nondecreasing_round (f : { f : nat → nat & nondecreasing f }) :
   `1 (nondecreasing_of_endo (endo_of_nondecreasing f)) = `1 f := eq_refl.
 
-(** ** Example 61: the tree of life, by generators *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Monotone 相关定义、性质与动机。
@@ -195,9 +193,9 @@ Definition rank (t : Taxon) : nat :=
   | Mammal | Bird => 0
   end.
 
-(* Monotonicity from the GENERATING relation: one case per edge — each
-   generator raises the rank — and the two closure rules; the closure is
-   never enumerated. *)
+(* Monotonicity GENERATING 关系: one case per edge — each
+ generator raises rank — two closure rules; closure is
+ never enumerated. （已译） *)
 Lemma rank_monotone : ∀ s t, taxon_le s t → (rank s <= rank t)%nat.
 Proof.
   intros s t H.

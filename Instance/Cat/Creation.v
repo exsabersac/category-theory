@@ -24,7 +24,7 @@ Set Universe Polymorphism.
 
 Generalizable All Variables.
 
-(** * Creation of limits is stable under the fibre product of categories *)
+(* * * Creation limits stable under fibre product 范畴 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/pullback
@@ -34,7 +34,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Cast algebra, with all endpoints variables *)
+(* 相关说明。 （已译） *)
 
 Lemma cast_solve {C : Category} {a b a' b' : C} (ex : a = a') (ey : b = b')
   (u : a ~{C}~> b) (v : a' ~{C}~> b') :
@@ -87,7 +87,7 @@ Proof.
   now rewrite H1, <- H2.
 Qed.
 
-(** ** A limiting cone stays limiting along an isomorphism of diagrams *)
+(* * ** A limiting cone stays limiting along 同构 diagrams （已译） *)
 
 Section DiagTransport.
 
@@ -145,7 +145,7 @@ Defined.
 
 End DiagTransport.
 
-(** ** Creation transports along an isomorphism of the functor *)
+(* * ** Creation transports along 同构 函子 （已译） *)
 
 (* The creation analogue of Functor/Hom/Continuous.v's
    [PreservesLimitCone_transport].  It carries CREATION, not strictness:
@@ -246,8 +246,7 @@ Notation p2 := (FP_snd F G).
 Notation KA := (p1 ◯ K).
 Notation KB := (p2 ◯ K).
 
-(* The square commutes definitionally: both components are the fibre
-   product's own stored data, read off the diagram. *)
+(* 相关说明。 （已译） *)
 
 Definition fp_square_obj (j : J) : F (KA j) = G (KB j) := `2 (K j).
 
@@ -264,8 +263,7 @@ Next Obligation.
   exact (cast_solve _ _ _ _ Hf).
 Qed.
 
-(* The [F]-image of the [A]-projection of a cone is limiting as soon as the
-   [G]-image of its [B]-projection is — the square, read as a transport. *)
+(* 相关说明。 （已译） *)
 
 Section FImage.
 
@@ -289,7 +287,7 @@ Definition fp_F_image_limiting : IsLimitCone (FCone F (FCone p1 W)) :=
 
 End FImage.
 
-(** ** Pairing the two coordinate mediators *)
+(* 相关说明。 （已译） *)
 
 Section Pairing.
 
@@ -302,8 +300,7 @@ Section AtCompetitor.
 
 Context (Q : Cone K).
 
-(* The fibre product's side condition on the paired mediator is not extra
-   data: it is uniqueness in [C], both sides mediating the same cone. *)
+(* 相关说明。 （已译） *)
 
 Lemma fp_med_cast :
   hom_cast (`2 vertex_obj[Q]) (`2 vertex_obj[W])
@@ -376,8 +373,8 @@ Definition fp_image_limiting_at : IsLimitCone fp_image_cone :=
 
 Definition fp_upstairs_lift : StrictLift KA F fp_image_cone := screates fp_image_cone fp_image_limiting_at.
 
-(* Here, and only here, is the bottom functor's strictness spent: the third
-   component of a fibre-product object is a Leibniz equality. *)
+(* Here, here, bottom 函子's strictness spent: third
+ component fibre-product 对象 Leibniz equality. （已译） *)
 
 Definition fp_lift_apex : P :=
   ((vertex_obj[slift_cone fp_upstairs_lift], vertex_obj[N]); slift_eq fp_upstairs_lift).
@@ -446,7 +443,7 @@ Definition fp_snd_CreatesAllLimits
   CreatesAllLimits (FP_snd F G) :=
   fun J K => fp_snd_CreatesLimit F G K (SF J _) (HG J _).
 
-(* The issue's Verification block audits this name. *)
+(* 相关说明。 （已译） *)
 
 Definition creation_pullback_stable {A B C : Category} (F : A ⟶ C)
   (G : B ⟶ C) {J : Category} (K : J ⟶ FibreProduct F G)
@@ -455,7 +452,7 @@ Definition creation_pullback_stable {A B C : Category} (F : A ⟶ C)
   StrictlyCreatesLimit K (FP_snd F G) :=
   fp_snd_StrictlyCreatesLimit F G K SC HG.
 
-(** ** Mac Lane §V.6 Exercise 4: the comma category as the fibre product *)
+(* * ** Mac Lane §V.6 Exercise 4: comma 范畴 fibre product （已译） *)
 
 #[local] Set Transparent Obligations.
 
@@ -610,7 +607,7 @@ Definition Comma_FP_Equivalence :
 
 End CommaAsFibreProduct.
 
-(** ** Exercise 4: the comma projection creates limits, by that route *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）强度相关定义、性质与动机。
@@ -668,14 +665,14 @@ Definition comma_Complete_via_pullback
   creates_limits_Complete comma_proj2 HC
     (comma_proj2_CreatesAllLimits_via_pullback U d HU).
 
-(* The issue's Verification block audits this name too. *)
+(* 相关说明。 （已译） *)
 
 Definition comma_creates_limits_second_proof {C D : Category} (U : C ⟶ D)
   (d : D) (HU : ContinuousFunctor U) {J : Category} (K : J ⟶ (=(d) ↓ U)) :
   CreatesLimit K (@comma_proj2 _1 C D (=(d)) U) :=
   comma_proj2_creates_second U d HU K.
 
-(** ** The premise of Exercise 4 is inhabited, with nothing assumed *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。

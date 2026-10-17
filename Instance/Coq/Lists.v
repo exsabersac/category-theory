@@ -10,7 +10,7 @@ Require Import List.
 
 Generalizable All Variables.
 
-(** * Lists as the initial algebra of the list endofunctor over COQ *)
+(* * * Lists initial algebra list 自函子 over COQ （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Initial_algebra
@@ -54,16 +54,14 @@ Next Obligation.
   destruct o as [[a x]|]; reflexivity.
 Qed.
 
-(* The structure map of the list algebra: [None] is [nil] and [Some (a, l)] is
-   [cons a l].  This is a [ListF A]-algebra on [list A]. *)
+(* 相关说明。 （已译） *)
 Definition alg (A : Type) : ListF A (list A) ~{Coq}~> list A :=
   fun o => match o with
            | None => @nil A
            | Some (a, l) => cons a l
            end.
 
-(* The catamorphism (fold) determined by an algebra [β : 1 + A × Y ~> Y].  This
-   is the carrier of the unique algebra map out of [(list A, alg A)]. *)
+(* 相关说明。 （已译） *)
 Fixpoint fold {A Y : Type} (beta : option (A * Y)%type -> Y)
               (l : list A) : Y :=
   match l with
@@ -88,8 +86,8 @@ Proof.
     apply (Hh (Some (a, l'))).
 Qed.
 
-(* The unique algebra map from [(list A, alg A)] to an arbitrary algebra [y],
-   packaging the fold together with its commuting square. *)
+(* The unique algebra map [(list A, alg A)] arbitrary algebra [y],
+ packaging fold together 交换方块. （已译） *)
 Program Definition list_alg_hom (A : Type) (y : FAlg (ListF A))
   : (list A; alg A) ~{FAlg (ListF A)}~> y :=
   {| falg_hom := fold (`2 y) |}.
@@ -99,15 +97,14 @@ Next Obligation.
   destruct o as [[a l]|]; reflexivity.
 Qed.
 
-(* [list A] together with [alg A] is the initial [ListF A]-algebra: it is the
-   terminal object of the opposite of the algebra category. *)
+(* [list A] together [alg A] initial [ListF A]-algebra: it the
+ 终对象 opposite algebra 范畴. （已译） *)
 Program Definition list_initial (A : Type) : @Initial (FAlg (ListF A)) := {|
   terminal_obj := (list A; alg A);
   one := fun y => list_alg_hom A y
 |}.
 Next Obligation.
-  (* uniqueness: any two algebra maps out of [(list A, alg A)] agree, since each
-     coincides with the fold determined by the target algebra *)
+  (* 相关说明。 （已译） *)
   intros A x f g.
   destruct f as [hf Hf], g as [hg Hg].
   intro l; simpl.

@@ -36,7 +36,7 @@ Require Import Category.Instance.Top.Solenoid.
 
 Generalizable All Variables.
 
-(** * The two presentations of the p-adic solenoid *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/solenoid ("The P-adic solenoid is a
@@ -55,8 +55,7 @@ Open Scope category_scope.
 
 (** ** An integer near zero *)
 
-(* An integer that is the difference of two reals within [ra] and [rb] of
-   zero, with ra + rb < 1, is zero. *)
+(* 相关说明。 （已译） *)
 Lemma int_near_zero@{} (t : Z) (a b : CReal) (ra rb : Q) :
   CRealLe (CReal_abs a) (inject_Q ra) →
   CRealLe (CReal_abs b) (inject_Q rb) →
@@ -78,7 +77,7 @@ Proof.
   cbv [Qlt Qnum Qden] in U1, U2. lia.
 Qed.
 
-(** ** The circle group and its p-th power map *)
+(* 相关说明。 （已译） *)
 
 Program Definition CircleGroup@{o} : AbObject@{o o o} := {|
   ab_cmon := {|
@@ -113,7 +112,7 @@ Next Obligation. intros p a b. apply circ_eq_of_creal. simpl. ring. Qed.
 Example circ_pow_map@{u o} (p : positive) :
   cmon_map (circ_pow@{u o} p) = circ_mul@{o} p := eq_refl.
 
-(** ** The group tower and the space towers have one underlying tower *)
+(* 相关说明。 （已译） *)
 
 Definition GroupTower@{s u o} (p : positive) :
   Omega@{s o o}^op ⟶ Ab@{u o} :=
@@ -164,10 +163,9 @@ Example space_step_fn@{s h o hs + | o < h, h < hs +} (p : positive)
   fmap[Top_Forget@{o h hs} ◯ CircleTower@{s h o} p] (omega_step n) x
   = CReal_mult (posR p) x := eq_refl.
 
-(** ** The group solenoid, on the same matching strings *)
+(* 相关说明。 （已译） *)
 
-(* Instance/Ab/Limit.v's creation of limits by [Ab_Forget], at the matching
-   strings of the underlying tower. *)
+(* 相关说明。 （已译） *)
 Definition GroupSolenoid@{s u o so r | o < u, o < so +} (p : positive) :
   Limit@{r s o u} (GroupTower@{s u o} p) :=
   Ab_Forget_lifts_limits@{r r r u s o so} (GroupTower@{s u o} p)
@@ -229,10 +227,9 @@ Next Obligation. intros p x y H. exact H. Qed.
 Next Obligation. intros p x n. apply circ_eq_refl. Qed.
 Next Obligation. intros p x n. apply circ_eq_refl. Qed.
 
-(** ** The fibre over the base point is the p-adic integers *)
+(* 相关说明。 （已译） *)
 
-(* The rational identities behind the fibre, stated on bare integers so
-   that [ring] sees syntactic atoms. *)
+(* 相关说明。 （已译） *)
 Lemma q_fibre_step@{} (p P : positive) (a b k : Z) :
   a = (b + Zpos P * k)%Z →
   Qeq ((Zpos p # 1) * (a # (p * P)) - (b # P)) (k # 1).
@@ -300,8 +297,7 @@ Proof.
   cbv [Qeq Qmult Qnum Qden]. rewrite !Pos2Z.inj_mul. ring.
 Qed.
 
-(* The real identities behind the inverse, on universally quantified reals
-   so that [ring] sees syntactic atoms. *)
+(* 相关说明。 （已译） *)
 Lemma fibre_real_step@{} (P p s0 s1 a k : CReal) :
   CRealEq a (CReal_mult P s0) →
   CRealEq (CReal_minus (CReal_mult p s1) s0) k →
@@ -349,7 +345,7 @@ Lemma zres_of_eq@{o +} (p : positive) (n : nat) (x y : Z) :
   x = y → @equiv _ (rig_setoid (ResRing ZComm@{o o o} (Zpos p) n)) x y.
 Proof. intro E. apply (res_of_dvd (Zpos p) n x y 0%Z). lia. Qed.
 
-(** *** From the p-adic integers into the fibre: f ↦ (f_n / p^n)_n *)
+(* * *** From p-adic integers 进入 fibre: f ↦ (f_n / p^n)_n （已译） *)
 
 Definition zp_coord@{s o so | o < so +} (p : positive)
   (f : carrier (cmon_setoid (ZpAb@{s o so} p))) (n : nat) : CReal :=
@@ -396,7 +392,7 @@ Proof.
   apply q_fibre_diff. lia.
 Qed.
 
-(* The fibre of the leg μ_0 over the base point 0: the kernel of μ_0. *)
+(* 相关说明。 （已译） *)
 Definition SolFibre@{s u o so r | o < u, o < so +} (p : positive) :
   AbObject@{o o o} :=
   AbKernel@{o o o o o o u u} (gsol_leg@{s u o so r} p 0).
@@ -440,7 +436,7 @@ Example zp_one_to_unit_string@{s u o so r | o < u, o < so +}
                 (rig_one (Zp@{o o o o so s so o so} ZComm@{o o o} (Zpos p)))))
   = `1 (unit_string@{s o so} p) := eq_refl.
 
-(** *** From the fibre back: the integers p^n x_n, read off the witnesses *)
+(* 相关说明。 （已译） *)
 
 Fixpoint fibre_int@{s o so | o < so +} (p : positive)
   (x : SolPoints@{s o so} p) (z0 : Z) (n : nat) : Z :=
@@ -529,7 +525,7 @@ Next Obligation.
   exact E.
 Qed.
 
-(* The fibre of μ_0 over the base point is Z_p, as abelian groups. *)
+(* 相关说明。 （已译） *)
 Program Definition Zp_fibre_iso@{s u o so r | o < u, o < so +}
   (p : positive) (Hp : (1 < p)%positive) :
   @Isomorphism Ab@{u o} (ZpAb@{s o so} p) (SolFibre@{s u o so r} p) := {|
@@ -547,7 +543,7 @@ Next Obligation.
   exact (creal_scale_back _ _).
 Qed.
 
-(** ** The covering in [PTopCat]: evenly covered neighbourhoods *)
+(* 相关说明。 （已译） *)
 
 Lemma qmin_pos@{} (a b : Q) :
   Qlt 0 a → Qlt 0 b → { e : Q & (Qlt 0 e * Qle e a * Qle e b)%type }.
@@ -572,7 +568,7 @@ Proof.
   intro H. apply Qmult_lt_0_compat; [exact H|]. cbv [Qlt Qnum Qden]. lia.
 Qed.
 
-(* Multiplication by [p], with the integer translate kept explicit. *)
+(* 相关说明。 （已译） *)
 Lemma mul_ball@{} (p : positive) (z z' : CReal) (i : Z) (e : Q) :
   CRealLe (CReal_abs (CReal_plus (CReal_minus z' z) (inject_Z i)))
           (inject_Q (e * (1 # p))) →
@@ -594,7 +590,7 @@ Proof.
     rewrite !Pos2Z.inj_mul; nia.
 Qed.
 
-(* The arc about [y]: the interior of the closed ball of radius 1/4. *)
+(* 相关说明。 （已译） *)
 Definition in_arc@{o} (y : CReal) (x : Circle_setoid@{o}) : Prop :=
   inhabited (cint@{o} y (1 # 4) x).
 
@@ -608,8 +604,7 @@ Qed.
 Lemma in_arc_centre@{o} (y : CReal) : in_arc@{o} y y.
 Proof. constructor. apply cint_centre. reflexivity. Qed.
 
-(* The integer that carries a point of the arc to within 1/4 of [y],
-   computed by rounding. *)
+(* 相关说明。 （已译） *)
 Definition arc_shift@{} (y x : CReal) : Z := cround (CReal_minus y x).
 
 Lemma in_arc_shift@{o} (y x : CReal) : in_arc@{o} y x →
@@ -626,8 +621,7 @@ Proof.
   rewrite Ej. exact Hj.
 Qed.
 
-(* The sheet of [z] over the arc: the residue mod p of the integer that
-   brings p z within 1/4 of [y]. *)
+(* 相关说明。 （已译） *)
 Definition sheet_index@{} (p : positive) (y z : CReal) : Z :=
   Z.modulo (- arc_shift y (CReal_mult (posR p) z)) (Zpos p).
 
@@ -681,8 +675,7 @@ Lemma in_sheet_disjoint@{o} (p : positive) (y : CReal) (k k' : Z)
   in_sheet@{o} p y k z → in_sheet@{o} p y k' z → k = k'.
 Proof. intros [_ H] [_ H']. rewrite <- H, <- H'. reflexivity. Qed.
 
-(* The preimage of the arc under the wrapping map is the union of the p
-   sheets. *)
+(* 相关说明。 （已译） *)
 Lemma in_sheet_preimage@{o} (p : positive) (y : CReal)
   (z : Circle_setoid@{o}) :
   in_arc@{o} y (CReal_mult (posR p) z)
@@ -695,10 +688,9 @@ Proof.
   - intros [k [_ [H _]]]. exact H.
 Qed.
 
-(** *** The local sections of the wrapping map *)
+(* 相关说明。 （已译） *)
 
-(* On the arc about [y], the lift of [x] into sheet [k]:
-   (x + arc_shift y x + k) / p. *)
+(* 相关说明。 （已译） *)
 Definition sheet_lift@{} (p : positive) (y : CReal) (k : Z) (x : CReal) :
   CReal :=
   CReal_mult (inject_Q (1 # p))
@@ -771,7 +763,7 @@ Proof.
   change (inject_Z 0) with (inject_Q 0). unfold CReal_minus. ring.
 Qed.
 
-(* The lift contracts distances by the factor p. *)
+(* 相关说明。 （已译） *)
 Lemma sheet_lift_lip@{u} (p : positive) (y : CReal) (k : Z) (x x' : CReal)
   (d : Q) :
   Qle d (1 # 4) → in_arc@{u} y x → in_arc@{u} y x' → cball@{u} x x' d →
@@ -829,10 +821,9 @@ Proof.
   unfold sheet_lift. fold m. rewrite E, inv_p_mul. unfold CReal_minus. ring.
 Qed.
 
-(** *** Each sheet is homeomorphic to the arc, by the wrapping map *)
+(* 相关说明。 （已译） *)
 
-(* The subspaces are Instance/Top/Subspace.v's [ex732_Sub], the subspace
-   topology on a subset, reused. *)
+(* 相关说明。 （已译） *)
 Definition ArcSpace@{o} (y : CReal) : PTop@{o} :=
   ex732_Sub PCircle@{o} (in_arc@{o} y).
 
@@ -952,7 +943,7 @@ Proof.
   exact (in_sheet_preimage p y).
 Qed.
 
-(** *** The fibre of the wrapping map over a point has exactly p points *)
+(* 相关说明。 （已译） *)
 
 Definition fibre_pt@{} (p : positive) (y : CReal) (k : Z) : CReal :=
   sheet_lift p y k y.
@@ -990,10 +981,9 @@ Proof.
   - exact (sheet_lift_respects p y _ _ _ HU (in_arc_centre y) H).
 Defined.
 
-(** ** A subspace of the circle over the Type-valued [Top], by its balls *)
+(* 相关说明。 （已译） *)
 
-(* The points of a Type-valued predicate [P] on the circle, compared as
-   points of the circle; the membership data is invisible to [≈]. *)
+(* 相关说明。 （已译） *)
 Program Definition csub_setoid@{o} (P : Circle_setoid@{o} → Type@{o}) :
   SetoidObject@{o o} := {|
   carrier := { x : CReal & P x };
@@ -1006,9 +996,7 @@ Next Obligation.
   - intros a b c H1 H2; exact (circ_eq_trans _ _ _ H1 H2).
 Qed.
 
-(* An open: every point has a ball of the circle inside it, among the
-   points of [P].  It quantifies over a radius, never over opens, so it
-   sits at the points' universe. *)
+(* 相关说明。 （已译） *)
 Definition csub_open@{o} (P : Circle_setoid@{o} → Type@{o})
   (V : csub_setoid@{o} P → Type@{o}) : Type@{o} :=
   ∀ a, V a → { e : Q & (Qlt 0 e * ∀ b : csub_setoid@{o} P,
@@ -1112,8 +1100,8 @@ Proof.
     exact (Hg (cint (projT1 (g z0)) e) (cint_open _ _)).
 Qed.
 
-(* The universal property of the subspace topology, over ANY space
-   mapping in. *)
+(* The 普遍性质 subspace topology, over ANY space
+ 映射 in. （已译） *)
 Theorem csub_universal@{h o | o < h +} (P : Circle_setoid@{o} → Type@{o})
   (Z : TopSpace@{o}) (g : SetoidMorphism@{o o o} Z (csub_setoid@{o} P)) :
   Continuous@{h o} Z (CSub@{o} P) g ↔
@@ -1124,7 +1112,7 @@ Proof.
   - exact (csub_lift_cont P Z g).
 Qed.
 
-(* The coarsest topology making the inclusion continuous. *)
+(* The coarsest topology making 含入 continuous. （已译） *)
 Lemma csub_coarsest@{h o + | o < h +} (P : Circle_setoid@{o} → Type@{o})
   (T : (csub_setoid@{o} P → Type@{o}) → Type@{o})
   (Tr : ∀ U V, (∀ x, U x ↔ V x) → T U → T V)
@@ -1143,10 +1131,9 @@ Proof.
            (fun U HU => Hc U HU) V HV).
 Qed.
 
-(** ** The covering over the Type-valued [Top] *)
+(* 相关说明。 （已译） *)
 
-(* The arc about [y], Type-valued: the interior of the closed ball of
-   radius 1/4 itself.  The Prop-valued [in_arc] is its squash. *)
+(* 相关说明。 （已译） *)
 Definition tarc@{o} (y : CReal) : Circle_setoid@{o} → Type@{o} :=
   cint@{o} y (1 # 4).
 
@@ -1242,7 +1229,7 @@ Proof.
   - exact (tsheet_preimage p y).
 Qed.
 
-(* The arc and the sheets as spaces: ball subspaces of the circle. *)
+(* 相关说明。 （已译） *)
 Definition TArc@{o} (y : CReal) : TopSpace@{o} := CSub@{o} (tarc@{o} y).
 
 Definition TSheet@{o} (p : positive) (y : CReal) (k : Z) : TopSpace@{o} :=
@@ -1257,8 +1244,8 @@ Next Obligation.
   intros p y k a b H. exact (proper_morphism (circ_mul p) _ _ H).
 Qed.
 
-(* The restriction of [wrap p] is continuous, because [wrap p] after the
-   inclusion is. *)
+(* The restriction [wrap p] continuous, because [wrap p] after the
+ 含入 is. （已译） *)
 Lemma wrap_sheet_cont@{h o | o < h +} (p : positive) (y : CReal) (k : Z) :
   Continuous@{h o} (TSheet@{o} p y k) (TArc@{o} y) (wrap_sheet_map@{o} p y k).
 Proof.
@@ -1275,7 +1262,7 @@ Definition wrap_sheet@{h o | o < h +} (p : positive) (y : CReal) (k : Z) :
   @Build_ContinuousMorphism (TSheet p y k) (TArc y) (wrap_sheet_map p y k)
     (wrap_sheet_cont@{h o} p y k).
 
-(* The local section [sheet_lift] lands in sheet [k]. *)
+(* 相关说明。 （已译） *)
 Lemma tsheet_lift_in@{o} (p : positive) (y : CReal) (k : Z)
   (Hk : (0 <= k < Zpos p)%Z) (x : CReal) :
   tarc@{o} y x → tsheet@{o} p y k (sheet_lift p y k x).
@@ -1323,7 +1310,7 @@ Definition tsheet_lift_mor@{h o | o < h +} (p : positive) (y : CReal)
   @Build_ContinuousMorphism (TArc y) (TSheet p y k) (tsheet_lift_map p y k Hk)
     (tsheet_lift_cont@{h o} p y k Hk).
 
-(* Each sheet is homeomorphic to the arc, by the wrapping map, in [Top]. *)
+(* 相关说明。 （已译） *)
 Program Definition wrap_sheet_iso@{h o | o < h +} (p : positive)
   (y : CReal) (k : Z) (Hk : (0 <= k < Zpos p)%Z) :
   @Isomorphism Top@{h o} (TSheet@{o} p y k) (TArc@{o} y) := {|

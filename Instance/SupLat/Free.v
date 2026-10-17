@@ -1,4 +1,4 @@
-(** * The free complete semilattice, and the monadicity of [SupLat] *)
+(* 相关说明。 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -29,7 +29,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** The free complete semilattice P X *)
+(* 相关说明。 （已译） *)
 
 (* P X ordered by inclusion, with sup = union. *)
 Definition FreeSL@{o} (X : SetoidObject@{o o}) : SupLatObject@{o}.
@@ -46,8 +46,8 @@ Proof.
   - intros SS T H z [S [HS Hz]]. exact (H S HS z Hz).
 Defined.
 
-(* F : Sets ⟶ SupLat.  Its action on maps is #227's direct image, and a
-   direct image preserves unions by the naturality of μ. *)
+(* F : Sets ⟶ SupLat. Its action maps #227's direct image, a
+ direct image preserves unions 自然性 μ. （已译） *)
 Definition SL_Free@{o so} : Sets@{o so} ⟶ SupLat@{o so}.
 Proof.
   unshelve refine
@@ -62,7 +62,7 @@ Proof.
   - intros X Y Z f g. exact (@fmap_comp _ _ Powerset_Prop@{o so} X Y Z f g).
 Defined.
 
-(* U : SupLat ⟶ Sets forgets the order and the sup. *)
+(* 相关说明。 （已译） *)
 Definition SL_Forget@{o so} : SupLat@{o so} ⟶ Sets@{o so}.
 Proof.
   unshelve refine
@@ -159,7 +159,7 @@ Proof.
       exact (Powerset_union_image_singleton@{o} S).
 Defined.
 
-(* The free complete semilattice: F ⊣ U, in the hom-set form. *)
+(* 相关说明。 （已译） *)
 Definition SL_adj@{o so} :
   @Adjunction@{so o o so o o o o so o so} SupLat@{o so} Sets@{o so}
     SL_Free@{o so} SL_Forget@{o so}.
@@ -175,7 +175,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The monad of the adjunction, against [Powerset_Monad] *)
+(* * ** The 单子 伴随, against [Powerset_Monad] （已译） *)
 
 Definition SL_induced@{o so} :
   @Monad Sets@{o so} (SL_Forget@{o so} ◯ SL_Free@{o so}) :=
@@ -194,8 +194,8 @@ Example SL_induced_ret_fun@{o so} (X : SetoidObject@{o o}) :
   (fun x => @ret _ _ SL_induced@{o so} X x)
     = (fun x => @ret _ _ Powerset_Monad@{o so} X x) := eq_refl.
 
-(* The induced join is U ε F, that is ⋃ ∘ P id: the union of the direct
-   image of SS under the identity, not the union of SS. *)
+(* The induced join U ε F, ⋃ ∘ P id: union direct
+ image SS under 恒等, not union SS. （已译） *)
 Example SL_induced_join_fun@{o so} (X : SetoidObject@{o o}) :
   (fun SS => @join _ _ SL_induced@{o so} X SS)
     = (fun SS => Powerset_union_pred@{o}
@@ -229,11 +229,11 @@ Example SL_induced_functor_component@{o so} (X : SetoidObject@{o o}) :
     = @iso_id Sets@{o so} (fobj[Powerset_Prop@{o so}] X) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Monadicity of the forgetful functor *)
+(* * ** Monadicity forgetful 函子 （已译） *)
 
-(* An algebra of the induced monad is, with its data unchanged, an algebra
-   of [Powerset_Monad]: only the action law is proved again, since the
-   induced join is ⋃ ∘ P id rather than ⋃. *)
+(* An algebra induced 单子 is, data unchanged, algebra
+ [Powerset_Monad]: action law proved again, since the
+ induced join ⋃ ∘ P id rather than ⋃. （已译） *)
 Definition SL_induced_repack@{o so} {X : SetoidObject@{o o}}
   (β : @TAlgebra Sets@{o so} (SL_Forget@{o so} ◯ SL_Free@{o so})
          SL_induced@{o so} X) :
@@ -273,8 +273,8 @@ Proof.
   - intros x y z f g a. reflexivity.
 Defined.
 
-(* The algebra round trip through the comparison, with the identity as its
-   component. *)
+(* The algebra round trip through comparison, 恒等 its
+ component. （已译） *)
 Definition SL_comparison_counit_iso@{o so}
   (x : @EilenbergMoore@{so so so o} Sets@{o so}
          (SL_Forget@{o so} ◯ SL_Free@{o so}) SL_induced@{o so}) :
@@ -311,8 +311,8 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* The semilattice round trip through the comparison, with the identity as
-   its component. *)
+(* The semilattice round trip through comparison, 恒等 as
+ component. （已译） *)
 Definition SL_comparison_unit_iso@{o so} (A : SupLatObject@{o}) :
   @Isomorphism SupLat@{o so}
     (fobj[EM_induced_to_SupLat@{o so} ◯ EM_Comparison SL_adj@{o so}] A) A.
@@ -336,8 +336,8 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* The comparison functor is an equivalence, with identity components both
-   ways. *)
+(* The comparison 函子 等价, 恒等 components both
+ ways. （已译） *)
 Definition SL_comparison_equivalence@{o so} :
   @EquivalenceOfCategories@{so so so so so o} SupLat@{o so}
     (@EilenbergMoore@{so so so o} Sets@{o so}
@@ -362,8 +362,8 @@ Proof.
   exact SL_comparison_equivalence@{o so}.
 Defined.
 
-(* The components of both natural isomorphisms are identities, at a
-   variable object. *)
+(* The components both natural isomorphisms identities, at a
+ variable 对象. （已译） *)
 Example SL_comparison_counit_component@{o so}
   (x : @EilenbergMoore@{so so so o} Sets@{o so}
          (SL_Forget@{o so} ◯ SL_Free@{o so}) SL_induced@{o so}) :

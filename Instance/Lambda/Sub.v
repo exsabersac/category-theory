@@ -16,7 +16,7 @@ Section Sub.
 
 Import ListNotations.
 
-(** Parallel substitution for the de Bruijn STLC. *)
+(** 本节：Parallel substitution de Bruijn STLC. （已译） *)
 
 (*
    本文件给出 λ 演算相关实例。
@@ -60,8 +60,8 @@ Proof.
   now rewrite RenExp_idRen, IHs.
 Qed.
 
-(* The identity substitution ι, mapping every variable to itself.  Under a
-   binder it pushes the freshly bound variable and weakens the rest. *)
+(* The 恒等 substitution ι, 映射 every variable itself. Under a
+ binder it pushes freshly bound variable weakens rest. （已译） *)
 Fixpoint idSub {Γ} : Sub Γ Γ :=
   match Γ with
   | []     => NoSub
@@ -99,9 +99,9 @@ Equations SubVar {Γ Γ' τ} (s : Sub Γ Γ') (v : Var Γ' τ) : Exp Γ τ :=
   SubVar (Push t σ) ZV     := t;
   SubVar (Push t σ) (SV v) := SubVar σ v.
 
-(* e[σ]: apply a parallel substitution throughout an expression, lifting it with
-   [Keepₛ] when passing under the binder of [LAM] (this is where capture is
-   avoided). *)
+(* e[σ]: apply parallel substitution throughout expression, lifting it with
+ [Keepₛ] passing under binder [LAM] (这是 where capture is
+ avoided). （已译） *)
 Fixpoint SubExp {Γ Γ' τ} (s : Sub Γ Γ') (e : Exp Γ' τ) : Exp Γ τ :=
   match e with
   | EUnit         => EUnit
@@ -113,9 +113,9 @@ Fixpoint SubExp {Γ Γ' τ} (s : Sub Γ Γ') (e : Exp Γ' τ) : Exp Γ τ :=
   | LAM e         => LAM (SubExp (Keepₛ s) e)
   end.
 
-(* σ;δ: composition of substitutions, applying δ to every image of σ.  This is
-   composition in the category of contexts; [SubExp_ScS] shows it agrees with
-   sequential application of σ then δ. *)
+(* σ;δ: 复合 substitutions, applying δ every image σ. This is
+ 复合 范畴 contexts; [SubExp_ScS] shows it agrees with
+ sequential application σ then δ. （已译） *)
 Fixpoint ScS {Γ Γ' Γ''} (s : Sub Γ' Γ'') (δ : Sub Γ Γ') : Sub Γ Γ'' :=
   match s with
   | NoSub    => NoSub
@@ -143,7 +143,7 @@ Proof.
     now rewrite IHσ.
 Qed.
 
-(* The identity renaming is a left unit for RcS. *)
+(* The 恒等 renaming left unit RcS. （已译） *)
 Lemma RcS_idRen {Γ Γ'} (σ : Sub Γ Γ') :
   RcS idRen σ = σ.
 Proof.
@@ -151,8 +151,7 @@ Proof.
   now rewrite IHσ.
 Qed.
 
-(* A renaming acts the same whether pre-composed into idSub or post-composed
-   onto idSub: the two ways of viewing a renaming as a substitution agree. *)
+(* 相关说明。 （已译） *)
 Lemma RcS_idSub {Γ Γ'} (σ : Ren Γ Γ') :
   RcS σ idSub = ScR idSub σ.
 Proof.
@@ -175,7 +174,7 @@ Proof.
     now rewrite RcR_idRen_right.
 Qed.
 
-(* Pre-composing the skip renaming drops the freshly pushed image. *)
+(* 相关说明。 （已译） *)
 Lemma RcS_skip1 {Γ Γ' τ} (e : Exp Γ τ) (σ : Sub Γ Γ') :
   RcS skip1 (Push e σ) = σ.
 Proof.
@@ -300,7 +299,7 @@ Proof.
     now dependent elimination v; simp SubVar.
 Qed.
 
-(* sub_id: applying the identity substitution is the identity, e[ι] = e. *)
+(* sub_id: applying 恒等 substitution 恒等, e[ι] = e. （已译） *)
 Lemma SubExp_idSub {Γ τ} (e : Exp Γ τ) :
   SubExp idSub e = e.
 Proof.
@@ -312,9 +311,9 @@ Proof.
     now f_equal.
 Qed.
 
-(* The substitution lemma proper: e[σ;δ] = (e[σ])[δ].  Together with the
-   identity laws below this gives associativity of ScS and makes (Env, Sub) a
-   category. *)
+(* The substitution 引理 proper: e[σ;δ] = (e[σ])[δ]. Together the
+ 恒等 laws below gives associativity ScS makes (Env, Sub) a
+ 范畴. （已译） *)
 Lemma SubExp_ScS {Γ Γ' Γ'' τ} (σ : Sub Γ' Γ'') (δ : Sub Γ Γ') (e : Exp Γ'' τ) :
   SubExp (ScS σ δ) e = SubExp δ (SubExp σ e).
 Proof.
@@ -364,8 +363,8 @@ Proof.
   now rewrite IHσ.
 Qed.
 
-(* Lifting under a binder is functorial for composition: (Keepₛ f);(Keepₛ g) =
-   Keepₛ (f;g).  This is the coherence that lets [SubExp_ScS] descend into LAM. *)
+(* Lifting under binder functorial 复合: (Keepₛ f);(Keepₛ g) =
+ Keepₛ (f;g). This coherence lets [SubExp_ScS] descend LAM. （已译） *)
 Lemma ScS_Keepₛ {Γ Γ' Γ'' τ} (f : Sub Γ' Γ'') (g : Sub Γ Γ') :
   ScS (Keepₛ (τ:=τ) f) (Keepₛ g) = Keepₛ (ScS f g).
 Proof.
@@ -401,8 +400,8 @@ Proof.
   now rewrite ScS_idSub_right.
 Qed.
 
-(* The only substitution on the empty context is the identity, so it acts
-   trivially on closed expressions. *)
+(* The substitution empty context 恒等, so it acts
+ trivially closed expressions. （已译） *)
 Corollary SubExp_closed `(s : Sub [] []) `(e : [] ⊢ τ) :
   SubExp s e = e.
 Proof.
@@ -411,8 +410,8 @@ Proof.
   now rewrite SubExp_idSub.
 Qed.
 
-(* Substituting a closed expression and then closing the result again leaves it
-   unchanged, since both round-trips collapse to the identity on []. *)
+(* Substituting closed expression then closing result again leaves it
+ unchanged, since both round-trips collapse 恒等 []. （已译） *)
 Lemma SubExp_SubExp `(s : Sub [] Γ) (s' : Sub Γ []) `(e : [] ⊢ τ) :
   SubExp s (SubExp s' e) = e.
 Proof.
@@ -425,8 +424,8 @@ Proof.
     now rewrite !NoSub_idSub, !SubExp_idSub.
 Qed.
 
-(* As [SubExp_SubExp], but with a renaming on the inside instead of a
-   substitution: closing a renamed closed expression is again the identity. *)
+(* As [SubExp_SubExp], but renaming inside instead a
+ substitution: closing renamed closed expression again 恒等. （已译） *)
 Lemma SubExp_RenExp `(s : Sub [] Γ) (r' : Ren Γ []) `(e : [] ⊢ τ) :
   SubExp s (RenExp r' e) = e.
 Proof.
@@ -440,7 +439,7 @@ Proof.
     now rewrite SubExp_RcS.
 Qed.
 
-(* Computation rules for the two variable cases of [Push]. *)
+(* 相关说明。 （已译） *)
 Lemma SubExp_VAR_ZV {Γ τ} (s : Sub [] Γ) (x : Exp [] τ) :
   SubExp (Push x s) (VAR ZV) = x.
 Proof. now simpl; simp SubVar. Qed.
@@ -449,9 +448,7 @@ Lemma SubExp_VAR_SV {Γ τ τ'} (s : Sub [] Γ) (x : Exp [] τ') (v : Var Γ τ)
   SubExp (Push x s) (VAR (SV v)) = SubExp s (VAR v).
 Proof. now simpl; simp SubVar. Qed.
 
-(* Substitution preserves being a value (it commutes with the value
-   constructors).  Proven with [Defined] because it carries computational
-   content, mirroring [RenExp_ValueP]. *)
+(* 相关说明。 （已译） *)
 Lemma SubExp_ValueP {Γ Γ' τ} {v : Exp Γ τ} (σ : Sub Γ' Γ) :
   ValueP v → ValueP (SubExp σ v).
 Proof.

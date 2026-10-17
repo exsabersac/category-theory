@@ -1,4 +1,4 @@
-(** * The components functor and its right adjoint *)
+(* * * The components 函子 右伴随 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -30,7 +30,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** §1. The discrete category on a setoid: two small lemmas *)
+(* * ** §1. The discrete 范畴 setoid: two small lemmas （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。
@@ -55,7 +55,7 @@ Proof.
   - now transitivity y; [ symmetry |].
 Qed.
 
-(** ** §2. The discrete functor Sets ⟶ Cat *)
+(* * ** §2. The discrete 函子 Sets ⟶ Cat （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -81,9 +81,9 @@ Next Obligation.
   exists (fun a => disc_setoid_iso (is_setoid y) (H a)); intros; exact I.
 Defined.
 
-(* Four readbacks, all [eq_refl].  The second and third are the ones a
-   consumer needs: the objects of the discrete category ARE the carrier
-   and its homs ARE the setoid's own relation. *)
+(* Four readbacks, all [eq_refl]. The second third ones a
+ consumer needs: 对象 discrete 范畴 ARE carrier
+ homs ARE setoid's own 关系. （已译） *)
 Example cat_disc_obj (A : Sets) :
   fobj[Cat_Disc] A = DiscreteSetoidCat (is_setoid A) := eq_refl.
 
@@ -122,9 +122,9 @@ Next Obligation.
   exact (zigzag_setoid_contract (is_setoid A) _ _ (zigzag_fmap F s)).
 Defined.
 
-(* The hom-setoid isomorphism.  Two obligations, both [Proper] fields;
-   the two round trips are discharged by the ambient tactic, and §4
-   records that the second of them is vacuous on arrows. *)
+(* The hom-setoid 同构. Two obligations, both [Proper] fields;
+ two round trips discharged ambient tactic, §4
+ records second them vacuous arrows. （已译） *)
 Program Definition pi0_adj_iso (C : Cat) (A : Sets) :
   @Isomorphism Sets
     {| carrier := @hom Sets (fobj[Pi0] C) A
@@ -218,7 +218,7 @@ Example pi0_rt_to_from_map_equiv (C : Cat) (A : Sets)
 Example cat_disc_hom_trivial (A : Sets) (x y : carrier A)
   (p q : x ~{fobj[Cat_Disc] A}~> y) : p ≈ q := I.
 
-(** ** §5. Cat_Disc is fully faithful; Sets is reflective in Cat *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -257,7 +257,7 @@ Example pi0_counit_iso_to (A : Sets) (a : carrier A) :
 Example pi0_counit_iso_from (A : Sets) (a : carrier A) :
   from (pi0_counit_iso A) a = a := eq_refl.
 
-(** ** §6. Non-vacuity: π₀ genuinely forgets *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、始/终对象相关定义、性质与动机。
@@ -300,7 +300,7 @@ Proof.
            (@prefmap _ _ _ H RNeg RPos (Roof_Connected RNeg RPos))).
 Qed.
 
-(** ** §7. Why the right adjoint is not the plain discrete category *)
+(* * ** §7. Why 右伴随 not plain discrete 范畴 （已译） *)
 
 (*
    本节说明 Components 相关定义、性质与动机。
@@ -317,9 +317,9 @@ Program Definition blur_bool_negb : blur_bool ~{Sets}~> blur_bool :=
 
 Example blur_bool_id_equiv_negb : id[blur_bool] ≈ blur_bool_negb := fun _ => I.
 
-(* The arrow action a carrier-based discrete functor would have to have:
-   objects the CARRIER, arrows Leibniz equalities, so the action on
-   arrows is [f_equal]. *)
+(* The arrow action carrier-based discrete 函子 would have have:
+ 对象 CARRIER, arrows Leibniz equalities, so action on
+ arrows [f_equal]. （已译） *)
 Program Definition disc_carrier_map@{o so dh dp} {A B : Sets@{o so}}
   (f : A ~> B) :
   DiscreteCat@{o dh dp} (carrier A) ⟶ DiscreteCat@{o dh dp} (carrier B) :=

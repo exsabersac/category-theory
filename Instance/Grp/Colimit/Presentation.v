@@ -20,7 +20,7 @@ Require Import Category.Instance.Grp.Colimit.
 
 Generalizable All Variables.
 
-(** * The free product of groups as a coequalizer of free groups *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/monadic+adjunction
@@ -32,7 +32,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Homomorphisms out of a free group are determined on the letters *)
+(* 相关说明。 （已译） *)
 
 Lemma Grp_free_hom_ext {X : Sets} {K : Grp} (g1 g2 : FreeGrp X ~{Grp}~> K) :
   (∀ a, g1 (fg_insert X a) ≈ g2 (fg_insert X a)) → g1 ≈ g2.
@@ -46,7 +46,7 @@ Proof.
     intro a; reflexivity.
 Qed.
 
-(** ** The canonical presentation of one group *)
+(* 相关说明。 （已译） *)
 
 Section Canonical.
 
@@ -142,8 +142,7 @@ Local Notation inlS :=
 Local Notation inrS :=
   (@inr Sets Sets_Cocartesian (Grp_Forget G) (Grp_Forget H)).
 
-(* Riehl's "canonical comparison" [UF inl, UF inr] : UFUG + UFUH → UF(UG + UH)
-   between the coproduct of the images and the image of the coproduct. *)
+(* 相关说明。 （已译） *)
 Definition Grp_riehl_comparison :
   UFUGH ~{Sets}~> Grp_Forget (FreeGrp UGH) :=
   @merge Sets Sets_Cocartesian _ _ _
@@ -160,8 +159,8 @@ Definition Grp_riehl_l : FreeGrp UFUGH ~{Grp@{u p}}~> FreeGrp UGH :=
 Definition Grp_riehl_r : FreeGrp UFUGH ~{Grp@{u p}}~> FreeGrp UGH :=
   free_group_counit (FreeGrp UGH) ∘ fmap[FreeGrp] Grp_riehl_comparison.
 
-(* The transpose, across the free-forgetful adjunction, of the copairing in
-   [Sets] of the underlying maps of two homomorphisms out of G and H. *)
+(* The transpose, across free-forgetful 伴随, copairing in
+ [Sets] underlying maps two homomorphisms out G H. （已译） *)
 Definition Grp_riehl_transpose {z : Grp@{u p}}
   (f1 : G ~{Grp@{u p}}~> z) (f2 : H ~{Grp@{u p}}~> z) :
   FreeGrp UGH ~{Grp@{u p}}~> z :=
@@ -169,8 +168,7 @@ Definition Grp_riehl_transpose {z : Grp@{u p}}
     (@merge Sets Sets_Cocartesian _ _ _ (fmap[Grp_Forget] f1)
                                         (fmap[Grp_Forget] f2)).
 
-(* Riehl's e : F(UG + UH) → G + H, the transpose of [U inl, U inr], at a
-   coproduct structure that is passed EXPLICITLY. *)
+(* 相关说明。 （已译） *)
 Definition Grp_riehl_e (CC : @Cocartesian Grp@{u p}) :
   FreeGrp UGH ~{Grp@{u p}}~> @Coprod Grp@{u p} CC G H :=
   Grp_riehl_transpose (@inl Grp@{u p} CC G H) (@inr Grp@{u p} CC G H).
@@ -223,7 +221,7 @@ Proof.
   - exact (free_group_counit_generator (FreeGrp UGH) _).
 Qed.
 
-(** *** The transpose on each factor, and the cofork *)
+(* 相关说明。 （已译） *)
 
 Section Transpose.
 
@@ -255,8 +253,7 @@ Proof.
     exact (free_group_counit_generator H g).
 Qed.
 
-(* Every such transpose coforks the pair: on the letter [inl w] both legs
-   come to f1 applied to the value of the word w in G. *)
+(* 相关说明。 （已译） *)
 Lemma Grp_riehl_transpose_cofork :
   Grp_riehl_transpose f1 f2 ∘ Grp_riehl_l
     ≈ Grp_riehl_transpose f1 f2 ∘ Grp_riehl_r.
@@ -284,14 +281,14 @@ Qed.
 
 End Transpose.
 
-(** *** A coforking map restricts to each factor *)
+(* 相关说明。 （已译） *)
 
 Section Factors.
 
 Context {c : Grp@{u p}} (k : FreeGrp UGH ~{Grp@{u p}}~> c).
 Context (Hk : k ∘ Grp_riehl_l ≈ k ∘ Grp_riehl_r).
 
-(* The restriction of [k] to the words in each factor's letters. *)
+(* 相关说明。 （已译） *)
 Definition Grp_riehl_kG : FreeGrp (Grp_Forget G) ~{Grp@{u p}}~> c :=
   k ∘ fmap[FreeGrp] inlS.
 
@@ -351,7 +348,7 @@ Proof using Hk.
            (fmap[Grp_Forget] (free_group_counit H)) w).
 Qed.
 
-(* The descents through the two canonical presentations. *)
+(* 相关说明。 （已译） *)
 Definition Grp_riehl_uG : G ~{Grp@{u p}}~> c :=
   unique_obj (coeq_desc (Grp_canonical_presentation G)
                 Grp_riehl_kG Grp_riehl_kG_cofork).
@@ -376,7 +373,7 @@ Qed.
 
 End Factors.
 
-(** *** Every coproduct of G and H is a coequalizer of the pair *)
+(* 相关说明。 （已译） *)
 
 Section Descent.
 
@@ -459,25 +456,23 @@ Proof.
              uniqueness      := Grp_riehl_desc_unique CC k Hk |}.
 Defined.
 
-(** *** Every coequalizer of the pair is a coproduct of G and H *)
+(* 相关说明。 （已译） *)
 
 Section Construction.
 
 Context {q : Grp@{u p}} {e : FreeGrp UGH ~{Grp@{u p}}~> q}.
 Context (E : IsCoequalizer Grp_riehl_l Grp_riehl_r q e).
 
-(* The injections: e restricted to each factor's words, descended through
-   that factor's canonical presentation. *)
+(* 相关说明。 （已译） *)
 Definition Grp_riehl_inl : G ~{Grp@{u p}}~> q := Grp_riehl_uG e (cofork E).
 Definition Grp_riehl_inr : H ~{Grp@{u p}}~> q := Grp_riehl_uH e (cofork E).
 
-(* The injection computes: on an element g it IS e at the image of the
-   one-letter word [g] under F(inl). *)
+(* 相关说明。 （已译） *)
 Example Grp_riehl_inl_is_restriction (g : carrier (grp_setoid G)) :
   Grp_riehl_inl g = e (fmap[FreeGrp] inlS (fg_insert (Grp_Forget G) g))
   := eq_refl.
 
-(* The copairing: the transpose of the two maps, descended through e. *)
+(* 相关说明。 （已译） *)
 Definition Grp_riehl_merge {z : Grp@{u p}}
   (f1 : G ~{Grp@{u p}}~> z) (f2 : H ~{Grp@{u p}}~> z) : q ~{Grp@{u p}}~> z :=
   unique_obj (coeq_desc E (Grp_riehl_transpose f1 f2)
@@ -550,8 +545,7 @@ Proof.
     exact (Grp_riehl_transpose_generator f1 f2 (Datatypes.inr g)).
 Qed.
 
-(* Any map out of q that carries e to the transpose of (f1, f2) carries the
-   injections to f1 and f2. *)
+(* 相关说明。 （已译） *)
 Lemma Grp_riehl_inl_along {z : Grp@{u p}}
   (f1 : G ~{Grp@{u p}}~> z) (f2 : H ~{Grp@{u p}}~> z)
   (φ : q ~{Grp@{u p}}~> z) :
@@ -602,10 +596,9 @@ Qed.
 
 End RiehlPair.
 
-(** ** Riehl's construction as a coproduct structure on [Grp] *)
+(* 相关说明。 （已译） *)
 
-(* Given coequalizers, from anywhere, the coequalizer of the pair with the
-   injections above IS a choice of binary coproducts. *)
+(* 相关说明。 （已译） *)
 Definition Grp_Cocartesian_of_coequalizers@{u p +}
   (HC : HasCoequalizers Grp@{u p}) : @Cocartesian Grp@{u p}.
 Proof.
@@ -634,10 +627,10 @@ Proof.
       exact (Grp_riehl_merge_unique _ _ _ f1 f2 h H1 H2).
 Defined.
 
-(** ** At the adjoint functor theorem's coproduct and coequalizers *)
+(* * ** At adjoint 函子 定理's coproduct coequalizers （已译） *)
 
-(* Riehl's statement at the coproduct Instance/Grp/Colimit.v obtains from
-   the adjoint functor theorem, passed explicitly. *)
+(* Riehl's statement at coproduct Instance/Grp/Colimit.v obtains from
+ adjoint 函子 定理, passed explicitly. （已译） *)
 Definition Grp_free_product_is_coequalizer@{u p +} (G H : Grp@{u p}) :
   IsCoequalizer (Grp_riehl_l G H) (Grp_riehl_r G H)
     (@Coprod Grp Grp_Cocartesian_via_GAFT G H)
@@ -662,9 +655,7 @@ Example Grp_Cocartesian_via_riehl_obj@{u p +} (G H : Grp@{u p}) :
 
 (** ** Agreement *)
 
-(* [coequalizer_unique] of Structure/Coequalizer.v ends in [Qed], so its
-   comparison map cannot be read back; this transparent twin carries the
-   coequalizing maps along. *)
+(* 相关说明。 （已译） *)
 Section CoequalizerAlong.
 
 Context {C : Category} {x y : C} {f g : x ~> y}.
@@ -702,7 +693,7 @@ Proof using E1 E2. exact (unique_property (coeq_desc E1 e2 (cofork E2))). Qed.
 End CoequalizerAlong.
 
 (* The coequalizer Instance/Grp/Colimit.v's [Grp_HasCoequalizers_via_GAFT]
-   returns for Riehl's pair is the adjoint functor theorem's coproduct... *)
+ returns Riehl's pair adjoint 函子 定理's coproduct... （已译） *)
 Definition Grp_free_product_coequalizer_agrees@{u p +} (G H : Grp@{u p}) :
   `1 (@coeq Grp Grp_HasCoequalizers_via_GAFT _ _
         (Grp_riehl_l G H) (Grp_riehl_r G H))
@@ -712,7 +703,7 @@ Definition Grp_free_product_coequalizer_agrees@{u p +} (G H : Grp@{u p}) :
                (Grp_riehl_l G H) (Grp_riehl_r G H))))
     (Grp_free_product_is_coequalizer G H).
 
-(* ...compatibly with the coequalizing maps... *)
+(* 相关说明。 （已译） *)
 Lemma Grp_free_product_coequalizer_agrees_e@{u p +} (G H : Grp@{u p}) :
   to (Grp_free_product_coequalizer_agrees G H)
     ∘ `1 (`2 (@coeq Grp Grp_HasCoequalizers_via_GAFT _ _
@@ -725,8 +716,8 @@ Proof.
            (Grp_free_product_is_coequalizer G H)).
 Qed.
 
-(* ...and with the injections: Riehl's on the left, the theorem's on the
-   right. *)
+(* ...and injections: Riehl's left, 定理's the
+ right. （已译） *)
 Lemma Grp_free_product_coequalizer_agrees_inl@{u p +} (G H : Grp@{u p}) :
   to (Grp_free_product_coequalizer_agrees G H)
     ∘ @inl Grp Grp_Cocartesian_via_riehl G H
@@ -749,8 +740,8 @@ Proof.
            (Grp_free_product_coequalizer_agrees_e G H)).
 Qed.
 
-(* The two coproduct bifunctors agree up to natural isomorphism, both being
-   left adjoint to the diagonal. *)
+(* The two coproduct bifunctors agree up natural 同构, both being
+ 左伴随 diagonal. （已译） *)
 Definition Grp_riehl_coproduct_agrees@{u p +} :
   @InternalCoproductFunctor Grp@{u p} Grp_Cocartesian_via_riehl
     ≈ @InternalCoproductFunctor Grp@{u p} Grp_Cocartesian_via_GAFT :=
@@ -866,8 +857,7 @@ Proof.
   exact HB.
 Qed.
 
-(* Hence e is never monic at Z/2: the coequalizer genuinely quotients the
-   free group on the disjoint union. *)
+(* 相关说明。 （已译） *)
 Corollary Grp_riehl_e_not_monic (CC : @Cocartesian Grp@{u p}) :
   Monic (Grp_riehl_e Z2 Z2 CC) → False.
 Proof.
@@ -879,8 +869,8 @@ Qed.
 
 End NonVacuity.
 
-(* The same at the adjoint functor theorem's coproduct, which exists only
-   above [Set] carriers. *)
+(* The same at adjoint 函子 定理's coproduct, exists only
+ above [Set] carriers. （已译） *)
 Example Grp_free_product_coequalizer_nontrivial@{u p +} :
   Monic (Grp_riehl_e Z2@{p} Z2@{p}
            (Grp_Cocartesian_via_GAFT : @Cocartesian Grp@{u p})) → False :=

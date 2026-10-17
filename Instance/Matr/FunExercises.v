@@ -61,18 +61,17 @@ Proof.
     now rewrite H.
 Qed.
 
-(* The zeroth power is the identity -- by computation, so [reflexivity]
-   rather than a unit law. *)
+(* The zeroth power 恒等 -- computation, so [reflexivity]
+ rather than unit law. （已译） *)
 Lemma mat_pow_zero {x : C} (A : x ~> x) : mat_pow A 0%nat ≈ id.
 Proof. reflexivity. Qed.
 
-(* The first power is A itself, up to the unit law -- [A ∘ id] and not
-   [A] syntactically, which is why this is a lemma and not [eq_refl]. *)
+(* The first power A itself, up unit law -- [A ∘ id] not
+ [A] syntactically, why 这是 引理 not [eq_refl]. （已译） *)
 Lemma mat_pow_one {x : C} (A : x ~> x) : mat_pow A 1%nat ≈ A.
 Proof. simpl; apply id_right. Qed.
 
-(* Exponents add.  This is the whole homomorphism content of [pow_hom]:
-   the induction moves one factor across an associativity. *)
+(* 相关说明。 （已译） *)
 Lemma mat_pow_add {x : C} (A : x ~> x) (j k : nat) :
   mat_pow A (j + k)%nat ≈ mat_pow A j ∘ mat_pow A k.
 Proof.
@@ -81,7 +80,7 @@ Proof.
   - now rewrite IH, comp_assoc.
 Qed.
 
-(** ** The inverse of a commuting square *)
+(* * ** The inverse 交换方块 （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。
@@ -106,16 +105,16 @@ Qed.
 End Powers.
 
 (* ---------------------------------------------------------------------- *)
-(** ** Part one: the walking arrow, and matrix equivalence *)
+(* * ** Part one: walking arrow, matrix 等价 （已译） *)
 (* ---------------------------------------------------------------------- *)
 
 Section ArrowIso.
 
 Context {C : Category}.
 
-(* A morphism, as an object of the arrow category.  [Arrow C] is the
-   comma (Id ↓ Id), so its objects are triples (a, b, f) and this is
-   just the packaging. *)
+(* A 态射, 对象 arrow 范畴. [Arrow C] the
+ comma (Id ↓ Id), so 对象 triples (a, b, f) 这是
+ just packaging. （已译） *)
 Definition arrow_pack {a b : C} (f : a ~> b) : @Arrow C := ((a, b); f).
 
 (*
@@ -174,8 +173,7 @@ Theorem matrix_equivalence_iso {n1 m1 n2 m2 : nat}
   (arrow_pack A ≅[@Arrow (Matr R)] arrow_pack B) ↔ MatrixEquivalent A B.
 Proof. exact (arrow_iso_iff A B). Qed.
 
-(* The classical form, for a fixed pair of changes of basis: the square
-   B P ≈ Q A and the solved form B ≈ Q A P⁻¹ say the same thing. *)
+(* 相关说明。 （已译） *)
 Lemma matrix_equivalence_classical {n1 m1 n2 m2 : nat}
   (A : n1 ~{Matr R}~> m1) (B : n2 ~{Matr R}~> m2)
   (P : n1 ≅[Matr R] n2) (Q : m1 ≅[Matr R] m2) :
@@ -195,7 +193,7 @@ Qed.
 End MatrixEquivalence.
 
 (* ---------------------------------------------------------------------- *)
-(** ** The same statement read in the functor category [_2, C] *)
+(* * ** The same statement read 函子 范畴 [_2, C] （已译） *)
 (* ---------------------------------------------------------------------- *)
 
 (*
@@ -228,7 +226,7 @@ Qed.
 End TwoFunIso.
 
 (* ---------------------------------------------------------------------- *)
-(** ** Part two: the delooped free monoid, and matrix similarity *)
+(* * ** Part two: delooped free 幺半群, matrix similarity （已译） *)
 (* ---------------------------------------------------------------------- *)
 
 (*
@@ -237,9 +235,9 @@ End TwoFunIso.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Two lemmas that need nothing from the delooping live OUTSIDE the
-   pinned section, at an arbitrary category: the fess audit measured
-   that keeping them inside cost them a needless [Set] pin. *)
+(* Two lemmas need nothing delooping live OUTSIDE the
+ pinned section, at arbitrary 范畴: fess audit measured
+ keeping them inside cost them needless [Set] pin. （已译） *)
 Section Intertwining.
 
 Context {C : Category}.
@@ -286,7 +284,7 @@ Universe u.
 
 Context {C : Category@{u Set Set}}.
 
-(** *** The dictionary: endomorphisms versus functors out of B (ℕ, +) *)
+(* * *** The dictionary: endomorphisms versus 函子 out B (ℕ, +) （已译） *)
 
 (*
    本节说明幺半群相关定义、性质与动机。
@@ -304,9 +302,9 @@ Program Definition pow_hom {x : C} (A : x ~> x) :
 Next Obligation. intros x A; reflexivity. Qed.
 Next Obligation. intros x A j k; exact (mat_pow_add A j k). Qed.
 
-(* The functor named by an endomorphism, through the spine of
-   Construction/Deloop/Functors.v.  Its object action is constantly x
-   and its arrow action is [mat_pow A]. *)
+(* The 函子 named endomorphism, through spine of
+ Construction/Deloop/Functors.v. Its 对象 action constantly x
+ arrow action [mat_pow A]. （已译） *)
 Definition functor_of_endo {x : C} (A : x ~> x) : Deloop Nat_Plus ⟶ C :=
   functor_of_hom_monoid x (pow_hom A).
 
@@ -353,7 +351,7 @@ Proof.
   symmetry; exact (fmap_is_pow F k).
 Qed.
 
-(** *** Naturality collapses to the generator *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明自然变换相关定义、性质与动机。
@@ -414,8 +412,8 @@ Section MatrixSimilarity.
 
 Context {R : RigObject@{Set Set Set}}.
 
-(* The two legs of the dictionary at [Matr R], named as the exercise
-   names them: a functor out of B (ℕ, +) IS a square matrix. *)
+(* The two legs dictionary at [Matr R], named exercise
+ names them: 函子 out B (ℕ, +) IS square matrix. （已译） *)
 Definition square_of_functor (F : Deloop Nat_Plus ⟶ Matr R) :
   F ttt ~{Matr R}~> F ttt := endo_of_functor F.
 
@@ -429,8 +427,8 @@ Definition MatrixSimilar {n n' : nat}
   (A : n ~{Matr R}~> n) (B : n' ~{Matr R}~> n') : Type :=
   ∃ P : n ≅[Matr R] n', to P ∘ A ≈ B ∘ to P.
 
-(* The headline: isomorphic objects of [[Deloop Nat_Plus, Matr R]] are
-   exactly the similar square matrices. *)
+(* The headline: isomorphic 对象 [[Deloop Nat_Plus, Matr R]] are
+ exactly similar square matrices. （已译） *)
 Theorem matrix_similarity_iso {n n' : nat}
   (A : n ~{Matr R}~> n) (B : n' ~{Matr R}~> n') :
   (@Isomorphism ([Deloop Nat_Plus, Matr R])
@@ -454,8 +452,7 @@ Proof.
     now rewrite id_right.
 Qed.
 
-(* Similar matrices are equivalent -- take Q := P -- and the converse
-   is refuted by the witnesses below. *)
+(* 相关说明。 （已译） *)
 Lemma similar_implies_equivalent {n n' : nat}
   (A : n ~{Matr R}~> n) (B : n' ~{Matr R}~> n') :
   MatrixSimilar A B → MatrixEquivalent A B.
@@ -491,11 +488,11 @@ Proof. exact (two_fun_iso_iff (Walk A) (Walk B)). Qed.
 End MatrixEquivalenceFun.
 
 (* ---------------------------------------------------------------------- *)
-(** ** The universe restriction is not empty *)
+(* 相关说明。 （已译） *)
 (* ---------------------------------------------------------------------- *)
 
-(* Every rig in the tree lives at the restricted universes, so the
-   similarity theorem applies to all of them. *)
+(* Every rig tree lives at restricted universes, so the
+ similarity 定理 applies all them. （已译） *)
 Definition Nat_Rig_pinned : RigObject@{Set Set Set} := Nat_Rig.
 Definition Bool_Rig_pinned : RigObject@{Set Set Set} := Bool_Rig.
 Definition Int_Rig_pinned : RigObject@{Set Set Set} := Int_Rig.
@@ -504,9 +501,7 @@ Definition Int_Rig_pinned : RigObject@{Set Set Set} := Int_Rig.
 (** ** Witnesses over the integers *)
 (* ---------------------------------------------------------------------- *)
 
-(* A two-element case analysis, so that entrywise equations between 2 × 2
-   matrices are discharged by computation.  [Fin.t 0] is empty, which is
-   what closes the third branch. *)
+(* 相关说明。 （已译） *)
 Lemma fin2_rect (P : Fin.t 2%nat → Type)
   (h1 : P Fin.F1) (h2 : P (Fin.FS Fin.F1)) : ∀ i, P i.
 Proof.
@@ -516,9 +511,7 @@ Proof.
   intro k; inversion k.
 Qed.
 
-(* Every equation between 2 × 2 integer matrices below is closed, so
-   the four entries reduce; [Local] keeps the tactic out of the exported
-   name space. *)
+(* 相关说明。 （已译） *)
 Local Ltac entrywise :=
   intro; match goal with
          | [ i : Fin.t 2%nat |- _ ] => pattern i; apply fin2_rect
@@ -543,8 +536,7 @@ Definition zmat22 (a b c d : Z) : 2%nat ~{Matr Int_Rig}~> 2%nat :=
              | _, _ => d
              end.
 
-(* The three matrices used below: the two rank-one diagonal idempotents
-   and the transposition. *)
+(* 相关说明。 （已译） *)
 Definition zmat_e11 : 2%nat ~{Matr Int_Rig}~> 2%nat := zmat22 1 0 0 0.
 Definition zmat_e22 : 2%nat ~{Matr Int_Rig}~> 2%nat := zmat22 0 0 0 1.
 Definition zmat_swap : 2%nat ~{Matr Int_Rig}~> 2%nat := zmat22 0 1 1 0.
@@ -570,9 +562,9 @@ Example ze22_zswap_entry :
   (@compose (Matr Int_Rig) 2%nat 2%nat 2%nat zmat_e22 zmat_swap)
     (Fin.FS Fin.F1) Fin.F1 = 1%Z := eq_refl.
 
-(* diag(1,0) and diag(0,1) are similar, conjugated by the
-   transposition -- so they are also equivalent, and the two functor
-   categories agree on this pair. *)
+(* diag(1,0) diag(0,1) similar, conjugated the
+ transposition -- so they equivalent, two 函子
+ 范畴 agree pair. （已译） *)
 Theorem zmat_e11_similar_e22 : MatrixSimilar zmat_e11 zmat_e22.
 Proof.
   exists zswap_iso.
@@ -582,7 +574,7 @@ Qed.
 Corollary zmat_e11_equivalent_e22 : MatrixEquivalent zmat_e11 zmat_e22.
 Proof. exact (similar_implies_equivalent _ _ zmat_e11_similar_e22). Qed.
 
-(* And the corresponding isomorphisms, in the two functor categories. *)
+(* And corresponding isomorphisms, two 函子 范畴. （已译） *)
 Definition zmat_e11_e22_arrow_iso :
   arrow_pack zmat_e11 ≅[@Arrow (Matr Int_Rig)] arrow_pack zmat_e22 :=
   snd (matrix_equivalence_iso zmat_e11 zmat_e22) zmat_e11_equivalent_e22.
@@ -597,7 +589,7 @@ Definition zmat_e11_e22_two_iso :
   snd (matrix_equivalence_iso_Fun zmat_e11 zmat_e22)
     zmat_e11_equivalent_e22.
 
-(** *** The two relations are genuinely different *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明幺半群相关定义、性质与动机。
@@ -626,7 +618,7 @@ Proof.
   entrywise.
 Qed.
 
-(* The shear moves the (0,1) entry, so it is not the identity matrix. *)
+(* The shear moves (0,1) entry, so it not 恒等 matrix. （已译） *)
 Lemma zmat_shear_not_id : zmat_shear ≈ @id (Matr Int_Rig) 2%nat → False.
 Proof.
   intro H.
@@ -642,15 +634,15 @@ Proof.
   exact (zmat_shear_not_id (similar_to_id zmat_shear H)).
 Qed.
 
-(* Packaged: one pair of matrices, isomorphic over the walking arrow and
-   not isomorphic over the delooped free monoid. *)
+(* Packaged: one pair matrices, isomorphic over walking arrow and
+ not isomorphic over delooped free 幺半群. （已译） *)
 Definition equivalence_is_weaker_than_similarity :
   MatrixEquivalent (@id (Matr Int_Rig) 2%nat) zmat_shear
   * (MatrixSimilar (@id (Matr Int_Rig) 2%nat) zmat_shear → False) :=
   (zmat_id_equivalent_shear, zmat_id_not_similar_shear).
 
-(* The cheapest negative of all, at one dimension: the identity and the
-   zero matrix are not similar, because 1 and 0 are distinct integers. *)
+(* The cheapest negative all, at one dimension: 恒等 the
+ zero matrix not similar, because 1 0 distinct integers. （已译） *)
 Definition zmat_zero : 1%nat ~{Matr Int_Rig}~> 1%nat := fun _ _ => 0%Z.
 
 Lemma zmat_zero_not_id : zmat_zero ≈ @id (Matr Int_Rig) 1%nat → False.
@@ -680,23 +672,22 @@ Qed.
 Example functor_of_square_obj (n : nat) (A : n ~{Matr Int_Rig}~> n) :
   functor_of_square A ttt = n := eq_refl.
 
-(* And its arrow action at the generator is the matrix back again, up to
-   the unit law, which is [endo_of_functor_of_endo]. *)
+(* 相关说明。 （已译） *)
 Example square_of_functor_of_square (n : nat)
   (A : n ~{Matr Int_Rig}~> n) : square_of_functor (functor_of_square A) ≈ A.
 Proof. exact (endo_of_functor_of_endo A). Qed.
 
-(* Powers compute: the transposition has order two, so its odd powers
-   are itself and its even powers the identity, read here at the (0,1)
-   entry.  (Entries again, hence [=].) *)
+(* Powers compute: transposition has order two, so odd powers
+ itself even powers 恒等, read here at (0,1)
+ entry. (Entries again, hence [=].) （已译） *)
 Example zswap_pow_3 :
   mat_pow zmat_swap 3%nat Fin.F1 (Fin.FS Fin.F1) = 1%Z := eq_refl.
 
 Example zswap_pow_2 :
   mat_pow zmat_swap 2%nat Fin.F1 (Fin.FS Fin.F1) = 0%Z := eq_refl.
 
-(* ...and the functor named by the transposition sends k to that power,
-   definitionally -- the freeness of (ℕ, +) made computational. *)
+(* ...and 函子 named transposition sends k power,
+ definitionally -- freeness (ℕ, +) made computational. （已译） *)
 Example functor_of_square_fmap_3 :
   @fmap _ _ (functor_of_square zmat_swap) ttt ttt 3%nat
     Fin.F1 (Fin.FS Fin.F1) = 1%Z := eq_refl.

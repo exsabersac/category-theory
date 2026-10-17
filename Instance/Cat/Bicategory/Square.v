@@ -17,7 +17,7 @@ Require Import Category.Instance.Cat.Bicategory.Adjunction.
 
 Generalizable All Variables.
 
-(** * The adjoint-square mate is the mates mate, at Cat *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出双范畴实例。

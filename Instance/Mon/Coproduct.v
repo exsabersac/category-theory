@@ -29,7 +29,7 @@ Generalizable All Variables.
 
 Local Notation MonS := (@Mon Sets Sets_Product_Monoidal).
 
-(** ** Setoid monoids at the element level *)
+(* 相关说明。 （已译） *)
 
 Definition mon_ob (M : MonS) : SetoidObject := `1 M.
 
@@ -128,9 +128,7 @@ Section FreeProduct.
 
 Context (M N : MonS).
 
-(* Formal words: a letter from either side, a formal unit, a formal
-   product.  No alternation and no reduction are built in; both are
-   imposed by the congruence below. *)
+(* 相关说明。 （已译） *)
 Inductive FPTerm : Type :=
   | fp_inl : carrier (mon_ob M) → FPTerm
   | fp_inr : carrier (mon_ob N) → FPTerm
@@ -255,7 +253,7 @@ End Mediator.
 
 End FreeProduct.
 
-(** * The free product IS the binary coproduct of Mon(Sets) *)
+(* 相关说明。 （已译） *)
 
 #[export] Program Instance Mon_Sets_Cocartesian : @Cocartesian MonS := {|
   product_obj := FreeProd;
@@ -282,7 +280,7 @@ Next Obligation.
     exact (fp_merge_unique A B Q f g h Hl Hr).
 Qed.
 
-(** ** The Cocartesian vocabulary computes to the construction *)
+(* 相关说明。 （已译） *)
 
 Example coprod_is_FreeProd (A B : MonS) :
   @Coprod MonS Mon_Sets_Cocartesian A B = FreeProd A B := eq_refl.
@@ -496,7 +494,7 @@ Proof.
   destruct n; discriminate Hq.
 Qed.
 
-(** * Control: a trivial factor is absorbed *)
+(* 相关说明。 （已译） *)
 
 Example initial_is_TrivMon :
   @initial_obj MonS Mon_Sets_Initial = TrivMon := eq_refl.
@@ -558,7 +556,7 @@ Example fp_beta_l_fun :
 Example fp_beta_r_fun :
   mon_fun (fp_merge A B Q f g ∘[MonS] fp_injr A B) = mon_fun g := eq_refl.
 
-(* The three coproduct equations, at [≈], inherited from the instance. *)
+(* 相关说明。 （已译） *)
 Corollary fp_merge_inl :
   @merge MonS Mon_Sets_Cocartesian Q A B f g ∘[MonS] @inl MonS _ A B ≈ f.
 Proof. exact (@inl_merge MonS Mon_Sets_Cocartesian Q A B f g). Qed.

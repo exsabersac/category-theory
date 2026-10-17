@@ -34,7 +34,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The underlying-set functor of commutative rings *)
+(* * ** The underlying-set 函子 commutative rings （已译） *)
 
 Program Definition CRng_Forget : CRng ⟶ Sets := {|
   fobj := fun A => rig_setoid (`1 A);
@@ -46,27 +46,27 @@ Next Obligation. intros A B C f g a; simpl; reflexivity. Qed.
 
 (** ** Pointed commutative rings *)
 
-(** Objects are pairs (A, a); morphisms are the ring homomorphisms
-    carrying the point.  This is Construction/Elements.v's category of
-    elements, not a fresh construction. *)
+(** Objects pairs (A, a); 态射 ring homomorphisms
+ carrying point. This Construction/Elements.v's 范畴 of
+ elements, not fresh construction. （已译） *)
 Definition CRngPt : Category := Elements CRng_Forget.
 
 Definition CRngPt_Forget : CRngPt ⟶ CRng := Elements_proj CRng_Forget.
 
-(** The hom-type is the point-preservation condition, definitionally. *)
+(** 本节：The hom-type point-preservation condition, definitionally. （已译） *)
 Example CRngPt_hom_unfold (P Q : CRngPt) :
   (P ~{CRngPt}~> Q)
     = ∃ f : `1 P ~{CRng}~> `1 Q, rig_map (`1 f) (`2 P) ≈ `2 Q
   := eq_refl.
 
-(** ** The polynomial ring, pointed at the indeterminate *)
+(* 相关说明。 （已译） *)
 
 Definition PolyCRng (A : CRng) : CRng := (PolyRing (`1 A); poly_comm (`1 A)).
 
 Definition PolyPt (A : CRng) : CRngPt := (PolyCRng A; @poly_x (`1 A)).
 
-(** The coefficient inclusion, as a morphism of commutative rings.  The
-    membership witness of [CRng_Sub] is trivial. *)
+(** The coefficient 含入, 态射 commutative rings. The
+ membership witness [CRng_Sub] trivial. （已译） *)
 Definition poly_pointed_arrow (A : CRng)
   : A ~{CRng}~> CRngPt_Forget (PolyPt A) :=
   (poly_const (`1 A); I).
@@ -110,10 +110,10 @@ Definition poly_pointed_universal_arrow (A : CRng)
   universal_arrow_from_UMP A CRngPt_Forget (PolyPt A)
     (poly_pointed_arrow A) (poly_pointed_universal A).
 
-(** ** The left adjoint and the adjunction
+(* * ** The 左伴随 伴随
 
-    Both come out of the generic machinery with no further proof — the
-    route Construction/Free/Quiver.v and Instance/Mod/Free.v take. *)
+ Both come out generic machinery no further 证明 — the
+ route Construction/Free/Quiver.v Instance/Mod/Free.v take. （已译） *)
 
 Definition PolyPointed : CRng ⟶ CRngPt :=
   LeftAdjointFunctorFromUniversalArrows CRngPt_Forget
@@ -122,8 +122,8 @@ Definition PolyPointed : CRng ⟶ CRngPt :=
 Definition poly_pointed_adjunction : PolyPointed ⊣ CRngPt_Forget :=
   AdjunctionFromUniversalArrows CRngPt_Forget poly_pointed_universal_arrow.
 
-(** The left adjoint's object part is the pointed polynomial ring, and
-    the universal arrow is the coefficient inclusion — both on the nose. *)
+(** The 左伴随's 对象 part pointed polynomial ring, and
+ 泛箭头 coefficient 含入 — both nose. （已译） *)
 Example PolyPointed_obj (A : CRng) : PolyPointed A = PolyPt A := eq_refl.
 
 Example poly_pointed_point_is_x (A : CRng) :
@@ -173,11 +173,11 @@ Proof.
   exact (iso_to_from (@adj _ _ _ _ poly_pointed_adjunction A Q) h).
 Qed.
 
-(** ** The left adjoint relabels coefficients
+(* * ** The 左伴随 relabels coefficients
 
-    [LeftAdjointFunctorFromUniversalArrows] defines [fmap] by universal
-    factorization, not by a formula, so what the functor does to a
-    constant has to be proved. *)
+ [LeftAdjointFunctorFromUniversalArrows] defines [fmap] universal
+ factorization, not formula, so what 函子 does a
+ 常值 has proved. （已译） *)
 Lemma poly_pointed_fmap_const {A B : CRng} (u : A ~{CRng}~> B)
   (c : carrier (rig_setoid (`1 A))) :
   rig_map (`1 (`1 (fmap[PolyPointed] u))) (@pt_const (`1 A) c)

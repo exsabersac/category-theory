@@ -20,7 +20,7 @@ Require Import Coq.Arith.PeanoNat.
 
 Generalizable All Variables.
 
-(** ** The reflection: same carrier, coarser [≈] *)
+(* 相关说明。 （已译） *)
 
 Definition poset_refl_equiv (P : OrdObject)
     (x y : carrier (ord_setoid P)) : Prop :=
@@ -58,8 +58,8 @@ Next Obligation.
   - exact (ord_trans P x x' y Hxx' (ord_trans P x' y' y H Hy'y)).
 Qed.
 
-(** Antisymmetry of the reflection is the DEFINITION of its [≈]: the two
-    order proofs handed in ARE the pair the coarser equivalence asks for. *)
+(** Antisymmetry reflection DEFINITION [≈]: two
+ order proofs handed ARE pair coarser 等价 asks for. （已译） *)
 Lemma PosetReflection_Antisymmetric (P : OrdObject)
   : OrdAntisymmetric (PosetReflection P).
 Proof. intros x y Hxy Hyx; split; assumption. Defined.
@@ -182,8 +182,8 @@ Lemma chaos2_merges :
   (true : carrier (ord_setoid (PosetReflection Chaos2))) ≈ false.
 Proof. split; exact I. Defined.
 
-(** The naturals under [le]: already a partial order, so the reflection is
-    inert on it and the counit isomorphism applies. *)
+(** The naturals under [le]: already partial order, so reflection is
+ inert it counit 同构 applies. （已译） *)
 Program Definition NatLe : OrdObject := {|
   ord_setoid := {| carrier := nat ; is_setoid := eq_Setoid nat |};
   ord_le     := Nat.le
@@ -204,8 +204,8 @@ Lemma natle_reflection_inert (x y : carrier (ord_setoid NatLe)) :
   (x : carrier (ord_setoid (PosetReflection NatLe))) ≈ y → x = y.
 Proof. intros [Hxy Hyx]; exact (Nat.le_antisymm x y Hxy Hyx). Qed.
 
-(** A MIXED preorder: two mutually related points and one strictly above
-    them.  The reflection merges exactly the pair and keeps the top apart. *)
+(** 本节：A MIXED preorder: two mutually related points one strictly above
+ them. The reflection merges exactly pair keeps top apart. （已译） *)
 Inductive MixPt : Set := mleft | mright | mtop.
 
 Definition mix_le (x y : MixPt) : Prop :=

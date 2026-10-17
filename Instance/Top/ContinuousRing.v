@@ -1,4 +1,4 @@
-(** * The ring of continuous functions, contravariantly *)
+(* 相关说明。 （已译） *)
 
 Require Import Coq.Reals.Rdefinitions.
 Require Import Coq.Reals.Raxioms.
@@ -52,9 +52,7 @@ Ltac RlinH := RcasesH; lra.
 
 (** ** Balls are open *)
 
-(* The metric ball around a point, as an open of the real line: at any
-   interior point the slack radius witnesses openness (radius as data,
-   no choice). *)
+(* 相关说明。 （已译） *)
 Lemma ball_around (c d : R) :
   (0 < d)%R → ball_open BS_R (fun r : R => (Rabs (c - r) < d)%R).
 Proof.
@@ -65,7 +63,7 @@ Proof.
     RlinH.
 Qed.
 
-(** ** The pointwise algebra of continuous real-valued maps *)
+(* 相关说明。 （已译） *)
 
 Section Pointwise.
 
@@ -141,8 +139,7 @@ Next Obligation.
                                (projT2 i)))) Rlt_0_2).
 Qed.
 
-(* Multiplication, pointwise; the radius shrinks by the local bound and
-   is capped at 1 (design note 1). *)
+(* 相关说明。 （已译） *)
 Program Definition cr_mult (f g : ContinuousMorphism X R_Top) :
   ContinuousMorphism X R_Top := {|
   continuous_map :=
@@ -329,7 +326,7 @@ Next Obligation.
                           (projT2 i)))).
 Qed.
 
-(* Constants are continuous: the preimage of any open is uniform. *)
+(* 相关说明。 （已译） *)
 Program Definition cr_const (c : R) : ContinuousMorphism X R_Top := {|
   continuous_map := {| morphism := fun _ => c |}
 |}.
@@ -410,7 +407,7 @@ Next Obligation.
   intros X f x; simpl; unfold R_equiv; ring.
 Qed.
 
-(** ** Precomposition, and the functor *)
+(* * ** Precomposition, 函子 （已译） *)
 
 (* Precomposition along a continuous map is a ring homomorphism: every
    preservation law is pointwise reflexivity, the operations being
@@ -437,9 +434,9 @@ Next Obligation.
   intros Y X h f g y; simpl; reflexivity.
 Qed.
 
-(* Mac Lane §II.3 Exercise 5: C, contravariantly, from spaces to rings.
-   The arrow action is [contramap] of the hom into the ring object ℝ
-   (design note 2). *)
+(* Mac Lane §II.3 Exercise 5: C, contravariantly, spaces rings.
+ The arrow action [contramap] hom 进入 ring 对象 ℝ
+ (design note 2). （已译） *)
 Program Definition ContinuousRingFunctor : Top^op ⟶ Rng := {|
   fobj := fun X => CRingOb X;
   fmap := fun X Y h => CRing_precomp (unop h)

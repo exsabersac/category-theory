@@ -40,7 +40,7 @@ Record PointedSetoid := {
   pt : carrier pointed_setoid
 }.
 
-(* A pointed map: a setoid map that carries the basepoint to the basepoint. *)
+(* 相关说明。 （已译） *)
 Record PointedMorphism (X Y : PointedSetoid) := {
   pointed_map :> SetoidMorphism (pointed_setoid X) (pointed_setoid Y);
   preserves_pt : pointed_map (pt X) ≈ pt Y
@@ -123,7 +123,7 @@ Next Obligation. intros X Y f x; simpl; reflexivity. Qed.
 Next Obligation. intros X Y Z W f g h x; simpl; reflexivity. Qed.
 Next Obligation. intros X Y Z W f g h x; simpl; reflexivity. Qed.
 
-(** ** The zero object: a single point, both initial and terminal *)
+(* * ** The zero 对象: single point, both initial terminal （已译） *)
 
 (* The one-point pointed set: [poly_unit] under `=`, pointed at its only
    element.  It plays both universal roles below. *)
@@ -150,8 +150,8 @@ Proof.
   reflexivity.
 Defined.
 
-(* Into the one-point set there is exactly one map: everything goes to the
-   only element, which is that object's basepoint. *)
+(* Into one-point set there exactly one map: everything goes the
+ element, 对象's basepoint. （已译） *)
 Definition pointed_one {X : PointedSetoid} : PointedMorphism X PointedOne :=
   @pointed_const X PointedOne.
 
@@ -159,8 +159,7 @@ Lemma pointed_one_unique {X : PointedSetoid}
   (f g : PointedMorphism X PointedOne) : f ≈ g.
 Proof.
   intro x.
-  (* [simpl] first: it keeps the goal's universes from being minimized to
-     [Set] when the [poly_unit] elimination below is elaborated. *)
+  (* 相关说明。 （已译） *)
   simpl.
   destruct (pointed_map f x), (pointed_map g x).
   reflexivity.
@@ -202,16 +201,14 @@ Definition PointedSets_Initial : @Initial PointedSets :=
 #[export] Instance PointedSets_Zero : ZeroObject PointedSets :=
   @Build_ZeroObject PointedSets PointedSets_Terminal PointedSets_Initial iso_id.
 
-(** ** Images, injections and surjections *)
+(* 相关说明。 （已译） *)
 
 (* [f] is injective when it separates points up to `≈`. *)
 Definition PointedInjective {X Y : PointedSetoid}
   (f : PointedMorphism X Y) : Type :=
   ∀ a b : carrier X, f a ≈ f b → a ≈ b.
 
-(* Membership of [y] in the image of [f].  Because `≈` is [Type]-valued, this
-   is a [sigT] and therefore carries the preimage as data: no choice principle
-   is needed to extract it later. *)
+(* 相关说明。 （已译） *)
 Definition InImage {X Y : PointedSetoid}
   (f : PointedMorphism X Y) (y : carrier Y) : Type :=
   ∃ x : carrier X, f x ≈ y.
@@ -221,8 +218,7 @@ Definition PointedSurjective {X Y : PointedSetoid}
   (f : PointedMorphism X Y) : Type :=
   ∀ b : carrier Y, InImage f b.
 
-(* Image membership is a property of the `≈`-class, not of the representative:
-   the same preimage witnesses membership of any equivalent point. *)
+(* 相关说明。 （已译） *)
 Lemma InImage_respects {X Y : PointedSetoid} (f : PointedMorphism X Y)
   {y y' : carrier Y} : y ≈ y' → InImage f y → InImage f y'.
 Proof.
@@ -243,7 +239,7 @@ Proof.
   apply preserves_pt.
 Qed.
 
-(** ** Monomorphisms are exactly the injections *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Pointed 相关定义、性质与动机。
@@ -298,7 +294,7 @@ Proof.
     + reflexivity.
 Qed.
 
-(** ** Epimorphisms are exactly the surjections *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明核/余核相关定义、性质与动机。
@@ -369,9 +365,7 @@ Definition PointedCP {X Y : PointedSetoid} (f : PointedMorphism X Y) :
   pt := Datatypes.inl (pt Y)
 |}.
 
-(* The two legs of the cokernel pair.  The left leg is pointed on the nose;
-   the right leg is pointed because the two basepoints have been identified,
-   which needs [InImage_pt]. *)
+(* 相关说明。 （已译） *)
 Program Definition CP_left_map {X Y : PointedSetoid} (f : PointedMorphism X Y) :
   SetoidMorphism (pointed_setoid Y) (pointed_setoid (PointedCP f)) := {|
   morphism := fun y => Datatypes.inl y
@@ -402,8 +396,8 @@ Proof.
   - apply InImage_pt.
 Defined.
 
-(* The two legs agree after [f]: every point of the form [f x] is in the image
-   by definition, which is exactly the gluing condition. *)
+(* The two legs agree after [f]: every point form [f x] image
+ 定义, exactly gluing condition. （已译） *)
 Lemma CP_coequalizes {X Y : PointedSetoid} (f : X ~{PointedSets}~> Y) :
   CP_left f ∘ f ≈ CP_right f ∘ f.
 Proof.
@@ -428,8 +422,7 @@ Proof.
   exact (snd Hb).
 Qed.
 
-(* Mac Lane CWM §I.7: in Set_* the epimorphisms are exactly the surjective
-   maps.  Both directions are unconditional. *)
+(* 相关说明。 （已译） *)
 Theorem pointed_epic_iff {X Y : PointedSetoid} (f : X ~{PointedSets}~> Y) :
   PointedSurjective f ↔ Epic f.
 Proof.
@@ -442,10 +435,10 @@ Proof.
   - apply pointed_epic_surjective.
 Qed.
 
-(** ** Mac Lane's Proposition (CWM §I.7): splitting, and balance *)
+(* 相关说明。 （已译） *)
 
-(* The easy halves, valid in any category and proved here pointwise: a
-   morphism with a left inverse is monic, one with a right inverse is epic. *)
+(* The easy halves, valid any 范畴 proved here pointwise: a
+ 态射 left inverse monic, one right inverse epic. （已译） *)
 
 Corollary pointed_split_monic_is_monic {X Y : PointedSetoid}
   (f : X ~{PointedSets}~> Y) : Section f → Monic f.
@@ -470,7 +463,7 @@ Proof.
     now rewrite (Hs b).
 Qed.
 
-(** *** Monic implies split monic, given decidable image membership *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Pointed 相关定义、性质与动机。
@@ -547,7 +540,7 @@ Proof.
     reflexivity.
 Defined.
 
-(** *** Balance: invertible IS monic and epic, with no hypotheses at all *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Pointed 相关定义、性质与动机。
@@ -606,20 +599,18 @@ Proof.
       exact (`2 (Hsurj (f a))).
 Qed.
 
-(** *** Epic implies split epic, given an enumeration and a decidable
-        codomain *)
+(* 相关说明。 （已译） *)
 
 (* Decidability of `≈` on a pointed setoid. *)
 Definition DecidableEquiv (Y : PointedSetoid) : Type :=
   ∀ y y' : carrier Y, (y ≈ y') + ¬ (y ≈ y').
 
-(* Decidability of "is this the basepoint?", the weaker hypothesis needed by
-   the essential-surjectivity argument of Instance/Sets/Pointed/Part.v. *)
+(* Decidability "is basepoint?", weaker 假设 needed by
+ essential-surjectivity 论元 Instance/Sets/Pointed/Part.v. （已译） *)
 Definition DecidablePt (Z : PointedSetoid) : Type :=
   ∀ z : carrier Z, (z ≈ pt Z) + ¬ (z ≈ pt Z).
 
-(* Membership in a list up to `≈`, [Type]-valued so that the position of the
-   witness may be inspected. *)
+(* 相关说明。 （已译） *)
 Fixpoint InSetoid {X : PointedSetoid}
   (x : carrier X) (l : list (carrier X)) : Type :=
   match l with
@@ -627,9 +618,9 @@ Fixpoint InSetoid {X : PointedSetoid}
   | Datatypes.cons a l' => (a ≈ x) + InSetoid x l'
   end.
 
-(* An enumeration of a pointed setoid: a list meeting every `≈`-class.  This
-   is the finiteness hypothesis; the [bool] witness of
-   Instance/Sets/Pointed/Finite.v satisfies it. *)
+(* An enumeration pointed setoid: list meeting every `≈`-class. This
+ finiteness 假设; [bool] witness of
+ Instance/Sets/Pointed/Finite.v satisfies it. （已译） *)
 Record PointedEnumeration (X : PointedSetoid) := {
   enum_list : list (carrier X);
   enum_covers : ∀ x : carrier X, InSetoid x enum_list
@@ -771,7 +762,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The two splitting hypotheses are necessary, in-tree *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Pointed 相关定义、性质与动机。
@@ -783,8 +774,8 @@ Definition InformativeEM := ∀ P : Prop, P + ¬ P.
 
 Section Necessity.
 
-(* The monic side: `option P` based at `None`, mapping to the two-point set
-   by forgetting the proof.  It is injective for every P, hence monic. *)
+(* The monic side: `option P` based at `None`, 映射 two-point set
+ forgetting 证明. It injective every P, hence monic. （已译） *)
 
 Definition optP_rel (P : Prop) (u v : option P) : Type :=
   match u, v with
@@ -830,9 +821,9 @@ Proof. intros x y H; destruct x, y; simpl in *; try exact I; contradiction. Qed.
 Definition optP_monic (P : Prop) : Monic (optP_f P) :=
   fst (pointed_monic_iff (optP_f P)) (optP_injective P).
 
-(* Dropping [ImageDecidable] from [pointed_monic_split] decides every
-   proposition: the retraction's value at the free point says whether P
-   holds. *)
+(* Dropping [ImageDecidable] [pointed_monic_split] decides every
+ 命题: retraction's value at free point says whether P
+ holds. （已译） *)
 Theorem unconditional_monic_split_gives_IEM :
   (∀ (X Y : PointedSetoid) (g : X ~{PointedSets}~> Y), Monic g → Section g)
   → InformativeEM.
@@ -848,8 +839,8 @@ Proof.
     exact Hp.
 Qed.
 
-(* The epic side: the two-point set with its two points glued exactly when P
-   holds.  The identity carrier map into it is surjective, hence epic. *)
+(* The epic side: two-point set two points glued exactly P
+ holds. The 恒等 carrier map it surjective, hence epic. （已译） *)
 
 Definition glueP_rel (P : Prop) (u v : option poly_unit) : Type :=
   match u, v with

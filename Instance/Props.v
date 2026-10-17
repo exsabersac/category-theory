@@ -10,7 +10,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * The category PROP of propositions *)
+(* * * The 范畴 PROP propositions （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/bicartesian+closed+category
@@ -34,24 +34,24 @@ Program Definition Props : Category := {|
   compose := fun _ _ _ g f x => g (f x)    (* transitivity of implication *)
 |}.
 
-(* Terminal object: True is the top proposition, with `I : True` giving the
-   unique map P ~> True (every P implies True). *)
+(* Terminal 对象: True top 命题, `I : True` giving the
+ unique map P ~> True (every P implies True). （已译） *)
 #[export]
 Program Instance Props_Terminal : @Terminal Props := {
   terminal_obj := True;                    (* 1 = True *)
   one := fun _ _ => I                       (* ! : P → True *)
 }.
 
-(* Initial object: False is the bottom proposition; ex falso quodlibet gives
-   the unique map False ~> P (False implies every P). *)
+(* Initial 对象: False bottom 命题; ex falso quodlibet gives
+ unique map False ~> P (False implies every P). （已译） *)
 #[export]
 Program Instance Props_Initial : @Initial Props := {
   terminal_obj := False;                   (* 0 = False (terminal in Props^op) *)
   one := fun _ _ => False_rect _ _          (* ¡ : False → P, by ex falso *)
 }.
 
-(* Product: conjunction. P ∧ Q is the meet, with proj1/proj2 the projections
-   and conj the pairing of two implications. *)
+(* Product: conjunction. P ∧ Q meet, proj1/proj2 projections
+ conj pairing two 蕴含. （已译） *)
 #[export]
 Program Instance Props_Cartesian : @Cartesian Props := {
   product_obj := and;                      (* P × Q = P ∧ Q *)
@@ -77,8 +77,7 @@ Program Instance Props_Cocartesian : @Cocartesian Props := {
   exr  := fun _ _ p => or_intror p         (* right injection Q → P ∨ Q *)
 }.
 
-(* Exponential: implication. Q ^ P = P → Q, and exp_iso is the currying
-   bijection Hom(R ∧ P, Q) ≅ Hom(R, P → Q) witnessing (- ∧ P) ⊣ (P → -). *)
+(* 相关说明。 （已译） *)
 #[export]
 Program Instance Props_Closed : @Closed Props _ := {
   exponent_obj := Basics.impl;             (* Q ^ P = P → Q *)

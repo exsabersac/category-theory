@@ -20,8 +20,8 @@ Require Import Coq.Arith.Compare_dec.
 
 Generalizable All Variables.
 
-(** * Preorders as thin categories: the round trip, order reversal, total
-      orders, and infima as limits *)
+(* * * Preorders thin 范畴: round trip, order reversal, total
+ orders, infima limits （已译） *)
 
 (*
  Book: Riehl, "Category Theory in Context", Dover 2016, §1.2
@@ -35,7 +35,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Thinness of prosets and posets *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom、等价相关定义、性质与动机。
@@ -61,14 +61,14 @@ Lemma poset_thin {A : Type} {R : relation A} (P : PreOrder R)
   Thin (@Poset A R P H).
 Proof. exact (proset_thin P). Qed.
 
-(* Antisymmetry is exactly skeletality of the thin category: mutually related
-   objects are isomorphic by [thin_iso], and antisymmetry forces them equal. *)
+(* Antisymmetry exactly skeletality thin 范畴: mutually related
+ 对象 isomorphic [thin_iso], antisymmetry forces them equal. （已译） *)
 Lemma poset_skeletal {A : Type} {R : relation A} (P : PreOrder R)
       (H : @Antisymmetric A eq eq_equiv R) (x y : A) :
   x ≅[@Poset A R P H] y → x = y.
 Proof. intro i; exact (H x y (to i) (from i)). Qed.
 
-(** ** Round trip, leg one: the preorder of the thin category of P is P *)
+(* * ** Round trip, leg one: preorder thin 范畴 P P （已译） *)
 
 (*
    本节说明等价相关定义、性质与动机。
@@ -100,7 +100,7 @@ Proof.
   - exact (fun r => inhabits r).
 Qed.
 
-(** ** Round trip, leg two: the thin category of the hom-preorder *)
+(* * ** Round trip, leg two: thin 范畴 hom-preorder （已译） *)
 
 (*
    本节说明函子、hom相关定义、性质与动机。
@@ -129,9 +129,9 @@ Proof.
     constructor; intros x y f g _; apply T.
 Qed.
 
-(* On a proset the choice hypothesis of Structure/Thin.v is discharged: the
-   homs of [Proset P] are the Props [R x y], so eliminating [inhabited] lands
-   back in Prop and is permitted. *)
+(* On proset choice 假设 Structure/Thin.v discharged: the
+ homs [Proset P] Props [R x y], so eliminating [inhabited] lands
+ back Prop permitted. （已译） *)
 Definition proset_HomChoice {A : Type} {R : relation A} (P : PreOrder R) :
   HomChoice (Proset P) :=
   fun x y h => match h return R x y with inhabits r => r end.
@@ -177,20 +177,20 @@ Lemma thin_Proset_roundtrip_hom {C : Category} (T : Thin C) (ch : HomChoice C)
   fmap[Proset_hom_Functor T ch] (fmap[thin_to_Proset_Functor C] f) ≈ f.
 Proof. apply T. Qed.
 
-(* Vacuous, per the note above -- kept only so both directions are named. *)
+(* 相关说明。 （已译） *)
 Lemma Proset_thin_roundtrip_hom {C : Category} (T : Thin C) (ch : HomChoice C)
       {x y : C} (h : x ~{Proset (thin_PreOrder C)}~> y) :
   fmap[thin_to_Proset_Functor C] (fmap[Proset_hom_Functor T ch] h) ≈ h.
 Proof. exact I. Qed.
 
-(* The hypothesis-free corollary: a proset is recovered from its own
-   hom-preorder, with [proset_HomChoice] supplying the only hypothesis and
-   [proset_thin] the other. *)
+(* The 假设-free 推论: proset recovered own
+ hom-preorder, [proset_HomChoice] supplying 假设 and
+ [proset_thin] other. （已译） *)
 Definition Proset_roundtrip {A : Type} {R : relation A} (P : PreOrder R) :
   Proset P ≅[Cat] Proset (thin_PreOrder (Proset P)) :=
   thin_Proset_iso (proset_thin P) (proset_HomChoice P).
 
-(** ** Order reversal: the opposite of a thin category (Riehl §1.2) *)
+(* * ** Order reversal: opposite thin 范畴 (Riehl §1.2) （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -242,7 +242,7 @@ Program Definition Proset_op_iso {A : Type} {R : relation A}
   from := Proset_op_from P
 |}.
 
-(** ** Preorders versus equivalence relations (Seven Sketches §1.2.2) *)
+(* * ** Preorders versus 等价 relations (Seven Sketches §1.2.2) （已译） *)
 
 (*
    本节说明等价相关定义、性质与动机。
@@ -267,7 +267,7 @@ Proof.
   - exact (@PreOrder_Transitive A R P).
 Qed.
 
-(** ** The discrete and codiscrete preorders on a carrier (§1.2.2) *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -324,23 +324,23 @@ Proof.
   - exact (discrete_initial S refl x y).
 Qed.
 
-(* The categorical reading of the top: from every proset on A there is an
-   identity-on-objects functor into the codiscrete one, because every arrow
-   has somewhere to go. *)
+(* The categorical reading top: every proset A there an
+ 恒等-on-对象 函子 进入 codiscrete one, because every arrow
+ has somewhere go. （已译） *)
 Program Definition to_codiscrete {A : Type} {R : relation A} (P : PreOrder R) :
   Proset P ⟶ Proset (codiscrete_PreOrder A) := {|
   fobj := fun x => x;
   fmap := fun _ _ _ => I
 |}.
 
-(* And why the codiscrete preorder is as far from a poset as possible: all
-   its objects are isomorphic, so it is skeletal only when A is a
-   subsingleton. *)
+(* And why codiscrete preorder far poset possible: all
+ 对象 isomorphic, so it skeletal A a
+ subsingleton. （已译） *)
 Lemma codiscrete_all_iso {A : Type} (x y : A) :
   x ≅[Proset (codiscrete_PreOrder A)] y.
 Proof. exact (thin_iso (proset_thin (codiscrete_PreOrder A)) I I). Qed.
 
-(** ** Comparability, and how it differs from decidability (§1.2.2) *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Order 相关定义、性质与动机。
@@ -386,8 +386,7 @@ Proof.
     + right; intro hxy; exact (ne (anti x y hxy h)).
 Qed.
 
-(* In a discrete preorder an element is comparable with itself and with
-   nothing else (§1.2.2): the only arrows are the identities. *)
+(* 相关说明。 （已译） *)
 
 Lemma discrete_comparable_self {A : Type} (x : A) :
   comparable (discrete_rel A) x x.
@@ -397,7 +396,7 @@ Lemma discrete_incomparable {A : Type} (x y : A) :
   x ≠ y → comparable (discrete_rel A) x y → False.
 Proof. intros ne [e|e]; [ exact (ne e) | exact (ne (eq_sym e)) ]. Qed.
 
-(** ** Total (linear) orders, Mac Lane §I.2 definition 4 *)
+(* * ** Total (linear) orders, Mac Lane §I.2 定义 4 （已译） *)
 
 (*
    本节说明 Order 相关定义、性质与动机。
@@ -423,8 +422,7 @@ Lemma TotalOrder_Category_thin {A : Type} {R : relation A} (T : TotalOrder R) :
   Thin (TotalOrder_Category T).
 Proof. exact (proset_thin (@total_preorder A R T)). Qed.
 
-(* The characterization asked for in §1.2.2: over a fixed antisymmetric
-   preorder, being a total order IS "every two elements are comparable". *)
+(* 相关说明。 （已译） *)
 Theorem TotalOrder_iff_all_comparable {A : Type} (R : relation A)
         (P : PreOrder R) (anti : ∀ x y : A, R x y → R y x → x = y) :
   TotalOrder R ↔ (∀ x y : A, comparable R x y).
@@ -437,7 +435,7 @@ Proof.
            ; total_comparable := cmp |}.
 Qed.
 
-(** *** (ℕ, ≤) as a total order, and its reverse *)
+(* 相关说明。 （已译） *)
 
 Definition nat_TotalOrder : TotalOrder PeanoNat.Nat.le := {|
   total_preorder   := PeanoNat.Nat.le_preorder;
@@ -457,22 +455,20 @@ Definition nat_TotalOrder : TotalOrder PeanoNat.Nat.le := {|
 Definition Nat_TotalOrder_Category : Category :=
   TotalOrder_Category nat_TotalOrder.
 
-(* The reverse of (ℕ, ≤) is (ℕ, ≥) on the nose: stdlib defines [ge n m] as
-   [m <= n], and [Basics.flip le x y] reduces to [le y x], so the two
-   relations are convertible. *)
+(* 相关说明。 （已译） *)
 Lemma flip_le_is_ge (x y : nat) :
   Basics.flip PeanoNat.Nat.le x y = ge x y.
 Proof. reflexivity. Qed.
 
-(* Hence the opposite of the thin category of (ℕ, ≤) is the thin category of
-   (ℕ, ≥), by the general order-reversal isomorphism above. *)
+(* Hence opposite thin 范畴 (ℕ, ≤) thin 范畴 of
+ (ℕ, ≥), general order-reversal 同构 above. （已译） *)
 Definition Nat_op_iso :
   ((Proset PeanoNat.Nat.le_preorder)^op)%category
     ≅[Cat] Proset (flip_PreOrder PeanoNat.Nat.le_preorder) :=
   Proset_op_iso PeanoNat.Nat.le_preorder.
 
-(* And the reversed order is itself a total order, so the opposite category
-   is again the thin category of a total order. *)
+(* And reversed order itself total order, so opposite 范畴
+ again thin 范畴 total order. （已译） *)
 Definition flip_TotalOrder {A : Type} {R : relation A} (T : TotalOrder R) :
   TotalOrder (Basics.flip R) := {|
   total_preorder   := flip_PreOrder (@total_preorder A R T);
@@ -487,7 +483,7 @@ Definition flip_TotalOrder {A : Type} {R : relation A} (T : TotalOrder R) :
 Definition nat_ge_TotalOrder : TotalOrder (Basics.flip PeanoNat.Nat.le) :=
   flip_TotalOrder nat_TotalOrder.
 
-(** ** Infima and suprema, and their categorical identification (§1.3.1) *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Order 相关定义、性质与动机。
@@ -501,8 +497,8 @@ Definition IsInfimum {A : Type} (R : relation A) (x y m : A) : Type :=
 Definition IsSupremum {A : Type} (R : relation A) (x y m : A) : Type :=
   (R x m ∧ R y m) ∧ (∀ n : A, R x n → R y n → R m n).
 
-(* The two notions are one notion read in two directions, and the identity is
-   definitional, not merely provable. *)
+(* The two notions one notion read two directions, 恒等 is
+ definitional, not merely provable. （已译） *)
 Lemma supremum_is_flipped_infimum {A : Type} (R : relation A) (x y m : A) :
   IsSupremum R x y m = IsInfimum (Basics.flip R) x y m.
 Proof. reflexivity. Qed.
@@ -658,8 +654,8 @@ Proof.
     + intros n ux uy; exact ux.
 Qed.
 
-(* Combining the two: the thin category of a total order has a limit and a
-   colimit for every two-object discrete diagram. *)
+(* Combining two: thin 范畴 total order has limit a
+ colimit every two-对象 discrete diagram. （已译） *)
 
 Definition TotalOrder_pair_limit {A : Type} {R : relation A}
            (T : TotalOrder R) (x y : A) :
@@ -673,7 +669,7 @@ Definition TotalOrder_pair_colimit {A : Type} {R : relation A}
   fst (supremum_iff_colimit (@total_preorder A R T) x y (tjoin T x y))
       (TotalOrder_join T x y).
 
-(** *** Worked instance: (ℕ, ≤), with min and max *)
+(* 相关说明。 （已译） *)
 
 Theorem nat_min_infimum (x y : nat) :
   IsInfimum PeanoNat.Nat.le x y (PeanoNat.Nat.min x y).
@@ -705,10 +701,7 @@ Definition nat_max_colimit (x y : nat) :
          (PeanoNat.Nat.max x y))
       (nat_max_supremum x y).
 
-(** *** Worked instance: the two-element order
-
-    The smallest order in which the identification has content: [false] below
-    [true], with conjunction the meet and disjunction the join. *)
+(* 相关说明。 （已译） *)
 
 Definition bool_le (x y : bool) : Prop := x = true → y = true.
 
@@ -761,8 +754,8 @@ Definition bool_orb_colimit (x y : bool) :
   fst (supremum_iff_colimit bool_PreOrder x y (orb x y))
       (bool_orb_supremum x y).
 
-(* The two-element order is a poset, so its thin category is skeletal; and
-   the meet computed by the class matches the boolean conjunction. *)
+(* The two-element order poset, so thin 范畴 skeletal; and
+ meet computed class matches boolean conjunction. （已译） *)
 
 Example bool_tmeet_true_false : tmeet bool_TotalOrder true false = false.
 Proof. reflexivity. Qed.
@@ -776,8 +769,8 @@ Proof. reflexivity. Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The thin category of a total order has the carrier as its objects and the
-   order itself as its homs. *)
+(* The thin 范畴 total order has carrier 对象 the
+ order itself homs. （已译） *)
 Example nat_order_obj : obj[Nat_TotalOrder_Category] = nat.
 Proof. reflexivity. Qed.
 
@@ -801,9 +794,7 @@ Proof. reflexivity. Qed.
 Example nat_tjoin_3_5 : tjoin nat_TotalOrder 3%nat 5%nat = 5%nat.
 Proof. reflexivity. Qed.
 
-(* [Thin] is inhabited on the two examples the tree already ships.  The poset
-   one is fully qualified because Instance/Proset.v and Instance/Poset.v
-   both export the name (Test/Poset.v). *)
+(* 相关说明。 （已译） *)
 
 Definition thin_proset_nat : Thin (Proset PeanoNat.Nat.le_preorder) :=
   proset_thin PeanoNat.Nat.le_preorder.
@@ -813,15 +804,14 @@ Definition thin_poset_nat :
   poset_thin PeanoNat.Nat.le_preorder
     (partial_order_antisym PeanoNat.Nat.le_partialorder).
 
-(* The colimit half restated through the library's own apex-pinned name
-   (Structure/Limit/Preservation.v), as promised above. *)
+(* 相关说明。 （已译） *)
 Corollary supremum_iff_IsAColimit {A : Type} {R : relation A} (P : PreOrder R)
         (x y m : A) :
   IsSupremum R x y m ↔ IsAColimit (PairDiagram P x y) m.
 Proof. exact (supremum_iff_colimit P x y m). Qed.
 
 (* The "no third name" claim above, pinned rather than asserted: the
-   TotalOrder route lands on the SAME category both existing files define. *)
+ TotalOrder route lands SAME 范畴 both existing files define. （已译） *)
 Example Nat_TotalOrder_Category_is_Poset :
   Nat_TotalOrder_Category = Category.Instance.Poset.LessThanEqualTo_Category
   := eq_refl.

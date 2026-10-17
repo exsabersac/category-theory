@@ -23,7 +23,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** (A) The inverse image on opens, as a functor *)
+(* * ** (A) The inverse image opens, 函子 （已译） *)
 
 Program Definition Opens_preimage {X Y : TopSpace} (g : Y ~{Top}~> X) :
   Opens X ⟶ Opens Y := {|
@@ -36,9 +36,9 @@ Example Opens_preimage_obj {X Y : TopSpace} (g : Y ~{Top}~> X)
   (U : OpenSet X) : fobj[Opens_preimage g] U = open_preimage g U := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (B) The space, and the refutation *)
+(* 相关说明。 （已译） *)
 
-(* The points: the naturals with a point at infinity. *)
+(* 相关说明。 （已译） *)
 Definition nat_inf_carrier@{o | Set < o +} : SetoidObject@{o o} :=
   {| carrier   := option nat
    ; is_setoid := eq_Setoid@{o} (option nat) |}.
@@ -96,16 +96,16 @@ Definition NatInf_Top@{o} : TopSpace@{o} := {|
   open_inter     := nat_inf_inter@{o}
 |}.
 
-(* The constant map from the point at infinity.  Continuity is free: the
-   preimage of any predicate is a constant predicate on a one-point
-   space, and [Point_Top] is discrete. *)
+(* The 常值 map point at infinity. Continuity free: the
+ preimage any predicate 常值 predicate one-point
+ space, [Point_Top] discrete. （已译） *)
 Definition nat_inf_point : Point_Top ~{Top}~> NatInf_Top := {|
   continuous_map :=
     const_morphism (top_carrier Point_Top) (top_carrier NatInf_Top) None;
   continuity := fun U _ x y _ h => h
 |}.
 
-(* The whole point, as an open of the one-point space. *)
+(* 相关说明。 （已译） *)
 Definition point_whole : OpenSet Point_Top :=
   (fun _ => poly_unit; open_whole Point_Top).
 
@@ -127,9 +127,9 @@ Defined.
 Definition nat_inf_punctured@{o +} (N : nat) : OpenSet NatInf_Top@{o} :=
   existT _ _ (nat_inf_punctured_open@{o} N).
 
-(* The preimage of a punctured open along the constant map at infinity is
-   the whole point: the map lands at infinity, which every punctured open
-   contains vacuously. *)
+(* The preimage punctured open along 常值 map at infinity is
+ whole point: map lands at infinity, every punctured open
+ contains vacuously. （已译） *)
 Definition point_into_punctured (N : nat) :
   point_whole ~{Opens Point_Top}~> open_preimage nat_inf_point
                                      (nat_inf_punctured N).
@@ -140,24 +140,22 @@ Theorem nat_inf_no_left_adjoint
   (L : Opens Point_Top ⟶ Opens NatInf_Top)
   (A : L ⊣ Opens_preimage nat_inf_point) : False.
 Proof.
-  (* Transposing the identity at [L point_whole] shows that open contains
-     infinity, hence a tail from some N. *)
+  (* Transposing 恒等 at [L point_whole] shows open contains
+ infinity, hence tail some N. （已译） *)
   pose proof (to (@adj _ _ _ _ A point_whole (L point_whole))
                 (id[L point_whole])) as Hinf.
   destruct (`2 (L point_whole) (Hinf ttt ttt)) as [N k].
-  (* Transposing the other way at the punctured open gives an inclusion
-     of [L point_whole] into it, contradicted at [Some N]. *)
+  (* Transposing other way at punctured open gives 含入
+ [L point_whole] it, contradicted at [Some N]. （已译） *)
   pose proof (from (@adj _ _ _ _ A point_whole (nat_inf_punctured N))
                 (point_into_punctured N)) as Hincl.
   exact (Hincl (Some N) (k N (PeanoNat.Nat.le_refl N)) N eq_refl eq_refl).
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (C) The right adjoint, AT THIS WITNESS *)
+(* * ** (C) The 右伴随, AT THIS WITNESS （已译） *)
 
-(* [R U] holds at infinity exactly when [U] holds at the point, and holds
-   at every natural.  Open: if it contains infinity it contains the tail
-   from 0, every natural being in it. *)
+(* 相关说明。 （已译） *)
 Definition nat_inf_R_pred (U : OpenSet Point_Top) :
   NatInf_Top → Type :=
   fun x => match x with
@@ -180,9 +178,9 @@ Program Definition nat_inf_right_adjoint :
                      end
 |}.
 
-(* The transposition.  Both directions are one-line implications at
-   infinity, and the point's own [ttt] is recovered by case analysis on
-   [poly_unit]. *)
+(* The transposition. Both directions one-line 蕴含 at
+ infinity, point's own [ttt] recovered case analysis on
+ [poly_unit]. （已译） *)
 Program Definition nat_inf_preimage_adjunction :
   Opens_preimage nat_inf_point ⊣ nat_inf_right_adjoint := {|
   adj := fun U V =>

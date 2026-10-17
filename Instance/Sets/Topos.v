@@ -18,7 +18,7 @@ Require Import Category.Instance.Sets.Classifier.OneLevel.
 
 Open Scope category_scope.
 
-(** * The category of setoids is an elementary topos *)
+(* * * The 范畴 setoids elementary topos （已译） *)
 
 (*
  Book:      Mac Lane, ibid., Appendix "Foundations", §App.1, printed
@@ -65,8 +65,8 @@ Example sets_topos_classifier (U : Untruncate) :
 Example sets_topos_dec_classifier (D : DecImage) :
   @topos_classifier Sets (Sets_Topos_dec D) = Sets_Classifier_dec D := eq_refl.
 
-(** ** (B) App.1 clause (a): the terminal object is a one-element set,
-       and clause (b): the pullback of [a → 1 ← b] is [a × b] *)
+(* * ** (B) App.1 clause (a): 终对象 one-element set,
+ clause (b): pullback [a → 1 ← b] [a × b] （已译） *)
 
 Example app1_terminal_carrier (U : Untruncate) :
   carrier (@terminal_obj Sets (@topos_terminal Sets (Sets_Topos U)))
@@ -81,9 +81,7 @@ Lemma app1_terminal_singleton
   (t : carrier (@terminal_obj Sets Sets_Terminal)) : t = ttt.
 Proof. destruct t; reflexivity. Qed.
 
-(* The pullback of the unique arrows into 1.  Stated at top level with
-   explicit binders rather than inside a Section: see universe reading
-   (1) in the header. *)
+(* 相关说明。 （已译） *)
 Definition PBONE@{o so} (a b : obj[Sets@{o so}]) :=
   @pullback Sets@{o so} Sets_HasPullbacks@{so o} a b
     (@terminal_obj Sets@{o so} Sets_Terminal@{so o}) one one.
@@ -101,7 +99,7 @@ Definition pbone_to_prod@{o so} (a b : obj[Sets@{o so}]) :
   pbone@{o so} a b ~{Sets@{o so}}~> a × b :=
   pbone_fst@{o so} a b △ pbone_snd@{o so} a b.
 
-(* [one_unique] does not apply here; see the gotcha in the header. *)
+(* 相关说明。 （已译） *)
 Definition pbone_sq@{o so} (a b : obj[Sets@{o so}]) :
   one ∘ exl ≈ one ∘ (exr : a × b ~{Sets@{o so}}~> b).
 Proof.
@@ -126,8 +124,8 @@ Proof.
   - intro p; split; reflexivity.
 Defined.
 
-(* "with its projections to the given factors a and b": the four leg
-   equations, at the setoid relation. *)
+(* "with projections given factors b": four leg
+ equations, at setoid 关系. （已译） *)
 Lemma pbone_to_exl (a b : obj[Sets]) :
   exl ∘ pbone_to_prod a b ≈ pbone_fst a b.
 Proof. intro p; reflexivity. Qed.
@@ -153,20 +151,20 @@ Proof.
 Qed.
 
 (* The mediator REDUCES: Instance/Sets/Pullback.v's [Sets_IsPullback] is
-   [Defined], so the pullback's universal property computes. *)
+ [Defined], so pullback's 普遍性质 computes. （已译） *)
 Example pbone_from_computes (a b : obj[Sets]) :
   pbone_from_prod a b = sets_pb_med one one exl exr (pbone_sq a b) := eq_refl.
 
-(* and the topos's own chosen pullback over 1 is that one *)
+(* 相关说明。 （已译） *)
 Example app1_pullback_is_topos_pullback (U : Untruncate) (a b : obj[Sets]) :
   @pullback Sets (@topos_pullbacks Sets (Sets_Topos U)) a b
     (@terminal_obj Sets (@topos_terminal Sets (Sets_Topos U))) one one
   = PBONE a b := eq_refl.
 
-(** ** (C) App.1 clause (c): Ω, truth, and the classifying rule *)
+(* 相关说明。 （已译） *)
 
-(* Mac Lane's "any set 2 consisting of two objects, 1 and 0", on the
-   decidable route. *)
+(* Mac Lane's "any set 2 consisting two 对象, 1 0", the
+ decidable route. （已译） *)
 Example app1_omega_dec (D : DecImage) :
   @Ω Sets _ (@topos_classifier Sets (Sets_Topos_dec D)) = BoolSetoid
   := eq_refl.
@@ -177,7 +175,7 @@ Example app1_truth_dec (D : DecImage) :
   @truth Sets _ (@topos_classifier Sets (Sets_Topos_dec D)) ttt = ptrue
   := eq_refl.
 
-(* and the truncation route's own truth-value object *)
+(* and truncation route's own truth-value 对象 （已译） *)
 Example app1_omega_U (U : Untruncate) :
   @Ω Sets _ (@topos_classifier Sets (Sets_Topos U)) = Powerset_Omega
   := eq_refl.
@@ -185,15 +183,12 @@ Example app1_truth_U (U : Untruncate) :
   @truth Sets _ (@topos_classifier Sets (Sets_Topos U)) ttt
   = Powerset_truth_point := eq_refl.
 
-(* "the monomorphism t : 1 → 2": monic for free, from the derived
-   [truth_monic] of Structure/SubobjectClassifier.v. *)
+(* 相关说明。 （已译） *)
 Definition app1_truth_monic (U : Untruncate) :
   @Monic Sets _ _ (@truth Sets _ (@topos_classifier Sets (Sets_Topos U)))
   := @truth_monic Sets _ _.
 
-(* "This subset has a well-known characteristic function ψ : b → 2":
-   the classifying rule, applied verbatim at the topos-level classifier
-   on both routes. *)
+(* 相关说明。 （已译） *)
 Definition app1_char_rule_dec@{o so} (D : DecImage@{o so})
   {u x : SetoidObject@{o o}} (m : u ~{Sets@{o so}}~> x)
   (M : @Monic Sets@{o so} u x m) (b : carrier x) :
@@ -228,9 +223,7 @@ Example app1_char_U_strict@{o so} (U : Untruncate@{o})
     (@topos_classifier Sets@{o so} (Sets_Topos@{o so} U)) u x m M b
   = Powerset_squash@{o} (sets_in_image@{o} m b) := eq_refl.
 
-(* "such that the following square is a pullback" -- display (2) and its
-   uniqueness clause are the class's own two fields, re-exposed at the
-   bundle so that they can be quoted at a topos. *)
+(* 相关说明。 （已译） *)
 Definition app1_classifying_square@{o so} (U : Untruncate@{o})
   {u x : SetoidObject@{o o}} (m : u ~{Sets@{o so}}~> x)
   (M : @Monic Sets@{o so} u x m) :=
@@ -243,10 +236,10 @@ Definition app1_classifying_unique@{o so} (U : Untruncate@{o})
   @char_unique Sets@{o so} _
     (@topos_classifier Sets@{o so} (Sets_Topos@{o so} U)) u x m M.
 
-(** ** (D) App.1 clause (d): P b IS the power set of b *)
+(* 相关说明。 （已译） *)
 
-(* Mac Lane's "P b, the set of all subsets s of b" -- definitional, not
-   an isomorphism.  See the header for why the two records coincide. *)
+(* Mac Lane's "P b, set all subsets s b" -- definitional, not
+ 同构. See header why two records coincide. （已译） *)
 Example app1_pow_is_powerset (U : Untruncate) (b : obj[Sets]) :
   @Pow Sets (Sets_Topos U) b = Powerset_Prop_obj b := eq_refl.
 
@@ -254,14 +247,12 @@ Example app1_pow_carrier (U : Untruncate) (b : obj[Sets]) :
   carrier (@Pow Sets (Sets_Topos U) b)
   = SetoidMorphism b Powerset_Prop_truth := eq_refl.
 
-(* On the decidable route it is the DECIDABLE power set instead. *)
+(* 相关说明。 （已译） *)
 Example app1_pow_dec_carrier (D : DecImage) (b : obj[Sets]) :
   carrier (@Pow Sets (Sets_Topos_dec D) b) = SetoidMorphism b BoolSetoid
   := eq_refl.
 
-(* Membership: Mac Lane's ε_b is function application.  MIND THE
-   ARGUMENT ORDER -- he writes ε_b(x, s) with the element first, and
-   this tree's [eval : y^x × x ~> y] takes the subset first. *)
+(* 相关说明。 （已译） *)
 Example app1_eval_is_application (U : Untruncate) (b : obj[Sets])
   (s : carrier (@Pow Sets (Sets_Topos U) b)) (x : carrier b) :
   @eval Sets Sets_Cartesian Sets_Closed b

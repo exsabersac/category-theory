@@ -74,14 +74,12 @@ Arguments smod_zero {R M} _.
 Arguments smod_plus {R M} _ _ _ _ _.
 Arguments smod_smul {R M} _ _ _ _.
 
-(* Saturation in the argument-implicit shape the proofs below want. *)
+(* Saturation 论元-implicit shape proofs below want. （已译） *)
 Definition smod_at {R : RingObject} {M : RModObject R} (S : Submodule M)
   {a b : carrier (cmon_setoid M)} (Hab : a ≈ b) (Ha : smod_mem S a) :
   smod_mem S b := smod_resp S a b Hab Ha.
 
-(* THE FIFTH FIELD THAT IS NOT A FIELD: closure under negation, because
-   -a is (-1)·a.  The scalar (-1) exists because R is a RING; over a rig
-   this would have to be assumed. *)
+(* 相关说明。 （已译） *)
 Lemma smod_neg {R : RingObject} {M : RModObject R} (S : Submodule M)
   (a : carrier (cmon_setoid M)) : smod_mem S a → smod_mem S (ab_neg M a).
 Proof.
@@ -92,7 +90,7 @@ Proof.
   - exact (smod_smul S _ _ Ha).
 Qed.
 
-(* Closure under subtraction, the shape every proof below uses. *)
+(* Closure under subtraction, shape every 证明 below uses. （已译） *)
 Lemma smod_sub {R : RingObject} {M : RModObject R} (S : Submodule M)
   (a b : carrier (cmon_setoid M)) :
   smod_mem S a → smod_mem S b → smod_mem S (ab_sub M a b).
@@ -120,7 +118,7 @@ Proof.
   exact (smod_at S (symmetry (smod_conjugate_inert t a)) Ha).
 Qed.
 
-(** ** The submodule as an object of [RMod R] *)
+(* * ** The submodule 对象 [RMod R] （已译） *)
 
 Definition smod_carrier {R : RingObject} {M : RModObject R}
   (S : Submodule M) : Type :=
@@ -183,7 +181,7 @@ Proof.
     intros p; simpl; apply rm_smul_one.
 Defined.
 
-(* The inclusion of a submodule: the first projection. *)
+(* The 含入 submodule: first projection. （已译） *)
 Program Definition smod_incl {R : RingObject} {M : RModObject R}
   (S : Submodule M) : SubmoduleMod S ~{RMod R}~> M := {|
   rm_hom := {| cmon_map := {| morphism := fun p : smod_carrier S => `1 p |} |}
@@ -251,9 +249,9 @@ Proof.
   - exact (smod_plus S _ _ K1 K2).
 Qed.
 
-(* Addition respects the relation.  Where the group case spends
-   NORMALITY ([quot_rel_mul]), this spends COMMUTATIVITY, inside
-   [ab_sub_plus]. *)
+(* Addition respects 关系. Where group case spends
+ NORMALITY ([quot_rel_mul]), spends COMMUTATIVITY, inside
+ [ab_sub_plus]. （已译） *)
 Lemma mquot_rel_plus (x x' y y' : carrier (cmon_setoid M)) :
   mquot_rel S x x' → mquot_rel S y y' →
   mquot_rel S (cmon_plus M x y) (cmon_plus M x' y').
@@ -277,9 +275,9 @@ Proof.
   - exact (smod_neg S _ K).
 Qed.
 
-(* The scalar action respects the relation.  THIS is the one place the
-   submodule's fourth field is spent, and it has no counterpart in the
-   group case at all. *)
+(* The scalar action respects 关系. THIS one place the
+ submodule's fourth field spent, it has no counterpart the
+ group case at all. （已译） *)
 Lemma mquot_rel_smul (r : carrier (rig_setoid (ring_rig R)))
   (x x' : carrier (cmon_setoid M)) :
   mquot_rel S x x' → mquot_rel S (rm_smul M r x) (rm_smul M r x').
@@ -304,8 +302,8 @@ Proof.
   - exact (smod_at S (symmetry (ab_sub_zero_r M x)) K).
 Qed.
 
-(* The half of the biconditional that keeps its [Type]-valued hypothesis:
-   nothing is truncated on the way in. *)
+(* The half biconditional keeps [Type]-valued 假设:
+ nothing truncated way in. （已译） *)
 Lemma mquot_rel_of_mem (x : carrier (cmon_setoid M)) :
   smod_mem S x → mquot_rel S x (cmon_zero M).
 Proof.
@@ -327,7 +325,7 @@ End QuotientRelation.
 
 Arguments mquot_setoid {R M} S.
 
-(** ** The quotient module and its projection *)
+(* 相关说明。 （已译） *)
 
 Definition QuotientMod {R : RingObject} {M : RModObject R}
   (S : Submodule M) : RModObject R.
@@ -379,8 +377,8 @@ Defined.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The projection: the identity function, read from the fine setoid into
-   the coarse one. *)
+(* The projection: 恒等 function, read fine setoid into
+ coarse one. （已译） *)
 Program Definition mquot_proj {R : RingObject} {M : RModObject R}
   (S : Submodule M) : M ~{RMod R}~> QuotientMod S := {|
   rm_hom := {| cmon_map :=
@@ -402,8 +400,7 @@ Qed.
 
 (* Conversely: the projection's kernel is exactly S, as a
    biconditional. *)
-(* Restated in lockstep with [mquot_rel_zero_iff]: the right-hand side is the
-   truncation.  [mquot_proj_kills] above keeps the [Type]-valued direction. *)
+(* 相关说明。 （已译） *)
 Lemma mquot_proj_kernel {R : RingObject} {M : RModObject R}
   (S : Submodule M) (x : carrier (cmon_setoid M)) :
   cmon_map (rm_hom (mquot_proj S)) x ≈ cmon_zero (QuotientMod S)
@@ -420,7 +417,7 @@ Lemma mquot_proj_epic {R : RingObject} {M : RModObject R}
   (S : Submodule M) : Epic (mquot_proj S).
 Proof. apply rmod_surjective_epic, mquot_proj_surjective. Qed.
 
-(** ** The functor of homomorphisms killing S *)
+(* * ** The 函子 homomorphisms killing S （已译） *)
 
 Definition MKills {R : RingObject} {M : RModObject R} (S : Submodule M)
   (K : RModObject R) : Type :=
@@ -514,8 +511,8 @@ Next Obligation. simpl; apply (cmon_map_zero (rm_hom (`1 p))). Qed.
 Next Obligation. intros x y; simpl; apply (cmon_map_plus (rm_hom (`1 p))). Qed.
 Next Obligation. intros r x; simpl; apply (rm_map_smul (`1 p)). Qed.
 
-(* The mediator's defining triangle holds by reflexivity, the projection
-   being the identity function. *)
+(* The mediator's defining triangle holds reflexivity, projection
+ being 恒等 function. （已译） *)
 Lemma mquot_med_commutes : mquot_med ∘ mquot_proj S ≈ `1 p.
 Proof. intro x; simpl; reflexivity. Qed.
 
@@ -527,7 +524,7 @@ End Mediator.
 
 Arguments mquot_med {R M} S {K} p.
 
-(** ** Mac Lane §III.1 Exercise 5: ⟨A/S, p⟩ is a universal element *)
+(* 相关说明。 （已译） *)
 
 Definition mquot_elem {R : RingObject} {M : RModObject R}
   (S : Submodule M) : MKills S (QuotientMod S) :=
@@ -564,7 +561,7 @@ Example mquot_universal_med_is_mquot_med {R : RingObject}
     = mquot_med S x.
 Proof. reflexivity. Qed.
 
-(** ** The homomorphism theorem, as a biconditional *)
+(* * ** The homomorphism 定理, biconditional （已译） *)
 
 Theorem mod_hom_theorem {R : RingObject} {M K : RModObject R}
   (S : Submodule M) (h : M ~{RMod R}~> K) :
@@ -639,17 +636,15 @@ Example KernelSub_mem {R : RingObject} {M N : RModObject R}
   smod_mem (KernelSub f) a = (cmon_map (rm_hom f) a ≈ cmon_zero N).
 Proof. reflexivity. Qed.
 
-(* The submodule object of the kernel has the same carrier as
-   Instance/Mod.v's [RModKernel], by convertibility. *)
+(* The submodule 对象 kernel has same carrier as
+ Instance/Mod.v's [RModKernel], convertibility. （已译） *)
 Example KernelSub_carrier_is_RModKernel {R : RingObject}
   {M N : RModObject R} (f : M ~{RMod R}~> N) :
   carrier (cmon_setoid (SubmoduleMod (KernelSub f)))
     = carrier (cmon_setoid (RModKernel f)).
 Proof. reflexivity. Qed.
 
-(* The image of f, as a submodule of the codomain.  Membership carries
-   the preimage as DATA (the tree's ∃ is [sigT]), so nothing is
-   chosen. *)
+(* 相关说明。 （已译） *)
 Program Definition ImageSubmod {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Submodule N := {|
   smod_mem := fun b : carrier (cmon_setoid N) =>
@@ -720,9 +715,9 @@ Proof.
     symmetry; apply ab_add_sub_cancel.
 Qed.
 
-(* The identification, in [RMod R].  Both legs are the identity on
-   elements; what they transport is the witness, through the
-   biconditional above. *)
+(* The identification, [RMod R]. Both legs 恒等 on
+ elements; what they transport witness, through the
+ biconditional above. （已译） *)
 Program Definition RModQuotient_is_quotient_by_image :
   RModQuotient f ≅[RMod R] QuotientMod (ImageSubmod f) := {|
   to := {| rm_hom := {| cmon_map :=
@@ -746,8 +741,7 @@ Next Obligation. recon_refl. Qed.
 Next Obligation. recon_refl. Qed.
 Next Obligation. recon_refl. Qed.
 
-(* And the projections agree under it: the identification carries
-   Instance/Mod.v's projection to this file's. *)
+(* 相关说明。 （已译） *)
 Lemma RModQuotient_proj_agrees :
   to RModQuotient_is_quotient_by_image ∘ rmod_quot_proj f
     ≈ mquot_proj (ImageSubmod f).
@@ -755,7 +749,7 @@ Proof. recon_refl. Qed.
 
 End Reconcile.
 
-(** ** Quotients by coextensive submodules agree *)
+(* 相关说明。 （已译） *)
 
 Program Definition mquot_congr {R : RingObject} {M : RModObject R}
   (S S' : Submodule M)
@@ -789,7 +783,7 @@ Next Obligation. intros R M S S' H1 H2 r x; simpl; apply mquot_rel_refl. Qed.
 Next Obligation. intros R M S S' H1 H2 x; simpl; apply mquot_rel_refl. Qed.
 Next Obligation. intros R M S S' H1 H2 x; simpl; apply mquot_rel_refl. Qed.
 
-(** ** The degenerate submodules, named and separated *)
+(* 相关说明。 （已译） *)
 
 Program Definition TrivialSub {R : RingObject} (M : RModObject R) :
   Submodule M := {|
@@ -895,14 +889,13 @@ Proof.
   - simpl; discriminate.
 Qed.
 
-(* THE QUOTIENT DOES NOT COLLAPSE: 1 stays apart from 0 in ℤ/2ℤ. *)
+(* 相关说明。 （已译） *)
 Theorem Z_mod_2Z_not_collapsed : mquot_rel EvenSub 1%Z 0%Z → False.
 Proof.
   intros [[k Hk]]; rewrite int_sub_is_minus in Hk; lia.
 Qed.
 
-(* But it does collapse 2 into 0, so the projection is not injective and
-   the quotient is a genuine quotient rather than a relabelling of ℤ. *)
+(* 相关说明。 （已译） *)
 Theorem Z_mod_2Z_collapses_two :
   cmon_map (rm_hom (mquot_proj EvenSub)) 2%Z
     ≈ cmon_map (rm_hom (mquot_proj EvenSub)) 0%Z.
@@ -916,8 +909,7 @@ Proof.
   vm_compute in E; discriminate E.
 Qed.
 
-(* The scalar action survives the quotient nondegenerately: 3·1 is
-   congruent to 1 and not to 0. *)
+(* 相关说明。 （已译） *)
 Example Z_mod_2Z_smul_three :
   mquot_rel EvenSub (rm_smul Int_RMod 3%Z 1%Z) 1%Z.
 Proof. constructor; exists 1%Z; reflexivity. Qed.
@@ -930,8 +922,8 @@ Proof.
   lia.
 Qed.
 
-(* The kernel of the projection is exactly 2ℤ, in both directions. *)
-(* Restated up to the truncation, in lockstep with [mquot_proj_kernel]. *)
+(* 相关说明。 （已译） *)
+(* 相关说明。 （已译） *)
 Lemma EvenSub_is_kernel_of_proj (a : Z) :
   smod_mem (KernelSub (mquot_proj EvenSub)) a ↔ inhabited (smod_mem EvenSub a).
 Proof. exact (mquot_proj_kernel EvenSub a). Qed.

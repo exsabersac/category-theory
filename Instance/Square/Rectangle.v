@@ -35,18 +35,18 @@ Proof. intros x y f g; exact (ord_thin f g). Qed.
 Lemma Rect_Thin : Thin Rect.
 Proof. exact (Thin_Product Two_Thin Three_Thin). Qed.
 
-(** The generating arrows: horizontal ones live in the [_3] factor at a
-    fixed row, vertical ones in the [_2] factor at a fixed column. *)
+(** 本节：The generating arrows: horizontal ones live [_3] factor at a
+ fixed row, vertical ones [_2] factor at fixed column. （已译） *)
 Definition rect_horiz (i : TwoObj) {j j' : Ord_obj 3} (s : j ~{_3}~> j') :
   (i, j) ~{Rect}~> (i, j') := (id, s).
 
 Definition rect_vert (j : Ord_obj 3) : (TwoX, j) ~{Rect}~> (TwoY, j) :=
   (TwoXY, id).
 
-(** ** Pasting, as a free-standing principle
+(* * ** Pasting, free-standing principle
 
-    Riehl's "two commuting squares paste to one", with no shape
-    category in sight: it is three rewrites. *)
+ Riehl's "two commuting squares paste one", no shape
+ 范畴 sight: it three rewrites. （已译） *)
 Lemma paste_squares {C : Category} {a b c a' b' c' : C}
   (u : a ~> b) (v : b ~> c) (u' : a' ~> b') (v' : b' ~> c')
   (p : a ~> a') (q : b ~> b') (r : c ~> c') :
@@ -58,10 +58,10 @@ Proof.
   now rewrite comp_assoc.
 Qed.
 
-(** ** What a diagram of shape 2 × 3 is
+(* * ** What diagram shape 2 × 3 is
 
-    Every equation below holds of an ARBITRARY [F], with no hypothesis:
-    the shape supplies them. *)
+ Every equation below holds ARBITRARY [F], no 假设:
+ shape supplies them. （已译） *)
 
 Section Diagram.
 
@@ -76,7 +76,7 @@ Definition rect_Y0 : C := fobj[F] (TwoY, ord3_0).
 Definition rect_Y1 : C := fobj[F] (TwoY, ord3_1).
 Definition rect_Y2 : C := fobj[F] (TwoY, ord3_2).
 
-(** The four horizontal arrows and the three vertical ones. *)
+(** 本节：The four horizontal arrows three vertical ones. （已译） *)
 Definition rect_u : rect_X0 ~> rect_X1 := fmap[F] (rect_horiz TwoX three_01).
 Definition rect_v : rect_X1 ~> rect_X2 := fmap[F] (rect_horiz TwoX three_12).
 Definition rect_u' : rect_Y0 ~> rect_Y1 := fmap[F] (rect_horiz TwoY three_01).
@@ -115,8 +115,8 @@ Local Ltac rect_shape :=
   apply fmap_respects;
   exact (Rect_Thin _ _ _ _).
 
-(** Each square commutes, because the two composites are already the
-    same arrow of the shape. *)
+(** 本节：Each square commutes, because two composites already the
+ same arrow shape. （已译） *)
 Lemma rect_left_commutes : rect_q ∘ rect_u ≈ rect_u' ∘ rect_p.
 Proof. rect_shape. Qed.
 
@@ -128,9 +128,9 @@ Theorem rect_outer_commutes :
   rect_r ∘ (rect_v ∘ rect_u) ≈ (rect_v' ∘ rect_u') ∘ rect_p.
 Proof. rect_shape. Qed.
 
-(** ...and it is forced twice over: the pasting principle derives the
-    same equation from the two squares alone, with no reference to the
-    shape at all. *)
+(** 本节：...and it forced twice over: pasting principle derives the
+ same equation two squares alone, no reference the
+ shape at all. （已译） *)
 Theorem rect_outer_two_ways :
   rect_r ∘ (rect_v ∘ rect_u) ≈ (rect_v' ∘ rect_u') ∘ rect_p.
 Proof.
@@ -138,8 +138,8 @@ Proof.
            rect_left_commutes rect_right_commutes).
 Qed.
 
-(** The long diagonal is the common value of every path from X0 to
-    Y2. *)
+(** 本节：The long diagonal common value every path X0 to
+ Y2. （已译） *)
 Theorem rect_long_via_top :
   rect_long_diagonal ≈ rect_r ∘ (rect_v ∘ rect_u).
 Proof. rect_shape. Qed.
@@ -161,8 +161,8 @@ Proof. rect_shape. Qed.
 Theorem rect_diag_right_via_bottom : rect_diag_right ≈ rect_v' ∘ rect_q.
 Proof. rewrite rect_diag_right_via_top; exact rect_right_commutes. Qed.
 
-(** The inner parallelogram: the long diagonal factors through either
-    short one. *)
+(** 本节：The inner parallelogram: long diagonal factors through either
+ short one. （已译） *)
 Theorem rect_long_through_left : rect_long_diagonal ≈ rect_v' ∘ rect_diag_left.
 Proof.
   rewrite rect_long_via_bottom, rect_diag_left_via_bottom.
@@ -221,8 +221,8 @@ Proof.
     now rewrite comp_assoc.
 Qed.
 
-(** The donor is the special case at the forward legs of an isomorphism
-    family — an [exact], with no proof of its own. *)
+(** The donor special case at forward legs 同构
+ family — [exact], no 证明 own. （已译） *)
 Corollary ord_naturality_from_steps_is_instance {C : Category} {n : nat}
   (F G : Ordinal (S n) ⟶ C) (θ : ∀ x : Ord_obj (S n), F x ≅ G x)
   (Hgen : ∀ k : Ord_obj n,
@@ -235,9 +235,9 @@ Proof.
   exact (ord_transform_naturality F G (fun x => to (θ x)) Hgen).
 Qed.
 
-(** The object-level form, which is what [Transform] wants.  The passage
-    from the index-level statement is [ord_eta]: [ord_at (ord_val x)
-    (ord_bound x)] IS [x], by record eta. *)
+(** The 对象-level form, what [Transform] wants. The passage
+ index-level statement [ord_eta]: [ord_at (ord_val x)
+ (ord_bound x)] IS [x], record eta. （已译） *)
 Corollary ord_transform_natural@{o h p co ch cp}
   {C : Category@{co ch cp}} {n : nat}
   (F G : Ordinal@{o h p} (S n) ⟶ C)
@@ -253,9 +253,9 @@ Proof.
            (ord_val x) (ord_val y) f (ord_bound x) (ord_bound y)).
 Qed.
 
-(** ** Commutative rectangles
+(* * ** Commutative rectangles
 
-    Six objects, seven arrows, and exactly TWO equations. *)
+ Six 对象, seven arrows, exactly TWO equations. （已译） *)
 
 Record CommutingRectangle (C : Category) : Type := {
   crc_x0 : C;  crc_x1 : C;  crc_x2 : C;
@@ -279,8 +279,8 @@ Arguments crc_p  {C} _.  Arguments crc_q  {C} _.  Arguments crc_r {C} _.
 Arguments crc_left  {C} _.
 Arguments crc_right {C} _.
 
-(** The outer rectangle of a commutative rectangle commutes — the
-    pasting principle, applied to the record's own two fields. *)
+(** 本节：The outer rectangle commutative rectangle commutes — the
+ pasting principle, applied record's own two fields. （已译） *)
 Theorem crc_outer {C : Category} (R : CommutingRectangle C) :
   crc_r R ∘ (crc_v R ∘ crc_u R) ≈ (crc_v' R ∘ crc_u' R) ∘ crc_p R.
 Proof.
@@ -319,8 +319,8 @@ Proof.
   - destruct (le_t_zero_absurd (le_t_SS_inv (le_t_SS_inv (le_t_SS_inv H)))).
 Defined.
 
-(** Naturality on the two generating steps IS the two square
-    equations. *)
+(** 本节：Naturality two generating steps IS two square
+ equations. （已译） *)
 Lemma rect_eta_gen (k : Ord_obj 2) :
   rect_eta (ord_succ k) ∘ fmap[rect_top] (ord_step k)
     ≈ fmap[rect_bottom] (ord_step k) ∘ rect_eta (ord_incl k).
@@ -346,9 +346,9 @@ Next Obligation.
            rect_eta rect_eta_gen x y f).
 Qed.
 
-(** The functor a commutative rectangle names: the classifying functor
-    of that transformation on the cylinder [_3 ∏ _2], read on
-    [_2 ∏ _3] through [Swap]. *)
+(** The 函子 commutative rectangle names: classifying 函子
+ transformation cylinder [_3 ∏ _2], read on
+ [_2 ∏ _3] through [Swap]. （已译） *)
 Definition RectFunctor : Rect ⟶ C := Cyl_functor rect_transform ◯ Swap.
 
 (** Its six objects, on the nose. *)
@@ -420,8 +420,8 @@ Definition ord3_arrow_total : nat :=
 Theorem ord3_arrow_total_6 : ord3_arrow_total = 6%nat.
 Proof. reflexivity. Qed.
 
-(** The same 6, read off [Instance/Ordinal.v]'s enumeration, which is
-    proved sound, complete and duplicate-free there. *)
+(** 本节：The same 6, read off [Instance/Ordinal.v]'s enumeration, is
+ proved sound, complete duplicate-free there. （已译） *)
 Example ord3_count_agrees : ord3_arrow_total = length (ord_pairs 3).
 Proof. reflexivity. Qed.
 
@@ -452,14 +452,14 @@ Definition rect_nonidentity_total : nat :=
 Theorem rect_nonidentity_total_12 : rect_nonidentity_total = 12%nat.
 Proof. reflexivity. Qed.
 
-(** 18 = 3 × 6: the walking arrow's three arrows against the ordinal 3's
-    six. *)
+(** 本节：18 = 3 × 6: walking arrow's three arrows against ordinal 3's
+ six. （已译） *)
 Example rect_count_is_product :
   rect_arrow_total = (two_arrow_total * ord3_arrow_total)%nat := eq_refl.
 
-(** The counting function is correct: 0 exactly where the hom-set is
-    empty, and where it is 1 the hom-set is inhabited.  (Thinness is
-    [Rect_Thin] and holds everywhere.) *)
+(** 本节：The counting function correct: 0 exactly where hom-set is
+ empty, where it 1 hom-set inhabited. (Thinness is
+ [Rect_Thin] holds everywhere.) （已译） *)
 Theorem rect_homcount_inhabited (x y : TwoObj * Ord_obj 3) :
   rect_homcount x y = 1%nat → x ~{Rect}~> y.
 Proof.

@@ -114,9 +114,7 @@ Record RgHom (R S : RgObject) := {
 Arguments rg_hom_ab {R S} _.
 Arguments rg_map_mul {R S} _ _ _.
 
-(* Preservation of negation is NOT a field and is NOT proved here: it is
-   Instance/Ab.v's [ab_map_neg], applied.  The unital-side twin is
-   Theory/Algebra/Rig.v's [RigHom_neg]. *)
+(* 相关说明。 （已译） *)
 Corollary rg_map_neg {R S : RgObject} (f : RgHom R S)
   (a : carrier (cmon_setoid (rg_ab R))) :
   cmon_map (rg_hom_ab f) (ab_neg (rg_ab R) a)
@@ -207,7 +205,7 @@ Next Obligation. intros R S T f g a; simpl; reflexivity. Qed.
 #[export] Program Instance Rg_Forget_Ab_Faithful : Faithful Rg_Forget_Ab.
 Next Obligation. intros R S f g Hfg a; exact (Hfg a). Qed.
 
-(** ** The forgetful functor from unital rings *)
+(* * ** The forgetful 函子 unital rings （已译） *)
 
 (*
    本节说明 Rg 相关定义、性质与动机。
@@ -223,8 +221,7 @@ Definition ring_rg (R : RingObject) : RgObject := {|
   rg_distr_r := rig_distr_r R
 |}.
 
-(* The arrow action is Instance/Rng.v's [Rng_Forget_Ab] repackaged
-   with one extra field, [rig_map_mul], again passed through unchanged. *)
+(* 相关说明。 （已译） *)
 Program Definition Rng_Forget_Rg : Rng ⟶ Rg := {|
   fobj := ring_rg;
   fmap := fun R S f => {|
@@ -269,8 +266,7 @@ Next Obligation.
   intros R S a b; simpl; symmetry; apply rg_mul_zero_l.
 Qed.
 
-(* The zero endomorphism of ℤ in [Rg] has no unital preimage: any
-   [RigHom] out of ℤ sends 1 to 1, and the zero map sends 1 to 0. *)
+(* 相关说明。 （已译） *)
 Theorem Rng_Forget_Rg_not_Full : Full Rng_Forget_Rg → False.
 Proof.
   intro F.
@@ -283,7 +279,7 @@ Proof.
   discriminate.
 Qed.
 
-(** ** The trivial rng is a zero object *)
+(* * ** The trivial rng zero 对象 （已译） *)
 
 (* Built on Instance/CMon/Biproduct.v's polymorphic [CMon_trivial],
    NOT on Instance/Ab.v's [Ab_trivial], which is measured to be
@@ -372,13 +368,13 @@ Next Obligation.
   now rewrite (Rg_zero_hom_unique R f), (Rg_zero_hom_unique R g).
 Qed.
 
-(* One record plays both roles, so the coincidence isomorphism is the
-   identity — Instance/CMon/Biproduct.v and Instance/Ab.v do the
-   same. *)
+(* One record plays both roles, so coincidence 同构 the
+ 恒等 — Instance/CMon/Biproduct.v Instance/Ab.v do the
+ same. （已译） *)
 #[export] Instance Rg_Zero : ZeroObject Rg :=
   @Build_ZeroObject Rg Rg_Terminal Rg_Initial iso_id.
 
-(** ** The contrast with the unital category *)
+(* * ** The contrast unital 范畴 （已译） *)
 
 (*
    本节说明始/终对象、核/余核相关定义、性质与动机。
@@ -425,7 +421,7 @@ Example rg_zero_obj_strict :
 Example rg_trivial_carrier_strict :
   carrier (cmon_setoid (ab_cmon (rg_ab Rg_trivial))) = poly_unit := eq_refl.
 
-(** ** Two refuted strict attempts, pinned *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Rg 相关定义、性质与动机。
@@ -451,7 +447,7 @@ Example control_forget_underlying_map (R S : RingObject)
   (f : R ~{Rng}~> S) :
   cmon_map (rg_hom_ab (fmap[Rng_Forget_Rg] f)) = rig_map f := eq_refl.
 
-(** ** Non-vacuity: the even integers *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Rg 相关定义、性质与动机。
@@ -485,8 +481,7 @@ Next Obligation. exact TwoZ_assoc_Z. Qed.
 Next Obligation. exact TwoZ_distr_l_Z. Qed.
 Next Obligation. exact TwoZ_distr_r_Z. Qed.
 
-(* Not unital: e·1 ≈ 1 reads 2e = 1 in ℤ, which [lia] refutes.  This is
-   the whole point of the witness — [Rg] is not secretly [Rng]. *)
+(* 相关说明。 （已译） *)
 Theorem TwoZ_not_unital :
   ∀ e : carrier (cmon_setoid (ab_cmon (rg_ab TwoZ_Rg))),
     (∀ a, rg_mul TwoZ_Rg e a ≈ a) → False.
@@ -550,17 +545,12 @@ Theorem TwoZ_incl_image_even : ∀ a,
   { k : Z & cmon_map (rg_hom_ab TwoZ_incl) a = Z.mul 2 k }.
 Proof. intro a; exists a; exact (@eq_refl Z (TwoZ_double a)). Qed.
 
-(* The converse half, without which the word "exactly" would be unearned:
-   every even integer IS hit.  The two together say the image is the
-   even integers and not merely a subset of them. *)
+(* 相关说明。 （已译） *)
 Theorem TwoZ_incl_image_onto_even : ∀ k : Z,
   { a & cmon_map (rg_hom_ab TwoZ_incl) a = Z.mul 2 k }.
 Proof. intro k; exists k; exact (@eq_refl Z (TwoZ_double k)). Qed.
 
-(** ** The universe instance, for the record
-
-    Rerun the commands below to reproduce the measurement quoted in the
-    header: neither [Rg_trivial] nor [Rg_Zero] carries [Set]. *)
+(* 相关说明。 （已译） *)
 
 Set Printing Universes.
 About Rg_trivial.

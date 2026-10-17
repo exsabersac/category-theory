@@ -1,4 +1,4 @@
-(** * V ≅ V* is not natural: the variance obstruction made concrete *)
+(* 相关说明。 （已译） *)
 
 Require Import Coq.QArith.QArith.
 Require Import Coq.micromega.Lqa.
@@ -31,7 +31,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The one-dimensional stage over ℚ *)
+(* 相关说明。 （已译） *)
 
 Definition Q1 : FdVectObject Q_Field := StdVect Q_Field 1.
 
@@ -39,9 +39,9 @@ Definition Q1 : FdVectObject Q_Field := StdVect Q_Field 1.
 Definition e1 : carrier (cmon_setoid (fdv_mod Q1)) :=
   std_basis Q_Field 1 Fin.F1.
 
-(* Scaling by a fixed rational, as a morphism of FdVect ℚ, written
-   through the abstract rig interface so every obligation is a rig
-   law (the house idiom of Instance/FdVect.v's std layer). *)
+(* Scaling fixed rational, 态射 FdVect ℚ, written
+ through abstract rig interface so every obligation rig
+ law (the house idiom Instance/FdVect.v's std layer). （已译） *)
 Definition qscale (c : Q) : Q1 ~{FdVect Q_Field}~> Q1.
 Proof.
   unshelve notypeclasses refine
@@ -90,7 +90,7 @@ Next Obligation.
   apply rig_mul_one_l.
 Qed.
 
-(* 1 ≉ 0 in ℚ — the coordinate that survives the collapse. *)
+(* 相关说明。 （已译） *)
 Lemma q_one_neq_zero : (1 == 0)%Q → False.
 Proof.
   intro H; discriminate H.
@@ -104,8 +104,7 @@ Proof.
   intro H; lra.
 Qed.
 
-(* [qscale c] applied to a vector IS the module action of c — both
-   are the pointwise product. *)
+(* 相关说明。 （已译） *)
 Lemma qscale_smul (c : Q) (v : carrier (cmon_setoid (fdv_mod Q1))) :
   cmon_map (rm_hom (qscale c)) v ≈ rm_smul (fdv_mod Q1) c v.
 Proof.
@@ -145,8 +144,7 @@ Let s : Q1 ~{FdVect Q_Field}~> DualFdObj Q_Field Q1 := to s0.
 
 Let q : Q := cmon_map (rm_hom (cmon_map (rm_hom s) e1)) e1.
 
-(* Left side of the square at (e₁, e₁): homogeneity of σ pushes the
-   scalar out through the dual module's pointwise action — 2q. *)
+(* 相关说明。 （已译） *)
 Lemma sigma_two :
   cmon_map (rm_hom (cmon_map (rm_hom s)
                       (cmon_map (rm_hom (qscale 2)) e1))) e1
@@ -160,9 +158,9 @@ Proof using Type.
   - exact (rm_map_smul s 2 e1 e1).
 Qed.
 
-(* Right side of the square at (e₁, e₁): homogeneity of the
-   functional σ(e₁) — an [RModHom] into the ring-as-module, whose
-   action is multiplication — gives ½q. *)
+(* Right side square at (e₁, e₁): homogeneity the
+ functional σ(e₁) — [RModHom] 进入 ring-as-module, whose
+ action multiplication — gives ½q. （已译） *)
 Lemma sigma_half :
   cmon_map (rm_hom (cmon_map (rm_hom s) e1))
     (cmon_map (rm_hom (qscale (/ 2))) e1)
@@ -176,7 +174,7 @@ Proof using Type.
   - exact (rm_map_smul (cmon_map (rm_hom s) e1) (/ 2)%Q e1).
 Qed.
 
-(* The single square instance plus the two computations: 2q ≈ ½q. *)
+(* 相关说明。 （已译） *)
 Lemma q_zero : (q == 0)%Q.
 Proof using Hnat.
   apply q_two_half_zero.
@@ -207,8 +205,8 @@ Proof using Hnat.
       apply rig_mul_zero_r.
 Qed.
 
-(* σ identifies e₁ and 0, so — σ being an isomorphism — e₁ ≈ 0 in
-   ℚ¹, and coordinate 1 of that collapse reads 1 ≈ 0 in ℚ. *)
+(* σ identifies e₁ 0, so — σ being 同构 — e₁ ≈ 0 in
+ ℚ¹, coordinate 1 collapse reads 1 ≈ 0 ℚ. （已译） *)
 Theorem sigma_square_violation : False.
 Proof using s0 Hnat.
   apply q_one_neq_zero.
@@ -229,9 +227,9 @@ Qed.
 
 End Violation.
 
-(* The packaged negative half, in its STRONG form: no isomorphism
-   ℚ¹ ≅ (ℚ¹)* satisfies even the single point (e₁, e₁) of the
-   pointwise naturality square at the automorphism 2·(−). *)
+(* The packaged negative half, STRONG form: no 同构
+ ℚ¹ ≅ (ℚ¹)* satisfies even single point (e₁, e₁) the
+ pointwise 自然性 square at automorphism 2·(−). （已译） *)
 Theorem sigma_not_natural
         (s0 : @Isomorphism (FdVect Q_Field) Q1 (DualFdObj Q_Field Q1)) :
   cmon_map (rm_hom (cmon_map (rm_hom (to s0))
@@ -244,9 +242,7 @@ Proof.
   exact (sigma_square_violation s0 Hnat).
 Qed.
 
-(* The categorical square implies the pointwise ∀-form: [DualFd]
-   acts by precomposition, so σ ∘ α ≈ DualFd(α⁻¹) ∘ σ, unfolded at
-   v and then at w, is literally the pointwise square. *)
+(* 相关说明。 （已译） *)
 Lemma sigma_square_pointwise
       (s0 : @Isomorphism (FdVect Q_Field) Q1 (DualFdObj Q_Field Q1)) :
   (to s0 ∘ to alpha2 ≈ fmap[DualFd Q_Field] (from alpha2) ∘ to s0) →

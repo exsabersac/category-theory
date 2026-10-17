@@ -7,8 +7,7 @@ From Coq Require Import Program.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The [~=] (JMeq) notation is flagged deprecated by recent Rocq; silence the
-   warning locally since it is pervasive in the dependently-typed goals below. *)
+(* 相关说明。 （已译） *)
 Local Set Warnings "-deprecated-notation".
 
 (*

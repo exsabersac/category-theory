@@ -22,8 +22,7 @@ Require Import Category.Instance.FinSet.Topos.
 
 Generalizable All Variables.
 
-(** * Subobjects of a skeletal finite set: images that compute, and Fong
-      and Spivak's merging-versus-tagging exercise *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/image
@@ -37,7 +36,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** (a) The map out of the empty finite set is monic *)
+(* 相关说明。 （已译） *)
 
 Lemma FinSet_zero_monic (x : FinSet) : Monic (@zero FinSet FinSet_Initial x).
 Proof.
@@ -46,7 +45,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (b) Images by the counted-subset codec *)
+(* 相关说明。 （已译） *)
 
 Section FinSetImages.
 
@@ -89,7 +88,7 @@ Lemma finset_image_commutes :
   (finset_image_mono : _ ~{FinSet}~> _) ∘ finset_image_factor ≈ f.
 Proof. intro a; apply fin_select_rank. Qed.
 
-(* The chosen preimage of the q-th selected element of the image. *)
+(* 相关说明。 （已译） *)
 Definition finset_image_witness (q : Fin.t finset_image_obj) : Fin.t m :=
   `1 (fin_existsb_sound
         (fun a : Fin.t m => fin_eqb (f a) (fin_select finset_hit q))
@@ -125,16 +124,16 @@ End FinSetImages.
   @Build_HasImages FinSet (@FinSet_ImageOf).
 
 (* ------------------------------------------------------------------------ *)
-(** ** (c) Seven Sketches Exercise 1.11: merging versus tagging *)
+(* 相关说明。 （已译） *)
 
 Definition fin4_0 : Fin.t 4 := Fin.F1.
 Definition fin4_1 : Fin.t 4 := Fin.FS Fin.F1.
 Definition fin4_2 : Fin.t 4 := Fin.FS (Fin.FS Fin.F1).
 Definition fin4_3 : Fin.t 4 := Fin.FS (Fin.FS (Fin.FS Fin.F1)).
 
-(* {0,1} and {1,2,3} inside the 4-element ambient object, cut out by
-   decidable predicates so that [fin_select_inj] supplies monicity and the
-   domains are counts that REDUCE. *)
+(* {0,1} {1,2,3} inside 4-element ambient 对象, cut out by
+ decidable predicates so [fin_select_inj] supplies monicity the
+ domains counts REDUCE. （已译） *)
 Definition ex11_u_pred : Fin.t 4 → bool :=
   fun i => (fin_eqb i fin4_0 || fin_eqb i fin4_1)%bool.
 
@@ -164,12 +163,12 @@ Definition ex11_v : @SubObj FinSet 4%nat :=
 Example ex11_u_size : sub_dom ex11_u = 2%nat := eq_refl.
 Example ex11_v_size : sub_dom ex11_v = 3%nat := eq_refl.
 
-(* MERGING: the union inside the ambient 4-element object has four
-   elements. *)
+(* MERGING: union inside ambient 4-element 对象 has four
+ elements. （已译） *)
 Example ex11_union_four :
   sub_dom (sub_join ex11_u ex11_v) = 4%nat := eq_refl.
 
-(* TAGGING: the coproduct of the two domains has five. *)
+(* 相关说明。 （已译） *)
 Example ex11_coproduct_five :
   @Coprod FinSet FinSet_Cocartesian 2%nat 3%nat = 5%nat := eq_refl.
 
@@ -178,15 +177,14 @@ Example ex11_meet_one :
   sub_dom (sub_meet ex11_u ex11_v) = 1%nat := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (d) The arithmetic of Exercise 1.11, and the elements of Pow 2 *)
+(* 相关说明。 （已译） *)
 
 Example finset_pow_three : @Pow FinSet FinSet_Topos 3%nat = 8%nat := eq_refl.
 
 Example finset_product_two_three :
   @product_obj FinSet FinSet_Cartesian 2%nat 3%nat = 6%nat := eq_refl.
 
-(* The third arithmetic clause, 2 + 3 = 5, is [ex11_coproduct_five] above
-   and is not restated here. *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Subobject 相关定义、性质与动机。

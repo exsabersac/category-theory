@@ -1,4 +1,4 @@
-(** * Preorders are closed under products and functor categories *)
+(* * * Preorders closed under products 函子 范畴 （已译） *)
 
 Require Import Coq.Relations.Relation_Definitions.
 Require Import Coq.Classes.RelationClasses.
@@ -111,18 +111,18 @@ Next Obligation.
   intros x y f; exact I.
 Qed.
 
-(** ** Functor categories: Mac Lane II.4 Ex. 4, structural half *)
+(* * ** Functor 范畴: Mac Lane II.4 Ex. 4, structural half （已译） *)
 
-(* A functor category into a thin target is thin: natural
-   transformations are compared pointwise, and their components are
-   parallel in the target. *)
+(* A 函子 范畴 thin target thin: natural
+ transformations compared pointwise, components are
+ parallel target. （已译） *)
 Lemma Thin_Fun {C D : Category} (TD : Thin D) : Thin (@Fun C D).
 Proof.
   intros F G σ τ x.
   exact (TD _ _ _ _).
 Qed.
 
-(** ** The functor category between preorders, concretely *)
+(* * ** The 函子 范畴 between preorders, concretely （已译） *)
 
 Section MonotoneOrder.
 
@@ -145,11 +145,11 @@ Qed.
 (* The preorder of monotone maps, as a thin category. *)
 Definition MonotoneProset : Category := Proset mm_le_PreOrder.
 
-(* The dictionary, functorially: on objects it is
-   Instance/Proset/Monotone.v's [monotone_of_Functor]/
-   [Functor_of_monotone] pair; on morphisms, a natural transformation
-   between functors of prosets is exactly a pointwise-order proof, and
-   conversely (Theory/Thin.v's [thin_natural] at the thin target). *)
+(* The dictionary, functorially: 对象 it is
+ Instance/Proset/Monotone.v's [monotone_of_Functor]/
+ [Functor_of_monotone] pair; 态射, 自然变换
+ between 函子 prosets exactly pointwise-order 证明, and
+ conversely (Theory/Thin.v's [thin_natural] at thin target). （已译） *)
 Program Definition Fun_Proset_to :
   @Fun (Proset P) (Proset Q) ⟶ MonotoneProset := {|
   fobj := monotone_of_Functor P Q;
@@ -217,7 +217,7 @@ Qed.
 
 End MonotoneOrder.
 
-(** ** Seven Sketches §1.2.2: the worked product Roof ∏ 2 *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Closure 相关定义、性质与动机。
@@ -235,9 +235,7 @@ Proof.
     | solve [ right; intros [f g]; inversion g ] ].
 Defined.
 
-(* Sanity: the decider is exercised at one related and one unrelated
-   pair — the apex reaches the right foot, and nothing climbs back up
-   the V. *)
+(* 相关说明。 （已译） *)
 Example roof_two_related :
   ((RZero, TwoX) : Roof ∏ _2) ~> (RPos, TwoY).
 Proof.
@@ -250,8 +248,7 @@ Proof.
   intros [f g]; inversion f.
 Qed.
 
-(* The counts, made load-bearing: the decider is transparent, so the
-   fifteen/twenty-one split computes. *)
+(* 相关说明。 （已译） *)
 Definition roof_two_objs : list (Roof ∏ _2) :=
   ((RNeg, TwoX) :: (RNeg, TwoY) :: (RZero, TwoX) :: (RZero, TwoY)
      :: (RPos, TwoX) :: (RPos, TwoY) :: nil)%list.

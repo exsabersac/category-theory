@@ -88,9 +88,7 @@ Lemma Cat_thcomp_id {A B C : Category} (F : A ⟶ B) (G : B ⟶ C) :
   nat_hcompose (nat_id (F:=G)) (nat_id (F:=F)) ≈ nat_id (F:=G ◯ F).
 Proof. simpl; intros; cat. Qed.
 
-(* The middle-four interchange IS the `fmap_comp` obligation of
-   [Cat_Hcompose] (Instance/Cat/Bicategory.v), whose own comment
-   names it as such; it is applied, not repeated. *)
+(* 相关说明。 （已译） *)
 Lemma Cat_tinterchange {A B C : Category} {F F' F'' : A ⟶ B}
   {G G' G'' : B ⟶ C}
   (δ : G' ⟹ G'') (γ : G ⟹ G') (β : F' ⟹ F'') (α : F ⟹ F') :
@@ -118,11 +116,11 @@ Lemma Cat_thunit_right {A B : Category} {F F' : A ⟶ B} (α : F ⟹ F') :
   Cat_unitr_cast (nat_hcompose α (nat_id (F:=Id))) ≈ α.
 Proof. simpl; intros; cat. Qed.
 
-(** ** Cat as a strict 2-category
+(* * ** Cat strict 2-范畴
 
-    The pinned name.  Every field is either a projection of the functor
-    category `[C, D]`, a construction of Theory/Natural/Transformation.v, or
-    one of the lemmas above; nothing is left to automation. *)
+ The pinned name. Every field either projection 函子
+ 范畴 `[C, D]`, construction Theory/Natural/Transformation.v, or
+ one lemmas above; nothing left automation. （已译） *)
 
 Definition Cat_TwoCategory : TwoCategory := {|
   tcat                 := StrictCat;
@@ -158,11 +156,11 @@ Definition Cat_TwoCategory : TwoCategory := {|
   thunit_right         := fun A B F F' α => @Cat_thunit_right A B F F' α
 |}.
 
-(** ** Acceptance tests
+(* * ** Acceptance tests
 
-    The structural fields reduce to the constructions they were built
-    from, so consumers of the class compute with the ordinary vocabulary of
-    functor categories. *)
+ The structural fields reduce constructions they were built
+ from, so consumers class compute ordinary vocabulary of
+ 函子 范畴. （已译） *)
 
 Example Cat_TwoCategory_tcat : @tcat Cat_TwoCategory = StrictCat := eq_refl.
 
@@ -177,8 +175,8 @@ Example Cat_TwoCategory_thcomp {A B C : Category} {F F' : A ⟶ B}
 Example Cat_TwoCategory_tid2 {A B : Category} (F : A ⟶ B) :
   @tid2 Cat_TwoCategory A B F = nat_id := eq_refl.
 
-(* The hom-category of Theory/TwoCategory.v is the functor category, on all
-   its structural fields. *)
+(* The hom-范畴 Theory/TwoCategory.v 函子 范畴, all
+ structural fields. （已译） *)
 
 Example Cat_thom_obj (A B : Category) :
   obj[thom (K:=Cat_TwoCategory) A B] = obj[[A, B]] := eq_refl.
@@ -186,9 +184,9 @@ Example Cat_thom_obj (A B : Category) :
 Example Cat_thom_hom (A B : Category) (F G : A ⟶ B) :
   (F ~{thom (K:=Cat_TwoCategory) A B}~> G) = (F ~{[A, B]}~> G) := eq_refl.
 
-(* Whiskering computes to the two whiskerings of Theory/Natural/
-   Transformation.v up to `≈` — Mac Lane's convention that a functor symbol
-   denotes its identity transformation. *)
+(* Whiskering computes two whiskerings Theory/Natural/
+ Transformation.v up `≈` — Mac Lane's convention 函子 symbol
+ denotes 恒等 transformation. （已译） *)
 
 Lemma Cat_twhisker_l_is_whisker_left {A B C : Category} (G : B ⟶ C)
   {F F' : A ⟶ B} (α : F ⟹ F') :
@@ -261,9 +259,9 @@ Example Cat_hcomp2_is_thcomp {A B C : Category} {F F' : A ⟶ B}
 
 Local Notation NatBase := (Deloop Nat_Plus).
 
-(* A cell of [NatSq_Double] is a square of [Sq NatBase], and conversely.
-   Both directions are the identity on the data; only the packaging
-   differs. *)
+(* A cell [NatSq_Double] square [Sq NatBase], conversely.
+ Both directions 恒等 data; packaging
+ differs. （已译） *)
 
 Definition NatSq_to_Sq (x : NatSq) :
   @dsq (Sq NatBase) ttt ttt ttt ttt
@@ -310,15 +308,15 @@ Definition Sq_hid {C : Category} {a c : C} (u : a ~{C}~> c) :
   @dsq (Sq C) a a c c (@dhid (Sq C) a) u u (@dhid (Sq C) c).
 Proof. simpl; cat. Defined.
 
-(* The vertical identity square on a horizontal 1-cell, for contrast: its
-   vertical edges are identities, which is exactly what [Sq_hid u] has only
-   when [u] is one. *)
+(* The vertical 恒等 square horizontal 1-cell, contrast: its
+ vertical edges identities, exactly what [Sq_hid u] has only
+ [u] one. （已译） *)
 Definition Sq_vid {C : Category} {a b : C} (h : a ~{C}~> b) :
   @dsq (Sq C) a b a b h id id h := @dsq_vid (Sq C) a b h.
 
-(* At the base above, the separating arrow is 1: the horizontal identity
-   square on it is the cell Theory/TwoCategory.v refutes definition 3
-   with, and 1 is not the identity of the delooping. *)
+(* At base above, separating arrow 1: horizontal 恒等
+ square it cell Theory/TwoCategory.v refutes 定义 3
+ with, 1 not 恒等 delooping. （已译） *)
 
 Example NatSq_bad_is_Sq_hid :
   NatSq_eq NatSq_bad
@@ -350,8 +348,8 @@ Example NatBase_centre_hcomp (m n : nat) (x : NatBase) :
               (NatBase_centre m) (NatBase_centre n)] x = (m + n)%nat
   := eq_refl.
 
-(* One whiskering, computed: whiskering by the identity 1-cell leaves the
-   component alone, the identity of the base being 0. *)
+(* One whiskering, computed: whiskering 恒等 1-cell leaves the
+ component alone, 恒等 base being 0. （已译） *)
 Example NatBase_whisker (n : nat) (x : NatBase) :
   transform[twhisker_l (K:=Cat_TwoCategory) (@Id NatBase)
               (NatBase_centre n)] x = n := eq_refl.

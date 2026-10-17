@@ -37,7 +37,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The full subcategory of abelian groups *)
+(* 相关说明。 （已译） *)
 
 Definition IsAbelian@{a c p +} (G : GrpObject@{a c p}) : Type@{a} :=
   ∀ a b : carrier G, grp_mul G a b ≈ grp_mul G b a.
@@ -80,8 +80,7 @@ Qed.
 Definition AbelianizationGrp@{u p +} (G : Grp@{u p}) : AbGrp :=
   (Ab_to_GrpOb (AbelianizationOb G); ab_is_abelian (AbelianizationOb G)).
 
-(* The mediator: the SAME underlying map as [f], read out of the
-   quotient. *)
+(* 相关说明。 （已译） *)
 Program Definition abel_med_grp@{u p +} {G H : Grp@{u p}} (HH : IsAbelian H)
   (f : G ~{Grp@{u p}}~> H) :
   Ab_to_GrpOb (AbelianizationOb G) ~{Grp@{u p}}~> H := {|
@@ -93,7 +92,7 @@ Qed.
 Next Obligation. intros G H HH f; exact (grp_map_unit f). Qed.
 Next Obligation. intros G H HH f a b; exact (grp_map_mul f a b). Qed.
 
-(** ** Mac Lane's universal arrow: the quotient projection *)
+(* * ** Mac Lane's 泛箭头: quotient projection （已译） *)
 
 Theorem abgrp_universal@{u p +} (G : Grp@{u p}) :
   ∀ (d : AbGrp) (f : G ~{Grp@{u p}}~> Incl Grp@{u p} AbGrp_Sub d),
@@ -126,7 +125,7 @@ Definition AbGrp_adj@{u p +} : AbGrp_reflector ⊣ Incl Grp@{u p} AbGrp_Sub :=
 Definition Ab_Reflective_in_Grp@{u p +} : @Reflective Grp@{u p} AbGrp_Sub :=
   @Build_Reflective Grp@{u p} AbGrp_Sub AbGrp_Full AbGrp_reflector AbGrp_adj.
 
-(** ** Readbacks: the unit is the map Mac Lane names *)
+(* 相关说明。 （已译） *)
 
 Example abgrp_reflector_obj@{u p +} (G : Grp@{u p}) :
   `1 (fobj[AbGrp_reflector] G) = Ab_to_GrpOb (AbelianizationOb G)
@@ -157,7 +156,7 @@ Definition abgrp_reflect_iso@{u p +} (G : Sub Grp@{u p} AbGrp_Sub) :
   fobj[AbGrp_reflector] (fobj[Incl Grp@{u p} AbGrp_Sub] G) ≅[AbGrp] G :=
   reflective_counit_iso Ab_Reflective_in_Grp G.
 
-(** ** The adjunction of Abelianize.v, factored through the subcategory *)
+(* * ** The 伴随 Abelianize.v, factored through subcategory （已译） *)
 
 (*
    本节说明 Reflective 相关定义、性质与动机。
@@ -203,8 +202,8 @@ Program Definition Ab_to_AbGrp_Full@{u p +} :
 |}.
 Next Obligation. intros A B h a; simpl; reflexivity. Qed.
 
-(* Every object of the subcategory is, up to the identity function, the
-   image of the [AbObject] read off it. *)
+(* Every 对象 subcategory is, up 恒等 function, the
+ image [AbObject] read off it. （已译） *)
 Program Definition AbGrp_iso@{u p +} (d : Sub Grp@{u p} AbGrp_Sub) :
   Ab_to_AbGrp (Grp_to_AbOb `1 d `2 d) ≅[AbGrp] d := {|
   to   := ({| grp_map := {| morphism := fun a : carrier `1 d => a |} |}; I);
@@ -230,8 +229,8 @@ Definition Ab_AbGrp_Equivalence@{u p +} :
     Ab_to_AbGrp_Full Ab_to_AbGrp_Faithful
     Ab_to_AbGrp_ESO.
 
-(* Abelianize.v's inclusion [Ab_to_Grp] factors as [Ab_to_AbGrp]
-   followed by the inclusion of the subcategory. *)
+(* Abelianize.v's 含入 [Ab_to_Grp] factors [Ab_to_AbGrp]
+ followed 含入 subcategory. （已译） *)
 Example ab_to_grp_factors_obj@{u p +} (A : Ab@{u p}) :
   Incl Grp AbGrp_Sub (Ab_to_AbGrp A) = Ab_to_Grp A := eq_refl.
 
@@ -240,7 +239,7 @@ Example ab_to_grp_factors_fmap@{u p +} (A B : Ab@{u p})
   fmap[Incl Grp AbGrp_Sub] (fmap[Ab_to_AbGrp] f) = fmap[Ab_to_Grp] f
   := eq_refl.
 
-(* As functors the two agree up to [≈], with identity components. *)
+(* As 函子 two agree up [≈], 恒等 components. （已译） *)
 Lemma ab_to_grp_factors@{u p +} :
   Incl Grp@{u p} AbGrp_Sub ◯ Ab_to_AbGrp ≈ Ab_to_Grp.
 Proof.
@@ -248,9 +247,9 @@ Proof.
   intros A B f a; simpl; reflexivity.
 Defined.
 
-(* And the reflector factors as Abelianize.v's left adjoint followed by
-   [Ab_to_AbGrp]: on objects on the nose, on arrows up to [≈] by the
-   uniqueness clause of the universal property. *)
+(* And reflector factors Abelianize.v's 左伴随 followed by
+ [Ab_to_AbGrp]: 对象 nose, arrows up [≈] the
+ uniqueness clause 普遍性质. （已译） *)
 Example abgrp_reflector_factors_obj@{u p +} (G : Grp@{u p}) :
   fobj[AbGrp_reflector] G = fobj[Ab_to_AbGrp] (fobj[Abelianization_Functor] G)
   := eq_refl.
@@ -273,7 +272,7 @@ Proof.
   exact (abgrp_reflector_factors_fmap G H f a).
 Defined.
 
-(** ** Riehl 5.3.ii at this reflection *)
+(* 相关说明。 （已译） *)
 
 Definition AbGrp_IdempotentMonad@{u p +} :
   @IdempotentMonad Grp@{u p} (Incl Grp@{u p} AbGrp_Sub ◯ AbGrp_reflector)
@@ -293,8 +292,8 @@ Proof.
   vm_compute in E; discriminate E.
 Qed.
 
-(* The unit at S₃ merges the commutator of the two generators with the
-   identity... *)
+(* The unit at S₃ merges commutator two generators the
+ 恒等... （已译） *)
 Lemma abgrp_unit_S3_merges@{u +} :
   grp_map (abgrp_unit (S3 : Grp@{u Set})) (gcomm S3 S3_r S3_s)
     ≈ grp_map (abgrp_unit (S3 : Grp@{u Set})) s3_unit.
@@ -311,9 +310,9 @@ Proof.
   exact (proper_morphism (grp_map g) _ _ abgrp_unit_S3_merges).
 Qed.
 
-(* The reflection of S₃ is not the trivial group: exercising the
-   universal property of the NEW universal arrow on the sign character,
-   the mediator separates the reflection from the identity. *)
+(* The reflection S₃ not trivial group: exercising the
+ 普遍性质 NEW 泛箭头 sign character,
+ mediator separates reflection 恒等. （已译） *)
 Definition AbTwo_in_AbGrp@{u p +} : Sub Grp@{u p} AbGrp_Sub :=
   (Ab_to_GrpOb AbTwo; ab_is_abelian AbTwo).
 
@@ -340,9 +339,9 @@ Theorem abgrp_S3_separates@{u +} :
         s3_unit → False.
 Proof. intro H; vm_compute in H; exact H. Qed.
 
-(* The same fact on the reflection's own setoid: the class of s and the
-   class of the identity stay apart in G/[G, G] at S₃, because the
-   mediator above respects that setoid's equality. *)
+(* The same fact reflection's own setoid: class s the
+ class 恒等 stay apart G/[G, G] at S₃, because the
+ mediator above respects setoid's equality. （已译） *)
 Lemma S3_reflection_nontrivial@{u +} :
   @equiv (carrier `1 (fobj[AbGrp_reflector] (S3 : Grp@{u Set}))) _
     S3_s s3_unit → False.

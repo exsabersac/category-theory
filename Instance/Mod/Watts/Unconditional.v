@@ -1,5 +1,5 @@
-(** * Watt's theorem with no hypothesis: every additive T : (R-Mod)^op ⟶ Ab
-      carrying colimits to limits is Hom(−, A) *)
+(* * * Watt's 定理 no 假设: every additive T : (R-Mod)^op ⟶ Ab
+ carrying colimits limits Hom(−, A) （已译） *)
 
 (*
  Book:      Mac Lane, ibid., §V.6 Theorem 3 and Definition 3 — the
@@ -96,7 +96,7 @@ Solve All Obligations with
   (intros;
    first [ constructor; repeat intro; exact I | repeat intro; exact I ]).
 
-(* A diagram of that shape: two arrows out of [G] for each [m : X]. *)
+(* 相关说明。 （已译） *)
 Section MSDiagram.
 
 Universes o h.
@@ -156,7 +156,7 @@ Proof.
     intro i; exact (Hw i ttt).
 Defined.
 
-(** ** 3. The free module on one generator, and evaluation at an element *)
+(* 相关说明。 （已译） *)
 
 Definition ew_Gen@{a c p o x +|
     Set < o, c < o, c < x, p <= a, c <= a, a <= o +}
@@ -168,8 +168,7 @@ Definition ew_g0@{a c p o x +|
   {R : RingObject@{a c p}} : carrier (cmon_setoid (@ew_Gen@{a c p o x} R)) :=
   @fv_gen R unit_setoid_object@{c c} ttt.
 
-(* [m ↦ the homomorphism sending the generator to m]: the free module's own
-   extension, so it needs no choice and computes. *)
+(* 相关说明。 （已译） *)
 Definition ew_ev@{a c p o x +|
     Set < o, c < o, c < x, p <= a, c <= a, a <= o +}
   {R : RingObject@{a c p}} {M : obj[RMod@{o x a p c} R]}
@@ -187,7 +186,7 @@ Example ew_ev_g0@{a c p o x +|
   (m : carrier (cmon_setoid M)) :
   cmon_map (rm_hom (ew_ev@{a c p o x} m)) ew_g0 = m := eq_refl.
 
-(** ** 4. The element-wise solution set at (R-Mod)^op *)
+(* 相关说明。 （已译） *)
 
 Section Covering.
 
@@ -207,8 +206,8 @@ Context (contK : ContinuousFunctor K).
 #[local] Notation Gen := (@ew_Gen@{a c p o x} R).
 #[local] Notation g0 := (@ew_g0@{a c p o x} R).
 
-(* The ONE fixed object: the coproduct of copies of [Gen], one per element
-   of [K Gen], taken from [RMod_Cocomplete_via_GAFT]. *)
+(* The ONE fixed 对象: coproduct copies [Gen], one per element
+ [K Gen], taken [RMod_Cocomplete_via_GAFT]. （已译） *)
 Definition ew_Idx : Type@{c} := carrier (K Gen).
 
 Definition ew_CopD : DiscreteCat@{c c c} ew_Idx ⟶ RMod@{o x a p c} R :=
@@ -225,8 +224,7 @@ Definition ew_Cop : obj[RMod@{o x a p c} R] :=
 Definition ew_inj (i : ew_Idx) : Gen ~{RMod@{o x a p c} R}~> ew_Cop :=
   cone_leg (@limit_cone _ _ _ ew_CopL) i.
 
-(* [K] carries that coproduct to a product, so the tautological family
-   [i ↦ i] is the image of one element [ew_y0] of [K ew_Cop]. *)
+(* 相关说明。 （已译） *)
 Definition ew_y0_ex :
   { w : carrier (K ew_Cop)
   & ∀ i : ew_Idx, @fmap _ _ K ew_Cop Gen (ew_inj i) w ≈ i }.
@@ -249,13 +247,11 @@ Section AtElement.
 
 Context (M : obj[RMod@{o x a p c} R]) (x0 : carrier (K M)).
 
-(* For each m, the element [K(ev m)(x0)] of [K Gen] names a copy of [Gen]
-   inside [ew_Cop]. *)
+(* 相关说明。 （已译） *)
 Definition ew_am (m : carrier (cmon_setoid M)) : ew_Idx :=
   @fmap _ _ K M Gen (ew_ev m) x0.
 
-(* The diagram M ← Gen → ew_Cop, one span per element m of M, and its
-   colimit P. *)
+(* 相关说明。 （已译） *)
 Definition ew_PD :
   MultiSpan@{c} (carrier (cmon_setoid M)) ⟶ RMod@{o x a p c} R :=
   ms_diagram@{o c w} M ew_Cop Gen
@@ -289,8 +285,7 @@ Proof.
            ms_free (ms_gen m) ttt).
 Qed.
 
-(* The one equation the covering rests on: P identifies m with the
-   generator of the copy of [Gen] that [ew_am m] names. *)
+(* 相关说明。 （已译） *)
 Lemma ew_key (m : carrier (cmon_setoid M)) :
   cmon_map (rm_hom ew_pF) (cmon_map (rm_hom (ew_inj (ew_am m))) g0)
     ≈ cmon_map (rm_hom ew_pM) m.
@@ -300,9 +295,7 @@ Proof.
   exact (Equivalence_Transitive _ _ _ H1 (Equivalence_Symmetric _ _ H2)).
 Qed.
 
-(* [K] carries the colimit P to a limit, so the compatible family
-   (x0 at M, ew_y0 at ew_Cop, ew_am m at each copy of Gen) is the image of
-   one element [ew_e] of [K P]. *)
+(* 相关说明。 （已译） *)
 Definition ew_efam (i : MultiSpan@{c} (carrier (cmon_setoid M))) :
   carrier ((K ◯ ew_PD^op) i).
 Proof using contK.
@@ -330,8 +323,7 @@ Definition ew_e : carrier (K ew_P) := projT1 ew_e_ex.
 Lemma ew_e_leg : @fmap _ _ K ew_P M ew_pM ew_e ≈ x0.
 Proof using contK. exact (projT2 ew_e_ex ms_mod). Qed.
 
-(* The member of the solution set: [ew_Cop] modulo the [Prop] kernel of
-   [ew_pF], a [PSubmodule] of the ONE fixed module [ew_Cop]. *)
+(* 相关说明。 （已译） *)
 Definition ew_N : PSubmodule ew_Cop := pker ew_pF.
 
 Definition ew_Q : obj[RMod@{o x a p c} R] := QuotientMod (psm_sub ew_N).
@@ -352,8 +344,7 @@ Proof.
   apply (snd (ab_sub_eq_zero_iff _ _ _)); exact H.
 Qed.
 
-(* The covering map, with NO choice: m ↦ the generator of the copy that
-   [ew_am m] names, read in the quotient. *)
+(* 相关说明。 （已译） *)
 Definition ew_tfun (m : carrier (cmon_setoid M)) :
   carrier (cmon_setoid ew_Cop) :=
   cmon_map (rm_hom (ew_inj (ew_am m))) g0.
@@ -401,8 +392,7 @@ Qed.
 
 End AtElement.
 
-(* The index: a [Prop] submodule of the fixed [ew_Cop] with an element of
-   [K] at the quotient.  It sits at the carrier universe [c]. *)
+(* 相关说明。 （已译） *)
 Definition ew_WIdx : Type@{c} :=
   { N : PSubmodule ew_Cop & carrier (K (QuotientMod (psm_sub N))) }.
 
@@ -420,7 +410,7 @@ Defined.
 
 End Covering.
 
-(** ** 5. Every continuous K : (R-Mod)^op ⟶ Sets is representable *)
+(* 相关说明。 （已译） *)
 
 Definition RModop_continuous_representable@{a c p o x s +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o, c < s +}
@@ -430,7 +420,7 @@ Definition RModop_continuous_representable@{a c p o x s +|
     (Complete_op_of_Cocomplete (RMod_Cocomplete_via_GAFT R))
     (Continuous_PreservesImageLimit contK) (RModop_esols K contK).
 
-(** ** 6. Watt's theorem, contravariant form, with no hypothesis *)
+(* * ** 6. Watt's 定理, contravariant form, no 假设 （已译） *)
 
 Definition watts_theorem_unconditional@{a c p o x b s +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o, c < s, Set < b, c < b +}
@@ -449,8 +439,8 @@ Proof.
            (AbEnriched_op (RMod_AbEnriched R)) T AF Rp).
 Defined.
 
-(* The representing module IS the object the representability theorem
-   produces for [Ab_Forget ◯ T]. *)
+(* The 表示 module IS 对象 representability 定理
+ produces [Ab_Forget ◯ T]. （已译） *)
 Example watts_theorem_unconditional_obj@{a c p o x b s +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o, c < s, Set < b, c < b +}
   {R : RingObject@{a c p}} (T : (RMod@{o x a p c} R)^op ⟶ Ab@{b c})
@@ -464,9 +454,9 @@ Example watts_theorem_unconditional_obj@{a c p o x b s +|
 
 (** ** 7. Non-vacuity *)
 
-(* Every module A gives an instance of the theorem, through
-   Functor/Representable/Additive.v's [CoHomAb_continuous], and the
-   module the theorem returns is isomorphic to A. *)
+(* Every module A gives instance 定理, through
+ Functor/Representable/Additive.v's [CoHomAb_continuous], the
+ module 定理 returns isomorphic A. （已译） *)
 Definition watts_unconditional_CoHomAb_obj@{a c p o x b +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o, Set < b, c < b +}
   {R : RingObject@{a c p}} (A : RMod@{o x a p c} R) :
@@ -486,7 +476,7 @@ Definition watts_unconditional_CoHomAb_obj@{a c p o x b +|
        (continuous_compose (CoHomAb_continuous (RMod_AbEnriched R) A)
           Ab_Forget_creates_continuous)).
 
-(* The set-valued form at the plain hom-functor. *)
+(* The set-valued form at plain hom-函子. （已译） *)
 Definition RModop_hom_representable_obj@{a c p o x s +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o, c < s +}
   {R : RingObject@{a c p}} (A : RMod@{o x a p c} R) :

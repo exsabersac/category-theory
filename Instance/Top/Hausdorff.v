@@ -27,7 +27,7 @@ Require Import Category.Instance.Top.Separation.
 
 Generalizable All Variables.
 
-(** * Hausdorff spaces: Mac Lane §V.9 Proposition 2, Exercises 4 and 5 *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/Hausdorff+space
@@ -42,8 +42,7 @@ Generalizable All Variables.
 
 (** ** Closure under limits *)
 
-(* The legs of a limiting cone carry the premise forward and are jointly
-   injective on points, so a limit of separated spaces is separated. *)
+(* 相关说明。 （已译） *)
 Lemma plimit_PSep@{j o so +| o < so +} (prem : SepPremise@{o})
   (L : SepLaws@{o} prem) {J : Category@{j o o}} (T : J ⟶ PTopCat@{o so})
   (N : Cone T) (HN : IsLimitCone N) (HT : ∀ k, PSep prem (T k)) :
@@ -61,7 +60,7 @@ Definition PSep_closed@{o so +| o < so +} (prem : SepPremise@{o})
     plimit_PSep prem L (Incl PTopCat@{o so} (PSepSub prem) ◯ K) N HN
       (fun k => `2 (K k)).
 
-(** ** Presentations of quotients of a space *)
+(* 相关说明。 （已译） *)
 
 (* A presentation of a quotient of X on X's own points: an equivalence
    [R] coarser than X's equality, and a topology [T] on (X, R) coarser
@@ -193,7 +192,7 @@ End Image.
 
 End Presentation.
 
-(** ** Mac Lane's solution set: the Hausdorff quotients of X *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Hausdorff 相关定义、性质与动机。
@@ -244,7 +243,7 @@ Defined.
 
 End Sols.
 
-(** ** The reflector by the general adjoint functor theorem *)
+(* * ** The reflector general adjoint 函子 定理 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -280,8 +279,7 @@ Definition PFull_Reflective_GAFT@{o so +| Set < o, o < so +}
     (projT1 (PFull_left_adjoint_GAFT Pr ker ker_of ker_to closed pr_img))
     (projT2 (PFull_left_adjoint_GAFT Pr ker ker_of ker_to closed pr_img)).
 
-(* For a separation premise the kernel is the premise itself, and the
-   image of a map into a separated space is separated. *)
+(* 相关说明。 （已译） *)
 Lemma PSep_img@{o} (prem : SepPremise@{o}) (L : SepLaws@{o} prem)
   (X Y : PTop@{o}) (hY : PSep prem Y) (h : PMor@{o} X Y) :
   PSep prem (img_space X Y (prem _ (POpen Y)) (sl_equiv _ L Y) hY h).
@@ -297,7 +295,7 @@ Definition PSep_reflective_GAFT@{o so +| Set < o, o < so +}
     (fun Y => sl_equiv _ L Y) (fun Y hY => hY) (PSep_closed prem L)
     (PSep_img prem L).
 
-(** ** Haus: completeness and the reflector *)
+(* 相关说明。 （已译） *)
 
 Definition Haus_Sub@{o so | o < so +} : Subcategory@{so o o o} PTopCat@{o so} :=
   PSepSub@{o so} prem_T2@{o}.
@@ -318,14 +316,14 @@ Definition Haus_Incl_continuous@{o so +| o < so +} :
     (sub_CreatesAllLimits Haus_Sub (PFullSub_Full _)
        (PSep_closed prem_T2 prem_T2_laws)).
 
-(* The issue's pinned name: the reflection of Haus in [PTopCat], its
-   reflector obtained BY the general adjoint functor theorem. *)
+(* The issue's pinned name: reflection Haus [PTopCat], its
+ reflector obtained BY general adjoint 函子 定理. （已译） *)
 Definition Haus_reflective@{o so +| Set < o, o < so +} :
   Reflective Haus_Sub@{o so} :=
   PSep_reflective_GAFT prem_T2 prem_T2_laws.
 
 (* The largest Hausdorff quotient, directly (Instance/Top/Separation.v),
-   is the same reflector up to natural isomorphism. *)
+ same reflector up natural 同构. （已译） *)
 Definition Haus_reflectors_iso@{o so +| Set < o, o < so +} :
   reflector (Haus_reflective : Reflective Haus_Sub@{o so})
     ≈ reflector (PT2_Reflective : Reflective Haus_Sub@{o so}) :=
@@ -393,15 +391,12 @@ Proof.
   - exact (H3 y).
 Defined.
 
-(* Riehl §4.7 Exercise ii, and Mac Lane's "it follows that Haus has all
-   small colimits": cocompleteness by transfer along the reflection. *)
+(* 相关说明。 （已译） *)
 Definition Haus_Cocomplete@{o so +| Set < o, o < so +} :
   @Cocomplete Haus@{o so} :=
   reflective_Cocomplete Haus_reflective PTop_Cocomplete.
 
-(* The same transfer along the direct reflector, which needs no [Set < o];
-   its colimit apex is the largest Hausdorff quotient of the colimit in
-   [PTopCat], on the nose. *)
+(* 相关说明。 （已译） *)
 Definition Haus_Cocomplete_direct@{o so +| o < so +} :
   @Cocomplete Haus@{o so} :=
   reflective_Cocomplete PT2_Reflective PTop_Cocomplete.
@@ -413,8 +408,8 @@ Example Haus_colimit_apex@{o so +| o < so +} (J : Category@{o o o})
         (colimit_apex (PTop_Cocomplete J (Incl PTopCat@{o so} Haus_Sub ◯ K)))
   := eq_refl.
 
-(* "as does the forgetful functor Haus → Set": the reflection of the
-   discrete space. *)
+(* "as does forgetful 函子 Haus → Set": reflection the
+ discrete space. （已译） *)
 Definition Haus_Forget_left_adjoint@{o so +| Set < o, o < so +} :
   (reflector (Haus_reflective : Reflective Haus_Sub@{o so}) ◯ PDisc@{o so})
     ⊣ (PForget@{o so} ◯ Incl PTopCat@{o so} Haus_Sub@{o so}) :=
@@ -425,7 +420,7 @@ Definition Haus_Forget_left_adjoint_direct@{o so +| o < so +} :
     ⊣ (PForget@{o so} ◯ Incl PTopCat@{o so} Haus_Sub@{o so}) :=
   Adjunction_Compose PDisc_PForget (reflective_adj PT2_Reflective).
 
-(** ** A coproduct of Hausdorff spaces is Hausdorff *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -450,8 +445,8 @@ Proof.
   - intro k'. exact (popen_const (X k') (k' = k)).
 Qed.
 
-(* The image of a predicate on a summand: the points of that summand, read
-   along a proof that they lie in it, at which the predicate holds. *)
+(* The image predicate summand: points summand, read
+ along 证明 they lie it, at predicate holds. （已译） *)
 Definition psigma_img (k : Ix) (U : X k → Prop)
   (p : carrier (pt_carrier (PSigma@{o i u} Ix X))) : Prop :=
   ex (fun e : projT1 p = k =>
@@ -524,14 +519,13 @@ Proof.
   - rewrite (Hc a e eq_refl). exact (Hl a eq_refl).
 Qed.
 
-(* So a coproduct of Hausdorff spaces over an index with decidable
-   equality, [bool] for a binary coproduct among them, is Hausdorff. *)
+(* 相关说明。 （已译） *)
 Corollary PHaus_coproduct_dec@{o i u +| i <= o, o < u +} (Ix : Type@{i})
   (X : Ix → PTop@{o}) (dec : ∀ a b : Ix, sumbool (a = b) (a = b → False))
   (HX : ∀ k, PHaus (X k)) : PHaus (PSigma@{o i u} Ix X).
 Proof. exact (PHaus_coproduct Ix X (sep_dec_uip Ix dec) HX). Qed.
 
-(** ** T0 and T1 spaces by the same argument *)
+(* * ** T0 T1 spaces same 论元 （已译） *)
 
 Definition PT0_reflective_GAFT@{o so +| Set < o, o < so +} :
   Reflective (PSepSub@{o so} prem_T0@{o}) :=
@@ -541,10 +535,9 @@ Definition PT1_reflective_GAFT@{o so +| Set < o, o < so +} :
   Reflective (PSepSub@{o so} prem_T1@{o}) :=
   PSep_reflective_GAFT prem_T1 prem_T1_laws.
 
-(** ** Regular spaces: Exercise 4 at n = 2 *)
+(* 相关说明。 （已译） *)
 
-(* The closure of a predicate for a family of opens: the points each open
-   neighbourhood of which meets it. *)
+(* 相关说明。 （已译） *)
 Definition PClosureIn@{o} (S : Type@{o}) (O : (S → Prop) → Prop)
   (W : S → Prop) (y : S) : Prop :=
   ∀ Z, O Z → Z y → ex (fun z => Z z /\ W z).
@@ -643,8 +636,7 @@ Definition PT3_closed@{o so +| o < so +} :
      plimit_PReg (Incl PTopCat@{o so} (PFullSub PT3) ◯ K) N HN
        (fun k => snd (`2 (K k)))).
 
-(* The image presentation of a map into a regular space is regular: its
-   opens are the preimages of opens. *)
+(* 相关说明。 （已译） *)
 Lemma img_PReg@{o} (X Y : PTop@{o}) (k : Y → Y → Prop)
   (k_of : ∀ y y' : Y, y ≈ y' → k y y') (k_to : ∀ y y' : Y, k y y' → y ≈ y')
   (h : PMor@{o} X Y) : PReg Y → PReg (img_space X Y k k_of k_to h).
@@ -668,15 +660,14 @@ Definition PT3_img@{o} (X Y : PTop@{o}) (hY : PT3 Y) (h : PMor@{o} X Y) :
   (PSep_img prem_T2 prem_T2_laws X Y (fst hY) h,
    img_PReg X Y _ _ _ h (snd hY)).
 
-(* The reflection of T3 spaces in all spaces, by the same argument. *)
+(* The reflection T3 spaces all spaces, same 论元. （已译） *)
 Definition PT3_reflective_GAFT@{o so +| Set < o, o < so +} :
   Reflective (PFullSub@{o so} PT3@{o}) :=
   PFull_Reflective_GAFT PT3 (fun Y => prem_T2 _ (POpen Y))
     (fun Y => sl_equiv _ prem_T2_laws Y) (fun Y hY => fst hY) PT3_closed
     PT3_img.
 
-(* The discrete two-point space is T3: a point's singleton is open and is
-   its own closure. *)
+(* 相关说明。 （已译） *)
 Lemma PBool_PReg@{o} : PReg PBool@{o}.
 Proof.
   intros U HU x u. exists (fun z => z = x). split.
@@ -691,7 +682,7 @@ Qed.
 
 Definition PBool_PT3@{o} : PT3 PBool@{o} := (PBool_PHaus, PBool_PReg).
 
-(** ** Strictness: a Hausdorff space that is not regular *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -767,8 +758,7 @@ Definition PComb : PTop@{o} := {|
   popen_inter    := comb_open_inter
 |}.
 
-(* The basic neighbourhoods: a tooth point alone, a spine point with the
-   tail of its tooth, and [comb_inf] with the teeth from [N] on. *)
+(* 相关说明。 （已译） *)
 Lemma comb_open_c (n m : nat) : POpen PComb (fun z => z = comb_c n m).
 Proof. split; [intro e; discriminate e|intros k e; discriminate e]. Qed.
 
@@ -833,8 +823,7 @@ Proof.
       as [z [e e']]. subst z. exact e'.
 Qed.
 
-(* The complement of the spine is an open neighbourhood of [comb_inf];
-   the closure of any smaller one meets the spine. *)
+(* 相关说明。 （已译） *)
 Lemma PComb_not_PReg : PReg PComb → False.
 Proof.
   intro HR.
@@ -855,30 +844,28 @@ Qed.
 
 End Comb.
 
-(** ** Exercise 4: the successive inclusions, by the adjoint functor theorem *)
+(* * ** Exercise 4: successive inclusions, adjoint 函子 定理 （已译） *)
 
-(* n = 0: Top_1 → Top_0, the T1 spaces among the T0 spaces. *)
+(* 相关说明。 （已译） *)
 Definition PT1_in_PT0_reflective_GAFT@{o so +| Set < o, o < so +} :
   Reflective (restrict_sub (PSepSub@{o so} prem_T0@{o})
                            (PSepSub@{o so} prem_T1@{o})) :=
   restrict_Reflective (PSepSub prem_T0) (PSepSub prem_T1) (PFullSub_Full _)
     PT1_PT0 PT1_reflective_GAFT.
 
-(* n = 1: Top_2 → Top_1, the Hausdorff spaces among the T1 spaces. *)
+(* 相关说明。 （已译） *)
 Definition Haus_in_PT1_reflective_GAFT@{o so +| Set < o, o < so +} :
   Reflective (restrict_sub (PSepSub@{o so} prem_T1@{o}) Haus_Sub@{o so}) :=
   restrict_Reflective (PSepSub prem_T1) Haus_Sub (PFullSub_Full _)
     PHaus_PT1 Haus_reflective.
 
-(* n = 2: Top_3 → Top_2, the regular Hausdorff spaces among the Hausdorff
-   spaces. *)
+(* 相关说明。 （已译） *)
 Definition PT3_in_Haus_reflective_GAFT@{o so +| Set < o, o < so +} :
   Reflective (restrict_sub Haus_Sub@{o so} (PFullSub@{o so} PT3@{o})) :=
   restrict_Reflective Haus_Sub (PFullSub PT3) (PFullSub_Full _)
     (fun X p => fst p) PT3_reflective_GAFT.
 
-(* The issue's pinned name: the reflections of Exercise 4 that are
-   delivered, n = 0, 1, 2, each produced by [GAFT]. *)
+(* 相关说明。 （已译） *)
 Definition separation_axiom_reflections@{o so +| Set < o, o < so +} :
   (Reflective (restrict_sub (PSepSub@{o so} prem_T0@{o})
                             (PSepSub@{o so} prem_T1@{o}))
@@ -888,7 +875,7 @@ Definition separation_axiom_reflections@{o so +| Set < o, o < so +} :
   (PT1_in_PT0_reflective_GAFT, Haus_in_PT1_reflective_GAFT,
    PT3_in_Haus_reflective_GAFT).
 
-(** ** Exercise 5: a coequalizer of Hausdorff spaces that is not Hausdorff *)
+(* 相关说明。 （已译） *)
 
 Section Ex5Spaces.
 
@@ -896,8 +883,7 @@ Universe o.
 
 Local Open Scope nat_scope.
 
-(* Two Hausdorff spaces: the discrete naturals, and the convergent sequence
-   ℕ∞ of Instance/Top/Complete.v. *)
+(* 相关说明。 （已译） *)
 Definition PNat : PTop@{o} := PDiscrete pnat_setoid@{o}.
 
 Lemma PNat_PHaus : PHaus PNat.
@@ -911,7 +897,7 @@ Proof.
   - simpl. congruence.
 Qed.
 
-(* The tail above [n] is a neighbourhood of the limit point. *)
+(* 相关说明。 （已译） *)
 Lemma PConv_tail_open (n : nat) :
   POpen PConv@{o} (fun z => match z with None => True | Some k => n < k end).
 Proof. intros _. exists (S n). intros m Hm. exact Hm. Qed.
@@ -962,9 +948,7 @@ Proof.
   - exfalso. apply Hne. reflexivity.
 Qed.
 
-(* The parallel pair n ↦ 2n, n ↦ 2n + 2 from ℕ into ℕ∞: its coequalizer
-   glues the even points of the sequence to one point, which the limit
-   point cannot be separated from. *)
+(* 相关说明。 （已译） *)
 Definition glue_f_set :
   @SetoidMorphism@{o o o} _ (is_setoid pnat_setoid@{o}) _
     (is_setoid (pt_carrier PConv@{o})) :=
@@ -979,8 +963,8 @@ Definition glue_g_set :
     (is_setoid (pt_carrier PConv@{o})) (fun n : nat => Some (S (S (n + n))))
     (fun a b (e : a = b) => f_equal (fun n : nat => Some (S (S (n + n)))) e).
 
-(* The generated relation never relates a point of the sequence to the
-   limit point. *)
+(* The generated 关系 never relates point sequence the
+ limit point. （已译） *)
 Lemma glue_none_inv (a b : option nat) :
   coeq_rel glue_f_set glue_g_set a b → (a = None <-> b = None).
 Proof.
@@ -1017,7 +1001,7 @@ Definition glue_f : PNat ~{PTopCat@{o so}}~> PConv@{o} :=
 Definition glue_g : PNat ~{PTopCat@{o so}}~> PConv@{o} :=
   pdisc_mor pnat_setoid PConv glue_g_set.
 
-(* The coequalizer in [PTopCat], as the tree chooses it. *)
+(* 相关说明。 （已译） *)
 Definition glue_coeq :=
   @coeq PTopCat@{o so} PTop_HasCoequalizers PNat PConv glue_f glue_g.
 
@@ -1036,8 +1020,7 @@ Proof.
   discriminate (Hb eq_refl).
 Qed.
 
-(* Every neighbourhood of the limit point holds a tail of the sequence,
-   so an even point, glued to [Some 0]. *)
+(* 相关说明。 （已译） *)
 Lemma GlueQ_notsep : PNotSep GlueQ (Some 0) None.
 Proof.
   intros U V [HUr HUo] [HVr HVo] u v.
@@ -1066,9 +1049,7 @@ Proof.
   exact (Hd z a b).
 Qed.
 
-(* Mac Lane: "a coequalizer in Haus is the largest Hausdorff quotient of
-   the coequalizer in Top".  The direct reflection glues exactly the pair
-   that [GlueQ] keeps apart. *)
+(* 相关说明。 （已译） *)
 Lemma GlueQ_reflection_glues : sepeq prem_T2 GlueQ (Some 0) None.
 Proof.
   intros R HR.

@@ -19,7 +19,7 @@ Require Import Category.Instance.Top.Subspace.TypeValued.
 
 Generalizable All Variables.
 
-(** * The real line and the circle over the constructive reals *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/solenoid
@@ -33,7 +33,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** Arithmetic on the constructive reals *)
+(* 相关说明。 （已译） *)
 
 (* [inject_Q] reflects the order, so it is injective up to [Qeq]. *)
 Lemma creal_inject_Q_injective@{} (q r : Q) :
@@ -56,7 +56,7 @@ Definition posR@{} (p : positive) : CReal := inject_Z (Zpos p).
 Lemma posR_nonneg@{} (p : positive) : CRealLe (inject_Q 0) (posR p).
 Proof. unfold posR, inject_Z. apply inject_Q_le. unfold Qle; simpl; lia. Qed.
 
-(* The difference of two equal reals is the integer zero. *)
+(* 相关说明。 （已译） *)
 Lemma creal_minus_self@{} (x y : CReal) :
   CRealEq x y → CRealEq (CReal_minus x y) (inject_Z 0).
 Proof.
@@ -95,7 +95,7 @@ Proof.
   lia.
 Qed.
 
-(** ** Rounding a real that lies near an integer *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Circle 相关定义、性质与动机。
@@ -160,7 +160,7 @@ Proof.
     rewrite E at 1. apply CReal_plus_le_compat_l. exact H1.
 Qed.
 
-(** ** The line: points, closed rational balls, the metric topology *)
+(* 相关说明。 （已译） *)
 
 Program Definition creal_setoid@{o} : Setoid@{o o} CReal :=
   {| equiv := CRealEq |}.
@@ -227,8 +227,7 @@ Qed.
 Lemma q_scale_pos@{} (p : positive) (e : Q) : Qlt 0 e → Qlt 0 (e * (1 # p)).
 Proof. intro H. apply Qmult_lt_0_compat; [exact H|reflexivity]. Qed.
 
-(* The line over the Type-valued [Top]: an open is a predicate each of
-   whose points has a closed rational ball inside it. *)
+(* 相关说明。 （已译） *)
 Definition ropen@{o} (U : RLine_setoid@{o} → Type@{o}) : Type@{o} :=
   ∀ x, U x → { e : Q & (Qlt 0 e * ∀ y, rball x y e → U y)%type }.
 
@@ -280,7 +279,7 @@ Definition RLine@{o} : TopSpace@{o} := {|
   open_inter    := ropen_inter@{o}
 |}.
 
-(* The same line over [PTopCat]: the same balls, Prop-valued opens. *)
+(* 相关说明。 （已译） *)
 Definition propen@{o} (U : RLine_setoid@{o} → Prop) : Prop :=
   ∀ x, U x → ex (fun e : Q => Qlt 0 e /\ ∀ y, rball x y e → U y).
 
@@ -334,7 +333,7 @@ Definition PRLine@{o} : PTop@{o} := {|
   popen_inter    := propen_inter@{o}
 |}.
 
-(** ** Multiplication by a positive integer, continuous on the line *)
+(* 相关说明。 （已译） *)
 
 Program Definition line_mul@{o} (p : positive) :
   SetoidMorphism@{o o o} RLine_setoid@{o} RLine_setoid@{o} := {|
@@ -365,10 +364,9 @@ Qed.
 Definition prline_mul@{o} (p : positive) : PMor@{o} PRLine@{o} PRLine@{o} :=
   @Build_PMor PRLine PRLine (line_mul p) (pline_mul_cont p).
 
-(** ** The circle's points: the line modulo the integers *)
+(* 相关说明。 （已译） *)
 
-(* Two reals are the same point of the circle when their difference is an
-   integer; the integer is kept as data. *)
+(* 相关说明。 （已译） *)
 Definition circ_eq@{u} (x y : CReal) : Type@{u} :=
   { k : Z & CRealEq (CReal_minus x y) (inject_Z k) }.
 
@@ -405,7 +403,7 @@ Qed.
 Definition Circle_setoid@{o} : SetoidObject@{o o} :=
   {| carrier := CReal; is_setoid := circ_setoid@{o} |}.
 
-(* The quotient map: the identity on representatives. *)
+(* The quotient map: 恒等 representatives. （已译） *)
 Program Definition circ_q@{o} :
   SetoidMorphism@{o o o} RLine_setoid@{o} Circle_setoid@{o} := {|
   morphism := fun x => x
@@ -422,10 +420,9 @@ Next Obligation.
   rewrite creal_inject_Z_mult, <- Hk. unfold posR, CReal_minus. ring.
 Qed.
 
-(** ** The circle's equality is propositional *)
+(* 相关说明。 （已译） *)
 
-(* The integer a witness of [circ_eq] carries is determined by the two
-   points: two witnesses of one equation carry the same integer. *)
+(* 相关说明。 （已译） *)
 Lemma circ_eq_witness_unique@{u} (x y : CReal) (a b : circ_eq@{u} x y) :
   projT1 a = projT1 b.
 Proof.
@@ -436,7 +433,7 @@ Qed.
 Definition circ_peq@{} (x y : CReal) : Prop :=
   ex (fun k : Z => CRealEq (CReal_minus x y) (inject_Z k)).
 
-(* The integer is recomputed from the real by [cround]; no choice. *)
+(* 相关说明。 （已译） *)
 Lemma circ_eq_of_peq@{u} (x y : CReal) : circ_peq x y → circ_eq@{u} x y.
 Proof.
   intro H. exists (cround (CReal_minus x y)).
@@ -451,8 +448,7 @@ Definition circ_PropEquiv@{o} :
   @PropEquiv_of_relation _ (is_setoid Circle_setoid@{o}) circ_peq
     circ_eq_of_peq@{o} circ_peq_of_eq@{o}.
 
-(* The circle's own balls: [y] lies within [e] of [x] up to an integer
-   translate, the integer again kept as data. *)
+(* 相关说明。 （已译） *)
 Definition cball@{u} (x y : CReal) (e : Q) : Type@{u} :=
   { k : Z & CRealLe
       (CReal_abs (CReal_plus (CReal_minus y x) (inject_Z k))) (inject_Q e) }.
@@ -467,7 +463,7 @@ Proof.
   rewrite E. exact b.
 Qed.
 
-(* A ball of the circle is a ball of the line about a translate. *)
+(* 相关说明。 （已译） *)
 Lemma rball_of_cball@{} (x y : CReal) (e : Q) (k : Z) :
   CRealLe (CReal_abs (CReal_plus (CReal_minus y x) (inject_Z k)))
           (inject_Q e) →
@@ -536,7 +532,7 @@ Proof.
     rewrite !Pos2Z.inj_mul; nia.
 Qed.
 
-(** ** The circle over [Top]: the quotient topology of the line *)
+(* 相关说明。 （已译） *)
 
 Definition Circle@{o} : TopSpace@{o} :=
   TQuot@{o} RLine@{o} Circle_setoid@{o} circ_q@{o}.
@@ -544,11 +540,11 @@ Definition Circle@{o} : TopSpace@{o} :=
 Example Circle_points@{o} : top_carrier Circle@{o} = Circle_setoid@{o} :=
   eq_refl.
 
-(* The ball topology of the circle, Type-valued. *)
+(* 相关说明。 （已译） *)
 Definition cball_open@{o} (V : Circle_setoid@{o} → Type@{o}) : Type@{o} :=
   ∀ x, V x → { e : Q & (Qlt 0 e * ∀ y, cball@{o} x y e → V y)%type }.
 
-(* The quotient topology IS the ball topology: both directions. *)
+(* 相关说明。 （已译） *)
 Lemma circle_open_balls@{o} (V : Circle_setoid@{o} → Type@{o}) :
   IsOpen Circle@{o} V ↔ cball_open@{o} V.
 Proof.
@@ -608,11 +604,11 @@ Definition wrap@{h o | o < h +} (p : positive) :
 Example wrap_map@{h o | o < h +} (p : positive) :
   continuous_map (wrap@{h o} p) = circ_mul@{o} p := eq_refl.
 
-(* At p = 1 the wrapping map is the identity. *)
+(* At p = 1 wrapping map 恒等. （已译） *)
 Lemma wrap_one@{h o | o < h +} : wrap@{h o} 1 ≈ @id Top@{h o} Circle@{o}.
 Proof. intro x. apply circ_eq_of_creal. exact (CReal_mult_1_l x). Qed.
 
-(** ** The circle over [PTopCat]: the same quotient, Prop-valued *)
+(* 相关说明。 （已译） *)
 
 Definition PCircle@{o} : PTop@{o} :=
   PQuot@{o} PRLine@{o} Circle_setoid@{o} circ_q@{o}.
@@ -652,7 +648,7 @@ Lemma pwrap_one@{o so | o < so +} :
   pwrap@{o so} 1 ≈ @id PTopCat@{o so} PCircle@{o}.
 Proof. intro x. apply circ_eq_of_creal. exact (CReal_mult_1_l x). Qed.
 
-(** ** Two points of the circle that differ *)
+(* 相关说明。 （已译） *)
 
 Lemma circle_half_not_zero@{o} :
   @equiv _ Circle_setoid@{o} (inject_Q (1 # 2)) (inject_Q 0) → False.

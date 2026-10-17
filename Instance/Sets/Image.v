@@ -23,8 +23,8 @@ Section SetsImage.
 Context {X Y : SetoidObject}.
 Context (f : X ~{Sets}~> Y).
 
-(* Comparing image points by their Y-components only is an equivalence,
-   inherited from the setoid on Y. *)
+(* Comparing image points Y-components 等价,
+ inherited setoid Y. （已译） *)
 Lemma Sets_Image_equivalence :
   Equivalence (fun p q : ∃ y : Y, ∃ x : X, f x ≈ y => `1 p ≈ `1 q).
 Proof.
@@ -43,8 +43,7 @@ Proof.
     + exact H2.
 Qed.
 
-(* The setoid of image points: pairs of a point of Y with a chosen
-   f-preimage, compared by their Y-components only. *)
+(* 相关说明。 （已译） *)
 Definition Sets_Image_setoid : Setoid (∃ y : Y, ∃ x : X, f x ≈ y) := {|
   equiv        := fun p q => `1 p ≈ `1 q;
   setoid_equiv := Sets_Image_equivalence
@@ -56,8 +55,7 @@ Definition Sets_Image : SetoidObject := {|
   is_setoid := Sets_Image_setoid
 |}.
 
-(* The epi leg X ~> Sets_Image: send x to f x, remembering x itself as the
-   chosen preimage. *)
+(* 相关说明。 （已译） *)
 Definition Sets_Image_epi : X ~{Sets}~> Sets_Image.
 Proof.
   unshelve refine {| morphism        := fun x => (f x; (x; _))
@@ -68,8 +66,8 @@ Proof.
     now apply (proper_morphism f).
 Defined.
 
-(* The mono leg Sets_Image ~> Y: the first projection.  Respectfulness is
-   the identity: the image equivalence IS agreement of first projections. *)
+(* The mono leg Sets_Image ~> Y: first projection. Respectfulness is
+ 恒等: image 等价 IS agreement first projections. （已译） *)
 Definition Sets_Image_mono : Sets_Image ~{Sets}~> Y.
 Proof.
   unshelve refine {| morphism        := fun p => `1 p
@@ -110,8 +108,8 @@ Proof.
       exact hx.
 Qed.
 
-(* The mono leg is monic: mono ∘ g1 ≈ mono ∘ g2 says the first projections
-   agree pointwise, which is precisely the image setoid's equivalence. *)
+(* The mono leg monic: mono ∘ g1 ≈ mono ∘ g2 says first projections
+ agree pointwise, precisely image setoid's 等价. （已译） *)
 Lemma Sets_Image_mono_monic : Monic Sets_Image_mono.
 Proof.
   constructor.

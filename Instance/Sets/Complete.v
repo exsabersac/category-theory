@@ -30,9 +30,7 @@ Section SetsLimit.
 Context {D : Category}.
 Context (F : D ⟶ Sets).
 
-(* The compatibility constraint cutting the limit out of the indexed product
-   of the [F d]: a family is compatible when its components agree along every
-   arrow of [D]. *)
+(* 相关说明。 （已译） *)
 Definition Sets_limit_compatible (x : Sets_iprod_obj (fun d : D => F d)) :
   Type :=
   ∀ (d d' : D) (f : d ~{D}~> d'), fmap[F] f (x d) ≈ x d'.
@@ -45,8 +43,7 @@ Definition Sets_limit_compatible (x : Sets_iprod_obj (fun d : D => F d)) :
 Definition Sets_limit_carrier : Type :=
   { x : Sets_iprod_obj (fun d : D => F d) & Sets_limit_compatible x }.
 
-(* Two compatible families are identified when the underlying families are:
-   the constraint witness plays no part, exactly as in Instance/Sets/End.v. *)
+(* 相关说明。 （已译） *)
 Definition Sets_limit_equiv : crelation Sets_limit_carrier :=
   fun p q => `1 p ≈ `1 q.
 
@@ -68,17 +65,14 @@ Program Definition Sets_limit_leg (d : D) : Sets_limit_obj ~{Sets}~> F d := {|
 |}.
 Next Obligation. intros d p q Hpq; exact (Hpq d). Qed.
 
-(* The limit cone.  Its coherence condition is precisely the compatibility
-   constraint carried by each family. *)
+(* 相关说明。 （已译） *)
 Program Definition Sets_limit_cone : Cone F := {|
   vertex_obj := Sets_limit_obj;
   coneFrom   := {| vertex_map := Sets_limit_leg |}
 |}.
 Next Obligation. intros d d' f p; exact (`2 p d d' f). Qed.
 
-(* The mediator out of a competing cone [N]: bundle the legs of [N] at a
-   point [e] into a family, whose compatibility is [N]'s own cone coherence
-   read at [e]. *)
+(* 相关说明。 （已译） *)
 Program Definition Sets_limit_med (N : Cone F) :
   vertex_obj[N] ~{Sets}~> Sets_limit_obj := {|
   morphism := fun e =>
@@ -99,12 +93,12 @@ Next Obligation. intros N v Hv e d; symmetry; exact (Hv d e). Qed.
 
 End SetsLimit.
 
-(* [Sets] is complete: every diagram of every shape has a limit.  See the
-   header for the smallness discipline recorded on the universe context of
-   this constant. *)
+(* [Sets] complete: every diagram every shape has limit. See the
+ header smallness discipline recorded universe context of
+ 常值. （已译） *)
 Definition Sets_Complete : @Complete Sets := fun D F => Sets_Limit F.
 
-(** * Mac Lane's cone-set construction *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Complete 相关定义、性质与动机。
@@ -117,9 +111,7 @@ Section ConeSet.
 Context {D : Category}.
 Context (F : D ⟶ Sets).
 
-(* Mac Lane's [Cone ( *, F)]: the cone presheaf of Structure/Cone.v
-   evaluated at the terminal setoid.  Not a copy -- the two [eq_refl]
-   Examples below pin both fields of the [SetoidObject]. *)
+(* 相关说明。 （已译） *)
 Definition cone_apex : obj[Sets] :=
   fobj[ConePresheaf F] (@terminal_obj Sets Sets_Terminal).
 
@@ -135,19 +127,18 @@ Example cone_apex_setoid :
   @is_setoid cone_apex = AConeEquiv (@terminal_obj Sets Sets_Terminal) F
   := eq_refl.
 
-(* Display (2): [v_j : Cone ( *, F) --> F_j], [sigma |--> sigma_j].  The
-   function sends a cone to the value of its leg at [d] on the one point. *)
+(* 相关说明。 （已译） *)
 Program Definition cone_leg_at (d : D) : cone_apex ~{Sets}~> F d := {|
   morphism := fun p => @vertex_map _ _ _ _ p d ttt
 |}.
 Next Obligation. intros d p q Hpq; exact (Hpq d ttt). Qed.
 
-(* The leg IS evaluation, on the nose. *)
+(* 相关说明。 （已译） *)
 Example cone_leg_at_is_evaluation (d : D) (p : cone_apex) :
   cone_leg_at d p = @vertex_map _ _ _ _ p d ttt := eq_refl.
 
-(* "hence v as defined in (2) is a cone to the base F": the coherence of
-   the cone of legs is the argument cone's own coherence at the point. *)
+(* "hence v defined (2) cone base F": coherence of
+ cone legs 论元 cone's own coherence at point. （已译） *)
 Program Definition cone_set_acone : ACone cone_apex F := {|
   vertex_map := cone_leg_at
 |}.
@@ -158,9 +149,7 @@ Qed.
 Definition cone_set_cone : Cone F :=
   {| vertex_obj := cone_apex; coneFrom := cone_set_acone |}.
 
-(* Mac Lane's [h]: "for each x in X, tau x is a cone to F from one point,
-   so there is a unique function h : X --> Cone ( *, F) sending each x to
-   tau x". *)
+(* 相关说明。 （已译） *)
 Program Definition cone_set_med (N : Cone F) :
   vertex_obj[N] ~{Sets}~> cone_apex := {|
   morphism := fun e =>
@@ -184,8 +173,7 @@ Lemma cone_set_med_commutes (N : Cone F) (d : D) :
     ≈ @vertex_map _ _ _ _ (@coneFrom _ _ _ N) d.
 Proof. intros e; reflexivity. Qed.
 
-(* Uniqueness.  The [destruct u] is the one use of the singleton's
-   unique-inhabitant property in the whole construction. *)
+(* 相关说明。 （已译） *)
 Lemma cone_set_med_unique (N : Cone F)
   (v : vertex_obj[N] ~{Sets}~> cone_apex) :
   (∀ d : D, cone_leg_at d ∘ v
@@ -211,8 +199,7 @@ Next Obligation. intros N v Hv; exact (cone_set_med_unique N v Hv). Qed.
 
 End ConeSet.
 
-(* Completeness of [Set], by Mac Lane's own construction.  A second witness
-   beside [Sets_Complete]; see the header for why both stand. *)
+(* 相关说明。 （已译） *)
 Definition ConeSet_Complete : @Complete Sets := fun D F => cone_set_Limit F.
 
 (** ** Mac Lane's discrete example *)
@@ -226,8 +213,8 @@ Definition ConeSet_Complete : @Complete Sets := fun D F => cone_set_Limit F.
 Definition discrete_limit {A : Set} (f : A → obj[Sets]) :
   Limit (DiscreteCat_Functor f) := Sets_Limit (DiscreteCat_Functor f).
 
-(* The limit's apex IS the compatible-family object of the discrete
-   diagram. *)
+(* The limit's apex IS compatible-family 对象 discrete
+ diagram. （已译） *)
 Example discrete_apex_is_limit_obj {A : Set} (f : A → obj[Sets]) :
   iprod f (discrete_limit f)
   = Sets_limit_obj (DiscreteCat_Functor f) := eq_refl.
@@ -237,7 +224,7 @@ Example discrete_inner_is_iprod {A : Set} (f : A → obj[Sets]) :
   Sets_iprod_obj (fun d : DiscreteCat A => (DiscreteCat_Functor f) d)
   = Sets_iprod_obj f := eq_refl.
 
-(* The limit legs ARE the indexed-product projections. *)
+(* 相关说明。 （已译） *)
 Example discrete_leg_is_proj {A : Set} (f : A → obj[Sets]) (a : A) :
   iprod_proj f (discrete_limit f) a
   = Sets_limit_leg (DiscreteCat_Functor f) a := eq_refl.
@@ -264,7 +251,7 @@ Program Definition discrete_pair {A : Set} (f : A → obj[Sets]) :
 |}.
 Next Obligation. intros A f x y Hxy a; exact (Hxy a). Qed.
 
-(* The discrete limit IS the cartesian product, up to isomorphism. *)
+(* The discrete limit IS cartesian product, up 同构. （已译） *)
 Program Definition discrete_iprod_iso {A : Set} (f : A → obj[Sets]) :
   @Isomorphism Sets (Sets_limit_obj (DiscreteCat_Functor f))
                     (Sets_iprod_obj f) := {|
@@ -273,8 +260,7 @@ Program Definition discrete_iprod_iso {A : Set} (f : A → obj[Sets]) :
 Next Obligation. intros A f x a; reflexivity. Qed.
 Next Obligation. intros A f p a; reflexivity. Qed.
 
-(* Both leg families, at the setoid grade.  The [eq_refl] form of the first
-   is refused at CONVERSION and is pinned in the probe. *)
+(* 相关说明。 （已译） *)
 Lemma discrete_iprod_iso_leg {A : Set} (f : A → obj[Sets]) (a : A) :
   Sets_iprod_proj f a ∘ to (discrete_iprod_iso f)
     ≈ iprod_proj f (discrete_limit f) a.

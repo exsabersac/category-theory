@@ -9,7 +9,7 @@ Set Equations With UIP.
 
 Generalizable All Variables.
 
-(** Type-indexed logical predicates and relations for the STLC. *)
+(** 本节：Type-indexed logical predicates relations STLC. （已译） *)
 
 (*
    本文件给出 λ 演算相关实例。
@@ -25,7 +25,7 @@ Context {Γ : Env}.
 
 Variable P : ∀ {τ}, Exp Γ τ → Type.
 
-(** [ExpP] lifts the base predicate [P] type-directed through the syntax. *)
+(** 本节：[ExpP] lifts base predicate [P] type-directed through syntax. （已译） *)
 Equations ExpP `(e : Exp Γ τ) : Type :=
   ExpP (τ:=_ ⟶ _) e := P e ∧ (∀ x, ExpP x → ExpP (APP e x));
   ExpP (τ:=_ × _) e := P e ∧ ExpP (Fst e) ∧ ExpP (Snd e);
@@ -40,14 +40,13 @@ Inductive SubP : ∀ {Γ'}, Sub Γ Γ' → Type :=
 
 Derive Signature for SubP.
 
-(* The base predicate is the head component at every type (CR1-style
-   extraction): reducibility implies [P]. *)
+(* 相关说明。 （已译） *)
 Lemma ExpP_P {τ} {e : Γ ⊢ τ} : ExpP e → P e.
 Proof. intros; induction τ; simpl in *; simp ExpP in X; now reduce. Qed.
 
 Variable R : ∀ {τ}, Exp Γ τ → Exp Γ τ → Type.
 
-(** [ExpR] is the binary analogue of [ExpP], lifting the base relation [R]. *)
+(** [ExpR] binary analogue [ExpP], lifting base 关系 [R]. （已译） *)
 Equations ExpR {τ} (e1 e2 : Exp Γ τ) : Type :=
   ExpR (τ:=_ ⟶ _) f1 f2 :=
     R f1 f2 ∧ (∀ x1 x2, ExpR x1 x2 → ExpR (APP f1 x1) (APP f2 x2));
@@ -55,8 +54,8 @@ Equations ExpR {τ} (e1 e2 : Exp Γ τ) : Type :=
     R e1 e2 ∧ ExpR (Fst e1) (Fst e2) ∧ ExpR (Snd e1) (Snd e2);
   ExpR e1 e2 := R e1 e2.
 
-(* The base relation is the head component at every type: relatedness implies
-   [R]. *)
+(* The base 关系 head component at every type: relatedness implies
+ [R]. （已译） *)
 Lemma ExpR_R {τ} {e1 e2 : Γ ⊢ τ} : ExpR e1 e2 → R e1 e2.
 Proof. intros; induction τ; simpl in *; simp ExpR in X; now reduce. Qed.
 

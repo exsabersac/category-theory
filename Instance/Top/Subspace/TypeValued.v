@@ -11,7 +11,7 @@ Require Import Category.Instance.Top.Forgetful.
 
 Generalizable All Variables.
 
-(** * Subspaces and quotients over the Type-valued [Top] *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/subspace+topology
@@ -36,7 +36,7 @@ Proof.
   - exact (open_proper Y U HU (g x) (f x) (symmetry (Hfg x)) u).
 Qed.
 
-(** ** The quotient topology, at the points' universe *)
+(* 相关说明。 （已译） *)
 
 Section TopQuotient.
 
@@ -114,8 +114,7 @@ Proof.
     + exact (Hc W HW).
 Qed.
 
-(* The book's form: a continuous [f : X → Z] whose underlying function
-   factors as [k ∘ q] has [k] continuous out of the quotient. *)
+(* 相关说明。 （已译） *)
 Definition tquot_desc (Z : TopSpace@{o}) (f : ContinuousMorphism X Z)
   (k : SetoidMorphism@{o o o} T (top_carrier Z))
   (Hfk : ∀ x, continuous_map f x ≈ k (q x)) : ContinuousMorphism TQuot Z :=
@@ -131,7 +130,7 @@ Example tquot_desc_map (Z : TopSpace@{o}) (f : ContinuousMorphism X Z)
 
 End TopQuotient.
 
-(** ** The subspace topology, one universe up *)
+(* 相关说明。 （已译） *)
 
 Section TopSubspace.
 
@@ -141,9 +140,7 @@ Constraint o < o1.
 Context (X : TopSpace@{o}) (S : SetoidObject@{o o})
         (h : SetoidMorphism@{o o o} S (top_carrier X)).
 
-(* Mac Lane's predicate, verbatim: V is open when it is the preimage along
-   [h] of an open of X.  It quantifies over the opens of X, so it is valued
-   at [o1], one universe above the points. *)
+(* 相关说明。 （已译） *)
 Definition tsub_open (V : S → Type@{o}) : Type@{o1} :=
   { U : top_carrier X → Type@{o} &
     (IsOpen X U ∧ (∀ s : S, V s ↔ U (h s)))%type }.
@@ -167,9 +164,7 @@ Proof.
            (fst (HUB s) u)).
 Qed.
 
-(* Unions indexed at the points' universe, as in [open_union]: the
-   witnesses are data, and the union of the witnesses witnesses the
-   union. *)
+(* 相关说明。 （已译） *)
 Lemma tsub_open_union (I : Type@{o}) (U : I → S → Type@{o}) :
   (∀ i, tsub_open (U i)) → tsub_open (fun s => { i : I & U i s }).
 Proof.
@@ -199,7 +194,7 @@ Proof.
     + intros [a b]; exact (snd (HUA s) a, snd (HVB s) b).
 Qed.
 
-(* [h] is continuous out of the subspace: preimages of opens are open. *)
+(* 相关说明。 （已译） *)
 Lemma tsub_preimage_open (U : top_carrier X → Type@{o}) :
   IsOpen X U → tsub_open (fun s => U (h s)).
 Proof.
@@ -207,7 +202,7 @@ Proof.
   intro s; split; exact (fun w => w).
 Qed.
 
-(* Continuity into the subspace, for a setoid map from a space. *)
+(* Continuity 进入 subspace, setoid map space. （已译） *)
 Definition tsub_continuous (Z : TopSpace@{o})
   (g : SetoidMorphism@{o o o} (top_carrier Z) S) : Type@{o1} :=
   ∀ V : S → Type@{o}, tsub_open V → IsOpen Z (fun z => V (g z)).
@@ -226,8 +221,8 @@ Proof.
     + exact (Hc B HB).
 Qed.
 
-(* The book's form: a continuous [f : Z → X] whose underlying function
-   factors as [h ∘ g] has [g] continuous into the subspace. *)
+(* The book's form: continuous [f : Z → X] whose underlying function
+ factors [h ∘ g] has [g] continuous 进入 subspace. （已译） *)
 Definition tsub_lift (Z : TopSpace@{o}) (f : ContinuousMorphism Z X)
   (g : SetoidMorphism@{o o o} (top_carrier Z) S)
   (Hfg : ∀ z, continuous_map f z ≈ h (g z)) : tsub_continuous Z g :=
@@ -237,10 +232,10 @@ Definition tsub_lift (Z : TopSpace@{o}) (f : ContinuousMorphism Z X)
 
 End TopSubspace.
 
-(** ** The sliced forgetful functors at [Top_Forget] *)
+(* * ** The sliced forgetful 函子 at [Top_Forget] （已译） *)
 
-(* [G ↓ X] and [X ↓ G] at [Top_Forget], into the slices of the LIFTED
-   [Sets@{h so}] that [Top_Forget] lands in. *)
+(* [G ↓ X] [X ↓ G] at [Top_Forget], 进入 slices LIFTED
+ [Sets@{h so}] [Top_Forget] lands in. （已译） *)
 Program Definition Top_Forget_over@{o h so +| o < h, h < so +}
   (X : TopSpace@{o}) :
   @Slice Top@{h o} X ⟶ @Slice Sets@{h so} (Top_Forget@{o h so} X) := {|
@@ -267,7 +262,7 @@ Next Obligation. intros X x y m n H t; simpl in *. exact (H t). Qed.
 Next Obligation. intros X x t; simpl. apply reflexive_lift. Qed.
 Next Obligation. intros X x y z m n t; simpl. apply reflexive_lift. Qed.
 
-(** ** The quotient functor, out of the UNLIFTED [Sets] *)
+(* * ** The quotient 函子, out UNLIFTED [Sets] （已译） *)
 
 Program Definition TQuot_Functor@{o h so +| o < h, o < so +}
   (X : TopSpace@{o}) :
@@ -288,7 +283,7 @@ Next Obligation. intros X c d m n H t; simpl in *. exact (H t). Qed.
 Next Obligation. intros X c t; simpl. reflexivity. Qed.
 Next Obligation. intros X c d e m n t; simpl. reflexivity. Qed.
 
-(** ** The cross-universe transpositions *)
+(* 相关说明。 （已译） *)
 
 Section Transpositions.
 
@@ -298,14 +293,12 @@ Constraint o < so.
 
 Context (X : TopSpace@{o}).
 
-(* A space under [X], stripped to its points and underlying map in the
-   UNLIFTED coslice; [Top_Forget_under] is its lift. *)
+(* 相关说明。 （已译） *)
 Definition tstrip_under (y : @Coslice Top@{h o} X) :
   @Coslice Sets@{o so} (top_carrier X) :=
   (top_carrier (`1 y); continuous_map (`2 y)).
 
-(* The space's image under [Top_Forget_under X] is the lift of its
-   stripped reading, on the nose. *)
+(* 相关说明。 （已译） *)
 Example tstrip_under_lift@{so' + | h < so' +} (y : @Coslice Top@{h o} X) :
   Top_Forget_under@{o h so'} X y
   = (Setoid_Lift@{o h} (`1 (tstrip_under y));
@@ -381,7 +374,7 @@ Example tquot_obj_stripped_pair (T : SetoidObject@{o o})
   (q : top_carrier X ~{Sets@{o so}}~> T) :
   tstrip_under (TQuot_Functor X (T; q)) = (T; q) := eq_refl.
 
-(* The unit of the transposition is the identity, transported. *)
+(* The unit transposition 恒等, transported. （已译） *)
 Lemma tquot_unit_stripped (c : @Coslice Sets@{o so} (top_carrier X)) :
   to (tquot_adj c (TQuot_Functor X c)) id
     ≈[@Coslice Sets@{o so} (top_carrier X)]
@@ -399,8 +392,8 @@ Constraint o < h.
 Context (X : TopSpace@{o}) (S : SetoidObject@{o o})
         (h : SetoidMorphism@{o o o} S (top_carrier X)).
 
-(* Maps over [X] from [(Z, f)] into the (unpackaged) subspace on [(S, h)]:
-   setoid maps into [S], continuous into the subspace, over [X]. *)
+(* Maps over [X] [(Z, f)] 进入 (unpackaged) subspace [(S, h)]:
+ setoid maps [S], continuous 进入 subspace, over [X]. （已译） *)
 Definition tsub_hom (Z : TopSpace@{o}) (f : ContinuousMorphism@{h o} Z X) :
   Type@{o1} :=
   { g : SetoidMorphism@{o o o} (top_carrier Z) S &
@@ -419,8 +412,8 @@ Next Obligation.
       [exact (H1 z)|exact (H2 z)].
 Qed.
 
-(* The transposition of [G ↓ X ⊣ L]: a map over [X] into the subspace IS
-   its underlying map, continuity coming from [tsub_universal]. *)
+(* The transposition [G ↓ X ⊣ L]: map over [X] 进入 subspace IS
+ underlying map, continuity coming [tsub_universal]. （已译） *)
 Program Definition tsub_adj (Z : TopSpace@{o})
   (f : ContinuousMorphism@{h o} Z X) :
   @Isomorphism Sets

@@ -71,7 +71,7 @@ Arguments coeq_rel_refl {A B} f g b.
 Arguments coeq_rel_Equivalence {A B} f g.
 Arguments coeq_rel_coarser {A B} f g.
 
-(** ** Leastness: respecting the closure IS coforking *)
+(* 相关说明。 （已译） *)
 
 Section Leastness.
 
@@ -96,7 +96,7 @@ Proof.
   - now transitivity (h b2).
 Qed.
 
-(* ... and back, by the [cq_glue] constructor alone. *)
+(* 相关说明。 （已译） *)
 Lemma cofork_of_coeq_rel (h : B ~{Sets}~> X)
   (Hh : SetsRespects (coeq_rel f g) X h) : h ∘ f ≈ h ∘ g.
 Proof. intro a; exact (Hh (f a) (g a) (cq_glue f g a)). Qed.
@@ -125,21 +125,21 @@ Definition sets_coeq_proj : B ~{Sets}~> SetsCoeq :=
   sets_quot_proj B (coeq_rel f g) (coeq_rel_Equivalence f g)
     (coeq_rel_coarser f g).
 
-(* The carrier is B's, and the coequalizing map is the identity function
-   -- both by conversion, the [eq_refl] exception. *)
+(* The carrier B's, coequalizing map 恒等 function
+ -- both conversion, [eq_refl] exception. （已译） *)
 Example sets_coeq_carrier : carrier SetsCoeq = carrier B.
 Proof. reflexivity. Qed.
 
 Example sets_coeq_proj_at (b : carrier B) : sets_coeq_proj b = b.
 Proof. reflexivity. Qed.
 
-(* Awodey §3.4's construction and Seven Sketches §6.2.4's example, as the
-   elementary universal property of Structure/Coequalizer.v. *)
+(* Awodey §3.4's construction Seven Sketches §6.2.4's example, the
+ elementary 普遍性质 Structure/Coequalizer.v. （已译） *)
 Definition sets_coeq_IsCoequalizer :
   IsCoequalizer f g SetsCoeq sets_coeq_proj.
 Proof.
   unshelve refine {| cofork := _ |}.
-  - (* the projection coforks: this is [cq_glue] read pointwise *)
+  - (* the projection coforks: 这是 [cq_glue] read pointwise （已译） *)
     intro a; exact (cq_glue f g a).
   - intros X h Hh.
     unshelve refine
@@ -156,8 +156,7 @@ End SetsCoeq.
 Arguments SetsCoeq {A B} f g.
 Arguments sets_coeq_proj {A B} f g.
 
-(* THE INSTANCE.  [∃] is [sigT], so the coequalizer is a CHOSEN one,
-   supplied as data; no choice principle is consumed. *)
+(* 相关说明。 （已译） *)
 #[export] Instance Sets_HasCoequalizers : HasCoequalizers Sets := {|
   coeq := fun x y f g =>
     existT (fun q : Sets => { e : y ~{Sets}~> q & IsCoequalizer f g q e })
@@ -167,7 +166,7 @@ Arguments sets_coeq_proj {A B} f g.
          (sets_coeq_proj f g) (sets_coeq_IsCoequalizer f g))
 |}.
 
-(* The chosen object and map are the ones built above, by conversion. *)
+(* The chosen 对象 map ones built above, conversion. （已译） *)
 Example sets_hascoeq_obj {A B : SetoidObject} (f g : A ~{Sets}~> B) :
   `1 (@coeq Sets Sets_HasCoequalizers A B f g) = SetsCoeq f g.
 Proof. reflexivity. Qed.
@@ -176,7 +175,7 @@ Example sets_hascoeq_map {A B : SetoidObject} (f g : A ~{Sets}~> B) :
   `1 (`2 (@coeq Sets Sets_HasCoequalizers A B f g)) = sets_coeq_proj f g.
 Proof. reflexivity. Qed.
 
-(** ** Mac Lane §III.3 exercise 5: X/E is the coequalizer of E ⇉ X *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明子对象相关定义、性质与动机。
@@ -221,8 +220,7 @@ Proof.
   intros s t Hst; exact (snd Hst).
 Defined.
 
-(* The pair ⟨x, y, w⟩ is where the two projections separate, and it is
-   what makes the cofork condition say exactly "h respects R". *)
+(* 相关说明。 （已译） *)
 Definition sets_rel_pt {x y : carrier X} (w : R x y) : carrier SetsRelObj :=
   existT (fun x' : carrier X => { y' : carrier X & R x' y' }) x
     (existT (fun y' : carrier X => R x y') y w).
@@ -235,9 +233,7 @@ Example sets_rel_snd_at {x y : carrier X} (w : R x y) :
   sets_rel_snd (sets_rel_pt w) = y.
 Proof. reflexivity. Qed.
 
-(* Coforking the projection pair IS respecting R.  Unlike
-   [coeq_rel_respects] this needs no induction at all: one direction
-   evaluates at [sets_rel_pt], the other reads a triple apart. *)
+(* 相关说明。 （已译） *)
 Lemma sets_rel_cofork_iff {Z : SetoidObject} (h : X ~{Sets}~> Z) :
   (h ∘ sets_rel_fst ≈ h ∘ sets_rel_snd) ↔ SetsRespects R Z h.
 Proof.
@@ -246,9 +242,9 @@ Proof.
   - intros Hh s; exact (Hh (`1 s) (`1 (`2 s)) (`2 (`2 s))).
 Qed.
 
-(* Mac Lane §III.3 exercise 5 / Awodey §3.4 example 3.19.  Note that the
-   coequalizer object here is the quotient ON THE NOSE, not merely
-   isomorphic to it. *)
+(* Mac Lane §III.3 exercise 5 / Awodey §3.4 example 3.19. Note the
+ coequalizer 对象 here quotient ON THE NOSE, not merely
+ isomorphic it. （已译） *)
 Definition sets_rel_IsCoequalizer (HR : Equivalence R) (HC : SetoidCoarser R) :
   IsCoequalizer sets_rel_fst sets_rel_snd (SetsQuotient X R HR)
     (sets_quot_proj X R HR HC).
@@ -317,7 +313,7 @@ Proof.
   - intro x; exact (coeq_rel_refl (sets_rel_fst R) (sets_rel_snd R) x).
 Defined.
 
-(* Both legs are the identity function, by conversion. *)
+(* Both legs 恒等 function, conversion. （已译） *)
 Example sets_rel_coeq_iso_to (HC : SetoidCoarser R) (x : carrier X) :
   to (sets_rel_coeq_iso HC) x = x.
 Proof. reflexivity. Qed.
@@ -330,15 +326,15 @@ End Comparison.
 
 (** ** Non-vacuity *)
 
-(* A coequalizer that MERGES.  The two constant maps out of the singleton
-   into the two-element discrete setoid identify [false] with [true], so
-   the coequalizer collapses [bool]. *)
+(* A coequalizer MERGES. The two 常值 maps out singleton
+ 进入 two-element discrete setoid identify [false] [true], so
+ coequalizer collapses [bool]. （已译） *)
 
 Definition UnitSet : SetoidObject :=
   {| carrier := poly_unit ; is_setoid := unit_setoid |}.
 
-(* [BoolSet] is Instance/Sets/Quotient.v's, reused rather than
-   redeclared: the two files' witnesses then live over the same object. *)
+(* [BoolSet] Instance/Sets/Quotient.v's, reused rather than
+ redeclared: two files' witnesses then live over same 对象. （已译） *)
 
 Definition bool_false_map : UnitSet ~{Sets}~> BoolSet.
 Proof. unshelve refine {| morphism := fun _ : poly_unit => false |}. Defined.

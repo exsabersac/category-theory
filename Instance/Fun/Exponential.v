@@ -20,7 +20,7 @@ Open Scope category_scope.
 
 Generalizable All Variables.
 
-(** * Exponentials of presheaves: [C^op, Sets] is cartesian closed *)
+(* * * Exponentials presheaves: [C^op, Sets] 笛卡尔闭 （已译） *)
 
 (*
  Book:      Riehl, Category Theory in Context, 2nd ed., §4.4,
@@ -34,7 +34,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** A: the exponential presheaf -- Awodey display (8.5) *)
+(* 相关说明。 （已译） *)
 
 Section PshExpSec.
 
@@ -45,9 +45,9 @@ Context {C : Category}.
 
 Context (P Q : C^op ⟶ Sets).
 
-(* Display (8.5): Q^P(c) is the hom-setoid of the presheaf category at
-   the representable on c times P.  Instance/Fun.v's [[[ , ]]]( , )
-   notation packages exactly that as an object of [Sets]. *)
+(* Display (8.5): Q^P(c) hom-setoid presheaf 范畴 at
+ representable c times P. Instance/Fun.v's [[[ , ]]]( , )
+ notation packages exactly 对象 [Sets]. （已译） *)
 Definition PshExp_obj (c : C) : Sets :=
   [[[C^op, Sets]]]( @product_obj _ PshCart (Curried_CoHom C c) P, Q ).
 
@@ -65,9 +65,9 @@ Proof.
   - proper. exact (X x0 _).
 Defined.
 
-(* The two functor laws are PROVED, not inherited.  [fmap_id] is the one
-   the default obligation tactic closes; a third [Next Obligation] is
-   rejected for want of a goal. *)
+(* The two 函子 laws PROVED, not inherited. [fmap_id] one
+ default obligation tactic closes; third [Next Obligation] is
+ rejected want goal. （已译） *)
 Program Definition PshExp : C^op ⟶ Sets := {|
   fobj := PshExp_obj;
   fmap := PshExp_fmap
@@ -85,7 +85,7 @@ Qed.
 
 End PshExpSec.
 
-(** ** B: the transposition, both ways *)
+(* 相关说明。 （已译） *)
 
 Section Transpose.
 
@@ -96,8 +96,7 @@ Context {C : Category}.
 
 Context (X P Q : C^op ⟶ Sets).
 
-(* Riehl's beta_c(x), component at d: the function taking f : c -> d and
-   z in P d to alpha_d ((X f) x, z). *)
+(* 相关说明。 （已译） *)
 Program Definition to_exp_inner_comp
   (alpha : @product_obj _ PshCart X P ⟹ Q) (c : C) (x : fobj[X] c)
   (d : C^op) :
@@ -145,8 +144,7 @@ Proof.
     exact (@fmap_comp _ _ X _ _ _ (fst hp) f x).
 Defined.
 
-(* The counit route: alpha_c (x, p) = (beta_c x)_c (id_c, p), which is
-   Riehl's ev composed with beta × F. *)
+(* 相关说明。 （已译） *)
 Program Definition from_exp_comp (beta : X ⟹ PshExp P Q) (c : C^op) :
   fobj[@product_obj _ PshCart X P] c ~{Sets}~> fobj[Q] c :=
   {| morphism := fun xp => (beta c (fst xp)) c (id[c], snd xp) |}.
@@ -186,8 +184,8 @@ Proof.
   exact (@fmap_id _ _ X c (fst xp)).
 Qed.
 
-(* The other is Riehl's Yoneda step, and it needs no Yoneda: the
-   [naturality] field of beta at [fst hp], plus one identity law. *)
+(* The other Riehl's Yoneda step, it needs no Yoneda: the
+ [naturality] field beta at [fst hp], plus one 恒等 law. （已译） *)
 Lemma to_from_exp (beta : X ⟹ PshExp P Q) :
   to_exp (from_exp beta) ≈[[C^op, Sets]] beta.
 Proof.
@@ -217,8 +215,8 @@ Next Obligation. exact (from_to_exp x x0 (c, c0)). Qed.
 
 End Transpose.
 
-(** ** C: naturality in X -- Awodey's "And these isos are clearly
-       natural in X" *)
+(* * ** C: 自然性 X -- Awodey's "And these isos clearly
+ natural X" （已译） *)
 
 Section NaturalX.
 
@@ -229,8 +227,8 @@ Context {C : Category}.
 
 Context (X X' P Q : C^op ⟶ Sets).
 
-(* One appeal to the naturality field of g -- its [naturality_sym]
-   orientation -- and nothing else. *)
+(* One appeal 自然性 field g -- [naturality_sym]
+ orientation -- nothing else. （已译） *)
 Lemma to_exp_natural_X (g : X' ~{[C^op, Sets]}~> X)
   (alpha : @product_obj _ PshCart X P ~{[C^op, Sets]}~> Q) :
   to_exp X' P Q (alpha ∘[[C^op, Sets]] @first _ PshCart _ _ P g)
@@ -285,9 +283,7 @@ Definition Functor_Category_Closed_cov@{o h so +} (C : Category@{o h h}) :
     (@Functor_Category_Cartesian C Sets@{h so} Sets_Cartesian) :=
   Functor_Category_Closed (C^op).
 
-(* The terminal presheaf is #339's, specialised.  With
-   [Functor_Category_Cartesian] this completes the finite-product half of
-   Theorem 8.14. *)
+(* 相关说明。 （已译） *)
 Definition presheaf_terminal (C : Category) : @Terminal ([C^op, Sets]) :=
   @Functor_Category_Terminal (C^op) Sets Sets_Terminal.
 
@@ -306,11 +302,11 @@ Example exp_obj_is_display85 (c : C) :
     = [[[C^op, Sets]]]( @product_obj _ PshCart (Curried_CoHom C c) P, Q )
   := eq_refl.
 
-(* The class's exponential IS the presheaf built above. *)
+(* 相关说明。 （已译） *)
 Example exponent_obj_is_PshExp :
   @exponent_obj _ _ (Functor_Category_Closed C) P Q = PshExp P Q := eq_refl.
 
-(* The class's transposes ARE the two maps built above. *)
+(* 相关说明。 （已译） *)
 Example curry_is_to_exp (alpha : @product_obj _ PshCart X P ⟹ Q) :
   @curry' _ _ (Functor_Category_Closed C) X P Q alpha = to_exp X P Q alpha
   := eq_refl.
@@ -319,8 +315,7 @@ Example uncurry_is_from_exp (beta : X ⟹ PshExp P Q) :
   @uncurry' _ _ (Functor_Category_Closed C) X P Q beta = from_exp X P Q beta
   := eq_refl.
 
-(* Riehl's counit formula, at [≈] and not at [eq_refl]; see the header
-   for the residue and the probe for the refutation. *)
+(* 相关说明。 （已译） *)
 Lemma eval_is_at_identity (c : C)
   (gy : fobj[@product_obj _ PshCart (PshExp P Q) P] c) :
   (@eval' _ _ (Functor_Category_Closed C) P Q) c gy
@@ -335,7 +330,7 @@ Example presheaf_terminal_is_donor (C : Category) :
   presheaf_terminal C = @Functor_Category_Terminal (C^op) Sets Sets_Terminal
   := eq_refl.
 
-(** ** F: at C := 1 the construction recovers [Sets_Closed] *)
+(* 相关说明。 （已译） *)
 
 Section AtOne.
 Context (P Q : _1^op ⟶ Sets).

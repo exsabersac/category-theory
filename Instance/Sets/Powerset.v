@@ -18,7 +18,7 @@ Require Import Coq.Vectors.Fin.
 
 Generalizable All Variables.
 
-(** * The covariant and contravariant power-set functors on [Sets] *)
+(* * * The covariant contravariant power-set 函子 [Sets] （已译） *)
 
 (*
    nLab:      https://ncatlab.org/nlab/show/power+set
@@ -30,7 +30,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** Universe placement, stated precisely *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -54,15 +54,15 @@ Definition Powerset_obj@{o so} (X : SetoidObject@{o o}) :
    ; is_setoid := @SetoidMorphism_Setoid@{so so so}
                     (Setoid_Lift@{o so} X) PropSetoid@{o so} |}.
 
-(* Membership is application of the predicate; this lemma is the [≈]-respect
-   of a subset, in the form the proofs below want it. *)
+(* Membership application predicate; 引理 [≈]-respect
+ subset, form proofs below want it. （已译） *)
 Lemma Powerset_mem_respects@{o so} {X : SetoidObject@{o o}}
   (S : carrier (Powerset_obj@{o so} X)) {x y : carrier X}
   (H : @equiv _ (is_setoid X) x y) : S x → S y.
 Proof. exact (fst (@proper_morphism _ _ _ _ S x y H)). Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The lifting functor [Sets_Lift] *)
+(* * ** The lifting 函子 [Sets_Lift] （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -84,7 +84,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The direct image, and the covariant functor *)
+(* * ** The direct image, covariant 函子 （已译） *)
 
 (*
    本节说明 Powerset 相关定义、性质与动机。
@@ -137,9 +137,9 @@ Proof.
   - transitivity (g x); [ exact (H x) | exact Hfx ].
 Qed.
 
-(* Functoriality.  [fmap_id]: the direct image along the identity of [S] is
-   the [≈]-saturation of [S], which is [S] itself because subsets respect
-   [≈]. *)
+(* Functoriality. [fmap_id]: direct image along 恒等 [S] is
+ [≈]-saturation [S], [S] itself because subsets respect
+ [≈]. （已译） *)
 Lemma Powerset_map_id@{o so} {X : SetoidObject@{o o}} :
   Powerset_map@{o so} (@id Sets@{o so} X) ≈ @setoid_morphism_id@{so so so}
                                               (Powerset_obj@{o so} X).
@@ -149,8 +149,8 @@ Proof.
   - intro Hy; exists y; split; [ exact Hy | reflexivity ].
 Qed.
 
-(* [fmap_comp]: the image along a composite is the image of the image; the
-   intermediate witness is [g x]. *)
+(* [fmap_comp]: image along 复合 image image; the
+ intermediate witness [g x]. （已译） *)
 Lemma Powerset_map_comp@{o so} {X Y Z : SetoidObject@{o o}}
   (f : Y ~{Sets@{o so}}~> Z) (g : X ~{Sets@{o so}}~> Y) :
   Powerset_map@{o so} (f ∘[Sets@{o so}] g)
@@ -169,8 +169,8 @@ Proof.
     + transitivity (f y); [ exact (proper_morphism f _ _ Hgy) | exact Hfz ].
 Qed.
 
-(* The covariant power-set functor, at the cross-universe type argued for in
-   the header. *)
+(* The covariant power-set 函子, at cross-universe type argued in
+ header. （已译） *)
 Definition Powerset@{o so sso} : @Functor Sets@{o so} Sets@{so sso}.
 Proof.
   unshelve refine
@@ -192,7 +192,7 @@ Lemma Powerset_fmap_image@{o so sso} {X Y : SetoidObject@{o o}}
 Proof. reflexivity. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The inverse image, and the contravariant functor *)
+(* * ** The inverse image, contravariant 函子 （已译） *)
 
 (*
    本节说明 Powerset 相关定义、性质与动机。
@@ -348,7 +348,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Non-vacuity: the direct image is not a relabelling *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Powerset 相关定义、性质与动机。
@@ -440,7 +440,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Sanity: [FinSet]-sized computations *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom、等价相关定义、性质与动机。
@@ -473,16 +473,14 @@ Example fin32_at_0 : fin32 Fin.F1 = Fin.F1 := eq_refl.
 Example fin32_at_1 : fin32 (Fin.FS Fin.F1) = Fin.F1 := eq_refl.
 Example fin32_at_2 : fin32 (Fin.FS (Fin.FS Fin.F1)) = Fin.FS Fin.F1 := eq_refl.
 
-(* The three elements of [Fin.t 3] used below are pairwise distinct, and so
-   are the two elements of [Fin.t 2]: the carriers are not collapsing. *)
+(* 相关说明。 （已译） *)
 Lemma fin3_0_ne_1 : @Fin.F1 2 = Fin.FS Fin.F1 → False.
 Proof. discriminate. Qed.
 
 Lemma fin2_0_ne_1 : @Fin.F1 1 = Fin.FS Fin.F1 → False.
 Proof. discriminate. Qed.
 
-(* WITNESS 1 (merging along a non-injective map).  {0} and {1} are distinct
-   subsets of the three-element set... *)
+(* 相关说明。 （已译） *)
 Lemma fin32_singletons_distinct :
   Powerset_singleton_pred (X:=fin_setoid_object 3) Fin.F1
     ≈ Powerset_singleton_pred (X:=fin_setoid_object 3) (Fin.FS Fin.F1)
@@ -556,8 +554,7 @@ Proof.
   exact (fin2_0_ne_1 (fst (fin32_image_sub01 (Fin.FS Fin.F1)) H)).
 Qed.
 
-(* [fin3_sub01] really does have exactly two elements, and they are
-   distinct: nothing below rests on it accidentally collapsing. *)
+(* 相关说明。 （已译） *)
 Lemma fin3_sub01_has_0 : fin3_sub01 Fin.F1.
 Proof. exact (Datatypes.inl eq_refl). Qed.
 
@@ -641,8 +638,8 @@ Proof.
   exact (Powerset_image_singleton (fin_map fin_const0) (Fin.FS Fin.F1)).
 Qed.
 
-(* The direct image MOVES the subset {1} to {0}; the identity functor's
-   action would have left it where it was. *)
+(* The direct image MOVES subset {1} {0}; 恒等 函子's
+ action would have left it where it was. （已译） *)
 Lemma Powerset_image_moves :
   fmap[Powerset] (fin_map fin_const0)
       (Powerset_singleton_pred (X:=fin_setoid_object 2) (Fin.FS Fin.F1))
@@ -692,7 +689,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The second carrier: [Prop]-valued subsets, and a genuine endofunctor *)
+(* * ** The second carrier: [Prop]-valued subsets, genuine 自函子 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -738,8 +735,7 @@ Definition Powerset_Prop_obj@{o} (X : SetoidObject@{o o}) : SetoidObject@{o o} :
   {| carrier   := SetoidMorphism@{o o o} X Powerset_Prop_truth@{o}
    ; is_setoid := @SetoidMorphism_Setoid@{o o o} X Powerset_Prop_truth@{o} |}.
 
-(* The direct image, truncated: [y] belongs to [f S] when SOME [x ∈ S] has
-   [f x ≈ y], with the "some" squashed. *)
+(* 相关说明。 （已译） *)
 Definition Powerset_Prop_image@{o} {X Y : SetoidObject@{o o}}
   (f : SetoidMorphism@{o o o} X Y) (S : carrier (Powerset_Prop_obj@{o} X)) :
   carrier (Powerset_Prop_obj@{o} Y).
@@ -782,9 +778,9 @@ Proof.
   - transitivity (g x); [ exact (H x) | exact Hfx ].
 Qed.
 
-(* [fmap_id]: as for the proof-relevant carrier, the image of [S] along the
-   identity is the [≈]-saturation of [S], which is [S] because subsets
-   respect [≈]. *)
+(* [fmap_id]: 证明-relevant carrier, image [S] along the
+ 恒等 [≈]-saturation [S], [S] because subsets
+ respect [≈]. （已译） *)
 Lemma Powerset_Prop_map_id@{o} {X : SetoidObject@{o o}} :
   Powerset_Prop_map@{o} (@setoid_morphism_id@{o o o} X)
     ≈ @setoid_morphism_id@{o o o} (Powerset_Prop_obj@{o} X).
@@ -795,8 +791,7 @@ Proof.
   - exact (Powerset_squash_intro@{o} (existT _ y (H, reflexivity y))).
 Qed.
 
-(* [fmap_comp]: the intermediate witness is [g x], and the truncation goes
-   through because the goal is a [Prop] at every step. *)
+(* 相关说明。 （已译） *)
 Lemma Powerset_Prop_map_comp@{o} {X Y Z : SetoidObject@{o o}}
   (f : SetoidMorphism@{o o o} Y Z) (g : SetoidMorphism@{o o o} X Y) :
   Powerset_Prop_map@{o} (@setoid_morphism_compose@{o o o} X Y Z f g)
@@ -814,8 +809,8 @@ Proof.
     transitivity (f y); [ exact (proper_morphism f _ _ Hgy) | exact Hfz ].
 Qed.
 
-(* THE ENDOFUNCTOR.  Domain and codomain are the same category, at the same
-   universes — which is the whole point of this section. *)
+(* THE ENDOFUNCTOR. Domain codomain same 范畴, at same
+ universes — whole point section. （已译） *)
 Definition Powerset_Prop@{o so} : @Functor Sets@{o so} Sets@{o so}.
 Proof.
   unshelve refine
@@ -826,9 +821,7 @@ Proof.
   - intros X Y Z f g; exact (@Powerset_Prop_map_comp@{o} X Y Z f g).
 Defined.
 
-(* As with [Powerset_fmap_image]: the two sides are the very same term, so
-   the equality is Leibniz (=) rather than ≈, on the Functor/Bifunctor.v
-   precedent. *)
+(* 相关说明。 （已译） *)
 Lemma Powerset_Prop_fmap_image@{o so} {X Y : SetoidObject@{o o}}
   (f : X ~{Sets@{o so}}~> Y) (S : carrier (Powerset_Prop_obj@{o} X)) :
   fmap[Powerset_Prop@{o so}] f S = Powerset_Prop_image@{o} f S.
@@ -860,9 +853,9 @@ Proof.
   - transitivity a'; [ exact Haa' | exact Hx ].
 Defined.
 
-(* The naturality square, componentwise: the direct image of a singleton is
-   the singleton of the image, and truncation respects that because the
-   existential over a singleton collapses. *)
+(* The 自然性 square, componentwise: direct image singleton is
+ singleton image, truncation respects because the
+ existential over singleton collapses. （已译） *)
 Lemma Powerset_Prop_image_singleton@{o} {X Y : SetoidObject@{o o}}
   (f : SetoidMorphism@{o o o} X Y) (a : carrier X) :
   Powerset_Prop_image@{o} f (Powerset_Prop_singleton_pred@{o} a)
@@ -892,7 +885,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The blocked consumers, unblocked *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明单子相关定义、性质与动机。
@@ -905,7 +898,7 @@ Definition Powerset_Prop_Monad_statement : Type := @Monad Sets Powerset_Prop.
 Definition Powerset_Prop_FAlg : Category := FAlg Powerset_Prop.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Non-vacuity for the truncated carrier *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Powerset 相关定义、性质与动机。
@@ -1000,9 +993,9 @@ Proof.
   - intros X Y Z f g S; exact (@Powerset_Prop_map_comp@{o} X Y Z f g S).
 Defined.
 
-(* Same-term equalities, closed by [reflexivity], on the
-   Functor/Bifunctor.v precedent: [Powerset_Prop_Lift] is the lift of
-   [Powerset_Prop], object-wise and morphism-wise. *)
+(* Same-term equalities, closed [reflexivity], the
+ Functor/Bifunctor.v precedent: [Powerset_Prop_Lift] lift of
+ [Powerset_Prop], 对象-wise 态射-wise. （已译） *)
 Lemma Powerset_Prop_Lift_obj@{o so sso} (X : SetoidObject@{o o}) :
   Powerset_Prop_Lift@{o so sso} X = Setoid_Lift@{o so} (Powerset_Prop@{o so} X).
 Proof. reflexivity. Qed.

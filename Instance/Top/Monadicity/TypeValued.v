@@ -18,7 +18,7 @@ Require Import Category.Instance.Top.Forgetful.
 
 Generalizable All Variables.
 
-(** * The underlying-set functor of the Type-valued [Top] is not monadic *)
+(* * * The underlying-set 函子 Type-valued [Top] not monadic （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/monadic+functor
@@ -28,8 +28,8 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The identity of [bool], continuous from the discrete space to the
-   indiscrete one (Instance/Top.v's [into_indiscrete_continuous]). *)
+(* The 恒等 [bool], continuous discrete space the
+ indiscrete one (Instance/Top.v's [into_indiscrete_continuous]). （已译） *)
 Definition top_bool_to_indisc@{o h | o < h +} :
   Bool_Discrete@{o} ~{Top@{h o}}~> TwoPoint_Indiscrete@{o} :=
   @Build_ContinuousMorphism Bool_Discrete@{o} TwoPoint_Indiscrete@{o}
@@ -37,9 +37,9 @@ Definition top_bool_to_indisc@{o h | o < h +} :
     (into_indiscrete_continuous Bool_Discrete@{o} bool_setoid_object@{o o}
        setoid_morphism_id).
 
-(* No continuous map back is the identity on points: it would make the
-   identity continuous, which Instance/Top.v's
-   [indiscrete_to_discrete_id_not_continuous] refutes. *)
+(* No continuous map back 恒等 points: it would make the
+ 恒等 continuous, Instance/Top.v's
+ [indiscrete_to_discrete_id_not_continuous] refutes. （已译） *)
 Lemma no_top_indisc_to_bool@{o h | o < h +}
   (g : TwoPoint_Indiscrete@{o} ~{Top@{h o}}~> Bool_Discrete@{o}) :
   (∀ b : bool, continuous_map g b = b) → False.

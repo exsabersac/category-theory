@@ -32,20 +32,16 @@ Generalizable All Variables.
 
 (** ** Thinness of the product shape *)
 
-(** The walking arrow is thin.  Its hom-setoid is [Morphism_equality],
-    so [≈] is Leibniz [=] and this is [ord_two_thin]
-    ([Instance/Ordinal.v]) verbatim; it is cited rather than reproved. *)
+(** The walking arrow thin. Its hom-setoid [Morphism_equality],
+ so [≈] Leibniz [=] 这是 [ord_two_thin]
+ ([Instance/Ordinal.v]) verbatim; it cited rather than reproved. （已译） *)
 Lemma Two_Thin : Thin _2.
 Proof. intros x y f g; exact (ord_two_thin f g). Qed.
 
 Lemma Two2_Thin : Thin (_2 ∏ _2).
 Proof. exact (Thin_Product Two_Thin Two_Thin). Qed.
 
-(** ** From 2 × 2 to the square
-
-    The four corners.  The first factor is the horizontal direction of
-    the square (A → B and C → D), the second the vertical (A → C and
-    B → D). *)
+(* 相关说明。 （已译） *)
 Definition sq22_node (a b : TwoObj) : SquareNode :=
   match a, b with
   | TwoX, TwoX => Sq_A
@@ -87,10 +83,10 @@ Definition Square_of_22 : (_2 ∏ _2) ⟶ Square :=
     (fun x => Square_Thin _ _ _ _)
     (fun x y z f g => Square_Thin _ _ _ _).
 
-(** ** From the square to 2 × 2
+(* * ** From square 2 × 2
 
-    The evident commutative square in 2 × 2, and the functor the
-    universal property of [Square] makes of it. *)
+ The evident commutative square 2 × 2, 函子 the
+ 普遍性质 [Square] makes it. （已译） *)
 Definition sq22_commuting : CommutingSquare (_2 ∏ _2) :=
   @Build_CommutingSquare (_2 ∏ _2)
     (TwoX, TwoX) (TwoY, TwoX) (TwoX, TwoY) (TwoY, TwoY)
@@ -118,11 +114,11 @@ Lemma square_22_obj_round (x : TwoObj * TwoObj) :
   fobj[Square_to_22] (sq22_obj x) = x.
 Proof. destruct x as [a b]; destruct a, b; reflexivity. Qed.
 
-(** ** The identification
+(* * ** The identification
 
-    Both round trips at [Functor_StrictEq_Setoid] strength: Leibniz on
-    objects, and on morphisms a [hom_cast] conjugation which thinness
-    discharges outright on either side. *)
+ Both round trips at [Functor_StrictEq_Setoid] strength: Leibniz on
+ 对象, 态射 [hom_cast] conjugation thinness
+ discharges outright either side. （已译） *)
 Lemma Square_22_round : @equiv _ (@Functor_StrictEq_Setoid Square Square)
   (Square_of_22 ◯ Square_to_22) (Id[Square]).
 Proof.
@@ -163,8 +159,8 @@ Definition Square_2x2_Cat_iso : Square ≅[Cat] (_2 ∏ _2) :=
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** The walking arrow has three arrows: [TwoHom] is inhabited except at
-    (Y, X), and then by exactly one element. *)
+(** 本节：The walking arrow has three arrows: [TwoHom] inhabited except at
+ (Y, X), then exactly one element. （已译） *)
 Definition two_homcount (a b : TwoObj) : nat :=
   match a, b with
   | TwoY, TwoX => 0
@@ -191,9 +187,9 @@ Definition two_arrow_total : nat :=
 Theorem two_arrow_total_3 : two_arrow_total = 3%nat.
 Proof. reflexivity. Qed.
 
-(** In the product, the hom-set at a pair of endpoint pairs is the
-    product of the two component hom-sets, so its count is the product
-    of the two counts. *)
+(** 本节：In product, hom-set at pair endpoint pairs the
+ product two component hom-sets, so count product
+ two counts. （已译） *)
 Definition prod22_homcount (x y : TwoObj * TwoObj) : nat :=
   (two_homcount (fst x) (fst y) * two_homcount (snd x) (snd y))%nat.
 
@@ -247,14 +243,14 @@ Proof.
           | exact (TwoXY, TwoXY) ].
 Qed.
 
-(** The cross-check the two presentations owe each other: Mac Lane's
-    count and Riehl's agree, arrow for arrow, identity for identity. *)
+(** The cross-check two presentations owe each other: Mac Lane's
+ count Riehl's agree, arrow arrow, 恒等 恒等. （已译） *)
 Theorem square_22_counts_agree :
   ((square_arrow_total = prod22_arrow_total) *
    (square_identity_total = prod22_identity_total) *
    (square_nonidentity_total = prod22_nonidentity_total))%type.
 Proof. repeat split; reflexivity. Qed.
 
-(** ...and 9 = 3 × 3, which is the whole of Riehl's argument. *)
+(** ...and 9 = 3 × 3, whole Riehl's 论元. （已译） *)
 Example square_count_is_three_squared :
   square_arrow_total = (two_arrow_total * two_arrow_total)%nat := eq_refl.

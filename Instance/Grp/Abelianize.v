@@ -114,8 +114,8 @@ Definition abelianize_universal_arrow (G : Grp)
   universal_arrow_from_UMP G Ab_to_Grp (AbelianizationOb G) (abel_proj G)
     (abelianize_universal G).
 
-(** The same content in the direct encoding, where the universal object
-    is named rather than projected out of a comma category. *)
+(** The same content direct encoding, where universal 对象
+ named rather than projected out comma 范畴. （已译） *)
 Program Definition abelianize_AUniversalArrow (G : Grp)
   : AUniversalArrow G Ab_to_Grp (AbelianizationOb G) := {|
   universal_arrow := abel_proj G
@@ -129,9 +129,9 @@ Next Obligation.
     symmetry; exact (Hg a).
 Qed.
 
-(** [universal_arrow_from_UMP] stores the supplied morphism as the
-    second projection of the comma object it builds, so both readings
-    are on the nose. *)
+(** [universal_arrow_from_UMP] stores supplied 态射 the
+ second projection comma 对象 it builds, so both readings
+ nose. （已译） *)
 Example abelianize_arrow_is_proj (G : Grp) :
   @arrow _ _ G Ab_to_Grp (abelianize_universal_arrow G) = abel_proj G
   := eq_refl.
@@ -171,8 +171,8 @@ Proof.
   intro a; simpl; apply abel_eq_refl.
 Qed.
 
-(** The two facts assembled: an isomorphism in the functor category
-    whose components are identities. *)
+(** The two facts assembled: 同构 函子 范畴
+ whose components identities. （已译） *)
 Program Definition abelianize_left_iso :
   @Isomorphism ([Grp, Ab]) abelianize_left Abelianization_Functor := {|
   to   := {| transform := fun G => @id Ab (Abelianization_Functor G) |};
@@ -228,7 +228,7 @@ Qed.
 Next Obligation. intros A; simpl; reflexivity. Qed.
 Next Obligation. intros A a b; simpl; reflexivity. Qed.
 
-(** The counit, concretely: the identity on elements. *)
+(** The counit, concretely: 恒等 elements. （已译） *)
 Example abelianize_counit_computes (A : AbObject)
   (a : carrier (cmon_setoid A)) :
   cmon_map (abelianize_counit_hom A) a = a := eq_refl.
@@ -257,8 +257,8 @@ Program Definition abelianize_counit_iso (A : AbObject) :
 Next Obligation. intros A a; simpl; reflexivity. Qed.
 Next Obligation. intros A a; simpl; apply abel_eq_refl. Qed.
 
-(** The counit as a natural transformation.  Both naturality squares
-    have the identity on both legs, so both are [reflexivity]. *)
+(** The counit 自然变换. Both 自然性 squares
+ have 恒等 both legs, so both [reflexivity]. （已译） *)
 Program Definition abelianize_counit :
   Abelianization_Functor ◯ Ab_to_Grp ⟹ @Id Ab := {|
   transform := abelianize_counit_hom
@@ -353,11 +353,11 @@ Program Definition Ab_to_Grp_Full : Full Ab_to_Grp := {|
 |}.
 Next Obligation. intros A B h a; simpl; reflexivity. Qed.
 
-(** ** Non-vacuity over S₃
+(* * ** Non-vacuity over S₃
 
-    Every separation below is obtained by mapping OUT of the quotient:
-    no induction on the generation [InCommutator] could produce a
-    negative.  The target is ℤ/2 read as an [AbObject]. *)
+ Every separation below obtained 映射 OUT quotient:
+ no induction generation [InCommutator] could produce a
+ negative. The target ℤ/2 read [AbObject]. （已译） *)
 
 (*
    本节说明 Abelianize 相关定义、性质与动机。
@@ -403,8 +403,8 @@ Definition ab_two_sign : S3 ~{Grp}~> Ab_to_GrpOb AbTwo :=
   Build_GrpHom S3 (Ab_to_GrpOb AbTwo)
     (grp_map s3_sign) (grp_map_unit s3_sign) (grp_map_mul s3_sign).
 
-(** The projection MERGES: the commutator of the two generators becomes
-    the unit in the abelianization. *)
+(** 本节：The projection MERGES: commutator two generators becomes
+ unit abelianization. （已译） *)
 Lemma abelianize_S3_identifies : abel_eq S3 (gcomm S3 S3_r S3_s) s3_unit.
 Proof.
   constructor.
@@ -413,9 +413,9 @@ Proof.
   - apply inc_comm.
 Qed.
 
-(** …and what it merges was apart in S₃, so the abelianization of S₃ is
-    a PROPER quotient.  The second half is the donor's
-    [commutator_S3_nontrivial]; nothing is reproved. *)
+(** 本节：…and what it merges was apart S₃, so abelianization S₃ is
+ PROPER quotient. The second half donor's
+ [commutator_S3_nontrivial]; nothing reproved. （已译） *)
 Theorem abelianize_S3_proper :
   abel_eq S3 (gcomm S3 S3_r S3_s) s3_unit *
   (gcomm S3 S3_r S3_s ≈ s3_unit → False).
@@ -515,8 +515,8 @@ Example probe_control_to (G : Grp) (A : Ab)
 Example probe_control_counit (A : Ab) (a : carrier (cmon_setoid A)) :
   cmon_map (abelianize_counit_hom A) a = a := eq_refl.
 
-(* NEGATIVE 1 (conversion).  The two left adjoints are not the same
-   functor: the arrow actions differ. *)
+(* NEGATIVE 1 (conversion). The two left adjoints not same
+ 函子: arrow actions differ. （已译） *)
 Fail Example probe_left_functors :
   abelianize_left = Abelianization_Functor := eq_refl.
 
@@ -526,15 +526,12 @@ Fail Example probe_left_functors :
 Fail Example probe_left_fmap_strict (G H : Grp) (f : G ~{Grp}~> H) :
   fmap[abelianize_left] f = fmap[Abelianization_Functor] f := eq_refl.
 
-(* NEGATIVE 3 (conversion).  The forward transposes agree as FUNCTIONS
-   ([probe_control_to]) but not as whole [SetoidMorphism] records: the
-   [proper_morphism] certificates are rebuilt. *)
+(* 相关说明。 （已译） *)
 Fail Example probe_routes_to_record (G : Grp) (A : Ab) :
   to (@adj _ _ _ _ abelianize_adjunction G A)
     = to (@adj _ _ _ _ abelianize_adjunction_via_transform G A) := eq_refl.
 
-(* NEGATIVE 4 (conversion).  The backward transposes: route one's is
-   the opaque unique factorization. *)
+(* 相关说明。 （已译） *)
 Fail Example probe_routes_from (G : Grp) (A : Ab)
   (f : G ~{Grp}~> Ab_to_Grp A) :
   from (@adj _ _ _ _ abelianize_adjunction G A) f

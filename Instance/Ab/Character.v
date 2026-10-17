@@ -1,4 +1,4 @@
-(** * Character groups and the double-dual evaluation *)
+(* 相关说明。 （已译） *)
 
 Require Import Coq.ZArith.ZArith.
 Require Import Coq.QArith.QArith.
@@ -29,7 +29,7 @@ Generalizable All Variables.
 
 (** ** The circle group ℚ/ℤ *)
 
-(* x and y are identified when they differ by an integer. *)
+(* 相关说明。 （已译） *)
 Definition qz_eq (x y : Q) : Type := { z : Z & x - y == inject_Z z }.
 
 Lemma qz_eq_refl (x : Q) : qz_eq x x.
@@ -56,8 +56,7 @@ Proof.
   rewrite H; ring.
 Qed.
 
-(* The canonical form of an integer has denominator 1, by the ggcd
-   specification (gcd with 1 is 1). *)
+(* 相关说明。 （已译） *)
 Lemma Qred_inject_Z_den (z : Z) : Qden (Qred (inject_Z z)) = 1%positive.
 Proof.
   unfold Qred, inject_Z; simpl.
@@ -125,8 +124,8 @@ Proof.
     exact Hz.
 Defined.
 
-(* The circle as an abelian group object: ℚ with the integer-difference
-   setoid, addition, and negation. *)
+(* The circle abelian group 对象: ℚ integer-difference
+ setoid, addition, negation. （已译） *)
 Program Definition QZ : AbObject := {|
   ab_cmon := {|
     cmon_setoid := {| carrier := Q;
@@ -263,7 +262,7 @@ Next Obligation.
   apply qz_of_Qeq; cbn; ring.
 Qed.
 
-(** ** The contravariant character functor *)
+(* * ** The contravariant character 函子 （已译） *)
 
 (* Precomposition: a homomorphism f : H → G pulls characters of G back
    to characters of H. *)
@@ -323,9 +322,9 @@ Qed.
 
 (** ** The covariant double dual *)
 
-(* Evaluation-style action: Ξ ↦ (χ ↦ Ξ (χ ∘ f)).  Defined directly so
-   both flips are visible and everything unfolds in the naturality
-   square. *)
+(* Evaluation-style action: Ξ ↦ (χ ↦ Ξ (χ ∘ f)). Defined directly so
+ both flips visible everything unfolds 自然性
+ square. （已译） *)
 Program Definition DD : Ab ⟶ Ab := {|
   fobj := fun G => D_ob (D_ob G);
   fmap := fun G H (f : G ~{Ab}~> H) =>

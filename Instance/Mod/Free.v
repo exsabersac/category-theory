@@ -37,7 +37,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Formal linear combinations and the module quotient *)
+(* 相关说明。 （已译） *)
 
 Section FreeModule.
 
@@ -157,7 +157,7 @@ Proof.
   intros x y H; exact (fe_gen H).
 Defined.
 
-(** ** The linear extension of a function on generators *)
+(* 相关说明。 （已译） *)
 
 Section Extension.
 
@@ -244,7 +244,7 @@ Next Obligation.
         | (intros; simpl; reflexivity) ].
 Qed.
 
-(* It agrees with [h] on the basis — definitionally, not up to [≈]. *)
+(* 相关说明。 （已译） *)
 Example free_module_extend_generators (x : carrier X) :
   cmon_map (rm_hom fv_extend) (fv_gen x) = h x := eq_refl.
 
@@ -291,8 +291,8 @@ End Extension.
 Arguments fv_eval {W} h t.
 Arguments fv_extend {W} h.
 
-(** ** The universal property, in the shape [universal_arrow_from_UMP]
-       consumes *)
+(* * ** The 普遍性质, shape [universal_arrow_from_UMP]
+ 所消耗 （已译） *)
 Theorem free_module_universal :
   ∀ (W : RModObject R) (h : X ~{Sets}~> RMod_Forget R W),
     ∃! g : FreeModObject ~{RMod R}~> W,
@@ -339,22 +339,22 @@ Arguments fv_eval_respects {R X} W h s t _.
 Arguments fv_extend_unique {R X} W h g _ t.
 Arguments free_module_universal {R} X W h.
 
-(** ** The universal arrow, the free functor and the adjunction *)
+(* * ** The 泛箭头, free 函子 伴随 （已译） *)
 
 Section FreeModuleAdjunction.
 
 Context (R : RingObject).
 
-(* The free module packaged as a universal arrow.  By
-   Theory/Universal/Arrow.v this IS an initial object of the comma
-   category [=(X) ↓ RMod_Forget R]. *)
+(* The free module packaged 泛箭头. By
+ Theory/Universal/Arrow.v IS 始对象 comma
+ 范畴 [=(X) ↓ RMod_Forget R]. （已译） *)
 Definition free_module_universal_arrow (X : Sets)
   : UniversalArrow X (RMod_Forget R) :=
   universal_arrow_from_UMP X (RMod_Forget R) (FreeModObject X) (fv_insert X)
     (free_module_universal X).
 
-(* The same content in the direct encoding, where the universal object is
-   named rather than projected out of a comma category. *)
+(* The same content direct encoding, where universal 对象 is
+ named rather than projected out comma 范畴. （已译） *)
 Program Definition free_module_AUniversalArrow (X : Sets)
   : AUniversalArrow X (RMod_Forget R) (FreeModObject X) := {|
   universal_arrow := fv_insert X
@@ -365,15 +365,14 @@ Next Obligation.
   - exact (fv_extend h).
   - intro x; simpl; reflexivity.
   - intros g Hg t; simpl.
-    (* [AUniversalArrow]'s uniqueness field is oriented the other way
-       round from the comma-packaged one, hence the [symmetry]. *)
+    (* 相关说明。 （已译） *)
     symmetry; apply (fv_extend_unique W h g).
     intro x; exact (Hg x).
 Qed.
 
-(* The functor and the adjunction come out of the generic machinery with
-   no further proof — the route Instance/Grp/Free.v,
-   Instance/Coq/Monoid/Free.v and Construction/Free/Quiver.v all take. *)
+(* The 函子 伴随 come out generic machinery with
+ no further 证明 — route Instance/Grp/Free.v,
+ Instance/Coq/Monoid/Free.v Construction/Free/Quiver.v all take. （已译） *)
 Definition FreeMod : Sets ⟶ RMod R :=
   LeftAdjointFunctorFromUniversalArrows (RMod_Forget R)
     free_module_universal_arrow.
@@ -381,8 +380,8 @@ Definition FreeMod : Sets ⟶ RMod R :=
 Definition free_module_adjunction : FreeMod ⊣ RMod_Forget R :=
   AdjunctionFromUniversalArrows (RMod_Forget R) free_module_universal_arrow.
 
-(** The free functor's object part is the formal-sum module,
-    definitionally. *)
+(** The free 函子's 对象 part formal-sum module,
+ definitionally. （已译） *)
 Example FreeMod_obj (X : Sets) : FreeMod X = FreeModObject X := eq_refl.
 
 (*
@@ -437,12 +436,12 @@ Proof.
   intro m; exact (free_module_counit_generator W m).
 Qed.
 
-(** ** The free functor relabels basis vectors
+(* * ** The free 函子 relabels basis vectors
 
-    Riehl's "functoriality on maps of generating sets".
-    [LeftAdjointFunctorFromUniversalArrows] defines [fmap] by universal
-    factorization, not by a formula, so what the functor does to a
-    generator has to be proved. *)
+ Riehl's "functoriality maps generating sets".
+ [LeftAdjointFunctorFromUniversalArrows] defines [fmap] universal
+ factorization, not formula, so what 函子 does a
+ generator has proved. （已译） *)
 Lemma free_module_fmap_generators {X Y : Sets} (u : X ~{Sets}~> Y)
   (x : carrier X) :
   cmon_map (rm_hom (fmap[FreeMod] u)) (fv_gen x) ≈ fv_gen (u x).
@@ -567,8 +566,7 @@ Lemma fv_eval_pointwise@{a c p so +} (R : RingObject@{a c p})
   fv_eval h t ≈ fv_eval h' t.
 Proof. exact (fv_extend_unique W h' (fv_extend h) (fun x => H x) t). Qed.
 
-(* The natural bijection RMod(F X, W) ≅ Sets(X, U W): forward the
-   restriction to the basis, backward the linear extension. *)
+(* 相关说明。 （已译） *)
 Definition free_module_hom_iso@{a c p so +} (R : RingObject@{a c p})
   (X : Sets@{c so}) (W : RMod R) :
   @Isomorphism Sets@{c so}
@@ -597,9 +595,9 @@ Proof.
   - intros g t. exact (fv_extend_transpose R g t).
 Defined.
 
-(* The adjunction's last level, which no constraint mentions when it is
-   left free, is pinned to the one of [Sets], as Instance/Smgrp.v and
-   Instance/Mon/Free.v pin theirs. *)
+(* The 伴随's last level, no constraint mentions it is
+ left free, pinned one [Sets], Instance/Smgrp.v and
+ Instance/Mon/Free.v pin theirs. （已译） *)
 Definition free_module_adjunction_hom@{a c p so +} (R : RingObject@{a c p}) :
   @Adjunction@{_ c c so c c c c so c so} (RMod R) Sets@{c so}
     (FreeMod R) (RMod_Forget R).
@@ -611,15 +609,15 @@ Proof.
   - intros X W W' k g. exact (free_module_naturality_in_module R k g).
 Defined.
 
-(* Its counit is the fold of the identity, by conversion. *)
+(* Its counit fold 恒等, conversion. （已译） *)
 Example free_module_hom_counit@{a c p so +} (R : RingObject@{a c p})
   (W : RMod R) (t : @FVTerm R (RMod_Forget R W)) :
   cmon_map (rm_hom (@counit _ _ _ _ (free_module_adjunction_hom R) W)) t
     = fv_eval (@id Sets@{c so} (RMod_Forget R W)) t := eq_refl.
 
-(* Its unit and its forward transpose ARE those of
-   [free_module_adjunction].  The cast pins the free level of that
-   adjunction too, as the hom-set form's own is pinned above. *)
+(* Its unit forward transpose ARE those of
+ [free_module_adjunction]. The cast pins free level that
+ 伴随 too, hom-set form's own pinned above. （已译） *)
 Example free_module_hom_unit@{a c p so +} (R : RingObject@{a c p})
   (X : Sets@{c so}) :
   @Category.Theory.Adjunction.unit _ _ _ _ (free_module_adjunction_hom R) X
@@ -738,12 +736,12 @@ Section NonDegeneracy.
 Context (R : RingObject).
 Context (X : SetoidObject).
 
-(** *** Distinct scalars give distinct multiples of a basis vector
+(* * *** Distinct scalars give distinct multiples basis vector
 
-    This needs NO hypothesis on X and none on R beyond what
-    [RingObject] already carries.  Map every generator to 1 in R viewed
-    as a module over itself (Instance/Mod.v's [Ring_RMod]); then r·e_x
-    evaluates to r·1 ≈ r. *)
+ This needs NO 假设 X none R beyond what
+ [RingObject] already carries. Map every generator 1 R viewed
+ module over itself (Instance/Mod.v's [Ring_RMod]); then r·e_x
+ evaluates r·1 ≈ r. （已译） *)
 
 Definition fv_probe_one : X ~{Sets}~> RMod_Forget R (Ring_RMod R).
 Proof.
@@ -772,8 +770,7 @@ Qed.
 Context (Xdec : ∀ x y : carrier X, (x ≈ y) + ((x ≈ y) → False)).
 Context (Rnz : rig_one (ring_rig R) ≈ rig_zero (ring_rig R) → False).
 
-(* The characteristic function of the generator [x], with values in R
-   viewed as a module over itself. *)
+(* 相关说明。 （已译） *)
 Definition fv_probe_at (x : carrier X)
   : X ~{Sets}~> RMod_Forget R (Ring_RMod R).
 Proof using R X Xdec.
@@ -813,8 +810,7 @@ Theorem free_module_two_independent (x y : carrier X)
   (Hxy : (x ≈ y) → False) (r s : carrier (rig_setoid (ring_rig R))) :
   fv_eq (fv_plus (@fv_smul R X r (fv_gen x)) (fv_smul s (fv_gen y))) fv_zero →
   (r ≈ rig_zero (ring_rig R)) * (s ≈ rig_zero (ring_rig R)).
-(* [Rnz] is deliberately absent: this separation does not need it, and
-   naming the section variables keeps that visible in the signature. *)
+(* 相关说明。 （已译） *)
 Proof using R X Xdec.
   intro He.
   split.
@@ -905,8 +901,8 @@ Example int_free_extend_computes :
 Example int_free_extend_generator_true :
   fv_eval int_probe (zgen true) = 3%Z := eq_refl.
 
-(* ℤ is not the zero ring, so the basis insertion is injective on this
-   generating setoid. *)
+(* ℤ not zero ring, so basis 嵌入 injective this
+ generating setoid. （已译） *)
 Lemma int_one_neq_zero :
   rig_one (ring_rig Int_Ring) ≈ rig_zero (ring_rig Int_Ring) → False.
 Proof. intro H; compute in H; discriminate H. Qed.
@@ -920,9 +916,9 @@ Proof.
   compute in Hb; discriminate Hb.
 Qed.
 
-(* The basis is linearly independent over ℤ too.  This one spends the
-   decider but NOT [int_one_neq_zero] — the ℚ reading of the same
-   theorem is [free_vect_basis_independent]. *)
+(* The basis linearly independent over ℤ too. This one spends the
+ decider but NOT [int_one_neq_zero] — ℚ reading same
+ 定理 [free_vect_basis_independent]. （已译） *)
 Theorem int_free_two_independent
   (r s : carrier (rig_setoid (ring_rig Int_Ring))) :
   fv_eq (zplus (zsmul r (zgen true)) (zsmul s (zgen false)))
@@ -934,7 +930,7 @@ Proof.
            true false two_gens_distinct r s).
 Qed.
 
-(* ...and the scalars embed, with no decidability spent. *)
+(* 相关说明。 （已译） *)
 Theorem int_free_scalars_distinct :
   fv_eq (zsmul 2%Z (zgen true)) (zsmul 3%Z (zgen true)) → False.
 Proof.

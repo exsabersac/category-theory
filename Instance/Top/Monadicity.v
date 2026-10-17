@@ -24,8 +24,8 @@ Require Import Category.Instance.Top.Cocomplete.
 
 Generalizable All Variables.
 
-(** * The discrete-space adjunction induces the identity monad, and is not
-      monadic *)
+(* * * The discrete-space 伴随 induces 恒等 单子, not
+ monadic （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/monadic+functor
@@ -38,9 +38,7 @@ Generalizable All Variables.
 
 (** ** The induced monad *)
 
-(* [s] is the strict level of [Compose] in [PForget ◯ PDisc]; it is the
-   same [s] as the Eilenberg-Moore level below, which [EM_Comparison]
-   identifies with it. *)
+(* 相关说明。 （已译） *)
 Definition PDiscT@{o so s | o < so, o < s +} :
   Sets@{o so} ⟶ Sets@{o so} :=
   PForget@{o so} ◯ PDisc@{o so}.
@@ -70,8 +68,8 @@ Example PDiscMonad_ret@{o so s u u0 | o < so, o < s, o < u +}
 Example PDiscMonad_join@{o so s u u0 | o < so, o < s, o < u +}
   (x : Sets@{o so}) : @join _ _ PDiscMonad@{o so s u u0} x = id := eq_refl.
 
-(* The data fields of the functor and of the monad, as functions: I = ⟨I,
-   1, 1⟩ on the nose. *)
+(* The data fields 函子 单子, functions: I = ⟨I,
+ 1, 1⟩ nose. （已译） *)
 Example PDiscT_fields@{o so s | o < so, o < s +} :
   (@fobj _ _ PDiscT@{o so s}, @fmap _ _ PDiscT@{o so s})
     = (@fobj _ _ Id[Sets@{o so}], @fmap _ _ Id[Sets@{o so}]) := eq_refl.
@@ -81,7 +79,7 @@ Example PDiscMonad_fields@{o so s u u0 | o < so, o < s, o < u +} :
     = (@ret _ _ (IdMonad@{so o} Sets@{o so}),
        @join _ _ (IdMonad@{so o} Sets@{o so})) := eq_refl.
 
-(** ** The isomorphism with the identity monad, in [Monads Sets] *)
+(* * ** The 同构 恒等 单子, [Monads Sets] （已译） *)
 
 Definition disc_to_id@{o so s | o < so, o < s +} :
   PDiscT@{o so s} ⟹ Id[Sets@{o so}].
@@ -135,7 +133,7 @@ Proof.
     intros x z; simpl; reflexivity.
 Defined.
 
-(** ** The comparison functor is the forgetful functor *)
+(* * ** The comparison 函子 forgetful 函子 （已译） *)
 
 Definition PDiscK@{o so s u u0 e | o < so, o < s, o < u, so <= e +} :
   PTopCat@{o so} ⟶
@@ -153,7 +151,7 @@ Example PDiscK_forget_map@{o so s u u0 e |
   fmap[EM_Forget _ ◯ PDiscK@{o so s u u0 e}] f = fmap[PForget@{o so}] f
   := eq_refl.
 
-(* The structure map of K X is the identity setoid morphism itself. *)
+(* The structure map K X 恒等 setoid 态射 itself. （已译） *)
 Example PDiscK_alg@{o so s u u0 e | o < so, o < s, o < u, so <= e +}
   (X : PTopCat@{o so}) :
   t_alg[`2 (fobj[PDiscK@{o so s u u0 e}] X)] = setoid_morphism_id
@@ -259,8 +257,8 @@ Proof.
   intros X Y f x; simpl. reflexivity.
 Defined.
 
-(* The comparison into the algebras of [IdMonad Sets], through θ* of the
-   morphism of monads [id_disc_hom]. *)
+(* The comparison 进入 algebras [IdMonad Sets], through θ* the
+ 态射 单子 [id_disc_hom]. （已译） *)
 Definition PDiscKI@{o so s u u0 e | o < so, o < s, o < u, so <= e +} :
   PTopCat@{o so} ⟶
     @EilenbergMoore@{e so s o} Sets@{o so} Id[Sets@{o so}]
@@ -281,7 +279,7 @@ Example PDiscKI_alg@{o so s u u0 e | o < so, o < s, o < u, so <= e +}
   (X : PTopCat@{o so}) (x : X) :
   t_alg[`2 (fobj[PDiscKI@{o so s u u0 e}] X)] x = x := eq_refl.
 
-(** ** Not full, not an equivalence, not monadic *)
+(* * ** Not full, not 等价, not monadic （已译） *)
 
 Definition pbool_to_indisc@{o so | o < so +} :
   PBool@{o} ~{PTopCat@{o so}}~> PTwoIndisc@{o} :=
@@ -342,8 +340,8 @@ Lemma PDiscK_not_Equivalence@{o so s u u0 e |
   EquivalenceOfCategories PDiscK@{o so s u u0 e} → False.
 Proof. intros E. exact (PDiscK_not_Full (Equivalence_Full E)). Qed.
 
-(* The comparison into the algebras of [IdMonad Sets] is not full either:
-   the identity of [bool] is an algebra map KI PTwoIndisc → KI PBool. *)
+(* The comparison 进入 algebras [IdMonad Sets] not full either:
+ 恒等 [bool] algebra map KI PTwoIndisc → KI PBool. （已译） *)
 Lemma PDiscKI_not_Full@{o so s u u0 e | o < so, o < s, o < u, so <= e +} :
   Full PDiscKI@{o so s u u0 e} → False.
 Proof.

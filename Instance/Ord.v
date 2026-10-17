@@ -33,8 +33,8 @@ Record OrdObject := {
 
 #[export] Existing Instance ord_le_respects.
 
-(** The order is implied by the carrier's own equivalence: this is the one
-    consequence of [ord_le_respects] that the development below consumes. *)
+(** The order implied carrier's own 等价: 这是 one
+ consequence [ord_le_respects] development below 所消耗. （已译） *)
 Lemma ord_le_of_equiv (P : OrdObject) (x y : carrier (ord_setoid P)) :
   x ≈ y → ord_le P x y.
 Proof.
@@ -114,7 +114,7 @@ Next Obligation. intros P Q f g Hfg a; simpl; exact (Hfg a). Qed.
 Next Obligation. intros P a; simpl; reflexivity. Qed.
 Next Obligation. intros P Q R f g a; simpl; reflexivity. Qed.
 
-(** ** Partial orders as a full subcategory *)
+(* 相关说明。 （已译） *)
 
 Definition OrdAntisymmetric (P : OrdObject) : Type :=
   ∀ x y : carrier (ord_setoid P),
@@ -139,7 +139,7 @@ Proof. exact (Full_Implies_Full_Functor Ord Pos_Sub Pos_Sub_Full). Defined.
 Lemma Posets_Incl_Faithful : Functor.Faithful (Incl Ord Pos_Sub).
 Proof. exact (Incl_Faithful Ord Pos_Sub). Defined.
 
-(** ** Comparison with the pre-existing [Pos] *)
+(* 相关说明。 （已译） *)
 
 Definition OrdObject_of_Poset (P : PosetObject) : OrdObject := {|
   ord_setoid      := pos_setoid P;
@@ -225,7 +225,7 @@ Next Obligation.
   intros P Q f a; simpl; reflexivity.
 Qed.
 
-(** ** A preorder as a thin category, and the reviewer's distinction *)
+(* * ** A preorder thin 范畴, reviewer's distinction （已译） *)
 
 Definition ord_preorder (P : OrdObject)
   : RelationClasses.PreOrder (ord_le P).

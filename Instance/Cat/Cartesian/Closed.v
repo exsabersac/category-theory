@@ -12,7 +12,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** Cat is cartesian closed: the exponential is the functor category. *)
+(** Cat 笛卡尔闭: exponential 函子 范畴. （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/functor+category

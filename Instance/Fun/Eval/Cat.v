@@ -17,7 +17,7 @@ Require Import Category.Instance.Cat.Exponential.
 
 Generalizable All Variables.
 
-(** * The evaluation functor as [Cat]'s exponential evaluation *)
+(* * * The evaluation 函子 [Cat]'s exponential evaluation （已译） *)
 
 (*
    本文件给出 Cat 相关实例。
@@ -36,16 +36,16 @@ Context (P X : Cat).
    (see the header's universe measurement). *)
 Definition CatEval : ([P, X] ∏ P) ⟶ X := @eval Cat Cat_Cartesian Cat_Closed P X.
 
-(* Its two data fields ARE [EvalBi]'s, on the nose. *)
+(* 相关说明。 （已译） *)
 Definition CatEval_obj (Hp : ([P, X] ∏ P)) :
   fobj[CatEval] Hp = fobj[EvalBi] Hp := eq_refl.
 
 Definition CatEval_map (Hp Kq : ([P, X] ∏ P)) :
   @fmap _ _ CatEval Hp Kq = @fmap _ _ (@EvalBi P X) Hp Kq := eq_refl.
 
-(* So the fixed-object evaluation is the partial application of [Cat]'s
-   own evaluation: on objects on the nose, on arrows up to ≈ (through
-   Instance/Fun/Eval.v's [eval_partial_map]). *)
+(* So fixed-对象 evaluation partial application [Cat]'s
+ own evaluation: 对象 nose, arrows up ≈ (through
+ Instance/Fun/Eval.v's [eval_partial_map]). （已译） *)
 Definition eval_is_CatEval_partial_obj (p : P) (H : [P, X]) :
   fobj[Eval p] H = fobj[Partial_l CatEval p] H := eq_refl.
 
@@ -55,8 +55,8 @@ Proof. exact (eval_partial_map p H K s). Qed.
 
 End CatEval.
 
-(* The parameter/adjunct passage the issue asks to record already exists as
-   an isomorphism in [Cat]: Instance/Cat/Exponential.v's [Cat_exp_prod_l].
-   Cited, not rebuilt. *)
+(* The parameter/adjunct passage issue asks record already exists as
+ 同构 [Cat]: Instance/Cat/Exponential.v's [Cat_exp_prod_l].
+ Cited, not rebuilt. （已译） *)
 Definition eval_transpose (J P X : Cat) :
   @Isomorphism Cat ([J ∏ P, X]) ([J, [P, X]]) := Cat_exp_prod_l J P X.

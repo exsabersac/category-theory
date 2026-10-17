@@ -12,7 +12,7 @@ Require Import Category.Instance.Mon.Coproduct.
 
 Generalizable All Variables.
 
-(** * The free monoid on a SETOID, and its adjunction at Mon(Sets) *)
+(* * * The free 幺半群 SETOID, 伴随 at Mon(Sets) （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/universal+morphism
@@ -129,7 +129,7 @@ Proof.
   - intro u; rewrite wapp_nil_r; exact (word_eq_refl u).
 Defined.
 
-(* The four data readings hold on the nose. *)
+(* 相关说明。 （已译） *)
 Example free_mon_carrier (X : SetoidObject) :
   mon_ob (FreeMonSetsObject X) = WordObj X := eq_refl.
 
@@ -158,10 +158,10 @@ Next Obligation.
   exact (we_cons a b Datatypes.nil Datatypes.nil Hab we_nil).
 Qed.
 
-(** ** The extension of a map into a monoid: the fold
+(* * ** The extension map 幺半群: fold
 
-    The extension of h replaces concatenation by the multiplication of L
-    and the empty word by its unit, so it is the right fold of h. *)
+ The extension h replaces concatenation multiplication L
+ empty word unit, so it right fold h. （已译） *)
 
 Fixpoint free_mon_extend {X : SetoidObject} {L : MonS}
          (h : carrier X → carrier (mon_ob L)) (l : list (carrier X))
@@ -171,8 +171,8 @@ Fixpoint free_mon_extend {X : SetoidObject} {L : MonS}
   | Datatypes.cons a l' => mon_mul L (h a) (free_mon_extend h l')
   end.
 
-(* The fold respects `≈` on words as soon as h respects `≈` on letters —
-   which is exactly the hypothesis a Sets-morphism carries. *)
+(* The fold respects `≈` words soon h respects `≈` letters —
+ exactly 假设 Sets-态射 carries. （已译） *)
 Lemma free_mon_extend_respects {X : SetoidObject} {L : MonS}
       (h : carrier X → carrier (mon_ob L))
       (hp : Proper (equiv ==> equiv) h)
@@ -184,9 +184,7 @@ Proof.
   - exact (mon_mul_resp L _ _ (hp a b Hab) _ _ IH).
 Qed.
 
-(* It carries concatenation to multiplication: induction on the left
-   word, using the left unit law at the empty word and associativity at
-   a [cons]. *)
+(* 相关说明。 （已译） *)
 Lemma free_mon_extend_wapp {X : SetoidObject} {L : MonS}
       (h : carrier X → carrier (mon_ob L)) (u v : list (carrier X)) :
   free_mon_extend h (wapp u v)
@@ -201,7 +199,7 @@ Proof.
     + symmetry; exact (mon_mul_assoc L (h a) _ _).
 Qed.
 
-(* ...and it agrees with h on the generators, by the right unit law. *)
+(* 相关说明。 （已译） *)
 Lemma free_mon_extend_generator {X : SetoidObject} {L : MonS}
       (h : carrier X → carrier (mon_ob L)) (a : carrier X) :
   free_mon_extend h (free_mon_insert X a) ≈ h a.
@@ -266,15 +264,15 @@ Proof.
     intro b; symmetry; exact (Hg b).
 Qed.
 
-(* The free monoid packaged as a universal arrow from X to [Mon_Forget].
-   By Theory/Universal/Arrow.v this IS an initial object of the comma
-   category =(X) ↓ Mon_Forget. *)
+(* The free 幺半群 packaged 泛箭头 X [Mon_Forget].
+ By Theory/Universal/Arrow.v IS 始对象 comma
+ 范畴 =(X) ↓ Mon_Forget. （已译） *)
 Definition free_mon_universal_arrow (X : Sets) : UniversalArrow X UMonS :=
   universal_arrow_from_UMP X UMonS (FreeMonSetsObject X)
                            (free_mon_insert X) (free_mon_universal X).
 
-(* The same content in the direct encoding, where the universal object is
-   named rather than projected. *)
+(* The same content direct encoding, where universal 对象 is
+ named rather than projected. （已译） *)
 Program Definition free_mon_AUniversalArrow (X : Sets)
   : AUniversalArrow X UMonS (FreeMonSetsObject X) := {|
   universal_arrow := free_mon_insert X
@@ -304,22 +302,22 @@ Definition FreeMonSets : Sets ⟶ MonS :=
 Definition free_mon_sets_adjunction : FreeMonSets ⊣ UMonS :=
   AdjunctionFromUniversalArrows UMonS free_mon_universal_arrow.
 
-(** * Strengths achieved, and two rejected *)
+(* 相关说明。 （已译） *)
 
-(* The free functor's object part is the word monoid, definitionally. *)
+(* The free 函子's 对象 part word 幺半群, definitionally. （已译） *)
 Example FreeMonSets_obj (X : Sets) :
   FreeMonSets X = FreeMonSetsObject X := eq_refl.
 
-(* The universal arrow is the insertion on the nose:
-   [universal_arrow_from_UMP] stores the supplied morphism as the second
-   projection of the comma object it builds, so no proof is involved. *)
+(* The 泛箭头 嵌入 nose:
+ [universal_arrow_from_UMP] stores supplied 态射 second
+ projection comma 对象 it builds, so no 证明 involved. （已译） *)
 Example free_mon_arrow_is_insert (X : Sets) :
   @arrow _ _ X UMonS (free_mon_universal_arrow X) = free_mon_insert X
   := eq_refl.
 
-(* Hence so is the unit of the adjunction: the transpose of the identity
-   is [fmap[U] id ∘ arrow], and [fmap[U] id] is the identity setoid map,
-   whose action is [Datatypes.id]. *)
+(* Hence so unit 伴随: transpose 恒等
+ [fmap[U] id ∘ arrow], [fmap[U] id] 恒等 setoid map,
+ whose action [Datatypes.id]. （已译） *)
 Example free_mon_unit_is_insert (X : Sets) (a : carrier X) :
   @Category.Theory.Adjunction.unit _ _ _ _ free_mon_sets_adjunction X a
     = free_mon_insert X a := eq_refl.
@@ -390,8 +388,8 @@ Example free_mon_extend_insert_at_letter
     (Datatypes.cons a Datatypes.nil)
     = wmap f (Datatypes.cons a Datatypes.nil) := eq_refl.
 
-(* Each step of the induction closes by [reflexivity] with no monoid law
-   spent, which is why this is stated at Leibniz `=`. *)
+(* Each step induction closes [reflexivity] no 幺半群 law
+ spent, why 这是 stated at Leibniz `=`. （已译） *)
 Lemma free_mon_extend_insert {X Y : Sets} (f : X ~{Sets}~> Y)
       (l : list (carrier X)) :
   free_mon_extend (L:=FreeMonSetsObject Y)
@@ -429,8 +427,7 @@ Proof.
   exact (mon_mul_resp L _ _ (H a) _ _ IH).
 Qed.
 
-(* The natural bijection Mon(F X, L) ≅ Sets(X, U L): forward g ↦ U g ∘
-   insert, backward the fold. *)
+(* 相关说明。 （已译） *)
 Definition free_mon_hom_iso@{o so +} (X : Sets@{o so}) (L : MonS) :
   @Isomorphism Sets@{o so}
     {| carrier := @hom MonS (FreeMonSets X) L
@@ -472,13 +469,12 @@ Proof.
   - intros X L L' f g a. reflexivity.
 Defined.
 
-(* Its counit is the fold of the identity, by conversion. *)
+(* Its counit fold 恒等, conversion. （已译） *)
 Example free_mon_hom_counit (L : MonS) (l : list (carrier (mon_ob L))) :
   mon_fun (@counit _ _ _ _ free_mon_sets_adjunction_hom L) l
     = free_mon_extend (fun x => x) l := eq_refl.
 
-(* Its unit and its forward transpose ARE those of
-   [free_mon_sets_adjunction]. *)
+(* 相关说明。 （已译） *)
 Example free_mon_hom_unit (X : Sets) :
   @Category.Theory.Adjunction.unit _ _ _ _ free_mon_sets_adjunction_hom X
     = @Category.Theory.Adjunction.unit _ _ _ _ free_mon_sets_adjunction X
@@ -489,22 +485,21 @@ Example free_mon_hom_to (X : Sets) (L : MonS)
   to (@adj _ _ _ _ free_mon_sets_adjunction_hom X L) g
     = to (@adj _ _ _ _ free_mon_sets_adjunction X L) g := eq_refl.
 
-(** * Non-vacuity
+(* * * Non-vacuity
 
-    [word_eq] is a STRUCTURAL congruence, not a generated one, so unlike
-    Instance/Mon/Coproduct.v's [fp_eq] it is open to inversion and
-    negatives are reachable directly.  Both routes are given below;
-    they share no proof text. *)
+ [word_eq] STRUCTURAL congruence, not generated one, so unlike
+ Instance/Mon/Coproduct.v's [fp_eq] it open inversion and
+ negatives reachable directly. Both routes given below;
+ they share no 证明 text. （已译） *)
 
-(* The insertion reflects `≈`: it is injective on generators up to the
-   source setoid, for EVERY X, with no hypothesis. *)
+(* The 嵌入 reflects `≈`: it injective generators up the
+ source setoid, EVERY X, no 假设. （已译） *)
 Lemma free_mon_insert_reflects {X : SetoidObject} (a b : carrier X) :
   word_eq (Datatypes.cons a Datatypes.nil)
           (Datatypes.cons b Datatypes.nil) → a ≈ b.
 Proof. intro H; inversion H; assumption. Qed.
 
-(* Two setoids on ONE carrier, [bool]: the discrete one, and the
-   coarsest one, which identifies everything. *)
+(* 相关说明。 （已译） *)
 Definition MonTwoObj : SetoidObject :=
   {| carrier := bool ; is_setoid := eq_Setoid bool |}.
 
@@ -515,7 +510,7 @@ Next Obligation. constructor; repeat intro; exact Logic.I. Qed.
 Definition BlurObj : SetoidObject :=
   {| carrier := bool ; is_setoid := Blur_Setoid |}.
 
-(* Over the discrete setoid the two generators stay apart... *)
+(* 相关说明。 （已译） *)
 Theorem free_mon_two_generators_distinct : @word_eq MonTwoObj
   (Datatypes.cons true Datatypes.nil)
   (Datatypes.cons false Datatypes.nil) → False.

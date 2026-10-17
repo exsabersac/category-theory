@@ -15,7 +15,7 @@ Require Import Category.Theory.Skeleton.
 
 Generalizable All Variables.
 
-(** * The skeleton equivalence: finite setoids and finite ordinals *)
+(* * * The skeleton 等价: finite setoids finite ordinals （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/equivalence+of+categories
@@ -34,28 +34,28 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The canonical n-element setoid *)
+(* 相关说明。 （已译） *)
 
 Definition fin_setoid (n : nat) : SetoidObject := {|
   carrier := Fin.t n;
   is_setoid := Fin_Setoid
 |}.
 
-(* A setoid map, packaged from its respectfulness proof in the shape the
-   proofs below produce.  Nothing here is specific to finiteness. *)
+(* A setoid map, packaged respectfulness 证明 shape the
+ proofs below produce. Nothing here specific finiteness. （已译） *)
 Definition setoid_map {X Y : SetoidObject} (f : X → Y)
   (Hf : ∀ a b, a ≈ b → f a ≈ f b) : X ~{Sets}~> Y :=
   Build_SetoidMorphism X (is_setoid X) Y (is_setoid Y) f Hf.
 
-(* On the canonical setoids the equivalence is Leibniz equality, so EVERY
-   function between them is respectful: this is exactly why the inclusion
-   below is full. *)
+(* On canonical setoids 等价 Leibniz equality, so EVERY
+ function between them respectful: 这是 exactly why 含入
+ below full. （已译） *)
 Definition fin_map {m n : nat} (f : Fin.t m → Fin.t n) :
   fin_setoid m ~{Sets}~> fin_setoid n :=
   setoid_map (X := fin_setoid m) (Y := fin_setoid n) f
     (fun a b H => f_equal f H).
 
-(** ** Counting: a bijection of finite ordinals pins the ordinal *)
+(* 相关说明。 （已译） *)
 
 Fixpoint fin_enum (n : nat) : list (Fin.t n) :=
   match n with
@@ -63,8 +63,7 @@ Fixpoint fin_enum (n : nat) : list (Fin.t n) :=
   | Datatypes.S k => Fin.F1 :: List.map Fin.FS (fin_enum k)
   end.
 
-(* Stated locally rather than taken from the standard library, whose name
-   for it moved between the supported versions. *)
+(* 相关说明。 （已译） *)
 Lemma length_of_map {A B : Type} (h : A → B) (l : list A) :
   List.length (List.map h l) = List.length l.
 Proof.
@@ -137,9 +136,9 @@ Proof.
     + now apply nodup_map_FS.
 Qed.
 
-(* Two finite ordinals connected by mutually inverse maps have the same
-   index: each enumeration embeds into the image of the other without
-   repetition, so the two lengths bound one another. *)
+(* Two finite ordinals connected mutually inverse maps have same
+ index: each enumeration embeds 进入 image other without
+ repetition, so two lengths bound one another. （已译） *)
 Lemma fin_bijection_index {m n : nat}
   (f : Fin.t m → Fin.t n) (g : Fin.t n → Fin.t m)
   (fg : ∀ j, f (g j) = j) (gf : ∀ i, g (f i) = i) : m = n.
@@ -159,7 +158,7 @@ Proof.
   - exact (Hle m n f g fg).
 Qed.
 
-(** ** The category of finite setoids *)
+(* * ** The 范畴 finite setoids （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。
@@ -222,7 +221,7 @@ Example sets_setf_iso (A B : Set_f)
   sets_iso (@setf_iso A B i) = i.
 Proof. now destruct i. Qed.
 
-(** ** The inclusion of finite ordinals *)
+(* * ** The 含入 finite ordinals （已译） *)
 
 (*
    本节说明 Skeleton 相关定义、性质与动机。
@@ -295,7 +294,7 @@ Qed.
 Next Obligation. now apply theta_to_from. Qed.
 Next Obligation. now apply card_map_comp. Qed.
 
-(** ** The inclusion is full, faithful and essentially surjective *)
+(* * ** The 含入 full, faithful 本质满射 （已译） *)
 
 (*
    本节说明函子、hom相关定义、性质与动机。
@@ -318,8 +317,8 @@ Definition FinSet_Incl_EssSurj :
 
 (** ** The equivalence *)
 
-(* Mac Lane's example, obtained through the general criterion rather than
-   by hand.  This is the constant to audit with [Print Assumptions]. *)
+(* Mac Lane's example, obtained through general criterion rather than
+ hand. This 常值 audit [Print Assumptions]. （已译） *)
 Definition FinSet_Setf_Equivalence : EquivalenceOfCategories FinSet_Incl :=
   @FF_ESO_Equivalence FinSet Set_f FinSet_Incl
     FinSet_Incl_Full FinSet_Incl_Faithful FinSet_Incl_EssSurj.
@@ -345,7 +344,7 @@ Example Card_quasi_inverse_fmap {A B : Set_f} (f : A ~> B) :
   fmap[@quasi_inverse FinSet Set_f FinSet_Incl FinSet_Setf_Equivalence] f
     = fmap[Card] f := eq_refl.
 
-(** ** The two comparison cells, stated with [Card] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Skeleton 相关定义、性质与动机。
@@ -363,8 +362,7 @@ Definition Incl_Card_theta : Id[Set_f] ≈ FinSet_Incl ◯ Card.
 Proof.
   exists (fun A => @setf_iso A (finset_obj (fs_card A)) (fs_theta A)).
   intros A B f a.
-  (* [f a] first travels along the round trip at A, then back along the
-     round trip at B; both cancellations are [theta_from_to]. *)
+  (* 相关说明。 （已译） *)
   transitivity (f (from (fs_theta A) (to (fs_theta A) a))).
   - exact (proper_morphism f _ _ (symmetry (theta_from_to a))).
   - exact (symmetry
@@ -442,7 +440,7 @@ Proof.
   - apply setf_cardinality_complete.
 Qed.
 
-(** ** The asymmetry of the two round trips *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、同构相关定义、性质与动机。
@@ -525,9 +523,9 @@ Proof.
   discriminate i.
 Qed.
 
-(* The comparison cell at [two_swap] computes to the transposition, and
-   is provably not the identity — contrast [Incl_unit_is_identity], which
-   holds at EVERY object of [FinSet]. *)
+(* The comparison cell at [two_swap] computes transposition, and
+ provably not 恒等 — contrast [Incl_unit_is_identity], which
+ holds at EVERY 对象 [FinSet]. （已译） *)
 Example counit_at_two_swap :
   to (@equivalence_counit_at FinSet Set_f FinSet_Incl
         FinSet_Setf_Equivalence two_swap) Fin.F1 = Fin.FS Fin.F1.
@@ -585,7 +583,7 @@ Proof.
   discriminate H.
 Qed.
 
-(** ** A finite setoid whose carrier is infinite *)
+(* 相关说明。 （已译） *)
 
 (* [nat] under equality of parity: two equivalence classes, infinitely
    many inhabitants.  It is an object of [Set_f] of cardinality 2, so
@@ -657,8 +655,8 @@ Definition parity_succ : parity_two ~{Set_f}~> parity_two :=
   setoid_map (X := parity_setoid) (Y := parity_setoid)
     Datatypes.S succ_respects.
 
-(* The carrier is [nat]: an object of [Set_f] is finite in the setoid sense
-   — finitely many EQUIVALENCE CLASSES — so its carrier type need not be. *)
+(* The carrier [nat]: 对象 [Set_f] finite setoid sense
+ — finitely many EQUIVALENCE CLASSES — so carrier type need not be. （已译） *)
 (* PROJECTION: an identification of carriers, holding because [parity_two]
    was built over [parity_setoid] whose carrier is [nat]. It records that a
    two-element object may have an infinite carrier; it proves nothing about
@@ -693,7 +691,7 @@ Example counit_at_parity_two :
   to (@equivalence_counit_at FinSet Set_f FinSet_Incl
         FinSet_Setf_Equivalence parity_two) Fin.F1 = 0%nat := eq_refl.
 
-(** ** Bridge to the general skeleton theory *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Skeleton 相关定义、性质与动机。

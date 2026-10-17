@@ -25,9 +25,9 @@ Require Import Category.Instance.Proset.Monotone.
 
 Generalizable All Variables.
 
-(** * The discrete-poset adjunction: the identity monad over propositional
-      setoids, the truncation monad over [Sets], and [Pos_Forget] not
-      monadic *)
+(* * * The discrete-poset 伴随: 恒等 单子 over propositional
+ setoids, truncation 单子 over [Sets], [Pos_Forget] not
+ monadic （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/monadic+functor
@@ -38,7 +38,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Posets are propositional, and [Pos_Forget] factors through [PropSets] *)
+(* 相关说明。 （已译） *)
 
 Definition pos_PropEquiv@{w c cp p0 p1 p2 p3 |
   Set < w, Set < p2, c <= w, cp <= w, c <= p0, c <= p1, cp <= p1,
@@ -83,7 +83,7 @@ Definition Pos_Forget_factor@{c so po p0 p1 p2 p3 s a b |
   PropSets_lift_Incl@{po c so s a b} Pos_Forget@{po so p0 p2 p1 p3 c}
     pos_PropEquiv@{so c c p0 p1 p2 p3}.
 
-(** ** The discrete poset on a propositional setoid *)
+(* 相关说明。 （已译） *)
 
 Definition PosDiscPObj@{c so p0 p1 p2 p3 |
   c < so, Set < p2, p2 <= p0, p3 <= p1, c <= p0, c <= p1 +}
@@ -178,7 +178,7 @@ Proof.
   - intros x y z f g t; simpl. reflexivity.
 Defined.
 
-(** ** Over [PropSets] the induced monad is the identity monad *)
+(* * ** Over [PropSets] induced 单子 恒等 单子 （已译） *)
 
 Definition TPosP@{c so po p0 p1 p2 p3 s |
   c < so, c < s, c < po, Set < p2, p1 <= po, p2 <= p0, p3 <= p1, c <= p0,
@@ -293,16 +293,16 @@ Proof.
     intros x z; simpl; reflexivity.
 Defined.
 
-(* Awodey's "the Eilenberg-Moore category for T = 1_Sets is then just Sets
-   itself", over [PropSets]: Monad/Identity.v's [IdMonad_EM_equivalence]
-   at [PropSets]. *)
+(* Awodey's "Eilenberg-Moore 范畴 T = 1_Sets then just Sets
+ itself", over [PropSets]: Monad/Identity.v's [IdMonad_EM_equivalence]
+ at [PropSets]. （已译） *)
 Definition PropSets_EM_Id_equivalence@{c so s e | c < so, c < s, so <= e +} :
   EquivalenceOfCategories
     (@EM_Forget@{so c s e} PropSets@{c so} Id[PropSets@{c so}]
        (IdMonad@{so c} PropSets@{c so})) :=
   IdMonad_EM_equivalence@{so c s e} PropSets@{c so}.
 
-(** ** Over [Sets] the discrete poset truncates *)
+(* 相关说明。 （已译） *)
 
 Definition PosDiscObj@{c so p0 p1 p2 p3 |
   c < so, Set < p2, p2 <= p0, p3 <= p1, c <= p0, c <= p1 +} (S : Sets@{c so}) :
@@ -402,7 +402,7 @@ Proof.
   - intros x y z f g t; simpl. reflexivity.
 Defined.
 
-(** ** Over [Sets] the induced monad is the truncation monad *)
+(* * ** Over [Sets] induced 单子 truncation 单子 （已译） *)
 
 Definition TPos@{c so po p0 p1 p2 p3 s |
   c < so, c < s, c < po, Set < p2, p1 <= po, p2 <= p0, p3 <= p1, c <= p0,
@@ -516,7 +516,7 @@ Proof.
     intros x z; simpl; exact (inhabits (reflexivity _)).
 Defined.
 
-(** ** Over [Sets], when the induced monad is the identity *)
+(* * ** Over [Sets], induced 单子 恒等 （已译） *)
 
 Definition id_to_TPos@{c so po p0 p1 p2 p3 s |
   c < so, c < s, c < po, Set < p2, p1 <= po, p2 <= p0, p3 <= p1, c <= p0,
@@ -692,8 +692,8 @@ Definition choice_of_IEM@{c | +} (E : ∀ P : Type@{c}, P + (P → False)) :
              | inr N => match (match h with inhabits a => N a end) with end
              end.
 
-(* Under informative excluded middle the induced monad IS the identity
-   monad, up to isomorphism in [Monads Sets]. *)
+(* Under informative excluded middle induced 单子 IS 恒等
+ 单子, up 同构 [Monads Sets]. （已译） *)
 Definition MPos_IEM_Id_iso@{c so po p0 p1 p2 p3 s a m1 m2 |
   c < so, c < s, c < po, Set < p2, p1 <= po, p2 <= p0, p3 <= p1, c <= p0,
   c <= p1, so <= m1, c <= m1, so <= m2, c <= m2 +}

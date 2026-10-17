@@ -31,7 +31,7 @@ Require Import Coq.Lists.List.
 
 Generalizable All Variables.
 
-(** * Cartesian closure is NOT inherited by functor categories *)
+(* * * Cartesian closure NOT inherited 函子 范畴 （已译） *)
 
 (*
  Book:      Awodey, Category Theory, §8.7 "Exponentials in categories
@@ -44,7 +44,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** A: points of an exponential, in any cartesian closed category *)
+(* * ** A: points exponential, any 笛卡尔闭 范畴 （已译） *)
 
 Section CCCPoints.
 
@@ -62,9 +62,9 @@ Definition ccc_point {P Q : C} (f : P ~> Q) :
   @terminal_obj C CT ~> @exponent_obj C CC CL P Q :=
   @curry C CC CL _ P Q (f ∘ exr).
 
-(* Distinct morphisms have distinct points.  Uncurrying undoes [curry]
-   ([uncurry_curry]), and [exr o (one /\ id) ~ id] ([exr_fork]) cancels
-   the projection. *)
+(* Distinct 态射 have distinct points. Uncurrying undoes [curry]
+ ([uncurry_curry]), [exr o (one /\ id) ~ id] ([exr_fork]) cancels
+ projection. （已译） *)
 Lemma ccc_point_inj {P Q : C} (f g : P ~> Q) :
   ccc_point f ≈ ccc_point g -> f ≈ g.
 Proof.
@@ -82,8 +82,8 @@ Qed.
 
 End CCCPoints.
 
-(** ** B: a transformation out of the constant functor is determined at
-       the initial index *)
+(* * ** B: transformation out 常值 函子 determined at
+ initial index （已译） *)
 
 Section ConstantPoints.
 
@@ -132,9 +132,9 @@ Context {AT : @Terminal A}.
 Context {CC : @Cartesian ([J, A])}.
 Context {CL : @Closed ([J, A]) CC}.
 
-(* Hom_{[J,A]}(P, Q) injects into Hom_A(1_A, (Q^P) 0).  The [Cartesian]
-   structure [CC] is arbitrary; the TERMINAL object is supplied here as
-   the pointwise one, which is what makes section B applicable. *)
+(* Hom_{[J,A]}(P, Q) injects Hom_A(1_A, (Q^P) 0). The [Cartesian]
+ structure [CC] arbitrary; TERMINAL 对象 supplied here as
+ pointwise one, what makes section B applicable. （已译） *)
 Definition fun_hom_point {P Q : [J, A]} (f : P ~{[J, A]}~> Q) :
   @terminal_obj A AT
     ~{A}~> (@exponent_obj _ CC CL P Q) (@initial_obj J JI) :=
@@ -223,8 +223,8 @@ Program Definition TwoFun@{o h p u u0 u1 u2 +}
 |}.
 Next Obligation. now destruct f. Qed.
 
-(* The k-th family: the identity at stage [S k], the constant map at
-   [Fin.F1] everywhere else. *)
+(* The k-th family: 恒等 at stage [S k], 常值 map at
+ [Fin.F1] everywhere else. （已译） *)
 Definition alpha_fam (k n : nat) : Fin.t 2 -> Fin.t 2 :=
   match Nat.eq_dec n (S k) with
   | left  _ => fun i => i
@@ -248,8 +248,7 @@ Next Obligation.
   destruct f; simpl; [ reflexivity | apply alpha_fam_F1 ].
 Qed.
 
-(* The family is injective: [Alpha k] and [Alpha j] already differ at
-   stage [S k], applied to the second element of the two-element set. *)
+(* 相关说明。 （已译） *)
 Lemma Alpha_distinct (k j : nat) : Alpha k ≈ Alpha j -> k = j.
 Proof.
   intro H.
@@ -275,14 +274,14 @@ Qed.
 
 Section MacLaneEx5.
 
-(* An ARBITRARY cartesian structure on the functor category, and an
-   arbitrary cartesian closed structure over it. *)
+(* An ARBITRARY cartesian structure 函子 范畴, an
+ arbitrary 笛卡尔闭 structure over it. （已译） *)
 Context (CC : @Cartesian ([Omega, FinSet])).
 Context (CL : @Closed ([Omega, FinSet]) CC).
 
-(* The object of [FinSet] -- a natural number -- at which the engine
-   lands: the value at stage 0 of the exponential of [TwoFun] by
-   itself. *)
+(* The 对象 [FinSet] -- natural number -- at engine
+ lands: value at stage 0 exponential [TwoFun] by
+ itself. （已译） *)
 Definition exp_card : nat :=
   (@exponent_obj _ CC CL TwoFun TwoFun)
     (@initial_obj Omega Omega_Initial).
@@ -324,7 +323,7 @@ Corollary fun_pointwise_not_cartesian_closed :
     (Functor_Category_Cartesian Omega FinSet FinSet_Cartesian) -> False.
 Proof. exact (fun_not_cartesian_closed _). Qed.
 
-(** ** F: Awodey §8.7 -- the objectwise formula gives the wrong object *)
+(* * ** F: Awodey §8.7 -- objectwise formula gives wrong 对象 （已译） *)
 
 (*
    本节说明始/终对象相关定义、性质与动机。
@@ -354,8 +353,8 @@ Proof.
   - exact id.
 Defined.
 
-(* Any two morphisms out of the empty setoid agree, which discharges
-   every case of [fmap_comp] that is not an identity. *)
+(* Any two 态射 out empty setoid agree, discharges
+ every case [fmap_comp] not 恒等. （已译） *)
 Program Definition PresheafP : _2^op ⟶ Sets := {|
   fobj := PObj;
   fmap := PMap
@@ -409,8 +408,8 @@ Section AwodeyPointwise.
 Context (CC : @Cartesian ([_2^op, Sets])).
 Context (CL : @Closed ([_2^op, Sets]) CC).
 
-(* The engine at the presheaf category: two distinct points of
-   (Q^P) TwoY. *)
+(* The engine at presheaf 范畴: two distinct points of
+ (Q^P) TwoY. （已译） *)
 Definition pq_point (b : bool) :
   @terminal_obj Sets Sets_Terminal
     ~{Sets}~> (@exponent_obj _ CC CL PresheafP PresheafQ) TwoY :=

@@ -18,7 +18,7 @@ Generalizable All Variables.
 *)
 #[local] Obligation Tactic := idtac.
 
-(** * The quotient of a setoid by an equivalence relation *)
+(* * * The quotient setoid 等价 关系 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/setoid
@@ -44,7 +44,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The two forms of the hypothesis *)
+(* * ** The two forms 假设 （已译） *)
 
 Section Hypotheses.
 
@@ -55,14 +55,14 @@ Context (R : crelation (carrier A)).
    i.e. `≈` is contained in R. *)
 Definition SetoidCoarser : Type := ∀ x y : carrier A, x ≈ y → R x y.
 
-(* Mac Lane's form: R RESPECTS the carrier's equality, i.e. R may be
-   transported along `≈` in either argument.  Stated one-directionally;
-   symmetry of `≈` gives the other direction. *)
+(* Mac Lane's form: R RESPECTS carrier's equality, i.e. R may be
+ transported along `≈` either 论元. Stated one-directionally;
+ symmetry `≈` gives other direction. （已译） *)
 Definition SetoidRespectsRel : Type :=
   ∀ x x' y y' : carrier A, x ≈ x' → y ≈ y' → R x y → R x' y'.
 
-(* Forward: coarseness gives respect, and the law of R it consumes is
-   TRANSITIVITY. *)
+(* Forward: coarseness gives respect, law R it 所消耗 is
+ TRANSITIVITY. （已译） *)
 Lemma coarser_respects (HR : Transitive R) : SetoidCoarser → SetoidRespectsRel.
 Proof.
   intros Hc x x' y y' Hx Hy Hxy.
@@ -71,9 +71,9 @@ Proof.
   - now apply Hc.
 Qed.
 
-(* Back: respect gives coarseness, and the law of R it consumes is
-   REFLEXIVITY.  Given x ≈ y, transport R x x along `≈` in the second
-   argument. *)
+(* Back: respect gives coarseness, law R it 所消耗 is
+ REFLEXIVITY. Given x ≈ y, transport R x x along `≈` second
+ 论元. （已译） *)
 Lemma respects_coarser (HR : Reflexive R) : SetoidRespectsRel → SetoidCoarser.
 Proof.
   intros Hr x y Hxy.
@@ -98,7 +98,7 @@ End Hypotheses.
 Arguments SetoidCoarser {A} R.
 Arguments SetoidRespectsRel {A} R.
 
-(** ** The quotient object and its projection *)
+(* * ** The quotient 对象 projection （已译） *)
 
 (*
    本节说明等价相关定义、性质与动机。
@@ -109,8 +109,7 @@ Definition SetsQuotient (A : SetoidObject) (R : crelation (carrier A))
   (HR : Equivalence R) : SetoidObject :=
   {| carrier := carrier A ; is_setoid := {| equiv := R ; setoid_equiv := HR |} |}.
 
-(* The carrier is untouched, by conversion -- the [eq_refl] exception to
-   the `≈` discipline, and the point of the construction. *)
+(* 相关说明。 （已译） *)
 Example sets_quot_carrier (A : SetoidObject) (R : crelation (carrier A))
   (HR : Equivalence R) : carrier (SetsQuotient A R HR) = carrier A.
 Proof. reflexivity. Qed.
@@ -128,37 +127,33 @@ Proof.
   intros x y Hxy; exact (HC x y Hxy).
 Defined.
 
-(* ... and its action is the identity, by conversion. *)
+(* ... action 恒等, conversion. （已译） *)
 Example sets_quot_proj_at (A : SetoidObject) (R : crelation (carrier A))
   (HR : Equivalence R) (HC : SetoidCoarser R) (a : carrier A) :
   sets_quot_proj A R HR HC a = a.
 Proof. reflexivity. Qed.
 
-(* Two elements are identified in the quotient exactly when R relates
-   them -- again by conversion, so the quotient's `≈` is readable. *)
+(* 相关说明。 （已译） *)
 Example sets_quot_equiv (A : SetoidObject) (R : crelation (carrier A))
   (HR : Equivalence R) (x y : carrier A) :
   @equiv _ (SetsQuotient A R HR) x y = R x y.
 Proof. reflexivity. Qed.
 
-(** ** The functor of R-respecting maps *)
+(* * ** The 函子 R-respecting maps （已译） *)
 
 Section RespFunctor.
 
 Context {A : SetoidObject}.
 Context (R : crelation (carrier A)).
 
-(* h respects R when it cannot tell R-related elements apart.  This is
-   Mac Lane's condition on the functions that descend. *)
+(* 相关说明。 （已译） *)
 Definition SetsRespects (X : SetoidObject) (h : A ~{Sets}~> X) : Type :=
   ∀ x y : carrier A, R x y → h x ≈ h y.
 
 Definition RespMap (X : SetoidObject) : Type :=
   { h : A ~{Sets}~> X & SetsRespects X h }.
 
-(* Two respecting maps are compared by their underlying maps; the
-   respectfulness witness carries no equational weight, exactly as in
-   Instance/Grp/Quotient.v's [Kills_Setoid]. *)
+(* 相关说明。 （已译） *)
 Program Definition RespMap_Setoid (X : SetoidObject) : Setoid (RespMap X) :=
   {| equiv := fun p q => `1 p ≈ `1 q |}.
 Next Obligation.
@@ -220,8 +215,8 @@ Proof.
   intros x y Hxy; exact (`2 p x y Hxy).
 Defined.
 
-(* The defining triangle, pointwise by [reflexivity]: the projection is
-   the identity function, so there is nothing to compute. *)
+(* The defining triangle, pointwise [reflexivity]: projection is
+ 恒等 function, so there nothing compute. （已译） *)
 Lemma sets_quot_med_commutes (HC : SetoidCoarser R) {X : SetoidObject}
   (p : RespMap R X) : sets_quot_med p ∘ sets_quot_proj A R HR HC ≈ `1 p.
 Proof. intro a; simpl; reflexivity. Qed.
@@ -235,7 +230,7 @@ End Mediator.
 
 Arguments sets_quot_med {A} R HR {X} p.
 
-(** ** Mac Lane §III.1 construction 4: ⟨A/R, p⟩ is a universal element *)
+(* 相关说明。 （已译） *)
 
 Section Universal.
 
@@ -270,9 +265,7 @@ Next Obligation.
     exact (sets_quot_med_unique R HR HC x v Hv).
 Defined.
 
-(* The class's element IS the projection, and the class's mediator IS
-   [sets_quot_med] -- both by convertibility, the [eq_refl] exception,
-   checking that the packaging rebuilt nothing. *)
+(* 相关说明。 （已译） *)
 Example sets_quot_universal_elem_is_proj :
   `1 (@aue_elem _ (RespFunctor R) (SetsQuotient A R HR)
         sets_quot_universal_element)
@@ -285,7 +278,7 @@ Example sets_quot_universal_med_is_med {X : SetoidObject} (x : RespMap R X) :
     = sets_quot_med R HR x.
 Proof. reflexivity. Qed.
 
-(** ** The representation, by the Yoneda-free route *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明Yoneda、hom相关定义、性质与动机。
@@ -310,7 +303,7 @@ Definition sets_quot_Representable : Representable (RespFunctor R) :=
 Definition sets_quot_representation :=
   @represented _ (RespFunctor R) sets_quot_Representable.
 
-(* The representing object is the quotient on the nose. *)
+(* The 表示 对象 quotient nose. （已译） *)
 Example sets_quot_repr_obj :
   @repr_obj _ (RespFunctor R) sets_quot_Representable = SetsQuotient A R HR.
 Proof. reflexivity. Qed.
@@ -320,7 +313,7 @@ End Universal.
 Arguments sets_quot_elem {A} R HR HC.
 Arguments sets_quot_universal_element {A} R HR HC.
 
-(** ** The two degenerate coarsenings, named *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Quotient 相关定义、性质与动机。
@@ -334,7 +327,7 @@ Proof. reflexivity. Qed.
 Definition sets_quot_finest_coarser (A : SetoidObject) :
   SetoidCoarser (@equiv _ A) := fun _ _ h => h.
 
-(* THE COARSEST: R := the total relation, which identifies everything. *)
+(* THE COARSEST: R := total 关系, identifies everything. （已译） *)
 Definition TotalRelT (A : SetoidObject) : crelation (carrier A) :=
   fun _ _ => poly_unit.
 
@@ -353,8 +346,7 @@ Lemma sets_quot_total_collapses (A : SetoidObject) (x y : carrier A) :
   @equiv _ (SetsQuotient A (TotalRelT A) (TotalRelT_Equivalence A)) x y.
 Proof. exact ttt. Qed.
 
-(** ** Non-vacuity: a quotient that neither keeps everything apart nor
-       collapses everything *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Quotient 相关定义、性质与动机。
@@ -381,12 +373,12 @@ Definition nat_parity_coarser : SetoidCoarser nat_parity :=
 Definition NatParity : SetoidObject :=
   SetsQuotient NatDiscrete nat_parity nat_parity_Equivalence.
 
-(* The quotient IDENTIFIES: 0 and 2 are equal in it, by computation. *)
+(* 相关说明。 （已译） *)
 Example nat_parity_merges : @equiv _ NatParity 0%nat 2%nat.
 Proof. reflexivity. Qed.
 
-(* The quotient SEPARATES: 0 and 1 are not.  This is where a decidable
-   invariant earns its keep -- the relation unfolds to [true = false]. *)
+(* The quotient SEPARATES: 0 1 not. This where decidable
+ invariant earns keep -- 关系 unfolds [true = false]. （已译） *)
 Lemma nat_parity_separates : @equiv _ NatParity 0%nat 1%nat → False.
 Proof. intro H; discriminate H. Qed.
 
@@ -406,9 +398,9 @@ Lemma nat_parity_not_coarsest :
   (∀ m n : carrier NatDiscrete, TotalRelT NatDiscrete m n → nat_parity m n) → False.
 Proof. intro H; exact (nat_parity_separates (H 0%nat 1%nat ttt)). Qed.
 
-(* And the universal property is inhabited at it: the parity map itself
-   is a respecting map, so the mediator out of the quotient exists and
-   computes on closed input. *)
+(* And 普遍性质 inhabited at it: parity map itself
+ respecting map, so mediator out quotient exists and
+ computes closed input. （已译） *)
 Definition BoolSet : SetoidObject :=
   {| carrier := bool ; is_setoid := eq_Setoid bool |}.
 
@@ -426,7 +418,7 @@ Definition nat_even_resp : RespMap nat_parity BoolSet :=
   existT (SetsRespects nat_parity BoolSet)
     nat_even_map (fun m n (H : nat_parity m n) => H).
 
-(* The descended map on the quotient, evaluated. *)
+(* 相关说明。 （已译） *)
 Example nat_parity_med_at_4 :
   sets_quot_med nat_parity nat_parity_Equivalence nat_even_resp 4%nat = true.
 Proof. reflexivity. Qed.

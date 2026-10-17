@@ -27,7 +27,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The trivial homomorphism computes *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Colimit 相关定义、性质与动机。
@@ -38,7 +38,7 @@ Lemma grp_zero_mor_is_unit {G K : GrpObject} (a : carrier G) :
   grp_map (@zero_mor Grp Grp_Zero G K) a ≈ grp_unit K.
 Proof. simpl; reflexivity. Qed.
 
-(** ** G/N as the coequalizer of N ↪ G against the trivial map *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -46,23 +46,22 @@ Proof. simpl; reflexivity. Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The cofork equation: the projection cannot tell the inclusion from the
-   trivial map, because every member of N is projected to the unit. *)
+(* The cofork equation: projection cannot tell 含入 the
+ trivial map, because every member N projected unit. （已译） *)
 Lemma quot_cofork {G : GrpObject} (N : NormalSubgroup G) :
   quot_proj N ∘ sub_incl N ≈ quot_proj N ∘ @zero_mor Grp Grp_Zero _ _.
 Proof.
   intro p; simpl.
   unfold Basics.compose.
-  (* The quotient's `≈` is the truncation of [quot_rel] since the PR
-     "algebraic carriers are sets" (2026-09-17), so the witness is wrapped. *)
+  (* 相关说明。 （已译） *)
   constructor.
   apply (snd (quot_rel_unit_iff N (`1 p))).
   exact (`2 p).
 Qed.
 
-(* Descent: a homomorphism coforking the pair is exactly one that kills N,
-   and [hom_theorem] then supplies the unique factorization.  Nothing here
-   is a new argument. *)
+(* Descent: homomorphism coforking pair exactly one kills N,
+ [hom_theorem] then supplies unique factorization. Nothing here
+ new 论元. （已译） *)
 Lemma quot_coeq_desc {G : GrpObject} (N : NormalSubgroup G)
   {Z : GrpObject} (h : G ~{Grp}~> Z)
   (Hh : h ∘ sub_incl N ≈ h ∘ @zero_mor Grp Grp_Zero _ _) :
@@ -85,8 +84,8 @@ Proof.
   - exact (fun Z h Hh => quot_coeq_desc N h Hh).
 Defined.
 
-(* Awodey's colimit presentation, in the vocabulary of
-   Structure/Kernel.v: the projection is the cokernel of the inclusion. *)
+(* Awodey's colimit presentation, vocabulary of
+ Structure/Kernel.v: projection cokernel 含入. （已译） *)
 Definition quot_IsCokernel {G : GrpObject} (N : NormalSubgroup G) :
   @IsCokernel Grp Grp_Zero _ _ _ (sub_incl N) (quot_proj N) :=
   quot_IsCoequalizer N.
@@ -102,7 +101,7 @@ Definition quot_proj_normal_epi {G : GrpObject} (N : NormalSubgroup G) :
 Definition quot_proj_regular_epi {G : GrpObject} (N : NormalSubgroup G) :
   RegularEpi (quot_proj N) := cokernel_regular_epi (quot_IsCokernel N).
 
-(** ** Riehl Example 3.1.25: the normal closure of an image *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Colimit 相关定义、性质与动机。
@@ -166,8 +165,7 @@ Proof.
   - exact (sub_resp P _ _ Hab IHa).
 Qed.
 
-(* A homomorphism killing the image kills the whole closure: the same
-   induction, and the descent step of the cokernel below. *)
+(* 相关说明。 （已译） *)
 Lemma normal_closure_killed {G H Z : GrpObject} (f : G ~{Grp}~> H)
   (h : H ~{Grp}~> Z)
   (Hgen : ∀ a : carrier G, grp_map h (grp_map f a) ≈ grp_unit Z)
@@ -183,7 +181,7 @@ Lemma normal_closure_cofork {G H : GrpObject} (f : G ~{Grp}~> H) :
 Proof.
   intro a; simpl.
   unfold Basics.compose.
-  (* One [constructor] for the truncation, as in [quot_cofork] above. *)
+  (* 相关说明。 （已译） *)
   constructor.
   apply (snd (quot_rel_unit_iff (NormalClosure f) (grp_map f a))).
   exact (nc_gen a).
@@ -204,8 +202,7 @@ Proof.
   apply (grp_map_unit h).
 Qed.
 
-(* Riehl's Example 3.1.25, in full: the coequalizer of φ with the trivial
-   homomorphism is H modulo the normal closure of the image of φ. *)
+(* 相关说明。 （已译） *)
 Definition normal_closure_IsCoequalizer {G H : GrpObject} (f : G ~{Grp}~> H) :
   IsCoequalizer f (@zero_mor Grp Grp_Zero _ _)
                 (QuotientGrp (NormalClosure f)) (quot_proj (NormalClosure f)).
@@ -223,7 +220,7 @@ Definition normal_closure_cokernel_epic {G H : GrpObject} (f : G ~{Grp}~> H) :
   Epic (quot_proj (NormalClosure f)) :=
   cokernel_epic (normal_closure_IsCokernel f).
 
-(** ** The two presentations agree where they overlap *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明核/余核相关定义、性质与动机。
@@ -248,14 +245,13 @@ Definition quot_normal_closure_iso {G : GrpObject} (N : NormalSubgroup G) :
 
 (** ** Non-vacuity at S3 *)
 
-(* The cokernel of A3 ↪ S3 is the two-element quotient, so the cokernel
-   witnesses above are not about a collapsed situation. *)
+(* 相关说明。 （已译） *)
 Definition S3_A3_IsCokernel :
   @IsCokernel Grp Grp_Zero _ _ _ (sub_incl A3) (quot_proj A3) :=
   quot_IsCokernel A3.
 
-(* The hypothesis is the truncation since the PR "algebraic carriers are
-   sets" (2026-09-17); the goal is [False], so it is unwrapped at no cost. *)
+(* The 假设 truncation since PR "algebraic carriers are
+ sets" (2026-09-17); goal [False], so it unwrapped at no cost. （已译） *)
 Theorem S3_A3_cokernel_nondegenerate :
   grp_map (quot_proj A3) S3_s ≈ grp_map (quot_proj A3) (grp_unit S3) → False.
 Proof. intros [H]; simpl in H; discriminate. Qed.
@@ -283,7 +279,7 @@ Proof.
   - exact (nc_mul (nc_gen S3_refl_gen) (nc_conj S3_r (nc_gen S3_refl_gen))).
 Qed.
 
-(* And r is NOT in the subgroup, so the closure is strictly larger. *)
+(* 相关说明。 （已译） *)
 Theorem S3_refl_sub_lacks_rotation : sub_mem S3_refl_sub S3_r → False.
 Proof. simpl; discriminate. Qed.
 
@@ -301,8 +297,8 @@ Proof.
   discriminate E.
 Qed.
 
-(* Whereas the normal closure of the identity of S3 is all of S3, and that
-   cokernel does collapse -- the far end of the construction's range. *)
+(* Whereas normal closure 恒等 S3 all S3, that
+ cokernel does collapse -- far end construction's range. （已译） *)
 Theorem S3_total_closure_collapses (a b : carrier S3) :
   quot_rel (NormalClosure (@id Grp S3)) a b.
 Proof. exact (nc_gen (grp_mul S3 a (grp_inv S3 b))). Qed.

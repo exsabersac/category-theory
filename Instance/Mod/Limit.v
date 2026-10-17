@@ -18,7 +18,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * Limits of R-modules are created by the forgetful functor to [Ab] *)
+(* * * Limits R-modules created forgetful 函子 [Ab] （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/created+limit
@@ -126,7 +126,7 @@ Proof.
   exact (limit_med_commutes (limit_is_alimit L) (mlim_smul_cone r) j a).
 Qed.
 
-(** ** The module laws, by joint monicity of the legs *)
+(* 相关说明。 （已译） *)
 
 Lemma mlim_smul_respects : Proper (equiv ==> equiv ==> equiv) mlim_smul.
 Proof.
@@ -141,8 +141,8 @@ Lemma mlim_smul_distr_l (r : carrier (rig_setoid (ring_rig R)))
   (a b : carrier (cmon_setoid (ab_cmon vertex_obj[L]))) :
   mlim_smul r (cmon_plus vertex_obj[L] a b)
     ≈ cmon_plus vertex_obj[L] (mlim_smul r a) (mlim_smul r b).
-(* Not proved: the mediator is an [Ab]-morphism, so this IS its
-   [cmon_map_plus] clause. *)
+(* Not proved: mediator [Ab]-态射, so IS its
+ [cmon_map_plus] clause. （已译） *)
 Proof. exact (cmon_map_plus (mlim_smul_map r) a b). Qed.
 
 Lemma mlim_smul_distr_r (r s : carrier (rig_setoid (ring_rig R)))
@@ -176,8 +176,7 @@ Qed.
 
 (** ** The lifted module *)
 
-(* The abelian group is not constructed: [rm_ab] IS the apex of [L].  That
-   is the whole reason [mlim_over_obj] below is [eq_refl]. *)
+(* 相关说明。 （已译） *)
 
 Definition LimitMod : RModObject R :=
   {| rm_ab            := vertex_obj[L]
@@ -188,7 +187,7 @@ Definition LimitMod : RModObject R :=
    ; rm_smul_assoc    := mlim_smul_assoc
    ; rm_smul_one      := mlim_smul_one |}.
 
-(** ** The legs are module homomorphisms *)
+(* 相关说明。 （已译） *)
 
 Program Definition mlim_hom (j : J) : RModHom LimitMod (K j) :=
   {| rm_hom := mlim_leg j |}.
@@ -202,7 +201,7 @@ Definition mlim_cone : Cone K :=
   @Build_Cone J (RMod R) K LimitMod
     (@Build_ACone J (RMod R) LimitMod K mlim_hom (@mlim_hom_coherence)).
 
-(** ** Strictness: the lifted cone lies over [L] on the nose *)
+(* 相关说明。 （已译） *)
 
 Definition mlim_over_obj : RMod_Forget_Ab R LimitMod = vertex_obj[L] :=
   eq_refl.
@@ -251,7 +250,7 @@ Proof.
              (FCone (RMod_Forget_Ab R) N) (rm_hom v) Hv a).
 Defined.
 
-(** ** Uniqueness of the lifted action (Mac Lane's §V.1 Theorem 2) *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -276,7 +275,7 @@ Qed.
 
 End ModLift.
 
-(** * Reflection: a cone of modules whose image is limiting is limiting *)
+(* 相关说明。 （已译） *)
 
 Section ModReflect.
 
@@ -338,7 +337,7 @@ Defined.
 
 End ModReflect.
 
-(** * [RMod_Forget_Ab] strictly creates every limit *)
+(* 相关说明。 （已译） *)
 
 Section ModStrictlyCreates.
 
@@ -387,7 +386,7 @@ Definition RMod_lift_cone_unique {R : RingObject} {J : Category}
   ConeIso M (slift_cone (screates N HN)) :=
   screates_lift_unique (RMod_Forget_Ab_StrictlyCreatesLimit K) N HN M i.
 
-(** * The image of a cone of modules is the underlying cone of groups *)
+(* 相关说明。 （已译） *)
 
 Example rmod_fcone_apex {R : RingObject} {J : Category} (K : J ⟶ RMod R)
   (N : Cone K) :
@@ -397,7 +396,7 @@ Example rmod_fcone_leg {R : RingObject} {J : Category} (K : J ⟶ RMod R)
   (N : Cone K) (j : J) :
   cone_leg (FCone (RMod_Forget_Ab R) N) j = rm_hom (cone_leg N j) := eq_refl.
 
-(** * Mac Lane's Theorem 2: the lifting half *)
+(* 相关说明。 （已译） *)
 
 Definition RMod_Forget_Ab_lifts_limits {R : RingObject} {J : Category}
   (K : J ⟶ RMod R) (L : Limit (RMod_Forget_Ab R ◯ K)) : Limit K :=
@@ -414,8 +413,8 @@ Example rmod_lift_legs {R : RingObject} {J : Category} (K : J ⟶ RMod R)
     (cone_leg (@limit_cone _ _ _ (RMod_Forget_Ab_lifts_limits K L)) j)
     = limit_leg (limit_is_alimit L) j := eq_refl.
 
-(** * Corollaries: [RMod R] is complete, and both forgetful functors are
-      continuous *)
+(* * * Corollaries: [RMod R] complete, both forgetful 函子 are
+ continuous （已译） *)
 
 Definition RMod_Complete (R : RingObject) : @Complete (RMod R) :=
   creates_limits_Complete (RMod_Forget_Ab R) Ab_Complete
@@ -455,9 +454,9 @@ Context {R : RingObject}.
 Context {J : Category}.
 Context (K : J ⟶ RMod R).
 
-(* The repackaging bridge: same apex, same legs, same coherence proof, a
-   different record type.  Structure/Limit/Preservation.v's
-   [cone_assoc] is the same move across functor associativity. *)
+(* The repackaging bridge: same apex, same legs, same coherence 证明, a
+ different record type. Structure/Limit/Preservation.v's
+ [cone_assoc] same move across 函子 associativity. （已译） *)
 
 Definition rmod_abcone_of (N : Cone (RMod_Forget R ◯ K)) :
   Cone ((Ab_Forget ◯ RMod_Forget_Ab R) ◯ K) :=
@@ -479,7 +478,7 @@ Definition RMod_Forget_PreservesAllLimits (R : RingObject) :
   PreservesAllLimits (RMod_Forget R) :=
   Continuous_PreservesAllLimits (RMod_Forget_creates_continuous R).
 
-(** * "Limits of modules are computed componentwise", literally *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。

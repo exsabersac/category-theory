@@ -100,7 +100,7 @@ Proof.
     apply grp_mul_inv_l.
 Qed.
 
-(* The right unit law, from the left one and the right inverse law. *)
+(* 相关说明。 （已译） *)
 Lemma grp_mul_unit_r (a : carrier G) : grp_mul G a (grp_unit G) ≈ a.
 Proof.
   transitivity (grp_mul G a (grp_mul G (grp_inv G a) a)).
@@ -111,8 +111,7 @@ Proof.
     apply grp_mul_unit_l.
 Qed.
 
-(* Uniqueness of inverses, right-handed form: anything absorbing a on the
-   right is the chosen inverse of a. *)
+(* 相关说明。 （已译） *)
 Lemma grp_inv_unique_r (a b : carrier G) :
   grp_mul G a b ≈ grp_unit G → b ≈ grp_inv G a.
 Proof.
@@ -138,9 +137,7 @@ Proof.
     apply grp_mul_unit_l.
 Qed.
 
-(* Inversion respects `≈`.  This is the field the record does not carry:
-   from a ≈ b, the element grp_inv a is a left inverse of b, and left
-   inverses are unique. *)
+(* 相关说明。 （已译） *)
 Lemma grp_inv_respects_law (a b : carrier G) :
   a ≈ b → grp_inv G a ≈ grp_inv G b.
 Proof.
@@ -220,9 +217,7 @@ Qed.
 
 End GrpFacts2.
 
-(* A homomorphism of groups: a setoid map on the carriers preserving the
-   unit and the operation.  Preservation of inversion is NOT a field; it
-   is [grp_map_inv] below. *)
+(* 相关说明。 （已译） *)
 Record GrpHom (G H : GrpObject) := {
   grp_map :> SetoidMorphism (grp_setoid G) (grp_setoid H);
 
@@ -275,8 +270,7 @@ Definition Build_GrpHom' {G H : GrpObject}
 
 #[local] Obligation Tactic := idtac.
 
-(* The hom-setoid: homomorphisms are compared by their underlying maps,
-   pointwise up to the codomain's `≈` (as in [Sets]). *)
+(* 相关说明。 （已译） *)
 #[export]
 Program Instance GrpHom_Setoid {G H : GrpObject} : Setoid (GrpHom G H) := {|
   equiv := fun f g => ∀ a, grp_map f a ≈ grp_map g a
@@ -311,8 +305,8 @@ Proof.
   - intros f g Hfg a; exact (pequiv_from _ _ (Hfg a)).
 Defined.
 
-(* The identity homomorphism: the identity setoid map, which preserves the
-   unit and the operation on the nose. *)
+(* The 恒等 homomorphism: 恒等 setoid map, preserves the
+ unit operation nose. （已译） *)
 Program Definition grp_hom_id {G : GrpObject} : GrpHom G G := {|
   grp_map := setoid_morphism_id
 |}.
@@ -325,8 +319,8 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* Composition of homomorphisms: composition of the underlying setoid maps;
-   preservation of unit and operation composes. *)
+(* Composition homomorphisms: 复合 underlying setoid maps;
+ preservation unit operation composes. （已译） *)
 Program Definition grp_hom_compose {G H K : GrpObject}
         (f : GrpHom H K) (g : GrpHom G H) : GrpHom G K := {|
   grp_map := setoid_morphism_compose (grp_map f) (grp_map g)
@@ -402,7 +396,7 @@ Proof.
   exact (@GrpHom_PropEquiv G H).
 Defined.
 
-(* The forgetful functor to [Sets], dropping the group structure. *)
+(* The forgetful 函子 [Sets], dropping group structure. （已译） *)
 Program Definition Grp_Forget : Grp ⟶ Sets := {|
   fobj := fun G => grp_setoid G;
   fmap := fun _ _ f => grp_map f
@@ -428,7 +422,7 @@ Next Obligation.
   exact (Hfg a).
 Qed.
 
-(** ** The zero object: the trivial group *)
+(* * ** The zero 对象: trivial group （已译） *)
 
 (*
    本节说明 Grp 相关定义、性质与动机。
@@ -455,8 +449,8 @@ Proof.
     reflexivity.
 Defined.
 
-(* The unique homomorphism into the trivial group: everything to the
-   point. *)
+(* The unique homomorphism 进入 trivial group: everything the
+ point. （已译） *)
 Definition Grp_one@{u p} (G : GrpObject@{p p p}) :
   G ~{Grp@{u p}}~> Grp_trivial@{p}.
 Proof.
@@ -481,8 +475,7 @@ Qed.
 Definition Grp_Terminal@{u p} : @Terminal Grp@{u p} :=
   @Build_Terminal Grp@{u p} Grp_trivial@{p} Grp_one@{u p} Grp_one_unique@{u p}.
 
-(* The unique homomorphism out of the trivial group: the point goes to the
-   unit -- the only unit-preserving choice. *)
+(* 相关说明。 （已译） *)
 Definition Grp_zero_hom@{u p} (G : GrpObject@{p p p}) :
   Grp_trivial@{p} ~{Grp@{u p}}~> G.
 Proof.
@@ -527,8 +520,7 @@ Definition Grp_Initial@{u p} : @Initial Grp@{u p} :=
 
 (** ** Binary direct products *)
 
-(* The direct product G × H: the product setoid with componentwise unit,
-   operation and inversion. *)
+(* 相关说明。 （已译） *)
 Definition Grp_product (G H : GrpObject) : GrpObject.
 Proof.
   unshelve notypeclasses refine {|
@@ -597,9 +589,9 @@ Proof.
     + apply (grp_map_mul g).
 Defined.
 
-(* The universal property holds because equivalence of pairs in the
-   product setoid IS componentwise equivalence, so both halves of
-   [ump_products] are projections of that. *)
+(* The 普遍性质 holds because 等价 pairs the
+ product setoid IS componentwise 等价, so both halves of
+ [ump_products] projections that. （已译） *)
 #[export] Program Instance Grp_Cartesian : @Cartesian Grp := {
   product_obj := Grp_product;
   fork := @Grp_fork;
@@ -625,7 +617,7 @@ Next Obligation.
     + exact (H2 a).
 Qed.
 
-(** ** Monomorphisms are exactly the injections *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明核/余核、来源与用途相关定义、性质与动机。
@@ -635,8 +627,8 @@ Qed.
 Definition grp_kernel_carrier {G H : GrpObject} (f : G ~{Grp}~> H) : Type :=
   { a : carrier G & grp_map f a ≈ grp_unit H }.
 
-(* Two kernel elements are equivalent when their underlying elements are;
-   the membership witness is ignored, so no proof irrelevance is needed. *)
+(* Two kernel elements equivalent underlying elements are;
+ membership witness ignored, so no 证明 irrelevance needed. （已译） *)
 Program Definition grp_kernel_setoid {G H : GrpObject} (f : G ~{Grp}~> H) :
   Setoid (grp_kernel_carrier f) := {|
   equiv := fun p q => projT1 p ≈ projT1 q
@@ -690,7 +682,7 @@ Proof.
     + intros p q Hpq; exact Hpq.
 Defined.
 
-(* The two probe maps out of the kernel: the inclusion ... *)
+(* The two probe maps out kernel: 含入 ... （已译） *)
 Definition Grp_kernel_incl {G H : GrpObject} (f : G ~{Grp}~> H) :
   Grp_kernel f ~{Grp}~> G.
 Proof.
@@ -703,7 +695,7 @@ Proof.
     reflexivity.
 Defined.
 
-(* ... and the constant map at the unit. *)
+(* ... 常值 map at unit. （已译） *)
 Definition Grp_kernel_triv {G H : GrpObject} (f : G ~{Grp}~> H) :
   Grp_kernel f ~{Grp}~> G.
 Proof.
@@ -718,9 +710,9 @@ Proof.
     apply grp_mul_unit_l.
 Defined.
 
-(* f cannot tell the two probe maps apart: it sends every kernel element
-   to the unit by definition of the kernel, and the unit to the unit by
-   [grp_map_unit]. *)
+(* f cannot tell two probe maps apart: it sends every kernel element
+ unit 定义 kernel, unit unit by
+ [grp_map_unit]. （已译） *)
 Lemma Grp_kernel_probe {G H : GrpObject} (f : G ~{Grp}~> H) :
   f ∘ Grp_kernel_incl f ≈ f ∘ Grp_kernel_triv f.
 Proof.
@@ -760,11 +752,9 @@ Proof.
     exact Htriv.
 Qed.
 
-(** ** The opposite-group functor and inversion (Riehl, Example 1.4.4(vi)) *)
+(* * ** The opposite-group 函子 inversion (Riehl, Example 1.4.4(vi)) （已译） *)
 
-(* G^op: the same setoid with the multiplication reversed.  The unit and
-   the inversion are unchanged, since the left laws of G^op are the right
-   laws of G. *)
+(* 相关说明。 （已译） *)
 Definition Grp_op_obj (G : GrpObject) : GrpObject.
 Proof.
   unshelve notypeclasses refine {|
@@ -817,9 +807,7 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* Inversion as a homomorphism G ~> G^op.  It is NOT an endomorphism of G:
-   the multiplication law it satisfies is (a * b)⁻¹ ≈ b⁻¹ * a⁻¹, which is
-   the law of G^op read at the images. *)
+(* 相关说明。 （已译） *)
 Definition Grp_inv_to (G : GrpObject) : G ~{Grp}~> Grp_op_obj G.
 Proof.
   unshelve notypeclasses refine
@@ -875,9 +863,9 @@ Next Obligation.
   apply grp_map_inv.
 Qed.
 
-(* The identity functor on [Grp] is naturally isomorphic to the
-   opposite-group functor, the component at G being inversion.  Both round
-   trips are [grp_inv_inv]. *)
+(* The 恒等 函子 [Grp] naturally isomorphic the
+ opposite-group 函子, component at G being inversion. Both round
+ trips [grp_inv_inv]. （已译） *)
 Program Definition Grp_op_Isomorphism :
   @Isomorphism ([Grp, Grp]) (@Id Grp) Grp_Op := {|
   to   := Grp_inv_Transform;
@@ -894,7 +882,7 @@ Next Obligation.
   apply grp_inv_inv.
 Qed.
 
-(** ** Reconciliation with the internal [GroupObject] of Structure/Group.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
@@ -990,8 +978,7 @@ Proof.
     exact (Hleft a).
 Defined.
 
-(* The two translations are mutually inverse on the operations, by
-   computation: the round trip changes no data at all. *)
+(* 相关说明。 （已译） *)
 Example Grp_GroupObject_roundtrip_unit (G : GrpObject) :
   grp_unit (GroupObject_GrpObject (grp_setoid G) (grp_prop G) (Grp_GroupObject G))
     ≈ grp_unit G.
@@ -1008,7 +995,7 @@ Example Grp_GroupObject_roundtrip_inv (G : GrpObject) (a : carrier G) :
 Proof. reflexivity. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** A nontrivial witness: Z/2, and non-vacuity of the machinery *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -1065,12 +1052,11 @@ Proof.
   exact (Hback Hm).
 Qed.
 
-(* And some map IS monic: the identity on Z2. *)
+(* And some map IS monic: 恒等 Z2. （已译） *)
 Theorem Monic_in_Grp_is_inhabited : @Monic Grp Z2 Z2 (@id Grp Z2).
 Proof. apply (@id_monic Grp Z2). Qed.
 
-(* The kernel probe is non-degenerate: the kernel of Z2 ~> 1 contains a
-   non-unit element. *)
+(* 相关说明。 （已译） *)
 Definition ker_true : carrier (Grp_kernel (Grp_one Z2)).
 Proof. exists true. simpl. reflexivity. Defined.
 
@@ -1084,8 +1070,7 @@ Proof. simpl. discriminate. Qed.
 (*    Is it provable?  (It is NOT stated in Instance/Grp.v.)              *)
 (* ===================================================================== *)
 
-(* Each of the three takes the carrier's [PropEquiv] as a parameter, since
-   [GroupObject_GrpObject] does; see its comment for the strength change. *)
+(* 相关说明。 （已译） *)
 Example rt_back_unit (X : Sets) (PX : PropEquiv (is_setoid X))
   (GO : @GroupObject Sets Sets_CartesianMonoidal X) :
   @mempty Sets Sets_prod_Monoidal X

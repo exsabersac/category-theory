@@ -14,7 +14,7 @@ Require Import Category.Instance.CMon.
 
 Generalizable All Variables.
 
-(** * CMon is semiadditive: zero object, biproducts, CMon-enrichment *)
+(* * * CMon semiadditive: zero 对象, biproducts, CMon-enrichment （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/biproduct
@@ -43,10 +43,10 @@ Proof.
   reflexivity.
 Qed.
 
-(** ** The zero object: the trivial monoid *)
+(* * ** The zero 对象: trivial 幺半群 （已译） *)
 
-(* The one-element commutative monoid on [poly_unit]: the operation and the
-   unit are both the point, and every law holds by computation. *)
+(* The one-element commutative 幺半群 [poly_unit]: operation the
+ unit both point, every law holds computation. （已译） *)
 Definition CMon_trivial@{o} : CMonObject@{o o o}.
 Proof.
   unshelve notypeclasses refine {|
@@ -70,8 +70,8 @@ Proof.
     reflexivity.
 Defined.
 
-(* The unique homomorphism into the trivial monoid: everything to the
-   point. *)
+(* The unique homomorphism 进入 trivial 幺半群: everything the
+ point. （已译） *)
 Definition CMon_one@{u o} (M : CMonObject@{o o o}) : M ~{CMon@{u o}}~> CMon_trivial@{o}.
 Proof.
   unshelve notypeclasses refine
@@ -99,8 +99,8 @@ Qed.
 Definition CMon_Terminal : @Terminal CMon :=
   @Build_Terminal CMon CMon_trivial CMon_one CMon_one_unique.
 
-(* The unique homomorphism out of the trivial monoid: the point goes to the
-   unit — the only unit-preserving choice. *)
+(* The unique homomorphism out trivial 幺半群: point goes the
+ unit — unit-preserving choice. （已译） *)
 Definition CMon_zero_hom@{u o} (M : CMonObject@{o o o}) : CMon_trivial@{o} ~{CMon@{u o}}~> M.
 Proof.
   unshelve notypeclasses refine
@@ -117,8 +117,8 @@ Proof.
     apply cmon_plus_zero_l.
 Defined.
 
-(* Uniqueness out of the trivial monoid: the point is the unit, and any
-   homomorphism sends units to units ([cmon_map_zero]). *)
+(* Uniqueness out trivial 幺半群: point unit, any
+ homomorphism sends units units ([cmon_map_zero]). （已译） *)
 Lemma CMon_zero_hom_unique@{u o} (M : CMonObject@{o o o})
   (f g : CMon_trivial@{o} ~{CMon@{u o}}~> M) : f ≈ g.
 Proof.
@@ -133,16 +133,15 @@ Qed.
 Definition CMon_Initial : @Initial CMon :=
   @Build_Terminal (CMon^op) CMon_trivial CMon_zero_hom CMon_zero_hom_unique.
 
-(* The trivial monoid is a zero object.  The same record [CMon_trivial]
-   carries both the terminal and the initial structure, so the coincidence
-   isomorphism is the identity. *)
+(* The trivial 幺半群 zero 对象. The same record [CMon_trivial]
+ carries both terminal initial structure, so coincidence
+ 同构 恒等. （已译） *)
 #[export] Instance CMon_Zero : ZeroObject CMon :=
   @Build_ZeroObject CMon CMon_Terminal CMon_Initial iso_id.
 
-(** ** Biproducts: the direct product of commutative monoids *)
+(* 相关说明。 （已译） *)
 
-(* The direct product M ⊕ N: the product setoid with componentwise unit and
-   operation. *)
+(* 相关说明。 （已译） *)
 Definition CMon_product (M N : CMonObject) : CMonObject.
 Proof.
   unshelve notypeclasses refine {|
@@ -351,9 +350,7 @@ Proof.
       exact (Hr a).
 Defined.
 
-(* The coproduct mediator (a, b) ↦ f a + g b.  This is where commutativity
-   of the target's addition is indispensable: preservation of + is the
-   middle-four interchange. *)
+(* 相关说明。 （已译） *)
 Definition CMon_copair {M N P : CMonObject}
   (f : M ~{CMon}~> P) (g : N ~{CMon}~> P) :
   CMon_product M N ~{CMon}~> P.
@@ -439,7 +436,7 @@ Definition CMon_Biproduct (M N : CMonObject) :
 #[export] Instance CMon_Biproducts : @HasBiproducts CMon CMon_Zero :=
   @Build_HasBiproducts CMon CMon_Zero CMon_Biproduct.
 
-(** ** The CMon-enrichment: pointwise addition of homomorphisms *)
+(* 相关说明。 （已译） *)
 
 (* Pointwise addition (f + g) a := f a + g a.  Preservation of + is again
    the middle-four interchange; preservation of 0 is 0 + 0 ≈ 0. *)
@@ -465,7 +462,7 @@ Proof.
     apply cmon_plus_interchange.
 Defined.
 
-(* The constant-zero homomorphism, the unit for pointwise addition. *)
+(* The 常值-zero homomorphism, unit pointwise addition. （已译） *)
 Definition CMon_pzero (M N : CMonObject) : M ~{CMon}~> N.
 Proof.
   unshelve notypeclasses refine
@@ -482,7 +479,7 @@ Proof.
     apply cmon_plus_zero_l.
 Defined.
 
-(* The commutative-monoid laws for the hom-setoids, all pointwise. *)
+(* The commutative-幺半群 laws hom-setoids, all pointwise. （已译） *)
 Lemma CMon_padd_respects {M N : CMonObject} :
   Proper (equiv ==> equiv ==> equiv) (@CMon_padd M N).
 Proof.
@@ -515,8 +512,8 @@ Proof.
   apply cmon_plus_zero_l.
 Qed.
 
-(* Composition is additive in each argument: on the left because the outer
-   homomorphism preserves +, on the right by computation. *)
+(* Composition additive each 论元: left because outer
+ homomorphism preserves +, right computation. （已译） *)
 Lemma CMon_compose_padd_left {M N P : CMonObject}
   (h : N ~{CMon}~> P) (f g : M ~{CMon}~> N) :
   h ∘ CMon_padd f g ≈ CMon_padd (h ∘ f) (h ∘ g).
@@ -549,9 +546,9 @@ Proof.
   exact (cmon_map_zero f).
 Qed.
 
-(* CMon is preadditive in the CMon-enriched sense of
-   Structure/Preadditive.v: each hom-setoid is a commutative monoid and
-   composition is bi-additive. *)
+(* CMon preadditive CMon-enriched sense of
+ Structure/Preadditive.v: each hom-setoid commutative 幺半群 and
+ 复合 bi-additive. （已译） *)
 #[export] Instance CMon_Preadditive : Preadditive CMon :=
   @Build_Preadditive CMon
     (@CMon_padd)
@@ -565,7 +562,7 @@ Qed.
     (@CMon_compose_pzero_left)
     (@CMon_compose_pzero_right).
 
-(** ** Integration with the phase machinery *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Biproduct 相关定义、性质与动机。

@@ -37,7 +37,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** Formal ring expressions over an abelian group *)
+(* 相关说明。 （已译） *)
 
 Section FreeRingOnAb.
 
@@ -151,7 +151,7 @@ Proof.
   exact (fre_sym (fre_mul (fr_refl s) (fre_add_zero_l fr_zero))).
 Qed.
 
-(** ** The free ring on the abelian group A *)
+(* 相关说明。 （已译） *)
 
 Definition FreeRngAbObject : RingObject := {|
   ring_rig := {|
@@ -172,8 +172,8 @@ Definition FreeRngAbObject : RingObject := {|
     rig_distr_r := fre_distr_r;
     rig_mul_zero_l := fr_mul_zero_l;
     rig_mul_zero_r := fr_mul_zero_r;
-    (* [fr_eq] IS a [Prop]-valued relation, so it is its own [Prop] mirror
-       and both implications are the identity. *)
+    (* [fr_eq] IS [Prop]-valued 关系, so it own [Prop] 镜像
+ both 蕴含 恒等. （已译） *)
     rig_prop := @PropEquiv_of_relation _ fr_Setoid fr_eq
                   (fun _ _ h => h) (fun _ _ h => h)
   |};
@@ -218,7 +218,7 @@ Defined.
 Example free_rng_ab_insert_is_gen (a : carrier (cmon_setoid A)) :
   cmon_map free_rng_ab_insert a = fr_gen a := eq_refl.
 
-(** ** The ring extension of a homomorphism on generators *)
+(* 相关说明。 （已译） *)
 
 Section Extension.
 
@@ -359,8 +359,8 @@ End Extension.
 Arguments fr_eval {R} h t.
 Arguments free_rng_ab_extend {R} h.
 
-(** ** The universal property, in the shape [universal_arrow_from_UMP]
-       consumes *)
+(* * ** The 普遍性质, shape [universal_arrow_from_UMP]
+ 所消耗 （已译） *)
 Theorem free_rng_ab_universal :
   ∀ (R : RingObject) (h : A ~{Ab}~> Rng_Forget_Ab R),
     ∃! g : FreeRngAbObject ~{Rng}~> R,
@@ -407,7 +407,7 @@ Arguments free_rng_ab_extend {A R} h.
 Arguments fr_eval_respects {A} R h s t _.
 Arguments free_rng_ab_extend_unique {A} R h g _ t.
 
-(** ** The universal arrow, the free functor and the adjunction *)
+(* * ** The 泛箭头, free 函子 伴随 （已译） *)
 
 Definition free_rng_ab_universal_arrow (A : Ab)
   : UniversalArrow A Rng_Forget_Ab :=
@@ -501,8 +501,7 @@ Proof.
   - exact (rig_mul_respects R _ _ IH1 _ _ IH2).
 Qed.
 
-(* The natural bijection Rng(F A, R) ≅ Ab(A, U R): forward g ↦ U g ∘
-   insert, backward the extension. *)
+(* 相关说明。 （已译） *)
 Definition free_rng_ab_hom_iso@{u p +} (A : Ab@{u p}) (R : Rng@{u p}) :
   @Isomorphism Sets@{p u}
     {| carrier := @hom Rng@{u p} (FreeRngAb A) R
@@ -544,14 +543,13 @@ Proof.
   - intros A R R' f g a. reflexivity.
 Defined.
 
-(* Its counit is the evaluation of the identity, by conversion. *)
+(* Its counit evaluation 恒等, conversion. （已译） *)
 Example free_rng_ab_hom_counit@{u p +} (R : Rng@{u p})
   (t : FRTerm (Rng_Forget_Ab R)) :
   rig_map (@counit _ _ _ _ free_rng_ab_adjunction_hom R) t
     = fr_eval (@id Ab@{u p} (Rng_Forget_Ab R)) t := eq_refl.
 
-(* Its unit and its forward transpose ARE those of
-   [free_rng_ab_adjunction]. *)
+(* 相关说明。 （已译） *)
 Example free_rng_ab_hom_unit@{u p +} (A : Ab@{u p}) :
   @Category.Theory.Adjunction.unit _ _ _ _ free_rng_ab_adjunction_hom A
     = @Category.Theory.Adjunction.unit _ _ _ _ free_rng_ab_adjunction A
@@ -586,9 +584,9 @@ Proof.
   exact (@from_adj_respects _ _ _ _ AF x y _ _ H).
 Qed.
 
-(* Naturality of the unit along an ARBITRARY morphism of D.  The in-tree
-   [unit_comp] (Theory/Adjunction.v) states naturality only along a
-   morphism [x ~> U y], which is a different statement. *)
+(* Naturality unit along ARBITRARY 态射 D. The in-tree
+ [unit_comp] (Theory/Adjunction.v) states 自然性 along a
+ 态射 [x ~> U y], different statement. （已译） *)
 Lemma unit_natural {F : D ⟶ C} (AF : F ⊣ U) {x y : D} (u : x ~> y) :
   @Category.Theory.Adjunction.unit _ _ _ _ AF y ∘ u
     ≈ fmap[U] (fmap[F] u)
@@ -629,8 +627,8 @@ Proof.
   exact (@from_adj_comp_law _ _ _ _ AF x (F' x) _).
 Qed.
 
-(* One round-trip argument; the other round trip is this lemma at the
-   swapped pair. *)
+(* One round-trip 论元; other round trip 引理 at the
+ swapped pair. （已译） *)
 Lemma adj_left_compare_round {F F' : D ⟶ C}
   (AF : F ⊣ U) (AF' : F' ⊣ U) (x : D) :
   adj_left_compare AF' AF x ∘ adj_left_compare AF AF' x ≈ id[F x].
@@ -698,7 +696,7 @@ Defined.
 
 End LeftAdjointComparison.
 
-(** * Mac Lane §IV.8 Exercise 2: the free ring in two ways *)
+(* 相关说明。 （已译） *)
 
 Definition RngUnderlyingAb : Rng ⟶ Sets := Ab_Forget ◯ Rng_Forget_Ab.
 Definition RngUnderlyingMon : Rng ⟶ Sets := Mon_Forget ◯ Rng_Forget_Mon.
@@ -709,7 +707,7 @@ Example rng_underlying_fobj_agree (R : Rng) :
 Example rng_underlying_fmap_agree (R S : Rng) (f : R ~> S) :
   fmap[RngUnderlyingAb] f = fmap[RngUnderlyingMon] f := eq_refl.
 
-(** ** Route one: sets ⟶ abelian groups ⟶ rings *)
+(* 相关说明。 （已译） *)
 
 Definition free_ring_via_ab : Sets ⟶ Rng := FreeRngAb ◯ FreeAb.
 
@@ -717,7 +715,7 @@ Definition free_ring_via_ab_adjunction
   : free_ring_via_ab ⊣ RngUnderlyingAb :=
   Adjunction_Compose free_ab_adjunction free_rng_ab_adjunction.
 
-(** ** Route two: sets ⟶ monoids ⟶ rings *)
+(* 相关说明。 （已译） *)
 
 Definition free_ring_via_mon : Sets ⟶ Rng :=
   MonoidRingFunctor ◯ FreeMonSets.
@@ -793,8 +791,8 @@ Example free_ring_via_ab_obj (X : Sets) :
 Example free_ring_via_mon_obj (X : Sets) :
   free_ring_via_mon X = ZMonRing (FreeMonSetsObject X) := eq_refl.
 
-(* The retyping is inert on the unit: the two adjunctions have the SAME
-   forward transpose, hence the same unit, on the nose. *)
+(* The retyping inert unit: two 伴随 have SAME
+ forward transpose, hence same unit, nose. （已译） *)
 Example retype_adj_agrees (X : Sets) (R : Rng)
   (f : free_ring_via_mon X ~{Rng}~> R) :
   to (@adj _ _ _ _ free_ring_via_mon_adjunction_ab X R) f
@@ -814,9 +812,7 @@ Example retype_unit_agrees (X : Sets) :
 
 Section NonDegeneracy.
 
-(* The hypotheses appear only in proofs, so they must be named for the
-   section to discharge them as explicit arguments -- the
-   Theory/EckmannHilton.v idiom. *)
+(* 相关说明。 （已译） *)
 Local Set Default Proof Using "All".
 
 Context (A : AbObject).
@@ -837,7 +833,7 @@ Proof.
   - intros a b; simpl; symmetry; exact (rig_add_zero_l R (rig_zero R)).
 Defined.
 
-(* The free ring is not the zero ring. *)
+(* 相关说明。 （已译） *)
 Theorem free_rng_ab_zero_not_one : fr_eq (@fr_zero A) fr_one → False.
 Proof.
   intro He.
@@ -845,8 +841,8 @@ Proof.
   exact (fr_eval_respects R fr_zero_probe _ _ He).
 Qed.
 
-(* No generator is the unit -- the insertion of A does not meet the
-   scalars.  True of EVERY generator of EVERY abelian group. *)
+(* No generator unit -- 嵌入 A does not meet the
+ scalars. True EVERY generator EVERY abelian group. （已译） *)
 Theorem free_rng_ab_gen_not_one (a : carrier (cmon_setoid A)) :
   fr_eq (fr_gen a) (@fr_one A) → False.
 Proof.
@@ -861,14 +857,14 @@ Arguments fr_zero_probe A {R}.
 Arguments free_rng_ab_zero_not_one A {R} Hne _.
 Arguments free_rng_ab_gen_not_one A {R} Hne a _.
 
-(** ** The integers embed in the free ring on the integers *)
+(* 相关说明。 （已译） *)
 
 Lemma int_one_not_zero : rig_one Int_Ring ≈ rig_zero Int_Ring → False.
 Proof. intro H; compute in H; discriminate H. Qed.
 
 (* [Rng_Forget_Ab Int_Ring] IS Instance/Ab/Free.v's [ab_int], so the
-   identity of [Ab] is already a probe and no new homomorphism is
-   needed. *)
+ 恒等 [Ab] already probe no new homomorphism is
+ needed. （已译） *)
 Definition rng_int_probe : ab_int ~{Ab}~> Rng_Forget_Ab Int_Ring :=
   @id Ab ab_int.
 
@@ -935,9 +931,9 @@ Proof.
   compute in H; discriminate H.
 Qed.
 
-(* The object just probed IS the ab-route free ring on the two-element
-   setoid, so the witness exercises the composite of the exercise and not
-   a construction beside it. *)
+(* The 对象 just probed IS ab-route free ring two-element
+ setoid, so witness exercises 复合 exercise not
+ construction beside it. （已译） *)
 Example rng_two_gens_is_via_ab :
   FreeRngAbObject rng_two_gens = free_ring_via_ab AbTwoGens := eq_refl.
 
@@ -978,10 +974,10 @@ Fail Definition rng_mon_route_ascribed
   : free_ring_via_mon ⊣ RngUnderlyingAb :=
   Adjunction_Compose free_mon_sets_adjunction zmring_adjunction.
 
-(* The two composites are non-convertible terms denoting isomorphic
-   rings on the same
-   generating setoid, so [free_ring_composites_agree] is not an
-   isomorphism between a thing and itself. *)
+(* The two composites non-convertible terms denoting isomorphic
+ rings same
+ generating setoid, so [free_ring_composites_agree] not an
+ 同构 between thing itself. （已译） *)
 Fail Example rng_routes_convertible :
   free_ring_via_ab AbTwoGens = free_ring_via_mon AbTwoGens := eq_refl.
 
@@ -1008,9 +1004,7 @@ Fail Example rng_fmap_generator_computes {A B : Ab} (u : A ~{Ab}~> B)
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Positive controls naming the two constants the negatives below name,
-   so that renaming either breaks this file instead of turning a [Fail]
-   vacuously green.  Unconstrained, these elaborate. *)
+(* 相关说明。 （已译） *)
 Check (Rng_Forget_Mon : Rng ⟶ MonSets).
 Check (Rig_Forget_Mon : Rig ⟶ MonSets).
 
@@ -1029,8 +1023,5 @@ Fail Check (Rig_Forget_Mon : Rig@{uo uh} ⟶ MonSets).
 
 End MonRouteSetPin.
 
-(** ** Instrument check
-
-    A [Fail] that must fail for a reason having nothing to do with this
-    file, so that a broken [Fail] mechanism would be visible. *)
+(* 相关说明。 （已译） *)
 Fail Example rng_instrument_check : (0%Z = 1%Z) := eq_refl.

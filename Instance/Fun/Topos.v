@@ -26,7 +26,7 @@ Require Import Category.Instance.Fun.Classifier.
 
 Open Scope category_scope.
 
-(** * Presheaf categories are elementary toposes *)
+(* * * Presheaf 范畴 elementary toposes （已译） *)
 
 (*
  Book:      Awodey, Category Theory (1st ed., Carnegie Mellon
@@ -59,8 +59,8 @@ Definition Presheaf_Topos_IEM@{o h so} (C : Category@{o h h})
   (Em : IEM@{h}) : ElementaryTopos ([C^op, Sets@{h so}]) :=
   Presheaf_Topos@{o h so} C (untruncate_of_IEM Em).
 
-(* Seven Sketches §7.3 footnote 5: "The category of functors C → Set is
-   also a topos: use C^op as the defining site." *)
+(* Seven Sketches §7.3 footnote 5: "The 范畴 函子 C → Set is
+ topos: use C^op defining site." （已译） *)
 Definition Copresheaf_Topos@{o h so} (C : Category@{o h h})
   (UT : Untruncate@{h}) : ElementaryTopos ([C, Sets@{h so}]) :=
   Presheaf_Topos@{o h so} (C^op) UT.
@@ -69,7 +69,7 @@ Definition Copresheaf_Topos_IEM@{o h so} (C : Category@{o h h})
   (Em : IEM@{h}) : ElementaryTopos ([C, Sets@{h so}]) :=
   Copresheaf_Topos@{o h so} C (untruncate_of_IEM Em).
 
-(** ** (B) The five fields, and the two derived objects, read back *)
+(* * ** (B) The five fields, two derived 对象, read back （已译） *)
 
 Section Readback.
 
@@ -100,8 +100,7 @@ Example psh_topos_closed :
 Example psh_topos_classifier :
   @topos_classifier _ (Presheaf_Topos C UT) = Fun_Classifier UT := eq_refl.
 
-(* The exponential IS Awodey's display-(8.5) presheaf.  This is the
-   issue's reviewer check that it is proved rather than postulated. *)
+(* 相关说明。 （已译） *)
 Example psh_topos_exponent (P Q : C^op ⟶ Sets) :
   @exponent_obj _ _ (@topos_closed _ (Presheaf_Topos C UT)) P Q
   = PshExp P Q := eq_refl.
@@ -121,20 +120,19 @@ Example psh_topos_pow (P : C^op ⟶ Sets) :
   @Pow ([C^op, Sets]) (Presheaf_Topos C UT) P
   = PshExp P (Sieve_Presheaf C) := eq_refl.
 
-(* The terminal presheaf is the one Instance/Fun/Exponential.v names. *)
+(* 相关说明。 （已译） *)
 Example psh_terminal_is_donor :
   @topos_terminal _ (Presheaf_Topos C UT) = presheaf_terminal C := eq_refl.
 
-(* The chosen pullback is the pointwise one.  The category must be
-   written out in the two arrows, or elaboration stalls. *)
+(* The chosen pullback pointwise one. The 范畴 must be
+ written out two arrows, elaboration stalls. （已译） *)
 Example psh_pullback_is_donor (F G H : C^op ⟶ Sets)
   (a : F ~{[C^op, Sets]}~> H) (b : G ~{[C^op, Sets]}~> H) :
   @pullback ([C^op, Sets]) (@topos_pullbacks _ (Presheaf_Topos C UT))
     F G H a b
   = Fun_Pullback Sets_HasPullbacks a b := eq_refl.
 
-(* The covariant reading is not a parallel construction: its closed and
-   classifier fields ARE the tree's own covariant donors. *)
+(* 相关说明。 （已译） *)
 Example copsh_topos_closed :
   @topos_closed _ (Copresheaf_Topos C UT) = Functor_Category_Closed_cov C
   := eq_refl.
@@ -181,9 +179,7 @@ Example psh_char_is_awodey_sieve (E U : C^op ⟶ Sets) (theta : U ⟹ E)
   = Powerset_squash (∃ x : carrier (fobj[U] d),
                        transform[theta] d x ≈ fmap[E] f e) := eq_refl.
 
-(* "and given h : D → C let h* : Ω(C) → Ω(D) be defined by:
-    h*(S) = {g : · → D | h ∘ g ∈ S}."  The arrow must be ascribed into
-   [C^op]; see the spelling note in the header. *)
+(* 相关说明。 （已译） *)
 Example psh_omega_is_restriction (c d : C) (h : d ~{C}~> c) (S : Sieve c) :
   fmap[@Ω ([C^op, Sets]) _ (@topos_classifier _ (Presheaf_Topos C UT))]
       (h : c ~{C^op}~> d) S

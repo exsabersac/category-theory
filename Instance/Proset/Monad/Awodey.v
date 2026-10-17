@@ -16,7 +16,7 @@ Require Import Coq.Relations.Relation_Definitions.
 
 Generalizable All Variables.
 
-(** * Awodey's adjunction from a closure operator *)
+(* * * Awodey's 伴随 closure operator （已译） *)
 
 (*
  Book: Awodey, "Category Theory" (1st ed., CMU pre-print, Sept 2005),
@@ -27,9 +27,9 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The closed elements, with the inherited order *)
+(* 相关说明。 （已译） *)
 
-(* K: the elements with cl x ≤ x, i.e. Seven Sketches' fix_j. *)
+(* 相关说明。 （已译） *)
 Definition ClosedElt@{u} {A : Type@{u}} {R : relation A} {P : PreOrder R}
   (c : ClosureOperator@{u} P) : Type@{u} :=
   { x : A | R (cl_fun c x) x }.
@@ -57,7 +57,7 @@ Definition closed_i@{u} {A : Type@{u}} {R : relation A} {P : PreOrder R}
   (c : ClosureOperator@{u} P) (k : ClosedElt c) : A :=
   proj1_sig k.
 
-(* Awodey's two implications, as the unit and counit inequalities. *)
+(* Awodey's two 蕴含, unit counit inequalities. （已译） *)
 Definition closed_galois@{u} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (c : ClosureOperator@{u} P) :
   GaloisConnection R (closed_le c) :=
@@ -72,7 +72,7 @@ Definition closed_adj@{u h s a | h < s +} {A : Type@{u}}
   {R : relation A} {P : PreOrder R} (c : ClosureOperator@{u} P) :=
   GaloisAdjunction@{u u s a h} P (closed_PreOrder c) (closed_galois c).
 
-(** ** T = i ∘ t, and the induced monad is T *)
+(* * ** T = i ∘ t, induced 单子 T （已译） *)
 
 (* T = i ∘ t on objects, on the nose. *)
 Example closed_factorisation_obj@{u h +} {A : Type@{u}} {R : relation A}
@@ -81,23 +81,22 @@ Example closed_factorisation_obj@{u h +} {A : Type@{u}} {R : relation A}
        ◯ GaloisFunctor_l@{u u h} P (closed_PreOrder c) (closed_galois c)] x
     = cl_fun c x := eq_refl.
 
-(* ...and on arrows, so that i ◯ t = [closure_functor c] is refused in
-   the law fields alone. *)
+(* 相关说明。 （已译） *)
 Example closed_factorisation_fmap@{u h +} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (c : ClosureOperator@{u} P) (x y : A) (f : R x y) :
   fmap[GaloisFunctor_r@{u u h} P (closed_PreOrder c) (closed_galois c)
        ◯ GaloisFunctor_l@{u u h} P (closed_PreOrder c) (closed_galois c)] f
     = fmap[closure_functor@{u h} c] f := eq_refl.
 
-(* The induced monad, read back as a closure operator, has c's monotone
-   map on the nose. *)
+(* The induced 单子, read back closure operator, has c's monotone
+ map nose. （已译） *)
 Example closed_induced_is_c@{u h s a | h < s +} {A : Type@{u}}
   {R : relation A} {P : PreOrder R} (c : ClosureOperator@{u} P) :
   cl_fun (closure_of_monad _
             (MM := Adjunction_Induced_Monad (closed_adj@{u h s a} c)))
     = cl_fun c := eq_refl.
 
-(* i ◯ t is the closure functor, with identity components. *)
+(* i ◯ t closure 函子, 恒等 components. （已译） *)
 Lemma closed_induced_functor@{u h +} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (c : ClosureOperator@{u} P) :
   GaloisFunctor_r@{u u h} P (closed_PreOrder c) (closed_galois c)
@@ -105,7 +104,7 @@ Lemma closed_induced_functor@{u h +} {A : Type@{u}} {R : relation A}
     ≈ closure_functor@{u h} c.
 Proof. exists (fun x => iso_id). intros; exact I. Qed.
 
-(** ** "tik = k": up to ≅, and on first projections under antisymmetry *)
+(* 相关说明。 （已译） *)
 
 (* t (i k) has first component cl k... *)
 Example closed_tik_fst@{u} {A : Type@{u}} {R : relation A}

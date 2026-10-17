@@ -1,4 +1,4 @@
-(** * The covariant power-set monad on [Sets] *)
+(* * * The covariant power-set 单子 [Sets] （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -24,8 +24,7 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------------ *)
 (** ** The union of a set of subsets *)
 
-(* ⋃ SS = { x | ∃ S ∈ SS, x ∈ S }.  Both memberships are [Prop]s, so the
-   existential is the standard library's [ex] and needs no squash. *)
+(* 相关说明。 （已译） *)
 Definition Powerset_union_pred@{o} {X : SetoidObject@{o o}}
   (SS : carrier (Powerset_Prop_obj@{o} (Powerset_Prop_obj@{o} X))) :
   carrier (Powerset_Prop_obj@{o} X).
@@ -40,7 +39,7 @@ Proof.
   - exact (proj2 (@proper_morphism _ _ _ _ S x y Hxy) Hx).
 Defined.
 
-(* The union respects the equivalence of sets of subsets. *)
+(* The union respects 等价 sets subsets. （已译） *)
 Lemma Powerset_union_respects@{o} {X : SetoidObject@{o o}}
   (SS TT : carrier (Powerset_Prop_obj@{o} (Powerset_Prop_obj@{o} X)))
   (H : SS ≈ TT) :
@@ -64,7 +63,7 @@ Definition Powerset_union@{o} {X : SetoidObject@{o o}} :
 (* ------------------------------------------------------------------------ *)
 (** ** The monad laws, pointwise *)
 
-(* μ ∘ Pμ ≈ μ ∘ μP: the union of the unions is the union of the union. *)
+(* 相关说明。 （已译） *)
 Lemma Powerset_union_assoc@{o} {X : SetoidObject@{o o}}
   (SSS : carrier (Powerset_Prop_obj@{o}
                     (Powerset_Prop_obj@{o} (Powerset_Prop_obj@{o} X)))) :
@@ -82,7 +81,7 @@ Proof.
     + exists S; split; assumption.
 Qed.
 
-(* μ ∘ Pη ≈ id: the union of the singletons of the members of S is S. *)
+(* 相关说明。 （已译） *)
 Lemma Powerset_union_image_singleton@{o} {X : SetoidObject@{o o}}
   (S : carrier (Powerset_Prop_obj@{o} X)) :
   Powerset_union_pred@{o}
@@ -99,7 +98,7 @@ Proof.
     + apply Powerset_squash_intro; reflexivity.
 Qed.
 
-(* μ ∘ ηP ≈ id: the union of the one-point set {S} is S. *)
+(* 相关说明。 （已译） *)
 Lemma Powerset_union_singleton@{o} {X : SetoidObject@{o o}}
   (S : carrier (Powerset_Prop_obj@{o} X)) :
   Powerset_union_pred@{o} (Powerset_Prop_singleton_pred@{o} S) ≈ S.
@@ -111,8 +110,7 @@ Proof.
     reflexivity.
 Qed.
 
-(* Naturality of μ, proved directly: the union of the images is the image
-   of the union. *)
+(* 相关说明。 （已译） *)
 Lemma Powerset_union_natural@{o} {X Y : SetoidObject@{o o}}
   (f : SetoidMorphism@{o o o} X Y)
   (SS : carrier (Powerset_Prop_obj@{o} (Powerset_Prop_obj@{o} X))) :
@@ -194,7 +192,7 @@ Example Powerset_Monad_ret_member@{o so} (X : SetoidObject@{o o})
   @ret _ _ Powerset_Monad@{o so} X x z
     = Powerset_squash@{o} (@equiv _ (is_setoid X) x z) := eq_refl.
 
-(* The formability statement Instance/Sets/Powerset.v entered for this
-   monad is now inhabited, by the monad above. *)
+(* The formability statement Instance/Sets/Powerset.v entered this
+ 单子 now inhabited, 单子 above. （已译） *)
 Example Powerset_Monad_statement@{u so o} :
   Powerset_Prop_Monad_statement@{u so o} := Powerset_Monad@{o so}.

@@ -38,8 +38,8 @@ Definition row_operation (n : nat) : Type :=
   @hom (@Presheaves (Matr R) Sets)
     (@Curried_CoHom (Matr R) n) (@Curried_CoHom (Matr R) n).
 
-(* Naturality, read concretely: a row operation commutes with right
-   multiplication — the linearity the corollary's proof turns on. *)
+(* Naturality, read concretely: row operation commutes right
+ multiplication — linearity 推论's 证明 turns on. （已译） *)
 Lemma row_operation_natural {n : nat} (η : row_operation n)
   {m m' : nat} (f : m' ~{Matr R}~> m) (M : m ~{Matr R}~> n) :
   transform[η] m' (M ∘[Matr R] f) ≈ transform[η] m M ∘[Matr R] f.
@@ -47,9 +47,9 @@ Proof.
   symmetry; exact (@naturality _ _ _ _ η _ _ f M).
 Qed.
 
-(* Conversely, any ≈-respecting family commuting with right
-   multiplication is a row operation: naturality is EXACTLY that
-   property, so the two notions coincide. *)
+(* Conversely, any ≈-respecting family commuting right
+ multiplication row operation: 自然性 EXACTLY that
+ property, so two notions coincide. （已译） *)
 Program Definition Build_row_operation {n : nat}
   (φ : ∀ m : nat, (m ~{Matr R}~> n) → (m ~{Matr R}~> n))
   (φ_respects : ∀ m (M M' : m ~{Matr R}~> n),
@@ -62,16 +62,16 @@ Program Definition Build_row_operation {n : nat}
     (fun m => {| morphism := φ m ; proper_morphism := φ_respects m |})
     _.
 
-(** ** The corollary, through the Yoneda embedding *)
+(* * ** The 推论, through Yoneda embedding （已译） *)
 
-(* The representing matrix of a row operation: the [to] direction of the
-   Yoneda embedding's isomorphism. *)
+(* The 表示 matrix row operation: [to] direction the
+ Yoneda embedding's 同构. （已译） *)
 Definition representing_matrix {n : nat} (η : row_operation n) :
   n ~{Matr R}~> n :=
   to (Yoneda_Embedding (Matr R) n n) η.
 
-(* It is the operation applied to the identity matrix — evaluation at
-   the identity being the forward map of the Yoneda lemma. *)
+(* It operation applied 恒等 matrix — evaluation at
+ 恒等 being forward map Yoneda 引理. （已译） *)
 Lemma representing_matrix_at_id {n : nat} (η : row_operation n) :
   representing_matrix η ≈ transform[η] n (@id (Matr R) n).
 Proof.
@@ -92,9 +92,9 @@ Proof.
   exact (iso_from_to (Yoneda_Embedding (Matr R) n n) η m M).
 Qed.
 
-(* ...and the representing matrix is unique: any matrix that acts as η
-   by left multiplication is the representing matrix, by injectivity of
-   the embedding's [to] through the other round trip. *)
+(* ...and 表示 matrix unique: any matrix acts η
+ left multiplication 表示 matrix, injectivity of
+ embedding's [to] through other round trip. （已译） *)
 Theorem representing_matrix_unique {n : nat}
   (η : row_operation n) (P : n ~{Matr R}~> n) :
   (∀ (m : nat) (M : m ~{Matr R}~> n),
@@ -105,7 +105,7 @@ Proof.
   rewrite <- (iso_to_from (Yoneda_Embedding (Matr R) n n) P).
   unfold representing_matrix.
   apply (proper_morphism (to (Yoneda_Embedding (Matr R) n n))).
-  (* the transformations agree pointwise, in the opposite orientation *)
+  (* 相关说明。 （已译） *)
   intros m M i j; simpl.
   symmetry.
   apply (HP m M i j).
@@ -113,7 +113,7 @@ Qed.
 
 End RowOps.
 
-(** ** A worked elementary operation: swapping two rows *)
+(* 相关说明。 （已译） *)
 
 Section Swap.
 
@@ -126,9 +126,9 @@ Definition fin2_swap (i : Fin.t 2) : Fin.t 2 :=
   | Fin.FS _ => Fin.F1
   end.
 
-(* Swapping the two rows of a 2 × m matrix.  Rows are permuted, columns
-   untouched, so right multiplication passes through — the linearity
-   hypothesis is definitional. *)
+(* Swapping two rows 2 × m matrix. Rows permuted, columns
+ untouched, so right multiplication passes through — linearity
+ 假设 definitional. （已译） *)
 Program Definition swap_rows_op : row_operation R 2 :=
   Build_row_operation R
     (fun m M => fun i j => M (fin2_swap i) j)
@@ -136,10 +136,10 @@ Program Definition swap_rows_op : row_operation R 2 :=
 
 End Swap.
 
-(** ** The representing matrix of the swap computes over ℕ *)
+(* * ** The 表示 matrix swap computes over ℕ （已译） *)
 
-(* Applying the swap to the 2 × 2 identity yields the permutation matrix
-   [[0,1],[1,0]], entry by entry, by pure computation. *)
+(* Applying swap 2 × 2 恒等 yields permutation matrix
+ [[0,1],[1,0]], entry entry, pure computation. （已译） *)
 Example swap_rep_00 :
   representing_matrix Nat_Rig (swap_rows_op Nat_Rig) Fin.F1 Fin.F1 = 0%nat
   := eq_refl.

@@ -24,7 +24,7 @@ Context {R : RingObject}.
 Context {I : Type}.
 Context (V : I → RModObject R).
 
-(* The carrier is the dependent function space, with pointwise [≈]. *)
+(* 相关说明。 （已译） *)
 Program Definition modprod_setoid : SetoidObject := {|
   carrier := ∀ i : I, carrier (cmon_setoid (V i));
   is_setoid := {| equiv := fun f g => ∀ i, f i ≈ g i |}
@@ -93,8 +93,8 @@ Next Obligation. intros Z f i; apply (cmon_map_zero (rm_hom (f i))). Qed.
 Next Obligation. intros Z f a b i; apply (cmon_map_plus (rm_hom (f i))). Qed.
 Next Obligation. intros Z f r z i; apply (rm_map_smul (f i)). Qed.
 
-(* The universal property, in the two clauses [IsIndexedProduct] asks for;
-   both are [reflexivity] pointwise. *)
+(* The 普遍性质, two clauses [IsIndexedProduct] asks for;
+ both [reflexivity] pointwise. （已译） *)
 Lemma prod_tuple_proj {Z : RModObject R} (f : ∀ i, RModHom Z (V i)) (i : I) :
   @compose (RMod R) Z ProdMod (V i) (prod_proj i) (prod_tuple f) ≈ f i.
 Proof. intro z; reflexivity. Qed.
@@ -109,8 +109,8 @@ Proof. intros z i; exact (H i z). Qed.
 Example prod_proj_component (i : I) (f : carrier (cmon_setoid ProdMod)) :
   cmon_map (rm_hom (prod_proj i)) f = f i := eq_refl.
 
-(* The two clauses assembled into the tree's own record: [ProdMod] with its
-   projections is an indexed product in [RMod R]. *)
+(* The two clauses assembled 进入 tree's own record: [ProdMod] its
+ projections indexed product [RMod R]. （已译） *)
 Definition ProdMod_IsIndexedProduct :
   @IsIndexedProduct (RMod R) I V ProdMod prod_proj.
 Proof.

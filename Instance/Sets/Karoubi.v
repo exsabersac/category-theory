@@ -23,9 +23,9 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* The splitting object for an idempotent e on X: the sub-setoid of elements
-   held fixed by e, compared under X's equivalence on underlying elements
-   (the fixedness proofs are irrelevant). *)
+(* The splitting 对象 idempotent e X: sub-setoid elements
+ held fixed e, compared under X's 等价 underlying elements
+ (the fixedness proofs irrelevant). （已译） *)
 Program Definition sets_split_obj {X : SetoidObject} (e : X ~{Sets}~> X) :
   SetoidObject := {|
   carrier := ∃ a : X, e a ≈ a;
@@ -36,15 +36,14 @@ Next Obligation.
   equivalence.
 Qed.
 
-(* The idempotent law of e, read pointwise through the hom-setoid of Sets:
-   e a is a fixed point of e. *)
+(* 相关说明。 （已译） *)
 Lemma sets_split_fixed {X : SetoidObject} (e : X ~{Sets}~> X)
       (H : Idempotent e) (a : X) : e (e a) ≈ e a.
 Proof.
   exact (@idem Sets X e H a).
 Qed.
 
-(* The retraction X ~> Y: send a to the fixed point e a. *)
+(* 相关说明。 （已译） *)
 Program Definition sets_split_r {X : SetoidObject} (e : X ~{Sets}~> X)
         (H : Idempotent e) : X ~{Sets}~> sets_split_obj e := {|
   morphism := fun a => (e a; sets_split_fixed e H a)
@@ -54,7 +53,7 @@ Next Obligation.
   now rewrite Hab.
 Qed.
 
-(* The section Y ~> X: the underlying element, discarding fixedness. *)
+(* 相关说明。 （已译） *)
 Program Definition sets_split_s {X : SetoidObject} (e : X ~{Sets}~> X) :
   sets_split_obj e ~{Sets}~> X := {|
   morphism := fun p => `1 p
@@ -83,9 +82,7 @@ Next Obligation.
   exact (`2 p).
 Qed.
 
-(* Every idempotent of Sets splits: Sets is Cauchy complete.  The splitting
-   chosen for e has e itself as the split idempotent, so agreement with e is
-   reflexivity. *)
+(* 相关说明。 （已译） *)
 #[export] Instance Sets_IdempotentsSplit : IdempotentsSplit Sets.
 Proof.
   constructor.

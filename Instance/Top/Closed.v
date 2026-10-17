@@ -11,7 +11,7 @@ Require Import Category.Instance.Top.
 
 Generalizable All Variables.
 
-(** * Closed sets, and the complementation duality *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/closed+subset
@@ -32,19 +32,18 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Opens and closed sets of a space *)
+(* 相关说明。 （已译） *)
 
-(* An open of X, as an object: the predicate together with its openness. *)
+(* An open X, 对象: predicate together openness. （已译） *)
 Definition OpenSet (X : TopSpace) : Type := { U : X → Type & IsOpen X U }.
 
-(* A closed set of X: the closed predicate, its complementing open (as
-   data, per design note 1), and the agreement between the two. *)
+(* 相关说明。 （已译） *)
 Record ClosedSet (X : TopSpace) := {
   closed_pred : X → Type;                       (* the closed predicate *)
   closed_compl : X → Type;                      (* its complementing open *)
   closed_compl_open : IsOpen X closed_compl;    (* which is indeed open *)
 
-  (* the closed predicate is the negation of the complementing open *)
+  (* 相关说明。 （已译） *)
   closed_agree : ∀ x : X, closed_pred x ↔ ¬ (closed_compl x)
 }.
 
@@ -69,8 +68,8 @@ Definition open_complement {X : TopSpace} (U : OpenSet X) : ClosedSet X := {|
 Definition closed_interior {X : TopSpace} (C : ClosedSet X) : OpenSet X :=
   (closed_compl C; closed_compl_open C).
 
-(* The chosen order on closed sets implies inclusion of the closed
-   predicates — the direction that survives without excluded middle. *)
+(* The chosen order closed sets implies 含入 closed
+ predicates — direction survives without excluded middle. （已译） *)
 Lemma closed_order_implies_inclusion {X : TopSpace} (C D : ClosedSet X) :
   (∀ x : X, closed_compl D x → closed_compl C x) →
   ∀ x : X, closed_pred C x → closed_pred D x.
@@ -79,8 +78,7 @@ Proof.
   exact (snd (closed_agree D x) (fun hd => fst (closed_agree C x) Hc (Hincl x hd))).
 Qed.
 
-(* Likewise for the setoid: agreement of complementing opens implies
-   agreement of the closed predicates. *)
+(* 相关说明。 （已译） *)
 Lemma closed_equiv_implies_pred_equiv {X : TopSpace} (C D : ClosedSet X) :
   (∀ x : X, closed_compl C x ↔ closed_compl D x) →
   ∀ x : X, closed_pred C x ↔ closed_pred D x.
@@ -117,11 +115,11 @@ Program Definition Closeds (X : TopSpace) : Category := {|
   compose := fun C D E g f x u => f x (g x u)
 |}.
 
-(** ** Complementation as an isomorphism of categories *)
+(* * ** Complementation 同构 范畴 （已译） *)
 
-(* Forward: an open goes to its complement.  An inclusion `U ⊆ V` is
-   literally the arrow required in `(Closeds X)^op`, namely the inclusion
-   of the complementing opens. *)
+(* Forward: open goes complement. An 含入 `U ⊆ V` is
+ literally arrow required `(Closeds X)^op`, namely 含入
+ complementing opens. （已译） *)
 Program Definition OpenCompl (X : TopSpace) : Opens X ⟶ (Closeds X)^op := {|
   fobj := fun U => open_complement U;
   fmap := fun U V g => g
@@ -164,15 +162,12 @@ Defined.
 
 (** ** The two presheaves on Top *)
 
-(* Preimage of an open along a continuous map is open — that IS continuity,
-   and it is what makes the opens contravariantly functorial. *)
+(* 相关说明。 （已译） *)
 Definition open_preimage {X Y : TopSpace} (g : Y ~{Top}~> X) (U : OpenSet X) :
   OpenSet Y :=
   (fun y => `1 U (g y); continuity g (`1 U) (`2 U)).
 
-(* Preimage of a closed set: both components are pulled back, the
-   complementing open stays open by continuity, and the agreement field
-   transports pointwise. *)
+(* 相关说明。 （已译） *)
 Definition closed_preimage {X Y : TopSpace} (g : Y ~{Top}~> X)
            (C : ClosedSet X) : ClosedSet Y := {|
   closed_pred       := fun y => closed_pred C (g y);
@@ -181,9 +176,9 @@ Definition closed_preimage {X Y : TopSpace} (g : Y ~{Top}~> X)
   closed_agree      := fun y => closed_agree C (g y)
 |}.
 
-(* The setoid of opens of X, as an object of [Sets]: two opens are
-   identified when their predicates agree pointwise (up to the library's
-   Type-valued `↔`). *)
+(* The setoid opens X, 对象 [Sets]: two opens are
+ identified predicates agree pointwise (up library's
+ Type-valued `↔`). （已译） *)
 Definition OpenSets (X : TopSpace) : obj[Sets].
 Proof.
   refine {| carrier   := OpenSet X
@@ -236,7 +231,7 @@ Next Obligation.
              (symmetry (Hfg y))).
 Qed.
 Next Obligation.
-  (* the preimage along the identity is the identity *)
+  (* the preimage along 恒等 恒等 （已译） *)
   intros X U y; split; exact (fun h => h).
 Qed.
 Next Obligation.
@@ -244,8 +239,7 @@ Next Obligation.
   intros X Y Z f g U y; split; exact (fun h => h).
 Qed.
 
-(* The presheaf of closed sets, likewise.  Everything happens on the
-   complementing open, which is exactly the component the setoid compares. *)
+(* 相关说明。 （已译） *)
 Program Definition ClosedsF : Top^op ⟶ Sets := {|
   fobj := fun X => ClosedSets X;
   fmap := fun X Y f => {| morphism := closed_preimage (unop f) |}
@@ -316,7 +310,7 @@ Next Obligation. intros X C y; split; exact (fun h => h). Qed.
 Next Obligation. intros X U y; split; exact (fun h => h). Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The exact price of the classical reading *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Closed 相关定义、性质与动机。

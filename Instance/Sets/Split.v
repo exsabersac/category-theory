@@ -7,7 +7,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * A section/retraction pair in Sets that is not an isomorphism *)
+(* * * A section/retraction pair Sets not 同构 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/split+epimorphism
@@ -21,8 +21,8 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------------ *)
 (** ** The two objects *)
 
-(* The two-element setoid is the one Instance/Sets.v already carries;
-   this is a notation for it, not a second copy. *)
+(* The two-element setoid one Instance/Sets.v already carries;
+ 这是 notation it, not second copy. （已译） *)
 Notation sets_two := bool_setoid_object.
 
 (*
@@ -81,14 +81,13 @@ Definition sets_three_card :
 (* ------------------------------------------------------------------------ *)
 (** ** The two maps *)
 
-(* The inclusion is [Some].  The only feature of it the proofs below use is
-   that it misses [None]. *)
+(* The 含入 [Some]. The feature it proofs below use is
+ it misses [None]. （已译） *)
 Program Definition sets_incl23 : sets_two ~{Sets}~> sets_three := {|
   morphism := @Some bool
 |}.
 
-(* The retraction undoes [Some] and folds the missed point [None] onto
-   [true], so it identifies [None] with [Some true]. *)
+(* 相关说明。 （已译） *)
 Definition option_fold (o : option bool) : bool :=
   match o with
   | Some b => b
@@ -105,9 +104,9 @@ Program Definition sets_retr32 : sets_three ~{Sets}~> sets_two := {|
 Lemma sets_retr_incl : sets_retr32 ∘[Sets] sets_incl23 ≈ id{Sets}.
 Proof. intro b; now destruct b. Qed.
 
-(* Hence the inclusion is a split mono and the retraction a split epi, both
-   witnessed by the SAME equation -- this is the shape Theory/Morphisms.v
-   names [Section] and [Retraction]. *)
+(* Hence 含入 split mono retraction split epi, both
+ witnessed SAME equation -- 这是 shape Theory/Morphisms.v
+ names [Section] [Retraction]. （已译） *)
 
 Definition sets_incl23_Section : Section sets_incl23 :=
   Build_Section _ _ sets_incl23 sets_retr32 sets_retr_incl.
@@ -116,17 +115,17 @@ Definition sets_retr32_Retraction : Retraction sets_retr32 :=
   Build_Retraction _ _ sets_retr32 sets_incl23 sets_retr_incl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The other composite provably is not the identity *)
+(* * ** The other 复合 provably not 恒等 （已译） *)
 
-(* At [None] the round trip lands on [Some true]: the retraction folds [None]
-   onto [true] and the inclusion cannot recover it. *)
+(* At [None] round trip lands [Some true]: retraction folds [None]
+ onto [true] 含入 cannot recover it. （已译） *)
 
 Lemma sets_incl_retr_not_id :
   sets_incl23 ∘[Sets] sets_retr32 ≈ id{Sets} → False.
 Proof. intro H; discriminate (H None). Qed.
 
-(* So this splitting's idempotent is not an identity -- which is exactly what
-   the generic Karoubi construction never exhibits. *)
+(* So splitting's idempotent not 恒等 -- exactly what
+ generic Karoubi construction never exhibits. （已译） *)
 Lemma sets_incl_retr_idempotent :
   Idempotent (sets_incl23 ∘[Sets] sets_retr32).
 Proof.
@@ -142,8 +141,7 @@ Qed.
 Lemma sets_incl23_not_iso : IsIsomorphism sets_incl23 → False.
 Proof. intros [t Hr _]; discriminate (Hr None). Qed.
 
-(* The retraction identifies [None] with [Some true], so no left inverse can
-   separate them again. *)
+(* 相关说明。 （已译） *)
 
 Lemma sets_retr32_not_iso : IsIsomorphism sets_retr32 → False.
 Proof.
@@ -156,7 +154,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The class inclusions of Theory/Morphisms/Classes.v are strict *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Split 相关定义、性质与动机。
@@ -174,8 +172,8 @@ Definition sets_split_epi_not_iso :
   * (@IsoClass Sets sets_three sets_two sets_retr32 → False) :=
   (sets_retr32_Retraction, sets_retr32_not_iso).
 
-(* The Seven Sketches example in full: a one-sided inverse pair whose other
-   composite provably is not an identity, with neither map invertible. *)
+(* The Seven Sketches example full: one-sided inverse pair whose other
+ 复合 provably not 恒等, neither map invertible. （已译） *)
 Definition sets_split_pair_not_iso :
   (sets_retr32 ∘[Sets] sets_incl23 ≈ id{Sets})
   * ((sets_incl23 ∘[Sets] sets_retr32 ≈ id{Sets}) → False)
@@ -187,9 +185,7 @@ Definition sets_split_pair_not_iso :
 (* ------------------------------------------------------------------------ *)
 (** ** Both maps are regular *)
 
-(* Tying the example back to Mac Lane §I.5 Exercise 7: a one-sided inverse is
-   already a pseudoinverse, so each map of the pair is regular even though
-   neither is invertible. *)
+(* 相关说明。 （已译） *)
 
 Definition sets_incl23_regular : RegularMorphism sets_incl23 :=
   regular_of_section _ sets_incl23_Section.

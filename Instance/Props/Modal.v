@@ -25,7 +25,7 @@ Require Import Coq.Relations.Relation_Definitions.
 
 Generalizable All Variables.
 
-(** * The modal operator B ⇒ − on propositions *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/closure+operator
@@ -37,10 +37,10 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The operator and its two axioms *)
+(* 相关说明。 （已译） *)
 
-(* j p := B → p, an endofunctor of the entailment preorder [Props]; its
-   law fields are [I], the hom-setoid of [Props] being [True]. *)
+(* j p := B → p, 自函子 entailment preorder [Props]; its
+ law fields [I], hom-setoid [Props] being [True]. （已译） *)
 Definition modal_functor@{u h} (B : Prop) : Props@{u h} ⟶ Props@{u h} :=
   @Build_Functor Props@{u h} Props@{u h} (fun p => B → p)
     (fun p q (f : Basics.impl p q) (g : B → p) (b : B) => f (g b))
@@ -50,7 +50,7 @@ Definition modal_functor@{u h} (B : Prop) : Props@{u h} ⟶ Props@{u h} :=
    j(j(p)) = j(p), read as mutual entailment. *)
 Definition modal_ext@{} (B p : Prop) : p → (B → p) := fun x _ => x.
 
-(* The multiplication, a transparent term: the assumption used twice. *)
+(* 相关说明。 （已译） *)
 Definition modal_mult@{} (B p : Prop) : (B → (B → p)) → (B → p) :=
   fun f b => f b b.
 
@@ -63,8 +63,8 @@ Lemma modal_idem_ext@{} (propext : ∀ P Q : Prop, (P <-> Q) → P = Q)
   (B p : Prop) : (B → (B → p)) = (B → p).
 Proof. exact (propext _ _ (modal_idem B p)). Qed.
 
-(* The monad: unit the first axiom, multiplication the forward half of
-   the second, every law [I]. *)
+(* The 单子: unit first axiom, multiplication forward half of
+ second, every law [I]. （已译） *)
 Definition modal_monad@{u h} (B : Prop) :
   @Monad Props@{u h} (modal_functor@{u h} B) :=
   @Build_Monad Props@{u h} (modal_functor@{u h} B)
@@ -76,15 +76,13 @@ Definition modal_monad@{u h} (B : Prop) :
 Example modal_monad_join@{u h} (B p : Prop) (f : B → (B → p)) (b : B) :
   @join _ _ (modal_monad@{u h} B) p f b = f b b := eq_refl.
 
-(* It IS Structure/Thin/Monad.v's [thin_monad] at [Props] with the
-   witness [fun _ _ _ _ => I], on the WHOLE record: that constructor's
-   law fields reduce to [I] by beta. *)
+(* 相关说明。 （已译） *)
 Example modal_monad_is_thin@{u h t} (B : Prop) :
   modal_monad@{u h} B
     = @thin_monad@{t u h} Props@{u h} (fun _ _ _ _ => I)
         (modal_functor@{u h} B) (modal_ext B) (modal_mult B) := eq_refl.
 
-(* Its algebras are the j-closed propositions, (B → p) → p. *)
+(* 相关说明。 （已译） *)
 Definition modal_talgebra_iff@{u h +} (B p : Prop) :
   @TAlgebra Props@{u h} (modal_functor B) (modal_monad B) p
     ↔ ((B → p) → p) :=
@@ -106,7 +104,7 @@ Proof.
   exact (to_closed a (fun x => x)).
 Qed.
 
-(** ** The monad of the currying adjunction (− ∧ B) ⊣ (B ⇒ −) *)
+(* * ** The 单子 currying 伴随 (− ∧ B) ⊣ (B ⇒ −) （已译） *)
 
 (*
    本节说明伴随、笛卡尔相关定义、性质与动机。
@@ -127,8 +125,8 @@ Definition curry_cofunctor@{u h e | h < e +}
     (@Prod_Functor@{u h e e} Props@{u h} _ B)
     (@Exp_Functor@{u h e e} Props@{u h} _ CL B).
 
-(* The monad of [Curry_Adjunction B].  The adjunction's last level is
-   free in its block and is pinned to h. *)
+(* The 单子 [Curry_Adjunction B]. The 伴随's last level is
+ free block pinned h. （已译） *)
 Definition curry_monad@{u h e | h < e +} (B : Prop) :
   @Monad Props@{u h} (curry_functor@{u h e} Props_Closed B) :=
   @Adjunction_Monad@{u h u h e h} Props@{u h} Props@{u h} _ _
@@ -138,8 +136,8 @@ Definition curry_monad@{u h e | h < e +} (B : Prop) :
 Example curry_monad_fobj@{u h e | h < e +} (B p : Prop) :
   fobj[curry_functor@{u h e} Props_Closed B] p = (B → p /\ B) := eq_refl.
 
-(* It is not B ⇒ − by conversion (the equation of objects is refused),
-   but the two functors are naturally isomorphic. *)
+(* It not B ⇒ − conversion (the equation 对象 refused),
+ but two 函子 naturally isomorphic. （已译） *)
 Lemma curry_modal_iso@{u h e + | h < e +} (B : Prop) :
   curry_functor@{u h e} Props_Closed B ≈ modal_functor@{u h} B.
 Proof.
@@ -150,9 +148,9 @@ Proof.
   - intros; exact I.
 Qed.
 
-(* Under propositional extensionality, taken as a hypothesis, the two
-   object maps agree, so no proof of their difference can exist unless
-   that axiom is refuted. *)
+(* Under propositional extensionality, taken 假设, two
+ 对象 maps agree, so no 证明 difference can exist unless
+ axiom refuted. （已译） *)
 Lemma curry_modal_fobj_ext@{u h e | h < e +}
   (propext : ∀ P Q : Prop, (P <-> Q) → P = Q) (B p : Prop) :
   fobj[curry_functor@{u h e} Props_Closed B] p = fobj[modal_functor@{u h} B] p.
@@ -169,13 +167,13 @@ Definition curry_talgebra_iff@{u h e + | h < e +} (B p : Prop) :
    fun h => @Build_TAlgebra Props@{u h} _ (curry_monad@{u h e} B) p
               h I I).
 
-(* The two monads have the same closed elements. *)
+(* The two 单子 have same closed elements. （已译） *)
 Definition curry_modal_closed_iff@{} (B p : Prop) :
   ((B → p /\ B) → p) <-> ((B → p) → p) :=
   conj (fun h f => h (fun b => conj (f b) b))
        (fun h f => h (fun b => proj1 (f b))).
 
-(** ** The dual: the comonad of the same adjunction, B ∧ − *)
+(* * ** The dual: 余单子 same 伴随, B ∧ − （已译） *)
 
 (* [Adjunction_Comonad]'s level u4 (sixth in its binder) occurs in neither
    its type nor its block; it is pinned to h, as is the adjunction's last
@@ -201,12 +199,12 @@ Definition curry_wcoalgebra_iff@{u h e + | h < e +} (B p : Prop) :
    fun h => @Build_WCoalgebra Props@{u h} _ (curry_comonad@{u h e} B) p
               h I I).
 
-(* Its open elements are the propositions that entail B. *)
+(* 相关说明。 （已译） *)
 Definition curry_open_iff_entails@{} (B p : Prop) :
   (p → (B → p) /\ B) <-> (p → B) :=
   conj (fun h x => proj2 (h x)) (fun h x => conj (fun _ => x) (h x)).
 
-(** ** The same operator on the preorder of propositions *)
+(* 相关说明。 （已译） *)
 
 Definition impl_PreOrder@{} : PreOrder Basics.impl :=
   {| PreOrder_Reflexive := fun _ x => x
@@ -223,13 +221,13 @@ Definition modal_closure@{u} (B : Prop) : ClosureOperator@{u} impl_PreOrder :=
    ; cl_ext  := modal_ext B
    ; cl_mult := modal_mult B |}.
 
-(* [Props] is not [Proset impl_PreOrder] by conversion, so the two
-   presentations are distinct terms; their functors agree on objects. *)
+(* [Props] not [Proset impl_PreOrder] conversion, so two
+ presentations distinct terms; 函子 agree 对象. （已译） *)
 Example modal_closure_fobj@{u h} (B p : Prop) :
   fobj[closure_functor@{u h} (modal_closure@{u} B)] p
     = fobj[modal_functor@{u h} B] p := eq_refl.
 
-(* And the two monads have the same unit and multiplication. *)
+(* And two 单子 have same unit multiplication. （已译） *)
 Example modal_closure_ret@{u h} (B p : Prop) :
   @ret _ _ (closure_monad@{u h} (modal_closure@{u} B)) p
     = @ret _ _ (modal_monad@{u h} B) p := eq_refl.

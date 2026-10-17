@@ -5,7 +5,7 @@ Require Import Category.Theory.Functor.
 
 Generalizable All Variables.
 
-(** * The strict category of categories *)
+(* * * The strict 范畴 范畴 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/Cat

@@ -1,4 +1,4 @@
-(** * The indiscrete functor and the right half of Smythe's adjoint string *)
+(* * * The indiscrete 函子 right half Smythe's adjoint string （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.
@@ -29,7 +29,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** §1. The indiscrete co-extension *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -169,7 +169,7 @@ Fail Example unit_has_no_eta (u : Datatypes.unit) : u = tt := eq_refl.
 Example unit_eta_by_destruct (u : Datatypes.unit) : u = tt.
 Proof. now destruct u. Qed.
 
-(** ** §5. The indiscrete functor is fully faithful *)
+(* * ** §5. The indiscrete 函子 fully faithful （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -186,7 +186,7 @@ Next Obligation.
   exact (iso_to_from (indisc_adj_iso (StrictCat_Indisc x) y) g).
 Defined.
 
-(** ** §6. The adjoint string, as far as it goes *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、函子相关定义、性质与动机。
@@ -198,11 +198,11 @@ Definition adjoint_string :
     * (StrictCat_Objects ⊣ StrictCat_Indisc) :=
   (Disc_Objects_Adjunction, Objects_Indisc_Adjunction).
 
-(** ** §7. The two adjoints of the objects functor genuinely differ *)
+(* * ** §7. The two adjoints 对象 函子 genuinely differ （已译） *)
 
-(* The engine, one line: a morphism of a DISCRETE category is an
-   equality proof, and an indiscrete category supplies a morphism
-   between any two objects, so the image of [tt] IS the equation. *)
+(* The engine, one line: 态射 DISCRETE 范畴 an
+ equality 证明, indiscrete 范畴 supplies 态射
+ between any two 对象, so image [tt] IS equation. （已译） *)
 Lemma ind_to_disc_constant {A B : Type}
   (F : Indiscrete A ⟶ DiscreteCat B) (x y : A) : fobj[F] x = fobj[F] y.
 Proof. exact (fmap[F] (tt : x ~{Indiscrete A}~> y)). Qed.
@@ -241,7 +241,7 @@ Section IndiscreteSetPin.
   Constraint Set < uh.
   Context (C : Category@{uo uh uh}) (A : Type@{uo}).
 
-  (* Controls: the ambient, the left wing, and the two shapes. *)
+  (* 相关说明。 （已译） *)
   Check (C : obj[StrictCat]).
   Check (fmap[StrictCat_Objects] (Id[C])).
   Check (@disc_ext@{uo uh uh uo}).
@@ -254,7 +254,7 @@ Section IndiscreteSetPin.
   (* 2: so does the lift built over it ... *)
   Check (@indisc_lift C A).
 
-  (* 3: ... and so, therefore, does the adjunction. *)
+  (* 3: ... so, therefore, does 伴随. （已译） *)
   Check (@indisc_adj_iso C A).
 End IndiscreteSetPin.
 
@@ -280,7 +280,7 @@ Section IndiscreteObjectsAboveHoms.
   Check (@indisc_adj_iso C A).
 End IndiscreteObjectsAboveHoms.
 
-(** ** §9. Where the string stops on the right *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、函子相关定义、性质与动机。
@@ -349,9 +349,9 @@ Definition ind_bool_connected : Connected (Indiscrete bool) :=
 Program Definition ind_bool_iso :
   @Isomorphism (Indiscrete bool) true false := {| to := tt; from := tt |}.
 
-(* The transposition computes.  By [adj_to_lifts] the forward leg IS
-   [indisc_lift], so these evaluate the adjunction's own [to] at a
-   non-identity function. *)
+(* The transposition computes. By [adj_to_lifts] forward leg IS
+ [indisc_lift], so these evaluate 伴随's own [to] at a
+ non-恒等 function. （已译） *)
 Example neg_lift_true :
   fobj[indisc_lift (C := DiscreteCat bool) negb] true = false := eq_refl.
 

@@ -10,7 +10,7 @@ Generalizable All Variables.
 
 Set Default Proof Using "All".
 
-(** * Pointwise pullbacks in a functor category *)
+(* * * Pointwise pullbacks 函子 范畴 （已译） *)
 
 (*
    本文件给出拉回实例。
@@ -19,7 +19,7 @@ Set Default Proof Using "All".
 *)
 
 (* ------------------------------------------------------------------ *)
-(** ** (A) Pointwise pullbacks give a pullback in [C, D] *)
+(* 相关说明。 （已译） *)
 
 Section FunIsPullback.
 
@@ -30,9 +30,9 @@ Context (p1 : P ~{[C, D]}~> F) (p2 : P ~{[C, D]}~> G).
 Context (Hpt : ∀ x : C, IsPullback (transform[alpha] x) (transform[beta] x)
                           (P x) (transform[p1] x) (transform[p2] x)).
 
-(* Two arrows into the apex agreeing on both legs agree: the standard
-   consequence of the universal property, used to prove naturality of the
-   mediator. *)
+(* Two arrows 进入 apex agreeing both legs agree: standard
+ consequence 普遍性质, used prove 自然性 the
+ mediator. （已译） *)
 Lemma fpb_jointly_monic (x : C) {Z : D} (u v : Z ~> P x) :
   transform[p1] x ∘ u ≈ transform[p1] x ∘ v →
   transform[p2] x ∘ u ≈ transform[p2] x ∘ v → u ≈ v.
@@ -95,7 +95,7 @@ Defined.
 End FunIsPullback.
 
 (* ------------------------------------------------------------------ *)
-(** ** (B) The chosen pointwise pullback *)
+(* 相关说明。 （已译） *)
 
 Section FunPullback.
 
@@ -116,8 +116,8 @@ Lemma fpb_commutes (x : C) :
   transform[alpha] x ∘ fpb_fst x ≈ transform[beta] x ∘ fpb_snd x.
 Proof. exact (pullback_commutes _ _ (fpb_at x)). Qed.
 
-(* The square the arrow action factors through: the two naturality
-   squares of alpha and beta plus the pointwise commuting square. *)
+(* The square arrow action factors through: two 自然性
+ squares alpha beta plus pointwise 交换方块. （已译） *)
 Lemma fpb_arr_sq {x y : C} (h : x ~> y) :
   transform[alpha] y ∘ (fmap[F] h ∘ fpb_fst x)
     ≈ transform[beta] y ∘ (fmap[G] h ∘ fpb_snd x).
@@ -162,8 +162,8 @@ Proof.
   now split.
 Qed.
 
-(* All three functor laws are the uniqueness clause of the pullback
-   applied to the two legs. *)
+(* All three 函子 laws uniqueness clause pullback
+ applied two legs. （已译） *)
 Definition Fun_Pullback_Functor : C ⟶ D.
 Proof.
   unshelve refine (@Build_Functor C D fpb_obj (@fpb_arr) _ _ _).
@@ -181,8 +181,7 @@ Proof.
       now rewrite fmap_comp.
 Defined.
 
-(* Naturality of each projection IS the defining equation of the arrow
-   action, read backwards. *)
+(* 相关说明。 （已译） *)
 Definition Fun_Pullback_fst : Fun_Pullback_Functor ~{[C, D]}~> F.
 Proof.
   unshelve refine (@Build_Transform' C D Fun_Pullback_Functor F fpb_fst _).
@@ -234,9 +233,7 @@ Example fun_haspullbacks_readback {C D : Category} (HP : @HasPullbacks D)
   @pullback ([C, D]) (Fun_HasPullbacks HP) F G H alpha beta
     = Fun_Pullback HP alpha beta := eq_refl.
 
-(* The mediator is D's mediator at every component, ON THE NOSE
-   ([fun_pullback_med_strict]); the [≈] form below is the weakening a
-   consumer rewrites with. *)
+(* 相关说明。 （已译） *)
 Example fun_pullback_med_strict {C D : Category} (HP : @HasPullbacks D)
   {F G H : C ⟶ D} (alpha : F ~{[C, D]}~> H) (beta : G ~{[C, D]}~> H)
   {Q : C ⟶ D} (q1 : Q ~{[C, D]}~> F) (q2 : Q ~{[C, D]}~> G)

@@ -44,7 +44,7 @@ Open Scope category_scope.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The tower of an endomorphism, in any category *)
+(* * ** The tower endomorphism, any 范畴 （已译） *)
 
 Section EndoTower.
 
@@ -52,9 +52,9 @@ Universes s o h.
 
 Context {C : Category@{o h h}} (X : obj[C]) (w : X ~{C}~> X).
 
-(* The action on an order proof, the Instance/Rng/Zp.v [res_hom] idiom:
-   the proof of [m <= n] built from [n - m] successor steps is sent to
-   the [n - m]-fold composite of [w]. *)
+(* The action order 证明, Instance/Rng/Zp.v [res_hom] idiom:
+ 证明 [m <= n] built [n - m] successor steps sent to
+ [n - m]-fold 复合 [w]. （已译） *)
 Fixpoint endo_hom {m n : nat} (f : le_t@{h} m n) : X ~{C}~> X :=
   match f with
   | le_t_n    => id
@@ -91,7 +91,7 @@ Definition EndoTower : Omega@{s h h}^op ⟶ C :=
     endo_hom_id
     (fun x y z f g => endo_hom_comp f g).
 
-(* The generating arrow is sent to [w], on the nose up to the unit. *)
+(* 相关说明。 （已译） *)
 Example endo_step (n : nat) :
   fmap[EndoTower] (omega_step n) = id ∘ w := eq_refl.
 
@@ -100,7 +100,7 @@ Proof. exact (id_left w). Qed.
 
 End EndoTower.
 
-(* A functor carries the tower of [w] to the tower of [fmap w]. *)
+(* A 函子 carries tower [w] tower [fmap w]. （已译） *)
 Section EndoTowerMap.
 
 Universes s oc od h.
@@ -127,8 +127,7 @@ End EndoTowerMap.
 
 (** ** The towers of circles *)
 
-(* The tower of points: the circle's point setoid under the p-fold map,
-   in [Sets]. *)
+(* 相关说明。 （已译） *)
 Definition UCircleTower@{s o so | o < so +} (p : positive) :
   Omega@{s o o}^op ⟶ Sets@{o so} :=
   @EndoTower Sets@{o so} Circle_setoid@{o} (circ_mul@{o} p).
@@ -149,12 +148,12 @@ Example CircleTower_step@{s h o + | o < h +} (p : positive) (n : nat) :
 Example PCircleTower_step@{s o so + | o < so +} (p : positive) (n : nat) :
   fmap[PCircleTower@{s o so} p] (omega_step n) = id ∘ pwrap p := eq_refl.
 
-(* The underlying tower of the [PTopCat] tower is the tower of points. *)
+(* 相关说明。 （已译） *)
 Lemma PCircleTower_points@{s o so + | o < so +} (p : positive) :
   PForget@{o so} ◯ PCircleTower@{s o so} p ≈ UCircleTower@{s o so} p.
 Proof. exact (EndoTower_map PForget PCircle (pwrap p)). Qed.
 
-(** ** The solenoid in the Type-valued [Top] *)
+(* 相关说明。 （已译） *)
 
 (* Its points: #408's matching strings of the tower of points. *)
 Definition SolPoints@{s o so | o < so +} (p : positive) : SetoidObject@{o o} :=
@@ -164,16 +163,13 @@ Definition sol_pr@{s o so | o < so +} (p : positive) (n : nat) :
   SetoidMorphism@{o o o} (SolPoints@{s o so} p) Circle_setoid@{o} :=
   tower_proj@{s o so o} (UCircleTower@{s o so} p) n.
 
-(* Mac Lane's matching condition, read back: p x_(n+1) = x_n on the
-   circle, for every n. *)
+(* 相关说明。 （已译） *)
 Example sol_compat@{s o so + | o < so +} (p : positive)
   (x : Sets_iprod_obj (fun n : nat => fobj[UCircleTower@{s o so} p] n)) :
   tower_compat (UCircleTower@{s o so} p) x
   = (∀ n : nat, circ_eq (CReal_mult (posR p) (x (S n))) (x n)) := eq_refl.
 
-(* Its opens: those predicates each of whose points [s] has a finite stage
-   [n] and a radius [e] such that every string within [e] of [s] at the
-   stages up to [n] lies in the predicate. *)
+(* 相关说明。 （已译） *)
 Definition sopen@{s o so | o < so +} (p : positive)
   (V : SolPoints@{s o so} p → Type@{o}) : Type@{o} :=
   ∀ s, V s → { n : nat & { e : Q & (Qlt 0 e *
@@ -267,9 +263,9 @@ Proof.
     + exact (open_inter Z _ _ IH (HP (S n))).
 Qed.
 
-(* The half of the universal property with content: a setoid map into the
-   solenoid's points is continuous as soon as every composite with a
-   projection is. *)
+(* The half 普遍性质 content: setoid map 进入
+ solenoid's points continuous soon every 复合 a
+ projection is. （已译） *)
 Lemma sol_lift_cont@{s o so h + | o < so, o < h +} (p : positive)
   (Z : TopSpace@{o}) (g : SetoidMorphism@{o o o} Z (SolPoints@{s o so} p))
   (Hg : ∀ j, Continuous@{h o} Z Circle@{o}
@@ -296,8 +292,8 @@ Proof.
     intro j. exact (Hg j (cint (sol_pr p j (g z0)) e) (cint_open _ _)).
 Qed.
 
-(* The universal property of the solenoid's topology, over ANY space
-   mapping in. *)
+(* The 普遍性质 solenoid's topology, over ANY space
+ 映射 in. （已译） *)
 Theorem solenoid_universal@{s o so h + | o < so, o < h +} (p : positive)
   (Z : TopSpace@{o}) (g : SetoidMorphism@{o o o} Z (SolPoints@{s o so} p)) :
   Continuous@{h o} Z (Solenoid@{s o so} p) g ↔
@@ -359,7 +355,7 @@ Definition sol_med@{s o so h | o < so, o < h +} (p : positive)
     (sol_lift_cont p _ (sol_med_map p N)
        (fun j => continuity (@vertex_map _ _ _ _ (@coneFrom _ _ _ N) j))).
 
-(* The p-adic solenoid: the limit in [Top] of the tower of circles. *)
+(* 相关说明。 （已译） *)
 Program Definition solenoid_limit@{s o so h r | o < so, o < h +}
   (p : positive) : Limit@{r s h h} (CircleTower@{s h o} p) := {|
   limit_cone := sol_cone@{s o so h} p;
@@ -368,8 +364,7 @@ Program Definition solenoid_limit@{s o so h r | o < so, o < h +}
 Next Obligation. intros p N n z; reflexivity. Qed.
 Next Obligation. intros p N v Hv z n; symmetry; exact (Hv n z). Qed.
 
-(* The limit's points ARE the matching strings, and its legs ARE the
-   projections. *)
+(* 相关说明。 （已译） *)
 Example solenoid_points@{s o so h + | o < so, o < h +} (p : positive) :
   top_carrier (vertex_obj[@limit_cone _ _ _ (solenoid_limit@{s o so h _} p)])
   = inverse_limit (UCircleTower@{s o so} p) := eq_refl.
@@ -380,9 +375,7 @@ Example solenoid_leg_map@{s o so h + | o < so, o < h +} (p : positive)
     (cone_leg (@limit_cone _ _ _ (solenoid_limit@{s o so h _} p)) n)
   = tower_proj (UCircleTower@{s o so} p) n := eq_refl.
 
-(* The coarsest topology making the legs continuous: every topology on the
-   points in which each projection is continuous contains every open of the
-   solenoid. *)
+(* 相关说明。 （已译） *)
 Lemma solenoid_coarsest@{s o so h + | o < so, o < h +} (p : positive)
   (T : (SolPoints@{s o so} p → Type@{o}) → Type@{o})
   (Tr : ∀ U V, (∀ x, U x ↔ V x) → T U → T V)
@@ -431,7 +424,7 @@ Proof.
   - intros v Hv a n; symmetry; exact (Hv n a).
 Defined.
 
-(** ** The solenoid in [PTopCat], by #458's recipe *)
+(* 相关说明。 （已译） *)
 
 Definition PTop_solenoid_limit@{s o so r | o < so +} (p : positive) :
   Limit@{r s o so} (PCircleTower@{s o so} p) :=
@@ -470,8 +463,7 @@ Lemma PTop_solenoid_coarsest@{s o so + | o < so +} (p : positive)
   ∀ V, POpen (PSolenoid p) V → T V.
 Proof. exact (pinit_weakest _ nat (fun _ => PCircle) _ T HT Hc). Qed.
 
-(* Any limiting cone over the tower carries exactly the initial topology
-   for its legs (#458's necessity half, at this tower). *)
+(* 相关说明。 （已译） *)
 Lemma PTop_solenoid_open_forced@{s o so + | o < so +} (p : positive)
   (L : Cone (PCircleTower@{s o so} p)) (HL : IsLimitCone L)
   (V : vertex_obj[L] → Prop) :
@@ -487,7 +479,7 @@ Definition PTop_solenoid_forget_preserves@{s o so + | o < so +}
     (@limit_cone _ _ _ (PTop_solenoid_limit p))
     (limit_limitcone (PTop_solenoid_limit p)).
 
-(** ** The two solenoids have the same points *)
+(* 相关说明。 （已译） *)
 
 Example solenoid_points_agree@{s o so + | o < so +} (p : positive) :
   carrier (SolPoints@{s o so} p) = carrier (pt_carrier (PSolenoid@{s o so _} p))
@@ -529,8 +521,7 @@ Proof.
   exists (fun _ => inject_Q 0). intro n. exact (zero_compat p).
 Defined.
 
-(* The string (1/(2 p^n))_n: it starts at the half-turn 1/2, and the
-   p-fold map carries each entry to the one before. *)
+(* 相关说明。 （已译） *)
 Definition half_string@{s o so | o < so +} (p : positive) :
   SolPoints@{s o so} p.
 Proof.
@@ -557,8 +548,7 @@ Proof.
   exists (zero_string p), (half_string p). exact (solenoid_two_points p).
 Defined.
 
-(* The string (1/p^n)_n lies over the base point, like the zero string;
-   when 1 < p the two differ, so the leg at stage zero is not injective. *)
+(* 相关说明。 （已译） *)
 Definition unit_string@{s o so | o < so +} (p : positive) :
   SolPoints@{s o so} p.
 Proof.
@@ -584,7 +574,7 @@ Proof.
   destruct (Z.eq_mul_1 k (Z.pos p) (eq_sym Hk)) as [->| ->]; lia.
 Qed.
 
-(** ** At p = 1 the solenoid is isomorphic to the circle *)
+(* 相关说明。 （已译） *)
 
 Lemma one_compat@{u} (c : CReal) : circ_eq@{u} (CReal_mult (posR 1) c) c.
 Proof. apply circ_eq_of_creal. exact (CReal_mult_1_l c). Qed.

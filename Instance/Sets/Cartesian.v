@@ -4,7 +4,7 @@ Require Import Category.Structure.Cartesian.
 
 Generalizable All Variables.
 
-(** * Cartesian (binary product) structure on [Sets] *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/setoid

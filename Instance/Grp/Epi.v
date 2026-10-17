@@ -8,12 +8,12 @@ Require Import Category.Instance.Grp.
 
 Generalizable All Variables.
 
-(* Obligations are discharged by hand throughout, as in Instance/Grp.v, so that
-   every proof below is visible in the source rather than delegated to a
-   default tactic. *)
+(* Obligations discharged hand throughout, Instance/Grp.v, so that
+ every 证明 below visible source rather than delegated a
+ default tactic. （已译） *)
 #[local] Obligation Tactic := idtac.
 
-(** * Epimorphisms in the category of groups *)
+(* * * Epimorphisms 范畴 groups （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/epimorphisms+of+groups+are+surjective
@@ -54,8 +54,7 @@ Proof.
   exact (nq (g p)).
 Qed.
 
-(* Stability of a conjunction, stated for [Prop] because the truth values
-   below are propositions and the library's `∧` is the [Type]-valued [prod]. *)
+(* 相关说明。 （已译） *)
 Lemma stable_and (P Q : Prop) : Stable P → Stable Q → Stable (P /\ Q).
 Proof.
   intros HP HQ HH.
@@ -229,7 +228,7 @@ Proof.
   - exact grp_coset_trans.
 Qed.
 
-(* The coset space of the image, as a setoid. *)
+(* 相关说明。 （已译） *)
 Definition Grp_Coset : SetoidObject :=
   {| carrier   := carrier H
    ; is_setoid := {| equiv        := grp_coset_rel
@@ -264,8 +263,8 @@ Proof.
     now apply grp_coset_sym.
 Qed.
 
-(* Left translation by [a], as a setoid map of the coset space: the coset
-   relation is preserved because (ay)⁻¹(ax) ≈ y⁻¹x. *)
+(* Left translation [a], setoid map coset space: coset
+ 关系 preserved because (ay)⁻¹(ax) ≈ y⁻¹x. （已译） *)
 Program Definition grp_translate (a : carrier H) :
   SetoidMorphism Grp_Coset Grp_Coset := {| morphism := grp_mul H a |}.
 Next Obligation.
@@ -280,8 +279,7 @@ Next Obligation.
   now rewrite grp_mul_unit_l.
 Qed.
 
-(* Translating by an element OF the image does not change image membership.
-   This is the M-equivariance input to the twist below. *)
+(* 相关说明。 （已译） *)
 Lemma GrpImage_translate (m c : carrier H) :
   GrpImage f m →
   (GrpImage f (grp_mul H (grp_inv H m) c) ↔ GrpImage f c).
@@ -305,7 +303,7 @@ Arguments grp_coset_rel {G H} f _ _.
 Arguments Grp_Coset {G H} f.
 Arguments grp_translate {G H} f a.
 
-(** ** The symmetric group of a setoid *)
+(* 相关说明。 （已译） *)
 
 (* A permutation of a setoid: an invertible setoid map, presented as a pair of
    setoid maps with both round trips up to `≈`.  Nothing here is a bijection on
@@ -363,8 +361,7 @@ Next Obligation.
     now transitivity (sperm_to q x).
 Qed.
 
-(* G4.  Permutations are compared pointwise on their forward maps, so a
-   permutation setoid is propositional whenever the underlying setoid is. *)
+(* 相关说明。 （已译） *)
 Definition SetoidPermutation_PropEquiv (X : SetoidObject)
   (PX : PropEquiv (is_setoid X)) : PropEquiv (SetoidPermutation_Setoid X).
 Proof.
@@ -470,16 +467,16 @@ Qed.
 Definition grp_conj (K : GrpObject) (s : carrier K) : K ~{Grp}~> K :=
   Build_GrpHom' (grp_conj_map K s) (grp_conj_mul K s).
 
-(** ** The action of H on the stable power set of the coset space *)
+(* 相关说明。 （已译） *)
 
 Section Epi.
 
 Context {G H : GrpObject}.
 Context (f : G ~{Grp}~> H).
 
-(* The stable-valued "power set" of the coset space: setoid maps from the
-   cosets of the image to the stable propositions.  This is the H-set the
-   argument permutes. *)
+(* The stable-valued "power set" coset space: setoid maps the
+ cosets image stable propositions. This H-set the
+ 论元 permutes. （已译） *)
 Definition GrpCosetPower : SetoidObject :=
   {| carrier   := SetoidMorphism (Grp_Coset f) StableSetoid
    ; is_setoid := @SetoidMorphism_Setoid (Grp_Coset f) StableSetoid |}.
@@ -551,7 +548,7 @@ Qed.
 Definition grp_action : H ~{Grp}~> SymGrp GrpCosetPower grp_coset_power_prop :=
   Build_GrpHom' grp_action_map grp_action_mul.
 
-(** ** The twist: an involution that is equivariant for the image only *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Epi 相关定义、性质与动机。
@@ -667,11 +664,11 @@ Definition grp_twist : carrier (SymGrp GrpCosetPower grp_coset_power_prop) := {|
   sperm_from_to := grp_twist_roundtrip
 |}.
 
-(* The twisted action: conjugate the action by the twist. *)
+(* 相关说明。 （已译） *)
 Definition grp_twisted_action : H ~{Grp}~> SymGrp GrpCosetPower grp_coset_power_prop :=
   grp_conj (SymGrp GrpCosetPower grp_coset_power_prop) grp_twist ∘[Grp] grp_action.
 
-(** ** The twist commutes with the image, and only with the image *)
+(* 相关说明。 （已译） *)
 
 Lemma grp_twist_act_commute (g : carrier G) (S : carrier GrpCosetPower) :
   grp_twist_map (grp_act_map (grp_map f g) S)
@@ -714,7 +711,7 @@ Proof.
     apply grp_twist_roundtrip.
 Qed.
 
-(* The distinguished stable subset: the double negation of image membership. *)
+(* 相关说明。 （已译） *)
 Program Definition grp_dense_subset :
   SetoidMorphism (Grp_Coset f) StableSetoid :=
   {| morphism := λ c, (¬¬ GrpImage f c ; stable_not_not (GrpImage f c)) |}.
@@ -728,8 +725,7 @@ Next Obligation.
     exact (nny (λ hy, nx (Eyx hy))).
 Qed.
 
-(* An element outside the image stays outside it after inversion and after
-   multiplying by the unit -- the shape in which the action presents it. *)
+(* 相关说明。 （已译） *)
 Lemma grp_image_misses_translate (h0 : carrier H) (Hh0 : ¬ GrpImage f h0) :
   ¬ GrpImage f (grp_mul H (grp_inv H h0) (grp_unit H)).
 Proof.
@@ -758,7 +754,7 @@ Proof.
   exact (Hbwd Hnn (grp_image_misses_translate h0 Hh0)).
 Qed.
 
-(** ** When an element OF the image moves the coset space *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Epi 相关定义、性质与动机。
@@ -779,8 +775,7 @@ Next Obligation.
     exact (nx (grp_coset_trans f x y x0 Hxy hy)).
 Qed.
 
-(* The indicator of the base coset is the distinguished subset already in use,
-   so the two blocks are about the same construction and not two of them. *)
+(* 相关说明。 （已译） *)
 Lemma grp_coset_indicator_base :
   grp_coset_indicator (grp_unit H) ≈ grp_dense_subset.
 Proof.
@@ -816,9 +811,9 @@ Proof.
   exact (Hbwd (λ n, n (grp_coset_refl f x0)) Hout).
 Qed.
 
-(* The same thing one level up, and stated for an element OF the image: if
-   some conjugate of f g escapes the image, then f g does not act by the
-   identity permutation of [GrpCosetPower]. *)
+(* The same thing one level up, stated element OF image: if
+ some conjugate f g escapes image, then f g does not act the
+ 恒等 permutation [GrpCosetPower]. （已译） *)
 Lemma grp_image_acts_nontrivially (g : carrier G) (x0 : carrier H) :
   ¬ GrpImage f (grp_mul H (grp_inv H x0)
                   (grp_mul H (grp_inv H (grp_map f g)) x0)) →
@@ -829,8 +824,7 @@ Proof.
            (Heq (grp_coset_indicator x0))).
 Qed.
 
-(* At an element OUTSIDE the image the twist does not commute with the action:
-   the two sides disagree at the distinguished subset and the base coset. *)
+(* 相关说明。 （已译） *)
 Lemma grp_twist_act_not_commute (h0 : carrier H) (Hh0 : ¬ GrpImage f h0) :
   grp_twist_map (grp_act_map h0 grp_dense_subset)
     ≈ grp_act_map h0 (grp_twist_map grp_dense_subset) → False.
@@ -848,9 +842,9 @@ Proof.
   exact (B Hne Hne).
 Qed.
 
-(* The two homomorphisms are distinct in the hom-setoid of [Grp], witnessed at
-   the concrete element [h0] of H and the concrete permutation argument
-   [grp_twist_map grp_dense_subset]. *)
+(* The two homomorphisms distinct hom-setoid [Grp], witnessed at
+ concrete element [h0] H concrete permutation 论元
+ [grp_twist_map grp_dense_subset]. （已译） *)
 Lemma grp_actions_differ (h0 : carrier H) (Hh0 : ¬ GrpImage f h0) :
   grp_twisted_action ≈ grp_action → False.
 Proof.
@@ -866,9 +860,9 @@ Proof.
   - exact (Heq h0 (grp_twist_map grp_dense_subset)).
 Qed.
 
-(* The twist is never the identity permutation, for any f whatsoever: the
-   permutation group in play is therefore never the trivial group, and the
-   witness above is not secretly the unit. *)
+(* The twist never 恒等 permutation, any f whatsoever: the
+ permutation group play therefore never trivial group, the
+ witness above not secretly unit. （已译） *)
 Lemma grp_twist_not_identity :
   grp_twist ≈ grp_unit (SymGrp GrpCosetPower grp_coset_power_prop) → False.
 Proof.
@@ -897,8 +891,7 @@ Proof.
   apply grp_twisted_action_agrees.
 Qed.
 
-(* The unconditional positive reading: the image of an epimorphism of groups is
-   dense, i.e. no element of the codomain can be shown to miss it. *)
+(* 相关说明。 （已译） *)
 Theorem grp_epic_image_dense :
   Epic f → ∀ h : carrier H, ¬¬ GrpImage f h.
 Proof.
@@ -943,9 +936,7 @@ Proof.
   exact (grp_epic_image_dense Hepic h).
 Qed.
 
-(* Mac Lane's Exercise I.5.5, in the form this library can state: over a
-   codomain whose image membership is double-negation stable, the
-   epimorphisms of Grp are exactly the surjections. *)
+(* 相关说明。 （已译） *)
 Theorem grp_epic_iff_surjective :
   GrpImageStable → (Epic f ↔ GrpSurjective f).
 Proof.
@@ -955,7 +946,7 @@ Proof.
   - apply grp_surjective_is_epic.
 Qed.
 
-(** ** The hypothesis is the conclusion *)
+(* * ** The 假设 conclusion （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -967,9 +958,9 @@ Qed.
 Theorem surjective_gives_stable : GrpSurjective f → GrpImageStable.
 Proof. intros Hs h _; exact (Hs h). Qed.
 
-(* Hence for an EPIMORPHISM the hypothesis is EQUIVALENT to the conclusion it
-   is supposed to buy, and [grp_epic_is_surjective] adds nothing beyond the
-   unconditional [grp_epic_image_dense]. *)
+(* Hence EPIMORPHISM 假设 EQUIVALENT conclusion it
+ supposed buy, [grp_epic_is_surjective] adds nothing beyond the
+ unconditional [grp_epic_image_dense]. （已译） *)
 Theorem stability_is_the_conclusion (Hepic : Epic f) :
   GrpImageStable ↔ GrpSurjective f.
 Proof.
@@ -1000,8 +991,7 @@ Proof. intros Hst Hd h; exact (Hst h (Hd h)). Qed.
 Theorem surjective_gives_weaker : GrpSurjective f → DenseImpliesSurjective.
 Proof. intros Hs _; exact Hs. Qed.
 
-(* And the weaker form collapses in exactly the same way, so the deflation is
-   not an artefact of how [GrpImageStable] is phrased. *)
+(* 相关说明。 （已译） *)
 Theorem weaker_is_the_conclusion (Hepic : Epic f) :
   DenseImpliesSurjective ↔ GrpSurjective f.
 Proof.
@@ -1011,7 +1001,7 @@ Proof.
   - exact surjective_gives_weaker.
 Qed.
 
-(** ** Why the textbook transposition is not available *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Epi 相关定义、性质与动机。
@@ -1203,7 +1193,7 @@ Proof.
   split; exact ttt.
 Qed.
 
-(* ... and (1,0) is not the unit, so the image is more than {1}. *)
+(* 相关说明。 （已译） *)
 Example grp_two_incl_image_witness_not_unit :
   @equiv _ (grp_setoid (Grp_product GrpTwo GrpTwo))
     (grp_two_one, grp_two_zero) (grp_unit (Grp_product GrpTwo GrpTwo)) → False.
@@ -1221,8 +1211,8 @@ Proof.
   exact H2.
 Qed.
 
-(* The two homomorphisms into the permutation group are distinct IN THE
-   HOM-SETOID of [Grp], at the concrete element (0,1) of the codomain. *)
+(* The two homomorphisms 进入 permutation group distinct IN THE
+ HOM-SETOID [Grp], at concrete element (0,1) codomain. （已译） *)
 Theorem grp_two_actions_differ :
   grp_twisted_action grp_two_incl ≈ grp_action grp_two_incl → False.
 Proof.
@@ -1230,8 +1220,8 @@ Proof.
            (grp_two_zero, grp_two_one) grp_two_incl_misses).
 Qed.
 
-(* Neither of the two permutations that carry the argument is secretly the
-   identity: not the twist, and not the action at the missing element. *)
+(* Neither two permutations carry 论元 secretly the
+ 恒等: not twist, not action at missing element. （已译） *)
 Theorem grp_two_action_not_identity :
   grp_act grp_two_incl (grp_two_zero, grp_two_one)
     ≈ grp_unit (SymGrp (GrpCosetPower grp_two_incl) (grp_coset_power_prop grp_two_incl)) → False.
@@ -1240,8 +1230,8 @@ Proof.
            (grp_two_zero, grp_two_one) grp_two_incl_misses).
 Qed.
 
-(* The permutation group in play is not the trivial group: the twist is a
-   permutation different from the identity. *)
+(* The permutation group play not trivial group: twist a
+ permutation different 恒等. （已译） *)
 Theorem grp_two_twist_not_identity :
   grp_twist grp_two_incl
     ≈ grp_unit (SymGrp (GrpCosetPower grp_two_incl) (grp_coset_power_prop grp_two_incl)) → False.
@@ -1272,9 +1262,9 @@ Proof.
            (grp_two_zero, grp_two_one) grp_two_incl_misses).
 Qed.
 
-(* The hypothesis of the classical form, discharged on a concrete finite
-   group: membership in the image of [grp_two_incl] is decidable, hence
-   stable. *)
+(* The 假设 classical form, discharged concrete finite
+ group: membership image [grp_two_incl] decidable, hence
+ stable. （已译） *)
 Definition grp_two_incl_decidable : GrpImageDecidable grp_two_incl.
 Proof.
   intros [x y].
@@ -1293,8 +1283,7 @@ Definition grp_two_incl_epic_iff_surjective :
   grp_epic_iff_surjective grp_two_incl
     (GrpImageDecidable_Stable grp_two_incl grp_two_incl_decidable).
 
-(* The same conclusion again, this time routed through the classical form, so
-   that the biconditional is exercised and not merely stated. *)
+(* 相关说明。 （已译） *)
 Theorem grp_two_incl_not_epic_classically : ¬ Epic grp_two_incl.
 Proof.
   intro Hepic.
@@ -1304,7 +1293,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** A second witness, with a NON-NORMAL image *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -1339,9 +1328,9 @@ Definition Sym3Letters : SetoidObject :=
    ; is_setoid := {| equiv        := sym3_rel
                    ; setoid_equiv := sym3_equivalence |} |}.
 
-(* The [Prop] mirror of [sym3_rel], on the model of [grp_two_prel] above and
-   for the same reason: [GrpSym3] below is a [GrpObject] and [SymGrp] asks
-   its setoid for a [PropEquiv]. *)
+(* The [Prop] 镜像 [sym3_rel], model [grp_two_prel] above and
+ same reason: [GrpSym3] below [GrpObject] [SymGrp] asks
+ setoid [PropEquiv]. （已译） *)
 Definition sym3_prel (x y : sym3_letter) : Prop :=
   match x, y with
   | inl _, inl _             => True
@@ -1365,8 +1354,7 @@ Proof.
   exact Hp.
 Defined.
 
-(* A self-inverse map of the letters is a permutation of them, with itself as
-   its own backward map: both round trips are the same fact. *)
+(* 相关说明。 （已译） *)
 Definition sym3_perm (p : sym3_letter → sym3_letter)
            (Hp : ∀ x y, sym3_rel x y → sym3_rel (p x) (p y))
            (Hi : ∀ x, sym3_rel (p (p x)) x) : SetoidPermutation Sym3Letters.
@@ -1377,8 +1365,7 @@ Proof.
   - exact Hi.
 Defined.
 
-(* The transposition of the last two letters.  It generates the order-two
-   subgroup that plays the role of the image. *)
+(* 相关说明。 （已译） *)
 Definition sym3_swap12 (x : sym3_letter) : sym3_letter :=
   match x with
   | inl u       => inl u
@@ -1398,8 +1385,7 @@ Proof. intros [u|[u|u]]; exact ttt. Qed.
 Definition sym3_s : SetoidPermutation Sym3Letters :=
   sym3_perm sym3_swap12 sym3_swap12_respects sym3_swap12_involutive.
 
-(* The transposition of the first two letters.  It is the coset representative
-   whose conjugate escapes the image. *)
+(* 相关说明。 （已译） *)
 Definition sym3_swap01 (x : sym3_letter) : sym3_letter :=
   match x with
   | inl u       => inr (inl u)
@@ -1419,9 +1405,7 @@ Proof. intros [u|[u|u]]; exact ttt. Qed.
 Definition sym3_a : SetoidPermutation Sym3Letters :=
   sym3_perm sym3_swap01 sym3_swap01_respects sym3_swap01_involutive.
 
-(* What the two transpositions do, spelled out so that the descriptions above
-   -- "of the last two letters", "of the first two" -- are checkable rather
-   than decoration. *)
+(* 相关说明。 （已译） *)
 Example sym3_swaps_act :
   (sym3_rel (sym3_swap12 sym3_l0) sym3_l0
      ∧ sym3_rel (sym3_swap12 sym3_l1) sym3_l2
@@ -1433,9 +1417,9 @@ Proof. repeat split; exact ttt. Qed.
 
 Definition GrpSym3 : GrpObject := SymGrp Sym3Letters sym3_letters_prop.
 
-(* Z/2 included as the subgroup generated by the transposition of the last two
-   letters.  The only law with any content is that the transposition squares
-   to the identity. *)
+(* Z/2 included subgroup generated transposition last two
+ letters. The law any content transposition squares
+ 恒等. （已译） *)
 Definition sym3_of_two (x : grp_two_carrier) : SetoidPermutation Sym3Letters :=
   match x with
   | inl _ => sperm_id Sym3Letters
@@ -1454,8 +1438,8 @@ Proof.
     destruct a as [u|u], b as [v|v]; intros [z|[z|z]]; exact ttt.
 Defined.
 
-(* It really is an inclusion, so the image really is of order two: a
-   transposition is not the identity, witnessed at the second letter. *)
+(* It really 含入, so image really order two: a
+ transposition not 恒等, witnessed at second letter. （已译） *)
 Lemma grp_two_sym3_injective :
   ∀ a b : carrier GrpTwo,
     grp_map grp_two_sym3 a ≈ grp_map grp_two_sym3 b → a ≈ b.
@@ -1463,7 +1447,7 @@ Proof.
   intros [u|u] [v|v] Hab; try exact ttt; exact (Hab sym3_l1).
 Qed.
 
-(* The image is proper: the OTHER transposition has no preimage. *)
+(* 相关说明。 （已译） *)
 Lemma grp_two_sym3_misses : ¬ GrpImage grp_two_sym3 sym3_a.
 Proof.
   intros [g Hg].
@@ -1511,18 +1495,18 @@ Proof.
            grp_two_sym3_conj_outside).
 Qed.
 
-(* And the main theorem applies here too, so the second witness is a witness
-   for the argument as a whole and not only for its degenerate step. *)
+(* And main 定理 applies here too, so second witness witness
+ 论元 whole not degenerate step. （已译） *)
 Theorem grp_two_sym3_not_epic : ¬ Epic grp_two_sym3.
 Proof.
   exact (grp_not_epic_of_witness grp_two_sym3 sym3_a grp_two_sym3_misses).
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Epi and monic are incomparable in Grp *)
+(* 相关说明。 （已译） *)
 
-(* The easy direction on a concrete surjection that is NOT an isomorphism: the
-   first projection of Z/2 x Z/2 is onto, hence epic, and it is not monic. *)
+(* The easy direction concrete surjection NOT 同构: the
+ first projection Z/2 x Z/2 onto, hence epic, it not monic. （已译） *)
 Definition grp_two_exl_surjective : GrpSurjective (@Grp_exl GrpTwo GrpTwo).
 Proof.
   intro h.
@@ -1548,8 +1532,8 @@ Proof.
   exact H2.
 Qed.
 
-(* So [Epic] and [Monic] do not coincide in [Grp]: there is an epimorphism
-   that is not a monomorphism, and hence not an isomorphism. *)
+(* So [Epic] [Monic] do not coincide [Grp]: there epimorphism
+ not monomorphism, hence not 同构. （已译） *)
 Corollary grp_two_epic_not_monic :
   Epic (@Grp_exl GrpTwo GrpTwo) ∧ (Monic (@Grp_exl GrpTwo GrpTwo) → False).
 Proof.

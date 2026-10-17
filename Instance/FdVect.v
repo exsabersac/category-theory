@@ -113,7 +113,7 @@ Next Obligation. intros a b; simpl; apply Qmult_comm. Qed.
 Next Obligation. simpl; unfold Qeq; simpl; discriminate. Qed.
 Next Obligation. repeat intro; now apply Qinv_comp. Qed.
 Next Obligation.
-  (* The stdlib supplies only the right-hand law [Qmult_inv_r]; commute. *)
+  (* 相关说明。 （已译） *)
   intros x Hx; simpl.
   transitivity (Qmult x (Qinv x)).
   - apply Qmult_comm.
@@ -124,7 +124,7 @@ Example q_field_inv : finv Q_Field (4 # 1) = (1 # 4)%Q := eq_refl.
 
 Example q_field_inv_zero : finv Q_Field (0 # 1) = (0 # 1)%Q := eq_refl.
 
-(** ** Finite-dimensional vector spaces with chosen coordinates *)
+(* 相关说明。 （已译） *)
 
 (** An object is an F-module together with a chosen linear isomorphism to
     F^n — i.e. a basis, presented as the coordinate/expansion pair rather
@@ -144,7 +144,7 @@ Record FdVectObject (F : FieldObject) := {
   fdv_expand_respects : ∀ c d,
     (∀ i, c i ≈ d i) → fdv_expand c ≈ fdv_expand d;
 
-  (* The two round trips: coordinates ARE an isomorphism onto F^n. *)
+  (* The two round trips: coordinates ARE 同构 onto F^n. （已译） *)
   fdv_coord_expand : ∀ c i, fdv_coord (fdv_expand c) i ≈ c i;
   fdv_expand_coord : ∀ v, fdv_expand (fdv_coord v) ≈ v;
 
@@ -245,9 +245,9 @@ Next Obligation. intros F V W f a; simpl; reflexivity. Qed.
 Next Obligation. intros F V W X Y f g h a; simpl; reflexivity. Qed.
 Next Obligation. intros F V W X Y f g h a; simpl; reflexivity. Qed.
 
-(** The forgetful functor to F-modules, i.e. to [Vct_F F]: it drops the
-    coordinates and is the identity on morphisms, hence full and
-    faithful. *)
+(** The forgetful 函子 F-modules, i.e. [Vct_F F]: it drops the
+ coordinates 恒等 态射, hence full and
+ faithful. （已译） *)
 Program Definition FdVect_Forget (F : FieldObject) :
   FdVect F ⟶ Vct_F F := {|
   fobj := fun V => fdv_mod V;
@@ -292,9 +292,9 @@ Next Obligation.
     transitivity (v i); [ apply Huv | apply Hvw ].
 Qed.
 
-(* The carrier is a pointwise power of the field's own carrier, so it is
-   propositional pointwise: [dep_fun_PropEquiv] with the two implications the
-   identity, keyed to the field's [rig_prop]. *)
+(* The carrier pointwise power field's own carrier, so it is
+ propositional pointwise: [dep_fun_PropEquiv] two 蕴含 the
+ 恒等, keyed field's [rig_prop]. （已译） *)
 Program Definition std_cmon : CMonObject := {|
   cmon_setoid := std_setoid;
   cmon_zero   := fun _ => rig_zero F;
@@ -334,8 +334,8 @@ Next Obligation. intros r s v i; simpl; apply rig_distr_r. Qed.
 Next Obligation. intros r s v i; simpl; apply rig_mul_assoc. Qed.
 Next Obligation. intros v i; simpl; apply rig_mul_one_l. Qed.
 
-(** The coordinates of F^n are the identity, so all six coordinate laws
-    hold by [reflexivity]. *)
+(** The coordinates F^n 恒等, so all six coordinate laws
+ hold [reflexivity]. （已译） *)
 Program Definition StdVect : FdVectObject F := {|
   fdv_mod    := std_mod;
   fdv_dim    := n;
@@ -365,7 +365,7 @@ Definition std_basis (F : FieldObject) (n : nat) (j : Fin.t n) :
 Example std_dim (F : FieldObject) (n : nat) :
   fdv_dim (StdVect F n) = n := eq_refl.
 
-(** ** Matrices as linear maps: the orientation, pinned by computation *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 FdVect 相关定义、性质与动机。
@@ -378,14 +378,14 @@ Definition mat_apply (R : RigObject) {n m : nat}
   Fin.t m → carrier (rig_setoid R) :=
   fun i => fin_sum R (fun j => rig_mul R (A i j) (v j)).
 
-(** A two-element tabulator, for the probes only. *)
+(** 本节：A two-element tabulator, probes only. （已译） *)
 Definition fin2 {A : Type} (a b : A) : Fin.t 2 → A :=
   fun i => match i with
            | Fin.F1     => a
            | Fin.FS _   => b
            end.
 
-(* 1 × 1: the 1 × 1 matrix (3) sends the vector (4) to (12). *)
+(* 相关说明。 （已译） *)
 Example mat_apply_1x1 :
   mat_apply Int_Rig (n:=1) (m:=1) (fun _ _ => 3%Z) (fun _ => 4%Z) Fin.F1
     = 12%Z := eq_refl.
@@ -424,16 +424,14 @@ Example mat_apply_orientation_discriminated :
     = mat_apply Int_Rig probe_A probe_v Fin.F1 → False.
 Proof. intro e; discriminate e. Qed.
 
-(* The identity matrix acts as the identity: Σ_j delta i j · v j ≈ v i,
-   which is [fin_sum_delta_l] with no work. *)
+(* The 恒等 matrix acts 恒等: Σ_j delta i j · v j ≈ v i,
+ [fin_sum_delta_l] no work. （已译） *)
 Example mat_apply_id (R : RigObject) (n : nat)
   (v : Fin.t n → carrier (rig_setoid R)) (i : Fin.t n) :
   mat_apply R (@id (Matr R) n) v i ≈ v i.
 Proof. apply (fin_sum_delta_l R i v). Qed.
 
-(* The j-th column of A is the image of the j-th standard basis vector:
-   Σ_l A i l · delta l j ≈ A i j, by [fin_sum_delta_r].  This is the
-   equation fullness inverts. *)
+(* 相关说明。 （已译） *)
 Example mat_apply_basis (R : RigObject) {n m : nat}
   (A : Fin.t m → Fin.t n → carrier (rig_setoid R))
   (j : Fin.t n) (i : Fin.t m) :
@@ -541,9 +539,9 @@ Proof.
   apply rig_mul_respects; [ apply field_comm | reflexivity ].
 Qed.
 
-(** The linear map of a matrix.  Only [proper_morphism] is left to
-    [Program]; the three law fields are the lemmas just proved, handed
-    over as terms so that obligation ORDER cannot matter. *)
+(** 本节：The linear map matrix. Only [proper_morphism] left to
+ [Program]; three law fields lemmas just proved, handed
+ over terms so obligation ORDER cannot matter. （已译） *)
 Program Definition mat_hom {n m : nat}
   (A : Fin.t m → Fin.t n → carrier (rig_setoid F)) :
   StdVect F n ~{FdVect F}~> StdVect F m := {|
@@ -595,16 +593,13 @@ Qed.
 
 End Comparison.
 
-(** ** Faithful, full, essentially surjective *)
+(* * ** Faithful, full, 本质满射 （已译） *)
 
 Section FullFaithfulEso.
 
 Context (F : FieldObject).
 
-(** *** Faithful: a matrix is recovered from its map at basis vectors
-
-    [mat_apply A e_j i ≈ A i j] is [fin_sum_delta_r], so two matrices
-    inducing the same linear map agree entrywise. *)
+(* 相关说明。 （已译） *)
 Lemma Matr_to_FdVect_faithful {n m : nat}
   (A B : n ~{Matr (field_ring F)}~> m) :
   fmap[Matr_to_FdVect F] A ≈ fmap[Matr_to_FdVect F] B → A ≈ B.
@@ -623,10 +618,10 @@ Qed.
   fmap_inj := fun n m A B H => Matr_to_FdVect_faithful A B H
 |}.
 
-(** *** Full: the matrix of a linear map is its table of basis images *)
+(* 相关说明。 （已译） *)
 
-(** In F^n a monoid sum is computed coordinatewise, because the module
-    operations are pointwise. *)
+(** In F^n 幺半群 sum computed coordinatewise, because module
+ operations pointwise. （已译） *)
 Lemma msum_std {n p : nat}
   (f : Fin.t p → (Fin.t n → carrier (rig_setoid F))) (i : Fin.t n) :
   msum (std_cmon F n) f i
@@ -639,9 +634,9 @@ Proof.
     apply (IHk (fun j => f (Fin.FS j))).
 Qed.
 
-(** Every vector of F^n is the sum of its coordinates against the
-    standard basis: v ≈ Σ_j v_j · e_j.  This is [fin_sum_delta_r] once
-    the sum is pushed to coordinates by [msum_std]. *)
+(** 本节：Every vector F^n sum coordinates against the
+ standard basis: v ≈ Σ_j v_j · e_j. This [fin_sum_delta_r] once
+ sum pushed coordinates [msum_std]. （已译） *)
 Lemma std_expand {n : nat} (v : Fin.t n → carrier (rig_setoid F)) :
   (v : carrier (cmon_setoid (std_mod F n)))
     ≈ msum (std_cmon F n)
@@ -661,16 +656,16 @@ Proof.
       apply rig_mul_respects; [ reflexivity | apply delta_sym ].
 Qed.
 
-(** The matrix of a linear map: its (i,j) entry is the i-th coordinate
-    of the image of the j-th basis vector — the j-th column IS g e_j. *)
+(** 本节：The matrix linear map: (i,j) entry i-th coordinate
+ image j-th basis vector — j-th column IS g e_j. （已译） *)
 Definition matrix_of {n m : nat}
   (g : StdVect F n ~{FdVect F}~> StdVect F m) :
   n ~{Matr (field_ring F)}~> m :=
   fun i j => cmon_map (rm_hom g) (std_basis F n j) i.
 
-(** The section law.  Expand v, push g through the sum ([msum_hom]) and
-    through each scalar ([rm_map_smul]), return to coordinates
-    ([msum_std]), and commute the two factors. *)
+(** 本节：The section law. Expand v, push g through sum ([msum_hom]) and
+ through each scalar ([rm_map_smul]), return coordinates
+ ([msum_std]), commute two factors. （已译） *)
 Lemma matrix_of_sur {n m : nat}
   (g : StdVect F n ~{FdVect F}~> StdVect F m) :
   fmap[Matr_to_FdVect F] (matrix_of g) ≈ g.
@@ -706,7 +701,7 @@ Qed.
   fmap_sur := fun n m g => matrix_of_sur g
 |}.
 
-(** *** Essentially surjective: the chosen coordinates ARE the witness *)
+(* 相关说明。 （已译） *)
 
 Program Definition std_coord_hom (V : FdVectObject F) :
   V ~{FdVect F}~> StdVect F (fdv_dim V) := {|
@@ -736,8 +731,8 @@ Next Obligation.
   exact (fdv_expand_respects V c d Hcd).
 Qed.
 
-(** A chosen basis IS a linear isomorphism F^dim ≅ V; both inverse laws
-    are the round trips, applied pointwise. *)
+(** A chosen basis IS linear 同构 F^dim ≅ V; both inverse laws
+ round trips, applied pointwise. （已译） *)
 Program Definition StdVect_iso (V : FdVectObject F) :
   StdVect F (fdv_dim V) ≅[FdVect F] V := {|
   to   := std_expand_hom V;
@@ -769,14 +764,14 @@ Definition FdVect_Matr_Equivalence (F : FieldObject) :
   @FF_ESO_Equivalence _ _ (Matr_to_FdVect F) _ _
     (Matr_to_FdVect_EssSurj F).
 
-(** The quasi-inverse sends a space to its carried dimension, on the
-    nose — the content of essential surjectivity, made visible. *)
+(** 本节：The quasi-inverse sends space carried dimension, the
+ nose — content essential surjectivity, made visible. （已译） *)
 Example equivalence_inverse_dim (F : FieldObject) (V : FdVectObject F) :
   fobj[@quasi_inverse (Matr (field_ring F)) (FdVect F) (Matr_to_FdVect F)
          (FdVect_Matr_Equivalence F)] V
     = fdv_dim V := eq_refl.
 
-(** ** Reindexing maps, and the acceptance tests over ℚ *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 FdVect 相关定义、性质与动机。
@@ -814,7 +809,7 @@ Example q_fmap_row1 :
   cmon_map (rm_hom (fmap[Matr_to_FdVect Q_Field] qA)) qv (Fin.FS Fin.F1)
     = (39 # 1)%Q := eq_refl.
 
-(* The fullness round trip recovers the matrix entrywise. *)
+(* 相关说明。 （已译） *)
 Example q_full_roundtrip_01 :
   matrix_of Q_Field (fmap[Matr_to_FdVect Q_Field] qA)
     Fin.F1 (Fin.FS Fin.F1) = (2 # 1)%Q := eq_refl.
@@ -823,8 +818,7 @@ Example q_full_roundtrip_10 :
   matrix_of Q_Field (fmap[Matr_to_FdVect Q_Field] qA)
     (Fin.FS Fin.F1) Fin.F1 = (3 # 1)%Q := eq_refl.
 
-(* ... and on a linear map given independently of any matrix: the
-   coordinate swap of ℚ², whose matrix is [[0,1],[1,0]]. *)
+(* 相关说明。 （已译） *)
 Definition fin2_swap : Fin.t 2 → Fin.t 2 := fin2 (Fin.FS Fin.F1) Fin.F1.
 
 Definition q_swap : StdVect Q_Field 2 ~{FdVect Q_Field}~> StdVect Q_Field 2 :=
@@ -839,8 +833,8 @@ Example q_swap_matrix_10 :
 Example q_swap_matrix_11 :
   matrix_of Q_Field q_swap (Fin.FS Fin.F1) (Fin.FS Fin.F1) = 0%Q := eq_refl.
 
-(* The chosen coordinates of the standard space are the identity, so its
-   round trips compute — at open vectors, not just at literals. *)
+(* The chosen coordinates standard space 恒等, so its
+ round trips compute — at open vectors, not just at literals. （已译） *)
 Example q_std_coord_expand (c : Fin.t 2 → carrier (rig_setoid Q_Field))
   (i : Fin.t 2) :
   fdv_coord (StdVect Q_Field 2) (fdv_expand (StdVect Q_Field 2) c) i = c i

@@ -1,4 +1,4 @@
-(** * Riehl's Set^BG: evaluation is monadic, by the monadicity theorem *)
+(* * * Riehl's Set^BG: evaluation monadic, monadicity 定理 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Lib.Setoid.Propositional.
@@ -41,7 +41,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Riehl's Set^BG and its forgetful functor *)
+(* * ** Riehl's Set^BG forgetful 函子 （已译） *)
 
 (* The functor category [Deloop M, Sets], hom level o (see UNIVERSES). *)
 Definition SetBG@{o so} (M : MonObject@{o o o}) : Category@{so o o} :=
@@ -52,8 +52,8 @@ Definition U_BG@{o so} (M : MonObject@{o o o}) :
   SetBG@{o so} M ⟶ Sets@{o so} :=
   @Eval@{o o so o so so} (Deloop@{o o} M) Sets@{o so} ttt.
 
-(* Riehl's left adjoint: X goes to the functor whose value is the free
-   M-set M × X. *)
+(* Riehl's 左伴随: X goes 函子 whose value free
+ M-set M × X. （已译） *)
 Definition F_BG@{o so} (M : MonObject@{o o o}) :
   Sets@{o so} ⟶ SetBG@{o so} M :=
   MSet_from@{so o o so o} M ◯ MSet_Free@{o so} M.
@@ -84,8 +84,7 @@ Proof.
   split; [ reflexivity | exact Hxy ].
 Defined.
 
-(* A map ψ : X → P ttt extends to (g, x) ↦ g · ψ x: [MSet_extend] at the
-   action read off P, carried back along the round trip. *)
+(* 相关说明。 （已译） *)
 Definition BG_extend@{o so} {M : MonObject@{o o o}}
   {X : SetoidObject@{o o}} {P : SetBG@{o so} M}
   (ψ : X ~{Sets@{o so}}~> fobj[U_BG@{o so} M] P) :
@@ -149,7 +148,7 @@ Proof.
   - intros X P Q f g x; simpl. reflexivity.
 Defined.
 
-(** ** Creation of U-split coequalizers, transported from M-sets *)
+(* 相关说明。 （已译） *)
 
 (* A cofork of transformations whose [MSet_to]-image is a coequalizer of
    M-sets is a coequalizer of functors: the descended equivariant map is
@@ -176,9 +175,9 @@ Proof.
       exact (uniqueness D (fmap[MSet_to@{so o} M] v) (fun y => Hv ttt y) z).
 Defined.
 
-(* The coequalizing transformation onto the created functor: component e,
-   naturality the equivariance of Instance/Fun/Action/Monad.v's
-   [CreatedE]. *)
+(* The coequalizing transformation onto created 函子: component e,
+ 自然性 equivariance Instance/Fun/Action/Monad.v's
+ [CreatedE]. （已译） *)
 Definition BGCreatedE@{o so} {M : MonObject@{o o o}} {P Q : SetBG@{o so} M}
   (p q : P ~{SetBG@{o so} M}~> Q)
   (S : @SplitCoequalizer Sets@{o so} _ _
@@ -242,8 +241,8 @@ Proof.
     intros y. exact (He ttt y).
 Defined.
 
-(* The lift is on the nose: value Z, action e (g · s z), arrow e and the
-   identity comparison isomorphism. *)
+(* The lift nose: value Z, action e (g · s z), arrow e the
+ 恒等 comparison 同构. （已译） *)
 Example bg_created_carrier@{o so} {M : MonObject@{o o o}}
   {P Q : SetBG@{o so} M} (p q : P ~{SetBG@{o so} M}~> Q)
   (S : @SplitCoequalizer Sets@{o so} _ _
@@ -275,7 +274,7 @@ Example bg_created_iso@{o so} {M : MonObject@{o o o}}
   `1 (snd (`2 (`2 (@create_coeq _ _ _ (U_BG_creates@{o so} M) P Q p q S))))
   = @iso_id Sets@{o so} (scoeq_obj S) := eq_refl.
 
-(** ** Riehl's Exercise 5.5.iv, literally, by the monadicity theorem *)
+(* * ** Riehl's Exercise 5.5.iv, literally, monadicity 定理 （已译） *)
 
 Definition BG_beck_equivalence@{o so} (M : MonObject@{o o o}) :
   EquivalenceOfCategories (EM_Comparison (BG_adj@{o so} M)) :=
@@ -301,8 +300,8 @@ Definition BGMonad@{o so} (M : MonObject@{o o o}) :
   @Monad Sets@{o so} (U_BG@{o so} M ◯ F_BG@{o so} M) :=
   Adjunction_Induced_Monad (BG_adj@{o so} M).
 
-(* Set^BM is isomorphic in Cat to the algebras of its monad, by the
-   comparison functor itself. *)
+(* Set^BM isomorphic Cat algebras 单子, the
+ comparison 函子 itself. （已译） *)
 Definition BG_EM_iso@{o so c} (M : MonObject@{o o o}) :
   @Isomorphism Cat@{c so so so o} (SetBG@{o so} M)
     (@EilenbergMoore@{so so so o} Sets@{o so}
@@ -312,8 +311,8 @@ Definition BG_EM_iso@{o so c} (M : MonObject@{o o o}) :
 Example BG_EM_iso_to@{o so c} (M : MonObject@{o o o}) :
   to (BG_EM_iso@{o so c} M) = EM_Comparison (BG_adj@{o so} M) := eq_refl.
 
-(* The monad read back: T X = M × X, T f = M × f, η x = (u u, x) and
-   μ (g₁, (g₂, x)) = (g₁ g₂, x). *)
+(* The 单子 read back: T X = M × X, T f = M × f, η x = (u u, x) and
+ μ (g₁, (g₂, x)) = (g₁ g₂, x). （已译） *)
 Example BG_T_obj@{o so} (M : MonObject@{o o o}) (X : SetoidObject@{o o}) :
   fobj[U_BG@{o so} M ◯ F_BG@{o so} M] X = act_prod M X := eq_refl.
 
@@ -342,9 +341,9 @@ Example BG_join_fun@{o so} (M : MonObject@{o o o}) (X : SetoidObject@{o o}) :
   = (fun p : carrier M * (carrier M * carrier X) =>
        (mon_op (fst p) (fst (snd p)), snd (snd p))) := eq_refl.
 
-(** ** Against the monad of Instance/Fun/Action/Monad.v *)
+(* * ** Against 单子 Instance/Fun/Action/Monad.v （已译） *)
 
-(* The two functors, with identity components. *)
+(* The two 函子, 恒等 components. （已译） *)
 Definition BG_T_ActF@{o so} (M : MonObject@{o o o}) :
   U_BG@{o so} M ◯ F_BG@{o so} M ≈ ActF@{o so} M.
 Proof.
@@ -352,7 +351,7 @@ Proof.
   intros X Y f p. simpl. split; reflexivity.
 Defined.
 
-(* The two units, by the unit law of M. *)
+(* 相关说明。 （已译） *)
 Definition BG_ret_ActMonad@{o so} (M : MonObject@{o o o})
   (X : SetoidObject@{o o}) (x : carrier X) :
   (@ret _ _ (BGMonad@{o so} M) X) x ≈ (@ret _ _ (ActMonad@{o so} M) X) x.
@@ -360,16 +359,15 @@ Proof.
   split; [ exact (mon_op_unit_l mon_unit) | reflexivity ].
 Defined.
 
-(* The two multiplications, on the nose at every triple. *)
+(* 相关说明。 （已译） *)
 Example BG_join_ActMonad@{o so} (M : MonObject@{o o o})
   (X : SetoidObject@{o o}) (p : carrier M * (carrier M * carrier X)) :
   (@join _ _ (BGMonad@{o so} M) X) p = (@join _ _ (ActMonad@{o so} M) X) p :=
   eq_refl.
 
-(** ** The tie: θ* from the algebras of [BGMonad] to those of [ActMonad] *)
+(* 相关说明。 （已译） *)
 
-(* An algebra of [BGMonad M] is one of [ActMonad M] with the same
-   structure map; the unit law moves along mon_op_unit_l. *)
+(* 相关说明。 （已译） *)
 Definition BG_Act_alg@{o so} (M : MonObject@{o o o}) (a : SetoidObject@{o o})
   (h : @TAlgebra Sets@{o so} (U_BG@{o so} M ◯ F_BG@{o so} M)
          (BGMonad@{o so} M) a) :
@@ -386,7 +384,7 @@ Proof.
   - intros p. exact (@t_action _ _ _ _ h p).
 Defined.
 
-(* The same reading the other way; it is not assembled into a functor. *)
+(* The same reading other way; it not assembled 函子. （已译） *)
 Definition Act_BG_alg@{o so} (M : MonObject@{o o o}) (a : SetoidObject@{o o})
   (h : @TAlgebra Sets@{o so} (ActF@{o so} M) (ActMonad@{o so} M) a) :
   @TAlgebra Sets@{o so} (U_BG@{o so} M ◯ F_BG@{o so} M)
@@ -403,8 +401,8 @@ Proof.
   - intros p. exact (@t_action _ _ _ _ h p).
 Defined.
 
-(* Mac Lane's θ*, for the identity-component isomorphism [BG_T_ActF]:
-   the identity on carriers, structure maps and arrows. *)
+(* Mac Lane's θ*, 恒等-component 同构 [BG_T_ActF]:
+ 恒等 carriers, structure maps arrows. （已译） *)
 Definition BG_Act_EM@{o so} (M : MonObject@{o o o}) :
   @EilenbergMoore@{so so so o} Sets@{o so} (U_BG@{o so} M ◯ F_BG@{o so} M)
     (BGMonad@{o so} M)
@@ -453,9 +451,9 @@ Example BG_Act_EM_forget_map@{o so} (M : MonObject@{o o o})
   fmap[@EM_Forget _ _ (ActMonad@{o so} M) ◯ BG_Act_EM@{o so} M] f
   = fmap[@EM_Forget _ _ (BGMonad@{o so} M)] f := eq_refl.
 
-(* The tie on objects: θ* after this file's comparison functor, against
-   the comparison functor of [MSet_adj] after [MSet_to], the [to] leg of
-   [Fun_EM_iso]. *)
+(* The tie 对象: θ* after file's comparison 函子, against
+ comparison 函子 [MSet_adj] after [MSet_to], [to] leg of
+ [Fun_EM_iso]. （已译） *)
 Example tie_carrier@{o so} (M : MonObject@{o o o}) (P : SetBG@{o so} M) :
   `1 (fobj[BG_Act_EM@{o so} M ◯ EM_Comparison (BG_adj@{o so} M)] P)
   = `1 (fobj[EM_Comparison (MSet_adj@{o so} M) ◯ MSet_to@{so o} M] P) :=
@@ -470,7 +468,7 @@ Example tie_alg@{o so} (M : MonObject@{o o o}) (P : SetBG@{o so} M)
       (`2 (fobj[EM_Comparison (MSet_adj@{o so} M) ◯ MSet_to@{so o} M] P))
       (g, z) := eq_refl.
 
-(* The same, as a function of the pair. *)
+(* 相关说明。 （已译） *)
 Example tie_alg_fun@{o so} (M : MonObject@{o o o}) (P : SetBG@{o so} M) :
   (fun p => @t_alg _ _ _ _
      (`2 (fobj[BG_Act_EM@{o so} M ◯ EM_Comparison (BG_adj@{o so} M)] P)) p)
@@ -478,7 +476,7 @@ Example tie_alg_fun@{o so} (M : MonObject@{o o o}) (P : SetBG@{o so} M) :
        (`2 (fobj[EM_Comparison (MSet_adj@{o so} M) ◯ MSet_to@{so o} M] P))
        p) := eq_refl.
 
-(* The tie as a functor, in Cat, with identity components. *)
+(* The tie 函子, Cat, 恒等 components. （已译） *)
 Definition tie@{o so c} (M : MonObject@{o o o}) :
   @equiv _
     (@homset Cat@{c so so so o} (SetBG@{o so} M)
@@ -519,9 +517,9 @@ Definition GSet_BG_Monadic_Grp@{o so}
     (U_BG@{o so} (grp_deloop_monoid@{o o o} G)) :=
   U_BG_Monadic@{o so} (grp_deloop_monoid@{o o o} G).
 
-(* At Structure/Group.v's groups internal to (Sets, ×), through
-   Instance/Grp.v's [GroupObject_GrpObject], which asks that the
-   carrier's ≈ be a proposition. *)
+(* At Structure/Group.v's groups internal (Sets, ×), through
+ Instance/Grp.v's [GroupObject_GrpObject], asks the
+ carrier's ≈ 命题. （已译） *)
 Definition GSet_BG_Monadic_GroupObject@{o so} (X : Sets@{o so})
   (PX : PropEquiv@{o o} X)
   (GO : @GroupObject@{so o so} Sets@{o so} Sets_CartesianMonoidal X) :

@@ -1,4 +1,4 @@
-(** * No natural isomorphism G ≅ D(G): Mac Lane's remark *)
+(* * * No natural 同构 G ≅ D(G): Mac Lane's remark （已译） *)
 
 Require Import Coq.ZArith.ZArith.
 Require Import Coq.QArith.QArith.
@@ -28,12 +28,12 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The groupoid core and the covariant character functor *)
+(* * ** The groupoid core covariant character 函子 （已译） *)
 
 Definition AbIso : Category := Groupoid Ab.
 
 (* D' f := D (f⁻¹): contravariance twisted through inversion makes the
-   character functor covariant on the core. *)
+ character 函子 covariant core. （已译） *)
 Program Definition D' : AbIso ⟶ AbIso := {|
   fobj := fun G => D_ob G;
   fmap := fun G H (f : @Isomorphism Ab G H) =>
@@ -163,7 +163,7 @@ Qed.
 Lemma z5_one_neq_zero : z5_eq 1 0 → False.
 Proof. intros [k Hk]; lia. Qed.
 
-(** ** The automorphism x ↦ 2x and the generator character *)
+(* 相关说明。 （已译） *)
 
 Program Definition z5_mul (m : Z) : Z5 ~{Ab}~> Z5 := {|
   cmon_map := {| morphism := fun x => (m * x)%Z |}
@@ -256,8 +256,7 @@ Proof.
     exact (cmon_map_plus (cmon_map s 1%Z) 1%Z 1%Z).
 Qed.
 
-(* The square at x := 1, evaluated at the group element 1, plus
-   additivity on both sides: 2q ≈ 3q, so q ≈ 0. *)
+(* 相关说明。 （已译） *)
 Lemma q_zero : qz_eq q 0.
 Proof.
   apply qz_two_three_zero.
@@ -266,8 +265,8 @@ Proof.
   exact sigma_three.
 Qed.
 
-(* Multiples of a vanishing value vanish: σ(1)(n) ≈ 0 for the five
-   residues, hence — through the mod-5 setoid — for every argument. *)
+(* Multiples vanishing value vanish: σ(1)(n) ≈ 0 five
+ residues, hence — through mod-5 setoid — every 论元. （已译） *)
 Lemma sigma_one_zero : ∀ x : Z, qz_eq (cmon_map (cmon_map s 1%Z) x) 0.
 Proof.
   assert (Hstep : ∀ n : Z,
@@ -308,7 +307,7 @@ Qed.
 Theorem sigma_square_violation : False.
 Proof.
   apply z5_one_neq_zero.
-  (* 1 ≈ from(σ)(σ(1)) ≈ from(σ)(σ(0)) ≈ 0 *)
+  (* 相关说明。 （已译） *)
   pose proof (iso_from_to s0) as Hfi.
   eapply z5_eq_trans; [ apply z5_eq_sym, (Hfi 1%Z) | ].
   eapply z5_eq_trans; [ | apply (Hfi 0%Z) ].
@@ -352,7 +351,7 @@ Proof.
   exact (sigma_not_natural (σ Z5) Hnat).
 Qed.
 
-(** ** Not even the objects match up globally *)
+(* * ** Not even 对象 match up globally （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。

@@ -9,7 +9,7 @@ Require Import Category.Instance.Coq.
 
 Generalizable All Variables.
 
-(** * The environment (coreader) comonad on COQ *)
+(* * * The environment (coreader) 余单子 COQ （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Monad_(functional_programming)
@@ -28,7 +28,7 @@ Generalizable All Variables.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** The action of e × − on morphisms: apply f under the environment. *)
+(** The action e × − 态射: apply f under environment. （已译） *)
 Definition env_map {e x y : Type} (f : x → y) (p : e * x) : e * y :=
   match p with (e0, v) => (e0, f v) end.
 
@@ -54,14 +54,14 @@ Definition EnvF (e : Type) : Coq ⟶ Coq := @Build_Functor Coq Coq
   (λ x : Type, @env_map_id e x)
   (λ (x y z : Type) (f : y → z) (g : x → y), @env_map_comp e x y z f g).
 
-(** The counit ε: project out the value. *)
+(** 本节：The counit ε: project out value. （已译） *)
 Definition env_extract {e x : Type} (p : e * x) : x := snd p.
 
-(** The comultiplication δ: copy the environment into the payload. *)
+(** The comultiplication δ: copy environment 进入 payload. （已译） *)
 Definition env_duplicate {e x : Type} (p : e * x) : e * (e * x) :=
   match p with (e0, v) => (e0, (e0, v)) end.
 
-(** Naturality of the counit — the op-read of [fmap_ret]. *)
+(** 本节：Naturality counit — op-read [fmap_ret]. （已译） *)
 Lemma env_extract_natural {e x y : Type} (f : x → y) (p : e * x) :
   f (env_extract p) = env_extract (env_map f p).
 Proof. now destruct p. Qed.
@@ -81,7 +81,7 @@ Lemma env_extract_duplicate {e x : Type} (p : e * x) :
   env_extract (env_duplicate p) = p.
 Proof. now destruct p. Qed.
 
-(** Naturality of the comultiplication — the op-read of [join_fmap_fmap]. *)
+(** 本节：Naturality comultiplication — op-read [join_fmap_fmap]. （已译） *)
 Lemma env_duplicate_natural {e x y : Type} (f : x → y) (p : e * x) :
   env_map (env_map f) (env_duplicate p) = env_duplicate (env_map f p).
 Proof. now destruct p. Qed.

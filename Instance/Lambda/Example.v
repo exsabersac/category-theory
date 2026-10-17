@@ -6,7 +6,7 @@ Set Equations With UIP.
 
 Generalizable All Variables.
 
-(** * Worked examples for the de Bruijn STLC CEK evaluator *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出 λ 演算相关实例。

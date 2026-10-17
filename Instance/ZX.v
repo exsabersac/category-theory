@@ -60,8 +60,8 @@ Arguments zx_tensor {m n m' n'} _ _.
 Arguments zx_z m n _ : assert.
 Arguments zx_x m n _ : assert.
 
-(** Notation for ZX wires.  Composition of diagrams is written
-    [f ⊙ g], tensor is [f ⊕ g] (to avoid clashing with [⨂]). *)
+(** 本节：Notation ZX wires. Composition diagrams written
+ [f ⊙ g], tensor [f ⊕ g] (to avoid clashing [⨂]). （已译） *)
 
 Declare Scope zx_scope.
 Delimit Scope zx_scope with zx.
@@ -77,8 +77,8 @@ Open Scope zx_scope.
 *)
 
 Inductive zx_eq : forall {m n}, ZX m n -> ZX m n -> Prop :=
-  (** Congruence: zx_eq is reflexive, symmetric, transitive, and
-      preserved by tensor and composition. *)
+  (** Congruence: zx_eq reflexive, symmetric, transitive, and
+ preserved tensor 复合. （已译） *)
   | zx_eq_refl  : forall {m n} (f : ZX m n), zx_eq f f
   | zx_eq_sym   : forall {m n} (f g : ZX m n), zx_eq f g -> zx_eq g f
   | zx_eq_trans : forall {m n} (f g h : ZX m n),
@@ -218,27 +218,27 @@ Next Obligation.
   apply zx_eq_sym, zx_eq_tensor_compose.
 Defined.
 
-(** ** Sanity check: the identity wire on [n] composed with itself is itself. *)
+(* * ** Sanity check: 恒等 wire [n] composed itself itself. （已译） *)
 
 Lemma zx_id_compose_id (n : nat) :
   zx_eq (zx_id n ⊙ zx_id n) (zx_id n).
 Proof. apply zx_eq_id_left. Qed.
 
-(** ** Sanity check: Z-spider fusion at zero phase is idempotent. *)
+(* 相关说明。 （已译） *)
 
 Lemma zx_z_self_fuse (m n : nat) :
   zx_eq (zx_z 1 n phase_zero ⊙ zx_z m 1 phase_zero)
         (zx_z m n (phase_add phase_zero phase_zero)).
 Proof. apply (zx_eq_z_fusion m n). Qed.
 
-(** ** Sanity check: X-spider fusion at zero phase. *)
+(* 相关说明。 （已译） *)
 
 Lemma zx_x_self_fuse (m n : nat) :
   zx_eq (zx_x 1 n phase_zero ⊙ zx_x m 1 phase_zero)
         (zx_x m n (phase_add phase_zero phase_zero)).
 Proof. apply (zx_eq_x_fusion m n). Qed.
 
-(** ** Triple Hadamard reduces to a single Hadamard. *)
+(* 相关说明。 （已译） *)
 
 Lemma zx_h_triple :
   zx_eq (zx_h ⊙ zx_h ⊙ zx_h) zx_h.
@@ -248,13 +248,13 @@ Proof.
   - apply zx_eq_id_left.
 Qed.
 
-(** ** Double swap is the identity wire pair. *)
+(* * ** Double swap 恒等 wire pair. （已译） *)
 
 Lemma zx_swap_double :
   zx_eq (zx_swap ⊙ zx_swap) (zx_id 2).
 Proof. apply zx_eq_swap_invol. Qed.
 
-(** ** Quadruple swap is the identity (two double-swaps). *)
+(* * ** Quadruple swap 恒等 (two double-swaps). （已译） *)
 
 Lemma zx_swap_quadruple :
   zx_eq (zx_swap ⊙ zx_swap ⊙ zx_swap ⊙ zx_swap) (zx_id 2).
@@ -267,7 +267,7 @@ Proof.
     + apply zx_eq_id_left.
 Qed.
 
-(** ** Quadruple Hadamard is the identity wire. *)
+(* * ** Quadruple Hadamard 恒等 wire. （已译） *)
 
 Lemma zx_h_quadruple :
   zx_eq (zx_h ⊙ zx_h ⊙ (zx_h ⊙ zx_h)) (zx_id 1).
@@ -277,7 +277,7 @@ Proof.
   - apply zx_eq_id_left.
 Qed.
 
-(** ** Identity Z-spider on the right is absorbed by composition. *)
+(* * ** Identity Z-spider right absorbed 复合. （已译） *)
 
 Lemma zx_compose_z_id_right {m : nat} (f : ZX m 1) :
   zx_eq (zx_z 1 1 phase_zero ⊙ f) f.

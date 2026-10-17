@@ -23,7 +23,7 @@ Require Import Category.Instance.StrictCat.ToCat.
 
 Generalizable All Variables.
 
-(** * The fork C² ⇉ C → 1 in Cat, split by a terminal object of C *)
+(* * * The fork C² ⇉ C → 1 Cat, split 终对象 C （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/split+coequalizer
@@ -37,8 +37,8 @@ Generalizable All Variables.
 
 (** ** The fork, for C any category *)
 
-(* e, the unique functor C ⟶ 1, is the terminal map of [Cat] and of
-   [StrictCat] alike. *)
+(* e, unique 函子 C ⟶ 1, terminal map [Cat] of
+ [StrictCat] alike. （已译） *)
 Example arrow_fork_e_one@{o h +} (C : Category@{o h h}) :
   Erase C = @one Cat Cat_Terminal C := eq_refl.
 
@@ -55,7 +55,7 @@ Lemma arrow_fork_law1_strict@{o h +} (C : Category@{o h h}) :
   Erase C ∘[StrictCat] Arrow_dom ≈[StrictCat] Erase C ∘[StrictCat] Arrow_cod.
 Proof. apply (@one_unique StrictCat StrictCat_Terminal). Qed.
 
-(* ... and on the nose, on objects and on arrows. *)
+(* ... nose, 对象 arrows. （已译） *)
 Example arrow_fork_law1_obj@{o h +} (C : Category@{o h h}) (x : @Arrow C) :
   fobj[Erase C ◯ Arrow_dom] x = fobj[Erase C ◯ Arrow_cod] x := eq_refl.
 
@@ -63,16 +63,16 @@ Example arrow_fork_law1_map@{o h +} (C : Category@{o h h})
   {x y : @Arrow C} (f : x ~> y) :
   fmap[Erase C ◯ Arrow_dom] f = fmap[Erase C ◯ Arrow_cod] f := eq_refl.
 
-(** ** The splitting, given a terminal object a₀ of C *)
+(* * ** The splitting, given 终对象 a₀ C （已译） *)
 
-(* s, the functor 1 ⟶ C sending the object of 1 to a₀. *)
+(* s, 函子 1 ⟶ C sending 对象 1 a₀. （已译） *)
 Example arrow_fork_s_obj@{o h +} {C : Category@{o h h}} `{T : @Terminal C}
   (x : _1) :
   fobj[Diagonal _1 (@terminal_obj C T)] x = @terminal_obj C T := eq_refl.
 
-(* t, the functor C ⟶ C² sending c to the unique arrow c → a₀: the
-   classifying functor of the unique arrow from Id[C] to the terminal
-   object of [C, C], the constant functor at a₀. *)
+(* t, 函子 C ⟶ C² sending c 唯一箭头 c → a₀: the
+ classifying 函子 唯一箭头 Id[C] terminal
+ 对象 [C, C], 常值 函子 at a₀. （已译） *)
 Definition arrow_fork_t@{o h +} {C : Category@{o h h}} `{T : @Terminal C} :
   C ⟶ @Arrow C :=
   Arrow_intro (Id[C]; (Constant_Terminal_Functor T;
@@ -93,13 +93,13 @@ Lemma arrow_fork_law2_strict@{o h +} {C : Category@{o h h}}
     ≈[StrictCat] @id StrictCat _1.
 Proof. apply (@one_unique StrictCat StrictCat_Terminal). Qed.
 
-(* Law 3, ∂₀ t = 1, with the object component [eq_refl]. *)
+(* Law 3, ∂₀ t = 1, 对象 component [eq_refl]. （已译） *)
 Lemma arrow_fork_law3_strict@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   Arrow_dom ∘[StrictCat] arrow_fork_t ≈[StrictCat] @id StrictCat C.
 Proof. exists (fun _ => eq_refl). intros; simpl; reflexivity. Defined.
 
-(* Law 4, ∂₁ t = s e, with the object component [eq_refl]. *)
+(* Law 4, ∂₁ t = s e, 对象 component [eq_refl]. （已译） *)
 Lemma arrow_fork_law4_strict@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   Arrow_cod ∘[StrictCat] arrow_fork_t
@@ -115,8 +115,8 @@ Example arrow_fork_law4_strict_component@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   projT1 (@arrow_fork_law4_strict C T) = fun _ => eq_refl := eq_refl.
 
-(* Law 2 on the nose at the object of 1 and its arrow; for a variable
-   object or arrow of 1 it needs a case analysis (see the header). *)
+(* Law 2 nose at 对象 1 arrow; variable
+ 对象 arrow 1 it needs case analysis (see header). （已译） *)
 Example arrow_fork_law2_obj@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   fobj[Erase C ◯ Diagonal _1 (@terminal_obj C T)] ttt = fobj[Id[_1]] ttt
@@ -127,7 +127,7 @@ Example arrow_fork_law2_map@{o h +} {C : Category@{o h h}}
   fmap[Erase C ◯ Diagonal _1 (@terminal_obj C T)] (@id _1 ttt)
     = fmap[Id[_1]] (@id _1 ttt) := eq_refl.
 
-(* Laws 3 and 4 on the nose, on objects and on arrows. *)
+(* Laws 3 4 nose, 对象 arrows. （已译） *)
 Example arrow_fork_law3_obj@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} (c : C) :
   fobj[Arrow_dom ◯ arrow_fork_t] c = fobj[Id[C]] c := eq_refl.
@@ -146,7 +146,7 @@ Example arrow_fork_law4_map@{o h +} {C : Category@{o h h}}
   fmap[Arrow_cod ◯ arrow_fork_t] f
     = fmap[Diagonal _1 (@terminal_obj C T) ◯ Erase C] f := eq_refl.
 
-(* The split fork in StrictCat: Split.v's record, f := ∂₀ and g := ∂₁. *)
+(* 相关说明。 （已译） *)
 Definition arrow_fork_split_strict@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   @SplitCoequalizer StrictCat (@Arrow C) C Arrow_dom Arrow_cod :=
@@ -155,15 +155,15 @@ Definition arrow_fork_split_strict@{o h +} {C : Category@{o h h}}
     (arrow_fork_law1_strict C) arrow_fork_law2_strict
     arrow_fork_law3_strict arrow_fork_law4_strict.
 
-(* The split fork in Cat: the one in StrictCat, pushed along the
-   comparison functor StrictCat ⟶ Cat, which is the identity on objects
-   and on arrows. *)
+(* The split fork Cat: one StrictCat, pushed along the
+ comparison 函子 StrictCat ⟶ Cat, 恒等 对象
+ arrows. （已译） *)
 Definition arrow_fork_split@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   @SplitCoequalizer Cat (@Arrow C) C Arrow_dom Arrow_cod :=
   functor_preserves_split StrictCat_to_Cat _ _ arrow_fork_split_strict.
 
-(* ... whose e, s and t are Mac Lane's. *)
+(* 相关说明。 （已译） *)
 Example arrow_fork_split_e@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   scoeq_e arrow_fork_split = Erase C := eq_refl.
@@ -176,7 +176,7 @@ Example arrow_fork_split_t@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   scoeq_t arrow_fork_split = arrow_fork_t := eq_refl.
 
-(** ** The split fork in Cat, directly *)
+(* 相关说明。 （已译） *)
 
 (* Laws 2 to 4 proved in Cat itself, each natural isomorphism having
    identities for components; law 1 is [arrow_fork_law1]. *)
@@ -200,7 +200,7 @@ Lemma arrow_fork_law4_direct@{o h +} {C : Category@{o h h}}
     ≈[Cat] Diagonal _1 (@terminal_obj C T) ∘[Cat] Erase C.
 Proof. exists (fun _ => iso_id). intros; simpl; cat. Defined.
 
-(* The components of laws 3 and 4 are identities on the nose. *)
+(* 相关说明。 （已译） *)
 Example arrow_fork_law3_direct_component@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} (c : C) :
   to (projT1 (@arrow_fork_law3_direct C T) c) = id := eq_refl.
@@ -209,7 +209,7 @@ Example arrow_fork_law4_direct_component@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} (c : C) :
   to (projT1 (@arrow_fork_law4_direct C T) c) = id := eq_refl.
 
-(* The split fork they make, with the same e, s and t. *)
+(* 相关说明。 （已译） *)
 Definition arrow_fork_split_direct@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   @SplitCoequalizer Cat (@Arrow C) C Arrow_dom Arrow_cod :=
@@ -231,9 +231,9 @@ Example arrow_fork_split_direct_t@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   scoeq_t arrow_fork_split_direct = arrow_fork_t := eq_refl.
 
-(** ** Consequences, through Structure/Coequalizer/Split.v and Absolute.v *)
+(* 相关说明。 （已译） *)
 
-(* e is a coequalizer of ∂₀ and ∂₁: the Lemma of §VI.6. *)
+(* 相关说明。 （已译） *)
 Definition arrow_fork_coequalizer_strict@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   @IsCoequalizer StrictCat _ _ Arrow_dom Arrow_cod _1 (Erase C) :=
@@ -244,8 +244,8 @@ Definition arrow_fork_coequalizer@{o h +} {C : Category@{o h h}}
   @IsCoequalizer Cat _ _ Arrow_dom Arrow_cod _1 (Erase C) :=
   split_coequalizer_is_coequalizer _ _ arrow_fork_split.
 
-(* ... and every functor out of StrictCat or out of Cat into a
-   D : Category@{do dh dh} with o <= dh carries it to a coequalizer. *)
+(* ... every 函子 out StrictCat out Cat a
+ D : Category@{do dh dh} o <= dh carries it coequalizer. （已译） *)
 Definition arrow_fork_preserved_strict@{o h do dh +}
   {C : Category@{o h h}} `{T : @Terminal C} {D : Category@{do dh dh}}
   (F : StrictCat ⟶ D) :
@@ -260,8 +260,7 @@ Definition arrow_fork_preserved@{o h do dh +}
     (F _1) (fmap[F] (Erase C)) :=
   split_coequalizer_preserved F _ _ arrow_fork_split.
 
-(* The Corollary of p. 150, "In every split fork, e is an absolute
-   coequalizer of ∂₀ and ∂₁", at this fork: Absolute.v's predicate. *)
+(* 相关说明。 （已译） *)
 Definition arrow_fork_absolute_strict@{o h xo xh +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   @AbsoluteCoequalizer@{_ _ xo xh _} StrictCat (@Arrow C) C Arrow_dom
@@ -274,7 +273,7 @@ Definition arrow_fork_absolute@{o h xo xh +} {C : Category@{o h h}}
     _1 (Erase C) :=
   split_coequalizer_absolute arrow_fork_split.
 
-(* The two corollaries above are the Corollary, applied to D and F. *)
+(* 相关说明。 （已译） *)
 Example arrow_fork_preserved_absolute_strict@{o h do dh +}
   {C : Category@{o h h}} `{T : @Terminal C} {D : Category@{do dh dh}}
   (F : StrictCat ⟶ D) :
@@ -286,11 +285,11 @@ Example arrow_fork_preserved_absolute@{o h do dh +}
   (F : Cat ⟶ D) :
   @arrow_fork_preserved C T D F = @arrow_fork_absolute C T D F := eq_refl.
 
-(** ** Not every such fork is a coequalizer *)
+(* 相关说明。 （已译） *)
 
-(* If C has no objects, neither has C², so the identity of C coforks ∂₀
-   and ∂₁; were e a coequalizer, it would descend through e to a functor
-   1 ⟶ C, whose value is an object of C. *)
+(* If C has no 对象, neither has C², so 恒等 C coforks ∂₀
+ ∂₁; were e coequalizer, it would descend through e 函子
+ 1 ⟶ C, whose value 对象 C. （已译） *)
 Lemma arrow_fork_not_coequalizer@{o h +} (C : Category@{o h h})
   (empty : C → False) :
   @IsCoequalizer Cat _ _ Arrow_dom Arrow_cod _1 (Erase C) → False.

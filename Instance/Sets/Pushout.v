@@ -53,8 +53,8 @@ End PushoutEqDef.
 
 Arguments pushout_eq {A B C} f g _ _.
 
-(** Reflexivity comes from [po_inl_cong] / [po_inr_cong] applied to the
-    underlying setoid's reflexivity. *)
+(** 本节：Reflexivity comes [po_inl_cong] / [po_inr_cong] applied the
+ underlying setoid's reflexivity. （已译） *)
 Lemma pushout_eq_refl {A B C : SetoidObject}
       (f : SetoidMorphism A B) (g : SetoidMorphism A C)
       (x : Datatypes.sum (carrier B) (carrier C)) :
@@ -117,8 +117,8 @@ Definition pushout_mediator_fun
   | Datatypes.inr c => q2 c
   end.
 
-(** Respectfulness of [pushout_mediator_fun] for [pushout_eq], by induction
-    on the equivalence-closure derivation. *)
+(** Respectfulness [pushout_mediator_fun] [pushout_eq], induction
+ 等价-closure derivation. （已译） *)
 Lemma pushout_mediator_respects
         {A B C Q : SetoidObject}
         (f : SetoidMorphism A B) (g : SetoidMorphism A C)
@@ -155,10 +155,7 @@ Qed.
 
 End SetsPushout.
 
-(** ** The [HasPushouts Sets] instance
-
-    Each pushout is packaged as a [Pullback] in [Sets^op] using the
-    machinery in [Structure/Pushout.v]. *)
+(* 相关说明。 （已译） *)
 
 #[export] Program Instance Sets_HasPushouts : HasPushouts Sets := {|
   pushout := fun X Y Z f g =>
@@ -175,16 +172,14 @@ Next Obligation.
   apply po_glue.
 Defined.
 Next Obligation.
-  (* UMP in Sets^op: given a cocone (q1 : Y → Q, q2 : Z → Q) in Sets with
-     q1 ∘ f ≈ q2 ∘ g, build the unique mediator Pull → Q. *)
+  (* 相关说明。 （已译） *)
   rename X0 into Hcomm.
   unshelve refine
     (Build_Unique _ _ _ (pushout_mediator f g q1 q2 _) _ _).
   - (* The compatibility hypothesis Hcomm expressed pointwise. *)
     intros a. exact (Hcomm a).
   - simpl; split; intros b; reflexivity.
-  - (* Uniqueness: any v : Pull → Q agreeing on both injections equals
-       the mediator pointwise.  Case split on the sum constructor. *)
+  - (* 相关说明。 （已译） *)
     intros v [Hv1 Hv2].
     intros [b | c]; simpl.
     + symmetry; exact (Hv1 b).

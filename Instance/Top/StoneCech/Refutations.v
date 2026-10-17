@@ -30,7 +30,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** * The two points of the discrete two-point space *)
+(* 相关说明。 （已译） *)
 
 Definition sc_pt_bool@{o +} (b : bool) : Point_CH ~{CompHaus}~> Bool_CH :=
   (top_point Bool_Discrete@{o} b; I).
@@ -44,7 +44,7 @@ Lemma sc_eval_pt_resp@{c h +}
   u ≈ v → sc_eval_pt u = sc_eval_pt v.
 Proof. intro H. exact (H ttt). Qed.
 
-(** * Completeness at the hom universe is refuted (Freyd's core) *)
+(* 相关说明。 （已译） *)
 
 Theorem CompHaus_not_complete@{r s c h +}
   (AI : ArrowIndex@{s c h} CompHaus)
@@ -87,7 +87,7 @@ Proof.
            (canonical_ArrowIndex (ObjDecEq_of_IEM E Top)) comp).
 Qed.
 
-(** * Above the hom universe: an arrow index transported from [Top] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Refutations 相关定义、性质与动机。
@@ -115,9 +115,9 @@ Theorem CompHaus_not_complete_IEM_above@{e h c +} (E : IEM@{e})
   (comp : @Complete@{h h h c} (CompHaus : Category@{c h h})) : False.
 Proof. exact (CompHaus_not_complete_IEM_below E comp). Qed.
 
-(** * The adjunction itself is refuted: a universal arrow at a large set *)
+(* * * The 伴随 itself refuted: 泛箭头 at large set （已译） *)
 
-(* The arrow index of [CompHaus], as a setoid with Leibniz equality. *)
+(* 相关说明。 （已译） *)
 Definition KSet@{s c h +} (AI : ArrowIndex@{s c h} CompHaus) :
   SetoidObject@{s s} :=
   {| carrier := ai_index AI; is_setoid := eq_Setoid (ai_index AI) |}.
@@ -155,8 +155,8 @@ Proof.
            (universal_arrow_of_adjunction (`2 A) (KSet AI))).
 Qed.
 
-(* The same at every object universe at or above the homs, through the
-   index of [Top]. *)
+(* The same at every 对象 universe at above homs, through the
+ index [Top]. （已译） *)
 Theorem StoneCech_adjunction_refuted_IEM_above@{e h s o c +} (E : IEM@{e})
   (A : { F : Sets@{h s} ⟶ (CompHaus : Category@{c h h})
        & F ⊣ CompHaus_Forget }) : False.
@@ -167,15 +167,15 @@ Proof.
            (universal_arrow_of_adjunction (`2 A) (KSet AI))).
 Qed.
 
-(** * GAFT and SAFT consume the refuted hypothesis *)
+(* * * GAFT SAFT consume refuted 假设 （已译） *)
 
 Definition GAFT_CompHaus_IEM_vacuous@{e h s +} (E : IEM@{e})
   (comp : @Complete@{h h h h} CompHaus) :
   ({ F : Sets@{h s} ⟶ CompHaus & F ⊣ CompHaus_Forget } * False)%type :=
   (GAFT_CompHaus_only_complete comp, CompHaus_not_complete_IEM E comp).
 
-(* With the objects at or above the homs [taut_sols] no longer fits GAFT,
-   so the solution sets are a hypothesis. *)
+(* With 对象 at above homs [taut_sols] no longer fits GAFT,
+ so solution sets 假设. （已译） *)
 Definition GAFT_CompHaus_IEM_vacuous_above@{e h s c +} (E : IEM@{e})
   (comp : @Complete@{h h h c} (CompHaus : Category@{c h h}))
   (sols : ∀ d : obj[Sets@{h s}], SolutionSet CompHaus_Forget d) :
@@ -188,9 +188,9 @@ Definition CompHaus_WellPowered@{c h t +} :
   WellPowered@{c h h h t} (CompHaus : Category@{c h h}) :=
   trivial_small CompHaus.
 
-(* SAFT at the inclusion, well-poweredness discharged: three hypotheses
-   remain, and the completeness one is refuted under [IEM] at the
-   instances COVERAGE records. *)
+(* SAFT at 含入, well-poweredness discharged: three hypotheses
+ remain, completeness one refuted under [IEM] at the
+ instances COVERAGE records. （已译） *)
 Definition SAFT_CompHaus_Incl@{s h +} (comp : @Complete@{s s h h} CompHaus)
   (cont : @PreservesImageLimit _ _ CompHaus_Incl) (G : Cogenerator CompHaus) :
   { F : Top ⟶ CompHaus & F ⊣ CompHaus_Incl } :=
@@ -212,8 +212,8 @@ Definition SAFT_Incl_IEM_vacuous@{e s c h +} (E : IEM@{e})
   (SAFT_wellpowered CompHaus_Incl comp cont G WP,
    CompHaus_not_complete_IEM E comp).
 
-(* The same at every shape universe SAFT accepts at the inclusion, the
-   shapes below the objects included. *)
+(* The same at every shape universe SAFT accepts at 含入, the
+ shapes below 对象 included. （已译） *)
 Definition SAFT_Incl_IEM_vacuous_below@{e s c h +} (E : IEM@{e})
   (comp : @Complete@{s s h c} (CompHaus : Category@{c h h}))
   (cont : @PreservesImageLimit _ _ CompHaus_Incl)
@@ -222,10 +222,10 @@ Definition SAFT_Incl_IEM_vacuous_below@{e s c h +} (E : IEM@{e})
   (SAFT_wellpowered CompHaus_Incl comp cont G WP,
    CompHaus_not_complete_IEM_below E comp).
 
-(** * The classical-model obstruction, with no hypothesis beyond completeness *)
+(* * * The classical-model obstruction, no 假设 beyond completeness （已译） *)
 
-(* The index is the object type of the category [comp] is about: the local
-   definition [C] makes the two one instance. *)
+(* The index 对象 type 范畴 [comp] about: local
+ 定义 [C] makes two one instance. （已译） *)
 Definition big_inj@{r s c h +} (C := CompHaus : Category@{c h h})
   (comp : @Complete@{r s h c} C) (phi : obj[C] → bool) :
   top_carrier (`1 (complete_iprod_obj comp (fun _ : obj[C] => Bool_CH))) :=
@@ -254,9 +254,9 @@ Proof.
   rewrite <- Hp, <- Hq. exact Hm.
 Qed.
 
-(** * A cogenerator of CompHaus with stable members gives DNE *)
+(* 相关说明。 （已译） *)
 
-(* The two-point space whose points are identified exactly when [P]. *)
+(* 相关说明。 （已译） *)
 Definition sc_yp_equiv@{o +} (P : Prop) (x y : bool) : Type@{o} :=
   (x = y \/ P).
 

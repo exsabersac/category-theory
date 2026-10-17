@@ -159,9 +159,7 @@ Proof.
            (lie_br_add_l L) (lie_br_add_r L) (lie_alt L)).
 Qed.
 
-(* Homogeneity in the SECOND slot: antisymmetry twice, homogeneity in
-   the first slot once, and [rm_smul_neg_r] to move the scalar past the
-   negation. *)
+(* 相关说明。 （已译） *)
 Theorem lie_br_smul_r r (x y : carrier (cmon_setoid (lie_mod L))) :
   lie_br L x (rm_smul (lie_mod L) r y)
     ≈ rm_smul (lie_mod L) r (lie_br L x y).
@@ -363,8 +361,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* a+(b+c) ≈ b+(c+a) -- the cyclic rotation the Jacobi cancellation
-   needs. *)
+(* 相关说明。 （已译） *)
 Lemma lie_add_rot (R : RigObject) (a b c : carrier (rig_setoid R)) :
   rig_add R a (rig_add R b c) ≈ rig_add R b (rig_add R c a).
 Proof.
@@ -418,8 +415,7 @@ Proof.
   intros x x' Hx y y' Hy; unfold lie_comm_br; now rewrite Hx, Hy.
 Qed.
 
-(* Additivity in the first slot: [rig_distr_r] then [rig_distr_l], and
-   nothing else.  Centrality is NOT consumed. *)
+(* 相关说明。 （已译） *)
 Lemma lie_comm_add_l (x y z : carrier (rig_setoid RA)) :
   lie_comm_br (rig_add RA x y) z
     ≈ rig_add RA (lie_comm_br x z) (lie_comm_br y z).
@@ -442,8 +438,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* THE ONE PLACE CENTRALITY IS SPENT, and it is spent once: the rewrite
-   with [aalg_central] moves u(r) back across y in y·(u(r)·x). *)
+(* 相关说明。 （已译） *)
 Lemma lie_comm_smul_l r (x y : carrier (rig_setoid RA)) :
   lie_comm_br (rig_mul RA (UA r) x) y
     ≈ rig_mul RA (UA r) (lie_comm_br x y).
@@ -459,7 +454,7 @@ Proof.
   reflexivity.
 Qed.
 
-(* Alternating: one line, and it is the additive inverse law alone. *)
+(* 相关说明。 （已译） *)
 Lemma lie_comm_alt (x : carrier (rig_setoid RA)) :
   lie_comm_br x x ≈ rig_zero RA.
 Proof. unfold lie_comm_br; apply ring_neg_r. Qed.
@@ -493,9 +488,9 @@ Proof.
   apply lie_add_shuffle4.
 Qed.
 
-(* Jacobi: three instances of [lie_comm_triple] and one application of
-   [lie_jacobi_shape].  The six triple products line up with the shape
-   lemma's six variables on the nose. *)
+(* Jacobi: three instances [lie_comm_triple] one application of
+ [lie_jacobi_shape]. The six triple products line up shape
+ 引理's six variables nose. （已译） *)
 Lemma lie_comm_jacobi (x y z : carrier (rig_setoid RA)) :
   rig_add RA (lie_comm_br x (lie_comm_br y z))
     (rig_add RA (lie_comm_br y (lie_comm_br z x))
@@ -528,7 +523,7 @@ Definition lie_of_aalg {K : CRng} (A : AAlgObject K) : LieObject K := {|
   lie_jacobi      := lie_comm_jacobi A
 |}.
 
-(* THE UNDERLYING MODULE IS UNTOUCHED, on the nose. *)
+(* 相关说明。 （已译） *)
 Example lie_comm_underlying {K : CRng} (A : AAlg K) :
   lie_mod (lie_of_aalg A) = fobj[AAlg_Forget_Mod K] A := eq_refl.
 
@@ -565,8 +560,8 @@ Next Obligation. intros K A B f g Hfg a; exact (Hfg a). Qed.
 Next Obligation. intros K A a; simpl; reflexivity. Qed.
 Next Obligation. intros K A B C f g a; simpl; reflexivity. Qed.
 
-(* Both data fields of the two forgetful composites agree on the nose;
-   the whole functor records do NOT, and the probe section pins that. *)
+(* Both data fields two forgetful composites agree nose;
+ whole 函子 records do NOT, probe section pins that. （已译） *)
 Example lie_forget_compose_obj {K : CRng} (A : AAlg K) :
   fobj[Lie_Forget_Mod K] (fobj[CommutatorFunctor K] A)
     = fobj[AAlg_Forget_Mod K] A := eq_refl.
@@ -587,15 +582,13 @@ Example lie_comm_forget_set {K : CRng} (L : Lie K) :
   fobj[Lie_Forget K] L = fobj[RMod_Forget (`1 K)] (fobj[Lie_Forget_Mod K] L)
   := eq_refl.
 
-(** ** The commutator functor is faithful, and is not full *)
+(* * ** The commutator 函子 faithful, not full （已译） *)
 
 #[export] Instance CommutatorFunctor_Faithful (K : CRng) :
   Faithful (CommutatorFunctor K).
 Proof. constructor; intros A B f g E; exact E. Qed.
 
-(* The zero map is a Lie homomorphism between ANY two Lie algebras: it
-   is a module map, and the bracket clause reads 0 ≈ [0,0], which is
-   [lie_br_zero_l]. *)
+(* 相关说明。 （已译） *)
 Program Definition lie_zero_hom {K : CRng} (L M : LieObject K)
   : LieHom L M := {|
   lie_hom := {| rm_hom := {| cmon_map :=
@@ -628,7 +621,7 @@ Example lie_ut2_carrier : carrier (cmon_setoid (lie_mod Lie_UT2)) = ut2
 Example lie_ut2_e11_e12 :
   lie_br Lie_UT2 ut2_e11 ut2_e12 = ut2_e12 := eq_refl.
 
-(* ...and the other order is its negative, computed. *)
+(* 相关说明。 （已译） *)
 Example lie_ut2_e12_e11 :
   lie_br Lie_UT2 ut2_e12 ut2_e11 = (0, -1, 0)%Z := eq_refl.
 
@@ -636,9 +629,7 @@ Theorem lie_ut2_bracket_nonzero :
   lie_br Lie_UT2 ut2_e11 ut2_e12 ≈ cmon_zero (lie_mod Lie_UT2) → False.
 Proof. unfold ut2_eqT; simpl; discriminate. Qed.
 
-(* Non-degenerate in the sharper sense too: the bracket is not symmetric,
-   so [Lie_UT2] is not the abelian Lie algebra on its own module in
-   disguise. *)
+(* 相关说明。 （已译） *)
 Theorem lie_ut2_not_abelian :
   lie_br Lie_UT2 ut2_e11 ut2_e12 ≈ lie_br Lie_UT2 ut2_e12 ut2_e11 → False.
 Proof. unfold ut2_eqT; simpl; discriminate. Qed.
@@ -652,11 +643,7 @@ Proof.
   exact (lie_ut2_bracket_nonzero (H Lie_UT2 ut2_e11 ut2_e12)).
 Qed.
 
-(** ** Non-fullness
-
-    The zero endomorphism of [Lie_UT2] is a Lie map; it is the image of
-    no algebra map, because an algebra map carries 1 to 1 and [UT2] has
-    1 ≉ 0. *)
+(* 相关说明。 （已译） *)
 
 Lemma lie_ut2_one_not_zero : rig_one UT2 ≈ rig_zero UT2 → False.
 Proof. unfold ut2_eqT; simpl; discriminate. Qed.
@@ -672,7 +659,7 @@ Proof.
   exact (Hs (rig_one UT2)).
 Qed.
 
-(** ** The commutative case is the degenerate one *)
+(* 相关说明。 （已译） *)
 
 Theorem lie_comm_of_commutative {K : CRng} (A : AAlgObject K)
   (Hc : ∀ a b, rig_mul (aalg_ring A) a b ≈ rig_mul (aalg_ring A) b a)

@@ -9,7 +9,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * The traced (cowriter, exponent) comonad *)
+(* * * The traced (cowriter, exponent) 余单子 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)#Comonads
@@ -29,9 +29,9 @@ Generalizable All Variables.
 
 Section Traced.
 
-(** The section-context monoid: ordinary Coq data — a bare type together
-    with a unit, a multiplication, and the three monoid equations as Leibniz
-    laws. *)
+(** The section-context 幺半群: ordinary Coq data — bare type together
+ unit, multiplication, three 幺半群 equations Leibniz
+ laws. （已译） *)
 
 Context (m : Type).
 Context (mempty : m).
@@ -48,19 +48,19 @@ Hypothesis mappend_assoc :
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** The plan-prescribed action on raw types: post-compose the observation. *)
+(** 本节：The plan-prescribed action raw types: post-compose observation. （已译） *)
 Definition coq_traced_map {x y : Type} (f : x → y) (h : m → x) : m → y :=
   λ w, f (h w).
 
-(** The counit on raw types: evaluate at the neutral trace. *)
+(** 本节：The counit raw types: evaluate at neutral trace. （已译） *)
 Definition coq_traced_extract {x : Type} (h : m → x) : x := h mempty.
 
 (** The comultiplication on raw types: evaluate under every translation. *)
 Definition coq_traced_duplicate {x : Type} (h : m → x) : m → m → x :=
   λ w w', h (mappend w w').
 
-(** Four of the equations are definitional at the function level: beta and
-    eta for functions are part of Coq's conversion. *)
+(** 本节：Four equations definitional at function level: beta and
+ eta functions part Coq's conversion. （已译） *)
 
 Lemma coq_traced_map_id {x : Type} (h : m → x) :
   coq_traced_map (λ v : x, v) h = h.
@@ -71,20 +71,20 @@ Lemma coq_traced_map_comp {x y z : Type} (f : y → z) (g : x → y)
   coq_traced_map (λ v, f (g v)) h = coq_traced_map f (coq_traced_map g h).
 Proof. reflexivity. Qed.
 
-(** Naturality of the counit — the op-read of [fmap_ret]. *)
+(** 本节：Naturality counit — op-read [fmap_ret]. （已译） *)
 Lemma coq_traced_extract_natural {x y : Type} (f : x → y) (h : m → x) :
   f (coq_traced_extract h) = coq_traced_extract (coq_traced_map f h).
 Proof. reflexivity. Qed.
 
-(** Naturality of the comultiplication — the op-read of [join_fmap_fmap]. *)
+(** 本节：Naturality comultiplication — op-read [join_fmap_fmap]. （已译） *)
 Lemma coq_traced_duplicate_natural {x y : Type} (f : x → y) (h : m → x) :
   coq_traced_map (coq_traced_map f) (coq_traced_duplicate h)
     = coq_traced_duplicate (coq_traced_map f h).
 Proof. reflexivity. Qed.
 
-(** The remaining three equations consult the monoid laws and hold pointwise
-    — each is the plan's restatement of the corresponding law at a sampled
-    trace. *)
+(** The remaining three equations consult 幺半群 laws hold pointwise
+ — each plan's restatement corresponding law at sampled
+ trace. （已译） *)
 
 (** Counit law ε ∘ δ ≈ id, pointwise — the op-read of [join_ret]. *)
 Lemma coq_traced_extract_duplicate {x : Type} (h : m → x) (w : m) :
@@ -161,8 +161,8 @@ Qed.
 
 (** ** The functorial action *)
 
-(* Post-composition under the trace: f is applied to the value observed at
-   every trace. *)
+(* Post-复合 under trace: f applied value observed at
+ every trace. （已译） *)
 Program Definition traced_map {x y : SetoidObject} (f : SetoidMorphism x y) :
   SetoidMorphism (traced_obj x) (traced_obj y) := {|
   morphism := λ h w, f (h w)
@@ -172,8 +172,8 @@ Next Obligation.
   apply proper_morphism, Hhk.
 Qed.
 
-(** [traced_map] respects ≈ pointwise — the field whose COQ counterpart is
-    the funext-entailing obligation above; here it is immediate. *)
+(** 本节：[traced_map] respects ≈ pointwise — field whose COQ counterpart is
+ funext-entailing obligation above; here it immediate. （已译） *)
 Lemma traced_map_respects {x y : SetoidObject} (f g : SetoidMorphism x y) :
   (∀ v : carrier x, f v ≈ g v) →
   ∀ h : m → carrier x, traced_equiv (traced_map f h) (traced_map g h).
@@ -209,7 +209,7 @@ Definition TracedF : Sets ⟶ Sets := @Build_Functor Sets Sets
 
 (** ** The comonad structure *)
 
-(** The counit ε: evaluate at the neutral trace. *)
+(** 本节：The counit ε: evaluate at neutral trace. （已译） *)
 Program Definition traced_extract {x : SetoidObject} :
   SetoidMorphism (traced_obj x) x := {|
   morphism := λ h, h mempty
@@ -229,7 +229,7 @@ Next Obligation.
   apply Hhk.
 Qed.
 
-(** Naturality of the counit — the op-read of [fmap_ret]. *)
+(** 本节：Naturality counit — op-read [fmap_ret]. （已译） *)
 Lemma traced_extract_natural {x y : SetoidObject} (f : SetoidMorphism x y)
   (h : m → carrier x) :
   f (traced_extract h) ≈ traced_extract (traced_map f h).
@@ -260,7 +260,7 @@ Proof using mempty_left.
   now rewrite mempty_left.
 Qed.
 
-(** Naturality of the comultiplication — the op-read of [join_fmap_fmap]. *)
+(** 本节：Naturality comultiplication — op-read [join_fmap_fmap]. （已译） *)
 Lemma traced_duplicate_natural {x y : SetoidObject} (f : SetoidMorphism x y)
   (h : m → carrier x) :
   traced_equiv (traced_map (traced_map f) (traced_duplicate h))

@@ -48,7 +48,7 @@ Next Obligation.
     destruct H as [e [H1 H2]]; exists e; split; assumption.
 Qed.
 
-(** ** Self-duality: Rel ≅ Rel^op in Cat (Awodey 1.9.2(a)) *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、hom、等价相关定义、性质与动机。
@@ -121,7 +121,7 @@ Next Obligation.
     exact HR.
 Qed.
 
-(** ** The graph embedding is faithful: Coq is a wide subcategory *)
+(* 相关说明。 （已译） *)
 
 #[export] Instance Relation_Functor_Faithful : Faithful Relation_Functor.
 Proof.
@@ -131,7 +131,7 @@ Proof.
   reflexivity.
 Qed.
 
-(** ** The empty set is terminal too, hence a zero object *)
+(* * ** The empty set terminal too, hence zero 对象 （已译） *)
 
 #[export] Program Instance Rel_Terminal : @Terminal Rel := {
   terminal_obj := False;
@@ -145,7 +145,7 @@ Next Obligation. intros x f g a b; contradiction. Qed.
   zero_coincide := iso_id
 }.
 
-(** ** The powerset order is self-dual (Awodey 1.9.2(c)) *)
+(* 相关说明。 （已译） *)
 
 Section Powerset.
 
@@ -168,8 +168,8 @@ Qed.
 
 Definition Powerset : Category := Proset psub_preorder.
 
-(* Complementation is antitone, hence a functor into the opposite
-   order; the thin target makes every functor law free. *)
+(* Complementation antitone, hence 函子 进入 opposite
+ order; thin target makes every 函子 law free. （已译） *)
 Program Definition Powerset_Compl : Powerset ⟶ Powerset^op := {|
   fobj := fun A x => negb (A x);
   fmap := fun A B (H : psub A B) x HB => _
@@ -225,7 +225,7 @@ Qed.
 
 End Powerset.
 
-(** ** Sets is NOT self-dual (Awodey 1.9.2(b)) *)
+(* 相关说明。 （已译） *)
 
 Definition SEmpty : Sets := {| carrier := False; is_setoid := eq_Setoid False |}.
 Definition SUnit  : Sets := {| carrier := unit;  is_setoid := eq_Setoid unit  |}.

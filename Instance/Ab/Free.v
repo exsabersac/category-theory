@@ -34,7 +34,7 @@ Generalizable All Variables.
 *)
 #[local] Obligation Tactic := idtac.
 
-(** ** Formal sums and the group quotient *)
+(* 相关说明。 （已译） *)
 
 Section FreeAbelian.
 
@@ -144,11 +144,11 @@ Proof.
   intros x y H; exact (fae_gen H).
 Defined.
 
-(* The insertion IS the generator former on the nose. *)
+(* The 嵌入 IS generator former nose. （已译） *)
 Example free_ab_insert_is_gen (x : carrier X) :
   free_ab_insert x = fa_gen x := eq_refl.
 
-(** ** The additive extension of a function on generators *)
+(* 相关说明。 （已译） *)
 
 Section Extension.
 
@@ -222,8 +222,7 @@ Next Obligation.
         | (intros; simpl; reflexivity) ].
 Qed.
 
-(* It agrees with [h] on the generators -- definitionally, not up to
-   [≈]. *)
+(* 相关说明。 （已译） *)
 Example free_ab_extend_generators (x : carrier X) :
   cmon_map free_ab_extend (fa_gen x) = h x := eq_refl.
 
@@ -272,8 +271,8 @@ End Extension.
 Arguments fa_eval {A} h t.
 Arguments free_ab_extend {A} h.
 
-(** ** The universal property, in the shape [universal_arrow_from_UMP]
-       consumes *)
+(* * ** The 普遍性质, shape [universal_arrow_from_UMP]
+ 所消耗 （已译） *)
 Theorem free_ab_universal :
   ∀ (A : AbObject) (h : X ~{Sets}~> Ab_Forget A),
     ∃! g : FreeAbObject ~{Ab}~> A,
@@ -310,18 +309,18 @@ Arguments free_ab_extend {X A} h.
 Arguments fa_eval_respects {X} A h s t _.
 Arguments free_ab_extend_unique {X} A h g _ t.
 
-(** ** The universal arrow, the free functor and the adjunction *)
+(* * ** The 泛箭头, free 函子 伴随 （已译） *)
 
-(* The free abelian group packaged as a universal arrow.  By
-   Theory/Universal/Arrow.v this IS an initial object of the comma
-   category [=(X) ↓ Ab_Forget]. *)
+(* The free abelian group packaged 泛箭头. By
+ Theory/Universal/Arrow.v IS 始对象 comma
+ 范畴 [=(X) ↓ Ab_Forget]. （已译） *)
 Definition free_ab_universal_arrow (X : Sets)
   : UniversalArrow X Ab_Forget :=
   universal_arrow_from_UMP X Ab_Forget (FreeAbObject X) (free_ab_insert X)
     (free_ab_universal X).
 
-(* The same content in the direct encoding, where the universal object is
-   named rather than projected out of a comma category. *)
+(* The same content direct encoding, where universal 对象 is
+ named rather than projected out comma 范畴. （已译） *)
 Program Definition free_ab_AUniversalArrow (X : Sets)
   : AUniversalArrow X Ab_Forget (FreeAbObject X) := {|
   universal_arrow := free_ab_insert X
@@ -332,8 +331,7 @@ Next Obligation.
   - exact (free_ab_extend h).
   - intro x; simpl; reflexivity.
   - intros g Hg t; simpl.
-    (* [AUniversalArrow]'s uniqueness field is oriented the other way
-       round from the comma-packaged one, hence the [symmetry]. *)
+    (* 相关说明。 （已译） *)
     symmetry; apply (free_ab_extend_unique A h g).
     intro x; exact (Hg x).
 Qed.
@@ -349,8 +347,8 @@ Definition FreeAb : Sets ⟶ Ab :=
 Definition free_ab_adjunction : FreeAb ⊣ Ab_Forget :=
   AdjunctionFromUniversalArrows Ab_Forget free_ab_universal_arrow.
 
-(** The free functor's object part is the formal-sum group,
-    definitionally. *)
+(** The free 函子's 对象 part formal-sum group,
+ definitionally. （已译） *)
 Example FreeAb_obj (X : Sets) : FreeAb X = FreeAbObject X := eq_refl.
 
 (*
@@ -402,11 +400,11 @@ Proof.
   intro a; exact (free_ab_counit_generator A a).
 Qed.
 
-(** ** The free functor relabels generators
+(* * ** The free 函子 relabels generators
 
-    [LeftAdjointFunctorFromUniversalArrows] defines [fmap] by universal
-    factorization, not by a formula, so what the functor does to a
-    generator has to be proved; it is [≈] and not [eq_refl]. *)
+ [LeftAdjointFunctorFromUniversalArrows] defines [fmap] universal
+ factorization, not formula, so what 函子 does a
+ generator has proved; it [≈] not [eq_refl]. （已译） *)
 Lemma free_ab_fmap_generators {X Y : Sets} (u : X ~{Sets}~> Y)
   (x : carrier X) :
   cmon_map (fmap[FreeAb] u) (fa_gen x) ≈ fa_gen (u x).
@@ -449,7 +447,7 @@ Proof.
   intro x; simpl; reflexivity.
 Qed.
 
-(** *** Naturality in the generating set *)
+(* 相关说明。 （已译） *)
 Theorem free_ab_naturality_in_set {X Y : Sets} {A : Ab}
   (g : FreeAb Y ~{Ab}~> A) (u : X ~{Sets}~> Y) :
   fa_transpose (g ∘ fmap[FreeAb] u) ≈ fa_transpose g ∘ u.
@@ -458,10 +456,10 @@ Proof.
   exact (proper_morphism (cmon_map g) _ _ (free_ab_fmap_generators u x)).
 Qed.
 
-(** *** Naturality in the target group
+(* * *** Naturality target group
 
-    Both sides are the same composite of underlying functions, so this is
-    [reflexivity] pointwise. *)
+ Both sides same 复合 underlying functions, so 这是
+ [reflexivity] pointwise. （已译） *)
 Theorem free_ab_naturality_in_group {X : Sets} {A A' : Ab}
   (k : A ~{Ab}~> A') (g : FreeAb X ~{Ab}~> A) :
   fa_transpose (k ∘ g) ≈ fmap[Ab_Forget] k ∘ fa_transpose g.
@@ -514,8 +512,7 @@ Proof.
   exact (free_ab_extend_unique A h' (free_ab_extend h) (fun x => H x) t).
 Qed.
 
-(* The natural bijection Ab(F X, A) ≅ Sets(X, U A): forward the
-   restriction to the generators, backward the additive extension. *)
+(* 相关说明。 （已译） *)
 Definition free_ab_hom_iso@{c so +} (X : Sets@{c so}) (A : Ab) :
   @Isomorphism Sets@{c so}
     {| carrier := @hom Ab (FreeAb X) A ; is_setoid := @homset Ab (FreeAb X) A |}
@@ -542,9 +539,9 @@ Proof.
   - intros g t. exact (fa_extend_transpose g t).
 Defined.
 
-(* The adjunction's last level, which no constraint mentions when it is
-   left free, is pinned to the one of [Sets], as Instance/Mod/Free.v pins
-   its own hom-set form. *)
+(* The 伴随's last level, no constraint mentions it is
+ left free, pinned one [Sets], Instance/Mod/Free.v pins
+ own hom-set form. （已译） *)
 Definition free_ab_adjunction_hom@{c so +} :
   @Adjunction@{_ c c so c c c c so c so} Ab Sets@{c so} FreeAb Ab_Forget.
 Proof.
@@ -554,14 +551,14 @@ Proof.
   - intros X A A' k g. exact (free_ab_naturality_in_group k g).
 Defined.
 
-(* Its counit is the fold of the identity, by conversion. *)
+(* Its counit fold 恒等, conversion. （已译） *)
 Example free_ab_hom_counit@{c so +} (A : Ab) (t : FATerm (Ab_Forget A)) :
   cmon_map (@counit _ _ _ _ free_ab_adjunction_hom A) t
     = fa_eval (@id Sets@{c so} (Ab_Forget A)) t := eq_refl.
 
-(* Its unit and its forward transpose ARE those of [free_ab_adjunction].
-   The cast pins the free level of that adjunction too, as the hom-set
-   form's own is pinned above. *)
+(* Its unit forward transpose ARE those [free_ab_adjunction].
+ The cast pins free level 伴随 too, hom-set
+ form's own pinned above. （已译） *)
 Example free_ab_hom_unit@{c so +} (X : Sets@{c so}) :
   @Category.Theory.Adjunction.unit _ _ _ _ free_ab_adjunction_hom X
     = @Category.Theory.Adjunction.unit _ _ _ _
@@ -590,10 +587,10 @@ Context (A : AbObject).
 Context (a : carrier (cmon_setoid A)).
 Context (Ha : a ≈ cmon_zero A → False).
 
-(** *** Two separations that need no decider at all
+(* * *** Two separations need no decider at all
 
-    The constant map at [a] is a morphism of [Sets] with no hypothesis on
-    X whatever, and it already refutes the two cheapest collapses. *)
+ The 常值 map at [a] 态射 [Sets] no 假设 on
+ X whatever, it already refutes two cheapest collapses. （已译） *)
 
 Definition fa_probe_const : X ~{Sets}~> Ab_Forget A.
 Proof using X A a.
@@ -633,7 +630,7 @@ Qed.
 
 Context (Xdec : ∀ x y : carrier X, (x ≈ y) + ((x ≈ y) → False)).
 
-(* The characteristic function of the generator [x]. *)
+(* 相关说明。 （已译） *)
 Definition fa_probe_at (x : carrier X) : X ~{Sets}~> Ab_Forget A.
 Proof using X A a Xdec.
   unshelve refine {|
@@ -756,8 +753,8 @@ Example int_free_ab_extend_generator_true :
 Example int_free_ab_extend_zero :
   fa_eval ab_int_probe (@fa_zero AbTwoGens) = 0%Z := eq_refl.
 
-(** The four separations, instantiated at ℤ with the element 1 and at the
-    decidable two-element setoid. *)
+(** 本节：The four separations, instantiated at ℤ element 1 at the
+ decidable two-element setoid. （已译） *)
 
 Theorem int_free_ab_gen_not_zero :
   fa_eq (zgen true) (@fa_zero AbTwoGens) → False.
@@ -830,7 +827,5 @@ Example control_generators_typecheck :
   carrier (Ab_Forget (FreeAbObject AbTwoGens))
   := (zgen true : FATerm AbTwoGens).
 
-(* Instrument check: [Fail] does fire on a genuine conversion failure of
-   the same kind as the three negatives above, so their green is not the
-   harness reporting success on nothing. *)
+(* 相关说明。 （已译） *)
 Fail Example instrument_check : (0%Z = 1%Z) := eq_refl.

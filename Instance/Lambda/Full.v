@@ -49,7 +49,7 @@ Inductive Ctxt Γ : Ty → Ty → Set :=
 
 Derive Signature NoConfusion NoConfusionHom Subterm for Ctxt.
 
-(* [Ctxt] forms a category with objects = types and morphisms = contexts. *)
+(* [Ctxt] forms 范畴 对象 = types 态射 = contexts. （已译） *)
 
 Definition Ctxt_id {Γ τ} : Ctxt Γ τ τ := C_Nil _.
 Arguments Ctxt_id {_ _} /.
@@ -136,8 +136,8 @@ Set Elimination Schemes.
 
 Scheme Plug_ind := Induction for Plug Sort Type.
 
-(* [Plug] forms a category with objects = expressions and morphisms = plugs
-   over existential contexts. *)
+(* [Plug] forms 范畴 对象 = expressions 态射 = plugs
+ over existential contexts. （已译） *)
 
 Definition Plug_id {Γ τ} {x : Exp Γ τ} : Plug x (C_Nil Γ) x := Plug_Hole _.
 Arguments Plug_id {_ _ _} /.
@@ -164,9 +164,7 @@ Theorem Plug_id_left {Γ τ τ'} {C : Ctxt Γ τ' τ} {x : Exp Γ τ'} {y : Exp 
   Plug_comp Plug_id P ~= P.
 *)
 
-(* One-step reduction: [e1' ---> e2'] when [e1'] decomposes as C[e1], the
-   redex [e1] contracts to [e2], and [e2'] recomposes as C[e2].  This single
-   rule closes [Redex] under every evaluation context. *)
+(* 相关说明。 （已译） *)
 Inductive Step {Γ τ} : Exp Γ τ → Exp Γ τ → Set :=
   | StepRule {τ'} {C : Ctxt Γ τ' τ} {e1 e2 : Exp Γ τ'} {e1' e2' : Exp Γ τ} :
     Plug e1 C e1' →
@@ -248,8 +246,7 @@ Proof.
     now f_equal; auto.
 Qed.
 
-(* Plugging is injective in its filler: a whole term determines the hole that
-   a fixed context decomposed it into. *)
+(* 相关说明。 （已译） *)
 Lemma Plug_injective {Γ τ τ'} {C : Ctxt Γ τ' τ} e :
   ∀ e1, Plug e1 C e → ∀ e2, Plug e2 C e → e1 = e2.
 Proof.
@@ -279,8 +276,7 @@ Proof.
   dependent elimination H; eauto.
 Qed.
 
-(* Congruence under application: a step of the operator (resp. operand, with
-   the operator already a [LAM]) lifts to a step of the whole [APP]. *)
+(* 相关说明。 （已译） *)
 Lemma AppL_LAM {Γ dom cod} {e e' : Exp Γ (dom ⟶ cod)} {x : Exp Γ dom} :
   e ---> e' →
   APP e x ---> APP e' x.

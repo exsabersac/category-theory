@@ -22,7 +22,7 @@ Require Import Category.Instance.Top.Quotient.
 
 Generalizable All Variables.
 
-(** * The category of pairs, and X/A as a left adjoint *)
+(* * * The 范畴 pairs, X/A 左伴随 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/Top
@@ -37,17 +37,16 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** The category of pairs [Top^(2)] *)
+(* * ** The 范畴 pairs [Top^(2)] （已译） *)
 
-(* A space with a subset of its points; the subset is a Type-valued
-   predicate that respects the points' equality. *)
+(* 相关说明。 （已译） *)
 Record PairTop@{o} := {
   pair_space :> TopSpace@{o};
   pair_sub : carrier (top_carrier pair_space) → Type@{o};
   pair_sub_proper : ∀ x y, x ≈ y → pair_sub x → pair_sub y
 }.
 
-(* A map of pairs: a continuous map carrying the subset into the subset. *)
+(* A map pairs: continuous map carrying subset 进入 subset. （已译） *)
 Record PairMap@{h o | o < h +} (X Y : PairTop@{o}) := {
   pair_map :> pair_space X ~{Top@{h o}}~> pair_space Y;
   pair_carries : ∀ x, pair_sub X x → pair_sub Y (pair_map x)
@@ -56,8 +55,7 @@ Record PairMap@{h o | o < h +} (X Y : PairTop@{o}) := {
 Arguments pair_map {X Y} _.
 Arguments pair_carries {X Y} _ _ _.
 
-(* The hom-setoid is [Top]'s own, read on the underlying maps, as
-   Instance/Top/Homotopy.v's [PointedMap_Setoid] is. *)
+(* 相关说明。 （已译） *)
 Lemma PairMap_equiv_Equivalence@{h o | o < h +} {X Y : PairTop@{o}} :
   Equivalence (fun p q : PairMap@{h o} X Y => pair_map p ≈ pair_map q).
 Proof.
@@ -112,9 +110,9 @@ Next Obligation. intros X Y f x; simpl. reflexivity. Qed.
 Next Obligation. intros X Y Z W f g k x; simpl. reflexivity. Qed.
 Next Obligation. intros X Y Z W f g k x; simpl. reflexivity. Qed.
 
-(** ** The underlying pair of a pointed space *)
+(* 相关说明。 （已译） *)
 
-(* ⟨Y, *⟩: the subset is the basepoint, up to the points' equality. *)
+(* 相关说明。 （已译） *)
 Definition point_pair@{o} (Y : PointedTop@{o}) : PairTop@{o} :=
   @Build_PairTop@{o} (ptop_space Y) (fun y => y ≈ ptop_pt Y)
     (fun x y e h => transitivity (symmetry e) h).
@@ -140,10 +138,9 @@ Next Obligation. intros X Y f g Hfg x; simpl. exact (Hfg x). Qed.
 Next Obligation. intros X x; simpl. reflexivity. Qed.
 Next Obligation. intros X Y Z f g x; simpl. reflexivity. Qed.
 
-(** ** The quotient X/A of a pair: (X ⊔ {∗}) / (A ∼ ∗) *)
+(* 相关说明。 （已译） *)
 
-(* The points are those of X and one new point [None]; a point of X is
-   identified with [None] exactly when it lies in A. *)
+(* 相关说明。 （已译） *)
 Definition pquot_rel@{o} (X : PairTop@{o})
   (u v : option (carrier (top_carrier (pair_space X)))) : Type@{o} :=
   match u, v with
@@ -195,9 +192,7 @@ Definition pquot_some@{o} (X : PairTop@{o}) :
     (pquot_setoid X) (@Some _)
     (fun x y (e : x ≈ y) => (inl e : pquot_rel X (Some x) (Some y))).
 
-(* X/A: the quotient topology of Instance/Top/Subspace/TypeValued.v along
-   [Some], so an open is a predicate respecting the identification whose
-   restriction to X is open. *)
+(* 相关说明。 （已译） *)
 Definition pquot_space@{o} (X : PairTop@{o}) : TopSpace@{o} :=
   TQuot (pair_space X) (pquot_carrier X) (pquot_some X).
 
@@ -259,7 +254,7 @@ Next Obligation.
   intros X Y Z f g [x|]; simpl; [ left; reflexivity | exact ttt ].
 Qed.
 
-(** ** The hom-set bijection Top_*(X/A, Y) ≅ Top^(2)(⟨X, A⟩, ⟨Y, *⟩) *)
+(* 相关说明。 （已译） *)
 
 (* Restrict a based map out of X/A along [Some]. *)
 Definition pquot_to@{h o | o < h +} (X : PairTop@{o}) (Y : PointedTop@{o})
@@ -275,7 +270,7 @@ Proof.
   - exact (ptop_preserves p).
 Defined.
 
-(* Extend a map of pairs by sending the new point to the basepoint. *)
+(* 相关说明。 （已译） *)
 Definition pquot_from_map@{h o | o < h +} (X : PairTop@{o})
   (Y : PointedTop@{o}) (g : X ~{Top_pairs@{h o}}~> point_pair Y) :
   SetoidMorphism@{o o o} (pquot_carrier X) (top_carrier (ptop_space Y)).
@@ -399,7 +394,7 @@ Example pairs_quotient_adj_is@{h o u v | o < h, h < u +} (X : PairTop@{o})
 
 (** ** X/A is the pushout X ⊔_A ∗ *)
 
-(* The points of A, with the equality of X, as a discrete space. *)
+(* 相关说明。 （已译） *)
 Lemma pair_sub_equiv_Equivalence@{o} (X : PairTop@{o}) :
   Equivalence (fun a b : collapse_sub_points (pair_space X) (pair_sub X) =>
                  projT1 a ≈ projT1 b).
@@ -431,7 +426,7 @@ Definition pair_sub_incl@{h o | o < h +} (X : PairTop@{o}) :
     (pair_sub_incl_map X)
     (out_of_discrete_continuous _ (pair_space X) (pair_sub_incl_map X)).
 
-(* The new point, as a map from the one-point space. *)
+(* 相关说明。 （已译） *)
 Definition pquot_base@{h o | o < h +} (X : PairTop@{o}) :
   Point_Top@{o} ~{Top@{h o}}~> pquot_space X :=
   top_point@{h o} (pquot_space X) None.
@@ -491,7 +486,7 @@ Defined.
 Example pquot_pushout_apex@{h o | o < h +} (X : PairTop@{o}) :
   pushout_apex (pquot_pushout@{h o} X) = pquot_space X := eq_refl.
 
-(** ** X/A is the universal-arrow coequalizer of the point-inclusions *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、（余）极限相关定义、性质与动机。
@@ -545,8 +540,7 @@ Definition pquot_wide_cocone@{o h | o < h +} (X : PairTop@{o}) :
            (collapse_sub_family (pair_space X) (pair_sub X)))^op)
        (pquot_wide_legs X) (pquot_wide_legs_coherence X)).
 
-(* A cocone's two legs are a map out of X and a point absorbing A: the
-   data of the pushout, whose mediator [pquot_po_med] is the one here. *)
+(* 相关说明。 （已译） *)
 Lemma pquot_wide_ump@{o h | o < h +} (X : PairTop@{o})
   (N : Cocone (AWide@{h h h h h} (C := Top@{h o})
                  (collapse_sub_family (pair_space X) (pair_sub X)))) :
@@ -589,7 +583,7 @@ Example pquot_wide_coequalizer_colimit_in@{o h | o < h +}
   colimit_inj (colimit_is_acolimit (pquot_wide_coequalizer_colimit@{o h} X))
     ParY = pquot_in X := eq_refl.
 
-(* The leg out of * picks the left adjoint's basepoint. *)
+(* The leg out * picks 左伴随's basepoint. （已译） *)
 Example pquot_wide_coequalizer_colimit_base@{o h | o < h +}
   (X : PairTop@{o}) :
   continuous_map
@@ -597,14 +591,13 @@ Example pquot_wide_coequalizer_colimit_base@{o h | o < h +}
        ParX) ttt
     = ptop_pt (fobj[PairQuotient@{h o}] X) := eq_refl.
 
-(* The left adjoint's value at every pair IS that colimit's apex. *)
+(* The 左伴随's value at every pair IS colimit's apex. （已译） *)
 Example pquot_wide_coequalizer_colimit_quotient@{o h | o < h +}
   (X : PairTop@{o}) :
   ptop_space (fobj[PairQuotient@{h o}] X)
     = colimit_apex (pquot_wide_coequalizer_colimit@{o h} X) := eq_refl.
 
-(* Every colimit of the point-inclusions of a subset has a point, the image
-   of * under its leg out of *, whether or not the subset has one. *)
+(* 相关说明。 （已译） *)
 Definition collapse_colimit_point@{o h | o < h +} (X : TopSpace@{o})
   (A : X → Type@{o})
   (L : WideCoequalizer (AWide@{h h h h h} (C := Top@{h o})
@@ -612,10 +605,9 @@ Definition collapse_colimit_point@{o h | o < h +} (X : TopSpace@{o})
   top_carrier (colimit_apex L) :=
   continuous_map (colimit_inj (colimit_is_acolimit L) ParX) ttt.
 
-(** ** The elementary record, given a point of A *)
+(* 相关说明。 （已译） *)
 
-(* With a point [a0] of A in hand, X ~> X/A IS an elementary wide
-   coequalizer of the point-inclusions of A. *)
+(* 相关说明。 （已译） *)
 Definition pquot_coequalizer@{o h i | o < h, o <= i +} (X : PairTop@{o})
   (a0 : collapse_sub_points (pair_space X) (pair_sub X)) :
   IsWideCoequalizer@{i h h} (C := Top@{h o})
@@ -637,8 +629,8 @@ Proof.
            exact (projT2 a0).
 Defined.
 
-(* The two readings of X/A are isomorphic in [Top], by the identity on the
-   points of X. *)
+(* The two readings X/A isomorphic [Top], 恒等 the
+ points X. （已译） *)
 Definition pquot_collapse_iso@{o h u | o < h, h < u +} (X : PairTop@{o})
   (a0 : collapse_sub_points (pair_space X) (pair_sub X)) :
   Top_collapse_sub (pair_space X) (pair_sub X) ≅[Top@{h o}] pquot_space X :=
@@ -686,7 +678,7 @@ Definition pquot_collapse_iso_pointed@{o h u | o < h, h < u +}
     (iso_to_from (pquot_collapse_iso@{o h u} X a0))
     (iso_from_to (pquot_collapse_iso@{o h u} X a0)).
 
-(** ** The empty subset: X/∅ ≅ X₊; no pointed elementary coequalizer *)
+(* 相关说明。 （已译） *)
 
 Definition empty_pair@{o} (X : TopSpace@{o}) : PairTop@{o} :=
   @Build_PairTop@{o} X (fun _ => False) (fun _ _ _ f => f).
@@ -697,7 +689,7 @@ Lemma pquot_empty_new_point@{o} (X : TopSpace@{o})
   pquot_rel (empty_pair X) (Some x) None → False.
 Proof. exact (fun f => f). Qed.
 
-(* ... and is X with a disjoint point added, X₊ = X + 1. *)
+(* 相关说明。 （已译） *)
 Definition pquot_empty_sum_to@{o} (X : TopSpace@{o}) :
   SetoidMorphism@{o o o} (pquot_carrier (empty_pair X))
     (sum_carrier X Point_Top@{o}).
@@ -768,15 +760,15 @@ Example pquot_empty_sum_iso_none@{h o | o < h +} (X : TopSpace@{o}) :
   continuous_map (to (pquot_empty_sum_iso@{h o} X)) None = Datatypes.inr ttt
   := eq_refl.
 
-(* So, read as the universal arrow, the coequalizer of the empty family of
-   point-inclusions, the colimit above at ⟨X, ∅⟩, is X ⊔ ∗. *)
+(* So, read 泛箭头, coequalizer empty family of
+ point-inclusions, colimit above at ⟨X, ∅⟩, X ⊔ ∗. （已译） *)
 Definition pquot_wide_coequalizer_colimit_empty@{o h | o < h +}
   (X : TopSpace@{o}) :
   colimit_apex (pquot_wide_coequalizer_colimit@{o h} (empty_pair X))
     ≅[Top@{h o}] Sum_Top X Point_Top@{o} :=
   pquot_empty_sum_iso@{h o} X.
 
-(* The elementary record at ⟨∅, ∅⟩ is not met by this X/A ... *)
+(* 相关说明。 （已译） *)
 Lemma pquot_empty_not_coequalizer@{o h i | o < h, o <= i +} :
   IsWideCoequalizer@{i h h} (C := Top@{h o})
     (collapse_sub_family (pair_space (empty_pair Empty_Top@{o}))
@@ -801,7 +793,7 @@ Proof.
   exact (pquot_empty_not_coequalizer@{o h i} (H (empty_pair Empty_Top@{o}))).
 Qed.
 
-(** ** The elementary record and the colimit part at the empty subset *)
+(* 相关说明。 （已译） *)
 
 (* No pointed space's underlying space is an elementary wide coequalizer
    of the empty family of point-inclusions at the empty space: its

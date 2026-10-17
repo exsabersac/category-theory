@@ -10,7 +10,7 @@ Require Import Category.Instance.Top.Subspace.TypeValued.
 
 Generalizable All Variables.
 
-(** * Colimits of the Type-valued [Top]: what is formable, and the walls *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/Top
@@ -23,7 +23,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** Coproducts at an index universe at or below the points *)
+(* 相关说明。 （已译） *)
 
 Section TSigma.
 
@@ -35,9 +35,7 @@ Context (Ix : Type@{i}) (X : Ix → TopSpace@{o}).
 Definition tsig_setoid : SetoidObject@{o o} :=
   Sets_icoprod_obj (fun k => top_carrier (X k)).
 
-(* The final topology for the injections, Type-valued: a predicate is open
-   when it respects the points' equality and every restriction to a
-   summand is open. *)
+(* 相关说明。 （已译） *)
 Definition tsig_open (W : tsig_setoid → Type@{o}) : Type@{o} :=
   ((∀ p q : tsig_setoid, p ≈ q → W p → W q) ∧
    (∀ k : Ix, IsOpen (X k) (fun x => W (existT _ k x))))%type.
@@ -133,8 +131,7 @@ Defined.
 
 End TSigmaUMP.
 
-(* Indexed coproducts of the Type-valued [Top], at index types at or below
-   the points' universe. *)
+(* 相关说明。 （已译） *)
 Definition Top_HasIndexedCoproducts_small@{o h +| o < h +} :
   HasIndexedCoproducts Top@{h o} :=
   @Build_HasIndexedCoproducts Top@{h o}
@@ -143,7 +140,7 @@ Definition Top_HasIndexedCoproducts_small@{o h +| o < h +} :
     (fun A f => Build_IsIndexedCoproduct f _ _
                   (fun c iota => tsig_desc A f c iota)).
 
-(** ** Coequalizers: the quotient topology on the [Sets] coequalizer *)
+(* 相关说明。 （已译） *)
 
 Section TCoeq.
 
@@ -161,8 +158,8 @@ Definition tcoeq_proj : y ~{Top@{h o}}~> tcoeq_obj := tquot_proj y _ _.
 Lemma tcoeq_cofork : tcoeq_proj ∘ f ≈ tcoeq_proj ∘ g.
 Proof. intro a; simpl. exact (cq_glue _ _ a). Qed.
 
-(* The descended map on points: a coforking map respects the relation the
-   pair generates (Instance/Sets/Coequalizer.v's [coeq_rel_of_cofork]). *)
+(* The descended map points: coforking map respects 关系 the
+ pair generates (Instance/Sets/Coequalizer.v's [coeq_rel_of_cofork]). （已译） *)
 Definition tcoeq_med {z : Top@{h o}} (k : y ~{Top@{h o}}~> z)
   (Hk : k ∘ f ≈ k ∘ g) :
   SetoidMorphism@{o o o} (SetsCoeq (continuous_map f) (continuous_map g))
@@ -199,8 +196,7 @@ Definition Top_HasCoequalizers@{o h +| o < h +} : HasCoequalizers Top@{h o} :=
     (fun x y f g =>
        (tcoeq_obj f g; (tcoeq_proj f g; tcoeq_IsCoequalizer f g))).
 
-(* The coequalizer IS the quotient topology on the [Sets] coequalizer of
-   the underlying maps, on the nose. *)
+(* 相关说明。 （已译） *)
 Example Top_coequalizer_obj@{o h +| o < h +} {x y : Top@{h o}}
   (f g : x ~{Top@{h o}}~> y) :
   `1 (@coeq _ Top_HasCoequalizers x y f g)

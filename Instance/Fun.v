@@ -52,8 +52,8 @@ Notation "[[[ C , D ]]]( F , G )" := ({| carrier   := @hom (@Fun C D) F G
                                        ; is_setoid := @homset (@Fun C D) F G |})
   (at level 90, right associativity, format "[[[ C ,  D ]]]( F , G )") : homset_scope.
 
-(* The category laws restated directly for `[C, D]`: left/right identity and
-   associativity of vertical composition, each holding componentwise in D. *)
+(* The 范畴 laws restated directly `[C, D]`: left/right 恒等 and
+ associativity vertical 复合, each holding componentwise D. （已译） *)
 
 Corollary nat_id_left C D (F G : C ⟶ D) (N : F ⟹ G) :
   nat_id ∙ N ≈[Fun] N.
@@ -227,8 +227,8 @@ Proof.
          apply iso_from_to).
 Defined.
 
-(* The two directions of [Functor_Setoid_Nat_Iso] as standalone conversions:
-   a natural isomorphism gives functor equality, and vice versa. *)
+(* The two directions [Functor_Setoid_Nat_Iso] standalone conversions:
+ natural 同构 gives 函子 equality, vice versa. （已译） *)
 
 Definition iso_equiv {C D : Category} {f g : C ⟶ D} :
   f ≅[Fun] g → f ≈ g := fst (Functor_Setoid_Nat_Iso _ _).

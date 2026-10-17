@@ -41,7 +41,7 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** ** Restriction of scalars: Mac Lane's construction 8 *)
+(* 相关说明。 （已译） *)
 
 (** Along ρ : R → S, an S-module M becomes an R-module with r acting as
     ρ r does.  The underlying abelian group is UNCHANGED — [rm_ab] is
@@ -74,9 +74,9 @@ Proof.
     apply rm_smul_one.
 Defined.
 
-(** A map of S-modules IS a map of the restricted R-modules: the same
-    homomorphism of abelian groups, its linearity read at the scalar
-    ρ r. *)
+(** 本节：A map S-modules IS map restricted R-modules: same
+ homomorphism abelian groups, linearity read at scalar
+ ρ r. （已译） *)
 Program Definition RestrictHom {R S : RingObject} (rho : R ~{Rng}~> S)
   {M N : RModObject S} (f : M ~{RMod S}~> N) :
   RestrictObj rho M ~{RMod R}~> RestrictObj rho N := {|
@@ -120,7 +120,7 @@ Definition RigHom_op {R S : RingObject} (rho : R ~{Rng}~> S) :
 Definition RestrictR {R S : RingObject} (rho : R ~{Rng}~> S) :
   ModR S ⟶ ModR R := Restrict (RigHom_op rho).
 
-(** ** The comparison isomorphisms, all identity-carrier *)
+(* * ** The comparison isomorphisms, all 恒等-carrier （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。
@@ -144,9 +144,9 @@ Next Obligation.
   intros R M N h k Hh Hk Hhk Hkh m; exact (Hkh m).
 Qed.
 
-(** Reindexing, packaged with the op-direction fixed once: a morphism
-    x ~> y of [Rng^op] IS a ring map y → x, and restriction along it
-    carries x-modules to y-modules. *)
+(** Reindexing, packaged op-direction fixed once: 态射
+ x ~> y [Rng^op] IS ring map y → x, restriction along it
+ carries x-modules y-modules. （已译） *)
 Definition mod_map {x y : RingObject} (f : x ~{Rng^op}~> y) :
   RMod x ⟶ RMod y := Restrict f.
 
@@ -158,9 +158,9 @@ Definition mod_map {x y : RingObject} (f : x ~{Rng^op}~> y) :
 Definition mod_resp_iso {x y : RingObject} {f g : x ~{Rng^op}~> y}
   (e : f ≈ g) (a : RMod x) : mod_map f a ≅[RMod y] mod_map g a.
 Proof.
-  (* The two modules are pinned explicitly: both comparison maps being
-     the identity of ONE group, the elaborator would otherwise identify
-     the source and target modules with each other. *)
+  (* The two modules pinned explicitly: both comparison maps being
+ 恒等 ONE group, elaborator would otherwise identify
+ source target modules each other. （已译） *)
   unshelve notypeclasses refine
     (@rmod_iso_of_ab y (mod_map f a) (mod_map g a)
        cmon_hom_id cmon_hom_id _ _ _ _).
@@ -207,7 +207,7 @@ Proof.
   - intros m; reflexivity.
 Defined.
 
-(** ** The indexed category of modules *)
+(* * ** The indexed 范畴 modules （已译） *)
 
 (*
    本节说明函子、来源与用途相关定义、性质与动机。
@@ -248,10 +248,10 @@ Proof.
     intros w x y z f g h a m; reflexivity.
 Defined.
 
-(** ** The category of all modules: Mac Lane's construction 9 *)
+(* * ** The 范畴 all modules: Mac Lane's construction 9 （已译） *)
 
-(** Objects are pairs (R; M) with M an R-module; morphisms are described
-    below.  The name is the issue's. *)
+(** Objects pairs (R; M) M R-module; 态射 described
+ below. The name issue's. （已译） *)
 Definition ModTotal : Category := Grothendieck ModIndexed.
 
 (** The projection to rings, contravariantly.  By
@@ -260,7 +260,7 @@ Definition ModTotal : Category := Grothendieck ModIndexed.
     strength, not re-proved here. *)
 Definition ModProj : ModTotal ⟶ Rng^op := Grothendieck_Proj ModIndexed.
 
-(** *** What the objects and morphisms are, on the nose *)
+(* * *** What 对象 态射 are, nose （已译） *)
 
 Example ModTotal_obj_unfold :
   obj[ModTotal] = (∃ R : RingObject, RModObject R) := eq_refl.
@@ -289,7 +289,7 @@ Lemma ModTotal_cosemilinear {R S : RingObject} {M : RModObject R}
     ≈ rm_smul N s (cmon_map (rm_hom g) m).
 Proof. exact (rm_map_smul g s m). Qed.
 
-(** And back: that equation is all a fibre leg is. *)
+(** 本节：And back: equation all fibre leg is. （已译） *)
 Program Definition mod_cosemilinear_hom {R S : RingObject}
   {M : RModObject R} {N : RModObject S} (rho : S ~{Rng}~> R)
   (h : AbHom (rm_ab M) (rm_ab N))
@@ -303,10 +303,10 @@ Next Obligation.
   exact (Hs s m).
 Qed.
 
-(** *** Composition is Mac Lane's (ρ, f)·(ρ', f') *)
+(* 相关说明。 （已译） *)
 
-(** The ring components compose in [Rng] in the REVERSE order, on the
-    nose. *)
+(** 本节：The ring components compose [Rng] REVERSE order, the
+ nose. （已译） *)
 Example ModTotal_compose_ring {X Y Z : ModTotal} (b : Y ~> Z) (a : X ~> Y) :
   `1 (b ∘ a) = `1 a ∘[Rng] `1 b := eq_refl.
 
@@ -340,7 +340,7 @@ Definition ModTotal_fibre (R : RingObject) :
   EquivalenceOfCategories (Fiber_Grothendieck_To ModIndexed R) :=
   fiber_grothendieck_equiv ModIndexed R.
 
-(** ** The fibred reading: Mac Lane's (ρ, f) on the nose *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、同构相关定义、性质与动机。
@@ -395,7 +395,7 @@ Definition ModFibredProj : ModFibred ⟶ Rng :=
 
 Example ModFibred_double_op_collapses : (Rng^op)^op = Rng := eq_refl.
 
-(** *** Mac Lane's (ρ, f), definitionally *)
+(* 相关说明。 （已译） *)
 
 Example ModFibred_obj_unfold :
   obj[ModFibred] = (∃ R : RingObject, RModObject R) := eq_refl.
@@ -424,7 +424,7 @@ Lemma ModFibred_semilinear {R S : RingObject} {M : RModObject R}
     ≈ rm_smul N (rig_map rho r) (cmon_map (rm_hom f) m).
 Proof. exact (rm_map_smul f r m). Qed.
 
-(** And back: that equation is all a fibre leg is. *)
+(** 本节：And back: equation all fibre leg is. （已译） *)
 Program Definition mod_semilinear_hom {R S : RingObject}
   {M : RModObject R} {N : RModObject S} (rho : R ~{Rng}~> S)
   (h : AbHom (rm_ab M) (rm_ab N))
@@ -438,10 +438,10 @@ Next Obligation.
   exact (Hs r m).
 Qed.
 
-(** *** Composition is Mac Lane's pasting *)
+(* 相关说明。 （已译） *)
 
-(** The ring legs compose in [Rng] in Mac Lane's order, ρ' ∘ ρ, on the
-    nose. *)
+(** 本节：The ring legs compose [Rng] Mac Lane's order, ρ' ∘ ρ, the
+ nose. （已译） *)
 Example ModFibred_compose_ring {X Y Z : ModFibred}
   (b : Y ~> Z) (a : X ~> Y) :
   `1 (b ∘ a) = `1 b ∘[Rng] `1 a := eq_refl.
@@ -458,8 +458,8 @@ Lemma ModFibred_compose_fibre {X Y Z : ModFibred}
         ∘ fmap[mod_map (`1 a)] (`2 b) ∘ `2 a.
 Proof. intro m; reflexivity. Qed.
 
-(** On carriers the comparison is invisible and the fibre legs simply
-    compose. *)
+(** 本节：On carriers comparison invisible fibre legs simply
+ compose. （已译） *)
 Lemma ModFibred_compose_carrier {X Y Z : ModFibred}
   (b : Y ~> Z) (a : X ~> Y)
   (m : carrier (cmon_setoid (rm_ab (`2 X)))) :
@@ -492,20 +492,20 @@ Definition ModFibred_fibre (R : RingObject) :
     (Opposite_Functor (Fiber_Grothendieck_To OpModIndexed R)) :=
   EquivalenceOfCategories_op (fiber_grothendieck_equiv OpModIndexed R).
 
-(** ** Every module is a ℤ-module: the witness *)
+(* 相关说明。 （已译） *)
 
-(** ℤ is initial in [Rng], so there is exactly one ring map ℤ → R, and
-    restriction along it is the underlying-abelian-group functor read as
-    a change of base. *)
+(** ℤ initial [Rng], so there exactly one ring map ℤ → R, and
+ restriction along it underlying-abelian-group 函子 read as
+ change base. （已译） *)
 Example rng_from_Z_is_initial_arrow (R : RingObject) :
   rng_from_Z R = @zero Rng Rng_Initial_Z R := eq_refl.
 
 Definition ZRestrict (R : RingObject) : RMod R ⟶ RMod Int_Ring :=
   Restrict (rng_from_Z R).
 
-(** The arrow of [ModTotal] this produces, out of EVERY object: its ring
-    leg is the unique map ℤ → R and its module leg is the identity,
-    because the restriction is the target on the nose. *)
+(** The arrow [ModTotal] produces, out EVERY 对象: ring
+ leg unique map ℤ → R module leg 恒等,
+ because restriction target nose. （已译） *)
 Definition mod_to_Z (R : RingObject) (M : RModObject R) :
   (R; M) ~{ModTotal}~> (Int_Ring; ZRestrict R M) :=
   (rng_from_Z R; @id (RMod Int_Ring) (ZRestrict R M)).

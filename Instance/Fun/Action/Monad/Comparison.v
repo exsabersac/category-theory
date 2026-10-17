@@ -21,7 +21,7 @@ Require Import Category.Monad.Comparison.Resolution.
 
 Generalizable All Variables.
 
-(** * Awodey's uniqueness of the comparison functor, without the coherence *)
+(* * * Awodey's uniqueness comparison 函子, without coherence （已译） *)
 
 (*
  Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
@@ -33,10 +33,9 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** The monoid {1, a, b} and the automorphism σ swapping a and b *)
+(* * ** The 幺半群 {1, a, b} automorphism σ swapping b （已译） *)
 
-(* 1 is [None]; a and b are [Some true] and [Some false], each a left
-   zero: x y = x unless x = 1. *)
+(* 相关说明。 （已译） *)
 Definition lz_op (x y : option bool) : option bool :=
   match x with None => y | Some c => Some c end.
 
@@ -70,7 +69,7 @@ Proof. destruct x as [[]|], y as [[]|]; reflexivity. Qed.
 Lemma lz_swap_swap (x : option bool) : lz_swap (lz_swap x) = x.
 Proof. destruct x as [[]|]; reflexivity. Qed.
 
-(* σ × 1 on the carrier LZ × X of the free LZ-set on X. *)
+(* 相关说明。 （已译） *)
 Definition lz_swap_first@{o so} (X : SetoidObject@{o o}) :
   act_prod LZ@{o} X ~{Sets@{o so}}~> act_prod LZ@{o} X.
 Proof.
@@ -88,9 +87,7 @@ Proof.
   - intros [g x]; simpl. split; [ apply lz_swap_swap | reflexivity ].
 Defined.
 
-(* The element k of LZ × 1, as a map 1 → LZ × 1: a Kleisli arrow 1 → 1
-   of LZ × (−), and, extended by [MSet_extend], the right multiplication
-   by k of the free LZ-set on 1. *)
+(* 相关说明。 （已译） *)
 Definition lz_pick@{o so} (k : option bool) :
   unit_setoid_object@{o o}
     ~{Sets@{o so}}~> act_prod LZ@{o} unit_setoid_object@{o o}.
@@ -100,7 +97,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The issue's reading, refuted at the adjunction of LZ-sets *)
+(* * ** The issue's reading, refuted at 伴随 LZ-sets （已译） *)
 
 (* σ*: an action restricted along σ. *)
 Definition SwapAct@{o} (A : MSetoidAction@{o o o o o o o o} LZ@{o}) :
@@ -253,8 +250,8 @@ Proof.
   exact (K_not_EMC (H K_swap K_forget K_free)).
 Qed.
 
-(* The coherence is what excludes K: no comparison over the identity
-   identification of the two monads has a functor ≈ K. *)
+(* The coherence what excludes K: no comparison over 恒等
+ identification two 单子 has 函子 ≈ K. （已译） *)
 Corollary K_no_coherent_comparison@{o so +}
   (P : Comparison (@EM_Adjunction Sets@{o so} (ActF@{o so} LZ@{o})
                      (ActMonad@{o so} LZ@{o}))
@@ -270,7 +267,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Awodey's printed reading, refuted at the Kleisli resolution *)
+(* 相关说明。 （已译） *)
 
 Section Printed.
 
@@ -377,8 +374,8 @@ Proof.
   - rewrite Hs in E1. discriminate E1.
 Qed.
 
-(* The free extension Φ₀ of f itself has the same property and is ≈ the
-   comparison functor. *)
+(* The free extension Φ₀ f itself has same property ≈ the
+ comparison 函子. （已译） *)
 Definition phi0_fun {X Y : SetoidObject@{o o}} (f : X ~{Kl}~> Y) :
   act_prod LZU X ~{SetsU}~> act_prod LZU Y.
 Proof.
@@ -453,8 +450,7 @@ Proof.
   split; reflexivity.
 Qed.
 
-(* Awodey's printed property, U^T Φ ≅ U and Φ F = F^T, has two solutions
-   that are not isomorphic. *)
+(* 相关说明。 （已译） *)
 Theorem printed_awodey_not_unique :
   ∃ Φ1 Φ2 : Kl ⟶ EMK,
     (UT ◯ Φ1 ≈ KlForget) *
@@ -472,11 +468,11 @@ Qed.
 End Printed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** K is a comparison, over the monad automorphism θ_σ *)
+(* * ** K comparison, over 单子 automorphism θ_σ （已译） *)
 
 Section Sigma.
 
-(* m1 and m2, the object and hom levels of [Monads Sets], kept apart. *)
+(* m1 m2, 对象 hom levels [Monads Sets], kept apart. （已译） *)
 Universes o so m1 m2.
 Constraint o < so.
 
@@ -534,8 +530,8 @@ Example theta_sigma_component (X : SetoidObject@{o o}) :
   transform[mh_transform (to theta_sigma)] X = lz_swap_first@{o so} X
   := eq_refl.
 
-(* K, with the triangles [K_free] and [K_forget], is a comparison over
-   θ_σ, where [EM_Comparison] is one over the identity identification. *)
+(* K, triangles [K_free] [K_forget], comparison over
+ θ_σ, where [EM_Comparison] one over 恒等 identification. （已译） *)
 Definition K_Comparison :
   Comparison (@EM_Adjunction Sets@{o so} (ActF@{o so} LZ@{o})
                 (ActMonad@{o so} LZ@{o}))

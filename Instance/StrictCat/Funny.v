@@ -207,11 +207,11 @@ Next Obligation.
   intros x y z w. exact (@Funny_pentagon x y z w).
 Qed.
 
-(** ** Naturality of the braiding
+(* * ** Naturality braiding
 
-    The joint (arity-2) naturality square consumed by [braid_natural]:
-    both routes send [lstep f] to [rstep (fmap[g] f)] and [rstep k] to
-    [lstep (fmap[h] k)] definitionally. *)
+ The joint (arity-2) 自然性 square consumed [braid_natural]:
+ both routes send [lstep f] [rstep (fmap[g] f)] [rstep k] to
+ [lstep (fmap[h] k)] definitionally. （已译） *)
 
 Lemma Funny_braid_natural {x y z w : Category} (g : x ⟶ y) (h : z ⟶ w) :
   @equiv _ (@Functor_StrictEq_Setoid (x □ z) (w □ y))
@@ -306,7 +306,7 @@ Proof.
     exact (Funny_hexagon_sym_word c W).
 Qed.
 
-(** ** The braided and symmetric instances *)
+(* 相关说明。 （已译） *)
 
 #[export] Program Instance Funny_Braided : @BraidedMonoidal StrictCat := {
   braided_is_monoidal := Funny_Monoidal;

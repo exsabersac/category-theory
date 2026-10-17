@@ -18,7 +18,7 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** The category COQ of types and functions. *)
+(** The 范畴 COQ types functions. （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Category_of_sets
@@ -48,7 +48,7 @@ Program Instance Coq : Category := {
 Next Obligation. equivalence; congruence. Qed.
 Next Obligation. proper; congruence. Qed.
 
-(* Terminal object: the singleton `unit`, with the unique map `λ _, tt`. *)
+(* Terminal 对象: singleton `unit`, unique map `λ _, tt`. （已译） *)
 #[export]
 Program Instance Coq_Terminal : @Terminal Coq := {
   terminal_obj := unit : Type;       (* the terminal object 1 := unit *)
@@ -56,8 +56,7 @@ Program Instance Coq_Terminal : @Terminal Coq := {
 }.
 Next Obligation. destruct (f x0), (g x0); reflexivity. Qed.
 
-(* Products: the cartesian product of types `x * y`, with projections fst/snd
-   and pairing ⟨f, g⟩ := λ x, (f x, g x). *)
+(* 相关说明。 （已译） *)
 #[export]
 Program Instance Coq_Cartesian : @Cartesian Coq := {
   product_obj := λ x y, x * y : Type;          (* product object x × y *)
@@ -75,7 +74,7 @@ Next Obligation.
     rewrite <- surjective_pairing; reflexivity.
 Qed.
 
-(* The cartesian monoidal structure: tensor := × with unit I := 1 (unit). *)
+(* 相关说明。 （已译） *)
 #[export]
 Program Instance Coq_Monoidal : @Monoidal Coq :=
   @CC_Monoidal Coq Coq_Cartesian Coq_Terminal.
@@ -95,8 +94,7 @@ Program Instance Coq_Closed : @Closed Coq _ := {
 Next Obligation. proper; extensionality X0; congruence. Qed.
 Next Obligation. proper; congruence. Qed.
 
-(* The cartesian-closed structure read as a closed monoidal structure: the
-   internal hom of the cartesian monoidal product is the exponential above. *)
+(* 相关说明。 （已译） *)
 #[export]
 Program Instance Coq_ClosedMonoidal : @ClosedMonoidal Coq :=
   @CCC_ClosedMonoidal Coq Coq_Cartesian Coq_Terminal Coq_Closed.

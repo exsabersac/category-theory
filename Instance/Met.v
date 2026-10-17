@@ -20,7 +20,7 @@ Generalizable All Variables.
 
 Open Scope R_scope.
 
-(** * Metric spaces, isometries, and the complete ones *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/complete+metric+space
@@ -37,7 +37,7 @@ Open Scope R_scope.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** A missing standard-library step *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Met 相关定义、性质与动机。
@@ -63,7 +63,7 @@ Record MetricSpace@{o} := {
 
   dist : met_carrier → met_carrier → R;   (* the distance *)
 
-  (* the distance respects the carrier's own equality *)
+  (* 相关说明。 （已译） *)
   dist_proper : ∀ x x' y y', x ≈ x' → y ≈ y' → dist x y = dist x' y';
 
   (* (a) zero self-distance *)
@@ -86,11 +86,11 @@ Arguments dist_separates {X} _ _ _ : rename.
 Arguments dist_sym {X} _ _ : rename.
 Arguments dist_triangle {X} _ _ _ : rename.
 
-(** ** What the four axioms already give *)
+(* 相关说明。 （已译） *)
 
-(* Non-negativity, which Fong & Spivak build into the codomain: run the
-   triangle inequality from x to x through y, then use symmetry and the
-   vanishing diagonal to read 0 ≤ 2 d(x,y). *)
+(* Non-negativity, Fong & Spivak build 进入 codomain: run the
+ triangle inequality x x through y, then use symmetry the
+ vanishing diagonal read 0 ≤ 2 d(x,y). （已译） *)
 Lemma dist_nonneg {X : MetricSpace} (x y : X) : 0 <= dist x y.
 Proof.
   pose proof (dist_triangle x y x) as H.
@@ -98,8 +98,7 @@ Proof.
   lra.
 Qed.
 
-(* The converse of [dist_separates]: equal points are at distance zero.
-   This is [dist_proper] against [dist_refl], and it is used constantly. *)
+(* 相关说明。 （已译） *)
 Lemma dist_eq_zero {X : MetricSpace} (x y : X) : x ≈ y → dist x y = 0.
 Proof.
   intro Hxy.
@@ -107,8 +106,7 @@ Proof.
   apply dist_refl.
 Qed.
 
-(* Distance vanishes exactly on the diagonal of the carrier's own equality:
-   the two separation clauses packaged together. *)
+(* 相关说明。 （已译） *)
 Lemma dist_zero_iff {X : MetricSpace} (x y : X) : dist x y = 0 ↔ x ≈ y.
 Proof.
   split.
@@ -256,9 +254,7 @@ Proof. constructor; intros x y f g H; exact H. Qed.
 *)
 Section OfInjection.
 
-(* The five lemmas below genuinely depend on the section variables; [Lib.v]
-   sets [Default Proof Using "Type"], which would discard them.  Same
-   reason, same remedy, as Instance/Top/Interval.v. *)
+(* 相关说明。 （已译） *)
 Local Set Default Proof Using "All".
 
 Context (A : SetoidObject).
@@ -319,14 +315,10 @@ Definition R_Metric : MetricSpace :=
   Metric_of_injection R_Setoid (fun r => r)
     (fun x y H => H) (fun x y H => H).
 
-(* Distance on [R_Metric] is the absolute difference, by conversion.  This
-   is the [eq_refl] exception: it is a statement about definitional
-   unfolding, not about `≈`. *)
+(* 相关说明。 （已译） *)
 Example R_Metric_dist (x y : R_Metric) : dist x y = Rabs (x - y) := eq_refl.
 
-(* The one-point space, over the singleton setoid [Sets_Terminal] uses.
-   Everything is at distance zero from everything, and separation holds
-   because the carrier has one element. *)
+(* 相关说明。 （已译） *)
 Definition Point_Metric : MetricSpace :=
   {| met_carrier    := unit_setoid_object;
      dist           := fun _ _ => 0;
@@ -370,7 +362,7 @@ Definition Harmonic : MetricSpace :=
     (fun x y H => f_equal harm H)
     (fun x y H => harm_injective x y H).
 
-(** ** Cauchy sequences, limits, completeness *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Met 相关定义、性质与动机。
@@ -389,15 +381,13 @@ Definition MConverges (X : MetricSpace) (u : nat → X) (l : X) : Type :=
 Definition MComplete (X : MetricSpace) : Type :=
   ∀ u : nat → X, MCauchy X u → ∃ l : X, MConverges X u l.
 
-(* Limits are unique up to the carrier's own equality.  This is where
-   separation earns its place among the axioms: without it a sequence could
-   converge to two genuinely different points. *)
+(* 相关说明。 （已译） *)
 Lemma MConverges_unique {X : MetricSpace} (u : nat → X) (l l' : X) :
   MConverges X u l → MConverges X u l' → l ≈ l'.
 Proof.
   intros Hl Hl'.
   apply dist_separates.
-  (* 0 ≤ d(l,l') and d(l,l') < ε for every ε > 0, hence d(l,l') = 0. *)
+  (* 相关说明。 （已译） *)
   assert (∀ eps : R, 0 < eps → dist l l' < eps) as Hsmall.
   { intros eps Heps.
     destruct (Hl (eps / 2) ltac:(lra)) as [N1 HN1].
@@ -414,8 +404,7 @@ Proof.
   - now symmetry.
 Qed.
 
-(* A convergent sequence is Cauchy.  The Cauchy modulus is produced from the
-   convergence modulus at ε/2 — data from data, no choice. *)
+(* 相关说明。 （已译） *)
 Lemma MConverges_MCauchy {X : MetricSpace} (u : nat → X) (l : X) :
   MConverges X u l → MCauchy X u.
 Proof.
@@ -455,7 +444,7 @@ Proof.
   now apply HN.
 Qed.
 
-(** ** The full subcategory of complete spaces *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明始/终对象相关定义、性质与动机。
@@ -488,10 +477,9 @@ Definition CMet_Incl_Full : Functor.Full CMet_Incl :=
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Complete and incomplete witnesses *)
+(* 相关说明。 （已译） *)
 
-(* The one-point space is complete: every sequence converges to the point,
-   with threshold 0. *)
+(* 相关说明。 （已译） *)
 Definition Point_Metric_MComplete : MComplete Point_Metric :=
   fun u _ => (ttt; fun eps Heps => (0%nat; fun n _ => Heps)).
 
@@ -503,7 +491,7 @@ Definition Point_Metric_MComplete : MComplete Point_Metric :=
 Lemma R_Metric_MComplete : MComplete R_Metric.
 Proof.
   intros u Hu.
-  (* The standard library's Cauchy criterion, from our modulus. *)
+  (* 相关说明。 （已译） *)
   assert (Cauchy_crit u) as Hcc.
   { intros eps Heps.
     destruct (Hu eps ltac:(lra)) as [N HN].
@@ -514,8 +502,8 @@ Proof.
   exists l; intros eps Heps.
   destruct (Hu (eps / 2) ltac:(lra)) as [N HN].
   exists N; intros n Hn.
-  (* |u n - l| ≤ |u n - u m| + |u m - l| for a suitable m ≥ N chosen by the
-     Prop-level convergence; the goal is a Prop, so this is legitimate. *)
+  (* |u n - l| ≤ |u n - u m| + |u m - l| suitable m ≥ N chosen the
+ Prop-level convergence; goal Prop, so 这是 legitimate. （已译） *)
   destruct (Hl (eps / 2) ltac:(lra)) as [M HM].
   pose (m := Nat.max N M).
   assert (R_dist (u m) l < eps / 2) as H1 by (apply HM; apply Nat.le_max_r).
@@ -531,10 +519,9 @@ Qed.
 Definition R_CMet : CMet := (R_Metric; R_Metric_MComplete).
 Definition Point_CMet : CMet := (Point_Metric; Point_Metric_MComplete).
 
-(** ** The harmonic space is not complete *)
+(* 相关说明。 （已译） *)
 
-(* An archimedean modulus, as DATA: [up] is a function, and [archimed] is
-   the Prop that certifies it. *)
+(* 相关说明。 （已译） *)
 Definition harm_mod (eps : R) : nat := Z.to_nat (up (/ eps)).
 
 Lemma harm_antitone (m n : nat) : (m <= n)%nat → harm n <= harm m.
@@ -580,7 +567,7 @@ Proof.
   pose proof (pos_INR l); lra.
 Qed.
 
-(* The identity sequence of the harmonic space is Cauchy. *)
+(* The 恒等 sequence harmonic space Cauchy. （已译） *)
 Lemma harm_seq_MCauchy : MCauchy Harmonic (fun n => n).
 Proof.
   intros eps Heps.
@@ -593,9 +580,7 @@ Proof.
   apply Rabs_def1; lra.
 Qed.
 
-(* ... and it has no limit in the space.  Every point k sits at 1/(k+1) > 0,
-   while the sequence runs down to 0; taking ε = 1/(2(k+1)) and an index
-   past 2k+1 separates them. *)
+(* 相关说明。 （已译） *)
 Lemma harm_seq_no_limit (l : Harmonic) :
   MConverges Harmonic (fun n => n) l → False.
 Proof.

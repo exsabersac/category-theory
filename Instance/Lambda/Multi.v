@@ -23,8 +23,7 @@ Section Multi.
 
 Generalizable All Variables.
 
-(* Reflexive-transitive closure of R: [multi_refl] is the empty sequence and
-   [multi_step] prepends one R-step to an existing sequence. *)
+(* 相关说明。 （已译） *)
 Inductive multi `(R : crelation X) : crelation X :=
   | multi_refl (x : X) : multi x x
   | multi_step (x y z : X) : R x y → multi y z → multi x z.
@@ -51,7 +50,7 @@ Proof.
   now eapply multi_step; eauto.
 Qed.
 
-(* The closure is a preorder (reflexive and transitive). *)
+(* 相关说明。 （已译） *)
 #[export]
 Program Instance multi_PreOrder `(R : crelation X) :
   PreOrder (multi R).
@@ -60,9 +59,9 @@ Next Obligation. now eapply multi_trans; eauto. Qed.
 
 Notation " t '--->*' t' " := (multi Step t t') (at level 40).
 
-(* A multi-step sequence may be extended by one [Step] at either end: the
-   contravariant (flipped) argument prepends a step before the sequence, the
-   covariant argument appends one after it. *)
+(* A multi-step sequence may extended one [Step] at either end: the
+ contravariant (flipped) 论元 prepends step before sequence, the
+ covariant 论元 appends one after it. （已译） *)
 #[export]
 Program Instance multi_respects_Step {Γ τ} :
   Proper (Step --> Step ==> arrow) (multi (Step (Γ:=Γ) (τ:=τ))).
@@ -105,10 +104,10 @@ Proof.
   now intuition; auto with *.
 Qed.
 
-(* Congruence/compatibility lemmas: each lifts a single-step congruence rule
-   of [Step] to multi-step reduction, reducing one subterm while the rest of
-   the expression stays fixed.  [multistep_AppR] reduces the argument of an
-   application whose function is already a value (cf. [ST_AppR]/[AppR_LAM]). *)
+(* Congruence/compatibility lemmas: each lifts single-step congruence rule
+ [Step] multi-step reduction, reducing one subterm while rest of
+ expression stays fixed. [multistep_AppR] reduces 论元 an
+ application whose function already value (cf. [ST_AppR]/[AppR_LAM]). （已译） *)
 Lemma multistep_AppR {Γ dom cod} {e e' : Γ ⊢ dom} {v : Γ ⊢ (dom ⟶ cod)} :
   (e --->* e') → ValueP v → APP v e --->* APP v e'.
 Proof.
@@ -143,9 +142,7 @@ Lemma multistep_Pair2 {Γ τ1 τ2} {e1 : Γ ⊢ τ1} {e2 e2' : Γ ⊢ τ2} :
   ValueP e1 → (e2 --->* e2') → Pair e1 e2 --->* Pair e1 e2'.
 Proof. now simpl_multistep. Qed.
 
-(* Reduce both components of a pair: first the left to a value [e1'] (via
-   [multistep_Pair1]), then the right (via [multistep_Pair2], whose [ST_Pair2]
-   rule requires the left component to already be a value). *)
+(* 相关说明。 （已译） *)
 Lemma multistep_Pair {Γ τ1 τ2} {e1 e1' : Γ ⊢ τ1} {e2 e2' : Γ ⊢ τ2} :
   ValueP e1' →
   (e1 --->* e1') → (e2 --->* e2') → Pair e1 e2 --->* Pair e1' e2'.

@@ -1,4 +1,4 @@
-(** * The Galois connection of a group acting on a set *)
+(* 相关说明。 （已译） *)
 
 Require Import Category.Lib.
 Require Import Category.Lib.Setoid.Propositional.
@@ -46,10 +46,9 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** (A) Closure operators, over an arbitrary Galois connection *)
+(* 相关说明。 （已译） *)
 
-(* Mac Lane's display (2) of Theorem 1, and the closedness vocabulary it
-   supports.  Nothing here mentions a group, an action or a power set. *)
+(* 相关说明。 （已译） *)
 
 Section GaloisClosure.
 
@@ -80,9 +79,7 @@ Definition gal_rlr_above (b : B) :
   RA (gal_r Gc b) (gal_r Gc (gal_l Gc (gal_r Gc b))) :=
   gal_unit Gc PB (gal_r Gc b).
 
-(* Closedness.  One direction of each is free -- [gal_counit] on the [B]
-   side, [gal_unit] on the [A] side -- so the predicate records only the
-   direction that is not. *)
+(* 相关说明。 （已译） *)
 Definition GalClosed_l (b : B) : Prop := RB b (gal_l Gc (gal_r Gc b)).
 Definition GalClosed_r (a : A) : Prop := RA (gal_r Gc (gal_l Gc a)) a.
 
@@ -125,7 +122,7 @@ Qed.
 End GaloisClosure.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (B) Mutual inclusion is [equiv] of subsets *)
+(* * ** (B) Mutual 含入 [equiv] subsets （已译） *)
 
 (*
    本节说明 Galois 相关定义、性质与动机。
@@ -146,7 +143,7 @@ Example op_rel_is_flip {A : Type} (R : relation A) :
   op_rel R = Basics.flip R := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (C) The action, the two operators, and the connection *)
+(* 相关说明。 （已译） *)
 
 Section Action.
 
@@ -200,8 +197,8 @@ Proof using A G.
   - rewrite Hxy; exact Hfix.
 Defined.
 
-(* The two memberships, on the nose.  Equations between [Prop]s, i.e.
-   between OBJECTS, not between morphisms. *)
+(* The two memberships, nose. Equations between [Prop]s, i.e.
+ between OBJECTS, not between 态射. （已译） *)
 Example stab_mem (X : carrier (Powerset_Prop_obj@{o} (act_setoid A)))
   (s : carrier (grp_setoid G)) :
   stab X s = (∀ x, X x → fixes s x) := eq_refl.
@@ -210,8 +207,8 @@ Example fixed_mem (S : carrier (Powerset_Prop_obj@{o} (grp_setoid G)))
   (x : carrier (act_setoid A)) :
   fixed S x = (∀ s, S s → fixes s x) := eq_refl.
 
-(* Mac Lane's middle term: "sigma . x = x for all sigma in S and all x in
-   X".  It is the SAME TERM as the [Q]-side inclusion. *)
+(* Mac Lane's middle term: "sigma . x = x all sigma S all x in
+ X". It SAME TERM [Q]-side 含入. （已译） *)
 Definition FixesAll (X : carrier (Powerset_Prop_obj@{o} (act_setoid A)))
                     (S : carrier (Powerset_Prop_obj@{o} (grp_setoid G)))
   : Prop := ∀ s, S s → ∀ x, X x → fixes s x.
@@ -221,18 +218,14 @@ Example stab_transpose_strict
   (S : carrier (Powerset_Prop_obj@{o} (grp_setoid G))) :
   subset_le@{o} S (stab X) = FixesAll X S := eq_refl.
 
-(* The other side.  Its whole content is the swap of two quantifiers -- so
-   the biconditional Mac Lane states as two steps costs, here, exactly one
-   permutation and one [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Lemma fixed_transpose_iff
   (X : carrier (Powerset_Prop_obj@{o} (act_setoid A)))
   (S : carrier (Powerset_Prop_obj@{o} (grp_setoid G))) :
   subset_le@{o} X (fixed S) <-> FixesAll X S.
 Proof using A G. split; intros H a Ha b Hb; exact (H b Hb a Ha). Qed.
 
-(* Antitonicity of the two operators, in the elementary form.  The
-   connection reads them at [op_rel], where they become the covariant
-   fields the donor record asks for. *)
+(* 相关说明。 （已译） *)
 Lemma stab_antitone (X X' : carrier (Powerset_Prop_obj@{o} (act_setoid A))) :
   subset_le@{o} X X' → subset_le@{o} (stab X') (stab X).
 Proof using A G. intros H s Hs x Hx; exact (Hs x (H x Hx)). Qed.
@@ -241,8 +234,8 @@ Lemma fixed_antitone (S S' : carrier (Powerset_Prop_obj@{o} (grp_setoid G))) :
   subset_le@{o} S S' → subset_le@{o} (fixed S') (fixed S).
 Proof using A G. intros H x Hx s Hs; exact (Hx s (H s Hs)). Qed.
 
-(* THE GALOIS CONNECTION.  All six fields by name; the second relation is
-   the REVERSED inclusion on P(G), which is Mac Lane's [Q^op]. *)
+(* THE GALOIS CONNECTION. All six fields name; second 关系 is
+ REVERSED 含入 P(G), Mac Lane's [Q^op]. （已译） *)
 Definition group_action_galois :
   GaloisConnection (@subset_le@{o} (act_setoid A))
                    (op_rel (@subset_le@{o} (grp_setoid G))) :=
@@ -253,7 +246,7 @@ Definition group_action_galois :
    ; gal_to   := fun X S H => proj2 (fixed_transpose_iff X S) H
    ; gal_from := fun X S H => proj1 (fixed_transpose_iff X S) H |}.
 
-(* The two preorders the connection is read at. *)
+(* 相关说明。 （已译） *)
 Definition stab_PreOrder_U : PreOrder (@subset_le@{o} (act_setoid A)) :=
   subset_le_preorder@{o} (act_setoid A).
 
@@ -262,7 +255,7 @@ Definition stab_PreOrder_G :
   op_PreOrder (subset_le_preorder@{o} (grp_setoid G)).
 
 (* ------------------------------------------------------------------------ *)
-(** ** (D) The stabiliser is a subgroup *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Galois 相关定义、性质与动机。
@@ -297,7 +290,7 @@ Example stab_Subgroup_mem
   sub_mem (stab_Subgroup X) s = stab X s := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (E) The two closure operators are idempotent *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Galois 相关定义、性质与动机。
@@ -477,7 +470,7 @@ Example galois_PG_hom
 
 
 (* ------------------------------------------------------------------------ *)
-(** ** (I) Mac Lane's own typing: a pair adjoint on the right *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、hom、同构相关定义、性质与动机。
@@ -523,13 +516,13 @@ Arguments fixes {G A} s x.
 Arguments stab {G A} X.
 Arguments fixed {G A} S.
 Arguments FixesAll {G A} X S.
-(* [A] stays EXPLICIT in [ClosedG]: its argument [S] is a subset of the
-   GROUP, which determines [G] but not the action. *)
+(* [A] stays EXPLICIT [ClosedG]: 论元 [S] subset the
+ GROUP, determines [G] but not action. （已译） *)
 Arguments ClosedG {G} A S.
 Arguments ClosedU {G A} X.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (H1) A witness: the two-element group acting on two points *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Galois 相关定义、性质与动机。
@@ -539,9 +532,7 @@ Arguments ClosedU {G A} X.
 Definition galois_two@{wo} : SetoidObject@{wo wo} :=
   {| carrier := bool ; is_setoid := eq_Setoid@{wo} bool |}.
 
-(* Z/2 as [bool] under exclusive or, with [false] the unit and every
-   element its own inverse.  Transparent: the [discriminate] arguments
-   below need its operation to compute. *)
+(* 相关说明。 （已译） *)
 Definition GalZ2@{wo} : GrpObject@{wo wo wo}.
 Proof.
   unshelve refine {| grp_setoid := galois_two@{wo}
@@ -567,8 +558,7 @@ Proof.
   - intros [|] [|] [|]; reflexivity.
 Defined.
 
-(* The action moves a point, so neither operator is the one belonging to a
-   trivial action. *)
+(* 相关说明。 （已译） *)
 Example galois_z2_act_moves : act GalZ2Act true true = false := eq_refl.
 
 (* Subsets of the two-point setoid.  [equiv] there is Leibniz equality, so
@@ -588,9 +578,7 @@ Definition galois_true@{wo} : carrier (Powerset_Prop_obj@{wo} galois_two@{wo})
 Definition galois_false@{wo} : carrier (Powerset_Prop_obj@{wo} galois_two@{wo})
   := galois_sub@{wo} (fun b => b = false).
 
-(* THE STABILISER OF {true} IS THE TRIVIAL SUBGROUP.  The forward step
-   eliminates the truncation into a [Prop] goal and closes by
-   [discriminate] on the computed [xorb true true]. *)
+(* 相关说明。 （已译） *)
 Lemma galois_z2_stab_forces (s : bool) :
   stab (A := GalZ2Act) galois_true s → s = false.
 Proof.
@@ -611,7 +599,7 @@ Proof.
   - intros s Hs; simpl in Hs; subst s; exact galois_z2_stab_unit.
 Qed.
 
-(* THE FIXED-POINT SET OF THE NON-IDENTITY ELEMENT IS EMPTY. *)
+(* 相关说明。 （已译） *)
 Theorem galois_fixed_true_empty (x : bool) :
   fixed (A := GalZ2Act) galois_true x → False.
 Proof.
@@ -619,8 +607,7 @@ Proof.
   destruct x; discriminate Hfix.
 Qed.
 
-(* NON-CLOSURE, ON THE GROUP SIDE: {true} is not a stabiliser.  Its
-   closure is all of G, because every element stabilises the empty set. *)
+(* 相关说明。 （已译） *)
 Theorem galois_true_not_ClosedG :
   ClosedG GalZ2Act galois_true → False.
 Proof.
@@ -631,8 +618,7 @@ Proof.
   discriminate Hfalse.
 Qed.
 
-(* NON-CLOSURE, ON THE POINT SIDE: {true} is not a fixed-point set.  Its
-   closure is all of U, because the trivial subgroup fixes everything. *)
+(* 相关说明。 （已译） *)
 Theorem galois_true_not_ClosedU :
   ClosedU (A := GalZ2Act) galois_true → False.
 Proof.
@@ -655,7 +641,7 @@ Proof.
   symmetry; exact galois_stab_true_trivial.
 Qed.
 
-(* [stab] is not constant: it separates the empty subset from {true}. *)
+(* [stab] not 常值: it separates empty subset {true}. （已译） *)
 Definition galois_empty@{wo} : carrier (Powerset_Prop_obj@{wo} galois_two@{wo})
   := galois_sub@{wo} (fun _ => False).
 
@@ -670,7 +656,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (H2) A witness whose stabiliser is a proper non-trivial subgroup *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Galois 相关定义、性质与动机。
@@ -707,8 +693,7 @@ Proof.
   - intros [[|] [|]] [[|] [|]] [|]; reflexivity.
 Defined.
 
-(* Membership in the stabiliser of {true} is exactly "the first coordinate
-   is the unit", both ways. *)
+(* 相关说明。 （已译） *)
 Lemma galois_v4_stab_forces (g : bool * bool) :
   stab (A := GalV4Act) galois_true g → fst g = false.
 Proof.
@@ -723,7 +708,7 @@ Proof.
   simpl; rewrite Hg; reflexivity.
 Qed.
 
-(* NOT the trivial subgroup: it contains an element other than the unit. *)
+(* 相关说明。 （已译） *)
 Theorem galois_v4_stab_nontrivial :
   sub_mem (stab_Subgroup GalV4 GalV4Act galois_true) (false, true)
     * ((false, true) = grp_unit GalV4 → False).

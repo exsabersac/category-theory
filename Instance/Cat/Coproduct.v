@@ -26,8 +26,7 @@ Generalizable All Variables.
 
 (** ** The indexed coproduct in Cat *)
 
-(* Both of these are [:=] with no tactic: [SigmaCat_ump]'s [∃!] is
-   literally the [desc] field the elementary record asks for. *)
+(* 相关说明。 （已译） *)
 Definition SigmaCat_IsIndexedCoproduct {I : Type} (C : I → Cat) :
   IsIndexedCoproduct C (SigmaCat C) (SigmaCat_inj C) :=
   Build_IsIndexedCoproduct C (SigmaCat C) (SigmaCat_inj C)
@@ -40,11 +39,11 @@ Instance Cat_HasIndexedCoproducts : @HasIndexedCoproducts Cat :=
     (fun A C a => SigmaCat_inj C a)
     (fun A C => SigmaCat_IsIndexedCoproduct C).
 
-(** ** Fullness of the injections forces UIP on the index *)
+(* 相关说明。 （已译） *)
 
-(* The terminal category's homs do not depend on their endpoints, so
-   the inhabitation hypothesis of [sigma_inj_Full_forces_UIP] is
-   discharged by [ttt]. *)
+(* The terminal 范畴's homs do not depend endpoints, so
+ inhabitation 假设 [sigma_inj_Full_forces_UIP] is
+ discharged [ttt]. （已译） *)
 Theorem inj_Full_forces_UIP_at_One {I : Type} (i : I)
   (H : Full (SigmaCat_inj (fun _ : I => _1) i)) :
   ∀ e : i = i, e = eq_refl.
@@ -62,7 +61,7 @@ Program Definition SigmaCat_unit_iso (D : Category) :
   iso_from_to := SigmaCat_unit_round_r
 |}.
 
-(** ** Two summands: the construction is not degenerate *)
+(* 相关说明。 （已译） *)
 
 Definition BoolFam (C D : Category) (b : bool) : Category :=
   if b then C else D.
@@ -76,15 +75,15 @@ Lemma bool_cross_empty_rl (C D : Category) (x : D) (y : C) :
   ((false; x) ~{SigmaCat (BoolFam C D)}~> (true; y)) → False.
 Proof. apply sigma_hom_cross_empty; simpl; discriminate. Qed.
 
-(* …so objects of different summands are not isomorphic: the summands
-   are not merged. *)
+(* …so 对象 different summands not isomorphic: summands
+ not merged. （已译） *)
 Lemma bool_summands_not_isomorphic (C D : Category) (x : C) (y : D) :
   @Isomorphism (SigmaCat (BoolFam C D)) (true; x) (false; y) → False.
 Proof. intros iso; exact (bool_cross_empty_lr C D x y (to iso)). Qed.
 
-(* The case functor genuinely does case analysis: over the two-object
-   family it takes the two summands to two DIFFERENT objects of the
-   target, by computation. *)
+(* The case 函子 genuinely does case analysis: over two-对象
+ family it takes two summands two DIFFERENT 对象 the
+ target, computation. （已译） *)
 Program Definition PointX : _1 ⟶ _2 := {|
   fobj := fun _ => TwoX;
   fmap := fun _ _ _ => id
@@ -109,10 +108,10 @@ Lemma case_separates_summands :
     ≠ fobj[SigmaCat_case TwoPointFuns] (false; ttt).
 Proof. discriminate. Qed.
 
-(** ** Comparison with the binary coproduct *)
+(* 相关说明。 （已译） *)
 
-(* The object and arrow actions of the comparison, factored out so that
-   the [bool] case analysis happens once. *)
+(* The 对象 arrow actions comparison, factored out so that
+ [bool] case analysis happens once. （已译） *)
 Definition bool_to_obj (C D : Category) (b : bool) :
   BoolFam C D b → obj[C ∐ D] :=
   match b as b0 return BoolFam C D b0 → obj[C ∐ D] with
@@ -251,9 +250,9 @@ Program Definition SigmaBool_iso (C D : Category) :
   iso_from_to := SigmaBool_round_from C D
 |}.
 
-(* The comparison is STRICT: both round trips hold at
-   [Functor_StrictEq_Setoid], with every object component [eq_refl], so
-   the two categories are ISOMORPHIC and not merely equivalent. *)
+(* The comparison STRICT: both round trips hold at
+ [Functor_StrictEq_Setoid], every 对象 component [eq_refl], so
+ two 范畴 ISOMORPHIC not merely equivalent. （已译） *)
 Lemma SigmaBool_strict_to (C D : Category) :
   @equiv _ Functor_StrictEq_Setoid
     (SigmaBool_to C D ◯ SigmaBool_from C D) (Id[C ∐ D]).
@@ -295,7 +294,7 @@ Fail Example SigmaBool_obj_strict (C D : Category) :
 Fail Example SigmaBool_cat_strict (C D : Category) :
   SigmaCat (BoolFam C D) = (C ∐ D) := eq_refl.
 
-(** ** The smallness side condition, measured *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。

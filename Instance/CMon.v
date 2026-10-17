@@ -7,7 +7,7 @@ Require Import Category.Instance.Sets.Propositional.
 
 Generalizable All Variables.
 
-(** * The category of commutative monoids *)
+(* * * The 范畴 commutative monoids （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/commutative+monoid
@@ -44,7 +44,7 @@ Record CMonObject := {
 #[export] Existing Instance cmon_plus_respects.
 #[export] Existing Instance cmon_prop.
 
-(* The right unit law follows from the left one by commutativity. *)
+(* 相关说明。 （已译） *)
 Corollary cmon_plus_zero_r (M : CMonObject) (a : carrier (cmon_setoid M)) :
   cmon_plus M a (cmon_zero M) ≈ a.
 Proof.
@@ -52,8 +52,7 @@ Proof.
   apply cmon_plus_zero_l.
 Qed.
 
-(* A homomorphism of commutative monoids: a setoid map on the carriers that
-   preserves the unit and the operation. *)
+(* 相关说明。 （已译） *)
 Record CMonHom (M N : CMonObject) := {
   cmon_map :> SetoidMorphism (cmon_setoid M) (cmon_setoid N);
 
@@ -68,8 +67,7 @@ Arguments cmon_map_plus {M N} _ _ _.
 
 #[local] Obligation Tactic := idtac.
 
-(* The hom-setoid: homomorphisms are compared by their underlying maps,
-   pointwise up to the codomain's `≈` (as in [Sets]). *)
+(* 相关说明。 （已译） *)
 #[export]
 Program Instance CMonHom_Setoid {M N : CMonObject} : Setoid (CMonHom M N) := {|
   equiv := fun f g => ∀ a, cmon_map f a ≈ cmon_map g a
@@ -104,8 +102,8 @@ Proof.
   - intros f g H a; exact (pequiv_from _ _ (H a)).
 Defined.
 
-(* The identity homomorphism: the identity setoid map, which preserves the
-   unit and the operation on the nose. *)
+(* The 恒等 homomorphism: 恒等 setoid map, preserves the
+ unit operation nose. （已译） *)
 Program Definition cmon_hom_id {M : CMonObject} : CMonHom M M := {|
   cmon_map := setoid_morphism_id
 |}.
@@ -118,8 +116,8 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* Composition of homomorphisms: composition of the underlying setoid maps;
-   preservation of unit and operation composes. *)
+(* Composition homomorphisms: 复合 underlying setoid maps;
+ preservation unit operation composes. （已译） *)
 Program Definition cmon_hom_compose {M N P : CMonObject}
         (f : CMonHom N P) (g : CMonHom M N) : CMonHom M P := {|
   cmon_map := setoid_morphism_compose (cmon_map f) (cmon_map g)
@@ -195,9 +193,9 @@ Proof.
   exact (@CMonHom_PropEquiv M N).
 Defined.
 
-(* The forgetful functor to [Sets], dropping the monoid structure.  It is
-   faithful by construction, since equivalence of homomorphisms in [CMon] is
-   equivalence of the underlying setoid maps. *)
+(* The forgetful 函子 [Sets], dropping 幺半群 structure. It is
+ faithful construction, since 等价 homomorphisms [CMon] is
+ 等价 underlying setoid maps. （已译） *)
 Program Definition CMon_Forget : CMon ⟶ Sets := {|
   fobj := fun M => cmon_setoid M;
   fmap := fun _ _ f => cmon_map f

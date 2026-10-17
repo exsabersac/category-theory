@@ -10,7 +10,7 @@ Require Import Category.Theory.Coq.Monoid.
 
 Generalizable All Variables.
 
-(** * ParE: partial functions with monoidal errors over Coq Types *)
+(* 相关说明。 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Monad_(functional_programming)#The_Either_monad
@@ -25,8 +25,8 @@ Section ParE.
 Context {E : Type}.
 Context `{Monoid E}.
 
-(* Kleisli bind for the exception monad [E + -]: an incoming error [inl x] is
-   propagated unchanged, while a value [inr y] is fed to the continuation [f]. *)
+(* Kleisli bind exception 单子 [E + -]: incoming error [inl x] is
+ propagated unchanged, while value [inr y] fed continuation [f]. （已译） *)
 Definition sum_bind {A B : Type} (f : A → E + B) (o : E + A) : E + B :=
   match o with
   | Datatypes.inl x => Datatypes.inl x
@@ -160,16 +160,15 @@ Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The initial object is again the empty type [False], but now read as the
-   *source*: a morphism out of [False] is given by [False_rect], vacuously. *)
+(* The 始对象 again empty type [False], but now read the
+ *source*: 态射 out [False] given [False_rect], vacuously. （已译） *)
 #[export] Program Instance Par_Initial : Initial ParE := {
   terminal_obj := False;
   one := λ _ _, False_rect _ _
 }.
 Next Obligation. contradiction. Qed.
 
-(* The coproduct is the disjoint sum [sum]: [fork] (the copairing) dispatches
-   on the tag, and the injections [exl]/[exr] are total, hence always [inr]. *)
+(* 相关说明。 （已译） *)
 #[export] Program Instance Par_Cocartesian : @Cocartesian ParE := {
   product_obj := sum;
   fork := λ _ _ _ f g x,

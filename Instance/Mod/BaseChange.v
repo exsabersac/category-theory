@@ -1,4 +1,4 @@
-(** * Base change along ℤ → R: the free R-module on an abelian group *)
+(* 相关说明。 （已译） *)
 
 (*
  Book:      Mac Lane, ibid., §I.8, printed pp. 28–29 — the tensor
@@ -76,7 +76,7 @@ Example zext_act_gen (A : AbObject) (r s : RS) (a : carrier A) :
   zext_act A r (ZG A s a) = ZG A (rig_mul (ring_rig R) r s) a := eq_refl.
 
 
-(** ** The four module laws, each by agreement on generators *)
+(* 相关说明。 （已译） *)
 
 Lemma zext_smul_scalar (A : AbObject) (r r' : RS) :
   r ≈ r' → ∀ x, zext_act A r x ≈ zext_act A r' x.
@@ -145,7 +145,7 @@ Definition ZExtObj (A : AbObject) : RModObject R := {|
   rm_smul_one      := zext_act_one A
 |}.
 
-(** ** The arrow action, and the functor *)
+(* * ** The arrow action, 函子 （已译） *)
 
 Program Definition zext_map_bilin {A B : AbObject} (f : AbHom A B) :
   Bilinear (ring_ab R) A (TT B) := {|
@@ -363,7 +363,7 @@ Proof.
   - intros A M N f g a; reflexivity.
 Defined.
 
-(** ** Unit, counit, and the strict readings *)
+(* 相关说明。 （已译） *)
 
 Definition zext_unit (A : AbObject) :
   A ~{Ab}~> rm_ab (ZExtObj A) :=
@@ -373,7 +373,7 @@ Definition zext_counit (M : RModObject R) :
   ZExtObj (rm_ab M) ~{RMod R}~> M :=
   @counit (RMod R) Ab ZExt (RMod_Forget_Ab R) zext_adjunction M.
 
-(* THE REVIEWER CHECK.  The unit IS a |-> 1 (x) a, on the nose. *)
+(* 相关说明。 （已译） *)
 Example zext_unit_is_gen (A : AbObject) (a : carrier A) :
   cmon_map (zext_unit A) a = ZG A (rig_one (ring_rig R)) a := eq_refl.
 
@@ -457,8 +457,8 @@ Context (R : RingObject) (A : AbObject) (M : RModObject R).
 Context (h : A ~{Ab}~> rm_ab M) (g : ZExtObj R A ~{RMod R}~> M).
 Context (a : carrier A) (s : carrier (rig_setoid (ring_rig R))).
 
-(* CONTROL for negative 1: the round trip DOES hold at ≈, and the proof
-   term names the exact law that closes the gap. *)
+(* CONTROL negative 1: round trip DOES hold at ≈, 证明
+ term names exact law closes gap. （已译） *)
 Example zext_ctrl_to_from :
   cmon_map (zext_to R (zext_from R h)) a ≈ cmon_map h a
   := rm_smul_one M (cmon_map h a).
@@ -476,15 +476,13 @@ Example zext_ctrl_from_to :
     ≈ cmon_map (rm_hom g) (@ts_gen (ring_ab R) A s a)
   := iso_from_to (zext_adj R A M) g _.
 
-(* NEGATIVE 2 (CONVERSION).  The other round trip leaves an s · 1 in the
-   scalar slot; [rig_mul_one_r] is what removes it, and it too is an
-   abstract field. *)
+(* 相关说明。 （已译） *)
 Fail Example zext_probe_from_to_strict :
   cmon_map (rm_hom (zext_from R (zext_to R g)))
     (@ts_gen (ring_ab R) A s a)
     = cmon_map (rm_hom g) (@ts_gen (ring_ab R) A s a) := eq_refl.
 
-(* CONTROL for negative 3: the unit IS an arrow of [Ab]. *)
+(* 相关说明。 （已译） *)
 Check (zext_unit R A : A ~{Ab}~> rm_ab (ZExtObj R A)).
 
 (*
@@ -496,7 +494,7 @@ Fail Check (zext_unit R A : A ~{RMod R}~> rm_ab (ZExtObj R A)).
 
 End ZExtProbeStrength.
 
-(* CONTROL for negative 4: the comparison map exists and computes. *)
+(* 相关说明。 （已译） *)
 Check (cmon_map (rm_hom zext_int_eval) (ZIntGen 3 4)).
 
 (*

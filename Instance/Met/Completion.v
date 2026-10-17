@@ -23,7 +23,7 @@ Generalizable All Variables.
 
 Open Scope R_scope.
 
-(** * The completion of a metric space, as a universal arrow *)
+(* * * The completion metric space, 泛箭头 （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/universal+morphism
@@ -66,8 +66,7 @@ Proof.
   lra.
 Qed.
 
-(* A sandwich at zero: a non-negative sequence under the sum of two null
-   sequences is null.  This is what makes [cs_equiv] transitive. *)
+(* 相关说明。 （已译） *)
 Lemma Un_cv_zero_squeeze (w u v : nat → R) :
   (∀ n, 0 <= w n) → (∀ n, w n <= u n + v n) →
   Un_cv u 0 → Un_cv v 0 → Un_cv w 0.
@@ -171,7 +170,7 @@ Proof.
   exact (HN n Hn).
 Qed.
 
-(* Convergence only sees the sequence up to the carrier's own equality. *)
+(* 相关说明。 （已译） *)
 Lemma MConverges_respects_seq {Z : MetricSpace} (u v : nat → Z) (l : Z) :
   (∀ n, u n ≈ v n) → MConverges Z u l → MConverges Z v l.
 Proof.
@@ -184,19 +183,16 @@ Qed.
 
 Section Completion.
 
-(* The proofs below genuinely depend on the space being completed; [Lib.v]
-   sets [Default Proof Using "Type"], which would discard it.  Same reason,
-   same remedy, as Instance/Top/Interval.v and Instance/Met.v's
-   [OfInjection] section. *)
+(* 相关说明。 （已译） *)
 Local Set Default Proof Using "All".
 
 Context (X : MetricSpace).
 
-(** ** Cauchy sequences as the points of the completion *)
+(* 相关说明。 （已译） *)
 
-(* A point of the completion is a sequence TOGETHER WITH its modulus, this
-   library's `∃` being [sigT].  The modulus is what
-   [Completion_MComplete] consumes, one per index. *)
+(* A point completion sequence TOGETHER WITH modulus, this
+ library's `∃` being [sigT]. The modulus what
+ [Completion_MComplete] 所消耗, one per index. （已译） *)
 Definition CauchySeq : Type := ∃ u : nat → X, MCauchy X u.
 
 Definition cs_seq (x : CauchySeq) : nat → X := `1 x.
@@ -204,16 +200,14 @@ Definition cs_cauchy (x : CauchySeq) : MCauchy X (cs_seq x) := `2 x.
 
 Definition cs_of (u : nat → X) (H : MCauchy X u) : CauchySeq := (u; H).
 
-(* The sequence of distances between two points of the completion. *)
+(* 相关说明。 （已译） *)
 Definition cdist_seq (x y : CauchySeq) (n : nat) : R :=
   dist (cs_seq x n) (cs_seq y n).
 
 Lemma cdist_seq_nonneg (x y : CauchySeq) (n : nat) : 0 <= cdist_seq x y n.
 Proof. apply dist_nonneg. Qed.
 
-(* The distances themselves form a Cauchy sequence of REALS.  This is the
-   whole reason the codomain of the metric must be complete, and the
-   estimate that proves it is [dist_quadrilateral]. *)
+(* 相关说明。 （已译） *)
 Lemma cdist_Cauchy_crit (x y : CauchySeq) : Cauchy_crit (cdist_seq x y).
 Proof.
   intros eps Heps.
@@ -237,7 +231,7 @@ Proof.
   lra.
 Qed.
 
-(** ** The distance on the completion *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -247,7 +241,7 @@ Qed.
 Definition cdist (x y : CauchySeq) : R :=
   proj1_sig (R_complete (cdist_seq x y) (cdist_Cauchy_crit x y)).
 
-(* The distance IS the limit of the term-wise distances ... *)
+(* 相关说明。 （已译） *)
 Lemma cdist_spec (x y : CauchySeq) : Un_cv (cdist_seq x y) (cdist x y).
 Proof. exact (proj2_sig (R_complete (cdist_seq x y) (cdist_Cauchy_crit x y))). Qed.
 
@@ -279,7 +273,7 @@ Proof.
   lra.
 Qed.
 
-(** ** Identification of Cauchy sequences *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Completion 相关定义、性质与动机。
@@ -288,9 +282,7 @@ Qed.
 *)
 Definition cs_equiv (x y : CauchySeq) : Prop := Un_cv (cdist_seq x y) 0.
 
-(* Both proofs are pointwise rather than by rewriting the SEQUENCE, which
-   would need functional extensionality: nothing in this development
-   rewrites under a lambda. *)
+(* 相关说明。 （已译） *)
 Lemma cs_equiv_refl (x : CauchySeq) : cs_equiv x x.
 Proof.
   intros eps Heps.
@@ -335,7 +327,7 @@ Qed.
 Definition CauchySeq_Object : SetoidObject :=
   {| carrier := CauchySeq; is_setoid := CauchySeq_Setoid |}.
 
-(** ** The completion is a metric space *)
+(* 相关说明。 （已译） *)
 
 Lemma cdist_proper (x x' y y' : CauchySeq) :
   x ≈ x' → y ≈ y' → cdist x y = cdist x' y'.
@@ -406,8 +398,8 @@ Qed.
 
 Definition eta_seq (a : X) : CauchySeq := cs_of (fun _ => a) (const_MCauchy a).
 
-(* The distance between two constant sequences is the distance of their
-   values — this is where [Un_cv_const] is spent. *)
+(* The distance between two 常值 sequences distance their
+ values — 这是 where [Un_cv_const] spent. （已译） *)
 Lemma eta_dist (a b : X) : cdist (eta_seq a) (eta_seq b) = dist a b.
 Proof.
   apply cdist_unique.
@@ -436,9 +428,7 @@ Defined.
 Definition eta : Isometry X Completion :=
   {| isometry_map := eta_morphism; isometry_dist := eta_dist |}.
 
-(* DENSITY: every point of the completion is the limit of the embedded
-   terms of any Cauchy sequence naming it.  The threshold is the sequence's
-   own Cauchy modulus at ε/2 — data, as always. *)
+(* 相关说明。 （已译） *)
 Lemma eta_dense (x : CauchySeq) :
   MConverges Completion (fun n => eta_seq (cs_seq x n)) x.
 Proof.
@@ -490,9 +480,7 @@ Lemma cs_diag_MCauchy : MCauchy X cs_diag.
 Proof.
   intros eps Heps.
   destruct (Hxi (eps / 4) ltac:(lra)) as [N2 HN2].
-  (* [harm_mod (eps/4)] is written out rather than abbreviated: [lra] matches
-     atoms syntactically, and a local abbreviation would hide the very term
-     [harm_mod_spec] talks about. *)
+  (* 相关说明。 （已译） *)
   exists (Nat.max (harm_mod (eps / 4)) N2); intros j k Hj Hk.
   assert (harm_mod (eps / 4) <= j)%nat as Hj1
       by (transitivity (Nat.max (harm_mod (eps / 4)) N2);
@@ -557,7 +545,7 @@ Definition Completion_MComplete : MComplete Completion :=
 (* The completion as an object of [CMet]. *)
 Definition Completion_CMet : CMet := (Completion; Completion_MComplete).
 
-(** ** Extending an isometry into a complete space *)
+(* 相关说明。 （已译） *)
 
 Section Extend.
 
@@ -565,8 +553,7 @@ Context (Y : MetricSpace).
 Context (cY : MComplete Y).
 Context (f : Isometry X Y).
 
-(* The image of a Cauchy sequence under an isometry is Cauchy, with the SAME
-   modulus; [cY] then names its limit. *)
+(* 相关说明。 （已译） *)
 Definition ext_seq (x : Completion) : nat → Y :=
   fun n => isometry_map f (cs_seq x n).
 
@@ -578,9 +565,9 @@ Definition ext_val (x : Completion) : Y := `1 (cY (ext_seq x) (ext_MCauchy x)).
 Definition ext_spec (x : Completion) : MConverges Y (ext_seq x) (ext_val x) :=
   `2 (cY (ext_seq x) (ext_MCauchy x)).
 
-(* The term-wise distances of x and y converge to the distance of the two
-   limits.  This single lemma yields both that [ext] is well defined and
-   that it preserves the distance. *)
+(* The term-wise distances x y converge distance two
+ limits. This single 引理 yields both [ext] well defined and
+ it preserves distance. （已译） *)
 Lemma ext_dist_cv (x y : Completion) :
   Un_cv (cdist_seq x y) (dist (ext_val x) (ext_val y)).
 Proof.
@@ -620,9 +607,9 @@ Defined.
 Definition ext : Isometry Completion Y :=
   {| isometry_map := ext_morphism; isometry_dist := ext_isometry |}.
 
-(* THE TRIANGLE: the extension restricted along the embedding is the
-   original isometry.  The image sequence is constant at [f a], so its limit
-   is [f a]. *)
+(* THE TRIANGLE: extension restricted along embedding the
+ original isometry. The image sequence 常值 at [f a], so limit
+ [f a]. （已译） *)
 Lemma ext_eta (a : X) : ext_val (eta_seq a) ≈ isometry_map f a.
 Proof.
   apply (MConverges_unique (ext_seq (eta_seq a))).
@@ -632,17 +619,14 @@ Proof.
     rewrite dist_refl; exact Heps.
 Qed.
 
-(* UNIQUENESS: any isometry out of the completion that restricts to [f]
-   along the embedding IS [ext].  Density does the work — the two maps agree
-   on a dense set and both preserve limits. *)
+(* 相关说明。 （已译） *)
 Lemma ext_unique (g : Isometry Completion Y) :
   (∀ a : X, isometry_map g (eta_seq a) ≈ isometry_map f a) →
   ∀ x : Completion, isometry_map g x ≈ ext_val x.
 Proof.
   intros Hg x.
   apply (MConverges_unique (ext_seq x)).
-  - (* g carries the embedded terms to the image sequence, and preserves
-       the limit of the dense approximation *)
+  - (* 相关说明。 （已译） *)
     apply (MConverges_respects_seq
              (fun n => isometry_map g (eta_seq (cs_seq x n))) (ext_seq x)).
     + intro n; exact (Hg (cs_seq x n)).
@@ -654,9 +638,9 @@ End Extend.
 
 (** ** The universal arrow *)
 
-(* Mac Lane §III.1's sentence, in the direct encoding of
-   Theory/Universal/Arrow.v: the embedding is a universal arrow from X to
-   the inclusion of the complete spaces. *)
+(* Mac Lane §III.1's sentence, direct encoding of
+ Theory/Universal/Arrow.v: embedding 泛箭头 X to
+ 含入 complete spaces. （已译） *)
 Definition Completion_AUniversalArrow :
   AUniversalArrow (X : Met) CMet_Incl Completion_CMet.
 Proof.
@@ -671,9 +655,9 @@ Proof.
       exact (ext_unique (`1 d) (`2 d) f (`1 v) Hv x).
 Defined.
 
-(* The same statement in the comma-category encoding, which is what
-   [ump_universal_arrows] and the [LeftAdjointFunctorFromUniversalArrows]
-   machinery consume. *)
+(* The same statement comma-范畴 encoding, what
+ [ump_universal_arrows] [LeftAdjointFunctorFromUniversalArrows]
+ machinery consume. （已译） *)
 Definition Completion_UniversalArrow : UniversalArrow (X : Met) CMet_Incl.
 Proof.
   unshelve eapply (universal_arrow_from_UMP (X : Met) CMet_Incl Completion_CMet eta).
@@ -701,9 +685,7 @@ Corollary completion_unique (X : MetricSpace) (Z : CMet)
     fmap[CMet_Incl] i ∘ eta X ≈ @universal_arrow _ _ (X : Met) CMet_Incl Z U.
 Proof. exact (auniversal_arrow_unique (Completion_AUniversalArrow X) U). Qed.
 
-(* The same statement with neither solution privileged: any two complete
-   spaces solving X's completion problem are uniquely compatibly
-   isomorphic. *)
+(* 相关说明。 （已译） *)
 Corollary completions_unique (X : MetricSpace) (A B : CMet)
       (U1 : AUniversalArrow (X : Met) CMet_Incl A)
       (U2 : AUniversalArrow (X : Met) CMet_Incl B) :
@@ -718,7 +700,7 @@ Proof. exact (auniversal_arrow_unique U1 U2). Qed.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Non-vacuity: a completion that genuinely adds a point *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Completion 相关定义、性质与动机。
@@ -737,7 +719,7 @@ Proof.
   destruct (H (harm k / 2) ltac:(lra)) as [N HN].
   pose (n := Nat.max N (2 * k + 1)).
   specialize (HN n (Nat.le_max_l N (2 * k + 1))).
-  (* the n-th term of the distance sequence is |harm k - harm n| *)
+  (* 相关说明。 （已译） *)
   change (R_dist (Rabs (harm k - harm n)) 0 < harm k / 2) in HN.
   unfold R_dist in HN.
   rewrite Rminus_0_r, Rabs_pos_eq in HN by apply Rabs_pos.

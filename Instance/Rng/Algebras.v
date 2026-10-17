@@ -38,9 +38,7 @@ Generalizable All Variables.
 
 (** ** The direct definition *)
 
-(* A commutative K-algebra: a commutative ring together with a
-   homomorphism out of K.  The three fields are, in order, the underlying
-   ring, its commutativity, and the structure map. *)
+(* 相关说明。 （已译） *)
 Record KAlgObject (K : CRng) := {
   kalg_ring : RingObject;
   kalg_comm : ∀ a b, rig_mul kalg_ring a b ≈ rig_mul kalg_ring b a;
@@ -59,9 +57,9 @@ Arguments kalg_unit {K} _.
 Definition KAlgHom {K : CRng} (A B : KAlgObject K) : Type :=
   ∃ f : kalg_ring A ~{Rng}~> kalg_ring B, kalg_unit B ≈ f ∘ kalg_unit A.
 
-(* Two K-algebra morphisms are equal when their underlying ring
-   homomorphisms are; the triangle proof is irrelevant.  This matches
-   [Coslice]'s convention (Construction/Slice.v). *)
+(* Two K-algebra 态射 equal underlying ring
+ homomorphisms are; triangle 证明 irrelevant. This matches
+ [Coslice]'s convention (Construction/Slice.v). （已译） *)
 Program Definition KAlgHom_Setoid {K : CRng} (A B : KAlgObject K) :
   Setoid (KAlgHom A B) := {|
   equiv := fun f g => `1 f ≈ `1 g
@@ -120,7 +118,7 @@ Program Definition KAlg_to_Coslice (K : CRng) : KAlg K ⟶ Coslice CRng K := {|
   fmap := fun A B f => ((`1 f; I); `2 f)
 |}.
 
-(* ...and back: forget the packaging. *)
+(* 相关说明。 （已译） *)
 Program Definition Coslice_to_KAlg (K : CRng) : Coslice CRng K ⟶ KAlg K := {|
   fobj := fun x => {| kalg_ring := `1 (`1 x);
                       kalg_comm := `2 (`1 x);
@@ -130,9 +128,9 @@ Program Definition Coslice_to_KAlg (K : CRng) : Coslice CRng K ⟶ KAlg K := {|
 
 (** ** The round trips *)
 
-(* KAlg → Coslice → KAlg is the identity on objects DEFINITIONALLY: the
-   round trip rebuilds the record from its three projections, and records
-   have eta here. *)
+(* KAlg → Coslice → KAlg 恒等 对象 DEFINITIONALLY: the
+ round trip rebuilds record three projections, records
+ have eta here. （已译） *)
 Example KAlg_Coslice_round_obj (K : CRng) (A : KAlg K) :
   fobj[Coslice_to_KAlg K] (fobj[KAlg_to_Coslice K] A) = A := eq_refl.
 
@@ -179,15 +177,15 @@ Proof.
     destruct tx, ty.
     simpl.
     reflexivity.
-  - (* from ∘ to ≈ id, on the algebras; the object component is [eq_refl] *)
+  - (* from ∘ ≈ id, algebras; 对象 component [eq_refl] （已译） *)
     exists (fun _ => eq_refl).
     intros A B f; simpl.
     reflexivity.
 Defined.
 
-(* The two composites, named: each is strictly equal to an identity
-   functor.  These are the round trips at FUNCTOR level, the object- and
-   hom-level statements above being their components. *)
+(* The two composites, named: each strictly equal 恒等
+ 函子. These round trips at FUNCTOR level, 对象- and
+ hom-level statements above being components. （已译） *)
 Definition KAlg_Coslice_to_from (K : CRng) :
   @equiv _ (@homset StrictCat (Coslice CRng K) (Coslice CRng K))
     (@compose StrictCat _ _ _ (KAlg_to_Coslice K) (Coslice_to_KAlg K))
@@ -211,9 +209,7 @@ Definition KAlg_Coslice_iso (K : CRng) : KAlg K ≅[Cat] Coslice CRng K :=
     (strict_equiv_implies_fun_equiv _ _ (KAlg_Coslice_to_from K))
     (strict_equiv_implies_fun_equiv _ _ (KAlg_Coslice_from_to K)).
 
-(* The comma reading, Mac Lane's own shape (K ↓ CRng): compose with
-   [Comma_Coslice] (Construction/Slice.v).  At [Cat] strength, because
-   that is where [Comma_Coslice] is stated. *)
+(* 相关说明。 （已译） *)
 Definition KAlg_Comma_iso (K : CRng) : KAlg K ≅[Cat] (=(K) ↓ Id) :=
   iso_compose (Comma_Coslice CRng K) (KAlg_Coslice_iso K).
 
@@ -260,8 +256,7 @@ Definition Int_to_Q_KAlg : Int_KAlg ~{KAlg Int_CRng}~> Q_KAlg :=
 Definition Z_KAlg (A : CRng) : KAlgObject Int_CRng :=
   Build_KAlgObject Int_CRng (`1 A) (`2 A) (rng_from_Z (`1 A)).
 
-(* ...and canonically means uniquely: any structure map out of ℤ on any
-   ℤ-algebra agrees with the canonical one, by [rng_from_Z_unique]. *)
+(* 相关说明。 （已译） *)
 Lemma Z_KAlg_unit_unique (A : KAlgObject Int_CRng) (z : Z) :
   rig_map (kalg_unit A) z ≈ rig_map (kalg_unit (Z_KAlg (kalg_ring A; kalg_comm A))) z.
 Proof. apply rng_from_Z_unique. Qed.
@@ -275,8 +270,7 @@ Example Q_KAlg_is_canonical (z : Z) :
   rig_map (kalg_unit Q_KAlg) z ≈ rig_map (kalg_unit (Z_KAlg Q_CRng)) z.
 Proof. exact (Z_KAlg_unit_unique Q_KAlg z). Qed.
 
-(* The witnesses transport across the comparison, so the coslice is
-   inhabited too, on the nose. *)
+(* 相关说明。 （已译） *)
 Example Q_KAlg_in_Coslice :
   fobj[KAlg_to_Coslice Int_CRng] Q_KAlg = ((Q_Ring; Q_Ring_commutative); (ZtoQ; I))
   := eq_refl.

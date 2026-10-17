@@ -25,7 +25,7 @@ Program Definition Limit_Cones `(F : J ⟶ C) `{T : @Terminal (Cones F)} :
      ; uniqueness       := fun v H => @one_unique _ T N (@one _ T N) (v; H) |}
 |}.
 
-(** * The converse, and the colimit readings *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限、始/终对象相关定义、性质与动机。

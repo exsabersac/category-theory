@@ -21,7 +21,7 @@ Require Import Category.Instance.Smgrp.
 
 Generalizable All Variables.
 
-(** * The monoid monad W₀ and its algebras *)
+(* * * The 幺半群 单子 W₀ algebras （已译） *)
 
 (*
  Book: Awodey, "Category Theory", 1st ed., Carnegie Mellon pre-print,
@@ -37,7 +37,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** Tuples of every length: [Tup0 A n] is Aⁿ, n ≥ 0 *)
+(* 相关说明。 （已译） *)
 
 (* Tup0 A 0 = unit and Tup0 A (S n) = Tup A n = A^(n+1). *)
 Definition Tup0@{o} (A : Type@{o}) (n : nat) : Type@{o} :=
@@ -132,8 +132,7 @@ Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** ∐_{n≥0} Xⁿ as a setoid *)
 
-(* Letterwise ≈ on tuples of every length, True on the two empty tuples
-   and False across lengths. *)
+(* 相关说明。 （已译） *)
 Definition tup0_eq@{o} {X : SetoidObject@{o o}} (n m : nat) :
   Tup0@{o} X n → Tup0@{o} X m → Type@{o} :=
   match n as n0, m as m0 return Tup0 X n0 → Tup0 X m0 → Type@{o} with
@@ -212,7 +211,7 @@ Proof.
   destruct (tup_to_list n t) as [|a l]; [ contradiction | exact K ].
 Qed.
 
-(* The literal words of length 0, 1 and 2. *)
+(* 相关说明。 （已译） *)
 Definition word0@{o} {A : Type@{o}} : list A := Datatypes.nil.
 
 Definition word1@{o} {A : Type@{o}} (a : A) : list A :=
@@ -226,7 +225,7 @@ Lemma word_eq_wapp_nil_r@{o} {X : SetoidObject@{o o}} (l : list X) :
 Proof. rewrite wapp_nil_r. apply word_eq_refl. Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** W₀, the monad of the adjunction Set ⇀ Mon *)
+(* * ** W₀, 单子 伴随 Set ⇀ Mon （已译） *)
 
 Section W0Monad.
 
@@ -299,7 +298,7 @@ Proof.
     rewrite tup0_to_list_list_to_tup0. apply word_eq_refl.
 Defined.
 
-(* A word goes to its length and its tuple of letters, and back. *)
+(* 相关说明。 （已译） *)
 Example W0_sum_iso_to@{+} (X : obj[Sets@{o so}]) (l : list X) :
   to (W0_sum_iso X) l = existT _ (length l) (list_to_tup0 l) := eq_refl.
 
@@ -308,7 +307,7 @@ Example W0_sum_iso_from@{+} (X : obj[Sets@{o so}]) (n : nat)
   from (W0_sum_iso X) (existT _ n t) = tup0_to_list n t := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** An algebra is a monoid (Awodey, Exercise 10.6.6) *)
+(* * ** An algebra 幺半群 (Awodey, Exercise 10.6.6) （已译） *)
 
 Lemma alg_unit@{+} {S : obj[Sets@{o so}]}
   (α : @TAlgebra Sets@{o so} W0F W0 S) (a : S) :
@@ -326,7 +325,7 @@ Proof.
   - exact (@t_action _ _ _ _ α ww).
 Qed.
 
-(* The multiplication x · y = α⟨x y⟩ and the unit α⟨⟩. *)
+(* 相关说明。 （已译） *)
 Definition alg_mul@{+} {S : obj[Sets@{o so}]}
   (α : @TAlgebra Sets@{o so} W0F W0 S) (a b : S) : S :=
   t_alg[α] (word2 a b).
@@ -344,7 +343,7 @@ Proof.
   exact (we_cons _ _ _ _ Ha (we_cons _ _ _ _ Hb we_nil)).
 Qed.
 
-(* The laws, from the unit law and the action law at a word of words. *)
+(* 相关说明。 （已译） *)
 Lemma alg_mul_assoc@{+} {S : obj[Sets@{o so}]}
   (α : @TAlgebra Sets@{o so} W0F W0 S) (a b c : S) :
   alg_mul α (alg_mul α a b) c ≈ alg_mul α a (alg_mul α b c).
@@ -401,7 +400,7 @@ Definition alg_monoid@{+} {S : obj[Sets@{o so}]}
   mk_mon_obj S (alg_one α) (alg_mul α) (alg_mul_respects α)
     (alg_mul_assoc α) (alg_one_l α) (alg_one_r α).
 
-(* The algebra comes from its monoid: α⟨m1 … mn⟩ ≈ m1 ⋯ mn. *)
+(* The algebra comes 幺半群: α⟨m1 … mn⟩ ≈ m1 ⋯ mn. （已译） *)
 Lemma alg_fold@{+} {S : obj[Sets@{o so}]}
   (α : @TAlgebra Sets@{o so} W0F W0 S) (l : list S) :
   free_mon_extend (L := alg_monoid α) (fun x => x) l ≈ t_alg[α] l.
@@ -420,8 +419,8 @@ Proof.
   exact (we_cons _ _ _ _ (reflexivity a) (word_eq_wapp_nil_r l)).
 Qed.
 
-(* ...and from no other: a monoid on the same carrier whose products the
-   algebra computes has the algebra's multiplication and unit. *)
+(* ...and no other: 幺半群 same carrier whose products the
+ algebra computes has algebra's multiplication unit. （已译） *)
 Lemma alg_monoid_unique@{+} (M : MonOS)
   (α : @TAlgebra Sets@{o so} W0F W0 (mon_ob M))
   (H : ∀ l, t_alg[α] l ≈ free_mon_extend (L := M) (fun x => x) l) :
@@ -435,7 +434,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The Eilenberg–Moore category of W₀ is Mon *)
+(* * ** The Eilenberg–Moore 范畴 W₀ Mon （已译） *)
 
 Definition W0Alg@{+} : Category@{so o o} :=
   @EilenbergMoore@{so so so o} Sets@{o so} W0F W0.
@@ -470,7 +469,7 @@ Defined.
 Definition Mon_K@{+} : MonOS ⟶ W0Alg :=
   EM_Comparison free_mon_sets_adjunction_hom.
 
-(* The algebra round trip, with the identity as its component. *)
+(* The algebra round trip, 恒等 component. （已译） *)
 Definition Mon_EM_counit_iso@{+} (x : W0Alg) :
   @Isomorphism W0Alg (fobj[Mon_K ◯ EM_to_Mon] x) x.
 Proof.
@@ -495,8 +494,8 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* The monoid round trip, with the identity as its component: the
-   multiplication comes back as x · (y · 1). *)
+(* The 幺半群 round trip, 恒等 component: the
+ multiplication comes back x · (y · 1). （已译） *)
 Definition Mon_EM_unit_iso@{+} (M : MonOS) :
   @Isomorphism MonOS (fobj[EM_to_Mon ◯ Mon_K] M) M.
 Proof.
@@ -516,8 +515,8 @@ Proof.
   - intro a. reflexivity.
 Defined.
 
-(* Awodey Example 10.7 and Riehl Example 5.2.6(iii): K is an equivalence,
-   with identity components both ways. *)
+(* Awodey Example 10.7 Riehl Example 5.2.6(iii): K 等价,
+ 恒等 components both ways. （已译） *)
 Definition Mon_EM_equivalence@{+} :
   @EquivalenceOfCategories@{so so so so so o} MonOS W0Alg Mon_K.
 Proof.
@@ -538,7 +537,7 @@ Proof.
   exact Mon_EM_equivalence.
 Defined.
 
-(* Mon ≅ Set^{W₀} in Cat, from the two component isomorphisms. *)
+(* 相关说明。 （已译） *)
 Definition Mon_EM_iso@{c +} : @Isomorphism Cat@{c so so so o} MonOS W0Alg.
 Proof.
   unshelve refine
@@ -550,7 +549,7 @@ Proof.
 Defined.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Commuting with the forgetful functors (Awodey §10.3) *)
+(* * ** Commuting forgetful 函子 (Awodey §10.3) （已译） *)
 
 Definition W0_Forget@{+} : W0Alg ⟶ Sets@{o so} :=
   @EM_Forget Sets@{o so} W0F W0.
@@ -577,7 +576,7 @@ Example EM_to_Mon_Forget_map@{+} {x y : W0Alg} (f : x ~{W0Alg}~> y) :
   fmap[UMonOS] (fmap[EM_to_Mon] f) = fmap[W0_Forget] f := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The Kleisli category of W₀ (Riehl, Example 5.2.11(ii)) *)
+(* * ** The Kleisli 范畴 W₀ (Riehl, Example 5.2.11(ii)) （已译） *)
 
 Definition W0Kl@{+} : Category@{so o o} := @Kleisli Sets@{o so} W0F W0.
 
@@ -627,12 +626,12 @@ Example W0Kl_hom_iso_to@{+} (A B : obj[Sets@{o so}]) (f : A ~{W0Kl}~> B)
 (* ------------------------------------------------------------------------ *)
 (** ** Readbacks *)
 
-(* The two legs of the isomorphism in Cat are the two functors. *)
+(* The two legs 同构 Cat two 函子. （已译） *)
 Example Mon_EM_iso_to@{+} : to Mon_EM_iso = Mon_K := eq_refl.
 
 Example Mon_EM_iso_from@{+} : from Mon_EM_iso = EM_to_Mon := eq_refl.
 
-(* The monoid of an algebra: its carrier, x · y = α⟨x y⟩ and 1 = α⟨⟩. *)
+(* The 幺半群 algebra: carrier, x · y = α⟨x y⟩ 1 = α⟨⟩. （已译） *)
 Example alg_monoid_carrier@{+} {S : obj[Sets@{o so}]}
   (α : @TAlgebra Sets@{o so} W0F W0 S) : mon_ob (alg_monoid α) = S
   := eq_refl.
@@ -645,9 +644,9 @@ Example alg_monoid_one@{+} {S : obj[Sets@{o so}]}
   (α : @TAlgebra Sets@{o so} W0F W0 S) :
   mon_one (alg_monoid α) = t_alg[α] word0 := eq_refl.
 
-(* K M is ⟨M, U ε_M⟩: the structure map is the fold of the identity, ν₀ the
-   unit, and νₙ the n-fold product, bracketed to the right with the unit
-   last. *)
+(* K M ⟨M, U ε_M⟩: structure map fold 恒等, ν₀ the
+ unit, νₙ n-fold product, bracketed right unit
+ last. （已译） *)
 Example Mon_K_carrier@{+} (M : MonOS) :
   projT1 (fobj[Mon_K] M) = mon_ob M := eq_refl.
 
@@ -674,7 +673,7 @@ Example Mon_K_nu2@{+} (M : MonOS) (x y : mon_ob M) :
 Example Mon_K_map@{+} {M N : MonOS} (f : M ~{MonOS}~> N) :
   t_alg_hom[fmap[Mon_K] f] = `1 f := eq_refl.
 
-(* The monoid of an algebra, through the functor. *)
+(* The 幺半群 algebra, through 函子. （已译） *)
 Example EM_to_Mon_carrier@{+} (x : W0Alg) :
   mon_ob (fobj[EM_to_Mon] x) = projT1 x := eq_refl.
 
@@ -687,8 +686,7 @@ Example EM_to_Mon_one@{+} (x : W0Alg) :
 Example EM_to_Mon_map@{+} {x y : W0Alg} (f : x ~{W0Alg}~> y) :
   `1 (fmap[EM_to_Mon] f) = t_alg_hom[f] := eq_refl.
 
-(* The round trips: the carrier, the unit and the maps come back on the
-   nose, the multiplication as x · (y · 1), so at ≈. *)
+(* 相关说明。 （已译） *)
 Example Mon_rt_carrier@{+} (M : MonOS) :
   mon_ob (fobj[EM_to_Mon ◯ Mon_K] M) = mon_ob M := eq_refl.
 
@@ -717,8 +715,8 @@ Example EM_rt_alg_fun@{+} (x : W0Alg) (l : list (projT1 x)) :
 Example EM_rt_alg_hom@{+} {x y : W0Alg} (f : x ~{W0Alg}~> y) :
   t_alg_hom[fmap[Mon_K ◯ EM_to_Mon] f] = t_alg_hom[f] := eq_refl.
 
-(* Every component of the two natural isomorphisms is the identity, at a
-   variable object, to and from. *)
+(* Every component two natural isomorphisms 恒等, at a
+ variable 对象, from. （已译） *)
 Example Mon_EM_iso_to_from_component@{+} (x : W0Alg) :
   (t_alg_hom[to (projT1 (iso_to_from Mon_EM_iso) x)],
    t_alg_hom[from (projT1 (iso_to_from Mon_EM_iso) x)])

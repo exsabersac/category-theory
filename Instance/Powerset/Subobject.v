@@ -24,7 +24,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** (A) The subobject preimage is monotone, in any category *)
+(* * ** (A) The subobject preimage monotone, any 范畴 （已译） *)
 
 Section ReindexMonotone.
 
@@ -57,7 +57,7 @@ Defined.
 End ReindexMonotone.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (B) The direct image of a subobject of a setoid *)
+(* 相关说明。 （已译） *)
 
 Section SubImage.
 
@@ -67,8 +67,8 @@ Constraint o < so.
 Context {A B : SetoidObject@{o o}}.
 Context (f : A ~{Sets@{o so}}~> B).
 
-(* The direct image of a subobject: the image of the composite mono,
-   Instance/Sets/Image.v's construction reused whole. *)
+(* The direct image subobject: image 复合 mono,
+ Instance/Sets/Image.v's construction reused whole. （已译） *)
 Definition sub_image (u : @SubObj Sets@{o so} A) : @SubObj Sets@{o so} B :=
   @Build_SubObj Sets@{o so} B
     (Sets_Image (f ∘ sub_mono u))
@@ -112,9 +112,7 @@ Proof.
   intro p; reflexivity.
 Qed.
 
-(* The setoid upgrade.  Both comparison maps preserve the first
-   projection, and the image setoid compares nothing else, so the two
-   inverse laws close by [reflexivity]. *)
+(* 相关说明。 （已译） *)
 #[export] Instance sub_image_respects :
   Proper (equiv ==> equiv) sub_image.
 Proof.
@@ -135,7 +133,7 @@ Arguments sub_image {A B} f u.
 Arguments sub_image_monotone {A B} f {u v} H.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (C) The transposition, at subobject level *)
+(* 相关说明。 （已译） *)
 
 Section SubTranspose.
 
@@ -145,8 +143,7 @@ Constraint o < so.
 Context {A B : SetoidObject@{o o}}.
 Context (f : A ~{Sets@{o so}}~> B).
 
-(* Left to right.  The image's epi leg supplies the second pullback leg
-   and Instance/Sets/Image.v's [Sets_Image_comm] the square. *)
+(* 相关说明。 （已译） *)
 Lemma sub_image_transpose_to (u : @SubObj Sets@{o so} A)
   (v : @SubObj Sets@{o so} B) :
   sub_le (sub_image f u) v → sub_le u (sub_reindex f v).
@@ -186,9 +183,7 @@ Proof.
   - exact (`2 (`2 p)).
 Qed.
 
-(* RESPECTFULNESS IS WHERE MONICITY IS SPENT: two image points with one
-   first projection may carry different preimages, and only injectivity
-   of a mono in [Sets] identifies the two values. *)
+(* 相关说明。 （已译） *)
 Definition sub_transpose_from_map (u : @SubObj Sets@{o so} A)
   (v : @SubObj Sets@{o so} B)
   (k : sub_dom u ~{Sets@{o so}}~> sub_dom (sub_reindex f v))
@@ -223,7 +218,7 @@ Definition sub_image_reindex_iffT (u : @SubObj Sets@{o so} A)
 End SubTranspose.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (D) The bridges to the Prop-valued subsets of #311 *)
+(* 相关说明。 （已译） *)
 
 Section Bridges.
 
@@ -233,9 +228,7 @@ Constraint o < so.
 Context {A B : SetoidObject@{o o}}.
 Context (f : A ~{Sets@{o so}}~> B).
 
-(* The direct image of the subobject a subset names IS that subset's
-   direct image -- at [≈], because the two truncated existentials are
-   bracketed differently and each direction reassociates. *)
+(* 相关说明。 （已译） *)
 Lemma sub_image_is_Powerset_Prop_image
   (S : carrier (Powerset_Prop_obj@{o} A)) :
   Powerset_subset_of_subobject@{o so}
@@ -278,9 +271,9 @@ Proof.
     + reflexivity.
 Qed.
 
-(* Consequently the Type-valued subobject order maps to the Prop-valued
-   subset order: a factorization between subobjects yields inclusion of
-   the subsets they name. *)
+(* Consequently Type-valued subobject order maps Prop-valued
+ subset order: factorization between subobjects yields 含入 of
+ subsets they name. （已译） *)
 Lemma subset_le_of_sub_le (u v : @SubObj Sets@{o so} A) :
   sub_le u v →
   ∀ a, Powerset_subset_of_subobject@{o so} u a

@@ -29,9 +29,9 @@ Generalizable All Variables.
 
 (** ** Objects *)
 
-(** An abelian group: a commutative monoid with a negation that is a
-    left inverse.  The right inverse law follows by commutativity
-    ([ab_neg_right] below), so it is not a field. *)
+(** An abelian group: commutative 幺半群 negation a
+ left inverse. The right inverse law follows commutativity
+ ([ab_neg_right] below), so it not field. （已译） *)
 Record AbObject := {
   ab_cmon :> CMonObject;
 
@@ -50,8 +50,8 @@ Proof.
   apply ab_neg_left.
 Qed.
 
-(** Cancellation, used repeatedly below.  This is the one property that
-    genuinely separates a group from a monoid. *)
+(** Cancellation, used repeatedly below. This one property that
+ genuinely separates group 幺半群. （已译） *)
 Lemma ab_cancel_l (A : AbObject) (a b c : carrier (cmon_setoid A)) :
   cmon_plus A a b ≈ cmon_plus A a c → b ≈ c.
 Proof.
@@ -79,9 +79,9 @@ Proof.
   apply cmon_plus_zero_l.
 Qed.
 
-(** Negation distributes over addition.  This needs commutativity, so it is an
-    abelian-group fact rather than a group fact, and it is what makes the
-    quotient below respect negation. *)
+(** 本节：Negation distributes over addition. This needs commutativity, so it an
+ abelian-group fact rather than group fact, it what makes the
+ quotient below respect negation. （已译） *)
 Lemma ab_neg_plus (A : AbObject) (a b : carrier (cmon_setoid A)) :
   ab_neg A (cmon_plus A a b)
     ≈ cmon_plus A (ab_neg A a) (ab_neg A b).
@@ -138,17 +138,17 @@ Program Definition Ab@{u p} : Category@{u p p} := {|
   compose_respects := fun A B C => @cmon_hom_compose_respects@{u p} A B C
 |}.
 
-(** The forgetful functor to [Sets], through the underlying setoid. *)
+(** The forgetful 函子 [Sets], through underlying setoid. （已译） *)
 Program Definition Ab_Forget : Ab ⟶ Sets := {|
   fobj := fun A => cmon_setoid (ab_cmon A);
   fmap := fun _ _ f => cmon_map f
 |}.
 
-(** ** The zero group as a zero object *)
+(* * ** The zero group zero 对象 （已译） *)
 
-(** The one-element abelian group.  Its negation is forced: there is only one
-    element, so [ab_neg] is the constant map and the inverse law is
-    [reflexivity]. *)
+(** The one-element abelian group. Its negation forced: there one
+ element, so [ab_neg] 常值 map inverse law is
+ [reflexivity]. （已译） *)
 Definition Ab_trivial : AbObject.
 Proof.
   unshelve notypeclasses refine {|
@@ -159,7 +159,7 @@ Proof.
   - intros a; reflexivity.
 Defined.
 
-(** Everything maps to the point, and only one map does. *)
+(** 本节：Everything maps point, one map does. （已译） *)
 Definition Ab_one (A : AbObject) : A ~{Ab}~> Ab_trivial := CMon_one A.
 
 Lemma Ab_one_unique (A : AbObject) (f : A ~{Ab}~> Ab_trivial) :
@@ -172,8 +172,8 @@ Program Definition Ab_Terminal : @Terminal Ab := {|
 |}.
 Next Obligation. now rewrite (Ab_one_unique _ f), (Ab_one_unique _ g). Qed.
 
-(** Dually: the unique map OUT of the point sends the point to zero.  This is
-    where the group being trivial does the work -- there is nothing to choose. *)
+(** 本节：Dually: unique map OUT point sends point zero. This is
+ where group being trivial does work -- there nothing choose. （已译） *)
 Definition Ab_zero_hom (A : AbObject) : Ab_trivial ~{Ab}~> A :=
   CMon_zero_hom A.
 
@@ -196,12 +196,12 @@ Next Obligation.
     [ apply Ab_zero_hom_unique | symmetry; apply Ab_zero_hom_unique ].
 Qed.
 
-(** The same object is both, so the coincidence iso is the identity -- exactly
-    as at Instance/CMon/Biproduct.v. *)
+(** The same 对象 both, so coincidence iso 恒等 -- exactly
+ at Instance/CMon/Biproduct.v. （已译） *)
 #[export] Instance Ab_Zero : ZeroObject Ab :=
   @Build_ZeroObject Ab Ab_Terminal Ab_Initial iso_id.
 
-(** ** Mac Lane's §I.7 proposition: monic = injective, epic = surjective *)
+(* * ** Mac Lane's §I.7 命题: monic = injective, epic = surjective （已译） *)
 
 Definition AbInjective {A B : AbObject} (f : A ~{Ab}~> B) : Type :=
   ∀ x y : carrier (cmon_setoid A), cmon_map f x ≈ cmon_map f y → x ≈ y.
@@ -228,7 +228,7 @@ Proof.
   now apply pequiv_from.
 Qed.
 
-(** *** The kernel, used as the probe object for the monic half *)
+(* * *** The kernel, used probe 对象 monic half （已译） *)
 
 (*
    本节说明核/余核相关定义、性质与动机。
@@ -293,8 +293,8 @@ Proof using A B f.
     intros a; simpl; apply ab_neg_left.
 Defined.
 
-(** The inclusion of the kernel, and the zero map alongside it.  [f] equalizes
-    them, which is the whole point. *)
+(** The 含入 kernel, zero map alongside it. [f] equalizes
+ them, whole point. （已译） *)
 Program Definition ab_kernel_incl : AbKernel ~{Ab}~> A :=
   {| cmon_map := {| morphism := fun p : ab_ker_carrier => projT1 p |} |}.
 
@@ -319,7 +319,7 @@ Lemma ab_monic_injective {A B : AbObject} (f : A ~{Ab}~> B) :
   Monic f → AbInjective f.
 Proof.
   intros Hm x y Hxy.
-  (* Step 1: monic collapses the two maps out of the kernel. *)
+  (* 相关说明。 （已译） *)
   assert (Hk : ∀ p : carrier (cmon_setoid (AbKernel f)),
                  projT1 p ≈ cmon_zero A).
   { apply (@monic _ _ _ f Hm (AbKernel f)
@@ -355,7 +355,7 @@ Proof.
   split; [ apply ab_monic_injective | apply ab_injective_monic ].
 Qed.
 
-(** *** The quotient B/fA, used as the probe object for the epic half *)
+(* * *** The quotient B/fA, used probe 对象 epic half （已译） *)
 
 (*
    本节说明（余）端相关定义、性质与动机。
@@ -484,9 +484,9 @@ Proof using A B f.
     apply ab_neg_left.
 Defined.
 
-(** The projection (identity on carriers, coarser equality) and the zero map.
-    [f] equalizes them -- which is exactly the statement that [f a] is
-    congruent to zero modulo the image. *)
+(** The projection (恒等 carriers, coarser equality) zero map.
+ [f] equalizes them -- exactly statement [f a] is
+ congruent zero modulo image. （已译） *)
 Program Definition ab_quot_proj : B ~{Ab}~> AbQuotient :=
   {| cmon_map := {| morphism := fun b : carrier (cmon_setoid B) => b |} |}.
 Next Obligation. intros x y Hxy; simpl; exists (cmon_zero A); apply pequiv_from;
@@ -580,7 +580,7 @@ Proof.
   split; [ apply ab_epic_surjective | apply ab_prop_surjective_epic ].
 Qed.
 
-(** ** The hom-setoids are propositional *)
+(* 相关说明。 （已译） *)
 
 (** L8: [Ab]'s hom-setoid IS [CMonHom_Setoid] (see [Ab] above), so
     Instance/CMon.v's [CMonHom_PropEquiv] supplies the whole family at once.

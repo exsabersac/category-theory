@@ -25,7 +25,7 @@ From Coq Require Import Lia.
 
 Generalizable All Variables.
 
-(** * Monads on a preorder are closure operators *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab: https://ncatlab.org/nlab/show/idempotent+monad
@@ -39,10 +39,9 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Closure operators: Mac Lane's display (3) *)
+(* 相关说明。 （已译） *)
 
-(* Mac Lane's display (3) as the fields: a monotone map, extensivity
-   (the unit) and the multiplication inequality. *)
+(* 相关说明。 （已译） *)
 Record ClosureOperator@{u} {A : Type@{u}} {R : relation A}
   (P : PreOrder R) := {
   cl_fun  : @MonotoneFun A R A R;
@@ -54,15 +53,14 @@ Arguments cl_fun {A R P} _.
 Arguments cl_ext {A R P} _ _.
 Arguments cl_mult {A R P} _ _.
 
-(* Seven Sketches Definition 1.120 (b), derived: the inverse of the
-   multiplication is extensivity at cl x. *)
+(* 相关说明。 （已译） *)
 Definition cl_idem@{u h} {A : Type@{u}} {R : relation A} {P : PreOrder R}
   (c : ClosureOperator@{u} P) (x : A) :
   cl_fun c (cl_fun c x) ≅[Proset@{u h} P] cl_fun c x :=
   @Build_Isomorphism (Proset@{u h} P) _ _
     (cl_mult c x) (cl_ext c (cl_fun c x)) I I.
 
-(* The smart constructor from Definition 1.120's form. *)
+(* 相关说明。 （已译） *)
 Definition closure_of_iso@{u h} {A : Type@{u}} {R : relation A}
   (P : PreOrder R) (f : @MonotoneFun A R A R) (ext : ∀ x, R x (f x))
   (idem : ∀ x, f (f x) ≅[Proset@{u h} P] f x) : ClosureOperator@{u} P :=
@@ -78,7 +76,7 @@ Example closure_of_iso_to@{u h} {A : Type@{u}} {R : relation A}
 
 (** ** The correspondence *)
 
-(* The endofunctor of the thin category, through Monotone.v. *)
+(* The 自函子 thin 范畴, through Monotone.v. （已译） *)
 Definition closure_functor@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (c : ClosureOperator@{u} P) :
   Proset@{u h} P ⟶ Proset@{u h} P :=
@@ -93,7 +91,7 @@ Definition closure_monad@{u h} {A : Type@{u}} {R : relation A}
     (fun _ _ _ => I) (fun _ => I) (fun _ => I) (fun _ => I)
     (fun _ _ _ => I).
 
-(* Monad → closure: the two inequalities are ret and join. *)
+(* 相关说明。 （已译） *)
 Definition closure_of_monad@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (M : Proset@{u h} P ⟶ Proset@{u h} P)
   {MM : @Monad (Proset@{u h} P) M} : ClosureOperator@{u} P :=
@@ -101,8 +99,7 @@ Definition closure_of_monad@{u h} {A : Type@{u}} {R : relation A}
    ; cl_ext  := fun x => @ret _ M MM x
    ; cl_mult := fun x => @join _ M MM x |}.
 
-(* The correspondence.  The pair is built with its family explicit, the
-   8.19/8.20 idiom recorded in Monotone.v. *)
+(* 相关说明。 （已译） *)
 Definition monad_closure_iff@{u h +} {A : Type@{u}} {R : relation A}
   (P : PreOrder R) :
   { M : Proset@{u h} P ⟶ Proset@{u h} P & @Monad (Proset@{u h} P) M }
@@ -122,7 +119,7 @@ Example closure_monad_is_thin@{u h t} {A : Type@{u}} {R : relation A}
     = @thin_monad@{t u h} (Proset@{u h} P) (fun _ _ _ _ => I)
         (closure_functor@{u h} c) (cl_ext c) (cl_mult c) := eq_refl.
 
-(* closure → monad → closure is the identity on the WHOLE record. *)
+(* closure → 单子 → closure 恒等 WHOLE record. （已译） *)
 Example closure_round_trip@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (c : ClosureOperator@{u} P) :
   closure_of_monad@{u h} (closure_functor@{u h} c) (MM := closure_monad c)
@@ -136,7 +133,7 @@ Definition monad_round_trip@{u h +} {A : Type@{u}} {R : relation A}
   closure_functor (closure_of_monad M (MM := MM)) ≈ M :=
   Functor_of_monotone_of_Functor P P M.
 
-(* ...but its object and arrow maps are M's on the nose. *)
+(* ...but 对象 arrow maps M's nose. （已译） *)
 Example monad_round_trip_fobj@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (M : Proset@{u h} P ⟶ Proset@{u h} P)
   {MM : @Monad (Proset@{u h} P) M} (x : A) :
@@ -149,7 +146,7 @@ Example monad_round_trip_fmap@{u h} {A : Type@{u}} {R : relation A}
   fmap[closure_functor (closure_of_monad M (MM := MM))] f = fmap[M] f
   := eq_refl.
 
-(* ...and the monad it rebuilds has M's unit and multiplication. *)
+(* ...and 单子 it rebuilds has M's unit multiplication. （已译） *)
 Example monad_round_trip_ret@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (M : Proset@{u h} P ⟶ Proset@{u h} P)
   {MM : @Monad (Proset@{u h} P) M} (x : A) :
@@ -162,7 +159,7 @@ Example monad_round_trip_join@{u h} {A : Type@{u}} {R : relation A}
   @join _ _ (closure_monad (closure_of_monad M (MM := MM))) x
     = @join _ M MM x := eq_refl.
 
-(** ** Algebras are the closed elements *)
+(* 相关说明。 （已译） *)
 
 (* Mac Lane p. 141: an algebra is exactly an x with Tx ≤ x. *)
 Definition talgebra_iff_closed@{u h +} {A : Type@{u}} {R : relation A}
@@ -187,7 +184,7 @@ Definition closed_iff_fixed@{u h +} {A : Type@{u}} {R : relation A}
   (fun h => @Build_Isomorphism (Proset@{u h} P) _ _ h (@ret _ M MM x) I I,
    fun i => to i).
 
-(* Idempotent.v's M-local objects (ret x invertible) are the closed ones. *)
+(* Idempotent.v's M-local 对象 (ret x invertible) closed ones. （已译） *)
 Definition mlocal_iff_closed@{u h +} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (M : Proset@{u h} P ⟶ Proset@{u h} P)
   {MM : @Monad (Proset@{u h} P) M} (x : A) :
@@ -197,8 +194,7 @@ Definition mlocal_iff_closed@{u h +} {A : Type@{u}} {R : relation A}
    fun h => @Build_IsIsomorphism (Proset@{u h} P) x (M x)
               (@ret _ M MM x) h I I).
 
-(* The same, by instantiating Idempotent.v at the thin witness.  [Qed]
-   keeps four body-only universe levels private (see the header). *)
+(* 相关说明。 （已译） *)
 Lemma talgebra_iff_closed_via_idem@{u h +} {A : Type@{u}}
   {R : relation A} {P : PreOrder R} (M : Proset@{u h} P ⟶ Proset@{u h} P)
   {MM : @Monad (Proset@{u h} P) M} (x : A) :
@@ -210,16 +206,16 @@ Proof.
           fun h => @local_algebra _ M MM IM x (of_closed h))).
 Qed.
 
-(** ** The Eilenberg-Moore category and the reflection, instantiated *)
+(* * ** The Eilenberg-Moore 范畴 reflection, instantiated （已译） *)
 
-(* The Eilenberg-Moore category is equivalent to the closed elements. *)
+(* The Eilenberg-Moore 范畴 equivalent closed elements. （已译） *)
 Definition proset_EM_equivalence@{u h +} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (M : Proset@{u h} P ⟶ Proset@{u h} P)
   {MM : @Monad (Proset@{u h} P) M} :=
   @Idempotent_EM_Equivalence (Proset@{u h} P) M MM
     (thin_IdempotentMonad (Order.proset_thin P)).
 
-(* The reflection onto the closed elements, t ⊣ i. *)
+(* 相关说明。 （已译） *)
 Definition proset_fixed_adj@{u h +} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (M : Proset@{u h} P ⟶ Proset@{u h} P)
   {MM : @Monad (Proset@{u h} P) M} :=
@@ -244,7 +240,7 @@ Example proset_factorisation_fmap@{u h +} {A : Type@{u}} {R : relation A}
              (thin_IdempotentMonad (Order.proset_thin P))] f = fmap[M] f
   := eq_refl.
 
-(** ** Partial orders: antisymmetry turns ≅ into = *)
+(* 相关说明。 （已译） *)
 
 (* Mac Lane p. 141: in a partial order an algebra is a fixed point. *)
 Lemma closed_eq@{u h} {A : Type@{u}} {R : relation A} {P : PreOrder R}
@@ -291,7 +287,7 @@ Definition max_closure@{u} (k : nat) : ClosureOperator@{u} Nat.le_preorder :=
    ; cl_ext  := fun n => Nat.le_max_r k n
    ; cl_mult := fun n => max_mult k n |}.
 
-(* ...whose algebras are exactly the n above k. *)
+(* 相关说明。 （已译） *)
 Lemma max_closed_iff@{u h +} (k n : nat) :
   @TAlgebra (Proset@{u h} Nat.le_preorder)
     (closure_functor@{u h} (max_closure@{u} k))

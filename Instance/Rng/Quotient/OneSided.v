@@ -47,7 +47,7 @@ Next Obligation.
   apply ut2_eq3; ring.
 Qed.
 
-(* Non-vacuity of the left ideal itself: E₁₁ is in it and is not zero. *)
+(* 相关说明。 （已译） *)
 Theorem E11Left_nontrivial :
   lidl_mem E11Left ut2_e11 * (ut2_e11 = ut2_zero → False).
 Proof.
@@ -65,8 +65,7 @@ Theorem ut2_e11_not_right_absorbing :
   lidl_mem E11Left (rig_mul UT2 ut2_e11 ut2_e12) → False.
 Proof. intros [a Ha]; discriminate Ha. Qed.
 
-(* So the fifth field of [Ideal] is not derivable from the other four:
-   no [Ideal UT2] has [E11Left]'s membership predicate. *)
+(* 相关说明。 （已译） *)
 Theorem E11Left_is_not_an_Ideal :
   { I : Ideal UT2 & ∀ x, idl_mem I x ↔ lidl_mem E11Left x } → False.
 Proof.
@@ -171,7 +170,7 @@ Theorem UT2_mod_strict_collapses_e12 :
     ≈ rig_map (rquot_proj StrictUpper) ut2_zero.
 Proof. constructor; exists 1%Z; reflexivity. Qed.
 
-(* The quotient ring UT2/StrictUpper is not the zero ring. *)
+(* 相关说明。 （已译） *)
 Theorem UT2_mod_strict_nonzero :
   rig_one (QuotientRing StrictUpper) ≈ rig_zero (QuotientRing StrictUpper)
     → False.

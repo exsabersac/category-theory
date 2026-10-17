@@ -110,8 +110,8 @@ Proof.
   apply (cmon_plus_zero_r W (rbl_map β v (cmon_zero V'))).
 Qed.
 
-(** (−v) ⊗ w ≈ −(v ⊗ w): the left-hand side IS an additive inverse of
-    v ⊗ w, and Instance/Ab.v's [ab_neg_unique] says that is enough. *)
+(** 本节：(−v) ⊗ w ≈ −(v ⊗ w): left-hand side IS additive inverse of
+ v ⊗ w, Instance/Ab.v's [ab_neg_unique] says enough. （已译） *)
 Lemma rbl_neg_l (v : carrier (cmon_setoid V)) (w : carrier (cmon_setoid V')) :
   rbl_map β (ab_neg V v) w ≈ ab_neg W (rbl_map β v w).
 Proof.
@@ -334,7 +334,7 @@ Proof.
   exact (mte_trans (mte_sym (mte_act_l r v w)) (mte_act_r r v w)).
 Qed.
 
-(** The elementary consequences of bilinearity, at the canonical map. *)
+(** 本节：The elementary consequences bilinearity, at canonical map. （已译） *)
 Lemma tensor_zero_l (w : carrier (cmon_setoid V')) :
   mt_eq (mt_gen (cmon_zero V) w) mt_zero.
 Proof. exact (rbl_zero_l tensor_gen w). Qed.
@@ -631,11 +631,11 @@ Next Obligation.
   exact (symmetry (Hk v w)).
 Qed.
 
-(* Mac Lane's pair ⟨r, e⟩, the same data with the object as a field. *)
+(* Mac Lane's pair ⟨r, e⟩, same data 对象 field. （已译） *)
 Definition tensor_UniversalElement : UniversalElement Bilin :=
   UniversalElement_of_AUniversalElement tensor_universal_element.
 
-(* The representing object is the tensor, by [eq_refl]. *)
+(* The 表示 对象 tensor, [eq_refl]. （已译） *)
 Example tensor_UniversalElement_obj :
   @ue_obj (RMod R) Bilin tensor_UniversalElement = TensorMod V V' := eq_refl.
 
@@ -706,21 +706,18 @@ Proof.
     intros v w w'; simpl; unfold Rig.Z_eqT; ring.
   - (* rbl_smul_l *)
     intros r v w; simpl; unfold Rig.Z_eqT; ring.
-  - (* rbl_smul_r: the clause that spends commutativity of ℤ *)
+  - (* 相关说明。 （已译） *)
     intros r v w; simpl; unfold Rig.Z_eqT; ring.
 Defined.
 
-(* Index arguments supplied once, as NOTATIONS (so each unfolds to the
-   constructor itself) — the device Instance/Mod/Free.v uses for its own
-   witnesses. *)
+(* 相关说明。 （已译） *)
 Local Notation zgen  := (@mt_gen Int_Ring Int_RMod Int_RMod).
 Local Notation zzero := (@mt_zero Int_Ring Int_RMod Int_RMod).
 Local Notation zplus := (@mt_plus Int_Ring Int_RMod Int_RMod).
 Local Notation zneg  := (@mt_neg Int_Ring Int_RMod Int_RMod).
 Local Notation zsmul := (@mt_smul Int_Ring Int_RMod Int_RMod).
 
-(* The factorization computes, through [tensor_med] and through the
-   universal element's own mediator alike. *)
+(* 相关说明。 （已译） *)
 Example int_tensor_med_computes :
   cmon_map (rm_hom (tensor_med Int_mul_bilinear)) (zgen 2%Z 3%Z) = 6%Z
   := eq_refl.
@@ -729,7 +726,7 @@ Example int_tensor_factor_computes :
   cmon_map (rm_hom (tensor_factor Int_mul_bilinear)) (zgen 2%Z 3%Z) = 6%Z
   := eq_refl.
 
-(* And it computes on a compound tensor, where the fold does real work. *)
+(* 相关说明。 （已译） *)
 Example int_tensor_med_computes_sum :
   cmon_map (rm_hom (tensor_med Int_mul_bilinear))
     (zplus (zsmul 5%Z (zgen 2%Z 3%Z)) (zneg (zgen 4%Z 1%Z)))
@@ -799,8 +796,7 @@ Next Obligation.
             (int_tensor_unit ∘ tensor_med Int_mul_bilinear)
             (@id (RMod Int_Ring) (TensorMod Int_RMod Int_RMod)) _).
   intros v w; simpl.
-  (* (v·w) ⊗ 1 ≈ (w·v) ⊗ 1 ≈ w·(v ⊗ 1) ≈ v ⊗ (w·1) ≈ v ⊗ w: the middle
-     two steps are the two action rules, i.e. the balanced law. *)
+  (* 相关说明。 （已译） *)
   refine (mte_trans (@mte_gen Int_Ring Int_RMod Int_RMod _ _ _ _
                        (Z.mul_comm v w) (reflexivity 1%Z)) _).
   refine (mte_trans (mte_sym (@mte_act_l Int_Ring Int_RMod Int_RMod w v 1%Z)) _).

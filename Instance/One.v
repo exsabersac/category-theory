@@ -6,7 +6,7 @@ Require Import Category.Instance.Cat.
 
 Generalizable All Variables.
 
-(** The terminal category 1 (the point). *)
+(** The terminal 范畴 1 (the point). （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Category_of_small_categories
@@ -37,14 +37,14 @@ Notation "1" := _1 : category_scope.
 Notation "one[ C ]" := (@one Cat _ C)
   (at level 9, format "one[ C ]") : object_scope.
 
-(* The unique functor `! : C ⟶ 1`, collapsing all of C onto the point. *)
+(* The unique 函子 `! : C ⟶ 1`, collapsing all C onto point. （已译） *)
 #[export]
 Program Instance Erase `(C : Category) : C ⟶ 1 := {
   fobj := fun _ => ttt;      (* every object goes to the lone object *)
   fmap := fun _ _ _ => id    (* every morphism goes to the identity *)
 }.
 
-(* 1 is the terminal object of Cat, witnessed by the unique functor [Erase]. *)
+(* 1 终对象 Cat, witnessed unique 函子 [Erase]. （已译） *)
 #[export]
 Program Instance Cat_Terminal : @Terminal Cat := {
   terminal_obj := _1;        (* the terminal category 1 *)

@@ -31,8 +31,8 @@ Open Scope Ty_scope.
 
 Reserved Notation " t '--->' t' " (at level 40).
 
-(* The single-step CBV reduction relation; intrinsically typed, so each step
-   preserves the context [Γ] and type [τ] (preservation by construction). *)
+(* The single-step CBV reduction 关系; intrinsically typed, so each step
+ preserves context [Γ] type [τ] (preservation construction). （已译） *)
 Inductive Step : ∀ {Γ τ}, Exp Γ τ → Exp Γ τ → Set :=
   | ST_Pair1 Γ τ1 τ2 (x x' : Exp Γ τ1) (y : Exp Γ τ2) :
     x ---> x' →
@@ -110,8 +110,7 @@ Proof.
     + dependent elimination H1'; now eauto 6.
 Qed.
 
-(* Values are irreducible (and the contrapositive [Value_cannot_start]): a
-   value cannot be on the left of a step. *)
+(* 相关说明。 （已译） *)
 Lemma Value_irreducible {Γ τ} {e e' : Exp Γ τ} :
   ValueP e → ¬ (e ---> e').
 Proof.
@@ -130,8 +129,7 @@ Proof.
   intuition eauto.
 Qed.
 
-(* Congruence lemmas restating ST_AppL/ST_AppR with the bound names used by
-   downstream developments ([Multi], [Norm]). *)
+(* 相关说明。 （已译） *)
 Lemma AppL_LAM {Γ dom cod} {e e' : Exp Γ (dom ⟶ cod)} {x : Exp Γ dom} :
   e ---> e' →
   APP e x ---> APP e' x.

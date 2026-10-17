@@ -9,7 +9,7 @@ Require Import Category.Instance.One.
 
 Generalizable All Variables.
 
-(** * The constant diagram factors through the terminal category 1. *)
+(* * * The 常值 diagram factors through terminal 范畴 1. （已译） *)
 
 (*
  nLab:      https://ncatlab.org/nlab/show/diagonal+functor

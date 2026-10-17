@@ -44,8 +44,8 @@ Proof.
   now rewrite rig_add_zero_r.
 Qed.
 
-(* Instance/Rng.v's [ring_neg_r] with the ring argument fixed, so that
-   the rewrites below match without an explicit instantiation. *)
+(* Instance/Rng.v's [ring_neg_r] ring 论元 fixed, so that
+ rewrites below match without explicit instantiation. （已译） *)
 Lemma ring_neg_r' (a : K) : a ⊕ ⊖ a ≈ 0R.
 Proof. apply ring_neg_r. Qed.
 
@@ -71,10 +71,7 @@ Proof.
   apply rig_mul_zero_r.
 Qed.
 
-(** ** Deleting an index
-
-    [fin_delete skip] is the order-preserving injection whose image is
-    everything but [skip]. *)
+(* 相关说明。 （已译） *)
 
 Fixpoint fin_delete {n : nat} : Fin.t (S n) → Fin.t n → Fin.t (S n) :=
   match n with
@@ -134,7 +131,7 @@ Proof.
       now rewrite (IHn s q p (Fin.FS_inj _ _ Heq)).
 Qed.
 
-(** ** The index of a finite ordinal, and the alternating sign *)
+(* 相关说明。 （已译） *)
 
 Definition fidx {n : nat} (i : Fin.t n) : nat := proj1_sig (Fin.to_nat i).
 
@@ -162,7 +159,7 @@ Proof.
   - rewrite IHa; now rewrite ring_neg_mul_l.
 Qed.
 
-(** ** The determinant, by first-column Laplace expansion *)
+(* 相关说明。 （已译） *)
 
 Definition minor {n : nat} (A : Matrix R (S n) (S n)) (i j : Fin.t (S n)) :
   Matrix R n n :=
@@ -176,9 +173,7 @@ Fixpoint det {n : nat} : Matrix R n n → K :=
         pow_neg1 (fidx i) ⊗ A i Fin.F1 ⊗ det (minor A i Fin.F1))
   end.
 
-(* The two unfolding steps, as rewrite rules: [simpl] would unfold the
-   finite sum as well and leave the goal in a shape the [fin_sum] kit no
-   longer matches. *)
+(* 相关说明。 （已译） *)
 Lemma det_S {n : nat} (A : Matrix R (S n) (S n)) :
   det A = fin_sum R (fun i : Fin.t (S n) =>
             pow_neg1 (fidx i) ⊗ A i Fin.F1 ⊗ det (minor A i Fin.F1)).
@@ -199,7 +194,7 @@ Proof.
   - apply IHn; intros r c; apply H.
 Qed.
 
-(** ** The determinant of the identity *)
+(* * ** The determinant 恒等 （已译） *)
 
 Lemma delta_FS {n : nat} (i j : Fin.t n) :
   delta R (Fin.FS i) (Fin.FS j) ≈ delta R i j.
@@ -349,7 +344,7 @@ Proof.
       apply mul_swap.
 Qed.
 
-(* A zero column kills the determinant: the scalar clause at x = 0. *)
+(* 相关说明。 （已译） *)
 Lemma det_col_zero {n : nat} (A : Matrix R n n) (j : Fin.t n) :
   (∀ i, A i j ≈ 0R) → det A ≈ 0R.
 Proof.
@@ -402,7 +397,7 @@ Proof.
         unfold minor; rewrite fin_delete_FS_F1, fin_delete_F1; reflexivity.
       - apply det_respects; intros r' c'; unfold minor.
         rewrite !fin_delete_F1, fin_delete_FS_FS; reflexivity. }
-    (* Exchange the two sums and match the terms. *)
+    (* 相关说明。 （已译） *)
     transitivity
       (fin_sum R (fun c : Fin.t (S m) => fin_sum R (fun i : Fin.t (S m) =>
          pow_neg1 (fidx (Fin.FS c)) ⊗ A Fin.F1 (Fin.FS c)
@@ -418,7 +413,7 @@ Proof.
       apply fin_sum_respects; intro i.
       rewrite !fidx_FS, !pow_neg1_S.
       apply row_expand_term. }
-    (* Fold the inner sum back into the minor of the row expansion. *)
+    (* Fold inner sum back 进入 minor row expansion. （已译） *)
     apply fin_sum_respects; intro c.
     rewrite <- fin_sum_mul_l.
     apply rig_mul_respects; [ reflexivity |].
@@ -451,8 +446,7 @@ Proof using Type.
   apply ring_neg_r'.
 Qed.
 
-(* The head of the row expansion cancels, leaving only the columns from
-   position 2 on. *)
+(* 相关说明。 （已译） *)
 Lemma det_alt01_tail {n : nat} (A : Matrix R (S (S n)) (S (S n))) :
   (∀ i, A i Fin.F1 ≈ A i (Fin.FS Fin.F1)) →
   det A ≈ fin_sum R (fun j : Fin.t n =>
@@ -688,9 +682,7 @@ Proof using Type.
   - intros y _; exists y; reflexivity.
 Qed.
 
-(* Transposing two columns other than the first: the first column is
-   untouched and each minor undergoes the corresponding transposition
-   one size down. *)
+(* 相关说明。 （已译） *)
 Lemma det_swap_FS {n : nat} (A : Matrix R (S n) (S n)) (p q : Fin.t n)
   (IH : ∀ (B : Matrix R n n) (u v : Fin.t n), u ≠ v →
           det (fun i j => B i (fswap u v j)) ≈ ⊖ (det B)) :
@@ -713,9 +705,7 @@ Proof.
   apply ring_neg_mul_r.
 Qed.
 
-(* Transposing the first column with a later one: adjacent by
-   [det_swap01], otherwise the conjugate τ σ τ of an adjacent swap by a
-   swap of two later columns. *)
+(* 相关说明。 （已译） *)
 Lemma fswap_conj {n : nat} (q1 : Fin.t n) (x : Fin.t (S (S n))) :
   fswap Fin.F1 (Fin.FS (Fin.FS q1)) x
   = fswap Fin.F1 (Fin.FS Fin.F1)
@@ -905,8 +895,8 @@ Proof using Type.
           [ exact HnP | exact Hall ].
 Qed.
 
-(* The predecessor of a non-zero index, with a default that the
-   [fpred_FS] hypothesis rules out. *)
+(* The predecessor non-zero index, default the
+ [fpred_FS] 假设 rules out. （已译） *)
 Definition fpred {k : nat} (d : Fin.t k) (x : Fin.t (S k)) : Fin.t k :=
   Fin.caseS' x (fun _ => Fin.t k) d (fun y => y).
 
@@ -1033,8 +1023,8 @@ Proof using Type.
     [ contradiction | reflexivity ].
 Qed.
 
-(* A column that is a finite sum of scaled vectors splits the
-   determinant into the corresponding finite sum. *)
+(* A column finite sum scaled vectors splits the
+ determinant 进入 corresponding finite sum. （已译） *)
 Lemma det_col_sum {n : nat} (M : Matrix R n n) (j : Fin.t n) {m : nat}
   (c : Fin.t m → K) (V : Fin.t m → Fin.t n → K) :
   (∀ i, M i j ≈ fin_sum R (fun l => c l ⊗ V l i)) →
@@ -1134,8 +1124,8 @@ Proof.
   induction js as [|j js' IHjs]; intros Hnd M f Hin Hout; simpl.
   - apply det_respects; intros i k.
     apply Hout; intro Hc; inversion Hc.
-  - (* [NoDup] has two constructors, so it cannot be eliminated into the
-       Type-valued [≈]; take it apart with the Prop-level projections. *)
+  - (* [NoDup] has two constructors, so it cannot eliminated 进入
+ Type-valued [≈]; take it apart Prop-level projections. （已译） *)
     assert (Hnotin := proj1 (proj1 (List.NoDup_cons_iff j js') Hnd)).
     assert (Hnd' := proj2 (proj1 (List.NoDup_cons_iff j js') Hnd)).
     rewrite (det_col_sum M j (fun l => B l j) (fun l i => A i l)).
@@ -1415,9 +1405,9 @@ Corollary det_unit_of_iso {n : nat} (A B : n ~{Matr (ring_rig R)}~> n) :
   A ∘ B ≈ id → det A ⊗ det B ≈ 1R.
 Proof. intro H; apply det_unit_of_inverse; exact H. Qed.
 
-(* The inverse is supplied by the caller, so that the statement stays in
-   [Matr]'s hom type instead of an anonymous function that [∘] cannot
-   assign a category to. *)
+(* The inverse supplied caller, so statement stays in
+ [Matr]'s hom type instead anonymous function [∘] cannot
+ assign 范畴 to. （已译） *)
 Corollary iso_of_det_unit {m : nat}
   (A B : S m ~{Matr (ring_rig R)}~> S m) (u : K) :
   det A ⊗ u ≈ 1R →
@@ -1435,9 +1425,7 @@ Proof.
     + exact (snd (inverse_of_det_unit A u Hu) i j).
 Qed.
 
-(* The existential form: a unit determinant yields the two-sided
-   inverse outright, packaged for consumers ([u · adj A] as the
-   inverse matrix). *)
+(* 相关说明。 （已译） *)
 Corollary invertible_of_det_unit {m : nat}
   (A : S m ~{Matr (ring_rig R)}~> S m) (u : K) :
   det A ⊗ u ≈ 1R →
@@ -1496,10 +1484,7 @@ Qed.
 
 End DetMap.
 
-(** ** Orientation, pinned by computation
-
-    Over the integers everything in sight reduces, so the shape of the
-    expansion is checked by [eq_refl] rather than asserted. *)
+(* 相关说明。 （已译） *)
 
 Definition m11 (a : Z) : Matrix Int_Ring 1 1 := fun _ _ => a.
 
@@ -1514,14 +1499,13 @@ Definition m22 (a b c d : Z) : Matrix Int_Ring 2 2 :=
 
 Example det_11 : det Int_Ring (m11 5) = 5%Z := eq_refl.
 
-(* ad - bc, with the sign on the (1,0) entry: the first-column
-   expansion of [[a,b],[c,d]] is a·d - c·b. *)
+(* 相关说明。 （已译） *)
 Example det_22 : det Int_Ring (m22 1 2 3 4) = (-2)%Z := eq_refl.
 Example det_22_id : det Int_Ring (m22 1 0 0 1) = 1%Z := eq_refl.
 Example det_22_swap : det Int_Ring (m22 0 1 1 0) = (-1)%Z := eq_refl.
 
-(* Matr's composition really is the matrix product in this orientation:
-   the product of [[1,2],[3,4]] and [[0,1],[1,0]] is [[2,1],[4,3]]. *)
+(* Matr's 复合 really matrix product orientation:
+ product [[1,2],[3,4]] [[0,1],[1,0]] [[2,1],[4,3]]. （已译） *)
 Example matr_compose_22 :
   (@compose (Matr Int_Ring) 2%nat 2%nat 2%nat (m22 1 2 3 4) (m22 0 1 1 0))
     Fin.F1 Fin.F1 = 2%Z := eq_refl.
@@ -1551,11 +1535,11 @@ Example det_mul_33 :
   = (det Int_Ring (m33 1 2 3 4 5 6 7 8 10)
      * det Int_Ring (m33 2 0 1 1 3 0 0 1 4))%Z := eq_refl.
 
-(** ** Mac Lane's own case: the integers
+(* * ** Mac Lane's own case: integers
 
-    [Int_Ring] is commutative, so the whole development instantiates;
-    these are the §I.4 statements over ℤ, with no hypothesis left
-    open. *)
+ [Int_Ring] commutative, so whole development instantiates;
+ these §I.4 statements over ℤ, no 假设 left
+ open. （已译） *)
 
 Definition Int_comm : ∀ a b, rig_mul Int_Ring a b ≈ rig_mul Int_Ring b a :=
   fun a b => Z.mul_comm a b.
@@ -1574,8 +1558,7 @@ Definition det_Z_id {n : nat} :
   det Int_Ring (fun i j : Fin.t n => delta Int_Ring i j) ≈ rig_one Int_Ring
   := det_id Int_Ring.
 
-(* The adjugate of [[1,2],[3,4]] is [[4,-2],[-3,1]], and its product
-   with the matrix is det = -2 down the diagonal. *)
+(* 相关说明。 （已译） *)
 Example adj_22_00 : adj Int_Ring (m22 1 2 3 4) Fin.F1 Fin.F1 = 4%Z := eq_refl.
 Example adj_22_01 :
   adj Int_Ring (m22 1 2 3 4) Fin.F1 (Fin.FS Fin.F1) = (-2)%Z := eq_refl.

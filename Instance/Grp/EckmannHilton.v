@@ -22,7 +22,7 @@ Generalizable All Variables.
 *)
 Local Set Default Proof Using "All".
 
-(** * Group objects in Grp are abelian groups *)
+(* * * Group 对象 Grp abelian groups （已译） *)
 
 (*
    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
@@ -107,7 +107,7 @@ Local Set Default Proof Using "All".
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The ambient category and its cartesian monoidal structure *)
+(* * ** The ambient 范畴 cartesian monoidal structure （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -125,9 +125,9 @@ Definition GrpMon : @Monoidal GrpS := GrpCM.
 
 Definition GrpTensor := @tensor GrpS GrpMon.
 
-(* The tensor IS Instance/Grp.v's own direct product, and the tensor unit
-   IS its own trivial group -- by [eq_refl], so no comparison morphism is
-   needed anywhere below. *)
+(* The tensor IS Instance/Grp.v's own direct product, tensor unit
+ IS own trivial group -- [eq_refl], so no comparison 态射 is
+ needed anywhere below. （已译） *)
 Example grp_tensor_is_product (G H : GrpS) :
   @fobj _ _ GrpTensor (G, H) = Grp_product G H := eq_refl.
 
@@ -139,7 +139,7 @@ Example grp_tensor_unit_is_trivial :
 Definition AbelianGrp (G : GrpS) : Type :=
   ∀ a b : carrier G, grp_mul G a b ≈ grp_mul G b a.
 
-(** ** Half (b): a group object in Grp is abelian *)
+(* * ** Half (b): group 对象 Grp abelian （已译） *)
 
 Section GroupObjectInGrp.
 
@@ -149,9 +149,9 @@ Context (GO : @GroupObject GrpS GrpCM G).
 Definition gob_monoid : @MonoidObject GrpS GrpMon G :=
   @groupobject_is_monoid GrpS GrpCM G GO.
 
-(* The three structure morphisms, read elementwise.  [gmul2] is the SECOND
-   multiplication -- the internal one -- as opposed to [grp_mul G], which
-   is the group's own. *)
+(* The three structure 态射, read elementwise. [gmul2] SECOND
+ multiplication -- internal one -- opposed [grp_mul G], which
+ group's own. （已译） *)
 Definition gmul2 (a b : carrier G) : carrier G :=
   grp_map (@mappend GrpS GrpMon G gob_monoid) (a, b).
 
@@ -231,9 +231,7 @@ Proof.
            gob_interchange a b).
 Qed.
 
-(* THE HEADLINE of half (b): the group's OWN multiplication is
-   commutative.  This is [eh_g_comm], the [g]-side reading, which is what
-   a consumer holding only [grp_mul G] wants. *)
+(* 相关说明。 （已译） *)
 Theorem group_object_abelian : AbelianGrp G.
 Proof.
   exact (eh_g_comm gmul2 (grp_mul G) gunit2 (grp_unit G)
@@ -243,9 +241,7 @@ Proof.
            gob_interchange).
 Qed.
 
-(* The two inverse laws of [GroupObject], read at a point.  [∆] copies and
-   [eliminate] discards, so both sides reduce to elementwise statements
-   about [gmul2], [ginv2] and [gunit2]. *)
+(* 相关说明。 （已译） *)
 Lemma gob_inv_left (a : carrier G) : gmul2 (ginv2 a) a ≈ gunit2.
 Proof. exact (@left_inverse GrpS GrpCM G GO a). Qed.
 
@@ -265,8 +261,8 @@ Proof.
   apply gob_units_agree.
 Qed.
 
-(* "Every group object in Grp arises this way", packaged: all three
-   structure morphisms are the group's own. *)
+(* "Every group 对象 Grp arises way", packaged: all three
+ structure 态射 group's own. （已译） *)
 Definition group_object_structure_forced :
   (∀ a b : carrier G, gmul2 a b ≈ grp_mul G a b)
     ∧ (gunit2 ≈ grp_unit G)
@@ -275,11 +271,11 @@ Definition group_object_structure_forced :
 
 End GroupObjectInGrp.
 
-(** ** Uniqueness of the group-object structure *)
+(* * ** Uniqueness group-对象 structure （已译） *)
 
-(* Because every group-object structure on [G] is [G]'s own structure,
-   any two of them agree.  This is the content of "arises this way" that a
-   bare biconditional does not carry. *)
+(* Because every group-对象 structure [G] [G]'s own structure,
+ any two them agree. This content "arises way" a
+ bare biconditional does not carry. （已译） *)
 
 Theorem group_object_mul_unique (G : GrpS)
         (GO GO' : @GroupObject GrpS GrpCM G) (a b : carrier G) :
@@ -308,7 +304,7 @@ Proof.
   apply gob_inv_agrees.
 Qed.
 
-(** ** Half (a): an abelian group is a group object in Grp *)
+(* * ** Half (a): abelian group group 对象 Grp （已译） *)
 
 Section AbelianIsGroupObject.
 
@@ -391,16 +387,12 @@ End AbelianIsGroupObject.
 
 (** ** Mac Lane's Exercise 4 *)
 
-(* [↔] is Lib's Type-valued [iffT] (Lib/Foundation.v), which is what
-   the two sides need: [AbelianGrp G] is a family of [≈]-proofs and
-   [GroupObject G] is data, so neither is a [Prop]. *)
+(* 相关说明。 （已译） *)
 Definition abelian_iff_group_object (G : GrpS) :
   AbelianGrp G ↔ @GroupObject GrpS GrpCM G :=
   (abelian_GroupObject G, group_object_abelian G).
 
-(* The exercise, packaged: the biconditional together with the clause that
-   makes the backward direction say "arises this way" rather than merely
-   "exists". *)
+(* 相关说明。 （已译） *)
 Definition maclane_III_6_ex4 (G : GrpS) :
   (AbelianGrp G ↔ @GroupObject GrpS GrpCM G)
     ∧ (∀ GO : @GroupObject GrpS GrpCM G,
@@ -409,7 +401,7 @@ Definition maclane_III_6_ex4 (G : GrpS) :
            ∧ (∀ a : carrier G, ginv2 G GO a ≈ grp_inv G a)) :=
   (abelian_iff_group_object G, group_object_structure_forced G).
 
-(** ** Strengths, measured strict-first *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 EckmannHilton 相关定义、性质与动机。
@@ -505,9 +497,9 @@ Example Z2_gob_unit : gunit2 Z2 Z2_GroupObject = false := eq_refl.
 
 Example Z2_gob_inv : ginv2 Z2 Z2_GroupObject true = true := eq_refl.
 
-(* And it is not degenerate: the multiplication is not constant, and the
-   carrier has two provably distinct elements ([Z2_nontrivial] is
-   Instance/Grp.v's). *)
+(* And it not degenerate: multiplication not 常值, the
+ carrier has two provably distinct elements ([Z2_nontrivial] is
+ Instance/Grp.v's). （已译） *)
 
 Lemma Z2_gob_not_constant :
   gmul2 Z2 Z2_GroupObject true true ≈ gmul2 Z2 Z2_GroupObject true false

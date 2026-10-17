@@ -40,7 +40,7 @@ Generalizable All Variables.
 *)
 
 (* ------------------------------------------------------------------------ *)
-(** ** (A0) General constants, and one engineering helper *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明等价相关定义、性质与动机。
@@ -67,8 +67,7 @@ Program Definition proset_adjunction_at {A B : Type}
     (fun a b => {| to   := {| morphism := tr a b |}
                  ; from := {| morphism := tl a b |} |}) _ _.
 
-(* Right adjoints preserve meets, at the level of the order: Seven
-   Sketches Proposition 1.111, Riehl §4.6.3's right-adjoint half. *)
+(* 相关说明。 （已译） *)
 Definition gal_r_preserves_glb {A B : Type}
   {RA : relation A} {RB : relation B} (G : GaloisConnection RA RB)
   {Ix : Type} (d : Ix → B) (m : B) (H : IsGLB RB d m) :
@@ -93,7 +92,7 @@ Definition gal_l_preserves_lub {A B : Type}
                     (fun i => gal_to G (d i) n (Hn i)))).
 
 (* ------------------------------------------------------------------------ *)
-(** ** (A) The dual image, and the right adjunction *)
+(* * ** (A) The dual image, right 伴随 （已译） *)
 
 (* Awodey's [f_*(U) = {b | f^{-1}(b) subseteq U}], Riehl's [f_!],
    Fong-Spivak's [f_*], Mac Lane's [P_#].  NO truncation: a [forall]
@@ -130,8 +129,7 @@ Example dual_mem (S : carrier (Powerset_Prop_obj@{o} X)) (y : carrier Y) :
          @Category.Lib.Setoid.equiv _ (is_setoid Y) (f x) y → S x)
   := eq_refl.
 
-(* Riehl §4.5's [Delta_f p := p f] IS the inverse image, on the nose:
-   again an equality of [Prop]s. *)
+(* 相关说明。 （已译） *)
 Example preimage_is_precompose (T : carrier (Powerset_Prop_obj@{o} Y))
   (x : carrier X) :
   Powerset_Prop_preimage@{o} f T x = T (f x) := eq_refl.
@@ -154,8 +152,8 @@ Definition preimage_transpose_to (T : carrier (Powerset_Prop_obj@{o} Y))
   fun y Hy x Hfx =>
     H x (proj2 (@proper_morphism _ _ _ _ T (f x) y Hfx) Hy).
 
-(* ... and right to left.  Evaluating the dual image at [f x] against the
-   reflexivity witness is the whole argument. *)
+(* ... right left. Evaluating dual image at [f x] against the
+ reflexivity witness whole 论元. （已译） *)
 Definition preimage_transpose_from (T : carrier (Powerset_Prop_obj@{o} Y))
   (S : carrier (Powerset_Prop_obj@{o} X))
   (H : subset_le T (Powerset_Prop_dual@{o} f S)) :
@@ -179,20 +177,19 @@ Definition DualImage : Subsets@{o u} X ⟶ Subsets@{o u} Y :=
 
 (** *** The two pinned adjunctions *)
 
-(* #382's, under this issue's name.  A [:=] with no tactic, so "the
-   existential IS the direct image" is definitional at a general [f]. *)
+(* 相关说明。 （已译） *)
 Definition exists_substitution_adjunction : DirectImage f ⊣ InverseImage f :=
   image_preimage_adjunction f.
 
-(* THE HEADLINE.  Stated at #382's [InverseImage f], not at a second
-   preimage functor: see the header. *)
+(* THE HEADLINE. Stated at #382's [InverseImage f], not at second
+ preimage 函子: see header. （已译） *)
 Definition substitution_forall_adjunction : InverseImage f ⊣ DualImage :=
   proset_adjunction_at (subset_le_preorder@{o} Y) (subset_le_preorder@{o} X)
     (InverseImage f) DualImage preimage_transpose_to preimage_transpose_from.
 
-(* Mac Lane's "P^*, which is the inverse image operation, has both a left
-   adjoint P_* and a right adjoint P_#", packaged.  [*] is [prod]: both
-   components are data. *)
+(* Mac Lane's "P^*, inverse image operation, has both left
+ adjoint P_* 右伴随 P_#", packaged. [*] [prod]: both
+ components data. （已译） *)
 Definition quantifier_triple :
   (DirectImage f ⊣ InverseImage f) * (InverseImage f ⊣ DualImage) :=
   (exists_substitution_adjunction, substitution_forall_adjunction).
@@ -215,7 +212,7 @@ Example dual_galois_round_trip :
     (InverseImage f) DualImage substitution_forall_adjunction
   = preimage_dual_galois := eq_refl.
 
-(** *** The unit and the counit ARE the two inclusions *)
+(* 相关说明。 （已译） *)
 
 (* Mac Lane's [X <= P_# P^* X], written directly. *)
 Definition forall_unit_incl (T : carrier (Powerset_Prop_obj@{o} Y)) :
@@ -242,7 +239,7 @@ Example adj_counit_is_forall_incl (S : carrier (Powerset_Prop_obj@{o} X)) :
   @counit _ _ (InverseImage f) DualImage substitution_forall_adjunction S
     = forall_counit_incl S := eq_refl.
 
-(** *** (F) Seven Sketches 1.117 and Awodey 9.12, in their own words *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Quantifier 相关定义、性质与动机。
@@ -256,8 +253,7 @@ Definition apples_buckets_bicondition
        (subset_le T (Powerset_Prop_dual@{o} f S)) :=
   (preimage_transpose_to T S, preimage_transpose_from T S).
 
-(* "if a bucket doesn't contain any apples at all, then vacuously all its
-   apples are from A', so empty buckets count". *)
+(* 相关说明。 （已译） *)
 Definition dual_vacuous (S : carrier (Powerset_Prop_obj@{o} X))
   (y : carrier Y)
   (Hy : ∀ x : carrier X,
@@ -265,10 +261,9 @@ Definition dual_vacuous (S : carrier (Powerset_Prop_obj@{o} X))
   Powerset_Prop_dual@{o} f S y :=
   fun x Hfx => match Hy x Hfx with end.
 
-(** *** (D) Awodey §9.6: what each adjoint preserves *)
+(* 相关说明。 （已译） *)
 
-(* The dual image preserves meets, directly: the second clause is the
-   transpose of the family's own second clause. *)
+(* 相关说明。 （已译） *)
 Theorem dual_image_preserves_meets {Idx : Type}
   (S : Idx → carrier (Powerset_Prop_obj@{o} X))
   (m : carrier (Powerset_Prop_obj@{o} X))
@@ -285,8 +280,8 @@ Proof.
     intro i; exact (preimage_transpose_from n (S i) (Hn i)).
 Qed.
 
-(* The same statement read off (A0).  [gal_r preimage_dual_galois] IS the
-   dual image, so the general lemma applies with no adapter. *)
+(* The same statement read off (A0). [gal_r preimage_dual_galois] IS the
+ dual image, so general 引理 applies no adapter. （已译） *)
 Definition dual_image_preserves_meets_via_galois {Idx : Type}
   (S : Idx → carrier (Powerset_Prop_obj@{o} X))
   (m : carrier (Powerset_Prop_obj@{o} X))
@@ -296,7 +291,7 @@ Definition dual_image_preserves_meets_via_galois {Idx : Type}
     (Powerset_Prop_dual@{o} f m) :=
   gal_r_preserves_glb preimage_dual_galois S m H.
 
-(* The two routes inhabit ONE type: the pair typechecks. *)
+(* 相关说明。 （已译） *)
 Definition dual_image_meet_routes_agree {Idx : Type}
   (S : Idx → carrier (Powerset_Prop_obj@{o} X))
   (m : carrier (Powerset_Prop_obj@{o} X))
@@ -310,9 +305,9 @@ Definition dual_image_meet_routes_agree {Idx : Type}
   (dual_image_preserves_meets S m H,
    dual_image_preserves_meets_via_galois S m H).
 
-(* Instance/Powerset.v proved this DIRECTLY, and the comment beside it
-   says why: the adjoint route needs f^*'s right adjoint,
-   which is this file's.  Here it is, as that corollary. *)
+(* Instance/Powerset.v proved DIRECTLY, comment beside it
+ says why: adjoint route needs f^*'s 右伴随,
+ file's. Here it is, 推论. （已译） *)
 Definition inverse_image_preserves_joins_via_galois {Idx : Type}
   (T : Idx → carrier (Powerset_Prop_obj@{o} Y))
   (m : carrier (Powerset_Prop_obj@{o} Y))
@@ -352,11 +347,11 @@ Arguments dual_vacuous {X Y} f S y Hy.
 Arguments dual_image_preserves_meets {X Y} f {Idx} S m H.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (B) Mac Lane's site: the first projection U x V -> U *)
+(* 相关说明。 （已译） *)
 
-(* The product setoid.  Measured: for [U V : SetoidObject@{o o}] this is
-   again a [SetoidObject@{o o}], which is what lets [Subsets] be formed
-   on it. *)
+(* The product setoid. Measured: [U V : SetoidObject@{o o}] 这是
+ again [SetoidObject@{o o}], what lets [Subsets] formed
+ it. （已译） *)
 Definition ProdSetoid@{o so} (U V : SetoidObject@{o o}) : SetoidObject@{o o} :=
   @product_obj Sets@{o so} Sets_Cartesian U V.
 
@@ -401,7 +396,7 @@ Proof.
                     (Hxx', quant_refl y)) (H y)).
 Defined.
 
-(* [P^* X], which Mac Lane calls the cylinder [X x V] over the base X. *)
+(* 相关说明。 （已译） *)
 Definition cylinder@{o so} {U V : SetoidObject@{o o}}
   (Xs : carrier (Powerset_Prop_obj@{o} U)) :
   carrier (Powerset_Prop_obj@{o} (ProdSetoid@{o so} U V)) :=
@@ -417,13 +412,12 @@ Context (U V : SetoidObject@{o o}).
 Example proj_fst_computes (x : carrier U) (y : carrier V) :
   proj_fst@{o so} U V (x, y) = x := eq_refl.
 
-(* The cylinder over X contains exactly the pairs whose first component
-   lies in X: an equality of [Prop]s, on the nose. *)
+(* 相关说明。 （已译） *)
 Example cylinder_mem (Xs : carrier (Powerset_Prop_obj@{o} U))
   (x : carrier U) (y : carrier V) :
   @cylinder@{o so} U V Xs (x, y) = Xs x := eq_refl.
 
-(** *** Mac Lane's two displayed biconditionals *)
+(* 相关说明。 （已译） *)
 
 (* [S <= P^* X <=> P_* S <= X]. *)
 Theorem proj_exists_transpose
@@ -467,7 +461,7 @@ Proof.
   - intros Xs H; exact (fst (proj_forall_transpose S Xs) H).
 Qed.
 
-(** *** The two Galois connections at Mac Lane's own formulas *)
+(* 相关说明。 （已译） *)
 
 Definition proj_exists_monotone
   (S T : carrier (Powerset_Prop_obj@{o} (ProdSetoid@{o so} U V)))
@@ -507,7 +501,7 @@ Definition proj_galois_forall :
    ; gal_to   := fun Xs S H => fst (proj_forall_transpose S Xs) H
    ; gal_from := fun Xs S H => snd (proj_forall_transpose S Xs) H |}.
 
-(** *** The identifications with (A), and their exact grade *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Quantifier 相关定义、性质与动机。
@@ -529,9 +523,7 @@ Proof.
     exact (Hex, quant_refl (snd z)).
 Qed.
 
-(* And [P_#] is the dual image along the same projection, again at [≈]:
-   [proj_forall] quantifies over [carrier V], the dual image over
-   [carrier (ProdSetoid U V)]. *)
+(* 相关说明。 （已译） *)
 Theorem proj_forall_is_dual
   (S : carrier (Powerset_Prop_obj@{o} (ProdSetoid@{o so} U V))) :
   @proj_forall@{o so} U V S
@@ -544,9 +536,9 @@ Proof.
   - intros H y; exact (H (x, y) (quant_refl x)).
 Qed.
 
-(* The two Galois connections' three maps agree with (A)'s.  The RECORDS
-   are not compared, and no comparison of the two adjunctions is
-   claimed. *)
+(* The two Galois connections' three maps agree (A)'s. The RECORDS
+ not compared, no comparison two 伴随 is
+ claimed. （已译） *)
 Definition proj_maps_agree
   (S : carrier (Powerset_Prop_obj@{o} (ProdSetoid@{o so} U V)))
   (Xs : carrier (Powerset_Prop_obj@{o} U)) :
@@ -561,7 +553,7 @@ Definition proj_maps_agree
 End Projection.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (C) Beck-Chevalley for the reindexed projection *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Quantifier 相关定义、性质与动机。
@@ -628,7 +620,7 @@ Example beck_chevalley_forall
     = @proj_forall@{o so} U' V (Powerset_Prop_preimage@{o} (cyl_reindex V g) S)
   := eq_refl.
 
-(* The [≈] readings, for a consumer who wants the order-theoretic form. *)
+(* 相关说明。 （已译） *)
 Theorem beck_chevalley_exists_equiv
   (S : carrier (Powerset_Prop_obj@{o} (ProdSetoid@{o so} U V))) :
   Powerset_Prop_preimage@{o} g (@proj_exists@{o so} U V S)
@@ -644,10 +636,9 @@ Proof. intro x; split; intro H; exact H. Qed.
 End BeckChevalley.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (E) Riehl 4.1.9, and Exercise 4.1.ii *)
+(* 相关说明。 （已译） *)
 
-(* A predicate on X in Riehl's sense IS an element of the power set here.
-   Both readings are equalities of TYPES and of [Prop]s. *)
+(* 相关说明。 （已译） *)
 Example predicates_are_subsets@{o} (X : SetoidObject@{o o}) :
   carrier (Powerset_Prop_obj@{o} X)
     = SetoidMorphism@{o o o} X Powerset_Prop_truth@{o} := eq_refl.
@@ -656,9 +647,7 @@ Example pointwise_is_subset_le@{o} {X : SetoidObject@{o o}}
   (S T : carrier (Powerset_Prop_obj@{o} X)) :
   @subset_le@{o} X S T = (∀ x : carrier X, S x → T x) := eq_refl.
 
-(* The one-point setoid, and the unique map into it.  Named locally: both
-   [SetsOne] (Construction/Elements.v, Instance/Sets/Pointed/
-   Coslice.v) and [Sets_Terminal] are taken. *)
+(* 相关说明。 （已译） *)
 Definition quant_one@{o so} : SetoidObject@{o o} :=
   @terminal_obj Sets@{o so} Sets_Terminal.
 
@@ -673,9 +662,9 @@ Constraint o < so.
 
 Context (X : SetoidObject@{o o}).
 
-(* Riehl's [Delta_X], [exists_X] and [forall_X], as the three functors of
-   Example 4.1.8 at the unique map [X -> 1].  That instantiation IS her
-   Exercise 4.1.ii. *)
+(* Riehl's [Delta_X], [exists_X] [forall_X], three 函子 of
+ Example 4.1.8 at unique map [X -> 1]. That instantiation IS her
+ Exercise 4.1.ii. （已译） *)
 Definition Delta_X : Subsets@{o u} quant_one@{o so} ⟶ Subsets@{o u} X :=
   InverseImage (quant_bang@{o so} X).
 
@@ -696,15 +685,15 @@ Definition riehl_adjoint_triple :
   (exists_X ⊣ Delta_X) * (Delta_X ⊣ forall_X) :=
   (riehl_exists_delta, riehl_delta_forall).
 
-(* [Delta_X] is her constant functor: its value at [P] is the predicate
-   constantly [P ttt].  An equality of [Prop]s, on the nose. *)
+(* [Delta_X] her 常值 函子: value at [P] predicate
+ constantly [P ttt]. An equality [Prop]s, nose. （已译） *)
 Example Delta_X_obj_mem
   (P : carrier (Powerset_Prop_obj@{o} quant_one@{o so})) (x : carrier X) :
   fobj[Delta_X] P x = P ttt := eq_refl.
 
 End Riehl.
 
-(** *** The truth-value object: [Subsets 1] against [Props] *)
+(* * *** The truth-value 对象: [Subsets 1] against [Props] （已译） *)
 
 Section TruthValues.
 
@@ -733,8 +722,8 @@ Program Definition Props_to_subsets_one :
   fmap := fun P Q (h : P → Q) => fun _ (p : P) => h p
 |}.
 
-(* Both round trips.  One is the identity on the nose at the level of
-   [Prop]s; the other needs the point to be destructed. *)
+(* Both round trips. One 恒等 nose at level of
+ [Prop]s; other needs point destructed. （已译） *)
 Example Props_subsets_one_round (P : Props@{o u}) :
   fobj[subsets_one_to_Props] (fobj[Props_to_subsets_one] P) = P := eq_refl.
 
@@ -765,7 +754,7 @@ Defined.
 End TruthValues.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (D) again: Awodey's two contrapositives, at a concrete witness *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Quantifier 相关定义、性质与动机。
@@ -783,8 +772,7 @@ Theorem dual_const0_sng0_at_1@{o so +} :
     (Fin.FS Fin.F1).
 Proof. intros x Heq; discriminate Heq. Qed.
 
-(* ... and does NOT contain 0: the fibre over 0 is the whole set, and 1
-   is not in {0}. *)
+(* 相关说明。 （已译） *)
 Theorem dual_const0_sng0_not_at_0@{o so +} :
   Powerset_Prop_dual@{o} powerset_const0@{o so} powerset_sng0@{o} Fin.F1
   → False.
@@ -794,15 +782,14 @@ Proof.
   intro Heq; discriminate Heq.
 Qed.
 
-(* The direct image of {1} DOES contain 0.  This is
-   Instance/Sets/Powerset/Universal.v's own [powerset_direct_sng1_at_0]
-   read through [Powerset_Prop_fmap_image], not a second proof. *)
+(* The direct image {1} DOES contain 0. This is
+ Instance/Sets/Powerset/Universal.v's own [powerset_direct_sng1_at_0]
+ read through [Powerset_Prop_fmap_image], not second 证明. （已译） *)
 Definition image_const0_sng1_at_0@{o so} :
   Powerset_Prop_image@{o} powerset_const0@{o so} powerset_sng1@{o} Fin.F1 :=
   powerset_direct_sng1_at_0@{o so}.
 
-(* THE TWO ADJOINTS DIFFER.  At {1} the existential contains 0 and the
-   universal does not: the whole point of the third leg. *)
+(* 相关说明。 （已译） *)
 Theorem exists_ne_forall_at_const0@{o so +} :
   Powerset_Prop_image@{o} powerset_const0@{o so} powerset_sng1@{o}
     ≈ Powerset_Prop_dual@{o} powerset_const0@{o so} powerset_sng1@{o}
@@ -814,9 +801,7 @@ Proof.
   intro Heq; discriminate Heq.
 Qed.
 
-(* Every element of the two-point carrier lies in {0} join {1}: the
-   exhaustiveness the join witness needs, by the [Fin.caseS']/[Fin.case0]
-   idiom of Structure/Limit/Product/Finite.v. *)
+(* 相关说明。 （已译） *)
 Lemma fin2_in_sng0_join_sng1@{o +} (i : Fin.t 2%nat) :
   subset_join powerset_sng0@{o} powerset_sng1@{o} i.
 Proof.
@@ -827,9 +812,9 @@ Proof.
     + intro k; apply (Fin.case0 (fun _ => _) k).
 Qed.
 
-(* THE DUAL IMAGE DOES NOT PRESERVE JOINS.  Stated as the refutation of
-   the INCLUSION, which is what the contrapositive below consumes and
-   which is strictly stronger than refuting the [≈]. *)
+(* THE DUAL IMAGE DOES NOT PRESERVE JOINS. Stated refutation of
+ INCLUSION, what contrapositive below 所消耗 and
+ strictly stronger than refuting [≈]. （已译） *)
 Theorem dual_image_not_join_preserving@{o so +} :
   subset_le
     (Powerset_Prop_dual@{o} powerset_const0@{o so}
@@ -880,7 +865,7 @@ Proof.
                 (subset_meet powerset_sng0@{o} powerset_sng1@{o})
                 (subset_inter_IsGLB
                    (pair_family powerset_sng0@{o} powerset_sng1@{o}))).
-  (* The nontrivial inclusion, from the adjoint hypothesis. *)
+  (* The nontrivial 含入, adjoint 假设. （已译） *)
   assert (Hge : subset_le
                   (subset_meet
                      (Powerset_Prop_image@{o} powerset_const0@{o so}
@@ -892,7 +877,7 @@ Proof.
   { refine (snd HG _ _); intros [|].
     - exact (subset_meet_l _ _).
     - exact (subset_meet_r _ _). }
-  (* ... and the trivial one, from monotonicity. *)
+  (* 相关说明。 （已译） *)
   assert (Hle : subset_le
                   (Powerset_Prop_image@{o} powerset_const0@{o so}
                      (subset_meet powerset_sng0@{o} powerset_sng1@{o}))
@@ -906,15 +891,15 @@ Proof.
                (subset_meet_l _ _)).
     - exact (image_monotone powerset_const0@{o so} _ _
                (subset_meet_r _ _)). }
-  (* Mutual inclusion IS [≈] -- Instance/Grp/Galois.v's
-     [subset_le_antisym], written inline for the measured reason in the
-     header. *)
+  (* Mutual 含入 IS [≈] -- Instance/Grp/Galois.v's
+ [subset_le_antisym], written inline measured reason the
+ header. （已译） *)
   exact (direct_image_not_meet_preserving
            (fun x => conj (Hle x) (Hge x))).
 Qed.
 
-(* And dually: "as above, forall x cannot be a left adjoint, since it
-   does not have this property." *)
+(* And dually: "as above, forall x cannot 左伴随, since it
+ does not have property." （已译） *)
 Theorem forall_not_left_adjoint@{o so u +} :
   (∃ R : Subsets@{o u} powerset_fin2@{o} ⟶ Subsets@{o u} powerset_fin2@{o},
      DualImage powerset_const0@{o so} ⊣ R)
@@ -936,9 +921,9 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (G) Non-vacuity over Mac Lane's own site *)
+(* 相关说明。 （已译） *)
 
-(* Both factors are the two-element discrete setoid. *)
+(* 相关说明。 （已译） *)
 Definition quant_sq@{o so} : SetoidObject@{o o} :=
   ProdSetoid@{o so} powerset_fin2@{o} powerset_fin2@{o}.
 
@@ -973,13 +958,12 @@ Proof.
   - rewrite H1; exact H.
 Defined.
 
-(* Mac Lane's projection of the diagonal is everything: every x pairs
-   with itself. *)
+(* 相关说明。 （已译） *)
 Theorem proj_diag_exists_everywhere (x : Fin.t 2%nat) :
   @proj_exists@{o so} powerset_fin2@{o} powerset_fin2@{o} diag_subset x.
 Proof. exists x; reflexivity. Qed.
 
-(* ... while [P_#] of the diagonal is empty: no x pairs with EVERY y. *)
+(* 相关说明。 （已译） *)
 Theorem proj_diag_forall_nowhere (x : Fin.t 2%nat) :
   @proj_forall@{o so} powerset_fin2@{o} powerset_fin2@{o} diag_subset x
   → False.
@@ -990,8 +974,7 @@ Proof.
   rewrite H0 in H1; discriminate H1.
 Qed.
 
-(* At a ROW, [P_#] is the singleton {0}: the row over 0 is full, the row
-   over 1 is empty. *)
+(* 相关说明。 （已译） *)
 Theorem proj_row_forall_at_0 :
   @proj_forall@{o so} powerset_fin2@{o} powerset_fin2@{o} row0_subset
     Fin.F1.

@@ -99,7 +99,7 @@ Require Import Category.Functor.Opposite.
    nLab: https://ncatlab.org/nlab/show/comonad
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)#Comonads
 
-   本节说明相关定义、性质与动机。 A 余单子 is formal dual 单子: counit ε : M ⟹ Id comultiplication δ : M ⟹ M ○ M satisfying dual coassociativity counit laws.
+   本节说明单子、余单子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

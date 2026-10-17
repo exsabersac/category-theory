@@ -86,7 +86,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The negative witness: [Commutative] is refuted this diagram, over the. very same quiver that carries commuting one above.
+   本节说明 Examples 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -132,13 +132,13 @@ Qed.
 (** ** The tree's shape-specific commutativity statements are instances *)
 
 (*
-   本节说明相关定义、性质与动机。 Theory/Diagram.v's header claims that reusable in-tree statements of. commutativity each fix one figure, that [Commutative] generalizes them.
+   本节说明 Examples 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 A cone leg triangle: [Structure/Cone.v]'s [cone_coherence] is exactly. commutativity walking triangle two legs image 态射 between them. Division labour between two results below, stated precisely because it is easy misread.
+   本节说明 Examples 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -171,7 +171,7 @@ Proof. apply square_commutes, (is_pullback_commutes Hpb). Qed.
 (** ** The walking loop: a diagram that draws a non-identity endomorphism *)
 
 (*
-   本节说明相关定义、性质与动机。 Theory/Diagram.v's [loop_commutative_iff] proves that over walking loop,. [Commutative] is exactly "the drawn endomorphism is identity". 即 clause predicate driven EMPTY path, it is one no figure-fixing statement can express.
+   本节说明 Examples 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

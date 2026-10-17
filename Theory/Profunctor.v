@@ -33,9 +33,13 @@ Generalizable All Variables.
    引理存在（Construction/Profunctor 模块）。 *)
 
 (*
-   Where profunctors 来源, and 用途
+   关于profunctors的来源与用途
 
-   本节说明相关定义、性质与动机。 nLab: https://ncatlab.org/nlab/show/profunctor Paper: Bénabou, "Les distributeurs", Institut de Mathématique Pure et Appliquée, Rapport 33, Univ. Cath. de Louvain (1973) Paper: Lawvere, "Metric Spaces, Generalized Logic, Closed 范畴", Rend. Sem. Mat. Fis.
+   nLab: https://ncatlab.org/nlab/show/profunctor
+   Paper: Bénabou, "Les distributeurs", Institut de Mathématique Pure
+   Paper: Lawvere, "Metric Spaces, Generalized Logic, and Closed
+
+   本节说明函子、profunctor、Lawvere 理论相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -46,16 +50,14 @@ Notation "C ⇸ D" := (Profunctor C D)
   (at level 90, right associativity) : category_scope.
 
 (*
-   本节说明相关定义、性质与动机。 The identity profunctor C is hom-bifunctor Hom C : C^op ∏ C ⟶ Sets of. 函子/Hom.v, viewed at profunctor type C ⇸ C. On (c, c') it is hom-set C(c, c'), C acting both sides 复合;
+   本节说明函子、hom、profunctor相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 Definition Id_Profunctor (C : Category) : C ⇸ C := Hom C.
 
 (*
-   可表 profunctors. A 函子 F : C ⟶ D presents the profunctor
-
-   本节说明相关定义、性质与动机。 Repr_left F : C ⇸ D, (c, d) ↦ D(F c, d), covariantly 可表 left, while 函子 U : D ⟶ C presents Repr_right U : C ⇸ D, (c, d) ↦ C(c, U d), 可表 right. Both are built from hom-bifunctor target (resp. source) precomposed F (resp.
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -67,9 +69,7 @@ Definition Repr_right {C D : Category} (U : D ⟶ C) : C ⇸ D :=
   Hom C ◯ ((@Id C)^op ∏⟶ U).
 
 (*
-   The 等价 of profunctors C ⇸ D is inherited from the 函子 范畴
-
-   本节说明相关定义、性质与动机。 [C^op ∏ D, Sets]: two profunctors are equivalent 当且仅当 they are naturally isomorphic (函子_Setoid).
+   本节说明函子、等价、profunctor相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

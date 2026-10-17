@@ -20,7 +20,7 @@ Generalizable All Variables.
 (** ** The transport helper and the bundled record *)
 
 (*
-   本节说明相关定义、性质与动机。 Transport inhabitant [poly_unit] along Type equality. Stated.
+   本节说明 Operad 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -61,9 +61,7 @@ Proof.
 Qed.
 
 (*
-   Every LIST of 对象 of an operad is a [repeat] of the point: the
-
-   本节说明相关定义、性质与动机。 list-level face contractibility, equality along which round trip below recasts. [Defined] so [f_equal2] spine computes list constructors;
+   本节说明 Operad 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -76,7 +74,7 @@ Proof.
 Defined.
 
 (*
-   本节说明相关定义、性质与动机。 * ** The transparent repeat-arithmetic kit. The stdlib's [repeat_app] is stated concatenation right is opaque some supported versions;
+   本节说明函子、多元范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -107,7 +105,7 @@ Definition ohom (n : nat) : Type := @mhom MO (repeat pt n) pt.
 Definition oid : ohom 1 := @mid MO pt.
 
 (*
-   本节说明相关定义、性质与动机。 * *** The round trip. Every multimorphism underlying 多元范畴 whose target is point is n-ary operation, [n := length Γ], recasting along [all_repeat];
+   本节说明多元范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -137,9 +135,7 @@ Lemma operad_roundtrip_inv {Γ : list (@mobj MO)} (g : ohom (length Γ)) :
 Proof. apply mcast_symm_r. Qed.
 
 (*
-   * *** Single-slot operadic 复合
-
-   本节说明相关定义、性质与动机。 The classical [∘ᵢ]: splice n-ary operation into (i+1)-st input (i + 1 + j)-ary operation, yielding (i + (n + j))-ary operation.
+   本节说明多元范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -171,9 +167,7 @@ Proof.
 Qed.
 
 (*
-   * *** The 对称-group action on arities
-
-   本节说明相关定义、性质与动机。 Self-permutations repeated context [repeat pt n] act n-ary operations. The witnesses are Type-valued [tperm] Theory/多元范畴.v — index class's own action;
+   本节说明函子、多元范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

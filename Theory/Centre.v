@@ -20,13 +20,17 @@ Generalizable All Variables.
    （见 Theory/EckmannHilton.v）。文内其它长注释后续可续译。 *)
 
 (*
-   本节说明相关定义、性质与动机。 Why this is arity-zero shadow Eckmann–Hilton. nLab: https://ncatlab.org/nlab/show/Eckmann-Hilton+argument nLab: https://ncatlab.org/nlab/show/center+of+a+范畴 Paper: Eckmann, Hilton, "Group-like structures 一般地 范畴 I", Mathematische Annalen 145, 1962 Read
+   nLab:  https://ncatlab.org/nlab/show/Eckmann-Hilton+argument
+   nLab:  https://ncatlab.org/nlab/show/center+of+a+category
+   Paper: Eckmann, Hilton, "Group-like structures in general categories I",
+
+   本节说明自然变换、函子、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 THREE DIFFERENT THINGS ARE CALLED A CENTRE. All three are this tree,. they are three different KINDS. Naming them together once is cheaper than disambiguating them repeatedly downstream.
+   本节说明函子、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -38,9 +42,7 @@ Section Centre.
 Context {C : Category}.
 
 (*
-   The carrier: the hom-setoid of the 函子 范畴 `[C, C]` at the
-
-   本节：identity 函子. This is categorical home centre — 对象 `[C, C]` are 函子 its 态射 are 自然变换 (Instance/Fun.v), so `Id[C] ~{[C, C]}~> Id[C]` is `Id[C] ⟹ Id[C]` setoid is [Transform_Setoid], comparing two transformations
+   本节说明自然变换、函子、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -50,9 +52,7 @@ Definition centre_setoid : SetoidObject := {|
 |}.
 
 (*
-   The 幺半群 structure needs no proof: it is Construction/Deloop.v's
-
-   本节说明相关定义、性质与动机。 endomorphism 幺半群 对象 Id[C] 范畴 `[C, C]`.
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -76,9 +76,7 @@ Example centre_monoid_op :
 (** ** Commutativity, directly from naturality *)
 
 (*
-   The whole content of the exercise, at a single 对象.  Read α's
-
-   本节说明相关定义、性质与动机。 naturality square at 态射 `transform[β] x : x ~> x`; because `fmap[Id]` is definitionally identity 态射, square is already commutation.
+   本节说明 Centre 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -90,9 +88,7 @@ Proof.
 Qed.
 
 (*
-   The centre is a COMMUTATIVE 幺半群: vertical 复合 of 自然
-
-   本节说明相关定义、性质与动机。 endotransformations identity 函子 is commutative. This is pinned constant Mac Lane §II.5 Exercise 8 / Riehl Exercise 1.7.iv.
+   本节说明函子、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -115,7 +111,7 @@ End Centre.
 (** ** The Eckmann–Hilton packaging *)
 
 (*
-   本节说明相关定义、性质与动机。 The traditional route: exhibit two unital operations that interchange and. invoke Theory/EckmannHilton.v. Everything 本节 is honest about being consistency exhibit rather than independent derivation;
+   本节说明（余）端相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -125,9 +121,7 @@ Section CentreEH.
 Context {C : Category}.
 
 (*
-   The first operation is vertical 复合.  The second is the SAME
-
-   本节说明相关定义、性质与动机。 复合 its arguments swapped — which, [centre_vcomp_op_is_hcompose] below, is exactly Godement horizontal 复合 other order, two agreeing components at identity 函子.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -151,7 +145,7 @@ Example centre_vcomp_op_component (α β : Id[C] ⟹ Id[C]) (x : C) :
 (** *** The second operation IS the horizontal composite, componentwise *)
 
 (*
-   本节说明相关定义、性质与动机。 [nat_hcompose ε η : J ◯ F ⟹ K ◯ G] lands at `Id ◯ Id`, not at `Id`, so. two transformations do not have same TYPE no equation between them can be written without transport.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -186,9 +180,7 @@ Definition centre_vcomp_op_respects :
 Proof. repeat intro; now apply nat_compose_respects. Qed.
 
 (*
-   The four 单位律.  Both operations take [nat_id] as a two-sided unit —
-
-   本节说明相关定义、性质与动机。 this is coincidence units that makes Eckmann–Hilton argument applicable at all, here it is not accident construction but fact that both operations ARE vertical 复合.
+   本节说明 Centre 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -206,7 +198,7 @@ Definition centre_vcomp_op_unit_r (α : Id[C] ⟹ Id[C]) :
   centre_vcomp_op α nat_id ≈[Fun] α := nat_id_left C C Id[C] Id[C] α.
 
 (*
-   本节说明相关定义、性质与动机。 The interchange law, orientation Theory/EckmannHilton.v states it:. `f (g b) (g c d) ≈ g (f c) (f b d)`. 分量地 goal is `(b ∘ a) ∘ (d ∘ c) ≈ (b ∘ d) ∘ (a ∘ c)`;
+   本节说明 Centre 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -238,7 +230,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 [eh_ops] — Eckmann–Hilton conclusion that two operations. COINCIDE — degenerates here into commutativity second time, since second operation is first its arguments swapped.
+   本节说明 Centre 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -253,7 +245,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Likewise [eh_units]: two units coincide. Here they were literally.
+   本节说明 Centre 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -269,7 +261,7 @@ Qed.
 (** *** Why the EH route cannot be independent *)
 
 (*
-   本节说明相关定义、性质与动机。 The claim, machine-checked. Take interchange law HYPOTHESIS —. not proved [centre_interchange], but any statement that shape — instantiate its second third arguments at [nat_id].
+   本节说明 Centre 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -281,7 +273,7 @@ Theorem centre_interchange_forces_commutative
   centre_vcomp α δ ≈[Fun] centre_vcomp δ α.
 Proof.
   (*
-   本节说明相关定义、性质与动机。 Instantiate at (α, 1, 1, δ), writing 1 [nat_id]:. f (g α 1) (g 1 δ) ≈ g (f α 1) (f 1 δ). 分量地 即 `(1 ∘ α x) ∘ (δ x ∘ 1) ≈ (1 ∘ δ x) ∘ (α x ∘ 1)`, cancelling four units leaves `α x ∘ δ x ≈ δ x ∘ α x`, which is goal.
+   本节说明 Centre 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -298,13 +290,13 @@ End CentreEH.
 (** ** The centre of Sets is trivial *)
 
 (*
-   本节说明相关定义、性质与动机。 Mac Lane asks centre Set. The probe is standard one: a. point setoid X is same thing 态射 into X from singleton, naturality α at that 态射 pins α's component at X identity.
+   本节说明 Centre 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 The singleton setoid used probe's domain is carrier of. [Sets_Terminal] (Instance/Sets.v), [poly_unit] under `=`. UNIVERSE ANNOTATION, why it is not decoration. `Sets@{o so}` has carriers at `o` 对象 at `so` (Instance/Sets.v).
+   本节说明 Centre 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -315,7 +307,7 @@ Program Definition centre_Sets_point@{o so} {X : obj[Sets@{o so}]}
 |}.
 
 (*
-   本节说明相关定义、性质与动机。 The probe's underlying function is given literally, so it computes; the. [Program] wrapper touches only respectfulness certificate.
+   本节说明 Centre 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -354,7 +346,7 @@ Qed.
 (** ** The centre of Coq is trivial *)
 
 (*
-   本节说明相关定义、性质与动机。 The same probe over Instance/Coq.v, where hom-setoid is pointwise. Leibniz equality (Instance/Coq.v), so conclusion is equation rather than `≈`.
+   本节说明hom、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

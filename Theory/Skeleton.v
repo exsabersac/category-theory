@@ -28,9 +28,7 @@ Generalizable All Variables.
 (** ** The half-adjoint correction, at the level of object types *)
 
 (*
-   The path 代数 needed for [half_伴随_triangle] below.  These are the
-
-   本节说明相关定义、性质与动机。 HoTT-book lemmas [f_equal] (there written [ap]) homotopies, proved here [destruct] path so that nothing outside Coq.Init.Logic is used.
+   本节说明 Skeleton 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -77,7 +75,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The corrected counit. The raw [eps] satisfies no triangle: [eps (f a)]. [f_equal f (eta a)] are two proofs one 对象 equality, identifying them is exactly what UIP would buy.
+   本节说明伴随相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -100,9 +98,7 @@ End HalfAdjoint.
 (** ** Strict functor equality from a family of object equalities *)
 
 (*
-   [函子_StrictEq_Setoid] compares 函子 by a family of 对象
-
-   本节说明相关定义、性质与动机。 equalities together transported-态射 condition. Stating that condition [id_cast] instead raw [transport] keeps every proof below inside ordinary categorical calculus.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -137,7 +133,7 @@ Definition Skeletal (C : Category) := ∀ x y : C, x ≅ y → x = y.
 (** ** An equivalence between skeletal categories is an isomorphism *)
 
 (*
-   本节说明相关定义、性质与动机。 The general lemma, which Mac Lane's Exercise 1 is corollary. The.
+   本节说明伴随、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -234,9 +230,7 @@ Arguments skeletal_equivalence_is_isomorphism {A B} SA SB F E.
 (** ** "A is a skeleton of C", packaged as data *)
 
 (*
-   Mac Lane §IV.4 定义 3, first half; Riehl 定义 1.5.16.  The
-
-   本节说明相关定义、性质与动机。 uniqueness clause concludes [Sub C skel_sub], not C: see header why that strengthening is necessary rather than convenient.
+   本节说明同构、（余）强度相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -327,7 +321,7 @@ Definition skeleton_unit_iso {C : Category} (S : Skeleton C) :
   equiv_iso (skeleton_unit S).
 
 (*
-   本节说明相关定义、性质与动机。 Mac Lane §IV.4 Remark 1, issue's own orientation. The second.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -338,7 +332,7 @@ Definition skeleton_remark {C : Category} (S : Skeleton C) :
   (iso_sym (skeleton_counit_iso S), skel_reflect_incl_obj S).
 
 (*
-   本节说明相关定义、性质与动机。 THE GROUPOID OF FINITE SETS AND BIJECTIONS is not tree, this. development does not pretend otherwise.
+   本节说明 Skeleton 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -509,7 +503,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The posetal REFLECTION — that every preorder HAS skeleton — is a. different statement is not made: it needs 对象-level quotient, Construction/Quotient.v quotients homs only. The catalog assigns that clause #372.
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

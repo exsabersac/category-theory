@@ -24,7 +24,7 @@ Set Transparent Obligations.
    nLab: https://ncatlab.org/nlab/show/functor
    Wikipedia: https://en.wikipedia.org/wiki/Functor_(functional_programming)
 
-   本节说明相关定义、性质与动机。 [map : (v -> b) -> Map k v -> Map k b] is functorial action (fmap) 自函子 [Map k -] 范畴 Coq types, fixing key type [k].
+   本节说明函子、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

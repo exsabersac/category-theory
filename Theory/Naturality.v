@@ -28,9 +28,7 @@ Class Naturality (A : Type) : Type := {
 Arguments natural {A _} _ /.
 
 (*
-   Discharge a `自然 _ * 自然 _ * ...` goal (a tuple of naturality
-
-   本节说明相关定义、性质与动机。 squares, produced 同构 families conjunctions `幺半_naturality`): unfold structure `H`, split 积, then close each square caller-supplied tactic `tac`.
+   本节说明 Naturality 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -112,9 +110,7 @@ Qed.
  *)
 
 (*
-   A `Mapping F` records a 态射 action `map : (x ~> y) → (F x ~> F y)` for
-
-   本节：an 对象 map `F : C → C`, without demanding 函子定律. It supplies per-variable action `F(f)`/`G(f)` used inside `Arity*` naturality squares below, so that those squares can be stated 对象 maps that are functorial each argument (e.g.
+   本节说明 Naturality 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -156,7 +152,7 @@ Program Instance ArityOne {C : Category}
 }.
 
 (*
-   本节说明相关定义、性质与动机。 Naturality family `f : ∀ A B, P A B ~> Q A B` jointly both.
+   本节说明 Naturality 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -262,7 +258,7 @@ Program Instance ArityFive {C : Category}
 }.
 
 (*
-   本节说明相关定义、性质与动机。 For family isomorphisms `f : ∀ A, P A ≅ Q A`, naturality means both the. 正向 components `to (f A)` 反向 components `from (f A)` are 自然;
+   本节说明 Naturality 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

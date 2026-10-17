@@ -22,15 +22,18 @@ Generalizable All Variables.
 *)
 
 (*
-   From universal mappings to 伴随 函子
+   nLab:  https://ncatlab.org/nlab/show/universal+construction
+   Paper: Samuel, "On universal mappings and free topological groups",
+   Paper: Porst, "The history of the General Adjoint Functor Theorem",
+   book: a functor has a left adjoint precisely when every object of its
 
-   本节说明相关定义、性质与动机。 nLab: https://ncatlab.org/nlab/show/universal+construction Paper: Samuel, "On universal mappings free topological groups", Bull. Amer. Math. Soc.
+   本节说明伴随、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 Two encodings this notion are given below. UniversalArrow packages the. property 始对象 逗号范畴 =(c) ↓ F, which makes universal mapping property [ump_universal_arrows] immediate consequence;
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -41,9 +44,7 @@ Context `{C : Category}.
 Context `{D : Category}.
 
 (*
-   A 泛箭头 from c to F is an 始对象 of the 逗号范畴
-
-   本节说明相关定义、性质与动机。 =(c) ↓ F. Its underlying 对象 [arrow_obj] 态射 [arrow] are read off two projections that 始对象.
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -57,7 +58,7 @@ Class UniversalArrow (c : C) (F : D ⟶ C) := {
 Notation "c ⟿ F" := (UniversalArrow c F) (at level 20) : category_theory_scope.
 
 (*
-   本节说明相关定义、性质与动机。 The universal mapping property: any h : c ~> F d factors h ≈ fmap[F] g ∘. arrow through unique g : arrow_obj ~> d.
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -101,9 +102,7 @@ Defined.
 (** ** Uniqueness up to a unique isomorphism *)
 
 (*
-   Awodey, "范畴 Theory" (1st ed., Carnegie Mellon pre-print, September
-
-   本节：2005), Proposition 1.10, printed p. 22, states free 幺半群 what holds every 泛箭头: two solutions same universal mapping problem are connected exactly one 同构 COMPATIBLE WITH universal arrows. The compatibility clause is not decoration.
+   本节说明幺半群、同构、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -196,9 +195,7 @@ Arguments arrow : clear implicits.
 Arguments arrow_obj : clear implicits.
 
 (*
-   A 泛箭头 to U from every 对象 c : C assembles into a 左伴随
-
-   本节说明相关定义、性质与动机。 of U. The 对象 map sends c its universal 对象 arrow_obj, 态射 map sends f : x ~> y unique factorization arrow ∘ f through arrow_obj x.
+   本节说明伴随相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -229,9 +226,7 @@ Proof.
 Defined.
 
 (*
-   The induced 函子 is genuinely 左伴随 to U: the hom-set 同构
-
-   本节说明相关定义、性质与动机。 (LeftAdjoint c ~> d) ≊ (c ~> U d) is exactly universal factorization, universal arrows u serving unit 伴随.
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -259,9 +254,7 @@ Defined.
 
 
 (*
-   The same notion stated directly, with the universal 对象 a : D given as a
-
-   本节说明相关定义、性质与动机。 parameter rather than projected from 逗号范畴. The data is universal 态射 together its uniqueness-of-factorization property.
+   本节说明 Arrow 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -278,7 +271,7 @@ Class AUniversalArrow (c : C) (F : D ⟶ C) (a : D) := {
   {| equiv := fun X Y => (@universal_arrow _ _ _ X) ≈ (@universal_arrow _ _ _ Y) |}.
 
 (*
-   本节说明相关定义、性质与动机。 [universal_arrow_unique] restated direct encoding, where the. universal 对象 is parameter rather than projection.
+   本节说明幺半群、同构、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -364,7 +357,7 @@ End AUniversalArrowUnique.
 (** ** The two packagings of a universal arrow are interchangeable *)
 
 (*
-   本节说明相关定义、性质与动机。 Mac Lane, CWM 2nd ed., §IV.1, Corollary 2 (book p. 85), runs chain "a. representation X(x, G−) at every x" ⟹ "a 泛箭头 at every x" ⟹ "a 左伴随".
+   本节说明伴随、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -408,9 +401,7 @@ Proof.
 Defined.
 
 (*
-   STRENGTH, measured strict-first.  The 正向 passage disturbs neither the
-
-   本节说明相关定义、性质与动机。 对象 nor arrow: [universal_arrow_from_UMP] builds comma 对象 ((ttt, a);
+   本节说明（余）强度相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -421,9 +412,7 @@ Example ua_of_aua_arrow {a : D} (W : AUniversalArrow c F a) :
   @arrow c F (ua_of_aua W) = @universal_arrow c F a W := eq_refl.
 
 (*
-   Because the 对象 returns on the nose, the round trip STARTING from the
-
-   本节说明相关定义、性质与动机。 direct packaging lands back at SAME index [a] — it typechecks against [AUniversalArrow c F a] no transport — returns underlying 态射 unchanged.
+   本节说明 Arrow 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -439,9 +428,7 @@ Lemma aua_ua_round {a : D} (W : AUniversalArrow c F a) :
 Proof. simpl; reflexivity. Qed.
 
 (*
-   The other 复合 is weaker, and the difference is real rather than an
-
-   本节说明相关定义、性质与动机。 artifact how it is stated. [ua_of_aua (aua_of_ua W)] rebuilds whole [Initial] record 逗号范畴 from UMP, so [arrow_initial] field is different term two [UniversalArrow]s are NOT [eq_refl]-equal — pinned conversion negative Test/ProbeRe
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

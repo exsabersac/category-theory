@@ -36,37 +36,37 @@ Generalizable All Variables.
 *)
 
 (*
-   本节说明相关定义、性质与动机。 * ** What is consumed, correction that goes it. [ZigZag], [Connected] whole zig-zag calculus are CONSUMED from Structure/Groupoid/Connected.v. Nothing below redeclares them.
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 Why principal construction is called [pi0]. The quotient built below is SET — 对象 [Sets], one point per component.
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 Universes, measured constraint blocks. THE EXPLICIT BINDERS ARE LOAD-BEARING IN THREE PLACES, each measurement is discriminating: same body without them is strictly worse nothing else about it changes. (1) [zigzag_fmap].
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 Strengths, measured [eq_refl] first. HELD — nine here, two more connected-diagram section at end file ([connected_diagram_is_index] [connected_nonempty_diagram_is_index], each naming new constant against donor predicate applied index), s
+   本节说明（余）端、（余）强度相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 STATUS: axiom-free. 105 constants — 90 named, 12 [Program] obligations,.
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 What is NOT delivered. - NO DECISION PROCEDURE. [ZigZag] is proof-relevant data, nothing here decides whether two 对象 are joined; negative results below each go through invariant ambient 范畴, never through analysis chains.
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -74,9 +74,7 @@ Generalizable All Variables.
 (** ** Functors carry zig-zags to zig-zags *)
 
 (*
-   A 函子 sends each step of a chain to a step of the same direction.
-
-   本节说明相关定义、性质与动机。 This is piece that was missing: donor file has chain, its 复合 its reversal, but no action 函子 it. The recursion is chain nothing else — no 函子 law is consumed, only [fmap] itself.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -90,7 +88,7 @@ Fixpoint zigzag_fmap@{oc od hc hd} {C : Category@{oc hc hc}}
   end.
 
 (*
-   本节说明相关定义、性质与动机。 The image one-step chain is one-step chain image arrow,. ON THE NOSE.
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -98,7 +96,7 @@ Example zigzag_fmap_hom {C D : Category} (F : C ⟶ D) {x y : C} (f : x ~> y) :
   zigzag_fmap F (hom_zigzag f) = hom_zigzag (fmap[F] f) := eq_refl.
 
 (*
-   本节说明相关定义、性质与动机。 Functoriality action. These are NOT [eq_refl]: [zigzag_fmap]. recurses its chain argument, so at variable chain it is stuck.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -135,9 +133,7 @@ Proof.
 Qed.
 
 (*
-   What a 函子 out of a connected 范畴 gives, stated at exactly the
-
-   本节说明相关定义、性质与动机。 strength it has: any two 对象 IN THE IMAGE are joined. Read quantifier carefully — [x] [y] range over C, not over D, so this says nothing about 对象 D outside image, it is NOT [Connected D].
+   本节说明函子、（余）强度相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -146,7 +142,7 @@ Definition connected_image@{k oc od hc hd} {C : Category@{oc hc hc}}
   (x y : C) : ZigZag@{od hd} (F x) (F y) := zigzag_fmap F (K x y).
 
 (*
-   本节说明相关定义、性质与动机。 Surjectivity is what closes gap, essential surjectivity is.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -169,7 +165,7 @@ Definition equivalence_connected {C D : Category} (F : C ⟶ D)
 (** ** π₀ as a setoid *)
 
 (*
-   本节说明相关定义、性质与动机。 The three chain operations donor file are exactly three. fields 等价 relation.
+   本节说明等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -179,9 +175,7 @@ Definition zigzag_Equivalence (C : Category) : Equivalence (@ZigZag C) :=
    ; Equivalence_Transitive := @zigzag_trans C |}.
 
 (*
-   The 对象 type of C as a setoid under Leibniz equality — the finest
-
-   本节说明相关定义、性质与动机。 equality it, so that quotient below genuinely coarsens. THE FOURTH UNIVERSE BINDER IS LOAD-BEARING AND WAS MEASURED, NOT GUESSED, two separate comparisons.
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -191,9 +185,7 @@ Definition ObjSetoid@{o h p q} (C : Category@{o h p}) : SetoidObject@{o q} :=
                    ; setoid_equiv := @eq_equivalence@{o q} obj[C] |} |}.
 
 (*
-   π₀ of C: the 对象 of C with "joined by a zig-zag" as the equality.
-
-   本节说明相关定义、性质与动机。 This is Instance/Sets/Quotient.v's [SetsQuotient] applied directly — [ZigZag] is already [crelation] [obj[C]], so no encoding step intervenes. Per house discipline that file CARRIER IS UNTOUCHED only `≈` is coarsened;
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -201,9 +193,7 @@ Definition pi0 (C : Category) : SetoidObject :=
   SetsQuotient (ObjSetoid C) (@ZigZag C) (zigzag_Equivalence C).
 
 (*
-   The carrier of π₀ IS the 对象 type, and its equality IS the zig-zag
-
-   本节说明相关定义、性质与动机。 relation, both conversion. Neither statement is tautology: each names [pi0] one side donor constant other.
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -213,9 +203,7 @@ Example pi0_equiv (C : Category) (x y : C) :
   @equiv _ (pi0 C) x y = ZigZag x y := eq_refl.
 
 (*
-   Leibniz-equal 对象 are joined, by the empty chain.  This is the
-
-   本节说明相关定义、性质与动机。 [SetoidCoarser] 假设 Instance/Sets/Quotient.v, it is only thing projection needs beyond 等价.
+   本节说明等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -225,9 +213,7 @@ Definition pi0_coarser@{o h} (C : Category@{o h h}) :
     match e in _ = z return ZigZag x z with eq_refl => zz_nil x end.
 
 (*
-   The projection sending an 对象 to its component, as a 态射 of
-
-   本节说明相关定义、性质与动机。 [Sets]. THE EXPLICIT BINDERS HERE ARE LOAD-BEARING, MEASURED AS FOLLOWS.
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -240,7 +226,7 @@ Definition pi0_proj@{o so h} (C : Category@{o h h}) :
 Example pi0_proj_at (C : Category) (x : C) : pi0_proj C x = x := eq_refl.
 
 (*
-   本节说明相关定义、性质与动机。 π₀ is functorial, [zigzag_fmap] is exactly respectfulness. clause: map components is map 对象 that carries joined 对象 joined 对象.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -257,9 +243,7 @@ Example pi0_fmap_at {C D : Category} (F : C ⟶ D) (x : C) :
   pi0_fmap F x = F x := eq_refl.
 
 (*
-   Naturally isomorphic 函子 induce the same map on components: the
-
-   本节说明相关定义、性质与动机。 component 同构 at x is one-step chain from F x G x.
+   本节说明函子、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -268,7 +252,7 @@ Lemma pi0_fmap_respects {C D : Category} (F G : C ⟶ D) (H : F ≈ G) :
 Proof. intro x; exact (hom_zigzag (to (`1 H x))). Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Connectedness read off π₀. Both directions are NEAR-DEFINITIONAL —. [equiv] [pi0 C] IS [ZigZag] [pi0_equiv] above — they are recorded because π₀ phrasing is one consumer will reach for, not because either carries argument.
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -291,9 +275,7 @@ Defined.
 (** ** π₀ as a functor Cat ⟶ Sets *)
 
 (*
-   The three 函子定律 are free.  [fmap_respects] is [pi0_fmap_respects];
-
-   本节说明相关定义、性质与动机。 [fmap_id] [fmap_comp] ask chain between two 对象 that are Leibniz-equal, [zz_nil] supplies it — so no property [Id] [Compose] is consumed at all, 特别地 [zigzag_fmap_id] [zigzag_fmap_compose] are NOT used here.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -310,9 +292,7 @@ Example Pi0_obj (C : Cat) : fobj[Pi0] C = pi0 C := eq_refl.
 (** ** The connected component of an object, as a full subcategory *)
 
 (*
-   The 对象 joined to x, with EVERY 态射 of C between them.  The
-
-   本节说明相关定义、性质与动机。 selected-态射 family is universe-polymorphic unit, so two closure fields are discharged ambient obligation tactic subcategory is full construction.
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -354,9 +334,7 @@ Definition component_arr {C : Category} {x : C} {a b : C}
   (a; sa) ~{ConnectedComponent C x}~> (b; sb) := (f; ttt).
 
 (*
-   Membership is DATA, so one 对象 of C sitting in the component by two
-
-   本节说明相关定义、性质与动机。 different chains gives two DIFFERENT 对象 subcategory. They are canonically isomorphic, identity C both directions. (Construction/Subcategory.v's [Full_membership_iso] proves same thing generically;
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -367,7 +345,7 @@ Program Definition component_iso (C : Category) (x y : C)
 |}.
 
 (*
-   本节说明相关定义、性质与动机。 A chain C starting inside component lifts chain the. component.
+   本节说明（余）端相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -387,7 +365,7 @@ Fixpoint component_lift {C : Category} {x : C} {y z : C}
   end sy.
 
 (*
-   本节说明相关定义、性质与动机。 Each component is connected — half "C is disjoint union of. its connected components" 即 theorem here.
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -403,9 +381,7 @@ Definition Component_obj (C : Category) (x : C) : ConnectedComponent C x :=
   (x; zz_nil x).
 
 (*
-   A connected 范畴 is its own single component, up to 等价: the
-
-   本节说明相关定义、性质与动机。 inclusion is fully 忠实 always, connectedness makes it surjective 对象 nose, so witnessing 同构 is [iso_id].
+   本节说明等价、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -421,7 +397,7 @@ Definition connected_Component_equiv (C : Category) (x : C)
     (Component_Incl_ESO C x K).
 
 (*
-   本节说明相关定义、性质与动机。 The component does not depend which representative names it. The.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -462,7 +438,7 @@ Proof.
 Defined.
 
 (*
-   本节说明相关定义、性质与动机。 Only EQUIVALENCE is claimed, 即 not shortfall proof. but 对象: reindexing changes membership proof each 对象 carries, so 对象 [(w; s)] target is reached from [(w; zigzag_trans z s)] comes back [(w;
+   本节说明等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -476,7 +452,7 @@ Definition Component_reindex_equiv (C : Category) (x x' : C)
 (** ** Two readings of "connected", separated *)
 
 (*
-   本节说明相关定义、性质与动机。 THE SOURCE ISSUE AND THE DONOR FILE DO NOT DEFINE THE SAME PREDICATE,. AND THE DIFFERENCE IS EXACTLY THE EMPTY CATEGORY. The issue asks "INHABITED, any two 对象 are joined zig-zag";
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -512,7 +488,7 @@ Definition connected_readings_differ :
   (Zero_Connected, Zero_not_ConnectedNonempty).
 
 (*
-   本节说明相关定义、性质与动机。 Every component satisfies stronger reading, its representative. supplying 对象.
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -521,7 +497,7 @@ Definition Component_ConnectedNonempty (C : Category) (x : C) :
   Build_ConnectedNonempty (Component_obj C x) (Component_Connected C x).
 
 (*
-   本节说明相关定义、性质与动机。 The π₀ phrasing stronger reading: π₀ has exactly one point. Like.
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -536,9 +512,7 @@ Defined.
 (** ** Categories that are connected, and one that is not *)
 
 (*
-   A 终对象 joins every pair: out to 1 and back.  Both the bundled
-
-   本节说明相关定义、性质与动机。 class 对象-level predicate Structure/Terminal.v are covered, latter because terminality is often available only property.
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -556,9 +530,7 @@ Definition terminal_ConnectedNonempty {C : Category} (T : @Terminal C) :
   Build_ConnectedNonempty (@terminal_obj C T) (terminal_connected T).
 
 (*
-   Dually for an 始对象: in to 0 and back out.  注意 these are
-
-   本节说明相关定义、性质与动机。 written out rather than obtained from terminal case at [C^op], because chain [C^op] is not chain C nose — two constructors exchange — no transport between them is built here.
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -583,9 +555,7 @@ Definition One_ConnectedNonempty : ConnectedNonempty _1 :=
   @Build_ConnectedNonempty _1 ttt One_Connected.
 
 (*
-   In a discrete 范畴 a chain cannot leave the 对象 it starts at:
-
-   本节说明相关定义、性质与动机。 every arrow forces its endpoints Leibniz-equal, induction over chain accumulates those equalities. Stated over Structure/Discrete.v's [Discrete] PREDICATE rather than over Instance/Discrete.v's construction, so it applies any 范畴 shown discrete.
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -602,9 +572,7 @@ Definition discrete_connected_eq {C : Category} (D : Discrete C)
   (K : Connected C) (x y : C) : x = y := discrete_zigzag_eq D (K x y).
 
 (*
-   Hence a discrete 范畴 is connected 当且仅当 it has at most one
-
-   本节说明相关定义、性质与动机。 对象, satisfies stronger reading 当且仅当 it has exactly one.
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -632,7 +600,7 @@ Proof.
 Defined.
 
 (*
-   本节说明相关定义、性质与动机。 For GROUPOID zig-zag form one-arrow form agree. This is. PURE ASSEMBLY two constants donor file — Structure/Groupoid/Connected.v's [connected_arrow] 正向 its [arrow_connected] back — introduces no argument its own;
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -666,7 +634,7 @@ Definition pi0_Parallel_subsingleton : pi0_subsingleton Parallel :=
   Parallel_Connected.
 
 (*
-   本节说明相关定义、性质与动机。 [Roof] is sharper witness it is CITED, not reproved:. Structure/Groupoid/Connected.v's [Roof_Connected] already exhibits walking span connected, its [Roof_no_arrow_neg_pos] shows it is not arrow-connected.
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -682,9 +650,7 @@ Proof.
 Qed.
 
 (*
-   ... and π₀ of it genuinely separates its two 对象, which is what
-
-   本节说明相关定义、性质与动机。 makes construction non-vacuous: quotient does not collapse everything. The argument does not read chain conclude False from its shape — no analysis chains could, chain being data three constructors no contradictory one;
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -707,9 +673,7 @@ Proof.
 Qed.
 
 (*
-   A 函子 from a connected 范畴 to a disconnected one.  This is what
-
-   本节说明相关定义、性质与动机。 makes [connected_image] honest statement first section: its conclusion holds here, while [Connected (DiscreteCat bool)] is refutable.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -736,7 +700,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 * ** Connected diagrams (Riehl §3.4). Riehl's running 定义 derives notion DIAGRAMS from one 范畴: diagram is connected when its INDEXING 范畴 is.
+   本节说明（余）极限相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -780,7 +744,7 @@ Definition pi0_connected_diagram {J C : Category} (D : J ⟶ C)
   pi0_subsingleton_connected H.
 
 (*
-   本节说明相关定义、性质与动机。 Witnesses, positive negative, two shapes this file already. exercises.
+   本节说明 Components 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -792,7 +756,7 @@ Definition bool_diagram_not_connected {C : Category}
   DiscreteCat_bool_not_connected.
 
 (*
-   本节说明相关定义、性质与动机。 NOT delivered here: no connected LIMIT. The reason connected diagrams.
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

@@ -117,9 +117,7 @@ Lemma alt_endo_nothing {c} (m n : Maybe c) :
 Proof. induction m, n; simpl; intuition auto; discriminate. Qed.
 
 (*
-   The lawful 函子 instance: [Maybe] is a genuine 自函子 on [Coq],
-
-   本节：discharging identity 复合 函子定律. (The name reuses source [Maybe_函子] instance, [Either]/[Tuple] proof files.)
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

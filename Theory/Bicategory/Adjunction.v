@@ -20,7 +20,7 @@ Notation "f ∘∘∘ g" := (hcompose (f, g)) : category_scope.
 (*
    nLab: https://ncatlab.org/nlab/show/adjunction+in+a+bicategory
 
-   本节：An 伴随 inside 双范畴 `B` is internalisation ordinary notion 伴随 函子: it lives entirely 2-cell calculus `B`. Fix two 0-cells `x y : bi0cell`.
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -143,9 +143,7 @@ Proof.
 Qed.
 
 (*
-   The three single-贴须 naturality squares of the 结合子, each obtained
-
-   本节说明相关定义、性质与动机。 from general `hassoc_自然` field taking two three 2-cells be identities collapsing resulting `hcomp2 bi2id bi2id` via `hcomp2_id`.
+   本节说明 Adjunction 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -181,9 +179,7 @@ Proof.
 Qed.
 
 (*
-   The coherence 2-isomorphisms live in the hom-范畴 `bicat _ _`, so their
-
-   本节说明相关定义、性质与动机。 inverse laws are stated generic `iso_to_from`/`iso_from_to` ambient `∘`/`id`.
+   本节说明hom、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -196,7 +192,7 @@ Lemma vfrom_vto {x y : bi0cell} {A A' : bicat x y} (i : A ≅[bicat x y] A') :
 Proof. exact (iso_from_to i). Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Master conjugation lemma: `to`-direction naturality square two. coherence isos transposes `from`-direction one.
+   本节说明 Adjunction 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -229,9 +225,7 @@ Lemma hunit_right_from_natural {x y : bi0cell} {f f' : bicat x y}
 Proof. exact (iso_conj_from _ _ _ _ (hunit_right_natural η)). Qed.
 
 (*
-   贴须-form restatements of the `to`-direction unitor naturality fields
-
-   本节说明相关定义、性质与动机。 (definitionally equal fields, since `lwhisker`/`rwhisker` unfold `hcomp2`), so they compose uniformly 贴须 calculus.
+   本节说明 Adjunction 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -248,7 +242,7 @@ Proof. exact (hunit_right_natural η). Qed.
 (* ------------------------------------------------------------------ *)
 
 (*
-   本节说明相关定义、性质与动机。 `f ⊣ u` inside `B`: unit counit 2-cells two triangle identities,. each stated equation between unitor/结合子-conjugated whiskering 复合 endpoints `f ~> f` (resp. `u ~> u`) identity 2-cell.
+   本节说明 Adjunction 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -287,7 +281,7 @@ Arguments adj_triangle_right {B x y} f u {_}.
 (** Uniqueness of adjoints up to invertible 2-cell *)
 
 (*
-   本节说明相关定义、性质与动机。 Two right adjoints same 1-cell `f` are related invertible. 2-cell.
+   本节说明伴随相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -440,9 +434,7 @@ Proof.
 Qed.
 
 (*
-   The triangle and pentagon coherences restated in 贴须 notation (the
-
-   本节说明相关定义、性质与动机。 fields are phrased through `hcomp2`, which 贴须 unfold), so that `rewrite` matches 贴须 terms occurring below.
+   本节说明 Adjunction 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -530,7 +522,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The `from`-direction left-unit coherence, obtained inverting `to`.
+   本节说明 Adjunction 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -563,9 +555,7 @@ Lemma vcancel_tf {x' y' : bi0cell} {A0 A1 C : bicat x' y'}
 Proof. rewrite vcompose_assoc, vto_vfrom. now rewrite bi2id_left. Qed.
 
 (*
-   The 结合子 naturality laws, solved for the doubly-whiskered cell; these
-
-   本节说明相关定义、性质与动机。 put each right-whiskered factor expanded mate into normal form whose flanking associators telescope against their neighbours.
+   本节说明 Adjunction 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -668,9 +658,7 @@ Proof.
     rewrite <- (assoc_nat_bot b f (uη Aa)).
     now rewrite <- vcompose_assoc. }
   (*
-   Main computation: expand the right-whiskered mate into 结合子-solved
-
-   本节说明相关定义、性质与动机。 factors, telescope four adjacent 结合子 pairs, then apply tail straightening, merge `b`-贴须, collapse via left triangle right-unit coherence.
+   本节说明 Adjunction 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

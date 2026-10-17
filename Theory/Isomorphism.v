@@ -65,9 +65,7 @@ Arguments iso_from_to {x y} _.
 Infix "≅" := Isomorphism (at level 91) : category_scope.
 
 (*
-   The predicate form: `f` is an 同构 iff it has a two-sided inverse.
-
-   本节：This is nLab 定义 "an invertible 态射", phrased about single 态射 `f` rather than about pair 对象;
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -124,9 +122,7 @@ Next Obligation.
 Defined.
 
 (*
-   Bundling the three constructions above: `≅` is an 等价 relation on
-
-   本节说明相关定义、性质与动机。 the 对象 C. (Per nLab, isomorphisms C are 态射 its core groupoid;
+   本节说明等价、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -143,9 +139,7 @@ Definition ob_equiv : crelation C := Isomorphism.
    ; setoid_equiv := iso_equivalence |}.
 
 (*
-   等价 of two isomorphisms between the *same* pair of 对象 (as
-
-   本节说明相关定义、性质与动机。 opposed `≅`, which relates 对象): two isos are equal when their `to` `from` components are equal 态射 under `≈`.
+   本节说明hom、等价、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -206,9 +200,7 @@ Ltac isomorphism :=
   unshelve (refine {| to := _; from := _ |}; simpl; intros).
 
 (*
-   Every 同构 is both monic and epic, in each direction: `to` and
-
-   本节说明相关定义、性质与动机。 `from` are cancellable both sides because each has two-sided inverse. (The converse fails 一般地;
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -246,7 +238,7 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Two-sided inverses are unique up ≈: if `g` is right inverse `g'`. left inverse same `f`, they agree. Stated plain 态射 (no 同构 packaging), which is form inverted coherence laws downstream consume (e.g.
+   本节说明幺半结构、幺半群、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -263,9 +255,7 @@ Proof.
 Qed.
 
 (*
-   Two-sided inverses are unique, so an 同构 is determined by its `to`
-
-   本节说明相关定义、性质与动机。 component: if `to f ≈ g` then `from` components agree well, hence `f ≈ g`.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -339,9 +329,7 @@ Next Obligation.
 Qed.
 
 (*
-   Partial converses to "isos are monic and epic": a 态射 即 both
-
-   本节说明相关定义、性质与动机。 monic retraction (split epi) is 同构, dually 态射 即 both epic section (split mono) is 同构.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

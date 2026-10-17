@@ -35,9 +35,7 @@ Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 
 (*
-   正向 direction: an 伴随 F ⊣ U transposes to a 自然 同构 of
-
-   本节：the 可表 profunctors. Concretely we route universal-property 伴随 through 伴随_Universal_to_Hom obtain hom-bifunctor 同构 hom_adj, whose endpoints are Repr_left F Repr_right U.
+   本节说明伴随、hom、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

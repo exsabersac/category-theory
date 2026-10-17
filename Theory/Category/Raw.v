@@ -45,9 +45,7 @@ Notation "f ∘⁻ g" :=
 Coercion r_obj : RawCategory >-> Sortclass.
 
 (*
-   Assemble a lawful [范畴] from raw data once the missing setoid
-
-   本节说明相关定义、性质与动机。 ([homset]), [Proper] respectfulness 复合, unit 结合律 laws are supplied externally.
+   本节说明 Raw 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -73,7 +71,7 @@ Open Scope raw_morphism_scope.
    nLab: https://ncatlab.org/nlab/show/functor
    Wikipedia: https://en.wikipedia.org/wiki/Functor
 
-   本节：A [Denotation] is 函子 from lawless [RawCategory] C lawful [范畴] D: 对象 map [dobj], 态射 map [denote], two functoriality laws preserving identities ([h_id]) 复合 ([h_compose]).
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -92,9 +90,7 @@ Notation "C ⟶⁻ D" := (@Denotation C%raw_category D%category)
   (at level 90, right associativity) : type_scope.
 
 (*
-   The hom-setoid on the raw 范畴 induced by a denotation: two raw
-
-   本节说明相关定义、性质与动机。 态射 are equivalent 当且仅当 their images under [denote] are equivalent lawful target.
+   本节说明拉回/推出、hom、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -104,9 +100,7 @@ Program Definition DerivedEquivalence
    ; setoid_equiv := _ |}.
 
 (*
-   Given a lawless [RawCategory], a lawful [范畴], and a denotation from
-
-   本节说明相关定义、性质与动机。 the former latter, re-present source lawful [范畴] way that denotation: take derived hom-setoid above, then discharge unit 结合律 laws rewriting [h_id] [h_compose] appealing corresponding laws lawful targe
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

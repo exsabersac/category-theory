@@ -73,9 +73,7 @@ Class Cleaving {C : Category} (D : Displayed C) := {
 (** ** Cartesian morphisms and cloven fibrations, functor presentation *)
 
 (*
-   The ≈-honest 普遍性质: the factorization of [fmap[P] ψ]
-
-   本节说明相关定义、性质与动机。 through [fmap[P] φ] is carried explicit base-态射 witness [g] explicit equation, mediating lift is unique among 态射 lying over [g] up [≈].
+   本节说明 Fibration 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -87,9 +85,7 @@ Class CartesianMorphism {C E : Category} (P : E ⟶ C)
 }.
 
 (*
-   A chosen 笛卡尔 lift of [f : x ~> P e'].  The lift 对象 is
-
-   本节说明相关定义、性质与动机。 anchored fibre over [x] STRICTLY, propositional 对象 equality [P lift_obj = x] (sanctioned here;
+   本节说明同构、笛卡尔相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -114,7 +110,7 @@ Class ClovenFibration {C E : Category} (P : E ⟶ C) := {
 }.
 
 (*
-   本节说明相关定义、性质与动机。 A split cleavage: chosen lifts are functorial nose. Both.
+   本节说明函子、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -138,9 +134,7 @@ Class SplitCleaving {C E : Category} (P : E ⟶ C)
 (** ** Bridge: a cleaving makes the total projection a cloven fibration *)
 
 (*
-   A displayed-笛卡尔 态射 is 笛卡尔 for the projection 函子:
-
-   本节说明相关定义、性质与动机。 the base factorization is transported into displayed 态射 over 复合, which then factors uniquely through [ff].
+   本节说明函子、笛卡尔相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -178,9 +172,7 @@ Defined.
 #[local] Obligation Tactic := program_simpl.
 
 (*
-   The bridge: chosen displayed lifts become chosen 函子-level lifts of
-
-   本节说明相关定义、性质与动机。 the projection. The lift [f : x ~> `1 e'] at [e'] is pair [(x;
+   本节说明函子、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -205,9 +197,7 @@ Qed.
 #[local] Obligation Tactic := idtac.
 
 (*
-   The op-displayed 范畴: same displayed 对象; a displayed 态射
-
-   本节说明相关定义、性质与动机。 from [dx] [dy] over [f : x ~{C^op}~> y] is displayed 态射 from [dy] [dx] over underlying arrow [f : y ~{C}~> x].
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

@@ -35,9 +35,9 @@ Context `{Monad F}.
 Definition join {x} (m : F (F x)) : F x := bind m id.
 
 (*
-   Kleisli (fish) 复合 (>=>): the 复合 of the Kleisli 范畴
+   nLab: https://ncatlab.org/nlab/show/Kleisli+category
 
-   本节说明相关定义、性质与动机。 of [F], whose arrows x ⇒ y are functions x → F y whose identity is [ret]. Categorically [(g ∘_Kl f) = μ ∘ F(g) ∘ f]; FP-side [(f >=> g) x ≈ f x >>= g].
+   本节说明Kleisli相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -60,9 +60,7 @@ Definition liftM3 {x y z w : Type@{d}} (f : x → y → z → w) :
     λ x y z, bind x (λ x, liftM2 (f x) y z).
 
 (*
-   [apM] is the applicative [ap] (<*>) derived from the 单子:
-
-   本节说明相关定义、性质与动机。 [apM fM aM ≈ fM >>= (λ f, liftM f aM)]. This is canonical lax-幺半 structure every 单子 induces (see [Applicative_单子] below).
+   本节说明幺半结构、单子、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -70,7 +68,7 @@ Definition apM {x y : Type@{d}} (fM : F (x → y)) (aM : F x) : F y :=
   bind fM (λ f, liftM f aM).
 
 (*
-   本节说明相关定义、性质与动机。 [when]/[unless] are standard Haskell conditional combinators: run the. effect [x] when (resp. unless) guard holds, otherwise do nothing [ret tt].
+   本节说明 Monad 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -147,9 +145,9 @@ Instance Identity_Monad : Monad id | 9 := {
 }.
 
 (*
-   The reader 单子 [arrow x = (x → -)]: [ret] is the constant function and
+   Wikipedia: https://en.wikipedia.org/wiki/Monad_(functional_programming)#Environment_monad
 
-   本节说明相关定义、性质与动机。 [bind] threads shared environment [r] through both computations. It is 单子 [(x →) ⊣] currying 伴随 (functions from fixed [x]).
+   本节说明伴随、单子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -160,9 +158,9 @@ Instance arrow_Monad x : Monad (arrow x) := {
 }.
 
 (*
-   [单子_Distributes] packages the data needed to make the 复合 [M ∘ N]
+   nLab: https://ncatlab.org/nlab/show/distributive+law
 
-   本节：a 单子: swap/prod map [mprod : N (M (N x)) → M (N x)]. This is half 分配律 [N] over [M] sufficient [Compose_单子]; full 分配律 N ∘ M ⇒ M ∘ N (a [BeckDistributiveLaw]) is structure that guarantees 复合 is again 单子.
+   本节说明单子、分配律相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -176,9 +174,9 @@ Import MonadNotations.
 Open Scope monad_scope.
 
 (*
-   The 复合 [M ∘ N] is a 单子 given a 分配律 [单子_Distributes]:
+   nLab: https://ncatlab.org/nlab/show/distributive+law
 
-   本节说明相关定义、性质与动机。 [ret] is [ret[M] ∘ pure[N]] (both units stacked) [bind] uses [mprod] commute inner [N] past outer [M]. This is standard "单子-on-单子 via 分配律" construction.
+   本节说明单子、分配律相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -190,7 +188,9 @@ Instance Compose_Monad `{Monad M} `{Applicative N}
 }.
 
 (*
-   本节说明相关定义、性质与动机。 The Yoneda construction [Yoneda F] is monadic whenever [F] is: this is the.
+   nLab: https://ncatlab.org/nlab/show/Yoneda+lemma
+
+   本节说明单子、Yoneda、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -214,9 +214,9 @@ Context `{Monad F}.
 }.
 
 (*
-   Every 单子 is applicative, with [pure = ret] (the unit η) and [ap = apM]
+   Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor
 
-   本节说明相关定义、性质与动机。 (sequential application via bind). This is canonical 单子 ⇒ Applicative ⇒ 函子 tower.
+   本节说明函子、单子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

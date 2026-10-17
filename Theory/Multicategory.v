@@ -18,15 +18,20 @@ Generalizable All Variables.
    长历史短文若仍为英文属后续波次；定义性文首已译。 *)
 
 (*
-   Where multicategories 来源, and 用途
+   关于multicategories的来源与用途
 
-   本节说明相关定义、性质与动机。 nLab: https://ncatlab.org/nlab/show/多元范畴 nLab: https://ncatlab.org/nlab/show/operad Paper: Lambek, "Deductive systems 范畴 II.
+   nLab:  https://ncatlab.org/nlab/show/multicategory
+   nLab:  https://ncatlab.org/nlab/show/operad
+   Paper: Lambek, "Deductive systems and categories II. Standard
+   Book:  Leinster, "Higher Operads, Higher Categories", Cambridge
+
+   本节说明多元范畴、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 * ** The splice-equation kit. Canonical proofs list equations along which laws cast. Pure [app]-代数: chains [app_assoc]/[app_nil_r]/[app_comm_cons].
+   本节说明 Multicategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -82,7 +87,7 @@ Proof. symmetry; apply splice_eq_slot_out. Qed.
 End SpliceKit.
 
 (*
-   本节说明相关定义、性质与动机。 * ** Permutation witnesses data. The Type-valued mirror stdlib [Permutation], constructor constructor.
+   本节说明 Multicategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -116,7 +121,7 @@ Fixpoint tperm_Permutation {A : Type} {Γ Δ : list A} (p : tperm Γ Δ) :
   end.
 
 (*
-   本节说明相关定义、性质与动机。 * ** Block-permutation combinators. The equivariance law acts spliced context permuting its three blocks independently.
+   本节说明 Multicategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -209,9 +214,7 @@ Class Multicategory : Type := {
     mcast (splice_eq_unit_right Γ1 Γ2 a) (mcomp f (mid a)) ≈ f;
 
   (*
-   结合律, nested shape: the second slot lands INSIDE the spliced
-
-   本节说明相关定义、性质与动机。 context. Splicing [g] into [f] then [h] into [a]-slot that [g] contributed agrees splicing [mcomp g h] into [f] directly.
+   本节说明 Multicategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -222,9 +225,7 @@ Class Multicategory : Type := {
     mcomp (mcast e1 (mcomp f g)) h ≈ mcast e2 (mcomp f (mcomp g h));
 
   (*
-   结合律, disjoint shape: two slots in the SAME outer context
-
-   本节说明相关定义、性质与动机。 ([a] before [b] zipper [(Γ1, a, Γ2 ++ b :: Γ3)] respectively [(Γ1 ++ :: Γ2, b, Γ3)]) may be filled either order.
+   本节说明 Multicategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -238,9 +239,7 @@ Class Multicategory : Type := {
       ≈ mcast d4 (mcomp (mcast d3 (mcomp (mcast d2 f) h)) g);
 
   (*
-   The 对称-group action: relabel the source context along a
-
-   本节说明相关定义、性质与动机。 permutation. The action depends permutation WITNESS data, which is why witness is Type-valued [tperm].
+   本节说明 Multicategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -278,7 +277,7 @@ Class Multicategory : Type := {
 #[export] Existing Instance msym_respects.
 
 (*
-   本节说明相关定义、性质与动机。 * ** The derived cast lemma pack. Mirrors [dsq_coerce] pack Theory/DoubleCategory.v (one index instead two): 消去, flipping across [≈], proof irrelevance, [_any] forms canonical-proof laws.
+   本节说明 Multicategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

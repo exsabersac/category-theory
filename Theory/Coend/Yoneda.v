@@ -191,7 +191,7 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 * An element [Sets_End YoE] is family [s x : C(c,x) → F x] satisfying. wedge law: exactly 自然变换 [C(c,-) ⟹ F]. We build two setoid maps directly prove round trips.
+   本节说明自然变换相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

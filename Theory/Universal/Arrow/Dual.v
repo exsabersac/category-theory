@@ -29,19 +29,22 @@ Open Scope category_scope.
    nLab: https://ncatlab.org/nlab/show/universal+morphism
    Wikipedia: https://en.wikipedia.org/wiki/Universal_property
 
-   本节说明相关定义、性质与动机。 A couniversal arrow from 函子 F : D ⟶ C 对象 c : C -- Mac Lane's "泛箭头 from F c" (CWM 2nd ed., §III.1, p.
+   本节说明函子、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 Why dual is cheap here, what it costs. nLab: https://ncatlab.org/nlab/show/反+范畴 Paper: Mac Lane, "对偶 groups", Bull. Amer. Math. Soc.
+   nLab:  https://ncatlab.org/nlab/show/opposite+category
+   Paper: Mac Lane, "Duality for groups", Bull. Amer. Math. Soc. 56, 1950
+
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 WHAT IS DELIVERED. Both encodings, mirroring primal file field field: [CouniversalArrow], packaging property 对象 projected out, [ACouniversalArrow], 对象 : D parameter.
+   本节说明同构、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -59,9 +62,7 @@ Definition CouniversalArrow (c : C) (F : D ⟶ C) : Type :=
   @UniversalArrow (C^op) (D^op) c (Opposite_Functor F).
 
 (*
-   Mirrors [Existing Class 余单子] in 余单子/Core.v: typeclass resolution
-
-   本节说明相关定义、性质与动机。 keys head constant goal does not unfold this 定义, so without declaration couniversal arrow scope would not be found implicit arguments accessors below.
+   本节说明余单子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -86,13 +87,13 @@ Definition coarrow : F coarrow_obj ~{C}~> c :=
 End Accessors.
 
 (*
-   本节说明相关定义、性质与动机。 No [Arguments] command is needed -- would survive: [Arguments] inside a. [Section] is discharged at its [End]. Both accessors take c F implicitly already, from implicit [Context] binders [Accessors], that survives;
+   本节说明（余）端相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 The couniversal mapping property: any h : F d ~> c factors as. h ≈ coarrow ∘ fmap[F] g through unique g : d ~> coarrow_obj.
+   本节说明 Dual 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -112,15 +113,13 @@ Definition couniversal_arrow_from_UMP (c : C) (F : D ⟶ C) (d : D)
 (** ** The terminal-object reading (Mac Lane §III.1 Definition 3) *)
 
 (*
-   Mac Lane defines a couniversal arrow from F to c as a TERMINAL 对象 of
-
-   本节：the 逗号范畴 F ↓ =(c), that reading is delivered here pair conversions rather than 定义, reason header gives: 反-side 逗号范畴 indexes its 对象 `1 ∏ D^op` where this one indexes `D ∏ 1`, [积] categori
+   本节说明始/终对象、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节：Locating mismatch: it is NOT terminal/initial axis. `Initial K`. is notation `@Terminal (K^op)` (Structure/Initial.v) `(K^op)^op = K` holds conversion (Construction/反.v), so 终对象 F ↓ =(c) IS 始对象 its 反, free.
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -153,9 +152,7 @@ Proof.
 Defined.
 
 (*
-   The transported structure chooses the couniversal 对象 on the nose --
-
-   本节说明相关定义、性质与动机。 what makes [couniversal_arrow_terminal] transport rather than bare existence claim, idiom [Terminal_iso_obj] (Structure/Initial.v).
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -173,7 +170,7 @@ Proof.
   unshelve eapply (couniversal_arrow_from_UMP c F a ε).
   intros d' f.
   (*
-   本节说明相关定义、性质与动机。 every factorization f through ε satisfies comma square, whose. =(c)-leg computes id[c].
+   本节说明 Dual 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -195,7 +192,7 @@ Defined.
 (** ** Uniqueness up to a unique isomorphism *)
 
 (*
-   本节说明相关定义、性质与动机。 The duals mediator calculus added Theory/Universal/Arrow.v for. Awodey's Proposition 1.10. Each is primal statement read 反 范畴, so each is supplied [:=] one-line [exact];
+   本节说明 Dual 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -231,9 +228,7 @@ Lemma cua_med_comp (U1 U2 U3 : CouniversalArrow c F) :
 Proof. exact (@ua_med_comp (C^op) (D^op) c (Opposite_Functor F) U3 U2 U1). Qed.
 
 (*
-   The two mediators are mutually inverse, so the couniversal 对象 are
-
-   本节说明相关定义、性质与动机。 isomorphic. [同构_反] reads op-side 同构 back into `(D^op)^op`, which IS `D`;
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -278,9 +273,7 @@ End CouniversalArrowUnique.
 Context (F : @Functor D C).
 
 (*
-   A couniversal arrow from F to every 对象 c : C assembles into a right
-
-   本节：伴随 F. The 对象 map sends c its couniversal 对象, 态射 map sends f : x ~> y unique factorization f ∘ coarrow through coarrow_obj y.
+   本节说明伴随、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -297,9 +290,7 @@ Corollary right_adjoint_obj (H : forall c : C, CouniversalArrow c F) (c : C) :
 Proof. reflexivity. Qed.
 
 (*
-   The induced 函子 is genuinely 右伴随 to F, with the couniversal
-
-   本节说明相关定义、性质与动机。 arrows serving components counit. [反_伴随] supplies whole proof: `(C^op)^op = C` `(F^op)^op = F` both hold [reflexivity], so dual 反-side 伴随 lands at `F ⊣ RightAdjointFunctorFromCouniversalArrows H` nothing tr
+   本节说明伴随、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -313,9 +304,7 @@ Definition AdjunctionFromCouniversalArrows
     (@AdjunctionFromUniversalArrows (C^op) (D^op) (Opposite_Functor F) H).
 
 (*
-   The counit of that 伴随 is the couniversal arrow.  Only up to `≈`:
-
-   本节说明相关定义、性质与动机。 the transpose delivers `coarrow ∘ fmap[F] id`, which is one [fmap_id] one [id_right] short [eq_refl]. See header's second boundary;
+   本节说明伴随相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -331,9 +320,7 @@ Qed.
 (** ** The direct encoding *)
 
 (*
-   The same notion stated directly, with the couniversal 对象 a : D given as
-
-   本节说明相关定义、性质与动机。 a parameter rather than projected out. Definitionally [AUniversalArrow] 反 范畴, exactly [CouniversalArrow] is [UniversalArrow] there.
+   本节说明 Dual 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -422,7 +409,7 @@ End ACouniversalArrowUnique.
 (** ** The two encodings agree *)
 
 (*
-   本节说明相关定义、性质与动机。 Theory/Universal/Arrow.v carries both encodings but never relates them;. here passage is cheap both directions, so it is supplied.
+   本节说明 Dual 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

@@ -33,9 +33,7 @@ Record Metacategory := {
     defined f g := (h; H);
 
   (*
-   Matchability (Mac Lane C-1): whenever [fg] is the 复合 of [(f, g)]
-
-   本节说明相关定义、性质与动机。 and [gh] is 复合 [(g, h)], 复合 [(fg, h)] also exists.
+   本节说明 ArrowsOnly 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -44,9 +42,7 @@ Record Metacategory := {
     composite g h gh → ∃ fgh, composite fg h fgh;
 
   (*
-   结合律 (Mac Lane C-2): for a composable triple, associating to the
-
-   本节说明相关定义、性质与动机。 left, [(fg, h)], agrees associating right, [(f, gh)].
+   本节说明 ArrowsOnly 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -56,9 +52,7 @@ Record Metacategory := {
     ∀ fgh, composite fg h fgh ↔ composite f gh fgh;
 
   (*
-   Identity arrows (对象). [u] is an identity when it acts neutrally on
-
-   本节说明相关定义、性质与动机。 either side every 复合 which it participates: [f ∘ u ≈ f] whenever [f ∘ u] is defined, [u ∘ g ≈ g] whenever [u ∘ g] is defined.
+   本节说明 ArrowsOnly 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -67,7 +61,7 @@ Record Metacategory := {
     (∀ g, defined u g → composite u g g);
 
   (*
-   本节说明相关定义、性质与动机。 Existence identities (Mac Lane): each arrow [f] there should be a. source identity target identity whose composites [f] recover [f]. As currently written, however, this axiom is vacuous.
+   本节说明 ArrowsOnly 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

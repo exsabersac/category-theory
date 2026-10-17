@@ -50,7 +50,7 @@ Context (H : (C ∏ D)^op ∏ (C ∏ D) ⟶ Sets).
     [(d1, d2) ↦ H ((c1, d1), (c2, d2))], contravariant in [d1], covariant in
     [d2], obtained by holding the [C]-coordinates fixed at [c1], [c2]. *)
 (*
-   本节说明相关定义、性质与动机。 * The action [H] "rectangle" moves: contravariant [C]-move [u],.
+   本节说明函子、（余）端相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -366,9 +366,7 @@ Proof.
 Qed.
 
 (*
-   * 反向 leg at [c]: the mediator [∫^d H((c,d),(c,d)) → ∫ H].  Its domain
-
-   本节说明相关定义、性质与动机。 is stated [Inner (c, c)] (definitionally inner coend apex) so that compositions [bimap[Inner]] below resolve their 范畴.
+   本节说明（余）端相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -378,9 +376,7 @@ Definition bwd_leg (c : C) :
     (bwd_inner_cond c).
 
 (*
-   * 反向 outer cowedge: the [C]-glue for [fc] reduces, on generators, to a
-
-   本节说明相关定义、性质与动机。 single [H]-glue at pair 态射 [(fc, id)]; two sides agree common cowedge [fun d => bwd_leg c1 ∘ bimap[Inner] (op fc) id ∘ inj_d].
+   本节说明 Fubini 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

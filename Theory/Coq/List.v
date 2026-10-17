@@ -47,7 +47,7 @@ Fixpoint zipWith `(f : a → b → c) (xs : list a) (ys : list b) : list c :=
    nLab: https://ncatlab.org/nlab/show/monoidal+functor
    Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor
 
-   本节：An applicative 函子 is lax 幺半 自函子 (with strength) 笛卡尔闭范畴 types, where [pure] is unit map [ap] is derived from 积 map [μ : F x × F y → F (x × y)]. There are two standard applicative structures lists.
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -58,9 +58,9 @@ Instance list_Applicative : Applicative list := {
 }.
 
 (*
-   The [Alternative] instance exposes the underlying free-幺半群 structure of
+   Wikipedia: https://en.wikipedia.org/wiki/Free_monoid
 
-   lists: [empty = []] is 幺半群 unit [choose = app] is concatenation (the 幺半群 乘法).
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -71,9 +71,9 @@ Program Instance list_Alternative : Alternative list := {
 }.
 
 (*
-   [flatten] is the 乘法 (join) of the list 单子: it concatenates
+   nLab: https://ncatlab.org/nlab/show/list+monad
 
-   本节：a list-of-lists into single list repeated [app], i.e. 单子 乘法 μ : list (list A) → list A free-幺半群 单子.
+   本节说明单子、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -84,7 +84,7 @@ Fixpoint flatten `(xs : list (list A)) : list A :=
   end.
 
 (*
-   本节说明相关定义、性质与动机。 [mapM]/[forM] is applicative traversal list (Haskell's. [traverse]/[mapM]): it threads effect [m] through list using lax-幺半 structure [m], witnessing that [list] is traversable 函子.
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -101,9 +101,8 @@ Definition concatMapM `{Applicative m} {A B : Type}
 
 (*
    nLab: https://ncatlab.org/nlab/show/list+monad
-   Wikipedia: https://en.wikipedia.org/wiki/Monad_(functional_programming)#The_list_monad
 
-   本节说明相关定义、性质与动机。 The (free-幺半群) list 单子: unit [ret x = [x]] is singleton, [bind x f = flatten (map f x)] is map-then-join.
+   本节说明单子、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -169,9 +168,9 @@ Fixpoint insertM `{Monad m} {A : Type} (P : A → A → m bool)
 Arguments insertM {m H A} P z l : simpl never.
 
 (*
-   [concat] is the 单子 乘法 [flatten] under its conventional
+   nLab: https://ncatlab.org/nlab/show/list+monad
 
-   本节说明相关定义、性质与动机。 name; [concatMap f = flatten ∘ map f] is exactly Kleisli extension / [bind] list 单子 its arguments flipped.
+   本节说明单子、Kleisli相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -319,17 +318,13 @@ Fixpoint mapAccumL {A X Y : Type} (f : A → X → (A * Y))
   end.
 
 (*
-   定义 getBy {a} (p : a → bool) (xs : list a) : Maybe a :=
-
-   本节说明相关定义、性质与动机。 (fun f => foldl f Nothing xs) (fun acc x => match acc | Just y => Just y | Nothing => if p x then Just x else Nothing end). 定义 sumlist : list nat → nat := foldl addn 0. 定义 safe_nth {a} (xs : list a) (n : nat) (H : n < size xs) : a. Proof.
+   本节说明（余）端相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   [List_函子] repeats [list_函子] above; both define [fmap = map] and
-
-   本节说明相关定义、性质与动机。 are therefore definitionally equal. Being declared last, this instance is one typeclass resolution selects default.
+   本节说明 List 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -351,9 +346,7 @@ Fixpoint list_ap {A B} (fs: list (A → B)) (xs: list A)
   end.
 
 (*
-   The lawful, 笛卡尔-积 list applicative, induced by [list_单子]:
-
-   本节说明相关定义、性质与动机。 it satisfies four applicative laws (identity, 复合, 同态, interchange), unlike ZipList-style [list_Applicative] above.
+   本节说明笛卡尔相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

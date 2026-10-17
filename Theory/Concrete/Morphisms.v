@@ -27,7 +27,7 @@ Context {C : Category}.
 Context `{Con : @Concrete C}.
 
 (*
-   本节说明相关定义、性质与动机。 Injective underlying function implies monic. This IS corollary of.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -42,7 +42,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Surjective underlying function implies epic: mirror image. A point of. underlying set TARGET is hit some point `a` source, two composites agree at `a`;
+   本节说明 Morphisms 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -66,9 +66,7 @@ End ConcreteMorphisms.
 (** ** The corollary at work: [Coq], via [Coq_Concrete] *)
 
 (*
-   Non-vacuity of both lemmas at a real concrete 范畴.  `Coq`
-
-   本节说明相关定义、性质与动机。 (Instance/Coq.v) is concrete via [Coq_Concrete] (Instance/Concrete.v), whose underlying-set 函子 reads type setoid under Leibniz equality.
+   本节说明函子、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -76,7 +74,7 @@ End ConcreteMorphisms.
 Definition bool_to_nat (b : bool) : nat := if b then 1%nat else 0%nat.
 
 (*
-   本节说明相关定义、性质与动机。 This one statement is `=` rather than `≈`, deliberately so: it relates. ELEMENTS `bool` `nat`, not 态射.
+   本节说明 Morphisms 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -93,7 +91,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Predecessor is surjective: every `y` is `pred (S y)`. It is not injective.
+   本节说明 Morphisms 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -113,7 +111,7 @@ Definition Coq_pred_Epic : Epic (Nat.pred : nat ~{Coq}~> nat) :=
 (** ** The same two conclusions through the reflection lemmas *)
 
 (*
-   本节说明相关定义、性质与动机。 The corollary can also be reached first establishing property in. `Sets` then reflecting it along 忠实 函子, which is what Riehl's exercise proper supplies.
+   本节说明函子、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -125,7 +123,7 @@ Definition Coq_bool_to_nat_Monic_reflected :
        (fun a b (Hab : bool_to_nat a = bool_to_nat b) => bool_to_nat_inj a b Hab)).
 
 (*
-   本节说明相关定义、性质与动机。 For epis `Sets`-side ingredient comes from this file's own. [concrete_surjective_epic] at [Sets_Concrete] (Theory/Concrete.v), whose underlying-set 函子 is identity: there `concrete_fun h` IS `h`, so lemma reads "a surjective setoid map is epic `Sets`".
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

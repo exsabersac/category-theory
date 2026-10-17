@@ -69,9 +69,7 @@ Proof.
 Qed.
 
 (*
-   Transport of a 余幺半群 structure across an 同构 i : x ≅ y, by
-
-   本节说明相关定义、性质与动机。 conjugation: copy y is "carry back along i⁻¹, copy x, carry both halves 正向 along i", discard y is "carry back, discard". The laws are those Cx conjugated i;
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -165,9 +163,7 @@ Proof.
 Qed.
 
 (*
-   The 范畴 Comon(C) of internal comonoids in C: 对象 are 对象 of
-
-   本节：C equipped 余幺半群 structure, 态射 are C-态射 equipped proof homomorphy, 等价 is 等价 underlying 态射 — same sigma packaging [Mon] [Sub] Construction/Subcategory.v.
+   本节说明等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

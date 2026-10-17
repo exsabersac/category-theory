@@ -740,9 +740,7 @@ Qed.
 (** ** The metacategory-side composite *)
 
 (*
-   The 复合 passage on the 元范畴 side, formed under the same
-
-   本节说明相关定义、性质与动机。 shape 假设 file already takes [ToArrows]: uniqueness identity proofs RECONSTRUCTION's 对象. (An earlier revision this header claimed 复合 could not be formed at all;
+   本节说明等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

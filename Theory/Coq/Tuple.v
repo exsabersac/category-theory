@@ -25,9 +25,7 @@ Generalizable All Variables.
 Notation Tuple := prod (only parsing).
 
 (*
-   The two halves of the 积 结合子 [A * (B * C) ≅ (A * B) * C];
-
-   本节说明相关定义、性质与动机。 [tuple_swap_a_bc_to_ab_c] [tuple_swap_ab_c_to_a_bc] are mutually inverse witness that 积 is associative up 同构.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -46,7 +44,7 @@ Definition right_triple {A B C} (x : A) (y : B) (z : C) : A * (B * C) :=
   (x, (y, z)).
 
 (*
-   本节说明相关定义、性质与动机。 The bifunctorial action [prod] its first second components:.
+   本节说明 Tuple 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -87,9 +85,7 @@ Instance Tuple_Applicative x `{Monoid x} : Applicative (Tuple x) := {
 }.
 
 (*
-   The writer 单子: [ret] seeds the empty log; [bind] runs [f] on the held
-
-   本节说明相关定义、性质与动机。 value concatenates incoming log [xm] produced log [xx].
+   本节说明单子、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

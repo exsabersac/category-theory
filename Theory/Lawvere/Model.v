@@ -42,9 +42,7 @@ Record Model := {
 }.
 
 (*
-   * ** The 范畴 of models
-
-   本节说明相关定义、性质与动机。 The full subcategory 函子 范畴 [law_cat T, C] whose 对象 carry both preservation witnesses.
+   本节说明自然变换、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -61,7 +59,7 @@ Definition Models_sub : Subcategory (@Fun (@law_cat T) C) :=
 Definition Models : Category := Sub (@Fun (@law_cat T) C) Models_sub.
 
 (*
-   本节说明相关定义、性质与动机。 * ** Bridges between record subcategory presentations. A [Model] packs into 对象 [Models], every 对象 [Models] unpacks [Model];
+   本节说明 Model 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -75,7 +73,7 @@ Definition Model_unpack (x : Models) : Model :=
    ; model_terminal  := snd `2 x |}.
 
 (*
-   本节说明相关定义、性质与动机。 * The two presentations are mutually inverse nose: each round. trip is eta-expansion, discharged case analysis. (Propositional [=] packed OBJECT data — sanctioned case;
+   本节说明 Model 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

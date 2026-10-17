@@ -22,7 +22,7 @@ Class Traversable@{d c} {T : Type@{d} → Type@{c}} :=
 Arguments Traversable : clear implicits.
 
 (*
-   本节说明相关定义、性质与动机。 [Tupersable] is project-specific specialization [Traversable] a. pairing (writer-style) shape [x * -]: it sequences [T] past tuple 函子 without requiring carrier [x] be [Applicative], simply threading seed value [a : x] through.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

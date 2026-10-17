@@ -53,9 +53,7 @@ Theorem point_of_Point {C : Category} (x : C) : point_of (Point x) = x.
 Proof. reflexivity. Qed.
 
 (*
-   Second round trip, at the strict 函子 equality: [Point (F ttt)] and
-
-   本节说明相关定义、性质与动机。 [F] have same 对象 map nose, their 态射 maps agree.
+   本节说明函子、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -73,9 +71,7 @@ Corollary Point_point_of {C : Category} (F : _1 ⟶ C) : Point (point_of F) ≈ 
 Proof. apply strict_equiv_implies_fun_equiv, Point_point_of_strict. Qed.
 
 (*
-   The correspondence is 忠实 in the strongest available sense: two
-
-   对象 give equivalent 函子 当且仅当 they are isomorphic.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -109,9 +105,7 @@ Next Obligation. intros C x a; reflexivity. Qed.
 Next Obligation. intros C x y z f g a; reflexivity. Qed.
 
 (*
-   [Point (F ttt) ≅ F] in the 函子 范畴, with identity components.
-
-   本节说明相关定义、性质与动机。 [Point_point_of_strict] above is different currency, equality 函子; it does reach this 同构, but only via [strict_equiv_implies_fun_equiv] then [函子_Setoid_Nat_Iso], that route hides components.
+   本节说明函子、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -144,7 +138,7 @@ Qed.
 Next Obligation. intros C F a; destruct a; simpl; cat. Qed.
 
 (*
-   本节：[[_1, C] ≃ C], theorem behind Instance/One.v's header prose. This. is EQUIVALENCE 范畴: [≅[Cat]] this library is [Cat]'s 同构, [Cat]'s hom-setoid identifies 函子 up 自然 同构.
+   本节说明函子、hom、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -191,7 +185,7 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Instance/Two.v's [id] at [TwoX] reduces [TwoIdX], so [fmap_id]. applies it up conversion; but [TwoIdX] is not SYNTACTICALLY [id], which is enough stop [rewrite fmap_id] [apply fmap_id].
+   本节说明 Shapes 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -205,7 +199,7 @@ Proof. exact (@fmap_id _ _ F TwoY). Qed.
 Definition arrow_of {C : Category} (F : _2 ⟶ C) : F TwoX ~> F TwoY := fmap[F] TwoXY.
 
 (*
-   本节说明相关定义、性质与动机。 First round trip, definitional therefore near-trivial: [Walk f] was.
+   本节说明 Shapes 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -213,9 +207,7 @@ Theorem arrow_of_Walk {C : Category} {x y : C} (f : x ~> y) : arrow_of (Walk f) 
 Proof. reflexivity. Qed.
 
 (*
-   Second round trip, at the strict 函子 equality.  The two identity
-
-   本节说明相关定义、性质与动机。 cases are where content is: [Walk (arrow_of F)] sends them [id] construction, only [fmap_id] identifies that [fmap[F]] them.
+   本节说明函子、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -234,9 +226,7 @@ Corollary Walk_arrow_of {C : Category} (F : _2 ⟶ C) : Walk (arrow_of F) ≈ F.
 Proof. apply strict_equiv_implies_fun_equiv, Walk_arrow_of_strict. Qed.
 
 (*
-   The 对象 action of [Walk f] does not see [f] at all: parallel
-
-   本节说明相关定义、性质与动机。 态射 give 函子 literally same action 对象.
+   本节说明函子、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -263,9 +253,7 @@ Next Obligation. intros C F; split; simpl; [ apply fmap_TwoIdX | apply fmap_TwoI
 Next Obligation. intros C F G H η θ; split; simpl; reflexivity. Qed.
 
 (*
-   Conversely an 对象 of [Arrow C] is a 态射, hence a [Walk], and a
-
-   本节：交换方块 is 自然变换 between two [Walk]s: naturality at two identities is 单位律, at [TwoXY] it is square itself.
+   本节说明自然变换相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -293,7 +281,7 @@ Next Obligation. intros C x a; destruct a; reflexivity. Qed.
 Next Obligation. intros C x y z f g a; destruct a; reflexivity. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The strict half comparison: going Arrow C -> [_2, C] -> Arrow C. returns 对象 one started from, nose. The 对象 equality needs pair comma 对象 destructured, which is why proof opens pattern rather than [eq_refl];
+   本节说明 Shapes 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -308,9 +296,7 @@ Proof.
 Qed.
 
 (*
-   The other half, as a 自然 同构 in [[_2, C]].  Its components
-
-   本节说明相关定义、性质与动机。 are identities, which is sense which two 函子 differ only how they present [fmap] at two identity arrows [_2];
+   本节说明函子、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -351,7 +337,7 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The comparison Construction/Arrow.v left open. [≅[Cat]] is an.
+   本节说明等价、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -374,9 +360,7 @@ Qed.
 (* ---------------------------------------------------------------------- *)
 
 (*
-   The two generating steps of [_3] are [ord_step] at the two 对象 of
-
-   本节说明相关定义、性质与动机。 [Ordinal 2]; their endpoints are Instance/Ordinal.v's [ord3_0], [ord3_1], [ord3_2] definitionally, which is what lets types below be written without transports.
+   本节说明 Shapes 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -419,7 +403,7 @@ Theorem Functor_of_Pair_snd {C : Category} {x y z : C} (f : x ~> y) (g : y ~> z)
 Proof. exact (Functor_of_Steps_step (pair_steps (pair_obj x y z) f g) ord2_1). Qed.
 
 (*
-   本节说明相关定义、性质与动机。 [_3] has six arrows: three identities, two generating steps, and. [three_02].
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -451,7 +435,7 @@ Proof.
 Defined.
 
 (*
-   本节说明相关定义、性质与动机。 The substantive round trip: every diagram shape 3 is one built. from its own composable pair.
+   本节说明函子、（余）强度相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -478,7 +462,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The list vocabulary ([In], [NoDup], [length]) [lia] are used from. here on.
+   本节说明 Shapes 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -497,9 +481,7 @@ Definition Two_Three_12 : _2 ⟶ _3 := Walk three_12.
 Definition Two_Three_02 : _2 ⟶ _3 := Walk three_02.
 
 (*
-   Their 对象 actions, computed.  These are [=] between 对象, by
-
-   本节说明相关定义、性质与动机。 [eq_refl]; they are near-trivial individually are recorded because together they are what distinguishes three 函子.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -520,9 +502,7 @@ Corollary Two_Three_02_arrow : arrow_of Two_Three_02 ≈ three_02.
 Proof. exact (arrow_of_Walk three_02). Qed.
 
 (*
-   The two 范畴-level comparisons instantiated at this same target,
-
-   本节说明相关定义、性质与动机。 which is neither empty nor point: [_3] has three 对象 six 态射, enumeration below records.
+   本节说明 Shapes 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -540,9 +520,7 @@ Proof.
 Qed.
 
 (*
-   Non-vacuity of Example 3.36: the three 函子 are pairwise
-
-   本节说明相关定义、性质与动机。 non-equivalent -- not merely distinct terms, but not naturally isomorphic, since 自然 同构 would force equal indices at 对象 where they differ.
+   本节说明函子、同构、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -556,9 +534,7 @@ Theorem Two_Three_12_02 : (Two_Three_12 ≈ Two_Three_02) → False.
 Proof. intros [i _]; pose proof (ord_iso_val (i TwoX)) as E; discriminate. Qed.
 
 (*
-   The example's own observation: over this target the 对象 action
-
-   本节说明相关定义、性质与动机。 already determines 函子. The proof consumes thinness [_3] nothing else -- two transported 态射 actions are parallel arrows [Ordinal 3], [le_t_irr] says there is at most one such.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -597,7 +573,7 @@ Definition two_three_coords (F : _2 ⟶ _3) : (nat * nat)%type :=
 Definition two_three_index : list (nat * nat) := ord_pairs 3.
 
 (*
-   本节说明相关定义、性质与动机。 The count. It is DERIVED, from Instance/Ordinal.v's closed formula.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -611,9 +587,7 @@ Theorem two_three_coords_in (F : _2 ⟶ _3) : In (two_three_coords F) two_three_
 Proof. exact (ord_coords_in_pairs (two_three_mor F)). Qed.
 
 (*
-   Distinct indices are the only way two of these 函子 can differ:
-
-   本节说明相关定义、性质与动机。 equal coordinates force strict equality 函子, transporting Instance/Ordinal.v's [ord_coords_inj] along correspondence.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -681,9 +655,7 @@ Program Definition const_TwoX : two_setoid_object ~{Sets}~> two_setoid_object :=
 |}.
 
 (*
-   The tested converse promised at [Walk_对象_agree] and at
-
-   本节说明相关定义、性质与动机。 [two_three_对象_determine]: over [Sets] identity constant map two-element setoid give two 函子 out [_2] SAME 对象 action, which [arrow_of] separates.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -700,9 +672,7 @@ Proof.
 Qed.
 
 (*
-   Exercise 3.45, the 构造性 direction: for every setoid S there is a
-
-   本节说明相关定义、性质与动机。 函子 from point whose value at point is S. [=] between 对象 again, near-trivial -- [Point S] was built it -- but it is precisely statement exercise asks for.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -721,7 +691,7 @@ Corollary Sets_point_iso (S T : Sets) :
 Proof. exact (Point_equiv_iso S T). Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Non-vacuity [Sets] instantiation, witness that escapes the. degenerate case: empty setoid singleton give NON-equivalent 函子 from point.
+   本节说明函子、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

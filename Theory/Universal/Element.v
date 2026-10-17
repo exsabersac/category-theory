@@ -29,19 +29,21 @@ Generalizable All Variables.
 *)
 
 (*
-   本节：Where notion sits, why it is elementary one. Text: Mac Lane, "范畴 Working Mathematician", Springer 1998, §III.1 (pp. 55-59) §III.2 Text: Riehl, "范畴 Theory Context", Dover 2016, §2.4 Paper: Kan, "伴随 函子", Trans. Amer. Math. Soc.
+   Paper: Kan, "Adjoint functors", Trans. Amer. Math. Soc. 87, 1958
+
+   本节说明伴随、自然变换、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 WHAT IS DELIVERED. * [AUniversalElement H r] -- elementary 定义 对象 PARAMETER, idiom [AUniversalArrow], carrying [Setoid] ([AUniversalElementEquiv]) that compares two universal elements their underlying elements;
+   本节说明 Element 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 [exists_setoid] (Structure/UniversalProperty.v) is declared there with. [#[local]], which removes it from instance database importers but leaves CONSTANT reachable name.
+   本节说明 Element 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -50,7 +52,7 @@ Generalizable All Variables.
 (** ** Global elements of a setoid *)
 
 (*
-   本节说明相关定义、性质与动机。 Mac Lane's "an element x ∈ H d may be described function x : * → H d. from one-point set". [SetsOne] (Construction/Elements.v) is singleton [Sets_Terminal], same 对象 elements-逗号范畴 =(SetsOne) ↓ K is built over there.
+   本节说明 Element 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -73,7 +75,7 @@ Definition global_elements_from (X : Sets) : X ~{Sets}~> GlobalElements X :=
   {| morphism := @global_element X ; proper_morphism := fun x y H _ => H |}.
 
 (*
-   本节说明相关定义、性质与动机。 Hom(1, X) ≅ X [Sets]: global-elements lemma. One leg is the. identity underlying element [eq_refl] ([global_element_at]);
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -92,9 +94,7 @@ Context {D : Category}.
 (** ** The elementary definition *)
 
 (*
-   Mac Lane's clause, with the 对象 r a PARAMETER -- the idiom of
-
-   本节说明相关定义、性质与动机。 [AUniversalArrow] (Theory/Universal/Arrow.v), shape every comparison below needs, since both [representability_by_yoneda] [AUniversalArrow] fix their 对象.
+   本节说明 Element 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -105,9 +105,7 @@ Class AUniversalElement (H : D ⟶ Sets) (r : D) := {
 }.
 
 (*
-   Two universal elements at the same 对象 are equivalent when their
-
-   本节说明相关定义、性质与动机。 underlying elements agree; factorization data carries nothing further.
+   本节说明 Element 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -116,9 +114,7 @@ Class AUniversalElement (H : D ⟶ Sets) (r : D) := {
   {| equiv := fun X Y => @aue_elem H r X ≈ @aue_elem H r Y |}.
 
 (*
-   Mac Lane's pair ⟨r, e⟩ proper, with the 对象 a FIELD -- the idiom of
-
-   本节说明相关定义、性质与动机。 [可表] (函子/可表.v), which bundles [repr_obj] same way.
+   本节说明函子、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -140,7 +136,7 @@ Definition UniversalElement_of_AUniversalElement {H : D ⟶ Sets} {r : D}
      ue_universal := @aue_universal H r U |}.
 
 (*
-   本节说明相关定义、性质与动机。 Both round trips are [eq_refl] ON THE WHOLE RECORD -- not merely the. element -- because fields are copied verbatim primitive projections give record eta.
+   本节说明Yoneda、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -157,9 +153,7 @@ Proof. reflexivity. Qed.
 (** ** The Yoneda mate *)
 
 (*
-   The 自然变换 [Hom r,─] ⟹ H determined by an element x of
-
-   本节说明相关定义、性质与动机。 H r: its component at d carries k : r ~> d (H k) x. It is supplied INSTANTIATING presheaf Yoneda lemma at D^op rather than using [Covariant_Yoneda_Lemma], one reason: [representability_by_yoneda] below is stated [Yoneda_Lemma C F c], deliverable 2 compos
+   本节说明自然变换、Yoneda、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -173,7 +167,7 @@ Lemma ue_mate_at (H : D ⟶ Sets) (r : D) (x : H r) (d : D) (k : r ~{D}~> d) :
 Proof. reflexivity. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The covariant Yoneda lemma gives same mate -- but only up `≈`, not. [eq_refl]. The two instances are separate [Program Instance]s whose naturality obligations are distinct opaque constants, so two transformations are distinct TERMS convertible actions;
+   本节说明Yoneda相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -187,9 +181,7 @@ Context (H : D ⟶ Sets).
 Context (r : D).
 
 (*
-   From a 泛元素, the inverse of its mate: the component at d
-
-   本节说明相关定义、性质与动机。 sends x unique k factoring it. Respectfulness both naturality squares are uniqueness arguments, nothing else.
+   本节说明 Element 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -219,9 +211,7 @@ Next Obligation.
 Qed.
 
 (*
-   ... hence the mate of a 泛元素 is invertible.  The two inverse
-
-   本节说明相关定义、性质与动机。 laws are [unique_property] [uniqueness] respectively; [fmap_id] [id_left] residues are identity 函子 范畴 [D, Sets] unfolding.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -271,7 +261,7 @@ Qed.
 (** ** The representation, built directly *)
 
 (*
-   本节说明相关定义、性质与动机。 [ue_mate] is Yoneda mate is what deliverable 2 must be stated. against; but it inherits UNIVERSE CONSTRAINT from its donor that consumer should not have pay.
+   本节说明Yoneda、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -318,7 +308,7 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 ... back, without Yoneda: factorization is inverse's. component.
+   本节说明函子、Yoneda相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -361,7 +351,7 @@ Definition ue_yoneda_obj : SetoidObject :=
   {| carrier := { x : H r & IsIsomorphism (ue_mate H r x) } |}.
 
 (*
-   本节说明相关定义、性质与动机。 ... check that naming it changed nothing: [representability_by_yoneda]. at D^op has EXACTLY this setoid its source, [exists_setoid] instance included.
+   本节说明 Element 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -380,9 +370,7 @@ Program Definition ue_of_yoneda
   {| morphism := fun p => AUniversalElement_of_mate (`1 p) (`2 p) |}.
 
 (*
-   THE STATEMENT, and it is an 同构 in [Sets] -- of SETOIDS.  Not a
-
-   本节说明相关定义、性质与动机。 biconditional (which would forget maps), not merely pair mutually inverse maps up `≈` (which would forget respectfulness).
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -401,9 +389,7 @@ Corollary ue_yoneda_round_ue (U : AUniversalElement H r) :
 Proof. reflexivity. Qed.
 
 (*
-   Composing with [representability_by_yoneda]: a 泛元素 of H at r
-
-   本节说明相关定义、性质与动机。 is same data representation H r. This is theorem [函子/可表.v]'s header states prose ("by Yoneda lemma such Φ is determined single 泛元素") that [Structure/UniversalProperty.v] proved only anonymous encoding.
+   本节说明函子、Yoneda相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -422,9 +408,7 @@ Definition universal_element_of_representation
   := from universal_element_representation Phi.
 
 (*
-   The 泛元素 read off a representation is Mac Lane's Φ_r(id r) --
-
-   本节说明相关定义、性质与动机。 the image identity -- conversion, every H, r Φ. BUT DO NOT READ THIS AS THE GENERAL FORM OF Instance/Coq/Nat.v's [nat_universal_element].
+   本节说明Yoneda相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -435,7 +419,7 @@ Lemma universal_element_of_representation_at
 Proof. reflexivity. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 THE TWO ROUTES AGREE. The Yoneda-composed accessors direct ones.
+   本节说明Yoneda相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -453,9 +437,7 @@ End MateIso.
 (** ** The bundled form and [Representable] *)
 
 (*
-   [函子/可表.v]'s [可表] bundles exactly [ue_obj] plus
-
-   本节说明相关定义、性质与动机。 the 自然 同构, so it is SAME notion [UniversalElement], not competing one -- two pass into one another through [universal_element_representation] representing 对象 kept nose.
+   本节说明函子、Yoneda、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -488,7 +470,7 @@ Proof. reflexivity. Qed.
 (** ** Uniqueness up to a unique isomorphism *)
 
 (*
-   本节说明相关定义、性质与动机。 Mac Lane's Proposition 1 §III.1 this notion, mirroring. [auniversal_arrow_unique] (Theory/Universal/Arrow.v) clause clause. The predicate cutting 同构 down is compatibility two universal elements, [fmap[H] (to i) e₁ ≈ e₂];
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -567,7 +549,7 @@ End UniversalElementUnique.
 (** ** Deliverable 3(a): universal elements are universal arrows from 1 *)
 
 (*
-   本节说明相关定义、性质与动机。 Mac Lane's Remark 3, first half. The passage is not definitional: an.
+   本节说明 Element 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -621,7 +603,7 @@ Corollary aua_of_aue_arrow (U : AUniversalElement H r) :
 Proof. reflexivity. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 ... so element survives element-side round trip [eq_refl],.
+   本节说明 Element 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -644,7 +626,7 @@ End UniversalElement.
 (** ** Deliverable 3(b): universal arrows are universal elements of D(c, S−) *)
 
 (*
-   本节说明相关定义、性质与动机。 Mac Lane's Remark 3, second half, it is CHEAPER than first.. [fobj[Curried_Hom C] c] is covariant hom-函子 [Hom c,─], whose [fmap] at h is 后复合 h;
+   本节说明函子、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -665,7 +647,7 @@ Lemma hom_after_fmap (d d' : D) (k : d ~{D}~> d') (u : c ~{C}~> S d) :
 Proof. reflexivity. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 [@Build_...] rather than `{| ... |}` literal: Class, literal.
+   本节说明 Element 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -694,7 +676,7 @@ End HomFunctor.
 (** ** The subsumption Mac Lane asserts, as one theorem *)
 
 (*
-   本节说明相关定义、性质与动机。 Remark 3 full. The tree carried neither half; stating them together is. point, because what Mac Lane claims is that two notions are INTERDEFINABLE, that claim is visible only when both directions sit one statement.
+   本节说明 Element 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -718,9 +700,7 @@ Proof.
 Defined.
 
 (*
-   The two halves compose, and the 复合 is not vacuous: starting from a
-
-   本节：泛箭头 ⟨a, u⟩ from c S, reading it 泛元素 D(c, S−) (b) then back out 泛箭头 from SINGLETON that 函子 (a) returns same underlying 态射, up evaluation [global_element] performs.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -735,15 +715,13 @@ Proof. reflexivity. Qed.
 (** ** Naturality of the global-elements isomorphism *)
 
 (*
-   Riehl, _范畴 Theory in Context_, 2nd ed., SS3.2, printed pp. 93-94:
-
-   本节说明相关定义、性质与动机。 the display [lim F ≅ Set( *, lim F) ≅ Cone( *, F)] that motivates cone-set construction Instance/Sets/完备.v.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 [SetsOne] is terminal setoid. Read this at its true strength: it.
+   本节说明（余）强度、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

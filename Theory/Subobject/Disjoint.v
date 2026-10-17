@@ -34,9 +34,7 @@ Context {C : Category}.
 Context `{Z : @ZeroObject C}.
 
 (*
-   Two arrows into the zero 对象 agree because the zero 对象 is also
-
-   本节说明相关定义、性质与动机。 terminal; carrying them across coincidence 同构 makes that visible, 消去 假设 [Monic] is never used.
+   本节说明同构、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

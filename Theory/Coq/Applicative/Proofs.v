@@ -92,9 +92,7 @@ Proof.
 Qed.
 
 (*
-   The 复合 of two applicatives is itself applicative. We establish
-
-   本节：this appeal general proofs that: 1. every Coq 函子 has strength; 2. (also, but not needed: any two strong 函子 compose strong 函子; if it is Coq 函子 it is known have strength); 3.
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

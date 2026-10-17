@@ -24,7 +24,7 @@ Class Applicative@{d c} {F : Type@{d} → Type@{c}} := {
 Arguments Applicative : clear implicits.
 
 (*
-   本节说明相关定义、性质与动机。 [liftA2] maps binary function over two applicative arguments,. [liftA2 f b = pure f <*> <*> b].
+   本节说明 Applicative 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -36,7 +36,7 @@ Definition liftA2 `{Applicative F} {x y z}
    nLab: https://ncatlab.org/nlab/show/distributive+monoidal+category
    Wikipedia: https://en.wikipedia.org/wiki/Monoid_(category_theory)
 
-   本节说明相关定义、性质与动机。 The Alternative type class adds 幺半群 structure each [F x] 即 compatible applicative structure: [empty] is neutral element [choose] (Haskell's [<|>]) binary operation.
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -90,7 +90,7 @@ Instance Identity_Applicative : Applicative id | 9 := {
 }.
 
 (*
-   本节说明相关定义、性质与动机。 The reader / function applicative [λ a, x → a] (Haskell's [(->) x]):.
+   本节说明 Applicative 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -101,9 +101,7 @@ Instance arrow_Applicative x : Applicative (arrow x) := {
 }.
 
 (*
-   The constant applicative [Const x] over a [幺半群 x]: [pure] discards its
-
-   本节说明相关定义、性质与动机。 value returns [mempty]; [ap] combines two accumulators [⊗].
+   本节说明幺半结构、函子、单子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -114,9 +112,7 @@ Instance Const_Applicative `{Monoid x} : Applicative (Const x) := {
 }.
 
 (*
-   Applicatives are closed under 复合: [F ∘ G] is again applicative
-
-   本节说明相关定义、性质与动机。 (unlike 单子). [pure] is [pure[F] ∘ pure[G]], [ap] uses [F]'s [ap] twice, first lifting [G]'s [ap] under [F] (via [pure ap[G]]) then applying it.
+   本节说明单子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -128,7 +124,7 @@ Instance Compose_Applicative `{Applicative F} `{Applicative G} :
 }.
 
 (*
-   本节说明相关定义、性质与动机。 This is standard Haskell-style [Alternative (Compose f g)]: it lifts F's.
+   本节说明 Applicative 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -140,7 +136,7 @@ Instance Compose_Alternative `{Alternative F} `{Alternative G} :
 }.
 
 (*
-   本节说明相关定义、性质与动机。 The Yoneda / co-Yoneda encoding applicative [F] is again applicative:.
+   本节说明Yoneda、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

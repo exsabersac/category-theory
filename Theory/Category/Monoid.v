@@ -19,7 +19,7 @@ Generalizable All Variables.
 *)
 
 (*
-   本节说明相关定义、性质与动机。 What this file is, what it is not. SCOPE. This is SET-LEVEL remark only -- germ, not theory.
+   本节说明函子、拉回/推出、双范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -27,9 +27,7 @@ Generalizable All Variables.
 (** ** Two-sorted graphs *)
 
 (*
-   A graph in Mac Lane's sense: an 对象 sort [gobj], an arrow sort [garr]
-
-   本节说明相关定义、性质与动机。 with chosen 等价, two boundary maps. The two respectfulness fields say that `≈`-equivalent arrows have equal endpoints;
+   本节说明等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -57,7 +55,7 @@ Arguments gcod_respects {_ _ _} _.
 (** ** The composable pairs A ×_O A *)
 
 (*
-   本节说明相关定义、性质与动机。 The fibred 积 `A ×_O A = { (g, f) | dom g = cod f }`, kept data (a. record, i.e. sigma) rather than subset: [cp_match] is genuine inhabitant equality type, available transport. [cp_outer] [cp_inner] are two projections;
+   本节说明 Monoid 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -73,7 +71,7 @@ Arguments cp_match {_} _.
 Arguments Build_Composable {_} _ _ _.
 
 (*
-   本节说明相关定义、性质与动机。 Two composable pairs are identified when their two projections are. This. is correct setoid 拉回 taken over sort compared strict equality: third component is proof equation [gobj] carries no further information about pair.
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -100,9 +98,7 @@ Lemma cp_inner_respects {G : Graph} (p q : Composable G) :
 Proof. now intros [_ H]. Qed.
 
 (*
-   The 普遍性质, in the only form available without quotients: a
-
-   本节说明相关定义、性质与动机。 pair maps into [garr] whose boundaries agree factors through composable pairs, nose both projections.
+   本节说明 Monoid 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -122,7 +118,7 @@ Lemma Composable_med_inner {G : Graph} {X : Type}
 Proof. reflexivity. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Uniqueness, stated honestly: mediating map is determined its two. projections UP TO [Composable_equiv], not up `eq`.
+   本节说明等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -135,9 +131,7 @@ Proof. intros Ho Hi x; split; [ apply Ho | apply Hi ]. Qed.
 (** ** The monoid structure on a graph *)
 
 (*
-   Mac Lane's unit and 乘法, with their boundary conditions and
-
-   本节说明相关定义、性质与动机。 laws. The 乘法 is presented curried form, taking composability proof explicit argument, because 即 how it is applied;
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -202,7 +196,7 @@ Proof. intros Hg Hf; now apply Hm; split. Qed.
 (** ** From the monoid presentation to a [Category] *)
 
 (*
-   本节说明相关定义、性质与动机。 The hom from x y: arrow together proofs pinning its endpoints.. The proofs are kept data so that they may be used build composability witness;
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -251,9 +245,7 @@ Definition smc_compose {G : Graph} (M : SpanMonoid G) {x y z : gobj G}
      eq_trans (sm_mul_cod M _ _ _) (sa_cod g))).
 
 (*
-   NOTE 1.  Unconditional and axiom-free: no UIP, no rigidity, no 假设
-
-   本节说明相关定义、性质与动机。 on [gobj] beyond its being [Type]. Every law follows from corresponding [SpanMonoid] field, proof-independence [sm_mul_respects] absorbing fact that composability witness built [smc_match] depends endpoint proofs carried homs, which hom-s
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -294,7 +286,7 @@ Arguments aarr {_} _.
 Arguments Build_BundledArrow {_} _ _ _.
 
 (*
-   本节说明相关定义、性质与动机。 The groupoid laws [eq] that transport pack needs. Each is proved by. [destruct] both endpoints universally quantified, which is what makes it applicable later at LOOP `e : x = x`, where [destruct] is unavailable.
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -365,7 +357,7 @@ Proof. destruct u; reflexivity. Qed.
 (** ** The graph of a category *)
 
 (*
-   本节说明相关定义、性质与动机。 Two bundled arrows are equivalent when there are equalities their. endpoints carrying one other up `≈`.
+   本节说明 Monoid 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -402,9 +394,7 @@ Defined.
 (** ** Rigidity: when transport does not see which proof it travelled along *)
 
 (*
-   NOTE 2.  The 假设 under which an ordinary 范畴 yields a 幺半群 on
-
-   本节说明相关定义、性质与动机。 its graph bundled arrows. It says that transporting 态射 along 对象 equalities depends only endpoints, not proofs. This is implied UIP 对象, holds trivially set-based reading Mac Lane intends.
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -426,7 +416,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The calculation behind functoriality comparison [Rebuild_from]. below, stated once over arbitrary transport data.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -460,9 +450,7 @@ Definition arrow_mul {C : Category} (g f : BundledArrow C) (p : asrc g = atgt f)
     (aarr g ∘ hom_transport eq_refl (eq_sym p) (aarr f)).
 
 (*
-   The two 单位律 hold WITHOUT rigidity.  The trick is that the arrow
-
-   本节说明相关定义、性质与动机。 等价 lets one choose 对象 paths: very proof [p] that has be transported along is offered back witness, two transports cancel [eq_trans_sym_l] / [hom_transport_id].
+   本节说明等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -488,9 +476,7 @@ Proof.
 Qed.
 
 (*
-   NOTE 3.  Respectfulness of the 乘法 is where the correspondence
-
-   本节说明相关定义、性质与动机。 first meets [HomRigid], it is essential use. Multiplying same pair along two proofs p, p' same composability equation composes outer arrow two transports inner arrow that differ loop at INTERMEDIATE 对象 -- 对象 where two ar
+   本节说明等价、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -512,7 +498,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 [pl] [pr] repeat types [q] [p] -- 即 not redundancy but. reduced form record's [sm_assoc] hypotheses, since boundary laws [arrow_mul] hold [eq_refl] here.
+   本节说明 Monoid 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -574,9 +560,7 @@ Lemma span_id_arr (x : gobj G) : sa_arr (@id C' x) = sm_unit M x.
 Proof. reflexivity. Qed.
 
 (*
-   ... and its 复合 IS the 乘法 of M, along ANY proof of the
-
-   本节说明相关定义、性质与动机。 composability equation. This is sense which 范畴 structure 幺半群 structure are same structure.
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -620,7 +604,7 @@ Lemma sm_unbundle_bundle (a : garr G) : sm_unbundle (sm_bundle a) = a.
 Proof. reflexivity. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 THE OTHER is identity only up `≈`, 即 exactly right: the. bundled form re-derives endpoints from [gdom] [gcod], which agree recorded ones only propositionally.
+   本节说明 Monoid 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -634,7 +618,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Both comparisons respect `≈`. Together two composites above and.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -697,9 +681,7 @@ Proof.
 Qed.
 
 (*
-   The two comparisons are 函子.  [Rebuild_to] is unconditional;
-
-   本节说明相关定义、性质与动机。 [Rebuild_from] uses rigidity twice, once see that it respects `≈` once functoriality, since it has compare transports one 态射 along independently chosen 对象 paths.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -733,9 +715,7 @@ Proof.
 Defined.
 
 (*
-   NOTE 4.  The round trip packages as an 同构 in [Cat].  In this
-
-   本节：library 即 SAME strength 范畴等价: Cat's hom-setoid is [函子_Setoid], which identifies 函子 up 自然 同构, Theory/等价.v converts [≅[Cat]] [EquivalenceOfCategories] back.
+   本节说明函子、hom、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -758,9 +738,7 @@ End CategoryRoundTrip.
 (** ** Necessity of [HomRigid]: a reverse-mathematics theorem *)
 
 (*
-   NOTE 3 explains why [arrow_mul_respects] consumes rigidity; 本节
-
-   本节说明相关定义、性质与动机。 shows consumption is unavoidable. If 乘法 respected [BundledArrow_equiv] uniformly C WITHOUT 假设, uniqueness identity proofs would follow every type. The countermodel is built so 复合 lands RIGID corner.
+   本节说明 Monoid 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -871,7 +849,7 @@ Qed.
 End Countermodel.
 
 (*
-   本节：* * The necessity theorem.. If 乘法 [arrow_mul] Theory/范畴/幺半群.v respected [BundledArrow_equiv] WITHOUT [HomRigid] 假设 -- i.e. if [arrow_mul_respects] held its [rigid] argument dropped -- then UIP would hold every type.
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

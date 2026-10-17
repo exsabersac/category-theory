@@ -91,7 +91,7 @@ Lemma passoc_from {x y z : C} :
 Proof. reflexivity. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Split power at block boundary: [pow (m + n) ≅ pow m × pow n]. Only. 正向 direction is needed graft;
+   本节说明 Endomorphism 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -196,7 +196,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 * ** The graft map. [graft m d k g] is splice combinator underlying [mcomp]: it passes [m]-block inputs through, feeds next [d]-block operation [g], passes trailing [k]-block. Built iterating [second] over prefix;
+   本节说明 Endomorphism 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -361,7 +361,7 @@ Qed.
 (** ** The operad data *)
 
 (*
-   本节说明相关定义、性质与动机。 Length concatenation, hand-written Fixpoint (not tactic.
+   本节说明 Endomorphism 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -401,9 +401,7 @@ Definition End_mcomp {Γ1 Γ2 Δ : list poly_unit} {b c : poly_unit}
     ∘ pow_cast (len_splice Γ1 Δ Γ2).
 
 (*
-   * ** The 对称 action
-
-   本节说明相关定义、性质与动机。 The action permutation witness [p : tperm Γ Δ] is GENUINE: it permutes factors power, built structural recursion witness. The [tperm_swap] generator acts 积 braid two head factors; [tperm_skip] 贴须 [second];
+   本节说明 Endomorphism 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -532,7 +530,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 * ** Whiskering tail map under prefix factors. [plug m u] applies [u] under first [m] factors power; graft is [plug m] its payload row, [tperm_app_r] whiskering acts [plug].
+   本节说明 Endomorphism 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -855,9 +853,7 @@ Proof.
 Qed.
 
 (*
-   * ** The 结合律 laws
-
-   本节说明相关定义、性质与动机。 Strategy: make every boundary-cast proof opaque ([generalize]), then abstract each concatenation length variable replace it its canonical arithmetic value ([set]/[clearbody]/[subst]).
+   本节说明 Endomorphism 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

@@ -64,7 +64,7 @@ End QuotientAccessors.
 (** ** Isomorphisms carried across the opposite category *)
 
 (*
-   本节说明相关定义、性质与动机。 Four-field permutations, no proof content: [iso_to_from] one. side is [iso_from_to] other, because two round trips swap endpoints when 复合 is reversed.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -91,9 +91,7 @@ Context {C : Category}.
 Context {x : C}.
 
 (*
-   C^op^op is C by conversion, so the quotient 对象 of C^op ARE the
-
-   本节说明相关定义、性质与动机。 subobjects C, at Leibniz equality no tactic -- claim about DATA type, which is one place Leibniz equality is right relation.
+   本节说明子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -106,7 +104,7 @@ Example quot_le_unfold (q r : QuotObj x) :
   := eq_refl.
 
 (*
-   本节说明相关定义、性质与动机。 The setoid, covariantly, far conversion reaches: witness is. 同构 IN C^op 复合 must be annotated. The naive spelling, C-同构 [quot_cod q ≅ quot_cod r] [to i ∘ quot_epi q ≈ quot_epi r], is REFUSED here (cannot unify);
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -124,9 +122,7 @@ Definition quot_le_trans (q r s : QuotObj x) :
   @sub_le_trans (C^op) x q r s.
 
 (*
-   The mediating arrow of a factorization between quotient 对象 is
-
-   本节说明相关定义、性质与动机。 itself EPI C: [sub_le_monic] (Theory/子对象.v) read at C^op, then carried back [Epic_of_op_Monic].
+   本节说明子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -157,7 +153,7 @@ Definition quot_ge_of_equiv (q r : QuotObj x) : q ≈ r → quot_le r q :=
   @sub_ge_of_equiv (C^op) x q r.
 
 (*
-   本节：The covariant characterization setoid, which conversion does. NOT give (see [quot_equiv_unfold]): two quotient 对象 are equivalent 当且仅当 同构 their codomains IN C carries one epi other.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -191,9 +187,7 @@ Proof.
 Defined.
 
 (*
-   The one-directional form with the 同构 handed in the OTHER way
-
-   本节说明相关定义、性质与动机。 round -- from codomain second argument that first -- which is shape consumer comparing computed quotient named one (Instance/Grp/QuotObj.v's 同构-theorem reading) actually has hand.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -219,7 +213,7 @@ Context {C : Category}.
 Context {x y : C}.
 
 (*
-   本节说明相关定义、性质与动机。 The two projections, named. The other two bridges of. Theory/态射/对偶.v go other way round square -- [Monic_of_op_Epic] turns [Epic] C^op into [Monic] C [op_Epic_of_Monic] turns [Monic] C into [Epic] C^op -- which is what makes [QuotObj_
+   本节说明子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -259,9 +253,7 @@ Context `{HP : @HasPushouts C}.
 Context {x : C}.
 
 (*
-   The 推出 of two epis, read as a quotient 对象: the meet for
-
-   本节说明相关定义、性质与动机。 [quot_le] -- greatest lower bound, finest quotient that factors through both (the interface stub's gloss had direction "factors through" backwards;
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -286,9 +278,7 @@ Definition quot_meet_le_r (q r : QuotObj x) : quot_le (quot_meet q r) r :=
   @sub_meet_le_r (C^op) (HasPullbacks_op_of_HasPushouts HP) x q r.
 
 (*
-   Mac Lane §V.7 dualized: the 推出 is the GREATEST quotient 对象
-
-   本节说明相关定义、性质与动机。 below both, factorization order [quot_le] -- finest quotient that factors through both q r.
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -297,7 +287,7 @@ Definition quot_meet_is_glb (q r : QuotObj x) :
   @sub_meet_is_glb (C^op) (HasPullbacks_op_of_HasPushouts HP) x q r.
 
 (*
-   本节说明相关定义、性质与动机。 The order-theoretic predicate transports unchanged: [IsMeet] at C^op.
+   本节说明 Quotient 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -344,7 +334,7 @@ Context `{T : @Terminal C}.
 Context {x : C}.
 
 (*
-   本节说明相关定义、性质与动机。 [sub_bot] at C^op. Structure/Initial.v makes [Initial (C^op)] the. same thing [Terminal C], [sub_bot]'s 假设 [Monic zero] becomes [Epic (one : x ~> 1)] through [op_Monic_of_Epic].
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -357,9 +347,7 @@ Definition quot_bot_least (He : Epic (@one C T x)) (q : QuotObj x) :
   @sub_bot_least (C^op) T x (op_Monic_of_Epic (@one C T x) He) q.
 
 (*
-   The formal dual of [zero_monic_of_strict] (Theory/子对象/
-
-   本节说明相关定义、性质与动机。 Lattice.v) at C^op, recorded SYMMETRY ONLY: its strict- initial 假设 reads here COSTRICT 终对象 -- every 对象 receiving map from 1 is isomorphic 1 -- which is near-vacuous condition: it does not hold [Sets] (1 → bool exists bool is not 1) a
+   本节说明子对象、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -383,7 +371,7 @@ Context {J : Type}.
 Context (S : J → QuotObj x).
 
 (*
-   本节：[sub_wide_intersection] at C^op. The [WidePullback] argument is a. wide 拉回 IN C^op, which is wide 推出 C; Structure/ 拉回/Wide.v supplies no wide-推出 vocabulary none is added here, so caller states it C^op spelling.
+   本节说明拉回/推出、子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -413,7 +401,7 @@ Section Coimages.
 Context {C : Category}.
 
 (*
-   本节说明相关定义、性质与动机。 An image C^op, read forwards: coarsest quotient x through. which f factors.
+   本节说明 Quotient 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -422,7 +410,7 @@ Definition CoimageOf {x y : C} (f : x ~> y) : Type := @ImageOf (C^op) y x f.
 End Coimages.
 
 (*
-   本节说明相关定义、性质与动机。 Following [Cocartesian] (Structure/Cocartesian.v) and. [Initial] (Structure/Initial.v) precedent, this is NOTATION rather than 定义, so that instance resolution underlying [HasImages] class still fires at C^op.
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

@@ -21,9 +21,7 @@ Generalizable All Variables.
 *)
 
 (*
-   The lax 变换 class, at full strength.  Its data are the component
-
-   本节说明相关定义、性质与动机。 1-cells [lt0] naturator 2-cells [lt1]; its laws are naturality naturator 2-cells [lt1_自然], unit coherence [lt_unit], 复合 coherence [lt_comp].
+   本节说明（余）强度相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -53,9 +51,7 @@ Class LaxTransformation {B B' : Bicategory} (F G : Pseudofunctor B B') := {
     ≈ from (hunit_right (lt0 x)) ∘∘ to (hunit_left (lt0 x));
 
   (*
-   复合 coherence: the naturator at a 复合 g ∘∘∘ f, conjugated by
-
-   本节说明相关定义、性质与动机。 the compositors pf_comp F G, agrees pasting two naturators lt1 g lt1 f re-bracketed 结合子 B'.
+   本节说明 Lax 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -77,9 +73,7 @@ Arguments lt_unit {B B'} {F G} _ x.
 Arguments lt_comp {B B'} {F G} _ {x y z} g f.
 
 (*
-   The oplax 变换 class: the dual of [LaxTransformation], with every
-
-   本节说明相关定义、性质与动机。 naturator 2-cell reversed. The naturator now points olt1 f : olt0 y ∘∘∘ pf1[F] f ⟹ pf1[G] f ∘∘∘ olt0 x, three coherence axioms are mirror images lax ones (the unit 复合 laws associators inverted unitor comparison reversed).
+   本节说明 Lax 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -121,9 +115,7 @@ Arguments olt_unit {B B'} {F G} _ x.
 Arguments olt_comp {B B'} {F G} _ {x y z} g f.
 
 (*
-   A lax 变换 is *pseudonatural* when every naturator 2-cell is
-
-   本节说明相关定义、性质与动机。 invertible. This is mixin over [LaxTransformation]: it exposes, each 1-cell f, witness that [lt1 σ f] is 同构 hom-范畴 B', hence two-sided inverse its 消去 laws via [IsIsomorphism].
+   本节说明hom、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -137,9 +129,7 @@ Arguments pn_iso {B B' F G σ} _ {x y} f.
 (** Inhabitation witness. *)
 
 (*
-   To witness that the 变换 classes are inhabited "closed under the
-
-   本节说明相关定义、性质与动机。 global context", we exhibit them terminal 双范畴: one 0-cell, one 1-cell, one 2-cell, codiscrete 2-cell setoid which every 2-cell equation holds.
+   本节说明双范畴、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -165,7 +155,7 @@ Proof.
     _ _ _                           (* hunit_left/right/hassoc naturality *)
     _ _).                           (* triangle, pentagon *)
   (*
-   本节说明相关定义、性质与动机。 the codiscrete equations, two whiskering naturalities two. coherence laws all reduce [True];
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -190,9 +180,7 @@ Proof.
 Defined.
 
 (*
-   The identity lax 变换 on the terminal 双范畴 (via the identity
-
-   本节说明相关定义、性质与动机。 伪函子): all components naturators are unique [tt], all three coherence laws hold codiscrete setoid.
+   本节说明双范畴、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

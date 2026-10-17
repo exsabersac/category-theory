@@ -22,9 +22,7 @@ Generalizable All Variables.
 (** ** Joint monicity of a pullback's projections *)
 
 (*
-   The standard consequence of the 普遍性质: two maps into the
-
-   本节说明相关定义、性质与动机。 apex agreeing after both projections are equal. Stated separately because transport's uniqueness clause consumes it C while working D.
+   本节说明 Pullback 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

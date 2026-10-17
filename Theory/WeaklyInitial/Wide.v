@@ -25,7 +25,7 @@ Generalizable All Variables.
 *)
 
 (*
-   本节说明相关定义、性质与动机。 A weakly initial family, 积 it, supply wide. equalizers yield genuine 始对象. Construction. Write [P0] 积 对象 [iprod (wif_obj W) P].
+   本节说明等化子、hom、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -42,9 +42,7 @@ Proof.
             ∘ iprod_proj (wif_obj W) P (projT1 (wif_cover W c))).
 
   (*
-   The wide 等化子 of the family of ALL endomorphisms of [P0].  The
-
-   本节说明相关定义、性质与动机。 index type is hom-type [P0 ~> P0] family is identity assignment, so "the i-th member" IS endomorphism [i].
+   本节说明等化子、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -52,7 +50,7 @@ Proof.
     as [I [e Eeq]].
 
   (*
-   本节说明相关定义、性质与动机。 Every endomorphism [P0] is absorbed equalizing map. This is.
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

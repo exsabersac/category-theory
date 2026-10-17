@@ -35,9 +35,7 @@ Definition sub_reindex {x y : C} (f : y ~> x) (u : SubObj x) : SubObj y := {|
 |}.
 
 (*
-   The workhorse: if a given 子对象 v of y sits atop ANY 拉回 square
-
-   本节说明相关定义、性质与动机。 of sub_mono u along f, then v is reindexing u along f, up SubObj setoid.
+   本节说明拉回/推出、同构、子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -163,9 +161,7 @@ Proof.
 Qed.
 
 (*
-   The 子对象 presheaf: contravariant on C, valued in setoids.  A
-
-   本节：C^op-arrow f : x ~> y is C-arrow y ~> x, acts 拉回 reindexing; 函子定律 are three lemmas above, read at pointwise hom-setoid Sets. Naming note: [Sub] is work order's name coexists Construction/Subcategory.v's 范畴 [Sub];
+   本节说明函子、拉回/推出、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

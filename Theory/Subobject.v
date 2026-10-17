@@ -73,9 +73,7 @@ Proof.
 Defined.
 
 (*
-   Awodey, *范畴 Theory*, §5.1: a factorization BETWEEN subobjects is
-
-   本节说明相关定义、性质与动机。 itself monic, so u ≤ v exhibits sub_dom u 子对象 sub_dom v not merely x. The file used assert this header prose above nothing tree back it.
+   本节说明子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -101,9 +99,7 @@ Proof.
 Qed.
 
 (*
-   Two subobjects are equivalent 当且仅当 each factors through the other:
-
-   本节说明相关定义、性质与动机。 the 同构 supplies both factorizations, conversely mutual factorizations k, l compose endomorphisms over same mono, hence identity monicity, assembling 同构 domains.
+   本节说明同构、子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

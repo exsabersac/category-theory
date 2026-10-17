@@ -19,13 +19,13 @@ Generalizable All Variables.
 *)
 
 (*
-   本节说明相关定义、性质与动机。 Where naturality square went. Given τ : S ⟹ T there are two ways turn f : c ~> c' into 态射 S c ~> T c': travel S then transform, τ_{c'} ∘ fmap[S] f, transform then travel T, fmap[T] f ∘ τ_c.
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 Two equations, both which carry content. The tree's [Transform] carries [naturality] together [naturality_sym], but those are one equation two orientations, kept apart so that 对偶 holds definitionally;
+   本节说明 Arrows 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -38,9 +38,7 @@ Context {S : C ⟶ D}.
 Context {T : C ⟶ D}.
 
 (*
-   An arrow-indexed family: one 态射 S c ~> T c' for each f : c ~> c',
-
-   本节说明相关定义、性质与动机。 with two splice laws. [τ_arr_left] absorbs post-复合 into family through T, [τ_arr_right] absorbs pre-复合 through S;
+   本节说明 Arrows 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -69,7 +67,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The family is determined its values at identities, two ways..
+   本节说明 Arrows 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -155,7 +153,7 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The other formula same family: transform, then transport along. T.
+   本节说明 Arrows 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -169,9 +167,7 @@ Proof.
 Qed.
 
 (*
-   From an arrow family back to a 变换: the components are the
-
-   本节说明相关定义、性质与动机。 values at identities, naturality square is [τ_arr_diagonal_naturality].
+   本节说明 Arrows 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -220,7 +216,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Uniqueness, four forms one wants it.. [Transform_determined_by_arrows]: 自然变换 is determined its arrow family, so assignment is injective up ≈.
+   本节说明自然变换相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -266,9 +262,7 @@ Proof.
 Qed.
 
 (*
-   The correspondence as an 同构 of setoids in Sets, in the manner
-
-   本节说明相关定义、性质与动机。 of [classifier_classifies] (Structure/SubobjectClassifier.v): underlying maps are two directions above, two round trips are two theorems above.
+   本节说明同构、子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -297,9 +291,7 @@ End ArrowTransform.
 Arguments ArrowTransform {C D} S T.
 
 (*
-   The identity 变换's arrow family is the functorial action of
-
-   本节说明相关定义、性质与动机。 the 函子 itself: 函子 is its own arrow family, which is arrows-only counterpart identity arrows standing 对象.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -341,7 +333,7 @@ Lemma diagonal_fmap {C J : Category} (x : C) {c c' : J} (f : c ~> c') :
 Proof. reflexivity. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Parallel (Instance/Parallel.v) has exactly two arrows ParX ~> ParY, and. they are not equivalent: its hom-setoid compares boolean tags that index arrows.
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -361,9 +353,7 @@ Proof.
 Qed.
 
 (*
-   The two constant 函子 2 ⟶ Parallel that carry every example and
-
-   本节说明相关定义、性质与动机。 every countermodel below: one sending all 2 parX, other sending all 2 parY.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -374,7 +364,7 @@ Local Notation ConstY := (Δ[_2](parY)).
 Section ConcreteArrows.
 
 (*
-   本节说明相关定义、性质与动机。 A concrete non-identity example: constant arrow family at. h : parX ~> parY, taken between ConstX ConstY. Both splice laws hold because both functorial actions are identities.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -390,9 +380,7 @@ Proof.
 Defined.
 
 (*
-   The correspondence computes on it: the induced 变换 has h at
-
-   本节说明相关定义、性质与动机。 every component (by conversion alone), family recovered from that 变换 is again constant family.
+   本节说明 Arrows 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -409,7 +397,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Non-triviality, concretely: two constant families at two arrows. Parallel are distinct, hence so are transformations they induce — latter [Arrows_determined_by_transform], i.e.
+   本节说明 Arrows 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -436,13 +424,13 @@ End ConcreteArrows.
 Section Independence.
 
 (*
-   本节说明相关定义、性质与动机。 The two splice laws are independent: neither follows from other,. without respectfulness.
+   本节说明函子、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 A LIMITATION these two countermodels, disclosed because audit of. first commit called it out: their respectfulness lemmas below hold reason that has nothing do families.
+   本节说明（余）极限、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -507,7 +495,7 @@ End Independence.
 (** ** Neither law alone implies respectfulness *)
 
 (*
-   本节说明相关定义、性质与动机。 [τ_arr_respects] above derives respectfulness family from two. splice laws TOGETHER, derivation visibly uses both: each law supplies one leg detour through padded term `f ∘ id`.
+   本节说明 Arrows 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

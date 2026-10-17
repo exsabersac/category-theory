@@ -39,7 +39,7 @@ Definition op_Monic_of_Epic {C : Category} {x y : C} (f : x ~> y)
 (** ** The dual derivations *)
 
 (*
-   本节说明相关定义、性质与动机。 [monic_cancel] obtained from [epic_cancel] no second argument. In.
+   本节说明 Duality 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -57,7 +57,7 @@ Definition monic_compose_op {C : Category} {x y z : C}
          (op_Epic_of_Monic g Hg) (op_Epic_of_Monic f Hf)).
 
 (*
-   本节说明相关定义、性质与动机。 The derived forms prove same statements direct ones. Stating.
+   本节说明 Duality 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -75,7 +75,7 @@ Definition monic_compose_agrees {C : Category} {x y z : C}
 (** ** The wide subcategories of monos and of epis *)
 
 (*
-   本节说明相关定义、性质与动机。 Riehl, CTiC, §1.2 (Exercise 1.2.ii): monomorphisms C form wide. subcategory -- wide because every identity is monic, subcategory because monos compose. Those are exactly [id_monic] [monic_compose], so record below has no proof content its own;
+   本节说明 Duality 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -90,9 +90,7 @@ Definition MonoSub_Wide (C : Category) : Wide C (MonoSub C) :=
   fun _ => ttt.
 
 (*
-   The dual, obtained through C^op rather than reproved: an 满态射 of C
-
-   本节说明相关定义、性质与动机。 is 单态射 C^op, so [EpiSub] transports [MonoSub (C^op)] back along bridges above rather than repeating closure arguments.
+   本节说明 Duality 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -114,7 +112,7 @@ Definition EpiSub_Wide (C : Category) : Wide C (EpiSub C) :=
   fun _ => ttt.
 
 (*
-   本节说明相关定义、性质与动机。 The inverse-pair rows Mac Lane §II.1's dualization table (extended. §IV.3 Exercise 1): left inverse C is right inverse C^op conversely — composites are literally same, only read through 反 复合.
+   本节说明 Duality 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

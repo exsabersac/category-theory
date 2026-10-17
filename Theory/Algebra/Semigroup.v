@@ -85,9 +85,7 @@ Proof.
 Qed.
 
 (*
-   The 范畴 Smgrp(C) of internal semigroups in C, packaged with sigma
-
-   对象 homs exactly Theory/代数/幺半群/Hom.v packages Mon(C): 态射 等价 is 等价 underlying C-态射.
+   本节说明hom、幺半群、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

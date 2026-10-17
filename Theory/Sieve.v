@@ -108,9 +108,7 @@ Qed.
 (** ** The presheaf of sieves *)
 
 (*
-   Awodey's Ω : C^op → Sets.  The three 函子定律 are the three
-
-   本节说明相关定义、性质与动机。 范畴 laws C read through membership: respectfulness [fmap] is [筛_respects] at [h ≈ h'], identity law is [id_left] 复合 law is [comp_assoc].
+   本节说明函子、层/筛相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

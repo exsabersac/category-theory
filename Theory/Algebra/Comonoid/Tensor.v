@@ -35,7 +35,7 @@ Context {C : Category}.
 Context `{S : @SymmetricMonoidal C}.
 
 (*
-   本节说明相关定义、性质与动机。 Hypergraph.v's [mid_swap_inv] is definitionally diagonal the. interchange;
+   本节说明 Tensor 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -252,9 +252,7 @@ End ComonoidTensor.
 (* ------------------------------------------------------------------ *)
 
 (*
-   * ** The trivial 余幺半群 on the unit 对象
-
-   本节说明相关定义、性质与动机。 [δ_I := λ⁻¹, ε_I := id] — structure [Hypergraph] class asserts through its [scfa_unit_delta]/[scfa_unit_epsilon] fields Fong–Spivak show is unique unit-compatible choice.
+   本节说明 Tensor 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

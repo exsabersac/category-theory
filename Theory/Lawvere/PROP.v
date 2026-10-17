@@ -64,9 +64,7 @@ Definition Lawvere_CartesianMonoidal : @CartesianMonoidal (@law_cat T) :=
   @CC_CartesianMonoidal (@law_cat T) (@law_cartesian T) (@law_terminal T).
 
 (*
-   * Sanity, machine-checked: the 幺半 structures underlying the
-
-   本节说明相关定义、性质与动机。 braided/对称 packagings are [Lawvere_幺半] itself, nose.
+   本节说明幺半结构、幺半群、Lawvere 理论相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -84,7 +82,7 @@ Section LawverePROP.
 Context (T : LawvereTheory).
 
 (*
-   本节说明相关定义、性质与动机。 * The strictness pack: in-tree PROP/interpretation machinery.
+   本节说明幺半结构、幺半群、Lawvere 理论相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -112,9 +110,7 @@ Definition Lawvere_prop_tensor_plus (m n : nat) :
     (@law_plus_product T m n).
 
 (*
-   * The PROP on [law_cat T]: strict path [SM], 对称 path the
-
-   本节：笛卡尔 braiding section 1, coherence 假设 [coh] (typechecking because [braided_is_幺半 (对称_is_braided (Lawvere_对称 T))] is definitionally [Lawvere_幺半 T]), 对象 correspondence [law_of_nat].
+   本节说明Lawvere 理论、笛卡尔相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -129,7 +125,7 @@ Definition Lawvere_PROP : PROP := {|
 |}.
 
 (*
-   本节说明相关定义、性质与动机。 * *** Interpretation free PROP Lawvere theory. The side conditions are those [Construction/PROP/Interp.v] / [Universal.v]: [Prop] reflection hom 等价 decidable 对象 equality (powering axiom-free UIP 对象).
+   本节说明hom、等价、Lawvere 理论相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -146,9 +142,7 @@ Context (v : ∀ m n : nat, Σ m n → (@law_of_nat T m ~{@law_cat T}~> @law_of_
 Definition Lawvere_Valuation : Valuation Lawvere_PROP Σ := v.
 
 (*
-   * The induced interpretation 函子 out of the free PROP ([FreeCat Σ]
-
-   本节说明相关定义、性质与动机。 is underlying 范畴 [FreePROP Σ]), instantiating in-tree universal-property machinery at [Lawvere_PROP].
+   本节说明函子、Lawvere 理论相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

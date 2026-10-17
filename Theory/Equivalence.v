@@ -40,17 +40,18 @@ Generalizable All Variables.
    Definition，在使用点显式传入。这也使桥转换的 Cat 层宇宙约束局部于实际使用处。 *)
 
 (*
-   Where 等价 came from, and what it is for
+   nLab: https://ncatlab.org/nlab/show/T%C3%B4hoku
+   nLab: https://ncatlab.org/nlab/show/principle+of+equivalence
+   nLab: https://ncatlab.org/nlab/show/skeleton+of+a+category
+   SEP:  https://plato.stanford.edu/entries/category-theory/
 
-   本节：nLab: https://ncatlab.org/nlab/show/T%C3%B4hoku nLab: https://ncatlab.org/nlab/show/principle+of+等价 nLab: https://ncatlab.org/nlab/show/skeleton+of+a+范畴 SEP: https://plato.stanford.edu/entries/范畴-theory/ The notion is younger than 范畴 theory itself.
+   本节说明自然变换、函子、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   F is 本质满射 (on 对象) when every 对象 of the target
-
-   本节说明相关定义、性质与动机。 范畴 is isomorphic image some 对象 source.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -71,9 +72,7 @@ Class EquivalenceOfCategories {C D : Category} (F : C ⟶ D) := {
 }.
 
 (*
-   An 范畴等价 IS an 同构 in Cat: Cat's hom-setoid
-
-   本节说明相关定义、性质与动机。 is [函子_Setoid], so two inverse laws 同构 are exactly counit unit cells. This is kept 定义 — never Instance — both no-inferable-quasi-inverses rule because it mentions [Cat], one universe level above C D;
+   本节说明函子、hom、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -93,9 +92,7 @@ Definition Cat_Iso_to_Equivalence {C D : Category} (iso : C ≅[Cat] D) :
     (symmetry (iso_from_to iso)).
 
 (*
-   The two bridges compose to the identity, on the nose for the 函子
-
-   本节说明相关定义、性质与动机。 data (both corollaries hold [reflexivity] components);
+   本节说明函子、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -134,7 +131,7 @@ Definition equivalence_unit_at (x : C) : x ≅ quasi_inverse (F x) :=
   `1 equivalence_unit x.
 
 (*
-   本节说明相关定义、性质与动机。 Naturality unit counit components, extracted from the.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -184,9 +181,7 @@ Definition EquivalenceOfCategories_sym :
 End QuasiInverse.
 
 (*
-   Packaging from bundled 自然 isomorphisms: a 函子 equipped with
-
-   本节：自然 isomorphisms F ◯ G ≅ Id[D] Id[C] ≅ G ◯ F 函子 范畴 is 等价 — [≅[Fun]] [≈] direction [函子_Setoid_Nat_Iso] round trip.
+   本节说明函子、等价、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -205,9 +200,9 @@ Definition EquivalenceOfCategories_Id {C : Category} :
     (symmetry (fun_equiv_id_left Id[C])).
 
 (*
-   Essential surjectivity is closed under 复合.
+   Book: Riehl, "Category Theory in Context", Dover 2016, §1.5,
 
-   本节说明相关定义、性质与动机。 Book: Riehl, "范畴 Theory Context", Dover 2016, §1.5, Exercise 1.5.vi(i), printed p. 38 This is third clause that exercise, alongside closure fullness faithfulness ([Full_Compose] [忠实_Compose], Theory/函子.v).
+   本节说明函子、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

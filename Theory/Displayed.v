@@ -106,7 +106,7 @@ Class Displayed (C : Category) := {
 #[export] Existing Instance dcomp_respects.
 
 (*
-   本节说明相关定义、性质与动机。 * ** The derived transport lemma pack. Everything below is consequence class fields.
+   本节说明 Displayed 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

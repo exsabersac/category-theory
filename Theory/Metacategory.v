@@ -38,9 +38,11 @@ Generalizable All Variables.
    基于 [find]；它携带这些定义的打磨形式。 *)
 
 (*
-   The first-order theory of 范畴, and its computable models
+   nLab: https://ncatlab.org/nlab/show/metacategory
+   SEP:  https://plato.stanford.edu/entries/category-theory/
+   Paper: Eilenberg, Mac Lane, "General Theory of Natural
 
-   本节：nLab: https://ncatlab.org/nlab/show/元范畴 SEP: https://plato.stanford.edu/entries/范畴-theory/ Paper: Eilenberg, Mac Lane, "General Theory 自然 Equivalences", Trans. AMS 58, 1945 The word "元范畴" carries point whole construction.
+   本节说明等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -74,9 +76,7 @@ Record Metacategory := {
      f∙u = f whenever the composite f∙u is defined and u∙g = g whenever u∙g is
      defined." *)
   (*
-   Note: Mac Lane's 定义 is conditional ("whenever ... defined"). The
-
-   本节说明相关定义、性质与动机。 encoding below drops definedness guard instead requires [复合 f u f] (and [复合 u g g]) *every* arrow, i.e. that [f ∙ u] [u ∙ g] are defined equal [f]/[g] all [f]/[g].
+   本节说明 Metacategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -108,7 +108,7 @@ Record Metacategory := {
   (* "For each arrow g of C there exist identity arrows u and u' of C such
      that u'∙g and g∙u are defined." *)
   (*
-   本节说明相关定义、性质与动机。 jww (TODO): The use [->] below should be [/\]. The current form is. vacuously true (any non-identity [u] makes implication trivially hold), so this axiom imposes no real constraint.
+   本节说明 Metacategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

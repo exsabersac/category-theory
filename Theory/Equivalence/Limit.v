@@ -52,9 +52,7 @@ Definition isalimit_to_limit {J C : Category} {G : J ⟶ C} {c : C}
 (** ** Transport of limits along a natural isomorphism of diagrams *)
 
 (*
-   Naturally isomorphic diagrams have the same cones and the same 极限.
-
-   本节：Given e : G ≈ G' (which, [函子_Setoid], is bundled 自然 同构), cone over G becomes cone over G' composing each leg 分量地 同构, conversely; apex-pinned 极限 witness follows, same apex.
+   本节说明函子、（余）极限、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -315,9 +313,7 @@ End ReflectLimit.
 End FullyFaithful.
 
 (*
-   Riehl's Lemma 3.4.5 (#481): a 全忠实 函子 reflects the
-
-   本节：极限 colimits present its codomain. In cone-level vocabulary Structure/极限/Preservation.v 极限 half is [ff_reflect_ump] its leg side condition discharged [reflexivity], legs [FCone] being image legs: term that Theory/等价/C
+   本节说明函子、（余）极限、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -420,9 +416,7 @@ Proof.
 Defined.
 
 (*
-   Any 极限 of F ◯ G is carried back to a 极限 of G: the quasi-inverse
-
-   本节说明相关定义、性质与动机。 (a 右伴随) preserves it, diagram 同构 above transports result from quasi_inverse ◯ (F ◯ G) G.
+   本节说明伴随、（余）极限、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -437,9 +431,7 @@ End EquivalenceLimit.
 (** ** The opposite of an equivalence of categories *)
 
 (*
-   F^op is an 等价 whenever F is: the two cells of E dualize
-
-   本节：pointwise, their 同构 families running through [同构_反] their conjugation coherences being those E read at reversed 态射 (复合 反范畴 unfolds reversed 复合, so only reassociation separates two statements
+   本节说明等价、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -483,7 +475,7 @@ Context {F : C ⟶ D}.
 Context (E : @EquivalenceOfCategories C D F).
 
 (*
-   本节：Reflection colimits: cocone over G is cone over G^op, an. [IsAColimit] witness is [IsALimit] witness over 反 复合, F^op is 全忠实 because it is 等价 ([EquivalenceOfCategories_op]).
+   本节说明（余）极限、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

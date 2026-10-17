@@ -126,7 +126,7 @@ Lemma eq_sym_f_equal {A B : Type} (h : A → B) {a b : A} (e : a = b) :
 Proof. destruct e; reflexivity. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 * The identity function's permutation image is original witness,. transported along [map_id_t]. Everything both sides computes list/permutation constructors, so induction goes through no identification equality proofs.
+   本节说明 Functor 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -155,9 +155,7 @@ Proof.
 Qed.
 
 (*
-   * ** Transport lemmas in a 多元范畴
-
-   本节说明相关定义、性质与动机。 Boundary casts commute everything sight. Each lemma is quantified over equalities variable endpoints, so proof is [destruct] equality followed [mcast_id] — no UIP anywhere.
+   本节说明多元范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -197,7 +195,7 @@ Lemma mcast_mtarget_cast {Γ Γ' : list mobj} {c c' : mobj}
 Proof. destruct e'; reflexivity. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 * Splicing commutes blockwise recasting boundary: casts. both arguments [mcomp] fuse into one cast 复合. The zipper/splice equalities [ez]/[es] are ANY proofs;
+   本节说明 Functor 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -242,7 +240,7 @@ Class MultiFunctor (M N : Multicategory) : Type := {
   mf_id (a : @mobj M) : mf_map (mid a) ≈ mid (mf_obj a);
 
   (*
-   本节说明相关定义、性质与动机。 Splicing is preserved, up boundary casts putting image. zipper zipper form ([ez]) reassembling image spliced context ([es]).
+   本节说明多元范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -291,7 +289,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 * ** The setoid multifunctors. Two parallel multifunctors are equivalent when their 对象 maps agree pointwise (Type-level 对象 data, so [=] is sanctioned) and, modulo source/target recasting that this agreement induces, their multimorphism maps agree up [≈].
+   本节说明 Functor 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -349,7 +347,7 @@ Next Obligation.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 * ** The identity multifunctor. The 对象 map is identity, but [map (fun => a) Γ] is only propositionally equal [Γ], so multimorphism map recasts along transparent [map_id_t].
+   本节说明 Functor 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -392,9 +390,7 @@ Next Obligation.
 Qed.
 
 (*
-   * ** 复合 of multifunctors
-
-   本节说明相关定义、性质与动机。 对象 compose nose; multimorphism map recasts along transparent [map_map_t] move between [map (mf_obj G) (map (mf_obj F) Γ)] [map (fun => mf_obj G (mf_obj F a)) Γ].
+   本节说明 Functor 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

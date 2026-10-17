@@ -20,9 +20,7 @@ Open Scope N_scope.
 *)
 
 (*
-   Sanity check on the raw decider [formula_反向] (the Gallina 核
-
-   本节说明相关定义、性质与动机。 behind [map_decide]), bypassing reflection wrapper. The reified formula is tautology [P -> P] one fixed [P], goal asserts that decider lands its [Proved] branch ([then True]) rather than [No]/[Uncertain] ([else False]);
+   本节说明核/余核相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -41,7 +39,7 @@ Example formula_backward_example (x y z w : N) :
 Proof. vm_compute; constructor. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Smallest end-to-end use reflective tactic [solve_map]: same. two-element map appears 假设 conclusion, so [MapsTo (x,y) f] follows trivially.
+   本节说明（余）端相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -51,9 +49,7 @@ Example map_decide_test  x y f :
 Proof. solve_map. Qed.
 
 (*
-   The real content: the 结合律 coherence of [composable_pairs n].
-
-   本节说明相关定义、性质与动机。 Following [ArrowsOnly]'s convention, [M.find (f, g) = Some fg] reads "g f compose fg" (i.e. [f ∘ g = fg]). So hypotheses say [f ∘ g = fg], [g ∘ h = gh] [fg ∘ h = fgh]; conclusion says [f ∘ gh = fgh], i.e.
+   本节说明 DecideExample 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -73,9 +69,7 @@ Proof.
 Qed.
 
 (*
-   Same 结合律 goal at larger n, showing how the two approaches scale.
-
-   本节说明相关定义、性质与动机。 Brute force grows combinatorially table size (timings noted below: 30.15s at n = 4, 2501s at n = 5), while reflection stays tens milliseconds;
+   本节说明 DecideExample 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -106,7 +100,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Largest instance exercised here. Despite name, this uses. [composable_pairs 10] (a 10-对象 table, 100 alludes roughly hundred-entry map), is only case where reflection itself takes appreciable time (2.445s);
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

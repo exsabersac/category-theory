@@ -67,9 +67,7 @@ Proof.
 Qed.
 
 (*
-   The 范畴 Mon(C) of internal 幺半群 in C: 对象 are 对象 of C
-
-   本节：equipped 幺半群 structure, 态射 are C-态射 equipped proof homomorphy, 等价 is 等价 underlying 态射 — exactly sigma packaging [Sub] Construction/Subcategory.v.
+   本节说明幺半群、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

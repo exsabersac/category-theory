@@ -30,9 +30,11 @@ Generalizable All Variables.
    （Theory/Lawvere/Sets.v 如此）。 *)
 
 (*
-   Functorial semantics: theory as 范畴, model as 函子
+   nLab:   https://ncatlab.org/nlab/show/Lawvere+theory
+   Paper:  Linton, "Some Aspects of Equational Categories", Proc. Conf.
+   Paper:  Plotkin, Power, "Notions of Computation Determine Monads",
 
-   本节说明相关定义、性质与动机。 nLab: https://ncatlab.org/nlab/show/Lawvere+theory Thesis: Lawvere, "Functorial Semantics Algebraic Theories", Ph.D. thesis, Columbia University, 1963 (reprinted Reprints Theory Applications 范畴 No.
+   本节说明函子、Lawvere 理论相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -59,9 +61,7 @@ Class LawvereTheory : Type := {
 Coercion law_cat : LawvereTheory >-> Category.
 
 (*
-   * ** Powers of the generic 对象
-
-   本节说明相关定义、性质与动机。 [law_pow n] is explicit n-fold 积 [law_of_nat 1] (right-nested, empty 积 终对象), [law_pow_one] is propositional equality chain showing it agrees [law_of_nat n] — induction from [law_zero_terminal] [law_plus_积].
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

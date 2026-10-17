@@ -22,13 +22,13 @@ Generalizable All Variables.
 #[local] Obligation Tactic := intros.
 
 (*
-   本节说明相关定义、性质与动机。 Functorial images isomorphisms are taken library's.
+   本节说明函子、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 Rewriting toolkit iso [bimap] chains along left-nested.
+   本节说明 Monoidal 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -49,9 +49,7 @@ Section IsoSpine.
 Context {A : Category}.
 
 (*
-   From a 交换方块 against the [to] components of two
-
-   本节说明相关定义、性质与动机。 isomorphisms, derive corresponding square against [from] components.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -255,9 +253,7 @@ Section TransportData.
 Context (X : Category).
 
 (*
-   The data of a 幺半 structure on X — unit, tensor, 单位子,
-
-   本节说明相关定义、性质与动机。 结合子, six naturality squares — triangle pentagon laws deliberately left out.
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -383,15 +379,13 @@ Local Notation eta := (@equivalence_unit_at C D F E).
 Local Notation eps := (@equivalence_counit_at C D F E).
 
 (*
-   本节说明相关定义、性质与动机。 Naturality unit counit components — conjugation.
+   本节说明等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   The defect of the chosen unit/counit pair: the 复合
-
-   本节说明相关定义、性质与动机。 G d ~> G F G d ~> G d measuring how far pair is from satisfying zig-zag identity at G. For 伴随 等价 it would be identity;
+   本节说明伴随、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -399,7 +393,7 @@ Definition transport_defect (d : D) : G d ≅ G d :=
   fobj_iso G _ _ (eps d) ⊙ eta (G d).
 
 (*
-   本节说明相关定义、性质与动机。 The [*_unfold] equations here below spell out components the. isomorphisms just defined.
+   本节说明函子、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -435,7 +429,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The rectified counit: correcting chosen counit inverse of. defect yields counit same quasi-inverse unit that satisfies zig-zag identity at G (proved below).
+   本节说明伴随、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -524,9 +518,7 @@ Next Obligation.
 Qed.
 
 (*
-   The action of the transported tensor on a pair of 态射, written
-
-   本节说明相关定义、性质与动机。 out. [bimap[Transported_Tensor] f g] reduces exactly this term; D-side lemmas below are stated directly this form so that every 对象 index proof goal is same (reduced) representation.
+   本节说明（余）端相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -828,7 +820,7 @@ Definition Transported_Monoidal_Data : MonoidalTransportData D :=
     (@Transported_from_tensor_assoc_natural).
 
 (*
-   本节说明相关定义、性质与动机。 The triangle law transported structure. The zig-zag identity.
+   本节说明 Monoidal 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -858,7 +850,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The pentagon law transported structure. No zig-zag is needed:.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

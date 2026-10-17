@@ -19,9 +19,7 @@ Generalizable All Variables.
 *)
 
 (*
-   An 伴随 等价: an 伴随 both of whose comparison
-
-   本节说明相关定义、性质与动机。 transformations are 分量地 invertible. The two extra fields are [IsIsomorphism] witnesses about derived [unit] [counit] underlying hom-setoid 伴随.
+   本节说明伴随、hom、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -34,9 +32,7 @@ Class AdjointEquivalence {C D : Category} (F : C ⟶ D) (U : D ⟶ C) := {
 }.
 
 (*
-   Naturality of the unit and counit of a hom-setoid 伴随, at an
-
-   本节说明相关定义、性质与动机。 arbitrary 态射. Theory/伴随.v proves these squares only shapes needed there — [unit_comp] pins codomain U-image [counit_comp] pins domain F-image — but rewriting argument is insensitive that, so we restate them generally.
+   本节说明伴随、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

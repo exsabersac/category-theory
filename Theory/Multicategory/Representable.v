@@ -30,9 +30,7 @@ Generalizable All Variables.
 (** ** The tensor fold *)
 
 (*
-   * The right fold of the tensor over the unit: the 对象 realization
-
-   本节说明相关定义、性质与动机。 of source context. This is [cprop_tensor_app] pattern Construction/ColouredPROP.v, valued arbitrary (non-strict) 幺半范畴, so concatenation is reflected coherence ISOMORPHISM rather than equality.
+   本节说明幺半结构、幺半群、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -103,7 +101,7 @@ Next Obligation. apply tfold_app_to_from. Qed.
 Next Obligation. apply tfold_app_from_to. Qed.
 
 (*
-   本节：* ** Boundary casts fold. [tcast e] is identity 态射 transported along propositional equality colour lists (Type-level 对象 data, per hom_cast discipline cited Theory/多元范畴.v).
+   本节说明多元范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -128,7 +126,7 @@ Lemma tcast_loop {Γ : list A} (e : Γ = Γ) : tcast e ≈ id.
 Proof using luip. rewrite (luip _ _ e eq_refl); reflexivity. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 * ** The splice map. [msplice Γ1 g] realizes single-slot 复合 source contexts: it rewrites [b]-slot zipper [(Γ1, b, Γ2)] argument [g : tfold Δ ~> ob b], leaving blocks alone.
+   本节说明 Representable 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -142,7 +140,7 @@ Fixpoint msplice (Γ1 : list A) {Γ2 Δ : list A} {b : A}
   end.
 
 (*
-   本节说明相关定义、性质与动机。 * ** Unit coherence. The two lemmas feeding 单位律 多元范畴: folding away empty suffix is boundary cast, splicing unitor into slot is identity.
+   本节说明多元范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -167,7 +165,7 @@ Proof using luip.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 * Splicing identity multimorphism (the right unitor a. singleton context) into any slot is identity: core right unit law.
+   本节说明 Representable 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -185,9 +183,7 @@ Proof.
 Qed.
 
 (*
-   * ** 结合律 coherence
-
-   本节说明相关定义、性质与动机。 How concatenation map interacts triple split: folding [x ++ y ++ z] way [(x ++ y) ++ z] way [x ++ (y ++ z)] agrees up 结合子. This is pentagon-powered core file;
+   本节说明多元范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -247,7 +243,7 @@ Proof using luip.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 * ** Splice-versus-fold coherence. The two ways splice can sit against concatenation map: slot inside block being folded off (the NESTED shape), slot beyond block being folded off (the DISJOINT shape).
+   本节说明 Representable 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -327,9 +323,7 @@ Proof.
 Qed.
 
 (*
-   * ** The two 结合律 cores
-
-   本节说明相关定义、性质与动机。 Splice-after-splice two shapes 多元范畴 结合律 laws, splice maps themselves (the outer multimorphism [f] is peeled off congruence instance obligations).
+   本节说明多元范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -399,7 +393,7 @@ Proof using luip.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 * ** The block form splice. The splice map conjugated into three tensor blocks: prefix rides identity factor, argument acts middle block against fold suffix.
+   本节说明 Representable 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -436,7 +430,7 @@ Definition tensor_list_app {C : Category} `{M : @Monoidal C}
   tfold_app (fun x => x) xs ys.
 
 (*
-   本节说明相关定义、性质与动机。 * ** Swap-versus-fold coherence. The purely 幺半 square exchanging adjacent transposition two head factors fold tail: [m] is GENERIC 态射 [x ⨂ y ~> y ⨂ x] (in use, braiding), conjugated associators either side generic tail map [w].
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -498,7 +492,7 @@ Qed.
 End SwapFold.
 
 (*
-   本节说明相关定义、性质与动机。 * ** Realizing permutations braidings. [perm_arrow p] realizes structural permutation 态射 between folds, CONTRAVARIANTLY: action multimorphisms is 预复合.
+   本节说明 Representable 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -578,7 +572,7 @@ Qed.
 End Realization.
 
 (*
-   本节说明相关定义、性质与动机。 * ** Equivariance splice. The interaction [msplice] blockwise permutations: prefix, argument, suffix blocks may be permuted independently, this commutes splicing.
+   本节说明 Representable 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -639,7 +633,7 @@ Qed.
 End Equivariance.
 
 (*
-   本节说明相关定义、性质与动机。 * ** The equivariance core. Splicing commutes independent blockwise permutation prefix, argument boundary, suffix.
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -721,9 +715,7 @@ Qed.
 #[local] Obligation Tactic := intros.
 
 (*
-   * Any 对称 幺半范畴, realized over a colour type [A],
-
-   本节：yields 多元范畴: multimorphisms out [Γ] are 态射 out tensor fold [Γ], 复合 splices through concatenation 同构, 对称 action precomposes braiding realization.
+   本节说明幺半结构、幺半群、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -819,9 +811,7 @@ Qed.
 End Assembly.
 
 (*
-   * Every 对称 幺半范畴 yields a 多元范畴 on its own
-
-   本节：对象: [mhom Γ c := tensor_list Γ ~> c]. The uniqueness list equality proofs 对象 is threaded 假设: class's [mcast_id] is quantified over ARBITRARY loops [e : Γ = Γ], transport along such loop is provably trivial 当且仅当 parallel list equaliti
+   本节说明幺半结构、幺半群、多元范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -831,9 +821,7 @@ Definition RepresentableMulticategory (C : Category)
   Fold_Multicategory (fun x : C => x) luip.
 
 (*
-   * ** The 多元范畴 of a coloured PROP
-
-   本节：A coloured PROP is strict 对称 幺半范畴 whose 对象 are colour lists, so it realizes its own colours: 多元范畴 has [mobj := Colour] multimorphisms out tensor fold wires.
+   本节说明幺半结构、幺半群、多元范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -845,9 +833,7 @@ Definition list_uip_of_dec {A : Type}
   UIP_dec (list_eq_dec dec).
 
 (*
-   * The tensor fold of wires is the canonical colour-list 对象: the
-
-   本节说明相关定义、性质与动机。 strict boundary equalities [cprop_unit_nil]/[cprop_tensor_app] collapse fold (a propositional equality OBJECTS, sanctioned hom_cast discipline).
+   本节说明 Representable 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

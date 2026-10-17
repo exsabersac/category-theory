@@ -50,7 +50,7 @@ Fixpoint le_S_shift@{u} {m n} (p : le_t@{u} m n) : le_t@{u} (S m) (S n) :=
   end.
 
 (*
-   本节说明相关定义、性质与动机。 Predictable obligation alignment (op-)cocone records below: with.
+   本节说明 Adamek 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -59,9 +59,7 @@ Fixpoint le_S_shift@{u} {m n} (p : le_t@{u} m n) : le_t@{u} (S m) (S n) :=
 Section Adamek.
 
 (*
-   [余极限]/[IsALimit] force the diagram 范畴 and the target to share
-
-   本节说明相关定义、性质与动机。 their hom/prop universe, [Chain] pins [Omega]'s hom/prop [Set] (Instance/Omega.v, Construction/Chain.v). The target [C] therefore carries its hom/prop at [Set];
+   本节说明（余）极限、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -145,7 +143,7 @@ Section Mediator.
 Context (aβ : FAlg F).
 
 (*
-   本节说明相关定义、性质与动机。 The competing cocone's legs into carrier [``aβ], built recursion on.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -263,9 +261,7 @@ End Mediator.
 Definition muF : FAlg F := existT (fun a : C => FAlgebra F a) A alpha.
 
 (*
-   The unique [F]-代数 map from the initial 代数 to any 代数 [y]
-
-   本节说明相关定义、性质与动机。 (an arrow [muF ~> y] [FAlg F], i.e. into 终对象 [(FAlg F)^op]).
+   本节说明函子、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

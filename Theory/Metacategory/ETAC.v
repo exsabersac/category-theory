@@ -49,9 +49,7 @@ Proof.
 Qed.
 
 (*
-   Cast 代数, each law by destructing its equalities: a two-sided
-
-   本节说明相关定义、性质与动机。 cast splits into its sides, independent side-casts commute, codomain cast crosses 复合 domain cast. Exported reusable 代数 downstream consumers [acast];
+   本节说明 ETAC 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -86,7 +84,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The three arrow-equation satisfactions, standalone: stated over.
+   本节说明 ETAC 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -109,7 +107,7 @@ Definition sat_eqarr {C : Category} (f g : Arr C) : Type :=
     & acast ed ec (arr_map f) ≈ arr_map g } }.
 
 (*
-   本节说明相关定义、性质与动机。 Bundles are propositionally their own eta-expansions; rewriting along.
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -586,9 +584,7 @@ Qed.
 (** ** The one-functor case (maclane:II.1:remark2, scoped) *)
 
 (*
-   The one-函子 recording (design note 4): the 对象 and arrow
-
-   本节说明相关定义、性质与动机。 actions F^op are literally those F, stated at BUNDLE level — this is definitional commutation, not statement-level theorem;
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

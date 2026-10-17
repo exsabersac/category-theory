@@ -28,7 +28,7 @@ Section PushoutSquare.
 Context {C : Category}.
 
 (*
-   本节说明相关定义、性质与动机。 The square. x ---g---> z | | f| | i2 v v y ---i1--> P commutes enjoys 普遍性质 推出.
+   本节说明拉回/推出、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -42,7 +42,7 @@ Context {x y z : C} {f : x ~> y} {g : x ~> z}.
 Context {P : C} {i1 : y ~> P} {i2 : z ~> P}.
 
 (*
-   本节说明相关定义、性质与动机。 The C-facing smart constructor. Without it caller must build the. square goals displayed C^op, where legs precompose left [id_left]/[id_right] swap roles — elaboration nuisance recorded header.
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -108,7 +108,7 @@ Qed.
 End Accessors.
 
 (*
-   本节：* *** Conversions bundled [IsPushout]. Both are field repackagings, exactly Stability.v's [拉回_is_拉回]/[is_拉回_拉回] are;
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -131,9 +131,7 @@ Arguments IsPushoutSquare {C x y z} f g P i1 i2.
 (** ** The cokernel pair *)
 
 (*
-   The 余核 pair of f : x ~> y is the 推出 of f with itself: a
-
-   本节说明相关定义、性质与动机。 parallel pair out y, universal among parallel pairs coequalizing f.
+   本节说明拉回/推出、核/余核相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -213,9 +211,7 @@ Context {x y : C}.
 Context (f : x ~> y).
 
 (*
-   Seven Sketches 定义 7.5, 正向: if f is right-cancellable then
-
-   本节说明相关定义、性质与动机。 the square f two identity legs is 推出. The mediator cocone (q1, q2) is q1 itself — epicness is exactly what says q2 is same 态射.
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -236,9 +232,7 @@ Proof.
 Defined.
 
 (*
-   Seven Sketches 定义 7.5, 反向: if that square is a 推出
-
-   本节说明相关定义、性质与动机。 then f is right-cancellable. A pair coequalizing f is mediated SINGLE 态射 which, precomposed identity twice over, is both members pair.
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -285,7 +279,7 @@ Proof. split; [ exact epic_ckp_trivial | exact ckp_trivial_epic ]. Qed.
 (** *** The same at full strength: the left leg is an isomorphism *)
 
 (*
-   本节说明相关定义、性质与动机。 When f is epic, mediator pair (id, id) is two-sided. inverse either leg, so 余核-pair apex collapses onto codomain.
+   本节说明核/余核相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -337,9 +331,7 @@ Arguments epic_iff_cokernel_pair_trivial {C x y} f P.
 Arguments epic_iff_cokernel_pair_left_iso {C x y} f P.
 
 (*
-   * *** The same at the CHOSEN 余核 pair
-
-   本节说明相关定义、性质与动机。 Named aliases so that consumer working under [HasPushouts] need not spell 推出 argument.
+   本节说明拉回/推出、核/余核相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -355,9 +347,7 @@ Definition epic_iff_chosen_ckp_left_iso {C : Category}
   epic_iff_cokernel_pair_left_iso f (cokernel_pair f).
 
 (*
-   * ** The [Monic] dual, by 对偶
-
-   本节说明相关定义、性质与动机。 Every statement below is one three above instantiated at C^op re-typed through 对偶.v's [Monic]/[Epic] bridges. No proof content is repeated: each is supplied [:=] two-line [split] over C^op instance.
+   本节说明 CokernelPair 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -369,9 +359,7 @@ Context {x y : C}.
 Context (f : x ~> y).
 
 (*
-   The identity 推出 square at C^op IS the identity 拉回 square at
-
-   本节说明相关定义、性质与动机。 C. This holds because (C^op)^op reduces C this library (Construction/反.v), so two [IsPullback] applications are same term.
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -380,9 +368,7 @@ Definition op_collapse_pushout_square :
     = @IsPullback C x x y f f x id id := eq_refl.
 
 (*
-   A 推出 of f with itself in C^op IS a 拉回 of f with itself in C,
-
-   本节说明相关定义、性质与动机。 and 余核-pair legs there ARE 拉回 projections here. Measured: [eq_refl] all three.
+   本节说明拉回/推出、核/余核相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -396,7 +382,7 @@ Definition op_collapse_ckp_right (P : Pullback f f) :
   @ckp_right (C^op) y x f P = pullback_snd f f P := eq_refl.
 
 (*
-   本节说明相关定义、性质与动机。 [IsIsomorphism] at C^op at C carry same inverse swap their. two law fields, so conversion is field permutation no proof content.
+   本节说明 CokernelPair 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -423,7 +409,7 @@ Context {x y : C}.
 Context (f : x ~> y).
 
 (*
-   本节说明相关定义、性质与动机。 [Monic f] ↔ square f two identity legs is PULLBACK. This. is Seven Sketches 定义 7.5's mono clause;
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -437,9 +423,7 @@ Proof.
 Qed.
 
 (*
-   The 核-pair phrasing: f is monic 当且仅当 its 核 pair is
-
-   本节说明相关定义、性质与动机。 trivial, i.e. its two projections coincide. Stated ARBITRARY 拉回 f itself, matching 余核-pair side.
+   本节说明拉回/推出、核/余核相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

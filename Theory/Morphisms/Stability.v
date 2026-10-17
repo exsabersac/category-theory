@@ -16,9 +16,7 @@ Generalizable All Variables.
 *)
 
 (*
-   The apex-pinned 拉回 predicate: the square
-
-   本节说明相关定义、性质与动机。 P ---p2---> y | | p1| |g v v x ---f----> z commutes enjoys 普遍性质 拉回.
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -54,7 +52,7 @@ Definition is_pullback_pullback {C : Category} {x y z : C}
 (* The pasting law                                                           *)
 
 (*
-   本节说明相关定义、性质与动机。 Two adjacent squares over composable bottom row --k--> b --h--> c:. P ---p2---> Q ---q2---> y | | | p1| q1| |m v v v ----k---> b ----h---> c Note: earlier planning draft transposed two squares;
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -119,9 +117,7 @@ Proof.
 Qed.
 
 (*
-   Pasting, inward: if the right-hand square is a 拉回, the left-hand
-
-   本节说明相关定义、性质与动机。 square commutes, outer rectangle is 拉回, then left-hand square is 拉回.
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -183,9 +179,7 @@ End Pasting.
 (* Stability under base change                                               *)
 
 (*
-   Monomorphisms are stable under 拉回: in the square
-
-   本节说明相关定义、性质与动机。 P ---snd--> y | | fst| |m v v x ----f---> z m monic, projection 反 m is monic well.
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -290,7 +284,7 @@ Arguments transport_fst {C x y z f g P P'} _.
 Arguments transport_snd {C x y z f g P P'} _.
 
 (*
-   本节说明相关定义、性质与动机。 Any two pullbacks one cospan are isomorphic via mediators that commute. projections;
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -340,7 +334,9 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Stability orthogonal left class under cobase change.. nLab: https://ncatlab.org/nlab/show/orthogonal+factorization+system If e ⫫ m e' is 推出 e along any 态射 g (the cobase change e), then e' ⫫ m well.
+   nLab: https://ncatlab.org/nlab/show/orthogonal+factorization+system
+
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

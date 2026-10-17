@@ -59,7 +59,7 @@ Fixpoint tperm_length {A : Type} {Γ Δ : list A} (p : tperm Γ Δ) :
   end.
 
 (*
-   本节说明相关定义、性质与动机。 * ** UIP colour type operad. The colour type is propositionally [poly_unit] ([operad_one]), UIP transports backwards along type equality [destruct];
+   本节说明 Algebra 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -116,7 +116,7 @@ Definition oalg_ctx (Γ : list (@mobj MO)) :
            (f_equal (repeat pt) (eq_sym (map_length_t oalg_obj Γ))).
 
 (*
-   本节说明相关定义、性质与动机。 An operad action: action maps at every arity, respecting [≈], with. three preservation laws restated at accessor level Theory/多元范畴/Operad.v.
+   本节说明多元范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -193,9 +193,7 @@ Qed.
 Local Obligation Tactic := idtac.
 
 (*
-   Assembling the full multifunctor from the action maps: the 对象 map
-
-   本节说明相关定义、性质与动机。 is forced, multimorphism map recasts every context its repeat form every target point, three multifunctor laws are discharged from accessor-level laws cast calculus.
+   本节说明 Algebra 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -304,9 +302,7 @@ Qed.
 End Build.
 
 (*
-   * ** The 范畴 of O-代数
-
-   本节说明相关定义、性质与动机。 Following [FAlgHom] idiom Construction/FAlg.v: 态射 代数 is carrier map intertwining actions at every arity, through functorial action [pow_map] finite powers.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -385,9 +381,7 @@ Arguments oalg_hom {O C H H0 X Y A B} _.
 Arguments oalg_commutes {O C H H0 X Y A B} _ n o.
 
 (*
-   The 范畴 of O-代数 in C.
-
-   本节：对象: pairs carrier 代数 structure arrows: action-intertwining carrier maps identity: identity carrier map 复合: 复合 carrier maps, pasting squares
+   本节说明 Algebra 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -434,9 +428,7 @@ Definition Comm : Operad := {|
 |}.
 
 (*
-   * ** Comm-代数 in Sets are commutative 幺半群
-
-   本节说明相关定义、性质与动机。 正向 direction, since PR "algebraic carriers are sets" (2026-09-17) it asks carrier [PropEquiv]; strength-change paragraph file header records why, names two constants this file that gained 假设.
+   本节说明幺半群、（余）强度相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -445,7 +437,7 @@ Section CommToCMon.
 
 Context {X : Sets}.
 (*
-   本节说明相关定义、性质与动机。 Since PR "algebraic carriers are sets" (2026-09-17) [CMonObject].
+   本节说明 Algebra 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -529,9 +521,7 @@ Qed.
 End CommToCMon.
 
 (*
-   * ** Commutative 幺半群 are Comm-代数
-
-   本节说明相关定义、性质与动机。 Converse direction, through convenience constructor: arity-n action is n-fold sum, identity/复合/symmetry preservation are unit law, fold-of-a-graft computation, invariance sums under permutation (结合律 + commutativity).
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -658,13 +648,13 @@ Definition CMon_to_Comm_algebra : OperadAlgebra (C:=Sets) Comm (cmon_setoid M) :
 End CMonToComm.
 
 (*
-   本节：* ** The two directions, bundled. The named Comm/CMon connection: Comm-代数 [Sets] whose carrier setoid has [PropEquiv] yields commutative 幺半群 that carrier, every commutative 幺半群 carries Comm-代数 structure.
+   本节说明幺半群、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   本节说明相关定义、性质与动机。 AN EARLIER REVISION stated left component without [PropEquiv],. "a Comm-代数 [Sets] yields commutative 幺半群 its carrier".
+   本节说明幺半群、（余）强度相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

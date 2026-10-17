@@ -28,7 +28,7 @@ Generalizable All Variables.
 *)
 
 (*
-   本节：* ** 积 separate points. Two 态射 into 积 that agree after both projections are equal — immediate from uniqueness half [ump_积]. Stated arbitrary 笛卡尔 范畴;
+   本节说明笛卡尔相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -51,9 +51,7 @@ Section Ev1.
 Context (T : LawvereTheory).
 
 (*
-   * Evaluation at the generic 对象 [law_of_nat 1]: a model goes to its
-
-   本节说明相关定义、性质与动机。 underlying set, 态射 models (a 自然变换) its component at [law_of_nat 1].
+   本节说明自然变换、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -69,9 +67,7 @@ Next Obligation.
 Qed.
 
 (*
-   * ** Faithfulness of the underlying-set 函子
-
-   本节：Under reachability 假设, 态射 [Sets]-models is determined its component at [law_of_nat 1]: component at [law_pow n] is pinned down induction [n] — at [0] because maps into (an 对象 isomorphic to) 终对象 are equal, at [S k] because th
+   本节说明函子、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -142,7 +138,7 @@ Qed.
 End Ev1.
 
 (*
-   本节：* ** Reachability base theory. For skeletal base theory [FinSetOp_Lawvere] 对象 underlying 范畴 literally are 自然 numbers [law_of_nat] is identity, so reachability holds [eq_refl] — 假设 [ev1_忠实] costs nothing on
+   本节说明Lawvere 理论相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

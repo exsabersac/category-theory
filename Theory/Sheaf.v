@@ -28,17 +28,19 @@ Generalizable All Variables.
    层 (sheaf) 是满足下降条件的预层：对拓扑中的每个覆盖，截面由兼容的局部截面唯一胶合。 *)
 
 (*
-   Where 层 来源, and 用途
+   关于sheaves的来源与用途
 
-   本节说明相关定义、性质与动机。 nLab: https://ncatlab.org/nlab/show/层 nLab: https://ncatlab.org/nlab/show/Grothendieck+topology Wikipedia: https://en.wikipedia.org/wiki/层_(mathematics) A 层 is systematic bookkeeping passage from local data global data.
+   nLab:      https://ncatlab.org/nlab/show/sheaf
+   nLab:      https://ncatlab.org/nlab/show/Grothendieck+topology
+   Wikipedia: https://en.wikipedia.org/wiki/Sheaf_(mathematics)
+
+   本节说明层/筛、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   A C-valued presheaf on some 范畴 U.
-
-   本节说明相关定义、性质与动机。 C is often taken be Sets. The universe annotation keeps two 范畴' levels independent: left inference, minimization had identified U's hom proof levels C's — one shared level across both 范畴 instances — which Sets target pins elements its
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -101,9 +103,7 @@ Class Site (C : Category) := {
 }.
 
 (*
-   If { fᵢ : Uᵢ → U } (i∈I) is a family of 态射 with codomain U,
-
-   本节说明相关定义、性质与动机。 a presheaf X : Cᵒᵖ → Set is called 层 this family if: any collection elements xᵢ ∈ X(Uᵢ) such that, whenever g : V → Uᵢ h : V → Uⱼ are such that fᵢ ∘ g = fⱼ ∘ h, we have X(g)(xᵢ) = X(h)(xⱼ), then there exists unique x ∈ X(U) such that X(fᵢ)(x) = xᵢ all i
+   本节说明层/筛相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

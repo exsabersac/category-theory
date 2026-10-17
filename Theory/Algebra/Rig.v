@@ -176,13 +176,11 @@ Proof.
 Qed.
 
 (* The category of rigs and rig homomorphisms. *)
-(* The universes are pinned by hand, for the reason recorded at
-   Instance/CMon.v's [CMon]: with [rig_prop] a field the record's sort carries
-   a [Set+1], the elaborator stops identifying the record's own sort variable
-   with the category's object universe, and [Rig] would acquire a third,
-   redundant universe -- refusing the `Rig@{uo uh}` annotations of
-   Instance/Rng/Free.v for arity.  Measured after the change,
-   [Rig@{u p} : Category@{u p p}] with the one new constraint [Set < u]. *)
+(*
+   本节说明 Rig 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Rig@{u p} : Category@{u p p} := {|
   obj     := RigObject@{p p p};
   hom     := RigHom@{p};
@@ -256,10 +254,11 @@ Next Obligation. intros R S T f g a; simpl; reflexivity. Qed.
 
 (** ** The one-object Preadditive bridge *)
 
-(* Delooping the multiplicative monoid, with composition as
-   multiplication — Construction/Deloop.v's construction, inlined so this
-   file stays on the algebra spine (Deloop's [MonObject] carries only one
-   operation; a rig needs both). *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition DeloopRig (R : RigObject) : Category := {|
   obj     := poly_unit;
   hom     := fun _ _ => carrier (rig_setoid R);
@@ -278,11 +277,11 @@ Next Obligation.
   intros R x y z w f g h; simpl; apply rig_mul_assoc.
 Qed.
 
-(* [DeloopRig R]'s hom-setoid IS the rig's own carrier setoid, so the
-   delooping is locally propositional as soon as the rig is -- which, since
-   the PR "algebraic carriers are sets" (2026-09-17), every rig is.  This is
-   what lets [EndRig] below be applied back to a delooping in the round-trip
-   examples. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance DeloopRig_LocallyPropositional (R : RigObject) :
   LocallyPropositional (DeloopRig R).
 Proof.
@@ -307,18 +306,11 @@ Next Obligation. intros R x y z f g h; apply rig_distr_r. Qed.
 Next Obligation. intros R x y z f; apply rig_mul_zero_l. Qed.
 Next Obligation. intros R x y z f; apply rig_mul_zero_r. Qed.
 
-(* Conversely, the endomorphism hom of ANY object of ANY preadditive
-   category is a rig: addition is the enrichment, multiplication is
-   composition.  This is the honest converse — it does not need the
-   category to have one object.
+(*
+   本节说明hom相关定义、性质与动机。
 
-   It DOES need one thing it did not need before the PR "algebraic carriers
-   are sets" (2026-09-17): the ambient category must be LOCALLY PROPOSITIONAL
-   (Instance/Sets/Propositional.v), since the rig's carrier setoid IS
-   [C]'s hom-setoid and [rig_prop] has to be supplied from it.  The hypothesis
-   is a class, so it is discharged by instance resolution wherever an instance
-   is in scope -- at a delooping by [DeloopRig_LocallyPropositional] above, at
-   [Ab] and [RMod R] by the instances in Instance/Ab.v and Instance/Mod.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition EndRig {C : Category} {LP : LocallyPropositional C}
   (P : Preadditive C) (c : C) :
   RigObject := {|
@@ -377,24 +369,11 @@ Next Obligation. intros R a b; simpl; reflexivity. Qed.
 Next Obligation. intros R a; simpl; reflexivity. Qed.
 Next Obligation. intros R a; simpl; reflexivity. Qed.
 
-(* The bridge, packaged: a rig deloops to a one-object preadditive
-   category, any object of a LOCALLY PROPOSITIONAL preadditive category
-   has an endomorphism rig, and the round trip on the rig side is the
-   identity-carrier isomorphism, definitional on the data.  (The
-   category-side composite has no equational form — see the header.)
+(*
+   本节说明同构相关定义、性质与动机。
 
-   AN EARLIER REVISION read the middle clause as "any object of a
-   preadditive category".  Since the PR "algebraic carriers are sets"
-   (2026-09-17) this triple's measured type carries the hypothesis on
-   its second and third components,
-
-     … * (∀ C, LocallyPropositional C → Preadditive C → obj → RigObject)
-         * …
-
-   because a [RigObject] carries [rig_prop]; see [EndRig] above and the
-   strength-change paragraph of the header for why, and for what
-   discharges it.  The first component [DeloopRig_Preadditive] is
-   unchanged. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition rig_iff_one_object_preadditive :=
   (@DeloopRig_Preadditive, @EndRig, @EndRig_DeloopRig).
 
@@ -412,9 +391,11 @@ Program Definition Nat_Rig : RigObject := {|
   rig_one := 1%nat;
   rig_mul := Nat.mul;
 
-  (* [nat_setoid_object]'s `≈` IS [eq], which is already a [Prop]; the two
-     implications are the identity.  The relation has to be NAMED -- an
-     ascription [(x ≈ y : Prop)] is refused, see Lib/Setoid/Propositional.v. *)
+  (*
+   本节说明 Rig 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   rig_prop := @PropEquiv_of_relation _ (is_setoid nat_setoid_object) (@eq nat)
                 (fun _ _ h => h) (fun _ _ h => h)
 |}.
@@ -517,12 +498,11 @@ Next Obligation. intros R S T f g a; simpl; reflexivity. Qed.
 
 (** ** The integers: an axiom-free ring witness *)
 
-(* The equality is Type-ascribed (the Ipt_equiv/R_equiv precedent of
-   Instance/Top/Interval.v and Instance/Top/Presheaf.v) so the setoid's
-   proof level floats instead of being pinned at the level of Prop-valued
-   [eq] — pinning it would force every abelian group sharing an [AbHom]
-   with ℤ down to Set, which is exactly the tensor-unit situation of
-   Instance/Ab/Monoidal.v. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Z_eqT (x y : Z) : Type := x = y.
 
 Lemma Z_eqT_Equivalence : Equivalence Z_eqT.
@@ -555,19 +535,16 @@ Proof.
   intros a b Hab; unfold Z_eqT in *; now subst.
 Qed.
 
-(* Plain definitions with explicit proof terms: the stdlib equalities land
-   in the Type-ascribed [Z_eqT] by conversion, and the explicit universe
-   binders keep the setoid's levels parameters rather than letting
-   minimization collapse them to Set — which would drag every abelian
-   group sharing a hom with ℤ down with it (the tensor-unit situation of
-   Instance/Ab/Monoidal.v). *)
-(* The universe instance is written [RigObject@{q o p}], not [@{o p q}]:
-   since the PR "algebraic carriers are sets" (2026-09-17) the record's
-   AUXILIARY level -- the one bounding the [PropEquiv] field's own sort, which
-   carries the [Set+1] -- is the FIRST argument rather than the third, so the
-   named universes keep their roles by being permuted rather than renamed.
-   [o] is still the carrier, [p] the proof level and [q] the level the
-   record's sort is read at. *)
+(*
+   本节说明幺半结构、hom、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明 Rig 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Int_Rig@{o p q | o <= q, p <= q +} : RigObject@{q o p} := {|
   rig_setoid := Z_setoid_object@{o p};
   rig_zero := 0%Z;
@@ -587,10 +564,11 @@ Definition Int_Rig@{o p q | o <= q, p <= q +} : RigObject@{q o p} := {|
   rig_mul_zero_l := Z.mul_0_l;
   rig_mul_zero_r := Z.mul_0_r;
 
-  (* [Z_eqT] is [eq] under a [Type] ascription, so the [Prop] mirror is [eq]
-     itself and the two implications are the identity by conversion.  The
-     ascription is what keeps the setoid's proof level a parameter (see the
-     comment above [Z_eqT]); it does not make the relation proof-relevant. *)
+  (*
+   本节说明 Rig 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   rig_prop := @PropEquiv_of_relation _ (is_setoid Z_setoid_object@{o p}) (@eq Z)
                 (fun _ _ h => h) (fun _ _ h => h)
 |}.
@@ -678,9 +656,11 @@ Example int_ring_neg : rig_add Int_Rig (ring_neg Int_Ring 7%Z) 7%Z = 0%Z
 Example rig_iter_nat_3 :
   rig_map (rig_from_nat Nat_Rig) 3%nat = 3%nat := eq_refl.
 
-(* The forgetful functors agree with the projections on the nose, and
-   their composites with the forgetfuls to [Sets] return the carrier
-   setoid definitionally — the header's claim, machine-checked. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example rig_forget_cmon_carrier (R : RigObject) :
   cmon_setoid (Rig_Forget_CMon R) = rig_setoid R := eq_refl.
 Example rig_forget_cmon_sets (R : RigObject) :

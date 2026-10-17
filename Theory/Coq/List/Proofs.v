@@ -359,9 +359,7 @@ Qed.
 *)
 
 (*
-   Forall_ordered: moved earlier in the file (to its 定义 site above)
-
-   本节说明相关定义、性质与动机。 because it is consumed StronglySorted_cat. This note marks its former location;
+   本节说明 Proofs 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -842,7 +840,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Permutation infrastructure insertion-sort helpers below. [Permutation]. is 等价 lists that quotients [app] down free *commutative* 幺半群;
+   本节说明幺半群、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -1035,9 +1033,7 @@ Proof.
 Qed.
 
 (*
-   The lawful 函子 instance: [list] is a genuine 自函子 on [Coq],
-
-   本节说明相关定义、性质与动机。 with [fmap = List.map]. As sibling [Maybe]/[Either]/[Tuple] proof files, witness reuses source [list_函子] instance [a_fmap] discharges three [AFunctor] obligations -- [map] respects pointwise equality functions, [map id = id], [map (g ∘ f) =
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

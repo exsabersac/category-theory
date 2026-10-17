@@ -40,7 +40,7 @@ Example Nat_Rig_zero_FinSet : rig_zero Nat_Rig = 0%nat := eq_refl.
 Example Nat_Rig_one_FinSet : rig_one Nat_Rig = 1%nat := eq_refl.
 
 (*
-   本节说明相关定义、性质与动机。 * ** An independent witness converse bridge direction. [EndRig] applied preadditive 范畴 Rig development did not itself build: Instance/CMon/Biproduct.v's [CMon_Preadditive].
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

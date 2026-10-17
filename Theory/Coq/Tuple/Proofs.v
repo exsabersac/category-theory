@@ -43,9 +43,7 @@ Proof.
 Qed.
 
 (*
-   The second-argument 函子 [(x * −)] is a lawful 自函子 on [Coq]; as
-
-   本节说明相关定义、性质与动机。 with [arrow_IsFunctor], witness reuses [函子] instance [a_fmap], only nontrivial obligation is that [prod_map] respects pointwise equality functions.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

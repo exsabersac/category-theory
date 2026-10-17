@@ -34,9 +34,7 @@ Arguments oedgeset {_} _ _ _.
 #[export] Existing Instance oedgeset.
 
 (*
-   A 态射 of O-graphs: a map on arrows for each ordered pair of nodes,
-
-   本节说明相关定义、性质与动机。 respecting arrow setoids. There is NO action nodes -- 即 exactly what "identity 对象" means, it is whole difference from [QuiverHomomorphism].
+   本节说明 OGraph 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -132,9 +130,7 @@ Lemma ograph_comp_assoc_sym@{o h p hh} {O : Type@{o}}
 Proof. now intros x y f. Qed.
 
 (*
-   The 范畴 of O-graphs and identity-on-nodes 态射.  Its hom and
-
-   本节：proof universes are identified ([范畴@{oo hh hh}]) because Structure/幺半.v's [幺半@{o h}] demands exactly that shape 范畴;
+   本节说明幺半结构、hom、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -164,7 +160,7 @@ Definition eq_setoid_poly@{a b} (A : Type@{a}) : Setoid@{a b} A := {|
 |}.
 
 (*
-   本节说明相关定义、性质与动机。 The trivial (unit) O-graph -- Mac Lane's "O itself, arrow set O and. both domain codomain functions identity". Its arrows x ~> y are PROOFS x = y, compared Leibniz equality. Two things about that, both load-bearing neither idealisation.
+   本节说明 OGraph 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -217,7 +213,7 @@ Example OGrph_Quiver_nodes {O : Type} {A B : OGraph O} (F : OGraphHom A B) :
   @fnodes _ _ (QuiverHomOfOGraphHom F) = fun x : O => x := eq_refl.
 
 (*
-   本节：Uniqueness identity proofs NODE type, taken explicit. 假设 house idiom (Theory/元范畴/General.v's [ObjUIP], Theory/范畴/幺半群.v's [HomRigid]) rather than axiom. It is not needed anywhere else this file;
+   本节说明幺半群、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -263,7 +259,7 @@ Example composable_eta@{o h p +|+} {O : Type@{o}} {A B : OGraph@{o h p} O}
   : cpair (cmid u) (cleft u) (cright u) = u := eq_refl.
 
 (*
-   本节说明相关定义、性质与动机。 Two composable pairs are identified when their middle nodes are equal and. two legs agree after transporting along that equality. The middle node is compared Coq's [=] -- it is NODE, O carries no setoid -- while legs are compared edge setoids' own `≈`.
+   本节说明等价、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -613,9 +609,7 @@ Definition ounit@{o h p hh oo +|+} {O : Type@{o}} {A : OGraph@{o h p} O}
   @eta (OGrph@{o h p hh oo} O) (OGrph_Monoidal@{o h p hh oo} O) A M.
 
 (*
-   The three 幺半群 laws, restated in the pointwise form of [OGraphHomEquiv]
-
-   本节说明相关定义、性质与动机。 so that they can be applied composable pair. Each is class field read through definitional unfolding `≈` [OGrph O].
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -705,7 +699,7 @@ Proof.
 Defined.
 
 (*
-   本节说明相关定义、性质与动机。 ORIENTATION, pinned computation rather than prose. Mac Lane writes. composable pair <g, f> dom g = cod f, sets dom<g,f> = dom f, cod<g,f> = cod g; so LEFT leg is arrow applied last.
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -831,7 +825,7 @@ Example ocat_roundtrip_compose (C : Category) :
   @compose (CategoryOfOMonoid (MonoidOfCat C)) = @compose C := eq_refl.
 
 (*
-   本节：Conjugating identity isomorphisms does nothing: this is shape. [函子_Setoid]'s naturality condition takes when two 函子 agree 对象 definitionally, both comparisons below do. (The same lemma is proved same reason Theory/范畴/幺半群.v;
+   本节说明函子、幺半群、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -974,9 +968,7 @@ Definition MonObject_of_OMonoid {A : OGraph poly_unit} (M : OMonoid A) :
   MonObject := hom_monoid (CategoryOfOMonoid M) ttt.
 
 (*
-   The 幺半群 comes back in every data field.  Full record equality is
-
-   本节说明相关定义、性质与动机。 blocked, always this library, proof-carrying law fields: laws [CategoryOfOMonoid] are derived from 幺半群-对象 laws rather than projected from M, so they are not same terms.
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -1011,7 +1003,7 @@ Example ograph_nat_compose_2_3 :
 (** ** The unit setoid is load-bearing: coarsening it ENTAILS UIP *)
 
 (*
-   本节说明相关定义、性质与动机。 The header explains that no UIP is needed anywhere above, localizes the. reason one choice: trivial O-graph compares its edge-proofs LEIBNIZ equality, which is what hands [oul_to]'s respectfulness obligation equation [p = p'] it needs.
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

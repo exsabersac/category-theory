@@ -48,9 +48,7 @@ Generalizable All Variables.
    起两跳，Instance/Parallel → Instance/Sets；此前三跳）。 *)
 
 (*
-   A weakly initial family: an index [Type], a family of 对象, and for
-
-   本节说明相关定义、性质与动机。 every 对象 [c] *choice* covering member together arrow into [c].
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -65,12 +63,12 @@ Arguments wif_obj {C} _ _.
 Arguments wif_cover {C} _ _.
 
 (*
-   本节：The 积 [P] weakly initial family, together equalizers and. endomorphism-indexed 积 [Pe] over 积 对象, yields genuine 始对象. Construction. Write [P0] 积 对象 [iprod (wif_obj W) P].
+   本节说明等化子、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 (*
-   本节说明相关定义、性质与动机。 THE BINDERS ARE WHERE FREYD'S SIZE CONDITION LIVES, so they are written. out rather than inferred, two [极限] instances are whole point.
+   本节说明（余）极限、hom、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -94,7 +92,7 @@ Proof.
             ∘ iprod_proj (wif_obj W) P (projT1 (wif_cover W c))).
 
   (*
-   本节说明相关定义、性质与动机。 The tupling all endomorphisms, constant identity family,. through endomorphism-indexed POWER [Pe] -- family there is [fun _ : P0 ~> P0 => P0], constant, so Structure/极限/Power.v's vocabulary applies is used.
+   本节说明（余）极限相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -172,7 +170,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 * * The characterization: both directions (Mac Lane §V.6 Theorem 1). Everything above this line is original file (#158/#328's Freyd construction), byte-identical up one corrected sentence (see below);
+   本节说明（余）极限相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -262,9 +260,7 @@ Example initial_iff_weakly_initial_family_fst {C : Category}
 (** ** The convenience wrapper: the two products from completeness *)
 
 (*
-   Awodey §9.8's reading: harvest both 积 from [完备] and keep
-
-   本节说明相关定义、性质与动机。 the equalizers explicit supply — [完备_HasEqualizers] lives downstream, 伴随/GAFT.v, is not re-derived here.
+   本节说明伴随、等化子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -303,9 +299,7 @@ Example initial_iff_weakly_initial_family_complete_fst {C : Category}
 (** ** Weakly initial is strictly weaker than initial *)
 
 (*
-   At the walking parallel pair: [ParX] reaches every 对象, is not
-
-   本节说明相关定义、性质与动机。 initial (two inequivalent arrows [ParY]), [ParY] is not even weakly initial — separation is about 对象, not 范畴.
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

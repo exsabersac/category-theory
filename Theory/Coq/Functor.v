@@ -28,7 +28,7 @@ Coercion fmap : Functor >-> Funclass.
    nLab: https://ncatlab.org/nlab/show/contravariant+functor
    Wikipedia: https://en.wikipedia.org/wiki/Functor#Covariance_and_contravariance
 
-   本节说明相关定义、性质与动机。 FP reading. A contravariant 函子 equips [F : Type → Type] [contramap : (x → y) → F y → F x], which reverses direction mapped function. The laws are again identity [contramap id ≈ id] 复合 [contramap (g ∘ f) ≈ contramap f ∘ contramap g].
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -40,7 +40,7 @@ Arguments Contravariant : clear implicits.
 Coercion contramap : Contravariant >-> Funclass.
 
 (*
-   本节说明相关定义、性质与动机。 If same [F] is both covariant contravariant, it must ignore its. argument (it is constant 函子 up iso), so any [F x] can be moved any [F y].
+   本节说明函子、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -48,7 +48,7 @@ Definition coerce `{Functor F} `{Contravariant F} {x y} : F x → F y :=
   fmap (False_rect _) ∘ contramap (False_rect _).
 
 (*
-   本节说明相关定义、性质与动机。 Haskell-style infix notation [fmap]/[contramap]. [<$>] is Haskell's. infix [fmap]; [<$] replaces all contents constant;
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -122,7 +122,7 @@ Instance Compose_Functor `{Functor F} `{Functor G} : Functor (F ∘ G) := {
    nLab: https://ncatlab.org/nlab/show/Yoneda+lemma
    Wikipedia: https://en.wikipedia.org/wiki/Yoneda_lemma
 
-   本节说明相关定义、性质与动机。 The (covariant, "co-Yoneda") presentation [F] at [x]: type 自然变换 [Hom(x, −) ⇒ F].
+   本节说明自然变换、Yoneda、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

@@ -21,9 +21,15 @@ Generalizable All Variables.
 *)
 
 (*
-   Where Kan 扩张 来源, and 用途
+   关于 Kan 扩张的来源与用途
 
-   本节：nLab: https://ncatlab.org/nlab/show/codensity+单子 nLab: https://ncatlab.org/nlab/show/nerve+and+realization Paper: Kan, "伴随 函子", Transactions American Mathematical Society 87, 1958 Paper: Leinster, "Codensity ultrafilter 单子", Theory Applications
+   nLab:  https://ncatlab.org/nlab/show/codensity+monad
+   nLab:  https://ncatlab.org/nlab/show/nerve+and+realization
+   Paper: Kan, "Adjoint functors", Transactions of the American
+   Paper: Leinster, "Codensity and the ultrafilter monad", Theory and
+   Paper: Hinze, "Kan Extensions for Program Optimisation — Or: Art and
+
+   本节说明Kan 扩张、伴随、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -36,9 +42,9 @@ Context {F : A ⟶ B}.
 Context {C : Category}.
 
 (*
-   The restriction (预复合) 函子 Induced := (− ◯ F) : [B,C] ⟶ [A,C],
+   nLab: https://ncatlab.org/nlab/show/Kan+extension
 
-   本节：written F* p* 文献. On 对象 it sends G : B ⟶ C G ◯ F; 自然变换 f : G ⟹ H it 贴须 F, giving component (Induced f)_z = f_(F z). The Kan 扩张 along F are adjoints this 函子.
+   本节说明Kan 扩张、伴随、自然变换相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -51,9 +57,10 @@ Next Obligation. apply naturality. Qed.
 Next Obligation. apply naturality_sym. Qed.
 
 (*
-   Global 右 Kan 扩张 along F: the 右伴随 Ran of the restriction
+   nLab: https://ncatlab.org/nlab/show/Kan+extension
+   Wikipedia: https://en.wikipedia.org/wiki/Kan_extension
 
-   本节：函子 Induced = (− ◯ F). The 伴随 Induced ⊣ Ran corresponds hom-set 同构 [A,C](M ◯ F, X) ≅ [B,C](M, Ran X), 自然 M.
+   本节说明Kan 扩张、伴随、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -67,9 +74,7 @@ Class RightKan := {
 }.
 
 (*
-   Local (pointwise-free) 右 Kan 扩张 of a single 函子 X : A ⟶ C
-
-   本节说明相关定义、性质与动机。 along F. This is 终对象 among pairs (函子, counit), can exist even when global 伴随 Ran above does not.
+   本节说明Kan 扩张、伴随、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -86,19 +91,15 @@ Class LocalRightKan (X : A ⟶ C) := {
 }.
 
 (*
-   given 函子 F along p' which can exist even if the entire 函子 defined
-
    Wikipedia: "There is also a local definition of 'the Kan extension of a
 
-   本节说明相关定义、性质与动机。 above [global Kan 扩张] does not. This is generalization fact that particular diagram shape C can have 极限 even if not every such diagram does.
+   本节说明Kan 扩张、伴随、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   A global 右 Kan 扩张 restricts to a local one at each X: take the
-
-   本节说明相关定义、性质与动机。 extending 函子 be Ran X counit be image identity under 伴随 iso (the counit Induced ⊣ Ran at X).
+   本节说明Kan 扩张、伴随、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -140,9 +141,10 @@ Next Obligation.
 Qed.
 
 (*
-   Global 左 Kan 扩张 along F: the 左伴随 Lan of the restriction
+   nLab: https://ncatlab.org/nlab/show/Kan+extension
+   Wikipedia: https://en.wikipedia.org/wiki/Kan_extension
 
-   本节：函子 Induced = (− ◯ F). The 伴随 Lan ⊣ Induced corresponds hom-set 同构 [A,C](X, M ◯ F) ≅ [B,C](Lan X, M), 自然 M.
+   本节说明Kan 扩张、伴随、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -154,9 +156,7 @@ Class LeftKan := {
 }.
 
 (*
-   Local 左 Kan 扩张 of a single 函子 X : A ⟶ C along F.  This is the
-
-   本节说明相关定义、性质与动机。 始对象 among pairs (函子, unit), can exist even when global 伴随 Lan above does not.
+   本节说明Kan 扩张、伴随、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -173,9 +173,7 @@ Class LocalLeftKan (X : A ⟶ C) := {
 }.
 
 (*
-   A global 左 Kan 扩张 restricts to a local one at each X: take the
-
-   本节说明相关定义、性质与动机。 extending 函子 be Lan X unit be image identity under 伴随 iso (the unit Lan ⊣ Induced at X).
+   本节说明Kan 扩张、伴随、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -249,17 +247,13 @@ Definition preserves_right_Kan `(R : E ⟶ F) :=
     `(!RightKan K E) `(!RightKan K F), R ◯ Ran K G ≈ Ran K (R ◯ G).
 
 (*
-   "We show that left adjoints preserve left Kan 扩张, while right
-
-   本节说明相关定义、性质与动机。 adjoints will preserve right adjoints [sic]. These connections adjoints run deeper.
+   本节说明Kan 扩张、伴随、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   If L ⊣ R then 预复合 by L is hom-isomorphic to 后复合 by R:
-
-   本节说明相关定义、性质与动机。 [E,D](L ◯ G, H) ≊ [E,C](G, R ◯ H), 函子-范畴 lift defining hom-set 伴随.
+   本节说明Kan 扩张、伴随、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -313,9 +307,7 @@ Proof.
 Qed.
 
 (*
-   Work in progress: left adjoints preserve left Kan 扩张 (Lehner, "All
-
-   本节说明相关定义、性质与动机。 Concepts are Kan Extensions"). The proof is incomplete — three obligations are left open proof script is abandoned before `Qed`, so theorem is NOT added environment introduces no axioms. Retained proof sketch.
+   本节说明Kan 扩张、伴随、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

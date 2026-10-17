@@ -33,9 +33,7 @@ Context {C : Category}.
 Context `{Con : @Concrete C}.
 
 (*
-   The actual function carried by an arrow: the 对象 part of [underlying]
-
-   本节说明相关定义、性质与动机。 supplies underlying set each 对象, [concrete_fun f] is `f` read setoid map between those sets.
+   本节说明 Concrete 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -52,7 +50,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The function determines arrow: "arrows ARE actual functions", the. definitional unfolding [underlying_忠实] at level elements.
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -87,7 +85,7 @@ Context {C : Category}.
 (*
    nLab: https://ncatlab.org/nlab/show/separator
 
-   本节说明相关定义、性质与动机。 A separator (generator) is test 对象 `t` whose generalized elements `e : t ~> x` jointly detect equality arrows out `x`. Awodey §1.5, Remark 1.7 introduces exactly this condition, repair naive notion concreteness.
+   本节说明伴随、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -112,9 +110,7 @@ Next Obligation.
 Qed.
 
 (*
-   The converse reading: whenever `Hom(t, −)` is 忠实, `t` separates.  So
-
-   本节说明相关定义、性质与动机。 [Separator t] faithfulness 可表 are interderivable, neither direction is extra assumption.
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -132,9 +128,7 @@ End Separator.
 Arguments separates {C} t {Separator x y} f g _.
 
 (*
-   Awodey's own case: the test 对象 is terminal, so generalized elements are
-
-   本节：GLOBAL elements `1 ~> x` — points `x`. A 范畴 which 终对象 separates is well-pointed. This is property CATEGORY equipped 终对象.
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -150,9 +144,7 @@ Definition Concrete_of_WellPointed {C : Category} `{T : @Terminal C}
 (** ** The category of setoids is concrete, and well-pointed *)
 
 (*
-   `Sets` is concrete by way of its identity 函子: an 对象 IS its
-
-   本节说明相关定义、性质与动机。 underlying set arrow IS its function. Faithfulness is then identity implication.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -171,7 +163,7 @@ Definition bool_setoid_object@{t u+} : SetoidObject@{t u} :=
    ; is_setoid := {| equiv := @eq bool ; setoid_equiv := eq_equivalence |} |}.
 
 (*
-   本节说明相关定义、性质与动机。 Non-vacuity [Sets_Concrete]: faithfulness is not free, because the. hom-setoid it is injective is not trivial.
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -213,9 +205,7 @@ Definition Sets_WellPointed@{o so+} : WellPointedCategory Sets@{o so} :=
   Sets_Separator@{o so}.
 
 (*
-   [Separator] is a genuine condition on an 对象, not one every 对象
-
-   本节说明相关定义、性质与动机。 satisfies: EMPTY setoid is not separator `Sets`, because there is nothing probe — every 假设 separator condition holds vacuously, so it would identify two distinct arrows [Sets_two_arrows].
+   本节说明 Concrete 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -234,7 +224,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The global-elements concretization `Sets` obtained from. well-pointedness. It is SECOND concrete structure same 范畴: its underlying-set 函子 is `Hom(1, −)` where [Sets_Concrete]'s is identity.
+   本节说明函子、hom、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

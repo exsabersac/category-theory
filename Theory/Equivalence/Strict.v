@@ -62,7 +62,7 @@ Definition surjective_ESO {A C : Category} {S : A ⟶ C}
     (fun c => id_cast_iso (`2 (surj c))).
 
 (*
-   本节说明相关定义、性质与动机。 The chosen preimage survives repackaging nose, at an.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -175,9 +175,7 @@ Next Obligation.
 Qed.
 
 (*
-   What a left-伴随-right-inverse of [S] yields: the LEFT 伴随 is
-
-   本节说明相关定义、性质与动机。 全忠实, [S] is surjective 对象. Nothing here asserts that [S] is full 忠实;
+   本节说明伴随相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -400,9 +398,7 @@ Example ff_surj_eso_inverse_map (c c' : C) (f : c ~> c') :
     = fmap[ff_surjective_left] f := eq_refl.
 
 (*
-   Hence the two left adjoints are equal at [函子_StrictEq_Setoid], with
-
-   本节说明相关定义、性质与动机。 every 对象 component [eq_refl]; whole 函子 RECORDS are not Leibniz-equal, three law fields being rebuilt.
+   本节说明伴随、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -422,9 +418,7 @@ Lemma one_hom_unique {x y : @obj _1} (f g : x ~{_1}~> y) : f ≈ g.
 Proof. destruct f, g; reflexivity. Qed.
 
 (*
-   [_1]'s hom-setoid is [态射_equality], i.e. Leibniz equality, and a
-
-   本节说明相关定义、性质与动机。 tactic that unfolds [≈] leaves goals that shape. [apply] cannot use lemma just above such goal: [hom _1] ignores its endpoints, so implicit [y] is not determined unification. The endpoint-free spelling below is what those goals need.
+   本节说明hom、始/终对象、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -521,9 +515,7 @@ Proof.
 Qed.
 
 (*
-   Packaged so that BOTH halves speak of one and the same 函子: two
-
-   本节说明相关定义、性质与动机。 separate occurrences [erase_pt _2] one statement would be two universe instances, pair would then relate two 范畴 rather than one.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -539,7 +531,7 @@ Definition sets_erase_LARI : LeftAdjointRightInverse (erase_pt Sets) :=
   erase_LARI Sets_Initial.
 
 (*
-   本节说明相关定义、性质与动机。 The two-element setoid under Leibniz equality, two distinct parallel. arrows it.
+   本节说明 Strict 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

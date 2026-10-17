@@ -55,9 +55,7 @@ Definition cata {a : C} (β : FAlgebra F a) : μ ~> a :=
   falg_hom[ @zero (FAlg F) I (a ; β) ].
 
 (*
-   The defining square: the mediator is an F-代数 同态, so its
-
-   本节说明相关定义、性质与动机。 carrier commutes initial structure [inα] target structure [β].
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -68,7 +66,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Uniqueness: any carrier [h] commuting same square is catamorphism.. Package [h] F-代数 同态 [iobj ~> (a;
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -81,9 +79,7 @@ Proof.
 Qed.
 
 (*
-   Fusion: a carrier map [g] of F-代数 absorbs into the fold.  The
-
-   本节说明相关定义、性质与动机。 复合 [g ∘ cata β] is again F-代数 mediator [iobj ~> (b;
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -106,9 +102,7 @@ Context (F : C ⟶ C).
 Context (T : @Terminal (FCoalg F)).
 
 (*
-   The final F-余代数: its carrier [ν] is the greatest fixed point of [F]
-
-   本节说明相关定义、性质与动机。 and its structure map [outγ : ν ~> F ν] is final structure.
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

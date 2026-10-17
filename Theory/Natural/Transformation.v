@@ -46,9 +46,7 @@ Context {G : C ⟶ D}.
    积见同目录后续。 *)
 
 (*
-   The `naturality_sym` field records the 对称 orientation of the
-
-   本节说明相关定义、性质与动机。 naturality square. It is logically derivable from `naturality` (see `Build_Transform'` below, which proves it from `naturality` alone), but is kept primitive field so that 对偶 holds definitionally: 反 [Transform] swaps `naturality` `naturality_sym` wit
+   本节说明 Transformation 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -66,7 +64,7 @@ Class Transform := {
   }.
 
 (*
-   本节说明相关定义、性质与动机。 Smart constructor: build [Transform] from components together the. single (non-对称) naturality square, deriving `naturality_sym` symmetry.
+   本节说明 Transformation 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -169,9 +167,7 @@ Program Definition nat_id `{F : C ⟶ D} : F ⟹ F := {|
 #[export] Hint Unfold nat_id : core.
 
 (*
-   Vertical 复合 of 自然变换: for `g : F ⟹ G` and
-
-   本节说明相关定义、性质与动机。 `f : G ⟹ K`, 复合 `f ∙ g : F ⟹ K` has component `(f ∙ g)_X = f_X ∘ g_X`.
+   本节说明自然变换、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -221,7 +217,7 @@ Program Instance Transform_respects {C D : Category} :
    nLab: https://ncatlab.org/nlab/show/natural+transformation
    Wikipedia: https://en.wikipedia.org/wiki/Natural_transformation
 
-   本节说明相关定义、性质与动机。 Horizontal (Godement) 复合. Given `η : F ⟹ G` between `F G : C ⟶ D` `ε : J ⟹ K` between `J K : D ⟶ E`, 函子 复合 yields `nat_hcompose ε η : J ◯ F ⟹ K ◯ G` whose component at `x` is `transform[ε] (G x) ∘ fmap[J] (transform[η] x)`, which naturality `ε` al
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -267,7 +263,7 @@ Qed.
 (*
    nLab: https://ncatlab.org/nlab/show/whiskering
 
-   本节：Right whiskering `N ⊲ X`: precompose 自然变换 `N : F ⟹ G` 函子 `X : E ⟶ C`, yielding `F ◯ X ⟹ G ◯ X` component `(N ⊲ X)_x = N (X x)`. This is horizontal 复合 `N` identity 变换 `X`;
+   本节说明自然变换、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -285,7 +281,7 @@ Notation "N ⊲ F" := (whisker_right N F) (at level 10).
 (*
    nLab: https://ncatlab.org/nlab/show/whiskering
 
-   本节：Left whiskering `X ⊳ N`: postcompose 自然变换 `N : F ⟹ G` 函子 `X : D ⟶ E`, yielding `X ◯ F ⟹ X ◯ G` component `(X ⊳ N)_x = fmap[X] (N x)`. This is horizontal 复合 identity 变换 `X` `N`;
+   本节说明自然变换、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

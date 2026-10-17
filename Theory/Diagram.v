@@ -79,7 +79,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Mac Lane's condition: any two paths same source same. target have same 复合. Both vertices both paths are universally quantified, paths carry no length bound, so this covers every diagram shape at once rather than fixed square triangle.
+   本节说明 Diagram 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -96,9 +96,7 @@ Arguments Commutative {G C} D.
 (** ** The diagram-as-functor form of the predicate *)
 
 (*
-   The Seven Sketches formulation: a diagram is a 函子 out of an indexing
-
-   本节说明相关定义、性质与动机。 范畴, it commutes when every parallel pair indexing 范畴 has single image.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -142,7 +140,7 @@ Proof.
   - change (@tnil _ _ y) with (@id (FreeOnQuiver G) y).
     now rewrite fmap_id.
   - (*
-   本节说明相关定义、性质与动机。 [≈], not [=]: [tlist_app_cons] (Lib/TList.v) is proved by. [destruct], so two sides are not same term 函子/Bifunctor.v exception does not apply.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -154,9 +152,7 @@ Proof.
 Qed.
 
 (*
-   Round trip one: extending the restriction of a 函子 gives that 函子
-
-   本节：back. The 等价 used is [函子_StrictEq_Setoid] (Theory/函子.v), which is exactly hom-setoid strict 范畴 范畴 (Instance/StrictCat.v): 对象 agree nose -- here [eq_refl], since two 函子 have same 对象 map 定义 -
+   本节说明函子、hom、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -172,7 +168,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Round trip two: restricting extension diagram gives that diagram. back, 态射 [QuiverCategory]. The vertex maps agree definitionally ([eq_refl]);
+   本节说明 Diagram 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -185,7 +181,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Commutativity diagram is exactly statement that its extending. 函子 identifies parallel 态射 free 范畴.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -290,9 +286,7 @@ Proof.
 Qed.
 
 (*
-   Riehl, Lemma 1.6.20: a FAITHFUL 函子 reflects commutativity.  If the
-
-   本节说明相关定义、性质与动机。 image diagram commutes then diagram already commutes. The proof is [fmap_inj] (Theory/函子.v) applied two path denotations, holds parallel paths arbitrary length because [dpath_postcompose] does.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -369,7 +363,7 @@ Definition sq_via_C : tlist (@edges SquareQuiver) SqA SqD :=
     (tcons SqC (tt : @edges SquareQuiver SqC SqD) tnil).
 
 (*
-   本节说明相关定义、性质与动机。 This quiver genuinely has parallel pair: two paths are DISTINCT. 态射 free 范畴, since they pass through different vertices [SqB = SqC] is refutable.
+   本节说明 Diagram 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -383,7 +377,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 ACYCLICITY, proved rather than asserted. Ranking vertices so that every. edge strictly increases rank bounds length any path rank difference; endo-path has rank difference zero, hence length zero, hence is [tnil].
+   本节说明 Diagram 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -423,9 +417,7 @@ Program Definition SquareDiagram : Diagram SquareQuiver C :=
   {| fnodes := sq_obj ; fedgemap := sq_edgemap |}.
 
 (*
-   The edge labels are the four given 态射.  The equality is Leibniz (=)
-
-   本节说明相关定义、性质与动机。 rather than [≈] because two sides are very same term; this is convention documented at 函子/Bifunctor.v.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -442,7 +434,7 @@ Example sq_denote_via_C : dpath SquareDiagram sq_via_C ≈ k ∘ h.
 Proof. simpl; now rewrite id_left. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The specification every path square, its endpoints. [False]. marks vertex pairs joined no path at all.
+   本节说明 Diagram 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -467,7 +459,7 @@ Proof.
   induction p as [ | i m e p IH ].
   - destruct j; simpl; reflexivity.
   - (*
-   本节说明相关定义、性质与动机。 Closed explicitly rather than [cat]: every component [cat]. (Lib/Tactics.v) always succeeds, so [cat] can never report missing step; exactly one these goals -- [k ∘ h ≈ v ∘ u] -- is one place [Hsq] is used, so it is discharged name. The [ [> ...
+   本节说明 Diagram 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -497,7 +489,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 So square shape general predicate carries exactly content of. familiar two-复合 equation: nothing more, nothing less.
+   本节说明 Diagram 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -512,7 +504,7 @@ End WalkingSquare.
 (** ** The walking triangle *)
 
 (*
-   本节说明相关定义、性质与动机。 Three vertices, direct edge two-step route:. X --w------------> Z \ ^ u / \ / > Y --v----/ (the two-step route is [u] then [v];
+   本节说明 Diagram 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -536,7 +528,7 @@ Definition tri_direct : tlist (@edges TriangleQuiver) TrX TrZ :=
   tcons TrX (tt : @edges TriangleQuiver TrX TrZ) tnil.
 
 (*
-   本节说明相关定义、性质与动机。 Again genuine parallel pair: two-step route direct edge are.
+   本节说明 Diagram 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -634,7 +626,7 @@ End WalkingTriangle.
 (** ** The walking loop: the empty path carries content *)
 
 (*
-   本节说明相关定义、性质与动机。 One vertex, one loop edge.. X --e--> X (a single edge from X itself) Both shapes above are ACYCLIC, so each them endo-path clause [Commutative] is instantiated only at [tnil] says nothing; this shape is one that exercises it.
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -660,7 +652,7 @@ Definition loop_edgemap (i j : LoopNode)
   match i, j with LpX, LpX => fun _ => e end.
 
 (*
-   本节说明相关定义、性质与动机。 As [SquareDiagram] [TriangleDiagram], [fedgemap_respects]. obligation here is discharged file-global [Obligation Tactic] (Lib/Tactics.v's [cat_simpl]).
+   本节说明 Diagram 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -763,15 +755,13 @@ End NaturalitySquare.
 (** ** Commutativity as factorization through the preorder reflection *)
 
 (*
-   本节：Fong Spivak, Seven Sketches Compositionality, §3.3.4, footnote to. 定义 3.51 (cited location; see header): diagram commutes 当且仅当 it factors through preorder reflection its indexing 范畴.
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   (=>) A shape-commuting 函子 factors through the reflection, and the
-
-   本节说明相关定义、性质与动机。 factorization reproduces it nose. The mediating 函子 is [QuotientLift] at total congruence, whose 假设 is exactly [CommutativeShape].
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -788,7 +778,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The Leibniz [=] here is library's same-term exception, not lapse from.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -802,9 +792,7 @@ Proof.
 Qed.
 
 (*
-   The converse in the form that matches the 正向 direction: a 函子 that
-
-   本节说明相关定义、性质与动机。 merely AGREES such 复合 -- pointwise up [≈], 对象 maps equal nose, which is how Construction/Quotient.v states its uniqueness -- is itself shape-commuting.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -837,7 +825,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The two directions above are usually quoted single biconditional, so. state it.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

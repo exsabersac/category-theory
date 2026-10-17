@@ -17,9 +17,7 @@ Generalizable All Variables.
 *)
 
 (*
-   The quasi-inverse assembled from a full, 忠实, 本质地
-
-   本节说明相关定义、性质与动机。 surjective 函子. On 对象 it is chosen preimage [eso_obj];
+   本节说明函子、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -53,9 +51,7 @@ Next Obligation.
 Qed.
 
 (*
-   The unit component at x : C, an 同构 x ≅ eso_obj (F x).  Its two
-
-   本节说明相关定义、性质与动机。 sides are [prefmap]-images two sides [eso_iso (F x)];
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -160,9 +156,7 @@ Definition equivalence_prefmap `(E : @EquivalenceOfCategories C D F)
     ∘ to (equivalence_unit_at x).
 
 (*
-   The section law: [fmap[F] (等价_prefmap E g)] and g have the
-
-   本节说明相关定义、性质与动机。 same image under 忠实 [quasi_inverse] — unit's conjugation coherence, after cancelling monic [from] epic [to] components unit 同构.
+   本节说明等价、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

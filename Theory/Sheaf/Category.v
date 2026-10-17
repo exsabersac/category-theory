@@ -22,7 +22,7 @@ Generalizable All Variables.
 *)
 
 (*
-   本节说明相关定义、性质与动机。 * Pointwise implication Type-valued [ForallT] of. Theory/层.v: function witnesses at every element maps [ForallT P] witness over vector [ForallT Q] witness over same vector.
+   本节说明层/筛相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -39,9 +39,7 @@ Context (C : Category).
 Context `{@Site C}.
 
 (*
-   * The full subcategory data: 对象 are presheaves equipped with a
-
-   本节：[层] witness; every 自然变换 between two 层 is 态射 层 ([True]), so closure under identity 复合 is trivial ([I]).
+   本节说明自然变换、层/筛相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -59,7 +57,7 @@ Definition Sheaves_Incl : Sheaves ⟶ @Presheaves C Sets :=
   Incl (@Presheaves C Sets) Sheaves_sub.
 
 (*
-   本节说明相关定义、性质与动机。 * The subcategory is full construction, so inclusion is a. full 函子 (via [Full_Implies_Full_函子]). Kept [Defined] uniformity, though [Full_Implies_Full_函子] is itself opaque, so chosen preimage does not compute through this route;
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -78,9 +76,7 @@ Proof.
 Qed.
 
 (*
-   * ** Repleteness: the 层 condition is closed under 同构
-
-   本节说明相关定义、性质与动机。 If X ≅ Y [Presheaves C Sets] X is 层, then Y is 层.
+   本节说明层/筛、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

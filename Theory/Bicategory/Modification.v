@@ -21,9 +21,7 @@ Generalizable All Variables.
 *)
 
 (*
-   The 修改 class, at full strength.  Its datum is the component
-
-   本节说明相关定义、性质与动机。 2-cell family [md]; its single law is 修改 axiom [md_自然], phrased through Godement 复合 [hcomp2] lax naturators [lt1] two lax transformations.
+   本节说明（余）强度相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -47,9 +45,7 @@ Arguments md_natural {B B' F G σ τ} _ {x y} f.
 (** The identity modification. *)
 
 (*
-   The identity 修改's axiom: with every component the identity 2-cell,
-
-   本节说明相关定义、性质与动机。 the two whiskerings reduce (by `hcomp2_id`) identity 2-cells, equation collapses `lt1 σ f ≈ lt1 σ f` 单位律 vertical 复合.
+   本节说明双范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -71,9 +67,7 @@ Definition id_modification {B B' : Bicategory} {F G : Pseudofunctor B B'}
 (** The vertical composite of modifications. *)
 
 (*
-   复合 修改 axiom: 分量地 vertical 复合.  The two
-
-   本节：whiskerings split over vertical 复合 interchange specialisations `hcomp2_comp_right`/`hcomp2_comp_left`, resulting pasting is closed two given 修改 axioms 结合律 vertical 复合.
+   本节说明 Modification 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -132,9 +126,7 @@ Next Obligation.
 Qed.
 
 (*
-   The 范畴 of lax transformations F ⟹ G and modifications between them:
-
-   本节：对象 are lax transformations, homs modifications, identity 复合 above, 范畴 laws hold 分量地 from corresponding vertical-复合 laws target hom-范畴.
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -173,9 +165,7 @@ Defined.
 (** Inhabitation witnesses. *)
 
 (*
-   Concrete closed witnesses on the terminal 双范畴's identity lax
-
-   变换 (Theory/双范畴/Lax.v): identity 修改 its self-复合.
+   本节说明双范畴、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

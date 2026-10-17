@@ -45,9 +45,7 @@ Generalizable All Variables.
 (** ** A level-polymorphic identity type for objects *)
 
 (*
-   * 对象 carry no setoid in this library, so an 对象 bijection has to be
-
-   本节说明相关定义、性质与动机。 stated identity type. Stdlib [eq] cannot be used HERE, reason is genuine portability constraint rather than preference: Coq 8.19 8.20 [eq] is pinned global universe, so mentioning it inside 定义 that DECLARES its own universe binder yields
+   本节说明 Size 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -60,9 +58,7 @@ Arguments obj_refl {A} a.
 (** ** Local smallness *)
 
 (*
-   * Awodey 定义 1.12 / Riehl 定义 1.1.7: only a set's worth of
-
-   本节说明相关定义、性质与动机。 态射 between any two 对象. "A set's worth" is read as: matched setoid at level [uh]. [uh <= h] is deliberately NON-STRICT, so that [locally_small_ambient] below can witness predicate at 范畴's own hom level.
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -81,7 +77,7 @@ Class LocallySmall@{o h p uh up | h <= p, uh <= up, uh <= h}
                  @Setoid.equiv _ (ls_setoid x y) u v → ls_to u ≈ ls_to v;
 
   (*
-   本节说明相关定义、性质与动机。 [ls_from] must respect [≈] too. Without this field structure is only. section/retraction pair NOT setoid 同构: [ls_from] could send [≈]-equal 态射 unrelated small representatives, no such field is derivable from others.
+   本节说明hom、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -94,9 +90,7 @@ Class LocallySmall@{o h p uh up | h <= p, uh <= up, uh <= h}
 }.
 
 (*
-   * EVERY 范畴 is locally small at its own hom level, by the identity
-
-   本节说明相关定义、性质与动机。 resizing. This is Riehl's "each these is locally small" (定义 1.1.7 discussion after Example 1.1.3) turned into lemma. Note precisely what it does does not say.
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -137,7 +131,7 @@ Definition small_locally_small@{o h p uo uh up
   : LocallySmall@{o h p uh up} C := small_locally.
 
 (*
-   本节说明相关定义、性质与动机。 * A TYPE is small at level [w] when it is bijection, up [ObjEq], with. type at that level. This is 对象 half [Small] 范畴 dropped: same four fields [small_ob], [small_ob_to], [small_ob_from], two round trips, stated bare [Type@{u}].
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -156,9 +150,7 @@ Arguments st_to_from {A} _ _.
 Arguments st_from_to {A} _ _.
 
 (*
-   * A setoid whose 等价 is constantly [True]: any two elements agree.
-
-   本节说明相关定义、性质与动机。 Used below one-element small hom, mirroring device at Construction/Sq.v Instance/Proset.v.
+   本节说明hom、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -170,14 +162,12 @@ Arguments st_from_to {A} _ _.
         ; Equivalence_Transitive := fun _ _ _ _ _ => I |} |}.
 
 (*
-   * The terminal 范畴 is small: one 对象 and one arrow, so [poly_unit] at
-
-   本节说明相关定义、性质与动机。 the lower levels serves small copy. Every proof term is given EXPLICITLY rather than [destruct] [Program].
+   本节说明hom、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 (*
-   本节说明相关定义、性质与动机。 No explicit universe binder here, deliberately, hom half is INLINED. rather than named separately.
+   本节说明hom、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -201,9 +191,7 @@ Definition One_Small : Small _1 :=
 (** ** Riehl's arrows-with-domain-and-codomain packaging *)
 
 (*
-   * Riehl Remark 1.1.2 (used again at 定义 1.1.6) packages a 范畴 as
-
-   本节说明相关定义、性质与动机。 a set 对象, set 态射, functions [dom], [cod], [id], [dom] [cod] retracting [id].
+   本节说明 Size 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -220,16 +208,12 @@ Record ArrowQuiver@{u} := {
 }.
 
 (*
-   * The total arrow collection of a 范畴: Awodey's [C1], Riehl's "a set's
-
-   本节说明相关定义、性质与动机。 worth arrows". Note it bundles endpoints, so its level is at least that 对象 -- which is why Awodey's 定义 1.11 needs BOTH halves not just hom condition.
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 (*
-   * The total arrow collection of a 范畴: Awodey's [C1], Riehl's "a set's
-
-   本节说明相关定义、性质与动机。 worth arrows". Note it BUNDLES endpoints, so its level is at least that 对象 -- which is exactly why Awodey's 定义 1.11 needs both halves rather than hom condition alone.
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -237,9 +221,7 @@ Definition TotalMor (C : Category) : Type :=
   { x : obj[C] & { y : obj[C] & x ~{C}~> y }}.
 
 (*
-   * A 范畴 packages as an [ArrowQuiver], and both retraction laws hold
-
-   本节说明相关定义、性质与动机。 by [obj_refl] -- identity arrow at [x] is stored [x] both its endpoints, so [aq_dom] [aq_cod] project it back definitionally.
+   本节说明 Size 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

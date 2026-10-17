@@ -30,9 +30,7 @@ Generalizable All Variables.
    的 [ortho_left_cobase_change]。 *)
 
 (*
-   The ∃!-with-∧ shape below mirrors [ump_pullbacks] in Structure/拉回.v:
-
-   本节说明相关定义、性质与动机。 [∃!] is Type-valued [Unique] record Lib/Setoid.v, [∧] is Type-valued conjunction, so fillers can be extracted used definitions.
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -141,9 +139,7 @@ Proof.
 Qed.
 
 (*
-   The left class is closed under retracts in the 箭头范畴: if e' is a
-
-   本节说明相关定义、性质与动机。 retract e — witnessed section (ia, ib) retraction (ra, rb) arrows ra ∘ ia ≈ id, rb ∘ ib ≈ id, e ∘ ia ≈ ib ∘ e' e' ∘ ra ≈ rb ∘ e — then e ⫫ m entails e' ⫫ m: square over e' is whiskered (ra, rb) into square over e, lifted there, filler is r
+   本节说明 Orthogonality 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

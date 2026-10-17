@@ -46,7 +46,7 @@ Definition equivalence_PreservesLimitCone {J : Category} (K : J ⟶ C) :
     (AdjointEquivalence_swap_adjunction (Equivalence_to_AdjointEquivalence E)) K.
 
 (*
-   本节说明相关定义、性质与动机。 Reflection, from full faithfulness. The leg side condition of. [ff_reflect_ump] (Theory/等价/极限.v) is [reflexivity] here exactly because [FCone]'s legs are image legs.
+   本节说明函子、（余）极限、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

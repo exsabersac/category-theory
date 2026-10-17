@@ -59,7 +59,7 @@ Class Section `(f : x ~> y) := {
    nLab: https://ncatlab.org/nlab/show/split+epimorphism
    Wikipedia: https://en.wikipedia.org/wiki/Section_(category_theory)
 
-   本节说明相关定义、性质与动机。 `Retraction f` witnesses that `f : x ~> y` is split 满态射: it has right inverse `retract : y ~> x` `f ∘ retract ≈ id` (retract_comp). Equivalently, f is retraction section `retract`. Every such f is epic (retractions_are_epic).
+   本节说明 Morphisms 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -73,7 +73,7 @@ Class Retraction `(f : x ~> y) := {
    nLab: https://ncatlab.org/nlab/show/split+idempotent
    Wikipedia: https://en.wikipedia.org/wiki/Karoubi_envelope
 
-   本节说明相关定义、性质与动机。 A split idempotent `split_idem : x ~> x` factors through 对象 y retraction `split_idem_r : x ~> y` followed section `split_idem_s : y ~> x`, `split_idem_s ∘ split_idem_r ≈ split_idem` (split_idem_sr) `split_idem_r ∘ split_idem_s ≈ id` (split_idem_rs).
+   本节说明 Morphisms 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -205,9 +205,7 @@ Proof.
 Qed.
 
 (*
-   Epimorphisms cancel on the LEFT: if a 复合 is epic, the arrow applied
-
-   本节说明相关定义、性质与动机。 LAST is epic. (Mac Lane, CWM 2nd ed., §I.5 Exercise 1; Riehl, CTiC, Lemma 1.2.11(ii'); Awodey §2.9 Exercise 2(c).) Anything g1, g2 agreeing after f already agrees after f ∘ g, 复合 cancels. Note asymmetry: nothing follows about g.
+   本节说明 Morphisms 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -221,9 +219,7 @@ Proof.
 Qed.
 
 (*
-   Monomorphisms cancel on the RIGHT: if a 复合 is monic, the arrow
-
-   本节说明相关定义、性质与动机。 applied FIRST is monic. (Mac Lane §I.5 Exercise 1; Riehl Lemma 1.2.11(ii);
+   本节说明子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -251,7 +247,10 @@ Qed.
 (** ** Split pairs and the idempotents they produce *)
 
 (*
-   本节说明相关定义、性质与动机。 Mac Lane, CWM 2nd ed., §I.5 ("Monics, Epis, Zeros"), printed p. 19.. CITED BY LOCATION; printed text was not consulted no sentence it is reproduced here.
+   nLab: https://ncatlab.org/nlab/show/split+epimorphism
+   nLab: https://ncatlab.org/nlab/show/idempotent
+
+   本节说明 Morphisms 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -278,7 +277,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 [SplitIdempotent] above states two splitting laws, its header. points here idempotence they force.
+   本节说明 Morphisms 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -294,7 +293,10 @@ Qed.
 (** ** Regular (von Neumann regular) arrows *)
 
 (*
-   本节说明相关定义、性质与动机。 Mac Lane, CWM 2nd ed., §I.5 Exercise 7, printed p. 21 -- again CITED BY. LOCATION, not quoted; printed text was not consulted. The in-tree catalog summarizes exercise as: "Call arrow f : -> b 范畴 C regular when there exists g : b -> f g f = f.
+   Wikipedia: https://en.wikipedia.org/wiki/Regular_semigroup
+   Wikipedia: https://en.wikipedia.org/wiki/Von_Neumann_regular_ring
+
+   本节说明 Morphisms 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -322,7 +324,7 @@ Proof.
 Defined.
 
 (*
-   本节说明相关定义、性质与动机。 Both composites built from pseudoinverse are idempotent:. (f ∘ g) ∘ (f ∘ g) ≈ ((f ∘ g) ∘ f) ∘ g ≈ f ∘ g, (g ∘ f) ∘ (g ∘ f) ≈ g ∘ ((f ∘ g) ∘ f) ≈ g ∘ f. Proved here from regularity law alone.
+   本节说明 Morphisms 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -338,9 +340,7 @@ Proof.
 Qed.
 
 (*
-   Under a 消去 假设 the converses hold.  These two lemmas are
-
-   本节说明相关定义、性质与动机。 what make choice discussion Instance/FinSet/Regular.v Instance/Sets/Regular.v precise rather than hand-waved: [regular_epic_retraction], quantified over arrows [Sets], IS implication [blanket_regularity_entails_splitting] from blanket principle "every ar
+   本节说明 Morphisms 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

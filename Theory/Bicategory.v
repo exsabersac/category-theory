@@ -33,17 +33,19 @@ Reserved Infix "∘∘∘" (at level 40, left associativity).
    是 `hcompose` 对一对 2-胞的函子作用，连贯定律经其陈述。 *)
 
 (*
-   Why weaken a 2-范畴: examples, coherence, and the 单子 slogan
+   nLab:      https://ncatlab.org/nlab/show/bicategory
+   Wikipedia: https://en.wikipedia.org/wiki/Bicategory
+   Paper: Bénabou, J., "Introduction to bicategories", Reports of the
+   Paper: Kelly, G.M., Street, R., "Review of the elements of
+   Paper: Mac Lane, S., Paré, R., "Coherence for bicategories and indexed
 
-   本节：nLab: https://ncatlab.org/nlab/show/双范畴 Wikipedia: https://en.wikipedia.org/wiki/双范畴 Paper: Bénabou, J., "Introduction bicategories", Reports Midwest 范畴 Seminar, LNM 47, Springer 1967, pp.
+   本节说明单子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 (*
-   From https://ncatlab.org/nlab/show/双范畴#detailedDefn :
-
-   本节：{In 下述 text, → matches ~> this library, ⇒ matches ~~>} A 双范畴 B consists - collection Ob[B] 对象 0-cells, - each 对象 对象 b, collection B(a,b) Hom[B](a,b) 态射 1-cells → b, - each 对象 a, 对象 b, m
+   本节说明hom、双范畴相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -102,9 +104,7 @@ Class Bicategory := {
     where "f ∘∘∘ g" := (hcompose (f, g));  (* horizontal composition functor *)
 
   (*
-   The horizontal 复合 of two 2-cells (Godement whiskering), obtained as
-
-   本节说明相关定义、性质与动机。 the functorial action `hcompose` pair. This is manifest field: it is 定义, not new data, so it computes underlying bifunctor's `fmap`.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -114,9 +114,7 @@ Class Bicategory := {
     := @fmap _ _ (@hcompose x y z) (g, f) (g', f') (θ, η);
 
   (*
-   The coherence 2-isomorphisms of a 双范畴, living in the hom-范畴
-
-   `bicat _ _` mirroring 单位子 结合子 幺半范畴 (`Structure/幺半.v`), tensor ↔ hcompose, I ↔ bi1id.
+   本节说明幺半结构、hom、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -130,9 +128,7 @@ Class Bicategory := {
     ((h ∘∘∘ g) ∘∘∘ f) ≅[bicat w z] (h ∘∘∘ (g ∘∘∘ f));
 
   (*
-   The 单位子 and the 结合子 are 自然 in their 1-cell arguments; each
-
-   本节说明相关定义、性质与动机。 square is horizontal-复合 analogue 幺半 naturality λ, ρ α (the `to`-direction;
+   本节说明幺半结构、幺半群、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -150,9 +146,7 @@ Class Bicategory := {
       ≈ to (hassoc h' g' f') ∘∘ hcomp2 (hcomp2 θ γ) η;
 
   (*
-   The two coherence laws: the triangle relates the 单位子 to the 结合子
-
-   本节说明相关定义、性质与动机。 across `bi1id`, pentagon makes two reassociations fourfold horizontal 复合 agree.
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -171,9 +165,7 @@ Class Bicategory := {
 #[export] Existing Instance vcompose_respects.
 
 (*
-   Smart constructor for [双范畴], mirroring [Build_范畴']: it takes
-
-   本节说明相关定义、性质与动机。 every field except `vcompose_assoc_sym` supplies that 对称 form automatically `symmetry (vcompose_assoc …)`.
+   本节说明双范畴、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

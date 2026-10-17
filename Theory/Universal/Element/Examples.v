@@ -35,7 +35,7 @@ Example nat_ue_obj : @ue_obj Endos Endos_Forget nat_UniversalElement = NatSucc.
 Proof. reflexivity. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 ... its element is [O] -- Instance/Coq/Nat.v's. [nat_universal_element], obtained here through general 定义 rather than checked this one 函子.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -62,7 +62,7 @@ Example nat_ue_factor_at_zero (y : Endos) (n : Endos_Forget y) :
 Proof. exact (unique_property (@ue_universal _ _ nat_UniversalElement y n)). Qed.
 
 (*
-   本节说明相关定义、性质与动机。 And Riehl's Proposition 2.4.8 at this instance: pair ⟨(nat, S), 0⟩ is. 始对象 范畴 elements [Endos_Forget]. This is general form Instance/Coq/Nat.v's [repr_initial];
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

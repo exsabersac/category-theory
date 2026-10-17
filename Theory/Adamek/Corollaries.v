@@ -33,9 +33,7 @@ Generalizable All Variables.
 *)
 
 (*
-   [余完备 C] (Structure/完备.v) is [∀ D (G : D ⟶ C), 余极限 G].
-
-   本节：Applying it ω-shape [Omega] diagram [Chain F] yields 余极限 [余极限 (Chain F)] that [adamek] requires, no further hypotheses. We then feed that 余极限 together supplied [AdamekData] [adamek].
+   本节说明（余）极限相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -49,9 +47,7 @@ Proof.
 Qed.
 
 (*
-   The option 自函子 [NatF X := option X = 1 + X] on COQ (Instance/Coq.v).
-
-   本节说明相关定义、性质与动机。 It is polynomial 自函子 whose initial 代数 is type [nat]: structure map [1 + nat ~> nat] is [O]/[S] ([None ↦ O], [Some k ↦ S k]), initiality is exactly primitive recursion [nat].
+   本节说明同构、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

@@ -67,9 +67,7 @@ Generalizable All Variables.
    见证，是历史上中心的例子族，但并非全部：极限与 Kan 扩张本身也是伴随（分别对对角与限制函子）。 *)
 
 (*
-   伴随 relate two 函子 that map between the same two 范畴
-
-   本节：(though 反 directions), manner 即 weaker than 同构 等价, but still quite informative. 一般地, one 函子 is forgetful, maps constructions from more expressive domain into one that captures only essence that structure;
+   本节说明伴随、函子、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -104,7 +102,7 @@ Class Adjunction@{o3 p3 so sh sp} := {
     ⌊f ∘ g⌋ ≈ fmap[U] f ∘ ⌊g⌋;
 
   (*
-   本节说明相关定义、性质与动机。 The dual (_sym) statements inverse transpose ⌈-⌉ = from adj;.
+   本节说明 Adjunction 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -401,7 +399,7 @@ Proof.
 Qed.
 
 (*
-   本节：Future direction (no scaffolding here yet):. "The most important property adjoints is their continuity: every 函子 that has 左伴随 (and therefore is 右伴随) is continuous (i.e. commutes 极限 范畴 theoretical sense);
+   本节说明伴随、函子、（余）极限相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -409,9 +407,7 @@ Qed.
 (** ** Transporting an adjunction along an isomorphism of left adjoints *)
 
 (*
-   A 函子 naturally isomorphic to a 左伴随 is a 左伴随,
-
-   本节：with SAME 右伴随. [right_伴随_iso] [left_伴随_iso] above run other way (from two 伴随 同构), Theory/等价/伴随.v transports along EQUIVALENCE OF CATEGORIES rather than along 2-cell, Theory/函子.v's [transport_ad
+   本节说明伴随、函子、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

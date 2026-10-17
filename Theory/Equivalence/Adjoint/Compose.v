@@ -31,7 +31,7 @@ Generalizable All Variables.
 Section IsoCalculus.
 
 (*
-   本节说明相关定义、性质与动机。 The explicit universe binders are LOAD-BEARING: written unannotated,. same bodies minimize so identify X's hom proof universes, four constants are then rejected at 范畴 whose two levels are declared apart.
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -44,7 +44,7 @@ Program Definition IsIso_id {x : X} : IsIsomorphism (id[x]) := {|
 |}.
 
 (*
-   本节说明相关定义、性质与动机。 Invertibility transports along [~]: inverse [~]-target.
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -59,9 +59,7 @@ Definition IsIso_along {x y : X} {f g : x ~> y}
                     (@is_left_inverse X x y g Hg) |}.
 
 (*
-   A 复合 of invertible 态射 is invertible, with the inverses
-
-   本节说明相关定义、性质与动机。 composed 反 order. This is [iso_compose] (Theory/同构.v) read predicate rather than bundled form.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -165,7 +163,7 @@ Example AdjointEquivalence_Compose_counit_clause (y : E) :
 (** *** The comparison with the two constituents *)
 
 (*
-   本节说明相关定义、性质与动机。 Mac Lane's whiskering formula unit, at [~]. Its donor is a. [Qed] corollary proved from [to_adj_unit], so this grade is donor's;
+   本节说明伴随相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -215,9 +213,7 @@ Example AdjointEquivalence_Compose_counit_inverse (y : E) :
 (** *** The refinement route, and how it compares *)
 
 (*
-   The route the catalog entry proposes: refine the 复合 of the two
-
-   本节说明相关定义、性质与动机。 induced equivalences 范畴. Its premise checks out -- type below is same one [AdjointEquivalence_Compose] inhabits, no transport -- but it is different 伴随 等价, rejected at [eq_refl] against direct one whole record, underlying
+   本节说明伴随、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -283,9 +279,7 @@ Context {F : C ⟶ D} {U : D ⟶ C}.
 Context (A : AdjointEquivalence F U).
 
 (*
-   Theory/等价/伴随.v already supplies the third member of
-
-   本节说明相关定义、性质与动机。 the trio, [AdjointEquivalence_swap A : AdjointEquivalence U F], its underlying swapped 伴随. The two agree nose, latter being defined former's 伴随 field. Nothing is rebuilt here;
+   本节说明伴随、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -308,9 +302,7 @@ Context (B : AdjointEquivalence F2 U2).
 Context (G : AdjointEquivalence F3 U3).
 
 (*
-   The two bracketings of a triple 复合 have DIFFERENT types --
-
-   本节说明相关定义、性质与动机。 [Compose] 函子 is not associative nose -- so no equation between them is well formed, none is invented; shape is pinned typing negative probe.
+   本节说明函子、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -361,9 +353,7 @@ End Laws.
 (** ** Non-vacuity *)
 
 (*
-   Theory/等价/Strict.v supplies a genuine 伴随
-
-   本节说明相关定义、性质与动机。 等价 between terminal 范畴 [Indiscrete bool], via Mac Lane SIV.4 Exercise 3.
+   本节说明伴随、函子、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

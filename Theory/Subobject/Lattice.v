@@ -50,7 +50,7 @@ Lemma sub_top_greatest (u : SubObj x) : sub_le u sub_top.
 Proof. exists (sub_mono u); cat. Defined.
 
 (*
-   本节说明相关定义、性质与动机。 Riehl 4.7.9's characterization intersection family, its.
+   本节说明 Lattice 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -169,9 +169,7 @@ Defined.
 (** *** The two degenerate index shapes *)
 
 (*
-   Over an empty index every 子对象 is vacuously below every member, so
-
-   本节：the greatest lower bound is greatest 子对象. This is case at which wide-拉回 presentation intersection order-theoretic one part company: empty wide 拉回 is 终对象 (Structure/拉回/Wide.v), which is not [sub_top].
+   本节说明拉回/推出、子对象、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -242,9 +240,7 @@ Context `{@HasPullbacks C}.
 Context {x : C}.
 
 (*
-   The intersection of two subobjects: the chosen 拉回 of their monos,
-
-   本节说明相关定义、性质与动机。 mapped into x through first one. The 复合 is monic because monos are stable under 拉回 closed under 复合.
+   本节说明拉回/推出、子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -281,9 +277,7 @@ Proof.
 Defined.
 
 (*
-   Mac Lane §V.7, book p. 126: the 拉回 of two monos is the GREATEST
-
-   本节：子对象 below both. A competing w below both supplies 交换方块, 普遍性质 supplies mediator, first projection triangle turns that mediator into required factorization.
+   本节说明拉回/推出、子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -314,9 +308,7 @@ Proof.
 Defined.
 
 (*
-   Respectfulness is proved through the 普遍性质, not through
-
-   本节说明相关定义、性质与动机。 the 拉回: [sub_meet u v] [sub_meet u' v'] are greatest lower bounds pointwise-equivalent families, hence equivalent.
+   本节说明拉回/推出、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -402,9 +394,7 @@ Context {J : Type}.
 Context (S : J → SubObj x).
 
 (*
-   Every projection of a wide 拉回 of monos is monic: two maps agreeing
-
-   本节说明相关定义、性质与动机。 after one projection agree after every projection, commutativity wide square monicity family, hence agree joint monicity.
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -422,7 +412,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The intersection family subobjects, presented at index j0:. wide 拉回 monos, mapped into x through j0-th member. By [wide_拉回_commutes] mono does not depend j0 up ≈.
+   本节说明拉回/推出、子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -435,9 +425,7 @@ Definition sub_wide_intersection (j0 : J)
 |}.
 
 (*
-   Riehl 4.7.9 in full: the wide 拉回 presents the greatest 子对象
-
-   本节说明相关定义、性质与动机。 of x contained every member family. Containment j-th member is j-th projection, wide square its triangle;
+   本节说明拉回/推出、子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -465,7 +453,7 @@ Proof.
 Defined.
 
 (*
-   本节说明相关定义、性质与动机。 The chosen index is immaterial, at strongest available reading:.
+   本节说明等价、同构、子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -489,9 +477,7 @@ Context `{@HasPullbacks C}.
 Context {x : C}.
 
 (*
-   Whenever the pair of monos carries a wide 拉回, the wide
-
-   本节说明相关定义、性质与动机。 intersection presented at [true] agrees chosen binary meet.
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -537,9 +523,7 @@ Section Images.
 Context {C : Category}.
 
 (*
-   An image of f : y ~> x as a 子对象 of x: f factors through it, and
-
-   本节说明相关定义、性质与动机。 it is least 子对象 f factors through. This is (E, Mono) image orthogonal factorization system read order-theoretic statement;
+   本节说明子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -605,9 +589,7 @@ Proof.
 Defined.
 
 (*
-   The image is the LEAST 子对象 above both: a competing w above both
-
-   本节说明相关定义、性质与动机。 supplies two factorizations, their copairing factors copairing monos through w, [im_least] is exactly statement that image is below any 子对象 map factors through.
+   本节说明子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -769,9 +751,7 @@ Definition sub_wide_join_via {p : C} {inj : ∀ j, sub_dom (S j) ~> p}
   SubObj x := im_sub I.
 
 (*
-   The indexed least upper bound.  Membership is the j-th 余积
-
-   本节说明相关定义、性质与动机。 injection followed image factorization; minimality copairs family factorizations competing 子对象 supplies identifies result induced map uniqueness half [icoprod_desc].
+   本节说明子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -824,9 +804,7 @@ Lemma sub_bot_least (Hz : Monic (@zero C I x)) (u : SubObj x) :
 Proof. exists zero; apply zero_unique. Defined.
 
 (*
-   Strictness supplies the 假设.  For g1 g2 : w ~> 0, strictness at
-
-   本节：g1 gives 同构 i : w ≅ 0; every map w ~> 0 then agrees [to i], because precomposing it [from i] lands endomorphism 幺半群 始对象, where [zero_unique] leaves only identity.
+   本节说明幺半群、同构、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -865,9 +843,7 @@ Context `{I : @Initial C}.
 Context {x : C}.
 
 (*
-   A 笛卡尔闭范畴 with an 始对象 has a STRICT
-
-   本节：始对象 (Structure/BiCCC.v, [initial_strict]), so arrow out it is monic [sub_bot] applies no further 假设. This is one place this file where bottom 子对象 is obtained rather than assumed. Two measurements govern it.
+   本节说明子对象、笛卡尔、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -908,7 +884,7 @@ Context `{I : @Initial C}.
 Context {x : C}.
 
 (*
-   本节说明相关定义、性质与动机。 Fong Spivak §1.2.1's unit law ∅ ∪ X ≅ X, at level of. subobjects, image copairing handed in: bottom is below u, so u is already least upper bound pair, least upper bounds agree.
+   本节说明子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -950,9 +926,7 @@ Definition ofs_image_sub (O : OFS E (@MonoClass C)) {y x : C} (f : y ~> x) :
 |}.
 
 (*
-   Minimality is orthogonality.  A factorization of f through a 子对象
-
-   本节说明相关定义、性质与动机。 w bounds 交换方块 between E-leg factorization mono w;
+   本节说明子对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -987,9 +961,7 @@ Definition HasImages_of_OFS (O : OFS E (@MonoClass C)) : HasImages C :=
 End OFSImages.
 
 (*
-   A regular 范畴 has images, through its (regular epi, mono) system
-
-   本节说明相关定义、性质与动机。 Regular_OFS (Structure/Regular/Factorization.v). CONDITIONAL: no [Regular] instance exists this tree (Instance/Sets/拉回.v), so this corollary is implication awaiting model, it is only route this file from established structure [HasImages].
+   本节说明拉回/推出相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

@@ -70,9 +70,7 @@ Definition Transported_Adjunction :
     transported_adj_cod.
 
 (*
-   The 正向 transpose of the 复合 is the pasting of the three
-
-   本节：constituent 正向 transposes, definitionally: transpose through codomain 等价, then through original 伴随, then through domain 等价.
+   本节说明伴随、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -94,9 +92,7 @@ Corollary Transported_Adjunction_from {d : D'} {c : C'}
 Proof. reflexivity. Qed.
 
 (*
-   The unit of the 复合: the domain-side unit, followed by the
-
-   本节说明相关定义、性质与动机。 K-image unit A, followed (K ◯ U)-image codomain-side unit — [伴随_Compose_unit] applied twice.
+   本节说明伴随相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -116,9 +112,7 @@ Proof.
 Qed.
 
 (*
-   The counit of the 复合, dually: the G-image of (the F-image of the
-
-   本节说明相关定义、性质与动机。 domain-side counit, followed counit A), followed codomain-side counit — [伴随_Compose_counit] applied twice.
+   本节说明伴随相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

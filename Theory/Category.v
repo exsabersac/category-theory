@@ -54,9 +54,14 @@ Reserved Infix "∘" (at level 40, left associativity).
    Theory/Isomorphism.v  Require 本文件。 *)
 
 (*
-   Where 范畴 来源, and what the 定义 is for
+   关于范畴的来源与用途
 
-   本节说明相关定义、性质与动机。 SEP: https://plato.stanford.edu/entries/范畴-theory/ nLab: https://ncatlab.org/nlab/show/E-范畴 nLab: https://ncatlab.org/nlab/show/Yoneda+lemma Paper: Eilenberg, Mac Lane, "General theory 自然 equivalences", Transactions American Mathematical Society 58, 194
+   SEP:   https://plato.stanford.edu/entries/category-theory/
+   nLab:  https://ncatlab.org/nlab/show/E-category
+   nLab:  https://ncatlab.org/nlab/show/Yoneda+lemma
+   Paper: Eilenberg, Mac Lane, "General theory of natural equivalences",
+
+   本节说明自然变换、函子、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -153,9 +158,7 @@ Coercion obj : Category >-> Sortclass.
 #[export] Hint Rewrite @id_right : categories.
 
 (*
-   [Build_范畴'] is a custom constructor that automatically provides the
-
-   本节说明相关定义、性质与动机。 定义 [comp_assoc_sym] from [comp_assoc] symmetry. It is intended be used [refine] tactic, such example below.
+   本节说明 Category 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -194,9 +197,7 @@ Open Scope homset_scope.
 Open Scope morphism_scope.
 
 (*
-   The hom-setoid whose 等价 is Coq's strict equality `eq`. Equipping a
-
-   本节说明相关定义、性质与动机。 hom this `Setoid` recovers classical (non-quotient) notion 范畴, where two 态射 are equal only when definitionally equal.
+   本节说明hom、等价、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -226,9 +227,7 @@ Corollary cod_comp {x y z : C} (g : y ~> z) (f : x ~> y) :
 Proof. split; auto. Qed.
 
 (*
-   Riehl, "范畴 Theory in Context", §1.1: the identity at an 对象 is
-
-   本节说明相关定义、性质与动机。 unique. An endomorphism 即 two-sided unit is [id] — either half that 假设 already suffices, since testing it against [id] itself collapses it unit law.
+   本节说明 Category 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -255,9 +254,7 @@ Arguments comp_assoc {_%_category _%_object _%_object _%_object _%_object}
   _%_morphism _%_morphism _%_morphism.
 
 (*
-   The hom relation of any 范畴 is a preorder on 对象: reflexivity is
-
-   本节说明相关定义、性质与动机。 witnessed `id` transitivity 复合 (note order: `g ∘ f` `f : x ~> y` `g : y ~> z`).
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

@@ -45,9 +45,7 @@ Definition Monoidal_OneObject_Bicategory
     (fun _ _ _ _ _ => @pentagon_identity C M).    (* hcoherence_pentagon  *)
 
 (*
-   Kelly's unit-coincidence, transported.  A 幺半范畴 satisfies
-
-   本节：λ_I ≈ ρ_I ([unit_identity] Structure/幺半/Proofs.v, derived consequence triangle pentagon axioms). Under delooping this is precisely statement that left right 单位子 one-对象 双范畴 agree identity 1-cell.
+   本节说明幺半结构、幺半群、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

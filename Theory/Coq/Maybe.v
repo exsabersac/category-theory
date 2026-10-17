@@ -103,9 +103,7 @@ Instance Maybe_Alternative : Alternative Maybe := {
 Import MonadNotations.
 
 (*
-   Lifting a 半群 on [a] to [Maybe a]: [Nothing] acts as a freely adjoined
-
-   本节说明相关定义、性质与动机。 identity, two [Just]s combine underlying [⊗]. This is standard construction making [Maybe a] 幺半群 (unit [Nothing]) from any 半群 [a] -- i.e.
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -122,9 +120,7 @@ Program Instance Semigroup_Maybe `{Semigroup a} : Semigroup (Maybe a) := {
 }.
 
 (*
-   [Maybe a] is a 幺半群 with unit [Nothing] (adjoined above).  Only a
-
-   本节说明相关定义、性质与动机。 [半群 a] is needed [mappend]; [幺半群 a] constraint here is stronger than strictly required (Haskell asks only [半群 a]).
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

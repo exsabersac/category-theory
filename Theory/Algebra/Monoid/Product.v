@@ -65,9 +65,7 @@ Lemma mon_prod_eta_exr : exr ∘ mon_prod_eta ≈ eta[Y].
 Proof. unfold mon_prod_eta; apply exr_fork. Qed.
 
 (*
-   结合律 of [mon_prod_mu], one component at a time.  The 假设
-
-   本节说明相关定义、性质与动机。 [Hp] says exactly that p commutes two multiplications; both projections satisfy it, [mon_prod_mu_exl] [mon_prod_mu_exr]. The two sides are each normalised common form ending [(p ⨂ p) ⨂ p];
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -99,9 +97,7 @@ Proof.
 Qed.
 
 (*
-   The 积 of two internal 幺半群.  Declared a plain [Program
-
-   本节：定义] rather than [Instance]: registering it would add resolution rule [幺半群 (_ × _)], [Mon] itself is indexed this class, so leaving database untouched is conservative choice (the [Hom_可表] precedent, 函子/可表.v).
+   本节说明函子、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -236,9 +232,7 @@ Context `{CA : @Cartesian C}.
 Context `{TE : @Terminal C}.
 
 (*
-   The underlying 对象 of a 积 幺半群 IS the 积 of the underlying
-
-   本节说明相关定义、性质与动机。 对象, likewise projections, pairing unique map into terminal 幺半群: all at Leibniz equality, [eq_refl]. This is preservation DATA;
+   本节说明（余）极限、幺半群、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -268,9 +262,7 @@ End Forget.
 (** ** Reconciling the two monoid-object classes *)
 
 (*
-   At a FIXED 幺半 base the two classes differ only by the names and the
-
-   本节说明相关定义、性质与动机。 order their fields, so passage is field renaming both directions.
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -294,7 +286,7 @@ Definition MonoidObject_of_Monoid {x : C} (X : Monoid x)
 |}.
 
 (*
-   本节说明相关定义、性质与动机。 Both round trips close WHOLE record [eq_refl]: both classes are.
+   本节说明 Product 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -305,7 +297,7 @@ Example monoid_object_round {x : C} (X : @MonoidObject C M x) :
   MonoidObject_of_Monoid (Monoid_of_MonoidObject X) = X := eq_refl.
 
 (*
-   本节：THE DESIGN CLAIM, MACHINE-CHECKED RATHER THAN ARGUED. The passage above. cannot carry [积_幺半群] abstract 幺半 base: its conclusion lives at [CC_幺半], variable M there is no conversion between two.
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -329,9 +321,7 @@ End AbstractBaseProbe.
 (** ** [Product_Monoid] is the cartesian special case *)
 
 (*
-   Instantiating the 幺半 base at [CC_幺半] — where the tensor IS the
-
-   categorical 积 — makes [幺半群_积] Structure/幺半群.v's [积_幺半群] two constructions 幺半群 same 对象. They agree;
+   本节说明幺半结构、幺半群、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -356,9 +346,7 @@ Example Monoid_Product_eta_is_Product_Monoid
   := eq_refl.
 
 (*
-   [积_幺半群] read as a [幺半群] in this file's sense.  This is what
-
-   本节说明相关定义、性质与动机。 "so that [积_幺半群] applies" amounts to, it doubles positive control negative [AbstractBaseProbe] above: very same application, at M := [CC_幺半] instead variable M, IS accepted.
+   本节说明幺半群、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -401,9 +389,7 @@ End Comparison.
 (** ** A concrete instantiation, and the design claim made concrete *)
 
 (*
-   [Sets] with the setoid 积 is a 幺半范畴 (its own hand-built
-
-   本节：[Sets_积_幺半], Instance/Sets.v — NOT [CC_幺半]), it is 笛卡尔. So [Mon Sets] at that base — which is exactly Instance/Roster.v's [Mon_Sets], 定义 there; that file is not required here — inherits 有限积.
+   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -419,16 +405,12 @@ Definition Mon_Sets_Terminal
   := @Mon_Terminal Sets Sets_Product_Monoidal Sets_Terminal.
 
 (*
-   CONVERSION negative: [Sets]'s own 幺半 structure is not the 笛卡尔
-
-   本节：幺半 structure built from its 积. Stripping [Fail] gives "cannot unify "Sets_积_幺半" "CC_幺半"".
+   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 (*
-   Control for the negative below.  Without it, `@CC_幺半` applied to
-
-   本节说明相关定义、性质与动机。 explicit arguments occurs ONLY inside that `Fail`, so signature change `CC_幺半` would make command fail wrong reason — `Illegal application` rather than `cannot unify` — guard would go vacuously green.
+   本节说明 Product 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -439,9 +421,7 @@ Fail Example Sets_Product_Monoidal_is_CC_Monoidal :
   := eq_refl.
 
 (*
-   TYPING negative: consequently [积_幺半群] does not supply a 幺半群
-
-   本节：for [Mon Sets]. Stripping [Fail] gives "The term "积_幺半群 X Y" has type "@MonoidObject Sets (@CC_幺半 Sets _ _) (x × y)" while it is expected have type "@MonoidObject Sets Sets_积_幺半 (x × y)"".
+   本节说明幺半群、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -455,7 +435,7 @@ Fail Check
 End SetsWitness.
 
 (*
-   本节说明相关定义、性质与动机。 * * The universe boundary, PINNED. The UNIVERSES section this header attributes C's hom = proof identification three donors, measured under section declaring levels strictly apart.
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -472,7 +452,7 @@ Check (fun (C : Category@{uo uh up}) (x y : C) => x ~> y).
 Check (fun (C : Category@{uo uh up}) (x : C) => id[x]).
 
 (*
-   本节说明相关定义、性质与动机。 Controls that three donor names resolve at unconstrained levels;.
+   本节说明 Product 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

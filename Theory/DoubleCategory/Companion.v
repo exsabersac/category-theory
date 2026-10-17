@@ -20,7 +20,7 @@ Lemma triple_id {C : Category} {x : C} : id[x] ∘ (id ∘ id) ≈ id.
 Proof. cat. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 * ** Boundary coercion versus vertical pasting. The uniqueness argument must slide boundary coercion out one factor vertical 复合.
+   本节说明 Companion 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -136,7 +136,7 @@ Definition companion_compare (P Q : Companion u) :
   companion_name u (comp_hor Q) (comp_unit Q) (comp_counit P).
 
 (*
-   本节说明相关定义、性质与动机。 The round trip [P → Q → P] is vertical identity square. Proof:.
+   本节说明 Companion 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

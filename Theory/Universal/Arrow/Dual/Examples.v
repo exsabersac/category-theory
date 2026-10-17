@@ -35,9 +35,7 @@ Context `{C : Category}.
 Context `{@Cartesian C}.
 
 (*
-   The projection pair, typed as a 态射 of C ∏ C out of the diagonal.
-
-   本节说明相关定义、性质与动机。 The ascription is load-bearing: bare pair elaborator cannot see which 范畴's 复合 couniversal equation is asking for.
+   本节说明 Examples 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -46,7 +44,7 @@ Definition proj_pair (p : C ∏ C) :
   (@exl C _ (fst p) (snd p), @exr C _ (fst p) (snd p)).
 
 (*
-   本节说明相关定义、性质与动机。 The couniversal mapping property projection pair, exact shape. consumed [couniversal_arrow_from_UMP]: p : C ∏ C 对象 fst p × snd p together (exl, exr) : Δ (fst p × snd p) ~> p is couniversal arrow from Δ p.
+   本节说明 Examples 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -130,7 +128,7 @@ Corollary product_via_couniversal_obj (p : C ∏ C) :
 Proof. reflexivity. Qed.
 
 (*
-   本节说明相关定义、性质与动机。 ... its counit is projection pair, up `≈` (see second.
+   本节说明 Examples 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -141,7 +139,7 @@ Corollary product_via_couniversal_counit (p : C ∏ C) :
 Proof. exact (counit_couniversal (Diagonal_Product C) product_CUA p). Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The arrow action is chosen unique factorization, so nothing forces it to. reduce ×(C)'s [fmap];
+   本节说明伴随、函子、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -157,7 +155,7 @@ End CouniversalExample.
 (** ** A concrete instantiation *)
 
 (*
-   本节说明相关定义、性质与动机。 The family above is inhabited something other than variable: [Sets] is.
+   本节说明伴随、笛卡尔相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

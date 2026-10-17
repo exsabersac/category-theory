@@ -51,9 +51,12 @@ Generalizable All Variables.
    [Functor_StrictEq_Setoid]。 *)
 
 (*
-   Where 函子 来源, and 用途
+   关于函子的来源与用途
 
-   本节：SEP: https://plato.stanford.edu/entries/范畴-theory/ nLab: https://ncatlab.org/nlab/show/General+Theory+of+自然+Equivalences 函子 are founding notion 范畴 theory, not derived one.
+   SEP:  https://plato.stanford.edu/entries/category-theory/
+   nLab: https://ncatlab.org/nlab/show/General+Theory+of+Natural+Equivalences
+
+   本节说明自然变换、函子、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -112,9 +115,7 @@ Notation "fmap[ F ]" := (@fmap _ _ F%functor _ _)
 #[export]
 Program Instance Functor_Setoid {C D : Category} : Setoid (C ⟶ D) := {
   (*
-   注意 it doesn't make much sense (with our 定义 of [范畴])
-
-   本节说明相关定义、性质与动机。 to ask that [∀ x : C, F x = G x] [∀ (x y :C) (f : x ~> y), fmap[F] f ≈ fmap[G] f] because second condition is hard work type-system since it needs lots equality proofs.
+   本节说明 Functor 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -288,7 +289,7 @@ Arguments fun_equiv_comp_assoc {A B C D} F G H.
    nLab: https://ncatlab.org/nlab/show/full+functor
    Wikipedia: https://en.wikipedia.org/wiki/Full_functor
 
-   本节说明相关定义、性质与动机。 F is full when each hom-map fmap[F] : (x ~> y) → (F x ~> F y) is surjective. Constructively this is witnessed section [prefmap] [fmap[F]]: choice preimage fmap[F] (prefmap g) ≈ g ([fmap_sur]), rather than bare surjectivity proposition.
+   本节说明函子、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -311,7 +312,7 @@ Class Faithful `(F : C ⟶ D) := {
    nLab: https://ncatlab.org/nlab/show/fully+faithful+functor
    Wikipedia: https://en.wikipedia.org/wiki/Full_and_faithful_functors
 
-   本节说明相关定义、性质与动机。 A fully 忠实 函子 (both Full 忠实) reflects isomorphisms: if F x ≅ F y then x ≅ y. The witnesses are [prefmap] applied given iso;
+   本节说明函子、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -333,7 +334,10 @@ Proof.
 Defined.
 
 (*
-   本节说明相关定义、性质与动机。 Fullness faithfulness are LOCAL conditions, both are closed under. 复合 函子. Book: Riehl, "范畴 Theory Context", Dover 2016, §1.5, Remark 1.5.8, printed p. 33, Exercise 1.5.vi(i), printed p.
+   Book: Riehl, "Category Theory in Context", Dover 2016, §1.5, Remark 1.5.8,
+   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed., GTM 5,
+
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -367,7 +371,7 @@ Qed.
    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed., GTM 5,
    Book: Riehl, "Category Theory in Context", Dover 2016, §1.6,
 
-   本节说明相关定义、性质与动机。 Springer 1998, §I.5, Exercise 9, printed p. 21. Exercise 1.6.iv, printed p. 47 A 忠实 函子 REFLECTS monomorphisms: if image fmap[F] f is left- cancellable D, then f was already left-cancellable C.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -383,9 +387,7 @@ Proof.
 Qed.
 
 (*
-   The dual, right-消去 reading of the same argument.  It is proved
-
-   本节：directly, mirroring proof above, rather than transported across C^op: 反-范畴 apparatus lives Construction/反.v 反 函子 函子/反.v's [反_函子], both later layers than this core file, direct proof is s
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -404,7 +406,7 @@ Qed.
    nLab: https://ncatlab.org/nlab/show/algebra+over+an+endofunctor
    Wikipedia: https://en.wikipedia.org/wiki/F-algebra
 
-   本节：For 自函子 F : C ⟶ C, F-代数 carrier 对象 is structure 态射 F ~> a; dual F-余代数 is ~> F a. The (F, G)-dialgebra generalizes both 态射 F ~> G between images two endofunctors.
+   本节说明 Functor 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -458,9 +460,7 @@ Proof. reflexivity. Qed.
 End AFunctor.
 
 (*
-   An alternative setoid of 函子 that uses strict (propositional) equality
-
-   of 对象, F x = G x, rather than 自然 同构 F x ≅ G x [函子_Setoid].
+   本节说明函子、同构、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

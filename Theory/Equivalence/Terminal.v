@@ -45,7 +45,7 @@ Definition Terminal_transport {C D : Category} {F : C ⟶ D}
     (fun d f g => terminal_transport_unique E T d f g).
 
 (*
-   本节：The initial dual, argued directly rather than opposing E.. The 对偶 route DOES exist: [EquivalenceOfCategories_op] at Theory/等价/极限.v opposes 等价, [Terminal_transport (EquivalenceOfCategories_op E) I0] discharges this one line.
+   本节说明（余）极限、等价、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -66,7 +66,7 @@ Definition initial_transport_arrow {C D : Category} {F : C ⟶ D}
     ∘ fmap[F] (@zero C I0 (@quasi_inverse C D F E d)).
 
 (*
-   本节说明相关定义、性质与动机。 [@Initial D] is notation [@Terminal (D^op)], so record is built. [Build_Terminal] at D^op;
+   本节说明始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -92,7 +92,7 @@ Section TerminalSubContractible.
 Context {C : Category}.
 
 (*
-   本节：Riehl, CTiC, Lemma 1.6.16, strongest packaging: soon C HAS a. 终对象, subcategory Block D is equivalent terminal 范畴 -- contractible groupoid. The 函子 1 is [Erase]; quasi-inverse is constant at chosen 对象.
+   本节说明函子、hom、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

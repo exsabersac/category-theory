@@ -29,9 +29,7 @@ Generalizable All Variables.
 (** ** (A) Oppositization respects the functor setoid *)
 
 (*
-   Given e : G ≈ G' — which, for [函子_Setoid], is a 自然
-
-   本节说明相关定义、性质与动机。 同构 bundled its coherence — 反 函子 are equivalent, taking each component's INVERSE.
+   本节说明函子、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -54,7 +52,7 @@ Instance Opposite_Functor_Proper {J C : Category} :
   fun _ _ e => Opposite_Functor_respects e.
 
 (*
-   本节说明相关定义、性质与动机。 The inverse passage costs nothing, reason is tree's own.
+   本节说明函子、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -64,7 +62,7 @@ Definition Opposite_Functor_reflects {J C : Category} {G G' : J ⟶ C}
   Opposite_Functor_respects e.
 
 (*
-   本节说明相关定义、性质与动机。 The two passages return ISOMORPHISM FAMILY nose, both. 复合 orders — [同构] has primitive projections eta, so [同构_反] applied twice is identity definitionally.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -82,9 +80,7 @@ Example Opposite_Functor_respects_reflects {J C : Category}
 (** ** (B) Transport of colimits along a natural isomorphism *)
 
 (*
-   The duals of Theory/等价/极限.v's [cone_transport],
-
-   本节说明相关定义、性质与动机。 [cone_transport_inv], [isalimit_transport] [极限_transport], obtained riding (A) rather than second proof.
+   本节说明（余）极限、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -106,7 +102,7 @@ Definition colimit_transport {J C : Category} {G G' : J ⟶ C}
   limit_transport (Opposite_Functor_respects e) L.
 
 (*
-   本节说明相关定义、性质与动机。 Covariant readbacks. A cocone's injections run INTO apex, so.
+   本节说明（余）极限相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -168,9 +164,7 @@ Example colimit_transport_apex {J C : Category} {G G' : J ⟶ C}
 (** ** (C) The induced map, without invertibility *)
 
 (*
-   A bundled 极限 witness, read as a cone.  (Theory/等价/极限.v
-
-   本节说明相关定义、性质与动机。 has [isalimit_to_极限] [极限] packaging; [Cone]-level repackaging is not tree, two constructions below need it.)
+   本节说明（余）极限、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -187,7 +181,7 @@ Context {G G' : J ⟶ C}.
 Context (a : G ⟹ G').
 
 (*
-   本节：Push cone over G along α: postcompose each leg component.. This generalizes Theory/等价/极限.v's [cone_transport], which is this construction at 正向 components 同构 (see [cone_along_is_cone_transport] below);
+   本节说明（余）极限、等价、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -218,9 +212,7 @@ Context (HL : IsALimit G c).
 Context (HL' : IsALimit G' c').
 
 (*
-   The comparison: push the 极限 cone of G along α and mediate through
-
-   本节说明相关定义、性质与动机。 the 极限 G'. NOTE hypotheses — two 极限, handed explicitly;
+   本节说明（余）极限相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -251,9 +243,7 @@ Arguments limit_induced_commutes {J C G G'} a {c c'} HL HL' x.
 Arguments limit_induced_unique {J C G G'} a {c c'} HL HL' v _.
 
 (*
-   The comparison at the identity 变换 is the identity, and it
-
-   本节说明相关定义、性质与动机。 composes. These are 对象-level shadows functoriality [lim]; no 极限 FUNCTOR is built here.
+   本节说明函子、（余）极限相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -285,7 +275,7 @@ Qed.
 (** *** The colimit dual, covariantly *)
 
 (*
-   本节：[反_Transform] sends α : G ⟹ G' G'^op ⟹ G^op, so roles of. two 余极限 witnesses are exchanged when 极限 statement is instantiated — which is exactly what makes induced arrow run from 余极限 G 余极限 G'.
+   本节说明（余）极限相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -340,9 +330,7 @@ Qed.
 (** ** How (B) and (C) fit together *)
 
 (*
-   The 正向 components of a [函子_Setoid] 等价 form a
-
-   本节：自然变换: coherence field [函子_Setoid] is naturality square disguise, [fun_equiv_to_fmap] (Theory/函子.v) is exactly square, other orientation.
+   本节说明自然变换、函子、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -361,9 +349,7 @@ Example fun_equiv_transform_component {J C : Category} {G G' : J ⟶ C}
   transform[fun_equiv_transform e] x = to (`1 e x) := eq_refl.
 
 (*
-   Theory/等价/极限.v's [cone_transport] IS [cone_along] at those
-
-   本节说明相关定义、性质与动机。 components, LEG BY LEG nose, so invertible case (C) cone half (B) are one construction.
+   本节说明（余）极限、等价相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -374,9 +360,7 @@ Example cone_along_is_cone_transport {J C : Category} {G G' : J ⟶ C}
   = cone_leg (cone_transport e N) x := eq_refl.
 
 (*
-   And the comparison induced between a 极限 and its OWN transport is
-
-   本节说明相关定义、性质与动机。 the identity. This is what (1) adds (2): apex is pinned, so comparison has nowhere go.
+   本节说明（余）极限、来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -391,9 +375,7 @@ Proof.
 Qed.
 
 (*
-   The 余极限 reading of the same fact.  The 变换 is the
-
-   本节说明相关定义、性质与动机。 BACKWARD family here: transporting 余极限 precomposes its injections [from], so comparison that comes out identity is one induced inverse components.
+   本节说明（余）极限相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -419,7 +401,7 @@ Qed.
 (** ** Witnesses over the walking arrow *)
 
 (*
-   本节说明相关定义、性质与动机。 Non-vacuity. The cheapest index shape non-identity arrow is.
+   本节说明（余）极限相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -495,9 +477,7 @@ Defined.
 (** *** A non-invertible transformation with a non-invertible comparison *)
 
 (*
-   Ambient [_2] as well as index [_2].  The diagram [Id[_2]] has 余极限
-
-   本节说明相关定义、性质与动机。 apex TwoY; constant diagram at TwoY has 余极限 apex TwoY too, so sharp witness we take LIMITS instead, whose apexes are TwoX TwoY — genuinely different 对象.
+   本节说明（余）极限相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -516,7 +496,7 @@ Program Definition two_shift : Id[_2] ⟹ two_const := {|
 Solve Obligations with (intros; apply Two_thin).
 
 (*
-   本节说明相关定义、性质与动机。 The two diagrams are NOT naturally isomorphic, so section (B) does not. apply this pair at all: 同构 would supply arrow TwoY ~> TwoX, [_2] has none.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -534,9 +514,7 @@ Lemma two_shift_not_invertible :
 Proof. exact TwoXY_not_iso. Qed.
 
 (*
-   ... the two diagrams take TwoX to genuinely different 对象, which
-
-   本节说明相关定义、性质与动机。 is what makes two 极限 apexes different: [two_IsALimit] pins apex diagram [D] [D TwoX], so two 对象 actions read off below ARE two apexes.
+   本节说明函子、（余）极限相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -555,9 +533,7 @@ Definition two_shift_induced : TwoX ~{_2}~> TwoY :=
   limit_induced two_shift (two_IsALimit Id[_2]) (two_IsALimit two_const).
 
 (*
-   It COMPUTES to the 变换's component at TwoX.  This is why
-
-   本节说明相关定义、性质与动机。 the two universal properties above are closed [Defined]: [Qed] mediator is opaque only [≈] form below survives, which over thin ambient says nothing.
+   本节说明 Colimit 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -569,7 +545,7 @@ Theorem two_shift_induced_not_iso :
 Proof. intros [g _ _]; exact (TwoHom_Y_X_absurd g). Qed.
 
 (*
-   本节说明相关定义、性质与动机。 The comparison does satisfy its defining triangle, so witness. exercises 普遍性质 not merely existence arrow.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -585,7 +561,7 @@ Qed.
 (** *** Colimit transport, exercised: distinct diagrams, moved legs *)
 
 (*
-   本节说明相关定义、性质与动机。 WHAT THIS COSTS, MEASURED. A sharp (B) witness needs two diagrams. that are naturally isomorphic genuinely different, constant diagrams cannot be different (their arrow action is forced [id]), so diagram must act non-trivially [TwoXY].
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -650,7 +626,7 @@ Proof.
 Defined.
 
 (*
-   本节说明相关定义、性质与动机。 ... they are genuinely different diagrams: their arrow actions at. [TwoXY] are not even [≈]-equal, which is strictly stronger than refuting Leibniz equality two 函子 records.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -660,9 +636,7 @@ Lemma two_diagrams_differ :
 Proof. intro K; specialize (K true); simpl in K; discriminate. Qed.
 
 (*
-   The 余极限 of the first diagram, and the transport of it along the
-
-   本节说明相关定义、性质与动机。 同构. THE TRANSPORT VISIBLY MOVES A LEG: injection at TwoY goes from identity negation, two are provably not [≈]-equal.
+   本节说明（余）极限、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -671,7 +645,7 @@ Definition two_id_colimit : IsAColimit two_id_diagram two_bool_set :=
   two_IsAColimit two_id_diagram.
 
 (*
-   本节说明相关定义、性质与动机。 MEASURED REJECTION: strict form next statement,. [... TwoY = two_negb_map], is rejected. The transported leg is [id ∘ two_negb_map], 复合 [Sets] rebuilds [SetoidMorphism] record rather than reducing, so [id ∘ _] residue survives.
+   本节说明来源与用途相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

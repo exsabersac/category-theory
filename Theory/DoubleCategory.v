@@ -129,7 +129,7 @@ Class DoubleCategory : Type := {
       (@dsq_hcomp a b c a' b' c' h h' u v w k k');
 
   (*
-   本节说明相关定义、性质与动机。 Interchange: pasting 2x2 grid vertically-then-horizontally agrees with. horizontally-then-vertically.
+   本节说明 DoubleCategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -229,7 +229,7 @@ Definition dunit_right_from `{D : DoubleCategory} {a b} (h : dhor a b)
   := projT1 (projT2 (dunit_right h)).
 
 (*
-   本节说明相关定义、性质与动机。 The round-trip identities, named after [iso_to_from]/[iso_from_to] of.
+   本节说明同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -273,7 +273,7 @@ Definition dunit_right_to_from `{D : DoubleCategory} {a b} (h : dhor a b) :
   := snd (projT2 (projT2 (dunit_right h))).
 
 (*
-   本节说明相关定义、性质与动机。 * ** The derived coercion lemma pack. Mirrors [dtransport] pack Theory/Displayed.v: consumers class spend their time reorienting cancelling boundary coercions, each step is one lemmas below.
+   本节说明 DoubleCategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

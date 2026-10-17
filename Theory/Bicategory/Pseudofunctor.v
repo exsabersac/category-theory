@@ -21,9 +21,7 @@ Notation "f ∘∘ g" := (vcompose f g).
 Notation "f ∘∘∘ g" := (hcompose (f, g)).
 
 (*
-   The image of an 同构 under a 函子, as a transparent 定义 so
-
-   本节说明相关定义、性质与动机。 its `to`/`from` compute `fmap` components — used transport compositor/unitor isos one 伪函子 through hom-函子 another when composing pseudofunctors.
+   本节说明函子、hom、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -114,9 +112,7 @@ Qed.
 End Hcomp2.
 
 (*
-   The 伪函子 class, at full strength.  Following the nLab 定义,
-
-   本节说明相关定义、性质与动机。 with compositor oriented `pf1 (g ∘∘∘ f) ≅ pf1 g ∘∘∘ pf1 f` unitor `pf1 bi1id ≅ bi1id` (both invertible), coherence laws phrased through `hcomp2`, `hassoc` 单位子 target 双范畴.
+   本节说明双范畴、（余）强度相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -142,9 +138,7 @@ Class Pseudofunctor (B B' : Bicategory) := {
       ≈ hcomp2 (fmap[pf1] θ) (fmap[pf1] η) ∘∘ to (pf_comp g f);
 
   (*
-   结合律 hexagon: the two ways of comparing pf1 ((h∘g)∘f) with
-
-   本节说明相关定义、性质与动机。 pf1 h ∘∘∘ (pf1 g ∘∘∘ pf1 f) — reassociating images first, versus reassociating source applying pf1 — agree.
+   本节说明 Pseudofunctor 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -182,7 +176,7 @@ Notation "pf1[ F ]" := (@pf1 _ _ F%functor _ _)
   (at level 9, format "pf1[ F ]").
 
 (*
-   本节说明相关定义、性质与动机。 The compositor's naturality its `from` (lax) orientation, obtained from. `pf_comp_自然` cancelling invertible compositor both sides.
+   本节说明 Pseudofunctor 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -204,9 +198,7 @@ Proof.
 Qed.
 
 (*
-   The identity 伪函子: the hom-函子 are identity 函子, and the
-
-   本节说明相关定义、性质与动机。 unitor compositor are identity isomorphisms (both hold definitionally, since `Id` preserves horizontal 复合 identities nose).
+   本节说明函子、hom、同构相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -235,9 +227,7 @@ Next Obligation.
 Qed.
 
 (*
-   Pure-结合律 assembly of the 伪函子 结合律 hexagon.  In
-
-   本节说明相关定义、性质与动机。 an arbitrary 范畴, given four categorical facts that arise (two compositor-naturality squares GN1/GN2, outer factor's hexagon GHEX, inner factor's hexagon transported through outer hom-函子 HGMF), two sides 复合 hexagon agree.
+   本节说明函子、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -270,9 +260,7 @@ Proof.
 Qed.
 
 (*
-   The 复合 of two pseudofunctors.  On 0-cells and hom-函子 it is the
-
-   本节说明相关定义、性质与动机。 pointwise 复合; its unitor compositor are built from those two factors, transporting inner factor's iso through outer factor's hom-函子 `map_iso`.
+   本节说明函子、hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

@@ -51,9 +51,7 @@ Example density_diagram_obj (d : D) (x : K d) :
 (** ** The Yoneda transformation at an element *)
 
 (*
-   For x an element of K d, the 变换 [Hom d,-] ==> K whose
-
-   本节说明相关定义、性质与动机。 component at e carries g : d ~> e [fmap[K] g x]. Respectfulness is [elements_respects_cond] both naturality orientations are [fmap_comp] read at element.
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -87,7 +85,7 @@ Example density_inj_at (d : D) (x : K d) (e : D) (g : d ~> e) :
   transform[density_inj ((d; x) : ElementsOp)] e g = fmap[K] g x := eq_refl.
 
 (*
-   本节说明相关定义、性质与动机。 Cocone coherence. For f : x ~> y [Elements K] diagram sends f.
+   本节说明 Density 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -121,7 +119,7 @@ Section Mediator.
 Context (M : Cocone DensityDiagram).
 
 (*
-   本节说明相关定义、性质与动机。 Respectfulness ELEMENT argument, derived from cocone coherence. at [elements_same] not assumed. Two `≈`-equal elements over one 对象 D are DIFFERENT 对象 [Elements K] -- 对象 are compared Leibniz equality -- so their injections are priori unrelated;
+   本节说明 Density 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -285,9 +283,7 @@ Example pdensity_inj (c : C) (x : P c) (e : C) (g : e ~{C}~> c) :
     = fmap[P] g x := eq_refl.
 
 (*
-   The other evident description of the diagram agrees on 对象 AND on
-
-   本节说明相关定义、性质与动机。 arrows, both [eq_refl]; two 函子 RECORDS do not (probe negative 1), because [PElements_proj] is [Program 定义] whose law fields are opaque obligations.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -323,7 +319,7 @@ Example coy_leg_is_density_inj (c x : C) (g : x ~{C}~> c) (a : F x) :
     = transform[density_inj F ((x; a) : ElementsOp F)] c g := eq_refl.
 
 (*
-   本节说明相关定义、性质与动机。 The naturality-in-c upgrade LEGS. [Theory/Coend/Yoneda.v]. fixes c section variable;
+   本节说明Yoneda、hom、（余）端相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -337,7 +333,7 @@ Example coy_leg_natural_witness (x : C) (a : F x) :
   `1 (coy_leg_natural_in_apex x a) = yo_inj F a := eq_refl.
 
 (*
-   本节说明相关定义、性质与动机。 The coend's inverse map is "insert at identity", running it. back through mediator gives density injection at (c, b) applied [id] -- left-hand side [density_elements_covered].
+   本节说明（余）端相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -373,9 +369,7 @@ Definition et : ElementsOp KBool := (ttt; true).
 Definition ef : ElementsOp KBool := (ttt; false).
 
 (*
-   The diagram is CONSTANT at the one 可表, and there are no
-
-   本节说明相关定义、性质与动机。 态射 between two elements, so theorem here says that two-element set is 余积 two copies singleton.
+   本节说明 Density 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -395,9 +389,7 @@ Proof.
 Qed.
 
 (*
-   The two elements are not merely DISTINCT 对象 of the index: there
-
-   本节说明相关定义、性质与动机。 is no 态射 between them either, covariant [Elements] reading. This is what makes "2 = 1 + 1" description above honest rather than decorative, audit found it asserted prose pinned nowhere, so it is lemma now. A 态射 (ttt;true) ~> (ttt;
+   本节说明 Density 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -461,7 +453,7 @@ End Witness.
 (** ** Probe: negatives of three kinds, with positive controls *)
 
 (*
-   本节说明相关定义、性质与动机。 Each [Fail] below was stripped once its error read off, so its. KIND is known it is not vacuously green.
+   本节说明 Density 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -510,7 +502,7 @@ Definition ctrl_med_commutes (M : Cocone (DensityDiagram K))
   := density_med_commutes K M j.
 
 (*
-   本节说明相关定义、性质与动机。 NEGATIVE 2 (CONVERSION). Stripped, this reports. [cannot unify "density_med K M ∘ density_inj K j" "cocone_inj M j"].
+   本节说明 Density 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -525,7 +517,7 @@ Fail Example neg_med_commutes_strict (M : Cocone (DensityDiagram K))
 Check (Curried_Hom D ◯ (Elements_proj K)^op).
 
 (*
-   本节说明相关定义、性质与动机。 NEGATIVE 3 (TYPING). Stripped, this reports. ["Elements_proj K" has type "Elements K ⟶ D" while it is expected have type "Elements K ⟶ D^op" (cannot unify "D" "(D^op)")].
+   本节说明 Density 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -549,7 +541,7 @@ Check (fun (D : Category@{uo uh uh}) (K : D ⟶ Sets@{uh us}) => @yo_inj D K).
 Check @DensityDiagram.
 
 (*
-   本节说明相关定义、性质与动机。 NEGATIVE 4 (FORMABILITY). Stripped, this reports universe. inconsistency naming declared levels: [Cannot enforce uh = _ because uh < uo <= _].
+   本节说明 Density 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

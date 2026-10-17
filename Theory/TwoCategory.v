@@ -14,7 +14,12 @@ Generalizable All Variables.
    在表面上为恒等。本文件给出严格 2-范畴类与交换律；长历史短文后续可续译。 *)
 
 (*
-   本节说明相关定义、性质与动机。 Why two dimensions, why interchange law is whole story.
+   nLab:  https://ncatlab.org/nlab/show/2-category
+   nLab:  https://ncatlab.org/nlab/show/Eckmann-Hilton+argument
+   Paper: Bénabou, "Introduction to bicategories", Lecture Notes in
+   Paper: Kelly, Street, "Review of the elements of 2-categories", Lecture
+
+   本节说明自然变换、函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -69,7 +74,7 @@ Class TwoCategory : Type := {
     thcomp (tvcomp δ γ) (tvcomp β α) ≈ tvcomp (thcomp δ β) (thcomp γ α);
 
   (*
-   本节说明相关定义、性质与动机。 STRICTNESS. Re-bracketing unit adjustment 1-cell boundary. identify corresponding types 2-cells; identifications are data, laws below say they behave identities.
+   本节说明 TwoCategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -130,9 +135,7 @@ Class TwoCategory : Type := {
 #[export] Existing Instance tunitr_cast_respects.
 
 (*
-   * ** The hom-范畴
-
-   本节说明相关定义、性质与动机。 Riehl 1.7.8 asks that 2-cells between 1-cells `a ~> b` form 范畴 under vertical 复合;
+   本节说明hom相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -156,7 +159,7 @@ Section TwoCategoryLemmas.
 Context {K : TwoCategory}.
 
 (*
-   本节说明相关定义、性质与动机。 * ** Whiskering (Mac Lane §II.5, convention def 1). Mac Lane lets 函子 symbol stand its identity 变换, so that `S' ∘ τ` `τ' ∘ T` denote horizontal composites one whose factors is identity.
+   本节说明函子相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -229,9 +232,7 @@ Proof.
 Qed.
 
 (*
-   * ** Mac Lane's display (3): a horizontal 复合 factors two ways
-
-   本节说明相关定义、性质与动机。 `τ' ∘ τ = (T' ∘ τ) · (τ' ∘ S) = (τ' ∘ T) · (S' ∘ τ)`, two diagonals naturality square Godement 积.
+   本节说明 TwoCategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -300,7 +301,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 * ** Mac Lane's def-3 condition globular presentation. A 2-cell is unit vertical 复合 when composing it changes nothing; it is unit horizontal 复合 when whiskering it changes nothing, once boundary identification is applied.
+   本节说明 TwoCategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -347,7 +348,7 @@ Arguments IsVUnit {_ _ _ _} _.
 Arguments IsHUnit {_ _} _.
 
 (*
-   本节说明相关定义、性质与动机。 * ** The arrows-only presentation (Mac Lane §II.5 definitions 2 3). Mac Lane's double 范畴 is "a set which is set arrows two different 复合 operations which together satisfy interchange law".
+   本节说明 TwoCategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -393,7 +394,7 @@ Arguments mcident {A S} _ _ /.
 Arguments mcident_law {A S} _ _.
 
 (*
-   本节说明相关定义、性质与动机。 The two packagings agree: [MetaComp] over setoid is a. [元范畴] that setoid's carrier, conversely.
+   本节说明 TwoCategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -435,7 +436,7 @@ Record StrictDoubleCategory : Type := {
   dhoriz : MetaComp dcell_setoid;       (* the second composition, `∘` *)
 
   (*
-   本节说明相关定义、性质与动机。 "which together satisfy interchange law": Mac Lane's display (5),.
+   本节说明 TwoCategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -452,7 +453,7 @@ Record StrictDoubleCategory : Type := {
 #[export] Existing Instance dcell_setoid.
 
 (*
-   本节说明相关定义、性质与动机。 The two compositions metacategories, hence — through. Theory/元范畴/General.v's passage — ordinary 范畴.
+   本节说明 TwoCategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -479,9 +480,7 @@ Definition dhident (D : StrictDoubleCategory) (u : dcell D) : Type :=
   mcident (dhoriz D) u.
 
 (*
-   * *** 定义 3: a 2-范畴
-
-   本节说明相关定义、性质与动机。 "A 2-范畴 is double 范畴 which every identity arrow first 复合 is also identity second." The orientation follows Theorem 1, whose closing clause reads "every arrow 即 identity ∘ is also identity ·": HORIZONTAL identiti
+   本节说明 TwoCategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -496,9 +495,7 @@ Record StrictTwoCategory : Type := {
 Require Import Coq.micromega.Lia.
 
 (*
-   * ** Mac Lane's negative example: 交换方块 are not a 2-范畴
-
-   本节说明相关定义、性质与动机。 §II.5's 定义 2-范畴 closes recording that commutative squares Set form double 范畴 which is not one.
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -564,9 +561,7 @@ Definition NatSq_hident (u : NatSq) : Type :=
   (∀ g, NatSq_hdefined u g → NatSq_hcomp u g g).
 
 (*
-   Every obligation below is arithmetic once the 复合 hypotheses are
-
-   本节说明相关定义、性质与动机。 taken apart. The edges are left opaque projections — no square is ever destructed — so `lia` sees plain linear equations over atoms.
+   本节说明 TwoCategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -760,7 +755,7 @@ Proof.
 Qed.
 
 (*
-   本节说明相关定义、性质与动机。 Non-degeneracy: model is not one which everything collapses.. Its two identity families are genuinely different ([NatSq_vid_is_not_hid] below proves vertical identity 即 no horizontal one;
+   本节说明 TwoCategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -780,7 +775,7 @@ Example NatSq_vpaste_computes :
   nsq_left (NatSq_vpaste NatSq_bad NatSq_bad eq_refl) = 2%nat := eq_refl.
 
 (*
-   本节说明相关定义、性质与动机。 * ** The passage from globular arrows-only presentation. Mac Lane's 定义 2 bundles ALL cells into one collection, so composability two them becomes EQUATION between their boundaries — between 0-cells, between 1-cells.
+   本节说明 TwoCategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -1163,9 +1158,7 @@ Proof using K SB.
 Qed.
 
 (*
-   Every identity for the horizontal 复合 is one for the vertical
-
-   本节说明相关定义、性质与动机。 复合 — Mac Lane's def-3 condition, proved bundling.
+   本节说明 TwoCategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -1282,7 +1275,7 @@ Proof using K SB. intro H; exact (TwoH_unique (TwoH_at β α) H). Qed.
 End ToStrict.
 
 (*
-   本节说明相关定义、性质与动机。 * ** The converse passage, precisely what it still needs. Extraction other direction — reading globular [TwoCategory] off arrows-only [StrictTwoCategory] — is NOT delivered. What it needs is available two parts, it is worth being exact about which.
+   本节说明 TwoCategory 相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
@@ -1300,9 +1293,7 @@ Proof.
 Qed.
 
 (*
-   * ** The 假设 pack is satisfiable
-
-   本节：Nothing above is vacuous. The witness is CHAOTIC 2-范畴 delooping 加性 幺半群 naturals: one 0-cell, 1-cell each 自然, exactly one 2-cell between any parallel pair.
+   本节说明幺半群相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

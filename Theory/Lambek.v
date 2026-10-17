@@ -62,9 +62,7 @@ Proof.
 Qed.
 
 (*
-   Dually, the structure map of the final F-余代数 is an 同构. The
-
-   本节：范畴 [FCoalg F] is [(FAlg (F^op))^op], so [@Terminal (FCoalg F)] is definitionally [@Initial (FAlg (F^op))] final F-余代数 is initial [F^op]-代数. Its carrier [ν] is 对象 [C^op], so this 同构 lives [C^op];
+   本节说明同构、始/终对象相关定义、性质与动机。
 
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)

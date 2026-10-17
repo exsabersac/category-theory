@@ -17,32 +17,13 @@ Notation "f ∘∘∘ g" := (hcompose (f, g)) : category_scope.
 
 (** Adjunctions inside a bicategory *)
 
-(* nLab: https://ncatlab.org/nlab/show/adjunction+in+a+bicategory
+(*
+   nLab: https://ncatlab.org/nlab/show/adjunction+in+a+bicategory
 
-   An adjunction inside a bicategory `B` is the internalisation of the ordinary
-   notion of adjoint functors: it lives entirely in the 2-cell calculus of `B`.
-   Fix two 0-cells `x y : bi0cell`. An adjunction `f ⊣ u` consists of a pair of
-   1-cells `f : x ~~> y` (the left adjoint) and `u : y ~~> x` (the right
-   adjoint) together with two 2-cells
+   本节：An 伴随 inside 双范畴 `B` is internalisation ordinary notion 伴随 函子: it lives entirely 2-cell calculus `B`. Fix two 0-cells `x y : bi0cell`.
 
-     - a unit    η : Id_x ⟹ u ∘ f     (in the hom-category `bicat x x`), and
-     - a counit  ε : f ∘ u ⟹ Id_y     (in the hom-category `bicat y y`),
-
-   satisfying the two triangle (zig-zag / swallowtail) identities. Because
-   horizontal composition in a bicategory is associative and unital only up to
-   the coherence 2-isomorphisms `hassoc`, `hunit_left`, `hunit_right`, the two
-   zig-zag composites do not literally start and end at `f` and `u`; they are
-   conjugated by the unitors and the associator so that the endpoints become the
-   1-cells `f` and `u` themselves. The Godement/whiskering operation `hcomp2`
-   (the functorial action of `hcompose` on a pair of 2-cells) supplies the
-   whiskerings `f ⊲ η` and `ε ⊳ f` that make up each composite.
-
-   Specialising `B` to the bicategory `Cat` (where `bicat C D := [C, D]`,
-   horizontal composition is functor composition, and the coherences are the
-   canonical natural isomorphisms) recovers exactly the counit/unit presentation
-   of an ordinary adjunction `F ⊣ U` from `Theory/Adjunction.v`; this file states
-   the general notion through `hcomp2`/`hassoc`/`hunit_*` so that the mates
-   correspondence can be developed uniformly over any bicategory. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section BicatAdjunction.
 
@@ -161,10 +142,13 @@ Proof.
   now rewrite hcomp2_rwhisker_lwhisker.
 Qed.
 
-(* The three single-whisker naturality squares of the associator, each obtained
-   from the general `hassoc_natural` field by taking two of the three 2-cells to
-   be identities and collapsing the resulting `hcomp2 bi2id bi2id` via
-   `hcomp2_id`. They let a whisker be transported across the associator. *)
+(*
+   The three single-贴须 naturality squares of the 结合子, each obtained
+
+   本节说明相关定义、性质与动机。 from general `hassoc_自然` field taking two three 2-cells be identities collapsing resulting `hcomp2 bi2id bi2id` via `hcomp2_id`.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Whiskering the outer (top) leg past the associator. *)
 Lemma assoc_nat_top {w x' y' z' : bi0cell} {h h' : bicat y' z'}
@@ -196,11 +180,13 @@ Proof.
   now rewrite hcomp2_id in HN.
 Qed.
 
-(* The coherence 2-isomorphisms live in the hom-categories `bicat _ _`, so their
-   inverse laws are stated by the generic `iso_to_from`/`iso_from_to` with the
-   ambient `∘`/`id`. These thin wrappers restate them in the vertical-composition
-   notation `∘∘`/`bi2id` used throughout, so `rewrite` matches uniformly (the
-   proofs are by conversion, since `∘` on `bicat x y` is `vcompose`). *)
+(*
+   The coherence 2-isomorphisms live in the hom-范畴 `bicat _ _`, so their
+
+   本节说明相关定义、性质与动机。 inverse laws are stated generic `iso_to_from`/`iso_from_to` ambient `∘`/`id`.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma vto_vfrom {x y : bi0cell} {A A' : bicat x y} (i : A ≅[bicat x y] A') :
   to i ∘∘ from i ≈ bi2id.
 Proof. exact (iso_to_from i). Qed.
@@ -209,9 +195,11 @@ Lemma vfrom_vto {x y : bi0cell} {A A' : bicat x y} (i : A ≅[bicat x y] A') :
   from i ∘∘ to i ≈ bi2id.
 Proof. exact (iso_from_to i). Qed.
 
-(* Master conjugation lemma: a `to`-direction naturality square for two
-   coherence isos transposes to the `from`-direction one. Every inverse-unitor
-   and inverse-associator naturality used below is an instance. *)
+(*
+   本节说明相关定义、性质与动机。 Master conjugation lemma: `to`-direction naturality square two. coherence isos transposes `from`-direction one.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma iso_conj_from {x y : bi0cell} {A A' Bb Bb' : bicat x y}
   (i : A ≅[bicat x y] Bb) (i' : A' ≅[bicat x y] Bb')
   (η : Bb ~> Bb') (θ : A ~> A') :
@@ -240,9 +228,13 @@ Lemma hunit_right_from_natural {x y : bi0cell} {f f' : bicat x y}
   from (hunit_right f') ∘∘ η ≈ rwhisker η bi1id ∘∘ from (hunit_right f).
 Proof. exact (iso_conj_from _ _ _ _ (hunit_right_natural η)). Qed.
 
-(* Whisker-form restatements of the `to`-direction unitor naturality fields
-   (definitionally equal to the fields, since `lwhisker`/`rwhisker` unfold to
-   `hcomp2`), so they compose uniformly with the whisker calculus. *)
+(*
+   贴须-form restatements of the `to`-direction unitor naturality fields
+
+   本节说明相关定义、性质与动机。 (definitionally equal fields, since `lwhisker`/`rwhisker` unfold `hcomp2`), so they compose uniformly 贴须 calculus.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma hunit_left_nat {x y : bi0cell} {f f' : bicat x y} (η : f ~> f') :
   η ∘∘ to (hunit_left f) ≈ to (hunit_left f') ∘∘ lwhisker bi1id η.
 Proof. exact (hunit_left_natural η). Qed.
@@ -255,17 +247,11 @@ Proof. exact (hunit_right_natural η). Qed.
 (* The adjunction class.                                               *)
 (* ------------------------------------------------------------------ *)
 
-(* `f ⊣ u` inside `B`: unit and counit 2-cells and the two triangle identities,
-   each stated as an equation between a unitor/associator-conjugated whiskering
-   composite with endpoints `f ~> f` (resp. `u ~> u`) and the identity 2-cell.
+(*
+   本节说明相关定义、性质与动机。 `f ⊣ u` inside `B`: unit counit 2-cells two triangle identities,. each stated equation between unitor/结合子-conjugated whiskering 复合 endpoints `f ~> f` (resp. `u ~> u`) identity 2-cell.
 
-   The left triangle spells out that the zig-zag
-
-     f = f ∘ Id  ⟹  f ∘ (u ∘ f)  ⟹  (f ∘ u) ∘ f  ⟹  Id ∘ f = f
-
-   (unit whiskered on the left of `f`, reassociated, then counit whiskered on
-   the right of `f`, all conjugated by the right/left unitors) is `id[f]`. The
-   right triangle is the mirror statement for `u`. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class BicatAdjunction {x y : bi0cell} (f : bicat x y) (u : bicat y x) := {
   adj_unit   : bi1id ~{bicat x x}~> (u ∘∘∘ f);   (* η : Id_x ⟹ u ∘ f *)
@@ -300,18 +286,11 @@ Arguments adj_triangle_right {B x y} f u {_}.
 
 (** Uniqueness of adjoints up to invertible 2-cell *)
 
-(* Two right adjoints of the same 1-cell `f` are related by an invertible
-   2-cell. The comparison 2-cell is the *mate of the identity*: given right
-   adjoints `a` and `b` of `f`, the composite
+(*
+   本节说明相关定义、性质与动机。 Two right adjoints same 1-cell `f` are related invertible. 2-cell.
 
-     matecell : a  ⟹  Id_x ∘ a  ⟹  (b ∘ f) ∘ a  ⟹  b ∘ (f ∘ a)  ⟹  b ∘ Id_y  ⟹  b
-
-   whiskering the unit `η_b` of `b` on the right of `a`, reassociating, then
-   whiskering the counit `ε_a` of `a` on the left of `b`. The heart of the
-   argument is a characterisation: `matecell` is the *unique* 2-cell `γ : a ⟹ b`
-   compatible with the units, `(γ ⊳ f) ∘ η_a ≈ η_b` (`mate_charac`), together
-   with the fact that `matecell` itself is unit-compatible (`mate_unit_compat`).
-   Uniqueness then makes the two mates `a ⟹ b` and `b ⟹ a` mutually inverse. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AdjointUniqueness.
 
@@ -460,9 +439,13 @@ Proof.
   - rewrite (hunit_right_nat u), H. now rewrite <- (hunit_right_nat v).
 Qed.
 
-(* The triangle and pentagon coherences restated in whisker notation (the
-   fields are phrased through `hcomp2`, to which the whiskers unfold), so that
-   `rewrite` matches the whisker terms occurring below. *)
+(*
+   The triangle and pentagon coherences restated in 贴须 notation (the
+
+   本节说明相关定义、性质与动机。 fields are phrased through `hcomp2`, which 贴须 unfold), so that `rewrite` matches 贴须 terms occurring below.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma tri_lr {x' y' z' : bi0cell} (g : bicat y' z') (k : bicat x' y') :
   rwhisker (to (hunit_right g)) k
     ≈ lwhisker g (to (hunit_left k)) ∘∘ to (hassoc g bi1id k).
@@ -546,9 +529,11 @@ Proof.
   apply tri_lr.
 Qed.
 
-(* The `from`-direction of left-unit coherence, obtained by inverting the `to`
-   form: right-whiskering the inverse left unitor factors as the inverse of the
-   composite unitor after the inverse associator. *)
+(*
+   本节说明相关定义、性质与动机。 The `from`-direction left-unit coherence, obtained inverting `to`.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma left_unit_coherence_from {x' y' z' : bi0cell}
   (g : bicat y' z') (k : bicat x' y') :
   rwhisker (from (hunit_left g)) k
@@ -577,9 +562,13 @@ Lemma vcancel_tf {x' y' : bi0cell} {A0 A1 C : bicat x' y'}
   to i ∘∘ (from i ∘∘ r) ≈ r.
 Proof. rewrite vcompose_assoc, vto_vfrom. now rewrite bi2id_left. Qed.
 
-(* The associator naturality laws, solved for the doubly-whiskered cell; these
-   put each right-whiskered factor of the expanded mate into a normal form whose
-   flanking associators telescope against their neighbours. *)
+(*
+   The 结合子 naturality laws, solved for the doubly-whiskered cell; these
+
+   本节说明相关定义、性质与动机。 put each right-whiskered factor expanded mate into normal form whose flanking associators telescope against their neighbours.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma assoc_top_solve {w x' y' z' : bi0cell} {h h' : bicat y' z'}
   (θ : h ~> h') (g : bicat x' y') (l : bicat w x') :
   rwhisker (rwhisker θ g) l
@@ -678,10 +667,13 @@ Proof.
                             (from (hunit_right (b ∘∘∘ f)) ∘∘ uη Ab)).
     rewrite <- (assoc_nat_bot b f (uη Aa)).
     now rewrite <- vcompose_assoc. }
-  (* Main computation: expand the right-whiskered mate into associator-solved
-     factors, telescope the four adjacent associator pairs, then apply the tail
-     straightening, merge the `b`-whiskers, and collapse via the left triangle
-     and right-unit coherence. *)
+  (*
+   Main computation: expand the right-whiskered mate into 结合子-solved
+
+   本节说明相关定义、性质与动机。 factors, telescope four adjacent 结合子 pairs, then apply tail straightening, merge `b`-贴须, collapse via left triangle right-unit coherence.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   unfold matecell.
   rewrite !rwhisker_comp.
   rewrite (tri_lr b f).

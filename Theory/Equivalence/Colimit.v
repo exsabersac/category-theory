@@ -28,14 +28,13 @@ Generalizable All Variables.
 
 (** ** (A) Oppositization respects the functor setoid *)
 
-(* Given e : G ≈ G' — which, for [Functor_Setoid], is a natural
-   isomorphism bundled with its coherence — the opposite functors are
-   equivalent, by taking each component's INVERSE.  This is the 2-cell
-   reversal tamed by invertibility: [Isomorphism_Opposite] swaps [to] and
-   [from], and the coherence square is the original one read at the
-   flipped arrow, so only a reassociation separates the two statements
-   (composition in the opposite category unfolds to reversed
-   composition). *)
+(*
+   Given e : G ≈ G' — which, for [函子_Setoid], is a 自然
+
+   本节说明相关定义、性质与动机。 同构 bundled its coherence — 反 函子 are equivalent, taking each component's INVERSE.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Opposite_Functor_respects {J C : Category} {G G' : J ⟶ C}
   (e : G ≈ G') : Opposite_Functor G ≈ Opposite_Functor G'.
@@ -54,34 +53,21 @@ Instance Opposite_Functor_Proper {J C : Category} :
   Proper (equiv ==> equiv) (@Opposite_Functor J C) :=
   fun _ _ e => Opposite_Functor_respects e.
 
-(* The inverse passage costs nothing, and the reason is the tree's own
-   [Opposite_Functor_invol] (Functor/Opposite.v): oppositization is a
-   DEFINITIONAL involution on functors, so [Opposite_Functor_respects]
-   applied to an equivalence of opposites lands at
-   [(G^op)^op ≈ (G'^op)^op], which IS [G ≈ G'].  A [:=] with no tactic,
-   no transport and no coercion. *)
+(*
+   本节说明相关定义、性质与动机。 The inverse passage costs nothing, reason is tree's own.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Opposite_Functor_reflects {J C : Category} {G G' : J ⟶ C}
   (e : Opposite_Functor G ≈ Opposite_Functor G') : G ≈ G' :=
   Opposite_Functor_respects e.
 
-(* The two passages return the ISOMORPHISM FAMILY on the nose, in both
-   composition orders — [Isomorphism] has primitive projections with eta,
-   so [Isomorphism_Opposite] applied twice is the identity definitionally.
+(*
+   本节说明相关定义、性质与动机。 The two passages return ISOMORPHISM FAMILY nose, both. 复合 orders — [同构] has primitive projections eta, so [同构_反] applied twice is identity definitionally.
 
-   MEASURED REJECTION, with its cause DISCRIMINATED rather than guessed:
-   the round trip does NOT hold at the whole record, and there are TWO
-   independent obstructions, each with its own control.
-     (i) The COHERENCE component is rejected on its own.  Its proof is
-         built by [rewrite comp_assoc], so applying the passage twice
-         wraps the term in two [eq_ind]s that do not cancel; the
-         first-component Examples below are the control showing the data
-         half is unaffected.
-     (ii) Independently, stdlib [sigT] has no definitional eta:
-         [existT _ (`1 e) (`2 e) = e] is rejected for an ARBITRARY [e],
-         so the pair would fail to close even had (i) not.
-   Nothing weaker than (i) is claimed: no [≈]-level round trip is stated,
-   there being no setoid on [Functor_Setoid]'s coherence field. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example Opposite_Functor_reflects_respects {J C : Category}
   {G G' : J ⟶ C} (e : G ≈ G') (x : J) :
@@ -95,15 +81,13 @@ Example Opposite_Functor_respects_reflects {J C : Category}
 
 (** ** (B) Transport of colimits along a natural isomorphism *)
 
-(* The duals of Theory/Equivalence/Limit.v's [cone_transport],
-   [cone_transport_inv], [isalimit_transport] and [limit_transport],
-   obtained by riding (A) rather than by a second proof.  Every statement
-   below is COVARIANT: no opposite category appears in any type AS
-   WRITTEN — the covariant names [Cocone], [IsAColimit], [Colimit] and
-   [colimit_inj] carry it — even though every proof goes through one.
+(*
+   The duals of Theory/等价/极限.v's [cone_transport],
 
-   All four are supplied by [:=] with no tactic — the passage costs
-   exactly the (A) lemma and nothing else. *)
+   本节说明相关定义、性质与动机。 [cone_transport_inv], [isalimit_transport] [极限_transport], obtained riding (A) rather than second proof.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition cocone_transport {J C : Category} {G G' : J ⟶ C}
   (e : G ≈ G') (N : Cocone G) : Cocone G' :=
@@ -121,14 +105,11 @@ Definition colimit_transport {J C : Category} {G G' : J ⟶ C}
   (e : G ≈ G') (L : Colimit G) : Colimit G' :=
   limit_transport (Opposite_Functor_respects e) L.
 
-(* Covariant readbacks.  A cocone's injections run INTO the apex, so
-   pushing one across e postcomposes with the forward component while the
-   colimit's own injections PREcompose with the backward one — the
-   opposite handedness from the limit side, and the reason these are
-   worth stating rather than leaving the reader to unfold.
+(*
+   本节说明相关定义、性质与动机。 Covariant readbacks. A cocone's injections run INTO apex, so.
 
-   All four hold at Leibniz equality, recorded as [eq_refl] Examples
-   below; the [≈] forms are the rewriting-friendly ones. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cocone_transport_inj {J C : Category} {G G' : J ⟶ C}
   (e : G ≈ G') (N : Cocone G) (x : J) :
@@ -186,9 +167,13 @@ Example colimit_transport_apex {J C : Category} {G G' : J ⟶ C}
 
 (** ** (C) The induced map, without invertibility *)
 
-(* A bundled limit witness, read as a cone.  (Theory/Equivalence/Limit.v
-   has [isalimit_to_limit] for the [Limit] packaging; the [Cone]-level
-   repackaging is not in tree, and the two constructions below need it.) *)
+(*
+   A bundled 极限 witness, read as a cone.  (Theory/等价/极限.v
+
+   本节说明相关定义、性质与动机。 has [isalimit_to_极限] [极限] packaging; [Cone]-level repackaging is not tree, two constructions below need it.)
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition isalimit_cone {J C : Category} {G : J ⟶ C} {c : C}
   (H : IsALimit G c) : Cone G :=
@@ -201,11 +186,11 @@ Context {C : Category}.
 Context {G G' : J ⟶ C}.
 Context (a : G ⟹ G').
 
-(* Push a cone over G along α: postcompose each leg with the component.
-   This generalizes Theory/Equivalence/Limit.v's [cone_transport], which
-   is this construction at the forward components of an isomorphism (see
-   [cone_along_is_cone_transport] below); the coherence needs only
-   NATURALITY of α, never invertibility. *)
+(*
+   本节：Push cone over G along α: postcompose each leg component.. This generalizes Theory/等价/极限.v's [cone_transport], which is this construction at 正向 components 同构 (see [cone_along_is_cone_transport] below);
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition cone_along_leg (N : Cone G) (x : J) :
   vertex_obj[N] ~{C}~> G' x :=
@@ -232,10 +217,13 @@ Context {c c' : C}.
 Context (HL : IsALimit G c).
 Context (HL' : IsALimit G' c').
 
-(* The comparison: push the limit cone of G along α and mediate through
-   the limit of G'.  NOTE the hypotheses — two limits, handed in
-   explicitly; nothing says C has all J-shaped limits, and α is an
-   arbitrary transformation. *)
+(*
+   The comparison: push the 极限 cone of G along α and mediate through
+
+   本节说明相关定义、性质与动机。 the 极限 G'. NOTE hypotheses — two 极限, handed explicitly;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition limit_induced : c ~{C}~> c' :=
   limit_med HL' (cone_along (isalimit_cone HL)).
@@ -262,11 +250,13 @@ Arguments limit_induced {J C G G'} a {c c'} HL HL'.
 Arguments limit_induced_commutes {J C G G'} a {c c'} HL HL' x.
 Arguments limit_induced_unique {J C G G'} a {c c'} HL HL' v _.
 
-(* The comparison at the identity transformation is the identity, and it
-   composes.  These are the object-level shadows of functoriality of
-   [lim]; no limit FUNCTOR is built here.  [nat_id]'s component is
-   [fmap[G] id] rather than [id] (Theory/Natural/Transformation.v),
-   which is why [fmap_id] appears. *)
+(*
+   The comparison at the identity 变换 is the identity, and it
+
+   本节说明相关定义、性质与动机。 composes. These are 对象-level shadows functoriality [lim]; no 极限 FUNCTOR is built here.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma limit_induced_id {J C : Category} {G : J ⟶ C} {c : C}
   (HL : IsALimit G c) : limit_induced nat_id HL HL ≈ id.
@@ -294,12 +284,11 @@ Qed.
 
 (** *** The colimit dual, covariantly *)
 
-(* [Opposite_Transform] sends α : G ⟹ G' to G'^op ⟹ G^op, so the roles of
-   the two colimit witnesses are exchanged when the limit statement is
-   instantiated — which is exactly what makes the induced arrow run from
-   the colimit of G to the colimit of G'.  Every constant below is
-   supplied by [:=] or by a bare [exact]; the dual costs nothing, and no
-   opposite category appears in any of the types. *)
+(*
+   本节：[反_Transform] sends α : G ⟹ G' G'^op ⟹ G^op, so roles of. two 余极限 witnesses are exchanged when 极限 statement is instantiated — which is exactly what makes induced arrow run from 余极限 G 余极限 G'.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition colimit_induced {J C : Category} {G G' : J ⟶ C} (a : G ⟹ G')
   {c c' : C} (HC : IsAColimit G c) (HC' : IsAColimit G' c') :
@@ -350,16 +339,13 @@ Qed.
 
 (** ** How (B) and (C) fit together *)
 
-(* The forward components of a [Functor_Setoid] equivalence form a
-   natural transformation: the coherence field of [Functor_Setoid] is a
-   naturality square in disguise, and [fun_equiv_to_fmap]
-   (Theory/Functor.v) is exactly the square, in the other
-   orientation.  The tree appears to have no such passage — a sweep of
-   every [.v] for a declaration whose type mentions both [≈] and [⟹]
-   returns only one hit, a prose comment (Instance/Cat/TwoCategory.v)
-   — so this is a search over the SHAPE of the statement and does not
-   rule out an equivalent phrased another way.  Without it (C) could not
-   be applied to the data (B) consumes. *)
+(*
+   The 正向 components of a [函子_Setoid] 等价 form a
+
+   本节：自然变换: coherence field [函子_Setoid] is naturality square disguise, [fun_equiv_to_fmap] (Theory/函子.v) is exactly square, other orientation.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition fun_equiv_transform {J C : Category} {G G' : J ⟶ C}
   (e : G ≈ G') : G ⟹ G'.
@@ -374,28 +360,26 @@ Example fun_equiv_transform_component {J C : Category} {G G' : J ⟶ C}
   (e : G ≈ G') (x : J) :
   transform[fun_equiv_transform e] x = to (`1 e x) := eq_refl.
 
-(* Theory/Equivalence/Limit.v's [cone_transport] IS [cone_along] at those
-   components, LEG BY LEG and on the nose, so the invertible case of (C)
-   and the cone half of (B) are one construction.
+(*
+   Theory/等价/极限.v's [cone_transport] IS [cone_along] at those
 
-   MEASURED REJECTION, and it is a fact about proof fields rather than
-   about the construction: the WHOLE-RECORD form
-   [cone_along (fun_equiv_transform e) N = cone_transport e N] does NOT
-   close by [eq_refl].  [ACone] carries its coherence as a field, and the
-   two coherences are different opaque constants
-   ([cone_along_coherence] here, [cone_transport_coherence] in Limit.v),
-   so what the leg-level Example below establishes is the strongest form
-   available. *)
+   本节说明相关定义、性质与动机。 components, LEG BY LEG nose, so invertible case (C) cone half (B) are one construction.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example cone_along_is_cone_transport {J C : Category} {G G' : J ⟶ C}
   (e : G ≈ G') (N : Cone G) (x : J) :
   cone_leg (cone_along (fun_equiv_transform e) N) x
   = cone_leg (cone_transport e N) x := eq_refl.
 
-(* And the comparison induced between a limit and its OWN transport is
-   the identity.  This is what (1) adds to (2): the apex is pinned, so
-   the comparison has nowhere to go.  Note the statement names both a (B)
-   constant and a (C) constant, and neither side reduces to the other. *)
+(*
+   And the comparison induced between a 极限 and its OWN transport is
+
+   本节说明相关定义、性质与动机。 the identity. This is what (1) adds (2): apex is pinned, so comparison has nowhere go.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma limit_induced_of_transport {J C : Category} {G G' : J ⟶ C}
   (e : G ≈ G') {c : C} (HL : IsALimit G c) :
@@ -406,10 +390,13 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(* The colimit reading of the same fact.  The transformation is the
-   BACKWARD family here: transporting a colimit precomposes its
-   injections with [from], so the comparison that comes out as the
-   identity is the one induced by the inverse components. *)
+(*
+   The 余极限 reading of the same fact.  The 变换 is the
+
+   本节说明相关定义、性质与动机。 BACKWARD family here: transporting 余极限 precomposes its injections [from], so comparison that comes out identity is one induced inverse components.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition fun_equiv_transform_inv {J C : Category} {G G' : J ⟶ C}
   (e : G ≈ G') : G' ⟹ G.
@@ -431,19 +418,11 @@ Qed.
 
 (** ** Witnesses over the walking arrow *)
 
-(* Non-vacuity.  The cheapest index shape with a non-identity arrow is
-   [_2] (Instance/Two.v), and over it both a limit and a colimit of every
-   diagram exist for free: the limit is the SOURCE object with legs [id]
-   and the diagram's arrow, the colimit the TARGET object with
-   injections the arrow and [id].
+(*
+   本节说明相关定义、性质与动机。 Non-vacuity. The cheapest index shape non-identity arrow is.
 
-   These two lemmas are general (any ambient C, any diagram) and are
-   proved here because the tree has no limit over [_2].  That absence is
-   a search over the SPELLING, not over the meaning:
-   [rg -E '(IsALimit|IsAColimit|Limit|Colimit)[^a-zA-Z_][^\n]*_2\b']
-   over every [.v] returns nothing outside this file, which does not rule
-   out an equivalent statement phrased another way.  They are used only
-   by the witnesses below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition two_limit_leg {C : Category} (D : _2 ⟶ C) (x : _2) :
   D TwoX ~{C}~> D x :=
@@ -515,13 +494,13 @@ Defined.
 
 (** *** A non-invertible transformation with a non-invertible comparison *)
 
-(* Ambient [_2] as well as index [_2].  The diagram [Id[_2]] has colimit
-   apex TwoY; the constant diagram at TwoY has colimit apex TwoY too, so
-   for the sharp witness we take the LIMITS instead, whose apexes are
-   TwoX and TwoY — genuinely different objects.
+(*
+   Ambient [_2] as well as index [_2].  The diagram [Id[_2]] has 余极限
 
-   [_2] is thin (Instance/Two.v's [Two_thin]), so every morphism
-   obligation below closes with that one lemma. *)
+   本节说明相关定义、性质与动机。 apex TwoY; constant diagram at TwoY has 余极限 apex TwoY too, so sharp witness we take LIMITS instead, whose apexes are TwoX TwoY — genuinely different 对象.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition two_const : _2 ⟶ _2 := {|
   fobj := fun _ => TwoY;
@@ -536,10 +515,11 @@ Program Definition two_shift : Id[_2] ⟹ two_const := {|
 |}.
 Solve Obligations with (intros; apply Two_thin).
 
-(* The two diagrams are NOT naturally isomorphic, so section (B) does not
-   apply to this pair at all: an isomorphism would supply an arrow
-   TwoY ~> TwoX, and [_2] has none.  This is what makes the witness a
-   separation of (C) from (B) rather than an instance of both. *)
+(*
+   本节说明相关定义、性质与动机。 The two diagrams are NOT naturally isomorphic, so section (B) does not. apply this pair at all: 同构 would supply arrow TwoY ~> TwoX, [_2] has none.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma two_shift_diagrams_not_isomorphic : Id[_2] ≈ two_const → False.
 Proof.
@@ -553,12 +533,13 @@ Lemma two_shift_not_invertible :
   @IsIsomorphism _2 TwoX TwoY (transform[two_shift] TwoX) → False.
 Proof. exact TwoXY_not_iso. Qed.
 
-(* ... the two diagrams take TwoX to genuinely different objects, which
-   is what makes the two limit apexes different: [two_IsALimit] pins the
-   apex of a diagram [D] as [D TwoX], so the two object actions read off
-   below ARE the two apexes.  DISPLAY HAZARD: [Check] suppresses the
-   functor argument of [fobj], so the left-hand pair prints with the same
-   head twice. *)
+(*
+   ... the two diagrams take TwoX to genuinely different 对象, which
+
+   本节说明相关定义、性质与动机。 is what makes two 极限 apexes different: [two_IsALimit] pins apex diagram [D] [D TwoX], so two 对象 actions read off below ARE two apexes.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example two_shift_fobj_at_TwoX :
   (fobj[Id[_2]] TwoX, fobj[two_const] TwoX) = (TwoX, TwoY) := eq_refl.
@@ -573,10 +554,13 @@ Proof. discriminate. Qed.
 Definition two_shift_induced : TwoX ~{_2}~> TwoY :=
   limit_induced two_shift (two_IsALimit Id[_2]) (two_IsALimit two_const).
 
-(* It COMPUTES to the transformation's component at TwoX.  This is why
-   the two universal properties above are closed with [Defined]: with
-   [Qed] the mediator is opaque and only the [≈] form below survives,
-   which over a thin ambient says nothing. *)
+(*
+   It COMPUTES to the 变换's component at TwoX.  This is why
+
+   本节说明相关定义、性质与动机。 the two universal properties above are closed [Defined]: [Qed] mediator is opaque only [≈] form below survives, which over thin ambient says nothing.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example two_shift_induced_computes : two_shift_induced = TwoXY := eq_refl.
 
@@ -584,11 +568,11 @@ Theorem two_shift_induced_not_iso :
   @IsIsomorphism _2 TwoX TwoY two_shift_induced → False.
 Proof. intros [g _ _]; exact (TwoHom_Y_X_absurd g). Qed.
 
-(* The comparison does satisfy its defining triangle, so the witness
-   exercises the universal property and not merely the existence of an
-   arrow.  Over a thin ambient this is automatic, which is exactly why
-   the separation above (no natural isomorphism, distinct apexes) is
-   what carries the content. *)
+(*
+   本节说明相关定义、性质与动机。 The comparison does satisfy its defining triangle, so witness. exercises 普遍性质 not merely existence arrow.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma two_shift_induced_commutes (x : _2) :
   limit_leg (two_IsALimit two_const) x ∘ two_shift_induced
@@ -600,36 +584,11 @@ Qed.
 
 (** *** Colimit transport, exercised: distinct diagrams, moved legs *)
 
-(* WHAT THIS COSTS, MEASURED.  A sharp (B) witness needs two diagrams
-   that are naturally isomorphic and genuinely different, and constant
-   diagrams cannot be different (their arrow action is forced to [id]),
-   so the diagram must act non-trivially on [TwoXY].  The obvious route
-   is Theory/Shapes.v's [Walk], but requiring that module was
-   measured to add NINE modules to this file's 32 — Construction/Arrow,
-   Construction/Comma, Instance/One, Instance/Zero, Instance/Omega,
-   Instance/Ordinal, Instance/StrictCat and its ToCat satellite — plus
-   the Equations plugin, and rebuilding [Walk] here would duplicate a
-   donor.
+(*
+   本节说明相关定义、性质与动机。 WHAT THIS COSTS, MEASURED. A sharp (B) witness needs two diagrams. that are naturally isomorphic genuinely different, constant diagrams cannot be different (their arrow action is forced [id]), so diagram must act non-trivially [TwoXY].
 
-   NEITHER IS NEEDED, and the reason is worth carrying: [Walk] varies its
-   OBJECT action, which is what forces its [match] to carry a dependent
-   return annotation.  Hold the object action CONSTANT and the arrow
-   action has codomain [X ~> X] independently of the endpoints, so the
-   [match] is ordinary.  [two_endo] below is therefore not a special case
-   of [Walk] dressed up — it is the case [Walk]'s annotation exists to
-   avoid — and it costs zero extra modules.
-
-   ENGINEERING FINDING, second sighting of a hazard the tree already
-   records (Functor/Construction/Postcompose.v): written INLINE in the
-   [Program Definition], even this non-dependent match is compiled
-   through the dependent eliminator, and the obligations arrive carrying
-   [eq]/[JMeq] hypotheses no ordinary case analysis discharges.
-   Elaborating the arrow action as a plain [Definition] first
-   ([two_endo_map]) avoids that entirely.  A THIRD hazard, also already
-   recorded (Instance/Fun/Group.v): [_2]'s composition is itself
-   [Program]-generated, so [destruct f, g] in the [fmap_comp] obligation
-   yields an ill-typed application of [Two._2_obligation_1] — destruct
-   the OBJECTS first, which is what the proof below does. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition two_endo_map {C : Category} {X : C} (u : X ~> X)
   (x y : _2) (f : x ~{_2}~> y) : X ~{C}~> X :=
@@ -690,38 +649,32 @@ Proof.
   intros x y f; destruct f; simpl; intro b; destruct b; reflexivity.
 Defined.
 
-(* ... and they are genuinely different diagrams: their arrow actions at
-   [TwoXY] are not even [≈]-equal, which is strictly stronger than
-   refuting a Leibniz equality of the two functor records.
+(*
+   本节说明相关定义、性质与动机。 ... they are genuinely different diagrams: their arrow actions at. [TwoXY] are not even [≈]-equal, which is strictly stronger than refuting Leibniz equality two 函子 records.
 
-   NOT DELIVERED, and measured rather than overlooked: the Leibniz form
-   [two_id_diagram = two_negb_diagram → False] is not stated.  The two
-   are universe-POLYMORPHIC constants that receive different universe
-   instances, so [rewrite] cannot abstract over one of them — it reports
-   that abstracting leads to an ill-typed term.  Nothing is lost: two
-   functors that were Leibniz equal would have [≈]-equal arrow actions,
-   so the statement below refutes the Leibniz form a fortiori. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma two_diagrams_differ :
   fmap[two_id_diagram] TwoXY ≈ fmap[two_negb_diagram] TwoXY → False.
 Proof. intro K; specialize (K true); simpl in K; discriminate. Qed.
 
-(* The colimit of the first diagram, and the transport of it along the
-   isomorphism.  THE TRANSPORT VISIBLY MOVES A LEG: the injection at
-   TwoY goes from the identity to negation, and the two are provably
-   not [≈]-equal.  This is what makes the (B) witness a demonstration
-   rather than a restatement — the transport genuinely consumes [e] and
-   is not a projection. *)
+(*
+   The 余极限 of the first diagram, and the transport of it along the
+
+   本节说明相关定义、性质与动机。 同构. THE TRANSPORT VISIBLY MOVES A LEG: injection at TwoY goes from identity negation, two are provably not [≈]-equal.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition two_id_colimit : IsAColimit two_id_diagram two_bool_set :=
   two_IsAColimit two_id_diagram.
 
-(* MEASURED REJECTION: the strict form of the next statement,
-   [... TwoY = two_negb_map], is rejected.  The transported leg is
-   [id ∘ two_negb_map], and composition in [Sets] rebuilds a
-   [SetoidMorphism] record rather than reducing, so the [id ∘ _] residue
-   survives.  The control is the line after it, where the ORIGINAL leg
-   IS [id] strictly. *)
+(*
+   本节说明相关定义、性质与动机。 MEASURED REJECTION: strict form next statement,. [... TwoY = two_negb_map], is rejected. The transported leg is [id ∘ two_negb_map], 复合 [Sets] rebuilds [SetoidMorphism] record rather than reducing, so [id ∘ _] residue survives.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma two_transport_inj_computes :
   colimit_inj (isacolimit_transport two_diagrams_equiv two_id_colimit)

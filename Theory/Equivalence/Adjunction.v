@@ -69,10 +69,13 @@ Definition Transported_Adjunction :
   Adjunction_Compose (Adjunction_Compose transported_adj_dom A)
     transported_adj_cod.
 
-(* The forward transpose of the composite is the pasting of the three
-   constituent forward transposes, definitionally: transpose through the
-   codomain equivalence, then through the original adjunction, then
-   through the domain equivalence. *)
+(*
+   The 正向 transpose of the 复合 is the pasting of the three
+
+   本节：constituent 正向 transposes, definitionally: transpose through codomain 等价, then through original 伴随, then through domain 等价.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary Transported_Adjunction_to {d : D'} {c : C'}
   (f : G (F (Kinv d)) ~{C'}~> c) :
   to (@adj _ _ _ _ Transported_Adjunction d c) f
@@ -90,9 +93,13 @@ Corollary Transported_Adjunction_from {d : D'} {c : C'}
            (from (@adj _ _ _ _ transported_adj_dom d (U (Ginv c))) g)).
 Proof. reflexivity. Qed.
 
-(* The unit of the composite: the domain-side unit, followed by the
-   K-image of the unit of A, followed by the (K ◯ U)-image of the
-   codomain-side unit — [Adjunction_Compose_unit] applied twice. *)
+(*
+   The unit of the 复合: the domain-side unit, followed by the
+
+   本节说明相关定义、性质与动机。 K-image unit A, followed (K ◯ U)-image codomain-side unit — [伴随_Compose_unit] applied twice.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary Transported_Adjunction_unit {d : D'} :
   @unit _ _ _ _ Transported_Adjunction d
     ≈ fmap[K ◯ U] (@unit _ _ _ _ transported_adj_cod (F (Kinv d)))
@@ -108,9 +115,13 @@ Proof.
     apply (Adjunction_Compose_unit transported_adj_dom A).
 Qed.
 
-(* The counit of the composite, dually: the G-image of (the F-image of the
-   domain-side counit, followed by the counit of A), followed by the
-   codomain-side counit — [Adjunction_Compose_counit] applied twice. *)
+(*
+   The counit of the 复合, dually: the G-image of (the F-image of the
+
+   本节说明相关定义、性质与动机。 domain-side counit, followed counit A), followed codomain-side counit — [伴随_Compose_counit] applied twice.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary Transported_Adjunction_counit {c : C'} :
   @counit _ _ _ _ Transported_Adjunction c
     ≈ @counit _ _ _ _ transported_adj_cod c

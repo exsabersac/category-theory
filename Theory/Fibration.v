@@ -72,10 +72,13 @@ Class Cleaving {C : Category} (D : Displayed C) := {
 
 (** ** Cartesian morphisms and cloven fibrations, functor presentation *)
 
-(* The ≈-honest universal property: the factorization of [fmap[P] ψ]
-   through [fmap[P] φ] is carried by an explicit base-morphism witness [g]
-   and an explicit equation, and the mediating lift is unique among
-   morphisms lying over [g] up to [≈]. *)
+(*
+   The ≈-honest 普遍性质: the factorization of [fmap[P] ψ]
+
+   本节说明相关定义、性质与动机。 through [fmap[P] φ] is carried explicit base-态射 witness [g] explicit equation, mediating lift is unique among 态射 lying over [g] up [≈].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class CartesianMorphism {C E : Category} (P : E ⟶ C)
       {e e' : E} (φ : e ~> e') := {
   cart_factor {e'' : E} (ψ : e'' ~> e') (g : P e'' ~> P e)
@@ -83,10 +86,13 @@ Class CartesianMorphism {C E : Category} (P : E ⟶ C)
     ∃! χ : e'' ~> e, (φ ∘ χ ≈ ψ) ∧ (fmap[P] χ ≈ g)
 }.
 
-(* A chosen cartesian lift of [f : x ~> P e'].  The lift object is
-   anchored in the fibre over [x] STRICTLY, by a propositional object
-   equality [P lift_obj = x] (sanctioned here; see the header), and the
-   lift lies over [f] up to the isomorphism induced by that equality. *)
+(*
+   A chosen 笛卡尔 lift of [f : x ~> P e'].  The lift 对象 is
+
+   本节说明相关定义、性质与动机。 anchored fibre over [x] STRICTLY, propositional 对象 equality [P lift_obj = x] (sanctioned here;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record CartesianLift {C E : Category} (P : E ⟶ C) {x : C} {e' : E}
        (f : x ~> P e') := {
   lift_obj : E;
@@ -107,18 +113,11 @@ Class ClovenFibration {C E : Category} (P : E ⟶ C) := {
   cloven_lift {x : C} {e' : E} (f : x ~> P e') : CartesianLift P f
 }.
 
-(* A split cleavage: the chosen lifts are functorial on the nose.  Both
-   laws live across the strict anchoring's transports, via [iso_of_eq]:
+(*
+   本节说明相关定义、性质与动机。 A split cleavage: chosen lifts are functorial nose. Both.
 
-   - the lift of [id[P e']] has lift object equal to [e'] itself, and its
-     lift morphism is the corresponding transport isomorphism (an identity
-     seen across the object equality [q]);
-
-   - the composite [f ∘ g] is lifted, up to the object equality [q] of the
-     two chosen lift objects, by the composite of the lift of [f] with the
-     lift of [g] — where [g : y ~> x] is first carried into the fibre over
-     [x] along the anchoring of the lift of [f], so that it can be lifted
-     with codomain [lift_obj (cloven_lift f)]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class SplitCleaving {C E : Category} (P : E ⟶ C)
       `{H : @ClovenFibration C E P} := {
   split_lift_id {e' : E} :
@@ -138,9 +137,13 @@ Class SplitCleaving {C E : Category} (P : E ⟶ C)
 
 (** ** Bridge: a cleaving makes the total projection a cloven fibration *)
 
-(* A displayed-cartesian morphism is cartesian for the projection functor:
-   the base factorization is transported into a displayed morphism over
-   the composite, which then factors uniquely through [ff]. *)
+(*
+   A displayed-笛卡尔 态射 is 笛卡尔 for the projection 函子:
+
+   本节说明相关定义、性质与动机。 the base factorization is transported into displayed 态射 over 复合, which then factors uniquely through [ff].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma total_cartesian {C : Category} {D : Displayed C}
   {t t' : Total D} (φ : t ~> t') (Hφ : DCartesian (`2 φ)) :
   CartesianMorphism (Total_Proj D) φ.
@@ -174,10 +177,13 @@ Defined.
 
 #[local] Obligation Tactic := program_simpl.
 
-(* The bridge: chosen displayed lifts become chosen functor-level lifts of
-   the projection.  The lift of [f : x ~> `1 e'] at [e'] is the pair
-   [(x; dx)] over the cleaving's chosen [dx], so the strict anchoring is
-   [eq_refl] and its transport isomorphism is an identity. *)
+(*
+   The bridge: chosen displayed lifts become chosen 函子-level lifts of
+
+   本节说明相关定义、性质与动机。 the projection. The lift [f : x ~> `1 e'] at [e'] is pair [(x;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition cleaving_total_cloven {C : Category} {D : Displayed C}
         `{H : @Cleaving C D} : ClovenFibration (Total_Proj D) := {|
   cloven_lift := fun x e' f =>
@@ -198,11 +204,13 @@ Qed.
 
 #[local] Obligation Tactic := idtac.
 
-(* The op-displayed category: same displayed objects; a displayed morphism
-   from [dx] to [dy] over [f : x ~{C^op}~> y] is a displayed morphism from
-   [dy] to [dx] over the underlying arrow [f : y ~{C}~> x].  Transport is
-   unchanged (an op-hom setoid IS the underlying hom setoid), and displayed
-   composition flips its arguments, mirroring [Construction/Opposite.v]. *)
+(*
+   The op-displayed 范畴: same displayed 对象; a displayed 态射
+
+   本节说明相关定义、性质与动机。 from [dx] [dy] over [f : x ~{C^op}~> y] is displayed 态射 from [dy] [dx] over underlying arrow [f : y ~{C}~> x].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Displayed_op {C : Category} (D : Displayed C) :
   Displayed (C^op) := {|
   dobj := @dobj C D;

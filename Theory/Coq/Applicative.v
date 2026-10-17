@@ -23,21 +23,23 @@ Class Applicative@{d c} {F : Type@{d} → Type@{c}} := {
 
 Arguments Applicative : clear implicits.
 
-(* [liftA2] maps a binary function over two applicative arguments,
-   [liftA2 f a b = pure f <*> a <*> b].  Categorically it is the curried form
-   of the laxator [μ : F x ⊗ F y → F (x ⊗ y)] postcomposed with [fmap]: it is
-   interdefinable with [ap], and [μ = liftA2 pair]. *)
+(*
+   本节说明相关定义、性质与动机。 [liftA2] maps binary function over two applicative arguments,. [liftA2 f b = pure f <*> <*> b].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition liftA2 `{Applicative F} {x y z}
   (f : x → y → z) (a : F x) (b : F y) : F z :=
   ap (ap (pure f) a) b.
 
-(* nLab: https://ncatlab.org/nlab/show/distributive+monoidal+category
+(*
+   nLab: https://ncatlab.org/nlab/show/distributive+monoidal+category
    Wikipedia: https://en.wikipedia.org/wiki/Monoid_(category_theory)
 
-   The Alternative type class adds a monoid structure on each [F x] that is
-   compatible with the applicative structure: [empty] is the neutral element
-   and [choose] (Haskell's [<|>]) the binary operation.  As with the other
-   classes here the monoid laws are NOT recorded as fields. *)
+   本节说明相关定义、性质与动机。 The Alternative type class adds 幺半群 structure each [F x] 即 compatible applicative structure: [empty] is neutral element [choose] (Haskell's [<|>]) binary operation.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Alternative@{d c} {F : Type@{d} → Type@{c}} := {
   empty  {x : Type@{d}} : F x;                         (* neutral element of the [choose] monoid *)
   choose {x : Type@{d}} : F x → F x → F x;              (* binary [<|>] operation *)
@@ -87,30 +89,37 @@ Instance Identity_Applicative : Applicative id | 9 := {
   ap := λ _ _ f x, f x;
 }.
 
-(* The reader / function applicative [λ a, x → a] (Haskell's [(->) x]):
-   [pure] is the constant function and [ap] threads the shared environment
-   [r] through both the function and the argument. *)
+(*
+   本节说明相关定义、性质与动机。 The reader / function applicative [λ a, x → a] (Haskell's [(->) x]):.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Instance arrow_Applicative x : Applicative (arrow x) := {
   pure := λ _ x _, x;
   ap := λ _ _ f x r, f r (x r);
 }.
 
-(* The constant applicative [Const x] over a [Monoid x]: [pure] discards its
-   value and returns [mempty]; [ap] combines the two accumulators with [⊗].
-   This is the canonical example of a lax monoidal functor that is not a
-   monad -- it is the lax monoidal functor [Types → Types] picking out the
-   monoid [x], with [η = mempty] and [μ = (⊗)]. *)
+(*
+   The constant applicative [Const x] over a [幺半群 x]: [pure] discards its
+
+   本节说明相关定义、性质与动机。 value returns [mempty]; [ap] combines two accumulators [⊗].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Instance Const_Applicative `{Monoid x} : Applicative (Const x) := {
   pure := λ _ _, mkConst mempty;
   ap := λ _ _ '(mkConst x) '(mkConst y), mkConst (x ⊗ y);
 }.
 
-(* Applicatives are closed under composition: [F ∘ G] is again applicative
-   (unlike monads).  [pure] is [pure[F] ∘ pure[G]], and [ap] uses [F]'s [ap]
-   twice, first lifting [G]'s [ap] under [F] (via [pure ap[G]]) and then
-   applying it.  Categorically this is the composite of the two laxators. *)
+(*
+   Applicatives are closed under 复合: [F ∘ G] is again applicative
+
+   本节说明相关定义、性质与动机。 (unlike 单子). [pure] is [pure[F] ∘ pure[G]], [ap] uses [F]'s [ap] twice, first lifting [G]'s [ap] under [F] (via [pure ap[G]]) then applying it.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Instance Compose_Applicative `{Applicative F} `{Applicative G} :
   Applicative (F ∘ G)  := {
@@ -118,10 +127,11 @@ Instance Compose_Applicative `{Applicative F} `{Applicative G} :
   ap   := λ _ _, ap[F] ∘ ap[F] (pure ap[G])
 }.
 
-(* This is the standard Haskell-style [Alternative (Compose f g)]: it lifts F's
-   Alternative structure pointwise over G, and does NOT use G's Alternative
-   structure at all -- there is no canonical way to combine an [F (G x)] and
-   [F (G x)] using G's choose without committing to a specific shape. *)
+(*
+   本节说明相关定义、性质与动机。 This is standard Haskell-style [Alternative (Compose f g)]: it lifts F's.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Instance Compose_Alternative `{Alternative F} `{Alternative G} :
   Alternative (F ∘ G) := {
@@ -129,9 +139,11 @@ Instance Compose_Alternative `{Alternative F} `{Alternative G} :
   choose := λ x, @choose F _ (G x);
 }.
 
-(* The Yoneda / co-Yoneda encoding of an applicative [F] is again applicative:
-   the continuation-passing presentation [Yoneda F x = ∀ r, (x → r) → F r]
-   transports [pure] and [ap] through the natural isomorphism [Yoneda F ≅ F]. *)
+(*
+   本节说明相关定义、性质与动机。 The Yoneda / co-Yoneda encoding applicative [F] is again applicative:.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Instance Yoneda_Applicative `{Applicative F} : Applicative (Yoneda F) := {
   pure := λ _ x, λ r k, pure (k x);

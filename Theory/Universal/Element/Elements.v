@@ -21,30 +21,24 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* WHAT IS DELIVERED
+(*
+   本节说明相关定义、性质与动机。 WHAT IS DELIVERED. [Elements_Initial], [AUniversalElement_of_Elements_Initial] [UniversalElement_of_Elements_Initial], 对象 element kept [eq_refl] both directions, mediating 态射 identified factorization [aue_universal] ([Elements_
 
-   [Elements_Initial], [AUniversalElement_of_Elements_Initial] and
-   [UniversalElement_of_Elements_Initial], with the object and element kept
-   by [eq_refl] in both directions, and the mediating morphism identified
-   with the factorization of [aue_universal] ([Elements_zero_is_med]).
-
-   WHAT IS NOT DELIVERED
-
-   No isomorphism of setoids between [AUniversalElement H r] and the
-   initial-object structures: [Initial] carries a chosen [one] field, so two
-   [Initial (Elements H)] values at the same object need not be equal and
-   there is no in-tree setoid on them to state such an iso against.  The
-   round trips below are therefore recorded on the DATA (object, element),
-   which is what the two directions actually preserve. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ElementsInitial.
 
 Context {D : Category}.
 Context (H : D ⟶ Sets).
 
-(* Forward.  The object (r, e) is initial: the unique arrow to (d, x) is the
-   unique k with (H k) e ≈ x, and the [Elements] hom-setoid compares only
-   the underlying D-morphism, so uniqueness there IS [uniqueness]. *)
+(*
+   正向.  The 对象 (r, e) is initial: the unique arrow to (d, x) is the
+
+   本节说明相关定义、性质与动机。 unique k (H k) e ≈ x, [Elements] hom-setoid compares only underlying D-态射, so uniqueness there IS [uniqueness].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 (* Built with [unshelve refine] rather than [Program] so that the names in
    the uniqueness obligation are this file's and not the elaborator's. *)
 Definition Elements_Initial {r : D} (U : AUniversalElement H r)
@@ -67,10 +61,13 @@ Lemma Elements_zero_is_med {r : D} (U : AUniversalElement H r) (d : D) (x : H d)
     = unique_obj (aue_universal d x).
 Proof. reflexivity. Qed.
 
-(* Backward.  The initial object's two projections are the universal object
-   and the universal element; its [zero] is the factorization and
-   [zero_unique] its uniqueness.  The only step with content is that the
-   carried condition [`2 (zero ...)] is exactly the required equation. *)
+(*
+   反向.  The 始对象's two projections are the universal 对象
+
+   本节说明相关定义、性质与动机。 and 泛元素; its [zero] is factorization [zero_unique] its uniqueness.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition AUniversalElement_of_Elements_Initial (I : @Initial (Elements H))
   : AUniversalElement H (`1 (@initial_obj (Elements H) I)).
 Proof.

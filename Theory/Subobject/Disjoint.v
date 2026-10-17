@@ -33,9 +33,13 @@ Section ZeroMonic.
 Context {C : Category}.
 Context `{Z : @ZeroObject C}.
 
-(* Two arrows into the zero object agree because the zero object is also
-   terminal; carrying them across the coincidence isomorphism makes that
-   visible, and the cancellation hypothesis of [Monic] is never used. *)
+(*
+   Two arrows into the zero 对象 agree because the zero 对象 is also
+
+   本节说明相关定义、性质与动机。 terminal; carrying them across coincidence 同构 makes that visible, 消去 假设 [Monic] is never used.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma zero_initial_monic (w : C) : Monic (@zero C (@zero_initial C Z) w).
 Proof.
   constructor; intros v g1 g2 _.

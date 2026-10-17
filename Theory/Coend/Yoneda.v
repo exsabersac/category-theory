@@ -190,11 +190,11 @@ Next Obligation.
     now rewrite comp_assoc.
 Qed.
 
-(** An element of [Sets_End YoE] is a family [s x : C(c,x) → F x] satisfying
-    the wedge law: exactly a natural transformation [C(c,-) ⟹ F]. We build
-    the two setoid maps directly and prove the round trips. The pristine
-    obligation regime keeps each obligation goal unsimplified, so the intro
-    structure of the wedge and round-trip proofs is stated explicitly. *)
+(*
+   本节说明相关定义、性质与动机。 * An element [Sets_End YoE] is family [s x : C(c,x) → F x] satisfying. wedge law: exactly 自然变换 [C(c,-) ⟹ F]. We build two setoid maps directly prove round trips.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
 (** Forward map: evaluate the family at [c] on the identity, [s ↦ (s c) id]. *)

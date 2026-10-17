@@ -358,9 +358,13 @@ Proof.
 Qed.
 *)
 
-(* Forall_ordered: moved earlier in the file (to its definition site above)
-   because it is consumed by StronglySorted_cat.  This note marks its former
-   location; the lemmas that follow remain commented out for continuity. *)
+(*
+   Forall_ordered: moved earlier in the file (to its 定义 site above)
+
+   本节说明相关定义、性质与动机。 because it is consumed StronglySorted_cat. This note marks its former location;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (*
 Lemma StronglySorted_rcons_rcons : forall a R `{Transitive _ R} (x : a) y xs,
@@ -837,12 +841,11 @@ Proof.
       * assumption.
 Qed.
 
-(* Permutation infrastructure for the insertion-sort helpers below.  [Permutation]
-   is the equivalence on lists that quotients [app] down to the free *commutative*
-   monoid; registering it as an [Equivalence] (with [insert] and [Forall] shown to
-   respect it) lets the sorting lemmas rewrite freely under reordering.  Coq's
-   [Permutation] is reflexive by construction, so only symmetry and transitivity
-   need discharging here. *)
+(*
+   本节说明相关定义、性质与动机。 Permutation infrastructure insertion-sort helpers below. [Permutation]. is 等价 lists that quotients [app] down free *commutative* 幺半群;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance Permutation_Equivalence {A} : Equivalence (@Permutation A).
 Next Obligation. now apply (@Permutation_sym A). Qed.
@@ -1031,13 +1034,13 @@ Proof.
     exact (H1 x).
 Qed.
 
-(* The lawful functor instance: [list] is a genuine endofunctor on [Coq],
-   with [fmap = List.map].  As in the sibling [Maybe]/[Either]/[Tuple] proof
-   files, the witness reuses the source [list_Functor] instance for [a_fmap]
-   and discharges the three [AFunctor] obligations -- [map] respects pointwise
-   equality of functions, [map id = id], and [map (g ∘ f) = map g ∘ map f] --
-   each by induction on the list.  (The name reuses the source [list_Functor]
-   instance from [Theory.Coq.List].) *)
+(*
+   The lawful 函子 instance: [list] is a genuine 自函子 on [Coq],
+
+   本节说明相关定义、性质与动机。 with [fmap = List.map]. As sibling [Maybe]/[Either]/[Tuple] proof files, witness reuses source [list_函子] instance [a_fmap] discharges three [AFunctor] obligations -- [map] respects pointwise equality functions, [map id = id], [map (g ∘ f) =
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition list_Functor : IsFunctor list_Functor := {|
   a_fmap := list_Functor;
 |}.

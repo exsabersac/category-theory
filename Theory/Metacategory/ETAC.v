@@ -48,12 +48,13 @@ Proof.
   destruct ex, ey; reflexivity.
 Qed.
 
-(* Cast algebra, each law by destructing its equalities: a two-sided
-   cast splits into its sides, independent side-casts commute, and a
-   codomain cast crosses a composition as a domain cast.  Exported as
-   reusable algebra for downstream consumers of [acast]; the proofs in
-   THIS file reach literal-pair bundles instead (via [arr_eta]) and
-   never consume it — disclosed in design note 3. *)
+(*
+   Cast 代数, each law by destructing its equalities: a two-sided
+
+   本节说明相关定义、性质与动机。 cast splits into its sides, independent side-casts commute, codomain cast crosses 复合 domain cast. Exported reusable 代数 downstream consumers [acast];
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma acast_split {C : Category} {x y x' y' : obj[C]}
   (ex : x = x') (ey : y = y') (f : x ~> y) :
   acast ex ey f = acast eq_refl ey (acast ex eq_refl f).
@@ -84,11 +85,11 @@ Proof.
   destruct f as [[x y] f]; reflexivity.
 Qed.
 
-(* The three arrow-equation satisfactions, standalone: stated over
-   generic bundles so their op-transport lemmas can destruct everything
-   in sight (the endpoint pairs first, then the equalities), which the
-   in-place forms cannot — abstracting an endpoint of an environment
-   value crosses the other components. *)
+(*
+   本节说明相关定义、性质与动机。 The three arrow-equation satisfactions, standalone: stated over.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition sat_id {C : Category} (a : obj[C]) (f : Arr C) : Type :=
   { ed : arr_dom f = a
@@ -107,10 +108,11 @@ Definition sat_eqarr {C : Category} (f g : Arr C) : Type :=
   & { ec : arr_cod f = arr_cod g
     & acast ed ec (arr_map f) ≈ arr_map g } }.
 
-(* Bundles are propositionally their own eta-expansions; rewriting along
-   this puts any environment value into literal-pair form, where the
-   generic lemmas below apply and every destruct is between plain
-   variables. *)
+(*
+   本节说明相关定义、性质与动机。 Bundles are propositionally their own eta-expansions; rewriting along.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma arr_eta {C : Category} (s : Arr C) :
   s = ((arr_dom s, arr_cod s); arr_map s).
 Proof.
@@ -583,11 +585,13 @@ Qed.
 
 (** ** The one-functor case (maclane:II.1:remark2, scoped) *)
 
-(* The one-functor recording (design note 4): the object and arrow
-   actions of F^op are literally those of F, stated at BUNDLE level —
-   this is a definitional commutation, not a statement-level theorem;
-   the statement-level functor language is the deferred half of the
-   remark, and the disclosure in the header is its honest delivery. *)
+(*
+   The one-函子 recording (design note 4): the 对象 and arrow
+
+   本节说明相关定义、性质与动机。 actions F^op are literally those F, stated at BUNDLE level — this is definitional commutation, not statement-level theorem;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 (* The arrow action of a functor, on bundles. *)
 Definition arr_fmap {C D : Category} (F : C ⟶ D) (s : Arr C) : Arr D :=
   ((F (arr_dom s), F (arr_cod s)); fmap[F] (arr_map s)).

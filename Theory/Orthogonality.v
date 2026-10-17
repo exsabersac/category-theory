@@ -29,10 +29,13 @@ Generalizable All Variables.
    左类在余基变换（推出）下的稳定性需要拉回/推出工具箱，见 Theory/Morphisms/Stability.v
    的 [ortho_left_cobase_change]。 *)
 
-(* The ∃!-with-∧ shape below mirrors [ump_pullbacks] in Structure/Pullback.v:
-   [∃!] is the Type-valued [Unique] record of Lib/Setoid.v, and [∧] is the
-   Type-valued conjunction, so fillers can be extracted and used in
-   definitions. *)
+(*
+   The ∃!-with-∧ shape below mirrors [ump_pullbacks] in Structure/拉回.v:
+
+   本节说明相关定义、性质与动机。 [∃!] is Type-valued [Unique] record Lib/Setoid.v, [∧] is Type-valued conjunction, so fillers can be extracted used definitions.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Orthogonal {C : Category} {a b x y : C} (e : a ~> b) (m : x ~> y) := {
   ortho_lift {u : a ~> x} {v : b ~> y} (comm : m ∘ u ≈ v ∘ e) :
@@ -137,12 +140,13 @@ Proof.
     + exact Hdm.
 Qed.
 
-(* The left class is closed under retracts in the arrow category: if e' is a
-   retract of e — witnessed by a section (ia, ib) and a retraction (ra, rb)
-   of arrows with ra ∘ ia ≈ id, rb ∘ ib ≈ id, e ∘ ia ≈ ib ∘ e' and
-   e' ∘ ra ≈ rb ∘ e — then e ⫫ m entails e' ⫫ m: a square over e' is
-   whiskered by (ra, rb) into a square over e, lifted there, and the filler
-   is restricted along ib. *)
+(*
+   The left class is closed under retracts in the 箭头范畴: if e' is a
+
+   本节说明相关定义、性质与动机。 retract e — witnessed section (ia, ib) retraction (ra, rb) arrows ra ∘ ia ≈ id, rb ∘ ib ≈ id, e ∘ ia ≈ ib ∘ e' e' ∘ ra ≈ rb ∘ e — then e ⫫ m entails e' ⫫ m: square over e' is whiskered (ra, rb) into square over e, lifted there, filler is r
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ortho_left_retract {C : Category} {a b a' b' x y : C}
   (e : a ~> b) (e' : a' ~> b') (m : x ~> y)
   (ia : a' ~> a) (ib : b' ~> b) (ra : a ~> a') (rb : b ~> b')

@@ -45,18 +45,11 @@ Definition equivalence_PreservesLimitCone {J : Category} (K : J ⟶ C) :
   right_adjoint_PreservesLimitCone
     (AdjointEquivalence_swap_adjunction (Equivalence_to_AdjointEquivalence E)) K.
 
-(* Reflection, from full faithfulness.  The leg side condition of
-   [ff_reflect_ump] (Theory/Equivalence/Limit.v) is [reflexivity] here
-   exactly because [FCone]'s legs are the image legs.
+(*
+   本节说明相关定义、性质与动机。 Reflection, from full faithfulness. The leg side condition of. [ff_reflect_ump] (Theory/等价/极限.v) is [reflexivity] here exactly because [FCone]'s legs are image legs.
 
-   CORRECTION (#481): the body wrote that term out, [@ff_reflect_ump C D
-   F (Equivalence_Full E) (Equivalence_Faithful E) J K M (limitcone_isalimit
-   H) (fun x => reflexivity _)], which is Theory/Equivalence/Limit.v's
-   [ff_ReflectsLimitCone] at this functor's fullness and faithfulness:
-   the two read back as one at [eq_refl] (measured).  The body now calls
-   that constant, eta-expanded, and the [About] blocks of this file's five
-   constants are unchanged (compared by script against the earlier
-   body). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition equivalence_ReflectsLimitCone {J : Category} (K : J ⟶ C) :
   ReflectsLimitCone K F :=

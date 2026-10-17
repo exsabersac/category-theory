@@ -58,12 +58,11 @@ Fixpoint tperm_length {A : Type} {Γ Δ : list A} (p : tperm Γ Δ) :
   | tperm_trans q r => eq_trans (tperm_length q) (tperm_length r)
   end.
 
-(** ** UIP for the colour type of an operad
+(*
+   本节说明相关定义、性质与动机。 * ** UIP colour type operad. The colour type is propositionally [poly_unit] ([operad_one]), UIP transports backwards along type equality [destruct];
 
-    The colour type is propositionally [poly_unit] ([operad_one]), and UIP
-    transports backwards along a type equality by [destruct]; on
-    [poly_unit] itself, equality is decidable, so Hedberg ([UIP_dec],
-    axiom-free) applies. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma operad_obj_UIP (O : Operad) (x y : @mobj (operad_multi O))
   (e1 e2 : x = y) : e1 = e2.
@@ -116,11 +115,11 @@ Definition oalg_ctx (Γ : list (@mobj MO)) :
   eq_trans (all_repeat O Γ)
            (f_equal (repeat pt) (eq_sym (map_length_t oalg_obj Γ))).
 
-(* An operad action: the action maps at every arity, respecting [≈], with
-   the three preservation laws restated at the accessor level of
-   Theory/Multicategory/Operad.v.  The symmetry law conjugates the
-   permutation action of the endomorphism operad by the reindexing casts
-   normalising [length (map oalg_obj (repeat pt n))] to [n]. *)
+(*
+   本节说明相关定义、性质与动机。 An operad action: action maps at every arity, respecting [≈], with. three preservation laws restated at accessor level Theory/多元范畴/Operad.v.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record OperadAction : Type := {
   oact (n : nat) : ohom O n → (pow X n ~> X);
 
@@ -193,10 +192,13 @@ Qed.
 
 Local Obligation Tactic := idtac.
 
-(* Assembling the full multifunctor from the action maps: the object map
-   is forced, the multimorphism map recasts every context to its repeat
-   form and every target to the point, and the three multifunctor laws
-   are discharged from the accessor-level laws by the cast calculus. *)
+(*
+   Assembling the full multifunctor from the action maps: the 对象 map
+
+   本节说明相关定义、性质与动机。 is forced, multimorphism map recasts every context its repeat form every target point, three multifunctor laws are discharged from accessor-level laws cast calculus.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Build_OperadAlgebra (α : OperadAction) :
   OperadAlgebra O X := {|
   mf_obj := oalg_obj;
@@ -301,11 +303,13 @@ Qed.
 
 End Build.
 
-(** ** The category of O-algebras
+(*
+   * ** The 范畴 of O-代数
 
-    Following the [FAlgHom] idiom of Construction/FAlg.v: a morphism of
-    algebras is a carrier map intertwining the actions at every arity,
-    through the functorial action [pow_map] on finite powers. *)
+   本节说明相关定义、性质与动机。 Following [FAlgHom] idiom Construction/FAlg.v: 态射 代数 is carrier map intertwining actions at every arity, through functorial action [pow_map] finite powers.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Algebras.
 
@@ -380,12 +384,13 @@ End Algebras.
 Arguments oalg_hom {O C H H0 X Y A B} _.
 Arguments oalg_commutes {O C H H0 X Y A B} _ n o.
 
-(* The category of O-algebras in C.
+(*
+   The 范畴 of O-代数 in C.
 
-       objects: pairs of a carrier and an algebra structure
-        arrows: action-intertwining carrier maps
-      identity: the identity carrier map
-   composition: composition of carrier maps, pasting the squares *)
+   本节：对象: pairs carrier 代数 structure arrows: action-intertwining carrier maps identity: identity carrier map 复合: 复合 carrier maps, pasting squares
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition OperadAlgebras (O : Operad) (C : Category)
   `{@Cartesian C} `{@Terminal C} : Category := {|
   obj     := ∃ X : C, OperadAlgebra O X;
@@ -428,31 +433,22 @@ Definition Comm : Operad := {|
   operad_one := eq_refl
 |}.
 
-(** ** Comm-algebras in Sets are commutative monoids
+(*
+   * ** Comm-代数 in Sets are commutative 幺半群
 
-    Forward direction, and since the PR "algebraic carriers are sets"
-    (2026-09-17) it asks the carrier for a [PropEquiv]; the strength-change
-    paragraph of the file header records why, and names the two constants
-    of this file that gained the hypothesis.
+   本节说明相关定义、性质与动机。 正向 direction, since PR "algebraic carriers are sets" (2026-09-17) it asks carrier [PropEquiv]; strength-change paragraph file header records why, names two constants this file that gained 假设.
 
-    The binary and nullary actions of a Comm-algebra
-    furnish the operation and unit; associativity comes from the two ways
-    of splicing the binary operation into itself ([mf_comp] at concrete
-    contexts), commutativity from the symmetric action at the swap
-    witness ([mf_sym]), and the unit law from [mf_comp] against the
-    nullary operation combined with [mf_id].  Everything is definitional
-    in [Sets], so each law is an instance of the corresponding
-    multifunctor law evaluated at a point. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CommToCMon.
 
 Context {X : Sets}.
-(* Since the PR "algebraic carriers are sets" (2026-09-17) a [CMonObject]
-   carries [cmon_prop], and [Comm_algebra_to_CMon] below takes its carrier
-   setoid straight from [X] -- an arbitrary object of [Sets], which supplies
-   no [Prop] mirror of its own (Instance/Sets/Propositional.v's header records
-   why there is no such instance in general).  The section therefore takes one
-   as a hypothesis; every concrete [X] in the tree has one. *)
+(*
+   本节说明相关定义、性质与动机。 Since PR "algebraic carriers are sets" (2026-09-17) [CMonObject].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context (PX : PropEquiv (is_setoid X)).
 Context (A : OperadAlgebra Comm X).
 
@@ -532,12 +528,13 @@ Qed.
 
 End CommToCMon.
 
-(** ** Commutative monoids are Comm-algebras
+(*
+   * ** Commutative 幺半群 are Comm-代数
 
-    Converse direction, through the convenience constructor: the arity-n
-    action is the n-fold sum, identity/composition/symmetry preservation
-    are the unit law, the fold-of-a-graft computation, and invariance of
-    sums under permutation (associativity + commutativity). *)
+   本节说明相关定义、性质与动机。 Converse direction, through convenience constructor: arity-n action is n-fold sum, identity/复合/symmetry preservation are unit law, fold-of-a-graft computation, invariance sums under permutation (结合律 + commutativity).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CMonToComm.
 
@@ -660,21 +657,17 @@ Definition CMon_to_Comm_algebra : OperadAlgebra (C:=Sets) Comm (cmon_setoid M) :
 
 End CMonToComm.
 
-(** ** The two directions, bundled
+(*
+   本节：* ** The two directions, bundled. The named Comm/CMon connection: Comm-代数 [Sets] whose carrier setoid has [PropEquiv] yields commutative 幺半群 that carrier, every commutative 幺半群 carries Comm-代数 structure.
 
-    The named Comm/CMon connection: a Comm-algebra in [Sets] whose
-    carrier setoid has a [PropEquiv] yields a commutative monoid on that
-    carrier, and every commutative monoid carries a Comm-algebra
-    structure.  (The checklist row asks for the two directions; a full
-    categorical equivalence is not claimed here.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* AN EARLIER REVISION stated the left component without the [PropEquiv],
-   as "a Comm-algebra in [Sets] yields a commutative monoid on its
-   carrier".  Since the PR "algebraic carriers are sets" (2026-09-17) a
-   [CMonObject] carries [cmon_prop] and a bare [X : Sets] does not supply
-   one, so that component now asks for it; see [Comm_algebra_to_CMon]
-   above and the strength-change paragraph of the file header.  The right
-   component is unchanged: a [CMonObject]'s carrier supplies its own. *)
+(*
+   本节说明相关定义、性质与动机。 AN EARLIER REVISION stated left component without [PropEquiv],. "a Comm-代数 [Sets] yields commutative 幺半群 its carrier".
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Comm_algebra_CMon :
   (∀ (X : Sets) (PX : PropEquiv (is_setoid X))
      (A : OperadAlgebra Comm X), CMonObject)

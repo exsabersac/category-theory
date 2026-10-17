@@ -20,10 +20,13 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The modification class, at full strength.  Its datum is the component
-   2-cell family [md]; its single law is the modification axiom [md_natural],
-   phrased through the Godement composite [hcomp2] and the lax naturators
-   [lt1] of the two lax transformations. *)
+(*
+   The 修改 class, at full strength.  Its datum is the component
+
+   本节说明相关定义、性质与动机。 2-cell family [md]; its single law is 修改 axiom [md_自然], phrased through Godement 复合 [hcomp2] lax naturators [lt1] two lax transformations.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Modification {B B' : Bicategory} {F G : Pseudofunctor B B'}
       (σ τ : LaxTransformation F G) := {
   (* component 2-cells Γ_x : σ_x ⟹ τ_x *)
@@ -43,12 +46,13 @@ Arguments md_natural {B B' F G σ τ} _ {x y} f.
 
 (** The identity modification. *)
 
-(* The identity modification's axiom: with every component the identity 2-cell,
-   the two whiskerings reduce (by `hcomp2_id`) to identity 2-cells, and the
-   equation collapses to `lt1 σ f ≈ lt1 σ f` by the unit laws of vertical
-   composition.  This uses no coincidence of unitors in the target bicategory,
-   so it is a genuine (non-vacuous) witness on an *arbitrary* lax
-   transformation σ. *)
+(*
+   The identity 修改's axiom: with every component the identity 2-cell,
+
+   本节说明相关定义、性质与动机。 the two whiskerings reduce (by `hcomp2_id`) identity 2-cells, equation collapses `lt1 σ f ≈ lt1 σ f` 单位律 vertical 复合.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma id_modification_natural {B B' : Bicategory} {F G : Pseudofunctor B B'}
       (σ : LaxTransformation F G) {x y : @bi0cell B} (f : @bicat B x y) :
   lt1 σ f ∘∘ hcomp2 (bi2id (a:=pf1[G] f)) (bi2id (a:=lt0 σ x))
@@ -66,10 +70,13 @@ Definition id_modification {B B' : Bicategory} {F G : Pseudofunctor B B'}
 
 (** The vertical composite of modifications. *)
 
-(* Composite modification axiom: componentwise vertical composition.  The two
-   whiskerings split over vertical composition by the interchange specialisations
-   `hcomp2_comp_right`/`hcomp2_comp_left`, and the resulting pasting is closed by
-   the two given modification axioms and associativity of vertical composition. *)
+(*
+   复合 修改 axiom: 分量地 vertical 复合.  The two
+
+   本节：whiskerings split over vertical 复合 interchange specialisations `hcomp2_comp_right`/`hcomp2_comp_left`, resulting pasting is closed two given 修改 axioms 结合律 vertical 复合.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma compose_modification_natural {B B' : Bicategory} {F G : Pseudofunctor B B'}
       {σ τ υ : LaxTransformation F G}
       (n : Modification τ υ) (m : Modification σ τ)
@@ -124,11 +131,13 @@ Next Obligation.
   - intros m n p H1 H2 x; now rewrite H1, H2.
 Qed.
 
-(* The category of lax transformations F ⟹ G and modifications between them:
-   objects are lax transformations, homs the modifications, identity and
-   composition as above, and the category laws hold componentwise from the
-   corresponding vertical-composition laws in the target hom-categories.  Built
-   with [Build_Category'], which derives the dual associativity field. *)
+(*
+   The 范畴 of lax transformations F ⟹ G and modifications between them:
+
+   本节：对象 are lax transformations, homs modifications, identity 复合 above, 范畴 laws hold 分量地 from corresponding vertical-复合 laws target hom-范畴.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition LaxTransformation_Category {B B' : Bicategory}
            (F G : Pseudofunctor B B') : Category.
 Proof.
@@ -163,10 +172,13 @@ Defined.
 
 (** Inhabitation witnesses. *)
 
-(* Concrete closed witnesses on the terminal bicategory's identity lax
-   transformation (Theory/Bicategory/Lax.v): the identity modification and its
-   self-composite.  These exhibit the class and its composition as inhabited
-   with no appeal to any axiom. *)
+(*
+   Concrete closed witnesses on the terminal 双范畴's identity lax
+
+   变换 (Theory/双范畴/Lax.v): identity 修改 its self-复合.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Trivial_id_Modification :
   Modification Trivial_LaxTransformation Trivial_LaxTransformation :=
   id_modification Trivial_LaxTransformation.

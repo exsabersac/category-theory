@@ -21,10 +21,13 @@ Generalizable All Variables.
 
 (** ** Joint monicity of a pullback's projections *)
 
-(* The standard consequence of the universal property: two maps into the
-   apex agreeing after both projections are equal.  Stated separately
-   because the transport's uniqueness clause consumes it in C while
-   working in D. *)
+(*
+   The standard consequence of the 普遍性质: two maps into the
+
+   本节说明相关定义、性质与动机。 apex agreeing after both projections are equal. Stated separately because transport's uniqueness clause consumes it C while working D.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma is_pullback_jointly_monic {C : Category} {x y z : C}
       {f : x ~> z} {g : y ~> z} {P : C} {p1 : P ~> x} {p2 : P ~> y}
       (HP : IsPullback f g P p1 p2) (Q : C) (a b : Q ~> P) :

@@ -27,10 +27,13 @@ Class Naturality (A : Type) : Type := {
 
 Arguments natural {A _} _ /.
 
-(* Discharge a `natural _ * natural _ * ...` goal (a tuple of naturality
-   squares, as produced for isomorphism families and for the conjunctions in
-   `monoidal_naturality`): unfold the structure `H`, split the products, then
-   close each square with the caller-supplied tactic `tac`. *)
+(*
+   Discharge a `自然 _ * 自然 _ * ...` goal (a tuple of naturality
+
+   本节说明相关定义、性质与动机。 squares, produced 同构 families conjunctions `幺半_naturality`): unfold structure `H`, split 积, then close each square caller-supplied tactic `tac`.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Ltac prove_naturality H tac :=
   simpl; destruct H; simpl;
   split; [split|];
@@ -108,12 +111,13 @@ Next Obligation.
 Qed.
  *)
 
-(* A `Mapping F` records a morphism action `map : (x ~> y) → (F x ~> F y)` for
-   an object map `F : C → C`, without demanding the functor laws. It supplies
-   the per-variable action `F(f)`/`G(f)` used inside the `Arity*` naturality
-   squares below, so that those squares can be stated for object maps that are
-   functorial in each argument (e.g. the partial applications of a bifunctor)
-   even when no single `C ⟶ C` functor is to hand. *)
+(*
+   A `Mapping F` records a 态射 action `map : (x ~> y) → (F x ~> F y)` for
+
+   本节：an 对象 map `F : C → C`, without demanding 函子定律. It supplies per-variable action `F(f)`/`G(f)` used inside `Arity*` naturality squares below, so that those squares can be stated 对象 maps that are functorial each argument (e.g.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Mapping {C : Category} (F : C → C) : Type := {
   map {x y} (f : x ~> y) : F x ~> F y;    (* the morphism action F f of F *)
 }.
@@ -151,10 +155,11 @@ Program Instance ArityOne {C : Category}
   natural := fun f => ∀ x y (g : x ~> y), @map _ _ G _ _ g ∘ f x ≈ f y ∘ @map _ _ F _ _ g
 }.
 
-(* Naturality of a family `f : ∀ A B, P A B ~> Q A B` jointly in both
-   (covariant) arguments: for `g : x ~> y` and `h : z ~> w` the square reads
-   `Q(g,h) ∘ f x z ≈ f y w ∘ P(g,h)`, where the bifunctorial actions factor as
-   `Q(g,h) = GB h ∘ GA g` and `P(g,h) = FB h ∘ FA g`. *)
+(*
+   本节说明相关定义、性质与动机。 Naturality family `f : ∀ A B, P A B ~> Q A B` jointly both.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance ArityTwo {C : Category}
   (P : C → C → C)
@@ -256,9 +261,11 @@ Program Instance ArityFive {C : Category}
                    ∘ @map _ _ (FA _ _ _ _) _ _ g
 }.
 
-(* For a family of isomorphisms `f : ∀ A, P A ≅ Q A`, naturality means both the
-   forward components `to (f A)` and the backward components `from (f A)` are
-   natural; the statement is the product (`*`) of the two squares. *)
+(*
+   本节说明相关定义、性质与动机。 For family isomorphisms `f : ∀ A, P A ≅ Q A`, naturality means both the. 正向 components `to (f A)` 反向 components `from (f A)` are 自然;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance Transform_ArityOne {C : Category}
   (P : C → C) `{@Mapping C P}

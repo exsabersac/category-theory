@@ -21,104 +21,32 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* From universal mappings to adjoint functors
+(*
+   From universal mappings to 伴随 函子
 
-   nLab:  https://ncatlab.org/nlab/show/universal+construction
-   Paper: Samuel, "On universal mappings and free topological groups",
-          Bull. Amer. Math. Soc. 54(6), 1948
-   Paper: Porst, "The history of the General Adjoint Functor Theorem",
-          arXiv:2310.19528, 2024
+   本节说明相关定义、性质与动机。 nLab: https://ncatlab.org/nlab/show/universal+construction Paper: Samuel, "On universal mappings free topological groups", Bull. Amer. Math. Soc.
 
-   The universal arrow is the common shape of the universal mapping
-   problems of classical algebra and topology, isolated before category
-   theory had vocabulary to state it.  Free groups were current in the
-   1920s, the Stone–Čech compactification in the 1930s, and Markov's free
-   topological groups in the 1940s, each with its own bespoke existence
-   proof (Porst 2024).  The general problem was first posed by Pierre
-   Samuel, whose 1948 paper opens by observing that "constructions so
-   apparently different as Kronecker products, ... field of quotients of
-   an integral domain, free groups, free topological groups, completion
-   of a uniform space, Čech compactification enter in the same frame".
-   Samuel worked without functors — his axiomatized "kinds of structure"
-   derive from Bourbaki's theory of structures, cited from unpublished
-   manuscripts and the 1939 Résultats — yet his problem of universal
-   mappings asks exactly for a universal arrow to a forgetful functor,
-   unique up to isomorphism.  Mac Lane's chapter notes credit Samuel with
-   "the bold step of really formulating the general notion", suggest that
-   uniqueness only up to isomorphism is why the notion was slow to
-   develop, and record that Bourbaki then popularized it lavishly; the
-   notes to the adjunctions chapter add that Bourbaki's one-sided
-   formulation "lacks the symmetry of the adjunction problem" and so
-   just missed adjoint functors, whose discovery was left to Kan in
-   1958 (Mac Lane, "Categories for the Working Mathematician", Springer
-   1998, notes to Chapters III and IV).  Products described by the
-   universal property of their projections date from about the same
-   time (Mac Lane, 1948/1950); Functor/Diagonal.v plays out that dual
-   story in-tree.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   The purpose of the notion is codified by Theorem IV.1.2 of the same
-   book: a functor has a left adjoint precisely when every object of its
-   codomain has a universal arrow to it, and those arrows are then the
-   components of the unit.  A universal arrow is thus the local,
-   pointwise form of an adjunction, and this file implements the
-   local-to-global direction: [LeftAdjointFunctorFromUniversalArrows]
-   assembles the functor, and [AdjunctionFromUniversalArrows] the
-   adjunction, from a family of [UniversalArrow] witnesses.  The
-   comma-category packaging does real work here: because [arrow_initial]
-   is an initial object, uniqueness up to unique isomorphism is the
-   generic initial-object argument rather than a lemma re-proved per
-   construction — in Riehl's phrasing, "universal" is "a synonym for
-   either 'initial' or 'terminal'" (Riehl, "Category Theory in Context",
-   Dover 2016).  Structure/UniversalProperty/Universal/Arrow.v keeps the
-   representability face: [UniversalArrowIsUniversalProperty] identifies
-   an [AUniversalArrow] with a hom-set isomorphism via Yoneda.
+(*
+   本节说明相关定义、性质与动机。 Two encodings this notion are given below. UniversalArrow packages the. property 始对象 逗号范畴 =(c) ↓ F, which makes universal mapping property [ump_universal_arrows] immediate consequence;
 
-   The adjoint functor theorems are machines for manufacturing these
-   witnesses.  Samuel's own existence proof — form the product of all
-   mappings into structures of bounded cardinal, then cut down by
-   closure — is the skeleton of Freyd's proof of the General Adjoint
-   Functor Theorem (1960 thesis, printed 1964), which Porst accordingly
-   proposes to rename the Samuel–Freyd theorem.  In-tree the route is
-   Mac Lane's: Adjunction/GAFT.v produces an initial object of each comma
-   category, and its [GAFT_from_initials] concludes with the two
-   constructors of this file; Monad/Lifting.v proves the Dubuc
-   adjoint-triangle theorem the same way, one universal arrow per object;
-   and Construction/Free/Quiver.v instantiates the oldest pattern, a free
-   construction as a universal arrow to a forgetful functor
-   ([UniversalArrowQuiverCat]).
-
-   The rendering throughout is proof-relevant.  [ump_universal_arrows]
-   returns the mediating morphism as data together with its uniqueness
-   certificate, and [LeftAdjointFunctorFromUniversalArrows] computes the
-   action of the induced functor on a morphism f as the unique g with
-   arrow ∘ f ≈ fmap[U] g ∘ arrow: a free functor acts on arrows by
-   factorization rather than by choice.  The setoid discipline surfaces
-   in the direct encoding: uniqueness in [universal_arrow_universal] is
-   uniqueness up to ≈, and [AUniversalArrowEquiv] declares two universal
-   arrows at the same object equivalent precisely when their underlying
-   morphisms are ≈, the uniqueness half carrying no further data.  The
-   method remains in use well outside foundations (Pestov, "Universal
-   arrows to forgetful functors from categories of topological algebra",
-   1992), and Milewski teaches it to programmers as the "universal
-   construction": pick a shape, enumerate its occurrences, rank
-   candidates by unique factorization (Milewski, "Products and
-   Coproducts", 2015). *)
-
-(* Two encodings of this notion are given below. UniversalArrow packages the
-   property as an initial object of the comma category =(c) ↓ F, which makes
-   the universal mapping property [ump_universal_arrows] an immediate
-   consequence; AUniversalArrow records the same data directly as a morphism
-   together with its [Unique] factorization, without naming the object a as a
-   projection out of the comma category. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniversalArrow.
 
 Context `{C : Category}.
 Context `{D : Category}.
 
-(* A universal arrow from c to F is an initial object of the comma category
-   =(c) ↓ F.  Its underlying object [arrow_obj] and morphism [arrow] are read
-   off as the two projections of that initial object. *)
+(*
+   A 泛箭头 from c to F is an 始对象 of the 逗号范畴
+
+   本节说明相关定义、性质与动机。 =(c) ↓ F. Its underlying 对象 [arrow_obj] 态射 [arrow] are read off two projections that 始对象.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class UniversalArrow (c : C) (F : D ⟶ C) := {
   arrow_initial : @Initial (=(c) ↓ F);   (* the universal property, as initiality *)
 
@@ -128,9 +56,11 @@ Class UniversalArrow (c : C) (F : D ⟶ C) := {
 
 Notation "c ⟿ F" := (UniversalArrow c F) (at level 20) : category_theory_scope.
 
-(* The universal mapping property: any h : c ~> F d factors as h ≈ fmap[F] g ∘
-   arrow through a unique g : arrow_obj ~> d.  This follows directly from the
-   initiality of arrow_obj in the comma category =(c) ↓ F. *)
+(*
+   本节说明相关定义、性质与动机。 The universal mapping property: any h : c ~> F d factors h ≈ fmap[F] g ∘. arrow through unique g : arrow_obj ~> d.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary ump_universal_arrows `(c ⟿ F) `(h : c ~> F d) :
   ∃! g : arrow_obj ~> d, h ≈ fmap[F] g ∘ arrow.
 Proof.
@@ -170,31 +100,13 @@ Defined.
 
 (** ** Uniqueness up to a unique isomorphism *)
 
-(* Awodey, "Category Theory" (1st ed., Carnegie Mellon pre-print, September
-   2005), Proposition 1.10, printed p. 22, states for free monoids what holds
-   of every universal arrow: two solutions of the same universal mapping
-   problem are connected by exactly one isomorphism COMPATIBLE WITH the
-   universal arrows.  The compatibility clause is not decoration.  The
-   header of this file already observes that a universal arrow is an initial
-   object of a comma category and that uniqueness is therefore "the generic
-   initial-object argument"; [initial_unique_up_to_unique_iso]
-   (Structure/Initial.v) carries out that argument, but it lives in the comma
-   category =(c) ↓ F and its uniqueness clause ranges over comma
-   isomorphisms.  Read down in D — which is where a consumer wants it, since
-   the object of interest is [arrow_obj], not the comma pair — the predicate
-   [True] would be FALSE: [arrow_obj] can have automorphisms (the free monoid
-   on two generators has one exchanging them), and those are isomorphisms
-   between the two universal objects that do not commute with the arrows.
-   What is unique is the isomorphism satisfying
-   [fmap[F] (to i) ∘ arrow₁ ≈ arrow₂], and that is the statement proved here.
+(*
+   Awodey, "范畴 Theory" (1st ed., Carnegie Mellon pre-print, September
 
-   The proof does not go through the comma category at all: it is the
-   two-line mediator argument run on [ump_universal_arrows], with
-   [to_equiv_implies_iso_equiv] (Theory/Isomorphism.v) supplying the step
-   from agreement of the [to] components to equality in [iso_setoid].  Both
-   encodings of the notion are covered — [universal_arrow_unique] for the
-   comma-packaged [UniversalArrow], where the object is projected out, and
-   [auniversal_arrow_unique] for [AUniversalArrow], where it is named. *)
+   本节：2005), Proposition 1.10, printed p. 22, states free 幺半群 what holds every 泛箭头: two solutions same universal mapping problem are connected exactly one 同构 COMPATIBLE WITH universal arrows. The compatibility clause is not decoration.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniversalArrowUnique.
 
@@ -283,10 +195,13 @@ Context (U : @Functor D C).
 Arguments arrow : clear implicits.
 Arguments arrow_obj : clear implicits.
 
-(* A universal arrow to U from every object c : C assembles into a left adjoint
-   of U.  The object map sends c to its universal object arrow_obj, and the
-   morphism map sends f : x ~> y to the unique factorization of arrow ∘ f
-   through arrow_obj x. *)
+(*
+   A 泛箭头 to U from every 对象 c : C assembles into a 左伴随
+
+   本节说明相关定义、性质与动机。 of U. The 对象 map sends c its universal 对象 arrow_obj, 态射 map sends f : x ~> y unique factorization arrow ∘ f through arrow_obj x.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition LeftAdjointFunctorFromUniversalArrows (H : forall c : C, UniversalArrow c U)
   : @Functor C D.
 Proof.
@@ -313,9 +228,13 @@ Proof.
              f f (Equivalence_Reflexive _))).
 Defined.
 
-(* The induced functor is genuinely left adjoint to U: the hom-set isomorphism
-   (LeftAdjoint c ~> d) ≊ (c ~> U d) is exactly the universal factorization,
-   with the universal arrows u serving as the unit of the adjunction. *)
+(*
+   The induced 函子 is genuinely 左伴随 to U: the hom-set 同构
+
+   本节说明相关定义、性质与动机。 (LeftAdjoint c ~> d) ≊ (c ~> U d) is exactly universal factorization, universal arrows u serving unit 伴随.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition AdjunctionFromUniversalArrows (H: forall c : C, UniversalArrow c U) :
   @Adjunction _ _ (LeftAdjointFunctorFromUniversalArrows H) U.
 Proof.
@@ -339,9 +258,13 @@ Proof.
 Defined.
 
 
-(* The same notion stated directly, with the universal object a : D given as a
-   parameter rather than projected from a comma category.  The data is the
-   universal morphism together with its uniqueness-of-factorization property. *)
+(*
+   The same notion stated directly, with the universal 对象 a : D given as a
+
+   本节说明相关定义、性质与动机。 parameter rather than projected from 逗号范畴. The data is universal 态射 together its uniqueness-of-factorization property.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class AUniversalArrow (c : C) (F : D ⟶ C) (a : D) := {
     universal_arrow : c ~> fobj[F] a ;                 (* the universal morphism u : c ~> F a *)
     universal_arrow_universal {d} {f : c ~> (fobj[F] d)} :  (* the universal property: f factors uniquely as fmap[F] g ∘ u *)
@@ -354,15 +277,11 @@ Class AUniversalArrow (c : C) (F : D ⟶ C) (a : D) := {
   Setoid (AUniversalArrow c F a) :=
   {| equiv := fun X Y => (@universal_arrow _ _ _ X) ≈ (@universal_arrow _ _ _ Y) |}.
 
-(* [universal_arrow_unique] restated for the direct encoding, where the
-   universal object is a parameter rather than a projection.  This is the
-   shape Awodey's Proposition 1.10 has: two monoids M and N, each carrying a
-   generator insertion that satisfies the UMP, are connected by exactly one
-   isomorphism commuting with the two insertions.  Nothing here is inherited
-   from the block above; [AUniversalArrow]'s own uniqueness field is the
-   entire proof, and its orientation
-   ([fmap[F] g ∘ universal_arrow ≈ f]) already matches, so no [symmetry] is
-   needed where the comma-packaged version needed one. *)
+(*
+   本节说明相关定义、性质与动机。 [universal_arrow_unique] restated direct encoding, where the. universal 对象 is parameter rather than projection.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AUniversalArrowUnique.
 
@@ -444,45 +363,11 @@ End AUniversalArrowUnique.
 
 (** ** The two packagings of a universal arrow are interchangeable *)
 
-(* Mac Lane, CWM 2nd ed., §IV.1, Corollary 2 (book p. 85), runs the chain "a
-   representation of X(x, G−) at every x" ⟹ "a universal arrow at every x" ⟹
-   "a left adjoint".  In this file the last step is
-   [AdjunctionFromUniversalArrows], which consumes [UniversalArrow] — the
-   comma-initial packaging.  The representability side arrives at the OTHER
-   one: [AUniversalArrow] is what
-   [Structure/UniversalProperty/Universal/Arrow.v]'s
-   [UniversalArrowIsUniversalProperty] is stated over, and what
-   [Theory/Universal/Element.v]'s [universal_element_arrow_subsumption]
-   reaches from a universal element.
+(*
+   本节说明相关定义、性质与动机。 Mac Lane, CWM 2nd ed., §IV.1, Corollary 2 (book p. 85), runs chain "a. representation X(x, G−) at every x" ⟹ "a 泛箭头 at every x" ⟹ "a 左伴随".
 
-   Both classes have been in this file since it was written, each with its own
-   mediator kit ([ua_med] against [aua_med]) and its own uniqueness theorem
-   ([universal_arrow_unique] against [auniversal_arrow_unique]) — and nothing
-   converted between them, so the chain could not be run end to end.  These
-   two passages close that gap.
-
-   They are not a new idea, and the file is careful to say so:
-   Theory/Universal/Arrow/Dual.v already carries the COUNIVERSAL twin, as
-   [ACouniversalArrow_of_CouniversalArrow] and
-   [CouniversalArrow_of_ACouniversalArrow], with the same two strict
-   readbacks recorded there ([..._arrow] and [..._obj]).  What was missing
-   was the PRIMAL side — the one this file's own two classes need — so what
-   follows is the mirror of an existing passage rather than an invention.
-
-   They differ in more than packaging, which is why neither is a coercion.
-   [UniversalArrow] HIDES its object: [arrow_obj] is a projection out of an
-   initial object of =(c) ↓ F, so the object is whatever the comma category
-   supplies.  [AUniversalArrow] takes the object as a PARAMETER, so its type
-   mentions it.  The forward passage therefore forgets an index and the
-   backward passage invents one — and that asymmetry is exactly why the two
-   round trips below are not the same statement.
-
-   The orientations differ too, and each passage pays for it twice:
-   [ump_universal_arrows] concludes [h ≈ fmap[F] g ∘ arrow] while
-   [universal_arrow_universal] concludes [fmap[F] g ∘ universal_arrow ≈ f], so
-   a [symmetry] is spent in each of the two proof fields of [Unique].  The
-   file's own remark at [auniversal_arrow_unique] records the same mismatch
-   seen from the other side. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniversalArrowPackaging.
 
@@ -522,19 +407,26 @@ Proof.
       now symmetry.
 Defined.
 
-(* STRENGTH, measured strict-first.  The forward passage disturbs neither the
-   object nor the arrow: [universal_arrow_from_UMP] builds the comma object as
-   ((ttt, a); η), so both projections return what they were given. *)
+(*
+   STRENGTH, measured strict-first.  The 正向 passage disturbs neither the
+
+   本节说明相关定义、性质与动机。 对象 nor arrow: [universal_arrow_from_UMP] builds comma 对象 ((ttt, a);
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example ua_of_aua_obj {a : D} (W : AUniversalArrow c F a) :
   @arrow_obj c F (ua_of_aua W) = a := eq_refl.
 
 Example ua_of_aua_arrow {a : D} (W : AUniversalArrow c F a) :
   @arrow c F (ua_of_aua W) = @universal_arrow c F a W := eq_refl.
 
-(* Because the object returns on the nose, the round trip STARTING from the
-   direct packaging lands back at the SAME index [a] — it typechecks against
-   [AUniversalArrow c F a] with no transport — and returns the underlying
-   morphism unchanged. *)
+(*
+   Because the 对象 returns on the nose, the round trip STARTING from the
+
+   本节说明相关定义、性质与动机。 direct packaging lands back at SAME index [a] — it typechecks against [AUniversalArrow c F a] no transport — returns underlying 态射 unchanged.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example aua_ua_round_arrow {a : D} (W : AUniversalArrow c F a) :
   @universal_arrow c F a (aua_of_ua (ua_of_aua W))
     = @universal_arrow c F a W := eq_refl.
@@ -546,14 +438,13 @@ Lemma aua_ua_round {a : D} (W : AUniversalArrow c F a) :
   aua_of_ua (ua_of_aua W) ≈ W.
 Proof. simpl; reflexivity. Qed.
 
-(* The other composite is weaker, and the difference is real rather than an
-   artifact of how it is stated.  [ua_of_aua (aua_of_ua W)] rebuilds the whole
-   [Initial] record of the comma category from the UMP, so the [arrow_initial]
-   field is a different term and the two [UniversalArrow]s are NOT
-   [eq_refl]-equal — pinned as a conversion negative in
-   Test/ProbeRepresentability348.v.  What does survive is everything a
-   consumer reads: both derived projections return on the nose.  [Setoid]
-   there is no help either, [UniversalArrow] carrying none. *)
+(*
+   The other 复合 is weaker, and the difference is real rather than an
+
+   本节说明相关定义、性质与动机。 artifact how it is stated. [ua_of_aua (aua_of_ua W)] rebuilds whole [Initial] record 逗号范畴 from UMP, so [arrow_initial] field is different term two [UniversalArrow]s are NOT [eq_refl]-equal — pinned conversion negative Test/ProbeRe
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example ua_aua_round_obj (W : UniversalArrow c F) :
   @arrow_obj c F (ua_of_aua (aua_of_ua W)) = @arrow_obj c F W := eq_refl.
 

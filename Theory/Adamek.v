@@ -49,18 +49,22 @@ Fixpoint le_S_shift@{u} {m n} (p : le_t@{u} m n) : le_t@{u} (S m) (S n) :=
   | le_t_S p' => le_t_S (le_S_shift p')
   end.
 
-(* Predictable obligation alignment for the (op-)cocone records below: with
-   [idtac] every obligation SHIFTS to an explicit [Next Obligation], rather
-   than being silently discharged by the ambient [cat_simpl]. *)
+(*
+   本节说明相关定义、性质与动机。 Predictable obligation alignment (op-)cocone records below: with.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
 Section Adamek.
 
-(* [Colimit]/[IsALimit] force the diagram category and the target to share
-   their hom/prop universe, and [Chain] pins [Omega]'s hom/prop to [Set]
-   (Instance/Omega.v, Construction/Chain.v).  The target [C] therefore carries
-   its hom/prop at [Set]; the object level [cobj] stays polymorphic, so every
-   result below is universe-polymorphic in the size of the objects. *)
+(*
+   [余极限]/[IsALimit] force the diagram 范畴 and the target to share
+
+   本节说明相关定义、性质与动机。 their hom/prop universe, [Chain] pins [Omega]'s hom/prop [Set] (Instance/Omega.v, Construction/Chain.v). The target [C] therefore carries its hom/prop at [Set];
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Universe cobj.
 Context {C : Category@{cobj Set Set}}.
 Context `{HI : @Initial C}.
@@ -140,9 +144,11 @@ Section Mediator.
 
 Context (aβ : FAlg F).
 
-(* The competing cocone's legs into the carrier [``aβ], built by recursion on
-   the chain index: [lam 0] is the unique map out of [0], and each step
-   postcomposes the algebra map [`2 aβ] with the functorial image. *)
+(*
+   本节说明相关定义、性质与动机。 The competing cocone's legs into carrier [``aβ], built recursion on.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint lam (n : nat) : chain_obj F n ~> ``aβ :=
   match n with
   | O   => zero
@@ -256,10 +262,13 @@ End Mediator.
    ambiguous. *)
 Definition muF : FAlg F := existT (fun a : C => FAlgebra F a) A alpha.
 
-(* The unique [F]-algebra map from the initial algebra to any algebra [y]
-   (an arrow [muF ~> y] in [FAlg F], i.e. into the terminal object of
-   [(FAlg F)^op]).  The morphisms are stated inside [FAlg F] rather than through
-   the opposite so the parser reads the category [^op], not the functor one. *)
+(*
+   The unique [F]-代数 map from the initial 代数 to any 代数 [y]
+
+   本节说明相关定义、性质与动机。 (an arrow [muF ~> y] [FAlg F], i.e. into 终对象 [(FAlg F)^op]).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition adamek_one (y : FAlg F) :
   muF ~{FAlg F}~> y :=
   {| falg_hom := u y ; falg_commutes := u_alg y |}.

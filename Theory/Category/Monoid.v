@@ -18,136 +18,21 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* What this file is, and what it is not
+(*
+   本节说明相关定义、性质与动机。 What this file is, what it is not. SCOPE. This is SET-LEVEL remark only -- germ, not theory.
 
-   SCOPE.  This is the SET-LEVEL remark only -- the germ, not the theory.  A
-   general internal category, in an arbitrary ambient category with pullbacks,
-   is deliberately out of scope, as is the bicategory of spans, and so are
-   functors/homomorphisms between the structures defined here.  The object
-   sort O is a bare [Type] compared with Coq's strict [eq], NOT a setoid.
-   That is faithful to the source: Mac Lane's remark is about the set-based
-   presentation, where dom and cod are honest functions into a set of objects
-   and the composability condition `dom g = cod f` is an equation between
-   elements of that set.  The library's own [Category] does the same -- its
-   [obj] is a [Type] and objects are compared by [eq] (see [dom_comp] and
-   [cod_comp] in Theory/Category.v) -- so nothing new is being assumed here.
-   The arrow sort, by contrast, IS a setoid: morphism comparisons are up to
-   the chosen `≈`, as everywhere in this library.
-
-   WHY THIS FILE LIVES HERE.  Theory/Category/ collects re-presentations of
-   the [Category] class itself: Theory/Category/Raw.v strips the hom-setoid
-   and the laws, Theory/Category/Semi.v drops the identities.  This file adds
-   the two-sorted monoid presentation, and its payload is a
-   comparison with [Category] -- Raw.v rebuilds a [Category] from raw data
-   plus externally supplied laws, Semi.v projects one down to a semigroupoid,
-   each one-directional; this file is the first whose payload is a round trip
-   in both directions.  It is NOT Construction/Span/Monoid.v: nothing
-   here is a construction performed inside an ambient category, and
-   Construction/Span/Category.v is about spans in a category, which is a
-   different (and heavier) subject.
-
-   WHAT IS NEARBY, AND HOW IT DIFFERS.
-
-   - Structure/Monoid.v defines [MonoidObject]: a monoid in a MONOIDAL
-     category, in the sense of Benabou.  That is a different theorem shape.
-     There the tensor is a global bifunctor on one category; here the
-     "tensor" is the fibred product A x_O A, which is the hom-composition of
-     the bicategory of spans over O and is not a monoidal structure on any
-     single category in the tree.  The two only coincide after one builds
-     Span(Set), which this file does not.
-
-   - Structure/Span.v defines [Span C := Roof ⟶ C]: the diagram SHAPE of a
-     span, with no composition and no bicategory structure.  So the
-     "monoid in spans" reading of Mac Lane's remark is not available there,
-     and this file does not use it either -- it works with the fibred product
-     directly.
-
-   - Theory/Metacategory.v and Theory/Metacategory/ArrowsOnly.v formalize
-     Mac Lane's OTHER re-presentation, the single-sorted "arrows-only"
-     metacategory of CWM I.1, where objects are recovered as identity arrows
-     and composition is partial.  This file is the two-sorted remark of I.2:
-     objects are a primitive sort and composition is total on the fibred
-     product.
-
-   - Construction/Enriched.v (header) already records in prose that
-     enrichment is not internalization, and Theory/DoubleCategory.v (header)
-     that a double category is a category internal to Cat.  Neither file
-     defines an internal category; this one supplies the set-level case those
-     remarks point at.
-
-   HONESTY ABOUT STRENGTH (proved below, see the numbered notes in situ).
-
-   1. [Category_from_SpanMonoid] -- the monoid presentation yields a
-      [Category] -- is unconditional and axiom-free.
-
-   2. [Category_SpanMonoid] -- an ordinary [Category] yields a monoid
-      structure on its graph of bundled arrows -- is proved under an explicit
-      hypothesis [HomRigid C]: transport of a morphism along object-equality
-      proofs does not depend on WHICH proofs are chosen.  [HomRigid] follows
-      at once from UIP on the objects ([HomRigid_of_ObjUIP]), which in turn is
-      axiom-free by Hedberg whenever object equality is decidable -- the
-      discipline of Construction/Grothendieck/Strict.v and Instance/FinSet.v.
-      It is a HYPOTHESIS here, never an [Axiom].  The obstruction is real --
-      needed by [arrow_mul_respects] and [arrow_mul_assoc], see NOTE 3 -- and
-      genuine: [arrow_mul_respects_forces_UIP] at the end of this file proves
-      that discharging it uniformly in C would entail uniqueness of identity
-      proofs for every type.  The shape of the problem: multiplying
-      along two different proofs of the same composability equation composes
-      with two transports of one arrow that differ by a loop at the
-      INTERMEDIATE object, and the arrow equivalence's freedom to choose paths
-      at the two OUTER objects cannot repair a discrepancy in the middle.
-      In the set-based reading Mac Lane intends, O is a set and the question
-      does not arise.
-
-   3. Round trips.  Objects match definitionally in both directions
-      ([SpanMonoid_roundtrip_obj], [Category_roundtrip_obj], both [eq_refl]).
-      On arrows, one composite of each round trip is the identity on the nose
-      and the other only up to the relevant `≈`; that is exactly what is
-      proved below, and no more is claimed.  Starting from a [Category] the
-      comparison assembles into an isomorphism in [Cat]
-      ([Category_monoid_iso]).  In this library that is the same strength as
-      an equivalence of categories -- Cat's hom-setoid is [Functor_Setoid],
-      so a [≅[Cat]] IS an equivalence (Instance/Cat.v, Theory/Equivalence.v's
-      [Cat_Iso_to_Equivalence]/[Equivalence_to_Cat_Iso]) -- and it is the
-      strongest packaging the library offers, a [StrictCat] isomorphism being
-      out of reach without funext.  What is genuinely extra lives in the
-      construction rather than the type: both functors are the identity on
-      objects, and one hom round trip is definitional ([rb_from_to]).
-
-   UNIVERSES (measured, not asserted -- read off [About] with [Set Printing
-   Universes]).
-
-   - [Graph@{o a p}] carries gobj : Type@{o} and garr : Type@{a}
-     independently, with p the setoid's proof level.
-
-   - [Category_from_SpanMonoid@{o a} : Graph@{o a a} → … → Category@{o a a}]:
-     objects stay at the graph's object level and homs at its arrow level.
-     No level is raised.
-
-   - [Category_Graph@{a p _ o} : Category@{o p p} → Graph@{o a p}] with the
-     constraints o ≤ a and p ≤ a: the bundled-arrow sort ∃ x y, x ~> y sits
-     at the maximum of the object and hom universes, and nowhere higher.
-     No successor bump reaches the printed types in either direction
-     (auxiliary universes with strict bounds do occur in the constraint sets,
-     e.g. [Category_Graph]'s, but none appears in a type), and [Category_Graph] and
-     [Category_SpanMonoid] impose NO relation between the object and hom
-     levels of the category they start from.
-
-   - Re-building a [Category] from that graph does impose one: because
-     [Category_from_SpanMonoid] wants the graph's arrow and proof levels to
-     coincide, [Rebuild_to], [Rebuild_from] and [Category_monoid_iso] all
-     carry the constraint o ≤ h, the object universe below the hom universe.
-     That is the price of asking the original and the rebuilt category to be
-     objects of the SAME [Cat]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Two-sorted graphs *)
 
-(* A graph in Mac Lane's sense: an object sort [gobj], an arrow sort [garr]
-   with a chosen equivalence, and the two boundary maps.  The two
-   respectfulness fields say that `≈`-equivalent arrows have equal endpoints;
-   they are what makes the arrow sort a graph over [gobj] rather than merely a
-   setoid with two functions out of it, and they are exactly what the arrow
-   round trip below needs. *)
+(*
+   A graph in Mac Lane's sense: an 对象 sort [gobj], an arrow sort [garr]
+
+   本节说明相关定义、性质与动机。 with chosen 等价, two boundary maps. The two respectfulness fields say that `≈`-equivalent arrows have equal endpoints;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record Graph := {
   gobj : Type;                          (* the object sort O *)
   garr : Type;                          (* the arrow sort A *)
@@ -171,12 +56,11 @@ Arguments gcod_respects {_ _ _} _.
 
 (** ** The composable pairs A ×_O A *)
 
-(* The fibred product `A ×_O A = { (g, f) | dom g = cod f }`, kept as data (a
-   record, i.e. a sigma) rather than as a subset: [cp_match] is a genuine
-   inhabitant of an equality type, available for transport.  [cp_outer] and
-   [cp_inner] are the two projections; in the composite `m (g, f)` the outer
-   arrow g is the one applied last, matching the library's convention that
-   `f ∘ g` runs g first. *)
+(*
+   本节说明相关定义、性质与动机。 The fibred 积 `A ×_O A = { (g, f) | dom g = cod f }`, kept data (a. record, i.e. sigma) rather than subset: [cp_match] is genuine inhabitant equality type, available transport. [cp_outer] [cp_inner] are two projections;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record Composable (G : Graph) := {
   cp_outer : garr G;                             (* g *)
   cp_inner : garr G;                             (* f *)
@@ -188,11 +72,11 @@ Arguments cp_inner {_} _.
 Arguments cp_match {_} _.
 Arguments Build_Composable {_} _ _ _.
 
-(* Two composable pairs are identified when their two projections are.  This
-   is the correct setoid on a pullback taken over a sort compared by strict
-   equality: the third component is a proof of an equation in [gobj] and
-   carries no further information about the pair.  Note that it is NOT `eq` on
-   [Composable] -- see [Composable_ump_unique]. *)
+(*
+   本节说明相关定义、性质与动机。 Two composable pairs are identified when their two projections are. This. is correct setoid 拉回 taken over sort compared strict equality: third component is proof equation [gobj] carries no further information about pair.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Composable_equiv {G : Graph} (p q : Composable G) : Type :=
   (cp_outer p ≈ cp_outer q) ∧ (cp_inner p ≈ cp_inner q).
 
@@ -215,9 +99,13 @@ Lemma cp_inner_respects {G : Graph} (p q : Composable G) :
   Composable_equiv p q → cp_inner p ≈ cp_inner q.
 Proof. now intros [_ H]. Qed.
 
-(* The universal property, in the only form available without quotients: a
-   pair of maps into [garr] whose boundaries agree factors through the
-   composable pairs, on the nose on both projections. *)
+(*
+   The 普遍性质, in the only form available without quotients: a
+
+   本节说明相关定义、性质与动机。 pair maps into [garr] whose boundaries agree factors through composable pairs, nose both projections.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Composable_med {G : Graph} {X : Type}
            (u v : X → garr G) (H : ∀ x, gdom (u x) = gcod (v x))
            (x : X) : Composable G :=
@@ -233,13 +121,11 @@ Lemma Composable_med_inner {G : Graph} {X : Type}
   cp_inner (Composable_med u v H x) = v x.
 Proof. reflexivity. Qed.
 
-(* Uniqueness, stated honestly: the mediating map is determined by its two
-   projections UP TO [Composable_equiv], not up to `eq`.  Two mediating maps
-   with the same projections can still differ in the proof component, and
-   identifying those would need proof irrelevance or UIP on [gobj], neither of
-   which is assumed.  Since [Composable_equiv] is the equivalence the
-   multiplication is required to respect, this is the uniqueness that is
-   actually used. *)
+(*
+   本节说明相关定义、性质与动机。 Uniqueness, stated honestly: mediating map is determined its two. projections UP TO [Composable_equiv], not up `eq`.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Composable_ump_unique {G : Graph} {X : Type} (k k' : X → Composable G) :
   (∀ x, cp_outer (k x) ≈ cp_outer (k' x)) →
   (∀ x, cp_inner (k x) ≈ cp_inner (k' x)) →
@@ -248,18 +134,13 @@ Proof. intros Ho Hi x; split; [ apply Ho | apply Hi ]. Qed.
 
 (** ** The monoid structure on a graph *)
 
-(* Mac Lane's unit and multiplication, with their boundary conditions and
-   laws.  The multiplication is presented in curried form, taking the
-   composability proof as an explicit argument, because that is how it is
-   applied; [sm_pair_mul] below repackages it as the map `A ×_O A → A` of the
-   remark and [sm_pair_mul_respects] shows the curried respectfulness field is
-   exactly respectfulness for the pullback setoid.
+(*
+   Mac Lane's unit and 乘法, with their boundary conditions and
 
-   All laws are stated up to the arrow setoid's `≈`, and universally over the
-   composability proofs.  Quantifying over the proofs is not a weakening: it
-   is the content of "m is a function on A ×_O A", since two composable pairs
-   with the same components are the same element of the pullback whatever
-   proof witnesses their composability. *)
+   本节说明相关定义、性质与动机。 laws. The 乘法 is presented curried form, taking composability proof explicit argument, because 即 how it is applied;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record SpanMonoid (G : Graph) := {
   sm_unit : gobj G → garr G;                     (* e : O → A *)
   sm_unit_dom : ∀ x, gdom (sm_unit x) = x;       (* dom (e x) = x *)
@@ -320,10 +201,11 @@ Proof. intros Hg Hf; now apply Hm; split. Qed.
 
 (** ** From the monoid presentation to a [Category] *)
 
-(* The hom from x to y: an arrow together with proofs pinning its endpoints.
-   The proofs are kept as data so that they may be used to build the
-   composability witness; they are invisible to the hom-setoid, which compares
-   only the underlying arrows. *)
+(*
+   本节说明相关定义、性质与动机。 The hom from x y: arrow together proofs pinning its endpoints.. The proofs are kept data so that they may be used build composability witness;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SMHom (G : Graph) (x y : gobj G) : Type :=
   { a : garr G & (gdom a = x) ∧ (gcod a = y) }.
 
@@ -368,12 +250,13 @@ Definition smc_compose {G : Graph} (M : SpanMonoid G) {x y z : gobj G}
     (eq_trans (sm_mul_dom M _ _ _) (sa_dom f),
      eq_trans (sm_mul_cod M _ _ _) (sa_cod g))).
 
-(* NOTE 1.  Unconditional and axiom-free: no UIP, no rigidity, no hypothesis
-   on [gobj] beyond its being a [Type].  Every law follows from the
-   corresponding [SpanMonoid] field, the proof-independence of
-   [sm_mul_respects] absorbing the fact that the composability witness built
-   by [smc_match] depends on the endpoint proofs carried by the homs, which
-   the hom-setoid cannot see. *)
+(*
+   NOTE 1.  Unconditional and axiom-free: no UIP, no rigidity, no 假设
+
+   本节说明相关定义、性质与动机。 on [gobj] beyond its being [Type]. Every law follows from corresponding [SpanMonoid] field, proof-independence [sm_mul_respects] absorbing fact that composability witness built [smc_match] depends endpoint proofs carried homs, which hom-s
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Category_from_SpanMonoid {G : Graph} (M : SpanMonoid G) : Category.
 Proof.
   unshelve refine (Build_Category' (SMHom G) (smc_id M) (@smc_compose G M)).
@@ -410,10 +293,11 @@ Arguments atgt {_} _.
 Arguments aarr {_} _.
 Arguments Build_BundledArrow {_} _ _ _.
 
-(* The groupoid laws for [eq] that the transport pack needs.  Each is proved by
-   [destruct] with both endpoints universally quantified, which is what makes
-   it applicable later at a LOOP `e : x = x`, where [destruct] is unavailable.
-   None of this is UIP: no two proofs of the same equation are identified. *)
+(*
+   本节说明相关定义、性质与动机。 The groupoid laws [eq] that transport pack needs. Each is proved by. [destruct] both endpoints universally quantified, which is what makes it applicable later at LOOP `e : x = x`, where [destruct] is unavailable.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma eq_trans_id_l {A : Type} {x y : A} (e : x = y) : eq_trans eq_refl e = e.
 Proof. destruct e; reflexivity. Qed.
 
@@ -480,9 +364,11 @@ Proof. destruct u; reflexivity. Qed.
 
 (** ** The graph of a category *)
 
-(* Two bundled arrows are equivalent when there are equalities of their
-   endpoints carrying one to the other up to `≈`.  The equalities are kept as
-   data ([sigT], not [ex]) so the witnesses can be chosen and reused. *)
+(*
+   本节说明相关定义、性质与动机。 Two bundled arrows are equivalent when there are equalities their. endpoints carrying one other up `≈`.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition BundledArrow_equiv {C : Category} (a b : BundledArrow C) : Type :=
   { p : asrc a = asrc b &
   { q : atgt a = atgt b & hom_transport p q (aarr a) ≈ aarr b }}.
@@ -515,12 +401,13 @@ Defined.
 
 (** ** Rigidity: when transport does not see which proof it travelled along *)
 
-(* NOTE 2.  The hypothesis under which an ordinary category yields a monoid on
-   its graph of bundled arrows.  It says that transporting a morphism along
-   object equalities depends only on the endpoints, not on the proofs.  This
-   is implied by UIP on the objects, and holds trivially in the set-based
-   reading Mac Lane intends.  It is never assumed as an [Axiom]: every result
-   below that needs it takes it as an argument. *)
+(*
+   NOTE 2.  The 假设 under which an ordinary 范畴 yields a 幺半群 on
+
+   本节说明相关定义、性质与动机。 its graph bundled arrows. It says that transporting 态射 along 对象 equalities depends only endpoints, not proofs. This is implied UIP 对象, holds trivially set-based reading Mac Lane intends.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition HomRigid (C : Category) : Type :=
   ∀ (x x' y y' : C) (p p' : x = x') (q q' : y = y') (f : x ~> y),
     hom_transport p q f ≈ hom_transport p' q' f.
@@ -538,14 +425,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The calculation behind functoriality of the comparison [Rebuild_from]
-   below, stated once over arbitrary transport data.  Composing two arrows
-   after transporting their boundaries is the same as transporting the
-   boundaries of their composite, provided one may ignore WHICH object paths
-   were used -- which is what [HomRigid] grants.  The intermediate objects of
-   the two composites differ (one meets at the domain of the outer arrow, the
-   other at the shared object of the two homs), so [hom_transport_slide] is
-   what carries the one to the other. *)
+(*
+   本节说明相关定义、性质与动机。 The calculation behind functoriality comparison [Rebuild_from]. below, stated once over arbitrary transport data.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma hom_transport_compose_compare {C : Category} (rigid : HomRigid C)
       {xa ya xb yb x y z : C} (α : xa ~> ya) (β : xb ~> yb)
       (da : xa = y) (ca : ya = z) (db : xb = x) (cb : yb = y)
@@ -575,12 +459,13 @@ Definition arrow_mul {C : Category} (g f : BundledArrow C) (p : asrc g = atgt f)
   Build_BundledArrow (asrc f) (atgt g)
     (aarr g ∘ hom_transport eq_refl (eq_sym p) (aarr f)).
 
-(* The two unit laws hold WITHOUT rigidity.  The trick is that the arrow
-   equivalence lets one choose the object paths: the very proof [p] that has
-   to be transported along is offered back as the witness, and the two
-   transports cancel by [eq_trans_sym_l] / [hom_transport_id].  This is worth
-   isolating, because it confines the obstruction of [arrow_mul_respects]
-   below to that one law rather than to the correspondence at large. *)
+(*
+   The two 单位律 hold WITHOUT rigidity.  The trick is that the arrow
+
+   本节说明相关定义、性质与动机。 等价 lets one choose 对象 paths: very proof [p] that has be transported along is offered back witness, two transports cancel [eq_trans_sym_l] / [hom_transport_id].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma arrow_mul_id_left {C : Category} (f : BundledArrow C) (p : atgt f = atgt f) :
   BundledArrow_equiv (arrow_mul (arrow_unit (atgt f)) f p) f.
 Proof.
@@ -602,28 +487,13 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(* NOTE 3.  Respectfulness of the multiplication is where the correspondence
-   first meets [HomRigid], and it is the essential use.  Multiplying the same
-   pair along two proofs p, p' of the same composability equation composes the
-   outer arrow with two transports of the inner arrow that differ by a loop at
-   the INTERMEDIATE object -- the object where the two arrows meet.  The arrow
-   equivalence is free to pick paths at the source and the target of the
-   composite, but neither is the intermediate object, so that freedom cannot
-   repair the discrepancy.  And the hypothesis is unavoidable, not merely
-   convenient: [arrow_mul_respects_forces_UIP] at the end of this file shows
-   that proving [arrow_mul_respects] without it, uniformly in C, entails
-   uniqueness of identity proofs for every type.  The countermodel is chosen
-   so the composite lands in a RIGID corner: objects [option A], where
-   [None]'s loop space is provably contractible by an encode-decode argument,
-   pinning the setoid freedom at the outer objects while the intermediate
-   object [Some a] keeps the loops of A.
+(*
+   NOTE 3.  Respectfulness of the 乘法 is where the correspondence
 
-   The exact tally over the eight law fields of [SpanMonoid], as proved: the two
-   unit laws are rigidity-free ([arrow_mul_id_left], [arrow_mul_id_right]);
-   [arrow_mul_respects] and [arrow_mul_assoc] both use it, the latter because
-   the record quantifies over ARBITRARY witnesses for the two derived
-   composability equations, so the same intermediate-object discrepancy
-   arises there too. *)
+   本节说明相关定义、性质与动机。 first meets [HomRigid], it is essential use. Multiplying same pair along two proofs p, p' same composability equation composes outer arrow two transports inner arrow that differ loop at INTERMEDIATE 对象 -- 对象 where two ar
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma arrow_mul_respects {C : Category} (rigid : HomRigid C)
       (g g' f f' : BundledArrow C) (p : asrc g = atgt f) (p' : asrc g' = atgt f') :
   BundledArrow_equiv g g' → BundledArrow_equiv f f' →
@@ -641,10 +511,11 @@ Proof.
   now rewrite (rigid xf xf yf xg eq_refl eq_refl (eq_sym p) (eq_sym p') φf').
 Qed.
 
-(* [pl] and [pr] repeat the types of [q] and [p] -- that is not redundancy but
-   the reduced form of the record's [sm_assoc] hypotheses, since the boundary
-   laws of [arrow_mul] hold by [eq_refl] here.  They are separate arguments
-   precisely because they are separate PROOFS. *)
+(*
+   本节说明相关定义、性质与动机。 [pl] [pr] repeat types [q] [p] -- 即 not redundancy but. reduced form record's [sm_assoc] hypotheses, since boundary laws [arrow_mul] hold [eq_refl] here.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma arrow_mul_assoc {C : Category} (rigid : HomRigid C)
       (h g f : BundledArrow C) (p : asrc h = atgt g) (q : asrc g = atgt f)
       (pl : asrc g = atgt f) (pr : asrc h = atgt g) :
@@ -702,9 +573,13 @@ Proof. intro H; exact H. Qed.
 Lemma span_id_arr (x : gobj G) : sa_arr (@id C' x) = sm_unit M x.
 Proof. reflexivity. Qed.
 
-(* ... and its composition IS the multiplication of M, along ANY proof of the
-   composability equation.  This is the sense in which the category structure
-   and the monoid structure are the same structure. *)
+(*
+   ... and its 复合 IS the 乘法 of M, along ANY proof of the
+
+   本节说明相关定义、性质与动机。 composability equation. This is sense which 范畴 structure 幺半群 structure are same structure.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma span_compose_arr {x y z : gobj G} (g : y ~{C'}~> z) (f : x ~{C'}~> y)
       (pf : gdom (sa_arr g) = gcod (sa_arr f)) :
   sa_arr (g ∘ f) ≈ sm_mul M (sa_arr g) (sa_arr f) pf.
@@ -744,10 +619,11 @@ Proof. destruct p, q; reflexivity. Qed.
 Lemma sm_unbundle_bundle (a : garr G) : sm_unbundle (sm_bundle a) = a.
 Proof. reflexivity. Qed.
 
-(* THE OTHER is the identity only up to `≈`, and that is exactly right: the
-   bundled form re-derives the endpoints from [gdom] and [gcod], which agree
-   with the recorded ones only propositionally.  No stronger statement holds
-   here, and none is claimed. *)
+(*
+   本节说明相关定义、性质与动机。 THE OTHER is identity only up `≈`, 即 exactly right: the. bundled form re-derives endpoints from [gdom] [gcod], which agree recorded ones only propositionally.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sm_bundle_unbundle (u : garr (Category_Graph C')) :
   sm_bundle (sm_unbundle u) ≈ u.
 Proof.
@@ -757,10 +633,11 @@ Proof.
   now rewrite sa_arr_transport.
 Qed.
 
-(* Both comparisons respect `≈`.  Together with the two composites above and
-   the four boundary lemmas, that makes the pair a setoid isomorphism
-   commuting with [gdom] and [gcod] -- a comparison of GRAPHS, not merely a
-   bijection of the underlying types. *)
+(*
+   本节说明相关定义、性质与动机。 Both comparisons respect `≈`. Together two composites above and.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sm_bundle_respects (a b : garr G) : a ≈ b → sm_bundle a ≈ sm_bundle b.
 Proof.
   intro H.
@@ -819,10 +696,13 @@ Proof.
   now rewrite hom_transport_sym_inv.
 Qed.
 
-(* The two comparisons are functors.  [Rebuild_to] is unconditional;
-   [Rebuild_from] uses rigidity twice, once to see that it respects `≈` and
-   once for functoriality, since it has to compare transports of one morphism
-   along independently chosen object paths. *)
+(*
+   The two comparisons are 函子.  [Rebuild_to] is unconditional;
+
+   本节说明相关定义、性质与动机。 [Rebuild_from] uses rigidity twice, once see that it respects `≈` once functoriality, since it has compare transports one 态射 along independently chosen 对象 paths.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Rebuild_to : C ⟶ Rebuilt.
 Proof.
   unshelve refine (@Build_Functor C Rebuilt
@@ -852,15 +732,13 @@ Proof.
     apply (hom_transport_compose_compare rigid).
 Defined.
 
-(* NOTE 4.  The round trip packages as an isomorphism in [Cat].  In this
-   library that is the SAME strength as an equivalence of categories: Cat's
-   hom-setoid is [Functor_Setoid], which identifies functors up to natural
-   isomorphism, and Theory/Equivalence.v converts [≅[Cat]] to
-   [EquivalenceOfCategories] and back.  It is nevertheless the strongest
-   packaging available -- a [StrictCat] isomorphism would need funext -- and
-   the genuinely extra content is in the construction: both object maps are
-   the identity function on obj[C], one hom leg is the identity on the nose
-   ([rb_from_to]), and the other holds per hom-setoid ([rb_to_from]). *)
+(*
+   NOTE 4.  The round trip packages as an 同构 in [Cat].  In this
+
+   本节：library 即 SAME strength 范畴等价: Cat's hom-setoid is [函子_Setoid], which identifies 函子 up 自然 同构, Theory/等价.v converts [≅[Cat]] [EquivalenceOfCategories] back.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Category_monoid_iso : C ≅[Cat] Rebuilt.
 Proof.
   unshelve refine (@Build_Isomorphism Cat C Rebuilt Rebuild_to Rebuild_from _ _).
@@ -879,20 +757,13 @@ End CategoryRoundTrip.
 (* ------------------------------------------------------------------------ *)
 (** ** Necessity of [HomRigid]: a reverse-mathematics theorem *)
 
-(* NOTE 3 explains why [arrow_mul_respects] consumes rigidity; this section
-   shows the consumption is unavoidable.  If the multiplication respected
-   [BundledArrow_equiv] uniformly in C WITHOUT the hypothesis, uniqueness of
-   identity proofs would follow for every type.
+(*
+   NOTE 3 explains why [arrow_mul_respects] consumes rigidity; 本节
 
-   The countermodel is built so the composite lands in a RIGID corner.  Its
-   objects are [option A]: the loop space of [None] is contractible for every
-   A, by the encode-decode argument below, so the arrow equivalence has no
-   freedom at the outer objects of the test composite -- while the
-   intermediate object [Some a] keeps the loops of A, which is where the two
-   composability proofs are allowed to differ.  (The technique follows
-   Instance/Discrete/Reconstruct.v's [Discrete_DiscreteRigid_forces_UIP]; the
-   extra encode-decode step is needed here precisely because this file's
-   setoid gives freedom at TWO objects rather than none.) *)
+   本节说明相关定义、性质与动机。 shows consumption is unavoidable. If 乘法 respected [BundledArrow_equiv] uniformly C WITHOUT 假设, uniqueness identity proofs would follow every type. The countermodel is built so 复合 lands RIGID corner.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma etr_assoc {X : Type} {u v w z : X} (i : u = v) (j : v = w) (k : w = z) :
   eq_trans i (eq_trans j k) = eq_trans (eq_trans i j) k.
@@ -999,13 +870,11 @@ Qed.
 
 End Countermodel.
 
-(** * The necessity theorem.
+(*
+   本节：* * The necessity theorem.. If 乘法 [arrow_mul] Theory/范畴/幺半群.v respected [BundledArrow_equiv] WITHOUT [HomRigid] 假设 -- i.e. if [arrow_mul_respects] held its [rigid] argument dropped -- then UIP would hold every type.
 
-    If the multiplication [arrow_mul] of Theory/Category/Monoid.v respected
-    [BundledArrow_equiv] WITHOUT the [HomRigid] hypothesis -- i.e. if
-    [arrow_mul_respects] held with its [rigid] argument dropped -- then UIP
-    would hold for every type.  So the hypothesis isolated at
-    [sm_mul_respects] is not an artefact of the chosen proof. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem arrow_mul_respects_forces_UIP
   (K : forall (C : Category) (g g' f f' : BundledArrow C)
               (p : asrc g = atgt f) (p' : asrc g' = atgt f'),

@@ -30,11 +30,11 @@ Generalizable All Variables.
 
 Section IsoCalculus.
 
-(* The explicit universe binders are LOAD-BEARING: written unannotated,
-   the same bodies minimize so as to identify X's hom and proof
-   universes, and the four constants are then rejected at a category
-   whose two levels are declared apart.  Annotated they carry only
-   [Category]'s own [h <= p]. *)
+(*
+   本节说明相关定义、性质与动机。 The explicit universe binders are LOAD-BEARING: written unannotated,. same bodies minimize so identify X's hom proof universes, four constants are then rejected at 范畴 whose two levels are declared apart.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Universes o h p.
 Context {X : Category@{o h p}}.
 
@@ -43,9 +43,11 @@ Program Definition IsIso_id {x : X} : IsIsomorphism (id[x]) := {|
   two_sided_inverse := id
 |}.
 
-(* Invertibility transports along [~]: the inverse of the [~]-target
-   inverts the source as well, both laws by rewriting with the given
-   equation on the one side of the composite where it occurs. *)
+(*
+   本节说明相关定义、性质与动机。 Invertibility transports along [~]: inverse [~]-target.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition IsIso_along {x y : X} {f g : x ~> y}
   (H : f ≈ g) (Hg : IsIsomorphism g) : IsIsomorphism f :=
   {| two_sided_inverse := @two_sided_inverse X x y g Hg
@@ -56,10 +58,13 @@ Definition IsIso_along {x y : X} {f g : x ~> y}
        transitivity (compose_respects _ _ (reflexivity _) _ _ H)
                     (@is_left_inverse X x y g Hg) |}.
 
-(* A composite of invertible morphisms is invertible, with the inverses
-   composed in the opposite order.  This is [iso_compose]
-   (Theory/Isomorphism.v) read for the predicate rather than the
-   bundled form. *)
+(*
+   A 复合 of invertible 态射 is invertible, with the inverses
+
+   本节说明相关定义、性质与动机。 composed 反 order. This is [iso_compose] (Theory/同构.v) read predicate rather than bundled form.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition IsIso_comp {x y z : X} {f : y ~> z} {g : x ~> y}
   (Hf : IsIsomorphism f) (Hg : IsIsomorphism g) : IsIsomorphism (f ∘ g) := {|
   two_sided_inverse := @two_sided_inverse X x y g Hg
@@ -159,10 +164,11 @@ Example AdjointEquivalence_Compose_counit_clause (y : E) :
 
 (** *** The comparison with the two constituents *)
 
-(* Mac Lane's whiskering formula for the unit, at [~].  Its donor is a
-   [Qed] corollary proved from [to_adj_unit], so this grade is the
-   donor's; the strict form is [AdjointEquivalence_Compose_unit_transpose]
-   below. *)
+(*
+   本节说明相关定义、性质与动机。 Mac Lane's whiskering formula unit, at [~]. Its donor is a. [Qed] corollary proved from [to_adj_unit], so this grade is donor's;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition AdjointEquivalence_Compose_unit (x : C) :
   @unit _ _ _ _ (@adj_equivalence _ _ _ _ AdjointEquivalence_Compose) x
     ≈ fmap[U] (@unit _ _ _ _ (@adj_equivalence _ _ _ _ B) (F x))
@@ -208,13 +214,13 @@ Example AdjointEquivalence_Compose_counit_inverse (y : E) :
 
 (** *** The refinement route, and how it compares *)
 
-(* The route the catalog entry proposes: refine the composite of the two
-   induced equivalences of categories.  Its premise checks out -- the
-   type below is the same one [AdjointEquivalence_Compose] inhabits, with
-   no transport -- but it is a different adjoint equivalence, rejected at
-   [eq_refl] against the direct one on the whole record, on the
-   underlying adjunction and on the unit components (negatives 1-3 of
-   Test/ProbeAdjointCompose379.v). *)
+(*
+   The route the catalog entry proposes: refine the 复合 of the two
+
+   本节说明相关定义、性质与动机。 induced equivalences 范畴. Its premise checks out -- type below is same one [AdjointEquivalence_Compose] inhabits, no transport -- but it is different 伴随 等价, rejected at [eq_refl] against direct one whole record, underlying
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition AdjointEquivalence_Compose_via_equivalence :
   AdjointEquivalence (F' ◯ F) (U ◯ U') :=
   Equivalence_to_AdjointEquivalence
@@ -276,18 +282,13 @@ Context {C D : Category}.
 Context {F : C ⟶ D} {U : D ⟶ C}.
 Context (A : AdjointEquivalence F U).
 
-(* Theory/Equivalence/Adjoint.v already supplies the third member of
-   the trio, [AdjointEquivalence_swap A : AdjointEquivalence U F], and
-   its underlying swapped adjunction.  The two agree on the nose,
-   the latter being defined as the former's adjunction field.  Nothing
-   is rebuilt here; the readback records that the trio
-   composition/identity/inverse is available together.
+(*
+   Theory/等价/伴随.v already supplies the third member of
 
-   DISCLOSED: [AdjointEquivalence_swap] is built through
-   [EquivalenceOfCategories_sym] and [Equivalence_to_AdjointEquivalence],
-   so -- by the measurement Theory/Equivalence/Strict.v records for the
-   same chain -- its unit does not reduce.  A direct swap whose
-   transposes reduce is not attempted here. *)
+   本节说明相关定义、性质与动机。 the trio, [AdjointEquivalence_swap A : AdjointEquivalence U F], its underlying swapped 伴随. The two agree nose, latter being defined former's 伴随 field. Nothing is rebuilt here;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example AdjointEquivalence_swap_readback :
   @adj_equivalence _ _ _ _ (AdjointEquivalence_swap A)
     = AdjointEquivalence_swap_adjunction A := eq_refl.
@@ -306,13 +307,13 @@ Context (A : AdjointEquivalence F1 U1).
 Context (B : AdjointEquivalence F2 U2).
 Context (G : AdjointEquivalence F3 U3).
 
-(* The two bracketings of a triple composite have DIFFERENT types --
-   [Compose] of functors is not associative on the nose -- so no equation
-   between them is well formed, and none is invented; the shape is
-   pinned as a typing negative in the probe.  What IS well formed is the
-   comparison of their units and counits, because the two bracketings
-   have definitionally equal object actions; and there the law holds by
-   conversion. *)
+(*
+   The two bracketings of a triple 复合 have DIFFERENT types --
+
+   本节说明相关定义、性质与动机。 [Compose] 函子 is not associative nose -- so no equation between them is well formed, none is invented; shape is pinned typing negative probe.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition assoc_left :=
   AdjointEquivalence_Compose (AdjointEquivalence_Compose A B) G.
@@ -359,11 +360,13 @@ End Laws.
 
 (** ** Non-vacuity *)
 
-(* Theory/Equivalence/Strict.v supplies a genuine adjoint
-   equivalence between the terminal category and [Indiscrete bool], via
-   Mac Lane SIV.4 Exercise 3.  Swapping it and composing gives an
-   adjoint equivalence of [Indiscrete bool] with itself whose two
-   functors are both [IndT o Erase (Indiscrete bool)]. *)
+(*
+   Theory/等价/Strict.v supplies a genuine 伴随
+
+   本节说明相关定义、性质与动机。 等价 between terminal 范畴 [Indiscrete bool], via Mac Lane SIV.4 Exercise 3.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition indiscrete_swap :
   AdjointEquivalence (Erase (Indiscrete bool)) IndT :=

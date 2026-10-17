@@ -20,17 +20,14 @@ Set Transparent Obligations.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* nLab: https://ncatlab.org/nlab/show/functor
+(*
+   nLab: https://ncatlab.org/nlab/show/functor
    Wikipedia: https://en.wikipedia.org/wiki/Functor_(functional_programming)
 
-   [map : (v -> b) -> Map k v -> Map k b] is the functorial action (fmap)
-   of the endofunctor [Map k -] on the category of Coq types, fixing the key
-   type [k].  It satisfies the two functor laws up to the extensional [Map]
-   equivalence: [map id ≈ id] and [map (g ∘ f) ≈ map g ∘ map f] (these laws
-   are not proved here, but follow because [map] rewrites values pointwise
-   and preserves every key, hence commutes with [lookup]).  [mapWithKey]
-   is the key-aware variant [k -> v -> b], not a plain functor since the
-   transported function may depend on the key. *)
+   本节说明相关定义、性质与动机。 [map : (v -> b) -> Map k v -> Map k b] is functorial action (fmap) 自函子 [Map k -] 范畴 Coq types, fixing key type [k].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Map.
 

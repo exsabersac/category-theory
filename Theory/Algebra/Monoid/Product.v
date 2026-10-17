@@ -64,12 +64,13 @@ Proof. unfold mon_prod_eta; apply exl_fork. Qed.
 Lemma mon_prod_eta_exr : exr ∘ mon_prod_eta ≈ eta[Y].
 Proof. unfold mon_prod_eta; apply exr_fork. Qed.
 
-(* Associativity of [mon_prod_mu], one component at a time.  The hypothesis
-   [Hp] says exactly that p commutes with the two multiplications; both
-   projections satisfy it, by [mon_prod_mu_exl] and [mon_prod_mu_exr].  The
-   two sides are each normalised to a common form ending in
-   [(p ⨂ p) ⨂ p]; the associator's naturality is what lets the two
-   normalisations meet, and the target monoid's own [mu_assoc] closes it. *)
+(*
+   结合律 of [mon_prod_mu], one component at a time.  The 假设
+
+   本节说明相关定义、性质与动机。 [Hp] says exactly that p commutes two multiplications; both projections satisfy it, [mon_prod_mu_exl] [mon_prod_mu_exr]. The two sides are each normalised common form ending [(p ⨂ p) ⨂ p];
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mon_prod_assoc_leg {z} (Z : Monoid z) (p : x × y ~> z)
       (Hp : p ∘ mon_prod_mu ≈ mu[Z] ∘ bimap p p) :
   p ∘ (mon_prod_mu ∘ bimap mon_prod_mu id[x × y])
@@ -97,11 +98,13 @@ Proof.
   now rewrite mu_assoc.
 Qed.
 
-(* The product of two internal monoids.  Declared a plain [Program
-   Definition] rather than an [Instance]: registering it would add a
-   resolution rule for [Monoid (_ × _)], and [Mon] itself is indexed by this
-   class, so leaving the database untouched is the conservative choice (the
-   [Hom_Representable] precedent, Functor/Representable.v). *)
+(*
+   The 积 of two internal 幺半群.  Declared a plain [Program
+
+   本节：定义] rather than [Instance]: registering it would add resolution rule [幺半群 (_ × _)], [Mon] itself is indexed this class, so leaving database untouched is conservative choice (the [Hom_可表] precedent, 函子/可表.v).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Monoid_Product : Monoid (x × y) := {|
   mu  := mon_prod_mu;
   eta := mon_prod_eta
@@ -232,11 +235,13 @@ Section Forget.
 Context `{CA : @Cartesian C}.
 Context `{TE : @Terminal C}.
 
-(* The underlying object of a product monoid IS the product of the underlying
-   objects, and likewise for the projections, the pairing and the unique map
-   into the terminal monoid: all at Leibniz equality, by [eq_refl].  This is
-   preservation on DATA; creation in the sense of Structure/Limit/Creation.v
-   is not proved and is not claimed. *)
+(*
+   The underlying 对象 of a 积 幺半群 IS the 积 of the underlying
+
+   本节说明相关定义、性质与动机。 对象, likewise projections, pairing unique map into terminal 幺半群: all at Leibniz equality, [eq_refl]. This is preservation DATA;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Mon_Forget_product (X Y : Mon C) :
   fobj[Mon_Forget] (X × Y) = fobj[Mon_Forget] X × fobj[Mon_Forget] Y
   := eq_refl.
@@ -262,11 +267,13 @@ End Forget.
 
 (** ** Reconciling the two monoid-object classes *)
 
-(* At a FIXED monoidal base the two classes differ only by the names and the
-   order of their fields, so the passage is field renaming in both
-   directions.  This says nothing about the tensor: it cannot turn an
-   abstract M into [CC_Monoidal], which is why it is not the route by which
-   [Mon_Cartesian] is obtained. *)
+(*
+   At a FIXED 幺半 base the two classes differ only by the names and the
+
+   本节说明相关定义、性质与动机。 order their fields, so passage is field renaming both directions.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Monoid_of_MonoidObject {x : C} (X : @MonoidObject C M x)
   : Monoid x := {|
@@ -286,27 +293,22 @@ Definition MonoidObject_of_Monoid {x : C} (X : Monoid x)
   mappend_assoc := @mu_assoc _ _ _ X
 |}.
 
-(* Both round trips close on the WHOLE record by [eq_refl]: both classes are
-   declared under [Set Primitive Projections] (Lib/Foundation.v), so record
-   eta identifies a record with the tuple of its own projections. *)
+(*
+   本节说明相关定义、性质与动机。 Both round trips close WHOLE record [eq_refl]: both classes are.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example monoid_round {x : C} (X : Monoid x) :
   Monoid_of_MonoidObject (MonoidObject_of_Monoid X) = X := eq_refl.
 
 Example monoid_object_round {x : C} (X : @MonoidObject C M x) :
   MonoidObject_of_Monoid (Monoid_of_MonoidObject X) = X := eq_refl.
 
-(* THE DESIGN CLAIM, MACHINE-CHECKED RATHER THAN ARGUED.  The passage above
-   cannot carry [Product_Monoid] to an abstract monoidal base: its conclusion
-   lives at [CC_Monoidal], and for a variable M there is no conversion between
-   the two.  Stripping the [Fail] reports
+(*
+   本节：THE DESIGN CLAIM, MACHINE-CHECKED RATHER THAN ARGUED. The passage above. cannot carry [积_幺半群] abstract 幺半 base: its conclusion lives at [CC_幺半], variable M there is no conversion between two.
 
-     The term "Product_Monoid X Y" has type
-      "@MonoidObject C (@CC_Monoidal C ?H ?H0) (x × y)"
-     while it is expected to have type "@MonoidObject C M (x × y)"
-
-   — a TYPING failure at the monoidal instance itself, not at any argument
-   elaborated before it.  The positive control is in the comparison section
-   below, where the same application at M := [CC_Monoidal] is accepted. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 End MonProduct.
 
@@ -326,10 +328,13 @@ End AbstractBaseProbe.
 
 (** ** [Product_Monoid] is the cartesian special case *)
 
-(* Instantiating the monoidal base at [CC_Monoidal] — where the tensor IS the
-   categorical product — makes [Monoid_Product] and Structure/Monoid.v's
-   [Product_Monoid] two constructions of a monoid on the same object.  They
-   agree; the unit on the nose, the multiplication up to [≈]. *)
+(*
+   Instantiating the 幺半 base at [CC_幺半] — where the tensor IS the
+
+   categorical 积 — makes [幺半群_积] Structure/幺半群.v's [积_幺半群] two constructions 幺半群 same 对象. They agree;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Comparison.
 
@@ -350,11 +355,13 @@ Example Monoid_Product_eta_is_Product_Monoid
     = @mempty C CC_Monoidal _ (Product_Monoid X Y)
   := eq_refl.
 
-(* [Product_Monoid] read as a [Monoid] in this file's sense.  This is what
-   "so that [Product_Monoid] applies" amounts to, and it doubles as the
-   positive control for the negative in [AbstractBaseProbe] above: the very
-   same application, at M := [CC_Monoidal] instead of a variable M, IS
-   accepted. *)
+(*
+   [积_幺半群] read as a [幺半群] in this file's sense.  This is what
+
+   本节说明相关定义、性质与动机。 "so that [积_幺半群] applies" amounts to, it doubles positive control negative [AbstractBaseProbe] above: very same application, at M := [CC_幺半] instead variable M, IS accepted.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Product_Monoid_as_Monoid {x y : C}
            (X : @MonoidObject C CC_Monoidal x)
            (Y : @MonoidObject C CC_Monoidal y)
@@ -393,16 +400,13 @@ End Comparison.
 
 (** ** A concrete instantiation, and the design claim made concrete *)
 
-(* [Sets] with the setoid product is a monoidal category (its own hand-built
-   [Sets_Product_Monoidal], Instance/Sets.v — NOT [CC_Monoidal]), and it
-   is cartesian.  So [Mon Sets] at that base — which is exactly
-   Instance/Roster.v's [Mon_Sets], by definition there; that file is not
-   required here — inherits finite products.
+(*
+   [Sets] with the setoid 积 is a 幺半范畴 (its own hand-built
 
-   This is also where the design argument of the header stops being a pointer
-   and becomes an in-tree fact: [Product_Monoid] concludes at [CC_Monoidal
-   Sets], and the two monoidal structures on [Sets] are NOT the same term, so
-   route (a) would not have reached the tree's own [Mon Sets]. *)
+   本节：[Sets_积_幺半], Instance/Sets.v — NOT [CC_幺半]), it is 笛卡尔. So [Mon Sets] at that base — which is exactly Instance/Roster.v's [Mon_Sets], 定义 there; that file is not required here — inherits 有限积.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SetsWitness.
 
@@ -414,29 +418,33 @@ Definition Mon_Sets_Terminal
   : @Terminal (@Mon Sets Sets_Product_Monoidal)
   := @Mon_Terminal Sets Sets_Product_Monoidal Sets_Terminal.
 
-(* CONVERSION negative: [Sets]'s own monoidal structure is not the cartesian
-   monoidal structure built from its products.  Stripping the [Fail] gives
-   "cannot unify "Sets_Product_Monoidal" and "CC_Monoidal"".  Controls: the
-   two definitions immediately above, which name both [Sets_Product_Monoidal]
-   and [Sets_Cartesian] / [Sets_Terminal]. *)
-(* Control for the negative below.  Without it, `@CC_Monoidal` applied to
-   explicit arguments occurs ONLY inside that `Fail`, so a signature change
-   to `CC_Monoidal` would make the command fail for the wrong reason —
-   `Illegal application` rather than `cannot unify` — and the guard would go
-   vacuously green.  This is the same false-pass mode the section probe
-   above records. *)
+(*
+   CONVERSION negative: [Sets]'s own 幺半 structure is not the 笛卡尔
+
+   本节：幺半 structure built from its 积. Stripping [Fail] gives "cannot unify "Sets_积_幺半" "CC_幺半"".
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   Control for the negative below.  Without it, `@CC_幺半` applied to
+
+   本节说明相关定义、性质与动机。 explicit arguments occurs ONLY inside that `Fail`, so signature change `CC_幺半` would make command fail wrong reason — `Illegal application` rather than `cannot unify` — guard would go vacuously green.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check (@CC_Monoidal Sets Sets_Cartesian Sets_Terminal).
 
 Fail Example Sets_Product_Monoidal_is_CC_Monoidal :
   Sets_Product_Monoidal = @CC_Monoidal Sets Sets_Cartesian Sets_Terminal
   := eq_refl.
 
-(* TYPING negative: consequently [Product_Monoid] does not supply a monoid
-   for [Mon Sets].  Stripping the [Fail] gives "The term "Product_Monoid X Y"
-   has type "@MonoidObject Sets (@CC_Monoidal Sets _ _) (x × y)" while it is
-   expected to have type "@MonoidObject Sets Sets_Product_Monoidal (x × y)"".
-   Control: [Product_Monoid_as_Monoid] above, the same application where the
-   two bases DO agree. *)
+(*
+   TYPING negative: consequently [积_幺半群] does not supply a 幺半群
+
+   本节：for [Mon Sets]. Stripping [Fail] gives "The term "积_幺半群 X Y" has type "@MonoidObject Sets (@CC_幺半 Sets _ _) (x × y)" while it is expected have type "@MonoidObject Sets Sets_积_幺半 (x × y)"".
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check
   (fun (x y : Sets)
        (X : @MonoidObject Sets CC_Monoidal x)
@@ -446,17 +454,11 @@ Fail Check
 
 End SetsWitness.
 
-(** * The universe boundary, PINNED
+(*
+   本节说明相关定义、性质与动机。 * * The universe boundary, PINNED. The UNIVERSES section this header attributes C's hom = proof identification three donors, measured under section declaring levels strictly apart.
 
-    The UNIVERSES section of this header attributes C's hom = proof
-    identification to three donors, measured under a section declaring the
-    levels strictly apart.  An earlier revision REPORTED that measurement
-    without pinning it anywhere, so nothing in the build would have noticed
-    an upstream annotation changing it.  These are that measurement, as
-    guarded negatives with their controls.
-
-    Section-local [Universes]/[Constraint] do not leak: a downstream file
-    importing this one can still declare its own levels strictly apart. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseDonors.
 
@@ -469,9 +471,11 @@ Constraint uh < up.
 Check (fun (C : Category@{uo uh up}) (x y : C) => x ~> y).
 Check (fun (C : Category@{uo uh up}) (x : C) => id[x]).
 
-(* Controls that the three donor names resolve at unconstrained levels;
-   without these a rename would leave the negatives succeeding on a
-   reference-not-found error rather than on the universe boundary. *)
+(*
+   本节说明相关定义、性质与动机。 Controls that three donor names resolve at unconstrained levels;.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Check @Monoidal.
 Check @Cartesian.
 Check @Terminal.

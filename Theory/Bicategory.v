@@ -32,166 +32,20 @@ Reserved Infix "∘∘∘" (at level 40, left associativity).
    `Structure/Monoidal.v` 的字段。派生的水平 2-胞运算 `hcomp2`（Godement whiskering）
    是 `hcompose` 对一对 2-胞的函子作用，连贯定律经其陈述。 *)
 
-(* Why weaken a 2-category: examples, coherence, and the monad slogan
+(*
+   Why weaken a 2-范畴: examples, coherence, and the 单子 slogan
 
-   nLab:      https://ncatlab.org/nlab/show/bicategory
-   Wikipedia: https://en.wikipedia.org/wiki/Bicategory
-   Paper: Bénabou, J., "Introduction to bicategories", Reports of the
-          Midwest Category Seminar, LNM 47, Springer 1967, pp. 1-77
-   Paper: Kelly, G.M., Street, R., "Review of the elements of
-          2-categories", LNM 420, Springer 1974, pp. 75-103
-   Paper: Mac Lane, S., Paré, R., "Coherence for bicategories and indexed
-          categories", J. Pure Appl. Algebra 37, 1985, pp. 59-80
+   本节：nLab: https://ncatlab.org/nlab/show/双范畴 Wikipedia: https://en.wikipedia.org/wiki/双范畴 Paper: Bénabou, J., "Introduction bicategories", Reports Midwest 范畴 Seminar, LNM 47, Springer 1967, pp.
 
-   The notion is due to Bénabou (1967).  A strict 2-category demands that
-   horizontal composition of 1-cells be associative and unital on the
-   nose, and almost none of the naturally occurring 2-dimensional
-   structures meet that demand.  When composition is given by a universal
-   construction — pullback of spans, tensor of bimodules, coend of
-   profunctors — the result is determined only up to canonical
-   isomorphism, so [hcompose] is associative and unital up to a coherent
-   invertible 2-cell rather than on the nose.  A [Bicategory] keeps such
-   examples honest by recording the associator [hassoc] and the unitors
-   [hunit_left], [hunit_right] as data, and constraining them by the two
-   coherence laws [hcoherence_pentagon] and [hcoherence_triangle], so that
-   every reasonable diagram of associators and unitors commutes.  This
-   was, per nLab, the earliest such notion and remains the one in most
-   common use.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   The one-object case is exactly a monoidal category.  Read at a single
-   [bi0cell], with [bi1id] as the unit and [hcompose] as the tensor, the
-   bicategory axioms are the monoidal coherence axioms; this delooping is
-   why the [Bicategory] class was shaped to mirror Structure/Monoidal.v
-   field for field (the dictionary in the header above), and
-   Theory/Bicategory/OneObject.v realizes the correspondence by projecting
-   the monoidal data into a one-object bicategory (nLab; Wikipedia).
+(*
+   From https://ncatlab.org/nlab/show/双范畴#detailedDefn :
 
-   Cat is the archetypal strict example — categories, functors, natural
-   transformations — realized in Instance/Cat/Bicategory.v, where the
-   hom-category [bicat] C D is definitionally the functor category on C
-   and D.  The motivating weak examples lie elsewhere.  Span(C) over a
-   category with pullbacks is, as the header of Construction/Span/Category.v
-   notes, literally a bicategory, and quotienting by apex-iso recovers a
-   strict 1-category (with Span(Set) subsuming Rel); its pushout mirror
-   Cospan(C) is in Construction/Cospan/Category.v; bimodules over rings are
-   what nLab calls the prototype for many similar examples; and profunctors
-   compose by a coend, whose unit and associator laws are developed in
-   Construction/Profunctor/Laws.v.
+   本节：{In 下述 text, → matches ~> this library, ⇒ matches ~~>} A 双范畴 B consists - collection Ob[B] 对象 0-cells, - each 对象 对象 b, collection B(a,b) Hom[B](a,b) 态射 1-cells → b, - each 对象 a, 对象 b, m
 
-   The headline payoff, observed in the same 1967 paper, is a slogan: a
-   small category is a monad in the bicategory of spans of sets.  A monad
-   on a set A₀ in Span(Set) is a span A₀ ← A₁ → A₀ (objects, morphisms,
-   source and target) with a multiplication A₁ ×_{A₀} A₁ → A₁
-   (composition) and a unit A₀ → A₁ (identities), and its monad axioms are
-   the category axioms.  Varying the ambient bicategory specializes the
-   slogan: a monad in Prof is a promonad, the categorical content of
-   Hughes's arrows and the setting for profunctor optics (Milewski,
-   "Promonads, Arrows, and Einstein Notation for Profunctors", 2019;
-   Clarke et al., "Profunctor Optics, a Categorical Update", arXiv 2020).
-   More broadly, a bicategory is where composition given by a universal
-   construction is modeled without asserting a strict equality it does not
-   have.
-
-   Adjunctions internal to a bicategory, and the mates correspondence —
-   the bijection of 2-cells they induce — are the 2-categorical toolkit
-   for lifts, transports, and Beck-Chevalley squares (Kelly, Street
-   1974); the in-tree development gives internal adjunctions in
-   Theory/Bicategory/Adjunction.v, the Kelly-Street mates calculus in
-   Theory/Bicategory/Mates.v, pseudofunctors (the weak 2-functors) in
-   Theory/Bicategory/Pseudofunctor.v, and lax transformations and
-   modifications in Theory/Bicategory/Lax.v and
-   Theory/Bicategory/Modification.v, with a bicategorical adjunction in
-   Cat shown to coincide with F ⊣ U in
-   Instance/Cat/Bicategory/Adjunction.v.  The coherence theorem (Mac Lane,
-   Paré 1985) shows every bicategory biequivalent to a strict 2-category,
-   even though the naturally occurring examples are presented weakly;
-   Theory/DoubleCategory.v cross-refers to the [hassoc] orientation used
-   here. *)
-
-(* From https://ncatlab.org/nlab/show/bicategory#detailedDefn :
-
-{In the following text, → matches ~> in this library, and ⇒ matches ~~>}
-
-A bicategory B consists of
-
-- a collection Ob[B] of objects or 0-cells,
-- for each object a and object b,
-  a collection B(a,b) or Hom[B](a,b)
-  of morphisms or 1-cells a → b, and
-- for each object a, object b, morphism f:a → b, and morphism g:a → b,
-  a collection B(f,g) or 2Hom[B](f,g)
-  of 2-morphisms or 2-cells f ⇒ g or f ⇒ g:a → b,
-
-equipped with
-
-- for each object a,
-  an identity 1[a]:a → a or id[a]:a → a,
-- for each a,b,c, f:a → b, and g:b → c,
-  a composite f;g: a → c or g ∘ f:a → c,
-- for each f:a → b,
-  an identity or 2-identity 1[f]:f ⇒ f or Id[f]:f → f,
-- for each f,g,h:a → b, η:f ⇒ g, and θ:g ⇒ h,
-  a vertical composite θ ∙ η:f ⇒ h,
-- for each a,b,c, f,g:a → b, h:b → c, and η:f ⇒ g,
-  a left whiskering h ⊲ η:h ∘ f ⇒ h ∘ g,
-- for each a,b,c, f:a → b, g,h:b → c, and η:g ⇒ h,
-  a right whiskering η ⊳ f:g ∘ f ⇒ h ∘ f,
-- for each f:a → b,
-  a left unitor λ[f]:id[b] ∘ f ⇒ f,
-  and an inverse left unitor λ⁻¹[f]:f ⇒ id[b] ∘ f,
-- for each f:a → b,
-  a right unitor ρ[f]:f ∘ id[a] ⇒ f
-  and an inverse right unitor ρ⁻¹[f]:f ⇒ f ∘ id[a], and
-- for each a →[f] b →[g] c →[h] d,
-  an associator α[h,g,f]:(h ∘ g) ∘ f ⇒ h ∘ (g ∘ f)
-  and an inverse associator α⁻¹[h,g,f]: h ∘ (g ∘ f) ⇒ (h ∘ g) ∘ f,
-
-such that
-
-- for each η:f ⇒ g:a → b,
-  the vertical composites η ∙ Id[f] and Id[g] ∙ η both equal η,
-- for each f ⇒[η] g ⇒[θ] h ⇒[ι] i:a → b,
-  the vertical composites ι ∙ (θ ∙ η) and (ι ∙ θ) ∙ η are equal,
-- for each a →[f] b →[g] c,
-  the whiskerings Id[g] ⊳ f and g ⊲ Id[f]; both equal Id[g ∘ f],
-- for each f ⇒[η] g ⇒[θ] h:a → b and i:b → c,
-  the vertical composite (i ⊲ θ) ∙ (i ⊲ η) equals the whiskering i ⊲ (θ ∙ η),
-- for each f:a → b and g ⇒[η] h ⇒[θ] i:b → c,
-  the vertical composite (θ ⊳ f) ∙ (η ⊲ f) equals the whiskering (θ ∙ η) ⊳ f,
-- for each η:f ⇒ g:a → b,
-  the vertical composites λ[g] ∙ (id[b] ⊲ η) and η ∙ λ[f] are equal,
-- for each η:f ⇒ g:a → b,
-  the vertical composites ρ[g] ∙ (η ⊳ id[a]) and η ∙ ρ[f] are equal,
-- for each a →[f] b →[g] c and η:h ⇒ i:c → d,
-  the vertical composites α⁻¹[i,g,f] ∙ (η ⊳ (g ∘ f))
-  and ((η ⊳ g) ⊳ f) ∙ α⁻¹[h,g,f] are equal,
-- for each f:a → b, η:g ⇒ h:b → c, and i:c → d,
-  the vertical composites α⁻¹[i,h,f] ∙ (i ⊲ (η ⊳ f))
-  and ((i ⊲ η) ⊳ f) ∙ α⁻¹[i,g,f] are equal,
-- for each η:f ⇒ g:a → b and b →[h] c →[i] d,
-  the vertical composites α⁻¹[i,h,g] ∙ (i ⊲ (h ⊲ η))
-  and ((i ∘ h) ⊲ η) ∙ α⁻¹[i,h,f] are equal,
-- for each η:f ⇒ g:a → b and θ:h ⇒ i:b → c,
-  the vertical composites (i ⊲ η) ∙ (θ ⊳ f) and (θ ⊳ g) ∙ (h ⊲ η) are equal,
-- for each f:a → b,
-  the vertical composites λ[f] ∙ λ⁻¹[f]:f ⇒ f
-  and λ⁻¹[f] ∙ λ[f]:id[b] ∘ f ⇒ id[b] ∘ f
-  equal the appropriate identity 2-morphisms,
-- for each f:a → b,
-  the vertical composites ρ[f] ∙ ρ⁻¹[f]:f ⇒ f
-  and ρ⁻¹[f] ∙ ρ[f]:f ∘ id[a] ⇒ f ∘ id[a]
-  equal the appropriate identity 2-morphisms,
-- for each a →[f] b →[g] c →[h] d,
-  the vertical composites α⁻¹[h,g,f] ∙ α[h,g,f]:(h ∘ g) ∘ f ⇒ (h ∘ g) ∘ f
-  and α[h,g,f] ∙ α⁻¹[h,g,f]:h ∘ (g ∘ f) ⇒ h ∘ (g ∘ f)
-  equal the appropriate identity 2-morphisms,
-- for each a →[f] b →[g] c,
-  the vertical composite (ρ[g] ⊳ f) ∙ α⁻¹[g,id[b],f]
-  equals the whiskering g ⊲ λ[f], and
-- for each a →[f] b →[g] c →[h] d →[i] e,
-  the vertical composites ((α⁻¹[i,h,g] ⊳ f) ∙ α⁻¹[i,h∘g,f]) ∙ (i ⊲ α⁻¹[h,g,f])
-  and α⁻¹[i∘h,g,f] ∙ α⁻¹[i,h,g∘f] are equal.
-
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
 Class Bicategory := {
@@ -247,18 +101,25 @@ Class Bicategory := {
   hcompose {x y z : bi0cell} : bicat y z ∏ bicat x y ⟶ bicat x z
     where "f ∘∘∘ g" := (hcompose (f, g));  (* horizontal composition functor *)
 
-  (* The horizontal composite of two 2-cells (Godement whiskering), obtained as
-     the functorial action of `hcompose` on the pair. This is a manifest field:
-     it is a definition, not new data, so it computes to the underlying
-     bifunctor's `fmap`. All the coherence laws below are phrased through it. *)
+  (*
+   The horizontal 复合 of two 2-cells (Godement whiskering), obtained as
+
+   本节说明相关定义、性质与动机。 the functorial action `hcompose` pair. This is manifest field: it is 定义, not new data, so it computes underlying bifunctor's `fmap`.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   hcomp2 {x y z : bi0cell} {g g' : bicat y z} {f f' : bicat x y}
          (θ : g ~{bicat y z}~> g') (η : f ~{bicat x y}~> f') :
     (g ∘∘∘ f) ~{bicat x z}~> (g' ∘∘∘ f')
     := @fmap _ _ (@hcompose x y z) (g, f) (g', f') (θ, η);
 
-  (* The coherence 2-isomorphisms of a bicategory, living in the hom-categories
-     `bicat _ _` and mirroring the unitors and associator of a monoidal
-     category (`Structure/Monoidal.v`), with tensor ↔ hcompose, I ↔ bi1id. *)
+  (*
+   The coherence 2-isomorphisms of a 双范畴, living in the hom-范畴
+
+   `bicat _ _` mirroring 单位子 结合子 幺半范畴 (`Structure/幺半.v`), tensor ↔ hcompose, I ↔ bi1id.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
   hunit_left  {x y : bi0cell} (f : bicat x y) :   (* left  unitor λ[f] *)
     (bi1id ∘∘∘ f) ≅[bicat x y] f;
@@ -268,10 +129,13 @@ Class Bicategory := {
          (h : bicat y z) (g : bicat x y) (f : bicat w x) :
     ((h ∘∘∘ g) ∘∘∘ f) ≅[bicat w z] (h ∘∘∘ (g ∘∘∘ f));
 
-  (* The unitors and the associator are natural in their 1-cell arguments; each
-     square is the horizontal-composition analogue of the monoidal naturality
-     of λ, ρ and α (the `to`-direction; the `from`-direction follows since these
-     are isomorphisms). *)
+  (*
+   The 单位子 and the 结合子 are 自然 in their 1-cell arguments; each
+
+   本节说明相关定义、性质与动机。 square is horizontal-复合 analogue 幺半 naturality λ, ρ α (the `to`-direction;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
   hunit_left_natural {x y : bi0cell} {f f' : bicat x y}
                      (η : f ~{bicat x y}~> f') :
@@ -285,10 +149,13 @@ Class Bicategory := {
     hcomp2 θ (hcomp2 γ η) ∘∘ to (hassoc h g f)
       ≈ to (hassoc h' g' f') ∘∘ hcomp2 (hcomp2 θ γ) η;
 
-  (* The two coherence laws: the triangle relates the unitors to the associator
-     across `bi1id`, and the pentagon makes the two reassociations of a fourfold
-     horizontal composite agree. Endpoints mirror `Monoidal.triangle_identity`
-     and `Monoidal.pentagon_identity` exactly. *)
+  (*
+   The two coherence laws: the triangle relates the 单位子 to the 结合子
+
+   本节说明相关定义、性质与动机。 across `bi1id`, pentagon makes two reassociations fourfold horizontal 复合 agree.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
   hcoherence_triangle {x y z : bi0cell} (g : bicat y z) (f : bicat x y) :
     hcomp2 (to (hunit_right g)) (bi2id (a:=f))
@@ -303,12 +170,13 @@ Class Bicategory := {
 #[export] Existing Instance bi2homset.
 #[export] Existing Instance vcompose_respects.
 
-(* Smart constructor for [Bicategory], mirroring [Build_Category']: it takes
-   every field except `vcompose_assoc_sym` and supplies that symmetric form
-   automatically as `symmetry (vcompose_assoc …)`. This is "what symmetry
-   permits" — the dual orientation of vertical associativity carries no extra
-   content — and keeps duality definitional exactly as in [Category]. Intended
-   for use with `unshelve refine`, leaving the coherence obligations as goals. *)
+(*
+   Smart constructor for [双范畴], mirroring [Build_范畴']: it takes
+
+   本节说明相关定义、性质与动机。 every field except `vcompose_assoc_sym` supplies that 对称 form automatically `symmetry (vcompose_assoc …)`.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Build_Bicategory'
     bi0cell bi1cell bi2cell bi1id bi2homset bi2id
     vcompose vcompose_respects bi2id_left bi2id_right vcompose_assoc

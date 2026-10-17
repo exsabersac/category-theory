@@ -24,18 +24,14 @@ Arguments Functor : clear implicits.
    reading off its action [fmap] on morphisms. *)
 Coercion fmap : Functor >-> Funclass.
 
-(* nLab: https://ncatlab.org/nlab/show/contravariant+functor
+(*
+   nLab: https://ncatlab.org/nlab/show/contravariant+functor
    Wikipedia: https://en.wikipedia.org/wiki/Functor#Covariance_and_contravariance
 
-   FP reading.  A contravariant functor equips [F : Type → Type] with
-   [contramap : (x → y) → F y → F x], which reverses the direction of the
-   mapped function.  The laws are again identity [contramap id ≈ id] and
-   composition [contramap (g ∘ f) ≈ contramap f ∘ contramap g].
+   本节说明相关定义、性质与动机。 FP reading. A contravariant 函子 equips [F : Type → Type] [contramap : (x → y) → F y → F x], which reverses direction mapped function. The laws are again identity [contramap id ≈ id] 复合 [contramap (g ∘ f) ≈ contramap f ∘ contramap g].
 
-   Categorical reading.  This is an endofunctor [F : Types^op → Types],
-   equivalently a functor out of the opposite category; [contramap f] is the
-   image of [f] under that functor.  Presheaves are the paradigmatic
-   example. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Contravariant@{d c} {F : Type@{d} → Type@{c}} :=
   contramap : ∀ {x y : Type@{d}}, (x → y) → F y → F x.  (* hom map reversing arrows *)
 
@@ -43,18 +39,19 @@ Arguments Contravariant : clear implicits.
 
 Coercion contramap : Contravariant >-> Funclass.
 
-(* If the same [F] is both covariant and contravariant, it must ignore its
-   argument (it is a constant functor up to iso), so any [F x] can be moved to
-   any [F y].  We route through [F False]: [contramap] with the unique map out
-   of the initial type [False → x] sends [F x] to [F False], and [fmap] with
-   [False → y] sends [F False] to [F y].  [False_rect : False → z] is the
-   unique morphism from the initial object. *)
+(*
+   本节说明相关定义、性质与动机。 If same [F] is both covariant contravariant, it must ignore its. argument (it is constant 函子 up iso), so any [F x] can be moved any [F y].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition coerce `{Functor F} `{Contravariant F} {x y} : F x → F y :=
   fmap (False_rect _) ∘ contramap (False_rect _).
 
-(* Haskell-style infix notation for [fmap]/[contramap].  [<$>] is Haskell's
-   infix [fmap]; [<$] replaces all contents with a constant; [fmap[M N]]
-   selects [fmap] for the composite functor [λ X, M (N X)]. *)
+(*
+   本节说明相关定义、性质与动机。 Haskell-style infix notation [fmap]/[contramap]. [<$>] is Haskell's. infix [fmap]; [<$] replaces all contents constant;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Module FunctorNotations.
 
 Infix "<$>" := fmap
@@ -121,12 +118,14 @@ Instance Compose_Functor `{Functor F} `{Functor G} : Functor (F ∘ G) := {
   fmap := λ _ _, fmap[F] ∘ fmap[G];
 }.
 
-(* nLab: https://ncatlab.org/nlab/show/Yoneda+lemma
+(*
+   nLab: https://ncatlab.org/nlab/show/Yoneda+lemma
    Wikipedia: https://en.wikipedia.org/wiki/Yoneda_lemma
 
-   The (covariant, "co-Yoneda") presentation of [F] at [x]: the type of
-   natural transformations [Hom(x, −) ⇒ F].  By the Yoneda lemma this type is
-   naturally isomorphic to [F x], a continuation-passing encoding of [F]. *)
+   本节说明相关定义、性质与动机。 The (covariant, "co-Yoneda") presentation [F] at [x]: type 自然变换 [Hom(x, −) ⇒ F].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Yoneda@{d c u} (F : Type@{d} → Type@{c}) (x : Type@{u}) :=
   ∀ r : Type@{u}, (x → r) → F r.
 

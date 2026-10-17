@@ -41,13 +41,13 @@ Record Model := {
     @TerminalFunctor (@law_cat T) C model_fun (@law_terminal T) _
 }.
 
-(** ** The category of models
+(*
+   * ** The 范畴 of models
 
-    The full subcategory of the functor category [law_cat T, C] whose
-    objects carry both preservation witnesses.  [shom] retains every
-    natural transformation ([True]), so closure under identity and
-    composition is trivial ([I]) — the same shape as [C_W] in
-    Construction/Localization.v. *)
+   本节说明相关定义、性质与动机。 The full subcategory 函子 范畴 [law_cat T, C] whose 对象 carry both preservation witnesses.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Models_sub : Subcategory (@Fun (@law_cat T) C) :=
   @Build_Subcategory (@Fun (@law_cat T) C)
@@ -60,11 +60,11 @@ Definition Models_sub : Subcategory (@Fun (@law_cat T) C) :=
 
 Definition Models : Category := Sub (@Fun (@law_cat T) C) Models_sub.
 
-(** ** Bridges between the record and subcategory presentations
+(*
+   本节说明相关定义、性质与动机。 * ** Bridges between record subcategory presentations. A [Model] packs into 对象 [Models], every 对象 [Models] unpacks [Model];
 
-    A [Model] packs into an object of [Models], and every object of
-    [Models] unpacks to a [Model]; the two presentations carry exactly
-    the same data. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Model_pack (M : Model) : Models :=
   (model_fun M; (model_cartesian M, model_terminal M)).
@@ -74,10 +74,11 @@ Definition Model_unpack (x : Models) : Model :=
    ; model_cartesian := fst `2 x
    ; model_terminal  := snd `2 x |}.
 
-(** The two presentations are mutually inverse on the nose: each round
-    trip is an eta-expansion, discharged by case analysis.  (Propositional
-    [=] on the packed OBJECT data — the sanctioned case; no morphism
-    equality is asserted.) *)
+(*
+   本节说明相关定义、性质与动机。 * The two presentations are mutually inverse nose: each round. trip is eta-expansion, discharged case analysis. (Propositional [=] packed OBJECT data — sanctioned case;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Model_unpack_pack (M : Model) : Model_unpack (Model_pack M) = M.
 Proof. destruct M; reflexivity. Qed.

@@ -19,14 +19,13 @@ Open Scope N_scope.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Sanity check on the raw decider [formula_backward] (the Gallina kernel
-   behind [map_decide]), bypassing the reflection wrapper. The reified formula
-   is the tautology [P -> P] for one fixed [P], and the goal asserts that the
-   decider lands in its [Proved] branch ([then True]) rather than [No]/[Uncertain]
-   ([else False]); [vm_compute] runs the decision and [constructor] closes the
-   resulting [True]. The [vars] environment supplies the free positives 1..4;
-   the answer does not depend on [x y z w], which only confirms the result is
-   independent of the particular variable assignment. *)
+(*
+   Sanity check on the raw decider [formula_反向] (the Gallina 核
+
+   本节说明相关定义、性质与动机。 behind [map_decide]), bypassing reflection wrapper. The reified formula is tautology [P -> P] one fixed [P], goal asserts that decider lands its [Proved] branch ([then True]) rather than [No]/[Uncertain] ([else False]);
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example formula_backward_example (x y z w : N) :
   if formula_backward
        (Impl (Maps (Var 1%positive) (Var 2%positive) (Var 3%positive)
@@ -41,26 +40,23 @@ Example formula_backward_example (x y z w : N) :
   then True else False.
 Proof. vm_compute; constructor. Qed.
 
-(* Smallest end-to-end use of the reflective tactic [solve_map]: the same
-   two-element map appears as hypothesis and conclusion, so [MapsTo (x,y) f]
-   follows trivially. This checks the reify/decide/reflect round trip closes a
-   genuine (non-vacuous) membership goal. *)
+(*
+   本节说明相关定义、性质与动机。 Smallest end-to-end use reflective tactic [solve_map]: same. two-element map appears 假设 conclusion, so [MapsTo (x,y) f] follows trivially.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example map_decide_test  x y f :
   M.MapsTo (elt:=N) (x, y) f (M.add (0%N, 0%N) 0%N (M.add (1%N, 1%N) 1%N (M.empty _))) ->
   M.MapsTo (elt:=N) (x, y) f (M.add (0%N, 0%N) 0%N (M.add (1%N, 1%N) 1%N (M.empty _))).
 Proof. solve_map. Qed.
 
-(* The real content: the associativity coherence of [composable_pairs n].
-   Following [ArrowsOnly]'s convention, [M.find (f, g) = Some fg] reads "g and
-   f compose to fg" (i.e. [f ∘ g = fg]). So the hypotheses say [f ∘ g = fg],
-   [g ∘ h = gh] and [fg ∘ h = fgh]; the conclusion says [f ∘ gh = fgh], i.e.
-   the left- and right-associated composites of the triple agree. This is
-   exactly the [composition_law] obligation discharged for [Three] in
-   [ArrowsOnly], here stated directly against the composition table and closed
-   by reflection. [vm_compute triangular_number] first normalises the index
-   arithmetic so [map_decide] sees a ground map. The commented-out
-   [destruct_maps; nomega] is the brute-force alternative, kept with its timing
-   to document why reflection is used (0.016s vs 1.68s at n = 3). *)
+(*
+   The real content: the 结合律 coherence of [composable_pairs n].
+
+   本节说明相关定义、性质与动机。 Following [ArrowsOnly]'s convention, [M.find (f, g) = Some fg] reads "g f compose fg" (i.e. [f ∘ g = fg]). So hypotheses say [f ∘ g = fg], [g ∘ h = gh] [fg ∘ h = fgh]; conclusion says [f ∘ gh = fgh], i.e.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example problem3 : ∀ f g h fg gh fgh : N,
   let big := composable_pairs 3 in
   M.find (elt:=N) (f,  g)  big = Some fg ->
@@ -76,11 +72,13 @@ Proof.
   map_decide.                (* takes 0.016s *)
 Qed.
 
-(* Same associativity goal at larger n, showing how the two approaches scale.
-   Brute force grows combinatorially with the table size (timings noted below:
-   30.15s at n = 4, 2501s at n = 5), while reflection stays in the tens of
-   milliseconds; the [destruct_maps] lines are commented out so the file builds
-   quickly. *)
+(*
+   Same 结合律 goal at larger n, showing how the two approaches scale.
+
+   本节说明相关定义、性质与动机。 Brute force grows combinatorially table size (timings noted below: 30.15s at n = 4, 2501s at n = 5), while reflection stays tens milliseconds;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example problem4 : ∀ f g h fg gh fgh : N,
   let big := composable_pairs 4 in
   M.find (elt:=N) (f,  g)  big = Some fg ->
@@ -107,10 +105,11 @@ Proof.
   map_decide.                (* takes 0.085s *)
 Qed.
 
-(* Largest instance exercised here. Despite the name, this uses
-   [composable_pairs 10] (a 10-object table, the 100 alludes to the roughly
-   hundred-entry map), and is the only case where reflection itself takes
-   appreciable time (2.445s); brute force is not even attempted. *)
+(*
+   本节说明相关定义、性质与动机。 Largest instance exercised here. Despite name, this uses. [composable_pairs 10] (a 10-对象 table, 100 alludes roughly hundred-entry map), is only case where reflection itself takes appreciable time (2.445s);
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example problem100 : ∀ f g h fg gh fgh : N,
   let big := composable_pairs 10 in
   M.find (elt:=N) (f,  g)  big = Some fg ->

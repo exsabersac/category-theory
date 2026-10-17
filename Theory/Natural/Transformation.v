@@ -45,12 +45,13 @@ Context {G : C ⟶ D}.
    （§6, p. 247）。本文件定义分量与自然性方块；垂直复合、whiskering 与 Godement
    积见同目录后续。 *)
 
-(* The `naturality_sym` field records the symmetric orientation of the
-   naturality square. It is logically derivable from `naturality` (see
-   `Build_Transform'` below, which proves it from `naturality` alone), but is
-   kept as a primitive field so that duality holds definitionally: the
-   opposite of a [Transform] swaps `naturality` and `naturality_sym` without
-   any rewriting, mirroring `comp_assoc`/`comp_assoc_sym` in [Category]. *)
+(*
+   The `naturality_sym` field records the 对称 orientation of the
+
+   本节说明相关定义、性质与动机。 naturality square. It is logically derivable from `naturality` (see `Build_Transform'` below, which proves it from `naturality` alone), but is kept primitive field so that 对偶 holds definitionally: 反 [Transform] swaps `naturality` `naturality_sym` wit
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Transform := {
   transform {x} : F x ~> G x;             (* the component at each object x *)
@@ -64,9 +65,11 @@ Class Transform := {
     transform ∘ fmap[F] f ≈ fmap[G] f ∘ transform
   }.
 
-(* Smart constructor: build a [Transform] from the components together with the
-   single (non-symmetric) naturality square, deriving `naturality_sym` by
-   symmetry. This witnesses that `naturality_sym` carries no extra content. *)
+(*
+   本节说明相关定义、性质与动机。 Smart constructor: build [Transform] from components together the. single (non-对称) naturality square, deriving `naturality_sym` symmetry.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Build_Transform'
   (transform' : forall x, F x ~> G x)
@@ -165,10 +168,13 @@ Program Definition nat_id `{F : C ⟶ D} : F ⟹ F := {|
 
 #[export] Hint Unfold nat_id : core.
 
-(* Vertical composition of natural transformations: for `g : F ⟹ G` and
-   `f : G ⟹ K`, the composite `f ∙ g : F ⟹ K` has component
-   `(f ∙ g)_X = f_X ∘ g_X`. This is the composition of the functor category
-   `[C, D]`. *)
+(*
+   Vertical 复合 of 自然变换: for `g : F ⟹ G` and
+
+   本节说明相关定义、性质与动机。 `f : G ⟹ K`, 复合 `f ∙ g : F ⟹ K` has component `(f ∙ g)_X = f_X ∘ g_X`.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition nat_compose `{F : C ⟶ D} {G : C ⟶ D} {K : C ⟶ D}
   (f : G ⟹ K) (g : F ⟹ G) : F ⟹ K := {|
@@ -211,16 +217,14 @@ Program Instance Transform_respects {C D : Category} :
   Proper ((λ F G, G ⟹ F) ==> @Transform C D ==> arrow) (@Transform C D) :=
   λ _ _ F _ _ G H, nat_compose G (nat_compose H F).
 
-(* nLab: https://ncatlab.org/nlab/show/natural+transformation
+(*
+   nLab: https://ncatlab.org/nlab/show/natural+transformation
    Wikipedia: https://en.wikipedia.org/wiki/Natural_transformation
 
-   Horizontal (Godement) composition. Given `η : F ⟹ G` between
-   `F G : C ⟶ D` and `ε : J ⟹ K` between `J K : D ⟶ E`, functor composition
-   yields `nat_hcompose ε η : J ◯ F ⟹ K ◯ G` whose component at `x` is
-   `transform[ε] (G x) ∘ fmap[J] (transform[η] x)`, which by naturality of `ε`
-   also equals `fmap[K] (transform[η] x) ∘ transform[ε] (F x)`. This operation
-   is associative with identity, the identity coinciding with that for vertical
-   composition, and the two compositions satisfy the interchange law. *)
+   本节说明相关定义、性质与动机。 Horizontal (Godement) 复合. Given `η : F ⟹ G` between `F G : C ⟶ D` `ε : J ⟹ K` between `J K : D ⟶ E`, 函子 复合 yields `nat_hcompose ε η : J ◯ F ⟹ K ◯ G` whose component at `x` is `transform[ε] (G x) ∘ fmap[J] (transform[η] x)`, which naturality `ε` al
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition nat_hcompose {C D E} {F G : C ⟶ D} {J K : D ⟶ E}
   (ε : J ⟹ K) (η : F ⟹ G) : J ◯ F ⟹ K ◯ G := {|
@@ -260,13 +264,13 @@ Next Obligation.
   now apply Compose_respects_Transform_obligation_1.
 Qed.
 
-(* nLab: https://ncatlab.org/nlab/show/whiskering
+(*
+   nLab: https://ncatlab.org/nlab/show/whiskering
 
-   Right whiskering `N ⊲ X`: precompose the natural transformation `N : F ⟹ G`
-   with a functor `X : E ⟶ C`, yielding `F ◯ X ⟹ G ◯ X` with component
-   `(N ⊲ X)_x = N (X x)`. This is the horizontal composite of `N` with the
-   identity transformation on `X`; the naturality squares are inherited
-   directly from `N`. *)
+   本节：Right whiskering `N ⊲ X`: precompose 自然变换 `N : F ⟹ G` 函子 `X : E ⟶ C`, yielding `F ◯ X ⟹ G ◯ X` component `(N ⊲ X)_x = N (X x)`. This is horizontal 复合 `N` identity 变换 `X`;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition whisker_right {C D : Category} {F G : C ⟶ D} `(N : F ⟹ G)
         {E : Category} (X : E ⟶ C) : F ◯ X ⟹ G ◯ X := {|
@@ -278,13 +282,13 @@ Program Definition whisker_right {C D : Category} {F G : C ⟶ D} `(N : F ⟹ G)
 
 Notation "N ⊲ F" := (whisker_right N F) (at level 10).
 
-(* nLab: https://ncatlab.org/nlab/show/whiskering
+(*
+   nLab: https://ncatlab.org/nlab/show/whiskering
 
-   Left whiskering `X ⊳ N`: postcompose the natural transformation `N : F ⟹ G`
-   with a functor `X : D ⟶ E`, yielding `X ◯ F ⟹ X ◯ G` with component
-   `(X ⊳ N)_x = fmap[X] (N x)`. This is the horizontal composite of the
-   identity transformation on `X` with `N`; naturality follows from `fmap[X]`
-   preserving composition (`fmap_comp`) and `N`'s naturality. *)
+   本节：Left whiskering `X ⊳ N`: postcompose 自然变换 `N : F ⟹ G` 函子 `X : D ⟶ E`, yielding `X ◯ F ⟹ X ◯ G` component `(X ⊳ N)_x = fmap[X] (N x)`. This is horizontal 复合 identity 变换 `X` `N`;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition whisker_left {C D : Category}
         {E : Category} (X : D ⟶ E)

@@ -25,148 +25,26 @@ Open Scope category_scope.
 
 (** * Couniversal arrows *)
 
-(* nLab: https://ncatlab.org/nlab/show/universal+morphism
+(*
+   nLab: https://ncatlab.org/nlab/show/universal+morphism
    Wikipedia: https://en.wikipedia.org/wiki/Universal_property
 
-   A couniversal arrow from a functor F : D ⟶ C to an object c : C -- Mac
-   Lane's "universal arrow from F to c" (CWM 2nd ed., §III.1, p. 58) -- is a
-   pair (a, ε) consisting of an object a : D and a morphism ε : F a ~> c, such
-   that for every object d : D and every morphism h : F d ~> c there exists a
-   unique g : d ~> a satisfying h ≈ ε ∘ fmap[F] g.  Equivalently, (a, ε) is a
-   TERMINAL object of the comma category F ↓ =(c).
+   本节说明相关定义、性质与动机。 A couniversal arrow from 函子 F : D ⟶ C 对象 c : C -- Mac Lane's "泛箭头 from F c" (CWM 2nd ed., §III.1, p.
 
-   That last sentence is not new here: it is the one Theory/Universal/Arrow.v
-   already writes down in its own header -- "The dual notion, a universal
-   arrow from F to c, is a terminal object of F ↓ =(c)" -- as a remark, with
-   nothing in the tree carrying it.  This file carries it.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   Where a universal arrow is the pointwise form of a LEFT adjoint, with the
-   arrows serving as the components of the unit, a couniversal arrow is the
-   pointwise form of a RIGHT adjoint, with the arrows serving as the
-   components of the counit.  That is the content of
-   [RightAdjointFunctorFromCouniversalArrows] and
-   [AdjunctionFromCouniversalArrows] below: a couniversal arrow to every
-   c : C assembles into a right adjoint of F. *)
+(*
+   本节说明相关定义、性质与动机。 Why dual is cheap here, what it costs. nLab: https://ncatlab.org/nlab/show/反+范畴 Paper: Mac Lane, "对偶 groups", Bull. Amer. Math. Soc.
 
-(* Why the dual is cheap here, and what it costs
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   nLab:  https://ncatlab.org/nlab/show/opposite+category
-   Paper: Mac Lane, "Duality for groups", Bull. Amer. Math. Soc. 56, 1950
+(*
+   本节说明相关定义、性质与动机。 WHAT IS DELIVERED. Both encodings, mirroring primal file field field: [CouniversalArrow], packaging property 对象 projected out, [ACouniversalArrow], 对象 : D parameter.
 
-   The couniversal notion is introduced as the formal dual and its theory
-   left to the duality principle, and this file honours that: the
-   definition is an INSTANTIATION of the primal class at the opposite
-   categories,
-
-       CouniversalArrow c F := @UniversalArrow (C^op) (D^op) c (F^op),
-
-   after which every result of Theory/Universal/Arrow.v is available by
-   instantiation rather than by a second proof.  What the file adds is the
-   covariant reading, so that a consumer never types `op`: [coarrow_obj],
-   [coarrow] and [ump_couniversal_arrows] are DEFINITIONAL op-reads,
-   supplied by [:=] with no tactic at all, because `x ~{C^op}~> y` is
-   literally `y ~{C}~> x` (Construction/Opposite.v), the object and
-   morphism maps of `F^op` are literally those of `F`
-   (Functor/Opposite.v), and composition in `C^op` is composition in `C`
-   with its arguments exchanged.  The same device carries
-   Comonad/Core.v over [Comonad := @Monad (C^op) (W^op)] and
-   Structure/End.v over [Coend F := @End (C^op) (D^op) (F^op)] -- the
-   definition lives in End.v, not in Structure/Coend.v, which is the calculus
-   built on it.  This file applies the device again, and those two are the
-   models it follows.
-
-   The duality is not free everywhere, and the file measures rather than
-   assumes.  Two boundaries are recorded.
-
-   FIRST, the terminal-object reading is a THEOREM, not the definition.
-   `@Initial (=(c) ↓ F^op)` computed in the opposite categories is NOT
-   convertible with `@Terminal (F ↓ =(c))`: [Comma] stores its two
-   indices as an ordered pair, so the first has objects over `1 ∏ D^op`
-   and the second over `D ∏ 1`, and the product of categories is not
-   symmetric on the nose.  [couniversal_arrow_terminal] and
-   [couniversal_arrow_of_terminal] therefore convert in both directions
-   through the universal mapping property, and Test/ProbeCouniversal.v
-   pins the negative side.  This is the same accounting
-   Structure/Initial.v makes for [initial_unique], where transporting
-   the terminal statement would cost more than the direct argument.
-
-   The bridge's round-trip behaviour is ASYMMETRIC, and both halves are
-   recorded here rather than left for a reader to discover.  In one
-   direction it is better than the file claims elsewhere: for an
-   ARBITRARY [U], both [coarrow_obj] and [coarrow] survive
-   [couniversal_arrow_of_terminal (couniversal_arrow_terminal U)] by
-   [eq_refl] -- more general than Examples.v's [product_terminal_round],
-   which records only the arrow and only at the product.  In the other
-   direction it does not reduce at all: [couniversal_arrow_of_terminal]
-   destructs its argument, so on a variable [T] the object component of
-   [couniversal_arrow_terminal (couniversal_arrow_of_terminal T)] is
-   stuck.  Neither statement is packaged as an isomorphism, and the
-   "not a bijection" note in the WHAT IS NOT DELIVERED block below is
-   about the ENCODING passage, not about this bridge.
-
-   The mismatch is located precisely, and it is NOT the terminal/initial
-   axis: [terminal_is_initial_op] below records by [eq_refl] that
-   `@Terminal (F ↓ =(c))` IS `@Initial ((F ↓ =(c))^op)`, the house idiom
-   costing nothing.  What differs is WHICH comma category, and
-   Construction/Comma.v's [Cocomma] -- which the issue proposes as the
-   route -- does not close the gap either: [Cocomma F =(c)] is neither
-   the comma the op-side [arrow_initial] inhabits nor
-   `(F ↓ =(c))^op` on the nose (both measured, both pinned in the probe
-   file).  Hence the bridge is built, not asserted.
-
-   SECOND, the adjunction assembles by duality but its counit does not
-   REDUCE to the couniversal arrow.  [Opposite_Adjunction]
-   (Adjunction/Opposite.v) turns the opposite-side left adjoint into the
-   covariant right adjoint with `(C^op)^op = C` and `(F^op)^op = F`
-   holding by [reflexivity], so [RightAdjointFunctorFromCouniversalArrows]
-   is a `C ⟶ D` on the nose and its object action is [coarrow_obj] by
-   [eq_refl] ([right_adjoint_obj]).  The counit, however, arrives as
-   `coarrow ∘ fmap[F] id`, so [counit_couniversal] closes only up to `≈`
-   -- one [fmap_id] and one [id_right] away from [eq_refl], and the
-   residue is in the transpose, not in the [abstract]-opaque obligations
-   of [AdjunctionFromUniversalArrows].
-
-   The witnesses live in Theory/Universal/Arrow/Dual/Examples.v, kept
-   separate so that consumers of the theory -- Mac Lane §IV.1 Theorem 2
-   is the scheduled one -- do not inherit a dependency on
-   Structure/Cartesian.v. *)
-
-(* WHAT IS DELIVERED
-
-   Both encodings, mirroring the primal file field for field:
-   [CouniversalArrow], packaging the property with the object projected
-   out, and [ACouniversalArrow], with the object a : D a parameter.  For
-   each: the covariant accessors, the couniversal mapping property and
-   its converse, the full mediator calculus ([cua_med] / [acua_med] with
-   commutes / unique / id / comp), the canonical isomorphism of
-   couniversal objects, and Awodey's Proposition 1.10 dualized
-   ([couniversal_arrow_unique], [acouniversal_arrow_unique]).  Mac Lane's
-   terminal-object reading in both directions.  The right adjoint and the
-   adjunction, with the counit identified.  And -- an addition rather than
-   a mirror, the primal file relating its two encodings nowhere -- the
-   passage between the two encodings, both ways, each keeping the arrow
-   and the object by [eq_refl].
-
-   WHAT IS NOT DELIVERED
-
-   * NO NOTATION.  The primal `c ⟿ F` is declared INSIDE
-     [Section UniversalArrow] and so does not survive its [End]; there is
-     no exported spelling to mirror, and inventing one is out of scope.
-
-   * NO CONVERSE.  Mac Lane §IV.1 Theorem 2 -- that the counit of an
-     adjunction is a couniversal arrow at every object, the converse of
-     [AdjunctionFromCouniversalArrows] -- is deliberately left to the
-     issue that owns it (#347), which is why the artifacts here sit at
-     this path for it to import.
-
-   * NO REPRESENTABILITY FACE.  Structure/UniversalProperty/Universal/
-     Arrow.v identifies an [AUniversalArrow] with a hom-set isomorphism
-     via Yoneda ([UniversalArrowIsUniversalProperty]); no dual of that is
-     built here, and none is needed by the assembly.
-
-   * THE ENCODING PASSAGE IS NOT A BIJECTION.  Its two round trips are
-     recorded on the ARROW and the OBJECT only; nothing is claimed about
-     the uniqueness data, and no setoid isomorphism is stated. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CouniversalArrow.
 
@@ -180,11 +58,13 @@ Context {D : Category}.
 Definition CouniversalArrow (c : C) (F : D ⟶ C) : Type :=
   @UniversalArrow (C^op) (D^op) c (Opposite_Functor F).
 
-(* Mirrors [Existing Class Comonad] in Comonad/Core.v: typeclass resolution
-   keys on the head constant of a goal and does not unfold this definition, so
-   without the declaration a couniversal arrow in scope would not be found for
-   the implicit arguments of the accessors below.  Goals headed by
-   [UniversalArrow] are untouched, the two heads being distinct. *)
+(*
+   Mirrors [Existing Class 余单子] in 余单子/Core.v: typeclass resolution
+
+   本节说明相关定义、性质与动机。 keys head constant goal does not unfold this 定义, so without declaration couniversal arrow scope would not be found implicit arguments accessors below.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Existing Class CouniversalArrow.
 
 Section Accessors.
@@ -205,16 +85,17 @@ Definition coarrow : F coarrow_obj ~{C}~> c :=
 
 End Accessors.
 
-(* No [Arguments] command is needed -- or would survive: [Arguments] inside a
-   [Section] is discharged at its [End].  Both accessors take c and F
-   implicitly already, from the implicit [Context] binders of [Accessors], and
-   that survives; likewise for every [{c}]/[{F}] below. *)
+(*
+   本节说明相关定义、性质与动机。 No [Arguments] command is needed -- would survive: [Arguments] inside a. [Section] is discharged at its [End]. Both accessors take c F implicitly already, from implicit [Context] binders [Accessors], that survives;
 
-(* The couniversal mapping property: any h : F d ~> c factors as
-   h ≈ coarrow ∘ fmap[F] g through a unique g : d ~> coarrow_obj.  This is
-   [ump_universal_arrows] read in the opposite categories -- the op-side
-   composite `fmap[F^op] g ∘[C^op] arrow` IS `coarrow ∘[C] fmap[F] g` -- and
-   so is supplied by [:=], with no proof step of its own. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+
+(*
+   本节说明相关定义、性质与动机。 The couniversal mapping property: any h : F d ~> c factors as. h ≈ coarrow ∘ fmap[F] g through unique g : d ~> coarrow_obj.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ump_couniversal_arrows {c : C} {F : D ⟶ C}
   (U : CouniversalArrow c F) {d : D} (h : F d ~{C}~> c) :
   ∃! g : d ~{D}~> coarrow_obj U, h ≈ coarrow U ∘ fmap[F] g :=
@@ -230,22 +111,19 @@ Definition couniversal_arrow_from_UMP (c : C) (F : D ⟶ C) (d : D)
 
 (** ** The terminal-object reading (Mac Lane §III.1 Definition 3) *)
 
-(* Mac Lane defines a couniversal arrow from F to c as a TERMINAL object of
-   the comma category F ↓ =(c), and that reading is delivered here as a pair
-   of conversions rather than as the definition, for the reason the header
-   gives: the opposite-side comma category indexes its objects by `1 ∏ D^op`
-   where this one indexes by `D ∏ 1`, and [Product] of categories is not
-   symmetric on the nose.  Test/ProbeCouniversal.v pins that boundary.
+(*
+   Mac Lane defines a couniversal arrow from F to c as a TERMINAL 对象 of
 
-   The two constructions below are the exact duals of [arrow_initial] and
-   [universal_arrow_from_UMP], run through the couniversal mapping property. *)
+   本节：the 逗号范畴 F ↓ =(c), that reading is delivered here pair conversions rather than 定义, reason header gives: 反-side 逗号范畴 indexes its 对象 `1 ∏ D^op` where this one indexes `D ∏ 1`, [积] categori
 
-(* Locating the mismatch: it is NOT the terminal/initial axis.  `Initial K`
-   is notation for `@Terminal (K^op)` (Structure/Initial.v) and
-   `(K^op)^op = K` holds by conversion (Construction/Opposite.v), so the
-   terminal object of F ↓ =(c) IS an initial object of its opposite, for
-   free.  What the op-instantiation cannot supply is the COMMA CATEGORY.
-   Convertibility of types, not an equation between morphisms. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+
+(*
+   本节：Locating mismatch: it is NOT terminal/initial axis. `Initial K`. is notation `@Terminal (K^op)` (Structure/Initial.v) `(K^op)^op = K` holds conversion (Construction/反.v), so 终对象 F ↓ =(c) IS 始对象 its 反, free.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary terminal_is_initial_op {c : C} {F : D ⟶ C}
   (T : @Terminal (F ↓ =(c))) : @Initial ((F ↓ =(c))^op).
 Proof. exact T. Defined.
@@ -274,10 +152,13 @@ Proof.
     + now destruct f2, g2.
 Defined.
 
-(* The transported structure chooses the couniversal object on the nose --
-   what makes [couniversal_arrow_terminal] a transport rather than a bare
-   existence claim, in the idiom of [Terminal_iso_obj] (Structure/Initial.v).
-   Convertibility of OBJECTS, not an equation between morphisms. *)
+(*
+   The transported structure chooses the couniversal 对象 on the nose --
+
+   本节说明相关定义、性质与动机。 what makes [couniversal_arrow_terminal] transport rather than bare existence claim, idiom [Terminal_iso_obj] (Structure/Initial.v).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary couniversal_arrow_terminal_obj {c : C} {F : D ⟶ C}
   (U : CouniversalArrow c F) :
   `1 (@terminal_obj _ (couniversal_arrow_terminal U)) = (coarrow_obj U, ttt).
@@ -291,10 +172,11 @@ Proof.
   destruct t as [[a u] ε]; simpl in *.
   unshelve eapply (couniversal_arrow_from_UMP c F a ε).
   intros d' f.
-  (* every factorization of f through ε satisfies the comma square, whose
-     =(c)-leg computes to id[c].  Kept as a bare square proof rather than as a
-     packaged comma morphism so that the pairs below are literal sigmas: the
-     [fst `1] projections of an opaque hypothesis would not reduce. *)
+  (*
+   本节说明相关定义、性质与动机。 every factorization f through ε satisfies comma square, whose. =(c)-leg computes id[c].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   assert (sq : ∀ v : d' ~{D}~> a, f ≈ ε ∘ fmap[F] v →
                  ε ∘ fmap[F] v ≈ id{C} ∘ f).
   { intros v Hv.
@@ -312,12 +194,11 @@ Defined.
 
 (** ** Uniqueness up to a unique isomorphism *)
 
-(* The duals of the mediator calculus added to Theory/Universal/Arrow.v for
-   Awodey's Proposition 1.10.  Each is the primal statement read in the
-   opposite categories, so each is supplied by [:=] or by a one-line [exact];
-   note that the ARGUMENT ORDER swaps, since the op-side mediator
-   `arrow_obj U1 ~{D^op}~> arrow_obj U2` is covariantly a morphism
-   `coarrow_obj U2 ~> coarrow_obj U1`. *)
+(*
+   本节说明相关定义、性质与动机。 The duals mediator calculus added Theory/Universal/Arrow.v for. Awodey's Proposition 1.10. Each is primal statement read 反 范畴, so each is supplied [:=] one-line [exact];
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CouniversalArrowUnique.
 
@@ -349,10 +230,13 @@ Lemma cua_med_comp (U1 U2 U3 : CouniversalArrow c F) :
   cua_med U2 U3 ∘ cua_med U1 U2 ≈ cua_med U1 U3.
 Proof. exact (@ua_med_comp (C^op) (D^op) c (Opposite_Functor F) U3 U2 U1). Qed.
 
-(* The two mediators are mutually inverse, so the couniversal objects are
-   isomorphic.  [Isomorphism_Opposite] reads the op-side isomorphism back
-   into `(D^op)^op`, which IS `D`; it exchanges [to] and [from], which is
-   exactly what makes the [to] component come out as [cua_med U1 U2]. *)
+(*
+   The two mediators are mutually inverse, so the couniversal 对象 are
+
+   本节说明相关定义、性质与动机。 isomorphic. [同构_反] reads op-side 同构 back into `(D^op)^op`, which IS `D`;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition couniversal_arrow_iso (U1 U2 : CouniversalArrow c F)
   : coarrow_obj U1 ≅ coarrow_obj U2 :=
   @Isomorphism_Opposite (D^op) _ _
@@ -393,12 +277,13 @@ End CouniversalArrowUnique.
 
 Context (F : @Functor D C).
 
-(* A couniversal arrow from F to every object c : C assembles into a right
-   adjoint of F.  The object map sends c to its couniversal object, and the
-   morphism map sends f : x ~> y to the unique factorization of f ∘ coarrow
-   through coarrow_obj y.  Both are read off [Opposite_Functor] applied to the
-   primal assembly, so `C ⟶ D` is the type on the nose -- no comparison
-   functor and no transport. *)
+(*
+   A couniversal arrow from F to every 对象 c : C assembles into a right
+
+   本节：伴随 F. The 对象 map sends c its couniversal 对象, 态射 map sends f : x ~> y unique factorization f ∘ coarrow through coarrow_obj y.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition RightAdjointFunctorFromCouniversalArrows
   (H : forall c : C, CouniversalArrow c F) : @Functor C D :=
   Opposite_Functor
@@ -411,12 +296,13 @@ Corollary right_adjoint_obj (H : forall c : C, CouniversalArrow c F) (c : C) :
   fobj[RightAdjointFunctorFromCouniversalArrows H] c = coarrow_obj (H c).
 Proof. reflexivity. Qed.
 
-(* The induced functor is genuinely right adjoint to F, with the couniversal
-   arrows serving as the components of the counit.  [Opposite_Adjunction]
-   supplies the whole proof: `(C^op)^op = C` and `(F^op)^op = F` both hold by
-   [reflexivity], so the dual of the opposite-side adjunction lands at
-   `F ⊣ RightAdjointFunctorFromCouniversalArrows H` with nothing to
-   transport. *)
+(*
+   The induced 函子 is genuinely 右伴随 to F, with the couniversal
+
+   本节说明相关定义、性质与动机。 arrows serving components counit. [反_伴随] supplies whole proof: `(C^op)^op = C` `(F^op)^op = F` both hold [reflexivity], so dual 反-side 伴随 lands at `F ⊣ RightAdjointFunctorFromCouniversalArrows H` nothing tr
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition AdjunctionFromCouniversalArrows
   (H : forall c : C, CouniversalArrow c F) :
   F ⊣ RightAdjointFunctorFromCouniversalArrows H :=
@@ -426,10 +312,13 @@ Definition AdjunctionFromCouniversalArrows
     (Opposite_Functor F)
     (@AdjunctionFromUniversalArrows (C^op) (D^op) (Opposite_Functor F) H).
 
-(* The counit of that adjunction is the couniversal arrow.  Only up to `≈`:
-   the transpose delivers `coarrow ∘ fmap[F] id`, which is one [fmap_id] and
-   one [id_right] short of [eq_refl].  See the header's second boundary; the
-   negative half is pinned in Test/ProbeCouniversal.v. *)
+(*
+   The counit of that 伴随 is the couniversal arrow.  Only up to `≈`:
+
+   本节说明相关定义、性质与动机。 the transpose delivers `coarrow ∘ fmap[F] id`, which is one [fmap_id] one [id_right] short [eq_refl]. See header's second boundary;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma counit_couniversal (H : forall c : C, CouniversalArrow c F) (c : C) :
   @counit C D F (RightAdjointFunctorFromCouniversalArrows H)
           (AdjunctionFromCouniversalArrows H) c ≈ coarrow (H c).
@@ -441,10 +330,13 @@ Qed.
 
 (** ** The direct encoding *)
 
-(* The same notion stated directly, with the couniversal object a : D given as
-   a parameter rather than projected out.  Definitionally [AUniversalArrow] in
-   the opposite categories, exactly as [CouniversalArrow] is [UniversalArrow]
-   there. *)
+(*
+   The same notion stated directly, with the couniversal 对象 a : D given as
+
+   本节说明相关定义、性质与动机。 a parameter rather than projected out. Definitionally [AUniversalArrow] 反 范畴, exactly [CouniversalArrow] is [UniversalArrow] there.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ACouniversalArrow (c : C) (G : D ⟶ C) (a : D) : Type :=
   @AUniversalArrow (C^op) (D^op) c (Opposite_Functor G) a.
 
@@ -529,11 +421,11 @@ End ACouniversalArrowUnique.
 
 (** ** The two encodings agree *)
 
-(* Theory/Universal/Arrow.v carries both encodings but never relates them;
-   here the passage is cheap in both directions, so it is supplied.  Note the
-   orientations of the two universal properties differ by a [symmetry]
-   ([h ≈ ε ∘ fmap g] in the comma-packaged form, [ε ∘ fmap g ≈ f] in the
-   direct one), which is the whole content of the two proofs. *)
+(*
+   本节说明相关定义、性质与动机。 Theory/Universal/Arrow.v carries both encodings but never relates them;. here passage is cheap both directions, so it is supplied.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ACouniversalArrow_of_CouniversalArrow {c : C} {G : D ⟶ C}
   (U : CouniversalArrow c G) : ACouniversalArrow c G (coarrow_obj U).

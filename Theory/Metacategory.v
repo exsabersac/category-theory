@@ -37,83 +37,13 @@ Generalizable All Variables.
    Theory/Metacategory/ArrowsOnly.v 是同一想法在 [arrow := N] 上的平行开发，复合更直接
    基于 [find]；它携带这些定义的打磨形式。 *)
 
-(* The first-order theory of categories, and its computable models
+(*
+   The first-order theory of 范畴, and its computable models
 
-   nLab: https://ncatlab.org/nlab/show/metacategory
-   SEP:  https://plato.stanford.edu/entries/category-theory/
-   Paper: Eilenberg, Mac Lane, "General Theory of Natural
-          Equivalences", Trans. AMS 58, 1945
+   本节：nLab: https://ncatlab.org/nlab/show/元范畴 SEP: https://plato.stanford.edu/entries/范畴-theory/ Paper: Eilenberg, Mac Lane, "General Theory 自然 Equivalences", Trans. AMS 58, 1945 The word "元范畴" carries point whole construction.
 
-   The word "metacategory" carries the point of the whole construction.
-   Mac Lane reserves "category" for a metacategory whose objects and
-   arrows form sets, and uses "metacategory" for any model of the
-   first-order theory of categories, stated before a set theory is fixed.
-   It follows that the (large) category Cat of small categories stands
-   apart from the metacategory CAT of all categories: the latter is too
-   big to be a category, yet it remains a lawful model of the same axioms
-   (nLab, "metacategory"). The existing header states the arrows-only
-   data and laws; this block records why an objects-free axiomatization
-   was wanted, and what the finite encoding here makes computable.
-
-   The idea is present at the origin. Eilenberg and Mac Lane defined a
-   category as an "aggregate Ob" of objects with mappings under axioms C1
-   through C5, and remarked at once that the objects play a secondary
-   role and could be omitted, since axiom C5 attaches a unique object to
-   each identity mapping (SEP, "Category Theory"). The later text makes
-   this a graded build-up: a metagraph is objects and arrows with domain
-   and codomain; a metacategory adds identity and composition under
-   associativity and unit laws; a category is a metacategory whose data
-   form sets (CWM, I.1). The arrows-only description then sets the object
-   sort aside and keeps only arrows, the composable pairs, and their
-   composite — the presentation this file follows. Others took the
-   set-theoretic route: Grothendieck (1957) and Freyd (1964) defined
-   categories through hom-sets, and the metacategory is the first-order
-   ancestor those accounts specialize (SEP).
-
-   Two purposes are served. The first is foundational: stating the axioms
-   first-order makes "category" meaningful independently of a chosen set
-   theory, so that a category is simply a metacategory interpreted in
-   sets. This is the entry to Lawvere's elementary programme, in which the
-   category of sets and the category of categories are each axiomatized
-   directly (Lawvere, "An Elementary Theory of the Category of Sets",
-   PNAS 52, 1964; "The Category of Categories as a Foundation for
-   Mathematics", 1966). The second purpose is structural: the object sort
-   is inessential, since objects ARE the identity arrows. That reduction
-   is not left as a remark — [FromArrows] is its machine-checked witness,
-   taking the arrow data and the three axioms to a [Category] whose
-   objects are the identities [∃ i, identity M i].
-
-   Setting the objects aside leaves an algebra. Composition is a partial
-   binary operation, defined exactly when a codomain meets a domain, so a
-   category reads as a partial monoid with many units — a partial
-   semigroup carrying source and target — of which a one-object category
-   is the ordinary total monoid ("Relational Semigroups and Object-Free
-   Categories", arXiv:2001.11895, 2020). The file holds this partiality
-   as data: [defined f g] records that the pair [(f, g)] has an entry,
-   [composite f g h] names its value, and [pairs] is the whole partial
-   operation kept as one finite table.
-
-   Because that operation is a single finite datum, small categories are
-   literal data and their laws reduce to computation rather than case
-   analysis. The witnesses [ZeroArrows], [OneArrow], [TwoArrows] and
-   [ThreeArrows] are written as explicit tables of composable pairs;
-   [Three] is [FromArrows ThreeArrows]; [cardinality] counts the identity
-   arrows, the entries [(i, i)] mapping to [i], and [ThreeArrows_card_3]
-   evaluates it to three. The [structure] and [check_structure] tactics
-   discharge the membership obligations for these witnesses.
-   Theory/Metacategory/DecideExample.v presses the point further,
-   settling the associativity coherences over
-   Theory/Metacategory/ArrowsOnly.v through the proof-by-reflection
-   decider of Lib/MapDecide.v ([map_decide], [solve_map]), over the
-   finite-map extension Lib/FMapExt.v ([simplify_maps], [MapsTo_fun]).
-
-   The module stands apart from the working library: nothing in Instance/,
-   Construction/ or Structure/ depends on it. It is a self-contained
-   witness that the arrows-only axiomatization suffices to rebuild
-   [Category], and a place to hold small categories as computable data.
-   The name itself has largely fallen out of general use (nLab,
-   "metacategory"); the size distinctions it once marked are, in this
-   library, carried instead by universe polymorphism. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Module PNN := PairUsualDecidableType Nat_as_DT Nat_as_DT.
 
@@ -143,15 +73,13 @@ Record Metacategory := {
   (* "With these data one defines an identity of C to be an arrow u such that
      f∙u = f whenever the composite f∙u is defined and u∙g = g whenever u∙g is
      defined." *)
-  (* Note: Mac Lane's definition is conditional ("whenever ... defined"). The
-     encoding below drops the definedness guard and instead requires
-     [composite f u f] (and [composite u g g]) for *every* arrow, i.e. that
-     [f ∙ u] and [u ∙ g] are defined and equal to [f]/[g] for all [f]/[g]. This
-     is strictly stronger than Mac Lane's notion and is NOT satisfiable over a
-     finite table (see the file header: no enumerated arrow is an identity in
-     this sense, so [FromArrows] yields the empty category); the [FromArrows]
-     obligations below rely on it all the same. The parallel development in
-     Theory/Metacategory/ArrowsOnly.v keeps the guard, [defined f u → ...]. *)
+  (*
+   Note: Mac Lane's 定义 is conditional ("whenever ... defined"). The
+
+   本节说明相关定义、性质与动机。 encoding below drops definedness guard instead requires [复合 f u f] (and [复合 u g g]) *every* arrow, i.e. that [f ∙ u] [u ∙ g] are defined equal [f]/[g] all [f]/[g].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   identity (u : arr) :=
     (∀ (f : arr), composite f u f) ∧ (∀ (g : arr), composite u g g);
 
@@ -179,20 +107,11 @@ Record Metacategory := {
 
   (* "For each arrow g of C there exist identity arrows u and u' of C such
      that u'∙g and g∙u are defined." *)
-  (* jww (TODO): The use of [->] below should be [/\]. The current form is
-     vacuously true (any non-identity [u] makes the implication trivially
-     hold), so this axiom imposes no real constraint. Substituting [/\] is not
-     by itself a repair, and in THIS file even cutting the arrow type down to
-     the table's support would not suffice: the [identity] field above drops
-     Mac Lane's definedness guards, and under the unguarded reading no arrow
-     of the tables below is an identity even restricted to the support -- so
-     the conjunctive axiom would have no witnesses to point at. A faithful
-     repair here must both restore the guards on [identity] and bound the
-     quantifiers, in that order. The
-     mistake does not affect [FromArrows], which builds its category from
-     [obj := ∃ i, identity M i], not from [identity_law] — though note that
-     with the unguarded [identity] above, that object type is empty for every
-     example in this file. *)
+  (*
+   本节说明相关定义、性质与动机。 jww (TODO): The use [->] below should be [/\]. The current form is. vacuously true (any non-identity [u] makes implication trivially hold), so this axiom imposes no real constraint.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   identity_law (g : arr) :
     ∃ u,  identity u  ->
     ∃ u', identity u' ->

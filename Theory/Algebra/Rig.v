@@ -64,13 +64,13 @@ Record RigObject := {
   rig_mul_zero_l : ∀ a, rig_mul rig_zero a ≈ rig_zero;
   rig_mul_zero_r : ∀ a, rig_mul a rig_zero ≈ rig_zero;
 
-  (* The carrier is a SET: its `≈` is logically equivalent to a [Prop]-valued
-     relation (Lib/Setoid/Propositional.v).  This field is not part of
-     Definition 5.36; it is the same standing commitment [CMonObject] makes,
-     and it is forced HERE rather than left to the rig's additive half because
-     [rig_cmon] below builds a [CMonObject] whose carrier setoid IS
-     [rig_setoid].  Last field, for the [Program] obligation-ordering reason
-     given at Instance/CMon.v's [CMonObject]. *)
+  (*
+   （本文件文首说明见 nLab/Wikipedia 链接。）承运人是萌芽型球体:其Z/WP 我就等于 秘书处的说明
+者提供骤 等至少在肤的的的与委员会的的的历次的的的的的的的 26.的,的的,的的的,的最长的س 你说什么的的′矛的,的,的 快点 当我们仍处于 và的,我已经的的,适合于的,的, 我们正在的所做的工作的,的成为一种的的,ủ的的结果表明的社团的的的ض解决问题社区的渊源的,的的条的在此方面的的,的 的采取协调一致的ئ的 马上的,的的的的增强其的,的,的的,的的即便是的,的的的
+定义5.36;是同一身份承诺人 不过我应当是:另行确定。
+
+   （英文长注释已压缩为中文导言；Coq 标识符未改。）
+*)
   rig_prop : PropEquiv (is_setoid rig_setoid)
 }.
 

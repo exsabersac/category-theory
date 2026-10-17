@@ -44,14 +44,13 @@ Definition Monoidal_OneObject_Bicategory
     (fun _ _ _ => @triangle_identity C M)         (* hcoherence_triangle  *)
     (fun _ _ _ _ _ => @pentagon_identity C M).    (* hcoherence_pentagon  *)
 
-(* Kelly's unit-coincidence, transported.  A monoidal category satisfies
-   λ_I ≈ ρ_I ([unit_identity] in Structure/Monoidal/Proofs.v, a derived
-   consequence of the triangle and pentagon axioms).  Under the delooping this
-   is precisely the statement that the left and right unitors of the one-object
-   bicategory agree on the identity 1-cell.  Because `bicat tt tt ≡ C`, the two
-   unitors-at-`bi1id` are the very isomorphisms `unit_left`/`unit_right` at I, so
-   the corollary is [unit_identity] lifted from the `to`-level to an equivalence
-   of isomorphisms by [to_equiv_implies_iso_equiv]. *)
+(*
+   Kelly's unit-coincidence, transported.  A 幺半范畴 satisfies
+
+   本节：λ_I ≈ ρ_I ([unit_identity] Structure/幺半/Proofs.v, derived consequence triangle pentagon axioms). Under delooping this is precisely statement that left right 单位子 one-对象 双范畴 agree identity 1-cell.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary Monoidal_OneObject_unit_coincidence
     (C : Category) `{M : @Monoidal C} :

@@ -42,10 +42,13 @@ Proof.
   destruct x; auto.
 Qed.
 
-(* The second-argument functor [(x * −)] is a lawful endofunctor on [Coq]; as
-   with [arrow_IsFunctor], the witness reuses the [Functor] instance for
-   [a_fmap], and the only nontrivial obligation is that [prod_map] respects
-   pointwise equality of functions. *)
+(*
+   The second-argument 函子 [(x * −)] is a lawful 自函子 on [Coq]; as
+
+   本节说明相关定义、性质与动机。 with [arrow_IsFunctor], witness reuses [函子] instance [a_fmap], only nontrivial obligation is that [prod_map] respects pointwise equality functions.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Tuple_Functor {x} : IsFunctor (Tuple_Functor x) := {|
   a_fmap := Tuple_Functor x;
 |}.

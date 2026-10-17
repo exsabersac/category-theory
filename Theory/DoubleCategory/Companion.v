@@ -19,23 +19,11 @@ Generalizable All Variables.
 Lemma triple_id {C : Category} {x : C} : id[x] ∘ (id ∘ id) ≈ id.
 Proof. cat. Qed.
 
-(** ** Boundary coercion versus vertical pasting
+(*
+   本节说明相关定义、性质与动机。 * ** Boundary coercion versus vertical pasting. The uniqueness argument must slide boundary coercion out one factor vertical 复合.
 
-    The uniqueness argument must slide a boundary coercion out of one factor
-    of a vertical composite.  [DoubleCategory] states its laws with
-    [dsq_coerce] outermost only, and — exactly as documented for
-    [dtransport_comp_l]/[dtransport_comp_r] in Theory/Displayed.v, whose
-    pattern [dsq_coerce] re-applies — the interchange of coercion with
-    composition is not derivable from those laws (a 2-cocycle twist model
-    separates them).  We therefore package the two missing interchange laws
-    as a mixin, quantified over ANY proof of the composite boundary
-    relation so no proof-term surgery is ever needed at use sites.  Both
-    in-tree models satisfy them: in Sq squares are propositions, and in
-    Cospan/Double [dsq_coerce] leaves the apex map untouched.  Only the
-    coercion-vs-VERTICAL-composition laws are packaged, because they are
-    all the uniqueness proofs below need; the horizontal analogues
-    (sliding [dsq_coerce] through [dsq_hcomp]) would join this mixin when
-    a consumer arrives, and hold in both models for the same reasons. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class DoubleCoerceComp (D : DoubleCategory) : Type := {
   dsq_coerce_vcomp_l {a0 b0 a1 b1 a2 b2 : dcat}
@@ -147,11 +135,11 @@ Definition companion_compare (P Q : Companion u) :
   dsq (comp_hor P) id id (comp_hor Q) :=
   companion_name u (comp_hor Q) (comp_unit Q) (comp_counit P).
 
-(* The round trip [P → Q → P] is the vertical identity square.  Proof:
-   both sides are fixed by the transposition bijection of [P], and under
-   [companion_eval P] the composite evaluates — one binding identity per
-   companion — back to [P]'s counit, which is also the evaluation of the
-   identity square. *)
+(*
+   本节说明相关定义、性质与动机。 The round trip [P → Q → P] is vertical identity square. Proof:.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma companion_compare_zigzag (P Q : Companion u) :
   dsq_coerce (id_left id) (id_left id)
     (dsq_vcomp (companion_compare P Q) (companion_compare Q P))

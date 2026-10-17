@@ -125,11 +125,11 @@ Lemma eq_sym_f_equal {A B : Type} (h : A → B) {a b : A} (e : a = b) :
   eq_sym (f_equal h e) = f_equal h (eq_sym e).
 Proof. destruct e; reflexivity. Qed.
 
-(** The identity function's permutation image is the original witness,
-    transported along [map_id_t].  Everything on both sides computes on
-    list/permutation constructors, so the induction goes through with
-    no identification of equality proofs.  [tperm] lives in [Type], so
-    its dependent induction principle [tperm_rect] comes for free. *)
+(*
+   本节说明相关定义、性质与动机。 * The identity function's permutation image is original witness,. transported along [map_id_t]. Everything both sides computes list/permutation constructors, so induction goes through no identification equality proofs.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma perm_map_id {A : Type} {Γ Δ : list A} (p : tperm Γ Δ) :
   pcast (map_id_t Γ) (map_id_t Δ) (perm_map (fun x => x) p) = p.
 Proof.
@@ -154,12 +154,13 @@ Proof.
   - now rewrite (pcast_ptrans _ (map_map_t f g l') _), IHp, IHq.
 Qed.
 
-(** ** Transport lemmas in a multicategory
+(*
+   * ** Transport lemmas in a 多元范畴
 
-    Boundary casts commute with everything in sight.  Each lemma is
-    quantified over equalities with variable endpoints, so the proof is
-    a [destruct] of the equality followed by [mcast_id] — no UIP
-    anywhere. *)
+   本节说明相关定义、性质与动机。 Boundary casts commute everything sight. Each lemma is quantified over equalities variable endpoints, so proof is [destruct] equality followed [mcast_id] — no UIP anywhere.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section MulticategoryTransport.
 
@@ -195,10 +196,11 @@ Lemma mcast_mtarget_cast {Γ Γ' : list mobj} {c c' : mobj}
   mcast e (mtarget_cast e' f) ≈ mtarget_cast e' (mcast e f).
 Proof. destruct e'; reflexivity. Qed.
 
-(** Splicing commutes with blockwise recasting of the boundary: casts
-    on both arguments of [mcomp] fuse into one cast on the composite.
-    The zipper/splice equalities [ez]/[es] are ANY proofs; the blockwise
-    equalities [e1]/[e2]/[ed] guarantee they exist. *)
+(*
+   本节说明相关定义、性质与动机。 * Splicing commutes blockwise recasting boundary: casts. both arguments [mcomp] fuse into one cast 复合. The zipper/splice equalities [ez]/[es] are ANY proofs;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mcomp_cast_zipper {Γ1 Γ1' Γ2 Γ2' Δ Δ' : list mobj} {b c : mobj}
   (e1 : Γ1 = Γ1') (e2 : Γ2 = Γ2') (ed : Δ = Δ')
   (ez : Γ1 ++ b :: Γ2 = Γ1' ++ b :: Γ2')
@@ -239,11 +241,11 @@ Class MultiFunctor (M N : Multicategory) : Type := {
      [[mf_obj a]], so no cast is needed. *)
   mf_id (a : @mobj M) : mf_map (mid a) ≈ mid (mf_obj a);
 
-  (* Splicing is preserved, up to the boundary casts putting the image
-     of the zipper in zipper form ([ez]) and reassembling the image of
-     the spliced context ([es]).  Quantified over ANY proofs of the two
-     boundary equations (witnesses: [mf_eq_slot], [mf_eq_splice]),
-     following the [_any] law style of Theory/Multicategory.v. *)
+  (*
+   本节说明相关定义、性质与动机。 Splicing is preserved, up boundary casts putting image. zipper zipper form ([ez]) reassembling image spliced context ([es]).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   mf_comp {Γ1 Γ2 Δ : list (@mobj M)} {b c : @mobj M}
     (f : mhom (Γ1 ++ b :: Γ2) c) (g : mhom Δ b)
     (ez : map mf_obj (Γ1 ++ b :: Γ2)
@@ -288,16 +290,11 @@ Proof.
   now rewrite !mcast_id.
 Qed.
 
-(** ** The setoid of multifunctors
+(*
+   本节说明相关定义、性质与动机。 * ** The setoid multifunctors. Two parallel multifunctors are equivalent when their 对象 maps agree pointwise (Type-level 对象 data, so [=] is sanctioned) and, modulo source/target recasting that this agreement induces, their multimorphism maps agree up [≈].
 
-    Two parallel multifunctors are equivalent when their object maps
-    agree pointwise (Type-level object data, so [=] is sanctioned) and,
-    modulo the source/target recasting that this agreement induces,
-    their multimorphism maps agree up to [≈].  The witness [eobj] is
-    carried as DATA in a sigma — the pattern of the [Hobj]-conjugated
-    uniqueness statements of Construction/ColouredPROP/Universal.v —
-    so the equivalence laws never compare equality proofs, only
-    compose them. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition mf_equiv {M N : Multicategory} (F G : MultiFunctor M N) : Type :=
   { eobj : ∀ a : @mobj M, mf_obj F a = mf_obj G a
@@ -351,11 +348,11 @@ Next Obligation.
   - now apply mf_equiv_trans with y.
 Qed.
 
-(** ** The identity multifunctor
+(*
+   本节说明相关定义、性质与动机。 * ** The identity multifunctor. The 对象 map is identity, but [map (fun => a) Γ] is only propositionally equal [Γ], so multimorphism map recasts along transparent [map_id_t].
 
-    The object map is the identity, but [map (fun a => a) Γ] is only
-    propositionally equal to [Γ], so the multimorphism map recasts along
-    the transparent [map_id_t]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Local Obligation Tactic := intros; cbv beta.
 
@@ -394,11 +391,13 @@ Next Obligation.
   apply mcast_symm_l.
 Qed.
 
-(** ** Composition of multifunctors
+(*
+   * ** 复合 of multifunctors
 
-    Objects compose on the nose; the multimorphism map recasts along the
-    transparent [map_map_t] to move between [map (mf_obj G) (map
-    (mf_obj F) Γ)] and [map (fun a => mf_obj G (mf_obj F a)) Γ]. *)
+   本节说明相关定义、性质与动机。 对象 compose nose; multimorphism map recasts along transparent [map_map_t] move between [map (mf_obj G) (map (mf_obj F) Γ)] [map (fun => mf_obj G (mf_obj F a)) Γ].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition MultiCompose {M N O : Multicategory}
   (G : MultiFunctor N O) (F : MultiFunctor M N) : MultiFunctor M O := {|

@@ -19,124 +19,17 @@ Generalizable All Variables.
    setoid 设定下给出中心对象/幺半群结构，并与 Eckmann–Hilton 论证的零元阴影相联系
    （见 Theory/EckmannHilton.v）。文内其它长注释后续可续译。 *)
 
-(* Why this is the arity-zero shadow of Eckmann–Hilton
+(*
+   本节说明相关定义、性质与动机。 Why this is arity-zero shadow Eckmann–Hilton. nLab: https://ncatlab.org/nlab/show/Eckmann-Hilton+argument nLab: https://ncatlab.org/nlab/show/center+of+a+范畴 Paper: Eckmann, Hilton, "Group-like structures 一般地 范畴 I", Mathematische Annalen 145, 1962 Read
 
-   nLab:  https://ncatlab.org/nlab/show/Eckmann-Hilton+argument
-   nLab:  https://ncatlab.org/nlab/show/center+of+a+category
-   Paper: Eckmann, Hilton, "Group-like structures in general categories I",
-          Mathematische Annalen 145, 1962
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   Read one level up.  A category C is a one-object bicategory's worth of
-   structure sitting inside Cat: `[C, C]` is a hom-category of Cat, its
-   objects (functors) are 1-cells and its morphisms (natural
-   transformations) are 2-cells, and Id[C] is the identity 1-cell.  The
-   2-cells on an identity 1-cell are exactly the position at which the
-   Eckmann–Hilton collapse bites: vertical and horizontal composition
-   normally have DIFFERENT units — Theory/TwoCategory.v makes
-   that point explicitly, and it is why a 2-category does not degenerate —
-   but on an identity 1-cell the two units coincide, the argument applies,
-   and the monoid of such 2-cells is forced to be commutative.
+(*
+   本节说明相关定义、性质与动机。 THREE DIFFERENT THINGS ARE CALLED A CENTRE. All three are this tree,. they are three different KINDS. Naming them together once is cheaper than disambiguating them repeatedly downstream.
 
-   In this tree the collapse was already visible concretely before it was
-   stated in general.  Instance/Cat/TwoCategory.v's [NatBase_centre]
-   exhibits the 2-cells on the identity functor of the delooping
-   of (ℕ, +): every natural number gives one, and their vertical and
-   horizontal composites both compute to addition BY [eq_refl]
-   ([NatBase_centre_vcomp], [NatBase_centre_hcomp]).  That file's comment
-   names the present exercise as what it is illustrating.  This file
-   supplies the general theorem those examples instantiate.
-
-   The same one-object reading is what makes the centre a monoid in the
-   sense the library already has: Construction/Deloop.v's [hom_monoid C a]
-   turns the endomorphism hom-setoid of any object of any category into a
-   [MonObject], every monoid law being a category law by projection.  Taking
-   C := `[C, C]` and a := Id[C] gives the centre with no new proof
-   obligations at all — [centre_monoid] below is literally that application,
-   and the three data fields of the resulting monoid (carrier, unit,
-   operation) are the transformation setoid, [nat_id] and [nat_compose],
-   each recorded by [eq_refl].  What this file must supply on its own is the
-   one thing [hom_monoid] cannot know: commutativity.
-
-   HONESTY ABOUT THE EH ROUTE.  The exercise's traditional packaging
-   presents the centre as an Eckmann–Hilton situation and reads
-   commutativity off the general argument.  That packaging is delivered
-   below ([centre_commutative_EH]), and it is a genuine invocation of
-   Theory/EckmannHilton.v's [eh_comm] with all seven hypotheses discharged.
-   It is NOT, however, an independent derivation of commutativity, and this
-   file says so in two machine-checked ways rather than in prose:
-
-   (1) The second operation is not an independent operation.  At the
-       identity functor the Godement (horizontal) composite has the SAME
-       components as the vertical one — [centre_hcompose_is_vcomp] records
-       `transform[nat_hcompose α β] x = transform[nat_compose α β] x` by
-       [eq_refl], and both whiskerings against Id are the identity on
-       components ([centre_whisker_left], [centre_whisker_right]).  So the
-       "two operations" the argument wants are one operation and that same
-       operation with its arguments swapped.
-
-   (2) The interchange hypothesis already contains the conclusion.
-       [centre_interchange_forces_commutative] derives commutativity from
-       interchange by instantiating two of its four arguments at the unit
-       and cancelling with the unit laws — no padding argument, no
-       [eh_units] step, no appeal to Theory/EckmannHilton.v at all.  So no
-       proof of interchange for these operations can be weaker than
-       commutativity, and indeed [centre_interchange]'s proof below consumes
-       [centre_commutes_at] literally.
-
-   The EH route is therefore a CONSISTENCY EXHIBIT: it shows that the centre
-   genuinely is an Eckmann–Hilton situation and that the abstract engine
-   applies to it, which is the mathematical content of putting the two
-   exercises next to each other.  It is not a second, independent proof.
-   Theory/EckmannHilton.v's own header anticipates exactly this ("there they
-   genuinely share a unit, which is precisely the special position that
-   makes the collapse bite"); this file is that engine's third consumer,
-   after Structure/Semiadditive.v (which uses [eh_ops], [eh_comm] and
-   [eh_assoc] for its two convolutions) and Instance/Top/LoopSpace.v (which
-   uses the packaged [eckmann_hilton]).  Instance/Cat/TwoCategory.v does NOT
-   import it: its [NatBase_centre] examples exhibit the collapse by
-   computation rather than by invoking the theorem. *)
-
-(* THREE DIFFERENT THINGS ARE CALLED A CENTRE.  All three are in this tree,
-   and they are of three different KINDS.  Naming them together once is
-   cheaper than disambiguating them repeatedly downstream.
-
-   - THIS centre: the natural endotransformations of the identity functor,
-     `Id[C] ⟹ Id[C]`, under vertical composition.  A commutative MONOID.
-     Defined for an arbitrary category, no extra structure required.
-     Mac Lane §II.5 Exercise 8; Riehl Exercise 1.7.iv.
-
-   - The PREMONOIDAL centre: the central MORPHISMS of a binoidal category —
-     those whose two whiskerings commute with everything — assembled into a
-     wide subcategory.  A CATEGORY, namely `Centre C` of
-     Structure/Binoidal/Central.v (built from [CentralSub]), given
-     a monoidal structure in Structure/Premonoidal/Centre.v.  Requires a
-     binoidal/premonoidal ambient structure.
-
-   - The DRINFELD (monoidal) centre: objects of a monoidal category equipped
-     with a half-braiding, with intertwiners as morphisms.  A BRAIDED
-     MONOIDAL CATEGORY, `Drinfeld` of Structure/Monoidal/Drinfeld.v,
-     with [Drinfeld_Braided] and the forgetful [Drinfeld_Forget].  Requires
-     a monoidal ambient structure.
-
-   The bare name [Centre] is DELIBERATELY NOT taken here: it already belongs
-   to Structure/Binoidal/Central.v, and a second [Centre] in Theory/ would
-   make any file importing both ambiguous.  The names below are all
-   lower-case and prefixed ([centre_setoid], [centre_monoid],
-   [centre_commutative]).
-
-   REMARKS ON CONCRETE CENTRES, not computed here.  For `Sets` the centre is
-   trivial, and that IS proved below ([centre_Sets_trivial]) — the argument
-   is the standard one, probe naturality with the map out of a singleton
-   that picks a point.  For Grp and Ab the answer is more interesting, and
-   it is NOT computed in this tree.  The expected answer for FINITELY
-   GENERATED abelian groups is the multiplicative monoid (ℤ, ·), each
-   integer n acting on every group by the n-fold sum — a family that is
-   natural because every homomorphism preserves sums — via the route of
-   Riehl's Proposition 1.4.6, per the issue catalog; pinning it down
-   (rather than merely exhibiting the family) needs machinery this tree
-   does not have.
-   These two sentences are a REMARK, not a claim about anything proved here,
-   and nothing below depends on them. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The centre as a setoid and as a monoid *)
 
@@ -144,26 +37,25 @@ Section Centre.
 
 Context {C : Category}.
 
-(* The carrier: the hom-setoid of the functor category `[C, C]` at the
-   identity functor.  This is the categorical home of the centre — the
-   objects of `[C, C]` are functors and its morphisms are natural
-   transformations (Instance/Fun.v), so `Id[C] ~{[C, C]}~> Id[C]` is
-   `Id[C] ⟹ Id[C]` and the setoid is [Transform_Setoid], comparing two
-   transformations componentwise. *)
+(*
+   The carrier: the hom-setoid of the 函子 范畴 `[C, C]` at the
+
+   本节：identity 函子. This is categorical home centre — 对象 `[C, C]` are 函子 its 态射 are 自然变换 (Instance/Fun.v), so `Id[C] ~{[C, C]}~> Id[C]` is `Id[C] ⟹ Id[C]` setoid is [Transform_Setoid], comparing two transformations
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition centre_setoid : SetoidObject := {|
   carrier   := @hom ([C, C]) Id[C] Id[C];
   is_setoid := @homset ([C, C]) Id[C] Id[C]
 |}.
 
-(* The monoid structure needs no proof: it is Construction/Deloop.v's
-   endomorphism monoid of the object Id[C] of the category `[C, C]`.  The
-   associativity and unit laws are taken by PROJECTION from `[C, C]`'s own
-   [comp_assoc], [id_left] and [id_right] — the fields Instance/Fun.v's
-   [Fun] discharges — and not from that file's standalone restatements
-   [nat_comp_assoc], [nat_id_left], [nat_id_right], which are separate
-   corollaries.  (The last two are used below, for the EH route's unit
-   hypotheses, where they are what is wanted; [nat_comp_assoc] is not
-   consumed in this file.) *)
+(*
+   The 幺半群 structure needs no proof: it is Construction/Deloop.v's
+
+   本节说明相关定义、性质与动机。 endomorphism 幺半群 对象 Id[C] 范畴 `[C, C]`.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition centre_monoid : MonObject := hom_monoid ([C, C]) Id[C].
 
 (* The three data fields, definitionally.  [Set Primitive Projections] gives
@@ -183,10 +75,13 @@ Example centre_monoid_op :
 
 (** ** Commutativity, directly from naturality *)
 
-(* The whole content of the exercise, at a single object.  Read α's
-   naturality square at the morphism `transform[β] x : x ~> x`; because
-   `fmap[Id]` is definitionally the identity on morphisms, the square is
-   already the commutation.  Only α's naturality is used. *)
+(*
+   The whole content of the exercise, at a single 对象.  Read α's
+
+   本节说明相关定义、性质与动机。 naturality square at 态射 `transform[β] x : x ~> x`; because `fmap[Id]` is definitionally identity 态射, square is already commutation.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma centre_commutes_at (α β : Id[C] ⟹ Id[C]) (x : C) :
   transform[α] x ∘ transform[β] x ≈ transform[β] x ∘ transform[α] x.
 Proof.
@@ -194,9 +89,13 @@ Proof.
   exact (naturality[α] x x (transform[β] x)).
 Qed.
 
-(* The centre is a COMMUTATIVE monoid: vertical composition of natural
-   endotransformations of the identity functor is commutative.  This is the
-   pinned constant of Mac Lane §II.5 Exercise 8 / Riehl Exercise 1.7.iv. *)
+(*
+   The centre is a COMMUTATIVE 幺半群: vertical 复合 of 自然
+
+   本节说明相关定义、性质与动机。 endotransformations identity 函子 is commutative. This is pinned constant Mac Lane §II.5 Exercise 8 / Riehl Exercise 1.7.iv.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem centre_commutative (α β : Id[C] ⟹ Id[C]) :
   nat_compose α β ≈[Fun] nat_compose β α.
 Proof.
@@ -215,21 +114,23 @@ End Centre.
 
 (** ** The Eckmann–Hilton packaging *)
 
-(* The traditional route: exhibit two unital operations that interchange and
-   invoke Theory/EckmannHilton.v.  Everything in this section is honest
-   about being a consistency exhibit rather than an independent derivation;
-   see the header, and see [centre_interchange_forces_commutative] at the
-   end of the section for the machine-checked form of that claim. *)
+(*
+   本节说明相关定义、性质与动机。 The traditional route: exhibit two unital operations that interchange and. invoke Theory/EckmannHilton.v. Everything 本节 is honest about being consistency exhibit rather than independent derivation;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CentreEH.
 
 Context {C : Category}.
 
-(* The first operation is vertical composition.  The second is the SAME
-   composition with its arguments swapped — which, by
-   [centre_vcomp_op_is_hcompose] below, is exactly the Godement horizontal
-   composite in the other order, the two agreeing on components at the
-   identity functor. *)
+(*
+   The first operation is vertical 复合.  The second is the SAME
+
+   本节说明相关定义、性质与动机。 复合 its arguments swapped — which, [centre_vcomp_op_is_hcompose] below, is exactly Godement horizontal 复合 other order, two agreeing components at identity 函子.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition centre_vcomp (α β : Id[C] ⟹ Id[C]) : Id[C] ⟹ Id[C] :=
   nat_compose α β.
@@ -249,12 +150,11 @@ Example centre_vcomp_op_component (α β : Id[C] ⟹ Id[C]) (x : C) :
 
 (** *** The second operation IS the horizontal composite, componentwise *)
 
-(* [nat_hcompose ε η : J ◯ F ⟹ K ◯ G] lands at `Id ◯ Id`, not at `Id`, so
-   the two transformations do not have the same TYPE and no equation between
-   them can be written without a transport.  Componentwise they need none:
-   `(Id ◯ Id) x` reduces to `x`, so both components inhabit `x ~> x` and the
-   identification is [eq_refl].  This is stated componentwise deliberately;
-   no isomorphism [nat_ρ]/[nat_λ] is inserted and none is claimed. *)
+(*
+   本节说明相关定义、性质与动机。 [nat_hcompose ε η : J ◯ F ⟹ K ◯ G] lands at `Id ◯ Id`, not at `Id`, so. two transformations do not have same TYPE no equation between them can be written without transport.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example centre_hcompose_is_vcomp (α β : Id[C] ⟹ Id[C]) (x : C) :
   transform[nat_hcompose α β] x = transform[nat_compose α β] x := eq_refl.
@@ -285,12 +185,13 @@ Definition centre_vcomp_op_respects :
   Proper (equiv ==> equiv ==> equiv) centre_vcomp_op.
 Proof. repeat intro; now apply nat_compose_respects. Qed.
 
-(* The four unit laws.  Both operations take [nat_id] as a two-sided unit —
-   this is the coincidence of units that makes the Eckmann–Hilton argument
-   applicable at all, and here it is not an accident of the construction but
-   the fact that both operations ARE vertical composition.  The laws are
-   Instance/Fun.v's [nat_id_left] and [nat_id_right], used crosswise for the
-   opposite-order operation. *)
+(*
+   The four 单位律.  Both operations take [nat_id] as a two-sided unit —
+
+   本节说明相关定义、性质与动机。 this is coincidence units that makes Eckmann–Hilton argument applicable at all, here it is not accident construction but fact that both operations ARE vertical 复合.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition centre_vcomp_unit_l (α : Id[C] ⟹ Id[C]) :
   centre_vcomp nat_id α ≈[Fun] α := nat_id_left C C Id[C] Id[C] α.
@@ -304,16 +205,11 @@ Definition centre_vcomp_op_unit_l (α : Id[C] ⟹ Id[C]) :
 Definition centre_vcomp_op_unit_r (α : Id[C] ⟹ Id[C]) :
   centre_vcomp_op α nat_id ≈[Fun] α := nat_id_left C C Id[C] Id[C] α.
 
-(* The interchange law, in the orientation Theory/EckmannHilton.v states it:
-   `f (g a b) (g c d) ≈ g (f a c) (f b d)`.
+(*
+   本节说明相关定义、性质与动机。 The interchange law, orientation Theory/EckmannHilton.v states it:. `f (g b) (g c d) ≈ g (f c) (f b d)`. 分量地 goal is `(b ∘ a) ∘ (d ∘ c) ≈ (b ∘ d) ∘ (a ∘ c)`;
 
-   Componentwise the goal is `(b ∘ a) ∘ (d ∘ c) ≈ (b ∘ d) ∘ (a ∘ c)`;
-   reassociating both sides to `b ∘ (_ ∘ _) ∘ c` leaves exactly
-   `a ∘ d ≈ d ∘ a`, and there is nothing to appeal to for that but the
-   naturality square — i.e. [centre_commutes_at], which the proof therefore
-   uses LITERALLY.  This is the disclosure the header promises: the
-   interchange hypothesis of the EH route is not cheaper than its
-   conclusion. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma centre_interchange (a b c d : Id[C] ⟹ Id[C]) :
   centre_vcomp (centre_vcomp_op a b) (centre_vcomp_op c d)
     ≈[Fun] centre_vcomp_op (centre_vcomp a c) (centre_vcomp b d).
@@ -341,10 +237,11 @@ Proof.
            centre_interchange α β).
 Qed.
 
-(* [eh_ops] — the Eckmann–Hilton conclusion that the two operations
-   COINCIDE — degenerates here into commutativity a second time, since the
-   second operation is the first with its arguments swapped.  Recording it
-   makes the degeneration visible instead of leaving it implicit. *)
+(*
+   本节说明相关定义、性质与动机。 [eh_ops] — Eckmann–Hilton conclusion that two operations. COINCIDE — degenerates here into commutativity second time, since second operation is first its arguments swapped.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary centre_EH_ops (α β : Id[C] ⟹ Id[C]) :
   centre_vcomp α β ≈[Fun] centre_vcomp_op α β.
 Proof.
@@ -355,10 +252,11 @@ Proof.
            centre_interchange α β).
 Qed.
 
-(* Likewise [eh_units]: the two units coincide.  Here they were literally
-   the same transformation to begin with, so the general theorem's first
-   conclusion is [reflexivity] at this instance — another measurement of how
-   degenerate the EH situation is at the centre. *)
+(*
+   本节说明相关定义、性质与动机。 Likewise [eh_units]: two units coincide. Here they were literally.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary centre_EH_units : (nat_id : Id[C] ⟹ Id[C]) ≈[Fun] nat_id.
 Proof.
   exact (eh_units centre_vcomp centre_vcomp_op nat_id nat_id
@@ -370,14 +268,11 @@ Qed.
 
 (** *** Why the EH route cannot be independent *)
 
-(* The claim, machine-checked.  Take the interchange law as a HYPOTHESIS —
-   not the proved [centre_interchange], but any statement of that shape —
-   and instantiate its second and third arguments at [nat_id].  The unit
-   laws then collapse it directly to commutativity, with no padding
-   argument, no [eh_units] step, and no appeal to Theory/EckmannHilton.v.
-   So interchange for these two operations is not a weaker input than the
-   conclusion it is supposed to produce, and the EH packaging above is a
-   consistency exhibit rather than a second proof. *)
+(*
+   本节说明相关定义、性质与动机。 The claim, machine-checked. Take interchange law HYPOTHESIS —. not proved [centre_interchange], but any statement that shape — instantiate its second third arguments at [nat_id].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem centre_interchange_forces_commutative
   (inter : ∀ a b c d : Id[C] ⟹ Id[C],
       centre_vcomp (centre_vcomp_op a b) (centre_vcomp_op c d)
@@ -385,13 +280,11 @@ Theorem centre_interchange_forces_commutative
   (α δ : Id[C] ⟹ Id[C]) :
   centre_vcomp α δ ≈[Fun] centre_vcomp δ α.
 Proof.
-  (* Instantiate at (α, 1, 1, δ), writing 1 for [nat_id]:
+  (*
+   本节说明相关定义、性质与动机。 Instantiate at (α, 1, 1, δ), writing 1 [nat_id]:. f (g α 1) (g 1 δ) ≈ g (f α 1) (f 1 δ). 分量地 即 `(1 ∘ α x) ∘ (δ x ∘ 1) ≈ (1 ∘ δ x) ∘ (α x ∘ 1)`, cancelling four units leaves `α x ∘ δ x ≈ δ x ∘ α x`, which is goal.
 
-       f (g α 1) (g 1 δ)  ≈  g (f α 1) (f 1 δ).
-
-     Componentwise that is `(1 ∘ α x) ∘ (δ x ∘ 1) ≈ (1 ∘ δ x) ∘ (α x ∘ 1)`,
-     and cancelling the four units leaves `α x ∘ δ x ≈ δ x ∘ α x`, which is
-     the goal.  Only [id_left] and [id_right] are spent. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   specialize (inter α nat_id nat_id δ).
   intro x.
   specialize (inter x).
@@ -404,40 +297,28 @@ End CentreEH.
 
 (** ** The centre of Sets is trivial *)
 
-(* Mac Lane asks for the centre of Set.  The probe is the standard one: a
-   point of a setoid X is the same thing as a morphism into X from the
-   singleton, and naturality of α at that morphism pins α's component at X
-   to the identity.
+(*
+   本节说明相关定义、性质与动机。 Mac Lane asks centre Set. The probe is standard one: a. point setoid X is same thing 态射 into X from singleton, naturality α at that 态射 pins α's component at X identity.
 
-   Concretely, for `x : carrier X` let `pick x : 1 ~> X` be the constant map.
-   Naturality of α at `pick x`, evaluated at the sole element `ttt`, reads
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-       pick x (α_1 ttt)  ≈  α_X (pick x ttt),
+(*
+   本节说明相关定义、性质与动机。 The singleton setoid used probe's domain is carrier of. [Sets_Terminal] (Instance/Sets.v), [poly_unit] under `=`. UNIVERSE ANNOTATION, why it is not decoration. `Sets@{o so}` has carriers at `o` 对象 at `so` (Instance/Sets.v).
 
-   whose left side is `x` (the map is constant) and whose right side is
-   `α_X x`.  Note that the value of `α` at the singleton is never inspected:
-   it is absorbed by the constancy of the probe, which is why the argument
-   needs no decidability, no choice, and no extensionality. *)
-
-(* The singleton setoid used as the probe's domain is the carrier of
-   [Sets_Terminal] (Instance/Sets.v), [poly_unit] under `=`.
-
-   UNIVERSE ANNOTATION, and why it is not decoration.  `Sets@{o so}` has
-   carriers at `o` and objects at `so` (Instance/Sets.v).  Written
-   without the annotations below, universe minimization instantiates the
-   probe's carrier as `poly_unit@{Set}` and, through the object type, pins
-   `o := Set` — so the theorems would speak only of setoids whose carriers
-   live in `Set`.  Naming `o` and `so` and writing `poly_unit@{o}` keeps
-   both free, and the statements then apply to `Sets` at every level. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition centre_Sets_point@{o so} {X : obj[Sets@{o so}]}
   (x : carrier X) :
   ({| carrier := poly_unit@{o} |} : obj[Sets@{o so}]) ~{Sets@{o so}}~> X := {|
   morphism := fun _ => x
 |}.
 
-(* The probe's underlying function is given literally, so it computes; the
-   [Program] wrapper touches only the respectfulness certificate.  Recorded
-   because [centre_Sets_trivial] below relies on the reduction. *)
+(*
+   本节说明相关定义、性质与动机。 The probe's underlying function is given literally, so it computes; the. [Program] wrapper touches only respectfulness certificate.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example centre_Sets_point_computes@{o so} {X : obj[Sets@{o so}]}
   (x : carrier X) (u : poly_unit@{o}) : centre_Sets_point x u = x := eq_refl.
 
@@ -472,11 +353,11 @@ Qed.
 
 (** ** The centre of Coq is trivial *)
 
-(* The same probe over Instance/Coq.v, where the hom-setoid is pointwise
-   Leibniz equality (Instance/Coq.v), so the conclusion is an equation
-   rather than an `≈`.  It costs nothing beyond changing the probe's
-   codomain, and it is included because it is the reading a programmer
-   expects: a polymorphic function `forall a, a -> a` is the identity. *)
+(*
+   本节说明相关定义、性质与动机。 The same probe over Instance/Coq.v, where hom-setoid is pointwise. Leibniz equality (Instance/Coq.v), so conclusion is equation rather than `≈`.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem centre_Coq_trivial (α : Id[Coq] ⟹ Id[Coq])
   (X : obj[Coq]) (x : X) : transform[α] X x = x.

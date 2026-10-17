@@ -26,20 +26,11 @@ Section ConcreteMorphisms.
 Context {C : Category}.
 Context `{Con : @Concrete C}.
 
-(* Injective underlying function implies monic.  This IS a corollary of
-   [faithful_reflects_monic]: the underlying functor is faithful by
-   assumption, injectivity of the underlying function makes its image monic
-   in [Sets] by [injectivity_is_monic], and reflection carries that back to
-   `C`.  The first commit of this file proved it from scratch instead, and
-   then described it as derived from the reflection lemma — an audit caught
-   the discrepancy, so the proof now matches the description.
+(*
+   本节说明相关定义、性质与动机。 Injective underlying function implies monic. This IS corollary of.
 
-   NOTE THE ASYMMETRY with the epic direction below, which CANNOT take this
-   route: Instance/Sets.v's [surjectivity_is_epic] terminates in an
-   incomplete sketch and does not enter the environment, so there is no
-   independent "surjective implies epic" in [Sets] to reflect through.  That
-   direction is therefore proved directly here, and [Sets_surjective_epic]
-   below is obtained FROM it rather than the other way round. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma concrete_injective_monic {x y : C} (f : x ~> y) :
   injective (concrete_fun f) → Monic f.
 Proof.
@@ -50,10 +41,11 @@ Proof.
   exact (inj (injective:=Hinj) Hab).
 Qed.
 
-(* Surjective underlying function implies epic: the mirror image.  A point of
-   the underlying set of the TARGET is hit by some point `a` of the source, and
-   the two composites agree at `a`; the underlying functions of `g1` and `g2`
-   are setoid maps, so that agreement transports along the chosen preimage. *)
+(*
+   本节说明相关定义、性质与动机。 Surjective underlying function implies epic: mirror image. A point of. underlying set TARGET is hit some point `a` source, two composites agree at `a`;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma concrete_surjective_epic {x y : C} (f : x ~> y) :
   surjective (concrete_fun f) → Epic f.
 Proof.
@@ -73,22 +65,21 @@ End ConcreteMorphisms.
 
 (** ** The corollary at work: [Coq], via [Coq_Concrete] *)
 
-(* Non-vacuity of both lemmas at a real concrete category.  `Coq`
-   (Instance/Coq.v) is concrete via [Coq_Concrete] (Instance/Concrete.v),
-   whose underlying-set functor reads a type as a setoid under Leibniz
-   equality.  So `injective` and `surjective` below are the ordinary
-   element-level notions for the two functions chosen here, and the
-   conclusions are genuine cancellation properties in `Coq` — genuine because
-   `Coq`'s hom-setoids are not trivial, as Instance/Concrete.v's
-   [Coq_two_arrows] records. *)
+(*
+   Non-vacuity of both lemmas at a real concrete 范畴.  `Coq`
+
+   本节说明相关定义、性质与动机。 (Instance/Coq.v) is concrete via [Coq_Concrete] (Instance/Concrete.v), whose underlying-set 函子 reads type setoid under Leibniz equality.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition bool_to_nat (b : bool) : nat := if b then 1%nat else 0%nat.
 
-(* This one statement is `=` rather than `≈`, and deliberately so: it relates
-   ELEMENTS of `bool` and `nat`, not morphisms.  Under [Coq_Underlying] those
-   two carriers are setoids whose `≈` IS Leibniz equality, so this is already
-   the `≈`-shaped premise [injective] asks for, and it is used as such
-   directly below. *)
+(*
+   本节说明相关定义、性质与动机。 This one statement is `=` rather than `≈`, deliberately so: it relates. ELEMENTS `bool` `nat`, not 态射.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma bool_to_nat_inj (a b : bool) : bool_to_nat a = bool_to_nat b → a = b.
 Proof.
   destruct a, b; simpl; solve [ reflexivity | discriminate ].
@@ -101,10 +92,11 @@ Proof.
   exact (bool_to_nat_inj a b Hab).
 Qed.
 
-(* Predecessor is surjective: every `y` is `pred (S y)`.  It is not injective
-   either (`pred 0` and `pred 1` are both `0`, both by computation), so the
-   two halves above are exercised by two different arrows rather than by one
-   arrow that happens to be bijective. *)
+(*
+   本节说明相关定义、性质与动机。 Predecessor is surjective: every `y` is `pred (S y)`. It is not injective.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Instance Coq_pred_surjective :
   surjective (concrete_fun (Con:=Coq_Concrete) (Nat.pred : nat ~{Coq}~> nat)).
 Proof.
@@ -120,16 +112,11 @@ Definition Coq_pred_Epic : Epic (Nat.pred : nat ~{Coq}~> nat) :=
 
 (** ** The same two conclusions through the reflection lemmas *)
 
-(* The corollary can also be reached by first establishing the property in
-   `Sets` and then reflecting it along the faithful functor, which is what
-   Riehl's exercise proper supplies.  Both routes are recorded because the
-   second is a non-vacuity witness for [faithful_reflects_monic] and
-   [faithful_reflects_epic] themselves: the hypothesis genuinely holds and the
-   conclusion is a genuine monic (respectively epic) of `Coq`.
+(*
+   本节说明相关定义、性质与动机。 The corollary can also be reached first establishing property in. `Sets` then reflecting it along 忠实 函子, which is what Riehl's exercise proper supplies.
 
-   No claim is made that the two routes produce the same proof term — they are
-   different derivations of the same statement, and `Monic`/`Epic` are
-   record types whose inhabitants are not compared here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Coq_bool_to_nat_Monic_reflected :
   Monic (bool_to_nat : bool ~{Coq}~> nat) :=
@@ -137,15 +124,11 @@ Definition Coq_bool_to_nat_Monic_reflected :
     (fst (injectivity_is_monic (fmap[Coq_Underlying] bool_to_nat))
        (fun a b (Hab : bool_to_nat a = bool_to_nat b) => bool_to_nat_inj a b Hab)).
 
-(* For epis the `Sets`-side ingredient comes from this file's own
-   [concrete_surjective_epic] at [Sets_Concrete] (Theory/Concrete.v),
-   whose underlying-set functor is the identity: there `concrete_fun h` IS `h`,
-   so the lemma reads "a surjective setoid map is epic in `Sets`".
-   Instance/Sets.v states the corresponding biconditional as
-   `surjectivity_is_epic`, but that proof is a sketch stopped before
-   completion, so the name never enters the environment and cannot be used
-   here; the header of Instance/Sets.v documents the size obstruction behind
-   the missing direction. *)
+(*
+   本节说明相关定义、性质与动机。 For epis `Sets`-side ingredient comes from this file's own. [concrete_surjective_epic] at [Sets_Concrete] (Theory/Concrete.v), whose underlying-set 函子 is identity: there `concrete_fun h` IS `h`, so lemma reads "a surjective setoid map is epic `Sets`".
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Sets_surjective_epic {X Y : SetoidObject} (h : X ~{Sets}~> Y) :
   surjective h → Epic h :=
   concrete_surjective_epic (Con:=Sets_Concrete) h.

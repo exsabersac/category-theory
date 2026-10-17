@@ -105,13 +105,11 @@ Class Displayed (C : Category) := {
 #[export] Existing Instance dtransport_respects.  (* mirrors compose_respects *)
 #[export] Existing Instance dcomp_respects.
 
-(** ** The derived transport lemma pack
+(*
+   本节说明相关定义、性质与动机。 * ** The derived transport lemma pack. Everything below is consequence class fields.
 
-    Everything below is a consequence of the class fields. These lemmas are
-    budgeted here deliberately: the associativity and unit proofs for the
-    total category (Construction/Displayed/Total.v) spend all of their time
-    reorienting and cancelling transports, and each step is one of the
-    lemmas in this pack. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section DisplayedTransport.
 

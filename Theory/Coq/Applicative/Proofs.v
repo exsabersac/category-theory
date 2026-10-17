@@ -91,13 +91,13 @@ Proof.
   - apply Coq_StrongFunctor.
 Qed.
 
-(* The composition of two applicatives is itself applicative. We establish
-   this by appeal to the general proofs that:
+(*
+   The 复合 of two applicatives is itself applicative. We establish
 
-   1. every Coq functor has strength;
-   2. (also, but not needed: any two strong functors compose to a strong
-      functor; if it is a Coq functor it is known to have strength); and
-   3. any two lax monoidal functors compose to a lax monoidal functor. *)
+   本节：this appeal general proofs that: 1. every Coq 函子 has strength; 2. (also, but not needed: any two strong 函子 compose strong 函子; if it is Coq 函子 it is known have strength); 3.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem Compose_IsApplicative
   `(HF : EndoFunctor F)

@@ -27,13 +27,13 @@ Generalizable All Variables.
 
 (** ** The half-adjoint correction, at the level of object types *)
 
-(* The path algebra needed for [half_adjoint_triangle] below.  These are the
-   HoTT-book lemmas for [f_equal] (there written [ap]) and for homotopies,
-   proved here by [destruct] on the path so that nothing outside
-   Coq.Init.Logic is used.  [f_equal_idmap] has no standard-library name,
-   and [ap_ap] is preferred to the standard [f_equal_compose] because it is
-   always applied with both functions given explicitly, which is what makes
-   it fire against beta-reduced indices. *)
+(*
+   The path 代数 needed for [half_伴随_triangle] below.  These are the
+
+   本节说明相关定义、性质与动机。 HoTT-book lemmas [f_equal] (there written [ap]) homotopies, proved here [destruct] path so that nothing outside Coq.Init.Logic is used.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HalfAdjoint.
 Context {A B : Type}.
@@ -76,10 +76,11 @@ Proof.
   now rewrite (ap_ap (fun x => g (f x)) f (eta a)).
 Qed.
 
-(* The corrected counit.  The raw [eps] satisfies no triangle: [eps (f a)]
-   and [f_equal f (eta a)] are two proofs of one object equality, and
-   identifying them is exactly what UIP would buy.  [adjointified] repairs
-   [eps] so that the triangle holds by path algebra alone. *)
+(*
+   本节说明相关定义、性质与动机。 The corrected counit. The raw [eps] satisfies no triangle: [eps (f a)]. [f_equal f (eta a)] are two proofs one 对象 equality, identifying them is exactly what UIP would buy.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition adjointified (b : B) : f (g b) = b :=
   eq_trans (eq_sym (eps (f (g b)))) (eq_trans (f_equal f (eta (g b))) (eps b)).
@@ -98,10 +99,13 @@ End HalfAdjoint.
 
 (** ** Strict functor equality from a family of object equalities *)
 
-(* [Functor_StrictEq_Setoid] compares functors by a family of object
-   equalities together with a transported-morphism condition.  Stating that
-   condition with [id_cast] instead of raw [transport] keeps every proof
-   below inside the ordinary categorical calculus. *)
+(*
+   [函子_StrictEq_Setoid] compares 函子 by a family of 对象
+
+   本节说明相关定义、性质与动机。 equalities together transported-态射 condition. Stating that condition [id_cast] instead raw [transport] keeps every proof below inside ordinary categorical calculus.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma transport_square {D : Category} {a a' b b' : D}
   (p : a = a') (q : b = b') (u : a ~{D}~> b) (v : a' ~{D}~> b') :
@@ -132,12 +136,11 @@ Definition Skeletal (C : Category) := ∀ x y : C, x ≅ y → x = y.
 
 (** ** An equivalence between skeletal categories is an isomorphism *)
 
-(* The general lemma, of which Mac Lane's Exercise 1 is a corollary.  The
-   quasi-inverse supplied by the equivalence is corrected twice: its action
-   on morphisms is replaced by the [prefmap] of a [hom_cast] (so that the
-   two composites are strictly, not merely naturally, the identities), and
-   its object counit is replaced by [adjointified] (so that no rigidity
-   hypothesis is needed). *)
+(*
+   本节说明相关定义、性质与动机。 The general lemma, which Mac Lane's Exercise 1 is corollary. The.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SkeletalEquivalence.
 Context {A B : Category}.
@@ -230,12 +233,13 @@ Arguments skeletal_equivalence_is_isomorphism {A B} SA SB F E.
 
 (** ** "A is a skeleton of C", packaged as data *)
 
-(* Mac Lane §IV.4 Definition 3, first half; Riehl Definition 1.5.16.  The
-   uniqueness clause concludes in [Sub C skel_sub], not in C: see the header
-   for why that strengthening is necessary rather than convenient.  Note
-   also that Lib/Setoid.v's [Unique]/[∃!] must NOT be used here: at object
-   level the exported [ob_setoid] makes [≈] mean isomorphism, so [Unique]
-   would state a vacuity. *)
+(*
+   Mac Lane §IV.4 定义 3, first half; Riehl 定义 1.5.16.  The
+
+   本节说明相关定义、性质与动机。 uniqueness clause concludes [Sub C skel_sub], not C: see header why that strengthening is necessary rather than convenient.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Skeleton.
 Context {C : Category}.
@@ -322,34 +326,22 @@ Definition skeleton_unit_iso {C : Category} (S : Skeleton C) :
   Id[skel_cat S] ≅[Fun] skel_reflect S ◯ skel_incl S :=
   equiv_iso (skeleton_unit S).
 
-(* Mac Lane §IV.4 Remark 1, in the issue's own orientation.  The second
-   component is at OBJECTS only: [skel_reflect S ◯ skel_incl S ≈[StrictCat]
-   Id] is not derivable in general for the CANONICAL reflector (it holds in
-   degenerate cases such as [Indiscrete_bool_Skeleton]), since it would need a
-   normality coherence tying the chosen isomorphism to the chosen equality.
-   The strict statement holds instead for the CORRECTED inverse built in
-   Exercise 1 below. *)
+(*
+   本节说明相关定义、性质与动机。 Mac Lane §IV.4 Remark 1, issue's own orientation. The second.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition skeleton_remark {C : Category} (S : Skeleton C) :
   (Id[C] ≅[Fun] skel_incl S ◯ skel_reflect S)
   * (∀ a : skel_cat S, skel_reflect S (skel_incl S a) = a) :=
   (iso_sym (skeleton_counit_iso S), skel_reflect_incl_obj S).
 
-(* THE GROUPOID OF FINITE SETS AND BIJECTIONS is not in tree, and this
-   development does not pretend otherwise.  Riehl's Example 1.5.18 computes
-   its skeleton — the naturals, with the symmetric groups as automorphism
-   groups and no morphisms between distinct numbers — but "the skeleton OF"
-   needs the ambient groupoid, and there is none: Construction/Groupoid.v
-   supplies only the core [Groupoid C] of a given C, and building the groupoid
-   of ALL finite sets over [Sets] would reproduce the universe obstruction
-   docs/INHABITATION.md already records for cospans, where [Sets] places its
-   objects one universe above its homs.  The skeleton-side facts about
-   [Groupoid FinSet] — that it is skeletal, that its off-diagonal hom-sets are
-   empty, and that its automorphism monoid at [n] is the group of bijections
-   of the canonical n-element set — are each cheap over the
-   [hom_monoid]/[GrpObject] of Construction/Deloop.v, but they are statements
-   about [Groupoid FinSet], not about a skeleton of anything, and they are
-   left for a follow-up rather than stated. *)
+(*
+   本节说明相关定义、性质与动机。 THE GROUPOID OF FINITE SETS AND BIJECTIONS is not tree, this. development does not pretend otherwise.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Mac Lane §IV.4 Exercise 1 *)
 
@@ -516,9 +508,8 @@ Proof.
               (E y))).
 Qed.
 
-(* The posetal REFLECTION — that every preorder HAS a skeleton — is a
-   different statement and is not made: it needs an object-level quotient, and
-   Construction/Quotient.v quotients homs only.  The catalog assigns that
-   clause to #372.  What is proved is the given-skeleton form,
-   [skeleton_of_proset_antisymmetric] (Instance/Proset/Skeletal.v): the
-   carrier of a skeleton of a preorder is antisymmetric, that is, a poset. *)
+(*
+   本节说明相关定义、性质与动机。 The posetal REFLECTION — that every preorder HAS skeleton — is a. different statement is not made: it needs 对象-level quotient, Construction/Quotient.v quotients homs only. The catalog assigns that clause #372.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

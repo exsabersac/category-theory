@@ -50,77 +50,13 @@ Generalizable All Variables.
    （[Functor_Setoid]）；更严格的基于 transport 的替代留到本文件末尾的
    [Functor_StrictEq_Setoid]。 *)
 
-(* Where functors come from, and what they are for
+(*
+   Where 函子 来源, and 用途
 
-   SEP:  https://plato.stanford.edu/entries/category-theory/
-   nLab: https://ncatlab.org/nlab/show/General+Theory+of+Natural+Equivalences
+   本节：SEP: https://plato.stanford.edu/entries/范畴-theory/ nLab: https://ncatlab.org/nlab/show/General+Theory+of+自然+Equivalences 函子 are founding notion 范畴 theory, not derived one.
 
-   Functors are the founding notion of category theory, not a derived one.
-   Categories, functors, and natural transformations entered mathematics
-   together in (Eilenberg, Mac Lane, "General theory of natural
-   equivalences", Transactions of the American Mathematical Society 58,
-   1945) — the paper the nLab page above calls the foundational document of
-   category theory — distilled from the group-level computations of their
-   "Group Extensions and Homology" (Annals of Mathematics, 1942).  The
-   authors were explicit about the order of ideas: "the whole concept of a
-   category is essentially an auxiliary one" (quoted in the SEP entry
-   above), the basic concepts being those of functor and natural
-   transformation.  Categories exist so that functors have domains and
-   codomains, and functors exist so that naturality can be stated.  The
-   word itself was borrowed from Rudolf Carnap, who had used it for a
-   linguistic notion in The Logical Syntax of Language (1937), as recorded
-   in Mac Lane, Categories for the Working Mathematician (Springer, 1971),
-   p. 30.
-
-   A functor is the homomorphism notion for categories — the nLab frames it
-   as a horizontal categorification of the homomorphism concept — and its
-   purpose is double-sided.  Read outward, a functor transports whole
-   situations from one mathematical world to another, homology carrying
-   spaces to groups being the founding example; it follows from the iso
-   preservation recorded in [fobj_iso] that an invariant packaged as a
-   functor can never distinguish isomorphic objects.  Read inward, a
-   functor INTO a category is a diagram: a diagram of type J in C is a
-   covariant functor from J to C (Wikipedia, "Functor"), and
-   Structure/Limit.v takes exactly such an F : J ⟶ C as the shape over
-   which limits are formed.  Because [Compose] is associative with [Id] as
-   unit up to the natural isomorphisms of [Functor_Setoid]
-   ([fun_equiv_id_left], [fun_equiv_id_right], [fun_equiv_comp_assoc]),
-   categories themselves assemble into the category Cat of Instance/Cat.v,
-   whose morphisms are this file's functors; the same functors are the
-   objects of the functor categories of Instance/Fun.v, whose morphisms —
-   natural transformations, Theory/Natural/Transformation.v — form the next
-   rung of the ladder.
-
-   The applications track both readings.  Contravariant functors to Sets
-   are presheaves (nLab), of which the hom-functors of Functor/Hom.v and
-   the Yoneda embedding built from them are the canonical examples; a
-   functor from a one-object category BG to vector spaces is precisely a
-   linear representation of the group G (nLab); and Lawvere's functorial
-   semantics recast universal algebra by taking a theory to be a category
-   with finite products and a model to be a product-preserving functor out
-   of it (Lawvere, "Functorial Semantics of Algebraic Theories", PhD
-   thesis, Columbia University 1963; reprinted as TAC Reprints No. 5,
-   2004), the perspective implemented over this file in
-   Theory/Lawvere/Model.v.  The structure-preserving species the header
-   advertises live under Functor/Structure/.
-
-   The computational reading is genuine.  In typed functional programming
-   the type constructor is the object map and fmap the morphism map, with
-   the two laws left as the programmer's proof obligation, verified by
-   equational reasoning (Milewski, "Functors", 2015); this file
-   accordingly ships the Haskell spellings <$>, <$ and <&> as parsing-only
-   notations, and Theory/Coq/Functor.v carries the fmap-only class of that
-   tradition, its laws discharged per instance.  In Haskell the second law
-   is redundant, derivable from the first together with the free theorem of
-   the type of fmap, up to the usual caveat about bottom and seq
-   (Luposchainsky, "The second functor law is redundant").  No such
-   parametricity is available over arbitrary categories with setoid
-   hom-sets, so here [fmap_comp] is a genuine obligation of the class, and
-   a third law, [fmap_respects], appears that Haskell renders invisible.
-   The same setoid design decides what functor equality means: not
-   pointwise identity of objects but a natural isomorphism
-   ([Functor_Setoid]), with a stricter transport-based alternative deferred
-   to [Functor_StrictEq_Setoid] at the end of this file. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Functor@{o1 h1 p1 o2 h2 p2}
   {C : Category@{o1 h1 p1}} {D : Category@{o2 h2 p2}} := {
@@ -175,11 +111,13 @@ Notation "fmap[ F ]" := (@fmap _ _ F%functor _ _)
 
 #[export]
 Program Instance Functor_Setoid {C D : Category} : Setoid (C ⟶ D) := {
-  (* Note that it doesn't make much sense (with our definition of [Category])
-     to ask that [∀ x : C, F x = G x] and
-     [∀ (x y :C) (f : x ~> y), fmap[F] f ≈ fmap[G] f] because the second
-     condition is hard to work with in the type-system since it needs lots of
-     equality proofs. *)
+  (*
+   注意 it doesn't make much sense (with our 定义 of [范畴])
+
+   本节说明相关定义、性质与动机。 to ask that [∀ x : C, F x = G x] [∀ (x y :C) (f : x ~> y), fmap[F] f ≈ fmap[G] f] because second condition is hard work type-system since it needs lots equality proofs.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   equiv := fun F G =>
     (* Equality of objects in a category is taken to be a natural
        isomorphism *)
@@ -346,17 +284,14 @@ Proof. construct; cat. Qed.
 
 Arguments fun_equiv_comp_assoc {A B C D} F G H.
 
-(* nLab: https://ncatlab.org/nlab/show/full+functor
+(*
+   nLab: https://ncatlab.org/nlab/show/full+functor
    Wikipedia: https://en.wikipedia.org/wiki/Full_functor
 
-   F is full when each hom-map fmap[F] : (x ~> y) → (F x ~> F y) is surjective.
-   Constructively this is witnessed by a section [prefmap] of [fmap[F]]: a
-   choice of preimage with fmap[F] (prefmap g) ≈ g ([fmap_sur]), rather than by
-   a bare surjectivity proposition. No functoriality is demanded of [prefmap]
-   itself — it need not respect ≈ nor preserve identities/composition; only that
-   it lands in a genuine preimage. This matches the standard meaning of fullness
-   (cf. issue #118); the previous definition's [prefmap_respects], [prefmap_id]
-   and [prefmap_comp] fields were extraneous. *)
+   本节说明相关定义、性质与动机。 F is full when each hom-map fmap[F] : (x ~> y) → (F x ~> F y) is surjective. Constructively this is witnessed section [prefmap] [fmap[F]]: choice preimage fmap[F] (prefmap g) ≈ g ([fmap_sur]), rather than bare surjectivity proposition.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Full `(F : C ⟶ D) := {
   prefmap {x y} (g : F x ~> F y) : x ~> y;     (* chosen preimage of g under fmap *)
 
@@ -372,15 +307,14 @@ Class Faithful `(F : C ⟶ D) := {
   fmap_inj {x y} (f g : x ~> y) : fmap[F] f ≈ fmap[F] g → f ≈ g  (* injectivity of fmap[F] *)
 }.
 
-(* nLab: https://ncatlab.org/nlab/show/fully+faithful+functor
+(*
+   nLab: https://ncatlab.org/nlab/show/fully+faithful+functor
    Wikipedia: https://en.wikipedia.org/wiki/Full_and_faithful_functors
 
-   A fully faithful functor (both Full and Faithful) reflects isomorphisms: if
-   F x ≅ F y then x ≅ y. The witnesses are [prefmap] applied to the given iso;
-   the inverse laws are discharged by faithfulness ([fmap_inj]), which reduces
-   each to the corresponding law of the image iso after pushing [fmap] through
-   composition ([fmap_comp]) and cancelling the sections ([fmap_sur]). Fullness
-   alone no longer needs to be functorial. *)
+   本节说明相关定义、性质与动机。 A fully 忠实 函子 (both Full 忠实) reflects isomorphisms: if F x ≅ F y then x ≅ y. The witnesses are [prefmap] applied given iso;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma FullyFaithful `(F : C ⟶ D) `{@Full _ _ F} `{@Faithful _ _ F} :
   ∀ x y, F x ≅ F y → x ≅ y.
 Proof.
@@ -398,31 +332,11 @@ Proof.
        apply iso_from_to).
 Defined.
 
-(* Fullness and faithfulness are LOCAL conditions, and both are closed under
-   composition of functors.
+(*
+   本节说明相关定义、性质与动机。 Fullness faithfulness are LOCAL conditions, both are closed under. 复合 函子. Book: Riehl, "范畴 Theory Context", Dover 2016, §1.5, Remark 1.5.8, printed p. 33, Exercise 1.5.vi(i), printed p.
 
-   Book: Riehl, "Category Theory in Context", Dover 2016, §1.5, Remark 1.5.8,
-         printed p. 33, and Exercise 1.5.vi(i), printed p. 38
-   Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed., GTM 5,
-         Springer 1998, §I.3, printed pp. 14-15
-
-   Riehl's Remark 1.5.8 stresses that neither condition is a global statement
-   about the whole collection of morphisms: a faithful functor need not be
-   injective on morphisms overall, and a full functor need not be surjective
-   on morphisms overall.  That locality is definitional in the two classes
-   just above — [fmap_inj] quantifies its two morphisms over a COMMON pair
-   (x, y), and [prefmap] is only ever handed an arrow whose endpoints are
-   already of the form (F x, F y).
-
-   Exercise 1.5.vi(i) asks for the two closure properties below.  Note that
-   [Full] here is the split, choice-carrying form, so [Full_Compose] must
-   actually compose the two chosen sections; under a bare surjectivity
-   proposition it would instead be a chain of two existential eliminations.
-   The exercise's third clause, closure of essential surjectivity, is
-   [EssentiallySurjective_Compose] in Theory/Equivalence.v, where that class
-   is defined; its part (ii), transitivity of equivalence of categories, was
-   already in the library as [Equivalence_trans]
-   (Theory/Equivalence/Bundled.v). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export] Program Instance Full_Compose {C D E : Category}
   (F : D ⟶ E) (G : C ⟶ D) `{@Full _ _ F} `{@Full _ _ G} : Full (F ◯ G) := {|
@@ -448,26 +362,15 @@ Proof.
   exact Hfg.
 Qed.
 
-(* nLab: https://ncatlab.org/nlab/show/faithful+functor
+(*
+   nLab: https://ncatlab.org/nlab/show/faithful+functor
    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed., GTM 5,
-         Springer 1998, §I.5, Exercise 9, printed p. 21
    Book: Riehl, "Category Theory in Context", Dover 2016, §1.6,
-         Exercise 1.6.iv, printed p. 47
 
-   A faithful functor REFLECTS monomorphisms: if the image fmap[F] f is left-
-   cancellable in D, then f was already left-cancellable in C.  Given a pair
-   g1, g2 with f ∘ g1 ≈ f ∘ g2, push it through F ([fmap_comp]) to cancel
-   fmap[F] f, then pull the resulting fmap[F] g1 ≈ fmap[F] g2 back through
-   injectivity ([fmap_inj]).  Each hypothesis is used at exactly one step of
-   that proof: monicity of the image performs the cancellation, faithfulness
-   transports the cancelled equation from D back to C.
+   本节说明相关定义、性质与动机。 Springer 1998, §I.5, Exercise 9, printed p. 21. Exercise 1.6.iv, printed p. 47 A 忠实 函子 REFLECTS monomorphisms: if image fmap[F] f is left- cancellable D, then f was already left-cancellable C.
 
-   [Monic] and [Epic] are the left- and right-cancellation classes of
-   Theory/Morphisms.v (imported at the head of this file for these two
-   lemmas).  Neither of the two nearest in-tree results says this:
-   Theory/Adjunction.v's [adj_monic] concerns the ADJUNCT of a monic under a
-   faithfulness hypothesis, and Theory/Equivalence/FullFaithful.v cancels
-   isomorphism-induced monos and epis. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma faithful_reflects_monic `(F : C ⟶ D) `{@Faithful _ _ F}
       {x y : C} (f : x ~> y) : Morphisms.Monic (fmap[F] f) → Morphisms.Monic f.
 Proof.
@@ -479,11 +382,13 @@ Proof.
   now rewrite Hg.
 Qed.
 
-(* The dual, right-cancellation reading of the same argument.  It is proved
-   directly, by mirroring the proof above, rather than transported across
-   C^op: the opposite-category apparatus lives in Construction/Opposite.v and
-   the opposite of a functor in Functor/Opposite.v's [Opposite_Functor], both
-   later layers than this core file, and the direct proof is short. *)
+(*
+   The dual, right-消去 reading of the same argument.  It is proved
+
+   本节：directly, mirroring proof above, rather than transported across C^op: 反-范畴 apparatus lives Construction/反.v 反 函子 函子/反.v's [反_函子], both later layers than this core file, direct proof is s
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma faithful_reflects_epic `(F : C ⟶ D) `{@Faithful _ _ F}
       {x y : C} (f : x ~> y) : Morphisms.Epic (fmap[F] f) → Morphisms.Epic f.
 Proof.
@@ -495,14 +400,14 @@ Proof.
   now rewrite Hg.
 Qed.
 
-(* nLab: https://ncatlab.org/nlab/show/algebra+over+an+endofunctor
+(*
+   nLab: https://ncatlab.org/nlab/show/algebra+over+an+endofunctor
    Wikipedia: https://en.wikipedia.org/wiki/F-algebra
 
-   For an endofunctor F : C ⟶ C, an F-algebra on a carrier object a is a
-   structure morphism F a ~> a; the dual F-coalgebra is a ~> F a. The
-   (F, G)-dialgebra generalizes both to a morphism F a ~> G a between the
-   images of two endofunctors. Here these definitions name only the carrying
-   morphism type, not the full category of algebras. *)
+   本节：For 自函子 F : C ⟶ C, F-代数 carrier 对象 is structure 态射 F ~> a; dual F-余代数 is ~> F a. The (F, G)-dialgebra generalizes both 态射 F ~> G between images two endofunctors.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FAlgebra `(F : C ⟶ C) (a : C) := F a ~> a.
 
 Definition FCoalgebra `(F : C ⟶ C) (a : C) := a ~> F a.
@@ -552,13 +457,13 @@ Proof. reflexivity. Qed.
 
 End AFunctor.
 
-(* An alternative setoid of functors that uses strict (propositional) equality
-   of objects, F x = G x, rather than the natural isomorphism F x ≅ G x of
-   [Functor_Setoid]. Because objects equal only up to = require transporting
-   morphisms along those equalities, this section first develops the transport
-   lemmas needed to state and prove the morphism-coherence condition
-   ([Functor_StrictEq_Setoid]). This notion is stricter than [Functor_Setoid]
-   and is provided for settings where object equality is available. *)
+(*
+   An alternative setoid of 函子 that uses strict (propositional) equality
+
+   of 对象, F x = G x, rather than 自然 同构 F x ≅ G x [函子_Setoid].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section StrictEq.
  Lemma transport_adjunction (A : Type) (B : A -> Type) (R: forall a :A, crelation (B a)) :
    forall (a a' : A) (p : a = a') (x : B a) (y : B a'),

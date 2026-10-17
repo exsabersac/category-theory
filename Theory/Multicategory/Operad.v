@@ -19,9 +19,11 @@ Generalizable All Variables.
 
 (** ** The transport helper and the bundled record *)
 
-(* Transport an inhabitant of [poly_unit] along a Type equality.  Stated
-   with the equality oriented [poly_unit = A] so that the contractibility
-   lemma below can destruct it (the right endpoint is a variable). *)
+(*
+   本节说明相关定义、性质与动机。 Transport inhabitant [poly_unit] along Type equality. Stated.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition unit_transport {A : Type} (e : poly_unit = A) : A :=
   match e in _ = T return T with eq_refl => ttt end.
 
@@ -58,12 +60,13 @@ Proof.
   apply unit_transport_contr.
 Qed.
 
-(* Every LIST of objects of an operad is a [repeat] of the point: the
-   list-level face of contractibility, and the equality along which the
-   round trip below recasts.  [Defined] so the [f_equal2] spine computes
-   on list constructors; its leaves ([operad_obj_contr], hence
-   [unit_transport_contr]) are opaque, so full reduction stops there —
-   no consumer needs more (the casts ride the class's groupoid pack). *)
+(*
+   Every LIST of 对象 of an operad is a [repeat] of the point: the
+
+   本节说明相关定义、性质与动机。 list-level face contractibility, equality along which round trip below recasts. [Defined] so [f_equal2] spine computes list constructors;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition all_repeat (O : Operad) (Γ : list (@mobj (operad_multi O))) :
   Γ = repeat (operad_pt O) (length Γ).
 Proof.
@@ -72,13 +75,11 @@ Proof.
   - exact (f_equal2 cons (operad_obj_contr O a) IH).
 Defined.
 
-(** ** The transparent repeat-arithmetic kit
+(*
+   本节说明相关定义、性质与动机。 * ** The transparent repeat-arithmetic kit. The stdlib's [repeat_app] is stated concatenation right is opaque some supported versions;
 
-    The stdlib's [repeat_app] is stated with the concatenation on the
-    right and is opaque in some supported versions; the accessors below
-    need a proof that COMPUTES on [nat] constructors, so a transparent
-    Fixpoint is defined here (the [map_app_t] pattern of
-    Theory/Multicategory/Functor.v). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fixpoint repeat_app_t {A : Type} (x : A) (m n : nat) :
   repeat x (m + n) = repeat x m ++ repeat x n :=
@@ -105,12 +106,11 @@ Definition ohom (n : nat) : Type := @mhom MO (repeat pt n) pt.
 (* The unary identity operation: [repeat pt 1] is [[pt]] on the nose. *)
 Definition oid : ohom 1 := @mid MO pt.
 
-(** *** The round trip
+(*
+   本节说明相关定义、性质与动机。 * *** The round trip. Every multimorphism underlying 多元范畴 whose target is point is n-ary operation, [n := length Γ], recasting along [all_repeat];
 
-    Every multimorphism of the underlying multicategory whose target is
-    the point is an n-ary operation, [n := length Γ], by recasting along
-    [all_repeat]; the two directions cancel up to [≈] by the [mcast]
-    groupoid pack. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition to_ohom {Γ : list (@mobj MO)} (f : @mhom MO Γ pt) :
   ohom (length Γ) :=
@@ -136,14 +136,13 @@ Lemma operad_roundtrip_inv {Γ : list (@mobj MO)} (g : ohom (length Γ)) :
   to_ohom (of_ohom g) ≈ g.
 Proof. apply mcast_symm_r. Qed.
 
-(** *** Single-slot operadic composition
+(*
+   * *** Single-slot operadic 复合
 
-    The classical [∘ᵢ]: splice an n-ary operation into the (i+1)-st
-    input of an (i + 1 + j)-ary operation, yielding an
-    (i + (n + j))-ary operation.  The zipper of Theory/Multicategory.v
-    is instantiated at [Γ1 := repeat pt i], [Γ2 := repeat pt j], and
-    the boundary lists are renormalised to [repeat] form along the
-    transparent arithmetic kit. *)
+   本节说明相关定义、性质与动机。 The classical [∘ᵢ]: splice n-ary operation into (i+1)-st input (i + 1 + j)-ary operation, yielding (i + (n + j))-ary operation.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The zipper form of a repeated context: [repeat pt (S j)] is
    [pt :: repeat pt j] on the nose, so [repeat_app_t] already has the
@@ -171,15 +170,13 @@ Proof.
   now rewrite ef, eg.
 Qed.
 
-(** *** The symmetric-group action on arities
+(*
+   * *** The 对称-group action on arities
 
-    Self-permutations of the repeated context [repeat pt n] act on
-    n-ary operations.  The witnesses are the Type-valued [tperm] of
-    Theory/Multicategory.v — the index of the class's own action; the
-    stdlib [Permutation (repeat pt n) (repeat pt n)] proposition is
-    recoverable through [tperm_Permutation].  The identity law is
-    pinned to the canonical [tperm_refl] witness, and functoriality is
-    along the [tperm_trans] constructor, exactly as in the class. *)
+   本节说明相关定义、性质与动机。 Self-permutations repeated context [repeat pt n] act n-ary operations. The witnesses are Type-valued [tperm] Theory/多元范畴.v — index class's own action;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition osym {n : nat} (p : tperm (repeat pt n) (repeat pt n)) :
   ohom n → ohom n :=

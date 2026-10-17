@@ -28,210 +28,32 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Where the notion sits, and why it is the elementary one
+(*
+   本节：Where notion sits, why it is elementary one. Text: Mac Lane, "范畴 Working Mathematician", Springer 1998, §III.1 (pp. 55-59) §III.2 Text: Riehl, "范畴 Theory Context", Dover 2016, §2.4 Paper: Kan, "伴随 函子", Trans. Amer. Math. Soc.
 
-   Text:  Mac Lane, "Categories for the Working Mathematician", Springer 1998,
-          §III.1 (pp. 55-59) and §III.2
-   Text:  Riehl, "Category Theory in Context", Dover 2016, §2.4
-   Paper: Kan, "Adjoint functors", Trans. Amer. Math. Soc. 87, 1958
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   The universal element is the smallest of the universal notions: it
-   mentions no comma category, no adjunction, and no natural
-   transformation, only an element and a factorization.  Its interest is
-   that it is nevertheless EQUIVALENT to the largest of them.  Riehl
-   organises §2.4 around this observation, calling a representation of a
-   functor and a universal element "the same data", and her Proposition
-   2.4.8 makes the sharpest form of the statement: a universal element of
-   H is precisely an INITIAL object of the category of elements of H.
-   In-tree that reading is already worked out concretely, one functor at
-   a time: Instance/Coq/Nat.v's [repr_initial] derives initiality in
-   [FAlg NatF] from a representation of the forgetful functor on
-   endomaps, and its header explains that [FAlg NatF] is standing in for
-   the category of elements.  With the general class in hand that
-   argument can be run once instead of per functor, which is what
-   Theory/Universal/Element/Elements.v does.
+(*
+   本节说明相关定义、性质与动机。 WHAT IS DELIVERED. * [AUniversalElement H r] -- elementary 定义 对象 PARAMETER, idiom [AUniversalArrow], carrying [Setoid] ([AUniversalElementEquiv]) that compares two universal elements their underlying elements;
 
-   Historically the elementary form is what the subject started from.
-   Kan's 1958 paper introduces adjoints through hom-set bijections, and
-   Mac Lane's chapter notes record that the universal-mapping formulation
-   predates the functorial one by a decade (see the essay in
-   Theory/Universal/Arrow.v).  Mac Lane's own ordering in §III.1 is
-   deliberate: universal arrow first, universal element second, remark
-   third, the remark being where he tells the reader that nothing new was
-   introduced.  This file follows that ordering, and takes the remark
-   seriously enough to prove it.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   The setoid discipline changes one word of the definition.  Mac Lane
-   writes "(H k) e = x" with equality of elements of a set; here H lands
-   in [Sets], whose objects are setoids, so the clause is
-   [fmap[H] k e ≈ x] and uniqueness of k is uniqueness up to `≈` -- the
-   [Unique] record of Lib/Setoid.v, exactly as [AUniversalArrow] uses it.
-   Nothing else moves. *)
+(*
+   本节说明相关定义、性质与动机。 [exists_setoid] (Structure/UniversalProperty.v) is declared there with. [#[local]], which removes it from instance database importers but leaves CONSTANT reachable name.
 
-(* WHAT IS DELIVERED
-
-   * [AUniversalElement H r] -- the elementary definition with the object
-     a PARAMETER, in the idiom of [AUniversalArrow], carrying a [Setoid]
-     ([AUniversalElementEquiv]) that compares two universal elements by
-     their underlying elements; and [UniversalElement H] -- Mac Lane's
-     pair ⟨r, e⟩ with the object a FIELD, in the idiom of [Representable].
-     The two passages copy fields, so BOTH round trips close by [eq_refl]
-     on the whole record ([aue_of_ue_of_aue], [ue_of_aue_of_ue]) -- record
-     eta, primitive projections being on.
-
-   * The mediator calculus and Mac Lane's Proposition 1 for this notion:
-     [ue_med] with commutes / unique / id / comp, the canonical
-     isomorphism of universal objects, and uniqueness up to a UNIQUE
-     isomorphism compatible with the two universal elements
-     ([universal_element_unique]).
-
-   * DELIVERABLE 2, and it is an ISOMORPHISM OF SETOIDS IN [Sets], not a
-     biconditional and not a pair of mutually inverse maps up to `≈`:
-     [universal_element_yoneda] inhabits
-
-         @Isomorphism Sets (AUniversalElement H r) (ue_yoneda_obj)
-
-     where [ue_yoneda_obj] is LITERALLY the anonymous sigma setoid that
-     [representability_by_yoneda] takes as its source -- the same
-     [exists_setoid] constant, re-registered locally so the two
-     elaborate to the same term ([rby_agrees] checks this by ascribing
-     [representability_by_yoneda] at the named setoid, which is a
-     conversion check and not a proof).
-     Composing gives [universal_element_representation], the
-     universal-element/representation correspondence as one iso in
-     [Sets].  Accessors run both ways: [aue_mate_IsIso] and
-     [aue_inverse] out, [AUniversalElement_of_mate] back,
-     [universal_element_of_representation] and
-     [representation_of_universal_element] at the representation end.
-
-   * A YONEDA-FREE ROUTE TO THE SAME DATA, because deliverable 2's
-     statement carries a universe restriction its consumers should not:
-     [Yoneda_Lemma], hence [representability_by_yoneda], hence
-     [universal_element_representation], is stated over
-     [C : Category@{u0 u0 u0}] -- object, hom and proof universes
-     IDENTIFIED (measured, and pinned in Test/ProbeUniversalElement.v) --
-     so no category whose objects sit strictly above its homs can be
-     substituted, and [Instance/Coq/Nat.v]'s [Endos] is such a category.
-     [ue_transform], [ue_representation] and [AUniversalElement_of_repr]
-     build the same correspondence by hand, with [repr_eval] as the one
-     computation; [routes_agree_elem] and [routes_agree_repr] record that
-     the two routes carry the same data where both typecheck, and every
-     accessor and both [Representable] passages are routed through the
-     direct one.  The restriction is the DONOR'S, not one introduced
-     here, and nothing here shows it unavoidable.
-
-   * [UniversalElement_of_Representable] and
-     [Representable_of_UniversalElement], with the representing object
-     kept by [eq_refl] and the universal element identified as Mac Lane's
-     Φ_r(id r) ([ue_of_repr_elem]).  [Functor/Representable.v] is
-     therefore the SAME notion, not a competing one; its header's
-     sentence "by the Yoneda lemma such a Φ is determined by a single
-     universal element of F(A), namely Φ_A(id A)" is these two
-     definitions.
-
-   * DELIVERABLE 3(a): [AUniversalElement_of_AUniversalArrow] and
-     [AUniversalArrow_of_AUniversalElement] between [AUniversalElement H r]
-     and [AUniversalArrow SetsOne H r], mediated by the global-elements
-     lemma [global_elements_iso : (1 ~> X) ≅ X] in [Sets].
-
-   * DELIVERABLE 3(b): [AUniversalElement_of_hom] and
-     [AUniversalArrow_of_hom] between [AUniversalArrow c S a] and
-     [AUniversalElement ([Hom c,─] ◯ S) a].  This half is CHEAPER than it
-     looks and the file says why: the two records' fields have
-     CONVERTIBLE types, because [fmap] of the composite [Hom c,─] ◯ S at
-     k is postcomposition with [fmap[S] k].  Both passages are therefore
-     [:=] with no tactic, and both round trips are [eq_refl] on the whole
-     record.
-
-   * The composite Mac Lane asserts, as ONE theorem:
-     [universal_element_arrow_subsumption].
-
-   WHAT IS NOT DELIVERED
-
-   * NO CLAIM THAT THE YONEDA ISO IS A BIJECTION OF TYPES.  It is an
-     isomorphism in [Sets], i.e. of SETOIDS, and both setoids compare
-     only the underlying element (resp. the first projection).  The full
-     record round trip through the Yoneda encoding is NOT [eq_refl] --
-     the uniqueness data is rebuilt -- and Test/ProbeUniversalElement.v
-     pins that.  What IS [eq_refl] is the element, in both directions.
-
-   * NO DUAL.  A couniversal element -- a universal element of a
-     contravariant H : D^op ⟶ Sets, i.e. a TERMINAL object of the
-     category of elements -- would be the mirror of
-     Theory/Universal/Arrow/Dual.v and is left to the issue that wants
-     it.  Note that the presheaf orientation IS the one
-     [representability_by_yoneda] is stated in, and this file reaches the
-     covariant reading by instantiating it at [D^op] rather than by
-     reproving Yoneda; see [ue_mate].
-
-   * NO NOTATION.  [Theory/Universal/Arrow.v]'s `c ⟿ F` is declared
-     inside its section and does not survive; there is no exported
-     spelling to mirror.
-
-   * NO FUNCTORIALITY.  Nothing here makes [UniversalElement] an
-     assignment on functors, and no comparison with
-     [Construction/Elements.v]'s [Elements_proj] is stated.
-
-   * The initial-object-of-the-category-of-elements reading (Riehl
-     Proposition 2.4.8) is NOT here: it needs [Construction/Elements.v]'s
-     [Elements] and [Structure/Initial.v], and lives in the satellite
-     Theory/Universal/Element/Elements.v so that consumers of the theory
-     do not inherit those.  Non-vacuity likewise lives in
-     Theory/Universal/Element/Examples.v, which instantiates the class at
-     Instance/Coq/Nat.v's representation and recovers its universal
-     element [O] by [eq_refl].  Note what that witness does NOT do: it
-     does not re-derive Nat.v's [repr_initial], which lands in
-     [FAlg NatF], the comparison [Elements Endos_Forget ≃ FAlg NatF] not
-     being in the tree. *)
-
-(* [exists_setoid] (Structure/UniversalProperty.v) is declared there with
-   [#[local]], which removes it from the instance database for importers but
-   leaves the CONSTANT reachable by name.  Re-registering it here -- locally,
-   so this file does not push a first-projection-only setoid on every sigma
-   type in the tree -- is what makes [ue_yoneda_obj] below elaborate to the
-   very term [representability_by_yoneda] has in its type, rather than to a
-   copy with a different [Equivalence] proof that would not be convertible
-   with it.  [rby_agrees] records that this worked. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Existing Instance Category.Structure.UniversalProperty.exists_setoid.
 
 (** ** Global elements of a setoid *)
 
-(* Mac Lane's "an element x ∈ H d may be described as a function x : * → H d
-   from a one-point set".  [SetsOne] (Construction/Elements.v) is the
-   singleton of [Sets_Terminal], the same object the elements-comma category
-   =(SetsOne) ↓ K is built over there.
+(*
+   本节说明相关定义、性质与动机。 Mac Lane's "an element x ∈ H d may be described function x : * → H d. from one-point set". [SetsOne] (Construction/Elements.v) is singleton [Sets_Terminal], same 对象 elements-逗号范畴 =(SetsOne) ↓ K is built over there.
 
-   A NOTE ON UNIVERSES, because it dictates the shape of the three
-   definitions below.  A [Sets]-morphism out of the CONCRETE [SetsOne] whose
-   [proper_morphism] is left to INSTANCE RESOLUTION -- whether by [Program]'s
-   obligation tactic or by writing [reflexive_proper] out by hand -- resolves
-   [Reflexive] at [SetsOne] and thereby pins the CARRIER universe of [Sets] to
-   [Set], after which [global_element] cannot be applied at [fobj[H] d] for an
-   [H] whose [Sets] sits anywhere else, and the whole of 3(a) is unformable.
-   Writing the pointwise term [fun a b _ => reflexivity x] avoids the
-   resolution and keeps all three fully polymorphic
-   ([global_elements_iso@{u u0 u1 u2 u3}], measured).  Hence the record
-   literals with that field spelled out, and hence [GlobalElements] is named:
-   an anonymous [{| carrier := ... |}] in the [Isomorphism]'s type leaves the
-   ambient category of the [to] field unresolved.
-
-   BE PRECISE ABOUT THE CAUSE; an earlier revision of this note was wrong
-   twice, and the second error would have misled a reader following it as a
-   rule.  It is NOT [Program]: the same definition with a VARIABLE source
-   instead of [SetsOne] stays polymorphic under [Program]
-   ([∀ {X Y : obj[Sets@{u0 u}]}], measured), and a plain [Definition] with no
-   [Program] anywhere is pinned identically once its [proper_morphism] is
-   [reflexive_proper _].  And it is NOT that "supplying [proper_morphism]
-   explicitly as a term" suffices -- that claim is FALSE, since
-   [reflexive_proper (fun _ => x)] is such a term and is pinned; what matters
-   is supplying THAT PARTICULAR pointwise term.  Nor is it [Universe
-   Minimization ToSet], which changes nothing in either position: the pin
-   appears with the flag off (its state from Lib.v) and is byte-identical
-   with it on.  [reflexive_proper] itself is innocent, carrying an empty
-   constraint set; [Set] is chosen when the [Reflexive] instance is resolved
-   for [SetsOne]'s equivalence.  That last step is read off the elaborated
-   term rather than separately proved, and is stated as the diagnosis it
-   is. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition global_element {X : Sets} (x : X) : SetsOne ~{Sets}~> X :=
   {| morphism := fun _ => x ; proper_morphism := fun a b _ => reflexivity x |}.
@@ -250,10 +72,11 @@ Definition global_elements_to (X : Sets) : GlobalElements X ~{Sets}~> X :=
 Definition global_elements_from (X : Sets) : X ~{Sets}~> GlobalElements X :=
   {| morphism := @global_element X ; proper_morphism := fun x y H _ => H |}.
 
-(* Hom(1, X) ≅ X in [Sets]: the global-elements lemma.  One leg is the
-   identity on the underlying element by [eq_refl] ([global_element_at]); the
-   other needs the singleton's [ttt] to be its only inhabitant, which is the
-   [destruct] below. *)
+(*
+   本节说明相关定义、性质与动机。 Hom(1, X) ≅ X [Sets]: global-elements lemma. One leg is the. identity underlying element [eq_refl] ([global_element_at]);
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition global_elements_iso (X : Sets)
   : @Isomorphism Sets (GlobalElements X) X.
 Proof.
@@ -268,31 +91,37 @@ Context {D : Category}.
 
 (** ** The elementary definition *)
 
-(* Mac Lane's clause, with the object r a PARAMETER -- the idiom of
-   [AUniversalArrow] (Theory/Universal/Arrow.v), and the shape every
-   comparison below needs, since both [representability_by_yoneda] and
-   [AUniversalArrow] fix their object.  [d] and [x] are EXPLICIT, unlike
-   [AUniversalArrow]'s implicit [{d} {f}]: a deliberate deviation, since
-   every use site below supplies both and the implicit form forces the
-   [@]-spelling throughout. *)
+(*
+   Mac Lane's clause, with the 对象 r a PARAMETER -- the idiom of
+
+   本节说明相关定义、性质与动机。 [AUniversalArrow] (Theory/Universal/Arrow.v), shape every comparison below needs, since both [representability_by_yoneda] [AUniversalArrow] fix their 对象.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class AUniversalElement (H : D ⟶ Sets) (r : D) := {
   aue_elem : H r ;                             (* Mac Lane's e ∈ H r *)
   aue_universal (d : D) (x : H d) :            (* (H k) e ≈ x for a unique k *)
     Unique (fun k : r ~{D}~> d => fmap[H] k aue_elem ≈ x)
 }.
 
-(* Two universal elements at the same object are equivalent when their
-   underlying elements agree; the factorization data carries nothing
-   further.  This mirrors [AUniversalArrowEquiv] exactly. *)
+(*
+   Two universal elements at the same 对象 are equivalent when their
+
+   本节说明相关定义、性质与动机。 underlying elements agree; factorization data carries nothing further.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance AUniversalElementEquiv (H : D ⟶ Sets) (r : D) :
   Setoid (AUniversalElement H r) :=
   {| equiv := fun X Y => @aue_elem H r X ≈ @aue_elem H r Y |}.
 
-(* Mac Lane's pair ⟨r, e⟩ proper, with the object a FIELD -- the idiom of
-   [Representable] (Functor/Representable.v), which bundles [repr_obj] the
-   same way.  There is no setoid on this one: comparing two universal
-   elements at DIFFERENT objects is not an equation but the isomorphism
-   [universal_element_iso] below. *)
+(*
+   Mac Lane's pair ⟨r, e⟩ proper, with the 对象 a FIELD -- the idiom of
+
+   本节说明相关定义、性质与动机。 [可表] (函子/可表.v), which bundles [repr_obj] same way.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class UniversalElement (H : D ⟶ Sets) := {
   ue_obj : D ;
   ue_elem : H ue_obj ;
@@ -310,10 +139,11 @@ Definition UniversalElement_of_AUniversalElement {H : D ⟶ Sets} {r : D}
   {| ue_obj := r ; ue_elem := @aue_elem H r U ;
      ue_universal := @aue_universal H r U |}.
 
-(* Both round trips are [eq_refl] ON THE WHOLE RECORD -- not merely on the
-   element -- because the fields are copied verbatim and primitive
-   projections give record eta.  Contrast the Yoneda passage below, where
-   only the element survives. *)
+(*
+   本节说明相关定义、性质与动机。 Both round trips are [eq_refl] ON THE WHOLE RECORD -- not merely the. element -- because fields are copied verbatim primitive projections give record eta.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary aue_of_ue_of_aue {H : D ⟶ Sets} {r : D} (U : AUniversalElement H r) :
   AUniversalElement_of_UniversalElement (UniversalElement_of_AUniversalElement U)
     = U.
@@ -326,15 +156,13 @@ Proof. reflexivity. Qed.
 
 (** ** The Yoneda mate *)
 
-(* The natural transformation [Hom r,─] ⟹ H determined by an element x of
-   H r: its component at d carries k : r ~> d to (H k) x.  It is supplied by
-   INSTANTIATING the presheaf Yoneda lemma at D^op rather than by using
-   [Covariant_Yoneda_Lemma], for one reason: [representability_by_yoneda]
-   below is stated with [Yoneda_Lemma C F c], and deliverable 2 composes with
-   it, so the mate must be that term.  The instantiation is free --
-   (D^op)^op IS D and [Curried_CoHom (D^op) r] IS [Curried_Hom D r], both by
-   conversion (Construction/Opposite.v, Functor/Hom.v) -- so no [op]
-   appears in the type. *)
+(*
+   The 自然变换 [Hom r,─] ⟹ H determined by an element x of
+
+   本节说明相关定义、性质与动机。 H r: its component at d carries k : r ~> d (H k) x. It is supplied INSTANTIATING presheaf Yoneda lemma at D^op rather than using [Covariant_Yoneda_Lemma], one reason: [representability_by_yoneda] below is stated [Yoneda_Lemma C F c], deliverable 2 compos
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ue_mate (H : D ⟶ Sets) (r : D) (x : H r)
   : @Curried_Hom D r ~{[D, Sets]}~> H :=
   from (Yoneda_Lemma (D^op) H r) x.
@@ -344,13 +172,11 @@ Lemma ue_mate_at (H : D ⟶ Sets) (r : D) (x : H r) (d : D) (k : r ~{D}~> d) :
   transform (ue_mate H r x) d k = fmap[H] k x.
 Proof. reflexivity. Qed.
 
-(* The covariant Yoneda lemma gives the same mate -- but only up to `≈`, not
-   by [eq_refl].  The two instances are separate [Program Instance]s whose
-   naturality obligations are distinct opaque constants, so the two
-   transformations are distinct TERMS with convertible actions;
-   Test/ProbeUniversalElement.v pins the negative side.  Nothing below uses
-   this lemma; it is here so that a reader reaching for the covariant lemma
-   knows what is and is not available. *)
+(*
+   本节说明相关定义、性质与动机。 The covariant Yoneda lemma gives same mate -- but only up `≈`, not. [eq_refl]. The two instances are separate [Program Instance]s whose naturality obligations are distinct opaque constants, so two transformations are distinct TERMS convertible actions;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ue_mate_covariant (H : D ⟶ Sets) (r : D) (x : H r) :
   from (Covariant_Yoneda_Lemma D H r) x ≈ ue_mate H r x.
 Proof. intros d k; reflexivity. Qed.
@@ -360,9 +186,13 @@ Section MateIso.
 Context (H : D ⟶ Sets).
 Context (r : D).
 
-(* From a universal element, the inverse of its mate: the component at d
-   sends x to the unique k factoring it.  Respectfulness and both naturality
-   squares are uniqueness arguments, and nothing else. *)
+(*
+   From a 泛元素, the inverse of its mate: the component at d
+
+   本节说明相关定义、性质与动机。 sends x unique k factoring it. Respectfulness both naturality squares are uniqueness arguments, nothing else.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition aue_inverse (U : AUniversalElement H r)
   : H ~{[D, Sets]}~> @Curried_Hom D r :=
   {| transform := fun d => {| morphism := fun x => unique_obj (aue_universal d x) |} |}.
@@ -388,10 +218,13 @@ Next Obligation.
   - apply proper_morphism, (unique_property (aue_universal x x0)).
 Qed.
 
-(* ... hence the mate of a universal element is invertible.  The two inverse
-   laws are [unique_property] and [uniqueness] respectively; the [fmap_id]
-   and [id_left] residues are the identity of the functor category
-   [D, Sets] unfolding. *)
+(*
+   ... hence the mate of a 泛元素 is invertible.  The two inverse
+
+   本节说明相关定义、性质与动机。 laws are [unique_property] [uniqueness] respectively; [fmap_id] [id_left] residues are identity 函子 范畴 [D, Sets] unfolding.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition aue_mate_IsIso (U : AUniversalElement H r)
   : IsIsomorphism (ue_mate H r (@aue_elem H r U)) :=
   {| two_sided_inverse := aue_inverse U |}.
@@ -437,24 +270,11 @@ Qed.
 
 (** ** The representation, built directly *)
 
-(* [ue_mate] is the Yoneda mate and is what deliverable 2 must be stated
-   against; but it inherits a UNIVERSE CONSTRAINT from its donor that a
-   consumer should not have to pay.  [Yoneda_Lemma], and hence
-   [representability_by_yoneda], is stated over `C : Category@{u0 u0 u0}` --
-   object, hom and proof universes all IDENTIFIED (measured, not assumed) --
-   so neither can be instantiated at a category whose objects sit strictly
-   above its homs.  [Instance/Coq/Nat.v]'s [Endos] is exactly such a
-   category, so the entire Yoneda route is unavailable there.
+(*
+   本节说明相关定义、性质与动机。 [ue_mate] is Yoneda mate is what deliverable 2 must be stated. against; but it inherits UNIVERSE CONSTRAINT from its donor that consumer should not have pay.
 
-   The same transformation built by hand is not so constrained: its component
-   at d carries k to (H k) e, which is the action of [ue_mate] BY CONVERSION
-   ([ue_mate_is_transform] below records it), but the term mentions no
-   Yoneda lemma.  Everything the accessors need is therefore routed through
-   these three definitions, and only [universal_element_yoneda] and
-   [universal_element_representation] -- the deliverable-2 statements
-   proper -- carry the constraint.  Theory/Universal/Element/Examples.v is
-   the payoff: it instantiates at [Endos], which the Yoneda route cannot
-   reach. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition ue_transform (U : AUniversalElement H r)
   : @Curried_Hom D r ~{[D, Sets]}~> H :=
@@ -497,11 +317,11 @@ Next Obligation.
   - symmetry; apply id_left.
 Qed.
 
-(* ... and back, without Yoneda: the factorization is the inverse's
-   component.  The Yoneda computation Mac Lane invokes -- that Φ sends an
-   arrow to the image of the universal element under it -- is run here as the
-   naturality of [to Phi] evaluated at the identity, which is
-   Instance/Coq/Nat.v's [repr_eval] generalized off its one functor. *)
+(*
+   本节说明相关定义、性质与动机。 ... back, without Yoneda: factorization is inverse's. component.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma repr_eval (Phi : @Curried_Hom D r ≅[[D, Sets]] H) {d : D}
       (k : r ~{D}~> d) :
   fmap[H] k (transform (to Phi) r id{D}) ≈ transform (to Phi) d k.
@@ -540,9 +360,11 @@ Qed.
 Definition ue_yoneda_obj : SetoidObject :=
   {| carrier := { x : H r & IsIsomorphism (ue_mate H r x) } |}.
 
-(* ... and the check that naming it changed nothing: [representability_by_yoneda]
-   at D^op has EXACTLY this setoid as its source, [exists_setoid] instance
-   included.  [Defined]-free: the ascription is the whole content. *)
+(*
+   本节说明相关定义、性质与动机。 ... check that naming it changed nothing: [representability_by_yoneda]. at D^op has EXACTLY this setoid its source, [exists_setoid] instance included.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition rby_agrees : @Isomorphism Sets ue_yoneda_obj
   (Build_SetoidObject (Isomorphism (@Curried_Hom D r) H) _)
   := representability_by_yoneda (D^op) H r.
@@ -557,13 +379,13 @@ Program Definition ue_of_yoneda
       Build_SetoidObject (AUniversalElement H r) (AUniversalElementEquiv H r) :=
   {| morphism := fun p => AUniversalElement_of_mate (`1 p) (`2 p) |}.
 
-(* THE STATEMENT, and it is an isomorphism in [Sets] -- of SETOIDS.  Not a
-   biconditional (which would forget the maps), and not merely a pair of
-   mutually inverse maps up to `≈` (which would forget respectfulness).  The
-   two setoids compare only the underlying element and the first projection
-   respectively, so what the two round-trip laws say is that the ELEMENT
-   survives both passages; that they say it by [eq_refl] rather than by a
-   proof is recorded immediately below. *)
+(*
+   THE STATEMENT, and it is an 同构 in [Sets] -- of SETOIDS.  Not a
+
+   本节说明相关定义、性质与动机。 biconditional (which would forget maps), not merely pair mutually inverse maps up `≈` (which would forget respectfulness).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition universal_element_yoneda
   : @Isomorphism Sets
       (Build_SetoidObject (AUniversalElement H r) (AUniversalElementEquiv H r))
@@ -578,11 +400,13 @@ Corollary ue_yoneda_round_ue (U : AUniversalElement H r) :
   @aue_elem H r (ue_of_yoneda (ue_to_yoneda U)) = @aue_elem H r U.
 Proof. reflexivity. Qed.
 
-(* Composing with [representability_by_yoneda]: a universal element of H at r
-   is the same data as a representation of H by r.  This is the theorem
-   [Functor/Representable.v]'s header states in prose ("by the Yoneda lemma
-   such a Φ is determined by a single universal element") and that
-   [Structure/UniversalProperty.v] proved only for the anonymous encoding. *)
+(*
+   Composing with [representability_by_yoneda]: a 泛元素 of H at r
+
+   本节说明相关定义、性质与动机。 is same data representation H r. This is theorem [函子/可表.v]'s header states prose ("by Yoneda lemma such Φ is determined single 泛元素") that [Structure/UniversalProperty.v] proved only anonymous encoding.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition universal_element_representation
   : @Isomorphism Sets
       (Build_SetoidObject (AUniversalElement H r) (AUniversalElementEquiv H r))
@@ -597,32 +421,24 @@ Definition universal_element_of_representation
   (Phi : @Curried_Hom D r ≅[[D, Sets]] H) : AUniversalElement H r
   := from universal_element_representation Phi.
 
-(* The universal element read off a representation is Mac Lane's Φ_r(id r) --
-   the image of the identity -- by conversion, for every H, r and Φ.
+(*
+   The 泛元素 read off a representation is Mac Lane's Φ_r(id r) --
 
-   BUT DO NOT READ THIS AS THE GENERAL FORM OF Instance/Coq/Nat.v's
-   [nat_universal_element].  It is not, and the reason is this file's own
-   headline finding read back on itself: [universal_element_of_representation]
-   goes through the Yoneda route, so this lemma inherits the donor's universe
-   identification -- [About] reports the constraint [u = u0] -- and it is
-   therefore NOT instantiable at [Endos], which is the only category
-   Nat.v's check lives in.  The statement that does generalize
-   [nat_universal_element], and the one Theory/Universal/Element/Examples.v
-   actually uses, is [ue_of_repr_elem] below, stated over the DIRECT route
-   with the object universe free of the hom universe.  So this lemma is a
-   second instance of the restriction rather than an escape from it. *)
+   本节说明相关定义、性质与动机。 the image identity -- conversion, every H, r Φ. BUT DO NOT READ THIS AS THE GENERAL FORM OF Instance/Coq/Nat.v's [nat_universal_element].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma universal_element_of_representation_at
   (Phi : @Curried_Hom D r ≅[[D, Sets]] H) :
   @aue_elem H r (universal_element_of_representation Phi)
     = transform (to Phi) r id{D}.
 Proof. reflexivity. Qed.
 
-(* THE TWO ROUTES AGREE.  The Yoneda-composed accessors and the direct ones
-   are not the same TERMS -- the Yoneda route goes through
-   [representability_by_yoneda]'s [Defined] proof -- but they carry the same
-   data: the same universal element, by [eq_refl], and representations that
-   agree pointwise.  So nothing is lost by taking the direct route
-   downstream, which is what [UniversalElement_of_Representable] does. *)
+(*
+   本节说明相关定义、性质与动机。 THE TWO ROUTES AGREE. The Yoneda-composed accessors direct ones.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary routes_agree_elem (Phi : @Curried_Hom D r ≅[[D, Sets]] H) :
   @aue_elem H r (universal_element_of_representation Phi)
     = @aue_elem H r (AUniversalElement_of_repr Phi).
@@ -636,21 +452,13 @@ End MateIso.
 
 (** ** The bundled form and [Representable] *)
 
-(* [Functor/Representable.v]'s [Representable] bundles exactly [ue_obj] plus
-   the natural isomorphism, so it is the SAME notion as [UniversalElement],
-   not a competing one -- and the two pass into one another through
-   [universal_element_representation] with the representing object kept on the
-   nose.  That file's header says "by the Yoneda lemma such a Φ is determined
-   by a single universal element of F(A), namely Φ_A(id A)" and cites
-   Structure/UniversalProperty.v for it; the citation was to the anonymous
-   encoding, and these two definitions are the statement in the form the
-   sentence promises.
+(*
+   [函子/可表.v]'s [可表] bundles exactly [ue_obj] plus
 
-   Both are routed through the DIRECT constructions, not through
-   [universal_element_representation], so that they inherit no universe
-   constraint from [Yoneda_Lemma] and remain usable at categories whose
-   objects sit strictly above their homs.  [routes_agree_elem] and
-   [routes_agree_repr] record that the choice costs nothing. *)
+   本节说明相关定义、性质与动机。 the 自然 同构, so it is SAME notion [UniversalElement], not competing one -- two pass into one another through [universal_element_representation] representing 对象 kept nose.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition UniversalElement_of_Representable {H : D ⟶ Sets}
   (R : Representable H) : UniversalElement H :=
@@ -679,12 +487,11 @@ Proof. reflexivity. Qed.
 
 (** ** Uniqueness up to a unique isomorphism *)
 
-(* Mac Lane's Proposition 1 of §III.1 for this notion, mirroring
-   [auniversal_arrow_unique] (Theory/Universal/Arrow.v) clause for clause.
-   The predicate cutting the isomorphism down is compatibility with the two
-   universal elements, [fmap[H] (to i) e₁ ≈ e₂]; without it the statement
-   would be false for the same reason it is false for universal arrows (the
-   universal object can have automorphisms). *)
+(*
+   本节说明相关定义、性质与动机。 Mac Lane's Proposition 1 §III.1 this notion, mirroring. [auniversal_arrow_unique] (Theory/Universal/Arrow.v) clause clause. The predicate cutting 同构 down is compatibility two universal elements, [fmap[H] (to i) e₁ ≈ e₂];
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniversalElementUnique.
 
@@ -759,13 +566,11 @@ End UniversalElementUnique.
 
 (** ** Deliverable 3(a): universal elements are universal arrows from 1 *)
 
-(* Mac Lane's Remark 3, first half.  The passage is not definitional: an
-   [AUniversalArrow SetsOne H r] quantifies over MAPS f : 1 ~> H d and states
-   its clause as an equation of maps, while an [AUniversalElement H r]
-   quantifies over ELEMENTS x : H d and states it as an equation of elements.
-   The two are interchanged by [global_element] and evaluation at [ttt], and
-   the single [destruct] on [poly_unit] in each direction is the whole
-   difference. *)
+(*
+   本节说明相关定义、性质与动机。 Mac Lane's Remark 3, first half. The passage is not definitional: an.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section OnePoint.
 
@@ -815,10 +620,11 @@ Corollary aua_of_aue_arrow (U : AUniversalElement H r) :
     = @global_element (fobj[H] r) (@aue_elem H r U).
 Proof. reflexivity. Qed.
 
-(* ... and so the element survives the element-side round trip by [eq_refl],
-   while the arrow survives the arrow-side one only up to `≈` -- rebuilding a
-   map out of the singleton from its value at [ttt] is [global_elements_iso]'s
-   non-definitional leg, and it lands here. *)
+(*
+   本节说明相关定义、性质与动机。 ... so element survives element-side round trip [eq_refl],.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary aue_aua_round (U : AUniversalElement H r) :
   @aue_elem H r
     (AUniversalElement_of_AUniversalArrow (AUniversalArrow_of_AUniversalElement U))
@@ -837,19 +643,11 @@ End UniversalElement.
 
 (** ** Deliverable 3(b): universal arrows are universal elements of D(c, S−) *)
 
-(* Mac Lane's Remark 3, second half, and it is CHEAPER than the first.
-   [fobj[Curried_Hom C] c] is the covariant hom-functor [Hom c,─], whose
-   [fmap] at h is postcomposition with h; so the composite
-   [Hom c,─] ◯ S : D ⟶ Sets is Mac Lane's D(c, S−), its elements at d are the
-   morphisms c ~> S d, and
+(*
+   本节说明相关定义、性质与动机。 Mac Lane's Remark 3, second half, it is CHEAPER than first.. [fobj[Curried_Hom C] c] is covariant hom-函子 [Hom c,─], whose [fmap] at h is 后复合 h;
 
-       fmap[[Hom c,─] ◯ S] k u   IS   fmap[S] k ∘ u
-
-   BY CONVERSION.  Hence [AUniversalElement ([Hom c,─] ◯ S) a] and
-   [AUniversalArrow c S a] have field types that are convertible one for one,
-   the two passages below are [:=] with no tactic, and -- record eta being
-   available under primitive projections -- both round trips are [eq_refl] on
-   the WHOLE record, not merely on the arrow. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HomFunctor.
 
@@ -866,9 +664,11 @@ Lemma hom_after_fmap (d d' : D) (k : d ~{D}~> d') (u : c ~{C}~> S d) :
   fmap[HomAfter] k u = fmap[S] k ∘ u.
 Proof. reflexivity. Qed.
 
-(* [@Build_...] rather than the `{| ... |}` literal: for a Class, the literal
-   sends the elaborator looking for an instance of the head, and here it
-   guesses [?H] before [HomAfter] is available to fix it. *)
+(*
+   本节说明相关定义、性质与动机。 [@Build_...] rather than `{| ... |}` literal: Class, literal.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition AUniversalElement_of_hom {a : D} (U : AUniversalArrow c S a)
   : AUniversalElement HomAfter a :=
   @Build_AUniversalElement D HomAfter a
@@ -893,12 +693,11 @@ End HomFunctor.
 
 (** ** The subsumption Mac Lane asserts, as one theorem *)
 
-(* Remark 3 in full.  The tree carried neither half; stating them together is
-   the point, because what Mac Lane claims is that the two notions are
-   INTERDEFINABLE, and that claim is visible only when both directions sit in
-   one statement.  Each component is a pair of maps, not a bijection: 3(a) is
-   a bijection up to the round trips recorded above, and 3(b) is one on the
-   nose. *)
+(*
+   本节说明相关定义、性质与动机。 Remark 3 full. The tree carried neither half; stating them together is. point, because what Mac Lane claims is that two notions are INTERDEFINABLE, that claim is visible only when both directions sit one statement.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem universal_element_arrow_subsumption
   {C : Category} {D : Category} (S : D ⟶ C) (c : C) (H : D ⟶ Sets) (r : D) :
   (* (a) a universal element of H is a universal arrow from the one-point
@@ -918,12 +717,13 @@ Proof.
   - exact (@AUniversalArrow_of_hom C D S c r).
 Defined.
 
-(* The two halves compose, and the composite is not vacuous: starting from a
-   universal arrow ⟨a, u⟩ from c to S, reading it as a universal element of
-   D(c, S−) by (b) and then back out as a universal arrow from the SINGLETON
-   to that functor by (a) returns the same underlying morphism, up to the
-   evaluation [global_element] performs.  This is the round trip that only
-   exists once both halves are present. *)
+(*
+   The two halves compose, and the 复合 is not vacuous: starting from a
+
+   本节：泛箭头 ⟨a, u⟩ from c S, reading it 泛元素 D(c, S−) (b) then back out 泛箭头 from SINGLETON that 函子 (a) returns same underlying 态射, up evaluation [global_element] performs.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary subsumption_composite {C D : Category} (S : D ⟶ C) (c : C) (a : D)
   (U : AUniversalArrow c S a) :
   (@universal_arrow _ _ SetsOne (HomAfter S c) a
@@ -934,41 +734,19 @@ Proof. reflexivity. Qed.
 
 (** ** Naturality of the global-elements isomorphism *)
 
-(* Riehl, _Category Theory in Context_, 2nd ed., SS3.2, printed pp. 93-94:
-   the display [lim F ≅ Set( *, lim F) ≅ Cone( *, F)] that motivates the
-   cone-set construction of Instance/Sets/Complete.v.  Its FIRST
-   isomorphism is [global_elements_iso] above -- the OBJECT-LEVEL statement
-   pre-existed this addition, was declared at the [global_elements_iso]
-   above, and is already described by this file's own header.  What was
-   missing, and is added here, is only Riehl's "natural in X": nothing in
-   the tree exhibited [GlobalElements] as a FUNCTOR, so the isomorphism was
-   a FAMILY and not a natural one.
+(*
+   Riehl, _范畴 Theory in Context_, 2nd ed., SS3.2, printed pp. 93-94:
 
-   [GlobalElements] IS the representable [Hom 1,─] on the nose, and
-   [SetsOne] IS the terminal object on the nose -- both recorded by
-   [eq_refl] below -- so the functor is already in the tree and the
-   naturality statement is an isomorphism in [[Sets, Sets]] between it and
-   the identity.  Five of the six clauses are closed by the file's default
-   obligation tactic -- the tree-wide one, this file setting none -- and NOT
-   by [reflexivity], which an earlier revision of this sentence claimed and
-   did not measure; the comment at the definition itself says the weaker
-   thing.  The sixth is the singleton's unique-inhabitant property, spent in
-   one [destruct u] exactly as [global_elements_iso]'s own second clause
-   spends it.
+   本节说明相关定义、性质与动机。 the display [lim F ≅ Set( *, lim F) ≅ Cone( *, F)] that motivates cone-set construction Instance/Sets/完备.v.
 
-   THIS IS NOT NEEDED BY THE CONE-SET LIMIT, and is delivered because
-   Riehl's checkbox asks for it.  Instance/Sets/Complete.v's construction
-   spends the singleton directly, by the same [destruct], and does not
-   Require this module; consuming it there instead would cost that file
-   NINETEEN further modules of closure (33 to 52, measured by set
-   difference; an earlier revision said sixteen). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* [SetsOne] is the terminal setoid.  Read this at its true strength: it
-   holds by DELTA, not by computation -- Construction/Elements.v declares
-   [SetsOne := @terminal_obj Sets Sets_Terminal], so [Print SetsOne] answers
-   [1] -- so it pins that this file's [SetsOne] is still that definition and
-   nothing more.  It is kept as that guard rather than presented as a
-   measurement.  The next Example is not of this kind. *)
+(*
+   本节说明相关定义、性质与动机。 [SetsOne] is terminal setoid. Read this at its true strength: it.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example setsone_is_terminal :
   SetsOne = @terminal_obj Sets Sets_Terminal := eq_refl.
 

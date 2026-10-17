@@ -78,37 +78,11 @@ Proof.
     now rewrite comp_assoc.
 Qed.
 
-(* Mac Lane's condition: any two paths with the same source and the same
-   target have the same composite.  Both vertices and both paths are
-   universally quantified, and paths carry no length bound, so this covers
-   every diagram shape at once rather than a fixed square or triangle.
+(*
+   本节说明相关定义、性质与动机。 Mac Lane's condition: any two paths same source same. target have same 复合. Both vertices both paths are universally quantified, paths carry no length bound, so this covers every diagram shape at once rather than fixed square triangle.
 
-   The EMPTY path counts as a path, so taking [q := tnil] forces every
-   endo-path to denote [id]: over a shape with a loop [e : x -> x],
-   [Commutative] therefore requires [dedge D e ≈ id], and a diagram drawing a
-   non-identity endomorphism is not [Commutative].  That is the intended
-   reading and it matches the functor formulation, whose quantification over
-   parallel pairs likewise includes the identity; [commutative_iff_shape]
-   proves the two agree.
-
-   That consequence is not left as prose: [loop_commutative_iff] below proves
-   it in both directions over the walking loop, and
-   Theory/Diagram/Examples.v exhibits a concrete diagram that draws a
-   non-identity endomorphism and is therefore not [Commutative].
-
-   CARE IS NEEDED STATING WHAT THIS SEPARATES.  It is NOT that the
-   figure-fixing statements cannot express a loop condition: Construction/
-   Sq.v's [dsq a b c d h u v k := k ∘ u ≈ v ∘ h] quantifies over arbitrary
-   OBJECTS, so all four corners may be instantiated to one object [X], making
-   [h : X ~> X] an endo-path; [dsq X X X X e id id id] then reduces to
-   [id ∘ id ≈ id ∘ e], which is exactly [e ≈ id].  The real distinction is
-   about who supplies the condition.  [Commutative] FORCES [e ≈ id] from the
-   SHAPE alone, with no choice of instantiation: the empty path is always
-   available as a competitor to any endo-path.  [dsq] can be INSTANTIATED to
-   state that equation but never forces it, and the degenerate instantiation
-   is not what any of its in-tree uses does.  For [cone_coherence] and
-   [is_pullback_commutes] the point is different again -- each is a FIELD of a
-   record, so it cannot be freely instantiated at all. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Commutative : Type :=
   ∀ (x y : G) (p q : tlist edges x y), dpath p ≈ dpath q.
 
@@ -121,10 +95,13 @@ Arguments Commutative {G C} D.
 
 (** ** The diagram-as-functor form of the predicate *)
 
-(* The Seven Sketches formulation: a diagram is a functor out of an indexing
-   category, and it commutes when every parallel pair of the indexing category
-   has a single image.  For an indexing category that is free on a quiver this
-   is the same condition as [Commutative], proved below. *)
+(*
+   The Seven Sketches formulation: a diagram is a 函子 out of an indexing
+
+   本节说明相关定义、性质与动机。 范畴, it commutes when every parallel pair indexing 范畴 has single image.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CommutativeShape {J C : Category} (F : J ⟶ C) : Type :=
   ∀ (x y : J) (f g : x ~{J}~> y), fmap[F] f ≈ fmap[F] g.
 
@@ -164,10 +141,11 @@ Proof.
   induction p as [ | i m e p IH ]; simpl.
   - change (@tnil _ _ y) with (@id (FreeOnQuiver G) y).
     now rewrite fmap_id.
-  - (* [≈], not [=]: [tlist_app_cons] (Lib/TList.v) is proved by
-       [destruct], so the two sides are not the same term and the
-       Functor/Bifunctor.v exception does not apply.  This mirrors the
-       [RW] step of Construction/Free/Quiver.v. *)
+  - (*
+   本节说明相关定义、性质与动机。 [≈], not [=]: [tlist_app_cons] (Lib/TList.v) is proved by. [destruct], so two sides are not same term 函子/Bifunctor.v exception does not apply.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     assert (Hsplit : @equiv _ (@homset (FreeOnQuiver G) i y) (e ::: p)
                        (@compose (FreeOnQuiver G) _ _ _ p (tlist_singleton e)))
       by (unfold tlist_singleton; simpl; now rewrite <- tlist_app_cons).
@@ -175,12 +153,13 @@ Proof.
     apply compose_respects; [ exact IH | reflexivity ].
 Qed.
 
-(* Round trip one: extending the restriction of a functor gives that functor
-   back.  The equivalence used is [Functor_StrictEq_Setoid]
-   (Theory/Functor.v), which is exactly the hom-setoid of the strict
-   category of categories (Instance/StrictCat.v): objects agree on the nose
-   -- here by [eq_refl], since the two functors have the same object map by
-   definition -- and the transported morphism maps agree up to [≈]. *)
+(*
+   Round trip one: extending the restriction of a 函子 gives that 函子
+
+   本节：back. The 等价 used is [函子_StrictEq_Setoid] (Theory/函子.v), which is exactly hom-setoid strict 范畴 范畴 (Instance/StrictCat.v): 对象 agree nose -- here [eq_refl], since two 函子 have same 对象 map 定义 -
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma functor_of_diagram_of_functor (F : FreeOnQuiver G ⟶ C) :
   @equiv _ (@Functor_StrictEq_Setoid (FreeOnQuiver G) C)
          (FunctorOfDiagram (DiagramOfFunctor F)) F.
@@ -192,10 +171,11 @@ Proof.
     [ symmetry; apply dpath_fmap | apply dpath_of_functor ].
 Qed.
 
-(* Round trip two: restricting the extension of a diagram gives that diagram
-   back, as morphisms of [QuiverCategory].  The vertex maps agree definitionally
-   ([eq_refl]); on edges the round trip inserts one identity, removed by
-   [id_left]. *)
+(*
+   本节说明相关定义、性质与动机。 Round trip two: restricting extension diagram gives that diagram. back, 态射 [QuiverCategory]. The vertex maps agree definitionally ([eq_refl]);
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma diagram_of_functor_of_diagram (D : Diagram G C) :
   DiagramOfFunctor (FunctorOfDiagram D) ≈[QuiverCategory] D.
 Proof.
@@ -204,11 +184,11 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* Commutativity of a diagram is exactly the statement that its extending
-   functor identifies parallel morphisms of the free category.  This is the
-   agreement of Mac Lane's quiver-and-paths formulation with the Seven
-   Sketches diagram-as-functor formulation: morphisms of [FreeOnQuiver G] ARE
-   the paths of [G], so the two quantifications range over the same pairs. *)
+(*
+   本节说明相关定义、性质与动机。 Commutativity diagram is exactly statement that its extending. 函子 identifies parallel 态射 free 范畴.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem commutative_iff_shape (D : Diagram G C) :
   Commutative D ↔ CommutativeShape (FunctorOfDiagram D).
 Proof.
@@ -309,11 +289,13 @@ Proof.
     [ apply fmap_respects, Hc | symmetry; apply dpath_postcompose ].
 Qed.
 
-(* Riehl, Lemma 1.6.20: a FAITHFUL functor reflects commutativity.  If the
-   image diagram commutes then the diagram already commutes.  The proof is by
-   [fmap_inj] (Theory/Functor.v) applied to the two path denotations, and
-   holds for parallel paths of arbitrary length because [dpath_postcompose]
-   does. *)
+(*
+   Riehl, Lemma 1.6.20: a FAITHFUL 函子 reflects commutativity.  If the
+
+   本节说明相关定义、性质与动机。 image diagram commutes then diagram already commutes. The proof is [fmap_inj] (Theory/函子.v) applied two path denotations, holds parallel paths arbitrary length because [dpath_postcompose] does.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem faithful_reflects_commutative (U : C ⟶ E) `{@Faithful C E U}
         (D : Diagram G C) :
   Commutative (PostcomposeDiagram U D) -> Commutative D.
@@ -386,10 +368,11 @@ Definition sq_via_C : tlist (@edges SquareQuiver) SqA SqD :=
   tcons SqA (tt : @edges SquareQuiver SqA SqC)
     (tcons SqC (tt : @edges SquareQuiver SqC SqD) tnil).
 
-(* This quiver genuinely has a parallel pair: the two paths are DISTINCT
-   morphisms of the free category, since they pass through different vertices
-   and [SqB = SqC] is refutable.  Without this the commutativity predicate
-   would be vacuous on this shape. *)
+(*
+   本节说明相关定义、性质与动机。 This quiver genuinely has parallel pair: two paths are DISTINCT. 态射 free 范畴, since they pass through different vertices [SqB = SqC] is refutable.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sq_via_B_neq_via_C :
   (sq_via_B ≈[FreeOnQuiver SquareQuiver] sq_via_C) -> False.
 Proof.
@@ -399,12 +382,11 @@ Proof.
   discriminate Hq.
 Qed.
 
-(* ACYCLICITY, proved rather than asserted.  Ranking the vertices so that every
-   edge strictly increases the rank bounds the length of any path by the rank
-   difference; an endo-path has rank difference zero, hence length zero, hence
-   is [tnil].  This is what makes the endo-path clause of [Commutative] inert
-   on this shape -- NOT the emptiness of the self-edge sets, which alone would
-   leave a directed cycle of length two or more possible. *)
+(*
+   本节说明相关定义、性质与动机。 ACYCLICITY, proved rather than asserted. Ranking vertices so that every. edge strictly increases rank bounds length any path rank difference; endo-path has rank difference zero, hence length zero, hence is [tnil].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sq_rank (i : SqNode) : nat :=
   match i with SqA => 0 | SqB => 1 | SqC => 1 | SqD => 2 end.
 
@@ -440,9 +422,13 @@ Definition sq_edgemap (i j : SqNode) : sq_edge i j -> sq_obj i ~> sq_obj j :=
 Program Definition SquareDiagram : Diagram SquareQuiver C :=
   {| fnodes := sq_obj ; fedgemap := sq_edgemap |}.
 
-(* The edge labels are the four given morphisms.  The equality is Leibniz (=)
-   rather than [≈] because the two sides are the very same term; this is the
-   convention documented at Functor/Bifunctor.v. *)
+(*
+   The edge labels are the four given 态射.  The equality is Leibniz (=)
+
+   本节说明相关定义、性质与动机。 rather than [≈] because two sides are very same term; this is convention documented at 函子/Bifunctor.v.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example sq_label_u : dedge SquareDiagram (tt : @edges SquareQuiver SqA SqB) = u
   := eq_refl.
 Example sq_label_k : dedge SquareDiagram (tt : @edges SquareQuiver SqC SqD) = k
@@ -455,9 +441,11 @@ Proof. simpl; now rewrite id_left. Qed.
 Example sq_denote_via_C : dpath SquareDiagram sq_via_C ≈ k ∘ h.
 Proof. simpl; now rewrite id_left. Qed.
 
-(* The specification of every path of the square, by its endpoints.  [False]
-   marks the vertex pairs joined by no path at all.  Read as: assuming the
-   square commutes, a path's denotation is determined by its endpoints. *)
+(*
+   本节说明相关定义、性质与动机。 The specification every path square, its endpoints. [False]. marks vertex pairs joined no path at all.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sq_spec (i j : SqNode) : (sq_obj i ~{C}~> sq_obj j) -> Type :=
   match i, j return (sq_obj i ~{C}~> sq_obj j) -> Type with
   | SqA, SqA => fun f => f ≈ id
@@ -478,15 +466,11 @@ Lemma sq_paths (Hsq : v ∘ u ≈ k ∘ h) (i j : SqNode)
 Proof.
   induction p as [ | i m e p IH ].
   - destruct j; simpl; reflexivity.
-  - (* Closed explicitly rather than with [cat]: every component of [cat]
-       (Lib/Tactics.v) always succeeds, so [cat] can never report a
-       missing step; and exactly one of these goals -- [k ∘ h ≈ v ∘ u] -- is
-       the one place [Hsq] is used, so it is discharged by name.  The [ [> ... ] ]
-       selector pins that to EXACTLY one remaining goal: without it, an edit
-       that made [try reflexivity] close every goal would leave the chain
-       running on none, silently succeeding with [Hsq] unused -- the same class
-       of quiet-success defect the [cat] removal above is about.  This matches
-       [tri_paths] below. *)
+  - (*
+   本节说明相关定义、性质与动机。 Closed explicitly rather than [cat]: every component [cat]. (Lib/Tactics.v) always succeeds, so [cat] can never report missing step; exactly one these goals -- [k ∘ h ≈ v ∘ u] -- is one place [Hsq] is used, so it is discharged name. The [ [> ...
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     destruct i, m; simpl in e; try destruct e;
       destruct j; simpl in *; try contradiction;
       rewrite IH; rewrite ?id_left; try reflexivity; [> symmetry; exact Hsq ].
@@ -512,12 +496,11 @@ Proof.
   now rewrite !id_left in Heq.
 Qed.
 
-(* So on the square shape the general predicate carries exactly the content of
-   the familiar two-composite equation: nothing more, nothing less.  The
-   informal reason usually given -- that this shape has just one pair of
-   distinct parallel paths -- is a statement about paths up to equality and is
-   NOT proved here; what is proved is the [↔] itself, semantically, via
-   [sq_paths]. *)
+(*
+   本节说明相关定义、性质与动机。 So square shape general predicate carries exactly content of. familiar two-复合 equation: nothing more, nothing less.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem square_commutative_iff :
   Commutative SquareDiagram ↔ v ∘ u ≈ k ∘ h.
 Proof.
@@ -528,15 +511,11 @@ End WalkingSquare.
 
 (** ** The walking triangle *)
 
-(* Three vertices, with a direct edge and a two-step route:
+(*
+   本节说明相关定义、性质与动机。 Three vertices, direct edge two-step route:. X --w------------> Z \ ^ u / \ / > Y --v----/ (the two-step route is [u] then [v];
 
-        X --w------------> Z
-         \                ^
-          u              /
-           \            /
-            > Y --v----/
-
-   (the two-step route is [u] then [v]; [w] is the direct edge). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive TriNode : Set := TrX | TrY | TrZ.
 
 Definition tri_edge (i j : TriNode) : Type :=
@@ -556,9 +535,11 @@ Definition tri_via_Y : tlist (@edges TriangleQuiver) TrX TrZ :=
 Definition tri_direct : tlist (@edges TriangleQuiver) TrX TrZ :=
   tcons TrX (tt : @edges TriangleQuiver TrX TrZ) tnil.
 
-(* Again a genuine parallel pair: the two-step route and the direct edge are
-   distinct morphisms of the free category, since their first edges land on
-   different vertices and [TrY = TrZ] is refutable. *)
+(*
+   本节说明相关定义、性质与动机。 Again genuine parallel pair: two-step route direct edge are.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma tri_via_Y_neq_direct :
   (tri_via_Y ≈[FreeOnQuiver TriangleQuiver] tri_direct) -> False.
 Proof.
@@ -652,18 +633,11 @@ End WalkingTriangle.
 
 (** ** The walking loop: the empty path carries content *)
 
-(* One vertex, one loop edge.
+(*
+   本节说明相关定义、性质与动机。 One vertex, one loop edge.. X --e--> X (a single edge from X itself) Both shapes above are ACYCLIC, so each them endo-path clause [Commutative] is instantiated only at [tnil] says nothing; this shape is one that exercises it.
 
-        X --e--> X   (a single edge from X to itself)
-
-   Both shapes above are ACYCLIC, so in each of them the endo-path clause of
-   [Commutative] is instantiated only at [tnil] and says nothing; this shape is
-   the one that exercises it.  Note that "every [edges i i] is [Empty_set]"
-   would NOT by itself establish that -- a directed cycle of length two or more
-   produces an endo-path with no self-edge anywhere in it.  What actually
-   rules cycles out is that the edges strictly increase a rank, which is proved
-   below as [sq_endo_paths_are_nil] and [tri_endo_paths_are_nil] rather than
-   asserted. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive LoopNode : Set := LpX.
 
 Definition loop_edge (i j : LoopNode) : Type :=
@@ -685,13 +659,11 @@ Definition loop_edgemap (i j : LoopNode)
   : loop_edge i j -> loop_obj i ~> loop_obj j :=
   match i, j with LpX, LpX => fun _ => e end.
 
-(* As with [SquareDiagram] and [TriangleDiagram], the [fedgemap_respects]
-   obligation here is discharged by the file-global [Obligation Tactic]
-   (Lib/Tactics.v's [cat_simpl]).  That is wide automation of exactly the
-   kind this file argues against for LOAD-BEARING steps, so it is worth being
-   explicit that these three are not load-bearing: each edge map is a constant
-   or a match on a finite enumeration, and the obligation resolves to
-   [CMorphisms.reflexive_proper]. *)
+(*
+   本节说明相关定义、性质与动机。 As [SquareDiagram] [TriangleDiagram], [fedgemap_respects]. obligation here is discharged file-global [Obligation Tactic] (Lib/Tactics.v's [cat_simpl]).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition LoopDiagram : Diagram LoopQuiver C :=
   {| fnodes := loop_obj ; fedgemap := loop_edgemap |}.
 
@@ -790,23 +762,19 @@ End NaturalitySquare.
 
 (** ** Commutativity as factorization through the preorder reflection *)
 
-(* Fong and Spivak, Seven Sketches in Compositionality, §3.3.4, the footnote to
-   Definition 3.51 (cited by location; see the header): a diagram commutes
-   exactly when it factors through the preorder reflection of its indexing
-   category.  Construction/PreorderReflection.v builds that reflection as the
-   quotient of a category by the total hom-congruence.
+(*
+   本节：Fong Spivak, Seven Sketches Compositionality, §3.3.4, footnote to. 定义 3.51 (cited location; see header): diagram commutes 当且仅当 it factors through preorder reflection its indexing 范畴.
 
-   The intuition is that the reflection destroys precisely the information
-   commutativity asks a diagram to ignore.  In [PreorderReflect J] all parallel
-   morphisms are identified, so a functor out of it CANNOT distinguish two
-   parallel paths -- it commutes for want of the ability to do otherwise -- and
-   conversely a functor that already identifies parallel morphisms descends
-   through the quotient. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* (=>) A shape-commuting functor factors through the reflection, and the
-   factorization reproduces it on the nose.  The mediating functor is
-   [QuotientLift] at the total congruence, whose hypothesis is exactly
-   [CommutativeShape]. *)
+(*
+   (=>) A shape-commuting 函子 factors through the reflection, and the
+
+   本节说明相关定义、性质与动机。 factorization reproduces it nose. The mediating 函子 is [QuotientLift] at total congruence, whose 假设 is exactly [CommutativeShape].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ShapeFactor {J C : Category} (F : J ⟶ C) (Hc : CommutativeShape F)
   : PreorderReflect J ⟶ C :=
   @QuotientLift J (TotalRel J) _ C F (fun x y f g _ => Hc x y f g).
@@ -819,10 +787,11 @@ Proof.
   intros. exact (@QuotientLift_proj J (TotalRel J) _ C F _ x y f).
 Qed.
 
-(* The Leibniz [=] here is the library's same-term exception, not a lapse from
-   [≈]: Construction/Quotient.v's [QuotientLift_proj] is proved by
-   [reflexivity], the two sides being the same term, exactly as at
-   Functor/Bifunctor.v. *)
+(*
+   本节说明相关定义、性质与动机。 The Leibniz [=] here is library's same-term exception, not lapse from.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* (<=) Anything of the form [K ◯ Reflect J] commutes, whatever [K] is. *)
 Theorem factors_commutative_shape {J C : Category}
@@ -832,10 +801,13 @@ Proof.
   intros x y f g; simpl; apply fmap_respects; exact I.
 Qed.
 
-(* The converse in the form that matches the forward direction: a functor that
-   merely AGREES with such a composite -- pointwise up to [≈], with object maps
-   equal on the nose, which is how Construction/Quotient.v states its
-   uniqueness -- is itself shape-commuting. *)
+(*
+   The converse in the form that matches the 正向 direction: a 函子 that
+
+   本节说明相关定义、性质与动机。 merely AGREES such 复合 -- pointwise up [≈], 对象 maps equal nose, which is how Construction/Quotient.v states its uniqueness -- is itself shape-commuting.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem factors_commutative_shape' {J C : Category} (F : J ⟶ C)
         (K : PreorderReflect J ⟶ C)
         (Hobj : ∀ x : J, fobj[K] x = fobj[F] x)
@@ -864,12 +836,11 @@ Proof.
   intros. apply commutative_shape_factors.
 Qed.
 
-(* The two directions above are usually quoted as a single biconditional, so
-   state it.  "Factors through the reflection" is packaged as the data of a
-   functor out of [PreorderReflect J] agreeing with [F], in exactly the form
-   Construction/Quotient.v uses for its own uniqueness statement: object
-   maps equal on the nose, morphism maps agreeing up to [≈] after conjugating
-   by [hom_cast] along those equalities. *)
+(*
+   本节说明相关定义、性质与动机。 The two directions above are usually quoted single biconditional, so. state it.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FactorsThroughReflection {J C : Category} (F : J ⟶ C) : Type :=
   { K : PreorderReflect J ⟶ C &
   { Hobj : ∀ x : J, fobj[K] x = fobj[F] x &

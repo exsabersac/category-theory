@@ -21,11 +21,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** Pointwise implication for the Type-valued [ForallT] of
-    Theory/Sheaf.v: a function of witnesses at every element maps a
-    [ForallT P] witness over a vector to a [ForallT Q] witness over
-    the same vector.  Used twice below, once for the outer family of
-    gluing statements and once for the inner compatibility family. *)
+(*
+   本节说明相关定义、性质与动机。 * Pointwise implication Type-valued [ForallT] of. Theory/层.v: function witnesses at every element maps [ForallT P] witness over vector [ForallT Q] witness over same vector.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ForallT_impl {A : Type} (P Q : A → Type)
   (h : ∀ a : A, P a → Q a) :
   ∀ {n : nat} (v : Vector.t A n), ForallT P v → ForallT Q v.
@@ -38,10 +38,13 @@ Section SheafCategory.
 Context (C : Category).
 Context `{@Site C}.
 
-(** The full subcategory data: objects are presheaves equipped with a
-    [Sheaf] witness; every natural transformation between two sheaves
-    is a morphism of sheaves ([True]), so closure under identity and
-    composition is trivial ([I]). *)
+(*
+   * The full subcategory data: 对象 are presheaves equipped with a
+
+   本节：[层] witness; every 自然变换 between two 层 is 态射 层 ([True]), so closure under identity 复合 is trivial ([I]).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Sheaves_sub : Subcategory (@Presheaves C Sets) :=
   @Build_Subcategory (@Presheaves C Sets)
     (fun X : Presheaf C Sets => Sheaf X)
@@ -55,13 +58,11 @@ Definition Sheaves : Category := Sub (@Presheaves C Sets) Sheaves_sub.
 Definition Sheaves_Incl : Sheaves ⟶ @Presheaves C Sets :=
   Incl (@Presheaves C Sets) Sheaves_sub.
 
-(** The subcategory is full by construction, so the inclusion is a
-    full functor (via [Full_Implies_Full_Functor]).  Kept [Defined]
-    for uniformity, though [Full_Implies_Full_Functor] is itself
-    opaque, so the chosen preimage does not compute through this
-    route; a transparent inline construction (the preimage is
-    literally [(g; I)]) is available should a consumer ever need it
-    to compute. *)
+(*
+   本节说明相关定义、性质与动机。 * The subcategory is full construction, so inclusion is a. full 函子 (via [Full_Implies_Full_函子]). Kept [Defined] uniformity, though [Full_Implies_Full_函子] is itself opaque, so chosen preimage does not compute through this route;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Sheaves_Full : Functor.Full Sheaves_Incl.
 Proof.
   apply Full_Implies_Full_Functor.
@@ -76,17 +77,13 @@ Proof.
   constructor; simpl; intros x y f g Hfg; exact Hfg.
 Qed.
 
-(** ** Repleteness: the sheaf condition is closed under isomorphism
+(*
+   * ** Repleteness: the 层 condition is closed under 同构
 
-    If X ≅ Y in [Presheaves C Sets] and X is a sheaf, then Y is a
-    sheaf.  The unique-gluing data is transported componentwise across
-    the natural isomorphism: a matching family for Y is pulled back
-    along [from iso] to a matching family for X (naturality moves the
-    restriction maps across the components), X's unique glued section
-    is pushed forward along [to iso], and its uniqueness transfers
-    because the components are mutually inverse setoid bijections.
-    Kept [Defined] so downstream users can compute with the
-    transported gluing data. *)
+   本节说明相关定义、性质与动机。 If X ≅ Y [Presheaves C Sets] X is 层, then Y is 层.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem sheaf_iso_closed
   (X Y : Presheaf C Sets) (iso : X ≅[@Presheaves C Sets] Y) :
   Sheaf X → Sheaf Y.

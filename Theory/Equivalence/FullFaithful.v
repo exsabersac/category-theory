@@ -16,10 +16,13 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The quasi-inverse assembled from a full, faithful, essentially
-   surjective functor.  On objects it is the chosen preimage [eso_obj]; on
-   morphisms it conjugates through the witnessing isomorphisms and takes
-   the chosen [fmap]-preimage. *)
+(*
+   The quasi-inverse assembled from a full, 忠实, 本质地
+
+   本节说明相关定义、性质与动机。 surjective 函子. On 对象 it is chosen preimage [eso_obj];
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition ff_eso_inverse `(F : C ⟶ D)
   `{@Full C D F} `{@Faithful C D F} `{@EssentiallySurjective C D F} :
   D ⟶ C := {|
@@ -49,9 +52,13 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* The unit component at x : C, an isomorphism x ≅ eso_obj (F x).  Its two
-   sides are the [prefmap]-images of the two sides of [eso_iso (F x)]; the
-   inverse laws again go through [fmap_inj]/[fmap_sur]. *)
+(*
+   The unit component at x : C, an 同构 x ≅ eso_obj (F x).  Its two
+
+   本节说明相关定义、性质与动机。 sides are [prefmap]-images two sides [eso_iso (F x)];
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition ff_eso_unit_iso `(F : C ⟶ D)
   `{@Full C D F} `{@Faithful C D F} `{@EssentiallySurjective C D F}
   (x : C) : x ≅ eso_obj (F x) := {|
@@ -152,10 +159,13 @@ Definition equivalence_prefmap `(E : @EquivalenceOfCategories C D F)
     ∘ fmap[@quasi_inverse C D F E] g
     ∘ to (equivalence_unit_at x).
 
-(* The section law: [fmap[F] (equivalence_prefmap E g)] and g have the
-   same image under the faithful [quasi_inverse] — by the unit's
-   conjugation coherence, after cancelling the monic [from] and epic [to]
-   components of the unit isomorphism. *)
+(*
+   The section law: [fmap[F] (等价_prefmap E g)] and g have the
+
+   本节说明相关定义、性质与动机。 same image under 忠实 [quasi_inverse] — unit's conjugation coherence, after cancelling monic [from] epic [to] components unit 同构.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma equivalence_prefmap_sur `(E : @EquivalenceOfCategories C D F)
   {x y : C} (g : F x ~> F y) :
   fmap[F] (equivalence_prefmap E g) ≈ g.

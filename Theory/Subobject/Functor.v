@@ -34,10 +34,13 @@ Definition sub_reindex {x y : C} (f : y ~> x) (u : SubObj x) : SubObj y := {|
                     (pullback f (sub_mono u))
 |}.
 
-(* The workhorse: if a given subobject v of y sits atop ANY pullback square
-   of sub_mono u along f, then v is the reindexing of u along f, up to the
-   SubObj setoid.  The isomorphism of apexes and its triangle with the two
-   first projections come from pullback_transport. *)
+(*
+   The workhorse: if a given 子对象 v of y sits atop ANY 拉回 square
+
+   本节说明相关定义、性质与动机。 of sub_mono u along f, then v is reindexing u along f, up SubObj setoid.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sub_reindex_transport {x y : C} (f : y ~> x) (u : SubObj x)
       (v : SubObj y) (p2 : sub_dom v ~> sub_dom u)
       (HP : IsPullback f (sub_mono u) (sub_dom v) (sub_mono v) p2) :
@@ -159,17 +162,13 @@ Proof.
               (pullback f (sub_mono (sub_reindex g u))))).
 Qed.
 
-(* The subobject presheaf: contravariant on C, valued in setoids.  A
-   C^op-arrow f : x ~> y is a C-arrow y ~> x, and acts by pullback
-   reindexing; the functor laws are the three lemmas above, read at the
-   pointwise hom-setoid of Sets.  Naming note: [Sub] is the work
-   order's name and coexists with Construction/Subcategory.v's
-   category [Sub]; the two live in different modules, so qualify the
-   reference in any file importing both.  The generic transport lemma
-   [is_pullback_respects_left] above (and its companion
-   [is_pullback_respects_snd] in Structure/SubobjectClassifier.v) are
-   candidates for promotion into Theory/Morphisms/Stability.v beside
-   [IsPullback]. *)
+(*
+   The 子对象 presheaf: contravariant on C, valued in setoids.  A
+
+   本节：C^op-arrow f : x ~> y is C-arrow y ~> x, acts 拉回 reindexing; 函子定律 are three lemmas above, read at pointwise hom-setoid Sets. Naming note: [Sub] is work order's name coexists Construction/Subcategory.v's 范畴 [Sub];
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Obligation Tactic := simpl; intros.
 
 Program Definition Sub : C^op ⟶ Sets := {|

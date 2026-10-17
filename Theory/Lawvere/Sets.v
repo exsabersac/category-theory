@@ -27,11 +27,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Products separate points
+(*
+   本节：* ** 积 separate points. Two 态射 into 积 that agree after both projections are equal — immediate from uniqueness half [ump_积]. Stated arbitrary 笛卡尔 范畴;
 
-    Two morphisms into a product that agree after both projections are
-    equal — immediate from the uniqueness half of [ump_products].  Stated
-    for an arbitrary cartesian category; below it is used in [Sets]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma prod_separates {C : Category} `{@Cartesian C} {x y z : C}
   (h k : x ~> y × z) :
@@ -50,10 +50,13 @@ Section Ev1.
 
 Context (T : LawvereTheory).
 
-(** Evaluation at the generic object [law_of_nat 1]: a model goes to its
-    underlying set, a morphism of models (a natural transformation) to
-    its component at [law_of_nat 1].  The functor laws are componentwise
-    instances of the laws of the functor category. *)
+(*
+   * Evaluation at the generic 对象 [law_of_nat 1]: a model goes to its
+
+   本节说明相关定义、性质与动机。 underlying set, 态射 models (a 自然变换) its component at [law_of_nat 1].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition ev1 : Models T Sets ⟶ Sets := {|
   fobj := fun M => `1 M (law_of_nat 1%nat);
@@ -65,15 +68,13 @@ Next Obligation.
   simpl in HH; apply HH.
 Qed.
 
-(** ** Faithfulness of the underlying-set functor
+(*
+   * ** Faithfulness of the underlying-set 函子
 
-    Under the reachability hypothesis, a morphism of [Sets]-models is
-    determined by its component at [law_of_nat 1]: the component at
-    [law_pow n] is pinned down by induction on [n] — at [0] because maps
-    into (an object isomorphic to) the terminal object are equal, at
-    [S k] because the target model's product comparison is an iso and
-    products separate points — and [law_pow_one] plus [reach] transport
-    the agreement to every object. *)
+   本节：Under reachability 假设, 态射 [Sets]-models is determined its component at [law_of_nat 1]: component at [law_pow n] is pinned down induction [n] — at [0] because maps into (an 对象 isomorphic to) 终对象 are equal, at [S k] because th
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Context (reach : ∀ x : @law_cat T, { n : nat & law_of_nat n = x }).
 
@@ -140,13 +141,11 @@ Qed.
 
 End Ev1.
 
-(** ** Reachability for the base theory
+(*
+   本节：* ** Reachability base theory. For skeletal base theory [FinSetOp_Lawvere] 对象 underlying 范畴 literally are 自然 numbers [law_of_nat] is identity, so reachability holds [eq_refl] — 假设 [ev1_忠实] costs nothing on
 
-    For the skeletal base theory [FinSetOp_Lawvere] the objects of the
-    underlying category literally are the natural numbers and
-    [law_of_nat] is the identity, so reachability holds by [eq_refl] —
-    the hypothesis of [ev1_Faithful] costs nothing on the classical
-    notion of Lawvere theory. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition FinSetOp_reach :
   ∀ x : @law_cat FinSetOp_Lawvere, { n : nat & law_of_nat n = x } :=

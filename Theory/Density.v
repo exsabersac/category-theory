@@ -50,10 +50,13 @@ Example density_diagram_obj (d : D) (x : K d) :
 
 (** ** The Yoneda transformation at an element *)
 
-(* For x an element of K d, the transformation [Hom d,-] ==> K whose
-   component at e carries g : d ~> e to [fmap[K] g x].  Respectfulness is
-   [elements_respects_cond] and both naturality orientations are
-   [fmap_comp] read at an element. *)
+(*
+   For x an element of K d, the 变换 [Hom d,-] ==> K whose
+
+   本节说明相关定义、性质与动机。 component at e carries g : d ~> e [fmap[K] g x]. Respectfulness is [elements_respects_cond] both naturality orientations are [fmap_comp] read at element.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition yo_component {d : D} (x : K d) (e : D) :
   @hom Sets ([Hom d,─] e) (K e) :=
@@ -83,10 +86,11 @@ Definition density_inj (j : ElementsOp) :
 Example density_inj_at (d : D) (x : K d) (e : D) (g : d ~> e) :
   transform[density_inj ((d; x) : ElementsOp)] e g = fmap[K] g x := eq_refl.
 
-(* Cocone coherence.  For f : x ~> y in [Elements K] the diagram sends f
-   to precomposition with its underlying D-morphism, so the condition
-   reads [fmap[K] (g ∘ `1 f) (`2 x) ≈ fmap[K] g (`2 y)] at every e and
-   g -- which is [elements_comp_cond] fed the carried witness `2 f. *)
+(*
+   本节说明相关定义、性质与动机。 Cocone coherence. For f : x ~> y [Elements K] diagram sends f.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma density_cocone_coherence {x y : Elements K}
       (f : x ~{Elements K}~> y) :
@@ -116,12 +120,11 @@ Section Mediator.
 
 Context (M : Cocone DensityDiagram).
 
-(* Respectfulness in the ELEMENT argument, derived from cocone coherence
-   at [elements_same] and not assumed.  Two `≈`-equal elements over one
-   object of D are DIFFERENT objects of [Elements K] -- objects are
-   compared by Leibniz equality -- so their injections are a priori
-   unrelated; [elements_same] is the morphism between them whose
-   underlying D-morphism is the identity. *)
+(*
+   本节说明相关定义、性质与动机。 Respectfulness ELEMENT argument, derived from cocone coherence. at [elements_same] not assumed. Two `≈`-equal elements over one 对象 D are DIFFERENT 对象 [Elements K] -- 对象 are compared Leibniz equality -- so their injections are priori unrelated;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma den_med_respects {e : D} (z w : K e) (H : z ≈ w) :
   transform[cocone_inj M ((e; z) : ElementsOp)] e id
@@ -281,10 +284,13 @@ Example pdensity_inj (c : C) (x : P c) (e : C) (g : e ~{C}~> c) :
   transform[cocone_inj PDensityCocone ((c; x) : PElements P)] e g
     = fmap[P] g x := eq_refl.
 
-(* The other evident description of the diagram agrees on objects AND on
-   arrows, both by [eq_refl]; the two functor RECORDS do not (probe
-   negative 1), because [PElements_proj] is a [Program Definition] whose
-   law fields are opaque obligations. *)
+(*
+   The other evident description of the diagram agrees on 对象 AND on
+
+   本节说明相关定义、性质与动机。 arrows, both [eq_refl]; two 函子 RECORDS do not (probe negative 1), because [PElements_proj] is [Program 定义] whose law fields are opaque obligations.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example pdd_via_proj_obj (c : C) (x : P c) :
   PDensityDiagram ((c; x) : PElements P)
@@ -316,16 +322,11 @@ Example coy_leg_is_density_inj (c x : C) (g : x ~{C}~> c) (a : F x) :
   coy_leg F c x (g, a)
     = transform[density_inj F ((x; a) : ElementsOp F)] c g := eq_refl.
 
-(* The naturality-in-c upgrade of the LEGS.  [Theory/Coend/Yoneda.v]
-   fixes c as a section variable; an audit sharpened the attribution,
-   since that variable IS generalised at [End Yoneda] and so does not by
-   itself prevent the statement -- what does is that Yoneda.v imports
-   neither [Category.Instance.Fun] nor
-   [Category.Theory.Natural.Transformation], so it has no vocabulary for
-   [[Hom x,-] ==> F].  The conclusion stands.  The family of
-   coend legs at fixed (x, a) extends to a natural transformation out of
-   the representable, and that transformation is the density cocone's
-   injection. *)
+(*
+   本节说明相关定义、性质与动机。 The naturality-in-c upgrade LEGS. [Theory/Coend/Yoneda.v]. fixes c section variable;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem coy_leg_natural_in_apex (x : C) (a : F x) :
   { tau : [Hom x,─] ~{[C, Sets]}~> F
@@ -335,10 +336,11 @@ Proof. exists (yo_inj F a); intros c g; reflexivity. Defined.
 Example coy_leg_natural_witness (x : C) (a : F x) :
   `1 (coy_leg_natural_in_apex x a) = yo_inj F a := eq_refl.
 
-(* The coend's inverse map is "insert at the identity", and running it
-   back through the mediator gives the density injection at (c, b)
-   applied to [id] -- the left-hand side of [density_elements_covered].
-   So the two constructions share their inverse formula as well. *)
+(*
+   本节说明相关定义、性质与动机。 The coend's inverse map is "insert at identity", running it. back through mediator gives density injection at (c, b) applied [id] -- left-hand side [density_elements_covered].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example coy_from_at (c : C) (b : F c) :
   coy_from F c b = ci (YoI F c) c (id, b) := eq_refl.
@@ -370,9 +372,13 @@ Example kbool_obj : KBool ttt = DensityBool := eq_refl.
 Definition et : ElementsOp KBool := (ttt; true).
 Definition ef : ElementsOp KBool := (ttt; false).
 
-(* The diagram is CONSTANT at the one representable, and there are no
-   morphisms between the two elements, so the theorem here says that the
-   two-element set is the coproduct of two copies of the singleton. *)
+(*
+   The diagram is CONSTANT at the one 可表, and there are no
+
+   本节说明相关定义、性质与动机。 态射 between two elements, so theorem here says that two-element set is 余积 two copies singleton.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example kbool_diagram_constant :
   DensityDiagram KBool et = DensityDiagram KBool ef := eq_refl.
@@ -388,13 +394,13 @@ Proof.
   discriminate.
 Qed.
 
-(* The two elements are not merely DISTINCT objects of the index: there
-   is no morphism between them either, in the covariant [Elements]
-   reading.  This is what makes the "2 = 1 + 1" description above honest
-   rather than decorative, and an audit found it asserted in prose and
-   pinned nowhere, so it is a lemma now.  A morphism (ttt;true) ~> (ttt;
-   false) carries a D-morphism (necessarily [id], D being [_1]) together
-   with a proof that it transports [true] to [false]. *)
+(*
+   The two elements are not merely DISTINCT 对象 of the index: there
+
+   本节说明相关定义、性质与动机。 is no 态射 between them either, covariant [Elements] reading. This is what makes "2 = 1 + 1" description above honest rather than decorative, audit found it asserted prose pinned nowhere, so it is lemma now. A 态射 (ttt;true) ~> (ttt;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma kbool_no_hom_et_ef :
   ((ttt; true) ~{Elements KBool}~> (ttt; false)) → False.
 Proof. intros [f Hf]; simpl in Hf; discriminate. Qed.
@@ -454,11 +460,11 @@ End Witness.
 
 (** ** Probe: negatives of three kinds, with positive controls *)
 
-(* Each [Fail] below was stripped once and its error read off, so its
-   KIND is known and it is not vacuously green.  Every constant named in
-   a negative is also named in a control in the same section, so a rename
-   breaks the file loudly instead of turning a negative into a
-   "reference not found" false pass. *)
+(*
+   本节说明相关定义、性质与动机。 Each [Fail] below was stripped once its error read off, so its. KIND is known it is not vacuously green.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProbeConversion.
 
@@ -503,12 +509,11 @@ Definition ctrl_med_commutes (M : Cocone (DensityDiagram K))
   density_med K M ∘ density_inj K j ≈ cocone_inj M j
   := density_med_commutes K M j.
 
-(* NEGATIVE 2 (CONVERSION).  Stripped, this reports
-   [cannot unify "density_med K M ∘ density_inj K j" and
-   "cocone_inj M j"].  The mediator evaluates the competing cocone at the
-   object (e, fmap[K] g x) of the index while the right-hand side
-   evaluates it at j, and the two are reconciled only by cocone coherence
-   at [Elements_lift], which is a `≈` fact. *)
+(*
+   本节说明相关定义、性质与动机。 NEGATIVE 2 (CONVERSION). Stripped, this reports. [cannot unify "density_med K M ∘ density_inj K j" "cocone_inj M j"].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Example neg_med_commutes_strict (M : Cocone (DensityDiagram K))
   (j : ElementsOp K) :
@@ -519,11 +524,11 @@ Fail Example neg_med_commutes_strict (M : Cocone (DensityDiagram K))
 
 Check (Curried_Hom D ◯ (Elements_proj K)^op).
 
-(* NEGATIVE 3 (TYPING).  Stripped, this reports
-   ["Elements_proj K" has type "Elements K ⟶ D" while it is expected to
-   have type "Elements K ⟶ D^op" (cannot unify "D" and "(D^op)")].
-   This is the variance: the diagram of representables cannot be indexed
-   by [Elements K] covariantly. *)
+(*
+   本节说明相关定义、性质与动机。 NEGATIVE 3 (TYPING). Stripped, this reports. ["Elements_proj K" has type "Elements K ⟶ D" while it is expected have type "Elements K ⟶ D^op" (cannot unify "D" "(D^op)")].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (Curried_Hom D ◯ Elements_proj K).
 
@@ -543,11 +548,11 @@ Check (fun (D : Category@{uo uh uh}) (K : D ⟶ Sets@{uh us}) => ElementsOp K).
 Check (fun (D : Category@{uo uh uh}) (K : D ⟶ Sets@{uh us}) => @yo_inj D K).
 Check @DensityDiagram.
 
-(* NEGATIVE 4 (FORMABILITY).  Stripped, this reports a universe
-   inconsistency naming the declared levels: [Cannot enforce uh = _
-   because uh < uo <= _].  So the constraint [u <= u0] read off
-   [DensityDiagram]'s block is real, and it enters at the DIAGRAM rather
-   than at the index or at [yo_inj]. *)
+(*
+   本节说明相关定义、性质与动机。 NEGATIVE 4 (FORMABILITY). Stripped, this reports universe. inconsistency naming declared levels: [Cannot enforce uh = _ because uh < uo <= _].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fail Check (fun (D : Category@{uo uh uh}) (K : D ⟶ Sets@{uh us}) =>
               DensityDiagram K).

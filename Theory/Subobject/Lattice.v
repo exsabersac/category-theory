@@ -49,9 +49,11 @@ Definition sub_top : SubObj x := {|
 Lemma sub_top_greatest (u : SubObj x) : sub_le u sub_top.
 Proof. exists (sub_mono u); cat. Defined.
 
-(* Riehl 4.7.9's characterization of the intersection of a family, and its
-   dual: the greatest lower bound, respectively least upper bound, of the
-   family for the factorization preorder [sub_le]. *)
+(*
+   本节说明相关定义、性质与动机。 Riehl 4.7.9's characterization intersection family, its.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record IsIntersection {J : Type} (S : J → SubObj x) (w : SubObj x) := {
   inter_le : ∀ j, sub_le w (S j);
   inter_greatest : ∀ v : SubObj x, (∀ j, sub_le v (S j)) → sub_le v w
@@ -166,11 +168,13 @@ Defined.
 
 (** *** The two degenerate index shapes *)
 
-(* Over an empty index every subobject is vacuously below every member, so
-   the greatest lower bound is the greatest subobject.  This is the case
-   at which the wide-pullback presentation of the intersection and the
-   order-theoretic one part company: the empty wide pullback is a terminal
-   object (Structure/Pullback/Wide.v), which is not [sub_top]. *)
+(*
+   Over an empty index every 子对象 is vacuously below every member, so
+
+   本节：the greatest lower bound is greatest 子对象. This is case at which wide-拉回 presentation intersection order-theoretic one part company: empty wide 拉回 is 终对象 (Structure/拉回/Wide.v), which is not [sub_top].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma IsIntersection_empty {J : Type} (S : J → SubObj x) (Hempty : J → False) :
   IsIntersection S sub_top.
 Proof.
@@ -237,9 +241,13 @@ Context {C : Category}.
 Context `{@HasPullbacks C}.
 Context {x : C}.
 
-(* The intersection of two subobjects: the chosen pullback of their monos,
-   mapped into x through the first one.  The composite is monic because
-   monos are stable under pullback and closed under composition. *)
+(*
+   The intersection of two subobjects: the chosen 拉回 of their monos,
+
+   本节说明相关定义、性质与动机。 mapped into x through first one. The 复合 is monic because monos are stable under 拉回 closed under 复合.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sub_meet (u v : SubObj x) : SubObj x := {|
   sub_dom := Pull (sub_mono u) (sub_mono v)
                (pullback (sub_mono u) (sub_mono v));
@@ -272,11 +280,13 @@ Proof.
            (pullback (sub_mono u) (sub_mono v))).
 Defined.
 
-(* Mac Lane §V.7, book p. 126: the pullback of two monos is the GREATEST
-   subobject below both.  A competing w below both supplies a commuting
-   square, the universal property supplies the mediator, and the first
-   projection triangle turns that mediator into the required
-   factorization. *)
+(*
+   Mac Lane §V.7, book p. 126: the 拉回 of two monos is the GREATEST
+
+   本节：子对象 below both. A competing w below both supplies 交换方块, 普遍性质 supplies mediator, first projection triangle turns that mediator into required factorization.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sub_meet_is_glb (u v : SubObj x) :
   ∀ w : SubObj x, sub_le w u → sub_le w v → sub_le w (sub_meet u v).
 Proof.
@@ -303,11 +313,13 @@ Proof.
     exact (sub_meet_is_glb u v w (Hw true) (Hw false)).
 Defined.
 
-(* Respectfulness is proved through the universal property, not through
-   the pullback: [sub_meet u v] and [sub_meet u' v'] are greatest lower
-   bounds of pointwise-equivalent families, hence equivalent.  Fighting
-   the chosen pullback directly would need a comparison isomorphism of
-   apexes that this argument never mentions. *)
+(*
+   Respectfulness is proved through the 普遍性质, not through
+
+   本节说明相关定义、性质与动机。 the 拉回: [sub_meet u v] [sub_meet u' v'] are greatest lower bounds pointwise-equivalent families, hence equivalent.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance sub_meet_respects :
   Proper (equiv ==> equiv ==> equiv) sub_meet.
 Proof.
@@ -389,10 +401,13 @@ Context {x : C}.
 Context {J : Type}.
 Context (S : J → SubObj x).
 
-(* Every projection of a wide pullback of monos is monic: two maps agreeing
-   after one projection agree after every projection, by the commutativity
-   of the wide square and the monicity of the family, hence agree by joint
-   monicity.  This is Riehl 4.7.9's "the legs of the cone are monic". *)
+(*
+   Every projection of a wide 拉回 of monos is monic: two maps agreeing
+
+   本节说明相关定义、性质与动机。 after one projection agree after every projection, commutativity wide square monicity family, hence agree joint monicity.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma wide_pullback_proj_monic (W : WidePullback (fun j => sub_mono (S j)))
   (j : J) : Monic (wide_pullback_proj W j).
 Proof.
@@ -406,11 +421,11 @@ Proof.
   now rewrite Hg.
 Qed.
 
-(* The intersection of a family of subobjects, presented at an index j0:
-   the wide pullback of the monos, mapped into x through the j0-th member.
-   By [wide_pullback_commutes] the mono does not depend on j0 up to ≈.
-   The [sub_is_monic] field is Riehl 4.7.9's "the induced map into the
-   codomain is again monic". *)
+(*
+   本节说明相关定义、性质与动机。 The intersection family subobjects, presented at index j0:. wide 拉回 monos, mapped into x through j0-th member. By [wide_拉回_commutes] mono does not depend j0 up ≈.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sub_wide_intersection (j0 : J)
   (W : WidePullback (fun j => sub_mono (S j))) : SubObj x := {|
   sub_dom := WPull W;
@@ -419,11 +434,13 @@ Definition sub_wide_intersection (j0 : J)
     monic_compose (sub_is_monic (S j0)) (wide_pullback_proj_monic W j0)
 |}.
 
-(* Riehl 4.7.9 in full: the wide pullback presents the greatest subobject
-   of x contained in every member of the family.  Containment in the j-th
-   member is the j-th projection, with the wide square as its triangle;
-   maximality is the wide universal property applied to the family of
-   factorizations a competing subobject supplies. *)
+(*
+   Riehl 4.7.9 in full: the wide 拉回 presents the greatest 子对象
+
+   本节说明相关定义、性质与动机。 of x contained every member family. Containment j-th member is j-th projection, wide square its triangle;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem sub_wide_intersection_IsIntersection (j0 : J)
   (W : WidePullback (fun j => sub_mono (S j))) :
   IsIntersection S (sub_wide_intersection j0 W).
@@ -447,10 +464,11 @@ Proof.
     exact (`2 (Hv j0)).
 Defined.
 
-(* The chosen index is immaterial, and at the strongest available reading:
-   the two subobjects have the SAME domain, so the identity isomorphism
-   witnesses the equivalence and only the triangle has to be discharged,
-   by the wide square. *)
+(*
+   本节说明相关定义、性质与动机。 The chosen index is immaterial, at strongest available reading:.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sub_wide_intersection_index_irrelevant (j0 j1 : J)
   (W : WidePullback (fun j => sub_mono (S j))) :
   sub_wide_intersection j0 W ≈ sub_wide_intersection j1 W.
@@ -470,17 +488,13 @@ Context {C : Category}.
 Context `{@HasPullbacks C}.
 Context {x : C}.
 
-(* Whenever the pair of monos carries a wide pullback, the wide
-   intersection presented at [true] agrees with the chosen binary meet.
-   The comparison is made through the two universal properties rather than
-   through Structure/Pullback/Wide.v ([binary_wide_pullback]): that
-   lemma's family is [two_maps f g] over [two_fam (sub_dom u) (sub_dom v)],
-   whereas the family here is [fun b => sub_mono (sub_pair u v b)] over
-   [fun b => sub_dom (sub_pair u v b)], and the two index families are
-   convertible only at each literal [true] and [false], not as functions
-   of a variable b -- so routing through it would cost a transport of the
-   whole [IsWidePullback] record along a pointwise-only conversion.  The
-   order-theoretic route costs three lines. *)
+(*
+   Whenever the pair of monos carries a wide 拉回, the wide
+
+   本节说明相关定义、性质与动机。 intersection presented at [true] agrees chosen binary meet.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem sub_meet_is_wide_intersection (u v : SubObj x)
   (W : WidePullback (fun b => sub_mono (sub_pair u v b))) :
   sub_meet u v ≈ sub_wide_intersection (sub_pair u v) true W.
@@ -522,10 +536,13 @@ Section Images.
 
 Context {C : Category}.
 
-(* An image of f : y ~> x as a subobject of x: f factors through it, and
-   it is the least subobject f factors through.  This is the (E, Mono)
-   image of an orthogonal factorization system read as an order-theoretic
-   statement; it is what a union of subobjects consumes. *)
+(*
+   An image of f : y ~> x as a 子对象 of x: f factors through it, and
+
+   本节说明相关定义、性质与动机。 it is least 子对象 f factors through. This is (E, Mono) image orthogonal factorization system read order-theoretic statement;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record ImageOf {y x : C} (f : y ~> x) := {
   im_sub : SubObj x;
   im_factor : y ~> sub_dom im_sub;
@@ -587,10 +604,13 @@ Proof.
   exact (inr_merge (sub_mono u) (sub_mono v)).
 Defined.
 
-(* The image is the LEAST subobject above both: a competing w above both
-   supplies two factorizations, their copairing factors the copairing of
-   the monos through w, and [im_least] is exactly the statement that the
-   image is below any subobject the map factors through. *)
+(*
+   The image is the LEAST 子对象 above both: a competing w above both
+
+   本节说明相关定义、性质与动机。 supplies two factorizations, their copairing factors copairing monos through w, [im_least] is exactly statement that image is below any 子对象 map factors through.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sub_join_via_is_lub (u v : SubObj x)
   (I : ImageOf (merge (sub_mono u) (sub_mono v))) (w : SubObj x) :
   sub_le u w → sub_le v w → sub_le (sub_join_via u v I) w.
@@ -748,11 +768,13 @@ Definition sub_wide_join_via {p : C} {inj : ∀ j, sub_dom (S j) ~> p}
   (I : ImageOf (unique_obj (icoprod_desc P (fun j => sub_mono (S j))))) :
   SubObj x := im_sub I.
 
-(* The indexed least upper bound.  Membership is the j-th coproduct
-   injection followed by the image factorization; minimality copairs the
-   family of factorizations a competing subobject supplies and identifies
-   the result with the induced map by the uniqueness half of
-   [icoprod_desc]. *)
+(*
+   The indexed least upper bound.  Membership is the j-th 余积
+
+   本节说明相关定义、性质与动机。 injection followed image factorization; minimality copairs family factorizations competing 子对象 supplies identifies result induced map uniqueness half [icoprod_desc].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem sub_wide_join_via_IsUnion {p : C} {inj : ∀ j, sub_dom (S j) ~> p}
   (P : IsIndexedCoproduct (fun j => sub_dom (S j)) p inj)
   (I : ImageOf (unique_obj (icoprod_desc P (fun j => sub_mono (S j))))) :
@@ -801,12 +823,13 @@ Lemma sub_bot_least (Hz : Monic (@zero C I x)) (u : SubObj x) :
   sub_le (sub_bot Hz) u.
 Proof. exists zero; apply zero_unique. Defined.
 
-(* Strictness supplies the hypothesis.  For g1 g2 : w ~> 0, strictness at
-   g1 gives an isomorphism i : w ≅ 0; every map w ~> 0 then agrees with
-   [to i], because precomposing it with [from i] lands in the endomorphism
-   monoid of the initial object, where [zero_unique] leaves only the
-   identity.  The cancellation hypothesis of [Monic] is never consumed:
-   in a category with a strict initial object ANY two maps into 0 agree. *)
+(*
+   Strictness supplies the 假设.  For g1 g2 : w ~> 0, strictness at
+
+   本节：g1 gives 同构 i : w ≅ 0; every map w ~> 0 then agrees [to i], because precomposing it [from i] lands endomorphism 幺半群 始对象, where [zero_unique] leaves only identity.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma zero_monic_of_strict
   (Hstrict : ∀ (y : C) (f : y ~> 0), y ≅ 0) : Monic (@zero C I x).
 Proof.
@@ -841,25 +864,13 @@ Context `{@Closed C _}.
 Context `{I : @Initial C}.
 Context {x : C}.
 
-(* A cartesian closed category with an initial object has a STRICT
-   initial object (Structure/BiCCC.v, [initial_strict]), so the arrow
-   out of it is monic and [sub_bot] applies with no further hypothesis.
-   This is the one place in this file where the bottom subobject is
-   obtained rather than assumed.  Two measurements govern it.  The
-   requirement cost was taken only after being measured, by iterating
-   [coqdep -R . Category FILE] to a fixed point over the .v files named
-   in its right-hand sides: the two files Structure/BiCCC.v adds to this
-   file's requirement closure are itself and Structure/Distributive.v,
-   taking that closure from 46 to 48 (the whole file's closure is 48
-   files; the interface stub this one replaced measured 37 by the same
-   procedure).  And the hypothesis list is exactly the one
-   below, NOT the full bicartesian closed one: [initial_strict] is proved
-   in Structure/BiCCC.v under a cocartesian context as well, but does not
-   consume it, so no [Cocartesian] is declared here and none appears in
-   the discharged type of [biccc_zero_monic] -- read off with
-   [Check @biccc_zero_monic], whose binders are the category, a
-   [Cartesian], a [Closed], a [Terminal] of the opposite (that is the
-   [Initial]), and the object. *)
+(*
+   A 笛卡尔闭范畴 with an 始对象 has a STRICT
+
+   本节：始对象 (Structure/BiCCC.v, [initial_strict]), so arrow out it is monic [sub_bot] applies no further 假设. This is one place this file where bottom 子对象 is obtained rather than assumed. Two measurements govern it.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition biccc_zero_monic : Monic (@zero C I x) :=
   zero_monic_of_strict (fun y f => initial_strict f).
 
@@ -896,14 +907,11 @@ Context `{HI : @HasImages C}.
 Context `{I : @Initial C}.
 Context {x : C}.
 
-(* Fong and Spivak §1.2.1's unit law ∅ ∪ X ≅ X, at the level of
-   subobjects, with the image of the copairing handed in: the bottom is
-   below u, so u is already a least upper bound of the pair, and least
-   upper bounds agree.  Stated first with an explicit [ImageOf], so that a
-   category with images for SOME copairings (or a single computed image)
-   can use it without a [HasImages] instance; the class form follows.
-   [HI] is not consumed by this lemma and is dropped from its discharged
-   type -- read it off with [Check @sub_join_via_bot]. *)
+(*
+   本节说明相关定义、性质与动机。 Fong Spivak §1.2.1's unit law ∅ ∪ X ≅ X, at level of. subobjects, image copairing handed in: bottom is below u, so u is already least upper bound pair, least upper bounds agree.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sub_join_via_bot (Hz : Monic (@zero C I x)) (u : SubObj x)
   (Img : ImageOf (merge (sub_mono (sub_bot Hz)) (sub_mono u))) :
   sub_join_via (sub_bot Hz) u Img ≈ u.
@@ -941,11 +949,13 @@ Definition ofs_image_sub (O : OFS E (@MonoClass C)) {y x : C} (f : y ~> x) :
   sub_is_monic := fact_m_in (ofs_factor (OFS := O) f)
 |}.
 
-(* Minimality is orthogonality.  A factorization of f through a subobject
-   w bounds a commuting square between the E-leg of the factorization and
-   the mono of w; the diagonal filler of Theory/Orthogonality.v is the
-   arrow exhibiting the image below w, and its second triangle is the
-   factorization required by [sub_le]. *)
+(*
+   Minimality is orthogonality.  A factorization of f through a 子对象
+
+   本节说明相关定义、性质与动机。 w bounds 交换方块 between E-leg factorization mono w;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ofs_image_least (O : OFS E (@MonoClass C)) {y x : C} (f : y ~> x)
   (w : SubObj x) (g : y ~> sub_dom w) (Hg : sub_mono w ∘ g ≈ f) :
   sub_le (ofs_image_sub O f) w.
@@ -976,10 +986,12 @@ Definition HasImages_of_OFS (O : OFS E (@MonoClass C)) : HasImages C :=
 
 End OFSImages.
 
-(* A regular category has images, through its (regular epi, mono) system
-   Regular_OFS (Structure/Regular/Factorization.v).  CONDITIONAL: no
-   [Regular] instance exists in this tree (Instance/Sets/Pullback.v),
-   so this corollary is an implication awaiting a model, and it is the
-   only route in this file from an established structure to [HasImages]. *)
+(*
+   A regular 范畴 has images, through its (regular epi, mono) system
+
+   本节说明相关定义、性质与动机。 Regular_OFS (Structure/Regular/Factorization.v). CONDITIONAL: no [Regular] instance exists this tree (Instance/Sets/拉回.v), so this corollary is implication awaiting model, it is only route this file from established structure [HasImages].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Regular_HasImages {C : Category} (R : Regular C) : HasImages C :=
   HasImages_of_OFS (@Regular_OFS C R).

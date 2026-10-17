@@ -32,14 +32,13 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符未改。）
 *)
 
-(* [Cocomplete C] (Structure/Complete.v) is [∀ D (G : D ⟶ C), Colimit G].
-   Applying it to the ω-shape [Omega] and the diagram [Chain F] yields the
-   colimit [Colimit (Chain F)] that [adamek] requires, with no further
-   hypotheses.  We then feed that colimit together with the supplied
-   [AdamekData] to [adamek].  The [Colimit] argument is threaded explicitly and
-   identically into both the type of [D] and the body, so the [AdamekData]'s
-   ambient colimit [L] and the one consumed by [adamek] are the very same
-   term. *)
+(*
+   [余完备 C] (Structure/完备.v) is [∀ D (G : D ⟶ C), 余极限 G].
+
+   本节：Applying it ω-shape [Omega] diagram [Chain F] yields 余极限 [余极限 (Chain F)] that [adamek] requires, no further hypotheses. We then feed that 余极限 together supplied [AdamekData] [adamek].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary adamek_cocomplete
   {C : Category} `{@Initial C} (F : C ⟶ C)
   (CC : @Cocomplete C)
@@ -49,24 +48,13 @@ Proof.
   exact (adamek F (CC _ (Chain F)) D).
 Qed.
 
-(* The option endofunctor [NatF X := option X = 1 + X] on COQ (Instance/Coq.v).
-   It is the polynomial endofunctor whose initial algebra is the type [nat]:
-   the structure map [1 + nat ~> nat] is [O]/[S] ([None ↦ O], [Some k ↦ S k]),
-   and initiality is exactly primitive recursion on [nat].
+(*
+   The option 自函子 [NatF X := option X = 1 + X] on COQ (Instance/Coq.v).
 
-   [NatF] is the [A := unit] specialisation of the list endofunctor
-   [ListF A X := option (A × X)] (Instance/Coq/Lists.v) up to the isomorphism
-   [unit × X ≅ X]; that file carries the fully worked initial-algebra proof for
-   [ListF A] (with [list A] the carrier), so the analogous [nat] initiality for
-   [NatF] is exactly the [A := unit] reading of it.  Only the functor [NatF]
-   itself is formalized below; the initiality is proven in Instance/Coq/Nat.v,
-   where [nat_initial : @Initial (FAlg NatF)] exhibits [nat] with [O]/[S] as
-   the initial [NatF]-algebra — existence of the mediator by primitive
-   recursion, uniqueness by induction — and [nat_lambek] reads off the Lambek
-   isomorphism [1 + nat ≅ nat].  As with [list A], that proof is direct and
-   does not route through [adamek]: no [AdamekData] witness is constructed
-   anywhere in the tree, so the ω-colimit route stays conditional and the
-   concrete initial algebras are established by hand. *)
+   本节说明相关定义、性质与动机。 It is polynomial 自函子 whose initial 代数 is type [nat]: structure map [1 + nat ~> nat] is [O]/[S] ([None ↦ O], [Some k ↦ S k]), initiality is exactly primitive recursion [nat].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Keep obligation handling explicit and predictable (as in Instance/Coq/Lists.v):
    surface each functor law as its own obligation rather than letting the ambient

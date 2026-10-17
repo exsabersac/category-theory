@@ -21,22 +21,17 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := intros.
 
-(* Functorial images of isomorphisms are taken with the library's
-   [fobj_iso] (Theory/Functor.v, the [Proper] instance for [fobj]): its
-   [to] and [from] components are the literal [fmap] terms behind a
-   transparent obligation, so the [*_unfold] equations below remain
-   Leibniz (=) after unfolding. *)
+(*
+   本节说明相关定义、性质与动机。 Functorial images isomorphisms are taken library's.
 
-(* Rewriting toolkit for iso and [bimap] chains along left-nested
-   composition spines, used by every coherence proof of the transported
-   structure: composites are first normalized to the left-nested form
-   (via [rewrite !comp_assoc]) and then advanced by spine lemmas, each
-   keyed to match exactly one intended redex.  The toolkit is
-   transport-agnostic infrastructure, so it is scoped inside a module:
-   [Require Import]ing this file does not spill its generically named
-   lemmas into the top-level namespace.  The transport development
-   [Import]s it right below the module; downstream users opt in with
-   [Import Category.Theory.Equivalence.Monoidal.MonoidalTransportSpine]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+
+(*
+   本节说明相关定义、性质与动机。 Rewriting toolkit iso [bimap] chains along left-nested.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Module MonoidalTransportSpine.
 
@@ -53,10 +48,13 @@ Section IsoSpine.
 
 Context {A : Category}.
 
-(* From a commuting square against the [to] components of two
-   isomorphisms, derive the corresponding square against the [from]
-   components.  This turns each to-naturality lemma below into its
-   from-naturality companion. *)
+(*
+   From a 交换方块 against the [to] components of two
+
+   本节说明相关定义、性质与动机。 isomorphisms, derive corresponding square against [from] components.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma iso_from_natural {x y x' y' : A}
   (i : x ≅ y) (j : x' ≅ y') (f : x ~> x') (g : y ~> y')
   (H : g ∘ to i ≈ to j ∘ f) :
@@ -256,12 +254,13 @@ Section TransportData.
 
 Context (X : Category).
 
-(* The data of a monoidal structure on X — unit, tensor, unitors,
-   associator, and the six naturality squares — with the triangle and
-   pentagon laws deliberately left out.  This is the staging vehicle for
-   transported structures: the data and naturality land first, the two
-   coherence proofs are supplied separately to
-   [Monoidal_from_transport_data]. *)
+(*
+   The data of a 幺半 structure on X — unit, tensor, 单位子,
+
+   本节说明相关定义、性质与动机。 结合子, six naturality squares — triangle pentagon laws deliberately left out.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record MonoidalTransportData : Type := {
   transport_unit : X;
   transport_tensor : X ∏ X ⟶ X;
@@ -383,25 +382,27 @@ Local Notation G := (@quasi_inverse C D F E).
 Local Notation eta := (@equivalence_unit_at C D F E).
 Local Notation eps := (@equivalence_counit_at C D F E).
 
-(* Naturality of the unit and counit components — and the conjugation
-   form describing how G ◯ F acts on morphisms — is provided by
-   [equivalence_unit_to_natural]/[equivalence_unit_from_natural],
-   [equivalence_counit_to_natural]/[equivalence_counit_from_natural] and
-   [equivalence_unit_conjugate] of Theory/Equivalence.v, stated there
-   beside the accessors [equivalence_unit_at]/[equivalence_counit_at]. *)
+(*
+   本节说明相关定义、性质与动机。 Naturality unit counit components — conjugation.
 
-(* The defect of the chosen unit/counit pair: the composite
-   G d ~> G F G d ~> G d measuring how far the pair is from satisfying
-   the zig-zag identity at G.  For an adjoint equivalence it would be the
-   identity; in general it is merely a natural automorphism of G d. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+
+(*
+   The defect of the chosen unit/counit pair: the 复合
+
+   本节说明相关定义、性质与动机。 G d ~> G F G d ~> G d measuring how far pair is from satisfying zig-zag identity at G. For 伴随 等价 it would be identity;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition transport_defect (d : D) : G d ≅ G d :=
   fobj_iso G _ _ (eps d) ⊙ eta (G d).
 
-(* The [*_unfold] equations here and below spell out the components of the
-   isomorphisms just defined.  Each is Leibniz (=), not ≈, because the two
-   sides are the very same term after unfolding the definition — the
-   [bimap_fmap] convention of Functor/Bifunctor.v — which lets them be
-   used as rewrite rules with no setoid side conditions. *)
+(*
+   本节说明相关定义、性质与动机。 The [*_unfold] equations here below spell out components the. isomorphisms just defined.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma transport_defect_to_unfold (d : D) :
   to (transport_defect d) = fmap[G] (to (eps d)) ∘ to (eta (G d)).
 Proof. reflexivity. Qed.
@@ -433,11 +434,11 @@ Proof.
   apply transport_defect_to_natural.
 Qed.
 
-(* The rectified counit: correcting the chosen counit by the inverse of
-   the defect yields a counit for the same quasi-inverse and unit that
-   satisfies the zig-zag identity at G (proved below).  This is the
-   classical improvement step in showing that every equivalence refines
-   to an adjoint equivalence, done here only on the counit side. *)
+(*
+   本节说明相关定义、性质与动机。 The rectified counit: correcting chosen counit inverse of. defect yields counit same quasi-inverse unit that satisfies zig-zag identity at G (proved below).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition transport_counit (d : D) : F (G d) ≅ d :=
   eps d ⊙ fobj_iso F _ _ (iso_sym (transport_defect d)).
 
@@ -522,12 +523,13 @@ Next Obligation.
   apply fmap_comp.
 Qed.
 
-(* The action of the transported tensor on a pair of morphisms, written
-   out.  [bimap[Transported_Tensor] f g] reduces to exactly this term; the
-   D-side lemmas below are stated directly in this form so that every
-   object index in a proof goal is in the same (reduced) representation.
-   The [Build_MonoidalTransportData] at the end of the file converts them
-   back to the [bimap] phrasing of the record fields definitionally. *)
+(*
+   The action of the transported tensor on a pair of 态射, written
+
+   本节说明相关定义、性质与动机。 out. [bimap[Transported_Tensor] f g] reduces exactly this term; D-side lemmas below are stated directly this form so that every 对象 index proof goal is same (reduced) representation.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Notation Tbimap f g := (fmap[F] (fmap[G] f ⨂[M] fmap[G] g)).
 
 (* The transported left unitor:
@@ -825,9 +827,11 @@ Definition Transported_Monoidal_Data : MonoidalTransportData D :=
     (@Transported_to_tensor_assoc_natural)
     (@Transported_from_tensor_assoc_natural).
 
-(* The triangle law of the transported structure.  The zig-zag identity
-   collapses the counit factors of the two unitors, after which the law
-   reduces to the triangle of C conjugated by unit components. *)
+(*
+   本节说明相关定义、性质与动机。 The triangle law transported structure. The zig-zag identity.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Transported_triangle_identity (x y : D) :
   Tbimap (to (Transported_unit_right x)) (id[y])
     ≈ Tbimap (id[x]) (to (Transported_unit_left y))
@@ -853,10 +857,11 @@ Proof.
   now rewrite !comp_assoc.
 Qed.
 
-(* The pentagon law of the transported structure.  No zig-zag is needed:
-   the associator mentions only the unit isomorphism, whose components
-   cancel pairwise, and the residue is the pentagon of C surrounded by
-   naturality moves of the associator. *)
+(*
+   本节说明相关定义、性质与动机。 The pentagon law transported structure. No zig-zag is needed:.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Transported_pentagon_identity (x y z w : D) :
   Tbimap (id[x]) (to (Transported_tensor_assoc y z w))
       ∘ to (Transported_tensor_assoc x (F ((G y ⨂[M] G z)%object)) w)

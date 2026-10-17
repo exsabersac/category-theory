@@ -20,10 +20,13 @@ Generalizable All Variables.
 Notation "f ∘∘ g" := (vcompose f g).
 Notation "f ∘∘∘ g" := (hcompose (f, g)).
 
-(* The image of an isomorphism under a functor, as a transparent definition so
-   its `to`/`from` compute to `fmap` of the components — used to transport the
-   compositor/unitor isos of one pseudofunctor through the hom-functor of
-   another when composing pseudofunctors. *)
+(*
+   The image of an 同构 under a 函子, as a transparent 定义 so
+
+   本节说明相关定义、性质与动机。 its `to`/`from` compute `fmap` components — used transport compositor/unitor isos one 伪函子 through hom-函子 another when composing pseudofunctors.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition map_iso `(F : C ⟶ D) {x y : C} (i : x ≅ y) : F x ≅ F y := {|
   to   := fmap[F] (to i);
   from := fmap[F] (from i)
@@ -110,10 +113,13 @@ Qed.
 
 End Hcomp2.
 
-(* The pseudofunctor class, at full strength.  Following the nLab definition,
-   with the compositor oriented `pf1 (g ∘∘∘ f) ≅ pf1 g ∘∘∘ pf1 f` and the
-   unitor `pf1 bi1id ≅ bi1id` (both invertible), and the coherence laws phrased
-   through `hcomp2`, `hassoc` and the unitors of the target bicategory. *)
+(*
+   The 伪函子 class, at full strength.  Following the nLab 定义,
+
+   本节说明相关定义、性质与动机。 with compositor oriented `pf1 (g ∘∘∘ f) ≅ pf1 g ∘∘∘ pf1 f` unitor `pf1 bi1id ≅ bi1id` (both invertible), coherence laws phrased through `hcomp2`, `hassoc` 单位子 target 双范畴.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Pseudofunctor (B B' : Bicategory) := {
   pf0 : @bi0cell B → @bi0cell B';        (* action on 0-cells *)
 
@@ -135,9 +141,13 @@ Class Pseudofunctor (B B' : Bicategory) := {
     to (pf_comp g' f') ∘∘ fmap[pf1] (hcomp2 θ η)
       ≈ hcomp2 (fmap[pf1] θ) (fmap[pf1] η) ∘∘ to (pf_comp g f);
 
-  (* associativity hexagon: the two ways of comparing pf1 ((h∘g)∘f) with
-     pf1 h ∘∘∘ (pf1 g ∘∘∘ pf1 f) — reassociating the images first, versus
-     reassociating in the source and applying pf1 — agree. *)
+  (*
+   结合律 hexagon: the two ways of comparing pf1 ((h∘g)∘f) with
+
+   本节说明相关定义、性质与动机。 pf1 h ∘∘∘ (pf1 g ∘∘∘ pf1 f) — reassociating images first, versus reassociating source applying pf1 — agree.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   pf_assoc_coherence {w x y z : @bi0cell B}
       (h : @bicat B y z) (g : @bicat B x y) (f : @bicat B w x) :
     to (hassoc (pf1 h) (pf1 g) (pf1 f))
@@ -171,9 +181,11 @@ Arguments pf_comp {B B' _ x y z} g f.
 Notation "pf1[ F ]" := (@pf1 _ _ F%functor _ _)
   (at level 9, format "pf1[ F ]").
 
-(* The compositor's naturality in its `from` (lax) orientation, obtained from
-   `pf_comp_natural` by cancelling the invertible compositor on both sides.
-   This is the form the composite-pseudofunctor coherence proofs consume. *)
+(*
+   本节说明相关定义、性质与动机。 The compositor's naturality its `from` (lax) orientation, obtained from. `pf_comp_自然` cancelling invertible compositor both sides.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma pf_comp_natural_from {B B' : Bicategory} (P : Pseudofunctor B B')
   {x y z : @bi0cell B} {g g' : @bicat B y z} {f f' : @bicat B x y}
   (θ : g ~{@bicat B y z}~> g') (η : f ~{@bicat B x y}~> f') :
@@ -191,9 +203,13 @@ Proof.
   reflexivity.
 Qed.
 
-(* The identity pseudofunctor: the hom-functors are identity functors, and the
-   unitor and compositor are identity isomorphisms (both hold definitionally,
-   since `Id` preserves horizontal composition and identities on the nose). *)
+(*
+   The identity 伪函子: the hom-函子 are identity 函子, and the
+
+   本节说明相关定义、性质与动机。 unitor compositor are identity isomorphisms (both hold definitionally, since `Id` preserves horizontal 复合 identities nose).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Identity_Pseudofunctor (B : Bicategory) :
   Pseudofunctor B B := {|
   pf0 := fun x => x;
@@ -218,12 +234,13 @@ Next Obligation.
   simpl; rewrite ?hcomp2_id, ?bi2id_left, ?bi2id_right; reflexivity.
 Qed.
 
-(* Pure-associativity assembly of the pseudofunctor associativity hexagon.  In
-   an arbitrary category, given the four categorical facts that arise (two
-   compositor-naturality squares GN1/GN2, the outer factor's hexagon GHEX, and
-   the inner factor's hexagon transported through the outer hom-functor HGMF),
-   the two sides of the composite hexagon agree.  Isolating the bookkeeping here
-   keeps the composite proof free of associativity churn. *)
+(*
+   Pure-结合律 assembly of the 伪函子 结合律 hexagon.  In
+
+   本节说明相关定义、性质与动机。 an arbitrary 范畴, given four categorical facts that arise (two compositor-naturality squares GN1/GN2, outer factor's hexagon GHEX, inner factor's hexagon transported through outer hom-函子 HGMF), two sides 复合 hexagon agree.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma hex_assemble {C : Category}
   {s t v1 v2 v3 v4 u1 u2 u3 w1 w2 x1 : C}
   {P4 : s ~> v1} {P3 : v1 ~> v2} {P2 : v2 ~> v3} {P1 : v3 ~> v4} {A0 : v4 ~> t}
@@ -252,12 +269,13 @@ Proof.
   reflexivity.
 Qed.
 
-(* The composite of two pseudofunctors.  On 0-cells and hom-functors it is the
-   pointwise composite; its unitor and compositor are built from those of the
-   two factors, transporting the inner factor's iso through the outer factor's
-   hom-functor with `map_iso`.  The coherence proofs combine the two factors'
-   coherences with the naturality (`pf_comp_natural_from`) and functoriality of
-   the outer hom-functor. *)
+(*
+   The 复合 of two pseudofunctors.  On 0-cells and hom-函子 it is the
+
+   本节说明相关定义、性质与动机。 pointwise 复合; its unitor compositor are built from those two factors, transporting inner factor's iso through outer factor's hom-函子 `map_iso`.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section Compose.
 Context {B B' B'' : Bicategory}.
 Context (G : Pseudofunctor B' B'') (F : Pseudofunctor B B').

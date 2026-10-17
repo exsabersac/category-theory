@@ -43,50 +43,51 @@ Fixpoint zipWith `(f : a → b → c) (xs : list a) (ys : list b) : list c :=
   | x :: xs', y :: ys' => f x y :: zipWith f xs' ys'
   end.
 
-(* nLab: https://ncatlab.org/nlab/show/monoidal+functor
+(*
+   nLab: https://ncatlab.org/nlab/show/monoidal+functor
    Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor
 
-   An applicative functor is a lax monoidal endofunctor (with strength) on
-   the cartesian closed category of types, where [pure] is the unit map and
-   [ap] is derived from the product map [μ : F x × F y → F (x × y)].
+   本节：An applicative 函子 is lax 幺半 自函子 (with strength) 笛卡尔闭范畴 types, where [pure] is unit map [ap] is derived from 积 map [μ : F x × F y → F (x × y)]. There are two standard applicative structures lists.
 
-   There are two standard applicative structures on lists.  The one below
-   is the positional ZipList structure, where [ap] zips functions against
-   arguments via [zipWith id] (i.e. zipWith ($)).  The lawful ZipList
-   requires [pure x = repeat x] (an infinite stream) so that
-   [pure id <*> v = v]; with [pure x = [x]] the identity law fails because
-   the zip truncates to the shorter list.  The lawful, cartesian-product
-   structure that agrees with the list monad is [List_Applicative] below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Instance list_Applicative : Applicative list := {
   pure := λ _ x, [x];
   ap := λ _ _ f x, zipWith id f x;
 }.
 
-(* The [Alternative] instance exposes the underlying free-monoid structure of
-   lists: [empty = []] is the monoid unit and [choose = app] is concatenation
-   (the monoid multiplication).
-   Wikipedia: https://en.wikipedia.org/wiki/Free_monoid *)
+(*
+   The [Alternative] instance exposes the underlying free-幺半群 structure of
+
+   lists: [empty = []] is 幺半群 unit [choose = app] is concatenation (the 幺半群 乘法).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance list_Alternative : Alternative list := {
   empty := λ _, [];
   choose := List.app;
 }.
 
-(* [flatten] is the multiplication (join) of the list monad: it concatenates
-   a list-of-lists into a single list by repeated [app], i.e. the monad
-   multiplication μ : list (list A) → list A of the free-monoid monad.
-   nLab: https://ncatlab.org/nlab/show/list+monad *)
+(*
+   [flatten] is the 乘法 (join) of the list 单子: it concatenates
+
+   本节：a list-of-lists into single list repeated [app], i.e. 单子 乘法 μ : list (list A) → list A free-幺半群 单子.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint flatten `(xs : list (list A)) : list A :=
   match xs with
   | nil => nil
   | cons x xs' => app x (flatten xs')
   end.
 
-(* [mapM]/[forM] is the applicative traversal of a list (Haskell's
-   [traverse]/[mapM]): it threads the effect [m] through the list using the
-   lax-monoidal structure of [m], witnessing that [list] is a traversable
-   functor.  Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor *)
+(*
+   本节说明相关定义、性质与动机。 [mapM]/[forM] is applicative traversal list (Haskell's. [traverse]/[mapM]): it threads effect [m] through list using lax-幺半 structure [m], witnessing that [list] is traversable 函子.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint mapM `{Applicative m} {A B : Type} (f : A → m B) (l : list A) :
   m (list B) :=
   match l with
@@ -98,13 +99,14 @@ Definition concatMapM `{Applicative m} {A B : Type}
   (f : A → m (list B)) (l : list A) : m (list B) :=
   fmap flatten (mapM f l).
 
-(* nLab: https://ncatlab.org/nlab/show/list+monad
+(*
+   nLab: https://ncatlab.org/nlab/show/list+monad
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(functional_programming)#The_list_monad
 
-   The (free-monoid) list monad: unit [ret x = [x]] is the singleton, and
-   [bind x f = flatten (map f x)] is map-then-join.  The cartesian-product
-   applicative [List_Applicative] below is the one induced by this monad
-   (ap fs xs = bind fs (fun f => bind xs (fun x => [f x]))). *)
+   本节说明相关定义、性质与动机。 The (free-幺半群) list 单子: unit [ret x = [x]] is singleton, [bind x f = flatten (map f x)] is map-then-join.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Instance list_Monad : Monad list := {
   ret := λ _ x, [x];
@@ -166,10 +168,13 @@ Fixpoint insertM `{Monad m} {A : Type} (P : A → A → m bool)
 
 Arguments insertM {m H A} P z l : simpl never.
 
-(* [concat] is the monad multiplication [flatten] under its conventional
-   name; [concatMap f = flatten ∘ map f] is exactly Kleisli extension /
-   [bind] for the list monad with its arguments flipped.
-   nLab: https://ncatlab.org/nlab/show/list+monad *)
+(*
+   [concat] is the 单子 乘法 [flatten] under its conventional
+
+   本节说明相关定义、性质与动机。 name; [concatMap f = flatten ∘ map f] is exactly Kleisli extension / [bind] list 单子 its arguments flipped.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition concat {A} : list (list A) → list A := flatten.
 Definition concatMap {A B} (f : A → list B) : list A → list B :=
   flatten ∘ map f.
@@ -314,131 +319,20 @@ Fixpoint mapAccumL {A X Y : Type} (f : A → X → (A * Y))
   end.
 
 (*
-Definition getBy {a} (p : a → bool) (xs : list a) : Maybe a :=
-  (fun f => foldl f Nothing xs) (fun acc x =>
-    match acc with
-    | Just y => Just y
-    | Nothing =>
-      if p x
-      then Just x
-      else Nothing
-    end).
+   定义 getBy {a} (p : a → bool) (xs : list a) : Maybe a :=
 
-Definition sumlist : list nat → nat := foldl addn 0.
+   本节说明相关定义、性质与动机。 (fun f => foldl f Nothing xs) (fun acc x => match acc | Just y => Just y | Nothing => if p x then Just x else Nothing end). 定义 sumlist : list nat → nat := foldl addn 0. 定义 safe_nth {a} (xs : list a) (n : nat) (H : n < size xs) : a. Proof.
 
-Definition safe_nth {a} (xs : list a) (n : nat) (H : n < size xs) : a.
-Proof.
-  elim: xs => [|x xs IHxs] in n H *.
-    reflexivity.
-  elim: n => [|n IHn] in IHxs H *.
-    exact: x.
-  simpl in H.
-  apply: IHn.
-    move=> n0 H0.
-    apply: IHxs.
-    exact: H0.
-  by ordered.
-Defined.
-
-Definition safe_hd {a} (xs : list a) : 0 < size xs → a.
-Proof. case: xs => //. Defined.
-
-Arguments safe_hd [a] xs H.
-
-Definition safe_last {a} (xs : list a) : 0 < size xs → a.
-Proof.
-  case: xs => [//|y ys] /= *.
-  exact: (last y ys).
-Defined.
-
-Arguments safe_last [a] xs H.
-
-Fixpoint span {a} (p : a → bool) (l : list a) : (list a * list a) :=
-  match l with
-  | nil => (nil, nil)
-  | x :: xs =>
-    if p x
-    then let: (ys,zs) := span p xs in (x::ys,zs)
-    else (nil,l)
-  end.
-
-Program Fixpoint groupBy {a} (p : a → a → bool) (l : list a)
-  {measure (size l)} : list (list a) :=
-  match l with
-  | [] => nil
-  | x :: xs => let: (ys, zs) := span (p x) xs in
-               (x :: ys) :: groupBy p zs
-  end.
-Obligation 1.
-  clear groupBy.
-  rename Heq_anonymous into Heqe.
-  move: ys zs Heqe.
-  elim: xs => [|w ws /= IHws] ys zs /=.
-    by invert.
-  case: (p x w) => /=; last by invert.
-  case: (span (p x) ws) => [bs cs] in IHws *.
-  invert; subst.
-  specialize (IHws bs cs refl_equal).
-  move/ltP in IHws.
-  apply/ltP.
-  exact/leqW.
-Qed.
-
-Definition partition {a} (p : a → bool) : list a → list a * list a :=
-  foldr (fun x acc =>
-           if p x
-           then (x :: fst acc, snd acc)
-           else (fst acc, x :: snd acc)) ([], []).
-
-Definition map_fst_filter_snd :
-  forall (a b : eqType) (i : b) (xs : list (a * b)),
-  all (fun x => (x, i) \in xs) [list fst x | x <- xs & snd eq_dec x i].
-Proof.
-  move=> a b i xs.
-  apply/allP => x /mapP[[x1 y1]].
-  by rewrite mem_filter => /= /andP [/eqP/=-> pIxs ->].
-Qed.
-
-Fixpoint insert {a} (P : a → a → bool) (z : a) (l : list a) : list a :=
-  if l is x :: xs
-  then if P x z
-       then x :: insert P z xs
-       else z :: x :: xs
-  else [z].
-Arguments insert {a} P z l : simpl never.
-
-Fixpoint sortBy {a} (p : a → a → bool) (l : list a) : list a :=
-  match l with
-  | [] => nil
-  | x :: xs => insert p x (sortBy p xs)
-  end.
-
-Fixpoint sublist_impl_cons (a : eqType) (x : a) xs s :
-  sublist (x :: xs) s → sublist xs s.
-Proof.
-  elim: s => //= [z zs IHzs].
-  case: xs => // [y ys] in IHzs *.
-  case: (eq_dec x z).
-    case: (eq_dec y z).
-      exact: sublist_impl_cons.
-    exact.
-  case: (eq_dec y z).
-    move=> Hsub.
-    specialize (IHzs Hsub).
-    apply: sublist_impl_cons.
-    exact IHzs.
-  exact.
-Qed.
-
-Fixpoint between_all `(R : rel a) (xs : list a) : bool :=
-  if xs is y :: ys
-  then all (R y) ys && between_all R ys
-  else true.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* [List_Functor] repeats [list_Functor] above; both define [fmap = map] and
-   are therefore definitionally equal.  Being declared last, this instance is
-   the one typeclass resolution selects by default. *)
+(*
+   [List_函子] repeats [list_函子] above; both define [fmap = map] and
+
+   本节说明相关定义、性质与动机。 are therefore definitionally equal. Being declared last, this instance is one typeclass resolution selects default.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Instance List_Functor : Functor list := {
   fmap := map
@@ -456,10 +350,13 @@ Fixpoint list_ap {A B} (fs: list (A → B)) (xs: list A)
   | _ => nil
   end.
 
-(* The lawful, cartesian-product list applicative, induced by [list_Monad]:
-   it satisfies the four applicative laws (identity, composition,
-   homomorphism, interchange), unlike the ZipList-style [list_Applicative]
-   above.  Declared last, it is the instance resolution selects by default. *)
+(*
+   The lawful, 笛卡尔-积 list applicative, induced by [list_单子]:
+
+   本节说明相关定义、性质与动机。 it satisfies four applicative laws (identity, 复合, 同态, interchange), unlike ZipList-style [list_Applicative] above.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Instance List_Applicative : Applicative list := {
   pure := fun _ x => [x];

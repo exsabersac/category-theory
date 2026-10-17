@@ -72,15 +72,13 @@ Proof.
   now rewrite Hl.
 Defined.
 
-(* Awodey, *Category Theory*, §5.1: a factorization BETWEEN subobjects is
-   itself monic, so u ≤ v exhibits sub_dom u as a subobject of sub_dom v and
-   not merely of x.  The file used to assert this in the header prose above
-   with nothing in tree to back it.  The argument is the one [monic_cancel]
-   packages -- sub_mono u is monic, and it factors as sub_mono v ∘ k -- but it
-   is run inline here rather than by calling that lemma, because invoking it
-   would need to rewrite under [Monic] along the factoring equation and the
-   only ≈-transports for [Monic] in tree (Structure/Abelian.v,
-   Structure/Regular/Factorization.v) are both downstream of this file. *)
+(*
+   Awodey, *范畴 Theory*, §5.1: a factorization BETWEEN subobjects is
+
+   本节说明相关定义、性质与动机。 itself monic, so u ≤ v exhibits sub_dom u 子对象 sub_dom v not merely x. The file used assert this header prose above nothing tree back it.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sub_le_monic (u v : SubObj x) (H : sub_le u v) : Monic `1 H.
 Proof.
   destruct H as [k Hk]; simpl.
@@ -102,11 +100,13 @@ Proof.
   now rewrite Hk, Hk'.
 Qed.
 
-(* Two subobjects are equivalent exactly when each factors through the other:
-   the isomorphism supplies both factorizations, and conversely mutual
-   factorizations k, l compose to endomorphisms over the same mono, hence to
-   the identity by monicity, assembling an isomorphism of domains. Ends in
-   Defined because both directions transport data. *)
+(*
+   Two subobjects are equivalent 当且仅当 each factors through the other:
+
+   本节说明相关定义、性质与动机。 the 同构 supplies both factorizations, conversely mutual factorizations k, l compose endomorphisms over same mono, hence identity monicity, assembling 同构 domains.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem sub_equiv_iff_mutual (u v : SubObj x) :
   (u ≈ v) ↔ (sub_le u v * sub_le v u).
 Proof.

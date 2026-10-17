@@ -18,73 +18,17 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Where the naturality square went
+(*
+   本节说明相关定义、性质与动机。 Where naturality square went. Given τ : S ⟹ T there are two ways turn f : c ~> c' into 态射 S c ~> T c': travel S then transform, τ_{c'} ∘ fmap[S] f, transform then travel T, fmap[T] f ∘ τ_c.
 
-   Given τ : S ⟹ T there are two ways to turn f : c ~> c' into a morphism
-   S c ~> T c': travel by S and then transform, τ_{c'} ∘ fmap[S] f, or
-   transform and then travel by T, fmap[T] f ∘ τ_c.  The naturality square
-   says precisely that the two agree, so the pair collapses into one
-   operation on arrows — and that operation is the arrow family.  This is
-   the point of the exercise, and it is recorded here as
-   [Transform_to_Arrows_alt]: the family built from τ by the first formula
-   satisfies the second, the proof being [naturality] and nothing else.
-   In the reverse direction the components are read off the identities,
-   τ_c := τ (id[c]), and the naturality square is recovered as
-   [τ_arr_diagonal_naturality].
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   Object-free presentations run through the library one level further
-   down.  Theory/Metacategory/ArrowsOnly.v carries Mac Lane's arrows-only
-   axiomatization of a CATEGORY (CWM §I.1): there is no sort of objects at
-   all, an object being recovered as an identity arrow, and
-   [Category_from_Metacategory] builds a [Category] whose objects are the
-   identity arrows [{i | is_identity i}] of a [Metacategory].  The move
-   made here is the same move one dimension up — the components of a
-   transformation are its values at the identity arrows — and the
-   machinery is entirely separate: that file's partial composition on
-   [N]-indexed arrows shares no constant with this one.
+(*
+   本节说明相关定义、性质与动机。 Two equations, both which carry content. The tree's [Transform] carries [naturality] together [naturality_sym], but those are one equation two orientations, kept apart so that 对偶 holds definitionally;
 
-   A third reading of the same fusion is the interval category.  As
-   Instance/Two.v records, a natural transformation between two functors
-   C ⟶ D is a functor C ∏ 2 ⟶ D, a directed homotopy; the arrow family is
-   what such a functor does to the arrows of C ∏ 2 that cross the
-   interval, namely (f, TwoXY) ↦ τ f.  The walking arrow 2 reappears below
-   as the base of the independence countermodels. *)
-
-(* Two equations, both of which carry content
-
-   The tree's [Transform] carries [naturality] together with
-   [naturality_sym], but those are one equation in two orientations, kept
-   apart so that duality holds definitionally; the comment above
-   [Transform] says so, and [Build_Transform'] derives the second from the
-   first by [symmetry].  The two splice laws here are not of that kind.
-   Neither implies the other, and section [Independence] below proves it
-   with two concrete families over the walking arrow 2 (Instance/Two.v)
-   and the walking parallel pair (Instance/Parallel.v), whose two arrows
-   ParX ~> ParY are non-equivalent: [dom_family], which reads only the
-   domain of its argument, satisfies the left law ([dom_family_left]) and
-   refutes the right one ([dom_family_not_right]); [cod_family], which
-   reads only the codomain, does the reverse.  Both are respectful
-   ([dom_family_respects], [cod_family_respects]), so the independence is
-   not an artifact of dropping respectfulness.
-
-   What the two laws jointly buy is respectfulness itself.  A family that
-   respects ≈ in its argument is what the tree's setoid discipline
-   normally has to require as a field, but here it is a consequence:
-   [τ_arr_from_left] proves τ f ≈ fmap[T] f ∘ τ (id[c]) by rewriting once
-   with each law — the left law supplies fmap[T] f ∘ τ (id) ≈ τ (f ∘ id),
-   the right law supplies τ (f ∘ id) ≈ τ f ∘ fmap[S] (id) — and the
-   right-hand side depends on f only through fmap[T] f, which respects ≈
-   already.  [τ_arr_respects] is that argument, and the record therefore
-   has no [Proper] field.  Each law alone reaches only one half of the
-   detour: the equations constrain the family at terms literally of the
-   form g ∘ f, so passing between τ f and τ (f ∘ id) is itself an appeal
-   to a law, and it is the other one.
-
-   The dual reading [τ_arr_from_right], τ f ≈ τ (id[c']) ∘ fmap[S] f, is
-   available on the same footing, and the equality of the two right-hand
-   sides is the naturality square of the diagonal family c ↦ τ (id[c]).
-   That is the whole content of the reverse direction of the
-   correspondence, and it is what [Arrows_to_Transform] is built from. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ArrowTransform.
 
@@ -93,23 +37,13 @@ Context {D : Category}.
 Context {S : C ⟶ D}.
 Context {T : C ⟶ D}.
 
-(* An arrow-indexed family: one morphism S c ~> T c' for each f : c ~> c',
-   with the two splice laws.  [τ_arr_left] absorbs a post-composition into
-   the family through T, [τ_arr_right] absorbs a pre-composition through
-   S; together they are Mac Lane's displayed chain, and [τ_arr_splice]
-   below states that chain as the single equation it is usually written
-   as.
+(*
+   An arrow-indexed family: one 态射 S c ~> T c' for each f : c ~> c',
 
-   A universe note, since the parent file is careful about this and a
-   reader comparing the two will notice the difference.  Where
-   Theory/Natural/Transformation.v declares its six universes up front and
-   keeps the hom and proof levels of each category independent, the record
-   below lets them be inferred, and inference collapses the hom level onto
-   the proof level in both categories.  So [Transform] applies at strictly
-   more instantiations than [ArrowTransform] does.  Nothing here needs the
-   extra generality, and the correspondence theorems below are stated at
-   the shared instantiation, but the asymmetry is real and is recorded
-   rather than papered over. *)
+   本节说明相关定义、性质与动机。 with two splice laws. [τ_arr_left] absorbs post-复合 into family through T, [τ_arr_right] absorbs pre-复合 through S;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record ArrowTransform := {
   τ_arr {c c' : C} (f : c ~> c') : S c ~> T c';
@@ -134,9 +68,11 @@ Proof.
   apply τ_arr_right.
 Qed.
 
-(* The family is determined by its values at the identities, in two ways.
-   Each derivation uses BOTH laws: the detour through the padded term
-   f ∘ id[c] is legitimized by one law and removed by the other. *)
+(*
+   本节说明相关定义、性质与动机。 The family is determined its values at identities, two ways..
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma τ_arr_from_left (A : ArrowTransform) {c c' : C} (f : c ~> c') :
   τ_arr A f ≈ fmap[T] f ∘ τ_arr A (id[c]).
@@ -218,9 +154,11 @@ Next Obligation.
   now rewrite comp_assoc.
 Qed.
 
-(* The other formula for the same family: transform, then transport along
-   T.  That the two agree IS the naturality square of N — the proof is
-   [naturality] alone — and it is the observation the exercise turns on. *)
+(*
+   本节说明相关定义、性质与动机。 The other formula same family: transform, then transport along. T.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Transform_to_Arrows_alt (N : S ⟹ T) {c c' : C} (f : c ~> c') :
   τ_arr (Transform_to_Arrows N) f ≈ fmap[T] f ∘ transform[N] c.
@@ -230,10 +168,13 @@ Proof.
   apply naturality.
 Qed.
 
-(* From an arrow family back to a transformation: the components are the
-   values at the identities, and the naturality square is
-   [τ_arr_diagonal_naturality].  [Build_Transform'] supplies the symmetric
-   orientation, so nothing further is proved here. *)
+(*
+   From an arrow family back to a 变换: the components are the
+
+   本节说明相关定义、性质与动机。 values at identities, naturality square is [τ_arr_diagonal_naturality].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Arrows_to_Transform (A : ArrowTransform) : S ⟹ T :=
   Build_Transform' (fun c => τ_arr A (id[c]))
@@ -278,25 +219,11 @@ Proof.
   apply H.
 Qed.
 
-(* Uniqueness, in the four forms one wants of it.
+(*
+   本节说明相关定义、性质与动机。 Uniqueness, four forms one wants it.. [Transform_determined_by_arrows]: 自然变换 is determined its arrow family, so assignment is injective up ≈.
 
-   [Transform_determined_by_arrows]: a natural transformation is determined
-   by its arrow family, so the assignment is injective up to ≈.
-   [Arrows_determined_by_transform]: an arrow family is determined by the
-   transformation it induces, i.e. by its diagonal.
-   [Arrows_unique_transform]: the transformation inducing a given family is
-   unique — with [Arrows_to_Transform_to_Arrows] for existence, this is
-   Mac Lane's "arises from a unique natural transformation".
-   [Transform_unique_arrows]: and the family induced by a transformation is
-   unique.
-
-   These four are COROLLARIES, not four independent facts: each follows
-   mechanically from the two round trips together with the two
-   respectfulness instances, as an audit of the first commit verified by
-   re-deriving all of them.  They are stated separately because each is
-   the form some downstream argument will want, and because
-   [Arrows_unique_transform] is literally the uniqueness clause of Mac
-   Lane's exercise. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem Transform_determined_by_arrows (N M : S ⟹ T) :
   Transform_to_Arrows N ≈ Transform_to_Arrows M → N ≈ M.
@@ -338,10 +265,13 @@ Proof.
   now rewrite (H c').
 Qed.
 
-(* The correspondence as an isomorphism of setoids in Sets, in the manner
-   of [classifier_classifies] (Structure/SubobjectClassifier.v): the
-   underlying maps are the two directions above, and the two round trips
-   are the two theorems above. *)
+(*
+   The correspondence as an 同构 of setoids in Sets, in the manner
+
+   本节说明相关定义、性质与动机。 of [classifier_classifies] (Structure/SubobjectClassifier.v): underlying maps are two directions above, two round trips are two theorems above.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem Transform_Arrows_iso :
   @Isomorphism Sets {| carrier := S ⟹ T |} {| carrier := ArrowTransform |}.
@@ -366,11 +296,13 @@ End ArrowTransform.
 
 Arguments ArrowTransform {C D} S T.
 
-(* The identity transformation's arrow family is the functorial action of
-   the functor itself: a functor is its own arrow family, which is the
-   arrows-only counterpart of the identity arrows standing in for the
-   objects.  This also witnesses that [ArrowTransform] is inhabited for
-   every endo-pair (F, F). *)
+(*
+   The identity 变换's arrow family is the functorial action of
+
+   本节说明相关定义、性质与动机。 the 函子 itself: 函子 is its own arrow family, which is arrows-only counterpart identity arrows standing 对象.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Transform_to_Arrows_nat_id `(F : C ⟶ D) {c c' : C} (f : c ~> c') :
   τ_arr (Transform_to_Arrows (@nat_id C D F)) f ≈ fmap[F] f.
@@ -408,11 +340,11 @@ Lemma diagonal_fmap {C J : Category} (x : C) {c c' : J} (f : c ~> c') :
   fmap[Δ[J](x)] f ≈ id[x].
 Proof. reflexivity. Qed.
 
-(* Parallel (Instance/Parallel.v) has exactly two arrows ParX ~> ParY, and
-   they are not equivalent: its hom-setoid compares the boolean tags that
-   index the arrows.  The two objects are named again at the type
-   [Parallel] so that the ambient category is available to inference in
-   every statement below. *)
+(*
+   本节说明相关定义、性质与动机。 Parallel (Instance/Parallel.v) has exactly two arrows ParX ~> ParY, and. they are not equivalent: its hom-setoid compares boolean tags that index arrows.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition parX : Parallel := ParX.
 Definition parY : Parallel := ParY.
@@ -428,23 +360,24 @@ Proof.
   discriminate.
 Qed.
 
-(* The two constant functors 2 ⟶ Parallel that carry every example and
-   every countermodel below: one sending all of 2 to parX, the other
-   sending all of 2 to parY.  Their functorial actions are identities, by
-   [diagonal_fmap]. *)
+(*
+   The two constant 函子 2 ⟶ Parallel that carry every example and
+
+   本节说明相关定义、性质与动机。 every countermodel below: one sending all 2 parX, other sending all 2 parY.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Local Notation ConstX := (Δ[_2](parX)).
 Local Notation ConstY := (Δ[_2](parY)).
 
 Section ConcreteArrows.
 
-(* A concrete non-identity example: the constant arrow family at
-   h : parX ~> parY, taken between ConstX and ConstY.  Both splice laws
-   hold because both functorial actions are identities.  Nothing here is
-   an identity transformation — the source and target functors differ —
-   and the record is thereby shown non-vacuous over a pair of distinct
-   functors as well as over the pairs (F, F) covered by
-   [Transform_to_Arrows_nat_id]. *)
+(*
+   本节说明相关定义、性质与动机。 A concrete non-identity example: constant arrow family at. h : parX ~> parY, taken between ConstX ConstY. Both splice laws hold because both functorial actions are identities.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition const_arrows (h : parX ~> parY) : ArrowTransform ConstX ConstY.
 Proof.
@@ -456,9 +389,13 @@ Proof.
     now rewrite diagonal_fmap, id_right.
 Defined.
 
-(* The correspondence computes on it: the induced transformation has h at
-   every component (by conversion alone), and the family recovered from
-   that transformation is again the constant family. *)
+(*
+   The correspondence computes on it: the induced 变换 has h at
+
+   本节说明相关定义、性质与动机。 every component (by conversion alone), family recovered from that 变换 is again constant family.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma const_arrows_transform (h : parX ~> parY) (c : _2) :
   transform[Arrows_to_Transform (const_arrows h)] c ≈ h.
@@ -471,10 +408,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* Non-triviality, concretely: the two constant families at the two arrows
-   of Parallel are distinct, hence so are the transformations they induce
-   — the latter by [Arrows_determined_by_transform], i.e. through the
-   round trip rather than by inspection. *)
+(*
+   本节说明相关定义、性质与动机。 Non-triviality, concretely: two constant families at two arrows. Parallel are distinct, hence so are transformations they induce — latter [Arrows_determined_by_transform], i.e.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma const_arrows_distinct :
   ¬ (const_arrows par_one ≈ const_arrows par_two).
@@ -497,26 +435,17 @@ End ConcreteArrows.
 
 Section Independence.
 
-(* The two splice laws are independent: neither follows from the other,
-   with or without respectfulness.  Both countermodels live over the same
-   pair of constant functors ConstX, ConstY : 2 ⟶ Parallel, where both
-   functorial actions are identities, so that the left law reads
-   τ f ≈ τ (g ∘ f) and the right law reads τ (g ∘ f) ≈ τ g.  The first
-   constrains the family only along the domain of its argument, the second
-   only along the codomain, and in the walking arrow 2 the two come apart
-   at the non-identity arrow TwoXY : TwoX ~> TwoY. *)
+(*
+   本节说明相关定义、性质与动机。 The two splice laws are independent: neither follows from other,. without respectfulness.
 
-(* A LIMITATION of these two countermodels, disclosed because an audit of
-   the first commit called it out: their respectfulness lemmas below hold
-   for a reason that has nothing to do with the families.  The hom-setoid
-   of the walking arrow is Leibniz equality (Instance/Two.v's
-   Morphism_equality), so EVERY function out of one of its hom-types
-   respects `≈` automatically.  The two lemmas therefore establish that
-   independence survives the presence of a respectfulness field, which is
-   what they are for, but they are not evidence that these particular
-   families are well behaved.  The closing section of this file supplies
-   countermodels over a hom-setoid that genuinely quotients, where
-   respectfulness is a real constraint. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+
+(*
+   本节说明相关定义、性质与动机。 A LIMITATION these two countermodels, disclosed because audit of. first commit called it out: their respectfulness lemmas below hold reason that has nothing do families.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition dom_family {c c' : _2} (f : c ~> c') : ConstX c ~> ConstY c' :=
   match c with
@@ -577,22 +506,11 @@ End Independence.
 (* ------------------------------------------------------------------------ *)
 (** ** Neither law alone implies respectfulness *)
 
-(* [τ_arr_respects] above derives respectfulness of the family from the two
-   splice laws TOGETHER, and the derivation visibly uses both: each law
-   supplies one leg of the detour through the padded term `f ∘ id`.  That
-   left open whether one law alone might already suffice by some other
-   route.  It does not, in either direction, and this section settles it
-   with countermodels.  (The first commit of this file left the question
-   open; an audit resolved it and the argument is integrated here.)
+(*
+   本节说明相关定义、性质与动机。 [τ_arr_respects] above derives respectfulness family from two. splice laws TOGETHER, derivation visibly uses both: each law supplies one leg detour through padded term `f ∘ id`.
 
-   The question cannot even be POSED over the walking arrow used above,
-   because its hom-setoid is Leibniz equality and respectfulness there is
-   free.  What is needed is a base category whose hom-setoid genuinely
-   quotients — two arrows that Rocq can tell apart but that the setoid
-   identifies.  The blur categories below are the minimal such thing: one
-   object, two arrows, ALL arrows equivalent.  Their composition is chosen
-   degenerate in the two possible ways, which is exactly what makes one
-   splice law hold trivially while respectfulness collapses. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition BlurRight : Category := {|
   obj     := unit;

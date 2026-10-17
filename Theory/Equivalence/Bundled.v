@@ -33,10 +33,13 @@ Definition equivalence_quasi_inverse {C D : Category} (E : C ≃ D) :
   D ⟶ C :=
   @quasi_inverse C D (`1 E) (`2 E).
 
-(* Composition of equivalences, at the unbundled level.  The composite
-   G ◯ F is quasi-inverted by F′ ◯ G′ (primes denoting the chosen
-   quasi-inverses): each cell collapses by reassociation followed by the
-   corresponding cell of the inner equivalence, then of the outer one. *)
+(*
+   复合 of equivalences, at the unbundled level.  The 复合
+
+   本节说明相关定义、性质与动机。 G ◯ F is quasi-inverted F′ ◯ G′ (primes denoting chosen quasi-inverses): each cell collapses reassociation followed corresponding cell inner 等价, then outer one.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Compose.
 
@@ -79,11 +82,13 @@ Definition EquivalenceOfCategories_Compose :
 
 End Compose.
 
-(* Equivalence of categories is reflexive, symmetric and transitive.
-   These are data-carrying Definitions at the bundled level, not instances
-   of the standard library's Reflexive/Symmetric/Transitive classes: the
-   bundle is Type-valued and choice-carrying, and must never be conjured
-   by resolution. *)
+(*
+   范畴等价 is reflexive, 对称 and transitive.
+
+   本节说明相关定义、性质与动机。 These are data-carrying Definitions at bundled level, not instances standard library's Reflexive/对称/Transitive classes: bundle is Type-valued choice-carrying, must never be conjured resolution.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Equivalence_refl (C : Category) : C ≃ C :=
   (Id[C]; @EquivalenceOfCategories_Id C).
@@ -96,9 +101,13 @@ Definition Equivalence_trans {C D E : Category}
   (E1 : C ≃ D) (E2 : D ≃ E) : C ≃ E :=
   (`1 E2 ◯ `1 E1; EquivalenceOfCategories_Compose (`2 E1) (`2 E2)).
 
-(* Two sanity corollaries, definitional on the functor components: symmetry
-   is involutive on the underlying data, and the functor carried by a
-   composite is the composite of the carried functors. *)
+(*
+   Two sanity corollaries, definitional on the 函子 components: symmetry
+
+   is involutive underlying data, 函子 carried 复合 is 复合 carried 函子.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary Equivalence_sym_involutive {C D : Category} (E : C ≃ D) :
   `1 (Equivalence_sym (Equivalence_sym E)) ≈ `1 E.

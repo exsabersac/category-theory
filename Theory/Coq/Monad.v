@@ -34,11 +34,13 @@ Context `{Monad F}.
    [join m ≈ m >>= id].  nLab: https://ncatlab.org/nlab/show/monad *)
 Definition join {x} (m : F (F x)) : F x := bind m id.
 
-(* Kleisli (fish) composition (>=>): the composition of the Kleisli category
-   of [F], whose arrows x ⇒ y are functions x → F y and whose identity is
-   [ret].  Categorically [(g ∘_Kl f) = μ ∘ F(g) ∘ f]; FP-side
-   [(f >=> g) x ≈ f x >>= g].
-   nLab: https://ncatlab.org/nlab/show/Kleisli+category *)
+(*
+   Kleisli (fish) 复合 (>=>): the 复合 of the Kleisli 范畴
+
+   本节说明相关定义、性质与动机。 of [F], whose arrows x ⇒ y are functions x → F y whose identity is [ret]. Categorically [(g ∘_Kl f) = μ ∘ F(g) ∘ f]; FP-side [(f >=> g) x ≈ f x >>= g].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition kleisli_compose {x y z : Type@{d}} `(f : x → F y) `(g : y → F z) :
   x → F z := λ x, bind (f x) g.
 
@@ -57,15 +59,21 @@ Definition liftM3 {x y z w : Type@{d}} (f : x → y → z → w) :
   Eval cbv beta iota zeta delta [ liftM2 ] in
     λ x y z, bind x (λ x, liftM2 (f x) y z).
 
-(* [apM] is the applicative [ap] (<*>) derived from the monad:
-   [apM fM aM ≈ fM >>= (λ f, liftM f aM)].  This is the canonical lax-monoidal
-   structure every monad induces (see [Applicative_Monad] below). *)
+(*
+   [apM] is the applicative [ap] (<*>) derived from the 单子:
+
+   本节说明相关定义、性质与动机。 [apM fM aM ≈ fM >>= (λ f, liftM f aM)]. This is canonical lax-幺半 structure every 单子 induces (see [Applicative_单子] below).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition apM {x y : Type@{d}} (fM : F (x → y)) (aM : F x) : F y :=
   bind fM (λ f, liftM f aM).
 
-(* [when]/[unless] are the standard Haskell conditional combinators: run the
-   effect [x] when (resp. unless) the guard holds, otherwise do nothing
-   [ret tt].  No categorical content beyond [ret]. *)
+(*
+   本节说明相关定义、性质与动机。 [when]/[unless] are standard Haskell conditional combinators: run the. effect [x] when (resp. unless) guard holds, otherwise do nothing [ret tt].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition when (b : bool) (x : F unit) : F unit :=
   if b then x else ret tt.
 
@@ -138,22 +146,26 @@ Instance Identity_Monad : Monad id | 9 := {
   bind := λ _ _ m f, f m;
 }.
 
-(* The reader monad [arrow x = (x → -)]: [ret] is the constant function and
-   [bind] threads the shared environment [r] through both computations.  It is
-   the monad of the [(x →) ⊣] currying adjunction (functions from a fixed [x]).
-   Wikipedia: https://en.wikipedia.org/wiki/Monad_(functional_programming)#Environment_monad *)
+(*
+   The reader 单子 [arrow x = (x → -)]: [ret] is the constant function and
+
+   本节说明相关定义、性质与动机。 [bind] threads shared environment [r] through both computations. It is 单子 [(x →) ⊣] currying 伴随 (functions from fixed [x]).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Instance arrow_Monad x : Monad (arrow x) := {
   ret := λ _ x _, x;
   bind := λ _ _ m f r, f (m r) r;
 }.
 
-(* [Monad_Distributes] packages the data needed to make the composite [M ∘ N]
-   a monad: a swap/prod map [mprod : N (M (N x)) → M (N x)].  This is the
-   half of a distributive law of [N] over [M] sufficient for [Compose_Monad];
-   a full distributive law N ∘ M ⇒ M ∘ N (a [BeckDistributiveLaw]) is the
-   structure that guarantees the composite is again a monad.
-   nLab: https://ncatlab.org/nlab/show/distributive+law *)
+(*
+   [单子_Distributes] packages the data needed to make the 复合 [M ∘ N]
+
+   本节：a 单子: swap/prod map [mprod : N (M (N x)) → M (N x)]. This is half 分配律 [N] over [M] sufficient [Compose_单子]; full 分配律 N ∘ M ⇒ M ∘ N (a [BeckDistributiveLaw]) is structure that guarantees 复合 is again 单子.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Monad_Distributes (M N : Type → Type) :=
   mprod : ∀ {x}, N (M (N x)) → M (N x).
 
@@ -163,11 +175,13 @@ Import MonadNotations.
 
 Open Scope monad_scope.
 
-(* The composite [M ∘ N] is a monad given a distributive law [Monad_Distributes]:
-   [ret] is [ret[M] ∘ pure[N]] (both units stacked) and [bind] uses [mprod] to
-   commute the inner [N] past the outer [M].  This is the standard
-   "monad-on-monad via a distributive law" construction.
-   nLab: https://ncatlab.org/nlab/show/distributive+law *)
+(*
+   The 复合 [M ∘ N] is a 单子 given a 分配律 [单子_Distributes]:
+
+   本节说明相关定义、性质与动机。 [ret] is [ret[M] ∘ pure[N]] (both units stacked) [bind] uses [mprod] commute inner [N] past outer [M]. This is standard "单子-on-单子 via 分配律" construction.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Instance Compose_Monad `{Monad M} `{Applicative N}
   `{@Monad_Distributes M N} : Monad (M ∘ N) := {
@@ -175,11 +189,11 @@ Instance Compose_Monad `{Monad M} `{Applicative N}
   bind := λ x y m f, m >>=[M] (mprod M N ∘ ap (@pure _ _ (x → M (N y)) f));
 }.
 
-(* The Yoneda construction [Yoneda F] is monadic whenever [F] is: this is the
-   continuation-passing presentation of [F], and the isomorphism
-   [Yoneda F ≅ F] (the Yoneda lemma) is a monad isomorphism, with [ret] and
-   [bind] transported across it ([join] here re-flattens after the CPS apply).
-   nLab: https://ncatlab.org/nlab/show/Yoneda+lemma *)
+(*
+   本节说明相关定义、性质与动机。 The Yoneda construction [Yoneda F] is monadic whenever [F] is: this is the.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Instance Yoneda_Monad `{Monad F} : Monad (Yoneda F) := {
   ret := λ _ x, λ r k, ret (k x);
@@ -199,10 +213,13 @@ Context `{Monad F}.
   fmap := @liftM _ _
 }.
 
-(* Every monad is applicative, with [pure = ret] (the unit η) and [ap = apM]
-   (sequential application via bind).  This is the canonical Monad ⇒
-   Applicative ⇒ Functor tower.
-   Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor *)
+(*
+   Every 单子 is applicative, with [pure = ret] (the unit η) and [ap = apM]
+
+   本节说明相关定义、性质与动机。 (sequential application via bind). This is canonical 单子 ⇒ Applicative ⇒ 函子 tower.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance Applicative_Monad@{} : Applicative F | 9 := {
   pure := @ret _ _;
   ap := @apM _ _;

@@ -29,11 +29,13 @@ Generalizable All Variables.
 
 (** ** The tensor fold *)
 
-(** The right fold of the tensor over the unit: the object realization
-    of a source context.  This is the [cprop_tensor_app] pattern of
-    Construction/ColouredPROP.v, valued in an arbitrary (non-strict)
-    monoidal category, so concatenation is reflected by a coherence
-    ISOMORPHISM rather than an equality. *)
+(*
+   * The right fold of the tensor over the unit: the 对象 realization
+
+   本节说明相关定义、性质与动机。 of source context. This is [cprop_tensor_app] pattern Construction/ColouredPROP.v, valued arbitrary (non-strict) 幺半范畴, so concatenation is reflected coherence ISOMORPHISM rather than equality.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition tensor_list {C : Category} `{M : @Monoidal C} (xs : list C) : C :=
   fold_right (fun a acc => (a ⨂ acc)%object) I xs.
 
@@ -100,16 +102,11 @@ Program Definition tfold_app (Γ Δ : list A) :
 Next Obligation. apply tfold_app_to_from. Qed.
 Next Obligation. apply tfold_app_from_to. Qed.
 
-(** ** Boundary casts on the fold
+(*
+   本节：* ** Boundary casts fold. [tcast e] is identity 态射 transported along propositional equality colour lists (Type-level 对象 data, per hom_cast discipline cited Theory/多元范畴.v).
 
-    [tcast e] is the identity morphism transported along a propositional
-    equality of colour lists (Type-level object data, per the hom_cast
-    discipline cited in Theory/Multicategory.v).  Lemmas quantified over
-    equalities with at least one free endpoint hold by [destruct]; the
-    loop-collapse lemma [tcast_loop] instead consumes the uniqueness of
-    list equality proofs [luip] supplied to the construction, exactly as
-    the UIP-dependent layer of Construction/ColouredPROP/Cast.v consumes
-    its colour decider. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition tcast {Γ Δ : list A} (e : Γ = Δ) : tfold Γ ~{C}~> tfold Δ :=
   match e with eq_refl => id end.
@@ -130,13 +127,11 @@ Proof using luip. rewrite (luip _ _ p q); reflexivity. Qed.
 Lemma tcast_loop {Γ : list A} (e : Γ = Γ) : tcast e ≈ id.
 Proof using luip. rewrite (luip _ _ e eq_refl); reflexivity. Qed.
 
-(** ** The splice map
+(*
+   本节说明相关定义、性质与动机。 * ** The splice map. [msplice Γ1 g] realizes single-slot 复合 source contexts: it rewrites [b]-slot zipper [(Γ1, b, Γ2)] argument [g : tfold Δ ~> ob b], leaving blocks alone.
 
-    [msplice Γ1 g] realizes single-slot composition on source contexts:
-    it rewrites the [b]-slot of the zipper [(Γ1, b, Γ2)] by the argument
-    [g : tfold Δ ~> ob b], leaving the blocks alone.  Defined by
-    recursion on the prefix [Γ1], so that every law about it is an
-    induction with a one-line cons step. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fixpoint msplice (Γ1 : list A) {Γ2 Δ : list A} {b : A}
   (g : tfold Δ ~{C}~> ob b) :
@@ -146,11 +141,11 @@ Fixpoint msplice (Γ1 : list A) {Γ2 Δ : list A} {b : A}
   | a :: Γ1' => id[ob a] ⨂ msplice Γ1' g
   end.
 
-(** ** Unit coherence
+(*
+   本节说明相关定义、性质与动机。 * ** Unit coherence. The two lemmas feeding 单位律 多元范畴: folding away empty suffix is boundary cast, splicing unitor into slot is identity.
 
-    The two lemmas feeding the unit laws of the multicategory: folding
-    away an empty suffix is the boundary cast, and splicing the unitor
-    into a slot is the identity. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Folding an empty suffix away: the right unitor against the
     concatenation map is the cast along [Δ ++ [] = Δ], for any proof of
@@ -171,10 +166,11 @@ Proof using luip.
     now rewrite (IH (app_nil_r Δ)).
 Qed.
 
-(** Splicing the identity multimorphism (the right unitor on a
-    singleton context) into any slot is the identity: the core of the
-    right unit law.  Both endpoints are definitionally equal, since
-    [Γ1 ++ [b] ++ Γ2] and [Γ1 ++ b :: Γ2] are convertible. *)
+(*
+   本节说明相关定义、性质与动机。 * Splicing identity multimorphism (the right unitor a. singleton context) into any slot is identity: core right unit law.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma msplice_mid (Γ1 : list A) {Γ2 : list A} (b : A) :
   msplice Γ1 (Γ2:=Γ2) (Δ:=[b]) (b:=b) (to (@unit_right C _ (ob b))) ≈ id.
 Proof.
@@ -188,13 +184,13 @@ Proof.
     apply bimap_id_id.
 Qed.
 
-(** ** Associativity coherence
+(*
+   * ** 结合律 coherence
 
-    How the concatenation map interacts with a triple split: folding
-    [x ++ y ++ z] by way of [(x ++ y) ++ z] or by way of
-    [x ++ (y ++ z)] agrees up to the associator.  This is the
-    pentagon-powered core of the file; every associativity law of the
-    multicategory reduces to it. *)
+   本节说明相关定义、性质与动机。 How concatenation map interacts triple split: folding [x ++ y ++ z] way [(x ++ y) ++ z] way [x ++ (y ++ z)] agrees up 结合子. This is pentagon-powered core file;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma tfold_app_assoc (x y z : list A) (e : x ++ y ++ z = (x ++ y) ++ z) :
   (tfold_app_to x y ⨂ id[tfold z]) ∘ tfold_app_to (x ++ y) z ∘ tcast e
@@ -250,12 +246,11 @@ Proof using luip.
   - apply tcast_cons.
 Qed.
 
-(** ** Splice-versus-fold coherence
+(*
+   本节说明相关定义、性质与动机。 * ** Splice-versus-fold coherence. The two ways splice can sit against concatenation map: slot inside block being folded off (the NESTED shape), slot beyond block being folded off (the DISJOINT shape).
 
-    The two ways a splice can sit against the concatenation map: the
-    slot inside the block being folded off (the NESTED shape), and the
-    slot beyond the block being folded off (the DISJOINT shape).  Both
-    are stated over arbitrary proofs of their boundary equations. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Nested shape: folding [Γ2] off a context whose remaining prefix
     contains the slot.  The spliced argument [h] rides inside the left
@@ -331,12 +326,13 @@ Proof.
   - now rewrite IH.
 Qed.
 
-(** ** The two associativity cores
+(*
+   * ** The two 结合律 cores
 
-    Splice-after-splice in the two shapes of the multicategory
-    associativity laws, on the splice maps themselves (the outer
-    multimorphism [f] is peeled off by congruence in the instance
-    obligations). *)
+   本节说明相关定义、性质与动机。 Splice-after-splice two shapes 多元范畴 结合律 laws, splice maps themselves (the outer multimorphism [f] is peeled off congruence instance obligations).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Nested shape: the second slot lies INSIDE the context spliced by
     the first. *)
@@ -402,13 +398,11 @@ Proof using luip.
     now rewrite IH.
 Qed.
 
-(** ** The block form of the splice
+(*
+   本节说明相关定义、性质与动机。 * ** The block form splice. The splice map conjugated into three tensor blocks: prefix rides identity factor, argument acts middle block against fold suffix.
 
-    The splice map conjugated into three tensor blocks: the prefix
-    rides as an identity factor, and the argument acts on the middle
-    block against the fold of the suffix.  This is the bridge between
-    the recursive definition of [msplice] and blockwise reasoning, and
-    it is what the equivariance law reduces to. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma msplice_block (Γ1 : list A) {Γ2 Δ : list A} {b : A}
   (g : tfold Δ ~{C}~> ob b) :
   msplice Γ1 (Γ2:=Γ2) g
@@ -441,15 +435,11 @@ Definition tensor_list_app {C : Category} `{M : @Monoidal C}
   tensor_list (xs ++ ys) ≅ (tensor_list xs ⨂ tensor_list ys)%object :=
   tfold_app (fun x => x) xs ys.
 
-(** ** Swap-versus-fold coherence
+(*
+   本节说明相关定义、性质与动机。 * ** Swap-versus-fold coherence. The purely 幺半 square exchanging adjacent transposition two head factors fold tail: [m] is GENERIC 态射 [x ⨂ y ~> y ⨂ x] (in use, braiding), conjugated associators either side generic tail map [w].
 
-    The purely monoidal square exchanging an adjacent transposition of
-    the two head factors with a fold of the tail: [m] is a GENERIC
-    morphism [x ⨂ y ~> y ⨂ x] (in use, the braiding), conjugated by
-    associators on either side of a generic tail map [w].  Only
-    associator naturality and the pentagon enter — no braiding
-    coherence.  This is the swap case of the realization lemmas
-    below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SwapFold.
 
@@ -507,13 +497,11 @@ Qed.
 
 End SwapFold.
 
-(** ** Realizing permutations by braidings
+(*
+   本节说明相关定义、性质与动机。 * ** Realizing permutations braidings. [perm_arrow p] realizes structural permutation 态射 between folds, CONTRAVARIANTLY: action multimorphisms is 预复合.
 
-    [perm_arrow p] realizes a structural permutation as a morphism
-    between the folds, CONTRAVARIANTLY: the action on multimorphisms is
-    precomposition.  Skips tensor an identity on the head, adjacent
-    swaps conjugate the braiding by associators, and transitivity
-    composes. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Realization.
 
@@ -589,14 +577,11 @@ Qed.
 
 End Realization.
 
-(** ** Equivariance of the splice
+(*
+   本节说明相关定义、性质与动机。 * ** Equivariance splice. The interaction [msplice] blockwise permutations: prefix, argument, suffix blocks may be permuted independently, this commutes splicing.
 
-    The interaction of [msplice] with blockwise permutations: the
-    prefix, argument, and suffix blocks may be permuted independently,
-    and this commutes with splicing.  Everything reduces to the
-    padding lemmas above in fold coordinates, plus bimap interchange —
-    the blocks never cross the slot, so no braiding coherence beyond
-    [perm_arrow_app_l] is needed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Equivariance.
 
@@ -653,11 +638,11 @@ Qed.
 
 End Equivariance.
 
-(** ** The equivariance core
+(*
+   本节说明相关定义、性质与动机。 * ** The equivariance core. Splicing commutes independent blockwise permutation prefix, argument boundary, suffix.
 
-    Splicing commutes with independent blockwise permutation of the
-    prefix, the argument boundary, and the suffix.  Both sides land in
-    the same hom-set on the nose, so no boundary cast appears. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section EquivarianceCore.
 
@@ -735,13 +720,13 @@ Qed.
 
 #[local] Obligation Tactic := intros.
 
-(** Any symmetric monoidal category, realized over a colour type [A],
-    yields a multicategory: multimorphisms out of [Γ] are morphisms out
-    of the tensor fold of [Γ], composition splices through the
-    concatenation isomorphism, and the symmetric action precomposes the
-    braiding realization.  The uniqueness of list equality proofs
-    [luip] discharges the arbitrary-loop cast laws (Hedberg supplies it
-    from a decider; see [ColouredPROP_Multicategory]). *)
+(*
+   * Any 对称 幺半范畴, realized over a colour type [A],
+
+   本节：yields 多元范畴: multimorphisms out [Γ] are 态射 out tensor fold [Γ], 复合 splices through concatenation 同构, 对称 action precomposes braiding realization.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Fold_Multicategory : Multicategory := {|
   mobj := A;
   mhom := fun Γ c => tfold ob Γ ~{C}~> ob c;
@@ -833,29 +818,25 @@ Qed.
 
 End Assembly.
 
-(** Every symmetric monoidal category yields a multicategory on its own
-    objects: [mhom Γ c := tensor_list Γ ~> c].  The uniqueness of list
-    equality proofs on objects is threaded as a hypothesis: the class's
-    [mcast_id] is quantified over ARBITRARY loops [e : Γ = Γ], and
-    transport along such a loop is provably trivial exactly when
-    parallel list equalities are equal — for an arbitrary object type
-    this is precisely the fibrewise-UIP discipline of
-    Construction/Grothendieck/Strict.v (a decider supplies it by
-    Hedberg, as below). *)
+(*
+   * Every 对称 幺半范畴 yields a 多元范畴 on its own
+
+   本节：对象: [mhom Γ c := tensor_list Γ ~> c]. The uniqueness list equality proofs 对象 is threaded 假设: class's [mcast_id] is quantified over ARBITRARY loops [e : Γ = Γ], transport along such loop is provably trivial 当且仅当 parallel list equaliti
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition RepresentableMulticategory (C : Category)
   `{S : @SymmetricMonoidal C}
   (luip : ∀ (Γ Δ : list C) (p q : Γ = Δ), p = q) : Multicategory :=
   Fold_Multicategory (fun x : C => x) luip.
 
-(** ** The multicategory of a coloured PROP
+(*
+   * ** The 多元范畴 of a coloured PROP
 
-    A coloured PROP is a strict symmetric monoidal category whose
-    objects are colour lists, so it realizes its own colours: the
-    multicategory has [mobj := Colour] and multimorphisms out of the
-    tensor fold of wires.  The colour decider [Cdec] supplies the
-    uniqueness of list equality proofs by Hedberg ([UIP_dec], axiom
-    free), exactly the decider discipline of the coloured spine
-    (Construction/ColouredPROP/Cast.v). *)
+   本节：A coloured PROP is strict 对称 幺半范畴 whose 对象 are colour lists, so it realizes its own colours: 多元范畴 has [mobj := Colour] multimorphisms out tensor fold wires.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Uniqueness of list equality proofs from an element decider. *)
 Definition list_uip_of_dec {A : Type}
@@ -863,10 +844,13 @@ Definition list_uip_of_dec {A : Type}
   ∀ (Γ Δ : list A) (p q : Γ = Δ), p = q :=
   UIP_dec (list_eq_dec dec).
 
-(** The tensor fold of wires is the canonical colour-list object: the
-    strict boundary equalities [cprop_unit_nil]/[cprop_tensor_app]
-    collapse the fold (a propositional equality of OBJECTS, the
-    sanctioned hom_cast discipline). *)
+(*
+   * The tensor fold of wires is the canonical colour-list 对象: the
+
+   本节说明相关定义、性质与动机。 strict boundary equalities [cprop_unit_nil]/[cprop_tensor_app] collapse fold (a propositional equality OBJECTS, sanctioned hom_cast discipline).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cprop_tfold {Colour : Type} (Q : ColouredPROP Colour)
   (Γ : list Colour) :
   tfold (@wire Colour Q) Γ = cprop_of_list Γ.

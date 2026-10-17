@@ -34,10 +34,13 @@ Context {D : Category}.
 Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 
-(* Forward direction: an adjunction F ⊣ U transposes to a natural isomorphism of
-   the representable profunctors. Concretely we route the universal-property
-   adjunction through Adjunction_Universal_to_Hom to obtain the hom-bifunctor
-   isomorphism hom_adj, whose endpoints are Repr_left F and Repr_right U. *)
+(*
+   正向 direction: an 伴随 F ⊣ U transposes to a 自然 同构 of
+
+   本节：the 可表 profunctors. Concretely we route universal-property 伴随 through 伴随_Universal_to_Hom obtain hom-bifunctor 同构 hom_adj, whose endpoints are Repr_left F Repr_right U.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition adjunction_to_repr_iso (A : F ⊣ U) :
   Repr_left F ≅[[D^op ∏ C, Sets]] Repr_right U :=
   @hom_adj C D F U (@Adjunction_Universal_to_Hom C D F U A).

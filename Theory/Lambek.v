@@ -61,13 +61,13 @@ Proof.
            iso_to_from := Hαh; iso_from_to := Hhα |}.
 Qed.
 
-(* Dually, the structure map of the final F-coalgebra is an isomorphism. The
-   category [FCoalg F] is [(FAlg (F^op))^op], so [@Terminal (FCoalg F)] is
-   definitionally [@Initial (FAlg (F^op))] and the final F-coalgebra is the
-   initial [F^op]-algebra. Its carrier [ν] is an object of [C^op], so this
-   isomorphism lives in [C^op]; applying [lambek] to [F^op] gives
-   [F^op ν ≅[C^op] ν], and its symmetric form [iso_sym] is the required
-   [ν ≅ F ν]. *)
+(*
+   Dually, the structure map of the final F-余代数 is an 同构. The
+
+   本节：范畴 [FCoalg F] is [(FAlg (F^op))^op], so [@Terminal (FCoalg F)] is definitionally [@Initial (FAlg (F^op))] final F-余代数 is initial [F^op]-代数. Its carrier [ν] is 对象 [C^op], so this 同构 lives [C^op];
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem lambek_final `(F : C ⟶ C) (T : @Terminal (FCoalg F)) :
   `1 (@terminal_obj (FCoalg F) T) ≅ F (`1 (@terminal_obj (FCoalg F) T)).
 Proof.

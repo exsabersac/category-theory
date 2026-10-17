@@ -39,13 +39,10 @@ Example Nat_Rig_mul_FinSet_product (m n : nat) :
 Example Nat_Rig_zero_FinSet : rig_zero Nat_Rig = 0%nat := eq_refl.
 Example Nat_Rig_one_FinSet : rig_one Nat_Rig = 1%nat := eq_refl.
 
-(** ** An independent witness for the converse bridge direction
+(*
+   本节说明相关定义、性质与动机。 * ** An independent witness converse bridge direction. [EndRig] applied preadditive 范畴 Rig development did not itself build: Instance/CMon/Biproduct.v's [CMon_Preadditive].
 
-    [EndRig] applied to a preadditive category the Rig development did
-    not itself build: Instance/CMon/Biproduct.v's [CMon_Preadditive].
-    Every commutative monoid M thus yields the rig of its monoid
-    endomorphisms — addition pointwise, multiplication composition —
-    inhabiting the converse direction of the bridge away from the
-    delooping it would otherwise be tested on. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CMon_EndRig (M : CMonObject) : RigObject :=
   EndRig CMon_Preadditive M.

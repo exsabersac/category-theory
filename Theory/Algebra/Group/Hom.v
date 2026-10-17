@@ -37,19 +37,23 @@ Context `{CM : @CartesianMonoidal C}.
 
 (** ** Reading a group object as an internal monoid *)
 
-(* The underlying monoid of a group object, in the [mu]/[eta] presentation
-   that [Mon] is indexed by.  [groupobject_is_monoid] lands in
-   Structure/Monoid.v's [MonoidObject]; [Monoid_of_MonoidObject]
-   (Theory/Algebra/Monoid/Product.v) renames its fields.  Both steps are at
-   the SAME monoidal base, so no tensor changes hands. *)
+(*
+   The underlying 幺半群 of a group 对象, in the [mu]/[eta] presentation
+
+   本节：that [Mon] is indexed by. [groupobject_is_幺半群] lands Structure/幺半群.v's [MonoidObject]; [幺半群_of_MonoidObject] (Theory/代数/幺半群/积.v) renames its fields.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition group_monoid {x : C} (G : GroupObject x) : Monoid x :=
   Monoid_of_MonoidObject (@groupobject_is_monoid _ _ _ G).
 
-(* The inversion morphism of a NAMED group object.  Declared because
-   Structure/Group.v's [inverse[G]] notation quotes the token [inverse],
-   which makes it a keyword: [@inverse _ _ _ G] is then a parse error, and
-   [inverse[x]] leaves the instance to resolution.  This accessor names the
-   instance explicitly; the two agree by [eq_refl] ([group_inverse_is]). *)
+(*
+   The inversion 态射 of a NAMED group 对象.  Declared because
+
+   本节说明相关定义、性质与动机。 Structure/Group.v's [inverse[G]] notation quotes token [inverse], which makes it keyword: [@inverse _ _ _ G] is then parse error, [inverse[x]] leaves instance resolution. This accessor names instance explicitly;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition group_inverse {x : C} (G : GroupObject x) : x ~> x :=
   @Category.Structure.Group.inverse _ _ _ G.
 
@@ -66,12 +70,13 @@ Example group_monoid_eta {x : C} (G : GroupObject x) :
 
 (** ** Group homomorphisms *)
 
-(* A homomorphism of group objects IS a homomorphism of the underlying monoid
-   objects.  There is no inverse-preservation field; that it holds anyway is
-   [GroupHom_inverse] below.  A plain [Definition] rather than a [Class]: the
-   equality with [MonoidHom] is then definitional, so every lemma of
-   Theory/Algebra/Monoid/Hom.v and Theory/Algebra/Monoid/Product.v about
-   monoid homomorphisms applies to group homomorphisms with no adapter. *)
+(*
+   A 同态 of group 对象 IS a 同态 of the underlying 幺半群
+
+   本节说明相关定义、性质与动机。 对象. There is no inverse-preservation field; that it holds anyway is [GroupHom_inverse] below.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition GroupHom {x y : C} (Gx : GroupObject x) (Gy : GroupObject y)
            (f : x ~> y) : Type :=
   MonoidHom (group_monoid Gx) (group_monoid Gy) f.
@@ -98,21 +103,13 @@ Lemma right_inverse_r {x : C} {G : GroupObject x} :
   mappend[G] ∘ (id[x] ⨂ group_inverse G ∘ ∆x) ≈ mempty[G] ∘ eliminate.
 Proof. rewrite comp_assoc; apply right_inverse. Qed.
 
-(* Awodey, Category Theory 2nd ed., Section 4.1: a morphism of the underlying
-   monoid objects automatically commutes with the inversions, so the
-   internal-group hom class needs no inverse-preservation axiom.
+(*
+   Awodey, 范畴 Theory 2nd ed., Section 4.1: a 态射 of the underlying
 
-   The elementwise argument is "f(a⁻¹) is a left inverse of f(a), and left
-   inverses are unique".  Diagrammatically: reshape (f ∘ ι_x) ⨂ f as
-   (f ⨂ f) ∘ (ι_x ⨂ id) with [bimap_comp], push f out through the
-   multiplication square [group_hom_mappend], collapse the remainder by the
-   SOURCE object's [left_inverse], and finish with the unit triangle
-   [group_hom_mempty].  Uniqueness of left inverses in the TARGET is
-   Structure/Group/Proofs.v's [left_inverse_unique], which is where the
-   diagonal's naturality and the terminality of I are spent.
+   本节说明相关定义、性质与动机。 幺半群 对象 automatically commutes inversions, so internal-group hom class needs no inverse-preservation axiom. The elementwise argument is "f(a⁻¹) is left inverse f(a), left inverses are unique".
 
-   Note what is NOT used: [right_inverse] of either object appears nowhere in
-   this proof. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem GroupHom_inverse {x y : C} {Gx : GroupObject x} {Gy : GroupObject y}
         {f : x ~> y} (F : GroupHom Gx Gy f) :
   f ∘ group_inverse Gx ≈ group_inverse Gy ∘ f.
@@ -144,20 +141,11 @@ Lemma GroupHom_equiv {x y : C} {Gx : GroupObject x} {Gy : GroupObject y}
       {f g : x ~> y} : f ≈ g → GroupHom Gx Gy f → GroupHom Gx Gy g.
 Proof. exact MonoidHom_equiv. Qed.
 
-(* Mac Lane, CWM 2nd ed., Section III.6, Exercise 2 (as scoped by issue #343);
-   Awodey Section 4.1's Group(C).  Objects are objects of C equipped with a
-   group-object structure, morphisms are C-morphisms equipped with a proof of
-   homomorphy, and equivalence is equivalence of the underlying morphisms —
-   the same sigma packaging as [Mon] (Theory/Algebra/Monoid/Hom.v) and as
-   [Sub] (Construction/Subcategory.v).
+(*
+   本节说明相关定义、性质与动机。 Mac Lane, CWM 2nd ed., Section III.6, Exercise 2 (as scoped issue #343);. Awodey Section 4.1's Group(C).
 
-   Named [GrpCat] and not [Grp]: Instance/Grp.v already declares
-   [Grp : Category], the concrete category of groups over [Sets], along with
-   [Grp_Cartesian], [Grp_Terminal], [Grp_Forget] and
-   [Grp_Forget_Faithful] — five collisions,
-   measured with [rg] rather than guessed.  This file requires none of those
-   modules, so nothing is ambiguous here; the rename exists so that a
-   consumer may import both. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition GrpCat : Category := {|
   obj     := { x : C & GroupObject x };
   hom     := fun X Y => { f : `1 X ~> `1 Y & GroupHom `2 X `2 Y f };
@@ -176,9 +164,13 @@ Program Definition GrpCat_Forget : GrpCat ⟶ C := {|
 #[export] Instance GrpCat_Forget_Faithful : Faithful GrpCat_Forget.
 Proof. constructor; intros X Y f g E; exact E. Qed.
 
-(* The forgetful functor to internal monoids.  Its arrow action is the
-   IDENTITY on the underlying data — that is exactly the content of
-   [GroupHom] being [MonoidHom] rather than a record extending it. *)
+(*
+   The forgetful 函子 to internal 幺半群.  Its arrow action is the
+
+   本节说明相关定义、性质与动机。 IDENTITY underlying data — 即 exactly content [GroupHom] being [MonoidHom] rather than record extending it.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition GrpCat_Mon : GrpCat ⟶ Mon C := {|
   fobj := fun X => (`1 X; group_monoid `2 X);
   fmap := fun _ _ f => (`1 f; `2 f)
@@ -187,11 +179,11 @@ Program Definition GrpCat_Mon : GrpCat ⟶ Mon C := {|
 #[export] Instance GrpCat_Mon_Faithful : Faithful GrpCat_Mon.
 Proof. constructor; intros X Y f g E; exact E. Qed.
 
-(* And FULL, which costs three lines because the two hom types are
-   CONVERTIBLE: [fobj[GrpCat_Mon] X ~{Mon C}~> fobj[GrpCat_Mon] Y] is
-   [{f & MonoidHom (group_monoid `2 X) (group_monoid `2 Y) f}], and that IS
-   [X ~{GrpCat}~> Y] by [GroupHom]'s definition.  So the section is the
-   identity and its coherence is [reflexivity]. *)
+(*
+   本节说明相关定义、性质与动机。 And FULL, which costs three lines because two hom types are. CONVERTIBLE: [fobj[GrpCat_Mon] X ~{Mon C}~> fobj[GrpCat_Mon] Y] is [{f & MonoidHom (group_幺半群 ⟦0⟧2 Y) f}], that IS [X ~{GrpCat}~> Y] [GroupHom]'s 定义.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance GrpCat_Mon_Full : Full GrpCat_Mon.
 Proof.
   unshelve econstructor.
@@ -199,21 +191,26 @@ Proof.
   - intros X Y g; simpl; reflexivity.
 Qed.
 
-(* [Mon_Forget ◯ GrpCat_Mon] and [GrpCat_Forget] agree on objects and on
-   morphisms, at Leibniz equality.  The whole functor RECORDS are not
-   compared; see the probe section at the end of the file. *)
+(*
+   [Mon_Forget ◯ GrpCat_Mon] and [GrpCat_Forget] agree on 对象 and on
+
+   本节说明相关定义、性质与动机。 态射, at Leibniz equality. The whole 函子 RECORDS are not compared;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example grpcat_mon_forget_obj (X : GrpCat) :
   fobj[Mon_Forget] (fobj[GrpCat_Mon] X) = fobj[GrpCat_Forget] X := eq_refl.
 
 Example grpcat_mon_forget_map (X Y : GrpCat) (f : X ~> Y) :
   fmap[Mon_Forget] (fmap[GrpCat_Mon] f) = fmap[GrpCat_Forget] f := eq_refl.
 
-(* The two functors are moreover EQUAL in [Functor_StrictEq_Setoid], with
-   every object component literally [eq_refl].  What negative 3 at the end of
-   the file refutes is the strictly stronger claim that the composite is the
-   SAME RECORD as [GrpCat_Forget]; [Compose] rebuilds the three law fields,
-   so that fails while this succeeds.  No functor category is needed —
-   [Functor_StrictEq_Setoid] is Theory/Functor.v, already required. *)
+(*
+   The two 函子 are moreover EQUAL in [函子_StrictEq_Setoid], with
+
+   本节说明相关定义、性质与动机。 every 对象 component literally [eq_refl]. What negative 3 at end file refutes is strictly stronger claim that 复合 is SAME RECORD [GrpCat_Forget]; [Compose] rebuilds three law fields, so that fails while this succeeds.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example forget_compose_strict :
   @equiv _ (@Functor_StrictEq_Setoid GrpCat C)
     (Mon_Forget ◯ GrpCat_Mon) GrpCat_Forget.
@@ -246,10 +243,11 @@ Definition grp_prod_inverse : x × y ~> x × y :=
 Notation MU := (mon_prod_mu (group_monoid X) (group_monoid Y)).
 Notation ETA := (mon_prod_eta (group_monoid X) (group_monoid Y)).
 
-(* One component of the left inverse law.  [p] is a projection: [Hmu] says it
-   commutes with the two multiplications, [Hinv] with the two inversions.
-   The diagonal's naturality is what carries [p] past ∆, and the terminality
-   of I ([eliminate_comp]) is what absorbs it on the other side. *)
+(*
+   本节说明相关定义、性质与动机。 One component left inverse law. [p] is projection: [Hmu] says it. commutes two multiplications, [Hinv] two inversions.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma grp_prod_left_leg {z : C} (Z : GroupObject z) (p : x × y ~> z)
       (Hmu : p ∘ MU ≈ mappend[Z] ∘ bimap p p)
       (Hinv : p ∘ grp_prod_inverse ≈ group_inverse Z ∘ p) :
@@ -318,10 +316,13 @@ Proof.
     now rewrite (grp_prod_eta_leg Y exr (mon_prod_eta_exr _ _)).
 Qed.
 
-(* The product group object.  Its monoid half is #503's [Monoid_Product]
-   CONSUMED, not reproved; only the inversion and the two inverse laws are
-   new.  Built with [Build_GroupObject] rather than record-literal syntax,
-   because the field name [inverse] is a keyword (see [group_inverse]). *)
+(*
+   The 积 group 对象.  Its 幺半群 half is #503's [幺半群_积]
+
+   本节说明相关定义、性质与动机。 CONSUMED, not reproved; only inversion two inverse laws are new.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition GroupObject_Product : GroupObject (x × y) :=
   Build_GroupObject (x × y)
     (MonoidObject_of_Monoid
@@ -346,9 +347,11 @@ Example grp_prod_mempty :
   mempty[GroupObject_Product]
     = mon_prod_eta (group_monoid X) (group_monoid Y) := eq_refl.
 
-(* The projections and the pairing are group homomorphisms — and each is
-   #503's monoid statement applied verbatim, the two [GroupHom] goals being
-   CONVERTIBLE with the corresponding [MonoidHom] ones. *)
+(*
+   本节说明相关定义、性质与动机。 The projections pairing are group homomorphisms — each is.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma grp_exl_hom : GroupHom GroupObject_Product X exl.
 Proof. exact (mon_exl_hom (group_monoid X) (group_monoid Y)). Qed.
 
@@ -470,10 +473,11 @@ End GrpCatIntrinsic.
 
 (** ** Probes *)
 
-(* Each [Fail] below was stripped once and its failure kind read off the
-   message; the kinds are kept lexically apart, TYPING first and CONVERSION
-   last.  Every constant a negative names is also named by a succeeding
-   command, so a rename breaks the build instead of silencing a probe. *)
+(*
+   本节说明相关定义、性质与动机。 Each [Fail] below was stripped once its failure kind read off the. message; kinds are kept lexically apart, TYPING first CONVERSION last.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Probes.
 
@@ -483,12 +487,13 @@ Context `{CM : @CartesianMonoidal C}.
 Context {x y : C} (Gx : @GroupObject C CM x) (Gy : @GroupObject C CM y).
 Context (f : x ~> y).
 
-(* NEGATIVE 1, TYPING.  A group object cannot be stated over a bare monoidal
-   base: the inverse laws need the diagonal and the discard.  This is the
-   whole of the scope difference from Theory/Algebra/Monoid/Product.v, which
-   quantifies over an arbitrary [M : @Monoidal C].
-     "The term "M" has type "Monoidal" while it is expected to have type
-      "CartesianMonoidal"." *)
+(*
+   NEGATIVE 1, TYPING.  A group 对象 cannot be stated over a bare 幺半
+
+   本节：base: inverse laws need diagonal discard. This is whole scope difference from Theory/代数/幺半群/积.v, which quantifies over arbitrary [M : @幺半 C].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (fun z : obj[C] => @GroupObject C M z).
 
 (* CONTROL for negative 1. *)
@@ -511,13 +516,13 @@ Check (GroupHom Gx Gy f).
 Check (eq_refl : GroupHom Gx Gy f
                    = MonoidHom (group_monoid Gx) (group_monoid Gy) f).
 
-(* NEGATIVE 3, CONVERSION.  The two forgetful functors agree on objects and
-   on morphisms at [eq_refl] (the controls below), but the composite FUNCTOR
-   RECORD is not [GrpCat_Forget]: [Compose] rebuilds [fmap_respects],
-   [fmap_id] and [fmap_comp] as fresh proof terms.
-     "The term "eq_refl" has type
-      "Mon_Forget ◯ GrpCat_Mon = Mon_Forget ◯ GrpCat_Mon" while it is
-      expected to have type "Mon_Forget ◯ GrpCat_Mon = GrpCat_Forget"." *)
+(*
+   NEGATIVE 3, CONVERSION.  The two forgetful 函子 agree on 对象 and
+
+   本节说明相关定义、性质与动机。 on 态射 at [eq_refl] (the controls below), but 复合 FUNCTOR RECORD is not [GrpCat_Forget]: [Compose] rebuilds [fmap_respects], [fmap_id] [fmap_comp] fresh proof terms.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fail Check (eq_refl : Mon_Forget ◯ GrpCat_Mon = GrpCat_Forget).
 
 (* CONTROLS for negative 3. *)
@@ -530,13 +535,13 @@ End Probes.
 
 (** ** Where the hom/proof identification comes from *)
 
-(* Four FORMABILITY negatives.  Over a category whose hom and proof levels
-   are declared strictly apart, each of the four donors this file names is
-   rejected, while a hom and an identity at those very levels are accepted —
-   so the identification visible in every binder above is inherited from
-   four sources, each sufficient on its own, and is not introduced here.
-   They are NOT independent: [CartesianMonoidal] contains [Monoidal], so at
-   most three are.  See the UNIVERSES section of the header. *)
+(*
+   Four FORMABILITY negatives.  Over a 范畴 whose hom and proof levels
+
+   本节说明相关定义、性质与动机。 are declared strictly apart, each four donors this file names is rejected, while hom identity at those very levels are accepted — so identification visible every binder above is inherited from four sources, each sufficient its own, is not introduced
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniverseDonors.
 

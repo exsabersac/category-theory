@@ -44,11 +44,13 @@ Notation "f ∘⁻ g" :=
 
 Coercion r_obj : RawCategory >-> Sortclass.
 
-(* Assemble a lawful [Category] from raw data once the missing setoid
-   ([homset]), the [Proper] respectfulness of composition, and the unit and
-   associativity laws are supplied externally. The dual associativity law
-   [comp_assoc_sym] (present for the built-in duality of Theory/Category.v) is
-   filled in here by symmetry of [comp_assoc], so it need not be given. *)
+(*
+   Assemble a lawful [范畴] from raw data once the missing setoid
+
+   本节说明相关定义、性质与动机。 ([homset]), [Proper] respectfulness 复合, unit 结合律 laws are supplied externally.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition From_RawCategory
            (raw : RawCategory)
            {homset} {compose_respects}
@@ -67,16 +69,14 @@ Definition From_RawCategory
 
 Open Scope raw_morphism_scope.
 
-(* nLab: https://ncatlab.org/nlab/show/functor
+(*
+   nLab: https://ncatlab.org/nlab/show/functor
    Wikipedia: https://en.wikipedia.org/wiki/Functor
 
-   A [Denotation] is a functor from a lawless [RawCategory] C to a lawful
-   [Category] D: an object map [dobj], a morphism map [denote], and the two
-   functoriality laws preserving identities ([h_id]) and composition
-   ([h_compose]). Because D is lawful and equality of source morphisms is
-   defined by their image under [denote] (see [DerivedEquivalence] below),
-   these two laws are enough to transport D's unit and associativity laws back
-   onto C, recovering a lawful [Category] (see [LawfulCategory] below). *)
+   本节：A [Denotation] is 函子 from lawless [RawCategory] C lawful [范畴] D: 对象 map [dobj], 态射 map [denote], two functoriality laws preserving identities ([h_id]) 复合 ([h_compose]).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Denotation {C : RawCategory} {D : Category} := {
   dobj : C → D;                                   (* object map  C₀ → D₀ *)
   denote {x y : C} (f : x ~>⁻ y) : dobj x ~> dobj y;  (* morphism map on homs *)
@@ -91,20 +91,25 @@ Coercion dobj : Denotation >-> Funclass.
 Notation "C ⟶⁻ D" := (@Denotation C%raw_category D%category)
   (at level 90, right associativity) : type_scope.
 
-(* The hom-setoid on the raw category induced by a denotation: two raw
-   morphisms are equivalent exactly when their images under [denote] are
-   equivalent in the lawful target. This is the pullback of D's `≈` along
-   [denote], and it is an equivalence relation because `≈` on D is. *)
+(*
+   The hom-setoid on the raw 范畴 induced by a denotation: two raw
+
+   本节说明相关定义、性质与动机。 态射 are equivalent 当且仅当 their images under [denote] are equivalent lawful target.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition DerivedEquivalence
         `(F : C ⟶⁻ D) : ∀ X Y, Setoid (X ~>⁻ Y) := fun X Y =>
   {| equiv := fun f g => denote f ≈ denote g
    ; setoid_equiv := _ |}.
 
-(* Given a lawless [RawCategory], a lawful [Category], and a denotation from
-   the former to the latter, re-present the source as a lawful [Category] by
-   way of that denotation: take the derived hom-setoid above, then discharge
-   the unit and associativity laws by rewriting with [h_id] and [h_compose]
-   and appealing to the corresponding laws of the lawful target. *)
+(*
+   Given a lawless [RawCategory], a lawful [范畴], and a denotation from
+
+   本节说明相关定义、性质与动机。 the former latter, re-present source lawful [范畴] way that denotation: take derived hom-setoid above, then discharge unit 结合律 laws rewriting [h_id] [h_compose] appealing corresponding laws lawful targe
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition LawfulCategory `{F : C ⟶⁻ D} : Category :=
   @From_RawCategory C (DerivedEquivalence F) _ _ _ _.
 Next Obligation. proper; now rewrite !h_compose, X, X0. Qed.

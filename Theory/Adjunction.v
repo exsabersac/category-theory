@@ -66,23 +66,13 @@ Generalizable All Variables.
    下一块注释的自由/遗忘读法，树内由 Construction/Free/Quiver.v 的 [FreeForgetfulAdjunction]
    见证，是历史上中心的例子族，但并非全部：极限与 Kan 扩张本身也是伴随（分别对对角与限制函子）。 *)
 
-(* Adjunctions relate two functors that map between the same two categories
-  (though in opposite directions), in a manner that is weaker than isomorphism
-  or equivalence, but still quite informative. In general, one functor is
-  forgetful, and maps constructions from a more expressive domain into one
-  that captures only the essence of that structure; while the other is free,
-  and maps essential constructions into the fuller setting.
+(*
+   伴随 relate two 函子 that map between the same two 范畴
 
-  As an example: the category of ASTs may be mapped forgetfully to the
-  category of interpretated objects, which themselves map freely to some
-  "canonical" representation of each such object. So, "3", "1 + 2", and "2 +
-  1" all mean 3, while 3 is canonically represented by the constant "3". The
-  forgetful functor is the evaluator, and the free functor a parser, giving
-  rise to the following isomorphism (in the category of Sets, whose objects
-  may be hom-sets):
+   本节：(though 反 directions), manner 即 weaker than 同构 等价, but still quite informative. 一般地, one 函子 is forgetful, maps constructions from more expressive domain into one that captures only essence that structure;
 
-      AST x ~{category of syntax or ASTs}~> y
-        ≅ x ~{category of semantics or denotations}~> Denote y *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Adjunction.
 
@@ -113,9 +103,11 @@ Class Adjunction@{o3 p3 so sh sp} := {
   to_adj_nat_r {x y z} (f : y ~> z) (g : F x ~> y) :
     ⌊f ∘ g⌋ ≈ fmap[U] f ∘ ⌊g⌋;
 
-  (* The dual (_sym) statements for the inverse transpose ⌈-⌉ = from adj;
-     derivable from the above, but kept as fields so that opposite-side proofs
-     are available by reflexivity-of-duality without re-deriving them. *)
+  (*
+   本节说明相关定义、性质与动机。 The dual (_sym) statements inverse transpose ⌈-⌉ = from adj;.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   from_adj_nat_l {x y z} (f : y ~> U z) (g : x ~> y) :
     ⌈f ∘ g⌉ ≈ ⌈f⌉ ∘ fmap[F] g;
   from_adj_nat_r {x y z} (f : y ~> z) (g : x ~> U y) :
@@ -408,37 +400,21 @@ Proof.
     reflexivity.
 Qed.
 
-(* Future direction (no scaffolding here yet):
+(*
+   本节：Future direction (no scaffolding here yet):. "The most important property adjoints is their continuity: every 函子 that has 左伴随 (and therefore is 右伴随) is continuous (i.e. commutes 极限 范畴 theoretical sense);
 
-   "The most important property of adjoints is their continuity: every
-    functor that has a left adjoint (and therefore is a right adjoint) is
-    continuous (i.e. commutes with limits in the category theoretical
-    sense); every functor that has a right adjoint (and therefore is a
-    left adjoint) is cocontinuous (i.e. commutes with colimits)."
-                                                              -- Wikipedia
-
-   These theorems are formalized in Adjunction/Continuity.v:
-   [right_adjoint_preserves_limits] (RAPL, proved directly by transposing
-   cones through the hom-setoid isomorphism) and
-   [left_adjoint_preserves_colimits] (LAPC, by duality via
-   Adjunction/Opposite.v), phrased with the preservation vocabulary of
-   Structure/Limit/Preservation.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Transporting an adjunction along an isomorphism of left adjoints *)
 
-(* A functor naturally isomorphic to a left adjoint is a left adjoint,
-   with the SAME right adjoint.  [right_adjoint_iso] and [left_adjoint_iso]
-   above run the other way (from two adjunctions to an isomorphism),
-   Theory/Equivalence/Adjunction.v transports along an EQUIVALENCE OF
-   CATEGORIES rather than along a 2-cell, and Theory/Functor.v's
-   [transport_adjunction] is a Type-level transport of a relation along
-   an equality of indices, not an adjunction at all.  Built for
-   Instance/Mod/Bimodule.v's part (c) (#401), which declared it there as
-   its first consumer, and moved here verbatim by #431, whose
-   functor-category remark is its second; [adjunction_along_left_iso]
-   stays [Defined] and load-bearing (Bimodule.v's
-   [btba_to_is_transposed], and [aali_to_is_transpose] below, reduce
-   through it). *)
+(*
+   A 函子 naturally isomorphic to a 左伴随 is a 左伴随,
+
+   本节：with SAME 右伴随. [right_伴随_iso] [left_伴随_iso] above run other way (from two 伴随 同构), Theory/等价/伴随.v transports along EQUIVALENCE OF CATEGORIES rather than along 2-cell, Theory/函子.v's [transport_ad
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AdjunctionAlongIso.
 

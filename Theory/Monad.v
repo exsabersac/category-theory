@@ -95,12 +95,13 @@ Notation "f >> g" := (f >>= fun _ => g)%morphism
 Require Import Category.Construction.Opposite.
 Require Import Category.Functor.Opposite.
 
-(* nLab: https://ncatlab.org/nlab/show/comonad
+(*
+   nLab: https://ncatlab.org/nlab/show/comonad
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)#Comonads
 
-   A comonad is the formal dual of a monad: a counit ε : M ⟹ Id and a
-   comultiplication δ : M ⟹ M ○ M satisfying the dual coassociativity and
-   counit laws. Since duality is C^op^op = C by reflexivity here, it is
-   obtained for free as a monad on the opposite category. *)
+   本节说明相关定义、性质与动机。 A 余单子 is formal dual 单子: counit ε : M ⟹ Id comultiplication δ : M ⟹ M ○ M satisfying dual coassociativity counit laws.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Comonad `{M : C ⟶ C} := @Monad (C^op) (M^op).

@@ -18,10 +18,13 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* An adjoint equivalence: an adjunction both of whose comparison
-   transformations are componentwise invertible.  The two extra fields are
-   [IsIsomorphism] witnesses about the derived [unit] and [counit] of the
-   underlying hom-setoid adjunction. *)
+(*
+   An 伴随 等价: an 伴随 both of whose comparison
+
+   本节说明相关定义、性质与动机。 transformations are 分量地 invertible. The two extra fields are [IsIsomorphism] witnesses about derived [unit] [counit] underlying hom-setoid 伴随.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class AdjointEquivalence {C D : Category} (F : C ⟶ D) (U : D ⟶ C) := {
   adj_equivalence : F ⊣ U;
   adj_equiv_unit_iso (x : C) :
@@ -30,13 +33,13 @@ Class AdjointEquivalence {C D : Category} (F : C ⟶ D) (U : D ⟶ C) := {
     IsIsomorphism (@counit _ _ _ _ adj_equivalence y)
 }.
 
-(* Naturality of the unit and counit of a hom-setoid adjunction, at an
-   arbitrary morphism.  Theory/Adjunction.v proves these squares only in
-   the shapes needed there — [unit_comp] pins the codomain to a U-image
-   and [counit_comp] pins the domain to an F-image — but the rewriting
-   argument is insensitive to that, so we restate them generally.  The
-   variable convention follows Theory/Adjunction.v: F : D ⟶ C is the left
-   adjoint and U : C ⟶ D the right adjoint. *)
+(*
+   Naturality of the unit and counit of a hom-setoid 伴随, at an
+
+   本节说明相关定义、性质与动机。 arbitrary 态射. Theory/伴随.v proves these squares only shapes needed there — [unit_comp] pins codomain U-image [counit_comp] pins domain F-image — but rewriting argument is insensitive that, so we restate them generally.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma adj_unit_naturality {C D : Category} {F : D ⟶ C} {U : C ⟶ D}
   (A : F ⊣ U) {x y : D} (f : x ~{D}~> y) :

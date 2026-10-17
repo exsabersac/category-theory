@@ -32,58 +32,45 @@ Record Metacategory := {
   composite_defined {f g h : arrow} (H : composite f g h) :
     defined f g := (h; H);
 
-  (* Matchability (Mac Lane C-1): whenever [fg] is the composite of [(f, g)]
-     and [gh] is the composite of [(g, h)], the composite [(fg, h)] also
-     exists. This is the arrows-only form of "composable pairs have a
-     composite": the composable triple [f, g, h] always has the composite
-     [(f ∘ g) ∘ h]. *)
+  (*
+   Matchability (Mac Lane C-1): whenever [fg] is the 复合 of [(f, g)]
+
+   本节说明相关定义、性质与动机。 and [gh] is 复合 [(g, h)], 复合 [(fg, h)] also exists.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   composite_correct {f g h fg gh : arrow} :
     composite f g fg ->
     composite g h gh → ∃ fgh, composite fg h fgh;
 
-  (* Associativity (Mac Lane C-2): for a composable triple, associating to the
-     left, [(fg, h)], agrees with associating to the right, [(f, gh)]. The
-     biconditional captures that one composite is defined exactly when the
-     other is, and then they are the same arrow. *)
+  (*
+   结合律 (Mac Lane C-2): for a composable triple, associating to the
+
+   本节说明相关定义、性质与动机。 left, [(fg, h)], agrees associating right, [(f, gh)].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   composition_law {f g h fg gh : arrow} :
     composite f g fg ->
     composite g h gh ->
     ∀ fgh, composite fg h fgh ↔ composite f gh fgh;
 
-  (* Identity arrows (objects). [u] is an identity when it acts neutrally on
-     either side of every composite in which it participates: [f ∘ u ≈ f]
-     whenever [f ∘ u] is defined, and [u ∘ g ≈ g] whenever [u ∘ g] is defined.
-     These are exactly the arrows that stand in for objects. *)
+  (*
+   Identity arrows (对象). [u] is an identity when it acts neutrally on
+
+   本节说明相关定义、性质与动机。 either side every 复合 which it participates: [f ∘ u ≈ f] whenever [f ∘ u] is defined, [u ∘ g ≈ g] whenever [u ∘ g] is defined.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   is_identity (u : arrow) :=
     (∀ f, defined f u → composite f u f) ∧
     (∀ g, defined u g → composite u g g);
 
-  (* Existence of identities (Mac Lane): to each arrow [f] there should be a
-     source identity and a target identity whose composites with [f] recover
-     [f]. As currently written, however, this axiom is vacuous.
+  (*
+   本节说明相关定义、性质与动机。 Existence identities (Mac Lane): each arrow [f] there should be a. source identity target identity whose composites [f] recover [f]. As currently written, however, this axiom is vacuous.
 
-     jww (TODO): The two [->] below should be [/\], and the current form does
-     impose no constraint — arrow [1%N] of [Two] is genuinely not an identity,
-     so it witnesses the existential and discharges both implications. But
-     that substitution alone is not a repair: with conjunctions the axiom
-     quantifies over all of [N], while [composable_pairs n] mentions finitely
-     many arrows, so an arrow occurring in no composable pair ([100%N], say)
-     has no flanking identities and the record becomes uninhabitable by every
-     model in this file. A faithful repair must first fix the arrow type:
-     either relativize the axiom to arrows that occur in [pairs], or take
-     [arrow] to be the support of the table rather than all of [N]. Only then
-     does the remaining work — supplying identity witnesses for each example
-     metacategory — become possible. Theory/Metacategory/General.v states the
-     axiom in Mac Lane's conjunctive form over an arrow type that is exactly
-     the arrows.
-
-     The defect does not affect [Category_from_Metacategory], which builds its
-     category from objects [{i | is_identity i}], not from [identity_law].
-     Note however that the [obj_def] field of [object] is doing the work this
-     axiom should do: it is what excludes arrows that are identities only
-     vacuously (every arrow absent from [pairs] satisfies [is_identity]). In
-     General.v, where the axiom is conjunctive, [obj_def] is derivable and the
-     object record carries only the identity proof. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   identity_law (x y f : arrow) : composite x y f ->
     ∃ u u', is_identity u → is_identity u' ->
       composite f u f ∧ composite u' f f

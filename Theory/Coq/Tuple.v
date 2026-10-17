@@ -24,9 +24,13 @@ Generalizable All Variables.
 
 Notation Tuple := prod (only parsing).
 
-(* The two halves of the product associator [A * (B * C) ≅ (A * B) * C];
-   [tuple_swap_a_bc_to_ab_c] and [tuple_swap_ab_c_to_a_bc] are mutually
-   inverse and witness that the product is associative up to isomorphism. *)
+(*
+   The two halves of the 积 结合子 [A * (B * C) ≅ (A * B) * C];
+
+   本节说明相关定义、性质与动机。 [tuple_swap_a_bc_to_ab_c] [tuple_swap_ab_c_to_a_bc] are mutually inverse witness that 积 is associative up 同构.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition tuple_swap_a_bc_to_ab_c {A B C} (x : A * (B * C)) : A * B * C :=
   match x with (a, (b, c)) => ((a, b), c) end.
 
@@ -41,9 +45,11 @@ Definition left_triple {A B C} (x : A) (y : B) (z : C) : A * B * C :=
 Definition right_triple {A B C} (x : A) (y : B) (z : C) : A * (B * C) :=
   (x, (y, z)).
 
-(* The bifunctorial action of [prod] on its first and second components:
-   [first f] maps the left coordinate, [second f] the right one (Haskell's
-   [first]/[second] from [Data.Bifunctor], here for the pair bifunctor). *)
+(*
+   本节说明相关定义、性质与动机。 The bifunctorial action [prod] its first second components:.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition first `(f : a -> b) `(x : a * z) : b * z :=
   match x with (a, z) => (f a, z) end.
 
@@ -80,10 +86,13 @@ Instance Tuple_Applicative x `{Monoid x} : Applicative (Tuple x) := {
   ap := λ _ _ '(xf, f) '(xx, x), (xf ⊗ xx, f x);      (* combine logs, apply function *)
 }.
 
-(* The writer monad: [ret] seeds the empty log; [bind] runs [f] on the held
-   value and concatenates the incoming log [xm] with the produced log [xx].
-   Lawful precisely because [x] is a Monoid (the monad laws follow from the
-   monoid laws on [⊗]/[mempty]). *)
+(*
+   The writer 单子: [ret] seeds the empty log; [bind] runs [f] on the held
+
+   本节说明相关定义、性质与动机。 value concatenates incoming log [xm] produced log [xx].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Instance Tuple_Monad x `{Monoid x} : Monad (Tuple x) := {
   ret := λ _ y, (mempty, y);                                          (* unit: empty log [mempty] *)

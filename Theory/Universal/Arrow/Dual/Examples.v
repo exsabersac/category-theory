@@ -34,19 +34,22 @@ Section CouniversalExample.
 Context `{C : Category}.
 Context `{@Cartesian C}.
 
-(* The projection pair, typed as a morphism of C ∏ C out of the diagonal.
-   The ascription is load-bearing: as a bare pair the elaborator cannot see
-   which category's composition the couniversal equation is asking for. *)
+(*
+   The projection pair, typed as a 态射 of C ∏ C out of the diagonal.
+
+   本节说明相关定义、性质与动机。 The ascription is load-bearing: bare pair elaborator cannot see which 范畴's 复合 couniversal equation is asking for.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition proj_pair (p : C ∏ C) :
   Diagonal_Product C (fst p × snd p) ~{C ∏ C}~> p :=
   (@exl C _ (fst p) (snd p), @exr C _ (fst p) (snd p)).
 
-(* The couniversal mapping property of the projection pair, in the exact shape
-   consumed by [couniversal_arrow_from_UMP]: for p : C ∏ C the object
-   fst p × snd p together with (exl, exr) : Δ (fst p × snd p) ~> p is a
-   couniversal arrow from Δ to p.  Any f : Δ d' ~> p -- that is, any pair of
-   morphisms (f₁ : d' ~> fst p, f₂ : d' ~> snd p) -- factors uniquely through
-   the projections, the factorization being the fork f₁ △ f₂. *)
+(*
+   本节说明相关定义、性质与动机。 The couniversal mapping property projection pair, exact shape. consumed [couniversal_arrow_from_UMP]: p : C ∏ C 对象 fst p × snd p together (exl, exr) : Δ (fst p × snd p) ~> p is couniversal arrow from Δ p.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
 Program Definition product_couniversal_unique (p : C ∏ C) (d' : C)
@@ -126,22 +129,22 @@ Corollary product_via_couniversal_obj (p : C ∏ C) :
   fobj[product_via_couniversal_functor] p = (fst p × snd p).
 Proof. reflexivity. Qed.
 
-(* ... and its counit is the projection pair, up to `≈` (see the second
-   boundary recorded in the header of Theory/Universal/Arrow/Dual.v: the
-   transpose leaves a [fmap_id]/[id_right] residue). *)
+(*
+   本节说明相关定义、性质与动机。 ... its counit is projection pair, up `≈` (see second.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary product_via_couniversal_counit (p : C ∏ C) :
   @counit (C ∏ C) C (Diagonal_Product C) product_via_couniversal_functor
           product_via_couniversal p
     ≈ proj_pair p.
 Proof. exact (counit_couniversal (Diagonal_Product C) product_CUA p). Qed.
 
-(* The arrow action is a chosen unique factorization, so nothing forces it to
-   reduce to ×(C)'s [fmap]; what does hold is that the two functors are
-   naturally isomorphic, right adjoints to a fixed functor being unique up to
-   natural isomorphism ([right_adjoint_iso], Theory/Adjunction.v).  Pitting the
-   couniversally assembled adjunction against the concrete
-   [Diagonal_Product_Adjunction] over their common left adjoint Δ delivers it,
-   dually to [diagonal_product_via_gaft_is_diagonal]. *)
+(*
+   本节说明相关定义、性质与动机。 The arrow action is chosen unique factorization, so nothing forces it to. reduce ×(C)'s [fmap];
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition product_via_couniversal_is_product :
   product_via_couniversal_functor ≈ ×(C) :=
   right_adjoint_iso (Diagonal_Product C)
@@ -153,9 +156,11 @@ End CouniversalExample.
 
 (** ** A concrete instantiation *)
 
-(* The family above is inhabited by something other than a variable: [Sets] is
-   cartesian, so every pair of setoids has its couniversal arrow from the
-   diagonal, and the assembled adjunction is an adjunction of [Sets]. *)
+(*
+   本节说明相关定义、性质与动机。 The family above is inhabited something other than variable: [Sets] is.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Sets_product_CUA (p : Sets ∏ Sets) :
   CouniversalArrow p (Diagonal_Product Sets) :=

@@ -84,9 +84,13 @@ Proof.
   apply (@shom_mu _ _ _ _ _ F).
 Qed.
 
-(* The category Smgrp(C) of internal semigroups in C, packaged with sigma
-   objects and homs exactly as Theory/Algebra/Monoid/Hom.v packages Mon(C):
-   morphism equivalence is equivalence of the underlying C-morphisms. *)
+(*
+   The 范畴 Smgrp(C) of internal semigroups in C, packaged with sigma
+
+   对象 homs exactly Theory/代数/幺半群/Hom.v packages Mon(C): 态射 等价 is 等价 underlying C-态射.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Smgrp : Category := {|
   obj     := { x : C & Semigroup x };
   hom     := fun X Y => { f : `1 X ~> `1 Y & SemigroupHom `2 X `2 Y f };

@@ -90,9 +90,11 @@ Lemma passoc_from {x y z : C} :
   passoc ≈ ((prod_assoc (x:=x) (y:=y) (z:=z))⁻¹).
 Proof. reflexivity. Qed.
 
-(* Split a power at a block boundary: [pow (m + n) ≅ pow m × pow n].  Only
-   the forward direction is needed by the graft; it is built by induction on
-   the prefix length, reassociating with the product associator. *)
+(*
+   本节说明相关定义、性质与动机。 Split power at block boundary: [pow (m + n) ≅ pow m × pow n]. Only. 正向 direction is needed graft;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint pow_split (m n : nat) : pow (m + n) ~> pow m × pow n :=
   match m with
   | O => one △ id
@@ -193,12 +195,11 @@ Proof.
     now rewrite assoc_from_right'.
 Qed.
 
-(** ** The graft map
+(*
+   本节说明相关定义、性质与动机。 * ** The graft map. [graft m d k g] is splice combinator underlying [mcomp]: it passes [m]-block inputs through, feeds next [d]-block operation [g], passes trailing [k]-block. Built iterating [second] over prefix;
 
-    [graft m d k g] is the splice combinator underlying [mcomp]: it passes
-    an [m]-block of inputs through, feeds the next [d]-block to the operation
-    [g], and passes the trailing [k]-block.  Built by iterating [second]
-    over the prefix; the payload row is [first g ∘ pow_split d k]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint graft (m d k : nat) (g : pow d ~> X) :
   pow (m + (d + k)) ~> pow (m + S k) :=
   match m with
@@ -359,10 +360,11 @@ Qed.
 
 (** ** The operad data *)
 
-(* Length of a concatenation, a hand-written Fixpoint (not a tactic
-   proof) so that its computational content is pinned: the unit laws
-   below rely on the base case being [eq_refl] on the nose, and a
-   tactic-built term would leave that hostage to automation drift. *)
+(*
+   本节说明相关定义、性质与动机。 Length concatenation, hand-written Fixpoint (not tactic.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint len_app {A : Type} (l1 l2 : list A) :
   length (l1 ++ l2) = (length l1 + length l2)%nat :=
   match l1 with
@@ -398,14 +400,13 @@ Definition End_mcomp {Γ1 Γ2 Δ : list poly_unit} {b c : poly_unit}
     ∘ graft (length Γ1) (length Δ) (length Γ2) g
     ∘ pow_cast (len_splice Γ1 Δ Γ2).
 
-(** ** The symmetric action
+(*
+   * ** The 对称 action
 
-    The action of a permutation witness [p : tperm Γ Δ] is GENUINE: it
-    permutes the factors of the power, built by structural recursion on
-    the witness.  The [tperm_swap] generator acts by the product braid on
-    the two head factors; [tperm_skip] whiskers by [second];
-    [tperm_trans] composes.  An operation is then relabelled by
-    precomposition: [msym p f := f ∘ perm_act p]. *)
+   本节说明相关定义、性质与动机。 The action permutation witness [p : tperm Γ Δ] is GENUINE: it permutes factors power, built structural recursion witness. The [tperm_swap] generator acts 积 braid two head factors; [tperm_skip] 贴须 [second];
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The braid on the two head factors of a right-nested product:
    (a, (b, w)) ↦ (b, (a, w)). *)
@@ -530,12 +531,11 @@ Proof.
   now rewrite <- comp_assoc.
 Qed.
 
-(** ** Whiskering a tail map under a prefix of factors
+(*
+   本节说明相关定义、性质与动机。 * ** Whiskering tail map under prefix factors. [plug m u] applies [u] under first [m] factors power; graft is [plug m] its payload row, [tperm_app_r] whiskering acts [plug].
 
-    [plug m u] applies [u] under the first [m] factors of a power; the
-    graft is [plug m] of its payload row, and the [tperm_app_r]
-    whiskering acts by [plug].  These are the joints along which the
-    equivariance law is assembled. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fixpoint plug (m : nat) {s s' : nat} (u : pow s ~> pow s') :
   pow (m + s) ~> pow (m + s') :=
@@ -854,13 +854,13 @@ Proof.
   apply equivariant_core.
 Qed.
 
-(** ** The associativity laws
+(*
+   * ** The 结合律 laws
 
-    Strategy: make every boundary-cast proof opaque ([generalize]), then
-    abstract each concatenation length as a variable and replace it by its
-    canonical arithmetic value ([set]/[clearbody]/[subst]).  All casts then
-    ride loops or exactly the boundary equations of the nat-level cores
-    [graft_nested]/[graft_disjoint], and the goal closes by those cores. *)
+   本节说明相关定义、性质与动机。 Strategy: make every boundary-cast proof opaque ([generalize]), then abstract each concatenation length variable replace it its canonical arithmetic value ([set]/[clearbody]/[subst]).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma End_mcomp_assoc_nested {Γ1 Γ2 Δ1 Δ2 Θ : list poly_unit}
   {a b c : poly_unit}

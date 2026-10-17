@@ -52,9 +52,13 @@ Definition point_of {C : Category} (F : _1 ⟶ C) : C := F ttt.
 Theorem point_of_Point {C : Category} (x : C) : point_of (Point x) = x.
 Proof. reflexivity. Qed.
 
-(* Second round trip, at the strict functor equality: [Point (F ttt)] and
-   [F] have the same object map on the nose, and their morphism maps agree.
-   The lone hom of [_1] is the identity, so the content is [fmap_id]. *)
+(*
+   Second round trip, at the strict 函子 equality: [Point (F ttt)] and
+
+   本节说明相关定义、性质与动机。 [F] have same 对象 map nose, their 态射 maps agree.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Point_point_of_strict {C : Category} (F : _1 ⟶ C) :
   @equiv _ Functor_StrictEq_Setoid (Point (point_of F)) F.
 Proof.
@@ -68,11 +72,13 @@ Qed.
 Corollary Point_point_of {C : Category} (F : _1 ⟶ C) : Point (point_of F) ≈ F.
 Proof. apply strict_equiv_implies_fun_equiv, Point_point_of_strict. Qed.
 
-(* The correspondence is faithful in the strongest available sense: two
-   objects give equivalent functors exactly when they are isomorphic.  This
-   is what turns "objects of C" into "functors out of [_1]" as a statement
-   about identifications, and it is the lemma the [Sets] instantiation
-   below uses to separate two functors. *)
+(*
+   The correspondence is 忠实 in the strongest available sense: two
+
+   对象 give equivalent 函子 当且仅当 they are isomorphic.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Point_equiv_iso {C : Category} (x y : C) : (Point x ≈ Point y) ↔ (x ≅ y).
 Proof.
   split.
@@ -102,13 +108,13 @@ Next Obligation. intros C x y f g e a; exact e. Qed.
 Next Obligation. intros C x a; reflexivity. Qed.
 Next Obligation. intros C x y z f g a; reflexivity. Qed.
 
-(* [Point (F ttt) ≅ F] in the functor category, with identity components.
-   [Point_point_of_strict] above is a different currency, an equality of
-   functors; it does reach this isomorphism, but only via
-   [strict_equiv_implies_fun_equiv] and then [Functor_Setoid_Nat_Iso], and
-   that route hides the components.  Building the isomorphism directly
-   keeps them visibly [id], which is what discharges the naturality
-   obligation of [One_Fun_iso] below. *)
+(*
+   [Point (F ttt) ≅ F] in the 函子 范畴, with identity components.
+
+   本节说明相关定义、性质与动机。 [Point_point_of_strict] above is different currency, equality 函子; it does reach this 同构, but only via [strict_equiv_implies_fun_equiv] then [函子_Setoid_Nat_Iso], that route hides components.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Point_point_of_iso {C : Category} (F : _1 ⟶ C) :
   @Isomorphism (@Fun _1 C) (Point (point_of F)) F := {|
   to   := {| transform := fun a =>
@@ -137,12 +143,11 @@ Next Obligation.
 Qed.
 Next Obligation. intros C F a; destruct a; simpl; cat. Qed.
 
-(* [[_1, C] ≃ C], the theorem behind Instance/One.v's header prose.  This
-   is an EQUIVALENCE of categories: [≅[Cat]] in this library is [Cat]'s
-   isomorphism, and [Cat]'s hom-setoid identifies functors up to natural
-   isomorphism.  The [One_Eval ◯ One_Const] side is in fact strict (the
-   witness below is a [Functor_StrictEq_Setoid] proof with [eq_refl]
-   objects); the other side is not, for the reason the header records. *)
+(*
+   本节：[[_1, C] ≃ C], theorem behind Instance/One.v's header prose. This. is EQUIVALENCE 范畴: [≅[Cat]] this library is [Cat]'s 同构, [Cat]'s hom-setoid identifies 函子 up 自然 同构.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition One_Fun_iso {C : Category} : [_1, C] ≅[Cat] C := {|
   to   := One_Eval;
   from := One_Const
@@ -185,11 +190,11 @@ Next Obligation.
   destruct a, b, c; simpl in *; try contradiction; subst; simpl; cat.
 Qed.
 
-(* Instance/Two.v's [id] at [TwoX] reduces to [TwoIdX], so [fmap_id]
-   applies to it up to conversion; but [TwoIdX] is not SYNTACTICALLY an
-   [id], which is enough to stop [rewrite fmap_id] and [apply fmap_id].
-   These two named lemmas restore the syntactic form for the rewrites
-   below. *)
+(*
+   本节说明相关定义、性质与动机。 Instance/Two.v's [id] at [TwoX] reduces [TwoIdX], so [fmap_id]. applies it up conversion; but [TwoIdX] is not SYNTACTICALLY [id], which is enough stop [rewrite fmap_id] [apply fmap_id].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma fmap_TwoIdX {C : Category} (F : _2 ⟶ C) : fmap[F] TwoIdX ≈ id.
 Proof. exact (@fmap_id _ _ F TwoX). Qed.
 
@@ -199,18 +204,21 @@ Proof. exact (@fmap_id _ _ F TwoY). Qed.
 (* ... and the morphism it materializes. *)
 Definition arrow_of {C : Category} (F : _2 ⟶ C) : F TwoX ~> F TwoY := fmap[F] TwoXY.
 
-(* First round trip, definitional and therefore near-trivial: [Walk f] was
-   built so that [TwoXY] goes to [f], and its endpoints are already the
-   endpoints of [f], so both sides even have the same type on the nose. *)
+(*
+   本节说明相关定义、性质与动机。 First round trip, definitional therefore near-trivial: [Walk f] was.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem arrow_of_Walk {C : Category} {x y : C} (f : x ~> y) : arrow_of (Walk f) ≈ f.
 Proof. reflexivity. Qed.
 
-(* Second round trip, at the strict functor equality.  The two identity
-   cases are where the content is: [Walk (arrow_of F)] sends them to [id]
-   by construction, and only [fmap_id] identifies that with [fmap[F]] of
-   them.  That gap -- a [≈] and not a [=] -- is where a Leibniz equality
-   of the two functor records would have to be bridged, which is why the
-   header does not claim one. *)
+(*
+   Second round trip, at the strict 函子 equality.  The two identity
+
+   本节说明相关定义、性质与动机。 cases are where content is: [Walk (arrow_of F)] sends them [id] construction, only [fmap_id] identifies that [fmap[F]] them.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Walk_arrow_of_strict {C : Category} (F : _2 ⟶ C) :
   @equiv _ Functor_StrictEq_Setoid (Walk (arrow_of F)) F.
 Proof.
@@ -225,14 +233,13 @@ Qed.
 Corollary Walk_arrow_of {C : Category} (F : _2 ⟶ C) : Walk (arrow_of F) ≈ F.
 Proof. apply strict_equiv_implies_fun_equiv, Walk_arrow_of_strict. Qed.
 
-(* The object action of [Walk f] does not see [f] at all: parallel
-   morphisms give functors with literally the same action on objects.
-   This lemma is trivially true -- it is [eq_refl] in both cases -- and it
-   is stated only as the negative half of a pair: [Walk_objects_insufficient]
-   below exhibits a concrete target where two functors out of [_2] agree on
-   objects and are separated by [arrow_of], so the determination theorem
-   [two_three_objects_determine] proven for the target [_3] is a fact about
-   that target and not about functors out of [_2] in general. *)
+(*
+   The 对象 action of [Walk f] does not see [f] at all: parallel
+
+   本节说明相关定义、性质与动机。 态射 give 函子 literally same action 对象.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Walk_objects_agree {C : Category} {x y : C} (f g : x ~> y) :
   ∀ a, Walk f a = Walk g a.
 Proof. intro a; destruct a; reflexivity. Qed.
@@ -255,10 +262,13 @@ Qed.
 Next Obligation. intros C F; split; simpl; [ apply fmap_TwoIdX | apply fmap_TwoIdY ]. Qed.
 Next Obligation. intros C F G H η θ; split; simpl; reflexivity. Qed.
 
-(* Conversely an object of [Arrow C] is a morphism, hence a [Walk], and a
-   commuting square is a natural transformation between the two [Walk]s:
-   naturality at the two identities is unit laws, and at [TwoXY] it is the
-   square itself. *)
+(*
+   Conversely an 对象 of [Arrow C] is a 态射, hence a [Walk], and a
+
+   本节：交换方块 is 自然变换 between two [Walk]s: naturality at two identities is 单位律, at [TwoXY] it is square itself.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Fun_of_Arrow {C : Category} : @Arrow C ⟶ [_2, C] := {|
   fobj := fun x => Walk (`2 x);
   fmap := fun x y u =>
@@ -282,11 +292,11 @@ Next Obligation. intros C x y u v [H1 H2] a; destruct a; simpl; assumption. Qed.
 Next Obligation. intros C x a; destruct a; reflexivity. Qed.
 Next Obligation. intros C x y z f g a; destruct a; reflexivity. Qed.
 
-(* The strict half of the comparison: going Arrow C -> [_2, C] -> Arrow C
-   returns the object one started from, on the nose.  The object equality
-   needs the pair of the comma object destructured, which is why the proof
-   opens with a pattern rather than [eq_refl]; the morphism component is
-   then reflexivity in both legs of the commuting square. *)
+(*
+   本节说明相关定义、性质与动机。 The strict half comparison: going Arrow C -> [_2, C] -> Arrow C. returns 对象 one started from, nose. The 对象 equality needs pair comma 对象 destructured, which is why proof opens pattern rather than [eq_refl];
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Arrow_Fun_Arrow_strict {C : Category} :
   @equiv _ Functor_StrictEq_Setoid (Arrow_of_Fun ◯ Fun_of_Arrow) (Id[@Arrow C]).
 Proof.
@@ -297,10 +307,13 @@ Proof.
     split; reflexivity.
 Qed.
 
-(* The other half, as a natural isomorphism in [[_2, C]].  Its components
-   are identities, which is the sense in which the two functors differ only
-   in how they present [fmap] at the two identity arrows of [_2]; the
-   naturality obligations below consume exactly that. *)
+(*
+   The other half, as a 自然 同构 in [[_2, C]].  Its components
+
+   本节说明相关定义、性质与动机。 are identities, which is sense which two 函子 differ only how they present [fmap] at two identity arrows [_2];
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Walk_arrow_of_iso {C : Category} (F : _2 ⟶ C) :
   @Isomorphism (@Fun _2 C) (Walk (arrow_of F)) F := {|
   to   := {| transform := fun a =>
@@ -337,10 +350,11 @@ Next Obligation.
   intros C F a; destruct a; simpl; rewrite ?fmap_TwoIdX, ?fmap_TwoIdY; cat.
 Qed.
 
-(* The comparison Construction/Arrow.v left open.  [≅[Cat]] is an
-   EQUIVALENCE of categories, not an isomorphism of categories -- see the
-   header for exactly which of the two round trips is strict and why the
-   other one cannot be. *)
+(*
+   本节说明相关定义、性质与动机。 The comparison Construction/Arrow.v left open. [≅[Cat]] is an.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Two_Fun_Arrow {C : Category} : [_2, C] ≅[Cat] @Arrow C := {|
   to   := Arrow_of_Fun;
   from := Fun_of_Arrow
@@ -359,10 +373,13 @@ Qed.
 (** ** Composable pairs versus functors out of the ordinal 3 *)
 (* ---------------------------------------------------------------------- *)
 
-(* The two generating steps of [_3] are [ord_step] at the two objects of
-   [Ordinal 2]; their endpoints are Instance/Ordinal.v's [ord3_0],
-   [ord3_1], [ord3_2] definitionally, which is what lets the types below be
-   written without transports. *)
+(*
+   The two generating steps of [_3] are [ord_step] at the two 对象 of
+
+   本节说明相关定义、性质与动机。 [Ordinal 2]; their endpoints are Instance/Ordinal.v's [ord3_0], [ord3_1], [ord3_2] definitionally, which is what lets types below be written without transports.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ord2_0 : Ord_obj 2 := ord_at 0%nat (le_t_S le_t_n).
 Definition ord2_1 : Ord_obj 2 := ord_at 1%nat le_t_n.
 
@@ -401,10 +418,11 @@ Theorem Functor_of_Pair_snd {C : Category} {x y z : C} (f : x ~> y) (g : y ~> z)
   fmap[Functor_of_Pair f g] three_12 ≈ g.
 Proof. exact (Functor_of_Steps_step (pair_steps (pair_obj x y z) f g) ord2_1). Qed.
 
-(* [_3] has six arrows: three identities, the two generating steps, and
-   [three_02].  That last one goes to the composite -- which is the sense
-   in which a functor out of [_3] is a COMPOSABLE pair and not two
-   unrelated arrows. *)
+(*
+   本节说明相关定义、性质与动机。 [_3] has six arrows: three identities, two generating steps, and. [three_02].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Functor_of_Pair_comp {C : Category} {x y z : C} (f : x ~> y) (g : y ~> z) :
   fmap[Functor_of_Pair f g] three_02 ≈ g ∘ f.
 Proof.
@@ -432,19 +450,11 @@ Proof.
   - destruct (le_t_zero_absurd (le_t_SS_inv (le_t_SS_inv (le_t_SS_inv H)))).
 Defined.
 
-(* The substantive round trip: every diagram of shape 3 is the one built
-   from its own composable pair.  The comparison is at [Functor_Setoid],
-   the same strength Instance/Ordinal.v's [Functor_of_Steps_of_Functor]
-   delivers for the general shape, and unlike the [_1] and [_2] cases it is
-   not also given at [Functor_StrictEq_Setoid].  The reason it is not
-   ATTEMPTED here: the object part of the built functor is [pair_obj] read
-   off an index, which agrees with [F] only after an object of [_3] has
-   been identified with one of the three named ones, and the identification
-   [ord_obj_eq] supplies is [Qed]-opaque rather than [eq_refl], so the
-   transports in the strict setoid do not reduce away.  Whether the strict
-   form nonetheless holds is left open, not settled.
-   Naturality itself need only be checked on the two generating steps, by
-   Instance/Ordinal.v's [ord_functor_equiv_from_steps]. *)
+(*
+   本节说明相关定义、性质与动机。 The substantive round trip: every diagram shape 3 is one built. from its own composable pair.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Functor_of_Pair_of_Functor {C : Category} (F : _3 ⟶ C) :
   Functor_of_Pair (pair_fst F) (pair_snd F) ≈ F.
 Proof.
@@ -467,10 +477,11 @@ Proof.
   - destruct (le_t_zero_absurd (le_t_SS_inv (le_t_SS_inv H))).
 Qed.
 
-(* The list vocabulary ([In], [NoDup], [length]) and [lia] are used from
-   here on.  Instance/Ordinal.v requires the same two standard-library
-   modules, under the same spelling, and for the same reason: the closed
-   morphism count this section transports lives there. *)
+(*
+   本节说明相关定义、性质与动机。 The list vocabulary ([In], [NoDup], [length]) [lia] are used from. here on.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Coq.Lists.List.
 Require Import Coq.micromega.Lia.
 
@@ -485,9 +496,13 @@ Definition Two_Three_01 : _2 ⟶ _3 := Walk three_01.
 Definition Two_Three_12 : _2 ⟶ _3 := Walk three_12.
 Definition Two_Three_02 : _2 ⟶ _3 := Walk three_02.
 
-(* Their object actions, computed.  These are [=] between objects, by
-   [eq_refl]; they are near-trivial individually and are recorded because
-   together they are what distinguishes the three functors. *)
+(*
+   Their 对象 actions, computed.  These are [=] between 对象, by
+
+   本节说明相关定义、性质与动机。 [eq_refl]; they are near-trivial individually are recorded because together they are what distinguishes three 函子.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Two_Three_01_dom : Two_Three_01 TwoX = ord3_0 := eq_refl.
 Example Two_Three_01_cod : Two_Three_01 TwoY = ord3_1 := eq_refl.
 Example Two_Three_12_dom : Two_Three_12 TwoX = ord3_1 := eq_refl.
@@ -504,11 +519,13 @@ Proof. exact (arrow_of_Walk three_12). Qed.
 Corollary Two_Three_02_arrow : arrow_of Two_Three_02 ≈ three_02.
 Proof. exact (arrow_of_Walk three_02). Qed.
 
-(* The two category-level comparisons instantiated at this same target,
-   which is neither empty nor the point: [_3] has three objects and six
-   morphisms, as the enumeration below records.  These also witness that
-   the universe restriction disclosed in the header leaves both statements
-   inhabited. *)
+(*
+   The two 范畴-level comparisons instantiated at this same target,
+
+   本节说明相关定义、性质与动机。 which is neither empty nor point: [_3] has three 对象 six 态射, enumeration below records.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Two_Fun_Arrow_at_three : [_2, _3] ≅[Cat] @Arrow _3 := Two_Fun_Arrow.
 Example One_Fun_iso_at_three : [_1, _3] ≅[Cat] _3 := One_Fun_iso.
 
@@ -522,11 +539,13 @@ Proof.
   simpl in *; lia.
 Qed.
 
-(* Non-vacuity of Example 3.36: the three functors are pairwise
-   non-equivalent -- not merely distinct as terms, but not naturally
-   isomorphic, since a natural isomorphism would force equal indices at an
-   object where they differ.  So the correspondence really does separate
-   the three morphisms of [_3] it came from. *)
+(*
+   Non-vacuity of Example 3.36: the three 函子 are pairwise
+
+   本节说明相关定义、性质与动机。 non-equivalent -- not merely distinct terms, but not naturally isomorphic, since 自然 同构 would force equal indices at 对象 where they differ.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Two_Three_01_12 : (Two_Three_01 ≈ Two_Three_12) → False.
 Proof. intros [i _]; pose proof (ord_iso_val (i TwoX)) as E; discriminate. Qed.
 
@@ -536,16 +555,13 @@ Proof. intros [i _]; pose proof (ord_iso_val (i TwoY)) as E; discriminate. Qed.
 Theorem Two_Three_12_02 : (Two_Three_12 ≈ Two_Three_02) → False.
 Proof. intros [i _]; pose proof (ord_iso_val (i TwoX)) as E; discriminate. Qed.
 
-(* The example's own observation: over this target the object action
-   already determines the functor.  The proof consumes thinness of [_3] and
-   nothing else -- the two transported morphism actions are parallel arrows
-   of [Ordinal 3], and [le_t_irr] says there is at most one such.  The
-   other way round has been checked rather than assumed:
-   [Walk_objects_insufficient] below exhibits two functors [_2 ⟶ Sets] with
-   literally the same object action that [arrow_of] separates, so agreement
-   on objects carries no arrow information in general.  This theorem is
-   therefore a fact about the thin target, not about functors out of
-   [_2]. *)
+(*
+   The example's own observation: over this target the 对象 action
+
+   本节说明相关定义、性质与动机。 already determines 函子. The proof consumes thinness [_3] nothing else -- two transported 态射 actions are parallel arrows [Ordinal 3], [le_t_irr] says there is at most one such.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem two_three_objects_determine (F G : _2 ⟶ _3) (H : ∀ a, F a = G a) :
   @equiv _ Functor_StrictEq_Setoid F G.
 Proof. exists H; intros a b f; apply le_t_irr. Qed.
@@ -580,10 +596,11 @@ Definition two_three_coords (F : _2 ⟶ _3) : (nat * nat)%type :=
 
 Definition two_three_index : list (nat * nat) := ord_pairs 3.
 
-(* The count.  It is DERIVED, from Instance/Ordinal.v's closed formula
-   [ord_morphism_count n : 2 * length (ord_pairs n) = n * (n + 1)] at
-   n = 3, and not from writing six functors down or from computing a
-   numeral: [lia] halves 3 * 4. *)
+(*
+   本节说明相关定义、性质与动机。 The count. It is DERIVED, from Instance/Ordinal.v's closed formula.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem two_three_count : (length two_three_index = 6)%nat.
 Proof. pose proof (ord_morphism_count 3) as H; unfold two_three_index; lia. Qed.
 
@@ -593,9 +610,13 @@ Proof. exact (ord_pairs_nodup 3). Qed.
 Theorem two_three_coords_in (F : _2 ⟶ _3) : In (two_three_coords F) two_three_index.
 Proof. exact (ord_coords_in_pairs (two_three_mor F)). Qed.
 
-(* Distinct indices are the only way two of these functors can differ:
-   equal coordinates force strict equality of the functors, by transporting
-   Instance/Ordinal.v's [ord_coords_inj] along the correspondence. *)
+(*
+   Distinct indices are the only way two of these 函子 can differ:
+
+   本节说明相关定义、性质与动机。 equal coordinates force strict equality 函子, transporting Instance/Ordinal.v's [ord_coords_inj] along correspondence.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem two_three_coords_faithful (F G : _2 ⟶ _3) :
   two_three_coords F = two_three_coords G →
   @equiv _ Functor_StrictEq_Setoid F G.
@@ -659,12 +680,13 @@ Program Definition const_TwoX : two_setoid_object ~{Sets}~> two_setoid_object :=
   morphism := fun _ => TwoX
 |}.
 
-(* The tested converse promised at [Walk_objects_agree] and at
-   [two_three_objects_determine]: over [Sets] the identity and a constant
-   map on a two-element setoid give two functors out of [_2] with the SAME
-   object action, which [arrow_of] separates.  So the object action does
-   not determine a functor out of [_2] in general, and the determination
-   theorem above is a fact about the thin target [_3]. *)
+(*
+   The tested converse promised at [Walk_对象_agree] and at
+
+   本节说明相关定义、性质与动机。 [two_three_对象_determine]: over [Sets] identity constant map two-element setoid give two 函子 out [_2] SAME 对象 action, which [arrow_of] separates.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Walk_objects_insufficient :
   ((∀ a, Walk (@id Sets two_setoid_object) a = Walk const_TwoX a) *
    ((arrow_of (Walk (@id Sets two_setoid_object)) ≈ arrow_of (Walk const_TwoX))
@@ -677,10 +699,13 @@ Proof.
     discriminate.
 Qed.
 
-(* Exercise 3.45, the constructive direction: for every setoid S there is a
-   functor from the point whose value at the point is S.  [=] between
-   objects again, and near-trivial -- [Point S] was built for it -- but it
-   is precisely the statement the exercise asks for. *)
+(*
+   Exercise 3.45, the 构造性 direction: for every setoid S there is a
+
+   本节说明相关定义、性质与动机。 函子 from point whose value at point is S. [=] between 对象 again, near-trivial -- [Point S] was built it -- but it is precisely statement exercise asks for.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Sets_point_value (S : Sets) : Point S ttt = S.
 Proof. reflexivity. Qed.
 
@@ -695,10 +720,11 @@ Corollary Sets_point_iso (S T : Sets) :
   (Point S ≈ Point T) ↔ (S ≅[Sets] T).
 Proof. exact (Point_equiv_iso S T). Qed.
 
-(* Non-vacuity of the [Sets] instantiation, with a witness that escapes the
-   degenerate case: the empty setoid and the singleton give NON-equivalent
-   functors from the point.  The inverse leg of a hypothetical isomorphism
-   would send [ttt] to an inhabitant of [False]. *)
+(*
+   本节说明相关定义、性质与动机。 Non-vacuity [Sets] instantiation, witness that escapes the. degenerate case: empty setoid singleton give NON-equivalent 函子 from point.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Sets_point_separates :
   (Point (C:=Sets) empty_setoid_object ≈ Point (C:=Sets) unit_setoid_object)
     → False.

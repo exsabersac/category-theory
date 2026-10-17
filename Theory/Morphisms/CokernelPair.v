@@ -27,18 +27,11 @@ Section PushoutSquare.
 
 Context {C : Category}.
 
-(* The square
+(*
+   本节说明相关定义、性质与动机。 The square. x ---g---> z | | f| | i2 v v y ---i1--> P commutes enjoys 普遍性质 推出.
 
-        x ---g---> z
-        |          |
-       f|          | i2
-        v          v
-        y ---i1--> P
-
-   commutes and enjoys the universal property of a pushout.  This is
-   [IsPullback] read in C^op, where composition is reversed: the field
-   [is_pullback_commutes] there reads [i1 ∘ f ≈ i2 ∘ g] here, and
-   [is_pullback_ump] there reads as the mediation of cocones here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition IsPushoutSquare {x y z : C} (f : x ~> y) (g : x ~> z)
            (P : C) (i1 : y ~> P) (i2 : z ~> P) : Type :=
   @IsPullback (C^op) y z x f g P i1 i2.
@@ -48,11 +41,11 @@ Section Accessors.
 Context {x y z : C} {f : x ~> y} {g : x ~> z}.
 Context {P : C} {i1 : y ~> P} {i2 : z ~> P}.
 
-(* The C-facing smart constructor.  Without it a caller must build the
-   square with goals displayed in C^op, where the legs precompose on the
-   left and [id_left]/[id_right] swap roles — an elaboration nuisance
-   recorded in the header.  Like the readers below it is definitional:
-   both hypotheses fit the C^op record fields by conversion alone. *)
+(*
+   本节说明相关定义、性质与动机。 The C-facing smart constructor. Without it caller must build the. square goals displayed C^op, where legs precompose left [id_left]/[id_right] swap roles — elaboration nuisance recorded header.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Build_IsPushoutSquare
            (Hcomm : i1 ∘ f ≈ i2 ∘ g)
            (Hump : ∀ (Q : C) (q1 : y ~> Q) (q2 : z ~> Q),
@@ -114,11 +107,11 @@ Qed.
 
 End Accessors.
 
-(** *** Conversions with the bundled [IsPushout]
+(*
+   本节：* *** Conversions bundled [IsPushout]. Both are field repackagings, exactly Stability.v's [拉回_is_拉回]/[is_拉回_拉回] are;
 
-    Both are field repackagings, exactly as Stability.v's
-    [pullback_is_pullback]/[is_pullback_pullback] are; indeed each is that
-    conversion read at C^op, and so is supplied with no tactic. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition pushout_is_pushout_square {x y z : C}
            (f : x ~> y) (g : x ~> z) (P : IsPushout f g) :
@@ -137,15 +130,13 @@ Arguments IsPushoutSquare {C x y z} f g P i1 i2.
 
 (** ** The cokernel pair *)
 
-(* The cokernel pair of f : x ~> y is the pushout of f with itself: a
-   parallel pair out of y, universal among parallel pairs coequalizing f.
+(*
+   The 余核 pair of f : x ~> y is the 推出 of f with itself: a
 
-   This is the exact dual of Structure/Regular.v's
+   本节说明相关定义、性质与动机。 parallel pair out y, universal among parallel pairs coequalizing f.
 
-       Definition kernel_pair `{HasPullbacks C} (f : x ~> y)
-         : Pullback f f := pullback f f
-
-   and is spelled to mirror it one for one. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cokernel_pair {C : Category} `{H : @HasPushouts C} {x y : C}
   (f : x ~> y) : IsPushout f f := pushout f f.
 
@@ -221,10 +212,13 @@ Context {C : Category}.
 Context {x y : C}.
 Context (f : x ~> y).
 
-(* Seven Sketches Definition 7.5, forward: if f is right-cancellable then
-   the square on f with two identity legs is a pushout.  The mediator of a
-   cocone (q1, q2) is q1 itself — epicness is exactly what says q2 is the
-   same morphism. *)
+(*
+   Seven Sketches 定义 7.5, 正向: if f is right-cancellable then
+
+   本节说明相关定义、性质与动机。 the square f two identity legs is 推出. The mediator cocone (q1, q2) is q1 itself — epicness is exactly what says q2 is same 态射.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition epic_pushout_square (E : Epic f) : IsPushoutSquare f f y id id.
 Proof.
   destruct E as [cancel].
@@ -241,10 +235,13 @@ Proof.
       rewrite <- Hv1, id_right; reflexivity.
 Defined.
 
-(* Seven Sketches Definition 7.5, backward: if that square is a pushout
-   then f is right-cancellable.  A pair coequalizing f is mediated by a
-   SINGLE morphism which, precomposed with the identity twice over, is
-   both members of the pair. *)
+(*
+   Seven Sketches 定义 7.5, 反向: if that square is a 推出
+
+   本节说明相关定义、性质与动机。 then f is right-cancellable. A pair coequalizing f is mediated SINGLE 态射 which, precomposed identity twice over, is both members pair.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition pushout_square_epic (H : IsPushoutSquare f f y id id) : Epic f.
 Proof.
   constructor.
@@ -287,10 +284,11 @@ Proof. split; [ exact epic_ckp_trivial | exact ckp_trivial_epic ]. Qed.
 
 (** *** The same at full strength: the left leg is an isomorphism *)
 
-(* When f is epic, the mediator of the pair (id, id) is a two-sided
-   inverse of either leg, so the cokernel-pair apex collapses onto the
-   codomain.  Naming the inverse is what makes this stronger than a bare
-   [≅]. *)
+(*
+   本节说明相关定义、性质与动机。 When f is epic, mediator pair (id, id) is two-sided. inverse either leg, so 余核-pair apex collapses onto codomain.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma epic_ckp_left_iso (E : Epic f) : IsIsomorphism (ckp_left P).
 Proof.
   assert (Hid : id[y] ∘ f ≈ id[y] ∘ f) by reflexivity.
@@ -338,11 +336,13 @@ Arguments epic_iff_pushout_square {C x y} f.
 Arguments epic_iff_cokernel_pair_trivial {C x y} f P.
 Arguments epic_iff_cokernel_pair_left_iso {C x y} f P.
 
-(** *** The same at the CHOSEN cokernel pair
+(*
+   * *** The same at the CHOSEN 余核 pair
 
-    Named aliases so that a consumer working under [HasPushouts] need not
-    spell the pushout argument.  Each is the general statement applied to
-    [cokernel_pair f], supplied by [:=]. *)
+   本节说明相关定义、性质与动机。 Named aliases so that consumer working under [HasPushouts] need not spell 推出 argument.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition epic_iff_chosen_ckp_trivial {C : Category}
            `{H : @HasPushouts C} {x y : C} (f : x ~> y) :
@@ -354,15 +354,13 @@ Definition epic_iff_chosen_ckp_left_iso {C : Category}
   Epic f ↔ IsIsomorphism (ckp_left (cokernel_pair f)) :=
   epic_iff_cokernel_pair_left_iso f (cokernel_pair f).
 
-(** ** The [Monic] dual, by duality
+(*
+   * ** The [Monic] dual, by 对偶
 
-    Every statement below is one of the three above instantiated at C^op
-    and re-typed through Duality.v's [Monic]/[Epic] bridges.  No proof
-    content is repeated: each is supplied by [:=] or by a two-line
-    [split] over the C^op instance.
+   本节说明相关定义、性质与动机。 Every statement below is one three above instantiated at C^op re-typed through 对偶.v's [Monic]/[Epic] bridges. No proof content is repeated: each is supplied [:=] two-line [split] over C^op instance.
 
-    The two conversions that carry the transfer are MEASURED, not assumed;
-    see the [eq_refl] lemmas immediately below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section OpConversions.
 
@@ -370,18 +368,24 @@ Context {C : Category}.
 Context {x y : C}.
 Context (f : x ~> y).
 
-(* The identity pushout square at C^op IS the identity pullback square at
-   C.  This holds because (C^op)^op reduces to C in this library
-   (Construction/Opposite.v), so the two [IsPullback] applications are the
-   same term.  Measured: [eq_refl]. *)
+(*
+   The identity 推出 square at C^op IS the identity 拉回 square at
+
+   本节说明相关定义、性质与动机。 C. This holds because (C^op)^op reduces C this library (Construction/反.v), so two [IsPullback] applications are same term.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition op_collapse_pushout_square :
   @IsPushoutSquare (C^op) y x x f f x id id
     = @IsPullback C x x y f f x id id := eq_refl.
 
-(* A pushout of f with itself in C^op IS a pullback of f with itself in C,
-   and the cokernel-pair legs there ARE the pullback projections here.
-   Measured: [eq_refl] in all three.  This is what makes the [Monic]
-   statements below literal instantiations rather than restatements. *)
+(*
+   A 推出 of f with itself in C^op IS a 拉回 of f with itself in C,
+
+   本节说明相关定义、性质与动机。 and 余核-pair legs there ARE 拉回 projections here. Measured: [eq_refl] all three.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition op_collapse_cokernel_pair :
   @IsPushout (C^op) y x x f f = @Pullback C x x y f f := eq_refl.
 
@@ -391,10 +395,11 @@ Definition op_collapse_ckp_left (P : Pullback f f) :
 Definition op_collapse_ckp_right (P : Pullback f f) :
   @ckp_right (C^op) y x f P = pullback_snd f f P := eq_refl.
 
-(* [IsIsomorphism] at C^op and at C carry the same inverse and swap their
-   two law fields, so the conversion is a field permutation with no proof
-   content.  It is not [eq_refl]: the records differ in field ORDER, and
-   the [Fail] probe of Test/ProbeCokernelPair.v pins that. *)
+(*
+   本节说明相关定义、性质与动机。 [IsIsomorphism] at C^op at C carry same inverse swap their. two law fields, so conversion is field permutation no proof content.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition IsIsomorphism_of_op {a b : C} (h : b ~> a)
            (I : @IsIsomorphism (C^op) a b h) : @IsIsomorphism C b a h :=
   @Build_IsIsomorphism C b a h
@@ -417,10 +422,11 @@ Context {C : Category}.
 Context {x y : C}.
 Context (f : x ~> y).
 
-(* [Monic f] ↔ the square on f with two identity legs is a PULLBACK.  This
-   is Seven Sketches Definition 7.5's mono clause; that clause proper is
-   issue #672's territory, and what is delivered here is strictly the dual
-   of this issue's epi theorem, obtained by instantiating it at C^op. *)
+(*
+   本节说明相关定义、性质与动机。 [Monic f] ↔ square f two identity legs is PULLBACK. This. is Seven Sketches 定义 7.5's mono clause;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem monic_iff_pullback_square : Monic f ↔ IsPullback f f x id id.
 Proof.
   split.
@@ -430,9 +436,13 @@ Proof.
     exact (Monic_of_op_Epic f (pushout_square_epic (C:=C^op) f H)).
 Qed.
 
-(* The kernel-pair phrasing: f is monic exactly when its kernel pair is
-   trivial, i.e. its two projections coincide.  Stated for an ARBITRARY
-   pullback of f with itself, matching the cokernel-pair side. *)
+(*
+   The 核-pair phrasing: f is monic 当且仅当 its 核 pair is
+
+   本节说明相关定义、性质与动机。 trivial, i.e. its two projections coincide. Stated ARBITRARY 拉回 f itself, matching 余核-pair side.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem monic_iff_kernel_pair_trivial (P : Pullback f f) :
   Monic f ↔ pullback_fst f f P ≈ pullback_snd f f P.
 Proof.

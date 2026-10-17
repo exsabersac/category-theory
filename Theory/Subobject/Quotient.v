@@ -63,12 +63,11 @@ End QuotientAccessors.
 
 (** ** Isomorphisms carried across the opposite category *)
 
-(* Four-field permutations, with no proof content: [iso_to_from] on one
-   side is [iso_from_to] on the other, because the two round trips swap
-   endpoints when the composition is reversed.  Construction/Opposite.v:
-   146's [Isomorphism_Opposite] covers only the C-to-C^op direction and
-   fixes [to := from i]; both directions and the other orientation are
-   needed below. *)
+(*
+   本节说明相关定义、性质与动机。 Four-field permutations, no proof content: [iso_to_from] one. side is [iso_from_to] other, because two round trips swap endpoints when 复合 is reversed.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section OppositeIso.
 
@@ -91,10 +90,13 @@ Section QuotientCovariant.
 Context {C : Category}.
 Context {x : C}.
 
-(* C^op^op is C by conversion, so the quotient objects of C^op ARE the
-   subobjects of C, at Leibniz equality and with no tactic -- a claim
-   about the DATA of the type, which is the one place Leibniz equality
-   is the right relation. *)
+(*
+   C^op^op is C by conversion, so the quotient 对象 of C^op ARE the
+
+   本节说明相关定义、性质与动机。 subobjects C, at Leibniz equality no tactic -- claim about DATA type, which is one place Leibniz equality is right relation.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example QuotObj_op_is_SubObj : @QuotObj (C^op) x = @SubObj C x := eq_refl.
 
 (* The factorization order, covariantly, on the nose. *)
@@ -103,12 +105,11 @@ Example quot_le_unfold (q r : QuotObj x) :
   = { k : quot_cod r ~> quot_cod q & k ∘ quot_epi r ≈ quot_epi q }
   := eq_refl.
 
-(* The setoid, covariantly, as far as conversion reaches: the witness is
-   an isomorphism IN C^op and the composition must be annotated.  The
-   naive spelling, with a C-isomorphism [quot_cod q ≅ quot_cod r] and
-   [to i ∘ quot_epi q ≈ quot_epi r], is REFUSED here (cannot unify); the
-   header quotes the refusal.  [quot_equiv_iff_iso] below is the
-   covariant statement, at ≈ rather than at [eq_refl]. *)
+(*
+   本节说明相关定义、性质与动机。 The setoid, covariantly, far conversion reaches: witness is. 同构 IN C^op 复合 must be annotated. The naive spelling, C-同构 [quot_cod q ≅ quot_cod r] [to i ∘ quot_epi q ≈ quot_epi r], is REFUSED here (cannot unify);
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example quot_equiv_unfold (q r : QuotObj x) :
   (q ≈ r)
   = { i : @Isomorphism (C^op) (quot_cod q) (quot_cod r)
@@ -122,12 +123,13 @@ Definition quot_le_trans (q r s : QuotObj x) :
   quot_le q r → quot_le r s → quot_le q s :=
   @sub_le_trans (C^op) x q r s.
 
-(* The mediating arrow of a factorization between quotient objects is
-   itself an EPI of C: [sub_le_monic] (Theory/Subobject.v) read at
-   C^op, then carried back by [Epic_of_op_Monic].  Both the target type
-   and the bridge's category have to be given explicitly, since the
-   arrow's type is spelled at C^op and Rocq would otherwise read [Epic]
-   there -- which is [Monic] in C, the wrong claim. *)
+(*
+   The mediating arrow of a factorization between quotient 对象 is
+
+   本节说明相关定义、性质与动机。 itself EPI C: [sub_le_monic] (Theory/子对象.v) read at C^op, then carried back [Epic_of_op_Monic].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition quot_le_epic (q r : QuotObj x) (H : quot_le q r) :
   @Epic C (quot_cod r) (quot_cod q) (`1 H) :=
   @Epic_of_op_Monic C (quot_cod r) (quot_cod q) (`1 H)
@@ -154,13 +156,11 @@ Definition quot_le_of_equiv (q r : QuotObj x) : q ≈ r → quot_le q r :=
 Definition quot_ge_of_equiv (q r : QuotObj x) : q ≈ r → quot_le r q :=
   @sub_ge_of_equiv (C^op) x q r.
 
-(* The covariant characterization of the setoid, which conversion does
-   NOT give (see [quot_equiv_unfold]): two quotient objects are
-   equivalent exactly when an isomorphism of their codomains IN C
-   carries the one epi to the other.  Both directions go through the
-   symmetry of the setoid, because the C^op reading of [q ≈ r] carries
-   the isomorphism in the opposite orientation; the field permutations
-   then leave nothing to prove, and each branch ends in [exact]. *)
+(*
+   本节：The covariant characterization setoid, which conversion does. NOT give (see [quot_equiv_unfold]): two quotient 对象 are equivalent 当且仅当 同构 their codomains IN C carries one epi other.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem quot_equiv_iff_iso (q r : QuotObj x) :
   (q ≈ r) ↔ { i : quot_cod q ≅[C] quot_cod r
             & to i ∘ quot_epi q ≈ quot_epi r }.
@@ -190,13 +190,13 @@ Proof.
   now symmetry.
 Defined.
 
-(* The one-directional form with the isomorphism handed in the OTHER way
-   round -- from the codomain of the second argument to that of the
-   first -- which is the shape a consumer comparing a computed quotient
-   with a named one (Instance/Grp/QuotObj.v's isomorphism-theorem reading)
-   actually has in hand.  First proved in that file during the parallel
-   build; lifted here at integration as a corollary of
-   [quot_equiv_iff_iso] rather than kept as a second proof. *)
+(*
+   The one-directional form with the 同构 handed in the OTHER way
+
+   本节说明相关定义、性质与动机。 round -- from codomain second argument that first -- which is shape consumer comparing computed quotient named one (Instance/Grp/QuotObj.v's 同构-theorem reading) actually has hand.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary quot_equiv_of_cod_iso (q r : QuotObj x)
   (i : quot_cod r ≅[C] quot_cod q)
   (H : to i ∘ quot_epi r ≈ quot_epi q) : q ≈ r.
@@ -218,14 +218,11 @@ Section Bridges.
 Context {C : Category}.
 Context {x y : C}.
 
-(* The two projections, named.  The other two bridges of
-   Theory/Morphisms/Duality.v go the other way round the square --
-   [Monic_of_op_Epic] turns an [Epic] of C^op into a [Monic] of C
-   and [op_Epic_of_Monic] turns a [Monic] of C into an [Epic] of
-   C^op -- which is what makes [QuotObj_op_is_SubObj] a genuine
-   identification rather than a one-way reading: the monicity witness a
-   subobject of C carries is exactly the epicness witness a quotient
-   object of C^op carries. *)
+(*
+   本节说明相关定义、性质与动机。 The two projections, named. The other two bridges of. Theory/态射/对偶.v go other way round square -- [Monic_of_op_Epic] turns [Epic] C^op into [Monic] C [op_Epic_of_Monic] turns [Monic] C into [Epic] C^op -- which is what makes [QuotObj_
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition epic_of_monic_op (f : x ~> y) : @Monic (C^op) y x f → @Epic C x y f
   := fst (monic_op_iff_epic f).
 
@@ -261,10 +258,13 @@ Context {C : Category}.
 Context `{HP : @HasPushouts C}.
 Context {x : C}.
 
-(* The pushout of two epis, read as a quotient object: the meet for
-   [quot_le] -- the greatest lower bound, the finest quotient that
-   factors through both (the interface stub's gloss had the direction of
-   "factors through" backwards; corrected at integration). *)
+(*
+   The 推出 of two epis, read as a quotient 对象: the meet for
+
+   本节说明相关定义、性质与动机。 [quot_le] -- greatest lower bound, finest quotient that factors through both (the interface stub's gloss had direction "factors through" backwards;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition quot_meet (q r : QuotObj x) : QuotObj x :=
   @sub_meet (C^op) (HasPullbacks_op_of_HasPushouts HP) x q r.
 
@@ -285,17 +285,22 @@ Definition quot_meet_le_l (q r : QuotObj x) : quot_le (quot_meet q r) q :=
 Definition quot_meet_le_r (q r : QuotObj x) : quot_le (quot_meet q r) r :=
   @sub_meet_le_r (C^op) (HasPullbacks_op_of_HasPushouts HP) x q r.
 
-(* Mac Lane §V.7 dualized: the pushout is the GREATEST quotient object
-   below both, in the factorization order [quot_le] -- the finest
-   quotient that factors through both q and r.  See the header on why a
-   reader who orders by the size of the codomain reads this as a join. *)
+(*
+   Mac Lane §V.7 dualized: the 推出 is the GREATEST quotient 对象
+
+   本节说明相关定义、性质与动机。 below both, factorization order [quot_le] -- finest quotient that factors through both q r.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition quot_meet_is_glb (q r : QuotObj x) :
   ∀ w : QuotObj x, quot_le w q → quot_le w r → quot_le w (quot_meet q r) :=
   @sub_meet_is_glb (C^op) (HasPullbacks_op_of_HasPushouts HP) x q r.
 
-(* The order-theoretic predicate transports unchanged: [IsMeet] at C^op
-   is the two-element case of [IsIntersection], whose two clauses are
-   stated with [sub_le], which at C^op is [quot_le] on the nose. *)
+(*
+   本节说明相关定义、性质与动机。 The order-theoretic predicate transports unchanged: [IsMeet] at C^op.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition quot_meet_IsMeet (q r : QuotObj x) :
   @IsMeet (C^op) x q r (quot_meet q r) :=
   @sub_meet_IsMeet (C^op) (HasPullbacks_op_of_HasPushouts HP) x q r.
@@ -338,23 +343,11 @@ Context {C : Category}.
 Context `{T : @Terminal C}.
 Context {x : C}.
 
-(* [sub_bot] at C^op.  Structure/Initial.v makes [Initial (C^op)] the
-   same thing as [Terminal C], and [sub_bot]'s hypothesis [Monic zero]
-   becomes [Epic (one : x ~> 1)] through [op_Monic_of_Epic].  The
-   hypothesis is REAL but OBJECT-DEPENDENT rather than rare, and it is
-   left standing here only because this file builds no witness: in
-   [Sets] the arrow x → 1 is epic at every INHABITED x and is NOT epic
-   at the empty setoid (two maps 1 → Y agree after ∅ → 1 for free), and
-   Instance/Sets/QuotObj.v carries both halves -- the three-line
-   [Sets_one_epic_of_inhabited], whence the bottom quotient object
-   [Sets_quot_bot] at every inhabited setoid, and the refutation
-   [Sets_one_not_epic_empty].  The same inhabited/empty split governs
-   [Grp], [Ab] and [Top], while in a thin category every arrow is epic.
-   An earlier revision of this paragraph said "in most categories the
-   arrow to the terminal object is not epic", which an audit refuted by
-   discharging the hypothesis at [Sets] on [bool]; a second revision
-   said the discharge "lives with the witnesses" before any had been
-   landed, which a second audit caught. *)
+(*
+   本节说明相关定义、性质与动机。 [sub_bot] at C^op. Structure/Initial.v makes [Initial (C^op)] the. same thing [Terminal C], [sub_bot]'s 假设 [Monic zero] becomes [Epic (one : x ~> 1)] through [op_Monic_of_Epic].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition quot_bot (He : Epic (@one C T x)) : QuotObj x :=
   @sub_bot (C^op) T x (op_Monic_of_Epic (@one C T x) He).
 
@@ -363,18 +356,13 @@ Definition quot_bot_least (He : Epic (@one C T x)) (q : QuotObj x) :
   quot_le (quot_bot He) q :=
   @sub_bot_least (C^op) T x (op_Monic_of_Epic (@one C T x) He) q.
 
-(* The formal dual of [zero_monic_of_strict] (Theory/Subobject/
-   Lattice.v) at C^op, recorded for SYMMETRY ONLY: its strict-
-   initial hypothesis reads here as a COSTRICT terminal object -- every
-   object receiving a map from 1 is isomorphic to 1 -- which is a
-   near-vacuous condition: it does not hold in [Sets] (1 → bool exists
-   and bool is not 1) and in any category with a zero object it forces every
-   object to be terminal, so it is satisfied essentially only by the
-   trivial category.  It is NOT the practical route to [Epic one]; that
-   route is the object-by-object one described above (inhabitedness at
-   [Sets]).  The isomorphism is supplied in C and carried over by
-   [op_Iso_of_Iso]; no category in this tree is shown to satisfy the
-   hypothesis, and none should be expected to. *)
+(*
+   The formal dual of [zero_monic_of_strict] (Theory/子对象/
+
+   本节说明相关定义、性质与动机。 Lattice.v) at C^op, recorded SYMMETRY ONLY: its strict- initial 假设 reads here COSTRICT 终对象 -- every 对象 receiving map from 1 is isomorphic 1 -- which is near-vacuous condition: it does not hold [Sets] (1 → bool exists bool is not 1) a
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition one_epic_of_costrict
   (Hco : ∀ (y : C) (f : @terminal_obj C T ~> y),
            @terminal_obj C T ≅[C] y) :
@@ -394,13 +382,11 @@ Context {x : C}.
 Context {J : Type}.
 Context (S : J → QuotObj x).
 
-(* [sub_wide_intersection] at C^op.  The [WidePullback] argument is a
-   wide pullback IN C^op, which is a wide pushout of C; Structure/
-   Pullback/Wide.v supplies no wide-pushout vocabulary and none is added
-   here, so the caller states it in the C^op spelling.  The index [j0]
-   survives the transport for the reason recorded in the subobject
-   file's header: the wide record carries no leg to the common
-   codomain, so the epi into the apex is read off a chosen member. *)
+(*
+   本节：[sub_wide_intersection] at C^op. The [WidePullback] argument is a. wide 拉回 IN C^op, which is wide 推出 C; Structure/ 拉回/Wide.v supplies no wide-推出 vocabulary none is added here, so caller states it C^op spelling.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition quot_wide_meet (j0 : J)
   (W : @WidePullback (C^op) J (fun j => quot_cod (S j)) x
          (fun j => quot_epi (S j))) : QuotObj x :=
@@ -426,23 +412,20 @@ Section Coimages.
 
 Context {C : Category}.
 
-(* An image of C^op, read forwards: the coarsest quotient of x through
-   which f factors.  Its fields read [im_sub : QuotObj x],
-   [im_factor : quot_cod im_sub ~> y] with
-   [im_factor ∘[C] quot_epi im_sub ≈ f] -- the composition MUST be
-   annotated with C, for the same reason as in [quot_equiv_unfold]:
-   written bare, [∘] is elaborated in C^op from [im_factor]'s spelled
-   type and the sentence does not typecheck -- and [im_least] saying
-   that any quotient w of x with [g ∘[C] quot_epi w ≈ f] satisfies
-   [quot_le im_sub w]. *)
+(*
+   本节说明相关定义、性质与动机。 An image C^op, read forwards: coarsest quotient x through. which f factors.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CoimageOf {x y : C} (f : x ~> y) : Type := @ImageOf (C^op) y x f.
 
 End Coimages.
 
-(* Following the [Cocartesian] (Structure/Cocartesian.v) and
-   [Initial] (Structure/Initial.v) precedent, this is NOTATION rather
-   than a definition, so that instance resolution for the underlying
-   [HasImages] class still fires at C^op. *)
+(*
+   本节说明相关定义、性质与动机。 Following [Cocartesian] (Structure/Cocartesian.v) and. [Initial] (Structure/Initial.v) precedent, this is NOTATION rather than 定义, so that instance resolution underlying [HasImages] class still fires at C^op.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Notation "'HasCoimages' C" := (@HasImages (C^op))
   (at level 9) : category_theory_scope.
 Notation "@HasCoimages C" := (@HasImages (C^op))

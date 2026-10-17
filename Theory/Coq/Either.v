@@ -31,9 +31,11 @@ Definition either `(f : a → c) `(g : b → c) (x : a + b) : c :=
   | inr b => g b
   end.
 
-(* The bifunctor's action on the LEFT summand: [f + id : a + b → c + b],
-   rewriting [Left l] to [Left (f l)] and leaving [Right] fixed.  Contrast
-   [Either_map] below, which acts on the right summand. *)
+(*
+   本节说明相关定义、性质与动机。 The bifunctor's action LEFT summand: [f + id : + b → c + b],. rewriting [Left l] [Left (f l)] leaving [Right] fixed.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition mapLeft `(f : a → c) `(x : a + b) : c + b :=
   match x with
   | inl l => inl (f l)

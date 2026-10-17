@@ -63,10 +63,13 @@ Definition Lawvere_Symmetric : @SymmetricMonoidal (@law_cat T) :=
 Definition Lawvere_CartesianMonoidal : @CartesianMonoidal (@law_cat T) :=
   @CC_CartesianMonoidal (@law_cat T) (@law_cartesian T) (@law_terminal T).
 
-(** Sanity, machine-checked: the monoidal structures underlying the
-    braided/symmetric packagings are [Lawvere_Monoidal] itself, on the
-    nose.  This definitional agreement is what lets the PROP coherence
-    field below be a single equality hypothesis. *)
+(*
+   * Sanity, machine-checked: the 幺半 structures underlying the
+
+   本节说明相关定义、性质与动机。 braided/对称 packagings are [Lawvere_幺半] itself, nose.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Lawvere_Symmetric_monoidal_coherence :
   @braided_is_monoidal (@law_cat T)
     (@symmetric_is_braided (@law_cat T) Lawvere_Symmetric)
@@ -80,13 +83,11 @@ Section LawverePROP.
 
 Context (T : LawvereTheory).
 
-(** The strictness pack: the in-tree PROP/interpretation machinery
-    requires a strict target, and a general Lawvere theory's cartesian
-    monoidal structure is only weakly monoidal, so strictness is a
-    hypothesis — expected to be satisfied on skeletal instances (objects
-    literally the natural numbers) with [coh := eq_refl] and the
-    strictness object equalities by nat induction; the in-tree witness
-    awaits the base's monoidal assembly (header note). *)
+(*
+   本节说明相关定义、性质与动机。 * The strictness pack: in-tree PROP/interpretation machinery.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context (SM : @StrictMonoidal (@law_cat T)).
 Context (coh : @strict_is_monoidal (@law_cat T) SM = Lawvere_Monoidal T).
 
@@ -110,11 +111,13 @@ Definition Lawvere_prop_tensor_plus (m n : nat) :
           (@law_of_nat T m ⨂[M] @law_of_nat T n)%object) coh)
     (@law_plus_product T m n).
 
-(** The PROP on [law_cat T]: strict path [SM], symmetric path the
-    cartesian braiding of section 1, coherence the hypothesis [coh]
-    (typechecking because [braided_is_monoidal (symmetric_is_braided
-    (Lawvere_Symmetric T))] is definitionally [Lawvere_Monoidal T]),
-    and object correspondence [law_of_nat]. *)
+(*
+   * The PROP on [law_cat T]: strict path [SM], 对称 path the
+
+   本节：笛卡尔 braiding section 1, coherence 假设 [coh] (typechecking because [braided_is_幺半 (对称_is_braided (Lawvere_对称 T))] is definitionally [Lawvere_幺半 T]), 对象 correspondence [law_of_nat].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Lawvere_PROP : PROP := {|
   prop_cat := @law_cat T;
   prop_strict := SM;
@@ -125,11 +128,11 @@ Definition Lawvere_PROP : PROP := {|
   prop_tensor_plus := Lawvere_prop_tensor_plus
 |}.
 
-(** *** Interpretation of a free PROP in the Lawvere theory
+(*
+   本节说明相关定义、性质与动机。 * *** Interpretation free PROP Lawvere theory. The side conditions are those [Construction/PROP/Interp.v] / [Universal.v]: [Prop] reflection hom 等价 decidable 对象 equality (powering axiom-free UIP 对象).
 
-    The side conditions are those of [Construction/PROP/Interp.v] /
-    [Universal.v]: a [Prop] reflection of the hom equivalence and
-    decidable object equality (powering the axiom-free UIP on objects). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Context {HP : HomEqProp (@law_cat T)}.
 Context {OD : @ObjDecEq (@law_cat T)}.
@@ -142,9 +145,13 @@ Context (v : ∀ m n : nat, Σ m n → (@law_of_nat T m ~{@law_cat T}~> @law_of_
 
 Definition Lawvere_Valuation : Valuation Lawvere_PROP Σ := v.
 
-(** The induced interpretation functor out of the free PROP ([FreeCat Σ]
-    is the underlying category of [FreePROP Σ]), instantiating the
-    in-tree universal-property machinery at [Lawvere_PROP]. *)
+(*
+   * The induced interpretation 函子 out of the free PROP ([FreeCat Σ]
+
+   本节说明相关定义、性质与动机。 is underlying 范畴 [FreePROP Σ]), instantiating in-tree universal-property machinery at [Lawvere_PROP].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Lawvere_PROP_interp : FreeCat Σ ⟶ @law_cat T :=
   @InterpF Σ Lawvere_PROP HP OD Lawvere_Valuation.
 

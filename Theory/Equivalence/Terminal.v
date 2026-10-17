@@ -44,17 +44,11 @@ Definition Terminal_transport {C D : Category} {F : C ⟶ D}
     (fun d => terminal_transport_arrow E T d)
     (fun d f g => terminal_transport_unique E T d f g).
 
-(* The initial dual, argued directly rather than by opposing E.
+(*
+   本节：The initial dual, argued directly rather than opposing E.. The 对偶 route DOES exist: [EquivalenceOfCategories_op] at Theory/等价/极限.v opposes 等价, [Terminal_transport (EquivalenceOfCategories_op E) I0] discharges this one line.
 
-   The duality route DOES exist: [EquivalenceOfCategories_op] at
-   Theory/Equivalence/Limit.v opposes an equivalence, and
-   [Terminal_transport (EquivalenceOfCategories_op E) I0] discharges this
-   in one line.  It is not taken here because of where that constructor
-   lives -- Theory/Equivalence/Limit.v carries the limit-preservation and
-   RAPL development, and importing it would make this otherwise-light file
-   depend on the whole chain.  Repeating a three-line argument with [epic]
-   for [monic] and [zero_unique] for [one_unique] is the cheaper trade.
-   Anyone who already has Limit.v in scope should prefer the one-liner. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma initial_transport_unique {C D : Category} {F : C ⟶ D}
   (E : @EquivalenceOfCategories C D F) (I0 : @Initial C) (d : D)
   (f g : F (@initial_obj C I0) ~{D}~> d) : f ≈ g.
@@ -71,10 +65,11 @@ Definition initial_transport_arrow {C D : Category} {F : C ⟶ D}
   to (@equivalence_counit_at C D F E d)
     ∘ fmap[F] (@zero C I0 (@quasi_inverse C D F E d)).
 
-(* [@Initial D] is notation for [@Terminal (D^op)], so the record is built
-   with [Build_Terminal] at D^op; the arrow and uniqueness components are
-   stated in D and accepted by conversion, which avoids writing any
-   composite in the opposite category. *)
+(*
+   本节说明相关定义、性质与动机。 [@Initial D] is notation [@Terminal (D^op)], so record is built. [Build_Terminal] at D^op;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Initial_transport {C D : Category} {F : C ⟶ D}
   (E : @EquivalenceOfCategories C D F) (I0 : @Initial C) : @Initial D :=
   @Build_Terminal (D^op) (F (@initial_obj C I0))
@@ -96,27 +91,11 @@ Section TerminalSubContractible.
 
 Context {C : Category}.
 
-(* Riehl, CTiC, Lemma 1.6.16, strongest packaging: as soon as C HAS a
-   terminal object, the subcategory of Block D is equivalent to the
-   terminal category -- a contractible groupoid.
+(*
+   本节：Riehl, CTiC, Lemma 1.6.16, strongest packaging: soon C HAS a. 终对象, subcategory Block D is equivalent terminal 范畴 -- contractible groupoid. The 函子 1 is [Erase]; quasi-inverse is constant at chosen 对象.
 
-   The functor to 1 is [Erase]; the quasi-inverse is constant at the
-   chosen object.  The counit cell is any two functors into 1 agreeing,
-   which is Cat's own terminality ([Cat_Terminal], Instance/One.v); doing
-   it by hand instead collapses 1's hom universe to Set and then fails a
-   universe check.  The unit cell is componentwise [terminal_sub_iso],
-   with the [Functor_Setoid] coherence discharged by
-   [terminal_sub_hom_unique] -- in a category whose hom-sets are
-   singletons, EVERY diagram commutes.
-
-   CONSTRUCTIVE SCOPE.  Riehl's "empty or contractible" cannot be stated
-   as a decidable disjunction here: `Sub C TerminalObjects` inhabited-or-
-   not is exactly excluded middle for "C has a terminal object", and this
-   library is axiom-free.  What is delivered is the two halves that the
-   disjunction packages: the contractibility below, conditioned on an
-   inhabitant, and -- holding unconditionally, hence vacuously in the
-   empty case -- [terminal_sub_hom_contractible] and [terminal_sub_IsIso]
-   of Block D. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition terminal_sub_point (T : @Terminal C) :
   _1 ⟶ Sub C TerminalObjects := {|
   fobj := fun _ => terminal_sub_obj T;

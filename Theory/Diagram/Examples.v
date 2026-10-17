@@ -85,10 +85,11 @@ Proof.
   discriminate Heq.
 Qed.
 
-(* The negative witness: [Commutative] is refuted for this diagram, over the
-   very same quiver that carries the commuting one above.  The refutation goes
-   through [square_commutes_inv], which instantiates the predicate at the two
-   genuinely distinct paths of [SquareQuiver]. *)
+(*
+   本节说明相关定义、性质与动机。 The negative witness: [Commutative] is refuted this diagram, over the. very same quiver that carries commuting one above.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example coq_square_not_commutative : Commutative CoqNonCommutingSquare -> False.
 Proof.
   intro Hc.
@@ -130,28 +131,17 @@ Qed.
 
 (** ** The tree's shape-specific commutativity statements are instances *)
 
-(* Theory/Diagram.v's header claims that the reusable in-tree statements of
-   commutativity each fix one figure, and that [Commutative] generalizes them.
-   These four results discharge that claim for two of the three, by exhibiting
-   each as a [Commutative] diagram of the corresponding walking shape.  (The
-   third, Construction/Sq.v's [dsq], is the same square as
-   [square_commutative_iff] after permuting its four arguments to [dsq]'s
-   [(h, u, v, k)] AND applying [symmetry]: the permutation alone yields
-   [v ∘ h ≈ k ∘ u], while [dsq] is stated as [k ∘ u ≈ v ∘ h].  It is not
-   restated here, to avoid importing the double-category development.) *)
+(*
+   本节说明相关定义、性质与动机。 Theory/Diagram.v's header claims that reusable in-tree statements of. commutativity each fix one figure, that [Commutative] generalizes them.
 
-(* A cone leg triangle: [Structure/Cone.v]'s [cone_coherence] is exactly
-   the commutativity of the walking triangle on the two legs and the image
-   morphism between them.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   Division of labour between the two results below, stated precisely because
-   it is easy to misread.  The [_iff] is a SHAPE match: its [ACone] instance is
-   used only to name [vertex_map], and the biconditional holds for any three
-   morphisms of matching type, so it carries no more content than
-   [triangle_commutative_iff] with the arguments instantiated.  The cone-ness is
-   used by [cone_leg_commutes], which discharges the right-hand side from
-   [cone_coherence].  Together they exhibit [cone_coherence] as an instance;
-   neither alone does.  The same split applies to the pullback pair below. *)
+(*
+   本节说明相关定义、性质与动机。 A cone leg triangle: [Structure/Cone.v]'s [cone_coherence] is exactly. commutativity walking triangle two legs image 态射 between them. Division labour between two results below, stated precisely because it is easy misread.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary cone_leg_commutative_iff {J C : Category} {F : J ⟶ C} {c : C}
           `{@ACone J C c F} {x y : J} (f : x ~{J}~> y) :
   Commutative (TriangleDiagram (vertex_map x) (fmap[F] f) (vertex_map y))
@@ -180,14 +170,11 @@ Proof. apply square_commutes, (is_pullback_commutes Hpb). Qed.
 
 (** ** The walking loop: a diagram that draws a non-identity endomorphism *)
 
-(* Theory/Diagram.v's [loop_commutative_iff] proves that over the walking loop,
-   [Commutative] is exactly "the drawn endomorphism is the identity".  That is
-   the clause of the predicate driven by the EMPTY path, and it is the one no
-   figure-fixing statement can express.  Here it is exercised concretely, in
-   both directions, over the same category [Coq].
+(*
+   本节说明相关定义、性质与动机。 Theory/Diagram.v's [loop_commutative_iff] proves that over walking loop,. [Commutative] is exactly "the drawn endomorphism is identity". 即 clause predicate driven EMPTY path, it is one no figure-fixing statement can express.
 
-   [negb] is a non-identity endomorphism of [bool], so the diagram drawing it
-   is not [Commutative] -- while the diagram drawing [Datatypes.id] is. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition CoqLoopNegb : Diagram LoopQuiver Coq :=
   LoopDiagram (negb : (bool : Coq) ~{Coq}~> (bool : Coq)).

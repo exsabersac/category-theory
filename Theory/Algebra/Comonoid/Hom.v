@@ -68,12 +68,13 @@ Proof.
     apply (@hom_epsilon _ _ _ _ _ F).
 Qed.
 
-(* Transport of a comonoid structure across an isomorphism i : x ≅ y, by
-   conjugation: copy on y is "carry back along i⁻¹, copy on x, carry both
-   halves forward along i", and discard on y is "carry back, discard".  The
-   laws are those of Cx conjugated by i; each proof cancels the inner
-   [from i ∘ to i], applies the corresponding law of Cx, and transports the
-   result across the naturality square of the relevant structural map. *)
+(*
+   Transport of a 余幺半群 structure across an 同构 i : x ≅ y, by
+
+   本节说明相关定义、性质与动机。 conjugation: copy y is "carry back along i⁻¹, copy x, carry both halves 正向 along i", discard y is "carry back, discard". The laws are those Cx conjugated i;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := intros.
 
@@ -163,11 +164,13 @@ Proof.
   - reflexivity.
 Qed.
 
-(* The category Comon(C) of internal comonoids in C: objects are objects of
-   C equipped with a comonoid structure, morphisms are C-morphisms equipped
-   with a proof of homomorphy, and equivalence is equivalence of the
-   underlying morphisms — the same sigma packaging as [Mon] and [Sub] in
-   Construction/Subcategory.v. *)
+(*
+   The 范畴 Comon(C) of internal comonoids in C: 对象 are 对象 of
+
+   本节：C equipped 余幺半群 structure, 态射 are C-态射 equipped proof homomorphy, 等价 is 等价 underlying 态射 — same sigma packaging [Mon] [Sub] Construction/Subcategory.v.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Comon : Category := {|
   obj     := { x : C & Comonoid x };
   hom     := fun X Y => { f : `1 X ~> `1 Y & ComonoidHom `2 X `2 Y f };

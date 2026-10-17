@@ -53,79 +53,13 @@ Reserved Infix "∘" (at level 40, left associativity).
    库中几乎每个文件都直接或经其直接消费者 Theory/Functor.v 与
    Theory/Isomorphism.v  Require 本文件。 *)
 
-(* Where categories come from, and what the definition is for
+(*
+   Where 范畴 来源, and what the 定义 is for
 
-   SEP:   https://plato.stanford.edu/entries/category-theory/
-   nLab:  https://ncatlab.org/nlab/show/E-category
-   nLab:  https://ncatlab.org/nlab/show/Yoneda+lemma
-   Paper: Eilenberg, Mac Lane, "General theory of natural equivalences",
-          Transactions of the American Mathematical Society 58, 1945
+   本节说明相关定义、性质与动机。 SEP: https://plato.stanford.edu/entries/范畴-theory/ nLab: https://ncatlab.org/nlab/show/E-范畴 nLab: https://ncatlab.org/nlab/show/Yoneda+lemma Paper: Eilenberg, Mac Lane, "General theory 自然 equivalences", Transactions American Mathematical Society 58, 194
 
-   Categories, functors, and natural transformations entered mathematics
-   together, in Eilenberg and Mac Lane's "General theory of natural
-   equivalences" (1945) — the abstraction, so the Stanford Encyclopedia
-   recounts, of their "Group Extensions and Homology" (Annals of
-   Mathematics 43, 1942), where particular functors and natural
-   transformations were already at work among groups.  The motivation ran
-   backwards through the definitions: the aim was to make "natural"
-   precise, which required functors, which in turn required categories.
-   In their own words, "the whole concept of a category is essentially an
-   auxiliary one; our basic concepts are essentially those of a functor
-   and of a natural transformation".  Even the names are borrowed — per
-   the same Encyclopedia entry, "functor" from Carnap, "category" from
-   Aristotle, Kant, and Peirce.
-
-   What the auxiliary concept isolates is the least structure in which
-   composition makes sense: objects, morphisms, identities, an
-   associative composition, and nothing else.  Milewski's preface to
-   "Category Theory for Programmers" (2014) places composition "at the
-   very root of category theory".  Yet the definition never asks what an
-   object is; every property must be phrased through the morphisms into
-   and out of it, and the Yoneda lemma shows the discipline loses
-   nothing — per the nLab, probes by the other objects of C suffice to
-   distinguish the objects of C.  The reward is altitude: "Category
-   theory takes a bird's eye view of mathematics.  From high in the sky,
-   details become invisible, but we can spot patterns that were
-   impossible to detect from ground level" (Leinster, "Basic Category
-   Theory", CUP 2014).
-
-   The subsequent history reads as a map of this library.  Grothendieck
-   made categories intrinsic to homological algebra ("Sur quelques
-   points d'algèbre homologique", Tôhoku Math. J. 9, 1957); Kan isolated
-   adjoint functors ("Adjoint Functors", TAMS 87, 1958), the subject of
-   Theory/Adjunction.v; Lawvere turned algebraic theories into
-   categories and their models into functors ("Functorial Semantics of
-   Algebraic Theories", PNAS 50, 1963), realized here in
-   Theory/Lawvere.v, and axiomatized the category of sets (PNAS 52,
-   1964); Lambek read categories as deductive systems and cartesian
-   closed categories as typed lambda calculus, the bridge behind
-   Structure/Closed.v and Instance/Lambda/.  Baez and Stay extend the
-   same dictionary to physics and topology, with closed symmetric
-   monoidal categories as the common language ("Physics, Topology,
-   Logic and Computation: A Rosetta Stone", arXiv:0903.0340, 2009).
-
-   The class below is what the nLab calls an E-category: a category
-   enriched in setoids, taking a specified equivalence relation rather
-   than the identity type as the equality of morphisms — each hom
-   carries a chosen equivalence and composition carries the
-   extensionality witness [compose_respects].  Coq's intensional type
-   theory has no quotient types, so a hom cannot be quotiented after
-   the fact; the relation must travel with the hom.  The choice is what
-   lets the library run on zero axioms: Instance/Sets.v identifies two
-   setoid maps whenever they agree pointwise up to the codomain's ≈, so
-   functions are extensional without the functional extensionality
-   axiom, and a quotient category is merely another choice of [homset]
-   over the same homs (compare the hom-congruence quotients of
-   Construction/Quotient.v).  The price is a standing obligation: every
-   operation on morphisms must be shown Proper, and rewriting proceeds
-   through Coq's generalized setoid rewriting.  One further field is
-   deliberate: [comp_assoc_sym] restates associativity in the mirrored
-   orientation so that Construction/Opposite.v can simply exchange the
-   two fields, making C^op^op = C hold by reflexivity;
-   [Build_Category'] then recovers the redundant field for instance
-   authors.  Nearly every file in the library requires this one,
-   directly or through its immediate consumers Theory/Functor.v and
-   Theory/Isomorphism.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Category@{o h p | h <= p} : Type@{max(o+1,h+1,p+1)} := {
   obj : Type@{o};                       (* collection of objects *)
@@ -218,9 +152,13 @@ Coercion obj : Category >-> Sortclass.
 #[export] Hint Rewrite @id_left : categories.
 #[export] Hint Rewrite @id_right : categories.
 
-(* [Build_Category'] is a custom constructor that automatically provides the
-   definition of [comp_assoc_sym] from [comp_assoc] by symmetry. It is intended
-   to be used with the [refine] tactic, such as in the example below. *)
+(*
+   [Build_范畴'] is a custom constructor that automatically provides the
+
+   本节说明相关定义、性质与动机。 定义 [comp_assoc_sym] from [comp_assoc] symmetry. It is intended be used [refine] tactic, such example below.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Build_Category'
            {obj} hom {homset} id compose
            {compose_respects}
@@ -255,9 +193,13 @@ Open Scope object_scope.
 Open Scope homset_scope.
 Open Scope morphism_scope.
 
-(* The hom-setoid whose equivalence is Coq's strict equality `eq`. Equipping a
-   hom with this `Setoid` recovers the classical (non-quotient) notion of a
-   category, where two morphisms are equal only when definitionally equal. *)
+(*
+   The hom-setoid whose 等价 is Coq's strict equality `eq`. Equipping a
+
+   本节说明相关定义、性质与动机。 hom this `Setoid` recovers classical (non-quotient) notion 范畴, where two 态射 are equal only when definitionally equal.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Morphism_equality@{o h p}
   {ob : Type@{o}} {hom : ob → ob → Type@{h}}
   (x y : ob) : Setoid@{h p} (hom x y) := {|
@@ -283,10 +225,13 @@ Corollary cod_comp {x y z : C} (g : y ~> z) (f : x ~> y) :
   dom g = cod f ↔ cod (g ∘ f) = cod g.
 Proof. split; auto. Qed.
 
-(* Riehl, "Category Theory in Context", §1.1: the identity at an object is
-   unique. An endomorphism that is a two-sided unit is [id] — and either half
-   of that hypothesis already suffices, since testing it against [id] itself
-   collapses it to a unit law. *)
+(*
+   Riehl, "范畴 Theory in Context", §1.1: the identity at an 对象 is
+
+   本节说明相关定义、性质与动机。 unique. An endomorphism 即 two-sided unit is [id] — either half that 假设 already suffices, since testing it against [id] itself collapses it unit law.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary id_unique_left {x : C} (u : x ~> x) :
   (∀ (y : C) (f : x ~> y), f ∘ u ≈ f) → u ≈ id.
 Proof. intro H; rewrite <- (id_left u); apply H. Qed.
@@ -309,11 +254,13 @@ Arguments id_right {_%_category _%_object _%_object} _%_morphism.
 Arguments comp_assoc {_%_category _%_object _%_object _%_object _%_object}
   _%_morphism _%_morphism _%_morphism.
 
-(* The hom relation of any category is a preorder on objects: reflexivity is
-   witnessed by `id` and transitivity by composition (note the order: `g ∘ f`
-   for `f : x ~> y` and `g : y ~> z`). This is the standard observation that a
-   category has an underlying preorder of objects (a preorder is exactly a thin
-   category). *)
+(*
+   The hom relation of any 范畴 is a preorder on 对象: reflexivity is
+
+   本节说明相关定义、性质与动机。 witnessed `id` transitivity 复合 (note order: `g ∘ f` `f : x ~> y` `g : y ~> z`).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance hom_preorder {C : Category} : PreOrder (@hom C) := {
   PreOrder_Reflexive  := fun _ => id;

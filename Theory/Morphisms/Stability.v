@@ -15,18 +15,13 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The apex-pinned pullback predicate: the square
+(*
+   The apex-pinned 拉回 predicate: the square
 
-        P ---p2---> y
-        |           |
-      p1|           |g
-        v           v
-        x ---f----> z
+   本节说明相关定义、性质与动机。 P ---p2---> y | | p1| |g v v x ---f----> z commutes enjoys 普遍性质 拉回.
 
-   commutes and enjoys the universal property of a pullback.  The ∃!-with-∧
-   shape below is the Type-valued [Unique] record of Lib/Setoid.v together
-   with the Type-valued conjunction, mirroring [ump_pullbacks] in
-   Structure/Pullback.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record IsPullback {C : Category} {x y z : C} (f : x ~> z) (g : y ~> z)
        (P : C) (p1 : P ~> x) (p2 : P ~> y) := {
@@ -58,18 +53,11 @@ Definition is_pullback_pullback {C : Category} {x y z : C}
 (* ------------------------------------------------------------------------ *)
 (* The pasting law                                                           *)
 
-(* Two adjacent squares over the composable bottom row a --k--> b --h--> c:
+(*
+   本节说明相关定义、性质与动机。 Two adjacent squares over composable bottom row --k--> b --h--> c:. P ---p2---> Q ---q2---> y | | | p1| q1| |m v v v ----k---> b ----h---> c Note: earlier planning draft transposed two squares;
 
-        P ---p2---> Q ---q2---> y
-        |           |           |
-      p1|         q1|           |m
-        v           v           v
-        a ----k---> b ----h---> c
-
-   Note: an earlier planning draft transposed the two squares; the statements
-   proved below are the standard pasting law, in which the hypothesis that
-   the RIGHT-hand square (over the cospan h, m) is a pullback is required in
-   BOTH directions. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Pasting.
 
@@ -130,11 +118,13 @@ Proof.
         exact Hvw.
 Qed.
 
-(* Pasting, inward: if the right-hand square is a pullback, the left-hand
-   square commutes, and the outer rectangle is a pullback, then the
-   left-hand square is a pullback.  The left square's commutativity is data
-   the outer rectangle cannot recover, so it enters as the hypothesis
-   [Hcomm]. *)
+(*
+   Pasting, inward: if the right-hand square is a 拉回, the left-hand
+
+   本节说明相关定义、性质与动机。 square commutes, outer rectangle is 拉回, then left-hand square is 拉回.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma pullback_unpaste
       (HQ : IsPullback h m Q q1 q2)
       (Hcomm : k ∘ p1 ≈ q1 ∘ p2)
@@ -192,15 +182,13 @@ End Pasting.
 (* ------------------------------------------------------------------------ *)
 (* Stability under base change                                               *)
 
-(* Monomorphisms are stable under pullback: in the square
+(*
+   Monomorphisms are stable under 拉回: in the square
 
-        P ---snd--> y
-        |           |
-     fst|           |m
-        v           v
-        x ----f---> z
+   本节说明相关定义、性质与动机。 P ---snd--> y | | fst| |m v v x ----f---> z m monic, projection 反 m is monic well.
 
-   with m monic, the projection opposite m is monic as well. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma monic_pullback_stable {C : Category} {x y z : C}
       (f : x ~> z) (m : y ~> z) (Hm : Monic m) (P : Pullback f m) :
   Monic (pullback_fst f m P).
@@ -301,9 +289,11 @@ Arguments transport_iso {C x y z f g P P'} _.
 Arguments transport_fst {C x y z f g P P'} _.
 Arguments transport_snd {C x y z f g P P'} _.
 
-(* Any two pullbacks of one cospan are isomorphic via mediators that commute
-   with the projections; the round trips reduce to id by the uniqueness
-   clause applied to each pullback's self-mediator. *)
+(*
+   本节说明相关定义、性质与动机。 Any two pullbacks one cospan are isomorphic via mediators that commute. projections;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma pullback_transport {C : Category} {x y z : C} {f : x ~> z} {g : y ~> z}
       (P P' : Pullback f g) : PullbackTransport P P'.
 Proof.
@@ -349,27 +339,11 @@ Proof.
   - exact HTsnd.
 Qed.
 
-(* Stability of the orthogonal left class under cobase change.
+(*
+   本节说明相关定义、性质与动机。 Stability orthogonal left class under cobase change.. nLab: https://ncatlab.org/nlab/show/orthogonal+factorization+system If e ⫫ m e' is 推出 e along any 态射 g (the cobase change e), then e' ⫫ m well.
 
-   nLab: https://ncatlab.org/nlab/show/orthogonal+factorization+system
-
-   If e ⫫ m and e' is a pushout of e along any morphism g (the cobase
-   change of e), then e' ⫫ m as well.  With the span [b <-e- a -g-> a'] and
-   the pushout square
-
-       a --g--> a'
-       |        |
-      e|        | pushout_in2
-       v        v
-       b -----> apex ,
-          in1
-
-   a lifting square (u, v) over [pushout_in2] transports to one over [e],
-   whose unique filler [d] then combines with [u] into a cocone under the
-   span; the pushout mediator is the required filler, and both mediator
-   uniqueness principles combine to give its uniqueness.  This discharges
-   the pointer at the end of Theory/Orthogonality.v's closure-property
-   list. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Theory.Orthogonality.
 Require Import Category.Structure.Pushout.

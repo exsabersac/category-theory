@@ -21,13 +21,11 @@ Class Traversable@{d c} {T : Type@{d} → Type@{c}} :=
 
 Arguments Traversable : clear implicits.
 
-(* [Tupersable] is a project-specific specialization of [Traversable] to a
-   pairing (writer-style) shape [x * -]: it sequences [T] past the tuple
-   functor without requiring the carrier [x] to be [Applicative], by simply
-   threading the seed value [a : x] through.  There is no standard name for
-   this class; it is the traversal whose "applicative" is the (non-applicative)
-   writer-shaped functor [λ y, x * y].  Like the other classes here it is
-   lawless, recording only the [sequenceT] operation. *)
+(*
+   本节说明相关定义、性质与动机。 [Tupersable] is project-specific specialization [Traversable] a. pairing (writer-style) shape [x * -]: it sequences [T] past tuple 函子 without requiring carrier [x] be [Applicative], simply threading seed value [a : x] through.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class Tupersable@{d c} {x : Type@{d}} {T : Type@{d} → Type@{c}} := {
   (* sequence T past the writer-shaped tuple functor, seeded by [a : x] *)

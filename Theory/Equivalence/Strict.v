@@ -61,10 +61,11 @@ Definition surjective_ESO {A C : Category} {S : A ⟶ C}
     (fun c => `1 (surj c))
     (fun c => id_cast_iso (`2 (surj c))).
 
-(* The chosen preimage survives the repackaging on the nose, and at an
-   [eq_refl] witness -- the shape [Construction/Grothendieck/RoundTrip.v]'s
-   [RT_EssSurj] is in -- the witnessing isomorphism has [id] for both
-   legs. *)
+(*
+   本节说明相关定义、性质与动机。 The chosen preimage survives repackaging nose, at an.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example surjective_ESO_obj {A C : Category} {S : A ⟶ C}
   (surj : SurjectiveOnObjects S) (c : C) :
   @eso_obj A C S (surjective_ESO surj) c = `1 (surj c) := eq_refl.
@@ -173,9 +174,13 @@ Next Obligation.
   now rewrite Hfg.
 Qed.
 
-(* What a left-adjoint-right-inverse of [S] yields: the LEFT adjoint is
-   full and faithful, and [S] is surjective on objects.  Nothing here
-   asserts that [S] is full or faithful; both are refuted below. *)
+(*
+   What a left-伴随-right-inverse of [S] yields: the LEFT 伴随 is
+
+   本节说明相关定义、性质与动机。 全忠实, [S] is surjective 对象. Nothing here asserts that [S] is full 忠实;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition lari_left_ff_surjective :
   (Category.Theory.Functor.Full T * Faithful T) * SurjectiveOnObjects S :=
   ((lari_left_Full, lari_left_Faithful), lari_surjective).
@@ -394,9 +399,13 @@ Example ff_surj_eso_inverse_map (c c' : C) (f : c ~> c') :
   fmap[@ff_eso_inverse A C S _ _ ff_surj_eso] f
     = fmap[ff_surjective_left] f := eq_refl.
 
-(* Hence the two left adjoints are equal at [Functor_StrictEq_Setoid], with
-   every object component [eq_refl]; the whole functor RECORDS are not
-   Leibniz-equal, the three law fields being rebuilt. *)
+(*
+   Hence the two left adjoints are equal at [函子_StrictEq_Setoid], with
+
+   本节说明相关定义、性质与动机。 every 对象 component [eq_refl]; whole 函子 RECORDS are not Leibniz-equal, three law fields being rebuilt.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition ff_surj_eso_inverse_strict :
   @equiv _ (@Functor_StrictEq_Setoid C A)
     (@ff_eso_inverse A C S _ _ ff_surj_eso) ff_surjective_left :=
@@ -412,14 +421,13 @@ End FFSurjective.
 Lemma one_hom_unique {x y : @obj _1} (f g : x ~{_1}~> y) : f ≈ g.
 Proof. destruct f, g; reflexivity. Qed.
 
-(* [_1]'s hom-setoid is [Morphism_equality], i.e. Leibniz equality, and a
-   tactic that unfolds [≈] leaves goals in that shape.  [apply] cannot use
-   the lemma just above on such a goal: [hom _1] ignores its endpoints, so
-   the implicit [y] is not determined by unification.  The endpoint-free
-   spelling below is what those goals need.  It is NOT called
-   [poly_unit_eq]: that name is taken by Instance/StrictCat/Terminal.v
-   for the identical statement, and the print-assumptions target loads many
-   modules into one scope, where a shared name audits the wrong constant. *)
+(*
+   [_1]'s hom-setoid is [态射_equality], i.e. Leibniz equality, and a
+
+   本节说明相关定义、性质与动机。 tactic that unfolds [≈] leaves goals that shape. [apply] cannot use lemma just above such goal: [hom _1] ignores its endpoints, so implicit [y] is not determined unification. The endpoint-free spelling below is what those goals need.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma poly_unit_all_eq (f g : poly_unit) : f = g.
 Proof. destruct f, g; reflexivity. Qed.
 
@@ -512,10 +520,13 @@ Proof.
   exact (TwoHom_Y_X_absurd (@prefmap _2 _1 (Erase _2) F TwoY TwoX ttt)).
 Qed.
 
-(* Packaged so that BOTH halves speak of one and the same functor: two
-   separate occurrences of [erase_pt _2] in one statement would be two
-   universe instances, and the pair would then relate two categories
-   rather than one. *)
+(*
+   Packaged so that BOTH halves speak of one and the same 函子: two
+
+   本节说明相关定义、性质与动机。 separate occurrences [erase_pt _2] one statement would be two universe instances, pair would then relate two 范畴 rather than one.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition lari_does_not_imply_Full :
   { X : Category & { S : X ⟶ _1 &
       LeftAdjointRightInverse S
@@ -527,11 +538,11 @@ Definition lari_does_not_imply_Full :
 Definition sets_erase_LARI : LeftAdjointRightInverse (erase_pt Sets) :=
   erase_LARI Sets_Initial.
 
-(* The two-element setoid under Leibniz equality, and two distinct parallel
-   arrows on it.  The lambda domains are annotated and the respectfulness
-   certificates written by hand: left to instance search, an unannotated
-   record literal resolves its source setoid before meeting the expected
-   type (the Theory/Universal/Element.v hazard). *)
+(*
+   本节说明相关定义、性质与动机。 The two-element setoid under Leibniz equality, two distinct parallel. arrows it.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sets_bool_obj : SetoidObject :=
   {| carrier := bool; is_setoid := eq_Setoid bool |}.
 

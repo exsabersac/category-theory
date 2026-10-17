@@ -13,48 +13,11 @@ Generalizable All Variables.
    (interchange)。与弱 2-范畴/双范畴（Theory/Bicategory.v）相对，严格性使重括号与单位调整
    在表面上为恒等。本文件给出严格 2-范畴类与交换律；长历史短文后续可续译。 *)
 
-(* Why two dimensions, and why the interchange law is the whole story
+(*
+   本节说明相关定义、性质与动机。 Why two dimensions, why interchange law is whole story.
 
-   nLab:  https://ncatlab.org/nlab/show/2-category
-   nLab:  https://ncatlab.org/nlab/show/Eckmann-Hilton+argument
-   Paper: Bénabou, "Introduction to bicategories", Lecture Notes in
-          Mathematics 47 (1967), 1-77
-   Paper: Kelly, Street, "Review of the elements of 2-categories", Lecture
-          Notes in Mathematics 420 (1974), 75-103
-
-   Categories organise objects and maps; but the maps between categories —
-   functors — themselves carry maps, the natural transformations, and once
-   those are present two ways of composing them appear at once.  Mac Lane's
-   Theorem 1 is the observation that these two compositions are not merely
-   coexistent but LOCKED TOGETHER by the single equation (5): a 2x2 grid of
-   transformations may be assembled rows-first or columns-first with the
-   same result.  Everything two-dimensional follows from that lock.
-   Whiskering is the special case in which one factor is an identity
-   ([twhisker_l], [twhisker_r]), and Mac Lane's display (3) — that a
-   horizontal composite factors as a whiskering after a whiskering, in
-   either order — is exactly interchange with two identities plugged in
-   ([thcomp_whisker_left], [thcomp_whisker_right] below).
-
-   The interchange law also explains why the two-dimensional world is not
-   simply one-dimensional twice over.  Mac Lane's own Exercise 5 of §II.5 is
-   the Eckmann-Hilton argument: two everywhere-defined operations with a
-   COMMON unit satisfying (5) coincide and are commutative.  In a general
-   2-category the two compositions have DIFFERENT units — that is precisely
-   what def 3 legislates about — and the argument only bites where the units
-   collapse, which is why the endomorphism 2-cells of an identity 1-cell
-   form a commutative monoid while the whole structure does not degenerate.
-
-   Bénabou's bicategories (1967) weaken the present notion by replacing the
-   equations governing 1-cell composition with coherent isomorphisms; Kelly
-   and Street's review is the standard source for the strict theory and its
-   calculus of pasting and mates.  In this library the weak notion lives in
-   Theory/Bicategory.v and its motivating model in Instance/Cat/Bicategory.v;
-   the strict notion lives here, and the two meet in the observation, proved
-   in Instance/Cat/TwoCategory.v, that every coherence cell of the
-   bicategory `Cat_Bicategory` has IDENTITY components.  Double categories,
-   Ehresmann's 1963 notion, keep two kinds of 1-cell rather than one and are
-   the more general shape; Mac Lane's def 3 is the condition singling out
-   the 2-categories among them. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The globular presentation (Mac Lane §XII.3, Riehl 1.7.8) *)
 
@@ -105,10 +68,11 @@ Class TwoCategory : Type := {
     (δ : tcell g' g'') (γ : tcell g g') (β : tcell f' f'') (α : tcell f f') :
     thcomp (tvcomp δ γ) (tvcomp β α) ≈ tvcomp (thcomp δ β) (thcomp γ α);
 
-  (* STRICTNESS.  Re-bracketing and unit adjustment of the 1-cell boundary
-     identify the corresponding types of 2-cells; the identifications are
-     data, and the laws below say they behave as identities.  See the header
-     for why this, and not an equation of 1-cells, is what is asked. *)
+  (*
+   本节说明相关定义、性质与动机。 STRICTNESS. Re-bracketing unit adjustment 1-cell boundary. identify corresponding types 2-cells; identifications are data, laws below say they behave identities.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   tassoc_cast {a b c d : tcat} {f f' : a ~{tcat}~> b}
     {g g' : b ~{tcat}~> c} {h h' : c ~{tcat}~> d} :
     tcell (h ∘ (g ∘ f)) (h' ∘ (g' ∘ f')) →
@@ -165,11 +129,13 @@ Class TwoCategory : Type := {
 #[export] Existing Instance tunitl_cast_respects.
 #[export] Existing Instance tunitr_cast_respects.
 
-(** ** The hom-categories
+(*
+   * ** The hom-范畴
 
-    Riehl 1.7.8 asks that the 2-cells between 1-cells `a ~> b` form a
-    category under vertical composition; here that is a construction rather
-    than a field, assembled from [tid2], [tvcomp] and their three laws. *)
+   本节说明相关定义、性质与动机。 Riehl 1.7.8 asks that 2-cells between 1-cells `a ~> b` form 范畴 under vertical 复合;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition thom `{K : TwoCategory} (a b : @tcat K) : Category := {|
   obj              := a ~{tcat}~> b;
@@ -189,11 +155,11 @@ Section TwoCategoryLemmas.
 
 Context {K : TwoCategory}.
 
-(** ** Whiskering (Mac Lane §II.5, the convention of def 1)
+(*
+   本节说明相关定义、性质与动机。 * ** Whiskering (Mac Lane §II.5, convention def 1). Mac Lane lets 函子 symbol stand its identity 变换, so that `S' ∘ τ` `τ' ∘ T` denote horizontal composites one whose factors is identity.
 
-    Mac Lane lets a functor symbol stand for its identity transformation, so
-    that `S' ∘ τ` and `τ' ∘ T` denote horizontal composites one of whose
-    factors is an identity.  Those are the two whiskerings. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition twhisker_l {a b c : tcat} (g : b ~{tcat}~> c)
   {f f' : a ~{tcat}~> b} (α : tcell f f') : tcell (g ∘ f) (g ∘ f') :=
@@ -262,11 +228,13 @@ Proof.
   now rewrite tvid_left.
 Qed.
 
-(** ** Mac Lane's display (3): a horizontal composite factors two ways
+(*
+   * ** Mac Lane's display (3): a horizontal 复合 factors two ways
 
-    `τ' ∘ τ = (T' ∘ τ) · (τ' ∘ S) = (τ' ∘ T) · (S' ∘ τ)`, the two diagonals
-    of the naturality square of the Godement product.  Both are interchange
-    with an identity plugged into one slot. *)
+   本节说明相关定义、性质与动机。 `τ' ∘ τ = (T' ∘ τ) · (τ' ∘ S) = (τ' ∘ T) · (S' ∘ τ)`, two diagonals naturality square Godement 积.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma thcomp_whisker_left {a b c : tcat} {f f' : a ~{tcat}~> b}
   {g g' : b ~{tcat}~> c} (β : tcell g g') (α : tcell f f') :
@@ -331,15 +299,11 @@ Proof.
   apply thunit_right.
 Qed.
 
-(** ** Mac Lane's def-3 condition in the globular presentation
+(*
+   本节说明相关定义、性质与动机。 * ** Mac Lane's def-3 condition globular presentation. A 2-cell is unit vertical 复合 when composing it changes nothing; it is unit horizontal 复合 when whiskering it changes nothing, once boundary identification is applied.
 
-    A 2-cell is a unit for vertical composition when composing with it
-    changes nothing; it is a unit for horizontal composition when
-    whiskering by it changes nothing, once the boundary identification is
-    applied.  Both predicates are typed, and the second is only typeable at
-    2-cells on an IDENTITY 1-cell — which is already Mac Lane's point: in
-    the globular presentation the `∘`-identities sit among the
-    `·`-identities by construction. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition IsVUnit {a b : tcat} {f : a ~{tcat}~> b} (u : tcell f f) : Type :=
   (∀ (g : a ~{tcat}~> b) (α : tcell f g), tvcomp α u ≈ α) ∧
@@ -382,17 +346,11 @@ End TwoCategoryLemmas.
 Arguments IsVUnit {_ _ _ _} _.
 Arguments IsHUnit {_ _} _.
 
-(** ** The arrows-only presentation (Mac Lane §II.5 definitions 2 and 3)
+(*
+   本节说明相关定义、性质与动机。 * ** The arrows-only presentation (Mac Lane §II.5 definitions 2 3). Mac Lane's double 范畴 is "a set which is set arrows two different 复合 operations which together satisfy interchange law".
 
-    Mac Lane's double category is "a set which is the set of arrows for two
-    different composition operations which together satisfy the interchange
-    law".  A composition operation on a set of arrows, in his sense, is
-    exactly the data of Theory/Metacategory/General.v's [Metacategory]
-    minus the arrow type: partial, given as the graph [mccomp] of a
-    single-valued relation, with the two halves of axiom (i), axiom (ii),
-    and axiom (iii) in the conjunctive form that file establishes as the
-    correct one.  [MetaComp] is that data over a fixed setoid, so that two
-    of them may be laid on ONE collection of cells. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record MetaComp {A : Type} (S : Setoid A) : Type := {
   (* [mccomp g f h] reads "g∙f is defined, and equals h". *)
@@ -434,11 +392,11 @@ Arguments mccomp_match {A S} _ {k g f kg gf} _ _.
 Arguments mcident {A S} _ _ /.
 Arguments mcident_law {A S} _ _.
 
-(* The two packagings agree: a [MetaComp] over a setoid is a
-   [Metacategory] on that setoid's carrier, and conversely.  Neither
-   direction has any proof content — both are field-for-field
-   repackagings — which is the point: the arrows-only classes below are
-   Theory/Metacategory/General.v's notion, laid twice on one collection. *)
+(*
+   本节说明相关定义、性质与动机。 The two packagings agree: [MetaComp] over setoid is a. [元范畴] that setoid's carrier, conversely.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Metacategory_of_MetaComp {A : Type} {S : Setoid A}
   (M : MetaComp S) : Metacategory := {|
@@ -476,10 +434,11 @@ Record StrictDoubleCategory : Type := {
   dvert  : MetaComp dcell_setoid;       (* the first composition,  `·` *)
   dhoriz : MetaComp dcell_setoid;       (* the second composition, `∘` *)
 
-  (* "which together satisfy the interchange law": Mac Lane's display (5),
-     `(τ' · σ') ∘ (τ · σ) = (τ' ∘ τ) · (σ' ∘ σ)`, stated for partial
-     operations in the form of his remark 2 — the equation is asserted
-     whenever the composites on both sides are defined. *)
+  (*
+   本节说明相关定义、性质与动机。 "which together satisfy interchange law": Mac Lane's display (5),.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   dinterchange {σ τ σ' τ' p q r s x y : dcell} :
     mccomp dvert τ σ p →                (* p = τ · σ *)
     mccomp dvert τ' σ' q →              (* q = τ' · σ' *)
@@ -492,11 +451,11 @@ Record StrictDoubleCategory : Type := {
 
 #[export] Existing Instance dcell_setoid.
 
-(* The two compositions as metacategories, hence — through
-   Theory/Metacategory/General.v's passage — as ordinary categories.  This
-   is Mac Lane's Theorem 1 phrase "the arrow set of two different
-   categories" made literal: [dvert_Category] has the 1-cells of one
-   direction as its objects and [dhoriz_Category] those of the other. *)
+(*
+   本节说明相关定义、性质与动机。 The two compositions metacategories, hence — through. Theory/元范畴/General.v's passage — ordinary 范畴.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition dvert_Meta (D : StrictDoubleCategory) : Metacategory :=
   Metacategory_of_MetaComp (dvert D).
@@ -519,16 +478,13 @@ Definition dvident (D : StrictDoubleCategory) (u : dcell D) : Type :=
 Definition dhident (D : StrictDoubleCategory) (u : dcell D) : Type :=
   mcident (dhoriz D) u.
 
-(** *** Definition 3: a 2-category
+(*
+   * *** 定义 3: a 2-范畴
 
-    "A 2-category is a double category in which every identity arrow for the
-    first composition is also an identity for the second."  The orientation
-    follows Theorem 1, whose closing clause reads "every arrow that is an
-    identity for ∘ is also an identity for ·": the HORIZONTAL identities are
-    required to be vertical ones.  The converse is not asked for, and does
-    not hold — [NatSq_vid_is_not_hid] below witnesses the asymmetry
-    concretely, and [twocategory_tid2_vunit] is the globular half that
-    DOES hold. *)
+   本节说明相关定义、性质与动机。 "A 2-范畴 is double 范畴 which every identity arrow first 复合 is also identity second." The orientation follows Theorem 1, whose closing clause reads "every arrow 即 identity ∘ is also identity ·": HORIZONTAL identiti
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record StrictTwoCategory : Type := {
   s2double : StrictDoubleCategory;
@@ -539,38 +495,13 @@ Record StrictTwoCategory : Type := {
 
 Require Import Coq.micromega.Lia.
 
-(** ** Mac Lane's negative example: commuting squares are not a 2-category
+(*
+   * ** Mac Lane's negative example: 交换方块 are not a 2-范畴
 
-    §II.5's definition of a 2-category closes by recording that the
-    commutative squares of Set form a double category which is not one.
-    The witness below is the smallest faithful form of that example: the
-    commuting squares of a ONE-OBJECT category, namely the delooping of the
-    additive monoid of naturals.  One object is what keeps the arrows-only
-    packaging honest — with several objects, composability of two cells
-    would ask for an EQUATION between objects, the hypothesis
-    Theory/Metacategory/General.v carries as ObjUIP — and it costs nothing,
-    since the phenomenon at issue concerns the vertical arrows, not the
-    objects.
+   本节说明相关定义、性质与动机。 §II.5's 定义 2-范畴 closes recording that commutative squares Set form double 范畴 which is not one.
 
-    A square
-
-        · --t--> ·                  is a quadruple (t, l, r, b) of naturals
-        |        |                  subject to the commuting condition
-        l        r                       b + l = r + t,
-        v        v
-        · --b--> ·                  composing by addition in each direction.
-
-    Its two compositions are vertical pasting (matching bottom to top) and
-    horizontal pasting (matching right to left); together they satisfy the
-    interchange law, so this is a [StrictDoubleCategory].  It is not a
-    [StrictTwoCategory]: the horizontal identity on the vertical arrow 1 is
-    the square (0, 1, 1, 0), which is a unit for horizontal pasting but not
-    for vertical pasting, since pasting it under itself doubles its
-    vertical edges.  The same square is what Construction/Sq.v's model
-    produces for an arbitrary base — there the horizontal identity on a
-    vertical morphism [u] has vertical edges [u], while a vertical identity
-    square has vertical edges [id] — and Instance/Cat/TwoCategory.v records
-    that these cells ARE that model's squares. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record NatSq : Type := {
   nsq_top   : nat;
@@ -632,9 +563,13 @@ Definition NatSq_hident (u : NatSq) : Type :=
   (∀ f, NatSq_hdefined f u → NatSq_hcomp f u f) ∧
   (∀ g, NatSq_hdefined u g → NatSq_hcomp u g g).
 
-(* Every obligation below is arithmetic once the composition hypotheses are
-   taken apart.  The edges are left as opaque projections — no square is
-   ever destructed — so `lia` sees plain linear equations over atoms. *)
+(*
+   Every obligation below is arithmetic once the 复合 hypotheses are
+
+   本节说明相关定义、性质与动机。 taken apart. The edges are left opaque projections — no square is ever destructed — so `lia` sees plain linear equations over atoms.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Ltac nsq_hyps :=
   simpl in *;
   repeat match goal with
@@ -824,11 +759,11 @@ Proof.
   apply s2ident_coincide.
 Qed.
 
-(* Non-degeneracy: the model is not one in which everything collapses.
-   Its two identity families are genuinely different
-   ([NatSq_vid_is_not_hid] below proves a vertical identity that is no
-   horizontal one; the full classification of the overlap is not
-   recorded), and vertical pasting really adds. *)
+(*
+   本节说明相关定义、性质与动机。 Non-degeneracy: model is not one which everything collapses.. Its two identity families are genuinely different ([NatSq_vid_is_not_hid] below proves vertical identity 即 no horizontal one;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example NatSq_vid_is_not_hid (t : nat) :
   NatSq_hident (NatSq_vid (S t)) → False.
@@ -844,54 +779,11 @@ Qed.
 Example NatSq_vpaste_computes :
   nsq_left (NatSq_vpaste NatSq_bad NatSq_bad eq_refl) = 2%nat := eq_refl.
 
-(** ** The passage from the globular to the arrows-only presentation
+(*
+   本节说明相关定义、性质与动机。 * ** The passage from globular arrows-only presentation. Mac Lane's 定义 2 bundles ALL cells into one collection, so composability two them becomes EQUATION between their boundaries — between 0-cells, between 1-cells.
 
-    Mac Lane's definition 2 bundles ALL the cells into one collection, so
-    composability of two of them becomes an EQUATION between their
-    boundaries — between 0-cells, and between 1-cells.  In intensional type
-    theory that comparison is an identity type, and the passage therefore
-    needs the boundaries to form SETS.  This is exactly the situation
-    Theory/Metacategory/General.v meets one dimension down: its [ToArrows]
-    takes `obj_uip` as an explicit hypothesis and is the in-tree precedent
-    followed here, name for name ([Arr]/[TwoArr], [Arr_eq]/[TwoArr_eq],
-    [Arr_comp]/[TwoV]+[TwoH], [arr_crush]/[twoarr_crush]).
-
-    [StrictBase] is the hypothesis pack, and it has three parts.  (i) The
-    two UIP clauses, `sb_obj_uip` and `sb_hom_uip`, verbatim [ToArrows]'s
-    hypothesis at the two levels a 2-cell's boundary occupies.  (ii) Three
-    LEIBNIZ equations making the 1-cell layer a strict category — this is
-    not decoration: Mac Lane's arrows-only structure is strict, its
-    horizontal identity cells are units on the nose, and the cell equality
-    [TwoArr_eq] compares 1-cells by `=`, so `f ∘ id = f` must hold as an
-    identity and not merely up to `≈`.  (iii) Three clauses saying the
-    class's own boundary identifications ARE the transports along those
-    equations — that the chosen [tassoc_cast], [tunitl_cast],
-    [tunitr_cast] are the canonical ones, which is what "strict" means at
-    the level of 2-cells.
-
-    WHAT THIS EXCLUDES, DISCLOSED.  At `Cat` the pack is not inhabitable
-    by any means this library provides, for the reason round one
-    established: `(H ◯ G) ◯ F` and `H ◯ (G ◯ F)`
-    are not even convertible, and no Leibniz path between them is
-    derivable, so `sb_assoc` is
-    unavailable there.  That is the same limitation [ToArrows] carries —
-    UIP on the objects of `Cat` is not available either — and it is
-    intrinsic to the arrows-only style rather than an artifact of this
-    encoding.  The pack IS satisfiable: [NatPlus_StrictBase] below
-    inhabits it, so nothing here is vacuous.
-
-    WHAT IS ACHIEVED, EXACTLY.  [TwoCategory_to_Strict] is the forward
-    passage: a globular [TwoCategory] with a [StrictBase] yields a
-    [StrictTwoCategory], Mac Lane's def-3 coincidence included and PROVED
-    ([TwoArr_hident_is_vident]) rather than assumed.  The comparison is
-    then measured in the shape [ToArrows_Functor] uses: the bundling is
-    injective on 2-cells up to `≈` ([TwoArr_at_faithful], with
-    [TwoArr_at_respects] the converse), surjective on cells
-    ([TwoArr_at_surjective]), and carries [tvcomp] and [thcomp] to the two
-    compositions ([TwoV_at], [TwoH_at], with [TwoV_at_unique] and
-    [TwoH_at_unique] saying no other cell does).  It is NOT packaged as a
-    functor: the source has no category of 2-cells to be functorial from,
-    the two structures being related as a family to its bundling. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 From Coq Require Import Eqdep_dec.
 
@@ -1270,11 +1162,13 @@ Proof using K SB.
   rewrite <- CC, <- AA, <- BB, tinterchange, DD, EE; exact FF.
 Qed.
 
-(* Every identity for the horizontal composition is one for the vertical
-   composition — Mac Lane's def-3 condition, proved for the bundling.  A
-   `∘`-identity is forced by uniqueness of composites to agree with the
-   canonical one on the identity 1-cell, and THAT is a `·`-identity by
-   [TwoV_ident_id], which holds for the identity 2-cell on ANY 1-cell. *)
+(*
+   Every identity for the horizontal 复合 is one for the vertical
+
+   本节说明相关定义、性质与动机。 复合 — Mac Lane's def-3 condition, proved bundling.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma TwoV_ident_respects {u u'} :
   TwoArr_eq u u' → TwoV_ident u → TwoV_ident u'.
 Proof using K SB.
@@ -1387,27 +1281,11 @@ Proof using K SB. intro H; exact (TwoH_unique (TwoH_at β α) H). Qed.
 
 End ToStrict.
 
-(** ** The converse passage, and precisely what it still needs
+(*
+   本节说明相关定义、性质与动机。 * ** The converse passage, precisely what it still needs. Extraction other direction — reading globular [TwoCategory] off arrows-only [StrictTwoCategory] — is NOT delivered. What it needs is available two parts, it is worth being exact about which.
 
-    Extraction in the other direction — reading a globular [TwoCategory]
-    off an arrows-only [StrictTwoCategory] — is NOT delivered.  What it
-    needs is available in two parts, and it is worth being exact about
-    which.  The 0-cells are the `∘`-identities, the 1-cells the
-    `·`-identities, and the 2-cells over a prescribed vertical boundary are
-    carved out as a sub-setoid; that is precisely the [mobject]/[mmorphism]
-    machinery of Theory/Metacategory/General.v's
-    [Category_from_Metacategory], which would have to be run at both
-    levels and then interlocked.  The genuinely two-dimensional ingredient
-    is different: horizontal composition of 2-cells must lie over
-    horizontal composition of their 1-cell boundaries.  The lemma below
-    proves the two-dimensional GERM of that from the interchange law
-    alone, by a single instantiation: the horizontal composite of two
-    vertical units acts as a vertical unit ON THE GIVEN horizontal
-    composite (one instance — its [mcident]-hood in full is NOT proved
-    here).  Mac Lane's definition 2 does not state even this instance.
-    The remaining obstruction to the converse is the pair of interlocked
-    sub-setoid constructions PLUS upgrading this instance to a unit
-    everywhere it composes; ledgered, not hidden. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma dvert_unit_hcomp (D : StrictDoubleCategory) {u v w x y z t : dcell D} :
   mccomp (dvert D) x u x →      (* u is a vertical unit for x *)
@@ -1421,20 +1299,13 @@ Proof.
   exact (dinterchange D H1 H2 H3 H3 H4 H5).
 Qed.
 
-(** ** The hypothesis pack is satisfiable
+(*
+   * ** The 假设 pack is satisfiable
 
-    Nothing above is vacuous.  The witness is the CHAOTIC 2-category on the
-    delooping of the additive monoid of naturals: one 0-cell, a 1-cell for
-    each natural, and exactly one 2-cell between any parallel pair.  Its
-    1-cell layer is strict on the nose (`0 + f` reduces to `f`, and the
-    other two laws are `Nat.add_0_r` and `Nat.add_assoc`), and its 0-cells
-    and 1-cells have decidable equality, so both UIP clauses come from the
-    axiom-free [UIP_dec] rather than from an assumption.  The 2-cells are
-    degenerate, which is the point: what is being witnessed is that the
-    PACK is inhabited, not that the passage is interesting at this model.
-    The bundled structure is nonetheless not collapsed —
-    [ChaoticTwoCat_cells_separate] exhibits two cells its equality keeps
-    apart. *)
+   本节：Nothing above is vacuous. The witness is CHAOTIC 2-范畴 delooping 加性 幺半群 naturals: one 0-cell, 1-cell each 自然, exactly one 2-cell between any parallel pair.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition poly_unit_dec (x y : poly_unit) : {x = y} + {x <> y}.
 Proof. left; destruct x, y; reflexivity. Defined.

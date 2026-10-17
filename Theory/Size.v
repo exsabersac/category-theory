@@ -44,26 +44,13 @@ Generalizable All Variables.
 
 (** ** A level-polymorphic identity type for objects *)
 
-(** Objects carry no setoid in this library, so an object bijection has to be
-    stated with an identity type.  Stdlib [eq] cannot be used HERE, and the
-    reason is a genuine portability constraint rather than a preference: on
-    Coq 8.19 and 8.20 [eq] is pinned to a global universe, so mentioning it
-    inside a definition that DECLARES its own universe binder yields
-    "Universe constraints are not implied by the ones declared: o <= eq.u0",
-    which a binder has no syntax to discharge.  Rocq 9.1 made [eq] polymorphic
-    and accepts the same text, so this breaks only on the older toolchains --
-    exactly the kind of divergence the three-version build exists to catch.
+(*
+   * 对象 carry no setoid in this library, so an 对象 bijection has to be
 
-    Two details, since both are easy to state too broadly.  First, the trigger
-    is not merely declaring a universe binder: [Definition d@{u} (A : Type@{u})
-    (x : A) : x = x := eq_refl] SUCCEEDS on 8.19 and 8.20.  What breaks is a
-    binder carrying an explicit constraint clause -- both [@{u | }] and
-    [@{u v | u <= v}] are rejected.  Second, [ObjEq] is used in the two
-    [arrow_quiver_*] lemmas below as well, which carry no binder at all; it is
-    used there for uniformity with the [ArrowQuiver] fields they are about, not
-    from necessity.
+   本节说明相关定义、性质与动机。 stated identity type. Stdlib [eq] cannot be used HERE, reason is genuine portability constraint rather than preference: Coq 8.19 8.20 [eq] is pinned global universe, so mentioning it inside 定义 that DECLARES its own universe binder yields
 
-    [ObjEq] follows the [poly_unit@{u}] idiom at Lib/Setoid.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive ObjEq@{u} {A : Type@{u}} : A → A → Type@{u} :=
   obj_refl : ∀ a : A, ObjEq a a.
 
@@ -72,13 +59,13 @@ Arguments obj_refl {A} a.
 
 (** ** Local smallness *)
 
-(** Awodey Definition 1.12 / Riehl Definition 1.1.7: only a set's worth of
-    morphisms between any two objects.  "A set's worth" is read as: matched by
-    a setoid at level [uh].
+(*
+   * Awodey 定义 1.12 / Riehl 定义 1.1.7: only a set's worth of
 
-    [uh <= h] is deliberately NON-STRICT, so that [locally_small_ambient] below
-    can witness the predicate at a category's own hom level.  Instantiating it
-    at a strictly smaller [uh] is the reading with content. *)
+   本节说明相关定义、性质与动机。 态射 between any two 对象. "A set's worth" is read as: matched setoid at level [uh]. [uh <= h] is deliberately NON-STRICT, so that [locally_small_ambient] below can witness predicate at 范畴's own hom level.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class LocallySmall@{o h p uh up | h <= p, uh <= up, uh <= h}
       (C : Category@{o h p}) := {
   ls_hom     : ∀ (x y : C), Type@{uh};
@@ -93,12 +80,11 @@ Class LocallySmall@{o h p uh up | h <= p, uh <= up, uh <= h}
   ls_to_resp : ∀ {x y} (u v : ls_hom x y),
                  @Setoid.equiv _ (ls_setoid x y) u v → ls_to u ≈ ls_to v;
 
-  (* [ls_from] must respect [≈] too.  Without this field the structure is only
-     a section/retraction pair and NOT a setoid isomorphism: [ls_from] could
-     send [≈]-equal morphisms to unrelated small representatives, and no such
-     field is derivable from the others.  A countermodel exists -- a category
-     whose hom-setoid relates everything, resized by a small setoid that
-     relates nothing, satisfies every other field. *)
+  (*
+   本节说明相关定义、性质与动机。 [ls_from] must respect [≈] too. Without this field structure is only. section/retraction pair NOT setoid 同构: [ls_from] could send [≈]-equal 态射 unrelated small representatives, no such field is derivable from others.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   ls_from_resp : ∀ {x y} (f g : x ~> y),
                  f ≈ g → @Setoid.equiv _ (ls_setoid x y) (ls_from f) (ls_from g);
 
@@ -107,16 +93,13 @@ Class LocallySmall@{o h p uh up | h <= p, uh <= up, uh <= h}
                  @Setoid.equiv _ (ls_setoid x y) (ls_from (ls_to u)) u
 }.
 
-(** EVERY category is locally small at its own hom level, by the identity
-    resizing.  This is Riehl's "each of these is locally small" (Definition
-    1.1.7 and the discussion after Example 1.1.3) turned into a lemma.
+(*
+   * EVERY 范畴 is locally small at its own hom level, by the identity
 
-    Note precisely what it does and does not say.  It is not that local
-    smallness is a theorem of category theory -- it is that [Class Category]
-    BUILDS IT IN, by giving [homset] at a fixed level.  So in this library the
-    book's distinction between "small" and "merely locally small" collapses on
-    the locally-small side: the predicate is universally satisfiable at the
-    ambient level, and only acquires content strictly below it. *)
+   本节说明相关定义、性质与动机。 resizing. This is Riehl's "each these is locally small" (定义 1.1.7 discussion after Example 1.1.3) turned into lemma. Note precisely what it does does not say.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition locally_small_ambient@{o h p | h <= p} (C : Category@{o h p})
   : LocallySmall@{o h p h p} C :=
   @Build_LocallySmall@{o h p h p} C
@@ -153,40 +136,11 @@ Definition small_locally_small@{o h p uo uh up
   (C : Category@{o h p}) (S : Small@{o h p uo uh up} C)
   : LocallySmall@{o h p uh up} C := small_locally.
 
-(** A TYPE is small at level [w] when it is in bijection, up to [ObjEq], with
-    a type at that level.  This is the object half of [Small] with the
-    category dropped: the same four fields [small_ob], [small_ob_to],
-    [small_ob_from], and the two round trips, stated of a bare [Type@{u}].
+(*
+   本节说明相关定义、性质与动机。 * A TYPE is small at level [w] when it is bijection, up [ObjEq], with. type at that level. This is 对象 half [Small] 范畴 dropped: same four fields [small_ob], [small_ob_to], [small_ob_from], two round trips, stated bare [Type@{u}].
 
-    WHY IT IS SEPARATE FROM [Small].  [Small] is a property of a CATEGORY and
-    bundles the hom condition with the object condition; what the adjoint
-    functor theorems need of a solution set is neither -- the index of a
-    [SolutionSet] is a bare [Type], with no category structure on it at all
-    (Adjunction/SpanningArrow.v says so of its own index).  So the
-    object half is factored out here and consumed, with no hom condition
-    anywhere, by Adjunction/GAFT/Resize.v.
-
-    THE TWO BINDERS ARE THE POINT.  [w] is the level of the small carrier and
-    [u] the level of the type being resized; they are UNRELATED, which is
-    what makes a use of this record a resizing rather than an identity.
-    Measured, [About] under [Set Printing Universes]:
-
-      SmallType@{w u} : Type@{u} → Type@{max(w+1,u)}
-      (* w u |= *)                               <-- empty constraint block
-
-    [ObjEq] (above) rather than [eq] for the round trips, for the reason the
-    [ObjEq] header gives and [Small] already relies on: object equality in
-    this library is a [Type]-valued identity that survives the universe
-    polymorphism, and [eq] at [Type@{u}] would pin the level.
-
-    PRIOR ART.  This is the shape the HoTT literature writes [IsSmall] or
-    "essentially small" (Coq-HoTT's [IsSmall@{i j} X := { Y : Type@{i} & Y
-    <~> X }], Basics/Equivalences and Universes/Smallness), with the
-    equivalence replaced by an [ObjEq] round trip because this library is
-    axiom-free and has no univalence.  The consequence is that [SmallType] is
-    DATA, not a property: two resizings of the same type need not agree, and
-    nothing here truncates.  Structure/Complete.v's SIZE NOTE, item 4, is the
-    statement of why the library wants it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record SmallType@{w u} (A : Type@{u}) : Type@{max(w+1,u)} := {
   st_carrier : Type@{w};
   st_to      : st_carrier → A;
@@ -201,12 +155,13 @@ Arguments st_from {A} _ _.
 Arguments st_to_from {A} _ _.
 Arguments st_from_to {A} _ _.
 
-(** A setoid whose equivalence is constantly [True]: any two elements agree.
-    Used below for the one-element small hom, mirroring the device at
-    Construction/Sq.v and Instance/Proset.v.  Kept [#[local]] for the
-    reason Construction/Sq.v gives for its own copy: applied to a
-    data-carrying type it would silently identify everything, so it must not
-    leak into the library interface. *)
+(*
+   * A setoid whose 等价 is constantly [True]: any two elements agree.
+
+   本节说明相关定义、性质与动机。 Used below one-element small hom, mirroring device at Construction/Sq.v Instance/Proset.v.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Definition True_setoid@{u p} (A : Type@{u}) : Setoid@{u p} A :=
   {| Setoid.equiv    := fun _ _ => True
    ; setoid_equiv    :=
@@ -214,33 +169,18 @@ Arguments st_from_to {A} _ _.
         ; Equivalence_Symmetric  := fun _ _ _ => I
         ; Equivalence_Transitive := fun _ _ _ _ _ => I |} |}.
 
-(** The terminal category is small: one object and one arrow, so [poly_unit] at
-    the lower levels serves as the small copy.
+(*
+   * The terminal 范畴 is small: one 对象 and one arrow, so [poly_unit] at
 
-    Every proof term is given EXPLICITLY rather than by [destruct] or [Program].
-    That is not fastidiousness: the [destruct] route elaborates through
-    [eq_ind], whose global universe ([eq_ind.u0]) a declared universe binder
-    cannot mention, so the definition is rejected with "Universe constraints are
-    not implied by the ones declared".
+   本节说明相关定义、性质与动机。 the lower levels serves small copy. Every proof term is given EXPLICITLY rather than [destruct] [Program].
 
-    The hom half is split out with an explicit type ascription because a nested
-    record literal leaves the class parameter [C] unresolved. *)
-(* No explicit universe binder here, deliberately, and the hom half is INLINED
-   rather than named separately.  Two distinct obstacles force this shape:
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   本节说明相关定义、性质与动机。 No explicit universe binder here, deliberately, hom half is INLINED. rather than named separately.
 
-   - [_1]'s hom-setoid is [Morphism_equality], a [Program Definition] whose own
-     obligations carry constraints on [eq]'s global universes ([eq_ind.u0]).  A
-     declared binder cannot mention those, so declaring one makes the witness
-     un-typecheckable.
-   - Naming the hom half separately makes Coq solve its constraints in
-     isolation, where it collapses [uh] to [h]; the result then cannot be used
-     at the strict [uh < h] that [Small] demands.  Inlining lets both halves be
-     solved together.
-
-   Nothing is given up.  The STRICTNESS lives in the class, so any inhabitant
-   of [Small] satisfies [uo < o] and [uh < h] by [Small]'s own constraints --
-   which is exactly why this witness is evidence that those constraints are
-   satisfiable rather than merely restrictive. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition One_Small : Small _1 :=
   @Build_Small _1
     (@Build_LocallySmall _1
@@ -260,22 +200,13 @@ Definition One_Small : Small _1 :=
 
 (** ** Riehl's arrows-with-domain-and-codomain packaging *)
 
-(** Riehl Remark 1.1.2 (used again at Definition 1.1.6) packages a category as
-    a set of objects, a set of morphisms, and functions [dom], [cod], [id],
-    with [dom] and [cod] retracting [id].
+(*
+   * Riehl Remark 1.1.2 (used again at 定义 1.1.6) packages a 范畴 as
 
-    The tree's [Quiver] (Construction/Free/Quiver.v) is the INDEXED
-    presentation -- [edges : nodes → nodes → Type] -- in which [dom] and [cod]
-    are carried by the indexing rather than by functions, and it has no
-    identity selection at all, so it supplies neither half of Riehl's
-    retraction.  A "reflexive quiver" appears nowhere in the tree.
+   本节说明相关定义、性质与动机。 a set 对象, set 态射, functions [dom], [cod], [id], [dom] [cod] retracting [id].
 
-    Both presentations are given below, because the difference is exactly where
-    the retraction laws live.  In the UNINDEXED form they are genuine equations
-    that a candidate must satisfy; in the INDEXED form they are definitional,
-    since an identity edge at [x] has source and target [x] by typing.  That is
-    worth having on record: it is a case where the library's formulation makes
-    a book axiom disappear rather than proving it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The unindexed packaging, as Riehl states it. *)
 Record ArrowQuiver@{u} := {
@@ -288,37 +219,30 @@ Record ArrowQuiver@{u} := {
   aq_cod_id  : ∀ x, ObjEq (aq_cod (aq_id x)) x
 }.
 
-(** The total arrow collection of a category: Awodey's [C1], Riehl's "a set's
-    worth of arrows".  Note it bundles the endpoints, so its level is at least
-    that of the objects -- which is why Awodey's Definition 1.11 needs BOTH
-    halves and not just the hom condition. *)
-(** The total arrow collection of a category: Awodey's [C1], Riehl's "a set's
-    worth of arrows".  Note it BUNDLES the endpoints, so its level is at least
-    that of the objects -- which is exactly why Awodey's Definition 1.11 needs
-    both halves rather than the hom condition alone.  An [ArrowQuiver] keeps
-    objects and arrows in ONE universe, the way a set-theoretic presentation
-    keeps them both sets; universes are left to inference here, since
-    [sigT]'s projections carry global constraints ([Projections.u0]) that a
-    declared binder cannot mention, and no strictness is wanted at this
-    point anyway. *)
+(*
+   * The total arrow collection of a 范畴: Awodey's [C1], Riehl's "a set's
+
+   本节说明相关定义、性质与动机。 worth arrows". Note it bundles endpoints, so its level is at least that 对象 -- which is why Awodey's 定义 1.11 needs BOTH halves not just hom condition.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+(*
+   * The total arrow collection of a 范畴: Awodey's [C1], Riehl's "a set's
+
+   本节说明相关定义、性质与动机。 worth arrows". Note it BUNDLES endpoints, so its level is at least that 对象 -- which is exactly why Awodey's 定义 1.11 needs both halves rather than hom condition alone.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition TotalMor (C : Category) : Type :=
   { x : obj[C] & { y : obj[C] & x ~{C}~> y }}.
 
-(** A category packages as an [ArrowQuiver], and both retraction laws hold
-    by [obj_refl] -- the identity arrow at [x] is stored with [x] as both of
-    its endpoints, so [aq_dom] and [aq_cod] project it back definitionally.
+(*
+   * A 范畴 packages as an [ArrowQuiver], and both retraction laws hold
 
-    Proof terms are explicit rather than left to [Program]: see the note on
-    [One_Small] above for why the [eq]-lemma route is not available under a
-    declared universe binder.
+   本节说明相关定义、性质与动机。 by [obj_refl] -- identity arrow at [x] is stored [x] both its endpoints, so [aq_dom] [aq_cod] project it back definitionally.
 
-    SCOPE.  Leaving universes to inference here has one consequence worth
-    stating rather than leaving to be discovered: it forces [p] equal to [h],
-    so this applies to every category whose hom-setoid proofs sit at the hom
-    level -- which is every category in the tree, since inference unifies them
-    at each use site -- but NOT to a hypothetical [C : Category@{o h p}] with
-    strictly [h < p], which the class permits.  [locally_small_ambient] carries
-    no such restriction. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ArrowQuiverOfCat (C : Category) : ArrowQuiver :=
   {| aq_ob     := obj[C]
    ; aq_mor    := TotalMor C

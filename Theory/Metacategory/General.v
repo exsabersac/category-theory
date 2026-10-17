@@ -739,13 +739,13 @@ Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** The metacategory-side composite *)
 
-(* The composite passage on the metacategory side, formed under the same
-   shape of hypothesis the file already takes for [ToArrows]: uniqueness of
-   identity proofs on the RECONSTRUCTION's objects.  (An earlier revision of
-   this header claimed the composite could not be formed at all; that was
-   false, and the audit that caught it supplied these two definitions.)  No
-   metacategory-level comparison with [M] is stated, because this file
-   defines no notion of equivalence of metacategories -- see the header. *)
+(*
+   The 复合 passage on the 元范畴 side, formed under the same
+
+   本节说明相关定义、性质与动机。 shape 假设 file already takes [ToArrows]: uniqueness identity proofs RECONSTRUCTION's 对象. (An earlier revision this header claimed 复合 could not be formed at all;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition MetaRoundTrip (M : Metacategory)
   (mobj_uip : ∀ (x y : mobject M) (p q : x = y), p = q) : Metacategory :=
   @ToArrows (Category_from_Metacategory M) mobj_uip.

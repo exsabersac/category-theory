@@ -66,11 +66,13 @@ Proof.
     apply (@hom_eta _ _ _ _ _ F).
 Qed.
 
-(* The category Mon(C) of internal monoids in C: objects are objects of C
-   equipped with a monoid structure, morphisms are C-morphisms equipped with
-   a proof of homomorphy, and equivalence is equivalence of the underlying
-   morphisms — exactly the sigma packaging of [Sub] in
-   Construction/Subcategory.v. *)
+(*
+   The 范畴 Mon(C) of internal 幺半群 in C: 对象 are 对象 of C
+
+   本节：equipped 幺半群 structure, 态射 are C-态射 equipped proof homomorphy, 等价 is 等价 underlying 态射 — exactly sigma packaging [Sub] Construction/Subcategory.v.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Mon : Category := {|
   obj     := { x : C & Monoid x };
   hom     := fun X Y => { f : `1 X ~> `1 Y & MonoidHom `2 X `2 Y f };

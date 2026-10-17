@@ -33,10 +33,13 @@ Arguments oedgeset {_} _ _ _.
 
 #[export] Existing Instance oedgeset.
 
-(* A morphism of O-graphs: a map on arrows for each ordered pair of nodes,
-   respecting the arrow setoids.  There is NO action on nodes -- that is
-   exactly what "identity on objects" means, and it is the whole difference
-   from [QuiverHomomorphism]. *)
+(*
+   A 态射 of O-graphs: a map on arrows for each ordered pair of nodes,
+
+   本节说明相关定义、性质与动机。 respecting arrow setoids. There is NO action nodes -- 即 exactly what "identity 对象" means, it is whole difference from [QuiverHomomorphism].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record OGraphHom@{o h p} {O : Type@{o}} (A B : OGraph@{o h p} O)
   : Type@{max(o,h,p)} := {
   oemap : ∀ x y, oedges A x y → oedges B x y;
@@ -128,10 +131,13 @@ Lemma ograph_comp_assoc_sym@{o h p hh} {O : Type@{o}}
     (ograph_compose F (ograph_compose G H)).
 Proof. now intros x y f. Qed.
 
-(* The category of O-graphs and identity-on-nodes morphisms.  Its hom and
-   proof universes are identified ([Category@{oo hh hh}]) because
-   Structure/Monoidal.v's [Monoidal@{o h}] demands exactly that shape of
-   category; see the header. *)
+(*
+   The 范畴 of O-graphs and identity-on-nodes 态射.  Its hom and
+
+   本节：proof universes are identified ([范畴@{oo hh hh}]) because Structure/幺半.v's [幺半@{o h}] demands exactly that shape 范畴;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition OGrph@{o h p hh oo} (O : Type@{o}) : Category@{oo hh hh} := {|
   obj     := OGraph@{o h p} O;
   hom     := fun A B => OGraphHom@{o h p} A B;
@@ -157,22 +163,11 @@ Definition eq_setoid_poly@{a b} (A : Type@{a}) : Setoid@{a b} A := {|
   setoid_equiv := eq_equivalence@{a b}
 |}.
 
-(* The trivial (unit) O-graph -- Mac Lane's "O itself, with arrow set O and
-   both domain and codomain functions the identity".  Its arrows x ~> y are
-   the PROOFS of x = y, compared by Leibniz equality.
+(*
+   本节说明相关定义、性质与动机。 The trivial (unit) O-graph -- Mac Lane's "O itself, arrow set O and. both domain codomain functions identity". Its arrows x ~> y are PROOFS x = y, compared Leibniz equality. Two things about that, both load-bearing neither idealisation.
 
-   Two things about that, both load-bearing and neither an idealisation.
-   First, Leibniz comparison does NOT collapse distinct proofs: absent UIP on
-   the node type this graph may carry more than one loop at a node, so the
-   reading "exactly one arrow per node" is available only when O has UIP.
-   That costs nothing -- [OGraph_unit] is still a unit for the composable-
-   pairs product, because the product's own setoid quotients by the middle
-   node's equality (see [CompEquiv]), which is exactly the freedom the extra
-   loops occupy.  Second, the comparison must be Leibniz and not coarser:
-   [oul_to]'s respectfulness proof consumes an equation between two proofs of
-   one node equality, and under a coarser setoid that equation would have to
-   be supplied instead -- which is UIP.  So this setoid choice is what keeps
-   the file free of any UIP hypothesis; see the header. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition OGraph_unit@{o h p} (O : Type@{o}) : OGraph@{o h p} O := {|
   oedges := fun x y => x = y;
   oedgeset := fun x y => eq_setoid_poly@{h p} (x = y)
@@ -221,14 +216,11 @@ Defined.
 Example OGrph_Quiver_nodes {O : Type} {A B : OGraph O} (F : OGraphHom A B) :
   @fnodes _ _ (QuiverHomOfOGraphHom F) = fun x : O => x := eq_refl.
 
-(* Uniqueness of identity proofs on the NODE type, taken as an explicit
-   hypothesis in the house idiom (Theory/Metacategory/General.v's [ObjUIP],
-   Theory/Category/Monoid.v's [HomRigid]) rather than as an axiom.  It is not
-   needed anywhere else in this file; it is needed HERE because
-   [QuiverHomomorphismEquivalence] compares two quiver morphisms up to an
-   ARBITRARY family of node equalities, and along a self-equality that is not
-   [eq_refl] the transported edge maps need not be related.  Whether the
-   comparison functor is faithful without it is left open. *)
+(*
+   本节：Uniqueness identity proofs NODE type, taken explicit. 假设 house idiom (Theory/元范畴/General.v's [ObjUIP], Theory/范畴/幺半群.v's [HomRigid]) rather than axiom. It is not needed anywhere else this file;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition NodeUIP (O : Type) : Type := ∀ (x : O) (p : x = x), p = eq_refl.
 
 Lemma OGrph_Quiver_Faithful (O : Type) : NodeUIP O → Faithful (OGrph_Quiver O).
@@ -270,17 +262,11 @@ Example composable_eta@{o h p +|+} {O : Type@{o}} {A B : OGraph@{o h p} O}
   {x z : O} (u : Composable@{o h p} A B x z)
   : cpair (cmid u) (cleft u) (cright u) = u := eq_refl.
 
-(* Two composable pairs are identified when their middle nodes are equal and
-   the two legs agree after transporting along that equality.  The middle
-   node is compared by Coq's [=] -- it is a NODE, and O carries no setoid --
-   while the legs are compared by the edge setoids' own `≈`.
+(*
+   本节说明相关定义、性质与动机。 Two composable pairs are identified when their middle nodes are equal and. two legs agree after transporting along that equality. The middle node is compared Coq's [=] -- it is NODE, O carries no setoid -- while legs are compared edge setoids' own `≈`.
 
-   No UIP is needed for this to be an equivalence relation, nor anywhere it
-   is consumed: the node equality q is only ever ELIMINATED (every proof
-   below destructs it, after which the two transports disappear) and never
-   compared with a second proof of the same equation.  The header explains
-   where a comparison of two such proofs WOULD have arisen, and what
-   discharges it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CompEquiv@{o h p} {O : Type@{o}} {A B : OGraph@{o h p} O} {x z : O}
   (u v : Composable@{o h p} A B x z) : Type@{p} :=
   { q : cmid u = cmid v &
@@ -626,9 +612,13 @@ Definition ounit@{o h p hh oo +|+} {O : Type@{o}} {A : OGraph@{o h p} O}
   : OGraphHom@{o h p} (OGraph_unit@{o h p} O) A :=
   @eta (OGrph@{o h p hh oo} O) (OGrph_Monoidal@{o h p hh oo} O) A M.
 
-(* The three monoid laws, restated in the pointwise form of [OGraphHomEquiv]
-   so that they can be applied to a composable pair.  Each is the class field
-   read through the definitional unfolding of `≈` in [OGrph O]. *)
+(*
+   The three 幺半群 laws, restated in the pointwise form of [OGraphHomEquiv]
+
+   本节说明相关定义、性质与动机。 so that they can be applied composable pair. Each is class field read through definitional unfolding `≈` [OGrph O].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma omonoid_assoc@{o h p hh oo +|+} {O : Type@{o}} {A : OGraph@{o h p} O}
   (M : OMonoid@{o h p hh oo} A) :
@@ -714,11 +704,11 @@ Proof.
     now rewrite id_right.
 Defined.
 
-(* ORIENTATION, pinned by computation rather than by prose.  Mac Lane writes
-   the composable pair as <g, f> with dom g = cod f, and sets dom<g,f> = dom f,
-   cod<g,f> = cod g; so the LEFT leg is the arrow applied last.  With that
-   choice the monoid multiplication on a category's own O-graph is this
-   library's [compose] on the nose, and the unit is [id]. *)
+(*
+   本节说明相关定义、性质与动机。 ORIENTATION, pinned computation rather than prose. Mac Lane writes. composable pair <g, f> dom g = cod f, sets dom<g,f> = dom f, cod<g,f> = cod g; so LEFT leg is arrow applied last.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example ocat_mu_is_compose (C : Category) (x y z : obj[C])
   (g : y ~{C}~> z) (f : x ~{C}~> y) :
   oemap (omul (MonoidOfCat C)) x z
@@ -840,11 +830,11 @@ Example ocat_roundtrip_id (C : Category) :
 Example ocat_roundtrip_compose (C : Category) :
   @compose (CategoryOfOMonoid (MonoidOfCat C)) = @compose C := eq_refl.
 
-(* Conjugating by identity isomorphisms does nothing: this is the shape
-   [Functor_Setoid]'s naturality condition takes when the two functors agree
-   on objects definitionally, as both comparisons below do.  (The same lemma
-   is proved for the same reason in Theory/Category/Monoid.v; it is restated
-   here rather than imported, that file having nothing else this one needs.) *)
+(*
+   本节：Conjugating identity isomorphisms does nothing: this is shape. [函子_Setoid]'s naturality condition takes when two 函子 agree 对象 definitionally, both comparisons below do. (The same lemma is proved same reason Theory/范畴/幺半群.v;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ograph_iso_id_conj {D : Category} {x y : D} (h : x ~> y) :
   from (@iso_id D y) ∘ h ∘ to (@iso_id D x) ≈ h.
 Proof. simpl; now rewrite id_right, id_left. Qed.
@@ -983,12 +973,13 @@ Example Deloop_of_MonObject_compose (M : MonObject) :
 Definition MonObject_of_OMonoid {A : OGraph poly_unit} (M : OMonoid A) :
   MonObject := hom_monoid (CategoryOfOMonoid M) ttt.
 
-(* The monoid comes back in every data field.  Full record equality is
-   blocked, as always in this library, by the proof-carrying law fields: the
-   laws of [CategoryOfOMonoid] are derived from the monoid-object laws rather
-   than projected from M, so they are not the same terms.  (Contrast
-   Construction/Deloop.v's [hom_monoid_Deloop], which IS [eq_refl] on the
-   whole record, because [Deloop] takes M's law fields verbatim.) *)
+(*
+   The 幺半群 comes back in every data field.  Full record equality is
+
+   本节说明相关定义、性质与动机。 blocked, always this library, proof-carrying law fields: laws [CategoryOfOMonoid] are derived from 幺半群-对象 laws rather than projected from M, so they are not same terms.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example MonObject_of_OMonoid_carrier (M : MonObject) :
   carrier (MonObject_of_OMonoid (Monoid_of_MonObject M)) = carrier M := eq_refl.
 
@@ -1019,20 +1010,11 @@ Example ograph_nat_compose_2_3 :
 
 (** ** The unit setoid is load-bearing: coarsening it ENTAILS UIP *)
 
-(* The header explains that no UIP is needed anywhere above, and localizes the
-   reason to one choice: the trivial O-graph compares its edge-proofs by
-   LEIBNIZ equality, which is what hands [oul_to]'s respectfulness obligation
-   the equation [p = p'] it needs.  Coarsening that setoid -- identifying all
-   proofs, which looks harmless, since morally there is one loop per node --
-   is what would put UIP back.
+(*
+   本节说明相关定义、性质与动机。 The header explains that no UIP is needed anywhere above, localizes the. reason one choice: trivial O-graph compares its edge-proofs LEIBNIZ equality, which is what hands [oul_to]'s respectfulness obligation equation [p = p'] it needs.
 
-   That is stated here as a THEOREM rather than left as a design argument.
-   Build the trivial O-graph with the coarsest possible setoid, keep
-   [oul_to]'s underlying map verbatim, and respectfulness of THAT map is not
-   merely "UIP-shaped": it entails UIP on O outright.  So the escape above is
-   the setoid choice and nothing else.
-
-   (Adapted from the adversarial audit's own probe, with thanks.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition coarse_unit (O : Type) : OGraph O := {|
   oedges := fun x y => x = y;

@@ -20,10 +20,13 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The lax transformation class, at full strength.  Its data are the component
-   1-cells [lt0] and the naturator 2-cells [lt1]; its laws are naturality of
-   the naturator in 2-cells [lt1_natural], the unit coherence [lt_unit], and
-   the composition coherence [lt_comp]. *)
+(*
+   The lax 变换 class, at full strength.  Its data are the component
+
+   本节说明相关定义、性质与动机。 1-cells [lt0] naturator 2-cells [lt1]; its laws are naturality naturator 2-cells [lt1_自然], unit coherence [lt_unit], 复合 coherence [lt_comp].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class LaxTransformation {B B' : Bicategory} (F G : Pseudofunctor B B') := {
   (* component 1-cells α_x : F x ~~> G x *)
   lt0 (x : @bi0cell B) : @bicat B' (pf0 F x) (pf0 G x);
@@ -49,9 +52,13 @@ Class LaxTransformation {B B' : Bicategory} (F G : Pseudofunctor B B') := {
       ∘∘ hcomp2 (from (@pf_id _ _ G x)) (bi2id (a:=lt0 x))
     ≈ from (hunit_right (lt0 x)) ∘∘ to (hunit_left (lt0 x));
 
-  (* composition coherence: the naturator at a composite g ∘∘∘ f, conjugated by
-     the compositors pf_comp of F and G, agrees with the pasting of the two
-     naturators lt1 g and lt1 f re-bracketed by the associator of B'. *)
+  (*
+   复合 coherence: the naturator at a 复合 g ∘∘∘ f, conjugated by
+
+   本节说明相关定义、性质与动机。 the compositors pf_comp F G, agrees pasting two naturators lt1 g lt1 f re-bracketed 结合子 B'.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   lt_comp {x y z : @bi0cell B} (g : @bicat B y z) (f : @bicat B x y) :
     hcomp2 (bi2id (a:=lt0 z)) (to (@pf_comp _ _ F x y z g f))
       ∘∘ lt1 (g ∘∘∘ f)
@@ -69,14 +76,13 @@ Arguments lt1_natural {B B'} {F G} _ {x y f f'} μ.
 Arguments lt_unit {B B'} {F G} _ x.
 Arguments lt_comp {B B'} {F G} _ {x y z} g f.
 
-(* The oplax transformation class: the dual of [LaxTransformation], with every
-   naturator 2-cell reversed.  The naturator now points
+(*
+   The oplax 变换 class: the dual of [LaxTransformation], with every
 
-       olt1 f : olt0 y ∘∘∘ pf1[F] f  ⟹  pf1[G] f ∘∘∘ olt0 x,
+   本节说明相关定义、性质与动机。 naturator 2-cell reversed. The naturator now points olt1 f : olt0 y ∘∘∘ pf1[F] f ⟹ pf1[G] f ∘∘∘ olt0 x, three coherence axioms are mirror images lax ones (the unit 复合 laws associators inverted unitor comparison reversed).
 
-   and the three coherence axioms are the mirror images of the lax ones (the
-   unit and composition laws with the associators inverted and the unitor
-   comparison reversed). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class OplaxTransformation {B B' : Bicategory} (F G : Pseudofunctor B B') := {
   (* component 1-cells α_x : F x ~~> G x *)
   olt0 (x : @bi0cell B) : @bicat B' (pf0 F x) (pf0 G x);
@@ -114,12 +120,13 @@ Arguments olt1_natural {B B'} {F G} _ {x y f f'} μ.
 Arguments olt_unit {B B'} {F G} _ x.
 Arguments olt_comp {B B'} {F G} _ {x y z} g f.
 
-(* A lax transformation is *pseudonatural* when every naturator 2-cell is
-   invertible.  This is a mixin over [LaxTransformation]: it exposes, for each
-   1-cell f, a witness that [lt1 σ f] is an isomorphism in the hom-category of
-   B', hence a two-sided inverse and its cancellation laws via [IsIsomorphism].
-   (nLab: a pseudonatural transformation is a lax transformation whose
-   naturators are invertible.) *)
+(*
+   A lax 变换 is *pseudonatural* when every naturator 2-cell is
+
+   本节说明相关定义、性质与动机。 invertible. This is mixin over [LaxTransformation]: it exposes, each 1-cell f, witness that [lt1 σ f] is 同构 hom-范畴 B', hence two-sided inverse its 消去 laws via [IsIsomorphism].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class Pseudonatural {B B' : Bicategory} {F G : Pseudofunctor B B'}
       (σ : LaxTransformation F G) := {
   pn_iso {x y : @bi0cell B} (f : @bicat B x y) : IsIsomorphism (lt1 σ f)
@@ -129,15 +136,13 @@ Arguments pn_iso {B B' F G σ} _ {x y} f.
 
 (** Inhabitation witness. *)
 
-(* To witness that the transformation classes are inhabited "closed under the
-   global context", we exhibit them on the terminal bicategory: one 0-cell, one
-   1-cell, one 2-cell, with the codiscrete 2-cell setoid in which every 2-cell
-   equation holds.  This is a genuine (non-vacuous) bicategory — its unique
-   0-cell, 1-cell and 2-cell are all inhabited — so the identity lax
-   transformation on it exercises every coherence field of the classes above
-   without appeal to the target bicategory's Kelly coherence (λ_{bi1id} =
-   ρ_{bi1id}), which the identity lax transformation on an *arbitrary*
-   pseudofunctor would require. *)
+(*
+   To witness that the 变换 classes are inhabited "closed under the
+
+   本节说明相关定义、性质与动机。 global context", we exhibit them terminal 双范畴: one 0-cell, one 1-cell, one 2-cell, codiscrete 2-cell setoid which every 2-cell equation holds.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The codiscrete setoid on [unit]: any two elements are related. *)
 Program Definition triv_setoid : Setoid unit := {| equiv := fun _ _ => True |}.
@@ -159,9 +164,11 @@ Proof.
     _ _ _                           (* hunit_left, hunit_right, hassoc *)
     _ _ _                           (* hunit_left/right/hassoc naturality *)
     _ _).                           (* triangle, pentagon *)
-  (* the codiscrete equations, the two whiskering naturalities and the two
-     coherence laws all reduce to [True]; the associator/unitor isos and the
-     horizontal-composition functor are the unique trivial ones. *)
+  (*
+   本节说明相关定义、性质与动机。 the codiscrete equations, two whiskering naturalities two. coherence laws all reduce [True];
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   all: try (repeat intro; exact I).
   - (* hcompose : the horizontal-composition functor *)
     intros x y z.
@@ -182,9 +189,13 @@ Proof.
     unshelve eapply Build_Isomorphism; try exact tt; exact I.
 Defined.
 
-(* The identity lax transformation on the terminal bicategory (via the identity
-   pseudofunctor): all components and naturators are the unique [tt], and all
-   three coherence laws hold in the codiscrete setoid. *)
+(*
+   The identity lax 变换 on the terminal 双范畴 (via the identity
+
+   本节说明相关定义、性质与动机。 伪函子): all components naturators are unique [tt], all three coherence laws hold codiscrete setoid.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Trivial_LaxTransformation :
   LaxTransformation (Identity_Pseudofunctor Trivial_Bicategory)
                     (Identity_Pseudofunctor Trivial_Bicategory) := {|

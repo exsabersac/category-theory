@@ -64,10 +64,13 @@ Arguments iso_from_to {x y} _.
 
 Infix "≅" := Isomorphism (at level 91) : category_scope.
 
-(* The predicate form: `f` is an isomorphism iff it has a two-sided inverse.
-   This is the nLab definition "an invertible morphism", phrased about a
-   single morphism `f` rather than about a pair of objects; [IsIsoToIso]
-   below recovers the object-level [Isomorphism] from it. *)
+(*
+   The predicate form: `f` is an 同构 iff it has a two-sided inverse.
+
+   本节：This is nLab 定义 "an invertible 态射", phrased about single 态射 `f` rather than about pair 对象;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class IsIsomorphism {x y : C} (f : x ~> y) := {
     two_sided_inverse : y ~> x;                  (* the inverse g : y ~> x *)
@@ -120,9 +123,13 @@ Next Obligation.
   apply iso_from_to.
 Defined.
 
-(* Bundling the three constructions above: `≅` is an equivalence relation on
-   the objects of C. (Per nLab, the isomorphisms of C are the morphisms of its
-   core groupoid; this instance records the relation they induce on objects.) *)
+(*
+   Bundling the three constructions above: `≅` is an 等价 relation on
+
+   本节说明相关定义、性质与动机。 the 对象 C. (Per nLab, isomorphisms C are 态射 its core groupoid;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance iso_equivalence : Equivalence Isomorphism := {
   Equivalence_Reflexive  := @iso_id;
   Equivalence_Symmetric  := @iso_sym;
@@ -135,10 +142,13 @@ Definition ob_equiv : crelation C := Isomorphism.
   {| equiv := Isomorphism
    ; setoid_equiv := iso_equivalence |}.
 
-(* Equivalence of two isomorphisms between the *same* pair of objects (as
-   opposed to `≅`, which relates objects): two isos are equal when their `to`
-   and `from` components are equal as morphisms under `≈`. This makes each
-   hom `x ≅ y` of isomorphisms into a setoid ([iso_setoid] below). *)
+(*
+   等价 of two isomorphisms between the *same* pair of 对象 (as
+
+   本节说明相关定义、性质与动机。 opposed `≅`, which relates 对象): two isos are equal when their `to` `from` components are equal 态射 under `≈`.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition iso_equiv {x y : C} : crelation (x ≅ y) :=
   fun f g => (to f ≈ to g) * (from f ≈ from g).
 
@@ -195,10 +205,13 @@ Notation "f '⁻¹'" := (from f) (at level 9, format "f '⁻¹'") : morphism_sco
 Ltac isomorphism :=
   unshelve (refine {| to := _; from := _ |}; simpl; intros).
 
-(* Every isomorphism is both monic and epic, in each direction: `to` and
-   `from` are cancellable on both sides because each has a two-sided inverse.
-   (The converse fails in general; see [Monic_Retraction_Iso] below for the
-   extra hypothesis that recovers an isomorphism.) *)
+(*
+   Every 同构 is both monic and epic, in each direction: `to` and
+
+   本节说明相关定义、性质与动机。 `from` are cancellable both sides because each has two-sided inverse. (The converse fails 一般地;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance iso_to_monic {C : Category} {x y} (iso : @Isomorphism C x y) :
   Monic iso.
@@ -232,11 +245,11 @@ Next Obligation.
   rewrites; reflexivity.
 Qed.
 
-(* Two-sided inverses are unique up to ≈: if `g` is a right inverse and `g'`
-   a left inverse of the same `f`, they agree. Stated for plain morphisms (no
-   isomorphism packaging), which is the form inverted coherence laws
-   downstream consume (e.g. the interchange toolkit of
-   Structure/Monoidal/Braided/Proofs.v). *)
+(*
+   本节说明相关定义、性质与动机。 Two-sided inverses are unique up ≈: if `g` is right inverse `g'`. left inverse same `f`, they agree. Stated plain 态射 (no 同构 packaging), which is form inverted coherence laws downstream consume (e.g.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma comp_inverse_unique
       {C : Category} {x y : C} (f : x ~> y) (g g' : y ~> x) :
   f ∘ g ≈ id[y] -> g' ∘ f ≈ id[x] -> g ≈ g'.
@@ -249,10 +262,13 @@ Proof.
   apply id_right.
 Qed.
 
-(* Two-sided inverses are unique, so an isomorphism is determined by its `to`
-   component: if `to f ≈ to g` then the `from` components agree as well, hence
-   `f ≈ g`. The proof uses that `to f` is epic (a standard inverse-uniqueness
-   argument). *)
+(*
+   Two-sided inverses are unique, so an 同构 is determined by its `to`
+
+   本节说明相关定义、性质与动机。 component: if `to f ≈ g` then `from` components agree well, hence `f ≈ g`.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Proposition to_equiv_implies_iso_equiv {C : Category} {x y} (f g : x ≅ y) :
   to f ≈ to g -> f ≈ g.
 Proof.
@@ -322,11 +338,13 @@ Next Obligation.
   rewrites; reflexivity.
 Qed.
 
-(* Partial converses to "isos are monic and epic": a morphism that is both
-   monic and a retraction (split epi) is an isomorphism, and dually a morphism
-   that is both epic and a section (split mono) is an isomorphism. In each case
-   the one-sided inverse supplied by the split, together with cancellability,
-   upgrades to a two-sided inverse. *)
+(*
+   Partial converses to "isos are monic and epic": a 态射 即 both
+
+   本节说明相关定义、性质与动机。 monic retraction (split epi) is 同构, dually 态射 即 both epic section (split mono) is 同构.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance Monic_Retraction_Iso
         {C : Category} {x y : C} `(r : @Retraction _ _ _ f) `(m : @Monic _ _ _ f) :

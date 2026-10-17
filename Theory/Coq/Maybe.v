@@ -102,10 +102,13 @@ Instance Maybe_Alternative : Alternative Maybe := {
 
 Import MonadNotations.
 
-(* Lifting a semigroup on [a] to [Maybe a]: [Nothing] acts as a freely adjoined
-   identity, and two [Just]s combine with the underlying [⊗].  This is the
-   standard construction making [Maybe a] a monoid (unit [Nothing]) from any
-   semigroup [a] -- i.e. freely adjoining a unit. *)
+(*
+   Lifting a 半群 on [a] to [Maybe a]: [Nothing] acts as a freely adjoined
+
+   本节说明相关定义、性质与动机。 identity, two [Just]s combine underlying [⊗]. This is standard construction making [Maybe a] 幺半群 (unit [Nothing]) from any 半群 [a] -- i.e.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Maybe_append `{Semigroup a} (x y : Maybe a) : Maybe a :=
   match x, y with
   | Nothing, x     => x
@@ -118,9 +121,13 @@ Program Instance Semigroup_Maybe `{Semigroup a} : Semigroup (Maybe a) := {
   mappend := Maybe_append
 }.
 
-(* [Maybe a] is a monoid with unit [Nothing] (adjoined above).  Only a
-   [Semigroup a] is needed for [mappend]; the [Monoid a] constraint here is
-   stronger than strictly required (Haskell asks only for [Semigroup a]). *)
+(*
+   [Maybe a] is a 幺半群 with unit [Nothing] (adjoined above).  Only a
+
+   本节说明相关定义、性质与动机。 [半群 a] is needed [mappend]; [幺半群 a] constraint here is stronger than strictly required (Haskell asks only [半群 a]).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export]
 Program Instance Monoid_option `{Monoid a} : Monoid (Maybe a) := {
   mempty := None

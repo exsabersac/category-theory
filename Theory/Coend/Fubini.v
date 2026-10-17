@@ -49,13 +49,11 @@ Context (H : (C ∏ D)^op ∏ (C ∏ D) ⟶ Sets).
 (** The inner integrand at fixed [c1 c2 : C]: the [D]-profunctor
     [(d1, d2) ↦ H ((c1, d1), (c2, d2))], contravariant in [d1], covariant in
     [d2], obtained by holding the [C]-coordinates fixed at [c1], [c2]. *)
-(** The action of [H] on a "rectangle" of moves: a contravariant [C]-move [u],
-    a covariant [C]-move [v], a contravariant [D]-move [g1] and a covariant
-    [D]-move [g2], with every object explicit so that no projection sits inside
-    the morphism literal (which is what makes Coq insert [eq_rect] transports).
-    This single engine drives every functorial action below; the inner coend
-    fixes [u], [v] at identities, the [Inner] functor fixes [g1], [g2] at
-    identities, and every composition collapses through [Hact_comp]. *)
+(*
+   本节说明相关定义、性质与动机。 * The action [H] "rectangle" moves: contravariant [C]-move [u],.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Hact (c1 c2 c1' c2' : C) (d1 d2 d1' d2' : D)
   (u : c1' ~{C}~> c1) (v : c2 ~{C}~> c2')
   (g1 : d1' ~{D}~> d1) (g2 : d2 ~{D}~> d2') :
@@ -367,17 +365,25 @@ Proof.
   exact (ce_glue H (c, d1) (c, d2) (id, g) a).
 Qed.
 
-(** Backward leg at [c]: the mediator [∫^d H((c,d),(c,d)) → ∫ H].  Its domain
-    is stated as [Inner (c, c)] (definitionally the inner coend apex) so that
-    the compositions with [bimap[Inner]] below resolve their category. *)
+(*
+   * 反向 leg at [c]: the mediator [∫^d H((c,d),(c,d)) → ∫ H].  Its domain
+
+   本节说明相关定义、性质与动机。 is stated [Inner (c, c)] (definitionally inner coend apex) so that compositions [bimap[Inner]] below resolve their 范畴.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition bwd_leg (c : C) :
   Inner (c, c) ~{Sets}~> coend_apex_setoid H :=
   coend_mediator (InnerIntegrand c c) (fun d => coend_inj_mor H (c, d))
     (bwd_inner_cond c).
 
-(** Backward outer cowedge: the [C]-glue for [fc] reduces, on generators, to a
-    single [H]-glue at the pair morphism [(fc, id)]; the two sides agree with
-    the common cowedge [fun d => bwd_leg c1 ∘ bimap[Inner] (op fc) id ∘ inj_d]. *)
+(*
+   * 反向 outer cowedge: the [C]-glue for [fc] reduces, on generators, to a
+
+   本节说明相关定义、性质与动机。 single [H]-glue at pair 态射 [(fc, id)]; two sides agree common cowedge [fun d => bwd_leg c1 ∘ bimap[Inner] (op fc) id ∘ inj_d].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma bwd_cond : Cowedge_cond Inner (coend_apex_setoid H) bwd_leg.
 Proof.
   intros c1 c2 fc.

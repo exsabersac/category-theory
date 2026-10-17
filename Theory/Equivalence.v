@@ -39,103 +39,21 @@ Generalizable All Variables.
    （Construction/Opposite/Monoidal.v 的 [Monoidal_op] 约定）。下文所有构造都是普通
    Definition，在使用点显式传入。这也使桥转换的 Cat 层宇宙约束局部于实际使用处。 *)
 
-(* Where equivalence came from, and what it is for
+(*
+   Where 等价 came from, and what it is for
 
-   nLab: https://ncatlab.org/nlab/show/T%C3%B4hoku
-   nLab: https://ncatlab.org/nlab/show/principle+of+equivalence
-   nLab: https://ncatlab.org/nlab/show/skeleton+of+a+category
-   SEP:  https://plato.stanford.edu/entries/category-theory/
+   本节：nLab: https://ncatlab.org/nlab/show/T%C3%B4hoku nLab: https://ncatlab.org/nlab/show/principle+of+等价 nLab: https://ncatlab.org/nlab/show/skeleton+of+a+范畴 SEP: https://plato.stanford.edu/entries/范畴-theory/ The notion is younger than 范畴 theory itself.
 
-   The notion is younger than category theory itself.  The founding
-   paper (Eilenberg, Mac Lane, "General Theory of Natural Equivalences",
-   Transactions of the AMS 58, 1945) treats the category as "essentially
-   an auxiliary" concept, the basic notions being functor and natural
-   transformation (Marquis, "Category Theory", Stanford Encyclopedia of
-   Philosophy).  Equivalence of categories is introduced for the first
-   time in Grothendieck's Tôhoku paper (Grothendieck, "Sur quelques
-   points d'algèbre homologique", Tôhoku Mathematical Journal (2) 9,
-   1957), and in the adjoint form — unit, counit, triangle identities —
-   slightly before Kan isolated adjoint functors in general (nLab,
-   "Tôhoku").  Within a year, Morita had made equivalence of module
-   categories the definition of an equivalence relation on rings
-   (Morita, "Duality for modules and its applications to the theory of
-   rings with minimum condition", Science Reports of the Tokyo Kyoiku
-   Daigaku A 6, 1958): the Morita invariants of a ring are exactly the
-   properties that transport along R-Mod ≃ S-Mod.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   Strict isomorphism of categories — composites Leibniz-equal to the
-   identity functors — is the sameness Cat supports as a mere
-   1-category, and it is too strong: objects are only ever determined up
-   to isomorphism, so comparing them by equality separates categories
-   that no categorical property can tell apart.  Finite-dimensional
-   vector spaces over a field are equivalent, never isomorphic, to the
-   small category of natural numbers and matrices (nLab, "equivalence of
-   categories").  Equivalence is instead exactly the sameness
-   categorical language respects — monos, epis, limits and colimits,
-   cartesian closure, being a topos all transport across it — and the
-   properties it does not preserve are the ones the principle of
-   equivalence brands "evil".  Skeletons measure the cost of
-   strictifying anyway: every category is equivalent to each of its
-   skeletons, yet the EXISTENCE claim — that every category has one —
-   is itself equivalent to the axiom of choice, skeletality is not
-   equivalence-invariant, and even a skeletal category has no product
-   on the nose (nLab, "skeleton of a category").  The library
-   accordingly states every law up to ≈ and never asserts that
-   existence: Theory/Skeleton.v carries the [Skeletal] predicate and
-   packages "A is a skeleton of C" as DATA — a full subcategory with a
-   chosen representative and its uniqueness — so that everything true
-   of a GIVEN skeleton is proved there, choice-free
-   ([skeleton_inclusion_is_equivalence], [skeletons_are_isomorphic]),
-   while no [Skeleton C] is ever produced for an arbitrary C.  That
-   skeletality is not equivalence-invariant is itself a theorem
-   ([skeletality_is_not_equivalence_invariant] of
-   Theory/Skeleton/Separation.v, separating [1] from the indiscrete
-   category on [bool]), complemented by [Skeletal_StrictCat_invariant],
-   which shows the predicate IS invariant under isomorphism of
-   categories.  The concrete instances remain the computing witnesses:
-   Instance/FinSet.v, proved skeletal in Instance/FinSet/Skeleton.v,
-   where positional objects let the [FinSet_Topos] examples compute by
-   eq_refl (Instance/FinSet/Topos.v).
+(*
+   F is 本质满射 (on 对象) when every 对象 of the target
 
-   The choice content of the classical characterization dictates the
-   split shape of [EssentiallySurjective].  That every fully faithful,
-   essentially surjective functor is an equivalence is logically
-   equivalent to the axiom of choice: a quasi-inverse must pick a
-   preimage for every object at once (Yorgey, "AC and equivalence of
-   categories", 2014).  Makkai repaired this with anafunctors, functors
-   defined only up to isomorphism (Makkai, "Avoiding the axiom of choice
-   in general category theory", Journal of Pure and Applied Algebra
-   108(2), 1996); univalent foundations dissolve it, since for univalent
-   categories the characterization needs no choice at all (Ahrens,
-   Kapulkin, Shulman, "Univalent categories and the Rezk completion",
-   2015).  This file keeps the constructive kernel of that result in
-   setoid form, following the HoTT Book (chapter 9, 2013): [eso_obj]
-   computes the chosen preimage, [eso_iso] is a data-level witness,
-   "there exists a preimage" becomes "here is one", and [FF_ESO_Equivalence]
-   in Theory/Equivalence/FullFaithful.v invokes no choice principle.
+   本节说明相关定义、性质与动机。 范畴 is isomorphic image some 对象 source.
 
-   Equivalence is also the form in which mathematics states its
-   classical dualities: Boolean algebras against Stone spaces (Stone,
-   "The Theory of Representations for Boolean Algebras", Transactions of
-   the AMS 40, 1936), commutative C*-algebras against compact Hausdorff
-   spaces (Gelfand, Naimark, Mat. Sbornik 12, 1943), and, conjecturally,
-   the two sides of mirror symmetry as an equivalence of derived
-   categories (Kontsevich, "Homological algebra of mirror symmetry",
-   1994).  Inside the library the pattern recurs: [Monadic] in
-   Monad/Comparison.v is defined as [EquivalenceOfCategories] at the
-   Eilenberg–Moore comparison, Cauchy completeness makes the Karoubi
-   embedding an equivalence (Construction/Karoubi/Universal.v), the
-   fibred/indexed correspondence concludes with [RoundTrip_Equivalence]
-   (Construction/Grothendieck/RoundTrip.v), and the algebras of an
-   idempotent monad recover its reflective subcategory through
-   [Idempotent_EM_Equivalence] (Construction/Reflective/Idempotent.v).
-   A theorem of this genre is a completed classification: whatever is
-   categorical on one side transports, without loss, to the other. *)
-
-(* F is essentially surjective (on objects) when every object of the target
-   category is isomorphic to the image of some object of the source.  The
-   witness is split: [eso_obj] chooses a preimage object and [eso_iso]
-   exhibits the isomorphism. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class EssentiallySurjective {C D : Category} (F : C ⟶ D) := {
   eso_obj : D → C;                     (* chosen preimage object *)
   eso_iso (d : D) : F (eso_obj d) ≅ d  (* its image is isomorphic to d *)
@@ -152,12 +70,13 @@ Class EquivalenceOfCategories {C D : Category} (F : C ⟶ D) := {
   equivalence_unit   : Id[C] ≈ quasi_inverse ◯ F
 }.
 
-(* An equivalence of categories IS an isomorphism in Cat: Cat's hom-setoid
-   is [Functor_Setoid], so the two inverse laws of the isomorphism are
-   exactly the counit and unit cells.  This is kept as a Definition — never
-   an Instance — both by the no-inferable-quasi-inverses rule and because
-   it mentions [Cat], one universe level above C and D; as a Definition the
-   extra constraints stay local to its use sites. *)
+(*
+   An 范畴等价 IS an 同构 in Cat: Cat's hom-setoid
+
+   本节说明相关定义、性质与动机。 is [函子_Setoid], so two inverse laws 同构 are exactly counit unit cells. This is kept 定义 — never Instance — both no-inferable-quasi-inverses rule because it mentions [Cat], one universe level above C D;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Equivalence_to_Cat_Iso {C D : Category} {F : C ⟶ D}
   (E : EquivalenceOfCategories F) : C ≅[Cat] D :=
   @Build_Isomorphism Cat C D F (@quasi_inverse C D F E)
@@ -173,10 +92,13 @@ Definition Cat_Iso_to_Equivalence {C D : Category} (iso : C ≅[Cat] D) :
     (iso_to_from iso)
     (symmetry (iso_from_to iso)).
 
-(* The two bridges compose to the identity, on the nose for the functor
-   data (both corollaries hold by [reflexivity] on the components); the
-   isomorphism-level statement is up to [≈] of isos in Cat, which compares
-   exactly the [to]/[from] components. *)
+(*
+   The two bridges compose to the identity, on the nose for the 函子
+
+   本节说明相关定义、性质与动机。 data (both corollaries hold [reflexivity] components);
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary Cat_Iso_to_Equivalence_to_Cat_Iso {C D : Category}
   (iso : C ≅[Cat] D) :
   Equivalence_to_Cat_Iso (Cat_Iso_to_Equivalence iso) ≈ iso.
@@ -211,9 +133,11 @@ Definition equivalence_counit_at (d : D) : F (quasi_inverse d) ≅ d :=
 Definition equivalence_unit_at (x : C) : x ≅ quasi_inverse (F x) :=
   `1 equivalence_unit x.
 
-(* Naturality of the unit and counit components, extracted from the
-   conjugation coherence carried by [Functor_Setoid]'s ≈ (the helpers
-   [fun_equiv_to_fmap]/[fun_equiv_fmap_from] of Theory/Functor.v). *)
+(*
+   本节说明相关定义、性质与动机。 Naturality unit counit components, extracted from the.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma equivalence_unit_to_natural {x y : C} (f : x ~> y) :
   to (equivalence_unit_at y) ∘ f
@@ -259,10 +183,13 @@ Definition EquivalenceOfCategories_sym :
 
 End QuasiInverse.
 
-(* Packaging from bundled natural isomorphisms: a functor equipped with
-   natural isomorphisms F ◯ G ≅ Id[D] and Id[C] ≅ G ◯ F in the functor
-   category is an equivalence — the [≅[Fun]] to [≈] direction of the
-   [Functor_Setoid_Nat_Iso] round trip. *)
+(*
+   Packaging from bundled 自然 isomorphisms: a 函子 equipped with
+
+   本节：自然 isomorphisms F ◯ G ≅ Id[D] Id[C] ≅ G ◯ F 函子 范畴 is 等价 — [≅[Fun]] [≈] direction [函子_Setoid_Nat_Iso] round trip.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Nat_Isos_to_Equivalence {C D : Category} (F : C ⟶ D) (G : D ⟶ C)
   (counit_iso : F ◯ G ≅[Fun] Id[D]) (unit_iso : Id[C] ≅[Fun] G ◯ F) :
   EquivalenceOfCategories F :=
@@ -277,23 +204,13 @@ Definition EquivalenceOfCategories_Id {C : Category} :
     (fun_equiv_id_left Id[C])
     (symmetry (fun_equiv_id_left Id[C])).
 
-(* Essential surjectivity is closed under composition.
+(*
+   Essential surjectivity is closed under 复合.
 
-   Book: Riehl, "Category Theory in Context", Dover 2016, §1.5,
-         Exercise 1.5.vi(i), printed p. 38
+   本节说明相关定义、性质与动机。 Book: Riehl, "范畴 Theory Context", Dover 2016, §1.5, Exercise 1.5.vi(i), printed p. 38 This is third clause that exercise, alongside closure fullness faithfulness ([Full_Compose] [忠实_Compose], Theory/函子.v).
 
-   This is the third clause of that exercise, alongside the closure of
-   fullness and of faithfulness ([Full_Compose] and [Faithful_Compose],
-   Theory/Functor.v).  Given e : E, pull it back twice — first along F, then
-   along G — and paste the two witnessing isomorphisms: F carries G's
-   isomorphism forward (functors preserve isomorphisms, [fobj_iso]) to land at
-   F applied to F's own chosen preimage of e, from where F's own isomorphism
-   finishes the trip to e.  The
-   choices compose because [EssentiallySurjective] is the split form, carrying
-   a chosen preimage rather than a bare existence statement.
-
-   Stated at the end of the file rather than beside the class so that the two
-   class definitions above stay adjacent. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export] Program Instance EssentiallySurjective_Compose
   {C D E : Category} (F : D ⟶ E) (G : C ⟶ D)

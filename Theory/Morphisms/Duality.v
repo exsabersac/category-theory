@@ -38,10 +38,11 @@ Definition op_Monic_of_Epic {C : Category} {x y : C} (f : x ~> y)
 
 (** ** The dual derivations *)
 
-(* [monic_cancel] obtained from [epic_cancel] with no second argument.  In
-   C^op the composite f ∘ g becomes g ∘ f, so cancelling the LEFT factor there
-   is cancelling the RIGHT factor here -- which is exactly why the two lemmas
-   read as mirror images rather than as the same statement twice. *)
+(*
+   本节说明相关定义、性质与动机。 [monic_cancel] obtained from [epic_cancel] no second argument. In.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition monic_cancel_op {C : Category} {x y z : C}
   {f : y ~> z} {g : x ~> y} : Monic (f ∘ g) → Monic g :=
   fun H => Monic_of_op_Epic g
@@ -55,10 +56,11 @@ Definition monic_compose_op {C : Category} {x y z : C}
       (@epi_compose (C^op) z y x g f
          (op_Epic_of_Monic g Hg) (op_Epic_of_Monic f Hf)).
 
-(* The derived forms prove the same statements as the direct ones.  Stating
-   this is the honest way to keep both: nothing here silently replaces
-   Theory/Morphisms.v's proofs, and if the two ever drifted apart these would
-   stop typechecking. *)
+(*
+   本节说明相关定义、性质与动机。 The derived forms prove same statements direct ones. Stating.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition monic_cancel_agrees {C : Category} {x y z : C}
   {f : y ~> z} {g : x ~> y} :
   (Monic (f ∘ g) → Monic g) * (Monic (f ∘ g) → Monic g) :=
@@ -72,11 +74,11 @@ Definition monic_compose_agrees {C : Category} {x y z : C}
 
 (** ** The wide subcategories of monos and of epis *)
 
-(* Riehl, CTiC, §1.2 (Exercise 1.2.ii): the monomorphisms of C form a wide
-   subcategory -- wide because every identity is monic, a subcategory because
-   monos compose.  Those are exactly [id_monic] and [monic_compose], so the
-   record below has no proof content of its own; the point is that the two
-   closure lemmas are precisely the subcategory axioms. *)
+(*
+   本节说明相关定义、性质与动机。 Riehl, CTiC, §1.2 (Exercise 1.2.ii): monomorphisms C form wide. subcategory -- wide because every identity is monic, subcategory because monos compose. Those are exactly [id_monic] [monic_compose], so record below has no proof content its own;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition MonoSub (C : Category) : Subcategory C := {|
   sobj  := fun _ => poly_unit;
   shom  := fun x y _ _ f => Monic f;
@@ -87,11 +89,13 @@ Definition MonoSub (C : Category) : Subcategory C := {|
 Definition MonoSub_Wide (C : Category) : Wide C (MonoSub C) :=
   fun _ => ttt.
 
-(* The dual, obtained through C^op rather than reproved: an epimorphism of C
-   is a monomorphism of C^op, so [EpiSub] transports [MonoSub (C^op)] back
-   along the bridges above rather than repeating the closure arguments.  Note
-   the composition order flips in the opposite category, which is why the
-   [scomp] field below feeds its two arguments in the other order. *)
+(*
+   The dual, obtained through C^op rather than reproved: an 满态射 of C
+
+   本节说明相关定义、性质与动机。 is 单态射 C^op, so [EpiSub] transports [MonoSub (C^op)] back along bridges above rather than repeating closure arguments.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition EpiSub (C : Category) : Subcategory C.
 Proof.
   unshelve refine {| sobj := fun _ => poly_unit
@@ -109,12 +113,11 @@ Defined.
 Definition EpiSub_Wide (C : Category) : Wide C (EpiSub C) :=
   fun _ => ttt.
 
-(* The inverse-pair rows of Mac Lane §II.1's dualization table (extended
-   by §IV.3 Exercise 1): a left inverse in C is a right inverse in C^op
-   and conversely — the composites are literally the same, only read
-   through the opposite composition.  All four directions, mirroring the
-   Monic/Epic quartet above; each law is the other side's law by
-   conversion, so every obligation is an [exact]. *)
+(*
+   本节说明相关定义、性质与动机。 The inverse-pair rows Mac Lane §II.1's dualization table (extended. §IV.3 Exercise 1): left inverse C is right inverse C^op conversely — composites are literally same, only read through 反 复合.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 

@@ -17,93 +17,19 @@ Generalizable All Variables.
    输入置换作用。本文件给出多范畴类、拼接方程套件，以及与 operad / 对称变体的接口。
    长历史短文若仍为英文属后续波次；定义性文首已译。 *)
 
-(* Where multicategories come from, and what they are for
+(*
+   Where multicategories 来源, and 用途
 
-   nLab:  https://ncatlab.org/nlab/show/multicategory
-   nLab:  https://ncatlab.org/nlab/show/operad
-   Paper: Lambek, "Deductive systems and categories II. Standard
-          constructions and closed categories", Lecture Notes in
-          Mathematics 86, Springer 1969
-   Book:  Leinster, "Higher Operads, Higher Categories", Cambridge
-          University Press 2004
+   本节说明相关定义、性质与动机。 nLab: https://ncatlab.org/nlab/show/多元范畴 nLab: https://ncatlab.org/nlab/show/operad Paper: Lambek, "Deductive systems 范畴 II.
 
-   A category composes UNARY operations, one source and one target.
-   Large tracts of mathematics instead concern operations of several
-   inputs and one output — a multiplication A × A → A, the grafting of
-   trees, a proof drawing on several hypotheses.  A multicategory
-   axiomatizes that directly: a morphism [mhom Γ c] whose source Γ is a
-   finite LIST of objects, composed by substituting multimorphisms into
-   the input slots of another.  The notion is due to Lambek, who coined
-   the word while formalizing deductive systems and closed categories
-   (Lambek, "Deductive systems and categories II", LNM 86, 1969;
-   revisited in "Multicategories revisited", Contemporary Mathematics 92,
-   1989); he read a deduction of a formula c from an ordered context
-   c₁, …, cₙ as a multimorphism into c, so the motivation was logical
-   before it was higher-categorical.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   Taking arities as primitive, rather than encoding several inputs as
-   one tensored input A₁ ⊗ ⋯ ⊗ Aₙ → B, is the substance of the notion: a
-   tensor is extra structure, and a base need not carry one.  A
-   multicategory needs no monoidal product, and when one is present the
-   multimorphisms it represents recover it.  This is representability
-   (Hermida, "Representable multicategories", Advances in Mathematics
-   151(2), 2000): every monoidal category yields the multicategory whose
-   [mhom] from A₁, …, Aₙ to B is the ordinary homset C(A₁ ⊗ ⋯ ⊗ Aₙ, B).
-   The construction, carried once over an object realization, is
-   Theory/Multicategory/Representable.v.
+(*
+   本节说明相关定义、性质与动机。 * ** The splice-equation kit. Canonical proofs list equations along which laws cast. Pure [app]-代数: chains [app_assoc]/[app_nil_r]/[app_comm_cons].
 
-   The single-colour case is the operad, a multicategory whose one object
-   leaves each multimorphism fixed by the ARITY of its source
-   (Theory/Multicategory/Operad.v).  The geometry predates the word:
-   Boardman and Vogt described the little n-cubes operads and a
-   recognition principle for iterated loop spaces (ideas circa 1968,
-   published as "Homotopy Invariant Algebraic Structures on Topological
-   Spaces", LNM 347, 1973), on the PROPs and PACTs of Adams and Mac Lane;
-   the name and the definition are due to May ("The Geometry of Iterated
-   Loop Spaces", LNM 271, 1972), whose recognition theorem relates
-   connected algebras over the little n-cubes operad to n-fold loop
-   spaces.  An algebra for an operad O on X is a map into the
-   endomorphism operad, whose n-ary part is X^n → X; the library builds
-   this [EndOperad] in Theory/Multicategory/Endomorphism.v and takes an
-   [OperadAlgebra] to be a multifunctor into it
-   (Theory/Multicategory/Algebra.v), where the terminal operad's algebras
-   in Sets are exactly the commutative monoids of Instance/CMon.v
-   ([Comm_algebra_CMon]).
-
-   The reach beyond topology is broad.  Multicategories stand to operads
-   as multi-sorted Lawvere theories stand to single-sorted ones, and a
-   finite-product (Lawvere) theory, presented without forcing its product
-   objects, is exactly a Cartesian multicategory (nLab, "Lawvere theory"):
-   the source list tracks arities and its copy/discard structure realizes
-   the structural rules of weakening and contraction, joining the
-   Theory/Lawvere.v and Construction/PROP/ spine.
-   Symmetric multicategories also organize algebraic K-theory (Elmendorf,
-   Mandell, "Permutative categories, multicategories, and algebraic
-   K-theory", Algebraic & Geometric Topology 9(4), 2009), and Leinster's
-   generalized operads recast the language of higher category theory
-   (Leinster 2004), Batanin's globular operads describing weak
-   ∞-categories within it.
-
-   The computational reading returns to Lambek.  A multimorphism into c
-   is a term, or a proof, in a context: Γ is the typing context of free
-   variables and c the conclusion, [mid a] the bare variable, and
-   single-slot composition [mcomp] the substitution of one argument into
-   a chosen slot.  So read, the two associativity laws
-   [mcomp_assoc_nested] and [mcomp_assoc_disjoint] are the associativity
-   of substitution — into a variable itself introduced by a substitution,
-   and of two independent substitutions commuting — and the symmetric
-   action [msym] is exchange, the renaming of free variables.  The ordered
-   case, which has no exchange rule, is resource-sensitive and forms the
-   syntactic core of substructural and linear logic; the symmetric action
-   restores exchange, which is why the class carries it as separate data. *)
-
-(** ** The splice-equation kit
-
-    Canonical proofs of the list equations along which the laws cast.
-    Pure [app]-algebra: chains of [app_assoc]/[app_nil_r]/[app_comm_cons].
-    The associativity laws are quantified over ANY proof of their
-    equations, so the kit lemmas are only witnesses (and the convenient
-    instantiation points). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SpliceKit.
 
@@ -155,14 +81,11 @@ Proof. symmetry; apply splice_eq_slot_out. Qed.
 
 End SpliceKit.
 
-(** ** Permutation witnesses as data
+(*
+   本节说明相关定义、性质与动机。 * ** Permutation witnesses data. The Type-valued mirror stdlib [Permutation], constructor constructor.
 
-    The Type-valued mirror of the stdlib [Permutation], constructor for
-    constructor.  Because it lives in [Type], instances may build the
-    symmetric action [msym p] by structural recursion on the witness [p]
-    — not possible for the Prop-valued stdlib relation, which has no
-    elimination into [Type].  Everything below is a transparent Fixpoint
-    so that witnesses compute on list constructors. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive tperm {A : Type} : list A → list A → Type :=
   | tperm_nil : tperm [] []
@@ -192,15 +115,11 @@ Fixpoint tperm_Permutation {A : Type} {Γ Δ : list A} (p : tperm Γ Δ) :
   | tperm_trans q r => perm_trans (tperm_Permutation q) (tperm_Permutation r)
   end.
 
-(** ** Block-permutation combinators
+(*
+   本节说明相关定义、性质与动机。 * ** Block-permutation combinators. The equivariance law acts spliced context permuting its three blocks independently.
 
-    The equivariance law acts on the spliced context by permuting its
-    three blocks independently.  The combinators are transparent
-    counterparts of the stdlib's opaque [Permutation_app]: a witness on
-    the left block extends along a fixed right tail ([tperm_app_l]), a
-    fixed left prefix skips over a witness on the right block
-    ([tperm_app_r]), and the general parallel composition is their
-    transitive composite. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Whiskering a witness by a fixed tail on the right. *)
 Fixpoint tperm_app_l {A : Type} {Γ Γ' : list A} (p : tperm Γ Γ')
@@ -289,23 +208,26 @@ Class Multicategory : Type := {
     (f : mhom (Γ1 ++ a :: Γ2) c) :
     mcast (splice_eq_unit_right Γ1 Γ2 a) (mcomp f (mid a)) ≈ f;
 
-  (* Associativity, nested shape: the second slot lands INSIDE the spliced
-     context.  Splicing [g] into [f] and then [h] into the [a]-slot that
-     [g] contributed agrees with splicing [mcomp g h] into [f] directly.
-     Quantified over ANY proofs of the two boundary equations (witnesses:
-     [splice_eq_nested_slot], [splice_eq_nested]). *)
+  (*
+   结合律, nested shape: the second slot lands INSIDE the spliced
+
+   本节说明相关定义、性质与动机。 context. Splicing [g] into [f] then [h] into [a]-slot that [g] contributed agrees splicing [mcomp g h] into [f] directly.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   mcomp_assoc_nested {Γ1 Γ2 Δ1 Δ2 Θ : list mobj} {a b c : mobj}
     (f : mhom (Γ1 ++ b :: Γ2) c) (g : mhom (Δ1 ++ a :: Δ2) b) (h : mhom Θ a)
     (e1 : Γ1 ++ (Δ1 ++ a :: Δ2) ++ Γ2 = (Γ1 ++ Δ1) ++ a :: (Δ2 ++ Γ2))
     (e2 : Γ1 ++ (Δ1 ++ Θ ++ Δ2) ++ Γ2 = (Γ1 ++ Δ1) ++ Θ ++ (Δ2 ++ Γ2)) :
     mcomp (mcast e1 (mcomp f g)) h ≈ mcast e2 (mcomp f (mcomp g h));
 
-  (* Associativity, disjoint shape: two slots in the SAME outer context
-     ([a] before [b] in the zipper [(Γ1, a, Γ2 ++ b :: Γ3)] respectively
-     [(Γ1 ++ a :: Γ2, b, Γ3)]) may be filled in either order.  Quantified
-     over ANY proofs of the four boundary equations (witnesses:
-     [splice_eq_out] for [d1]/[d4], [splice_eq_slot_out] for [d2],
-     [splice_eq_slot_in] for [d3]). *)
+  (*
+   结合律, disjoint shape: two slots in the SAME outer context
+
+   本节说明相关定义、性质与动机。 ([a] before [b] zipper [(Γ1, a, Γ2 ++ b :: Γ3)] respectively [(Γ1 ++ :: Γ2, b, Γ3)]) may be filled either order.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   mcomp_assoc_disjoint {Γ1 Γ2 Γ3 Δ Θ : list mobj} {a b c : mobj}
     (f : mhom (Γ1 ++ a :: Γ2 ++ b :: Γ3) c) (g : mhom Δ a) (h : mhom Θ b)
     (d1 : Γ1 ++ Δ ++ Γ2 ++ b :: Γ3 = (Γ1 ++ Δ ++ Γ2) ++ b :: Γ3)
@@ -315,9 +237,13 @@ Class Multicategory : Type := {
     mcomp (mcast d1 (mcomp f g)) h
       ≈ mcast d4 (mcomp (mcast d3 (mcomp (mcast d2 f) h)) g);
 
-  (* The symmetric-group action: relabel the source context along a
-     permutation.  The action depends on the permutation WITNESS as
-     data, which is why the witness is the Type-valued [tperm]. *)
+  (*
+   The 对称-group action: relabel the source context along a
+
+   本节说明相关定义、性质与动机。 permutation. The action depends permutation WITNESS data, which is why witness is Type-valued [tperm].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   msym {Γ Δ : list mobj} {c : mobj} (p : tperm Γ Δ) :
     mhom Γ c → mhom Δ c;
 
@@ -351,11 +277,11 @@ Class Multicategory : Type := {
 #[export] Existing Instance mcomp_respects.
 #[export] Existing Instance msym_respects.
 
-(** ** The derived cast lemma pack
+(*
+   本节说明相关定义、性质与动机。 * ** The derived cast lemma pack. Mirrors [dsq_coerce] pack Theory/DoubleCategory.v (one index instead two): 消去, flipping across [≈], proof irrelevance, [_any] forms canonical-proof laws.
 
-    Mirrors the [dsq_coerce] pack of Theory/DoubleCategory.v (one index
-    instead of two): cancellation, flipping across [≈], proof irrelevance,
-    and the [_any] forms of the canonical-proof laws. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section MulticategoryLemmas.
 

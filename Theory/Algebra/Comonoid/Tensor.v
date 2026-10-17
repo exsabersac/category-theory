@@ -34,11 +34,11 @@ Section ComonoidTensor.
 Context {C : Category}.
 Context `{S : @SymmetricMonoidal C}.
 
-(* Hypergraph.v's [mid_swap_inv] is definitionally the diagonal of the
-   interchange; this bridge lets the canonical morphisms be rewritten
-   into [swap_inner] form (the mirror orientation of Deterministic.v's
-   [swap_inner_diag], restated locally to keep this file independent of
-   the copy-discard stack). *)
+(*
+   本节说明相关定义、性质与动机。 Hypergraph.v's [mid_swap_inv] is definitionally diagonal the. interchange;
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mid_swap_inv_swap_inner (x y : C) :
   mid_swap_inv x y ≈ swap_inner x x y y.
 Proof. reflexivity. Qed.
@@ -251,12 +251,13 @@ End ComonoidTensor.
 
 (* ------------------------------------------------------------------ *)
 
-(** ** The trivial comonoid on the unit object
+(*
+   * ** The trivial 余幺半群 on the unit 对象
 
-    [δ_I := λ⁻¹, ε_I := id] — the structure the [Hypergraph] class
-    asserts through its [scfa_unit_delta]/[scfa_unit_epsilon] fields
-    and Fong–Spivak show is the unique unit-compatible choice.  The
-    laws are pure unitor coherence (Kelly's λ_I ≈ ρ_I). *)
+   本节说明相关定义、性质与动机。 [δ_I := λ⁻¹, ε_I := id] — structure [Hypergraph] class asserts through its [scfa_unit_delta]/[scfa_unit_epsilon] fields Fong–Spivak show is unique unit-compatible choice.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ComonoidUnit.
 

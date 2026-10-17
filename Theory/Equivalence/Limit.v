@@ -51,13 +51,13 @@ Definition isalimit_to_limit {J C : Category} {G : J ⟶ C} {c : C}
 
 (** ** Transport of limits along a natural isomorphism of diagrams *)
 
-(* Naturally isomorphic diagrams have the same cones and the same limits.
-   Given e : G ≈ G' (which, for [Functor_Setoid], is a bundled natural
-   isomorphism), a cone over G becomes a cone over G' by composing each
-   leg with the componentwise isomorphism, and conversely; an apex-pinned
-   limit witness follows, with the same apex.  This is the iso-of-cones
-   step of limit creation below, but it is stated in full generality
-   because nothing about it is specific to equivalences. *)
+(*
+   Naturally isomorphic diagrams have the same cones and the same 极限.
+
+   本节：Given e : G ≈ G' (which, [函子_Setoid], is bundled 自然 同构), cone over G becomes cone over G' composing each leg 分量地 同构, conversely; apex-pinned 极限 witness follows, same apex.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section DiagramIso.
 
@@ -314,22 +314,13 @@ End ReflectLimit.
 
 End FullyFaithful.
 
-(* Riehl's Lemma 3.4.5 (#481): a full and faithful functor reflects the
-   limits and the colimits present in its codomain.  In the cone-level
-   vocabulary of Structure/Limit/Preservation.v the limit half is
-   [ff_reflect_ump] with its leg side condition discharged by
-   [reflexivity], the legs of [FCone] being the image legs: the term that
-   Theory/Equivalence/Creation.v's [equivalence_ReflectsLimitCone],
-   Construction/Subcategory/Creation.v's [sub_ReflectsLimitCone] and
-   Construction/Reflective/Limit.v's [reflective_ReflectsLimitCone] each
-   wrote out at its own functor, and which each now calls (a CORRECTION
-   (#481) at each).  The colimit halves ride the opposite
-   functor, full and faithful by Functor/Opposite.v's [Full_op] and
-   [Faithful_op] (#266): [ff_reflects_colimit] in the apex-pinned form of
-   [ff_reflects_limit], with the injections of the image colimit as the
-   side condition, and [ff_ReflectsColimitCocone] at cone level, the image
-   cocone over (F ◯ K)^op read over F^op ◯ K^op by Preservation.v's
-   [islimitcone_op_comp]. *)
+(*
+   Riehl's Lemma 3.4.5 (#481): a 全忠实 函子 reflects the
+
+   本节：极限 colimits present its codomain. In cone-level vocabulary Structure/极限/Preservation.v 极限 half is [ff_reflect_ump] its leg side condition discharged [reflexivity], legs [FCone] being image legs: term that Theory/等价/C
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ff_ReflectsLimitCone {C D : Category} {F : C ⟶ D}
   `{HF : @Full C D F} `{HfF : @Faithful C D F} {J : Category} (K : J ⟶ C) :
@@ -428,9 +419,13 @@ Proof.
   exact (fun_equiv_id_left G).
 Defined.
 
-(* Any limit of F ◯ G is carried back to a limit of G: the quasi-inverse
-   (a right adjoint) preserves it, and the diagram isomorphism above
-   transports the result from quasi_inverse ◯ (F ◯ G) to G. *)
+(*
+   Any 极限 of F ◯ G is carried back to a 极限 of G: the quasi-inverse
+
+   本节说明相关定义、性质与动机。 (a 右伴随) preserves it, diagram 同构 above transports result from quasi_inverse ◯ (F ◯ G) G.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition equivalence_creates_limits {J : Category} (G : J ⟶ C)
   (L : Limit (F ◯ G)) : Limit G :=
@@ -441,12 +436,13 @@ End EquivalenceLimit.
 
 (** ** The opposite of an equivalence of categories *)
 
-(* F^op is an equivalence whenever F is: the two cells of E dualize
-   pointwise, their isomorphism families running through
-   [Isomorphism_Opposite] and their conjugation coherences being those of
-   E read at the reversed morphism (composition in the opposite category
-   unfolds to reversed composition, so only a reassociation separates the
-   two statements). *)
+(*
+   F^op is an 等价 whenever F is: the two cells of E dualize
+
+   本节：pointwise, their 同构 families running through [同构_反] their conjugation coherences being those E read at reversed 态射 (复合 反范畴 unfolds reversed 复合, so only reassociation separates two statements
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition equivalence_counit_op {C D : Category} {F : C ⟶ D}
   (E : @EquivalenceOfCategories C D F) :
@@ -486,11 +482,11 @@ Context {C D : Category}.
 Context {F : C ⟶ D}.
 Context (E : @EquivalenceOfCategories C D F).
 
-(* Reflection of colimits: a cocone over G is a cone over G^op, an
-   [IsAColimit] witness is an [IsALimit] witness over the opposite
-   composite, and F^op is full and faithful because it is an equivalence
-   ([EquivalenceOfCategories_op]).  The injection families translate
-   definitionally. *)
+(*
+   本节：Reflection colimits: cocone over G is cone over G^op, an. [IsAColimit] witness is [IsALimit] witness over 反 复合, F^op is 全忠实 because it is 等价 ([EquivalenceOfCategories_op]).
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition equivalence_reflects_colimits {J : Category} {G : J ⟶ C}
   (N : Cocone G)

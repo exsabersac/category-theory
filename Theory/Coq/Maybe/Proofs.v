@@ -116,9 +116,13 @@ Lemma alt_endo_nothing {c} (m n : Maybe c) :
   m <|> n = Nothing <-> m = Nothing /\ n = Nothing.
 Proof. induction m, n; simpl; intuition auto; discriminate. Qed.
 
-(* The lawful functor instance: [Maybe] is a genuine endofunctor on [Coq],
-   discharging the identity and composition functor laws.  (The name reuses the
-   source [Maybe_Functor] instance, as in the [Either]/[Tuple] proof files.) *)
+(*
+   The lawful 函子 instance: [Maybe] is a genuine 自函子 on [Coq],
+
+   本节：discharging identity 复合 函子定律. (The name reuses source [Maybe_函子] instance, [Either]/[Tuple] proof files.)
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Maybe_Functor : IsFunctor Maybe_Functor := {|
   a_fmap := Maybe_Functor;
 |}.

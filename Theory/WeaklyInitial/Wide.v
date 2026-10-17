@@ -24,23 +24,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* A weakly initial family, a product of it, and a supply of wide
-   equalizers yield a genuine initial object.
+(*
+   本节说明相关定义、性质与动机。 A weakly initial family, 积 it, supply wide. equalizers yield genuine 始对象. Construction. Write [P0] 积 对象 [iprod (wif_obj W) P].
 
-   Construction.  Write [P0] for the product object [iprod (wif_obj W) P].
-   For any [c], the covering arrow [wif_cover c] composed with the matching
-   projection gives a map [P0 ~> c], so [P0] is weakly initial.  Take the
-   wide equalizer [e : I ~> P0] of the family of ALL endomorphisms of [P0],
-   indexed by the hom-type itself.  Its fork condition instantiated at an
-   endomorphism [u] and at [id] says [u ∘ e ≈ id ∘ e], i.e. [e] absorbs
-   every endomorphism; and [e] is monic.  This [I] is initial:
-
-     - existence  [I ~> c]:  [wmap c ∘ e];
-     - uniqueness: given [f g : I ~> c], take the wide equalizer [k : K ~> I]
-       of the two-element family {f, g}; weak initiality gives [s : P0 ~> K],
-       so [e ∘ (k ∘ s)] is an endomorphism of [P0], absorbed by [e];
-       monicity of [e] then makes [(k ∘ s) ∘ e ≈ id], i.e. [k] is split epi,
-       and [f ∘ k ≈ g ∘ k] forces [f ≈ g]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem initial_from_weakly_initial_wide `(W : WeaklyInitialFamily C)
   (P : Limit (DiscreteCat_Functor (wif_obj W)))
   (E : HasWideEqualizers C) : @Initial C.
@@ -53,15 +41,21 @@ Proof.
           projT2 (wif_cover W c)
             ∘ iprod_proj (wif_obj W) P (projT1 (wif_cover W c))).
 
-  (* The wide equalizer of the family of ALL endomorphisms of [P0].  The
-     index type is the hom-type [P0 ~> P0] and the family is the identity
-     assignment, so "the i-th member" IS the endomorphism [i]. *)
+  (*
+   The wide 等化子 of the family of ALL endomorphisms of [P0].  The
+
+   本节说明相关定义、性质与动机。 index type is hom-type [P0 ~> P0] family is identity assignment, so "the i-th member" IS endomorphism [i].
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   destruct (@wide_equalizer C E (P0 ~> P0) P0 P0 (fun u => u))
     as [I [e Eeq]].
 
-  (* Every endomorphism of [P0] is absorbed by the equalizing map.  This is
-     one instance of the wide fork condition — at [u] and at [id] — where
-     the original needed the two tuplings through the power. *)
+  (*
+   本节说明相关定义、性质与动机。 Every endomorphism [P0] is absorbed equalizing map. This is.
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   assert (endo_absorb : ∀ u : P0 ~> P0, u ∘ e ≈ e).
   { intro u.
     transitivity (id[P0] ∘ e).

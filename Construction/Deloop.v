@@ -7,45 +7,19 @@ Generalizable All Variables.
 
 (** * Delooping: monoids as one-object categories *)
 
-(* nLab:      https://ncatlab.org/nlab/show/delooping
+(*
    nLab:      https://ncatlab.org/nlab/show/monoid
    nLab:      https://ncatlab.org/nlab/show/groupoid
    Wikipedia: https://en.wikipedia.org/wiki/Monoid
    Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, §I.2, printed p. 11 (constructions 3 and 4)
    Book:      Awodey, "Category Theory", 2nd ed., §1.4, pp. 12-13
    Book:      Riehl, "Category Theory in Context", Example 1.1.4(ii), pp. 5-6
    Book:      Fong, Spivak, "Seven Sketches in Compositionality", CUP 2019,
-              §3.2.1 Example 3.13, printed p. 83
 
-   A monoid is exactly a category with one object.  Mac Lane's third
-   construction in §I.2 takes a monoid M to the category [Deloop M] whose sole
-   object is a formal point, whose arrows are the elements of M, whose
-   composition is the multiplication of M, and whose identity arrow is the unit
-   of M; the category laws then read off verbatim as the monoid laws.  His
-   fourth construction specializes to groups: when every element has a
-   two-sided inverse, every arrow of the one-object category is invertible, so
-   the category is a one-object groupoid.  Conversely — the direction Awodey
-   and Fong-Spivak both make explicit — for any category C and any object a,
-   the endomorphism hom `a ~> a` is a monoid under composition with unit [id].
-   This file provides all three, plus the statement that the two constructions
-   are mutually inverse in the direction where that can be said on the nose
-   ([hom_monoid_Deloop], which holds by [eq_refl]).
+   本文件给出构造。
 
-   Contents:
-
-       MonObject                 a monoid (carrier setoid, unit, operation)
-       Deloop M                  the one-object category B M
-       hom_monoid C a            the endomorphism monoid of a in C
-       hom_monoid_Deloop         hom_monoid (Deloop M) ttt = M, by eq_refl
-       GrpObject                 a monoid with a two-sided inverse operation
-       Deloop_group_invertible   every arrow of B G is an isomorphism
-       Nat_Plus, Bool_Xor_Grp    inhabitation witnesses for the two records
-
-   The functor-level half of the dictionary — that functors between deloopings
-   are exactly monoid homomorphisms, so that a functor `B G ⟶ Vect` is a linear
-   representation of G — is deliberately not built here; it belongs with the
-   Mac Lane §I.3 material. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Why "delooping", and what the one-object reading buys
 

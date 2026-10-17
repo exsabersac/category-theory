@@ -10,39 +10,14 @@ Generalizable All Variables.
 
 (** The Cayley representation of a category. *)
 
-(* nLab: https://ncatlab.org/nlab/show/Cayley's+theorem
+(*
    nLab: https://ncatlab.org/nlab/show/Yoneda+embedding
    Wikipedia: https://en.wikipedia.org/wiki/Cayley%27s_theorem
 
-   Cayley's theorem (group version) says every group G embeds into the
-   symmetric group Sym(G) via left multiplication g ↦ (x ↦ g x); for a monoid
-   M the same map g ↦ (x ↦ g · x) embeds M into the endofunction monoid
-   (M → M, id, ∘).  Reading a category C as a many-object monoid, the
-   corresponding statement is the covariant Yoneda embedding C ⟶ [C, Set]
-   sending x to the corepresentable [Hom x,─], which is full and faithful.
+   本文件给出 Cayley 表示相关。
 
-   This file builds that embedding's image directly, without naming Sets or a
-   functor category.  An object of Cayley is an object of C; a morphism
-   x ~> y is the underlying data of a natural transformation
-   [Hom y,─] ⟹ [Hom x,─] (post-composition acting on the left), namely a
-   family
-
-       f : ∀ r, (y ~> r) → (x ~> r)
-
-   that is Proper in r and k and satisfies the naturality/representability
-   law  f r k ≈ k ∘ f _ id, so every f is determined by the single morphism
-   f _ id : x ~> y (this is the bijection of the Yoneda lemma).  Composition
-   g ∘ f is r,k ↦ g r (f r k) and identity is r,k ↦ k; two morphisms are
-   equivalent when they agree as functions, ∀ r k, `1 f r k ≈ `1 g r k.
-
-   To_Cayley : C ⟶ Cayley and From_Cayley : Cayley ⟶ C below witness that this
-   embedding is (split) faithful: From_Cayley (To_Cayley f) ≈ f.  Its point is
-   that the round trip normalises composition.  Because each f is recovered as
-   f _ id, a composite is always read back as a fully *left*-associated chain
-   (… (id ∘ f) ∘ g) ∘ h regardless of how it was bracketed in Cayley; this is
-   the categorical form of the "difference list" / Cayley-monoid trick, where
-   a monoid is replaced by its endofunctions to reassociate · into ∘.  See
-   Cayley_Right and Cayley_Left below. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where the theorem comes from, and what the image is for
 

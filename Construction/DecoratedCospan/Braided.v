@@ -26,17 +26,15 @@ Generalizable All Variables.
 
 (** * Braided and Symmetric Monoidal structure on [DecoratedCospanCat] *)
 
-(* nLab: https://ncatlab.org/nlab/show/braided+monoidal+category
+(*
    nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category
    Wikipedia: https://en.wikipedia.org/wiki/Braided_monoidal_category
    Wikipedia: https://en.wikipedia.org/wiki/Symmetric_monoidal_category
 
-   The braiding on [DC] is the decorated lift [dec_mor_as_cospan paws] of the
-   C-coproduct swap [paws], carrying the canonical [id_decoration] on the apex.
-   It satisfies naturality and the two hexagon identities ([hexagon_identity],
-   [hexagon_identity_sym]) of a braided monoidal category, and is involutive
-   ([braid ∘ braid ≈ id]) for the symmetric structure; the concept definitions
-   live in Structure/Monoidal/Braided.v and Structure/Monoidal/Symmetric.v. *)
+   本文件给出构造。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (*
     Reference: Brendan Fong, "Decorated Cospans", arXiv:1502.00872,

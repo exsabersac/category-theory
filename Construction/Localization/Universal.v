@@ -15,10 +15,11 @@ Require Import Category.Construction.Localization.
 
 Generalizable All Variables.
 
-(* The section proofs below draw on context variables (the reflective structure,
-   the W-inverting functor G, and the two hypotheses on it) that need not occur
-   in every stated type, so capture every section variable rather than the
-   [Default Proof Using "Type"] subset inherited from Lib.v. *)
+(*
+   本文件给出泛构造相关。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Set Default Proof Using "All".
 
 (* nLab: https://ncatlab.org/nlab/show/reflective+subcategory

@@ -19,57 +19,13 @@ Require Import Category.Theory.Shapes.
 
 Generalizable All Variables.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §II.4 Exercise 8, printed p. 42 (PDF 52) — maclane:II.4:ex8
+(*
    Book:      Awodey, "Category Theory" (1st ed., 2005 pre-print), §7.7,
-              Example 7.16, printed p. 171 (PDF pp. 180–181) —
-              awodey:7.7:example16
 
-   Exercise II.4.8, and Awodey's "transcendental deduction": under the
-   exponential transpose of Cat, the cylinder encoding of a natural
-   transformation — a functor C ∏ 2 ⟶ B restricting to its boundary
-   functors — corresponds to the arrow-category encoding — a functor
-   C ⟶ B⃗ — of the SAME transformation.  The chain is: [Cat_Closed]'s
-   [exp_iso] transposes F : C ∏ 2 ⟶ B to C ⟶ [_2, B]; Theory/Shapes.v's
-   [Arrow_of_Fun] (the [to] leg of [Two_Fun_Arrow]) turns functors out
-   of the walking arrow into arrow objects; and
-   Construction/Arrow/Functor.v's [Arrow_extract] reads the classified
-   triple back off.  [cylinder_arrow_agree] states that this composite
-   carries [Cyl_functor τ] to a triple equivalent to (S, T, τ) in the
-   triple setoid — the two encodings classify the same transformation.
+   本文件给出箭头范畴：对象为底范畴的态射，态射为交换方块。
 
-     - [Cyl_transpose]: the exponential transpose of a cylinder
-       functor, C ⟶ [_2, B]
-     - [Cyl_to_arrow]: the transpose pushed into the arrow category,
-       C ⟶ B⃗
-     - [cylinder_arrow_agree]: extracting the triple recovers
-       (S, T, τ) up to [ArrowTriple_Setoid]
-
-   Design:
-
-   1. UNIVERSE SCOPE, MEASURED.  The composite here elaborates at
-      [Category@{Set Set Set}] — object universe INCLUDED — so it
-      cannot be applied to categories whose objects live above [Set]
-      ([cylinder_arrow_agree_at_two] below witnesses that it has
-      content at small categories).  This is a stronger pin than the
-      donor's: Theory/Shapes.v's [Arrow_of_Fun] keeps its object
-      universe free, and whether the object pin introduced by this
-      composite is forced by the [Cat]/[Fun] plumbing or avoidable
-      has not been settled here.  It is why this file is separate
-      from Construction/Cylinder.v, whose universal property carries
-      no Set-level pin at all (verified by instantiation strictly
-      above [Set]).
-
-   2. NATURALITY IN THE TRIPLE, IN THE SETOID SENSE.
-      [cylinder_arrow_natural] below states it: triples equivalent
-      in [ArrowTriple_Setoid] are carried to equivalent extracted
-      triples — a corollary of the pointwise agreement and the
-      triple setoid's own equivalence.  The stronger packaging of
-      the correspondence as an isomorphism in Sets (the shape
-      [Arrow_classification] uses) is not delivered here: the
-      object-level bijection of the two encodings is already the
-      composite of [Arrow_classification] with the exponential
-      transpose, and is not restated. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The transpose and its arrow-category form *)
 

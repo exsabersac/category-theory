@@ -4,48 +4,11 @@ From Coq Require Import Arith.
 
 Generalizable All Variables.
 
-(** * Signatures over PROPs
+(*
+   本文件给出 PROP 相关。
 
-    A SIGNATURE is the data of a (one-sorted) symmetric monoidal
-    theory: a family of typed generators indexed by their input/output
-    arity.  Unlike an ordinary algebraic (Lawvere) theory, whose
-    operations have a single output, a generator here may have any
-    output coarity, so a signature is just the underlying object of
-    the free-PROP adjunction, an element of [Set^(nat x nat)] (here in
-    [Type]).  This is the standard "many-sorted signature in the
-    arities-are-naturals setting" that PROPs are designed to capture
-    syntactically.
-
-    Concretely [Sig m n] is the [Type] of generator names that have
-    [m] input wires (the domain/arity) and [n] output wires (the
-    codomain/coarity).  In examples:
-
-      - The empty signature [Empty_Sig m n := Empty_set] presents a
-        PROP with NO non-structural generators (just identity,
-        composition, tensor, braid).  Its free PROP on no generators
-        is the permutation category: morphisms [m ~> n] are empty
-        unless [m = n], in which case they are the braidings of [m]
-        wires.  (NB: the free *hypergraph* PROP on no generators, which
-        additionally quotients by the special-commutative-Frobenius
-        axioms, is the PROP of cospans of finite sets; that extra
-        structure is NOT imposed by the [FreePROP] of this development,
-        which quotients only by the strict-SMC axioms.)
-      - The commutative-monoid signature has one [Sig 2 1] (mul) and
-        one [Sig 0 1] (unit).  Its free PROP-on-signature with the
-        commutative-monoid equational theory is the PROP of finite
-        sets and functions (i.e. FinSet, the prop for commutative
-        monoids; multivalued/span semantics would instead require the
-        comonoid generators of a bicommutative bimonoid).
-      - For an electrical-circuit signature one might have [Sig 0 1]
-        for a battery, [Sig 1 1] for a resistor, [Sig 2 1] for a
-        Y-junction, etc.
-
-    The signature is the INPUT to free-PROP constructions: given [S],
-    [FreePROP S] is the strict symmetric monoidal category whose
-    morphisms are [S]-labelled string diagrams modulo the
-    strict-SMC axioms.  This file defines just [Signature]; the
-    [Term] inductive and the [FreePROP] construction live in
-    [Construction/PROP/Free.v] and successor files. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Signature : Type := nat -> nat -> Type.
 

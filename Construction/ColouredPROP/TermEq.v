@@ -8,52 +8,15 @@ Generalizable All Variables.
 
 (** * Equational theory of free coloured-PROP terms *)
 
-(* nLab: https://ncatlab.org/nlab/show/PROP
+(*
    nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category
    Wikipedia: https://en.wikipedia.org/wiki/Symmetric_monoidal_category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   The equivalence relation [CTermEq] on [CTerm S cs ds] quotients the
-   raw syntax of [Construction/ColouredPROP/Signature.v] by the strict
-   symmetric monoidal category axioms.  The quotient
-   [CTerm S / CTermEq S] is the free COLOURED PROP (= free strict
-   symmetric monoidal category whose objects are the finite words over
-   [Colour] under concatenation) on the signature [S].
+   本文件给出构造。
 
-   In library notation, with [⊙c = CT_comp], [⊕c = CT_tens],
-   [id = CT_id], [σ = CT_braid], the constructors below assert:
-
-      - reflexivity, symmetry, transitivity (the setoid laws)
-      - congruences for [CT_comp] and [CT_tens]
-      - category laws: identity-left, identity-right, associativity
-      - bifunctor (tensor) laws: identity, sequential interchange,
-        functoriality
-      - symmetric-monoidal coherence: braid naturality, braid
-        involution, hexagon
-
-    The strict-PROP axioms on colour words — [CT_id cs ⊕c CT_id ds ≈
-    CT_id (cs ++ ds)], the concatenation-as-tensor strict laws — are
-    present as primitive constructors of [CTermEq] because the [CTerm]
-    type is indexed by [list Colour] and [CT_id cs ⊕c CT_id ds] has
-    type [CTerm S (cs ++ ds) (cs ++ ds)] while [CT_id (cs ++ ds)] has
-    the same type by definition; the equation is well-typed without
-    any [eq_rect] casts.
-
-    This file defines just the equivalence relation.  The [Setoid]
-    instance and the [Category] / coloured-PROP structure on the
-    quotient live in successor files ([Construction/ColouredPROP/
-    Free.v] onward).
-
-    In a STRICT symmetric monoidal category the associator and unitors
-    are identities, so the pentagon and triangle coherences hold on the
-    nose and the only substantive coherences left are the hexagon and
-    the symmetry/involution equation [σ_{ds,cs} ⊙c σ_{cs,ds} ≈ id] (cf.
-    the nLab and Wikipedia pages above).  Because list concatenation is
-    strictly associative/right-unital only up to propositional [=]
-    (exactly the asymmetry of [Nat.add] in the one-sorted donor:
-    [[] ++ l] is definitional but [l ++ []] and re-association are
-    not), several of those "on the nose" equations are nonetheless
-    stated below in [eq_rect] transport form. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CTermEq.
 

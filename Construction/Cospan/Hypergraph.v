@@ -18,21 +18,15 @@ Require Import Category.Structure.Monoidal.
 
 Generalizable All Variables.
 
-(* References:
+(*
    nLab: https://ncatlab.org/nlab/show/hypergraph+category
    nLab: https://ncatlab.org/nlab/show/Frobenius+algebra
    Wikipedia: https://en.wikipedia.org/wiki/Frobenius_algebra
-   Fong, "Decorated Cospans" (arXiv:1502.00872), Thm 3.5.
-   Fong-Spivak, "Hypergraph Categories" (arXiv:1806.08304).
 
-   A hypergraph category is a symmetric monoidal category in which every
-   object carries a special commutative Frobenius algebra (SCFA), coherently
-   with the monoidal product: hypergraph category = SMC + per-object SCFA.
-   The SCFA on each object [X] consists of multiplication [μ : X⨂X ~> X],
-   unit [η : I ~> X], comultiplication [δ : X ~> X⨂X], counit [ε : X ~> I],
-   subject to the commutative-monoid, cocommutative-comonoid, Frobenius, and
-   special ([μ ∘ δ ≈ id]) laws.  On [CospanCat C] these are the cospans built
-   from the cocartesian (fold/cofold) structure of [C], as set out below. *)
+   本文件给出构造。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** * Hypergraph structure on [CospanCat C]
 

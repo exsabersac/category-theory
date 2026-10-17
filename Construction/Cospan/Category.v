@@ -8,51 +8,13 @@ Generalizable All Variables.
 
 (** * The cospan category (direct construction) *)
 
-(* nLab:      https://ncatlab.org/nlab/show/cospan
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Span_(category_theory)
 
-   A cospan in [C] from [X] to [Y] is a diagram [X -in1-> N <-in2- Y], i.e. an
-   apex [N] with two legs into it.  In library notation:
+   本文件给出范畴变体或层范畴等。
 
-     Objects:          the objects of [C].
-     Morphisms X ~> Y: cospans [X -in1-> N <-in2- Y], with apex [N].
-     Equivalence ≈:    two cospans are equivalent (cospan_equiv) if their
-                       apexes are connected by an isomorphism respecting both
-                       legs.
-     Composition:      given [X -> N <- Y] and [Y -> M <- Z], the composite is
-                       the PUSHOUT cospan [X -> N ⊔_Y M <- Z]; this needs [C] to
-                       have pushouts ([HasPushouts]).
-     Identity:         the cospan [X -id-> X <-id- X].
-
-   A cospan in [C] is the same as a span in [C^op], so cospans are dual to
-   spans (nLab).  This file is nonetheless an INDEPENDENT mirror of
-   [Construction.Span.Category]: it uses pushouts in [C] directly rather than
-   going through pullbacks in [C^op], so it does not wrap [SpanCat].
-   Downstream files can therefore phrase all cospan obligations as C-level
-   equations without C^op type friction.  The duality is still present at the
-   level of [HasPushouts ↔ HasPullbacks (C^op)] (via [Structure/Pushout]).
-
-   Bicategory vs. category.  With cospans taken literally as morphisms,
-   pushouts are determined only up to canonical isomorphism, so associativity
-   and the unit laws hold only UP TO ISOMORPHISM of apexes; Cospan(C) is
-   therefore in general a bicategory, not a strict 1-category.  Here we obtain
-   an honest 1-category ([CospanCat]) by the standard device of quotienting by
-   that isomorphism: the hom-setoid equality [≈] is [cospan_equiv] (isomorphism
-   of apexes respecting the legs).  Relative to that [≈] the unit and
-   associativity laws hold strictly, which is exactly the nLab/Wikipedia
-   prescription of taking iso-classes of cospans to recover a 1-category.
-
-   Related: cospans of monos in [Set] present corelations, and cospan
-   composition is the prototypical Frobenius/hypergraph structure used in
-   applied category theory — neither is developed here.
-
-   User-facing API:
-
-     - [CospanArrow X Y]   — the record of cospans from [X] to [Y]
-     - [cospan_apex f]     — the apex
-     - [cospan_in1 f]      — the leg [X ~> apex]
-     - [cospan_in2 f]      — the leg [Y ~> apex]
-     - [CospanCat C HP]    — the category of cospans *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CospanCategory.
 

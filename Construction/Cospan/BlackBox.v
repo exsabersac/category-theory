@@ -13,60 +13,13 @@ Require Import Category.Construction.Cospan.Category.
 Require Import Category.Construction.DecoratedCospan.
 Require Import Category.Construction.DecoratedCospan.Category.
 
-(** * Black-boxing functor for decorated cospans
-
+(*
     Reference: Baez–Fong, "A compositional framework for passive linear
-    networks", arXiv:1504.05625 §4 (the black-box functor ♭ : Circ →
-    LagRel); Fong, "The Algebra of Open and Interconnected Systems",
-    arXiv:1609.05382 (PhD thesis), where black-boxing is developed across
-    Ch. 3 ("Corelations: a tool for black boxing") and Ch. 4 ("Decorated
-    corelations: black-boxed open systems").
 
-    nLab has no dedicated "black boxing" page; the concept is documented
-    under https://ncatlab.org/nlab/show/decorated+cospan and
-    https://ncatlab.org/nlab/show/hypergraph+category.  Wikipedia has no
-    article on this (applied-category-theory) sense of black-boxing.
+   本文件给出构造。
 
-    The black-boxing concept: a "decorated cospan" represents an open
-    system with an internal mechanism (the decoration) and an external
-    interface (the cospan).  Black-boxing forgets the internal mechanism,
-    retaining only the observable input/output behaviour — typically a
-    relation, a Markov kernel, or a linear map.
-
-    Categorically, black-boxing is a HYPERGRAPH FUNCTOR
-
-      ⬛ : DecoratedCospanCat F  ⟶  ObservableCat
-
-    that preserves the symmetric monoidal AND the SCFA structure on each
-    object.  This is what makes black-boxing COMPOSITIONAL: the black-box
-    of a composite system is the composite of the black-boxes, and the
-    black-box of a parallel composition is the parallel composition of
-    the black-boxes.
-
-    ** What this file lands
-
-    1. The "underlying cospan" forgetful black-box
-
-         [forget_decoration : DecoratedCospanCat F → CospanCat C]
-
-       — a black-box that throws away the decoration entirely, keeping
-       only the cospan.
-
-    2. The well-definedness lemmas: forgetting respects the
-       [dec_cospan_equiv] equivalence (so the action descends to the
-       quotient), and preserves identity and composition on the nose.
-
-    3. A discussion of how the general black-boxing functor — taking
-       decorated cospans to relations, Markov kernels, linear maps, or
-       ZX-diagrams — instantiates the same pattern.
-
-    See Fong's thesis, Theorem 6.1, which states that the original
-    Baez–Fong electrical-circuit black-boxing functor ♭ : Circ → LagRel
-    is a hypergraph functor (equivalently Baez–Fong arXiv:1504.05625).
-    The categorical content of that theorem is precisely: apex-iso
-    transport + lax-monoidal naturality + SCFA preservation; the
-    forgetful black-box below is the trivial instance that exhibits this
-    structure with the cleanest possible proof. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Section: forgetful black-box on decorated cospans *)
 

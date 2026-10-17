@@ -5,25 +5,13 @@ Generalizable All Variables.
 
 (** The product of two categories. *)
 
-(* nLab: https://ncatlab.org/nlab/show/product+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Product_category
 
-   The product category C ∏ D has as objects the pairs (c, d) with c : C and
-   d : D, and as morphisms (c, d) ~> (c', d') the pairs (f, g) of a morphism
-   f : c ~> c' in C and a morphism g : d ~> d' in D. Identity and composition
-   are componentwise: id := (id, id) and (f, g) ∘ (f', g') := (f ∘ f', g ∘ g').
-   Equivalence of morphisms is the componentwise conjunction of ≈ in C and ≈
-   in D, and the unit and associativity laws hold componentwise because they
-   hold in each factor.
+   本文件给出积（分量）构造。
 
-   This is the cartesian product in Cat, the category of categories: the
-   projection functors Fst and Snd (π₁, π₂ below) exhibit C ∏ D as the
-   categorical product of C and D, so a functor E ⟶ C ∏ D is the same as a
-   pair of functors E ⟶ C and E ⟶ D. This is the product *of categories*, and
-   is distinct from a product *object* inside a single category, formed via a
-   universal cone in Structure/Cartesian.v.
-
-   All of the methods are spelled out here to ease simplification. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Bifunctors, interchange, and the product's place in Cat
 

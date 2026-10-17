@@ -7,35 +7,15 @@ Generalizable All Variables.
 
 (** * The total category of a displayed category *)
 
-(* nLab:      https://ncatlab.org/nlab/show/displayed+category
+(*
    nLab:      https://ncatlab.org/nlab/show/Grothendieck+construction
    Wikipedia: https://en.wikipedia.org/wiki/Fibred_category
    Reference: Benedikt Ahrens and Peter LeFanu Lumsdaine, "Displayed
-              Categories", Logical Methods in Computer Science 15(1), 2019.
-              https://arxiv.org/abs/1705.04296
 
-   The total category ∫ D of a displayed category D over C: objects are
-   dependent pairs (x; dx) of a base object x : C and an object dx displayed
-   over it; morphisms (x; dx) ~> (y; dy) are dependent pairs (f; ff) of a
-   base morphism f : x ~> y and a displayed morphism ff : dhom dx dy f lying
-   over it. Since base morphisms are compared by ≈ rather than by equality,
-   two total morphisms are equivalent when some proof e relates their base
-   components and transporting the first displayed component along e yields
-   the second; by proof irrelevance of transport ([dtransport_id], and its
-   consequence [dtransport_proof_irrel]) the choice of e is immaterial, so
-   this is a bona fide equivalence relation.
+   本文件给出构造。
 
-   Identity and composition are the displayed ones paired over the base
-   ones. Each category law is proven by supplying the base law as the first
-   component and closing the displayed side with the derived transport
-   lemma pack of Theory/Displayed.v ([dtransport_did_left],
-   [dtransport_did_right], [dtransport_dcomp_assoc], and friends), which was
-   budgeted there for exactly this purpose.
-
-   [Total_Proj] is the evident projection functor ∫ D ⟶ C taking first
-   components; its functor laws hold by reflexivity because identity and
-   composition in ∫ D are componentwise. Cleavings on D make this projection
-   a cloven fibration — see Theory/Fibration.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := program_simpl.
 

@@ -15,40 +15,13 @@ Generalizable All Variables.
 
 (** * Quivers and the free category on a quiver *)
 
-(* nLab:      https://ncatlab.org/nlab/show/quiver
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Quiver_(mathematics)
 
-   A quiver (directed multigraph) is a set of nodes (vertices) together with,
-   for each ordered pair of nodes, a set of edges (arrows) between them.  In
-   the classical presentation this is two sets V, E with source/target maps
-   s, t : E → V; here the edges are indexed directly by their endpoints, so
-   [edges X Y] is the set of arrows from X to Y and source/target are implicit
-   in the indexing.  Parallel edges and loops are allowed.  Each [edges X Y]
-   carries a setoid so arrows are compared up to [≈] rather than [=].
+   本文件给出构造。
 
-   A quiver homomorphism (QuiverHomomorphism) maps nodes to nodes and edges to
-   edges respecting source and target (here automatic from the indexing) and
-   the edge setoids.  Quivers and their homomorphisms form the category
-   [QuiverCategory] (the Quiv of the literature); morphism equivalence is
-   pointwise equality on nodes together with transported [≈] on edges.
-
-   The free category on a quiver G, [FreeOnQuiver G], has the nodes of G as
-   objects and finite composable paths of edges as morphisms ([tlist edges],
-   the type-aligned lists of Lib/TList.v): the empty path [tnil] is the
-   identity and path concatenation [+++] (with composition order flipped,
-   [g +++ f]) is composition; associativity and unit laws are the [tlist_app]
-   laws.  [QuiverOfCat] underlies a category as a quiver, giving the forgetful
-   functor [Forgetful : StrictCat ⟶ QuiverCategory].
-
-   [UniversalArrowQuiverCat] establishes the universal property: every quiver
-   homomorphism G ⇨ U(C) factors uniquely through the unit
-   [UnitQuiverCatAdjunction] as a functor [InducedFunctor], i.e. Free ⊣
-   Forgetful.  [FreeForgetfulAdjunction] packages this adjunction.
-
-   [FreeSyntax] (Section FreeQuiverSyntax) gives an alternative syntactic free
-   category whose morphisms are the free term algebra [Mor] (Ident/Morph/Comp)
-   quotiented by [≈] under the normalising map [morDA] into paths; it is
-   equivalent to [FreeOnQuiver]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Quiver.
   Class Quiver@{o h p} := {

@@ -24,21 +24,11 @@ Require Import Category.Construction.Cospan.Symmetric.
 
 Generalizable All Variables.
 
-(** * Special commutative Frobenius algebras on [CospanCat C HP]
+(*
+   本文件给出构造。
 
-    Every object of [CospanCat C HP] carries a canonical SCFA built
-    from the cocartesian structure of [C].  This file discharges the
-    axioms of:
-    - [Monoid (CospanCat C HP) X]   (with mu, eta from [cospan_scfa_*])
-    - [Comonoid (CospanCat C HP) X] (with delta, epsilon)
-    - [Frobenius] compatibility
-    - [CommutativeFrobenius] (mu/delta commutativity under braid)
-    - [SpecialCommutativeFrobenius] (mu ∘ delta ≈ id)
-    for each [X : C].
-
-    The proofs reduce — via [mor_as_cospan_compose] and
-    [cospan_tensor_mor_as_cospan] — to C-level coproduct identities on
-    pushouts of the codiagonal [id ▽ id] and zero. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* SCFA = special commutative Frobenius algebra, i.e. the "classical
    structure" of categorical quantum mechanics: a commutative comonoid

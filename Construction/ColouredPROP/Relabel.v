@@ -5,11 +5,11 @@ Require Import Category.Theory.Functor.
 Require Import Category.Theory.Natural.Transformation.
 Require Import Category.Construction.Product.
 Require Import Category.Functor.Construction.Product.
-(* [Instance.Fun] is Required but NOT Imported: its functor-category
-   notation "[ C , D ]" (level 90) and ListNotations' "[]" have
-   incompatible parsing prefixes, and this file needs the latter for
-   colour words.  The one use of the functor category below names
-   [Category.Instance.Fun.Fun] qualified. *)
+(*
+   本文件给出构造。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Category.Instance.Fun.
 Require Import Category.Structure.Monoidal.
 Require Import Category.Structure.Monoidal.Braided.

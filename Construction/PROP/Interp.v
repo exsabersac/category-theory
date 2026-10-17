@@ -21,51 +21,14 @@ Generalizable All Variables.
 
 (** * Interpreting free-PROP terms in an arbitrary PROP *)
 
-(* nLab: https://ncatlab.org/nlab/show/PROP
+(*
    nLab: https://ncatlab.org/nlab/show/free+category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   Given a signature [S] and a PROP [P], a [Valuation] assigns to every
-   generator [g : S m n] a morphism [⟦m⟧ ~{P}~> ⟦n⟧].  This file defines
-   the induced interpretation [interp : Term S m n → (⟦m⟧ ~{P}~> ⟦n⟧)]
-   and proves it SOUND for the equational theory [TermEq] of
-   [Construction/PROP/TermEq.v]: [TermEq]-equal terms have equivalent
-   interpretations.  This is the morphism-level content of the free
-   PROP's universal property; the functor packaging lives in the
-   successor file [Construction/PROP/Universal.v].
+   本文件给出 PROP 相关。
 
-   The development is organised in three layers:
-
-   1.  [BraidTransport] — the coherence quarantine.  A PROP carries two
-       [Monoidal] structures on the same category: the strict path
-       [strict_is_monoidal prop_strict] and the symmetric path
-       [braided_is_monoidal (symmetric_is_braided prop_symmetric)],
-       related by the propositional equality [prop_monoidal_coherence].
-       The braiding and its laws live on the symmetric path, while the
-       strictness equalities [prop_unit_zero] / [prop_tensor_plus] live
-       on the strict path.  [transport_braid] moves the braid family
-       across the coherence equality, and the [transport_braid_*]
-       lemmas move each braid law with it.  Every lemma destructs a
-       VARIABLE equality between two [Monoidal] records, so the
-       transport reduces definitionally; the concrete coherence proof
-       of [P] is eliminated here and NOWHERE ELSE downstream.
-
-   2.  The PROP-target kit — [strict_braid] (the transported braiding),
-       cast/bimap interaction lemmas, the strict structural maps as
-       [id_cast]s with their naturality restated as cast-sliding, the
-       [⟦·⟧]-level combinators [hcast], [⊞] ([prop_tensor_hom]) and
-       [prop_braid], and the K-lemmas K1–K12 giving the strict
-       symmetric monoidal laws of [⊞]/[prop_braid] at [nat]-indexed
-       objects.  The UIP-flavoured lemmas require decidable object
-       equality ([ObjDecEq P], axiom-free UIP via [Eqdep_dec]).
-
-   3.  [Valuation], [interp], and soundness.  [TermEq] is [Prop]-valued
-       while the hom equivalence [≈] of an abstract target is
-       [Type]-valued, so the induction lands in the [Prop]-reflection
-       [heq] of a [HomEqProp] instance and round-trips through
-       [heq_intro] / [heq_elim] (see [Construction/Quotient.v]).  The
-       induction covers every one of the nineteen [TermEq]
-       constructors. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Transporting a braid family across a [Monoidal] equality
 

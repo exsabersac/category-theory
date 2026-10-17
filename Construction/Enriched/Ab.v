@@ -1,109 +1,13 @@
 (** * Ab-enrichment: Enriched over (Ab, ⊗, ℤ) is exactly AbEnriched *)
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §I.8, printed pp. 28–29 (PDF pp. 38–39) — maclane:I.8:def5
+(*
    nLab:      https://ncatlab.org/nlab/show/Ab-enriched+category
    Wikipedia: https://en.wikipedia.org/wiki/Preadditive_category
 
-   Mac Lane's remark after the tensor-data definition: an Ab-category
-   "can be described completely in these terms" — hom-groups, composition
-   morphisms A(b,c) ⊗ A(a,b) → A(a,c), and units ℤ → A(a,a) subject to
-   associativity and unit laws.  With Instance/Ab/Tensor.v's tensor and
-   Instance/Ab/Monoidal.v's monoidal structure in hand, that remark is a
-   theorem of this library:
+   本文件给出阿贝尔群相关实例。
 
-     [Enriched_Ab_iff_AbEnriched :
-        @Enriched Ab Ab_Monoidal ↔
-        { C : Category & (LocallyPropositional C * AbEnriched C)%type }]
-
-   in the same Type-valued-↔ form as Construction/Enriched.v's
-   [Category_is_Enriched_over_Set] and Construction/Enriched/Two.v's
-   [Enriched_Two_preorder].  The two directions:
-
-     - [Enriched_of_AbEnriched]: an [AbEnriched] category (the direct
-       Structure/AbCategory.v class) yields tensor data — hom-objects
-       are the hom-groups, [eid] sends n to n·id by the integer action,
-       [ecompose] is the ⊗-factorization of composition, whose
-       bilinearity is exactly [compose_padd_left]/[compose_padd_right].
-     - [Category_of_Enriched_Ab] + [AbEnriched_of_Enriched_Ab]: tensor
-       data yields a category — composition is [ecompose] at a
-       generator, identity is [eid] at 1 — that is [AbEnriched], its
-       bilinearity read back off the generator relations of the tensor.
-
-   Design:
-
-   1. EVERY LAW IS A GENERATOR COMPUTATION.  In the forward direction
-      the three enrichment equations are morphism equalities out of
-      (iterated) tensors, so [tensor_hom_ext]/[tensor_hom_ext2] reduce
-      them to generators, where the mediators compute: the unit laws
-      become the integer-action equations n·id ∘ f ≈ n·f (an instance
-      of [zsmul_hom] at the pre/postcomposition homomorphisms) and the
-      associativity equation becomes [comp_assoc].  In the reverse
-      direction the SAME three equations are consumed at generator
-      arguments, where they compute to the category laws being built.
-
-   2. PRE/POSTCOMPOSITION ARE HOMOMORPHISMS.  [precomp_hom]/
-      [postcomp_hom] package (− ∘ f) and (g ∘ −) as [AbHom]s of the
-      hom-groups — their additivity is the other half of bilinearity —
-      so the ℤ-action bridge n·g ∘ f ≈ n·(g ∘ f) is one application of
-      Instance/Ab/Monoidal.v's [zsmul_hom] rather than a fresh
-      induction.
-
-   3. BOTH DIRECTIONS ARE IDENTITY ON OBJECTS AND HOM-CARRIERS.  The
-      forward direction sets [eobj := obj[C]] and the carrier of each
-      hom-object to [x ~> y] itself; the reverse reads them back
-      unchanged, and composition at a generator reduces to the original
-      [∘].  The correspondence is thus a repackaging of the same data —
-      which is exactly Mac Lane's claim — with no equivalence-of-
-      categories apparatus invoked, and [Enriched_Ab_itself] below
-      exercises the forward direction at the concrete [Ab_AbEnriched].
-      (Bare [1%Z] at [carrier ZAb] positions is harmless here because
-      the [@ts_gen ZAb …] applications pin the object first, so the
-      projection reduces to [Z] before the literal is matched —
-      Instance/Ab/Monoidal.v's header note on [ZAb_one] scopes the
-      danger to unresolved [carrier ?G] evars.)
-
-   4. NOTHING IS ASSUMED BEYOND THE CLASSES.  Both directions are
-      constructions, closed under the global context; the reverse
-      direction never inspects [eobj] and the forward one never
-      inspects the ambient category beyond its [AbEnriched] fields
-      and its [LocallyPropositional] instance (note 5).
-
-   5. A RECORDED STRENGTH CHANGE: THE FORWARD DIRECTION TAKES ONE
-      HYPOTHESIS IT DID NOT TAKE BEFORE, AND THE BICONDITIONAL IS
-      RESTATED.  An earlier revision of this header quoted
-      [Enriched_Ab_iff_AbEnriched] with right-hand side
-      [{ C : Category & AbEnriched C }] and described the forward
-      direction as running on an arbitrary [AbEnriched] category.
-      Since the PR "algebraic carriers are sets" (2026-09-17) an
-      [AbObject] carries [cmon_prop], a [PropEquiv] for its carrier
-      setoid, and [ehom_ab] takes its carrier setoid straight from
-      [C]'s hom-setoid; an arbitrary category supplies no [Prop]
-      mirror of its `≈` — in [Cat] an [F ≈ G] IS a family of
-      isomorphisms (Lib/Setoid/Propositional.v,
-      Instance/Sets/Propositional.v's header).  So the whole of
-      Section FromAbEnriched now assumes
-      [{LP : LocallyPropositional C}], which is where the hypothesis
-      belongs: at the PASSAGE from the internal enrichment to a
-      concrete object of [Ab], not in [AbEnriched] itself, which is
-      untouched and keeps the ambient `≈` (the SCOPE paragraph of
-      Structure/Complete.v's size note, item 4).
-
-      The eight constants of that section carry it: [ehom_ab],
-      [precomp_hom], [postcomp_hom], [zsmul_precomp], [zsmul_postcomp],
-      [ab_eid], [ab_ecompose] and [Enriched_of_AbEnriched].  The
-      biconditional is restated to match, its right-hand side now
-      [{ C : Category & (LocallyPropositional C * AbEnriched C)%type }].
-      That extra factor is not a hypothesis smuggled in: the REVERSE
-      direction produces it ([LocallyPropositional_of_Enriched_Ab]),
-      so the equivalence is the same one with its content made
-      explicit.  Nothing in Section ToAbEnriched gained a hypothesis.
-      The class is discharged by resolution at every concrete ambient:
-      [Ab_LocallyPropositional] (Instance/Ab.v) is what
-      [Enriched_Ab_itself] uses, and [RMod_LocallyPropositional]
-      (Instance/Mod.v), [CMon_LocallyPropositional]
-      (Instance/CMon.v) and [DeloopRig_LocallyPropositional]
-      (Theory/Algebra/Rig.v) serve the others. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Coq.ZArith.BinInt.
 

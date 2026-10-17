@@ -14,29 +14,15 @@ Generalizable All Variables.
 
 (** * Parallel-composition bifunctor on FreeCat *)
 
-(* nLab: https://ncatlab.org/nlab/show/monoidal+category
+(*
    nLab: https://ncatlab.org/nlab/show/PROP
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   The monoidal product of a (strict, symmetric) monoidal category is a
-   bifunctor [⊗ : C ∏ C ⟶ C].  For the free PROP [FreeCat S] this is the
-   parallel composition of string diagrams, with arities given by addition:
+   本文件给出张量相关构造。
 
-     - on objects:    [(m, n) ↦ m + n]   (tensor on objects is [Nat.add])
-     - on morphisms:  [(f, g) ↦ T_tens f g], so [f : m1 ~> n1] and
-                       [g : m2 ~> n2] yield [f ⊗ g : m1 + m2 ~> n1 + n2]
-
-   The bifunctor laws (a functor out of the product category [FreeCat S ∏
-   FreeCat S]) follow from the [TE_tens_*] constructors of the [TermEq]
-   quotient relation:
-     - respectfulness (fmap_respects):  [TE_tens_cong]
-     - identity preservation (fmap_id): [TE_tens_id]
-         [id_m ⊗ id_n ≈ id_(m+n)]
-     - composition preservation (fmap_comp), i.e. the middle-four
-       interchange [(f1 ⊙ f2) ⊗ (g1 ⊙ g2) ≈ (f1 ⊗ g1) ⊙ (f2 ⊗ g2)]:
-       [TE_interchange] (used via [TE_sym], since the constructor states
-       the reverse orientation). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FreeTensor.
 

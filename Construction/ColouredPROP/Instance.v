@@ -21,104 +21,16 @@ Generalizable All Variables.
 
 (** * The free coloured PROP, bundled: the library's first [ColouredPROP] *)
 
-(* nLab: https://ncatlab.org/nlab/show/PROP
+(*
    nLab: https://ncatlab.org/nlab/show/strict+monoidal+category
    nLab: https://ncatlab.org/nlab/show/free+category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
 
-   This file assembles the bundled [ColouredPROP] instance
-   [FreeColouredPROP S Cdec] on the free category [CFreeCat S] of a
-   coloured signature [S] — the first inhabitant of the
-   [ColouredPROP] class of [Construction/ColouredPROP.v] — merging
-   the one-sorted spine's donor pair [Construction/PROP/Strict.v] +
-   [Construction/PROP/Instance.v], the same layout compression as
-   the earlier files of this directory.
+   本文件给出具体实例。
 
-   ** Strictness
-
-   [CFreeCat S] is STRICT monoidal: its objects are colour words
-   (lists over [Colour]), its tensor on objects is concatenation,
-   and the boundary equations
-
-     [eq_sym (app_assoc x y z)] : (x ++ y) ++ z = x ++ (y ++ z)
-     [app_nil_l x]              : [] ++ x = x
-     [app_nil_r x]              : x ++ [] = x
-
-   are honest Leibniz equalities of objects — exactly the
-   object-level strictness the [StrictMonoidal] class demands.  The
-   comparison fields — that the structural isomorphisms coincide
-   with the identity transported along those equalities — are
-   reflexivity-grade here, because [Cast.v] BUILT the unitors and
-   the associator as [CT_cast] maps, and [CT_cast e] is
-   definitionally the very [match e in _ = T return _ ~> T with
-   eq_refl => id end] shape that the class's fields ask for (with
-   the SAME proof term [e] on both sides, so not even UIP on colour
-   words is needed).  Note the stdlib orientation of [app_assoc]
-   (right-to-left reassociation), so the associator's [to] is the
-   [eq_sym] cast — the orientation fixed once in [Cast.v] and
-   repeated verbatim in [strict_assoc_obj] below.
-
-   Crucially, [strict_is_monoidal] is [CFreeCat_Monoidal S Cdec] —
-   THE shared [Monoidal] record from [Monoidal.v] that the Braided
-   and Symmetric instances of [Braided.v] also name — so all
-   structure projections downstream agree definitionally.
-
-   ** The bundled instance
-
-   Every equality field of [FreeColouredPROP] is [eq_refl], because
-   the whole tower shares that ONE [Monoidal] record:
-
-     - [strict_is_monoidal CFreeCat_Strict] is, by iota reduction on
-       the explicit record literal below, the literal term
-       [CFreeCat_Monoidal S Cdec];
-     - [braided_is_monoidal (symmetric_is_braided
-        (CFreeCat_Symmetric S Cdec))] projects through
-       [CFreeCat_Braided S Cdec] to the SAME literal term;
-
-   so [cprop_monoidal_coherence] — propositional in general, with
-   the use-site friction documented at length in
-   [Construction/PROP.v] — is DEFINITIONAL for the free coloured
-   PROP.  Likewise [cprop_of_list] is the identity on colour words
-   (the objects of [CFreeCat S] ARE the lists of colours),
-   [cprop_unit_nil] holds because the unit of
-   [CFreeCat_Monoidal S Cdec] is the literal [[]], and
-   [cprop_tensor_app] holds because the object action of
-   [CFreeCat_Tensor S] is [fun p => fst p ++ snd p], which reduces
-   on the literal pair [(cs, ds)] to [cs ++ ds].
-
-   D2 WARNING (see the foot of [Monoidal.v]): the shared record
-   [CFreeCat_Monoidal S Cdec] depends on the colour decider [Cdec],
-   so every one of those [eq_refl]s presumes that ONE canonical
-   [Cdec] is fixed per colour type at each instance site.  Mixing
-   deciders surfaces as an opaque unification error at exactly the
-   [cprop_monoidal_coherence := eq_refl] field.  If that [eq_refl]
-   ever stops typechecking, the shared-record wiring broke — fix the
-   wiring; never generalize the field.  The machine-checked
-   [Example]s at the end of this file exist to catch such
-   violations at their source.
-
-   ** Side-condition instances
-
-   The file also hosts the two side-condition instances that the
-   interpretation and universal-property files require of
-   [CFreeCat S], both drawn from the fully general kit of
-   [Construction/Quotient.v]:
-
-     - [HomEqProp (CFreeCat S)]: the hom-setoid equivalence of
-       [CFreeCat S] IS the [Prop]-valued [CTermEq S] after
-       delta/beta reduction of [Free.v]'s [CTerm_Setoid], so both
-       directions of the reflection are the identity;
-     - [ObjDecEq (CFreeCat S)]: objects are colour words, so
-       [list_eq_dec Cdec] decides object equality, giving axiom-free
-       UIP on objects.  Per the D2 decidability discipline this one
-       is a plain [Definition], not an [Instance]: it is
-       [Cdec]-conditional, and call sites pass it explicitly, naming
-       the one canonical decider of the ambient development.
-
-   Following the [Free.v] discipline, the comparison proofs are
-   standalone, named lemmas and the records are assembled with every
-   field explicit, generating no Program obligations. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FreeColouredPROP.
 

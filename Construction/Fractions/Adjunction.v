@@ -15,84 +15,18 @@ Require Import Category.Instance.Grpd.
 
 Generalizable All Variables.
 
-(** * Riehl 4.1.15: the adjoint triple [Fractions ⊣ Incl ⊣ Core]
-
+(*
     nLab:      https://ncatlab.org/nlab/show/core
     nLab:      https://ncatlab.org/nlab/show/localization
     Wikipedia: https://en.wikipedia.org/wiki/Groupoid
     Book: Riehl, Category Theory in Context, 2nd ed., §4.1, Example 4.1.15,
-          printed p. 137 (PDF pp. 157-158) — the inclusion of groupoids
-          into categories has adjoints on both sides, the left one the
-          category of fractions and the right one the core
     Book: Mac Lane, Categories for the Working Mathematician, 2nd ed.,
-          GTM 5, §IV.1 — adjunctions from universal arrows
     Paper: Brown, From groups to groupoids: a brief survey, Bulletin of the
-           London Mathematical Society 19, 1987
 
-    WHAT IS DELIVERED.  Both halves of Riehl's example, over ONE ambient
-    category, as two [Adjunction] records bundled into one statement:
+   本文件给出伴随相关构造与性质。
 
-      [Fractions_Incl_Adjunction : Adjunction FractionsF Grpd_Incl]
-      [Incl_Core_Adjunction      : Adjunction Grpd_Incl  Core]
-      [riehl_4_1_15              : AdjointTriple FractionsF Grpd_Incl Core]
-
-    The right-hand half is [Construction/Groupoid/Core.v]'s, unchanged and
-    unmoved; only the left-hand half is new, and the ambient is [Cat] for
-    both, so no strictification and no comparison functor stands between
-    them.  [Instance/Grpd.v]'s header said the left half "remains prose",
-    and [Construction/Fractions.v]'s said the triple "is NOT assembled over
-    one ambient here".  Both are superseded by this file, and both have been
-    corrected in place in those headers — Instance/Grpd.v's sentence now
-    points here, and Construction/Fractions.v keeps its account of the gap
-    as the record of what closing it cost, since its strict statements
-    remain the sharper reading and are not weakened.
-
-    HOW THE LEFT HALF IS BUILT, AND WHAT THE GAP WAS.  The route is the
-    library's standard one — a universal arrow at every object, then
-    [Theory/Universal/Arrow.v]'s [AdjunctionFromUniversalArrows], which
-    builds a LEFT adjoint and is therefore the RIGHT direction for this
-    half (it is the wrong direction for [Incl ⊣ Core], which is why
-    [Construction/Groupoid/Core.v] took the hom-setoid route instead).  The
-    single obstruction was the strength of the `∃!` clause:
-    [universal_arrow_from_UMP] wants it at the ambient's hom-setoid, [Grpd]
-    inherits [Cat]'s [Functor_Setoid], and [Fractions_UMP_groupoid] supplied
-    it at [Functor_StrictEq_Setoid].  Existence transferred along
-    [strict_equiv_implies_fun_equiv]; uniqueness did not, and
-    [Construction/Fractions/Weak.v] reproves it against natural isomorphism.
-    With [Fractions_UMP_weak] in hand this file is assembly: the universal
-    arrow is [FractionsProj C] with the weak [Unique] record handed straight
-    across, the sigma of [Grpd]'s homs contributing a [(L; I)] on the way in
-    and a destructuring on the way out, since [Grpd]'s [shom] is [True].
-
-    THE LEFT ADJOINT IS THE LOCALIZATION, ON THE NOSE AND ON MORPHISMS.
-    [FractionsF : Cat ⟶ Grpd] is the functor
-    [AdjunctionFromUniversalArrows] generates, and it is not merely
-    isomorphic to the category of fractions: [FractionsF_obj] checks
-    [fobj[FractionsF] C = (Fractions C; Fractions_IsGroupoid C)] at
-    [eq_refl].  On morphisms the identification is up to `≈` and cannot be
-    better, since the localization of a functor is itself only determined up
-    to natural isomorphism: [FractionsF_fmap] identifies [fmap[FractionsF] F]
-    with [FractionsMap F], the lift of [FractionsProj D ◯ F] along the
-    projection.  [Fractions_unit_is_proj] reads the unit off as
-    [FractionsProj C], which is what makes the adjunction the localization
-    rather than some other left adjoint.
-
-    FUNCTORIALITY OF [Fractions] IN [C] was listed as not delivered by
-    [Construction/Fractions.v] and is delivered here, twice over: as
-    [FractionsF]'s own functor laws, and — read back through
-    [FractionsF_fmap] — as [FractionsMap_id] and [FractionsMap_comp] on the
-    hand-written lift.  Naturality of the hom-set bijection in [C] and in
-    [D], also listed as not delivered there, is the [Adjunction] record's
-    [to_adj_nat_l] and [to_adj_nat_r].
-
-    WHAT IS NOT DELIVERED.  The triple is not shown to make [Grpd]
-    reflective and coreflective in [Cat] in the sense of
-    [Construction/Reflective.v]; that file's [Reflective] is stated over an
-    inclusion of its own and connecting it to [Grpd_Incl] is separate work.
-    Nothing here computes [Fractions C] for any concrete [C], so the
-    left adjoint is exhibited but no localization is evaluated; and the
-    monad [Grpd_Incl ◯ FractionsF] and comonad [Grpd_Incl ◯ Core] the two
-    adjunctions generate are not named. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The object map: a localization is a groupoid *)
 

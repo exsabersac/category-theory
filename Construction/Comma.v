@@ -16,40 +16,13 @@ Context {T : B ⟶ C}.
 
 (** The comma category (S ↓ T) of two functors with common codomain. *)
 
-(* nLab: https://ncatlab.org/nlab/show/comma+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Comma_category
 
-   Given functors S : A ⟶ C and T : B ⟶ C, the comma category S ↓ T has as
-   objects the triples (a, b, h) of objects a : A and b : B together with a
-   morphism h : S a ~> T b in C; here a triple is encoded as the dependent
-   pair (∃ p : A ∏ B, S (fst p) ~> T (snd p)), so `1 x is the pair (a, b) and
-   `2 x is the mediating morphism h. A morphism (a, b, h) ~> (a', b', h') is a
-   pair of morphisms (f : a ~> a' in A, g : b ~> b' in B) making the square
+   本文件给出构造。
 
-       S a  --h-->  T b
-        |            |
-      S f           T g           commute, i.e.  h' ∘ S f ≈ T g ∘ h.
-        v            v
-       S a' --h'--> T b'
-
-   Identity is (id, id) and composition is componentwise, (f, g) ∘ (f', g') :=
-   (f ∘ f', g ∘ g'); both laws hold because they hold in A and B. Equivalence
-   of morphisms is the componentwise conjunction of ≈ in A and ≈ in B (the
-   commuting-square proof component is irrelevant to equality).
-
-   The construction is due to Lawvere (1963), who used a comma punctuation mark
-   for it; the name persists even though the modern notation is the arrow ↓.
-
-   Special cases: taking S = T = Id[C] gives the arrow category C^→, whose
-   objects are the morphisms of C and whose morphisms are commuting squares;
-   taking S = Id[C] and T = Δ(c) the constant functor at c : C gives the slice
-   C/c (see Construction/Slice.v, where C ̸ c ≅ (Id ↓ =(c)) is proven); dually
-   S = Δ(c), T = Id[C] gives the coslice c/C. The projection functors below,
-   comma_proj1 : S ↓ T ⟶ A and comma_proj2 : S ↓ T ⟶ B, recover a and b, and
-   comma_proj_nat is the natural transformation S ◯ comma_proj1 ⟹ T ◯
-   comma_proj2 whose component at (a, b, h) is h. Comma categories characterize
-   adjunctions and universal arrows: a universal arrow from S to T is an
-   initial object of the appropriate comma category. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Reification, the adjoint functor theorems, and gluing
 

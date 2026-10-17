@@ -7,28 +7,11 @@ Require Import Equations.Prop.Logic.
 
 Generalizable All Variables.
 
-(** * The funny tensor product of functors
+(*
+   本文件给出构造。
 
-    [FunnyBimap F G : C □ D ⟶ C' □ D'] acts on the funny tensor product of
-    categories (Construction/Funny.v) one generating step at a time:
-
-      lstep f ↦ lstep (fmap[F] f)        rstep g ↦ rstep (fmap[G] g)
-
-    packaged through the separately-functorial eliminator [FunnyUP], so
-    functoriality is inherited from the universal property rather than
-    re-proved by word induction.
-
-    The bifunctor laws ([FunnyBimap_id], [FunnyBimap_comp]) and properness
-    ([FunnyBimap_respects]) are stated in [Functor_StrictEq_Setoid]
-    (Theory/Functor.v).  This is essential and not a stylistic choice: the
-    funny tensor product is NOT invariant under equivalence of categories
-    (see the header of Construction/Funny.v for the [I □ I ≃ ℤ]
-    counterexample), so [FunnyBimap] does NOT respect the
-    natural-isomorphism setoid [Functor_Setoid] used by the weak [Cat]
-    (Instance/Cat.v) — the corresponding [fmap_respects] is false.  Its
-    properness is real only over strict functor equality, which is the
-    hom-setoid of [StrictCat] (Instance/StrictCat.v); the symmetric monoidal
-    structure downstream (Instance/StrictCat/Funny.v) lives there. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The action of [F □ G], as separately functorial data *)
 

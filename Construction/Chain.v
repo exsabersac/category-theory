@@ -11,18 +11,13 @@ Generalizable All Variables.
 
 (** * The initial-algebra chain of an endofunctor *)
 
-(* nLab: https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
+(*
+ nLab: https://ncatlab.org/nlab/show/initial+algebra+of+an+endofunctor
 
-   For an endofunctor [F] on a category [C] with an initial object [0], the
-   initial-algebra chain is the ω-indexed diagram
+   本文件给出链相关构造。
 
-       0 --¡--> F 0 --F¡--> F² 0 --F²¡--> ...
-
-   whose colimit (when [F] preserves it) carries the initial F-algebra
-   (Adámek's theorem, Theory/Adamek.v).  Here it is packaged as a functor
-   [Chain : Omega ⟶ C] out of the ordinal ω (Instance/Omega.v).  The section
-   is closed before any [Colimit (Chain F)] statement so that the diagram is a
-   genuine object of the functor category. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Chain.
 

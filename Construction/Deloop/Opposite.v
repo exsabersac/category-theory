@@ -12,12 +12,11 @@ Generalizable All Variables.
 
 (** ** The opposite monoid, and delooping against duality *)
 
-(* Riehl, CTiC, Example 1.2.2(iii): the opposite of a delooping is the
-   delooping of the opposite monoid.  This is the device by which a RIGHT
-   action of M is presented as a LEFT action of M^op, and it is the reason
-   the composition-order choice above is a choice rather than a convention:
-   the other choice deloops M^op, and for non-commutative M those categories
-   differ (Construction/Funny/Comparison.v's [ListMon] is a live example). *)
+(*
+   本文件给出反范畴、反函子或反自然变换（2-胞方向反转）。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition MonObject_op (M : MonObject) : MonObject := {|
   mon_setoid := mon_setoid M;

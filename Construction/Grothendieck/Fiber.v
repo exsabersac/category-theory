@@ -11,41 +11,15 @@ Generalizable All Variables.
 
 (** * Fibre categories, and the fibres of the Grothendieck construction *)
 
-(* nLab:      https://ncatlab.org/nlab/show/Grothendieck+fibration
+(*
    nLab:      https://ncatlab.org/nlab/show/displayed+category
    nLab:      https://ncatlab.org/nlab/show/Grothendieck+construction
    Wikipedia: https://en.wikipedia.org/wiki/Fibred_category
 
-   The fibre of a displayed category [D] over a base object [x] is the
-   category [Fiber D x] whose objects are the objects displayed over [x]
-   and whose morphisms are the displayed morphisms lying over [id[x]].
-   The identity is the displayed identity.  The displayed composite of
-   two morphisms over [id] lies over [id ∘ id], so composition recentres
-   it over [id] by transporting along the base unit law [id_left id]; by
-   proof irrelevance of [dtransport] ([dtransport_id] and its
-   consequences in Theory/Displayed.v) the choice of base law is
-   immaterial, and each category law of the fibre closes with one lemma
-   of the derived transport pack.
+   本文件给出构造。
 
-   The second half of the file is the committed half of the Grothendieck
-   round trip: for an indexed category [A : IndexedCat B]
-   (Construction/Indexed.v) and [x : B], the fibre at [x] of the
-   Grothendieck construction of [A] (Construction/Grothendieck.v) is
-   equivalent to the fibre [A] indexes at [x]:
-
-     Fiber (Grothendieck_Displayed A) x  ≃  idx_fib A x
-
-   The equivalence is near-isomorphic.  On objects both functors are the
-   identity: an object of the Grothendieck fibre at [x] is literally an
-   object of [idx_fib A x].  Only the homs differ: a Grothendieck-fibre
-   morphism from [a] to [b] is a fibre morphism [idx_map A id a ~> b]
-   (reindex along [id], then compare in the fibre), while a plain fibre
-   morphism goes [a ~> b]; the two functors mediate by composing with
-   the unit isomorphism [idx_id A a : idx_map A id a ≅ a] on the
-   appropriate side.  Both natural-isomorphism cells of the equivalence
-   carry identity components, and their conjugation coherence reduces to
-   the unit coherence fields [idx_unit_left]/[idx_unit_right] of
-   [IndexedCat] together with naturality of [idx_id]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 

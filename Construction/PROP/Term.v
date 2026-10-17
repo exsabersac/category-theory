@@ -7,30 +7,15 @@ Generalizable All Variables.
 
 (** * Raw terms over a PROP signature *)
 
-(* nLab: https://ncatlab.org/nlab/show/PROP
+(*
    nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category
    nLab: https://ncatlab.org/nlab/show/string+diagram
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   The syntactic representation of morphisms in the free PROP on a
-   signature [S].  A term of type [Term S m n] is a string-diagram
-   expression with [m] input wires and [n] output wires, built up from:
+   本文件给出 PROP 相关。
 
-      - identity wires [T_id n]
-      - braids [T_braid m n] (the canonical "block braiding" that
-        crosses an [m]-wide bundle past an [n]-wide bundle)
-      - sequential composition [T_comp]
-      - parallel composition (tensor) [T_tens]
-      - signature-supplied generators [T_gen]
-
-    This file defines just the SYNTAX — no equational theory.  The
-    equational theory (associativity / unit / braid coherence /
-    interchange) lives in a successor file [Construction/PROP/TermEq.v]
-    and the full [FreePROP] category in [Construction/PROP/Free.v].
-
-    The arity-indexing means [Term S] is naturally a "many-sorted on
-    naturals" data structure: arities propagate up through sequential
-    and parallel composition by the corresponding [Nat] operation. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Term.
 

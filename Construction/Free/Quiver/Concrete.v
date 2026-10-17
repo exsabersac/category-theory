@@ -12,108 +12,16 @@ Generalizable All Variables.
 
 (** * Quivers as a concrete category: the multi-sorted case *)
 
-(* nLab:      https://ncatlab.org/nlab/show/quiver
+(*
    nLab:      https://ncatlab.org/nlab/show/concrete+category
    Wikipedia: https://en.wikipedia.org/wiki/Quiver_(mathematics)
    Book:      Riehl, "Category Theory in Context", Dover 2016, §1.6,
-              Example 1.6.19, printed p. 46
    Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, Springer 1998, §I.7, printed p. 26
 
-   Riehl's Example 1.6.19 is the sharpest small illustration of what a chosen
-   underlying-set functor is for.  A quiver has TWO sorts of element, vertices
-   and arrows, and neither sort alone determines a quiver homomorphism:
+   本文件给出具体范畴相关。
 
-     - the VERTEX functor is not faithful, because a homomorphism can move
-       parallel edges around while fixing every vertex;
-     - the ARROW functor is not faithful, because a homomorphism can permute
-       isolated vertices while fixing every edge (there being none to move);
-     - their DISJOINT UNION is faithful, so quivers are concrete after all.
-
-   All three functors are built here over the in-tree quiver category
-   `QuiverCategory` (Construction/Free/Quiver.v), whose objects are the
-   `Quiver` records of that file: a node type together with an edge
-   setoid `edges x y` for each ordered pair of nodes.  Since edges are indexed
-   by their endpoints rather than carrying source/target maps, the "set of
-   arrows" has to be assembled: [QArrow] below is the type of triples
-   (source, target, edge), and [QArrow_Setoid] compares two such triples by an
-   equality of endpoints together with an `≈` of edges moved along it.
-
-     [QuiverVertices] : Q ↦ the nodes of Q             (not faithful)
-     [QuiverArrows]   : Q ↦ the triples of Q           (not faithful)
-     [QuiverElements] : Q ↦ nodes of Q ⊎ triples of Q  (faithful, see below)
-
-   These are the first `Sets`-valued functors on quivers in the library.
-   `QuiverCategory` is the only quiver category in the tree, and the only
-   quiver-facing functors that existed before this file are
-   Construction/Free/Quiver.v's `Forgetful : StrictCat ⟶ QuiverCategory`
-   and `FreeCatFunctor : QuiverCategory ⟶ StrictCat`, neither of which
-   lands in `Sets`.  The quiver-building idiom used for the witnesses below,
-   `Build_Quiver_Standard_Eq`, is the one Test/Issue138.v already uses.
-
-   Both negative results are genuine refutations, each witnessed by two
-   PARALLEL homomorphisms exhibited explicitly and shown distinct in the
-   hom-setoid of `QuiverCategory` — not merely written differently:
-
-     [LoopQuiver]  one node, two parallel loops; the identity and the
-       loop-swapping endomorphism agree on nodes, differ on edges
-       ([QuiverVertices_not_Faithful]).
-     [DiscQuiver]  two nodes, no edges; the identity and the node-swapping
-       endomorphism agree on arrows (there are none), differ on nodes
-       ([QuiverArrows_not_Faithful]).
-
-   Scope of the positive half, disclosed
-   -------------------------------------
-
-   [QuiverElements] is proved faithful under one hypothesis on the target
-   quiver: uniqueness of identity proofs for its node type ([NodeUIP]).
-   Where that hypothesis enters is worth stating precisely.
-
-   Equivalence of quiver homomorphisms in `QuiverCategory`
-   (`QuiverHomomorphismEquivalence`) is a SIGMA type: `F ≈ G` consists of a
-   family `node_equiv : ∀ x, F x = G x` TOGETHER WITH a coherence condition
-   that quantifies over all edges and refers to that one chosen family.  From
-   `fmap[QuiverElements] F ≈ fmap[QuiverElements] G` one recovers, on the node
-   summand, a family `ne x : F x = G x`, and on the arrow summand, for each
-   edge separately, its own pair of endpoint equalities.  Nothing in that
-   hypothesis ties the per-edge equalities to the ones `ne` supplies, and this
-   development found no way to replace one by the other short of [NodeUIP].
-   With [NodeUIP] the replacement is immediate, and the proof goes through.
-
-   Riehl's quivers have SETS of vertices, for which uniqueness of identity
-   proofs holds; so [NodeUIP] is the hypothesis under which her example is
-   being reproduced.  Accordingly the `Concrete` instance is delivered for the
-   full subcategory (in the sense of Construction/Subcategory.v) of quivers
-   satisfying it — [SetQuiverCat], built with that file's generic `Sub` —
-   rather than for `QuiverCategory` itself, and BOTH negative
-   results are reproved there ([SetQuiverVertices_not_Faithful],
-   [SetQuiverArrows_not_Faithful]) so that all of Example 1.6.19 lives in one
-   category.  Both witness quivers have node types with decidable equality
-   (`poly_unit` and `bool`), so they are objects of [SetQuiverCat] by
-   [NodeDecEq_NodeUIP], an axiom-free Hedberg step through
-   `Eqdep_dec.UIP_dec` — the same device Construction/Quotient.v uses for
-   `obj_uip`.
-
-   An unrestricted `Concrete QuiverCategory` is therefore NOT claimed here,
-   and the restriction is NOT a shortcut: the closing section of this file
-   proves that `Faithful QuiverElements` IMPLIES UIP, so the hypothesis is
-   forced rather than convenient. (The first commit said only that this was
-   an obstruction to the proof rather than a refutation; an audit closed
-   the loop, and its argument is integrated below.) Since UIP is
-   independent of Rocq's logic, `Faithful QuiverElements` is not provable
-   here, and concreteness of `QuiverCategory` VIA THIS FUNCTOR is
-   unreachable axiom-free.
-
-   Whether some OTHER functor to `Sets` concretizes `QuiverCategory` is
-   still left open. No such functor is known to the author of this file,
-   and there is a structural reason for pessimism — pointwise data over any
-   carrier yields equalities one element at a time, whereas the target
-   requires a single node family coherent with every edge at once — but no
-   non-existence proof is offered.
-
-   Obligation discipline: this file sets `Obligation Tactic := idtac`, so
-   every proof below introduces its own variables and none depends on a
-   Program-generated name. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Existing Instance edgeset.
 #[local] Obligation Tactic := idtac.

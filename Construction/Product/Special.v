@@ -14,72 +14,13 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §II.3 Exercise 1, printed p. 39 (PDF p. 49) — maclane:II.3:ex1
+(*
    nLab:      https://ncatlab.org/nlab/show/product+category
 
-   Mac Lane's exercise: the product of categories restricts, along the
-   standard full embeddings, to the familiar products of algebraic
-   structures — a note carried here in prose, as the exercise states it:
-   no Mon ⟶ Cat or Set ⟶ Cat embedding functor exists in-tree yet, and
-   the three isomorphisms below are their object-level content —
-   delooped monoids (and groups) multiply componentwise, and discrete
-   categories multiply as sets.  Three specializations, each an
-   isomorphism in [Cat] (up to the natural isomorphisms of
-   [Functor_Setoid], the library's hom-equivalence there — in this
-   library the strength of an equivalence of categories, per
-   Instance/Cat.v's header; the issue's StrictCat alternative is not
-   taken, though the discrete case is morally strict, because strict
-   functor equality would need the transport machinery of
-   Functor_StrictEq, out of proportion for this exercise):
+   本文件给出积（分量）构造。
 
-     - [Deloop_prod_iso]   : Deloop (M × N) ≅ Deloop M ∏ Deloop N
-     - [Deloop_grp_prod]   : the same statement read at product groups —
-                             the monoid part of [GrpObject_prod] IS
-                             [MonObject_prod] definitionally, so the
-                             isomorphism is literally the same term
-     - [Discrete_Product]  : DiscreteCat (A * B) ≅ DiscreteCat A ∏
-                             DiscreteCat B
-
-   Design:
-
-   1. THE HOM-SIDES ARE DEFINITIONALLY EQUAL.  A hom of
-      [Deloop (MonObject_prod M N)] is an element of [carrier M * carrier N],
-      and a hom of [Deloop M ∏ Deloop N] is exactly the same pair type; both
-      functors of [Deloop_prod_iso] are the identity on arrows, and the
-      whole isomorphism is object-side bookkeeping about [poly_unit]
-      (whose two-component tuples are collapsed by unit-morphism
-      conjugation, not by eta).  Likewise [Discrete_Product]'s object
-      types agree on the nose — [A * B] both times — and only the
-      MORPHISM encodings differ: one equality of pairs versus a pair of
-      equalities, converted by [f_equal] projections one way and the
-      local transparent [pair_eta]/[pair_equal] kit the other — local
-      because the stdlib's [surjective_pairing] and [f_equal2] are
-      opaque, and an arrow action built on them would be stuck,
-      sinking every functor law.
-
-   2. NO UIP.  [DiscreteCat]'s hom-setoid is strict equality of equality
-      proofs, so the functor laws and round trips are equations between
-      proof terms; each is closed by destructing the objects (exposing
-      the pairs) and then the morphisms (collapsing to [eq_refl]),
-      never by an axiom.  [Print Assumptions] on every artifact here is
-      closed under the global context.
-
-   3. THE GROUP CASE IS A RESTRICTION, NOT A SECOND PROOF.  [Deloop]
-      consumes only the monoid part, and [GrpObject_prod] is built so
-      its [grp_monoid] projection is [MonObject_prod] of the parts by
-      [eq_refl]; Mac Lane's "the same statement restricted to groups"
-      is therefore delivered by applying [Deloop_prod_iso] at the
-      underlying monoids, with the componentwise inverse supplied only
-      to close the group structure itself.
-
-   4. NAMESPACE NOTE.  [MonObject]/[GrpObject] here are
-      Construction/Deloop.v's setoid records; Instance/Grp.v defines a
-      DIFFERENT record also named [GrpObject] (with carrier-level
-      fields) and already carries its own componentwise [Grp_product]
-      with projections and [Grp_Cartesian].  The two products live at
-      different layers and neither subsumes the other; this file's is
-      the one the delooping dictionary consumes. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 
 (** ** The product monoid, and the product group *)

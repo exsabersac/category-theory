@@ -21,48 +21,13 @@ Generalizable All Variables.
 
 (** * Composition of profunctors by coends *)
 
-(* nLab:      https://ncatlab.org/nlab/show/profunctor
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Profunctor
 
-   Profunctors `P : C ⇸ D` and `Q : D ⇸ E` (Theory/Profunctor.v, i.e. functors
-   `C^op ∏ D ⟶ Sets` and `D^op ∏ E ⟶ Sets`) compose by the coend
+   本文件给出复合相关构造（伴随/函子/单子等的复合）。
 
-     (Q ∘ P)(c, e)  :=  ∫^d  P(c, d) × Q(d, e).
-
-   For a fixed pair `(c, e)` the integrand is the bifunctor
-
-     prof_integrand c e : D^op ∏ D ⟶ Sets,   (d', d) ↦ P(c, d) × Q(d', e),
-
-   contravariant in `d'` (through `Q`) and covariant in `d` (through `P`); the
-   diagonal `prof_integrand c e (d, d) = P(c, d) × Q(d, e)` is exactly the
-   integrand summand, and the coend `SetsCoend (prof_integrand c e)`
-   (Instance/Sets/Coend.v) glues those summands along the dinaturality of `P`
-   and `Q`. The composite `prof_compose P Q : C ⇸ E` sends `(c, e)` to the coend
-   apex; its action on a morphism `(fc, fe)` of `C^op ∏ E` is the unique
-   mediator out of the source coend produced by the coend universal property
-   `coend_med`/`coend_med_eq` of Structure/Coend.v.
-
-   The integrand is written directly rather than assembled from the product of
-   the partial functors `P(c, -)`, `Q(-, e)` and the Sets tensor: the direct
-   form makes `fmap[prof_integrand c e]` compute definitionally to the pointwise
-   pair map `(p, q) ↦ (fmap[P] (id, ψ) p, fmap[Q] (φ, id) q)`, so every coend
-   obligation below reduces to the functoriality of `P` and `Q` with no tower of
-   product/tensor combinators to unfold. The setoid product is the categorical
-   product of setoids `prod_setoid` (Lib/Datatypes.v), which is precisely the
-   carrier of the cartesian tensor of Sets.
-
-   The three functor laws of `prof_compose` are all discharged through the coend
-   uniqueness principle `coend_med_eq`: two mediators that agree on every
-   injection are equal. Their agreement is read off the mediator computation
-   rule `coend_med_inj` together with the fact that the family of "change of
-   `(c, e)`" maps `prof_theta` assembles into a natural transformation of
-   integrands, whence the dinaturality (cowedge) condition of the transported
-   legs follows from the target coend's own cowedge law `coend_cowedge`.
-
-   The unit for this composition is the identity profunctor `prof_id := Hom C`
-   (Functor/Hom.v); the unitors and associator up to natural isomorphism live in
-   the companion module Construction/Profunctor/Laws.v. Everything here is kept
-   Sets-valued and per-pair: no category of all profunctors is formed. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProfCompose.
 

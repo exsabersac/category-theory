@@ -8,16 +8,11 @@ From Coq Require Import Arith.
 
 Generalizable All Variables.
 
-(** * [T_cast] interaction with [T_tens]
+(*
+   本文件给出 PROP 相关。
 
-    Bridge lemmas that the Monoidal instance on [FreeCat S]
-    (Construction/PROP/Monoidal.v) uses to discharge naturality of the
-    structural isomorphisms.
-    [T_tens] mixes two arities additively; [T_cast] rewrites a single
-    arity along a propositional equation.  The lemmas below all reduce
-    the cast away by [destruct]-ing the arity equation, after which the
-    goal is closed by a primitive tensor/identity constructor of
-    [TermEq] ([TE_tens_id], [TE_id_left], or [TE_id_right]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CastTensor.
 

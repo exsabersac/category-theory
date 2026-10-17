@@ -6,61 +6,13 @@ Generalizable All Variables.
 
 (** * A category read at higher universe levels *)
 
-(* nLab: https://ncatlab.org/nlab/show/universe+enlargement (the general
-   notion, a category of one universe re-read in a larger one; this file
-   is its trivial case, the same category with nothing improved)
+(*
+ nLab: https://ncatlab.org/nlab/show/universe+enlargement (the general
 
-   WHY IT IS NEEDED.  [Category@{o h p}] is a record, and the tree's
-   records are not cumulative (Instance/Sets/Classifier.v's
-   [Setoid_Lift] says so of setoid objects and rebuilds them;
-   Structure/Pullback/Wide/Complete.v says so of the category record): a
-   [C : Category@{co ch ch}] is not itself a [Category@{xo xh xh}] when
-   co < xo or ch < xh, although its objects, arrows and ≈ re-typecheck at
-   the higher levels.  A statement that quantifies over every category at
-   the levels (xo, xh), such as Structure/Coequalizer/Absolute.v's
-   [AbsoluteCoequalizer] and Structure/Limit/Absolute.v's
-   [AbsoluteLimitCone], therefore cannot be applied to C itself, nor to a
-   category below (xo, xh); it can be applied to the rebuild, and that is
-   what makes those predicates downward closed (#477).
+   本文件给出构造。
 
-   WHAT IS HERE.
-     - [LiftCat C]: C rebuilt as a [Category@{xo xh xh}], with C's
-       objects, arrows, ≈, identities and composites, and every law C's
-       own.  The [Equivalence] and [Proper] fields are repacked, those
-       records not being cumulative either.
-     - [Lift_in C : C ⟶ LiftCat C], the identity on objects and on
-       arrows on the nose ([Lift_in_fobj], [Lift_in_fmap], at [eq_refl]).
-     - [Lift_after T : C ⟶ LiftCat X] for [T : C ⟶ X]: T read into the
-       rebuild of X, with T's actions on the nose ([Lift_after_fobj],
-       [Lift_after_fmap], at [eq_refl]).  In every datum it is
-       [Lift_in X ◯ T], but Theory/Functor.v's [Compose] gives its three
-       categories one hom level, so [Lift_in X ◯ T] cannot be formed when
-       the lift's hom level is strictly above X's (refused in
-       Test/ProbeAbsolute477.v); [Lift_after] is built directly.
-
-   UNIVERSES, by [About].  [LiftCat@{co ch xo xh}] is over
-   [C : Category@{co ch ch}] and returns a [Category@{xo xh xh}] under
-   the constraints "co <= xo" and "ch <= xh" and no other, and
-   [Lift_in@{co ch xo xh}] and its two readbacks carry the same two.
-   [Lift_after@{co ch xo xh yo yh}] lifts [X : Category@{xo xh xh}] to
-   [@{yo yh}] under "ch <= xh" (from [T] itself), "ch <= yh",
-   "xo <= yo" and "xh <= yh", and its two readbacks the same four.  No
-   block carries an equation.  The statements of [Lift_in], [Lift_after]
-   and the four readbacks name the instance of the lift they speak of
-   (six explicit universe instances of this file's constants): a lifted
-   level is bounded below alone, and minimization would otherwise set
-   it to the level it lifts.
-
-   NOT DELIVERED.  No functor back from [LiftCat C] to C once the hom
-   level is lifted: at "ch < xh" the type [LiftCat C ⟶ C] is itself
-   refused ("Cannot enforce ch = …", Test/ProbeAbsolute477.v), since
-   [Functor]'s [fmap_respects] is typed through [respectful] at the
-   target's levels and so bounds the source's hom level by the
-   target's; with the objects lifted alone the way back is formable.
-   No lift of the proof level apart from the hom level.  Nothing about
-   structure that [LiftCat] preserves or reflects beyond what its
-   consumers in Structure/Limit/Absolute.v and Structure/Coequalizer/
-   Absolute.v use, which is that its arrows, ≈ and composites are C's. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition LiftCat@{co ch xo xh +} (C : Category@{co ch ch}) :
   Category@{xo xh xh}.

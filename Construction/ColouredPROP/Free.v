@@ -12,50 +12,15 @@ Generalizable All Variables.
 
 (** * The free coloured-PROP category on a signature *)
 
-(* nLab: https://ncatlab.org/nlab/show/PROP
+(*
    nLab: https://ncatlab.org/nlab/show/free+category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
    Wikipedia: https://en.wikipedia.org/wiki/Free_category
 
-   A coloured PROP over a set [Colour] of wire types is a strict
-   symmetric monoidal category whose objects are the finite words
-   [list Colour] and whose tensor on objects is concatenation.  The
-   free coloured PROP on a signature [S] has as its [cs ~> ds] arrows
-   the typed string-diagram terms [CTerm S cs ds] quotiented by the
-   laws of a strict symmetric monoidal category; this is the standard
-   "free = syntactic" construction, the many-sorted analogue of
-   [Construction/PROP/Free.v], with [list Colour] replacing [nat] and
-   [++] replacing [Nat.add] throughout.
+   本文件给出构造。
 
-   This file assembles the underlying [Category] layer of that
-   quotient together with its tensor bifunctor:
-
-     - obj        := list Colour                (objects: colour words)
-     - hom cs ds  := CTerm S cs ds mod CTermEq  (typed diagrams / ≈)
-     - id         := CT_id                      (identity wires)
-     - compose    := CT_comp                    (sequential composition)
-     - tensor     := CFreeCat_Tensor            (parallel composition)
-
-   The hom-equivalence ≈ is [CTermEq S], so the [Category] laws
-   (left/right unit, associativity) are exactly its [CTE_id_left] /
-   [CTE_id_right] / [CTE_assoc] constructors, and [compose_respects]
-   is its [CTE_comp_cong] congruence.  The [Monoidal],
-   [SymmetricMonoidal], and strictness layers — which complete
-   [CFreeCat S] to a free strict symmetric monoidal category and then
-   to the first inhabitant of [Construction/ColouredPROP.v]'s class —
-   live in the successor files ([Construction/ColouredPROP/Cast.v],
-   [Monoidal.v], [Braided.v], [Instance.v]).
-
-   Layout note: this file merges the one-sorted spine's donor pair
-   [Construction/PROP/Free.v] + [Construction/PROP/Tensor.v].  The
-   coloured tensor bifunctor needs nothing beyond the [CTE_tens_*]
-   constructors already provided by the equational theory, so it
-   lives here rather than in a file of its own.
-
-   Following the coloured spine's proof-using discipline, the
-   inductives ([CTerm], [CTermEq]) were declared in sections that
-   closed in their home files; every statement below carries the
-   signature [S] explicitly. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CFreeCategory.
 

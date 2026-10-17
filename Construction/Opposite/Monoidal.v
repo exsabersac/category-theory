@@ -18,40 +18,13 @@ Generalizable All Variables.
 
 (** * Monoidal structure on the opposite category *)
 
-(* nLab: https://ncatlab.org/nlab/show/opposite+category
+(*
    nLab: https://ncatlab.org/nlab/show/monoidal+category
 
-   A monoidal structure (I, ⨂, λ, ρ, α) on C induces one on C^op: the tensor
-   acts the same way on objects, morphisms are tensored by reading the same
-   [bimap] against the reversed hom-sets, and the structural isomorphisms are
-   the original ones read in the opposite category (so their [to] components
-   are the original [from] components, via [Isomorphism_Opposite]).  Every
-   coherence obligation is discharged by the corresponding law of C in the
-   opposite orientation: the library records both directions of each
-   naturality square, and the inverse-direction triangle and pentagon are
-   already derived in Structure/Monoidal/Proofs.v, precisely so that this
-   dualization is cheap.  A braiding or symmetry likewise transports, with
-   the two hexagon identities exchanging roles — the reason Braided.v
-   carries both hexagons as data.
+   本文件给出幺半相关结构。
 
-   [Monoidal_op], [Braided_op] and [Symmetric_op] are Definitions rather
-   than global Instances: registering them would let resolution silently
-   equip C^op with a monoidal structure whenever C has one, which is rarely
-   what an unannotated goal means (cf. the deferral rationale in
-   Theory/Algebra/Comonoid.v).  Callers select them explicitly.
-
-   The payoff is duality transfer for internal algebra: a comonoid in C is
-   exactly a monoid in (C^op, Monoidal_op) and vice versa, on the nose (the
-   round trips are definitional), and comonoid homomorphisms in C are
-   exactly monoid homomorphisms in C^op with source and target exchanged.
-   This is packaged both pointwise ([Comonoid_to_op_Monoid] and companions)
-   and functorially, as functors Mon(C^op) ⟶ Comon(C)^op and back.
-
-   No involution claim is made for [Monoidal_op]: although (C ∏ C)^op and
-   C^op ∏ C^op are convertible, [Opposite_Tensor] and the [Monoidal_op]
-   obligations rebuild the functor-law and coherence fields as fresh
-   Qed-opaque proof terms, so [Monoidal_op (Monoidal_op M)] is not
-   definitionally M even though (C^op)^op = C holds by reflexivity. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section OppositeMonoidal.
 

@@ -15,93 +15,14 @@ Require Import Category.Construction.Cospan.Category.
 
 Generalizable All Variables.
 
-(** * Decorated cospans (Fong)
-
+(*
     Reference: Brendan Fong, "Decorated Cospans", arXiv:1502.00872
-    (published as Theory and Applications of Categories, Vol. 30, No. 33,
-    2015, pp. 1096-1120); and Baez, Fong & Pollard, "A Compositional
-    Framework for Markov Processes", arXiv:1508.06448.
-
     nLab:      https://ncatlab.org/nlab/show/decorated+cospan
-    (Wikipedia has no dedicated decorated-cospan article as of this
-    writing; none-exists: the topic is covered only on nLab and in the
-    primary literature.)
 
-    A decorated cospan is a cospan [X → N ← Y] in a category [C] (with
-    pushouts and a chosen coproduct/initial structure) equipped with a
-    "decoration" of the apex [N], where the decorations live in a monoidal
-    category [D] and are pulled back through a lax monoidal functor
-    [F : C → D].  Concretely, a decoration of [N] is a morphism
-    [decoration : I_D ~> F N] in [D] — i.e. a global element of [F N]
-    in the cartesian-internal-hom sense.
+   本文件给出构造。
 
-    The point of the construction is that lax monoidality of [F] makes
-    decorations COMPOSE: given a cospan [X → N ← Y] decorated by
-    [d_N : I → F N] and a cospan [Y → M ← Z] decorated by [d_M : I → F M],
-    the composite cospan [X → P ← Z] with [P = pushout(N, M)] inherits a
-    decoration
-
-      I ≅ I ⨂ I --d_N ⨂ d_M-> F N ⨂ F M --lax_ap-> F (N + M) --F(pushout-leg)-> F P.
-
-    The key insight: this construction is functorial, the apex-iso
-    equivalence on cospans transports cleanly, and the resulting category
-    [DecoratedCospanCat F] is a hypergraph category whenever [C] has finite
-    colimits and [F] is lax BRAIDED monoidal.  In Fong's numbering, that
-    decorated cospans form a category is [3.2. Proposition]; the symmetric-
-    monoidal and hypergraph structure (with the wide embedding of
-    [Cospan(C)]) is [3.5. Theorem].
-
-    ** Note on the lax-braided / lax-symmetric requirement
-
-    Fong's [3.1. Definition] takes only a plain LAX MONOIDAL functor
-    [(F, ϕ) : (C, +) → (D, ⊗)]; that is all the bare DECORATED-COSPAN
-    DATA and the [3.2. Proposition] category structure need.  The extra
-    BRAIDING/SYMMETRY hypothesis enters at [3.5. Theorem], which assumes
-    [(D, ⊗)] braided monoidal and [F] LAX BRAIDED monoidal in order to
-    obtain the symmetric monoidal and hypergraph structure.  (When the
-    codomain is [(Set, ×)] this is the lax-symmetric case Fong uses in his
-    examples.)  The braiding/symmetry condition (the laxator [lax_ap]
-    commutes with the braidings of [+] and [⊗]) is genuinely needed for
-    two purposes:
-
-      1. to make the resulting category symmetric monoidal — the
-         braiding on decorated cospans must respect decorations;
-      2. to establish the Frobenius / hypergraph laws — since [μ] for
-         the SCFA on [X+Y] uses braiding to interleave decorations.
-
-    In this library's factoring of the construction we ask only for
-    [LaxMonoidalFunctor] at the BASE level (this file): just enough
-    to get [DecoratedCospanCat] as a category.  The symmetric and
-    hypergraph layers (see [Construction/DecoratedCospan/Braided.v],
-    [.../Symmetric.v], [.../Hypergraph.v]) capture the additional
-    coherence requirements through dedicated classes
-    [DecCospan_{Braided,Symmetric}_Coherent], whose fields encode
-    exactly the consequences of [F] being lax-symmetric on the
-    decorated-cospan side.  Instantiating these classes for a
-    non-lax-symmetric [F] is impossible in general — they implicitly
-    enforce the requirement.
-
-    If you instantiate this file's classes from a [LaxMonoidalFunctor]
-    that is NOT lax-symmetric you can build [DecCospan_Coherent] and
-    the base category structure, but the [Braided] / [Symmetric] /
-    [Hypergraph] layers will be unprovable.
-
-    Applications: electrical circuits (Baez–Fong), Markov processes,
-    chemical reaction networks, signal-flow graphs.  In each case the
-    decorations encode "internal" data of the apex that black-boxes to
-    the observable boundary behaviour.
-
-    ** Coq-specific organisation
-
-    We parameterise by [C], [D], a [HasPushouts C], a [Terminal D] (so we
-    have a unit [1_D ~> F N] interpretation of "I_D ~> F N"; the actual
-    unit of the monoidal [D] is supplied by [@Monoidal D]), and the lax
-    monoidal functor [F].
-
-    In the original Fong paper the decorations live in [Set] and a
-    decoration of [N] is literally an element of [F N].  Generalising
-    to a monoidal codomain [D] with unit [I_D], an element is a morphism
-    [I_D ~> F N], recovering the [Set]-case when [D = Set]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section DecoratedCospan.
 

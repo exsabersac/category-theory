@@ -35,60 +35,15 @@ Open Scope nat_scope.
 
 (** * Tietze moves for presentations of PROPs *)
 
-(* nLab: https://ncatlab.org/nlab/show/generators+and+relations
+(*
    nLab: https://ncatlab.org/nlab/show/PROP
    Wikipedia: https://en.wikipedia.org/wiki/Tietze_transformations
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   Two FINITE presentations of the same group are related by a finite
-   sequence of TIETZE TRANSFORMATIONS: adding/removing a derivable
-   relation, and adding/removing a definable generator.  The same
-   calculus applies to presentations of PROPs by symmetric monoidal
-   theories ([SMT], from [Construction/PROP/Presentation.v]), and this
-   file develops its two "adding" moves together with the theorems
-   that make them presentation-preserving: for move 1 the congruences
-   coincide at every arity; for move 2 the embedding is conservative
-   AND a section up to derivable equality, which pins the presented
-   homs on both sides (the packaging as an equivalence of presented
-   PROPs is deferred; see the trailer):
+   本文件给出 PROP 相关。
 
-   1.  SIGNATURE MORPHISMS ([T_map]): a [SubSig S T] acts on terms by
-       structural recursion, giving a functor [RelabelFunctor : FreeCat S ⟶
-       FreeCat T] that is strict symmetric monoidal — signature
-       morphisms induce strict symmetric maps of free PROPs (no
-       injectivity of [h] is assumed or used: arbitrary
-       boundary-preserving relabellings, including generator
-       collapses, are covered).  Unlike
-       the tactic-built [T_inj] of [Term.v] (left untouched, related by
-       the bridge [T_map_T_inj]), [T_map] is a computing [Fixpoint], so
-       the functor laws hold by reflexivity.
-
-   2.  SUMS OF SIGNATURES: the copairing of two valuations interprets a
-       summand's image under [sig_inl]/[sig_inr] exactly as the summand
-       itself ([interp_copair_inl]/[interp_copair_inr]).
-
-   3.  TIETZE MOVE 1 ([AddEqn]): adding an equation DERIVABLE in a
-       theory [E] yields a theory with the same congruence — the
-       equivalence [AddEqn_derivable_conservative], both directions.
-
-   4.  TIETZE MOVE 2 ([ext_smt]): adjoining a fresh generator [g] of
-       arity [(m, n)] together with the defining equation [g ≈ w] for a
-       word [w] of the base theory is CONSERVATIVE: base-signature
-       terms are identified in the extension exactly when they were
-       identified before ([ext_conservative]/[ext_reflects]).  The
-       proof is by a syntactic retraction that substitutes [w] for the
-       new generator; a semantic route through [interp] and a copaired
-       valuation is possible but carries heavier dependencies, so the
-       retraction is preferred here.  The retraction is moreover a
-       SECTION of the embedding up to derivable equality
-       ([ext_retract_section]): every extended-signature term is
-       [TermEqW]-equal to an embedded base term, so the extension adds
-       no new morphisms, only a new name.
-
-   Everything is elementary syntax: the only quotients involved are the
-   [Prop]-valued congruences [TermEq] and [TermEqW], and the only
-   proof-irrelevance used is axiom-free UIP on [nat] (via [T_cast_id]
-   from [Construction/PROP/Cast.v]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Signature morphisms acting on terms
 

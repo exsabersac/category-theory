@@ -35,45 +35,13 @@ Proof. exact (@fmap_comp K Sets G x y z g f w). Qed.
 
 (** * Day convolution on [[C, Sets]] *)
 
-(* nLab:      https://ncatlab.org/nlab/show/Day+convolution
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Day_convolution
 
-   For a monoidal category [(C, ⨂, I)] the Day convolution of two functors
-   [F, G : C ⟶ Sets] is the functor whose value at [c] is the coend
+   本文件给出构造。
 
-     (Day F G) c  :=  ∫^{a,b}  C(a ⨂ b, c) × F a × G b.
-
-   It is the left Kan extension of [F ⊗ G] along [⨂], and makes [[C, Sets]] a
-   monoidal category with unit the covariant representable [C(I, −)]. This file
-   realises it over the concrete [Sets]-coend of Instance/Sets/Coend, so every
-   construction is [funext]-free.
-
-   For a fixed target [c] the integrand is the bifunctor
-
-     DayI F G c : (C ∏ C)^op ∏ (C ∏ C) ⟶ Sets,
-       ((a1,b1),(a2,b2)) ↦ C(a1 ⨂ b1, c) × F a2 × G b2,
-
-   contravariant in [(a1,b1)] through the hom [C(a1 ⨂ b1, c)] (precomposition
-   by the tensor of the two moves) and covariant in [(a2,b2)] through
-   [F a2 × G b2]; its diagonal [DayI F G c ((a,b),(a,b)) = C(a ⨂ b, c) × F a × G b]
-   is the coend summand. As in Construction/Profunctor/Compose the integrand is
-   written directly so that [fmap[DayI F G c]] computes definitionally to the
-   pointwise triple map, and the setoid product is [prod_setoid] (Lib/Datatypes).
-
-   [Day F G] is functorial in [c] covariantly (post-compose the hom [C(a ⨂ b, −)]),
-   the action being the coend mediator of the transported injections. The
-   bifunctoriality in [(F, G)], the unit [C(I, −)], the unitor isomorphisms
-   (via the co-Yoneda reduction of Theory/Coend/Yoneda), and the associator
-   isomorphism [Day (Day F G) H ≅ Day F (Day G H)] are developed below. The
-   associator is a natural isomorphism of functors, built by hand from a pair of
-   nested coend mediators (one per side of the tensor) glued by the monoidal
-   associator [tensor_assoc] of [C]; the abstract Fubini theorem of
-   Theory/Coend/Fubini does not apply directly here, since the doubly-nested
-   integrand lives over a product category and needs the interchange gluing
-   supplied explicitly below. The induced monoidal structure on [[C, Sets]]
-   itself — the [Day_Monoidal] instance packaging these isomorphisms with the
-   pentagon and triangle coherences — is deferred to a downstream file
-   (ledger 5). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where the convolution comes from, and what it is for
 

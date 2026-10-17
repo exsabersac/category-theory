@@ -15,49 +15,14 @@ Generalizable All Variables.
 
 (** * The codomain displayed category *)
 
-(* nLab:      https://ncatlab.org/nlab/show/codomain+fibration
+(*
    nLab:      https://ncatlab.org/nlab/show/displayed+category
    Wikipedia: https://en.wikipedia.org/wiki/Fibred_category
 
-   The codomain displayed category of [C] displays over each object [x : C]
-   the maps INTO [x]: an object over [x] is a pair [(d; p)] of an object
-   [d : C] and a morphism [p : d ~> x].  A displayed morphism from [(d; p)]
-   over [x] to [(d'; p')] over [y], lying over a base morphism [f : x ~> y],
-   is a morphism [u : d ~> d'] making the square
+   本文件给出构造。
 
-       d  --u-->  d'
-       |          |
-      p|          | p'        commute, i.e.  p' ∘ u ≈ f ∘ p,
-       v          v
-       x  --f-->  y
-
-   and two displayed morphisms over [f] are equivalent when their underlying
-   morphisms [u] are ≈ — the square proof is irrelevant.  Transport along a
-   base proof [e : f ≈ g] leaves the morphism [u] untouched and merely
-   rewrites the square along [e], so the transport laws ([dtransport_id],
-   [dtransport_trans], and the interchange fields) are reflexivity-shaped.
-
-   Fibres and total category.  The fibre of this displayed category over [x]
-   has as objects the maps into [x] — the encoding [∃ d, d ~> x] is
-   literally the object encoding of the slice category of
-   Construction/Slice.v — and as morphisms over [id[x]] the commuting
-   triangles over [x], which are the slice's morphisms.  The total category
-   (Construction/Displayed/Total.v) has as objects ALL maps of [C] and as
-   morphisms all commuting squares: it is the displayed rendering of the
-   arrow category.  The comparison with the comma presentation
-   [C ⃗ = (Id[C] ↓ Id[C])] of Construction/Arrow.v is delivered below as the
-   mutually inverse functors [Codomain_Total_to_Arrow] and
-   [Arrow_to_Codomain_Total], packaged as an isomorphism
-   [Codomain_Total_Arrow_iso] in Cat.
-
-   The payoff is the classical characterization of the codomain FIBRATION:
-   the codomain displayed category has a cleaving exactly when [C] has all
-   pullbacks.  [codomain_cleaving] builds the cartesian lift of [f : x ~> y]
-   at [(d; p)] from the chosen pullback of [p] along [f], and
-   [codomain_cleaving_pullbacks] conversely reads the pullback of a cospan
-   [f : x ~> z], [g : y ~> z] off the cartesian lift of [f] at [(y; g)]; in
-   both directions the universal properties are exchanged by turning a
-   competing pullback cone into a displayed morphism over a composite. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 

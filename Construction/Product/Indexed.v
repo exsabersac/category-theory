@@ -10,57 +10,13 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §II.3 Exercise 3, printed p. 40 (PDF p. 50) — maclane:II.3:ex3
+(*
    nLab:      https://ncatlab.org/nlab/show/product+category
 
-   For a set-indexed family of categories, the product category has as
-   objects the choice functions of objects and as arrows the
-   componentwise families of arrows, with projection functors satisfying
-   the evident universal property: a family of functors into the
-   components factors through the product, uniquely up to [Cat]'s
-   hom-equivalence — the setoid rendering of the book's on-the-nose
-   uniqueness.
+   本文件给出积（分量）构造。
 
-     - [PiCat C]: objects [∀ i, C i], homs the dependent families of
-       component homs, everything componentwise
-     - [PiCat_Proj i]: the projections
-     - [PiCat_Pair R]: the pairing ⟨R⟩ of a family [R i : D ⟶ C i],
-       with [PiCat_Pair_Proj] the triangle [P i ◯ ⟨R⟩ ≈ R i] — its
-       components are [iso_id], the composite being DEFINITIONALLY
-       [R i] on both objects and arrows — [PiCat_ump_unique] the
-       uniqueness half, and [PiCat_ump] the bundled ∃! (the same
-       packaging as Structure/Limit/Product.v's [iprod_ump])
-
-   Design:
-
-   1. ONE CATEGORY INSTANCE FOR THE WHOLE FAMILY.  [C : I → Category]
-      forces every member onto the same universe instance of
-      [Category], so no per-member level juggling arises; the product's
-      objects live at the maximum of [I]'s level and the members'
-      object level — and [I]'s level also bounds the HOM universe,
-      since a hom is itself an [I]-indexed family — exactly as the
-      library's {o h p} polymorphism prescribes.  This is the "set-indexed" of the exercise made
-      precise: [I] is a [Type], with no smallness apparatus needed.
-
-   2. CONTRAST WITH Structure/Limit/Product.v.  That file's indexed
-      products ([iprod] over Instance/Discrete.v's discrete diagrams)
-      are products of OBJECTS INSIDE one category; this file's [PiCat]
-      is a product OF CATEGORIES — the same distinction as between
-      [Cartesian]'s binary product and Construction/Product.v's [∏].
-      The two meet at [Cat]: [PiCat] exhibits the data that would make
-      [Cat] complete under set-indexed products, the binary case of
-      which is Instance/Cat/Cartesian.v's [Cat_Cartesian].
-
-   3. THE BINARY CASE.  At [I := bool], [PiCat] specializes to a
-      category equivalent to [C ∏ D] — a choice function on [bool]
-      against a pair — recovering [Cat_Cartesian]'s fork; the
-      identification is a NOTE, as in the exercise, rather than a
-      formalized equivalence, since nothing downstream consumes it; the
-      bridge is real but not free — [prod] is not a primitive record,
-      so the pair side needs [fst]/[snd] destructs (the obstruction
-      Construction/Product/Special.v documents), and the dependent
-      identity family needs explicit match motives. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The product category *)
 

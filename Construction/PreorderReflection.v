@@ -1,82 +1,8 @@
-(** * The preorder reflection of a category
+(*
+   本文件给出构造。
 
-    Every category has an underlying preorder on objects: [x ≤ y] whenever
-    some morphism [x ~> y] exists.  Passing to it discards the identity of the
-    witnessing morphism and keeps only its existence.  The construction that
-    performs that erasure while staying inside [Cat] is built here: the same
-    objects, with all parallel morphisms identified.  The result is THIN -- at
-    most one morphism between any two objects -- and thin categories are
-    exactly preorders, as recorded at Theory/Category.v and
-    Instance/Proset.v.  See https://ncatlab.org/nlab/show/thin+category.
-
-    NOT THE POSETAL REFLECTION.  These must not be conflated, and the
-    difference is exactly which data is discarded.  The nLab's posetal
-    reflection (https://ncatlab.org/nlab/show/posetal+reflection) quotients
-    OBJECTS by mutual relatedness -- [a ≃ b] when [a ≤ b] and [b ≤ a] -- and
-    exhibits posets as reflective in preorders.  [PreorderReflect] does the
-    opposite: [preorder_reflect_obj] below proves objects are untouched
-    DEFINITIONALLY, and only morphisms are identified.  This construction is
-    the category-level ANALOGUE of the posetal reflection, which is how
-    jwiegley/category-theory#803 words it; the object-identifying construction
-    is a separate obligation that remains open.
-
-    WHY "REFLECTION" IS EARNED HERE.  Not by citation, but by the universal
-    property proved below: [ThinLift] shows every functor into a thin category
-    factors through [Reflect] uniquely ([ThinLift_proj], [ThinLift_unique]).
-    That makes [PreorderReflect C] THE universal thin quotient of [C], rather
-    than merely a quotient that happens to be thin.  The full reflective
-    adjunction with the inclusion of preorders into [Cat] is a stronger
-    statement and is NOT proved here (see SCOPE).
-
-    WHY IT MATTERS HERE.  A diagram commutes exactly when it factors through
-    the preorder reflection of its indexing category.  That is the packaging
-    Fong and Spivak give for commutativity in Seven Sketches in
-    Compositionality §3.3.4, the footnote to Definition 3.51; it is the
-    reading that makes
-    "commutes" a statement about the SHAPE rather than about any one figure:
-    once parallel morphisms of the shape are identified, a functor out of the
-    quotient cannot distinguish two parallel paths, so it cannot help but
-    commute.  Theory/Diagram.v proves both directions.
-
-    Cited by location only: the Fong-Spivak text was not consulted while
-    writing this file, matching the disclosure in Theory/Diagram.v.
-
-    HOW IT IS BUILT.  Nothing new is required.  Construction/Quotient.v already
-    quotients a category by a hom-congruence -- [HomCongruence],
-    [Quotient], [QuotientProj], and the universal property
-    [QuotientLift] with [QuotientLift_proj] and
-    [QuotientLift_unique].  The preorder reflection is that quotient at
-    the TOTAL congruence, the relation relating every pair of parallel
-    morphisms.  All FOUR congruence fields -- [cong_incl], [cong_sym],
-    [cong_trans], [cong_comp] -- are immediate, since the relation is
-    constantly [True].  (Reflexivity is not a field: it is the derived
-    [cong_refl] at Construction/Quotient.v.)  Before this file the only in-tree [HomCongruence]
-    instances were the PROP and coloured-PROP term congruences.
-
-    NOT [hom_preorder].  Theory/Category.v declares
-    [hom_preorder : PreOrder (@hom C)], but that is a different thing and is
-    not the reflection: being a [CRelationClasses.PreOrder] on [hom] it is
-    [Type]-valued, so it REMEMBERS which morphism witnesses the relation --
-    exactly the information the reflection is meant to discard.  Its header
-    does not use the phrase "Type-valued"; what it records is that reflexivity
-    is witnessed by [id] and transitivity by composition, which is the same
-    fact stated constructively.
-
-    SCOPE.  jwiegley/category-theory#803 lists SEVEN work items.  This file
-    supplies item 1 (the total hom-congruence and the quotient), plus the
-    universal property below.  The remaining SIX are NOT built here and nothing
-    below depends on them: the truncated object preorder
-    [c ≤ c' := inhabited (c ~> c')] and its comparison with [PreorderReflect]
-    (item 2); functoriality of [PreorderReflect] on [Cat] (3); the reflective
-    adjunction with the inclusion of preorders (4); Exercise 3.21, the
-    reflection of [FreeOnQuiver G] as a reachability preorder (5); Exercise
-    3.22, the reflection of the loop category (6); and Remark 3.23's two-sided
-    [HomRel] containment (7).
-
-    NAMES.  #803's plan names the module [Construction/PreorderReflection.v]
-    and the constant [PreorderReflect]; those two are taken from it so that
-    issue lands here cleanly.  [TotalRel], [preorder_reflect_thin], [Reflect],
-    [Thin] and [ThinLift] are this file's own coinages, not the plan's. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

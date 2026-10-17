@@ -16,65 +16,15 @@ Require Import Category.Construction.DecoratedCospan.
 
 Generalizable All Variables.
 
-(** * DecoratedCospanCat as a Category
-
+(*
     nLab: https://ncatlab.org/nlab/show/decorated+cospan
     Wikipedia: none-exists (the Wikipedia "Cospan" article does not
-    cover decorated cospans or hypergraph categories).
-
     Reference: Brendan Fong, "Decorated Cospans", arXiv:1502.00872
-    (Theory and Applications of Categories 30 (33), 2015, 1096-1120).
-    The fact that the F-decorated cospans form a category — composition
-    by pushout, identity by the empty decoration, morphisms taken up to
-    apex-iso — is Fong's [3.2. Proposition].  (The earlier draft of this
-    header miscited it as "Theorem 2.3"; in the paper Section 2 is about
-    plain [Cospan(C)], and [2.3] is not a theorem about [FCospan].)
 
-    [Construction/DecoratedCospan.v] supplies the data layer: the
-    [DecoratedCospanArrow] record, the [dec_cospan_equiv] setoid,
-    identity, and composition.  This module assembles those into a
-    [Category] record [DecoratedCospanCat], discharging the four
-    obligations:
+   本文件给出范畴变体或层范畴等。
 
-      (a) [dec_cospan_compose] is [Proper] w.r.t. [dec_cospan_equiv];
-      (b) identity laws  [id ∘ f ≈ f]  and  [f ∘ id ≈ f];
-      (c) associativity  [(h ∘ g) ∘ f ≈ h ∘ (g ∘ f)].
-
-    Each obligation has TWO components:
-
-      - the COSPAN-level fact (already proven in [Cospan.Category]):
-        [cospan_compose_respects_aux], [cospan_id_left/right],
-        [cospan_compose_assoc];
-      - the DECORATION-level fact: that the composite-decoration
-        formula respects the apex-iso transport produced by the
-        cospan-level proof.
-
-    The decoration-level facts are the "lax-monoidal coherence" half
-    of Fong's [3.2. Proposition].  They are not free: they depend on the
-    chosen identity-decoration [id_decoration] and merge map
-    [cospan_merge] being COHERENT with the lax monoidal structure on
-    [F].  Fong supplies these coherences as part of the decorated-cospan
-    data of his [3.1. Definition] (a lax braided monoidal functor
-    [F : (C, +) -> (D, tensor)]), and the diagram chases discharging
-    them are the content of the proof of his [3.2. Proposition].
-
-    In this Coq formalisation we bundle those coherences as a
-    typeclass [DecCospan_Coherent], parameterised by the same data
-    used in [Construction/DecoratedCospan.v].  Concrete instances of
-    [DecCospan_Coherent] correspond exactly to Fong's "decorated
-    cospan structure" ([3.1. Definition]): a lax monoidal functor [F]
-    with a chosen identity-decoration map and merge map, satisfying
-    the unit / associativity / functoriality coherences.
-
-    With [DecCospan_Coherent] in scope, the four [Category] obligations
-    are discharged by routing the cospan part through
-    [Cospan.Category]'s lemmas and the decoration part through the
-    [DecCospan_Coherent] fields.
-
-    This is the literature-correct packaging: it makes explicit the
-    fact (well-known in the categorical-systems literature) that the
-    decorated-cospan category is well-defined exactly when the
-    decoration data satisfies a specific list of coherences. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section DecoratedCospanCategory.
 

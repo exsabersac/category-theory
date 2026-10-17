@@ -13,34 +13,15 @@ Require Import Category.Functor.Hom.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/local+object
+(*
+ nLab: https://ncatlab.org/nlab/show/local+object
          https://ncatlab.org/nlab/show/reflective+subcategory
          https://ncatlab.org/nlab/show/localization
 
-   Orthogonal-subcategory localization.  Fix a category C and a class W of
-   morphisms (a [MorphismClass C], from Theory/Morphisms/Classes.v).  An object
-   x of C is *W-local* when it "sees every W-map as invertible": for every
-   w : a ~> b in W the precomposition map on hom-sets
+   本文件给出构造。
 
-       (- ∘ w) : Hom(b, x) ⟶ Hom(a, x)
-
-   is an isomorphism of setoids.  This precomposition map is exactly the action
-   of the contravariant hom-functor [Hom ─, x] = Curried_CoHom C x on the arrow
-   w (read as an arrow b ~{C^op}~> a), so we state W-locality directly as an
-   [IsIsomorphism] in [Sets] of [fmap[[Hom ─, x]] w].  See Functor/Hom.v for
-   the presheaf [Hom ─, x] and Instance/Sets.v for isomorphisms in [Sets].
-
-   The W-local objects span a *full* subcategory [C_W W] of C (built on
-   Construction/Subcategory.v with [shom] retaining every morphism, so the
-   fullness witness is trivial).  When this subcategory is reflective
-   (Construction/Reflective.v) the reflector *inverts W*: it carries every W-map
-   to an isomorphism.  The proof runs entirely through the reflection
-   adjunction's hom-set transposes together with W-locality of the reflections
-   [Iota (reflector _ a)] and [Iota (reflector _ b)]; it needs neither a
-   calculus of fractions nor any classical or extensionality principle.  We also
-   record the companion fact on which localizations rest, that the reflection
-   unit at a W-local object is an isomorphism ([unit_at_local_iso]) — the dual,
-   for the unit, of the counit-iso lemma [reflective_counit_iso]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where localization comes from, and what it is for
 

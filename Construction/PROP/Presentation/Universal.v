@@ -39,80 +39,15 @@ Generalizable All Variables.
 
 (** * The universal property of a presented PROP *)
 
-(* nLab: https://ncatlab.org/nlab/show/PROP
+(*
    nLab: https://ncatlab.org/nlab/show/generators+and+relations
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
    Wikipedia: https://en.wikipedia.org/wiki/Presentation_of_a_monoid
 
-   [Construction/PROP/Universal.v] packages the interpretation of free
-   terms into the strict symmetric monoidal functor [InterpF] and
-   proves it unique: the free PROP is initial among PROPs with an
-   [S]-valuation.  This file extends that universal property through a
-   PRESENTATION: given a symmetric monoidal theory [E : SMT] and a
-   valuation [v] of its generators in a PROP [P] that is SOUND for the
-   axioms of [E] ([ESound] — axiom-related terms have equivalent
-   interpretations), the interpretation factors through the presented
-   PROP of [Construction/PROP/Presentation.v], uniquely among strict
-   symmetric monoidal functors.
+   本文件给出泛构造相关。
 
-   In one sentence: an [E]-sound valuation extends uniquely through
-   the presented PROP.  This is the rule-soundness interface by which
-   an equational theory is installed into a semantic target once, and
-   every [TermEqW]-derivable equation then holds there for free.
-
-   Contents:
-
-   - [interpW_sound]: soundness of [interp] for the theory congruence
-     [TermEqW E] — a six-constructor induction whose [TEW_termeq] case
-     is [Interp.v]'s whole nineteen-case [interp_sound_heq], reused;
-     as there, [TermEqW] is [Prop]-valued while the hom equivalence of
-     the abstract target is [Type]-valued, so the induction lands in
-     the [Prop]-reflection [heq] and round-trips through
-     [heq_intro]/[heq_elim];
-
-   - [PresentedInterp]: the interpretation functor on [PresentedCat E],
-     obtained by the quotient lifting of [Construction/Quotient.v]; it
-     factors [InterpF] through [PresentedProj E] DEFINITIONALLY
-     ([PresentedInterp_proj] is a Leibniz equality by [eq_refl], and
-     [Presented_factor] is its [≈]-level restatement);
-
-   - the strict symmetric monoidal structure on [PresentedInterp]: the
-     comparison DATA are the same [prop_unit_zero]/[prop_tensor_plus]
-     casts as [InterpF]'s, and every proof field is one of
-     [Universal.v]'s named coherence lemmas ([interp_ap_natural],
-     [interp_monoidal_unit_left]/[interp_monoidal_unit_right],
-     [interp_monoidal_assoc], [interp_braid_ap]) — their statements
-     are purely target-side, which is exactly why they were factored
-     out there;
-
-   - [Presented_unique]: any strict symmetric competitor
-     [G : PresentedCat E ⟶ P] agreeing with [v] on generators agrees
-     with [interp] on EVERY morphism of the presented category, up to
-     the [hom_cast] conjugation along an object-agreement family
-     [Hobj].  Proved by PRECOMPOSITION with the projection: the
-     composite [G ◯ PresentedProj E] is strict monoidal by
-     [Compose_StrictMonoidalFunctor], its comparisons collapse onto
-     [G]'s own because the projection's comparisons are identities
-     with [eq_refl] object equalities, so [Universal.v]'s
-     [interp_unique] applies to the composite and transfers back
-     definitionally — every hom of [PresentedCat E] IS a term;
-
-   - [Presented_unique_from_one]: the object agreement synthesised
-     from the single datum [G 1 = ⟦1⟧] by the [PresentedG_obj]
-     fixpoint, exactly as [interp_unique_from_one] does on the free
-     side ([strict_pure_obj] against [prop_unit_zero] at arity 0,
-     [strict_ap_obj] against [prop_tensor_plus] peeling one wire at a
-     time).
-
-   As in [Universal.v], "strict symmetric monoidal functor" is one
-   [StrictMonoidalFunctor] over the strict-path monoidals plus the
-   braid-compatibility square [SymmetricStrictW] over that SAME tensor
-   comparison, with the target braiding re-indexed to the strict path
-   by [strict_braid]; see the design note there for why the hypothesis
-   pack is phrased against this bundle rather than against the two
-   independent [StrictMonoidalFunctor]/[BraidedMonoidalFunctor]
-   classes of [Functor/Structure/Monoidal/Strict.v] and
-   [Functor/Structure/Monoidal/Braided.v]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section PresentedUniversal.
 

@@ -6,20 +6,13 @@ Generalizable All Variables.
 
 (** * The category of F-algebras *)
 
-(* nLab:      https://ncatlab.org/nlab/show/algebra+over+an+endofunctor
+(*
    Wikipedia: https://en.wikipedia.org/wiki/F-algebra
 
-   For an endofunctor [F : C ⟶ C], an F-algebra is an object [a] with a
-   structure map [α : F a ~> a] (this is [FAlgebra F a] of Theory/Functor.v).
-   A morphism of F-algebras [(a, α) ~> (b, β)] is a carrier map [h : a ~> b]
-   commuting with the structure maps: [h ∘ α ≈ β ∘ fmap[F] h].  These form the
-   category [FAlg F]; its initial object (when it exists) is the least fixed
-   point of [F], and Lambek's lemma shows the initial structure map is an
-   isomorphism [F μF ≅ μF] (Theory/Lambek.v).
+   本文件给出构造。
 
-   The construction mirrors [Monad/Eilenberg/Moore.v]: a bundled hom class
-   [FAlgHom] carrying the commuting square, a dependent-pair object carrier,
-   and a hom-setoid comparing the underlying carrier maps. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where the construction comes from, and what recursion becomes
 

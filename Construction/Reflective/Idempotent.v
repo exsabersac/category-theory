@@ -17,10 +17,11 @@ Require Import Category.Adjunction.Natural.Transformation.Universal.
 
 Generalizable All Variables.
 
-(* Section proofs below draw on class-instance context variables (the monad and
-   its idempotency witness) that need not occur in the stated type, so capture
-   every section variable rather than the [Default Proof Using "Type"] subset
-   inherited from Lib.v. *)
+(*
+   本文件给出构造。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Set Default Proof Using "All".
 
 (* nLab: https://ncatlab.org/nlab/show/idempotent+monad

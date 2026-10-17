@@ -10,12 +10,11 @@ Require Import Coq.Vectors.Fin.
 
 Generalizable All Variables.
 
-(** [Construction/Free/Quiver.v] declares [edgeset] as a section-local
-    instance and again as a [Local Existing Instance], so it does not
-    escape that file.  Re-declaring it here — locally, so it does not
-    escape this one either — is mandatory: without it the very first
-    statement about edge equivalence reports a missing [Setoid] instance,
-    which reads like a universe problem and is not one. *)
+(*
+   本文件给出构造。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Existing Instance edgeset.
 
 (** * Categories presented by generators and relations

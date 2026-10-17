@@ -14,94 +14,17 @@ Generalizable All Variables.
 
 (** * The braided and symmetric monoidal structures on the free coloured PROP *)
 
-(* nLab: https://ncatlab.org/nlab/show/braided+monoidal+category
+(*
    nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category
    nLab: https://ncatlab.org/nlab/show/PROP
    Wikipedia: https://en.wikipedia.org/wiki/Braided_monoidal_category
    Wikipedia: https://en.wikipedia.org/wiki/Symmetric_monoidal_category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   This file equips THE shared [Monoidal] record on [CFreeCat S] — the
-   [CFreeCat_Monoidal S Cdec] of [Construction/ColouredPROP/Monoidal.v]
-   — with the block braiding [CT_braid cs ds], which crosses a
-   [cs]-typed bundle of wires past a [ds]-typed bundle, yielding the
-   [BraidedMonoidal] instance on the free coloured PROP; the braid
-   involution [CTE_braid_invol] then upgrades it to the
-   [SymmetricMonoidal] instance.  Downstream, the Strict and bundled
-   coloured-PROP instances all project this single Monoidal record, so
-   their agreement is definitional and [Instance.v] can discharge the
-   [cprop_monoidal_coherence] field of [Construction/ColouredPROP.v]'s
-   class by [eq_refl].
+   本文件给出构造。
 
-   This file merges the one-sorted spine's donor pair
-   [Construction/PROP/Braided.v] + [Construction/PROP/Symmetric.v],
-   the same layout compression as [Free.v] (Free + Tensor), [Cast.v]
-   (Cast + CastTensor + Structural) and [Monoidal.v] (Naturality +
-   Monoidal).  The proofs are the donors' proofs with [list Colour]
-   replacing [nat], [++] replacing [Nat.add], and [app_assoc]
-   replacing [Nat.add_assoc]; the naming flip between the donor's
-   [T_cast_inv]/[T_cast_inv_sym] and the coloured
-   [CT_cast_inv]/[CT_cast_inv_sym] is accounted for below (the
-   coloured [CT_cast_inv] is the TARGET-side cancellation
-   [cast e ⊙c cast (eq_sym e) ≈ id], which the donor called
-   [T_cast_inv_sym]).
-
-   Three proof fields are needed beyond the braid itself (writing
-   [⊙c = CT_comp], [⊕c = CT_tens], [σ = CT_braid], and [α] for the
-   associator casts of [Cast.v]):
-
-     - [braid_natural], the joint naturality square in the [ArityTwo]
-       form of [Theory/Naturality.v]: for [g : x ⇒ y], [h : z ⇒ w],
-
-         (h ⊕c id_y) ⊙c (id_z ⊕c g) ⊙c σ_{x,z}
-           ≈ σ_{y,w} ⊙c (id_y ⊕c h) ⊙c (g ⊕c id_z).
-
-       Fusing the adjacent half-identity tensors on each side
-       ([ctens_fuse_l] / [ctens_fuse_r]) reduces the square to the
-       primitive constructor [CTE_braid_natural].  (Per the design
-       note at the foot of [Monoidal.v], the coloured spine defines
-       no [braid_natural]-named synonym lemma that could shadow the
-       [BraidedMonoidal] projection in the record below.)
-
-     - [hexagon_identity], braiding [x] past the tensor [y ⨂ z]:
-
-         α_{y,z,x} ⊙c σ_{x,y++z} ⊙c α_{x,y,z}
-           ≈ (id_y ⊕c σ_{x,z}) ⊙c α_{y,x,z} ⊙c (σ_{x,y} ⊕c id_z).
-
-       Its source is the [CTE_braid_hex_right] axiom of [TermEq],
-       stated there in [eq_rect] transport form; the transport
-       bridges of [Construction/ColouredPROP/Monoidal.v]
-       ([ceq_rect_cod_cast], [ceq_rect_dom_cast], [CT_cast_sym_sym])
-       rewrite every transport as composition with a [CT_cast], and
-       one inverse-cast cancellation ([CT_cast_inv]) aligns the
-       result with the class field.
-
-     - [hexagon_identity_sym], braiding the tensor [x ⨂ y] past [z]
-       along the inverse associators: the same recipe applied to
-       [CTE_braid_hex_left].
-
-   The [braid_invol] field of [SymmetricMonoidal] is the
-   [CTE_braid_invol] axiom on the nose: crossing a [cs]-typed bundle
-   past a [ds]-typed bundle and back untangles completely.  Since the
-   tensor of [CFreeCat S] is [++] on objects, [cs ⨂ ds] and
-   [cs ++ ds] agree definitionally and the axiom matches the class
-   field verbatim.
-
-   Decidability discipline (design decision D2): every lemma in this
-   file is UIP-free — the donor's appeals to UIP on [nat] were already
-   replaced in [Monoidal.v]'s bridges by destructing the quantified
-   boundary equation.  Only the record instances depend on the colour
-   decider [Cdec], and only through their [braided_is_monoidal]
-   projection [CFreeCat_Monoidal S Cdec] (see the D2 WARNING at the
-   foot of [Monoidal.v]: instance sites must fix ONE canonical [Cdec]
-   per colour type).
-
-   All proof fields of the records are supplied from standalone,
-   named lemmas (the [Free.v] discipline), and the records themselves
-   are explicit [Build_BraidedMonoidal] / [Build_SymmetricMonoidal]
-   applications, so no Program obligations are generated and
-   successor files — Strict, the bundled coloured-PROP instance, and
-   the presentation layer — can reuse the very same lemmas. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CFreeBraided.
 

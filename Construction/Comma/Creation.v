@@ -21,47 +21,13 @@ Generalizable All Variables.
 
 (** * The comma projection creates limits *)
 
-(* nLab: https://ncatlab.org/nlab/show/comma+category#limits_and_colimits
+(*
    nLab: https://ncatlab.org/nlab/show/created+limit
 
-   The projection [comma_proj2 : =(d) ↓ U ⟶ C] creates limits, as the prose
-   at Construction/Comma.v and Construction/Comma/Limit.v has always
-   said.  Construction/Comma/Limit.v proves existence; what is added here is
-   the reflection clause [comma_creates_reflect] and the packaging
-   [comma_CreatesLimit] against Structure/Limit/Creation.v.  Nothing in
-   Construction/Comma/Limit.v is changed.
+   本文件给出极限/余极限的创造。
 
-   Two consequences worth naming.  First, [PreservesImageLimit]
-   (Construction/Comma/Limit.v), the honest cone-level hypothesis that
-   file introduced and that Adjunction/GAFT.v and Adjunction/SAFT.v consume,
-   is [PreservesLimitCone] quantified over all shapes, up to repackaging a
-   [Limit] record as a cone together with its universal property: the two
-   bridges below carry no proof, and both round trips hold by [eq_refl]
-   (the two [Type]s are not themselves convertible, one binding [Limit G]
-   where the other binds a cone and an [IsLimitCone]).  So GAFT and SAFT
-   already speak the general vocabulary under an older name.
-
-   Second, the created lift lies over an ARBITRARY downstairs limit [L] on
-   the nose — [comma_strict_apex] and [comma_strict_legs] are [eq_refl] for
-   every [L], not merely for the one a [Complete C] happens to choose.  That
-   is the generalization this file's header previously deferred: [Limit.v]
-   now takes [Ldiag] as a section parameter instead of computing it as
-   [HC J Gdiag], so [comma_limit] is parameterized by the limit it is built
-   from and the projection lands on that limit definitionally.  The exported
-   type of [Comma_Complete] is unchanged by the move — it simply supplies
-   [HC J (Gdiag K)] as the parameter — so Adjunction/GAFT.v and
-   Adjunction/SAFT.v are untouched.
-
-   On the house rule that morphisms are compared with [≈]: [comma_strict_legs]
-   writes [=] between morphisms, and it does so because both sides are the
-   SAME term — the witness is [eq_refl].  It records Mac Lane's [F σ = τ] at
-   full strength, which is strictly stronger than the [≈] the class asks
-   for; every proof below uses [≈].  (An earlier revision said
-   [comma_strict_legs] was "the one statement here" of that shape; measured
-   at this revision there are FOUR in this file — the later three being
-   [comma_limit_at_legs], [comma_prod_leg_strict] and
-   [comma_equalizer_leg_strict] — and a fifth, [coslice_lift_legs], in
-   Construction/Slice/Creation.v, each likewise [eq_refl] on one term.) *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* What follows the strictness readbacks was added for Mac Lane §V.6's
    Lemma 1 and Exercise 1 (book pp. 121-125) and, through

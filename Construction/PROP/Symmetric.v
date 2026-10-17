@@ -14,36 +14,15 @@ Generalizable All Variables.
 
 (** * The symmetric monoidal structure on the free PROP *)
 
-(* nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category
+(*
    nLab: https://ncatlab.org/nlab/show/PROP
    Wikipedia: https://en.wikipedia.org/wiki/Symmetric_monoidal_category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   A PROP is a SYMMETRIC strict monoidal category, so the braiding
-   [T_braid m n] installed on [FreeCat S] by
-   [Construction/PROP/Braided.v] must be its own inverse.  That is
-   precisely the [TE_braid_invol] axiom of [TermEq]:
+   本文件给出 PROP 相关。
 
-     σ_{n,m} ⊙ σ_{m,n} ≈ id_{m+n}
-
-   — crossing an [m]-wide bundle of wires past an [n]-wide bundle and
-   back again untangles completely.  Since the tensor of [FreeCat S]
-   is [Nat.add] on objects, [m ⨂ n] and [m + n] agree definitionally
-   and the axiom matches the [braid_invol] field of
-   [SymmetricMonoidal] verbatim.
-
-   The [symmetric_is_braided] field names [FreeCat_Braided S], whose
-   own [braided_is_monoidal] field names THE shared [Monoidal] record
-   [FreeCat_Monoidal S]: the Strict and bundled PROP instances
-   downstream project this single record as well, so their agreement
-   is definitional.
-
-   The synonym lemma [braid_invol] of [Construction/PROP/Naturality.v]
-   is deliberately not imported here: its name would shadow the
-   [SymmetricMonoidal] projection of the same name (the [Free.v]
-   discipline of standalone-lemma-then-explicit-record keeps the
-   record literal free of Program obligations, but the field names
-   themselves must still resolve to the class projections). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FreeSymmetric.
 

@@ -26,62 +26,13 @@ Generalizable All Variables.
 
 (** * The coslice projection creates limits *)
 
-(* nLab: https://ncatlab.org/nlab/show/over+category#limits_and_colimits
+(*
    nLab: https://ncatlab.org/nlab/show/created+limit
 
-   Mac Lane §V.1 Exercise 1 (book p. 112) asks for the coslice case of the
-   comma lemma: the projection [c ̸co C ⟶ C] creates every limit [C] has.
-   Riehl states the same as the limit half of §3.4 Proposition 8 (printed
-   p. 106) and again as §4.7 Lemma 2 (printed p. 174), whose Exercise
-   (printed p. 180) asks for the direct argument.
+   本文件给出极限/余极限的创造。
 
-   The comma side of that is Construction/Comma/Creation.v, which needs no
-   hypothesis here beyond one this library already supplies: [Id] is a right
-   adjoint ([adj_id], Instance/Adjoints.v, re-exported as
-   [Adjunction_Id], Adjunction/Compose.v), and
-   [right_adjoint_PreservesImageLimit] (Construction/Comma/Limit.v)
-   turns any adjunction into the preservation witness.  So
-   [@PreservesImageLimit C C Id] is inhabited for EVERY category, with no
-   premise at all, and every statement in this file is unconditional in that
-   sense — the only hypothesis anywhere below is a [Complete C] where
-   completeness is the conclusion's subject.
-
-   What transports and what does not.  [Comma_Coslice] (Construction/Slice.v —
-   issue #438 and five in-tree sites cite the [#[export]]
-   attribute heading that same declaration, one line above it)
-   is an isomorphism [c ̸co C ≅ =(c) ↓ Id] in [Cat], hence an equivalence,
-   hence a creator of all limits (Theory/Equivalence/Creation.v), so
-   completeness and CreatesLimit both cross over.  STRICT creation is not
-   carried across by that argument, and no strict statement about the
-   transported projection is claimed here either way: the transported
-   projection [comma_proj2 ◯ Coslice_to_Comma] has an object action that
-   does not reduce to the first projection —
-   [Comma_Coslice] is a [Program Instance] whose [fobj] is an obligation —
-   and there is no [StrictlyCreatesLimit_compose] to compose strictness
-   through.  Test/ProbeCommaCreation438.v's negatives n3 and n4 pin both
-   halves: the object action is refused against [`1 x], and the coslice is
-   not the comma category on the nose.  Both close the [eq_refl] route to
-   [slift_eq], which is what "there is no [StrictlyCreatesLimit_compose]"
-   leaves without an alternative; neither REFUTES the existence of a
-   [StrictlyCreatesLimit K (comma_proj2 ◯ Coslice_to_Comma)], whose
-   [slift_eq] is a Leibniz [=] that need not be [eq_refl], and no such lift
-   was attempted.
-
-   That is a fact about the TRANSPORT, not about coslice projections.  An
-   earlier revision of this header drew the wrong conclusion from it — that
-   a plain unconditioned projection [c ̸co C ⟶ C] would have to be built
-   from scratch, all three in-tree coslice projections carrying an extra
-   hypothesis on [C].  Measured, that is false for two of the three:
-   [Coslice_Proj] (Construction/Slice/Adjunction.v) prints as
-   [∀ {C : Category} (a : obj[C]), (a ̸co C) ⟶ C] and [Coslice_proj]
-   (Instance/Cat/Pullback.v) as the same, because the [Cocartesian] and
-   [ObjUIP] variables of the sections they sit in are never discharged into
-   them — their bodies do not use them.  Only [Coslice_Forget]
-   (Construction/Slice/Terminal.v) genuinely carries one, an [Initial].
-   So the second half of this file does the direct argument for
-   [Coslice_Proj] itself, and n6 records that the plain and the transported
-   projection are nevertheless different functors, so neither result
-   transfers to the other by conversion. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The identity is its own right adjoint, so the comma side is free *)
 

@@ -10,23 +10,11 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** V = Sets recovers ordinary category theory, at the transformation level.
+(*
+   本文件给出集合相关实例或构造。
 
-    The companion theorems [Category_is_Enriched_over_Set] and
-    [Functor_is_Enriched_over_Set] (in Construction/Enriched.v) show that a
-    Sets-enriched category is an ordinary category and that a Sets-enriched
-    functor is an ordinary functor.  This file completes the picture for the
-    third leg: a Sets-enriched natural transformation between the enriched
-    functors [EF], [EG] corresponding to ordinary functors [F], [G] is the same
-    data as an ordinary natural transformation [F ⟹ G].
-
-    In Sets the tensor unit is the singleton [I = {| carrier := poly_unit |}],
-    so an enriched component [etransform x : I ~{Sets}~> ehom D (F x) (G x)] is a
-    setoid map [poly_unit → (F x ~> G x)]; its value at [ttt] is an ordinary
-    component [F x ~> G x].  Unfolding the enriched naturality square in Sets and
-    evaluating at [f : x ~> y] gives exactly the ordinary naturality equation
-    [etransform y ttt ∘ fmap[F] f ≈ fmap[G] f ∘ etransform x ttt] (the
-    [naturality_sym] orientation, up to the left/right unitor plumbing). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section EnrichedSetsTransform.
 

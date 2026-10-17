@@ -9,21 +9,13 @@ Generalizable All Variables.
 
 (** * The category of F-coalgebras *)
 
-(* nLab:      https://ncatlab.org/nlab/show/coalgebra+of+an+endofunctor
+(*
    Wikipedia: https://en.wikipedia.org/wiki/F-coalgebra
 
-   An F-coalgebra is an object [a] with a structure map [γ : a ~> F a]
-   ([FCoalgebra F a] of Theory/Functor.v); a coalgebra morphism commutes with
-   the structure maps.  This is exactly an [F^op]-algebra in [C^op], so the
-   category is obtained by duality rather than re-proving the laws:
+   本文件给出构造。
 
-       FCoalg F := (FAlg (F^op))^op.
-
-   Because the library's duality is definitional ([C^op^op = C] by
-   reflexivity), the covariant components are the expected ones: objects are
-   pairs [(a, γ : a ~> F a)] and the forgetful functor lands back in [C].  The
-   final coalgebra (when it exists) is the greatest fixed point of [F];
-   [lambek_final] (Theory/Lambek.v) makes its structure map an isomorphism. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition FCoalg `(F : C ⟶ C) : Category := (FAlg (F^op))^op.
 

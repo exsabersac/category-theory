@@ -18,60 +18,16 @@ Generalizable All Variables.
 
 (** * The braided monoidal structure on the free PROP *)
 
-(* nLab: https://ncatlab.org/nlab/show/braided+monoidal+category
+(*
    nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category
    nLab: https://ncatlab.org/nlab/show/PROP
    Wikipedia: https://en.wikipedia.org/wiki/Braided_monoidal_category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   This file equips THE shared [Monoidal] record on [FreeCat S] — the
-   [FreeCat_Monoidal S] of [Construction/PROP/Monoidal.v] — with the
-   block braiding [T_braid m n], which crosses an [m]-wide bundle of
-   wires past an [n]-wide bundle, yielding the [BraidedMonoidal]
-   instance on the free PROP.  Downstream, the Symmetric, Strict and
-   bundled PROP instances all project this single Monoidal record, so
-   their agreement is definitional.
+   本文件给出 PROP 相关。
 
-   Three proof fields are needed beyond the braid itself (writing
-   [⊙ = T_comp], [⊕ = T_tens], [σ = T_braid], and [α] for the
-   associator casts of [Structural.v]):
-
-     - [braid_natural], the joint naturality square in the [ArityTwo]
-       form of [Theory/Naturality.v]: for [g : x ⇒ y], [h : z ⇒ w],
-
-         (h ⊕ id_y) ⊙ (id_z ⊕ g) ⊙ σ_{x,z}
-           ≈ σ_{y,w} ⊙ (id_y ⊕ h) ⊙ (g ⊕ id_z).
-
-       Fusing the adjacent half-identity tensors on each side
-       ([tens_fuse_l] / [tens_fuse_r]) reduces the square to the
-       primitive constructor [TE_braid_natural].  (The synonym lemma
-       in [Construction/PROP/Naturality.v] is deliberately not
-       imported here: its name [braid_natural] would shadow the
-       [BraidedMonoidal] projection of the same name in the record
-       literal below.)
-
-     - [hexagon_identity], braiding [x] past the tensor [y ⨂ z]:
-
-         α_{y,z,x} ⊙ σ_{x,y+z} ⊙ α_{x,y,z}
-           ≈ (id_y ⊕ σ_{x,z}) ⊙ α_{y,x,z} ⊙ (σ_{x,y} ⊕ id_z).
-
-       Its source is the [TE_braid_hex_right] axiom of [TermEq],
-       stated there in [eq_rect] transport form; the transport
-       bridges of [Construction/PROP/Monoidal.v] ([eq_rect_cod_cast],
-       [eq_rect_dom_cast], [T_cast_sym_sym]) rewrite every transport
-       as composition with a [T_cast], and one inverse-cast
-       cancellation ([T_cast_inv_sym]) aligns the result with the
-       class field.
-
-     - [hexagon_identity_sym], braiding the tensor [x ⨂ y] past [z]
-       along the inverse associators: the same recipe applied to
-       [TE_braid_hex_left].
-
-   All proof fields of the record are supplied from standalone, named
-   lemmas (the [Free.v] discipline), so no Program obligations are
-   generated and successor files — Symmetric, the bundled PROP
-   instance, and the presentation layer — can reuse the very same
-   lemmas. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FreeBraided.
 

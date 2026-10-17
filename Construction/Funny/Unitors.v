@@ -13,36 +13,11 @@ Require Import Equations.Prop.Logic.
 
 Generalizable All Variables.
 
-(** * Unitors for the funny tensor product
+(*
+   本文件给出构造。
 
-    The terminal category [1] (Instance/One.v) is the unit of the funny
-    tensor product: [1 □ C ≅ C ≅ C □ 1], and the isomorphisms are strict —
-    they live in [StrictCat], with the round trips equal to the identity
-    functor in [Functor_StrictEq_Setoid], not merely naturally isomorphic
-    to it.  Through the comparison functor [StrictCat_to_Cat]
-    (Instance/StrictCat/ToCat.v) each unitor also yields an isomorphism in
-    the weak [Cat] ([Funny_unit_left_cat], [Funny_unit_right_cat]).
-
-    The forward directions are packaged through the separately-functorial
-    eliminator [FunnyUP] (Construction/Funny.v): a word in [1 □ C] is
-    folded by sending the (identity) [1]-steps to [id] and the [C]-steps to
-    themselves.  The backward directions are the injections [FunnyR ttt]
-    and [FunnyL ttt] — the injection at the lone object of [1] IS the
-    inverse.  One round trip is definitional up to [id_left]; the other
-    collapses a word to its composite, which the congruence [feq] proves
-    equal to the original word one head step at a time
-    ([Funny_strict_eq], StrictEq.v).
-
-    [Funny_unit_left_natural]/[Funny_unit_left_from_natural] (and their
-    right-hand duals) are the strict naturality squares of the unitors
-    against [FunnyBimap] (Bifunctor.v), in the exact shape consumed by the
-    [to_unit_left_natural] (etc.) fields of the [Monoidal] instance on
-    [StrictCat] (Instance/StrictCat/Funny.v).
-
-    All coherence statements live in [Functor_StrictEq_Setoid] — the
-    hom-setoid of [StrictCat] — because the funny tensor product is not
-    invariant under equivalence of categories (see the header of
-    Construction/Funny.v). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The left unitor [1 □ C ≅ C] *)
 

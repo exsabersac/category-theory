@@ -9,30 +9,11 @@ Require Import Category.Instance.Two.Monoidal.
 
 Generalizable All Variables.
 
-(** * Categories enriched over 2 are exactly preorders.
+(*
+   本文件给出构造。
 
-    Regard the walking arrow [_2] as the poset of truth values
-    {TwoX < TwoY} with its cartesian monoidal structure [Two_Monoidal]
-    (tensor := meet, unit := the top TwoY).  A category enriched over
-    this monoidal category assigns to every pair of objects a truth
-    value [ehom x y : TwoObj], read as the proposition "x ≤ y" (true
-    when [ehom x y = TwoY], equivalently when there is an arrow
-    [TwoY ~> ehom x y] in [_2]).
-
-    - [eid : TwoY ~> (x ⟿ x)] forces [ehom x x = TwoY]: REFLEXIVITY.
-    - [ecompose : (y ⟿ z) ⨂ (x ⟿ y) ~> (x ⟿ z)], with the tensor
-      the meet, forces [ehom y z = TwoY → ehom x y = TwoY →
-      ehom x z = TwoY]: TRANSITIVITY.
-    - The three enrichment laws are equations between parallel arrows
-      of the thin category [_2], hence hold automatically.
-
-    Conversely a (decidable) preorder yields an enrichment by letting
-    [ehom x y] be the truth value of "x ≤ y".  Enriched functors
-    between such enrichments are exactly the monotone maps.
-
-    This mirrors [Category_is_Enriched_over_Set] in
-    Construction/Enriched.v, which recovers ordinary categories by
-    enriching over [Sets]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* In 2, an object receiving an arrow from the top is itself the top. *)
 Lemma two_from_top {z : TwoObj} : TwoHom TwoY z → z = TwoY.

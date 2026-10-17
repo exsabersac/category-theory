@@ -5,19 +5,13 @@ Generalizable All Variables.
 
 (** The opposite (dual) category C^op. *)
 
-(* nLab: https://ncatlab.org/nlab/show/opposite+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Opposite_category
 
-   C^op has the same objects as C, with hom-sets reversed,
-   hom[C^op] x y := hom[C] y x, so that f : y ~> x in C is read as
-   f : x ~{C^op}~> y.  Identities are unchanged and composition is reversed:
-   g ∘ f in C^op is f ∘ g in C.
+   本文件给出反范畴、反函子或反自然变换（2-胞方向反转）。
 
-   Duality is built in here so that (C^op)^op = C holds by reflexivity: the
-   two associativity laws are swapped (comp_assoc uses comp_assoc_sym and vice
-   versa) and compose_respects is re-bracketed symmetrically, so applying the
-   construction twice lands every field back on its original (see op_invol,
-   provable by [reflexivity]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Duality: the principle, its history, and what strictness buys
 

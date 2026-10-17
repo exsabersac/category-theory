@@ -19,32 +19,11 @@ From Coq Require Import Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * Theorem 1: W is the free monoidal category on one generator
+(*
+   本文件给出泛构造相关。
 
-    Mac Lane, CWM 2nd ed., §VII.2, Theorem 1 [maclane:VII.2:thm1]: for any
-    monoidal category [B] and object [b : B] there is a unique morphism
-    [W ⟶ B] of monoidal categories carrying the generator to [b] — namely
-    substitution of [b] into all blanks.
-
-    THE MORPHISM NOTION IS STRICT, and that is Mac Lane's own reading, not a
-    weakening: his Moncat (§VII.1, [maclane:VII.1:construction2]) is "the
-    category of all small monoidal categories with STRICT morphisms as
-    arrows", and a strict morphism ([maclane:VII.1:def3]) carries α, λ, ρ to
-    α', λ', ρ' on the nose.  Uniqueness among merely strong monoidal functors
-    is false — any conjugate of [Subst] by a nonidentity natural isomorphism
-    is again strong monoidal and sends the generator to an isomorph of [b] —
-    so the strict reading is the only one under which Theorem 1 can hold.
-    Existence is nevertheless delivered at BOTH strengths below:
-    [Subst_Monoidal] (strong) and [Subst_Strict] (strict, with both object
-    equations [eq_refl] on the nose).
-
-    What is deliberately NOT delivered here, and where it is recorded:
-    uniqueness up to monoidal natural isomorphism among STRONG monoidal
-    functors.  The library has no monoidal-natural-transformation class for
-    strong functors (Theory/Natural/Transformation/Monoidal.v states
-    [LaxMonoidal_Transform] for lax functors only), so that statement has no
-    home; it is ledgered in doc/classical-completion-plan.md rather than
-    approximated. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Universal.
 

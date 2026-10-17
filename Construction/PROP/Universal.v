@@ -36,77 +36,14 @@ Generalizable All Variables.
 
 (** * The universal property of the free PROP *)
 
-(* nLab: https://ncatlab.org/nlab/show/PROP
+(*
    nLab: https://ncatlab.org/nlab/show/free+category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   Given a signature [S], a PROP [P], and a valuation [v] of the
-   generators, this file packages the interpretation
-   [interp : Term S m n → (⟦m⟧ ~{P}~> ⟦n⟧)] of
-   [Construction/PROP/Interp.v] into a functor [InterpF : FreeCat S ⟶ P]
-   and equips it with the full strict-symmetric-monoidal structure,
-   then proves it UNIQUE among such functors: the free PROP [FreePROP S]
-   is initial among PROPs that are equipped with an [S]-valuation and
-   satisfy two side conditions on the target [P]: decidable object
-   equality ([ObjDecEq], powering the axiom-free UIP on [obj P]) and a
-   [Prop] reflection of the hom equivalence ([HomEqProp], powering
-   [InterpF]'s respectfulness field [interp_sound]).  The free
-   instance provides both by construction ([FreeCat_HomEqProp] /
-   [FreeCat_ObjDecEq] in [Instance.v]).  The [Proof using] lines
-   witness the split: uniqueness ([interp_unique] and its corollaries)
-   needs only [ObjDecEq]; [HomEqProp] enters only through [InterpF]
-   itself.
+   本文件给出泛构造相关。
 
-   The strictness comparisons of [InterpF] ride the PROP class fields
-   VERBATIM: [strict_pure_obj] is [prop_unit_zero] and [strict_ap_obj]
-   is [prop_tensor_plus] (machine-checked by [Example]s below), so the
-   universal property really is stated against the strict object
-   equalities every PROP carries.
-
-   ** Design note: how "strict symmetric monoidal functor" is phrased
-
-   A PROP carries two [Monoidal] structures on the same category — the
-   strict path [MP P] and the braided/symmetric path [MB P] — related
-   only by the propositional equality [prop_monoidal_coherence].  The
-   classes [StrictMonoidalFunctor] (at [MP P];
-   Functor/Structure/Monoidal/Strict.v) and [BraidedMonoidalFunctor]
-   (at [MB P]; Functor/Structure/Monoidal/Braided.v) therefore carry
-   INDEPENDENT [MonoidalFunctor] fields over propositionally-different
-   target monoidals, and a hypothesis pack made of one instance of each
-   would be underdetermined (nothing would relate their two tensor
-   comparisons).  Uniqueness is instead phrased against ONE
-   [StrictMonoidalFunctor] plus [SymmetricStrict]: the braid
-   compatibility square over that SAME [ap_iso], with the braiding
-   re-indexed to the strict path by [strict_braid] (the transport of
-   [Interp.v]).  For competitors arriving with a genuine
-   [BraidedMonoidalFunctor], the converse bridge
-   [SymmetricStrict_of_Braided] converts (given the agreement of the
-   two tensor comparisons across the coherence transport), and
-   [InterpF_Braided] / [InterpF_Symmetric] deliver [InterpF] itself in
-   those classes via the match-based [MonoidalFunctor_transport].
-
-   ** Uniqueness
-
-   [interp_unique] pins any [SymmetricStrict] competitor [G] that
-   agrees with [v] on generators: the object agreement is a family
-   [Hobj : ∀ n, G n = ⟦n⟧] of Leibniz equalities, and the morphism
-   agreement is phrased by conjugating with [hom_cast] along it.  The
-   theorem holds for an ARBITRARY such family — axiom-free UIP on
-   [obj P] (the [ObjDecEq] class) makes any two proofs of the same
-   object equality interchangeable — and the corollary
-   [interp_unique_from_one] derives the whole family from the single
-   datum [G 1 = ⟦1⟧] via the [G_obj] fixpoint.  [interp_unique2] is the
-   resulting agreement of any two competitors.  The existence half is
-   named as well: [InterpF_extends_valuation] records (by [eq_refl])
-   that [InterpF] extends the valuation, and
-   [InterpF_interp_unique_self] instantiates the hypothesis pack of
-   [interp_unique] at [InterpF] itself, with [Hobj := eq_refl].
-
-   The named coherence lemmas of section 2 ([interp_ap_natural],
-   [interp_monoidal_unit_left/right], [interp_monoidal_assoc],
-   [interp_braid_ap]) are deliberately standalone: their statements are
-   purely target-side, so [Construction/PROP/Presentation/Universal.v]
-   reuses them verbatim for the presented PROP. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Transporting a [MonoidalFunctor] across a [Monoidal] equality
 

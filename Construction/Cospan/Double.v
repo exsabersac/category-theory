@@ -10,46 +10,13 @@ Generalizable All Variables.
 
 (** * The double category of cospans *)
 
-(* nLab: https://ncatlab.org/nlab/show/double+category+of+cospans
+(*
+ nLab: https://ncatlab.org/nlab/show/double+category+of+cospans
 
-   Over a category [C] with chosen pushouts ([HasPushouts C]) the cospans of
-   [C] organise into a pseudo double category [Cospan_Double]:
+   本文件给出构造。
 
-     - objects and (strict) vertical 1-cells: [C] itself;
-     - horizontal 1-cells [X ⇸ Y]: cospans [X → N ← Y]
-       ([CospanArrow X Y] of Construction/Cospan/Category.v);
-     - squares
-             X --h--> Y
-             |        |
-             u        v
-             v        v
-             Z --k--> W
-       filling a boundary [(h, u, v, k)]: morphisms of cospans, i.e. maps of
-       apexes [φ : apex h ~> apex k] intertwining the legs with the vertical
-       edges ([φ ∘ in1 h ≈ in1 k ∘ u] and [φ ∘ in2 h ≈ in2 k ∘ v]);
-     - horizontal composition: gluing along the shared boundary object by the
-       CHOSEN pushout, exactly as in [cospan_compose];
-     - the associator and both unitors: invertible globular squares whose
-       apex maps are pushout mediators, with the triangle and pentagon
-       coherence discharged by the joint epimorphy of pushout injections.
-
-   Unlike [CospanCat] (which quotients by apex isomorphism to obtain a
-   1-category), no quotient is taken here: the square setoid compares the
-   apex maps themselves, so [dsq] is genuinely proof-relevant and all the
-   weak structure carries real pushout content.
-
-   Every equation in this file is an equality of morphisms OUT OF a (possibly
-   iterated) pushout apex, so the whole development rides on a single
-   principle: the pushout injections are jointly epic
-   ([pushout_jointly_epic]), the op-dual of the "pullback projections are
-   jointly monic" reasoning of Theory/Morphisms/Stability.v.  Each side of
-   the triangle/pentagon is evaluated on the generator legs of the iterated
-   pushout by the mediator computation rules [pushout_med_in1]/[_in2], and
-   the results are compared leg by leg.
-
-   Monoidal double categories (tensoring cospans alongside the double
-   structure, towards decorated/structured cospans) are NOT attempted here;
-   that development is deferred (ledger entry 9). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CospanDouble.
 

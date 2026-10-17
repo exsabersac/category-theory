@@ -10,24 +10,13 @@ Reserved Infix "⟿" (at level 90, right associativity).
 
 (** A category enriched over a monoidal category K (a K-category). *)
 
-(* nLab: https://ncatlab.org/nlab/show/enriched+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Enriched_category
 
-   Given a monoidal category (K, ⨂, I) playing the role of V, a K-enriched
-   category replaces each hom-set by a hom-object (x ⟿ y) : K.  Composition
-   is the K-morphism ecompose : (y ⟿ z) ⨂ (x ⟿ y) ~> (x ⟿ z) (the codomain
-   factor on the left, mirroring ordinary composition order), and the
-   identity is the K-morphism eid : I ~> (x ⟿ x) that names the identity
-   inside the hom-object.  The three coherence axioms below assert, as
-   equalities of K-morphisms, the associativity diagram and the two unit
-   diagrams of Kelly's definition, with unit_left, unit_right and
-   tensor_assoc supplying the unitors and associator of K.
+   本文件给出构造。
 
-   Taking K = Set recovers ordinary (locally small) categories: hom-objects
-   become hom-sets, eid picks out an element, and ecompose a function.
-   Taking K = Ab gives preadditive categories, with bilinear composition —
-   made literally computational in Construction/Enriched/Ab.v over
-   Instance/Ab/Monoidal.v's ⟨Ab, ⊗, ℤ⟩. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Why enrichment, and the bases that tune it
 

@@ -15,121 +15,19 @@ Generalizable All Variables.
 
 (** * Natural transformations between group homomorphisms are conjugations *)
 
-(* nLab:      https://ncatlab.org/nlab/show/natural+transformation
+(*
    nLab:      https://ncatlab.org/nlab/show/delooping
    nLab:      https://ncatlab.org/nlab/show/automorphism+2-group
    Wikipedia: https://en.wikipedia.org/wiki/Inner_automorphism
    Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, §I.4, printed p. 18 (Exercise 3)
    Book:      Awodey, "Category Theory", 2nd ed., Oxford Logic Guides 52,
-              2010, §7.7 ("Functor categories"), Example 7.21, printed
-              pp. 167-168
    Book:      Awodey, "Category Theory", 1st ed. (Carnegie Mellon pre-print,
-              September 2005), §7.7, Example 7.21, printed p. 175
    Book:      Riehl, "Category Theory in Context", Exercise 1.4.ii,
-              printed p. 30
 
-   CITATION NOTE.  AWODEY CHANGED THE FORMULA BETWEEN EDITIONS, and both
-   printings have now been read.  For a transformation ϑ : f → g between
-   homomorphisms f, g : G → H the FIRST edition (printed p. 175) writes
+   本文件给出构造。
 
-       f(x) · h = h · g(x),    equivalently    h⁻¹ · f(x) · h = g(x),
-
-   and calls ϑ "an inner automorphism y ↦ h⁻¹ · y · h of H (called
-   conjugation by h), that takes f to g"; the SECOND edition (printed p. 167)
-   writes
-
-       g(x) · h = h · f(x),    equivalently    g(x) = h · f(x) · h⁻¹,
-
-   and calls ϑ "an inner automorphism y → h · y · h⁻¹ of H (called
-   conjugation by h) that takes f to g".  (Both quotations, and those below,
-   normalize the superscript inverse and the inter-word spacing; nothing else
-   is changed — the two printings really do use different arrow glyphs and
-   different comma placement in that sentence.)
-
-   The two differ in which of the source and the target multiplies on the
-   left of h.  Each edition is internally consistent, and the two forms are
-   carried to each other by h ↦ h⁻¹: the first edition's is exactly
-   [transform_iff_conjugate_SWAPPED] below, whose proof derives it from the
-   second edition's [transform_iff_conjugate] by doing nothing but replacing
-   h by h⁻¹.  THIS FILE FOLLOWS THE SECOND EDITION, because that is the
-   orientation the library's own composition order produces — see the
-   COMPOSITION ORDER note below, which derives it rather than assuming it.
-   Every Awodey quotation below is from the second printing unless the first
-   is named.
-
-   The catalog entry behind this file cites the FIRST edition, as
-   Structure/Groupoid.v also does for §7.7, and ITS PARAPHRASE IS CORRECT FOR
-   THE EDITION IT CITES: nothing here corrects it, and no erratum against it
-   is claimed anywhere in this file.
-
-   Mac Lane's Exercise 3 is cited by location only: its content is what this
-   file proves, but its wording is not quoted, not having been checked
-   against the book.
-
-   Two monoid homomorphisms S, T : M → N correspond to two functors between
-   the deloopings B M ⟶ B N ([Deloop_map] and [Deloop_unmap] below; the round
-   trip through a homomorphism is the identity on the nose, the one through a
-   functor on its morphism part).  A natural transformation between those two
-   functors has exactly one component, at the single object, so it is a single
-   element h of N; and its one naturality square says
-
-       T g · h  ≈  h · S g       for every g in M,
-
-   which for a group N is
-
-       T g  ≈  h · S g · h⁻¹,
-
-   the statement that h conjugates S into T.  This file proves that
-   correspondence in both directions, at the level of setoids, and draws the
-   consequence Awodey draws: since h is invertible when N is a group, every
-   such transformation is invertible, so the functor category is a groupoid.
-
-   Contents:
-
-       Deloop_map f              the functor B M ⟶ B N of a homomorphism f
-       Deloop_unmap F            the homomorphism of a functor; a left inverse
-                                 of [Deloop_map] by [eq_refl]
-       deloop_compose_mon_op     composition in B N IS the product of N
-       Intertwines F G h         T g · h ≈ h · S g, for every g
-       transform_intertwines     a transformation's component intertwines
-       intertwines_transform     and conversely
-       transform_iff_intertwines the two together (monoids, no inverses)
-       transform_intertwiner_iso the correspondence as a bijection of setoids
-       Conjugates F G h          T g ≈ h · S g · h⁻¹, for every g
-       conjugates_is_conjugation and that IS Structure/Groupoid.v's
-                                 [conjugate], by [eq_refl]
-       transform_conjugator_iso  the same bijection over a group, onto the
-                                 set of CONJUGATING elements
-       transform_conjugator_hom  and at two homomorphisms: B S ⟹ B T IS the
-                                 set of elements conjugating S into T
-       transform_iff_conjugate   Mac Lane §I.4 Exercise 3, both directions
-       transform_iff_conjugate_SWAPPED
-                                 the same statement with h replaced by h⁻¹ —
-                                 Awodey's first-edition orientation
-       conjugates_inverse        h⁻¹ conjugates the other way
-       Fun_IsGroupoid            [C, D] is a groupoid whenever D is
-       Deloop_Fun_IsGroupoid     Awodey's consequence: H^G is a groupoid
-       deloop_ginv_conjugates    and the inverse conjugates back, by h⁻¹
-       abelian_conjugates_agree  the statement is EMPTY for abelian targets
-       Bool_Xor_abelian, Z3_abelian   which the older witnesses are
-       S3_hom_conjugate          a nonabelian witness: two homomorphisms
-                                 Z/2 → S3 conjugate by a non-central element
-                                 ([S3_conjugator_noncentral])
-       S3_conjugation_moves      and the conjugation is not the identity
-       Deloop_S3_two_objects     H^G has two provably distinct objects
-       S3_no_transform_trivial   and two with NO arrow between them, so it is
-                                 not connected ([Deloop_Fun_S3_not_connected])
-       Deloop_Fun_S3_not_deloop  hence not equivalent to the delooping of any
-                                 MONOID — not merely of any group — in either
-                                 direction
-
-   The delooping itself, and the monoid/group records [MonObject] and
-   [GrpObject], are Construction/Deloop.v; that file's header states that "the
-   functor-level half of the dictionary — that functors between deloopings are
-   exactly monoid homomorphisms" is deliberately left out of it, and
-   [Deloop_map]/[Deloop_unmap] below are that half.  [MonHom], [IsGroupoid],
-   [ginv] and the symmetric group [S3_Grp] come from Structure/Groupoid.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* What the exercise is about, and the two ways to get it wrong
 

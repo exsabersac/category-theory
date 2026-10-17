@@ -6,13 +6,11 @@ Require Import Category.Theory.Natural.Transformation.
 Require Import Category.Functor.Bifunctor.
 Require Import Category.Construction.Product.
 Require Import Category.Functor.Construction.Product.
-(* [Instance.Fun] is Required but NOT Imported: its functor-category
-   notation "[ C , D ]" (level 90) and ListNotations' "[]" have
-   grammatically incompatible bracket prefixes.  The one use site (the
-   projection's tensor-comparison isomorphism below) writes the
-   qualified [@Category.Instance.Fun.Fun] instead — the same
-   discipline as [Universal.v], [Relabel.v] and
-   [Presentation/Universal.v]. *)
+(*
+   本文件给出构造。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Category.Instance.Fun.
 Require Import Category.Structure.Monoidal.
 Require Import Category.Structure.Monoidal.Braided.

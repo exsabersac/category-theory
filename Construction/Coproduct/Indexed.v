@@ -5,17 +5,11 @@ Require Import Category.Theory.Category.
 Require Import Category.Theory.Isomorphism.
 Require Import Category.Theory.Functor.
 
-(* PORTABILITY, learned the hard way: this MUST be the [Coq.Logic.]
-   spelling, not [From Stdlib Require Import EqdepFacts].  The tree
-   builds on Coq 8.19/8.20 as well as Rocq 9.1, and the [Stdlib] prefix
-   does not exist on the 8.x line -- Docker CI rejects it with "Cannot
-   find a physical path bound to logical path EqdepFacts with prefix
-   Stdlib".  An earlier revision of this file shipped the [Stdlib]
-   spelling and was the only file in the tree to use it.  Note that the
-   nix [category-theory_8_19] target ACCEPTS both spellings, so a green
-   nix build is not evidence here; the tree's own convention is
-   [Require Import Coq.Logic.Eqdep_dec.] (Structure/Bicartesian/Matrix.v,
-   Instance/Ordinal.v, Instance/FinSet/Pushout.v) and this follows it. *)
+(*
+   本文件给出余积实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Import Coq.Logic.EqdepFacts.
 
 Generalizable All Variables.

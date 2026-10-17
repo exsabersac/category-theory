@@ -6,13 +6,11 @@ Require Import Category.Theory.Natural.Transformation.
 Require Import Category.Functor.Bifunctor.
 Require Import Category.Construction.Product.
 Require Import Category.Functor.Construction.Product.
-(* [Category.Instance.Fun] is Required transitively (its [Fun] category
-   hosts the tensor-comparison isomorphism below) but deliberately NOT
-   Imported: its bracket notation [C, D] is grammatically incompatible
-   with the singleton list notation [c] of [ListNotations], which the
-   wire-datum corollary needs.  The use sites write the qualified
-   [@Category.Instance.Fun.Fun] instead — the same discipline as
-   [Construction/ColouredPROP/Universal.v]. *)
+(*
+   本文件给出泛构造相关。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Require Category.Instance.Fun.
 Require Import Category.Structure.Monoidal.
 Require Import Category.Structure.Monoidal.Braided.

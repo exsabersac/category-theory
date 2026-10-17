@@ -11,13 +11,11 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** Identity and composition of K-enriched functors, together with the left
-    and right whiskering of a V-natural transformation by an enriched functor.
+(*
+   本文件给出复合相关构造（伴随/函子/单子等的复合）。
 
-    These assemble the categorical structure on K-categories: EnrichedId and
-    EnrichedCompose give the identity and composite 1-cells, while the two
-    whiskerings supply the horizontal action of 1-cells on V-natural 2-cells
-    that Fun.v needs to build the enriched functor category. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The identity enriched functor: the object map is the identity and each
     hom-object map is the identity K-morphism id[x ⟿ y]. *)

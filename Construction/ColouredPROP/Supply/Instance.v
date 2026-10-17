@@ -27,10 +27,11 @@ From Coq Require Import Lists.List.
 Import ListNotations.
 From Coq Require Import Bool.Bool.
 From Coq Require Import Eqdep_dec.
-(* [Morphisms] (the [Prop]-relation generalized-rewriting classes) powers
-   the [rewrite]s over the [Prop]-valued congruence [CTermEqW] in the
-   singleton-collapse theorems below; the library's own crelation-based
-   kit (Lib/Setoid.v) does not apply to raw [CTerm] formers. *)
+(*
+   本文件给出具体实例。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 From Coq Require Import Morphisms.
 
 Generalizable All Variables.

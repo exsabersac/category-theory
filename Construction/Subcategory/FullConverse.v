@@ -1,24 +1,10 @@
 (** * The converse of [Full_Implies_Full_Functor] needs its hypothesis *)
 
-(* Construction/Subcategory.v proves [Full_Functor_Implies_Full] under the
-   hypothesis [ShomRespects] — that the selected-morphism predicate is closed
-   under the hom-setoid equivalence — and explains why the [Subcategory]
-   record does not supply it.  That explanation was a diagnosis of why one
-   proof does not go through, not a proof that no proof does.
+(*
+   本文件给出构造。
 
-   This file closes the gap with a counterexample, so the hypothesis is now
-   known to be NECESSARY rather than merely convenient.  (The construction is
-   due to an audit of the first commit of this work.)
-
-   The ambient category has one object and the natural numbers as its
-   morphisms, composed by addition, with two arrows identified exactly when
-   both are zero or both are nonzero.  That is a genuine congruence for
-   addition and it has two classes, so the hom-setoid is NOT the total
-   relation — the counterexample does not cheat by making everything equal.
-   The subcategory selects every morphism except 1.  Its inclusion is full as
-   a FUNCTOR, because 1 can be replaced by 2, which is retained and
-   equivalent to it; but the subcategory is not full as DATA, because 1
-   itself is not retained.  That is exactly the failure of [ShomRespects]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

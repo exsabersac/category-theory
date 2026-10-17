@@ -11,37 +11,11 @@ Require Import Category.Construction.Funny.Bifunctor.
 
 Generalizable All Variables.
 
-(** * Symmetry of the funny tensor product
+(*
+   本文件给出构造。
 
-    [FunnySwap : C □ D ⟶ D □ C] swaps the two coordinates:
-
-      (c, d) ↦ (d, c)        lstep f ↦ rstep f        rstep g ↦ lstep g
-
-    Each step swaps IN PLACE — the word is never reversed.  A word
-    (c1, d1) ~> (c2, d2) becomes a word (d1, c1) ~> (d2, c2) with the same
-    steps in the same temporal order, each moving the other coordinate;
-    reversing the word would flip domain and codomain and is wrong.
-
-    Like every functor out of a funny tensor product, [FunnySwap] is
-    packaged through the separately-functorial eliminator [FunnyUP]
-    (Construction/Funny.v), so functoriality is inherited from the universal
-    property rather than re-proved by word induction.  Since swapping twice
-    is the identity on the generating steps, [FunnySwap] is involutive
-    ([FunnySwap_invol]) and hence an isomorphism of categories, both in
-    [StrictCat] ([Funny_swap]) and — through the comparison functor
-    [StrictCat_to_Cat] — in the weak [Cat] ([Funny_swap_cat]).
-
-    [FunnySwap_natural] is the strict naturality square in both variables
-    jointly: swapping commutes with [FunnyBimap F G] (Bifunctor.v).  This
-    is the braiding underlying the symmetric monoidal structure of [□] on
-    [StrictCat] (Instance/StrictCat/Funny.v); per Foltz–Lair–Kelly (1980)
-    both monoidal biclosed structures on Cat are symmetric, and this is the
-    symmetry of the funny one.
-
-    All coherence statements live in [Functor_StrictEq_Setoid] — the
-    hom-setoid of [StrictCat] — because the funny tensor product is not
-    invariant under equivalence of categories (see the header of
-    Construction/Funny.v). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The action of the swap, as separately functorial data *)
 

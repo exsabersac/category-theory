@@ -8,31 +8,13 @@ Generalizable All Variables.
 
 (** The Karoubi envelope (idempotent splitting completion) of a category. *)
 
-(* nLab:      https://ncatlab.org/nlab/show/Karoubi+envelope
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Karoubi_envelope
 
-   The Karoubi envelope Split(C) of a category C — also called its idempotent
-   splitting completion, or Cauchy completion — freely splits the idempotents
-   of C.  An object is a pair (x, e) of an object x : C and an idempotent
-   e : x ~> x with e ∘ e ≈ e; a morphism (x, e) ~> (y, e') is a morphism
-   f : x ~> y of C absorbed by the idempotents on either side,
+   本文件给出构造。
 
-      e' ∘ f ≈ f      and      f ∘ e ≈ f,
-
-   two such being equal exactly when their underlying C-morphisms are ≈, the
-   absorption proofs being irrelevant.  The identity of (x, e) is e itself —
-   not id[x], which need not be absorbed by e — and composition is
-   composition in C, the absorption laws for a composite following from those
-   of its outer factors.
-
-   C embeds into Split(C) by x ↦ (x, id[x]) on objects and f ↦ f on
-   morphisms (Karoubi_Embed); the embedding is full and faithful, both
-   witnessed below by the identity on underlying morphisms.  The point of the
-   construction is that in Split(C) every idempotent splits: an idempotent φ
-   on (x, e) factors through the object (x, φ) as a retraction followed by a
-   section, both carried by φ itself, with both triangle equations reducing
-   to φ ∘ φ ≈ φ (karoubi_idem_splits, phrased via the SplitIdempotent class
-   of Theory/Morphisms.v). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Why idempotents are split, and where the completion is used
 

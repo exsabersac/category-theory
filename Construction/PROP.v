@@ -14,13 +14,13 @@ Generalizable All Variables.
 
 (** * PROPs (PROducts and Permutations) *)
 
-(* nLab:      https://ncatlab.org/nlab/show/PROP
+(*
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   A PROP, in the sense of MacLane and the modern PROP/operad literature,
-   is a strict symmetric monoidal category whose objects are the natural
-   numbers and whose tensor on objects is addition (object monoid (ℕ,+,0),
-   unit I = 0); the symmetric groups S_n embed into PROP(n,n). *)
+   本文件给出 PROP 相关。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (**
     A PROP, in the sense of MacLane and the modern PROP/operad literature,

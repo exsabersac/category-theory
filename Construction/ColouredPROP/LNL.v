@@ -28,126 +28,17 @@ Generalizable All Variables.
 
 (** * The linear/non-linear comonoid-supply bridge *)
 
-(* nLab: https://ncatlab.org/nlab/show/linear+logic
+(*
    nLab: https://ncatlab.org/nlab/show/copy-discard+category
    nLab: https://ncatlab.org/nlab/show/comonoid
-
-   ** SCOPE CONTRACT (read this before extending the file)
-
-   This file states the HONEST, ATTAINABLE form of a linear/non-linear
-   bridge for supplied coloured PROPs, in the library's
-   copy-discard vocabulary (Structure/Monoidal/CopyDiscard.v and
-   CopyDiscard/Deterministic.v — the Cho–Jacobs determinism squares —
-   together with the Fong–Spivak comonoid supplies of
-   Theory/Algebra/Comonoid/*.v and Construction/ColouredPROP/Supply.v).
-   It is deliberately NOT Benton's LNL adjunction, and no part of it
-   should be read as claiming one:
-
-     - Benton's LNL model is a symmetric monoidal adjunction between a
-       cartesian (closed) category and a symmetric monoidal (closed)
-       category.  The right adjoint that manufactures the cartesian
-       leg from the linear one is the COFREE COMMUTATIVE COMONOID
-       functor (equivalently, the cartesian leg arises from the [!]
-       exponential comonad it induces).  This library has no
-       cofree-comonoid construction — [Comon_Forget] of
-       Theory/Algebra/Comonoid/Hom.v has no right adjoint in-tree — so
-       the adjunction itself is out of reach here, and this file says
-       so rather than approximating it with an unproved interface.
-       What IS delivered is the underlying bridge any such adjunction
-       would factor through: the copyable colour class embeds into
-       [Comon (cprop_cat P)], and the hom-sets of that embedding ARE
-       the supply-deterministic maps, on the nose
-       ([LNL_hom_is_deterministic]), with the [LNL_lift] /
-       [Comon_Forget] round-trip pair ([LNL_forget_lift] /
-       [LNL_lift_unique]) making the identification functorial in
-       both directions.
-
-     - A bespoke category of cartesian colour words and deterministic
-       maps (with its own hand-rolled monoidal tower) is an explicit
-       NON-GOAL, recorded here in the same machine-checked-deferral
-       style the spine uses for out-of-scope successors (cf. the
-       deferral notes of Construction/PROP/Algebra.v and
-       Construction/ColouredPROP/Algebra.v).  [Comon (cprop_cat P)] —
-       the sigma-packaged category of internal comonoids that
-       Theory/Algebra/Comonoid/Hom.v already provides — IS the
-       non-linear leg; duplicating it as a bespoke record tower would
-       add coherence obligations without adding theorems.
-
-   The conceptual neighbour of this bridge elsewhere in the library is
-   the "cartesian colour" discussion of Structure/Monoidal/Collapse.v:
-   there, semicartesian collapse shows what happens when copy/discard
-   become NATURAL for every morphism (Fox's theorem territory, where
-   the tensor is forced cartesian); here, the per-colour supply keeps
-   naturality confined to the deterministic subclass, which is exactly
-   what lets linear (non-copyable) colours coexist with cartesian
-   (copyable) ones inside one coloured PROP.
-
-   Concretely the file delivers:
-
-   1.  [SupplyDeterministic] — Cho–Jacobs determinism relativised to
-       the DERIVED boundary supplies [supply_list]: a boundary map
-       between all-copyable words is supply-deterministic when it is a
-       [ComonoidHom] between the derived supplies.  This is
-       [deterministic] of CopyDiscard/Deterministic.v with the global
-       [cd_comonoid] supply replaced by the per-boundary
-       [supply_list] — a coloured PROP with linear colours has no
-       global supply, precisely because linear wires carry none.
-       Definitionally equal to [sel_deterministic] of Linear.v
-       (pinned by [SupplyDeterministic_is_sel_deterministic]), and —
-       at the total-supply degeneration point, the one instance in
-       this file where a global [cd_comonoid] supply exists —
-       definitionally equal to that [deterministic] itself
-       (pinned by [SupplyDeterministic_is_deterministic]).
-
-   2.  [supplied_obj] / [LNL_lift] — the embedding of the copyable
-       colour class into [Comon (cprop_cat P)] at the symmetric-side
-       monoidal structure [MBc P], with the round-trip pair
-       [LNL_forget_lift] (forget after lift is the underlying map,
-       reflexivity-grade) and [LNL_lift_unique] (any [Comon]-hom
-       agreeing with [f] under [Comon_Forget] IS the lift of [f], via
-       [Comon_Forget_Faithful]), plus the functoriality laws
-       [LNL_lift_id] / [LNL_lift_comp].
-
-   3.  [CopyDiscard_of_total_supply] — the degeneration test: over the
-       TOTAL copyability predicate [fun _ => true], the free supplied
-       PROP [SupplyPROP] of Supply/Instance.v carries an honest
-       [CopyDiscard] structure, with
-       [cd_comonoid X := supply_list X (all_true X)] and the four
-       coherence fields discharged by the Fong–Spivak coherence
-       THEOREMS [supply_app_delta] / [supply_app_epsilon] of Supply.v
-       together with the unconditional evidence irrelevance of bool
-       copyability ([all_copyable_irrelevant]).  At [SupplyPROP] the
-       [ctensor_app_b] / [cunit_nil_b] mediation casts of those
-       theorems are [eq_refl] (the pinned Examples of
-       Supply/Instance.v), so every [hom_cast] vanishes DEFINITIONALLY
-       and the obligations are [exact] applications.  A remark on
-       class fit: [CopyDiscard] demands a comonoid on EVERY object,
-       while a supply only provides them on the image of
-       [cprop_of_list]; for a general coloured PROP that gap would
-       need a surjectivity hypothesis.  At [SupplyPROP] the objects
-       ARE the colour words and [cprop_of_list] is the identity, so
-       no such hypothesis arises — the class's non-surjectivity
-       observation is recorded as a non-defect, not worked around.
-
-   4.  [linear_cartesian_characterization] — the closing lemma, at the
-       pure supply PROP (base signature [Empty_CSig]): a colour is
-       linear exactly when its wire supports NEITHER a
-       commutative-comonoid supply NOR a bare fan-out morphism
-       [[c] ~> [c; c]] (both refuted through [SupplyPROP_no_fanout]:
-       a supply's comultiplication would itself be a fan-out), and
-       copyable exactly when it supports BOTH ([supply_wire_comonoid]
-       and [SupplyPROP_fanout]).  This is the categorical content of
-       the fan-out linearity check: fan-out at a linear wire is not
-       disallowed by convention — it is UNINHABITED.
-
    Reference: Benton, "A mixed linear and non-linear logic: proofs,
-              terms and models", CSL 1994, LNCS 933
    Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
-              string diagrams", MSCS 29(7):938–971, 2019
-              (arXiv:1709.00322), §2
    Reference: Fong & Spivak, "Supplying bells and whistles in
-              symmetric monoidal categories" (arXiv:1908.02633),
-              §§1–2 *)
+
+   本文件给出构造。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ------------------------------------------------------------------ *)
 

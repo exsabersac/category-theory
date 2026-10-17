@@ -13,54 +13,15 @@ Generalizable All Variables.
 
 (** * The Monoidal structure on the free coloured PROP *)
 
-(* nLab: https://ncatlab.org/nlab/show/monoidal+category
+(*
    nLab: https://ncatlab.org/nlab/show/PROP
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   This file assembles THE [Monoidal] record on [CFreeCat S]: the unit
-   object is the empty colour word [[]], the tensor is the
-   parallel-composition bifunctor [CFreeCat_Tensor] (concatenation on
-   colour words), and the structural isomorphisms are the [CT_cast]
-   isos of [Construction/ColouredPROP/Cast.v].  Every downstream
-   instance on [CFreeCat S] — Braided, Symmetric, Strict, and the
-   bundled coloured PROP of [Instance.v] — names this ONE record, so
-   the strict/symmetric projections agree definitionally, and the
-   [cprop_monoidal_coherence] field of [Construction/ColouredPROP.v]'s
-   class can be discharged by [eq_refl].
+   本文件给出幺半相关结构。
 
-   The strict-PROP right-unit and associativity axioms of
-   [CTermEq] are stated in [eq_rect] transport form
-   ([CTE_tens_id0_right], [CTE_tens_assoc]).  The [Monoidal] class
-   instead wants naturality squares phrased through the [CT_cast]
-   structural maps.  The bridge lemmas below convert between the two
-   spellings by quantifying over the boundary equation and destructing
-   it — which is exactly the generalisation that is unavailable once a
-   fixed colour word pins the transport proof (see the right-unit note
-   below, ported from the one-sorted donor's [Naturality.v]).  With
-   the bridges in hand, the previously-blocked right-unitor and
-   associator naturality squares are ordinary consequences of the
-   [CTermEq] axioms.
-
-   This file merges the one-sorted spine's donor pair
-   [Construction/PROP/Naturality.v] + [Construction/PROP/Monoidal.v]:
-   the naturality bank and the record that consumes it live together,
-   the same layout compression as [Free.v] (Free + Tensor) and
-   [Cast.v] (Cast + CastTensor + Structural).
-
-   Decidability discipline (design decision D2): the boundary
-   equations live on [list Colour], which has UIP only when [Colour]
-   has decidable equality.  Every lemma below whose proof invokes the
-   UIP layer of [Cast.v] ([CT_cast_id] / [CT_cast_irrelevant]) is
-   conditional on the section decider [Cdec], carries an explicit
-   [Proof using] clause naming it, and abstracts over it on section
-   close.  The UIP-free majority (transport bridges, cast shifting,
-   tensor fusion, the right-unit and associator naturality squares)
-   needs no decidability at all.
-
-   All proof fields of the record are supplied from standalone, named
-   lemmas (the [Free.v] discipline), so no Program obligations are
-   generated and successor files can reuse the very same lemmas. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CFreeMonoidal.
 

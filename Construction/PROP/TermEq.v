@@ -10,47 +10,15 @@ Local Open Scope nat_scope.
 
 (** * Equational theory of free-PROP terms *)
 
-(* nLab: https://ncatlab.org/nlab/show/PROP
+(*
    nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category
    Wikipedia: https://en.wikipedia.org/wiki/Symmetric_monoidal_category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   The equivalence relation [TermEq] on [Term S m n] quotients the
-   raw syntax of [Construction/PROP/Term.v] by the strict symmetric
-   monoidal category axioms.  The quotient [Term S / TermEq] is the
-   free PROP (= free strict symmetric monoidal category whose objects
-   are the naturals under [+]) on the signature [S].
+   本文件给出 PROP 相关。
 
-   In library notation, with [⊙ = T_comp], [⊕ = T_tens],
-   [id = T_id], [σ = T_braid], the constructors below assert:
-
-      - reflexivity, symmetry, transitivity (the setoid laws)
-      - congruences for [T_comp] and [T_tens]
-      - category laws: identity-left, identity-right, associativity
-      - bifunctor (tensor) laws: identity, sequential interchange,
-        functoriality
-      - symmetric-monoidal coherence: braid naturality, braid
-        involution, hexagon
-
-    The strict-PROP axioms on naturals — [T_id n ⊕ T_id m ≈ T_id (n+m)],
-    the addition-as-tensor strict laws — are present as primitive
-    constructors of [TermEq] because the [Term] type is indexed by [nat]
-    and [T_id n ⊕ T_id m] has type [Term S (n+m) (n+m)] while
-    [T_id (n+m)] has the same type by definition; the equation is
-    well-typed without any [eq_rect] casts.
-
-    This file defines just the equivalence relation.  The [Setoid]
-    instance and the [Category] / [PROP] structure on the quotient
-    live in successor files.
-
-    In a STRICT symmetric monoidal category the associator and unitors
-    are identities, so the pentagon and triangle coherences hold on the
-    nose and the only substantive coherences left are the hexagon and
-    the symmetry/involution equation [σ_{n,m} ⊙ σ_{m,n} ≈ id] (cf. the
-    nLab and Wikipedia pages above).  Because [nat] addition is strictly
-    associative/unital only up to propositional [=], several of those
-    "on the nose" equations are nonetheless stated below in [eq_rect]
-    transport form. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section TermEq.
 

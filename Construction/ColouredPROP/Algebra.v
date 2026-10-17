@@ -17,62 +17,13 @@ Generalizable All Variables.
 
 (** * Algebras (models) of a coloured signature in a coloured PROP *)
 
-(* nLab: https://ncatlab.org/nlab/show/PROP
+(*
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   Fixing a coloured signature [S] and a coloured PROP [P], a MODEL
-   (or algebra) of [S] in [P] is a valuation [v : CValuation P S] — an
-   assignment of a [P]-morphism [⟦cs⟧ ~{P}~> ⟦ds⟧] to every generator
-   [g : S cs ds] (see [Construction/ColouredPROP/Interp.v]).  This
-   file builds the category of such models, as the many-sorted mirror
-   of [Construction/PROP/Algebra.v] (the one-sorted donor), with
-   [list Colour] replacing [nat], [++] replacing [+], and [[]]
-   replacing [0]:
+   本文件给出代数结构。
 
-     - [CModelHom v w] — a morphism of models: a family of
-       endomorphisms [cmh_component cs : ⟦cs⟧ ~{P}~> ⟦cs⟧] that is
-       monoidal (the identity at the empty boundary, sending
-       concatenations of boundaries to [⊞c]-tensors of components)
-       and compatible with the two valuations at every generator.
-       (The [c]-prefixed name keeps clear of the one-sorted
-       [ModelHom], and — as there — of the [AlgHom] of
-       [Instance/Comp.v], the single-sorted operadic cousin of this
-       notion.)
-
-     - [cmodel_hom_natural] — the fundamental theorem: the components
-       of a model morphism are automatically natural against the
-       interpretation of EVERY term, not just the generators.  The
-       generator squares extend along [cinterp] by structural
-       induction, using the K-kit of [Interp.v] (K2/K3 for the
-       tensor case and K5 for the braid case; K1 enters later, in
-       the monoidality of the identity model morphism).  Only the
-       coherence-free part of the kit (K1–K5) is consumed: no
-       [ObjDecEq]-flavoured cast juggling appears in any proof of
-       this file — [HomEqProp] / [ObjDecEq] enter only to TYPE the
-       interpretation functor [CInterpF] in the [Transform]
-       packaging below.
-
-     - [CAlg] — the category of models: objects are valuations,
-       morphisms are [CModelHom]s, with componentwise identity,
-       composition, and hom-equivalence.
-
-     - [CModelHom_Transform_natural] — the naturality square of
-       [cmodel_hom_natural], restated in the orientation a
-       [Transform] between the interpretation functors expects.
-
-     - [CModelHom_Transform] — the packaging of [cmodel_hom_natural]:
-       a model morphism induces a natural transformation
-       [CInterpF S P v ⟹ CInterpF S P w] between the interpretation
-       functors of [Construction/ColouredPROP/Universal.v].
-
-   In PROP-theoretic terms a [CModelHom] is a monoidal natural
-   transformation between the strict symmetric monoidal functors
-   corresponding to [v] and [w], re-indexed along the Leibniz
-   strictness equalities [cprop_unit_nil] / [cprop_tensor_app]; as
-   in the one-sorted donor, the full functor-category packaging (a
-   functor from [CAlg] into the functor category [[CFreeCat S, P]])
-   is deferred to a successor file, as no current consumer needs
-   it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CAlgebra.
 

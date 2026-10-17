@@ -10,31 +10,13 @@ Require Import Category.Construction.Subcategory.
 
 Generalizable All Variables.
 
-(* nLab: https://ncatlab.org/nlab/show/reflective+subcategory
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Reflective_subcategory
 
-   A reflective subcategory of C is a full subcategory S ⊆ C whose inclusion
-   functor [Incl C S : Sub C S ⟶ C] has a left adjoint, the reflector
-   [reflector : C ⟶ Sub C S], with [reflector ⊣ Incl C S].  The record
-   [Reflective] below bundles exactly these three data: fullness of the
-   subcategory ([reflective_full]), the reflector, and the adjunction.
+   本文件给出构造。
 
-   Dually, a coreflective subcategory is one whose inclusion has a right
-   adjoint (the coreflector).  We obtain it by reflectivity in the opposite
-   category: [Coreflective S := Reflective (op_subcategory S)], where
-   [op_subcategory S] is the subcategory of C^op selecting the same objects
-   and the C^op-reverses of the morphisms of S.
-
-   The characteristic property of a *full* reflective subcategory is that the
-   counit ε : reflector ∘ Incl ⟹ Id of the adjunction is a natural
-   isomorphism: at every object [x] of the subcategory the component
-   ε_x : reflector (Incl x) ~> x is invertible.  Its inverse is the unit
-   η_{Incl x} : Incl x ~> Incl (reflector (Incl x)) of the adjunction, read
-   back into [Sub C S] using fullness — fullness supplies the [shom] witness
-   making η into a morphism of the subcategory ([reflective_counit_iso]).  One
-   triangle identity ([fmap_counit_unit]) discharges ε_x ∘ η ≈ id, and the
-   other ([counit_fmap_unit]) together with naturality of the counit
-   ([counit_naturality]) discharges η ∘ ε_x ≈ id. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The counit of an adjunction is natural at an arbitrary morphism.  The
    corollaries in Theory/Adjunction.v prove this square only when the domain

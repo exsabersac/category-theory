@@ -11,70 +11,15 @@ Generalizable All Variables.
 
 (** * The finite setoids inside [Sets]: a worked full-subcategory example *)
 
-(* nLab:      https://ncatlab.org/nlab/show/FinSet
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Category_of_finite_sets
    Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              GTM 5, Springer 1998, §I.3, printed pp. 14-15
    Book:      Riehl, "Category Theory in Context", Dover 2016, §1.5,
-              Remark 1.5.8, printed p. 33
 
-   Mac Lane's §I.3 example of a full subcategory is the finite sets inside
-   Set, with all functions between them.  This file is that example over
-   Instance/Sets.v's setoids, assembled from Construction/Subcategory.v:
-   [FinSets] selects objects by a finiteness witness and retains EVERY
-   morphism of [Sets] between selected objects, so its inclusion is full
-   ([FinSets_Full_Functor]) as well as faithful ([FinSets_Faithful]).
+   本文件给出有限情形。
 
-   Finiteness, over setoids.  A setoid counts as finite here when some list of
-   its carrier exhausts it UP TO `≈` ([FiniteSetoid] via [mem_upto]).  The
-   list need not be duplicate-free and the carrier needs no decidable
-   equality.  This is the reading forced by the setoid discipline: the ambient
-   `≈` is what "the same element" means, so exhaustion must be stated with
-   respect to it, not with respect to Coq's `=` on the carrier.
-
-   This is deliberately the cheap witness, sufficient for a full-subcategory
-   example and nothing more.  Mac Lane's §I.4 skeleton construction — the
-   equivalence between finite sets and finite ordinals, catalog item
-   `maclane:I.4:construction4`, filed as issue #238 — is the place where a
-   canonical choice of representative for each finite cardinality belongs;
-   Instance/FinSet.v already carries the skeletal side of that story.  Nothing
-   here depends on either, and no skeleton is constructed below.
-
-   What is exhibited, and what is not
-   ----------------------------------
-
-   [FinSets_Incl] is a FULLY FAITHFUL functor into [Sets] whose objects are
-   finite setoids.  It is NOT claimed to be injective on objects.  An object
-   of [Sub] is a setoid PAIRED WITH a chosen witness, so one setoid can be
-   presented with two different enumerations and yield two objects with the
-   same image under the inclusion; [FinSets_bool] and [FinSets_bool_dup]
-   below do exactly that, and [FinSets_bool_same_image] records that their
-   images agree on the nose.  Those two objects ARE provably distinct, and the
-   first commit of this file had this backwards: it said deciding the
-   question would need proof irrelevance for the [sobj] component.  Proof
-   irrelevance would be needed to prove them EQUAL.  Distinctness is
-   immediate, with no axiom, because [FiniteSetoid] carries its enumeration
-   as DATA and the length of that enumeration separates them —
-   [FinSets_bool_distinct] below.  They are nonetheless isomorphic in the
-   subcategory ([FinSets_bool_iso]), which is the point: the inclusion is
-   fully faithful without being injective on objects.  (Correction due to an
-   audit of the first commit.)  Nothing in
-   the [Subcategory] record of Construction/Subcategory.v forces [sobj] to be
-   subsingleton-valued, so this is a feature of the apparatus rather than of
-   finiteness.
-
-   Terminology, accordingly: "subcategory" in this file always names the
-   [Subcategory] RECORD of Construction/Subcategory.v — the selection data —
-   and never asserts that [FinSets_Incl] is injective on objects.  The functor
-   is described as fully faithful, which is what is proved of it.
-
-   Non-vacuity.  Statements about an inclusion are content-free if the
-   hom-setoids involved are trivial, and faithfulness in particular is an
-   injectivity claim that would then say nothing.  [FinSets_two_arrows] below
-   exhibits two parallel morphisms of the subcategory — the identity and the
-   negation of the two-element setoid — and shows them DISTINCT in the
-   subcategory's own hom-setoid.  [FinSets_negb_Monic] then puts
-   Theory/Functor.v's [faithful_reflects_monic] to work on that morphism. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Finiteness of a setoid *)
 

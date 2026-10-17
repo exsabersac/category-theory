@@ -17,69 +17,17 @@ Generalizable All Variables.
 
 (** * The round trip: split cleavings versus indexed categories *)
 
-(* nLab:      https://ncatlab.org/nlab/show/Grothendieck+construction
+(*
    nLab:      https://ncatlab.org/nlab/show/Grothendieck+fibration
    nLab:      https://ncatlab.org/nlab/show/cloven+fibration
    nLab:      https://ncatlab.org/nlab/show/indexed+category
    Wikipedia: https://en.wikipedia.org/wiki/Grothendieck_construction
    Wikipedia: https://en.wikipedia.org/wiki/Equivalence_of_categories
 
-   The correspondence between fibrations and indexed categories, in the
-   direction that turns a chosen-lift structure on a functor into an indexed
-   category and closes the round trip back to the total category.  For
-   [P : E ⟶ B] equipped with a cloven structure:
+   本文件给出构造。
 
-   - [IndexedCat_of_SplitCleaving] builds an [IndexedCat B] (Construction/
-     Indexed.v) whose fibre over [x] is the STRICT fibre [{e : E & P e = x}]
-     (objects anchored by a propositional object equality [P e = x], the
-     sanctioned use of object-level [=]), with reindexing along [f] given by
-     the chosen opcartesian lift.  The three coherence families
-     [idx_resp]/[idx_id]/[idx_comp] are the mediating fibre isomorphisms
-     produced by the lift's universal property, and every pseudofunctor law
-     is discharged from that universal property by joint monicity of the
-     lift ([vunique]) — never from an object-level equation between lift
-     objects, which would require [UIP].
-
-   - [RoundTrip_Comparison] is the comparison functor
-       Grothendieck (IndexedCat_of_SplitCleaving P) ⟶ E
-     sending a fibre object [(e; p)] to its carrier [e] and a morphism
-     [(f; k)] to the vertical part [`1 k] precomposed with the chosen lift
-     [pf_mor f].  It lies over the projection: [P ◯ RoundTrip_Comparison] is
-     [Grothendieck_Proj] up to the natural isomorphism whose components are
-     the anchoring isomorphisms [iso_of_eq (P e = x)]
-     ([RoundTrip_Comparison_Proj]).
-
-   - The comparison is full ([RoundTrip_Full], the preimage built from the
-     opcartesian universal property), faithful ([RoundTrip_Faithful], base
-     component recovered through the projection square and vertical component
-     by joint monicity), and strictly surjective on objects; hence an
-     equivalence of categories ([RoundTrip_Equivalence]), assembled through
-     the full + faithful + essentially-surjective characterization
-     (Theory/Equivalence/FullFaithful.v).
-
-   Two deliberate, disclosed departures from the most literal reading:
-
-   (1) VARIANCE.  [IndexedCat B] is covariant — reindexing along [f : x ~> y]
-       is a functor [idx_fib x ⟶ idx_fib y] — matching the OPfibration that
-       the Grothendieck construction produces (Construction/Indexed.v).  The
-       chosen-lift input is therefore taken as a [SplitCleaving (P^op)]: a
-       split opfibration of [P], equivalently a split (Grothendieck)
-       fibration of [P^op].  The classical contravariant presentation is the
-       instance at [B^op].  Concretely the opcartesian lifts of [P] are read
-       off the cartesian lifts of [P^op] (Theory/Fibration.v), unwound to
-       clean [E]/[B] data by [pf_lift]/[pf_mor]/[pf_over]/[pf_ump] below.
-
-   (2) CLOVEN SUFFICES.  Only the underlying [ClovenFibration (P^op)] of the
-       split cleaving is consumed; the two strictness fields [split_lift_id]
-       and [split_lift_comp] are not used.  This is a strengthening, not a
-       gap: [IndexedCat]'s coherence is iso-valued (a pseudofunctor, not a
-       strict 2-functor), so the opcartesian universal property already
-       provides coherent [idx_id]/[idx_comp] isomorphisms and discharges the
-       unit and cocycle laws.  Splitness would be needed only to make the
-       reindexing strictly functorial, i.e. for a STRICT indexed category;
-       the round trip and its equivalence hold for any cloven structure.
-       The public interface still takes a [SplitCleaving] argument, so the
-       stated theorem is exactly "from a split cleaving of [P]". *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma iso_of_eq_op_to {C : Category} {a b : C} (q : a = b) :
   to (iso_of_eq (C:=C^op) q) ≈ from (iso_of_eq (C:=C) q).

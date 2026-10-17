@@ -13,80 +13,16 @@ Require Import Category.Instance.StrictCat.ToCat.
 
 Generalizable All Variables.
 
-(** * The universal property of [C[C⁻¹]] at [Functor_Setoid] strength
-
+(*
     nLab:      https://ncatlab.org/nlab/show/localization
     nLab:      https://ncatlab.org/nlab/show/calculus+of+fractions
     Book: Riehl, Category Theory in Context, 2nd ed., §4.1, Example 4.1.15,
-          printed p. 137 — the inclusion of groupoids into categories has a
-          left adjoint, the category of fractions
     Book: Gabriel, Zisman, Calculus of Fractions and Homotopy Theory,
-          Ergebnisse 35, Springer 1967, §I.1
 
-    WHAT THIS FILE IS FOR.  [Construction/Fractions.v] proves the universal
-    property of the zig-zag localization at STRICT strength: its
-    [Fractions_UMP] and [Fractions_UMP_groupoid] are [Unique] records over
-    [Functor_StrictEq_Setoid], i.e. Leibniz equality on objects together
-    with `≈` on morphisms conjugated by [hom_cast].  That is the strength
-    [Construction/Quotient.v] and [Construction/Free/Groupoid.v] state their
-    own uniqueness clauses at, and it is the wrong strength for
-    [Theory/Universal/Arrow.v]'s [universal_arrow_from_UMP], which reads the
-    `∃!` at the AMBIENT category's hom-setoid.  The ambient here is [Cat],
-    whose hom-setoid is [Functor_Setoid] — natural isomorphism.  The header
-    of [Construction/Fractions.v] records the resulting mismatch and quotes
-    the refusal in full.
+   本文件给出构造。
 
-    This file removes the mismatch by REPROVING the uniqueness clause
-    against natural isomorphism.  Existence needed no work: it transfers
-    along [Instance/StrictCat/ToCat.v]'s [strict_equiv_implies_fun_equiv],
-    which is exactly the statement that strict equality of functors refines
-    natural isomorphism.  Uniqueness does not transfer in that direction —
-    a functor that factors [F] only up to natural isomorphism need not
-    factor it up to object equality, so the strict statement says nothing
-    about it — and it is reproved here from the beginning.
-
-    WHY THE ARGUMENT WORKS.  Three facts about [Fractions C] make it go
-    through, and all three are conversions, not lemmas: [Fractions C] has
-    exactly the objects of [C] ([ZQuiver]'s [nodes] is [@obj C], and neither
-    [FreeOnQuiver] nor [QuotientCong] disturbs the object type),
-    [FractionsProj C] is the identity on objects, and a hom of
-    [Fractions C] IS a [Lib/TList.v] word in the glued quiver, the quotient
-    coarsening only the setoid.  So a natural isomorphism between the two
-    restrictions [G1 ◯ FractionsProj C] and [G2 ◯ FractionsProj C] already
-    supplies its component at every object of [Fractions C]; only naturality
-    has to be extended, from the generators to all words.
-
-    That extension is the induction [Fractions_weak_word], and it has the
-    same shape as [Construction/Fractions.v]'s [ZigZagLift_unique] — the
-    word is peeled with [tlist_app_cons], the tail handled by the induction
-    hypothesis and the head letter by a separate lemma — with the
-    [hom_cast] of the strict argument replaced throughout by conjugation
-    with the components of the isomorphism.  The head letter splits the same
-    way too: a forward letter is a generator and is given, while a backward
-    letter is pinned because both [G1] and [G2] carry the two cancellation
-    equations of [Construction/Fractions.v] to two-sided inverses
-    ([zbwd_zfwd_functor], [zfwd_zbwd_functor], which hold for ANY functor out
-    of the localization), and a two-sided inverse is determined up to `≈`.
-    [iso_conj_inverse] is the replacement for [hom_cast_inverse]: it says
-    that if [a] and [a'] correspond under conjugation by two isomorphisms,
-    then so do their inverses.
-
-    NO GROUPOID HYPOTHESIS ON THE TARGET, for the uniqueness half.
-    [Fractions_weak_word] and [Fractions_proj_epic_weak] hold for an
-    arbitrary target category [D]; the invertibility they use is that of the
-    IMAGES of the generators, which the localization already forces.  Only
-    existence needs [IsGroupoid D], and only to produce the [Finv] argument
-    of [FractionsLift].
-
-    WHAT IS PROVED, AND WHAT IS NOT.  [Fractions_UMP_weak] is the same
-    [Unique] record as [Fractions_UMP_groupoid] with [Functor_StrictEq_Setoid]
-    replaced by [Functor_Setoid] in both positions.  It is genuinely WEAKER
-    than the strict one, and deliberately so: the two are not
-    interchangeable, and [Test/ProbeFractionsAdjunction972.v] pins the
-    direction by refusing the strict statement where only the weak one has
-    been proved.  Nothing here says the strict version is subsumed, and
-    [Construction/Fractions.v] keeps it — [Fractions_proj_epic] and
-    [frac_restrict_recovers] still read at the strict setoid. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Conjugating a two-sided inverse
 

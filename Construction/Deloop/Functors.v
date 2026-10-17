@@ -19,93 +19,11 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * Functors out of a delooping: homomorphisms, actions, representations
+(*
+   本文件给出构造。
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §I.3
-    (printed p. 15), Exercise 3(b,c) [maclane:I.3:ex3]: a functor between
-    two groups regarded as one-object categories is a group homomorphism;
-    a functor from a group to Set is a permutation representation, and to
-    [Matr_K] a matrix representation.
-    Awodey, "Category Theory", §4.3 (printed p. 86)
-    [awodey:4.3:remark-functor-group-hom, awodey:4.3:def-representation]:
-    the same identification, and representations as functors out of the
-    delooping; §7.1 (printed p. 154)
-    [awodey:7.1:construction-poset-to-group]: a functor from a poset to a
-    group is exactly a unit-and-composition-respecting family g_{p,q} —
-    a cocycle.
-    Riehl, "Category Theory in Context", §1.3: Example 1.3.9
-    [riehl:1.3:example9] (actions as functors, with the left/right
-    convention), Corollary 1.3.10 [riehl:1.3:cor10] (each group element
-    acts by an automorphism, inverses mapping to inverses), Exercise
-    1.3.i [riehl:1.3:exi] (functors between groups).
-
-    Everything is developed over Construction/Deloop.v's [MonObject] and
-    [GrpObject] and its delooping [Deloop M].  The homomorphism record
-    is Structure/Groupoid.v's [MonHom] (with [MonIso] for isomorphisms),
-    and group statements are the monoid statements read at a
-    [GrpObject]: the extra content — homomorphisms preserve inverses —
-    is that file's THEOREM [MonHom_grp_inv], by uniqueness of inverses,
-    the same derivation pattern as Instance/Ab.v's and
-    Theory/Algebra/Rig.v's negation-preservations.  Part (b) itself is
-    likewise already in tree: Construction/Deloop/Transform.v's
-    [Deloop_map]/[Deloop_unmap], whose homomorphism-side round trip
-    [Deloop_unmap_map] holds as an EQUALITY OF RECORDS — nothing here
-    re-proves either.
-
-    THE SPINE is one general correspondence: functors [Deloop M ⟶ C]
-    are the same as a choice of object c : C together with a monoid
-    homomorphism [M → hom_monoid C c] into Deloop.v's endomorphism
-    monoid ([functor_of_hom_monoid] / [hom_monoid_of_functor], with
-    round trips).  Every part of the exercise specializes it:
-
-      - C := Deloop N (part b): the object choice is forced, and
-        Transform.v's [Deloop_map] IS the spine at that single object
-        ([Deloop_map_spine]; the types agree definitionally by
-        Deloop.v's [hom_monoid_Deloop]); what Transform.v states only
-        pointwise — its functor-side round trip is [eq_refl] on [fmap]
-        and propositional on [fobj] — is completed here to a full
-        [Functor_Setoid] natural isomorphism ([Deloop_functor_round]);
-      - C := Sets (part c, permutation representations): unfolded into
-        the friendlier [MSetoidAction] record — a monoid acting on a
-        setoid — with the correspondence both ways
-        ([action_of_functor] / [functor_of_action]); at a [GrpObject]
-        this is Riehl's Example 1.3.9, the LEFT-action convention (a
-        left action is a functor out of B G);
-      - C := Matr R (part c, matrix representations): [MatrixRep], a
-        dimension n together with a homomorphism into the multiplicative
-        monoid of n × n matrices — the dimension IS the chosen object
-        ([matrix_rep_of_functor] / [functor_of_matrix_rep]).
-
-    RIGHT ACTIONS (Riehl's convention note): a right action is a functor
-    out of [(Deloop G)^op], and Construction/Deloop/Opposite.v's
-    [Deloop_op] identifies that source with [Deloop (MonObject_op G)],
-    so the two translations [right_action_of_op_functor] and
-    [op_functor_of_right_action] carry right actions to and from LEFT
-    actions of the opposite monoid — the classical statement.  Their
-    mutual inversion is NOT stated here: it would combine
-    [action_functor_round] with [Deloop_op]'s isomorphism laws and the
-    functoriality of [◯] over [Functor_Setoid].
-
-    THE AUTOMORPHISM COROLLARY (Riehl 1.3.10): at a [GrpObject] every
-    [fmap] lands in isomorphisms.  Per the issue this is delivered as a
-    NAMED INSTANTIATION of Theory/Functor.v's [fobj_iso] at
-    [Deloop_group_iso] ([action_automorphism]), with the inverse of the
-    action of g being the action of the inverse of g, recorded
-    definitionally ([action_automorphism_from]).  As with Deloop.v's
-    [Deloop_group_iso], the TYPE [F ttt ≅ F ttt] is inhabited by
-    [iso_id] alone; the corollary's content is WHICH isomorphism, i.e.
-    the two definitional readings [action_automorphism_to]/[_from].
-
-    THE COCYCLE CHARACTERIZATION (Awodey §7.1): functors from a proset
-    into a delooping are exactly proof-irrelevant families g_{p,q}
-    satisfying the unit and composition conditions ([Cocycle],
-    [cocycle_of_functor] / [functor_of_cocycle], with round trips on
-    BOTH sides — [cocycle_round] pointwise, [cocycle_functor_round] up
-    to [Functor_Setoid] isomorphism).  The worked witness is
-    Awodey's, transposed from ℝ to ℤ to keep the instance layer
-    axiom-free (the same substitution Theory/Algebra/Rig.v makes for its
-    ring witness): P = (ℤ, ≤), G = (ℤ, +), g_{x,y} = y − x
-    ([translation_cocycle]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Monoid homomorphisms: Structure/Groupoid.v's [MonHom]
 

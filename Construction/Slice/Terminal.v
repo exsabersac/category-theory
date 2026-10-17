@@ -11,79 +11,15 @@ Generalizable All Variables.
 
 (** * The slice over a terminal object is the ambient category *)
 
-(* Reference: Saunders Mac Lane, "Categories for the Working Mathematician",
-              2nd ed., §II.6, p. 47, Exercise 2 [maclane:II.6:ex2] — in the
-              catalog's paraphrase (doc/plan/books/maclane/inventory/II.json,
-              not the book's wording): if t is a terminal object of C, the
-              category (C ↓ t) of objects over t is isomorphic to C.  The same
-              statement appears already on p. 45 as the worked example
-              accompanying the definition of (C ↓ a) [maclane:II.6:def2]:
-              since the one-point set is terminal in Set, the category of sets
-              over it is isomorphic to Set.
+(*
    nLab:      https://ncatlab.org/nlab/show/over+category
    nLab:      https://ncatlab.org/nlab/show/terminal+object
    Wikipedia: https://en.wikipedia.org/wiki/Comma_category
 
-   The content is one sentence of mathematics.  An object of the slice C/t is
-   an object a of C equipped with a structure morphism a ~> t; when t is
-   terminal that morphism carries no information, since [one_unique] says any
-   two arrows into t agree.  So "an object over t" is just "an object", and a
-   commuting triangle over t is just an arrow: the triangle condition
-   `g' ∘ f ≈ g` is automatic.  The forgetful functor (a, g) ↦ a and the section
-   a ↦ (a, !) implement the correspondence.
+   本文件给出终对象相关。
 
-   Dually — [Coslice_Initial] in Block B — the coslice under an initial object
-   is again the ambient category, `0/C ≅ C`.
-
-   ** Strength: this is an EQUIVALENCE, and the gap is real
-
-   Mac Lane says "isomorphic", meaning an isomorphism of categories.  What is
-   delivered here is [≅[Cat]], and in this library that is *equivalence* of
-   categories, not isomorphism: Cat's hom-setoid is [Functor_Setoid]
-   (Instance/Cat.v), which identifies functors that are naturally isomorphic.
-   The weakening is not an artifact of the proof — the on-the-nose statement is
-   FALSE here, for a reason worth naming, and the falsity is MACHINE-CHECKED:
-   [slice_terminal_not_strict] (Construction/Comma/Special.v) exhibits a
-   category — [Blur], one object, two parallel arrows identified by its
-   hom-setoid — with a [Terminal] instance for which
-   `Slice Blur ttt ≅[StrictCat] Blur` is refutable outright.
-
-   In a set-based development the object *set* of C/t is in bijection with the
-   object set of C, because "there is exactly one arrow a ~> t" is a statement
-   about elements.  In this library terminality is stated up to `≈`
-   ([one_unique] : f ≈ g), which is weaker than `f = g`.  The objects of
-   [Slice] are the dependent pairs `∃ a : C, a ~> t`, so two `≈`-equal but
-   distinct structure morphisms g and g' give two *distinct* objects (a; g) and
-   (a; g') of the slice.  A strict isomorphism of categories would have to
-   identify them, and nothing in the [Terminal] class does.  What is true is
-   that they are canonically isomorphic *in the slice*, by the identity of C —
-   and that is exactly the natural isomorphism supplied below.  So the honest
-   reading is: the slice over a terminal object is equivalent to C, with the
-   equivalence exhibited by an explicit adjoint-equivalence-shaped pair, not
-   isomorphic to it on the nose.
-
-   The two round trips therefore have DIFFERENT strengths, and both are
-   recorded:
-
-   - [Slice_Forget ◯ Slice_Section] is the identity functor on C at STRICT
-     strength ([Slice_Terminal_strict_section]): its object map is
-     definitionally `fun x => x` and its arrow map definitionally `fun f => f`,
-     so the [Functor_StrictEq_Setoid] witness is `fun _ => eq_refl` and the
-     coherence clause is `f ≈ f`.  [Slice_Section] is thus a strict section of
-     [Slice_Forget], not merely a section up to isomorphism.
-
-   - [Slice_Section ◯ Slice_Forget] is the identity on the slice only up to
-     natural isomorphism, by the argument above.  Its components are carried by
-     `id` in C ([slice_terminal_unit_carrier]), so the isomorphism is as
-     canonical as it can be; it is not, and cannot be, an equality.
-
-   ** Relation to the neighbouring files
-
-   Construction/Slice.v proves the slice IS a comma category,
-   `C/c ≅[Cat] (Id ↓ =(c))` ([Comma_Slice]), so this file's statement transports
-   to the comma reading at the same strength.  Construction/Comma/Special.v
-   handles the other end of Mac Lane's list of specializations, the comma of two
-   constant functors. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Block A: the slice over a terminal object *)
 

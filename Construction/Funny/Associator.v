@@ -11,35 +11,11 @@ Require Import Category.Construction.Funny.Bifunctor.
 
 Generalizable All Variables.
 
-(** * The associator of the funny tensor product
+(*
+   本文件给出构造。
 
-    [(C □ D) □ E ≅ C □ (D □ E)] as an isomorphism in [StrictCat], hence
-    (via the comparison functor) in [Cat].
-
-    A morphism of [(C □ D) □ E] is a word whose left steps carry a whole
-    word of [C □ D] and whose right steps carry an [E]-morphism; a morphism
-    of [C □ (D □ E)] is a word whose left steps carry a [C]-morphism and
-    whose right steps carry a whole word of [D □ E].  The forward functor
-    flattens each outer left step [lstep w] by re-nesting: inner [C]-steps
-    of [w] stay left steps, inner [D]-steps become right steps carrying a
-    singleton [D □ E]-word; each outer right step [rstep h] becomes a right
-    step carrying the singleton inner right step.  The backward functor
-    un-flattens symmetrically.  Both directions are built from the pushout
-    universal property [FunnyUP] out of "inner" injection-like functors
-    ([FunnyAssocInnerL]/[FunnyAssocInnerR]), so all functoriality is
-    inherited rather than re-proved by word induction (Weber, "Free products
-    of higher operad algebras", TAC 28:2 (2013), §2; nLab, "funny tensor
-    product").
-
-    The round trips are the identity on objects up to re-tupling of pairs
-    and are proved by [Funny_strict_eq] (Construction/Funny/StrictEq.v) from
-    the segment lemmas [from_innerL]/[to_innerR]; the naturality squares in
-    all three arguments ([FunnyAssoc_natural], [FunnyAssocFrom_natural]) are
-    generator-wise, closing by reflexivity at every leaf.  As with every
-    coherence law of the funny tensor, the isomorphism lives in [StrictCat]:
-    the construction is not invariant under equivalence of categories (see
-    the header of Construction/Funny.v), so [Cat] only inherits the
-    isomorphism through [StrictCat_to_Cat]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FunnyAssoc.
 

@@ -21,51 +21,15 @@ Require Import Category.Construction.DecoratedCospan.Category.
 
 Generalizable All Variables.
 
-(** * Symmetric monoidal structure on [DecoratedCospanCat]
-
+(*
     Reference: Brendan Fong, "Decorated Cospans", arXiv:1502.00872,
-    Theorem 3.5 (the decorated-cospan category is a symmetric monoidal
-    hypergraph category whenever the decorating functor is a lax braided
-    (symmetric) monoidal functor).
     nLab: https://ncatlab.org/nlab/show/decorated+cospan
     Wikipedia: https://en.wikipedia.org/wiki/Symmetric_monoidal_category
 
-    This module assembles the symmetric monoidal hierarchy on
-    [DecoratedCospanCat] by layering decoration coherences on top of the
-    [Cospan_*] structural witnesses from [Construction/Cospan/Symmetric.v].
+   本文件给出构造。
 
-    Following the [DecCospan_Coherent] pattern established in
-    [Construction/DecoratedCospan/Category.v], each layer bundles its
-    decoration-side coherence requirements as a typeclass, parameterised
-    by the same lax-monoidal data ([F], [LM], [id_decoration],
-    [cospan_merge]) used to define [DecoratedCospanCat] itself.
-
-    Concrete instances of each coherence class correspond to the
-    explicit constructions one finds in the categorical-systems
-    literature (Fong's circuits, Baez–Fong Markov processes,
-    Fong–Spivak signal-flow diagrams).  The structural propositions of
-    this file are independent of any concrete instance; they organise
-    the bookkeeping so that a downstream consumer supplying the
-    coherence-class instance receives the full symmetric monoidal
-    hypergraph structure for free.
-
-    ** Layered class architecture
-
-    [DecCospan_Coherent]         (Category obligations — already in
-                                  [DecoratedCospan/Category.v])
-        ↓ provides
-    [DecCospan_Bifunctor_Coherent] (decoration-side bifunctor laws)
-        ↓ provides
-    [DecCospan_Monoidal_Coherent]  (unitor/associator decoration coherence)
-        ↓ provides
-    [DecCospan_Braided_Coherent]   (braid decoration coherence; requires
-                                  F to be symmetric-lax-monoidal)
-        ↓ provides
-    [DecCospan_Symmetric_Coherent] (symmetric braid coherence)
-
-    Each step pairs the cospan-level fact (already in
-    [Construction/Cospan/Symmetric.v]) with the matching decoration-level
-    coherence. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section DecoratedCospanSymmetric.
 

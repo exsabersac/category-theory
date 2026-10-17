@@ -32,77 +32,13 @@ Require Import Category.Construction.DecoratedCospan.Braided.
 
 Generalizable All Variables.
 
-(** * Hypergraph structure on [DecoratedCospanCat]
-
+(*
     Reference: Brendan Fong, "Decorated Cospans", arXiv:1502.00872,
-    Theorem 3.5 (the decorated-cospan category is symmetric monoidal and
-    a hypergraph category); Fong–Spivak, "Hypergraph categories",
-    JPAA 223 (2019) = arXiv:1806.08304, Definition 4.1.1 (hypergraph
-    category) and Definition 4.1.3 (hypergraph functor).
 
-    This module assembles the [Hypergraph] instance on
-    [DecoratedCospanCat HP LM id_decoration cospan_merge] by layering
-    a decoration coherence class on top of [Cospan_Hypergraph] from
-    [Construction/Cospan/HypergraphInstance.v].
+   本文件给出构造。
 
-    ** Architecture
-
-    The [Hypergraph] class on [DC] requires:
-
-      - an SCFA on every object [X];
-      - tensor coherence ([scfa_tensor_mu], [scfa_tensor_eta],
-        [scfa_tensor_delta], [scfa_tensor_epsilon]) — the SCFA on
-        [X ⨂ Y] agrees with the canonical SCFA assembled from those
-        of [X] and [Y];
-      - unit coherence ([scfa_unit_mu], [scfa_unit_eta],
-        [scfa_unit_delta], [scfa_unit_epsilon]) — the SCFA on [I]
-        is the trivial one.
-
-    The literature-correct packaging (Fong–Spivak, Definition 4.1.1 of
-    the "Hypergraph categories" paper) bundles all of this — the
-    decoration-coherent SCFA per object plus the 8 coherence equations
-    — as a single hypergraph-decoration coherence class.  Concrete
-    decoration choices (Fong's circuits, Baez–Fong Markov processes)
-    would supply explicit witnesses for all fields; this library does
-    not yet provide any such instance (see the status note below).
-
-    We package this as [DecCospan_Hypergraph_Coherent], whose principal
-    field is a per-object [SpecialCommutativeFrobenius DC X], plus the
-    8 standard tensor + unit coherence equations.
-
-    ** Note on the lax-symmetric requirement (Fong Definition 3.1 / Theorem 3.5)
-
-    Fong introduces [F] as a lax braided monoidal functor in
-    Definition 3.1; the hypergraph structure (Theorem 3.5) requires the
-    SYMMETRIC strengthening, so [F] must be a LAX SYMMETRIC monoidal
-    functor.  The symmetric-laxness is needed here because
-    [μ] for the SCFA on [X+Y] uses braiding to interleave decorations:
-    without [F (braid_C) ∘ lax_ap ≈ lax_ap ∘ braid_D], the canonical
-    SCFA on [X+Y] (assembled from the SCFAs of [X] and [Y]) cannot
-    be shown to satisfy the Frobenius/commutativity laws on decorated
-    cospans.
-
-    In this library's factoring, the [DecCospan_Braided_Coherent] and
-    [DecCospan_Symmetric_Coherent] classes (taken as [Context] above)
-    encode exactly the decorated-cospan-side consequences of [F] being
-    lax-symmetric — instantiating them is impossible without an
-    underlying lax-symmetric [F].
-
-    ** Status: CONDITIONAL on unfilled coherence assumptions
-
-    [DecoratedCospan_Hypergraph] below is built inside a [Section] whose
-    [Context] assumes the full stack of coherence classes
-    ([DecCospan_Coherent], [DecCospan_Bifunctor_Coherent],
-    [DecCospan_Monoidal_Coherent], [DecCospan_Braided_Coherent],
-    [DecCospan_Symmetric_Coherent], [DecCospan_Hypergraph_Coherent]).
-    NONE of these classes is instantiated anywhere in the library: only
-    the [Class] declarations and the [Context] assumptions exist, with no
-    [Instance]/[Build_] witnesses.  This construction is therefore a
-    CONDITIONAL result — given the coherence witnesses it would yield the
-    [Hypergraph] instance, but it is not a finished, inhabited result.
-    Even the "trivial decoration" ([F = Δ I_D]) witness is NOT supplied
-    here; the discussion of how each field would be discharged (below) is
-    a sketch of intended work, not a delivered instance. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section DecoratedCospanHypergraph.
 

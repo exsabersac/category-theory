@@ -30,66 +30,15 @@ Generalizable All Variables.
 
 (** * Laws of base change for coloured PROPs *)
 
-(* nLab: https://ncatlab.org/nlab/show/base+change
+(*
    nLab: https://ncatlab.org/nlab/show/restriction+of+scalars
    nLab: https://ncatlab.org/nlab/show/PROP
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   [Construction/ColouredPROP/BaseChange.v] builds, for every colour
-   function [f : Colour → Colour'] and signature morphism [h] over it,
-   the strict symmetric monoidal functor
+   本文件给出构造。
 
-     [BaseChangeF f C'dec S S' h : CFreeCat S ⟶ CFreeCat S']
-
-   through the universal property of the free coloured PROP.  This
-   file proves that the construction is (pseudo)functorial in [f], and
-   develops its two standard corollaries:
-
-   1.  FUNCTORIALITY.  Along the identity colour function, base change
-       is the identity functor ([BaseChangeF_id]); along a composite
-       [g ∘ f], it is the composite of the base changes
-       ([BaseChangeF_comp]).  Both statements are necessarily
-       [hom_cast]-conjugated: the boundary equalities [map_id] and
-       [map_map] of the list functor are PROPOSITIONAL, not
-       definitional (stdlib's proofs are opaque, and the equations do
-       not reduce for variable colour words), so on-the-nose equality
-       of the functors is not even well-typed.  The conjugated form is
-       the honest statement, and it comes from the UNIQUENESS half of
-       the universal property ([cinterp_unique] / [cinterp_unique2])
-       rather than from fresh term inductions: each side of the law is
-       exhibited as a strict symmetric competitor extending the same
-       valuation, and uniqueness pins them together.
-
-   2.  SUBSET RESTRICTION.  A predicate [Q] on colours induces the
-       subtype [ColourSub Q := { c | Q c }], and base change along the
-       projection [proj1_sig] restricts a free coloured PROP to a
-       sub-colour-set ([SubColourFunctor]), with the whole strict
-       symmetric monoidal packaging inherited from [BaseChangeF_*].
-       Decidability of the subtype is an EXPLICIT hypothesis — it is
-       never manufactured from decidability of [Colour] plus proof
-       irrelevance of [Q].
-
-   3.  PRESENTED DESCENT.  A signature morphism between the underlying
-       signatures of two theories [E], [E'] that carries the axioms of
-       [E] to derivable equations of [E'] ([BaseChangeRespects])
-       induces a functor between the PRESENTED coloured PROPs
-       ([PresentedBaseChange]), by the quotient lifting of
-       [Construction/Quotient.v].  The congruence preservation lemma
-       [BaseChange_CTermEqW] is a six-case induction whose free-
-       equation case is [BaseChangeF]'s own [fmap_respects] — the
-       nineteen-case soundness induction is REUSED through the functor,
-       never repeated.
-
-   ** Deciders (D2 discipline)
-
-   As everywhere in the coloured spine, colour deciders are explicit
-   arguments, one canonical decider per colour type per instance site:
-   [Cdec] for the source colours, [C'dec]/[C''dec] for the targets.
-   The UIP steps of the functoriality proofs run through [ObjDecEq] on
-   the TARGET free category (objects are colour words, decided by
-   [list_eq_dec] of the colour decider), via the axiom-free
-   [obj_uip]/[id_cast_loop]/[hom_cast_irr] kit of
-   [Construction/Quotient.v]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Transport of generators along boundary equalities
 

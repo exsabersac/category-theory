@@ -7,70 +7,15 @@ Generalizable All Variables.
 
 (** * Indexed categories: the coherent pseudofunctor-lite *)
 
-(* nLab:      https://ncatlab.org/nlab/show/indexed+category
+(*
    nLab:      https://ncatlab.org/nlab/show/pseudofunctor
    nLab:      https://ncatlab.org/nlab/show/Grothendieck+construction
    Wikipedia: https://en.wikipedia.org/wiki/Grothendieck_construction
 
-   An indexed category over a base category [B] assigns to every object
-   [x : B] a fibre category [idx_fib x] and to every morphism [f : x ~> y] a
-   reindexing functor [idx_map f : idx_fib x ⟶ idx_fib y] — covariantly here,
-   matching the opfibration that the Grothendieck construction
-   (Construction/Grothendieck.v) produces; the classical contravariant
-   presentation of an indexed category as a pseudofunctor out of [B^op] is
-   recovered by instantiating the base at [B^op].  Functoriality holds only up
-   to *chosen, coherent* natural isomorphisms:
+   本文件给出构造。
 
-   - [idx_resp] mediates reindexing along equivalent base morphisms (B's homs
-     are setoids, so [idx_map] can respect [≈] only up to isomorphism),
-   - [idx_id] compares [idx_map id] with the identity functor,
-   - [idx_comp] compares [idx_map f ∘ idx_map g] with [idx_map (f ∘ g)],
-
-   subject to naturality in the fibre argument and to the pseudofunctor
-   coherence laws: proof irrelevance and transitivity for [idx_resp]
-   ([idx_resp_id], [idx_resp_trans]), the unit laws [idx_unit_left] and
-   [idx_unit_right], the associativity cocycle [idx_cocycle], and
-   compatibility of [idx_comp] with [idx_resp] in each base-morphism
-   argument ([idx_comp_resp_l], [idx_comp_resp_r]).  This is
-   "pseudofunctor-lite": exactly the coherent data that the Grothendieck
-   construction consumes, with no 2-categorical superstructure.
-
-   HONESTY NOTE (binding design decision).  In this library a bare
-   [Functor B Cat] does NOT suffice for the Grothendieck construction: Cat's
-   hom-equivalence is [Functor_Setoid], so [fmap_comp], [fmap_id] and
-   [fmap_respects] are *chosen natural isos carrying no coherence between
-   different applications* — an adversarial instance can twist [fmap_comp] by
-   a nontrivial central automorphism in a fibre, and the total category's
-   associativity becomes unprovable.  [StrictCat]-valued functors shift the
-   problem to coherence of propositional object-equality proofs (no UIP in
-   general).  The honest "pseudofunctor-lite" is therefore an explicit
-   coherent-data record, [IndexedCat], with the cocycle and unit coherence as
-   fields; constructors are provided elsewhere in this development (a) from
-   split cleavages, where the coherence is trivial
-   (Construction/Grothendieck/RoundTrip.v), and (b) from [F : B ⟶ StrictCat]
-   under fibrewise UIP, dischargeable via Hedberg wherever object equality is
-   decidable (as in FinSet-like fibres); the constructor and a local Hedberg
-   live in Construction/Grothendieck/Strict.v, whose only concrete Grothendieck
-   is the constant one, so the UIP branch is proven but not itself instantiated
-   on a decidable fibre.
-   Displayed categories (Theory/Displayed.v) remain the primitive Coq-friendly
-   presentation.
-
-   Shape of the twist counterexample.  Fix any [F : B ⟶ Cat] having a fibre
-   with a nontrivial central automorphism [θ] (e.g. a one-object fibre given
-   by a group with nontrivial centre), and fix one composable pair [(f, g)]
-   in [B].  Because [Cat] compares functors by [Functor_Setoid], the functor
-   law [fmap_comp f g : fmap (f ∘ g) ≈ fmap f ∘ fmap g] is *data*: a natural
-   isomorphism chosen independently at each pair of morphisms.  Replace the
-   chosen iso at exactly the pair [(f, g)] by its composite with [θ].
-   Centrality keeps every component natural, and every [Functor] law still
-   holds, because each law constrains one application at a time and never
-   relates [fmap_comp f g] to [fmap_comp (f ∘ g) h] or to [fmap_comp g h].
-   Yet associativity of composition in the would-be total category is
-   precisely such a cross-application equation — the cocycle [idx_cocycle]
-   below — and the twist breaks it, since it introduces a stray factor of
-   [θ ≠ id] on one side only.  Hence the coherence must be carried as data,
-   in the fields below, rather than recovered from bare functoriality. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record IndexedCat (B : Category) : Type := {
   idx_fib : B → Category;

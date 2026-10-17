@@ -6,32 +6,11 @@ Require Import Equations.Prop.Logic.
 
 Generalizable All Variables.
 
-(** * Strict equality of functors out of a funny tensor product
+(*
+   本文件给出构造。
 
-    [Instance/StrictCat.v] compares functors with [Functor_StrictEq_Setoid]
-    (Theory/Functor.v): equal object maps, with morphism maps agreeing after
-    transporting along the object equalities.  Every coherence law of the
-    funny tensor product that lives over [StrictCat] therefore ends in the
-    same kind of proof: two functors out of [C □ D] must be shown strictly
-    equal.
-
-    This file proves that master lemma once and for all ([Funny_strict_eq]):
-    since every morphism of [C □ D] is a word in the generating steps
-    [lstep]/[rstep], two functors out of [C □ D] are strictly equal as soon
-    as they agree on objects and, after transport, on the generating steps.
-    The word induction here is the single transport-heavy proof of the
-    development; the seam helpers ([transport_id_hom], [transport_cod_comp],
-    [transport_dom_comp], [transport_seam]) localize the transport
-    bookkeeping so that downstream files never repeat it.
-
-    As corollaries: the eta rule [Funny_eta] (every functor out of [C □ D]
-    is recovered by [FunnyUP] from its restriction [toSep] to the generating
-    steps), and the uniqueness half of the pushout universal property
-    [Funny_UP_unique] (any functor agreeing with a [SepFunctorial] package
-    on the generators is strictly equal to [FunnyUP] of the package).
-
-    Precedent for the transport kit: [Compose_respects_stricteq] and the
-    surrounding lemmas in Theory/Functor.v, and Instance/StrictCat/ToCat.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Seam helpers
 

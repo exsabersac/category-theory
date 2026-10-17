@@ -16,20 +16,13 @@ Generalizable All Variables.
 
 (** Comma-category characterization of adjunctions (Lawvere) *)
 
-(* nLab: https://ncatlab.org/nlab/show/adjoint+functor
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Comma_category
 
-   Lawvere's theorem: F ⊣ G iff the comma categories (F ↓ Id[C]) and
-   (Id[D] ↓ G) are isomorphic over the projections to the product category
-   D ∏ C; that is, the isomorphism commutes with comma_proj.  Here, with
-   F : D ⟶ C and G : C ⟶ D, the record [lawvere_equiv] below packages such an
-   iso together with its over-D∏C coherence ([projF], [projG], [σ]) and
-   extracts from it the hom-set bijection
+   本文件给出伴随相关构造与性质。
 
-     φ' : (F a ~> b) ≅ (a ~> G b)
-
-   natural in both a and b (see [lawvere_to_functorial], [lawvere_from_functorial]),
-   recovering the classical hom-set definition of an adjunction. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Coherence between an iso φ : C ⟶ D (with inverse ψ) and two projections
    πC, πD : _ ⟶ E that it preserves: the unit/counit η, μ paste together with

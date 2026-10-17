@@ -7,43 +7,13 @@ Generalizable All Variables.
 
 (** * Signatures over coloured PROPs *)
 
-(* nLab:      https://ncatlab.org/nlab/show/PROP
+(*
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   A COLOURED SIGNATURE is the data of a many-sorted symmetric monoidal
-   theory: a family of typed generators indexed by their input/output
-   boundary.  Where a one-sorted PROP signature ([Construction/PROP/
-   Signature.v]) indexes generators by a pair of natural numbers — how
-   MANY wires enter and leave — a coloured signature over a set
-   [Colour] of wire types indexes them by pairs of LISTS of colours:
-   which wire types enter, in which order, and which leave.  It is a
-   family of types indexed by pairs of colour words — an object of
-   [Set^(W x W)] (here in [Type]) where [W := list Colour] is the free
-   monoid of finite words over [Colour] — the underlying object of the
-   free-coloured-PROP adjunction.
+   本文件给出构造。
 
-   Concretely [Sig cs ds] is the [Type] of generator names whose input
-   boundary is the colour list [cs] and whose output boundary is [ds].
-   In examples:
-
-     - The empty signature [Empty_CSig] presents a coloured PROP with
-       NO non-structural generators: its free coloured PROP has as
-       morphisms exactly the structural rearrangements (identities,
-       composites, tensors, braids), i.e. colour-preserving
-       permutations of wires.
-     - A typed circuit signature over [Colour := {wire; clk}] might
-       have a generator in [Sig [wire; wire] [wire]] (a join that
-       needs two data wires), one in [Sig [clk; wire] [wire]] (a
-       latch), one in [Sig [] [clk]] (a clock source), etc.  The
-       colour discipline makes ill-typed pluggings unrepresentable.
-
-   The signature is the INPUT to the free construction: given [S],
-   the free coloured PROP on [S] is the strict symmetric monoidal
-   category whose morphisms are [S]-labelled typed string diagrams
-   modulo the strict-SMC axioms.  This file defines the signatures,
-   the raw [CTerm] syntax, and smart constructors; the equational
-   theory lives in [Construction/ColouredPROP/TermEq.v] and the free
-   category in [Construction/ColouredPROP/Free.v]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CSignature.
 

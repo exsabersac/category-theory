@@ -21,49 +21,15 @@ Generalizable All Variables.
 
 (** * The free PROP, bundled: the library's first inhabited [PROP] *)
 
-(* nLab: https://ncatlab.org/nlab/show/PROP
+(*
    nLab: https://ncatlab.org/nlab/show/free+category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
    Wikipedia: https://en.wikipedia.org/wiki/Free_category
 
-   This file assembles the bundled [PROP] instance [FreePROP S] on the
-   free category [FreeCat S] of a signature [S] — the first inhabitant
-   of the [PROP] class in the library.  See the surrounding discussions
-   in [Construction/PROP/Free.v] and [Construction/PROP.v] for the
-   roadmap of the instance tower that this file completes.
+   本文件给出具体实例。
 
-   Every equality field of [FreePROP] is [eq_refl], because the whole
-   tower shares ONE [Monoidal] record:
-
-     - [strict_is_monoidal (FreeCat_Strict S)] is, by iota reduction on
-       the explicit record literal of [Strict.v], the literal term
-       [FreeCat_Monoidal S];
-     - [braided_is_monoidal (symmetric_is_braided (FreeCat_Symmetric S))]
-       projects through [FreeCat_Braided S] to the SAME literal term;
-
-   so [prop_monoidal_coherence] — propositional in general, with the
-   use-site friction documented at length in [Construction/PROP.v] —
-   is DEFINITIONAL for the free PROP.  Likewise [prop_of_nat] is the
-   identity on [nat] (the objects of [FreeCat S] ARE the naturals),
-   [prop_unit_zero] holds because the unit of [FreeCat_Monoidal S] is
-   the literal [0], and [prop_tensor_plus] holds because the object
-   action of [FreeCat_Tensor S] is [fun p => fst p + snd p], which
-   reduces on the literal pair [(m, n)] to [m + n].
-
-   The file also hosts the two side-condition instances that the
-   interpretation and universal-property files require of [FreeCat S],
-   both drawn from the fully general kit of [Construction/Quotient.v]:
-
-     - [HomEqProp (FreeCat S)]: the hom-setoid equivalence of
-       [FreeCat S] IS the [Prop]-valued [TermEq S] after delta/beta
-       reduction of [Free.v]'s [Term_Setoid], so both directions of the
-       reflection are the identity;
-     - [ObjDecEq (FreeCat S)]: objects are [nat], so [Nat.eq_dec]
-       decides object equality, giving axiom-free UIP on objects.
-
-   Machine-checked [Example]s at the end pin the definitional
-   behaviour, so any regression in the shared-record wiring is caught
-   here rather than at a distant use site. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FreePROP.
 

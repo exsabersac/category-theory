@@ -14,25 +14,11 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** The ORDINARY category [C, D]_V of K-enriched functors and V-natural
-    transformations.
+(*
+   本文件给出构造。
 
-    Objects are the enriched functors C ⟶ D, morphisms are the V-natural
-    transformations of Natural.v under their componentwise setoid, the
-    identity at F has components eid, and composition is VERTICAL
-    composition: at x, the composite of τ after σ is
-
-        ecompose ∘ (τ_x ⨂ σ_x) ∘ λ_I⁻¹
-
-    where λ_I⁻¹ : I ~> I ⨂ I coerces the tensor unit so that the two
-    I-sourced components can be tensored and then composed in D.
-
-    Ledger entry 11 (a scope note, not a weakening): this file delivers the
-    ordinary category of V-functors, which is exactly this phase's named
-    deliverable.  Upgrading it to a genuine V-CATEGORY — with hom-OBJECTS
-    ∫_c D(F c, G c) valued in K rather than hom-sets — requires ends in K
-    and underlying-category machinery, and is deferred to a later phase
-    (ledger 11). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** * A small splitting/cons toolkit in K
 

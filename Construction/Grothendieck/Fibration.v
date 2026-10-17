@@ -13,52 +13,14 @@ Generalizable All Variables.
 
 (** * The Grothendieck projection is a split opfibration *)
 
-(* nLab:      https://ncatlab.org/nlab/show/Grothendieck+construction
+(*
    nLab:      https://ncatlab.org/nlab/show/Grothendieck+fibration
    Wikipedia: https://en.wikipedia.org/wiki/Fibred_category
 
-   The projection ∫ A ⟶ B of the Grothendieck construction
-   (Construction/Grothendieck.v) is an opfibration, and its canonical
-   opcleaving is split: the chosen lifts compose functorially on the nose,
-   with the chosen coherence isos of [A] as the mediators.
+   本文件给出构造。
 
-   Opcartesian lifts.  Over [f : x ~> y] with [dx] above [x], the chosen
-   lift is the total morphism [(f; id)] into [(y; idx_map A f dx)]: push
-   [dx] forward along [f]; the displayed part is the identity of the
-   pushforward [idx_map A f dx].  Opcartesianness is [DCartesian] in the
-   op-displayed sense of Theory/Fibration.v — cartesianness for
-   [Displayed_op (Grothendieck_Displayed A)] over [B^op].  Unwinding the
-   op-reading, a displayed morphism over [g ∘ f] out of [dx] is a fibre
-   morphism [hh : idx_map A (g ∘ f) dx ~> dz], and it factors through the
-   chosen lift uniquely by conjugating with the chosen composition iso:
-   the mediating morphism is [hh ∘ to (idx_comp A g f dx)], and both
-   existence and uniqueness are inverse cancellation for [idx_comp] —
-   which is exactly why the lift is opcartesian: [idx_comp] is an iso.
-   [Grothendieck_OpCleaving] packages the chosen lifts as an [OpCleaving],
-   and [cleaving_total_cloven] upgrades it to a cloven fibration of the
-   projection out of the op-total category ([Grothendieck_OpCloven]).
-
-   Splitting (disclosed design point).  The split laws are delivered as
-   standalone named lemmas ([Grothendieck_split_lift_id],
-   [Grothendieck_split_lift_comp], bundled as [Grothendieck_Split]) rather
-   than as an op-instance of the strict [SplitCleaving] record of
-   Theory/Fibration.v.  [SplitCleaving] anchors its laws in propositional
-   object equalities ([lift_obj … = e']); for the canonical opcleaving
-   here those anchors would read [idx_map A id dx = dx] and
-   [idx_map A g (idx_map A f dx) = idx_map A (g ∘ f) dx] in the fibres,
-   and a general [IndexedCat] provides them only as the chosen isos
-   [idx_id] and [idx_comp], not as equalities — demanding equality would
-   amount to demanding that [A] itself be strict.  The honest split laws
-   therefore state functoriality of the cleavage on the nose relative to
-   the chosen coherence isos: composing the chosen lift of [id[x]] with
-   the vertical image of [idx_id A dx] IS the identity of [(x; dx)], and
-   composing the chosen lifts of [f] then [g] with the vertical image of
-   [idx_comp A g f dx] IS the chosen lift of [g ∘ f].  The mediators are
-   pinned to the chosen isos — which satisfy the unit and cocycle
-   coherence of [IndexedCat] — not merely asserted to exist; nothing is
-   quantified away.  When [A] is strict (all [idx_id]/[idx_comp]
-   components identity isos), the mediators reduce to identities and the
-   laws specialize to the classical on-the-nose splitting. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section GrothendieckFibration.
 

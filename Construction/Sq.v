@@ -6,32 +6,13 @@ Require Import Category.Theory.DoubleCategory.Companion.
 
 Generalizable All Variables.
 
-(** * The double category of commuting squares
-
+(*
     nLab: https://ncatlab.org/nlab/show/double+category (Examples)
 
-    For any category [C], there is a double category [Sq C] whose objects
-    are the objects of [C], whose vertical AND horizontal 1-cells are both
-    the morphisms of [C], and whose squares
+   本文件给出构造。
 
-        a --h--> b
-        |        |
-        u        v
-        v        v
-        c --k--> d
-
-    are the proofs that the square commutes: [dsq h u v k := k ∘ u ≈ v ∘ h].
-    A square is a mere proposition (an inhabitant of the hom-setoid's
-    relation), so we equip it with the TRIVIAL setoid identifying all
-    inhabitants; every coherence field of [DoubleCategory] then holds
-    automatically, and the fields demanding a witness (vertical and
-    horizontal pasting, the globular associator and unitors) are exactly
-    the associativity and unit laws of [C].
-
-    This instance is the class's reuse audit: it exercises every field of
-    [DoubleCategory] in the degenerate proof-irrelevant regime, dually to
-    Construction/Cospan/Double.v where squares are genuinely
-    proof-relevant. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The trivial setoid on a type: all inhabitants are identified.  For
    [Sq C] the carrier is always a commuting-square proposition, so this

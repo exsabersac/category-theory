@@ -20,55 +20,15 @@ Require Import Category.Construction.DecoratedCospan.Symmetric.
 
 Generalizable All Variables.
 
-(** * Monoidal structure on [DecoratedCospanCat]
-
+(*
     Reference: Brendan Fong, "Decorated Cospans", arXiv:1502.00872,
-    Theorem 3.5 (the symmetric-monoidal hypergraph structure on
-    [F Cospan]).  This module assembles the plain [Monoidal] layer of
-    that theorem on [DecoratedCospanCat HP LM id_decoration cospan_merge],
-    layering a decoration coherence class on top of [Cospan_Monoidal]
-    from [Construction/Cospan/Hypergraph.v].  The braiding and symmetry
-    that complete Theorem 3.5 are added in the sibling [Braided] and
-    [Symmetric] modules; here we ask only for a plain
-    [LaxMonoidalFunctor], which suffices for the associator and unitors.
-
     nLab: https://ncatlab.org/nlab/show/decorated+cospan
     Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
 
-    In library notation the monoidal data follows Fong's Theorem 3.5:
-    the tensor of objects is the coproduct ([I := initial_obj], and
-    [tensor := DecoratedCospan_Bifunctor], whose object part is the
-    coproduct [X + Y]); the tensor of morphisms combines the two
-    decorations via the laxator [lax_ap[F]] (see [dec_tensor_decoration]
-    in [Symmetric]); the monoidal unit is the initial object [0]
-    decorated trivially; and the associator/unitors are the [Dlift] of
-    the corresponding [Cocartesian] isos [coprod_assoc],
-    [coprod_zero_l], [coprod_zero_r], each carrying [id_decoration] on
-    its codomain apex.
+   本文件给出幺半相关结构。
 
-    ** Architecture
-
-    Following the [DecCospan_Coherent] / [DecCospan_Bifunctor_Coherent]
-    pattern, the eight obligations of the [Monoidal] class are paired as
-
-      (a) the cospan-level fact (already proved generically by
-          [cospan_unit_left_natural], [cospan_unit_right_natural],
-          [cospan_tensor_assoc_natural], [cospan_triangle_identity],
-          [cospan_pentagon_identity]);
-
-      (b) a matching decoration-level coherence supplied by the
-          user-instantiable [DecCospan_Monoidal_Coherent] typeclass.
-
-    Each coherence field is stated as a SINGLE decorated-cospan
-    equivalence: the LHS-vs-RHS [dec_cospan_equiv] for the Monoidal
-    obligation in question.
-
-    The structural unitors and associator are defined as the
-    [dec_mor_as_cospan] of the corresponding C-iso, carrying the
-    canonical [id_decoration] on the codomain apex.  Their iso-laws
-    inherit from the [Category]-level [id_left] / [id_right] of
-    [DecoratedCospanCat] (which are themselves discharged by the
-    [DecCospan_Coherent] typeclass). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section DecoratedCospanMonoidal.
 

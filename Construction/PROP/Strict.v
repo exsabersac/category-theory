@@ -16,36 +16,15 @@ Generalizable All Variables.
 
 (** * The Strict structure on the free PROP *)
 
-(* nLab: https://ncatlab.org/nlab/show/strict+monoidal+category
+(*
    nLab: https://ncatlab.org/nlab/show/PROP
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   [FreeCat S] is STRICT monoidal: its objects are natural numbers, its
-   tensor on objects is addition, and the arity equations
+   本文件给出严格情形。
 
-     [Nat.add_assoc x y z] : x + (y + z) = (x + y) + z   (associativity)
-     [Nat.add_0_l x]       : 0 + x = x                   (left unit)
-     [Nat.add_0_r x]       : x + 0 = x                   (right unit)
-
-   are honest Leibniz equalities of objects — exactly the object-level
-   strictness the [StrictMonoidal] class demands.  The comparison
-   fields — that the structural isomorphisms of the monoidal structure
-   coincide with the identity transported along those equalities — are
-   reflexivity-grade here, because [Structural.v] BUILT the unitors and
-   the associator as [T_cast] maps, and [T_cast e] is definitionally
-   the very [match e in _ = T return _ ~> T with eq_refl => id end]
-   shape that the class's fields ask for (with the SAME proof term [e]
-   on both sides, so not even UIP is needed).
-
-   Crucially, [strict_is_monoidal] is [FreeCat_Monoidal S] — THE shared
-   [Monoidal] record from [Monoidal.v] that the Braided, Symmetric, and
-   PROP instances also name — so all structure projections downstream
-   agree definitionally.
-
-   Following the [Free.v] discipline, the comparison proofs are
-   standalone, named lemmas and the record is assembled with every
-   field explicit, generating no Program obligations. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FreeStrict.
 

@@ -11,35 +11,16 @@ Generalizable All Variables.
 
 (** * Naturality lemmas for the structural isomorphisms *)
 
-(* nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+category
+(*
    nLab: https://ncatlab.org/nlab/show/braided+monoidal+category
    nLab: https://ncatlab.org/nlab/show/PROP
    Wikipedia: https://en.wikipedia.org/wiki/Symmetric_monoidal_category
    Wikipedia: https://en.wikipedia.org/wiki/Braided_monoidal_category
 
-   Restated in library notation (writing [g ⊙ f] for [T_comp g f], the
-   diagrammatic "g after f", and [f ⊕ g] for [T_tens f g]):
+   本文件给出 PROP 相关。
 
-     - braid naturality: σ slides past a tensor of two morphisms,
-         (g ⊕ f) ⊙ σ_{m1,m2} ≈ σ_{n1,n2} ⊙ (f ⊕ g)
-       for f : m1 ⇒ n1, g : m2 ⇒ n2.  This is exactly the naturality
-       square of the symmetry σ_{a,b} : a ⊗ b → b ⊗ a, matching the
-       source equation (g ⊗ f) ∘ σ_{a,b} = σ_{a',b'} ∘ (f ⊗ g).
-     - braid involution (symmetry): σ_{n,m} ⊙ σ_{m,n} ≈ id_{m+n},
-       the source's σ_{B,A} ∘ σ_{A,B} = id_{A⊗B}.
-     - the interchange law (bifunctoriality of ⊕) lives in [TermEq] as
-       [TE_interchange]; here it is used implicitly through the tensor
-       of morphisms appearing in braid naturality.
-
-   Algebraic facts about [Term S] that the Monoidal instance on
-   [FreeCat S] needs.  Each lemma states a strict-PROP naturality
-   equation in terms of [T_cast] (the structural map) and [T_tens]
-   (the bimap).
-
-   The proofs rely on:
-     - [TE_tens_id0_left] for the strict left-unit law
-     - [Nat.add_0_l] being DEFINITIONAL so [T_cast (Nat.add_0_l n)
-       : Term S (0+n) n] is the [T_cast eq_refl]-equivalent identity *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Naturality.
 

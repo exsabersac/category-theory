@@ -11,38 +11,11 @@ Require Import Coq.Lists.List.
 
 Generalizable All Variables.
 
-(** * The comparison functor κ : C □ D ⟶ C ∏ D
+(*
+   本文件给出比较函子相关。
 
-    The funny tensor product C □ D (Construction/Funny.v) and the cartesian
-    product C ∏ D (Construction/Product.v) have the same objects; the
-    comparison functor κ ([FunnyToProduct]) is the identity on objects and
-    sends a word to its componentwise composite, one generating step at a
-    time:
-
-      lstep f ↦ (f, id)        rstep g ↦ (id, g)
-
-    κ is bijective on objects ([FunnyToProduct_obj]) and full
-    ([FunnyToProduct_Full]): every (f, g) in C ∏ D is the image of the word
-    "g then f" — indeed of either diagonal of the fundamental square, since
-    (f, g) ≈ (f, id) ∘ (id, g) ≈ (id, g) ∘ (f, id) there.  It is NOT faithful
-    ([FunnyToProduct_not_faithful]): the two diagonals are identified by κ
-    but remain distinct in C □ D ([funny_diagonals_distinct]).  Finally κ is
-    natural in both arguments over strict functor equality
-    ([FunnyToProduct_natural]).
-
-    The non-faithfulness witness interprets _2 □ _2 in the free monoid on the
-    booleans, regarded as a one-object category ([ListMon]): L-steps are
-    tagged [true], R-steps [false], and the two diagonals map to the distinct
-    words [true; false] and [false; true].  This is the one-object shadow of
-    Weber's observation (TAC 28:2, §2) that on monoids − □ − is the free
-    product (the coproduct of monoids), whereas − ∏ − is the direct product.
-    It also pins down, as a regression test, that the congruence [feq] was
-    not accidentally made too coarse: no interchange is derivable.
-
-    Weber (TAC 28:2) further factorizes κ as bijective-on-objects followed by
-    fully-faithful to obtain the Gray tensor product of 2-categories, where
-    the two diagonals become isomorphic rather than equal; that factorization
-    is out of scope here and recorded only as this remark. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The comparison functor *)
 

@@ -9,21 +9,13 @@ Generalizable All Variables.
 
 (** V-natural transformations between K-enriched functors. *)
 
-(* nLab: https://ncatlab.org/nlab/show/enriched+natural+transformation
+(*
+ nLab: https://ncatlab.org/nlab/show/enriched+natural+transformation
 
-   Given two K-enriched functors F, G : C ⟶ D between K-categories, a
-   K-enriched (or V-natural) transformation σ assigns to every object x of C
-   a component σ_x : I ~> (F x ⟿ G x) in K, naming an element of the hom-object
-   from F x to G x.  The naturality condition is the equality of two
-   K-morphisms (x ⟿ y) ~> (F x ⟿ G y): whiskering σ_y after F and whiskering
-   σ_x before G must agree.  The two composites are set up over the tensor unit
-   using ecompose (the enriched composition of D), with the unitors of K
-   supplying the coercions that make the sources match — mirroring the
-   unit_left / unit_right plumbing of eid_left / eid_right in Enriched.v.
+   本文件给出自然变换相关。
 
-   Taking K = Set recovers ordinary natural transformations: σ_x : I ~> (F x ⟿
-   G x) picks out a morphism component, and the naturality square becomes the
-   usual commuting square. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class EnrichedTransform {K : Category} `{@Monoidal K} {C D : Enriched K}
       (F G : EnrichedFunctor K C D) := {

@@ -11,60 +11,11 @@ Require Import Equations.Prop.Logic.
 
 Generalizable All Variables.
 
-(** * Closed structure of the funny tensor product
+(*
+   本文件给出闭结构。
 
-    The category [⟦B, E⟧] of functors and UNNATURAL transformations
-    (Construction/Funny/Hom.v) is the internal hom of the funny tensor
-    product: functors [A □ B ⟶ E] correspond to functors [A ⟶ ⟦B, E⟧]
-    ([FunnyCurry]/[FunnyUncurry]), with evaluation [FunnyEval].  By the
-    theorem of Foltz, Lair and Kelly (JPAA 17(2), 1980, 171-177) this is one
-    of exactly two monoidal biclosed structures on Cat, the other being the
-    cartesian structure whose internal hom [Instance/Fun.v] takes natural
-    transformations.
-
-    Two library interfaces CANNOT express this closed structure.  Both
-    no-gos are load-bearing; the statements in this file are deliberately
-    phrased outside both interfaces, so do not "upgrade" them to either
-    interface later:
-
-    1. [Structure/Monoidal/Closed.v]'s [ClosedMonoidal] hard-requires
-       [closed_is_cartesian : @CartesianMonoidal C] — its tensor IS the
-       cartesian product structure.  The funny tensor is not cartesian
-       (the comparison functor κ : C □ D ⟶ C ∏ D of
-       Construction/Funny/Comparison.v is not faithful), so that class is
-       structurally unusable for □.
-
-    2. [Theory/Adjunction.v] demands a hom-SETOID isomorphism
-       [adj : F x ~> y ≊ x ~> U y] in Sets.  For the would-be adjunction
-       (− □ B) ⊣ ⟦B, −⟧ this is unprovable in this metatheory, over either
-       functor-category setoid:
-
-       - over strict functor equality ([Functor_StrictEq_Setoid], the
-         hom-setoid of [StrictCat]), Properness of [FunnyCurry] would need
-         [∀ a, FunnyCurry F a = FunnyCurry F' a] — an [eq] of [Functor]
-         RECORDS in [⟦B, E⟧] — not derivable without functional
-         extensionality or proof irrelevance;
-
-       - over natural isomorphism ([Functor_Setoid], the hom-setoid of the
-         weak [Cat]), the two sides are genuinely DIFFERENT quotients: with
-         A = 1, Cat(1 □ B, E) identifies functors up to natural iso, while
-         Cat(1, ⟦B, E⟧) identifies them only up to unnatural iso.
-         [FunnyUncurry] is not Proper there: transporting a merely
-         unnatural component family along the [rstep] generators would
-         require exactly the naturality squares — the interchange law —
-         that C □ D pointedly lacks.
-
-    What IS true, and proved below:
-
-    - the strict β/η laws over [Functor_StrictEq_Setoid]:
-      [funny_uncurry_curry], [funny_curry_uncurry], [funny_curry_beta],
-      with mediator uniqueness on objects and on both generator families
-      ([funny_curry_unique], [funny_curry_unique_lstep]);
-    - the exponential law [Funny_exponential_law]:
-      [⟦A □ B, E⟧ ≅[Cat] ⟦A, ⟦B, E⟧⟧], a genuine isomorphism of categories
-      whose unit and counit components are UNNATURAL transformations — it
-      typechecks precisely because [⟦−,−⟧]-morphisms carry no naturality
-      condition. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Currying
 

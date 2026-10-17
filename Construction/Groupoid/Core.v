@@ -14,55 +14,15 @@ Generalizable All Variables.
 
 (** * The core functor, and its adjunction with the inclusion *)
 
-(* nLab:      https://ncatlab.org/nlab/show/core
+(*
    nLab:      https://ncatlab.org/nlab/show/Grpd
    Wikipedia: https://en.wikipedia.org/wiki/Core_(group_theory)
-
    Book: Riehl, "Category Theory in Context", Dover 2016, §4.1,
-         Example 4.1.15, printed p. 137 (PDF pp. 157-158)
 
-   Construction/Groupoid.v builds the core of ONE category:
-   [Groupoid C] has the objects of C and the isomorphisms of C as its
-   morphisms.  This file makes that construction a functor
-   [Core : Cat ⟶ Grpd] and proves it right adjoint to the inclusion
-   [Grpd_Incl : Grpd ⟶ Cat] of Instance/Grpd.v.
+   本文件给出核心定义。
 
-   The morphism part is forced.  A functor F : C ⟶ D carries isomorphisms
-   to isomorphisms -- Theory/Functor.v's [fobj_iso] is exactly that
-   statement, as a [Proper] instance -- so [CoreMap F] is F restricted to
-   the isomorphisms, sending x ≅ y to F x ≅ F y componentwise.  [CoreMap]
-   below writes that two-field isomorphism out directly instead of
-   projecting it from [fobj_iso], so that its two inverse laws are named
-   obligations here.  The object part needs [IsGroupoid (Groupoid C)];
-   that lemma is already in-tree, as Structure/Groupoid.v's
-   [core_is_groupoid], and is reused rather than reproved.
-
-   The adjunction is the universal property of the core: for a groupoid G,
-   every functor G ⟶ C lands in the isomorphisms of C, so it factors
-   through [Groupoid C], and uniquely.  The forward transpose is
-   [core_lift]: it re-reads F : G ⟶ C as a functor into [Groupoid C] by
-   pairing F f with F of the chosen inverse of f.  The backward transpose
-   is post-composition with [ForgetCore C : Groupoid C ⟶ C], which takes an
-   isomorphism to its [to] component.  What makes the two mutually inverse
-   is that a functor into a core is DETERMINED by its [to] components
-   ([core_functor_from] below): the [from] component of P f is forced to be
-   the [to] component of P (f⁻¹), by uniqueness of inverses.
-
-   The result is delivered as a `≈`-level [Adjunction] over the CATEGORY
-   [Grpd], through Theory/Adjunction.v's [Build_Adjunction'] -- not as a
-   per-object factorization statement.  Both of the naturality squares
-   [Build_Adjunction'] asks for are witnessed by the IDENTITY natural
-   isomorphism: the two functors being compared agree on objects and in
-   their [to] components, so [cat] closes those halves.  Only the [from]
-   halves need an argument, and only for the first square
-   ([to_adj_nat_l]); it is there that the one genuine lemma of the file,
-   [functor_ginv], is used.  The second ([to_adj_nat_r]) is componentwise
-   identical on both sides.
-
-   Not delivered here: the LEFT adjoint.  The category of fractions, which
-   universally inverts every morphism, is not built in any part, so the
-   adjoint triple Fractions ⊣ Incl ⊣ Core is exhibited only on its
-   right-hand side. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Functors between groupoids preserve the chosen inverse
 

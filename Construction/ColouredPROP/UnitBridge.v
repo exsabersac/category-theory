@@ -36,82 +36,13 @@ Generalizable All Variables.
 
 (** * The unit-colour bridge: PROPs are one-colour coloured PROPs *)
 
-(* nLab:      https://ncatlab.org/nlab/show/PROP
+(*
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   [Construction/ColouredPROP.v] closes with a discussion (its section
-   "Discussion: relationship to plain PROPs") observing that a [PROP]
-   is the one-colour special case of [ColouredPROP unit] — the
-   wire-list [list unit] is in bijection with [nat] via [length], with
-   [cprop_of_list (repeat tt n)] corresponding to [prop_of_nat n] and
-   concatenation to addition — and defers the formal bridge to a
-   downstream construction.  This file is that construction.
+   本文件给出构造。
 
-   It has three layers:
-
-   1. CLASS-LEVEL TRANSPORTS.  [PROP_to_ColouredPROP] equips the
-      category underlying any [PROP] with a [ColouredPROP unit]
-      structure ([cprop_of_list := length]-indexed naming), and
-      [ColouredPROP_unit_to_PROP] converts back
-      ([prop_of_nat := repeat tt]-indexed naming).  Both reuse the
-      SAME strict/symmetric structures and the SAME coherence proof,
-      so the underlying category, both [Monoidal] paths, and the
-      coherence field are preserved on the nose (machine-checked
-      [Example]s).  Only the object-naming function changes, riding
-      [len_app] respectively [repeat_app].
-
-   2. FREE-LEVEL BRIDGE FUNCTORS.  For a one-sorted signature [S],
-      the unit-coloured signature [USig S] reads a generator's arity
-      off the lengths of its colour words.  The two universal
-      properties then hand us strict symmetric monoidal functors in
-      both directions with NO fresh induction over terms:
-
-        [LengthFunctor : CFreeCat (USig S) ⟶ FreeCat S]
-          is [CInterpF] at the coloured-PROP-transported free PROP
-          ([LengthPROP := PROP_to_ColouredPROP (FreePROP S)]);
-        [RepeatFunctor : FreeCat S ⟶ CFreeCat (USig S)]
-          is [InterpF] at the PROP-transported free coloured PROP
-          ([RepeatPROP := ColouredPROP_unit_to_PROP
-                            (FreeColouredPROP (USig S) unit_dec)]).
-
-      Their strict monoidal packagings are the [CInterpF_Strict] /
-      [InterpF_Strict] instances at those targets; the strict object
-      comparisons are the transported class fields, i.e. the
-      [len_app]- respectively [repeat_app]-shaped equalities of
-      layer 1.
-
-   3. ROUND-TRIP LAWS.  On objects the two composites are
-      [length (repeat tt n) = n] ([repeat_length]) and
-      [repeat tt (length l) = l] ([unit_list_eta], which needs
-      eta for [unit] and is exactly where "one colour" enters).  On
-      morphisms, both round trips are the identity up to [hom_cast]
-      conjugation along those object equalities:
-
-        [LengthRepeat_roundtrip] :
-           hom_cast ∘ fmap[LengthFunctor ◯ RepeatFunctor] ≈ id
-        [RepeatLength_roundtrip] :
-           hom_cast ∘ fmap[RepeatFunctor ◯ LengthFunctor] ≈ id
-
-      Each is closed by the corresponding uniqueness theorem
-      ([interp_unique2] / [cinterp_unique2]) applied to the composite
-      and to the identity functor, both packaged strictly
-      ([Compose_StrictMonoidalFunctor] / [Id_StrictMonoidalFunctor])
-      and with braid-compatibility squares proved by the [id_cast]
-      calculus of [Construction/Quotient.v] — the composite square
-      collapses because every strict braiding in sight is
-      definitionally the free braid constructor ([Example]s
-      [strict_braid_FreePROP_eq] etc. pin this).
-
-   On-the-nose functoriality of the round trips is unattainable:
-   [repeat_length] and [unit_list_eta] are propositional, not
-   definitional, so the conjugated [hom_cast] form is the honest
-   statement — the same hom_cast-conjugation discipline as the
-   base-change laws (see the Discussion at the foot of
-   [Construction/ColouredPROP/BaseChange/Laws.v]).  In
-   this precise sense coloured PROPs are a strict generalisation of
-   PROPs: the one-colour free coloured PROP and the free PROP are
-   equivalent through strict symmetric monoidal functors that are
-   mutually inverse up to the canonical strictness casts. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Layer 0: unit-colour utilities *)
 

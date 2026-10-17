@@ -10,62 +10,13 @@ Require Import Coq.Arith.PeanoNat.
 
 Generalizable All Variables.
 
-(** * The free monoidal category on one generator
-
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed., §VII.2
-    (book pp. 165-168): binary words [maclane:VII.2:def1], the category [W]
-    [maclane:VII.2:construction1], and the freeness theorem
-    [maclane:VII.2:thm1].
+(*
     nLab: https://ncatlab.org/nlab/show/coherence+theorem+for+monoidal+categories
 
-    A monoidal category has a tensor that is associative and unital only UP TO
-    coherent isomorphism, so an iterated tensor is not one object but a whole
-    family of them, one per bracketing.  Mac Lane's device for studying that
-    family is to make the bracketings themselves the objects of a category.  A
-    BINARY WORD is a formal parenthesised product built from a single
-    placeholder [(-)] and an empty slot [e0]; [W] has the binary words as
-    objects and EXACTLY ONE arrow between any two words of the same length.
+   本文件给出构造。
 
-    That last clause is the whole point.  Because the hom is a proposition, any
-    two parallel arrows of [W] are equal, so every diagram in [W] commutes for
-    free — and a structure-preserving functor out of [W] must therefore send
-    every diagram of bracket-shuffles to a commuting diagram downstream.  [W]
-    is the walking (weak, non-symmetric) monoidal category on one object, and
-    its universal property is a form of the coherence theorem.
-
-    WHY THE HOM IS A LENGTH EQUATION.  We take [hom v w := wlen v = wlen w]
-    and declare the hom-setoid equivalence to be the constantly-true relation,
-    exactly as Instance/Proset.v does for a preorder.  Two consequences
-    are load-bearing:
-
-      - every law of a category, of a bifunctor, and of [Monoidal] — including
-        the triangle and the pentagon — is an equation between PARALLEL arrows
-        of [W], hence inhabited by [I] : True.  None of them costs a proof.
-        This is [W_thin] below, and it is why this file contains no coherence
-        argument at all: the coherence content of §VII.2 lives entirely in the
-        FREENESS theorem, not in [W] itself.
-
-      - [wlen] must be defined structurally with [+], not with an accumulator.
-        Then [wlen (WT WE x)] is convertible with [wlen x] because [0 + n]
-        reduces, so the left unitor of [W] is literally [eq_refl].  An
-        accumulator-based length would break that conversion and force a cast
-        into every unitor.
-
-    SCOPE OF THIS FILE.  It supplies the reusable core: the word datatype, [W],
-    and its monoidal structure.  Mac Lane's Theorem 1 — for a monoidal [B] and
-    an object [b], a unique structure-preserving functor [W ⟶ B] sending the
-    generator to [b] — is developed on top of this and is stated against STRICT
-    monoidal functors, which is what Mac Lane's own statement means: his Moncat
-    (§VII.1, [maclane:VII.1:construction2]) is "the category of all small
-    monoidal categories with strict morphisms as arrows", and his strict
-    morphism ([maclane:VII.1:def3]) is required to carry alpha, lambda and rho
-    to alpha', lambda' and rho' on the nose.  Uniqueness among merely STRONG
-    monoidal functors is false, so the strict reading is not a weakening but
-    the only one under which Theorem 1 can hold.
-
-    The word datatype is exported as a standalone [Set] on purpose: §VII.2's
-    coherence corollary and the §XI word-functor development both need to
-    recurse over the same words. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Binary words *)
 

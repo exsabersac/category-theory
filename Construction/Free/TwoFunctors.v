@@ -9,49 +9,14 @@ Generalizable All Variables.
 
 (** * Two functors between free categories, agreeing on objects *)
 
-(* Book: Fong, Spivak, "An Invitation to Applied Category Theory: Seven
-         Sketches in Compositionality", Cambridge University Press, 2019,
-         Section 3.3.2, Exercise 3.40, printed p. 92
+(*
    Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-         Springer GTM 5, 1998, Section I.3 ("Functors"), printed p. 15
    nLab: https://ncatlab.org/nlab/show/free+category
 
-   Exercise 3.40 asks for two functors that agree on objects and differ on
-   morphisms, and supplies the cheapest possible witness: from the free
-   category on a single arrow to the free category on two parallel arrows,
-   send the generator to one parallel arrow or to the other.  The two
-   functors have the SAME object function -- here literally [fun n => n],
-   the identity -- and different arrow functions.  This is Mac Lane's
-   Section I.3 question with the algebra removed; the group-theoretic
-   reading is in Instance/Grp/TwoFunctors.v.
+   本文件给出构造。
 
-   Everything rests on Construction/Free/Quiver.v.  A quiver built by
-   [Build_Quiver_Standard_Eq] compares edges by propositional equality, and
-   [FreeOnQuiver] makes its morphisms the type-aligned paths of Lib/TList.v
-   with [tlist_quiver_equiv] as the hom-setoid; a quiver homomorphism into
-   the underlying quiver of a category induces a functor out of the free
-   category ([InducedFunctor], which is also the mediating functor in the
-   proof of the universal property [UniversalArrowQuiverCat]).  So both
-   functors here are induced from a choice of image for the single
-   generator.
-
-   WHERE THE DIFFERENCE LIVES.  [fs_singleton_distinct] is the load-bearing
-   lemma: the two one-edge paths are inequivalent IN THE HOM-SETOID of the
-   target free category.  Unfolding [tlist_quiver_equiv] on two singletons
-   leaves an equality of intermediate nodes and an equation between the two
-   edges after transport along it; uniqueness of identity proofs on the
-   two-element node type (Hedberg, via the stdlib's axiom-free [UIP_dec])
-   discharges the first, and the second is then an equality of distinct
-   constructors.  So the separation is a statement about the setoid, not
-   about the shape of the terms.
-
-   The distinctness is stated in [Functor_StrictEq_Setoid]
-   (Theory/Functor.v), the hom-setoid of [StrictCat]
-   (Instance/StrictCat.v).  No claim is made here about the weak setoid
-   [Functor_Setoid] (Theory/Functor.v) of [Cat] (Instance/Cat.v),
-   which identifies naturally isomorphic functors; the twisted pair of
-   Functor/Twist.v and Instance/Grp/TwoFunctors.v is the one that
-   deliberately exhibits a pair separated strictly and identified weakly. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The two quivers *)
 

@@ -13,47 +13,11 @@ From Coq Require Import Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * Normalisation into a monoidal category
+(*
+   本文件给出构造。
 
-    The engine room of Mac Lane's Theorem 1 [maclane:VII.2:thm1].  Fix a
-    monoidal category [B] and an object [b].  Substituting [b] into a binary
-    word gives one bracketing of an iterated tensor; this file builds, for
-    every word, a canonical isomorphism [can w] from that bracketing to the
-    RIGHT-NORMALISED form [nf (wlen w) I], and proves the two equations about
-    the normaliser that the freeness theorem spends coherence on:
-
-      - [J_assoc]      — associativity of the join; this is the PENTAGON.
-      - [J_right_unit] — the join against an empty tail is rho; this is the
-                         TRIANGLE together with Kelly's [unit_identity].
-
-    Every other proof in the development is cast bookkeeping or naturality.
-
-    PROOF ROUTE, disclosed.  Mac Lane proves Theorem 1 by a rank induction on
-    a graph of basic arrows (CWM §VII.2, pp. 166-168) — a confluence argument.
-    We instead take the strictification / normalisation-by-evaluation route
-    (Beylin-Dybjer 1996, "Extracting a proof of coherence for monoidal
-    categories from a proof of normalization for monoids"; Schauenburg 2001,
-    "Turning monoidal categories into strict ones"): normalise every word to
-    the right-normalised form and observe that the normaliser is canonically
-    isomorphic to the identity.  The STATEMENT proved downstream is Mac
-    Lane's; only the route differs.
-
-    DESIGN NOTE, load-bearing.  [J m n X] is given the codomain [nf (m + n) X]
-    rather than [nf m (nf n X)].  With that choice every branch of every
-    [Fixpoint] below typechecks BY CONVERSION and no transport appears in the
-    definitions at all: [nf (0 + n) X] reduces to [nf n X], and
-    [nf (S k + n) X] to [b ⨂ nf (k + n) X].  The only transports in the whole
-    development are then of the single shape
-
-        id_cast (f_equal (fun i => nf i X) e)      with   e : m = n   in nat,
-
-    and [nat] has decidable equality, so uniqueness of identity proofs for
-    these casts is Hedberg's theorem ([UIP_dec Nat.eq_dec]) — axiom-free.
-    This is why the file needs no [ObjDecEq] hypothesis on [B]: the casts
-    never live at an arbitrary object of [B], only on the [nf] family indexed
-    by [nat].
-
-    The [id_cast]/[hom_cast] kit is Construction/Quotient.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Normal.
 

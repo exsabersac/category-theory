@@ -16,54 +16,13 @@ Generalizable All Variables.
 
 (** * Creation of limits in a comma category [=(d) ↓ U] *)
 
-(* nLab: https://ncatlab.org/nlab/show/comma+category#limits_and_colimits
+(*
    nLab: https://ncatlab.org/nlab/show/created+limit
 
-   Fix a functor [U : C ⟶ D] and an object [d : D].  The comma category
-   [=(d) ↓ U] (built with the constant functor [=(d) : 1 ⟶ D] of
-   [Functor/Diagonal.v] on the left) has as objects the pairs [(c, h)] of an
-   object [c : C] and a morphism [h : d ~> U c], encoded as the dependent pair
-   [(( _ , c ); h)] with the first component the point of the terminal category
-   [1]; and as morphisms [(c, h) ~> (c', h')] the [g : c ~> c'] with the
-   commuting triangle [h' ≈ U g ∘ h] (the constant functor sends every arrow to
-   [id[d]], so the general comma square [h' ∘ =(d) f ≈ U g ∘ h] collapses to
-   that triangle — this is [comma_square] below).
+   本文件给出极限相关。
 
-   Standard fact: if [C] has and [U] preserves [J]-limits, then [=(d) ↓ U] has
-   [J]-limits, and the projection [comma_proj2 : =(d) ↓ U ⟶ C] creates them.
-   Concretely, given a diagram [K : J ⟶ (=(d) ↓ U)]:
-
-     - its [C]-projection [G := comma_proj2 ◯ K] has a limit [L] in [C];
-     - the family [h_j := `2 (K j) : d ~> U (G j)] is a cone over [U ◯ G] with
-       apex [d] (the coherence is exactly the collapsed comma square of [K f]);
-     - preservation makes the image cone [(U L, fmap[U] π_•)] a limit of
-       [U ◯ G], so that cone mediates the [(d, h_•)] cone by a unique
-       [φ : d ~> U L];
-     - the pair [(L, φ)] with the projected legs [(c := π_j)] is the limit of
-       [K] in [=(d) ↓ U]; its universal property is the [C]-universal property
-       of [L] on the base component together with the mediating uniqueness of
-       the image cone on the [d]-component.
-
-   STATUS / hypothesis form.  The mathematically correct meaning of "U
-   preserves the limit of G" is that U carries the *limit cone* to a *limit
-   cone* — equivalently, the image cone [(U L, fmap[U] π_•)] is universal.  This
-   is precisely what [Adjunction/Continuity.v] establishes for right adjoints:
-   its [rapl_is_alimit] is built from [rapl_acone], whose legs
-   [rapl_leg x = fmap[U] (limit_leg (limit_is_alimit L) x)] are the image legs.
-
-   The bare class [PreservesLimit] of [Structure/Limit/Preservation.v] records
-   only that the *apex object* [U L] carries *some* limit structure of [U ◯ G]
-   ([IsALimit (U ◯ G) (U L)]); the legs of that structure are left
-   unconstrained and need not be the image legs [fmap[U] π_•].  Two distinct
-   cone structures on the same apex can differ by precomposition with a
-   non-invertible endomorphism, only one of them being a limit, so apex-only
-   preservation does not by itself make the image cone universal — and it is the
-   image cone whose universal property is needed to lift both the existence of
-   [φ] and the uniqueness of the comma mediator.  We therefore take as the
-   preservation hypothesis the honest, cone-level statement [PreservesImageLimit]
-   below (the image cone is universal), which is exactly the universal property
-   [rapl_ump] delivers.  This is a strengthening to the correct notion of
-   preservation, never a weakening of the conclusion [Comma_Complete]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CommaLimit.
 

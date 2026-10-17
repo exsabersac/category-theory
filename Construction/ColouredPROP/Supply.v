@@ -29,59 +29,15 @@ Generalizable All Variables.
 
 (** * Selective comonoid supplies on coloured PROPs *)
 
-(* nLab:      https://ncatlab.org/nlab/show/comonoid
+(*
    nLab:      https://ncatlab.org/nlab/show/copy-discard+category
    Reference: Fong & Spivak, "Supplying bells and whistles in symmetric
-              monoidal categories" (arXiv:1908.02633)
    Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
-              string diagrams", MSCS 29(7):938-971, 2019 (arXiv:1709.00322)
 
-   A SUPPLY of commutative comonoids in a symmetric monoidal category
-   (Fong-Spivak) equips every object with a comonoid structure,
-   coherently with the tensor.  In a coloured PROP objects are colour
-   words, so the natural datum is PER-COLOUR: a SELECTIVE supply
-   assigns a commutative comonoid to the single-colour wire [wire c]
-   of every colour [c] that a boolean predicate [copyable] marks as
-   duplicable.  All other colours are LINEAR: their wires need not
-   (and in the free/presented instances provably do not — see
-   Construction/ColouredPROP/Linear.v and Supply/Instance.v) support
-   any copy or delete operation.
+   本文件给出构造。
 
-   Design decisions, recorded:
-
-   - The class carries the SINGLE per-colour primitive [supply_wire];
-     the supply on a composite boundary [cs] is DERIVED by tensoring
-     wire comonoids ([supply_list] below), using the packaged tensor
-     and unit comonoids of Theory/Algebra/Comonoid/Tensor.v.  No
-     boundary-level comonoid axiom is ever assumed.
-
-   - Copyability is a [bool] predicate, not a [Type]-valued class:
-     boolean equations enjoy UNCONDITIONAL proof irrelevance
-     ([UIP_dec Bool.bool_dec]), so the derived-evidence bookkeeping of
-     [supply_list] never depends on the choice of copyability proof
-     ([all_copyable_irrelevant]).
-
-   - As with [cd_comonoid] in Structure/Monoidal/CopyDiscard.v, the
-     class is deliberately NOT declared an [Existing Instance]-style
-     supplier of comonoids: which objects are copyable is semantic
-     information, and instance resolution must not silently pick a
-     supply.
-
-   ** The MP/MB mediation
-
-   A [ColouredPROP] carries two [Monoidal] structures on the same
-   category — the strict path [MPc P] and the braided/symmetric path
-   [MBc P] (Construction/ColouredPROP/Interp.v) — equal by the
-   propositional field [cprop_monoidal_coherence].  Comonoids live on
-   the symmetric side (their cocommutativity needs the braid), while
-   the object correspondence [cprop_tensor_app]/[cprop_unit_nil] is
-   stated on the strict side.  [ctensor_app_b] and [cunit_nil_b]
-   below transport the correspondence across the coherence equality —
-   the one new coherence-elimination site of this file, extending the
-   doctrine of Interp.v.  At the free and presented instances the
-   coherence field is [eq_refl], so both definitions REDUCE to the
-   strict-side fields; Supply/Instance.v pins this with [eq_refl]
-   [Example]s. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Supply.
 

@@ -13,16 +13,11 @@ Section TerminalSubcategory.
 
 Context {C : Category}.
 
-(* Riehl, CTiC, Lemma 1.6.16: the full subcategory spanned by the terminal
-   objects of C.  [sobj] selects exactly the terminal objects (Block A's
-   predicate is what makes this expressible -- the bundled class cannot
-   span a subcategory, since it carries a choice of object), and [shom]
-   retains every C-morphism between them, which is fullness.  Closure
-   under composition and identity is then vacuous.
+(*
+   本文件给出终对象相关。
 
-   Written with [Build_Subcategory] rather than [Program]: a Program
-   record whose obligations are discharged by [Qed] is opaque to the
-   unifier, and the [Replete] witness below needs [shom] to reduce. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition TerminalObjects : Subcategory C :=
   @Build_Subcategory C
     (fun c => IsTerminalObj c)          (* the terminal objects *)

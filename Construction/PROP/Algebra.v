@@ -15,47 +15,13 @@ Generalizable All Variables.
 
 (** * Algebras (models) of a signature in a PROP *)
 
-(* nLab: https://ncatlab.org/nlab/show/PROP (see the section on algebras)
+(*
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   Fixing a signature [S] and a PROP [P], a MODEL (or algebra) of [S]
-   in [P] is a valuation [v : Valuation P S] — an assignment of a
-   [P]-morphism [⟦m⟧ ~{P}~> ⟦n⟧] to every generator [g : S m n]
-   (see [Construction/PROP/Interp.v]).  This file builds the category
-   of such models:
+   本文件给出代数结构。
 
-     - [ModelHom v w] — a morphism of models: a family of
-       endomorphisms [mh_component n : ⟦n⟧ ~{P}~> ⟦n⟧] that is
-       monoidal (the identity at arity [0], sending sums of arities to
-       [⊞]-tensors of components) and compatible with the two
-       valuations at every generator.  (The name avoids the [AlgHom]
-       of [Instance/Comp.v], which is the single-sorted operadic
-       cousin of this notion.)
-
-     - [model_hom_natural] — the fundamental theorem: the components
-       of a model morphism are automatically natural against the
-       interpretation of EVERY term, not just the generators.  The
-       generator squares extend along [interp] by structural
-       induction, using the K-kit of [Interp.v] (K2/K3 for the
-       tensor case and K5 for the braid case; K1 enters later, in
-       the monoidality of the identity model morphism).
-
-     - [Alg] — the category of models: objects are valuations,
-       morphisms are [ModelHom]s, with componentwise identity,
-       composition, and hom-equivalence.
-
-     - [ModelHom_Transform] — the packaging of [model_hom_natural]: a
-       model morphism induces a natural transformation
-       [InterpF S P v ⟹ InterpF S P w] between the interpretation
-       functors of [Construction/PROP/Universal.v].
-
-   In PROP-theoretic terms a [ModelHom] is a monoidal natural
-   transformation between the strict symmetric monoidal functors
-   corresponding to [v] and [w], re-indexed along the Leibniz
-   strictness equalities [prop_unit_zero] / [prop_tensor_plus]; the
-   full functor-category packaging (a functor from [Alg] into the
-   functor category [[FreeCat S, P]]) is deferred to a successor
-   file, as no current consumer needs it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Algebra.
 

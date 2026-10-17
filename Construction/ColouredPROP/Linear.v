@@ -18,90 +18,14 @@ Generalizable All Variables.
 
 (** * The linear discipline over coloured PROPs *)
 
-(* nLab:      https://ncatlab.org/nlab/show/PROP
+(*
    nLab:      https://ncatlab.org/nlab/show/linear+logic
    Wikipedia: https://en.wikipedia.org/wiki/Linear_type_system
 
-   A wire type in a typed string-diagram language is LINEAR when values
-   of that type may be neither duplicated nor deleted: every linear
-   wire entering a diagram must leave it exactly once.  This file
-   formalises that discipline over the coloured-PROP spine, in both
-   directions:
+   本文件给出构造。
 
-   - NEGATIVE HALF (the fan-out/discard restriction).  Copyability is
-     a boolean predicate [copyable : Colour -> bool]; a colour is
-     linear when [copyable c = false].  A signature is CONSERVATIVE at
-     a colour [c] when every generator has as many [c]-wires entering
-     as leaving ([c_conservative], counted by [count_occ]); the free
-     structural operations (identities, braids, composition, tensor)
-     are conservative at EVERY colour, so per-colour wire counts are
-     an invariant of all free terms ([cterm_count_occ]).  It follows
-     that at a conservative colour the hom-types [CTerm S [c] [c; c]]
-     (fan-out) and [CTerm S [c] []] (discard) are EMPTY
-     ([no_linear_fanout] / [no_linear_discard]).  This is emptiness of
-     the raw TYPE of terms, not merely emptiness up to the [CTermEq]
-     equivalence — no diagram of that boundary can even be written
-     down — and since a presented coloured PROP has literally the same
-     morphisms as the free one (only the equivalence coarsens, see
-     [Construction/ColouredPROP/Presentation.v]), the emptiness
-     descends to EVERY presented quotient
-     ([no_linear_fanout_presented] / [no_linear_discard_presented]).
-     This is the categorical content of the type-level fan-out check
-     of linear dataflow languages: an ill-linear plugging is not
-     rewritten away — it is unrepresentable.
-
-   - PERMUTATION INVARIANT.  Over a generator-free signature the
-     counting invariant sharpens: every term's output boundary is a
-     permutation of its input boundary ([structural_permutation]).
-     This is a one-directional, Prop-level necessary condition on
-     boundaries — it assigns no permutation to a term and proves no
-     converse realizability — a necessary-condition shadow of "the
-     free coloured PROP on no generators is the coloured permutation
-     groupoid" (cf. [Empty_CSig] in
-     [Construction/ColouredPROP/Signature.v]), which is not itself
-     formalized here.
-
-   - POSITIVE HALF (fan-out at copyable colours).  Conversely, a
-     copyable colour is one whose wire object CARRIES a commutative
-     comonoid: the selective supply of
-     [Construction/ColouredPROP/Supply.v], whose single per-colour
-     primitive [supply_wire] equips [wire c] with its comonoid
-     whenever [copyable c = true].  Its comultiplication IS a fan-out
-     morphism [wire c ~> wire c ⨂ wire c] ([copyable_fanout]) and its
-     counit a discard [wire c ~> I] ([copyable_discard]) — the
-     converse of the emptiness theorems, and the reason [copyable] is
-     the correct boundary of the linear discipline.  Relative to the
-     boundary supplies [supply_list] that [Supply.v] DERIVES from that
-     primitive (by tensoring wire comonoids through
-     [Theory/Algebra/Comonoid/Tensor.v]; nothing boundary-level is
-     postulated), a morphism between all-copyable boundaries is
-     DETERMINISTIC when it is a comonoid homomorphism between them
-     ([sel_deterministic]) — the two Cho–Jacobs copy/discard
-     preservation squares
-
-       scopy ds Hd ∘ f    ≈ (f ⨂ f) ∘ scopy cs Hc
-       sdiscard ds Hd ∘ f ≈ sdiscard cs Hc
-
-     ([sel_deterministic_scopy] / [sel_deterministic_sdiscard]),
-     packaged by the [ComonoidHom] class of
-     [Theory/Algebra/Comonoid/Hom.v], whose kit supplies the
-     identity/composition/respectfulness laws
-     ([sel_deterministic_id] / [sel_deterministic_comp] /
-     [sel_deterministic_equiv]).  The determinism predicate is stated
-     on the braided/symmetric monoidal path [MBc P], where the supply
-     comonoids live (see the MP/MB mediation note in [Supply.v]).
-     The linear/non-linear bridge built on this predicate lives in
-     [Construction/ColouredPROP/LNL.v].
-
-   References:
-   - Cho & Jacobs, "Disintegration and Bayesian inversion via string
-     diagrams", MSCS 29(7):938-971, 2019 (arXiv:1709.00322) —
-     determinism as comonoid homomorphy.
-   - Fong & Spivak, "Supplying bells and whistles in symmetric
-     monoidal categories" (arXiv:1908.02633) — supplies of commutative
-     comonoids.
-   - Bonchi, Sobocinski & Zanasi, "A categorical semantics of signal
-     flow graphs" — coloured PROPs as typed diagram languages. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The negative half: conservativity and hom-emptiness *)
 

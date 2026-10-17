@@ -13,83 +13,14 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §II.4, printed pp. 40–42 (PDF 50–52) —
-              maclane:II.4:construction1, maclane:II.4:ex7
+(*
    Book:      Awodey, "Category Theory" (1st ed., 2005 pre-print), §7.7,
-              Example 7.15, printed p. 171 (PDF p. 180) —
-              awodey:7.7:example15
    nLab:      https://ncatlab.org/nlab/show/arrow+category
 
-   Mac Lane's Exercise II.4.7: a functor into the arrow category is
-   exactly a natural transformation.  From H : C ⟶ Arrow B one reads
-   off two functors — the domain and codomain of the arrows H picks
-   out — and the arrows themselves assemble into a natural
-   transformation between them, BECAUSE the morphism part of H is a
-   commuting square; conversely a natural transformation τ : S ⟹ T
-   materializes as the functor c ↦ (τ c), naturality supplying the
-   squares.  The two passages are mutually inverse, and this file
-   states the bijection at the strength the library supports: a
-   setoid isomorphism in Sets between functors C ⟶ Arrow B under
-   [Functor_Setoid] (natural isomorphism) and transformation triples
-   (S, T, τ) under componentwise natural isomorphism intertwining τ.
+   本文件给出函子相关定义或实例。
 
-     - [ArrowTriple]/[triple_dom]/[triple_cod]/[triple_nat]: the
-       bundle (S, T, τ : S ⟹ T) with its boundary accessors
-     - [Arrow_dom]/[Arrow_cod]: the boundary functors of a functor
-       into the arrow category, and [Arrow_generic H] — the arrows H
-       picks out, assembled into a transformation (Ex. 7 forward);
-       [Arrow_dom_boundary]/[Arrow_cod_boundary] record that the
-       generic arrow's components have the projected boundaries
-     - [Arrow_intro (S, T, τ)]: the classifying functor H_τ with
-       object action c ↦ τ c and morphism action the naturality
-       square (Ex. 7 inverse)
-     - [ArrowTriple_Setoid]: triples up to componentwise natural
-       isomorphism intertwining the transformations
-     - [Arrow_classification]: the bijection, as an isomorphism in
-       Sets between the functor setoid and the triple setoid
-
-   Design:
-
-   1. THE COMPARISON WITH [_2, B] IS ALREADY IN THE TREE, AND IS NOT
-      REBUILT.  Theory/Shapes.v proves
-      [Two_Fun_Arrow : [_2, C] ≅[Cat] Arrow C] (with the strict half
-      [Arrow_Fun_Arrow_strict]), for [C : Category@{o Set Set}] — a
-      restriction [_2]'s Set-level homs force through [Fun].  This
-      file is the OTHER half of Mac Lane's §II.4 story, and it is
-      free of that Set-level pin: the classification never mentions
-      [_2], only the comma presentation [Arrow B := Id ↓ Id], so hom
-      and proof universes may sit strictly above [Set] (the
-      library's ambient h = p constraint that [Functor] imposes
-      still applies, as it does to every functor statement).
-      Awodey's Example 7.15 reads C^1 = C, C^2 = the arrow category,
-      C^I = powers: the first is Theory/Shapes.v's [One_Fun_iso]
-      (itself under the same Set-level restriction as
-      [Two_Fun_Arrow], for the same reason), the second is
-      [Two_Fun_Arrow], and the discrete third is issue #276's
-      Instance/Fun/Discrete.v.
-
-   2. THE TRIPLE SETOID MIRRORS [Functor_Setoid].  Two triples are
-      identified when their boundary functors are naturally
-      isomorphic AND the isomorphisms intertwine the two
-      transformations (ρ c ∘ τ c ≈ τ' c ∘ σ c).  This is forced:
-      the functor side identifies H ≈ H' by natural isomorphisms
-      whose components are commuting squares of [Arrow B], and a
-      square's two legs are exactly the σ/ρ components while the
-      square condition is exactly the intertwining.  The explicit
-      symmetric/transitive witnesses [fs_sym]/[fs_trans] for
-      [Functor_Setoid] are built by hand (iso_sym/iso_compose
-      families) so their component families stay transparent — the
-      instance's own Equivalence proof is opaque and cannot be
-      computed through.
-
-   3. ROUND TRIPS.  Extraction after introduction is definitional on
-      every component (identity isomorphism families); introduction
-      after extraction differs from the original functor only by
-      sigT/pair eta — H c is ((p, h)) while the rebuilt object is
-      ((fst p, snd p), h) — repaired by the identity-legged square,
-      the same pair-eta phenomenon Construction/Product/Special.v
-      documents. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Transformation triples *)
 

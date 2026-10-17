@@ -10,39 +10,15 @@ Generalizable All Variables.
 
 (** * The free PROP category on a signature *)
 
-(* nLab: https://ncatlab.org/nlab/show/PROP
+(*
    nLab: https://ncatlab.org/nlab/show/free+category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
    Wikipedia: https://en.wikipedia.org/wiki/Free_category
 
-   A PROP is a strict symmetric monoidal category whose objects are the
-   natural numbers and whose tensor on objects is addition, [m ⊗ n = m + n].
-   The free PROP on a signature [S] has as its [m ~> n] arrows the [S]-terms
-   [Term S m n] quotiented by the laws of a symmetric monoidal category; this
-   is the standard "free = syntactic" construction, the symmetric-monoidal
-   analogue of the path/quotient construction of a free category.
+   本文件给出 PROP 相关。
 
-   This file assembles only the underlying [Category] layer of that quotient:
-
-     - obj      := nat                         (objects are ℕ)
-     - hom m n  := Term S m n  modulo  TermEq  (string-diagram terms / ≈)
-     - id       := T_id                        (identity wires)
-     - compose  := T_comp                      (sequential composition)
-
-   The hom-equivalence ≈ is [TermEq S], so the [Category] laws (left/right
-   unit, associativity) are exactly its [TE_id_left] / [TE_id_right] /
-   [TE_assoc] constructors, and [compose_respects] is its [TE_comp_cong]
-   congruence.  The [Monoidal], [SymmetricMonoidal], [StrictMonoidal], and
-   [PROP] instances — which complete [FreeCat S] to a free strict
-   symmetric monoidal category — live in the successor files: on top of
-   the tensor functor ([Construction/PROP/Tensor.v]), the structural
-   isomorphisms ([Construction/PROP/Structural.v]) and their naturality
-   lemmas ([Construction/PROP/Naturality.v]), the shared monoidal record
-   is built in [Construction/PROP/Monoidal.v], its braided/symmetric/
-   strict structure in [Construction/PROP/Braided.v] / [Symmetric.v] /
-   [Strict.v], and the bundled [FreePROP S : PROP] — with definitional
-   coherence — in [Construction/PROP/Instance.v]; interpretation and the
-   universal property follow in [Interp.v] and [Universal.v]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FreeCategory.
 

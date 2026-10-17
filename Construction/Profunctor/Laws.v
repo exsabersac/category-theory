@@ -20,28 +20,14 @@ Generalizable All Variables.
 
 (** * Coherence laws of profunctor composition *)
 
-(* nLab: https://ncatlab.org/nlab/show/profunctor
+(*
+ nLab: https://ncatlab.org/nlab/show/profunctor
         https://ncatlab.org/nlab/show/bicategory+of+profunctors
 
-   Profunctor composition [prof_compose] (Construction/Profunctor/Compose.v),
-   with [prof_id := Hom C] as identity, satisfies the unit and associativity
-   laws of a bicategory up to natural isomorphism of profunctors, i.e. up to
-   iso in the functor category [C^op ∏ D ⟶ Sets].  This file supplies the three
-   structural isomorphisms:
+   本文件给出 profunctor 相关。
 
-     - the left unitor    [prof_unit_left_iso  : prof_id ∘ P ≅ P],
-     - the right unitor    [prof_unit_right_iso : P ∘ prof_id ≅ P],
-     - the associator     [prof_assoc_iso      : (P ∘ Q) ∘ R ≅ P ∘ (Q ∘ R)].
-
-   The unitors are the co-Yoneda reduction: gluing along the identity leg of a
-   representable collapses the mediating coend onto a single functor value.  The
-   associator is a Fubini-style rebracketing of the triple coend
-   [∫^d ∫^e P(c,d) × Q(d,e) × R(e,f)]; its forward and backward mediators send
-   generators to generators, so both round trips close by reflexivity, giving an
-   axiom-free isomorphism.
-
-   Assembling these into a [Bicategory] instance for the bicategory of
-   profunctors is deferred; here we deliver the laws themselves. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Discharge every [Program] obligation by hand, as in Compose.v: the default
    tactic would destructure the product-category objects and rename the

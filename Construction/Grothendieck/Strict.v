@@ -17,39 +17,16 @@ Generalizable All Variables.
 
 (** * Constructors for indexed categories *)
 
-(* nLab:      https://ncatlab.org/nlab/show/indexed+category
+(*
    nLab:      https://ncatlab.org/nlab/show/strict+category
    nLab:      https://ncatlab.org/nlab/show/Grothendieck+construction
    Wikipedia: https://en.wikipedia.org/wiki/Grothendieck_construction
    Reference: Michael Hedberg, "A coherence theorem for Martin-Löf's type
-              theory", Journal of Functional Programming 8(4), 1998
-              (decidable equality implies uniqueness of identity proofs).
 
-   This file provides two constructors for the coherent "pseudofunctor-lite"
-   [IndexedCat] (Construction/Indexed.v).
+   本文件给出严格情形。
 
-   The first constructor turns a functor [F : B ⟶ StrictCat] into an indexed
-   category.  [StrictCat] (Instance/StrictCat.v) compares functors by strict
-   equality [Functor_StrictEq_Setoid]: equal object maps [F x = G x] together
-   with a coherence forcing the morphism actions to agree after transport.
-   Reading each such object equality through [iso_of_eq]
-   (Instance/StrictCat/ToCat.v) supplies the chosen fibre isomorphisms that
-   [IndexedCat] demands.  The naturality fields fall out of the strict-equality
-   coherence read through the transport/iso dictionary
-   ([transport_cod_to_iso], [transport_r_dom_to_iso]).  The remaining
-   pseudofunctor coherence — proof irrelevance of [idx_resp], the unit laws,
-   the associativity cocycle — asks that competing composites of [iso_of_eq]
-   proofs agree; this needs the propositional object-equality proofs in each
-   fibre to be unique, i.e. uniqueness of identity proofs (UIP) on the objects
-   of every fibre.  UIP is taken as a hypothesis, discharged for fibres with
-   decidable object equality by Hedberg's theorem, taken from the standard
-   library as [UIP_dec] (Coq.Logic.Eqdep_dec).
-
-   The second constructor is the constant indexed category: every fibre is a
-   fixed [D], every reindexing is the identity functor, and every mediating
-   isomorphism is the identity, so all the coherence holds trivially.  Its
-   Grothendieck construction is the product category, witnessed by the
-   [≅[Cat]] isomorphism [Grothendieck_Constant_iso]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Coherence of [iso_of_eq]
 

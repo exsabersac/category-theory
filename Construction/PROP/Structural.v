@@ -13,29 +13,15 @@ Generalizable All Variables.
 
 (** * Structural isomorphisms for the free PROP *)
 
-(* nLab: https://ncatlab.org/nlab/show/monoidal+category
+(*
    nLab: https://ncatlab.org/nlab/show/associator
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
    Wikipedia: https://en.wikipedia.org/wiki/Coherence_condition
 
-   Package the three structural maps of a monoidal category — left
-   unitor, right unitor, associator — as isomorphisms in [FreeCat S]
-   using [T_cast].
+   本文件给出 PROP 相关。
 
-   "Structural" here is the monoidal-coherence sense (the unitors and
-   associator of nLab/Mac Lane), not the permutation sense: a PROP also
-   has the symmetric structural maps [S_n ⊆ PROP(n,n)] built from braids
-   and identities (see [T_swap] in Term.v), which are a separate family.
-
-   The arity-equations are pure [Nat] facts:
-
-     [Nat.add_0_l n]       : 0 + n = n                  (left unit)
-     [Nat.add_0_r n]       : n + 0 = n                  (right unit)
-     [Nat.add_assoc x y z] : x + (y + z) = (x + y) + z  (associator)
-
-   Because [Nat.add] is left-strict in Coq, the left unitor at
-   [0 + n] is the identity definitionally; the right unitor and the
-   associator require non-trivial casts. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Open Scope nat_scope.
 

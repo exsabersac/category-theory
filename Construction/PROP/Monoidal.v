@@ -19,34 +19,15 @@ Generalizable All Variables.
 
 (** * The Monoidal structure on the free PROP *)
 
-(* nLab: https://ncatlab.org/nlab/show/monoidal+category
+(*
    nLab: https://ncatlab.org/nlab/show/PROP
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   This file assembles THE [Monoidal] record on [FreeCat S]: the unit
-   object is [0], the tensor is the parallel-composition bifunctor
-   [FreeCat_Tensor] (addition on arities), and the structural
-   isomorphisms are the [T_cast] isos of [Structural.v].  Every
-   downstream instance on [FreeCat S] — Braided, Symmetric, Strict, and
-   the bundled PROP — names this ONE record, so the strict/symmetric
-   projections agree definitionally.
+   本文件给出幺半相关结构。
 
-   The strict-PROP right-unit and associativity axioms of [TermEq] are
-   stated in [eq_rect] transport form ([TE_tens_id0_right],
-   [TE_tens_assoc]).  The [Monoidal] class instead wants naturality
-   squares phrased through the [T_cast] structural maps.  The bridge
-   lemmas below convert between the two spellings by quantifying over
-   the arity equation and destructing it — which is exactly the
-   generalisation that is unavailable once a fixed arity pins the
-   transport proof (see the discussion at [Naturality.v]'s right-unit
-   note).  With the bridges in hand, the previously-blocked right-unitor
-   and associator naturality squares are ordinary consequences of the
-   [TermEq] axioms.
-
-   All proof fields of the record are supplied from standalone, named
-   lemmas (the [Free.v] discipline), so no Program obligations are
-   generated and successor files can reuse the very same lemmas. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section FreeMonoidal.
 

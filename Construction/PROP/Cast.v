@@ -9,20 +9,11 @@ From Coq Require Import Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * Transport infrastructure for the FreePROP construction
+(*
+   本文件给出 PROP 相关。
 
-    The FreePROP needs to talk about morphisms between objects whose
-    arity-naturals are PROPOSITIONALLY but not DEFINITIONALLY equal —
-    e.g. [x + 0] and [x], or [(x + y) + z] and [x + (y + z)].
-    [Nat.add] is left-strict but not right-strict in Coq, so these
-    arity equations do not reduce definitionally and must be
-    transported across.
-
-    [T_cast e] is the identity term, transported across a nat
-    equality.  Together with the associated rewrite lemmas it lets
-    the Monoidal instance for FreeCat package up structural
-    isomorphisms (unitors, associator) for the cases where the arity
-    equality is not [eq_refl]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The cast term: identity, transported across [e : m = n]. *)
 Definition T_cast {S : Signature} {m n : nat} (e : m = n) : Term S m n :=

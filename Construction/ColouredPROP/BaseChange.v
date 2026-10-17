@@ -28,100 +28,15 @@ Generalizable All Variables.
 
 (** * Base change: reindexing coloured PROPs along a colour function *)
 
-(* nLab: https://ncatlab.org/nlab/show/base+change
+(*
    nLab: https://ncatlab.org/nlab/show/restriction+of+scalars
    nLab: https://ncatlab.org/nlab/show/PROP
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   A function [f : Colour → Colour'] between colour sets induces a
-   monoid homomorphism [map f : list Colour → list Colour'] between the
-   free monoids of colour words, and along it two constructions:
+   本文件给出构造。
 
-   1.  RESTRICTION OF SCALARS ([ColouredPROP_restrict]): every coloured
-       PROP [P] over [Colour'] becomes a coloured PROP over [Colour] on
-       the SAME underlying category, by reading the object
-       correspondence through [map f]:
-
-         cprop_of_list cs := cprop_of_list (map f cs).
-
-       Only the object-naming data changes; the category, its strict
-       and symmetric monoidal structures, and their coherence are
-       carried over verbatim, so the [cprop_monoidal_coherence] field
-       — the fragile one, per the discussion in [Construction/PROP.v]
-       — is P's own proof, untouched.  The unit condition holds
-       because [map f [] ≡ []] is definitional, and the tensor
-       condition is P's own [cprop_tensor_app] composed with the image
-       of [map_app f cs ds : map f (cs ++ ds) = map f cs ++ map f ds]
-       — the one genuinely propositional seam in the whole
-       construction (stdlib's [map_app] is opaque).
-
-   2.  THE BASE-CHANGE FUNCTOR ([BaseChangeF]): a signature morphism
-       OVER [f] — a boundary-reindexing generator map
-
-         h : ∀ cs ds, S cs ds → S' (map f cs) (map f ds)
-
-       ([CSigMap]) — induces a strict symmetric monoidal functor
-       [CFreeCat S ⟶ CFreeCat S'] between the free coloured PROPs,
-       acting on objects by [map f] and sending each generator [g] to
-       [CT_gen (h _ _ g)].
-
-   ** Design: the functor is built THROUGH the universal property
-
-   Rather than writing a fresh term-recursion and re-proving the
-   19-case [CTermEq] soundness induction, [BaseChangeF] is one
-   instantiation of the free coloured PROP's universal property
-   ([Construction/ColouredPROP/Universal.v]): the target of the
-   interpretation is the RESTRICTION of [FreeColouredPROP S' C'dec]
-   along [f].  In that restriction the hom-set
-   [⟦cs⟧ ~> ⟦ds⟧] IS [CTerm S' (map f cs) (map f ds)] on the nose, so
-   the valuation [basechange_val := fun _ _ g => CT_gen (h _ _ g)]
-   typechecks with no casts, and [CInterpF] delivers the functor
-   together with its entire monoidal tower — [CInterpF_Monoidal] /
-   [CInterpF_Strict] / [CInterpF_Braided] / [CInterpF_Symmetric] /
-   [CInterpF_SymmetricStrict] instantiate to the [BaseChangeF_*]
-   records below — and, downstream, its functoriality laws come from
-   the uniqueness theorem [cinterp_unique] (see
-   [Construction/ColouredPROP/BaseChange/Laws.v]) rather than from
-   fresh inductions.
-
-   Because [cinterp] COMPUTES on constructors, the functor's action is
-   definitional where it matters: objects go to [map f cs], generators
-   to [CT_gen (h _ _ g)], identities to identities and composites to
-   composites, each machine-checked by an [eq_refl] [Example] below.
-
-   ** The strictness comparisons are NOT all reflexivity
-
-   [strict_pure_obj] of [BaseChangeF_Strict] is [eq_refl] (the unit
-   colour word is fixed by [map f] definitionally), but
-   [strict_ap_obj cs ds] is the [map_app]-shaped composite
-
-     eq_trans eq_refl (f_equal (fun ks => ks) (eq_sym (map_app f cs ds)))
-
-   and CANNOT be [eq_refl]: for variable [cs], the colour words
-   [map f cs ++ map f ds] and [map f (cs ++ ds)] are propositionally
-   but not definitionally equal.  This is exactly the seam that the
-   [hom_cast]-conjugated functoriality statements of
-   [BaseChange/Laws.v] have to thread, so it is pinned here by
-   [Example]s at its source.
-
-   ** Deciders (D2 discipline)
-
-   Two colour deciders circulate, one per colour type: [Cdec] for
-   [Colour] (naming the source's shared [Monoidal] record
-   [CFreeCat_Monoidal S Cdec]) and [C'dec] for [Colour'] (naming the
-   target's, and supplying the [ObjDecEq] side condition of the
-   universal property).  Per the D2 discipline of
-   [Construction/ColouredPROP/Instance.v], both are explicit
-   arguments, and each instance site should pass the ONE canonical
-   decider of its colour type.
-
-   Design alternative (not developed): a computing [C_base_map]
-   Fixpoint on [CTerm] with cast-conjugated braid and tensor clauses
-   would also yield the functor, at the cost of a fresh 19-case
-   transport soundness induction mirroring [CT_map_CTermEq] of
-   [Construction/ColouredPROP/Relabel.v].  The via-universal-property
-   route delivers everything below without it, so the fixpoint form
-   is left undeveloped. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The free coloured PROP's braiding, on the strict path
 

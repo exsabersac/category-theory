@@ -13,41 +13,14 @@ Generalizable All Variables.
 
 (** The universal property of the Karoubi envelope, and Cauchy completeness. *)
 
-(* nLab:      https://ncatlab.org/nlab/show/Karoubi+envelope
+(*
    nLab:      https://ncatlab.org/nlab/show/Cauchy+complete+category
    Wikipedia: https://en.wikipedia.org/wiki/Karoubi_envelope
 
-   A category has split idempotents when every idempotent e : x ~> x factors
-   through some object as a retraction followed by a section; the class
-   [IdempotentsSplit] packages a chosen such splitting for each idempotent.
-   Categories with this property are exactly the Cauchy complete categories
-   (in the sense of enrichment over Set), whence [CauchyComplete] below.
+   本文件给出泛构造相关。
 
-   The Karoubi envelope Split(C) of Construction/Karoubi.v is the free
-   idempotent-splitting completion of C.  This file records the evidence:
-
-   - idempotents split in Split(C) ([Karoubi_IdempotentsSplit]), and the
-     object splitting a given idempotent is unique up to isomorphism
-     ([split_idem_unique]);
-
-   - every functor G : C ⟶ D into a category with chosen splittings extends
-     along the embedding C ⟶ Split(C) to a functor Split(C) ⟶ D
-     ([Karoubi_Extend]) sending (x, e) to the splitting object of G e, with
-     Extend ∘ Embed ≈ G ([Karoubi_Extend_comm]); the extension is unique up
-     to natural isomorphism among functors restricting to G along the
-     embedding ([Karoubi_Extend_unique]);
-
-   - when C itself has split idempotents, the embedding C ⟶ Split(C) is an
-     equivalence of categories ([cauchy_complete_embed_equiv]).  Only this
-     forward direction is formalized; the converse (an equivalence forces
-     the idempotents of C to split, by transporting the envelope's
-     splittings backwards) is not carried in the library.
-
-   The uniqueness argument rests on the observation that inside Split(C)
-   every object (x, e) is a retract of the embedded object (x, id), both
-   directions being carried by e itself ([Karoubi_retraction],
-   [Karoubi_section]), so that every morphism of Split(C) factors through
-   the image of the embedding ([Karoubi_factors]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* A choice of splitting for every idempotent of C. *)
 Class IdempotentsSplit (C : Category) := {

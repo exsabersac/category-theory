@@ -10,46 +10,13 @@ Generalizable All Variables.
 
 (** * The Grothendieck construction *)
 
-(* nLab:      https://ncatlab.org/nlab/show/Grothendieck+construction
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Grothendieck_construction
 
-   The Grothendieck construction assembles an indexed category
-   [A : IndexedCat B] (Construction/Indexed.v, the coherent
-   "pseudofunctor-lite") into a category over [B], presented as a displayed
-   category (Theory/Displayed.v) whose total category
-   (Construction/Displayed/Total.v) is the classical ∫ A:
+   本文件给出构造。
 
-   - an object over [x : B] is an object of the fibre [idx_fib A x];
-   - a morphism over [f : x ~> y] from [dx] to [dy] is a fibre morphism
-     [idx_map A f dx ~> dy] — reindex forward along [f], then compare in
-     the target fibre;
-   - the identity over [id] is the unit iso [idx_id]; composition over
-     [f ∘ g] reindexes the inner leg forward along [f] and mediates with
-     the chosen composition iso [idx_comp];
-   - transport along [e : f ≈ g] precomposes with the inverse of the
-     mediator iso [idx_resp e], recentring the source from [idx_map g dx]
-     to [idx_map f dx].
-
-   Every displayed law is discharged from a corresponding coherence field
-   of [IndexedCat]: proof irrelevance and functoriality of transport come
-   from [idx_resp_id] and [idx_resp_trans]; the unit laws from
-   [idx_unit_left]/[idx_unit_right] plus naturality of [idx_id];
-   associativity from the cocycle [idx_cocycle] plus naturality of
-   [idx_comp] in the fibre argument; and the transport/composition
-   interchange from compatibility of [idx_comp] with [idx_resp]
-   ([idx_comp_resp_l]/[idx_comp_resp_r]).  This file is the payoff of the
-   coherent-data design: a bare [Functor B Cat] could not supply the
-   cross-application equations these proofs consume (see the honesty note
-   in Construction/Indexed.v).
-
-   Following the sanctioned staging for this construction, each displayed
-   law is first proven as a standalone lemma about [IndexedCat] — stated
-   over an arbitrary proof of the base-law instance it transports along,
-   which is harmless by proof irrelevance of [idx_resp] — and the
-   [Displayed] record is then assembled from the named lemmas.
-
-   [Grothendieck A] is the total category ∫ A, and [Grothendieck_Proj] is
-   the evident projection ∫ A ⟶ B, taking an object over [x] to [x]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Where the construction comes from, and what it is for
 

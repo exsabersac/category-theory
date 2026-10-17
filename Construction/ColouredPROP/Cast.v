@@ -11,41 +11,11 @@ From Coq Require Import Eqdep_dec.
 
 Generalizable All Variables.
 
-(** * Transport infrastructure for the free coloured PROP
+(*
+   本文件给出构造。
 
-    The free coloured PROP needs to talk about morphisms between
-    objects whose colour words are PROPOSITIONALLY but not
-    DEFINITIONALLY equal — e.g. [cs ++ []] and [cs], or
-    [(x ++ y) ++ z] and [x ++ (y ++ z)].  List concatenation [app] is
-    left-strict but not right-strict in Coq (exactly the asymmetry of
-    [Nat.add] in the one-sorted donor [Construction/PROP/Cast.v]), so
-    these boundary equations do not reduce definitionally and must be
-    transported across.
-
-    [CT_cast e] is the identity term, transported across an equality
-    [e] of colour words.  Together with the associated rewrite lemmas
-    it lets the Monoidal instance on [CFreeCat S] package up the
-    structural isomorphisms (unitors, associator) for the cases where
-    the boundary equality is not [eq_refl].
-
-    This file merges the three cast-layer donors of the one-sorted
-    spine into one:
-
-      - the [T_cast] kit of [Construction/PROP/Cast.v] (UIP-free core
-        plus the decidability-conditional UIP layer);
-      - the tensor-cast fusion lemmas of
-        [Construction/PROP/CastTensor.v];
-      - the structural isomorphisms of
-        [Construction/PROP/Structural.v].
-
-    Deviation from the donor, by design: [nat] has the canonical
-    decider [Nat.eq_dec], so the donor's UIP layer was unconditional.
-    An arbitrary [Colour : Type] carries no such decider, so here
-    every UIP-dependent lemma threads a colour-equality decider
-    [Cdec] as an EXPLICIT argument, and uses
-    [UIP_dec (list_eq_dec Cdec)] on colour words.  The UIP-free core
-    (inverse laws, composition, naturality, tensor fusion) needs no
-    decidability at all. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The cast term
 

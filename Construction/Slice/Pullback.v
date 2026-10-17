@@ -11,115 +11,16 @@ Generalizable All Variables.
 
 (** Functors between slice categories induced by a base morphism. *)
 
-(* nLab: https://ncatlab.org/nlab/show/base+change
+(*
    nLab: https://ncatlab.org/nlab/show/dependent+sum
    nLab: https://ncatlab.org/nlab/show/over+category
    Wikipedia: https://en.wikipedia.org/wiki/Pullback_(category_theory)
    Book:      Mac Lane, "Categories for the Working Mathematician",
-              2nd ed., Springer GTM 5, 1998, SS IV.5, printed p. 97,
-              Exercise 3 (catalog id maclane:IV.5:ex3)
 
-   Mac Lane's Exercise 3 reads, verbatim from the printed page:
+   本文件给出拉回相关。
 
-     "For C a category with pullbacks, each arrow f : a→a' defines a
-      functor (C↓f) = f_*: (C↓a)→(C↓a') which carries each object
-      x→a of (C↓a) to the composite x→a→a'.  Show that f_* has a
-      right adjoint f* with f*(x'→a') = y→a, where y is the vertex
-      of the pullback of a→a'←x'."
-
-   A NOTE ON HIS NOTATION, since it collides with this file's.  He
-   writes f_* for POST-COMPOSITION, where this file and the nLab
-   write f_! or Σ_f -- that is [Bang_Functor] below -- while his f*
-   is this file's [Star_Functor].  So his displayed conclusion, that
-   f_* has a right adjoint f*, IS [Base_Functor_Adjunction] with the
-   names translated, and his "y is the vertex of the pullback" is
-   [Pull].
-
-   A morphism f : a ~> b in C induces two functors between the slice
-   categories C ̸ a and C ̸ b:
-
-   - Bang_Functor f : C ̸ a ⟶ C ̸ b is the dependent sum Σ_f (also
-     written f_!, "lower shriek"), defined by post-composition with f:
-     it sends an object (o; h) with h : o ~> a to (o; f ∘ h), an object
-     over b.  This needs no extra structure on C.
-
-   - Star_Functor f : C ̸ a ⟶ C ̸ c is the base change (pullback)
-     functor f*, defined by pulling back along f: given f : c ~> a, it
-     sends an object (o; h) with h : o ~> a to (Pull h f;
-     pullback_snd h f), the fiber product o ×_a c equipped with its
-     projection to c.  This requires that the relevant pullbacks exist
-     in C, which is assumed below as the Hypothesis [pullbacks].
-
-   The theorem of this file is that the two are adjoint, dependent sum
-   on the LEFT and base change on the RIGHT: for a single f : a ~> b,
-   [Base_Functor_Adjunction] inhabits
-
-       Bang_Functor f ⊣ Star_Functor f,   i.e.   Σ_f ⊣ f*
-
-   with the class of Theory/Adjunction.v, so the left adjoint is the
-   functor C ̸ a ⟶ C ̸ b and the right adjoint is the functor
-   C ̸ b ⟶ C ̸ a obtained by instantiating [Star_Functor] at the same
-   f (its declared shape `(f : c ~> a) : C ̸ a ⟶ C ̸ c reads, at our
-   f : a ~> b, as C ̸ b ⟶ C ̸ a).  The orientation matters, and the
-   opposite reading Star_Functor f ⊣ Bang_Functor f -- which an earlier
-   commented sketch in this file proposed -- is NOT ill formed: both
-   functors have the shapes the class wants once the roles are swapped,
-   so it is a well typed statement that is simply not true in general.
-   Test/ProbeBaseChange387.v measures both halves of that: it records
-   the reversed statement as formable, and [reversed_orientation_refuted]
-   there compiles a counterexample over Sets along the unique morphism
-   ∅ ~> 1, where the unit such an adjunction would supply is a map from
-   the singleton into a setoid with uninhabited carrier -- the pullback
-   object, whose carrier is a sub-setoid of 1 × ∅.
-
-   The hom-set bijection is the universal property of the chosen
-   pullback, read twice.  For x = (o; h) over a and y = (p; k) over b, a
-   slice morphism Σ_f x ~> y is a C-morphism g : o ~> p with
-   k ∘ g ≈ f ∘ h, and that equation is precisely the square condition of
-   the competing cone ⟨g, h⟩ over the pullback square of k along f; the
-   mediator it produces is the transposed morphism x ~> f* y, its
-   [pullback_snd] leg equation being the slice condition over a.
-   Conversely a morphism into the pullback is turned back by
-   post-composing with [pullback_fst].  Because the slice hom-setoid of
-   Construction/Slice.v compares only the underlying C-morphism, both
-   round trips, both respectfulness obligations and both naturality
-   clauses are equations in C alone, and each is one appeal to the
-   uniqueness half of the universal property.
-
-   Unit and counit are named.  [bang_star_unit] at (o; h) is the
-   comparison of o into the pullback of f ∘ h along f -- the mediator of
-   the cone ⟨id, h⟩, whose square condition is (f ∘ h) ∘ id ≈ f ∘ h.
-   [bang_star_counit] at (p; k) is the pullback projection
-   [pullback_fst k f], whose slice condition k ∘ fst ≈ f ∘ snd IS
-   [pullback_commutes] verbatim, with no proof of its own.  Read their
-   identification with the class's η and ε at the strength measured, not
-   the one hoped for: the class's counit IS this projection composed
-   with a residual [id], on the nose ([bang_star_counit_strict]), and
-   the class's unit IS [base_to_mor] of the slice identity, on the nose
-   ([bang_star_unit_strict]), while against [bang_star_unit_mor] and
-   [bang_star_counit_mor] themselves only ≈ holds.  On the unit side
-   that is not the residual [id] but the PROOF argument: both sides are
-   mediators of the same cone ⟨id, h⟩, and [ump_pullbacks] takes the
-   square condition as an argument on which the mediator depends, so
-   feeding it the slice identity's own witness and feeding it
-   [id_right (f ∘ h)] give two mediators related by [uniqueness] and not
-   by conversion.
-
-   What is NOT built here.  When C is locally cartesian closed, f*
-   itself has a further right adjoint Π_f (the dependent product),
-   giving the string Σ_f ⊣ f* ⊣ Π_f.  Π_f is not constructed, and the
-   reason is measured rather than guessed: no class of local cartesian
-   closure is declared anywhere in this tree (the phrase occurs only in
-   prose, in Structure/Pullback.v, Construction/Slice.v and
-   Instance/Sets.v), and Structure/Cartesian/Closed.v's [Closed] is a
-   structure on C over a [Cartesian C], while no [Cartesian] instance
-   for a slice category is declared either -- so the dependent product
-   would have to be built from scratch.  That is left for a later
-   effort, and nothing below depends on it.  Also not delivered: no
-   Beck-Chevalley condition, no comparison of this adjunction with the
-   codomain fibration of Construction/Displayed/Codomain.v, no
-   monad or comonad from the adjunction, and no statement about when the
-   unit or counit is an isomorphism. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SliceFunctors.
 

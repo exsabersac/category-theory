@@ -21,72 +21,14 @@ Generalizable All Variables.
 
 (** * Interpreting free coloured-PROP terms in an arbitrary coloured PROP *)
 
-(* nLab: https://ncatlab.org/nlab/show/PROP
+(*
    nLab: https://ncatlab.org/nlab/show/free+category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   Given a coloured signature [S] and a coloured PROP [P], a
-   [CValuation] assigns to every generator [g : S cs ds] a morphism
-   [⟦cs⟧ ~{P}~> ⟦ds⟧].  This file defines the induced interpretation
-   [cinterp : CTerm S cs ds → (⟦cs⟧ ~{P}~> ⟦ds⟧)] and proves it SOUND
-   for the equational theory [CTermEq] of
-   [Construction/ColouredPROP/TermEq.v]: [CTermEq]-equal terms have
-   equivalent interpretations.  This is the morphism-level content of
-   the free coloured PROP's universal property; the functor packaging
-   lives in the successor file [Construction/ColouredPROP/Universal.v].
+   本文件给出构造。
 
-   This file is the many-sorted mirror of [Construction/PROP/Interp.v]
-   (the one-sorted donor), with [list Colour] replacing [nat], [++]
-   replacing [+], [[]] replacing [0], and the boundary equations
-   [app_nil_r] / [app_assoc] replacing [Nat.add_0_r] / [Nat.add_assoc].
-   The development is organised in three layers:
-
-   1.  [BraidTransport] — the coherence quarantine — is REUSED BY
-       IMPORT from [Construction/PROP/Interp.v]: its section is
-       generic over an arbitrary [Context {C : Category}], so
-       [braid_family], [transport_braid] and the six
-       [transport_braid_*] law transporters apply verbatim to the
-       category underlying a coloured PROP.  A coloured PROP carries
-       two [Monoidal] structures on the same category — the strict
-       path [strict_is_monoidal cprop_strict] and the symmetric path
-       [braided_is_monoidal (symmetric_is_braided cprop_symmetric)] —
-       related by the propositional equality
-       [cprop_monoidal_coherence]; the braiding and its laws live on
-       the symmetric path, the strictness equalities [cprop_unit_nil]
-       / [cprop_tensor_app] on the strict path.  Every transporter
-       destructs a VARIABLE equality between two [Monoidal] records,
-       so the transport reduces definitionally; the concrete coherence
-       proof of [P] is eliminated here (at [cstrict_braid] and its six
-       law images below) and, independently, in the MP/MB mediation of
-       [Construction/ColouredPROP/Supply.v] ([ctensor_app_b] /
-       [cunit_nil_b]) — the only place in the coloured-PROP
-       development that matches on it directly.
-
-   2.  The coloured-PROP-target kit — [cstrict_braid] (the transported
-       braiding), cast/bimap interaction lemmas, the strict structural
-       maps as [id_cast]s with their naturality restated as
-       cast-sliding, the [⟦·⟧]-level combinators [chcast], [⊞c]
-       ([ctensor_hom]) and [cbraid_hom], and the K-lemmas K1–K12
-       giving the strict symmetric monoidal laws of [⊞c]/[cbraid_hom]
-       at [list Colour]-indexed objects.  The UIP-flavoured lemmas
-       require decidable object equality ([ObjDecEq P], axiom-free UIP
-       via [Eqdep_dec]); note that NO decidability of [Colour] itself
-       is needed anywhere in this file — where the one-sorted donor
-       invoked UIP on [nat] via [Nat.eq_dec], the coloured kit works
-       with proof irrelevance on the OBJECTS of the target [P]
-       ([obj_uip] / [id_cast_irr] of [Construction/Quotient.v]).
-
-   3.  [CValuation], [cinterp], and soundness.  [CTermEq] is
-       [Prop]-valued while the hom equivalence [≈] of an abstract
-       target is [Type]-valued, so the induction lands in the
-       [Prop]-reflection [heq] of a [HomEqProp] instance and
-       round-trips through [heq_intro] / [heq_elim] (see
-       [Construction/Quotient.v]).  The induction covers every one of
-       the nineteen [CTermEq] constructors.
-
-   Naming: every definition and lemma here is [c]-prefixed so this
-   file can be imported alongside the one-sorted
-   [Construction/PROP/Interp.v] without collision. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The coloured-PROP-target kit *)
 

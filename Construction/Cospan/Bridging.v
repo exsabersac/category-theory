@@ -13,19 +13,13 @@ Generalizable All Variables.
 
 (** * Cospan bridging helpers (direct-CospanCat version) *)
 
-(* nLab:      https://ncatlab.org/nlab/show/cospan
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Span_(category_theory)
 
-   This file introduces no new categorical concept; it is a collection of
-   derived rewrites about the cospan category [CospanCat C] (and the
-   ambient coproduct structure) defined in [Construction.Cospan.Category],
-   where the cospan concept and its sources are documented in full.
+   本文件给出构造。
 
-   With [CospanCat] now built directly via pushouts in [C] (rather than as
-   [SpanCat (C^op)]), the cospan obligations are already phrased in terms
-   of C-direction morphisms.  This file collects a few derived rewrites
-   that come up repeatedly in Monoidal / SCFA / Hypergraph coherence proofs
-   over [CospanCat C]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Section 1: coproduct/cover bridging
 

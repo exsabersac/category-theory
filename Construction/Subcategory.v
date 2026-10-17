@@ -11,27 +11,13 @@ Context (C : Category).
 
 (** A subcategory D of a category C. *)
 
-(* nLab: https://ncatlab.org/nlab/show/subcategory
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Subcategory
 
-   A subcategory D of C is given by a subcollection [sobj] of the objects of C
-   together with, for each pair of selected objects, a subcollection [shom] of
-   the C-morphisms between them, closed under identity ([sid]) and composition
-   ([scomp]). The source/target closure condition (if f : x ~> y is in D then
-   so are x and y) holds here by construction: [shom] is only indexed by
-   objects ox, oy already selected from [sobj].
+   本文件给出构造。
 
-   These conditions make D a category in its own right ([Sub] below) for which
-   the inclusion D ⟶ C ([Incl]) is a functor; that inclusion is always
-   faithful, since on each hom-set it is the first projection out of a sigma
-   type — proved as [Incl_Faithful] below. A subcategory is full when [shom]
-   retains every C-morphism between selected objects ([Full]), and wide (lluf)
-   when [sobj] selects every object of C ([Wide]).  In a full subcategory an
-   ambient isomorphism lifts ([Full_sub_iso]) and, in particular, two
-   membership proofs for one object give isomorphic objects of [Sub]
-   ([Full_membership_iso]) -- which is why a skeleton's uniqueness clause is
-   stated at the level of [Sub]'s objects rather than their carriers
-   (Theory/Skeleton.v). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record Subcategory := {
   sobj : C → Type;                  (* sub-collection of the objects of C *)

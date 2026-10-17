@@ -18,7 +18,7 @@ Require Import Category.Construction.Arrow.
 
 Generalizable All Variables.
 
-(** * Functors out of the walking shapes 1, 2 and 3 *)
+(** * 出自行走形状 1、2、3 的函子 *)
 
 (* nLab:      https://ncatlab.org/nlab/show/terminal+category
 

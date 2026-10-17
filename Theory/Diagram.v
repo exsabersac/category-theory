@@ -10,7 +10,7 @@ Require Import Category.Construction.PreorderReflection.
 
 Generalizable All Variables.
 
-(** * Diagrams and commutativity *)
+(** * 图与交换性 *)
 
 (* nLab: https://ncatlab.org/nlab/show/commutative+diagram
 

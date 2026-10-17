@@ -10,7 +10,7 @@ Require Import Category.Instance.Coq.
 
 Generalizable All Variables.
 
-(** * The centre of a category *)
+(** * 范畴的中心 *)
 
 (* nLab:      https://ncatlab.org/nlab/show/center+of+a+category
    nLab:      https://ncatlab.org/nlab/show/Eckmann-Hilton+argument

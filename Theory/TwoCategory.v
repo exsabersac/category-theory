@@ -4,7 +4,7 @@ Require Import Category.Theory.Metacategory.General.
 
 Generalizable All Variables.
 
-(** * Strict 2-categories, in both of Mac Lane's presentations *)
+(** * 严格 2-范畴（Mac Lane 的两种呈现） *)
 
 (* nLab:      https://ncatlab.org/nlab/show/strict+2-category
    nLab:      https://ncatlab.org/nlab/show/2-category

@@ -16,7 +16,7 @@ Require Import Equations.Prop.Logic.
 
 Generalizable All Variables.
 
-(** * Skeletons and skeletal categories *)
+(** * 骨骼与骨骼范畴 *)
 
 (* nLab: https://ncatlab.org/nlab/show/skeleton
    Wikipedia: https://en.wikipedia.org/wiki/Skeleton_(category_theory)

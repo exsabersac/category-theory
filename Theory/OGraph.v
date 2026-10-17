@@ -13,7 +13,7 @@ Require Import Category.Instance.Cat.
 
 Generalizable All Variables.
 
-(** * O-graphs, the composable-pairs product, and categories as monoids *)
+(** * O-图、可复合对积，以及范畴 *)
 
 (* nLab:      https://ncatlab.org/nlab/show/quiver
    nLab:      https://ncatlab.org/nlab/show/monoidal+category

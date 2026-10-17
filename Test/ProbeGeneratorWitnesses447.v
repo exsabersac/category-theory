@@ -64,26 +64,26 @@ Check @terminal_obj.
 
 (** ** Readbacks that HOLD *)
 
-(* The Generator packages are the expected one-object families, on the
-   nose. *)
+(* The Generator packages expected one-对象 families, the
+ nose. （已译） *)
 Example p447w_g1 : gen_index Sets_Generator = unit := eq_refl.
 Example p447w_g2 : gen_obj Sets_Generator tt = unit_setoid_object := eq_refl.
 Example p447w_g3 :
   gen_obj Sets_terminal_Generator tt = @terminal_obj Sets Sets_Terminal
   := eq_refl.
 
-(* The terminal object's setoid field IS Instance/Sets.v's [Unit_Setoid];
-   the singleton's is Lib/Setoid.v's [unit_setoid] -- which is why N1
-   below is refused. *)
+(* The 终对象's setoid field IS Instance/Sets.v's [Unit_Setoid];
+ singleton's Lib/Setoid.v's [unit_setoid] -- why N1
+ below refused. （已译） *)
 Example p447w_t1 : @terminal_obj Sets Sets_Terminal
   = {| carrier := poly_unit ; is_setoid := Unit_Setoid |} := eq_refl.
 
-(* The initial object's carrier is [False], on the nose. *)
+(* The 始对象's carrier [False], nose. （已译） *)
 Example p447w_empty : carrier (@terminal_obj (Sets^op) Sets_Initial) = False
   := eq_refl.
 
-(* Control for N4: the free abelian group on one generator IS what the
-   theorem is about. *)
+(* Control N4: free abelian group one generator IS what the
+ 定理 about. （已译） *)
 Definition p447w_ab : @IsSeparator Ab (FreeAbObject unit_setoid_object) :=
   Ab_free_one_separates.
 

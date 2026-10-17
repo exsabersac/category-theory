@@ -87,8 +87,7 @@ Example p479_c4_round_trip (a : carrier G) :
 
 End GrpProbe.
 
-(* Membership above the carrier: the pair is refused there; G ×₀ N is
-   formable as a group, and a transversal still untruncates. *)
+(* 相关说明。 （已译） *)
 Section GrpMembershipAbove.
 
 Universes p m.

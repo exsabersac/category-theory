@@ -90,9 +90,9 @@ Fail Example p465_N0Z_instrument@{o x} (a0 : Z) :
        3%Z (@ts_gen (ring_ab Int_Ring) (ring_ab Int_Ring) 4%Z a0))
   = @ts_gen (ring_ab Int_Ring) (ring_ab Int_Ring) 13%Z a0 := eq_refl.
 
-(** ** Instance/Mod/TensorMonad.v: the module round trip *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the round trip on its group and on its action. *)
+(* 相关说明。 （已译） *)
 Example p465_ctl_rt_ab@{a c p o x} (R : RingObject@{a c p})
   (M : obj[RMod@{o x a p c} R]) :
   rm_ab (fobj[EM_to_RMod@{a c p o x} R
@@ -160,10 +160,9 @@ Fail Example p465_N6_rt_one@{a c p o x} (R : RingObject@{a c p})
   = rm_smul_one M
   := eq_refl.
 
-(** ** Instance/Mod/TensorMonad.v: the algebra round trip *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the round trip on its carrier, its structure map on each
-   generator r ⊗ m, and at every formal sum up to ≈. *)
+(* 相关说明。 （已译） *)
 Example p465_ctl_rt2_carrier@{a c p o x} (R : RingObject@{a c p})
   (X : @EilenbergMoore@{o o x c} Ab@{o c} (TensorF@{a c p o x} R)
          (TensorMonad@{a c p o x} R)) :
@@ -221,7 +220,7 @@ Fail Example p465_N9_rt2_obj@{a c p o x} (R : RingObject@{a c p})
   = X
   := eq_refl.
 
-(** ** Instance/Mod/TensorMonad.v: the composites as identity functors *)
+(* * ** Instance/Mod/TensorMonad.v: composites 恒等 函子 （已译） *)
 
 (* N10 *)
 Fail Example p465_N10_rt_functor@{a c p o x} (R : RingObject@{a c p}) :
@@ -238,10 +237,9 @@ Fail Example p465_N11_rt2_functor@{a c p o x} (R : RingObject@{a c p}) :
          (TensorMonad@{a c p o x} R)]
   := eq_refl.
 
-(** ** Instance/Mod/TensorMonad.v: T f against the bifunctor's 1 ⊗ f *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: T f and 1 ⊗ f on a generator, and at every formal sum up
-   to ≈. *)
+(* 相关说明。 （已译） *)
 Example p465_ctl_fmap_gen@{a c p o x} (R : RingObject@{a c p})
   (A B : obj[Ab@{o c}]) (f : A ~{Ab@{o c}}~> B)
   (s : carrier (rig_setoid (ring_rig R))) (a0 : carrier A) :
@@ -335,7 +333,7 @@ Fail Example p465_N12d_add_r@{a c p o x} (R : RingObject@{a c p})
   bilin_add_r (zext_map_bilin R f) = bilin_add_r (p465_tm_bilin R f)
   := eq_refl.
 
-(** ** Instance/Mod/TensorMonad.v: Beck's route *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: Beck's quasi-inverse acts through η; over ℤ at the scalar 3
    it IS h (3 ⊗ m). *)
@@ -406,7 +404,7 @@ Fail Example p465_N15_monadic_same@{a c p o x} (R : RingObject@{a c p}) :
   = RMod_Forget_Ab_Monadic@{a c p o x} R
   := eq_refl.
 
-(** ** Instance/Mod/Colimit/Creation.v *)
+(* 相关说明。 （已译） *)
 
 (* C0 *)
 Fail Fail Example p465c_C0_instrument@{a c p o x j l l0}
@@ -416,8 +414,7 @@ Fail Fail Example p465c_C0_instrument@{a c p o x j l l0}
   (HN : IsLimitCone@{l l0 j c o} N) :
   rm_ab (ColimMod N HN) = vertex_obj[N] := eq_refl.
 
-(* CONTROL: the created module's group and insertions, and the action on
-   an inserted element up to ≈. *)
+(* 相关说明。 （已译） *)
 Example p465c_ctl_obj@{a c p o x j l l0} {R : RingObject@{a c p}}
   {J : Category@{j c c}} {K : J ⟶ RMod@{o x a p c} R}
   (N : Cone ((RMod_Forget_Ab@{x o o a p c} R)^op ◯ K^op))
@@ -450,8 +447,7 @@ Fail Example p465c_C1_leg_smul@{a c p o x j l l0} {R : RingObject@{a c p}}
   rm_smul (ColimMod N HN) r (cmon_map (cone_leg N i) m)
   = cmon_map (cone_leg N i) (rm_smul (K i) r m) := eq_refl.
 
-(* CONTROL: the module reflected from a cocone M of modules has M's
-   group, and its mediators compute to the Ab ones. *)
+(* 相关说明。 （已译） *)
 Example p465c_ctl_reflect_group@{a c p o x j l l0} {R : RingObject@{a c p}}
   {J : Category@{j c c}} {K : J ⟶ RMod@{o x a p c} R}
   (M : Cone (K^op))
@@ -500,9 +496,9 @@ Fail Example p465c_C3_two_witnesses@{a c p o x j l l0}
   (HN HN' : IsLimitCone@{l l0 j c o} N) :
   ColimMod N HN = ColimMod N HN' := eq_refl.
 
-(* CONTROL: the lift read back through [creates_colimit_lift] has the
-   given nadir as its group and IS [ColimMod] of the colimit read in the
-   opposite category. *)
+(* CONTROL: lift read back through [creates_colimit_lift] has the
+ given nadir group IS [ColimMod] colimit read the
+ opposite 范畴. （已译） *)
 Example p465c_ctl_lift_apex@{a c p o x j l l0} {R : RingObject@{a c p}}
   {J : Category@{j c c}} (K : J ⟶ RMod@{o x a p c} R)
   (L : Colimit (RMod_Forget_Ab@{x o o a p c} R ◯ K)) :
@@ -518,8 +514,8 @@ Example p465c_ctl_lift_module@{a c p o x j l l0} {R : RingObject@{a c p}}
   = ColimMod (cone_op_comp (@limit_cone _ _ _ L))
       (islimitcone_op_comp (limit_limitcone L)) := eq_refl.
 
-(* CONTROL: at a shape with a terminal object the created action is
-   K(!)(r · m) on the nose and K 1's own up to ≈. *)
+(* CONTROL: at shape 终对象 created action is
+ K(!)(r · m) nose K 1's own up ≈. （已译） *)
 Example p465c_ctl_terminal_smul@{a c p o x j l l0} {R : RingObject@{a c p}}
   {J : Category@{j c c}} (T : @Terminal J) (K : J ⟶ RMod@{o x a p c} R)
   (r : carrier (rig_setoid (ring_rig R)))
@@ -548,10 +544,9 @@ Fail Example p465c_C4_terminal_own@{a c p o x j l l0}
              (rmod_terminal_colimit@{a c p o x j l l0} T K)]) r m
   = rm_smul (K (@terminal_obj J T)) r m := eq_refl.
 
-(** ** Instance/Mod/TensorMonad/Cocontinuous.v *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the transpose at a generator with the unit, on the nose; without
-   it, up to ≈; and over ℤ at the scalar 3 without it, on the nose. *)
+(* 相关说明。 （已译） *)
 Example p465c_ctl_to@{c o x} (R : RingObject@{c c c})
   (A B : obj[Ab@{o c}])
   (φ : fobj[TensorF@{c c c o x} R] A ~{Ab@{o c}}~> B)
@@ -600,7 +595,7 @@ Fail Example p465c_C5_to@{c o x} (R : RingObject@{c c c})
     r
   = cmon_map φ (@ts_gen (ring_ab R) A r a) := eq_refl.
 
-(* CONTROL: the inverse transpose, the same three ways. *)
+(* 相关说明。 （已译） *)
 Example p465c_ctl_from@{c o x} (R : RingObject@{c c c})
   (A B : obj[Ab@{o c}])
   (ψ : A ~{Ab@{o c}}~>
@@ -655,8 +650,8 @@ Fail Example p465c_C6_from@{c o x} (R : RingObject@{c c c})
   = @cmon_map (ab_cmon (ring_ab R)) (ab_cmon B) (cmon_map ψ a) r
   := eq_refl.
 
-(* CONTROL: U^T ◯ K against U on objects and arrows on the nose, and as
-   functors up to ≈. *)
+(* CONTROL: U^T ◯ K against U 对象 arrows nose, as
+ 函子 up ≈. （已译） *)
 Example p465c_ctl_cmp_obj@{a c p o x} (R : RingObject@{a c p})
   (M : obj[RMod@{o x a p c} R]) :
   fobj[EM_Forget (TensorF@{a c p o x} R)
@@ -707,9 +702,9 @@ Definition p465c_ctl_ring_ccc@{c o x} (R : RingObject@{c c c}) :
   Adjunction_Compose (zext_adjunction@{c c c o o x c c} R)
     (coex_adjunction@{c c c o x c} R).
 
-(* CONTROL (for C8 and C8a): at [RingObject@{a c p}] under an extensible
-   binder the same composite is accepted, elaboration adding a = c and
-   a = p. *)
+(* CONTROL (for C8 C8a): at [RingObject@{a c p}] under extensible
+ binder same 复合 accepted, elaboration adding = c and
+ = p. （已译） *)
 Definition p465c_ctl_ring_open@{a c p o x | Set < o, c < o, c < x +}
   (R : RingObject@{a c p}) :
   @Adjunction@{o c c o c c c c x c o} Ab@{o c} Ab@{o c}
@@ -738,7 +733,7 @@ Fail Definition p465c_C8a_proof_below@{a c p o x |
   Adjunction_Compose (zext_adjunction@{a c p o o x a a} R)
     (coex_adjunction@{a c p o x c} R).
 
-(** ** Closure: a readback, not a refutation *)
+(* 相关说明。 （已译） *)
 
 Print Assumptions TensorMonad.
 Print Assumptions EM_RMod_iso.
@@ -748,7 +743,7 @@ Print Assumptions RMod_Forget_Ab_creates_colimits.
 Print Assumptions TensorF_cocontinuous.
 Print Assumptions TensorF2_cocontinuous.
 
-(** ** Guard: the constants of the three targets *)
+(* 相关说明。 （已译） *)
 
 (* Instance/Mod/TensorMonad.v *)
 Check @Category.Instance.Mod.TensorMonad.TensorF.

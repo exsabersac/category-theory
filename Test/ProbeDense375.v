@@ -16,7 +16,7 @@ Require Import Category.Theory.Skeleton.Separation.
 
 Generalizable All Variables.
 
-(** * Boundary probe for Construction/Subcategory/Dense.v (issue #375) *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeDense375。
@@ -26,8 +26,7 @@ Generalizable All Variables.
 
 (** ** Instrument check *)
 
-(* If this command ever succeeds, the [Fail] wrapper is not doing its job
-   and every negative below is worthless. *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe375_no_such_constant_anywhere.
 
@@ -65,7 +64,7 @@ Check (reflective_full (dense_full_subcategory_reflective S F D)).
 Check (fun a : Sub C S => reflective_counit_iso
          (dense_full_subcategory_reflective S F D) a).
 
-(** ** CONVERSION 1: the IsoDense round trip does not return *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeDense375 相关定义、性质与动机。
@@ -76,7 +75,7 @@ Check (fun a : Sub C S => reflective_counit_iso
 Fail Example probe_iso_dense_round :
   ESO_iso_dense S (iso_dense_ESO S D) = D := eq_refl.
 
-(* The passing controls that locate the difference at the missing eta. *)
+(* 相关说明。 （已译） *)
 
 Example probe_iso_dense_round_obj (c : C) :
   `1 (ESO_iso_dense S (iso_dense_ESO S D) c) = `1 (D c) := eq_refl.
@@ -84,7 +83,7 @@ Example probe_iso_dense_round_obj (c : C) :
 Example probe_ESO_round_whole (E : EssentiallySurjective (Incl C S)) :
   iso_dense_ESO S (ESO_iso_dense S E) = E := eq_refl.
 
-(** ** CONVERSION 2: the counit does not reduce to the chosen iso *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、等价、同构相关定义、性质与动机。
@@ -103,7 +102,7 @@ Check (fun a : Sub C S =>
                (dense_adj S F D) a),
           to (`2 (D (Incl C S a))))).
 
-(** ** TYPING 3: the counit is not the identity, and cannot be *)
+(* * ** TYPING 3: counit not 恒等, cannot be （已译） *)
 
 (*
    本节说明（余）端、来源与用途相关定义、性质与动机。
@@ -115,13 +114,13 @@ Fail Example probe_counit_id (a : Sub C S) :
   @counit _ _ (dense_reflector S F D) (Incl C S) (dense_adj S F D) a
     = @id (Sub C S) a := eq_refl.
 
-(** ** TYPING 4: the adjunction is not the Reflective record *)
+(* * ** TYPING 4: 伴随 not Reflective record （已译） *)
 
 Fail Check (dense_adj S F D : Reflective S).
 
 End Boundaries.
 
-(** ** FORMABILITY 5: [Subcategory] identifies hom with proof *)
+(* * ** FORMABILITY 5: [Subcategory] identifies hom 证明 （已译） *)
 
 (*
    本节说明hom、来源与用途相关定义、性质与动机。
@@ -145,7 +144,7 @@ Fail Check (Subcategory Cu).
 
 End UniverseProbe.
 
-(** ** Witness (i): the skeleton of the indiscrete category on bool *)
+(* * ** Witness (i): skeleton indiscrete 范畴 bool （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -165,18 +164,18 @@ Example probe_skel_false :
   fobj[reflector probe_skel_refl] false
     = skel_rep Indiscrete_bool_Skeleton false := eq_refl.
 
-(* The carrier of the reflection is [true] at BOTH points ... *)
+(* 相关说明。 （已译） *)
 
 Example probe_skel_carrier_false :
   `1 (fobj[reflector probe_skel_refl] false) = true := eq_refl.
 
-(* ... so at [false] the reflection moves the object: it is not inert. *)
+(* ... so at [false] reflection moves 对象: it not inert. （已译） *)
 
 Example probe_skel_not_inert :
   `1 (fobj[reflector probe_skel_refl] false) = false → False.
 Proof. discriminate. Qed.
 
-(** ** Witness (ii): a full subcategory on BOTH points, choosing the other *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -209,9 +208,9 @@ Example swap_reflector_true :
 Example swap_reflector_false :
   `1 (fobj[reflector swap_reflective] false) = true := eq_refl.
 
-(* The two endpoints of the counit at an object [a] are DIFFERENT objects
-   of [Sub], which is what makes the identity form ill-typed rather than
-   merely unproved. *)
+(* The two endpoints counit at 对象 [a] DIFFERENT 对象
+ [Sub], what makes 恒等 form ill-typed rather than
+ merely unproved. （已译） *)
 
 Lemma swap_objects_differ (a : Sub (Indiscrete bool) BothPoints) :
   fobj[reflector swap_reflective] (Incl (Indiscrete bool) BothPoints a) = a
@@ -234,8 +233,8 @@ Proof.
   intro H; exact (swap_objects_differ ((true; I)) (H (true; I))).
 Qed.
 
-(* The counit at such an object is nevertheless an isomorphism, which is
-   the form the proposition's third clause takes here. *)
+(* The counit at such 对象 nevertheless 同构, is
+ form 命题's third clause takes here. （已译） *)
 
 Check (fun a : Sub (Indiscrete bool) BothPoints =>
          dense_counit_iso BothPoints BothPoints_Full swap_dense a).

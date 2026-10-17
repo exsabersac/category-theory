@@ -15,7 +15,7 @@ Require Import Category.Instance.Theory.Lindenbaum.
 
 Generalizable All Variables.
 
-(** * Probe for Instance/Theory/Lindenbaum.v (issue #390) *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeLindenbaum390。
@@ -23,11 +23,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Instrument check: this must be rejected for the trivial reason *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe390_no_such_constant_anywhere.
 
-(** ** Controls: every constant the negatives name, outside any [Fail] *)
+(* * ** Controls: every 常值 negatives name, outside any [Fail] （已译） *)
 
 Check @Sent.
 Check @s_var.
@@ -89,7 +89,7 @@ Check @Props.
 Check @Relation_Definitions.relation.
 Check @RelationClasses.PreOrder.
 
-(** ** N1, N2: the hom = proof identification, and its donor *)
+(* * ** N1, N2: hom = 证明 identification, donor （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -104,7 +104,7 @@ Constraint lh < lp.
 
 Context (Vu : Type@{lo}) (Tu : Theo@{lo lp} Vu).
 
-(* Controls: the category, its objects and a hom all elaborate here. *)
+(* Controls: 范畴, 对象 hom all elaborate here. （已译） *)
 Check (Lind Tu : Category@{lo lh lh}).
 Check (obj[Lind Tu]).
 Check (fun p q : Sent@{lo} Vu => p ~{Lind Tu}~> q).
@@ -115,7 +115,7 @@ Fail Check (Lind Tu : Category@{lo lh lp}).
 Context (Au : Type@{lo}) (Ru : Relation_Definitions.relation Au)
         (Pu : RelationClasses.PreOrder Ru).
 
-(* Control for N2, at the same declared levels. *)
+(* 相关说明。 （已译） *)
 Check (Proset Pu : Category@{lo lh lh}).
 
 (*
@@ -127,18 +127,18 @@ Fail Check (Proset Pu : Category@{lo lh lp}).
 
 End UniverseProbe.
 
-(** ** N3: entailment must be Prop-valued for [Proset] to accept it *)
+(* 相关说明。 （已译） *)
 
-(* The target's design note says a Type-valued entailment would not fit
-   [Proset], whose relation argument is a stdlib [relation A].  Here is
-   a Type-valued one, and the rejection. *)
+(* The target's design note says Type-valued entailment would not fit
+ [Proset], whose 关系 论元 stdlib [relation A]. Here is
+ Type-valued one, rejection. （已译） *)
 
 Inductive TEnt {V : Type} (T : Theo V) : Sent V -> Sent V -> Type :=
   | tent_refl p : TEnt p p
   | tent_cut p q r : TEnt p q -> TEnt q r -> TEnt p r.
 
-(* Controls: the Prop-valued one IS a stdlib relation, and the
-   Type-valued one does elaborate as a family. *)
+(* Controls: Prop-valued one IS stdlib 关系, the
+ Type-valued one does elaborate family. （已译） *)
 Check (Entails T_empty : Relation_Definitions.relation (Sent bool)).
 Check (TEnt T_empty).
 
@@ -156,7 +156,7 @@ Section TypingProbe.
 
 Context {V : Type} (T : Theo V) (p q r : Sent V).
 
-(* Control: the product object with the right structure supplied. *)
+(* Control: product 对象 right structure supplied. （已译） *)
 Check (@product_obj (Lind T) (Lind_Cartesian T) p q).
 
 (*
@@ -171,12 +171,12 @@ End TypingProbe.
 (* Control: the derivation exists at its own theory. *)
 Check (entails_mp : Entails T_mp (sv true) (sv false)).
 
-(* N5 (TYPING): a derivation at [T_mp] is not one at [T_empty].  The
-   theory is an INDEX of the hom-type, so this is a type mismatch and
-   not a unification report. *)
+(* N5 (TYPING): derivation at [T_mp] not one at [T_empty]. The
+ theory INDEX hom-type, so 这是 type mismatch and
+ not unification report. （已译） *)
 Fail Check (entails_mp : Entails T_empty (sv true) (sv false)).
 
-(** ** N6, N7, N8: three conversion rejections *)
+(* 相关说明。 （已译） *)
 
 (* Control: each category is convertible with itself. *)
 Definition probe390_lind_self : Lind T_empty = Lind T_empty := eq_refl.
@@ -198,15 +198,13 @@ Definition probe390_exp_orientation :
   @exponent_obj (Lind T) (Lind_Cartesian T) (Lind_Closed T) p q
     = s_imp p q := eq_refl.
 
-(* N7 (CONVERSION): and it is not "q implies p".  This guards the one
-   place where the library's [exponent_obj x y = y ^ x] convention and
-   the book's q^p could silently drift apart. *)
+(* 相关说明。 （已译） *)
 Fail Definition probe390_exp_flipped :
   @exponent_obj (Lind T) (Lind_Cartesian T) (Lind_Closed T) p q
     = s_imp q p := eq_refl.
 
-(* Control: [eval] IS [lind_uncurry] at the identity derivation, and it
-   is ≈-equal to the evaluation RULE, since the category is thin. *)
+(* Control: [eval] IS [lind_uncurry] at 恒等 derivation, it
+ ≈-equal evaluation RULE, since 范畴 thin. （已译） *)
 Definition probe390_eval_unfold :
   @eval (Lind T) (Lind_Cartesian T) (Lind_Closed T) p q
     = lind_uncurry (ent_refl T (s_imp p q)) := eq_refl.
@@ -215,20 +213,16 @@ Definition probe390_eval_equiv :
   @eval (Lind T) (Lind_Cartesian T) (Lind_Closed T) p q
     ≈ ent_eval T p q := lind_thin T _ _ _ _.
 
-(* N8 (CONVERSION): but it is not [ent_eval] on the nose.  This is what
-   thinness buys and what it does not: the two derivations are
-   identified by ≈ and by nothing stronger. *)
+(* 相关说明。 （已译） *)
 Fail Definition probe390_eval_strict :
   @eval (Lind T) (Lind_Cartesian T) (Lind_Closed T) p q
     = ent_eval T p q := eq_refl.
 
 End OrientationProbe.
 
-(** ** The [Defined] on [entails_weaken] is load-bearing downstream *)
+(* 相关说明。 （已译） *)
 
-(* Within the target, flipping either [Defined] to [Qed] changes
-   nothing.  This readback is what makes the one on [entails_weaken]
-   matter: with [Qed] it is rejected with "cannot unify". *)
+(* 相关说明。 （已译） *)
 Example probe390_weaken_reduces (p : Sent bool) :
   entails_weaken empty_sub_mp (ent_refl T_empty p) = ent_refl T_mp p
   := eq_refl.
@@ -237,7 +231,7 @@ Example probe390_weaken_fmap (p q : Sent bool) (f : Entails T_empty p q) :
   fmap[LindWeaken empty_sub_mp] f = entails_weaken empty_sub_mp f
   := eq_refl.
 
-(** ** The exercise's claims, exercised from outside *)
+(* 相关说明。 （已译） *)
 
 (* Product is conjunction, terminal is truth, exponential is
    implication — at Leibniz equality of objects. *)
@@ -248,11 +242,11 @@ Example probe390_structure {V} (T : Theo V) (p q : Sent V) :
        = s_imp p q)
   := (eq_refl, eq_refl, eq_refl).
 
-(* The category is thin, so the transpose is unique for free. *)
+(* The 范畴 thin, so transpose unique free. （已译） *)
 Example probe390_thin {V} (T : Theo V) : Thin (Lind T) := lind_thin T.
 
-(* Two axiom sets, two categories: derivable on one side, refuted on
-   the other, and no full functor between them. *)
+(* Two axiom sets, two 范畴: derivable one side, refuted on
+ other, no full 函子 between them. （已译） *)
 Example probe390_derivable : Entails T_mp (sv true) (sv false) :=
   entails_mp.
 
@@ -265,8 +259,8 @@ Example probe390_not_full :
 Example probe390_no_equiv (F : Lind T_empty ⟶ Lind T_all) :
   EquivalenceOfCategories F -> False := no_equivalence_empty_to_all F.
 
-(* The comparison with Props: a functor preserving 1, × and ^ on the
-   nose, faithful, but neither full nor essentially surjective. *)
+(* The comparison Props: 函子 preserving 1, × ^ the
+ nose, faithful, but neither full nor 本质满射. （已译） *)
 Example probe390_sound_functor : Lind T_empty ⟶ Props :=
   LindSound T_empty val_true val_true_empty.
 

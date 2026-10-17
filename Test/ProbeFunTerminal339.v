@@ -19,9 +19,7 @@ Require Import Category.Instance.Fun.Terminal.
 
 Generalizable All Variables.
 
-(** ** Instrument check
-
-    A [Fail] that never fails would make every negative below vacuous. *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
@@ -39,8 +37,8 @@ Constraint uh < up.
 (* Control: a hom-set of such a category exists. *)
 Check (fun (C : Category@{uo uh up}) (x y : C) => x ~> y).
 
-(* Control: so does a family of its objects -- the shape the indexed
-   results quantify over. *)
+(* Control: so does family 对象 -- shape indexed
+ results quantify over. （已译） *)
 Check (fun (C : Category@{uo uh up}) (A : Type) (f : A -> C) => f).
 
 (* NEGATIVE 1. *)
@@ -65,7 +63,7 @@ Check @HasIndexedProducts.
 (* NEGATIVE 3. *)
 Fail Check (fun (C : Category@{uo uh up}) => @HasIndexedProducts C).
 
-(* Control: likewise for [IsIndexedProduct], for the same reason. *)
+(* 相关说明。 （已译） *)
 Check @IsIndexedProduct.
 
 (* NEGATIVE 4. *)
@@ -76,8 +74,8 @@ Fail Check (fun (C : Category@{uo uh up}) (A : Type) (f : A -> C)
 (* Control: [Fun] exists at unconstrained levels. *)
 Check @Fun.
 
-(* NEGATIVE 5.  [Fun] does MORE than the other four: it identifies hom
-   with proof in BOTH arguments and the two hom levels with each other. *)
+(* NEGATIVE 5. [Fun] does MORE than other four: it identifies hom
+ 证明 BOTH arguments two hom levels each other. （已译） *)
 Fail Check (fun (C D : Category@{uo uh up}) => @Fun C D).
 
 End Donors.
@@ -101,8 +99,8 @@ Check (fun (C : Category@{co ch cp}) (D : Category@{dro dh dh})
 Check (fun (C : Category@{co ch cp}) (D : Category@{dro dh dh})
            (T : @Terminal D) => @terminal_obj D T).
 
-(* Control: and so does the target's OWN constant functor, at exactly
-   these levels -- C's hom and proof strictly apart. *)
+(* Control: so does target's OWN 常值 函子, at exactly
+ these levels -- C's hom 证明 strictly apart. （已译） *)
 Check (fun (C : Category@{co ch cp}) (D : Category@{dro dh dh}) (d : D) =>
          @Constant_Functor@{co ch cp dro dh dh} C D d).
 
@@ -139,7 +137,7 @@ Definition probe_limit_of_discrete
   {C : Category} {A : Type} (f : A -> C) : Type :=
   Limit (DiscreteCat_Functor f).
 
-(** ** Positive controls for the headline artifacts *)
+(* 相关说明。 （已译） *)
 
 Check @Functor_Category_Terminal.
 Check @Constant_Functor.
@@ -154,9 +152,9 @@ Check @Fun_bool_iprod_iso.
 Check @terminal_empty_IsIndexedProduct.
 Check @Fun_empty_iprod_terminal.
 
-(** The two CONVERSION refutations live in the target with their own
-    controls; these name their constants so a rename breaks this file
-    too. *)
+(** 本节：The two CONVERSION refutations live target own
+ controls; these name constants so rename breaks file
+ too. （已译） *)
 
 Check @bool_fam.
 Check @Fun_bool_iprod_iso_commutes.

@@ -23,7 +23,7 @@ Generalizable All Variables.
 
 Open Scope category_scope.
 
-(** * Probe: the measured boundaries of Structure/Limit/FromProducts.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeFromProducts416。
@@ -75,14 +75,14 @@ Check @FCone.
 Check @cone_leg.
 Check @vertex_obj.
 
-(** ** N1: the refinement at the full index *)
+(* 相关说明。 （已译） *)
 
 Section FullIndex.
 
 Context {C : Category} (HP : HasIndexedProducts C) (HE : HasEqualizers C).
 Context {J : Category} (F : J ⟶ C).
 
-(* Controls: apex, apex object and every leg agree on the nose. *)
+(* Controls: apex, apex 对象 every leg agree nose. （已译） *)
 Example probe416_ctrl_full_apex :
   vertex_obj[pe_gen_cone HP HE F ArrowIx_Generates]
     = vertex_obj[pe_limit_cone HP F HE] := eq_refl.
@@ -98,7 +98,7 @@ Example probe416_ctrl_full_leg (x : J) :
 Fail Example probe416_n1 :
   pe_gen_cone HP HE F ArrowIx_Generates = pe_limit_cone HP F HE := eq_refl.
 
-(* The delivered limit's cone IS the constructed cone. *)
+(* 相关说明。 （已译） *)
 Example probe416_ctrl_limit_cone :
   @limit_cone _ _ _ (limit_of_products_equalizer HP F HE)
     = pe_limit_cone HP F HE := eq_refl.
@@ -109,7 +109,7 @@ Example probe416_ctrl_complete_cone :
 
 End FullIndex.
 
-(** ** N2, N3: the image cone against the image of the cone *)
+(* 相关说明。 （已译） *)
 
 Section Image.
 
@@ -132,12 +132,12 @@ Fail Example probe416_n2 (x : J) :
 Fail Example probe416_n3 :
   pe_image_cone HP HE G GP GE K = FCone G (pe_limit_cone HP K HE) := eq_refl.
 
-(* Control: the transport the target ships. *)
+(* 相关说明。 （已译） *)
 Check (pe_image_ConeIso HP HE G GP GE K).
 
 End Image.
 
-(** ** N4, N5: the hypotheses are the ones named *)
+(* 相关说明。 （已译） *)
 
 Section Handedness.
 
@@ -179,7 +179,7 @@ Fail Check (@Complete Cu).
 
 End HomProof.
 
-(** ** N7: shape hom = ambient hom, the limit vocabulary's *)
+(* 相关说明。 （已译） *)
 
 Section ShapeHom.
 
@@ -240,7 +240,7 @@ Definition sets_pe_complete : @Complete Sets :=
 
 Check sets_pe_complete.
 
-(** ** A generating family on the walking arrow *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -259,15 +259,14 @@ Proof.
   - exact (@gen_idx _2 unit _ _ two_gen_fam tt).
 Defined.
 
-(* The full index has (at least) two distinct elements the refined one
-   does not: the two identities. *)
+(* 相关说明。 （已译） *)
 
 Example two_arrowix_apart :
   @mk_arrow _2 _ _ TwoXY = @mk_arrow _2 _ _ TwoIdX → False.
 Proof. intro H; apply (f_equal (fun a => snd (`1 a))) in H; discriminate. Qed.
 
-(* Being an identity is decidable on [_2], so the non-identity family of
-   the target's [nonid_Generates] generates there too. *)
+(* Being 恒等 decidable [_2], so non-恒等 family of
+ target's [nonid_Generates] generates there too. （已译） *)
 
 Definition two_isid_dec (x y : _2) (f : x ~{_2}~> y) :
   IsIdArrow x y f + (IsIdArrow x y f → False).
@@ -280,8 +279,7 @@ Defined.
 
 Check (nonid_Generates two_isid_dec).
 
-(* The restriction does not change the limit: the one-index equalizer is
-   canonically isomorphic, as a cone, to the full construction. *)
+(* 相关说明。 （已译） *)
 
 Check (fun F : _2 ⟶ Sets =>
   pe_gen_restrict_iso Sets_HasIndexedProducts

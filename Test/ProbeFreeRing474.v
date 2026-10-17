@@ -56,9 +56,9 @@ Generalizable All Variables.
 Fail Check p474_absent_name.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Rng/Free.v: the adjunction in hom-set form *)
+(* * ** Instance/Rng/Free.v: 伴随 hom-set form （已译） *)
 
-(* C1: the counit of the hom-set form is the evaluation of the identity. *)
+(* C1: counit hom-set form evaluation 恒等. （已译） *)
 Example p474_c1_hom_counit (R : Rng) (t : FRTerm (Rng_Forget_Ab R)) :
   rig_map (@counit _ _ _ _ free_rng_ab_adjunction_hom R) t
     = fr_eval (@id Ab (Rng_Forget_Ab R)) t := eq_refl.
@@ -96,9 +96,9 @@ Fail Example p474_r3_counits (R : Rng) (t : FRTerm (Rng_Forget_Ab R)) :
     = rig_map (@counit _ _ _ _ free_rng_ab_adjunction_hom R) t := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Rng/FreeMonad.v: the monad T *)
+(* * ** Instance/Rng/FreeMonad.v: 单子 T （已译） *)
 
-(* C5: T A is the abelian group of the free ring. *)
+(* 相关说明。 （已译） *)
 Example p474_c5_T_obj (A : Ab) :
   fobj[TF] A = Rng_Forget_Ab (FreeRngAbObject A) := eq_refl.
 
@@ -172,7 +172,7 @@ Fail Example p474_r6_T_map_var {A B : Ab} (f : A ~{Ab}~> B)
   := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Route A, not taken: the monad of the universal-arrow adjunction *)
+(* * ** Route A, not taken: 单子 universal-arrow 伴随 （已译） *)
 
 (* C17: route A's monad, the literal reading. *)
 Definition p474_c17_TA : @Monad Ab (Rng_Forget_Ab ◯ FreeRngAb) :=
@@ -235,7 +235,7 @@ Fail Example p474_r13_KA_gen (R : Rng) (a : carrier (rig_setoid R)) :
     = a := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Rng/FreeMonad.v: the comparison and Rng ≅ Ab^T *)
+(* 相关说明。 （已译） *)
 
 (* C21: the leg [to] of [Rng_EM_iso] is K. *)
 Example p474_c21_iso_to :
@@ -303,7 +303,7 @@ Example p474_c33_EM_add (x : RngAlg) :
 Example p474_c34_EM_map {x y : RngAlg} (f : x ~{RngAlg}~> y) :
   rig_map (fmap[EM_to_Rng] f) = cmon_map (t_alg_hom[f]) := eq_refl.
 
-(* C35 to C41: the ring round trip, field by field and on maps. *)
+(* 相关说明。 （已译） *)
 (* C35 *)
 Example p474_c35_rt_setoid (R : Rng) :
   rig_setoid (fobj[EM_to_Rng ◯ Rng_K] R) = rig_setoid R := eq_refl.
@@ -330,11 +330,11 @@ Example p474_c41_rt_hom {R S : Rng} (f : R ~{Rng}~> S) :
 Fail Example p474_r14_rt_ring (R : Rng) :
   fobj[EM_to_Rng ◯ Rng_K] R = R := eq_refl.
 
-(* C42: the algebra round trip keeps the group... *)
+(* 相关说明。 （已译） *)
 Example p474_c42_EM_rt_carrier (x : RngAlg) :
   `1 (fobj[Rng_K ◯ EM_to_Rng] x) = `1 x := eq_refl.
 
-(* C43: ...returns the structure map as the evaluation in its ring... *)
+(* 相关说明。 （已译） *)
 Example p474_c43_EM_rt_alg_fun (x : RngAlg) (t : FRTerm (`1 x)) :
   cmon_map (t_alg[projT2 (fobj[Rng_K ◯ EM_to_Rng] x)]) t
     = fr_eval (R := ralg_ring (projT2 x)) (@id Ab (`1 x)) t := eq_refl.
@@ -366,8 +366,8 @@ Fail Example p474_r17_rt_functor_Rng :
 Fail Example p474_r18_rt_functor_EM :
   Rng_K ◯ EM_to_Rng = Id[RngAlg] := eq_refl.
 
-(* C46 to C49: every component of the two natural isomorphisms, and of
-   the equivalence, is the identity. *)
+(* C46 C49: every component two natural isomorphisms, of
+ 等价, 恒等. （已译） *)
 (* C46 *)
 Example p474_c46_to_from_component (x : RngAlg) :
   (t_alg_hom[to (`1 (iso_to_from Rng_EM_iso) x)],
@@ -391,8 +391,8 @@ Example p474_c49_unit_component (R : Rng) :
     = (@setoid_morphism_id (rig_setoid R),
        @setoid_morphism_id (rig_setoid R)) := eq_refl.
 
-(* C50: through Theory/Equivalence.v's bridge, the [iso_to_from] component
-   is the identity too... *)
+(* C50: through Theory/Equivalence.v's bridge, [iso_to_from] component
+ 恒等 too... （已译） *)
 Example p474_c50_bridge_to_from (x : RngAlg) :
   t_alg_hom[to (`1 (iso_to_from (Equivalence_to_Cat_Iso Rng_EM_equivalence))
                  x)] = @id Ab (`1 x) := eq_refl.
@@ -402,7 +402,7 @@ Fail Example p474_r19_bridge_from_to (R : Rng) :
   rig_map (to (`1 (iso_from_to (Equivalence_to_Cat_Iso Rng_EM_equivalence))
                  R)) = @setoid_morphism_id (rig_setoid R) := eq_refl.
 
-(* C51 to C54: the forgetful functors, on objects and on arrows. *)
+(* C51 C54: forgetful 函子, 对象 arrows. （已译） *)
 (* C51 *)
 Example p474_c51_K_forget_obj (R : Rng) :
   fobj[RngAlg_Forget] (fobj[Rng_K] R) = fobj[Rng_Forget_Ab] R := eq_refl.
@@ -418,9 +418,9 @@ Example p474_c54_EM_forget_map {x y : RngAlg} (f : x ~{RngAlg}~> y) :
   := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Ab/TensorPower.v: ⨁ₙ A^{⊗n} *)
+(* 相关说明。 （已译） *)
 
-(* C55: the tensor powers are Spider.v's [tpower] at Ab: A^{⊗0} = ℤ... *)
+(* 相关说明。 （已译） *)
 Example p474_c55_tpower_zero (A : Ab) : tpower A 0 = ZAb := eq_refl.
 
 (* C56: ...and A^{⊗(n+1)} = A ⊗ A^{⊗n}. *)
@@ -453,7 +453,7 @@ Example p474_c59_ext_word (A c : Ab)
   (w : list (carrier (cmon_setoid A))) :
   cmon_map (tw_ext c ν Hl Hn) (tw_word w) = ν w := eq_refl.
 
-(* C60: the copairing composed with ιₙ, up to ≈. *)
+(* 相关说明。 （已译） *)
 Definition p474_c60_desc_iota_equiv (A c : Ab)
   (iota : ∀ n : nat, tpower A n ~{Ab}~> c) (n : nat)
   (x : carrier (tpower A n)) :
@@ -478,24 +478,22 @@ Fail Example p474_r21_word_iota (A : Ab)
   (w : list (carrier (cmon_setoid A))) :
   tw_word w = cmon_map (tw_iota (length w)) (tw_pure w) := eq_refl.
 
-(* C103: and false at Leibniz = at the empty word, where ι₀ 1 is the sum
-   ⟨⟩ + 0. *)
+(* 相关说明。 （已译） *)
 Definition p474_c103_word_iota_not_leibniz (A : Ab) :
   tw_word (@nil (carrier (cmon_setoid A)))
     ≠ cmon_map (@tw_iota A (length (@nil (carrier (cmon_setoid A)))))
         (tw_pure nil) := fun H => ltac:(discriminate H).
 
-(* C104: [tw_desc_iota] is false at Leibniz = too: at c := ⨁, the family
-   ι and n := 0, the copairing returns (⟨⟩ + 0) + 0 for ⟨⟩ + 0. *)
+(* 相关说明。 （已译） *)
 Definition p474_c104_desc_iota_not_leibniz (A : Ab) :
   cmon_map (tw_desc A (TWAb A) (@tw_iota A))
     (cmon_map (@tw_iota A 0) ZAb_one) ≠ cmon_map (@tw_iota A 0) ZAb_one
   := fun H => ltac:(discriminate H).
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Rng/FreeMonad/Words.v: T A ≅ ⨁ₙ A^{⊗n} *)
+(* 相关说明。 （已译） *)
 
-(* C62: the ring's abelian group is the words'. *)
+(* 相关说明。 （已译） *)
 Example p474_c62_TWRing_ab (A : AbObject) :
   Rng_Forget_Ab (TWRing A) = TWAb A := eq_refl.
 
@@ -509,11 +507,11 @@ Example p474_c64_TW_ret (A : Ab) (a : carrier (cmon_setoid A)) :
   cmon_map (to (T_TW_iso A)) (cmon_map (@ret _ _ TM A) a) = tw_word (a :: nil)
   := eq_refl.
 
-(* C65: [to] is the shared extension of the insertion. *)
+(* C65: [to] shared extension 嵌入. （已译） *)
 Example p474_c65_TW_to (A : Ab) (t : FRTerm A) :
   cmon_map (to (T_TW_iso A)) t = fr_eval (@tw_insert A) t := eq_refl.
 
-(* C66: [from] sends a word to the product of its letters. *)
+(* 相关说明。 （已译） *)
 Example p474_c66_TW_from (A : Ab) (w : list (carrier (cmon_setoid A))) :
   cmon_map (from (T_TW_iso A)) (tw_word w) = fr_word w := eq_refl.
 
@@ -546,7 +544,7 @@ Fail Example p474_r23_TW_from_to_rebracket (A : Ab)
        (fr_mul (fr_mul (fr_gen a) (fr_gen b)) (fr_gen c)))
     = fr_mul (fr_mul (fr_gen a) (fr_gen b)) (fr_gen c) := eq_refl.
 
-(* C105: and false at Leibniz =: from ∘ to rebrackets to the right. *)
+(* 相关说明。 （已译） *)
 Definition p474_c105_from_to_not_leibniz (A : Ab)
   (a b c : carrier (cmon_setoid A)) :
   cmon_map (from (T_TW_iso A))
@@ -555,7 +553,7 @@ Definition p474_c105_from_to_not_leibniz (A : Ab)
     ≠ fr_mul (fr_mul (fr_gen a) (fr_gen b)) (fr_gen c)
   := fun H => ltac:(injection H; intros _ H1; discriminate H1).
 
-(* C70: to ∘ from is the identity on terms as a Leibniz lemma. *)
+(* C70: ∘ 恒等 terms Leibniz 引理. （已译） *)
 Definition p474_c70_TW_to_from_lemma (A : Ab) (t : TWTerm A) :
   rig_map (@tw_to_rng A) (tw_to_fr t) = t := tw_to_from A t.
 
@@ -600,8 +598,7 @@ Fail Example p474_r25_TW_join_var (A : Ab) (t : FRTerm (fobj[TF] A)) :
   = tw_join (tw_map (to (T_TW_iso A)) (cmon_map (to (T_TW_iso (fobj[TF] A))) t))
   := eq_refl.
 
-(* C106: and false at Leibniz =: at ⟨⟨x⟩ + ⟨y⟩⟩ · 0 the left side is 0 + 0
-   and the right side 0. *)
+(* 相关说明。 （已译） *)
 Definition p474_c106_join_not_leibniz (A : Ab)
   (x y : carrier (cmon_setoid A)) :
   cmon_map (to (T_TW_iso A))
@@ -630,18 +627,18 @@ Fail Example p474_r26_TW_map_gen {A B : Ab} (f : A ~{Ab}~> B)
 (* C76: the functor ⨁ₙ (−)^{⊗n} on objects... *)
 Example p474_c76_TWF_obj (A : Ab) : fobj[TWF] A = TWAb A := eq_refl.
 
-(* C77: ...and on arrows, letterwise, on the nose. *)
+(* 相关说明。 （已译） *)
 Example p474_c77_TWF_map_word {A B : Ab} (f : A ~{Ab}~> B)
   (w : list (carrier (cmon_setoid A))) :
   cmon_map (fmap[TWF] f) (tw_word w) = tw_word (map (cmon_map f) w)
   := eq_refl.
 
-(* C78: the components of T ≈ TWF are the isomorphisms of (a). *)
+(* 相关说明。 （已译） *)
 Example p474_c78_natural_component (A : Ab) :
   `1 T_TW_natural A = T_TW_iso A := eq_refl.
 
-(* C108: the direct monad's η IS the insertion of one-letter words, as the
-   whole record... *)
+(* C108: direct 单子's η IS 嵌入 one-letter words, the
+ whole record... （已译） *)
 Example p474_c108_TWMonad_ret (A : Ab) :
   @ret _ _ TWMonad A = @tw_insert A := eq_refl.
 
@@ -649,18 +646,17 @@ Example p474_c108_TWMonad_ret (A : Ab) :
 Example p474_c109_TWMonad_join (A : Ab) (t : TWTerm (TWAb A)) :
   cmon_map (@join _ _ TWMonad A) t = tw_join t := eq_refl.
 
-(* C110: ...on a word of words the product of the inner words... *)
+(* 相关说明。 （已译） *)
 Example p474_c110_TWMonad_join_word (A : Ab) (ws : list (TWTerm A)) :
   cmon_map (@join _ _ TWMonad A) (@tw_word (TWAb A) ws) = tw_prod ws
   := eq_refl.
 
-(* C111: ...and μ ∘ η T = 1 on the nose, at a variable. *)
+(* 相关说明。 （已译） *)
 Example p474_c111_TWMonad_join_ret (A : Ab) (t : TWTerm A) :
   cmon_map (@join _ _ TWMonad A)
     (cmon_map (@ret _ _ TWMonad (fobj[TWF] A)) t) = t := eq_refl.
 
-(* C112: its associative law is false at Leibniz =: at the word
-   ⟨⟨⟨x⟩ + ⟨y⟩⟩, 0⟩ of T T T A, μ ∘ T μ gives 0 + 0 and μ ∘ μ T gives 0. *)
+(* 相关说明。 （已译） *)
 Definition p474_c112_TWMonad_assoc_not_leibniz (A : Ab)
   (x y : carrier (cmon_setoid A)) :
   cmon_map (@join _ _ TWMonad A)
@@ -677,7 +673,7 @@ Definition p474_c112_TWMonad_assoc_not_leibniz (A : Ab)
              :: @tw_zero (TWAb A) :: nil)))
   := fun H => ltac:(discriminate H).
 
-(* C113: the morphism of monads T → TWMonad has the components of (a)... *)
+(* C113: 态射 单子 T → TWMonad has components (a)... （已译） *)
 Example p474_c113_monad_hom_component (A : Ab) :
   transform[mh_transform T_TW_monad_hom] A = to (T_TW_iso A) := eq_refl.
 
@@ -685,7 +681,7 @@ Example p474_c113_monad_hom_component (A : Ab) :
 Example p474_c114_monad_hom_back_component (A : Ab) :
   transform[mh_transform TW_T_monad_hom] A = from (T_TW_iso A) := eq_refl.
 
-(* C115: ...and the two are the legs of T ≅ TWMonad in [Monads Ab]. *)
+(* 相关说明。 （已译） *)
 Example p474_c115_monad_iso_to : to T_TW_monad_iso = T_TW_monad_hom
   := eq_refl.
 
@@ -694,9 +690,9 @@ Example p474_c116_monad_iso_from : from T_TW_monad_iso = TW_T_monad_hom
   := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Rng/FreeMonad/System.v: the systems ⟨A, ν₀, ν₁, …⟩ *)
+(* 相关说明。 （已译） *)
 
-(* C79: ν of an algebra's system is the structure map on the word... *)
+(* 相关说明。 （已译） *)
 Example p474_c79_alg_nu (A : Ab) (α : @TAlgebra Ab TF TM A)
   (w : list (carrier (cmon_setoid A))) :
   tnu (alg_system α) w = cmon_map (t_alg[α]) (fr_word w) := eq_refl.
@@ -710,8 +706,7 @@ Example p474_c81_alg_pair (A : Ab) (α : @TAlgebra Ab TF TM A)
   (a b : carrier (cmon_setoid A)) :
   tnu (alg_system α) (a :: b :: nil) = ralg_mul α a b := eq_refl.
 
-(* C107: [fr_eval_id_word_concat] is false at Leibniz =: at the word of
-   words ⟨⟨a⟩, ⟨⟩⟩ one side is ⟨a⟩·1 and the other ⟨a⟩. *)
+(* 相关说明。 （已译） *)
 Definition p474_c107_word_concat_not_leibniz (A : Ab)
   (a : carrier (cmon_setoid A)) :
   fr_eval (@id Ab (fobj[TF] A))
@@ -753,8 +748,8 @@ Example p474_c88_EM_sys_pair (x : RngAlg)
   tnu (tsys_str (fobj[EM_to_TSys] x)) (a :: b :: nil)
     = rig_mul (fobj[EM_to_Rng] x) a b := eq_refl.
 
-(* C89 to C93: the system round trip keeps the group, ν₀, ν₂ and the maps,
-   and returns ν₁ as the identity. *)
+(* C89 C93: system round trip keeps group, ν₀, ν₂ maps,
+ returns ν₁ 恒等. （已译） *)
 (* C89 *)
 Example p474_c89_sys_rt_ab (S : TSys) :
   tsys_ab (fobj[EM_to_TSys ◯ TSys_to_EM] S) = tsys_ab S := eq_refl.
@@ -797,7 +792,7 @@ Fail Example p474_r28_sys_rt_letter_own (S : TSys)
 Fail Example p474_r29_sys_rt_whole (S : TSys) :
   fobj[EM_to_TSys ◯ TSys_to_EM] S = S := eq_refl.
 
-(* C95: the algebra round trip through the systems keeps the group... *)
+(* 相关说明。 （已译） *)
 Example p474_c95_EM_sys_rt_carrier (x : RngAlg) :
   `1 (fobj[TSys_to_EM ◯ EM_to_TSys] x) = `1 x := eq_refl.
 
@@ -813,8 +808,8 @@ Fail Example p474_r30_EM_sys_rt_whole (x : RngAlg) :
 Fail Example p474_r31_sys_rt_functor :
   EM_to_TSys ◯ TSys_to_EM = Id[TSys] := eq_refl.
 
-(* C97, C98: every component of the two natural isomorphisms is the
-   identity. *)
+(* C97, C98: every component two natural isomorphisms the
+ 恒等. （已译） *)
 (* C97 *)
 Example p474_c97_sys_to_from_component (x : RngAlg) :
   (t_alg_hom[to (`1 (iso_to_from TSys_EM_iso) x)],
@@ -849,7 +844,7 @@ Example p474_c102_rng_system_pair (R : Rng) (a b : carrier (rig_setoid R)) :
     = rig_mul R a b := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The guard: every constant of the targets *)
+(* * ** The guard: every 常值 targets （已译） *)
 
 Check @Category.Instance.Rng.Free.fr_eval_pointwise.
 Check @Category.Instance.Rng.Free.free_rng_ab_hom_iso.

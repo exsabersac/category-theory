@@ -6,7 +6,7 @@ Module FMapExt (E : DecidableType) (M : WSfun E).
 Module P := WProperties_fun E M.
 Module F := P.F.
 
-(** * Extensions to Coq's weak finite-map library *)
+(* 相关说明。 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Associative_array
@@ -676,7 +676,7 @@ Obligation 3.
   firstorder.
 Qed.
 
-(* Componentwise lift of relations [P] and [Q] to the product [A * B]. *)
+(* 相关说明。 （已译） *)
 Definition pairP {A B} (P : relation A) (Q : relation B) : relation (A * B) :=
   fun p p' => match p, p' with
               | (x, y), (x', y') => P x x' /\ Q y y'

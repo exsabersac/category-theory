@@ -31,9 +31,9 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe435_absent_name.
 
-(** ** A: TYPING — object versus family *)
+(* * ** A: TYPING — 对象 versus family （已译） *)
 
-(* control: a weakly initial object is a type, and a family is built from it *)
+(* control: weakly 始对象 type, family built it （已译） *)
 Check (fun (C : Category) (c : C) (w : WeaklyInitial c) =>
          wif_of_weakly_initial w).
 
@@ -41,9 +41,9 @@ Check (fun (C : Category) (c : C) (w : WeaklyInitial c) =>
 Fail Check (fun (C : Category) (c : C) (w : WeaklyInitial c) =>
               (w : WeaklyInitialFamily C)).
 
-(** ** B: CONVERSION — the singleton index, and the [C^op] pivot *)
+(* 相关说明。 （已译） *)
 
-(* control: the index is the polymorphic unit *)
+(* 相关说明。 （已译） *)
 Example p435_index {C : Category} (I : @Initial C) :
   wif_index (weakly_initial_of_initial I) = poly_unit := eq_refl.
 
@@ -58,9 +58,9 @@ Check (fun (C : Category) (I : @Initial C) => weakly_initial_of_initial I).
 Fail Check (fun (C : Category) (T : @Terminal C) =>
               weakly_initial_of_initial T).
 
-(** ** C: TYPING — the two products, and the index choice *)
+(* 相关说明。 （已译） *)
 
-(* control: with both products and the equalizers, Freyd's direction runs *)
+(* 相关说明。 （已译） *)
 Check (fun (C : Category) (W : WeaklyInitialFamily C)
            (P : Limit (DiscreteCat_Functor (wif_obj W)))
            (Pe : Limit (DiscreteCat_Functor
@@ -68,8 +68,7 @@ Check (fun (C : Category) (W : WeaklyInitialFamily C)
                            => iprod (wif_obj W) P)))
            (E : HasEqualizers C) => initial_from_weakly_initial W P Pe E).
 
-(* N4 TYPING: the equalizer supply is not accepted in place of the second
-   product *)
+(* 相关说明。 （已译） *)
 Fail Check (fun (C : Category) (W : WeaklyInitialFamily C)
                 (P : Limit (DiscreteCat_Functor (wif_obj W)))
                 (E : HasEqualizers C) => initial_from_weakly_initial W P E).
@@ -117,14 +116,13 @@ Check (Sets_roundtrip_iso
          : @initial_obj Sets Sets_initial_recovered
              ≅ @initial_obj Sets Sets_Initial).
 
-(* the separator and the solution-set converse are present *)
+(* 相关说明。 （已译） *)
 Check (Parallel_ParX_not_initial : @IsInitialObj Parallel ParX → False).
 Check (Parallel_ParY_not_weakly_initial : @WeaklyInitial Parallel ParY → False).
 Check (@sols_of_wif).
 Check (@sols_of_comma_initial).
 
-(* the converse's own index readback lives in Adjunction/GAFT.v, whose
-   comma notation this file does not import *)
+(* 相关说明。 （已译） *)
 Check (@sols_of_wif_index).
 
 (** ** Guard block *)

@@ -26,11 +26,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Instrument check: the harness reports a genuine rejection *)
+(* 相关说明。 （已译） *)
 
 Fail Check (1 = true).
 
-(** ** Kind 1 — FORMABILITY: hom and proof universes cannot be split *)
+(* * ** Kind 1 — FORMABILITY: hom 证明 universes cannot split （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -46,8 +46,8 @@ Constraint uh < up.
 Context (Cu : Category@{uo uh up}).
 Context (xu yu : Cu).
 
-(* Controls: the category, its hom-sets and its identities all elaborate
-   with the two levels declared strictly apart. *)
+(* Controls: 范畴, hom-sets identities all elaborate
+ two levels declared strictly apart. （已译） *)
 Check Cu.
 Check (xu ~> yu).
 Check (id[xu]).
@@ -58,8 +58,8 @@ Fail Check (@Slice Cu xu).
 (* Negative 2 (formability): the coslice construction. *)
 Fail Check (@Coslice Cu xu).
 
-(* Negative 3 (formability): the cartesian class -- hence also
-   [Cocartesian], which is that class read at the opposite category. *)
+(* Negative 3 (formability): cartesian class -- hence also
+ [Cocartesian], class read at opposite 范畴. （已译） *)
 Fail Check (@Cartesian Cu).
 
 (* Negative 4 (formability): the object-level terminality predicate. *)
@@ -68,8 +68,8 @@ Fail Check (@IsTerminalObj Cu xu).
 (* Negative 5 (formability): its initial dual. *)
 Fail Check (@IsInitialObj Cu xu).
 
-(* Negative 6 (formability): the target's own projection functor, which
-   inherits the identification from [Coslice] and adds nothing. *)
+(* Negative 6 (formability): target's own projection 函子, which
+ inherits identification [Coslice] adds nothing. （已译） *)
 Fail Check (@Coslice_Proj Cu xu).
 
 End UniverseBoundary.
@@ -107,8 +107,8 @@ Fail Example neg_unit_is_inr (c : C) :
     (Coslice_Projection_Adjunction a) c
     = @coslice_projection_unit C CC a c := eq_refl.
 
-(* Controls for negative 8: the slice counit carries the mirror-image
-   residue, on the OTHER side. *)
+(* Controls negative 8: slice counit carries 镜像-image
+ residue, OTHER side. （已译） *)
 Example ctrl_counit_residue (y : C) :
   @counit C (@Slice C a) (Slice_Proj a) (Slice_Prod a)
     (Slice_Projection_Adjunction a) y
@@ -221,22 +221,21 @@ Context {C : Category}.
 Context {CC : @Cocartesian C}.
 Context (a : C).
 
-(* Control: the adjunction has the handedness the exercise asks for --
-   the coproduct functor on the LEFT, the projection on the RIGHT. *)
+(* Control: 伴随 has handedness exercise asks --
+ coproduct 函子 LEFT, projection RIGHT. （已译） *)
 Check (@Coslice_Projection_Adjunction C CC a
          : Coslice_Coprod a ⊣ Coslice_Proj a).
 
 Check @Coslice_Coprod.
 Check @Coslice_Projection_Adjunction.
 
-(* Negative 11 (typing): the other handedness is a different statement,
-   and it is not merely unproved -- the ascription is rejected. *)
+(* 相关说明。 （已译） *)
 Fail Check (@Coslice_Projection_Adjunction C CC a
               : Coslice_Proj a ⊣ Coslice_Coprod a).
 
 End Typing.
 
-(** ** Controls naming every remaining delivered constant *)
+(* * ** Controls naming every remaining delivered 常值 （已译） *)
 
 Check @Cartesian.
 (* [Cocartesian] is a NOTATION (Structure/Cocartesian.v), not a

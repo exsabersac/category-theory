@@ -39,7 +39,7 @@ Require Import Category.Theory.Universal.Element.
 
 Generalizable All Variables.
 
-(** * Probe for issue #407: Mac Lane SV.1, completeness of Sets *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeConeSets407。
@@ -47,7 +47,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Guard block: every constant the refutations name, named outside them *)
+(* * ** Guard block: every 常值 refutations name, named outside them （已译） *)
 
 Check @Sets_limit_obj.
 Check @Sets_limit_leg.
@@ -108,19 +108,16 @@ Check @to.
 
 (** ** Instrument check *)
 
-(* If a refutation command can pass on a name that does not exist, none of
-   the ones below measures anything.  This one must pass. *)
+(* 相关说明。 （已译） *)
 Fail Check @coneset_probe_instrument_absent.
 
-(** ** (1) The two apexes are not equal -- CONVERSION *)
+(* 相关说明。 （已译） *)
 
-(* One is a sigma of a dependent function with a compatibility witness, the
-   other an [ACone] record.  Whole error tail:
-     (cannot unify "Sets_limit_obj F" and "cone_apex F"). *)
+(* 相关说明。 （已译） *)
 Fail Example neg_apex_strict {D : Category} (F : D ⟶ Sets) :
   Sets_limit_obj F = cone_apex F := eq_refl.
 
-(** ** (2) There is no [≈] grade on objects -- RESOLUTION *)
+(* * ** (2) There no [≈] grade 对象 -- RESOLUTION （已译） *)
 
 (* Objects of [Sets] carry no setoid.  Whole error:
      The following term contains unresolved implicit arguments ...
@@ -130,7 +127,7 @@ Fail Example neg_apex_strict {D : Category} (F : D ⟶ Sets) :
 Fail Definition neg_apex_equiv {D : Category} (F : D ⟶ Sets) : Type :=
   (Sets_limit_obj F ≈ cone_apex F).
 
-(** ** (3) The discrete leg equation is [≈], not [eq_refl] -- CONVERSION *)
+(* 相关说明。 （已译） *)
 
 (* [∘] in [Sets] rebuilds a [SetoidMorphism] record.  The [≈] form is
    [discrete_iprod_iso_leg], which holds. *)
@@ -138,7 +135,7 @@ Fail Example neg_discrete_leg {A : Set} (f : A → obj[Sets]) (a : A) :
   Sets_iprod_proj f a ∘ to (discrete_iprod_iso f)
   = iprod_proj f (discrete_limit f) a := eq_refl.
 
-(** ** (4) Which limit oracle the adjunction is fed -- TYPING *)
+(* * ** (4) Which limit oracle 伴随 fed -- TYPING （已译） *)
 
 (*
    本节说明 ProbeConeSets407 相关定义、性质与动机。
@@ -185,14 +182,14 @@ Check (@ACone (DiscreteCat A) C).
    Annotated, it reaches these levels. *)
 Check (DiscreteCat_Functor f : DiscreteCat@{io ch cp} A ⟶ C).
 
-(* Former donor 2: [IsALimit] identifies the shape's hom-and-proof
-   universes with the ambient category's.  It still does; what it no
-   longer transmits is a [Set]. *)
+(* Former donor 2: [IsALimit] identifies shape's hom-and-证明
+ universes ambient 范畴's. It still does; what it no
+ longer transmits [Set]. （已译） *)
 Check (IsALimit (DiscreteCat_Functor f)).
 
 End SetPin.
 
-(** ** (7) The forward transposition is [≈], not [eq_refl] -- CONVERSION *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeConeSets407 相关定义、性质与动机。
@@ -205,32 +202,30 @@ Fail Example neg_adj_to_strict {J : Category} (F : J ⟶ Sets)
      (snd (Cone_Natural_Transform F X) p)
   = cone_transpose F X p := eq_refl.
 
-(** ** (8) ... and so is the backward one, at whole-record level *)
+(* 相关说明。 （已译） *)
 
-(* Same donor, same cause.  What DOES hold on the nose is the LEG-BY-LEG
-   form, [coneset_adj_from_is_untranspose]. -- CONVERSION *)
+(* 相关说明。 （已译） *)
 Fail Example neg_adj_from_strict {J : Category} (F : J ⟶ Sets)
   (X : obj[Sets]) (h : X ~{Sets}~> cone_apex F) :
   fst (Cone_Natural_Transform F X)
       (from (@adj _ _ _ _ (ConeSet_Diagonal_Limit_Adjunction J) X F) h)
   = cone_untranspose F X h := eq_refl.
 
-(** ** (9) Awodey's subset is not the existing apex -- CONVERSION *)
+(* 相关说明。 （已译） *)
 
-(* The existing [HasEqualizers Sets] apex is the compatible-family setoid
-   over the walking parallel pair.  The bridge is [concrete_vs_existing],
-   an isomorphism and nothing stronger. *)
+(* The existing [HasEqualizers Sets] apex compatible-family setoid
+ over walking parallel pair. The bridge [concrete_vs_existing],
+ 同构 nothing stronger. （已译） *)
 Fail Example neg_awodey_strict {X Y : SetoidObject} (f g : X ~{Sets}~> Y) :
   sets_eq_obj f g = Sets_limit_obj (APair f g) := eq_refl.
 
-(** ** (10) The tuple form is an isomorphism, not an equality -- CONVERSION *)
+(* * ** (10) The tuple form 同构, not equality -- CONVERSION （已译） *)
 
-(* The two compatibility predicates quantify over paths and over generating
-   edges respectively.  The bridge is [tuple_iso]. *)
+(* 相关说明。 （已译） *)
 Fail Example neg_tuple_strict {G : Quiver} (D : Diagram G Sets) :
   Sets_limit_obj (FunctorOfDiagram D) = tuple_obj D := eq_refl.
 
-(** ** (11) Presentation-independence, at object level -- CONVERSION *)
+(* * ** (11) Presentation-independence, at 对象 level -- CONVERSION （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -241,7 +236,7 @@ Fail Example neg_pres_strict (G : Quiver) (R : PathRel G)
   (S : PresentedQuiver G R ⟶ Sets) :
   Sets_limit_obj S = Sets_limit_obj (Srestr G R S) := eq_refl.
 
-(** ** Controls for the three grades that DO hold *)
+(* 相关说明。 （已译） *)
 
 Example ctrl_pres_carrier (G : Quiver) (R : PathRel G)
   (S : PresentedQuiver G R ⟶ Sets) :

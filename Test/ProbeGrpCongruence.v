@@ -24,26 +24,24 @@ Require Import Category.Instance.Grp.Congruence.
 
 Generalizable All Variables.
 
-(** ** Negative 1: the two groupoid witnesses are not the same term *)
+(* 相关说明。 （已译） *)
 
-(* POSITIVE CONTROL: the record conversion deloops to the tree's own
-   delooping, and the chosen inverses agree, both by [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example control_deloop_agrees (H : GrpObject) :
   Deloop (grp_deloop_GrpObject H) = grp_deloop H := eq_refl.
 
 Example control_ginv_agrees (H : GrpObject) (a : carrier H) :
   ginv (grp_deloop_IsGroupoid' H) (x:=ttt) (y:=ttt) a = grp_inv H a := eq_refl.
 
-(* ...and for the OTHER witness too, so that "the data agree" is about
-   both of the terms the negative separates and not just one of them. *)
+(* 相关说明。 （已译） *)
 Example control_ginv_agrees_Free (H : GrpObject) (a : carrier H) :
   ginv (grp_deloop_IsGroupoid H) (x:=ttt) (y:=ttt) a = grp_inv H a := eq_refl.
 
-(* NEGATIVE: the whole [IsGroupoid] structures are not convertible. *)
+(* 相关说明。 （已译） *)
 Fail Definition negative_isgroupoid_record (H : GrpObject) :
   grp_deloop_IsGroupoid' H = grp_deloop_IsGroupoid H := eq_refl.
 
-(** ** Negative 2: the membership round trip is a biconditional *)
+(* 相关说明。 （已译） *)
 
 (* POSITIVE CONTROL: what the recovered membership DOES convert to. *)
 Example control_round_unfolds {G : GrpObject} (N : NormalSubgroup G)
@@ -56,7 +54,7 @@ Fail Definition negative_round_strict {G : GrpObject} (N : NormalSubgroup G)
   (a : carrier G) :
   sub_mem (@cong_ns G (ns_rel N) (ns_congruence N)) a = sub_mem N a := eq_refl.
 
-(** ** Negative 3: the quotient category is not the delooping, on the nose *)
+(* * ** Negative 3: quotient 范畴 not delooping, nose （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -78,23 +76,23 @@ Example control_quotient_compose {G : GrpObject} (N : NormalSubgroup G)
   @compose (deloop_quotient N) ttt ttt ttt f g
     = @compose (grp_deloop (QuotientGrp N)) ttt ttt ttt f g := eq_refl.
 
-(* NEGATIVE: the whole categories are not convertible. *)
+(* NEGATIVE: whole 范畴 not convertible. （已译） *)
 Fail Definition negative_quotient_category {G : GrpObject}
   (N : NormalSubgroup G) :
   deloop_quotient N = grp_deloop (QuotientGrp N) := eq_refl.
 
-(** ** Negative 4: the two mediators agree on the map, not as records *)
+(* 相关说明。 （已译） *)
 
-(* POSITIVE CONTROL: the underlying maps are the same term. *)
+(* 相关说明。 （已译） *)
 Example control_med_map {G K : GrpObject} (N : NormalSubgroup G)
   (p : Kills N K) (a : carrier (QuotientGrp N)) :
   grp_map (cat_med N p) a = grp_map (quot_med N p) a := eq_refl.
 
-(* NEGATIVE: the homomorphism records are not. *)
+(* 相关说明。 （已译） *)
 Fail Definition negative_med_record {G K : GrpObject} (N : NormalSubgroup G)
   (p : Kills N K) : cat_med N p = quot_med N p := eq_refl.
 
-(** ** Negative 5: the categorical kernel is coextensive, not equal *)
+(* 相关说明。 （已译） *)
 
 (* POSITIVE CONTROL: what the categorical kernel's membership IS. *)
 Example control_kernel_unfolds {G K : GrpObject} (h : G ~{Grp}~> K)
@@ -106,15 +104,15 @@ Fail Definition negative_kernel_strict {G K : GrpObject} (h : G ~{Grp}~> K)
   (a : carrier G) :
   sub_mem (kernel_ns h) a = sub_mem (KernelNS h) a := eq_refl.
 
-(** ** Negative 6: the projection functors agree on arrows, not on objects *)
+(* * ** Negative 6: projection 函子 agree arrows, not 对象 （已译） *)
 
-(* POSITIVE CONTROL: the arrow actions are the same term. *)
+(* 相关说明。 （已译） *)
 Example control_proj_fmap {G : GrpObject} (N : NormalSubgroup G)
   (a : carrier G) :
   @fmap _ _ (quot_to_deloop N ◯ deloop_quotient_proj N) ttt ttt a
     = @fmap _ _ (deloop_hom (quot_proj N)) ttt ttt a := eq_refl.
 
-(* NEGATIVE: the object actions are not. *)
+(* NEGATIVE: 对象 actions not. （已译） *)
 Fail Definition negative_proj_fobj {G : GrpObject} (N : NormalSubgroup G)
   (x : grp_deloop G) :
   fobj[quot_to_deloop N ◯ deloop_quotient_proj N] x

@@ -73,11 +73,11 @@ Require Import Category.Instance.Rng.Colimit.
 
 Generalizable All Variables.
 
-(** ** Instrument: the refutation keyword is live *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe450_absent_name.
 
-(** ** A. The headlines at their stated types *)
+(* 相关说明。 （已译） *)
 
 Check (Grp_colim_via_GAFT :
   ∀ J : Category, { K : [J, Grp] ⟶ Grp & K ⊣ @Diagonal Grp J }).
@@ -105,7 +105,7 @@ Check (Grp_canonical_presentation : ∀ G : Grp,
 Check (Grp_Cocartesian_of_coequalizers :
   HasCoequalizers Grp → @Cocartesian Grp).
 
-(** ** B. Every colimit is [GAFT] at the diagonal, read back by [eq_refl] *)
+(* 相关说明。 （已译） *)
 
 Example p450_grp_colim_is_GAFT (J : Category) :
   Grp_colim_via_GAFT J
@@ -123,16 +123,14 @@ Section Index.
 
 Context {J : Category}.
 
-(* The index IS the type of cocone congruences, and the members ARE the
-   quotients of the free group on the disjoint union. *)
+(* 相关说明。 （已译） *)
 Example p450_grp_index (D : J ⟶ Grp) :
   sol_index (Diagonal_Grp_solution_set D) = DCongIdx D := eq_refl.
 
 Example p450_grp_member (D : J ⟶ Grp) (i : DCongIdx D) :
   sol_obj (Diagonal_Grp_solution_set D) i = DQ D i := eq_refl.
 
-(* WHY [dker_cocone] MUST END IN [Defined]: the quotient at the kernel
-   index reduces to the one [fg_ker_med] maps out of. *)
+(* 相关说明。 （已译） *)
 Example p450_grp_kernel_quotient (D : J ⟶ Grp) (c : Grp)
   (h : D ~{[J, Grp]}~> fobj[@Diagonal Grp J] c) :
   DQ D (dker_idx D c h)
@@ -149,14 +147,14 @@ Example p450_rng_kernel_quotient (D : J ⟶ Rng) (c : Rng)
 
 End Index.
 
-(* The finite colimits are Structure/Limit/Finite.v's bridges. *)
+(* 相关说明。 （已译） *)
 Example p450_grp_cocartesian_bridge :
   Grp_Cocartesian_via_GAFT
     = FinitelyComplete_Cartesian
         (FinitelyCocomplete_FinitelyComplete_op
            Grp_FinitelyCocomplete_via_GAFT) := eq_refl.
 
-(** ** C. Which coproduct each headline is stated at *)
+(* 相关说明。 （已译） *)
 
 Example p450_meet_at_AFT (G H : Grp) :
   Grp_free_product_meet_trivial G H
@@ -176,14 +174,14 @@ Example p450_riehl_e_is_transpose (G H : Grp) (CC : @Cocartesian Grp) :
     = Grp_riehl_transpose G H (@inl Grp CC G H) (@inr Grp CC G H)
   := eq_refl.
 
-(** ** N1 (CONVERSION): the AFT coproduct is not the words free product *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: the same statement at Instance/Grp/Pushout.v's instance. *)
 Example p450_words_coprod_is_words (G H : Grp) :
   @Coprod Grp Grp_Cocartesian G H = Grp_free_product G H := eq_refl.
 
-(* CONTROL: what does relate the two -- an isomorphism and a natural
-   isomorphism, carried as data. *)
+(* CONTROL: what does relate two -- 同构 natural
+ 同构, carried data. （已译） *)
 Check (fun G H : Grp => Grp_free_product_iso G H :
   @Coprod Grp Grp_Cocartesian_via_GAFT G H ≅ Grp_free_product G H).
 Check (Grp_coproduct_agrees :
@@ -193,7 +191,7 @@ Check (Grp_coproduct_agrees :
 Fail Example p450_n1_aft_coprod_is_words (G H : Grp) :
   @Coprod Grp Grp_Cocartesian_via_GAFT G H = Grp_free_product G H := eq_refl.
 
-(** ** N2 (UNIVERSE): [Two_Discrete] is refused as a shape *)
+(* 相关说明。 （已译） *)
 
 (* CONTROLS: a discrete two-object shape whose homs are free. *)
 Definition p450_grp_colim_bool := Grp_colim_via_GAFT (DiscreteCat bool).
@@ -201,7 +199,7 @@ Definition p450_grp_colim_fin2 := Grp_colim_via_GAFT (DiscreteCat (Fin.t 2)).
 
 Fail Definition p450_n2_grp_two_discrete := Grp_colim_via_GAFT Two_Discrete.
 
-(** ** N3 (UNIVERSE): shape homs below the carrier, refused at [J, Grp] *)
+(* 相关说明。 （已译） *)
 
 Section ShapeHoms.
 
@@ -221,8 +219,7 @@ Fail Definition p450_n3_fun_below_carrier : Category := [Jlow, Grp@{u p}].
 
 End ShapeHoms.
 
-(** ** N4, N5 (UNIVERSE): at [Set] carriers the solution set elaborates
-    and [GAFT] does not *)
+(* 相关说明。 （已译） *)
 
 Section SetCarrier.
 
@@ -236,9 +233,9 @@ Context (D : J ⟶ Grp@{gu Set}) (DR : J ⟶ Rng@{gu Set}).
 Definition p450_grp_sols_at_set := @Diagonal_Grp_solution_set J D.
 Definition p450_rng_sols_at_set := @Diagonal_Rng_solution_set J DR.
 
-(* CONTROLS: [GAFT] at the same diagonal with every argument but the
-   solution set, so that neither completeness nor continuity is what a
-   [Set] carrier refuses. *)
+(* CONTROLS: [GAFT] at same diagonal every 论元 but the
+ solution set, so neither completeness nor continuity what a
+ [Set] carrier refuses. （已译） *)
 Definition p450_grp_gaft_partial_at_set :=
   GAFT (@Diagonal Grp@{gu Set} J) Grp_Complete
        (Continuous_PreservesImageLimit Diagonal_continuous).
@@ -251,8 +248,7 @@ Fail Definition p450_n5_rng_colim_at_set := Rng_colim_via_GAFT J.
 
 End SetCarrier.
 
-(** ** N6, N7 (UNIVERSE): the AFT side at [Set] carriers; Riehl's side and
-    the words side are accepted there *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、函子相关定义、性质与动机。
@@ -282,7 +278,7 @@ Definition p450_words_cocartesian_at_set@{u + | Set < u +} :
 Fail Definition p450_n7_aft_cocartesian_at_set@{u + | Set < u +} :
   @Cocartesian Grp@{u Set} := Grp_Cocartesian_via_GAFT.
 
-(** ** N8-N11 (CONVERSION): the letter-level facts are `≈`, not [eq_refl] *)
+(* 相关说明。 （已译） *)
 
 Section Letters.
 
@@ -302,13 +298,12 @@ Local Notation UFUGH :=
 Check (Grp_riehl_l G H (fg_insert UFUGH (Datatypes.inl w)),
        fg_insert UGH (Datatypes.inl (free_group_counit G w))).
 
-(* CONTROL: the `≈` that holds, at exactly N8's statement. *)
+(* 相关说明。 （已译） *)
 Check (Grp_riehl_l_inl G H w :
   Grp_riehl_l G H (fg_insert UFUGH (Datatypes.inl w))
     ≈ fg_insert UGH (Datatypes.inl (free_group_counit G w))).
 
-(* CONTROL: N8's `≈` again, closed by [FreeGrp]'s arrow map on a letter
-   alone, with no fact about the counit: N8 is refused on that arrow map. *)
+(* 相关说明。 （已译） *)
 Definition p450_n8_by_fmap_alone :
   Grp_riehl_l G H (fg_insert UFUGH (Datatypes.inl w))
     ≈ fg_insert UGH (Datatypes.inl (free_group_counit G w)) :=
@@ -345,15 +340,14 @@ Fail Example p450_n10_transpose_at_letter (s : UGH) :
                                          (fmap[Grp_Forget] f2) s
   := eq_refl.
 
-(* CONTROL: the `≈` at N11's statement, the counit on a letter. *)
+(* 相关说明。 （已译） *)
 Check (free_group_counit_generator G g :
   free_group_counit G (fg_insert (Grp_Forget G) g) ≈ g).
 
 Fail Example p450_n11_counit_at_letter :
   free_group_counit G (fg_insert (Grp_Forget G) g) = g := eq_refl.
 
-(* CONTROL: the UNIT does compute on a letter; the opacity is not the
-   unit's. *)
+(* 相关说明。 （已译） *)
 Example p450_unit_at_letter :
   @Category.Theory.Adjunction.unit _ _ _ _ free_group_adjunction
      (Grp_Forget G) g
@@ -361,16 +355,16 @@ Example p450_unit_at_letter :
 
 End Letters.
 
-(** ** N12 (CONVERSION): Riehl's coproduct is not the AFT coproduct *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: Riehl's coproduct object IS the apex of the theorem's
-   coequalizer of her pair. *)
+(* CONTROL: Riehl's coproduct 对象 IS apex 定理's
+ coequalizer her pair. （已译） *)
 Example p450_riehl_obj_is_coeq (G H : Grp) :
   @Coprod Grp Grp_Cocartesian_via_riehl G H
     = `1 (@coeq Grp Grp_HasCoequalizers_via_GAFT _ _
             (Grp_riehl_l G H) (Grp_riehl_r G H)) := eq_refl.
 
-(* CONTROL: and the agreement with the AFT coproduct is an isomorphism. *)
+(* CONTROL: agreement AFT coproduct 同构. （已译） *)
 Check (fun G H : Grp => Grp_free_product_coequalizer_agrees G H :
   `1 (@coeq Grp Grp_HasCoequalizers_via_GAFT _ _
          (Grp_riehl_l G H) (Grp_riehl_r G H))
@@ -380,9 +374,9 @@ Fail Example p450_n12_riehl_obj_is_aft_obj (G H : Grp) :
   @Coprod Grp Grp_Cocartesian_via_riehl G H
     = @Coprod Grp Grp_Cocartesian_via_GAFT G H := eq_refl.
 
-(** ** N13 (UNIVERSE): the ring ℤ stays at [Set]; the trivial group moved *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the comparison #450 made possible for groups. *)
+(* 相关说明。 （已译） *)
 Definition p450_grp_initial_comparison :=
   initial_unique Grp_Initial_via_GAFT Grp_Initial.
 
@@ -392,7 +386,7 @@ Check (Rng_Initial_Z : @Initial Rng@{_ Set}).
 Fail Definition p450_n13_rng_initial_comparison :=
   initial_unique Rng_Initial_via_GAFT Rng_Initial_Z.
 
-(** ** The zero object and [Z2] above [Set]: controls, formerly refused *)
+(* * ** The zero 对象 [Z2] above [Set]: controls, formerly refused （已译） *)
 
 Section AboveSet.
 
@@ -416,8 +410,7 @@ Definition p450_riehl_nontrivial_above_set :
 
 End AboveSet.
 
-(** ** N14 (CONVERSION): the meet of the injections is the bottom up to
-    `≈`, not on the nose *)
+(* 相关说明。 （已译） *)
 
 Section Disjoint.
 
@@ -437,12 +430,12 @@ Fail Example p450_n14_meet_is_bottom :
 
 End Disjoint.
 
-(* CONTROL: at groups, the bottom's domain IS the trivial group. *)
+(* 相关说明。 （已译） *)
 Example p450_bottom_is_trivial (G H : Grp) :
   sub_dom (@coprod_bot Grp Grp_Zero Grp_Cocartesian_via_GAFT G H)
     = Grp_trivial := eq_refl.
 
-(** ** The diagonal's binders: shape objects strictly below the homs *)
+(* * ** The diagonal's binders: shape 对象 strictly below homs （已译） *)
 
 Section DiagonalBinders.
 

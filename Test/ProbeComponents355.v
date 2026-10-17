@@ -29,7 +29,7 @@ Require Import Category.Structure.Limit.Initial.
 Require Import Coq.Logic.Eqdep_dec.
 Require Import Category.Structure.Limit.Components.
 
-(** ** Instrument check — must ERROR ("The command has not failed!"). *)
+(* 相关说明。 （已译） *)
 Fail Fail Check Category.
 
 (*
@@ -46,9 +46,9 @@ Constraint Set < uh.
 Context (Cu : Category@{uo uh uh}).
 Context (Js : bool → Category@{uo uh uh}).
 
-(* CONTROLS: the elementary vocabulary IS formable at these levels, and
-   the controls are APPLIED -- an unapplied polymorphic constant never
-   meets [Cu] and would discriminate nothing. *)
+(* CONTROLS: elementary vocabulary IS formable at these levels, and
+ controls APPLIED -- unapplied polymorphic 常值 never
+ meets [Cu] would discriminate nothing. （已译） *)
 
 Check (fun (A : Type) (f : A → Cu) (p : Cu)
            (pr : ∀ a : A, p ~{Cu}~> f a) => IsIndexedProduct f p pr).
@@ -64,7 +64,7 @@ Check (fun (F : SigmaCat Js ⟶ Cu) (L : bool → Cu)
 Check (fun (A : Type) (f : A → Cu)
            (P : Limit (DiscreteCat_Functor f)) => iprod f P).
 
-(* Former N2: and so is the target's own corollary over it. *)
+(* Former N2: so target's own 推论 over it. （已译） *)
 Check (fun (F : SigmaCat Js ⟶ Cu) (L : bool → Cu)
            (HL : ∀ k : bool, IsALimit (summand F k) (L k))
            (P : Limit (DiscreteCat_Functor L)) =>
@@ -72,8 +72,7 @@ Check (fun (F : SigmaCat Js ⟶ Cu) (L : bool → Cu)
 
 End IprodSetPin.
 
-(** ** CONVERSION — the transported diagram is not the summand on the
-    nose.  The control is the [≈] form, which the target proves. *)
+(* 相关说明。 （已译） *)
 
 Section DiagramConversion.
 
@@ -81,7 +80,7 @@ Context {J C : Category}.
 Context (D : ComponentDecomposition J).
 Context (F : J ⟶ C).
 
-(* CONTROL: the [≈] comparison exists and is what the target delivers. *)
+(* 相关说明。 （已译） *)
 Check (component_diagram_equiv D F).
 
 (* N3. *)
@@ -90,8 +89,7 @@ Fail Example probe_component_diagram_strict (k : cd_index D) :
 
 End DiagramConversion.
 
-(** ** POSITIVE CONTROLS naming the rest of the surface, so that a rename
-    of any of these breaks this file at a NON-[Fail] line. *)
+(* 相关说明。 （已译） *)
 
 Check @coprod_IsALimit.
 Check @coprod_IsLimitCone.

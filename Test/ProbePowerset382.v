@@ -56,12 +56,11 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------------ *)
 (** ** Negative 1: the instrument *)
 
-(* If [Fail] were inert -- a missing scope, a stray [Set Silent] -- this
-   would pass and every other negative below would be worthless. *)
+(* 相关说明。 （已译） *)
 Fail Check probe382_no_such_constant_anywhere.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Controls for the constants the negatives name *)
+(* 相关说明。 （已译） *)
 
 Check @subset_le.
 Check @subset_le_preorder.
@@ -141,9 +140,7 @@ Check @nat_inf_right_adjoint.
 Check @sub_image_is_Powerset_Prop_image.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Negatives 2 and 3: FORMABILITY (sort) -- two Type-valued orders
-       that are not [relation]s, hence out of reach of [Proset] and
-       [GaloisConnection] *)
+(* 相关说明。 （已译） *)
 
 (* THE POSITIVE CONTROL FIRST.  Inclusion of Prop-valued subsets IS a
    [relation], which is exactly why Instance/Powerset.v can put a
@@ -169,12 +166,12 @@ Fail Definition probe_type_le@{o so} (X : SetoidObject@{o o}) :
 Fail Definition probe_opens_le (X : TopSpace) : relation (OpenSet X) :=
   fun U V => ∀ x : X, `1 U x → `1 V x.
 
-(* ... and the control that the SAME expression IS the hom of [Opens X]. *)
+(* 相关说明。 （已译） *)
 Definition probe_opens_hom (X : TopSpace) (U V : OpenSet X) : Type :=
   U ~{Opens X}~> V.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Negatives 4 and 5: FORMABILITY (level) *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -185,8 +182,7 @@ Fail Definition probe_interior@{o} (X : TopSpace@{o}) (P : X → Type@{o}) :
   X → Type@{o} :=
   fun x => { V : OpenSet X & prod (∀ y : X, `1 V y → P y) (`1 V x) }.
 
-(* The control: at a SMALL index the very same union does form, so the
-   rejection is about the index's universe and not about the shape. *)
+(* 相关说明。 （已译） *)
 Definition probe_small_union@{o} (X : TopSpace@{o}) (I : Type@{o})
   (U : I → (X → Type@{o})) (HU : ∀ i, IsOpen X (U i)) :
   IsOpen X (fun x => { i : I & U i x }) := open_union X I U HU.
@@ -204,14 +200,13 @@ Fail Definition probe_complete_free@{o u + | Set < u +}
 Definition probe_complete_at_Set@{o +} (X : SetoidObject@{o o}) :
   @Complete (Subsets@{o Set} X) := Subsets_Complete.
 
-(* And the control that the CARTESIAN structure, which does NOT route
-   through the discrete diagram, carries no such pin. *)
+(* 相关说明。 （已译） *)
 Definition probe_cartesian_free@{o u + | Set < u +}
   (X : SetoidObject@{o o}) : @Cartesian (Subsets@{o u} X) :=
   Subsets_Cartesian.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Negatives 6, 7 and 8: CONVERSION *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbePowerset382 相关定义、性质与动机。
@@ -226,9 +221,7 @@ Fail Example probe_image_meet@{o so} :
         (Powerset_Prop_image@{o} powerset_const0@{o so} powerset_sng1@{o})
   := eq_refl.
 
-(* The control: the corresponding statement for the PREIMAGE, which does
-   preserve meets, is not merely true but definitional -- substitution
-   commutes with a universal quantifier on the nose. *)
+(* 相关说明。 （已译） *)
 Example probe_preimage_meet@{o so +} :
   Powerset_Prop_preimage@{o} powerset_const0@{o so}
       (subset_meet powerset_sng0@{o} powerset_sng1@{o})
@@ -270,8 +263,8 @@ Fail Example probe_sub_image_bridge@{o so}
       (sub_image f (Powerset_subobject_of_subset@{o so} S))
   = Powerset_Prop_image@{o} f S := eq_refl.
 
-(* The control: the same comparison at [≈] is Instance/Powerset/
-   Subobject.v's own lemma. *)
+(* The control: same comparison at [≈] Instance/Powerset/
+ Subobject.v's own 引理. （已译） *)
 Example probe_sub_image_bridge_equiv@{o so +}
   (A B : SetoidObject@{o o}) (f : A ~{Sets@{o so}}~> B)
   (S : carrier (Powerset_Prop_obj@{o} A)) :
@@ -281,7 +274,7 @@ Example probe_sub_image_bridge_equiv@{o so +}
   := sub_image_is_Powerset_Prop_image f S.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Positive checks that the headline artifacts exist and apply *)
+(* 相关说明。 （已译） *)
 
 Definition probe_adjunction_exists@{o so u u0 u1 +}
   (X Y : SetoidObject@{o o}) (f : X ~{Sets@{o so}}~> Y) :
@@ -350,7 +343,7 @@ Example probe_powerset_sng0_is_singleton@{o +} :
         (X:=Powerset_Prop_fin_object@{o} 2) Fin.F1 := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Negative 9: TYPING -- the adjunction has a handedness *)
+(* * ** Negative 9: TYPING -- 伴随 has handedness （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -361,7 +354,7 @@ Fail Definition probe_wrong_handedness@{o so u u0 u1 +}
   (X Y : SetoidObject@{o o}) (f : X ~{Sets@{o so}}~> Y) :
   InverseImage f ⊣ DirectImage f := image_preimage_adjunction f.
 
-(* The control at the correct handedness. *)
+(* 相关说明。 （已译） *)
 Definition probe_right_handedness@{o so u u0 u1 +}
   (X Y : SetoidObject@{o o}) (f : X ~{Sets@{o so}}~> Y) :
   DirectImage f ⊣ InverseImage f := image_preimage_adjunction f.

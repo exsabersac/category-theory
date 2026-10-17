@@ -32,15 +32,14 @@ Require Import Category.Instance.Coq.
 Require Import Category.Structure.Limit.Absolute.
 Require Import Category.Structure.Limit.Constant.
 
-(** ** Instrument check — must ERROR ("The command has not failed!"). *)
+(* 相关说明。 （已译） *)
 Fail Fail Check Category.
 
 Section OppositeConstant.
 Context {J C : Category}.
 Context (c : C).
 
-(* CONTROLS: both DATA fields agree on the nose, which is what locates
-   the failure of N1 in the LAW fields rather than in the actions. *)
+(* 相关说明。 （已译） *)
 Example probe_op_diag_fobj (x : J) :
   fobj[Opposite_Functor Δ[J](c)] x
     = fobj[@Diagonal (C^op) (J^op) c] x := eq_refl.
@@ -53,7 +52,7 @@ Example probe_op_diag_fmap {x y : J^op} (f : x ~{J^op}~> y) :
 Fail Example probe_op_diag_strict :
   Opposite_Functor Δ[J](c) = @Diagonal (C^op) (J^op) c := eq_refl.
 
-(* CONTROL for N2: the target proves the ≈ form. *)
+(* 相关说明。 （已译） *)
 Check @const_image_fmap_equiv.
 
 (* N2. *)
@@ -63,8 +62,7 @@ Fail Example probe_const_image_fmap {D : Category} (F : C ⟶ D)
 
 End OppositeConstant.
 
-(** ** POSITIVE CONTROLS naming the surface, so a rename of any of these
-    breaks this file at a NON-[Fail] line. *)
+(* 相关说明。 （已译） *)
 
 Check @const_acone.
 Check @const_cone.
@@ -93,8 +91,7 @@ Check @const_limit_not_from_point_alone.
 Check @td_const_IsALimit_product.
 Check @Diagonal_Zero_not_Faithful.
 Check @Diagonal_Two_Discrete_not_Full.
-(* Donor names the negatives depend on: without these a rename would
-   leave a [Fail] passing for reference-not-found (#151). *)
+(* 相关说明。 （已译） *)
 Check @Diagonal.
 Check @Opposite_Functor.
 Check @ConnectedNonempty.

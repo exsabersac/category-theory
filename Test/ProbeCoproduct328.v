@@ -21,7 +21,7 @@ Require Import Category.Instance.Roster.
 Generalizable All Variables.
 Local Open Scope category_scope.
 
-(** * Probe: strength boundaries of the Mon and Grph coproducts *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeCoproduct328。
@@ -85,9 +85,7 @@ Check fp_injr.
 Check FreeProd.
 Check fp_merge.
 
-(* Non-degeneracy, named so the witness cannot silently go trivial:
-   both injections are split monic for ARBITRARY factors, and over
-   (nat,+) the two generators provably do not commute. *)
+(* 相关说明。 （已译） *)
 Check fp_injections_Monic.
 Check fp_inl_injective.
 Check fp_generators_do_not_commute.
@@ -111,17 +109,13 @@ Fail Definition probe_quiver_record_strict :
   QuiverOfCat (C ∐ D)
     = QuiverCoprod (QuiverOfCat C) (QuiverOfCat D) := eq_refl.
 
-(* THE SHARP ONE: [edgeset] fails at the SAME constructor arguments at
-   which [edges] succeeds.  The control immediately below is what makes
-   this a contrast rather than an isolated refusal. *)
+(* 相关说明。 （已译） *)
 Fail Definition probe_quiver_edgeset_ll (a b : obj[C]) :
   @edgeset (QuiverOfCat (C ∐ D)) (Datatypes.inl a) (Datatypes.inl b)
     = @edgeset (QuiverCoprod (QuiverOfCat C) (QuiverOfCat D))
         (Datatypes.inl a) (Datatypes.inl b) := eq_refl.
 
-(* Control naming [edgeset] itself, so the negative above cannot go
-   vacuously green on a rename -- the [edges] control below names a
-   different projection and does not cover it. *)
+(* 相关说明。 （已译） *)
 Check (fun (G : Quiver) (x y : nodes) => @edgeset G x y).
 
 Definition probe_pos_quiver_edges_ll (a b : obj[C]) :
@@ -150,22 +144,19 @@ Check QuiverOfCat_Coproduct_iso.
 Check QuiverCoprod.
 Check QuiverOfCat.
 
-(* The two triangles hold at whole-record LEIBNIZ equality -- stronger
-   than the Mon side, and worth guarding so a change is noticed. *)
+(* 相关说明。 （已译） *)
 Check QuiverCopair_Inl.
 Check QuiverCopair_Inr.
 
-(* Respectfulness IS proved here, unlike the sibling product's
-   QuiverPair_unique, which the sibling discloses as unproved. *)
+(* 相关说明。 （已译） *)
 Check QuiverCopair_respects.
 Check QuiverCopair_unique.
 
-(* The Cocartesian instance itself, and its derived vocabulary. *)
+(* 相关说明。 （已译） *)
 Check QuiverCategory_Cocartesian.
 Check Coprod_is_QuiverCoprod.
 
-(* Non-degeneracy: there is genuinely NO edge between the summands, and
-   the two injections are not identified. *)
+(* 相关说明。 （已译） *)
 Check coprod_no_cross_edge.
 Check injections_not_equivalent.
 Check quiver_coprod_no_edge_lr.

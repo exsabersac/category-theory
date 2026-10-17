@@ -24,7 +24,7 @@ Generalizable All Variables.
 
 Fail Check generator_447_no_such_constant.
 
-(** ** Positive controls: every constant the negatives depend on *)
+(* * ** Positive controls: every 常值 negatives depend on （已译） *)
 
 Check @Generator.
 Check @Build_Generator.
@@ -56,13 +56,13 @@ Check @Separator.
 Check @Separator_of_IsSeparator.
 Check @IsSeparator_of_Separator.
 
-(** ** Readbacks that HOLD, at the strength stated *)
+(* 相关说明。 （已译） *)
 
 Section Readbacks.
 
 Context {C : Category}.
 
-(* F1: the duality bridge round-trips on the nose, both ways. *)
+(* 相关说明。 （已译） *)
 Example p447_rt1 (G : Generator C) : gen_of_cog (cog_of_gen G) = G := eq_refl.
 Example p447_rt2 (G : Cogenerator (C^op)) :
   cog_of_gen (gen_of_cog G) = G := eq_refl.

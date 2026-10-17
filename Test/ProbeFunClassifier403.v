@@ -31,7 +31,7 @@ Require Import Category.Instance.FinSet.Classifier.
 
 Generalizable All Variables.
 
-(** * Probe for issue #403 — the sieve classifier of a functor category *)
+(* * * Probe issue #403 — sieve classifier 函子 范畴 （已译） *)
 
 (*
    本文件为测试：ProbeFunClassifier403。
@@ -42,12 +42,11 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------ *)
 (** ** Instrument check *)
 
-(* A deliberately absent name: if this were to succeed, the refutation
-   commands below would be measuring nothing. *)
+(* 相关说明。 （已译） *)
 Fail Check probe403_this_name_does_not_exist.
 
 (* ------------------------------------------------------------------ *)
-(** ** Guard controls — every constant a negative names, named outside *)
+(* * ** Guard controls — every 常值 negative names, named outside （已译） *)
 
 Check @Sieve.
 Check @SieveObj.
@@ -136,14 +135,13 @@ Check @sub_mono.
 Check @sub_is_monic.
 
 (* ------------------------------------------------------------------ *)
-(** ** Positive controls the file's claims rest on *)
+(* 相关说明。 （已译） *)
 
-(* Mac Lane's Sets^2 is [_2, Sets], which is presheaves on [_2^op]:
-   the double opposite is the identity here, ON THE NOSE. *)
+(* Mac Lane's Sets^2 [_2, Sets], presheaves [_2^op]:
+ double opposite 恒等 here, ON THE NOSE. （已译） *)
 Example probe403_op_op_two : (_2^op)^op = _2 := eq_refl.
 
-(* The five computations of Mac Lane's j, restated from OUTSIDE the
-   target so a rename in the target breaks this file. *)
+(* 相关说明。 （已译） *)
 Example probe403_j_total : jmap twoX_total ≈ twoY_total := j_total.
 Example probe403_j_mid : jmap twoX_mid ≈ twoY_total := j_mid.
 Example probe403_j_empty : jmap twoX_empty ≈ twoY_empty := j_empty.
@@ -161,20 +159,20 @@ Example probe403_macOmega_X : fobj[MacOmega] TwoX = 3%nat := eq_refl.
 Example probe403_macOmega_Y : fobj[MacOmega] TwoY = 2%nat := eq_refl.
 Example probe403_macOmega_fmap : fmap[MacOmega] TwoXY = macj := eq_refl.
 
-(* The classifier's data, read back from outside. *)
+(* 相关说明。 （已译） *)
 Example probe403_omega {C : Category} (UT : Untruncate) :
   @Ω ([C^op, Sets]) _ (Fun_Classifier UT) = Sieve_Presheaf C := eq_refl.
 Example probe403_truth {C : Category} (UT : Untruncate) :
   @truth ([C^op, Sets]) _ (Fun_Classifier UT) = sieve_truth C := eq_refl.
 
-(* The pointwise pullback, read back from outside. *)
+(* 相关说明。 （已译） *)
 Example probe403_pb_obj {C D : Category} (HP : @HasPullbacks D)
   {F G H : C ⟶ D} (a : F ~{[C, D]}~> H) (b : G ~{[C, D]}~> H) (x : C) :
   fobj[Pull _ _ (Fun_Pullback HP a b)] x
     = Pull _ _ (pullback (transform[a] x) (transform[b] x)) := eq_refl.
 
 (* ------------------------------------------------------------------ *)
-(** ** (1)-(2) [classifier_classifies] at the presheaf category *)
+(* * ** (1)-(2) [classifier_classifies] at presheaf 范畴 （已译） *)
 
 Section CC.
 Context {C : Category}.
@@ -183,9 +181,9 @@ Context (HS : @SubobjectClassifier ([C^op, Sets])
                 (Functor_Category_Terminal Sets_Terminal)).
 Context (UT : Untruncate).
 
-(* CONTROL: the theorem IS formable at an ABSTRACT classifier of a
-   presheaf category — unlike at [Sets], where #402 records that it is
-   not statable at all. *)
+(* CONTROL: 定理 IS formable at ABSTRACT classifier a
+ presheaf 范畴 — unlike at [Sets], where #402 records it is
+ not statable at all. （已译） *)
 Check (@classifier_classifies ([C^op, Sets])
          (Functor_Category_Terminal Sets_Terminal) HPB HS).
 Check (@Sub_classifier_natural ([C^op, Sets])
@@ -224,18 +222,18 @@ Check (fun_classifier_classifies Cs UTs).
 Check (fun_sub_classifier_natural Cs UTs).
 Check (fun_Sub_Representable Cs UTs).
 
-(* NEGATIVE 3 (FORMABILITY).  The BUILT [Fun_Classifier] still cannot be
-   re-typed at those levels — a re-annotated REDEFINITION is what
-   escapes, not a re-ascription of the constant. *)
+(* NEGATIVE 3 (FORMABILITY). The BUILT [Fun_Classifier] still cannot be
+ re-typed at those levels — re-annotated REDEFINITION what
+ escapes, not re-ascription 常值. （已译） *)
 Fail Check (Fun_Classifier (C:=Cs) UTs
               : @SubobjectClassifier (PShSmall Cs) (PShSmall_Terminal Cs)).
 End CCSmall.
 
 (* ------------------------------------------------------------------ *)
-(** ** (4) No [HasPullbacks] for a functor category by resolution *)
+(* * ** (4) No [HasPullbacks] 函子 范畴 resolution （已译） *)
 
-(* CONTROLS: the two base categories DO have registered instances, and
-   the target's plain [Definition] supplies the functor-category ones. *)
+(* CONTROLS: two base 范畴 DO have registered instances, and
+ target's plain [Definition] supplies 函子-范畴 ones. （已译） *)
 Definition probe403_pb_sets : @HasPullbacks Sets := _.
 Definition probe403_pb_finset : @HasPullbacks FinSet := _.
 Check (Fun_HasPullbacks Sets_HasPullbacks : @HasPullbacks ([_2, Sets])).
@@ -250,8 +248,8 @@ Fail Definition probe403_no_pb_sets : @HasPullbacks ([_2, Sets]) := _.
 Fail Definition probe403_no_pb_finset : @HasPullbacks ([_2, FinSet]) := _.
 
 (* ------------------------------------------------------------------ *)
-(** ** (5) The class takes TWO arguments, and its literals want the
-        category written out *)
+(* * ** (5) The class takes TWO arguments, literals want the
+ 范畴 written out （已译） *)
 
 Section Arity.
 Context {C : Category}.
@@ -269,8 +267,8 @@ Fail Check (@SubobjectClassifier ([C^op, Sets])
               (Functor_Category_Terminal Sets_Terminal)
               (Fun_HasPullbacks Sets_HasPullbacks)).
 
-(* CONTROL: the subobject of the representable, with the category
-   written out. *)
+(* CONTROL: subobject representable, 范畴
+ written out. （已译） *)
 Check (fun (c : C) (S : Sieve c) => sieve_subobject c S).
 
 (*
@@ -286,7 +284,7 @@ Fail Definition probe403_sub_literal (c : C) (S : Sieve c) :
 End Arity.
 
 (* ------------------------------------------------------------------ *)
-(** ** (6) The presheaf category's two universe identifications *)
+(* * ** (6) The presheaf 范畴's two universe identifications （已译） *)
 
 Section DonorA.
 Universes co ch cp o so.
@@ -294,9 +292,9 @@ Constraint ch < cp.
 Constraint o < so.
 Context (Cu : Category@{co ch cp}).
 
-(* CONTROLS accepted at levels where hom and proof are DECLARED APART:
-   the hom type, an identity, and functors in both directions.  So
-   [Functor] is NOT a donor of [ch = cp]. *)
+(* CONTROLS accepted at levels where hom 证明 DECLARED APART:
+ hom type, 恒等, 函子 both directions. So
+ [Functor] NOT donor [ch = cp]. （已译） *)
 Check (fun (x y : Cu) => x ~{Cu}~> y).
 Check (fun (x : Cu) => @id Cu x).
 Check (@Functor Cu Cu).
@@ -305,8 +303,7 @@ Check (@Functor Cu Sets@{o so}).
 (* NEGATIVE 6a (FORMABILITY).  [Opposite] forces [ch = cp] on its own. *)
 Fail Check (Cu^op).
 
-(* NEGATIVE 6b (FORMABILITY).  So does [Fun], with NO [^op] anywhere in
-   the command — two INDEPENDENT donors. *)
+(* 相关说明。 （已译） *)
 Fail Check ([Cu, Sets@{o so}]).
 End DonorA.
 
@@ -316,9 +313,9 @@ Constraint ch2 < o2.
 Constraint o2 < so2.
 Context (Cv : Category@{co2 ch2 ch2}).
 
-(* CONTROLS: the opposite and both functor types elaborate with C's hom
-   universe DECLARED BELOW [Sets]' carrier universe.  So neither
-   [Opposite] nor [Functor] is a donor of [ch = o]. *)
+(* CONTROLS: opposite both 函子 types elaborate C's hom
+ universe DECLARED BELOW [Sets]' carrier universe. So neither
+ [Opposite] nor [Functor] donor [ch = o]. （已译） *)
 Check (Cv^op).
 Check (@Functor (Cv^op) Sets@{o2 so2}).
 Check (@Functor Cv Sets@{o2 so2}).
@@ -338,18 +335,18 @@ Constraint ch3 < dh3.
 Context (Cw : Category@{co3 ch3 ch3}).
 Context (Dw : Category@{do3 dh3 dh3}).
 
-(* CONTROL: the bare functor type elaborates at hom levels declared
-   apart, so [Functor] is not the donor of Instance/Fun/Pullback.v's
-   block equation [u0 = u2]. *)
+(* CONTROL: bare 函子 type elaborates at hom levels declared
+ apart, so [Functor] not donor Instance/Fun/Pullback.v's
+ block equation [u0 = u2]. （已译） *)
 Check (@Functor Cw Dw).
 
-(* NEGATIVE 8 (FORMABILITY).  [Fun] is: the functor CATEGORY is
-   refused at the same levels. *)
+(* NEGATIVE 8 (FORMABILITY). [Fun] is: 函子 CATEGORY is
+ refused at same levels. （已译） *)
 Fail Check ([Cw, Dw]).
 End DonorC.
 
 (* ------------------------------------------------------------------ *)
-(** ** (3) A [Type]-valued sieve is not an object of [Sets] *)
+(* * ** (3) A [Type]-valued sieve not 对象 [Sets] （已译） *)
 
 Section TypeSieve.
 Universes co4 ch4 cp4 o4 so4.
@@ -358,7 +355,7 @@ Constraint o4 < so4.
 Context (Cx : Category@{co4 ch4 ch4}).
 Context (cx : obj[Cx]).
 
-(* The [Type]-valued analogue of the record. *)
+(* 相关说明。 （已译） *)
 Record TSieve@{} (c : obj[Cx]) : Type@{max(co4,ch4,o4+1)} := {
   tsieve_mem : ∀ (d : obj[Cx]), (d ~{Cx}~> c) → Type@{o4};
   tsieve_closed : ∀ (d e : obj[Cx]) (f : d ~{Cx}~> c) (g : e ~{Cx}~> d),
@@ -377,19 +374,17 @@ Fail Check (TSieve cx : Type@{o4}).
 End TypeSieve.
 
 (* ------------------------------------------------------------------ *)
-(** ** (10) The truncation is not eliminable without [Untruncate] *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: over a [Prop] the squash is inert. *)
 Check @powerset_squash_prop_inert.
 
-(* NEGATIVE 10 (FORMABILITY).  The naive elimination is refused with
-   "Cannot enforce ... <= Prop" — #402's wall, at the same level, and
-   what [Untruncate] buys. *)
+(* 相关说明。 （已译） *)
 Fail Definition probe403_naive_untruncate@{o} : Untruncate@{o} :=
   fun P h => h P (fun p => p).
 
 (* ------------------------------------------------------------------ *)
-(** ** (9) The pointwise mediator is [≈] and not [eq_refl] *)
+(* 相关说明。 （已译） *)
 
 Section Med.
 Context {C D : Category}.
@@ -410,13 +405,12 @@ Example probe403_med_strict (x : C) :
                     (transform[q1] x) (transform[q2] x) (Hq x))
   := eq_refl.
 
-(* The [≈] form is then a weakening, kept in the target because it is
-   the shape a consumer rewrites with. *)
+(* 相关说明。 （已译） *)
 Check (fun x : C => fun_pullback_med_at HP a b q1 q2 Hq x).
 End Med.
 
 (* ------------------------------------------------------------------ *)
-(** ** (11) The two classifier readings are not the same constant *)
+(* * ** (11) The two classifier readings not same 常值 （已译） *)
 
 Section TwoReadings.
 Universes co5 o5 so5 OO5 HH5.
@@ -443,10 +437,9 @@ Fail Definition probe403_two_readings :
 End TwoReadings.
 
 (* ------------------------------------------------------------------ *)
-(** ** (12) [Fun_Classifier_cov] is a conversion, not a transport *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the covariant reading IS [Fun_Classifier] at the opposite,
-   supplied by [:=] with no tactic — [(D^op)^op = D] by [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example probe403_cov {D : Category} (UT : Untruncate) :
   @Fun_Classifier_cov D UT = @Fun_Classifier (D^op) UT := eq_refl.
 
@@ -465,15 +458,14 @@ Fail Definition probe403_cov_bad :
 End Cov.
 
 (* ------------------------------------------------------------------ *)
-(** ** (13) The sieve subpresheaf of the total sieve is not the
-        representable ON THE NOSE *)
+(* 相关说明。 （已译） *)
 
 Section TotalSub.
 Context {C : Category}.
 Context (c : C).
 
-(* CONTROLS: both ARE objects of the same presheaf category, so the
-   refusal below is about conversion and not about formability. *)
+(* CONTROLS: both ARE 对象 same presheaf 范畴, so the
+ refusal below about conversion not about formability. （已译） *)
 Check (sieve_subpresheaf c (total_sieve c)).
 Check (fobj[Curried_CoHom C] c).
 

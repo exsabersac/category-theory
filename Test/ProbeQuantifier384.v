@@ -36,7 +36,7 @@ Generalizable All Variables.
 Fail Check (probe_instrument_absent_384 : nat).
 
 (* ------------------------------------------------------------------------ *)
-(** ** Controls: every constant the negatives name, outside a [Fail] *)
+(* * ** Controls: every 常值 negatives name, outside [Fail] （已译） *)
 
 Check @Powerset_Prop_dual.
 Check @Powerset_Prop_obj.
@@ -79,7 +79,7 @@ Check @beck_chevalley_exists_mem.
 Check @beck_chevalley_exists.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (1) The two preimage functors are different RECORDS *)
+(* * ** (1) The two preimage 函子 different RECORDS （已译） *)
 
 Section GaloisFunctorRecord.
 
@@ -89,7 +89,7 @@ Constraint o < so.
 Context {X Y : SetoidObject@{o o}}.
 Context (f : X ~{Sets@{o so}}~> Y).
 
-(* POSITIVE: the object actions agree on the nose ... *)
+(* POSITIVE: 对象 actions agree nose ... （已译） *)
 Example p384_fobj_agrees (T : carrier (Powerset_Prop_obj@{o} Y)) :
   fobj[GaloisFunctor_l (subset_le_preorder@{o} Y)
          (subset_le_preorder@{o} X) (preimage_dual_galois f)] T
@@ -102,15 +102,13 @@ Example p384_fmap_agrees (T T' : carrier (Powerset_Prop_obj@{o} Y))
                (subset_le_preorder@{o} X) (preimage_dual_galois f)) T T' h
     = @fmap _ _ (InverseImage f) T T' h := eq_refl.
 
-(* NEGATIVE 1 (CONVERSION).  The WHOLE records do not: the three law
-   fields are separate opaque [Program] obligations. *)
+(* 相关说明。 （已译） *)
 Fail Example p384_functor_records_agree :
   GaloisFunctor_l (subset_le_preorder@{o} Y) (subset_le_preorder@{o} X)
     (preimage_dual_galois f)
   = InverseImage f := eq_refl.
 
-(* NEGATIVE 5 (TYPING).  The headline runs [InverseImage f ⊣ DualImage f]
-   and cannot be ascribed the other way round. *)
+(* 相关说明。 （已译） *)
 Fail Example p384_reversed_handedness :
   DualImage f ⊣ InverseImage f := substitution_forall_adjunction f.
 
@@ -118,7 +116,7 @@ Fail Example p384_reversed_handedness :
 Example p384_exists_leg_is_donor :
   exists_substitution_adjunction f = image_preimage_adjunction f := eq_refl.
 
-(* POSITIVE: the unit and the counit ARE Mac Lane's two inclusions. *)
+(* 相关说明。 （已译） *)
 Example p384_unit_is_incl (T : carrier (Powerset_Prop_obj@{o} Y)) :
   @unit _ _ (InverseImage f) (DualImage f)
     (substitution_forall_adjunction f) T = forall_unit_incl f T := eq_refl.
@@ -130,7 +128,7 @@ Example p384_counit_is_incl (S : carrier (Powerset_Prop_obj@{o} X)) :
 End GaloisFunctorRecord.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (2), (3) Mac Lane's two operations against the general ones *)
+(* 相关说明。 （已译） *)
 
 Section ProjectionGrades.
 
@@ -150,13 +148,11 @@ Fail Example p384_forall_is_dual_strict :
   @proj_forall@{o so} U V S
     = Powerset_Prop_dual@{o} (proj_fst@{o so} U V) S := eq_refl.
 
-(* POSITIVE: the [≈] forms hold, and are the target's. *)
+(* 相关说明。 （已译） *)
 Check (proj_exists_is_image U V S).
 Check (proj_forall_is_dual U V S).
 
-(* POSITIVE: the cylinder IS the inverse image along the projection, on
-   the nose -- so the two negatives above are about [proj_exists] and
-   [proj_forall] and not about the projection. *)
+(* 相关说明。 （已译） *)
 Example p384_cylinder_is_preimage
   (Xs : carrier (Powerset_Prop_obj@{o} U)) :
   @cylinder@{o so} U V Xs
@@ -165,7 +161,7 @@ Example p384_cylinder_is_preimage
 End ProjectionGrades.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (4) Beck-Chevalley: pointwise yes, whole-subset no *)
+(* 相关说明。 （已译） *)
 
 Section BeckGrades.
 
@@ -192,14 +188,14 @@ Example p384_beck_whole_subset :
     = @proj_exists@{o so} U' V
         (Powerset_Prop_preimage@{o} (cyl_reindex V g) S) := eq_refl.
 
-(* POSITIVE: the [≈] reading is the target's. *)
+(* 相关说明。 （已译） *)
 Check (beck_chevalley_exists_equiv U U' V g S).
 Check (beck_chevalley_exists U U' V g S).
 
 End BeckGrades.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (4) [Subsets 1] is EQUIVALENT to [Props], not isomorphic to it *)
+(* 相关说明。 （已译） *)
 
 Section OmegaGrades.
 
@@ -230,7 +226,7 @@ Fail Example p384_subsets_one_is_Props :
 End OmegaGrades.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (6) The donors' universe identification *)
+(* 相关说明。 （已译） *)
 
 Section UniverseBoundary.
 
@@ -239,8 +235,8 @@ Constraint pr < po.
 
 Context (A : SetoidObject@{po pr}).
 
-(* POSITIVE controls at the very same declared levels: the argument's
-   carrier and its setoid structure are both fine. *)
+(* POSITIVE controls at very same declared levels: 论元's
+ carrier setoid structure both fine. （已译） *)
 Check (carrier A).
 Check (is_setoid A).
 Check (A : Type@{po}).
@@ -252,7 +248,7 @@ Fail Check (Powerset_Prop_obj A).
 End UniverseBoundary.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Riehl's triple, and the truth-value comparison, exercised *)
+(* 相关说明。 （已译） *)
 
 Section RiehlChecks.
 

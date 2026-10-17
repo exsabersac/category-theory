@@ -40,7 +40,7 @@ Require Import Coq.Arith.PeanoNat.
 
 Generalizable All Variables.
 
-(** * Probe for Construction/Reflective/FixedPoints.v and its poset instance *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeFixedPoints386。
@@ -50,8 +50,7 @@ Generalizable All Variables.
 
 (** ** Instrument check *)
 
-(* A guard that must trigger for a trivial reason: the mechanism itself
-   is working, and no [Require] above is needed for it. *)
+(* 相关说明。 （已译） *)
 Fail Check probe386_instrument_no_such_constant.
 
 (** ** Negatives of kind TYPING *)
@@ -70,8 +69,8 @@ Context (A : F ⊣ U).
 *)
 Fail Check (adjunction_fixed_point_equivalence A : EquivalenceOfCategories F).
 
-(* Controls: the term does elaborate at its own type, and [F] is a
-   functor that [EquivalenceOfCategories] accepts as an argument. *)
+(* Controls: term does elaborate at own type, [F] a
+ 函子 [EquivalenceOfCategories] accepts 论元. （已译） *)
 Check (adjunction_fixed_point_equivalence A).
 Check (fun (E : EquivalenceOfCategories F) => quasi_inverse).
 Check (FixedL A).
@@ -112,8 +111,7 @@ Fail Check (Reflective_IdempotentMonad R
                   (Incl (C^op) (op_subcategory S) ◯ reflector R)
                   (Reflective_Monad R)).
 
-(* Control: in the op form the very same term typechecks, which is what
-   [Coreflective_IdempotentMonad_op] delivers. *)
+(* 相关说明。 （已译） *)
 Check (Coreflective_IdempotentMonad_op R).
 Check (Reflective_IdempotentMonad R).
 Check (Reflective_Monad R).
@@ -149,8 +147,8 @@ Fail Example probe_counit_fixed_not_op :
   CounitFixed A = op_subcategory (UnitFixed (Opposite_Adjunction F U A))
   := eq_refl.
 
-(* Controls: the morphism identification that DOES hold, and the
-   monad-side bridge, which holds on the whole record. *)
+(* Controls: 态射 identification DOES hold, the
+ 单子-side bridge, holds whole record. （已译） *)
 Check (fun c : C =>
   eq_refl : @unit (D^op) (C^op) (U^op) (F^op) (Opposite_Adjunction F U A) c
               = @counit C D F U A c).
@@ -182,8 +180,7 @@ Fail Example probe_wlocal_not_covariant (x : C) :
   sobj C (WLocal_Subcategory H) x = IsIsomorphism (@extract C W H x)
   := eq_refl.
 
-(* Controls: the op-side reading, which does hold on the nose, and the
-   two passages. *)
+(* 相关说明。 （已译） *)
 Check (fun x : C =>
   eq_refl : sobj C (WLocal_Subcategory H) x
               = @IsIsomorphism (C^op) x (W x) (@extract C W H x)).
@@ -217,8 +214,8 @@ Fail Example probe_closed_sigma_round
 Fail Example probe_closed_not_definitional
   (a : A) (Hc : GalClosed_r G a) : gal_r G (gal_l G a) = a := eq_refl.
 
-(* Controls: the relatedness that DOES hold with no hypothesis, and the
-   antisymmetric statement that supplies the equation. *)
+(* Controls: relatedness DOES hold no 假设, the
+ antisymmetric statement supplies equation. （已译） *)
 Check (fun (a : A) (Hc : GalClosed_r G a) =>
   Hc : RA (gal_r G (gal_l G a)) a).
 Check (gal_unit G PB).
@@ -250,8 +247,8 @@ Constraint uh < up.
 Context (Cu Du : Category@{uo uh up}).
 Context (Fu : Du ⟶ Cu) (Uu : Cu ⟶ Du).
 
-(* Controls at the very same declared levels: the category's homs and its
-   identities are formable, and so are functors in both directions. *)
+(* Controls at very same declared levels: 范畴's homs its
+ identities formable, so 函子 both directions. （已译） *)
 Check (fun x y : Cu => x ~{Cu}~> y).
 Check (fun x : Cu => id[x]).
 Check Fu.
@@ -264,13 +261,13 @@ Check Uu.
 *)
 Fail Check (Fu ⊣ Uu).
 
-(* NEGATIVE 8 (FORMABILITY).  [Subcategory] does so independently, with
-   no adjunction anywhere in the command. *)
+(* NEGATIVE 8 (FORMABILITY). [Subcategory] does so independently, with
+ no 伴随 anywhere command. （已译） *)
 Fail Check (Subcategory Cu).
 
 End ProbeUniverses.
 
-(* Controls for the two donors, at levels where they ARE formable. *)
+(* 相关说明。 （已译） *)
 Section ProbeUniversesControl.
 
 Universes vo vh.
@@ -285,14 +282,14 @@ Check (fun (Av : Fv ⊣ Uv) => adjunction_fixed_point_equivalence Av).
 
 End ProbeUniversesControl.
 
-(** ** Witness: the free-monoid adjunction *)
+(* * ** Witness: free-幺半群 伴随 （已译） *)
 
 (* Instance/Coq/Monoid/Free.v declares [MonCoq] and [UMon] as [#[local]]
    notations, which do not export; hence these two. *)
 Notation MonC := (@Mon Coq Coq_Monoidal).
 Notation UMonC := (@Mon_Forget Coq Coq_Monoidal).
 
-(* The unit at X carries [a] to the one-letter word [a :: nil]. *)
+(* 相关说明。 （已译） *)
 Example probe_free_unit_is_insert (X : Coq) (a : X) :
   @unit MonC Coq FreeMonoid UMonC free_monoid_adjunction X a
     = (a :: nil)%list := eq_refl.
@@ -333,8 +330,8 @@ Proof. exact (free_monoid_unit_never_iso (list bool)). Qed.
    over to an arbitrary adjunction.  Whether some OTHER natural
    isomorphism [F ◯ U ◯ F ≈ F] exists at this adjunction is neither
    proved nor refuted here. *)
-(* The object in question IS an [F]-image, which is what makes the next
-   two computations a statement about the CANONICAL comparison. *)
+(* The 对象 question IS [F]-image, what makes next
+ two computations statement about CANONICAL comparison. （已译） *)
 Example probe_FreeMon_is_F_bool :
   FreeMon bool = fobj[FreeMonoid] bool := eq_refl.
 
@@ -379,16 +376,16 @@ Proof.
   discriminate (Hc eq_refl).
 Qed.
 
-(* The general theorem still applies there, with both fixed
-   subcategories as they are: this is the control that the equivalence
-   asks nothing of the adjunction. *)
+(* The general 定理 still applies there, both fixed
+ subcategories they are: 这是 control 等价
+ asks nothing 伴随. （已译） *)
 Check (adjunction_fixed_point_equivalence free_monoid_adjunction).
 
-(** ** Witness: the identity adjunction, where every object is fixed *)
+(* * ** Witness: 恒等 伴随, where every 对象 fixed （已译） *)
 
-(* The other extreme.  [adj_id]'s unit is [≈ id], so transporting
-   invertibility of the identity along that equation makes every object
-   of C unit-fixed, and dually. *)
+(* The other extreme. [adj_id]'s unit [≈ id], so transporting
+ invertibility 恒等 along equation makes every 对象
+ C unit-fixed, dually. （已译） *)
 Definition probe_id_unit_fixed {C : Category} (x : C) :
   sobj C (UnitFixed (@adj_id C)) x.
 Proof.
@@ -405,10 +402,10 @@ Defined.
 
 Check (fun C : Category => adjunction_fixed_point_equivalence (@adj_id C)).
 
-(** ** Witness: the shift connection on the naturals *)
+(* 相关说明。 （已译） *)
 
-(* The restricted left adjoint carries the fixed object 5 to 3, by
-   computation, and 1 is not fixed. *)
+(* The restricted 左伴随 carries fixed 对象 5 3, by
+ computation, 1 not fixed. （已译） *)
 Check nat_shift_five_closed.
 Check nat_shift_five_fixed.
 Check nat_shift_closed_r_iff.

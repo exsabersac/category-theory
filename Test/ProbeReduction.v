@@ -19,7 +19,7 @@ Require Import Category.Instance.Sets.Products.
 
 Generalizable All Variables.
 
-(** * Probe: the strength boundaries of the (co)limit reductions *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeReduction。
@@ -48,8 +48,8 @@ Context `{@Cartesian C}.
 Context {x y : C}.
 Context (f g : x ~> y).
 
-(* CONVERSION negative.  Stripped, this reports a unification failure
-   between the two product objects. *)
+(* CONVERSION negative. Stripped, reports unification failure
+ between two product 对象. （已译） *)
 Fail Definition probe_ml_aw_codomain :
   (x × y)%object = (y × y)%object := eq_refl.
 
@@ -61,17 +61,16 @@ Fail Definition probe_ml_aw_codomain :
 Definition probe_pos_codomain_degenerate :
   (x × x)%object = (x × x)%object := eq_refl.
 
-(* CONVERSION negatives on the (A)/(B) round trips: both hold at [≈] and
-   neither at [=]. *)
+(* 相关说明。 （已译） *)
 Fail Definition probe_equalizer_pullback_round {E : C} (e : E ~> x × y) :
   (exl ∘ e) △ (exr ∘ e) = e := eq_refl.
 
 Fail Definition probe_pullback_equalizer_round {P : C}
      (p1 : P ~> x) (p2 : P ~> y) : exl ∘ (p1 △ p2) = p1 := eq_refl.
 
-(* Positive control naming Reduction.v's own constant: the first round
-   trip does hold at [≈].  If [equalizer_pullback_round] is renamed or
-   changes statement, this line fails to compile. *)
+(* Positive control naming Reduction.v's own 常值: first round
+ trip does hold at [≈]. If [equalizer_pullback_round] renamed or
+ changes statement, line fails compile. （已译） *)
 Definition probe_pos_round_up_to_equiv {E : C} (e : E ~> x × y) :
   (exl ∘ e) △ (exr ∘ e) ≈ e := equalizer_pullback_round E e.
 
@@ -103,9 +102,7 @@ Check (@aw_pair C _ x y f g = @aw_pair C _ x y f g).
 Check (@ml_right C _ x y g = @ml_right C _ x y g).
 Check (@aw_diag C _ y = @aw_diag C _ y).
 
-(* Positive control for the one genuine coincidence: at [f := id] the two
-   legs DO agree definitionally.  This is [maclane_awodey_degenerate_left]
-   restated at the probe level. *)
+(* 相关说明。 （已译） *)
 Definition probe_pos_degenerate :
   @ml_left C _ x x id = @aw_diag C _ x := eq_refl.
 
@@ -149,8 +146,8 @@ Definition probe_pos_cofork_is_fork_eq {x y : C} (f g : x ~> y)
 Check (HasCoequalizers C).
 Check (HasEqualizers (C^op)).
 
-(* Positive control naming Reduction.v's own bridge constant, so a rename
-   of the bridge breaks this file. *)
+(* Positive control naming Reduction.v's own bridge 常值, so rename
+ bridge breaks file. （已译） *)
 Definition probe_pos_bridge_exists {x y : C} (f g : x ~> y)
         (q : C) (e : y ~> q) (E : IsCoequalizer f g q e) :
   @IsEqualizer (C^op) y x f g q e := IsEqualizer_op_of_IsCoequalizer E.

@@ -27,7 +27,7 @@ Generalizable All Variables.
 
 Fail Check quot_obj_theory_446_no_such_constant.
 
-(** ** Positive controls: every constant the negatives depend on *)
+(* * ** Positive controls: every 常值 negatives depend on （已译） *)
 
 Check @QuotObj.
 Check @SubObj.
@@ -50,27 +50,24 @@ Check @quot_le_unfold.
 Check @quot_equiv_unfold.
 Check @QuotObj_op_is_SubObj.
 
-(** ** Readbacks that HOLD, at the strength stated *)
+(* 相关说明。 （已译） *)
 
 Section Readbacks.
 
 Context {C : Category}.
 Context {x : C}.
 
-(* F1: quotient objects of the opposite category ARE subobjects, on the
-   nose, because C^op^op is C by reflexivity. *)
+(* F1: quotient 对象 opposite 范畴 ARE subobjects, the
+ nose, because C^op^op C reflexivity. （已译） *)
 Example p446t_op_is_sub : @QuotObj (C^op) x = @SubObj C x := eq_refl.
 
-(* F2: the covariant reading of the order is definitional -- q ≤ r when
-   the epi of q FACTORS THROUGH the epi of r, q being the coarser. *)
+(* 相关说明。 （已译） *)
 Example p446t_le_unfold (q r : QuotObj x) :
   quot_le q r
   = { k : quot_cod r ~> quot_cod q & k ∘ quot_epi r ≈ quot_epi q }
   := eq_refl.
 
-(* The accepted [Check] that the INSTANCE negative N5 is the contrast to:
-   with no [HasPushouts C] in scope this succeeds, printing the open evar,
-   which is exactly why N5 is a [Definition]. *)
+(* 相关说明。 （已译） *)
 Check (fun q r : QuotObj x => quot_meet q r).
 
 End Readbacks.
@@ -82,8 +79,8 @@ Section Negatives.
 Context {C : Category}.
 Context {x y : C}.
 
-(* N2 -- CONVERSION.  Dropping the ^op on the left of F1: quotient objects
-   of C are NOT subobjects of C.  "cannot unify QuotObj x and SubObj x". *)
+(* N2 -- CONVERSION. Dropping ^op left F1: quotient 对象
+ C NOT subobjects C. "cannot unify QuotObj x SubObj x". （已译） *)
 Fail Definition n2 : @QuotObj C x = @SubObj C x := eq_refl.
 
 (*

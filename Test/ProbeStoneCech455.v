@@ -33,11 +33,11 @@ Require Import Category.Instance.Top.StoneCech.Refutations.
 
 Generalizable All Variables.
 
-(** ** Instrument: the refutation keyword is live *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe455_absent_name.
 
-(** ** N1-N5 (CONVERSION, TYPING): Instance/Top/StoneCech.v, the readbacks *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: [StoneCech_finite], restated at its stated type. *)
 Definition p455_stonecech_finite@{o h +} (X : SetoidObject@{o o})
@@ -54,9 +54,9 @@ Example p455_fin_unit_at@{o h +} (X : SetoidObject@{o o}) (FX : FinEnum X) :
   @arrow Sets _ (Setoid_Lift@{o h} X) _ (StoneCech_finite X FX)
     = sc_fin_unit X FX := eq_refl.
 
-(* CONTROL: at the two-point set the universal object IS [Bool_CH], so
-   [Bool_CH] is not a wrong value there; and it is [Discrete_CH] at the
-   enumeration passed. *)
+(* CONTROL: at two-point set universal 对象 IS [Bool_CH], so
+ [Bool_CH] not wrong value there; it [Discrete_CH] at the
+ enumeration passed. （已译） *)
 Example p455_fin_obj_bool@{o h +} :
   @arrow_obj Sets _ (Setoid_Lift@{o h} bool_setoid_object@{o o}) _
     (StoneCech_finite bool_setoid_object@{o o} bool_FinEnum) = Bool_CH :=
@@ -77,8 +77,7 @@ Fail Example p455_n1_fin_obj_bool_point@{o h +} :
     (StoneCech_finite bool_setoid_object@{o o} bool_FinEnum) = Point_CH :=
   eq_refl.
 
-(* CONTROL: N1's value is wrong, not merely unconvertible: the equation
-   carries [true] and [false] of the two-point carrier to the point. *)
+(* 相关说明。 （已译） *)
 Lemma p455_n1_wrong_value@{o h +} :
   @arrow_obj Sets _ (Setoid_Lift@{o h} bool_setoid_object@{o o}) _
     (StoneCech_finite bool_setoid_object@{o o} bool_FinEnum) = Point_CH →
@@ -93,8 +92,8 @@ Proof.
   specialize (E true false). discriminate E.
 Qed.
 
-(* CONTROL: a second enumeration of the two-point set, its list reversed,
-   and the object it gives. *)
+(* CONTROL: second enumeration two-point set, list reversed,
+ 对象 it gives. （已译） *)
 Lemma p455_bool_FinEnum_rev@{o +} : FinEnum bool_setoid_object@{o o}.
 Proof.
   exists (false :: true :: nil). intros [|].
@@ -110,15 +109,15 @@ Fail Example p455_n2_fin_obj_other_enum@{o h +} :
     (StoneCech_finite bool_setoid_object@{o o} bool_FinEnum)
     = Discrete_CH bool_setoid_object@{o o} p455_bool_FinEnum_rev := eq_refl.
 
-(* CONTROL: N2's two objects have one space; they differ in the
-   compactness proof alone. *)
+(* CONTROL: N2's two 对象 have one space; they differ the
+ compactness 证明 alone. （已译） *)
 Example p455_n2_same_space@{o +} :
   `1 (Discrete_CH bool_setoid_object@{o o} bool_FinEnum)
   = `1 (Discrete_CH bool_setoid_object@{o o} p455_bool_FinEnum_rev) :=
   eq_refl.
 
-(* CONTROL: the unit does not see the enumeration; at the two-point set it
-   IS the identity of [Sets]. *)
+(* CONTROL: unit does not see enumeration; at two-point set it
+ IS 恒等 [Sets]. （已译） *)
 Example p455_fin_unit_other_enum@{o h +} (X : SetoidObject@{o o})
   (FX FX' : FinEnum X) :
   @arrow Sets _ (Setoid_Lift@{o h} X) _ (StoneCech_finite X FX)
@@ -129,8 +128,7 @@ Example p455_fin_unit_bool_id@{o h +} :
     (StoneCech_finite bool_setoid_object@{o o} bool_FinEnum)
     = @id Sets (Setoid_Lift@{o h} bool_setoid_object@{o o}) := eq_refl.
 
-(* CONTROL: negation, an arrow of the unit's type that differs from the
-   unit at a point. *)
+(* 相关说明。 （已译） *)
 Definition p455_negb_lift@{o h +} :
   Setoid_Lift@{o h} bool_setoid_object@{o o} ~{Sets}~>
     CompHaus_Forget (Discrete_CH bool_setoid_object@{o o} bool_FinEnum).
@@ -150,7 +148,7 @@ Fail Example p455_n3_fin_unit_negb@{o h +} :
     (StoneCech_finite bool_setoid_object@{o o} bool_FinEnum)
     = p455_negb_lift := eq_refl.
 
-(* CONTROL: [CompHaus_Incl_universal_obj], restated, and at the point. *)
+(* 相关说明。 （已译） *)
 Example p455_incl_obj_at@{h o +} (K : CompHaus) :
   @arrow_obj Top@{h o} _ (CompHaus_Incl K) _ (CompHaus_Incl_universal K)
     = K := eq_refl.
@@ -163,7 +161,7 @@ Fail Example p455_n4_incl_obj_point@{h o +} (K : CompHaus) :
   @arrow_obj Top@{h o} _ (CompHaus_Incl K) _ (CompHaus_Incl_universal K)
     = Point_CH := eq_refl.
 
-(* CONTROL: the type of a universal arrow with its category named. *)
+(* CONTROL: type 泛箭头 范畴 named. （已译） *)
 Definition p455_ua_with_C@{o h +} (X : SetoidObject@{o o}) : Type :=
   UniversalArrow (C:=Sets) (Setoid_Lift@{o h} X) CompHaus_Forget.
 
@@ -171,7 +169,7 @@ Fail Definition p455_n5_ua_without_C@{o h +} (X : SetoidObject@{o o}) :
   Type :=
   UniversalArrow (Setoid_Lift@{o h} X) CompHaus_Forget.
 
-(** ** N6-N8 (UNIVERSE): Instance/Top/StoneCech.v, the universes *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeStoneCech455 相关定义、性质与动机。
@@ -198,9 +196,7 @@ Fail Definition p455_n6_conthom_at_o@{o +} (X Y : TopSpace@{o}) :
   Type@{o} :=
   ContinuousMorphism X Y.
 
-(* CONTROL: [Point_Hausdorff] at its [Set] carrier; the one-point space
-   separated and compact above [Set], by [Discrete_Hausdorff] and by
-   Instance/Top.v's [Point_Compact]. *)
+(* 相关说明。 （已译） *)
 Definition p455_point_hausdorff_set : IsHausdorff Point_Top@{Set} :=
   Point_Hausdorff.
 
@@ -257,7 +253,7 @@ Fail Definition p455_n8_bool_ch_bare@{o +} : CompHaus :=
      (Discrete_Compact_of_FinEnum _ p455_bool_FinEnum_bare,
       Discrete_Hausdorff _)).
 
-(** ** N9 (UNIVERSE): Instance/Top/StoneCech.v, the reduction of GAFT *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: the reduction of GAFT at [CompHaus_Forget] to completeness. *)
 Definition p455_pres@{h s +} :
@@ -278,8 +274,8 @@ Definition p455_gaft_body@{h s +} (comp : @Complete@{h h h h} CompHaus) :
   { F : Sets@{h s} ⟶ CompHaus & F ⊣ CompHaus_Forget } :=
   GAFT CompHaus_Forget comp CompHaus_Forget_PreservesImageLimit taut_sols.
 
-(* CONTROL: the tautological solution set with the objects of [CompHaus]
-   above its homs. *)
+(* CONTROL: tautological solution set 对象 [CompHaus]
+ above homs. （已译） *)
 Definition p455_taut_sols_above@{h s c +| h < c +} (d : obj[Sets@{h s}]) :
   SolutionSet (CompHaus_Forget : (CompHaus : Category@{c h h}) ⟶ Sets@{h s})
     d :=
@@ -290,7 +286,7 @@ Fail Definition p455_n9_gaft_taut_above@{h s c +| h < c +}
   { F : Sets@{h s} ⟶ CompHaus & F ⊣ CompHaus_Forget } :=
   GAFT CompHaus_Forget comp CompHaus_Forget_PreservesImageLimit taut_sols.
 
-(** ** Controls: the constructive pieces of Instance/Top/StoneCech.v *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: [Discrete_Hausdorff]; compactness of a discrete space iff
    finite enumerability, at one instance; discrete ℕ not compact. *)
@@ -388,12 +384,11 @@ Definition p455_ex4_local_at_CompHaus@{h o +} (K : CompHaus) :
   KSeparated K (CompHaus_Incl K : obj[Top@{h o}]) :=
   KSeparated_of_unit_injective_local_at_CompHaus K.
 
-(** ** N10-N12, N20-N22 (UNIVERSE): Instance/Top/StoneCech/Refutations.v,
-       the reach of the refutations *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: completeness of [CompHaus] refuted by an index at a shape
-   below its objects; by [IEM] at [c <= s] and [h <= s], and at GAFT's
-   instance. *)
+(* CONTROL: completeness [CompHaus] refuted index at shape
+ below 对象; [IEM] at [c <= s] [h <= s], at GAFT's
+ instance. （已译） *)
 Definition p455_not_complete_index@{r s c h +| s < c +}
   (AI : ArrowIndex@{s c h} CompHaus) (comp : @Complete@{r s h c} CompHaus) :
   False :=
@@ -407,9 +402,9 @@ Definition p455_not_complete_IEM_gaft@{e h +} (E : IEM@{e})
   (comp : @Complete@{h h h h} CompHaus) : False :=
   CompHaus_not_complete_IEM E comp.
 
-(* CONTROL: an arrow index of [Top] transported to [CompHaus]; through it,
-   N10's statement with [h <= s] refuted under [IEM], and GAFT's shape
-   with the objects above the homs. *)
+(* CONTROL: arrow index [Top] transported [CompHaus]; through it,
+ N10's statement [h <= s] refuted under [IEM], GAFT's shape
+ 对象 above homs. （已译） *)
 Definition p455_sub_index@{s h o c +} (AIT : ArrowIndex@{s h h} Top@{h o}) :
   ArrowIndex@{s c h} (CompHaus : Category@{c h h}) :=
   CompHaus_ArrowIndex_of_Top AIT.
@@ -466,8 +461,8 @@ Fail Definition p455_n11_top_not_complete_IEM_below@{e r s h o +| s < h +}
   (E : IEM@{e}) (comp : @Complete@{r s h h} Top@{h o}) : False :=
   Top_not_complete_IEM E comp.
 
-(* CONTROL: the adjunction refuted under [IEM], applied to GAFT's own
-   output; the universal arrow at a large set refuted by an index. *)
+(* CONTROL: 伴随 refuted under [IEM], applied GAFT's own
+ output; 泛箭头 at large set refuted index. （已译） *)
 Definition p455_adj_refuted_IEM@{e h s +} (E : IEM@{e})
   (A : { F : Sets@{h s} ⟶ CompHaus & F ⊣ CompHaus_Forget }) : False :=
   StoneCech_adjunction_refuted_IEM E A.
@@ -486,8 +481,8 @@ Definition p455_gaft_vacuous@{e h s +} (E : IEM@{e})
   ({ F : Sets@{h s} ⟶ CompHaus & F ⊣ CompHaus_Forget } * False)%type :=
   GAFT_CompHaus_IEM_vacuous E comp.
 
-(* CONTROL: with the objects above the homs, the adjunction refuted by an
-   arrow index at the hom universe. *)
+(* CONTROL: 对象 above homs, 伴随 refuted an
+ arrow index at hom universe. （已译） *)
 Definition p455_adj_refuted_index_above@{h s c +| h < c +}
   (AI : ArrowIndex@{h c h} (CompHaus : Category@{c h h}))
   (A : { F : Sets@{h s} ⟶ (CompHaus : Category@{c h h})
@@ -507,8 +502,8 @@ Fail Definition p455_n12_adj_refuted_above@{e h s c +| h < c +}
        & F ⊣ CompHaus_Forget }) : False :=
   StoneCech_adjunction_refuted_IEM E A.
 
-(* CONTROL: the same slot by slot, the proof slot at the objects; and
-   GAFT's route with the objects above the homs, any solution sets. *)
+(* CONTROL: same slot slot, 证明 slot at 对象; and
+ GAFT's route 对象 above homs, any solution sets. （已译） *)
 Definition p455_adj_above_slots@{e h s c o +| h < c +} (E : IEM@{e})
   (A : { F : Sets@{h s} ⟶ (CompHaus@{c h h c _ _ o _ _ _ _ _ _ _ _}
                              : Category@{c h h})
@@ -529,9 +524,9 @@ Fail Definition p455_n20_adj_above_proof_slot@{e h s c o +| h < c +}
        & F ⊣ CompHaus_Forget }) : False :=
   StoneCech_adjunction_refuted_IEM_above@{e h s o c _ _ _ _ _ _ _} E A.
 
-(* CONTROL: the same with the fourteenth and fifteenth slots, the
-   universes of the separating opens of the Hausdorff proof, written out
-   at the points' universe o. *)
+(* CONTROL: same fourteenth fifteenth slots, the
+ universes separating opens Hausdorff 证明, written out
+ at points' universe o. （已译） *)
 Definition p455_adj_above_hausdorff_at_o@{e h s c o +| h < c +}
   (E : IEM@{e})
   (A : { F : Sets@{h s} ⟶ (CompHaus@{c h h c _ _ o _ _ _ _ _ _ o o}
@@ -546,8 +541,8 @@ Fail Definition p455_n22_hausdorff_opens_below@{e h s c o q +| h < c, q < o +}
        & F ⊣ CompHaus_Forget }) : False :=
   StoneCech_adjunction_refuted_IEM_above@{e h s o c _ _ _ _ _ _ _} E A.
 
-(** ** N13-N17, N19 (UNIVERSE): Instance/Top/StoneCech/Refutations.v, SAFT
-       at the inclusion *)
+(* * ** N13-N17, N19 (UNIVERSE): Instance/Top/StoneCech/Refutations.v, SAFT
+ at 含入 （已译） *)
 
 (*
    本节说明 ProbeStoneCech455 相关定义、性质与动机。
@@ -646,7 +641,7 @@ Fail Definition p455_n16_trivial_small_at_c@{c h t +| h < c +} :
 Fail Definition p455_n17_incl_below@{c h +| c < h +} :=
   CompHaus_Incl : (CompHaus : Category@{c h h}) ⟶ Top.
 
-(** ** N18 (UNIVERSE): Instance/Top/StoneCech/Refutations.v, [big_inj] *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: [big_inj_injective], restated; [big_inj]'s body with
    [obj[CompHaus]] written in both places, at [s < c]. *)
@@ -670,15 +665,14 @@ Fail Definition p455_n18_big_inj_below@{r s c h +| s < c +}
   (phi : obj[CompHaus] → bool) :=
   big_inj comp phi.
 
-(* CONTROL: the cost of a cogenerator with ¬¬-stable members. *)
+(* 相关说明。 （已译） *)
 Definition p455_cogen_dne@{k c h +} (G : Cogenerator@{k c h} CompHaus)
   (stable : ∀ j (a b : top_carrier (`1 (cog_obj G j))),
               ((a ≈ b → False) → False) → a ≈ b) :
   ∀ P : Prop, ~~P → P :=
   CompHaus_cogenerator_stable_DNE G stable.
 
-(* CONTROL: the cost of a single point-separating space with ¬¬-stable
-   points. *)
+(* 相关说明。 （已译） *)
 Definition p455_point_sep_dne@{c h +} (K : (CompHaus : Category@{c h h}))
   (sepK : ∀ (Y : (CompHaus : Category@{c h h})) (p q : top_carrier (`1 Y)),
             (∀ k : Y ~{CompHaus}~> K,

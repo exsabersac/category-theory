@@ -35,15 +35,13 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe430_absent_name.
 
-(** ** A: CONVERSION — the identifications the proofs use hold at [≈], not
-       on the nose *)
+(* 相关说明。 （已译） *)
 
-(* controls: the [≈] forms are the file's own lemmas *)
+(* 相关说明。 （已译） *)
 Check fmap_one_point.
 Check free_ab_one_id_not_zero.
 
-(* N1 CONVERSION: the image of the point's terminal arrow is [id] up to [≈]
-   ([fmap_one_point]), not definitionally *)
+(* 相关说明。 （已译） *)
 Fail Example p430_fmap_one_not_definitional :
   fmap[FreeAb] (@one Sets Sets_Terminal SetsPoint) = @id Ab (FreeAb SetsPoint)
   := eq_refl.
@@ -53,12 +51,12 @@ Fail Example p430_image_leg_not_definitional :
   cone_leg (FCone FreeAb NatOneCone) 0%nat = @id Ab (FreeAb SetsPoint)
   := eq_refl.
 
-(* N3 CONVERSION: the free group on a point is not the zero group — nor is
-   it convertible to it; the separation is a theorem, not a computation *)
+(* N3 CONVERSION: free group point not zero group — nor is
+ it convertible it; separation 定理, not computation （已译） *)
 Fail Example p430_free_on_point_is_not_the_zero_group :
   FreeAb SetsPoint = Ab_trivial := eq_refl.
 
-(** ** B: TYPING — the two strength levels do not ascribe into each other *)
+(* 相关说明。 （已译） *)
 
 (* controls: each refutation at its own level *)
 Check (FreeAb_not_continuous : ContinuousFunctor FreeAb → False).
@@ -66,24 +64,24 @@ Check (FreeAb_not_PreservesAllLimits : PreservesAllLimits FreeAb → False).
 Check (FreeAb_not_PreservesLimitCone_binary_product
          : PreservesLimitCone BinDiagram FreeAb → False).
 
-(* N4 TYPING: the cone-level conclusion is not the apex-level one — the
-   latter needs the empty shape's separate argument *)
+(* N4 TYPING: cone-level conclusion not apex-level one — the
+ latter needs empty shape's separate 论元 （已译） *)
 Fail Definition p430_cone_level_is_not_apex_level :
   PreservesAllLimits FreeAb → False := FreeAb_not_continuous.
 
-(* N5 TYPING: the binary witness reaches the cone level only *)
+(* 相关说明。 （已译） *)
 Fail Definition p430_binary_witness_is_cone_level_only :
   PreservesLimit BinDiagram FreeAb → False
   := FreeAb_not_PreservesLimitCone_binary_product.
 
-(** ** C: UNIVERSE — the [Set] pin is [Ab_trivial]'s, not [Ab]'s *)
+(* 相关说明。 （已译） *)
 
 Monomorphic Universe uo uh.
 Monomorphic Constraint Set < uh.
 Monomorphic Constraint uh < uo.
 
-(* controls: the category and its forgetful functor form at a hom level
-   strictly above [Set] *)
+(* controls: 范畴 forgetful 函子 form at hom level
+ strictly above [Set] （已译） *)
 Check (Ab@{uo uh} : Category@{uo uh uh}).
 (*
    本节说明 ProbeFreeAbNotContinuous430 相关定义、性质与动机。
@@ -92,8 +90,7 @@ Check (Ab@{uo uh} : Category@{uo uh uh}).
 *)
 Check (Ab_Forget@{uo uo uh}).
 
-(* N6-N8 UNIVERSE: everything assembled from the trivial group is pinned
-   at [Set] *)
+(* 相关说明。 （已译） *)
 Fail Check (Ab_trivial : AbObject@{uh uh uh}).
 Fail Check (Ab_Terminal : @Terminal Ab@{uo uh}).
 Fail Check (Ab_Cartesian : @Cartesian Ab@{uo uh}).

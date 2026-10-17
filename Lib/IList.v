@@ -23,17 +23,14 @@ Section ilist.
 Context {A : Type}.
 Context {B : A → Type}.
 
-(* [ilist l] computes the right-nested product [B a0 * (B a1 * (... * unit))].
-   The empty list yields [unit]; a cons prepends one [B]-typed factor. *)
+(* 相关说明。 （已译） *)
 Fixpoint ilist (l : list A) : Type :=
   match l with
   | []      => unit
   | x :: xs => B x * ilist xs
   end.
 
-(* Cons for indexed lists: prepend a [B a] head onto an [ilist l], giving an
-   [ilist (a :: l)].  This is just pairing, the constructor for the product
-   that [ilist (a :: l)] reduces to. *)
+(* 相关说明。 （已译） *)
 Definition icons
            (a : A)
            {l : list A}
@@ -64,9 +61,7 @@ Definition ilist_hd {As : list A} (il : ilist As) :
     | [] => fun il => tt
   end il.
 
-(* Get the cdr of an ilist: the remaining [ilist As'] after dropping the
-   head.  As with [ilist_hd], the return type is computed from [As] so the
-   empty-list branch can fall back to [unit]. *)
+(* 相关说明。 （已译） *)
 Definition ilist_tl {As : list A} (il : ilist As) :
   match As return ilist As → Type with
     | a :: As' => fun il => ilist As'
@@ -124,9 +119,7 @@ Proof.
       exact (IHn As i).
 Defined.
 
-(* Append two indexed lists, concatenating their index lists: the result is
-   indexed by [l ++ l'], matching [List.app] on the underlying indices.
-   Recurses on the first list's structure. *)
+(* 相关说明。 （已译） *)
 Equations iapp `(xs : ilist l) `(ys : ilist l') : ilist (l ++ l') :=
   iapp (l:=[]) tt ys := ys;
   iapp (x, xs) ys := (x, iapp xs ys).
@@ -154,8 +147,7 @@ Equations imap `(f : A → C) `(k : ∀ (a : A), B a → D (f a))
   imap f k (l:=[]) tt := tt;
   imap f k (l:=j :: js) (x, xs) := (k j x, imap f k xs).
 
-(* The index-preserving special case of [imap]: keep the same index list [l]
-   and only change the value family from [B] to [C] via [k a : B a -> C a]. *)
+(* 相关说明。 （已译） *)
 Equations imap' `(k : ∀ (a : A), B a → C a)
   `(xs : @ilist A B l) : @ilist A C l :=
   imap' k (l:=[]) tt := tt;

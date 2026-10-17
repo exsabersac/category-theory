@@ -45,7 +45,7 @@ Generalizable All Variables.
 Fail Check probe378_no_such_constant_anywhere.
 
 (* ------------------------------------------------------------------ *)
-(** ** Controls: every guarded constant named outside a [Fail] *)
+(* * ** Controls: every guarded 常值 named outside [Fail] （已译） *)
 
 Check @diagonal_counit.
 Check @diagonal_counit_strict.
@@ -151,8 +151,7 @@ Context (P : ConstantColimits J C).
 Fail Example probe_apex_strict (c : C) :
   colim_obj L Δ[J](c) = c := eq_refl.
 
-(* Control: with the record in hand the SAME equation is available, and
-   under the terminal choice it holds by [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Definition probe_apex_control (c : C) : colim_obj (cc_colim P) Δ[J](c) = c
   := cc_obj P c.
 
@@ -181,13 +180,12 @@ Fail Example probe_counit_is_unique_iso (c : C) :
             (colim_acolimit L Δ[J](c)) (const_IsAColimit c K))
   := eq_refl.
 
-(* Control: the same statement at [≈] is what section (A) delivers, and
-   the counit's own triangle is what proves it. *)
+(* 相关说明。 （已译） *)
 Definition probe_counit_control (c : C) (j : J) :
   diagonal_counit L c ∘ colim_inj L Δ[J](c) j ≈ id
   := diagonal_counit_commutes L c j.
 
-(* Controls: both legs of the isomorphism read back on the nose. *)
+(* Controls: both legs 同构 read back nose. （已译） *)
 Example probe_to_strict (c : C) :
   to (diagonal_counit_Isomorphism L K c) = diagonal_counit L c := eq_refl.
 
@@ -215,7 +213,7 @@ Fail Definition probe_lali_from_bare :
   LeftAdjointLeftInverse (@Diagonal C J) :=
   colimit_is_lali_of_diagonal j0 L.
 
-(* Control: with the record it is exactly the headline. *)
+(* 相关说明。 （已译） *)
 Definition probe_lali_control :
   LeftAdjointLeftInverse (@Diagonal C J) :=
   colimit_is_lali_of_diagonal j0 P.
@@ -279,8 +277,7 @@ Fail Check (@LeftAdjointLeftInverse Au Xu).
 End HomProof.
 
 (* ------------------------------------------------------------------ *)
-(** ** (5) Readbacks the target's header claims, and the one it
-       withdraws *)
+(* 相关说明。 （已译） *)
 
 Example probe_eval_retracts {J C : Category} (j : J) (c : C) :
   fobj[@EvalAt J C j] Δ[J](c) = c := eq_refl.

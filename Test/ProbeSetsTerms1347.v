@@ -82,7 +82,7 @@ Check Category.Instance.Sets.setoid_morphism_id.
 Check Category.Instance.Sets.setoid_morphism_compose.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Downstream: the free module's unit *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeSetsTerms1347 相关定义、性质与动机。

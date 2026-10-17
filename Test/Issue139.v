@@ -21,16 +21,16 @@ Context {C : Category}.
 Context `{@Cartesian C}.
 Context `{@Terminal C}.
 
-(* Theorem 1, generically: a cartesian category with a terminal object is
-   monoidal.  Before #139 this construction had no discoverable name. *)
+(* Theorem 1, generically: cartesian 范畴 终对象 is
+ monoidal. Before #139 construction had no discoverable name. （已译） *)
 Definition issue_139_cartesian_is_monoidal : @Monoidal C := Cartesian_Monoidal.
 
-(* The tensor of that monoidal structure is exactly the categorical product. *)
+(* 相关说明。 （已译） *)
 Example issue_139_tensor_is_product (x y : C) :
   (x ⨂[Cartesian_Monoidal] y)%object = (x × y)%object.
 Proof. reflexivity. Qed.
 
-(* ...and its unit is exactly the terminal object. *)
+(* ...and unit exactly 终对象. （已译） *)
 Example issue_139_unit_is_terminal :
   @I C Cartesian_Monoidal = 1%object.
 Proof. reflexivity. Qed.

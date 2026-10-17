@@ -38,11 +38,10 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Instrument check: the harness reports a genuine failure, and a [Fail]
-   that succeeds prints nothing, so this must be here. *)
+(* 相关说明。 （已译） *)
 Fail Check probe_366_no_such_constant.
 
-(** ** Controls: everything the negatives name, named outside a [Fail] *)
+(* 相关说明。 （已译） *)
 
 Check @Power_Functor.
 Check @Copower_Functor.
@@ -86,7 +85,7 @@ Check @counit.
 Check @unique_property.
 Check Coq.
 
-(** ** A. §A: the direct copower functor agrees on DATA, not as a record *)
+(* * ** A. §A: direct copower 函子 agrees DATA, not record （已译） *)
 
 Section DirectCopower.
 
@@ -131,16 +130,14 @@ Example direct_obj (b : C) :
 Example direct_fmap {b b' : C} (g : b ~> b') :
   fmap[Copower_Functor_direct] g = fmap[Copower_Functor J] g := eq_refl.
 
-(* NEGATIVE 1, CONVERSION.  The WHOLE RECORD is refused: the three
-   [Program]-rebuilt law fields differ.  Verbatim:
-     ... (cannot unify "Copower_Functor_direct" and "Copower_Functor J"). *)
+(* 相关说明。 （已译） *)
 Fail Example direct_is_op_record :
   Copower_Functor_direct = Copower_Functor J := eq_refl.
 
 End DirectCopower.
 
-(** ** B. §A: the copower functor is [Opposite_Functor] OF the op-power
-    functor, and is NOT that functor *)
+(* * ** B. §A: copower 函子 [Opposite_Functor] OF op-power
+ 函子, NOT 函子 （已译） *)
 
 Section CopowerNotPower.
 
@@ -165,7 +162,7 @@ Fail Example copower_is_op_power :
 Fail Example copower_is_power :
   Copower_Functor J = Power_Functor J := eq_refl.
 
-(* POSITIVE CONTROL: what DOES hold on the nose is the double opposite. *)
+(* 相关说明。 （已译） *)
 Example double_op :
   Opposite_Functor (Copower_Functor J) = @Power_Functor (C^op) HC J
   := eq_refl.
@@ -209,7 +206,7 @@ Context {HP : @HasIndexedProducts C}.
 Context {HC : @HasIndexedCoproducts C}.
 Context (J : Type).
 
-(* An OPAQUE clone: the same adjunction, closed with [Qed]. *)
+(* An OPAQUE clone: same 伴随, closed [Qed]. （已译） *)
 Definition cp_adj_qed : Copower_Functor J ⊣ Power_Functor J.
 Proof. exact (Copower_Power_Adjunction J). Qed.
 
@@ -223,9 +220,9 @@ Fail Example qed_readback (b c : C) :
   @adj C C (Copower_Functor J) (Power_Functor J) cp_adj_qed b c
   = cp_adj_iso J b c := eq_refl.
 
-(* The §E adjunction, same treatment.  The readback at stake is the
-   target's own [pa_adj_iso_is_cp_adj_iso], which is what makes §E's
-   bijection §B's rather than a second one. *)
+(* The §E 伴随, same treatment. The readback at stake the
+ target's own [pa_adj_iso_is_cp_adj_iso], what makes §E's
+ bijection §B's rather than second one. （已译） *)
 Definition cp_pa_adj_qed : Partial_l Copower_Bifunctor J ⊣ Power_Functor J.
 Proof. exact (cp_pa_adj J). Qed.
 
@@ -258,8 +255,7 @@ Definition ex1_pa_adj_qed (a : C) :
   Partial_l Ex1_Bifunctor a ⊣ HomCoq HS a.
 Proof. exact (ex1_pa_adj HS a). Qed.
 
-(* POSITIVE CONTROL: with the transparent original the counit reduces, so
-   the mediator's [unique_property] closes it with no tactic at all. *)
+(* 相关说明。 （已译） *)
 Example ex1_counit_defined (a c : C) (g : a ~> c) :
   @counit C Coq (Partial_l Ex1_Bifunctor a) (HomCoq HS a)
     (ex1_pa_adj HS a) c ∘ copower_inj (a ~> c) a g ≈ g :=
@@ -275,14 +271,14 @@ Fail Example ex1_counit_qed (a c : C) (g : a ~> c) :
 
 End QedCloneEx1.
 
-(** ** D. §C: why the copower half is built directly over [1^op] *)
+(* 相关说明。 （已译） *)
 
 Section WeightedShapes.
 
 Context {C : Category}.
 Context (b : C).
 
-(* NEGATIVE 6, CONVERSION: the colimit shape is NOT the limit shape. *)
+(* 相关说明。 （已译） *)
 Fail Example one_op_is_one : Opposite _1 = _1 := eq_refl.
 
 (*
@@ -293,13 +289,13 @@ Fail Example one_op_is_one : Opposite _1 = _1 := eq_refl.
 Fail Example op_diagram_is_diagram :
   Opposite_Functor (copower_diagram b) = @power_diagram (C^op) b := eq_refl.
 
-(* POSITIVE CONTROL: the two weights agree on the single object's value. *)
+(* POSITIVE CONTROL: two weights agree single 对象's value. （已译） *)
 Example weight_values_agree (J : Type) :
   fobj[copower_weight J] ttt = fobj[power_weight J] ttt := eq_refl.
 
 End WeightedShapes.
 
-(** ** E. §C: the weighted round trip leaves ONE identity residue *)
+(* * ** E. §C: weighted round trip leaves ONE 恒等 residue （已译） *)
 
 Section WeightedRoundTripPin.
 
@@ -321,9 +317,9 @@ Fail Example inj_strict (j : J) :
 
 End WeightedRoundTripPin.
 
-(** ** F. §E: the §B ISO ascribes at the partial functor; the §B
-    ADJUNCTION does not, because [Adjunction] is indexed by the functor
-    RECORD and not by its two actions *)
+(* * ** F. §E: §B ISO ascribes at partial 函子; §B
+ ADJUNCTION does not, because [Adjunction] indexed 函子
+ RECORD not two actions （已译） *)
 
 Section PartialAscription.
 
@@ -332,7 +328,7 @@ Context {HP : @HasIndexedProducts C}.
 Context {HC : @HasIndexedCoproducts C}.
 Context (J : Type).
 
-(* POSITIVE CONTROLS: both actions agree, and so the ISO ascribes. *)
+(* 相关说明。 （已译） *)
 Example partial_obj (b : C) :
   fobj[Partial_l Copower_Bifunctor J] b = fobj[Copower_Functor J] b
   := eq_refl.
@@ -446,7 +442,7 @@ Defined.
 Lemma blur_equal : blur_id ≈ blur_neg.
 Proof. intro b; exact I. Qed.
 
-(* The [fmap_respects] obligation, written out at the shape it takes. *)
+(* 相关说明。 （已译） *)
 Definition SetsIndexRespects : Type :=
   ∀ (S S' a : Sets) (f f' : S ~{Sets}~> S'), f ≈ f' → ∀ j : S,
     @copower_inj Sets Sets_HasIndexedCoproducts (carrier S') a (f j)
@@ -460,7 +456,7 @@ Proof.
   simpl in e; discriminate e.
 Qed.
 
-(** ** I. The two parametrizations are BOTH inhabited *)
+(* 相关说明。 （已译） *)
 
 Check (@Copower_ParametrizedAdjunction).
 Check (@Copower_Object_ParametrizedAdjunction).

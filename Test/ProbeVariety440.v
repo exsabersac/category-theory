@@ -23,7 +23,7 @@ Module UA := Category.Instance.Comp.UniversalAlgebra.
 (* instrument: the refutation keyword is live *)
 Fail Check probe440_absent_name.
 
-(** ** A: CONVERSION — the axiom root, and a genuine induction *)
+(* 相关说明。 （已译） *)
 
 Section BundleRoot.
 
@@ -39,8 +39,7 @@ Fail Example p440_nullary_conv :
   (fun i : UA.nullary => UA.map f (match i return UA.carrier A with end))
     = (fun i : UA.nullary => match i return UA.carrier B with end) := eq_refl.
 
-(* control: the same equation WITH extensionality is accepted, and it is
-   exactly [nullary_bundle] *)
+(* 相关说明。 （已译） *)
 Example p440_nullary_ext :
   (fun i : UA.nullary => UA.map f (match i return UA.carrier A with end))
     = (fun i : UA.nullary => match i return UA.carrier B with end).
@@ -57,16 +56,14 @@ Context (s : Fin.t m → DerivedOperators S n).
 Context (t : DerivedOperators S m).
 Context (env : Fin.t n → sact_carrier A).
 
-(* n2 CONVERSION: substitution commutes with the action only
-   propositionally — [clone_act_subst] recurses over [t], so the two
-   sides are not convertible at an abstract [t]. *)
+(* 相关说明。 （已译） *)
 Fail Example p440_subst_conv :
   clone_act A (clone_subst s t) env
     = clone_act A t (fun i => clone_act A (s i) env) := eq_refl.
 
 End SubstIsInduction.
 
-(* control: the two computation rules of the action ARE definitional *)
+(* 相关说明。 （已译） *)
 
 Example p440_act_var {S : UA.OpSignature} (A : SetoidAction S) {n}
   (i : Fin.t n) (env : Fin.t n → sact_carrier A) :
@@ -78,10 +75,9 @@ Example p440_act_op {S : UA.OpSignature} (A : SetoidAction S) {n}
   clone_act A (clone_op o args) env
     = sact_op A o (fun j => clone_act A (args j) env) := eq_refl.
 
-(** ** B: TYPING — the equations are not dropped *)
+(* 相关说明。 （已译） *)
 
-(* The booleans under conjunction: a perfectly good operation algebra for
-   the group signature, and not a group. *)
+(* 相关说明。 （已译） *)
 (* The constructor is applied explicitly rather than through record
    syntax: [UA.op]'s signature quantifies over the operation type of an
    as-yet-unresolved [?S], and record syntax does not fix it. *)
@@ -96,8 +92,8 @@ Definition AndOp : UA.OpAlgebra UA.GroupOp :=
 (* control: it IS an object of [Algs], the equation-free category *)
 Example p440_and_in_algs : @UA.Algs UA.GroupOp := AndOp.
 
-(* the positive half of n3, stronger than any refutation: NO satisfaction
-   proof exists, because [false] has no inverse under conjunction *)
+(* the positive half n3, stronger than any refutation: NO satisfaction
+ 证明 exists, because [false] has no inverse under conjunction （已译） *)
 Theorem AndOp_not_group : satisfies UA.GroupEq AndOp → False.
 Proof.
   intro H.
@@ -106,14 +102,14 @@ Proof.
   discriminate Hf.
 Qed.
 
-(* n3 TYPING: so the naive satisfaction proof does not ascribe *)
+(* n3 TYPING: so naive satisfaction 证明 does not ascribe （已译） *)
 Fail Example p440_and_in_variety : GroupVariety :=
   (AndOp; fun e args => eq_refl).
 
 (* control: ℤ/2 under exclusive or IS an object of the variety *)
 Example p440_bool_in_variety : GroupVariety := GroupVariety_Bool.
 
-(** ** C: CONVERSION — the variety is not the category of groups *)
+(* * ** C: CONVERSION — variety not 范畴 groups （已译） *)
 
 (*
    本节说明 ProbeVariety440 相关定义、性质与动机。
@@ -122,17 +118,17 @@ Example p440_bool_in_variety : GroupVariety := GroupVariety_Bool.
 *)
 Fail Example p440_variety_is_grp : GroupVariety = Grp := eq_refl.
 
-(* controls: the comparison exists and is full and faithful *)
+(* controls: comparison exists 全忠实 （已译） *)
 Example p440_comparison : GroupVariety ⟶ Grp := GroupVariety_to_Grp.
 Example p440_comparison_faithful : Faithful GroupVariety_to_Grp :=
   GroupVariety_to_Grp_Faithful.
 Example p440_comparison_full : Functor.Full GroupVariety_to_Grp :=
   GroupVariety_to_Grp_Full.
 
-(** ** D: readbacks
+(* * ** D: readbacks
 
-    The two presentations of a variety agree on the nose, and the
-    forgetful functor's carrier is the algebra's carrier. *)
+ The two presentations variety agree nose, the
+ forgetful 函子's carrier algebra's carrier. （已译） *)
 
 Example p440_pack_carrier {S : UA.OpSignature} {E : UA.EqSignature S}
   (A : UA.Algebra S E) :

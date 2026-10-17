@@ -53,12 +53,12 @@ Check @Chain3_AdjointOnTheRight.
 Check @Powerset_not_AdjointOnTheLeft.
 Check @right_does_not_imply_left_in_Sets.
 
-(* TYPING 1 -- the reviewer's bar: the class is not an abbreviation. *)
+(* 相关说明。 （已译） *)
 Fail Definition probe358_not_an_abbreviation
   (H : @Adjunction (A^op) X (Opposite_Functor T) S) :
   AdjointOnTheRight S T := H.
 
-(* TYPING 2 -- and not in the other direction either. *)
+(* 相关说明。 （已译） *)
 Fail Definition probe358_not_an_abbreviation_rev
   (H : AdjointOnTheRight S T) :
   @Adjunction (A^op) X (Opposite_Functor T) S := H.

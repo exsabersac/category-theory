@@ -20,7 +20,7 @@ Require Import Category.Instance.Top.Pushout.
 
 Generalizable All Variables.
 
-(** * Probe: the strength boundary of the Grp and Top pushouts *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbePushoutGrpTop。
@@ -28,15 +28,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Instrument check
-
-    A [Fail] that must itself fail, so that a globally broken [Fail]
-    vernacular would be caught here rather than silently greening the
-    negatives below. *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
-(** ** Positive controls, and conversion negatives *)
+(* 相关说明。 （已译） *)
 
 Section GrpConversion.
 
@@ -46,17 +42,16 @@ Context {Q : GrpObject}.
 Context (q1 : B ~{Grp}~> Q) (q2 : C ~{Grp}~> Q).
 Context (Hcomm : q1 ∘[Grp] f ≈ q2 ∘[Grp] g).
 
-(* CONTROL 1.  The chosen pushout's apex and first injection ARE the
-   hand-built ones; the record projections reduce. *)
+(* 相关说明。 （已译） *)
 Definition ctl_grp_apex :
   pushout_apex (Grp_pushout f g) = AmalgamGrp f g := eq_refl.
 
 Definition ctl_grp_in1 :
   pushout_in1 (Grp_pushout f g) = am_inj1 f g := eq_refl.
 
-(* CONTROL 2.  The mediator's own value on the three formers reduces --
-   [am_eval] is a [Fixpoint], so this is where [am_med]'s homomorphism
-   laws come from. *)
+(* CONTROL 2. The mediator's own value three formers reduces --
+ [am_eval] [Fixpoint], so 这是 where [am_med]'s homomorphism
+ laws come from. （已译） *)
 Definition ctl_grp_med_unit :
   grp_map (am_med f g q1 q2 Hcomm) am_one = grp_unit Q := eq_refl.
 
@@ -98,8 +93,7 @@ Definition ctl_top_apex :
 Definition ctl_top_in1 :
   pushout_in1 (Top_pushout f g) = Top_po_in1 f g := eq_refl.
 
-(* CONTROL 3b.  Names [pushout_med] and [Top_po_med], for the same
-   pairing reason. *)
+(* 相关说明。 （已译） *)
 Definition ctl_top_med_typed
   : pushout_apex (Top_pushout f g) ~{Top}~> Q :=
   pushout_med (Top_pushout f g) Hcomm.
@@ -107,9 +101,7 @@ Definition ctl_top_med_typed
 Definition ctl_top_med_named
   : Pushout_Top f g ~{Top}~> Q := Top_po_med f g q1 q2 Hcomm.
 
-(* NEGATIVE 2 (conversion).  The SAME donor opacity, on the other
-   substrate -- which is what shows the cause is Structure/Pushout.v's
-   [Qed] rather than anything about groups. *)
+(* 相关说明。 （已译） *)
 Fail Definition neg_top_med :
   pushout_med (Top_pushout f g) Hcomm = Top_po_med f g q1 q2 Hcomm := eq_refl.
 
@@ -122,8 +114,7 @@ Context (B C : TopSpace).
 Notation Ef := (top_zero B).
 Notation Eg := (top_zero C).
 
-(* CONTROL 4.  The POINTS of the empty-span pushout are the coproduct's
-   points on the nose. *)
+(* 相关说明。 （已译） *)
 Definition ctl_top_points :
   carrier (top_carrier (Pushout_Top Ef Eg))
     = carrier (sum_carrier B C) := eq_refl.
@@ -136,8 +127,7 @@ Definition ctl_top_points :
 Fail Definition neg_top_carrier :
   top_carrier (Pushout_Top Ef Eg) = sum_carrier B C := eq_refl.
 
-(* CONTROL 4b.  Names [IsOpen] and [Sum_Top], which NEGATIVE 4 mentions
-   and no other control did. *)
+(* 相关说明。 （已译） *)
 Definition ctl_top_sum_open (W : sum_carrier B C → Type)
   (H : IsOpen (Sum_Top B C) W) : IsOpen (Sum_Top B C) W := H.
 
@@ -162,8 +152,7 @@ Section SetPin.
 Universe bg.
 Constraint Set < bg.
 
-(* CONTROL 5.  The amalgamated product is formable strictly above [Set]:
-   no [Set] pin anywhere in the pushout proper. *)
+(* 相关说明。 （已译） *)
 Check (fun (A B C : GrpObject@{bg bg bg})
            (f : A ~{Grp}~> B) (g : A ~{Grp}~> C) => AmalgamGrp f g).
 
@@ -181,8 +170,7 @@ Check (fun B C : GrpObject@{bg bg bg} => Grp_free_product B C).
 Check (fun B C : GrpObject@{bg bg bg} => Grp_fp_inl B C).
 Check (fun B C : GrpObject@{bg bg bg} => grp_const B C).
 
-(* CONTROL 8.  The donor constants exist and are usable at [Set]-level
-   groups. *)
+(* 相关说明。 （已译） *)
 Check (Grp_zero_hom Z2).
 Check (Grp_zero_hom_Section Z2).
 

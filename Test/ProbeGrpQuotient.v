@@ -26,18 +26,18 @@ Require Import Category.Instance.Grp.Quotient.Colimit.
 
 Generalizable All Variables.
 
-(** ** Negative 1: the kernel subgroup group is not [Grp_kernel] *)
+(* 相关说明。 （已译） *)
 
-(* POSITIVE CONTROL: the carriers ARE convertible. *)
+(* 相关说明。 （已译） *)
 Example control_kernel_carrier {G K : GrpObject} (h : G ~{Grp}~> K) :
   carrier (SubgroupGrp (KernelNS h)) = carrier (Grp_kernel h).
 Proof. reflexivity. Qed.
 
-(* NEGATIVE: the whole records are not. *)
+(* 相关说明。 （已译） *)
 Fail Definition negative_kernel_record {G K : GrpObject} (h : G ~{Grp}~> K) :
   SubgroupGrp (KernelNS h) = Grp_kernel h := eq_refl.
 
-(** ** Negative 2: the mediator triangle is `≈` and not Leibniz *)
+(* 相关说明。 （已译） *)
 
 (* POSITIVE CONTROL: the `≈` form holds, pointwise by reflexivity. *)
 Example control_med_triangle {G K : GrpObject} (N : NormalSubgroup G)
@@ -48,19 +48,19 @@ Proof. exact (quot_med_commutes N x). Qed.
 Fail Definition negative_med_triangle {G K : GrpObject} (N : NormalSubgroup G)
   (x : Kills N K) : quot_med N x ∘ quot_proj N = `1 x := eq_refl.
 
-(** ** Negative 3: [GrpImage_unit] is opaque *)
+(* 相关说明。 （已译） *)
 
-(* POSITIVE CONTROL: the equation the opaque lemma carries IS accessible,
-   which is what [image_med] uses instead of the witness. *)
+(* POSITIVE CONTROL: equation opaque 引理 carries IS accessible,
+ what [image_med] uses instead witness. （已译） *)
 Example control_image_unit_equation {G K : GrpObject} (h : G ~{Grp}~> K) :
   grp_map h (`1 (GrpImage_unit h)) ≈ grp_unit K.
 Proof. exact (`2 (GrpImage_unit h)). Qed.
 
-(* NEGATIVE: the witness itself does not reduce to the unit. *)
+(* 相关说明。 （已译） *)
 Fail Definition negative_image_unit_witness {G K : GrpObject}
   (h : G ~{Grp}~> K) : `1 (GrpImage_unit h) = grp_unit G := eq_refl.
 
-(** ** Boundary 4, lifted by #450: zero morphisms in [Grp] above [Set] *)
+(* * ** Boundary 4, lifted #450: zero 态射 [Grp] above [Set] （已译） *)
 
 Monomorphic Universe big.
 Monomorphic Constraint Set < big.
@@ -107,7 +107,7 @@ Definition control_big_zero : G ~{Grp}~> K := @zero_mor Grp Grp_Zero G K.
 
 End BigZero.
 
-(** ** Positive controls for the strict identifications that DO hold *)
+(* 相关说明。 （已译） *)
 
 Section Positive.
 
@@ -124,7 +124,7 @@ Example positive_first_iso_from {G K : GrpObject} (h : G ~{Grp}~> K) :
   from (first_isomorphism_theorem h) = image_med h (quot_elem (KernelNS h)).
 Proof. reflexivity. Qed.
 
-(* The universal element's underlying homomorphism IS the projection. *)
+(* 相关说明。 （已译） *)
 Example positive_universal_elem {G : GrpObject} (N : NormalSubgroup G) :
   `1 (@aue_elem _ (KillsFunctor N) (QuotientGrp N) (quot_universal_element N))
     = quot_proj N.

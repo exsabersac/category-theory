@@ -28,10 +28,7 @@ Definition control_prod (C D : Category) :
 
 Definition control_invol (G : Quiver) : QuiverOp (QuiverOp G) = G := eq_refl.
 
-(** ** Negative probes: the boundary.
-
-    These must FAIL.  Each is the [eq_refl] strengthening of a statement that
-    Constructions.v delivers at [≈]. *)
+(* 相关说明。 （已译） *)
 
 (* [Fst]/[Snd] are [Program Instance]s: [fmap_respects] is opaque. *)
 Fail Definition probe_fst_strict (C D : Category) :

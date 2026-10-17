@@ -13,7 +13,7 @@ Require Import Category.Instance.Grp.Limit.
 
 Generalizable All Variables.
 
-(** * Probe: the measured boundaries of Instance/Grp/Limit.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeGrpLimit411。
@@ -23,12 +23,11 @@ Generalizable All Variables.
 
 (** ** Instrument check *)
 
-(* A name that is not in scope: if the harness were reporting [Fail]
-   successes as failures, or vice versa, this line would say so. *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe411_no_such_constant.
 
-(** ** Guards: every constant a negative names, named outside every [Fail] *)
+(* * ** Guards: every 常值 negative names, named outside every [Fail] （已译） *)
 
 Check @IsALimit.
 Check @Cone.
@@ -47,7 +46,7 @@ Check @ConeSet_Complete.
 Check @Sets_Complete.
 Check @creates_limits_Complete.
 
-(** ** N1, N2: the universe boundary, with [Cone] as the control *)
+(* 相关说明。 （已译） *)
 
 Section UniverseBoundary.
 
@@ -59,8 +58,7 @@ Context (Ju : Category@{jo jh jh}).
 Context (Fj : Ju ⟶ Sets@{so sso}).
 Context (cu : obj[Sets@{so sso}]).
 
-(* Controls: the shape, the diagram and a cone over it are all formable at
-   these levels. *)
+(* 相关说明。 （已译） *)
 Check Ju.
 Check Fj.
 Check (@Cone Ju Sets@{so sso} Fj).
@@ -73,7 +71,7 @@ Fail Check (@sets_limit_ext Ju Fj cu).
 
 End UniverseBoundary.
 
-(** ** N3: the two creation classes are different types *)
+(* 相关说明。 （已译） *)
 
 Check (Grp_Forget_creates_limits : CreatesAllLimits Grp_Forget).
 Check (Grp_Forget_StrictlyCreatesLimits : StrictlyCreatesLimits Grp_Forget).
@@ -81,7 +79,7 @@ Check (Grp_Forget_StrictlyCreatesLimits : StrictlyCreatesLimits Grp_Forget).
 Fail Definition probe411_n3 : StrictlyCreatesLimits Grp_Forget :=
   Grp_Forget_creates_limits.
 
-(** ** N4: the created group depends on the limit oracle *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeGrpLimit411 相关定义、性质与动机。
@@ -97,7 +95,7 @@ Section Oracle.
 Context {J : Category}.
 Context (K : J ⟶ Grp).
 
-(* Control: over the cone-set oracle the carrier IS [cone_apex]. *)
+(* 相关说明。 （已译） *)
 Example probe411_ctrl_coneset :
   grp_setoid (vertex_obj[Grp_ConeSet_Complete J K]) = cone_apex (Grp_Forget ◯ K)
   := eq_refl.
@@ -107,9 +105,7 @@ Fail Example probe411_n4 :
   grp_setoid (vertex_obj[Grp_ConeSet_Complete J K])
     = Sets_limit_obj (Grp_Forget ◯ K) := eq_refl.
 
-(* Control: over the compatible-family oracle it IS [Sets_limit_obj] --
-   the target's own [grp_complete_carrier], restated here so that the
-   negative's discriminating partner sits beside it. *)
+(* 相关说明。 （已译） *)
 Example probe411_ctrl_sets :
   grp_setoid (vertex_obj[Grp_Complete J K]) = Sets_limit_obj (Grp_Forget ◯ K)
   := eq_refl.

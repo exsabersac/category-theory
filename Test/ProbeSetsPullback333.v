@@ -19,15 +19,11 @@ Require Import Category.Instance.Sets.Complete.
 Require Import Category.Adjunction.GAFT.Sets.
 Require Import Category.Instance.Sets.Pullback.
 
-(** ** Instrument check
-
-    A [Fail] that never fails would make every negative below vacuous. *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
-(** ** Negative 1 (CONVERSION): the #326 derivation gives the WRONG apex
-
-    This is the target's design decision, made checkable. *)
+(* 相关说明。 （已译） *)
 
 Section DerivationRoute.
 
@@ -55,7 +51,7 @@ Check (@pullback Sets Derived _ _ _ f g).
 
 End DerivationRoute.
 
-(** ** Negative 2 (CONVERSION, different cause): prod has no eta *)
+(* 相关说明。 （已译） *)
 
 Section PairEta.
 
@@ -64,8 +60,7 @@ Context (x y z : Sets) (f : x ~> z) (g : y ~> z) (u : sets_pb_obj f g).
 Fail Definition probe_pair_eta :
   sets_pb_pair f g u = `1 u := eq_refl.
 
-(* Positive controls.  The pairing exists and the projections DO compute;
-   only the surjective-pairing step is missing. *)
+(* 相关说明。 （已译） *)
 Check (sets_pb_pair f g u).
 Check (sets_pb_fst f g).
 Check (sets_pb_snd f g).
@@ -85,8 +80,8 @@ Context (x y z : Sets) (f : x ~> z) (g : y ~> z).
 Fail Definition probe_round_fst :
   exl ∘ sets_pb_pair f g = sets_pb_fst f g := eq_refl.
 
-(* Positive controls: the POINTWISE forms ARE proved in the target, and
-   every constant in the rejected equation is well-formed here. *)
+(* Positive controls: POINTWISE forms ARE proved target, and
+ every 常值 rejected equation well-formed here. （已译） *)
 Check sets_equalizer_round_fst_pointwise.
 Check (sets_pb_pair f g).
 Check (sets_pb_fst f g).
@@ -107,8 +102,7 @@ Context (x y z : Sets) (f : x ~> z) (g : y ~> z).
 Fail Check (Pullback f g (sets_pb_obj f g)
               (sets_pb_fst f g) (sets_pb_snd f g)).
 
-(* Positive controls: the BUNDLED form takes only the cospan, and the
-   APEX-PINNED form is the one that takes apex and legs. *)
+(* 相关说明。 （已译） *)
 Check (Pullback f g).
 Check Sets_Pullback.
 Check Sets_IsPullback.
@@ -116,7 +110,7 @@ Check (@IsPullback Sets).
 
 End BundledNotApplicable.
 
-(** ** Controls for the delivered results *)
+(* 相关说明。 （已译） *)
 
 Check Sets_HasPullbacks.
 Check Sets_Pullback.

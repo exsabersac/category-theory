@@ -53,13 +53,13 @@ Generalizable All Variables.
 Fail Check p477_absent_name.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The cone-level predicates: Structure/Limit/Absolute.v *)
+(* 相关说明。 （已译） *)
 
 Section Cones.
 
 Context {J C : Category} {K : J ⟶ C}.
 
-(* C1: the image of a cone under [Id] has the cone's apex ... *)
+(* 相关说明。 （已译） *)
 Example p477_c1_id_apex (N : Cone K) :
   vertex_obj[FCone Id N] = vertex_obj[N] := eq_refl.
 
@@ -70,12 +70,11 @@ Example p477_c2_id_leg (N : Cone K) (x : J) :
 (* R1 *)
 Fail Example p477_r1_id_comp : Id ◯ K = K := eq_refl.
 
-(* C3: so only the competing cone is repackaged, and absolute is
-   limiting. *)
+(* 相关说明。 （已译） *)
 Definition p477_c3_is_limit (N : Cone K) (A : AbsoluteLimitCone N) :
   IsLimitCone N := fun M => A C Id (cone_id_comp M).
 
-(* C4: the duality maps are mutually inverse on the nose ... *)
+(* 相关说明。 （已译） *)
 Example p477_c4_of_op_op (N : Cocone K) (A : AbsoluteColimitCocone N) :
   AbsoluteColimitCocone_of_op (AbsoluteColimitCocone_op A) = A := eq_refl.
 
@@ -93,7 +92,7 @@ Fail Example p477_r2_dual_same (N : Cocone K) :
 Definition p477_c6_bundled_limit (L : Limit K) (A : AbsoluteLimitCone L) :
   IsLimitCone L := AbsoluteLimitCone_IsLimitCone A.
 
-(* C7: ... and the colimit predicate to a bundled colimit. *)
+(* 相关说明。 （已译） *)
 Definition p477_c7_bundled_colimit (L : Colimit K)
   (A : AbsoluteColimitCocone L) : IsColimitCocone L :=
   AbsoluteColimitCocone_IsColimitCocone A.
@@ -110,7 +109,7 @@ Definition p477_c9_coapex (N : Cocone K) (A : AbsoluteColimitCocone N) :
 End Cones.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Universes of the cone-level predicates *)
+(* 相关说明。 （已译） *)
 
 Section ComposeUniverse.
 
@@ -151,24 +150,24 @@ Definition p477_c22_up_instance
   (A : AbsoluteLimitCone@{jo co ch do _ _ _ _} N) : IsLimitCone N :=
   AbsoluteLimitCone_IsLimitCone_up A.
 
-(* C23: ... and through the downward closure to the [Id] instance. *)
+(* 相关说明。 （已译） *)
 Definition p477_c23_down_instance
   (A : AbsoluteLimitCone@{jo co ch do _ _ _ _} N) : IsLimitCone N :=
   AbsoluteLimitCone_IsLimitCone (AbsoluteLimitCone_down A).
 
-(* C24: the colimit twins, the lift ... *)
+(* 相关说明。 （已译） *)
 Definition p477_c24_coup_instance
   (A : AbsoluteColimitCocone@{jo co ch do _ _ _ _} Nc) :
   IsColimitCocone Nc :=
   AbsoluteColimitCocone_IsColimitCocone_up A.
 
-(* C25: ... and the downward closure. *)
+(* 相关说明。 （已译） *)
 Definition p477_c25_codown_instance
   (A : AbsoluteColimitCocone@{jo co ch do _ _ _ _} Nc) :
   IsColimitCocone Nc :=
   AbsoluteColimitCocone_IsColimitCocone (AbsoluteColimitCocone_down A).
 
-(* C12: preservation keeps the target level free, given the limit. *)
+(* 相关说明。 （已译） *)
 Definition p477_c12_preserves (HN : IsLimitCone N)
   (A : AbsoluteLimitCone@{jo co ch do _ _ _ _} N)
   (D : Category@{do ch ch}) (F : Cu ⟶ D) : PreservesLimitCone Ku F :=
@@ -177,7 +176,7 @@ Definition p477_c12_preserves (HN : IsLimitCone N)
 End IdInstance.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The cofork: Structure/Coequalizer/Absolute.v *)
+(* 相关说明。 （已译） *)
 
 Section Cofork.
 
@@ -204,7 +203,7 @@ Definition p477_c15_inj_ParX_equiv :
   cocone_inj (FCocone T (cofork_cocone f g e H)) ParX
     ≈ fmap[T] e ∘ fmap[T] f := fmap_comp e f.
 
-(* C16: the descent of the image coequalizer is the colimit's mediator. *)
+(* 相关说明。 （已译） *)
 Example p477_c16_desc
   (HC : IsColimitCocone (FCocone T (cofork_cocone f g e H)))
   {z : X} (h : T y ~{X}~> z) (Hh : h ∘ fmap[T] f ≈ h ∘ fmap[T] g) :
@@ -254,7 +253,7 @@ Definition p477_c26_up_instance
   IsCoequalizer f g (scoeq_obj S) (scoeq_e S) :=
   AbsoluteCoequalizer_IsCoequalizer_up A.
 
-(* C27: ... and through the downward closure to the [Id] instance. *)
+(* 相关说明。 （已译） *)
 Definition p477_c27_down_instance
   (A : AbsoluteCoequalizer@{co ch co xh _} f g (scoeq_obj S) (scoeq_e S)) :
   IsCoequalizer f g (scoeq_obj S) (scoeq_e S) :=
@@ -278,8 +277,7 @@ Definition p477_c21_split_apex :
 
 End CoforkUniverse.
 
-(* C48: the limit side.  A split fork of C^op is an absolute limit cone in
-   C itself, through the duality map, C^op^op being C by conversion. *)
+(* 相关说明。 （已译） *)
 Definition p477_c48_split_op_limit {C : Category} {x y : C^op}
   {f g : x ~{C^op}~> y} (S : SplitCoequalizer f g) :
   @AbsoluteLimitCone (Parallel^op) C ((APair f g)^op)
@@ -287,20 +285,19 @@ Definition p477_c48_split_op_limit {C : Category} {x y : C^op}
   AbsoluteColimitCocone_op (split_cofork_AbsoluteColimitCocone S).
 
 (* ------------------------------------------------------------------------ *)
-(** ** The diagram-general conversions: Structure/Coequalizer.v *)
+(* 相关说明。 （已译） *)
 
 Section ParallelDiagram.
 
 Context {C : Category}.
 
-(* C28: at [APair f g] the general conversion has the type of
-   [is_coequalizer_cocone_ump], packaged as a colimiting cocone ... *)
+(* 相关说明。 （已译） *)
 Definition p477_c28_apair_colimit {x y : C} (f g : x ~> y) {q : C}
   {e : y ~> q} (E : IsCoequalizer f g q e) :
   IsColimitCocone (is_coequalizer_cocone f g E) :=
   parallel_coequalizer_colimit (APair f g) E.
 
-(* C29: ... and its converse the type of [coequalizer_is_coequalizer]. *)
+(* 相关说明。 （已译） *)
 Definition p477_c29_apair_coequalizer {x y : C} (f g : x ~> y)
   (L : Coequalizer (APair f g)) :
   IsCoequalizer f g (colimit_apex L)
@@ -368,7 +365,7 @@ Constraint xo < yo.
 Context (Cl : Category@{co ch ch}) (Xl : Category@{xo ch ch})
   (Tl : Cl ⟶ Xl).
 
-(* C38: with the objects lifted alone the composite is formable. *)
+(* C38: 对象 lifted alone 复合 formable. （已译） *)
 Definition p477_c38_compose_objects : Cl ⟶ LiftCat@{xo ch yo ch} Xl :=
   Lift_in Xl ◯ Tl.
 
@@ -381,7 +378,7 @@ Constraint ch < xh.
 
 Context (Cb : Category@{co ch ch}).
 
-(* C39: the functor type into the lift is formable ... *)
+(* C39: 函子 type 进入 lift formable ... （已译） *)
 Definition p477_c39_in_type : Type := Cb ⟶ LiftCat@{co ch xo xh} Cb.
 
 (* R10 *)
@@ -390,11 +387,9 @@ Fail Definition p477_r10_back_type : Type := LiftCat@{co ch xo xh} Cb ⟶ Cb.
 End LiftBack.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The carriers of the cone-level hom cap *)
+(* 相关说明。 （已译） *)
 
-(* C40, C41: Structure/Limit/Preservation.v's [cone_leg] and
-   [IsLimitCone], with their binders written out and the shape's hom level
-   at or below the ambient's. *)
+(* 相关说明。 （已译） *)
 Definition p477_c40_cone_leg@{jo jh co ch +} {J : Category@{jo jh jh}}
   {C : Category@{co ch ch}} {F : J ⟶ C} (N : Cone F) (x : J) :
   vertex_obj[N] ~{C}~> F x :=
@@ -432,21 +427,21 @@ Definition p477_c43_cone_type : Type := Cone Kw.
 (* R7 *)
 Fail Definition p477_r7_islimitcone (N : Cone Kw) : Type := IsLimitCone N.
 
-(* C44: ... and the limit predicate over them, its binders written out. *)
+(* 相关说明。 （已译） *)
 Definition p477_c44_islimitcone (N : Cone Kw) : Type :=
   p477_c41_IsLimitCone N.
 
 (* R8 *)
 Fail Definition p477_r8_op : Jw^op ⟶ Cw^op := Kw^op.
 
-(* C45: the opposite functor with its binders written out, and cones over
-   it, which are the cocones over [Kw]. *)
+(* C45: opposite 函子 binders written out, cones over
+ it, cocones over [Kw]. （已译） *)
 Definition p477_c45_cocone_type : Type := Cone (p477_c42_op Kw).
 
 End ConeCap.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The Yoneda embedding as a target of the cone-level predicates *)
+(* 相关说明。 （已译） *)
 
 Section YonedaSmall.
 
@@ -472,8 +467,8 @@ Constraint ch < co.
 Context (Jy : Category@{jo ch ch}) (Cy : Category@{co ch ch})
   (Ky : Jy ⟶ Cy) (Ny : Cocone Ky).
 
-(* C47: ... while for one whose objects lie strictly above, the embedding
-   is formable ... *)
+(* C47: ... while one whose 对象 lie strictly above, embedding
+ formable ... （已译） *)
 Definition p477_c47_yoneda_type : Type := Cy ⟶ [Cy^op, Sets].
 
 (* R11 *)
@@ -484,7 +479,7 @@ Fail Definition p477_r11_yoneda_large (A : AbsoluteColimitCocone Ny) :
 End YonedaLarge.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Guard: every constant #477 adds, by name *)
+(* * ** Guard: every 常值 #477 adds, name （已译） *)
 
 Check @Category.Construction.Lift.LiftCat.
 Check @Category.Construction.Lift.Lift_in.

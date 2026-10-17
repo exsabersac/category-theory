@@ -48,17 +48,17 @@ Require Import Category.Instance.Powerset.
 
 Generalizable All Variables.
 
-(* instrument: the refutation keyword is live in this file *)
+(* 相关说明。 （已译） *)
 Fail Check probe444_absent_name.
 
-(** ** The inhabited side, as positive controls *)
+(* 相关说明。 （已译） *)
 
 Check SmallOrd_op_Complete.
 Check SmallOrd_self_limit.
 Check SmallOrd_no_greatest.
 Check SmallOrd_op_not_large_complete.
 
-(** ** N2-N3: [Complete] is refused wherever the collapsed instance is forced *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeAFTNecessity444 相关定义、性质与动机。
@@ -67,8 +67,7 @@ Check SmallOrd_op_not_large_complete.
 *)
 Fail Check (Complete_Initial SmallOrd_op_Complete).
 
-(* N3: the same for the tree's large witnesses, which is what makes N5's
-   control the only accepted one. *)
+(* 相关说明。 （已译） *)
 Fail Check (Complete_Initial Sets_Complete).
 Fail Check (Complete_Initial Grp_Complete).
 Fail Check (Complete_Initial Ab_Complete).
@@ -82,12 +81,11 @@ Fail Check (Complete_Initial Ab_Complete).
 Fail Definition p444_boom : False :=
   SmallOrd_op_not_large_complete SmallOrd_op_Complete.
 
-(** ** N5: the accepted control — Freyd's collapse, and only it *)
+(* 相关说明。 （已译） *)
 
 Section ThinWitness.
 Context (X : SetoidObject).
-(* ACCEPTED: the thin powerset lattice is large-complete, and is the one
-   witness in tree that is. *)
+(* 相关说明。 （已译） *)
 Check (Complete_Initial (Subsets_Complete (X:=X))).
 End ThinWitness.
 

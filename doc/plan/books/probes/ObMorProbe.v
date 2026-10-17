@@ -6,7 +6,7 @@
 
 Require Import Coq.Init.Datatypes.
 
-(* Objects of the walking arrow 2, and of the terminal category 1. *)
+(* Objects walking arrow 2, terminal 范畴 1. （已译） *)
 Inductive Two := TZero | TOne.
 Inductive One := Star.
 
@@ -16,8 +16,8 @@ Theorem two_to_one_unique :
   forall f g : Two -> One, forall t : Two, f t = g t.
 Proof. intros f g t. destruct (f t), (g t). reflexivity. Qed.
 
-(* Cat(1,2) on objects: a functor 1 -> 2 is a choice of object of 2, and there
-   are exactly two such choices. *)
+(* Cat(1,2) 对象: 函子 1 -> 2 choice 对象 2, there
+ exactly two such choices. （已译） *)
 Theorem one_to_two_two_choices :
   forall f : One -> Two, (f Star = TZero) \/ (f Star = TOne).
 Proof. intro f. destruct (f Star). - left. reflexivity. - right. reflexivity. Qed.

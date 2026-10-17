@@ -55,19 +55,17 @@ Check (@aor C C (dual d) (dual d) (dual_self_adjoint_on_the_right d)).
 Fail Example probe359_braid_strict (x : C) :
   dd_unit d x = dcur (eval' ∘ braid) := eq_refl.
 
-(* Control for CONVERSION 1, with the residue exhibited. *)
+(* 相关说明。 （已译） *)
 Example probe359_braid_residue (x : C) :
   dd_unit d x = dcur (eval' ∘ (id[x ⇒ d] ⨂ id[x]) ∘ braid) := eq_refl.
 
-(* TYPING -- off the diagonal the two legs of the bijection do not even
-   share a type, so `to = from` is not statable there at all.  This is
-   the honest form of Mac Lane's symmetry remark. *)
+(* 相关说明。 （已译） *)
 Fail Example probe359_offdiagonal (a x : C) :
   to (@aor C C (dual d) (dual d) (dual_self_adjoint_on_the_right d) a x)
     = from (@aor C C (dual d) (dual d)
               (dual_self_adjoint_on_the_right d) a x) := eq_refl.
 
-(* Control: ON the diagonal the two legs ARE the same term. *)
+(* 相关说明。 （已译） *)
 Example probe359_diagonal (a : C) :
   to (@aor C C (dual d) (dual d) (dual_self_adjoint_on_the_right d) a a)
     = from (@aor C C (dual d) (dual d)

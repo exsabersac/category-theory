@@ -26,10 +26,10 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Positive controls
+(* * ** Positive controls
 
-    Every constant named in a negative below is also named here outside
-    any [Fail], so a rename cannot silently vacate a guard. *)
+ Every 常值 named negative below named here outside
+ any [Fail], so rename cannot silently vacate guard. （已译） *)
 
 Check @Top_Discrete.
 Check @Top_Forget.
@@ -44,11 +44,7 @@ Check @grothendieck_adjunction.
 Check @free_pointed_adjunction.
 Check @free_rng_ab_universal_arrow.
 
-(** ** Positive controls: the four rows of Mac Lane §III.1 Exercise 3
-
-    Row (b) is discharged by #400's Instance/Rng/Free.v and is CITED
-    here rather than rebuilt, which is what that issue's dependency note
-    on #312 requires. *)
+(* 相关说明。 （已译） *)
 
 Example row_a_abelianization : Grp ⟶ Ab := abelianize_left.
 Example row_b_free_ring (A : Ab) : UniversalArrow A Rng_Forget_Ab :=

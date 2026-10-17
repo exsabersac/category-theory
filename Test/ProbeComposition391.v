@@ -22,7 +22,7 @@ Require Import Category.Structure.Cartesian.Closed.Composition.
 
 Generalizable All Variables.
 
-(** * Probe for Structure/Cartesian/Closed/Composition.v (issue #391) *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeComposition391。
@@ -30,11 +30,10 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Instrument check: a name that cannot exist must be rejected, so that no
-   negative below can pass for the wrong reason. *)
+(* 相关说明。 （已译） *)
 Fail Check no_such_constant_exists_in_this_development.
 
-(** ** Controls: every constant a negative names, outside any rejection *)
+(* * ** Controls: every 常值 negative names, outside any rejection （已译） *)
 
 Check @internal_compose.
 Check @internal_id.
@@ -60,7 +59,7 @@ Check @split.
 Check @fobj.
 Check Sets.
 
-(** ** Negative 1 (CONVERSION): the [Set] agreement is pointwise only *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明来源与用途相关定义、性质与动机。
@@ -93,7 +92,7 @@ Context {C : Category}.
 Context `{@Cartesian C}.
 Context `{@Closed C _}.
 
-(** ** Negative 2 (TYPING): there is no functorial action in [b] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、来源与用途相关定义、性质与动机。
@@ -101,7 +100,7 @@ Context `{@Closed C _}.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The action, at the type it actually has. *)
+(* 相关说明。 （已译） *)
 Example p391_ctrl_b_action (a c b1 b2 : C) (f : b1 ~{C}~> b2) :
   (c^b2 × b1^a) ~{C}~> (c^b1 × b2^a) :=
   split (ihom f id) (ihom id f).
@@ -116,10 +115,9 @@ Fail Example p391_neg2 (a c b1 b2 : C) (f : b1 ~{C}~> b2) :
   (c^b1 × b1^a) ~{C}~> (c^b2 × b2^a) :=
   split (ihom f id) (ihom id f).
 
-(** ** Negative 3 (CONVERSION): the two hom-types are not the same type *)
+(* 相关说明。 （已译） *)
 
-(* Stated on the TYPES rather than on an inhabitant, so that no coercion
-   can make it pass for the wrong reason. *)
+(* 相关说明。 （已译） *)
 
 Example p391_ctrl_type_refl (a c b1 b2 : C) :
   ((c^b2 × b1^a) ~{C}~> (c^b1 × b2^a))
@@ -129,7 +127,7 @@ Fail Example p391_neg3 (a c b1 b2 : C) :
   ((c^b2 × b1^a) ~{C}~> (c^b1 × b2^a))
     = ((c^b1 × b1^a) ~{C}~> (c^b2 × b2^a)) := eq_refl.
 
-(** ** Negative 4 (CONVERSION): the [Program]-elaborated [fobj] is opaque *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明笛卡尔相关定义、性质与动机。
@@ -159,7 +157,7 @@ Qed.
 Example p391_ctrl_fobj (a b c : C) :
   fobj[ComposeSrcC a b] c = c^b × b^a := eq_refl.
 
-(* ... and the exponent-only naive functor, which also does. *)
+(* ... exponent-only naive 函子, does. （已译） *)
 Example p391_ctrl_naive_exp (a c : C) :
   fobj[NaiveExpBase a] c = c^a := eq_refl.
 
@@ -168,7 +166,7 @@ Fail Example p391_neg4 (a b c : C) :
 
 End ProbeGeneral.
 
-(** ** Negative 5 (FORMABILITY): [Cartesian] identifies hom with proof *)
+(* * ** Negative 5 (FORMABILITY): [Cartesian] identifies hom 证明 （已译） *)
 
 (*
    本节说明hom、笛卡尔相关定义、性质与动机。

@@ -30,7 +30,7 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe432_absent_name.
 
-(** ** A: CONVERSION — the converse is a construction *)
+(* 相关说明。 （已译） *)
 
 Section NotIdentity.
 
@@ -47,7 +47,7 @@ Fail Example p432_fixed_product_one_not_Id :
 
 End NotIdentity.
 
-(** ** B: TYPING — sides and categories *)
+(* * ** B: TYPING — sides 范畴 （已译） *)
 
 Section Sides.
 
@@ -59,8 +59,8 @@ Context (X : C) (HX : X ≅ 1).
 (* control *)
 Check (Id_adj_fixed_product X HX : Id ⊣ fixed_product_functor X).
 
-(* N2 TYPING: the identity is the LEFT adjoint of [X × −], not its right
-   adjoint *)
+(* N2 TYPING: 恒等 LEFT adjoint [X × −], not right
+ adjoint （已译） *)
 Fail Check (Id_adj_fixed_product X HX : fixed_product_functor X ⊣ Id).
 
 End Sides.
@@ -75,7 +75,7 @@ Check (Sets_op_not_cartesian_closed
 Fail Check (Sets_op_not_cartesian_closed
               : ∀ CC : @Cartesian Sets, @Closed Sets CC → False).
 
-(** ** C: UNIVERSE — an adjunction identifies the two hom levels *)
+(* * ** C: UNIVERSE — 伴随 identifies two hom levels （已译） *)
 
 Monomorphic Universe co ch do dh.
 Monomorphic Constraint ch < dh.
@@ -85,7 +85,7 @@ Section HomLevels.
 Context (Cw : Category@{co ch ch}).
 Context (Dw : Category@{do dh dh}).
 
-(* controls: the two categories, and a functor UP the hom levels *)
+(* controls: two 范畴, 函子 UP hom levels （已译） *)
 Check Cw.
 Check Dw.
 Check (Cw ⟶ Dw).
@@ -111,8 +111,8 @@ Example p432_fixed_product_fmap {C : Category} `{@Cartesian C}
   (X : C) {x y : C} (g : x ~> y) :
   fmap[fixed_product_functor X] g = second g := eq_refl.
 
-(* the converse's transpose computes: it is pairing with the unique arrow
-   to [X] — this makes [Id_adj_fixed_product]'s [Defined] load-bearing *)
+(* the converse's transpose computes: it pairing 唯一箭头
+ [X] — makes [Id_adj_fixed_product]'s [Defined] load-bearing （已译） *)
 Example p432_transpose_is_pairing {C : Category} `{CC : @Cartesian C}
   `{T : @Terminal C} (X : C) (HX : X ≅ 1) (x y : C) (f : x ~> y) :
   to (@adj _ _ _ _ (Id_adj_fixed_product X HX) x y) f = to_X X HX x △ f

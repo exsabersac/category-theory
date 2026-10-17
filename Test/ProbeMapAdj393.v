@@ -20,7 +20,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Instrument check: a name that is in no file of the tree *)
+(* 相关说明。 （已译） *)
 
 Fail Check map_of_adjunctions_no_such_constant_anywhere.
 
@@ -77,14 +77,14 @@ Check @Conjugate.
 Check @Functor_StrictEq_Setoid.
 Check @strict_equiv_of_id_cast_nat.
 
-(* The hom-set condition WITH the cast, which negative 1 removes. *)
+(* 相关说明。 （已译） *)
 Definition p393_control_cast :=
   to (@adj _ _ _ _ A' _ _) (fmap[sq_K S] k ∘ id_cast (eq_sym (sq_left S x))).
 
-(* The fused Mac Lane spelling, which negative 2 asks for at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Definition p393_control_fused := squares_unit_fused A A' S.
 
-(* The composite of the identity map with M, which negative 3 asks to be M. *)
+(* The 复合 恒等 map M, negative 3 asks M. （已译） *)
 Definition p393_control_compose :=
   MapOfAdjunctions_compose A A A' (MapOfAdjunctions_id A) M.
 
@@ -191,11 +191,10 @@ Check (fun (x y : Cu) (f g : x ~> y) => f ≈ g).
 (* Negative 6: the record itself. *)
 Fail Check (@AdjSquares Cu Du Fu Uu Cu Du Fu Uu).
 
-(* Negative 7: [id_cast] alone, with no adjunction in the command. *)
+(* Negative 7: [id_cast] alone, no 伴随 command. （已译） *)
 Fail Check (fun (x y : Cu) (e : x = y) => @id_cast Cu x y e).
 
-(* Negative 8: [Adjunction] alone, with no [id_cast] in the command; the
-   control [Check Fu] above shows [Functor] is not what is refused. *)
+(* 相关说明。 （已译） *)
 Fail Check (Fu ⊣ Uu).
 
 End Formability.

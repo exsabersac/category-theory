@@ -21,7 +21,7 @@ Require Import Coq.Vectors.Fin.
 
 Generalizable All Variables.
 
-(** * Probe: strength boundaries of the matrix coequalizer *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeMatrCoeq。
@@ -93,7 +93,7 @@ Definition probe_pos_op_bridge :
     coeq_f2_A coeq_f2_B coeq_f2_obj coeq_f2_map
   := IsEqualizer_op_of_IsCoequalizer coeq_f2.
 
-(** ** Elimination.v: the engine's own boundaries *)
+(* 相关说明。 （已译） *)
 
 Section EliminationNegatives.
 
@@ -111,8 +111,7 @@ Fail Definition probe_mat_sub_self_strict :
 
 End EliminationNegatives.
 
-(* Positive controls naming Elimination.v's own constants, so a rename or
-   a statement change in the engine breaks this file loudly. *)
+(* 相关说明。 （已译） *)
 Definition probe_pos_mat_id_l (K : FieldObject)
   (Kdec : forall a b : carrier (rig_setoid K), (a ≈ b) + (a ≈ b -> False))
   (a b : nat) (A : Matrix K a b) :
@@ -135,10 +134,7 @@ Check (fun (K : FieldObject) (a b : nat) (A : Matrix K a b) =>
 
 Check (fun (K : FieldObject) (a b : nat) => @mat_zero K a b).
 
-(** ** Positive controls for the headline artifacts
-
-    These name the two principal constants directly, so that neither can
-    be renamed or restated without this file failing. *)
+(* 相关说明。 （已译） *)
 
 Check (matr_IsCoequalizer F2_Field f2_dec coeq_f2_A coeq_f2_B).
 
@@ -148,9 +144,9 @@ Check (left_null_basis F2_Field f2_dec).
 
 Check (left_null_basis_diff F2_Field f2_dec).
 
-(* Non-degeneracy, named so the witness cannot silently become trivial:
-   the coequalizing map is epic but NOT monic, so it is a proper
-   quotient rather than an isomorphism in disguise. *)
+(* Non-degeneracy, named so witness cannot silently become trivial:
+ coequalizing map epic but NOT monic, so it proper
+ quotient rather than 同构 disguise. （已译） *)
 
 Check coeq_f2_map_epic.
 

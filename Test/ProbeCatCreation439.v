@@ -35,7 +35,7 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe439_absent_name.
 
-(** ** A: CONVERSION — the transported projection against [comma_proj2] *)
+(* 相关说明。 （已译） *)
 
 Section Transported.
 
@@ -43,7 +43,7 @@ Context {C D : Category}.
 Context (U : C ⟶ D).
 Context (d : D).
 
-(* controls: object and arrow actions agree on the nose *)
+(* controls: 对象 arrow actions agree nose （已译） *)
 
 Example p439_fobj (x : (=(d) ↓ U)) :
   fobj[FP_snd (@Coslice_Proj D d) U ◯ Comma_to_FP U d] x
@@ -53,32 +53,32 @@ Example p439_fmap {x y : (=(d) ↓ U)} (f : x ~> y) :
   fmap[FP_snd (@Coslice_Proj D d) U ◯ Comma_to_FP U d] f
     = fmap[@comma_proj2 _1 C D (=(d)) U] f := eq_refl.
 
-(* n1 CONVERSION: the two FUNCTORS are nevertheless different records *)
+(* 相关说明。 （已译） *)
 Fail Example p439_same_functor :
   (FP_snd (@Coslice_Proj D d) U ◯ Comma_to_FP U d)
     = (@comma_proj2 _1 C D (=(d)) U) := eq_refl.
 
-(* n2 CONVERSION: and the comma category is not the fibre product on the
-   nose, so the isomorphism is doing real work *)
+(* n2 CONVERSION: comma 范畴 not fibre product the
+ nose, so 同构 doing real work （已译） *)
 Fail Example p439_same_category :
   (=(d) ↓ U) = FibreProduct (@Coslice_Proj D d) U := eq_refl.
 
 End Transported.
 
-(** ** B: TYPING — why the bottom functor must create limits STRICTLY *)
+(* * ** B: TYPING — why bottom 函子 must create limits STRICTLY （已译） *)
 
 Section Strictness.
 
 Context {A B C : Category}.
 Context (F : A ⟶ C) (G : B ⟶ C).
 
-(* control: an object of the fibre product is a pair plus a LEIBNIZ
-   equality between the two images *)
+(* control: 对象 fibre product pair plus LEIBNIZ
+ equality between two images （已译） *)
 Example p439_fp_obj (a : A) (b : B) (e : F a = G b) : FibreProduct F G :=
   ((a, b); e).
 
-(* n3 TYPING: an isomorphism does not ascribe in that slot, which is why the
-   created apex needs [slift_eq] and not a [ConeIso] *)
+(* n3 TYPING: 同构 does not ascribe slot, why the
+ created apex needs [slift_eq] not [ConeIso] （已译） *)
 Fail Example p439_fp_obj_iso (a : A) (b : B) (i : F a ≅ G b) :
   FibreProduct F G := ((a, b); i).
 
@@ -99,7 +99,7 @@ Context (HG : PreservesLimitCone (FP_snd F G ◯ K) G).
 Example p439_square (j : J) :
   fp_square_obj F G K j = `2 (K j) := eq_refl.
 
-(* the strict lift lies over the GIVEN cone, apex and legs *)
+(* 相关说明。 （已译） *)
 
 Example p439_lift_apex (N : Cone (FP_snd F G ◯ K)) (HN : IsLimitCone N) :
   fobj[FP_snd F G]
@@ -116,7 +116,7 @@ Example p439_lift_legs (N : Cone (FP_snd F G ◯ K)) (HN : IsLimitCone N)
           N HN)) j)
     = cone_leg N j := eq_refl.
 
-(* the issue's Verification-block name IS the constant it aliases *)
+(* the issue's Verification-block name IS 常值 it aliases （已译） *)
 Example p439_alias_ex3 :
   creation_pullback_stable F G K SC HG = fp_snd_StrictlyCreatesLimit F G K SC HG
   := eq_refl.

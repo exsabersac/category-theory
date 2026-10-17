@@ -15,7 +15,7 @@ Require Import Category.Lib.
 Require Import Category.Theory.Category.
 Require Import Category.Theory.Metacategory.
 
-(* Instantiate the functor the file never applies. *)
+(* Instantiate 函子 file never applies. （已译） *)
 Module MyMap := FMapWeakList.Make PNN.
 Module Import MC := Metacategory MyMap.
 
@@ -43,7 +43,7 @@ Proof.
   intros [Hl _].
   set (l := MyMap.elements (pairs M)).
   set (n := keybound l).
-  (* [identity] demands a binding for EVERY f, in particular for f = n. *)
+  (* 相关说明。 （已译） *)
   assert (HM : MyMap.MapsTo (n, u) n (pairs M)) by exact (Hl n).
   apply MyMap.elements_1 in HM.
   (* ... but n exceeds every first-coordinate present in the finite [elements]. *)
@@ -64,8 +64,8 @@ Proof.
   intros [i Hi]; exact (identity_unsatisfiable M i Hi).
 Qed.
 
-(* Consequence 2: [Three] -- presented in the header as the three-object
-   category -- has NO objects at all. *)
+(* Consequence 2: [Three] -- presented header three-对象
+ 范畴 -- has NO 对象 at all. （已译） *)
 Theorem Three_is_empty : @obj Three -> False.
 Proof. exact (FromArrows_no_objects ThreeArrows). Qed.
 
@@ -75,8 +75,8 @@ End S8.
 Section Ex310.
 Local Open Scope nat_scope.
 
-(* The table really is inhabited: generator 3 : 1 -> 0, generator 4 : 2 -> 1,
-   and the composite 5 = 3 o 4.  So composition_law is not vacuously satisfied. *)
+(* The table really inhabited: generator 3 : 1 -> 0, generator 4 : 2 -> 1,
+ 复合 5 = 3 o 4. So 复合_law not vacuously satisfied. （已译） *)
 Example tbl_0_3 : composite ThreeArrows 0 3 3.
 Proof. apply MyMap.find_2. vm_compute. reflexivity. Qed.
 

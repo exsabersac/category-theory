@@ -40,29 +40,29 @@ Context {J : Category}.
 Context (K : J ⟶ Sub C S).
 Context (L : Colimit (Incl C S ◯ K)).
 
-(** ** A: TYPING — the reflected colimit lives in the subcategory *)
+(* 相关说明。 （已译） *)
 
-(* control: the reflected apex is the reflector at the ambient apex *)
+(* 相关说明。 （已译） *)
 Example p434_apex (HL : Colimit (Incl C S ◯ K)) :
   colimit_apex (reflective_colimit R K HL) = reflector R (colimit_apex HL)
   := eq_refl.
 
-(* N1 TYPING: it is not the ambient apex — the two live in different
-   categories *)
+(* N1 TYPING: it not ambient apex — two live different
+ 范畴 （已译） *)
 Fail Example p434_apex_is_ambient :
   colimit_apex (reflective_colimit R K L) = colimit_apex L := eq_refl.
 
-(** ** B: CONVERSION — cocompleteness of the two categories *)
+(* * ** B: CONVERSION — cocompleteness two 范畴 （已译） *)
 
-(* control: the theorem is a function between the two *)
+(* control: 定理 function between two （已译） *)
 Check (reflective_Cocomplete R : @Cocomplete C → @Cocomplete (Sub C S)).
 
-(* N2 CONVERSION: the two types are not the same type *)
+(* 相关说明。 （已译） *)
 Fail Example p434_cocomplete_same : @Cocomplete (Sub C S) = @Cocomplete C
   := eq_refl.
 
-(** ** C: TYPING — reflection is neither preservation nor creation by the
-       inclusion *)
+(* * ** C: TYPING — reflection neither preservation nor creation the
+ 含入 （已译） *)
 
 (* control: the cocone-level statement *)
 Check (reflective_colimit_cocone R K
@@ -79,13 +79,13 @@ Fail Check (reflective_colimit R K : CreatesColimit K (Incl C S)).
 
 (** ** D: readbacks *)
 
-(* the transparent counit isomorphism reduces to the counit *)
+(* the transparent counit 同构 reduces counit （已译） *)
 Example p434_rc_to (x : Sub C S) :
   to (rc_counit_iso R x)
     = @counit (Sub C S) C (reflector R) (Incl C S) (reflective_adj R) x
   := eq_refl.
 
-(* the injections are the issue's formula, on the nose *)
+(* 相关说明。 （已译） *)
 Example p434_inj (x : J) :
   colimit_inj (colimit_is_acolimit (reflective_colimit R K L)) x
     = fmap[reflector R] (colimit_inj (colimit_is_acolimit L) x)
@@ -104,14 +104,14 @@ Check (reflective_subcategory_cocomplete R).
 
 End Probe.
 
-(** ** The witness at a concrete reflection: torsion-free abelian groups *)
+(* 相关说明。 （已译） *)
 
 Definition p434_torsionfree_colimit
   (K : Ordinal 2 ⟶ Sub Ab TorsionFree_Sub) : Colimit K :=
   reflective_terminal_shape_colimit TorsionFree_Reflective
     (Ordinal_Succ_Terminal 1) K.
 
-(* its apex is the reflector at the terminal index, on the nose *)
+(* 相关说明。 （已译） *)
 Example p434_torsionfree_apex (K : Ordinal 2 ⟶ Sub Ab TorsionFree_Sub) :
   colimit_apex (p434_torsionfree_colimit K)
     = TorsionFree_reflector (Incl Ab TorsionFree_Sub (K (ord_top 1)))

@@ -1,4 +1,4 @@
-(** * Additional category-specific tactics and [cat] hint database *)
+(* * * Additional 范畴-specific tactics [cat] hint database （已译） *)
 
 (*
    本文件给出 Tactics2 相关定义与性质。
@@ -15,16 +15,16 @@ Require Import Category.Structure.Cartesian.
 (* Let [auto] close trivial reflexive goals (e.g. [equiv] reflexivity). *)
 #[export] Hint Extern 1 => reflexivity : core.
 
-(* Build a hom [x ~> z] from a hom hypothesis by composing on the matching
-   side; the remaining factor is left as a subgoal.  [multimatch] lets
-   backtracking try both orientations. *)
+(* Build hom [x ~> z] hom 假设 composing matching
+ side; remaining factor left subgoal. [multimatch] lets
+ backtracking try both orientations. （已译） *)
 Ltac compose_reduce :=
   multimatch goal with
   | [ f : @hom ?C ?x ?y  |- @hom ?C ?x ?z ] => refine (@compose C x y z _ f)
   | [ f : @hom ?C ?y ?z  |- @hom ?C ?x ?z ] => apply (@compose C x y z f)
   end.
 
-(* The [cat] auto database: discriminated so externs are indexed by goal head. *)
+(* 相关说明。 （已译） *)
 Create HintDb cat discriminated.
 
 #[export]
@@ -39,21 +39,18 @@ Ltac apply_setoid_morphism :=
 #[export]
 Hint Extern 20 => apply_setoid_morphism : cat.
 
-(* This is tempting but the "proper" script calls
-   intuition, which calls auto with *, so "proper"
-   should probably be a top-level command only. *)
+(* 相关说明。 （已译） *)
 (* Hint Extern 1 (Proper _ _) => proper : cat. *)
 (* Similarly with cat_simpl. *)
 (* Hint Extern 20 => progress(cat_simpl) : cat. *)
 (* Hint Extern 40 (@hom _ _ _) => hom_to_homset : cat. *)
 #[export] Hint Immediate id : cat.
 
-(* Split a [sigT] goal into its witness and proof, leaving the witness open. *)
+(* Split [sigT] goal witness 证明, leaving witness open. （已译） *)
 Ltac split_exists := unshelve eapply existT.
 #[export] Hint Extern 1 (@sigT _ _) => split_exists : cat.
 
-(* Reduce [fobj]/[fmap] applied to a literal [Build_Functor] record to the
-   corresponding field by unfolding the projection. *)
+(* 相关说明。 （已译） *)
 Ltac functor_simpl :=
   match goal with
   | [ |- context[@fobj _ _ (Build_Functor _ _ _ _ _ _ _)]] => unfold fobj

@@ -21,7 +21,7 @@ Require Import Category.Structure.Limit.Product.Finite.
 
 Generalizable All Variables.
 
-(** ** Instrument check: [Fail] is live in this file *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
@@ -31,30 +31,30 @@ Context {C : Category}.
 Context (CP : @Cartesian C) (T : @Terminal C).
 Context (x y z : C) (f1 : Fin.t 1 → C) (f2 : Fin.t 2 → C).
 
-(** ** Negative 1 (CONVERSION): the unary fold keeps its terminal pad *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_fin_prod_one :
   @fin_prod C CP T 1 f1 = f1 Fin.F1 := eq_refl.
 
-(** ** Negative 2 (CONVERSION): the binary fold keeps its terminal pad *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_fin_prod_two :
   @fin_prod C CP T 2 f2 = (f2 Fin.F1 × f2 (Fin.FS Fin.F1))%object := eq_refl.
 
-(** ** Negative 3 (CONVERSION): out to the class and back pads the product *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_roundtrip_product_obj :
   @product_obj C (HasFiniteProducts_Cartesian
                     (Cartesian_Terminal_HasFiniteProducts CP T)) x y
   = (x × y)%object := eq_refl.
 
-(** ** Negative 4 (CONVERSION): the recovered [Cartesian] is not the input *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_roundtrip_cartesian :
   HasFiniteProducts_Cartesian (Cartesian_Terminal_HasFiniteProducts CP T)
   = CP := eq_refl.
 
-(** ** Negative 5 (CONVERSION): the recovered [Terminal] is not the input *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_roundtrip_terminal :
   HasFiniteProducts_Terminal (Cartesian_Terminal_HasFiniteProducts CP T)
@@ -74,18 +74,16 @@ Fail Definition probe_roundtrip_whole :
        (Cartesian_Terminal_HasFiniteProducts CP T))
   = Cartesian_Terminal_HasFiniteProducts CP T := eq_refl.
 
-(** ** Negative 7 (CONVERSION): right fold and left fold differ
+(* * ** Negative 7 (CONVERSION): right fold left fold differ
 
-    This is why [awodey_fold_iso] is an isomorphism and nothing stronger. *)
+ This why [awodey_fold_iso] 同构 nothing stronger. （已译） *)
 
 Fail Definition probe_right_vs_left_fold :
   @fin_prod C CP T 3 (fin3 x y z) = awodey_prod CP x y z := eq_refl.
 
 End Conversions.
 
-(** ** Controls for the conversion negatives
-
-    Each names constants the negatives above name. *)
+(* 相关说明。 （已译） *)
 
 Check @fin_prod.
 Check @fin_proj.
@@ -143,8 +141,7 @@ Constraint uh < up.
 
 Context (C : Category@{uo uh up}).
 
-(* Control: naming a hom at these levels IS formable, so the rejections
-   below are about the three donors and not about C itself. *)
+(* 相关说明。 （已译） *)
 Check (fun x y : C => x ~{C}~> y).
 
 Fail Check (@Cartesian C).
@@ -160,13 +157,13 @@ Fail Check (fun (A : Type) (f : A → C) (p : C)
 
 End UniverseIdentification.
 
-(** ** Controls naming the three donors *)
+(* 相关说明。 （已译） *)
 
 Check @Cartesian.
 Check @Terminal.
 Check @IsIndexedProduct.
 
-(** ** Controls for the delivered results *)
+(* 相关说明。 （已译） *)
 
 Check @fin_IsIndexedProduct.
 Check @Cartesian_Terminal_HasFiniteProducts.

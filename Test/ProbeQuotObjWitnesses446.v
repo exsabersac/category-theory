@@ -42,7 +42,7 @@ Generalizable All Variables.
 
 Fail Check quot_obj_446_no_such_constant.
 
-(** ** Positive controls: every constant the negatives name *)
+(* * ** Positive controls: every 常值 negatives name （已译） *)
 
 Check @QuotObj.
 Check @SubObj.
@@ -86,10 +86,9 @@ Check @fin4_0.
 Check @fin4_2.
 Check @fin4_3.
 
-(** ** Positive controls for the computing readbacks themselves *)
+(* 相关说明。 （已译） *)
 
-(* The pushout of "identify {0,1}" and "identify {1,2}" over the
-   four-element set has TWO classes, by [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example p446_meet_two : quot_cod finset_q_meet = 2%nat := eq_refl.
 
 Example p446_meet_merges :
@@ -98,25 +97,20 @@ Example p446_meet_merges :
 Example p446_coimage_three :
   quot_cod (finset_coimage finset_merge01) = 3%nat := eq_refl.
 
-(** ** N1 -- the meet has two classes and not three (CONVERSION) *)
+(* 相关说明。 （已译） *)
 
-(* Guards [finset_quot_meet_two].  A probe against the right number
-   alone would pass for a construction that did not reduce at all; this
-   one pins that the number is computed and is 2. *)
+(* 相关说明。 （已译） *)
 Fail Example p446_n1 : quot_cod finset_q_meet = 3%nat := eq_refl.
 
-(** ** N2 -- the meet does not collapse everything (CONVERSION) *)
+(* 相关说明。 （已译） *)
 
-(* Guards [finset_quot_meet_separates_0_3] at the strongest reading: 0
-   and 3 are not identified even up to conversion. *)
+(* 相关说明。 （已译） *)
 Fail Example p446_n2 :
   quot_epi finset_q_meet fin4_0 = quot_epi finset_q_meet fin4_3 := eq_refl.
 
-(** ** N3 -- a coimage is smaller than the codomain it is read in
-       (CONVERSION) *)
+(* 相关说明。 （已译） *)
 
-(* Guards [finset_coimage_merge01_three]: the coimage of a 4 ↠ 3 map is
-   3 and not 4, so the construction is not silently the domain. *)
+(* 相关说明。 （已译） *)
 Fail Example p446_n3 :
   quot_cod (finset_coimage finset_merge01) = 4%nat := eq_refl.
 
@@ -125,8 +119,8 @@ Section SetsBoundaries.
 Universe o so.
 Constraint o < so.
 
-(** ** N4 -- the quotient-object meet is an ≈ and NOT a Leibniz equality
-       (CONVERSION) *)
+(* * ** N4 -- quotient-对象 meet ≈ NOT Leibniz equality
+ (CONVERSION) （已译） *)
 
 (*
    本节说明子对象、（余）强度相关定义、性质与动机。
@@ -137,16 +131,15 @@ Fail Example p446_n4 :
   @quot_meet Sets@{o so} Sets_HasPushouts NatDiscrete@{o}
     Sets_Q_parity Sets_Q_mod3 = Sets_Q_total := eq_refl.
 
-(** ** N5 -- a quotient object of C is not a subobject of C (CONVERSION) *)
+(* * ** N5 -- quotient 对象 C not subobject C (CONVERSION) （已译） *)
 
-(* [@QuotObj (C^op) x = @SubObj C x] holds by [eq_refl], C^op^op being C
-   on the nose.  Dropping the [^op] must NOT: that is the whole content
-   of the definition. *)
+(* [@QuotObj (C^op) x = @SubObj C x] holds [eq_refl], C^op^op being C
+ nose. Dropping [^op] must NOT: whole content
+ 定义. （已译） *)
 Fail Example p446_n5 (X : SetoidObject@{o o}) :
   @QuotObj Sets@{o so} X = @SubObj Sets@{o so} X := eq_refl.
 
-(** ** N6 -- the covariant reading of the setoid is a LEMMA, not a
-       conversion (CONVERSION) *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明同构、子对象相关定义、性质与动机。

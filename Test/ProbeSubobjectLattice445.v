@@ -48,7 +48,7 @@ Generalizable All Variables.
 
 Fail Check sub_lattice_no_such_constant.
 
-(** ** Positive controls: every constant the negatives depend on *)
+(* * ** Positive controls: every 常值 negatives depend on （已译） *)
 
 Check @sub_meet.
 Check @sub_meet_comm.
@@ -89,7 +89,7 @@ Check @FinSet_HasImages.
 Check @ex11_u.
 Check @ex11_v.
 
-(** ** Readbacks that HOLD, at the strength stated *)
+(* 相关说明。 （已译） *)
 
 Section Readbacks.
 
@@ -107,8 +107,7 @@ Example p445_meet_is_compose_reindex (u v : SubObj x) :
 
 End Readbacks.
 
-(* The FinSet numbers, restated here as the controls the negatives N8 and N9
-   are read against: 4 (merging) and 1 (the meet) compute by [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example p445_union_four : sub_dom (sub_join ex11_u ex11_v) = 4%nat := eq_refl.
 Example p445_meet_one : sub_dom (sub_meet ex11_u ex11_v) = 1%nat := eq_refl.
 Example p445_coproduct_five :

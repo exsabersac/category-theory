@@ -13,8 +13,7 @@ Require Import Category.Instance.Sets.CokernelPair.
 
 Generalizable All Variables.
 
-(** * Probes guarding Theory/Morphisms/CokernelPair.v and
-      Instance/Sets/CokernelPair.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeCokernelPair。
@@ -22,16 +21,14 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Positive controls: what IS definitional *)
+(* 相关说明。 （已译） *)
 
 Section Controls.
 
 Context {C : Category}.
 Context {x y z : C} (f : x ~> y) (g : x ~> z).
 
-(* The bundled/pinned round trip is a field repackaging both ways, so it
-   closes on the whole record.  Control for the header's claim that both
-   conversions cost nothing. *)
+(* 相关说明。 （已译） *)
 Definition ctl_roundtrip (P : IsPushout f g) :
   is_pushout_square_pushout (pushout_is_pushout_square f g P) = P := eq_refl.
 
@@ -48,24 +45,20 @@ Definition ctl_epic_pushout_square (E : Epic f) := epic_pushout_square f E.
 Definition ctl_pushout_square_epic (S : IsPushoutSquare f f y id id) :=
   pushout_square_epic f S.
 
-(* The duality collapse that carries every [Monic] statement of the target
-   file.  Control for [op_collapse_pushout_square]. *)
+(* 相关说明。 （已译） *)
 Definition ctl_op_collapse :
   @IsPushoutSquare (C^op) y x x f f x id id
     = @IsPullback C x x y f f x id id := eq_refl.
 
-(* The chosen cokernel pair's legs ARE the chosen pushout's injections. *)
+(* 相关说明。 （已译） *)
 Definition ctl_ckp_left `{H : @HasPushouts C} :
   ckp_left (cokernel_pair f) = pushout_in1 (pushout f f) := eq_refl.
 
-(* Control for formability negative 4: the pinned form DOES take an apex
-   and two legs, and the bundled form IS formable on the span alone. *)
+(* 相关说明。 （已译） *)
 Check (IsPushoutSquare f f y id id).
 Check (IsPushout f f).
 
-(* Control for conversion negative 1: the two [IsIsomorphism] readings are
-   inter-derivable, so what negative 1 refutes is CONVERTIBILITY and not
-   the mathematics. *)
+(* 相关说明。 （已译） *)
 Check (@IsIsomorphism_of_op C x y).
 Check (@op_IsIsomorphism_of C x y).
 

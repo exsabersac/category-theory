@@ -59,11 +59,11 @@ Open Scope category_scope.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Instrument check: a deliberately absent name *)
+(* 相关说明。 （已译） *)
 
 Fail Check p405_this_name_does_not_exist.
 
-(** ** (1) Positive controls over an arbitrary topos *)
+(* 相关说明。 （已译） *)
 
 Section ProbeGeneral.
 
@@ -159,9 +159,9 @@ Check @Ω.
 Check @curry.
 Check @flip.
 
-(* The exponential endofunctor of Structure/Cartesian/Closed/Adjunction.v
-   is covariant in the base with the exponent held FIXED, so its object
-   action is (-)^Ω and not Ω^(-). *)
+(* The exponential 自函子 Structure/Cartesian/Closed/Adjunction.v
+ covariant base exponent held FIXED, so 对象
+ action (-)^Ω not Ω^(-). （已译） *)
 Example p405_exp_functor_obj (a : C) :
   fobj[@Exp_Functor C _ _ Ω] a = exponent_obj Ω a := eq_refl.
 
@@ -175,14 +175,14 @@ Example p405_exp_functor_obj (a : C) :
 Fail Definition p405_partial_r_typing : C^op ⟶ C :=
   Partial_r (InternalHomFunctor C) Ω.
 
-(* The adjunction runs P^op ⊣ P and not the other way round, even though
-   both ascriptions are well formed as TYPES. *)
+(* The 伴随 runs P^op ⊣ P not other way round, even though
+ both ascriptions well formed TYPES. （已译） *)
 Fail Definition p405_swapped_handedness : PowF ⊣ Opposite_Functor PowF :=
   pow_adjunction.
 
 (** ** (3) CONVERSION negatives *)
 
-(* The exponential endofunctor's object action is not the power object. *)
+(* The exponential 自函子's 对象 action not power 对象. （已译） *)
 Fail Example p405_exp_is_pow (a : C) :
   fobj[@Exp_Functor C _ _ Ω] a = Pow a := eq_refl.
 
@@ -199,7 +199,7 @@ Example p405_relations_equiv {a b : C} (f : a ~> Pow b) :
 
 End ProbeGeneral.
 
-(** ** (4) FORMABILITY negatives: why the [Limit] route is not taken *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限、topos、hom相关定义、性质与动机。
@@ -352,16 +352,14 @@ Definition finset_derived_initial_iso :
     ≅[FinSet] @initial_obj FinSet FinSet_Initial :=
   initial_unique (@topos_Initial FinSet FinSet_Topos) FinSet_Initial.
 
-(* The derived binary coproduct agrees with FinSet's computable one, read
-   as the uniqueness of products in FinSet^op. *)
+(* 相关说明。 （已译） *)
 Definition finset_derived_coproduct_iso (m n : FinSet) :
   @Coprod FinSet (@topos_Cocartesian FinSet FinSet_Topos) m n
     ≅[FinSet^op] @Coprod FinSet FinSet_Cocartesian m n :=
   @cartesian_unique_iso (FinSet^op)
     (@topos_Cocartesian FinSet FinSet_Topos) FinSet_Cocartesian m n.
 
-(* The derived pushout agrees with FinSet's computable one, by the
-   pre-existing [pullback_unique] read in FinSet^op. *)
+(* 相关说明。 （已译） *)
 Definition finset_derived_pushout_iso {x y z : FinSet}
            (f : x ~> y) (g : x ~> z) :
   pushout_apex (@pushout FinSet (@topos_HasPushouts FinSet FinSet_Topos)

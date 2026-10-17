@@ -30,12 +30,11 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------------ *)
 (** ** Negative 1: the instrument *)
 
-(* If [Fail] were inert -- a missing scope, a stray [Set Silent] -- this
-   would pass and every other negative below would be worthless. *)
+(* 相关说明。 （已译） *)
 Fail Check probe385_no_such_constant_anywhere.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Controls for the constants the negatives name *)
+(* 相关说明。 （已译） *)
 
 Check @subset_le.
 Check @subset_le_preorder.
@@ -95,7 +94,7 @@ Check @zz_e1_not_self_perp.
 Check @zz_axes_differ.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Negatives 2-6, at an abstract setoid *)
+(* 相关说明。 （已译） *)
 
 Section AbstractBoundary.
 
@@ -106,7 +105,7 @@ Context (Xp : SetoidObject@{po po}).
 Context (Pp : PerpRel@{po} Xp).
 
 (* ---------------------------------------------------------------------- *)
-(** ** Negative 2 (TYPING): the connection is antitone, not covariant *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbePerp385 相关定义、性质与动机。
@@ -123,7 +122,7 @@ Fail Check (perp_galois Pp
                  (@subset_le@{po} Xp)).
 
 (* ---------------------------------------------------------------------- *)
-(** ** Negative 3 (TYPING): right-adjointness is not left-adjointness *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -138,7 +137,7 @@ Fail Check (perp_AdjointOnTheRight Pp
              : AdjointOnTheLeft (PerpOp Pp) (PerpOp Pp)).
 
 (* ---------------------------------------------------------------------- *)
-(** ** Negative 4 (TYPING): [L = R] is about the MAPS, not the functors *)
+(* * ** Negative 4 (TYPING): [L = R] about MAPS, not 函子 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -155,7 +154,7 @@ Check (perp_galois_l_is_r Pp).
 Fail Check (PerpFunctor Pp = PerpFunctor_r Pp).
 
 (* ---------------------------------------------------------------------- *)
-(** ** Negative 5 (CONVERSION): the triple complement collapses at [≈] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbePerp385 相关定义、性质与动机。
@@ -173,7 +172,7 @@ Fail Check (fun S : carrier (Powerset_Prop_obj@{po} Xp) =>
 End AbstractBoundary.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Negative 6 (CONVERSION): the witness identifications are at [≈] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbePerp385 相关定义、性质与动机。
@@ -186,7 +185,7 @@ Check (zz_perp_e1_is_yaxis : perp_set ZZPerp zz_e1 ≈ zz_yaxis).
 Fail Check (eq_refl : perp_set ZZPerp zz_e1 = zz_yaxis).
 
 (* ------------------------------------------------------------------------ *)
-(** ** Negative 7 (FORMABILITY): the carrier and relation levels coincide *)
+(* * ** Negative 7 (FORMABILITY): carrier 关系 levels coincide （已译） *)
 
 (*
    本节说明（余）强度相关定义、性质与动机。

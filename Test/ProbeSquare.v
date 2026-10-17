@@ -21,11 +21,11 @@ Require Import Category.Instance.Square.Rectangle.
 
 Local Open Scope category_scope.
 
-(** ** (1) The donor pin is gone
+(* * ** (1) The donor pin gone
 
-    A target category whose three universes are declared strictly above
-    [Set].  Before the lift described above, forming [SquareFunctor] at
-    such a target was a universe inconsistency; it now typechecks. *)
+ A target 范畴 whose three universes declared strictly above
+ [Set]. Before lift described above, forming [SquareFunctor] at
+ such target was universe inconsistency; it now typechecks. （已译） *)
 
 Section BigTarget.
 
@@ -38,17 +38,17 @@ Constraint bh <= bp.
 Context (D : Category@{bo bh bp}).
 Context (S : CommutingSquare D).
 
-(** The universal property of the presented square, applied above
-    [Set].  This is the guard on the [Build_Quiver_Standard_Eq]
-    generalisation. *)
+(** The 普遍性质 presented square, applied above
+ [Set]. This guard [Build_Quiver_Standard_Eq]
+ generalisation. （已译） *)
 Check (SquareFunctor S : Square ⟶ D).
 
-(** ...and its action on the generators, so the guard covers the
-    theorems and not only the construction. *)
+(** 本节：...and action generators, so guard covers the
+ theorems not construction. （已译） *)
 Check (SquareFunctor_f S).
 Check (square_universal S).
 
-(** The reverse direction was never pinned, and still is not. *)
+(** 本节：The reverse direction was never pinned, still not. （已译） *)
 Context (F : Square ⟶ D).
 
 Check (CommutingSquareOfFunctor F : CommutingSquare D).
@@ -71,8 +71,8 @@ Check (Square_2x2_Cat_iso : Square ≅[Cat] (_2 ∏ _2)).
 *)
 Fail Check (eq_refl : Square = (_2 ∏ _2)).
 
-(** Nor are their object types.  (With the [Fail] stripped: cannot
-    unify [SquareNode] with [TwoObj * TwoObj].) *)
+(** Nor 对象 types. (With [Fail] stripped: cannot
+ unify [SquareNode] [TwoObj * TwoObj].) （已译） *)
 Fail Check (eq_refl : SquareNode = (TwoObj * TwoObj)%type).
 
 (*
@@ -81,7 +81,7 @@ Fail Check (eq_refl : SquareNode = (TwoObj * TwoObj)%type).
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** (3) The rectangle: forward unpinned, converse pinned at [Set] *)
+(* 相关说明。 （已译） *)
 
 Section BigRectangle.
 
@@ -93,8 +93,8 @@ Constraint rh <= rp.
 
 Context (E : Category@{ro rh rp}).
 
-(** Forward half: the accessors and every commutativity statement
-    typecheck at a target above [Set]. *)
+(** 本节：Forward half: accessors every commutativity statement
+ typecheck at target above [Set]. （已译） *)
 Context (F : Rect ⟶ E).
 
 Check (rect_u F).
@@ -109,17 +109,17 @@ Check (rect_long_through_right F).
     shape category. *)
 Check (@paste_squares E).
 
-(** Negative half: the converse does not reach here.  (With the [Fail]
-    stripped this reports a universe inconsistency, [Set] against the
-    declared [rh].) *)
+(** 本节：Negative half: converse does not reach here. (With [Fail]
+ stripped reports universe inconsistency, [Set] against the
+ declared [rh].) （已译） *)
 Context (R : CommutingRectangle E).
 
 Fail Check (RectFunctor R : Rect ⟶ E).
 
 End BigRectangle.
 
-(** Positive control for the converse: at a target whose hom and proof
-    universes ARE [Set] it builds, and recovers all seven generators. *)
+(** Positive control converse: at target whose hom 证明
+ universes ARE [Set] it builds, recovers all seven generators. （已译） *)
 Section SmallRectangle.
 
 Universe so.

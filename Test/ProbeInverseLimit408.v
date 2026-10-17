@@ -23,7 +23,7 @@ Require Import Category.Instance.Sets.InverseLimit.
 Generalizable All Variables.
 Open Scope category_scope.
 
-(** * Refutation probe for Instance/Sets/InverseLimit.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeInverseLimit408。
@@ -31,11 +31,11 @@ Open Scope category_scope.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Instrument: a [Fail] that fails for a scope-free reason *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe408_no_such_constant.
 
-(** ** Guard block: every constant the negatives name, outside every Fail *)
+(* * ** Guard block: every 常值 negatives name, outside every Fail （已译） *)
 
 Check @tower_obj.
 Check @Sets_limit_obj.
@@ -55,44 +55,44 @@ Check @tower_compat.
 Check @tower_compat_all.
 Check @tower_proj.
 
-(** ** (1) CONVERSION: the two presentations are not one object *)
+(* * ** (1) CONVERSION: two presentations not one 对象 （已译） *)
 
-(* The tower object carries compatibility at the STEPS; [Sets_limit_obj]
-   carries it at every arrow.  They are isomorphic ([tower_iso]) and not
-   convertible. *)
+(* The tower 对象 carries compatibility at STEPS; [Sets_limit_obj]
+ carries it at every arrow. They isomorphic ([tower_iso]) not
+ convertible. （已译） *)
 Fail Definition neg_tower_is_limit_obj (F : Omega^op ⟶ Sets) :
   tower_obj F = Sets_limit_obj F := eq_refl.
 
-(* The control: the isomorphism the file actually delivers. *)
+(* The control: 同构 file actually delivers. （已译） *)
 Check (fun F : Omega^op ⟶ Sets => tower_iso F).
 
-(** ** (2) CONVERSION: nor is the tower object the cone set *)
+(* * ** (2) CONVERSION: nor tower 对象 cone set （已译） *)
 
 Fail Definition neg_tower_is_cone_apex (F : Omega^op ⟶ Sets) :
   tower_obj F = cone_apex F := eq_refl.
 
 Check (fun F : Omega^op ⟶ Sets => Sets_tower_limit_iso_cone_limit F).
 
-(** ** (3) TYPING: the shape is [Omega^op], and a covariant diagram is not one *)
+(* 相关说明。 （已译） *)
 
 (* A plain has-type mismatch: no [cannot unify], no universe clause. *)
 Fail Definition neg_wrong_variance (X : obj[Sets]) : obj[Sets] :=
   inverse_limit (Diagonal Omega X).
 
-(* The control: the OPPOSITE shape is what [inverse_limit] consumes, and
-   it is exactly the constant tower of the library file's section (G). *)
+(* The control: OPPOSITE shape what [inverse_limit] 所消耗, and
+ it exactly 常值 tower library file's section (G). （已译） *)
 Check (fun X : obj[Sets] => inverse_limit (Diagonal (Omega^op) X)).
 
-(** ** (4) FORMABILITY: [Cochain]'s [Set] pin, and it is the donor's *)
+(* 相关说明。 （已译） *)
 
 Section CochainPin.
 
 Universes co ch.
 Constraint Set < ch.
 
-(* [Cochain@{u u0}] is declared over [C : Category@{u0 Set Set}] -- hom AND
-   proof pinned to the literal [Set] -- so it is refused at a [Sets] whose
-   hom-and-proof level is declared strictly above [Set]. *)
+(* [Cochain@{u u0}] declared over [C : Category@{u0 Set Set}] -- hom AND
+ 证明 pinned literal [Set] -- so it refused at [Sets] whose
+ hom-and-证明 level declared strictly above [Set]. （已译） *)
 Fail Definition neg_cochain_above_Set
   (G : Sets@{ch co} ⟶ Sets@{ch co}) : Omega^op ⟶ Sets@{ch co} := Cochain G.
 

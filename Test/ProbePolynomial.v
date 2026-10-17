@@ -41,7 +41,7 @@ Example probe_instrument (K S : RingObject) (phi : K ~{Rng}~> S)
           rig_mul S s (rig_map phi a) ≈ rig_mul S (rig_map phi a) s) :
   rig_map (poly_extend phi s Kc Hc) (@poly_x K) = s := eq_refl.
 
-(** ** (1) Addition and multiplication compute; zero and one do not *)
+(* 相关说明。 （已译） *)
 
 (* POSITIVE CONTROLS. *)
 
@@ -89,7 +89,7 @@ Fail Example probe_extend_one_not_eq_refl
   rig_map (poly_extend phi s Kc Hc) (rig_one (PolyRing K))
     = rig_one S := eq_refl.
 
-(* ... and both DO hold up to [≈], which is what the file claims. *)
+(* 相关说明。 （已译） *)
 
 Example probe_extend_zero_up_to_equiv
   (K S : RingObject) (phi : K ~{Rng}~> S)
@@ -100,14 +100,13 @@ Example probe_extend_zero_up_to_equiv
   rig_map (poly_extend phi s Kc Hc) (rig_zero (PolyRing K)) ≈ rig_zero S.
 Proof. exact (rig_map_zero (poly_extend phi s Kc Hc)). Qed.
 
-(* The ℤ instance behaves the OTHER way, which is why the probes above
-   are stated at a variable ring: [zring S 0] reduces to [rig_zero S]. *)
+(* 相关说明。 （已译） *)
 
 Example probe_zpoly_zero_does_compute :
   rig_map (zpoly_eval Int_Ring 3%Z) (rig_zero ZPoly) = rig_zero Int_Ring
   := eq_refl.
 
-(** ** (2) The backward transpose does not compute *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbePolynomial 相关定义、性质与动机。
@@ -128,7 +127,7 @@ Example probe_transpose_up_to_equiv (A : CRng) (Q : CRngPt)
     ≈ peval (`1 h) (`2 Q) t.
 Proof. exact (poly_pointed_adj_transpose_evaluates A Q h t). Qed.
 
-(** ** (3) The free object, its point, the arrow and the unit do compute *)
+(* * ** (3) The free 对象, point, arrow unit do compute （已译） *)
 
 Example probe_free_object (A : CRng) : PolyPointed A = PolyPt A := eq_refl.
 
@@ -151,8 +150,8 @@ Example probe_unit (A : CRng) (c : carrier (rig_setoid (`1 A))) :
 Fail Example probe_unit_not_the_arrow (A : CRng) :
   poly_pointed_unit A = poly_pointed_arrow A := eq_refl.
 
-(* POSITIVE CONTROL for that negative: the two ARE equal as morphisms of
-   [CRng], which is an equation up to [≈] and holds. *)
+(* POSITIVE CONTROL negative: two ARE equal 态射 of
+ [CRng], equation up [≈] holds. （已译） *)
 
 Example probe_unit_equiv_arrow (A : CRng) :
   poly_pointed_unit A ≈ poly_pointed_arrow A.

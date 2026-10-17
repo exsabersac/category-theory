@@ -45,15 +45,15 @@ Require Import Coq.ZArith.ZArith.
 
 Generalizable All Variables.
 
-(** ** 1. [mr_eq], Instance/Rng/MonoidRing.v *)
+(* 相关说明。 （已译） *)
 
 (* NEGATIVE.  The elimination into an arbitrary [Type]. *)
 Fail Definition mr_eq_type_elim {R : RingObject} {M : MonSets}
   (s t : MRTerm R M) (He : mr_eq s t) : MRTerm R M :=
   ltac:(induction He; exact (mr_scal (rig_zero R))).
 
-(* CONTROL.  The relation IS the monoid ring's `≈`, and is its own [Prop]
-   mirror. *)
+(* CONTROL. The 关系 IS 幺半群 ring's `≈`, own [Prop]
+ 镜像. （已译） *)
 Example mr_pequiv_control {R : RingObject} {M : MonSets}
   (s t : MRTerm R M) (He : mr_eq s t) :
   @pequiv _ _ (rig_prop (MonoidRing R M)) s t := He.
@@ -69,15 +69,15 @@ Example mr_respects_control {R : RingObject} {M : MonSets} {S : RingObject}
   mreval phi psi s ≈ mreval phi psi t :=
   mreval_respects phi psi Hcomm s t He.
 
-(** ** 2. [fr_eq], Instance/Rng/Free.v *)
+(* 相关说明。 （已译） *)
 
 Fail Definition fr_eq_type_elim {A : AbObject}
   (s t : FRTerm A) (He : fr_eq s t) : FRTerm A :=
   ltac:(induction He; exact fr_zero).
 
-(* NEGATIVE.  The mediator's respectfulness with the elimination attempted
-   directly at the [Type]-valued `≈`, i.e. the script the file carried before
-   the relation moved. *)
+(* NEGATIVE. The mediator's respectfulness elimination attempted
+ directly at [Type]-valued `≈`, i.e. script file carried before
+ 关系 moved. （已译） *)
 Fail Definition fr_eval_type_elim {A : AbObject} (R : RingObject)
   (h : A ~{Ab}~> Rng_Forget_Ab R) (s t : FRTerm A) (He : fr_eq s t) :
   fr_eval h s ≈ fr_eval h t :=
@@ -93,7 +93,7 @@ Example fr_respects_control {A : AbObject} (R : RingObject)
   fr_eval h s ≈ fr_eval h t :=
   fr_eval_respects R h s t He.
 
-(** ** 3. [pt_eq], Instance/Rng/Polynomial.v *)
+(* 相关说明。 （已译） *)
 
 Fail Definition pt_eq_type_elim {K : RingObject}
   (s t : @PTerm K) (He : pt_eq s t) : @PTerm K :=
@@ -119,7 +119,7 @@ Example pt_respects_control (K S : RingObject) (phi : K ~{Rng}~> S)
   peval phi x t ≈ peval phi x u :=
   peval_respects K S phi x Kcomm Hcs t u He.
 
-(** ** 4. [tt_eq], Instance/Vect/TensorAlgebra.v *)
+(* 相关说明。 （已译） *)
 
 Fail Definition tt_eq_type_elim {K : CRng} {V : RModObject (`1 K)}
   (s t : TTerm V) (He : tt_eq s t) : TTerm V :=
@@ -140,11 +140,11 @@ Example tt_respects_control (K : CRng) (V : RModObject (`1 K))
   (He : tt_eq s t) : teval A f s ≈ teval A f t :=
   teval_respects K V A f s t He.
 
-(** ** 5. [et_eq], Instance/Vect/TensorAlgebra.v
+(* * ** 5. [et_eq], Instance/Vect/TensorAlgebra.v
 
-    Moved in LOCKSTEP with [tt_eq]: [ee_base] embeds a whole [tt_eq], so the
-    exterior relation could not stay in [Type] over a [Prop]-valued tensor
-    relation and still make Λ(V) a quotient of T(V). *)
+ Moved LOCKSTEP [tt_eq]: [ee_base] embeds whole [tt_eq], so the
+ exterior 关系 could not stay [Type] over [Prop]-valued tensor
+ 关系 still make Λ(V) quotient T(V). （已译） *)
 
 Fail Definition et_eq_type_elim {K : CRng} {V : RModObject (`1 K)}
   (s t : TTerm V) (He : et_eq s t) : TTerm V :=
@@ -160,7 +160,7 @@ Example et_respects_control (K : CRng) (V : RModObject (`1 K))
   (He : et_eq s t) : teval A (alt_lin f) s ≈ teval A (alt_lin f) t :=
   exteval_respects K V A f s t He.
 
-(** ** 6. [uenv_eq], Adjunction/Enveloping.v *)
+(* 相关说明。 （已译） *)
 
 Fail Definition uenv_eq_type_elim {K : CRng} {L : LieObject K}
   (s t : UEnvTerm L) (He : uenv_eq s t) : UEnvTerm L :=
@@ -188,15 +188,14 @@ Fail Definition rquot_rel_type_elim {R : RingObject} (I : Ideal R)
   idl_mem I (ab_sub (ring_ab R) x y) :=
   ltac:(destruct H as [K]; exact K).
 
-(* NEGATIVE 7b.  The biconditional is NOT available against the bare
-   membership; it holds only up to the truncation. *)
+(* 相关说明。 （已译） *)
 Fail Definition rquot_zero_iff_untruncated {R : RingObject} (I : Ideal R)
   (x : carrier (rig_setoid R)) :
   rquot_rel I x (rig_zero R) ↔ idl_mem I x :=
   rquot_rel_zero_iff I x.
 
-(* CONTROL.  The direction that loses nothing keeps its [Type]-valued
-   hypothesis. *)
+(* CONTROL. The direction loses nothing keeps [Type]-valued
+ 假设. （已译） *)
 Example rquot_of_mem_control {R : RingObject} (I : Ideal R)
   (x : carrier (rig_setoid R)) (Hx : idl_mem I x) :
   rquot_rel I x (rig_zero R) := rquot_rel_of_mem I x Hx.
@@ -207,8 +206,8 @@ Example rquot_zero_iff_control {R : RingObject} (I : Ideal R)
   rquot_rel I x (rig_zero R) ↔ inhabited (idl_mem I x) :=
   rquot_rel_zero_iff I x.
 
-(* CONTROL.  The quotient's `≈` IS [rquot_rel], and is its own [Prop]
-   mirror. *)
+(* CONTROL. The quotient's `≈` IS [rquot_rel], own [Prop]
+ 镜像. （已译） *)
 Example rquot_pequiv_control {R : RingObject} (I : Ideal R)
   (x y : carrier (rig_setoid R)) (H : rquot_rel I x y) :
   @pequiv _ _ (rig_prop (QuotientRing I)) x y := H.

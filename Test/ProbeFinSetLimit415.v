@@ -32,7 +32,7 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe415_absent_name.
 
-(** ** A: the pullback route does not compute; the native route does *)
+(* 相关说明。 （已译） *)
 
 Definition p415_HasEqualizers_pb : HasEqualizers FinSet :=
   @HasEqualizers_of_HasPullbacks_Terminal FinSet FinSet_Terminal
@@ -41,12 +41,12 @@ Definition p415_HasEqualizers_pb : HasEqualizers FinSet :=
 Definition p415_FinitelyComplete_pb : @FinitelyComplete FinSet :=
   finitely_complete_of_pullbacks_terminal FinSet_Pullbacks FinSet_Terminal.
 
-(* the topos-derived equalizer of FinSet IS the pullback-route term *)
+(* 相关说明。 （已译） *)
 Example p415_topos_route_is_pullback_route :
   @topos_HasEqualizers FinSet FinSet_Topos = p415_HasEqualizers_pb
   := eq_refl.
 
-(* control: the native equalizer object at the example pair is [2] *)
+(* control: native equalizer 对象 at example pair [2] （已译） *)
 Example p415_native_obj :
   `1 (@equalizer FinSet FinSet_HasEqualizers _ _
         finset_eq_example_f finset_eq_example_g) = 2%nat
@@ -58,7 +58,7 @@ Fail Example p415_pb_obj :
         finset_eq_example_f finset_eq_example_g) = 2%nat
   := eq_refl.
 
-(* control: the native terminal object from the empty finite limit is [1] *)
+(* control: native 终对象 empty finite limit [1] （已译） *)
 Example p415_native_terminal :
   @terminal_obj FinSet (FinitelyComplete_Terminal FinSet_FinitelyComplete)
   = 1%nat
@@ -117,7 +117,7 @@ Section Readbacks.
     = FinSet_IsEqualizer f g
     := eq_refl.
 
-  (* the inclusion is a fork, at the setoid of FinSet *)
+  (* 含入 fork, at setoid FinSet （已译） *)
   Example p415_fork :
     f ∘[FinSet] FinSet_equalizer_incl f g
     ≈ g ∘[FinSet] FinSet_equalizer_incl f g
@@ -130,7 +130,7 @@ Example p415_finitely_complete_readback :
       FinSet_HasEqualizers
   := eq_refl.
 
-(* a pair that never agrees has the empty equalizer *)
+(* 相关说明。 （已译） *)
 Example p415_disjoint :
   FinSet_equalizer_obj (fun _ : Fin.t 2 => (Fin.F1 : Fin.t 2))
                        (fun _ => Fin.FS Fin.F1) = 0%nat

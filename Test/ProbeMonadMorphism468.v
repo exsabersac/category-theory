@@ -51,7 +51,7 @@ Example p468_c1_hcompose@{o h s | h < s +} {C : Category@{o h h}}
   transform[nat_hcompose@{s o o o h} (mh_transform θ) (mh_transform θ)] x
     = mh_transform θ (T2 x) ∘ fmap[T] (mh_transform θ x) := eq_refl.
 
-(* C2: the ≈ of [Monads C] is the ≈ of [C, C] on [mh_transform]. *)
+(* 相关说明。 （已译） *)
 Example p468_c2_equiv@{o h m1 m2 u |
   h < u, o <= m1, h <= m1, o <= m2, h <= m2 +}
   (C : Category@{o h h}) (N N2 : Monads@{o h m1 m2} C)
@@ -113,7 +113,7 @@ Fail Example p468_r18_forget_comp@{o h m1 m2 u |
       ∘ fmap[Monads_Forget@{o h m1 m2 u} C] θ := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Part (b): the direction of F^T ⇝ θ* ∘ F^{T'} *)
+(* 相关说明。 （已译） *)
 
 (* C5: the page's direction is a well-formed type. *)
 Definition p468_c5_book_type@{o h e s | h < s, o <= e, h <= e +}
@@ -159,14 +159,14 @@ Example p468_c9_forget_map@{o h e s | h < s, o <= e, h <= e +}
   fmap[@EM_Forget@{o h s e} C T M ◯ mh_EM@{o h e s} θ] f
     = fmap[@EM_Forget@{o h s e} C T2 M2] f := eq_refl.
 
-(* C10: the [fobj] fields of the two functors. *)
+(* C10: [fobj] fields two 函子. （已译） *)
 Example p468_c10_fobj_field@{o h e s | h < s, o <= e, h <= e +}
   {C : Category@{o h h}} {T T2 : C ⟶ C}
   {M : @Monad C T} {M2 : @Monad C T2} (θ : MonadHom@{o h} M M2) :
   @fobj _ _ (@EM_Forget@{o h s e} C T M ◯ mh_EM@{o h e s} θ)
     = @fobj _ _ (@EM_Forget@{o h s e} C T2 M2) := eq_refl.
 
-(* C11: the [fmap] fields of the two functors. *)
+(* C11: [fmap] fields two 函子. （已译） *)
 Example p468_c11_fmap_field@{o h e s | h < s, o <= e, h <= e +}
   {C : Category@{o h h}} {T T2 : C ⟶ C}
   {M : @Monad C T} {M2 : @Monad C T2} (θ : MonadHom@{o h} M M2) :
@@ -181,7 +181,7 @@ Example p468_c12_strict_obj@{o h e s a b |
   (X : @EilenbergMoore@{e o s h} C T2 M2) :
   projT1 (mh_EM_forget_strict@{o h e s a b} θ) X = eq_refl := eq_refl.
 
-(* C41: both legs of the isomorphisms of [mh_EM_forget] are identities. *)
+(* 相关说明。 （已译） *)
 Example p468_c41_forget_iso@{o h e s | h < s, o <= e, h <= e +}
   {C : Category@{o h h}} {T T2 : C ⟶ C}
   {M : @Monad C T} {M2 : @Monad C T2} (θ : MonadHom@{o h} M M2)
@@ -228,7 +228,7 @@ Example p468_c13_free_forget@{o h e s | h < s, o <= e, h <= e +}
   t_alg_hom[transform[mh_EM_free@{o h e s} θ] x] = mh_transform θ x
   := eq_refl.
 
-(* C18: the underlying arrow of the transpose of η'_x. *)
+(* 相关说明。 （已译） *)
 Example p468_c18_transpose_arrow@{o h e s | h < s, o <= e, h <= e +}
   {C : Category@{o h h}} {T T2 : C ⟶ C}
   {M : @Monad C T} {M2 : @Monad C T2} (θ : MonadHom@{o h} M M2) (x : C) :
@@ -287,7 +287,7 @@ Example p468_c16_comp_alg@{o h e s | h < s, o <= e, h <= e +}
     = @t_alg _ _ _ _ (`2 X) ∘ (mh_transform φ (`1 X) ∘ mh_transform θ (`1 X))
   := eq_refl.
 
-(* C17: (φ ∘ θ)* and θ* ◯ φ* keep the same underlying arrows. *)
+(* 相关说明。 （已译） *)
 Example p468_c17_comp_hom@{o h e s | h < s, o <= e, h <= e +}
   {C : Category@{o h h}} {T T2 T3 : C ⟶ C}
   {M : @Monad C T} {M2 : @Monad C T2} {M3 : @Monad C T3}
@@ -324,7 +324,7 @@ Example p468_c43_comp_iso@{o h e s | h < s, o <= e, h <= e +}
    t_alg_hom[from (projT1 (mh_EM_compose@{o h e s} φ θ) X)])
     = (@id C (`1 X), @id C (`1 X)) := eq_refl.
 
-(* C44: and those of θ* ≈ θ2*, for θ ≈ θ2. *)
+(* 相关说明。 （已译） *)
 Example p468_c44_respects_iso@{o h e s | h < s, o <= e, h <= e +}
   {C : Category@{o h h}} {T T2 : C ⟶ C}
   {M : @Monad C T} {M2 : @Monad C T2} (θ θ2 : MonadHom@{o h} M M2)
@@ -359,7 +359,7 @@ Example p468_c19_bimap@{o h f s | h < s, o <= f, h <= f +}
               _ _ _ _ (mh_transform θ) (mh_transform θ)] x
     = mh_transform θ (T2 x) ∘ fmap[T] (mh_transform θ x) := eq_refl.
 
-(* C20: the type of [mh_join] is the multiplication square's. *)
+(* 相关说明。 （已译） *)
 Example p468_c20_hom_mu_type@{o h f s q |
   h < s, o <= f, h <= f, o < q, h < q +}
   {C : Category@{o h h}} {T T2 : C ⟶ C}
@@ -376,7 +376,7 @@ Example p468_c20_hom_mu_type@{o h f s q |
             _ _ _ _ (mh_transform θ) (mh_transform θ)))
   := eq_refl.
 
-(* C52: the type of [mh_ret] is the unit triangle's. *)
+(* 相关说明。 （已译） *)
 Example p468_c52_hom_eta_type@{o h f s q |
   h < s, o <= f, h <= f, o < q, h < q +}
   {C : Category@{o h h}} {T T2 : C ⟶ C}
@@ -393,7 +393,7 @@ Example p468_c38_hom_mu_term@{o h f s | h < s, o <= f, h <= f +}
   @hom_mu _ _ _ _ _ _ _ (mh_monoidhom@{o h f s} θ) x = @mh_join _ _ _ _ _ θ x
   := eq_refl.
 
-(* C39: the [mh_join] of [monoidhom_mh θ H] IS the square of H. *)
+(* 相关说明。 （已译） *)
 Example p468_c39_mh_join_term@{o h f s | h < s, o <= f, h <= f +}
   {C : Category@{o h h}} {T T2 : C ⟶ C}
   {M : @Monad C T} {M2 : @Monad C T2} (θ : T ⟹ T2)
@@ -479,7 +479,7 @@ Example p468_c51_monoid_eta@{o h f s | h < s, o <= f, h <= f +}
   transform[@eta _ _ _ (monad_monoid@{o h f s} M)] x = @ret C T M x
   := eq_refl.
 
-(* C24: the unit and multiplication of the monad round trip are M's. *)
+(* C24: unit multiplication 单子 round trip M's. （已译） *)
 Example p468_c24_monad_round@{o h f s | h < s, o <= f, h <= f +}
   {C : Category@{o h h}} {T : C ⟶ C} (M : @Monad C T) (x : C) :
   (@ret C T (monoid_monad@{o h f s} (monad_monoid@{o h f s} M)) x,
@@ -491,7 +491,7 @@ Fail Example p468_r8_monad_round@{o h f s | h < s, o <= f, h <= f +}
   {C : Category@{o h h}} {T : C ⟶ C} (M : @Monad C T) :
   monoid_monad@{o h f s} (monad_monoid@{o h f s} M) = M := eq_refl.
 
-(* C25: μ and η of the monoid round trip are N's, at x. *)
+(* C25: μ η 幺半群 round trip N's, at x. （已译） *)
 Example p468_c25_monoid_round@{o h f s | h < s, o <= f, h <= f +}
   {C : Category@{o h h}} {T : C ⟶ C}
   (N : @Monoid (@Fun@{o h o h f f s} C C) (@Compose_Monoidal@{s f o h} C) T)
@@ -509,21 +509,21 @@ Fail Example p468_r9_monoid_round@{o h f s | h < s, o <= f, h <= f +}
 (* ------------------------------------------------------------------------ *)
 (** ** Monad/Morphism/Transformer.v *)
 
-(* C56: the components of [transformer_hom L] are L's lift. *)
+(* 相关说明。 （已译） *)
 Example p468_c56_trans_lift@{o h | +} {C : Category@{o h h}} {M : C ⟶ C}
   {HM : @Monad C M} {T : (C ⟶ C) → (C ⟶ C)} {HT : @Monad C (T M)}
   (L : @MonadTransformer C M HM T HT) (x : C) :
   mh_transform (transformer_hom@{o h} L) x = @lift C M HM T HT L x
   := eq_refl.
 
-(* C57: the lift of [hom_transformer θ] has the components of θ. *)
+(* 相关说明。 （已译） *)
 Example p468_c57_hom_lift@{o h | +} {C : Category@{o h h}} {M : C ⟶ C}
   {HM : @Monad C M} {T : (C ⟶ C) → (C ⟶ C)} {HT : @Monad C (T M)}
   (θ : MonadHom@{o h} HM HT) (x : C) :
   @lift C M HM T HT (hom_transformer@{o h} θ) x = mh_transform θ x
   := eq_refl.
 
-(* C26: the lift of the transformer round trip is L's. *)
+(* 相关说明。 （已译） *)
 Example p468_c26_trans_round@{o h | +} {C : Category@{o h h}}
   {M : C ⟶ C} {HM : @Monad C M} {T : (C ⟶ C) → (C ⟶ C)}
   {HT : @Monad C (T M)} (L : @MonadTransformer C M HM T HT) (x : C) :
@@ -536,7 +536,7 @@ Fail Example p468_r10_trans_round@{o h | +} {C : Category@{o h h}}
   {HT : @Monad C (T M)} (L : @MonadTransformer C M HM T HT) :
   hom_transformer@{o h} (transformer_hom@{o h} L) = L := eq_refl.
 
-(* C27: the components of the hom round trip are θ's. *)
+(* 相关说明。 （已译） *)
 Example p468_c27_hom_round@{o h | +} {C : Category@{o h h}}
   {M : C ⟶ C} {HM : @Monad C M} {T : (C ⟶ C) → (C ⟶ C)}
   {HT : @Monad C (T M)} (θ : MonadHom@{o h} HM HT) (x : C) :
@@ -550,7 +550,7 @@ Fail Example p468_r11_hom_round@{o h | +} {C : Category@{o h h}}
   transformer_hom@{o h} (hom_transformer@{o h} θ) = θ := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Fun/Action/Monad/BG/Morphism.v *)
+(* 相关说明。 （已译） *)
 
 (* C58: [BG_theta M] has identity components. *)
 Example p468_c58_bg_component@{o so | o < so +} (M : MonObject@{o o o})
@@ -637,7 +637,7 @@ Example p468_r14_actbg_alg@{o so | o < so +} (M : MonObject@{o o o})
     = @t_alg _ _ _ _ (Act_BG_alg@{o so} M (`1 x) (`2 x)) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/SupLat/Free/Morphism.v *)
+(* 相关说明。 （已译） *)
 
 (* C61: [SL_theta] has identity components. *)
 Example p468_c61_sl_component@{o so | Set < o, o < so +}
@@ -672,7 +672,7 @@ Example p468_c62_sl_carrier@{o so | Set < o, o < so +}
          (SL_Forget@{o so} ◯ SL_Free@{o so}) SL_induced@{o so}) :
   `1 (fobj[SL_EM_theta@{o so}] x) = `1 x := eq_refl.
 
-(* C35: the carrier, the order and the supremum as a function. *)
+(* 相关说明。 （已译） *)
 Example p468_c35_sl_parts@{o so | Set < o, o < so +}
   (x : @EilenbergMoore@{so so so o} Sets@{o so}
          (SL_Forget@{o so} ◯ SL_Free@{o so}) SL_induced@{o so}) :
@@ -706,7 +706,7 @@ Fail Example p468_r17_sl_obj@{o so | Set < o, o < so +}
     = fobj[EM_induced_to_SupLat@{o so}] x := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Guard: every constant of the six targets, by its full name *)
+(* * ** Guard: every 常值 six targets, full name （已译） *)
 
 Check @Category.Monad.Morphism.MonadHom.
 Check @Category.Monad.Morphism.Build_MonadHom.
@@ -807,18 +807,16 @@ Check @Category.Instance.SupLat.Free.Morphism.SL_factor_map.
 Check @Category.Instance.SupLat.Free.Morphism.SL_factor.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The route through Monad/Monoid.v, measured and not taken *)
+(* 相关说明。 （已译） *)
 
 (* CORRECTION (#1348): taken since #1348; C40 now restates [monad_monoid]'s
    own body. *)
 
-(* Loaded here, after every other command, so that the two modules below
-   change the environment of this control alone. *)
+(* 相关说明。 （已译） *)
 Require Import Category.Monad.Monoid.
 Require Import Category.Theory.Algebra.Monoid.Product.
 
-(* C40: that route's μ and η are [monad_monoid]'s, and its round trip
-   keeps [ret]. *)
+(* 相关说明。 （已译） *)
 Example p468_c40_monoid_route@{o h f s + | h < s, o <= f, h <= f +}
   {C : Category@{o h h}} {T : C ⟶ C} (M : @Monad C T) (x : C) :
   (transform[@mu _ _ _

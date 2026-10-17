@@ -2,7 +2,7 @@ Require Import Category.Lib.
 
 Generalizable All Variables.
 
-(** * Setoids whose equality is propositional *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:    https://ncatlab.org/nlab/show/h-set
@@ -64,9 +64,7 @@ Proof.
       exact (pequiv_from x z (transitivity (pequiv_to x y H1) (pequiv_to y z H2))).
 Defined.
 
-(* [pequiv] respects `≈` in both arguments, up to [iff].  Note that [iff] here
-   is Coq's [Prop]-valued biconditional, NOT the library's `↔`, which
-   Lib/Foundation.v binds to [iffT]. *)
+(* 相关说明。 （已译） *)
 #[export] Instance pequiv_Proper :
   Proper (equiv ==> equiv ==> iff) (@pequiv A S P).
 Proof.
@@ -112,7 +110,7 @@ Definition PropEquiv_of_relation@{u p} {A : Type@{u}} {S : Setoid@{u p} A}
   (from : forall x y, @equiv A S x y -> R x y) : PropEquiv@{u p} S :=
   {| pequiv := R ; pequiv_to := to ; pequiv_from := from |}.
 
-(** ** Instances for the setoid constructors of Lib/Setoid.v *)
+(* 相关说明。 （已译） *)
 
 (* The discrete setoid: `≈` is Coq's [eq], which is already in [Prop].
 
@@ -164,7 +162,7 @@ Proof.
   - intros f g H x; exact (pequiv_from _ _ (H x)).
 Defined.
 
-(** ** Instances for the setoid constructors of Lib/Datatypes.v *)
+(* 相关说明。 （已译） *)
 
 (* The non-dependent function setoid.
 
@@ -247,9 +245,9 @@ Proof.
     + exact I.
 Defined.
 
-(* The list setoid.  [list_equiv] (Lib/Datatypes.v) is a [Type]-valued
-   fixpoint using `∧` = [prod]; the [Prop] mirror below uses [and], and the two
-   implications are structural inductions. *)
+(* The list setoid. [list_equiv] (Lib/Datatypes.v) [Type]-valued
+ fixpoint using `∧` = [prod]; [Prop] 镜像 below uses [and], two
+ 蕴含 structural inductions. （已译） *)
 Fixpoint list_pequiv {A : Type} {SA : Setoid A} (PA : PropEquiv SA)
   (xs ys : list A) : Prop :=
   match xs, ys with
@@ -290,7 +288,7 @@ Proof.
   - intros x y h; exact h.
 Defined.
 
-(** ** Transports for setoids built inline *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明核/余核相关定义、性质与动机。

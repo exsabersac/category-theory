@@ -23,10 +23,10 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Positive controls
+(* * ** Positive controls
 
-    Every constant named in a negative below is also named here, outside
-    any [Fail], so a rename cannot silently vacate a guard. *)
+ Every 常值 named negative below named here, outside
+ any [Fail], so rename cannot silently vacate guard. （已译） *)
 
 Check @free_ring_via_ab.
 Check @free_ring_via_mon.
@@ -60,13 +60,12 @@ Example probe_fobj_agree (R : Rng) :
 Example probe_fmap_agree (R S : Rng) (f : R ~{Rng}~> S) :
   fmap[RngUnderlyingAb] f = fmap[RngUnderlyingMon] f := eq_refl.
 
-(** ** CONVERSION negatives
+(* * ** CONVERSION negatives
 
-    Agreement on [fobj] and [fmap] does NOT extend to the functor
-    records, nor to the [Adjunction] record built over them. *)
+ Agreement [fobj] [fmap] does NOT extend 函子
+ records, nor [Adjunction] record built over them. （已译） *)
 
-(* The two right adjoints are not the same record: the law fields are
-   [Compose]'s obligations at different arguments. *)
+(* 相关说明。 （已译） *)
 Fail Example probe_underlying_records_agree :
   RngUnderlyingAb = RngUnderlyingMon := eq_refl.
 

@@ -1,20 +1,20 @@
 (* ========================================================================= *)
 (* Regression suite for issue #138.                                          *)
 (*                                                                           *)
-(* This file locks in the resolution of issue #138.  It checks that:        *)
+(* 相关说明。 （已译） *)
 (*                                                                           *)
 (*   - [StrictCat] is the STRICT category of categories: its homset          *)
 (*     equivalence is [Functor_StrictEq_Setoid] (strict equality of          *)
 (*     functors), not the weak nat-iso equivalence [Functor_Setoid] used by  *)
 (*     the weak category [Cat].                                              *)
 (*                                                                           *)
-(*   - The underlying-graph [Forgetful] functor and the [Free] ⊣ [Forgetful] *)
+(* - The underlying-graph [Forgetful] 函子 [Free] ⊣ [Forgetful] （已译） *)
 (*     adjunction live OVER [StrictCat], not over the weak [Cat].  They       *)
 (*     cannot be defined over [Cat] because they do not respect natural      *)
 (*     isomorphism: a category's underlying quiver is not invariant under     *)
-(*     the weak equivalence that [Cat]'s [Functor_Setoid] identifies.        *)
+(* the weak 等价 [Cat]'s [Functor_Setoid] identifies. （已译） *)
 (*                                                                           *)
-(*   - The comparison functor [StrictCat_to_Cat] witnesses that strict        *)
+(* - The comparison 函子 [StrictCat_to_Cat] witnesses strict （已译） *)
 (*     equality of functors implies natural isomorphism (strict-eq ⟹         *)
 (*     natural-iso), exhibiting [StrictCat] as a refinement of [Cat].        *)
 (* ========================================================================= *)
@@ -38,21 +38,21 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Forgetful is well-typed with the claimed signature. *)
+(* 相关说明。 （已译） *)
 Check (Forgetful : StrictCat ⟶ QuiverCategory).
 
-(* Computational behaviour: underlying nodes are the category's objects. *)
+(* Computational behaviour: underlying nodes 范畴's 对象. （已译） *)
 Example A138_nodes (C : Category) : @nodes (Forgetful C) = obj[C] := eq_refl.
 
-(* Underlying edges are the hom-sets. *)
+(* 相关说明。 （已译） *)
 Example A138_edges (C : Category) (x y : C) :
   @edges (Forgetful C) x y = (x ~> y) := eq_refl.
 
-(* The edge-map of the functor's fmap is the functor's fmap. *)
+(* The edge-map 函子's fmap 函子's fmap. （已译） *)
 Example A138_fedgemap (C D : Category) (F : C ⟶ D) (x y : C) (f : x ~> y) :
   @fedgemap _ _ (fmap[Forgetful] F) x y f = fmap[F] f := eq_refl.
 
-(* The underlying constructions on objects and morphisms are well-typed. *)
+(* The underlying constructions 对象 态射 well-typed. （已译） *)
 Check (QuiverOfCat : Category -> Quiver).
 Check (@QuiverHomomorphismOfFunctor
         : ∀ (C D : Category), (C ⟶ D) ->
@@ -76,16 +76,16 @@ Check (FreeCatFunctor : QuiverCategory ⟶ StrictCat).
 Check (FreeForgetfulAdjunction : FreeCatFunctor ⊣ Forgetful).
 
 (* A concrete worked quiver: one node, one loop.
-   NB: bare [unit] in edge position resolves to the adjunction-unit notation, so
-   we must qualify the Coq type as [Datatypes.unit]. *)
+ NB: bare [unit] edge position resolves 伴随-unit notation, so
+ we must qualify Coq type [Datatypes.unit]. （已译） *)
 Definition B138_loop : Quiver :=
   Build_Quiver_Standard_Eq Datatypes.unit (fun _ _ => Datatypes.unit).
 
 Check (FreeOnQuiver B138_loop : Category).
 Check (FreeCatFunctor B138_loop : Category).
 
-(* The nodes of the free category on the loop quiver are exactly the quiver's
-   nodes (here [unit]). *)
+(* The nodes free 范畴 loop quiver exactly quiver's
+ nodes (here [unit]). （已译） *)
 Example B138_free_loop_nodes :
   obj[FreeOnQuiver B138_loop] = Datatypes.unit := eq_refl.
 
@@ -110,8 +110,8 @@ Example C138_strictcat_id_left (A B : Category) (F : A ⟶ B) :
          (@compose StrictCat _ _ _ (@id StrictCat B) F) F :=
   @id_left StrictCat A B F.
 
-(* The three strict category laws, stated with the EXPLICIT strict setoid
-   and discharged by the existing lemmas. *)
+(* The three strict 范畴 laws, stated EXPLICIT strict setoid
+ discharged existing lemmas. （已译） *)
 Example C138_id_left {A B} (F : A ⟶ B) :
   @equiv _ Functor_StrictEq_Setoid (Id ◯ F) F := fun_strict_equiv_id_left F.
 

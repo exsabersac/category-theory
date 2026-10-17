@@ -36,21 +36,21 @@ Require Import Coq.Vectors.Fin.
 Generalizable All Variables.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (1) The Yoneda route at [Sets] *)
+(* 相关说明。 （已译） *)
 
-(* NEGATIVE.  Stripped, this reports a universe inconsistency between the
-   object universe of [Sets] and its hom universe. *)
+(* NEGATIVE. Stripped, reports universe inconsistency between the
+ 对象 universe [Sets] hom universe. （已译） *)
 Fail Check @universal_element_yoneda (Sets^op) Powerset_Prop_op Powerset_Omega.
 
 (* NEGATIVE, the composed form. *)
 Fail Check
   @universal_element_representation (Sets^op) Powerset_Prop_op Powerset_Omega.
 
-(* POSITIVE CONTROL: the Yoneda-free route at the same three arguments. *)
+(* 相关说明。 （已译） *)
 Check ue_representation Powerset_Prop_op Powerset_Omega
         Powerset_Prop_universal_element.
 
-(* POSITIVE CONTROL: and the whole representation the target file builds. *)
+(* 相关说明。 （已译） *)
 Check Powerset_representation.
 
 (*
@@ -82,7 +82,7 @@ Section PowersetAtTwoSizes.
 End PowersetAtTwoSizes.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (2) The element is not the point *)
+(* 相关说明。 （已译） *)
 
 (* NEGATIVE, over [Sets].  Stripped: "The term Powerset_truth_point has type
    carrier Powerset_Omega while it is expected to have type ...". *)
@@ -102,7 +102,7 @@ Example fin_subset_is_an_element :
   Fin.t (finpow 2) := finpow_truth_subset.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (3) The [Sets] round trip is [≈] only; the [FinSet] one is Leibniz *)
+(* 相关说明。 （已译） *)
 
 (* NEGATIVE.  Stripped: "cannot unify
    Powerset_preimage_of_truth (Powerset_char S) and S". *)
@@ -110,13 +110,12 @@ Fail Example sets_round_trip_strict
   (A : SetoidObject) (S : carrier (Powerset_Prop_obj A)) :
   Powerset_preimage_of_truth (Powerset_char S) = S := eq_refl.
 
-(* POSITIVE CONTROL: the [≈] form, which is what the target proves. *)
+(* 相关说明。 （已译） *)
 Check (fun (A : SetoidObject) (S : carrier (Powerset_Prop_obj A)) =>
          powerset_preimage_char S
          : Powerset_preimage_of_truth (Powerset_char S) ≈ S).
 
-(* POSITIVE CONTROL, and the CONTRAST: over [FinSet] the same round trip is
-   a Leibniz equation, with no setoid step anywhere. *)
+(* 相关说明。 （已译） *)
 Check (fun (n : nat) (S : Fin.t (finpow n)) =>
          fin_tabulate_apply S : fin_tabulate (fin_apply S) = S).
 
@@ -133,11 +132,9 @@ Check (powerset_truth_subset_holds
        : Powerset_truth_subset ≈ Powerset_holds).
 
 (* ------------------------------------------------------------------------ *)
-(** ** (5) The functor laws are not definitional *)
+(* * ** (5) The 函子 laws not definitional （已译） *)
 
-(* NEGATIVE.  Stripped: "cannot unify fmap[Powerset_Prop_op] id{Sets^op} and
-   id{Sets}".  CORRECTION (#1347): a POSITIVE CONTROL now; the command
-   holds at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example powerset_fmap_id_strict (X : SetoidObject) :
   fmap[Powerset_Prop_op] (id{Sets^op} : X ~{Sets^op}~> X) = id{Sets}
   := eq_refl.
@@ -151,13 +148,13 @@ Example powerset_fmap_comp_strict (X Y Z : SetoidObject)
 (* POSITIVE CONTROL: the [≈] form. *)
 Check (fun X : SetoidObject => @Powerset_Prop_comap_id X).
 
-(* POSITIVE CONTROL, and the CONTRAST once more: over [FinSet] the identity
-   law of the same functor IS a Leibniz equation on codes. *)
+(* POSITIVE CONTROL, CONTRAST once more: over [FinSet] 恒等
+ law same 函子 IS Leibniz equation codes. （已译） *)
 Check (fun (n : nat) (S : Fin.t (finpow n)) =>
          finpow_map_id S : finpow_map (fun i : Fin.t n => i) S = S).
 
 (* ------------------------------------------------------------------------ *)
-(** ** Positive controls that are strength claims in their own right *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明等价相关定义、性质与动机。
@@ -175,7 +172,7 @@ Example sets_subsets_are_maps (A : SetoidObject) :
 Fail Example fin_subsets_are_maps (n : nat) :
   Fin.t (finpow n) = (Fin.t n → Fin.t 2) := eq_refl.
 
-(* The classifier of [FinSet] and the power-set functor built over it share
-   their truth-value object, on the nose. *)
+(* The classifier [FinSet] power-set 函子 built over it share
+ truth-value 对象, nose. （已译） *)
 Example finset_omega_is_two :
   @Ω FinSet FinSet_Terminal FinSet_Classifier = 2%nat := eq_refl.

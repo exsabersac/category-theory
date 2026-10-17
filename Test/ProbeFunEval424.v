@@ -40,8 +40,7 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe424_absent_name.
 
-(** ** A: the new evaluation IS Adjunction/Diagonal/Connected.v's [EvalAt]
-       in both data fields, but not as a record *)
+(* 相关说明。 （已译） *)
 
 Section EvalAtAgreement.
 
@@ -55,13 +54,12 @@ Example p424_EvalAt_obj : fobj[Eval p] = fobj[@EvalAt P X p] := eq_refl.
 Example p424_EvalAt_map (H K : [P, X]) :
   @fmap _ _ (Eval p) H K = @fmap _ _ (@EvalAt P X p) H K := eq_refl.
 
-(* N1 CONVERSION: the whole records do not — both are [Program
-   Definition]s whose law fields are separate opaque constants *)
+(* 相关说明。 （已译） *)
 Fail Example p424_EvalAt_record : Eval p = @EvalAt P X p := eq_refl.
 
 End EvalAtAgreement.
 
-(** ** B: partial application agrees on arrows up to ≈ only *)
+(* 相关说明。 （已译） *)
 
 Section PartialAgreement.
 
@@ -70,8 +68,8 @@ Context {P X : Category} (p : P) (H K : [P, X]).
 (* control: on objects, on the nose *)
 Example p424_partial_obj : fobj[Eval p] H = fobj[Partial_l EvalBi p] H := eq_refl.
 
-(* N2 CONVERSION: on arrows the partial's action is [bimap s id], carrying
-   the [fmap id] the functor law removes *)
+(* N2 CONVERSION: arrows partial's action [bimap s id], carrying
+ [fmap id] 函子 law removes （已译） *)
 Fail Example p424_partial_map (s : H ~{[P, X]}~> K) :
   @fmap _ _ (Eval p) H K s = @fmap _ _ (Partial_l EvalBi p) H K s := eq_refl.
 
@@ -79,8 +77,7 @@ Fail Example p424_partial_map (s : H ~{[P, X]}~> K) :
 Check (eval_partial_map p H K).
 Check (eval_partial_iso p).
 
-(* N3 CONVERSION: the same on the other partial — [Partial_r]'s action is
-   [bimap id f], again carrying an [fmap id] *)
+(* 相关说明。 （已译） *)
 Fail Example p424_partial_r_map (q : P) (f : p ~> q) :
   @fmap _ _ (Partial_r EvalBi H) p q f = @fmap _ _ H p q f := eq_refl.
 
@@ -90,7 +87,7 @@ Check (fun (q : P) (f : p ~> q) => eval_partial_r_map H p q f).
 
 End PartialAgreement.
 
-(** ** C: the same data as the tree's other evaluation functors *)
+(* * ** C: same data tree's other evaluation 函子 （已译） *)
 
 (* at [X := Sets]: Functor/Hom/Yoneda/Natural.v's [YoEvalAt] *)
 Example p424_YoEvalAt_obj {C : Category} (c : C) :
@@ -121,16 +118,15 @@ Example p424_prior_nat (n : nat) (F : [BNat, Sets]) :
 Check (@CatEval_map).
 Check (@eval_transpose).
 
-(** ** D: the Awodey increment — Theory/Lawvere/Sets.v's [ev1] through the
-       general evaluation *)
+(* 相关说明。 （已译） *)
 
 Section Ev1.
 
 Context (T : LawvereTheory).
 
-(* [Models T Sets] is the full subcategory of [[law_cat T, Sets]] cut out
-   by [Models_sub]; [ev1] is evaluation at the generator after the
-   inclusion. *)
+(* [Models T Sets] full subcategory [[law_cat T, Sets]] cut out
+ [Models_sub]; [ev1] evaluation at generator after the
+ 含入. （已译） *)
 Definition p424_ev1_via_Eval : Models T Sets ⟶ Sets :=
   @Eval (@law_cat T) Sets (law_of_nat 1%nat)
     ◯ @Incl (@Fun (@law_cat T) Sets) (Models_sub T Sets).

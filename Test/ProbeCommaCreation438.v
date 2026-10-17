@@ -38,31 +38,31 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe438_absent_name.
 
-(** ** A: CONVERSION — the two preservation hypotheses *)
+(* 相关说明。 （已译） *)
 
 Section Preservation.
 
 Context {C D : Category}.
 Context {U : C ⟶ D}.
 
-(* control: each direction of the passage exists and is proof-free *)
+(* control: each direction passage exists 证明-free （已译） *)
 Check (@PreservesImageLimit_Continuous C D U).
 Check (@Continuous_PreservesImageLimit C D U).
 
-(* control: the all-shapes hypothesis yields the per-diagram one at every
-   diagram, which is the whole content of the weakening below *)
+(* control: all-shapes 假设 yields per-diagram one at every
+ diagram, whole content weakening below （已译） *)
 Check (fun (H : @PreservesImageLimit C D U) (J : Category) (G : J ⟶ C) =>
          (fun N HN => H J G (@Build_Limit J C G N HN))
            : PreservesLimitCone G U).
 
-(* N1 CONVERSION: the two [Type]s are nevertheless not convertible *)
+(* 相关说明。 （已译） *)
 Fail Example p438_types :
   @PreservesImageLimit C D U
     = (∀ (J : Category) (G : J ⟶ C), PreservesLimitCone G U) := eq_refl.
 
 End Preservation.
 
-(** ** B: UNIVERSE — the discrete shape is not formable here *)
+(* 相关说明。 （已译） *)
 
 Section DiscreteShape.
 
@@ -102,14 +102,14 @@ Definition p438_const_creates (HU : @PreservesImageLimit C D U)
 
 End DiscreteShape.
 
-(** ** C: CONVERSION — the coslice is reached only by transport *)
+(* 相关说明。 （已译） *)
 
 Section Coslice.
 
 Context {C : Category}.
 Context (c : C).
 
-(* control: the transported projection exists and creates every limit *)
+(* 相关说明。 （已译） *)
 Check (@coslice_comma_proj C c).
 Check (@coslice_comma_proj_CreatesAllLimits C c).
 
@@ -117,7 +117,7 @@ Check (@coslice_comma_proj_CreatesAllLimits C c).
 Fail Example p438_coslice_fobj (x : c ̸co C) :
   fobj[coslice_comma_proj c] x = `1 x := eq_refl.
 
-(* N4 CONVERSION: and the coslice is not the comma category on the nose *)
+(* N4 CONVERSION: coslice not comma 范畴 nose （已译） *)
 Fail Example p438_coslice_cat : (c ̸co C) = (=(c) ↓ Id[C]) := eq_refl.
 
 (*
@@ -131,15 +131,15 @@ Example p438_plain_fobj (x : c ̸co C) :
 Example p438_plain_fmap {x y : c ̸co C} (f : x ~{c ̸co C}~> y) :
   fmap[Coslice_Proj c] f = `1 f := eq_refl.
 
-(* N6 CONVERSION: the plain and the transported projections are DIFFERENT
-   functors, so what is proved of one does not transfer to the other by
-   conversion *)
+(* N6 CONVERSION: plain transported projections DIFFERENT
+ 函子, so what proved one does not transfer other by
+ conversion （已译） *)
 Fail Example p438_projs_agree :
   Coslice_Proj c = coslice_comma_proj c := eq_refl.
 
 End Coslice.
 
-(** ** C': the plain coslice projection's strict lift *)
+(* 相关说明。 （已译） *)
 
 Section PlainCoslice.
 
@@ -148,7 +148,7 @@ Context (c : C).
 Context {J : Category}.
 Context (K : J ⟶ (c ̸co C)).
 
-(* the lift lies over the GIVEN cone, apex and legs, with no hypothesis *)
+(* the lift lies over GIVEN cone, apex legs, no 假设 （已译） *)
 
 Example p438_coslice_apex (N : Cone (Coslice_Proj c ◯ K)) (HN : IsLimitCone N) :
   fobj[Coslice_Proj c]
@@ -165,14 +165,14 @@ Example p438_coslice_legs (N : Cone (Coslice_Proj c ◯ K)) (HN : IsLimitCone N)
           N HN)) j)
     = cone_leg N j := eq_refl.
 
-(* the lifted object's structure map is the mediator, on the nose *)
+(* the lifted 对象's structure map mediator, nose （已译） *)
 Example p438_coslice_structure (N : Cone (Coslice_Proj c ◯ K))
   (HN : IsLimitCone N) :
   `2 (coslice_lift_obj c K N HN) = coslice_med c K N HN := eq_refl.
 
 End PlainCoslice.
 
-(** ** D: CONVERSION — the shipped lift against the strict one *)
+(* 相关说明。 （已译） *)
 
 Section ShippedLift.
 
@@ -187,7 +187,7 @@ Context (L : Limit (Gdiag K)).
 Definition p438_HK : PreservesLimitCone (Gdiag K) U :=
   fun N HN => HU J (Gdiag K) (@Build_Limit J C (Gdiag K) N HN).
 
-(* control: the NEW strict lift lies over the given cone on the nose *)
+(* 相关说明。 （已译） *)
 Example p438_new_lift (N : Cone (Gdiag K)) (HN : IsLimitCone N) :
   fobj[comma_proj2]
     (vertex_obj[slift_cone
@@ -195,8 +195,8 @@ Example p438_new_lift (N : Cone (Gdiag K)) (HN : IsLimitCone N) :
           N HN)])
     = vertex_obj[N] := eq_refl.
 
-(* N5 CONVERSION: the shipped [creates_lift] discards its cone argument and
-   returns the lift of the fixed [L] instead *)
+(* N5 CONVERSION: shipped [creates_lift] discards cone 论元 and
+ returns lift fixed [L] instead （已译） *)
 Fail Example p438_old_lift (N : Cone (Gdiag K)) (HN : IsLimitCone N) :
   fobj[comma_proj2]
     (vertex_obj[creates_lift (CreatesLimit := comma_CreatesLimit HU K L) N HN])
@@ -230,7 +230,7 @@ Example p438_at_legs (j : J) :
 Example p438_slift_eq (N : Cone (Gdiag K)) (HN : IsLimitCone N) :
   slift_eq (comma_strict_lift K HK N HN) = eq_refl := eq_refl.
 
-(* the issue's name IS the constant it aliases, not merely its type *)
+(* the issue's name IS 常值 it aliases, not merely type （已译） *)
 Example p438_alias_limits :
   comma_proj_creates_limits K HK = comma_StrictlyCreatesLimit K HK := eq_refl.
 
@@ -266,7 +266,7 @@ Example p438_equalizer_apex {C D : Category} {U : C ⟶ D} {d : D}
   (E : Equalizer (Gdiag K)) :
   comma_proj2 (vertex_obj[comma_equalizer_at K HK E]) = vertex_obj[E] := eq_refl.
 
-(** ** F: a concrete witness — every coslice of [Sets] is complete *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。

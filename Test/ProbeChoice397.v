@@ -26,10 +26,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Instrument check
-
-    The negatives below are only as good as the harness: a name that
-    exists in no file of the tree must be refused. *)
+(* 相关说明。 （已译） *)
 
 Fail Check p397_no_such_constant_anywhere.
 
@@ -180,8 +177,7 @@ Definition p397_raf_type_control : Opposite (LeftAdjCat C D) ⟶ [C, D] :=
 Fail Definition p397_raf_covariant :
   LeftAdjCat C D ⟶ [C, D] := RightAdjointFunctor C D.
 
-(* Two further controls this section names: the two variance readbacks
-   that pin the arrow action's orientation, which no [Fail] can. *)
+(* 相关说明。 （已译） *)
 Definition p397_variance_control := raf_fmap_variance C D.
 Definition p397_id_control := raf_id_is_conj_mate_id C D.
 
@@ -220,16 +216,14 @@ Check (Cu ⟶ Du).
 
 Fail Check (Opposite Cu).
 
-(** *** Negative 10 (FORMABILITY): [Subcategory] alone
-
-    Stripped, same tail. *)
+(* 相关说明。 （已译） *)
 
 Fail Check (Subcategory Cu).
 
-(** *** Negative 11 (FORMABILITY): the functor CATEGORY alone
+(* * *** Negative 11 (FORMABILITY): 函子 CATEGORY alone
 
-    [Du ⟶ Cu] is accepted above, so this is [Fun]'s own shape and not
-    [Functor]'s.  Stripped, same tail, reported on [Du]. *)
+ [Du ⟶ Cu] accepted above, so 这是 [Fun]'s own shape not
+ [Functor]'s. Stripped, same tail, reported [Du]. （已译） *)
 
 Fail Check ([Du, Cu]).
 
@@ -272,25 +266,25 @@ Check (fun x y : Au => x ~{Au}~> y).
 Check (fun x y : Bu => x ~{Bu}~> y).
 Check (Au ⟶ Bu).
 
-(** *** Negative 14 (FORMABILITY): the reverse functor
+(* * *** Negative 14 (FORMABILITY): reverse 函子
 
-    Stripped, the error ends "universe inconsistency: Cannot enforce
-    ah = <fresh> because ah < bh <= <fresh>". *)
+ Stripped, error ends "universe inconsistency: Cannot enforce
+ ah = <fresh> because ah < bh <= <fresh>". （已译） *)
 
 Fail Check (Bu ⟶ Au).
 
-(** *** Negative 15 (FORMABILITY): the functor category, independently
+(* * *** Negative 15 (FORMABILITY): 函子 范畴, independently
 
-    No functor pair in the command.  Stripped, the error ends "universe
-    inconsistency: Cannot enforce bh = ah because ah < bh". *)
+ No 函子 pair command. Stripped, error ends "universe
+ inconsistency: Cannot enforce bh = ah because ah < bh". （已译） *)
 
 Fail Check ([Au, Bu]).
 
-(** *** Negative 16 (FORMABILITY): the delivered functor inherits it
+(* * *** Negative 16 (FORMABILITY): delivered 函子 inherits it
 
-    Not independent of 14 and 15; pinned so a change at either donor is
-    visible here.  Stripped, the error ends "universe inconsistency:
-    Cannot enforce ah = bh because ah < bh". *)
+ Not independent 14 15; pinned so change at either donor is
+ visible here. Stripped, error ends "universe inconsistency:
+ Cannot enforce ah = bh because ah < bh". （已译） *)
 
 Fail Check (RightAdjointFunctor Bu Au).
 

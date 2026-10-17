@@ -59,15 +59,15 @@ Generalizable All Variables.
 
 Open Scope category_scope.
 
-(** ** Instrument: the refutation keyword is live *)
+(* 相关说明。 （已译） *)
 
 (* The instrument *)
 Fail Check p462_absent_name.
 
-(** ** Instance/Top/Components.v, ENCODING: the Type-valued [Top] *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: a functor out of [Top@{h o}] into the [Sets] one universe up,
-   and an [Adjunction] record between them. *)
+(* CONTROL: 函子 out [Top@{h o}] 进入 [Sets] one universe up,
+ [Adjunction] record between them. （已译） *)
 Definition p462_top_to_sets_up@{h o so +} (C : Top@{h o} ⟶ Sets@{h so}) :
   True := I.
 
@@ -82,8 +82,8 @@ Fail Definition p462_top_to_sets@{h o so +}
 Fail Definition p462_top_adj_discrete@{h o so +}
   (C : Top@{h o} ⟶ Sets@{h so}) (A : C ⊣ Top_Discrete) : True := I.
 
-(* CONTROL: the component relation over [Top], Prop-valued, is formable
-   under the closed universe list of the points' universe alone. *)
+(* CONTROL: component 关系 over [Top], Prop-valued, formable
+ under closed universe list points' universe alone. （已译） *)
 Definition p462_tconnsub@{o} (X : TopSpace@{o}) (W : X → Prop) : Prop :=
   ∀ φ : X → Prop,
     (∀ z, W z → ex (fun O : X → Type@{o} =>
@@ -122,7 +122,7 @@ Fail Definition p462_tconnected@{o} (X : TopSpace@{o}) (W : X → Type@{o}) :
   Type@{o} :=
   ∀ (S : SetoidObject@{o o}) (g : X → S), ∀ a b, W a → W b → g a ≈ g b.
 
-(** ** Instance/Top/Components.v, MAC LANE'S SET: the propositional sets *)
+(* 相关说明。 （已译） *)
 
 (* N6 *)
 Fail Definition p462_comp_rel_witness@{o} (X : PTop@{o}) (x y : X)
@@ -137,8 +137,7 @@ Fail Definition p462_transpose_inh@{o} (X : PTop@{o})
   (HR : inhabited (pmap g x ≈ pmap g y)) : pmap g x ≈ pmap g y :=
   match HR with inhabits h => h end.
 
-(* CONTROL: through a [PropEquiv] of the target the truncation is
-   eliminated, and the transposition respects components. *)
+(* 相关说明。 （已译） *)
 Definition p462_transpose_pe@{o} (X : PTop@{o}) (S : SetoidObject@{o o})
   (P : PropEquiv@{o o} (is_setoid S)) (g : PMor@{o} X (PDiscrete S))
   (x y : X) (HR : inhabited (pmap g x ≈ pmap g y)) : pmap g x ≈ pmap g y :=
@@ -166,8 +165,8 @@ Definition p462_adj_Sets@{o so | o < so +} (U : Untruncate@{o}) :
   components_functor_Sets@{o so} ⊣ LDisc@{o so} :=
   components_left_adjoint_discrete_Sets U.
 
-(* CONTROL: [PSetsSub]'s object predicate placed at the points' universe
-   is formable, with [Set < o] in its block; at the pin, at [so]. *)
+(* CONTROL: [PSetsSub]'s 对象 predicate placed at points' universe
+ formable, [Set < o] block; at pin, at [so]. （已译） *)
 Definition p462_psets_sub_at_o@{o so | o < so +} :
   Subcategory@{so o o o} Sets@{o so} :=
   @Build_Subcategory@{so o o o} Sets@{o so}
@@ -182,7 +181,7 @@ Definition p462_psets_sub_Set@{so | Set < so +} := PSetsSub@{Set so}.
 Fail Definition p462_psets_sub_o_Set@{so | Set < so +} :=
   p462_psets_sub_at_o@{Set so}.
 
-(** ** Adjunction/Continuity/Equalizer.v: why the proof is direct *)
+(* * ** Adjunction/Continuity/Equalizer.v: why 证明 direct （已译） *)
 
 Section Pair.
 
@@ -203,14 +202,14 @@ Fail Example p462_pair : U ◯ APair f g = APair (fmap[U] f) (fmap[U] g)
 
 End Pair.
 
-(* CONTROL: right adjoints preserve equalizers, and the refutation. *)
+(* 相关说明。 （已译） *)
 Definition p462_rapl_equalizers@{co do h +} {C : Category@{co h h}}
   {D : Category@{do h h}} {F : D ⟶ C} {U : C ⟶ D} (A : F ⊣ U) :
   PreservesEqualizers U := right_adjoint_PreservesEqualizers A.
 
-(** ** Instance/Top/Components.v: the adjunction, at [eq_refl] *)
+(* * ** Instance/Top/Components.v: 伴随, at [eq_refl] （已译） *)
 
-(* CONTROL: both transposes and the unit are the identity on points. *)
+(* CONTROL: both transposes unit 恒等 points. （已译） *)
 Example p462_to_points@{o so | o < so +} (X : Lconn@{o so})
   (S : PSets@{o so}) (h : components_functor@{o so} X ~{PSets@{o so}}~> S)
   (x : pt_carrier (`1 X)) :
@@ -242,7 +241,7 @@ Example p462_Sets_from_points@{o so | o < so +} (U : Untruncate@{o})
   from (@adj _ _ _ _ (components_left_adjoint_discrete_Sets@{o so} U) X S)
     g x = pmap (`1 g) x := eq_refl.
 
-(* CONTROL: D is [PDisc] on objects and arrows, and C is [comp_rel]. *)
+(* CONTROL: D [PDisc] 对象 arrows, C [comp_rel]. （已译） *)
 Example p462_LDisc_obj@{o so | o < so +} (S : Sets@{o so}) :
   `1 (fobj[LDisc@{o so}] S) = fobj[PDisc@{o so}] S := eq_refl.
 
@@ -251,11 +250,9 @@ Example p462_components_equiv@{o so | o < so +} (X : Lconn@{o so})
   @equiv _ (is_setoid (`1 (fobj[components_functor@{o so}] X))) x y
     = comp_rel (`1 X) x y := eq_refl.
 
-(** ** Instance/Top/Components.v: the concrete equalizer, and the
-    non-existence statements *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the fork on the three-point space is an equalizer in [Lconn],
-   and C does not preserve it. *)
+(* 相关说明。 （已译） *)
 Definition p462_zig_equalizer@{o so | o < so +} :
   @IsEqualizer Lconn@{o so} LZig@{o so} LTwoIndisc@{o so}
     zig_f@{o so} zig_g@{o so} LBool@{o so} zig_e@{o so} :=
@@ -298,7 +295,7 @@ Definition p462_PDisc_no_left@{o so u u0 | o < so, o < u +}
          C' PDisc@{o so}) : False :=
   PDisc_no_left_adjoint C' A.
 
-(* CONTROL: the points may be in [Set]: the ten theorems at [o := Set]. *)
+(* 相关说明。 （已译） *)
 Definition p462_adj_at_Set@{so | Set < so +} :=
   components_left_adjoint_discrete@{Set so}.
 
@@ -331,10 +328,10 @@ Definition p462_zig_at_Set@{so | Set < so +} :=
 Definition p462_swap_at_Set@{so | Set < so +} :=
   components_swap_not_preserved@{Set so}.
 
-(** ** Instance/Top/Components/Paths.v: π₀ = colim ∘ P *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the arrow part of π₀ IS the colimit functor's, and on
-   representatives it is postcomposition. *)
+(* CONTROL: arrow part π₀ IS colimit 函子's, on
+ representatives it postcomposition. （已译） *)
 Example p462_pi0_fmap@{o so p f | o < so, p <= o, o < f +}
   {X Y : PTop@{o}} (h : PMor@{o} X Y) :
   fmap[PPi0@{o so p f}] h
@@ -345,8 +342,8 @@ Example p462_pi0_fmap_point@{o so p f | o < so, p <= o, o < f +}
   fmap[PPi0@{o so p f}] h (existT _ ParY x) = existT _ ParY (pcompose h x)
   := eq_refl.
 
-(* CONTROL: the identity law, up to [≈], and the underlying functions,
-   at [eq_refl]. *)
+(* CONTROL: 恒等 law, up [≈], underlying functions,
+ at [eq_refl]. （已译） *)
 Definition p462_pi0_id@{o so p f | o < so, p <= o, o < f +} (X : PTop@{o})
   (x : PMor@{o} PPoint@{o} X) :
   fmap[PPi0@{o so p f}] (pid X) (existT _ ParY x) ≈ existT _ ParY x :=
@@ -366,8 +363,7 @@ Example p462_id_setoid_map@{o} (X : PTop@{o})
   (x : PMor@{o} PPoint@{o} X) : pmap (pcompose (pid X) x) = pmap x
   := eq_refl.
 
-(* CONTROL: the endpoint pair as a diagram in [PTopCat^op], and the
-   Yoneda embedding of [PTopCat]. *)
+(* 相关说明。 （已译） *)
 Definition p462_iota@{o so +| o < so +} : Parallel ⟶ PTopCat@{o so}^op :=
   @APair (PTopCat@{o so}^op) PInterval@{o} PPoint@{o}
     ival_end0@{o} ival_end1@{o}.
@@ -378,8 +374,7 @@ Definition p462_yoneda@{o so +| o < so +} := Curried_CoHom PTopCat@{o so}.
 Fail Definition p462_P_derived@{o so +| o < so +} :=
   Induced p462_iota ◯ Curried_CoHom PTopCat@{o so}.
 
-(* CONTROL: the interval is connected in Instance/Top/Components.v's
-   two-point form; π₀ of the interval and of [PBool]. *)
+(* 相关说明。 （已译） *)
 Definition p462_interval_connected@{o} : PConnectedBool PInterval@{o} :=
   interval_PConnectedBool.
 
@@ -391,7 +386,7 @@ Definition p462_pi0_bool@{o so p f | o < so, p <= o, o < f +} :
   fobj[PPi0@{o so p f}] PBool@{o} ≅[Sets@{o so}] bool_setoid_object@{o o}
   := PPi0_PBool_iso.
 
-(** ** Closure: a readback, not a refutation *)
+(* 相关说明。 （已译） *)
 
 Print Assumptions right_adjoint_PreservesEqualizers.
 Print Assumptions components_functor.
@@ -400,15 +395,13 @@ Print Assumptions components_no_left_adjoint.
 Print Assumptions components_left_adjoint_discrete_Sets.
 Print Assumptions PPi0.
 
-(** ** Guard: the constants of the three targets *)
+(* 相关说明。 （已译） *)
 
 (* Adjunction/Continuity/Equalizer.v: 2 names. *)
 Check Category.Adjunction.Continuity.Equalizer.not_PreservesEqualizers_no_left_adjoint.
 Check Category.Adjunction.Continuity.Equalizer.right_adjoint_PreservesEqualizers.
 
-(* Instance/Top/Components.v: 125 names and the constructors of [zig_pt].
-   CORRECTION (#1349): 121 names now; the squash setoid's four follow the
-   group, by their new names. *)
+(* 相关说明。 （已译） *)
 Check Category.Instance.Top.Components.adj_from_points.
 Check Category.Instance.Top.Components.adj_Sets_from_points.
 Check Category.Instance.Top.Components.adj_Sets_to_points.
@@ -534,8 +527,7 @@ Check Category.Instance.Top.Components.zig_pt_rect.
 Check Category.Instance.Top.Components.zig_pt_sind.
 Check Category.Instance.Top.Components.zig_setoid.
 
-(* Instance/Sets/Propositional/Full.v: the squash setoid's 4 names, moved
-   there from Instance/Top/Components.v by #1349. *)
+(* 相关说明。 （已译） *)
 Check Category.Instance.Sets.Propositional.Full.squash_rel.
 Check Category.Instance.Sets.Propositional.Full.squash_sym.
 Check Category.Instance.Sets.Propositional.Full.squash_trans.

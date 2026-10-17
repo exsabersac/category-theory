@@ -81,15 +81,15 @@ Require Import Category.Instance.Mod.RingEpi.
 
 Generalizable All Variables.
 
-(** ** Instrument: the refutation keyword is live *)
+(* 相关说明。 （已译） *)
 
 (* The instrument *)
 Fail Check p370_absent_name.
 
-(** ** Instance/Grp/Abelianize/Reflective.v: why a new subcategory *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the inclusion of [AbGrp_Sub], the record over it, and
-   Abelianize.v's [Ab_to_Grp] factoring through it on objects. *)
+(* CONTROL: 含入 [AbGrp_Sub], record over it, and
+ Abelianize.v's [Ab_to_Grp] factoring through it 对象. （已译） *)
 Definition p370_abgrp_incl@{u p +} : Sub Grp@{u p} AbGrp_Sub ⟶ Grp@{u p} :=
   Incl Grp@{u p} AbGrp_Sub.
 
@@ -109,10 +109,10 @@ Fail Definition p370_record_from_abelianize (S : Subcategory Grp) :
   @Build_Reflective Grp S _ Abelianization_Functor
     abelianize_adjunction_via_transform.
 
-(** ** Construction/Reflective/Coreflective.v: what the bridge is for *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the objects, the hom types and the two [equiv] relations of
-   the two categories convert. *)
+(* CONTROL: 对象, hom types two [equiv] relations of
+ two 范畴 convert. （已译） *)
 Example p370_op_obj {C : Category} (S : Subcategory C) :
   obj[Opposite (Sub C S)] = obj[Sub (Opposite C) (op_subcategory S)]
   := eq_refl.
@@ -136,8 +136,8 @@ Fail Example p370_op_homset {C : Category} (S : Subcategory C)
   @homset (Opposite (Sub C S)) x y
     = @homset (Sub (Opposite C) (op_subcategory S)) x y := eq_refl.
 
-(* CONTROL: a record read back covariantly and rebuilt is the record,
-   and its coreflector is a covariant functor into the subcategory. *)
+(* CONTROL: record read back covariantly rebuilt record,
+ coreflector covariant 函子 进入 subcategory. （已译） *)
 Example p370_bridge_roundtrip {C : Category} {S : Subcategory C}
   (R : Coreflective S) :
   Coreflective_of_adjunction (coreflective_full R) (coreflector R)
@@ -151,10 +151,10 @@ Fail Example p370_coreflector_is_reflector {C : Category}
   {S : Subcategory C} (R : Coreflective S) :
   coreflector R = reflector R := eq_refl.
 
-(** ** The units, as records and pointwise *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: from universal arrows, the unit is the transpose of the
-   identity on the nose. *)
+(* CONTROL: universal arrows, unit transpose the
+ 恒等 nose. （已译） *)
 Example p370_ua_unit {C : Category} {S : Subcategory C}
   (full : Construction.Subcategory.Full C S)
   (UA : ∀ x : C, UniversalArrow x (Incl C S)) (x : C) :
@@ -173,8 +173,8 @@ Fail Example p370_ua_unit_arrow {C : Category} {S : Subcategory C}
     (reflective_adj (Reflective_of_UniversalArrows full UA)) x
     = @arrow C (Sub C S) x (Incl C S) (UA x) := eq_refl.
 
-(* CONTROL: the abelianization unit, as the transposed composite and
-   pointwise as Mac Lane's projection. *)
+(* CONTROL: abelianization unit, transposed 复合 and
+ pointwise Mac Lane's projection. （已译） *)
 Example p370_abgrp_unit@{u p +} (G : Grp@{u p}) :
   abgrp_unit G
     = fmap[Incl Grp@{u p} AbGrp_Sub] (@id AbGrp (fobj[AbGrp_reflector] G))
@@ -191,7 +191,7 @@ Fail Example p370_abgrp_unit_proj@{u p +} (G : Grp@{u p}) :
 Example p370_abgrp_unit_map@{u p +} (G : Grp@{u p}) :
   grp_map (abgrp_unit G) = grp_map (abel_proj G) := eq_refl.
 
-(* CONTROL: the torsion counit, likewise, against the inclusion of TA. *)
+(* CONTROL: torsion counit, likewise, against 含入 TA. （已译） *)
 Example p370_torsion_counit@{u p +} (A : Ab@{u p}) :
   torsion_counit A
     = torsion_incl A
@@ -210,8 +210,7 @@ Fail Example p370_torsion_counit_incl@{u p +} (A : Ab@{u p}) :
 Example p370_torsion_counit_map@{u p +} (A : Ab@{u p}) :
   cmon_map (torsion_counit A) = cmon_map (torsion_incl A) := eq_refl.
 
-(* CONTROL: the commutator-ideal unit, likewise, against the quotient
-   map. *)
+(* 相关说明。 （已译） *)
 Example p370_crng_unit@{u p +} (R : Rng@{u p}) :
   crng_unit R
     = fmap[Incl Rng@{u p} CRng_Sub] (@id CRng (fobj[CRng_reflector] R))
@@ -229,8 +228,8 @@ Fail Example p370_crng_unit_proj@{u p +} (R : Rng@{u p}) :
 Example p370_crng_unit_map@{u p +} (R : Rng@{u p}) :
   rig_map (crng_unit R) = rig_map (rquot_proj (CommIdeal R)) := eq_refl.
 
-(* CONTROL: the completion unit in MetU and in Met, pointwise the
-   constant sequence. *)
+(* CONTROL: completion unit MetU Met, pointwise the
+ 常值 sequence. （已译） *)
 Example p370_completionU_unit_point@{u o +} (X : MetU@{u o}) (a : X) :
   umap (@Category.Theory.Adjunction.unit _ _ _ _ completionU_adj X) a
     = eta_seq X a := eq_refl.
@@ -249,7 +248,7 @@ Fail Example p370_completion_unit_eta@{u o +} (X : Met@{u o}) :
   @Category.Theory.Adjunction.unit _ _ _ _ completion_adj X = eta X
   := eq_refl.
 
-(* CONTROL: the unit of the T-Mod reflection, pointwise Riehl's 1 ⊗ m. *)
+(* 相关说明。 （已译） *)
 Example p370_tmod_unit_point {R T : Rng} (phi : R ~{Rng}~> T)
   (Hc : CentralImage phi) (He : Epic phi) (M : RMod R)
   (m : carrier (cmon_setoid M)) :
@@ -264,10 +263,10 @@ Fail Example p370_tmod_unit_ext {R T : Rng} (phi : R ~{Rng}~> T)
   @Category.Theory.Adjunction.unit _ _ _ _ (TMod_adj phi Hc He) M
     = extend_adj_unit phi Hc M := eq_refl.
 
-(** ** Arrow parts, counits and a composite functor *)
+(* * ** Arrow parts, counits 复合 函子 （已译） *)
 
-(* CONTROL: the abelianization reflector against Abelianize.v's, on
-   objects on the nose and on arrows up to [≈]. *)
+(* CONTROL: abelianization reflector against Abelianize.v's, on
+ 对象 nose arrows up [≈]. （已译） *)
 Example p370_abgrp_factors_obj@{u p +} (G : Grp@{u p}) :
   fobj[AbGrp_reflector] G
     = fobj[Ab_to_AbGrp] (fobj[Abelianization_Functor] G) := eq_refl.
@@ -284,8 +283,8 @@ Fail Example p370_abgrp_factors_fmap_eq@{u p +} (G H : Grp@{u p})
   fmap[AbGrp_reflector] f
     = fmap[Ab_to_AbGrp] (fmap[Abelianization_Functor] f) := eq_refl.
 
-(* CONTROL: the inclusion's factorization agrees on arrows on the nose,
-   and as functors up to [≈]. *)
+(* CONTROL: 含入's factorization agrees arrows nose,
+ 函子 up [≈]. （已译） *)
 Example p370_ab_to_grp_fmap@{u p +} (A B : Ab@{u p})
   (f : A ~{Ab@{u p}}~> B) :
   fmap[Incl Grp@{u p} AbGrp_Sub] (fmap[Ab_to_AbGrp] f) = fmap[Ab_to_Grp] f
@@ -299,8 +298,8 @@ Definition p370_ab_to_grp_factors@{u p +} :
 Fail Example p370_ab_to_grp_factors_eq@{u p +} :
   Incl Grp@{u p} AbGrp_Sub ◯ Ab_to_AbGrp = Ab_to_Grp := eq_refl.
 
-(* CONTROL: the abelianization counit is invertible at every object of
-   the subcategory. *)
+(* CONTROL: abelianization counit invertible at every 对象 of
+ subcategory. （已译） *)
 Definition p370_abgrp_counit_iso@{u p +} (d : Sub Grp@{u p} AbGrp_Sub) :
   fobj[AbGrp_reflector] (fobj[Incl Grp@{u p} AbGrp_Sub] d) ≅[AbGrp] d :=
   abgrp_reflect_iso d.
@@ -310,8 +309,8 @@ Fail Example p370_abgrp_counit_point@{u p +} (d : Sub Grp@{u p} AbGrp_Sub)
   (a : carrier `1 d) :
   grp_map `1 (@counit _ _ _ _ AbGrp_adj d) a = a := eq_refl.
 
-(* CONTROL: the couniversal arrow of the torsion coreflection is the
-   inclusion of TA, on the nose. *)
+(* CONTROL: couniversal arrow torsion coreflection the
+ 含入 TA, nose. （已译） *)
 Example p370_torsion_coarrow@{u p +} (A : Ab@{u p}) :
   @coarrow Ab@{u p} TorsionCat A (Incl Ab@{u p} Torsion_Sub)
     (torsion_couniversal_arrow A) = torsion_incl A := eq_refl.
@@ -323,8 +322,8 @@ Fail Example p370_torsion_fmap@{u p +} (A B : Ab@{u p})
     = (torsion_lift (TorsionAb_IsTorsion A) (f ∘ torsion_incl A); I)
   := eq_refl.
 
-(* CONTROL: the MetU reflector's object is the completion, the whole
-   Σ-object, on the nose. *)
+(* CONTROL: MetU reflector's 对象 completion, whole
+ Σ-对象, nose. （已译） *)
 Example p370_completionU_obj@{u o +} (X : MetU@{u o}) :
   fobj[reflector CMet_Reflective_in_MetU] X = CompletionU X := eq_refl.
 
@@ -340,10 +339,10 @@ Fail Example p370_completionU_fmap_point@{u o +} (X Y : MetU@{u o})
   umap (`1 (fmap[reflector CMet_Reflective_in_MetU] f)) (eta_seq X a)
     = eta_seq Y (umap f a) := eq_refl.
 
-(** ** Instance/Met/Uniform.v: MetU is not Met *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: a constant map of [Harmonic] is an arrow of [MetU]; the
-   comparison is the identity on objects; and it is not full. *)
+(* CONTROL: 常值 map [Harmonic] arrow [MetU]; the
+ comparison 恒等 对象; it not full. （已译） *)
 Definition p370_const_umap@{u +| Set < u +} :
   Harmonic ~{MetU@{u Set}}~> Harmonic :=
   const_umap Harmonic Harmonic 0%nat.
@@ -359,10 +358,10 @@ Fail Definition p370_const_isometry@{u +| Set < u +} :
   Harmonic ~{Met@{u Set}}~> Harmonic :=
   const_umap Harmonic Harmonic 0%nat.
 
-(** ** Instance/Mod/RingEpi.v: clause (iv) *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the localization's universal property at a ring of carrier
-   level [Set], and the mediator [loc_hom] above it. *)
+(* CONTROL: localization's 普遍性质 at ring carrier
+ level [Set], mediator [loc_hom] above it. （已译） *)
 Definition p370_loc_at_set@{u +| Set < u +} (W : obj[Rng@{u Set}])
   (psi : Int_Ring ~{Rng@{u Set}}~> W)
   (H : InvertsSet (R := Int_Ring) PosZ psi) :=
@@ -379,8 +378,8 @@ Fail Definition p370_loc_above@{u p +| Set < p, p < u +}
   (H : InvertsSet (R := Int_Ring) PosZ psi) :=
   @snd _ _ ZtoQ_IsLocalization W psi H.
 
-(* CONTROL: restriction is full exactly for epimorphisms, for arbitrary
-   rings, and the reflection's adjunction is its own constant. *)
+(* CONTROL: restriction full exactly epimorphisms, arbitrary
+ rings, reflection's 伴随 own 常值. （已译） *)
 Definition p370_full_iff_epic {R T : Rng} (phi : R ~{Rng}~> T) :
   Functor.Full (Restrict phi) ↔ Epic phi := Restrict_Full_iff_Epic phi.
 
@@ -392,8 +391,8 @@ Definition p370_tmod_adj {R T : Rng} (phi : R ~{Rng}~> T)
 
 (** ** Non-vacuity, restated *)
 
-(* CONTROL: each reflection or coreflection is proper at a named object,
-   the statement restated independently of its proof. *)
+(* CONTROL: each reflection coreflection proper at named 对象,
+ statement restated independently 证明. （已译） *)
 Definition p370_S3_nontrivial@{u +} :
   @Setoid.equiv (carrier `1 (fobj[AbGrp_reflector] (S3 : Grp@{u Set}))) _
     S3_s s3_unit → False := S3_reflection_nontrivial.
@@ -420,15 +419,12 @@ Definition p370_ZMod_not_fixed :
   sobj (RMod Int_Ring) (UnitFixed (extend_restrict_adjunction ZtoQ Q_central))
     (Ring_RMod Int_Ring) → False := ZMod_not_UnitFixed.
 
-(** ** The reals: a readback, not a refutation *)
+(* 相关说明。 （已译） *)
 
-(* Prints ClassicalDedekindReals.sig_forall_dec,
-   ClassicalDedekindReals.sig_not_dec and functional_extensionality_dep;
-   see the header. *)
+(* 相关说明。 （已译） *)
 Print Assumptions CMet_Reflective_in_MetU.
 
-(** ** Guard: the constants of the nine targets closed under the global
-    context *)
+(* 相关说明。 （已译） *)
 
 (* Construction/Reflective/Coreflective.v: 15 names. *)
 Check Coreflective_of_adjunction.
@@ -682,7 +678,7 @@ Check twisted_rep.
 Check twisted_rep_value.
 Check two_actions_id.
 
-(** ** Guard: the reals-bound constants of Instance/Met/Uniform.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeReflective370 相关定义、性质与动机。

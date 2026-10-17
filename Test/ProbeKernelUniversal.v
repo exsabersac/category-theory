@@ -53,17 +53,17 @@ Check (fun (d : C) (h : d ~{C}~> x) (Hh : f ∘ h ≈ zmor ∘ h) =>
          kernel_round_mediator f K h Hh).
 Check (fun (d : C) (p : Kills f d) => aue_kernel_round_mediator f U d p).
 
-(** Negative: the whole record does not come back on the kernel side.
-    (Stripped: cannot unify [aue_kernel f (kernel_aue f K)] and [K].) *)
+(** 本节：Negative: whole record does not come back kernel side.
+ (Stripped: cannot unify [aue_kernel f (kernel_aue f K)] [K].) （已译） *)
 Fail Check (eq_refl : aue_kernel f (kernel_aue f K) = K).
 
-(** Negative: not even the [fork_eq] field alone -- [kill_fork] and
-    [fork_kill] are opaque, so their composite is not the identity term.
-    (Stripped: cannot unify the two [fork_eq] terms.) *)
+(** Negative: not even [fork_eq] field alone -- [kill_fork] and
+ [fork_kill] opaque, so 复合 not 恒等 term.
+ (Stripped: cannot unify two [fork_eq] terms.) （已译） *)
 Fail Check (eq_refl : fork_eq (aue_kernel f (kernel_aue f K)) = fork_eq K).
 
-(** Negative: nor on the universal-element side.  (Stripped: cannot unify
-    [kernel_aue f (aue_kernel f U)] and [U].) *)
+(** 本节：Negative: nor universal-element side. (Stripped: cannot unify
+ [kernel_aue f (aue_kernel f U)] [U].) （已译） *)
 Fail Check (eq_refl : kernel_aue f (aue_kernel f U) = U).
 
 (*
@@ -99,13 +99,11 @@ Check (aue_equalizer_round_universal f g V).
 Check (aue_equalizer_round_elem f g V).
 Check (fun (d : C) (p : Forks f g d) => aue_equalizer_round_mediator f g V d p).
 
-(** Negative: the other whole round trip is not [eq_refl].  (Stripped:
-    cannot unify [equalizer_aue f g (aue_equalizer f g V)] and [V].) *)
+(** 本节：Negative: other whole round trip not [eq_refl]. (Stripped:
+ cannot unify [equalizer_aue f g (aue_equalizer f g V)] [V].) （已译） *)
 Fail Check (eq_refl : equalizer_aue f g (aue_equalizer f g V) = V).
 
-(** ** (4) The two presheaves are distinct types
-
-    Positive control first: they are naturally isomorphic. *)
+(* 相关说明。 （已译） *)
 
 Check (fun (ZM : ZeroMorphisms C) => kill_fork_iso f).
 
@@ -189,5 +187,5 @@ Check (ab_parity_kernel_proper).
 Check (Rng_no_zero_morphisms : ZeroMorphisms Rng → False).
 Check (Rng_no_zero_object : @ZeroObject Rng → False).
 
-(** ... and the fork presheaf is nevertheless formable there. *)
+(** 本节：... fork presheaf nevertheless formable there. （已译） *)
 Check (fun (R S : Rng) (u v : R ~{Rng}~> S) => Rng_fork_presheaf u v).

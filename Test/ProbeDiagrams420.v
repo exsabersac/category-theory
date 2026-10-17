@@ -31,7 +31,7 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe420_absent_name.
 
-(** ** A: functor composition is neither strictly unital nor associative *)
+(* * ** A: 函子 复合 neither strictly unital nor associative （已译） *)
 
 Section Bracketing.
 
@@ -56,7 +56,7 @@ Example p420_assoc_fmap (F : C ⟶ D) (U : B ⟶ C) (W : A ⟶ B) {x y : A} (f :
 
 End Bracketing.
 
-(** ** B: why identity and composition of [Diagrams] are built componentwise *)
+(* * ** B: why 恒等 复合 [Diagrams] built componentwise （已译） *)
 
 Section Componentwise.
 
@@ -78,7 +78,7 @@ Check (fun (f : DHom Y Z) (g : DHom X Y) => Dcomp f g).
 
 End Componentwise.
 
-(** ** C: the colimit dual's hypothesis *)
+(* * ** C: colimit dual's 假设 （已译） *)
 
 Section Dual.
 
@@ -99,11 +99,11 @@ Check (@complete_op_roundtrip C).
 
 End Dual.
 
-(** ** D: the comma form over Cat forgets the square — a concrete countermodel *)
+(* 相关说明。 （已译） *)
 
 Section Countermodel.
 
-(* the one-object diagram in Sets constant at the two-element setoid *)
+(* the one-对象 diagram Sets 常值 at two-element setoid （已译） *)
 Definition p420_F : _1 ⟶ Sets := fobj[@Diagonal Sets _1] bool_setoid_object.
 
 Definition p420_X : CommaDiagrams Sets := ((_1, ttt); p420_F).
@@ -120,7 +120,7 @@ Next Obligation.
   intros; simpl in *; repeat match goal with b : bool |- _ => destruct b end; reflexivity.
 Qed.
 
-(* two comma arrows X → X with the same shape functor and different squares *)
+(* two comma arrows X → X same shape 函子 different squares （已译） *)
 Definition p420_square (i : bool_setoid_object ≅[Sets] bool_setoid_object) :
   p420_F ∘[Cat] Id[_1] ≈ fmap[@Diagonal Cat _1 Sets] ((@id _1 ttt)) ∘[Cat] p420_F.
 Proof.
@@ -143,8 +143,7 @@ Proof. split; reflexivity. Qed.
 Lemma p420_id_not_negb : (@id Sets bool_setoid_object ≈ negb_mor) → False.
 Proof. intro H. specialize (H true). simpl in H. discriminate H. Qed.
 
-(* so no respectful assignment of arrows can read the square back: any
-   [m] that sends the two arrows to their square components is refuted *)
+(* 相关说明。 （已译） *)
 Lemma p420_no_respectful_arrow_part
   (m : (p420_X ~{CommaDiagrams Sets}~> p420_X) →
        (bool_setoid_object ~{Sets}~> bool_setoid_object))

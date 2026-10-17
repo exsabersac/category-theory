@@ -15,8 +15,8 @@ Require Import Category.Construction.Funny.Unitors.
 Require Import Category.Instance.StrictCat.Funny.
 Require Import Category.Structure.Monoidal.
 
-(** A rigid member level [v], with outer levels [i] (StrictCat's objects) and
-    [j] strictly above it, as StrictCat's universe constraints require. *)
+(** A rigid member level [v], outer levels [i] (StrictCat's 对象) and
+ [j] strictly above it, StrictCat's universe constraints require. （已译） *)
 Monomorphic Universe i j v.
 Monomorphic Constraint v < i.
 Monomorphic Constraint v < j.
@@ -29,19 +29,11 @@ Monomorphic Constraint v < j.
 Definition probe_tensor_ok :=
   @Build_Monoidal StrictCat@{i v j v v} _1 FunnyTensor.
 
-(** ** The reproduction: the unitor field is where [Set] is enforced.
-
-    Error: The term "Funny_unit_left@{_ v}" has type "1 □ x ≅ x"
-    while it is expected to have type "fobj[FunnyTensor@{..}] (1, x) ≅ x"
-    (universe inconsistency: Cannot enforce Set = v). *)
+(* 相关说明。 （已译） *)
 Fail Check (@Build_Monoidal StrictCat@{i v j v v} _1 FunnyTensor
               (fun x : Category@{v v v} => @Funny_unit_left x)).
 
-(** ** The compiled instance is pinned: it does not transport to level [v].
-
-    Error: The term "Funny_Monoidal" has type "Monoidal@{i Set}"
-    while it is expected to have type "Monoidal@{i v}"
-    (universe inconsistency: Cannot enforce Set = v). *)
+(* 相关说明。 （已译） *)
 Fail Check (Funny_Monoidal@{i} : @Monoidal StrictCat@{i v j v v}).
 
 (*

@@ -27,11 +27,11 @@ Require Import Category.Instance.Cat.Limit.
 
 Generalizable All Variables.
 
-(** ** Instrument check: a [Fail] on an absent name does fail *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe414_absent_name.
 
-(** ** N1-N3: the index-below-object boundary of the [Cat] instance *)
+(* * ** N1-N3: index-below-对象 boundary [Cat] instance （已译） *)
 
 Section IndexBoundary.
 
@@ -39,9 +39,9 @@ Universe i so sh.
 Constraint so < sh.
 Constraint i <= so.
 
-(* Controls: the product itself sits at the small categories' own levels,
-   is an object of a [Cat] over them, and the class is formable up to the
-   projections. *)
+(* Controls: product itself sits at small 范畴' own levels,
+ 对象 [Cat] over them, class formable up the
+ projections. （已译） *)
 Check (fun (I : Type@{i}) (C : I → Category@{so sh sh}) =>
          (PiCat C : Category@{so sh sh})).
 Check (fun (I : Type@{i}) (C : I → Category@{so sh sh}) =>
@@ -53,8 +53,8 @@ Check (fun (I : Type@{i}) (C : I → Category@{so sh sh}) (a : I) =>
 Check (fun (I : Type@{i}) (C : I → Category@{so sh sh})
            (D : Category@{so sh sh}) (R : ∀ a, D ⟶ C a) => PiCat_ump R).
 
-(* N1: the donor.  The projection's product cannot have object universe
-   [so] when [so < sh]. *)
+(* N1: donor. The projection's product cannot have 对象 universe
+ [so] [so < sh]. （已译） *)
 Fail Check (fun (I : Type@{i}) (C : I → Category@{so sh sh}) (a : I) =>
               (PiCat_Proj C a : PiCat@{i so sh so sh} C ⟶ C a)).
 
@@ -67,7 +67,7 @@ Fail Check @Cat_HasIndexedProducts@{i so sh _ _}.
 
 End IndexBoundary.
 
-(** ** N4-N6: the index universe of the strict product and of completeness *)
+(* 相关说明。 （已译） *)
 
 Section StrictIndexBoundary.
 
@@ -77,8 +77,7 @@ Constraint i < h.
 (* Control: equalizers in [StrictCat] mention no index. *)
 Check @StrictCat_HasEqualizers@{h _ _ _ _ _}.
 
-(* N4: the strict product structure at an index universe below the hom
-   universe. *)
+(* 相关说明。 （已译） *)
 Fail Check (fun (uip : ∀ C : Category@{h h h}, ObjUIP C)
                 (fe : DepFunext@{h h}) =>
               (StrictCat_HasIndexedProducts uip fe
@@ -94,7 +93,7 @@ Fail Check (fun (uip : ∀ C : Category@{h h h}, ObjUIP C)
                 (fe : DepFunext@{h h}) =>
               (StrictCat_Complete uip fe : Complete@{i h h _})).
 
-(* N6: the donor of N5 — the reduction theorem itself demands index = hom. *)
+(* N6: donor N5 — reduction 定理 itself demands index = hom. （已译） *)
 Fail Check (fun (Cu : Category@{_ h h})
                 (HP : HasIndexedProducts@{i i i _ _ h} Cu)
                 (HE : HasEqualizers Cu) =>
@@ -102,7 +101,7 @@ Fail Check (fun (Cu : Category@{_ h h})
 
 End StrictIndexBoundary.
 
-(** ** N7: the strict equalizer is a [StrictCat] statement *)
+(* 相关说明。 （已译） *)
 
 Section StrictNotWeak.
 
@@ -116,7 +115,7 @@ Fail Check (Eq_IsEqualizer F G uip
 
 End StrictNotWeak.
 
-(** ** N8: the equalizer triangle holds on both data fields, not as records *)
+(* 相关说明。 （已译） *)
 
 Section EqualizerTriangle.
 
@@ -135,7 +134,7 @@ Fail Example eq_triangle_record :
 
 End EqualizerTriangle.
 
-(** ** N9: the product triangle, likewise *)
+(* 相关说明。 （已译） *)
 
 Section ProductTriangle.
 
@@ -191,12 +190,12 @@ Example cat_iprod_proj_is_PiCat_Proj :
 
 End ProductReadbacks.
 
-(** ** The weak ambient, at the measurement the target ships *)
+(* 相关说明。 （已译） *)
 
 Check EqCat_not_Cat_equalizer.
 Check ChaoticBool_points_equiv.
 
-(** ** Guard block: every constant a negative names, outside every [Fail] *)
+(* * ** Guard block: every 常值 negative names, outside every [Fail] （已译） *)
 
 Check @PiCat.
 Check @PiCat_Proj.

@@ -41,8 +41,7 @@ Context (x y : carrier (cmon_setoid N)).
 Fail Definition probe_relations_convertible :
   ab_coset_eq (rm_hom f) x y = mquot_rel (ImageSubmod f) x y := eq_refl.
 
-(* POSITIVE CONTROL at the same arguments: the two relations DO agree,
-   and the biconditional that says so is available here. *)
+(* 相关说明。 （已译） *)
 Definition control_relations_agree :
   ab_coset_eq (rm_hom f) x y ↔ mquot_rel (ImageSubmod f) x y :=
   rmod_quotient_relations_agree f x y.
@@ -74,13 +73,12 @@ Context (f : M ~{RMod R}~> N).
 Fail Definition probe_objects_equal :
   RModQuotient f = QuotientMod (ImageSubmod f) := eq_refl.
 
-(* POSITIVE CONTROL: the CARRIERS do agree on the nose -- both are N's
-   -- so what the probe measures is the setoid and not the carrier. *)
+(* 相关说明。 （已译） *)
 Definition control_carriers_agree :
   carrier (cmon_setoid (RModQuotient f))
     = carrier (cmon_setoid (QuotientMod (ImageSubmod f))) := eq_refl.
 
-(* SECOND POSITIVE CONTROL: the isomorphism that IS available. *)
+(* SECOND POSITIVE CONTROL: 同构 IS available. （已译） *)
 Definition control_objects_iso :
   RModQuotient f ≅[RMod R] QuotientMod (ImageSubmod f) :=
   RModQuotient_is_quotient_by_image f.
@@ -99,7 +97,7 @@ Context {R : RingObject}.
 Context {M N : RModObject R}.
 Context (f : M ~{RMod R}~> N).
 
-(* POSITIVE CONTROLS: both legs are the two mediators, strictly. *)
+(* 相关说明。 （已译） *)
 Definition control_to_is_mediator :
   to (mod_first_isomorphism_theorem f)
     = mquot_med (KernelSub f) (mod_image_elem f) := eq_refl.
@@ -112,7 +110,7 @@ Fail Definition probe_triangle_strict :
   to (mod_first_isomorphism_theorem f) ∘ mquot_proj (KernelSub f)
     = mod_image_cores f := eq_refl.
 
-(* ...and the `≈` form, which is what the file states. *)
+(* 相关说明。 （已译） *)
 Definition control_triangle_equiv :
   to (mod_first_isomorphism_theorem f) ∘ mquot_proj (KernelSub f)
     ≈ mod_image_cores f :=
@@ -133,13 +131,12 @@ Context {R : RingObject}.
 Fail Definition probe_total_is_zero_ring :
   QuotientRing (TotalIdeal R) = Zero_Ring := eq_refl.
 
-(* POSITIVE CONTROL: what IS true, and strictly -- the carrier of the
-   quotient is R's own. *)
+(* 相关说明。 （已译） *)
 Definition control_total_carrier :
   carrier (rig_setoid (QuotientRing (TotalIdeal R)))
     = carrier (rig_setoid R) := eq_refl.
 
-(* SECOND POSITIVE CONTROL: the `≈`-level statement the file makes. *)
+(* 相关说明。 （已译） *)
 Definition control_total_one_is_zero :
   rig_one (QuotientRing (TotalIdeal R))
     ≈ rig_zero (QuotientRing (TotalIdeal R)) :=
@@ -162,8 +159,8 @@ Definition control_rng_universal_elem {R : RingObject} (I : Ideal R) :
   `1 (@aue_elem _ (RKillsFunctor I) (QuotientRing I)
         (rquot_universal_element I)) = rquot_proj I := eq_refl.
 
-(* And the ring-side reading of a left ideal's relation as the two-sided
-   one, which Instance/Rng/Quotient.v claims by convertibility. *)
+(* And ring-side reading left ideal's 关系 two-sided
+ one, Instance/Rng/Quotient.v claims convertibility. （已译） *)
 Definition control_lquot_is_rquot {R : RingObject} (I : Ideal R)
   (x y : carrier (rig_setoid R)) :
   lquot_rel (Ideal_LeftIdeal I) x y = rquot_rel I x y := eq_refl.

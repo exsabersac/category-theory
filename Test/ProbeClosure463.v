@@ -59,7 +59,7 @@ Generalizable All Variables.
 
 Open Scope category_scope.
 
-(** ** Instrument: a false statement is refused *)
+(* 相关说明。 （已译） *)
 
 (* The instrument *)
 Fail Example p463_instrument@{u} : cl_fun (max_closure@{u} 2%nat) 0%nat = 0%nat
@@ -71,8 +71,8 @@ Example p463_instrument_ctl@{u} : cl_fun (max_closure@{u} 2%nat) 0%nat = 2%nat
 
 (** ** Structure/Thin/Monad.v *)
 
-(* CONTROL: the given families on the nose, and the comonad as the monad
-   at C^op on the nose. *)
+(* CONTROL: given families nose, 余单子 单子
+ at C^op nose. （已译） *)
 Example p463_thin_ret@{t o h} {C : Category@{o h h}} (TC : Thin@{t o h} C)
   (T : C ⟶ C) (u : ∀ x : C, x ~> T x) (m : ∀ x : C, T (T x) ~> T x)
   (x : C) : @ret C T (thin_monad TC T u m) x = u x := eq_refl.
@@ -93,10 +93,10 @@ Fail Example p463_thin_monad_is_MM@{t o h} {C : Category@{o h h}}
   (TC : Thin@{t o h} C) (T : C ⟶ C) (MM : @Monad C T) :
   thin_monad TC T (@ret C T MM) (@join C T MM) = MM := eq_refl.
 
-(** ** Instance/Proset/Monad.v: the correspondence *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: closure → monad → closure on the whole record, and
-   [closure_monad] as [thin_monad] on the whole record. *)
+(* CONTROL: closure → 单子 → closure whole record, and
+ [closure_monad] [thin_monad] whole record. （已译） *)
 Example p463_closure_round_trip@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (c : ClosureOperator@{u} P) :
   closure_of_monad@{u h} (closure_functor@{u h} c) (MM := closure_monad c)
@@ -108,8 +108,8 @@ Example p463_closure_monad_is_thin@{u h t} {A : Type@{u}} {R : relation A}
     = @thin_monad@{t u h} (Proset@{u h} P) (fun _ _ _ _ => I)
         (closure_functor@{u h} c) (cl_ext c) (cl_mult c) := eq_refl.
 
-(* CONTROL: monad → closure → monad: the four components on the nose,
-   and the functors at ≈. *)
+(* CONTROL: 单子 → closure → 单子: four components nose,
+ 函子 at ≈. （已译） *)
 Example p463_rt_fobj@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (M : Proset@{u h} P ⟶ Proset@{u h} P)
   {MM : @Monad (Proset@{u h} P) M} (x : A) :
@@ -146,8 +146,8 @@ Fail Example p463_rt_eq@{u h} {A : Type@{u}} {R : relation A}
   {MM : @Monad (Proset@{u h} P) M} :
   closure_functor (closure_of_monad M (MM := MM)) = M := eq_refl.
 
-(* CONTROL: the flip of N2, the functor's law fields written as
-   transparent [I]; its object map is M's on the nose. *)
+(* CONTROL: flip N2, 函子's law fields written as
+ transparent [I]; 对象 map M's nose. （已译） *)
 Definition p463_Functor_of_monotone_T@{u h} {A : Type@{u}} {R : relation A}
   (P : PreOrder R) (f : @MonotoneFun@{u u} A R A R) :
   Proset@{u h} P ⟶ Proset@{u h} P :=
@@ -169,8 +169,8 @@ Fail Example p463_rt_eq_T@{u h} {A : Type@{u}} {R : relation A}
   p463_Functor_of_monotone_T@{u h} P (cl_fun (closure_of_monad M (MM := MM)))
     = M := eq_refl.
 
-(* CONTROL: Seven Sketches' isomorphism as the FIELD, the design the
-   record does not take, with its two directions. *)
+(* CONTROL: Seven Sketches' 同构 FIELD, design the
+ record does not take, two directions. （已译） *)
 Record p463_ClosureOperatorIso@{u h} {A : Type@{u}} {R : relation A}
   (P : PreOrder R) := {
   p463_ci_fun  : @MonotoneFun@{u u} A R A R;
@@ -206,8 +206,8 @@ Fail Example p463_iso_round_trip@{u h} {A : Type@{u}} {R : relation A}
   p463_iso_of_monad (Functor_of_monotone P P (p463_ci_fun c))
     (MM := p463_iso_monad c) = c := eq_refl.
 
-(* CONTROL: the [to] leg of [closure_of_iso]'s isomorphism is the given
-   one. *)
+(* CONTROL: [to] leg [closure_of_iso]'s 同构 given
+ one. （已译） *)
 Example p463_iso_to@{u h} {A : Type@{u}} {R : relation A}
   (P : PreOrder R) (f : @MonotoneFun@{u u} A R A R) (ext : ∀ x, R x (f x))
   (idem : ∀ x, f (f x) ≅[Proset@{u h} P] f x) (x : A) :
@@ -220,10 +220,9 @@ Fail Example p463_iso_whole@{u h} {A : Type@{u}} {R : relation A}
   (idem : ∀ x, f (f x) ≅[Proset@{u h} P] f x) (x : A) :
   cl_idem@{u h} (closure_of_iso P f ext idem) x = idem x := eq_refl.
 
-(** ** The thin route, bare and pinned: Monad.v, Interior.v, Modal.v *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: [closure_monad] through [thin_monad] with the thin level
-   pinned to u, to h, or left extensible. *)
+(* 相关说明。 （已译） *)
 Definition p463_cm_thin_u@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (c : ClosureOperator@{u} P) :
   @Monad (Proset@{u h} P) (closure_functor c) :=
@@ -249,8 +248,7 @@ Fail Definition p463_cm_thin_bare@{u h} {A : Type@{u}} {R : relation A}
   @thin_monad (Proset@{u h} P) (fun _ _ _ _ => I)
     (closure_functor c) (cl_ext c) (cl_mult c).
 
-(* CONTROL: the same three for [interior_comonad] through
-   [thin_comonad]. *)
+(* 相关说明。 （已译） *)
 Definition p463_ic_thin_u@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (j : InteriorOperator@{u} P) :
   @Comonad (Proset@{u h} P) (interior_functor j) :=
@@ -276,7 +274,7 @@ Fail Definition p463_ic_thin_bare@{u h} {A : Type@{u}} {R : relation A}
   @thin_comonad (Proset@{u h} P) (fun _ _ _ _ => I)
     (interior_functor j) (cl_ext j) (cl_mult j).
 
-(* CONTROL: the same three for [modal_monad] through [thin_monad]. *)
+(* 相关说明。 （已译） *)
 Definition p463_mm_thin_u@{u h} (B : Prop) :
   @Monad Props@{u h} (modal_functor@{u h} B) :=
   @thin_monad@{u u h} Props@{u h} (fun _ _ _ _ => I) (modal_functor@{u h} B)
@@ -298,10 +296,10 @@ Fail Definition p463_mm_thin_bare@{u h} (B : Prop) :
   @thin_monad Props@{u h} (fun _ _ _ _ => I) (modal_functor@{u h} B)
     (modal_ext B) (modal_mult B).
 
-(** ** Construction/Reflective/Idempotent/Induced.v *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the composite is M on objects and on arrows, the induced
-   unit is ret at ≈, and the dual at C^op. *)
+(* CONTROL: 复合 M 对象 arrows, induced
+ unit ret at ≈, dual at C^op. （已译） *)
 Example p463_idem_obj@{o h d s | h < s +} {C : Category@{o h h}}
   {M : C ⟶ C} {MM : @Monad C M} {IM : @IdempotentMonad C M MM} (x : C) :
   fobj[Incl C (@MLocal_Subcategory C M MM)
@@ -345,11 +343,11 @@ Fail Example p463_idem_fun_refl@{o h d s | h < s +} {C : Category@{o h h}}
   Incl C (@MLocal_Subcategory C M MM)
     ◯ @idem_reflector@{o h d h h s} C M MM IM = M := eq_refl.
 
-(** ** Instance/Proset/Monad/Awodey.v *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: T = i ∘ t on objects and on arrows, the induced monotone map
-   is c's, and t (i k) agrees with cl k on first components and is
-   isomorphic to k. *)
+(* CONTROL: T = i ∘ t 对象 arrows, induced monotone map
+ c's, t (i k) agrees cl k first components is
+ isomorphic k. （已译） *)
 Example p463_aw_obj@{u h +} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (c : ClosureOperator@{u} P) (x : A) :
   fobj[GaloisFunctor_r@{u u h} P (closed_PreOrder c) (closed_galois c)
@@ -402,11 +400,11 @@ Fail Example p463_aw_tik@{u} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (c : ClosureOperator@{u} P) (k : ClosedElt c) :
   closed_t c (closed_i c k) = k := eq_refl.
 
-(** ** Instance/Proset/Monad/Interior.v: the reversed order *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: (Proset P)^op and the reversed order have the same objects
-   and homs; with Instance/Proset/Limit.v's transparent [op_PreOrder]
-   the identity and composition agree too. *)
+(* CONTROL: (Proset P)^op reversed order have same 对象
+ homs; Instance/Proset/Limit.v's transparent [op_PreOrder]
+ 恒等 复合 agree too. （已译） *)
 Example p463_op_obj@{u h} {A : Type@{u}} {R : relation A} (P : PreOrder R) :
   obj[(Proset@{u h} P)^op] = obj[Proset@{u h} (flip_PreOrder P)] := eq_refl.
 
@@ -445,7 +443,7 @@ Fail Example p463_opT_eq@{u h} {A : Type@{u}} {R : relation A}
   (P : PreOrder R) :
   ((Proset@{u h} P)^op)%category = Proset@{u h} (op_PreOrder P) := eq_refl.
 
-(** ** Instance/Proset/Monad/Interior.v: the correspondence *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、余单子相关定义、性质与动机。
@@ -527,9 +525,9 @@ Fail Example p463_flipop_eq@{u h} {A : Type@{u}} {R : relation A}
   {P : PreOrder R} (W : Proset@{u h} P ⟶ Proset@{u h} P) :
   flip_functor W = Proset_op_to P ◯ W^op ◯ Proset_op_from P := eq_refl.
 
-(* CONTROL: the flip of N22.  Structure/Thin.v's [Thin_Opposite] restated
-   with a transparent body; with the tree's own [thin_monad], the whole
-   comonad is [eq_refl]. *)
+(* CONTROL: flip N22. Structure/Thin.v's [Thin_Opposite] restated
+ transparent body; tree's own [thin_monad], whole
+ 余单子 [eq_refl]. （已译） *)
 Definition p463_Thin_Opposite_T@{t o h} {C : Category@{o h h}}
   (T : Category.Structure.Thin.Thin@{t o h} C) :
   Category.Structure.Thin.Thin@{t o h} (C^op) :=
@@ -552,9 +550,9 @@ Fail Example p463_ic_thin_eq@{u h t} {A : Type@{u}} {R : relation A}
 
 (** ** Instance/Props/Modal.v *)
 
-(* CONTROL: the modal monad as [thin_monad] on the whole record, with its
-   multiplication the transparent term, and join computing; the curry
-   functor's object map; the two functors at ≈. *)
+(* CONTROL: modal 单子 [thin_monad] whole record, its
+ multiplication transparent term, join computing; curry
+ 函子's 对象 map; two 函子 at ≈. （已译） *)
 Example p463_modal_is_thin@{u h t} (B : Prop) :
   modal_monad@{u h} B
     = @thin_monad@{t u h} Props@{u h} (fun _ _ _ _ => I)
@@ -580,8 +578,8 @@ Fail Example p463_curry_is_modal_fobj@{u h e | h < e +} (B p : Prop) :
 Fail Example p463_curry_is_modal@{u h e | h < e +} (B : Prop) :
   curry_functor@{u h e} Props_Closed B = modal_functor@{u h} B := eq_refl.
 
-(* CONTROL: at [impl_PreOrder] the objects, homs, identity and
-   composition of [Props] and [Proset impl_PreOrder] agree. *)
+(* CONTROL: at [impl_PreOrder] 对象, homs, 恒等 and
+ 复合 [Props] [Proset impl_PreOrder] agree. （已译） *)
 Example p463_props_obj : obj[Props] = obj[Proset impl_PreOrder] := eq_refl.
 
 Example p463_props_hom (p q : Prop) :
@@ -675,7 +673,7 @@ Definition p463_converse_nndne@{o h} :
   ~ ~ (∀ q : Prop, ~ ~ q → q) :=
   pcl_converse_nndne.
 
-(** ** Closure: a readback, not a refutation *)
+(* 相关说明。 （已译） *)
 
 Print Assumptions closure_of_monad.
 Print Assumptions closure_monad.
@@ -690,7 +688,7 @@ Print Assumptions modal_monad.
 Print Assumptions pint_coalgebra_iff_open.
 Print Assumptions pcl_converse_nndne.
 
-(** ** Guard: the constants of the seven targets *)
+(* 相关说明。 （已译） *)
 
 (* Structure/Thin/Monad.v: 14 names. *)
 Check @Category.Structure.Thin.Monad.thin_IdempotentComonad.

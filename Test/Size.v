@@ -1,22 +1,22 @@
 (* ========================================================================= *)
-(* Machine-checked demonstrations for the size vocabulary of Theory/Size.v.   *)
+(* 相关说明。 （已译） *)
 (*                                                                           *)
 (* This file is where issue #253's NEGATIVE demonstrations live, because they *)
-(* need the rejection vernacular, and each use of it is a hit for the         *)
+(* 相关说明。 （已译） *)
 (* [make todo] hygiene sweep (Makefile greps case-insensitively over every  *)
-(* .v file for a small set of trigger words, one of which is that vernacular's*)
+(* 相关说明。 （已译） *)
 (* own name).  Confining them here follows the in-tree precedent set by        *)
-(* Test/Issue138.v and Test/ProbeFunnyPoly.v,77, which use it the     *)
+(* 相关说明。 （已译） *)
 (* same way; Monad/Transformer.v does too.  This file contributes exactly *)
-(* four such hits, and the pull request states that number rather than         *)
+(* 相关说明。 （已译） *)
 (* hiding it.  Prose elsewhere in this file is deliberately worded to avoid    *)
-(* the trigger words, so the sweep's delta is exactly the four commands.      *)
+(* 相关说明。 （已译） *)
 (*                                                                           *)
-(* WHAT THE VERNACULAR DOES AND DOES NOT SHOW.  It succeeds when the command  *)
+(* 相关说明。 （已译） *)
 (* it wraps raises ANY error.  It does not report WHICH error, so on its own  *)
 (* it cannot distinguish a universe inconsistency from an ordinary type        *)
 (* mismatch or a typo.  Test/Issue138.v sets the precedent of saying so *)
-(* out loud, and the distinction is load-bearing here -- see BLOCK B.         *)
+(* 相关说明。 （已译） *)
 (* ========================================================================= *)
 
 Require Import Category.Lib.
@@ -28,9 +28,9 @@ Require Import Category.Instance.One.
 
 Generalizable All Variables.
 
-(* ===== BLOCK A — the size predicates are inhabited, and strict ===== *)
+(* 相关说明。 （已译） *)
 
-(* The vocabulary exists and can be used as a conclusion. *)
+(* 相关说明。 （已译） *)
 Check (One_Small : Small _1).
 Check (small_locally_small _1 One_Small : LocallySmall _1).
 
@@ -75,7 +75,7 @@ Fail Definition A253_trivial_small@{o h p uo uh up
 Fail Definition A253_no_object_resize@{o uo | uo < o} (A : Type@{o})
   : Type@{uo} := A.
 
-(* ===== BLOCK B — self-membership, and the distinction issue #253 conflates ==== *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 Size 相关定义、性质与动机。
@@ -101,14 +101,14 @@ Check (_1 : obj[Cat]).
 Check (Sets : obj[Cat]).
 Check (Cat : obj[Cat]).
 
-(* [Cat] is itself a category, hence an object of a [Cat] one level up.  Coq's
-   universe polymorphism supplies the whole tower silently; there is no [Cat']
-   to define, which is the divergence from Mac Lane's single fixed [U]. *)
+(* [Cat] itself 范畴, hence 对象 [Cat] one level up. Coq's
+ universe polymorphism supplies whole tower silently; there no [Cat']
+ define, divergence Mac Lane's single fixed [U]. （已译） *)
 Check (Cat : Category).
 
-(* ===== BLOCK C — Riehl's arrows-with-dom-and-cod packaging ===== *)
+(* 相关说明。 （已译） *)
 
-(* The unindexed packaging exists for every category... *)
+(* The unindexed packaging exists every 范畴... （已译） *)
 Check (fun C : Category => ArrowQuiverOfCat C : ArrowQuiver).
 
 (*

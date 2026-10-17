@@ -21,7 +21,7 @@ Require Import Category.Instance.Ab.TorsionFree.
 
 Generalizable All Variables.
 
-(** * Boundary probe for Construction/Reflective/Limit.v (issue #373) *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeReflectiveLimit373。
@@ -31,8 +31,7 @@ Generalizable All Variables.
 
 (** ** Instrument check *)
 
-(* If this command ever succeeds, the [Fail] wrapper is not doing its job
-   and every negative below is worthless. *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe373_no_such_constant_anywhere.
 
@@ -71,13 +70,13 @@ Check (reflective_lift R K).
 Check (reflective_CreatesAllLimits R).
 Check (reflective_Complete R).
 
-(** ** CONVERSION 1: the two preservation routes are different terms *)
+(* 相关说明。 （已译） *)
 
 Fail Example probe_two_routes (L : Limit (Incl C S ◯ K)) :
   creation_preserves_limit (reflective_CreatesLimit R K) L
     = reflective_Incl_PreservesLimitCone R K := eq_refl.
 
-(** ** CONVERSION 2: ... and their mediators do not agree on the nose *)
+(* 相关说明。 （已译） *)
 
 Fail Example probe_two_routes_med (L : Limit (Incl C S ◯ K))
   (M : Cone K) (HM : IsLimitCone M) (P : Cone (Incl C S ◯ K)) :
@@ -85,7 +84,7 @@ Fail Example probe_two_routes_med (L : Limit (Incl C S ◯ K))
     (creation_preserves_limit (reflective_CreatesLimit R K) L M HM P)
     = unique_obj (reflective_Incl_PreservesLimitCone R K M HM P) := eq_refl.
 
-(** ** CONVERSION 3: the counit isomorphism does not reduce *)
+(* * ** CONVERSION 3: counit 同构 does not reduce （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。
@@ -97,12 +96,12 @@ Fail Example probe_counit_iso_leg (x : Sub C S) :
   to (reflective_counit_iso R x)
     = @counit _ _ (reflector R) (Incl C S) (reflective_adj R) x := eq_refl.
 
-(** ** TYPING 4: creation is not preservation *)
+(* 相关说明。 （已译） *)
 
 Fail Check (reflective_CreatesLimit R K
               : PreservesLimitCone K (Incl C S)).
 
-(** ** TYPING 5: creation is not STRICT creation *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限、同构相关定义、性质与动机。
@@ -115,7 +114,7 @@ Fail Check (reflective_CreatesLimit R K
 
 End Boundaries.
 
-(** ** FORMABILITY 6: [Subcategory] identifies hom with proof *)
+(* * ** FORMABILITY 6: [Subcategory] identifies hom 证明 （已译） *)
 
 (*
    本节说明hom、来源与用途相关定义、性质与动机。
@@ -139,7 +138,7 @@ Fail Check (Subcategory Cu).
 
 End UniverseProbe.
 
-(** ** FORMABILITY 7 and 8: the cone vocabulary identifies J with C *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、（余）极限、hom相关定义、性质与动机。
@@ -169,7 +168,7 @@ Fail Check (@IsLimitCone Ju Vu Fu).
 
 End ShapeUniverseProbe.
 
-(** ** Non-vacuity: the torsion-free abelian groups *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限、始/终对象相关定义、性质与动机。
@@ -203,14 +202,14 @@ Example probe_ab_limit_apex :
 Definition probe_ab_created : Limit probe_KAb :=
   reflective_inherits_limits TorsionFree_Reflective probe_KAb probe_ab_limit.
 
-(* The created cone IS the lift of the cone downstairs ... *)
+(* 相关说明。 （已译） *)
 
 Example probe_ab_created_cone :
   @limit_cone _ _ _ probe_ab_created
     = reflective_lift TorsionFree_Reflective probe_KAb probe_ab_cone
   := eq_refl.
 
-(* ... its apex IS the reflector applied to the terminal object ... *)
+(* ... apex IS reflector applied 终对象 ... （已译） *)
 
 Example probe_ab_created_apex :
   vertex_obj[@limit_cone _ _ _ probe_ab_created]
@@ -227,7 +226,7 @@ Example probe_ab_created_carrier :
   `1 (vertex_obj[@limit_cone _ _ _ probe_ab_created])
     = AbModTorsion (@terminal_obj Ab Ab_Terminal) := eq_refl.
 
-(* The subcategory is complete as soon as [Ab] is; no completeness
-   witness for [Ab] is claimed here, so this is a conditional. *)
+(* The subcategory complete soon [Ab] is; no completeness
+ witness [Ab] claimed here, so 这是 conditional. （已译） *)
 
 Check (reflective_Complete TorsionFree_Reflective).

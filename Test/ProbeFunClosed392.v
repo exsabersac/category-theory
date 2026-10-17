@@ -32,7 +32,7 @@ Require Import Category.Instance.Fun.Closed.
 
 Generalizable All Variables.
 
-(** * Probe for Instance/Fun/Closed.v (issue #392) *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeFunClosed392。
@@ -44,7 +44,7 @@ Generalizable All Variables.
 
 Fail Check p392_this_name_exists_nowhere.
 
-(** ** Controls: every target constant, named outside any negative *)
+(* * ** Controls: every target 常值, named outside any negative （已译） *)
 
 Check @ccc_point.
 Check @ccc_point_inj.
@@ -98,7 +98,7 @@ Check @exponent_obj.
 Check @le_t.
 Check TwoY.
 
-(** ** Positive readbacks the negatives are measured against *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子、始/终对象、来源与用途相关定义、性质与动机。
@@ -107,20 +107,18 @@ Check TwoY.
 *)
 Example p392_Q_at_TwoX : fobj[PresheafQ] TwoX = two_elt := eq_refl.
 
-(* Away from their own stages, two members of the family agree by
-   computation; negative 6 is the same statement AT a stage. *)
+(* 相关说明。 （已译） *)
 Example p392_alpha_off_stage : alpha_fam 0 3 = alpha_fam 1 3 := eq_refl.
 
-(* The initial object of [_2^op] IS [Two_Terminal], with no transport:
-   [Initial C] is notation for [@Terminal (C^op)]. *)
+(* The 始对象 [_2^op] IS [Two_Terminal], no transport:
+ [Initial C] notation [@Terminal (C^op)]. （已译） *)
 Example p392_TwoOpInitial : TwoOpInitial = Two_Terminal := eq_refl.
 
-(** ** Negative 1 (FORMABILITY): the binders on [TwoFun] are
-       load-bearing *)
+(* 相关说明。 （已译） *)
 
-(* The same body as the target's, written WITHOUT universe binders.
-   Universe minimization then pins [Omega]'s hom and proof universes to
-   the literal [Set]. *)
+(* The same body target's, written WITHOUT universe binders.
+ Universe minimization then pins [Omega]'s hom 证明 universes to
+ literal [Set]. （已译） *)
 Program Definition TwoFunUnann : Omega ⟶ FinSet := {|
   fobj := fun _ => 2%nat;
   fmap := fun _ _ f => two_map f
@@ -141,7 +139,7 @@ Fail Check (TwoFunUnann : @Functor Omega@{p392o p392h p392p} FinSet).
 
 End P392Binders.
 
-(** ** Negative 2 (FORMABILITY): the [Set] pin on the presheaf ambient *)
+(* 相关说明。 （已译） *)
 
 Section P392SetsPin.
 
@@ -169,13 +167,12 @@ Check ([Omega@{p392co p392co p392co}, Sets@{p392co p392so}]).
 
 End P392SetsPin.
 
-(** ** Negative 3 (CONVERSION): the two presheaves differ at [TwoY] *)
+(* 相关说明。 （已译） *)
 
 Fail Definition p392_n3
   : fobj[PresheafP] TwoY = fobj[PresheafQ] TwoY := eq_refl.
 
-(** ** Negative 4 (CONVERSION): the objectwise candidate is not the
-       two-element setoid *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeFunClosed392 相关定义、性质与动机。
@@ -186,10 +183,10 @@ Fail Definition p392_n4
   : @exponent_obj Sets Sets_Cartesian Sets_Closed
       (fobj[PresheafP] TwoY) (fobj[PresheafQ] TwoY) = two_elt := eq_refl.
 
-(** ** Negative 5 (TYPING): the headline is about [Omega, FinSet] *)
+(* 相关说明。 （已译） *)
 
-(* Control: the headline accepts the pointwise cartesian structure on
-   its own functor category. *)
+(* Control: headline accepts pointwise cartesian structure on
+ own 函子 范畴. （已译） *)
 Check (fun_not_cartesian_closed
          (Functor_Category_Cartesian Omega FinSet FinSet_Cartesian)).
 
@@ -197,14 +194,14 @@ Check (fun_not_cartesian_closed
 Fail Check (fun_not_cartesian_closed
               (Functor_Category_Cartesian (_2^op) Sets Sets_Cartesian)).
 
-(** ** Negative 6 (CONVERSION): [alpha_fam] separates at its stage *)
+(* 相关说明。 （已译） *)
 
 Fail Definition p392_n6 : alpha_fam 0 1 = alpha_fam 1 1 := eq_refl.
 
-(** ** Negative 7 (TYPING): the engine's second half is about the
-       terminal object *)
+(* * ** Negative 7 (TYPING): engine's second half about the
+ 终对象 （已译） *)
 
-(* Control: the constant exists and is applicable at these arguments. *)
+(* Control: 常值 exists applicable at these arguments. （已译） *)
 Check (@fun_const_point Omega FinSet Omega_Initial FinSet_Terminal).
 
 (* Negative 7: its argument must be a transformation OUT OF the

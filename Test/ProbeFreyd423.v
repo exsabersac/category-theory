@@ -28,7 +28,7 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe423_absent_name.
 
-(** ** A: the [Set] pin of the unannotated discrete-diagram donor *)
+(* 相关说明。 （已译） *)
 
 Section SetPin.
 
@@ -45,7 +45,7 @@ Context {C : Category@{uo uh uh}} (comp : @Complete C) (fam : TotalMor C → C).
 Check (@limit_is_indexed_product C (TotalMor C) fam
          (comp _ (@DiscreteCat_Functor (TotalMor C) C fam))).
 
-(* control: the annotated route of Freyd.v at the same category *)
+(* control: annotated route Freyd.v at same 范畴 （已译） *)
 Check (complete_iprod comp fam).
 Check (complete_iprod_obj comp fam).
 
@@ -57,8 +57,7 @@ Section OpLiteral.
 
 Context {C : Category} (AI : ArrowIndex C).
 
-(* N2 TYPING: the anonymous record literal elaborates its binders at
-   [obj[C]] and is refused against [ArrowIndex (C^op)] *)
+(* 相关说明。 （已译） *)
 Fail Definition p423_op_literal : ArrowIndex (C^op) :=
   {| ai_index   := ai_index AI
    ; ai_enc     := fun x y h => ai_enc AI h
@@ -73,17 +72,17 @@ Example p423_op_round : ArrowIndex_op (ArrowIndex_op AI) = AI := eq_refl.
 
 End OpLiteral.
 
-(** ** C: positive controls — the hypothesis is not vacuous, and the
-       constructive wall is an injection *)
+(* * ** C: positive controls — 假设 not vacuous, the
+ constructive wall injection （已译） *)
 
 (* every category with decidable object equality carries an [ArrowIndex] *)
 Check (@canonical_ArrowIndex).
 
-(* from [f ≉ g] alone: an injection [(K → bool) → K] on the nose *)
+(* 相关说明。 （已译） *)
 Check (@fr_inj_injective).
 
-(* Theory/Size.v's [Small] and products over the category's own arrows
-   coexist: no universe wall *)
+(* Theory/Size.v's [Small] products over 范畴's own arrows
+ coexist: no universe wall （已译） *)
 Definition p423_small_and_products {C : Category} `{@Small C}
   (HP : HasIndexedProducts C) (fam : TotalMor C → C) : C :=
   indexed_product fam.

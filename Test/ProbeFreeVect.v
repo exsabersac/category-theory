@@ -21,18 +21,16 @@ Require Import Coq.ZArith.ZArith.
 
 Generalizable All Variables.
 
-(* Index arguments supplied once, as NOTATIONS (so each unfolds to the
-   constructor itself) — the device Instance/Mod/Free.v uses for its own
-   witnesses; [Local Notation] does not cross files. *)
+(* 相关说明。 （已译） *)
 Local Notation zgen  := (@fv_gen Int_Ring TwoGens).
 Local Notation zsmul := (@fv_smul Int_Ring TwoGens).
 Local Notation zplus := (@fv_plus Int_Ring TwoGens).
 
-(** ** Positive control: the unit computes
+(* * ** Positive control: unit computes
 
-    The unit is [fmap[U] id ∘ arrow], and both factors reduce, so the
-    unit of the free-forgetful adjunction IS the basis insertion on the
-    nose. *)
+ The unit [fmap[U] id ∘ arrow], both factors reduce, so the
+ unit free-forgetful 伴随 IS basis 嵌入 the
+ nose. （已译） *)
 Example probe_unit_computes (x : carrier TwoGens) :
   free_module_unit Int_Ring TwoGens x = zgen x := eq_refl.
 
@@ -59,10 +57,10 @@ Example probe_counit_up_to_equiv :
     (@fv_gen Int_Ring (RMod_Forget Int_Ring Int_RMod) 3%Z) ≈ 3%Z.
 Proof. exact (free_module_counit_generator Int_Ring Int_RMod 3%Z). Qed.
 
-(** ** Negative: the free functor's action on an arrow does not compute
+(* * ** Negative: free 函子's action arrow does not compute
 
-    Taken at the identity of the generating setoid, where a formula-based
-    definition would reduce immediately. *)
+ Taken at 恒等 generating setoid, where formula-based
+ 定义 would reduce immediately. （已译） *)
 Fail Example probe_fmap_computes (x : carrier TwoGens) :
   cmon_map (rm_hom (fmap[FreeMod Int_Ring] (@id Sets TwoGens))) (zgen x)
     = zgen x := eq_refl.
@@ -75,10 +73,10 @@ Proof.
            (@id Sets TwoGens) x).
 Qed.
 
-(** ** Negative: commutativity of a formal sum is not definitional
+(* * ** Negative: commutativity formal sum not definitional
 
-    The carrier is a plain inductive; commutativity is a constructor of
-    the quotienting relation, which is the positive control. *)
+ The carrier plain inductive; commutativity constructor of
+ quotienting 关系, positive control. （已译） *)
 Fail Example probe_plus_comm_definitional :
   zplus (zgen true) (zgen false) = zplus (zgen false) (zgen true) := eq_refl.
 

@@ -28,7 +28,7 @@ Require Import Category.Theory.Algebra.Rig.
 
 Generalizable All Variables.
 
-(** ** NEGATIVE: the propositional witness is not data *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeAbPropSurjective 相关定义、性质与动机。
@@ -48,10 +48,9 @@ Fail Definition rmod_prop_surjective_is_not_split
   ltac:(intro b; destruct (Hs b) as [a Ha]; exists a;
         exact (pequiv_to _ _ Ha)).
 
-(** ** CONTROLS: the directions that survive *)
+(* 相关说明。 （已译） *)
 
-(* The split notion implies the propositional one -- the direction that
-   loses nothing, and the positive control for the two negatives above. *)
+(* 相关说明。 （已译） *)
 Example ab_split_implies_prop {A B : AbObject} (f : A ~{Ab}~> B) :
   AbSurjective f → AbPropSurjective f :=
   ab_surjective_prop f.
@@ -75,7 +74,7 @@ Example rmod_prop_epic {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : RModPropSurjective f → Epic f :=
   rmod_prop_surjective_epic f.
 
-(* And the headline biconditionals, APPLIED, at their restated strength. *)
+(* 相关说明。 （已译） *)
 Example ab_epic_iff {A B : AbObject} (f : A ~{Ab}~> B) :
   Epic f ↔ AbPropSurjective f := ab_epic_iff_surjective f.
 
@@ -83,10 +82,9 @@ Example rmod_epic_iff_readback {R : RingObject} {M N : RModObject R}
   (f : M ~{RMod R}~> N) : Epic f ↔ RModPropSurjective f :=
   rmod_epic_iff f.
 
-(** ** The split notions are still there, and still say what they said *)
+(* 相关说明。 （已译） *)
 
-(* A not-lost check (it holds in the unchanged tree too), not a control of
-   the change. *)
+(* 相关说明。 （已译） *)
 Example ab_surjective_is_sigma {A B : AbObject} (f : A ~{Ab}~> B) :
   AbSurjective f
     = (∀ b : carrier (cmon_setoid B), { a & cmon_map f a ≈ b })

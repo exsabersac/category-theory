@@ -45,7 +45,7 @@ Generalizable All Variables.
 Fail Check p475_absent_name.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Construction 1: the restricted adjunction and its monad *)
+(* * ** Construction 1: restricted 伴随 单子 （已译） *)
 
 Section Restrict.
 
@@ -67,7 +67,7 @@ Example p475_c2_monad_map (x y : X) (f : x ~> y) :
 Fail Example p475_r1_functors :
   Restricted_Right G S ◯ Restricted_Left S full mem = G ◯ F := eq_refl.
 
-(* C3: the two composites are naturally isomorphic. *)
+(* 相关说明。 （已译） *)
 Definition p475_c3_functors_equiv :
   Restricted_Right G S ◯ Restricted_Left S full mem ≈ G ◯ F :=
   Restricted_Monad_agrees S full mem.
@@ -100,7 +100,7 @@ Fail Example p475_r3_monads_objects :
      : Monads X)
     = (G ◯ F; Adjunction_Induced_Monad Adj) := eq_refl.
 
-(* C7: the two monads are isomorphic in [Monads X]... *)
+(* C7: two 单子 isomorphic [Monads X]... （已译） *)
 Definition p475_c7_monads_iso :
   ((Restricted_Right G S ◯ Restricted_Left S full mem;
     Adjunction_Induced_Monad (Restricted_Adjunction Adj S full mem))
@@ -108,7 +108,7 @@ Definition p475_c7_monads_iso :
     ≅ (G ◯ F; Adjunction_Induced_Monad Adj) :=
   Restricted_Monad_iso Adj S full mem.
 
-(* C8: ... with the identity as every component of [to]... *)
+(* C8: ... 恒等 every component [to]... （已译） *)
 Example p475_c8_monads_iso_to (x : X) :
   transform[mh_transform (to (Restricted_Monad_iso Adj S full mem))] x = id
   := eq_refl.
@@ -121,7 +121,7 @@ Example p475_c9_monads_iso_from (x : X) :
 End Restrict.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Theorem 2: L by transposition, and its two triangles *)
+(* 相关说明。 （已译） *)
 
 Section Comparison.
 
@@ -159,7 +159,7 @@ Fail Example p475_r5_forget_map (x y : X) (f : x ~{XT}~> y) :
   fmap[G ◯ Kleisli_Comparison Adj] f = fmap[@Kleisli_Forget X (G ◯ F) T] f
   := eq_refl.
 
-(* C14: G L ≈ G_T with the identity at every object. *)
+(* C14: G L ≈ G_T 恒等 at every 对象. （已译） *)
 Example p475_c14_forget_iso (x : X) :
   `1 (Kleisli_Comparison_Forget Adj) x = iso_id := eq_refl.
 
@@ -177,7 +177,7 @@ Fail Example p475_r6_free_map (x y : X) (f : x ~> y) :
   fmap[Kleisli_Comparison Adj ◯ @Kleisli_Free X (G ◯ F) T] f = fmap[F] f
   := eq_refl.
 
-(* C17: L F_T ≈ F with the identity at every object. *)
+(* C17: L F_T ≈ F 恒等 at every 对象. （已译） *)
 Example p475_c17_free_iso (x : X) :
   `1 (Kleisli_Comparison_Free Adj) x = iso_id := eq_refl.
 
@@ -188,7 +188,7 @@ Example p475_c18_free_strict_obj (x : X) :
 End Comparison.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Exercise 1's image and Exercise 2 at FX *)
+(* 相关说明。 （已译） *)
 
 Section Image.
 
@@ -237,7 +237,7 @@ Proof. destruct y as [a [x e]]; reflexivity. Qed.
 End Image.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Riehl, Lemma 5.2.14: K : C_T ⟶ C^T *)
+(* 相关说明。 （已译） *)
 
 Section Riehl.
 
@@ -269,7 +269,7 @@ Example p475_c30_em_transpose (x y : C) (f : x ~{KT}~> y) :
   fmap[@Kleisli_EM C T H] f
     = from (@adj _ _ _ _ (EM_Adjunction T) x (EM_Free T y)) f := eq_refl.
 
-(* C31: K and L at the Eilenberg-Moore resolution agree on objects... *)
+(* C31: K L at Eilenberg-Moore resolution agree 对象... （已译） *)
 Example p475_c31_em_is_l_obj (c : C) :
   fobj[@Kleisli_EM C T H] c = fobj[Kleisli_Comparison (EM_Adjunction T)] c
   := eq_refl.
@@ -307,7 +307,7 @@ Proof. simpl. rewrite fmap_id, id_right. reflexivity. Qed.
 End Riehl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Exercise 3: the one-point monad *)
+(* * ** Exercise 3: one-point 单子 （已译） *)
 
 (* C35: T S is the one-point set. *)
 Example p475_c35_point_monad_obj (S : Sets) :
@@ -315,7 +315,7 @@ Example p475_c35_point_monad_obj (S : Sets) :
     = @terminal_obj Sets _ := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Riehl's K as her proof builds it, and L at the Kleisli resolution *)
+(* * ** Riehl's K her 证明 builds it, L at Kleisli resolution （已译） *)
 
 Section RiehlEMComparison.
 
@@ -338,8 +338,8 @@ Example p475_c37_riehl_k_map (x y : C) (f : x ~{KT}~> y) :
 Fail Example p475_r11_riehl_k_codomain : KT ⟶ EilenbergMoore T :=
   EM_Comparison (@Kleisli_Adjunction C T H).
 
-(* C38: its codomain is the algebras of the monad the Kleisli adjunction
-   induces. *)
+(* C38: codomain algebras 单子 Kleisli 伴随
+ induces. （已译） *)
 Example p475_c38_riehl_k_codomain :
   KT ⟶ @EilenbergMoore C (@Kleisli_Forget C T H ◯ @Kleisli_Free C T H)
          (Adjunction_Induced_Monad (@Kleisli_Adjunction C T H)) :=
@@ -364,8 +364,8 @@ Definition p475_c40_riehl_k_alg_join (c : C) :
 Fail Example p475_r13_l_at_kleisli : KT ⟶ KT :=
   Kleisli_Comparison (@Kleisli_Adjunction C T H).
 
-(* C41: L at the Kleisli resolution of T goes out of the Kleisli category of
-   the monad that resolution induces. *)
+(* C41: L at Kleisli resolution T goes out Kleisli 范畴 of
+ 单子 resolution induces. （已译） *)
 Example p475_c41_l_at_kleisli :
   @Kleisli C (@Kleisli_Forget C T H ◯ @Kleisli_Free C T H)
       (Adjunction_Induced_Monad (@Kleisli_Adjunction C T H)) ⟶ KT :=
@@ -374,14 +374,13 @@ Example p475_c41_l_at_kleisli :
 End RiehlEMComparison.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Uniqueness from the strict triangles *)
+(* 相关说明。 （已译） *)
 
 Section UniqueStrict.
 
 Context {X A : Category} {F : X ⟶ A} {G : A ⟶ X} (Adj : F ⊣ G).
 
-(* C42: the strict triangles L delivers satisfy the hypotheses of
-   [Kleisli_Comparison_unique_of_strict] at L0 := L, coh at eq_refl. *)
+(* 相关说明。 （已译） *)
 Definition p475_c42_unique_of_strict_at_l :
   @equiv _ (@Functor_StrictEq_Setoid _ A) (Kleisli_Comparison Adj)
     (Kleisli_Comparison Adj) :=
@@ -392,7 +391,7 @@ Definition p475_c42_unique_of_strict_at_l :
 End UniqueStrict.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Guard: every constant of the two targets, by name *)
+(* * ** Guard: every 常值 two targets, name （已译） *)
 
 Check @Category.Monad.Kleisli.Comparison.Restricted_Left_obligation_1.
 Check @Category.Monad.Kleisli.Comparison.Restricted_Left_obligation_2.

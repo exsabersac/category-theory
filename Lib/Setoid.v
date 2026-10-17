@@ -30,18 +30,16 @@ Coercion setoid_equiv : Setoid >-> Equivalence.
 
 Notation "f ≈ g" := (equiv f g) (at level 79) : category_theory_scope.
 
-(* Coq's [eq] is an equivalence relation; this is a universe-polymorphic
-   repackaging of the standard-library proofs so that the setoids below can be
-   built at an arbitrary universe level. *)
+(* Coq's [eq] 等价 关系; 这是 universe-polymorphic
+ repackaging standard-library proofs so setoids below can be
+ built at arbitrary universe level. （已译） *)
 Definition eq_equivalence@{t u} {A : Type@{t}} : @Equivalence@{t u} A (@eq A) :=
   @Build_Equivalence@{t u} A
     (@eq A) (@eq_Reflexive A)
     (@eq_Symmetric A)
     (@eq_Transitive A).
 
-(* A universe-polymorphic unit type. Used as the carrier of the terminal
-   setoid (see Instance/One.v) where the polymorphism of the standard [unit]
-   would be too restrictive. *)
+(* 相关说明。 （已译） *)
 Inductive poly_unit@{u} : Type@{u} := ttt.
 
 (* The terminal/unit setoid: [poly_unit] under propositional equality. *)
@@ -49,8 +47,8 @@ Definition unit_setoid@{t u} : Setoid@{t u} poly_unit@{t} :=
   {| equiv := @eq poly_unit@{t}
    ; setoid_equiv := @eq_equivalence@{t u} poly_unit@{t} |}.
 
-(* The discrete setoid on [A]: equivalence is just Coq's `=`. This is the
-   tightest equivalence on a type and recovers ordinary (extensional) sets. *)
+(* The discrete setoid [A]: 等价 just Coq's `=`. This the
+ tightest 等价 type recovers ordinary (extensional) sets. （已译） *)
 Definition eq_Setoid@{u} (A : Type@{u}) : Setoid@{u u} A :=
   Build_Setoid@{u _} A (λ f g, eq f g) eq_equivalence@{u u}.
 

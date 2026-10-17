@@ -22,7 +22,7 @@ Require Import Category.Instance.Sets.Coequalizer.Interconnect.
 
 Generalizable All Variables.
 
-(** ** (1) The Yoneda route at [Sets] *)
+(* 相关说明。 （已译） *)
 
 Section YonedaAtSets.
 
@@ -30,8 +30,8 @@ Context (H : Sets ⟶ Sets).
 Context (r : Sets).
 Context (U : AUniversalElement H r).
 
-(** Positive control: the Yoneda-FREE route builds the representation
-    at [Sets], and [Instance/Sets/Quotient.v] uses exactly it. *)
+(** 本节：Positive control: Yoneda-FREE route builds representation
+ at [Sets], [Instance/Sets/Quotient.v] uses exactly it. （已译） *)
 Check (ue_representation H r U).
 Check (AUniversalElement_of_repr H r).
 
@@ -63,7 +63,7 @@ Check (universal_element_yoneda K d).
 
 End YonedaSmall.
 
-(** ** (2) The untruncated class object *)
+(* * ** (2) The untruncated class 对象 （已译） *)
 
 (** Positive control: the [Prop]-valued part-carrier, at a PINNED [Sets]
     universe instance. *)
@@ -82,9 +82,9 @@ Definition probe_parts_type_up@{o o'} (A : SetoidObject@{o o}) : Type@{o'} :=
 Fail Definition probe_parts_type_same@{o} (A : SetoidObject@{o o}) : Type@{o} :=
   carrier A -> Type@{o}.
 
-(** ... and the [Prop]-valued relation really is usable as a quotient's
-    `≈` at a pinned instance, which is what [prop_rel_squash_stable]
-    rests on. *)
+(** ... [Prop]-valued 关系 really usable quotient's
+ `≈` at pinned instance, what [prop_rel_squash_stable]
+ rests on. （已译） *)
 Definition probe_prop_quotient@{o so} (A : obj[Sets@{o so}])
   (Rp : carrier A -> carrier A -> Prop) (HRp : Equivalence Rp) :
   obj[Sets@{o so}] :=
@@ -108,10 +108,10 @@ Definition probe_intersection_prop@{o} (A : SetoidObject@{o o})
   forall R : carrier A -> carrier A -> Prop,
     (forall x, R x x) -> R a b.
 
-(** ** (3) Coarsening is not conversion *)
+(* 相关说明。 （已译） *)
 
-(** Positive control: quotienting by the setoid's OWN `≈` returns the
-    record, by [eq_refl]. *)
+(** 本节：Positive control: quotienting setoid's OWN `≈` returns the
+ record, [eq_refl]. （已译） *)
 Definition probe_finest_eq (A : SetoidObject) :
   SetsQuotient A (@equiv _ A) (@setoid_equiv _ A) = A := eq_refl.
 
@@ -123,22 +123,22 @@ Definition probe_finest_eq (A : SetoidObject) :
 Fail Definition probe_diagonal_eq :
   SetsCoeq bool_false_map bool_false_map = BoolSet := eq_refl.
 
-(** ... while the fact the header actually claims -- that the two
-    relations agree -- is a theorem, in tree. *)
+(** ... while fact header actually claims -- two
+ relations agree -- 定理, tree. （已译） *)
 Check (@coeq_rel_diagonal UnitSet BoolSet bool_false_map).
 
-(** ** (4) Identification in a coequalizer is a derivation *)
+(* 相关说明。 （已译） *)
 
-(** Positive controls: the carrier did not move, and the two ports ARE
-    identified in the coequalizer. *)
+(** 本节：Positive controls: carrier did not move, two ports ARE
+ identified coequalizer. （已译） *)
 Definition probe_interconnect_carrier : carrier Interconnect = ic_port := eq_refl.
 
 Check port_P0_P1_merged.
 
-(** Negative: they are nevertheless distinct ports.  (With the [Fail]
-    stripped this reports "cannot unify "IcP0" and "IcP1"".) *)
+(** 本节：Negative: they nevertheless distinct ports. (With [Fail]
+ stripped reports "cannot unify "IcP0" "IcP1"".) （已译） *)
 Fail Definition probe_ports_eq : IcP0 = IcP1 := eq_refl.
 
-(** ... and the coequalizer does not identify everything: this is the
-    mapping-out argument, in tree. *)
+(** ... coequalizer does not identify everything: 这是 the
+ 映射-out 论元, tree. （已译） *)
 Check port_P0_P3_apart.

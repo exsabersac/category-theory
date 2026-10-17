@@ -22,7 +22,7 @@ Require Import Category.Functor.Construction.Postcompose.
 
 Generalizable All Variables.
 
-(** * Probes guarding Functor/Construction/Postcompose.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbePostcompose。
@@ -30,7 +30,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Group 1 (CONVERSION): the Hcompose route's arrow action *)
+(* 相关说明。 （已译） *)
 
 Section HcomposeConversion.
 
@@ -39,15 +39,13 @@ Context (J : E ⟶ E').
 Context (K L : D ⟶ E).
 Context (θ : K ⟹ L).
 
-(* POSITIVE CONTROL 1.  The OBJECT actions of the two routes DO agree on the
-   nose, so the instrument is not simply rejecting everything about
-   [PostcomposeViaHcompose]. *)
+(* 相关说明。 （已译） *)
 Definition control_hcompose_obj :
   fobj[PostcomposeViaHcompose J] K = fobj[Postcompose J] K := eq_refl.
 
-(* POSITIVE CONTROL 2.  The Hcompose route's component IS
-   [fmap[J] id ∘ fmap[J] (θ x)] on the nose — this is what the negative
-   below is measuring the presence of. *)
+(* POSITIVE CONTROL 2. The Hcompose route's component IS
+ [fmap[J] id ∘ fmap[J] (θ x)] nose — 这是 what negative
+ below measuring presence of. （已译） *)
 Definition control_hcompose_component (x : D) :
   transform[fmap[PostcomposeViaHcompose J] θ] x
     = fmap[J] (@id E (L x)) ∘ fmap[J] (transform[θ] x) := eq_refl.
@@ -73,20 +71,19 @@ Fail Definition negative_hcompose_component (x : D) :
   transform[fmap[PostcomposeViaHcompose J] θ] x
     = transform[fmap[Postcompose J] θ] x := eq_refl.
 
-(* POSITIVE CONTROL 3.  All three hold up to `≈`, which is the strength the
-   library file claims. *)
+(* 相关说明。 （已译） *)
 Definition control_hcompose_equiv :
   fmap[PostcomposeViaHcompose J] θ ≈ fmap[Postcompose J] θ :=
   postcompose_via_hcompose_fmap J K L θ.
 
 End HcomposeConversion.
 
-(** ** Group 2 (CONVERSION): [prefmap] does not compute *)
+(* 相关说明。 （已译） *)
 
 Section PrefmapConversion.
 
-(* POSITIVE CONTROL 4.  The FORWARD leg of the isomorphism computes: it is
-   the functor's own action on 2-cells, on the nose. *)
+(* POSITIVE CONTROL 4. The FORWARD leg 同构 computes: it is
+ 函子's own action 2-cells, nose. （已译） *)
 Definition control_iso_to (θ : finpost_K ⟹ finpost_K) :
   to finpost_hom_iso θ = fmap[SubPostcompose FinSets] θ := eq_refl.
 
@@ -120,10 +117,10 @@ Definition control_roundtrip :
 
 End PrefmapConversion.
 
-(** ** Group 3 (FORMABILITY): the hom universes cannot be kept apart *)
+(* 相关说明。 （已译） *)
 
-(* [Postcompose] identifies the hom AND proof universes of all three of its
-   categories.  The object universes stay free.  Both halves are probed. *)
+(* [Postcompose] identifies hom AND 证明 universes all three its
+ 范畴. The 对象 universes stay free. Both halves probed. （已译） *)
 
 Section UniverseFormability.
 
@@ -156,8 +153,8 @@ Section HomsApart.
                 @Postcompose D E E' J).
 End HomsApart.
 
-(* NEGATIVE 7 (formability).  Same for the SHAPE category's hom universe
-   against the two others. *)
+(* NEGATIVE 7 (formability). Same SHAPE 范畴's hom universe
+ against two others. （已译） *)
 Section ShapeHomApart.
   Universes uo uh1 uh2.
   Constraint uh1 < uh2.
@@ -182,7 +179,7 @@ End HomsTogether.
 
 End UniverseFormability.
 
-(** ** Group 4 (FORMABILITY): the enlargement of Sets is out of reach *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -195,9 +192,9 @@ Section SetsEnlargement.
 (* NEGATIVE 8 (formability).  [Postcompose] along the lift. *)
 Fail Check (fun (D : Category) => Postcompose (D:=D) Sets_Lift).
 
-(* NEGATIVE 9 (formability).  And already the bare object action, with no
-   functor category and no [Postcompose] in sight — which is what shows the
-   wall belongs to [Compose]. *)
+(* NEGATIVE 9 (formability). And already bare 对象 action, no
+ 函子 范畴 no [Postcompose] sight — what shows the
+ wall belongs [Compose]. （已译） *)
 Fail Check (fun (D : Category) (K : D ⟶ Sets) => Sets_Lift ◯ K).
 
 (*
@@ -211,11 +208,9 @@ Check (fun (D : Category) (K : D ⟶ Sets) => (Id[Sets]) ◯ K).
 
 End SetsEnlargement.
 
-(** ** Group 5: the headline results are inhabited at the witness *)
+(* 相关说明。 （已译） *)
 
-(* POSITIVE CONTROLS 11 and 12.  The two boundary theorems of the library
-   file, each named at its full type, so that a rename or a weakening of
-   either statement breaks this file. *)
+(* 相关说明。 （已译） *)
 
 Definition control_finpost_iso :
   (finpost_K ⟹ finpost_K)

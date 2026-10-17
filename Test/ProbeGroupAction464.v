@@ -36,7 +36,7 @@ Require Import Category.Instance.Fun.Action.Monad.BG.
 
 Generalizable All Variables.
 
-(** ** Instrument: a false statement is refused *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: Mac Lane's μ at a triple, in his order. *)
 Example p464_instrument_ctl@{o so} (M : MonObject@{o o o})
@@ -50,10 +50,9 @@ Fail Example p464_instrument@{o so} (M : MonObject@{o o o})
   (@join _ _ (ActMonad@{o so} M) X) (g1, (g2, x)) = (mon_op g2 g1, x) :=
   eq_refl.
 
-(** ** Instance/Fun/Action/Monad.v: the monad and the two Cat isomorphisms *)
+(* * ** Instance/Fun/Action/Monad.v: 单子 two Cat isomorphisms （已译） *)
 
-(* CONTROL: η at a point and μ as a function, on the nose; the [to] legs
-   of the two Cat isomorphisms. *)
+(* 相关说明。 （已译） *)
 Example p464_ret@{o so} (M : MonObject@{o o o}) (X : SetoidObject@{o o})
   (x : carrier X) :
   (@ret _ _ (ActMonad@{o so} M) X) x = (mon_unit, x) := eq_refl.
@@ -70,9 +69,9 @@ Example p464_to@{o so c} (M : MonObject@{o o o}) :
 Example p464_beck_to@{o so c} (M : MonObject@{o o o}) :
   to (EM_MSet_iso_beck@{o so c} M) = to (EM_MSet_iso@{o so c} M) := eq_refl.
 
-(** ** Instance/Fun/Action/Monad.v: the round trip M-set → algebra → M-set *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the carrier and the action as a function, on the nose. *)
+(* 相关说明。 （已译） *)
 Example p464_rt_setoid@{o so} {M : MonObject@{o o o}}
   (A : MSetoidAction@{o o o o o o o o} M) :
   act_setoid (fobj[EM_to_MSet@{o so} M ◯ EM_Comparison (MSet_adj@{o so} M)] A)
@@ -133,11 +132,9 @@ Fail Example p464_rt_functor@{o so} {M : MonObject@{o o o}} :
   EM_to_MSet@{o so} M ◯ EM_Comparison (MSet_adj@{o so} M)
   = Id[MSet@{so so o o o o o o} M] := eq_refl.
 
-(** ** Instance/Fun/Action/Monad.v: the round trip algebra → M-set →
-    algebra *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the carrier, the structure map at each pair, and the
-   structure map as the function p ↦ h (fst p, snd p), on the nose. *)
+(* 相关说明。 （已译） *)
 Example p464_rt2_carrier@{o so} {M : MonObject@{o o o}}
   (x : @EilenbergMoore@{so so so o} Sets@{o so} (ActF@{o so} M)
          (ActMonad@{o so} M)) :
@@ -178,9 +175,9 @@ Fail Example p464_rt2_obj@{o so} {M : MonObject@{o o o}}
   fobj[EM_Comparison (MSet_adj@{o so} M) ◯ EM_to_MSet@{o so} M] x = x :=
   eq_refl.
 
-(** ** Instance/Fun/Action/Monad.v: Beck's route against the direct one *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: Beck's quasi-inverse keeps the carrier and acts through η. *)
+(* 相关说明。 （已译） *)
 Example p464_beck_carrier@{o so} (M : MonObject@{o o o})
   (x : @EilenbergMoore@{so so so o} Sets@{o so} (ActF@{o so} M)
          (ActMonad@{o so} M)) :
@@ -210,9 +207,9 @@ Fail Example p464_monadic_same@{o so} (M : MonObject@{o o o}) :
   MSet_Forget_Monadic@{o so} M = MSet_Forget_Monadic_direct@{o so} M :=
   eq_refl.
 
-(** ** Instance/Fun/Action/Monad.v: the hand-built functor G × (−) *)
+(* * ** Instance/Fun/Action/Monad.v: hand-built 函子 G × (−) （已译） *)
 
-(* The functor G × (−) built by hand, which the file does not keep. *)
+(* The 函子 G × (−) built hand, file does not keep. （已译） *)
 Definition p464_ActF_hand@{o so} (M : MonObject@{o o o}) :
   Sets@{o so} ⟶ Sets@{o so}.
 Proof.
@@ -224,8 +221,8 @@ Proof.
   - intros X Y Z f g p. split; reflexivity.
 Defined.
 
-(* CONTROL: the same object and arrow maps as [ActF M], and ≈ to it with
-   identity components. *)
+(* CONTROL: same 对象 arrow maps [ActF M], ≈ it with
+ 恒等 components. （已译） *)
 Example p464_hand_obj@{o so} (M : MonObject@{o o o})
   (X : SetoidObject@{o o}) :
   fobj[p464_ActF_hand@{o so} M] X = fobj[ActF@{o so} M] X := eq_refl.
@@ -244,7 +241,7 @@ Defined.
 Fail Example p464_hand_is_composite@{o so} (M : MonObject@{o o o}) :
   p464_ActF_hand@{o so} M = ActF@{o so} M := eq_refl.
 
-(** ** Instance/Fun/Action/Monad/BG.v: the two monads *)
+(* * ** Instance/Fun/Action/Monad/BG.v: two 单子 （已译） *)
 
 (*
    本节说明单子相关定义、性质与动机。
@@ -292,7 +289,7 @@ Fail Example p464_bg_join_fun@{o so} (M : MonObject@{o o o})
   @join _ _ (BGMonad@{o so} M) X = @join _ _ (ActMonad@{o so} M) X :=
   eq_refl.
 
-(** ** Instance/Fun/Action/Monad/BG.v: evaluation *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: evaluation against [MSet_to] followed by [MSet_Forget], in
    both data fields. *)
@@ -309,15 +306,15 @@ Example p464_bg_U_map@{o so} (M : MonObject@{o o o}) (P Q : SetBG@{o so} M)
 Fail Example p464_bg_U_is_composite@{o so} (M : MonObject@{o o o}) :
   U_BG@{o so} M = MSet_Forget@{o so} M ◯ MSet_to@{so o} M := eq_refl.
 
-(** ** Instance/Fun/Action/Monad/BG.v: the hom level of Set^BG *)
+(* 相关说明。 （已译） *)
 
-(* The functor category of BG.v with its hom level raised from o to so;
-   Instance/Fun.v's block allows any hom level at least o. *)
+(* The 函子 范畴 BG.v hom level raised o so;
+ Instance/Fun.v's block allows any hom level at least o. （已译） *)
 Definition p464_SetBG_h@{o so} (M : MonObject@{o o o}) : Category@{so so so} :=
   @Fun@{o o so o so so so} (Deloop@{o o} M) Sets@{o so}.
 
-(* CONTROL: functors into the raised category are formable, and
-   Instance/Fun/Action.v's [MSet_from] lands there; [MSet_Free] alone. *)
+(* CONTROL: 函子 进入 raised 范畴 formable, and
+ Instance/Fun/Action.v's [MSet_from] lands there; [MSet_Free] alone. （已译） *)
 Definition p464_bg_up@{o so} (M : MonObject@{o o o}) : Type@{so} :=
   Sets@{o so} ⟶ p464_SetBG_h@{o so} M.
 
@@ -337,7 +334,7 @@ Fail Definition p464_bg_F_h@{o so} (M : MonObject@{o o o}) :
   Sets@{o so} ⟶ p464_SetBG_h@{o so} M :=
   MSet_from@{so so o so o} M ◯ MSet_Free@{o so} M.
 
-(** ** Instance/Fun/Action/Monad/BG.v: the tie *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -365,7 +362,7 @@ Fail Example p464_tie_obj@{o so c} (M : MonObject@{o o o})
   fobj[BG_Act_EM@{o so} M ◯ EM_Comparison (BG_adj@{o so} M)] P
   = fobj[to (Fun_EM_iso@{o so c} M)] P := eq_refl.
 
-(* CONTROL: the [morphism] field of the tie's structure map, on the nose. *)
+(* 相关说明。 （已译） *)
 Example p464_tie_alg_morphism@{o so c} (M : MonObject@{o o o})
   (P : SetBG@{o so} M) :
   @morphism _ _ _ _
@@ -383,7 +380,7 @@ Fail Example p464_tie_alg_proper@{o so c} (M : MonObject@{o o o})
   = @proper_morphism _ _ _ _
       (@t_alg _ _ _ _ (`2 (fobj[to (Fun_EM_iso@{o so c} M)] P))) := eq_refl.
 
-(** ** Closure: a readback, not a refutation *)
+(* 相关说明。 （已译） *)
 
 Print Assumptions ActMonad.
 Print Assumptions EM_MSet_iso.
@@ -391,7 +388,7 @@ Print Assumptions MSet_Forget_Monadic.
 Print Assumptions U_BG_Monadic.
 Print Assumptions tie.
 
-(** ** Guard: the constants of the two targets *)
+(* 相关说明。 （已译） *)
 
 (* Instance/Fun/Action/Monad.v *)
 Check @Category.Instance.Fun.Action.Monad.ActF.

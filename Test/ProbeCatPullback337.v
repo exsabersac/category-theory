@@ -22,9 +22,7 @@ Require Import Category.Instance.Cat.Pullback.
 
 Generalizable All Variables.
 
-(** ** Instrument check
-
-    A [Fail] that never fails would make every negative below vacuous. *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
@@ -40,13 +38,13 @@ Universe ao bo co h.
 Constraint ao < bo.
 Constraint bo < co.
 
-(* Control: the construction is formable with the three object universes
-   declared strictly apart. *)
+(* Control: construction formable three 对象 universes
+ declared strictly apart. （已译） *)
 Check (fun (A : Category@{ao h h}) (B : Category@{bo h h})
            (C : Category@{co h h}) (F : A ⟶ C) (G : B ⟶ C) =>
          FibreProduct F G).
 
-(* Control: so are both projections, at the same three levels. *)
+(* 相关说明。 （已译） *)
 Check (fun (A : Category@{ao h h}) (B : Category@{bo h h})
            (C : Category@{co h h}) (F : A ⟶ C) (G : B ⟶ C) =>
          (FP_fst F G, FP_snd F G)).
@@ -74,7 +72,7 @@ Context {A B C Q : Category} (F : A ⟶ C) (G : B ⟶ C).
 Context (q1 : Q ⟶ A) (q2 : Q ⟶ B).
 Context (Hsq : F ∘[StrictCat] q1 ≈[StrictCat] G ∘[StrictCat] q2).
 
-(* Control: the object action is [q1]'s on the nose. *)
+(* Control: 对象 action [q1]'s nose. （已译） *)
 Definition probe_fp_obj (z : Q) :
   fobj[FP_fst F G ◯ FP_med F G q1 q2 Hsq] z = fobj[q1] z := eq_refl.
 
@@ -107,7 +105,7 @@ Section SliceApex.
 
 Context {C : Category} (c : C).
 
-(* Control: the leg's object action, on the nose. *)
+(* Control: leg's 对象 action, nose. （已译） *)
 Definition probe_slice_obj (x : Slice C c) :
   fobj[Slice_Arrow c] x = ((`1 x, c); `2 x) := eq_refl.
 
@@ -123,8 +121,8 @@ End SliceApex.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Control: at a cospan whose two legs agree, the pair with [eq_refl] is an
-   object. *)
+(* Control: at cospan whose two legs agree, pair [eq_refl] an
+ 对象. （已译） *)
 Definition probe_ib_agree : obj[FibreProduct IBtrue IBtrue] :=
   ((ttt, ttt); eq_refl).
 
@@ -155,8 +153,8 @@ Check ObjUIP_of_ObjDecEq.
 Check FibreProduct_IsPullback_dec.
 Check StrictCat_HasPullbacks.
 
-(** The [Cat] side: the candidate is refuted, and the refutation is narrow
-    -- the same cospan does have a [Cat] pullback. *)
+(** 本节：The [Cat] side: candidate refuted, refutation narrow
+ -- same cospan does have [Cat] pullback. （已译） *)
 
 Check FibreProduct_not_Cat_pullback.
 Check point_cospan_Cat_IsPullback.

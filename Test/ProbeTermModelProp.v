@@ -38,7 +38,7 @@ Require Import Coq.ZArith.ZArith.
 
 Generalizable All Variables.
 
-(** ** 1. [ts_eq], Instance/Ab/Tensor.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeTermModelProp 相关定义、性质与动机。
@@ -51,9 +51,9 @@ Fail Definition ts_eq_type_elim {G H : AbObject} (s t : tsum G H)
   (He : ts_eq s t) : tsum G H :=
   ltac:(induction He; exact ts_zero).
 
-(* NEGATIVE.  The mediator's respectfulness with the elimination attempted
-   directly at the [Type]-valued `≈`, i.e. the script the file carried before
-   the relation moved. *)
+(* NEGATIVE. The mediator's respectfulness elimination attempted
+ directly at [Type]-valued `≈`, i.e. script file carried before
+ 关系 moved. （已译） *)
 Fail Definition ts_med_type_elim {G H K : AbObject}
   (β : Ab.Tensor.Bilinear G H K)
   (s t : tsum G H) (He : ts_eq s t) :
@@ -70,13 +70,13 @@ Example ts_control {G H K : AbObject} (β : Ab.Tensor.Bilinear G H K)
   Ab.Tensor.tensor_med_fun β s ≈ Ab.Tensor.tensor_med_fun β t :=
   Ab.Tensor.tensor_med_respects G H β s t He.
 
-(* CONTROL.  The relation IS the tensor's `≈`, and is its own [Prop]
-   mirror. *)
+(* CONTROL. The 关系 IS tensor's `≈`, own [Prop]
+ 镜像. （已译） *)
 Example ts_pequiv_control {G H : AbObject} (s t : tsum G H)
   (He : ts_eq s t) :
   @pequiv _ _ (cmon_prop (AbTensor G H)) s t := He.
 
-(** ** 2. [fa_eq], Instance/Ab/Free.v *)
+(* 相关说明。 （已译） *)
 
 Fail Definition fa_eq_type_elim {X : SetoidObject} (s t : FATerm X)
   (He : fa_eq s t) : FATerm X :=
@@ -97,7 +97,7 @@ Example fa_pequiv_control {X : SetoidObject} (s t : FATerm X)
   (He : fa_eq s t) :
   @pequiv _ _ (cmon_prop (FreeAbObject X)) s t := He.
 
-(** ** 3. [fv_eq], Instance/Mod/Free.v *)
+(* 相关说明。 （已译） *)
 
 Fail Definition fv_eq_type_elim {R : RingObject} {X : SetoidObject}
   (s t : @FVTerm R X) (He : fv_eq s t) : @FVTerm R X :=
@@ -107,7 +107,7 @@ Example fv_pequiv_control {R : RingObject} {X : SetoidObject}
   (s t : @FVTerm R X) (He : fv_eq s t) :
   @pequiv _ _ (cmon_prop (@FreeModObject R X)) s t := He.
 
-(** ** 4. [mt_eq], Instance/Mod/Tensor.v *)
+(* 相关说明。 （已译） *)
 
 Fail Definition mt_eq_type_elim {R : RingObject} {V V' : RModObject R}
   (s t : MTerm V V') (He : mt_eq s t) : MTerm V V' :=
@@ -117,7 +117,7 @@ Example mt_pequiv_control {R : RingObject} {V V' : RModObject R}
   (s t : MTerm V V') (He : mt_eq s t) :
   @pequiv _ _ (cmon_prop (TensorMod V V')) s t := He.
 
-(** ** 5. [bs_eq], Instance/Mod/Bimodule.v *)
+(* 相关说明。 （已译） *)
 
 Fail Definition bs_eq_type_elim {X : RingObject}
   {N : RModObject (Ring_op X)} {M : RModObject X}

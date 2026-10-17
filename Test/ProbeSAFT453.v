@@ -62,11 +62,11 @@ Require Import Category.Adjunction.SAFT.Characterization.Examples.
 
 Generalizable All Variables.
 
-(** ** Instrument: the refutation keyword is live *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe453_absent_name.
 
-(** ** N1-N3 (CONVERSION): the two left adjoints read back *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: [SAFT_left_obj], restated. *)
 Example p453_left_obj@{o dobj h so c w s t pk pa +|
@@ -86,8 +86,7 @@ Example p453_left_obj@{o dobj h so c w s t pk pa +|
               (fun _ => True))))) :=
   eq_refl.
 
-(* CONTROL: the same through the backward half of the Corollary's
-   biconditional. *)
+(* 相关说明。 （已译） *)
 Example p453_iff_left_obj@{o dobj h so c w s t pk pa +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -151,8 +150,7 @@ Example p453_thm2_left_obj@{o dobj h so c pk pa q r rd pw k +|
                 (fun k => `1 k)) :=
   eq_refl.
 
-(* CONTROL: the same through the backward half of Theorem 2's
-   biconditional. *)
+(* 相关说明。 （已译） *)
 Example p453_iff_thm2_obj@{o dobj h so c pk pa q r rd pw k +|
     h <= so, c <= so, o <= q, h <= q +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -183,10 +181,9 @@ Fail Example p453_n3_thm2_obj_is_product@{o dobj h so c pk pa q r rd pw k +|
                  (comma_cogenerator U d G))) :=
   eq_refl.
 
-(** ** N4, N5 (CONVERSION): the same readbacks through [GAFT_from_initials] *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the route through Adjunction/GAFT.v's [Qed] assembly is
-   formed, for the Corollary ... *)
+(* 相关说明。 （已译） *)
 Definition p453_gaft_route@{o dobj h so c w s t pk pa +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -242,7 +239,7 @@ Fail Example p453_n5_thm2_gaft_route_obj@{o dobj h so c pk pa q r rd pw k +|
                 (fun k => `1 k)) :=
   eq_refl.
 
-(** ** N6, N7 (CONVERSION): the cover's route and the comma's product *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: [SAFT_cover_wp_is_GAFT], restated. *)
 Example p453_cover_is_gaft@{o dobj h dp cp w s t pl pa +|
@@ -258,7 +255,7 @@ Example p453_cover_is_gaft@{o dobj h dp cp w s t pl pa +|
                     (WP (saft_prod@{o dobj h h dp} U comp G d))) :=
   eq_refl.
 
-(* CONTROL: the two left adjoints are isomorphic ([SAFT_cover_wp_iso]). *)
+(* 相关说明。 （已译） *)
 Definition p453_cover_iso@{o dobj h dp cp w s t pl pa +|
     h < dp, h < cp, w <= h, o <= s, h <= s, h < t +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -279,8 +276,7 @@ Fail Example p453_n6_routes_convertible@{o dobj h dp cp w s t pl pa +|
     = projT1 (SAFT_wellpowered U comp cont G WP) :=
   eq_refl.
 
-(* CONTROL: [comma_cogenerator_index], restated: the two routes index the
-   same family. *)
+(* 相关说明。 （已译） *)
 Example p453_same_index@{o dobj h so +| h <= so +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D) (d : D)
   (G : Cogenerator@{so o h} C) :
@@ -297,10 +293,10 @@ Fail Example p453_n7_same_product@{o dobj h so dp pk pa +|
     = saft_prod@{o dobj h so dp} U comp G d :=
   eq_refl.
 
-(** ** N8-N10, N26, N27 (BINDER, UNIVERSE): the regime of the theorems *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the Corollary with the homs strictly below the shapes and the
-   shapes strictly below the objects. *)
+(* CONTROL: Corollary homs strictly below shapes the
+ shapes strictly below 对象. （已译） *)
 Definition p453_small@{o dobj h so c w s t pk pa +|
     h < so, so < o, c < so, w < h, o <= s, h <= s, h < t +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -340,9 +336,9 @@ Definition p453_pa_below_t@{o dobj h so c w s t pk pa +|
   { F : D ⟶ C & F ⊣ U } :=
   SAFT_wellpowered U comp cont G WP.
 
-(* INSTRUMENT: the binder's constraints are enforced.  [Complete@{so so h
-   o}] declares [h] at or below its first slot, so this is refused
-   whatever the body. *)
+(* INSTRUMENT: binder's constraints enforced. [Complete@{so so h
+ o}] declares [h] at below first slot, so 这是 refused
+ whatever body. （已译） *)
 Fail Definition p453_n8_shapes_below_homs@{o dobj h so c w s t pk pa +|
     so < h, c < so, w < h, o <= s, h <= s, h < t +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -352,8 +348,8 @@ Fail Definition p453_n8_shapes_below_homs@{o dobj h so c w s t pk pa +|
   { F : D ⟶ C & F ⊣ U } :=
   SAFT_wellpowered U comp cont G WP.
 
-(* CONTROL: Theorem 2 at the same regime, the class index strictly above
-   the objects. *)
+(* CONTROL: Theorem 2 at same regime, class index strictly above
+ 对象. （已译） *)
 Definition p453_thm2_small@{o dobj h so c pk pa q r rd pw k +|
     h < so, so < o, c < so, o < q, h < q +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -377,8 +373,7 @@ Definition p453_thm2_small_iff@{o dobj h so c pk pa q r rd pw k +|
        * PreservesWidePullbacks@{o h dobj h pw q r rd} U) :=
   SAFT_iff U comp G HW.
 
-(* CONTROL: Theorem 2 with the class index strictly below both
-   wide-pullback universes, [q < r] and [q < rd]. *)
+(* 相关说明。 （已译） *)
 Definition p453_thm2_q_below_r@{o dobj h so c pk pa q r rd pw k +|
     h <= so, c <= so, o <= q, h <= q, q < r, q < rd +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -425,9 +420,9 @@ Fail Definition p453_n10_thm2_r_apart@{o dobj h so c pk pa q r r2 rd pw k +|
   { F : D ⟶ C & F ⊣ U } :=
   SAFT_thm2 U comp cont G HW HU.
 
-(* CONTROL: N26's term, [HW] applied to the corresponding family
-   [least_index] of the comma's cogenerator product, the class index at or
-   above the objects. *)
+(* CONTROL: N26's term, [HW] applied corresponding family
+ [least_index] comma's cogenerator product, class index at or
+ above 对象. （已译） *)
 Definition p453_least_index_at_objects@{o dobj h so c pk pa q r k +|
     h < so, so < o, c < so, o <= q, h < q +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -496,26 +491,25 @@ Fail Definition p453_n27_initial_r_apart@{o dobj h so c pk pa q r r2 rd pw k +|
        (HU _ _ _ _ (fun k => Subobject.sub_is_monic (`1 k)) _ _
           (wide_pullback_is_pullback (HW _ _ (fun k => `1 k))))).
 
-(** ** N11-N14, N28 (UNIVERSE): well-poweredness one universe up, at the pin *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: at [Sets] with the unconditional well-powering one universe up
-   and a small cogenerating family taken as a hypothesis, the cover is
-   accepted ... *)
+(* CONTROL: at [Sets] unconditional well-powering one universe up
+ small cogenerating family taken 假设, cover is
+ accepted ... （已译） *)
 Definition p453_cover_up@{o so +| o < so +} (d : Sets@{o so})
   (G : Cogenerator@{o so o} Sets@{o so}) :=
   saft_cover_at (@Id Sets@{o so}) Sets_Complete Sets_Id_PreservesImageLimit G d
     (Sets_WellPoweredAt_up _).
 
-(* ... and so is the solution set built from it, its index universe left
-   free. *)
+(* 相关说明。 （已译） *)
 Definition p453_solution_set_up@{o so +| o < so +} (d : Sets@{o so})
   (G : Cogenerator@{o so o} Sets@{o so}) :=
   saft_solution_set_at (@Id Sets@{o so}) Sets_Complete
     Sets_Id_PreservesImageLimit G d (Sets_WellPoweredAt_up _).
 
-(* CONTROL: the other unconditional well-powering of [Sets@{o so}],
-   Structure/WellPowered.v's [wp_trivial], indexed at the objects' [so],
-   strictly above the homs [o] ... *)
+(* CONTROL: other unconditional well-powering [Sets@{o so}],
+ Structure/WellPowered.v's [wp_trivial], indexed at 对象' [so],
+ strictly above homs [o] ... （已译） *)
 Definition p453_sets_wp_trivial@{o so +| o < so +} (d : Sets@{o so}) :
   WellPoweredAt@{so so so o so} d :=
   wp_trivial d.
@@ -546,8 +540,7 @@ Definition p453_wp_up_at@{o so +| o < so +} (x : Sets@{o so}) :=
 Fail Definition p453_n13_wp_up@{o so +| o < so +} : WellPowered Sets@{o so} :=
   fun x => Sets_WellPoweredAt_up x.
 
-(* CONTROL: under [Untruncate] the small well-powering meets the pin, and
-   both routes are accepted ([sets_id_saft], [sets_id_saft_cover]). *)
+(* 相关说明。 （已译） *)
 Definition p453_sets_id@{o so +| Set < o, o < so +} (Un : Untruncate@{o}) :
   { F : Sets@{o so} ⟶ Sets@{o so} & F ⊣ @Id Sets@{o so} } :=
   SAFT_wellpowered (@Id Sets@{o so}) Sets_Complete Sets_Id_PreservesImageLimit
@@ -573,8 +566,8 @@ Definition p453_cover_trivial@{o dobj h so dp cp w s t pl pa +|
   saft_cover_at U comp cont G d
     (wp_trivial@{o h w s t} (saft_prod U comp G d)).
 
-(* CONTROL: [GAFT]'s pin takes [wp_trivial] when the objects fit in the
-   homs. *)
+(* CONTROL: [GAFT]'s pin takes [wp_trivial] 对象 fit the
+ homs. （已译） *)
 Definition p453_cover_wp_trivial_small@{o dobj h dp cp s t pl pa +|
     o <= h, h < dp, h < cp +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -593,8 +586,8 @@ Fail Definition p453_n14_cover_wp_trivial_large@{o dobj h dp cp s t pl pa +|
   { F : D ⟶ C & F ⊣ U } :=
   SAFT_cover_wp_at U comp cont G (fun d => wp_trivial (saft_prod U comp G d)).
 
-(* CONTROL: N28's term, [GAFT] applied directly to the solution sets built
-   from [wp_trivial], when the objects fit in the homs. *)
+(* CONTROL: N28's term, [GAFT] applied directly solution sets built
+ [wp_trivial], 对象 fit homs. （已译） *)
 Definition p453_gaft_trivial_small@{o dobj h dp cp pl pa +|
     o <= h, h < dp, h < cp +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -617,7 +610,7 @@ Fail Definition p453_n28_gaft_trivial_large@{o dobj h dp cp pl pa +|
     (fun d => saft_solution_set_at U comp cont G d
                 (wp_trivial (saft_prod U comp G d))).
 
-(** ** N15, N16 (UNIVERSE): the large cogenerating family of [Sets] *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: the family itself. *)
 Definition p453_large_cog@{c o so +| o < so, o < c +} :
@@ -649,17 +642,16 @@ Fail Definition p453_n16_large_cog_comma@{o so +| Set < o, o < so +}
   SAFT_wellpowered (@Id Sets@{o so}) Sets_Complete Sets_Id_PreservesImageLimit
     Sets_Cogenerator_large (Sets_WellPowered_untruncate Un).
 
-(** ** N17 (UNIVERSE): the binders are load-bearing *)
+(* 相关说明。 （已译） *)
 
-(* An unannotated wrapper of [SAFT_wellpowered]: minimization sets the
-   well-powering's index universe to the homs. *)
+(* 相关说明。 （已译） *)
 Definition p453_unannotated {C D : Category} (U : C ⟶ D)
   (comp : @Complete C) (cont : @PreservesImageLimit C D U)
   (G : Cogenerator C) (WP : WellPowered C) : { F : D ⟶ C & F ⊣ U } :=
   SAFT_wellpowered U comp cont G WP.
 
-(* CONTROL: the library constant takes the index at [Set], strictly below
-   the homs ([indiscrete_saft], restated). *)
+(* CONTROL: library 常值 takes index at [Set], strictly below
+ homs ([indiscrete_saft], restated). （已译） *)
 Definition p453_indiscrete_set_index@{j o +| j < o +} :
   { F : Indiscrete@{o j j} Type@{j} ⟶ Indiscrete@{o j j} Type@{j}
     & F ⊣ @Id (Indiscrete@{o j j} Type@{j}) } :=
@@ -669,7 +661,7 @@ Definition p453_indiscrete_set_index@{j o +| j < o +} :
     (Indiscrete_Cogenerator_empty Type@{j})
     (Indiscrete_WellPowered@{o j Set o _} Type@{j}).
 
-(* CONTROL: the wrapper takes the index at the homs. *)
+(* 相关说明。 （已译） *)
 Definition p453_unannotated_hom_index@{j o +| j < o +} :
   { F : Indiscrete@{o j j} Type@{j} ⟶ Indiscrete@{o j j} Type@{j}
     & F ⊣ @Id (Indiscrete@{o j j} Type@{j}) } :=
@@ -688,7 +680,7 @@ Fail Definition p453_n17_unannotated_set_index@{j o +| j < o +} :
     (Indiscrete_Cogenerator_empty Type@{j})
     (Indiscrete_WellPowered@{o j Set o _} Type@{j}).
 
-(** ** N18 (CONVERSION): the lift's [Compose] universe is [cont]'s *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: [saft_lift]'s body, the cone at [pa]. *)
 Definition p453_lift_at_pa@{o dobj h so dp cp pl pa +|
@@ -713,9 +705,9 @@ Fail Definition p453_n18_lift_at_pc@{o dobj h so dp cp pl pa pc +|
   unique_obj (cont _ _ _ (saft_pb_cone@{o dobj h so dp cp pl pa so pc _}
                             U comp cont G d c h)).
 
-(** ** N19-N21 (UNIVERSE, TYPING): the corollaries' universes *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the Corollary at the diagonal, shapes at or below the homs. *)
+(* 相关说明。 （已译） *)
 Definition p453_diag_small@{o h so c w s t jo +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t, jo <= h +}
   (C : Category@{o h h}) (comp : @Complete@{so so h o} C)
@@ -724,7 +716,7 @@ Definition p453_diag_small@{o h so c w s t jo +|
   SAFT_wellpowered (@Diagonal C J) comp
     (Continuous_PreservesImageLimit Diagonal_continuous) G WP.
 
-(* CONTROL: the diagonal alone, shapes strictly above the homs. *)
+(* 相关说明。 （已译） *)
 Definition p453_diag_alone@{o h jo +| h < jo +}
   (C : Category@{o h h}) (J : Category@{jo h h}) :=
   @Diagonal C J.
@@ -737,8 +729,7 @@ Fail Definition p453_n19_diag_large@{o h so c w s t jo +|
   SAFT_wellpowered (@Diagonal C J) comp
     (Continuous_PreservesImageLimit Diagonal_continuous) G WP.
 
-(* CONTROL: [saft_cocomplete]'s body with a colimit-datum universe [cr]
-   declared at or above the homs. *)
+(* 相关说明。 （已译） *)
 Definition p453_cocomplete_cr_le@{o h so c w s t jo fo fa cr +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t, jo <= h,
     o <= fo, h <= fo, h < fa, h <= cr, jo <= cr +}
@@ -761,8 +752,8 @@ Fail Definition p453_n20_cocomplete_cr_above@{o h so c w s t jo fo fa cr +|
                         : { L : @Fun@{jo h o h fo h fa} J C ⟶ C
                           & L ⊣ @Diagonal@{fo h fa jo o h} C J })) F.
 
-(* CONTROL: the representability corollary with [PreservesImageLimit]'s
-   auxiliary [pa] strictly below the objects [su] of [Sets@{h su}]. *)
+(* CONTROL: representability 推论 [PreservesImageLimit]'s
+ auxiliary [pa] strictly below 对象 [su] [Sets@{h su}]. （已译） *)
 Definition p453_repr_pa_below_su@{o h so c w s t su pl pa ra rt +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t, h < su, pa < su +}
   {C : Category@{o h h}} (K : C ⟶ Sets@{h su})
@@ -791,24 +782,24 @@ Fail Definition p453_n21_repr_iff_pa_below_su@{o h so c w s t su pl pa ra rt +|
     ↔ @PreservesImageLimit@{o h su h pl so pa so} C Sets@{h su} K :=
   continuous_Set_functor_representable_iff K comp G WP.
 
-(** ** N22-N24 (UNIVERSE): wide pullbacks of subobjects from completeness *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: completeness supplies them with the index at the shapes, the
-   objects at or below the shapes. *)
+(* CONTROL: completeness supplies them index at shapes, the
+ 对象 at below shapes. （已译） *)
 Definition p453_hw_at_shapes@{o h so k +| h <= so, o <= so +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C) :
   HasSubobjectWidePullbacks@{o h so so k} C :=
   fun x I S => complete_wide_pullback comp (fun i => Subobject.sub_mono (S i)).
 
-(* CONTROL: and with the index at the objects, when they fit. *)
+(* CONTROL: index at 对象, they fit. （已译） *)
 Definition p453_hw_at_objects@{o h so k +| h <= so, o <= so +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C) :
   HasSubobjectWidePullbacks@{o h o o k} C :=
   fun x I S => complete_wide_pullback comp (fun i => Subobject.sub_mono (S i)).
 
 (* CONTROL: Adjunction/SAFT/Characterization.v's
-   [Complete_HasSubobjectWidePullbacks], at the index at the objects, IS
-   that term. *)
+ [Complete_HasSubobjectWidePullbacks], at index at 对象, IS
+ term. （已译） *)
 Example p453_hw_is_library@{o h so k +| h <= so, o <= so +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C) :
   (Complete_HasSubobjectWidePullbacks comp
@@ -821,8 +812,8 @@ Fail Definition p453_n22_hw_large@{o h so k +| h <= so, so < o +}
   HasSubobjectWidePullbacks@{o h o o k} C :=
   fun x I S => complete_wide_pullback comp (fun i => Subobject.sub_mono (S i)).
 
-(* CONTROL: N23's term, the family's index explicit, at the objects'
-   universe, when the objects fit in the shapes. *)
+(* CONTROL: N23's term, family's index explicit, at 对象'
+ universe, 对象 fit shapes. （已译） *)
 Definition p453_hw_index_ok@{o h so +| h <= so, o <= so +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C) (x : C)
   (I : Type@{o}) (S : I → SubObj x) :=
@@ -835,13 +826,13 @@ Fail Definition p453_n23_hw_large_index@{o h so +| h <= so, so < o +}
   @complete_wide_pullback C comp I (fun i => Subobject.sub_dom (S i)) x
     (fun i => Subobject.sub_mono (S i)).
 
-(* CONTROL: at [Sets], the index at the homs. *)
+(* 相关说明。 （已译） *)
 Definition p453_sets_hw_small@{o so k +| Set < o, o < so +} :
   HasSubobjectWidePullbacks@{so o o o k} Sets@{o so} :=
   fun x I S => complete_wide_pullback Sets_Complete
                  (fun i => Subobject.sub_mono (S i)).
 
-(* CONTROL: the library constant there, the index at the homs. *)
+(* CONTROL: library 常值 there, index at homs. （已译） *)
 Definition p453_sets_hw_library@{o so k +| Set < o, o < so +} :
   HasSubobjectWidePullbacks@{so o o o k} Sets@{o so} :=
   Complete_HasSubobjectWidePullbacks Sets_Complete.
@@ -851,9 +842,7 @@ Fail Definition p453_n24_sets_hw_large@{o so k +| Set < o, o < so +} :
   fun x I S => complete_wide_pullback Sets_Complete
                  (fun i => Subobject.sub_mono (S i)).
 
-(* POSITIVE CONTROL: every premise of Theorem 2 at the thin [Subsets Y],
-   [U := InverseImage f]; both preservation premises come from
-   [image_preimage_adjunction f] itself. *)
+(* 相关说明。 （已译） *)
 Definition p453_thm2_subsets@{o u so k +| o <= u, u <= so, o <= so +}
   {X Y : SetoidObject@{o o}} (f : X ~{Sets}~> Y) :
   { F : Subsets@{o u} X ⟶ Subsets@{o u} Y & F ⊣ InverseImage f } :=
@@ -872,7 +861,7 @@ Example p453_thm2_subsets_is_library@{o so u +| Set < o, o < so, o <= u +}
        : { F : Subsets@{o u} X ⟶ Subsets@{o u} Y & F ⊣ InverseImage f }) :=
   eq_refl.
 
-(** ** N25, N29 (UNIVERSE): [Sets^op], co-well-powered one universe up *)
+(* 相关说明。 （已译） *)
 
 Require Import Category.Instance.Sets.SpecialInitial.
 
@@ -908,8 +897,8 @@ Fail Definition p453_n29_setsop_gaft_up@{o so +| o < so +} :
 
 (** ** Controls without a negative *)
 
-(* The representing object is the left adjoint at the singleton
-   ([continuous_Set_functor_representable_obj], restated). *)
+(* The 表示 对象 左伴随 at singleton
+ ([continuous_Set_functor_representable_obj], restated). （已译） *)
 Example p453_repr_obj@{o h so c w s t su pl pa ra rt +|
     h <= so, c <= so, w <= h, o <= s, h <= s, h < t, h < su +}
   {C : Category@{o h h}} (K : C ⟶ Sets@{h su})
@@ -922,8 +911,7 @@ Example p453_repr_obj@{o h so c w s t su pl pa ra rt +|
     = fobj[projT1 (SAFT_wellpowered K comp cont G WP)] SetsOne :=
   eq_refl.
 
-(* The cover's index at [h] IS the well-powering's name for the pullback
-   subobject ([saft_cover_at_index], restated). *)
+(* 相关说明。 （已译） *)
 Example p453_cover_index@{o dobj h so dp cp w s t pl pa +|
     h <= so, h < dp, h < cp +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -937,8 +925,7 @@ Example p453_cover_index@{o dobj h so dp cp w s t pl pa +|
     = wp_from W (saft_sub@{o dobj h so dp cp _ _} U comp G d c h) :=
   eq_refl.
 
-(* The cover with the well-powering's [t] and [PreservesImageLimit]'s
-   auxiliary [pa] apart, in both orders. *)
+(* 相关说明。 （已译） *)
 Definition p453_cover_t_below_pa@{o dobj h so dp cp w s t pl pa +|
     h <= so, h < dp, h < cp, o <= s, h <= s, h < t, t < pa +}
   {C : Category@{o h h}} {D : Category@{dobj h h}} (U : C ⟶ D)
@@ -957,8 +944,8 @@ Definition p453_cover_pa_below_t@{o dobj h so dp cp w s t pl pa +|
   (W : WellPoweredAt@{w o s h t} (saft_prod@{o dobj h so dp} U comp G d)) :=
   saft_cover_at@{o dobj h so dp cp w s t pl pa _ _ _} U comp cont G d W.
 
-(* At one tuple at [Id[Sets]] under [Untruncate], the reshaped covering
-   datum holds at every object and the old one is refuted. *)
+(* At one tuple at [Id[Sets]] under [Untruncate], reshaped covering
+ datum holds at every 对象 old one refuted. （已译） *)
 Definition p453_separation@{o so t +| Set < o, o < so, o < t +}
   (Un : Untruncate@{o}) :
   (∀ d : Sets@{o so},

@@ -25,14 +25,13 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe425_absent_name.
 
-(** ** A: the image of the pointwise cone under evaluation IS the chosen
-       limit cone in apex and legs, but not as a record *)
+(* 相关说明。 （已译） *)
 
 Section ImageCone.
 
 Context {J P X : Category} (D : J ⟶ [P, X]) (L : ∀ p : P, Limit (Eval p ◯ D)).
 
-(* readbacks: the diagram at p, the object action, the leg components *)
+(* readbacks: diagram at p, 对象 action, leg components （已译） *)
 Example p425_diagram_obj (p : P) (j : J) :
   fobj[Eval p ◯ D] j = fobj[fobj[D] j] p := eq_refl.
 
@@ -43,7 +42,7 @@ Example p425_leg_component (j : J) (p : P) :
   transform[cone_leg (PointwiseLimitCone D L) j] p
   = limit_leg (limit_is_alimit (L p)) j := eq_refl.
 
-(* controls: apex and every leg of the image cone convert *)
+(* 相关说明。 （已译） *)
 Example p425_fcone_apex (p : P) :
   vertex_obj[FCone (Eval p) (PointwiseLimitCone D L)]
   = vertex_obj[@limit_cone _ _ _ (L p)] := eq_refl.
@@ -52,12 +51,12 @@ Example p425_fcone_leg (p : P) (j : J) :
   cone_leg (FCone (Eval p) (PointwiseLimitCone D L)) j
   = cone_leg (@limit_cone _ _ _ (L p)) j := eq_refl.
 
-(* N1 CONVERSION: the whole record does not — its coherence field is a
-   rebuilt proof and ≈ is Type-valued *)
+(* N1 CONVERSION: whole record does not — coherence field a
+ rebuilt 证明 ≈ Type-valued （已译） *)
 Fail Example p425_fcone_record (p : P) :
   FCone (Eval p) (PointwiseLimitCone D L) = @limit_cone _ _ _ (L p) := eq_refl.
 
-(* readbacks: the mediator and the packaged limit *)
+(* 相关说明。 （已译） *)
 Example p425_mediator (M : Cone D) (p : P) :
   transform[unique_obj (PointwiseIsLimitCone D L M)] p
   = plim_ump_map D L M p := eq_refl.
@@ -68,10 +67,10 @@ Example p425_limit_cone :
 
 End ImageCone.
 
-(** ** B: the packaged corollary must be annotated at the definition *)
+(* * ** B: packaged 推论 must annotated at 定义 （已译） *)
 
-(* The same body as [Functor_Category_Complete], written BARE at top level:
-   universe minimization identifies P's object level with its hom level. *)
+(* The same body [Functor_Category_Complete], written BARE at top level:
+ universe minimization identifies P's 对象 level hom level. （已译） *)
 Definition p425_bare_complete {P X : Category} (HX : @Complete X) :
   @Complete ([P, X]) :=
   fun J D => Functor_Category_pointwise_limit D (fun p => HX J (Eval p ◯ D)).
@@ -92,7 +91,7 @@ Fail Check (@p425_bare_complete P X).
 
 End Annotation.
 
-(** ** C: [Limit] identifies the shape's hom level with the ambient's *)
+(* 相关说明。 （已译） *)
 
 Section ShapeHom.
 
@@ -101,7 +100,7 @@ Constraint ih < ch.
 
 Context {I : Category@{io ih ih}} {X : Category@{co ch ch}} (F : I ⟶ X).
 
-(* controls: the diagram and a cone over it are accepted *)
+(* 相关说明。 （已译） *)
 Check F.
 Check (Cone F).
 
@@ -111,7 +110,7 @@ Fail Check (Limit F).
 
 End ShapeHom.
 
-(** ** D: the shape-level statement ascribes at the class downstream *)
+(* 相关说明。 （已译） *)
 
 Definition p425_hlos {J P X : Category} (LX : HasLimitsOfShape J X) :
   HasLimitsOfShape J ([P, X]) := Fun_HasLimitsOfShape LX.

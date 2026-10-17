@@ -23,10 +23,7 @@ Require Import Category.Adjunction.Unitalization.
 Require Import Category.Instance.Ab.TorsionFree.
 Require Import Coq.ZArith.ZArith.
 
-(** ** Instrument check
-
-    Scope-free: it names nothing, so it stays red however the target is
-    renamed, and it shows [Fail] is doing its job in this file. *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe_371_no_such_reference.
 
@@ -128,7 +125,7 @@ Fail Check (fun S : @Subcategory Cu => @Reflective Cu S).
 
 End ProbeTorsionUniverses.
 
-(** ** Controls naming every constant the negatives mention *)
+(* * ** Controls naming every 常值 negatives mention （已译） *)
 
 Check @torsion_unit.
 Check @torsion_incl.

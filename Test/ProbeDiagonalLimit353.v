@@ -39,15 +39,10 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Instrument check
-
-   Must ERROR ("The command has not failed!"), confirming a [Fail] wrapping
-   a SUCCEEDING command is itself rejected. Scope: it does NOT detect a
-   [Fail] that accepted everything — such a [Fail] would compile here too.
-   It rules out the commoner accident, a [Fail] treated as a no-op. *)
+(* 相关说明。 （已译） *)
 Fail Fail Check Category.
 
-(** ** CONVERSION — the opposite-functor calculus (Colimit.v 1, 2) *)
+(* * ** CONVERSION — opposite-函子 calculus (Colimit.v 1, 2) （已译） *)
 
 Section OppositeConversion.
 Context {C D E : Category}.
@@ -57,8 +52,7 @@ Fail Definition probe_op_compose (F : D ⟶ E) (G : C ⟶ D) :
   Opposite_Functor (F ◯ G)
     = Opposite_Functor F ◯ Opposite_Functor G := eq_refl.
 
-(* CONTROLS 1: BOTH data actions agree on the nose, which is what localizes
-   the failure to the three law fields. *)
+(* 相关说明。 （已译） *)
 Definition probe_op_compose_fobj (F : D ⟶ E) (G : C ⟶ D) (x : C) :
   fobj[Opposite_Functor (F ◯ G)] x
     = fobj[Opposite_Functor F ◯ Opposite_Functor G] x := eq_refl.
@@ -95,9 +89,7 @@ Definition via_Op (G G' : J ⟶ C) (e : G ≈ G') :
 Fail Definition probe_via_Op_component (G G' : J ⟶ C) (e : G ≈ G') (x : J) :
   `1 (via_Op G G' e) x = Isomorphism_Opposite (`1 e x) := eq_refl.
 
-(* CONTROL 3: the SAME readback through the transparent restatement holds.
-   Same statement, same arguments — only the route differs, which is what
-   makes the opacity attribution discriminate. *)
+(* 相关说明。 （已译） *)
 Definition probe_respects_component (G G' : J ⟶ C) (e : G ≈ G') (x : J) :
   `1 (Opposite_Functor_respects e) x = Isomorphism_Opposite (`1 e x)
   := eq_refl.
@@ -133,23 +125,23 @@ Fail Definition probe_sigT_eta (G G' : J ⟶ C) (e : G ≈ G') :
 
 End RoundTrip.
 
-(** ** CONVERSION — the adjunction unit/counit (Limit.v R1, R2) *)
+(* * ** CONVERSION — 伴随 unit/counit (Limit.v R1, R2) （已译） *)
 
 Section CounitConversion.
 Context {J C : Category} (L : HasLimitsOfShape J C) (F : [J, C]).
 
-(* NEGATIVE 6. The counit component is not the limit leg ON THE NOSE. *)
+(* 相关说明。 （已译） *)
 Fail Definition probe_counit_strict (j : J) :
   transform[lim_counit L F] j = lim_leg L F j := eq_refl.
 
-(* CONTROL 6: with the residual identity it DOES close — which locates the
-   difference at a `∘ id` and not at the leg. *)
+(* CONTROL 6: residual 恒等 it DOES close — locates the
+ difference at `∘ id` not at leg. （已译） *)
 Definition probe_counit_with_id (j : J) :
   transform[lim_counit L F] j = lim_leg L F j ∘ id := eq_refl.
 
 End CounitConversion.
 
-(** ** CONVERSION — the Kan comparison (Limit.v R3) *)
+(* 相关说明。 （已译） *)
 
 Section KanConversion.
 Context {J C : Category} (c : C).
@@ -159,8 +151,7 @@ Fail Definition probe_diag_induced :
   Δ[J](c)
     = fobj[@Induced J _1 (Erase J) C] (@Diagonal C _1 c) := eq_refl.
 
-(* CONTROLS 7: BOTH actions agree on the nose (these are the target's own
-   `diagonal_is_induced_obj` / `_map`), confining the failure to the laws. *)
+(* 相关说明。 （已译） *)
 Definition probe_diag_induced_obj (x : J) :
   fobj[Δ[J](c)] x
     = fobj[fobj[@Induced J _1 (Erase J) C] (@Diagonal C _1 c)] x := eq_refl.
@@ -182,23 +173,19 @@ Fail Definition probe_zero_op : Opposite _0 = _0 := eq_refl.
 Check _0.
 Check (Opposite _0).
 
-(** ** FORMABILITY — universes
-
-   No explicit universe instance is written inside any [Fail] below: such a
-   [Fail] can pass for an arity reason on another Coq version, making the
-   guard vacuous with nothing noticing. *)
+(* 相关说明。 （已译） *)
 
 Section FormabilityHomProof.
 Universes co ch cp.
 Constraint ch < cp.
 Context (Cu : Category@{co ch cp}).
 
-(* CONTROLS: hom and object are nameable with hom and proof declared
-   strictly apart, so the negatives below fire on the CONSTRAINT. *)
+(* CONTROLS: hom 对象 nameable hom 证明 declared
+ strictly apart, so negatives below fire CONSTRAINT. （已译） *)
 Check (fun x y : Cu => x ~{Cu}~> y).
 Check (obj[Cu]).
 
-(* NEGATIVE 8. `Opposite` alone identifies hom with proof. *)
+(* NEGATIVE 8. `Opposite` alone identifies hom 证明. （已译） *)
 Fail Check (Opposite Cu).
 
 End FormabilityHomProof.
@@ -217,8 +204,8 @@ Context (Ju : Category@{jo jh jp}) (Cu : Category@{co ch cp}).
 Check Ju.
 Check Cu.
 Check (Ju ⟶ Cu).
-(* CONTROL: the transparent restatement IS formable with the two object
-   levels declared strictly apart. *)
+(* CONTROL: transparent restatement IS formable two 对象
+ levels declared strictly apart. （已译） *)
 Check (@Opposite_Functor_respects Ju Cu).
 
 (* NEGATIVE. Stripped:
@@ -232,7 +219,7 @@ Universes so sh.
 Constraint Set < sh.
 Context (Cs : Category@{so sh sh}).
 
-(* CONTROL: the category is nameable with its homs strictly above `Set`. *)
+(* CONTROL: 范畴 nameable homs strictly above `Set`. （已译） *)
 Check Cs.
 Check (obj[Cs]).
 
@@ -245,9 +232,9 @@ Fail Check (@two_IsALimit Cs).
 
 End FormabilitySetPin.
 
-(** ** Controls naming every constant the negatives depend on, OUTSIDE a
-    [Fail], so a rename breaks a succeeding command rather than turning a
-    negative vacuously green. *)
+(* * ** Controls naming every 常值 negatives depend on, OUTSIDE a
+ [Fail], so rename breaks succeeding command rather than turning a
+ negative vacuously green. （已译） *)
 
 Check @Opposite_Functor.
 Check @Opposite_Functor_respects.

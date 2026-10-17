@@ -14,7 +14,7 @@ Require Import Category.Construction.Elements.Kan.
 
 Generalizable All Variables.
 
-(** * Probes guarding Construction/Elements/Kan.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeCoyoneda。
@@ -22,7 +22,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Group 1 (CONVERSION): the nat/cone round trips *)
+(* 相关说明。 （已译） *)
 
 Section RoundTripConversion.
 
@@ -34,9 +34,7 @@ Context (psi : ACone a (Elements_proj K)).
 Context (d : D) (x : K d).
 Context (j : Elements K).
 
-(* POSITIVE CONTROL 1.  The instrument is not rejecting everything: an
-   [eq_refl] between a term and itself, in exactly the shape the negatives
-   below use, is accepted. *)
+(* 相关说明。 （已译） *)
 Definition control_instrument :
   kan_nat_of_cone K (kan_cone_of_nat K tau)
     = kan_nat_of_cone K (kan_cone_of_nat K tau) := eq_refl.
@@ -69,15 +67,14 @@ Fail Definition neg_rt1_family :
      (kan_nat_of_cone K (kan_cone_of_nat K tau))
   = @transform D Sets K ([Hom a,─]) tau := eq_refl.
 
-(* NEGATIVE 3 (CONVERSION).  The same at a single component, so that the
-   failure is not attributed to the family's outer lambda. *)
+(* 相关说明。 （已译） *)
 Fail Definition neg_rt1_component :
   @transform D Sets K ([Hom a,─])
      (kan_nat_of_cone K (kan_cone_of_nat K tau)) d
   = @transform D Sets K ([Hom a,─]) tau d := eq_refl.
 
-(* POSITIVE CONTROL 3.  Round trip 2's LEG returns on the nose once the
-   sigma object is a literal pair. *)
+(* POSITIVE CONTROL 3. Round trip 2's LEG returns nose once the
+ sigma 对象 literal pair. （已译） *)
 Definition control_rt2_pair :
   @vertex_map (Elements K) D a (Elements_proj K)
      (kan_cone_of_nat K (kan_nat_of_cone K psi)) ((d; x) : Elements K)
@@ -94,15 +91,13 @@ Fail Definition neg_rt2_leg :
      (kan_cone_of_nat K (kan_nat_of_cone K psi)) j
   = @vertex_map (Elements K) D a (Elements_proj K) psi j := eq_refl.
 
-(* NEGATIVE 5 (CONVERSION).  Round trip 2 at the WHOLE [ACone] record.  Both
-   causes above apply, and additionally the [cone_coherence] field is
-   rebuilt from [kan_cone_coherence]. *)
+(* 相关说明。 （已译） *)
 Fail Definition neg_rt2_record :
   kan_cone_of_nat K (kan_nat_of_cone K psi) = psi := eq_refl.
 
 End RoundTripConversion.
 
-(** ** Group 2 (CONVERSION): the Δ bridge *)
+(* 相关说明。 （已译） *)
 
 Section DeltaConversion.
 
@@ -137,14 +132,13 @@ Definition control_delta_transform_component :
 Fail Definition neg_delta_cone_record :
   kan_cone_of_transform K (kan_transform_of_cone K psi) = psi := eq_refl.
 
-(* NEGATIVE 7 (CONVERSION).  The other direction, at the whole [Transform]
-   record; same cause on [naturality]/[naturality_sym]. *)
+(* 相关说明。 （已译） *)
 Fail Definition neg_delta_transform_record :
   kan_transform_of_cone K (kan_cone_of_transform K theta) = theta := eq_refl.
 
 End DeltaConversion.
 
-(** ** Group 3 (FORMABILITY): objects strictly above homs *)
+(* * ** Group 3 (FORMABILITY): 对象 strictly above homs （已译） *)
 
 (*
    本节说明hom、同构相关定义、性质与动机。
@@ -207,7 +201,7 @@ Check (fun (D : Category@{vo vh vh}) (K : D ⟶ Sets@{vh vs}) =>
 
 End ObjectsBelowHoms.
 
-(** ** Group 4: the delivered strengths, guarded *)
+(* 相关说明。 （已译） *)
 
 Section Delivered.
 

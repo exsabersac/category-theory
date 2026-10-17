@@ -24,10 +24,10 @@ Require Import Category.Functor.Hom.Yoneda.Natural.
 
 Generalizable All Variables.
 
-(** ** (1) The inherited universe restriction
+(* * ** (1) The inherited universe restriction
 
-    A category whose object universe is declared STRICTLY BELOW its hom
-    universe.  The two bifunctors reach it; the theorem does not. *)
+ A 范畴 whose 对象 universe declared STRICTLY BELOW hom
+ universe. The two bifunctors reach it; 定理 does not. （已译） *)
 
 Section ObjectsBelowHoms.
 
@@ -36,22 +36,21 @@ Constraint uo < uh.
 
 Context (C : Category@{uo uh uh}).
 
-(* Positive controls: both bifunctors are formable here, and so is the
-   partially applied evaluation functor... *)
+(* Positive controls: both bifunctors formable here, so the
+ partially applied evaluation 函子... （已译） *)
 Check (YoEval C).
 Check (YoNat C).
 Check (fun c : C => @YoEvalAt C c).
 
-(* ...and so is an isomorphism between them in the functor category the
-   theorem is stated in, so the packaging is not what is rejected. *)
+(* ...and so 同构 between them 函子 范畴 the
+ 定理 stated in, so packaging not what rejected. （已译） *)
 Definition probe_iso_id_control :
   @Isomorphism ([([C, Sets] ∏ C), Sets]) (YoEval C) (YoEval C) := iso_id.
 
-(* Negative 1: the theorem itself is not formable at this category. *)
+(* Negative 1: 定理 itself not formable at 范畴. （已译） *)
 Fail Check (yoneda_natural C).
 
-(* Negatives 2 and 3: neither is its donor, in either variance — so the
-   restriction is inherited and not introduced by this development. *)
+(* 相关说明。 （已译） *)
 Fail Check (fun (F : C ⟶ Sets) (A : C) => Covariant_Yoneda_Lemma C F A).
 Fail Check (fun (F : C^op ⟶ Sets) (A : C) => Yoneda_Lemma C F A).
 
@@ -99,8 +98,8 @@ Fail Definition probe_derived_iso_record :
 Definition probe_derived_to_control (w : Presheaves [Hom ─,A] F) :
   to (Yoneda_Lemma_derived C F A) w = to (Yoneda_Lemma C F A) w := eq_refl.
 
-(* Negative 7.  Nor are the two forward MORPHISMS equal as records, though
-   they agree on every argument — the [proper_morphism] fields differ. *)
+(* Negative 7. Nor two forward MORPHISMS equal records, though
+ they agree every 论元 — [proper_morphism] fields differ. （已译） *)
 Fail Definition probe_derived_to_record :
   to (Yoneda_Lemma_derived C F A) = to (Yoneda_Lemma C F A) := eq_refl.
 

@@ -32,9 +32,7 @@ Generalizable All Variables.
 
 (** ** Instruments *)
 
-(* I1 NAME-ABSENCE: the refutation keyword is live.  If the harness were
-   reporting refusals as successes, or the reverse, this line would say
-   so. *)
+(* 相关说明。 （已译） *)
 
 Fail Check p443_absent_name.
 
@@ -73,7 +71,7 @@ Example p443_ab_carrier :
   cmon_setoid (ab_cmon (vertex_obj[Ab_Complete J K]))
     = Sets_limit_obj (Ab_Forget ◯ K) := eq_refl.
 
-(* control: the leg, with the coercion I2 removes *)
+(* 相关说明。 （已译） *)
 Example p443_ab_leg (d : J) :
   cmon_map (cone_leg (@limit_cone _ _ _ (Ab_Complete J K)) d)
     = Sets_limit_leg (Ab_Forget ◯ K) d := eq_refl.
@@ -126,14 +124,14 @@ Fail Example p443_n2
 
 End AbPointwise.
 
-(** ** B: at [Rng] the same, over five operations *)
+(* 相关说明。 （已译） *)
 
 Section RngPointwise.
 
 Context {J : Category}.
 Context (K : J ⟶ Rng).
 
-(* control: the carrier, with the coercion I3 removes *)
+(* 相关说明。 （已译） *)
 Example p443_rng_carrier :
   rig_setoid (vertex_obj[Rng_Complete J K]) = Sets_limit_obj (Rng_Forget ◯ K)
   := eq_refl.
@@ -262,7 +260,7 @@ Context {J : Category}.
 Context (KA : J ⟶ Ab).
 Context (KR : J ⟶ Rng).
 
-(* control: over the cone-set oracle the carrier IS [cone_apex] *)
+(* 相关说明。 （已译） *)
 Example p443_ab_coneset :
   cmon_setoid (ab_cmon (vertex_obj[Ab_ConeSet_Complete J KA]))
     = cone_apex (Ab_Forget ◯ KA) := eq_refl.
@@ -326,13 +324,13 @@ Fail Check (GAFT Rng_Forget Rng_Complete Rng_Forget_PreservesAllLimits).
 Check (Ab_Forget_creates_continuous : ContinuousFunctor Ab_Forget).
 Check (Ab_Forget_Continuous : ContinuousFunctor Ab_Forget).
 
-(* control: the new one IS creation applied, on the nose *)
+(* 相关说明。 （已译） *)
 Example p443_creates_continuous_term :
   Ab_Forget_creates_continuous
     = creates_limits_continuous Ab_Forget Sets_Complete Ab_Forget_creates_limits
   := eq_refl.
 
-(* control: the old one IS RAPL applied, on the nose *)
+(* 相关说明。 （已译） *)
 Example p443_rapl_continuous_term :
   Ab_Forget_Continuous = right_adjoint_Continuous free_ab_adjunction
   := eq_refl.
@@ -346,19 +344,18 @@ Example p443_rapl_continuous_term :
 Fail Example p443_n15 :
   Ab_Forget_creates_continuous = Ab_Forget_Continuous := eq_refl.
 
-(* control: the apex-only corollary descends from the CREATION one *)
+(* control: apex-only 推论 descends CREATION one （已译） *)
 Example p443_ab_apex_descends :
   Ab_Forget_PreservesAllLimits
     = Continuous_PreservesAllLimits Ab_Forget_creates_continuous := eq_refl.
 
-(* N16 CONVERSION: and not from the RAPL one, which would have been
-   available and is not what the target used. *)
+(* 相关说明。 （已译） *)
 
 Fail Example p443_n16 :
   Ab_Forget_PreservesAllLimits
     = Continuous_PreservesAllLimits Ab_Forget_Continuous := eq_refl.
 
-(* control: at [Rng] there is only one, and it descends the same way *)
+(* 相关说明。 （已译） *)
 Example p443_rng_apex_descends :
   Rng_Forget_PreservesAllLimits
     = Continuous_PreservesAllLimits Rng_Forget_continuous := eq_refl.
@@ -378,8 +375,7 @@ Fail Check Ab_Forget_continuous.
 
 Fail Check Rng_Forget_Continuous.
 
-(** ** G: reflection is not preservation, and the two creation classes are
-        two types *)
+(* 相关说明。 （已译） *)
 
 (* control: what the target delivers *)
 Check (fun (J : Category) (K : J ⟶ Ab) =>
@@ -421,8 +417,8 @@ Fail Definition p443_n20 : StrictlyCreatesLimits Rng_Forget :=
 (* N21 NAME-ABSENCE *)
 Fail Check CMon_Complete.
 
-(** ** I: guard block — every constant a refutation names, named outside
-        every refutation *)
+(* * ** I: guard block — every 常值 refutation names, named outside
+ every refutation （已译） *)
 
 Check @carrier.
 Check @Cone.

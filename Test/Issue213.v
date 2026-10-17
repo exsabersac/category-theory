@@ -49,13 +49,13 @@ Definition issue_213_rel (f g : @adj_morphism C D) : Type :=
 Example issue_213_old_script_needs_the_wide_search : Equivalence issue_213_rel.
 Proof.
   unfold issue_213_rel.
-  (* The negative half: the old script cannot close the goal here. *)
+  (* 相关说明。 （已译） *)
   assert_fails
     (equivalence_old;
      solve [ transitivity (free_functor y); assumption
            | transitivity (forgetful_functor y); assumption ]).
-  (* The positive half, so this stays a live [Qed] rather than an aborted
-     sketch: the relation is an equivalence, closed the deterministic way. *)
+  (* The positive half, so stays live [Qed] rather than aborted
+ sketch: 关系 等价, closed deterministic way. （已译） *)
   constructor.
   - intros f.
     split; reflexivity.
@@ -65,9 +65,7 @@ Proof.
     split; etransitivity; eassumption.
 Qed.
 
-(* The mechanism, isolated to the one law that went missing: denied the wide
-   search, the old tactic body cannot close symmetry -- though symmetry does
-   hold, and closes at once by hand. *)
+(* 相关说明。 （已译） *)
 Example issue_213_symmetry_is_the_missing_law : Symmetric issue_213_rel.
 Proof.
   unfold issue_213_rel.
@@ -76,9 +74,7 @@ Proof.
   split; symmetry; assumption.
 Qed.
 
-(* The repaired script, run in that same hostile environment: the three laws
-   come from [iso_equivalence] componentwise, so no hint search of any width
-   is consulted. *)
+(* 相关说明。 （已译） *)
 Example issue_213_equivalence_unaided : Equivalence issue_213_rel.
 Proof.
   unfold issue_213_rel.
@@ -104,8 +100,8 @@ Proof.
   - transitivity (forgetful_functor y); assumption.
 Qed.
 
-(* Finally, the instance the library actually exports really is an equivalence
-   on [adj_morphism], and [≈] resolves to it. *)
+(* Finally, instance library actually exports really 等价
+ [adj_morphism], [≈] resolves it. （已译） *)
 Example issue_213_setoid_reflexive (f : @adj_morphism C D) : f ≈ f.
 Proof. reflexivity. Qed.
 

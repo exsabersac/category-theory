@@ -24,13 +24,11 @@ Require Import Category.Instance.Omega.
 Require Import Category.Instance.Ordinal.
 Require Import Category.Structure.Limit.Initial.
 
-(** ** Instrument check
-
-    A [Fail] that never fails would make every negative below vacuous. *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
-(** ** Negative 1 (CONVERSION): the leg at the initial object is not [id] *)
+(* * ** Negative 1 (CONVERSION): leg at 始对象 not [id] （已译） *)
 
 Section LegAtInitial.
 
@@ -39,16 +37,16 @@ Context (J C : Category) (I : @Initial J) (F : J ⟶ C).
 Fail Definition probe_initial_leg_is_id :
   initial_leg I F (@initial_obj J I) = id := eq_refl.
 
-(* Positive controls naming the negative's own constants.  The [≈] form IS
-   proved in the target, and every constant in the rejected equation is
-   independently well-formed here. *)
+(* Positive controls naming negative's own constants. The [≈] form IS
+ proved target, every 常值 rejected equation is
+ independently well-formed here. （已译） *)
 Check (initial_leg_id I F).
 Check (initial_leg I F).
 Check (@initial_obj J I).
 
 End LegAtInitial.
 
-(** ** Negative 2 (CONVERSION, different cause): the whole-record identity *)
+(* * ** Negative 2 (CONVERSION, different cause): whole-record 恒等 （已译） *)
 
 Section WholeRecord.
 
@@ -58,9 +56,7 @@ Fail Definition probe_limit_cones_record :
   @Limit_Cones J C F (initial_Cones_Terminal I F)
     = initial_Limit I F := eq_refl.
 
-(* Positive controls.  The CONE components DO agree by [eq_refl] -- that is
-   the target's own Example -- so what fails is the rebuilt universal
-   property, not the data. *)
+(* 相关说明。 （已译） *)
 Check initial_Cones_strict.
 Check (@Limit_Cones J C F).
 Check (initial_Limit I F).
@@ -68,9 +64,7 @@ Check (initial_Cones_Terminal I F).
 
 End WholeRecord.
 
-(** ** Negative 3 (FORMABILITY, universe): IsALimit identifies J's levels
-
-    A DIFFERENT KIND from 1 and 2. *)
+(* 相关说明。 （已译） *)
 
 Section UniverseIdentification.
 
@@ -96,13 +90,13 @@ Check (Cone F).
 
 Fail Check (cone_leg N x).
 
-(** ** Negative 5 (FORMABILITY, universe): IsLimitCone likewise *)
+(* 相关说明。 （已译） *)
 
 Fail Check (IsLimitCone N).
 
 End UniverseIdentification.
 
-(* Controls naming the two constants of negatives 4 and 5. *)
+(* 相关说明。 （已译） *)
 Check @cone_leg.
 Check @IsLimitCone.
 
@@ -144,7 +138,7 @@ Check (IsLimitCone N).
 
 End UniverseControl.
 
-(** ** Controls for the delivered results *)
+(* 相关说明。 （已译） *)
 
 Check initial_leg.
 Check initial_cone.

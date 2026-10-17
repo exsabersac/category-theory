@@ -39,14 +39,13 @@ Require Import Category.Instance.Grp.Free.
 Generalizable All Variables.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instrument check: this file's [Fail] is a real one *)
+(* 相关说明。 （已译） *)
 
-(* Scope-free: a statement that is simply ill-typed, so that a [Fail] which
-   silently accepted everything would be caught here. *)
+(* 相关说明。 （已译） *)
 Fail Definition instrument_check : nat := true.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (1) [am_eq] is a [Prop] inductive *)
+(* 相关说明。 （已译） *)
 
 Section AmEq.
 
@@ -71,8 +70,8 @@ Definition am_eq_stores_a_Type_premise (b b' : carrier B) (H : b ≈ b') :
 Definition am_eq_stores_a_Type_premise_r (c c' : carrier C) (H : c ≈ c') :
   am_eq f g (am_r c) (am_r c') := ae_r_resp c c' H.
 
-(* CONTROL 1b.  The relation IS the amalgam's own `≈`, and the amalgam's
-   [grp_prop] reads it back on the nose in both directions. *)
+(* CONTROL 1b. The 关系 IS amalgam's own `≈`, amalgam's
+ [grp_prop] reads it back nose both directions. （已译） *)
 Definition am_eq_is_the_amalgam_equality (u v : AmTerm B C) :
   @equiv _ (is_setoid (grp_setoid (AmalgamGrp f g))) u v = am_eq f g u v
   := eq_refl.
@@ -102,7 +101,7 @@ Definition am_med_applies
   am_med f g q1 q2 Hcomm.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (2) [QuotientGrp]'s `≈` is the truncation of [quot_rel] *)
+(* 相关说明。 （已译） *)
 
 Section Quot.
 
@@ -153,15 +152,14 @@ Defined.
 Definition quot_med_applies {K : GrpObject} (p : Kills N K) :
   QuotientGrp N ~{Grp}~> K := quot_med N p.
 
-(* CONTROL 2e.  [sub_mem] did NOT move: it is still [Type]-valued, and the
-   subgroup's own membership still hands back a witness. *)
+(* 相关说明。 （已译） *)
 Definition sub_mem_is_still_data (a : carrier G) (H : sub_mem N a) :
   sub_mem N a := H.
 
 End Quot.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (3) The free group's `≈` is a truncation too *)
+(* 相关说明。 （已译） *)
 
 Section Free.
 
@@ -230,9 +228,9 @@ Definition free_universal_is_total (X : Sets) :
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* [Grp] is locally propositional, which is what lets the functor-of-points
-   constructions of Structure/Group/Representable.v be applied at [Grp]
-   itself with no manual hypothesis. *)
+(* [Grp] locally propositional, what lets 函子-of-points
+ constructions Structure/Group/Representable.v applied at [Grp]
+ itself no manual 假设. （已译） *)
 Definition Grp_is_locally_propositional : LocallyPropositional Grp :=
   Grp_LocallyPropositional.
 

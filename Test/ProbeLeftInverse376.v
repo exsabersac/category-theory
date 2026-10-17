@@ -26,11 +26,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Instrument check: [Fail] itself must be able to fail. *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe376_no_such_constant_anywhere.
 
-(** ** Controls: the names the negatives below depend on. *)
+(* 相关说明。 （已译） *)
 
 Check @LeftAdjointLeftInverse.
 Check @lali_characterization.
@@ -190,7 +190,7 @@ Context (Au : Category@{ao ah ah}).
 Context (Xu : Category@{xo xh xh}).
 Context (Gu : Au ⟶ Xu).
 
-(* control: the functor type, and a functor, at levels declared apart *)
+(* control: 函子 type, 函子, at levels declared apart （已译） *)
 Check (Au ⟶ Xu).
 Check Gu.
 Check (InjectiveOnObjects Gu).

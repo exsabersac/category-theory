@@ -38,14 +38,14 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe428_absent_name.
 
-(** ** A: the two presentations of the hom-diagram agree on objects and on
-       the action of [fmap], not at the [fmap] field *)
+(* * ** A: two presentations hom-diagram agree 对象 on
+ action [fmap], not at [fmap] field （已译） *)
 
 Section Presentations.
 
 Context {J C : Category} (c : C) (F : J ⟶ C).
 
-(* controls: objects, and the action on an element, both convert *)
+(* controls: 对象, action element, both convert （已译） *)
 Example p428_fobj : fobj[@HomFrom C c ◯ F] = fobj[HomDiagram c F] := eq_refl.
 
 Example p428_fmap_value {j j' : J} (g : j ~{J}~> j') (h : c ~{C}~> F j) :
@@ -58,7 +58,7 @@ Example p428_fmap_value {j j' : J} (g : j ~{J}~> j') (h : c ~{C}~> F j) :
 Fail Example p428_fmap_field {j j' : J} (g : j ~{J}~> j') :
   fmap[@HomFrom C c ◯ F] g = fmap[HomDiagram c F] g := eq_refl.
 
-(* controls: the carriers Remark 2 and the Riehl items compute with *)
+(* 相关说明。 （已译） *)
 Example p428_image_apex (N : Cone F) :
   carrier (vertex_obj[FCone (@HomFrom C c) N]) = (c ~{C}~> vertex_obj[N])
   := eq_refl.
@@ -72,7 +72,7 @@ Example p428_cone_carrier :
 
 End Presentations.
 
-(** ** B: Remark 1 — which universe of sets *)
+(* 相关说明。 （已译） *)
 
 Section Universes.
 
@@ -82,8 +82,8 @@ Constraint hbig < sbig.
 
 Context (Cw : Category@{o1 h1 h1}) (cw : Cw).
 
-(* control: the level of the universe HOLDING Sets' objects is free above
-   the carrier level ([Sets@{o so} : Category@{so o o}], Instance/Sets.v) *)
+(* control: level universe HOLDING Sets' 对象 free above
+ carrier level ([Sets@{o so} : Category@{so o o}], Instance/Sets.v) （已译） *)
 Check (@HomFrom Cw cw : Cw ⟶ Sets@{h1 sbig}).
 Check (@hom_continuous_at Cw cw
        : ContinuousFunctor (@HomFrom_at Cw cw : Cw ⟶ Sets@{h1 sbig})).
@@ -97,8 +97,8 @@ Fail Check (@HomFrom Cw cw : Cw ⟶ Sets@{hbig sbig}).
 
 End Universes.
 
-(** ** C: smallness — Remark 2's [Sets]-side limit needs the shape's objects
-       at or below the carrier level; #331's theorem does not *)
+(* * ** C: smallness — Remark 2's [Sets]-side limit needs shape's 对象
+ at below carrier level; #331's 定理 does not （已译） *)
 
 Section Smallness.
 
@@ -107,13 +107,13 @@ Constraint h < jo.
 
 Context (Jw : Category@{jo h h}) (Cw : Category@{h h h}) (cw : Cw).
 
-(* controls: the hom-diagram forms and #331's preservation applies *)
+(* 相关说明。 （已译） *)
 Check (fun F : Jw ⟶ Cw => @HomFrom Cw cw ◯ F).
 Check (fun F : Jw ⟶ Cw => hom_PreservesLimitCone cw F).
 
-(* N3 UNIVERSE: the [Sets] limit of the hom-diagram is refused —
-   [Sets_Limit] needs the shape's object level at or below [Sets]' carrier
-   level, here [h] *)
+(* N3 UNIVERSE: [Sets] limit hom-diagram refused —
+ [Sets_Limit] needs shape's 对象 level at below [Sets]' carrier
+ level, here [h] （已译） *)
 Fail Check (fun F : Jw ⟶ Cw => Sets_Limit (@HomFrom Cw cw ◯ F)).
 
 End Smallness.
@@ -131,7 +131,7 @@ Check (end_Limit c F).
 Check (cone_nat_iso (F:=F) c).
 Check (limtuple_cone_iso (F:=F) c).
 
-(* the alias names the issue asks to audit *)
+(* 相关说明。 （已译） *)
 Check (hom_preserves_limits c).
 Check (@cohom_carries_colimits_to_limits C c).
 

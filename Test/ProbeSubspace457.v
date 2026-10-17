@@ -37,12 +37,12 @@ Require Import Category.Instance.Sets.Powerset.
 
 Generalizable All Variables.
 
-(** ** Instrument: the refutation keyword is live *)
+(* 相关说明。 （已译） *)
 
 (* The instrument *)
 Fail Check probe457_absent_name.
 
-(** ** Structure/SlicedInverse.v: the sliced functors and Proposition 1 *)
+(* * ** Structure/SlicedInverse.v: sliced 函子 Proposition 1 （已译） *)
 
 (* CONTROL: [Sliced_fobj] and [Cosliced_fobj], restated. *)
 Example p457_sliced_fobj@{oA hA oX hX +} {A : Category@{oA hA hA}}
@@ -53,8 +53,7 @@ Example p457_cosliced_fobj@{oA hA oX hX +} {A : Category@{oA hA hA}}
   {X : Category@{oX hX hX}} (G : A ⟶ X) (a : A) (h : @Coslice A a) :
   Cosliced G a h = (G (`1 h); fmap[G] (`2 h)) := eq_refl.
 
-(* CONTROL: Proposition 1, restated at its stated type; it IS the form
-   over whole right adjoints applied to [rari_right] and [rari_adj]. *)
+(* 相关说明。 （已译） *)
 Definition p457_prop1@{oA oX h +} {A : Category@{oA h h}}
   {X : Category@{oX h h}} (G : A ⟶ X) `{GF : @Faithful A X G}
   `{HX : @HasEqualizers X}
@@ -69,9 +68,7 @@ Example p457_prop1_by_adjoints@{oA oX h +} {A : Category@{oA h h}}
     = equalizers_from_sliced_right_adjoints G (fun a => rari_right (L a))
         (fun a => rari_adj (L a)) := eq_refl.
 
-(* CONTROL: the readbacks of [equalizers_from_sliced_RARI_obj] and
-   [_arrow], restated: the equalizer built IS the lift of the downstairs
-   one. *)
+(* 相关说明。 （已译） *)
 Example p457_prop1_obj@{oA oX h +} {A : Category@{oA h h}}
   {X : Category@{oX h h}} (G : A ⟶ X) `{GF : @Faithful A X G}
   `{HX : @HasEqualizers X}
@@ -94,8 +91,7 @@ Example p457_prop1_arrow@{oA oX h +} {A : Category@{oA h h}}
              `1 (`2 (@equalizer X HX _ _ (fmap[G] f) (fmap[G] g))))) :=
   eq_refl.
 
-(* The same book form with the downstairs equalizer read by [destruct],
-   builder A's out-of-tree measurement restated. *)
+(* 相关说明。 （已译） *)
 Definition p457_eq_by_match@{oA oX h +} {A : Category@{oA h h}}
   {X : Category@{oX h h}} (G : A ⟶ X) `{GF : @Faithful A X G}
   `{HX : @HasEqualizers X}
@@ -141,10 +137,9 @@ Fail Example p457_rari_over_refl@{oA oX h +} {A : Category@{oA h h}}
   (L : RightAdjointRightInverse (Sliced G x)) :
   G (`1 (rari_right L (S; s))) = S := eq_refl.
 
-(** ** Structure/SlicedInverse.v: where faithfulness is spent *)
+(* 相关说明。 （已译） *)
 
-(* The countermodel's data: an equalizer in [_1] of the erased pair, and
-   the couniversal arrow of the right-adjoint-right-inverse at [ParX]. *)
+(* 相关说明。 （已译） *)
 Definition p457_erase_eq :=
   @equalizer _1 One_HasEqualizers _ _
     (fmap[Erase Parallel] par_arrow_one) (fmap[Erase Parallel] par_arrow_two).
@@ -159,7 +154,7 @@ Definition p457_desc_at_erase :=
   @sliced_desc _ _ (Erase Parallel) ParX ParY par_arrow_one par_arrow_two
     _ (`1 (`2 p457_erase_eq)) (`2 (`2 p457_erase_eq)) p457_erase_U.
 
-(* CONTROL: the fork equation of the lift is FALSE there. *)
+(* 相关说明。 （已译） *)
 Definition p457_fork_refuted_at_erase :
   par_arrow_one
     ∘ sliced_eq_arrow (Erase Parallel) (`1 (`2 p457_erase_eq)) p457_erase_U
@@ -211,7 +206,7 @@ Definition p457_cofork_refuted_at_erase :
   → False :=
   parallel_pair_uncoforked _.
 
-(* CONTROL: the cofork lemma, at its stated type, with faithfulness. *)
+(* CONTROL: cofork 引理, at stated type, faithfulness. （已译） *)
 Definition p457_cofork@{oA oX h +} {A : Category@{oA h h}}
   {X : Category@{oX h h}} (G : A ⟶ X) {x y : A} (f g : x ~> y) {Q : X}
   (q : G y ~> Q) (E : IsCoequalizer (fmap[G] f) (fmap[G] g) Q q)
@@ -240,7 +235,7 @@ Fail Definition p457_prop1_dual_at_erase :=
   @coequalizers_from_sliced_LARI _ _ (Erase Parallel) _ One_HasCoequalizers
     erase_coslice_LARI.
 
-(* The same boundary read by [Proof using], builder A's measurement. *)
+(* 相关说明。 （已译） *)
 Section ForkUsing.
 
 Local Set Warnings "-undo-batch-mode".
@@ -272,9 +267,9 @@ Qed.
 
 End ForkUsing.
 
-(** ** Structure/SlicedInverse.v and its satellite: the refutations *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: [prop1_needs_faithfulness] and the satellite's dual, restated. *)
+(* 相关说明。 （已译） *)
 Definition p457_prop1_needs_faithfulness :
   (∀ (A X : Category) (G : A ⟶ X), @HasEqualizers X →
      (∀ a : A, RightAdjointRightInverse (Sliced G a)) → @HasEqualizers A)
@@ -287,9 +282,9 @@ Definition p457_prop1_dual_needs_faithfulness :
   → False :=
   prop1_dual_needs_faithfulness.
 
-(** ** Structure/SlicedInverse/Strict.v: the bridge and the dual form *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the round trip, and the dual's object readback, restated. *)
+(* CONTROL: round trip, dual's 对象 readback, restated. （已译） *)
 Example p457_rari_lali_rari@{oA oC h +} {A : Category@{oA h h}}
   {C : Category@{oC h h}} {S : A ⟶ C} (P : RightAdjointRightInverse S) :
   lali_rari (rari_lali P) = P := eq_refl.
@@ -312,10 +307,10 @@ Example p457_prop1_dual_obj@{oA oX h +} {A : Category@{oA h h}}
              `1 (`2 (@coeq X HX _ _ (fmap[G] f) (fmap[G] g))))) :=
   eq_refl.
 
-(** ** Instance/Top/Prop.v: the category and its forgetful functor *)
+(* * ** Instance/Top/Prop.v: 范畴 forgetful 函子 （已译） *)
 
-(* CONTROL: the homs sit at the points' universe, under the CLOSED binder
-   [@{o}]; the category and the forgetful functor land in ONE [Sets]. *)
+(* CONTROL: homs sit at points' universe, under CLOSED binder
+ [@{o}]; 范畴 forgetful 函子 land ONE [Sets]. （已译） *)
 Definition p457_pmor_at_o@{o} (X Y : PTop@{o}) : Type@{o} := PMor@{o} X Y.
 
 Definition p457_ptopcat@{o so | o < so +} : Category@{so o o} :=
@@ -333,10 +328,9 @@ Example p457_pforget_fmap@{o so | o < so +} {X Y : PTop@{o}}
 Definition p457_pforget_faithful@{o so | o < so +} :
   Faithful PForget@{o so} := _.
 
-(** ** Instance/Top/Prop.v: the union axiom, measured both ways *)
+(* 相关说明。 （已译） *)
 
-(* The alternative design (a): unions over an index TYPE at the points'
-   universe, Test/ProbeStoneCech455.v's [p455_TopP] completed. *)
+(* 相关说明。 （已译） *)
 Record p457_PTopIdx@{o} := {
   p457_pi_carrier :> SetoidObject@{o o};
   p457_PIOpen : (p457_pi_carrier → Prop) → Prop;
@@ -351,8 +345,7 @@ Record p457_PTopIdx@{o} := {
     p457_PIOpen U → p457_PIOpen V → p457_PIOpen (fun x => U x /\ V x)
 }.
 
-(* The index of the subspace's union witness under (a): (index, open)
-   pairs whose open witnesses the member. *)
+(* 相关说明。 （已译） *)
 Definition p457_idx_witness_index@{o +} (X : p457_PTopIdx@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S X) (I : Type@{o})
   (V : I → S → Prop) :=
@@ -386,14 +379,13 @@ Proof.
   - apply p457_piopen_union. intros [U FU]; exact (HF U FU).
 Qed.
 
-(* ... and the direct derivation at [Set] is refused. *)
+(* 相关说明。 （已译） *)
 (* N9 *)
 Fail Definition p457_idx_to_family_at_set (X : p457_PTopIdx@{Set})
   (F : (X → Prop) → Prop) :=
   p457_piopen_union X { U : X → Prop | F U }.
 
-(* CONTROL: under the chosen design (b) the subspace is formed at [Set],
-   and (a) follows at every index universe. *)
+(* 相关说明。 （已译） *)
 Definition p457_psub_at_set (X : PTop@{Set}) (S : SetoidObject@{Set Set})
   (h : SetoidMorphism@{Set Set Set} S X) : PTop@{Set} := PSub X S h.
 
@@ -402,11 +394,9 @@ Definition p457_union_indexed@{o i} (X : PTop@{o}) (I : Type@{i})
   (∀ k, POpen X (U k)) → POpen X (fun x => ex (fun k => U k x)) :=
   popen_union_indexed X I U.
 
-(** ** Instance/Top/Prop.v: the concrete spaces *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the discrete space's points and opens read back at [eq_refl]
-   under the CLOSED binder [@{o}], its five axioms are formed, and every
-   setoid map out of it is continuous. *)
+(* 相关说明。 （已译） *)
 Example p457_pdiscrete_carrier@{o} (S : SetoidObject@{o o}) :
   pt_carrier (PDiscrete S) = S := eq_refl.
 
@@ -432,8 +422,7 @@ Example p457_pdisc_mor_map@{o} (S : SetoidObject@{o o}) (Y : PTop@{o})
 Example p457_pconst_at@{o} (S : SetoidObject@{o o}) (Y : PTop@{o}) (y : Y)
   (s : S) : pconst S Y y s = y := eq_refl.
 
-(* CONTROL: the point and the two points, on Instance/Sets.v's setoids,
-   and the two points of [PBool] are distinct. *)
+(* 相关说明。 （已译） *)
 Example p457_ppoint@{o} :
   pt_carrier PPoint@{o} = unit_setoid_object@{o o} := eq_refl.
 
@@ -443,10 +432,10 @@ Example p457_pbool@{o} :
 Definition p457_pbool_points_distinct@{o} :
   @equiv _ PBool@{o} false true → False := PBool_points_distinct.
 
-(** ** Instance/Top/Subspace.v: the constructions *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the book's opens verbatim, the universal properties over
-   ARBITRARY spaces, and Exercise 7.32's definition, restated. *)
+(* CONTROL: book's opens verbatim, universal properties over
+ ARBITRARY spaces, Exercise 7.32's 定义, restated. （已译） *)
 Example p457_psub_open@{o} (X : PTop@{o}) (S : SetoidObject@{o o})
   (h : SetoidMorphism@{o o o} S X) (V : S → Prop) :
   POpen (PSub X S h) V
@@ -475,10 +464,10 @@ Definition p457_ex732_part3@{o +} (X : PTop@{o}) (P : X → Prop) :
   @PCont (ex732_Sub X P) X (ex732_incl X P) :=
   ex732_part3 X P.
 
-(** ** Instance/Top/Subspace.v: the object equations *)
+(* * ** Instance/Top/Subspace.v: 对象 equations （已译） *)
 
-(* CONTROL: at an explicit pair the object equation holds at [eq_refl],
-   and at a variable its first component does. *)
+(* CONTROL: at explicit pair 对象 equation holds at [eq_refl],
+ at variable first component does. （已译） *)
 Example p457_psub_obj_pair@{o so +| o < so +} (X : PTop@{o})
   (S : SetoidObject@{o o}) (h : S ~{Sets@{o so}}~> PForget@{o so} X) :
   Sliced PForget@{o so} X (PSub_Functor X (S; h)) = (S; h) := eq_refl.
@@ -516,8 +505,7 @@ Lemma p457_psub_obj_opaque@{o so +| o < so +} (X : PTop@{o})
   Sliced PForget@{o so} X (PSub_Functor X c) = c.
 Proof. destruct c; reflexivity. Qed.
 
-(* CONTROL: the counit is [id_cast] of [psub_obj], by the tactic
-   [psub_counit] is proved with. *)
+(* 相关说明。 （已译） *)
 Definition p457_psub_counit@{o so +| o < so +} (X : PTop@{o})
   (c : @Slice Sets@{o so} (PForget@{o so} X)) :
   @counit _ _ _ _ (psub_adjunction X) c ≈ id_cast (psub_obj X c) :=
@@ -529,11 +517,11 @@ Fail Definition p457_psub_counit_opaque@{o so +| o < so +} (X : PTop@{o})
   @counit _ _ _ _ (psub_adjunction X) c ≈ id_cast (p457_psub_obj_opaque X c) :=
   ltac:(destruct c; intro t; simpl; reflexivity).
 
-(** ** Instance/Top/Subspace.v: the packaging and the witnesses *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the subspace and quotient constructions in the two records, at
-   the types #457's plan states, with their adjoints and the subspace's
-   object equation read back. *)
+(* CONTROL: subspace quotient constructions two records, at
+ types #457's plan states, adjoints subspace's
+ 对象 equation read back. （已译） *)
 Definition p457_subspace_RARI@{o so +| o < so +} :
   ∀ X : PTop@{o}, RightAdjointRightInverse (Sliced PForget@{o so} X) :=
   subspace_RARI.
@@ -554,8 +542,7 @@ Example p457_quotient_LARI_left@{o so +| o < so +} (X : PTop@{o}) :
   @lari_left _ _ (Cosliced PForget@{o so} X) (quotient_LARI X)
     = PQuot_Functor X := eq_refl.
 
-(* CONTROL: Proposition 1 and its dual at [PForget], at the plan's
-   types. *)
+(* 相关说明。 （已译） *)
 Definition p457_ptop_equalizers@{o so +| o < so +} :
   @HasEqualizers PTopCat@{o so} := PTop_HasEqualizers.
 
@@ -613,10 +600,9 @@ Example p457_ptop_coequalizer_arrow@{o so +| o < so +} {x y : PTopCat@{o so}}
     = pquot_proj y (SetsCoeq (fmap[PForget] f) (fmap[PForget] g))
         (sets_coeq_proj (fmap[PForget] f) (fmap[PForget] g)) := eq_refl.
 
-(** ** Instance/Top/Subspace.v: the witnesses at concrete spaces *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the two constructions at the concrete two-point space, with
-   their adjoints read back at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Definition p457_pbool_subspace_RARI@{o so +| o < so +} :
   RightAdjointRightInverse (Sliced PForget@{o so} PBool@{o}) :=
   PBool_subspace_RARI.
@@ -633,7 +619,7 @@ Example p457_pbool_quotient_LARI_left@{o so +| o < so +} :
   @lari_left _ _ (Cosliced PForget@{o so} PBool@{o}) PBool_quotient_LARI
     = PQuot_Functor PBool := eq_refl.
 
-(* CONTROL: the two pairs are pairs of DIFFERENT maps. *)
+(* 相关说明。 （已译） *)
 Example p457_pbool_true_map@{o} :
   pmap pbool_true@{o} = pconst bool_setoid_object PBool true := eq_refl.
 
@@ -709,10 +695,9 @@ Definition p457_pbool_coequalizer_points@{o so +| o < so +} (b : bool) :
   @equiv _ (`1 PBool_coequalizer@{o so _ _ _ _ _ _}) b true :=
   PBool_coequalizer_points b.
 
-(** ** Instance/Top/Subspace/TypeValued.v: the subspace predicate *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the book's predicate is formed one universe up, as
-   [tsub_open], and its body is accepted there. *)
+(* 相关说明。 （已译） *)
 Definition p457_tsub_open@{o o1 +| o < o1 +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X))
   (V : S → Type@{o}) : Type@{o1} :=
@@ -731,13 +716,12 @@ Fail Definition p457_tsub_open_at_o@{o +} (X : TopSpace@{o})
   { U : top_carrier X → Type@{o} &
     (IsOpen X U ∧ (∀ s : S, V s ↔ U (h s)))%type }.
 
-(* CONTROL: the quotient is a space at the points' universe. *)
+(* 相关说明。 （已译） *)
 Definition p457_tquot@{o +} (X : TopSpace@{o}) (T : SetoidObject@{o o})
   (q : SetoidMorphism@{o o o} (top_carrier X) T) : TopSpace@{o} :=
   TQuot X T q.
 
-(* CONTROL: the five axioms of the unpackaged subspace, and the same
-   record literal at the quotient's opens, packaged at [o]. *)
+(* 相关说明。 （已译） *)
 Definition p457_tsub_axioms@{o o1 +| o < o1 +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X)) :=
   (tsub_open_respects@{o o1} X S h, tsub_open_proper@{o o1} X S h,
@@ -782,11 +766,11 @@ Definition p457_tquot_universal@{o +} (X : TopSpace@{o})
     ↔ Continuous X Z (setoid_morphism_compose k q) :=
   tquot_universal X T q Z k.
 
-(** ** Instance/Top/Subspace/TypeValued.v: the slices of the two [Sets] *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: an object of the slice of the UNLIFTED [Sets] carries the
-   discrete topology at the points' universe; one of the LIFTED [Sets]
-   carries it one universe up. *)
+(* CONTROL: 对象 slice UNLIFTED [Sets] carries the
+ discrete topology at points' universe; one LIFTED [Sets]
+ carries it one universe up. （已译） *)
 Definition p457_unlifted_slice_space@{o so +| o < so +} (X : TopSpace@{o})
   (x : @Slice Sets@{o so} (top_carrier X)) : TopSpace@{o} :=
   Discrete_Top (`1 x).
@@ -802,7 +786,7 @@ Fail Definition p457_lifted_slice_space@{o h so +| o < h, h < so +}
   TopSpace@{o} :=
   Discrete_Top (`1 x).
 
-(* CONTROL: the same for the coslices. *)
+(* 相关说明。 （已译） *)
 Definition p457_unlifted_coslice_space@{o so +| o < so +} (X : TopSpace@{o})
   (x : @Coslice Sets@{o so} (top_carrier X)) : TopSpace@{o} :=
   Discrete_Top (`1 x).
@@ -818,9 +802,9 @@ Fail Definition p457_lifted_coslice_space@{o h so +| o < h, h < so +}
   TopSpace@{o} :=
   Discrete_Top (`1 x).
 
-(* CONTROL: [Top_Forget] into the LIFTED [Sets], restated; the type of a
-   functor into the [Sets] whose objects are the point setoids is not
-   formed. *)
+(* CONTROL: [Top_Forget] 进入 LIFTED [Sets], restated; type a
+ 函子 进入 [Sets] whose 对象 point setoids not
+ formed. （已译） *)
 Definition p457_top_forget@{o h so +| o < h, h < so +} :
   Top@{h o} ⟶ Sets@{h so} :=
   Top_Forget@{o h so}.
@@ -829,9 +813,9 @@ Definition p457_top_forget@{o h so +| o < h, h < so +} :
 Fail Definition p457_top_to_point_sets@{o h +| o < h +} :=
   (Top@{h o} ⟶ Sets@{o h}).
 
-(* CONTROL: the type of a functor into the lifted [Sets@{h so}] is
-   formed; into Instance/Top/Forgetful.v's own [Sets@{o so}], the
-   universe [so] of its objects fresh, it is not. *)
+(* CONTROL: type 函子 进入 lifted [Sets@{h so}] is
+ formed; Instance/Top/Forgetful.v's own [Sets@{o so}], the
+ universe [so] 对象 fresh, it not. （已译） *)
 Definition p457_top_to_lifted_sets@{o h so +| o < h +} :=
   (Top@{h o} ⟶ Sets@{h so}).
 
@@ -892,9 +876,9 @@ Lemma p457_tquot_obj_stripped_opaque@{o h so +| o < h, o < so +}
   tstrip_under@{o h so _ _} X (TQuot_Functor X c) = c.
 Proof. destruct c; reflexivity. Qed.
 
-(* CONTROL: the transposed identity is [id_cast] of the inverse of
-   [tquot_obj_stripped], by the tactic [tquot_unit_stripped] is proved
-   with. *)
+(* CONTROL: transposed 恒等 [id_cast] inverse of
+ [tquot_obj_stripped], tactic [tquot_unit_stripped] proved
+ with. （已译） *)
 Definition p457_tquot_unit@{o h so +| o < h, o < so +}
   (X : TopSpace@{o}) (c : @Coslice Sets@{o so} (top_carrier X)) :
   to (tquot_adj X c (TQuot_Functor X c)) id
@@ -910,7 +894,7 @@ Fail Definition p457_tquot_unit_opaque@{o h so +| o < h, o < so +}
   id_cast (eq_sym (p457_tquot_obj_stripped_opaque X c)) :=
   ltac:(destruct c; intro t; simpl; reflexivity).
 
-(** ** The squashed, local subspace over [Top] *)
+(* 相关说明。 （已译） *)
 
 (* Scout A's local encoding, rebuilt: V is open when it respects [≈] and
    each point of V MERELY has an open of X around its image whose preimage
@@ -976,8 +960,8 @@ Proof.
       * apply p457_sq_pair; [exact (HbU s u) | exact (HbV s v)].
 Defined.
 
-(* CONTROL: [h] is continuous out of it, and the "only if" half of the
-   universal property holds. *)
+(* CONTROL: [h] continuous out it, "only if" half the
+ 普遍性质 holds. （已译） *)
 Lemma p457_sq_h_cont@{o o1 +| o < o1 +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X)) :
   Continuous (p457_sq_subspace@{o o1} X S h) X h.
@@ -997,8 +981,7 @@ Lemma p457_sq_only_if@{o o1 +| o < o1 +} (X : TopSpace@{o})
   Continuous Z X (setoid_morphism_compose h g).
 Proof. intros Hg U HU. exact (Hg _ (p457_sq_h_cont X S h U HU)). Qed.
 
-(* CONTROL: its opens include the book's, [tsub_open], for predicates
-   respecting the points' equality. *)
+(* 相关说明。 （已译） *)
 Lemma p457_sq_global_to_local@{o o1 +| o < o1 +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X))
   (V : S → Type@{o}) :
@@ -1047,7 +1030,7 @@ Fail Definition p457_sq_local_to_global@{o o1 +| o < o1 +} (X : TopSpace@{o})
     { U : top_carrier X → Type@{o} &
       (IsOpen X U ∧ (∀ s : S, V s ↔ U (h s)))%type }.
 
-(** ** Two further encodings of the subspace over Type-valued opens *)
+(* 相关说明。 （已译） *)
 
 (* Instance/Top/Kolmogorov.v's small-opens idea: quantifying over opens
    valued at [s < o] puts the predicate at [o] ... *)
@@ -1057,9 +1040,7 @@ Definition p457_small_sub_open@{s o +| s < o +} (X : TopSpace@{o})
   { U : top_carrier X → Type@{s} &
     (IsOpen X U ∧ (∀ s0 : S, V s0 ↔ U (h s0)))%type }.
 
-(* CONTROL: ... and, given an open of that encoding (whose type forces
-   [s < o]), the union of [s]-valued witnesses over an index at [s] is
-   [s]-valued ... *)
+(* 相关说明。 （已译） *)
 Definition p457_small_union_at_s@{s o +| s < o +} (X : TopSpace@{o})
   (S : SetoidObject@{o o}) (h : SetoidMorphism@{o o o} S (top_carrier X))
   (V : S → Type@{o}) (HV : p457_small_sub_open@{s o} X S h V)

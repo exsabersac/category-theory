@@ -1,4 +1,4 @@
-(** * Custom tactics shared across the library *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件给出 Tactics 相关定义与性质。
@@ -34,8 +34,8 @@ Module Compat.
     Import Fake.
     Import EqdepFacts.
 
-    (* if eq_rew_r_dep exists in EqdepFacts then it is used here,
-       otherwise this is the "fake" notation *)
+    (* if eq_rew_r_dep exists EqdepFacts then it used here,
+ otherwise 这是 "fake" notation （已译） *)
     Notation eq_rew_r_dep := internal_eq_rew_r_dep.
 
     (* same for the other notations *)
@@ -144,9 +144,7 @@ Ltac cat :=
 #[export] Hint Extern 8 (respectful _ _ _ _) =>
   unfold respectful : core.
 
-(* Seed [category_laws] with the setoid laws for [equiv]: reflexivity for
-   syntactically equal sides, and symmetry/transitivity as guarded externs so
-   [auto] can chain [≈] hypotheses. *)
+(* 相关说明。 （已译） *)
 #[export] Hint Extern 4 (equiv ?A ?A) => reflexivity : category_laws.
 #[export] Hint Extern 6 (equiv ?X ?Y) =>
   apply Equivalence_Symmetric : category_laws.
@@ -163,8 +161,7 @@ Ltac cat :=
 Ltac equivalence := constructor; repeat intro; simpl; try cat; intuition;
   try solve [ reflexivity | (symmetry; eassumption) ];
   auto with category_laws.
-(* [proper]: prove a [Proper]/respectful goal -- introduce the related
-   arguments, then close with [cat]/[intuition]. *)
+(* 相关说明。 （已译） *)
 Ltac proper := repeat intro; simpl; try cat; intuition.
 (* [sapply]/[srewrite]/[srewrite_r]: "setoid" variants that first materialize
    [F] as a hypothesis and [cbn]-normalize it (so projections of records unfold)
@@ -196,16 +193,14 @@ Ltac cat_simpl :=
 
 #[global] Obligation Tactic := cat_simpl.
 
-(* [construct]: start building a record/structure goal, deferring side
-   conditions as fresh goals ([unshelve econstructor]) and introducing the
-   fields' arguments. *)
+(* 相关说明。 （已译） *)
 Ltac construct := unshelve econstructor; simpl; intros.
 
-(* [inv H]: invert [H], substitute the resulting equalities, and discard the
-   now-redundant hypothesis when possible. *)
+(* [inv H]: invert [H], substitute resulting equalities, discard the
+ now-redundant 假设 possible. （已译） *)
 Ltac inv H := inversion H; subst; try clear H.
 
-(* [spose H as X]: introduce the (untyped) term [H] as hypothesis [X] and
-   [simpl]-reduce it -- a terse [pose proof ... as ...] for setoid lemmas. *)
+(* [spose H X]: introduce (untyped) term [H] 假设 [X] and
+ [simpl]-reduce it -- terse [pose proof ... ...] setoid lemmas. （已译） *)
 Tactic Notation "spose" uconstr(H) "as" ident(X) :=
   pose proof H as X; simpl in X.

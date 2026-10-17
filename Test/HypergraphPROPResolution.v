@@ -33,7 +33,7 @@ Section HypergraphPROPResolutionTests.
 
 Context (P : HypergraphPROP).
 
-(** The "tensor wire" — the canonical 1-arity PROP-object. *)
+(** The "tensor wire" — canonical 1-arity PROP-对象. （已译） *)
 Notation T := (@prop_of_nat P 1).
 
 (** [T] is an object of [P]. *)
@@ -48,8 +48,8 @@ Definition test_compose (f g : T ~> T) : T ~> T := g ∘ f.
 (** Equivalence is found between two morphisms of the same hom-set. *)
 Definition test_equiv (f g : T ~> T) : Type := f ≈ g.
 
-(** The SCFA on T is found via the Hypergraph instance, and its flat
-    [scfa_*] projections work. *)
+(** 本节：The SCFA T found via Hypergraph instance, flat
+ [scfa_*] projections work. （已译） *)
 Definition test_scfa_mu      := scfa_mu      (scfa T).
 Definition test_scfa_eta     := scfa_eta     (scfa T).
 Definition test_scfa_delta   := scfa_delta   (scfa T).

@@ -12,7 +12,7 @@ Require Import Category.Tools.Represented.
 
 Generalizable All Variables.
 
-(** * Compiling Coq functions to cartesian-closed combinators *)
+(* * * Compiling Coq functions cartesian-closed 组合子 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
@@ -24,8 +24,8 @@ Generalizable All Variables.
 
 Section Abstraction.
 
-(* The correctness relation for compiling a unary function [lam : a → b] to a
-   combinator [ccc : repr a ~> repr b]: [convert] carries [lam] to [ccc]. *)
+(* The 正确性关系 编译 unary function [lam : → b] a
+ 组合子 [ccc : repr ~> repr b]: [convert] carries [lam] [ccc]. （已译） *)
 Definition rel `{Repr a} `{Repr b}
            (lam : a → b) (ccc : repr a ~{AST}~> repr b) : Type :=
   ∀ x : a, convert (lam x) ≈ ccc ∘ convert x.
@@ -42,15 +42,15 @@ Definition rel2 `{Repr a} `{Repr b} `{Repr c}
 Infix ">==>" := rel (at level 99) : category_scope.
 Infix ">===>" := rel2 (at level 99) : category_scope.
 
-(* Variable rule: the identity lambda [λx, x] compiles to the identity arrow. *)
+(* Variable rule: 恒等 λ [λx, x] 编译为 恒等箭头. （已译） *)
 Corollary ccc_id : ∀ `{Repr a}, (λ x : a, x) >==> id.
 Proof. unfold rel; intros; cat. Qed.
 
 Tactic Notation "step" constr(x) "=>" constr(y) :=
   replace x with y by auto.
 
-(* Pairing of global elements is the represented pair: this is the [convert] of
-   [prod_Repr] (see Tools/Represented) holding definitionally. *)
+(* Pairing 全局元素 已表示的 pair: 这是 [convert] of
+ [prod_Repr] (see Tools/Represented) holding definitionally. （已译） *)
 Corollary convert_fork `{Repr a} `{Repr b} (x : a) (y : b) :
   convert x △ convert y ≈ convert (x, y).
 Proof. reflexivity. Qed.
@@ -80,8 +80,8 @@ Proof.
   rewrite <- convert_fork; cat.
 Qed.
 
-(* Application rule with an uncurried callee [U : a * b → c]: the argument is
-   paired with the input via [id △ V'] before applying [U']. *)
+(* Application rule 未柯里化的 被调用项 [U : * b → c]: 论元 is
+ 与…配对 input via [id △ V'] before applying [U']. （已译） *)
 Theorem ccc_apply_pair :
   ∀ `{Repr a} `{Repr b} `{Repr c}
     (U : a * b → c) (U' : repr a × repr b ~{AST}~> repr c)
@@ -99,8 +99,8 @@ Proof.
   reflexivity.
 Qed.
 
-(* Abstraction rule: an inner lambda [λy, U (x, y)] compiles by currying the
-   uncurried combinator [U'], so [λx, λy, U (x, y)] compiles to [curry U']. *)
+(* Abstraction rule: inner lambda [λy, U (x, y)] compiles currying the
+ 未柯里化的 组合子 [U'], so [λx, λy, U (x, y)] 编译为 [curry U']. （已译） *)
 Theorem ccc_curry :
   ∀ `{Repr a} `{Repr b} `{Repr c}
     (U : a * b → c) (U' : repr a × repr b ~> repr c),
@@ -112,8 +112,8 @@ Proof.
   apply X.
 Qed.
 
-(* Unit-introduction rule: the constant [tt] map compiles to the unique arrow
-   [one] into the terminal object, by [one_unique]. *)
+(* Unit-introduction rule: 常值 [tt] map 编译为 唯一箭头
+ [one] 进入 终对象, [one_unique]. （已译） *)
 Theorem ccc_terminal : ∀ `{Repr a},
   (λ _ : a, tt) >==> one.
 Proof.
@@ -183,41 +183,39 @@ Section Example.
 
 Infix ">==>" := rel (at level 99) : category_scope.
 
-(*
-Theorem ccc_arity2 :
-  ∀ (a b c : Type)
-    (f : a → b) (f' : F a ~> F b)
-    (g : a → b) (g' : F a ~> F b)
-    (p : b → b → c) (p' : F b ~> F c ^ F b),
-  f >==> f' ->
-  g >==> g' ->
-  p >==> exp_in ∘ p' ->
-  (λ x : a, p (f x) (g x)) >==> uncurry p' ∘ f' △ g'.
+(* Theorem ccc_arity2 :
+ ∀ (a b c : Type)
+ (f : → b) (f' : F ~> F b)
+ (g : → b) (g' : F ~> F b)
+ (p : b → b → c) (p' : F b ~> F c ^ F b),
+ f >==> f' ->
+ g >==> g' ->
+ p >==> exp_in ∘ p' ->
+ (λ x : a, p (f x) (g x)) >==> uncurry p' ∘ f' △ g'.
 Proof.
 Abort.
 
 Theorem ccc_plus :
-  ∀ (f : nat → nat) (f' : F nat ~> F nat)
-    (g : nat → nat) (g' : F nat ~> F nat),
-  f >==> f' ->
-  g >==> g' ->
-  (λ x : nat, (f x + g x)%nat)
-    >==> map_num ∘ add ∘ split (map_num⁻¹) (map_num⁻¹) ∘ f' △ g'.
+ ∀ (f : nat → nat) (f' : F nat ~> F nat)
+ (g : nat → nat) (g' : F nat ~> F nat),
+ f >==> f' ->
+ g >==> g' ->
+ (λ x : nat, (f x + g x)%nat)
+ >==> map_num ∘ add ∘ split (map_num⁻¹) (map_num⁻¹) ∘ f' △ g'.
 Proof.
-  intros.
-  pose proof (ccc_arity2 nat nat nat f f' g g' Nat.add
-                         (curry (map_num ∘ add ∘ split (map_num⁻¹) (map_num⁻¹)))
-                         X X0).
-  simpl in X1.
-  unfold rel in *; repeat intros.
-  rewrite uncurry_curry in X1.
-  rewrites; [reflexivity|]; clear X1.
-  pose proof (@fmap_add Coq _ _ _ _ _ _ _ _) as HA.
-  simpl in HA.
-  assert (Nat.add = prod_uncurry (λ p : nat * nat, (fst p + snd p)%nat)) by auto.
-  rewrites.
-Abort.
-*)
+ intros.
+ pose 证明 (ccc_arity2 nat nat nat f f' g g' Nat.add
+ (curry (map_num ∘ add ∘ split (map_num⁻¹) (map_num⁻¹)))
+ X X0).
+ simpl X1.
+ unfold rel *; repeat intros.
+ rewrite uncurry_curry X1.
+ rewrites; [reflexivity|]; clear X1.
+ pose 证明 (@fmap_add Coq _ _ _ _ _ _ _ _) HA.
+ simpl HA.
+ assert (Nat.add = prod_uncurry (λ p : nat * nat, (fst p + snd p)%nat)) auto.
+ rewrites.
+Abort. （已译） *)
 
 (* f : A -->[Setoid] R *)
 (* g : A -->[Setoid] R *)

@@ -11,7 +11,7 @@ Require Import Category.Instance.Sets.Pullback.
 
 Generalizable All Variables.
 
-(** * Boundary probe for the base change adjunction Σ_f ⊣ f* *)
+(** * 边界探针：基变换伴随 Σ_f ⊣ f* *)
 
 (*
    本文件为测试：ProbeBaseChange387。
@@ -23,7 +23,7 @@ Generalizable All Variables.
 Fail Check probe_base_change_387_no_such_name.
 
 (* ===================================================================== *)
-(** ** (A) Conversion boundaries, over an abstract base category         *)
+(* * ** (A) Conversion boundaries, over abstract base 范畴 （已译） *)
 
 Section Abstract.
 
@@ -46,8 +46,8 @@ Check @counit.
 Check (Base_Functor_Adjunction pullbacks f).
 Check (Bang_Functor f ⊣ Star_Functor pullbacks f).
 
-(* Control: the class's unit IS the transpose of the slice identity, on
-   the nose. *)
+(* Control: class's unit IS transpose slice 恒等, on
+ nose. （已译） *)
 Example ctrl_unit_strict (o : C) (h : o ~> a) :
   `1 (@unit (@Slice C b) (@Slice C a) (Bang_Functor f)
         (Star_Functor pullbacks f) (Base_Functor_Adjunction pullbacks f)
@@ -61,11 +61,11 @@ Fail Example neg_unit_strict (o : C) (h : o ~> a) :
         (o; h))
   = bang_star_unit_mor pullbacks f o h := eq_refl.
 
-(* Control for negative 1: the ≈ statement does hold. *)
+(* 相关说明。 （已译） *)
 Check (bang_star_unit_is_unit pullbacks f).
 
-(* Control: the class's counit is the projection with one residual
-   identity, which is what ε := ⌈id⌉ produces. *)
+(* Control: class's counit projection one residual
+ 恒等, what ε := ⌈id⌉ produces. （已译） *)
 Example ctrl_counit_strict (p : C) (k : p ~> b) :
   `1 (@counit (@Slice C b) (@Slice C a) (Bang_Functor f)
         (Star_Functor pullbacks f) (Base_Functor_Adjunction pullbacks f)
@@ -82,23 +82,21 @@ Fail Example neg_counit_strict (p : C) (k : p ~> b) :
 (* Control for negative 2. *)
 Check (bang_star_counit_is_counit pullbacks f).
 
-(* Negative 3 (CONVERSION): nor at the level of the whole slice
-   morphism, where the commuting witnesses differ as well. *)
+(* Negative 3 (CONVERSION): nor at level whole slice
+ 态射, where commuting witnesses differ well. （已译） *)
 Fail Example neg_counit_record (p : C) (k : p ~> b) :
   @counit (@Slice C b) (@Slice C a) (Bang_Functor f)
     (Star_Functor pullbacks f) (Base_Functor_Adjunction pullbacks f)
     (p; k)
   = bang_star_counit pullbacks f p k := eq_refl.
 
-(* (D), first half: the reversed orientation is FORMABLE.  It is a
-   statement, not a type error -- which is exactly why the deleted stub
-   could be written down at all. *)
+(* 相关说明。 （已译） *)
 Check (Star_Functor pullbacks f ⊣ Bang_Functor f).
 
 End Abstract.
 
 (* ===================================================================== *)
-(** ** (C) The universe identification, and its donors                   *)
+(* 相关说明。 （已译） *)
 
 Section Universes.
 
@@ -113,15 +111,15 @@ Check (xu ~{Cu}~> yu).
 Check (@id Cu xu).
 Check (@Functor Cu Cu).
 
-(* Controls naming, outside any rejected command, every constant the
-   negatives below name -- without these a rename would leave those
-   negatives green for the wrong reason. *)
+(* Controls naming, outside any rejected command, every 常值 the
+ negatives below name -- without these rename would leave those
+ negatives green wrong reason. （已译） *)
 Check @Slice.
 Check @Pullback.
 Check @Adjunction.
 
-(* Negative 4 (FORMABILITY): the headline is not formable when hom and
-   proof are declared apart. *)
+(* Negative 4 (FORMABILITY): headline not formable hom and
+ 证明 declared apart. （已译） *)
 Fail Check (@Base_Functor_Adjunction Cu).
 
 (* Negatives 5-7 (FORMABILITY): three donors, each rejected alone.
@@ -133,7 +131,7 @@ Fail Check (@Adjunction Cu Cu).
 End Universes.
 
 (* ===================================================================== *)
-(** ** (E) Discharging the hypothesis at Sets                            *)
+(* * ** (E) Discharging 假设 at Sets （已译） *)
 
 (*
    本节说明拉回/推出相关定义、性质与动机。
@@ -175,17 +173,16 @@ Definition sets_transpose :
         (Bang_Functor sets_pick) (Star_Functor sets_pullbacks sets_pick)
         (Sets_Base_Functor_Adjunction sets_pick) sets_x sets_y) sets_g.
 
-(* The transpose COMPUTES: at the point of the singleton it is the pair
-   ⟨the given morphism, the structure map⟩ inside the agreement
-   sub-setoid of Instance/Sets/Pullback.v. *)
+(* The transpose COMPUTES: at point singleton it pair
+ ⟨the given 态射, structure map⟩ inside agreement
+ sub-setoid Instance/Sets/Pullback.v. （已译） *)
 Example sets_transpose_fst :
   fst (`1 ((`1 sets_transpose) ttt)) = true := eq_refl.
 
 Example sets_transpose_snd :
   snd (`1 ((`1 sets_transpose) ttt)) = ttt := eq_refl.
 
-(* And so does the backward transpose, which reads the first coordinate
-   back off. *)
+(* 相关说明。 （已译） *)
 Definition sets_untranspose :
   Bang_Functor sets_pick sets_x ~{@Slice Sets sets_bool}~> sets_y :=
   from (@adj (@Slice Sets sets_bool) (@Slice Sets sets_one)
@@ -196,9 +193,9 @@ Definition sets_untranspose :
 Example sets_untranspose_computes :
   (`1 sets_untranspose) ttt = true := eq_refl.
 
-(* Base change along the point [true] genuinely cuts the identity object
-   over bool down to the fibre over true: every element of f* (bool; id)
-   has [true] in its first coordinate. *)
+(* Base change along point [true] genuinely cuts 恒等 对象
+ over bool down fibre over true: every element f* (bool; id)
+ has [true] first coordinate. （已译） *)
 Lemma sets_star_is_fibre
       (e : carrier (`1 (Star_Functor sets_pullbacks sets_pick sets_y))) :
   fst (`1 e) = true.
@@ -208,16 +205,15 @@ Definition sets_fibre_pt :
   carrier (`1 (Star_Functor sets_pullbacks sets_pick sets_y)) :=
   ((true, ttt); eq_refl).
 
-(* The counit at (bool; id) is the pullback projection, and it computes
-   on that element. *)
+(* 相关说明。 （已译） *)
 Example sets_counit_computes :
   (`1 (@counit (@Slice Sets sets_bool) (@Slice Sets sets_one)
          (Bang_Functor sets_pick) (Star_Functor sets_pullbacks sets_pick)
          (Sets_Base_Functor_Adjunction sets_pick) sets_y)) sets_fibre_pt
   = true := eq_refl.
 
-(* And so does the unit at (1; id), whose value is the comparison of the
-   singleton into the pullback. *)
+(* And so does unit at (1; id), whose value comparison the
+ singleton 进入 pullback. （已译） *)
 Example sets_unit_computes :
   fst (`1 ((`1 (@unit (@Slice Sets sets_bool) (@Slice Sets sets_one)
                   (Bang_Functor sets_pick)
@@ -226,7 +222,7 @@ Example sets_unit_computes :
   = ttt := eq_refl.
 
 (* ===================================================================== *)
-(** ** (B) and (D) The reversed orientation                              *)
+(* 相关说明。 （已译） *)
 
 Definition sets_empty : Sets :=
   {| carrier := False; is_setoid := eq_Setoid False |}.
@@ -235,13 +231,13 @@ Program Definition sets_bang : sets_empty ~{Sets}~> sets_one := {|
   morphism := fun x => False_rect poly_unit x
 |}.
 
-(* Negative 8 (TYPING): the delivered adjunction is not of the reversed
-   type.  A plain mismatch -- no universe clause. *)
+(* Negative 8 (TYPING): delivered 伴随 not reversed
+ type. A plain mismatch -- no universe clause. （已译） *)
 Fail Definition neg_wrong_orientation :
   Star_Functor sets_pullbacks sets_bang ⊣ Bang_Functor sets_bang :=
   Base_Functor_Adjunction sets_pullbacks sets_bang.
 
-(* Control for negative 8: the delivered orientation. *)
+(* 相关说明。 （已译） *)
 Check (Base_Functor_Adjunction sets_pullbacks sets_bang).
 Check (Star_Functor sets_pullbacks sets_bang ⊣ Bang_Functor sets_bang).
 

@@ -57,7 +57,7 @@ Open Scope category_scope.
 *)
 
 (* ==================================================================== *)
-(** ** Instrument: a Fail that passes because the name is absent *)
+(* 相关说明。 （已译） *)
 
 Fail Check p404_instrument_absent.
 
@@ -134,11 +134,9 @@ Fail Definition p404_resolve (C : Category) (UT : Untruncate) :
   ElementaryTopos ([C^op, Sets]) := _.
 
 (* -------------------------------------------------------------------- *)
-(** ** (B) The two donors of the smallness bound [objects <= homs] *)
+(* 相关说明。 （已译） *)
 
-(* A section declaring C's OBJECTS STRICTLY ABOVE its homs.  The
-   terminal, cartesian and pullback donors are all ACCEPTED there; the
-   exponential and the classifier are each refused ALONE. *)
+(* 相关说明。 （已译） *)
 
 Section DonorClosed.
 Universes co ch cso.
@@ -169,7 +167,7 @@ Fail Check (@Fun_Classifier Cq UTq).
 End DonorClosed.
 
 (* -------------------------------------------------------------------- *)
-(** ** (C) The small reading is blocked, and at the CLOSED field *)
+(* 相关说明。 （已译） *)
 
 Section SmallReading.
 Universes co o so OO HH.
@@ -179,7 +177,7 @@ Constraint so <= OO.
 Constraint OO <= HH.
 Context (Cs : Category@{co o o}) (UTs : Untruncate@{o}).
 
-(* the four fields that DO fit the lifted reading *)
+(* 相关说明。 （已译） *)
 Check (PShSmall_Terminal Cs : @Terminal (PShSmall Cs)).
 Check (@Functor_Category_Cartesian (Cs^op) Sets@{o so} Sets_Cartesian
        : @Cartesian (PShSmall Cs)).
@@ -230,10 +228,7 @@ Check Sets_Topos_dec@{Set su}.
      Universe inconsistency. Cannot enforce Set < Set because Set = Set. *)
 Fail Check Sets_Topos@{Set su}.
 
-(* NEGATIVE 11 (FORMABILITY), the same refusal one layer in, at the
-   classifier the bundle carries.  Stripped:
-
-     Universe inconsistency. Cannot enforce Set < Set because Set = Set. *)
+(* 相关说明。 （已译） *)
 Fail Check Sets_Classifier@{Set su}.
 
 End SetReach.
@@ -242,8 +237,7 @@ Section SetsNegatives.
 
 Context (U : Untruncate) (a b : obj[Sets]).
 
-(* [Pow] DOES reach this topos: the accepted control for negatives 12
-   and 13. *)
+(* 相关说明。 （已译） *)
 Check (@Pow Sets (Sets_Topos U) b).
 
 (* NEGATIVE 12 (FORMABILITY).  [classifier_classifies] carries
@@ -363,7 +357,7 @@ Definition sets_derived_push : @HasPushouts Sets := snd sets_colimits.
 
 End SetsFlagships.
 
-(* the five pre-existing Sets inhabitants, at the same types *)
+(* 相关说明。 （已译） *)
 Check (Sets_Initial : @Initial Sets).
 Check (Sets_Cocartesian : @Cocartesian Sets).
 Check (Sets_HasCoequalizers : @HasCoequalizers Sets).
@@ -396,11 +390,11 @@ Example PT_par_omega (UT : Untruncate) :
   = Sieve_Presheaf Parallel := eq_refl.
 
 (* ==================================================================== *)
-(** ** (G) Guard block
+(* * ** (G) Guard block
 
-    Every constant any refutation command above names, Checked OUTSIDE
-    every Fail.  Without this a rename would leave the negatives
-    vacuously green. *)
+ Every 常值 any refutation command above names, Checked OUTSIDE
+ every Fail. Without rename would leave negatives
+ vacuously green. （已译） *)
 
 Check @classifier_classifies.
 Check @relations_iso.

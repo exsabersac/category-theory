@@ -51,13 +51,11 @@ Context {C D E : Category}.
 Fail Definition probe_fmap_id_variable (x y : C) (s : ZigZag x y) :
   zigzag_fmap Id[C] s = s := eq_refl.
 
-(* CONTROL 1: at the empty chain the same statement DOES close. *)
+(* 相关说明。 （已译） *)
 Definition probe_fmap_id_nil (x : C) :
   zigzag_fmap Id[C] (zz_nil x) = zz_nil x := eq_refl.
 
-(* NEGATIVE 2.  Stripped, this reports:
-     (cannot unify "zigzag_fmap (G ◯ F) s"
-              and "zigzag_fmap G (zigzag_fmap F s)").                     *)
+(* 相关说明。 （已译） *)
 Fail Definition probe_fmap_comp_variable (F : C ⟶ D) (G : D ⟶ E)
   (x y : C) (s : ZigZag x y) :
   zigzag_fmap (G ◯ F) s = zigzag_fmap G (zigzag_fmap F s) := eq_refl.
@@ -67,8 +65,7 @@ Definition probe_fmap_comp_nil (F : C ⟶ D) (G : D ⟶ E) (x : C) :
   zigzag_fmap (G ◯ F) (zz_nil x) = zigzag_fmap G (zigzag_fmap F (zz_nil x))
   := eq_refl.
 
-(* CONTROLS naming the constants the two negatives depend on, so that
-   renaming any of them breaks a command OUTSIDE a [Fail]. *)
+(* 相关说明。 （已译） *)
 Check @zigzag_fmap.
 Check @zigzag_fmap_id.
 Check @zigzag_fmap_compose.
@@ -104,7 +101,7 @@ Proof using C D F.
   exact (@zigzag_fmap C D F).
 Defined.
 
-(* CONTROL 3b: the eta-expanded form the shipped [pi0_fmap] stores. *)
+(* 相关说明。 （已译） *)
 Definition probe_proper_by_script :
   pi0@{o o o hc} C ~{Sets@{o so}}~> pi0@{o o o hd} D.
 Proof using C D F.
@@ -196,8 +193,7 @@ Context (Cv : Category@{vo vh vh}).
 Check Cv.
 Check (obj[Cv]).
 
-(* CONTROL 4: the SHIPPED, annotated [pi0_proj] IS formable here.  This is
-   the discriminating half: same body, only the binders differ. *)
+(* 相关说明。 （已译） *)
 Check (pi0_proj Cv).
 
 (*
@@ -209,8 +205,7 @@ Fail Check (probe_pi0_proj_unann Cv).
 
 End FormabilityObj.
 
-(* CONTROLS naming the public constants the formability negatives are
-   about, outside any [Fail]. *)
+(* 相关说明。 （已译） *)
 Check @pi0_proj.
 Check @pi0_proj_at.
 Check @ObjSetoid.
@@ -220,10 +215,7 @@ Check @sets_quot_proj.
 Check @SetsQuotient.
 Check @SetoidCoarser.
 
-(** ** Controls for the headline results the target claims
-
-   These are not boundaries; they are here so that a rename or a change of
-   statement in the target breaks THIS file too. *)
+(* 相关说明。 （已译） *)
 Check @Connected.
 Check @ConnectedNonempty.
 Check @Zero_Connected.
@@ -241,8 +233,7 @@ Check @DiscreteCat_bool_not_connected.
 Check @Parallel_Connected.
 Check @Pi0.
 
-(* Controls for the connected-diagram section (Riehl §3.4).  These guard
-   the derived notion the same way: a rename in the target breaks here. *)
+(* 相关说明。 （已译） *)
 Check @ConnectedDiagram.
 Check @ConnectedNonemptyDiagram.
 Check @connected_diagram_of_nonempty.

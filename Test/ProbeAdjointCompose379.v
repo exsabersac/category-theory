@@ -24,7 +24,7 @@ Generalizable All Variables.
 (* Instrument check: a name that exists nowhere must be rejected. *)
 Fail Check probe379_no_such_constant_anywhere.
 
-(** ** Guards: every constant a negative names, named outside a [Fail] *)
+(* * ** Guards: every 常值 negative names, named outside [Fail] （已译） *)
 
 Check @AdjointEquivalence_Compose.
 Check @AdjointEquivalence_Compose_via_equivalence.
@@ -56,7 +56,7 @@ Check IndT.
 Check (Indiscrete bool).
 Check @Erase.
 
-(** ** Conversion negatives: the two routes are different *)
+(* 相关说明。 （已译） *)
 
 Section Routes.
 
@@ -66,15 +66,14 @@ Context {F' : D ⟶ E} {U' : E ⟶ D}.
 Context (A : AdjointEquivalence F U).
 Context (B : AdjointEquivalence F' U').
 
-(* Positive control: both routes inhabit ONE type, so the negatives
-   below are conversion questions and not typing ones. *)
+(* 相关说明。 （已译） *)
 Check (AdjointEquivalence_Compose A B
        : AdjointEquivalence (F' ◯ F) (U ◯ U')).
 Check (AdjointEquivalence_Compose_via_equivalence A B
        : AdjointEquivalence (F' ◯ F) (U ◯ U')).
 
-(* Negative 1 (CONVERSION): the refinement route is not the direct
-   composite, on the whole record. *)
+(* Negative 1 (CONVERSION): refinement route not direct
+ 复合, whole record. （已译） *)
 Fail Example probe379_neg1 :
   AdjointEquivalence_Compose_via_equivalence A B
     = AdjointEquivalence_Compose A B := eq_refl.
@@ -101,9 +100,7 @@ Example probe379_ctrl_direct_reduces (x : C) :
     = to (@adj _ _ _ _ (@adj_equivalence _ _ _ _ A) x (U' (F' (F x))))
          (@unit _ _ _ _ (@adj_equivalence _ _ _ _ B) (F x)) := eq_refl.
 
-(* Negative 4 (CONVERSION): Mac Lane's whiskering formula for the unit
-   is [~] and not [eq_refl].  The [~] form is the target's
-   [AdjointEquivalence_Compose_unit], reproduced as the control. *)
+(* 相关说明。 （已译） *)
 Fail Example probe379_neg4 (x : C) :
   @unit _ _ _ _ (@adj_equivalence _ _ _ _ (AdjointEquivalence_Compose A B)) x
     = fmap[U] (@unit _ _ _ _ (@adj_equivalence _ _ _ _ B) (F x))
@@ -115,7 +112,7 @@ Example probe379_ctrl_unit_approx (x : C) :
         ∘ @unit _ _ _ _ (@adj_equivalence _ _ _ _ A) x :=
   AdjointEquivalence_Compose_unit A B x.
 
-(* Negative 5 (CONVERSION): the same for the counit. *)
+(* 相关说明。 （已译） *)
 Fail Example probe379_neg5 (y : E) :
   @counit _ _ _ _ (@adj_equivalence _ _ _ _ (AdjointEquivalence_Compose A B)) y
     = @counit _ _ _ _ (@adj_equivalence _ _ _ _ B) y
@@ -130,7 +127,7 @@ Example probe379_ctrl_counit_approx (y : E) :
 
 End Routes.
 
-(** ** Typing negatives: the groupoid laws are not statable at the class *)
+(* 相关说明。 （已译） *)
 
 Section Laws.
 
@@ -160,7 +157,7 @@ Example probe379_ctrl_assoc_unit (x : C1) :
     = @unit _ _ _ _ (@adj_equivalence _ _ _ _ (assoc_right A B G)) x :=
   AdjointEquivalence_Compose_assoc_unit A B G x.
 
-(* Negative 7 (TYPING): the same for the left identity law. *)
+(* Negative 7 (TYPING): same left 恒等 law. （已译） *)
 Fail Check (AdjointEquivalence_Compose (@AdjointEquivalence_Id C1) A = A).
 
 Example probe379_ctrl_id_left_unit (x : C1) :
@@ -180,8 +177,7 @@ Example probe379_ctrl_witness_moves :
 
 Fail Check (indiscrete_square = @AdjointEquivalence_Id (Indiscrete bool)).
 
-(** ** Formability negatives: where the universe identifications come
-       from *)
+(* 相关说明。 （已译） *)
 
 Section HomIsProof.
 
@@ -212,10 +208,10 @@ Check (@IsIso_fmap Cu Cu G x y).
 *)
 Fail Check (@Id Cu).
 
-(* Negative 10 (FORMABILITY): [Adjunction] identifies hom with proof
-   INDEPENDENTLY
-   of that, probed here at two arbitrary endofunctors so that no [Id]
-   occurs in the command. *)
+(* Negative 10 (FORMABILITY): [Adjunction] identifies hom 证明
+ INDEPENDENTLY
+ that, probed here at two arbitrary endofunctors so no [Id]
+ occurs command. （已译） *)
 Fail Check (@Adjunction Cu Cu G H).
 
 (* Negative 11 (FORMABILITY): so does [AdjointEquivalence] -- but it

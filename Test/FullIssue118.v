@@ -44,8 +44,8 @@ Definition Id_Full {C : Category} : Full (@Id C) :=
 (** Register an instance so resolution of the leaner class is exercised too. *)
 #[local] Existing Instance Id_Full.
 
-(** The two surviving projections, with their expected types under the
-    corrected definition. *)
+(** The two surviving projections, expected types under the
+ corrected 定义. （已译） *)
 Check @prefmap.
 Check @fmap_sur.
 

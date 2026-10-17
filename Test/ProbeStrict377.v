@@ -26,11 +26,10 @@ Generalizable All Variables.
 
 (** ** Instrument check *)
 
-(* If a guarded command could succeed for want of a name, this one would
-   too.  It must be rejected. *)
+(* 相关说明。 （已译） *)
 Fail Check probe377_no_such_constant_anywhere.
 
-(** ** Controls: every constant the negatives name, named outside a guard *)
+(* * ** Controls: every 常值 negatives name, named outside guard （已译） *)
 
 Check @unit.
 Check @counit.
@@ -62,7 +61,7 @@ Check Indiscrete.
 Check @Erase.
 Check erase_pt.
 
-(** ** TYPING negatives: the two identity readings that are not statable *)
+(* * ** TYPING negatives: two 恒等 readings not statable （已译） *)
 
 Section UnitAndCounitTyping.
 
@@ -71,12 +70,12 @@ Context {S : A ⟶ C}.
 Context (P : LeftAdjointRightInverse S).
 Context (c : C).
 
-(* Control: the delivered form of "unit the identity", against the
-   identity TRANSPORTED along the object equation. *)
+(* Control: delivered form "unit 恒等", against the
+ 恒等 TRANSPORTED along 对象 equation. （已译） *)
 Check (@unit A C (lari_left P) S (lari_adj P) c
          ≈ id_cast (eq_sym (lari_obj P c))).
 
-(* Control: both sides of the negative are individually well-formed. *)
+(* 相关说明。 （已译） *)
 Check (@unit A C (lari_left P) S (lari_adj P) c).
 Check (@id C c).
 
@@ -98,22 +97,22 @@ Context `{@Faithful A C S}.
 Context (surj : SurjectiveOnObjects S).
 Context (a : A).
 
-(* Control: the counit is well-formed, and is an isomorphism -- which is
-   the strength Mac Lane's epsilon actually has. *)
+(* Control: counit well-formed, 同构 -- is
+ strength Mac Lane's epsilon actually has. （已译） *)
 Check (@counit A C (ff_surjective_left surj) S (ff_surj_adj surj) a).
 Check (ff_surjective_counit_iso surj a).
 Check (@id A a).
 
-(* NEGATIVE 2 (TYPING).  The counit runs
-   [ff_surjective_left (S a) ~> a], and the chosen preimage of [S a] need
-   not be [a]: the exercise gives an isomorphism, not an identity. *)
+(* NEGATIVE 2 (TYPING). The counit runs
+ [ff_surjective_left (S a) ~> a], chosen preimage [S a] need
+ not [a]: exercise gives 同构, not 恒等. （已译） *)
 Fail Check (@counit A C (ff_surjective_left surj) S (ff_surj_adj surj) a
             ≈ @id A a).
 
 End CounitTyping.
 
-(* Control: the counit of the delivered adjoint equivalence at the
-   non-degenerate witness is well-formed, and is an isomorphism. *)
+(* Control: counit delivered adjoint 等价 at the
+ non-degenerate witness well-formed, 同构. （已译） *)
 Check (@counit (Indiscrete bool) _1 (lari_left indiscrete_LARI)
          (Erase (Indiscrete bool)) (lari_adj indiscrete_LARI) false).
 
@@ -129,7 +128,7 @@ Check (@counit (Indiscrete bool) _1 (lari_left indiscrete_LARI)
          (Erase (Indiscrete bool)) (lari_adj indiscrete_LARI) false
        ≈ @id (Indiscrete bool) false).
 
-(* And it holds: both sides are the one inhabitant of [unit]. *)
+(* 相关说明。 （已译） *)
 Example p377_indiscrete_counit_is_id :
   @counit (Indiscrete bool) _1 (lari_left indiscrete_LARI)
     (Erase (Indiscrete bool)) (lari_adj indiscrete_LARI) false
@@ -147,8 +146,8 @@ Context `{@Faithful A C S}.
 Context (surj : SurjectiveOnObjects S).
 Context (c : C).
 
-(* Control: the residue is exhibited at Leibniz equality -- the unit IS
-   [fmap[S] id] composed with the transported identity. *)
+(* Control: residue exhibited at Leibniz equality -- unit IS
+ [fmap[S] id] composed transported 恒等. （已译） *)
 Check (ff_surj_unit_residue surj c).
 
 (* Control: the [≈] form does hold. *)
@@ -160,18 +159,18 @@ Fail Example p377_n3 :
   @unit A C (ff_surjective_left surj) S (ff_surj_adj surj) c
     = id_cast (eq_sym (ff_surj_eq surj c)) := eq_refl.
 
-(* Controls: both actions of the two left adjoints agree on the nose. *)
+(* 相关说明。 （已译） *)
 Check (ff_surj_eso_inverse_obj surj c).
 Check (ff_surj_eso_inverse_strict surj).
 
-(* NEGATIVE 4 (CONVERSION).  The whole functor RECORDS are not
-   Leibniz-equal: the three law fields are rebuilt. *)
+(* NEGATIVE 4 (CONVERSION). The whole 函子 RECORDS not
+ Leibniz-equal: three law fields rebuilt. （已译） *)
 Fail Example p377_n4 :
   @ff_eso_inverse A C S _ _ (ff_surj_eso surj) = ff_surjective_left surj
   := eq_refl.
 
-(* Control: the adjunction extracted from the delivered adjoint
-   equivalence IS the directly built one. *)
+(* Control: 伴随 extracted delivered adjoint
+ 等价 IS directly built one. （已译） *)
 Check (ff_surj_equiv_adj surj).
 
 (*
@@ -193,8 +192,7 @@ Fail Example p377_n6 :
     (@adj_equivalence C A _ S (ff_surj_eso_adjoint_equivalence surj)) c
     = id_cast (eq_sym (ff_surj_eq surj c)) := eq_refl.
 
-(* Control: on the DIRECT route the [≈] form is reached by unfolding the
-   unit and computing -- the residue is one [fmap_id]. *)
+(* 相关说明。 （已译） *)
 Definition p377_route_control :
   @unit A C (ff_surjective_left surj) S (ff_surj_adj surj) c
     ≈ id_cast (eq_sym (ff_surj_eq surj c))
@@ -213,13 +211,13 @@ Fail Definition p377_n7 :
 
 End StrictReadbacks.
 
-(* Controls: at an [eq_refl] witness both legs of the repackaged
-   isomorphism are [id] on the nose. *)
+(* Controls: at [eq_refl] witness both legs repackaged
+ 同构 [id] nose. （已译） *)
 Check @surjective_ESO_refl_to.
 Check @surjective_ESO_refl_from.
 
-(* NEGATIVE 8 (CONVERSION).  The whole isomorphism RECORD is nevertheless
-   not [iso_id]: the two inverse-law fields are different proofs. *)
+(* NEGATIVE 8 (CONVERSION). The whole 同构 RECORD nevertheless
+ not [iso_id]: two inverse-law fields different proofs. （已译） *)
 Fail Example p377_n8 {C : Category} (c : C) :
   @eso_iso C C Id[C] (surjective_ESO (@SurjectiveOnObjects_Id C)) c
     = @iso_id C c := eq_refl.
@@ -240,18 +238,17 @@ Constraint uh < vh.
 Context (Au : Category@{uo uh uh}).
 Context (Xu : Category@{vo vh vh}).
 
-(* Controls: both categories are formable at these declared levels, and a
-   functor in the DIRECTION the bound permits elaborates. *)
+(* Controls: both 范畴 formable at these declared levels, a
+ 函子 DIRECTION bound permits elaborates. （已译） *)
 Check Au.
 Check Xu.
 Check (Au ⟶ Xu).
 
-(* NEGATIVE 9 (FORMABILITY).  The other direction does not: [Functor]
-   forces the source's hom level below the target's. *)
+(* 相关说明。 （已译） *)
 Fail Check (Xu ⟶ Au).
 
-(* NEGATIVE 10 (FORMABILITY).  Hence neither does the record, whose
-   [lari_left] field is a functor the other way. *)
+(* NEGATIVE 10 (FORMABILITY). Hence neither does record, whose
+ [lari_left] field 函子 other way. （已译） *)
 Fail Check (∀ S : Au ⟶ Xu, LeftAdjointRightInverse S).
 
 End HomLevelBoundary.
@@ -269,8 +266,8 @@ Constraint wh < wp.
 
 Context (Bu : Category@{wo wh wp}).
 
-(* Controls: the category, its homs, and functors on it are all formable
-   with hom declared strictly below proof. *)
+(* Controls: 范畴, homs, 函子 it all formable
+ hom declared strictly below 证明. （已译） *)
 Check Bu.
 Check (∀ x y : Bu, x ~{Bu}~> y).
 Check (Bu ⟶ Bu).

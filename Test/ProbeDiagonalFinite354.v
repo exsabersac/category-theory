@@ -37,7 +37,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Instrument check — must ERROR ("The command has not failed!"). *)
+(* 相关说明。 （已译） *)
 Fail Fail Check Category.
 
 (*
@@ -62,8 +62,7 @@ Definition probe_eq_arrow_id (F : Parallel ⟶ C) :
 Fail Definition probe_coeq_arrow (F : Parallel ⟶ C) :
   coeq_arrow M F = colim_inj M F ParY := eq_refl.
 
-(* CONTROL 2 — note the residue is on the OTHER side, which is the
-   handedness the colimit rows carry throughout. *)
+(* 相关说明。 （已译） *)
 Definition probe_coeq_arrow_id (F : Parallel ⟶ C) :
   coeq_arrow M F = id ∘ colim_inj M F ParY := eq_refl.
 
@@ -107,8 +106,8 @@ Context {C : Category} (L : HasLimitsOfShape Parallel C) (x : C).
 *)
 Fail Definition probe_unit_is_id : dia_unit L x = id[x] := eq_refl.
 
-(* CONTROL 5: the unit IS nameable and well-typed at its real type, so the
-   negative is about the identity, not about `dia_unit`. *)
+(* CONTROL 5: unit IS nameable well-typed at real type, so the
+ negative about 恒等, not about `dia_unit`. （已译） *)
 Check (dia_unit L x).
 
 End UnitTyping.
@@ -125,7 +124,7 @@ Fail Definition probe_roof_op : Opposite Roof = Roof := eq_refl.
 (* NEGATIVE 7. *)
 Fail Definition probe_parallel_op : Opposite Parallel = Parallel := eq_refl.
 
-(* CONTROLS: both shapes are nameable and `Opposite` applies to each. *)
+(* 相关说明。 （已译） *)
 Check Roof.
 Check Parallel.
 Check (Opposite Roof).
@@ -142,12 +141,12 @@ Universes uo uh up.
 Constraint uh < up.
 Context (Cu : Category@{uo uh up}).
 
-(* CONTROLS accepted with hom and proof declared strictly apart. *)
+(* CONTROLS accepted hom 证明 declared strictly apart. （已译） *)
 Check (fun x y : Cu => x ~{Cu}~> y).
 Check (obj[Cu]).
 Check (fun x : Cu => id[x]).
 
-(* THE DISCRIMINATING CONTROL: the cone RECORD is formable here. *)
+(* 相关说明。 （已译） *)
 Check (@Cone Parallel Cu).
 
 (*
@@ -167,9 +166,9 @@ Fail Check (@IsPushoutSquare Cu).
 
 End FormabilityHomProof.
 
-(** ** Controls naming every constant the negatives depend on, OUTSIDE a
-    [Fail], so a rename breaks a succeeding command rather than turning a
-    negative vacuously green. *)
+(* * ** Controls naming every 常值 negatives depend on, OUTSIDE a
+ [Fail], so rename breaks succeeding command rather than turning a
+ negative vacuously green. （已译） *)
 
 Check @eq_arrow.
 Check @coeq_arrow.

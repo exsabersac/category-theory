@@ -46,7 +46,7 @@ Generalizable All Variables.
 
 Open Scope category_scope.
 
-(** * Probe: the measured boundaries of Structure/Limit/Finite.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeFinite417。
@@ -58,7 +58,7 @@ Open Scope category_scope.
 
 Fail Check probe417_nonexistent_name.
 
-(** ** A: the cone-category reading (Instance/Cones/Limit.v) *)
+(* * ** A: cone-范畴 reading (Instance/Cones/Limit.v) （已译） *)
 
 Section Cones.
   Context `(F : J ⟶ C).
@@ -72,16 +72,15 @@ Section Cones.
   Fail Example p417_initial_is_not_terminal :
     @Initial (Cocones F) = @Terminal (Cocones F) := eq_refl.
 
-  (* N2 TYPING: the literal passage the issue asks for,
-     [Initial (Cocones F) → Colimit F], is refused — the hypothesis has the
-     WRONG type for [Colimit_Cocones], a plain has-type mismatch. *)
+  (* N2 TYPING: literal passage issue asks for,
+ [Initial (Cocones F) → Colimit F], refused — 假设 has the
+ WRONG type [Colimit_Cocones], plain has-type mismatch. （已译） *)
   Fail Definition p417_colimit_of_initial (I : @Initial (Cocones F)) :
     Colimit F := Colimit_Cocones F I.
 
   Context (L : Limit F).
 
-  (* Controls: the round trip through [Cones F] returns the cone and every
-     mediator on the nose. *)
+  (* 相关说明。 （已译） *)
   Example p417_round_cone :
     @limit_cone _ _ _ (@Limit_Cones _ _ F (Cones_Limit F L))
     = @limit_cone _ _ _ L := eq_refl.
@@ -95,8 +94,8 @@ Section Cones.
 
   Context (T : @Terminal (Cones F)).
 
-  (* Controls: the other round trip returns the terminal cone and the
-     apex map of the unique arrow on the nose. *)
+  (* Controls: other round trip returns terminal cone the
+ apex map 唯一箭头 nose. （已译） *)
   Example p417_round_terminal_obj :
     @terminal_obj _ (Cones_Limit F (@Limit_Cones _ _ F T)) = @terminal_obj _ T
     := eq_refl.
@@ -109,7 +108,7 @@ Section Cones.
     Cones_Limit F (@Limit_Cones _ _ F T) = T := eq_refl.
 End Cones.
 
-(** ** B: finite completeness is not completeness (N5 CONVERSION, N6 TYPING) *)
+(* 相关说明。 （已译） *)
 
 Section NotComplete.
   Context {C : Category} (FC : @FinitelyComplete C).
@@ -120,12 +119,12 @@ Section NotComplete.
      clause as the header table has it. *)
   Fail Definition p417_fc_is_complete : @Complete C := FC.
 
-  (* Control: the other direction is the target's own passage. *)
+  (* 相关说明。 （已译） *)
   Definition p417_complete_fc (HC : @Complete C) : @FinitelyComplete C :=
     Complete_FinitelyComplete HC.
 
-  (* N6 TYPING: the generator corollary fed coequalizers where it asks for
-     equalizers. *)
+  (* N6 TYPING: generator 推论 fed coequalizers where it asks for
+ equalizers. （已译） *)
   Fail Definition p417_wrong_generator (T : @Terminal C) (CP : @Cartesian C)
     (HCo : HasCoequalizers C) : @FinitelyComplete C :=
     finitely_complete_from_generators T CP HCo.
@@ -133,8 +132,8 @@ End NotComplete.
 
 (** ** C: universes *)
 
-(* A bare clone of [EmptyDiagram]: the target's explicit binders are what
-   keep the ambient category free of the literal [Set]. *)
+(* A bare clone [EmptyDiagram]: target's explicit binders what
+ keep ambient 范畴 free literal [Set]. （已译） *)
 Definition EmptyDiagram_bare (C : Category) : EmptyShape ⟶ C.
 Proof.
   unshelve refine (@Build_Functor EmptyShape C
@@ -148,8 +147,7 @@ Section UnivPin.
   Context (Cu : Category@{co ch ch}).
   Context (FC : @FinitelyComplete Cu).
 
-  (* Controls: the shape-free constants and the free shapes elaborate at an
-     ambient whose homs sit strictly above [Set]. *)
+  (* 相关说明。 （已译） *)
   Check (@FinitelyComplete Cu).
   Check (FinitelyComplete_Terminal FC).
   Check (FinitelyComplete_HasPullbacks FC).
@@ -163,12 +161,10 @@ Section UnivPin.
   Context (DP : Parallel ⟶ Cu).
   Check (FC Parallel Parallel_FiniteCategory DP).
 
-  (* N7 UNIVERSE: the bare clone pins the ambient at [Set]. *)
+  (* 相关说明。 （已译） *)
   Fail Check (EmptyDiagram_bare Cu).
 
-  (* N8 UNIVERSE: [_2] is a [Category@{u Set Set}], so a limit over it — and
-     hence [FC] at it — is refused at this ambient, though the diagram
-     itself is accepted. *)
+  (* 相关说明。 （已译） *)
   Context (D2 : _2 ⟶ Cu).
   Check D2.
   Fail Check (Limit D2).
@@ -182,8 +178,8 @@ Section HomProof.
   Context (x y : Jv) (f : x ~> y).
   Check f.
   Check (id[x]).
-  (* N9 UNIVERSE: [FiniteCategory] identifies the shape's hom and proof
-     universes (through [ArrowIx]; measured). *)
+  (* N9 UNIVERSE: [FiniteCategory] identifies shape's hom 证明
+ universes (through [ArrowIx]; measured). （已译） *)
   Fail Check (@ArrowIx Jv).
   Fail Check (FiniteCategory Jv).
 End HomProof.
@@ -199,8 +195,7 @@ Definition FinSet_FinitelyCocomplete : @FinitelyCocomplete FinSet :=
 Definition Sets_FinitelyComplete : @FinitelyComplete Sets :=
   finitely_complete_of_pullbacks_terminal Sets_HasPullbacks Sets_Terminal.
 
-(* The sentence Structure/Topos.v now carries: every elementary topos is
-   finitely complete in the [Limit]-shaped sense. *)
+(* 相关说明。 （已译） *)
 Definition topos_FinitelyComplete {C : Category} (T : ElementaryTopos C) :
   @FinitelyComplete C :=
   finitely_complete_of_pullbacks_terminal topos_pullbacks topos_terminal.
@@ -234,7 +229,7 @@ Proof.
   exact (eq_trans (eq_sym hi) hj).
 Qed.
 
-(** ** Guards: every constant a negative names, outside every [Fail] *)
+(* * ** Guards: every 常值 negative names, outside every [Fail] （已译） *)
 
 Check @Terminal.
 Check @Cocones.

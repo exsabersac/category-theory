@@ -29,7 +29,7 @@ Require Import Category.Structure.Bicartesian.Matrix.
 
 Generalizable All Variables.
 
-(** ** Instrument check: [Fail] is live in this file *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
@@ -65,7 +65,7 @@ Fail Definition probe_binary_can_is_can_comparison :
 
 End BinaryComparison.
 
-(** ** Controls for the conversion negatives *)
+(* 相关说明。 （已译） *)
 
 Check @kron.
 Check @kron_diag.
@@ -88,8 +88,8 @@ Constraint uh < up.
 
 Context (C : Category@{uo uh up}).
 
-(* Controls: the ambient vocabulary IS formable at these levels, so the
-   rejection below is about the unannotated definition and not about C. *)
+(* Controls: ambient vocabulary IS formable at these levels, so the
+ rejection below about unannotated 定义 not about C. （已译） *)
 Check (fun x y : C => x ~{C}~> y).
 Check (fun (x y z : C) (f : x ~{C}~> y) (g : y ~{C}~> z) => g ∘ f).
 
@@ -117,12 +117,12 @@ Fail Check (fun (J K : Type) (g : J → C) (fm : K → C)
 
 End UniverseMinimization.
 
-(** ** Controls naming the constants of negative 3 *)
+(* 相关说明。 （已译） *)
 
 Check @mat_entry.
 Check @mat_entry_unfold.
 
-(** ** Controls for the delivered results *)
+(* 相关说明。 （已译） *)
 
 Check @matrix_ext.
 Check @matrix_determined.

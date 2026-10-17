@@ -20,15 +20,13 @@ Generalizable All Variables.
 
 Module UA := Category.Instance.Comp.UniversalAlgebra.
 
-(* Same reason as the target's: the global [Obligation Tactic] introduces
-   binders under names of its own choosing, and "o is already used" is
-   what that looks like from here. *)
+(* 相关说明。 （已译） *)
 #[local] Obligation Tactic := idtac.
 
 (* instrument: the refutation keyword is live *)
 Fail Check probe441_absent_name.
 
-(** ** A: why the free object cannot live in #440's Leibniz variety *)
+(* * ** A: why free 对象 cannot live #440's Leibniz variety （已译） *)
 
 (*
    本节说明 ProbeVarietyFree441 相关定义、性质与动机。
@@ -70,9 +68,9 @@ Qed.
 Fail Definition term_magma_leibniz : Variety CommEq :=
   (UA.Free MagmaOp bool; fun e args => eq_refl).
 
-(* control: the SHAPE is inhabited — the booleans under [xorb] are a
-   perfectly good object of #440's Leibniz variety, so n1 is about the
-   term algebra and not about the ascription. *)
+(* control: SHAPE inhabited — booleans under [xorb] a
+ perfectly good 对象 #440's Leibniz variety, so n1 about the
+ term algebra not about ascription. （已译） *)
 
 Definition BoolMagmaOp : UA.OpAlgebra MagmaOp :=
   UA.Build_OpAlgebra MagmaOp bool
@@ -135,9 +133,9 @@ Definition BoolCommVariety : SVariety CommEq :=
 Definition BoolGens : SetoidObject :=
   {| carrier := bool ; is_setoid := eq_Setoid bool |}.
 
-(* No [Next Obligation] here: the identity on a discrete setoid is
-   [Proper] by [Lib]'s own resolution, and adding one gets "No
-   obligations remaining". *)
+(* No [Next Obligation] here: 恒等 discrete setoid is
+ [Proper] [Lib]'s own resolution, adding one gets "No
+ obligations remaining". （已译） *)
 Definition sep_args' (i : UA.binary) : UA.Tree MagmaOp BoolGens :=
   match i with
   | UA.Fst => UA.generator MagmaOp BoolGens true
@@ -159,9 +157,9 @@ Proof.
   discriminate Heq.
 Qed.
 
-(* Non-vacuity of the congruence, so that [free_comm_not_collapsed] is a
-   sharp result rather than a statement about an empty relation: the
-   commutativity law DOES identify two distinct terms. *)
+(* Non-vacuity congruence, so [free_comm_not_collapsed] a
+ sharp result rather than statement about empty 关系: the
+ commutativity law DOES identify two distinct terms. （已译） *)
 Example p441_congruence_identifies :
   tree_equiv CommEq BoolGens
     (UA.node MagmaOp BoolGens magma_mul sep_args')
@@ -170,12 +168,11 @@ Example p441_congruence_identifies :
 
 (** ** C: CONVERSION *)
 
-(* n2: the free algebra's carrier IS the term type, but its `≈` is the
-   congruence and not Leibniz [=], so the two setoids do not convert. *)
+(* 相关说明。 （已译） *)
 Fail Example p441_free_setoid_is_eq :
   Tree_Setoid CommEq BoolGens = eq_Setoid (UA.Tree MagmaOp BoolGens) := eq_refl.
 
-(* control: the CARRIER does agree on the nose *)
+(* 相关说明。 （已译） *)
 Example p441_free_carrier :
   carrier (soa_obj (`1 (Free_Variety CommEq BoolGens)))
     = UA.Tree MagmaOp BoolGens := eq_refl.
@@ -202,11 +199,7 @@ Fail Definition p450_tree_equiv_elim_Type (X : Sets) (t u : UA.Tree MagmaOp X)
 Definition p450_tree_equiv_elim_Prop (X : Sets) (t u : UA.Tree MagmaOp X)
   (H : tree_equiv CommEq X t u) : True := ltac:(induction H; exact I).
 
-(** ** D: readbacks
-
-    The unit is the generator embedding on the nose, and the extension
-    of a map along it IS Instance/Comp.v's [induced_map] — nothing is
-    re-recursed. *)
+(* 相关说明。 （已译） *)
 
 Example p441_unit_is_generator (X : Sets) (x : X) :
   free_unit CommEq X x = UA.generator MagmaOp X x := eq_refl.
@@ -220,17 +213,15 @@ Example p441_ext_is_induced_map (X : Sets) (A : SVariety CommEq)
   (h : X ~{Sets}~> soa_obj (`1 A)) (t : UA.Tree MagmaOp X) :
   free_alg_ext A h t = UA.induced_map MagmaOp X (soa_alg (`1 A)) h t := eq_refl.
 
-(* This one pins the RECURSION STEP, which is what the prose was reaching
-   for: the extension of a map at a node is the algebra's operation
-   applied to the extensions of the arguments. *)
+(* 相关说明。 （已译） *)
 Example p441_ext_step (X : Sets) (A : SVariety CommEq)
   (h : X ~{Sets}~> soa_obj (`1 A)) (o : UA.operation MagmaOp)
   (k : UA.arity o → UA.Tree MagmaOp X) :
   free_alg_ext A h (UA.node MagmaOp X o k)
     = soa_op (`1 A) o (fun i => free_alg_ext A h (k i)) := eq_refl.
 
-(* And the left adjoint's action on OBJECTS, which nothing else pinned:
-   the functor built from the universal arrows really is [Free_Variety]. *)
+(* And 左伴随's action OBJECTS, nothing else pinned:
+ 函子 built universal arrows really [Free_Variety]. （已译） *)
 Example p441_left_adjoint_obj (X : Sets) :
   Free_Variety_Functor CommEq X = Free_Variety CommEq X := eq_refl.
 

@@ -56,19 +56,17 @@ Section Probes.
 Context {S : UA.OpSignature} (E : UA.EqSignature S) (A : SVariety E).
 Context (X : Sets) (h : X ~{Sets}~> SVariety_Forget E A).
 
-(* P4 -- positive control: the solution set's index IS the spanning
-   arrows, on the nose. *)
+(* 相关说明。 （已译） *)
 Example p448v_control :
   sol_index (variety_solution_set E X)
   = SpanningArrowsOutOf (SVariety_Forget E) X := eq_refl.
 
-(* P2 -- CONVERSION: the spanning arrow is the CORESTRICTION of h, not h
-   itself; "cannot unify "SubObj A" and "SubObj (sgen_alg h)"". *)
+(* 相关说明。 （已译） *)
 Fail Definition p448v_h_not_spanning : Spanning (SVariety_Forget E) h :=
   variety_spanning E A X h.
 
-(* P3 -- CONVERSION: the generated subalgebra is a different object from
-   A; "cannot unify "sgen_alg h" and "A"". *)
+(* P3 -- CONVERSION: generated subalgebra different 对象 from
+ A; "cannot unify "sgen_alg h" "A"". （已译） *)
 Fail Example p448v_gen_not_all : sgen_alg h = A := eq_refl.
 
 (*

@@ -18,7 +18,7 @@ Require Import Category.Instance.Adj.Bicategory.
 
 Generalizable All Variables.
 
-(** * Probe for Instance/Adj/Bicategory.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeAdjBicat399。
@@ -28,13 +28,13 @@ Generalizable All Variables.
 
 (* ---------------------------------------------------------------------- *)
 (* INSTRUMENT.  A passing [Fail] prints nothing under this repo's coqc, so *)
-(* this command establishes that [Fail] is doing anything at all.          *)
+(* 相关说明。 （已译） *)
 (* ---------------------------------------------------------------------- *)
 
 Fail Check p399_no_such_constant_anywhere.
 
 (* ---------------------------------------------------------------------- *)
-(* GUARD BLOCK.  Every constant that any negative below names, target and  *)
+(* GUARD BLOCK. Every 常值 any negative below names, target and （已译） *)
 (* donor alike, is named here OUTSIDE every [Fail], so that renaming any   *)
 (* one of them breaks this file at a [Check] line rather than turning a    *)
 (* negative vacuously green.                                              *)
@@ -126,7 +126,7 @@ Check @adjoints_round_record.
 (* ====================================================================== *)
 (* (1) N1-N6.  The 1-cell layer of [Adj] is WEAK: neither associativity   *)
 (*     nor either unit law of [Adjunction_Compose] is even statable, and  *)
-(*     one level down the functor equations are statable and refused at   *)
+(* one level down 函子 equations statable refused at （已译） *)
 (*     conversion.                                                        *)
 (* ====================================================================== *)
 
@@ -167,8 +167,8 @@ Fail Example n3 :
       (@Adjunction_Compose D D C Id[D] Id[D] F U (@Adjunction_Id D) Aa)
   := eq_refl.
 
-(* -- N4-N6 (CONVERSION).  CONTROLS: [fobj] and [fmap] agree on the      -- *)
-(* -- nose on both sides, so what the three negatives locate is the      -- *)
+(* 相关说明。 （已译） *)
+(* 相关说明。 （已译） *)
 (* -- three LAW fields of [Compose] and neither data field.              -- *)
 
 Example c399_n4a (o : D) :
@@ -194,7 +194,7 @@ End P399Assoc.
 
 (* ====================================================================== *)
 (* (2) N7-N10.  The same three laws one level up, at [AdjObj]: both unit  *)
-(*     laws, associativity, and the left-adjoint component of the first.  *)
+(* 相关说明。 （已译） *)
 (* ====================================================================== *)
 
 Section P399AdjObj.
@@ -203,7 +203,7 @@ Context {x y z w : Category}.
 Context (a : AdjObj x y) (b : AdjObj y z) (c : AdjObj z w).
 
 (* -- CONTROLS: the target's own four [eq_refl] readbacks, which say     -- *)
-(* -- what the padded 1-cell's two adjoints ARE.                         -- *)
+(* 相关说明。 （已译） *)
 
 Example c399_n7 :
   @eq (y ⟶ x) (adjobj_left (adjobj_hcompose (AdjIdObj y) a))
@@ -243,8 +243,8 @@ End P399AdjObj.
 
 (* ====================================================================== *)
 (* (3) N11, N12.  Route (b): the sigma leg of Adjunction/Square.v's       *)
-(*     vertical paste IS the Godement product componentwise; the tau leg  *)
-(*     is not, and as a WHOLE transformation neither leg has the type     *)
+(* 相关说明。 （已译） *)
+(* 相关说明。 （已译） *)
 (*     [nat_hcompose] has.                                                *)
 (* ====================================================================== *)
 
@@ -254,7 +254,7 @@ Context {C D E : Category}.
 Context {F F' : D ⟶ C} {U U' : C ⟶ D}.
 Context {G G' : C ⟶ E} {V V' : E ⟶ C}.
 
-(* -- CONTROL for N11: the target's [routeb_tau], the same statement     -- *)
+(* 相关说明。 （已译） *)
 (* -- at [~=], one application of [naturality].                          -- *)
 
 Example c399_n11 (t : U ⟹ U') (tb : V ⟹ V') (e : E) :
@@ -262,7 +262,7 @@ Example c399_n11 (t : U ⟹ U') (tb : V ⟹ V') (e : E) :
     ≈ nat_hcompose t tb e
   := @routeb_tau C D E U U' V V' t tb e.
 
-(* -- CONTROL for N12: the target's [routeb_sigma], the sigma leg at a   -- *)
+(* 相关说明。 （已译） *)
 (* -- COMPONENT and at [eq_refl].                                        -- *)
 
 Example c399_n12 (s : F' ⟹ F) (sb : G' ⟹ G) (o : D) :
@@ -283,9 +283,9 @@ Fail Example n12 (s : F' ⟹ F) (sb : G' ⟹ G) :
 End P399RouteB.
 
 (* ====================================================================== *)
-(* (4) N13, N14.  The bridge to Instance/Adjoints.v: that category        *)
+(* (4) N13, N14. The bridge Instance/Adjoints.v: 范畴 （已译） *)
 (*     composes by [adj_comp], whose composite is NOT [Adjunction_Compose] *)
-(*     at conversion though the two share a type; and the sigT round trip *)
+(* 相关说明。 （已译） *)
 (*     does not close where the record one does.                          *)
 (* ====================================================================== *)
 
@@ -295,7 +295,7 @@ Context {A1 B1 C1 : Category}.
 Context (mA : B1 ~{Adjoints}~> C1) (mB : A1 ~{Adjoints}~> B1).
 Context (xo : AdjObj A1 B1).
 
-(* -- CONTROLS for N13: both sides elaborate, at one and the same type.  -- *)
+(* 相关说明。 （已译） *)
 
 Check (adjunction (mA ∘ mB)).
 Check (@Adjunction_Compose B1 C1 A1
@@ -303,7 +303,7 @@ Check (@Adjunction_Compose B1 C1 A1
          (free_functor mB) (forgetful_functor mB)
          (adjunction mA) (adjunction mB)).
 
-(* -- CONTROL for N13, the positive half already in tree: the two        -- *)
+(* 相关说明。 （已译） *)
 (* -- constructions have definitionally equal transposes.                -- *)
 
 Example c399_n13a (o : C1) (p : A1)
@@ -320,7 +320,7 @@ Example c399_n13a (o : C1) (p : A1)
        (free_functor mB) (forgetful_functor mB)
        (adjunction mA) (adjunction mB) o p f.
 
-(* -- CONTROL for N14: the RECORD round trip closes at [eq_refl].        -- *)
+(* 相关说明。 （已译） *)
 
 Example c399_n14 : morphism_of_adjobj (adjobj_of_morphism mA) = mA
   := @adjoints_round_record B1 C1 mA.
@@ -344,9 +344,9 @@ End P399Adjoints.
 (* (5) N15.  [Build_Bicategory'] churns: its [symmetry]-derived           *)
 (*     [comp_assoc_sym] breaks record eta, [bicat x y] is then no longer  *)
 (*     [Adj x y], and [Adj_Hcompose] no longer typechecks against         *)
-(*     [hcompose].  The twenty arguments below are the twenty-one         *)
-(*     [Adj_Bicategory] passes to the raw constructor, less the           *)
-(*     [comp_assoc_sym] that this one derives.                            *)
+(* 相关说明。 （已译） *)
+(* 相关说明。 （已译） *)
+(* 相关说明。 （已译） *)
 (* ====================================================================== *)
 
 (* -- CONTROL: the raw-constructor build, which does typecheck.          -- *)
@@ -377,10 +377,10 @@ Fail Definition n15 : Bicategory :=
     (@Adj_pentagon).
 
 (* ====================================================================== *)
-(* (6) N16-N24 (FORMABILITY): hom = proof.  The identification every      *)
-(*     constant of the target carries in its BINDER is INHERITED, and     *)
+(* (6) N16-N24 (FORMABILITY): hom = 证明. The identification every （已译） *)
+(* 常值 target carries BINDER INHERITED, and （已译） *)
 (*     [Compose] is a donor of it on its own -- N20 refuses [Gq (o) Fq]   *)
-(*     with no adjunction and no transformation anywhere in the command,  *)
+(* with no 伴随 no transformation anywhere command, （已译） *)
 (*     while a [Transform] between two functors is accepted.              *)
 (* ====================================================================== *)
 
@@ -403,10 +403,10 @@ Check (fun Fq Gq : Cu ⟶ Du => Fq ⟹ Gq).
 
 Fail Check (fun (Fq : Du ⟶ Cu) (Uq : Cu ⟶ Du) => Fq ⊣ Uq).
 
-(* -- N17-N19.  [AdjObj], [Adj] and [ConjPair] inherit it.  NOTE that    -- *)
+(* 相关说明。 （已译） *)
 (* -- [AdjObj] contains an [Adjunction] and [ConjPair] two [AdjObj]s, so -- *)
-(* -- neither can be tested apart from its donor: N17-N19 record that     -- *)
-(* -- the identification reaches them, not that they add one.            -- *)
+(* 相关说明。 （已译） *)
+(* 相关说明。 （已译） *)
 
 Fail Check (AdjObj Cu Du).
 
@@ -423,7 +423,7 @@ Fail Check (fun (Fq : Cu ⟶ Du) (Gq : Du ⟶ Eu) => Gq ◯ Fq).
 Fail Check (fun (F1 G1 : Cu ⟶ Du) (J1 K1 : Du ⟶ Eu)
                 (aa : J1 ⟹ K1) (bb : F1 ⟹ G1) => nat_hcompose aa bb).
 
-(* -- N22-N24.  Cat's own horizontal composition and the target's two    -- *)
+(* -- N22-N24. Cat's own horizontal 复合 target's two -- （已译） *)
 (* -- 1-cell and bifunctor constants, all inheriting.                    -- *)
 
 Fail Check (@Cat_Hcompose Cu Du Eu).

@@ -26,7 +26,7 @@ Require Import Category.Instance.Mod.Bimodule.
 
 Generalizable All Variables.
 
-(** * Probe for Instance/Mod/Bimodule.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeBimodule401。
@@ -36,7 +36,7 @@ Generalizable All Variables.
 
 (* --------------------------------------------------------------- *)
 (* INSTRUMENT.  A passing [Fail] prints nothing under this repo's    *)
-(* coqc, so this command establishes that [Fail] does anything.      *)
+(* 相关说明。 （已译） *)
 (* --------------------------------------------------------------- *)
 
 Fail Check p401_no_such_constant_anywhere.
@@ -141,7 +141,7 @@ Check @int_tensor_separates.
 
 (* ================================================================= *)
 (* (1) N1-N2.  [Ring_op] is not strictly involutive, so the two       *)
-(*     readings of a right module are not interchangeable on the      *)
+(* 相关说明。 （已译） *)
 (*     nose.  Both are CONVERSION.                                    *)
 (* ================================================================= *)
 
@@ -181,7 +181,7 @@ End P401RingOp.
 
 (* ================================================================= *)
 (* (2) N3-N7.  Instance/Mod/Tensor.v's [TensorMod] serves NEITHER     *)
-(*     handedness of Exercise 3, and the one term that DOES typecheck *)
+(* 相关说明。 （已译） *)
 (*     computes the wrong object.  All TYPING.                        *)
 (* ================================================================= *)
 
@@ -204,12 +204,11 @@ Fail Check (@TensorMod (Ring_op R) N (bm_left E)).
 (* -- N6 (TYPING) -- *)
 Fail Check (RBilinear N (bm_left E) (bm_left E)).
 
-(* CONTROLS: [TensorMod] is fine when both factors are modules over ONE
-   ring on the SAME side. *)
+(* 相关说明。 （已译） *)
 Check (@TensorMod R (bm_left E) (bm_left E)).
 Check (@TensorMod (Ring_op R) N N).
 
-(* CONTROL, and the HAZARD: this one IS accepted. *)
+(* 相关说明。 （已译） *)
 Definition p401_hazard_accepted : RModObject (Ring_op R) :=
   @TensorMod (Ring_op R) N (bimodule_right_RMod F).
 
@@ -218,7 +217,7 @@ Definition p401_hazard_accepted : RModObject (Ring_op R) :=
 Fail Definition p401_n7 : RModObject (Ring_op S) :=
   @TensorMod (Ring_op R) N (bimodule_right_RMod F).
 
-(* CONTROL: the object Exercise 3 does produce, at the same [N]. *)
+(* CONTROL: 对象 Exercise 3 does produce, at same [N]. （已译） *)
 Check (RTensor E N : RModObject (Ring_op S)).
 
 End P401TensorMod.
@@ -239,7 +238,7 @@ Fail Check (M : RModObject Int_Ring).
 (* -- N9 (TYPING) -- *)
 Fail Check (@Build_Bimodule Int_Ring R M).
 
-(* CONTROLS: ℤ's own bimodule, and the module reading that DOES hold. *)
+(* 相关说明。 （已译） *)
 Check (Int_Bimodule : Bimodule Int_Ring Int_Ring).
 Check (bm_left Int_Bimodule : RModObject Int_Ring).
 Check (M : RModObject (Ring_op R)).
@@ -248,8 +247,8 @@ End P401Integers.
 
 (* ================================================================= *)
 (* (4) N10-N13.  Part (c)'s comparison is an isomorphism and NOTHING  *)
-(*     stronger: the two functors are different records, the two      *)
-(*     objects are different records, and the two module structures   *)
+(* stronger: two 函子 different records, two （已译） *)
+(* 对象 different records, two module structures （已译） *)
 (*     on the tensor of two bimodules do not even share a type.       *)
 (* ================================================================= *)
 
@@ -260,7 +259,7 @@ Context (E : Bimodule R S).
 Context (E1 : Bimodule S T).
 Context (N : RModObject (Ring_op R)).
 
-(* CONTROLS: the comparison exists, and its two sides DO share a type. *)
+(* 相关说明。 （已译） *)
 Check (tensor_assoc_iso E E1
   : (TensorWith E1 ◯ TensorWith E : ModR R ⟶ ModR T)
       ≈ TensorWith (BimodTensorBimod E E1)).
@@ -298,7 +297,7 @@ Fail Example p401_n17 (M : RModObject (Ring_op T)) :
           (@counit (ModR S) (ModR R) (TensorWith E) (HomS E)
              (bimodule_tensor_hom_adjunction E) (HomSObj E1 M)) := eq_refl.
 
-(* CONTROLS for N16/N17: the ≈ forms are theorems of the target. *)
+(* 相关说明。 （已译） *)
 Check (bac_unit_whiskered E E1 N).
 Check (fun (M : RModObject (Ring_op T)) => bac_counit_whiskered E E1 M).
 Check @bac_unit.
@@ -312,15 +311,13 @@ Check (bimodule_hom_composite_iso E E1
   : (HomS E ◯ HomS E1 : ModR T ⟶ ModR R)
       ≈ HomS (BimodTensorBimod E E1)).
 
-(* -- N12 (TYPING).  Read at the SECOND ring the two sides of the
-      comparison are not even of one type. -- *)
+(* 相关说明。 （已译） *)
 Fail Check (RTensor E1 (RTensor E N) : RModObject (Ring_op S)).
 
-(* -- N13 (TYPING).  The two module structures the tensor of two
-      bimodules carries are over DIFFERENT rings. -- *)
+(* 相关说明。 （已译） *)
 Fail Check (btb_left E E1 : RModObject (Ring_op T)).
 
-(* CONTROLS: each on its own ring, and the ONE group they share. *)
+(* 相关说明。 （已译） *)
 Check (btb_left E E1 : RModObject R).
 Check (btb_right E E1 : RModObject (Ring_op T)).
 Example p401_btb_same_group :
@@ -330,7 +327,7 @@ End P401PartC.
 
 (* ================================================================= *)
 (* (5) N14-N15.  The hom-group's enrichment demands a category whose  *)
-(*     hom and proof universes coincide.                              *)
+(* hom 证明 universes coincide. （已译） *)
 (* ================================================================= *)
 
 Section P401Univ.
@@ -354,7 +351,7 @@ Fail Check (fun (AC : AbEnriched Cu) (x y : Cu) => hom_ab AC x y).
 End P401Univ.
 
 (* ================================================================= *)
-(* (6) POSITIVE CONTROLS for the three headline artifacts of stage 2. *)
+(* 相关说明。 （已译） *)
 (* ================================================================= *)
 
 Section P401Positives.

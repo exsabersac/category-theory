@@ -30,15 +30,15 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe431_absent_name.
 
-(** ** A: CONVERSION — the square of left adjoints is not strict *)
+(* 相关说明。 （已译） *)
 
 Section SquareStrict.
 
 Context {J X A : Category}.
 Context (F : X ⟶ A).
 
-(* control: the square holds as a natural isomorphism with identity
-   components *)
+(* control: square holds natural 同构 恒等
+ components （已译） *)
 Check (square_iso (J:=J) F
          : postcompose F ◯ @Diagonal X J ≅[Fun] @Diagonal A J ◯ F).
 Example p431_square_component (x : X) (j : J) :
@@ -57,12 +57,12 @@ Context {J X A : Category}.
 Context {F : X ⟶ A} {G : A ⟶ X}.
 Context (Adj : F ⊣ G).
 
-(* controls: the constructed unit on the nose, the adjunction's own at [≈] *)
+(* controls: constructed unit nose, 伴随's own at [≈] （已译） *)
 Check (postcompose_unit_component (J:=J) Adj).
 Check (postcompose_adjunction_unit (J:=J) Adj).
 
-(* N5 CONVERSION: the adjunction's own [unit] accessor carries a [fmap_id]
-   residue over the whiskered original *)
+(* N5 CONVERSION: 伴随's own [unit] accessor carries [fmap_id]
+ residue over whiskered original （已译） *)
 Fail Example p431_adjunction_unit_not_definitional (S : J ⟶ X) (j : J) :
   transform[@Category.Theory.Adjunction.unit _ _ _ _
               (postcompose_adjunction (J:=J) Adj) S] j
@@ -70,7 +70,7 @@ Fail Example p431_adjunction_unit_not_definitional (S : J ⟶ X) (j : J) :
 
 End AccessorResidue.
 
-(** ** B: TYPING — each induced adjunction has one direction *)
+(* * ** B: TYPING — each induced 伴随 has one direction （已译） *)
 
 Section PostDirection.
 
@@ -100,7 +100,7 @@ Fail Check (precompose_adjunction (E:=E) Adj : precompose F ⊣ precompose G).
 
 End PreDirection.
 
-(** ** C: UNIVERSE — the functor category identifies the hom levels *)
+(* * ** C: UNIVERSE — 函子 范畴 identifies hom levels （已译） *)
 
 Monomorphic Universe jo jh xo xh.
 Monomorphic Constraint jh < xh.
@@ -115,7 +115,7 @@ Check Jw.
 Check Xw.
 
 (* N4 UNIVERSE: [[Jw, Xw]] needs [jh = xh] (Instance/Fun.v's [Fun]) — the
-   pin every constant of the target inherits *)
+ pin every 常值 target inherits （已译） *)
 Fail Check ([Jw, Xw]).
 
 End HomLevels.

@@ -46,22 +46,21 @@ Check @Rng_Forget_solution_set_prop.
 Check @free_rng_ab_via_GAFT.
 Check @free_ring_via_GAFT.
 
-(* The circular readings are KEPT and are still checkable; they are the
-   comparison, not the delivery. *)
+(* 相关说明。 （已译） *)
 Check @Rng_Forget_Ab_solution_set_from_adjunction.
 Check @Rng_Forget_solution_set_from_adjunction.
 Check @free_rng_ab_via_GAFT_from_adjunction.
 Check @free_ring_via_GAFT_from_adjunction.
 
-(** ** The index readbacks: WHICH solution set each application consumes *)
+(* * ** The index readbacks: WHICH solution set each application 所消耗 （已译） *)
 
 Section IndexReadbacks.
 
 Context (A : Ab).
 Context (X : Sets).
 
-(* The [Ab] half: the index is the congruence type on the free-ring terms
-   over [A], and the objects are the quotients. *)
+(* The [Ab] half: index congruence type free-ring terms
+ over [A], 对象 quotients. （已译） *)
 Example prng_ab_index :
   sol_index (Rng_Forget_Ab_solution_set_prop A) = RngCongIdx A := eq_refl.
 
@@ -69,8 +68,8 @@ Example prng_ab_obj (i : RngCongIdx A) :
   sol_obj (Rng_Forget_Ab_solution_set_prop A) i = QRng (`1 i) (`2 i)
   := eq_refl.
 
-(* The [Sets] half takes the SAME index, over the free abelian group on
-   [X] -- the direct route, not a composite of two adjunctions. *)
+(* The [Sets] half takes SAME index, over free abelian group on
+ [X] -- direct route, not 复合 two 伴随. （已译） *)
 Example prng_sets_index :
   sol_index (Rng_Forget_solution_set_prop X)
     = RngCongIdx (FreeAbObject X) := eq_refl.
@@ -79,7 +78,7 @@ Example prng_sets_obj (i : RngCongIdx (FreeAbObject X)) :
   sol_obj (Rng_Forget_solution_set_prop X) i = QRng (`1 i) (`2 i)
   := eq_refl.
 
-(* And the circular ones are still the singleton, which is the contrast. *)
+(* 相关说明。 （已译） *)
 Example prng_circular_index :
   sol_index (Rng_Forget_Ab_solution_set_from_adjunction A) = poly_unit
   := eq_refl.
@@ -114,7 +113,7 @@ Section ConcreteWitnesses.
 
 Definition prng_ZAb : Ab := ring_ab Int_Ring.
 
-(* The free ring on the integers as an abelian group. *)
+(* 相关说明。 （已译） *)
 Check (`1 free_rng_ab_via_GAFT prng_ZAb).
 Check (Rng_Forget_Ab_solution_set_prop prng_ZAb).
 Check (free_rng_ab_via_GAFT_comparison prng_ZAb).
@@ -127,8 +126,8 @@ Check (Rng_Forget_solution_set_prop nat_setoid_object).
 Check (free_ring_via_GAFT_comparison nat_setoid_object).
 Check (free_ring_via_GAFT_unit nat_setoid_object).
 
-(* And the congruence index at a named object, which is the thing that
-   made the whole construction fit. *)
+(* And congruence index at named 对象, thing that
+ made whole construction fit. （已译） *)
 Check (RngCongIdx prng_ZAb).
 Check (RngCongIdx (FreeAbObject nat_setoid_object)).
 

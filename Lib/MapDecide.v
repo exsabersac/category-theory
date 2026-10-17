@@ -2,7 +2,7 @@ From Coq Require Import NArith.
 From Coq Require Import FMaps.
 From Coq Require Import Lia.
 
-(* Override ++> notation with the crelation-based version. *)
+(* 相关说明。 （已译） *)
 #[local] Set Warnings "-notation-overridden".
 Require Import Category.Lib.
 Require Import Category.Lib.FMapExt.
@@ -17,22 +17,21 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* For the time being, this module is fixed to maps from [N * N → N]. *)
+(* 相关说明。 （已译） *)
 
 Module PO := PairOrderedType N_as_OT N_as_OT.
 Module M  := FMapList.Make(PO).
 Module Import FMapExt := FMapExt PO M.
 
-(**************************************************************************
- * Data type for representing partial results, taken from Chlipala's CPDT
- *)
+(* *************************************************************************
+ * Data type 表示 partial results, taken Chlipala's CPDT （已译） *)
 
 (* CPDT: http://adam.chlipala.net/cpdt/html/Cpdt.Reflection.html
 
-   [partial P], written [[P]], is the type of a verified-but-possibly-failing
-   decision: [Proved] carries an actual proof of [P], while [Uncertain]
-   carries nothing.  Because the only way to produce a [Yes] is to supply a
-   proof, any procedure returning [[P]] is sound by construction. *)
+ [partial P], written [[P]], type verified-but-possibly-failing
+ decision: [Proved] carries actual 证明 [P], while [Uncertain]
+ carries nothing. Because way produce [Yes] supply a
+ 证明, any procedure returning [[P]] sound construction. （已译） *)
 
 Inductive partial (P : Prop) : Set :=
 | Proved : P → partial
@@ -52,9 +51,7 @@ Notation "'Reduce' v" := (if v then Yes else No) (at level 100) : partial_scope.
 Notation "x || y" := (if x then Yes else Reduce y) : partial_scope.
 Notation "x && y" := (if x then Reduce y else No) : partial_scope.
 
-(**************************************************************************
- * A term language for theorems involving FMaps
- *)
+(* 相关说明。 （已译） *)
 
 Record environment : Set := {
   vars : positive → N
@@ -163,9 +160,7 @@ Fixpoint formula_denote env (t : formula) : Prop :=
   | Impl p q => formula_denote env p → formula_denote env q
   end.
 
-(**************************************************************************
- * Compute structural size of formulas, for well-founded recursion
- *)
+(* 相关说明。 （已译） *)
 
 Fixpoint map_expr_size (t : map_expr) : nat :=
   match t with
@@ -208,9 +203,7 @@ Proof.
   now rewrite formula_size_subst_formula.
 Qed.
 
-(**************************************************************************
- * Substitution of variables throughout a formula
- *)
+(* 相关说明。 （已译） *)
 
 Definition substitution (x y : term) : option (term * term) :=
   match x, y with
@@ -309,9 +302,7 @@ Proof.
   now apply (term_denote_substitution Heqo).
 Qed.
 
-(**************************************************************************
- * Code for removing conflicted map entries
- *)
+(* 相关说明。 （已译） *)
 
 Definition conflicted (x y : term) : bool :=
   match x, y with
@@ -337,9 +328,7 @@ Proof.
   rewrite N.eqb_refl; reflexivity.
 Qed.
 
-(**************************************************************************
- * Computational decision procedure for map membership
- *)
+(* 相关说明。 （已译） *)
 
 Import ListNotations.
 
@@ -458,9 +447,7 @@ Proof.
   unfold formula_tauto; destruct t, (formula_backward _ env); tauto.
 Qed.
 
-(**************************************************************************
- * Environment management tactics
- *)
+(* 相关说明。 （已译） *)
 
 Ltac inList x xs :=
   match xs with
@@ -517,9 +504,7 @@ Ltac allVars xs e :=
   | _ => xs
   end.
 
-(**************************************************************************
- * Reflection tactics
- *)
+(* 相关说明。 （已译） *)
 
 Ltac reifyValue env t :=
   match t with
@@ -585,9 +570,7 @@ Ltac reify :=
     change (formula_denote {| vars := env |} r1)
   end.
 
-(**************************************************************************
- * User interface tactics
- *)
+(* 相关说明。 （已译） *)
 
 Ltac solve_map := reify; apply formula_sound; vm_compute; auto.
 

@@ -27,8 +27,7 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe426_absent_name.
 
-(** ** A: the lifted cone's image is the given cone in apex and legs, not
-       as a record *)
+(* 相关说明。 （已译） *)
 
 Section JointLift.
 
@@ -39,8 +38,8 @@ Context {J P X : Category} (D : J ⟶ [P, X])
 Check (fun p : obj[P] => ev_lift_apex D N HN p).
 Check (fun (p : obj[P]) (x : J) => ev_lift_leg D N HN p x).
 
-(* N1 CONVERSION: the whole cone record does not — its coherence field is a
-   rebuilt opaque proof *)
+(* N1 CONVERSION: whole cone record does not — coherence field a
+ rebuilt opaque 证明 （已译） *)
 Fail Example p426_ev_lift_record (p : obj[P]) :
   FCone (Eval p) (ev_lift D N HN) = N p := eq_refl.
 
@@ -49,8 +48,8 @@ Check (Fun_Eval_JointlyCreateLimit D).
 
 End JointLift.
 
-(** ** B: strictness — the restriction is the identity on objects but not
-       a rebuild of functor records *)
+(* * ** B: strictness — restriction 恒等 对象 but not
+ rebuild 函子 records （已译） *)
 
 Section Strict.
 
@@ -60,8 +59,8 @@ Context {P X : Category}.
 Example p426_res_obj_at (H : [P, X]) (p : P) :
   fobj[fobj[@Res P X] H] p = fobj[H] p := eq_refl.
 
-(* N2 CONVERSION: the restricted functor is not the discrete functor on the
-   same object map — the arrow fields differ *)
+(* N2 CONVERSION: restricted 函子 not discrete 函子 the
+ same 对象 map — arrow fields differ （已译） *)
 Fail Example p426_res_is_disc (H : [P, X]) :
   fobj[@Res P X] H = DiscreteCat_Functor' (fobj[H]) := eq_refl.
 
@@ -69,13 +68,13 @@ Section StrictLimit.
 
 Context {J : Category} (D : J ⟶ [P, X]) (L : ∀ p : P, Limit (Eval p ◯ D)).
 
-(* control: the canonical lift's image has the pointwise apexes on the nose *)
+(* 相关说明。 （已译） *)
 Example p426_strict_obj_ok (p : P) :
   fobj[fobj[@Res P X] (PointwiseLimit D L)] p = plim_obj D L p := eq_refl.
 
-(* N3 CONVERSION: Riehl's strict clause — the image of the canonical lift
-   EQUAL to a given cone's apex downstairs — is an [eq] between functor
-   records and is refused *)
+(* N3 CONVERSION: Riehl's strict clause — image canonical lift
+ EQUAL given cone's apex downstairs — [eq] between 函子
+ records refused （已译） *)
 Fail Example p426_strict_record (N : Cone (@Res P X ◯ D)) :
   fobj[@Res P X] (PointwiseLimit D L) = vertex_obj[N] := eq_refl.
 
@@ -86,8 +85,8 @@ End StrictLimit.
 
 End Strict.
 
-(** ** C: the restriction functor is more universe-general than the theorem
-       it serves *)
+(* * ** C: restriction 函子 more universe-general than 定理
+ it serves （已译） *)
 
 Section Wide.
 
@@ -118,9 +117,9 @@ Fail Check (fun HX : @Complete Xw => @Functor_Category_Complete Pw Xw HX).
 *)
 Fail Check ([Pw, Xw] ⟶ Xw).
 
-(* N6 UNIVERSE: hence #424's [Eval] itself, and with it the hypothesis
-   [∀ p, Limit (Eval p ◯ D)] of [Res_CreatesLimit], cannot be stated at
-   this shape, while [Res] can (control above) *)
+(* N6 UNIVERSE: hence #424's [Eval] itself, it 假设
+ [∀ p, Limit (Eval p ◯ D)] [Res_CreatesLimit], cannot stated at
+ shape, while [Res] can (control above) （已译） *)
 Fail Check (@Eval Pw Xw).
 
 End Wide.

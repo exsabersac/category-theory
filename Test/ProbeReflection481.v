@@ -28,7 +28,7 @@ Generalizable All Variables.
 Fail Check p481_absent_name.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Mac Lane's definition, and Exercise 1 read off creation *)
+(* * ** Mac Lane's 定义, Exercise 1 read off creation （已译） *)
 
 Section Readbacks.
 
@@ -41,8 +41,7 @@ Example p481_c1_definition :
     = (∀ N : Cocone K, IsColimitCocone (FCocone F N) → IsColimitCocone N)
   := eq_refl.
 
-(* C2: Exercise 1 at cone level is the reflection field of the creation,
-   the image cocone read over F^op ◯ K^op. *)
+(* 相关说明。 （已译） *)
 Example p481_c2_exercise1 (CR : CreatesColimit K F) :
   creates_reflects_colimits CR
     = fun N H => @creates_reflect (J^op) (C^op) (D^op) (K^op) (F^op) CR N
@@ -53,13 +52,12 @@ Example p481_c2_exercise1 (CR : CreatesColimit K F) :
 Fail Definition p481_r1_op (H : ReflectsLimitCone (K^op) (F^op)) :
   ReflectsColimitCocone K F := H.
 
-(* C3: the two predicates are one apart, through islimitcone_op_comp. *)
+(* 相关说明。 （已译） *)
 Definition p481_c3_op (H : ReflectsLimitCone (K^op) (F^op)) :
   ReflectsColimitCocone K F :=
   fun N HN => H N (islimitcone_op_comp HN).
 
-(* C4: Riehl's Exercise 3.4.iii lifts every limiting cone downstairs to
-   the given limit upstairs, on the nose. *)
+(* 相关说明。 （已译） *)
 Example p481_c4_lift (L : Limit K) (P : PreservesLimitCone K F)
   (R : ReflectsIsos F) (N : Cone (F ◯ K)) (HN : IsLimitCone N) :
   creates_lift (CreatesLimit := preserves_conservative_creates_limit L P R)
@@ -67,8 +65,8 @@ Example p481_c4_lift (L : Limit K) (P : PreservesLimitCone K F)
 
 End Readbacks.
 
-(* C5: Exercise 3 is the cone-level theorem at the walking parallel pair,
-   read back through the bridges. *)
+(* C5: Exercise 3 cone-level 定理 at walking parallel pair,
+ read back through bridges. （已译） *)
 Example p481_c5_exercise3 {C D : Category} {F : C ⟶ D}
   (HC : HasCoequalizers C) (P : PreservesCoequalizers F)
   (R : ReflectsIsos F) :
@@ -79,8 +77,8 @@ Example p481_c5_exercise3 {C D : Category} {F : C ⟶ D}
            (PreservesCoequalizers_PreservesColimitCocones P) R)
   := eq_refl.
 
-(* C17: Exercise 1 over every diagram of parallel-pair shape is the
-   per-pair theorem at the restriction of its hypothesis. *)
+(* C17: Exercise 1 over every diagram parallel-pair shape the
+ per-pair 定理 at restriction 假设. （已译） *)
 Example p481_c17_exercise1_restriction {C D : Category} {F : C ⟶ D}
   (CR : CreatesCoequalizers F) :
   creates_reflects_coequalizers CR
@@ -88,16 +86,16 @@ Example p481_c17_exercise1_restriction {C D : Category} {F : C ⟶ D}
   := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** A class of shapes is the class of all diagrams of those shapes *)
+(* 相关说明。 （已译） *)
 
-(* C23: from the class of shapes S to the class of diagrams
-   [fun J _ => S J] and back is the identity ... *)
+(* C23: class shapes S class diagrams
+ [fun J _ => S J] back 恒等 ... （已译） *)
 Example p481_c23_over_class_over {C D : Category} {S : Category → Type}
   {F : C ⟶ D} (H : ReflectsLimitConesOver S F) :
   ReflectsLimitConesOfClass_Over (ReflectsLimitConesOver_OfClass H) = H
   := eq_refl.
 
-(* C24: ... and so is the round trip from [fun J _ => S J]. *)
+(* 相关说明。 （已译） *)
 Example p481_c24_class_over_class {C D : Category} {S : Category → Type}
   {F : C ⟶ D} (H : ReflectsLimitConesOfClass (fun J _ => S J) F) :
   ReflectsLimitConesOver_OfClass (ReflectsLimitConesOfClass_Over H) = H
@@ -118,9 +116,9 @@ Example p481_c26_colimit_class_over_class {C D : Category}
     = H
   := eq_refl.
 
-(* C27: a conservative functor's reflection over a class of shapes is its
-   reflection over the class of diagrams [fun J _ => S J], through the
-   map. *)
+(* C27: conservative 函子's reflection over class shapes its
+ reflection over class diagrams [fun J _ => S J], through the
+ map. （已译） *)
 Example p481_c27_reflects_over_is_class {C D : Category}
   {S : Category → Type} {F : C ⟶ D}
   (HL : ∀ J : Category, S J → ∀ K : J ⟶ C, Limit K)
@@ -143,8 +141,7 @@ Example p481_c28_reflects_colimits_over_is_class {C D : Category}
            (fun J K HJ => HL J HJ K) (fun J K HJ => P J HJ K) R)
   := eq_refl.
 
-(* C29: Riehl's Exercise 3.4.iii over a class of shapes is the exercise
-   over the class of diagrams [fun J _ => S J], pointwise. *)
+(* 相关说明。 （已译） *)
 Example p481_c29_creates_over_is_class {C D : Category}
   {S : Category → Type} {F : C ⟶ D}
   (HL : ∀ J : Category, S J → ∀ K : J ⟶ C, Limit K)
@@ -156,7 +153,7 @@ Example p481_c29_creates_over_is_class {C D : Category}
   := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Universes: the hom level of the target *)
+(* 相关说明。 （已译） *)
 
 (* C6: the elementary reflection of coequalizers, over a target whose hom
    level is strictly above C's. *)
@@ -164,7 +161,7 @@ Definition p481_c6_reflects_above@{co ch do dh + | ch < dh +}
   {C : Category@{co ch ch}} {D : Category@{do dh dh}} (F : C ⟶ D) : Type :=
   ReflectsCoequalizers F.
 
-(* C7: and the elementary preservation. *)
+(* 相关说明。 （已译） *)
 Definition p481_c7_preserves_above@{co ch do dh + | ch < dh +}
   {C : Category@{co ch ch}} {D : Category@{do dh dh}} (F : C ⟶ D) : Type :=
   PreservesCoequalizers F.
@@ -187,7 +184,7 @@ Definition p481_c19_conservative_above@{co ch do dh + | ch < dh +}
   {C : Category@{co ch ch}} {D : Category@{do dh dh}} (F : C ⟶ D) : Type :=
   p481_c18_ReflectsIsos F.
 
-(* C20: ... and, at one hom level, gives the class itself. *)
+(* 相关说明。 （已译） *)
 Definition p481_c20_copy_is_class@{co ch do +}
   {C : Category@{co ch ch}} {D : Category@{do ch ch}} {F : C ⟶ D}
   (R : p481_c18_ReflectsIsos F) : ReflectsIsos F :=
@@ -195,7 +192,7 @@ Definition p481_c20_copy_is_class@{co ch do +}
     (fun x y f I => @p481_c18_reflects_iso C D F R x y f I).
 
 (* ------------------------------------------------------------------------ *)
-(** ** Guard: every constant of the targets, by name *)
+(* * ** Guard: every 常值 targets, name （已译） *)
 
 Check @Category.Structure.Coequalizer.parallel_cocone_coequalizer_colimit.
 Check @Category.Structure.Limit.Reflection.ReflectsLimitConesOfShape.
@@ -255,7 +252,7 @@ Check @Category.Structure.Limit.Reflection.creates_reflects_coequalizers.
 Check @Category.Structure.Limit.Reflection.conservative_reflects_coequalizers.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Riehl's Lemma 3.4.5: full and faithful functors *)
+(* * ** Riehl's Lemma 3.4.5: 全忠实 函子 （已译） *)
 
 (*
    本节说明（余）极限、等价相关定义、性质与动机。
@@ -286,7 +283,7 @@ Definition p481_c8_ff_all_limits : ReflectsAllLimits F :=
 Definition p481_c9_ff_all_colimits : ReflectsAllColimits F :=
   fun J K => ff_ReflectsColimitCocone K.
 
-(* C10: the limit half is [ff_reflect_ump] with the legs by reflexivity. *)
+(* 相关说明。 （已译） *)
 Example p481_c10_ff_readback {J : Category} (K : J ⟶ C) :
   ff_ReflectsLimitCone K
     = fun N H => @ff_reflect_ump C D F HF HfF J K N (limitcone_isalimit H)
@@ -296,7 +293,7 @@ Example p481_c10_ff_readback {J : Category} (K : J ⟶ C) :
 End FullFaithful.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Left adjoints preserve coequalizers, in one line *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -309,10 +306,9 @@ Definition p481_c21_left_adjoint_preserves {C D : Category}
     (fun K => left_adjoint_PreservesColimitCocone A K).
 
 (* ------------------------------------------------------------------------ *)
-(** ** A class of shapes: all finite shapes *)
+(* 相关说明。 （已译） *)
 
-(* Required here, after every other command above: the import list of
-   Structure/Limit/Finite.v and that module. *)
+(* 相关说明。 （已译） *)
 Require Import Category.Theory.Morphisms.
 Require Import Category.Construction.Quotient.
 Require Import Category.Structure.Terminal.
@@ -349,11 +345,9 @@ Definition p481_c12_finite_creates {C D : Category} {F : C ⟶ D}
   preserves_conservative_creates_limits_over FiniteCategory HL P R.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Exercise 3's conservativity is needed: the functor to the point *)
+(* * ** Exercise 3's conservativity needed: 函子 point （已译） *)
 
-(* Required here, after every other command above: the import lists of
-   Instance/One.v, Instance/Sets.v, Instance/Sets/Quotient.v and
-   Instance/Sets/Coequalizer.v, and those modules. *)
+(* 相关说明。 （已译） *)
 Require Import Category.Instance.Cat.
 Require Import Category.Instance.One.
 Require Import Category.Structure.Monoidal.
@@ -379,11 +373,11 @@ Proof.
     + intros v _; destruct v; reflexivity.
 Defined.
 
-(* C14: so the functor from Sets to the point preserves coequalizers. *)
+(* C14: so 函子 Sets point preserves coequalizers. （已译） *)
 Definition p481_c14_erase_preserves : PreservesCoequalizers (Erase Sets) :=
   fun x y f g q e _ => p481_c13_point_coequalizer _ _ _ _.
 
-(* The two-element setoid, and its map onto the singleton. *)
+(* 相关说明。 （已译） *)
 Definition p481_bool : SetoidObject :=
   {| carrier := bool; is_setoid := eq_Setoid bool |}.
 
@@ -415,16 +409,16 @@ Proof.
   discriminate.
 Qed.
 
-(* C16: Sets has coequalizers and the functor preserves them, so by
-   Exercise 3 it is not conservative. *)
+(* C16: Sets has coequalizers 函子 preserves them, so by
+ Exercise 3 it not conservative. （已译） *)
 Definition p481_c16_erase_not_conservative :
   ReflectsIsos (Erase Sets) → False :=
   fun R => p481_c15_erase_not_reflects
              (conservative_reflects_coequalizers Sets_HasCoequalizers
                 p481_c14_erase_preserves R).
 
-(* C22: the three hypotheses of Exercise 3 hold together at the identity
-   on Sets, which therefore reflects coequalizers. *)
+(* C22: three hypotheses Exercise 3 hold together at 恒等
+ Sets, therefore reflects coequalizers. （已译） *)
 Definition p481_c22_identity_reflects : ReflectsCoequalizers (@Id Sets) :=
   @conservative_reflects_coequalizers Sets Sets (@Id Sets)
     Sets_HasCoequalizers (fun x y f g q e E => E)

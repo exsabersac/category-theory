@@ -43,9 +43,9 @@ Fail Example p466_instrument@{o} {X : SetoidObject@{o o}} (x y : carrier X) :
   Powerset_Prop_pair@{o} x y = Powerset_Prop_pair@{o} y x := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Sets/Powerset/Monad.v: the data *)
+(* 相关说明。 （已译） *)
 
-(* Controls: η is #227's singleton transformation and μ is the union. *)
+(* 相关说明。 （已译） *)
 Example p466_ret@{o so} (X : SetoidObject@{o o}) :
   @ret _ _ Powerset_Monad@{o so} X
     = transform[Powerset_Prop_Singleton@{o so}] X := eq_refl.
@@ -54,7 +54,7 @@ Example p466_join@{o so} (X : SetoidObject@{o o}) :
   @join _ _ Powerset_Monad@{o so} X = @Powerset_union@{o} X := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Sets/Powerset/Monad.v: the laws, at ≈ and not at eq_refl *)
+(* 相关说明。 （已译） *)
 
 (* Control: associativity at ≈. *)
 Example p466_assoc_ctl@{o} {X : SetoidObject@{o o}}
@@ -140,7 +140,7 @@ Fail Example p466_join_natural_fun@{o so} {X Y : SetoidObject@{o o}}
   := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Sets/Powerset/Monad.v: the proof-relevant carrier *)
+(* * ** Instance/Sets/Powerset/Monad.v: 证明-relevant carrier （已译） *)
 
 (* Control: the Prop-valued carrier's monad statement is formable. *)
 Definition p466_prop_statement@{so o} : Type@{so} :=
@@ -151,9 +151,9 @@ Fail Definition p466_relevant_statement@{o so sso} : Type@{sso} :=
   @Monad Sets@{o so} Powerset@{o so sso}.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/SupLat.v: the round trip semilattice → algebra → semilattice *)
+(* 相关说明。 （已译） *)
 
-(* Controls: the carrier and the sup, at [eq_refl]; the order, logically. *)
+(* 相关说明。 （已译） *)
 Example p466_rt_set@{o so} (A : SupLatObject@{o}) :
   sl_set (fobj[EM_to_SupLat@{o so} ◯ SupLat_to_EM@{o so}] A) = sl_set A
   := eq_refl.
@@ -197,10 +197,10 @@ Fail Example p466_rt_hom@{o so} (A B : SupLatObject@{o})
   fmap[EM_to_SupLat@{o so} ◯ SupLat_to_EM@{o so}] f = f := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/SupLat.v: the round trip algebra → semilattice → algebra *)
+(* 相关说明。 （已译） *)
 
-(* Controls: the carrier and the structure map, at [eq_refl], at a
-   variable object and at a named algebra. *)
+(* Controls: carrier structure map, at [eq_refl], at a
+ variable 对象 at named algebra. （已译） *)
 Example p466_rt2_carrier@{o so}
   (x : @EilenbergMoore@{so so so o} Sets@{o so} Powerset_Prop@{o so}
          Powerset_Monad@{o so}) :
@@ -257,11 +257,11 @@ Fail Example p466_alg_rt@{o so} {X : SetoidObject@{o o}}
   SupLat_TAlgebra@{o so} (TAlgebra_SupLat@{o so} α) = α := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Variant L: two redundant law fields (scout B's t5) *)
+(* 相关说明。 （已译） *)
 
-(* The order-first record with the two algebra laws of the sup added as
-   fields; not adopted, since the record is then no longer Mac Lane's
-   definition. *)
+(* The order-first record two algebra laws sup added as
+ fields; not adopted, since record then no longer Mac Lane's
+ 定义. （已译） *)
 Record p466_SupLatObjectL@{o} := {
   p466_sll_set : SetoidObject@{o o};
   p466_sll_le : carrier p466_sll_set → carrier p466_sll_set → Prop;
@@ -307,8 +307,8 @@ Definition p466_TAlgebra_L@{o so} {X : SetoidObject@{o o}}
     t_alg[α] (talg_sup_ub@{o so} α) (talg_sup_least@{o so} α)
     (@t_id _ _ _ _ α) (@t_action _ _ _ _ α).
 
-(* Controls: variant L's algebra round trip holds on the whole algebra,
-   and on the whole EM object written (X; α). *)
+(* Controls: variant L's algebra round trip holds whole algebra,
+ whole EM 对象 written (X; α). （已译） *)
 Example p466_L_alg_rt@{o so} {X : SetoidObject@{o o}}
   (α : @TAlgebra Sets@{o so} Powerset_Prop@{o so} Powerset_Monad@{o so} X) :
   p466_L_TAlgebra@{o so} (p466_TAlgebra_L@{o so} α) = α := eq_refl.
@@ -340,10 +340,9 @@ Fail Example p466_L_le_rt@{o so} (A : p466_SupLatObjectL@{o}) :
     = p466_sll_le A := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Variant A: the sup as a bare function *)
+(* 相关说明。 （已译） *)
 
-(* The properness of a sup, derived from the order.  Transparent, so that
-   the comparison below is not stopped by opacity. *)
+(* 相关说明。 （已译） *)
 Definition p466_sup_respects@{o} (A : SupLatObject@{o})
   (S T : carrier (Powerset_Prop_obj@{o} (sl_set A))) (E : S ≈ T) :
   @equiv _ (is_setoid (sl_set A)) (sl_sup A S) (sl_sup A T).
@@ -369,8 +368,7 @@ Fail Example p466_varA_whole@{o} (A : SupLatObject@{o}) :
 (* ------------------------------------------------------------------------ *)
 (** ** A Type-valued order *)
 
-(* Control: with a Prop-valued order the unit law's inequality is formable
-   (the order of [TAlgebra_SupLat], by [talg_sup_least]'s shape). *)
+(* 相关说明。 （已译） *)
 Example p466_proporder_unit@{o} (A : SupLatObject@{o})
   (x : carrier (sl_set A)) :
   ∀ z, Powerset_Prop_singleton_pred@{o} x z → sl_le A z x :=
@@ -394,9 +392,9 @@ Fail Definition p466_typeorder_unit (x : carrier X) :
 End TypeOrder.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/SupLat/Free.v: the induced monad against [Powerset_Monad] *)
+(* * ** Instance/SupLat/Free.v: induced 单子 against [Powerset_Monad] （已译） *)
 
-(* Controls: the object and arrow maps of the composite, as functions. *)
+(* Controls: 对象 arrow maps 复合, functions. （已译） *)
 Example p466_ind_obj_fun@{o so} :
   (fun X => fobj[SL_Forget@{o so} ◯ SL_Free@{o so}] X)
     = (fun X => fobj[Powerset_Prop@{o so}] X) := eq_refl.
@@ -411,8 +409,8 @@ Example p466_ind_ret_fun@{o so} (X : SetoidObject@{o o}) :
   (fun x => @ret _ _ SL_induced@{o so} X x)
     = (fun x => @ret _ _ Powerset_Monad@{o so} X x) := eq_refl.
 
-(* Control: the induced unit IS the identity composed with #227's
-   singleton map. *)
+(* Control: induced unit IS 恒等 composed #227's
+ singleton map. （已译） *)
 Example p466_ind_ret_compose@{o so} (X : SetoidObject@{o o}) :
   @ret _ _ SL_induced@{o so} X
     = @setoid_morphism_compose@{o o o} _ _ _
@@ -457,8 +455,8 @@ Example p466_ind_join_equiv@{o so} (X : SetoidObject@{o o}) :
 Fail Example p466_ind_functor@{o so} :
   SL_Forget@{o so} ◯ SL_Free@{o so} = Powerset_Prop@{o so} := eq_refl.
 
-(* Controls: the functor at ≈, with the identity isomorphism as its
-   component. *)
+(* Controls: 函子 at ≈, 恒等 同构 its
+ component. （已译） *)
 Example p466_ind_functor_equiv@{o so} :
   SL_Forget@{o so} ◯ SL_Free@{o so} ≈ Powerset_Prop@{o so} :=
   SL_induced_functor_equiv@{o so}.
@@ -473,9 +471,9 @@ Fail Definition p466_ind_monad@{o so} :
   Powerset_Monad@{o so}.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/SupLat/Free.v: the comparison round trips *)
+(* 相关说明。 （已译） *)
 
-(* Controls: identity components at a variable object, and the carrier. *)
+(* Controls: 恒等 components at variable 对象, carrier. （已译） *)
 Example p466_cmp_counit_component@{o so}
   (x : @EilenbergMoore@{so so so o} Sets@{o so}
          (SL_Forget@{o so} ◯ SL_Free@{o so}) SL_induced@{o so}) :
@@ -516,10 +514,10 @@ Fail Example p466_cmp_obj_b@{o so}
   := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/SupLat/Examples.v: P X and P 1 *)
+(* 相关说明。 （已译） *)
 
-(* Controls: (b) at the free algebra has the carrier and the sup of
-   [FreeSL X], and its order is inclusion logically. *)
+(* Controls: (b) at free algebra has carrier sup of
+ [FreeSL X], order 含入 logically. （已译） *)
 Example p466_freesl_em_set@{o so} (X : SetoidObject@{o o}) :
   sl_set (fobj[EM_to_SupLat@{o so}]
             (fobj[@EM_Free Sets@{o so} Powerset_Prop@{o so}
@@ -572,7 +570,7 @@ Fail Example p466_freealg_obj@{o so} (X : SetoidObject@{o o}) :
     = fobj[@EM_Free Sets@{o so} Powerset_Prop@{o so} Powerset_Monad@{o so}] X
   := eq_refl.
 
-(* Controls: the P 1 round trip at the point, and the Prop round trip. *)
+(* 相关说明。 （已译） *)
 Example p466_prop_p1_rt_at@{o}
   (T : carrier (Powerset_Prop_obj@{o} unit_setoid_object@{o o})) :
   slh_map Prop_to_P1@{o} (slh_map P1_to_Prop@{o} T) ttt = T ttt := eq_refl.
@@ -600,16 +598,16 @@ Example p466_chain_carrier@{o}
   sl_set (bool_SupLat@{o} wlem) = bool_setoid_object@{o o} := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Sets/Powerset/Monad/Riehl.v: the routes prove the field *)
+(* 相关说明。 （已译） *)
 
-(* Control: Riehl's route through the left adjoint proves the statement of
-   [Powerset_Monad]'s naturality field, as stated. *)
+(* Control: Riehl's route through 左伴随 proves statement of
+ [Powerset_Monad]'s 自然性 field, stated. （已译） *)
 Definition p466_riehl_lapc@{o so} {X Y : SetoidObject@{o o}}
   (f : X ~{Sets@{o so}}~> Y) : Powerset_join_natural_statement@{o so} f :=
   fun SS => join_natural_via_LAPC f SS.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Closure: readbacks, not refutations *)
+(* 相关说明。 （已译） *)
 
 Print Assumptions Powerset_Monad.
 Print Assumptions SupLat_EM_iso.
@@ -626,7 +624,7 @@ Print Assumptions Prop_P1_iso.
 Print Assumptions join_natural_routes_agree.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Guard: every constant of the five targets, by its full name *)
+(* * ** Guard: every 常值 five targets, full name （已译） *)
 
 Check @Category.Instance.Sets.Powerset.Monad.Powerset_union_pred.
 Check @Category.Instance.Sets.Powerset.Monad.Powerset_union_respects.

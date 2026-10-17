@@ -8,16 +8,16 @@ Require Import Category.Theory.Category.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* An object of the syntax is just an index into the ambient [objs] list. *)
+(* An 对象 syntax just index 进入 ambient [objs] list. （已译） *)
 Definition Obj := nat.
 
-(* Resolve an object index to a concrete object of [C], falling back to the
-   default [d] when the index is out of range (so the lookup is total). *)
+(* Resolve 对象 index concrete 对象 [C], falling back the
+ default [d] index out range (so lookup total). （已译） *)
 Definition objD' {C : Category} (d : C) (objs : list C) (n : Obj) :=
   List.nth n objs d.
 
-(* The hom-set type a morphism variable of typing [(dom, cod)] must inhabit;
-   used below as the index family [B] of the heterogeneous [arrs]. *)
+(* The hom-set type 态射 variable typing [(dom, cod)] must inhabit;
+ used below index family [B] heterogeneous [arrs]. （已译） *)
 Definition arrD' {C : Category} (d : C) (objs : list C) '(dom, cod) :=
   objD' d objs dom ~> objD' d objs cod.
 

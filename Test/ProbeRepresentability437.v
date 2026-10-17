@@ -38,20 +38,20 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe437_absent_name.
 
-(** ** A: CONVERSION — Definition 3 against the hom-shaped solution set *)
+(* 相关说明。 （已译） *)
 
-(* control: the two passages, and the index kept on the nose *)
+(* 相关说明。 （已译） *)
 Check (fun (C : Category) (K : C ⟶ Sets) => @sols_of_esols C K).
 Check (fun (C : Category) (K : C ⟶ Sets) => @esols_of_sols C K).
 
 Example p437_index (C : Category) (K : C ⟶ Sets) (E : ElementSolutionSet K) :
   sol_index (sols_of_esols K E) = esol_index E := eq_refl.
 
-(* N1 CONVERSION: the two records are not the same type *)
+(* 相关说明。 （已译） *)
 Fail Example p437_same_record (C : Category) (K : C ⟶ Sets) :
   ElementSolutionSet K = SolutionSet K SetsOne := eq_refl.
 
-(* control: [HomAfter K 1] IS the composite with the points functor *)
+(* control: [HomAfter K 1] IS 复合 points 函子 （已译） *)
 Example p437_homafter (C : Category) (K : C ⟶ Sets) :
   HomAfter K SetsOne = Compose (fobj[Curried_Hom Sets] SetsOne) K := eq_refl.
 
@@ -59,15 +59,14 @@ Example p437_homafter (C : Category) (K : C ⟶ Sets) :
 Fail Example p437_homafter_is_K (C : Category) (K : C ⟶ Sets) :
   HomAfter K SetsOne = K := eq_refl.
 
-(** ** B: TYPING — the preservation class, and the copower index *)
+(* 相关说明。 （已译） *)
 
 (* control: the theorem at its stated hypotheses *)
 Check (fun (C : Category) (K : C ⟶ Sets) (comp : @Complete C)
            (cont : @PreservesImageLimit C Sets K) (E : ElementSolutionSet K) =>
          representability_theorem K comp cont E).
 
-(* N3 TYPING: the apex-only class does not ascribe where the cone-level one
-   is asked for *)
+(* 相关说明。 （已译） *)
 Fail Check (fun (C : Category) (K : C ⟶ Sets) (comp : @Complete C)
                 (cont : @PreservesAllLimits C Sets K)
                 (E : ElementSolutionSet K) =>
@@ -76,14 +75,13 @@ Fail Check (fun (C : Category) (K : C ⟶ Sets) (comp : @Complete C)
 (* control: the copower hypothesis, indexed by an object of [Sets] *)
 Check (fun (C : Category) => HasSetsCopowers C).
 
-(* N5 TYPING: a [Type]-indexed family — the shape the tree's copowers have
-   — is not a [HasSetsCopowers] *)
+(* 相关说明。 （已译） *)
 Fail Definition p437_type_copowers (C : Category)
   (cop : ∀ (b : C) (X : Type),
       Representable (HomAfter (fobj[@Curried_Hom C] b) X))
   : HasSetsCopowers C := cop.
 
-(** ** C: UNIVERSE — the theorem inherits GAFT's pin *)
+(* * ** C: UNIVERSE — 定理 inherits GAFT's pin （已译） *)
 
 Section Formability.
 
@@ -92,11 +90,11 @@ Constraint sh < sp.
 
 Context (Cu : Category@{so sh sp}).
 
-(* control: the category itself is formable, and so are its homs *)
+(* control: 范畴 itself formable, so homs （已译） *)
 Check (@hom Cu).
 
-(* N4 UNIVERSE: the theorem's comma-initial step identifies hom with proof,
-   so it cannot be read at [Cu] *)
+(* N4 UNIVERSE: 定理's comma-initial step identifies hom 证明,
+ so it cannot read at [Cu] （已译） *)
 Fail Check (fun (K : Cu ⟶ Sets) (comp : @Complete Cu)
                 (cont : @PreservesImageLimit Cu Sets K)
                 (E : ElementSolutionSet K) =>

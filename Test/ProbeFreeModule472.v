@@ -51,9 +51,9 @@ Local Notation ZKA := (EM_Comparison free_ab_adjunction).
 Fail Check p472_absent_name.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Mod/Free.v: the adjunction in hom-set form *)
+(* * ** Instance/Mod/Free.v: 伴随 hom-set form （已译） *)
 
-(* C1: the counit of the hom-set form is the fold of the identity. *)
+(* C1: counit hom-set form fold 恒等. （已译） *)
 Example p472_c1_hom_counit (R : RingObject) (W : RMod R)
   (t : @FVTerm R (RMod_Forget R W)) :
   cmon_map (rm_hom (@counit _ _ _ _ (free_module_adjunction_hom R) W)) t
@@ -90,7 +90,7 @@ Fail Example p472_r2_counits (R : RingObject) (W : RMod R)
   := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The monad of the universal-arrow adjunction (route A) *)
+(* * ** The 单子 universal-arrow 伴随 (route A) （已译） *)
 
 (* C5: its μ is U ε F too, at [eq_refl]... *)
 Example p472_c5_routeA_join_counit (R : RingObject) (X : Sets) :
@@ -99,7 +99,7 @@ Example p472_c5_routeA_join_counit (R : RingObject) (X : Sets) :
         (@counit _ _ _ _ (free_module_adjunction R) (FreeMod R X))
   := eq_refl.
 
-(* C6: ...and the flattening up to ≈. *)
+(* 相关说明。 （已译） *)
 Definition p472_c6_routeA_join_equiv (R : RingObject) (X : Sets)
   (k : @FVTerm R (RMod_Forget R (FreeModObject X))) :
   @join _ _ (TRA R) X k ≈ fv_flatten R k :=
@@ -150,7 +150,7 @@ Fail Example p472_r8_routeA_K_alg_gen (R : RingObject) (M : RMod R)
   t_alg[projT2 (fobj[KA R] M)] (fv_gen x) = x := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Mod/FreeMonad.v: the monad T_R *)
+(* * ** Instance/Mod/FreeMonad.v: 单子 T_R （已译） *)
 
 (* C9: T_R X is the free module's setoid... *)
 Example p472_c9_TR_obj (R : RingObject) (X : Sets) :
@@ -180,7 +180,7 @@ Example p472_c14_TR_join_gen (R : RingObject) (X : Sets) (t : @FVTerm R X) :
   @join _ _ (FreeModMonad R) X
     (@fv_gen R (RMod_Forget R (FreeModObject X)) t) = t := eq_refl.
 
-(* C15: μ is the fold of the identity at a variable combination. *)
+(* C15: μ fold 恒等 at variable combination. （已译） *)
 Example p472_c15_TR_join_fun (R : RingObject) (X : Sets)
   (k : @FVTerm R (RMod_Forget R (FreeModObject X))) :
   @join _ _ (FreeModMonad R) X k
@@ -220,7 +220,7 @@ Fail Example p472_r11_TR_map_zero (R : RingObject) {X Y : Sets}
   fmap[FreeModF R] u fv_zero = fv_zero := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Part (a): the list form and the coefficients *)
+(* 相关说明。 （已译） *)
 
 (* C19: the relabelling of a combination relabels each pair (Leibniz). *)
 Definition p472_c19_relabel_lc (R : RingObject) {X Y : Sets}
@@ -228,8 +228,7 @@ Definition p472_c19_relabel_lc (R : RingObject) {X Y : Sets}
   fv_relabel R u (fv_lc l) = fv_lc (fv_lc_map R u l) :=
   fv_relabel_lc R u l.
 
-(* C20: the coefficient of x in μ k is the extension of f ↦ f_x at k, a
-   Leibniz equation. *)
+(* 相关说明。 （已译） *)
 Definition p472_c20_coef_join (R : RingObject) {X : Sets}
   (Xdec : ∀ x y : carrier X, (x ≈ y) + ((x ≈ y) → False))
   (x : carrier X) (k : @FVTerm R (RMod_Forget R (FreeModObject X))) :
@@ -279,7 +278,7 @@ Example p472_c24_coef_Z_join :
           (@fv_gen Int_Ring (RMod_Forget Int_Ring (FreeModObject TwoGens))
              (@fv_gen Int_Ring TwoGens true)))) = 4%Z := eq_refl.
 
-(* C25: from ∘ to is the identity on combinations up to ≈ ... *)
+(* C25: ∘ 恒等 combinations up ≈ ... （已译） *)
 Definition p472_c25_finsupp_from_to (R : RingObject) (X : Sets)
   (Xdec : ∀ x y : carrier X, (x ≈ y) + ((x ≈ y) → False))
   (t : @FVTerm R X) :
@@ -299,7 +298,7 @@ Example p472_c27_finsupp_iso_coef (R : RingObject) (X : Sets)
   fs_fun R X (to (TR_FinSupp_iso R X Xdec) t) y = fv_coef R Xdec y t
   := eq_refl.
 
-(* C28: ...and back, Σ f(y)·e_y over the support, duplicates removed. *)
+(* 相关说明。 （已译） *)
 Example p472_c28_finsupp_iso_from (R : RingObject) (X : Sets)
   (Xdec : ∀ x y : carrier X, (x ≈ y) + ((x ≈ y) → False))
   (f : FinSupp R X) :
@@ -314,7 +313,7 @@ Fail Example p472_r13_finsupp_from_to (R : RingObject) (X : Sets)
   from_finsupp R X Xdec (to_finsupp R X Xdec t) = t := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Part (b): the direct verification *)
+(* 相关说明。 （已译） *)
 
 (* C29: its unit is T_R's... *)
 Example p472_c29_direct_ret (R : RingObject) (X : Sets) :
@@ -340,7 +339,7 @@ Example p472_c33_direct_map_gen (R : RingObject) {X Y : Sets}
   (u : X ~{Sets}~> Y) (x : carrier X) :
   fmap[FreeModF_direct R] u (fv_gen x) = fv_gen (u x) := eq_refl.
 
-(* C34: the two endofunctors are naturally isomorphic. *)
+(* 相关说明。 （已译） *)
 Definition p472_c34_direct_iso (R : RingObject) :
   FreeModF_direct R ≈ FreeModF R := FreeModF_direct_iso R.
 
@@ -356,14 +355,14 @@ Fail Example p472_r14_direct_map_is_TR (R : RingObject) {X Y : Sets}
   fmap[FreeModF_direct R] u = fmap[FreeModF R] u := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Part (c): the comparison K and R-Mod ≅ Set^{T_R} *)
+(* 相关说明。 （已译） *)
 
 (* C36: the leg [to] of [RMod_EM_iso] is K... *)
 Example p472_c36_iso_to (R : RingObject) :
   to (RMod_EM_iso R) = EM_Comparison (free_module_adjunction_hom R)
   := eq_refl.
 
-(* C37: ...and the leg [from] is [EM_to_RModS]. *)
+(* 相关说明。 （已译） *)
 Example p472_c37_iso_from (R : RingObject) :
   from (RMod_EM_iso R) = EM_to_RModS R := eq_refl.
 
@@ -382,7 +381,7 @@ Example p472_c40_K_alg (R : RingObject) (M : RMod R) :
     = fmap[RMod_Forget R] (@counit _ _ _ _ (free_module_adjunction_hom R) M)
   := eq_refl.
 
-(* C41: ...whose value is the fold of the identity... *)
+(* C41: ...whose value fold 恒等... （已译） *)
 Example p472_c41_K_alg_fun (R : RingObject) (M : RMod R)
   (t : @FVTerm R (RMod_Forget R M)) :
   t_alg[`2 (fobj[RMod_K R] M)] t = fv_eval (@id Sets (RMod_Forget R M)) t
@@ -414,7 +413,7 @@ Example p472_c46_K_alg_smul (R : RingObject) (M : RMod R)
   t_alg[`2 (fobj[RMod_K R] M)] (fv_smul r (fv_gen x)) = rm_smul M r x
   := eq_refl.
 
-(* C47: ...and Σ rᵢ·⟨xᵢ⟩ to the fold of the identity there. *)
+(* C47: ...and Σ rᵢ·⟨xᵢ⟩ fold 恒等 there. （已译） *)
 Example p472_c47_K_alg_lc (R : RingObject) (M : RMod R)
   (l : list (fv_pair R (RMod_Forget R M))) :
   t_alg[`2 (fobj[RMod_K R] M)] (fv_lc l)
@@ -454,7 +453,7 @@ Example p472_c54_EM_prop (R : RingObject) (x : TRAlg R) (a b : `1 x) :
   @pequiv _ _ (cmon_prop (fobj[EM_to_RModS R] x)) a b
     = @fv_eq R (`1 x) (fv_gen a) (fv_gen b) := eq_refl.
 
-(* C55: the module round trip keeps the carrier... *)
+(* 相关说明。 （已译） *)
 Example p472_c55_RMod_rt_carrier (R : RingObject) (M : RMod R) :
   cmon_setoid (fobj[EM_to_RModS R ◯ RMod_K R] M) = cmon_setoid M
   := eq_refl.
@@ -489,11 +488,11 @@ Fail Example p472_r15_RMod_rt_prop (R : RingObject) (M : RMod R) :
 Fail Example p472_r16_RMod_rt_obj (R : RingObject) (M : RMod R) :
   fobj[EM_to_RModS R ◯ RMod_K R] M = M := eq_refl.
 
-(* C61: the algebra round trip keeps the carrier... *)
+(* 相关说明。 （已译） *)
 Example p472_c61_TRAlg_rt_carrier (R : RingObject) (x : TRAlg R) :
   `1 (fobj[RMod_K R ◯ EM_to_RModS R] x) = `1 x := eq_refl.
 
-(* C62: ...its structure map is the fold in the derived module... *)
+(* 相关说明。 （已译） *)
 Example p472_c62_TRAlg_rt_alg_fun (R : RingObject) (x : TRAlg R)
   (t : @FVTerm R (`1 x)) :
   t_alg[`2 (fobj[RMod_K R ◯ EM_to_RModS R] x)] t
@@ -539,7 +538,7 @@ Example p472_c66_from_to_component (R : RingObject) (M : RMod R) :
    cmon_map (rm_hom (from (`1 (iso_from_to (RMod_EM_iso R)) M))))
     = (@id Sets (RMod_Forget R M), @id Sets (RMod_Forget R M)) := eq_refl.
 
-(* C67: the counit of the equivalence has identity components... *)
+(* C67: counit 等价 has 恒等 components... （已译） *)
 Example p472_c67_equiv_counit_component (R : RingObject) (x : TRAlg R) :
   (t_alg_hom[to (`1 (@equivalence_counit _ _ _ (RMod_EM_equivalence R)) x)],
    t_alg_hom[from (`1 (@equivalence_counit _ _ _ (RMod_EM_equivalence R))
@@ -554,8 +553,8 @@ Example p472_c68_equiv_unit_component (R : RingObject) (M : RMod R) :
                                  (RMod_EM_equivalence R)) M))))
     = (@id Sets (RMod_Forget R M), @id Sets (RMod_Forget R M)) := eq_refl.
 
-(* C69: through Theory/Equivalence.v's bridge, the component of
-   [iso_to_from] is still the identity... *)
+(* C69: through Theory/Equivalence.v's bridge, component of
+ [iso_to_from] still 恒等... （已译） *)
 Example p472_c69_bridge_to_from (R : RingObject) (x : TRAlg R) :
   t_alg_hom[to (`1 (iso_to_from
                       (Equivalence_to_Cat_Iso (RMod_EM_equivalence R))) x)]
@@ -569,9 +568,9 @@ Fail Example p472_r21_bridge_from_to (R : RingObject) (M : RMod R) :
     = @id Sets (RMod_Forget R M) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Ab/Free.v: the adjunction in hom-set form *)
+(* * ** Instance/Ab/Free.v: 伴随 hom-set form （已译） *)
 
-(* C70: the counit of the hom-set form is the fold of the identity... *)
+(* C70: counit hom-set form fold 恒等... （已译） *)
 Example p472_c70_ab_hom_counit (A : Ab) (t : FATerm (Ab_Forget A)) :
   cmon_map (@counit _ _ _ _ free_ab_adjunction_hom A) t
     = fa_eval (@id Sets (Ab_Forget A)) t := eq_refl.
@@ -617,7 +616,7 @@ Fail Example p472_r25_ab_routeA_K_plus (A : Ab) (a b : carrier (Ab_Forget A)) :
   := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Ab/FreeMonad.v: ℤ[−] and Ab ≅ Set^{ℤ[−]} *)
+(* 相关说明。 （已译） *)
 
 (* C75: ℤ[X] is the free group's setoid... *)
 Example p472_c75_ZM_obj (X : Sets) :
@@ -646,7 +645,7 @@ Example p472_c80_ZM_join_gen (X : Sets) (t : FATerm X) :
   @join _ _ FreeAbMonad X (@fa_gen (Ab_Forget (FreeAbObject X)) t) = t
   := eq_refl.
 
-(* C81: ...μ is the fold of the identity... *)
+(* C81: ...μ fold 恒等... （已译） *)
 Example p472_c81_ZM_join_fun (X : Sets)
   (k : FATerm (Ab_Forget (FreeAbObject X))) :
   @join _ _ FreeAbMonad X k
@@ -669,7 +668,7 @@ Fail Example p472_r26_ZM_map_fun {X Y : Sets} (u : X ~{Sets}~> Y)
 Example p472_c84_ab_iso_to : to Ab_EM_iso = EM_Comparison free_ab_adjunction_hom
   := eq_refl.
 
-(* C85: ...and the leg [from] is [EM_to_AbS]. *)
+(* 相关说明。 （已译） *)
 Example p472_c85_ab_iso_from : from Ab_EM_iso = EM_to_AbS := eq_refl.
 
 (* C86: K G has carrier G... *)
@@ -733,7 +732,7 @@ Example p472_c99_ab_EM_prop (x : ZMAlg) (a b : `1 x) :
   @pequiv _ _ (cmon_prop (fobj[EM_to_AbS] x)) a b
     = @fa_eq (`1 x) (fa_gen a) (fa_gen b) := eq_refl.
 
-(* C100: the group round trip keeps the carrier... *)
+(* 相关说明。 （已译） *)
 Example p472_c100_Ab_rt_carrier (G : Ab) :
   cmon_setoid (fobj[EM_to_AbS ◯ Ab_K] G) = cmon_setoid G := eq_refl.
 
@@ -757,11 +756,11 @@ Example p472_c104_Ab_rt_hom {G H : Ab} (f : G ~{Ab}~> H) :
 Fail Example p472_r27_Ab_rt_obj (G : Ab) :
   fobj[EM_to_AbS ◯ Ab_K] G = G := eq_refl.
 
-(* C105: the algebra round trip keeps the carrier... *)
+(* 相关说明。 （已译） *)
 Example p472_c105_ZMAlg_rt_carrier (x : ZMAlg) :
   `1 (fobj[Ab_K ◯ EM_to_AbS] x) = `1 x := eq_refl.
 
-(* C106: ...its evaluation is the fold in the derived group... *)
+(* 相关说明。 （已译） *)
 Example p472_c106_ZMAlg_rt_alg_fun (x : ZMAlg) (t : FATerm (`1 x)) :
   t_alg[`2 (fobj[Ab_K ◯ EM_to_AbS] x)] t
     = fa_eval (A := zm_alg_ab (`2 x))
@@ -791,7 +790,7 @@ Example p472_c109_ab_from_to_component (G : Ab) :
    cmon_map (from (`1 (iso_from_to Ab_EM_iso) G)))
     = (@id Sets (Ab_Forget G), @id Sets (Ab_Forget G)) := eq_refl.
 
-(* C110: the counit of the equivalence has identity components... *)
+(* C110: counit 等价 has 恒等 components... （已译） *)
 Example p472_c110_ab_equiv_counit_component (x : ZMAlg) :
   (t_alg_hom[to (`1 (@equivalence_counit _ _ _ Ab_EM_equivalence) x)],
    t_alg_hom[from (`1 (@equivalence_counit _ _ _ Ab_EM_equivalence) x)])
@@ -804,7 +803,7 @@ Example p472_c111_ab_equiv_unit_component (G : Ab) :
     = (@id Sets (Ab_Forget G), @id Sets (Ab_Forget G)) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The guard: every constant of the targets *)
+(* * ** The guard: every 常值 targets （已译） *)
 
 Check @Category.Instance.Mod.Free.fv_eval_pointwise.
 Check @Category.Instance.Mod.Free.free_module_hom_iso.

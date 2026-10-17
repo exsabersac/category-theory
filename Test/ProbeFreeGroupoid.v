@@ -23,15 +23,15 @@ Local Open Scope category_scope.
 
 #[local] Existing Instance edgeset.
 
-(** ** Positive controls: the definitional claims *)
+(* 相关说明。 （已译） *)
 
-(* The hom TYPES of the free groupoid and of the free category on the signed
-   quiver agree on the nose: the quotient coarsens the equivalence and
-   nothing else. *)
+(* The hom TYPES free groupoid free 范畴 signed
+ quiver agree nose: quotient coarsens 等价 and
+ nothing else. （已译） *)
 Example control_hom_type (G : Quiver) (x y : G) :
   (x ~{FreeGroupoid G}~> y) = (x ~{FreeSigned G}~> y) := eq_refl.
 
-(* The chosen inverse of the groupoid structure IS word reversal. *)
+(* 相关说明。 （已译） *)
 Example control_ginv_is_reversal (G : Quiver) (x y : G)
   (f : x ~{FreeGroupoid G}~> y) :
   ginv (FreeGroupoid_IsGroupoid G) f = fginv f := eq_refl.
@@ -40,8 +40,8 @@ Example control_ginv_is_reversal (G : Quiver) (x y : G)
 Check (fun (G : Quiver) (x y : G) (f : x ~{FreeGroupoid G}~> y) =>
          fginv_involutive f : fginv (fginv f) = f).
 
-(* The generator clause of the universal property typechecks once the object
-   agreement [Hobj] is in scope, and is then conjugated by [hom_cast]. *)
+(* The generator clause 普遍性质 typechecks once 对象
+ agreement [Hobj] scope, then conjugated [hom_cast]. （已译） *)
 Check (∀ (G : Quiver) (D : Category)
          (F : QuiverHomomorphism G (QuiverOfCat D))
          (K : FreeGroupoid G ⟶ D)
@@ -50,33 +50,31 @@ Check (∀ (G : Quiver) (D : Category)
        hom_cast (Hobj x) (Hobj y) (fmap[K] (fgpos e))
          ≈ @fedgemap _ _ F x y e).
 
-(* The free functor's object part is the word group, definitionally. *)
+(* The free 函子's 对象 part word group, definitionally. （已译） *)
 Example control_FreeGrp_obj (X : Sets) : FreeGrp X = FreeGrpObject X
   := eq_refl.
 
-(* The unit of the adjunction computes to the one-letter word. *)
+(* The unit 伴随 computes one-letter word. （已译） *)
 Example control_unit_computes (X : Sets) (a : carrier X) :
   free_group_unit X a = fg_insert X a := eq_refl.
 
 (* [Deloop] accepts an [Instance/Grp.v] group only through the bridge. *)
 Check (fun H : GrpObject => grp_deloop H).
 
-(** ** Negative probes: these commands MUST fail *)
+(* 相关说明。 （已译） *)
 
-(* The free groupoid is not the free category on the signed quiver: the
-   [homset] fields differ.  (Stripped of [Fail]: "cannot unify".) *)
+(* The free groupoid not free 范畴 signed quiver: the
+ [homset] fields differ. (Stripped [Fail]: "cannot unify".) （已译） *)
 Fail Example probe_groupoid_is_free_category (G : Quiver) :
   FreeGroupoid G = FreeSigned G := eq_refl.
 
-(* The inverse law is not definitional.  (Stripped of [Fail]: "Unable to
-   unify ... with ...".) *)
+(* 相关说明。 （已译） *)
 Fail Example probe_inverse_definitional (G : Quiver) (x y : G)
   (f : x ~{FreeGroupoid G}~> y) :
   @compose (FreeGroupoid G) x y x (fginv f) f = @id (FreeGroupoid G) x
   := eq_refl.
 
-(* The counit does not compute.  (Stripped of [Fail]: "cannot unify",
-   the offending head being the opaque [ump_universal_arrows].) *)
+(* 相关说明。 （已译） *)
 Fail Example probe_counit_computes (H : Grp) (w : FGWord (Grp_Forget H)) :
   free_group_counit H w = free_grp_extend (@id Sets (Grp_Forget H)) w
   := eq_refl.

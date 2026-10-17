@@ -46,12 +46,12 @@ Require Import Category.Instance.Top.Hausdorff.TypeValued.
 
 Generalizable All Variables.
 
-(** ** Instrument: the refutation keyword is live *)
+(* 相关说明。 （已译） *)
 
 (* The instrument *)
 Fail Check p461_absent_name.
 
-(** ** Instance/Top/Hausdorff.v: the solution-set index needs [Set < o] *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: the index at a universe above [Set]. *)
 Definition p461_idx@{o +| Set < o +} (Pr : PTop@{o} → Type@{o})
@@ -77,7 +77,7 @@ Fail Definition p461_rel_part_closed@{o|} (X : PTop@{o}) : Type@{o} :=
 Fail Definition p461_top_part_closed@{o|} (X : PTop@{o}) : Type@{o} :=
   { T : (X → Prop) → Prop & True }.
 
-(** ** Instance/Top/Hausdorff.v: the two routes at [o := Set] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -131,8 +131,7 @@ Fail Definition p461_ex4_set@{so +| Set < so +} :
                               (PFullSub@{Set so} PT3@{Set})))%type :=
   separation_axiom_reflections.
 
-(* CONTROL: the two statements N4 and N6 refuse at [Set], at a universe
-   above it. *)
+(* 相关说明。 （已译） *)
 Definition p461_gaft@{o so +| Set < o, o < so +} :
   Reflective Haus_Sub@{o so} := Haus_reflective.
 
@@ -145,10 +144,10 @@ Definition p461_ex4@{o so +| Set < o, o < so +} :
                               (PFullSub@{o so} PT3@{o})))%type :=
   separation_axiom_reflections.
 
-(** ** Instance/Top/Hausdorff.v: what reads back on the nose *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the direct reflector's object is the largest Hausdorff
-   quotient, at [eq_refl]. *)
+(* CONTROL: direct reflector's 对象 largest Hausdorff
+ quotient, at [eq_refl]. （已译） *)
 Example p461_direct_obj@{o so +| o < so +} (X : PTopCat@{o so}) :
   `1 (fobj[reflector (PT2_Reflective : Reflective Haus_Sub@{o so})] X)
     = SepQuot prem_T2 X := eq_refl.
@@ -158,8 +157,7 @@ Fail Example p461_gaft_obj@{o so +| Set < o, o < so +} (X : PTopCat@{o so}) :
   `1 (fobj[reflector (Haus_reflective : Reflective Haus_Sub@{o so})] X)
     = SepQuot prem_T2 X := eq_refl.
 
-(* CONTROL: at a Hausdorff space the reflection keeps the points, at
-   [eq_refl], and is isomorphic to the space. *)
+(* 相关说明。 （已译） *)
 Example p461_lali_points@{o so +| o < so +} (X : Haus@{o so}) :
   carrier (pt_carrier (`1 (fobj[reflector PT2_Reflective]
                                (Incl PTopCat@{o so} Haus_Sub X))))
@@ -204,15 +202,14 @@ Fail Example p461_fmap@{o so +| o < so +} (prem : SepPremise@{o})
   (f : X ~{PTopCat@{o so}}~> Y) (x : carrier (pt_carrier X)) :
   pmap (`1 (fmap[PSep_reflector prem L] f)) x = pmap f x := eq_refl.
 
-(* CONTROL: the direct unit's section returns the point itself, at
-   [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example p461_surjective_direct_point@{o so +| o < so +} (X : PTopCat@{o so})
   (y : carrier (pt_carrier (`1 (fobj[reflector PT2_Reflective] X)))) :
   projT1 (Haus_unit_surjective_direct X y) = y := eq_refl.
 
-(* CONTROL: "we may take HX = X and η = 1": at a Hausdorff space the
-   unit of the reflection by [GAFT] is an isomorphism of spaces, the
-   counit its inverse. *)
+(* CONTROL: "we may take HX = X η = 1": at Hausdorff space the
+ unit reflection [GAFT] 同构 spaces, the
+ counit inverse. （已译） *)
 Definition p461_unit_iso@{o so +| Set < o, o < so +} (X : Haus@{o so}) :
   { e : Incl PTopCat@{o so} Haus_Sub
           (reflector Haus_reflective (Incl PTopCat@{o so} Haus_Sub X))
@@ -237,10 +234,10 @@ Proof.
                 (Incl PTopCat@{o so} Haus_Sub X))).
 Defined.
 
-(** ** The Leibniz carrier: eliminating [ex] into the points' equality *)
+(* * ** The Leibniz carrier: eliminating [ex] 进入 points' equality （已译） *)
 
-(* CONTROL: into the Leibniz equality, a proposition, which the discrete
-   two points' equality is by conversion. *)
+(* CONTROL: 进入 Leibniz equality, 命题, discrete
+ two points' equality conversion. （已译） *)
 Definition p461_elim_leibniz@{o} (a b : carrier (pt_carrier PBool@{o}))
   (H : ex (fun z : carrier (pt_carrier PBool@{o}) => z = a /\ z = b)) :
   a ≈ b :=
@@ -256,11 +253,11 @@ Fail Definition p461_elim_setoid@{o} (a b : carrier (pt_carrier PBool@{o}))
   | ex_intro _ z (conj za zb) => eq_trans (eq_sym za) zb
   end.
 
-(** ** Instance/Top/Hausdorff.v: Exercise 5's coequalizer and coproducts *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: [GlueQ]'s points are those of ℕ∞, its equality IS the
-   relation [coeq_rel] generates, and the quotient map is the identity on
-   points, all at [eq_refl]. *)
+(* CONTROL: [GlueQ]'s points those ℕ∞, equality IS the
+ 关系 [coeq_rel] generates, quotient map 恒等 on
+ points, all at [eq_refl]. （已译） *)
 Example p461_glueq_points@{o so +| o < so +} :
   carrier (pt_carrier GlueQ@{o so _ _ _ _ _ _}) = option nat := eq_refl.
 
@@ -271,8 +268,7 @@ Example p461_glueq_equiv@{o so +| o < so +} (a b : option nat) :
 Example p461_glue_q_point@{o so +| o < so +} (x : option nat) :
   pmap glue_q@{o so _ _ _ _ _ _} x = x := eq_refl.
 
-(* CONTROL: the binary coproduct of the two Hausdorff spaces of Exercise
-   5 is Hausdorff. *)
+(* 相关说明。 （已译） *)
 Definition p461_bool_dec (a b : bool) : sumbool (a = b) (a = b → False) :=
   match a as a0, b as b0 return sumbool (a0 = b0) (a0 = b0 → False) with
   | true, true => left eq_refl
@@ -293,7 +289,7 @@ Definition p461_sum_haus@{o u +| o < u +} :
               | false => PConv_PHaus
               end).
 
-(** ** Instance/Top/Hausdorff/TypeValued.v: the vacuity at every instance *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeHausdorff461 相关定义、性质与动机。
@@ -305,8 +301,8 @@ Definition p461_vacuous_apart@{e h o u u0 u1 u2 u3 u4 u6 +| o < h, h < u1,
     u0 <= h, u4 <= u6 +} :=
   GAFT_TopHaus_vacuous@{e h o u u0 u1 u2 u3 u4 u6}.
 
-(* CONTROL: the refutation of completeness itself, for the objects of
-   the subcategory strictly above [Top]'s homs. *)
+(* CONTROL: refutation completeness itself, 对象 of
+ subcategory strictly above [Top]'s homs. （已译） *)
 Definition p461_not_complete_above@{e h o u u0 u1 u2 u3 u4 +| o < h,
     h < u1, u2 < u, u3 < u, u2 <= o, u3 <= o, u0 <= h, o <= u, h < u4,
     u <= u4 +} (E : IEM@{e})
@@ -315,8 +311,7 @@ Definition p461_not_complete_above@{e h o u u0 u1 u2 u3 u4 +| o < h,
                Hausdorff_Subcategory@{h u0 o u u2 u3})) : False :=
   TopHaus_not_complete_below_IEM E comp.
 
-(* CONTROL: the two-point discrete space is Hausdorff with its separating
-   opens strictly below its points. *)
+(* 相关说明。 （已译） *)
 Definition p461_bool_opens_below@{t p q o +| p < t, q < t, p < o, q < o,
     o <= t +} : IsHausdorff@{t p q o} Bool_Discrete@{o} :=
   tophaus_bool_hausdorff@{t p q o}.
@@ -326,7 +321,7 @@ Fail Definition p461_disc_opens_below@{t p q o +| p < t, q < t, p < o,
     q < o, o <= t +} (A : SetoidObject@{o o}) :
   IsHausdorff@{t p q o} (Discrete_Top@{o o} A) := Discrete_Hausdorff A.
 
-(** ** Guard: every constant of the three targets *)
+(* * ** Guard: every 常值 three targets （已译） *)
 
 (* Instance/Top/Separation.v: 105 names. *)
 Check Build_SepLaws.

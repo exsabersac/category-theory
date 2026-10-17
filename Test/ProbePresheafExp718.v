@@ -25,7 +25,7 @@ Open Scope category_scope.
 
 Generalizable All Variables.
 
-(** * Probe for issue #718 -- exponentials of presheaves *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbePresheafExp718。
@@ -36,12 +36,11 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------ *)
 (** ** Instrument check *)
 
-(* A deliberately absent name.  If this were to succeed, the refutation
-   commands below would be measuring nothing. *)
+(* 相关说明。 （已译） *)
 Fail Check probe718_this_name_does_not_exist.
 
 (* ------------------------------------------------------------------ *)
-(** ** Guard controls -- every constant a negative names, named outside *)
+(* * ** Guard controls -- every 常值 negative names, named outside （已译） *)
 
 Check @PshExp.
 Check @PshExp_obj.
@@ -100,17 +99,16 @@ Check @_2.
 Check @_1.
 
 (* ------------------------------------------------------------------ *)
-(** ** Positive controls the file's claims rest on *)
+(* 相关说明。 （已译） *)
 
 (* The instance is found by typeclass resolution, at an arbitrary C. *)
 Definition probe718_resolves (C : Category) : @Closed ([C^op, Sets]) _ := _.
 
-(* And so is the terminal object of the same category. *)
+(* And so 终对象 same 范畴. （已译） *)
 Definition probe718_resolves_terminal (C : Category) :
   @Terminal ([C^op, Sets]) := _.
 
-(* Awodey display (8.5), restated from OUTSIDE the target so that a
-   rename in the target breaks this file. *)
+(* 相关说明。 （已译） *)
 Example probe718_display85 {C : Category} (P Q : C^op ⟶ Sets) (c : C) :
   fobj[PshExp P Q] c
     = [[[C^op, Sets]]](
@@ -118,7 +116,7 @@ Example probe718_display85 {C : Category} (P Q : C^op ⟶ Sets) (c : C) :
           (Curried_CoHom C c) P, Q )
   := eq_refl.
 
-(* The class's data, read back from outside. *)
+(* 相关说明。 （已译） *)
 Example probe718_exponent {C : Category} (P Q : C^op ⟶ Sets) :
   @exponent_obj _ _ (Functor_Category_Closed C) P Q = PshExp P Q := eq_refl.
 
@@ -126,8 +124,8 @@ Example probe718_terminal (C : Category) :
   presheaf_terminal C = @Functor_Category_Terminal (C^op) Sets Sets_Terminal
   := eq_refl.
 
-(* Riehl's covariant reading is the same constant at the opposite
-   category, on the nose. *)
+(* Riehl's covariant reading same 常值 at opposite
+ 范畴, nose. （已译） *)
 Example probe718_cov (C : Category) :
   Functor_Category_Closed_cov C = Functor_Category_Closed (C^op) := eq_refl.
 
@@ -154,8 +152,7 @@ Example probe718_first_fst :
   := eq_refl.
 End FirstReduces.
 
-(* The two identifications that hold at [≈] and not at [eq_refl], stated
-   from outside as the controls for negatives 5 and 6. *)
+(* 相关说明。 （已译） *)
 Example probe718_eval_weak {C : Category} (P Q : C^op ⟶ Sets) (c : C)
   (gy : fobj[@product_obj _
                (@Functor_Category_Cartesian (C^op) Sets Sets_Cartesian)
@@ -164,9 +161,9 @@ Example probe718_eval_weak {C : Category} (P Q : C^op ⟶ Sets) (c : C)
     ≈ (fst gy) c (id[c], snd gy)
   := eval_is_at_identity P Q c gy.
 
-(* The unconditional corollary of Instance/Fun/Closed.v, exercised from
-   outside: the hypothesis that file's section F is stated over is now
-   discharged by this issue's instance. *)
+(* The unconditional 推论 Instance/Fun/Closed.v, exercised from
+ outside: 假设 file's section F stated over now
+ discharged issue's instance. （已译） *)
 Check (awodey_pointwise_not_exponential_unconditional
          : @Isomorphism Sets
              ((@exponent_obj _ Psh2_Cart Psh2_Closed PresheafP PresheafQ) TwoY)
@@ -174,7 +171,7 @@ Check (awodey_pointwise_not_exponential_unconditional
 Check pq_point_distinct_unconditional.
 
 (* ------------------------------------------------------------------ *)
-(** ** The clone of the instance written WITHOUT universe binders *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom、来源与用途相关定义、性质与动机。
@@ -195,7 +192,7 @@ Next Obligation.
 Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** (1) The smallness bound: C's objects at or below Sets' carriers *)
+(* * ** (1) The smallness bound: C's 对象 at below Sets' carriers （已译） *)
 
 Section SmallC.
 Universes coB chB oB soB.
@@ -204,9 +201,9 @@ Constraint coB <= oB.
 Context (Csm : Category@{coB chB chB}).
 Context (Ps Qs : Csm^op ⟶ Sets@{oB soB}).
 
-(* CONTROL: with C's objects bounded by [Sets]' carrier universe, the
-   display-(8.5) object IS an object of that same [Sets], and so are the
-   functor, the isomorphism and the instance. *)
+(* CONTROL: C's 对象 bounded [Sets]' carrier universe, the
+ display-(8.5) 对象 IS 对象 same [Sets], so the
+ 函子, 同构 instance. （已译） *)
 Check ([[[Csm^op, Sets@{oB soB}]]](Ps, Qs) : obj[Sets@{oB soB}]).
 Check (PshExp Ps Qs).
 Check (Functor_Category_Closed Csm).
@@ -249,13 +246,13 @@ Fail Check (PshExp Pb Qb : Cbig^op ⟶ Sets@{oA soA}).
 *)
 Fail Check (presheaf_exp_iso Xb Pb Qb).
 
-(* NEGATIVE 1d (FORMABILITY).  And so, therefore, is the headline.  This
-   is Awodey's "for any small category C", as a measurement. *)
+(* NEGATIVE 1d (FORMABILITY). And so, therefore, headline. This
+ Awodey's "for any small 范畴 C", measurement. （已译） *)
 Fail Check (Functor_Category_Closed Cbig).
 End BigC.
 
 (* ------------------------------------------------------------------ *)
-(** ** (2)-(3) Hom = proof in the binder is the donors' doing *)
+(* * ** (2)-(3) Hom = 证明 binder donors' doing （已译） *)
 
 Section HomBelowProof.
 Universes coC chC cpC oC soC.
@@ -263,9 +260,9 @@ Constraint chC < cpC.
 Constraint oC < soC.
 Context (Cu : Category@{coC chC cpC}).
 
-(* CONTROLS accepted at levels where hom and proof are DECLARED APART:
-   the hom type, an identity, and the bare functor type into [Sets].  So
-   [Functor] is NOT a donor of [ch = cp]. *)
+(* CONTROLS accepted at levels where hom 证明 DECLARED APART:
+ hom type, 恒等, bare 函子 type [Sets]. So
+ [Functor] NOT donor [ch = cp]. （已译） *)
 Check (fun x y : Cu => x ~{Cu}~> y).
 Check (fun x : Cu => @id Cu x).
 Check (@Functor Cu Sets@{oC soC}).
@@ -274,13 +271,12 @@ Check (@Functor Cu Sets@{oC soC}).
    stripped error ends "Cannot enforce cpC = chC because chC < cpC". *)
 Fail Check (Cu^op).
 
-(* NEGATIVE 3 (FORMABILITY).  So does [Fun], with NO [^op] anywhere in
-   the command -- two INDEPENDENT donors, same error shape. *)
+(* 相关说明。 （已译） *)
 Fail Check ([Cu, Sets@{oC soC}]).
 End HomBelowProof.
 
 (* ------------------------------------------------------------------ *)
-(** ** (4) The route, and the load-bearing annotation *)
+(* 相关说明。 （已译） *)
 
 Section Route.
 Universes coD oD soD.
@@ -319,7 +315,7 @@ Fail Check (probe718_closed_unannotated Cr).
 End Route.
 
 (* ------------------------------------------------------------------ *)
-(** ** (5)-(6) The two conversion boundaries *)
+(* 相关说明。 （已译） *)
 
 Section Conv.
 Context {C : Category}.
@@ -327,9 +323,7 @@ Context (P Q : C^op ⟶ Sets).
 #[local] Notation PshCart :=
   (@Functor_Category_Cartesian (C^op) Sets Sets_Cartesian).
 
-(* CONTROLS: the two spellings of Awodey's [y h × 1_P] both elaborate,
-   and at the SAME type -- so the refusal below is about conversion and
-   not about formability. *)
+(* 相关说明。 （已译） *)
 Check (fun (c c' : C) (h : c ~{C^op}~> c') =>
          @first _ PshCart _ _ P (fmap[Curried_CoHom C] h)).
 Check (fun (c c' : C) (h : c ~{C^op}~> c') =>
@@ -360,7 +354,7 @@ Fail Example probe718_eval_strict (c : C)
 End Conv.
 
 (* ------------------------------------------------------------------ *)
-(** ** (7)-(9) Three typing boundaries *)
+(* 相关说明。 （已译） *)
 
 Section Typing.
 Context {C : Category}.
@@ -378,16 +372,15 @@ Check (PshExp P Q : C^op ⟶ Sets).
 *)
 Fail Definition probe718_psh_covariant : C ⟶ Sets := PshExp P Q.
 
-(* CONTROL: [exponent_obj y z] is z^y, so [PshExp P Q] is Q^P and the
-   transposition names P as the factor and Q as the target. *)
+(* 相关说明。 （已译） *)
 Check (presheaf_exp_iso X P Q
          : @Isomorphism Sets
              ([[[C^op, Sets]]]( @product_obj _ PshCart X P, Q ))
              ([[[C^op, Sets]]]( X, PshExp P Q ))).
 
-(* NEGATIVE 8 (TYPING).  The two arguments of [PshExp] are not
-   interchangeable: ascribing the same isomorphism with [PshExp Q P] on
-   the right is a plain has-type mismatch. *)
+(* NEGATIVE 8 (TYPING). The two arguments [PshExp] not
+ interchangeable: ascribing same 同构 [PshExp Q P] on
+ right plain has-type mismatch. （已译） *)
 Fail Definition probe718_swapped :
   @Isomorphism Sets
     ([[[C^op, Sets]]]( @product_obj _ PshCart X P, Q ))

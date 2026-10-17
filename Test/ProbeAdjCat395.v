@@ -17,8 +17,7 @@ Require Import Category.Instance.Fun.
 
 Generalizable All Variables.
 
-(* Instrument: this file's negatives are only as good as the harness.  A
-   name that exists nowhere must be refused. *)
+(* 相关说明。 （已译） *)
 Fail Check p395_no_such_constant_anywhere.
 
 Section Variance.
@@ -27,17 +26,16 @@ Context {C D : Category}.
 Context {F : D ⟶ C} {U : C ⟶ D} (A  : F  ⊣ U).
 Context {F' : D ⟶ C} {U' : C ⟶ D} (A' : F' ⊣ U').
 
-(* CONTROLS.  The constants the negative names must appear outside it, or a
-   rename would leave the negative vacuously green. *)
+(* 相关说明。 （已译） *)
 Check @Conjugate.
 Check A.
 Check A'.
 Check (fun (x : D) => F x).
 Check (fun (a : C) => U a).
 
-(* POSITIVE: with the adjunction arguments SWAPPED, Mac Lane's labelling
-   typechecks -- sigma forward on the left adjoints, tau backward on the
-   right adjoints. *)
+(* POSITIVE: 伴随 arguments SWAPPED, Mac Lane's labelling
+ typechecks -- sigma forward left adjoints, tau backward the
+ right adjoints. （已译） *)
 Check (fun (s : F ⟹ F') (t : U' ⟹ U) => Conjugate A' A s t).
 
 (*
@@ -53,19 +51,18 @@ Section HomShape.
 
 Context {C D : Category}.
 
-(* CONTROLS for the names the next negative mentions. *)
+(* 相关说明。 （已译） *)
 Check @ConjPair.
 Check @conj_left.
 Check @conj_right.
 Check @conj_pair_law.
 Check @adjobj_adj.
 
-(* The hom of [Adj C D] IS the conjugate-pair record, on the nose. *)
+(* 相关说明。 （已译） *)
 Example adj_hom_is_conjpair (x y : AdjObj C D) :
   (x ~{Adj C D}~> y) = @ConjPair C D x y := eq_refl.
 
-(* And the law field is the SWAPPED application, which is the variance the
-   negative above guards. *)
+(* 相关说明。 （已译） *)
 Example adj_law_is_swapped (x y : AdjObj C D) (f : x ~{Adj C D}~> y) :
   Conjugate (adjobj_adj y) (adjobj_adj x) (conj_left f) (conj_right f)
   := conj_pair_law f.
@@ -89,9 +86,9 @@ Example adj_forget_left_type (C D : Category) :
 Check (fun C D : Category => AdjForgetLeft C D : Adj C D ⟶ [D, C]).
 Check (fun C D : Category => AdjForgetRight C D : (Adj C D)^op ⟶ [C, D]).
 
-(* NEGATIVE 2 (TYPING).  The right forgetful functor is NOT covariant on
-   [Adj C D]; ascribing it there is refused.  This is the contravariance,
-   pinned. *)
+(* NEGATIVE 2 (TYPING). The right forgetful 函子 NOT covariant on
+ [Adj C D]; ascribing it there refused. This contravariance,
+ pinned. （已译） *)
 Fail Check (fun C D : Category => AdjForgetRight C D : Adj C D ⟶ [C, D]).
 
 End ForgetfulShape.

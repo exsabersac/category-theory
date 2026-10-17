@@ -28,8 +28,8 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe429_absent_name.
 
-(** ** A: UNIVERSE — [Projective] identifies hom with proof, and the
-       identification is [Epic]'s, not this file's *)
+(* * ** A: UNIVERSE — [Projective] identifies hom 证明, the
+ identification [Epic]'s, not file's （已译） *)
 
 Section ProbeUniverse.
 
@@ -38,68 +38,67 @@ Constraint vh < vp.
 
 Context (Cu : Category@{vo vh vp}) (x y : Cu) (f : x ~{Cu}~> y).
 
-(* controls: the category, its homs and an arrow all form here *)
+(* controls: 范畴, homs arrow all form here （已译） *)
 Check Cu.
 Check (x ~{Cu}~> y).
 Check f.
 
-(* N1, N2 UNIVERSE: the donors are already refused at these levels *)
+(* 相关说明。 （已译） *)
 Fail Check (@Epic Cu x y f).
 Fail Check (@Monic Cu x y f).
 
-(* N3 UNIVERSE: and so is [Projective], inheriting the identification *)
+(* 相关说明。 （已译） *)
 Fail Check (@Projective Cu x).
 
 End ProbeUniverse.
 
-(** ** B: CONVERSION — [Epic] in [C^op] is not [Monic] in [C]; the bridge
-       [op_Epic_of_Monic] does real work, so [injective_extend] is not an
-       [eq_refl] readback of the [C^op] accessor's hypothesis *)
+(* * ** B: CONVERSION — [Epic] [C^op] not [Monic] [C]; bridge
+ [op_Epic_of_Monic] does real work, so [injective_extend] not an
+ [eq_refl] readback [C^op] accessor's 假设 （已译） *)
 
 Section ProbeBridge.
 
 Context {C : Category} {a b : C} (m : a ~> b).
 
-(* controls: both types form and the bridge exists *)
+(* 相关说明。 （已译） *)
 Check (@Epic (C^op) b a m).
 Check (@Monic C a b m).
 Check (@op_Epic_of_Monic C a b m).
 
-(* N4 CONVERSION ("cannot unify"), N5 TYPING (a [Monic] proof offered where
-   an [Epic] one is expected): the two predicates are distinct records *)
+(* N4 CONVERSION ("cannot unify"), N5 TYPING (a [Monic] 证明 offered where
+ [Epic] one expected): two predicates distinct records （已译） *)
 Fail Example p429_bridge_refl : @Epic (C^op) b a m = @Monic C a b m := eq_refl.
 Fail Example p429_bridge_id (H : @Monic C a b m) : @Epic (C^op) b a m := H.
 
-(* controls: the OBJECT of the duality is definitional *)
+(* 相关说明。 （已译） *)
 Example p429_op_op : (C^op)^op = C := eq_refl.
 Example p429_hom_op : (b ~{C^op}~> a) = (a ~{C}~> b) := eq_refl.
 
 End ProbeBridge.
 
-(** ** C: TYPING — there is no "∃-statement rather than data" option *)
+(* 相关说明。 （已译） *)
 
 Section ProbeExists.
 
 Context {C : Category} {a b : C}.
 
-(* controls: [∃] and [exists] are both [sigT]; a Prop existential over a
-   Prop relation forms *)
+(* controls: [∃] [exists] both [sigT]; Prop existential over a
+ Prop 关系 forms （已译） *)
 Example p429_exists_is_sigT :
   (∃ h : a ~> b, h ≈ h) = { h : a ~> b & h ≈ h } := eq_refl.
 Example p429_keyword_exists_is_sigT :
   (exists h : a ~> b, h ≈ h) = { h : a ~> b & h ≈ h } := eq_refl.
 Check (ex (fun n : nat => n = n)).
 
-(* N6 TYPING: a Prop-valued existential over [≈], which is Type-valued
-   ([ex] unqualified: the Prelude's constant, whose module is [Coq.] on
-   8.19/8.20 and [Corelib.] on Rocq 9) *)
+(* N6 TYPING: Prop-valued existential over [≈], Type-valued
+ ([ex] unqualified: Prelude's 常值, whose module [Coq.] on
+ 8.19/8.20 [Corelib.] Rocq 9) （已译） *)
 Fail Definition p429_prop_lift : Prop :=
   ex (fun h : a ~> b => h ≈ h).
 
 End ProbeExists.
 
-(** ** D: PARSING — the [@Injective C] notation claims the token
-       [@Injective], as [@Initial C] already claims [@Initial] *)
+(* 相关说明。 （已译） *)
 
 Definition Injective_placeholder : nat := 0.
 Definition Initial_placeholder : nat := 0.
@@ -133,8 +132,8 @@ Check (@IndexedCoprod_Projective C).
 Check (@sets_all_projective_entails_LEM).
 Check two_projective_not_all.
 
-(* the witnesses' lifts COMPUTE: a split epi lifts by its retraction, the
-   initial object lifts by [zero] *)
+(* the witnesses' lifts COMPUTE: split epi lifts retraction, the
+ 始对象 lifts [zero] （已译） *)
 Example p429_retraction_lift_is {b c : C} (g : b ~> c) (R : Retraction g)
   (f : p ~> c) : `1 (Retraction_lifts g R f) = retract ∘ f := eq_refl.
 
@@ -144,7 +143,7 @@ Example p429_initial_lift_is `{I : @Initial C} {b c : C} (g : b ~> c)
 
 End Readbacks.
 
-(* in Sets, the lift of a Leibniz setoid is the chosen preimage, pointwise *)
+(* 相关说明。 （已译） *)
 Example p429_leibniz_lift_is (T : Type) {b c : Sets} (g : b ~> c) (He : Epic g)
   (f : LeibnizSetoid T ~{Sets}~> c) (t : T) :
   `1 (@projective_lift Sets _ (Sets_Leibniz_Projective T) b c g He f) t

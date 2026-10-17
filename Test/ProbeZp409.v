@@ -29,11 +29,11 @@ Open Scope category_scope.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Instrument: a refutation command must be able to fail *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe_zp409_no_such_name.
 
-(** ** Guard block: every constant the negatives name, named outside them *)
+(* * ** Guard block: every 常值 negatives name, named outside them （已译） *)
 
 Check @dsum.
 Check @dadd.
@@ -58,9 +58,7 @@ Check @mraw_1.
 Check @RKills.
 Check @ResIdeal.
 Check @PrincipalIdeal.
-(* [ResTower] is named by negative 7 and nowhere else; without this
-   line a rename of it would turn that guard vacuously green, which
-   the rename simulation caught. *)
+(* 相关说明。 （已译） *)
 Check @ResTower.
 
 (*
@@ -116,8 +114,7 @@ Example probe_zpd_without_mod_value :
 Example probe_zpd_control :
   zpd 10%Z (zp_const 10%Z (-1)%Z) 0%nat = 9%Z := eq_refl.
 
-(** ** Negative 4 (CONVERSION): [mraw] is the convolution, not the
-       pointwise product *)
+(* 相关说明。 （已译） *)
 
 Fail Example probe_mraw_pointwise (a b : nat -> Z) :
   mraw a b 1%nat = (a 1%nat * b 1%nat)%Z := eq_refl.

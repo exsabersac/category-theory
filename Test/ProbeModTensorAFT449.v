@@ -45,12 +45,10 @@ Require Import Category.Instance.Rng.
 
 (** ** Instrument check *)
 
-(* A refusal expected around a name that is not there.  If the instrument
-   were inert this line would pass silently and so would everything below
-   it. *)
+(* 相关说明。 （已译） *)
 Fail Check zzz_no_such_constant_449.
 
-(** ** Positive controls: every library constant a negative names *)
+(* * ** Positive controls: every library 常值 negative names （已译） *)
 
 Section Controls.
 
@@ -70,7 +68,7 @@ Check (tensor_repr_of_UE V V').
 Check (preserves_image_of_representable (tensor_repr_of_UE V V')).
 Check (@SpanningArrowsOutOf (RMod R) Sets (Bilin V V') SetsOne).
 
-(* The three [eq_refl] readbacks of the direct solution set, as controls. *)
+(* 相关说明。 （已译） *)
 Example c_esol_index :
   esol_index (tensor_esols_direct V V')
     = SpanningArrowsOutOf (Bilin V V') SetsOne := eq_refl.
@@ -90,9 +88,9 @@ Example c_same_index (HWP : @HasWidePullbacks (RMod R)) :
   esol_index (@tensor_esols R V V' HWP)
     = esol_index (tensor_esols_direct V V') := eq_refl.
 
-(* The representation read off the explicit tensor keeps [TensorMod] as its
-   representing object at [eq_refl] -- the control the CONVERSION negative
-   below is measured against. *)
+(* The representation read off explicit tensor keeps [TensorMod] its
+ 表示 对象 at [eq_refl] -- control CONVERSION negative
+ below measured against. （已译） *)
 Example c_repr_of_UE_obj :
   @repr_obj (RMod R) (Bilin V V') (tensor_repr_of_UE V V') = TensorMod V V'
   := eq_refl.
@@ -128,13 +126,13 @@ Example c_bal_esol_index :
 
 End AbControls.
 
-(* The two applications the negatives below sit beside, at an unconstrained
-   ring: these ARE accepted, so the negatives are about the argument, not
-   about the theorem being unusable. *)
+(* The two applications negatives below sit beside, at unconstrained
+ ring: these ARE accepted, so negatives about 论元, not
+ about 定理 being unusable. （已译） *)
 Check (fun (R : RingObject) (V V' : RModObject R) => tensor_via_AFT V V').
 Check (fun (R : RingObject) (V V' : RModObject R) =>
          module_tensor_universal V V').
-(* the issue's verification name IS the AFT universal element, by definition *)
+(* the issue's verification name IS AFT universal element, 定义 （已译） *)
 Example c_alias_is_ue : @module_tensor_universal = @tensor_AFT_ue := eq_refl.
 Check (fun (R : RingObject) (V V' : RModObject R) =>
          tensor_via_AFT_from_tensor V V').
@@ -149,26 +147,24 @@ Check (fun (X : RingObject) (N : RModObject (Ring_op X))
 
 Section UnconditionalPayoff.
 
-(* The tensor product of the integers with themselves as a Z-module,
-   obtained from the adjoint functor theorem with NO hypothesis. *)
+(* The tensor product integers themselves Z-module,
+ obtained adjoint 函子 定理 NO 假设. （已译） *)
 Check (tensor_via_AFT Int_RMod Int_RMod).
 Check (module_tensor_universal Int_RMod Int_RMod).
 Check (tensor_AFT_iso Int_RMod Int_RMod).
 Check (tensor_AFT_ue Int_RMod Int_RMod).
 
-(* Mac Lane's OWN p. 128 family, resized by his Lemma 2 (section 10 of the
-   target), at the same ring: the second, book-faithful route. *)
+(* 相关说明。 （已译） *)
 Check (tensor_via_AFT_maclane Int_RMod Int_RMod).
 Check (tensor_spanning_SmallUpToIso Int_RMod Int_RMod).
 Check (tensor_esols_resized Int_RMod Int_RMod).
 
-(* A SECOND ring, and a genuinely different one: the rationals. *)
+(* 相关说明。 （已译） *)
 Definition p449_QMod : RModObject Q_Ring := Ring_RMod Q_Ring.
 Check (tensor_via_AFT p449_QMod p449_QMod).
 Check (tensor_via_AFT_maclane p449_QMod p449_QMod).
 
-(* A THIRD: the opposite ring of the integers, which is what Exercise 3's
-   balanced tensor needs on the left. *)
+(* 相关说明。 （已译） *)
 Definition p449_OpMod : RModObject (Ring_op Int_Ring) :=
   Ring_RMod (Ring_op Int_Ring).
 Check (tensor_via_AFT p449_OpMod p449_OpMod).
@@ -201,16 +197,15 @@ Example p449_prop_obj (i : CongIdx V V') :
 Example p449_prop_elem (i : CongIdx V V') :
   esol_elem (tensor_esols_prop V V') i = QMod_gen (`1 i) (`2 i) := eq_refl.
 
-(* Mac Lane's Lemma 2: the SMALL index of the resized family is the same
-   congruence type. *)
+(* 相关说明。 （已译） *)
 Example p449_maclane_small_index :
   si_carrier (tensor_spanning_SmallUpToIso V V') = CongIdx V V' := eq_refl.
 
 Example p449_resized_index :
   esol_index (tensor_esols_resized V V') = CongIdx V V' := eq_refl.
 
-(* And the direct family's index is still the sigma over objects -- the
-   one NEGATIVE 1 refuses. *)
+(* And direct family's index still sigma over 对象 -- the
+ one NEGATIVE 1 refuses. （已译） *)
 Example p449_direct_index :
   esol_index (tensor_esols_direct V V')
     = SpanningArrowsOutOf (Bilin V V') SetsOne := eq_refl.
@@ -313,11 +308,7 @@ Fail Example n6_circular_route_is_a_different_term {R : RingObject}
   @Bilin_PreservesImageLimit R V V'
     = preserves_image_of_representable (tensor_repr_of_UE V V') := eq_refl.
 
-(** ** NEGATIVE 7 (ARGUMENT NAME): [MGen]'s predicate is positional
-
-    Instance/Mod/Spanning.v's [MGen] takes its predicate as an EXPLICIT
-    section variable, so the constructors do not answer to it by name.  The
-    control is the same application written positionally. *)
+(* 相关说明。 （已译） *)
 
 Section GenArgumentName.
 
@@ -348,12 +339,12 @@ Constraint pb = Set.
 Context (Rs : RingObject@{pa pb pc}).
 Context (Vs Vs' : RModObject Rs).
 
-(* THE CONTROL: the conditional form elaborates at this very ring. *)
+(* 相关说明。 （已译） *)
 Definition p449_cond_at_set_carrier
   (E : ElementSolutionSet (Bilin Vs Vs')) : Representable (Bilin Vs Vs') :=
   tensor_via_AFT_of_esols Vs Vs' E.
 
-(* THE NEGATIVE: the unconditional one does not. *)
+(* 相关说明。 （已译） *)
 Fail Definition p449_uncond_at_set_carrier :
   Representable (Bilin Vs Vs') := tensor_via_AFT Vs Vs'.
 

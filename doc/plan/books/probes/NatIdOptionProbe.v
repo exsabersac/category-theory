@@ -34,8 +34,8 @@ Proof.
   simpl in HC. discriminate.
 Qed.
 
-(* The counting engine: option unit has exactly two inhabitants, which is what
-   bounds the family count above by two once naturality pins alpha to alpha_unit. *)
+(* The counting engine: option unit has exactly two inhabitants, what
+ bounds family count above two once 自然性 pins alpha alpha_unit. （已译） *)
 Theorem option_unit_exactly_two :
   forall o : option unit, o = Some tt \/ o = None.
 Proof. intro o. destruct o as [u|]. - left. destruct u. reflexivity. - right. reflexivity. Qed.

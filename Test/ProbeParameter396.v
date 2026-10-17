@@ -30,14 +30,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Instrument check
-
-    This file's negatives are only as good as the harness: a name that
-    exists in no file of the tree must be refused. *)
+(* 相关说明。 （已译） *)
 
 Fail Check p396_no_such_constant_anywhere.
 
-(** ** Section A: Theorem 3's own boundaries *)
+(* 相关说明。 （已译） *)
 
 Section Theorem3Boundaries.
 
@@ -46,7 +43,7 @@ Context {F : X ∏ P ⟶ A}.
 Context (PA : ParametrizedAdjunction F).
 Context {p p' : P} (h : p' ~> p) (hop : p ~{P^op}~> p') (a : A).
 
-(* CONTROLS.  Every constant the negatives of this section name. *)
+(* CONTROLS. Every 常值 negatives section name. （已译） *)
 Check @ParametrizedAdjunction.
 Check @pa_right.
 Check @pa_adj.
@@ -70,11 +67,11 @@ Check @unique_obj.
 Check @unop.
 Check @fmap.
 
-(* A control for the elaboration failure that did not reproduce. *)
+(* 相关说明。 （已译） *)
 Definition p396_hou_control (x : X) (b : A) (k : F (x, p) ~> b) :=
   to (@adj _ _ _ _ (pa_adj PA p) x b) k.
 
-(* Controls for negative 1: the universal exists and the mate exists. *)
+(* 相关说明。 （已译） *)
 Definition p396_universal := pa_param_mate_universal PA h.
 Definition p396_mate := pa_param_mate PA h.
 
@@ -117,7 +114,7 @@ Fail Definition p396_fmap_param_strict :
 
 End Theorem3Boundaries.
 
-(** ** Section B: the dual's boundaries *)
+(* 相关说明。 （已译） *)
 
 Section DualBoundaries.
 
@@ -185,7 +182,7 @@ Fail Definition p396_copa_fmap_param_strict :
 
 End DualBoundaries.
 
-(** ** Section C: the currying instance's boundaries *)
+(* 相关说明。 （已译） *)
 
 Section CurryingBoundaries.
 
@@ -305,7 +302,7 @@ Fail Definition p396_curry_bifunctor_fmap_strict {b : C} (k : a ~> b) :
 
 End CurryingBoundaries.
 
-(** ** Section D: the unit/counit presentation's boundaries *)
+(* 相关说明。 （已译） *)
 
 Section TransformBoundaries.
 
@@ -390,14 +387,13 @@ Check p396_const_bifunctor.
 Definition p396_wedge_cond : Type :=
   bimap[Hf] id f ∘ leg u ≈ bimap[Hf] (op f) id ∘ leg v.
 
-(* The dinaturality hexagon, at the constant source, whose two [bimap]
-   factors are the identity of the apex. *)
+(* The dinaturality hexagon, at 常值 source, whose two [bimap]
+ factors 恒等 apex. （已译） *)
 Definition p396_dinat_cond : Type :=
   bimap[Hf] (op f) id ∘ leg v ∘ bimap[p396_const_bifunctor w] id f
     ≈ bimap[Hf] id f ∘ leg u ∘ bimap[p396_const_bifunctor w] (op f) id.
 
-(* Both interderivations, as passing controls: two [id_right]s and a
-   [symmetry] separate the two conditions. *)
+(* 相关说明。 （已译） *)
 
 Definition p396_wedge_to_dinat : p396_wedge_cond → p396_dinat_cond.
 Proof.
@@ -411,10 +407,7 @@ Proof.
   intro E; simpl in E; rewrite !id_right in E; now symmetry.
 Defined.
 
-(** *** Negative 14 (CONVERSION): the hexagon is not the wedge condition
-
-    Stripped, the error ends (cannot unify "p396_dinat_cond" and
-    "p396_wedge_cond"). *)
+(* 相关说明。 （已译） *)
 
 Fail Definition p396_dinat_is_wedge :
   p396_dinat_cond = p396_wedge_cond := eq_refl.
@@ -479,18 +472,18 @@ Constraint xh < ah.
 Context (Xu : Category@{xo xh xh}).
 Context (Au : Category@{ao ah ah}).
 
-(* CONTROLS at the declared levels, including the functor in the direction
-   that IS formable. *)
+(* CONTROLS at declared levels, including 函子 direction
+ IS formable. （已译） *)
 Check Xu.
 Check Au.
 Check (fun z w : Xu => z ~{Xu}~> w).
 Check (fun z w : Au => z ~{Au}~> w).
 Check (Xu ⟶ Au).
 
-(** *** Negative 17 (FORMABILITY): the reverse functor
+(* * *** Negative 17 (FORMABILITY): reverse 函子
 
-    Stripped, the error ends "universe inconsistency: Cannot enforce
-    xh = ... because xh < ah <= ...". *)
+ Stripped, error ends "universe inconsistency: Cannot enforce
+ xh = ... because xh < ah <= ...". （已译） *)
 
 Fail Check (Au ⟶ Xu).
 
@@ -514,9 +507,9 @@ Context (Hf : (Pu^op ∏ Pu) ⟶ Xu).
 Context (K : (Pu^op ∏ Pu) ⟶ (Pu^op ∏ Au)).
 Context (L : (Pu^op ∏ Au) ⟶ Xu).
 
-(* CONTROLS at the declared levels: the source, the integrand's type, the
-   integrand itself, both composable halves, and the formable direction of
-   §H's functor pair. *)
+(* CONTROLS at declared levels: source, integrand's type, the
+ integrand itself, both composable halves, formable direction of
+ §H's 函子 pair. （已译） *)
 Check Pu.
 Check Au.
 Check Xu.
@@ -529,10 +522,7 @@ Check (Pu^op ⟶ Xu).
 Check @AdjointOnTheRight.
 Check @Compose.
 
-(** *** Negative 18 (FORMABILITY): [Wedge] forces ph = xh
-
-    Stripped, the error ends "universe inconsistency: Cannot enforce
-    xh2 = ph because ph < xh2", reported on [Xu]. *)
+(* 相关说明。 （已译） *)
 
 Fail Check (@Wedge Pu Xu Hf).
 

@@ -18,7 +18,7 @@ Require Import Category.Instance.Sets.Chain.
 
 Generalizable All Variables.
 
-(** * Probe: strength boundaries of Sets cocompleteness *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeCocomplete329。
@@ -82,8 +82,8 @@ Fail Definition probe_apex_is_sum :
 
 End ApexNegative.
 
-(* Positive controls naming Cocomplete.v's own constants: the carriers DO
-   agree by eq_refl, and the apex equivalence IS the generated relation. *)
+(* Positive controls naming Cocomplete.v's own constants: carriers DO
+ agree eq_refl, apex 等价 IS generated 关系. （已译） *)
 Check Sets_colim_carrier_is_coproduct.
 Check Sets_colim_equiv_is_rel.
 Check Sets_colim_obj.
@@ -119,8 +119,8 @@ Check @vertex_map.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The quotient does not collapse: at the two-object discrete shape the
-   two fibres stay apart. *)
+(* The quotient does not collapse: at two-对象 discrete shape the
+ two fibres stay apart. （已译） *)
 Check two_fibres_not_collapsed.
 
 Check two_fibres_not_equal_in_colimit.

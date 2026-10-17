@@ -36,19 +36,17 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe436_absent_name.
 
-(** ** A: FORMABILITY — no uniqueness is asked of a solution set *)
+(* 相关说明。 （已译） *)
 
 Check @sol_index.
 Check @sol_obj.
 Check @sol_arr.
 Check @sol_covers.
 
-(* n7 NAME-ABSENCE: and there is no field called [sol_unique] — a
-   reference-not-found, the instrument's own kind, which is why the four
-   [Check]s above carry the rest of the claim *)
+(* 相关说明。 （已译） *)
 Fail Check @sol_unique.
 
-(** ** B: CONVERSION — how far the unit family reads back *)
+(* 相关说明。 （已译） *)
 
 Section Conversion.
 
@@ -63,8 +61,7 @@ Example p436_obj (u : poly_unit) :
 Example p436_arr (u : poly_unit) :
   sol_arr (solution_set_of_adjunction A d) u = @unit _ _ _ _ A d := eq_refl.
 
-(* controls: Mac Lane's route agrees with the direct one on all three
-   data fields, not only the arrow *)
+(* 相关说明。 （已译） *)
 Example p436_via_index :
   sol_index (solution_set_of_adjunction_via_comma A d)
     = sol_index (solution_set_of_adjunction A d) := eq_refl.
@@ -76,7 +73,7 @@ Example p436_via_arr (u : poly_unit) :
   sol_arr (solution_set_of_adjunction_via_comma A d) u = @unit _ _ _ _ A d
   := eq_refl.
 
-(* n1 CONVERSION: the two routes are nevertheless not the same term *)
+(* 相关说明。 （已译） *)
 Fail Example p436_routes_agree :
   solution_set_of_adjunction A d = solution_set_of_adjunction_via_comma A d
   := eq_refl.
@@ -85,8 +82,7 @@ Fail Example p436_routes_agree :
 Fail Example p436_member_is_FUF (u : poly_unit) :
   sol_obj (solution_set_of_adjunction A d) u = F (U (F d)) := eq_refl.
 
-(* control: a solution set built from a weakly initial family keeps that
-   family's index *)
+(* 相关说明。 （已译） *)
 Example p436_wif_index (W : WeaklyInitialFamily (=(d) ↓ U)) :
   sol_index (sols_of_wif U d W) = wif_index W := eq_refl.
 
@@ -96,7 +92,7 @@ Fail Example p436_general_is_singleton (W : WeaklyInitialFamily (=(d) ↓ U)) :
 
 End Conversion.
 
-(** ** C: TYPING — the sufficient direction keeps all three premises *)
+(* 相关说明。 （已译） *)
 
 Check (fun (C D : Category) (U : C ⟶ D) (comp : @Complete C)
            (cont : @PreservesImageLimit C D U)
@@ -130,7 +126,7 @@ Check (fun (Cu : Category@{p436o p436h p436p})
                 (Du : Category@{p436o p436h p436p})
                 (U : Cu ⟶ Du) => @GAFT_iff Cu Du U).
 
-(** ** E: readbacks, and the [Sets] cross-check *)
+(* 相关说明。 （已译） *)
 
 Example p436_rev_is_GAFT {C D : Category} (U : C ⟶ D) (comp : @Complete C)
   (cont : @PreservesImageLimit C D U) (sols : ∀ d : D, SolutionSet U d) :
@@ -151,8 +147,7 @@ Example p436_sets_arr (d : Sets) (u : poly_unit) :
   sol_arr (solution_set_of_adjunction (@adj_id Sets) d) u
     = sol_arr (Sets_Id_SolutionSet d) u := eq_refl.
 
-(* n9 CONVERSION: the two families are not the same record — the covering
-   witnesses differ *)
+(* 相关说明。 （已译） *)
 Fail Example p436_sets_same_record (d : Sets) :
   solution_set_of_adjunction (@adj_id Sets) d = Sets_Id_SolutionSet d
   := eq_refl.

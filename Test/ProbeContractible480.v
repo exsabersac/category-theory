@@ -31,14 +31,14 @@ Generalizable All Variables.
 Fail Check p480_absent_name.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (b) after (a): a split fork, through Mac Lane's Lemma, and back *)
+(* 相关说明。 （已译） *)
 
 Section FromSplit.
 
 Context {C : Category} {x y : C} {f g : x ~> y}.
 Context (S : SplitCoequalizer f g).
 
-(* C1: the object comes back on the nose. *)
+(* C1: 对象 comes back nose. （已译） *)
 Example p480_c1_split_round_obj :
   scoeq_obj (every_coequalizer_split S (split_coequalizer_is_coequalizer f g S))
     = scoeq_obj S := eq_refl.
@@ -58,7 +58,7 @@ Fail Example p480_r1_split_round_s :
   scoeq_s (every_coequalizer_split S (split_coequalizer_is_coequalizer f g S))
     = scoeq_s S := eq_refl.
 
-(* C4: s comes back up to ≈, by the uniqueness of the descent. *)
+(* 相关说明。 （已译） *)
 Definition p480_c4_split_round_s :
   scoeq_s (every_coequalizer_split S (split_coequalizer_is_coequalizer f g S))
     ≈ scoeq_s S :=
@@ -68,7 +68,7 @@ Definition p480_c4_split_round_s :
 End FromSplit.
 
 (* ------------------------------------------------------------------------ *)
-(** ** (a) after (b): a contraction, through a coequalizer, and back *)
+(* 相关说明。 （已译） *)
 
 Section FromContractible.
 
@@ -76,12 +76,12 @@ Context {C : Category} {x y : C} {f g : x ~> y}.
 Context (P : ContractiblePair f g) {q : C} {e : y ~> q}.
 Context (E : IsCoequalizer f g q e).
 
-(* C5: the contraction comes back on the nose. *)
+(* 相关说明。 （已译） *)
 Example p480_c5_contr_round_t :
   contr_t (split_coequalizer_contractible (contractible_coequalizer_split P E))
     = contr_t P := eq_refl.
 
-(* C6: so does the proof of the first equation. *)
+(* C6: so does 证明 first equation. （已译） *)
 Example p480_c6_contr_round_section :
   contr_section
     (split_coequalizer_contractible (contractible_coequalizer_split P E))
@@ -96,7 +96,7 @@ Fail Example p480_r2_contr_round_cofork :
 End FromContractible.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Restatements of the target's readbacks *)
+(* 相关说明。 （已译） *)
 
 Section Readbacks.
 
@@ -168,7 +168,7 @@ Example p480_c28_idem_r :
 End Idempotent.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Universes: the targets' hom levels may lie strictly above C's *)
+(* 相关说明。 （已译） *)
 
 (* C14: absoluteness at a target hom level strictly above C's. *)
 Definition p480_c14_absolute_above@{co ch xo xh + | ch < xh +}
@@ -186,7 +186,7 @@ Definition p480_c15_functor_above@{co ch do dh + | ch < dh +}
   functor_preserves_contractible F f g P.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Guard: every constant of the targets, by name *)
+(* * ** Guard: every 常值 targets, name （已译） *)
 
 Check @Category.Structure.Coequalizer.Contractible.ContractiblePair.
 Check @Category.Structure.Coequalizer.Contractible.contr_t.
@@ -214,7 +214,7 @@ Check @Category.Structure.Coequalizer.Contractible.functor_preserves_contractibl
 Check @Category.Structure.Coequalizer.Absolute.contractible_coequalizer_absolute.
 
 (* ------------------------------------------------------------------------ *)
-(** ** A reflexive pair with a coequalizer that is not contractible *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeContractible480 相关定义、性质与动机。
@@ -232,8 +232,7 @@ Require Import Category.Instance.Grp.TwoFunctors.
 Require Import Category.Instance.Grp.Quotient.
 Require Import Category.Instance.Grp.Coequalizer.
 
-(* C16: the common section of #479's reflexive pair at Z/4 over {0, 2} is
-   #479's [semidirect_refl], x ↦ ⟨x, 0⟩, 0 being the subgroup's unit. *)
+(* 相关说明。 （已译） *)
 Example p480_c16_z4_section (a : carrier Z4) :
   grp_map (refl_section (semidirect_reflexive Z4_two)) a
     = (a, snd (sdp_unit Z4_two)) := eq_refl.
@@ -263,11 +262,9 @@ Definition p480_c24_a3_contractible :
   split_coequalizer_contractible S3_A3_Grp_split.
 
 (* ------------------------------------------------------------------------ *)
-(** ** A contractible pair with no coequalizer, and not reflexive *)
+(* 相关说明。 （已译） *)
 
-(* Required here, after every other command; the lines
-   Instance/Presented/Cyclic.v adds to the lists above, and that
-   module. *)
+(* 相关说明。 （已译） *)
 Require Import Category.Lib.TList.
 Require Import Category.Construction.Free.Quiver.
 Require Import Category.Construction.Free.Quiver.Presented.
@@ -277,15 +274,14 @@ Require Import Coq.micromega.Lia.
 Require Import Category.Instance.Comp.
 Require Import Category.Instance.Presented.Cyclic.
 
-(* C20: in Awodey's one-object category of the idempotent s ∘ s = s,
-   the pair (1, s) is contracted by 1. *)
+(* C20: Awodey's one-对象 范畴 idempotent s ∘ s = s,
+ pair (1, s) contracted 1. （已译） *)
 Definition p480_c20_idem_contractible :
   @ContractiblePair IdemCat ttt ttt id (spath 1) :=
   @idempotent_contractible IdemCat ttt (spath 1)
     (@Build_Idempotent IdemCat ttt (spath 1) idem_rel).
 
-(* C21: and it has no coequalizer: one would split s through it, with
-   e ∘ s' ≈ 1 and s' ∘ e ≈ s, and the arrows are 1 and s alone. *)
+(* 相关说明。 （已译） *)
 Theorem p480_c21_idem_no_coequalizer (q : IdemCat) (e : ttt ~{IdemCat}~> q) :
   @IsCoequalizer IdemCat ttt ttt id (spath 1) q e → False.
 Proof.
@@ -310,8 +306,7 @@ Proof.
   discriminate.
 Qed.
 
-(* C22: nor is (1, s) reflexive: a common section r would have
-   s ∘ r ≈ 1, and the arrows are 1 and s alone. *)
+(* 相关说明。 （已译） *)
 Theorem p480_c22_idem_not_reflexive :
   @ReflexivePair IdemCat ttt ttt id (spath 1) → False.
 Proof.

@@ -46,11 +46,11 @@ Require Import Category.Instance.Sets.SpecialInitial.
 
 Generalizable All Variables.
 
-(** ** Instrument: the refutation keyword is live *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe452_absent_name.
 
-(** ** N1 (CONVERSION): the object IS the intersection, and not the product *)
+(* * ** N1 (CONVERSION): 对象 IS intersection, not product （已译） *)
 
 (* CONTROL: the object readback, restated. *)
 Example p452_obj@{o h so q +| h <= so, o <= q, h <= q +}
@@ -71,7 +71,7 @@ Example p452_zero@{o h so q +| h <= so, o <= q, h <= q +}
         ∘ `1 (inter_le _ _ Hw (cogen_pullback_sub comp G c)) :=
   eq_refl.
 
-(* CONTROL: the conclusion in the type. *)
+(* 相关说明。 （已译） *)
 Definition p452_is_initial@{o h so q +| h <= so, o <= q, h <= q +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C)
   (G : Cogenerator@{so o h} C) (w : SubObj (cogen_prod comp G))
@@ -86,15 +86,14 @@ Fail Example p452_n1_obj_is_product@{o h so q +| h <= so, o <= q, h <= q +}
   @initial_obj C (special_initial_object comp G w Hw) = cogen_prod comp G :=
   eq_refl.
 
-(** ** N2, N3 (UNIVERSE): the two donor collapses *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: [cogen_prod] at the collapsed index universe, [c = so]. *)
 Definition p452_prod_at_so@{o h so +| h <= so +} {C : Category@{o h h}}
   (comp : @Complete@{so so h o} C) (G : Cogenerator@{so o h} C) : C :=
   cogen_prod comp G.
 
-(* CONTROL: [cogen_power], whose shape is a Σ over the index, takes an index
-   universe below the shape universe. *)
+(* 相关说明。 （已译） *)
 Definition p452_power_low_index@{o h so c +| h <= so, c < so +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C)
   (G : Cogenerator@{c o h} C) (x : C) : C :=
@@ -122,15 +121,14 @@ Fail Definition p452_n3_power_high_datum@{o h r so +| h <= so, so < r +}
   (G : Cogenerator@{so o h} C) (x : C) : C :=
   cogen_power comp G x.
 
-(** ** N4, N5 (UNIVERSE; N5 is P_H_le_so): small hom-sets, [h <= so] *)
+(* 相关说明。 （已译） *)
 
-(* INSTRUMENT: with the limit-datum universe [r] kept apart, the binder is
-   formable at [so < h], so a refusal under it is about the body. *)
+(* 相关说明。 （已译） *)
 Definition p452_binder_ok@{o h r so +| so < h, h <= r +} {C : Category@{o h h}}
   (comp : @Complete@{r so h o} C) (G : Cogenerator@{so o h} C) (x : C) : C :=
   x.
 
-(* With [r = so] the binder alone is refused, whatever the body. *)
+(* 相关说明。 （已译） *)
 Fail Definition p452_n4_binder_collapsed@{o h so +| so < h +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C)
   (G : Cogenerator@{so o h} C) (x : C) : C :=
@@ -153,7 +151,7 @@ Fail Definition p452_n5_power_limit_small_shape@{o h r so +| so < h, h <= r +}
   (G : Cogenerator@{so o h} C) (c : C) :=
   comp _ (Category.Instance.Discrete.DiscreteCat_Functor (cogen_power_fam G c)).
 
-(** ** N6, N7 (UNIVERSE): the small-objects route at [so < o] *)
+(* * ** N6, N7 (UNIVERSE): small-对象 route at [so < o] （已译） *)
 
 (* CONTROL: [special_initial_object_small]'s body, objects at or below the
    shape universe. *)
@@ -164,7 +162,7 @@ Definition p452_small_route_ok@{o h so +| h <= so, o <= so +}
     (complete_intersection_IsIntersection comp
        (fun m : SubObj (cogen_prod comp G) => m)).
 
-(* CONTROL: the library constant at the same universes. *)
+(* CONTROL: library 常值 at same universes. （已译） *)
 Definition p452_small_const@{o h so +| h <= so, o <= so +}
   {C : Category@{o h h}} (comp : @Complete@{so so h o} C)
   (G : Cogenerator@{so o h} C) : @Initial C :=
@@ -190,7 +188,7 @@ Fail Definition p452_n7_small_index@{o h so +| h <= so, so < o +}
   @complete_intersection_IsIntersection C comp (cogen_prod comp G)
     (SubObj (cogen_prod comp G)) (fun m : SubObj (cogen_prod comp G) => m).
 
-(** ** N8, N9 (UNIVERSE): the comparison with Freyd's construction *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: [special_vs_freyd]'s statement and body at [so = h]. *)
 Definition p452_freyd_at_h@{o h +} {C : Category@{o h h}}
@@ -213,8 +211,7 @@ Fail Definition p452_n8_freyd_above@{o h so +| h < so +} {C : Category@{o h h}}
          (wif_of_weakly_initial (special_weakly_initial comp G w Hw))) :=
   initial_unique _ _.
 
-(* CONTROL: the weakly initial family of subobjects is formed with its index
-   strictly below the homs. *)
+(* 相关说明。 （已译） *)
 Definition p452_wif_low@{o h w s t d +| w < h, h < t, h < d, o <= s, h <= s +}
   {C : Category@{o h h}} (comp : @Complete@{h h h o} C)
   (G : Cogenerator@{h o h} C)
@@ -222,8 +219,7 @@ Definition p452_wif_low@{o h w s t d +| w < h, h < t, h < d, o <= s, h <= s +}
   WeaklyInitialFamily C :=
   wif_of_cogenerator comp G W.
 
-(* CONTROL: Freyd's construction takes it with the index AT the homs, which
-   is [freyd_of_cogenerator]'s body. *)
+(* 相关说明。 （已译） *)
 Definition p452_freyd_wif_at_h@{o h s t d +| h < t, h < d, o <= s, h <= s +}
   {C : Category@{o h h}} (comp : @Complete@{h h h o} C)
   (G : Cogenerator@{h o h} C)
@@ -241,15 +237,14 @@ Fail Definition p452_n9_freyd_wif_low@{o h w s t d +|
   initial_from_weakly_initial_complete comp (Complete_HasEqualizers comp)
     (wif_of_cogenerator comp G W).
 
-(** ** N10 (UNIVERSE): the small-objects form at [Sets] *)
+(* * ** N10 (UNIVERSE): small-对象 form at [Sets] （已译） *)
 
-(* CONTROL: the least-subobject form at the same universes. *)
+(* 相关说明。 （已译） *)
 Definition p452_sets_iem@{o so +| o < so +} (E : IEM@{o}) :
   @Initial Sets@{o so} :=
   sets_special_initial_IEM E.
 
-(* CONTROL: its body, with [Sets_Complete], ascribed as in N10, and
-   [Sets_Cogenerator_IEM E] named directly. *)
+(* 相关说明。 （已译） *)
 Definition p452_sets_iem_direct@{o so +| o < so +} (E : IEM@{o}) :
   @Initial Sets@{o so} :=
   special_initial_object (Sets_Complete : @Complete@{o o o so} Sets@{o so})
@@ -263,10 +258,10 @@ Fail Definition p452_n10_small_at_sets@{o so +| o < so +} (E : IEM@{o}) :
     (Sets_Complete : @Complete@{o o o so} Sets@{o so})
     (Sets_Cogenerator_IEM E).
 
-(** ** N11, N12 (UNIVERSE; P_type_truth): the [Type]-valued truth setoid *)
+(* 相关说明。 （已译） *)
 
-(* [Type@{l}] under [iffT]: the classical object of truth values, with the
-   library's [Type]-valued equivalence. *)
+(* [Type@{l}] under [iffT]: classical 对象 truth values, the
+ library's [Type]-valued 等价. （已译） *)
 Definition p452_iff_setoid@{l m p +| l < m, l <= p +} :
   Setoid@{m p} Type@{l}.
 Proof.
@@ -284,7 +279,7 @@ Definition p452_truth_low@{l o so +| l < o, o < so +} : obj[Sets@{o so}] :=
 Fail Definition p452_n11_truth_at@{o so +| o < so +} : obj[Sets@{o so}] :=
   @Build_SetoidObject Type@{o} p452_iff_setoid.
 
-(* CONTROL: the test map at a point [y0], for a setoid one level down. *)
+(* 相关说明。 （已译） *)
 Definition p452_char_low@{l o so +| l < o, o < so +}
   (Y : SetoidObject@{l l}) (y0 : carrier Y) :
   carrier Y → carrier (@Build_SetoidObject Type@{l} p452_iff_setoid) :=
@@ -295,12 +290,12 @@ Fail Definition p452_n12_char_at@{l o so +| l < o, o < so +}
   carrier Y → carrier (@Build_SetoidObject Type@{l} p452_iff_setoid) :=
   fun b => @equiv _ (is_setoid Y) y0 b.
 
-(* CONTROL: the conditional cogenerator at the same universes. *)
+(* 相关说明。 （已译） *)
 Definition p452_cog_untruncate@{o so +| Set < o, o < so +}
   (U : Untruncate@{o}) : Cogenerator Sets@{o so} :=
   Sets_Cogenerator_untruncate U.
 
-(** ** N13, N14 (UNIVERSE; P_large_cog): a large cogenerator of [Sets] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeSpecialInitial452 相关定义、性质与动机。
@@ -320,8 +315,8 @@ Definition p452_large_prod_abstract@{c o so +| o < so, o < c +}
   (comp : @Complete@{c c o so} Sets@{o so}) : obj[Sets@{o so}] :=
   cogen_prod comp Sets_Cogenerator_large@{c o so}.
 
-(* CONTROL: and so does the theorem, over any least subobject, the datum
-   hypothetical as above. *)
+(* CONTROL: so does 定理, over any least subobject, datum
+ hypothetical above. （已译） *)
 Definition p452_large_sio_abstract@{c o so +| o < so, o < c +}
   (comp : @Complete@{c c o so} Sets@{o so})
   (w : SubObj (cogen_prod comp Sets_Cogenerator_large@{c o so}))
@@ -357,9 +352,9 @@ Fail Definition p452_n14_large_sio_sets@{c o so +| o < so, o < c +} :
     (sub_bot (Sets_zero_monic _))
     (intersection_all_of_least _ (sub_bot_least (Sets_zero_monic _))).
 
-(** ** N15, N16 (UNIVERSE): [Sets^op] through well-poweredness *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the corollary at [Sets^op] with the datum left free. *)
+(* CONTROL: 推论 at [Sets^op] datum left free. （已译） *)
 Definition p452_setsop_wp_free@{o so +| o < so +}
   (WP : WellPowered (Sets@{o so}^op)) : @Initial (Sets@{o so}^op) :=
   special_initial_object_wellpowered WP setsop_comp setsop_cog.
@@ -373,8 +368,8 @@ Fail Definition p452_n15_setsop_wp_up@{o so +| o < so +} :
   special_initial_object_wellpowered (C := Sets@{o so}^op)
     (fun X => Sets_CoWellPoweredAt_up X) setsop_comp setsop_cog.
 
-(* CONTROL: the per-object corollary at [Sets^op] with the datum left
-   free. *)
+(* CONTROL: per-对象 推论 at [Sets^op] datum left
+ free. （已译） *)
 Definition p452_setsop_wp_at_free@{o so +| o < so +}
   (W : WellPoweredAt (C := Sets@{o so}^op)
          (cogen_prod setsop_comp setsop_cog)) :
@@ -386,9 +381,9 @@ Fail Definition p452_n16_setsop_wp_at_up@{o so +| o < so +} :
   special_initial_object_wellpowered_at setsop_comp setsop_cog
     (Sets_CoWellPoweredAt_up (cogen_prod setsop_comp setsop_cog)).
 
-(** ** N17, N18 (CONVERSION): the objects at [Sets^op] and at [Sets] *)
+(* * ** N17, N18 (CONVERSION): 对象 at [Sets^op] at [Sets] （已译） *)
 
-(* CONTROL: at [Sets^op] the object IS the singleton. *)
+(* CONTROL: at [Sets^op] 对象 IS singleton. （已译） *)
 Example p452_setsop_obj@{o so +| o < so +} :
   @initial_obj (Sets@{o so}^op) setsop_special_initial
     = @terminal_obj Sets@{o so} Sets_Terminal := eq_refl.
@@ -397,7 +392,7 @@ Fail Example p452_n17_setsop_obj_empty@{o so +| o < so +} :
   @initial_obj (Sets@{o so}^op) setsop_special_initial
     = @initial_obj Sets@{o so} Sets_Initial := eq_refl.
 
-(* CONTROL: at [Sets] under [IEM] the object IS the empty setoid. *)
+(* CONTROL: at [Sets] under [IEM] 对象 IS empty setoid. （已译） *)
 Example p452_sets_iem_obj@{o so +| o < so +} (E : IEM@{o}) :
   @initial_obj Sets@{o so} (sets_special_initial_IEM E)
     = @initial_obj Sets@{o so} Sets_Initial := eq_refl.
@@ -420,7 +415,7 @@ Check (Subsets_special_initial_is_empty :
     (@initial_obj _ (Subsets_special_initial X G)
        : carrier (Powerset_Prop_obj X)) x → False).
 
-(* The book's form at [Sets], from the #451 intersection. *)
+(* 相关说明。 （已译） *)
 Definition p452_sets_book@{o so +| Set < o, o < so +} (U : Untruncate@{o}) :
   @Initial Sets@{o so} :=
   special_initial_object_book Sets_Complete (Sets_Cogenerator_untruncate U)

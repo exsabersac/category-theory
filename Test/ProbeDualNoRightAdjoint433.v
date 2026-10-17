@@ -45,36 +45,36 @@ Context (F : FieldObject).
 
 Notation Vct := (Vct_F F).
 
-(** ** A: CONVERSION — two dual functors, naturally isomorphic, not
-       convertible *)
+(* * ** A: CONVERSION — two dual 函子, naturally isomorphic, not
+ convertible （已译） *)
 
-(* control: #359's headline, Structure/Monoidal/Dual.v's self-adjunction
-   on the right, instantiates at the target's reading of [dual] *)
+(* control: #359's headline, Structure/Monoidal/Dual.v's self-伴随
+ right, instantiates at target's reading [dual] （已译） *)
 Definition p433_dual359_self_right :
   @AdjointOnTheRight Vct Vct (VctDual359 F) (VctDual359 F) :=
   @dual_self_adjoint_on_the_right Vct (VctSMC F) (VctLine F).
 
-(* control: the isomorphism is delivered, and the exercise holds for the
-   functor the issue names *)
+(* control: 同构 delivered, exercise holds the
+ 函子 issue names （已译） *)
 Check (dual_iso359 F : Dual F ≈ VctDual359 F).
 Check (dual359_no_right_adjoint F
          : CoordSpanProper F → ∀ Rt : Vct ⟶ Vct^op, VctDual359 F ⊣ Rt → False).
 
-(* N1 CONVERSION: the two functors are different [Program] records *)
+(* N1 CONVERSION: two 函子 different [Program] records （已译） *)
 Fail Example p433_two_duals_not_convertible : VctDual359 F = Dual F := eq_refl.
 
-(* control: objectwise, the carriers coincide on the nose *)
+(* 相关说明。 （已译） *)
 Example p433_carriers_convertible (x : Vct) :
   carrier (cmon_setoid (VctDual359 F x)) = carrier (cmon_setoid (Dual F x))
   := eq_refl.
 
-(* N5 CONVERSION: the packed modules do not — the proof fields of
-   [HomMod] and [DualMod] are different opaque constants *)
+(* N5 CONVERSION: packed modules do not — 证明 fields of
+ [HomMod] [DualMod] different opaque constants （已译） *)
 Fail Example p433_objects_not_convertible (x : Vct) :
   (VctDual359 F x : Vct) = (Dual F x : Vct) := eq_refl.
 
-(** ** B: TYPING — the refutation is conditional, and the self-adjunction
-       has a direction *)
+(* * ** B: TYPING — refutation conditional, self-伴随
+ has direction （已译） *)
 
 (* control: the conditional statement *)
 Check (dual_functor_no_right_adjoint F
@@ -117,18 +117,18 @@ Example p433_transpose_component {a x : Vct} (f : a ~{Vct}~> Dual F x)
   cmon_map (rm_hom (cmon_map (rm_hom (vct_transpose F f)) v)) w
     = cmon_map (rm_hom (cmon_map (rm_hom f) w)) v := eq_refl.
 
-(* the colimit mediator is the tuple of the competing cocone's legs *)
+(* 相关说明。 （已译） *)
 Example p433_mediator_component (M : Cocone (LineDiagram F))
   (z : carrier (cmon_setoid (vertex_obj[M] : Vct))) (n : nat) :
   cmon_map (rm_hom (unique_obj (PowCocone_IsColimitCocone F M))) z n
     = cmon_map (rm_hom (@vertex_map _ _ _ _ (@coneFrom _ _ _ M) n)) z
   := eq_refl.
 
-(* the isomorphism's components are the identity on functionals *)
+(* 同构's components 恒等 functionals （已译） *)
 Example p433_iso359_component (x : Vct) (g : carrier (cmon_setoid (Dual F x))) :
   cmon_map (rm_hom (to (projT1 (dual_iso359 F) x))) g = g := eq_refl.
 
-(* the indexed-product record's mediator is the tuple *)
+(* 相关说明。 （已译） *)
 Example p433_iprod_mediator {R : RingObject} {I : Type}
   (V : I → RModObject R) {Z : RModObject R} (pi : ∀ i, RModHom Z (V i)) :
   unique_obj (iprod_desc (ProdMod_IsIndexedProduct V) pi) = prod_tuple V pi

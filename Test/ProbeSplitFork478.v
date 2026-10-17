@@ -37,14 +37,14 @@ Generalizable All Variables.
 Fail Check p478_absent_name.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Law 2 at a variable object or arrow of 1 *)
+(* * ** Law 2 at variable 对象 arrow 1 （已译） *)
 
 Section LawTwo.
 
 Context {C : Category}.
 Context `{T : @Terminal C}.
 
-(* C1: at the object of 1, on the nose. *)
+(* C1: at 对象 1, nose. （已译） *)
 Example p478_c1_law2_obj :
   fobj[Erase C ◯ Diagonal _1 (@terminal_obj C T)] ttt = fobj[Id[_1]] ttt
   := eq_refl.
@@ -59,7 +59,7 @@ Lemma p478_c2_law2_obj_cases (x : _1) :
   fobj[Erase C ◯ Diagonal _1 (@terminal_obj C T)] x = fobj[Id[_1]] x.
 Proof. destruct x; reflexivity. Qed.
 
-(* C3: at the identity arrow of 1, on the nose. *)
+(* C3: at 恒等箭头 1, nose. （已译） *)
 Example p478_c3_law2_map :
   fmap[Erase C ◯ Diagonal _1 (@terminal_obj C T)] (@id _1 ttt)
     = fmap[Id[_1]] (@id _1 ttt) := eq_refl.
@@ -77,7 +77,7 @@ Proof. destruct f; reflexivity. Qed.
 End LawTwo.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The laws are not equalities of functor records *)
+(* * ** The laws not equalities 函子 records （已译） *)
 
 Section Records.
 
@@ -163,7 +163,7 @@ Definition p478_c15_law4_strict@{o h +} {C : Category@{o h h}}
   := arrow_fork_law4_strict.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Universes: the fork needs h <= o *)
+(* 相关说明。 （已译） *)
 
 (* R7 *)
 Fail Definition p478_r7_law1_o_lt_h@{o h + | o < h +} (C : Category@{o h h}) :
@@ -176,7 +176,7 @@ Definition p478_c16_law1_h_lt_o@{o h + | h < o +} (C : Category@{o h h}) :
   := arrow_fork_law1 C.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Restatements of the target's readbacks *)
+(* 相关说明。 （已译） *)
 
 Section Readbacks.
 
@@ -204,7 +204,7 @@ Example p478_c21_t_map {c d : C} (f : c ~> d) :
 
 End Readbacks.
 
-(* C22: the split fork in Cat has e for its coequalizing arrow. *)
+(* 相关说明。 （已译） *)
 Example p478_c22_split_e@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   scoeq_e (@arrow_fork_split C T) = Erase C := eq_refl.
@@ -215,7 +215,7 @@ Example p478_c23_split_s@{o h +} {C : Category@{o h h}}
   scoeq_s (@arrow_fork_split C T) = Diagonal _1 (@terminal_obj C T)
   := eq_refl.
 
-(* C24: ... and t for the section of ∂₀. *)
+(* 相关说明。 （已译） *)
 Example p478_c24_split_t@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   scoeq_t (@arrow_fork_split C T) = @arrow_fork_t C T := eq_refl.
@@ -231,20 +231,20 @@ Example p478_c26_not_coequalizer_0 :
   arrow_fork_not_coequalizer _0 (fun x => match x with end).
 
 (* ------------------------------------------------------------------------ *)
-(** ** The components of the two split forks in Cat *)
+(* 相关说明。 （已译） *)
 
 (* R8 *)
 Fail Example p478_r8_split_law3_component@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} (c : C) :
   to (projT1 (scoeq_law3 (@arrow_fork_split C T)) c) = id := eq_refl.
 
-(* C27: the same at the direct split fork. *)
+(* 相关说明。 （已译） *)
 Example p478_c27_split_direct_law3_component@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} (c : C) :
   to (projT1 (scoeq_law3 (@arrow_fork_split_direct C T)) c) = id := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Restatements: components, the direct split fork, the Corollary *)
+(* 相关说明。 （已译） *)
 
 (* C28: law 3 in StrictCat has the object component [eq_refl]. *)
 Example p478_c28_law3_strict_component@{o h +} {C : Category@{o h h}}
@@ -266,7 +266,7 @@ Example p478_c31_law4_direct_component@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} (c : C) :
   to (projT1 (@arrow_fork_law4_direct C T) c) = id := eq_refl.
 
-(* C32: the direct split fork has e for its coequalizing arrow. *)
+(* 相关说明。 （已译） *)
 Example p478_c32_split_direct_e@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   scoeq_e (@arrow_fork_split_direct C T) = Erase C := eq_refl.
@@ -277,26 +277,26 @@ Example p478_c33_split_direct_s@{o h +} {C : Category@{o h h}}
   scoeq_s (@arrow_fork_split_direct C T) = Diagonal _1 (@terminal_obj C T)
   := eq_refl.
 
-(* C34: ... and t for the section of ∂₀. *)
+(* 相关说明。 （已译） *)
 Example p478_c34_split_direct_t@{o h +} {C : Category@{o h h}}
   `{T : @Terminal C} :
   scoeq_t (@arrow_fork_split_direct C T) = @arrow_fork_t C T := eq_refl.
 
-(* C35: the corollary out of StrictCat is the Corollary, applied. *)
+(* C35: 推论 out StrictCat Corollary, applied. （已译） *)
 Example p478_c35_preserved_absolute_strict@{o h do dh +}
   {C : Category@{o h h}} `{T : @Terminal C} {D : Category@{do dh dh}}
   (F : StrictCat ⟶ D) :
   @arrow_fork_preserved_strict C T D F = @arrow_fork_absolute_strict C T D F
   := eq_refl.
 
-(* C36: ... and so is the one out of Cat. *)
+(* 相关说明。 （已译） *)
 Example p478_c36_preserved_absolute@{o h do dh +}
   {C : Category@{o h h}} `{T : @Terminal C} {D : Category@{do dh dh}}
   (F : Cat ⟶ D) :
   @arrow_fork_preserved C T D F = @arrow_fork_absolute C T D F := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Guard: every constant of the target, by name *)
+(* * ** Guard: every 常值 target, name （已译） *)
 
 Check @Category.Instance.Cat.SplitFork.arrow_fork_e_one.
 Check @Category.Instance.Cat.SplitFork.arrow_fork_e_one_strict.

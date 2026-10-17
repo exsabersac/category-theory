@@ -18,7 +18,7 @@ Require Import Category.Adjunction.Fullness.
 
 Generalizable All Variables.
 
-(** * Boundary probe for Adjunction/Fullness.v (issue #368). *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeFullness368。
@@ -26,8 +26,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* ** Instrument check: a [Fail] that must fire for a reason having
-   nothing to do with universes, typing or conversion. *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe368_no_such_constant_anywhere.
 
@@ -46,7 +45,7 @@ Context (Cu : Category@{co ch cp}).
 Context (x y : Cu).
 Context (f : x ~{Cu}~> y).
 
-(* Controls: the hom-set and the identity ARE formable at these levels. *)
+(* Controls: hom-set 恒等 ARE formable at these levels. （已译） *)
 Check (@id Cu x).
 Check f.
 
@@ -69,8 +68,8 @@ Constraint ch < cp.
 Context (Cu : Category@{co ch cp}).
 Context (Du : Category@{do dh dp}).
 
-(* [Functor] does NOT force hom = proof: this is accepted at exactly the
-   levels where [Section], [Monic] and [Retraction] are rejected. *)
+(* [Functor] does NOT force hom = 证明: 这是 accepted at exactly the
+ levels where [Section], [Monic] [Retraction] rejected. （已译） *)
 Check (Du ⟶ Cu).
 
 End P_hom_proof_control.
@@ -111,9 +110,9 @@ Context (A : F ⊣ U).
 
 Definition PT : F ∹ U := @Adjunction_to_Transform C D F U A.
 
-(* Controls: both whiskered transformations exist, at their own types,
-   and both of the target's hand-built transformations exist at the type
-   the isomorphism needs. *)
+(* Controls: both whiskered transformations exist, at own types,
+ both target's hand-built transformations exist at type
+ 同构 needs. （已译） *)
 Check (U ⊳ (@counit _ _ _ _ PT)).
 Check ((@unit _ _ _ _ PT) ⊲ U).
 Check (@whiskered_counit C D F U A : U ◯ F ◯ U ⟹ U).
@@ -148,9 +147,9 @@ Context {S : Subcategory C}.
 Context (R : Reflective S).
 Context (x : Sub C S).
 
-(* Controls: both isomorphisms exist, and the target's inverse is the
-   unit component at [eq_refl] (this is the target's own [Example],
-   restated here so a rename breaks the probe). *)
+(* Controls: both isomorphisms exist, target's inverse the
+ unit component at [eq_refl] (这是 target's own [Example],
+ restated here so rename breaks probe). （已译） *)
 Check (reflective_counit_iso R x).
 Check (reflective_fmap_counit_IsIsomorphism R x).
 Check (@reflective_fmap_counit_inverse C S R x).
@@ -183,9 +182,7 @@ Check (equiv_fmap_counit_IsIsomorphism E d).
 Check (@equiv_fmap_counit_inverse C D F E d).
 Check (@equiv_fmap_counit_inverse_agrees C D F E d).
 
-(* Negative 8 (CONVERSION).  Here the `≈` form IS available and is
-   delivered by the target as [equiv_fmap_counit_inverse_agrees]
-   (control above); it is the strict form that fails. *)
+(* 相关说明。 （已译） *)
 Fail Definition probe_equiv_inverse_strict :
   two_sided_inverse (IsIsomorphism := equiv_fmap_counit_IsIsomorphism E d)
   = fmap[@quasi_inverse C D F E]
@@ -207,7 +204,7 @@ Context {D : Category}.
 Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 
-(* Controls: the data fields agree on the nose. *)
+(* 相关说明。 （已译） *)
 Example probe_padding_assoc_fobj :
   fobj[U ◯ (F ◯ U)] = fobj[(U ◯ F) ◯ U] := eq_refl.
 Example probe_padding_assoc_fmap :

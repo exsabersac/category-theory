@@ -42,7 +42,7 @@ Generalizable All Variables.
 *)
 Fail Check zzz_no_such_constant_spanning_449.
 
-(** ** Positive controls: every library constant a negative names *)
+(* * ** Positive controls: every library 常值 negative names （已译） *)
 
 Section Controls.
 
@@ -90,8 +90,7 @@ Example c_esol_elem (HWP : @HasWidePullbacks (RMod R))
   (i : SpanningArrowsOutOf (Bilin V V') SetsOne) :
   esol_elem (@tensor_esols R V V' HWP) i = `1 (`2 i) ttt := eq_refl.
 
-(* The two [eq_refl] readbacks of the submodule/subobject bridge that DO
-   hold, as the controls NEGATIVE 1 sits beside. *)
+(* 相关说明。 （已译） *)
 Example c_subobj_dom (W : RModObject R) (S : Submodule W) :
   sub_dom (smod_subobj S) = SubmoduleMod S := eq_refl.
 

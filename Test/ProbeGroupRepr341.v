@@ -15,7 +15,7 @@ Require Import Category.Structure.Group.Representable.
 
 Generalizable All Variables.
 
-(** ** Negatives 1-3 (FORMABILITY): three donors identify hom with proof *)
+(* * ** Negatives 1-3 (FORMABILITY): three donors identify hom 证明 （已译） *)
 
 Section Donors.
 

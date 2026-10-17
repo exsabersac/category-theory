@@ -46,7 +46,7 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------------ *)
 (** ** Monad/Identity.v *)
 
-(* C5: the functor of [IdMonad C] is the identity on objects. *)
+(* C5: 函子 [IdMonad C] 恒等 对象. （已译） *)
 Example p469_c5_id_fobj@{o h | +} (C : Category@{o h h}) (x : C) :
   @fobj C C Id[C] x = x := eq_refl.
 
@@ -62,7 +62,7 @@ Example p469_c7_id_ret@{o h | +} (C : Category@{o h h}) (x : C) :
 Example p469_c8_id_join@{o h | +} (C : Category@{o h h}) (x : C) :
   @join C Id[C] (IdMonad@{o h} C) x = @id C x := eq_refl.
 
-(* C9: both legs of the unit isomorphism at an algebra are [id]. *)
+(* C9: both legs unit 同构 at algebra [id]. （已译） *)
 Example p469_c9_em_unit_legs@{o h s e | h < s, o <= e, h <= e +}
   (C : Category@{o h h})
   (X : @EilenbergMoore@{e o s h} C Id[C] (IdMonad@{o h} C)) :
@@ -71,9 +71,9 @@ Example p469_c9_em_unit_legs@{o h s e | h < s, o <= e, h <= e +}
     = (@id C (`1 X), @id C (`1 X)) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Top/Monadicity.v: the induced monad *)
+(* * ** Instance/Top/Monadicity.v: induced 单子 （已译） *)
 
-(* C1: the [fobj] fields of PDiscT and Id[Sets]. *)
+(* 相关说明。 （已译） *)
 Example p469_c1_fobj_field@{o so s | o < so, o < s +} :
   @fobj _ _ PDiscT@{o so s} = @fobj _ _ Id[Sets@{o so}] := eq_refl.
 
@@ -89,18 +89,18 @@ Example p469_c10_T_fobj@{o so s | o < so, o < s +} (x : Sets@{o so}) :
 Example p469_c11_T_fmap@{o so s | o < so, o < s +} (x y : Sets@{o so})
   (f : x ~> y) : fmap[PForget@{o so} ◯ PDisc@{o so}] f = f := eq_refl.
 
-(* C12: the unit of the adjunction is the identity arrow. *)
+(* C12: unit 伴随 恒等箭头. （已译） *)
 Example p469_c12_unit@{o so u u0 | o < so, o < u +} (x : Sets@{o so}) :
   @Category.Theory.Adjunction.unit _ _ _ _ PDisc_PForget@{o so u u0} x
     = @id Sets@{o so} x := eq_refl.
 
-(* C13: the counit at a space is the identity on its points. *)
+(* C13: counit at space 恒等 points. （已译） *)
 Example p469_c13_counit@{o so u u0 | o < so, o < u +}
   (X : PTopCat@{o so}) :
   pmap (@Category.Theory.Adjunction.counit _ _ _ _
           PDisc_PForget@{o so u u0} X) = setoid_morphism_id := eq_refl.
 
-(* C14: the unit of the induced monad is [id]. *)
+(* C14: unit induced 单子 [id]. （已译） *)
 Example p469_c14_ret@{o so s u u0 | o < so, o < s, o < u +}
   (x : Sets@{o so}) :
   @ret _ _ (@Adjunction_Induced_Monad _ _ _ _ PDisc_PForget@{o so u u0}) x
@@ -112,8 +112,8 @@ Example p469_c15_join@{o so s u u0 | o < so, o < s, o < u +}
   @join _ _ (@Adjunction_Induced_Monad _ _ _ _ PDisc_PForget@{o so u u0}) x
     = @id Sets@{o so} x := eq_refl.
 
-(* C37: its unit and multiplication, as functions, are those of the
-   identity monad. *)
+(* C37: unit multiplication, functions, those the
+ 恒等 单子. （已译） *)
 Example p469_c37_monad_fields@{o so s u u0 | o < so, o < s, o < u +} :
   (@ret _ _ (@Adjunction_Induced_Monad _ _ _ _ PDisc_PForget@{o so u u0}),
    @join _ _ (@Adjunction_Induced_Monad _ _ _ _ PDisc_PForget@{o so u u0}))
@@ -138,9 +138,9 @@ Fail Example p469_r1c_fmap_comp@{o so s | o < so, o < s +} :
   @fmap_comp _ _ PDiscT@{o so s} = @fmap_comp _ _ Id[Sets@{o so}]
   := eq_refl.
 
-(* C36: at the Leibniz setoid of [bool], the body of the standard
-   library's obligation behind R1a, transitivity after a reflexivity,
-   converts with its argument. *)
+(* C36: at Leibniz setoid [bool], body standard
+ library's obligation behind R1a, transitivity after reflexivity,
+ converts 论元. （已译） *)
 Example p469_c36_unfolded_bool@{o so | o < so +} :
   (fun (x0 y0 : bool_setoid_object@{o o} ~{Sets@{o so}}~>
                   bool_setoid_object@{o o})
@@ -161,7 +161,7 @@ Fail Example p469_r13_unfolded_variable@{o so | o < so +} :
          (x2 : x) => X x2) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Top/Monadicity.v: the isomorphism in [Monads Sets] *)
+(* * ** Instance/Top/Monadicity.v: 同构 [Monads Sets] （已译） *)
 
 (* C16: both morphisms of monads have identity components. *)
 Example p469_c16_hom_components@{o so s u u0 | o < so, o < s, o < u +}
@@ -170,7 +170,7 @@ Example p469_c16_hom_components@{o so s u u0 | o < so, o < s, o < u +}
    transform[mh_transform id_disc_hom@{o so s u u0}] x)
     = (@id Sets@{o so} x, @id Sets@{o so} x) := eq_refl.
 
-(* C17: so have the two legs of the isomorphism. *)
+(* C17: so have two legs 同构. （已译） *)
 Example p469_c17_iso_components@{o so s u u0 m1 m2 |
   o < so, o < s, o < u, so <= m1, o <= m1, so <= m2, o <= m2 +}
   (x : Sets@{o so}) :
@@ -186,9 +186,9 @@ Fail Example p469_r3_monad_eq@{o so s u u0 | o < so, o < s, o < u +} :
     Id[Sets@{o so}] (IdMonad@{so o} Sets@{o so}) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Top/Monadicity.v: the comparison functor *)
+(* * ** Instance/Top/Monadicity.v: comparison 函子 （已译） *)
 
-(* C3: the [fobj] fields of EM_Forget ◯ K and PForget. *)
+(* 相关说明。 （已译） *)
 Example p469_c3_forget_fobj_field@{o so s u u0 e |
   o < so, o < s, o < u, so <= e +} :
   @fobj _ _ (EM_Forget _ ◯ PDiscK@{o so s u u0 e}) = @fobj _ _ PForget@{o so}
@@ -218,7 +218,7 @@ Example p469_c20_strict_obj@{o so s u u0 e a b |
   (X : PTopCat@{o so}) :
   `1 PDiscK_forget_strict@{o so s u u0 e a b} X = eq_refl := eq_refl.
 
-(* C38: the structure map of K X is the identity setoid morphism. *)
+(* C38: structure map K X 恒等 setoid 态射. （已译） *)
 Example p469_c38_K_alg@{o so s u u0 e | o < so, o < s, o < u, so <= e +}
   (X : PTopCat@{o so}) :
   t_alg[`2 (fobj[EM_Comparison PDisc_PForget@{o so u u0}] X)]
@@ -248,10 +248,9 @@ Fail Example p469_r2c_fmap_comp@{o so s u u0 e |
     = @fmap_comp _ _ PForget@{o so} := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Top/Monadicity.v: Set^I = Set *)
+(* 相关说明。 （已译） *)
 
-(* C39: K X and EM_Free (PForget X) have one carrier and one structure
-   map. *)
+(* 相关说明。 （已译） *)
 Example p469_c39_K_free_parts@{o so s u u0 e |
   o < so, o < s, o < u, so <= e +} (X : PTopCat@{o so}) :
   (`1 (fobj[PDiscK@{o so s u u0 e}] X),
@@ -269,14 +268,14 @@ Fail Example p469_r14_K_free_obj@{o so s u u0 e |
     = fobj[@EM_Free@{so o s e} Sets@{o so} PDiscT@{o so s}
              PDiscMonad@{o so s u u0} ◯ PForget@{o so}] X := eq_refl.
 
-(* C21: KI after the forgetful functor is PForget on objects and arrows. *)
+(* C21: KI after forgetful 函子 PForget 对象 arrows. （已译） *)
 Example p469_c21_KI_forget@{o so s u u0 e |
   o < so, o < s, o < u, so <= e +} (X Y : PTopCat@{o so}) (f : X ~> Y) :
   (`1 (fobj[PDiscKI@{o so s u u0 e}] X),
    t_alg_hom[fmap[PDiscKI@{o so s u u0 e}] f])
     = (fobj[PForget@{o so}] X, fmap[PForget@{o so}] f) := eq_refl.
 
-(* C22: the structure map of KI X is the identity function. *)
+(* C22: structure map KI X 恒等 function. （已译） *)
 Example p469_c22_KI_alg@{o so s u u0 e | o < so, o < s, o < u, so <= e +}
   (X : PTopCat@{o so}) (x : X) :
   t_alg[`2 (fobj[mh_EM@{so o e s} id_disc_hom@{o so s u u0}
@@ -290,9 +289,9 @@ Example p469_r15_KI_alg_setoid@{o so s u u0 e |
   := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Sets/Propositional/Full.v *)
+(* 相关说明。 （已译） *)
 
-(* C23: the inclusion is the first projection on objects. *)
+(* C23: 含入 first projection 对象. （已译） *)
 Example p469_c23_incl_fobj@{o so | o < so +} (X : PropSets@{o so}) :
   fobj[PropSets_Incl@{o so}] X = projT1 X := eq_refl.
 
@@ -314,7 +313,7 @@ Example p469_c42_lift_map@{co o so | o < so +}
   (P : ∀ c : C, PropEquivObj@{so o o} (F c)) (x y : C) (f : x ~> y) :
   projT1 (fmap[PropSets_lift@{co o o so} F P] f) = fmap[F] f := eq_refl.
 
-(* C24: the unit of the reflection is the identity function. *)
+(* C24: unit reflection 恒等 function. （已译） *)
 Example p469_c24_trunc_unit@{o so a | o < so +} (S : Sets@{o so}) :
   @Sets.morphism _ _ _ _
     (@Category.Theory.Adjunction.unit _ _ _ _
@@ -329,7 +328,7 @@ Example p469_c43_trunc_counit@{o so a | o < so +} (X : PropSets@{o so}) :
     = (fun x : carrier (projT1 X) => x) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Pos/Monadicity.v: [Pos_Forget] through [PropSets] *)
+(* 相关说明。 （已译） *)
 
 (* C25: PropSets_Incl ◯ PosPForget is Pos_Forget on objects. *)
 Example p469_c25_factor_obj@{c so po p0 p1 p2 p3 s |
@@ -354,15 +353,15 @@ Fail Example p469_r18_factor_eq@{c so po p0 p1 p2 p3 s |
     = Pos_Forget@{po so p0 p2 p1 p3 c} := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Pos/Monadicity.v: over [PropSets] *)
+(* 相关说明。 （已译） *)
 
-(* C26: the monad keeps the setoid of an object. *)
+(* C26: 单子 keeps setoid 对象. （已译） *)
 Example p469_c26_TPosP_setoid@{c so po p0 p1 p2 p3 s |
   c < so, c < s, c < po, Set < p2, p1 <= po, p2 <= p0, p3 <= p1,
   c <= p0, c <= p1 +} (X : PropSets@{c so}) :
   projT1 (fobj[TPosP@{c so po p0 p1 p2 p3 s}] X) = projT1 X := eq_refl.
 
-(* C45: and the function of an arrow. *)
+(* 相关说明。 （已译） *)
 Example p469_c45_TPosP_fmap@{c so po p0 p1 p2 p3 s |
   c < so, c < s, c < po, Set < p2, p1 <= po, p2 <= p0, p3 <= p1,
   c <= p0, c <= p1 +} (X Y : PropSets@{c so})
@@ -385,7 +384,7 @@ Example p469_c35_pair_setoid@{c so po p0 p1 p2 p3 s |
   projT1 (fobj[TPosP@{c so po p0 p1 p2 p3 s}]
             (existT _ S P : PropSets@{c so})) = S := eq_refl.
 
-(* C27: the unit is the identity function. *)
+(* C27: unit 恒等 function. （已译） *)
 Example p469_c27_MPosP_ret@{c so po p0 p1 p2 p3 s a |
   c < so, c < s, c < po, Set < p2, p1 <= po, p2 <= p0, p3 <= p1,
   c <= p0, c <= p1 +} (X : PropSets@{c so}) :
@@ -399,8 +398,8 @@ Example p469_c46_MPosP_join@{c so po p0 p1 p2 p3 s a |
                        PosDiscP_PosPForget@{c so po p0 p1 p2 p3 a}) X)
     = id := eq_refl.
 
-(* C28: the morphism of monads to the identity monad has identity
-   components. *)
+(* C28: 态射 单子 恒等 单子 has 恒等
+ components. （已译） *)
 Example p469_c28_to_Id_component@{c so po p0 p1 p2 p3 s a |
   c < so, c < s, c < po, Set < p2, p1 <= po, p2 <= p0, p3 <= p1,
   c <= p0, c <= p1 +} (X : PropSets@{c so}) :
@@ -449,8 +448,7 @@ Fail Example p469_r9_monads_eq@{c so po p0 p1 p2 p3 s a m1 m2 |
     (existT _ Id[PropSets@{c so}] (IdMonad@{so c} PropSets@{c so}))
   := eq_refl.
 
-(* C52: a [SetoidObject], a record with primitive projections, converts
-   with its rebuilt record. *)
+(* 相关说明。 （已译） *)
 Example p469_c52_setoid_eta@{c | +} (S : SetoidObject@{c c}) :
   {| carrier := carrier S; is_setoid := is_setoid S |} = S := eq_refl.
 
@@ -459,9 +457,9 @@ Fail Example p469_r21_sigT_eta@{c so | c < so +} (X : PropSets@{c so}) :
   X = (existT _ (projT1 X) (projT2 X) : PropSets@{c so}) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Pos/Monadicity.v: over [Sets] *)
+(* 相关说明。 （已译） *)
 
-(* C48: the discrete order is the truncated ≈. *)
+(* 相关说明。 （已译） *)
 Example p469_c48_disc_le@{c so p0 p1 p2 p3 |
   c < so, Set < p2, p2 <= p0, p3 <= p1, c <= p0, c <= p1 +}
   (S : Sets@{c so}) (x y : carrier S) :
@@ -491,7 +489,7 @@ Fail Example p469_r19_PosDisc_eq@{c so po p0 p1 p2 p3 s |
   PosDisc@{c so po p0 p1 p2 p3}
     = PosDiscP@{c so po p0 p1 p2 p3} ◯ PropSets_trunc@{c so} := eq_refl.
 
-(* C29: the monad's functor is the reflection's on objects. *)
+(* C29: 单子's 函子 reflection's 对象. （已译） *)
 Example p469_c29_TPos_fobj@{c so po p0 p1 p2 p3 s |
   c < so, c < s, c < po, Set < p2, p1 <= po, p2 <= p0, p3 <= p1,
   c <= p0, c <= p1 +} (S : Sets@{c so}) :
@@ -553,7 +551,7 @@ Fail Example p469_r5_TPos_eq@{c so po p0 p1 p2 p3 s |
   c <= p0, c <= p1 +} :
   TPos@{c so po p0 p1 p2 p3 s} = Id[Sets@{c so}] := eq_refl.
 
-(* C31: the unit is the identity function. *)
+(* C31: unit 恒等 function. （已译） *)
 Example p469_c31_MPos_ret@{c so po p0 p1 p2 p3 s a |
   c < so, c < s, c < po, Set < p2, p1 <= po, p2 <= p0, p3 <= p1,
   c <= p0, c <= p1 +} (S : Sets@{c so}) :
@@ -581,7 +579,7 @@ Fail Definition p469_r10_naive_elim@{c so | c < so +} :
   fun S x y H => match H with inhabits h => h end.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The guard: every constant of the five targets *)
+(* * ** The guard: every 常值 five targets （已译） *)
 
 Check @Category.Monad.Identity.IdMonad.
 Check @Category.Monad.Identity.IdMonad_fobj.
@@ -761,23 +759,21 @@ Check @Category.Instance.Pos.Monadicity.PosPForget_not_Monadic.
 Check @Category.Instance.Pos.Monadicity.PropSets_Incl_Monadic.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The tree's other names for the principle, measured at the end *)
+(* 相关说明。 （已译） *)
 
-(* Loaded here, after every other command, the guard block included, so
-   that the modules below change the environment of C53 and C54 alone. *)
+(* 相关说明。 （已译） *)
 Require Import Category.Instance.Sets.Classifier.OneLevel.
 
-(* C53: Instance/Sets/Classifier/OneLevel.v's [Untruncate] and [IEM] are
-   the hypotheses of [choice_of_untr] and [choice_of_IEM], written out. *)
+(* 相关说明。 （已译） *)
 Example p469_c53_untr_iem_unfold@{c t | c < t +} :
   @eq Type@{t} Untruncate@{c}
     (∀ P : Type@{c}, (∀ Q : Prop, (P → Q) → Q) → P)
   /\ @eq Type@{t} IEM@{c} (∀ P : Type@{c}, P + (P → False))
   := conj eq_refl eq_refl.
 
-(* C54: under OneLevel.v's [IEM] the induced monad over [Sets] is the
-   identity monad, by [MPos_IEM_Id_iso] and by the route through
-   [untruncate_of_IEM] and [choice_of_untr]. *)
+(* C54: under OneLevel.v's [IEM] induced 单子 over [Sets] the
+ 恒等 单子, [MPos_IEM_Id_iso] route through
+ [untruncate_of_IEM] [choice_of_untr]. （已译） *)
 Definition p469_c54_iem_routes@{c so po p0 p1 p2 p3 s a m1 m2 |
   c < so, c < s, c < po, Set < p2, p1 <= po, p2 <= p0, p3 <= p1, c <= p0,
   c <= p1, so <= m1, c <= m1, so <= m2, c <= m2 +} (E : IEM@{c}) :=
@@ -787,13 +783,13 @@ Definition p469_c54_iem_routes@{c so po p0 p1 p2 p3 s a m1 m2 |
         (choice_of_untr@{c} (untruncate_of_IEM@{c} E)))).
 
 (* ------------------------------------------------------------------------ *)
-(** ** The monad of Id ⊣ Id, measured at the end *)
+(* * ** The 单子 Id ⊣ Id, measured at end （已译） *)
 
 Require Import Category.Instance.Adjoints.
 Require Import Category.Adjunction.Compose.
 Require Import Category.Monad.Monadicity.Examples.
 
-(* C55: the monad Id ⊣ Id induces has unit and multiplication [id]. *)
+(* C55: 单子 Id ⊣ Id induces has unit multiplication [id]. （已译） *)
 Example p469_c55_IdId_monad@{o h s a | h < s +} (C : Category@{o h h})
   (x : C) :
   (@ret _ _ (@Adjunction_Induced_Monad@{o h o h s a s} _ _ _ _

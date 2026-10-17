@@ -31,7 +31,7 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe413_absent_name.
 
-(** ** A: the two walls in front of the product's universal property *)
+(* * ** A: two walls front product's 普遍性质 （已译） *)
 
 Section Fork.
 Universe o o1.
@@ -55,13 +55,13 @@ Fail Check (@open_union Z (sq_boxdata X Y (fun _ => poly_unit)
                               (sq_fork_map X Y f g z0))).
 End Fork.
 
-(** ** B: the forgetful functor and the pinned creation statement *)
+(* * ** B: forgetful 函子 pinned creation statement （已译） *)
 
 (* POSITIVE: the issue's statement is formable *)
 Check (fun (J : Category) (K : J ⟶ CompHaus) =>
          @CreatesLimit J CompHaus _ K CompHaus_Forget).
 
-(* control: creation by the inclusion, the delivered conditional *)
+(* control: creation 含入, delivered conditional （已译） *)
 Check (fun (closed : ClosedUnderLimits CompactHausdorff_Subcategory)
            (J : Category) (K : J ⟶ CompHaus) =>
          CompHaus_Incl_CreatesLimit closed K : CreatesLimit K CompHaus_Incl).
@@ -69,7 +69,7 @@ Check (fun (closed : ClosedUnderLimits CompactHausdorff_Subcategory)
 (* N3 TYPING *)
 Fail Check (CompHaus_Forget : CompHaus ⟶ Top).
 
-(** ** C: the bijection theorem needs its hypothesis *)
+(* * ** C: bijection 定理 needs 假设 （已译） *)
 
 Section Bij.
 Context {X Y : TopSpace} (f : X ~{Top}~> Y)
@@ -90,7 +90,7 @@ Example p413_iso_to :
   to (compact_hausdorff_bijection_iso f g Hfg Hgf HX HY dec) = f := eq_refl.
 End Bij.
 
-(* non-vacuity: the one-point space, the identity, the whole open *)
+(* non-vacuity: one-point space, 恒等, whole open （已译） *)
 Definition p413_point_inverse_open :
   IsOpen Point_Top
     (fun y => (fun _ : Point_Top => poly_unit)

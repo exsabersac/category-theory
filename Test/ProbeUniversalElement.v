@@ -35,10 +35,10 @@ Context {H : D ⟶ Sets}.
 Context {r : D}.
 Context (U : AUniversalElement H r).
 
-(** ** (1) The mate computes; the covariant lemma's term is not it
+(* * ** (1) The mate computes; covariant 引理's term not it
 
-    Positive controls: the action is [eq_refl], and the two agree up to
-    [≈]. *)
+ Positive controls: action [eq_refl], two agree up to
+ [≈]. （已译） *)
 
 Check (fun (d : D) (k : r ~{D}~> d) =>
          eq_refl : transform (ue_mate H r (@aue_elem D H r U)) d k
@@ -47,20 +47,20 @@ Check (fun (d : D) (k : r ~{D}~> d) =>
 Check (ue_mate_covariant H r (@aue_elem D H r U)).
 Check (ue_mate_is_transform H r U).
 
-(** Negative: the covariant Yoneda lemma's mate is not the same TERM.
-    (Stripped: cannot unify [(Covariant_Yoneda_Lemma D H r)⁻¹ aue_elem] and
-    [ue_mate H r aue_elem].) *)
+(** Negative: covariant Yoneda 引理's mate not same TERM.
+ (Stripped: cannot unify [(Covariant_Yoneda_Lemma D H r)⁻¹ aue_elem] and
+ [ue_mate H r aue_elem].) （已译） *)
 Fail Check (eq_refl : from (Covariant_Yoneda_Lemma D H r) (@aue_elem D H r U)
                         = ue_mate H r (@aue_elem D H r U)).
 
-(** Negative: nor is the hand-built transformation.  (Stripped: cannot
-    unify [ue_mate H r aue_elem] and [ue_transform H r U].) *)
+(** 本节：Negative: nor hand-built transformation. (Stripped: cannot
+ unify [ue_mate H r aue_elem] [ue_transform H r U].) （已译） *)
 Fail Check (eq_refl : ue_mate H r (@aue_elem D H r U) = ue_transform H r U).
 
-(** ** (2) The Yoneda passage preserves the element, not the record
+(* * ** (2) The Yoneda passage preserves element, not record
 
-    Positive controls: the isomorphism exists, and the element survives
-    both round trips by [eq_refl]. *)
+ Positive controls: 同构 exists, element survives
+ both round trips [eq_refl]. （已译） *)
 
 Check (universal_element_yoneda H r
          : @Isomorphism Sets
@@ -72,14 +72,14 @@ Check (ue_yoneda_round_ue H r U).
 Check (fun (x : H r) (I : IsIsomorphism (ue_mate H r x)) =>
          ue_yoneda_round_elem H r x I).
 
-(** Positive control that the naming of the sigma setoid changed nothing:
-    [ue_yoneda_obj] IS [representability_by_yoneda]'s source, the
-    [exists_setoid] instance included. *)
+(** 本节：Positive control naming sigma setoid changed nothing:
+ [ue_yoneda_obj] IS [representability_by_yoneda]'s source, the
+ [exists_setoid] instance included. （已译） *)
 Check (rby_agrees H r).
 
-(** Negative: the whole record does not survive — [AUniversalElement_of_mate]
-    rebuilds the factorization data.  (Stripped: cannot unify
-    [ue_of_yoneda H r (ue_to_yoneda H r U)] and [U].) *)
+(** 本节：Negative: whole record does not survive — [AUniversalElement_of_mate]
+ rebuilds factorization data. (Stripped: cannot unify
+ [ue_of_yoneda H r (ue_to_yoneda H r U)] [U].) （已译） *)
 Fail Check (eq_refl : ue_of_yoneda H r (ue_to_yoneda H r U) = U).
 
 (*
@@ -106,18 +106,16 @@ Fail Check (fun (C : Category) (S : D ⟶ C) (c : C) =>
               eq_refl : AUniversalElement (HomAfter S c) r
                           = AUniversalArrow c S r).
 
-(** ** (4) The 3(a) passage: element on the nose, arrow up to [≈]
-
-    Positive controls. *)
+(* 相关说明。 （已译） *)
 
 Check (aue_aua_round H r U).
 Check (fun V : AUniversalArrow SetsOne H r => aua_aue_round H r V).
 Check (fun V : AUniversalArrow SetsOne H r => aue_of_aua_elem H r V).
 Check (aua_of_aue_arrow H r U).
 
-(** Negative: the arrow does NOT survive by [eq_refl] — [global_element]
-    rebuilds it from its value at [ttt].  (Stripped: cannot unify the two
-    [universal_arrow] terms.) *)
+(** 本节：Negative: arrow does NOT survive [eq_refl] — [global_element]
+ rebuilds it value at [ttt]. (Stripped: cannot unify two
+ [universal_arrow] terms.) （已译） *)
 Fail Check (fun V : AUniversalArrow SetsOne H r =>
               eq_refl
                 : @universal_arrow _ _ SetsOne H r
@@ -138,9 +136,9 @@ Check (@eq_refl nat (@ue_elem Endos Endos_Forget nat_UniversalElement)
          : @ue_elem Endos Endos_Forget nat_UniversalElement = O).
 Check (nat_Elements_Initial : @Initial (Elements Endos_Forget)).
 
-(** Positive control on the donor side: [representability_by_yoneda] and
-    [Yoneda_Lemma] do exist and do apply — at a category whose three
-    universes coincide. *)
+(** Positive control donor side: [representability_by_yoneda] and
+ [Yoneda_Lemma] do exist do apply — at 范畴 whose three
+ universes coincide. （已译） *)
 
 Check (fun (C : Category@{Set Set Set}) (F : C^op ⟶ Sets) (c : C) =>
          representability_by_yoneda C F c).
@@ -156,15 +154,15 @@ Fail Check (fun c : Endos =>
 
 Fail Check (fun c : Endos => @Yoneda_Lemma (Endos^op) Endos_Forget c).
 
-(** ... and so the Yoneda-composed accessor cannot produce the witness that
-    the direct one does.  (Stripped: the same universe inconsistency.) *)
+(** 本节：... so Yoneda-composed accessor cannot produce witness that
+ direct one does. (Stripped: same universe inconsistency.) （已译） *)
 
 Fail Check (@universal_element_of_representation Endos Endos_Forget NatSucc
               (@represented Endos Endos_Forget nat_succ_Representable)).
 
-(** Positive control, immediately: the direct accessor DOES.  This is the
-    pair that makes the restriction a measured fact about the two routes
-    rather than a claim about one. *)
+(** 本节：Positive control, immediately: direct accessor DOES. This the
+ pair makes restriction measured fact about two routes
+ rather than claim about one. （已译） *)
 
 Check (@AUniversalElement_of_repr Endos Endos_Forget NatSucc
          (@represented Endos Endos_Forget nat_succ_Representable)

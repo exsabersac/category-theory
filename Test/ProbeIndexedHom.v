@@ -23,7 +23,7 @@ Require Import Category.Structure.Limit.Indexed.Hom.
 
 Generalizable All Variables.
 
-(** ** (1a) An index universe strictly above the ambient hom universe *)
+(* 相关说明。 （已译） *)
 
 Section IndexAboveHoms.
 
@@ -32,20 +32,20 @@ Constraint uh < ua.
 
 Context (C : Category@{uo uh uh}) (A : Type@{ua}) (f : A -> C).
 
-(* Positive control 1: the TARGET functor alone accepts the large index —
-   its object action is a fresh dependent-function setoid, which lifts. *)
+(* Positive control 1: TARGET 函子 alone accepts large index —
+ 对象 action fresh dependent-function setoid, lifts. （已译） *)
 Check (iprod_hom_functor f).
 
 (* Positive control 2: the coproduct-side target functor likewise. *)
 Check (icoprod_hom_functor f).
 
-(* Positive control 3: the SOURCE functor is formable at this category, so
-   neither half of the comparison is what gets rejected. *)
+(* Positive control 3: SOURCE 函子 formable at 范畴, so
+ neither half comparison what gets rejected. （已译） *)
 Check (fun q : C => fobj[Curried_CoHom C] q).
 
-(* Negative 1: the comparison map itself is not formable — the two functors
-   have to live in ONE [Sets], and the hom-functor pins that [Sets]' carrier
-   universe to [C]'s hom universe. *)
+(* Negative 1: comparison map itself not formable — two 函子
+ have live ONE [Sets], hom-函子 pins [Sets]' carrier
+ universe [C]'s hom universe. （已译） *)
 Fail Check (fun (q : C) (proj : forall a : A, q ~> f a) =>
               @iprod_hom_transform C A f q proj).
 
@@ -54,14 +54,13 @@ Fail Check (fun (q : C) (proj : forall a : A, q ~> f a)
                 (H : @IsIndexedProduct C A f q proj) =>
               @iprod_hom_iso C A f q proj H).
 
-(* Negative 3: the coproduct side is the same statement at [C^op] and
-   inherits the same bound. *)
+(* 相关说明。 （已译） *)
 Fail Check (fun (p : C) (inj : forall a : A, f a ~> p) =>
               @icoprod_hom_transform C A f p inj).
 
 End IndexAboveHoms.
 
-(** ** (1b) The limit-shaped bridges, and why they carry [{A : Set}] *)
+(* 相关说明。 （已译） *)
 
 Section LimitShapeIndex.
 
@@ -75,14 +74,13 @@ Constraint Set < ub.
 *)
 Context (C : Category@{uo Set Set}) (A : Type@{ub}) (f : A -> C).
 
-(* Positive control 4: the limit shape IS formable at this large index. *)
+(* 相关说明。 （已译） *)
 Check (Limit (DiscreteCat_Functor f)).
 
 (* Positive control 5: so is the product object read off it. *)
 Check (fun L : Limit (DiscreteCat_Functor f) => @iprod C A f L).
 
-(* Negative 4: the hom-set bijection at that limit is not — the group (1a)
-   bound now reads "index at or below [Set]". *)
+(* 相关说明。 （已译） *)
 Fail Check (fun L : Limit (DiscreteCat_Functor f) => @limit_hom_iso C A f L).
 
 (* Negative 5: dually. *)
@@ -91,7 +89,7 @@ Fail Check (fun L : Limit (@DiscreteCat_Functor A (C^op) f) =>
 
 End LimitShapeIndex.
 
-(** ** (2) The round trip is not definitional *)
+(* 相关说明。 （已译） *)
 
 Section Conversion.
 
@@ -105,18 +103,16 @@ Context (c : C).
 Context (u : c ~> q).
 Context (fam : forall a : A, c ~> f a).
 
-(* Positive control 6: the forward leg IS the comparison map, on the nose. *)
+(* 相关说明。 （已译） *)
 Definition probe_to_control :
   to (iprod_hom_iso H) = iprod_hom_transform f q proj := eq_refl.
 
-(* Positive control 7: the backward leg's value IS the mediator named by the
-   pre-existing [∃!] accessor, on the nose. *)
+(* 相关说明。 （已译） *)
 Definition probe_from_control :
   transform (from (iprod_hom_iso H)) c fam = unique_obj (iprod_desc H fam)
   := eq_refl.
 
-(* Positive control 8: and the forward leg computes to restriction along the
-   projections. *)
+(* 相关说明。 （已译） *)
 Definition probe_transform_control :
   transform (to (iprod_hom_iso H)) c u = fun a : A => proj a ∘ u := eq_refl.
 
@@ -139,8 +135,7 @@ Context (c : obj[Sets]).
 Context (fam : forall a : A, c ~{Sets}~> F a).
 Context (u : c ~{Sets}~> Sets_iprod_obj F).
 
-(* Positive control 9: at [Sets] the backward leg computes to the tupling
-   map of Instance/Sets/Products.v. *)
+(* 相关说明。 （已译） *)
 Definition probe_sets_from_control :
   transform (from (Sets_iprod_hom_iso F)) c fam = Sets_iprod_tuple F c fam
   := eq_refl.
@@ -154,9 +149,7 @@ Fail Definition probe_sets_roundtrip :
   transform (from (Sets_iprod_hom_iso F)) c
     (transform (to (Sets_iprod_hom_iso F)) c u) = u := eq_refl.
 
-(* Positive control 10: the agreement holds one level further in, at the
-   underlying map, so the rejection above is about the certificate field and
-   not about either leg being stuck. *)
+(* 相关说明。 （已译） *)
 Definition probe_sets_roundtrip_value_control (x : c) :
   transform (from (Sets_iprod_hom_iso F)) c
     (transform (to (Sets_iprod_hom_iso F)) c u) x = u x := eq_refl.

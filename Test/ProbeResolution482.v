@@ -24,9 +24,7 @@ Require Import Category.Monad.Comparison.Resolution.
 
 Generalizable All Variables.
 
-(** * Probe for issue #482: the strength boundaries of
-      Monad/Comparison/Resolution.v and the controls of
-      Instance/Fun/Action/Monad/Comparison.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeResolution482。
@@ -109,7 +107,7 @@ End MonadProbe.
 
 Section LemmaProbe.
 
-(* The object and hom levels of [Monads X], kept apart as in the target. *)
+(* The 对象 hom levels [Monads X], kept apart target. （已译） *)
 Universes m1 m2.
 
 Context {X : Category}.
@@ -153,7 +151,7 @@ Example C17 (a : A') :
 End LemmaProbe.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The positive controls of Instance/Fun/Action/Monad/Comparison.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明单子相关定义、性质与动机。
@@ -182,8 +180,8 @@ Require Import Category.Monad.Kleisli.Adjunction.
 Require Import Category.Monad.Comparison.Resolution.
 Require Import Category.Instance.Fun.Action.Monad.Comparison.
 
-(* C18: at the adjunction of LZ-sets, [EM_Comparison] satisfies the first
-   hypothesis that [bare_awodey_refuted] quantifies over. *)
+(* C18: at 伴随 LZ-sets, [EM_Comparison] satisfies first
+ 假设 [bare_awodey_refuted] quantifies over. （已译） *)
 Example C18 :
   EM_Forget (ActF LZ) ◯ EM_Comparison (MSet_adj LZ) ≈ MSet_Forget LZ :=
   EM_Comparison_Forget (MSet_adj LZ).
@@ -199,7 +197,7 @@ Definition C20 :
     (EM_Comparison_theta (MSet_adj LZ)) :=
   EM_Comparison_Comparison (MSet_adj LZ).
 
-(* C21: and the Lemma's uniqueness applies to it. *)
+(* 相关说明。 （已译） *)
 Definition C21 : cmp_functor _ _ _ C20 ≈ EM_Comparison (MSet_adj LZ) :=
   EM_Comparison_unique (MSet_adj LZ) C20.
 

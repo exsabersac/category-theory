@@ -52,7 +52,7 @@ Check @Complete.
 Check @PreservesImageLimit.
 Check @HasWidePullbacks.
 
-(** ** Readbacks that HOLD, and the vacuity of the swapped order *)
+(* 相关说明。 （已译） *)
 
 Section Readbacks.
 
@@ -62,17 +62,13 @@ Context `{HWP : @HasWidePullbacks A}.
 Context (GP : PreservesWidePullbacks G).
 Context {x : X} {a : A} (f : x ~> G a).
 
-(* B1: the flipped order is VACUOUS -- inhabited for every f by
-   [sub_top_greatest] -- which is why [Spanning] reads [sub_le sub_top m]
-   and not [sub_le m sub_top]. *)
+(* 相关说明。 （已译） *)
 Definition p448_b1_flipped : Type :=
   ∀ m : SubObj a, SubFactorsThrough G f m → sub_le m sub_top.
 Example p448_b1_vacuous : p448_b1_flipped.
 Proof. intros m _; apply sub_top_greatest. Defined.
 
-(* B6: the two load-bearing [Defined]s, read back at eq_refl.  With
-   [factors_through_top] closed by Qed the first is refused; with
-   [spanning_solution_set] closed by Qed the last three are. *)
+(* 相关说明。 （已译） *)
 Example p448_t_lift : `1 (factors_through_top G f) = f := eq_refl.
 Example p448_t_index :
   sol_index (spanning_solution_set G GP x) = SpanningArrowsOutOf G x
@@ -104,7 +100,7 @@ Fail Definition p448_b5 : x ~> G a := spanning_factor G GP f.
 
 End Readbacks.
 
-(** ** The missing-instance boundary, in a section WITHOUT the instance *)
+(* 相关说明。 （已译） *)
 
 Section NoWidePullbacks.
 
@@ -121,7 +117,7 @@ Fail Definition p448_b4 : SubObj a := spanning_sub G f.
 
 End NoWidePullbacks.
 
-(** ** The former Set pin on GAFT, now lifted *)
+(* 相关说明。 （已译） *)
 
 Section UnannotatedGAFT.
 
@@ -139,9 +135,9 @@ Definition p448_b7 (comp : @Complete A)
   (cont : @PreservesImageLimit A X G) :
   { F : X ⟶ A & F ⊣ G } := GAFT G comp cont (spanning_solution_set G GP).
 
-(* The two are now interchangeable, up to the implicit/explicit shape of
-   the wide-pullback argument.  If the annotations are ever put back, this
-   line stops compiling. *)
+(* The two now interchangeable, up implicit/explicit shape of
+ wide-pullback 论元. If annotations ever put back, this
+ line stops 编译. （已译） *)
 Definition p448_b7_via_theorem (comp : @Complete A)
   (cont : @PreservesImageLimit A X G) :
   { F : X ⟶ A & F ⊣ G } := @GAFT_from_spanning A X G HWP GP comp cont.

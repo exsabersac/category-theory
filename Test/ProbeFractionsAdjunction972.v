@@ -29,20 +29,20 @@ Generalizable All Variables.
 
 (** ** Positive controls *)
 
-(* The objects of the localization ARE the objects of the source, and the
-   projection is the identity on them -- the two conversions the weak
-   uniqueness argument rests on. *)
+(* The 对象 localization ARE 对象 source, the
+ projection 恒等 them -- two conversions weak
+ uniqueness 论元 rests on. （已译） *)
 
 Example P1 (C : Category) : @obj (Fractions C) = @obj C := eq_refl.
 
 Example P2 (C : Category) (x : C) : fobj[FractionsProj C] x = x := eq_refl.
 
-(* The generated left adjoint's object map is the category of fractions on
-   the nose. *)
+(* The generated 左伴随's 对象 map 范畴 fractions on
+ nose. （已译） *)
 
 Example P3 (C : Cat) : fobj[FractionsF] C = frac_grpd C := eq_refl.
 
-(* The two adjunctions in the directions that ARE proved, and the triple. *)
+(* The two 伴随 directions ARE proved, triple. （已译） *)
 
 Example P4 : Adjunction FractionsF Grpd_Incl := Fractions_Incl_Adjunction.
 
@@ -50,8 +50,7 @@ Example P5 : Adjunction Grpd_Incl Core := Incl_Core_Adjunction.
 
 Example P6 : AdjointTriple FractionsF Grpd_Incl Core := riehl_4_1_15.
 
-(* The unit is the projection up to `≈`; N9 is the same statement at
-   [eq_refl] and is refused. *)
+(* 相关说明。 （已译） *)
 
 Example P7 (C : Cat) :
   @equiv _ (@Functor_Setoid C (Fractions C))
@@ -59,7 +58,7 @@ Example P7 (C : Cat) :
     (FractionsProj C)
   := Fractions_unit_is_proj C.
 
-(** ** Negatives, at an abstract source, target and functor *)
+(* * ** Negatives, at abstract source, target 函子 （已译） *)
 
 Section Negatives.
 
@@ -67,8 +66,7 @@ Context {C D : Category}.
 Variable Dg : IsGroupoid D.
 Variable F : C ⟶ D.
 
-(* Both universal properties exist at their own strength; only the transfers
-   are refused. *)
+(* 相关说明。 （已译） *)
 
 Example P8 :
   @Unique _ (@Functor_Setoid (Fractions C) D)
@@ -116,7 +114,7 @@ Fail Definition N11 (G H : C ⟶ D)
 
 End Negatives.
 
-(** ** Negatives about the adjunction itself *)
+(* * ** Negatives about 伴随 itself （已译） *)
 
 (* N4 *)
 Fail Definition N4 (C : Cat) : UniversalArrow C Grpd_Incl :=

@@ -19,11 +19,10 @@ Require Import Category.Instance.Cat.
 
 (** ** Instrument check *)
 
-(* A refusal expected around a name that is not there.  If the instrument were
-   inert this line would pass silently and so would everything below it. *)
+(* 相关说明。 （已译） *)
 Fail Check zzz_no_such_constant_propequiv.
 
-(** ** Positive controls: every constant the negatives sit beside *)
+(* * ** Positive controls: every 常值 negatives sit beside （已译） *)
 
 Check @PropEquiv.
 Check @pequiv.
@@ -71,12 +70,11 @@ Definition cat_equiv_is_data {C D : Category} (F G : C ⟶ D)
    at a discrete setoid with no explicit instance argument. *)
 Example c_resolution (A : Type) (x y : A) : Prop := @pequiv A (eq_Setoid A) _ x y.
 
-(* ... and the relation it resolves to is Coq's [eq], on the nose. *)
+(* ... 关系 it resolves Coq's [eq], nose. （已译） *)
 Example c_resolution_is_eq (A : Type) (x y : A) :
   @pequiv A (eq_Setoid A) (eq_PropEquiv A) x y = (x = y) := eq_refl.
 
-(* [pequiv_elim_inhabited] takes its [PropEquiv] implicitly, so the one
-   elimination the class buys elaborates with instance resolution alone. *)
+(* 相关说明。 （已译） *)
 Example c_elim (A : Type) (x y : A)
   (h : inhabited (@equiv A (eq_Setoid A) x y)) : @equiv A (eq_Setoid A) x y :=
   pequiv_elim_inhabited x y h.
@@ -111,9 +109,9 @@ Defined.
 Example c_parity_pequiv (x y : nat) :
   @pequiv nat parity_Setoid parity_PropEquiv x y = parity_rel x y := eq_refl.
 
-(** ** Controls: the pointwise and componentwise transports read back *)
+(* 相关说明。 （已译） *)
 
-(* The hom-setoid of [Sets]: pointwise into the target. *)
+(* The hom-setoid [Sets]: pointwise 进入 target. （已译） *)
 Example c_hom_pointwise {x y : SetoidObject} (Py : PropEquiv (is_setoid y))
   (f g : x ~{Sets}~> y) :
   @pequiv _ _ (hom_PropEquiv Py) f g
@@ -126,7 +124,7 @@ Example c_iprod_pointwise {A : Type} (F : A -> SetoidObject)
   @pequiv _ _ (iprod_PropEquiv F H) g h
     = (forall i : A, @pequiv _ _ (H i) (g i) (h i)) := eq_refl.
 
-(* Limits: pointwise in the shape, the compatibility witness playing no part. *)
+(* 相关说明。 （已译） *)
 Example c_limit_pointwise {D : Category} (F : D ⟶ Sets)
   (H : forall d : D, PropEquiv (is_setoid (F d)))
   (p q : Sets_limit_carrier F) :
@@ -139,8 +137,7 @@ Example c_funext_pointwise {T : Type} (t : T -> Type) (a b : T)
   @pequiv _ _ (funext_PropEquiv t a b Pb) f g
     = (forall x : t a, @pequiv _ _ Pb (f x) (g x)) := eq_refl.
 
-(* A [SetoidObject] that DOES have the property, as the control for
-   NEGATIVE 3: the blanket instance is refused, individual ones are not. *)
+(* 相关说明。 （已译） *)
 Definition eq_SetoidObject (A : Type) : SetoidObject :=
   {| carrier := A ; is_setoid := eq_Setoid A |}.
 
@@ -158,8 +155,8 @@ Definition PropRelSpace@{u} (A : Type@{u}) : Type@{u} := A -> A -> Prop.
 Definition PropEquiv_at_carrier@{u} (A : Type@{u}) (S : Setoid@{u u} A) :
   Type@{u} := PropEquiv@{u u} S.
 
-(* Control for NEGATIVE 4: one universe up, the [Type]-valued relation space
-   is accepted. *)
+(* Control NEGATIVE 4: one universe up, [Type]-valued 关系 space
+ accepted. （已译） *)
 Definition CRelSpace@{u v} (A : Type@{u}) : Type@{v} := A -> A -> Type@{u}.
 
 (* Control for NEGATIVE 5: one universe up, [Setoid] is accepted. *)

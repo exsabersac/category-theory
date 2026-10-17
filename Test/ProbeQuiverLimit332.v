@@ -16,13 +16,11 @@ Require Import Category.Structure.Limit.Preservation.
 Require Import Category.Instance.Coq.
 Require Import Category.Construction.Free.Quiver.Limit.
 
-(** ** Instrument check
-
-    A [Fail] that never fails would make every negative below vacuous. *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
-(** ** Negative 1 (CONVERSION): dpath is not fmap at a variable path *)
+(* 相关说明。 （已译） *)
 
 Section PathNegative.
 
@@ -32,8 +30,7 @@ Context (G : Quiver) (C : Category) (D : Diagram G C) (x y : G)
 Fail Definition probe_dpath_is_fmap :
   dpath D p = fmap[FunctorOfDiagram D] p := eq_refl.
 
-(* Positive controls naming the negative's own constants.  At a ONE-EDGE
-   path the two DO agree -- that is the target's own Example. *)
+(* 相关说明。 （已译） *)
 Check dpath_singleton_is_fmap.
 Check (dpath D p).
 Check (fmap[FunctorOfDiagram D] p).
@@ -42,9 +39,9 @@ Check (@FreeOnQuiver G).
 
 End PathNegative.
 
-(** ** Negative 2 (FORMABILITY, universe): Diagram identifies hom and proof
+(* * ** Negative 2 (FORMABILITY, universe): Diagram identifies hom 证明
 
-    Different KIND from Negative 1. *)
+ Different KIND Negative 1. （已译） *)
 
 Section HomProofApart.
 
@@ -54,12 +51,11 @@ Constraint uh < up.
 Context (G : Quiver) (C : Category@{uo uh up}) (c : obj[C])
         (J : Category) (F : J ⟶ C).
 
-(* Control (a): the underlying quiver of C is formable with hom and proof
-   DECLARED APART, so the identification is not the quiver's doing. *)
+(* Control (a): underlying quiver C formable hom 证明
+ DECLARED APART, so identification not quiver's doing. （已译） *)
 Check (QuiverOfCat C).
 
-(* Control (b): the ordinary cone -- the thing [AGraphCone] mirrors -- is
-   likewise formable here. *)
+(* 相关说明。 （已译） *)
 Check (ACone c F).
 
 (*
@@ -74,7 +70,7 @@ Fail Check (Diagram G C).
 
 End HomProofApart.
 
-(** ** Controls for the delivered results *)
+(* 相关说明。 （已译） *)
 
 Check AGraphCone.
 Check GraphCone.

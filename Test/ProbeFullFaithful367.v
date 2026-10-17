@@ -30,7 +30,7 @@ Require Import Category.Construction.Reflective.
 Require Import Category.Functor.Hom.Transfer.
 Require Import Category.Adjunction.FullFaithful.
 
-(* Prior art the probe checks against the targets, and the witnesses. *)
+(* 相关说明。 （已译） *)
 Require Import Category.Instance.Coq.Monoid.Free.
 Require Import Category.Structure.Terminal.
 Require Import Category.Structure.Initial.
@@ -48,13 +48,12 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------ *)
 (** ** Instrument check *)
 
-(* If this ever stops failing, the [Fail]s below are not measuring
-   anything. *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe_367_no_such_reference.
 
 (* ------------------------------------------------------------------ *)
-(** ** (1) The transfer transformation against [fmap[Curried_Hom]] *)
+(* 相关说明。 （已译） *)
 
 Section TransferComparison.
 
@@ -103,9 +102,7 @@ Fail Example neg2_component_record (c : A) :
 
 Check (@hom_transfer_at_id A a b f).
 
-(* NEGATIVE 3 (CONVERSION).  It does not hold at [eq_refl]: the value is
-   `id ∘ f`, and [id_left] is a law field of [Category], so no amount of
-   conversion removes it. *)
+(* 相关说明。 （已译） *)
 
 Fail Example neg3_transfer_at_id :
   transform[hom_transfer f] a id = f := eq_refl.
@@ -113,7 +110,7 @@ Fail Example neg3_transfer_at_id :
 End TransferComparison.
 
 (* ------------------------------------------------------------------ *)
-(** ** (2) Split monic is not plain monic *)
+(* 相关说明。 （已译） *)
 
 Section SplitVersusMonic.
 
@@ -123,9 +120,7 @@ Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 Context `{A : F ⊣ U}.
 
-(* CONTROL.  Theorem 1(ii) delivers a [Section] — the library's split
-   monomorphism — and that is what the reviewer check for this issue
-   asks for. *)
+(* 相关说明。 （已译） *)
 
 Check @right_adjoint_full_iff_counit_split_monic.
 
@@ -143,8 +138,7 @@ Fail Definition neg4_section_is_not_monic (HU : Functor.Full U) (a : C) :
   Monic (@counit C D F U A a) :=
   fst right_adjoint_full_iff_counit_split_monic HU a.
 
-(* CONTROL that the implication is nevertheless available, by the
-   in-tree passage rather than by conversion. *)
+(* 相关说明。 （已译） *)
 
 Definition ctrl_section_gives_monic (HU : Functor.Full U) (a : C) :
   Monic (@counit C D F U A a) :=
@@ -153,7 +147,7 @@ Definition ctrl_section_gives_monic (HU : Functor.Full U) (a : C) :
 End SplitVersusMonic.
 
 (* ------------------------------------------------------------------ *)
-(** ** (3) The reflective donor is opaque *)
+(* 相关说明。 （已译） *)
 
 Section ReflectiveOpacity.
 
@@ -162,9 +156,9 @@ Context {S : Subcategory C}.
 Context (R : Reflective S).
 Context (x : Sub C S).
 
-(* CONTROL.  Section (G) of the target derives the conclusion of
-   Construction/Reflective.v from Theorem 1(iii), and the existing
-   lemma is nameable here. *)
+(* CONTROL. Section (G) target derives conclusion of
+ Construction/Reflective.v Theorem 1(iii), existing
+ 引理 nameable here. （已译） *)
 
 Check (@reflective_counit_IsIsomorphism_general C S R x).
 Check (@reflective_counit_iso C S R x).
@@ -187,7 +181,7 @@ Fail Example neg5_reflective_to_is_counit :
 End ReflectiveOpacity.
 
 (* ------------------------------------------------------------------ *)
-(** ** (4) Universes: what the headlines inherit *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明hom相关定义、性质与动机。
@@ -233,8 +227,8 @@ Constraint ah < bh.
 Context (Cu : Category@{ao ah ah}).
 Context (Du : Category@{bo bh bh}).
 
-(* CONTROL accepted at these levels: a functor in the direction the
-   constraint allows. *)
+(* CONTROL accepted at these levels: 函子 direction the
+ constraint allows. （已译） *)
 
 Check (Cu ⟶ Du).
 
@@ -249,7 +243,7 @@ Fail Check (Du ⟶ Cu).
 End AdjunctionHomDonor.
 
 (* ------------------------------------------------------------------ *)
-(** ** (5) The prior art, checked against the target at one type *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、幺半群相关定义、性质与动机。
@@ -273,15 +267,14 @@ Definition ctrl_prior_art_target (HU : Functor.Faithful U) (a : C) :
   Epic (@counit C D F U A a) :=
   @counit_epic_of_faithful C D F U A HU a.
 
-(* And the two [Retraction] readings of `U ε` agree in type as well:
-   Free.v and Fullness.v's whiskered development. *)
+(* 相关说明。 （已译） *)
 
 Check (@adjunction_counit_underlying_retraction C D F U A).
 
 End PriorArt.
 
 (* ------------------------------------------------------------------ *)
-(** ** (6) Non-vacuity, quadrant one: full and NOT faithful *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随相关定义、性质与动机。
@@ -313,13 +306,12 @@ Proof.
                 (Erase PointedSets) pointed_erase_adj) H).
 Qed.
 
-(* The pre-existing refutation of invertibility at [PointedTwo], recorded
-   beside them so the three readings sit together. *)
+(* 相关说明。 （已译） *)
 
 Check pointed_counit_not_IsIsomorphism.
 
 (* ------------------------------------------------------------------ *)
-(** ** (7) Non-vacuity, quadrant two: faithful and NOT full *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明伴随、函子、hom相关定义、性质与动机。
@@ -366,8 +358,8 @@ Proof.
                 free_monoid_adjunction) H).
 Qed.
 
-(* And the combined reading: by (iii), the counit of this adjunction is
-   not a componentwise isomorphism either. *)
+(* And combined reading: (iii), counit 伴随 is
+ not componentwise 同构 either. （已译） *)
 
 Lemma free_mon_counit_family_not_iso :
   (∀ L : @Mon Coq Coq_Monoidal,
@@ -382,7 +374,7 @@ Proof.
 Qed.
 
 (* ------------------------------------------------------------------ *)
-(** ** (8) The remaining headline names, checked from outside *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeFullFaithful367 相关定义、性质与动机。

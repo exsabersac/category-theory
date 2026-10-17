@@ -17,17 +17,15 @@ Require Import Category.Structure.Lattice.
 
 Generalizable All Variables.
 
-(** ** Instrument check
-
-    A [Fail] that never fails would make every negative below vacuous. *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
-(** ** Negatives 1-3 (FORMABILITY): three INDEPENDENT donors identify hom
-       with proof
+(* * ** Negatives 1-3 (FORMABILITY): three INDEPENDENT donors identify hom
+ 证明
 
-    Each is rejected under `Constraint uh < up` while the control shows a
-    hom-set of such a category is perfectly formable at those levels. *)
+ Each rejected under `Constraint uh < up` while control shows a
+ hom-set such 范畴 perfectly formable at those levels. （已译） *)
 
 Section Donors.
 
@@ -69,15 +67,15 @@ End Donors.
 Check @dup_left.
 Check @dup_right.
 
-(** ** Positive controls for the headline artifacts *)
+(* 相关说明。 （已译） *)
 
 Check @InternalSemiring.
 Check @InternalRing.
 Check @InternalSemilattice.
 Check @InternalLattice.
 
-(** The two derivations that are the mathematical content: annihilation is
-    a THEOREM for a ring, and idempotence is DERIVED from absorption. *)
+(** 本节：The two derivations mathematical content: annihilation is
+ THEOREM ring, idempotence DERIVED absorption. （已译） *)
 
 Check @ring_annihilate_l.
 Check @ring_annihilate_r.

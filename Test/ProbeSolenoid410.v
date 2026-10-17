@@ -47,15 +47,14 @@ Generalizable All Variables.
 
 Open Scope category_scope.
 
-(** ** Instrument: the refutation keyword is live *)
+(* 相关说明。 （已译） *)
 
 (* The instrument *)
 Fail Check p410_absent_name.
 
-(** ** Instance/Top/Circle.v: the circle and its p-fold map *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the points of the circle, the underlying maps of the two
-   wrapping maps, and the wrapping map at 1 up to [≈]. *)
+(* 相关说明。 （已译） *)
 Example p410_circle_points@{o} : top_carrier Circle@{o} = Circle_setoid@{o}
   := eq_refl.
 
@@ -72,8 +71,7 @@ Definition p410_wrap_one@{h o | o < h +} :
 Fail Example p410_wrap_one_point@{h o | o < h +} (x : CReal) :
   continuous_map (wrap@{h o} 1) x = x := eq_refl.
 
-(* CONTROL: the circle's equality is propositional, the circle has two
-   distinct points, and its points lift to the hom universe. *)
+(* 相关说明。 （已译） *)
 Definition p410_circ_prop@{o} : PropEquiv@{o o} (is_setoid Circle_setoid@{o})
   := circ_PropEquiv.
 
@@ -85,10 +83,9 @@ Definition p410_circle_lift@{h o hs | o < h, h < hs +} :
   @Isomorphism Sets@{h hs} (Setoid_Lift@{o h} Circle_setoid@{o})
     Circle_setoid@{h} := circle_lift_iso.
 
-(** ** Instance/Top/Solenoid.v: the generic initial topology is walled *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: both Type-valued forms of the initial topology of a
-   nat-indexed family, one universe above the points. *)
+(* 相关说明。 （已译） *)
 Definition p410_init_family_up@{o o1 | o < o1 +} (S : SetoidObject@{o o})
   (X : nat → TopSpace@{o}) (t : ∀ n, SetoidMorphism@{o o o} S (X n))
   (V : S → Type@{o}) : Type@{o1} :=
@@ -117,8 +114,8 @@ Fail Definition p410_init_union@{o} (S : SetoidObject@{o o})
   ∀ s, V s → { n : nat & { U : X n → Type@{o} &
      (IsOpen (X n) U * U (t n s) * ∀ s', U (t n s') → V s')%type } }.
 
-(* CONTROL: the solenoid's own topology sits at the points' universe, and
-   it is the limit in [Top], characterised by its universal property. *)
+(* CONTROL: solenoid's own topology sits at points' universe, and
+ it limit [Top], characterised 普遍性质. （已译） *)
 Definition p410_solenoid_space@{s o so | o < so +} (p : positive) :
   TopSpace@{o} := Solenoid@{s o so} p.
 
@@ -137,10 +134,9 @@ Definition p410_forget@{s o so h hs + | o < so, o < h, h < hs +}
   IsLimitCone (FCone Top_Forget@{o h hs} (sol_cone@{s o so h} p)) :=
   solenoid_forget_preserves p.
 
-(** ** Instance/Top/Solenoid.v: the points, at [eq_refl] *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the points of both limits are #408's matching strings, the
-   legs its projections, and the matching condition Mac Lane's. *)
+(* 相关说明。 （已译） *)
 Example p410_points@{s o so h + | o < so, o < h +} (p : positive) :
   top_carrier (vertex_obj[@limit_cone _ _ _ (solenoid_limit@{s o so h _} p)])
   = inverse_limit (UCircleTower@{s o so} p) := eq_refl.
@@ -193,10 +189,9 @@ Fail Example p410_points_ptop (p : positive) :
   inverse_limit (UCircleTower p) = inverse_limit (PForget ◯ PCircleTower p)
   := eq_refl.
 
-(** ** Instance/Top/Solenoid.v: the towers *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the generating arrow of [EndoTower] is [id ∘ w] on the nose
-   and [w] up to [≈]. *)
+(* 相关说明。 （已译） *)
 Example p410_endo_step {C : Category} (X : obj[C]) (w : X ~{C}~> X)
   (n : nat) : fmap[EndoTower X w] (omega_step n) = id ∘ w := eq_refl.
 
@@ -219,11 +214,11 @@ Fail Example p410_tower_step_closed@{s h o | o < h} (p : positive)
   (n : nat) : fmap[CircleTower@{s h o} p] (tower_step n) = id ∘ wrap p
   := eq_refl.
 
-(** ** Instance/Top/Solenoid.v: non-vacuity, and p = 1 *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: two points for every p, read back through the [Defined]
-   witness; the leg at stage 0 not injective for 1 < p; the solenoid at
-   p = 1 isomorphic to the circle in both categories. *)
+(* CONTROL: two points every p, read back through [Defined]
+ witness; leg at stage 0 not injective 1 < p; solenoid at
+ p = 1 isomorphic circle both 范畴. （已译） *)
 Definition p410_two_points@{s o so | o < so +} (p : positive) :
   @equiv _ (SolPoints@{s o so} p) (zero_string@{s o so} p)
     (half_string@{s o so} p) → False := solenoid_two_points p.
@@ -244,7 +239,7 @@ Definition p410_pone_iso@{s o so r | o < so +} :
   @Isomorphism PTopCat@{o so} (PSolenoid@{s o so r} 1) PCircle@{o} :=
   PTop_solenoid_one_iso.
 
-(** ** Instance/Top/Solenoid/Presentations.v: one tower, two solenoids *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明同构相关定义、性质与动机。
@@ -270,8 +265,7 @@ Fail Example p410_points_group@{s u o so r | o < u, o < so +}
   SolPoints@{s o so} p = Ab_Forget@{u so o} (GSolenoid@{s u o so r} p)
   := eq_refl.
 
-(* CONTROL: the fibre of μ_0 over 0 is the p-adic integers, additively,
-   and the p-adic 1 is the unit string. *)
+(* 相关说明。 （已译） *)
 Example p410_fibre_carrier@{s u o so r | o < u, o < so +} (p : positive) :
   carrier (cmon_setoid (SolFibre@{s u o so r} p))
   = { x : SolPoints@{s o so} p &
@@ -288,10 +282,9 @@ Example p410_zp_one@{s u o so r | o < u, o < so +} (p : positive)
                 (rig_one (Zp@{o o o o so s so o so} ZComm@{o o o} (Zpos p)))))
   = `1 (unit_string@{s o so} p) := eq_refl.
 
-(** ** Instance/Top/Solenoid/Presentations.v: the covering *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: over [PTopCat], each sheet is homeomorphic to the arc by the
-   restriction of [pwrap p]. *)
+(* 相关说明。 （已译） *)
 Definition p410_pcover@{o so | o < so +} (p : positive) (y : CReal) (k : Z)
   (Hk : (0 <= k < Zpos p)%Z) :
   @Isomorphism PTopCat@{o so} (SheetSpace@{o} p y k) (ArcSpace@{o} y) :=
@@ -338,8 +331,7 @@ Definition p410_evenly@{o} (p : positive) (y : CReal) :
       ↔ { k : Z & ((0 <= k < Zpos p)%Z * tsheet@{o} p y k z)%type }))%type
   := wrap_evenly_covered p y.
 
-(* CONTROL: the book's subspace predicate at the arc, one universe up,
-   is formable, with its open whole space. *)
+(* 相关说明。 （已译） *)
 Definition p410_tsub_arc_whole@{o o1 | o < o1 +} (y : CReal) :
   tsub_open@{o o1} Circle@{o} (csub_setoid@{o} (tarc@{o} y))
     (csub_incl_map@{o} (tarc@{o} y)) (fun _ => poly_unit@{o}) :=
@@ -363,7 +355,7 @@ Fail Definition p410_tsub_arc@{o o1 | o < o1 +} (y : CReal) :
                      (csub_incl_map (tarc y))
 |}.
 
-(** ** The constructive reals: a readback, not a refutation *)
+(* 相关说明。 （已译） *)
 
 Print Assumptions solenoid_limit.
 Print Assumptions CircleGroup.
@@ -371,8 +363,7 @@ Print Assumptions Zp_fibre_iso.
 Print Assumptions wrap_sheet_iso.
 Print Assumptions pwrap_sheet_iso.
 
-(** ** Guard: the constants of the three targets, all closed under the global
-    context *)
+(* 相关说明。 （已译） *)
 
 (* Instance/Top/Circle.v: 94 names. *)
 Check cball.

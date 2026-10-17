@@ -33,10 +33,7 @@ Context {F : D ⟶ C}.
 Context {c : C}.
 Context (U : CouniversalArrow c F).
 
-(** ** (1) The covariant reading is definitional
-
-    Positive controls.  [coarrow] has the covariant type, and IS the
-    op-side [arrow] — the same term, not a transported one. *)
+(* 相关说明。 （已译） *)
 
 Check (coarrow U : F (coarrow_obj U) ~{C}~> c).
 
@@ -45,18 +42,18 @@ Check (eq_refl : coarrow U = @arrow (C^op) (D^op) c (Opposite_Functor F) U).
 Check (eq_refl : coarrow_obj U
                    = @arrow_obj (C^op) (D^op) c (Opposite_Functor F) U).
 
-(** The couniversal mapping property likewise: its statement mentions no
-    [op], and it is the primal statement's own term. *)
+(** The couniversal 映射 property likewise: statement mentions no
+ [op], it primal statement's own term. （已译） *)
 
 Check (fun (d : D) (h : F d ~{C}~> c) =>
          eq_refl : @ump_couniversal_arrows C D c F U d h
                      = @ump_universal_arrows (C^op) (D^op) c
                          (Opposite_Functor F) U d h).
 
-(** ** (2) The terminal-object reading is a theorem
+(* * ** (2) The terminal-对象 reading 定理
 
-    Positive control: the construction, and the fact that it chooses the
-    couniversal object on the nose. *)
+ Positive control: construction, fact it chooses the
+ couniversal 对象 nose. （已译） *)
 
 Check (couniversal_arrow_terminal U : @Terminal (F ↓ =(c))).
 Check (couniversal_arrow_terminal_obj U).
@@ -71,8 +68,8 @@ Check (couniversal_arrow_of_terminal (couniversal_arrow_terminal U)
 Fail Check (@arrow_initial (C^op) (D^op) c (Opposite_Functor F) U
               : @Terminal (F ↓ =(c))).
 
-(** Nor are the two comma categories themselves Leibniz-equal — the
-    reason for the mismatch, isolated.  (Stripped: cannot unify.) *)
+(** Nor two comma 范畴 themselves Leibniz-equal — the
+ reason mismatch, isolated. (Stripped: cannot unify.) （已译） *)
 Fail Check (eq_refl
               : @Comma _1 (D^op) (C^op) (@Diagonal (C^op) _1 c)
                        (Opposite_Functor F)
@@ -86,38 +83,36 @@ Fail Check (eq_refl
 Check (fun T : @Terminal (F ↓ =(c)) => terminal_is_initial_op T).
 Check (fun T : @Terminal (F ↓ =(c)) => (T : @Initial ((F ↓ =(c))^op))).
 
-(** ...and it is not closed by Construction/Comma.v's [Cocomma] either,
-    which the issue proposed as the route.  Positive control first: the
-    cocomma of the same two functors exists. *)
+(** ...and it not closed Construction/Comma.v's [Cocomma] either,
+ issue proposed route. Positive control first: the
+ cocomma same two 函子 exists. （已译） *)
 Check (@Cocomma D _1 C F (@Diagonal C _1 c) : Category).
 
-(** Negative: it is not the comma the op-side [arrow_initial] inhabits.
-    (Stripped: cannot unify [@Initial (=(c) ↓ F^op)] with
-    [@Initial (F ↑ =(c))].) *)
+(** 本节：Negative: it not comma op-side [arrow_initial] inhabits.
+ (Stripped: cannot unify [@Initial (=(c) ↓ F^op)] with
+ [@Initial (F ↑ =(c))].) （已译） *)
 Fail Check (@arrow_initial (C^op) (D^op) c (Opposite_Functor F) U
               : @Initial (@Cocomma D _1 C F (@Diagonal C _1 c))).
 
-(** Negative: nor is it the opposite of F ↓ =(c) on the nose.
-    (Stripped: cannot unify [F ↑ =(c)] with [(F ↓ =(c))^op].) *)
+(** 本节：Negative: nor it opposite F ↓ =(c) nose.
+ (Stripped: cannot unify [F ↑ =(c)] [(F ↓ =(c))^op].) （已译） *)
 Fail Check (eq_refl : @Cocomma D _1 C F (@Diagonal C _1 c)
                         = (@Comma D _1 C F (@Diagonal C _1 c))^op).
 
-(** ** (3) The dual is not the primal
-
-    Positive control: both types exist, at the same arguments. *)
+(* 相关说明。 （已译） *)
 Check (CouniversalArrow c F : Type).
 Check (UniversalArrow c F : Type).
 
-(** Negative: and they are different.  (Stripped: cannot unify
-    [CouniversalArrow c F] with [UniversalArrow c F].) *)
+(** 本节：Negative: they different. (Stripped: cannot unify
+ [CouniversalArrow c F] [UniversalArrow c F].) （已译） *)
 Fail Check (eq_refl : CouniversalArrow c F = UniversalArrow c F).
 
 End Probes.
 
-(** ** (4) The counit agrees only up to [≈]
+(* * ** (4) The counit agrees up [≈]
 
-    Measured at the worked example, so the probe is about a real
-    adjunction and not a variable. *)
+ Measured at worked example, so probe about real
+ 伴随 not variable. （已译） *)
 
 Section CounitProbe.
 
@@ -125,15 +120,15 @@ Context `{C : Category}.
 Context `{@Cartesian C}.
 Context (p : C ∏ C).
 
-(** Positive controls: the object action of the assembled right adjoint
-    reduces to the product on the nose, and the counit IS the projection
-    pair up to [≈]. *)
+(** Positive controls: 对象 action assembled 右伴随
+ reduces product nose, counit IS projection
+ pair up [≈]. （已译） *)
 Check (eq_refl : fobj[@product_via_couniversal_functor C _] p
                    = (fst p × snd p)).
 Check (@product_via_couniversal_counit C _ p).
 
-(** Negative: that agreement is not an [eq_refl].  (Stripped: cannot
-    unify the [counit] with [proj_pair p].) *)
+(** 本节：Negative: agreement not [eq_refl]. (Stripped: cannot
+ unify [counit] [proj_pair p].) （已译） *)
 Fail Check (eq_refl
               : @counit (C ∏ C) C (Diagonal_Product C)
                         (@product_via_couniversal_functor C _)

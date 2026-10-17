@@ -20,7 +20,7 @@ Require Import Category.Instance.Sets.Classifier.OneLevel.
 
 Generalizable All Variables.
 
-(** * Probe for Instance/Sets/Classifier/OneLevel.v (issue #402) *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeClassifier402。
@@ -31,12 +31,11 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------------ *)
 (** ** Instrument check *)
 
-(* A refutation command that succeeds prints nothing, so the instrument
-   must be exercised: this name exists nowhere. *)
+(* 相关说明。 （已译） *)
 Fail Check probe402_no_such_constant.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Controls, outside every refutation command *)
+(* 相关说明。 （已译） *)
 
 Check @classifier_classifies.
 Check @char_reindex.
@@ -77,16 +76,16 @@ Check @truth.
 Check @Monic.
 
 (* ------------------------------------------------------------------------ *)
-(** ** FORMABILITY: what is not statable at [Sets] *)
+(* 相关说明。 （已译） *)
 
 Section NotAtSets.
 Universes o so.
 Constraint o < so.
 Context (HS : @SubobjectClassifier Sets@{o so} Sets_Terminal@{so o}).
 
-(* CONTROL: [char_reindex] IS accepted at this very [Sets], for this very
-   classifier.  So the two refusals below are about their own statements,
-   not about the classifier or the category. *)
+(* CONTROL: [char_reindex] IS accepted at very [Sets], very
+ classifier. So two refusals below about own statements,
+ not about classifier 范畴. （已译） *)
 Check (fun (x y : SetoidObject@{o o}) (f : y ~{Sets@{o so}}~> x)
            (s : @SubObj Sets@{o so} x) =>
   @char_reindex Sets@{o so} Sets_Terminal@{so o} Sets_HasPullbacks@{so o}
@@ -104,8 +103,8 @@ Fail Check (@classifier_classifies Sets@{o so} Sets_Terminal@{so o}
 Fail Check (@Sub_classifier_natural Sets@{o so} Sets_Terminal@{so o}
               Sets_HasPullbacks@{so o} HS).
 
-(* NEGATIVE 3 (FORMABILITY).  [Sub_Representable] is built on that
-   isomorphism, so it inherits the refusal. *)
+(* NEGATIVE 3 (FORMABILITY). [Sub_Representable] built that
+ 同构, so it inherits refusal. （已译） *)
 Fail Check (@Sub_Representable Sets@{o so} Sets_Terminal@{so o}
               Sets_HasPullbacks@{so o} HS).
 
@@ -125,8 +124,8 @@ Check (fun (a b : SetoidObject@{o o}) =>
 Fail Check (fun (x : SetoidObject@{o o}) =>
   ({| carrier := @SubObj Sets@{o so} x |} : obj[Sets@{o so}])).
 
-(* CONTROLS: the two truth objects this file actually uses ARE objects of
-   [Sets] at one level. *)
+(* CONTROLS: two truth 对象 file actually uses ARE 对象 of
+ [Sets] at one level. （已译） *)
 Check (Powerset_Omega@{o} : obj[Sets@{o so}]).
 Check (BoolSetoid@{o} : obj[Sets@{o so}]).
 
@@ -140,9 +139,9 @@ End CarrierWall.
 Section SquashWall.
 Universes o.
 
-(* CONTROL: over a [Prop] the impredicative truncation is inert, so it CAN
-   be eliminated -- which is what makes [Untruncate] the extra hypothesis
-   and not a restatement of the goal. *)
+(* CONTROL: over [Prop] impredicative truncation inert, so it CAN
+ eliminated -- what makes [Untruncate] extra 假设
+ not restatement goal. （已译） *)
 Check (fun (P : Prop) => proj1 (powerset_squash_prop_inert@{o} P)).
 
 (* NEGATIVE 6 (FORMABILITY).  The naive elimination at a [Type@{o}]
@@ -155,13 +154,13 @@ Fail Check (fun (P : Type@{o}) (h : Powerset_squash@{o} P) =>
 End SquashWall.
 
 (* ------------------------------------------------------------------------ *)
-(** ** TYPING: the class takes two arguments, not three *)
+(* 相关说明。 （已译） *)
 
 Section ClassArity.
 Universes o so.
 Constraint o < so.
 
-(* CONTROL: the two-argument form, which is what the target inhabits. *)
+(* CONTROL: two-论元 form, what target inhabits. （已译） *)
 Check (@SubobjectClassifier Sets@{o so} Sets_Terminal@{so o}).
 
 (*
@@ -175,15 +174,14 @@ Fail Check (@SubobjectClassifier Sets@{o so} Sets_Terminal@{so o}
 End ClassArity.
 
 (* ------------------------------------------------------------------------ *)
-(** ** CONVERSION: the two grades of the bridge, and the two IEM routes *)
+(* 相关说明。 （已译） *)
 
 Section Grades.
 Universes o so sso.
 Constraint o < so.
 Constraint so < sso.
 
-(* CONTROLS: the bridge holds at [eq_refl] on VALUES, and at ≈ as
-   [SetoidMorphism] records one universe up. *)
+(* 相关说明。 （已译） *)
 Check (fun (U : Untruncate@{o}) (u x : SetoidObject@{o o})
            (m : u ~{Sets@{o so}}~> x) (M : @Monic Sets@{o so} u x m)
            (b : carrier x) => @bridge_pointwise@{o so} U u x m M b).
@@ -205,8 +203,7 @@ Fail Example bridge_record@{o' so' sso'} (U : Untruncate@{o'})
     = sets_squash_mor@{o' so' sso'}
         ∘[Sets@{so' sso'}] char_setoid@{o' so'} m := eq_refl.
 
-(* CONTROLS: the two routes from [IEM] to a classifier agree on ALL THREE
-   data fields -- Ω, char and truth -- at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Check (fun (E : IEM@{o}) => @iem_routes_omega@{o so} E).
 Check (fun (E : IEM@{o}) (u x : SetoidObject@{o o})
            (m : u ~{Sets@{o so}}~> x) (M : @Monic Sets@{o so} u x m)

@@ -17,7 +17,7 @@ Require Import Category.Theory.Density.
 
 Generalizable All Variables.
 
-(** * Boundary probes for Theory/Density.v (issue #346) *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeDensity346。
@@ -30,7 +30,7 @@ Section ProbeDensityConversion.
 Context {C : Category}.
 Context (P : C^op ⟶ Sets).
 
-(* CONTROL: the presheaf diagram is nameable and agrees on objects. *)
+(* CONTROL: presheaf diagram nameable agrees 对象. （已译） *)
 Check @PDensityDiagram.
 Check (fun (c : C) (x : P c) =>
          PDensityDiagram P ((c; x) : PElements P)).
@@ -50,8 +50,7 @@ Section ProbeDensityMediator.
 Context {D : Category}.
 Context (K : D ⟶ Sets).
 
-(* CONTROLS: all four file-local names below are nameable, and the
-   triangle holds at [≈]. *)
+(* 相关说明。 （已译） *)
 Check @DensityDiagram.
 Check @ElementsOp.
 Check @density.
@@ -71,8 +70,8 @@ Fail Example probe_med_strict (M : Cocone (DensityDiagram K))
   (j : ElementsOp K) :
   density_med K M ∘ density_inj K j = cocone_inj M j := eq_refl.
 
-(* CONTROL for negative 3: the composite IS formable with the OPPOSITE of
-   the projection, which is what the diagram uses. *)
+(* CONTROL negative 3: 复合 IS formable OPPOSITE of
+ projection, what diagram uses. （已译） *)
 Check (Curried_Hom D ◯ (Elements_proj K)^op).
 
 (* NEGATIVE 3, TYPING -- the variance.  The diagram of representables
@@ -107,7 +106,5 @@ Fail Check (fun (D : Category@{uo uh uh}) (K : D ⟶ Sets@{uh us}) =>
 
 End ProbeDensityUniverse.
 
-(* Instrument check: [Fail] does report an error when its command
-   SUCCEEDS, so the four negatives above are genuine failures rather than
-   an inert command. *)
+(* 相关说明。 （已译） *)
 Fail Fail Check @density.

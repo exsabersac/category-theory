@@ -20,7 +20,7 @@ Require Import Category.Instance.Cat.Bicategory.Adjunction.
 
 Generalizable All Variables.
 
-(** * Probe for Adjunction/Square.v and Instance/Cat/Bicategory/Square.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeSquare398。
@@ -30,13 +30,13 @@ Generalizable All Variables.
 
 (* ---------------------------------------------------------------------- *)
 (* INSTRUMENT.  A passing [Fail] prints nothing under this repo's coqc, so *)
-(* this command establishes that [Fail] is doing anything at all.          *)
+(* 相关说明。 （已译） *)
 (* ---------------------------------------------------------------------- *)
 
 Fail Check p398_no_such_constant_anywhere.
 
 (* ---------------------------------------------------------------------- *)
-(* GUARD BLOCK.  Every constant that any negative below names, target and  *)
+(* GUARD BLOCK. Every 常值 any negative below names, target and （已译） *)
 (* donor alike, is named here OUTSIDE every [Fail], so that renaming any   *)
 (* one of them breaks this file at a [Check] line rather than turning a    *)
 (* negative vacuously green.                                              *)
@@ -129,7 +129,7 @@ Context {F' : D' ⟶ C'} {U' : C' ⟶ D'}.
 Context (A' : F' ⊣ U').
 Context (K : C ⟶ C') (L : D ⟶ D').
 
-(* -- N1.  CONTROL: the mate route agrees with [palm_to] up to [≈]. -- *)
+(* 相关说明。 （已译） *)
 
 Example ctrl_n1 (al : F' ◯ L ◯ U ⟹ K) :
   @palm_via_mate C D F U A C' D' F' U' A' K L al
@@ -153,8 +153,8 @@ Fail Example n2 (al : F' ◯ L ◯ U ⟹ K) (x : D) :
       (@palm_to C D F U A C' D' F' U' A' K L al x)
       (@palm_two_factor C D F U A C' D' F' U' A' K L al x) := eq_refl.
 
-(* -- N4/N5/N6.  CONTROL: the two bracketings agree on objects and on   -- *)
-(* -- arrows, so what the three negatives locate is the LAW fields.     -- *)
+(* -- N4/N5/N6. CONTROL: two bracketings agree 对象 -- （已译） *)
+(* 相关说明。 （已译） *)
 
 Example ctrl_n456a (a : C) :
   @eq (obj[C']) (fobj[F' ◯ L ◯ U] a) (fobj[F' ◯ (L ◯ U)] a)
@@ -175,7 +175,7 @@ Fail Example n5 :
 Fail Example n6 :
   @eq (C ⟶ C') (F' ◯ L ◯ U) (F' ◯ (L ◯ U)) := eq_refl.
 
-(* -- N11.  CONTROL: the associator's component IS [fmap[U'] id], and   -- *)
+(* 相关说明。 （已译） *)
 (* -- it is [≈ id] but not [= id].                                      -- *)
 
 Example ctrl_n11a (x : D) :
@@ -219,7 +219,7 @@ Fail Example n20 (sigma : SqSigma K L) (x : D) :
          (@sq_mate C D F U A C' D' F' U' A' K L sigma) x)
       (sigma x) := eq_refl.
 
-(* -- N13 (TYPING).  CONTROL: with an ISOMORPHISM family the same       -- *)
+(* 相关说明。 （已译） *)
 (* -- statement is [MapAdjHom] on the nose.                             -- *)
 
 Example ctrl_n13
@@ -246,7 +246,7 @@ Fail Check (fun ta : L ◯ U ⟹ U' ◯ K =>
 End P398Main.
 
 (* ====================================================================== *)
-(* (2) N7-N10: the Id-padding negatives, K = L = Id, against the          *)
+(* 相关说明。 （已译） *)
 (*     identity-bounding-functor development Adjunction/Conjugate.v.      *)
 (* ====================================================================== *)
 
@@ -256,9 +256,9 @@ Context {C D : Category}.
 Context {F : D ⟶ C} {U : C ⟶ D} (A : F ⊣ U).
 Context {F2 : D ⟶ C} {U2 : C ⟶ D} (A2 : F2 ⊣ U2).
 
-(* CONTROL: at COMPONENT level the identification with Conjugate is    *)
-(* [eq_refl] in all three of the shapes the negatives then refute at   *)
-(* the level of types and of records.                                 *)
+(* 相关说明。 （已译） *)
+(* 相关说明。 （已译） *)
+(* 相关说明。 （已译） *)
 
 Example ctrl_id_a (s : F2 ⟹ F) (t : U ⟹ U2) :
   @AdjointSquare C D F U A C D F2 U2 A2 Id[C] Id[D]
@@ -311,8 +311,8 @@ Context {D C E : Category}.
 Context {F : D ⟶ C} {U : C ⟶ D} (A : F ⊣ U).
 Context {G : C ⟶ E} {V : E ⟶ C} (B : G ⊣ V).
 
-(* CONTROL: the composite's TRANSPOSE is definitional, and its unit     *)
-(* agrees with the whiskered formula up to [≈].                         *)
+(* CONTROL: 复合's TRANSPOSE definitional, unit （已译） *)
+(* 相关说明。 （已译） *)
 
 Example ctrl_n3a (x : D) (e : E) (k : fobj[G] (fobj[F] x) ~{E}~> e) :
   to (@adj E D (G ◯ F) (U ◯ V) (@AB D C E F U A G V B) x e) k
@@ -337,7 +337,7 @@ Fail Example n3 (x : D) :
 End P398Vert.
 
 (* ====================================================================== *)
-(* (4) N14 (FORMABILITY): [Adjunction] is the hom = proof donor.          *)
+(* (4) N14 (FORMABILITY): [Adjunction] hom = 证明 donor. （已译） *)
 (* ====================================================================== *)
 
 Section P398UnivAdj.
@@ -361,9 +361,9 @@ Check (fun Uq : Cu ⟶ Du => Uq ⟹ Uq).
 Fail Check (fun (Fq : Du ⟶ Cu) (Uq : Cu ⟶ Du) => Fq ⊣ Uq).
 
 (* -- N24 (FORMABILITY).  [Compose] is a SECOND donor of hom = proof,  -- *)
-(* -- independent of [Adjunction] and refused here with no adjunction  -- *)
+(* -- independent [Adjunction] refused here no 伴随 -- （已译） *)
 (* -- anywhere in the command: Adjunction/Square.v's header attributes -- *)
-(* -- the identification to [Adjunction] alone, which is true of the   -- *)
+(* 相关说明。 （已译） *)
 (* -- five controls it lists and is not discriminating.                -- *)
 
 Fail Check (fun (Fq : Du ⟶ Cu) (Uq : Cu ⟶ Du) => Uq ◯ Fq).
@@ -392,11 +392,11 @@ Fail Check (Bq ⟶ Aq).
 End P398UnivFun.
 
 (* ====================================================================== *)
-(* (6) N16-N19, N22, N23 (FORMABILITY): [Compose] is the donor of the     *)
+(* 相关说明。 （已译） *)
 (*     EXTRA collapse that every Transform-typed constant of              *)
 (*     Adjunction/Square.v carries.  The whole bare-family engine is      *)
 (*     formable at levels declared strictly apart; the four composites    *)
-(*     and the two Transform-typed wrappers are not.                      *)
+(* 相关说明。 （已译） *)
 (* ====================================================================== *)
 
 Section P398UnivComp.
@@ -411,9 +411,9 @@ Context (F2u : D2u ⟶ C2u) (U2u : C2u ⟶ D2u) (A2u : F2u ⊣ U2u).
 Context (Ku : Cu ⟶ C2u) (Lu : Du ⟶ D2u).
 Context (sg : SqSigma Ku Lu) (ta : SqTau Ku Lu).
 
-(* CONTROLS: the two component families, the condition, both mate      *)
-(* operators, the characterisation and the two unit/counit forms are   *)
-(* ALL accepted with the two hom levels declared strictly apart.       *)
+(* 相关说明。 （已译） *)
+(* 相关说明。 （已译） *)
+(* 相关说明。 （已译） *)
 
 Check (∀ x : Du, fobj[F2u] (fobj[Lu] x) ~{C2u}~> fobj[Ku] (fobj[Fu] x)).
 Check (∀ a : Cu, fobj[Lu] (fobj[Uu] a) ~{D2u}~> fobj[U2u] (fobj[Ku] a)).

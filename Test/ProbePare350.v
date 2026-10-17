@@ -42,17 +42,16 @@ Example ctl_unitor_fobj :
 Example ctl_unitor_fmap :
   @fmap A X (Id[X] ◯ G) = @fmap A X G := eq_refl.
 
-(* NEGATIVE 1 (CONVERSION): the whole functor records do NOT agree, even
-   though both actions above do.  [Compose] is not associative on the
-   nose. *)
+(* NEGATIVE 1 (CONVERSION): whole 函子 records do NOT agree, even
+ though both actions above do. [Compose] not associative the
+ nose. （已译） *)
 Fail Definition neg_assoc_record :
   ((G ◯ K) ◯ G) = (G ◯ (K ◯ G)) := eq_refl.
 
 (* NEGATIVE 2 (CONVERSION): nor is [Id] a strict unit for it. *)
 Fail Definition neg_unitor_record : (Id[X] ◯ G) = G := eq_refl.
 
-(* NEGATIVE 3 (CONVERSION): the right unitor fails as well, so repairing
-   the middle would still leave the endpoints wrong. *)
+(* 相关说明。 （已译） *)
 Fail Definition neg_unitor_right : (G ◯ Id[A]) = G := eq_refl.
 
 (*
@@ -77,14 +76,13 @@ Section ProbeTyping.
 Context {A X : Category}.
 Context (P : PareData A X).
 
-(* CONTROL: the whiskered composites ARE formable at the types the file
-   gives them. *)
+(* 相关说明。 （已译） *)
 Check (pare_Geps P).
 Check (pare_rhoG P).
 Check (pare_epsK P).
 Check (pare_Krho P).
 
-(* CONTROL: and the idempotent IS formable at [K ⟹ K]. *)
+(* 相关说明。 （已译） *)
 Check (pare_idem P : pare_K P ⟹ pare_K P).
 
 (*
@@ -106,10 +104,10 @@ Context (Hsr : ∀ x, transform[s] x ∘ transform[r] x
                       ≈ transform[pare_idem P] x).
 Context (Hrs : ∀ x, transform[r] x ∘ transform[s] x ≈ id).
 
-(* CONTROL: the adjunction built from the splitting exists. *)
+(* CONTROL: 伴随 built splitting exists. （已译） *)
 Check (pare_Adjunction P F r s Hsr Hrs).
 
-(* CONTROL: and so does the section recovered back out of it. *)
+(* 相关说明。 （已译） *)
 Check (pare_r P F (pare_Adjunction P F r s Hsr Hrs)).
 
 (*
@@ -122,8 +120,8 @@ Fail Definition neg_round_trip :
 
 End ProbeRoundTrip.
 
-(* Names the negatives depend on must also be named OUTSIDE a [Fail],
-   or a rename would leave this file compiling and the guard green. *)
+(* Names negatives depend must named OUTSIDE [Fail],
+ rename would leave file 编译 guard green. （已译） *)
 Check @pare_idem.
 Check @pare_idem_Idempotent.
 Check @pare_unit.

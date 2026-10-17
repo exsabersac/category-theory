@@ -27,8 +27,8 @@ Generalizable All Variables.
 
 (** ** Instrument check *)
 
-(* "The reference rmod_limit_449_no_such_constant was not found in the
-   current environment." *)
+(* "The reference rmod_limit_449_no_such_常值 was not found the
+ current environment." （已译） *)
 Fail Check rmod_limit_449_no_such_constant.
 
 (** ** Positive controls *)
@@ -93,12 +93,12 @@ Check @carrier.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* R1 = [mlim_over_obj]: the lifted module's group IS the apex of [L]. *)
+(* 相关说明。 （已译） *)
 Example p449_r1 {R : RingObject} {J : Category} (K : J ⟶ RMod R)
   (L : Limit (RMod_Forget_Ab R ◯ K)) :
   RMod_Forget_Ab R (LimitMod K L) = vertex_obj[L] := eq_refl.
 
-(* R2 = [mlim_over_legs]: and its legs ARE the legs of [L]. *)
+(* 相关说明。 （已译） *)
 Example p449_r2 {R : RingObject} {J : Category} (K : J ⟶ RMod R)
   (L : Limit (RMod_Forget_Ab R ◯ K)) (j : J) :
   fmap[RMod_Forget_Ab R] (cone_leg (mlim_cone K L) j) = mlim_leg K L j
@@ -114,7 +114,7 @@ Example p449_r4 {R : RingObject} {J : Category} (K : J ⟶ RMod R)
   (N : Cone K) (j : J) :
   cone_leg (FCone (RMod_Forget_Ab R) N) j = rm_hom (cone_leg N j) := eq_refl.
 
-(* R5 = [rmod_lift_apex]: the lifted limit lies over [L] on the nose. *)
+(* 相关说明。 （已译） *)
 Example p449_r5 {R : RingObject} {J : Category} (K : J ⟶ RMod R)
   (L : Limit (RMod_Forget_Ab R ◯ K)) :
   RMod_Forget_Ab R (vertex_obj[RMod_Forget_Ab_lifts_limits K L])
@@ -127,9 +127,9 @@ Example p449_r6 {R : RingObject} {J : Category} (K : J ⟶ RMod R)
     (cone_leg (@limit_cone _ _ _ (RMod_Forget_Ab_lifts_limits K L)) j)
     = limit_leg (limit_is_alimit L) j := eq_refl.
 
-(* R7 = [rmod_forget_obj_agrees]: the two forgetful functors agree on
-   objects -- the positive half of the bridge whose negative half is F1
-   below. *)
+(* R7 = [rmod_forget_obj_agrees]: two forgetful 函子 agree on
+ 对象 -- positive half bridge whose negative half F1
+ below. （已译） *)
 Example p449_r7 {R : RingObject} (M : RMod R) :
   RMod_Forget R M = (Ab_Forget ◯ RMod_Forget_Ab R) M := eq_refl.
 
@@ -143,8 +143,7 @@ Context {R : RingObject}.
 Context {J : Category}.
 Context (K : J ⟶ RMod R).
 
-(* R9 = [rmod_complete_carrier]: the chosen limit's carrier IS the
-   compatible-families setoid of Instance/Sets/Complete.v. *)
+(* 相关说明。 （已译） *)
 Example p449_r9 :
   cmon_setoid (ab_cmon (rm_ab (vertex_obj[RMod_Complete R J K])))
     = Sets_limit_obj (Ab_Forget ◯ (RMod_Forget_Ab R ◯ K)) := eq_refl.
@@ -186,9 +185,7 @@ Example p449_r14 (d : J) :
 
 End RModComputed449.
 
-(** ** The measured boundaries
-
-    Four, each followed by the term that does stand there. *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。

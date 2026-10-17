@@ -298,9 +298,9 @@ Proof.
     now rewrite x1, IHt1, IHt2.
 Qed.
 
-(* Normalization gives us a way to define the category of reified terms,
-   whose hom-setoid identifies two terms exactly when they share a normal
-   form. *)
+(* Normalization gives us way define 范畴 reified terms,
+ whose hom-setoid identifies two terms exactly they share normal
+ form. （已译） *)
 
 #[local]
 Program Instance Terms : Category := {

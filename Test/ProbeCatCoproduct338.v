@@ -16,9 +16,7 @@ Require Import Category.Instance.Cat.Coproduct.
 
 Generalizable All Variables.
 
-(** ** Instrument check
-
-    A [Fail] that never fails would make every negative below vacuous. *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
@@ -33,16 +31,15 @@ Section BinderBoundary.
 Universe uo uh up.
 Constraint uh < up.
 
-(* Control: the ANNOTATED construction is formable with the summands' hom
-   and proof universes declared strictly apart. *)
+(* Control: ANNOTATED construction formable summands' hom
+ 证明 universes declared strictly apart. （已译） *)
 Check (fun (I : Type) (C : I -> Category@{uo uh up}) => SigmaCat C).
 
 (* Control: so is its injection, at the same levels. *)
 Check (fun (I : Type) (C : I -> Category@{uo uh up}) (i : I) =>
          SigmaCat_inj C i).
 
-(* The unannotated body, re-declared here so the negative is about the
-   ANNOTATION and not about anything else in the file. *)
+(* 相关说明。 （已译） *)
 Definition sigma_obj_unann {I : Type} (C : I -> Category) : Type :=
   ∃ i : I, C i.
 
@@ -109,7 +106,7 @@ Definition probe_pkg_ump {I : Type} (C : I -> Cat) :
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Control: the isomorphism that DOES hold. *)
+(* Control: 同构 DOES hold. （已译） *)
 Check @SigmaBool_strict_iso.
 Check @SigmaBool_iso.
 Check @BoolFam.
@@ -130,13 +127,12 @@ Definition probe_forall_encoding_inhabited
   fun e => match (eq_ind true (fun b : bool => if b then True else False)
                           I false e) with end.
 
-(* Contrast, from the target: the encoding actually used makes that hom
-   EMPTY, which is the point. *)
+(* 相关说明。 （已译） *)
 Check @sigma_hom_cross_empty.
 Check @bool_cross_empty_lr.
 Check @bool_cross_empty_rl.
 
-(** ** Positive controls for the headline artifacts *)
+(* 相关说明。 （已译） *)
 
 Check @SigmaCat.
 Check @SigmaCat_inj.
@@ -147,8 +143,8 @@ Check @SigmaCat_ump.
 Check @ob_cast.
 Check @mor_cast.
 
-(** The hypothesis-free/hypothesis-bearing split, and the necessity
-    theorem that makes the split principled rather than convenient. *)
+(** The 假设-free/假设-bearing split, necessity
+ 定理 makes split principled rather than convenient. （已译） *)
 
 Check @SigmaCat_inj_Full.
 Check @sigma_inj_Full_forces_UIP.

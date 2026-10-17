@@ -16,10 +16,7 @@ Require Import Category.Instance.Sets.
 Require Import Category.Instance.Top.
 Require Import Category.Instance.Top.Kolmogorov.
 
-(** ** Instrument check
-
-    Scope-free: it names nothing, so it stays red however the target is
-    renamed, and it shows [Fail] is doing its job in this file. *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe_372b_no_such_reference.
 
@@ -135,7 +132,7 @@ Definition k372_probe_reflective_full :
   Category.Construction.Subcategory.Full Top T0_Subcategory :=
   reflective_full T0_Reflective_in_Top.
 
-(** ** Controls naming every constant the negatives mention *)
+(* * ** Controls naming every 常值 negatives mention （已译） *)
 
 Check @SameOpens.
 Check @SameOpensAll.

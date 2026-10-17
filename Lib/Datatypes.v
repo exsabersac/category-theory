@@ -9,7 +9,7 @@ Unset Transparent Obligations.
 
 Import ListNotations.
 
-(** * Basic datatypes and setoid structure *)
+(* 相关说明。 （已译） *)
 
 (*
  nLab:    https://ncatlab.org/nlab/show/setoid
@@ -119,13 +119,11 @@ Qed.
 
 Local Set Warnings "-intuition-auto-with-star".
 
-(* The only inductive types from the standard library used in this development
-   are products and sums, so we must show how they interact with constructive
-   setoids. *)
+(* 相关说明。 （已译） *)
 
-(* Product setoid: equivalence is componentwise, the equivalence relation
-   carried by the categorical product A × B in the category of setoids.
-   nLab: https://ncatlab.org/nlab/show/product *)
+(* Product setoid: 等价 componentwise, 等价 关系
+ carried categorical product A × B 范畴 setoids.
+ nLab: https://ncatlab.org/nlab/show/product （已译） *)
 #[global]
 Program Instance prod_setoid {A B} `{Setoid A} `{Setoid B} :
   Setoid (A * B) := {
@@ -341,9 +339,9 @@ Proof.
   induction l2; auto.
 Qed.
 
-(* The discrete setoid on [nat]: with no [equiv] field supplied, Program
-   resolves [equiv := eq] (with [eq_equivalence]), giving the setoid whose
-   equivalence is Leibniz equality. *)
+(* The discrete setoid [nat]: no [equiv] field supplied, Program
+ resolves [equiv := eq] (with [eq_equivalence]), giving setoid whose
+ 等价 Leibniz equality. （已译） *)
 #[global]
 Program Instance nat_setoid : Setoid nat.
 

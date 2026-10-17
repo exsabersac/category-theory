@@ -92,11 +92,11 @@ Require Import Category.Instance.Mod.Watts.
 
 Generalizable All Variables.
 
-(** ** Instrument: the refutation keyword is live *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe454_absent_name.
 
-(** ** N1 (INSTANCE): Functor/Representable/Additive.v *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: [LocallyPropositional_op_at], restated. *)
 Example p454_lp_op_at@{o h +} {C : Category@{o h h}}
@@ -115,8 +115,7 @@ Example p454_cohomab_fmap_at@{o h a +} {C : Category@{o h h}}
   (f : y ~{C}~> x) (g : x ~{C}~> A0) :
   cmon_map (fmap[CoHomAb AC A0 : C^op ⟶ Ab@{a h}] f) g = g ∘ f := eq_refl.
 
-(* CONTROL: the two components of [watt_ab_iso] ARE the representation's
-   ([watt_ab_iso_to_at] and [watt_ab_iso_from_at], restated). *)
+(* 相关说明。 （已译） *)
 Example p454_watt_to_at@{o h a s +} {C : Category@{o h h}}
   {LP : LocallyPropositional C} (AC : AbEnriched C) (T : C ⟶ Ab@{a h})
   (AF : @AdditiveFunctor C Ab@{a h} AC Ab_AbEnriched T)
@@ -149,8 +148,8 @@ Fail Definition p454_n1_lp_by_resolution (R : RingObject)
   (Rp : Representable (Ab_Forget ◯ T)) :=
   watt_ab_iso (AbEnriched_op (RMod_AbEnriched R)) T AF Rp.
 
-(* CONTROL: [HomAb_continuous] and [CoHomAb_continuous], restated; the
-   second IS the first at the opposite category. *)
+(* CONTROL: [HomAb_continuous] [CoHomAb_continuous], restated; the
+ second IS first at opposite 范畴. （已译） *)
 Definition p454_homab_cont@{o h a +} {C : Category@{o h h}}
   {LP : LocallyPropositional C} (AC : AbEnriched C) (A0 : C) :
   ContinuousFunctor (HomAb AC A0 : C ⟶ Ab@{a h}) :=
@@ -168,7 +167,7 @@ Example p454_cohomab_cont_is_op@{o h a +} {C : Category@{o h h}}
     = @HomAb_continuous (C^op) (LocallyPropositional_op LP)
         (AbEnriched_op AC) A0 := eq_refl.
 
-(** ** N2, N3 (CONVERSION, UNIVERSE): Instance/Mod/HomTensor.v *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: [homzl_ring_group] and [homzl_ring_act], restated. *)
 Example p454_homzl_group@{ra +} (R : RingObject@{ra ra ra}) (G : AbObject) :
@@ -190,7 +189,7 @@ Fail Example p454_n2_homzl_is_coext@{ra +} (R : RingObject@{ra ra ra})
   (G : AbObject) :
   HomZL (Ring_RMod (Ring_op R)) G = CoextObj R G := eq_refl.
 
-(* CONTROL: the first leg keeps the ring's three universes apart. *)
+(* 相关说明。 （已译） *)
 Definition p454_tensor_homZ_apart@{ra rc rp +| rc < ra, rp < ra +}
   {R : RingObject@{ra rc rp}} (B : RModObject (Ring_op R)) :=
   tensor_homZ_adjunction B.
@@ -203,7 +202,7 @@ Fail Definition p454_n3_homzl_ring_apart@{ra rc rp +| rc < ra, rp < ra +}
   {R : RingObject@{ra rc rp}} :=
   @homzl_ring_adjunction R.
 
-(** ** N4, N5 (UNIVERSE, BINDER): Instance/Mod/Cogenerator.v *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: [RMod_Cogenerator_large] is a cogenerator, indexed at the
    object universe. *)
@@ -242,9 +241,7 @@ Fail Definition p454_n5_adj_two_homs@{co hc do hd +| hc < hd +}
   (F : D ⟶ C) (U : C ⟶ D) : Type :=
   F ⊣ U.
 
-(* CONTROL: the transferred cogenerator's member at [eq_refl]
-   ([right_adjoint_cogenerator_obj] and [QZ_injective_cogenerator_member],
-   restated). *)
+(* 相关说明。 （已译） *)
 Example p454_ra_cog_obj@{co do h c +}
   {C : Category@{co h h}} {D : Category@{do h h}} {F : D ⟶ C}
   {U : C ⟶ D} (A : F ⊣ U) (HF : Faithful F) (G : Cogenerator@{c co h} C)
@@ -293,7 +290,7 @@ Definition p454_coext_wlem@{r +}
   ∀ P : Prop, (~ P) + (~~ P) :=
   coext_QZ_injective_WLEM HI.
 
-(** ** N6-N13, N28 (UNIVERSE, TYPING, BINDER): Instance/Mod/WellPowered.v *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: (2) at the pin, under [U]. *)
 Definition p454_wp_pin_U@{a c p o x +|
@@ -335,8 +332,7 @@ Definition p454_cwp_pin_U@{a c p o x +|
   CoWellPowered@{o c c o x} (RMod@{o x a p c} R) :=
   fun W => RMod_CoWellPoweredAt_untruncate U W.
 
-(* CONTROL: (5) one universe up, with nothing assumed, and at
-   [RingObject@{c c c}] with [c < w] alone. *)
+(* 相关说明。 （已译） *)
 Definition p454_cwp_up@{a c p o x w +|
     Set < o, c < o, c < x, p <= a, c <= a, a <= o, c < w, a <= w +}
   {R : RingObject@{a c p}} :
@@ -401,8 +397,7 @@ Fail Definition p454_n11_ring_obj_apart@{a c p o x +|
   (R : RingObject@{a c p}) : obj[RMod@{o x a p c} R] :=
   Ring_RMod R.
 
-(* CONTROL: (2)'s record under a CLOSED universe list: its universes
-   are exactly the five named. *)
+(* 相关说明。 （已译） *)
 Definition p454_wp_record_closed@{a c p o x |
     Set < c, c < o, c < x, p <= a, c <= a, a <= o +}
   {R : RingObject@{a c p}} (U : Untruncate@{c})
@@ -467,7 +462,7 @@ Fail Definition p454_n13_cwp_up_closed@{a c p o x w | c < w, a <= w +}
                      (rmod_epic_surjective _ (quot_is_epic u)));
      wp_to_from := ltac:(intro u; exists iso_id; simpl; cat) |}.
 
-(** ** N14, N15 (UNIVERSE): Instance/Mod/Colimit.v *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: the solution set at a [Set] carrier. *)
 Definition p454_sols_at_set@{go gx ga gp +|
@@ -487,8 +482,8 @@ Fail Definition p454_n14_colim_at_set@{go gx ga gp +|
   (R : RingObject@{ga Set gp}) (J : Category@{Set Set Set}) :=
   RMod_colim_via_GAFT R J.
 
-(* CONTROL: each initial object alone, the adjoint functor theorem's and
-   Instance/Mod.v's zero module, the latter at a [Set] carrier. *)
+(* CONTROL: each 始对象 alone, adjoint 函子 定理's and
+ Instance/Mod.v's zero module, latter at [Set] carrier. （已译） *)
 Definition p454_initial_via_gaft (R : RingObject) :=
   RMod_Initial_via_GAFT R.
 
@@ -503,10 +498,10 @@ Definition p454_initial_unique_gaft (R : RingObject) :=
 Fail Definition p454_n15_initial_vs_zero (R : RingObject) :=
   initial_unique (RMod_Initial_via_GAFT R) (RMod_Initial R).
 
-(** ** N16-N23, N29-N34 (CONVERSION, UNIVERSE): Instance/Mod/Watts.v *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: [watts_ex3_forget_obj], restated: the representing object is
-   the ring up to isomorphism. *)
+(* CONTROL: [watts_ex3_forget_obj], restated: 表示 对象 is
+ ring up 同构. （已译） *)
 Definition p454_ex3_forget_obj@{c o x b g +} (R : RingObject@{c c c})
   (G : Cogenerator@{g o c} (RMod@{o x c c c} R)) (U : Untruncate@{c}) :
   projT1 (watts_ex3_forget R G U
@@ -525,8 +520,8 @@ Fail Example p454_n16_ex3_forget_obj_refl@{c o x b g +}
                  (HomAb (RMod_AbEnriched R) A) (RMod_Forget_Ab R) })
     = Ring_RMod R := eq_refl.
 
-(* CONTROL: [watt_at_forget], restated: no hypothesis, and the
-   representing object [Ring_RMod R] by conversion. *)
+(* CONTROL: [watt_at_forget], restated: no 假设, the
+ 表示 对象 [Ring_RMod R] conversion. （已译） *)
 Definition p454_watt_at_forget@{c o x b +} (R : RingObject@{c c c}) :
   @Isomorphism (@Fun (RMod@{o x c c c} R) Ab@{b c})
     (HomAb (RMod_AbEnriched R) (Ring_RMod R)) (RMod_Forget_Ab R) :=
@@ -546,8 +541,7 @@ Definition p454_sets_ccc@{c o x a pk pa ra rt +}
           Ab_Forget_creates_continuous))
     (RModop_Cogenerator R) (RMod_CoWellPowered_untruncate U).
 
-(* CONTROL: the same body with the ring's three universes named apart and
-   no constraint among them. *)
+(* 相关说明。 （已译） *)
 Definition p454_sets_apart_free@{a c p o x b pk pa ra rt +}
   {R : RingObject@{a c p}} (T : (RMod@{o x a p c} R)^op ⟶ Ab@{b c})
   (contT : @PreservesImageLimit@{o c b c pk c pa c}
@@ -624,9 +618,9 @@ Fail Definition p454_n29_sets_level_below_pa@{c o x a s pk pa ra rt +|
           Ab_Forget_creates_continuous))
     (RModop_Cogenerator R) (RMod_CoWellPowered_untruncate U).
 
-(* CONTROL: the opposite of the forgetful functor is continuous, a right
-   adjoint by [coex_adjunction], with its [Ab] at RMod's object
-   universe. *)
+(* CONTROL: opposite forgetful 函子 continuous, right
+ adjoint [coex_adjunction], [Ab] at RMod's 对象
+ universe. （已译） *)
 Definition p454_forget_op_cont@{c o x +| Set < o, c < o, c < x +}
   (R : RingObject@{c c c}) :
   ContinuousFunctor
@@ -647,8 +641,8 @@ Fail Definition p454_n30_forget_op_cont_below@{c o x m +|
     (Opposite_Functor (RMod_Forget_Ab R : RMod@{o x c c c} R ⟶ Ab@{m c})) :=
   right_adjoint_Continuous (Opposite_Adjunction _ _ (coex_adjunction R)).
 
-(* CONTROL: [HomAbForget_continuous]'s body, the header's composite form,
-   with the composite's intermediate [Ab] at RMod's object universe. *)
+(* CONTROL: [HomAbForget_continuous]'s body, header's 复合 form,
+ 复合's intermediate [Ab] at RMod's 对象 universe. （已译） *)
 Definition p454_hafc_body_at_o@{c o x b +} (R : RingObject@{c c c})
   (A : AbObject@{c c c}) :
   ContinuousFunctor (@CoHomAb Ab@{o c} _ Ab_AbEnriched A
@@ -720,8 +714,7 @@ Fail Definition p454_n34_hafc_body_below_x@{c o x b k6 +| k6 < x +}
     (right_adjoint_Continuous (Opposite_Adjunction _ _ (coex_adjunction R)))
     (CoHomAb_continuous Ab_AbEnriched A).
 
-(* CONTROL: a draft of [watts_ex3] that elaborates [watts_ex3_sets]
-   twice, accepted with [s < x] declared. *)
+(* 相关说明。 （已译） *)
 Definition p454_ex3_twice@{a c p o x b s g +| s < x +}
   {R : RingObject@{a c p}} (T : RMod@{o x a p c} R ⟶ Ab@{b c})
   (AF : @AdditiveFunctor (RMod@{o x a p c} R) Ab@{b c}
@@ -815,9 +808,9 @@ Example p454_via_unconditional_body@{c o x a pk pa +}
     = watts_theorem_unconditional T AF (PreservesImageLimit_Continuous contT) :=
   eq_refl.
 
-(* CONTROL: [watts_unconditional_coext] and its [_2a], restated: with no
-   [Untruncate], the module the unconditional theorem returns at
-   [HomAbForget R A] is the coextension, and hom_ℤ(R, A). *)
+(* CONTROL: [watts_unconditional_coext] [_2a], restated: no
+ [Untruncate], module unconditional 定理 returns at
+ [HomAbForget R A] coextension, hom_ℤ(R, A). （已译） *)
 Definition p454_unc_coext@{c o x b +} (R : RingObject@{c c c})
   (A : AbObject@{c c c}) :
   projT1 (watts_theorem_unconditional
@@ -834,10 +827,10 @@ Definition p454_unc_coext_2a@{c o x b +} (R : RingObject@{c c c})
     ≅[RMod@{o x c c c} R] HomZL (Ring_RMod (Ring_op R)) A :=
   watts_unconditional_coext_2a R A.
 
-(** ** N24-N27 (UNIVERSE, CONVERSION): Instance/Mod/Watts/Unconditional.v *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the theorem at ℤ above [Set], the ring's universes collapsed
-   and apart. *)
+(* CONTROL: 定理 at ℤ above [Set], ring's universes collapsed
+ apart. （已译） *)
 Definition p454_unc_Z_ccc@{c o x b +|
     Set < c, c < o, c < x, Set < b, c < b +}
   (A : RMod@{o x c c c} Int_Ring@{c c c}) :=
@@ -856,8 +849,8 @@ Fail Definition p454_n24_unc_Z_at_set@{o x b +}
   (A : RMod@{o x Set Set Set} Int_Ring@{Set Set Set}) :=
   watts_unconditional_at_Z A.
 
-(* CONTROL: the theorem with the ring's carrier above [Set] and its three
-   universes strictly apart. *)
+(* CONTROL: 定理 ring's carrier above [Set] three
+ universes strictly apart. （已译） *)
 Definition p454_unc_apart@{a c p o x b s +|
     Set < c, c < o, c < x, p < a, c < a, a <= o, c < s, Set < b, c < b +}
   {R : RingObject@{a c p}} (T : (RMod@{o x a p c} R)^op ⟶ Ab@{b c})
@@ -874,8 +867,7 @@ Fail Definition p454_n25_unc_at_set@{o x b s +}
   (contT : ContinuousFunctor T) :=
   watts_theorem_unconditional T AF contT.
 
-(* CONTROL: RMod's second universe x and the target's s apart, in both
-   orders. *)
+(* 相关说明。 （已译） *)
 Definition p454_unc_x_below_s@{a c p o x b s +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o, c < s, Set < b, c < b,
     x < s +}
@@ -909,8 +901,8 @@ Example p454_t_at@{a c p o x s +|
   cmon_map (rm_hom (ew_t K M x0)) m
     = cmon_map (rm_hom (ew_inj K (ew_am K M x0 m))) ew_g0 := eq_refl.
 
-(* CONTROL: the value N26 compares with is an element of the fixed
-   coproduct, and the object N27 compares with is a module. *)
+(* CONTROL: value N26 compares element fixed
+ coproduct, 对象 N27 compares module. （已译） *)
 Definition p454_cop_zero@{a c p o x s +|
     Set < c, c < o, c < x, p <= a, c <= a, a <= o, c < s +}
   {R : RingObject@{a c p}} (K : (RMod@{o x a p c} R)^op ⟶ Sets@{c s}) :

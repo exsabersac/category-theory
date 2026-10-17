@@ -23,15 +23,11 @@ Require Import Coq.Lists.List.
 Require Import Coq.ZArith.ZArith.
 Require Import Coq.Relations.Relation_Definitions.
 
-(** ** Instrument check
-
-    A [Fail] that never fails would make every negative below vacuous.
-    This one must fail for a reason that has nothing to do with the
-    development. *)
+(* 相关说明。 （已译） *)
 
 Fail Definition probe_instrument_live : Datatypes.unit := 0.
 
-(** ** Negative 1 (CONVERSION): the factorization triangle is not Leibniz *)
+(* 相关说明。 （已译） *)
 
 Section TriangleNegative.
 
@@ -40,9 +36,9 @@ Context (A : AbObject) (N : Cocone (FGDiagram A)) (X : FGSub A).
 Fail Definition probe_triangle_strict :
   fg_med N ∘ cocone_inj (FGCocone A) X = cocone_inj N X := eq_refl.
 
-(* Positive controls naming the negative's own constants.  The [≈] form IS
-   proved in the target, and every constant in the rejected equation is
-   independently well-formed here. *)
+(* Positive controls naming negative's own constants. The [≈] form IS
+ proved target, every 常值 rejected equation is
+ independently well-formed here. （已译） *)
 Check (fg_med_commutes N X).
 Check (fg_med N).
 Check (cocone_inj (FGCocone A) X).
@@ -71,10 +67,7 @@ Check FGObj.
 Check ab_Z.
 Check (relation (FGObj ab_Z)).
 
-(** ** Controls for the delivered results
-
-    These name the principal artifacts, so a rename anywhere in the target
-    breaks this file loudly. *)
+(* 相关说明。 （已译） *)
 
 Check ab_fg_colimit.
 Check ab_fg_isacolimit.
@@ -102,13 +95,4 @@ Check Zsub_incomparable.
 Check Zjoin_strictly_larger.
 Check Ztwo_dup_iso.
 
-(** ** MEASURED RENAME-SIMULATION SCORE
-
-    The two negatives name these constants:
-
-      Negative 1: [fg_med], [cocone_inj], [FGCocone]
-      Negative 2: [FGHom], [FGObj], [ab_Z], [relation]
-
-    All SEVEN are named by a positive control above, so renaming any one
-    of them breaks this file rather than turning its negative vacuously
-    green.  Score: 7/7, counted rather than recalled. *)
+(* 相关说明。 （已译） *)

@@ -25,7 +25,7 @@ Require Import Category.Functor.Opposite.
 
 Local Open Scope category_scope.
 
-(** ** (1) The two shapes are isomorphic, not equal *)
+(* 相关说明。 （已译） *)
 
 (** Positive control: the isomorphism itself, at both strengths. *)
 Check (WideParallel_bool_Parallel :
@@ -41,19 +41,19 @@ Check (WideParallel_bool_Parallel_Cat :
 Definition probe_wide_hom_is_index :
   (ParX ~{WideParallel bool}~> ParY) = bool := eq_refl.
 
-(** Negative: the two [Category] records are not Leibniz-equal.  (With
-    the [Fail] stripped: cannot unify [WideParallel bool] with
-    [Parallel].) *)
+(** 本节：Negative: two [Category] records not Leibniz-equal. (With
+ [Fail] stripped: cannot unify [WideParallel bool] with
+ [Parallel].) （已译） *)
 Fail Definition wide_bool_is_Parallel :
   WideParallel bool = Parallel := eq_refl.
 
-(** Negative: nor are the hom-families convertible at [ParX], [ParY] —
-    [bool] against [∃ b : bool, ParHom b ParX ParY].  (With the [Fail]
-    stripped: cannot unify the two types.) *)
+(** 本节：Negative: nor hom-families convertible at [ParX], [ParY] —
+ [bool] against [∃ b : bool, ParHom b ParX ParY]. (With [Fail]
+ stripped: cannot unify two types.) （已译） *)
 Fail Definition wide_bool_hom_is_Parallel_hom :
   (ParX ~{WideParallel bool}~> ParY) = (ParX ~{Parallel}~> ParY) := eq_refl.
 
-(** ** (2) The diagram comparison is up to strict functor equality *)
+(* * ** (2) The diagram comparison up strict 函子 equality （已译） *)
 
 Section DiagramComparison.
 
@@ -70,26 +70,26 @@ Context (C : Category@{dco dch dch}).
 Context (x y : C).
 Context (f g : x ~{C}~> y).
 
-(** Positive control: the comparison that IS proved, and the [eq_refl]
-    identification of the arrow action that it rests on. *)
+(** 本节：Positive control: comparison IS proved, [eq_refl]
+ identification arrow action it rests on. （已译） *)
 Check (AWide_bool_APair f g).
 
 Definition probe_awide_true_is_f :
   fmap[AWide (fun b : bool => if b then f else g)]
     (true : ParX ~{WideParallel bool}~> ParY) = f := eq_refl.
 
-(** Negative: the two functors are not Leibniz-equal.  (With the [Fail]
-    stripped: cannot unify the two [Functor] records.) *)
+(** Negative: two 函子 not Leibniz-equal. (With [Fail]
+ stripped: cannot unify two [Functor] records.) （已译） *)
 Fail Definition awide_bool_is_APair :
   AWide (fun b : bool => if b then f else g) = APair f g ◯ Par_of_Wide
   := eq_refl.
 
 End DiagramComparison.
 
-(** ** (3) The index universe is bounded by the ambient hom universe *)
+(* 相关说明。 （已译） *)
 
-(** Positive control: with the index universe declared strictly BELOW the
-    target's hom universe, the diagram and both round trips build. *)
+(** 本节：Positive control: index universe declared strictly BELOW the
+ target's hom universe, diagram both round trips build. （已译） *)
 Section SmallIndex.
 
 Universes si so sh sp.

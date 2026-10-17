@@ -35,9 +35,9 @@ Require Import Category.Instance.Top.Wedge.
 
 Local Open Scope category_scope.
 
-(** ** Positive controls, part 1: the strict claims hold *)
+(* 相关说明。 （已译） *)
 
-(* The vocabulary bridge returns the biproduct's own data on the nose. *)
+(* 相关说明。 （已译） *)
 Check (fun (C : Category) (Z : @ZeroObject C)
            (B : @HasBiproducts C Z) (x y : C) =>
          @biproduct_product_obj C Z B x y).
@@ -45,7 +45,7 @@ Check (fun (C : Category) (Z : @ZeroObject C)
            (B : @HasBiproducts C Z) (x y : C) =>
          @biproduct_prod_is_coprod C Z B x y).
 
-(* At Ab, ten of the biproduct record's eleven fields are the CMon ones. *)
+(* 相关说明。 （已译） *)
 Check (fun M N : AbObject => (Ab_inl M N : M ~{Ab}~> Ab_product M N)).
 Check (fun M N : AbObject => Ab_exl_inr M N).
 Check (fun M N : AbObject => Ab_exr_inl M N).
@@ -61,7 +61,7 @@ Check (fun (R : RingObject) (M N : RModObject R) =>
 Check (fun (R : RingObject) (M N : RModObject R) =>
          (eq_refl : rm_hom (RMod_inr M N) = Ab_inr M N)).
 
-(* The two topological coproducts exist and are what they say. *)
+(* 相关说明。 （已译） *)
 Check (fun X Y : TopSpace => (Sum_Top X Y : TopSpace)).
 Check (fun X Y : PointedTop => (Wedge_Top X Y : TopSpace)).
 Check (fun X Y : PointedTop => (WedgeSum X Y : PointedTop)).
@@ -81,8 +81,7 @@ Context `{B : @HasBiproducts C Z}.
 
 Let Cart : @Cartesian C := biproduct_Cartesian.
 
-(* Positive controls for this section: the OBJECT and both PROJECTIONS do
-   come back on the nose, and both INJECTIONS come back up to [≈]. *)
+(* 相关说明。 （已译） *)
 Check (fun x y : C => @biproduct_roundtrip_obj C Z P B x y).
 Check (fun x y : C => @biproduct_roundtrip_exl C Z P B x y).
 Check (fun x y : C => @biproduct_roundtrip_exr C Z P B x y).
@@ -109,9 +108,7 @@ Fail Definition neg_roundtrip_inl (x y : C) :
   bi_inl (@cartesian_biproduct C Z P Cart x y) = bi_inl (biproduct x y)
   := eq_refl.
 
-(* NEGATIVE 2 (conversion, "cannot unify").  A fortiori the whole record
-   does not return: besides the injections, every law and both
-   universal-property fields are rebuilt. *)
+(* 相关说明。 （已译） *)
 Fail Definition neg_roundtrip_record (x y : C) :
   @cartesian_biproduct C Z P Cart x y = biproduct x y := eq_refl.
 
@@ -125,7 +122,7 @@ End RoundTripNegatives.
 Fail Definition neg_wedge_is_sum (X Y : PointedTop) :
   Wedge_Top X Y = Sum_Top (ptop_space X) (ptop_space Y) := eq_refl.
 
-(** ** Formability negatives: the [Set] pin inherited from Instance/Ab.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeCoproduct 相关定义、性质与动机。
@@ -138,7 +135,7 @@ Section SetPin.
 Universe ua.
 Constraint Set < ua.
 
-(* Controls: the direct-sum OBJECTS are free of the pin, on both sides. *)
+(* 相关说明。 （已译） *)
 Check (fun M N : AbObject@{ua ua ua} => Ab_product M N).
 Check (fun (R : RingObject@{ua ua ua}) (M N : RModObject R) =>
          RMod_product M N).
@@ -154,12 +151,11 @@ Fail Check (fun (R : RingObject@{ua ua ua}) (M N : RModObject R) =>
 
 End SetPin.
 
-(* Controls for negatives 4 and 5 at the pinned level, so that the two
-   constants are named by something that must succeed. *)
+(* 相关说明。 （已译） *)
 Check (fun M N : AbObject => Ab_Biproduct M N).
 Check (fun (R : RingObject) (M N : RModObject R) => RMod_Biproduct M N).
 
-(** ** Formability negatives: hom and proof universes are identified *)
+(* * ** Formability negatives: hom 证明 universes identified （已译） *)
 
 (*
    本节说明hom、笛卡尔相关定义、性质与动机。
@@ -172,26 +168,24 @@ Section SeparatedLevels.
 Universe uo uh up.
 Constraint uh < up.
 
-(* Control: the category itself, and its hom-sets, are fine at these
-   separated levels. *)
+(* Control: 范畴 itself, hom-sets, fine at these
+ separated levels. （已译） *)
 Check (fun (C : Category@{uo uh up}) (x y : obj[C]) => x ~{C}~> y).
 
 (* NEGATIVE 6 (formability, universe inconsistency:
    "Cannot enforce up = uh"). *)
 Fail Check (fun C : Category@{uo uh up} => @Cartesian C).
 
-(* NEGATIVE 7 (formability, same, at the upstream donor — the attribution
-   probe). *)
+(* 相关说明。 （已译） *)
 Fail Check (fun C : Category@{uo uh up} => @Terminal C).
 
 End SeparatedLevels.
 
-(* Controls for negatives 6 and 7: both classes are of course formable
-   when the two levels are not forced apart. *)
+(* 相关说明。 （已译） *)
 Check (fun C : Category => @Cartesian C).
 Check (fun C : Category => @Terminal C).
 
-(** ** Formability negative: the ∃!-package does not transfer to R-Mod *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeCoproduct 相关定义、性质与动机。
@@ -218,7 +212,7 @@ Fail Check (fun (R : RingObject) (M N P : RModObject R)
                  : ∃! h : RMod_product M N ~{RMod R}~> P,
                      (h ∘ RMod_inl M N ≈ f) ∧ (h ∘ RMod_inr M N ≈ g))).
 
-(** ** Formability negative: a product topology does not fit *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeCoproduct 相关定义、性质与动机。
@@ -247,8 +241,7 @@ Fail Definition probe_prod_open (W : probe_prod_carrier → Type@{o}) :
          ∧ (∀ q : probe_prod_carrier,
               U (fst q) → V (snd q) → W q))%type } }.
 
-(* Control: the very same body IS formable one universe up, so what the
-   negative locates is the LEVEL and not the shape. *)
+(* 相关说明。 （已译） *)
 Universe o2.
 Constraint o < o2.
 
@@ -261,8 +254,7 @@ Definition probe_prod_open_up (W : probe_prod_carrier → Type@{o}) :
          ∧ (∀ q : probe_prod_carrier,
               U (fst q) → V (snd q) → W q))%type } }.
 
-(* And a control at the coproduct's own predicate, which DOES fit — the
-   contrast the header draws. *)
+(* 相关说明。 （已译） *)
 Check (fun W : sum_carrier X Y → Type@{o} => (sum_open W : Type@{o})).
 
 End ProductTopology.

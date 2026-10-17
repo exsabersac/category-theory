@@ -32,7 +32,7 @@ Require Import Category.Structure.Limit.Power.Hom.
 
 Generalizable All Variables.
 
-(** ** (1a) The index of a power at [Sets] must be a small type *)
+(* 相关说明。 （已译） *)
 
 Section BigIndex.
 
@@ -44,7 +44,7 @@ Context (X : SetoidObject@{o o}).
 (* Positive control 1: at a small index the power is formable. *)
 Check (@power Sets@{o so} Sets_HasIndexedProducts@{so o} nat X).
 
-(* Positive control 2: and so is the copower. *)
+(* 相关说明。 （已译） *)
 Check (@copower Sets@{o so} Sets_HasIndexedCoproducts@{so o} nat X).
 
 (*
@@ -55,14 +55,14 @@ Check (@copower Sets@{o so} Sets_HasIndexedCoproducts@{so o} nat X).
 Fail Check (@power Sets@{o so} Sets_HasIndexedProducts@{so o}
               SetoidObject@{o o} X).
 
-(* Negative 2: dually for the copower. *)
+(* 相关说明。 （已译） *)
 Fail Check (@copower Sets@{o so} Sets_HasIndexedCoproducts@{so o}
               SetoidObject@{o o} X).
 
 End BigIndex.
 
-(** ** (1b) The [Program] form of the copower-of-[1] insertion is pinned to
-       [Set], and the shipped hand-written form is not *)
+(* * ** (1b) The [Program] form copower-of-[1] 嵌入 pinned to
+ [Set], shipped hand-written form not （已译） *)
 
 (* This is the variant Structure/Limit/Power/Hom.v declines to use.  It
    raises no obligation: instance resolution closes [proper_morphism] during
@@ -80,19 +80,18 @@ Constraint Set < uj.
 
 Context (J : Type@{uj}).
 
-(* Positive control 3: the shipped constant applies at this index. *)
+(* Positive control 3: shipped 常值 applies at index. （已译） *)
 Check (Sets_copower_one_from J).
 
-(* Positive control 4: so does the isomorphism built from it. *)
+(* Positive control 4: so does 同构 built it. （已译） *)
 Check (Sets_copower_one J).
 
-(* Negative 3: the [Program] variant does not -- its index universe was
-   pinned to [Set] by the resolved certificate. *)
+(* 相关说明。 （已译） *)
 Fail Check (probe_copower_one_from_program J).
 
 End ProgramPin.
 
-(** ** (2) A power is not an exponential, and a copower is not a product *)
+(* 相关说明。 （已译） *)
 
 Section Conversion.
 
@@ -101,8 +100,7 @@ Context (X Y : obj[Sets]).
 Context (C : Category).
 Context (b c : C).
 
-(* Positive control 5: the carrier of a power at [Sets] IS the bare function
-   type, on the nose. *)
+(* 相关说明。 （已译） *)
 Definition probe_power_carrier_control :
   carrier (@power Sets Sets_HasIndexedProducts J X) = (J → carrier X)
   := eq_refl.
@@ -116,13 +114,13 @@ Fail Definition probe_power_is_exponent :
   carrier (@power Sets Sets_HasIndexedProducts J X)
   = carrier (Sets_pow J X) := eq_refl.
 
-(* Positive control 6: the carrier of a copower IS the sigma type. *)
+(* 相关说明。 （已译） *)
 Definition probe_copower_carrier_control :
   carrier (@copower Sets Sets_HasIndexedCoproducts J Y)
   = { _ : J & carrier Y } := eq_refl.
 
-(* Negative 5: and it is not the product object.  [Sets_copower_prod] is an
-   isomorphism in [Sets], not an equality of objects. *)
+(* Negative 5: it not product 对象. [Sets_copower_prod] an
+ 同构 [Sets], not equality 对象. （已译） *)
 Fail Definition probe_copower_is_prod :
   @copower Sets Sets_HasIndexedCoproducts J Y
   = (Sets_discrete J × Y)%object := eq_refl.
@@ -134,15 +132,13 @@ Definition probe_rhs_control :
   = @power Sets Sets_HasIndexedProducts J
       {| carrier := @hom C c b ; is_setoid := @homset C c b |} := eq_refl.
 
-(* Negative 6: it is not the exponential of the hom-setoid.  The superscript
-   in [C(X, A)^I] is this library's [power], not its [^]. *)
+(* 相关说明。 （已译） *)
 Fail Definition probe_rhs_is_exponent :
   fobj[power_hom_functor J b] c
   = Sets_pow J {| carrier := @hom C c b ; is_setoid := @homset C c b |}
   := eq_refl.
 
-(* Positive control 8: the two comparison maps still compute, so the
-   rejections above are not a projection being stuck. *)
+(* 相关说明。 （已译） *)
 Definition probe_transform_control (p : C) (ev : ∀ _ : J, p ~> b)
   (u : c ~> p) :
   transform (power_hom_transform b p ev) c u = fun j : J => ev j ∘ u

@@ -19,8 +19,8 @@ Section Decide.
 
 Context `{Arrows}.
 
-(** [partial] and the [Yes]/[No]/[Reduce] machinery below are taken from
-    Certified Programming with Dependent Types (CPDT). *)
+(** 本节：[partial] [Yes]/[No]/[Reduce] machinery below taken from
+ Certified Programming Dependent Types (CPDT). （已译） *)
 
 Inductive partial (P : Type) : Type :=
 | Proved : P → partial

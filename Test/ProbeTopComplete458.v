@@ -56,12 +56,12 @@ Require Import Category.Instance.Top.Cocomplete.TypeValued.
 
 Generalizable All Variables.
 
-(** ** Instrument: the refutation keyword is live *)
+(* 相关说明。 （已译） *)
 
 (* The instrument *)
 Fail Check probe458_absent_name.
 
-(** ** Instance/Top/Complete.v: the initial topology and the recipe *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: [PInit]'s index universe is free, under the CLOSED binder
    [@{o i}]; its opens read back at [eq_refl]. *)
@@ -74,8 +74,8 @@ Example p458_pinit_open@{o i} (S : SetoidObject@{o o}) (I : Type@{i})
   (V : S → Prop) :
   POpen (PInit S I X t) V = pinit_open S I X t V := eq_refl.
 
-(* CONTROL: the universal property over ARBITRARY spaces mapping in, and
-   the one-map case, the subspace topology, restated. *)
+(* CONTROL: 普遍性质 over ARBITRARY spaces 映射 in, and
+ one-map case, subspace topology, restated. （已译） *)
 Definition p458_pinit_universal@{o i +} (S : SetoidObject@{o o})
   (I : Type@{i}) (X : I → PTop@{o})
   (t : ∀ k : I, SetoidMorphism@{o o o} S (X k)) (Z : PTop@{o})
@@ -91,9 +91,7 @@ Definition p458_pinit_one_psub@{o +} (X : PTop@{o})
   <-> POpen (PSub X S h) V :=
   PInit_one_PSub X S h V.
 
-(* CONTROL: the recipe at a shape universe ABOVE the points, [o < j],
-   the consumed and the produced limit properties at independent
-   universes; its mediator IS the [Sets] one at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Definition p458_recipe_above@{j o so v v1 w w1 +| o < so, o < j +}
   {J : Category@{j o o}} (T : J ⟶ PTopCat@{o so})
   (N : Cone (PForget@{o so} ◯ T)) (HN : IsLimitCone@{v v1 j o so} N) :
@@ -106,8 +104,7 @@ Example p458_recipe_med_map@{j o so +| o < so +}
   pmap (unique_obj (pinit_cone_limiting T N HN M))
     = unique_obj (HN (FCone PForget M)) := eq_refl.
 
-(* CONTROL: Riehl's "must": the opens of ANY limiting cone are those of
-   the initial topology of its legs. *)
+(* 相关说明。 （已译） *)
 Definition p458_topology_forced@{j o so +| o < so +}
   {J : Category@{j o o}} (T : J ⟶ PTopCat@{o so}) (L : Cone T)
   (HL : IsLimitCone L) (V : vertex_obj[L] → Prop) :
@@ -115,8 +112,7 @@ Definition p458_topology_forced@{j o so +| o < so +}
   <-> POpen (vertex_obj[pinit_cone T (FCone PForget L)]) V :=
   PTop_limit_open_iff_initial T L HL V.
 
-(* CONTROL: [PForget] is continuous, and preserves the limits of shapes
-   ABOVE the points, [o < s]. *)
+(* 相关说明。 （已译） *)
 Definition p458_pforget_continuous@{o so +| o < so +} :
   ContinuousFunctor PForget@{o so} := PForget_Continuous.
 
@@ -124,10 +120,9 @@ Definition p458_pforget_preserves_above@{s o so +| o < so, o < s +}
   (J : Category@{s o o}) (T : J ⟶ PTopCat@{o so}) :
   PreservesLimitCone T PForget@{o so} := PForget_PreservesLimitCone J T.
 
-(** ** Instance/Top/Complete.v: products and their index boundary *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: products indexed at the points' universe and strictly
-   below it. *)
+(* 相关说明。 （已译） *)
 Definition p458_iprod_at_points@{o so +| o < so +} :
   @HasIndexedProducts@{o o o o so o} PTopCat@{o so} :=
   PTop_HasIndexedProducts.
@@ -141,8 +136,7 @@ Fail Definition p458_iprod_above@{s o so +| o < so, o < s +} :
   @HasIndexedProducts@{s s s s so o} PTopCat@{o so} :=
   PTop_HasIndexedProducts.
 
-(* CONTROL: the product IS the product topology, at [eq_refl]; the
-   topology of ANY indexed product is the initial one. *)
+(* 相关说明。 （已译） *)
 Example p458_product_obj@{i o so +| i <= o, o < so +} (A : Type@{i})
   (X : A → PTop@{o}) :
   @indexed_product PTopCat@{o so} PTop_HasIndexedProducts A X
@@ -160,8 +154,7 @@ Definition p458_iprod_topology_forced@{i o so +| i <= o, o < so +}
   POpen Y V <-> POpen (PInit Y A X (fun a => pmap (p a))) V :=
   PTop_iprod_open_iff_initial A X Y p H V.
 
-(* CONTROL: the topology of ANY equalizer of spaces is the subspace
-   topology along its arrow. *)
+(* 相关说明。 （已译） *)
 Definition p458_equalizer_topology_forced@{o so +| o < so +}
   {X Y : PTop@{o}} (f g : X ~{PTopCat@{o so}}~> Y) (E : PTop@{o})
   (e : E ~{PTopCat@{o so}}~> X)
@@ -169,11 +162,9 @@ Definition p458_equalizer_topology_forced@{o so +| o < so +}
   POpen E V <-> POpen (PSub X E (pmap e)) V :=
   PTop_equalizer_open_iff_PSub f g E e H V.
 
-(** ** Instance/Top/Complete.v: Remark 1 and its universe boundary *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: [PTop_Complete] at a shape universe equal to the points',
-   strictly below them, at [Set], with the points at [Set], and with the
-   limit record strictly above the points. *)
+(* 相关说明。 （已译） *)
 Definition p458_complete_at_points@{o so +| o < so +} :
   @Complete@{o o o so} PTopCat@{o so} := PTop_Complete.
 
@@ -193,15 +184,14 @@ Definition p458_complete_record_above@{r o so +| o < r, o < so +} :
 Fail Definition p458_complete_above@{r s o so +| o < s, o < so, s <= r +} :
   @Complete@{r s o so} PTopCat@{o so} := PTop_Complete.
 
-(* CONTROL: its limit is the initial topology on the [Sets] limit, at
-   [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example p458_complete_apex@{s o so +| s <= o, o < so +}
   (J : Category@{s o o}) (T : J ⟶ PTopCat@{o so}) :
   vertex_obj[@limit_cone _ _ _ (@PTop_Complete@{o s o so _ _} J T)]
     = pinit_top T (Sets_limit_cone (PForget ◯ T)) := eq_refl.
 
-(* CONTROL: the book's route, at its one instance [Complete@{o o o so}];
-   it IS #416's theorem at the products and #457's equalizers. *)
+(* CONTROL: book's route, at one instance [Complete@{o o o so}];
+ it IS #416's 定理 at products #457's equalizers. （已译） *)
 Definition p458_complete_via_products@{o so +| o < so +} :
   @Complete@{o o o so} PTopCat@{o so} := PTop_Complete_via_products.
 
@@ -218,8 +208,7 @@ Fail Definition p458_via_products_below@{s o so +| s < o, o < so +} :
 Fail Definition p458_via_products_record_above@{r o so +| o < r, o < so +} :
   @Complete@{r o o so} PTopCat@{o so} := PTop_Complete_via_products.
 
-(* CONTROL: the book route's limit is a subspace of a product space, and
-   the two routes' apexes are isomorphic. *)
+(* 相关说明。 （已译） *)
 Definition p458_via_products_apex@{o so +| o < so +}
   (J : Category@{o o o}) (T : J ⟶ PTopCat@{o so}) :
   ex (fun S => ex (fun h =>
@@ -242,10 +231,9 @@ Fail Example p458_complete_routes_carrier@{o so +| o < so +}
       (vertex_obj[@limit_cone _ _ _ (PTop_Complete_via_products J T)])) :=
   eq_refl.
 
-(** ** Instance/Top/Complete.v: Awodey §2.6 and Riehl's box topology *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: Awodey's description of the binary product's opens, and the
-   cartesian structure. *)
+(* 相关说明。 （已译） *)
 Definition p458_ppair_open_iff_box@{o +} (X1 X2 : PTop@{o})
   (W : PPair_carrier X1 X2 → Prop) :
   POpen (PPair X1 X2) W <-> pair_box_union X1 X2 W :=
@@ -254,9 +242,7 @@ Definition p458_ppair_open_iff_box@{o +} (X1 X2 : PTop@{o})
 Definition p458_cartesian@{o so +| o < so +} : @Cartesian PTopCat@{o so} :=
   PTop_Cartesian.
 
-(* CONTROL: the box space on the nat-indexed power of [PBool] is not an
-   indexed product; the product topology mediates; the box-open
-   [pbox_all_false] is not product-open. *)
+(* 相关说明。 （已译） *)
 Definition p458_box_not_product@{o so +| o < so +} :
   @IsIndexedProduct PTopCat@{o so} nat (fun _ => PBool@{o})
     (PBoxTop nat (fun _ => PBool@{o}))
@@ -272,10 +258,10 @@ Definition p458_box_strictly_finer@{o +} :
   POpen (PProd nat (fun _ => PBool@{o})) pbox_all_false → False :=
   pbox_all_false_not_product_open.
 
-(** ** Instance/Top/Complete/ConeComma.v: Exercise 3, corrected *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: G_*'s object action, and (a) with a RIGHT adjoint of G_*,
-   restated for any [G], [T] and shape. *)
+(* CONTROL: G_*'s 对象 action, (a) RIGHT adjoint G_*,
+ restated any [G], [T] shape. （已译） *)
 Example p458_coneimage_obj@{oj oc od h +} {J : Category@{oj h h}}
   {C : Category@{oc h h}} {D : Category@{od h h}} (G : C ⟶ D)
   (T : J ⟶ C) (N : Cone T) : fobj[ConeImage G T] N = FCone G N :=
@@ -294,9 +280,9 @@ Fail Definition p458_ex3a_left@{oj oc od h +} {J : Category@{oj h h}}
   (L : Limit (G ◯ T)) : Limit T :=
   limit_from_cone_right_adjoint G T F A L.
 
-(* CONTROL: at [PForget] the right adjoint is the weakest topology, and
-   (a) at it IS [PTop_limit_via_cones]; the left adjoint, the discrete
-   topology, exists too. *)
+(* CONTROL: at [PForget] 右伴随 weakest topology, and
+ (a) at it IS [PTop_limit_via_cones]; 左伴随, discrete
+ topology, exists too. （已译） *)
 Example p458_pinitcone_obj@{j o so +| o < so +} {J : Category@{j o o}}
   (T : J ⟶ PTopCat@{o so}) (N : Cone (PForget@{o so} ◯ T)) :
   fobj[PInitCone T] N = pinit_cone T N := eq_refl.
@@ -323,9 +309,7 @@ Fail Definition p458_limit_via_left@{j o so +| o < so +}
   limit_from_cone_right_adjoint PForget T (PDiscCone T)
     (pdisc_cone_adjunction T) L.
 
-(* CONTROL: [PTop_Complete_via_cones] strictly below the points and at
-   them; its whole limit cone IS [PTop_Complete]'s at [eq_refl]; the
-   products of (c). *)
+(* 相关说明。 （已译） *)
 Definition p458_complete_via_cones_below@{s o so +| s < o, o < so +} :
   @Complete@{o s o so} PTopCat@{o so} := PTop_Complete_via_cones.
 
@@ -355,7 +339,7 @@ Definition p458_products_via_cone_comma@{i o so +| i <= o, o < so +} :
   @HasIndexedProducts@{i i i o so o} PTopCat@{o so} :=
   PTop_products_via_cone_comma.
 
-(** ** Instance/Top/Cocomplete.v: the final topology and the recipe *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: [PFinal]'s index universe is free, under the CLOSED binder
    [@{o i}]; its opens read back at [eq_refl]. *)
@@ -370,8 +354,8 @@ Example p458_pfinal_open@{o i} (S : SetoidObject@{o o}) (Ix : Type@{i})
   = ((∀ s t : S, s ≈ t → V s → V t) /\
      (∀ k : Ix, POpen (X k) (fun x => V (f k x)))) := eq_refl.
 
-(* CONTROL: the universal property over ARBITRARY spaces mapping out,
-   and the one-map case, the quotient topology, restated. *)
+(* CONTROL: 普遍性质 over ARBITRARY spaces 映射 out,
+ one-map case, quotient topology, restated. （已译） *)
 Definition p458_pfinal_universal@{o i +} (S : SetoidObject@{o o})
   (Ix : Type@{i}) (X : Ix → PTop@{o})
   (f : ∀ k : Ix, SetoidMorphism@{o o o} (X k) S) (Z : PTop@{o})
@@ -387,8 +371,7 @@ Definition p458_pfinal_one_pquot@{o +} (X : PTop@{o})
   <-> POpen (PFinal T Datatypes.unit (fun _ => X) (fun _ => q)) V :=
   pfinal_one_map_PQuot X T q V.
 
-(* CONTROL: the colimit recipe at a shape universe ABOVE the points; the
-   direct colimit's apex; Riehl's "must" for colimits. *)
+(* 相关说明。 （已译） *)
 Definition p458_corecipe_above@{o so s r r' x x' +| o < so, o < s +}
   {D : Category@{s o o}} (F : D ⟶ PTopCat@{o so})
   (N : Cocone (PForget@{o so} ◯ F))
@@ -423,8 +406,7 @@ Definition p458_colimit_open_iff_final@{o so s r +| o < so +}
                (fun d => pmap (colimit_inj (colimit_is_acolimit L) d))) V :=
   PTop_colimit_open_iff_final L V.
 
-(* CONTROL: [PForget] is cocontinuous, and preserves the colimits of
-   shapes ABOVE the points. *)
+(* 相关说明。 （已译） *)
 Definition p458_pforget_cocontinuous@{o so +| o < so +} :
   CocontinuousFunctor PForget@{o so} := PForget_Cocontinuous.
 
@@ -433,11 +415,9 @@ Definition p458_pforget_copreserves_above@{s o so +| o < so, o < s +}
   PreservesColimitCocone K PForget@{o so} :=
   PForget_PreservesColimitCocone J K.
 
-(** ** Instance/Top/Cocomplete.v: Remark 2 and its universe boundary *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: [PTop_Cocomplete] at the points' universe, strictly below
-   it, with the points at [Set], and with the colimit record strictly
-   above the points. *)
+(* 相关说明。 （已译） *)
 Definition p458_cocomplete_at_points@{o so +| o < so +} :
   @Cocomplete@{o o o so} PTopCat@{o so} := PTop_Cocomplete.
 
@@ -454,9 +434,9 @@ Definition p458_cocomplete_record_above@{r o so +| o < r, o < so +} :
 Fail Definition p458_cocomplete_above@{r s o so +| o < s, o < so, s <= r +} :
   @Cocomplete@{r s o so} PTopCat@{o so} := PTop_Cocomplete.
 
-(* CONTROL: the book's route, at its one instance
-   [Cocomplete@{o o o so}]; it IS #416's theorem at the coproducts and
-   #457's coequalizers. *)
+(* CONTROL: book's route, at one instance
+ [Cocomplete@{o o o so}]; it IS #416's 定理 at coproducts and
+ #457's coequalizers. （已译） *)
 Definition p458_cocomplete_via_coeq@{o so +| o < so +} :
   @Cocomplete@{o o o so} PTopCat@{o so} := PTop_Cocomplete_via_coproducts.
 
@@ -473,8 +453,7 @@ Fail Definition p458_via_coeq_below@{s o so +| s < o, o < so +} :
 Fail Definition p458_via_coeq_record_above@{r o so +| o < r, o < so +} :
   @Cocomplete@{r o o so} PTopCat@{o so} := PTop_Cocomplete_via_coproducts.
 
-(* CONTROL: the two routes' apexes are isomorphic, and their points'
-   underlying types are equal at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Definition p458_cocomplete_routes_iso@{o so +| o < so +}
   (D : Category@{o o o}) (F : D ⟶ PTopCat@{o so}) :
   colimit_apex (PTop_Cocomplete D F)
@@ -500,10 +479,9 @@ Fail Example p458_cocomplete_routes_spaces@{o so +| o < so +}
   colimit_apex (PTop_Cocomplete D F)
   = colimit_apex (PTop_Cocomplete_via_coproducts D F) := eq_refl.
 
-(** ** Instance/Top/Cocomplete.v: coproducts and their index boundary *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the coproduct's opens at [eq_refl]; coproducts indexed at
-   the points' universe; the non-vacuity witness. *)
+(* 相关说明。 （已译） *)
 Example p458_psigma_open@{o i +| i <= o +} (Ix : Type@{i})
   (X : Ix → PTop@{o})
   (V : Sets_icoprod_obj (fun k => pt_carrier (X k)) → Prop) :
@@ -527,10 +505,9 @@ Definition p458_sum_injections_differ@{o so u | o < so, o < u +} :
     ≈[PTopCat@{o so}] psigma_inj@{o so o u} bool (fun _ => PTwoIndisc) false
   → False := PTwoIndiscSum_injections_differ.
 
-(** ** Instance/Top/Cocomplete/TypeValued.v: the three walls *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: W1's two ingredients, each accepted alone; the coequalizer
-   IS the quotient topology at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Definition p458_top_coproducts_small@{o h u u0 +| o < h, u0 <= o, h < u +} :
   @HasIndexedCoproducts@{u u0 h h h} Top@{h o} :=
   Top_HasIndexedCoproducts_small.
@@ -560,8 +537,8 @@ Fail Definition p458_top_coproducts_at_homs@{o h u +| o < h, h < u +} :
   @HasIndexedCoproducts@{u h h h h} Top@{h o} :=
   Top_HasIndexedCoproducts_small.
 
-(* The points of a colimit of [Top@{h o}] over a shape at or below the
-   points: the sigma over the shape's objects, at [o]. *)
+(* The points colimit [Top@{h o}] over shape at below the
+ points: sigma over shape's 对象, at [o]. （已译） *)
 Definition p458_tcarr@{o h s +| o < h, s <= o +} (D : Category@{s h h})
   (F : D ⟶ Top@{h o}) : Type@{o} :=
   { d : obj[D] & top_carrier (F d) }.
@@ -579,7 +556,7 @@ Fail Inductive p458_tcolim_rel@{o h s +| o < h, s <= o +}
   | p458_tcr_trans : ∀ p q r, p458_tcolim_rel p q →
       p458_tcolim_rel q r → p458_tcolim_rel p r.
 
-(* CONTROL: the same relation valued at the homs' universe [h]. *)
+(* CONTROL: same 关系 valued at homs' universe [h]. （已译） *)
 Inductive p458_tcolim_relH@{o h s +| o < h, s <= o +}
   (D : Category@{s h h}) (F : D ⟶ Top@{h o}) :
   p458_tcarr D F → p458_tcarr D F → Type@{h} :=
@@ -598,9 +575,9 @@ Fail Definition p458_tcolim_relH_at_o@{o h s +| o < h, s <= o +}
   p458_tcarr D F → p458_tcarr D F → Type@{o} :=
   p458_tcolim_relH D F.
 
-(* CONTROL: the same relation valued in [Prop] fits at [Type@{o}]; the
-   mediator respects it up to [inhabited]; the squash eliminates into a
-   proposition. *)
+(* CONTROL: same 关系 valued [Prop] fits at [Type@{o}]; the
+ mediator respects it up [inhabited]; squash eliminates a
+ 命题. （已译） *)
 Inductive p458_tcolim_prel@{o h s +| o < h, s <= o +}
   (D : Category@{s h h}) (F : D ⟶ Top@{h o}) :
   p458_tcarr D F → p458_tcarr D F → Prop :=
@@ -656,17 +633,15 @@ Fail Definition p458_squash_elim@{o +} (Z : TopSpace@{o})
   (a b : top_carrier Z) (w : inhabited (a ≈ b)) : a ≈ b :=
   match w with inhabits e => e end.
 
-(** ** REFUTATION CONSTANTS: the two Refutations satellites and the pieces
-       of Exercise 3's printed reading *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the printed (a) refuted, the refuting data, the left
-   adjunction and the limit of [G ◯ T] it consists of, restated. *)
+(* CONTROL: printed (a) refuted, refuting data, left
+ 伴随 limit [G ◯ T] it consists of, restated. （已译） *)
 Definition p458_ex3a_literal_refuted :
   Ex3a_left_literal ex3_G1 ex3_T0 → False :=
   ex3a_left_adjoint_literal_refuted.
 
-(* CONTROL: the same refutation under a CLOSED binder that puts every one
-   of its eleven universes strictly above [Set]. *)
+(* 相关说明。 （已译） *)
 Definition p458_ex3a_literal_above_set@{u u0 u1 u2 u3 u4 u5 u6 u7 u8 u9 |
   Set < u, Set < u0, Set < u1, Set < u2, Set < u3, Set < u4, Set < u5,
   Set < u6, Set < u7, Set < u8, Set < u9, u8 < u5, u9 < u2 +} :
@@ -714,8 +689,7 @@ Fail Definition p458_iprod_refuted_at_points@{e o so +| o < so +} :
   IEM@{e} → @HasIndexedProducts@{o o o o so o} PTopCat@{o so} → False :=
   PTop_iprod_refuted_IEM.
 
-(* CONTROL: products of the Type-valued [Top] refuted at the homs'
-   universe under [IEM]. *)
+(* 相关说明。 （已译） *)
 Definition p458_top_iprod_refuted@{e h o +| o < h +} :
   IEM@{e} → @HasIndexedProducts@{h h h h h h} Top@{h o} → False :=
   Top_iprod_refuted_IEM_canonical.
@@ -725,8 +699,7 @@ Fail Definition p458_top_iprod_refuted_at_points@{e h o +| o < h +} :
   IEM@{e} → @HasIndexedProducts@{o o o h h h} Top@{h o} → False :=
   Top_iprod_refuted_IEM_canonical.
 
-(* CONTROL: cocompleteness refuted above the points under [IEM], with
-   the points at [Set] too; of [Sets] and of [Top] as well. *)
+(* 相关说明。 （已译） *)
 Definition p458_not_cocomplete_above@{e r s o so +| o < so, o < s,
   s <= r +} :
   IEM@{e} → @Cocomplete@{r s o so} PTopCat@{o so} → False :=
@@ -753,8 +726,7 @@ Definition p458_top_not_cocomplete_above@{e r s o h +| o < h, o < s,
   IEM@{e} → @Cocomplete@{r s h h} Top@{h o} → False :=
   Top_not_cocomplete_IEM.
 
-(** ** REFUTATION CONSTANTS: [ObjDecEq] with the points at [Set], and the
-       Type-valued [Top] below its homs *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeTopComplete458 相关定义、性质与动机。
@@ -842,9 +814,7 @@ Fail Definition p458_top_not_complete_canonical_below@{e r s h o +| o < s,
   IEM@{e} → @Complete@{r s h h} Top@{h o} → False :=
   Top_not_complete_IEM.
 
-(* CONTROL: completeness of [CompHaus] refuted under [IEM] at a shape
-   universe strictly between the points and the homs; #455's form at and
-   above the homs. *)
+(* 相关说明。 （已译） *)
 Definition p458_comphaus_not_complete_below@{e r s c h o +| o < s, s < h,
   h <= c, h <= r +} :
   IEM@{e} → @Complete@{r s h c} (CompHaus : Category@{c h h}) → False :=
@@ -861,8 +831,7 @@ Fail Definition p458_comphaus_canonical_below@{e r s c h o +| o < s, s < h,
   IEM@{e} → @Complete@{r s h c} (CompHaus : Category@{c h h}) → False :=
   CompHaus_not_complete_IEM_below.
 
-(* CONTROL: products of [Top] refuted under [IEM] at an index universe
-   strictly between the points and the homs. *)
+(* 相关说明。 （已译） *)
 Definition p458_top_iprod_refuted_below@{e s h o +| o < s, s < h +} :
   IEM@{e} → @HasIndexedProducts@{s s s h h h} Top@{h o} → False :=
   Top_iprod_refuted_below_IEM.
@@ -909,7 +878,7 @@ Fail Definition p458_top_cantor_objdeceq_at_set@{r s h +| Set < s, s < h,
   ObjDecEq Top@{h Set} → @Cocomplete@{r s h h} Top@{h Set} → False :=
   Top_not_cocomplete_Cantor_ObjDecEq.
 
-(** ** Guard: every constant of the six targets *)
+(* * ** Guard: every 常值 six targets （已译） *)
 
 (* Instance/Top/Complete.v *)
 Check PBoxTop.

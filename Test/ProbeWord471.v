@@ -45,9 +45,9 @@ Local Notation UMonS := (@Mon_Forget Sets Sets_Product_Monoidal).
 Fail Check p471_absent_name.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Mon/Free.v: the adjunction in hom-set form *)
+(* * ** Instance/Mon/Free.v: 伴随 hom-set form （已译） *)
 
-(* C1: the counit of the hom-set form is the fold of the identity. *)
+(* C1: counit hom-set form fold 恒等. （已译） *)
 Example p471_c1_hom_counit (L : MonS) (l : list (mon_ob L)) :
   mon_fun (@counit _ _ _ _ free_mon_sets_adjunction_hom L) l
     = free_mon_extend (fun x => x) l := eq_refl.
@@ -80,7 +80,7 @@ Fail Example p471_r2_counits (L : MonS) (l : list (mon_ob L)) :
     = mon_fun (@counit _ _ _ _ free_mon_sets_adjunction_hom L) l := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Mon/Word.v: the monad W₀ *)
+(* * ** Instance/Mon/Word.v: 单子 W₀ （已译） *)
 
 (* C5: W₀ X is the setoid of words. *)
 Example p471_c5_W0_obj (X : Sets) : fobj[W0F] X = WordObj X := eq_refl.
@@ -104,7 +104,7 @@ Example p471_c9_W0_join_counit (X : Sets) :
         (@counit _ _ _ _ free_mon_sets_adjunction_hom (FreeMonSets X))
   := eq_refl.
 
-(* C10: μ is the concatenation, the fold of the free monoid's product. *)
+(* C10: μ concatenation, fold free 幺半群's product. （已译） *)
 Example p471_c10_W0_join_fun (X : Sets) (ww : list (list X)) :
   @join _ _ W0 X ww = free_mon_extend (L := FreeMonSetsObject X)
                         (fun w => w) ww := eq_refl.
@@ -129,7 +129,7 @@ Example p471_c13_sum_to (X : Sets) (l : list X) :
 Example p471_c14_sum_from (X : Sets) (n : nat) (t : Tup0 X n) :
   from (W0_sum_iso X) (existT _ n t) = tup0_to_list n t := eq_refl.
 
-(* C15: on a literal word the round trip holds on the nose... *)
+(* 相关说明。 （已译） *)
 Example p471_c15_sum_rt_literal (X : Sets) (a b : X) :
   tup0sum_to_list (list_to_tup0sum (word2 a b)) = word2 a b := eq_refl.
 
@@ -157,7 +157,7 @@ Fail Example p471_r5_W0_map_letter {X Y : Sets} (f : X ~{Sets}~> Y)
     = Datatypes.cons (f a) Datatypes.nil := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Mon/Word.v: an algebra is a monoid (Awodey Ex. 10.6.6) *)
+(* * ** Instance/Mon/Word.v: algebra 幺半群 (Awodey Ex. 10.6.6) （已译） *)
 
 (* C18: the monoid of an algebra has its carrier... *)
 Example p471_c18_alg_monoid_carrier {S : Sets} (α : @TAlgebra Sets W0F W0 S) :
@@ -175,7 +175,7 @@ Example p471_c20_alg_monoid_one {S : Sets} (α : @TAlgebra Sets W0F W0 S) :
   mon_one (alg_monoid α) = t_alg[α] Datatypes.nil := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Mon/Word.v: the comparison K and EM ≅ Mon *)
+(* 相关说明。 （已译） *)
 
 (* C21: the leg [to] of [Mon_EM_iso] is K. *)
 Example p471_c21_iso_to :
@@ -194,7 +194,7 @@ Example p471_c24_K_alg (M : MonS) :
     = fmap[UMonS] (@counit _ _ _ _ free_mon_sets_adjunction_hom M)
   := eq_refl.
 
-(* C25: whose value is the fold of the identity. *)
+(* C25: whose value fold 恒等. （已译） *)
 Example p471_c25_K_alg_fun (M : MonS) (l : list (mon_ob M)) :
   t_alg[`2 (fobj[Mon_K] M)] l = free_mon_extend (fun x => x) l := eq_refl.
 
@@ -226,7 +226,7 @@ Example p471_c29_K_nu2 (M : MonS) (x y : mon_ob M) :
 Example p471_c30_K_map {M N : MonS} (f : M ~{MonS}~> N) :
   t_alg_hom[fmap[Mon_K] f] = `1 f := eq_refl.
 
-(* C31: the monoid of an algebra, through the functor: the carrier... *)
+(* C31: 幺半群 algebra, through 函子: carrier... （已译） *)
 Example p471_c31_EM_carrier (x : W0Alg) :
   mon_ob (fobj[EM_to_Mon] x) = `1 x := eq_refl.
 
@@ -240,11 +240,11 @@ Example p471_c32_EM_mul (x : W0Alg) (a b : `1 x) :
 Example p471_c33_EM_one (x : W0Alg) :
   mon_one (fobj[EM_to_Mon] x) = t_alg[`2 x] Datatypes.nil := eq_refl.
 
-(* C34: ...and the map of a morphism. *)
+(* C34: ...and map 态射. （已译） *)
 Example p471_c34_EM_map {x y : W0Alg} (f : x ~{W0Alg}~> y) :
   `1 (fmap[EM_to_Mon] f) = t_alg_hom[f] := eq_refl.
 
-(* C35: the monoid round trip keeps the carrier... *)
+(* C35: 幺半群 round trip keeps carrier... （已译） *)
 Example p471_c35_Mon_rt_carrier (M : MonS) :
   mon_ob (fobj[EM_to_Mon ◯ Mon_K] M) = mon_ob M := eq_refl.
 
@@ -252,7 +252,7 @@ Example p471_c35_Mon_rt_carrier (M : MonS) :
 Example p471_c36_Mon_rt_one (M : MonS) :
   mon_one (fobj[EM_to_Mon ◯ Mon_K] M) = mon_one M := eq_refl.
 
-(* C37: ...and the map of a morphism. *)
+(* C37: ...and map 态射. （已译） *)
 Example p471_c37_Mon_rt_hom {M N : MonS} (f : M ~{MonS}~> N) :
   mon_fun (fmap[EM_to_Mon ◯ Mon_K] f) = mon_fun f := eq_refl.
 
@@ -274,11 +274,11 @@ Fail Example p471_r7_Mon_rt_mul (M : MonS) :
 Fail Example p471_r8_Mon_rt_obj (M : MonS) :
   fobj[EM_to_Mon ◯ Mon_K] M = M := eq_refl.
 
-(* C40: the algebra round trip keeps the carrier... *)
+(* 相关说明。 （已译） *)
 Example p471_c40_EM_rt_carrier (x : W0Alg) :
   `1 (fobj[Mon_K ◯ EM_to_Mon] x) = `1 x := eq_refl.
 
-(* C41: ...its structure map is the fold of the derived monoid... *)
+(* C41: ...its structure map fold derived 幺半群... （已译） *)
 Example p471_c41_EM_rt_alg_fun (x : W0Alg) (l : list (`1 x)) :
   t_alg[`2 (fobj[Mon_K ◯ EM_to_Mon] x)] l
     = free_mon_extend (L := alg_monoid (`2 x)) (fun s => s) l := eq_refl.
@@ -288,7 +288,7 @@ Definition p471_c42_EM_rt_alg_equiv (x : W0Alg) (l : list (`1 x)) :
   t_alg[`2 (fobj[Mon_K ◯ EM_to_Mon] x)] l ≈ t_alg[`2 x] l :=
   alg_fold (`2 x) l.
 
-(* C43: ...and the map of a morphism comes back. *)
+(* C43: ...and map 态射 comes back. （已译） *)
 Example p471_c43_EM_rt_alg_hom {x y : W0Alg} (f : x ~{W0Alg}~> y) :
   t_alg_hom[fmap[Mon_K ◯ EM_to_Mon] f] = t_alg_hom[f] := eq_refl.
 
@@ -331,8 +331,8 @@ Example p471_c47_unit_component (M : MonS) :
     = ((fun a : mon_ob M => a), (fun a : mon_ob M => a)) := eq_refl.
 
 (* C48: Theory/Equivalence.v's bridge [Equivalence_to_Cat_Iso], applied
-   to the equivalence, has the identity as the component of its
-   [iso_to_from]... *)
+ 等价, has 恒等 component its
+ [iso_to_from]... （已译） *)
 Example p471_c48_bridge_to_from (x : W0Alg) :
   t_alg_hom[to (`1 (iso_to_from (Equivalence_to_Cat_Iso Mon_EM_equivalence))
                   x)]
@@ -345,7 +345,7 @@ Fail Example p471_r13_bridge_from_to (M : MonS) :
     = (fun a => a) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Mon/Word.v: the forgetful functors (Awodey §10.3) *)
+(* * ** Instance/Mon/Word.v: forgetful 函子 (Awodey §10.3) （已译） *)
 
 (* C49: U^{W₀} K M = U M... *)
 Example p471_c49_K_forget_obj (M : MonS) :
@@ -364,7 +364,7 @@ Example p471_c52_EM_forget_map {x y : W0Alg} (f : x ~{W0Alg}~> y) :
   fmap[UMonS] (fmap[EM_to_Mon] f) = fmap[W0_Forget] f := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Mon/Word.v: the Kleisli category (Riehl Ex. 5.2.11(ii)) *)
+(* * ** Instance/Mon/Word.v: Kleisli 范畴 (Riehl Ex. 5.2.11(ii)) （已译） *)
 
 (* C53: a Kleisli arrow A ⇝ B is a setoid map A → W₀ B... *)
 Example p471_c53_Kl_hom (A B : Sets) :
@@ -394,7 +394,7 @@ Fail Example p471_r14_Kl_compose {A B C : Sets}
   (g ∘[W0Kl] f) a = wconcat (wmap g (f a)) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Mon/Word/System.v: the families ν₀, ν₁, … *)
+(* 相关说明。 （已译） *)
 
 (* C58: ν read on the empty word is ν₀... *)
 Example p471_c58_nu0_nil {X : SetoidObject} (ν : NAry0 X) :
@@ -419,7 +419,7 @@ Example p471_c62_alg_at {X : Sets} (α : @TAlgebra Sets W0F W0 X) (n : nat)
   (t : Tup X n) :
   nu (nu_pos (alg_NAry0 α)) n t = t_alg[α] (tup_to_list n t) := eq_refl.
 
-(* C63: ν₀ is the unit of the monoid of the algebra... *)
+(* C63: ν₀ unit 幺半群 algebra... （已译） *)
 Example p471_c63_alg_nu0_unit {X : Sets} (α : @TAlgebra Sets W0F W0 X) :
   nu_zero (alg_NAry0 α) = mon_one (alg_monoid α) := eq_refl.
 
@@ -463,7 +463,7 @@ Fail Example p471_r16_rt_pos {X : Sets} (ν : NAry0 X)
   nu_pos (alg_NAry0 (NAry0_alg ν Hu Ha)) = nu_pos ν := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Mon/Word/System.v: the systems as a category *)
+(* * ** Instance/Mon/Word/System.v: systems 范畴 （已译） *)
 
 (* C69: the leg [to] of [W0Sys_EM_iso]. *)
 Example p471_c69_sys_iso_to : to W0Sys_EM_iso = W0Sys_to_EM := eq_refl.
@@ -485,7 +485,7 @@ Example p471_c73_em_to_sys_nu (x : W0Alg) (n : nat) (t : Tup (`1 x) n) :
   nu (nu_pos (ws0_nu (fobj[EM_to_W0Sys] x))) n t
     = t_alg[`2 x] (tup_to_list n t) := eq_refl.
 
-(* C74: the system round trip keeps the set... *)
+(* 相关说明。 （已译） *)
 Example p471_c74_sys_rt_set (A : W0Sys) :
   ws0_set (fobj[EM_to_W0Sys ◯ W0Sys_to_EM] A) = ws0_set A := eq_refl.
 
@@ -494,7 +494,7 @@ Example p471_c75_sys_rt_zero (A : W0Sys) :
   nu_zero (ws0_nu (fobj[EM_to_W0Sys ◯ W0Sys_to_EM] A)) = nu_zero (ws0_nu A)
   := eq_refl.
 
-(* C76: ...and the map of a morphism. *)
+(* C76: ...and map 态射. （已译） *)
 Example p471_c76_sys_rt_hom {A B : W0Sys} (f : A ~{W0Sys}~> B) :
   `1 (fmap[EM_to_W0Sys ◯ W0Sys_to_EM] f) = `1 f := eq_refl.
 
@@ -506,11 +506,11 @@ Fail Example p471_r17_sys_rt_nu (A : W0Sys) :
 Fail Example p471_r18_sys_rt_obj (A : W0Sys) :
   fobj[EM_to_W0Sys ◯ W0Sys_to_EM] A = A := eq_refl.
 
-(* C77: the algebra round trip through the systems keeps the carrier... *)
+(* 相关说明。 （已译） *)
 Example p471_c77_em_sys_rt_carrier (x : W0Alg) :
   `1 (fobj[W0Sys_to_EM ◯ EM_to_W0Sys] x) = `1 x := eq_refl.
 
-(* C78: ...and the map of a morphism. *)
+(* C78: ...and map 态射. （已译） *)
 Example p471_c78_em_sys_rt_alg_hom {x y : W0Alg} (f : x ~{W0Alg}~> y) :
   t_alg_hom[fmap[W0Sys_to_EM ◯ EM_to_W0Sys] f] = t_alg_hom[f] := eq_refl.
 
@@ -522,20 +522,20 @@ Fail Example p471_r19_em_sys_rt_obj (x : W0Alg) :
 Fail Example p471_r20_sys_functor :
   EM_to_W0Sys ◯ W0Sys_to_EM = Id[W0Sys] := eq_refl.
 
-(* C79: the components of [iso_to_from] are identities... *)
+(* 相关说明。 （已译） *)
 Example p471_c79_sys_to_from_component (x : W0Alg) :
   (t_alg_hom[to (`1 (iso_to_from W0Sys_EM_iso) x)],
    t_alg_hom[from (`1 (iso_to_from W0Sys_EM_iso) x)])
     = (@setoid_morphism_id (`1 x), @setoid_morphism_id (`1 x)) := eq_refl.
 
-(* C80: ...and so are those of [iso_from_to]. *)
+(* 相关说明。 （已译） *)
 Example p471_c80_sys_from_to_component (A : W0Sys) :
   (`1 (to (`1 (iso_from_to W0Sys_EM_iso) A)),
    `1 (from (`1 (iso_from_to W0Sys_EM_iso) A)))
     = (@setoid_morphism_id (ws0_set A), @setoid_morphism_id (ws0_set A))
   := eq_refl.
 
-(* C81: the system of a monoid M has ν₀ the unit... *)
+(* C81: system 幺半群 M has ν₀ unit... （已译） *)
 Example p471_c81_mon_system_zero (M : MonS) :
   nu_zero (ws0_nu (fobj[EM_to_W0Sys ◯ Mon_K] M)) = mon_one M := eq_refl.
 
@@ -544,7 +544,7 @@ Example p471_c82_mon_system_pair (M : MonS) (x y : mon_ob M) :
   nu (nu_pos (ws0_nu (fobj[EM_to_W0Sys ◯ Mon_K] M))) 1 (x, y)
     = mon_mul M x (mon_mul M y (mon_one M)) := eq_refl.
 
-(* C83: ...and νₙ the n-fold product, at each n by cases. *)
+(* 相关说明。 （已译） *)
 Definition p471_c83_mon_system_nu (M : MonS) (n : nat)
   (t : Tup0 (mon_ob M) n) :
   nu0 (ws0_nu (fobj[EM_to_W0Sys ◯ Mon_K] M)) n t
@@ -558,10 +558,10 @@ Fail Example p471_r21_mon_system_nu (M : MonS) (n : nat)
     = free_mon_extend (L := M) (fun s => s) (tup0_to_list n t) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/CMon/Free.v: the free commutative monoid and its monad *)
+(* * ** Instance/CMon/Free.v: free commutative 幺半群 单子 （已译） *)
 
-(* C84: the carrier of the free commutative monoid is the setoid of
-   multisets... *)
+(* C84: carrier free commutative 幺半群 setoid of
+ multisets... （已译） *)
 Example p471_c84_cmon_carrier (X : Sets) :
   cmon_setoid (FreeCMonObject X) = BagObj X := eq_refl.
 
@@ -569,11 +569,11 @@ Example p471_c84_cmon_carrier (X : Sets) :
 Example p471_c85_cmon_plus (X : Sets) (l m : list X) :
   cmon_plus (FreeCMonObject X) l m = wapp l m := eq_refl.
 
-(* C86: ...and its zero the empty multiset. *)
+(* 相关说明。 （已译） *)
 Example p471_c86_cmon_zero (X : Sets) :
   cmon_zero (FreeCMonObject X) = @Datatypes.nil X := eq_refl.
 
-(* C87: the monad on objects is the setoid of multisets... *)
+(* C87: 单子 对象 setoid multisets... （已译） *)
 Example p471_c87_bag_obj (X : Sets) : fobj[BagF] X = BagObj X := eq_refl.
 
 (* C88: ...on arrows the letterwise map, at a variable multiset... *)
@@ -601,11 +601,11 @@ Example p471_c92_cmon_iso_to : to CMon_EM_iso = CMon_K := eq_refl.
 (* C93: ... *)
 Example p471_c93_cmon_iso_from : from CMon_EM_iso = EM_to_CMon := eq_refl.
 
-(* C94: K M's structure map is the fold of the identity... *)
+(* C94: K M's structure map fold 恒等... （已译） *)
 Example p471_c94_cmon_K_alg_fun (M : CMon) (l : list (cmon_setoid M)) :
   t_alg[`2 (fobj[CMon_K] M)] l = cfold (L := M) (fun x => x) l := eq_refl.
 
-(* C95: ...with the zero on the empty multiset... *)
+(* 相关说明。 （已译） *)
 Example p471_c95_cmon_K_zero (M : CMon) :
   t_alg[`2 (fobj[CMon_K] M)] Datatypes.nil = cmon_zero M := eq_refl.
 
@@ -623,7 +623,7 @@ Example p471_c97_em_cmon_plus (x : BagAlg) (a b : `1 x) :
 Example p471_c98_em_cmon_zero (x : BagAlg) :
   cmon_zero (fobj[EM_to_CMon] x) = t_alg[`2 x] Datatypes.nil := eq_refl.
 
-(* C99: the round trip keeps the carrier... *)
+(* 相关说明。 （已译） *)
 Example p471_c99_cmon_rt_carrier (M : CMon) :
   cmon_setoid (fobj[EM_to_CMon ◯ CMon_K] M) = cmon_setoid M := eq_refl.
 
@@ -635,7 +635,7 @@ Example p471_c100_cmon_rt_zero (M : CMon) :
 Example p471_c101_cmon_rt_hom {M N : CMon} (f : M ~{CMon}~> N) :
   cmon_map (fmap[EM_to_CMon ◯ CMon_K] f) = cmon_map f := eq_refl.
 
-(* C102: ...and the sum comes back as a + (b + 0)... *)
+(* 相关说明。 （已译） *)
 Example p471_c102_cmon_rt_plus_fun (M : CMon) (a b : cmon_setoid M) :
   cmon_plus (fobj[EM_to_CMon ◯ CMon_K] M) a b
     = cmon_plus M a (cmon_plus M b (cmon_zero M)) := eq_refl.
@@ -653,7 +653,7 @@ Fail Example p471_r22_cmon_rt_plus (M : CMon) :
 Fail Example p471_r23_cmon_rt_obj (M : CMon) :
   fobj[EM_to_CMon ◯ CMon_K] M = M := eq_refl.
 
-(* C104: the algebra round trip keeps the carrier... *)
+(* 相关说明。 （已译） *)
 Example p471_c104_em_cmon_rt_carrier (x : BagAlg) :
   `1 (fobj[CMon_K ◯ EM_to_CMon] x) = `1 x := eq_refl.
 
@@ -673,13 +673,13 @@ Fail Example p471_r25_cmon_functor : EM_to_CMon ◯ CMon_K = Id[CMon]
 Fail Example p471_r26_cmon_functor_b : CMon_K ◯ EM_to_CMon = Id[BagAlg]
   := eq_refl.
 
-(* C106: the components of [iso_to_from] are identities... *)
+(* 相关说明。 （已译） *)
 Example p471_c106_cmon_to_from_component (x : BagAlg) :
   (t_alg_hom[to (`1 (iso_to_from CMon_EM_iso) x)],
    t_alg_hom[from (`1 (iso_to_from CMon_EM_iso) x)])
     = (@setoid_morphism_id (`1 x), @setoid_morphism_id (`1 x)) := eq_refl.
 
-(* C107: ...and so are those of [iso_from_to]. *)
+(* 相关说明。 （已译） *)
 Example p471_c107_cmon_from_to_component (M : CMon) :
   (cmon_map (to (`1 (iso_from_to CMon_EM_iso) M)),
    cmon_map (from (`1 (iso_from_to CMon_EM_iso) M)))
@@ -694,7 +694,7 @@ Example p471_c108_balg_prop (x : BagAlg) (a b : `1 x) :
         (Datatypes.cons b Datatypes.nil) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The guard: every constant of the targets *)
+(* * ** The guard: every 常值 targets （已译） *)
 
 Check @Category.Instance.Mon.Free.free_mon_extend_pointwise.
 Check @Category.Instance.Mon.Free.free_mon_hom_iso.

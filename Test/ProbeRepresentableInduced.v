@@ -37,18 +37,17 @@ Constraint uo < uh.
 
 Context (C : Category@{uo uh uh}).
 
-(* Control 1: the curried hom-functor itself is formable here — so what the
-   negatives reject is the fullness/faithfulness packaging, not [Curried_Hom]
-   and not the [[C, Sets]] target. *)
+(* Control 1: 柯里化的 hom-函子 itself formable here — so what the
+ negatives reject fullness/faithfulness packaging, not [Curried_Hom]
+ not [[C, Sets]] target. （已译） *)
 Check (Curried_Hom C).
 
-(* Control 2: so is the [Representable] class, which is what makes the
-   restriction worth escaping — the class is more general than its donors. *)
+(* 相关说明。 （已译） *)
 Check (fun F : C ⟶ Sets => Representable F).
 
-(* Controls 3-6: and so is the whole of Functor/Representable.v's
-   development — the induced arrow, its uniqueness packaging, the
-   isomorphism upgrade, and the tautological representation. *)
+(* Controls 3-6: so whole Functor/Representable.v's
+ development — induced arrow, uniqueness packaging, the
+ 同构 upgrade, tautological representation. （已译） *)
 Check (fun (K K' : C ⟶ Sets) (R : Representable K) (R' : Representable K')
            (tau : K ⟹ K') => repr_induced R R' tau).
 Check (fun (K K' : C ⟶ Sets) (R : Representable K) (R' : Representable K')
@@ -63,19 +62,17 @@ Fail Check (Yoneda_Faithful C).
 (* Negative 2: neither is fullness... *)
 Fail Check (Yoneda_Full C).
 
-(* ...and negative 3, therefore neither is the packaged hom-bijection the
-   issue suggested routing through. *)
+(* 相关说明。 （已译） *)
 Fail Check (fun c d : C => Yoneda_Embedding' C c d).
 
-(* Negative 4: the pin propagates to [repr_pair_iso], which consumes
-   [Yoneda_Embedding'] — so it is the DONORS' restriction and not something
-   Functor/Hom/Yoneda/Iso.v introduces. *)
+(* Negative 4: pin propagates [repr_pair_iso], 所消耗
+ [Yoneda_Embedding'] — so it DONORS' restriction not something
+ Functor/Hom/Yoneda/Iso.v introduces. （已译） *)
 Fail Check (fun (F : C ⟶ Sets) (c v : C)
                 (b1 : [Hom c,─] ≅[Fun] F) (b2 : [Hom v,─] ≅[Fun] F) =>
               repr_pair_iso b1 b2).
 
-(* Negative 5: ...and thence to Functor/Representable/Functorial.v's
-   cross-link, whose printed binder does NOT show the identification. *)
+(* 相关说明。 （已译） *)
 Fail Check (repr_pair_iso_from_is_induced C).
 
 (*
@@ -134,8 +131,7 @@ Context {F : C ⟶ Sets}.
 Context {c v : C}.
 Context (b1 : [Hom c,─] ≅[Fun] F) (b2 : [Hom v,─] ≅[Fun] F).
 
-(* Control 10: the issue's suggested route and the route taken produce the SAME
-   TERM — [repr_induced] IS the Yoneda transpose, by [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Definition probe_yoneda_transpose (K K' : C ⟶ Sets)
   (R : Representable K) (R' : Representable K') (tau : K ⟹ K') :
   @two_sided_inverse _ _ _ _
@@ -143,8 +139,8 @@ Definition probe_yoneda_transpose (K K' : C ⟶ Sets)
     (repr_transport R R' tau)
   = repr_induced R R' tau := eq_refl.
 
-(* Control 11: the isomorphism [univ_property_unique_up_to_unique_iso]
-   produces IS [repr_pair_iso], on the nose. *)
+(* Control 11: 同构 [univ_property_unique_up_to_unique_iso]
+ produces IS [repr_pair_iso], nose. （已译） *)
 Definition probe_up_unique_obj (P : C → Type) (eqP : ∀ x, Setoid (P x))
   (H : IsUniversalProperty C P eqP) (x y : C) (t : P x) (s : P y) :
   unique_obj (univ_property_unique_up_to_unique_iso C P eqP H x y t s)
@@ -167,8 +163,7 @@ Section ConversionWitness.
 
 Notation BNat := (Deloop Nat_Plus).
 
-(* Control 12: against the tautological representations the induced arrow
-   computes on the nose. *)
+(* 相关说明。 （已译） *)
 Definition probe_wit_computes (n : nat) :
   repr_induced (Hom_Representable (C:=BNat) ttt)
                (Hom_Representable (C:=BNat) ttt) (wit_tau n) = n := eq_refl.

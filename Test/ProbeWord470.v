@@ -36,7 +36,7 @@ Fail Check p470_absent_name.
 (* ------------------------------------------------------------------------ *)
 (** ** Theory/Algebra/Semigroup.v *)
 
-(* C1: forgetting the unit, then the multiplication, forgets both. *)
+(* 相关说明。 （已译） *)
 Example p470_c1_mon_smgrp_obj {C : Category} `{M : @Monoidal C}
   (X : Mon C) : fobj[Smgrp_Forget] (fobj[Mon_Smgrp] X) = `1 X := eq_refl.
 
@@ -46,7 +46,7 @@ Example p470_c2_mon_smgrp_map {C : Category} `{M : @Monoidal C}
   fmap[Smgrp_Forget] (fmap[Mon_Smgrp] f) = `1 f := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Smgrp.v: words and juxtaposition *)
+(* 相关说明。 （已译） *)
 
 (* C3: the carrier of F X is W X. *)
 Example p470_c3_free_carrier@{o so} (X : SetoidObject@{o o}) :
@@ -78,8 +78,7 @@ Fail Example p470_r1_assoc_variable@{o} (X : SetoidObject@{o o})
   (w v u : PWord@{o} X) :
   pwapp (pwapp w v) u = pwapp w (pwapp v u) := eq_refl.
 
-(* C8: a setoid, a record with primitive projections, converts with its
-   rebuilt record. *)
+(* 相关说明。 （已译） *)
 Example p470_c8_setoid_eta@{o} (X : SetoidObject@{o o}) :
   X = {| carrier := carrier X; is_setoid := is_setoid X |} := eq_refl.
 
@@ -104,9 +103,9 @@ Fail Example p470_r3_prod_eta@{o} (X : SetoidObject@{o o}) :
   (fun p : prod X X => (fst p, snd p)) = (fun p : prod X X => p) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Smgrp.v: the adjunction Set ⇀ Smgrp *)
+(* * ** Instance/Smgrp.v: 伴随 Set ⇀ Smgrp （已译） *)
 
-(* C11: the factorization of h through η_X is the extension of h. *)
+(* 相关说明。 （已译） *)
 Example p470_c11_universal_obj@{o so} (X : SetoidObject@{o o})
   (A : SmgrpSets@{o so}) (h : X ~{Sets@{o so}}~> fobj[Sg_Forget@{o so}] A) :
   unique_obj (sg_insert_universal@{o so} X A h) = sg_extend@{o so} h
@@ -118,12 +117,12 @@ Example p470_c68_ua_obj@{o so +} (X : SetoidObject@{o o}) :
   @arrow_obj Sets@{o so} SmgrpSets@{o so} X Sg_Forget@{o so}
     (sg_insert_UA X) = FreeSg@{o so} X := eq_refl.
 
-(* C69: ...and the insertion x ↦ ⟨x⟩ as its arrow. *)
+(* C69: ...and 嵌入 x ↦ ⟨x⟩ arrow. （已译） *)
 Example p470_c69_ua_arrow@{o so +} (X : SetoidObject@{o o}) :
   @arrow Sets@{o so} SmgrpSets@{o so} X Sg_Forget@{o so}
     (sg_insert_UA X) = sg_insert@{o so} X := eq_refl.
 
-(* C12: the unit of the adjunction is the insertion x ↦ ⟨x⟩. *)
+(* C12: unit 伴随 嵌入 x ↦ ⟨x⟩. （已译） *)
 Example p470_c12_unit@{o so} (X : SetoidObject@{o o}) :
   @unit _ _ _ _ Sg_adj@{o so} X = sg_insert@{o so} X := eq_refl.
 
@@ -159,8 +158,7 @@ Fail Example p470_r4_counit_right@{o so} (S : SmgrpSets@{o so})
     (existT (fun n => Tup (sg_ob S) n) 2%nat (s1, (s2, s3)))
   = sg_mul S s1 (sg_mul S s2 s3) := eq_refl.
 
-(* C17: a semigroup map out of F X is the fold of its values on the
-   letters, on the nose at a one-letter word. *)
+(* 相关说明。 （已译） *)
 Example p470_c17_unique_letter@{o so} (X : SetoidObject@{o o})
   (A : SmgrpSets@{o so}) (g : FreeSg@{o so} X ~{SmgrpSets@{o so}}~> A)
   (x : X) :
@@ -181,7 +179,7 @@ Fail Example p470_r5_unique_variable@{o so} (X : SetoidObject@{o o})
   sg_fun g w = pwfold (fun y => sg_fun g (letter y)) w := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Smgrp/Word.v: Proposition 1 *)
+(* 相关说明。 （已译） *)
 
 (* C19: W X is the setoid of words. *)
 Example p470_c19_W_obj@{o so} (X : SetoidObject@{o o}) :
@@ -242,7 +240,7 @@ Fail Example p470_r6_monads_eq@{o so} :
   WordMonad_direct@{o so} = WordMonad@{o so} := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Smgrp/Word.v: Proposition 2 *)
+(* 相关说明。 （已译） *)
 
 (* C29: ν_n of an algebra is h at (n; t). *)
 Example p470_c29_alg_NAry_at@{o so} {X : SetoidObject@{o o}}
@@ -275,7 +273,7 @@ Fail Example p470_r7_alg_rt_map@{o so} {X : SetoidObject@{o o}}
     = t_alg[α] := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Smgrp/Word.v: Proposition 2 as a category *)
+(* * ** Instance/Smgrp/Word.v: Proposition 2 范畴 （已译） *)
 
 (* C33: the leg [to] of [WSys_EM_iso]. *)
 Example p470_c33_wsys_iso_to@{o so c} :
@@ -297,7 +295,7 @@ Example p470_c36_em_to_wsys_nu@{o so} (x : WordAlg@{o so}) (n : nat)
   nu (ws_nu (fobj[EM_to_WSys@{o so}] x)) n t = t_alg[`2 x] (existT _ n t)
   := eq_refl.
 
-(* C37: the system round trip keeps the set... *)
+(* 相关说明。 （已译） *)
 Example p470_c37_wsys_rt_set@{o so} (A : WSys@{o so}) :
   ws_set (fobj[EM_to_WSys@{o so} ◯ WSys_to_EM@{o so}] A) = ws_set A
   := eq_refl.
@@ -317,17 +315,17 @@ Example p470_c40_wsys_rt_hom@{o so} {A B : WSys@{o so}}
   (f : A ~{WSys@{o so}}~> B) :
   `1 (fmap[EM_to_WSys@{o so} ◯ WSys_to_EM@{o so}] f) = `1 f := eq_refl.
 
-(* C41: the algebra round trip keeps the carrier... *)
+(* 相关说明。 （已译） *)
 Example p470_c41_em_wsys_rt_carrier@{o so} (x : WordAlg@{o so}) :
   `1 (fobj[WSys_to_EM@{o so} ◯ EM_to_WSys@{o so}] x) = `1 x := eq_refl.
 
-(* C42: ...and the map of a morphism. *)
+(* C42: ...and map 态射. （已译） *)
 Example p470_c42_em_wsys_rt_alg_hom@{o so} {x y : WordAlg@{o so}}
   (f : x ~{WordAlg@{o so}}~> y) :
   t_alg_hom[fmap[WSys_to_EM@{o so} ◯ EM_to_WSys@{o so}] f] = t_alg_hom[f]
   := eq_refl.
 
-(* C43: the components of [iso_to_from] are identities. *)
+(* 相关说明。 （已译） *)
 Example p470_c43_wsys_to_from_component@{o so c} (x : WordAlg@{o so}) :
   (t_alg_hom[to (`1 (iso_to_from WSys_EM_iso@{o so c}) x)],
    t_alg_hom[from (`1 (iso_to_from WSys_EM_iso@{o so c}) x)])
@@ -364,7 +362,7 @@ Fail Example p470_r12_wsys_functor@{o so} :
   EM_to_WSys@{o so} ◯ WSys_to_EM@{o so} = Id[WSys@{o so}] := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Smgrp/Word.v: the Corollary *)
+(* 相关说明。 （已译） *)
 
 (* C45: in any algebra ν3 is the iterate of ν2, up to ≈. *)
 Definition p470_c45_alg_nu3_equiv@{o so} {X : SetoidObject@{o o}}
@@ -381,7 +379,7 @@ Fail Example p470_r13_alg_nu3@{o so} {X : SetoidObject@{o o}}
     = nu2 (alg_NAry α) (nu2 (alg_NAry α) a b) c := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Instance/Smgrp/Word.v: the comparison K *)
+(* 相关说明。 （已译） *)
 
 (* C46: the leg [to] of [Smgrp_EM_iso] is K. *)
 Example p470_c46_iso_to@{o so c} :
@@ -400,7 +398,7 @@ Example p470_c49_K_alg@{o so} (A : SmgrpSets@{o so}) :
   t_alg[`2 (fobj[Sg_K@{o so}] A)]
     = fmap[Sg_Forget@{o so}] (@counit _ _ _ _ Sg_adj@{o so} A) := eq_refl.
 
-(* C50: its value is the product of the letters, bracketed to the left. *)
+(* 相关说明。 （已译） *)
 Example p470_c50_K_alg_fun@{o so} (A : SmgrpSets@{o so})
   (p : PWord@{o} (sg_ob A)) :
   t_alg[`2 (fobj[Sg_K@{o so}] A)] p = tfold1 (fun s => s) (`1 p) (`2 p)
@@ -434,13 +432,13 @@ Example p470_c55_K_system_nu@{o so} (A : SmgrpSets@{o so}) (n : nat)
   nu (ws_nu (fobj[EM_to_WSys@{o so}] (fobj[Sg_K@{o so}] A))) n t
     = tfold1 (fun s => s) n t := eq_refl.
 
-(* C56: ...and ν2 is the multiplication. *)
+(* 相关说明。 （已译） *)
 Example p470_c56_K_system_nu2@{o so} (A : SmgrpSets@{o so})
   (a b : sg_ob A) :
   nu (ws_nu (fobj[EM_to_WSys@{o so}] (fobj[Sg_K@{o so}] A))) 1%nat (a, b)
     = sg_mul A a b := eq_refl.
 
-(* C57: the semigroup round trip keeps the carrier... *)
+(* 相关说明。 （已译） *)
 Example p470_c57_sg_rt_carrier@{o so} (A : SmgrpSets@{o so}) :
   `1 (fobj[EM_to_Smgrp@{o so} ◯ Sg_K@{o so}] A) = `1 A := eq_refl.
 
@@ -448,23 +446,23 @@ Example p470_c57_sg_rt_carrier@{o so} (A : SmgrpSets@{o so}) :
 Example p470_c58_sg_rt_mul@{o so} (A : SmgrpSets@{o so}) :
   sg_mul (fobj[EM_to_Smgrp@{o so} ◯ Sg_K@{o so}] A) = sg_mul A := eq_refl.
 
-(* C59: ...and the map of a morphism. *)
+(* C59: ...and map 态射. （已译） *)
 Example p470_c59_sg_rt_hom@{o so} {A B : SmgrpSets@{o so}}
   (f : A ~{SmgrpSets@{o so}}~> B) :
   (fun a => `1 (fmap[EM_to_Smgrp@{o so} ◯ Sg_K@{o so}] f) a)
     = (fun a => `1 f a) := eq_refl.
 
-(* C60: the algebra round trip keeps the carrier... *)
+(* 相关说明。 （已译） *)
 Example p470_c60_em_rt_carrier@{o so} (x : WordAlg@{o so}) :
   `1 (fobj[Sg_K@{o so} ◯ EM_to_Smgrp@{o so}] x) = `1 x := eq_refl.
 
-(* C61: ...and the map of a morphism. *)
+(* C61: ...and map 态射. （已译） *)
 Example p470_c61_em_rt_alg_hom@{o so} {x y : WordAlg@{o so}}
   (f : x ~{WordAlg@{o so}}~> y) :
   t_alg_hom[fmap[Sg_K@{o so} ◯ EM_to_Smgrp@{o so}] f] = t_alg_hom[f]
   := eq_refl.
 
-(* C62: the components of [iso_to_from] are identities. *)
+(* 相关说明。 （已译） *)
 Example p470_c62_iso_to_from_component@{o so c} (x : WordAlg@{o so}) :
   (t_alg_hom[to (`1 (iso_to_from Smgrp_EM_iso@{o so c}) x)],
    t_alg_hom[from (`1 (iso_to_from Smgrp_EM_iso@{o so c}) x)])
@@ -477,7 +475,7 @@ Example p470_c63_iso_from_to_component@{o so c} (A : SmgrpSets@{o so}) :
    sg_fun (from (`1 (iso_from_to Smgrp_EM_iso@{o so c}) A)))
     = ((fun a : sg_ob A => a), (fun a : sg_ob A => a)) := eq_refl.
 
-(* C64: and those of the equivalence's counit. *)
+(* C64: those 等价's counit. （已译） *)
 Example p470_c64_counit_component@{o so} (x : WordAlg@{o so}) :
   (t_alg_hom[to (`1 (@equivalence_counit _ _ _
                        Smgrp_EM_equivalence@{o so}) x)],
@@ -536,8 +534,8 @@ Fail Example p470_r20_K_functor_b@{o so} :
   Sg_K@{o so} ◯ EM_to_Smgrp@{o so} = Id[WordAlg@{o so}] := eq_refl.
 
 (* C67: Theory/Equivalence.v's bridge [Equivalence_to_Cat_Iso], applied
-   to the equivalence, has the identity as the component of its
-   [iso_to_from]... *)
+ 等价, has 恒等 component its
+ [iso_to_from]... （已译） *)
 Example p470_c67_bridge_to_from@{o so +} (x : WordAlg@{o so}) :
   t_alg_hom[to (`1 (iso_to_from
                       (Equivalence_to_Cat_Iso Smgrp_EM_equivalence@{o so}))
@@ -552,7 +550,7 @@ Fail Example p470_r21_bridge_from_to@{o so +} (A : SmgrpSets@{o so}) :
     = (fun a => a) := eq_refl.
 
 (* ------------------------------------------------------------------------ *)
-(** ** The guard: every constant of the three targets *)
+(* * ** The guard: every 常值 three targets （已译） *)
 
 Check @Category.Theory.Algebra.Semigroup.Semigroup.
 Check @Category.Theory.Algebra.Semigroup.smu.

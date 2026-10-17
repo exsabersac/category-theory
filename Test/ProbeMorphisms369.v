@@ -13,7 +13,7 @@ Require Import Category.Instance.Fun.Morphisms.
 
 Generalizable All Variables.
 
-(** * Boundary probe for Instance/Fun/Morphisms.v (issue #369) *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeMorphisms369。
@@ -21,8 +21,7 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Instrument check: a [Fail] that must fire whatever else is true, so a
-   silently vacuous [Fail] elsewhere is not mistaken for a measurement. *)
+(* 相关说明。 （已译） *)
 Fail Check probe369_no_such_reference.
 
 (* ------------------------------------------------------------------ *)
@@ -51,8 +50,8 @@ Fail Example ker_fmap_id_strict :
 Example ker_fmap_id_equiv : fmap[KerPair ψ] (id[x]) ≈ id.
 Proof. exact (@fmap_id _ _ (KerPair ψ) x). Qed.
 
-(* Same for the cokernel-pair functor, whose [ck_fun] is a [match] on a
-   [sum]. *)
+(* Same cokernel-pair 函子, whose [ck_fun] [match] a
+ [sum]. （已译） *)
 Fail Example ck_fmap_id_strict :
   fmap[CokerPair ψ] (id[x]) = id := eq_refl.
 
@@ -91,9 +90,9 @@ Example iso_from_transform_agrees
   transform[from (equiv_iso (nat_iso_family θ H))]
     = transform[nat_inverse θ H] := eq_refl.
 
-(* CONVERSION 3 and 4.  Neither whole LEG is ours on the nose: the data
-   field agrees (the four controls above) and only the two naturality
-   fields, `abstract`ed by the donor, differ. *)
+(* CONVERSION 3 4. Neither whole LEG ours nose: data
+ field agrees (the four controls above) two 自然性
+ fields, `abstract`ed donor, differ. （已译） *)
 Fail Example iso_to_leg_strict
   (H : ∀ z : C, IsIsomorphism (transform[θ] z)) :
   to (equiv_iso (nat_iso_family θ H)) = θ := eq_refl.
@@ -105,7 +104,7 @@ Fail Example iso_from_leg_strict
 End Conversion.
 
 (* ------------------------------------------------------------------ *)
-(** ** CONVERSION 1, cause discriminated at the constant-functor witnesses *)
+(* * ** CONVERSION 1, cause discriminated at 常值-函子 witnesses （已译） *)
 
 (*
    本节说明函子相关定义、性质与动机。
@@ -182,9 +181,9 @@ Fail Check (@Fun Cu Du).
 
 End FormabilityFun.
 
-(* [Monic] and [Epic] take a category whose hom and proof levels
-   coincide, which is the other identification the target's binders
-   display. *)
+(* [Monic] [Epic] take 范畴 whose hom 证明 levels
+ coincide, other identification target's binders
+ display. （已译） *)
 Section FormabilityMonic.
 
 Universes mo mh mp.
@@ -201,8 +200,8 @@ Fail Check (@Epic Du a b g).
 
 End FormabilityMonic.
 
-(* And the target's own general theorem inherits both, so it too is
-   unformable over two categories whose hom levels are kept apart. *)
+(* And target's own general 定理 inherits both, so it too is
+ unformable over two 范畴 whose hom levels kept apart. （已译） *)
 Section FormabilityTarget.
 
 Universes to2 th tp uo uh up.

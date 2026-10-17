@@ -36,27 +36,25 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe421_absent_name.
 
-(** ** A: the notion is the op-dual in its fields, not as a type *)
+(* 相关说明。 （已译） *)
 
 Section OpDual.
 
 Context {C : Category} {x y : C} (f g : x ~> y).
 
-(* control: a common left inverse in C IS a common section in C^op, field
-   for field *)
+(* 相关说明。 （已译） *)
 Example p421_field_converts (s : y ~> x) (H : s ∘ f ≈ id) :
   f ∘[C^op] s ≈ id := H.
 
-(* controls: the pair repackages both ways and round-trips at [eq_refl] *)
+(* 相关说明。 （已译） *)
 Check (@corefl_op_round C x y f g).
 Check (@op_corefl_round C x y f g).
 
-(* N1 CONVERSION: the record types are distinct *)
+(* 相关说明。 （已译） *)
 Fail Example p421_pair_is_op :
   CoreflexivePair f g = @ReflexivePair (C^op) y x f g := eq_refl.
 
-(* N2 CONVERSION: so are the classes — the existential bodies are
-   [IsEqualizer] and [IsCoequalizer] *)
+(* 相关说明。 （已译） *)
 Fail Example p421_class_is_op :
   HasCoreflexiveEqualizers C = HasReflexiveCoequalizers (C^op) := eq_refl.
 
@@ -68,12 +66,12 @@ Check (@op_HasReflexiveCoequalizers_of_Coreflexive C).
 Fail Example p421_class_is_HasEqualizers :
   HasCoreflexiveEqualizers C = HasEqualizers C := eq_refl.
 
-(* control: the inclusion the other way is an instance *)
+(* control: 含入 other way instance （已译） *)
 Check (fun H : @HasEqualizers C => @HasEqualizers_HasCoreflexiveEqualizers C H).
 
 End OpDual.
 
-(** ** B: the identity index lives in the FULL arrow family only *)
+(* * ** B: 恒等 index lives FULL arrow family only （已译） *)
 
 Section GenFamily.
 
@@ -84,9 +82,7 @@ Context {I : Type} {idx_dom idx_cod : I → J}
   (Hgen : Generates idx_arr).
 Context (idx_id : J → I).
 
-(* N4 TYPING: at an abstract generating family, the projection at a
-   chosen index does not land in [F x] — its codomain is
-   [idx_cod (idx_id x)], with no definitional tie to [x] *)
+(* 相关说明。 （已译） *)
 Fail Definition p421_gen_proj_at_x (x : J) :
   @pe_gen_product C HP J F I idx_cod ~> F x :=
   @pe_gen_proj C HP J F I idx_cod (idx_id x).
@@ -104,37 +100,37 @@ Definition p421_gen_proj_at_cod (x : J) :
 Definition p421_trap_gen_proj_at_x (x : J) :
   pe_gen_product HP F ~> F x := pe_gen_proj HP F (idx_id x).
 
-(* control: at the full index the tie is definitional *)
+(* 相关说明。 （已译） *)
 Definition p421_full_proj_at_x (x : J) :
   pe_arrow_product HP F ~> F x :=
   pe_arrow_proj HP F (mk_arrow (@id J x)).
 
 Check (@id_index_cod J).
 
-(* readback: the identity index's codomain is [x] on the nose *)
+(* readback: 恒等 index's codomain [x] nose （已译） *)
 Example p421_id_index (x : J) : aix_cod (mk_arrow (@id J x)) = x := eq_refl.
 
 End GenFamily.
 
-(** ** C: the Sets converse needs properness *)
+(* 相关说明。 （已译） *)
 
 Section SetsConverse.
 
 Context {X Y : SetoidObject} (f g : X ~{Sets}~> Y).
 
-(* N5 TYPING: the choice function carried by [diagonal_in_image] is not by
-   itself a Sets morphism — the [proper_morphism] field is missing *)
+(* N5 TYPING: choice function carried [diagonal_in_image] not by
+ itself Sets 态射 — [proper_morphism] field missing （已译） *)
 Fail Definition p421_bare_section (D : diagonal_in_image f g) : Y ~{Sets}~> X :=
   {| morphism := fun b => `1 (D b) |}.
 
-(* control: with the properness hypothesis it is *)
+(* control: properness 假设 it is （已译） *)
 Check (fun (D : diagonal_in_image f g)
            (Hp : ∀ b b' : Y, b ≈ b' → `1 (D b) ≈ `1 (D b')) =>
          diagonal_section f g D Hp).
 
-(* control: the IMAGE-level reading needs no such hypothesis in either
-   direction — the image setoid compares codomain components only, so the
-   bare choice function is proper there *)
+(* control: IMAGE-level reading needs no such 假设 either
+ direction — image setoid compares codomain components only, so the
+ bare choice function proper there （已译） *)
 Check (fun D : diagonal_in_image f g =>
          fst (diagonal_in_image_iff_through_image f g) D).
 Check (fun (d : Y ~{Sets}~> Sets_Image (f △ g))

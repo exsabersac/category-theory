@@ -20,35 +20,30 @@ Require Import Coq.QArith.QArith.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The extension's computed value *)
+(* 相关说明。 （已译） *)
 
 (* Positive control: the claim itself. *)
 Example frac_extend_half_control :
   rig_map (frac_extend Int_Dom Q_Field ZtoQ_Dom)
     (mk_frac Int_Dom 1%Z 2%Z two_nonzero) = (1 # 2)%Q := eq_refl.
 
-(* Negative 1 — a wrong value.  Stripped of [Fail] this reports
-   "cannot unify" between the extension's value and [1 # 3]. *)
+(* 相关说明。 （已译） *)
 Fail Example frac_extend_half_wrong :
   rig_map (frac_extend Int_Dom Q_Field ZtoQ_Dom)
     (mk_frac Int_Dom 1%Z 2%Z two_nonzero) = (1 # 3)%Q := eq_refl.
 
-(* The two controls that make the next negative a strength boundary
-   rather than a second wrong value: [2 # 4] is [Qeq]-equal to the true
-   answer and is not Leibniz-equal to it. *)
+(* 相关说明。 （已译） *)
 Example q_probe_qeq : ((2 # 4) == (1 # 2))%Q := eq_refl.
 
 Example q_probe_not_leibniz : (2 # 4)%Q = (1 # 2)%Q → False.
 Proof. discriminate. Qed.
 
-(* Negative 2 — a [Qeq]-equal but not Leibniz-equal value.  Stripped of
-   [Fail] this reports "cannot unify" between the extension's value and
-   [2 # 4]. *)
+(* 相关说明。 （已译） *)
 Fail Example frac_extend_half_only_up_to_Qeq :
   rig_map (frac_extend Int_Dom Q_Field ZtoQ_Dom)
     (mk_frac Int_Dom 1%Z 2%Z two_nonzero) = (2 # 4)%Q := eq_refl.
 
-(** ** The two forgetful functors into [IntDom] *)
+(* * ** The two forgetful 函子 [IntDom] （已译） *)
 
 (* Positive control: agreement up to ≈ on morphisms. *)
 Example field_intdom_agrees_up_to_equiv
@@ -69,15 +64,15 @@ Fail Example field_intdom_agrees_strictly
   fmap[Field_IntDom stab] (fmap[Incl Field StableField_Sub] f)
     = fmap[StableField_IntDom] f := eq_refl.
 
-(* Positive control: the SAME shape of comparison, one functor along,
-   IS strict — so the negative above is not a generic fact about
-   proof-carrying records. *)
+(* Positive control: SAME shape comparison, one 函子 along,
+ IS strict — so negative above not generic fact about
+ 证明-carrying records. （已译） *)
 Example intdom_dom_agrees_strictly (F K : StableField)
   (f : F ~{StableField}~> K) :
   fmap[IntDom_Dom] (fmap[StableField_IntDom] f) = fmap[StableField_Dom] f
   := eq_refl.
 
-(** ** Reduction mod 2 lives in [Dom] and not in [IntDom] *)
+(* 相关说明。 （已译） *)
 
 (* Positive control. *)
 Example ZtoF2_is_a_Dom_morphism :

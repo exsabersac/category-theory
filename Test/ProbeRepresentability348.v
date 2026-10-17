@@ -40,14 +40,14 @@ Example ctl_obj (W : UniversalArrow c F) :
 Example ctl_arrow (W : UniversalArrow c F) :
   @arrow C D c F (ua_of_aua (aua_of_ua W)) = @arrow C D c F W := eq_refl.
 
-(* CONTROL: the other round trip returns the arrow on the nose. *)
+(* 相关说明。 （已译） *)
 Example ctl_aua_arrow {a : D} (W : AUniversalArrow c F a) :
   @universal_arrow C D c F a (aua_of_ua (ua_of_aua W))
     = @universal_arrow C D c F a W := eq_refl.
 
-(* NEGATIVE 1 (CONVERSION).  [ua_of_aua] rebuilds the comma category's
-   [Initial] record from the UMP, so [arrow_initial] is a different term
-   even though both projections above reduce. *)
+(* NEGATIVE 1 (CONVERSION). [ua_of_aua] rebuilds comma 范畴's
+ [Initial] record UMP, so [arrow_initial] different term
+ even though both projections above reduce. （已译） *)
 Fail Definition neg_ua_round (W : UniversalArrow c F) :
   ua_of_aua (aua_of_ua W) = W := eq_refl.
 
@@ -61,19 +61,17 @@ Context {F : C ⟶ D}.
 Context {G : D ⟶ C}.
 Context (A : F ⊣ G).
 
-(* CONTROL: the residue is EXACTLY [fmap[G] id ∘ unit] -- exhibited, so
-   the negative below is attributable to that term and to nothing else. *)
+(* 相关说明。 （已译） *)
 Example ctl_residue (c : C) :
   @arrow C D c G (universal_of_representable G (adj_representable A) c)
     = fmap[G] (id{D}) ∘ @unit D C F G A c := eq_refl.
 
-(* CONTROL: and it IS the unit up to [≈], so the negative is about
-   conversion and not about the mathematics. *)
+(* 相关说明。 （已译） *)
 Example ctl_residue_equiv (c : C) :
   @arrow C D c G (universal_of_representable G (adj_representable A) c)
     ≈ @unit D C F G A c := representable_roundtrip_arrow A c.
 
-(* CONTROL: the object half of the same round trip DOES return. *)
+(* CONTROL: 对象 half same round trip DOES return. （已译） *)
 Example ctl_roundtrip_obj (c : C) :
   fobj[left_adjoint_of_representable G (adj_representable A)] c = F c
   := eq_refl.
@@ -85,8 +83,8 @@ Fail Definition neg_roundtrip_arrow (c : C) :
 
 End ProbeResidue.
 
-(* Names the negatives depend on must also appear OUTSIDE a [Fail], or a
-   rename would leave this file compiling and the guard vacuously green. *)
+(* Names negatives depend must appear OUTSIDE [Fail], a
+ rename would leave file 编译 guard vacuously green. （已译） *)
 Check @ua_of_aua.
 Check @aua_of_ua.
 Check @universal_of_representable.

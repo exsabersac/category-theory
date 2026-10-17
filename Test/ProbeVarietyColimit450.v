@@ -51,11 +51,11 @@ Generalizable All Variables.
 
 Module UA := Category.Instance.Comp.UniversalAlgebra.
 
-(** ** Instrument: the refutation keyword is live *)
+(* 相关说明。 （已译） *)
 
 Fail Check probe450_variety_absent_name.
 
-(** ** A. The headlines at their stated types, and the route by [eq_refl] *)
+(* 相关说明。 （已译） *)
 
 Section Headlines.
 
@@ -80,7 +80,7 @@ Example p450v_colim_is_GAFT (J : Category) :
            (Continuous_PreservesImageLimit Diagonal_continuous)
            (@Diagonal_SVariety_solution_set S E J) := eq_refl.
 
-(* The index IS the type of cocone congruences on the term algebra. *)
+(* 相关说明。 （已译） *)
 Example p450v_index (J : Category) (D : J ⟶ SVariety E) :
   sol_index (Diagonal_SVariety_solution_set E D) = VCongIdx E D := eq_refl.
 
@@ -88,8 +88,7 @@ Example p450v_member (J : Category) (D : J ⟶ SVariety E)
   (i : VCongIdx E D) :
   sol_obj (Diagonal_SVariety_solution_set E D) i = VQ_alg E D i := eq_refl.
 
-(* Exercise 4's coequalizers are Structure/Limit/Finite.v's bridges over
-   the AFT colimits. *)
+(* 相关说明。 （已译） *)
 Example p450v_coequalizers_bridge :
   SVariety_coequalizers_via_GAFT E
     = HasCoequalizers_of_HasEqualizers_op
@@ -98,7 +97,7 @@ Example p450v_coequalizers_bridge :
               (Cocomplete_FinitelyCocomplete
                  (SVariety_Cocomplete_via_GAFT E)))) := eq_refl.
 
-(* Mac Lane's own route to the free algebra, at the congruence index. *)
+(* 相关说明。 （已译） *)
 Example p450v_free_is_GAFT :
   Free_Variety_via_GAFT E
     = GAFT (SVariety_Forget E) (SVariety_Complete E)
@@ -108,14 +107,14 @@ Example p450v_free_is_GAFT :
 Example p450v_free_index (X : Sets) :
   sol_index (SVariety_Forget_solution_set E X) = FCongIdx E X := eq_refl.
 
-(** ** N1 (CONVERSION): the AFT initial object's carrier does not reduce *)
+(* * ** N1 (CONVERSION): AFT 始对象's carrier does not reduce （已译） *)
 
-(* CONTROL: the initial algebra IS the free algebra on the empty set... *)
+(* 相关说明。 （已译） *)
 Example p450v_initial_is_free :
   @initial_obj (SVariety E) (SVariety_Initial E)
     = Free_Variety E (@initial_obj Sets _) := eq_refl.
 
-(* CONTROL: ...and its carrier IS the closed terms. *)
+(* 相关说明。 （已译） *)
 Example p450v_initial_carrier :
   carrier (soa_obj (`1 (@initial_obj (SVariety E) (SVariety_Initial E))))
     = UA.Tree S False := eq_refl.
@@ -130,16 +129,16 @@ Fail Example p450v_n1_aft_initial_carrier :
                                      (SVariety_Initial_via_GAFT E))))
     = UA.Tree S False := eq_refl.
 
-(** ** N2 (CONVERSION): the free algebra from [GAFT] is `≈`, no more *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the agreement that holds. *)
+(* 相关说明。 （已译） *)
 Check (Free_Variety_via_GAFT_agrees E :
   projT1 (Free_Variety_via_GAFT E) ≈ Free_Variety_Functor E).
 
 Fail Example p450v_n2_aft_free_is_free :
   projT1 (Free_Variety_via_GAFT E) = Free_Variety_Functor E := eq_refl.
 
-(** ** IX.1 Exercise 2: emptiness, and the category is never empty *)
+(* * ** IX.1 Exercise 2: emptiness, 范畴 never empty （已译） *)
 
 Check (SVariety_initial_empty_iff E :
   (carrier (soa_obj (`1 (@initial_obj (SVariety E) (SVariety_Initial E))))
@@ -180,18 +179,16 @@ Definition p450v_colim_fin2 {S : UA.OpSignature} (E : UA.EqSignature S) :=
 Fail Definition p450v_n3_two_discrete {S : UA.OpSignature}
   (E : UA.EqSignature S) := SVariety_colim_via_GAFT E Two_Discrete.
 
-(** ** N4 (UNIVERSE): at a [Set] carrier the solution set elaborates and
-    [GAFT] does not *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the diagonal solution set with the shape's homs, and hence the
-   algebras' carrier, at [Set]. *)
+(* 相关说明。 （已译） *)
 Definition p450v_sols_at_set {S : UA.OpSignature} (E : UA.EqSignature S)
   (J : Category@{Set Set Set}) (D : J ⟶ SVariety E) :=
   Diagonal_SVariety_solution_set E D.
 
-(* CONTROL: [GAFT] at the same diagonal with every argument but the
-   solution set, so that neither completeness nor continuity is what a
-   [Set] carrier refuses. *)
+(* CONTROL: [GAFT] at same diagonal every 论元 but the
+ solution set, so neither completeness nor continuity what a
+ [Set] carrier refuses. （已译） *)
 Definition p450v_gaft_partial_at_set {S : UA.OpSignature}
   (E : UA.EqSignature S) (J : Category@{Set Set Set}) :=
   GAFT (@Diagonal (SVariety E) J) (SVariety_Complete E)
@@ -201,9 +198,9 @@ Fail Definition p450v_n4_colim_at_set {S : UA.OpSignature}
   (E : UA.EqSignature S) (J : Category@{Set Set Set}) :=
   SVariety_colim_via_GAFT E J.
 
-(** ** N5 (UNIVERSE): [GAFT] refuses the spanning solution set *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the same call at the congruence-indexed family. *)
+(* 相关说明。 （已译） *)
 Definition p450v_gaft_congruences {S : UA.OpSignature}
   (E : UA.EqSignature S) :=
   GAFT (SVariety_Forget E) (SVariety_Complete E)

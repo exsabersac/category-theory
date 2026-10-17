@@ -49,14 +49,14 @@ Monomorphic Constraint Set < big.
 Check (Int_Rig@{big big big} : RigObject@{big big big}).
 Check (Int_Ring@{big big big} : RingObject@{big big big}).
 
-(* positive control: the donor applies at the Set-level instance *)
+(* 相关说明。 （已译） *)
 Check (Rig_Forget_Mon (Int_Rig@{Set Set Set})).
 Check (Rng_Forget_Mon (Int_Ring@{Set Set Set})).
 
 (* NEGATIVE 1: the donor itself does not reach one universe up *)
 Fail Check (Rig_Forget_Mon (Int_Rig@{big big big})).
 
-(* NEGATIVE 2: and neither does the ring-level functor built from it *)
+(* NEGATIVE 2: neither does ring-level 函子 built it （已译） *)
 Fail Check (Rng_Forget_Mon (Int_Ring@{big big big})).
 
 (*
@@ -100,7 +100,7 @@ Fail Check (fun (R : RingObject) (M : MonSets) (S : RingObject)
                 : rig_map (mring_extend phi psi Hcomm)
                     (rig_one (MonoidRing R M)) = rig_one S).
 
-(* ...and both DO hold up to [≈], which is what the file claims *)
+(* 相关说明。 （已译） *)
 Check (fun (R : RingObject) (M : MonSets) (S : RingObject)
            (phi : R ~{Rng}~> S) (psi : M ~{MonSets}~> Rng_Forget_Mon S)
            (Hcomm : MRComm phi psi) =>
@@ -111,10 +111,7 @@ Check (fun (R : RingObject) (M : MonSets) (S : RingObject)
            (Hcomm : MRComm phi psi) =>
          rig_map_one (mring_extend phi psi Hcomm)).
 
-(** * 5-6: the same seam in the tensor algebra
-
-    Instance/Vect/TensorAlgebra.v makes the identical claim for
-    [tensor_extend], for the identical reason. *)
+(* 相关说明。 （已译） *)
 
 Section TensorStrictness.
 

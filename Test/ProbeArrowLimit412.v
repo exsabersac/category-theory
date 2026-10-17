@@ -19,7 +19,7 @@ Require Import Category.Instance.Coq.
 
 Generalizable All Variables.
 
-(** * Probe: the measured boundaries of Construction/Arrow/Limit.v *)
+(* 相关说明。 （已译） *)
 
 (*
    本文件为测试：ProbeArrowLimit412。
@@ -52,14 +52,14 @@ Check @IsLimitCone.
 Check @Id_PreservesLimitCone.
 Check @Arrow_Complete.
 
-(** ** N1, N2: the records behind the on-the-nose readbacks *)
+(* 相关说明。 （已译） *)
 
 Section Records.
 
 Context {A B C : Category} {S : A ⟶ C} {T : B ⟶ C} {J : Category}.
 Context (K : J ⟶ (S ↓ T)) (HT : PreservesLimitCone (comma_proj2 ◯ K) T).
 
-(* Controls: the lift's image has [N]'s apex and legs on the nose. *)
+(* 相关说明。 （已译） *)
 Example probe412_ctrl_apex (N : Cone (comma_proj ◯ K)) (HN : IsLimitCone N) :
   vertex_obj[FCone comma_proj (comma_lift_cone K HT N HN)] = vertex_obj[N]
   := eq_refl.
@@ -83,8 +83,8 @@ Example probe412_ctrl_fmap :
 (* N2: CONVERSION — not as records. *)
 Fail Example probe412_n2 : Snd ◯ (comma_proj ◯ K) = comma_proj2 ◯ K := eq_refl.
 
-(* Controls for the DOMAIN side, which the target's NOT DELIVERED paragraph
-   cites: the two domain-diagram functors also agree on both actions. *)
+(* Controls DOMAIN side, target's NOT DELIVERED paragraph
+ cites: two domain-diagram 函子 agree both actions. （已译） *)
 Example probe412_ctrl_fobj1 :
   fobj[Fst ◯ (comma_proj ◯ K)] = fobj[comma_proj1 ◯ K] := eq_refl.
 
@@ -93,7 +93,7 @@ Example probe412_ctrl_fmap1 :
 
 End Records.
 
-(** ** N3: the hypothesis is on the codomain side *)
+(* * ** N3: 假设 codomain side （已译） *)
 
 Section Handedness.
 
@@ -110,8 +110,7 @@ Fail Check (comma_proj_CreatesLimit K HS).
 
 End Handedness.
 
-(** ** N4: the universe boundary, with the comma, the diagram and a cone as
-       controls *)
+(* 相关说明。 （已译） *)
 
 Section UniverseBoundary.
 
@@ -137,7 +136,7 @@ Fail Check (@comma_proj_CreatesLimit Au Au Cu Su Tu Ju K).
 
 End UniverseBoundary.
 
-(* The comma category itself keeps the two factors' hom levels apart. *)
+(* The comma 范畴 itself keeps two factors' hom levels apart. （已译） *)
 
 Section CommaApart.
 
@@ -166,7 +165,7 @@ Check (@Arrow_Complete Cu).
 
 End AboveSet.
 
-(** ** The witness: the created arrow computes *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限、始/终对象相关定义、性质与动机。
@@ -201,7 +200,7 @@ Example neg_lift_leg :
          ttt))
     = (id, id) := eq_refl.
 
-(* The created cone is limiting, through the general theorem. *)
+(* The created cone limiting, through general 定理. （已译） *)
 Definition neg_lift_limiting :
   IsLimitCone (comma_lift_cone NegK (Id_PreservesLimitCone _) NegN NegHN) :=
   creates_limiting (arrow_proj_creates_limits NegK) NegN NegHN.

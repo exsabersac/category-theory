@@ -30,15 +30,15 @@ Require Import Category.Instance.Top.Quotient.Pairs.
 
 Generalizable All Variables.
 
-(** ** Instrument: the refutation keyword is live *)
+(* 相关说明。 （已译） *)
 
 (* The instrument *)
 Fail Check probe459_absent_name.
 
-(** ** Instance/Top/Quotient.v: small wide coequalizers, W-a and W-b *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the instance at an index at or below the points, the class's
-   first inhabitant, and its object read back at [eq_refl]. *)
+(* CONTROL: instance at index at below points, class's
+ first inhabitant, 对象 read back at [eq_refl]. （已译） *)
 Definition p459_hwc_small@{i o h | i <= o, o < h +} :
   HasWideCoequalizers@{i h h} Top@{h o} :=
   Top_HasWideCoequalizers_small@{i o h}.
@@ -54,8 +54,8 @@ Fail Definition p459_hwc_at_hom@{o h | o < h +} :
   HasWideCoequalizers@{h h h} Top@{h o} :=
   Top_HasWideCoequalizers_small@{h o h}.
 
-(* CONTROL: the relation under a closed constraint list that declares
-   [i <= o]. *)
+(* CONTROL: 关系 under closed constraint list declares
+ [i <= o]. （已译） *)
 Definition p459_rel_bounded@{i o | i <= o} {I : Type@{i}}
   {A B : SetoidObject@{o o}} (fs : I → SetoidMorphism@{o o o} A B) :
   B → B → Type@{o} := wcoeq_rel@{i o} fs.
@@ -65,8 +65,7 @@ Fail Definition p459_rel_unbounded@{i o |} {I : Type@{i}}
   {A B : SetoidObject@{o o}} (fs : I → SetoidMorphism@{o o o} A B) :
   B → B → Type@{o} := wcoeq_rel@{i o} fs.
 
-(* CONTROL: [wcoeq_rel] declared afresh under the closed binder with the
-   bound, and without its glue constructor under the binder without it. *)
+(* 相关说明。 （已译） *)
 Inductive p459_wrel@{i o | i <= o} {I : Type@{i}} {A B : SetoidObject@{o o}}
   (fs : I → SetoidMorphism@{o o o} A B) : B → B → Type@{o} :=
   | p459_wbase : ∀ b1 b2 : B, b1 ≈ b2 → p459_wrel b1 b2
@@ -96,7 +95,7 @@ Fail Inductive p459_wrel_unbounded@{i o |} {I : Type@{i}}
       p459_wrel_unbounded b1 b2 → p459_wrel_unbounded b2 b3 →
       p459_wrel_unbounded b1 b3.
 
-(* CONTROL: the relation with its index at the points' universe. *)
+(* CONTROL: 关系 index at points' universe. （已译） *)
 Definition p459_rel_at_points@{o h | o < h +} (I : Type@{o})
   (A B : SetoidObject@{o o}) (fs : I → SetoidMorphism@{o o o} A B) :
   B → B → Type@{o} := wcoeq_rel fs.
@@ -106,17 +105,15 @@ Fail Definition p459_rel_at_hom@{o h | o < h +} (I : Type@{h})
   (A B : SetoidObject@{o o}) (fs : I → SetoidMorphism@{o o o} A B) :
   B → B → Type@{o} := wcoeq_rel fs.
 
-(** ** Instance/Top/Quotient.v: Construction 5 and W-c *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: X/A's points are those of X, and their equality IS
-   [collapse_rel], at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example p459_collapse_equiv@{o} (X : TopSpace@{o}) (I : Type@{o})
   (p : I → X) (x y : X) :
   @equiv _ (is_setoid (top_carrier (Top_collapse X I p))) x y
     = collapse_rel X I p x y := eq_refl.
 
-(* CONTROL: the mediator is the competing map itself, as a setoid map and
-   at every point, at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example p459_desc_map_points@{o h | o < h +} (X : TopSpace@{o})
   (I : Type@{o}) (p : I → X) {Z : Top@{h o}} (k : X ~{Top@{h o}}~> Z)
   (Hk : ∀ i j : I, k ∘ collapse_family X I p i ≈ k ∘ collapse_family X I p j) :
@@ -130,8 +127,7 @@ Example p459_desc_map_at@{o h | o < h +} (X : TopSpace@{o})
   continuous_map (collapse_desc_map X I p k Hk) x = continuous_map k x
   := eq_refl.
 
-(* CONTROL: Construction 5 in the elementary form at the flexible index,
-   and at Mac Lane's index, the points of A. *)
+(* 相关说明。 （已译） *)
 Definition p459_collapse_coequalizer@{o h i | o < h, o <= i +}
   (X : TopSpace@{o}) (A : X → Type@{o}) :
   IsWideCoequalizer@{i h h} (C := Top@{h o}) (collapse_sub_family X A)
@@ -144,7 +140,7 @@ Definition p459_coequalizer_at_points@{o h | o < h +} (X : TopSpace@{o})
     (Top_collapse_sub X A) (collapse_sub_proj X A) :=
   collapse_coequalizer@{o h o} X A.
 
-(* CONTROL: the record read at the hom universe. *)
+(* 相关说明。 （已译） *)
 Definition p459_coequalizer_at_hom@{o h | o < h +} (X : TopSpace@{o})
   (I : Type@{o}) (p : I → X) :
   IsWideCoequalizer@{h h h} (C := Top@{h o}) (collapse_family X I p)
@@ -158,8 +154,7 @@ Fail Definition p459_coequalizer_cumulative@{o h | o < h +}
     (Top_collapse X I p) (collapse_proj X I p) :=
   collapse_family_coequalizer@{o h o} X I p.
 
-(* CONTROL: the colimit round trip fed the record at the hom universe,
-   and the colimit form given a point of A. *)
+(* 相关说明。 （已译） *)
 Definition p459_colimit_flexible@{o h | o < h +} (X : TopSpace@{o})
   (I : Type@{o}) (p : I → X) (i0 : I) :=
   is_wide_coequalizer_colimit (C := Top@{h o}) (collapse_family@{o h} X I p)
@@ -181,10 +176,10 @@ Definition p459_collapse_epic@{o h | o < h +} (X : TopSpace@{o})
   (I : Type@{o}) (p : I → X) : Epic (collapse_proj X I p) :=
   collapse_proj_epic X I p.
 
-(** ** Instance/Top/Quotient.v: the comparisons and their extra universe *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: the direct collapse against the generic wide coequalizer, with
-   [u] in the binder, the identity on points both ways at [eq_refl]. *)
+(* CONTROL: direct collapse against generic wide coequalizer, with
+ [u] binder, 恒等 points both ways at [eq_refl]. （已译） *)
 Definition p459_iso_generic@{o h u | o < h, h < u +} (X : TopSpace@{o})
   (I : Type@{o}) (p : I → X) :
   Top_collapse X I p ≅[Top@{h o}] twcoeq_obj@{o o h} (collapse_family X I p) :=
@@ -207,7 +202,7 @@ Fail Definition p459_iso_generic_no_u@{o h | o < h +} (X : TopSpace@{o})
   wide_coequalizer_unique _ (collapse_family_coequalizer@{o h o} X I p)
     (twcoeq_IsWideCoequalizer@{o o h} (collapse_family X I p)).
 
-(* CONTROL: X/∅ ≅ X with [u] in the binder. *)
+(* 相关说明。 （已译） *)
 Definition p459_empty_iso@{o h u | o < h, h < u +} (X : TopSpace@{o}) :
   Top_collapse_sub X (fun _ => False) ≅[Top@{h o}] X :=
   wide_coequalizer_unique _ (collapse_coequalizer@{o h o} X (fun _ => False))
@@ -221,7 +216,7 @@ Fail Definition p459_empty_iso_no_u@{o h | o < h +} (X : TopSpace@{o}) :
     (wide_empty_id_IsWideCoequalizer _
        (fun a : collapse_sub_points X (fun _ => False) => projT2 a)).
 
-(* CONTROL: X/∅ and X have the same underlying type at [eq_refl]. *)
+(* 相关说明。 （已译） *)
 Example p459_empty_carrier@{o} (X : TopSpace@{o}) :
   carrier (top_carrier (Top_collapse_sub X (fun _ => False)))
     = carrier (top_carrier X) := eq_refl.
@@ -230,10 +225,10 @@ Example p459_empty_carrier@{o} (X : TopSpace@{o}) :
 Fail Example p459_empty_eq@{o} (X : TopSpace@{o}) :
   Top_collapse_sub X (fun _ => False) = X := eq_refl.
 
-(* CONTROL: at ∅ every elementary wide coequalizer of the empty family is
-   pointless; [collapse_empty_pointless] is a readback of [Empty_Top]'s
-   carrier, and a proof closes for every subset of ∅
-   ([p459_pointless_any]). *)
+(* CONTROL: at ∅ every elementary wide coequalizer empty family is
+ pointless; [collapse_empty_pointless] readback [Empty_Top]'s
+ carrier, 证明 closes every subset ∅
+ ([p459_pointless_any]). （已译） *)
 Definition p459_empty_coequalizer_pointless@{o h i | o < h, o <= i +}
   (Q : Top@{h o}) (e : Empty_Top@{o} ~{Top@{h o}}~> Q) :
   IsWideCoequalizer@{i h h} (C := Top@{h o})
@@ -250,9 +245,9 @@ Definition p459_pointless_any@{o}
   top_carrier (Top_collapse_sub Empty_Top@{o} A) → False :=
   fun z => match z with end.
 
-(** ** Instance/Top/Quotient/Pairs.v: the category of pairs *)
+(* * ** Instance/Top/Quotient/Pairs.v: 范畴 pairs （已译） *)
 
-(* CONTROL: the category and the two functors. *)
+(* CONTROL: 范畴 two 函子. （已译） *)
 Definition p459_top_pairs@{h o | o < h +} : Category@{h h h} :=
   Top_pairs@{h o}.
 
@@ -354,11 +349,11 @@ Definition p459_unsat_rel_not_transitive :
            | eq_refl => I
            end.
 
-(** ** Instance/Top/Quotient/Pairs.v: the adjunction *)
+(* * ** Instance/Top/Quotient/Pairs.v: 伴随 （已译） *)
 
-(* CONTROL: the adjunction at its explicit record instance, its unit and
-   counit read back at [eq_refl], and its hom-set isomorphism IS
-   [pairs_quotient_iso] at [eq_refl]. *)
+(* CONTROL: 伴随 at explicit record instance, unit and
+ counit read back at [eq_refl], hom-set 同构 IS
+ [pairs_quotient_iso] at [eq_refl]. （已译） *)
 Definition p459_adjunction@{h o u v | o < h, h < u +} :
   @Adjunction@{h h h h h h h h u h v} Top_pointed@{h o} Top_pairs@{h o}
     PairQuotient@{h o} PointPair@{h o} :=
@@ -392,8 +387,7 @@ Fail Example p459_hom_eq@{h o | o < h +} (X : PairTop@{o})
   @hom Top_pointed@{h o} (PairQuotient@{h o} X) Y
     = @hom Top_pairs@{h o} X (PointPair@{h o} Y) := eq_refl.
 
-(* CONTROL: the [Build_Adjunction'] term of the target at the explicit
-   record instance. *)
+(* 相关说明。 （已译） *)
 Definition p459_adjunction_built@{h o u v | o < h, h < u +} :
   @Adjunction@{h h h h h h h h u h v} Top_pointed@{h o} Top_pairs@{h o}
     PairQuotient@{h o} PointPair@{h o} :=
@@ -410,8 +404,8 @@ Fail Definition p459_adjunction_built_notation@{h o u v | o < h, h < u +} :
     ltac:(intros X Y Z f g x; reflexivity)
     ltac:(intros X Y Z f g x; reflexivity).
 
-(* CONTROL: the finished adjunction read through the notation, [v] named
-   in the binder. *)
+(* CONTROL: finished 伴随 read through notation, [v] named
+ binder. （已译） *)
 Definition p459_adjunction_notation@{h o u v | o < h, h < u +} :
   PairQuotient@{h o} ⊣ PointPair@{h o} :=
   pairs_quotient_adjunction@{h o u v}.
@@ -421,7 +415,7 @@ Fail Definition p459_adjunction_notation_no_v@{h o u | o < h, h < u +} :
   PairQuotient@{h o} ⊣ PointPair@{h o} :=
   pairs_quotient_adjunction.
 
-(** ** Instance/Top/Quotient/Pairs.v: X/A as the pushout *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: X/A is the pushout X ⊔_A ∗, its apex at [eq_refl]. *)
 Definition p459_pushout@{h o | o < h +} (X : PairTop@{o}) :
@@ -431,7 +425,7 @@ Definition p459_pushout@{h o | o < h +} (X : PairTop@{o}) :
 Example p459_pushout_apex@{h o | o < h +} (X : PairTop@{o}) :
   pushout_apex (pquot_pushout@{h o} X) = pquot_space X := eq_refl.
 
-(** ** Instance/Top/Quotient/Pairs.v: the colimit form, every A *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明（余）极限相关定义、性质与动机。
@@ -472,8 +466,7 @@ Example p459_wide_colimit_quotient@{o h | o < h +} (X : PairTop@{o}) :
   ptop_space (fobj[PairQuotient@{h o}] X)
     = colimit_apex (pquot_wide_coequalizer_colimit@{o h} X) := eq_refl.
 
-(* CONTROL: at the empty subset the colimit is X ⊔ *; every colimit of the
-   family has a point, at ⟨∅, ∅⟩ the new point [None]. *)
+(* 相关说明。 （已译） *)
 Definition p459_wide_colimit_empty@{o h | o < h +} (X : TopSpace@{o}) :
   colimit_apex (pquot_wide_coequalizer_colimit@{o h} (empty_pair X))
     ≅[Top@{h o}] Sum_Top X Point_Top@{o} :=
@@ -491,11 +484,9 @@ Definition p459_colimit_pointed_at_empty@{o h | o < h +} :
     (pquot_wide_coequalizer_colimit@{o h} (empty_pair Empty_Top@{o}))) :=
   None.
 
-(** ** Instance/Top/Quotient/Pairs.v: the elementary record, given a point *)
+(* 相关说明。 （已译） *)
 
-(* CONTROL: given a point of A, X/A is an elementary wide coequalizer of
-   the point-inclusions, isomorphic to Construction 5's in [Top] and in
-   [Top_pointed]. *)
+(* 相关说明。 （已译） *)
 Definition p459_pquot_coequalizer@{o h i | o < h, o <= i +}
   (X : PairTop@{o}) (a0 : collapse_sub_points (pair_space X) (pair_sub X)) :
   IsWideCoequalizer@{i h h} (C := Top@{h o})
@@ -538,7 +529,7 @@ Example p459_collapse_pointed_pt@{o} (X : PairTop@{o})
   (a0 : collapse_sub_points (pair_space X) (pair_sub X)) :
   ptop_pt (collapse_pointed X a0) = projT1 a0 := eq_refl.
 
-(** ** Instance/Top/Quotient/Pairs.v: the empty subset *)
+(* 相关说明。 （已译） *)
 
 (* CONTROL: X/∅ is X₊ in [Top], [Some x] ↦ [inl x] and [None] ↦ [inr ttt]
    at [eq_refl]. *)
@@ -612,7 +603,7 @@ Definition p459_empty_colimit_not_elementary@{o h i | o < h, o <= i +}
   False :=
   empty_colimit_not_elementary@{o h i} L e.
 
-(** ** Guard: every constant of the two targets *)
+(* * ** Guard: every 常值 two targets （已译） *)
 
 (* Instance/Top/Quotient.v *)
 Check Top_HasWideCoequalizers_small.

@@ -8,7 +8,7 @@ Require Import Category.Instance.AST.
 Generalizable All Variables.
 Set Transparent Obligations.
 
-(** * Representing Coq data types in the free bicartesian closed category *)
+(* * * Representing Coq 数据类型 自由双笛卡尔闭范畴 （已译） *)
 
 (*
  Wikipedia: https://en.wikipedia.org/wiki/Global_element

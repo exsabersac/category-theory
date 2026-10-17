@@ -32,12 +32,11 @@ Generalizable All Variables.
 (* ------------------------------------------------------------------------ *)
 (** ** Negative 1: the instrument *)
 
-(* If [Fail] were inert -- a missing scope, a stray [Set Silent] -- this
-   would pass and every other negative below would be worthless. *)
+(* 相关说明。 （已译） *)
 Fail Check probe381_no_such_constant_anywhere.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Controls for the constants the negatives name *)
+(* 相关说明。 （已译） *)
 
 Check @subset_le.
 Check @subset_le_preorder.
@@ -83,7 +82,7 @@ Check @galois_stab_true_trivial.
 Check @galois_v4_stab_proper.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Negative 2 (TYPING): the connection is antitone, not covariant *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeGalois381 相关定义、性质与动机。
@@ -106,7 +105,7 @@ Context (Gp : GrpObject@{pgu po po}).
 Context (Ap : MSetoidAction@{po po pgu pgu pgu po po pgu}
                 (grp_mon@{pgu po po} Gp)).
 
-(* The control: the connection DOES inhabit the antitone reading. *)
+(* 相关说明。 （已译） *)
 Check (group_action_galois Gp Ap
         : GaloisConnection (@subset_le@{po} (act_setoid Ap))
             (op_rel (@subset_le@{po} (grp_setoid Gp)))).
@@ -116,7 +115,7 @@ Fail Check (group_action_galois Gp Ap
                  (@subset_le@{po} (grp_setoid Gp))).
 
 (* ---------------------------------------------------------------------- *)
-(** ** Negatives 3 and 4 (CONVERSION), stated in the same section *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeGalois381 相关定义、性质与动机。
@@ -139,8 +138,8 @@ Fail Check (fun (S : carrier (Powerset_Prop_obj@{po} (grp_setoid Gp))) =>
                            = @fixed Gp Ap S)).
 
 (* ---------------------------------------------------------------------- *)
-(** ** Negative 5 (CONVERSION): the target category is the opposite one on
-       its objects and its homs, but not as a whole record *)
+(* * ** Negative 5 (CONVERSION): target 范畴 opposite one on
+ 对象 homs, but not whole record （已译） *)
 
 (*
    本节说明hom、等价相关定义、性质与动机。
@@ -172,8 +171,7 @@ Fail Check (eq_refl : Proset@{po Set} (stab_PreOrder_G Gp)
 End AntitoneIsNotCovariant.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Negatives 6 and 7 (FORMABILITY): [Subsets] identifies the two
-       universes of the setoid it is handed *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeGalois381 相关定义、性质与动机。
@@ -204,8 +202,7 @@ Fail Check (Subsets (act_setoid Aq)).
 End SubsetsIdentifies.
 
 (* ------------------------------------------------------------------------ *)
-(** ** Formerly Negative 8 (FORMABILITY): Instance/Grp.v's [Z2] was pinned
-    at [Set] *)
+(* 相关说明。 （已译） *)
 
 (*
    本节说明 ProbeGalois381 相关定义、性质与动机。
@@ -220,7 +217,7 @@ Check (Subsets (grp_setoid GalZ2)).
 Check (Subsets (grp_setoid Z2)).
 
 (* ------------------------------------------------------------------------ *)
-(** ** Positive: the two witnesses, and what they compute *)
+(* 相关说明。 （已译） *)
 
 Check (stab (A := GalZ2Act) galois_true).
 Check (stab_Subgroup GalV4 GalV4Act galois_true).

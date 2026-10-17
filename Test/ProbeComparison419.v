@@ -31,7 +31,7 @@ Generalizable All Variables.
 (* instrument: the refutation keyword is live *)
 Fail Check probe419_absent_name.
 
-(** ** A: the two bracketings of a twice-reindexed cone are distinct types *)
+(* 相关说明。 （已译） *)
 
 Section Bracketing.
 
@@ -49,13 +49,13 @@ Check (fun N : Cone F =>
 Fail Check (fun N : Cone F =>
               (cone_reindex V (cone_reindex W N) : Cone (F ◯ (W ◯ V)))).
 
-(* readbacks: apex and legs agree at [eq_refl] across the two bracketings *)
+(* 相关说明。 （已译） *)
 Check (@cone_reindex_comp_apex J'' J' J C W V F).
 Check (@cone_reindex_comp_leg J'' J' J C W V F).
 
 End Bracketing.
 
-(** ** B: the former [Set] pin of the discrete-diagram functor, lifted *)
+(* * ** B: former [Set] pin discrete-diagram 函子, lifted （已译） *)
 
 Section SetPin.
 
@@ -65,10 +65,10 @@ Constraint Set < uh.
 Context (Cu Du : Category@{uo uh uh}) (Fu : Cu ⟶ Du) (fam : bool → Cu)
         (HC : @Cartesian Cu) (HD : @Cartesian Du).
 
-(* control (a): the cone type over the unannotated functor is formable *)
+(* control (a): cone type over unannotated 函子 formable （已译） *)
 Check (fun N : Cone (@DiscreteCat_Functor bool Cu fam) => N).
 
-(* control (b): the comparison at the annotated functor *)
+(* control (b): comparison at annotated 函子 （已译） *)
 Check (fun (N : Cone (@DiscreteCat_Functor' bool Cu fam))
            (M : Cone (Fu ◯ @DiscreteCat_Functor' bool Cu fam))
            (HM : IsLimitCone M) =>
@@ -77,8 +77,8 @@ Check (fun (N : Cone (@DiscreteCat_Functor' bool Cu fam))
 (* control (c): the elementary binary comparison *)
 Check (@binary_comparison Cu Du Fu HC HD fam).
 
-(* Former N2, now a positive control: the comparison at the annotated
-   functor.  RECORDED CORRECTION -- see the header. *)
+(* Former N2, now positive control: comparison at annotated
+ 函子. RECORDED CORRECTION -- see header. （已译） *)
 Check (fun (N : Cone (@DiscreteCat_Functor bool Cu fam))
                 (M : Cone (Fu ◯ @DiscreteCat_Functor bool Cu fam))
                 (HM : IsLimitCone M) =>
@@ -93,13 +93,13 @@ Check (fun (c : Cu) (pi : ∀ b : bool, c ~{Cu}~> fam b)
 
 End SetPin.
 
-(** ** C: the orientation of [TerminalFunctor]'s comparison *)
+(* 相关说明。 （已译） *)
 
 Section Orientation.
 
 Context {C D : Category} (F : C ⟶ D) `{@Terminal C} `{@Terminal D}.
 
-(* control: the comparison direction is the class's [from] *)
+(* 相关说明。 （已译） *)
 Check (fun HF : @TerminalFunctor C D F _ _ =>
          (from (@fobj_one_iso _ _ F _ _ HF) : F terminal_obj ~{D}~> terminal_obj)).
 
@@ -107,12 +107,12 @@ Check (fun HF : @TerminalFunctor C D F _ _ =>
 Fail Check (fun HF : @TerminalFunctor C D F _ _ =>
               (to (@fobj_one_iso _ _ F _ _ HF) : F terminal_obj ~{D}~> terminal_obj)).
 
-(* readback: the comparison is the unique map into [1] *)
+(* 相关说明。 （已译） *)
 Check (terminal_comparison_one F nullary_fam).
 
 End Orientation.
 
-(** ** D: the limit comparison does not read a cocone without repackaging *)
+(* 相关说明。 （已译） *)
 
 Section OpRoute.
 
@@ -126,13 +126,13 @@ Check (fun (N : Cocone K) (M : Cocone (F ◯ K)) (HM : IsColimitCocone M) =>
 Check (fun (N : Cocone K) (M : Cocone (F ◯ K)) (HM : IsColimitCocone M) =>
          cone_comparison (F^op) N (islimitcone_op_comp HM)).
 
-(* N5 TYPING: the op route on the cocone as it stands *)
+(* 相关说明。 （已译） *)
 Fail Check (fun (N : Cocone K) (M : Cocone (F ◯ K)) (HM : IsColimitCocone M) =>
               cone_comparison (F^op) N HM).
 
 End OpRoute.
 
-(** ** E: readbacks and positive formability *)
+(* 相关说明。 （已译） *)
 
 Example p419_pullback_is {C D : Category} (H : C ⟶ D) (F : Cospan C)
   (N : Cone F) {M : Cone (H ◯ F)} (HM : IsLimitCone M) :

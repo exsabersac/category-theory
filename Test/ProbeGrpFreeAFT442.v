@@ -52,9 +52,9 @@ Example p442_via_GAFT_is_GAFT :
            (Continuous_PreservesImageLimit Grp_Forget_continuous)
            Grp_Forget_solution_set_from_adjunction := eq_refl.
 
-(* THE CIRCULARITY, as an [eq_refl].  The third hypothesis fed to Freyd's
-   theorem is the singleton family at the unit of the adjunction the
-   theorem is meant to produce. *)
+(* THE CIRCULARITY, [eq_refl]. The third 假设 fed Freyd's
+ 定理 singleton family at unit 伴随 the
+ 定理 meant produce. （已译） *)
 Example p442_solution_set_is_circular (X : Sets) :
   Grp_Forget_solution_set_from_adjunction X
     = solution_set_of_adjunction free_group_adjunction X := eq_refl.
@@ -62,7 +62,7 @@ Example p442_solution_set_is_circular (X : Sets) :
 Example p442_sol_index (X : Sets) :
   sol_index (Grp_Forget_solution_set_from_adjunction X) = poly_unit := eq_refl.
 
-(* ...and the single member is the word group already in tree. *)
+(* 相关说明。 （已译） *)
 Example p442_sol_obj (X : Sets) (i : poly_unit) :
   sol_obj (Grp_Forget_solution_set_from_adjunction X) i = FreeGrpObject X
   := eq_refl.
@@ -71,8 +71,8 @@ Example p442_sol_arr (X : Sets) (i : poly_unit) :
   sol_arr (Grp_Forget_solution_set_from_adjunction X) i = free_group_unit X
   := eq_refl.
 
-(* control for N4: the arrow and the insertion of generators agree at every
-   point, which is Instance/Grp/Free.v's [free_group_unit_is_insert]. *)
+(* control N4: arrow 嵌入 generators agree at every
+ point, Instance/Grp/Free.v's [free_group_unit_is_insert]. （已译） *)
 Example p442_sol_arr_pointwise (X : Sets) (i : poly_unit) (a : carrier X) :
   sol_arr (Grp_Forget_solution_set_from_adjunction X) i a = fg_insert X a
   := eq_refl.
@@ -86,9 +86,9 @@ Example p442_sol_arr_is_insert (X : Sets) (i : poly_unit) :
   sol_arr (Grp_Forget_solution_set_from_adjunction X) i = fg_insert X
   := eq_refl.
 
-(** ** B: the QA clause is `≈`, and only `≈` *)
+(* 相关说明。 （已译） *)
 
-(* control: the agreement that IS delivered... *)
+(* 相关说明。 （已译） *)
 Check (free_group_via_GAFT_agrees : `1 free_group_via_GAFT ≈ FreeGrp).
 
 (* ...and it is [left_adjoint_iso] applied, nothing instance-specific. *)
@@ -97,35 +97,33 @@ Example p442_agrees_is_generic :
     = left_adjoint_iso Grp_Forget _ FreeGrp (`2 free_group_via_GAFT)
                        free_group_adjunction := eq_refl.
 
-(* N1 CONVERSION: the two functors are NOT convertible.  [GAFT] is
-   [Qed]-opaque, so its output does not reduce at all. *)
+(* N1 CONVERSION: two 函子 NOT convertible. [GAFT] is
+ [Qed]-opaque, so output does not reduce at all. （已译） *)
 Fail Example p442_gaft_output_is_FreeGrp :
   `1 free_group_via_GAFT = FreeGrp := eq_refl.
 
-(* N2 CONVERSION: nor at a single object — not even at the singleton, where
-   the free group is the one-generator group the representation uses. *)
+(* N2 CONVERSION: nor at single 对象 — not even at singleton, where
+ free group one-generator group representation uses. （已译） *)
 Fail Example p442_gaft_output_obj :
   `1 free_group_via_GAFT SetOne = FreeGrpObject SetOne := eq_refl.
 
-(* N3 TYPE: and the two adjunctions are not comparable by [=] at all, their
-   left legs being different terms. *)
+(* N3 TYPE: two 伴随 not comparable [=] at all, their
+ left legs being different terms. （已译） *)
 Fail Example p442_gaft_adjunction_is_free :
   `2 free_group_via_GAFT = free_group_adjunction := eq_refl.
 
-(** ** C: which hypotheses this instance owes *)
+(* 相关说明。 （已译） *)
 
 (* control: the application, again, as a [Check] *)
 Check (GAFT Grp_Forget Grp_Complete
             (Continuous_PreservesImageLimit Grp_Forget_continuous)
             Grp_Forget_solution_set_from_adjunction).
 
-(* N6 TYPE: [ContinuousFunctor] is not [PreservesImageLimit] — the bridge
-   in the target's term is load-bearing. *)
+(* 相关说明。 （已译） *)
 Fail Check (GAFT Grp_Forget Grp_Complete Grp_Forget_continuous
                  Grp_Forget_solution_set_from_adjunction).
 
-(* N7 TYPE: neither is the apex-only class, which Instance/Grp/Limit.v also
-   supplies and which is the tempting wrong choice. *)
+(* 相关说明。 （已译） *)
 Fail Check (GAFT Grp_Forget Grp_Complete Grp_Forget_PreservesAllLimits
                  Grp_Forget_solution_set_from_adjunction).
 
@@ -139,8 +137,7 @@ Definition p442_GAFT_at_Grp :=
   GAFT Grp_Forget Grp_Complete
        (Continuous_PreservesImageLimit Grp_Forget_continuous).
 
-(* A solution-set builder over an arbitrary index, so that the pair below
-   differs in the index type and in nothing else. *)
+(* 相关说明。 （已译） *)
 Definition p442_sols_indexed_by (I : Type)
   (o : ∀ X : Sets, I → Grp)
   (a : ∀ (X : Sets) (i : I), X ~{Sets}~> Grp_Forget (o X i))
@@ -152,8 +149,8 @@ Definition p442_sols_indexed_by (I : Type)
    ; sol_arr := a X
    ; sol_covers := fun c h => cov X c h |}.
 
-(* control: at a [Set]-level index the builder's output IS what [GAFT]
-   consumes at this instance. *)
+(* control: at [Set]-level index builder's output IS what [GAFT]
+ 所消耗 at instance. （已译） *)
 Check (fun o a cov =>
          p442_GAFT_at_Grp (p442_sols_indexed_by bool o a cov)).
 
@@ -190,7 +187,7 @@ Fail Example p442_join_is_word_evaluation (X : Sets) :
     = fmap[Grp_Forget]
         (free_grp_extend (@id Sets (Grp_Forget (FreeGrp X)))) := eq_refl.
 
-(** ** F: the representation, and that it is not degenerate *)
+(* 相关说明。 （已译） *)
 
 Example p442_repr_obj :
   @repr_obj Grp Grp_Forget Grp_Forget_Representable = FreeGrp SetOne
@@ -211,9 +208,7 @@ Example p442_repr_from_component (G : Grp) (a : carrier (Grp_Forget G)) :
 Example p442_repr_to_is_transpose (G : Grp) (f : FreeGrp SetOne ~{Grp}~> G) :
   grp_repr_to G f = to (grp_adj G) f ttt := eq_refl.
 
-(* The round trip, which is what a degenerate transformation could not
-   supply: reading an element back off the homomorphism it names returns
-   that element. *)
+(* 相关说明。 （已译） *)
 Lemma p442_repr_to_from (G : Grp) (a : carrier (Grp_Forget G)) :
   grp_repr_to G (grp_repr_from G a) ≈ a.
 Proof. exact (iso_to_from (grp_adj G) (grp_repr_const G a) ttt). Qed.
@@ -313,9 +308,9 @@ Check @p442_repr_obj_not_trivial.
    （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The corollary's statement is the tree's own, converted: [free_group_unit]
-   IS [fg_insert] at a generator, so the general result is not a weaker
-   restatement of Instance/Grp/Free.v. *)
+(* The 推论's statement tree's own, converted: [free_group_unit]
+ IS [fg_insert] at generator, so general result not weaker
+ restatement Instance/Grp/Free.v. （已译） *)
 Example p442_two_letters_same_statement :
   (free_group_unit TwoLetters true ≈ free_group_unit TwoLetters false → False)
   = (fg_insert TwoLetters true ≈ fg_insert TwoLetters false → False)
@@ -330,9 +325,9 @@ Fail Example p442_two_letters_same_proof :
   free_group_two_letters_distinct = free_group_two_generators_distinct
   := eq_refl.
 
-(* N10 TYPE: the decision procedure is a real argument, not an inferable
-   one.  Dropping it leaves the two elements where [SetoidDecidable X] is
-   expected. *)
+(* N10 TYPE: decision procedure real 论元, not inferable
+ one. Dropping it leaves two elements where [SetoidDecidable X] is
+ expected. （已译） *)
 Fail Check (fun (X : Sets) (a b : carrier X) =>
               free_group_unit_injective_dec (X:=X) a b).
 
@@ -367,9 +362,7 @@ Check @Grp_Forget_solution_set_prop.
 Check @free_group_via_GAFT_from_adjunction.
 Check @free_group_monad_via_GAFT.
 
-(* The four arguments of the UNCONDITIONAL application, the twin of
-   [p442_via_GAFT_is_GAFT] above.  This is the line that would have to
-   change if the circular family came back. *)
+(* 相关说明。 （已译） *)
 Example p442_via_GAFT_prop_is_GAFT :
   free_group_via_GAFT
     = GAFT Grp_Forget Grp_Complete
@@ -380,8 +373,8 @@ Section PropSolutionReadbacks.
 
 Context (X : Sets).
 
-(* The index IS the congruence type, the members ARE the quotients, and the
-   arrows ARE the insertion of generators into them. *)
+(* The index IS congruence type, members ARE quotients, the
+ arrows ARE 嵌入 generators them. （已译） *)
 Example p442_sol_prop_index :
   sol_index (Grp_Forget_solution_set_prop X) = FGCongIdx X := eq_refl.
 
@@ -401,7 +394,7 @@ Example p442_sol_prop_carrier (i : FGCongIdx X) :
   carrier (grp_setoid (sol_obj (Grp_Forget_solution_set_prop X) i)) = FGWord X
   := eq_refl.
 
-(* The covering is the KERNEL of [free_grp_extend], on the nose. *)
+(* 相关说明。 （已译） *)
 Example p442_ker_idx_is_kernel (G : Grp) (h : X ~{Sets}~> Grp_Forget G) :
   `1 (fg_ker_idx h) = fg_ker h := eq_refl.
 
@@ -430,10 +423,10 @@ Fail Example p442_sol_prop_is_not_singleton (X : Sets) :
 Fail Example p442_two_applications_differ :
   free_group_via_GAFT = free_group_via_GAFT_from_adjunction := eq_refl.
 
-(** ** The payoff: the theorem applied at named sets
+(* * ** The payoff: 定理 applied at named sets
 
-    Before this PR these lines exhibited a free group obtained from an
-    adjunction that had been assumed in order to obtain it. *)
+ Before PR these lines exhibited free group obtained an
+ 伴随 had been assumed order obtain it. （已译） *)
 
 Check (Grp_Forget_solution_set_prop SetOne).
 Check (Grp_Forget_solution_set_prop TwoLetters).
@@ -456,16 +449,15 @@ Constraint pcar = Set.
 
 Context (Xs : obj[Sets@{pcar pobj}]).
 
-(* CONTROL 1: the non-circular solution set itself elaborates with the
-   carrier at [Set]. *)
+(* 相关说明。 （已译） *)
 Definition p442_prop_sols_at_set_carrier : SolutionSet Grp_Forget Xs :=
   Grp_Forget_solution_set_prop Xs.
 
-(* CONTROL 2: and so does the circular application. *)
+(* 相关说明。 （已译） *)
 Definition p442_circular_app_at_set_carrier : obj[Grp] :=
   `1 free_group_via_GAFT_from_adjunction Xs.
 
-(* THE NEGATIVE: the unconditional application does not. *)
+(* 相关说明。 （已译） *)
 Fail Definition p442_uncond_app_at_set_carrier : obj[Grp] :=
   `1 free_group_via_GAFT Xs.
 

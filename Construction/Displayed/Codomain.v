@@ -108,22 +108,11 @@ Qed.
 
 (** ** Cartesian lifts from pullbacks *)
 
-(* The cartesian lift of [f : x ~> y] at [(d; p)] is the chosen pullback of
-   [p] along [f]:
+(*
+   本节说明拉回/推出、笛卡尔相关定义、性质与动机。
 
-       x ×_y d --snd--> d
-          |             |
-       fst|             | p
-          v             v
-          x  ----f----> y
-
-   The pullback apex with its first projection is the lift object over [x],
-   and the second projection is the lift morphism over [f]; its square is
-   the pullback square read backwards.  Cartesianness is exactly the
-   pullback's universal property: a displayed morphism over [f ∘ g] from
-   [(e; q)] is a morphism [h] with [p ∘ h ≈ (f ∘ g) ∘ q], i.e. a competing
-   cone [(g ∘ q, h)] over the cospan, and the mediating morphism into the
-   apex is the unique displayed factorization over [g]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CodomainCleaving.
 
@@ -176,23 +165,11 @@ Definition codomain_cleaving `{H : @HasPullbacks C} :
 
 (** ** Pullbacks from cartesian lifts *)
 
-(* The (⇒) direction: a cleaving of the codomain displayed category yields
-   all pullbacks.  To pull [g : y ~> z] back along [f : x ~> z], regard [g]
-   as the displayed object [(y; g)] over [z] and take the chosen cartesian
-   lift of [f] at it: the lift object [(P; p1)] over [x] and the lift
-   morphism [u] over [f] assemble into the square
+(*
+   本节说明拉回/推出、笛卡尔相关定义、性质与动机。
 
-          P  ---u--->  y
-          |            |
-        p1|            | g
-          v            v
-          x  ---f--->  z .
-
-   For its universal property, a competing cone [(q1, q2)] from [Q] is
-   exactly a displayed morphism [(q2; _)] over the composite [f ∘ q1] from
-   the displayed object [(Q; id)] — the identity anchors [Q] over itself —
-   and [dcart_factor] provides the unique displayed factorization over
-   [q1], whose underlying morphism is the mediator. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition codomain_cleaving_pullbacks
   `{H : @Cleaving C (Codomain_Displayed C)} : HasPullbacks C.
@@ -238,15 +215,11 @@ End CodomainCleaving.
 
 (** ** Comparison with the comma-based arrow category *)
 
-(* The total category of the codomain displayed category has as objects the
-   pairs [(x; (d; p : d ~> x))] — the maps of [C] — and as morphisms the
-   pairs [(f; (u; _))] of a base morphism and a square over it.  Reshuffling
-   the components yields exactly an object [((d, x); p)] and a morphism
-   [((u, f); _)] of the comma category [C ⃗ = (Id[C] ↓ Id[C])] of
-   Construction/Arrow.v, with the very same commuting square; and both
-   equivalences compare the same two components.  The two reshufflings are
-   functorial and mutually inverse on the nose, giving an isomorphism (not
-   merely an equivalence) in Cat. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := program_simpl.
 

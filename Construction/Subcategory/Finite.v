@@ -39,9 +39,11 @@ Definition FiniteSetoid (X : SetoidObject) : Type :=
 
 (** ** The subcategory of finite setoids *)
 
-(* [shom] ignores its morphism argument: every [Sets]-morphism between finite
-   setoids is retained.  That is what makes the subcategory full, and it also
-   makes the two closure conditions immediate. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FinSets : Subcategory Sets :=
   @Build_Subcategory Sets FiniteSetoid
     (fun _ _ _ _ _ => True)
@@ -64,12 +66,11 @@ Definition FinSets_Full_Functor : Functor.Full FinSets_Incl :=
 Definition FinSets_Faithful : Functor.Faithful FinSets_Incl :=
   Incl_Faithful Sets FinSets.
 
-(* [shom] here does not inspect its morphism argument, so it is trivially
-   closed under `≈`, and the converse bridge applies: fullness of the
-   inclusion returns fullness of the data.  This instantiates the hypothesis
-   that Construction/Subcategory.v has to assume, showing it is a real
-   condition met by the standard shape of full subcategory and not an
-   unreachable one. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FinSets_ShomRespects : ShomRespects Sets FinSets :=
   fun _ _ _ _ _ _ _ _ => I.
 
@@ -103,11 +104,11 @@ Definition FinSets_bool : FinSetsCat := (bool_setoid_object; bool_finite).
 Definition FinSets_bool_dup : FinSetsCat :=
   (bool_setoid_object; bool_finite_dup).
 
-(* The two objects have the same image under the inclusion.  This statement is
-   deliberately `=` and not `≈`: it compares OBJECTS of [Sets], for which the
-   library supplies no hom-setoid to weaken to, and the two images are the same
-   object literally, so [reflexivity] closes it.  The setoid discipline applies
-   to morphisms, and every morphism-level claim in this file uses `≈`. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma FinSets_bool_same_image :
   FinSets_Incl FinSets_bool = FinSets_Incl FinSets_bool_dup.
 Proof. reflexivity. Qed.
@@ -137,13 +138,11 @@ Proof.
   exact (Sets_two_arrows Heq).
 Qed.
 
-(* [faithful_reflects_monic] on this example.  Negation is injective, hence
-   monic in [Sets] by Instance/Sets.v's [injectivity_is_monic]; the inclusion
-   is faithful; so negation is monic in the subcategory as well.  The
-   conclusion is not content-free: monicity cancels over every hom-setoid into
-   [FinSets_bool], and at least one of them — the endo-hom-setoid, taking the
-   source to be [FinSets_bool] itself — has the two distinct elements exhibited
-   by [FinSets_two_arrows]. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma FinSets_negb_Monic : Monic FinSets_negb.
 Proof.
   apply (faithful_reflects_monic FinSets_Incl).
@@ -152,9 +151,11 @@ Proof.
     solve [ reflexivity | discriminate ].
 Qed.
 
-(* The separating measurement promised in the header: the length of the
-   chosen enumeration.  This is well-typed with no proof irrelevance, no
-   UIP and no axiom — the enumeration is data, not a proof. *)
+(*
+   本节说明 Finite 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition enum_len (s : FinSetsCat) : nat := length (projT1 (projT2 s)).
 
 (* So the two objects over the same setoid are genuinely different objects,

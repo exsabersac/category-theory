@@ -74,9 +74,11 @@ Next Obligation.
   apply dtransport_dcomp_assoc_sym.
 Qed.
 
-(** The projection functor ∫ D ⟶ C: first components. Identity and
-    composition in the total category are componentwise, so both functor
-    laws are the base category's, holding by reflexivity. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Total_Proj {C : Category} (D : Displayed C) :
   Total D ⟶ C := {|

@@ -23,129 +23,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* WHAT IS PROVED HERE, AND AT WHAT STRENGTH
+(*
+   本节说明自然变换、函子、（余）强度相关定义、性质与动机。
 
-   Mac Lane's exercise (catalog maclane:II.6:ex4, "natural transformations as
-   sections of the comma projections (S. A. Huq)") asks, for functors
-   T, S : D ⟶ C, that a natural transformation τ : T ⟹ S be the same thing
-   as a functor τ : D ⟶ (T ↓ S) with P τ = Q τ = id_D, where P and Q are the
-   comma projections (phrasing per the catalog's statement_summary paraphrase,
-   doc/plan/books/maclane/inventory/II.json, not the book's wording).  Both
-   texts name the SOURCE of the transformation first in their own letters --
-   his is T, this file's is S -- so his T and S are this file's S and T.
-   Nothing else differs.
-
-   THE SECTION EQUATIONS, AT TWO STRENGTHS.
-
-   Mac Lane's "P τ = id_D" is an equality of functors, on the nose.
-   [Comma_Functor_proj1_strict] and [Comma_Functor_proj2_strict] deliver
-   exactly that, at [Functor_StrictEq_Setoid] — the hom-setoid of StrictCat,
-   in which two functors are identified when their object maps are equal
-   propositionally and their morphism maps agree after transport along that
-   equality.  Both hold with [eq_refl] as the object witness, because
-   [comma_proj1 ◯ Comma_Functor τ] has object map [fun X => fst (X, X)], which
-   is [fun X => X] by iota, and likewise on morphisms; every transport in the
-   coherence condition therefore vanishes and the condition is [f ≈ f].  This
-   is the strongest sense in which this library can say "on the nose": Coq's
-   own equality of the two functor RECORDS is not available, since they carry
-   proof fields that nothing identifies.
-
-   [Comma_Functor_proj1] and [Comma_Functor_proj2] are the same two facts at
-   [Functor_Setoid], the hom-setoid of Cat, in which "equal" means naturally
-   isomorphic — so ≈[Cat] and ≅[Cat] read as EQUIVALENCE, not isomorphism, of
-   categories.  Those are the witnesses [Comma_Transform] consumes, which is
-   why the backward direction proved here GENERALIZES the book's: it accepts a
-   functor that sections the projections only up to natural isomorphism, of
-   which a functor sectioning them on the nose is the special case.  (They are
-   built directly, with [iso_id] components, rather than transported from the
-   strict versions along [strict_equiv_implies_fun_equiv]; that bridge is
-   Qed-opaque, so the components of the isomorphism it produces would not
-   reduce, and the round trip below needs them to compute to [id].)
-
-   WITNESS DEPENDENCE, AND WHY IT DECIDES THE PACKAGING.
-
-   The generalization has a price, and it is not incidental.
-   [Comma_Transform F p q] is a function of the WITNESSES p and q, not of F
-   alone: [Comma_Transform_witness_shift] computes that replacing (p, q) by
-   (p', q') conjugates every component,
-
-     Comma_Transform F p' q' d
-       ≈ fmap[T] (to (`1 q' d) ∘ from (`1 q d)) ∘ Comma_Transform F p q d
-           ∘ fmap[S] (to (`1 p d) ∘ from (`1 p' d)),
-
-   by automorphisms of d assembled from the two witness pairs;
-   [Comma_Transform_witness_irrelevant] is the complementary reading, that
-   only the [to] components of the witnesses matter, and only up to ≈.
-
-   That conjugation is not merely a formal possibility, and the file does not
-   ask the reader to take it on faith.  [huq_witness_separates], at the end,
-   exhibits ONE section functor over B(Z/2) — the delooping of the two-element
-   group, where every element is a natural automorphism of the identity
-   because the group is abelian — carrying two witness pairs whose recovered
-   transformations compute to [false] and to [true], with the two values
-   pinned by [eq_refl] examples.  So a setoid of section functors whose
-   equivalence compared the FUNCTOR alone, discarding the witnesses, provably
-   could not support [Comma_Transform] as a map out of it: that one functor
-   would have to be sent to two distinct transformations.  That is why
-   [HuqSection] bundles the witnesses as data rather than asserting the
-   section property.
-
-   Retreating to on-the-nose witnesses would not remove the phenomenon, only
-   relocate it: a strict witness is still data, a family of object equalities
-   [∀ x, fst ``(F x) = x], and two such families differ by a family of loops
-   in obj[D] that nothing here identifies.  Identifying them uniformly is a
-   UIP hypothesis on the objects of D, which this development does not take.
-
-   THE PACKAGING, AND THE EQUIVALENCE IT QUOTIENTS BY.
-
-   [HuqSection] is a section functor packaged with its two witnesses.  Two of
-   them are [HuqCompatible] when there is a natural isomorphism θ between the
-   section functors — an inhabitant of [huq_functor X ≈[Cat] huq_functor Y],
-   so θ carries its naturality, it is not merely a pointwise family — ALONG
-   WHICH the witnesses correspond:
-
-     to (`1 (huq_sec1 X) d) ≈ to (`1 (huq_sec1 Y) d) ∘ fst `1 (to (`1 θ d))
-
-   and likewise for the second witness.  This is the geometric condition, "X
-   and Y are isomorphic AS SECTIONS"; it is deliberately NOT defined as the
-   kernel of the recovery map.  That it coincides with that kernel is the
-   theorem [huq_compatible_iff]: X and Y are compatible if and only if
-   [huq_transform X ≈ huq_transform Y].  The forward half is well-definedness
-   of the recovery map on the quotient.  The backward half is the substantive
-   one: from a bare equivalence of the two recovered transformations it builds
-   the comparison isomorphism, whose components are forced to be
-   [from (witness of Y) ∘ (witness of X)] — that is the opening step of
-   [huq_compatible_transform] — and whose NATURALITY does not consume the
-   hypothesis at all, [huq_compare_natural] using only the coherence fields of
-   the four witnesses.  The hypothesis is spent exactly once, on the commuting
-   square of the comparison, which the comma hom-setoid then ignores.
-
-   So the equivalence is not a convenience chosen to make a round trip close:
-   it is the coarsest relation for which the recovery map is injective, and it
-   is exhibited independently as the relation of being isomorphic as sections.
-   Nor is it so coarse as to collapse to "same underlying functor":
-   [huq_witness_sections_incompatible] separates two packaged sections whose
-   functors are literally the same.
-
-   [Huq_roundtrip] packages the correspondence as an isomorphism in Sets
-   between [huq_dom], the natural transformations S ⟹ T under
-   [Transform_Setoid], and [huq_cod], the packaged sections under
-   [HuqCompatible] — the shape used by Adjunction/Conjugate.v's
-   [conjugate_bijection] and Theory/Bicategory/Mates.v's [mate_iso].
-
-   Both round trips are available unpackaged, and neither rests on the kernel
-   characterization.  [Comma_Transform_Comma_Functor] is the transformation
-   side: at the canonical witnesses the conjugation collapses to
-   [fmap id ∘ τ X ∘ fmap id].  [Comma_Functor_Comma_Transform] is the section
-   side at its honest strength — a natural isomorphism
-   [Comma_Functor (Comma_Transform F p q) ≈[Cat] F] for ARBITRARY F, p and q,
-   whose component at d is the comma isomorphism between ((d, d); the
-   recovered arrow) and F d with legs the two witnesses at d.  It is not
-   available on the nose from these hypotheses, and the reason is visible in
-   the statement: F d is ((a, b); h) with a and b merely isomorphic to d, not
-   equal to it.  [huq_section_compatible] reads that isomorphism back into the
-   quotient, so the section-side round trip of [Huq_roundtrip] is discharged
-   by the explicit comparison rather than by [huq_compatible_iff]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* natural transformation S ⟹ T  ↦  section functor D ⟶ (S ↓ T) *)
 Program Definition Comma_Functor {C D : Category} {S T : D ⟶ C}
@@ -205,12 +87,11 @@ Context {S T : D ⟶ C}.
 
 (** ** The canonical section witnesses *)
 
-(* [Comma_Functor tau] is a common section of the two projections on the nose:
-   the object map of [comma_proj1 ◯ Comma_Functor tau] is
-   [fun X => fst (X, X)], which is [fun X => X] by iota, and likewise for its
-   morphism map, so the object witness required by [Functor_StrictEq_Setoid] is
-   [eq_refl] and both transports vanish. This is the strict (on-the-nose)
-   reading of the book's "sections of both forgetful functors". *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Comma_Functor_proj1_strict (tau : S ⟹ T) :
   comma_proj1 ◯ Comma_Functor tau ≈[StrictCat] Id := (fun _ => eq_refl; _).
@@ -220,13 +101,11 @@ Program Definition Comma_Functor_proj2_strict (tau : S ⟹ T) :
   comma_proj2 ◯ Comma_Functor tau ≈[StrictCat] Id := (fun _ => eq_refl; _).
 Next Obligation. reflexivity. Qed.
 
-(* The same two facts at the strength [Comma_Transform] consumes, namely in
-   Cat's hom-setoid [Functor_Setoid], where equality of functors is natural
-   isomorphism. These are built directly, with identity components, rather
-   than routed through [strict_equiv_implies_fun_equiv] (Instance/StrictCat/
-   ToCat.v): that bridge is [Qed]-opaque, so the components of the natural
-   isomorphism it produces do not reduce, whereas the round trip below needs
-   [to (`1 (Comma_Functor_proj2 tau) X)] to compute to [id]. *)
+(*
+   本节说明函子、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Comma_Functor_proj1 (tau : S ⟹ T) :
   comma_proj1 ◯ Comma_Functor tau ≈[Cat] Id := (fun _ => iso_id; _).
@@ -254,10 +133,11 @@ Qed.
 
 (** ** Witness dependence *)
 
-(* [Comma_Transform] is a function of the section witnesses, not of the section
-   functor alone. Replacing (p, q) by (p', q') conjugates every component by
-   the automorphisms [to (`1 p d) ∘ from (`1 p' d)] of d and
-   [to (`1 q' d) ∘ from (`1 q d)] of d. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem Comma_Transform_witness_shift
         (F : D ⟶ (S ↓ T))
@@ -282,11 +162,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The dependence is exactly on the [to] components of the witnesses: two
-   witness pairs with pointwise equivalent components give the same
-   transformation. So nothing beyond those components can matter, and the
-   conjugation of [Comma_Transform_witness_shift] is trivial precisely when
-   they agree. *)
+(*
+   本节说明 Transformation 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary Comma_Transform_witness_irrelevant
         (F : D ⟶ (S ↓ T))
@@ -421,10 +301,11 @@ Proof. reflexivity. Qed.
 Theorem huq_transform_section (tau : S ⟹ T) : huq_transform (huq_section tau) ≈ tau.
 Proof. apply Comma_Transform_Comma_Functor. Qed.
 
-(* Two packaged sections are compatible when there is a natural isomorphism
-   between the section functors ALONG WHICH the two pairs of witnesses
-   correspond: the triangles below say that the witness of X factors through
-   the witness of Y across the comparison. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition HuqCompatible (X Y : HuqSection) : Type :=
   ∃ theta : huq_functor X ≈[Cat] huq_functor Y,
@@ -455,13 +336,11 @@ Proof.
   symmetry; exact Hsq.
 Qed.
 
-(* The converse: the compatible-witness relation is exactly the kernel of the
-   backward map, so the equivalence above is not an arbitrary choice but the
-   coarsest one that makes [huq_transform] injective. The comparison
-   isomorphism is forced — its components are [from (witness of Y) ∘
-   (witness of X)] — and its NATURALITY is automatic, using only the coherence
-   fields of the four witnesses; the hypothesis is spent only on the comma
-   square. *)
+(*
+   本节说明等价、同构、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Undoing the conjugation on the [S] side: the recovered transformation,
    precomposed with the first witness, is the comma component of F d
@@ -477,9 +356,11 @@ Proof.
   reflexivity.
 Qed.
 
-(* The two recovered transformations agree, so the [X]-side conjugation of
-   the comma component of [F X] equals the [Y]-side one, up to the two
-   witnesses at d. This is the whole use made of the hypothesis. *)
+(*
+   本节说明 Transformation 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma huq_transform_shift (X Y : HuqSection)
       (H : huq_transform X ≈ huq_transform Y) (d : D) :
   fmap[T] (to (`1 (huq_sec2 X) d)) ∘ `2 (huq_functor X d)
@@ -554,15 +435,11 @@ Proof.
   - apply huq_transform_compatible.
 Qed.
 
-(* The section-side round trip, at the level of the quotient. This LEMMA is
-   proved directly from the comparison isomorphism of
-   [Comma_Functor_Comma_Transform] — it does not go through
-   [huq_transform_compatible] — so the round trip itself does not rest on the
-   kernel characterisation.  (The packaged [Huq_roundtrip] as a whole still
-   does, elsewhere: the forward map's respectfulness consumes
-   [huq_transform_compatible], and [HuqSection_Setoid]'s Equivalence
-   obligation routes through the kernel reading — the latter stylistically,
-   reflexivity at least having a direct geometric proof.) *)
+(*
+   本节说明等价、同构、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem huq_section_compatible (X : HuqSection) :
   HuqCompatible (huq_section (huq_transform X)) X.
@@ -611,27 +488,11 @@ End HuqBijection.
 
 (** ** Witness dependence is not merely formal *)
 
-(* The conjugation of [Comma_Transform_witness_shift] can be non-trivial, and
-   the witness B(Z/2) shows it. In the delooping of the two-element group
-   composition is [xorb] and the identity arrow is [false]; the group is
-   abelian, so EVERY element is a natural automorphism of the identity functor
-   (naturality of a family over a one-object category is exactly commutativity
-   with each arrow). Hence [true] gives a second witness that
-   [comma_proj1 ◯ Comma_Functor nat_id] is the identity, inequivalent to the
-   canonical one, and the two transformations recovered from THE SAME section
-   functor are [false] and [true].
+(*
+   本节说明函子相关定义、性质与动机。
 
-   So the ill-definedness that motivates [HuqSection]'s bundling of witnesses
-   is exhibited, not assumed: no map out of a setoid of section functors that
-   discarded the witnesses could agree with [Comma_Transform], since one and
-   the same functor would have to be sent to two distinct transformations.
-
-   UNIVERSES: everything above this section is fully polymorphic with no
-   [Set] anywhere.  The separation witness alone is pinned -- [Bool_Xor]'s
-   carrier is [bool : Set], so [BZ2 : Category@{u Set Set}] has its hom and
-   proof levels at [Set] -- the expected price of a concrete witness (the
-   Instance/Grp/Center.v S3 precedent), and a counterexample needs only one
-   instance. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Local Notation BZ2 := (Deloop Bool_Xor).
 

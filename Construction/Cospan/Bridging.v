@@ -21,15 +21,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Section 1: coproduct/cover bridging
+(*
+   本节说明拉回/推出、始/终对象相关定义、性质与动机。
 
-    These rewrites are purely about the cocartesian (coproduct) structure
-    of [C]; no pushout is involved here (the relevant cospan tensor builds
-    its legs from the binary coproduct [+], i.e. the pushout over the
-    initial object).  When proving the bifunctor [fmap_comp] for
-    [cospan_tensor], the leg conditions involve a [merge]-of-mediators
-    composed against [cover]-style legs.  The fundamental simplifications
-    are [merge ∘ cover] and [merge ∘ inl/inr]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CoprodCoverBridging.
 
@@ -83,12 +79,11 @@ Qed.
 
 End CoprodCoverBridging.
 
-(** ** Section 2: Coproduct mediator extensionality
+(*
+   本节说明 Bridging 相关定义、性质与动机。
 
-    A morphism out of a coproduct is determined by its action on [inl]
-    and [inr].  This is the joint-epi property — already available as
-    [merge_inv]/[fork_inv], but stated here in a form convenient for
-    cospan-leg goals. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CoprodJointEpi.
 
@@ -114,11 +109,11 @@ Qed.
 
 End CoprodJointEpi.
 
-(** ** Section 3: Cospan-equiv ergonomic builder
+(*
+   本节说明 Bridging 相关定义、性质与动机。
 
-    Builds a [cospan_equiv f g] from a C-iso of apexes plus two C-level
-    leg-relations.  In the direct CospanCat this is just the record
-    constructor, exposed here for clarity. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CospanEquivIntro.
 

@@ -91,10 +91,11 @@ Program Definition EnrichedWhiskerLeft {K : Category} `{@Monoidal K}
   etransform := fun x => efmap ∘ etransform x
 |}.
 Next Obligation.
-  (* enaturality of the left whisker at x, y.
-     LHS:  ecompose ∘ ((efmap H ∘ σ_y) ⨂ (efmap H ∘ efmap F)) ∘ unit_left⁻¹
-     Split the tensor, pull ecompose ∘ (efmap H ⨂ efmap H) through
-     H.efmap_comp, then apply σ's enaturality, and reassemble the RHS. *)
+  (*
+   本节说明 Compose 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   intros.
   simpl.
   (* split each tensor of composites into a composite of tensors *)
@@ -122,11 +123,11 @@ Program Definition EnrichedWhiskerRight {K : Category} `{@Monoidal K}
   etransform := fun x => etransform (efobj x)
 |}.
 Next Obligation.
-  (* enaturality of the right whisker at x, y.
-     LHS:  ecompose ∘ (σ_{Hy} ⨂ (efmap F ∘ efmap H)) ∘ unit_left⁻¹
-     Split the tensor: (id ⨂ efmap H) ∘ unit_left⁻¹ ≈ unit_left⁻¹ ∘ efmap H
-     by from_unit_left_natural; then apply σ's enaturality, and turn the
-     RHS coercion back with from_unit_right_natural. *)
+  (*
+   本节说明 Compose 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   intros.
   simpl.
   (* pad each component transform with an identity so the tensor becomes a

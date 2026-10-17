@@ -28,58 +28,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** * Hypergraph structure on [CospanCat C]
+(*
+   本节说明幺半结构、（余）极限、拉回/推出相关定义、性质与动机。
 
-    Mathematical content (cf. Carboni–Walters, Fong–Spivak):
-
-    Given a category [C] with finite colimits (an initial object [0],
-    binary coproducts [+], and binary pushouts), the cospan category
-    [CospanCat C] is a symmetric monoidal category with tensor given by
-    the coproduct of [C]:
-
-      X ⨂ Y   :=  X + Y               (in C)
-      I       :=  0                    (initial object of C)
-      f ⨂ g  :=  the cospan with apex [apex f + apex g] and legs
-                   [cover (cospan_in1 f) (cospan_in1 g)],
-                   [cover (cospan_in2 f) (cospan_in2 g)]
-
-    Each object [X] carries a canonical SCFA built from the cocartesian
-    structure:
-
-      μ_X     : cospan X+X ~> X via apex X, leg1 = [id ▽ id], leg2 = id
-      η_X     : cospan 0 ~> X via apex X, leg1 = zero, leg2 = id
-      δ_X     : cospan X ~> X+X (the opposite of μ as a cospan)
-      ε_X     : cospan X ~> 0 (the opposite of η as a cospan)
-
-    --------------------------------------------------------------------
-
-    Status: V2a delivers the typed *data* of this construction —
-    [Cospan_tensor_obj], [Cospan_unit_obj], [cospan_tensor] (tensor of
-    morphisms), and the SCFA-witness cospans [cospan_scfa_mu],
-    [cospan_scfa_eta], [cospan_scfa_delta], [cospan_scfa_epsilon].
-
-    The full [Monoidal (CospanCat C)] / [SymmetricMonoidal] / [Hypergraph]
-    proof obligations (naturality of associator/unitors, triangle and
-    pentagon, braid coherence, SCFA axioms in the cospan setoid, and
-    tensor/unit coherence on the [Hypergraph] class) decompose into a
-    large body of cospan-equiv pushout diagrams.  These obligations ARE
-    now discharged: the full [Hypergraph (CospanCat C)] instance
-    [Cospan_Hypergraph] is delivered in
-    [Construction/Cospan/HypergraphInstance.v] (which builds on the
-    monoidal/symmetric-monoidal instances and consumes the typed data
-    this file provides).
-
-    Consumers who want to instantiate [Hypergraph] for a different
-    concrete category, or to work below the [Hypergraph] class, have two
-    further options:
-
-      (a) Instantiate [Hypergraph] directly for your concrete category
-          (e.g. [Cospan(Sets)]) using the data definitions below plus
-          your category's specific axioms, OR
-      (b) Work at the level of the algebraic classes [Monoid] /
-          [Comonoid] / [Frobenius] / [SpecialCommutativeFrobenius]
-          directly on your objects — these are fully delivered, plus the
-          [Hypergraph_CompactClosed] derivation and the [Spider] lemmas. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CospanHypergraphData.
 
@@ -93,11 +46,11 @@ Context (HP : HasPushouts C).
 Definition Cospan_tensor_obj (X Y : C) : C := X + Y.
 Definition Cospan_unit_obj : C := initial_obj.
 
-(** ** Cospan-level tensor of morphisms
+(*
+   本节说明 Hypergraph 相关定义、性质与动机。
 
-    Given cospans [f : X ~> Y] (apex [Nf]) and [g : X' ~> Y'] (apex [Ng]),
-    the tensor cospan [f ⨂ g : X+X' ~> Y+Y'] has apex [Nf + Ng] and legs
-    obtained by [cover]-ing the legs of [f] and [g]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cospan_tensor
            {X Y X' Y' : C}
            (f : CospanArrow X Y) (g : CospanArrow X' Y')
@@ -139,12 +92,11 @@ Arguments cospan_scfa_eta     {C _} X.
 Arguments cospan_scfa_delta   {C _} X.
 Arguments cospan_scfa_epsilon {C _} X.
 
-(** ** Basic cospan_tensor properties
+(*
+   本节说明 Hypergraph 相关定义、性质与动机。
 
-    These are the equations that hold without needing the full bifunctor
-    machinery.  They are stated here as a typed surface for downstream
-    code, and as semantic anchors for the full V2c-applications
-    coherence proofs. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CospanTensorBasics.
 
@@ -169,10 +121,11 @@ Proof.
     apply merge_inl_inr.
 Defined.
 
-(** [cospan_tensor] respects [cospan_equiv] in both arguments.
+(*
+   本节说明 Hypergraph 相关定义、性质与动机。
 
-    With the direct CospanCat, the apex iso is just a C-iso of coproducts,
-    built via [coprod_respects_iso] from the per-component isos. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cospan_tensor_respects
       {X Y X' Y' : C}
       (f f' : CospanArrow X Y) (g g' : CospanArrow X' Y') :
@@ -195,45 +148,17 @@ Defined.
 
 End CospanTensorBasics.
 
-(** ** A note on the remaining Cospan→Hypergraph coherence
+(*
+   本节说明 Hypergraph 相关定义、性质与动机。
 
-    The general respect lemma [cospan_tensor f f' g g' : cospan_equiv f f'
-    -> cospan_equiv g g' -> cospan_equiv (cospan_tensor f g) (cospan_tensor f' g')]
-    requires constructing an iso of cospan apexes [apex f + apex g ≅ apex f' + apex g']
-    in the cospan setoid (which lives in [C^op]).
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-    Two natural strategies were tried:
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-      (a) Use [coprod_respects_iso] from [Cocartesian.v] to build the
-          coproduct iso in [C], then transport via [Isomorphism_Opposite]
-          to [C^op].  This requires converting the [C^op]-isos phi and psi
-          back into [C]-isos by swapping [to]/[from], but the swap creates
-          equational obligations of the form [from ∘ to ≈ id] where the
-          [id] is annotated with [C^op] vs [C], blocking type-equality
-          even though the morphism equations agree.
-
-      (b) Build the iso directly in [C^op] by manually filling
-          [Build_Isomorphism] with [cover (to phi) (to psi)] etc.  This
-          requires [Cocartesian (C^op)] (for the [cover] notation to
-          resolve), which we do not assume.
-
-    Both routes hit category-resolution friction that is mechanical but
-    non-trivial to discharge cleanly.  The most natural way to close this
-    is to first prove [@Cocartesian C -> @Cartesian (C^op)] (the
-    library's [Notation 'Cocartesian' C := (@Cartesian (C^op))] does the
-    reverse), giving us coproduct structure usable in either direction.
-    That conversion is straightforward but is a separate piece of
-    infrastructure.
-
-    For V2b we deliver the [cospan_tensor_id] case (above), the SCFA
-    data definitions, and a sharpened catalog of the remaining
-    coherence diagrams.  *)
-
-(** ** SCFA monoid/comonoid laws on the cocartesian witnesses
-
-    These don't require the full Monoidal-on-cospans structure; they
-    are equations between specific cospans, expressible directly via
-    the cocartesian structure of [C]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CospanSCFALaws.
 
@@ -242,67 +167,25 @@ Context `{H_Coc : @Cocartesian C}.
 Context `{H_Ini : @Initial C}.
 Context (HP : HasPushouts C).
 
-(** ** μ-unit laws on the witness cospans
+(*
+   本节说明幺半结构、拉回/推出、幺半群相关定义、性质与动机。
 
-    These hold as cospan-equiv equations between
-    [cospan_compose (cospan_scfa_mu X) (cospan_tensor (cospan_scfa_eta X) (cospan_id X))]
-    and (the canonical "unit_left" cospan).  The proof is a pushout
-    calculation in [C].
-
-    The full SCFA proof requires having the [Monoidal (CospanCat C)]
-    structure available so we can state the laws against [unit_left],
-    [unit_right], [tensor_assoc] etc. on cospans — that infrastructure
-    is the next layer (Cospan_Monoidal etc., deferred to V2c since it
-    requires building all the unitor/associator cospans and proving
-    their naturality through pushouts).
-
-    What V2b CAN deliver: the [cospan_scfa_*] witnesses respect
-    [cospan_equiv] under composition and tensor, and small structural
-    equations between them — which is the building-block layer.
-
-    The witness equation [μ ∘ δ ≈ id] (specialness) requires showing
-    that pushing out the codiagonal against itself collapses to the
-    identity cospan.  This is structurally a pushout calculation, but
-    requires the [cospan_compose_apex] / [cospan_compose_in1] /
-    [cospan_compose_in2] accessors and a careful UMP argument. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 End CospanSCFALaws.
 
-(** ** Status note
+(*
+   本节说明幺半结构、函子、拉回/推出相关定义、性质与动机。
 
-    V2b closes the trivial functoriality lemma
-    [cospan_tensor_id] and [cospan_tensor_respects] (above), which
-    are the [Proper]-instance ingredients for [cospan_tensor].
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-    The remaining structural obligations (full [Monoidal] instance,
-    associator/unitors/braid as cospans + their naturality, SCFA
-    axioms as cospans, [Hypergraph] tensor/unit coherence) reduce to
-    a large body of pushout-cospan-equiv diagrams in [C].  Each is
-    structurally a [pushout_med_eq]-and-[merge_inl_inr]-style
-    calculation, but the aggregate (5 distinct instances × roughly 100
-    lines each = ~500 lines of mechanical pushout reasoning) is too
-    large for a single PR.
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    These remaining obligations are sharpened to V2c-applications: a
-    downstream consumer instantiating [Hypergraph (CospanCat Sets)] or
-    [Hypergraph (CospanCat FinSet)] for a CONCRETE category can
-    discharge them directly using the category's specific finite-
-    colimit structure, which is typically much more tractable than the
-    fully-abstract pushout reasoning required at the [HasPushouts]
-    level.
-
-    The V2b-V2c boundary is therefore drawn at: *abstract* coherence
-    proofs (the rest of the cospan-as-hypergraph derivation) are deferred,
-    but *typed data* for downstream concrete-category instantiation is
-    fully provided.  *)
-
-(** ** Morphism-as-cospan: lifting C-morphisms into [CospanCat C]
-
-    Any morphism [f : X ~> Y] in [C] induces a cospan from [X] to [Y]:
-    apex = [Y], leg1 = [f], leg2 = [id].  This gives a functor
-    [C → CospanCat C] (the "left embedding") which we use throughout
-    the Monoidal structure: the unitor and associator cospans are the
-    lifts of the corresponding C-coproduct isos. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section MorphismAsCospan.
 
@@ -319,10 +202,11 @@ Proof.
   exists iso_id; simpl; split; cat.
 Defined.
 
-(* Lift a C-iso [phi : X ≅ Y] into [CospanCat C] by taking the cospan of
-   its forward map [to phi].  This is the underlying cospan of the induced
-   CospanCat-iso; the inverse cospan (the lift of [from phi]) is built
-   symmetrically when the full isomorphism is needed. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition mor_iso_as_cospan_iso {X Y : C} (phi : X ≅ Y) :
   CospanArrow X Y := mor_as_cospan (to phi).
 
@@ -377,11 +261,11 @@ Arguments cospan_unit_right {C _ _} X.
 Arguments cospan_tensor_assoc {C _} X Y Z.
 Arguments cospan_braid {C _} X Y.
 
-(** ** Pushout-of-id-with-g collapse
+(*
+   本节说明函子、拉回/推出相关定义、性质与动机。
 
-    The pushout of [(id : Y → Y, g : Y → Z)] is canonically isomorphic
-    to [Z].  This is the key calculation behind the morphism-as-cospan
-    functoriality. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section PushoutIdCollapse.
 
@@ -449,12 +333,11 @@ Section MorAsCospanFunctorial.
 Context {C : Category}.
 Context (HP : HasPushouts C).
 
-(** [mor_as_cospan] respects composition.
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    The composite cospan's apex is the pushout of [(id, g)], which by
-    [pushout_id_left_apex] is isomorphic to [Z] (the codomain of [g]).
-    Under that iso, the composite legs agree with [g ∘ f] and [id_Z]
-    respectively. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mor_as_cospan_compose {X Y Z : C} (g : Y ~> Z) (f : X ~> Y) :
   cospan_equiv
     (cospan_compose HP (mor_as_cospan g) (mor_as_cospan f))
@@ -480,11 +363,11 @@ Defined.
 
 End MorAsCospanFunctorial.
 
-(** ** Pushout-coproduct compatibility: the bifunctor key lemma
+(*
+   本节说明函子、拉回/推出相关定义、性质与动机。
 
-    The pushout of two [cover]s is canonically isomorphic to the coproduct
-    of the per-component pushouts.  This is the key compatibility behind
-    [cospan_tensor]'s functoriality. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section PushoutCoproductCompat.
 
@@ -492,11 +375,11 @@ Context {C : Category}.
 Context `{H_Coc : @Cocartesian C}.
 Context (HP : HasPushouts C).
 
-(* The "split" cocone over [(cover f f', cover g g')]: the two legs
-   [cover (pushout_in1 P) (pushout_in1 P')] and
-   [cover (pushout_in2 P) (pushout_in2 P')] into the coproduct of the
-   per-component pushout apexes agree, so they mediate the forward map
-   from the pushout-of-covers apex to that coproduct. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma pushout_cover_split_cocone
   {X X' Y Y' Z Z' : C}
   (f : X ~> Y) (g : X ~> Z)
@@ -649,11 +532,11 @@ Proof.
   rewrite <- merge_comp.
   apply (snd (merge_inv _ _ _ _)).
   split.
-  - (* Goal: split ∘ m1 ≈ inl
-       Cocone for P that gives `inl` as mediator: legs (inl ∘ pushout_in1 P, inl ∘ pushout_in2 P).
-       But that's just the inl-of-identity cocone.
-       Use pushout_med_unique to derive both [split ∘ m1] and [inl] equal the same
-       cocone-mediator. *)
+  - (*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     assert (HC : (@inl C _ (pushout_apex P) (pushout_apex P')) ∘ pushout_in1 P ∘ f
                  ≈ (@inl C _ (pushout_apex P) (pushout_apex P')) ∘ pushout_in2 P ∘ g).
     { rewrite <- !comp_assoc.
@@ -700,13 +583,11 @@ Qed.
 
 End PushoutCoproductCompat.
 
-(** ** Bifunctoriality: [cospan_tensor (g ∘ f) (g' ∘ f')
-                       ≈ cospan_tensor g g' ∘ cospan_tensor f f']
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    With the direct CospanCat, the iso of cospan apexes is built directly
-    from [pushout_cover_combine] (going from coproduct-of-pushouts
-    to pushout-of-covers).  The leg conditions reduce to
-    pushout-mediator-of-cover calculations. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CospanTensorBifunctoriality.
 
@@ -782,12 +663,11 @@ Defined.
 
 End CospanTensorBifunctoriality.
 
-(** ** Cospan_Bifunctor: [cospan_tensor] as a bifunctor on [CospanCat C]
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Builds the [Functor (CospanCat C ∏ CospanCat C) (CospanCat C)] from
-    the per-component data: object mapping is [Cospan_tensor_obj],
-    morphism mapping is [cospan_tensor], with [fmap_id] and [fmap_comp]
-    discharged by [cospan_tensor_id] and [cospan_tensor_compose_compat]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CospanBifunctor.
 
@@ -818,14 +698,11 @@ Defined.
 
 End CospanBifunctor.
 
-(** ** Cospan_Monoidal: the Monoidal structure on [CospanCat C]
+(*
+   本节说明幺半结构、幺半群、等价相关定义、性质与动机。
 
-    The unitor, associator, braid are [mor_as_cospan]s of the
-    corresponding C-level coproduct isos.  The Monoidal naturality
-    and coherence conditions lift through the [mor_as_cospan]
-    embedding because [mor_as_cospan] respects composition (via
-    [mor_as_cospan_compose]) and equivalence (via
-    [mor_as_cospan_proper]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CospanMonoidal.
 
@@ -872,20 +749,11 @@ Proof.
       * apply mor_as_cospan_id.
 Defined.
 
-(** ** Unitor naturality (left): a pushout-UMP calculation
+(*
+   本节说明拉回/推出、来源与用途相关定义、性质与动机。
 
-    For a generic cospan [g : x → y] with apex [N], legs [g1 : x → N]
-    and [g2 : y → N], the left-unitor naturality in [CospanCat] requires
-
-       cospan_compose HP g unit_left ≈ cospan_compose HP unit_left (bimap id g)
-
-    where [unit_left = mor_as_cospan (zero ▽ id : 0+x → x)] and
-    [bimap id g = cospan_tensor (cospan_id 0) g].
-
-    The LHS apex is [pushout id g1], which collapses to [N] by
-    [pushout_id_left_apex].  The RHS apex is the pushout of
-    [(cover id g2, zero ▽ id)], which also collapses to [N] by a
-    direct UMP calculation, exhibited below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma pushout_cover_id_unit_left_apex {y N : C} (g2 : y ~> N) :
   pushout_apex (pushout (cover id[0] g2 : (0 + y)%object ~> (0 + N)%object)
@@ -1006,12 +874,11 @@ Proof.
   apply inr_merge.
 Qed.
 
-(** Goal: [to coprod_assoc ∘ cover (cover f g) h ≈ cover f (cover g h) ∘ to coprod_assoc].
+(*
+   本节说明 Hypergraph 相关定义、性质与动机。
 
-    The proof is "computational" — both sides equal the canonical morphism
-    [(inl ∘ f) ▽ ((inr ∘ inl) ∘ g) ▽ ((inr ∘ inr) ∘ h)] (with appropriate
-    associativity).  We split it via joint-epi and reduce each leg by
-    explicit composition. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cover_assoc_from {a a' b b' c c' : C}
       (f : a ~> a') (g : b ~> b') (h : c ~> c') :
@@ -1124,12 +991,11 @@ Proof.
     reflexivity.
 Qed.
 
-(** ** Cover-paws (braid) interaction at C level
+(*
+   本节说明 Hypergraph 相关定义、性质与动机。
 
-    The C-iso [paws ≈ to coprod_comm] intertwines [cover g h] and
-    [cover h g].  Both directions are pure cocartesian calculations
-    via [cover_inl] / [cover_inr] and the [paws ∘ inl ≈ inr] /
-    [paws ∘ inr ≈ inl] base facts ([paws_inl], [paws_inr]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma paws_inl {x y : C} :
   (@paws C H_Coc x y) ∘ inl ≈ inr.
@@ -1172,11 +1038,11 @@ Proof.
     reflexivity.
 Qed.
 
-(** ** Pushout-along-iso: the apex collapses
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    For [m : Y → N] and a C-iso [phi : Y ≅ Z], the pushout of [(m, to phi)]
-    is canonically [N], with [pushout_in1 ≈ id[N]] and
-    [pushout_in2 ≈ m ∘ from phi]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma pushout_along_iso_apex {Y Z N : C} (m : Y ~> N) (phi : Y ≅ Z) :
   pushout_apex (pushout m (to phi)) ≅ N.
@@ -1217,13 +1083,11 @@ Proof.
     + cat.
 Defined.
 
-(** ** Bridging lemma: composing a cospan with a [mor_as_cospan] on the right
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    For [f : Y ~{CospanCat}~> Z] (a generic cospan) and [h : X ~> Y] a
-    C-morphism, [cospan_compose f (mor_as_cospan h)] simplifies under
-    the pushout-id-collapse: the pushout of [(id[Y], cospan_in1 f)] is
-    canonically the apex of [f], and the composite cospan becomes
-    [Build_CospanArrow (apex f) (cospan_in1 f ∘ h) (cospan_in2 f)]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cospan_compose_mor_as_cospan_right
       {X Y Z : C} (f : CospanArrow Y Z) (h : X ~> Y) :
@@ -1295,16 +1159,11 @@ Proof.
       exact Hk2.
 Defined.
 
-(** ** Left-unitor naturality
+(*
+   本节说明拉回/推出、来源与用途相关定义、性质与动机。
 
-    For any cospan [g : x → y]:
-      [g ∘ unit_left ≈ unit_left ∘ bimap id g]
-    in [CospanCat C HP], where [unit_left = mor_as_cospan (zero ▽ id)]
-    and [bimap id g = cospan_tensor (cospan_id 0) g].
-
-    The iso of apexes is [pushout_cover_id_unit_left_apex (cospan_in2 g)],
-    whose [to] is exactly the [pushout_med] making the legs match the
-    bridging-lemma-simplified LHS. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cospan_unit_left_natural
       {x y : C} (g : CospanArrow x y) :
@@ -1513,11 +1372,11 @@ Proof.
     apply cover_assoc_from.
 Defined.
 
-(** ** From [to] to [from] naturality
+(*
+   本节说明 Hypergraph 相关定义、性质与动机。
 
-    General principle: for any iso [phi : X ≅ Y] in a category [D],
-    if [g ∘ to phi ≈ to phi ∘ h] (the "to" naturality) then
-    [h ∘ from phi ≈ from phi ∘ g] (the "from" naturality). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma from_naturality_of_to {D : Category} {X Y W : D}
       (phi : @Isomorphism D X Y)
@@ -1633,11 +1492,11 @@ Qed.
      ≈ to coprod_assoc ∘ to coprod_assoc]
     at types [(((X+Y)+Z)+W) → (X+(Y+(Z+W)))]. *)
 
-(** Auxiliary computations used in the C-level pentagon below.
+(*
+   本节说明 Hypergraph 相关定义、性质与动机。
 
-    Strategy: each goal has shape [(EXPR) ∘ COMPOSITE_INJECTION ≈ TARGET].
-    We use the [coprod_ext_eq] tactic-like trick: assert the helper equation
-    and apply it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Reduce one composite alpha against `inl ∘ inl ∘ inl` to inl.
     Key fact: alpha ∘ (inl ∘ inl) = inl by [assoc_to_inl_inl].  So
@@ -1792,12 +1651,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** C-level pentagon for [coprod_assoc].
+(*
+   本节说明 Hypergraph 相关定义、性质与动机。
 
-    Two coproduct iso composites out of [((X+Y)+Z)+W] are equal iff they
-    agree on the four basis injections [(inl∘inl)∘inl], [(inl∘inl)∘inr],
-    [inl∘inr], and [inr].  Each of those is closed by the corresponding
-    [pentagon_lhs_*] / [pentagon_rhs_*] helper above. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma coprod_pentagon_aux {X Y Z W : C} :
   cover (id[X]) (to (@coprod_assoc C H_Coc Y Z W))
     ∘ to (@coprod_assoc C H_Coc X (Y + Z) W)
@@ -1838,11 +1696,11 @@ Proof.
     symmetry; rewrite pentagon_rhs_r; reflexivity.
 Qed.
 
-(** ** Triangle and Pentagon at cospan level
+(*
+   本节说明 Hypergraph 相关定义、性质与动机。
 
-    These lift the C-level [coprod_triangle_aux] and [coprod_pentagon_aux]
-    through [cospan_tensor_mor_as_cospan], [mor_as_cospan_compose], and
-    [mor_as_cospan_proper]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cospan_triangle_identity {x y : C} :
   cospan_equiv
@@ -1882,22 +1740,11 @@ Proof.
   apply coprod_triangle_aux.
 Defined.
 
-(** ** Toward [Monoidal (CospanCat C HP)]
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    All six naturality lemmas ([to/from] x [unit_left/unit_right/tensor_assoc])
-    are now derivable from the proved [cospan_unit_left_natural],
-    [cospan_unit_right_natural], [cospan_tensor_assoc_natural], and the
-    [from_naturality_of_to_M] helper.
-
-    The remaining obligations for the full [Monoidal] instance:
-
-      - [triangle_identity]: at cospan level, this reduces to the C-level
-        [coprod_triangle_aux] (proved above) lifted via
-        [cospan_tensor_mor_as_cospan] and [mor_as_cospan_compose].
-
-      - [pentagon_identity]: derived from [coprod_pentagon_aux] (C-level)
-        via [mor_as_cospan_proper], [cospan_tensor_mor_as_cospan], and
-        [mor_as_cospan_compose].  See [cospan_pentagon_identity] below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Cospan-level pentagon, parallel to [cospan_triangle_identity]. *)
 Lemma cospan_pentagon_identity {x y z w : C} :
@@ -1953,16 +1800,11 @@ Proof.
   apply coprod_pentagon_aux.
 Defined.
 
-(** ** Full Cospan_Monoidal instance
+(*
+   本节说明幺半结构、幺半群、始/终对象相关定义、性质与动机。
 
-    The Monoidal structure on [CospanCat C HP], with:
-      - unit object [I = 0] (initial object of C)
-      - tensor = coproduct of apexes via [Cospan_Bifunctor]
-      - unitors / associator = [mor_iso_lift] of the C-level coproduct isos
-      - naturality conditions discharged by [cospan_unit_*_natural] and
-        [cospan_tensor_assoc_natural]
-      - triangle / pentagon discharged by [cospan_triangle_identity] /
-        [cospan_pentagon_identity]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export] Program Instance Cospan_Monoidal : @Monoidal (CospanCat C HP) := {|
   I := (@Cospan_unit_obj C H_Ini : CospanCat C HP);
@@ -2011,98 +1853,27 @@ Defined.
 
 End CospanMonoidal.
 
-(* Historical note: the two status blocks below predate the completed
-   [Cospan_Monoidal] instance above and are retained only as design
-   rationale.  Their line-count estimates and "what remains" language are
-   superseded — the full Monoidal coherence (naturality, triangle,
-   pentagon) is discharged by the lemmas in this file and closes under the
-   global context, as recorded by the CLOSED markers at the end. *)
+(*
+   本节说明幺半结构、幺半群、（余）端相关定义、性质与动机。
 
-(** ** Status of the full Cospan-Hypergraph derivation
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-    With the above [mor_as_cospan] embedding and the unitor / associator
-    / braid cospans defined as data, the Monoidal coherence proofs at
-    the CospanCat level reduce to:
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-      (i)  the corresponding C-level coproduct facts (provided by
-           [Structure/Cocartesian.v]) — for triangle, pentagon,
-           naturality of unitors;
-     (ii)  the [cospan_compose] of two morphism-as-cospans agreeing
-           with the morphism-as-cospan of the composite in C, which
-           reduces to the pushout-of-id-with-anything collapse — i.e.,
-           [pushout id g] is canonically [Y] (the codomain of g) and
-           similarly for [pushout f id], a single pushout-UMP
-           calculation per unitor / associator / braid;
-    (iii)  the bifunctor [fmap_comp] for [cospan_tensor], requiring
-           the pushout-of-covers compatibility lemma.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-    These are still ~300-500 lines of pushout reasoning, but the
-    [mor_as_cospan] embedding makes them mechanically tractable.
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    The downstream consumer instantiation path is now: provide
-    [Cocartesian C], [Initial C], [HasPushouts C], and (for SCFA axioms)
-    a witness that pushouts of identity-style maps collapse — the
-    latter is automatic in [Sets] and in any category with explicit
-    finite colimits. *)
-
-(** ** Progress on V2 Final Push (this branch)
-
-    After refactoring [CospanCat] to a direct construction (no [C^op]
-    shim), the following V2d-coherence machinery is now available:
-
-    - [cospan_tensor_id], [cospan_tensor_respects],
-      [cospan_tensor_compose_compat] — the three [Proper] + bifunctor
-      ingredients for [cospan_tensor].
-
-    - [Cospan_Bifunctor : (CospanCat C HP) ∏ (CospanCat C HP) ⟶ CospanCat C HP]
-      — the bifunctor underlying the Monoidal tensor.
-
-    - [mor_as_cospan_compose], [mor_as_cospan_id], [mor_as_cospan_proper]
-      — functoriality of the embedding [C ⟶ CospanCat C].
-
-    - [mor_iso_lift] — lift any [C]-iso to a [CospanCat C HP]-iso, used
-      for the unitor / associator / braid as cospan-level isos.
-
-    - [cospan_tensor_mor_as_cospan] — the bridge
-      [cospan_tensor (mor_as_cospan f) (mor_as_cospan g) ≈ mor_as_cospan (cover f g)]
-      that lets [mor_as_cospan]-lifted morphisms interact with [bimap]
-      in the upcoming Monoidal naturality proofs.
-
-    What remains for the full Monoidal instance:
-
-      (a) The six naturality conditions ([to/from_unit_left_natural],
-          [to/from_unit_right_natural], [to/from_tensor_assoc_natural]).
-          Each requires showing
-            [g ∘ unit_left ≈ unit_left ∘ bimap id g]
-          for an *arbitrary* cospan [g], where [unit_left] is a lifted
-          C-iso but [g] is a generic cospan with non-trivial apex.  The
-          apex of the LHS composite collapses by [pushout_id_left_apex],
-          but the apex of the RHS composite is a pushout of [cover id g_2]
-          against [zero ▽ id], which is a non-trivial UMP calculation
-          (~50-100 lines each, ~400-600 total).
-
-      (b) Triangle + pentagon coherence identities, each a UMP
-          calculation against the unitor/associator cospans (~100-200
-          lines).
-
-    Estimated total: ~600-1000 lines of mechanical-but-detailed pushout
-    UMP reasoning.  Tractable but beyond a single dispatch session. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 (* CLOSED(V2d-coherence): the full Monoidal (CospanCat C HP) instance is
    built as [Cospan_Monoidal] above. *)
-(* CLOSED(V2d-coherence): The [Cospan_BraidedMonoidal] /
-   [Cospan_SymmetricMonoidal] instances are built in
-   [Construction/Cospan/Symmetric.v].  The SCFA-on-every-X instance
-   [cospan_scfa] (and the underlying monoid / comonoid / Frobenius /
-   commutative Frobenius pieces) is built in
-   [Construction/Cospan/SCFA.v].  The full
-   [Hypergraph (CospanCat C HP) Cospan_SymmetricMonoidal] instance is
-   built as [Cospan_Hypergraph] in
-   [Construction/Cospan/HypergraphInstance.v]:
-   - 4 unit axioms ([scfa_unit_{mu,eta,delta,epsilon}]) — closed via
-     initiality of [0];
-   - 4 tensor axioms ([scfa_tensor_{mu,eta,delta,epsilon}]) — closed via
-     the C-level identity [codiag_through_mid_swap] lifted through
-     [cospan_mid_swap_as_mor] / [cospan_mid_swap_inv_as_mor] and the
-     standard [mor_as_cospan_compose] /
-     [cospan_tensor_mor_as_cospan] / [cospan_tensor_id_left_as_cospan]
-     bridges over the 5-fold [mid_swap] composite. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

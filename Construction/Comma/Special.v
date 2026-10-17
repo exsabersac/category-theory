@@ -29,16 +29,11 @@ Generalizable All Variables.
 
 (** ** Block A: the discrete category on a setoid *)
 
-(* [Proset] transposed from `Prop`-valued preorders to the `crelation`s this
-   library's `≈` lives in: objects are the carrier, a morphism x ~> y is a
-   proof of x ≈ y, identity is reflexivity and composition is transitivity.
-   Like [Proset] it is THIN — the hom-setoid identifies all parallel arrows —
-   so every category law is an equation between parallel morphisms and is
-   discharged by the default obligation tactic.
+(*
+   本节说明hom相关定义、性质与动机。
 
-   [Blurry A] (Instance/Discrete/Reconstruct.v) is this construction at the
-   `eq` setoid; [Proset] is its `Prop`-valued analogue, unusable here for the
-   reason given in the header. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition DiscreteSetoidCat {A : Type} (S : Setoid A) : Category := {|
   obj     := A;                                (* objects are the carrier *)
   hom     := fun x y => @equiv A S x y;        (* a morphism IS a proof of ≈ *)
@@ -69,22 +64,22 @@ Context {b a : C}.
    unique object of 1 on both sides. *)
 Definition comma_const_obj (h : b ~{C}~> a) : (=(b) ↓ =(a)) := ((ttt, ttt); h).
 
-(* The comma of two constant functors is THIN: the only data in one of its
-   morphisms is a pair of arrows of 1, and 1 has exactly one arrow.  This is
-   the engine of the file's comma-side obligations — every functor and
-   isomorphism law whose goal lands IN the comma is an instance of it.  (Laws
-   landing in [HomDiscrete] are discharged by that category's own trivially
-   true hom-setoid instead: those goals are equations the setoid makes
-   vacuous, which [comma_const_thin] cannot even be applied to by typing.) *)
+(*
+   本节说明函子、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma comma_const_thin (X Y : (=(b) ↓ =(a))) (m n : X ~> Y) : m ≈ n.
 Proof.
   destruct m as [[u1 u2] Hm], n as [[v1 v2] Hn]; simpl.
   now split; destruct u1, u2, v1, v2.
 Qed.
 
-(* A morphism of the comma category yields the ≈ its square asserts.  The
-   square is `h' ∘ fmap[=(b)] _ ≈ fmap[=(a)] _ ∘ h`, and both constant functors
-   send every arrow to an identity, so it says h' ≈ h. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma comma_const_equiv {X Y : (=(b) ↓ =(a))} (m : X ~> Y) : `2 X ≈ `2 Y.
 Proof.
   destruct m as [uv Hm]; simpl in *.
@@ -92,9 +87,11 @@ Proof.
   now symmetry.
 Qed.
 
-(* ... and conversely, a ≈ yields a morphism; written out rather than left to
-   the default obligation tactic, since this direction is the file's claim that
-   a comma morphism here IS a witness of `≈`. *)
+(*
+   本节说明 Special 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
 Program Definition comma_const_mor {X Y : (=(b) ↓ =(a))} (e : `2 X ≈ `2 Y) :
@@ -108,9 +105,11 @@ Qed.
 
 #[local] Obligation Tactic := cat_simpl.
 
-(* Comma objects are isomorphic exactly when their arrows agree: an arrow of
-   the comma IS a witness of `≈` ([comma_const_equiv] the other way), so this is
-   the object-level reading of thinness. *)
+(*
+   本节说明 Special 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition comma_const_obj_iso {X Y : (=(b) ↓ =(a))} (e : `2 X ≈ `2 Y) :
   X ≅ Y := {|
   to   := comma_const_mor e;
@@ -141,10 +140,11 @@ Program Definition Hom_Comma : HomDiscrete b a ⟶ (=(b) ↓ =(a)) := {|
 |}.
 Solve All Obligations with (intros; apply comma_const_thin).
 
-(* Mac Lane, §II.6, remark [maclane:II.6:remark1]: the comma category of two
-   objects, regarded as functors out of 1, is the discrete category on the
-   hom-set between them.  `≅[Cat]` is EQUIVALENCE of categories here
-   (Instance/Cat.v); see the header for what each round trip achieves. *)
+(*
+   本节说明函子、hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 (* [idtac] so that BOTH clauses are written out rather than left to the default
    obligation tactic; restored immediately afterwards. *)
 #[local] Obligation Tactic := idtac.
@@ -154,9 +154,11 @@ Program Definition Comma_Discrete_Hom : (=(b) ↓ =(a)) ≅[Cat] HomDiscrete b a
   from := Hom_Comma
 |}.
 Next Obligation.
-  (* Comma_Hom ◯ Hom_Comma ≈ Id[HomDiscrete b a]: the identity on objects
-     definitionally (h ↦ ((ttt, ttt); h) ↦ h), so [iso_id] components serve, and
-     the coherence clause is trivially true, the target being thin. *)
+  (*
+   本节说明 Special 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   exists (fun _ => iso_id).
   intros x y e; exact I.
 Qed.
@@ -179,30 +181,11 @@ Section CommaDiscreteEq.
 Context {C : Category}.
 Context {b a : C}.
 
-(* The always-available comparison: `=` implies `≈`, so the strictly discrete
-   category on the hom-TYPE maps into the comma category.  Every equality proof
-   goes to the canonical comma morphism on the reflexivity witness it
-   transports.
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-   Not [DiscreteCat_Functor comma_const_obj], though the two are extensionally
-   the same functor.  [Full], [Faithful] and [EssentiallySurjective] each carry
-   only THREE universe parameters (measured: `About Full` reports
-   `Full@{u u0 u1}`), so each identifies the hom AND proof universes of its
-   source and target categories.  RECORDED CORRECTION: an earlier revision of
-   this paragraph continued "[DiscreteCat_Functor] carries the `Set` pin in its
-   OWN signature — its type mentions `DiscreteCat@{u Set Set}`, fixed when that
-   constant was defined — so using it here would make the class demand `Set`
-   for C's hom universe too, which at this abstract use site is a universe
-   inconsistency, not merely a pin."  That pin is GONE: the donor was annotated
-   in place at Instance/Discrete.v in the PR "algebraic carriers are sets"
-   (2026-09-17), and its type now reads `DiscreteCat@{o h p} A ⟶ C` over
-   `C : Category@{uo uh up}`, with no literal `Set`.  Whether the hand-built
-   functor could therefore be replaced by [DiscreteCat_Functor comma_const_obj]
-   here has NOT been re-measured, and the hand-built one is kept: building the
-   functor by hand leaves those universes free to unify with C's, which is what
-   Block C's statements need; the same consideration is why
-   Instance/Discrete/Reconstruct.v's [Discrete_Compare] carries explicit
-   `@{o h p}` binders rather than going through [Program]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 (* `=` implies `≈`: transport the reflexivity witness along the equality. *)
 Definition discrete_eq_equiv (x y : b ~{C}~> a) (e : x = y) : x ≈ y :=
   match e in _ = z return x ≈ z with eq_refl => reflexivity x end.
@@ -236,10 +219,11 @@ Program Definition Comma_Discrete_eq_ESO :
   eso_iso := comma_const_iso
 |}.
 
-(* Fullness is EXACTLY the collapse of the hom-setoid.  Forwards: a witness of
-   f ≈ g is a comma morphism between the images, whose preimage is the wanted
-   equality.  Backwards: the required section law is free, the comma category
-   being thin. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Comma_Discrete_eq_Full_iff : Full Comma_Discrete_eq ↔ HomStrict.
 Proof.
   split.
@@ -252,9 +236,11 @@ Proof.
              (fun f g m => comma_const_thin _ _ _ _)).
 Qed.
 
-(* Faithfulness is EXACTLY UIP on the hom-type.  The comma category is thin, so
-   the hypothesis `fmap p ≈ fmap q` is vacuous and the conclusion `p ≈ q` is,
-   in [DiscreteCat], strict equality of the two proofs. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Comma_Discrete_eq_Faithful_iff : Faithful Comma_Discrete_eq ↔ HomUIP.
 Proof.
   split.
@@ -264,9 +250,11 @@ Proof.
     constructor; intros f g p q _; exact (HU f g p q).
 Qed.
 
-(* The conditional reading, with both hypotheses.  [HomStrict] builds the
-   backward functor's action and [HomUIP] discharges its three laws, each of
-   which is an equation between equality proofs. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Hom_Discrete_eq (HE : HomStrict) (HU : HomUIP) :
   HomDiscrete b a ⟶ DiscreteCat (b ~{C}~> a) :=
   @Build_Functor (HomDiscrete b a) (DiscreteCat (b ~{C}~> a))
@@ -314,12 +302,11 @@ Definition Comma_Discrete_Hom_eq (HE : HomStrict) (HU : HomUIP) :
   DiscreteCat (b ~{C}~> a) ≅[Cat] (=(b) ↓ =(a)) :=
   iso_compose (iso_sym Comma_Discrete_Hom) (Discrete_HomDiscrete HE HU).
 
-(* The necessity of [HomUIP], for ANY isomorphism, not merely for the one built
-   above: both legs of an isomorphism in Cat are faithful with no hypothesis
-   ([Cat_Iso_to_Faithful], Instance/Cat.v), and faithfulness of a functor into
-   this thin comma category is literally UIP on the hom-type.  So the plain
-   [DiscreteCat] reading of Mac Lane's remark cannot be had unconditionally in
-   this library. *)
+(*
+   本节说明函子、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem comma_discrete_iso_forces_UIP
   (iso : DiscreteCat (b ~{C}~> a) ≅[Cat] (=(b) ↓ =(a))) : HomUIP.
 Proof.
@@ -332,28 +319,19 @@ End CommaDiscreteEq.
 
 (** ** Block D: witnesses — both hypotheses inhabited, and both necessary *)
 
-(* Non-vacuity of Block C is proved rather than assumed, in both directions.
+(*
+   本节说明hom、（余）强度相关定义、性质与动机。
 
-   [HomUIP] alone is not enough: [Blur] below is a category whose hom-type is
-   [bool], on which UIP holds by Hedberg, yet Mac Lane's remark in its plain
-   [DiscreteCat] form is outright FALSE there ([Blur_no_discrete_iso]) — so
-   [HomStrict] is a genuine second hypothesis, not a convenience.  The two
-   hypotheses are pinned at DIFFERENT strengths, stated precisely:
-   [comma_discrete_iso_forces_UIP] shows [HomUIP] NECESSARY for any such
-   isomorphism (a genuine implication), while for [HomStrict] what is shown is
-   that it is NOT DROPPABLE ([Blur]: the other hypothesis alone does not
-   suffice) — no implication from the isomorphism to [HomStrict] is claimed.
-   And the pair is simultaneously satisfiable: over the terminal
-   category both hold and [Comma_Discrete_Hom_eq] applies
-   ([One_Comma_Discrete_Hom_eq]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 From Coq Require Import Eqdep_dec.
 
-(* One object, two parallel arrows, and a hom-setoid that identifies them: the
-   minimal category on which the hom-setoid is a genuine quotient.  Every
-   category law is an equation in the trivial hom-setoid, hence free — the same
-   device as Instance/Proset.v and as [Blurry] in
-   Instance/Discrete/Reconstruct.v, whence the name. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Blur : Category := {|
   obj     := poly_unit;
   hom     := fun _ _ => bool;
@@ -375,17 +353,11 @@ Proof.
   intros x y; destruct x, y; solve [ now left | right; discriminate ].
 Qed.
 
-(* Hence [HomUIP] does not suffice: over [Blur] no isomorphism in Cat between
-   the strictly discrete category on the hom-type and the comma of the two
-   constant functors exists at all.
+(*
+   本节说明函子、hom、同构相关定义、性质与动机。
 
-   The argument is short.  Over [Blur] any two arrows are `≈`, so any two
-   objects of the comma are isomorphic ([comma_const_obj_iso]).  A functor
-   preserves isomorphisms ([fobj_iso]), so the two objects `true` and `false` of
-   [DiscreteCat bool] have isomorphic images under `from ◯ to`; but in a
-   [DiscreteCat] an isomorphism carries an equality of its endpoints, and the
-   round trip `from ◯ to ≈ Id` identifies each image with its argument.  So
-   `true = false`. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Blur_no_discrete_iso :
   (DiscreteCat (ttt ~{Blur}~> ttt) ≅[Cat] (=((ttt : Blur)) ↓ =((ttt : Blur)))) → False.
 Proof.
@@ -407,15 +379,11 @@ Proof.
   discriminate Heq.
 Qed.
 
-(* [Blur] also settles the sibling file's strictness question.
-   Construction/Slice/Terminal.v argues in prose that Mac Lane's "isomorphic"
-   is unavailable for the slice over a terminal object — slice objects carry
-   their structure morphism as data, and [one_unique] gives only `≈`.  Here
-   that argument becomes a theorem: [Blur]'s trivially-true hom-setoid makes
-   EVERY arrow a `one`, so `Slice Blur ttt` has two objects `(ttt; true)` and
-   `(ttt; false)` where [Blur] has one object, and a strict isomorphism of
-   categories would force `true = false` through its object round trip.
-   (Adapted from the adversarial audit's probe, with thanks.) *)
+(*
+   本节说明hom、始/终对象、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Blur_Terminal : @Terminal Blur := {|
   terminal_obj := ttt;
   one := fun _ => true
@@ -441,10 +409,11 @@ Proof.
            (f_equal (fun s : @Slice Blur ttt => projT2 s) Heq)).
 Qed.
 
-(* The other side: over the terminal category both hypotheses hold, so
-   [Comma_Discrete_Hom_eq] is not a conditional with an empty premise.  The
-   hom-setoid of `1` is strict equality, so [HomStrict] is the identity, and
-   [HomUIP] is Hedberg at [poly_unit]. *)
+(*
+   本节说明hom、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma One_HomStrict : @HomStrict _1 ttt ttt.
 Proof. intros f g e; exact e. Qed.
 

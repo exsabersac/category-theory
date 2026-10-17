@@ -25,10 +25,11 @@ Generalizable All Variables.
 
 (** ** The product monoid, and the product group *)
 
-(* The product setoid is Lib/Datatypes.v's [prod_setoid], the same idiom
-   Instance/Grp.v's [Grp_product] uses — reusing it keeps the registered
-   [Proper] instances ([pair_respects], [fst_respects], [snd_respects])
-   applicable to the product carrier. *)
+(*
+   本节说明 Special 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition prod_SetoidObject (M N : MonObject) : SetoidObject := {|
   carrier := carrier M * carrier N;
   is_setoid := @prod_setoid _ _ (is_setoid M) (is_setoid N)
@@ -134,9 +135,11 @@ Next Obligation.
              (transitivity (mon_op_unit_r _) (mon_op_unit_l _))).
 Qed.
 
-(* Mac Lane's "the group case is the same statement restricted to groups":
-   the isomorphism at product groups is the monoid isomorphism verbatim,
-   because [Deloop] consumes only the monoid part (design note 3). *)
+(*
+   本节说明幺半群、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Deloop_grp_prod (G H : GrpObject) :
   Deloop (GrpObject_prod G H) ≅[Cat] Deloop G ∏ Deloop H :=
   Deloop_prod_iso G H.

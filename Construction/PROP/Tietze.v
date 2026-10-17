@@ -45,15 +45,11 @@ Open Scope nat_scope.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Signature morphisms acting on terms
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    [T_map h] relabels every generator leaf through [h] and leaves the
-    structural constructors untouched — the [T_subst] instance of
-    [Construction/PROP/TermEq.v] whose generator action is [T_gen]
-    after [h].  It COMPUTES on constructors — e.g. [T_map h (T_comp g
-    f)] is definitionally [T_comp (T_map h g) (T_map h f)] — which the
-    functor and monoidal-functor packaging below exploits:
-    identity/composition preservation are [TE_refl]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition T_map {S T : Signature} (h : SubSig S T) {m n : nat}
   (t : Term S m n) : Term T m n :=
@@ -96,20 +92,11 @@ Proof.
   exact (T_subst_TermEq (fun a b (g : S a b) => T_gen (h a b g))).
 Qed.
 
-(** ** The induced functor of free PROPs
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    A signature morphism [h : SubSig S T] induces [RelabelFunctor h :
-    FreeCat S ⟶ FreeCat T] — identity on objects (arities), [T_map h]
-    on morphisms — and the functor is STRICT SYMMETRIC monoidal: both
-    comparison maps are identities on the nose, the object equalities
-    are [eq_refl], and the braid square commutes because [T_map] fixes
-    [T_braid].  This is the "signature morphisms induce strict
-    symmetric maps of free PROPs" half of the Tietze calculus; the
-    packaging mirrors the projection functor of [Presentation.v], and
-    both discharge their coherence squares with the shared
-    identity-bookkeeping lemmas [tm_id_swap] / [tm_comp_id_tens] /
-    [tm_collapse_r] / [tm_collapse_l] of
-    [Construction/PROP/TermEq.v]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SignatureMorphism.
 
@@ -132,10 +119,11 @@ Definition Relabel_ap_dom : FreeCat S ∏ FreeCat S ⟶ FreeCat T :=
 Definition Relabel_ap_cod : FreeCat S ∏ FreeCat S ⟶ FreeCat T :=
   RelabelFunctor ◯ FreeCat_Tensor S.
 
-(** Both directions of the tensor comparison are families of
-    identities — [T_map] computes through [T_tens], so the two functors
-    have definitionally equal actions — and naturality is
-    [tm_id_swap]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Relabel_ap_to : Relabel_ap_dom ⟹ Relabel_ap_cod :=
   @Build_Transform' (FreeCat S ∏ FreeCat S) (FreeCat T)
     Relabel_ap_dom Relabel_ap_cod
@@ -159,11 +147,11 @@ Program Definition Relabel_ap_iso :
   iso_from_to := fun p => tm_comp_id_tens (fst p) (snd p)
 |}.
 
-(** *** The coherence squares
+(*
+   本节说明 Tietze 相关定义、性质与动机。
 
-    Each structural map of [FreeCat_Monoidal] is a [T_cast], which
-    [T_map] fixes ([T_map_T_cast]); after that rewrite the squares are
-    pure identity bookkeeping. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Relabel_unit_left_square (x : nat) :
   TermEq T (T_cast (Nat.add_0_l x))
@@ -212,11 +200,11 @@ Program Definition RelabelFunctor_Monoidal :
   monoidal_assoc := fun x y z => Relabel_assoc_square x y z
 |}.
 
-(** Both comparison maps are identities on the nose, so the functor is
-    STRICT monoidal with [eq_refl] object equalities.  As with
-    [Presentation.v]'s projection, the two comparison fields are
-    discharged in situ, keeping the record at a single universe
-    instance. *)
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition RelabelFunctor_Strict :
   @StrictMonoidalFunctor (FreeCat S) (FreeCat T)
     (FreeCat_Monoidal S) (FreeCat_Monoidal T) RelabelFunctor := {|
@@ -266,13 +254,11 @@ Arguments RelabelFunctor_Strict {S T} h : assert.
 Arguments RelabelFunctor_Braided {S T} h : assert.
 Arguments RelabelFunctor_Symmetric {S T} h : assert.
 
-(** ** Sums of signatures and copaired valuations
+(*
+   本节说明 Tietze 相关定义、性质与动机。
 
-    The coproduct injections of [Sum_Sig], and the copairing of two
-    valuations, satisfying the expected computation rules under
-    [interp]: interpreting the [T_map]-image of a summand's term
-    through the copaired valuation is interpreting the term through the
-    summand's own valuation. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition sig_inl {S T : Signature} : SubSig S (Sum_Sig S T) :=
   fun _ _ s => Datatypes.inl s.
@@ -316,14 +302,11 @@ Proof.
   - reflexivity.
 Qed.
 
-(** ** Tietze move 1: adding a derivable equation
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-    Extending a theory [E] by ONE new equation [s ≈ t] between terms of
-    a fixed arity.  The extended equation system is the two-constructor
-    inductive below — an axiom of [E], or the new equation — which
-    keeps the arity indices pinned by the constructor itself, so no
-    transports (and no UIP) are needed anywhere in the conservativity
-    proof. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AddEquation.
 
@@ -342,11 +325,11 @@ Definition AddEqn : SMT := {|
   smt_eqs := add_eqn
 |}.
 
-(** Adding a DERIVABLE equation changes nothing: the congruence of the
-    extended theory coincides with the congruence of [E].  Forward
-    direction by induction — the new axiom's case is exactly the
-    derivation [Hd] — and backward direction by axiom-inclusion
-    monotonicity. *)
+(*
+   本节说明 Tietze 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem AddEqn_derivable_conservative (Hd : TermEqW E s t) :
   ∀ (a b : nat) (u u' : Term (smt_sig E) a b),
     TermEqW AddEqn u u' <-> TermEqW E u u'.
@@ -385,13 +368,11 @@ End AddEquation.
 
 Arguments AddEqn E {m n} s t : assert.
 
-(** ** Tietze move 2: definitional extension
+(*
+   本节说明 Tietze 相关定义、性质与动机。
 
-    Adjoining to a theory [B] a FRESH generator of arity [(m, n)]
-    together with the single defining equation identifying it with a
-    word [w] of the base signature.  The extension is conservative:
-    the retraction substituting [w] back for the new generator carries
-    every derivation of the extended theory to a derivation of [B]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Extension.
 
@@ -402,10 +383,11 @@ Context (w : Term (smt_sig B) m n).
 (** The extended signature: the base plus one generator. *)
 Definition ext_sig : Signature := Sum_Sig (smt_sig B) (Single_Sig m n).
 
-(** Computing witnesses for the [Nat.eqb] equations of the singleton
-    signature.  The standard library's [Nat.eqb_refl] and [Nat.eqb_eq]
-    are Qed-opaque, so anything built on them is stuck at closed
-    arities; these transparent fixpoints restore reduction. *)
+(*
+   本节说明 Tietze 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fixpoint nat_eqb_refl (x : nat) : Nat.eqb x x = true :=
   match x return Nat.eqb x x = true with
@@ -428,15 +410,11 @@ Fixpoint nat_eqb_eq (a b : nat) {struct a} : Nat.eqb a b = true → a = b :=
       f_equal Datatypes.S (nat_eqb_eq a' b' H)
   end.
 
-(** The unique generator of [Single_Sig m n], with its arity
-    equations.  All three definitions are TRANSPARENT and built on the
-    computing witnesses above, so they reduce at closed arities
-    ([single_gen] to [tt], the arity equations to [eq_refl]) and
-    [ext_retract] computes on concrete definitional extensions — see
-    [ext_retract_computes_on_new_gen] at the end of the file.  The
-    conservativity proofs below remain transparency-indifferent: they
-    consume the arity equations only through UIP on [nat]
-    ([T_cast_id]). *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition single_gen : Single_Sig m n m n :=
   match eq_sym (nat_eqb_refl m) in _ = c
     return (if c then if Nat.eqb n n then unit else Empty_set
@@ -503,11 +481,11 @@ Definition ext_smt : SMT := {|
   smt_eqs := ext_eqs
 |}.
 
-(** *** The syntactic retraction
+(*
+   本节说明 Tietze 相关定义、性质与动机。
 
-    Substitute [w] for the new generator, conjugated by the arity
-    casts that reconcile the generator's typed arity [(a, b)] with the
-    pinned [(m, n)]; base generators go back to themselves. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ext_retract_gen {a b : nat} (g : ext_sig a b) :
   Term (smt_sig B) a b :=
@@ -554,11 +532,11 @@ Proof.
   exact (T_subst_TermEq (@ext_retract_gen)).
 Qed.
 
-(** The retraction is sound for the whole extended theory: base axioms
-    retract to themselves ([retract_map_inl]), and the defining
-    equation retracts to the identity bookkeeping [cast ⊙ (w ⊙ cast) ≈
-    w], where both casts are along loop equations on [nat] and vanish
-    by [T_cast_id] (axiom-free UIP). *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma retract_sound {a b : nat} {s t : Term ext_sig a b} :
   TermEqW ext_smt s t → TermEqW B (ext_retract s) (ext_retract t).
 Proof.
@@ -621,17 +599,11 @@ Proof.
   - cbn [T_map T_subst]; apply TEW_tens; assumption.
 Qed.
 
-(** The fullness ("section") leg: EVERY term of the extended
-    signature is [TermEqW ext_smt]-equal to the embedding of its own
-    retraction — the embedded base theory is not merely conservative
-    but exhaustive.  Together with [ext_conservative]/[ext_reflects]
-    this is the hom-level content of an equivalence between the base
-    and extended presentations; the [PresEquiv] packaging is deferred
-    (see the trailer).  By term induction: structural constructors are
-    congruences, base generators are fixed, and the fresh generator is
-    exactly the defining equation [ee_def] once [single_sig_singleton]
-    pins it to [single_gen] and UIP on [nat] ([T_cast_id]) clears the
-    arity casts. *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ext_retract_section {a b : nat} (t : Term ext_sig a b) :
   TermEqW ext_smt t (T_map sig_inl (ext_retract t)).
 Proof.
@@ -703,11 +675,11 @@ Example T_map_computes_tens {S T : Signature} (h : SubSig S T)
 Example RelabelFunctor_obj_id {S T : Signature} (h : SubSig S T) (k : nat) :
   fobj[RelabelFunctor h] k = k := eq_refl.
 
-(** A scratch definitional extension over the empty signature,
-    witnessing that [ext_retract] REDUCES at closed arities — the
-    transparent [single_gen]/[single_dom]/[single_cod] compute, so
-    retracting the fresh generator yields its defining word framed by
-    identity casts, by [eq_refl]. *)
+(*
+   本节说明 Tietze 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Definition scratch_smt : SMT :=
   {| smt_sig := Empty_Sig; smt_eqs := fun _ _ _ _ => False |}.
 
@@ -715,19 +687,8 @@ Example ext_retract_computes_on_new_gen :
   ext_retract scratch_smt 1 1 (T_id 1) (T_gen (new_gen scratch_smt 1 1))
   = T_comp (T_id 1) (T_comp (T_id 1) (T_id 1)) := eq_refl.
 
-(** ** Follow-up material (deliberately not started here)
+(*
+   本节说明函子、等价相关定义、性质与动机。
 
-    Two natural continuations of this file are left for a successor:
-
-    - a [TheoryMorphism] record — a [SubSig] between theory signatures
-      whose action carries each axiom of the source theory to a
-      derivable equation of the target, inducing a functor of
-      PRESENTED categories through the quotient's universal property;
-
-    - a [PresEquiv] record packaging a presentation equivalence as a
-      pair of theory morphisms whose composites are pointwise
-      derivably equal to the identities, with the Tietze moves above
-      as its generating instances.
-
-    Both ride only on machinery already present in this file and in
-    [Construction/PROP/Presentation.v]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

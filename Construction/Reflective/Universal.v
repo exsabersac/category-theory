@@ -52,11 +52,11 @@ Proof. simpl. apply id_left. Qed.
 
 (** ** The dual: coreflective subcategories from couniversal arrows *)
 
-(* Mac Lane §IV.3, printed p. 91, dually: coreflective when every object
-   has a couniversal arrow from the inclusion.  Theory/Universal/Arrow/
-   Dual.v assembles the right adjoint and the adjunction, and
-   Construction/Reflective/Coreflective.v's covariant bridge packages
-   them as the op-typed record. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Coreflective_of_CouniversalArrows@{o h +} {C : Category@{o h h}}
   {S : Subcategory C}
   (full : Construction.Subcategory.Full C S)

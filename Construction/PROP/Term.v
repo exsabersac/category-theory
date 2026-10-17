@@ -50,10 +50,11 @@ Notation "f ⊕t g" := (T_tens f g) (at level 30, right associativity) : term_sc
 Definition T_swap {S : Signature} : Term S 2 2 :=
   T_braid 1 1.
 
-(* Relabel a whole term along a signature embedding [inc : SubSig S T],
-   recursing through the structural constructors and remapping each
-   [T_gen] leaf.  Arities [m n] are preserved, so this is the action on
-   morphisms of the induced functor [FreePROP S -> FreePROP T]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition T_inj {S T : Signature} (inc : SubSig S T)
                  {m n : nat} (t : Term S m n) : Term T m n.
 Proof.

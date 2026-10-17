@@ -32,10 +32,11 @@ Context {C : Category}.
 
 #[local] Obligation Tactic := intros.
 
-(* The tensor on C^op: the same object action, with the morphism action
-   given componentwise by the tensor of C read against the reversed
-   hom-sets.  Note that the domain is the product category C^op ∏ C^op —
-   we do not route through a mediating (C ∏ C)^op. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Opposite_Tensor `{M : @Monoidal C} :
   C^op ∏ C^op ⟶ C^op := {|
   fobj := fun p => (fst p ⨂[M] snd p)%object;
@@ -55,13 +56,11 @@ Next Obligation.
   apply bimap_comp.
 Qed.
 
-(* The monoidal structure on C^op.  The unit is that of C; the unitors and
-   associator are those of C read in the opposite category.  Each law of the
-   [Monoidal] class then dualizes to a law of C: the to/from naturality
-   squares trade places, and the triangle and pentagon become their
-   inverse-direction forms from Structure/Monoidal/Proofs.v.
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-   A Definition, NOT an Instance — callers select it explicitly. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Monoidal_op `{M : @Monoidal C} : @Monoidal (C^op) := {|
   I            := @I C M;
   tensor       := Opposite_Tensor;
@@ -154,13 +153,11 @@ Next Obligation.
   apply braid_invol.
 Qed.
 
-(** ** Duality transfer for internal (co)monoids
+(*
+   本节说明幺半结构、hom、幺半群相关定义、性质与动机。
 
-    A comonoid on x in C is exactly a monoid on x in (C^op, Monoidal_op):
-    the comultiplication reads as a multiplication against the reversed
-    hom-sets, coassociativity as associativity, and the counit laws as the
-    unit laws.  All four passages below are definitional on the underlying
-    data, and the round trips are literal (proved by reflexivity). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Comonoid_to_op_Monoid `{M : @Monoidal C} {x : C}
   (Cm : @Comonoid C M x) : @Monoid (C^op) Monoidal_op x := {|
@@ -254,12 +251,11 @@ Lemma Monoid_op_roundtrip `{M : @Monoidal C} {x : C}
     ∧ eta[op_Comonoid_to_Monoid (Monoid_to_op_Comonoid Mn)] ≈ eta[Mn].
 Proof. split; reflexivity. Qed.
 
-(** ** Duality transfer for homomorphisms
+(*
+   本节说明hom、幺半群相关定义、性质与动机。
 
-    A comonoid homomorphism in C is exactly a monoid homomorphism in C^op
-    between the transported monoids, with source and target exchanged (and
-    vice versa): the preservation squares are the same equations read
-    against the reversed hom-sets. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma ComonoidHom_to_op_MonoidHom `{M : @Monoidal C} {x y : C}
       {Cx : @Comonoid C M x} {Cy : @Comonoid C M y} {f : x ~{C}~> y} :
@@ -286,16 +282,11 @@ Qed.
 
 #[local] Obligation Tactic := cat_simpl.
 
-(* Functorially: Mon(C^op) and Comon(C)^op agree up to the identity on
-   underlying data.  The two functors below are mutually inverse on that
-   underlying data — the mu/eta/delta/epsilon components and the carrier
-   morphisms round-trip definitionally (fmap is the identity on the
-   underlying C-morphism) — but NOT on the nose at the record level: each
-   object round trip rebuilds the law fields (delta_coassoc etc.) as fresh
-   Qed-opaque proof terms, so the round-tripped sigma objects are not
-   definitionally equal to the originals (proof-irrelevant, but opaque).
-   No isomorphism-of-categories lemma is claimed here; nothing downstream
-   needs one. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Mon_op_to_Comon_op `{M : @Monoidal C} :
   @Mon (C^op) Monoidal_op ⟶ (@Comon C M)^op := {|

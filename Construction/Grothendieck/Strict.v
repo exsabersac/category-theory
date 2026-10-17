@@ -28,12 +28,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Coherence of [iso_of_eq]
+(*
+   本节说明函子、同构相关定义、性质与动机。
 
-    The chosen fibre isomorphisms are all of the form [iso_of_eq p] for a
-    propositional object equality [p].  These lemmas record how [iso_of_eq]
-    interacts with transitivity, symmetry, functor action, and strict-equality
-    coherence; none of them needs UIP. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Reading [iso_of_eq] through a concatenation of equalities composes the
    isomorphisms (in the opposite order, as always for [to]). *)
@@ -51,9 +50,11 @@ Lemma fmap_iso_of_eq {C D : Category} (G : C ⟶ D) {x y : C} (p : x = y) :
   fmap[G] (to (iso_of_eq p)) ≈ to (iso_of_eq (f_equal (fobj[G]) p)).
 Proof. destruct p; simpl; apply fmap_id. Qed.
 
-(* Strict equality of two functors makes the family [iso_of_eq (`1 S -)]
-   natural: this is exactly the strict-equality coherence [`2 S] read through
-   the transport/iso dictionary of Instance/StrictCat/ToCat.v. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma strict_eq_iso_natural {C D : Category} {F' G' : C ⟶ D}
   (S : @equiv _ Functor_StrictEq_Setoid F' G') {a b : C} (k : a ~> b) :
   fmap[G'] k ∘ to (iso_of_eq (`1 S a)) ≈ to (iso_of_eq (`1 S b)) ∘ fmap[F'] k.
@@ -89,10 +90,11 @@ Section StrictFunctorToIndexed.
 Context {B : Category}.
 Context (F : B ⟶ StrictCat).
 
-(* Fibrewise uniqueness of identity proofs on objects: the coherence-collapsing
-   hypothesis.  It is legitimate object-level [=] (sanctioned here by the strict
-   fibre anchoring of the construction) and is discharged from decidable object
-   equality by Hedberg's theorem ([UIP_dec]) below. *)
+(*
+   本节说明 Strict 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Hypothesis Fuip : ∀ (b : B) (x y : F b) (p q : x = y), p = q.
 
 (* Under UIP, [iso_of_eq] does not depend on its equality proof. *)

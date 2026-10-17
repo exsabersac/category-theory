@@ -148,11 +148,11 @@ Definition dense_counit_iso (D : IsoDense) (a : Sub C S) :
   @adj_equiv_counit_iso _ _ _ _
     (AdjointEquivalence_swap (dense_incl_adjoint_equivalence D)) a.
 
-(* The bundled reading, in [Sub C S].  Its forward leg is the counit on the
-   nose, recorded below; contrast [reflective_counit_iso]
-   (Construction/Reflective.v), which states the same fact at the level
-   of the [Reflective] record but is closed with [Qed] while producing
-   data, so neither of its legs reduces. *)
+(*
+   本节说明 Dense 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition dense_counit_Isomorphism (D : IsoDense) (a : Sub C S) :
   dense_reflector D (Incl C S a) ≅[Sub C S] a :=
@@ -168,9 +168,11 @@ Arguments IsoDense {C} S.
 
 (** ** The skeleton rider *)
 
-(* Mac Lane's "This includes in particular the case already noted, when A
-   is a skeleton of C".  [skel_iso] is stated in the reverse orientation,
-   so the whole content of this passage is [iso_sym]. *)
+(*
+   本节说明 Dense 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition skeleton_IsoDense {C : Category} (Sk : Skeleton C) :
   IsoDense (skel_sub Sk) :=

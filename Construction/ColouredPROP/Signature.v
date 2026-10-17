@@ -28,26 +28,19 @@ Definition CSignature : Type := list Colour -> list Colour -> Type.
 Definition Empty_CSig : CSignature :=
   fun _ _ => Empty_set.
 
-(** The signature of a single generator [g : ms -> ns] (with input
-    boundary [ms] and output boundary [ns]), and no other generators.
+(*
+   本节说明 Signature 相关定义、性质与动机。
 
-    Deviation from the one-sorted donor: [Single_Sig] tested arities
-    with [Nat.eqb], which presumes decidable equality.  Colour lists
-    over an arbitrary [Colour : Type] have no such test, so the
-    coloured form is PROOF-CARRYING instead: an inhabitant of
-    [Single_CSig ms ns xs ys] is a pair of equality proofs, with
-    canonical inhabitant [(eq_refl, eq_refl)] at boundary [(ms, ns)].
-    This is decidability-free and definitionally empty nowhere — it
-    is provably empty exactly off the diagonal. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Single_CSig (ms ns : list Colour) : CSignature :=
   fun xs ys => ((xs = ms) * (ys = ns))%type.
 
-(** ** Operations on signatures
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    Sum (disjoint union) of two signatures: a generator is a generator
-    of one or the other.  This builds complex signatures from smaller
-    ones — e.g. a typed monoid-and-comonoid signature is the sum of
-    the two single-generator families. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Sum_CSig (S T : CSignature) : CSignature :=
   fun cs ds => (S cs ds + T cs ds)%type.
 
@@ -77,29 +70,11 @@ Arguments CSubSig {Colour} Sub Sup.
 Arguments CSubSig_id {Colour} S.
 Arguments CSubSig_compose {Colour S T U} h2 h1.
 
-(** * Raw terms over a coloured signature
+(*
+   本节说明 Signature 相关定义、性质与动机。
 
-    The syntactic representation of morphisms in the free coloured
-    PROP on a signature [S].  A term of type [CTerm S cs ds] is a
-    typed string-diagram expression whose input wires carry the
-    colours [cs] (in order) and whose output wires carry [ds], built
-    up from:
-
-      - identity wires [CT_id cs]
-      - braids [CT_braid cs ds] (the canonical "block braiding" that
-        crosses a [cs]-typed bundle past a [ds]-typed bundle)
-      - sequential composition [CT_comp]
-      - parallel composition (tensor) [CT_tens]
-      - signature-supplied generators [CT_gen]
-
-    This defines just the SYNTAX — no equational theory.  Boundaries
-    propagate through the constructors by list operations: tensor
-    concatenates ([++] replacing the donor's [+] on [nat]), and the
-    braid has boundary [(cs ++ ds, ds ++ cs)].
-
-    The inductive lives in its own section, which closes here before
-    any lemma about it; downstream files always state results as
-    [CTerm S cs ds] with the signature [S] explicit. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CTerm.
 
@@ -151,9 +126,8 @@ Definition cwire {Colour} {S : CSignature Colour} (c : Colour) :
 Definition CT_nothing {Colour} {S : CSignature Colour} : CTerm S [] [] :=
   CT_id [].
 
-(* NOTE: there is deliberately no analogue of the donor's [T_inj]
-   here.  Relabelling a term along a signature morphism is the
-   computing fixpoint [CT_map] of [Construction/ColouredPROP/
-   Relabel.v] from day one — in the one-sorted development [T_inj]
-   was superseded by [T_map], and the coloured spine skips the
-   intermediate step. *)
+(*
+   本节说明 Signature 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

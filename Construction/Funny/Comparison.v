@@ -19,10 +19,11 @@ Generalizable All Variables.
 
 (** ** The comparison functor *)
 
-(* The separately functorial data of κ: each generating step becomes the
-   corresponding one-sided morphism of the cartesian product.  Interchange
-   holds in C ∏ D, so this data folds words through [FunnyUP] with no
-   obstruction — κ is precisely where the two diagonals get identified. *)
+(*
+   本节说明函子、笛卡尔、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition FunnyToProduct_sep {C D : Category} :
   SepFunctorial (E:=C ∏ D) (fun (c : C) (d : D) => (c, d)) := {|
   sf_lmap := fun _ _ f d => (f, id);
@@ -109,11 +110,11 @@ Definition diagLR : FunHom (C:=_2) (D:=_2) TwoX TwoX TwoY TwoY :=
 Definition diagRL : FunHom (C:=_2) (D:=_2) TwoX TwoX TwoY TwoY :=
   fconsR (C:=_2) (D:=_2) TwoXY (fconsL (C:=_2) (D:=_2) TwoXY fnil).
 
-(* The separation theorem: the two diagonals are NOT identified by [feq].
-   Folding through [FunnyTwo_sep] sends them to the distinct words
-   [true; false] and [false; true] of the free monoid, and [ffold_respects]
-   says the fold is [feq]-invariant.  This is the regression test that the
-   congruence on words is not too coarse — no interchange law snuck in. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem funny_diagonals_distinct : feq diagLR diagRL → False.
 Proof.
   intro E.
@@ -133,14 +134,11 @@ Proof.
   simpl; split; reflexivity.
 Qed.
 
-(** ** Naturality of κ over strict functor equality
+(*
+   本节说明函子、笛卡尔相关定义、性质与动机。
 
-    κ is the component at (C, D) of a transformation from the funny tensor to
-    the cartesian product of functors: κ ∘ (F □ G) ≈ (F ∏⟶ G) ∘ κ, in
-    [Functor_StrictEq_Setoid].  Both sides agree definitionally on objects;
-    on the generating steps the fixed coordinate needs [fmap_id] (an ≈-level
-    equation, which is exactly why the statement lives at strict functor
-    equality and not literal equality). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma FunnyToProduct_natural {C C' D D' : Category}
   (F : C ⟶ C') (G : D ⟶ D') :

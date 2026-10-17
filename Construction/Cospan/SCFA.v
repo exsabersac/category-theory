@@ -30,18 +30,15 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* SCFA = special commutative Frobenius algebra, i.e. the "classical
-   structure" of categorical quantum mechanics: a commutative comonoid
-   plus cocommutative monoid satisfying the Frobenius law
-   [(id ⨂ mu) ∘ (delta ⨂ id) ≈ delta ∘ mu ≈ (mu ⨂ id) ∘ (id ⨂ delta)]
-   and the special law [mu ∘ delta ≈ id].  In [CospanCat C HP] each object
-   [X] carries the canonical SCFA whose [mu]/[delta] are the fold/cofold
-   (codiagonal [id ▽ id]) maps and whose [eta]/[epsilon] are [zero], making
-   [Cospan(FinSet)] the prototypical hypergraph category.
-
+(*
    nLab:      https://ncatlab.org/nlab/show/Frobenius+algebra
    nLab:      https://ncatlab.org/nlab/show/classical+structure
-   Wikipedia: https://en.wikipedia.org/wiki/Frobenius_algebra *)
+   Wikipedia: https://en.wikipedia.org/wiki/Frobenius_algebra
+
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CospanSCFA.
 
@@ -50,12 +47,11 @@ Context `{H_Coc : @Cocartesian C}.
 Context `{H_Ini : @Initial C}.
 Context (HP : HasPushouts C).
 
-(** ** Identification of the SCFA data with [mor_as_cospan] lifts
+(*
+   本节说明 SCFA 相关定义、性质与动机。
 
-    [cospan_scfa_mu X] and [cospan_scfa_eta X] are exactly
-    [mor_as_cospan (id ▽ id)] and [mor_as_cospan zero] respectively.
-    [cospan_scfa_delta X] and [cospan_scfa_epsilon X] are the
-    backwards-cospan variants, lifted via [mor_as_cospan_back]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cospan_scfa_mu_as_cospan (X : C) :
   cospan_scfa_mu X = mor_as_cospan ((id[X] ▽ id[X]) : (X + X)%object ~{C}~> X).
@@ -81,11 +77,11 @@ Lemma cospan_scfa_epsilon_as_back (X : C) :
   = mor_as_cospan_back (zero : 0%object ~{C}~> X).
 Proof. reflexivity. Qed.
 
-(** ** Bridging: composing a backward-cospan on the outside
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    [mor_as_cospan_back f : X → Y] has apex X and in1 = id[X].
-    Composing it with [g : Z → X] (apex N) gives the pushout of
-    [(in2 g : X → N, id[X] : X → X)], whose apex collapses to N. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cospan_compose_mor_as_cospan_back_left
       {X Y Z : C} (f : Y ~> X) (g : CospanArrow Z X) :
@@ -550,18 +546,16 @@ Proof.
   { apply mor_as_cospan_back_compose. }
   (* Now: back ((id▽id) ∘ cover zero id) = back (to coprod_zero_l)  [codiag_eta_left]. *)
   unfold mor_as_cospan, mor_as_cospan_back; simpl.
-  (* Goal (cospan_equiv f g):
-       f = Build_CospanArrow X id[X] ((id▽id) ∘ cover zero id)   apex X,
-           in1 = id[X], in2 = (id▽id) ∘ cover zero id = to coprod_zero_l;
-       g = mor_as_cospan (from coprod_zero_l)                     apex 0+X,
-           in1 = from coprod_zero_l, in2 = id[X].
-     The two apexes are X and 0+X, so the witnessing iso phi must have type
-     X ≅ 0+X (not X ≅ X); cospan_equiv asks for
-       to phi ∘ in1 f ≈ in1 g   and   to phi ∘ in2 f ≈ in2 g. *)
-  (* Take phi = iso_sym coprod_zero_l : X ≅ 0+X, so [to phi = from coprod_zero_l].
-     Then to phi ∘ id[X] = from coprod_zero_l = in1 g ✓, and
-       to phi ∘ to coprod_zero_l = from coprod_zero_l ∘ to coprod_zero_l = id[X] = in2 g ✓
-     (the latter by [iso_from_to], after [codiag_eta_left] rewrites in2 f). *)
+  (*
+   本节说明 SCFA 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
+  (*
+   本节说明 SCFA 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   exists (iso_sym (@coprod_zero_l C H_Coc H_Ini X)).
   simpl; split.
   - rewrite id_right.
@@ -618,15 +612,11 @@ Next Obligation.
   apply cospan_mu_unit_right.
 Defined.
 
-(** ** Pushout of the codiagonal with itself collapses
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    The pushout [pushout (id ▽ id) (id ▽ id)] has apex canonically X,
-    because any cocone [(p, q)] over this span satisfies [p ≈ q]
-    (by [merge_inv]: [p ∘ (id ▽ id) ≈ q ∘ (id ▽ id)] gives
-    [p ▽ p ≈ q ▽ q] hence [p ≈ q]).
-
-    In particular, in the abstract pushout [P = pushout (id▽id) (id▽id)],
-    [pushout_in1 P ≈ pushout_in2 P]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma pushout_codiag_legs_eq (X : C) :
   let P := pushout (id[X] ▽ id[X] : (X + X)%object ~> X)
@@ -971,13 +961,11 @@ Proof.
               ((cover (id[X] ▽ id[X]) id[X] ∘ from (@coprod_assoc C H_Coc X X X))
                  : (X + (X + X))%object ~> (X + X)%object)
               (cover id[X] (id[X] ▽ id[X]))).
-  (* Cocone (id▽id, id▽id) over the span:
-     Hcomm: (id▽id) ∘ (cover (id▽id) id ∘ from α) ≈ (id▽id) ∘ cover id (id▽id)
-     LHS: by codiag_cover, (id▽id) ∘ cover (id▽id) id ∘ from α
-                          = ((id▽id) ▽ id) ∘ from α.
-     RHS: by codiag_cover, = id ▽ (id▽id).
-     Need: ((id▽id) ▽ id) ∘ from α ≈ id ▽ (id▽id).
-     This is codiag_assoc rewritten using iso_to/from cancellation. *)
+  (*
+   本节说明 SCFA 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   assert (HC : (id[X] ▽ id[X]) ∘ (cover (id[X] ▽ id[X]) id[X] ∘ from coprod_assoc)
               ≈ (id[X] ▽ id[X]) ∘ cover id[X] (id[X] ▽ id[X])).
   { rewrite comp_assoc.

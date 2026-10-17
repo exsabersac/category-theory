@@ -48,21 +48,11 @@ Context (cospan_merge :
 Context `{DCC : @DecCospan_Coherent C HP H_Coc MC D MD F LM
                                      id_decoration cospan_merge}.
 
-(** ** Decorated cospan tensor
+(*
+   本节说明 Symmetric 相关定义、性质与动机。
 
-    Given decorated cospans [f : X → X'] (apex [Nf], decoration [d_f])
-    and [g : Y → Y'] (apex [Ng], decoration [d_g]), the tensor cospan
-    [f ⊗ g : X+Y → X'+Y'] has:
-
-      - cospan part: [cospan_tensor (dc_cospan f) (dc_cospan g)] with apex
-        [Nf + Ng] (built in [Construction/Cospan/Hypergraph.v]);
-      - decoration: the composite
-
-           I  -unit_left⁻¹->  I ⨂ I  -d_f ⨂ d_g->  F Nf ⨂ F Ng
-              -lax_ap->  F (Nf ⨂_C Ng)  -F (cospan_merge)->  F (Nf + Ng)
-
-        That is, the same combinator used in [dec_compose_decoration]
-        applied to the apex pair. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition dec_tensor_decoration
   {X X' Y Y' : C}
@@ -85,29 +75,18 @@ Definition dec_cospan_tensor
   dc_decoration := dec_tensor_decoration f g
 |}.
 
-(** ** Bifunctor coherence class
+(*
+   本节说明 Symmetric 相关定义、性质与动机。
 
-    The Bifunctor instance on [DecoratedCospanCat] requires three
-    decoration-side coherences (the cospan-side counterparts already
-    live in [Construction/Cospan/Hypergraph.v]):
-
-      (i) [dec_tensor_id_dec]: tensor-of-identities decoration equals
-          identity decoration up to apex iso;
-
-      (ii) [dec_tensor_respects_dec]: pairwise [dec_cospan_equiv]
-          transports through the tensor;
-
-      (iii) [dec_tensor_compose_dec]: tensor distributes over composition
-          (interchange law on the decoration side).
-
-    Each is a routine appeal to the lax-monoidal naturality of [F]
-    combined with the apex-iso transport produced by the corresponding
-    [Cospan/Hypergraph.v] lemma. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class DecCospan_Bifunctor_Coherent : Type := {
-  (** Decoration coherence for [tensor_id]: the tensor of two identity
-      decorated cospans equals the identity decorated cospan on the
-      coproduct, after transport along the cospan-level iso. *)
+  (*
+   本节说明 Symmetric 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   dec_tensor_id_dec :
     forall (X Y : C),
       fmap[F] (to (projT1 (cospan_tensor_id X Y)))
@@ -234,12 +213,11 @@ Next Obligation.
   apply dec_cospan_tensor_compose_compat.
 Qed.
 
-(** ** Decorated lift of a C-morphism
+(*
+   本节说明 Symmetric 相关定义、性质与动机。
 
-    Given [f : X ~> Y] in [C], the natural decorated-cospan lift is
-    [mor_as_cospan f] (apex = Y) carrying [id_decoration Y].  This is
-    the canonical "structural" decoration, used to lift the
-    unitor/associator/braid of [CospanCat] to [DecoratedCospanCat]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition dec_mor_as_cospan {X Y : C} (f : X ~> Y)
   : DecoratedCospanArrow X Y :=
@@ -248,30 +226,8 @@ Definition dec_mor_as_cospan {X Y : C} (f : X ~> Y)
 
 End DecoratedCospanSymmetric.
 
-(** ** Path to the full SMC layer
+(*
+   本节说明幺半结构、幺半群、来源与用途相关定义、性质与动机。
 
-    The Bifunctor instance above is the first of the four pieces of the
-    decorated symmetric monoidal hypergraph structure.  The remaining
-    three (Monoidal, BraidedMonoidal, SymmetricMonoidal) follow the same
-    layered-coherence pattern:
-
-    - [DecCospan_Monoidal_Coherent] bundles the unitor + associator
-      decoration coherences.  The cospan-level facts come from
-      [Cospan_Monoidal] in [Construction/Cospan/Hypergraph.v].
-
-    - [DecCospan_Braided_Coherent] bundles the braid-decoration
-      coherence.  The cospan-level fact comes from
-      [Cospan_BraidedMonoidal] in [Construction/Cospan/Symmetric.v].
-      The decoration-side coherence requires [F] to be symmetric in the
-      sense that [lax_ap[F] ∘ braid ≈ F(braid) ∘ lax_ap[F]] — i.e. [F]
-      is a SYMMETRIC lax monoidal functor.
-
-    - [DecCospan_Symmetric_Coherent] bundles the braid-involution
-      decoration coherence — typically automatic from the braided
-      coherence and [paws_invol].
-
-    Once those three classes are populated, the [Monoidal /
-    BraidedMonoidal / SymmetricMonoidal] instances on
-    [DecoratedCospanCat] are constructed in the same pairing-pattern
-    as the Bifunctor above: each Program Obligation pairs the
-    cospan-level lemma with the matching coherence-class field. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

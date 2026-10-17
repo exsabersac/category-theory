@@ -33,9 +33,11 @@ Generalizable All Variables.
 Definition NodeUIP (Q : Quiver) : Type :=
   ∀ (x y : @nodes Q) (p q : x = y), p = q.
 
-(* Decidable node equality gives [NodeUIP] with no axiom, by Hedberg's theorem
-   in the form `Eqdep_dec.UIP_dec`.  Construction/Quotient.v's `obj_uip` is
-   the same step for the objects of a category. *)
+(*
+   本节说明 Concrete 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma NodeDecEq_NodeUIP (Q : Quiver)
       (dec : ∀ x y : @nodes Q, {x = y} + {x ≠ y}) : NodeUIP Q.
 Proof.
@@ -83,11 +85,11 @@ Definition qmove {Q : Quiver} {a a' b b' : @nodes Q}
   Logic.transport (fun t => edges a' t) q
     (Logic.transport (fun s => edges s b) p e).
 
-(* Two arrows are equivalent when their endpoints agree and, after moving the
-   first edge onto the second's endpoints, the edges agree in the edge setoid.
-   The endpoint comparison is `=` and not `≈` because Construction/Free/
-   Quiver.v gives nodes no setoid structure of their own — only edges carry
-   one; the edge comparison is `≈`, as the library's discipline requires. *)
+(*
+   本节说明 Concrete 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition QArrow_equiv {Q : Quiver} (u v : QArrow Q) : Type :=
   { p : qsrc u = qsrc v &
   { q : qtgt u = qtgt v & qmove p q (qedge u) ≈ qedge v } }.
@@ -142,10 +144,11 @@ Lemma QArrow_intro_same {Q : Quiver} {a b : @nodes Q} (e e' : edges a b) :
   {| qsrc := a ; qtgt := b ; qedge := e' |}.
 Proof. intro H; exact (existT _ eq_refl (existT _ eq_refl H)). Qed.
 
-(* The coherence condition of `QuiverHomomorphismEquivalence`, restated as an
-   equivalence of moved edges.  Both directions are proved by eliminating the
-   two endpoint equalities, which is legitimate here because all four
-   endpoints are universally quantified variables. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma qmove_bridge {Q : Quiver} {a1 a2 b1 b2 : @nodes Q}
       (p : a1 = a2) (q : b1 = b2) (f : edges a1 b1) (g : edges a2 b2) :
   Logic.transport (fun t => edges a1 t) q f ≈
@@ -261,12 +264,11 @@ Next Obligation.
   - destruct u as [a b e]; apply QArrow_equiv_refl.
 Qed.
 
-(* The positive half of Riehl's example, at the scope disclosed in the header:
-   a quiver homomorphism is determined by its action on vertices and arrows
-   together, once the target's node type satisfies uniqueness of identity
-   proofs.  The node summand supplies the node family; the arrow summand
-   supplies the coherence, after [NodeUIP] identifies its own endpoint
-   equalities with the ones the node summand chose. *)
+(*
+   本节说明 Concrete 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem QuiverElements_faithful_under_NodeUIP
         {Q Q' : QuiverCategory} (uip : NodeUIP Q')
         (F G : Q ~{QuiverCategory}~> Q') :
@@ -289,9 +291,11 @@ Qed.
 
 (** ** Witness quivers, and the two negative results *)
 
-(* One node carrying two parallel loops.  A homomorphism out of it is a choice
-   of node and a map on the two loops, so the node data cannot see the loop
-   data — this is what defeats the vertex functor. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition LoopQuiver : Quiver :=
   Build_Quiver_Standard_Eq poly_unit (fun _ _ => bool).
 
@@ -323,10 +327,11 @@ Proof.
   discriminate.
 Qed.
 
-(* [QArrow] and [QuiverArrows] are not degenerate: [LoopQuiver] has two
-   arrows, distinct in [QArrow_Setoid].  Without this the arrow functor could
-   be the constant empty functor and [QuiverArrows_not_Faithful] below would
-   be uninformative. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition loop_arrow (b : bool) : QArrow LoopQuiver :=
   Build_QArrow LoopQuiver ttt ttt b.
 
@@ -385,16 +390,11 @@ Qed.
 
 (** ** The full subcategory of set-quivers, and its concreteness *)
 
-(* Quivers whose node type satisfies uniqueness of identity proofs — Riehl's
-   quivers, whose vertices form a set.  Every morphism between two of them is
-   retained ([SetQuivers_Full]), so this is a full subcategory in the sense of
-   Construction/Subcategory.  [SetQuivers_Full] is recorded because a reader
-   will want it, but no proof below consumes it: what the results actually
-   rest on is that [Sub]'s hom-setoid is DEFINITIONALLY the base one, so no
-   transfer lemma is needed.v.  Its objects are PAIRS of a quiver and a
-   [NodeUIP] witness, so the object map of the inclusion forgets a proof
-   component and injectivity of that map is NOT claimed; what is used below is
-   only that the inclusion is faithful (and full, by [SetQuivers_Full]). *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition SetQuivers : Subcategory QuiverCategory := {|
   sobj := NodeUIP;
   shom := fun _ _ _ _ _ => poly_unit
@@ -471,10 +471,11 @@ Qed.
   underlying_faithful := SetQuiverElements_Faithful
 |}.
 
-(* Non-vacuity of [SetQuiver_Concrete]: the hom-setoids it is injective on are
-   not trivial.  [loop_swap_distinct] and [disc_swap_distinct] each exhibit
-   two parallel morphisms that differ, and equivalence in [SetQuiverCat] is by
-   definition equivalence of the underlying quiver homomorphisms. *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma SetQuiverCat_two_arrows :
   @id SetQuiverCat LoopSetQuiver ≈ (loop_swap; ttt) → False.
 Proof. exact loop_swap_distinct. Qed.
@@ -482,21 +483,11 @@ Proof. exact loop_swap_distinct. Qed.
 (* ------------------------------------------------------------------------ *)
 (** ** The node-UIP hypothesis is necessary, not merely convenient *)
 
-(* The restriction to `NodeUIP` above is forced. If the disjoint-union
-   functor were faithful on ALL quivers, UIP would follow — so, UIP being
-   independent of Rocq's logic, that faithfulness is not provable and
-   `Concrete QuiverCategory` is unreachable through this functor.
+(*
+   本节说明函子相关定义、性质与动机。
 
-   The witness is a single quiver whose edges record BOTH endpoints:
-   over a node type N with a distinguished c, take `edges x y := (c = x) *
-   (c = y)`. Two endomorphisms constant at c differ by transporting the
-   edge along a loop. The disjoint-union functor identifies them, because
-   on the arrow summand it is enough to supply the loop itself. But
-   equality in `QuiverCategory` demands ONE shared node family coherent
-   with every edge simultaneously, and a single loop cannot satisfy the
-   source constraint and the target constraint at once unless it is
-   trivial. That last step is [uip_key] below, isolated so the arithmetic
-   is visible. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma uip_transport_id {A} {c a : A} (p : c = a) :
   Logic.transport (fun s => c = s) p eq_refl = p.

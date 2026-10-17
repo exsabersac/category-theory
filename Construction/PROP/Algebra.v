@@ -39,13 +39,11 @@ Notation "⟦ n ⟧" := (@prop_of_nat P n) (at level 0, format "⟦ n ⟧").
 (** Parallel composition at [⟦·⟧]-indexed objects, from [Interp.v]. *)
 Infix "⊞" := (prop_tensor_hom P) (at level 30, right associativity).
 
-(** ** Model morphisms
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    A model morphism [v ⇒ w] is a monoidal family of endomorphisms of
-    the canonical objects, intertwining the two valuations.  The
-    monoidality field [mh_tensor] is stated in [⊞] form — terser than
-    an explicit [id_cast] conjugation, and exactly the shape the K-kit
-    of [Interp.v] consumes. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record ModelHom (v w : Valuation P S) : Type := {
   mh_component : ∀ n : nat, ⟦n⟧ ~{P}~> ⟦n⟧;
@@ -67,13 +65,11 @@ Arguments mh_unit {v w} _.
 Arguments mh_tensor {v w} _ _ _.
 Arguments mh_gen {v w} _ _ _ _.
 
-(** ** Naturality against every interpreted term
+(*
+   本节说明 Algebra 相关定义、性质与动机。
 
-    The generator squares of a [ModelHom] extend to naturality squares
-    at ALL terms: identities by the unit laws, sequential composition
-    by pasting, parallel composition by [mh_tensor] on both flanks and
-    the interchange law K2 (rewriting under [⊞] via K3), and the block
-    braid by [mh_tensor] and the braid naturality K5. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem model_hom_natural {v w : Valuation P S} (α : ModelHom v w)
   {m n : nat} (t : Term S m n) :
@@ -224,11 +220,11 @@ Lemma ModelHom_Transform_natural {v w : Valuation P S} (α : ModelHom v w)
   interp P S w t ∘ mh_component α m ≈ mh_component α n ∘ interp P S v t.
 Proof. symmetry; apply model_hom_natural. Qed.
 
-(* Built with the explicit [Build_Transform'] so that the source and
-   target functors are pinned, as for [InterpF] itself in
-   [Universal.v].  A [ModelHom] is a monoidal natural transformation
-   re-indexed along the Leibniz strictness equalities; only the bare
-   [Transform] packaging is provided here (see the header). *)
+(*
+   本节说明幺半结构、自然变换、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ModelHom_Transform {v w : Valuation P S} (α : ModelHom v w) :
   InterpF S P v ⟹ InterpF S P w :=
   @Build_Transform' (FreeCat S) P (InterpF S P v) (InterpF S P w)

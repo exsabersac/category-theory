@@ -70,23 +70,11 @@ Notation DCMon := (DecoratedCospan_Monoidal HP LM id_decoration cospan_merge).
 Notation DCSMC :=
   (DecoratedCospan_SymmetricMonoidal HP LM id_decoration cospan_merge).
 
-(** ** Coherence class for the Hypergraph structure on [DC]
+(*
+   本节说明 Hypergraph 相关定义、性质与动机。
 
-    Fong's "decorated SCFA" data: a decoration-coherent choice of
-    SCFA generator for every object, satisfying the 8 standard
-    coherence equations of the [Hypergraph] class.
-
-    Each field's RHS uses the [DecoratedCospan_SymmetricMonoidal]
-    instance (which is the SMC structure on [DC] from Braided.v); the
-    LHS is the user-supplied data.
-
-    The principal field [dec_cospan_scfa] supplies the per-object
-    decorated SCFA.  In the trivial-decoration case it is the
-    [Cospan_Hypergraph]-SCFA with [id_decoration] decorations on each
-    apex; in genuine decorated-cospan examples it is the SCFA carrying
-    the application-specific data on each apex (Fong circuits use the
-    "no-resistors" decoration, Baez–Fong Markov processes use the
-    "no-transitions" decoration, etc.). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class DecCospan_Hypergraph_Coherent : Type := {
   dec_cospan_scfa : forall (X : DC),
@@ -152,41 +140,8 @@ Program Definition DecoratedCospan_Hypergraph : @Hypergraph DC DCSMC := {|
 
 End DecoratedCospanHypergraph.
 
-(** ** Discussion: how the coherence class WOULD be discharged
+(*
+   本节说明 Hypergraph 相关定义、性质与动机。
 
-    The following sketches the intended witnesses; none is constructed in
-    this library (the coherence classes are assumed, never instantiated —
-    see the status note in the header above).
-
-    The [DecCospan_Hypergraph_Coherent] class packages exactly the
-    structure Fong identifies in Theorem 3.5 of "Decorated Cospans":
-    a per-object decoration-coherent SCFA plus the 8 standard
-    hypergraph coherences.
-
-    For the trivial decoration ([F = Δ I_D]):
-
-      - [dec_cospan_scfa X] is the [Cospan_Hypergraph.scfa] wrapped
-        with [id_decoration] on every apex (the apex for [mu] is [X],
-        for [eta] is [X], etc.);
-
-      - the 8 coherence equations would be inherited from the
-        corresponding [Cospan_Hypergraph] equations under apex-iso
-        transport of [id_decoration], which simplifies when [F = Δ I_D]
-        (since [fmap[F] _ = id]) — but even this trivial witness is not
-        actually built here.
-
-    For Fong's electrical circuits, [dec_cospan_scfa X] is the SCFA
-    carrying the "empty resistor network" decoration (the additive
-    unit of the resistor-network monoid on [X]); the tensor and unit
-    coherences follow from the algebra of resistor networks on
-    coproducts.
-
-    For Baez–Fong Markov processes, [dec_cospan_scfa X] is the SCFA
-    carrying the "no transitions" decoration; the coherences follow
-    from the monoid structure on transition graphs.
-
-    In every case the witness would be a short calculation in the chosen
-    decoration data, building on the cospan-level SCFA construction
-    already done by [Cospan_Hypergraph]; those calculations are not yet
-    carried out here, so no [DecCospan_Hypergraph_Coherent] instance is
-    provided. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

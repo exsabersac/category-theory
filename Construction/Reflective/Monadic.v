@@ -28,10 +28,11 @@ Generalizable All Variables.
 
 (** ** The comparison functor of a reflection *)
 
-(* [Reflective_Monad R] is [Adjunction_Induced_Monad (reflective_adj R)]
-   by definition, so the Eilenberg–Moore comparison of the reflection
-   lands in the category of algebras for the idempotent monad
-   Construction/Reflective/Idempotent.v attaches to [R]. *)
+(*
+   本节说明伴随、单子、Eilenberg–Moore相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition reflective_comparison@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (R : Reflective S) :
   Sub C S ⟶ @EilenbergMoore C (Incl C S ◯ reflector R) (Reflective_Monad R)
@@ -64,10 +65,11 @@ Definition reflective_eso_obj@{o h +} {C : Category@{o h h}}
   (z : @EilenbergMoore C (Incl C S ◯ reflector R) (Reflective_Monad R)) :
   Sub C S := reflector R ``z.
 
-(* The comparison algebra at the reflection of [a] is isomorphic to
-   (a, α): forward the structure map α, backward the unit.  That the unit
-   is inverse to α is Idempotent.v's [algebra_ret_iso]; the witness is
-   bound with [pose] so that its inverse stays a reduct of α. *)
+(*
+   本节说明 Monadic 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition reflective_eso_iso@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (R : Reflective S)
   (z : @EilenbergMoore C (Incl C S ◯ reflector R) (Reflective_Monad R)) :

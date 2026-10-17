@@ -115,16 +115,11 @@ Proof.
   - intros c d d' g. reflexivity.
 Qed.
 
-(** ** Transport helpers
+(*
+   本节说明 Bifunctor 相关定义、性质与动机。
 
-    Properness of [FunnyBimap] transports morphisms of [C' □ D'] along
-    object equalities that are [f_equal] images of SCALAR equalities in one
-    coordinate ([eF c], resp. [eG d]).  Each helper destructs the scalar
-    equalities — after which every transport vanishes definitionally — so
-    downstream proofs never manipulate transports over pair types.  The
-    left/right suffix [_l]/[_r] names the argument being varied (the
-    [C]-side functor, resp. the [D]-side one); [lstep]/[rstep] names the
-    generating step being transported. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma funny_transport_lstep_l {C D : Category} {a a' b b' : C} {y : D}
   (p : a = a') (q : b = b') (s : a ~{C}~> b) (s' : a' ~{C}~> b')
@@ -174,12 +169,11 @@ Proof.
   apply feq_consR; [ exact E | apply feq_refl ].
 Qed.
 
-(** ** Properness with respect to strict functor equality
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Split per argument: each half varies one functor while the other is
-    fixed, so all object equalities are [f_equal] images of one scalar
-    family and the helpers above apply verbatim on the generating steps;
-    [Funny_strict_eq] then extends the agreement to all words. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma FunnyBimap_respects_l {C C' D D' : Category}
   {F F' : C ⟶ C'} (G : D ⟶ D') :

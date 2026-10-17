@@ -56,10 +56,11 @@ Proof.
   apply TE_id_left.
 Qed.
 
-(** Naturality of [T_cast]: a cast can be moved past any morphism
-    along the same arity equation.  This is the key lemma used to
-    discharge the naturality obligations of the unitors and the
-    associator in the Monoidal instance on [FreeCat S]. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma T_cast_natural
   {S : Signature} {m n : nat} (e : m = n) (f : Term S m m) (g : Term S n n)
   (Hfg : forall (q : m = n),
@@ -106,24 +107,17 @@ Proof.
   reflexivity.
 Qed.
 
-(** ** Transport bridges for strict-PROP equations
+(*
+   本节说明 Cast 相关定义、性质与动机。
 
-    The strict-PROP right-unit and associativity axioms in [TermEq]
-    are stated in [eq_rect] transport form (over [Nat.add_0_r] and
-    [Nat.add_assoc] respectively).  Below we expose a small helper
-    for use when downstream proofs need to work with both ends of
-    the transport. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(** Transport-spelling bridge: the [eq_rect] transport of a term
-    along [e : m = n] over the codomain index equals the [match]
-    (dependent pattern-match) spelling of the same transport.  Both
-    sides are [T_cast e] applied to [t]; this lemma just lets a proof
-    switch between the [eq_rect] form used in [TermEq]'s strict-PROP
-    axioms and the [match] form used by [T_cast].
+(*
+   本节说明 Cast 相关定义、性质与动机。
 
-    This is the standard "destruct the eq_rect" pattern, but bundled
-    as a helper so the [T_cast]-level naturality proofs don't have
-    to repeat it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma T_term_eq_rect_destruct
   {S : Signature} {m n : nat} (e : m = n) (t : Term S m m) :
   eq_rect m (fun k => Term S m k) t n e

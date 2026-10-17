@@ -64,12 +64,11 @@ Open Scope nat_scope.
 
 Notation "⟦ n ⟧" := (@prop_of_nat P n) (at level 0, format "⟦ n ⟧").
 
-(** ** 1. Soundness for the theory congruence
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    A valuation is [E]-SOUND when the two sides of every axiom of the
-    theory have equivalent interpretations.  This is the semantic
-    entry fee of the presentation: the free equations hold in any
-    PROP ([interp_sound]), and the axioms hold by hypothesis. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ESound : Type :=
   ∀ m n (s t : Term Σ m n),
@@ -77,11 +76,11 @@ Definition ESound : Type :=
 
 Context (Hv : ESound).
 
-(** Soundness of [interp] for [TermEqW E], in the [Prop]-reflection.
-    Six cases: the embedded free equations are [Interp.v]'s
-    [interp_sound_heq] wholesale; the axioms are [Hv]; symmetry,
-    transitivity and the two composition congruences round-trip
-    through [heq_intro]/[heq_elim] as in the donor induction. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma interpW_sound_heq {m n : nat} {s t : Term Σ m n} :
   TermEqW E s t → heq (interp P Σ v s) (interp P Σ v t).
 Proof using E HP Hv OD P v.
@@ -119,12 +118,11 @@ Proof using E HP Hv OD P v.
   exact (heq_elim (interpW_sound_heq HT)).
 Qed.
 
-(** ** 2. The interpretation functor on the presented category
+(*
+   本节说明函子相关定义、性质与动机。
 
-    [InterpF] identifies [TermEqW]-related morphisms (that is
-    [interpW_sound]), so it lifts through the quotient by the
-    universal property of [Construction/Quotient.v].  The lift acts
-    on objects and morphisms exactly as [InterpF] does. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition PresentedInterp : PresentedCat E ⟶ P :=
   @QuotientLift (FreeCat Σ) (fun m n : nat => @TermEqW E m n)
@@ -138,13 +136,11 @@ Lemma PresentedInterp_proj {m n : nat} (t : Term Σ m n) :
   fmap[PresentedInterp] (fmap[PresentedProj E] t) = fmap[InterpF Σ P v] t.
 Proof. reflexivity. Qed.
 
-(** ** 3. The strong and strict monoidal structure
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    Same component data as [InterpF]'s in [Universal.v] §3: the tensor
-    comparison is the [prop_tensor_plus] cast, packaged as a natural
-    isomorphism in the functor category, and every proof field is a
-    named target-side lemma of [Universal.v] — the source category
-    changed, the target goals did not. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition PresentedInterp_ap_dom :
   PresentedCat E ∏ PresentedCat E ⟶ P :=
@@ -168,10 +164,11 @@ Definition PresentedInterp_ap_from :
     (fun mn => id_cast (eq_sym (prop_tensor_plus (fst mn) (snd mn))))
     (fun x y f => interp_ap_natural_from Σ P v (fst f) (snd f)).
 
-(** The two composites are the identity transformation, componentwise
-    (in the functor category the identity's component at [mn] is
-    [fmap id], which on each side reduces to a tensor of identities);
-    proof text as in the donor. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma PresentedInterp_ap_to_from (mn : PresentedCat E ∏ PresentedCat E) :
   id_cast (prop_tensor_plus (fst mn) (snd mn))
       ∘ id_cast (eq_sym (prop_tensor_plus (fst mn) (snd mn)))
@@ -228,14 +225,11 @@ Program Definition PresentedInterp_Monoidal :
   monoidal_assoc := interp_monoidal_assoc Σ P v
 |}.
 
-(** The comparisons ARE the PROP's strictness equalities, verbatim —
-    [strict_pure_obj] is [prop_unit_zero] and [strict_ap_obj] is
-    [prop_tensor_plus], as the universal property demands.  The two
-    reflexivity-grade comparison fields are in-situ Program
-    obligations (the [Presented_Strict] discipline of
-    [Presentation.v]), which the ambient obligation tactic discharges
-    on its own: both comparisons are the transported identities the
-    class asks for, definitionally. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition PresentedInterp_Strict :
   @StrictMonoidalFunctor (PresentedCat E) P (Presented_Monoidal E) (MP P)
     PresentedInterp := {|
@@ -244,13 +238,11 @@ Program Definition PresentedInterp_Strict :
   strict_ap_obj := fun x y : nat => @prop_tensor_plus P x y      (* ditto *)
 |}.
 
-(** ** 4. Symmetry
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    The braid-compatibility square of a monoidal functor out of the
-    presented category, over its own tensor comparison, with the
-    target braiding re-indexed to the strict path by [strict_braid] —
-    the presented-source sibling of [Universal.v]'s
-    [SymmetricStrict]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition SymmetricStrictW (G : PresentedCat E ⟶ P)
   (MG : @MonoidalFunctor (PresentedCat E) P (Presented_Monoidal E) (MP P) G) :
@@ -266,11 +258,11 @@ Proof.
   exact (interp_braid_ap Σ P v m n).
 Qed.
 
-(** ** 5. Factorisation
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    The [≈]-level statement of the (definitional) factorisation of
-    the interpretation through the projection: [PresentedInterp]
-    extends [v]'s interpretation along [PresentedProj E]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem Presented_factor : ∀ m n (t : Term Σ m n),
   fmap[PresentedInterp] (fmap[PresentedProj E] t) ≈ interp P Σ v t.
@@ -278,14 +270,11 @@ Proof.
   intros; reflexivity.
 Qed.
 
-(** ** 6. Uniqueness
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    Any strict symmetric competitor agreeing with [v] on generators
-    agrees with [interp] on every morphism of [PresentedCat E], up to
-    the [hom_cast] conjugation along the object family [Hobj].  As on
-    the free side, the theorem holds for an ARBITRARY such family —
-    axiom-free UIP on [obj P] (the [ObjDecEq] class) makes any two
-    proofs of the same object equality interchangeable. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section PresentedUniqueness.
 
@@ -298,16 +287,18 @@ Context (Hgen : ∀ m n (g : Σ m n),
   fmap[G] (quot E (T_gen g))
     ≈ hom_cast (eq_sym (Hobj m)) (eq_sym (Hobj n)) (v m n g)).
 
-(** The competitor, precomposed with the projection: a functor from
-    the FREE category, to which [Universal.v]'s uniqueness applies.
-    Its action on objects and morphisms is definitionally [G]'s own,
-    because the projection is the identity on both. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PresentedComposite : FreeCat Σ ⟶ P := G ◯ PresentedProj E.
 
-(** The composite is strict monoidal: [Compose_StrictMonoidalFunctor]
-    of [SG] after [PresentedProj_Strict].  Because the projection's
-    strict object equalities are [eq_refl], the composite's strict
-    object data reduce to [SG]'s own ([eq_trans e eq_refl ≡ e]). *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PresentedComposite_Strict :
   @StrictMonoidalFunctor (FreeCat Σ) P (FreeCat_Monoidal Σ) (MP P)
     PresentedComposite :=
@@ -363,10 +354,11 @@ Proof using E G HBW P SG.
   exact HB.
 Qed.
 
-(** Main uniqueness.  [interp_unique] pins the composite on every
-    term; since the projection is the identity on objects and
-    morphisms — every hom of [PresentedCat E] IS a term — the
-    conclusion transfers back to [G] definitionally. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Presented_unique :
   ∀ m n (f : m ~{PresentedCat E}~> n),
     fmap[G] f ≈ hom_cast (eq_sym (Hobj m)) (eq_sym (Hobj n))
@@ -379,18 +371,11 @@ Qed.
 
 End PresentedUniqueness.
 
-(** *** Existence, machine-checked against the hypothesis pack
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    [PresentedInterp] itself — with its strict structure
-    [PresentedInterp_Strict], its braid square
-    [PresentedInterp_SymmetricStrict], and the object family
-    [Hobj := eq_refl] (its object action is [prop_of_nat] on the
-    nose) — satisfies the hypotheses of [Presented_unique]: the
-    generator agreement is the definitional action on terms up to
-    trivial casts, and instantiating the theorem at [PresentedInterp]
-    typechecks.  As in the donor [Construction/PROP/Universal.v], this
-    is the named witness that the mediating functor of the existence
-    half is itself pinned by the uniqueness half. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example PresentedInterp_generator_agreement (m n : nat) (g : Σ m n) :
   fmap[PresentedInterp] (quot E (T_gen g))
@@ -409,13 +394,11 @@ Proof.
            PresentedInterp_generator_agreement m n f).
 Qed.
 
-(** *** Uniqueness from a single object datum
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    As on the free side, the object family [Hobj] can be synthesised
-    from the single equality [G 1 = ⟦1⟧]: zero-arity agreement is
-    [strict_pure_obj] against [prop_unit_zero], and successor
-    agreement peels one wire off with [strict_ap_obj] against
-    [prop_tensor_plus]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section PresentedUniquenessFromOne.
 
@@ -453,12 +436,11 @@ Qed.
 
 End PresentedUniquenessFromOne.
 
-(** *** Agreement of competitors
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Any two strict symmetric functors out of the presented category
-    that agree with [v] on the generators agree with each other on
-    every morphism, after re-indexing both to the canonical
-    objects. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary Presented_unique2
   (G1 : PresentedCat E ⟶ P)

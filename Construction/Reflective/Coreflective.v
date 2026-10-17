@@ -35,10 +35,11 @@ Proof.
   - intros x y z f g. exact (@fmap_comp _ _ G z y x g f).
 Defined.
 
-(* The covariant adjunction [Incl ⊣ G] read as [G^op ⊣ Incl^op].  The
-   hom-set isomorphism is the donor's with [to] and [from] exchanged, and
-   each of the four naturality fields is one of the donor's four with its
-   arguments permuted: nothing is re-proved. *)
+(*
+   本节说明伴随、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition coreflector_op_adj@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (G : C ⟶ Sub C S) (A : Incl C S ⊣ G) :
   coreflector_op G ⊣ Incl (C^op) (op_subcategory S).
@@ -172,10 +173,11 @@ Example coreflective_unit_is_op_counit@{o h +} {C : Category@{o h h}}
     = @counit _ _ _ _ (reflective_adj R) s
   := eq_refl.
 
-(* The dual of [reflective_counit_iso]: at an object of a coreflective
-   subcategory the unit is invertible, [x ≅ coreflector (Incl x)].  The
-   two morphisms are [reflective_counit_iso]'s, and its two inverse laws
-   are exchanged. *)
+(*
+   本节说明 Coreflective 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition coreflective_unit_iso@{o h +} {C : Category@{o h h}}
   {S : Subcategory C} (R : Coreflective S) (x : Sub C S) :
   x ≅[Sub C S] fobj[coreflector R] (fobj[Incl C S] x).

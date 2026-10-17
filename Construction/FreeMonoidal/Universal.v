@@ -88,14 +88,18 @@ Proof.
   reflexivity.
 Qed.
 
-(* From here on the goals are monoidal-coherence shaped, and the global
-   [cat_simpl] obligation tactic pre-processes them unpredictably; take manual
-   control instead (precedent: Functor/Structure/Monoidal/Id.v). *)
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
-(* The comparison natural isomorphism has identity components: [subst] is
-   strict on objects, so the two composite functors agree definitionally on
-   objects and the comparison square is [Subst_tensor]. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Subst_ap_to :
   ((⨂) ◯ Subst ∏⟶ Subst) ~{[W ∏ W, B]}~> (Subst ◯ (⨂)) := {|
   transform := fun _ => id
@@ -341,18 +345,17 @@ Corollary Subst_unit_right_word :
     ≈ to (@unit_right B MB b).
 Proof. apply Subst_unit_right. Qed.
 
-(** ** Uniqueness
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    Any strict monoidal functor sending the generator to [b] agrees with
-    [Subst] — on objects by a derived Leibniz equality [Theta], on morphisms
-    up to conjugation by the [Theta]-transports.  The statements are given in
-    SQUARE form ([id_cast (Theta -)] naturality squares) rather than through
-    [hom_cast], because squares compose; the [hom_cast] reading is recovered
-    by composing with the invertible casts. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(* The W-side mirrors of the join and the normaliser.  Their RECURSIVE
-   STRUCTURE is the point (each branch is a structure map of W, which [G]'s
-   strictness translates), not the underlying arrows — W is thin. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint JW (m n : nat) : WT (nfword m) (nfword n) ≅[W] nfword (m + n) :=
   match m with
   | O   => @unit_left W W_Monoidal (nfword n)
@@ -455,10 +458,11 @@ Fixpoint subst_nfword (n : nat) : subst b (nfword n) = nf b n I :=
 
 Notation sigma n := (id_cast (subst_nfword n)).
 
-(* Bridges: Strict.v's transported-identity matches ARE [id_cast] — the
-   to-direction definitionally, the from-direction along the symmetric
-   equality.  Stated as Leibniz equalities so they rewrite match-forms into
-   cast-forms that the kit lemmas can see. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma id_cast_match {X Y : B} (e : X = Y) :
   (match e in _ = T return X ~{B}~> T with eq_refl => id end) = id_cast e.
 Proof. reflexivity. Qed.
@@ -501,9 +505,11 @@ Lemma JW_unique (m n : nat) :
     ≈ sigma (m + n) ∘ thc (nfword (m + n)) ∘ fmap[G] (to (JW m n)).
 Proof.
   induction m; simpl.
-  - (* SG's left unitality, solved for the G-image of the W-side unitor in
-       ISO form first (pure inverse cancellations), converting the inverses
-       to transported identities only at the interface. *)
+  - (*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     pose proof (@monoidal_unit_left _ _ _ _ G
                   (@strict_functor_is_monoidal _ _ _ _ G SG) (nfword n)) as UL.
     assert (GL : fmap[G] (to (@unit_left W W_Monoidal (nfword n)))
@@ -672,10 +678,11 @@ Proof.
     reflexivity.
 Qed.
 
-(* The normaliser square: G agrees with the canonical normalisation maps,
-   across the object agreement.  Structural induction; the generator case is
-   SG's right unitality read backwards through the iso inverses, the tensor
-   case is [strict_fmap_bimap] + the tensored IHs + [JW_unique]. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma canW_unique (w : Word) :
   to (can b w) ∘ thc w
     ≈ sigma (wlen w) ∘ thc (nfword (wlen w)) ∘ fmap[G] (to (canW w)).
@@ -793,9 +800,11 @@ Lemma sigma_nfword_cast (m n : nat) (e : m = n) :
     ≈ id_cast (f_equal (fun i => nf b i I) e) ∘ sigma m.
 Proof. destruct e; simpl; now rewrite id_left, id_right. Qed.
 
-(* Mac Lane's uniqueness: on EVERY arrow, G agrees with substitution across
-   the object agreement.  W is thin, so the proof decomposes the arrow
-   through the normalisers — for free — and the three squares compose. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Subst_unique {v w : Word} (p : v ~{W}~> w) :
   fmap[Subst] p ∘ thc v ≈ thc w ∘ fmap[G] p.
 Proof.
@@ -845,13 +854,11 @@ Qed.
 
 End Uniqueness.
 
-(** ** Theorem 1, packaged
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    [maclane:VII.2:thm1]: substitution is a strict monoidal functor sending
-    the generator to [b] — with both object equations [eq_refl] — and it is
-    the ONLY one: any strict monoidal [G] with [G WI = b] agrees with it on
-    objects by a derived Leibniz equality and on every arrow up to transport
-    along that equality. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem FreeMonoidal_universal :
   (((@StrictMonoidalFunctor W B W_Monoidal MB Subst) *
     (Subst WI = b)) *

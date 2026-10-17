@@ -28,21 +28,19 @@ Section Kan.
 Context {D : Category}.
 Context (K : D ⟶ Sets).
 
-(* The passages and the Δ bridge are built by applying the record
-   constructor to named lemmas, so they carry no obligation and stay
-   transparent — which is what the [eq_refl] measurements below rest on.
-   [Program] is used only for the three isomorphism definitions, and
-   there the obligation tactic is set to [idtac] so that the goals arrive
-   in a predictable shape rather than partially discharged under
-   generated names. *)
+(*
+   本节说明同构、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 
-(* Explicit spellings of the two [ACone] projections at the data of this
-   file.  Both are class projections whose instance argument is found by
-   typeclass search, and search cannot see which cone is meant when two
-   cones over the same diagram are in scope; naming them here keeps every
-   statement below unambiguous. *)
+(*
+   本节说明 Kan 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Notation leg psi j :=
   (@vertex_map (Elements K) D _ (Elements_proj K) psi j).
@@ -52,10 +50,11 @@ Notation coh psi f :=
 
 (** ** From a map into a representable to a cone *)
 
-(* Cone coherence for the leg family j ↦ τ (`1 j) (`2 j).  A morphism of
-   [Elements K] is a D-morphism together with a witness that it carries
-   the element; naturality of τ supplies the equation at the D-morphism
-   and the carried witness moves the answer onto the target element. *)
+(*
+   本节说明 Kan 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma kan_cone_coherence {a : D} (tau : K ⟹ [Hom a,─])
       {x y : Elements K} (f : x ~{Elements K}~> y) :
@@ -81,10 +80,11 @@ Example kan_cone_of_nat_leg {a : D} (tau : K ⟹ [Hom a,─])
 
 (** ** From a cone to a map into a representable *)
 
-(* Two `≈`-equal elements over one object of D are DIFFERENT objects of
-   [Elements K] — objects are compared by Leibniz equality — but they are
-   connected by the morphism whose underlying D-morphism is the identity.
-   This is the witness that makes the backward passage possible. *)
+(*
+   本节说明 Kan 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma elements_same_cond {d : D} (x y : K d) (H : x ≈ y) :
   fmap[K] (id[d]) x ≈ y.
@@ -107,10 +107,11 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* The naturality square of the transformation to be built, in both
-   orientations.  Each is cone coherence at the chosen lift of f, whose
-   image under the projection is f itself definitionally
-   ([Elements_lift_over]). *)
+(*
+   本节说明 Kan 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma kan_nat_naturality {a : D} (psi : ACone a (Elements_proj K))
       {d d' : D} (f : d ~> d') (x : K d) :
@@ -157,10 +158,11 @@ Proof. intros [d x]; reflexivity. Qed.
 
 (** ** The two sides as functors of the apex *)
 
-(* The left-hand side is a PURE ASSEMBLY of in-tree parts: the covariant
-   hom-functor of the functor category [D, Sets] taken at K, composed
-   with the Yoneda embedding of D.  It is a plain [Definition] with no
-   obligations, so all three functor laws are inherited. *)
+(*
+   本节说明函子、Yoneda、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition KanNat : D^op ⟶ Sets :=
   Curried_Hom ([D, Sets]) K ◯ Curried_Hom D.
@@ -196,15 +198,11 @@ Next Obligation. intros a tau; apply kan_nat_cone_nat. Qed.
 
 (** ** Naturality in the apex *)
 
-(* The reindexing on both sides is precomposition of every leg (resp. of
-   every component's value) with g, so all four naturality obligations
-   close by [reflexivity].  The two INVERSE laws do not, and the reason
-   is not this construction: [nat_id]'s component is [fmap[F] id] rather
-   than [id] (Theory/Natural/Transformation.v), so the identity of a
-   functor category reindexes and leaves an [∘ id] behind — see the
-   engineering note in the header.  In [Sets] the identity is
-   [setoid_morphism_id] and [kan_iso_at]'s corresponding obligations need
-   no such step. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition kan_coyoneda : KanNat ≅[[D^op, Sets]] KanCone := {|
   to   := {| transform := fun a => to   (kan_iso_at a) |};
@@ -227,10 +225,11 @@ Example kan_coyoneda_from_component (a : D) :
 
 (** ** The literal Δ-reading *)
 
-(* Mac Lane writes the right-hand side as Nat(Δa, Q).  A [Transform] out
-   of the constant functor is the same leg family as an [ACone] with the
-   coherence law read against [fmap[Δa] f = id]; the passages below cost
-   exactly one [id_right] each. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma kan_transform_naturality {a : D} (psi : ACone a (Elements_proj K))
       {x y : Elements K} (f : x ~{Elements K}~> y) :

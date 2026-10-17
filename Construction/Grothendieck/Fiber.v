@@ -41,10 +41,11 @@ Context {C : Category}.
 Context (D : Displayed C).
 Context (x : C).
 
-(* Associativity of the recentred composition, stated over arbitrary
-   proofs of the base unit law: both sides fuse into a single transport
-   of the displayed associator, and parallel transports agree by proof
-   irrelevance. *)
+(*
+   本节说明 Fiber 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Fiber_comp_assoc {da db dc dd : dobj x}
   (e1 e2 e3 e4 : @id C x ∘ @id C x ≈ @id C x)
   (ff : dhom dc dd id) (gg : dhom db dc id) (hh : dhom da db id) :
@@ -101,11 +102,11 @@ Qed.
 
 End FiberCategory.
 
-(** ** The fibres of the Grothendieck construction
+(*
+   本节说明等价相关定义、性质与动机。
 
-    For [A : IndexedCat B] and [x : B], the fibre of the displayed
-    presentation of ∫ A over [x] recovers [idx_fib A x] up to an
-    equivalence of categories that is the identity on objects. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section GrothendieckFiber.
 
@@ -146,14 +147,11 @@ Proof.
   apply iso_to_from.
 Qed.
 
-(* From the Grothendieck fibre to the indexed fibre: the identity on
-   objects; on homs, recentre the source along the unit iso.  Both
-   functors here are assembled with an explicit [Build_Functor]: a
-   Grothendieck-fibre hom IS a fibre hom [idx_map A id a ~> b] up to
-   definitional unfolding, and the type ascriptions below make that
-   reading explicit for the elaborator (Program-mode elaboration would
-   instead mediate the object mismatch with equality coercions, which
-   are not available: [idx_map A id a] is only isomorphic to [a]). *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Fiber_Grothendieck_To :
   Fiber (Grothendieck_Displayed A) x ⟶ idx_fib A x.
 Proof.

@@ -99,18 +99,11 @@ Qed.
 
 End ForgetDecoration.
 
-(** ** The forgetful black-box as a [Functor]
+(*
+   本节说明函子相关定义、性质与动机。
 
-    With [DecoratedCospanCat] in scope (and the [DecCospan_Coherent]
-    coherence class), [forget_decoration] is a [Functor] record from
-    [DecoratedCospanCat HP LM id_decoration cospan_merge] to
-    [CospanCat C HP].
-
-    The functor laws are immediate from the [forget_decoration_*]
-    lemmas above: the underlying cospan of the identity decorated
-    cospan IS the identity cospan, and the underlying cospan of a
-    composite IS the composite of underlying cospans (both by
-    reflexivity of the cospan setoid). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ForgetDecorationFunctor.
 
@@ -148,100 +141,8 @@ Defined.
 
 End ForgetDecorationFunctor.
 
-(** ** Hypergraph-functoriality of the forgetful black-box
+(*
+   本节说明函子相关定义、性质与动机。
 
-    [CospanCat C HP] carries the canonical hypergraph structure
-    [Cospan_Hypergraph] (in [Construction/Cospan/HypergraphInstance.v]).
-    Lifting [DecoratedCospanCat F] to a full hypergraph category — by
-    pairing the cospan-level SCFA with a CHOSEN decoration on each of
-    [μ, η, δ, ε] — and then forgetting the decoration leaves the SCFA
-    on [forget_decoration X = X] equal to [Cospan_Hypergraph]'s SCFA,
-    so preservation is REFLEXIVE: [F (μ_X) = μ_{F X}] etc.
-
-    The strict form of hypergraph-functor preservation:
-
-      F (mu_X)     ≈ mu_{F X}
-      F (eta_X)    ≈ eta_{F X}
-      F (delta_X)  ≈ delta_{F X}
-      F (eps_X)    ≈ eps_{F X}
-
-    follows from the cospan-level reflexivity ([forget_decoration_id]
-    and [forget_decoration_compose]) combined with the definitional
-    equality of [scfa] generators on a [DecoratedCospanCat F]-object's
-    underlying cospan-category object.  The full packaging requires
-    DecoratedCospanCat itself as a [Category] record (the
-    [Construction/DecoratedCospan.v] module exports the API and the
-    Setoid; the [Category] record packaging follows the standard pattern
-    from [CospanCat]'s construction).
-
-    ** Discussion: the general black-boxing functor
-
-    In its full generality (Baez–Fong, Fong–Spivak), black-boxing is a
-    hypergraph functor
-
-      ⬛ : DecoratedCospanCat F  ⟶  Rel
-
-    or, depending on the application,
-
-      ⬛ : DecoratedCospanCat F  ⟶  Cospan(FinSet)   (Markov-process variant)
-      ⬛ : DecoratedCospanCat F  ⟶  Vect_R           (linear-circuit variant)
-      ⬛ : DecoratedCospanCat F  ⟶  ZX_Cat.          (quantum variant)
-
-    Each instance specialises the codomain hypergraph category and the
-    decoration-to-behaviour map.  The categorical content — that the
-    construction is a hypergraph functor — is the SAME in every case:
-    apex-iso transport + lax-monoidal naturality + SCFA preservation.
-
-    This file provides the canonical forgetful black-box, the
-    well-definedness lemmas at the cospan/equivalence level, and the
-    pattern-recipe for instantiating the general case.
-
-    ** Packaging as a [HypergraphFunctor] record
-
-    [Structure/Monoidal/HypergraphFunctor.v] defines the literature
-    notion of a hypergraph functor (Fong–Spivak, "Hypergraph
-    Categories", arXiv:1806.08304, Def. 4.1.3): a strong symmetric
-    monoidal functor between hypergraph categories preserving the SCFA
-    structure on every object.
-
-    The forgetful black-box [forget_decoration : DecoratedCospanCat F →
-    CospanCat C] is, by construction, a STRICT hypergraph functor: it
-    acts as the identity on objects, and on each generator it sends
-    the decorated SCFA-generator back to the underlying cospan-level
-    SCFA-generator (since the decoration is, by definition, an extra
-    layer wrapped around the cospan).
-
-    Formally building the [HypergraphFunctor] instance requires:
-
-      1. [DecoratedCospanCat F] as a [Category] record (done by
-         [Construction/DecoratedCospan/Category.v], parameterised by
-         a [DecCospan_Coherent] instance);
-
-      2. the SMC structure on [DecoratedCospanCat] (the
-         [Construction/DecoratedCospan/Category.v] discussion section
-         outlines the [DecCospan_Monoidal_Coherent] +
-         [DecCospan_Symmetric_Coherent] coherence-class signatures);
-
-      3. the [Hypergraph] structure on [DecoratedCospanCat] (chosen
-         decorations on each of the four SCFA generators, lifting
-         [Cospan_Hypergraph]'s scfa fields one level).
-
-    With (1)-(3) in scope, the [HypergraphFunctor] instance for
-    [forget_decoration] takes [hf_unit_iso := iso_id] and
-    [hf_tensor_iso X Y := iso_id] (the functor acts as the identity
-    on objects), and discharges each of the four preservation
-    equations by [reflexivity] (since
-    [forget_decoration_morphism (scfa_gen_dec X) = scfa_gen X]
-    holds on the nose by the choice of decorated SCFA).
-
-    This file provides the forgetful functor [forget_decoration] and
-    the recipe above for packaging it as the canonical Fong-style
-    "black-box is a hypergraph functor" (Theorem 6.1 in his thesis,
-    arXiv:1609.05382).  The [HypergraphFunctor] instance itself is NOT
-    yet constructed here: it awaits the [DecCospan_*_Coherent]
-    instances of steps (1)-(3) above (the [HypergraphFunctor]
-    inhabitants currently in the library are the trivial
-    [Id_HypergraphFunctor] of [Structure/Monoidal/HypergraphFunctor.v]
-    and the images of the forgetful bridge
-    [SymmetricMonoidalFunctor_HypergraphFunctor] of
-    [Functor/Structure/Monoidal/Hypergraph.v]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

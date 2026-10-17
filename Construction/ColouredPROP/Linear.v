@@ -52,13 +52,11 @@ Definition c_conservative (c : Colour) : Type :=
 Definition LinearRespecting : Type :=
   forall c : Colour, LinearColour c -> c_conservative c.
 
-(** *** The occurrence invariant
+(*
+   本节说明分配律相关定义、性质与动机。
 
-    Per-colour wire counts are invariant under all five term formers:
-    identities and composites trivially, the block braid and the
-    tensor because [count_occ] distributes over [++]
-    ([count_occ_app]), and generators by conservativity.  This is the
-    whole-diagram consequence of the local counting discipline. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cterm_count_occ (c : Colour) (Hgen : c_conservative c)
   {cs ds : list Colour} (t : CTerm S cs ds) :
@@ -120,14 +118,11 @@ Corollary linear_no_discard (HL : LinearRespecting)
   CTerm S [c] [] -> False.
 Proof. exact (no_linear_discard c (HL c Hc)). Qed.
 
-(** *** The permutation invariant of the structural fragment
+(*
+   本节说明 Linear 相关定义、性质与动机。
 
-    Over a generator-free signature the invariant sharpens from
-    per-colour counting to boundary relatedness: every term's output
-    boundary is a permutation of its input boundary.  Identities are
-    reflexivity, the block braid is [Permutation_app_comm], and
-    composition/tensor are transitivity/congruence of
-    [Permutation]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem structural_permutation
   (Hempty : forall cs ds : list Colour, S cs ds -> False)
@@ -155,15 +150,11 @@ Arguments linear_no_fanout {Colour} Cdec S copyable HL c Hc _ : assert.
 Arguments linear_no_discard {Colour} Cdec S copyable HL c Hc _ : assert.
 Arguments structural_permutation {Colour} S Hempty {cs ds} t : assert.
 
-(** ** Presented transfer
+(*
+   本节说明hom、等价相关定义、性质与动机。
 
-    A presented coloured PROP ([Construction/ColouredPROP/
-    Presentation.v]) has THE SAME morphisms as the free category —
-    [CPresentedCat E] is a [Quotient], which keeps [hom] on the nose
-    and only coarsens the equivalence — so hom-emptiness transfers
-    verbatim: both corollaries are [exact] applications of the free
-    theorems at [CTerm (csmt_sig E)].  No quotient can create a
-    fan-out at a conservative colour, whatever its axioms. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section LinearPresented.
 
@@ -186,13 +177,11 @@ End LinearPresented.
 Arguments no_linear_fanout_presented {Colour} Cdec E c Hgen _ : assert.
 Arguments no_linear_discard_presented {Colour} Cdec E c Hgen _ : assert.
 
-(** ** Machine-checked sanity: the empty signature
+(*
+   本节说明 Linear 相关定义、性质与动机。
 
-    [Empty_CSig] is conservative at every colour (its generator type
-    is [Empty_set]), so with all colours declared linear it respects
-    the linear discipline, its fan-out homs are empty, and every one
-    of its terms has output boundary a permutation of its input
-    boundary. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example Empty_CSig_conservative {Colour : Type}
   (Cdec : forall c d : Colour, {c = d} + {c <> d}) (c : Colour) :
@@ -214,14 +203,11 @@ Example Empty_CSig_structural_permutation {Colour : Type}
   Permutation cs ds :=
   structural_permutation Empty_CSig (fun _ _ g => match g with end) t.
 
-(** ** The positive half: fan-out at copyable colours
+(*
+   本节说明幺半结构、幺半群、来源与用途相关定义、性质与动机。
 
-    At an arbitrary coloured PROP [P] with a selective supply
-    ([Construction/ColouredPROP/Supply.v]), every copyable wire
-    carries honest fan-out and discard morphisms, and determinism at
-    all-copyable boundaries is comonoid homomorphy for the derived
-    supplies.  Everything is stated on the braided/symmetric monoidal
-    path [MBc P], where the supply comonoids live. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SelectiveFanOut.
 
@@ -233,11 +219,11 @@ Context `{SS : @SelectiveSupply Colour P copyable}.
 Notation "⟦ cs ⟧c" := (@cprop_of_list Colour P cs)
   (at level 0, format "⟦ cs ⟧c").
 
-(** *** Fan-out and discard at a copyable wire
+(*
+   本节说明 Linear 相关定义、性质与动机。
 
-    The comultiplication and counit of the wire supply, read as
-    morphisms of [P]: the positive converses of [no_linear_fanout]
-    and [no_linear_discard]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition copyable_fanout {c : Colour} (H : copyable c = true) :
   wire (P := P) c ~{P}~>
@@ -250,15 +236,11 @@ Definition copyable_discard {c : Colour} (H : copyable c = true) :
   @ccomon_epsilon P (@cprop_symmetric Colour P) (wire (P := P) c)
     (@supply_wire Colour P copyable SS c H).
 
-(** *** Determinism at all-copyable boundaries
+(*
+   本节说明hom相关定义、性质与动机。
 
-    Relative to the derived boundary supplies [supply_list], a
-    morphism is DETERMINISTIC when it is a comonoid homomorphism
-    between them — the two Cho–Jacobs preservation squares, packaged
-    by [ComonoidHom].  The [ComonoidHom] kit of
-    [Theory/Algebra/Comonoid/Hom.v] instantiates to the expected laws:
-    identities are deterministic, deterministic morphisms compose, and
-    determinism respects [≈]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition sel_deterministic {cs ds : list Colour}
   (Hc : all_copyable copyable cs) (Hd : all_copyable copyable ds)

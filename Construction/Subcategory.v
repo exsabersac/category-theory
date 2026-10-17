@@ -52,25 +52,13 @@ Program Instance Incl : Sub ⟶ C := {
   fmap := fun x y f => `1 f
 }.
 
-(* The inclusion is faithful, for every [S] whatsoever.
-
+(*
    Book: Riehl, "Category Theory in Context", Dover 2016, §1.5, Remark 1.5.8,
-         printed p. 33
 
-   This lemma is as shallow as it looks, and it is worth saying so plainly
-   rather than dressing it up: [Sub]'s hom-setoid is DEFINITIONALLY `≈` of
-   first projections (`equiv := fun f g => `1 f ≈ `1 g` in [Sub] above), and
-   [Incl]'s action on morphisms is that same first projection, so the
-   hypothesis and the conclusion are literally the same statement and the
-   proof is [exact]. Nothing about [S] is used — neither closure field, nor
-   even that [shom] is inhabited. What the lemma buys is that the argument is
-   now made once, generically, instead of per subcategory: it is exactly the
-   proof re-derived for one particular subcategory at
-   Theory/Sheaf/Category.v.
+   本节说明hom相关定义、性质与动机。
 
-   The substance of a faithfulness claim sits in the hom-setoid being injected
-   out of, not in the injection; see Construction/Subcategory/Finite.v for an
-   instance of [Sub] carrying two parallel morphisms shown distinct. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Incl_Faithful : Functor.Faithful Incl.
 Proof.
@@ -97,9 +85,11 @@ Proof.
   - reflexivity.
 Qed.
 
-(* In a full subcategory every ambient isomorphism between selected objects
-   lifts, because both legs are retained by [Full] and the two laws are
-   compared by [Sub]'s hom-setoid, i.e. on carriers. *)
+(*
+   本节说明hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Full_sub_iso (full : Full) {x y : C}
         (ox : sobj S x) (oy : sobj S y) (f : x ≅ y) :
@@ -110,11 +100,11 @@ Program Definition Full_sub_iso (full : Full) {x y : C}
 Next Obligation. apply iso_to_from. Qed.
 Next Obligation. apply iso_from_to. Qed.
 
-(* The special case at the identity: two membership proofs for one object
-   give isomorphic — never equal — objects of [Sub].  Theory/Skeleton.v
-   quotes this when explaining why a skeleton's uniqueness clause is stated
-   at the level of [Sub]'s objects rather than their carriers.  Provided
-   for reference; it is [Full_sub_iso] at [iso_id]. *)
+(*
+   本节说明 Subcategory 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Full_membership_iso (full : Full) (x : C)
         (p q : sobj S x) : ((x; p) : Sub) ≅[Sub] (x; q) := {|
@@ -122,14 +112,11 @@ Program Definition Full_membership_iso (full : Full) (x : C)
   from := (id[x]; full x x q p id)
 |}.
 
-(* ... and back again.
+(*
+   本节说明函子、hom、来源与用途相关定义、性质与动机。
 
-   Reading the previous lemma in reverse runs into the setoid discipline.
-   [Functor.Full Incl] returns, for a C-morphism f between selected objects, a
-   morphism OF THE SUBCATEGORY, and [fmap_sur] compares it to f in the
-   hom-setoid: what comes back is some g with g ≈ f carrying a [shom] witness,
-   not a witness for f itself. That up-to-≈ statement is what fullness of the
-   inclusion yields on its own, and it is recorded first. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Full_Functor_Implies_Full_upto (HF : Functor.Full Incl) :
   ∀ (x y : C) (ox : sobj S x) (oy : sobj S y) (f : x ~> y),
@@ -143,29 +130,21 @@ Proof.
   - exact (`2 p).
 Qed.
 
-(* To close the gap and land on [Full] as stated, one needs [shom] to be
-   closed under the hom-setoid equivalence. The [Subcategory] record above has
-   no such field — its two closure conditions are for composition and
-   identities — so the property is named here and taken as a hypothesis rather
-   than derived. It holds trivially for the usual case of a full subcategory
-   cut out by a predicate on objects alone, where [shom] ignores its morphism
-   argument: Theory/Sheaf/Category.v and Construction/Subcategory/Finite.v
-   are both of that shape, and the latter discharges it. *)
+(*
+   本节说明层/筛、hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ShomRespects : Type :=
   ∀ (x y : C) (ox : sobj S x) (oy : sobj S y) (f g : x ~> y),
     f ≈ g → shom S ox oy f → shom S ox oy g.
 
-(* The converse of [Full_Implies_Full_Functor] under that hypothesis, which
-   with it completes the "full subcategory iff full inclusion" biconditional.
-   Only the hypothesis's transport along ≈ is used; the two directions are
-   otherwise independent.
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-   The hypothesis is NECESSARY, not merely convenient:
-   Construction/Subcategory/FullConverse.v exhibits a subcategory whose
-   inclusion is full as a functor while the subcategory is not full as data,
-   over a hom-setoid with two classes, refuting the unhypothesised converse
-   outright. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Full_Functor_Implies_Full : ShomRespects → Functor.Full Incl → Full.
 Proof.

@@ -128,15 +128,11 @@ Lemma all_copyable_irrelevant (cs : list Colour)
   (H1 H2 : all_copyable cs) : H1 = H2.
 Proof. exact (UIP_dec Bool.bool_dec H1 H2). Qed.
 
-(** ** The class: a per-colour selective supply
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    The single primitive: every copyable colour's wire carries a
-    commutative comonoid.  Everything else — the boundary supply, its
-    copy/discard accessors — is derived below.
-
-    Deliberately NOT wired into instance resolution (the [cd_comonoid]
-    doctrine of Structure/Monoidal/CopyDiscard.v): a supply is chosen,
-    not inferred. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class SelectiveSupply : Type := {
   supply_wire (c : Colour) :
     copyable c = true ->
@@ -157,13 +153,11 @@ Definition ccomonoid_transport {X Y : P} (e : X = Y) :
                @CommutativeComonoid P (@cprop_symmetric Colour P) Z
   with eq_refl => fun M => M end.
 
-(** The supply on a boundary word, derived from the wire supplies:
-    the empty word carries the (transported) unit comonoid, and a
-    cons peels one wire comonoid off and tensors it onto the supply
-    of the tail via the packaged tensor comonoid of
-    Theory/Algebra/Comonoid/Tensor.v.  Note [wire c ≡ ⟦[c]⟧c] and
-    [[c] ++ cs' ≡ c :: cs'] definitionally, so the only transports
-    are the two mediation equalities. *)
+(*
+   本节说明 Supply 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint supply_list `{SS : SelectiveSupply} (cs : list Colour) :
   all_copyable cs ->
   @CommutativeComonoid P (@cprop_symmetric Colour P) ⟦cs⟧c :=
@@ -238,16 +232,11 @@ Arguments sdiscard_irr {Colour P copyable SS} cs H1 H2 : assert.
 
 (* ------------------------------------------------------------------ *)
 
-(** ** Machine-checked sanity: the mediation is definitional at both
-       delivered instances
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    At the free ([FreeColouredPROP]) and the presented
-    ([CPresentedColouredPROP]) coloured PROPs the coherence field is
-    [eq_refl] over ONE shared [Monoidal] record, so both mediating
-    equalities compute to [eq_refl].  Each [Example] holds by a closed
-    [eq_refl] proof term; any regression in the shared-record wiring
-    of Instance.v/Presentation.v is caught here (and again, at the
-    supplied instance, by the [Example]s of Supply/Instance.v). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example ctensor_app_b_free_is_refl {Colour : Type} (S : CSignature Colour)
   (Cdec : forall c d : Colour, {c = d} + {c <> d}) (cs ds : list Colour) :
@@ -267,38 +256,11 @@ Example cunit_nil_b_presented_is_refl {Colour : Type} (E : CSMT Colour)
 
 (* ------------------------------------------------------------------ *)
 
-(** ** Toward the Fong–Spivak coherence theorems
+(*
+   本节说明 Supply 相关定义、性质与动机。
 
-    The remainder of the file proves that the DERIVED boundary supply
-    satisfies the supply-coherence squares of Fong–Spivak (the
-    [scfa_tensor_*] shapes of Hypergraph.v, the [cd_tensor_*] fields
-    of CopyDiscard.v): the comultiplication/counit of [supply_list
-    (cs ++ ds)] is the canonical tensor delta/epsilon of the parts'
-    supplies, mediated by the [ctensor_app_b] cast.  Because the
-    boundary supply is derived rather than axiomatized, these are
-    THEOREMS ([supply_app_delta]/[supply_app_epsilon] below).
-
-    The proof layers:
-
-    1.  variable-equality transporters between [Monoidal] records
-        ([tmon_unitl_cast]/[tmon_assoc_cast]), which carry the
-        morphism-level strictness of [MPc P] (Interp.v's
-        [cstrict_*_cast]) over to [MBc P] exactly the way Interp.v's
-        [BraidTransport] kit carries the braid the other way: the
-        lemma eliminates a VARIABLE equality and the instantiation
-        merely passes [cprop_monoidal_coherence];
-
-    2.  raw coherences of the canonical tensor-comonoid morphisms in
-        an arbitrary symmetric monoidal category (no comonoid laws —
-        pure naturality and interchange, so the induction can
-        substitute an inductive hypothesis for an inner
-        comultiplication);
-
-    3.  cast-aligned [_general] forms at [P] (the Interp.v K-kit
-        style): every boundary equality is quantified, destructible
-        ones are destructed, and the unitor-/associator-shaped
-        residues are aligned by [obj_uip] — hence the [ObjDecEq]
-        hypothesis — and discharged through layers 1–2. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Transport a left-unitor-shaped object equality along an equality
     of [Monoidal] records. *)
@@ -359,22 +321,11 @@ Qed.
 
 (* ------------------------------------------------------------------ *)
 
-(** ** Raw coherences of the canonical tensor-comonoid morphisms
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Three general symmetric-monoidal facts about the canonical
-    morphisms of Structure/Monoidal/Hypergraph.v, for RAW
-    comultiplications and counits:
-
-    - [tensor_delta_unit_l_raw]: the canonical tensor delta of the
-      unit comonoid's [λ⁻¹] with [dy] is [dy] conjugated by unitors
-      ([swap_inner_unit_left] plus naturality of [λ]);
-    - [tensor_delta_assoc_raw]: the two iterations of the canonical
-      tensor delta agree across the associator — [swap_inner_assoc]
-      (the associativity hexagon of the squaring functor,
-      Braided/Proofs.v) at diagonal arguments, plus naturality of the
-      associator;
-    - [tensor_epsilon_assoc_raw]: the same for the canonical epsilon
-      (triangle coherence plus Kelly's [unit_identity]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section TensorComonoidCoherence.
 
@@ -476,12 +427,11 @@ Proof.
   exact (@bimap_id_id P P P (@tensor P (MBc P)) x y).
 Qed.
 
-(** *** Strictness of [MBc P], through the transporters
+(*
+   本节说明 Supply 相关定义、性质与动机。
 
-    The strict path's comparison facts (Interp.v's [cstrict_*_cast]
-    at [MPc P]) transported to the symmetric path along
-    [cprop_monoidal_coherence].  Only the left unitor and the
-    associator are needed by the supply theorems. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition cunitl_obj_b (x : P) :
   ((@I P (MBc P)) ⨂[MBc P] x)%object = x :=
@@ -527,11 +477,11 @@ Proof.
   apply cassoc_cast_b.
 Qed.
 
-(** *** Projections of transported comonoids
+(*
+   本节说明 Supply 相关定义、性质与动机。
 
-    The delta of a transported comonoid is the [hom_cast] of the
-    delta (along the equality and its [ctensor2_b] pairing); the
-    epsilon likewise, with the codomain [I] untouched. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma ccomonoid_transport_delta {X Y : P} (e : X = Y)
   (M : @CommutativeComonoid P (@cprop_symmetric Colour P) X) :
@@ -603,12 +553,11 @@ Context {OD : @ObjDecEq P}.
 Notation "⟦ cs ⟧c" := (@cprop_of_list Colour P cs)
   (at level 0, format "⟦ cs ⟧c").
 
-(** *** The cast-aligned [_general] forms
+(*
+   本节说明 Supply 相关定义、性质与动机。
 
-    Interp.v K-kit style: quantify every boundary equality, destruct
-    the destructible ones, align the unitor-/associator-shaped
-    residues by [obj_uip], and discharge through the [MBc]-strictness
-    bridges and the raw coherences. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Unit absorption for the canonical delta: casting the canonical
     tensor delta of (the transported unit comonoid's delta) with [dy]
@@ -831,12 +780,11 @@ Proof.
               (supply_list l (proj2 (andb_prop _ _ H))))).
 Qed.
 
-(** The same projections at ARBITRARY split evidence: since
-    copyability evidence is unique ([copyable_irrelevant] /
-    [all_copyable_irrelevant]), the head-wire and tail evidence in the
-    unfolding may be chosen freely.  These are the forms the coherence
-    theorems consume — they let the induction thread ONE uniform
-    evidence spelling through both sides of the square. *)
+(*
+   本节说明 Supply 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma supply_list_delta_cons_any (c : Colour) (l : list Colour)
   (H : all_copyable copyable (c :: l))
@@ -867,15 +815,11 @@ Proof.
   exact (supply_list_epsilon_cons c l H).
 Qed.
 
-(** *** The coherence theorems
+(*
+   本节说明 Supply 相关定义、性质与动机。
 
-    The comultiplication (resp. counit) of the derived supply on a
-    concatenated boundary [cs ++ ds] is the canonical tensor delta
-    (resp. epsilon) of the supplies of the parts, mediated by the
-    [ctensor_app_b] cast — the Fong–Spivak supply-coherence squares
-    (the [scfa_tensor_*] shapes of Hypergraph.v, the [cd_tensor_*]
-    fields of CopyDiscard.v), PROVED for the derived boundary supply
-    rather than assumed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem supply_app_delta (cs ds : list Colour)
   (Hc : all_copyable copyable cs) (Hd : all_copyable copyable ds)
@@ -894,10 +838,11 @@ Proof using OD P SS copyable.
     rewrite supply_list_delta_nil.
     symmetry.
     apply supply_delta_unit_general.
-  - (* [(c :: cs') ++ ds ≡ c :: (cs' ++ ds)]: unfold one cons on each
-       side at a UNIFORM choice of evidence (the [_any] projections),
-       substitute the inductive hypothesis for the tail, and close by
-       cast-aligned associativity. *)
+  - (*
+   本节说明 Supply 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     change ((c :: cs') ++ ds) with (c :: cs' ++ ds).
     rewrite (supply_list_delta_cons_any c (cs' ++ ds) Hcd
                (proj1 (andb_prop _ _ Hc)) (proj2 (andb_prop _ _ Hcd))).

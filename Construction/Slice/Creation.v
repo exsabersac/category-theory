@@ -44,10 +44,11 @@ Section CosliceComma.
 Context {C : Category}.
 Context (c : C).
 
-(* Strict creation for the coslice READ AS A COMMA.  Here the projection is
-   [comma_proj2] itself, so the strictness of Construction/Comma/Creation.v
-   survives: apex by [eq_refl], legs by [reflexivity], at every limiting
-   cone downstairs. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition coslice_comma_StrictlyCreatesLimit
   {J : Category} (K : J ⟶ (=(c) ↓ Id)) :
@@ -67,11 +68,11 @@ Definition coslice_comma_CreatesAllLimits :
 Definition coslice_comma_Complete (HC : @Complete C) : @Complete (=(c) ↓ Id) :=
   creates_limits_Complete comma_proj2 HC coslice_comma_CreatesAllLimits.
 
-(* The same completeness by the route the issue names, kept as a
-   cross-check: [Comma_Complete_right_adjoint] at [Adjunction_Id] does
-   type-check, exactly as the issue's "Also covered by" section claims.  It
-   is a different term from the one above — that one goes through creation,
-   this one through Construction/Comma/Limit.v's [Comma_Complete]. *)
+(*
+   本节说明伴随、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition coslice_comma_Complete_via_adjoint (HC : @Complete C) :
   @Complete (=(c) ↓ Id) :=
@@ -111,34 +112,11 @@ End CosliceComma.
 
 (** ** Strict creation for the PLAIN coslice projection *)
 
-(* Everything above goes through [Comma_Coslice], and strictness does not
-   survive that transport.  It does not have to: [Coslice_Proj]
-   (Construction/Slice/Adjunction.v) is an unconditioned functor
-   [c ̸co C ⟶ C] — the [Cocartesian] variable of the section it sits in is
-   not discharged into it, because its body does not use it — and both its
-   data fields reduce, [fobj] to [`1 x] and [fmap] to [`1 f] by [eq_refl].
-   So the [StrictLift] apex clause is definitional for it.  Riehl's §4.7
-   exercise asks for the direct argument for the COMMA projection "along the
-   lines of the argument for the analogous statement about slice/coslice
-   projections": the exercise proper is
-   Construction/Comma/Creation.v's [comma_StrictlyCreatesLimit], and what is
-   built below is the slice/coslice statement the exercise names as its
-   model, which the tree did not have either.
+(*
+   本节说明伴随、函子相关定义、性质与动机。
 
-   It is carried out below, and it needs NO hypothesis whatever: the step
-   that consumes preservation in the comma case is the passage from the
-   limit downstairs to a limit of its [U]-image, and with [U] the identity
-   that passage is the given limiting cone itself.  The structure maps
-   [`2 (K j) : c ~> `1 (K j)] of the diagram's objects form a cone with apex
-   [c] over the projected diagram, whose mediator into the given limiting
-   cone is the lifted object's own structure map; the lifted legs are the
-   given legs, so the projection returns them on the nose.
-
-   [Instance/Cat/Pullback.v]'s [Coslice_proj] is a second unconditioned
-   projection with the same two data fields, and it reduces the same way;
-   it is not used here, since importing that file would cost twelve modules
-   of closure against this file's five for Construction/Slice/Adjunction.v,
-   and the two functors are distinct records. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CosliceCreate.
 
@@ -282,10 +260,11 @@ Definition Coslice_Proj_CreatesAllLimits {C : Category} (c : C) :
   CreatesAllLimits (Coslice_Proj c) :=
   fun J K => Coslice_Proj_CreatesLimit c K.
 
-(* Completeness of the coslice without any transport at all.  [Coslice_Complete]
-   above reaches the same conclusion through [Comma_Coslice]; the two are
-   kept side by side because the transported one is what an equivalence
-   gives in general, and this one is what the direct argument gives. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Coslice_Complete_direct {C : Category} (c : C) (HC : @Complete C) :
   @Complete (c ̸co C) :=

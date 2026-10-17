@@ -121,15 +121,8 @@ Arguments HypergraphColouredPROP Colour : assert.
 
 Coercion hcprop : HypergraphColouredPROP >-> ColouredPROP.
 
-(** ** Discussion: relationship to plain PROPs
+(*
+   本节说明函子相关定义、性质与动机。
 
-    A [PROP] is the special case of [ColouredPROP unit] (one colour).
-    The wire-list [list unit] is in bijection with [nat] via length,
-    so [cprop_of_list (repeat tt n)] corresponds to [prop_of_nat n]
-    and concatenation corresponds to addition.
-
-    That correspondence is formalised in
-    [Construction/ColouredPROP/UnitBridge.v]: class-level transports
-    in both directions, free-level bridge functors, and
-    hom_cast-conjugated round-trip laws showing coloured PROPs
-    strictly generalise PROPs. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

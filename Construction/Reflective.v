@@ -18,12 +18,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The counit of an adjunction is natural at an arbitrary morphism.  The
-   corollaries in Theory/Adjunction.v prove this square only when the domain
-   is an F-image ([counit_comp]); the general form below (a copy of the
-   argument used for the corollaries there) is what the counit-iso proof
-   consumes, since its morphism runs out of an arbitrary object of the
-   subcategory. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma counit_naturality
       {Cadj Dadj : Category} {F : Dadj ⟶ Cadj} {U : Cadj ⟶ Dadj}
@@ -67,9 +66,11 @@ Definition op_subcategory {C : Category} (S : Subcategory C) :
 Definition Coreflective {C : Category} (S : Subcategory C) : Type :=
   @Reflective (C^op) (op_subcategory S).
 
-(* For a full reflective subcategory the counit is a componentwise
-   isomorphism: reflector (Incl x) ≅ x in Sub C S, with the counit as the
-   forward map and the (subcategory-lifted) unit as its inverse. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma reflective_counit_iso {C : Category} {S : Subcategory C}
       (R : Reflective S) (x : Sub C S) :

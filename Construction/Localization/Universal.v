@@ -22,53 +22,15 @@ Generalizable All Variables.
 *)
 Set Default Proof Using "All".
 
-(* nLab: https://ncatlab.org/nlab/show/reflective+subcategory
-         https://ncatlab.org/nlab/show/localization
-         https://ncatlab.org/nlab/show/orthogonal+subcategory
+(*
+   nLab: https://ncatlab.org/nlab/show/reflective+subcategory
+   https://ncatlab.org/nlab/show/localization
+   https://ncatlab.org/nlab/show/orthogonal+subcategory
 
-   The universal property of orthogonal-subcategory localization.
+   本节说明函子相关定义、性质与动机。
 
-   SCOPE.  This is the ORTHOGONAL-SUBCATEGORY (reflective) form of
-   localization.  We work over a class [W : MorphismClass C] whose full
-   subcategory [C_W W] of W-local objects (Construction/Localization.v) is
-   reflective, with reflector [reflector R : C ⟶ Sub C (C_W W)] (the
-   localization functor) and reflection unit η.  The zig-zag calculus of
-   fractions — the syntactic construction of C[W⁻¹] out of formal composites of
-   W-arrows and their formal inverses — is out of this file's scope (ledger
-   entry 15, permitted by Localization.v's wording); we rely instead on the
-   reflective hypothesis [R : Reflective (C_W W)].  This is the sanctioned
-   reading of localization for this development, not a gap: every statement
-   below is proved at full strength, funext-free and axiom-free.
-
-   THEOREM ([localization_universal]).  For a reflective [C_W W] and any functor
-   [G : C ⟶ E] that sends every W-map to an isomorphism, provided the reflection
-   units are themselves W-maps, G FACTORS through the reflector L uniquely up to
-   natural isomorphism: there is a functor [G' : Sub C (C_W W) ⟶ E] (namely the
-   restriction [G ◯ Incl]) with a natural isomorphism [G ≈ G' ◯ L] in the
-   functor category [C, E] (functor setoid equality is exactly natural iso, via
-   [Functor_Setoid_Nat_Iso]), and G' is unique up to natural isomorphism among
-   all such factorizations.
-
-   The side hypothesis that the reflection units lie in W is the honest
-   condition making [C_W W] the localization AT W (equivalently, that W is
-   saturated enough to contain its own reflection units): under it, W-inversion
-   of G specializes to inversion of the units, which is the exact content the
-   factorization consumes.  Localization.v's [reflector_inverts_W] complements
-   this from the other side, showing the reflector always inverts W.
-
-   PROOF SHAPE.
-   - [reflection_unit_naturality]: naturality of the reflection unit
-     η : Id ⟹ Incl ◯ reflector at an arbitrary base morphism, from the
-     adjunction transposes ([to_adj_nat_l]/[to_adj_nat_r]).
-   - [reflection_counit_is_iso]: for a full reflective subcategory the counit
-     ε is a componentwise isomorphism (the [IsIsomorphism] repackaging of
-     Reflective.v's [reflective_counit_iso], reproved transparently so its
-     inverse is available to later coherence proofs).
-   - [reflection_retract]: reflector ◯ Incl ≈ Id on the subcategory, from the
-     counit iso and its naturality ([counit_naturality]).
-   - factorization: G ∘ η is a natural iso G ⟹ (G ◯ Incl) ◯ reflector because
-     G inverts every unit; uniqueness: any competing G' satisfies
-     G' ≈ G'◯(reflector◯Incl) ≈ (G'◯reflector)◯Incl ≈ G◯Incl. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Universal.
 
@@ -85,10 +47,11 @@ Local Notation Iota := (Incl C (C_W W)).
 Local Notation Refl := (reflector R).
 Local Notation A    := (reflective_adj R).
 
-(* Naturality of the reflection unit η : Id ⟹ Iota ◯ Refl at an arbitrary base
-   morphism f : c ~> c'.  The library's [unit_comp] records this only for
-   morphisms of the shape c ~> U y; the general square below is derived from the
-   forward transpose's two naturalities. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma reflection_unit_naturality {c c' : C} (f : c ~> c') :
   fmap[Iota] (fmap[Refl] f)
     ∘ @Category.Theory.Adjunction.unit Su C Refl Iota A c
@@ -101,13 +64,11 @@ Proof.
   now rewrite id_right.
 Qed.
 
-(* For a full reflective subcategory the counit ε_x : Refl (Iota x) ~> x is an
-   isomorphism in the subcategory.  Its inverse is the reflection unit at
-   [Iota x], read into [Su] by fullness; both inverse laws are the triangle
-   identities (the second after transporting along [counit_naturality]).  This
-   is [reflective_counit_iso] repackaged as [IsIsomorphism]; [reflection_retract]
-   below names the inverse by destructing this record, which an opaque [Qed]
-   proof still permits. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma reflection_counit_is_iso (x : Su) :
   IsIsomorphism (@counit Su C Refl Iota A x).
 Proof.
@@ -121,9 +82,11 @@ Proof.
     apply (@counit_fmap_unit Su C Refl Iota A (Iota x)).
 Qed.
 
-(* The reflector restricted to the subcategory is the identity up to natural
-   isomorphism: Refl ◯ Iota ≈ Id[Su].  The componentwise isos are the counits,
-   and the coherence square is [counit_naturality]. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma reflection_retract : Refl ◯ Iota ≈ Id[Su].
 Proof.
   exists (fun x => IsIsoToIso _ (reflection_counit_is_iso x)).

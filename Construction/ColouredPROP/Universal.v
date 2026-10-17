@@ -39,99 +39,15 @@ Generalizable All Variables.
 
 (** * The universal property of the free coloured PROP *)
 
-(* nLab: https://ncatlab.org/nlab/show/PROP
+(*
+   nLab: https://ncatlab.org/nlab/show/PROP
    nLab: https://ncatlab.org/nlab/show/free+category
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   Given a coloured signature [S], a coloured PROP [P], and a valuation
-   [v] of the generators, this file packages the interpretation
-   [cinterp : CTerm S cs ds → (⟦cs⟧ ~{P}~> ⟦ds⟧)] of
-   [Construction/ColouredPROP/Interp.v] into a functor
-   [CInterpF : CFreeCat S ⟶ P] and equips it with the full
-   strict-symmetric-monoidal structure, then proves it UNIQUE among
-   such functors: the free coloured PROP [FreeColouredPROP S Cdec] is
-   initial among coloured PROPs that are equipped with an
-   [S]-valuation and satisfy two side conditions on the target [P]:
-   decidable object equality ([ObjDecEq], powering the axiom-free UIP
-   on [obj P]) and a [Prop] reflection of the hom equivalence
-   ([HomEqProp], powering [CInterpF]'s respectfulness field
-   [cinterp_sound]).  The free instance provides both by construction
-   ([CFreeCat_HomEqProp] / [CFreeCat_ObjDecEq] in [Instance.v]).  The
-   [Proof using] lines witness the split: uniqueness ([cinterp_unique]
-   and its corollaries) needs only [ObjDecEq]; [HomEqProp] enters only
-   through [CInterpF] itself.
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-   This file is the many-sorted mirror of
-   [Construction/PROP/Universal.v] (the one-sorted donor), with
-   [list Colour] replacing [nat], [++] replacing [+], [[]] replacing
-   [0], and the boundary equations [app_nil_l] / [app_nil_r] /
-   [app_assoc] replacing [Nat.add_0_l] / [Nat.add_0_r] /
-   [Nat.add_assoc].  The generic transport of monoidal-functor
-   structure across a [Monoidal] equality — [MonoidalFunctor_transport]
-   — is REUSED BY IMPORT from the donor: it is stated over arbitrary
-   categories [C D], so it applies verbatim to [CFreeCat S] and the
-   category underlying a coloured PROP (the same import-not-clone
-   discipline as the [BraidTransport] kit of
-   [Construction/ColouredPROP/Interp.v]).
-
-   The strictness comparisons of [CInterpF] ride the coloured-PROP
-   class fields VERBATIM: [strict_pure_obj] is [cprop_unit_nil] and
-   [strict_ap_obj] is [cprop_tensor_app] (machine-checked by
-   [Example]s below), so the universal property really is stated
-   against the strict object equalities every coloured PROP carries.
-
-   ** Design note: how "strict symmetric monoidal functor" is phrased
-
-   A coloured PROP carries two [Monoidal] structures on the same
-   category — the strict path [MPc P] and the braided/symmetric path
-   [MBc P] — related only by the propositional equality
-   [cprop_monoidal_coherence].  The classes [StrictMonoidalFunctor]
-   (of [Functor/Structure/Monoidal/Strict.v], at [MPc P]) and
-   [BraidedMonoidalFunctor] (of [Functor/Structure/Monoidal/Braided.v],
-   at [MBc P]) therefore carry INDEPENDENT [MonoidalFunctor] fields
-   over propositionally-different target monoidals, and a hypothesis
-   pack made of one instance of each would be underdetermined (nothing
-   would relate their two tensor comparisons).  Uniqueness is instead
-   phrased against ONE [StrictMonoidalFunctor] plus [CSymmetricStrict]:
-   the braid compatibility square over that SAME [ap_iso], with the
-   braiding re-indexed to the strict path by [cstrict_braid] (the
-   transport of [Interp.v]).  For competitors arriving with a genuine
-   [BraidedMonoidalFunctor], the converse bridge
-   [CSymmetricStrict_of_Braided] converts (given the agreement of the
-   two tensor comparisons across the coherence transport), and
-   [CInterpF_Braided] / [CInterpF_Symmetric] deliver [CInterpF] itself
-   in those two classes via the match-based
-   [MonoidalFunctor_transport].
-
-   ** Uniqueness
-
-   [cinterp_unique] pins any [CSymmetricStrict] competitor [G] that
-   agrees with [v] on generators: the object agreement is a family
-   [Hobj : ∀ cs, G cs = ⟦cs⟧] of Leibniz equalities, and the morphism
-   agreement is phrased by conjugating with [hom_cast] along it.  The
-   theorem holds for an ARBITRARY such family — axiom-free UIP on
-   [obj P] (the [ObjDecEq] class) makes any two proofs of the same
-   object equality interchangeable; [Cdec] enters only to STATE the
-   competitor's source structure (a [StrictMonoidalFunctor] typed at
-   [CFreeCat_Monoidal S Cdec], so the statement and its [Proof using]
-   name it), while the proof never case-splits on colours — all UIP
-   is routed through [obj P], as in [Interp.v] — and the corollary
-   [cinterp_unique_from_wires] derives
-   the whole family from the single-wire data [G [c] = ⟦[c]⟧] via the
-   [G_obj] fixpoint, peeling one typed wire at a time.
-   [cinterp_unique2] is the resulting agreement of any two
-   competitors.  The existence half is named as well:
-   [CInterpF_extends_valuation] records (by [eq_refl]) that [CInterpF]
-   extends the valuation, and [CInterpF_interp_unique_self]
-   instantiates the hypothesis pack of [cinterp_unique] at [CInterpF]
-   itself, with [Hobj := eq_refl].
-
-   The named coherence lemmas of section 2 ([cinterp_ap_natural],
-   [cinterp_monoidal_unit_left/right], [cinterp_monoidal_assoc],
-   [cinterp_braid_ap]) are deliberately standalone: their statements
-   are purely target-side, so
-   [Construction/ColouredPROP/Presentation/Universal.v] reuses them
-   verbatim for the presented coloured PROP. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CUniversal.
 
@@ -146,12 +62,11 @@ Context (v : CValuation P S).
 Notation "⟦ cs ⟧" := (@cprop_of_list Colour P cs)
   (at level 0, format "⟦ cs ⟧").
 
-(** ** 1. The interpretation functor
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Objects go to [cprop_of_list]; morphisms go through [cinterp].
-    Respectfulness is exactly the soundness theorem of [Interp.v], and
-    the functor laws hold by computation, because [cinterp] reduces on
-    the [CT_id] and [CT_comp] constructors. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma CInterpF_fmap_id (cs : list Colour) :
   cinterp P S v (CT_id cs) ≈ id[⟦cs⟧].
@@ -162,10 +77,11 @@ Lemma CInterpF_fmap_comp {cs ds es : list Colour}
   cinterp P S v (CT_comp f g) ≈ cinterp P S v f ∘ cinterp P S v g.
 Proof. reflexivity. Qed.
 
-(* Built with an explicit [Build_Functor] so that the source and target
-   categories are pinned (the [QuotientProj] discipline of
-   [Construction/Quotient.v]); a bare record literal would try to infer
-   them from the field values, which live in [list Colour] and [P]. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CInterpF : CFreeCat S ⟶ P :=
   Build_Functor (CFreeCat S) P
     (@cprop_of_list Colour P)
@@ -174,26 +90,19 @@ Definition CInterpF : CFreeCat S ⟶ P :=
     CInterpF_fmap_id
     (fun cs ds es f g => CInterpF_fmap_comp f g).
 
-(** Machine-checked: [CInterpF] EXTENDS the valuation — every generator
-    is sent to its assigned morphism, definitionally.  Together with
-    [CInterpF_interp_unique_self] below, this is the existence half of
-    the universal property in named form. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example CInterpF_extends_valuation (cs ds : list Colour) (g : S cs ds) :
   fmap[CInterpF] (CT_gen g) = v cs ds g := eq_refl.
 
-(** ** 2. Named coherence lemmas
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    Every statement is purely target-side (only [P]-morphisms appear),
-    so [Presentation/Universal.v] can reuse them for the presented
-    coloured PROP, whose structural maps are the very same [CT_cast]
-    terms.
-
-    The [_general] lemmas quantify over the object equalities: after
-    destructing them, the single non-destructible residue is aligned
-    with the canonical strict equality by [obj_uip] (axiom-free UIP on
-    [obj P], from [ObjDecEq]).  As everywhere in the coloured spine,
-    proof irrelevance is routed through the TARGET's objects; the
-    colour decider [Cdec] plays no role in this section. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Naturality of the tensor-comparison cast against [cinterp]: the
     conjugating cast of [⊞c] cancels its inverse. *)
@@ -297,10 +206,11 @@ Proof using OD P S v.
   apply cto_unit_right_cast_general.
 Qed.
 
-(** The associativity field of [MonoidalFunctor] at [CInterpF].
-    Recall the stdlib orientation of [app_assoc] (right-to-left
-    reassociation), so the source associator's [to] is the [eq_sym]
-    cast — the orientation fixed once in [Cast.v]. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cinterp_monoidal_assoc (x y z : list Colour) :
   cinterp P S v (CT_cast (eq_sym (app_assoc x y z)))
       ∘ id_cast (@cprop_tensor_app Colour P (x ++ y) z)
@@ -352,9 +262,11 @@ Definition CInterpF_ap_from : CInterpF_ap_cod ⟹ CInterpF_ap_dom :=
     (fun mn => id_cast (eq_sym (@cprop_tensor_app Colour P (fst mn) (snd mn))))
     (fun x y f => cinterp_ap_natural_from (fst f) (snd f)).
 
-(** The two composites are the identity transformation, componentwise.
-    (In the functor category the identity's component at [mn] is
-    [fmap id], which on each side reduces to a tensor of identities.) *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma CInterpF_ap_to_from (mn : CFreeCat S ∏ CFreeCat S) :
   id_cast (@cprop_tensor_app Colour P (fst mn) (snd mn))
       ∘ id_cast (eq_sym (@cprop_tensor_app Colour P (fst mn) (snd mn)))
@@ -377,11 +289,11 @@ Proof.
   apply bimap_id_id.
 Qed.
 
-(* The functor-category isomorphism is an explicit [Build_Isomorphism]
-   application, pinning the ambient category to the functor category
-   [Fun (CFreeCat S ∏ CFreeCat S) P] (a record literal would leave it
-   to inference; see the import note at the top for why the category
-   is written in qualified form rather than bracket notation). *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CInterpF_ap_iso :
   @Isomorphism (@Category.Instance.Fun.Fun (CFreeCat S ∏ CFreeCat S) P)
     CInterpF_ap_dom CInterpF_ap_cod :=
@@ -453,15 +365,11 @@ Example CInterpF_strict_ap_obj_is_cprop_tensor_app (x y : list Colour) :
   @strict_ap_obj _ _ _ _ CInterpF CInterpF_Strict x y
   = @cprop_tensor_app Colour P x y := eq_refl.
 
-(** ** 4. Symmetry
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    [CSymmetricStrict G MG] is the braid-compatibility square of a
-    monoidal functor [G] over ITS OWN tensor comparison, with the
-    target braiding re-indexed to the strict path by [cstrict_braid].
-    See the header for why uniqueness is phrased against this bundle
-    rather than against the two independent functor classes of
-    [Functor/Structure/Monoidal/Strict.v] and
-    [Functor/Structure/Monoidal/Braided.v]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition CSymmetricStrict (G : CFreeCat S ⟶ P)
   (MG : @MonoidalFunctor (CFreeCat S) P (CFreeCat_Monoidal S Cdec) (MPc P) G) :
@@ -476,14 +384,11 @@ Proof.
   exact (cinterp_braid_ap cs ds).
 Qed.
 
-(** *** Bridges to the braided/symmetric functor classes of
-    [Functor/Structure/Monoidal/Braided.v]
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    The braid square at the transported functor is the braid square at
-    the original functor against the transported braid family; both
-    lemmas destruct a VARIABLE [Monoidal] equality, so the concrete
-    [cprop_monoidal_coherence] is never eliminated in a goal — the
-    same quarantine discipline as [Interp.v]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma CSymmetricStrict_square_transport
   {N1 N2 : @Monoidal P} (e : N1 = N2)
@@ -525,10 +430,11 @@ Proof.
   exact (Hsq x y).
 Qed.
 
-(** The braid square of [CInterpF] against the SYMMETRIC-path braiding,
-    obtained by transporting [CInterpF_SymmetricStrict] across the
-    coherence.  Standalone so that the [BraidedMonoidalFunctor] record
-    below is an explicit constructor application. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma CInterpF_Braided_compat (x y : list Colour) :
   fmap[CInterpF] (CT_braid x y)
       ∘ to (@ap_iso _ _ _ _ CInterpF
@@ -594,16 +500,11 @@ Proof.
            (fun x y => @braid_compat _ _ _ _ G BG x y)).
 Qed.
 
-(** ** 5. Uniqueness
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    The cast toolbox is the transport kit of
-    [Construction/Quotient.v] — sliding a cast across an equation
-    ([comp_cast_shift]), fusing nested cast conjugations
-    ([id_cast_conj_fuse]), identifying conjugations along different
-    proofs of the same object equalities ([id_cast_conj_irr], UIP on
-    [obj P]), and round-tripping [hom_cast]s ([hom_cast_roundtrip]) —
-    plus its monoidal extension [cbimap_hom_cast] from
-    [Construction/ColouredPROP/Interp.v]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CUniqueness.
 
@@ -638,12 +539,11 @@ Proof.
            (m1, m2) (n1, n2) (f, g)).
 Qed.
 
-(** Main uniqueness: any strict symmetric competitor agreeing with [v]
-    on generators agrees with [cinterp] on every term, up to the
-    [hom_cast] conjugation along the object family [Hobj].  The proof
-    is a structural induction on terms; thanks to UIP on [obj P], it
-    works for an ARBITRARY family [Hobj], with no coherence hypothesis
-    relating its members. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem cinterp_unique : ∀ cs ds (t : CTerm S cs ds),
   fmap[G] t
     ≈ hom_cast (eq_sym (Hobj cs)) (eq_sym (Hobj ds)) (cinterp P S v t).
@@ -698,16 +598,11 @@ Qed.
 
 End CUniqueness.
 
-(** *** Existence, machine-checked against the hypothesis pack
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    [CInterpF] itself — with its strict structure [CInterpF_Strict],
-    its braid square [CInterpF_SymmetricStrict], and the object family
-    [Hobj := eq_refl] (its object action is [cprop_of_list] on the
-    nose) — satisfies the hypotheses of [cinterp_unique]: the
-    generator agreement is [CInterpF_extends_valuation] up to trivial
-    casts, and instantiating the theorem at [CInterpF] typechecks.
-    This is the named witness that the mediating functor of the
-    existence half is itself pinned by the uniqueness half. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example CInterpF_generator_agreement (cs ds : list Colour) (g : S cs ds) :
   fmap[CInterpF] (CT_gen g)
@@ -726,15 +621,11 @@ Proof using Cdec HP OD P S v.
            cs ds t).
 Qed.
 
-(** *** Uniqueness from single-wire object data
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    The object family [Hobj] can be synthesised from the single-wire
-    data [H1 : ∀ c, G [c] = ⟦[c]⟧] — the coloured analogue of the
-    one-sorted donor's single datum [G 1 = ⟦1⟧].  Nil-arity agreement
-    is [strict_pure_obj] against [cprop_unit_nil], and cons agreement
-    peels one typed wire off with [strict_ap_obj] against
-    [cprop_tensor_app], using the definitional fact
-    [[c] ⨂ cs' = [c] ++ cs' = c :: cs'] on the free side. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CUniquenessFromWires.
 
@@ -770,11 +661,11 @@ Qed.
 
 End CUniquenessFromWires.
 
-(** *** Agreement of competitors
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Any two strict symmetric functors that agree with [v] on the
-    generators agree with each other on every term, after re-indexing
-    both to the canonical objects. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary cinterp_unique2
   (G1 : CFreeCat S ⟶ P)

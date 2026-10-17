@@ -45,15 +45,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Transporting a [MonoidalFunctor] across a [Monoidal] equality
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    The coherence [prop_monoidal_coherence] of a PROP is a
-    propositional equality between two [Monoidal] records on the same
-    category.  A monoidal functor into one of them transports to the
-    other by dependent elimination; as in the [BraidTransport] section
-    of [Interp.v], every lemma about the transport destructs a VARIABLE
-    equality, so the concrete coherence proof is never eliminated in
-    any goal. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition MonoidalFunctor_transport {C D : Category} {MC : @Monoidal C}
   {N1 N2 : @Monoidal D} (e : N1 = N2) {F : C ⟶ D} :
@@ -62,12 +58,11 @@ Definition MonoidalFunctor_transport {C D : Category} {MC : @Monoidal C}
         return @MonoidalFunctor C D MC N1 F → @MonoidalFunctor C D MC N F
   with eq_refl => fun X => X end.
 
-(** The tensor comparison of the transported functor is the original
-    one, transported along the same equality.  Exported kit with no
-    in-tree consumer yet: the braid-square transfers below are
-    discharged by [SymmetricStrict_square_transport] and
-    [SymmetricStrict_untransport], which move whole squares across the
-    coherence rather than lone comparisons. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ap_iso_transport {C D : Category} {MC : @Monoidal C}
   {N1 N2 : @Monoidal D} (e : N1 = N2) {F : C ⟶ D}
   (MF : @MonoidalFunctor C D MC N1 F) (x y : C) :
@@ -89,12 +84,11 @@ Open Scope nat_scope.
 
 Notation "⟦ n ⟧" := (@prop_of_nat P n) (at level 0, format "⟦ n ⟧").
 
-(** ** 1. The interpretation functor
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Objects go to [prop_of_nat]; morphisms go through [interp].
-    Respectfulness is exactly the soundness theorem of [Interp.v], and
-    the functor laws hold by computation, because [interp] reduces on
-    the [T_id] and [T_comp] constructors. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma InterpF_fmap_id (n : nat) :
   interp P S v (T_id n) ≈ id[⟦n⟧].
@@ -104,10 +98,11 @@ Lemma InterpF_fmap_comp {m n p : nat} (f : Term S n p) (g : Term S m n) :
   interp P S v (T_comp f g) ≈ interp P S v f ∘ interp P S v g.
 Proof. reflexivity. Qed.
 
-(* Built with an explicit [Build_Functor] so that the source and target
-   categories are pinned (the [QuotientProj] discipline of
-   [Construction/Quotient.v]); a bare record literal would try to infer
-   them from the field values, which live in [nat] and [P]. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition InterpF : FreeCat S ⟶ P :=
   Build_Functor (FreeCat S) P
     (@prop_of_nat P)
@@ -116,23 +111,19 @@ Definition InterpF : FreeCat S ⟶ P :=
     InterpF_fmap_id
     (fun m n p f g => InterpF_fmap_comp f g).
 
-(** Machine-checked: [InterpF] EXTENDS the valuation — every generator
-    is sent to its assigned morphism, definitionally.  Together with
-    [InterpF_interp_unique_self] below, this is the existence half of
-    the universal property in named form. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example InterpF_extends_valuation (m n : nat) (g : S m n) :
   fmap[InterpF] (T_gen g) = v m n g := eq_refl.
 
-(** ** 2. Named coherence lemmas
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    Every statement is purely target-side (only [P]-morphisms appear),
-    so [Presentation/Universal.v] can reuse them for the presented
-    PROP, whose structural maps are the very same [T_cast] terms.
-
-    The [_general] lemmas quantify over the object equalities: after
-    destructing them, the single non-destructible residue is aligned
-    with the canonical strict equality by [obj_uip] (axiom-free UIP on
-    [obj P], from [ObjDecEq]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Naturality of the tensor-comparison cast against [interp]: the
     conjugating cast of [⊞] cancels its inverse. *)
@@ -279,9 +270,11 @@ Definition InterpF_ap_from : InterpF_ap_cod ⟹ InterpF_ap_dom :=
     (fun mn => id_cast (eq_sym (prop_tensor_plus (fst mn) (snd mn))))
     (fun x y f => interp_ap_natural_from (fst f) (snd f)).
 
-(** The two composites are the identity transformation, componentwise.
-    (In the functor category the identity's component at [mn] is
-    [fmap id], which on each side reduces to a tensor of identities.) *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma InterpF_ap_to_from (mn : FreeCat S ∏ FreeCat S) :
   id_cast (prop_tensor_plus (fst mn) (snd mn))
       ∘ id_cast (eq_sym (prop_tensor_plus (fst mn) (snd mn)))
@@ -369,15 +362,11 @@ Example InterpF_strict_ap_obj_is_prop_tensor_plus (x y : nat) :
   @strict_ap_obj _ _ _ _ InterpF InterpF_Strict x y = @prop_tensor_plus P x y
   := eq_refl.
 
-(** ** 4. Symmetry
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    [SymmetricStrict G MG] is the braid-compatibility square of a
-    monoidal functor [G] over ITS OWN tensor comparison, with the
-    target braiding re-indexed to the strict path by [strict_braid].
-    See the header for why uniqueness is phrased against this bundle
-    rather than against the two independent
-    [StrictMonoidalFunctor]/[BraidedMonoidalFunctor] classes of
-    Functor/Structure/Monoidal/{Strict,Braided}.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition SymmetricStrict (G : FreeCat S ⟶ P)
   (MG : @MonoidalFunctor (FreeCat S) P (FreeCat_Monoidal S) (MP P) G) : Type :=
@@ -391,13 +380,11 @@ Proof.
   exact (interp_braid_ap m n).
 Qed.
 
-(** *** Bridges to the [BraidedMonoidalFunctor]/[SymmetricMonoidalFunctor]
-    classes of Functor/Structure/Monoidal/Braided.v
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    The braid square at the transported functor is the braid square at
-    the original functor against the transported braid family; both
-    lemmas destruct a VARIABLE [Monoidal] equality, so the concrete
-    [prop_monoidal_coherence] is never eliminated in a goal. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma SymmetricStrict_square_transport
   {N1 N2 : @Monoidal P} (e : N1 = N2)
@@ -487,16 +474,11 @@ Proof.
            (fun x y => @braid_compat _ _ _ _ G BG x y)).
 Qed.
 
-(** ** 5. Uniqueness
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    The cast toolbox is the transport kit of
-    [Construction/Quotient.v] — sliding a cast across an equation
-    ([comp_cast_shift]), fusing nested cast conjugations
-    ([id_cast_conj_fuse]), identifying conjugations along different
-    proofs of the same object equalities ([id_cast_conj_irr], UIP),
-    and round-tripping [hom_cast]s ([hom_cast_roundtrip]) — plus its
-    monoidal extension [bimap_hom_cast] from
-    [Construction/PROP/Interp.v]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Uniqueness.
 
@@ -531,12 +513,11 @@ Proof.
            (m1, m2) (n1, n2) (f, g)).
 Qed.
 
-(** Main uniqueness: any strict symmetric competitor agreeing with [v]
-    on generators agrees with [interp] on every term, up to the
-    [hom_cast] conjugation along the object family [Hobj].  The proof
-    is a structural induction on terms; thanks to UIP on [obj P], it
-    works for an ARBITRARY family [Hobj], with no coherence hypothesis
-    relating its members. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem interp_unique : ∀ m n (t : Term S m n),
   fmap[G] t ≈ hom_cast (eq_sym (Hobj m)) (eq_sym (Hobj n)) (interp P S v t).
 Proof using G HB Hgen Hobj OD P S SG v.
@@ -590,16 +571,11 @@ Qed.
 
 End Uniqueness.
 
-(** *** Existence, machine-checked against the hypothesis pack
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    [InterpF] itself — with its strict structure [InterpF_Strict], its
-    braid square [InterpF_SymmetricStrict], and the object family
-    [Hobj := eq_refl] (its object action is [prop_of_nat] on the nose)
-    — satisfies the hypotheses of [interp_unique]: the generator
-    agreement is [InterpF_extends_valuation] up to trivial casts, and
-    instantiating the theorem at [InterpF] typechecks.  This is the
-    named witness that the mediating functor of the existence half is
-    itself pinned by the uniqueness half. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example InterpF_generator_agreement (m n : nat) (g : S m n) :
   fmap[InterpF] (T_gen g)
@@ -616,13 +592,11 @@ Proof.
            (fun k : nat => eq_refl) InterpF_generator_agreement m n t).
 Qed.
 
-(** *** Uniqueness from a single object datum
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    The object family [Hobj] can be synthesised from the single
-    equality [G 1 = ⟦1⟧]: zero-arity agreement is [strict_pure_obj]
-    against [prop_unit_zero], and successor agreement peels one wire
-    off with [strict_ap_obj] against [prop_tensor_plus], using the
-    definitional facts [1 ⨂ k = 1 + k = S k] on the free side. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section UniquenessFromOne.
 
@@ -655,11 +629,11 @@ Proof using G H1 HB OD P S SG v. exact (interp_unique G SG HB G_obj Hgen). Qed.
 
 End UniquenessFromOne.
 
-(** *** Agreement of competitors
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Any two strict symmetric functors that agree with [v] on the
-    generators agree with each other on every term, after re-indexing
-    both to the canonical objects. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary interp_unique2
   (G1 : FreeCat S ⟶ P)

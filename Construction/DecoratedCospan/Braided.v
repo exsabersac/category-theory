@@ -37,31 +37,12 @@ Generalizable All Variables.
 *)
 
 (*
-    Reference: Brendan Fong, "Decorated Cospans", arXiv:1502.00872,
-    Theorem 3.5 (the symmetric-monoidal / hypergraph structure; in the
-    arXiv numbering 3.1 is the Definition, 3.2 the Proposition, 3.4 a
-    Remark, and 3.5 the Theorem).  This module assembles the [BraidedMonoidal] and
-    [SymmetricMonoidal] instances on [DecoratedCospanCat] by layering
-    decoration coherences on top of [Cospan_BraidedMonoidal] /
-    [Cospan_SymmetricMonoidal] from [Construction/Cospan/Symmetric.v].
+   Reference: Brendan Fong, "Decorated Cospans", arXiv:1502.00872,
 
-    ** Architecture
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-      [DecCospan_Braided_Coherent]      (braid naturality + hexagon)
-      [DecCospan_Symmetric_Coherent]    (braid involution)
-
-    Each coherence field states a [dec_cospan_equiv] between the
-    decorated-cospan LHS and RHS of the matching Braided/Symmetric
-    obligation, with the braiding built as [dec_mor_as_cospan paws]
-    (the [paws] swap from [C]'s [Cocartesian] structure lifted to a
-    decorated cospan via the canonical [id_decoration]).
-
-    The cospan-level part is already proved in
-    [Cospan_BraidedMonoidal] / [Cospan_SymmetricMonoidal]; the
-    decoration-level part is the genuine content of the field, and
-    typically requires [F] to be a SYMMETRIC lax monoidal functor
-    (i.e. [F (braid_C) ∘ lax_ap ≈ lax_ap ∘ braid_D]).  Concrete
-    decoration instances supply explicit proofs from their chosen [F]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section DecoratedCospanBraided.
 
@@ -90,20 +71,11 @@ Notation Dcompose g f := (dec_cospan_compose HP LM cospan_merge g f).
 Notation Did X := (dec_cospan_id id_decoration X).
 Notation Dlift f := (dec_mor_as_cospan id_decoration f).
 
-(** ** Coherence class for the Braided structure on [DecoratedCospanCat]
+(*
+   本节说明等价相关定义、性质与动机。
 
-    The braiding on [DC] is [dec_mor_as_cospan paws]: the decorated lift
-    of the C-coproduct swap, with the canonical [id_decoration] on the
-    apex.  The Braided-class obligations are:
-
-      - [braid_natural]   : the naturality square for [braid] is a
-                            decorated-cospan equivalence;
-      - [hexagon_identity], [hexagon_identity_sym] : the hexagon
-                            coherence relating [braid] with
-                            [tensor_assoc], in both forms.
-
-    Each field below pairs the LHS and RHS of the corresponding
-    obligation directly. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class DecCospan_Braided_Coherent : Type := {
 
@@ -120,10 +92,11 @@ Class DecCospan_Braided_Coherent : Type := {
         (Dcompose (Dtensor h f) (Dlift (@paws C H_Coc x z)))
         (Dcompose (Dlift (@paws C H_Coc y w)) (Dtensor f h));
 
-  (** Hexagon identity (to form).  LHS and RHS are both
-      RIGHT-associated.  The corresponding [Monoidal] obligation is
-      left-associated; the proof reassociates via
-      [dec_cospan_compose_assoc] before applying this field. *)
+  (*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   dec_hexagon_identity_eq :
     forall {x y z : C},
       dec_cospan_equiv
@@ -166,12 +139,11 @@ Program Definition DecoratedCospan_BraidedMonoidal
   braid := fun X Y => Dlift (@paws C H_Coc X Y)
 |}.
 Next Obligation.
-  (* braid_natural: arity-2 naturality.
-     The Coq-level shape (after Bifunctor unfolds to [dec_cospan_tensor]):
-       Dcompose (Dcompose (Dtensor h f) (Dlift paws)) ?
-     We use the same pattern as in [Cospan_BraidedMonoidal] —
-     re-associate the outer compose, fuse via tensor_compose_compat
-     and tensor_respects, then apply the coherence field. *)
+  (*
+   本节说明 Braided 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   eapply dec_cospan_equiv_trans.
   { apply (dec_cospan_compose_respects_aux HP LM id_decoration cospan_merge).
     - apply dec_cospan_equiv_refl.
@@ -204,9 +176,11 @@ Next Obligation.
   apply dec_braid_natural_eq.
 Qed.
 Next Obligation.
-  (* Hexagon LHS and RHS are both left-associated in the Monoidal goal;
-     the [dec_hexagon_identity_eq] coherence is right-associated.
-     Reassociate both sides via [dec_cospan_compose_assoc_sym]. *)
+  (*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   eapply dec_cospan_equiv_trans.
   { apply dec_cospan_equiv_sym.
     apply (dec_cospan_compose_assoc HP LM id_decoration cospan_merge). }
@@ -223,10 +197,11 @@ Next Obligation.
   apply (dec_cospan_compose_assoc HP LM id_decoration cospan_merge).
 Qed.
 
-(** ** Coherence class for the Symmetric structure on [DecoratedCospanCat]
+(*
+   本节说明 Braided 相关定义、性质与动机。
 
-    A single field: [braid ∘ braid ≈ id] on the decorated side.
-    Cospan-level: [cospan_braid_invol_C] (from [Cospan_SymmetricMonoidal]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class DecCospan_Symmetric_Coherent : Type := {
   dec_braid_invol_eq :
@@ -251,24 +226,8 @@ Qed.
 
 End DecoratedCospanBraided.
 
-(** ** Discussion: when [F] must be symmetric
+(*
+   本节说明幺半结构、幺半群、来源与用途相关定义、性质与动机。
 
-    The [DecCospan_Braided_Coherent] field [dec_braid_natural_eq]
-    requires the decoration on the LHS — built by tensoring decorations
-    via [lax_ap] then composing with the cospan-side [braid] — to agree
-    with the decoration on the RHS.  In Fong's [F = Set] case (where
-    decorations are global elements of [F N]) this is automatic; in the
-    general monoidal-codomain case it requires [F] to be a SYMMETRIC
-    lax monoidal functor, i.e. [F (braid_C) ∘ lax_ap ≈ lax_ap ∘ braid_D].
-
-    [DecCospan_Symmetric_Coherent]'s single field
-    [dec_braid_invol_eq] follows on the cospan side from
-    [paws_invol] (proved generically in [Cospan_SymmetricMonoidal]);
-    its decoration side is the [id_decoration]-coherence on the
-    identity cospan, i.e., the composite of two identity-style
-    decorations through [paws ∘ paws ≈ id] collapses back to
-    [id_decoration].
-
-    Both coherence classes are populated trivially when [F = Δ I_D]
-    (the constant lax-monoidal functor), in which case all decorations
-    are [id : I_D ~> I_D] and every coherence reduces to refl. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

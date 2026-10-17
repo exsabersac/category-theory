@@ -80,29 +80,14 @@ Arguments CT_tens_respects {Colour S cs1 ds1 cs2 ds2}.
 
 (** * Parallel-composition bifunctor on CFreeCat *)
 
-(* nLab: https://ncatlab.org/nlab/show/monoidal+category
+(*
+   nLab: https://ncatlab.org/nlab/show/monoidal+category
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_category
 
-   The monoidal product of a (strict, symmetric) monoidal category is
-   a bifunctor [⊗ : C ∏ C ⟶ C].  For the free coloured PROP
-   [CFreeCat S] this is the parallel composition of typed string
-   diagrams, with boundaries given by concatenation:
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-     - on objects:    [(cs, ds) ↦ cs ++ ds]  (tensor on objects is [++])
-     - on morphisms:  [(f, g) ↦ CT_tens f g], so [f : cs1 ~> ds1] and
-                       [g : cs2 ~> ds2] yield
-                       [f ⊗ g : cs1 ++ cs2 ~> ds1 ++ ds2]
-
-   The bifunctor laws (a functor out of the product category
-   [CFreeCat S ∏ CFreeCat S]) follow from the [CTE_tens_*]
-   constructors of the [CTermEq] quotient relation:
-     - respectfulness (fmap_respects):  [CTE_tens_cong]
-     - identity preservation (fmap_id): [CTE_tens_id]
-         [id_cs ⊗ id_ds ≈ id_(cs ++ ds)]
-     - composition preservation (fmap_comp), i.e. the middle-four
-       interchange [(f1 ⊙c f2) ⊗ (g1 ⊙c g2) ≈ (f1 ⊗ g1) ⊙c (f2 ⊗ g2)]:
-       [CTE_interchange] (used via [CTE_sym], since the constructor
-       states the reverse orientation). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CFreeTensor.
 

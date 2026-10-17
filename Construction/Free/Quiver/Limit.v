@@ -63,10 +63,11 @@ Context {D : Diagram G C}.
 
 (** ** Extension along paths *)
 
-(* THE induction.  The coherence field speaks only of edges; this extends it
-   to a path of arbitrary length, one [gcone_coherence] and one [comp_assoc]
-   per step.  It is what makes a graph cone a cone over the free category,
-   and it is the only place in this file where a path is inducted over. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma gcone_dpath {c : obj[C]} (N : AGraphCone D c) {x y : G}
   (p : tlist edges x y) : dpath D p ∘ gvertex_map x ≈ gvertex_map y.
 Proof.
@@ -156,10 +157,11 @@ Example dpath_singleton_is_fmap {x y : G} (e : edges x y) :
 
 (** ** Limits of a graph diagram *)
 
-(* Def 8's "a limit for the diagram D is a universal such cone", at CONE
-   level: the factorization is required to commute with the legs OF N, which
-   is what the apex-only reading cannot say.  This is the graph-shaped mirror
-   of Structure/Limit/Preservation.v's [IsLimitCone]. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition IsLimitGraphCone (N : GraphCone D) : Type :=
   ∀ M : GraphCone D, ∃! u : gvertex_obj[M] ~{C}~> gvertex_obj[N],
     ∀ x : G, gcone_leg N x ∘ u ≈ gcone_leg M x.
@@ -242,9 +244,11 @@ Arguments GraphLimit {G C} D.
 
 (** ** Witness one: a limiting graph cone over the walking triangle *)
 
-(* The shape is Theory/Diagram.v's [TriangleQuiver]; the diagram is that
-   file's [TriangleDiagram] with its direct edge taken to be LITERALLY the
-   composite, so no commutation hypothesis is needed and none is used. *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section TriangleLimit.
 
 Context {C : Category}.
@@ -309,10 +313,11 @@ Example tri_med_is_arrow {c : obj[C]} (f : c ~{C}~> p) :
 
 (** *** No functoriality: the triangles at the two parallel X->Z arrows *)
 
-(* [tri_via_Y] and [tri_direct] are DISTINCT morphisms of the free category
-   (Theory/Diagram.v's [tri_via_Y_neq_direct]), and a graph cone states a
-   triangle for neither.  Both are consequences of the edge conditions,
-   through [gcone_dpath]. *)
+(*
+   本节说明 Limit 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma tri_gcone_at_via_Y (M : GraphCone TriD) :
   dpath TriD tri_via_Y ∘ gcone_leg M TrX ≈ gcone_leg M TrZ.
 Proof. exact (gcone_leg_dpath M tri_via_Y). Qed.

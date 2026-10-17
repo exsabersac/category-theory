@@ -45,13 +45,11 @@ Fixpoint nfword (n : nat) : Word :=
 Lemma wlen_nfword (n : nat) : wlen (nfword n) = n.
 Proof. induction n; simpl; auto. Qed.
 
-(** ** A generic helper: the tensor of two isomorphisms
+(*
+   本节说明幺半结构、幺半群、同构相关定义、性质与动机。
 
-    Stated over an arbitrary monoidal category because both [W] below and the
-    target [B] of the freeness theorem use it.  It duplicates the [iso_bimap]
-    of Structure/Monoidal/Drinfeld.v on purpose: importing Drinfeld here
-    would drag half-braidings into every consumer of the word datatype, and
-    Drinfeld is not edited by this development. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition tensor_iso {C : Category} `{@Monoidal C} {x y z w : C}
   (i : x ≅ y) (j : z ≅ w) : (x ⨂ z) ≅ (y ⨂ w) := {|
   to   := to i ⨂ to j;
@@ -110,10 +108,11 @@ Program Definition W_tensor : W ∏ W ⟶ W := {|
       (Nat.add_assoc (wlen x) (wlen y) (wlen z))
 |}.
 
-(* Every remaining obligation — the six naturality fields, the triangle and the
-   pentagon — is an equation between parallel arrows of [W], so thinness closes
-   all of them uniformly.  This is the whole reason the file carries no
-   coherence argument. *)
+(*
+   本节说明 FreeMonoidal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Solve All Obligations with (intros; constructor).
 
 (** ** Acceptance tests

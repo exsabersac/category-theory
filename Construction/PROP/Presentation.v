@@ -48,10 +48,11 @@ Generalizable All Variables.
 
 (** ** Symmetric monoidal theories *)
 
-(** An equation system over a signature: for each pair of arities, a
-    relation on the [Σ]-terms of that arity.  [Prop]-valued, matching
-    the [Prop]-valued congruences that [Construction/Quotient.v]
-    quotients by. *)
+(*
+   本节说明 Presentation 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition EqSystem (S : Signature) : Type :=
   ∀ m n : nat, Term S m n → Term S m n → Prop.
 
@@ -69,15 +70,11 @@ Notation Σ := (smt_sig E).
 
 Open Scope nat_scope.
 
-(** ** The theory congruence
+(*
+   本节说明 Presentation 相关定义、性质与动机。
 
-    [TermEqW] ("W" for "with axioms") is the smallest congruence on
-    [Term Σ] containing both the free equations [TermEq Σ] and the
-    theory axioms [smt_eqs E].  Reflexivity is derivable —
-    [TEW_termeq _ _ (TE_refl _)] — so it is not a constructor.
-
-    As with [TermEq] itself, the Section+Context style keeps [E] a
-    section variable rather than a uniform inductive parameter. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive TermEqW : forall {m n}, Term Σ m n → Term Σ m n → Prop :=
 
@@ -115,13 +112,11 @@ Inductive TermEqW : forall {m n}, Term Σ m n → Term Σ m n → Prop :=
     (fun (m n p : nat) (f f' : Term Σ n p) (g g' : Term Σ m n) Hf Hg =>
        TEW_comp f f' g g' Hf Hg).
 
-(** ** The presented category
+(*
+   本节说明等价相关定义、性质与动机。
 
-    Same objects ([nat]) and same morphisms ([Term Σ]) as the free
-    category; only the equivalence coarsens from [TermEq Σ] to
-    [TermEqW].  The generic [Quotient_HomEqProp] and
-    [Quotient_ObjDecEq] instances of [Construction/Quotient.v] apply
-    to it as-is, so nothing further needs defining here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition PresentedCat : Category :=
   @Quotient (FreeCat Σ) (fun m n : nat => @TermEqW m n) TermEqW_Congruence.
@@ -134,14 +129,11 @@ Definition quot {m n : nat} (t : Term Σ m n) : m ~{PresentedCat}~> n := t.
 Definition PresentedProj : FreeCat Σ ⟶ PresentedCat :=
   @QuotientProj (FreeCat Σ) (fun m n : nat => @TermEqW m n) TermEqW_Congruence.
 
-(** ** Term-level bookkeeping
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
 
-    The [TermEq]-level facts that discharge the comparison squares of
-    the projection functor — where every comparison map is an identity
-    or a tensor of identities — are the generic identity-bookkeeping
-    lemmas [tm_id_swap] / [tm_comp_id_tens] / [tm_collapse_r] /
-    [tm_collapse_l] of [Construction/PROP/TermEq.v], consumed below at
-    the theory's signature [Σ]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Reflexivity of the theory congruence, via the embedding. *)
 Definition TermEqW_refl {m n : nat} (t : Term Σ m n) : TermEqW t t :=
@@ -157,17 +149,11 @@ Definition Presented_Tensor : PresentedCat ∏ PresentedCat ⟶ PresentedCat :=
     TermEqW_Congruence (FreeCat_Tensor Σ)
     (fun x y f g Hf Hg => TEW_tens (fst f) (fst g) (snd f) (snd g) Hf Hg).
 
-(** ** THE shared Monoidal record on [PresentedCat]
+(*
+   本节说明幺半结构、幺半群、等价相关定义、性质与动机。
 
-    Unit [0], tensor [Presented_Tensor], structural isomorphisms the
-    [T_cast] isos of [Structural.v] pushed through [Quotient_iso].
-    Every proof field is the corresponding FREE lemma — the very same
-    lemmas that assemble [FreeCat_Monoidal] — embedded by
-    [TEW_termeq]: the two sides of each square are syntactically the
-    same terms, only compared under the coarser equivalence.
-
-    Braided, Symmetric, Strict, and the bundled PROP below all name
-    this ONE record, so their agreement is definitional. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Presented_Monoidal : @Monoidal PresentedCat := {|
   I            := 0;
@@ -193,15 +179,11 @@ Program Definition Presented_Monoidal : @Monoidal PresentedCat := {|
     TEW_termeq _ _ (free_pentagon Σ x y z w)
 |}.
 
-(** ** The braided and symmetric structure
+(*
+   本节说明 Presentation 相关定义、性质与动机。
 
-    The block braiding [T_braid] descends unchanged; its naturality
-    square, the two hexagons, and the involution are the free lemmas
-    of [Construction/PROP/{Braided,Symmetric}.v], embedded.  (The
-    synonym lemmas of [Construction/PROP/Naturality.v] are
-    deliberately not imported: their names [braid_natural] and
-    [braid_invol] would shadow the class projections of the same
-    names in the record literals below.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Presented_Braided : @BraidedMonoidal PresentedCat := {|
   braided_is_monoidal := Presented_Monoidal;  (* THE shared record *)
@@ -220,23 +202,17 @@ Program Definition Presented_Symmetric : @SymmetricMonoidal PresentedCat := {|
     TEW_termeq _ _ (free_braid_invol Σ x y)
 |}.
 
-(** ** The strict structure
+(*
+   本节说明同构相关定义、性质与动机。
 
-    Objects are naturals and the tensor on objects is addition, so
-    the object-level strictness equalities are the arity equations of
-    [Nat]; the comparison fields are reflexivity-grade because
-    [Structural.v] BUILT the structural isomorphisms as [T_cast]
-    maps, which are definitionally the transported identities the
-    class asks for (same proof term on both sides). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(*  The three comparison fields are reflexivity-grade, as in the free
-    donor [Construction/PROP/Strict.v], but here they are discharged
-    as Program obligations rather than by applying standalone lemmas:
-    a separately-declared lemma carries its own universe instance of
-    the polymorphic [PresentedCat], and the record-field unifier stops
-    at the instance mismatch inside the transported-identity [match]
-    before it would reduce both sides.  Proving the field in situ
-    keeps the whole comparison at the record's single instance. *)
+(*
+   本节说明 Presentation 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Presented_Strict : @StrictMonoidal PresentedCat := {|
   strict_is_monoidal    := Presented_Monoidal;  (* THE shared record *)
   strict_assoc_obj      := fun x y z => eq_sym (Nat.add_assoc x y z);
@@ -247,13 +223,11 @@ Next Obligation. exact (TermEqW_refl _). Qed.
 Next Obligation. exact (TermEqW_refl _). Qed.
 Next Obligation. exact (TermEqW_refl _). Qed.
 
-(** ** The presented PROP, bundled
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    As with [FreePROP], every equality field is [eq_refl] because the
-    whole tower shares the ONE [Monoidal] record [Presented_Monoidal].
-    If [prop_monoidal_coherence := eq_refl] ever stops typechecking,
-    the shared-record wiring broke — fix the wiring; do not generalize
-    the field. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition PresentedPROP : PROP := {|
   prop_cat       := PresentedCat;
@@ -265,12 +239,11 @@ Definition PresentedPROP : PROP := {|
   prop_tensor_plus := fun m n => eq_refl
 |}.
 
-(** ** The projection is a strict symmetric monoidal functor
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    [PresentedProj] is the identity on objects and morphisms, so both
-    comparison maps are identities and every coherence square is an
-    identity-bookkeeping equation, discharged by the term-level
-    lemmas above through [TEW_termeq]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The tensor-then-project and project-then-tensor composites that
     the tensor comparison relates. *)
@@ -341,10 +314,11 @@ Lemma PresentedProj_ap_id (x y : nat) :
   ≈[PresentedCat] @id PresentedCat (x + y).
 Proof. exact (TermEqW_refl _). Qed.
 
-(*  As with [Presented_Strict], the two comparison fields are
-    discharged in situ (both comparison maps are identities on the
-    nose), keeping the whole record at a single universe instance of
-    [PresentedCat]. *)
+(*
+   本节说明 Presentation 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition PresentedProj_Strict :
   @StrictMonoidalFunctor (FreeCat Σ) PresentedCat
     (FreeCat_Monoidal Σ) Presented_Monoidal PresentedProj := {|
@@ -355,15 +329,11 @@ Program Definition PresentedProj_Strict :
 Next Obligation. exact (TermEqW_refl _). Qed.
 Next Obligation. exact (TermEqW_refl _). Qed.
 
-(** The braid-compatibility square of the projection: the free braid
-    maps to the presented braid, conjugated by the (identity) tensor
-    comparisons.  This is the [SymmetricMonoidalFunctor] square in
-    the strict setting, provided as projection-side API; the
-    universal-property file does not consume it — when transferring
-    uniqueness across the projection it discharges the composite's
-    braid square directly from the competitor's own square,
-    rewriting all four tensor comparisons to casts with
-    [strict_ap_iso_id]. *)
+(*
+   本节说明 Presentation 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma PresentedProj_braid (m n : nat) :
   fmap[PresentedProj] (@braid (FreeCat Σ) (FreeCat_Braided Σ) m n)
     ∘ to (@ap_iso _ _ _ _ PresentedProj PresentedProj_Monoidal m n)

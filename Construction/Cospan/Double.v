@@ -117,12 +117,11 @@ Proof.
   proper.
 Qed.
 
-(** ** Horizontal pasting of squares
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    Two squares sharing their middle vertical edge [v] induce, by the
-    universal property of the gluing pushout of their top cospans, a square
-    between the glued cospans.  The mediator's legs land in the gluing
-    pushout of the bottom cospans. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma glue_comm {a b c a' b' c' : C}
       {h : CospanArrow a b} {h' : CospanArrow b c}
@@ -226,11 +225,11 @@ Proof.
     now rewrite comp_assoc.
 Qed.
 
-(** ** The unit globular squares
+(*
+   本节说明拉回/推出、同构相关定义、性质与动机。
 
-    Gluing with the identity cospan is the identity cospan up to the
-    canonical pushout isomorphism; both directions are packaged as squares
-    with identity vertical edges. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Unitors.
 
@@ -363,14 +362,11 @@ Qed.
 
 End Unitors.
 
-(** ** The associator globular squares
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    The two bracketings of a triple gluing are canonically isomorphic: both
-    apexes receive the three cospan apexes through pushout injections, and
-    the mediators in either direction are assembled from the pushout UMP in
-    two steps.  All computation rules on the three "generator" legs are
-    recorded, since the triangle and pentagon coherence proofs evaluate
-    everything on generators. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Associator.
 
@@ -599,10 +595,11 @@ Definition Cospan_dassoc_bwd :
 
 End Associator.
 
-(** ** The strict vertical laws and coercion groupoid laws
+(*
+   本节说明 Double 相关定义、性质与动机。
 
-    All of them are φ-level identities: [CospanSq_coerce] preserves the apex
-    map on the nose, and vertical pasting is composition of apex maps. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma CospanSq_coerce_id {a b c d : C} {h : CospanArrow a b}
       {u : a ~> c} {v : b ~> d} {k : CospanArrow c d}
@@ -645,10 +642,11 @@ Lemma CospanSq_vassoc {a0 b0 a1 b1 a2 b2 a3 b3 : C}
     ≈ CospanSq_vcomp s (CospanSq_vcomp t r).
 Proof. simpl; apply comp_assoc. Qed.
 
-(** ** Reduction bridges for the apex maps of the named squares
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    These let the coherence proofs replace [sq_map (...)] subterms by their
-    underlying pushout mediators without relying on [simpl]'s traversal. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma CospanSq_vid_map {a b : C} (h : CospanArrow a b) :
   sq_map (CospanSq_vid h) ≈ id[cospan_apex h].
@@ -667,12 +665,11 @@ Lemma Cospan_dassoc_fwd_map {X Y Z W : C}
   sq_map (Cospan_dassoc_fwd p q r) ≈ assoc_fwd_map p q r.
 Proof. reflexivity. Qed.
 
-(** ** Triangle coherence
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    Whiskering the left unitor equals the associator followed by whiskering
-    the right unitor, evaluated on the three generator legs of the iterated
-    gluing pushout of [k ∘h (dhid b ∘h f)].  The middle generator is exactly
-    the pushout square of the bottom gluing [gpo f k]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Cospan_triangle {a b c : C} (f : CospanArrow a b) (k : CospanArrow b c) :
   CospanSq_hmap (CospanSq_vid f) (Cospan_dunit_right_fwd k)
@@ -729,15 +726,11 @@ Proof.
     cat.
 Qed.
 
-(** ** Pentagon coherence
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    The two globular paths from [k ∘h (h ∘h (g ∘h f))] to
-    [((k ∘h h) ∘h g) ∘h f] agree.  Both sides are morphisms out of a
-    three-fold iterated pushout, so the proof evaluates them on the four
-    generator legs (the apexes of [f], [g], [h] and [k]) via three nested
-    applications of joint epimorphy; on each generator both sides compute,
-    by the mediator rules, to the same composite of injections into the
-    target apex. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Cospan_pentagon {a b c d e : C}
       (f : CospanArrow a b) (g : CospanArrow b c)

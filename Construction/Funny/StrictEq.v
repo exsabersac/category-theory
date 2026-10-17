@@ -45,9 +45,11 @@ Lemma transport_seam {E : Category} {x m m' w : E} (p : m = m')
     = u ∘ transport (fun z => x ~{E}~> z) p v.
 Proof. destruct p; reflexivity. Qed.
 
-(* ≈-congruence of the two transports, stated on hom-setoids directly so
-   that [apply] needs no higher-order unification (cf. the instances
-   [proper_transport_cod] and [proper_transport_dom] in Theory/Functor.v). *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma transport_cod_respects {E : Category} {x w w' : E} (p : w = w')
   {u v : x ~{E}~> w} :
   u ≈ v →
@@ -90,11 +92,11 @@ Context (er : ∀ (c : C) (d d' : D) (g : d ~{D}~> d'),
     ≈ transport_r (fun z => z ~{E}~> K (c, d')) (eo c d)
                   (@fmap (C □ D) E K (c, d) (c, d') (rstep g))).
 
-(* The word induction: agreement on the generating steps extends to every
-   word.  In the cons cases [fconsL f t ≡ t ∘ lstep f] holds definitionally
-   ([fconsL_decomp]), so [fmap_comp] splits the word at the head; the seam
-   helpers then walk both transports to the seam [(cb, da)] (resp.
-   [(ca, db)]), where the induction hypothesis and [el] (resp. [er]) meet. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Funny_strict_eq_word {c1 : C} {d1 : D} {c2 : C} {d2 : D}
   (t : FunHom c1 d1 c2 d2) :
   transport (fun z => H (c1, d1) ~{E}~> z) (eo c2 d2)

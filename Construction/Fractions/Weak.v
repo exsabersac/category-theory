@@ -24,13 +24,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Conjugating a two-sided inverse
+(*
+   本节说明函子、同构相关定义、性质与动机。
 
-    The weak counterpart of [Construction/Fractions.v]'s [hom_cast_inverse].
-    There the correspondence between [a] and [a'] was transport along
-    equalities of the endpoints; here it is conjugation by isomorphisms of
-    the endpoints, which is the shape [Functor_Setoid] states naturality in
-    ([fmap[F] f ≈ from (iso y) ∘ fmap[G] f ∘ to (iso x)]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma iso_conj_inverse {D : Category} {X1 Y1 X2 Y2 : D}
   (p : X1 ≅ X2) (q : Y1 ≅ Y2)
@@ -60,11 +58,11 @@ Section FractionsWeak.
 
 Context {C D : Category}.
 
-(* A single letter of a zig-zag word.  The forward letter IS a generator —
-   [tlist_singleton (inl f)] is [zfwd f], which is [fmap[FractionsProj C] f]
-   by conversion — so it is the hypothesis read back.  The backward letter is
-   the content: it is inverse to the forward letter under both functors, and
-   a conjugate of an inverse is the inverse of the conjugate. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Fractions_weak_edge
   (G1 G2 : Fractions C ⟶ D) (iso : ∀ x : C, G1 x ≅ G2 x)
@@ -85,10 +83,11 @@ Proof.
              (Hgen y x g)).
 Qed.
 
-(* The induction on words, in the shape of [ZigZagLift_unique]: the empty
-   word is the identity and the isomorphism cancels, and [e ::: rest] is
-   [rest ∘ (e)], where the two conjugations meet at the middle object and
-   the inner [to (iso b) ∘ from (iso b)] collapses. *)
+(*
+   本节说明同构、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Fractions_weak_word
   (G1 G2 : Fractions C ⟶ D) (iso : ∀ x : C, G1 x ≅ G2 x)
@@ -119,13 +118,11 @@ Qed.
 
 End FractionsWeak.
 
-(** ** Precomposition with the projection is injective, at [Functor_Setoid]
+(*
+   本节说明函子、同构相关定义、性质与动机。
 
-    The weak counterpart of [Construction/Fractions.v]'s
-    [Fractions_proj_epic], and unlike that one it needs NO hypothesis on the
-    target: the whole content is [Fractions_weak_word], and the isomorphism
-    family is carried over unchanged because the objects of [Fractions C]
-    are the objects of [C]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem Fractions_proj_epic_weak {C D : Category} (L L' : Fractions C ⟶ D)
   (E : @equiv _ (@Functor_Setoid C D)

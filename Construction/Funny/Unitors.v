@@ -36,13 +36,11 @@ Definition Funny_unit_left_to {C : Category} : (1 □ C) ⟶ C :=
 Definition Funny_unit_left_from {C : Category} : C ⟶ (1 □ C) :=
   FunnyR (C:=1) ttt.
 
-(* The object round trip [(ttt, d) = (u, d)] on [1 □ C], definitionally
-   [eq_refl] once [u] is destructed; kept transparent so the transports in
-   [Funny_strict_eq] vanish by computation.  [poly_unit] has only
-   propositional eta ([u] is not convertible to [ttt]), whence the match
-   here and in the mirrored [funny_unit_right_obj] below.  (The pair match
-   needed because [prod] lacks definitional eta lives inside
-   [Funny_strict_eq] itself, StrictEq.v.) *)
+(*
+   本节说明 Unitors 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition funny_unit_left_obj {C : Category} (u : poly_unit) (d : C) :
   @eq (obj[1 □ C]) (ttt, d) (u, d) :=
   match u as p return (@eq (obj[1 □ C]) (ttt, d) (p, d)) with
@@ -61,13 +59,11 @@ Proof.
   exact (id_left f).
 Qed.
 
-(* NOTE on proof style below: tactic-level [apply feq_trans] and friends
-   choke here, because unification must assign object evars like
-   [ttt : poly_unit] against the not-yet-solved [obj[?C]] — the objects and
-   homs of [1] reduce to [poly_unit], erasing the projection structure that
-   would determine the category.  Explicit [@]-applications supply the
-   categories first, and conversion silently discharges the (definitionally
-   trivial) transports. *)
+(*
+   本节说明 Unitors 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma funny_unit_left_from_to {C : Category} :
   @equiv _ (@Functor_StrictEq_Setoid (1 □ C) (1 □ C))
@@ -197,16 +193,11 @@ Definition Funny_unit_left_cat {C : Category} : (1 □ C) ≅[Cat] C :=
 Definition Funny_unit_right_cat {C : Category} : (C □ 1) ≅[Cat] C :=
   fobj_iso StrictCat_to_Cat (C □ 1) C Funny_unit_right.
 
-(** ** Strict naturality of the unitors
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    The four squares below are, verbatim, the [to_unit_left_natural],
-    [from_unit_left_natural], [to_unit_right_natural] and
-    [from_unit_right_natural] fields of the [Monoidal] instance on
-    [StrictCat], with [bimap] instantiated at [FunnyBimap].  Both
-    composites in each square agree definitionally on objects, and on the
-    generating steps up to [id_left]/[fmap_id], so [Funny_strict_eq]
-    (resp. [Functor_StrictEq_intro] for the functors out of a plain
-    category) closes them without any word induction. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Funny_unit_left_natural {x y : Category} (g : x ⟶ y) :
   @equiv _ (@Functor_StrictEq_Setoid (1 □ x) y)

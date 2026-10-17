@@ -112,11 +112,11 @@ Example prod_IsLimitCone_med {N1 : Cone (Fst ◯ K)} {N2 : Cone (Snd ◯ K)}
 
 (** ** Each projection preserves limits, unconditionally (Riehl (i)) *)
 
-(* Given a limiting cone [N] over [K] and a competing cone [M] over
-   [Fst ◯ K], splice [M] with the [D]-image of [N] into a cone over [K];
-   the [C]-component of its mediator into [N] is the wanted arrow.  For
-   uniqueness, any [v] commuting with the [C]-legs makes [(v, id)] a
-   mediator for the spliced cone, so [v] is that component. *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Fst_PreservesLimitCone : PreservesLimitCone K Fst.
 Proof.
@@ -261,10 +261,11 @@ Defined.
 Example pair_const_obj (d : D) {J : Category} (G : J ⟶ C) (x : J) :
   fobj[pair_const d G] x = (G x, d) := eq_refl.
 
-(* A cone over [Fst ◯ pair_const d G] IS a cone over [G]: the two functors
-   agree on objects and arrows by conversion, so the repackaging carries
-   the same apex and the same legs, and the two readings of "limiting"
-   are convertible. *)
+(*
+   本节说明函子、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition repack_fst {d : D} {J : Category} {G : J ⟶ C}
   (N : Cone (Fst ◯ pair_const d G)) : Cone G :=

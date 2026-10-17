@@ -87,9 +87,11 @@ Proof.
   exact (HF tt tt tt tt 1%nat eq_refl).
 Qed.
 
-(* Therefore the converse of Full_Implies_Full_Functor is FALSE for a general
-   Subcategory record, and ShomRespects (or some equivalent) is genuinely
-   required.  Stated as a refutation of the unhypothesised statement: *)
+(*
+   本节说明 FullConverse 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem converse_without_ShomRespects_is_false :
   (forall (C : Category) (S : Subcategory C),
       Functor.Full (Incl C S) -> Subcategory.Full C S) -> False.

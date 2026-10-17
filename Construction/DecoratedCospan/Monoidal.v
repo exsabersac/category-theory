@@ -60,20 +60,11 @@ Notation Dcompose g f := (dec_cospan_compose HP LM cospan_merge g f).
 Notation Did X := (dec_cospan_id id_decoration X).
 Notation Dlift f := (dec_mor_as_cospan id_decoration f).
 
-(** ** Coherence class for the Monoidal structure on [DecoratedCospanCat]
+(*
+   本节说明幺半结构、幺半群、等价相关定义、性质与动机。
 
-    Each field states a [dec_cospan_equiv] between the decorated-cospan
-    LHS and RHS of the corresponding [Monoidal] obligation, with the
-    unitors and associator on each side built as [Dlift] of the
-    underlying C-iso (carrying the canonical [id_decoration]).
-
-    The cospan-level part of every such equivalence is supplied
-    generically (via [Cospan_Monoidal]); the decoration part — i.e.,
-    that the apex iso of the cospan-level equivalence transports the
-    LHS decoration to the RHS decoration — is the genuine content of
-    each field.  For concrete decoration data (Fong's circuits, Markov
-    processes) each field reduces to a short calculation in the lax
-    monoidal data. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class DecCospan_Monoidal_Coherent : Type := {
 
@@ -162,14 +153,11 @@ Class DecCospan_Monoidal_Coherent : Type := {
            (Dlift (to (@coprod_assoc C H_Coc x y (z + w)%object)))
            (Dlift (to (@coprod_assoc C H_Coc (x + y)%object z w))));
 
-  (** Decoration coherence for the unit_left iso laws.  The [to ∘ from]
-      composite of [dec_mor_iso_lift coprod_zero_l] reduces to [id] in
-      [DC]; this requires the decoration coherence on the identity-cospan
-      result of composing [Dlift (to phi)] with [Dlift (from phi)].  The
-      cospan-level fact comes from [iso_to_from] / [iso_from_to] of
-      [mor_iso_lift].  This single field handles all unitor / associator
-      iso-laws uniformly because the decoration-side is the same
-      [id_decoration]-composite reduction in every case. *)
+  (*
+   本节说明 Monoidal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   dec_iso_lift_to_from :
     forall {X Y : C} (phi : X ≅ Y),
       dec_cospan_equiv
@@ -187,12 +175,11 @@ Context `{DCMC : DecCospan_Monoidal_Coherent}.
 
 Set Default Proof Using "All".
 
-(** ** [DecoratedCospan_Monoidal] : the Monoidal instance
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Each obligation is dispatched by the corresponding coherence-class
-    field.  The structural iso-laws use [dec_iso_lift_to_from] /
-    [dec_iso_lift_from_to]; the naturality / triangle / pentagon
-    obligations use the matching [dec_*_eq] field. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition DecoratedCospan_Monoidal : @Monoidal DC := {|
   I := (@initial_obj C H_Ini : DC);
@@ -237,22 +224,8 @@ Qed.
 
 End DecoratedCospanMonoidal.
 
-(** ** Discussion: the coherence-class instance
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    The [DecCospan_Monoidal_Coherent] class is the literature-correct
-    packaging of the decoration-side coherences for Theorem 3.5 of
-    Fong's "Decorated Cospans".  Each field is a single decorated-cospan
-    equivalence whose cospan part is delivered by the existing
-    [Cospan_Monoidal] infrastructure and whose decoration part is the
-    explicit datum.
-
-    For the trivial decoration (the constant lax-monoidal functor
-    [F = Δ I_D]), every field's witness reduces to a routine
-    cospan-level transport: the decoration on each side is the
-    [id_decoration], and the apex iso transports it via [fmap[F] = id]
-    on the constant functor.
-
-    For Fong's electrical-circuit decoration and Baez–Fong's Markov-
-    process decoration, the fields are populated by direct calculations
-    in the chosen lax-monoidal functor; each is roughly a 5-line
-    diagrammatic chase. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

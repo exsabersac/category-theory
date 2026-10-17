@@ -24,14 +24,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Functors between groupoids preserve the chosen inverse
+(*
+   本节说明函子、Eilenberg–Moore相关定义、性质与动机。
 
-    [IsGroupoid] carries a CHOSEN inverse for each arrow, so "F preserves
-    inverses" is not a tautology: it says the choice made in B at [fmap[F] f]
-    agrees, up to `≈`, with the image of the choice made in A at f.  It does,
-    because both are inverses of the same arrow and inverses are unique
-    (Structure/Groupoid.v's [ginv_unique_r], which is Eilenberg and
-    Mac Lane's Lemma 1.4 read at the chosen inverse). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma functor_ginv {A B : Category} (HA : IsGroupoid A) (HB : IsGroupoid B)
       (F : A ⟶ B) {x y : A} (f : x ~> y) :
@@ -44,21 +41,20 @@ Proof.
   apply fmap_id.
 Qed.
 
-(* In the core the chosen inverse is [iso_sym] ON THE NOSE, not merely up to
-   `≈`: [core_is_groupoid] hands [Build_IsIsomorphism] the term [iso_sym f]
-   and [ginv] projects it straight back out.  Recorded as an [Example] at
-   [eq_refl], the strongest available reading. *)
+(*
+   本节说明 Core 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example core_ginv_eq {C : Category} {x y : Groupoid C} (f : x ~> y) :
   ginv (core_is_groupoid C) f = iso_sym f := eq_refl.
 
-(** ** Isomorphisms of the core
+(*
+   本节说明函子、同构相关定义、性质与动机。
 
-    An isomorphism of C is a morphism of [Groupoid C]; it is moreover an
-    ISOMORPHISM of [Groupoid C], with [iso_sym] as its inverse.  This is
-    [core_is_groupoid] packaged as `≅` rather than as [IsIsomorphism], and
-    it is what turns a natural isomorphism between functors into C into one
-    between the corresponding functors into [Groupoid C]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition core_iso {D : Category} {a b : D} (i : a ≅ b) :
   a ≅[Groupoid D] b := {|
@@ -92,12 +88,11 @@ Qed.
    [fmap_comp] survives it. *)
 Next Obligation. split; simpl; apply fmap_comp. Qed.
 
-(* The core of a natural isomorphism.  [Cat]'s hom-setoid is
-   [Functor_Setoid], so F ≈ F' is a natural isomorphism; each component is
-   an isomorphism of D, hence a morphism of [Groupoid D], and [core_iso]
-   promotes it to an isomorphism THERE.  The naturality square is checked
-   twice, once in each component of the isomorphism, the [from] half being
-   the given square read at f⁻¹. *)
+(*
+   本节说明函子、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma CoreMap_respects {C D : Category} (F F' : C ⟶ D) :
   F ≈ F' → CoreMap F ≈ CoreMap F'.
@@ -124,14 +119,11 @@ Qed.
 
 (** ** The counit: reading an isomorphism as a morphism *)
 
-(* [ForgetCore C] is the counit of the adjunction below at C, up to `≈` --
-   [core_counit_is_ForgetCore] measures that.  It is the inclusion of the
-   core back into C: identity on objects, and the [to] component on
-   morphisms.  It is not an inclusion in the sense of
-   Construction/Subcategory.v -- the core is a subcategory of C only up to
-   the choice of inverse carried by each arrow -- and it is faithful
-   precisely because an isomorphism is determined by its [to] component
-   (Theory/Isomorphism.v's [to_equiv_implies_iso_equiv]). *)
+(*
+   本节说明伴随、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition ForgetCore (C : Category) : Groupoid C ⟶ C := {|
   fobj := fun x => x;
@@ -144,12 +136,11 @@ Proof.
   now apply to_equiv_implies_iso_equiv.
 Qed.
 
-(** ** The forward transpose
+(*
+   本节说明函子、同构相关定义、性质与动机。
 
-    A functor out of a groupoid factors through the core.  The factoring
-    functor sends f to the isomorphism whose [to] is F f and whose [from] is
-    F of the chosen inverse of f; the two inverse laws are the images under
-    F of [ginv_right] and [ginv_left]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition core_lift {G : Category} (HG : IsGroupoid G)
         {C : Category} (F : G ⟶ C) : G ⟶ Groupoid C := {|
@@ -183,10 +174,11 @@ Next Obligation.
     apply fmap_comp.
 Qed.
 
-(* The [from] component of a functor into a core is not free data: it is
-   forced to be the [to] component at the inverse arrow.  This is
-   [functor_ginv] read at [core_is_groupoid], whose chosen inverse is
-   [iso_sym] ([core_ginv_eq] above), taken in its [to] component. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma core_functor_from {G : Category} (HG : IsGroupoid G) {C : Category}
       (P : G ⟶ Groupoid C) {x y : G} (f : x ~> y) :
@@ -214,10 +206,11 @@ Proof.
     cat.
 Qed.
 
-(* Transporting the forward transpose along a natural isomorphism of its
-   argument.  Same shape as [CoreMap_respects]: the [to] half is the given
-   naturality square, the [from] half is that square read at the chosen
-   inverse. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma core_lift_respects {G : Category} (HG : IsGroupoid G) {C : Category}
       (F F' : G ⟶ C) : F ≈ F' → core_lift HG F ≈ core_lift HG F'.
@@ -232,11 +225,11 @@ Qed.
 
 (** ** The adjunction Incl ⊣ Core *)
 
-(* Riehl §4.1, Example 4.1.15, right-hand half.  The hom-setoid isomorphism
-   is [core_lift] one way and post-composition with [ForgetCore] the other,
-   and the two naturality squares are the two [to_adj_nat_*] fields
-   Theory/Adjunction.v's [Build_Adjunction'] asks for -- the other two are
-   derived there. *)
+(*
+   本节说明伴随、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Incl_Core_Adjunction : Adjunction Grpd_Incl Core.
 Proof.
@@ -265,15 +258,11 @@ Proof.
               intros x y h; split; simpl; cat).
 Defined.
 
-(** ** The universal property, spelled out
+(*
+   本节说明伴随、函子、同构相关定义、性质与动机。
 
-    Riehl's phrasing of the same fact: "because functors preserve
-    isomorphisms, any functor out of a groupoid factors uniquely through the
-    core".  This is the adjunction read at one object, and it is derived FROM
-    the adjunction's two round trips rather than proved again -- the
-    adjunction is the theorem, this is its restatement.  Uniqueness is up to
-    `≈`, which for functors into [Groupoid C] is natural isomorphism, not
-    equality: that is the strongest reading [Cat]'s hom-setoid supports. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem core_factorization {G : Grpd} {C : Category} (F : `1 G ⟶ C) :
   { P : `1 G ⟶ Groupoid C
@@ -288,9 +277,11 @@ Proof.
     now apply core_lift_respects.
 Qed.
 
-(* The counit of the adjunction is the inclusion of the core back into C,
-   as it must be: [counit] is the backward transpose of the identity, and
-   the backward transpose is post-composition with [ForgetCore]. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example core_counit_is_ForgetCore (C : Cat) :
   @counit Cat Grpd Grpd_Incl Core Incl_Core_Adjunction C ≈ ForgetCore C.

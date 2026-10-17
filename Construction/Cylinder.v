@@ -230,10 +230,11 @@ Definition Cyl_extract {C B : Category} (F : C ∏ _2 ⟶ B) :
   Cyl_restrict0 F ⟹ Cyl_restrict1 F :=
   F ⊳ @Cyl_mu C.
 
-(* The round trip: F is the classifier of the transformation it
-   carries, through transparent reflexivity witnesses (Construction/
-   Arrow/Functor.v's [fs_refl]).  With [cylinder_universal] this
-   closes Riehl's bijection in both directions. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Cyl_functor_Cyl_extract {C B : Category} (F : C ∏ _2 ⟶ B) :
   F ≈ Cyl_functor (Cyl_extract F).
 Proof.

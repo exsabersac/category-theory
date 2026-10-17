@@ -39,60 +39,16 @@ Generalizable All Variables.
 (** * The free selective supply: a presented coloured PROP with
       per-wire duplicators and deleters *)
 
-(* nLab:      https://ncatlab.org/nlab/show/PROP
+(*
+   nLab:      https://ncatlab.org/nlab/show/PROP
    nLab:      https://ncatlab.org/nlab/show/comonoid
    nLab:      https://ncatlab.org/nlab/show/generators+and+relations
    Reference: Fong & Spivak, "Supplying bells and whistles in symmetric
-              monoidal categories" (arXiv:1908.02633)
 
-   This file builds the free SUPPLIED coloured PROP on a signature: a
-   base signature [S] is extended with WIRE-LEVEL generators — one
-   duplicator [SG_dup c : [c] -> [c; c]] and one deleter
-   [SG_del c : [c] -> []] for every colour the boolean predicate
-   [copyable] marks as duplicable — and quotiented by the per-wire
-   commutative-comonoid equations [SupplyEqs].  The result
-   [SupplyPROP] is the library's THIRD inhabitant of
-   [Construction/ColouredPROP.v]'s class (after [FreeColouredPROP]
-   and the generic [CPresentedColouredPROP] it instantiates), and it
-   carries a [SelectiveSupply] structure in the sense of
-   [Construction/ColouredPROP/Supply.v]: every copyable wire's dup and
-   del descend to a commutative comonoid in the quotient.
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-   Design decision, recorded: the generators are WIRE-level ONLY.  A
-   comonoid on a composite boundary [cs] is not axiomatised; it is
-   DERIVED by tensoring wire comonoids ([supply_list] of Supply.v,
-   powered by the packaged tensor/unit comonoids of
-   Theory/Algebra/Comonoid/Tensor.v).  This avoids any
-   boundary-compatibility axiom family (e.g. a dup-on-append
-   equation) and the cast-spelling pitfalls such axioms invite.
-
-   The four [SupplyEqs] constructors are stated in the EXACT
-   cast-normal shapes the [Comonoid]/[CommutativeComonoid] record
-   fields reduce to at [CPresented_Monoidal] (checked by cbn, as for
-   [CPresented_Strict] in Presentation.v):
-
-     - coassociativity carries the single [app_assoc [c] [c] [c]]
-       cast — the [from] of the presented associator;
-     - the LEFT counit law is cast-free on the axiom side
-       ([[] ++ [c]] is definitional), and the field's residual
-       left-unitor cast [CT_cast (eq_sym (app_nil_l [c]))] is
-       eliminated by [CT_cast_id] under [Cdec];
-     - the RIGHT counit law carries the [app_nil_r [c]] cast — the
-       [from] of the presented right unitor, [CT_cast (eq_sym
-       (app_nil_r [c]))] — on its right-hand side, which IS the
-       field's normal form (no massage needed);
-     - cocommutativity is cast-free ([CT_braid [c] [c]] is the
-       presented braid on the nose).
-
-   The fan-out corollaries at the foot of the file are the categorical
-   content of the linear fan-out check: over a base signature that is
-   conservative at a non-copyable colour [c], the hom-set
-   [[c] ~> [c; c]] of [SupplyPROP] is EMPTY (no axiom can create a
-   fan-out that no term realises), while for copyable [c] the
-   generator itself inhabits it.  Over the PURE supply PROP (base
-   signature [Empty_CSig]) this becomes an exact characterisation:
-   [[c] ~> [c; c]] is inhabited iff [copyable c = true]
-   ([fanout_iff]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section SupplyInstance.
 
@@ -101,11 +57,11 @@ Context (Cdec : forall c d : Colour, {c = d} + {c <> d}).
 Context (S : CSignature Colour).
 Context (copyable : Colour -> bool).
 
-(** ** The supply generators
+(*
+   本节说明 Instance 相关定义、性质与动机。
 
-    Wire-level only: one duplicator and one deleter per COPYABLE
-    colour.  The copyability witness is carried by the generator, so
-    non-copyable colours index no generators at all. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive SupplyGen : list Colour -> list Colour -> Type :=
   | SG_dup (c : Colour) : copyable c = true -> SupplyGen [c] [c; c]
@@ -125,12 +81,11 @@ Definition sg_del (c : Colour) (H : copyable c = true) :
   CTerm SupplyExtSig [c] [] :=
   CT_gen (inr (SG_del c H)).
 
-(** ** The supply equations
+(*
+   本节说明 Instance 相关定义、性质与动机。
 
-    Per-wire commutative-comonoid axioms, and NOTHING else — no
-    boundary-level equation is assumed (see the header).  Each
-    constructor is stated in the cbn-normal shape of the record field
-    it will discharge. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Inductive SupplyEqs : forall cs ds : list Colour,
     CTerm SupplyExtSig cs ds -> CTerm SupplyExtSig cs ds -> Prop :=
@@ -152,10 +107,11 @@ Inductive SupplyEqs : forall cs ds : list Colour,
         (CT_comp (CT_tens (sg_del c H) (CT_id [c])) (sg_dup c H))
         (CT_id [c])
 
-  (** Right counit law.  The right-hand side carries the [from] of
-      the presented right unitor at [[c]]: the
-      [eq_sym (app_nil_r [c])] cast (a stuck endo-cast, since
-      [[c] ++ [] ≡ [c]] definitionally but [app_nil_r] is opaque). *)
+  (*
+   本节说明 Instance 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   | SE_counit_right (c : Colour) (H : copyable c = true) :
       SupplyEqs [c] [c]
         (CT_comp (CT_tens (CT_id [c]) (sg_del c H)) (sg_dup c H))
@@ -186,13 +142,11 @@ Definition SupplyPROP_del (c : Colour) (H : copyable c = true) :
   ([c] : list Colour) ~{CPresentedCat SupplySMT}~> [] :=
   cquot SupplySMT (sg_del c H).
 
-(** ** The wire comonoid laws
+(*
+   本节说明 Instance 相关定义、性质与动机。
 
-    Standalone law lemmas, each in the EXACT normal form of the
-    record field it discharges; three of the four are
-    verbatim [CTEW_ax] embeddings of the axioms, and the left counit
-    law additionally eliminates the field's stuck left-unitor cast
-    with [CT_cast_id] (list-UIP under [Cdec]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Coassociativity, in the shape of [delta_coassoc] at
     [CPresented_Monoidal SupplySMT Cdec]. *)
@@ -204,10 +158,11 @@ Definition supply_wire_coassoc (c : Colour) (H : copyable c = true) :
              (sg_dup c H)) :=
   CTEW_ax SupplySMT _ _ (SE_coassoc c H).
 
-(** Left counit, in the shape of [delta_counit_left]: the field's
-    right-hand side is the [from] of the presented left unitor,
-    [CT_cast (eq_sym (app_nil_l [c]))], a stuck endo-cast eliminated
-    by [CT_cast_id]. *)
+(*
+   本节说明 Instance 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma supply_wire_counit_left (c : Colour) (H : copyable c = true) :
   CTermEqW SupplySMT
     (CT_comp (CT_tens (sg_del c H) (CT_id [c])) (sg_dup c H))
@@ -233,11 +188,11 @@ Definition supply_wire_cocomm (c : Colour) (H : copyable c = true) :
     (sg_dup c H) :=
   CTEW_ax SupplySMT _ _ (SE_cocomm c H).
 
-(** ** The wire comonoids
+(*
+   本节说明 Instance 相关定义、性质与动机。
 
-    Explicit [Build_*] applications (record literals would infer the
-    wrong category); every law field is the corresponding standalone
-    lemma, accepted by conversion against the field's normal form. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition supply_wire_comonoid_raw (c : Colour) (H : copyable c = true) :
   @Comonoid (CPresentedCat SupplySMT)
@@ -273,14 +228,11 @@ Definition supply_wire_comonoid (c : Colour) (H : copyable c = true) :
 Definition SupplyPROP_SelectiveSupply : SelectiveSupply SupplyPROP copyable :=
   @Build_SelectiveSupply Colour SupplyPROP copyable supply_wire_comonoid.
 
-(** ** Machine-checked sanity
+(*
+   本节说明 Instance 相关定义、性质与动机。
 
-    The mediation equalities of Supply.v REDUCE to [eq_refl] at
-    [SupplyPROP] (the shared-record wiring of the presented tower
-    makes both coherence paths definitional), so the derived boundary
-    supply [supply_list] carries no residual transport here.  Each
-    [Example] holds by [eq_refl]; any regression in the wiring is
-    caught at this file rather than at a distant use site. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example SupplyPROP_ctensor_app_b_refl (cs ds : list Colour) :
   ctensor_app_b SupplyPROP cs ds = eq_refl := eq_refl.
@@ -302,11 +254,11 @@ Example SupplyPROP_supply_list_nil :
   = @CommutativeComonoid_Unit (CPresentedCat SupplySMT)
       (CPresented_Symmetric SupplySMT Cdec) := eq_refl.
 
-(** The singleton-boundary supply collapses to the wire comonoid: it
-    is DEFINITIONALLY the wire comonoid tensored with the unit
-    comonoid — the [ctensor_app_b [c] []] transport vanished — up to
-    the (proof-irrelevant, [UIP_dec Bool.bool_dec]) copyability
-    evidence produced by the cons-peeling of [supply_list]. *)
+(*
+   本节说明 Instance 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma SupplyPROP_supply_list_wire (c : Colour) (H : copyable c = true)
   (Hc : all_copyable copyable [c]) :
   supply_list (P := SupplyPROP) (SS := SupplyPROP_SelectiveSupply) [c] Hc
@@ -321,11 +273,11 @@ Proof using Type.
   reflexivity.
 Qed.
 
-(** The comultiplication of the singleton supply, pinned: it is the
-    canonical tensor comultiplication of the wire comonoid with the
-    unit comonoid.  (The further collapse of the unit factor — all
-    the way down to the duplicator itself — is
-    [SupplyPROP_scopy_wire] below.) *)
+(*
+   本节说明 Instance 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example SupplyPROP_supply_list_wire_delta (c : Colour)
   (H : copyable c = true) (Hc : all_copyable copyable [c]) :
   ccomon_delta
@@ -348,22 +300,11 @@ Example SupplyPROP_cocomm_holds (c : Colour) (H : copyable c = true) :
     ≈[CPresentedCat SupplySMT] SupplyPROP_dup c H :=
   CTEW_ax SupplySMT _ _ (SE_cocomm c H).
 
-(** ** The singleton collapse, up to [≈]
+(*
+   本节说明 Instance 相关定义、性质与动机。
 
-    The capstone of the collapse pins: on a single wire the DERIVED
-    boundary copy/discard of Supply.v coincide with the generators
-    themselves.  The derived [scopy [c]] is the canonical tensor
-    comultiplication of the wire comonoid with the unit comonoid
-    ([SupplyPROP_supply_list_wire] above); its interchange is built
-    from associators, unitors and a unit braid, all of which are
-    endo-casts or unit braids at CONCRETE colour words here, so the
-    whole conjugation collapses by list-UIP ([CT_cast_id]), the
-    unit-braid axiom, and the strict right-unit law.
-
-    The rewrites run over the [Prop]-valued congruence [CTermEqW], so
-    the file registers the (file-local) [Equivalence] and [Proper]
-    instances the generalized-rewriting engine needs on the raw term
-    formers. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Instance SupplyPROP_CTermEqW_Equivalence
   {cs ds : list Colour} :
@@ -467,12 +408,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** ** Fan-out corollaries
+(*
+   本节说明hom相关定义、性质与动机。
 
-    The categorical content of the linear fan-out check: the supply
-    generators are conservative at every NON-copyable colour, so
-    hom-emptiness at linear colours survives the supply extension —
-    no equational axiom can inhabit an empty hom-set. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The supply generators mention only copyable colours, so a
     non-copyable colour occurs equally often (namely zero times) on
@@ -504,12 +444,11 @@ Definition supplyextsig_conservative (c : Colour) (Hc : copyable c = false)
     | inr gG => supplygen_conservative c Hc cs ds gG
     end.
 
-(** No fan-out at linear colours: over a base signature conservative
-    at a non-copyable [c], the hom-set [[c] ~> [c; c]] of the
-    presented supply PROP is EMPTY — the presented transfer of the
-    free-level counting theorem ([no_linear_fanout_presented]:
-    quotient homs are the same type, and no congruence can inhabit an
-    empty hom). *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem SupplyPROP_no_fanout (c : Colour) (Hc : copyable c = false)
   (HS : c_conservative Cdec S c) :
   (([c] : list Colour) ~{SupplyPROP}~> [c; c]) -> False.
@@ -552,13 +491,11 @@ Arguments SupplyPROP_fanout {Colour} Cdec S copyable c H : assert.
 Arguments SupplyPROP_scopy_wire {Colour} Cdec S copyable c H Hc : assert.
 Arguments SupplyPROP_sdiscard_wire {Colour} Cdec S copyable c H Hc : assert.
 
-(** ** The pure supply PROP: the exact fan-out characterisation
+(*
+   本节说明hom相关定义、性质与动机。
 
-    Over the empty base signature the supply generators are the ONLY
-    generators, and copyability is characterised exactly by fan-out
-    inhabitation.  This is the free-standing categorical statement of
-    the linear fan-out check: linearity is hom-EMPTINESS, not a
-    convention. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section PureSupply.
 

@@ -29,124 +29,29 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* What the exercise is about, and the two ways to get it wrong
-
+(*
    nLab:  https://ncatlab.org/nlab/show/automorphism+2-group
    Paper: Eilenberg, Mac Lane, "General theory of natural equivalences",
-          Trans. Amer. Math. Soc. 58(2), 1945
 
-   Mac Lane's Exercise 3 in §I.4 is about as small as a complete example of a
-   natural transformation gets.  A group has one object, so a functor out of
-   it has nothing to do on objects and is exactly a homomorphism; a natural
-   transformation between two such functors has one component, and the
-   naturality square — an equation between two composites of three arrows —
-   becomes an equation between two products of three elements.  The answer,
-   conjugacy, is a fact about groups that predates category theory entirely;
-   what the exercise shows is that naturality REPRODUCES it, with no
-   group-theoretic input beyond the definitions.  That is the phenomenon the
-   1945 paper was written about, here at its smallest.
+   本节说明自然变换、函子相关定义、性质与动机。
 
-   The reading upward is the theory of 2-groups.  The delooping B G of a
-   group is a one-object groupoid; the functor category B H ^ B G is a
-   groupoid ([Deloop_Fun_IsGroupoid]) whose objects CORRESPOND to the
-   homomorphisms G → H — they are functors, and the round trip through a
-   functor is an identity only on the morphism part
-   ([Deloop_map_unmap_fmap], [Deloop_map_unmap_fobj]) — and whose arrows are
-   the conjugacies between them.  Two consequences
-   are immediate from the definitions below rather than cited: two objects
-   are joined by an arrow exactly when the homomorphisms are conjugate
-   ([transform_iff_conjugate]), so the connected components are the conjugacy
-   classes; and [Intertwines] at F = G says exactly that h commutes with
-   every S a, so the endomorphisms of the object S are the centralizer in H
-   of the image of S.  The nLab records the corresponding automorphism
-   2-group as AUT(H) ≔ Aut(B H), presented by the crossed module
-   H →Ad Aut(H) (nLab, "automorphism 2-group"); this file stops at the
-   groupoid and builds no 2-group, but the non-connectedness witness at the
-   end is exactly a pair of homomorphisms in different conjugacy classes.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   TWO TRAPS, both addressed below rather than in prose only, and both
-   scoped there to exactly where they bite.
+(*
+   本节说明等价相关定义、性质与动机。
 
-   The first is VACUITY.  In an abelian group conjugation is the identity:
-   h · a · h⁻¹ ≈ a for every h.  So over an abelian target the conjugation
-   theorem, however carefully stated, distinguishes nothing at all, and any
-   demonstration built on such a target is worthless as evidence that the
-   statement has content.  That is not left as a warning here:
-   [abelian_conjugates_agree] PROVES that a conjugating element between two
-   functors into an abelian target forces the two functors to agree on every
-   arrow, and [Bool_Xor_abelian] and [Z3_abelian] show that Z/2 and Z/3 —
-   the tree's only groups until Structure/Groupoid.v added S3 — are abelian,
-   hence useless for this statement ([Bool_conjugates_agree] spells the
-   instantiation out at Z/2).  The witness used here is therefore the
-   symmetric group S3, which Structure/Groupoid.v introduced as the tree's
-   first nonabelian group: the two homomorphisms Z/2 → S3 picking out the
-   transpositions a and c are conjugate by the three-cycle r
-   ([S3_hom_conjugate]), the conjugation moves them
-   ([S3_conjugation_moves]), and the conjugating element is non-central
-   ([S3_conjugator_noncentral], which is that file's [S3_not_abelian] read as
-   a statement about r).  [S3_conjugation_needs_nonabelian] closes the loop by
-   DERIVING that S3 is nonabelian from those two facts together, so the
-   witness cannot be degenerate without contradicting itself.
-
-   The second is COMPOSITION ORDER.  In this library f ∘ g means "g first",
-   and Construction/Deloop.v takes `compose f g := mon_op f g` — the monoid
-   product in the same argument order, which [deloop_compose_mon_op] below
-   restates as an equation holding by [eq_refl].  Reading naturality
-   (`fmap[G] f ∘ η ≈ η ∘ fmap[F] f`, Theory/Natural/Transformation.v) through
-   that gives, for η : S ⟹ T with component h,
-
-       T g · h ≈ h · S g,       hence      T g ≈ h · S g · h⁻¹.
-
-   So the TARGET of the transformation multiplies on the LEFT of h, and it is
-   the target that is the conjugate of the source.  That is Awodey's
-   SECOND-EDITION orientation (Example 7.21, 2nd ed. p. 167, quoted with the
-   superscript inverse and inter-word spacing normalized): "what is a natural
-   transformation between two group homomorphisms f, g : G → H? Such a map
-   ϑ : f → g would be an element h ∈ H such that for every x ∈ G, we have
-   g(x) · h = h · f(x) or, equivalently, g(x) = h · f(x) · h⁻¹."  Source f,
-   target g, target on the left — the same way round as [Intertwines] and
-   [Conjugates] below.  ([transform_intertwines] is literally the [naturality]
-   field: it is proved by `naturality n ttt ttt` with no rewriting at all,
-   which is the sharpest available check that no side has been silently
-   swapped.)
-
-   HOW MUCH THE DIRECTION MATTERS, exactly.  Not as much as "trap" suggests
-   at the ∃-quantified level.  [transform_iff_conjugate] and its
-   source-on-the-left twin [transform_iff_conjugate_SWAPPED] are both proved
-   below, and both are biconditionals with the SAME left-hand side, so their
-   two right-hand sides are equivalent in this file by composing them; the
-   proof actually carried out is the swapped one from the standard one, by
-   sending h to h⁻¹ ([conjugates_inverse]) and nothing else.  Neither
-   orientation is a false statement, and neither is Awodey's first edition,
-   whose formula is the swapped one (see the CITATION NOTE above).
-   What the direction does fix is every statement made about a GIVEN h —
-   [Intertwines], [Conjugates], [transform_intertwines], [S3_hom_conjugate],
-   [deloop_ginv_conjugates] — where exchanging the sides changes the claim
-   rather than merely its notation, and where getting it backwards would
-   quietly mean something else about a named element.  The opposite
-   convention for delooping — composition as `mon_op g f` — would deloop the
-   opposite monoid (Construction/Deloop/Opposite.v) and exchange the two
-   sides of every equation in this file. *)
-
-(* The obligations in this file are all elementary: for each of the two
-   setoid bijections below, one [Equivalence], two [Proper]s and the two
-   round trips; and for the S3 witness, one unit law and one finite case
-   check over the multiplication table.  None of them wants [cat_simpl]'s
-   program machinery, so the ambient obligation tactic is switched off,
-   following Construction/Deloop.v and Instance/CMon.v. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
 (** ** Functors between deloopings are monoid homomorphisms *)
 
-(* One half of the functor-level dictionary: a homomorphism f : M → N becomes
-   a functor B M ⟶ B N.  There is nothing to do on objects, and the three
-   functor laws are the three homomorphism laws by projection — respecting
-   `≈`, preserving the unit, preserving the product — in the orientation
-   [MonHom] states them, so no obligation is generated.
+(*
+   本节说明函子相关定义、性质与动机。
 
-   ([Build_Functor] is applied to explicit arguments rather than written with
-   record syntax because the record fields alone do not determine the two
-   categories.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Deloop_map {M N : MonObject} (f : MonHom M N) :
   Deloop M ⟶ Deloop N :=
   @Build_Functor (Deloop M) (Deloop N)
@@ -167,24 +72,19 @@ Definition Deloop_unmap {M N : MonObject} (F : Deloop M ⟶ Deloop N) :
   mon_map_op       := fun a b => @fmap_comp _ _ F ttt ttt ttt a b
 |}.
 
-(* The round trip through a homomorphism is the identity ON THE NOSE — an
-   equality of whole records, law fields included, holding by [eq_refl]
-   because [Set Primitive Projections] gives records definitional eta and
-   because neither construction rebuilds a single field.  This is the same
-   strength as [hom_monoid_Deloop] in Construction/Deloop.v, and it is what
-   licenses reading the statements below, which are phrased with
-   [Deloop_unmap], as statements about the homomorphisms one started with. *)
+(*
+   本节说明（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Deloop_unmap_map {M N : MonObject} (f : MonHom M N) :
   Deloop_unmap (Deloop_map f) = f := eq_refl.
 
-(* The round trip through a functor is the identity on the morphism part,
-   again by [eq_refl], and agrees with F at every object — but only
-   propositionally there, by a case split.  [poly_unit] is an ordinary
-   inductive type with no definitional eta (a variable x : poly_unit is not
-   convertible to [ttt], which was checked before this comment was written),
-   so the object map of [Deloop_map (Deloop_unmap F)] — the constant function
-   at [ttt] — and that of F are not the same term.  The whole functors are
-   therefore NOT claimed equal, and nothing below needs them to be. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example Deloop_map_unmap_fmap {M N : MonObject} (F : Deloop M ⟶ Deloop N)
   (a : carrier M) :
   @fmap _ _ (Deloop_map (Deloop_unmap F)) ttt ttt a = @fmap _ _ F ttt ttt a
@@ -194,10 +94,11 @@ Example Deloop_map_unmap_fobj {M N : MonObject} (F : Deloop M ⟶ Deloop N)
   (x : Deloop M) : fobj[Deloop_map (Deloop_unmap F)] x = fobj[F] x.
 Proof. destruct (fobj[F] x); reflexivity. Qed.
 
-(* Distinct homomorphisms give distinct functors, hence distinct OBJECTS of
-   the functor category.  The type ascription on the projected morphism map
-   is what makes it non-dependent, so that [f_equal] applies: the hom-set of
-   a delooping does not vary with the object. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Deloop_map_distinct {M N : MonObject} (f g : MonHom M N) (a : carrier M) :
   (f a = g a → False) → Deloop_map f = Deloop_map g → False.
 Proof.
@@ -210,12 +111,11 @@ Qed.
 
 (** ** The composition-order convention, checked *)
 
-(* Composition in a delooping IS the monoid product, in the same argument
-   order: the two are the same function, not merely equivalent.  Every
-   equation in this file is read through this one, so it is recorded as a
-   proof rather than as a remark.  (The objects must be supplied explicitly —
-   the hom is the same setoid at every pair, so nothing in a composite
-   determines them.) *)
+(*
+   本节说明hom、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example deloop_compose_mon_op (N : MonObject) :
   @compose (Deloop N) ttt ttt ttt = @mon_op N := eq_refl.
 
@@ -226,30 +126,27 @@ Section Intertwining.
 Context {M N : MonObject}.
 Context (F G : Deloop M ⟶ Deloop N).
 
-(* h intertwines F and G when   G a · h ≈ h · F a   for every a.  This is the
-   naturality square of a transformation F ⟹ G written multiplicatively, and
-   it is Awodey's form of the condition: no inverses appear, so it is stated
-   for monoids and specializes to groups below.
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-   Note which side is which: the TARGET G multiplies on the left of h, the
-   SOURCE F on the right. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Intertwines (h : carrier N) : Type :=
   ∀ a : carrier M, mon_op (Deloop_unmap G a) h ≈ mon_op h (Deloop_unmap F a).
 
-(* Forward direction.  A natural transformation has a single component, at
-   the single object, and that component intertwines — this is the
-   [naturality] field itself, instantiated at the one object twice, with no
-   rewriting whatever.  That the proof term is exactly `naturality n ttt ttt`
-   is the check that the two sides of the equation have not been swapped. *)
+(*
+   本节说明自然变换相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition transform_intertwines (n : F ⟹ G) : Intertwines (transform n ttt) :=
   naturality n ttt ttt.
 
-(* Backward direction.  An intertwining element is a natural transformation:
-   take it as the component at the only object.  (The objects are destructed
-   because a bare variable of [poly_unit] is not convertible to [ttt] —
-   [fmap] at a variable object is not the same term as [fmap] at [ttt] — and
-   after the case split the naturality square is the intertwining equation
-   verbatim.) *)
+(*
+   本节说明自然变换相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition intertwines_transform (h : carrier N) (I : Intertwines h) : F ⟹ G.
 Proof.
   refine (@Build_Transform' _ _ F G (fun _ => h) _).
@@ -262,9 +159,11 @@ Defined.
 Example intertwines_transform_component (h : carrier N) (I : Intertwines h) :
   transform (intertwines_transform h I) ttt = h := eq_refl.
 
-(* The two directions together.  Both sides are data — a transformation one
-   way, an element with its equations the other — so this is Lib/Foundation.v's
-   Type-valued `↔` ([iffT]) and `∃` ([sigT]), not the propositional pair. *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem transform_iff_intertwines : (F ⟹ G) ↔ ∃ h : carrier N, Intertwines h.
 Proof.
   split.
@@ -277,44 +176,11 @@ Defined.
 
 (** ** The correspondence at the level of setoids *)
 
-(* Setoid-level care, which is what the task behind this file asks for: not
-   merely that the two collections are inhabited together, but that they
-   CORRESPOND.  They do, and the correspondence is a bijection of setoids —
-   an isomorphism in [Sets] — between
+(*
+   本节说明同构、来源与用途相关定义、性质与动机。
 
-     - the transformations F ⟹ G under [Transform_Setoid], where two
-       transformations are identified when their components agree at every
-       object; and
-
-     - the INTERTWINING elements of N, i.e. the elements h carrying a proof
-       of [Intertwines h], where two are identified when the ELEMENTS are
-       `≈`-equal in N.
-
-   Intertwining, not conjugating: N is a bare monoid here, with no inverses,
-   so "h conjugates F into G" has nothing to refer to yet.  The version over
-   a group — the literal set of CONJUGATING elements, cut out by [Conjugates]
-   — is [transform_conjugator_iso] below, where the two conditions on h agree
-   by [conjugates_iff_intertwines].
-
-   The second setoid ignores the intertwining witness.  That is deliberate
-   and is the honest reading of "the set of elements": the witness is proof
-   content with no equality of its own, and identifying elements by their
-   underlying element of N makes the collection the sub-setoid of N cut out
-   by the condition.  It is also forced by the first setoid, which sees only
-   components.
-
-   The isomorphism is in [Sets], where it says exactly what a bijection of
-   setoids says: two `≈`-respecting maps, inverse to each other up to `≈`.
-   Nothing in this file is stated in [Cat], where `≅` would mean only
-   equivalence of categories.
-
-   What is NOT claimed: nothing here says the correspondence is a group
-   isomorphism, or natural in F and G, or that it identifies composition of
-   transformations with multiplication in N.  (Vertical composition does take
-   components to composites — [nat_compose]'s component at x is the composite
-   of the two components, and composition in a delooping is [mon_op] — but
-   for three different functors F ⟹ G ⟹ K that composition is a category's,
-   not a monoid's, and the statement is not made here.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Intertwiner : Type := ∃ h : carrier N, Intertwines h.
 
@@ -359,10 +225,11 @@ Next Obligation.
   exact Hpq.
 Qed.
 
-(* The bijection.  One round trip is [reflexivity], the two elements being
-   convertible; the other needs the case split on the object, because a
-   transformation's component at a variable object is only reachable from its
-   component at [ttt] after that variable is known to be [ttt]. *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition transform_intertwiner_iso :
   Deloop_Transforms ≅[Sets] Deloop_Intertwiners := {|
   to   := transform_intertwiner;
@@ -391,21 +258,20 @@ Context {M : MonObject}.
 Context {Grp : GrpObject}.
 Context (F G : Deloop M ⟶ Deloop Grp).
 
-(* h conjugates F into G when  G a ≈ h · F a · h⁻¹  for every a.  This is the
-   equation Mac Lane's exercise asks about and Awodey's Example 7.21 writes as
-   `g(x) = h · f(x) · h⁻¹`, bracketed the way the derivation below produces
-   it; the two bracketings agree by associativity. *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Conjugates (h : carrier Grp) : Type :=
   ∀ a : carrier M,
     Deloop_unmap G a ≈ mon_op (mon_op h (Deloop_unmap F a)) (grp_inv h).
 
-(* And "conjugation by h" is not a new notion here: the right-hand side above
-   is Structure/Groupoid.v's [conjugate] — the inner automorphism
-   y ↦ h · y · h⁻¹ that Awodey's example names — evaluated in the groupoid
-   [Deloop Grp] at the single object, on the nose.  This is an equality of
-   TYPES holding by [eq_refl], so it is also an independent check that this
-   file's composition order agrees with that of the existing conjugation
-   machinery. *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example conjugates_is_conjugation (h : carrier Grp) :
   Conjugates h
     = ∀ a : carrier M,
@@ -414,10 +280,11 @@ Example conjugates_is_conjugation (h : carrier Grp) :
               h (Deloop_unmap F a)
   := eq_refl.
 
-(* Conjugating and intertwining are the same condition on h once inverses are
-   available: multiply the intertwining equation on the right by h⁻¹ to reach
-   the conjugation form, and the conjugation form on the right by h to get
-   back. *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma intertwines_conjugates (h : carrier Grp) :
   Intertwines F G h → Conjugates h.
 Proof.
@@ -458,25 +325,11 @@ Context {M : MonObject}.
 Context {Grp : GrpObject}.
 Context (F G : Deloop M ⟶ Deloop Grp).
 
-(* The literal deliverable: over a GROUP the transformations F ⟹ G correspond
-   to the set of CONJUGATING elements — the elements h of Grp satisfying
-   [Conjugates F G h], the equation `G a ≈ h · F a · h⁻¹` that names an inner
-   automorphism.  [transform_intertwiner_iso] above is the same bijection
-   over a bare monoid, where the condition can only be stated as intertwining
-   because no inverses exist; here it is stated as conjugation outright.
+(*
+   本节说明幺半群、来源与用途相关定义、性质与动机。
 
-   No new mathematical content has to be proved — only the same five
-   obligations again.  The two conditions on h are interchangeable
-   once inverses are available ([intertwines_conjugates] and
-   [conjugates_intertwines]), so the two maps are those of
-   [transform_intertwiner_iso] with the witness converted on the way through,
-   and the two round trips are still [reflexivity] and a case split on the
-   object.
-
-   Every disclosure made for the intertwiner setoid above applies here
-   verbatim: the equality is that of the underlying elements of Grp, so the
-   proof of [Conjugates] is not seen, and the isomorphism is in [Sets] —
-   a bijection of setoids, nothing more. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Conjugator : Type := ∃ h : carrier Grp, Conjugates F G h.
 
 Program Definition Conjugator_Setoid : Setoid Conjugator := {|
@@ -516,12 +369,11 @@ Next Obligation.
   exact Hpq.
 Qed.
 
-(* The bijection the exercise asks for, over a group: the collection of
-   transformations F ⟹ G IS the set of conjugating elements.  Taken at
-   F = [Deloop_map S] and G = [Deloop_map T] it is the statement that the
-   transformations B S ⟹ B T correspond to the elements of Grp conjugating
-   S into T — [transform_iff_conjugate] below with the correspondence made
-   explicit instead of existentially quantified away. *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition transform_conjugator_iso :
   Deloop_Transforms F G ≅[Sets] Deloop_Conjugators := {|
   to   := transform_conjugator;
@@ -541,10 +393,11 @@ End ConjugatorIso.
 
 Arguments Conjugator {M Grp} F G.
 
-(* The same bijection read at two homomorphisms, which is the exercise's own
-   phrasing: the transformations B S ⟹ B T ARE the elements of C conjugating
-   S into T.  This is only [transform_conjugator_iso] instantiated, and it is
-   named because that is the exercise's own phrasing. *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition transform_conjugator_hom {B C : GrpObject} (S T : MonHom B C) :
   Deloop_Transforms (Deloop_map S) (Deloop_map T)
     ≅[Sets] Deloop_Conjugators (Deloop_map S) (Deloop_map T) :=
@@ -578,17 +431,11 @@ Proof.
   now rewrite mon_op_unit_l.
 Qed.
 
-(* Mac Lane, "Categories for the Working Mathematician", §I.4, Exercise 3, in
-   both directions: for groups B and C and homomorphisms S, T : B → C, a
-   natural transformation between the two functors those homomorphisms give
-   between the deloopings is inhabited exactly when some h in C conjugates S
-   into T.
+(*
+   本节说明自然变换、函子、幺半群相关定义、性质与动机。
 
-   The forward direction extracts the single component; the backward
-   direction builds the transformation from h.  Nothing is assumed about B
-   beyond its being a monoid — its inverses are never used — but it is stated
-   for groups because that is Mac Lane's setting; [transform_iff_intertwines]
-   above is the monoid form. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem transform_iff_conjugate {B C : GrpObject} (S T : MonHom B C) :
   (Deloop_map S ⟹ Deloop_map T)
     ↔ ∃ h : carrier C,
@@ -606,26 +453,11 @@ Proof.
     exact (conjugates_intertwines (Deloop_map S) (Deloop_map T) h C').
 Defined.
 
-(* The same statement with the two sides exchanged: the SOURCE exhibited as
-   the conjugate of the target, rather than the target as the conjugate of
-   the source.  This is Awodey's first-edition equation, moved across:
-   `f(x) · h = h · g(x)`, printed there as `h⁻¹ · f(x) · h = g(x)`, is
-   `f(x) = h · g(x) · h⁻¹` with f the source and g the target — the statement
-   below.  See the CITATION NOTE at the top of the file.
+(*
+   本节说明 Transform 相关定义、性质与动机。
 
-   It is a real theorem, proved here rather than described, and its proof is
-   the whole content of the remark: at this level — where h is EXISTENTIALLY
-   QUANTIFIED — it follows from [transform_iff_conjugate] by sending h to h⁻¹
-   and nothing else, [conjugates_inverse] supplying each step.  Since the two
-   are biconditionals with the same left-hand side, their right-hand sides
-   are thereby equivalent, and the choice of side is not a choice between a
-   true statement and a false one here.
-
-   It is at the COMPONENT level that the direction is real content: the
-   statements about a given h — [Intertwines], [Conjugates],
-   [transform_intertwines], [S3_hom_conjugate], [deloop_ginv_conjugates] —
-   each say something different when the sides are exchanged, and it is those
-   that the library's composition order pins down. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem transform_iff_conjugate_SWAPPED {B C : GrpObject} (S T : MonHom B C) :
   (Deloop_map S ⟹ Deloop_map T)
     ↔ ∃ h : carrier C,
@@ -644,25 +476,11 @@ Defined.
 
 (** ** Awodey §7.7: the functor category is a groupoid *)
 
-(* The general fact behind Awodey's consequence, which is where its content
-   actually lies: if every arrow of D is invertible then so is every natural
-   transformation into D, since the componentwise inverses are again natural
-   — the naturality square for them is the original square with the two
-   components moved across it — and a transformation whose components are
-   two-sided inverses is a two-sided inverse.  (Only that direction is proved
-   here; the converse, that an invertible transformation has invertible
-   components, is not needed and is not stated.)
+(*
+   本节说明自然变换、来源与用途相关定义、性质与动机。
 
-   Awodey draws the conclusion for two GROUPOIDS: "It is clear that if G and
-   H are any groupoids, then the functor category H^G is also a groupoid"
-   (2nd ed., p. 168).  What is proved here is stronger in the domain: C is an
-   arbitrary category, and only D must be a groupoid.
-
-   The delooping case is the corollary below; the general statement is proved
-   here rather than only at deloopings because the argument uses nothing
-   about the domain, and because the inverse it produces has the component
-   this file needs — [ginv] at each object, which for a delooping IS the
-   group inverse ([deloop_ginv_component]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Fun_ginv {C D : Category} (GD : IsGroupoid D) {F K : C ⟶ D}
   (n : F ⟹ K) : K ⟹ F.
 Proof.
@@ -689,10 +507,11 @@ Proof.
     apply ginv_left.
 Defined.
 
-(* Awodey §7.7: for groups G and H the functor category H^G is a groupoid.
-   Only the TARGET need be a group — the domain may be the delooping of any
-   monoid, since the inverse of a transformation is built from the inverse of
-   its component, which lives in the target. *)
+(*
+   本节说明函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Deloop_Fun_IsGroupoid (M : MonObject) (Grp : GrpObject) :
   IsGroupoid ([Deloop M, Deloop Grp]) :=
   Fun_IsGroupoid (Deloop_IsGroupoid Grp).
@@ -715,9 +534,11 @@ Example deloop_ginv_component {M : MonObject} {Grp : GrpObject}
   transform (ginv (Deloop_Fun_IsGroupoid M Grp) n) ttt
     = grp_inv (transform n ttt) := eq_refl.
 
-(* Second, that element conjugates G back into F.  Together with the equation
-   above this is Awodey's sentence in full: the transformation is invertible,
-   and its inverse is conjugation by h⁻¹. *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma deloop_ginv_conjugates {M : MonObject} {Grp : GrpObject}
   {F G : Deloop M ⟶ Deloop Grp} (n : F ⟹ G) :
   Conjugates G F (grp_inv (transform n ttt)).
@@ -729,11 +550,11 @@ Qed.
 
 (** ** The first trap: the statement is empty over an abelian target *)
 
-(* Conjugation in an abelian group is the identity, so a conjugating element
-   between two functors into an abelian target forces them to agree on every
-   arrow: the conjugation theorem, over such a target, relates nothing that
-   was not already equal.  This is proved, not asserted, because it is the
-   precise sense in which an abelian witness would demonstrate nothing. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma abelian_conjugates_agree {M : MonObject} {Grp : GrpObject}
   (F G : Deloop M ⟶ Deloop Grp) (h : carrier Grp)
   (comm : ∀ a b : carrier Grp, mon_op a b ≈ mon_op b a)
@@ -758,11 +579,11 @@ Proof. intros [|] [|]; reflexivity. Qed.
 Lemma Z3_abelian : ∀ a b : carrier Z3_Grp, mon_op a b ≈ mon_op b a.
 Proof. intros [| |] [| |]; reflexivity. Qed.
 
-(* Instantiated at Z/2 — the library's first group witness, and the target
-   one would reach for first.  Over it a conjugating element forces the two
-   functors to agree pointwise, so nothing about conjugacy can be seen
-   there.  (Only that direction is proved; the converse, that agreeing
-   functors are conjugate, is not needed and is not stated.) *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary Bool_conjugates_agree {M : MonObject}
   (F G : Deloop M ⟶ Deloop Bool_Xor_Grp) (h : carrier Bool_Xor_Grp)
   (Cj : Conjugates F G h) :
@@ -771,13 +592,11 @@ Proof. exact (abelian_conjugates_agree F G h Bool_Xor_abelian Cj). Qed.
 
 (** ** A nonabelian witness *)
 
-(* An element of order dividing two names a homomorphism Z/2 → S3, since
-   Z/2 is generated by one element of order two.  Three instances are used
-   below: the trivial homomorphism and the two picking out the transpositions
-   a and c.  (The hypothesis is Coq's `=` because Structure/Groupoid.v builds
-   [S3_Mon] over the carrier setoid whose [equiv] field IS [eq], as it does
-   for [Z3_Mon] and as Construction/Deloop.v does for [Bool_Xor]; so `≈` and
-   `=` are the same relation here and nothing weaker is being assumed.) *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition S3_involution_hom (x : S3) (Hx : S3_mul x x = S3_e) :
   MonHom Bool_Xor S3_Mon := {|
   mon_map := fun b => if b then x else S3_e
@@ -795,18 +614,20 @@ Definition S3_hom_e : MonHom Bool_Xor S3_Mon := S3_involution_hom S3_e eq_refl.
 Definition S3_hom_a : MonHom Bool_Xor S3_Mon := S3_involution_hom S3_a eq_refl.
 Definition S3_hom_c : MonHom Bool_Xor S3_Mon := S3_involution_hom S3_c eq_refl.
 
-(* The conjugating element is NON-CENTRAL, which is the whole point of
-   choosing it: this is Structure/Groupoid.v's [S3_not_abelian] read as the
-   statement that r does not commute with a.  ([mon_op] at [S3_Mon] is
-   [S3_mul] and `≈` is `=`, both definitionally, so that lemma is this
-   statement already.) *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition S3_conjugator_noncentral :
   mon_op (m:=S3_Mon) S3_r S3_a ≈ mon_op (m:=S3_Mon) S3_a S3_r → False :=
   S3_not_abelian.
 
-(* The witness the vacuity note requires: the three-cycle r conjugates the
-   homomorphism picking out a into the one picking out c.  Both cases are a
-   computation in the multiplication table — r · a · r⁻¹ = b · rr = c. *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem S3_hom_conjugate :
   @Conjugates Bool_Xor S3_Grp (Deloop_map S3_hom_a) (Deloop_map S3_hom_c) S3_r.
 Proof. intros [|]; reflexivity. Qed.
@@ -834,12 +655,11 @@ Proof.
   discriminate H.
 Qed.
 
-(* The two facts together DERIVE that S3 is nonabelian, which is the check
-   that the witness exercises exactly the hypothesis it was chosen for: were
-   the target abelian, [abelian_conjugates_agree] would force the two
-   homomorphisms to agree, and [S3_conjugation_moves] says they do not.  A
-   witness over Z/2 or Z/3 could not survive this test: [Bool_Xor_abelian] and
-   [Z3_abelian], fed to the same lemma, are the proof that it would not. *)
+(*
+   本节说明 Transform 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary S3_conjugation_needs_nonabelian :
   (∀ a b : carrier S3_Grp, mon_op a b ≈ mon_op b a) → False.
 Proof.
@@ -854,14 +674,11 @@ Qed.
 
 (** ** Awodey's second sentence: a groupoid, but not a group *)
 
-(* Awodey, immediately after the invertibility remark (2nd ed., p. 167):
-   "But H^G is still not usually a group, simply because there may be many
-   different homomorphisms G → H, so the functor category H^G has more than
-   one object."  Here are two such homomorphisms: those Z/2 → S3 picking out
-   a and c are different functors, so the object type of the functor category
-   is not a singleton.  (They are also the two that
-   [S3_conjugating_transform] connects, so this groupoid carries an arrow
-   between distinct objects.) *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Deloop_S3_two_objects :
   Deloop_map S3_hom_a = Deloop_map S3_hom_c → False.
 Proof.
@@ -871,16 +688,11 @@ Qed.
 
 Definition Deloop_Fun_S3 : Category := [Deloop Bool_Xor_Grp, Deloop S3_Grp].
 
-(* The stronger statement, which object-counting alone does not give: the
-   functor category is not a group even up to equivalence.  A group, read as
-   a category, is a one-object groupoid, so "essentially a group" means
-   "equivalent to a delooping"; and a category equivalent to a delooping is
-   connected, since an equivalence is full and a delooping has an arrow
-   between any two of its objects (there being one object and at least the
-   identity arrow).
+(*
+   本节说明函子、等价相关定义、性质与动机。
 
-   [Full] here is the library's chosen-section form, so no choice principle
-   is used: [prefmap] is applied to the unit element of the monoid. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition deloop_equivalence_connected {C : Category} {N : MonObject}
   (F : C ⟶ Deloop N) (E : EquivalenceOfCategories F) : Connected C.
 Proof.
@@ -890,10 +702,11 @@ Proof.
   exact (@prefmap _ _ F Ful x y mon_unit).
 Defined.
 
-(* The trivial homomorphism and the one picking out a are NOT conjugate: an
-   intertwining element would satisfy a · h ≈ h · e, i.e. a · h ≈ h, and no
-   element of S3 does — which the proof checks over its six elements.  So the
-   functor category has two objects with no arrow between them. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem S3_no_transform_trivial :
   (Deloop_map S3_hom_e ⟹ Deloop_map S3_hom_a) → False.
 Proof.
@@ -915,11 +728,11 @@ Proof.
            (K (Deloop_map S3_hom_e) (Deloop_map S3_hom_a))).
 Qed.
 
-(* And therefore it is not equivalent to the delooping of any monoid — in
-   particular of any group — so it is a groupoid that is not a group in a
-   stronger sense than object-counting gives.  Both directions of the
-   equivalence are covered: the second statement turns an equivalence out of
-   a delooping into one into it, by [EquivalenceOfCategories_sym]. *)
+(*
+   本节说明幺半群、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Deloop_Fun_S3_not_deloop (N : MonObject) (F : Deloop_Fun_S3 ⟶ Deloop N)
   (E : EquivalenceOfCategories F) : False.
 Proof.

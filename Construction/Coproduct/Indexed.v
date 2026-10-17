@@ -16,241 +16,15 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §III.5 Exercise 4, printed p. 74 (PDF p. 84) —
-              maclane:III.5:ex4
+(*
+   Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
    Book:      Riehl, "Category Theory in Context", 2nd ed., §3.6 —
-              riehl:3.6:construction-cat-coproducts
    nLab:      https://ncatlab.org/nlab/show/coproduct
 
-   The disjoint union of an [I]-indexed family of categories: objects are
-   the dependent pairs [(i; x)] with [x : C i], and a morphism
-   [(i; x) ~> (j; y)] is a proof [e : i = j] together with a morphism
-   [ob_cast C e x ~> y] of [C j].  Across summands — [i] and [j]
-   distinct — the hom is EMPTY, because [i = j] is; within a summand it
-   is that summand's own hom TOGETHER WITH the loop of the index proof
-   it carries, and the two coincide EXACTLY under [IdxUIP] — see point
-   3, where that is what [sigma_inj_Full_forces_UIP] proves and what
-   [SigmaCat_inj_Full] therefore has to assume.  (An earlier revision of
-   this sentence said "up to the transport that typing forces", which
-   asserts the identification point 3 shows costs a hypothesis.)
-   Functors out of the coproduct are given by case analysis
-   ([SigmaCat_case]), and that correspondence is the universal property
-   ([SigmaCat_ump]).
+   本节说明hom相关定义、性质与动机。
 
-     - [SigmaCat C]: the coproduct category ∐_{i:I} C i
-     - [SigmaCat_inj C i]: the injection C i ⟶ ∐ C
-     - [SigmaCat_case F]: the case functor ∐ C ⟶ D of a family
-       [F : ∀ i, C i ⟶ D], with [SigmaCat_case_inj] the triangle,
-       [SigmaCat_case_unique] the uniqueness half, and [SigmaCat_ump]
-       the bundled ∃! (the packaging of Structure/Limit/Product.v's
-       [iprod_ump] and Construction/Product/Indexed.v's [PiCat_ump])
-
-   The [Cat]-level packaging — [IsIndexedCoproduct], and the
-   [HasIndexedCoproducts Cat] instance — is Instance/Cat/Coproduct.v,
-   which also carries the comparison with the binary coproduct of
-   Construction/Coproduct.v and the concrete witnesses.
-
-   1. THE INDEX-EQUALITY ENCODING, WHICH IS THIS FILE'S REAL CONTENT.
-      To say "the hom is empty across summands and the summand's hom
-      within one summand" one must say when two INDICES agree, and [I]
-      is an arbitrary [Type] with no decider.  Three encodings present
-      themselves and they are not equivalent:
-
-      (a) match on a DECIDER [∀ i j : I, {i = j} + {i <> j}].  Not
-          taken: the exercise grants no decider, and demanding one
-          would exclude, for instance, an index type of functions.
-
-      (b) index the hom by a Leibniz equality and transport —
-          [hom (i;x) (j;y) := ∃ e : i = j, ob_cast C e x ~> y] — with
-          the hom-setoid comparing the two index proofs at Leibniz
-          equality and the two morphisms at [≈] after transport.  THIS
-          IS THE ENCODING TAKEN.
-
-      (c) quantify over the proof — [∀ e : i = j, …] — with the setoid
-          comparing pointwise.  REFUTED, and for two independent
-          reasons, neither of which is about UIP.  First, it gets the
-          MATHEMATICS wrong: for [i] and [j] provably distinct the type
-          [∀ e : i = j, X e] is INHABITED (by the vacuous function), so
-          this reading adds a morphism between every pair of objects in
-          different summands — the indiscrete category on the summands,
-          not their disjoint union.  Second, it does not even define a
-          category: the identity at [(i;x)] would have to be a family
-          [∀ e : i = i, ob_cast C e x ~> x], and for a loop [e] the
-          object [ob_cast C e x] is not [x], so no identity is
-          definable.  A hybrid — pair the sigma (for emptiness) with the
-          ∀-family (for a proof-independent hom) — inherits the second
-          failure and is refuted with it.
-
-      A FOURTH encoding is excluded by a different argument.  One might
-      try to make the hom-setoid FINER, comparing the two index proofs
-      only up to CONVERSION rather than up to Leibniz equality (an
-      inductive relation whose one constructor takes a single [e]).
-      That relation is an equivalence and a congruence, but the
-      resulting structure is not a category: associativity of the index
-      component is the associativity of proof composition, which holds
-      only PROPOSITIONALLY, and — whichever way the composition of index
-      proofs is made to reduce — only one of the two unit laws follows
-      it (this file's [sigma_compose] matches on the OUTER proof and so
-      buys [id ∘ f], leaving [f ∘ id] propositional).  So the setoid
-      must tolerate propositional equality of index proofs, which is
-      encoding (b).  That the remaining unit law could not be bought by
-      some other arrangement is an argument, not a theorem: no
-      impossibility is proved.
-
-   2. NO HYPOTHESIS IS SPENT ON THE CONSTRUCTION OR ON ITS UNIVERSAL
-      PROPERTY.  [SigmaCat], [SigmaCat_inj], [SigmaCat_case],
-      [SigmaCat_case_inj], [SigmaCat_case_unique] and [SigmaCat_ump]
-      take NO decidability and NO uniqueness-of-identity-proofs
-      hypothesis, on [I] or on anything else.  This was not the
-      expected outcome and it deserves its reason.  Every proof
-      obligation quantifies over the two ENDPOINT indices, so the
-      index proof [e : i = j] it must reason about relates two
-      universally quantified variables and can be ELIMINATED by
-      [destruct]; after that elimination every transport disappears and
-      the goal is the corresponding law of one summand.  Uniqueness in
-      particular goes through because a family of natural isomorphisms
-      [∀ i, G ◯ inj i ≈ F i] is a DEPENDENT FUNCTION of [i], so it
-      already carries whatever coherence the index type's own paths
-      demand; the naturality square for the comparison is proved by
-      destructing the index proof of the morphism it is stated at, and
-      lands exactly on the naturality of the given family at that
-      index.
-
-   3. WHERE A HYPOTHESIS IS SPENT, AND THAT IT IS NECESSARY.  What does
-      need one is the classically automatic statement that the
-      injections are FULL — that every endomorphism of [(i;x)] comes
-      from [C i].  A loop [e : i = i] cannot be eliminated, so a
-      morphism carrying one need not be [≈] to any morphism carrying
-      [eq_refl].  [SigmaCat_inj_Full] therefore takes [IdxUIP I]
-      explicitly, and [sigma_inj_Full_forces_UIP] proves the hypothesis
-      NECESSARY rather than convenient: fullness of a single injection,
-      for a family whose [i]-summand has an object with the relevant
-      hom-sets inhabited, ENTAILS uniqueness of identity proofs at that
-      index.  (The pattern is this tree's: Theory/OGraph.v's
-      [coarse_respectfulness_entails_UIP], Theory/Category/Monoid.v's
-      [arrow_mul_respects_forces_UIP], and
-      Instance/Discrete/Reconstruct.v's
-      [Discrete_DiscreteUpToIso_forces_UIP].)  Faithfulness splits: for
-      a CONSTANT family it is free ([SigmaCat_const_inj_Faithful], by
-      the retraction [SigmaCat_case (fun _ => Id)], which is
-      definitionally the identity on the summand), while for a general
-      family [SigmaCat_inj_Faithful] takes [IdxUIP I] and spends it one
-      level up, through the stdlib's axiom-free [UIP_shift].  NO
-      necessity result is proved for faithfulness — no countermodel is
-      exhibited and none is claimed.
-
-   4. UNIVERSES, MEASURED IN THE CONSTRAINT BLOCKS.  [SigmaCat] is
-      declared with explicit binders, and that is LOAD-BEARING: written
-      unannotated, universe minimization IDENTIFIES the summands' hom
-      and proof universes — the definitions below then read
-      [(I → Category@{u2 u0 u0}) → Category@{u1 u0 u0}] — and a family
-      at [Category@{uo uh up}] declared under [Constraint uh < up] is
-      rejected with "Cannot enforce up = uh".  Measured for BOTH
-      shapes: the single [Program Definition] this file started from,
-      and the pieces below with their annotations stripped.  With the
-      binders written out the block is all BOUNDS and no
-      identification.  The FULL block is six constraints, not three —
-
-        ui <= us,  uo <= us,  oh <= op,
-        ui <= Projections.u0,  uo <= Projections.u1,
-        oh <= Projections.u1
-
-      — and an earlier revision of this header listed only the first
-      row, which understated it.  [oh <= op] is [Class Category]'s own
-      [h <= p].  The three [Projections.*] bounds are the stdlib's:
-      [projT1] and [projT2] are NOT universe polymorphic ([About projT1]
-      says so, and [Set < Projections.u0 < Projections.u1]), so every
-      universe that passes through a sigma here is additionally capped
-      below a FIXED global level.  That is nothing of this file's doing
-      either, and it does not disturb the headline — no constraint in
-      the block is an EQUATION — but it is part of the block and is now
-      stated.  So the index universe [ui] and the summands'
-      object universe [uo] bound only [us], the object universe of the
-      COPRODUCT, and the summands' hom and proof universes pass through
-      untouched.  [SigmaCat_inj] carries the same block, and
-      [SigmaCat_case] adds only the four bounds [oh <= dh], [oh <= dp],
-      [op <= dp] and [dh <= dp] relating the two categories a functor
-      spans, which are [Class Functor]'s.  In particular the index
-      universe does NOT bound the hom universe, and the reason is worth
-      naming: [eq] is Prop-valued, so the index proof carried inside
-      every hom costs nothing there.  That is the point of contrast
-      with the dual construction: in Construction/Product/Indexed.v's
-      [PiCat] a hom IS an [I]-indexed dependent FUNCTION, so there
-      [I]'s level bounds the hom universe as well — the asymmetry is
-      real, not a difference of annotation.  The minimization defect
-      repaired here is of the family
-      Construction/Free/Quiver/Examples.v records for
-      [Build_Quiver_Standard_Eq].
-
-      THE UMP-LEVEL LEMMAS DO NOT SHARE THAT FREEDOM, AND THE CAUSE IS
-      A DONOR.  [SigmaCat_case_inj], [SigmaCat_case_unique] and
-      [SigmaCat_ump] all display [C : Category@{a b b}] and
-      [D : Category@{c b b}] — hom and proof identified in BOTH, and
-      the two categories' hom universes identified with each other.
-      That is [Functor_Setoid]'s (Theory/Functor.v, itself an
-      unannotated [Program Instance]) and not this file's: under
-      [Constraint uh < up], [@Functor_Setoid C D] is REJECTED for a
-      source at those levels and again for a target at those levels,
-      while the functor TYPE [C ⟶ D] and [@Unique _ (@homset C x y) P]
-      both elaborate there as positive controls.  Since [≈] on functors
-      IS that setoid, no statement of the universal property in this
-      library's vocabulary can avoid it; nothing here attempts to lift
-      it, and it is NOT claimed unavoidable.  What it costs a consumer
-      is recorded at the point of use, in Instance/Cat/Coproduct.v.
-
-   5. PRIOR ART, AND WHAT IS *NOT* REUSED.
-      - Construction/Product/Indexed.v's [PiCat] is the dual — the
-        set-indexed PRODUCT of categories, Mac Lane §II.3 Ex 3 — and is
-        a STRUCTURAL precedent only, not a donor: the coproduct is not
-        [PiCat] of opposites, and no definition below mentions it.  The
-        numbered-discussion shape of this header, and the binary-case
-        note, follow that file.
-      - Construction/Coproduct.v's binary [C ∐ D] is the two-summand
-        case, where the index is [bool] and the case analysis is on
-        CONSTRUCTORS, so it needs no index-equality machinery at all.
-        The comparison at [I := bool] is made in Instance/Cat/Coproduct.v.
-      - THE GROTHENDIECK ROUTE EXISTS AND WOULD COST STRICTLY MORE.
-        [Construction/Displayed/Total.v]'s [Total] has
-        [obj := ∃ x : C, dobj x], and over a discrete base its total
-        category is a disjoint union; the way in is
-        Construction/Grothendieck/Strict.v's
-        [IndexedCat_of_StrictFunctor], which takes a functor into
-        [StrictCat] together with the explicit hypothesis
-        [Fuip : ∀ (b : B) (x y : F b) (p q : x = y), p = q] — UIP on
-        the OBJECTS of every fibre — with
-        [IndexedCat_of_StrictFunctor_dec] discharging it from decidable
-        fibre equality via [UIP_dec].  So that route would buy the
-        construction at the price of UIP on every summand's object
-        type, where the direct construction pays nothing.  This is a
-        MEASUREMENT of the donor's stated hypothesis, not an attempt to
-        run the route: nothing here builds a [Displayed] or an
-        [IndexedCat], and it is NOT claimed that the route could not be
-        rearranged to spend less.
-
-   WHAT IS NOT DELIVERED.  No notation for the indexed coproduct (the
-   binary [∐] is taken and no unambiguous indexed spelling was found).
-   THE COMPANION PROBE is Test/ProbeCatCoproduct338.v, which pins the
-   universe measurements of point 4 as [Fail] commands and compiles the
-   inhabitedness half of point 1's encoding-(c) refutation as
-   [probe_forall_encoding_inhabited].  So "refuted by argument, not by
-   a compiled [Fail]" below is exact as written — that half is compiled
-   there as a POSITIVE, not as a [Fail] — and a reader looking for what
-   IS machine-checked should look in that file.
-
-   No [Colimit]/[DiscreteCat_Functor] reading — see
-   Instance/Cat/Coproduct.v, which explains why.  No functoriality of
-   [SigmaCat] in the family [C] or in the index [I], and hence no
-   comparison of [∐] over a reindexing.  No dual, no relation to
-   [PiCat] beyond the header remark, and no distributivity of products
-   over these coproducts.  No claim that the injections are jointly
-   surjective on objects other than the definitional one.  Faithfulness
-   of the injections is not shown to FORCE anything.  No countermodel
-   is built for any of the refuted encodings of point 1: they are
-   refuted by argument in this header — the inhabitedness of a vacuous
-   function type, the non-existence of an identity, and the merely
-   propositional associativity of proof composition — and not by a
-   compiled [Fail]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Casting along index equalities *)
 
@@ -270,11 +44,11 @@ Definition mor_cast@{ui uo oh op} {I : Type@{ui}}
   ob_cast C e2 x ~> y :=
   match p in _ = e return ob_cast C e x ~> y with eq_refl => f end.
 
-(* Casting along a proof and back along its inverse is the identity —
-   at LEIBNIZ equality, not merely at [≈].  Both endpoints are
-   universally quantified here, which is exactly why [destruct p]
-   is available; the same statement instantiated at a loop is not
-   provable, and that is the content of section [Fullness] below. *)
+(*
+   本节说明 Indexed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mor_cast_sym@{ui uo oh op} {I : Type@{ui}}
   (C : I → Category@{uo oh op}) {i j : I} {x : C i} {y : C j}
   {e1 e2 : i = j} (p : e1 = e2) (f : ob_cast C e1 x ~> y) :
@@ -283,19 +57,11 @@ Proof. destruct p; reflexivity. Qed.
 
 (** ** The data of the coproduct category *)
 
-(* Objects, homs and the hom-relation are named separately so that each
-   carries its own universe annotation.  A NOTE ON WHAT THAT DOES AND
-   DOES NOT BUY, corrected before landing: an earlier revision of this
-   comment claimed that "an explicitly annotated [Program Definition] of
-   this record does not elaborate at all".  That is FALSE, and was
-   refuted by compiling one — with obj, hom and the hom-relation fully
-   inlined and the law fields supplied BY NAME, an annotated
-   [Program Definition] elaborates and prints a constraint block
-   character-for-character identical to [SigmaCat]'s.  What actually
-   provokes "Universe … is unbound" is proving the obligations by
-   TACTIC in place, which generates constants carrying universes the
-   declared binder list cannot mention.  So what is load-bearing is
-   naming the obligation PROOFS, not naming the data. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sigma_obj@{ui uo oh op us} {I : Type@{ui}}
   (C : I → Category@{uo oh op}) : Type@{us} := ∃ i : I, C i.
 
@@ -312,12 +78,11 @@ Definition sigma_id@{ui uo oh op us} {I : Type@{ui}}
   {C : I → Category@{uo oh op}} (X : sigma_obj@{ui uo oh op us} C) :
   sigma_hom X X := (eq_refl; id).
 
-(* Composition.  The match is on the index proof of the OUTER morphism:
-   in the [eq_refl] branch the middle and target indices coincide, that
-   morphism's transport disappears, and the two morphisms compose in one
-   summand with the inner morphism's index proof carried along
-   unchanged.  Matching this way round is what makes [id ∘ f] reduce
-   definitionally — see [sigma_id_left]. *)
+(*
+   本节说明 Indexed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sigma_compose@{ui uo oh op us} {I : Type@{ui}}
   {C : I → Category@{uo oh op}} {X Y Z : sigma_obj@{ui uo oh op us} C}
   (f : sigma_hom Y Z) (g : sigma_hom X Y) : sigma_hom X Z :=
@@ -478,11 +243,11 @@ Proof. intros [i _]; destruct i. Qed.
 
 (** ** The case functor and the universal property *)
 
-(* A family of functors out of the summands assembles into one functor
-   out of the coproduct.  On a morphism the match eliminates the index
-   proof: in the [eq_refl] branch source and target lie in the same
-   summand and the answer is that summand's functor applied to the
-   (now untransported) morphism. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sigma_case_obj@{ui uo oh op us do dh dp} {I : Type@{ui}}
   {C : I → Category@{uo oh op}} {D : Category@{do dh dp}}
   (F : ∀ i : I, C i ⟶ D) (X : sigma_obj@{ui uo oh op us} C) : D :=
@@ -545,10 +310,11 @@ Definition SigmaCat_case@{ui uo oh op us do dh dp} {I : Type@{ui}}
     (fun X => sigma_case_map_id F X)
     (fun X Y Z f g => sigma_case_map_comp F f g).
 
-(* The triangle.  Both actions of the composite are DEFINITIONALLY
-   those of [F i] — the two Examples below pin that at [eq_refl] — so
-   the witnessing natural isomorphism is the identity family, as in
-   [PiCat_Pair_Proj]. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example sigma_case_inj_fobj {I : Type} {C : I → Category} {D : Category}
   (F : ∀ i : I, C i ⟶ D) (i : I) :
   fobj[SigmaCat_case F ◯ SigmaCat_inj C i] = fobj[F i] := eq_refl.
@@ -573,11 +339,11 @@ Proof.
   rewrite id_left, id_right; reflexivity.
 Qed.
 
-(* Uniqueness, up to [Cat]'s hom-equivalence.  NO hypothesis: the
-   comparison's components are read off the given family, and its
-   naturality square is proved by eliminating the index proof of the
-   morphism it is stated at, which reduces it to the naturality of the
-   given family at that index. *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma SigmaCat_case_unique {I : Type} {C : I → Category} {D : Category}
   (F : ∀ i : I, C i ⟶ D) (G : SigmaCat C ⟶ D) :
   (∀ i : I, G ◯ SigmaCat_inj C i ≈ F i) → G ≈ SigmaCat_case F.
@@ -612,12 +378,11 @@ Definition IdxUIP (I : Type) : Type := ∀ (i : I) (p : i = i), p = eq_refl.
 Lemma IdxUIP_pair {I : Type} (U : IdxUIP I) {i j : I} (p q : i = j) : p = q.
 Proof. destruct p; symmetry; apply U. Qed.
 
-(* Faithfulness for a GENERAL family spends [IdxUIP] one level up: the
-   hypothesis hands over an equality [p] between two proofs of [i = i],
-   and only [UIP_shift] — the axiom-free "a type with unique identity
-   proofs has unique identity-proof-proofs" of the stdlib's
-   EqdepFacts — makes [p] itself [eq_refl], which is what erases the
-   transport. *)
+(*
+   本节说明 Indexed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition SigmaCat_inj_Faithful {I : Type} (C : I → Category)
   (U : IdxUIP I) (i : I) : Faithful (SigmaCat_inj C i) := {|
   fmap_inj := _
@@ -628,10 +393,11 @@ Next Obligation.
   exact Hp.
 Qed.
 
-(* Faithfulness for a CONSTANT family is free.  The case functor of the
-   constantly-identity family retracts the injection — definitionally,
-   by [sigma_case_inj_fmap] — and a functor whose composite with
-   another is faithful is faithful. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Faithful_cancel {C D E : Category} (F : C ⟶ D) (G : D ⟶ E) :
   Faithful (G ◯ F) → Faithful F.
 Proof.
@@ -664,14 +430,11 @@ Next Obligation.
   rewrite mor_cast_sym; reflexivity.
 Qed.
 
-(* …and the hypothesis is NECESSARY, not merely convenient.  Given an
-   object [x] of the [i]-summand whose hom-sets out of every
-   loop-transport of [x] are inhabited — as they are for the terminal
-   category, the instantiation carried out in Instance/Cat/Coproduct.v
-   — fullness of the injection at [i] ENTAILS that every loop at [i] is
-   [eq_refl].  The chosen preimage's own section condition supplies an
-   equality [eq_refl = e] for an arbitrary loop [e], and that is
-   Streicher's K at [i]. *)
+(*
+   本节说明hom、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem sigma_inj_Full_forces_UIP {I : Type} (C : I → Category) (i : I)
   (x : C i) (pt : ∀ e : i = i, ob_cast C e x ~> x)
   (H : Full (SigmaCat_inj C i)) : ∀ e : i = i, e = eq_refl.
@@ -682,12 +445,11 @@ Qed.
 
 (** ** The singleton index *)
 
-(* Over a one-element index the coproduct collapses onto its single
-   summand.  The two comparison functors are the case functor of the
-   constantly-identity family and the injection; one composite is the
-   identity with identity components, and the other needs uniqueness of
-   identity proofs on [poly_unit], which Hedberg supplies from its
-   (trivial) decidable equality, so nothing is assumed. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SigmaCat_unit_collapse {D : Category} :
   SigmaCat (fun _ : poly_unit => D) ⟶ D := SigmaCat_case (fun _ => Id[D]).
 

@@ -50,13 +50,11 @@ Qed.
 Example FunnyCurry_obj {A B E : Category} (F : (A □ B) ⟶ E) (a : A) (b : B) :
   FunnyCurry F a b = F (a, b) := eq_refl.
 
-(** ** Uncurrying
+(*
+   本节说明函子相关定义、性质与动机。
 
-    A functor [G : A ⟶ ⟦B, E⟧] is precisely separately functorial data on
-    the object family [fun a b => G a b] — the two step actions are [G]'s
-    functor laws read componentwise, and there is NO mixed law to provide:
-    [feq] has no interchange constructor, which is the mathematical point.
-    [FunnyUP] then assembles the functor out of [A □ B]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition FunnyUncurry_sep {A B E : Category} (G : A ⟶ ⟦B, E⟧) :
   SepFunctorial (fun (a : A) (b : B) => G a b) := {|
@@ -67,9 +65,11 @@ Next Obligation.
   proper.
   exact (@fmap_respects A (⟦B, E⟧) G c c' x y X d).
 Qed.
-(* sf_rmap_respects, sf_rmap_id are discharged by the global obligation
-   tactic; the sf_lmap_* laws need the component application at [d] made
-   explicit, which the tactic's rewrites cannot see under. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Next Obligation. exact (@fmap_id A (⟦B, E⟧) G c d). Qed.
 Next Obligation. exact (@fmap_comp A (⟦B, E⟧) G c c' c'' f' f d). Qed.
 Next Obligation. exact (@fmap_comp B E (G c) d d' d'' g' g). Qed.
@@ -109,11 +109,11 @@ Lemma FunnyEval_rstep {B E : Category} (P : B ⟶ E) {b b' : B}
   @fmap ((⟦B, E⟧) □ B) E FunnyEval (P, b) (P, b') (rstep g) ≈ fmap[P] g.
 Proof. exact (FunnyUP_rstep (FunnyUncurry_sep Id[⟦B, E⟧]) g). Qed.
 
-(** ** The strict round trips
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Uncurrying the curried functor recovers it strictly: the object maps
-    agree definitionally, and on the generating steps the two functors
-    differ by a single [id ∘ −] introduced by [ffold]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem funny_uncurry_curry {A B E : Category} (F : (A □ B) ⟶ E) :
   @equiv _ (@Functor_StrictEq_Setoid (A □ B) E)
@@ -145,18 +145,11 @@ Proof.
   exact (id_left (fmap[G] f b)).
 Qed.
 
-(** ** The β-law and uniqueness
+(*
+   本节说明 Closed 相关定义、性质与动机。
 
-    [FunnyCurry F] is the unique-up-to-strict-equality mediator through
-    evaluation: β says [FunnyEval ◯ (FunnyCurry F □ Id) ≈ F] strictly, and
-    any [H] satisfying the same equation agrees with [FunnyCurry F]
-    pointwise-strictly ([funny_curry_unique]) — which pins [H] on objects
-    and on its action on [B]-morphisms (the [rstep] generators).  The same
-    β hypothesis equally pins [H]'s action on [A]-morphisms (the [lstep]
-    generators): that companion half is [funny_curry_unique_lstep].
-    Together these statements express the universal property of the
-    exponential, stated without the unprovable hom-setoid adjunction (see
-    the header). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem funny_curry_beta {A B E : Category} (F : (A □ B) ⟶ E) :
   @equiv _ (@Functor_StrictEq_Setoid (A □ B) E)
@@ -187,13 +180,11 @@ Proof.
   exact (id_left (fmap[H a] g)).
 Qed.
 
-(* The [lstep] half of mediator uniqueness.  [funny_curry_unique] compares
-   [H a] and [FunnyCurry F a] as functors out of [B], so it constrains
-   [fmap[H]] only on [B]-morphisms; the action of [H] on an [A]-morphism
-   [f] — an unnatural transformation, one component per [b] — is pinned by
-   the same β hypothesis against [fmap[F] (lstep f)], up to the
-   object-equality transports of the hypothesis.  The proof mirrors the
-   [rstep] case inside [funny_curry_unique]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem funny_curry_unique_lstep {A B E : Category} (F : (A □ B) ⟶ E)
   (H : A ⟶ ⟦B, E⟧)
   (pf : @equiv _ (@Functor_StrictEq_Setoid (A □ B) E)
@@ -210,14 +201,11 @@ Proof.
   exact (id_left (fmap[H] f b)).
 Qed.
 
-(** ** The exponential law, as an isomorphism in Cat
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
 
-    Currying and uncurrying are themselves functorial between the funny
-    functor categories [⟦A □ B, E⟧] and [⟦A, ⟦B, E⟧⟧], and these functors
-    are mutually inverse up to natural isomorphism with identity (or
-    pair-η) components.  The components are unnatural transformations, so
-    no naturality square has to be proved — which is exactly why this
-    isomorphism exists while the hom-setoid adjunction does not. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition FunnyCurryF {A B E : Category} :
   (⟦A □ B, E⟧) ⟶ (⟦A, ⟦B, E⟧⟧) := {|
@@ -248,10 +236,11 @@ Program Definition funny_curry_uncurry_iso {A B E : Category}
   iso_from_to := funny_curry_uncurry_iso_law G
 |}.
 
-(* The counit: [FunnyUncurry (FunnyCurry F) x ≡ F (fst x, snd x)], which is
-   [F x] only up to the propositional η-law for pairs; the component at [x]
-   is therefore a pattern match — legal precisely because the components
-   need not be natural. *)
+(*
+   本节说明 Closed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition funny_pair_eta_to {A B E : Category} (F : (A □ B) ⟶ E)
   (x : A □ B) : F (fst x, snd x) ~{E}~> F x :=

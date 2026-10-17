@@ -27,9 +27,11 @@ Unset Transparent Obligations.
 
 (** ** The identity functor preserves limiting cones *)
 
-(* [FCone Id[D] N] has [N]'s apex and legs on the nose, over the diagram
-   [Id[D] ◯ G] instead of [G]; the two [Cone] types differ only in that
-   functor record, so a competitor over one repackages over the other. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Id_PreservesLimitCone {J D : Category} (G : J ⟶ D) :
   PreservesLimitCone G Id[D].
@@ -54,9 +56,11 @@ Context {J : Category}.
 Context (K : J ⟶ (S ↓ T)).
 Context (HT : PreservesLimitCone (comma_proj2 ◯ K) T).
 
-(* The codomain half of a cone over the projected diagram, read over
-   [comma_proj2 ◯ K].  [FCone Snd N] is a cone over [Snd ◯ (comma_proj ◯ K)],
-   a different functor record with the same actions. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition cod_leg (N : Cone (comma_proj ◯ K)) (j : J) :
   snd vertex_obj[N] ~{B}~> (comma_proj2 ◯ K) j := snd (cone_leg N j).

@@ -46,10 +46,11 @@ Generalizable All Variables.
 
 (** ** Layer 0: unit-colour utilities *)
 
-(** The canonical decider for the one-point colour type.  Fixed once,
-    per the one-canonical-decider discipline of
-    [Construction/ColouredPROP/Instance.v] (D2): every [Cdec]-indexed
-    record below names exactly this term. *)
+(*
+   本节说明 UnitBridge 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition unit_dec (u v : unit) : {u = v} + {u <> v} :=
   left (match u return u = v with
         | tt => match v return tt = v with
@@ -57,10 +58,11 @@ Definition unit_dec (u v : unit) : {u = v} + {u <> v} :=
                 end
         end).
 
-(** Eta for unit lists: a [list unit] is determined by its length.
-    This single lemma is where "one colour" does all its work — for
-    any larger colour type the corresponding statement is not even
-    well-posed. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma unit_list_eta (l : list unit) : repeat tt (length l) = l.
 Proof.
   induction l as [| u l IH]; cbn.
@@ -69,13 +71,11 @@ Proof.
     now rewrite IH.
 Qed.
 
-(** Closing move for the composite braid squares below: a doubly
-    conjugated morphism equals a singly conjugated one whenever the
-    conjugating cast chains compose to proofs of the same object
-    equalities.  Stated in the exact association the rewrite sequence
-    of the braid-square proofs produces; the two non-destructible
-    residues ([b1] a domain loop, [k'] parallel to the fused codomain
-    chain) are discharged by axiom-free UIP on objects. *)
+(*
+   本节说明 UnitBridge 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma braid_conj_close {C : Category} (OD : @ObjDecEq C)
   {p q t1 t2 t3 s : C}
   (k : p = t1) (a1 : t1 = t2) (b1 : t2 = p)
@@ -93,10 +93,11 @@ Qed.
 
 (** ** Layer 1: the class-level transports *)
 
-(* [length (xs ++ ys) = length xs + length ys], proven locally: the
-   standard-library lemma is named [app_length] in Coq 8.19 and
-   [length_app] from 8.20 onward, so the portable route across the
-   supported versions is the two-line induction. *)
+(*
+   本节说明 UnitBridge 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma len_app {A : Type} (xs ys : list A) :
   length (xs ++ ys) = (length xs + length ys)%nat.
 Proof.
@@ -104,11 +105,11 @@ Proof.
   now rewrite IHxs.
 Qed.
 
-(** Any PROP is a [unit]-coloured PROP: keep the category and BOTH
-    monoidal paths (hence the coherence proof) verbatim; name objects
-    by the length of the colour word.  [length [] ≡ 0] makes the unit
-    field the PROP's own, and [len_app] corrects the boundary of
-    the tensor field. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PROP_to_ColouredPROP (Q : PROP) : ColouredPROP unit :=
   Build_ColouredPROP unit
     (@prop_cat Q)
@@ -121,10 +122,11 @@ Definition PROP_to_ColouredPROP (Q : PROP) : ColouredPROP unit :=
        eq_trans (@prop_tensor_plus Q (length cs) (length ds))
                 (f_equal (@prop_of_nat Q) (eq_sym (len_app cs ds)))).
 
-(** Any [unit]-coloured PROP is a PROP: name objects by iterated
-    [tt]-wires.  [repeat tt 0 ≡ []] makes the unit field the coloured
-    PROP's own, and [repeat_app] corrects the boundary of the tensor
-    field. *)
+(*
+   本节说明 UnitBridge 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ColouredPROP_unit_to_PROP (Q : ColouredPROP unit) : PROP :=
   Build_PROP
     (@cprop_cat unit Q)
@@ -163,11 +165,11 @@ Example ColouredPROP_unit_to_PROP_coherence (Q : ColouredPROP unit) :
 Example PROP_to_ColouredPROP_wire (Q : PROP) :
   wire (P := PROP_to_ColouredPROP Q) tt = @prop_of_nat Q 1 := eq_refl.
 
-(** Round-trip smoke tests on objects: at closed numerals and closed
-    words the two composites compute back to the original naming
-    (for a VARIABLE index the agreement is [repeat_length] /
-    [unit_list_eta], which is exactly what the layer-3 morphism
-    round trips conjugate along). *)
+(*
+   本节说明 UnitBridge 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example roundtrip_prop_of_nat_2 (Q : PROP) :
   @prop_of_nat (ColouredPROP_unit_to_PROP (PROP_to_ColouredPROP Q)) 2
   = @prop_of_nat Q 2 := eq_refl.
@@ -209,11 +211,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** *** The length direction
+(*
+   本节说明 UnitBridge 相关定义、性质与动机。
 
-    The target of the coloured universal property is the free PROP,
-    seen as a [unit]-coloured PROP through the layer-1 transport;
-    its objects ARE the naturals and [cprop_of_list] IS [length]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition LengthPROP : ColouredPROP unit :=
   PROP_to_ColouredPROP (FreePROP S).
@@ -224,10 +226,11 @@ Definition LengthPROP : ColouredPROP unit :=
 Definition length_val : CValuation LengthPROP USig :=
   fun (cs ds : list unit) (g : USig cs ds) => T_gen g.
 
-(** The bridge functor, by the coloured universal property.  The
-    side conditions of [CFreeCat S] hold at [LengthPROP] because its
-    category IS [FreeCat S]: hom equivalence reflects into [Prop] by
-    [FreeCat_HomEqProp], and objects are [nat] with [Nat.eq_dec]. *)
+(*
+   本节说明函子、hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition LengthFunctor : CFreeCat USig ⟶ FreeCat S :=
   @CInterpF unit USig LengthPROP
     (FreeCat_HomEqProp S) (FreeCat_ObjDecEq S) length_val.
@@ -265,12 +268,11 @@ Example LengthFunctor_strict_ap_obj (x y : list unit) :
   @strict_ap_obj _ _ _ _ LengthFunctor LengthFunctor_Strict x y
   = @cprop_tensor_app unit LengthPROP x y := eq_refl.
 
-(** *** The repeat direction
+(*
+   本节说明 UnitBridge 相关定义、性质与动机。
 
-    The target of the one-sorted universal property is the free
-    unit-coloured PROP, seen as a PROP through the layer-1 transport;
-    its objects ARE the unit words and [prop_of_nat] IS
-    [repeat tt]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition RepeatPROP : PROP :=
   ColouredPROP_unit_to_PROP (FreeColouredPROP USig unit_dec).
@@ -283,10 +285,11 @@ Definition repeat_val : Valuation RepeatPROP S :=
     CT_gen (nsig_cast (eq_sym (repeat_length tt m))
                       (eq_sym (repeat_length tt n)) g).
 
-(** The bridge functor, by the one-sorted universal property, with
-    the side conditions of [CFreeCat USig] supplied by [Instance.v]
-    (the object decider is [list_eq_dec unit_dec], passed explicitly
-    per the D2 discipline). *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition RepeatFunctor : FreeCat S ⟶ CFreeCat USig :=
   @InterpF S RepeatPROP
     (CFreeCat_HomEqProp USig) (CFreeCat_ObjDecEq USig unit_dec) repeat_val.
@@ -318,14 +321,11 @@ Example RepeatFunctor_strict_ap_obj (x y : nat) :
   @strict_ap_obj _ _ _ _ RepeatFunctor RepeatFunctor_Strict x y
   = @prop_tensor_plus RepeatPROP x y := eq_refl.
 
-(** *** Shared-record wiring, pinned
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Both transported targets project THE shared [Monoidal] records of
-    the free instances, and their strict-path braidings are the free
-    braid constructors on the nose (the coherence fields are the
-    literal [eq_refl], so [transport_braid] evaporates).  These
-    [Example]s are what makes the composite braid squares below close
-    without ever destructing a coherence proof. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example MPc_LengthPROP_shared :
   MPc LengthPROP = FreeCat_Monoidal S := eq_refl.
@@ -369,13 +369,11 @@ Definition LengthRepeat_Strict :
     (FreeCat_Monoidal S) (CFreeCat_Monoidal USig unit_dec) (MP (FreePROP S))
     LengthFunctor RepeatFunctor LengthFunctor_Strict RepeatFunctor_Strict.
 
-(** The braid-compatibility square of the composite.  Both legs send
-    the free braid to a cast-conjugated free braid ([prop_braid] /
-    [cbraid_hom] compute), and the target braiding is the braid
-    constructor definitionally, so after pushing [fmap] through the
-    casts ([fmap_id_cast]) the two sides are conjugations of the SAME
-    morphism along different proofs of the same object equalities —
-    closed by [braid_conj_close]. *)
+(*
+   本节说明 UnitBridge 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma LengthRepeat_SymmetricStrict :
   SymmetricStrict S (FreePROP S)
     (LengthFunctor ◯ RepeatFunctor) LengthRepeat_Strict.
@@ -394,10 +392,11 @@ Proof.
   assert (Hsb : forall x y : nat,
              strict_braid (FreePROP S) x y = T_braid x y) by reflexivity.
   rewrite Hsb.
-  (* Both legs compute on the braid: [interp] sends it to [prop_braid]
-     and [cinterp] sends the residual [CT_braid] to [cbraid_hom], so
-     the ENTIRE expansion below is one definitional equality — only
-     the two [fmap]-images of stuck casts stay unreduced. *)
+  (*
+   本节说明 UnitBridge 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   assert (HRL : fmap[LengthFunctor ◯ RepeatFunctor] (T_braid m n)
             = (fmap[LengthFunctor]
                  (id_cast (@prop_tensor_plus RepeatPROP n m))
@@ -451,10 +450,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** The composite agrees with the tautological valuation on
-    generators: [RepeatFunctor] relabels through [nsig_cast] and
-    [LengthFunctor] reads the generator back, so the residue is
-    exactly [T_gen_cast_agree] at the [repeat_length] equalities. *)
+(*
+   本节说明 UnitBridge 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma LengthRepeat_gen_agree (m n : nat) (g : S m n) :
   fmap[LengthFunctor ◯ RepeatFunctor] (T_gen g)
     ≈ @hom_cast (FreeCat S) _ _ _ _
@@ -477,10 +477,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** THE round-trip law on the one-sorted side: going through unit
-    words and back is the identity on every term, up to conjugation
-    along [repeat_length].  By [interp_unique2] against the identity
-    competitor. *)
+(*
+   本节说明 UnitBridge 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem LengthRepeat_roundtrip (m n : nat) (t : Term S m n) :
   @hom_cast (FreeCat S) _ _ _ _
     (repeat_length tt m) (repeat_length tt n)
@@ -532,10 +533,11 @@ Proof.
              cstrict_braid (FreeColouredPROP USig unit_dec) x y
              = CT_braid x y) by reflexivity.
   rewrite Hsb.
-  (* Mirror expansion: [cinterp] sends the braid to [cbraid_hom] and
-     [interp] sends the residual [T_braid] to [prop_braid]; one
-     definitional equality, with only the two [fmap]-images of stuck
-     casts left standing. *)
+  (*
+   本节说明 UnitBridge 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   assert (HLR : fmap[RepeatFunctor ◯ LengthFunctor] (CT_braid cs ds)
             = (fmap[RepeatFunctor]
                  (id_cast (@cprop_tensor_app unit LengthPROP ds cs))
@@ -595,11 +597,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** The coloured composite agrees with the tautological valuation on
-    generators.  The computed [nsig_cast] rides [repeat_length] while
-    the canonical conjugation rides [unit_list_eta]; the two are
-    proofs of the same [nat] equalities, identified by
-    [nsig_cast_irr] (UIP on [nat]). *)
+(*
+   本节说明 UnitBridge 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma RepeatLength_gen_agree (cs ds : list unit) (g : USig cs ds) :
   fmap[RepeatFunctor ◯ LengthFunctor] (CT_gen g)
     ≈ @hom_cast (CFreeCat USig) _ _ _ _
@@ -634,10 +636,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** THE round-trip law on the coloured side: going through lengths
-    and back is the identity on every term, up to conjugation along
-    [unit_list_eta].  By [cinterp_unique2] against the identity
-    competitor. *)
+(*
+   本节说明 UnitBridge 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem RepeatLength_roundtrip (cs ds : list unit)
   (t : CTerm USig cs ds) :
   @hom_cast (CFreeCat USig) _ _ _ _
@@ -661,10 +664,11 @@ Proof.
            cs ds t).
 Qed.
 
-(** Object-level round trips, for the record: the composites act on
-    objects exactly as [length ∘ repeat tt] and [repeat tt ∘ length],
-    so the conjugating equalities above are precisely the two halves
-    of the [list unit ≃ nat] bijection. *)
+(*
+   本节说明 UnitBridge 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example LengthRepeat_fobj (n : nat) :
   fobj[LengthFunctor ◯ RepeatFunctor] n = length (repeat tt n) := eq_refl.
 

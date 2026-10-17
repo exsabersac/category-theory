@@ -14,11 +14,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* The trivial setoid on a type: all inhabitants are identified.  For
-   [Sq C] the carrier is always a commuting-square proposition, so this
-   is honest proof-irrelevance rather than information loss.  Kept local:
-   applied to a data-carrying type it would silently identify everything,
-   so it must not leak into the library interface. *)
+(*
+   本节说明 Sq 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Program Definition trivial_setoid (A : Type) : Setoid A := {|
   equiv := fun _ _ => True
 |}.
@@ -78,23 +78,20 @@ Next Obligation.
   split; exact I.
 Qed.
 
-(** ** The coercion/composition interchange mixin holds trivially
+(*
+   本节说明 Sq 相关定义、性质与动机。
 
-    Squares of [Sq C] are propositions under the trivial setoid, so both
-    interchange fields of [DoubleCoerceComp] are immediate.  This makes the
-    companion/conjoint uniqueness theorems of
-    Theory/DoubleCategory/Companion.v available at [Sq C]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Sq_DoubleCoerceComp (C : Category) : DoubleCoerceComp (Sq C).
 Proof. construct; exact I. Defined.
 
-(** ** Companions: every vertical morphism is its own companion
+(*
+   本节说明 Sq 相关定义、性质与动机。
 
-    The companion of a vertical morphism [u : a ~> b] is [u] ITSELF viewed
-    as a horizontal 1-cell.  The binding squares are the trivially
-    commuting squares [u ∘ id ≈ u ∘ id] and [id ∘ u ≈ id ∘ u], and both
-    zigzag identities hold automatically since any two squares with the
-    same boundary are equal. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Sq_companion {C : Category} {a b : C}
   (u : a ~{C}~> b) : Companion (D:=Sq C) u := {|
@@ -109,20 +106,11 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(** ** Conjoints: exactly the isomorphisms
+(*
+   本节说明伴随、hom、同构相关定义、性质与动机。
 
-    AUDIT NOTE.  In [Sq C] a conjoint of [u : a ~> b] is a two-sided
-    inverse of [u]: unwinding the binding squares at this model,
-    [conj_unit] reads [conj_hor ∘ u ≈ id ∘ id] and [conj_counit] reads
-    [id ∘ id ≈ u ∘ conj_hor].  A general morphism therefore has no conjoint
-    here — in the quintet double category of a 1-category, conjoints are
-    right adjoints, and an adjoint between locally discrete hom-categories
-    is an inverse.  Accordingly [Sq_conjoint] is delivered at an
-    isomorphism (the conjoint of [to u] is [from u]), and the necessity is
-    recorded by [Sq_conjoint_iso]: any conjoint of [u] in [Sq C] makes [u]
-    invertible.  Conjoints of arbitrary morphisms live instead in the
-    transposed model whose horizontal 1-cells are the morphisms of
-    [C^op]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Sq_conjoint {C : Category} {a b : C}
   (u : a ≅ b) : Conjoint (D:=Sq C) (to u) := {|

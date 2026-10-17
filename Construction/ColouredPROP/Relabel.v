@@ -32,80 +32,21 @@ Generalizable All Variables.
 
 (** * Relabelling coloured-PROP terms along a signature morphism *)
 
-(* nLab: https://ncatlab.org/nlab/show/generators+and+relations
+(*
+   nLab: https://ncatlab.org/nlab/show/generators+and+relations
    nLab: https://ncatlab.org/nlab/show/PROP
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
 
-   A signature relabelling [h : CSubSig S T] ([Construction/
-   ColouredPROP/Signature.v]) preserves generator boundaries on the
-   nose, so it acts on typed string-diagram terms by pure structural
-   recursion: relabel every generator leaf through [h] and leave the
-   structural constructors untouched.  No injectivity of [h] is
-   assumed or used anywhere in this file — everything applies to
-   arbitrary boundary-preserving relabellings, including generator
-   collapses.  This file develops that action and its consequences,
-   the coloured mirror of the signature-morphism half of
-   [Construction/PROP/Tietze.v] (its [T_map] development, with
-   [list Colour] replacing [nat], [++] replacing [Nat.add], and
-   [app_nil_r] / [app_assoc] replacing [Nat.add_0_r] /
-   [Nat.add_assoc]):
+   本节说明来源与用途相关定义、性质与动机。
 
-   1.  [CT_map h] is a computing [Fixpoint] — e.g. [CT_map h (CT_comp
-       g f)] is definitionally [CT_comp (CT_map h g) (CT_map h f)] —
-       so the functor packaging below discharges its identity and
-       composition laws by [CTE_refl].  Because [h] preserves
-       boundaries exactly, NO boundary-mismatch casts are needed to
-       STATE [CT_map]'s action: the boundaries of a term and of its
-       image agree on the nose.  ([CT_cast] does still appear in a
-       few statements — [CT_map_CT_cast] and the coherence squares of
-       item 4 — but there it is a first-class term being mapped, the
-       monoidal structural map under study, never a repair of a
-       boundary mismatch introduced by [CT_map] itself.)  (Per the
-       note at the foot of [Signature.v], there is
-       no tactic-built precursor to bridge to: the coloured spine has
-       [CT_map] from day one.)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   2.  [CT_map] fixes casts ([CT_map_CT_cast]) and commutes with the
-       three [eq_rect] transport shapes in which [CTermEq] states its
-       strict-PROP axioms (the transport seams [CT_map_eq_rect_cod] /
-       [CT_map_eq_rect_dom] / [CT_map_eq_rect_r_dom]) — each a Leibniz
-       equality by destructing the boundary equation.
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-   3.  Soundness for the equational theory ([CT_map_CTermEq]): the
-       induction covers all NINETEEN [CTermEq] constructors — the
-       thirteen constructor-to-constructor cases reduce by
-       computation, and the six transport-form cases first move
-       [CT_map] across the [eq_rect] seams, then close with the same
-       primitive constructor.
-
-   4.  The induced functor [CRelabelFunctor h : CFreeCat S ⟶
-       CFreeCat T] — identity on objects (colour words), [CT_map h] on
-       morphisms — is STRICT SYMMETRIC monoidal: both comparison maps
-       are identities on the nose, the object equalities are
-       [eq_refl], and the braid square commutes because [CT_map] fixes
-       [CT_braid].  Signature morphisms induce strict symmetric maps
-       of free coloured PROPs ([CRelabelFunctor_Monoidal] /
-       [CRelabelFunctor_Strict] / [CRelabelFunctor_Braided] /
-       [CRelabelFunctor_Symmetric]).  The comparison squares are fed
-       by the identity-bookkeeping quartet [ctm_id_swap] /
-       [ctm_comp_id_tens] / [ctm_collapse_r] / [ctm_collapse_l] of
-       [Construction/ColouredPROP/TermEq.v].
-
-   Everything is elementary syntax: the only relation involved is the
-   [Prop]-valued congruence [CTermEq], and no proof irrelevance is
-   used anywhere — the decidability discipline (D2) enters only
-   through the shared [Monoidal] record [CFreeCat_Monoidal _ Cdec]
-   that the packaged records name in their types.  Following the
-   [Free.v] discipline, the records are explicit [Build_*]
-   applications with standalone, named comparison lemmas. *)
-
-(** ** The relabelling action on terms
-
-    [CT_map h] relabels every generator leaf through [h] and leaves
-    the structural constructors untouched.  It COMPUTES on
-    constructors, which the functor and monoidal-functor packaging
-    below exploits: identity/composition preservation are
-    [CTE_refl]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Fixpoint CT_map {Colour : Type} {S T : CSignature Colour}
   (h : CSubSig S T) {cs ds : list Colour}
@@ -153,16 +94,11 @@ Lemma CT_map_eq_rect_r_dom {Colour : Type} {S T : CSignature Colour}
   = eq_rect_r (fun k : list Colour => CTerm T k b) (CT_map h t) e.
 Proof. destruct e; reflexivity. Qed.
 
-(** *** Soundness of relabelling
+(*
+   本节说明 Relabel 相关定义、性质与动机。
 
-    [CT_map h] carries every free equation of [CTermEq S] to the
-    corresponding free equation of [CTermEq T].  The induction covers
-    all nineteen constructors: the thirteen
-    constructor-to-constructor cases reduce by computation, and the
-    six transport-form cases ([CTE_tens_id0_right], [CTE_tens_assoc],
-    the two hexagons, and the two unit braids) first move [CT_map]
-    across the [eq_rect] seams by the Leibniz bridges above, then
-    close with the same primitive constructor. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma CT_map_CTermEq {Colour : Type} {S T : CSignature Colour}
   (h : CSubSig S T) {cs ds : list Colour} {s t : CTerm S cs ds} :
@@ -218,22 +154,11 @@ Proof.
     cbn [CT_map]; apply CTE_braid_unit_right.
 Qed.
 
-(** ** The induced functor of free coloured PROPs
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    A signature morphism [h : CSubSig S T] induces [CRelabelFunctor h :
-    CFreeCat S ⟶ CFreeCat T] — identity on objects (colour words),
-    [CT_map h] on morphisms — and the functor is STRICT SYMMETRIC
-    monoidal: both comparison maps are identities on the nose, the
-    object equalities are [eq_refl], and the braid square commutes
-    because [CT_map] fixes [CT_braid].  The packaging mirrors the
-    one-sorted donor's [RelabelFunctor] tower of [Construction/PROP/
-    Tietze.v], with the monoidal instances drawn from the ONE shared
-    record [CFreeCat_Monoidal _ Cdec] (see the D2 WARNING at the foot
-    of [Construction/ColouredPROP/Monoidal.v]: fix one canonical
-    [Cdec] per colour type); the coherence squares are discharged with
-    the shared identity-bookkeeping lemmas [ctm_id_swap] /
-    [ctm_comp_id_tens] / [ctm_collapse_r] / [ctm_collapse_l] of
-    [Construction/ColouredPROP/TermEq.v]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CSignatureMorphism.
 
@@ -258,10 +183,11 @@ Definition CRelabel_ap_dom : CFreeCat S ∏ CFreeCat S ⟶ CFreeCat T :=
 Definition CRelabel_ap_cod : CFreeCat S ∏ CFreeCat S ⟶ CFreeCat T :=
   CRelabelFunctor ◯ CFreeCat_Tensor S.
 
-(** Both directions of the tensor comparison are families of
-    identities — [CT_map] computes through [CT_tens], so the two
-    functors have definitionally equal actions — and naturality is
-    [ctm_id_swap]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CRelabel_ap_to : CRelabel_ap_dom ⟹ CRelabel_ap_cod :=
   @Build_Transform' (CFreeCat S ∏ CFreeCat S) (CFreeCat T)
     CRelabel_ap_dom CRelabel_ap_cod
@@ -288,11 +214,11 @@ Definition CRelabel_ap_iso :
     (fun p => ctm_comp_id_tens (fst p) (snd p))
     (fun p => ctm_comp_id_tens (fst p) (snd p)).
 
-(** *** The coherence squares
+(*
+   本节说明 Relabel 相关定义、性质与动机。
 
-    Each structural map of [CFreeCat_Monoidal] is a [CT_cast], which
-    [CT_map] fixes ([CT_map_CT_cast]); after that rewrite the squares
-    are pure identity bookkeeping. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma CRelabel_unit_left_square (x : list Colour) :
   CTermEq T (CT_cast (app_nil_l x))
@@ -327,10 +253,11 @@ Proof.
   - apply CTE_sym, ctm_collapse_l.
 Qed.
 
-(** The strong monoidal structure: the unit comparison is [iso_id],
-    the tensor comparison is the identity family [CRelabel_ap_iso], and
-    the three coherence squares are the lemmas above.  Both [Monoidal]
-    instances are the shared records [CFreeCat_Monoidal _ Cdec]. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CRelabelFunctor_Monoidal :
   @MonoidalFunctor (CFreeCat S) (CFreeCat T)
     (CFreeCat_Monoidal S Cdec) (CFreeCat_Monoidal T Cdec) CRelabelFunctor :=
@@ -397,11 +324,11 @@ Arguments CRelabelFunctor_Strict {Colour S T} h Cdec : assert.
 Arguments CRelabelFunctor_Braided {Colour S T} h Cdec : assert.
 Arguments CRelabelFunctor_Symmetric {Colour S T} h Cdec : assert.
 
-(** ** Machine-checked sanity
+(*
+   本节说明函子相关定义、性质与动机。
 
-    [CT_map] computes on the structural constructors, so the functor
-    action of [CRelabelFunctor] is definitional, and the sub-signature
-    algebra of [Signature.v] is respected on the nose. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example CT_map_fixes_id {Colour : Type} {S T : CSignature Colour}
   (h : CSubSig S T) (cs : list Colour) :

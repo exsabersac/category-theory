@@ -37,13 +37,11 @@ Context (S : Signature).
 
 Open Scope nat_scope.
 
-(** ** The bundled instance
+(*
+   本节说明 Instance 相关定义、性质与动机。
 
-    All three structure fields name records that project to THE shared
-    [FreeCat_Monoidal S], so each equality field below is [eq_refl].
-    If [prop_monoidal_coherence := eq_refl] ever stops typechecking,
-    the shared-record wiring broke — fix the wiring; do not generalize
-    the field. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition FreePROP : PROP := {|
   prop_cat       := FreeCat S;
@@ -65,12 +63,11 @@ Definition FreePROP : PROP := {|
   prop_tensor_plus := fun m n => eq_refl
 |}.
 
-(** ** Side-condition instances for the interpretation files
+(*
+   本节说明hom、等价相关定义、性质与动机。
 
-    The hom-setoid equivalence of [FreeCat S] is [TermEq S] by
-    delta/beta reduction of [Term_Setoid], and [TermEq S] is already
-    [Prop]-valued, so the [Prop] reflection is the identity in both
-    directions. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export] Instance FreeCat_HomEqProp : HomEqProp (FreeCat S) :=
   Build_HomEqProp (FreeCat S)
@@ -87,9 +84,11 @@ Definition FreePROP : PROP := {|
     Each [Example] holds by [eq_refl], witnessing that the
     corresponding field of [FreePROP] is definitional. *)
 
-(** The coherence between the strict and symmetric [Monoidal] paths is
-    the reflexivity proof itself — the "known limitation" discussed in
-    [Construction/PROP.v] does not bite on the free PROP. *)
+(*
+   本节说明幺半结构、（余）极限、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example FreePROP_coherence_is_refl :
   @prop_monoidal_coherence FreePROP = eq_refl := eq_refl.
 

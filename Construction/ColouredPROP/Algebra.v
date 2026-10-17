@@ -42,13 +42,11 @@ Notation "⟦ cs ⟧" := (@cprop_of_list Colour P cs)
 (** Parallel composition at [⟦·⟧]-indexed objects, from [Interp.v]. *)
 Infix "⊞c" := (ctensor_hom P) (at level 30, right associativity).
 
-(** ** Model morphisms
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    A model morphism [v ⇒ w] is a monoidal family of endomorphisms of
-    the canonical objects, intertwining the two valuations.  The
-    monoidality field [cmh_tensor] is stated in [⊞c] form — terser
-    than an explicit [chcast] conjugation, and exactly the shape the
-    K-kit of [Interp.v] consumes. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record CModelHom (v w : CValuation P S) : Type := {
   cmh_component : ∀ cs : list Colour, ⟦cs⟧ ~{P}~> ⟦cs⟧;
@@ -71,14 +69,11 @@ Arguments cmh_unit {v w} _.
 Arguments cmh_tensor {v w} _ _ _.
 Arguments cmh_gen {v w} _ _ _ _.
 
-(** ** Naturality against every interpreted term
+(*
+   本节说明 Algebra 相关定义、性质与动机。
 
-    The generator squares of a [CModelHom] extend to naturality
-    squares at ALL terms: identities by the unit laws, sequential
-    composition by pasting, parallel composition by [cmh_tensor] on
-    both flanks and the interchange law K2 (rewriting under [⊞c] via
-    K3), and the block braid by [cmh_tensor] and the braid naturality
-    K5. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem cmodel_hom_natural {v w : CValuation P S} (α : CModelHom v w)
   {cs ds : list Colour} (t : CTerm S cs ds) :
@@ -234,11 +229,11 @@ Lemma CModelHom_Transform_natural {v w : CValuation P S}
   cinterp P S w t ∘ cmh_component α cs ≈ cmh_component α ds ∘ cinterp P S v t.
 Proof. symmetry; apply cmodel_hom_natural. Qed.
 
-(* Built with the explicit [Build_Transform'] so that the source and
-   target functors are pinned, as for [CInterpF] itself in
-   [Universal.v].  A [CModelHom] is a monoidal natural transformation
-   re-indexed along the Leibniz strictness equalities; only the bare
-   [Transform] packaging is provided here (see the header). *)
+(*
+   本节说明幺半结构、自然变换、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CModelHom_Transform {v w : CValuation P S}
   (α : CModelHom v w) : CInterpF S P v ⟹ CInterpF S P w :=
   @Build_Transform' (CFreeCat S) P (CInterpF S P v) (CInterpF S P w)

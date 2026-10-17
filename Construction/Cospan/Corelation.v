@@ -28,9 +28,11 @@ Section Corelation.
 Context {C : Category}.
 Context `{@Cocartesian C}.
 
-(** A corelation is a cospan together with a proof that its copairing
-    is epic.  We package this as a record so that downstream code can
-    extract the copairing-epi witness without re-deriving it. *)
+(*
+   本节说明 Corelation 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record CorelationArrow (X Y : C) : Type := {
   corelation_cospan : CospanArrow X Y;
   corelation_copairing_epic :
@@ -98,29 +100,11 @@ Definition corelation_id (X : C) : CorelationArrow X X :=
 
 Context (HP : HasPushouts C).
 
-(** ** Epi-stability hypothesis
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    The natural axiom we actually use in the composition-preserves-epi
-    proof is:
-
-      "Given a pushout of [f2 : Y → Nf] and [g1 : Y → Ng] in [C], if
-       [cf = f1 ▽ f2 : X + Y → Nf] is epic and [cg = g1 ▽ g2 : Y + Z → Ng]
-       is epic, then the composite copairing of the new cospan is epic."
-
-    This is one form of "joint-epi stability under pushout", and is the
-    precise axiom needed for [CorelCat] to be a category.  It holds in
-    pretoposes (in particular in [Sets]) and more generally in any
-    regular category where the regular-epi factorisation is preserved
-    by pushouts.
-
-    Rather than expose a generic [EpiStablePushouts] class and prove the
-    derivation from it (which requires a regular-epi factorisation
-    system that the library does not currently formalise), we ASSUME
-    this composite-copairing-is-epi statement directly as the class
-    [CorelComposable] below.  This lets us deliver [CorelCat] and the
-    wide-subcategory machinery in V2b, with the only V2c-applications
-    obligation being to discharge the [CorelComposable] instance for
-    concrete categories like [Sets]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class CorelComposable : Type := {
   composite_copairing_epic :
@@ -161,14 +145,11 @@ Arguments corelation_compose {C _ HP CC X Y Z} g f.
 (** ** Setoid for corelations, lifted to the global level *)
 Arguments CorelationArrow_Setoid {C _} X Y.
 
-(** ** Category laws for corelation composition
+(*
+   本节说明等价相关定义、性质与动机。
 
-    Once composition is constructed (via the [CorelComposable]
-    hypothesis), the category laws come for free from the underlying
-    cospan-level laws: equivalence on corelations is by definition
-    equivalence on their underlying cospans, so [cospan_id_left],
-    [cospan_id_right], and [cospan_compose_assoc] discharge the goals
-    after [corelation_equiv]-unfolding. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CorelationCategory.
 
@@ -256,12 +237,11 @@ End CorelationCategory.
 
 Arguments CorelCat C {H_Coc} HP {CC}.
 
-(** ** [CorelCat] as a wide subcategory of [CospanCat]
+(*
+   本节说明函子相关定义、性质与动机。
 
-    The forgetful functor [CorelCat → CospanCat] sends each corelation to
-    its underlying cospan and acts as the identity on objects.  It is
-    faithful (different corelations with the same underlying cospan are
-    equal) and bijective on objects (hence "wide"). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CorelToCospan.
 
@@ -281,22 +261,10 @@ Solve All Obligations with
 
 End CorelToCospan.
 
-(** ** Notes
+(*
+   Reference: nLab "corelation"; B. Fong, "The Algebra of Open and
 
-    The [CorelComposable] hypothesis is the single composite-copairing-
-    is-epi axiom needed for [CorelCat] to be a category.  In a regular
-    category (e.g. [Sets]), this hypothesis is automatic and follows
-    from the regular-epi factorisation system.
+   本节说明 Corelation 相关定义、性质与动机。
 
-    [CorelCat C HP CC] is mathematically complete and parametric over
-    [CorelComposable C HP]; concrete instantiation (e.g. for [Sets],
-    [FinSet], or any other category with a suitable epi-factorisation)
-    is a downstream concern, not part of the cospan/corelation core.
-    Producing such an instance in [Sets] requires either a regular-epi
-    factorisation system, set-theoretic choice/LEM, or a quotient-style
-    pushout setoid — each independent setoid infrastructure outside the
-    scope of the cospan formalisation.
-
-    Reference: nLab "corelation"; B. Fong, "The Algebra of Open and
-    Interconnected Systems" (DPhil thesis, Oxford 2016, arXiv:1609.05382),
-    where Corel(C) is built as the image factorisation of Cospan(C). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

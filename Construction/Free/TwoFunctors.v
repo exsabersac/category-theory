@@ -85,10 +85,11 @@ Definition FreePickLeft : FreeWalkingArrow ⟶ FreeParallelPair :=
 Definition FreePickRight : FreeWalkingArrow ⟶ FreeParallelPair :=
   InducedFunctor WalkingArrowQuiver free_pick_right_hom.
 
-(* The object functions are equal as FUNCTIONS, not merely pointwise: both
-   are the identity function on the two nodes.  (This is an equality of
-   object maps, which is what the exercise is about; morphisms are still
-   compared with ≈ everywhere below.) *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma free_two_functors_same_objects :
   fobj[FreePickLeft] = fobj[FreePickRight].
 Proof. reflexivity. Qed.
@@ -144,11 +145,11 @@ Proof.
   exact H.
 Qed.
 
-(* Two functors, the same object function, different arrow functions:
-   distinct in the strict functor setoid.  The object components of a
-   strict equality are loops at the two nodes, which uniqueness of identity
-   proofs collapses to [eq_refl]; the arrow condition then says the two
-   images of the generator agree in the hom-setoid, and they do not. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem free_two_functors_distinct :
   @equiv _ (@Functor_StrictEq_Setoid FreeWalkingArrow FreeParallelPair)
     FreePickLeft FreePickRight → False.

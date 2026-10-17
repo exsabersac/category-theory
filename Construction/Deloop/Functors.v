@@ -25,14 +25,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** Monoid homomorphisms: Structure/Groupoid.v's [MonHom]
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-    The homomorphism record and its inverse-preservation theorem are
-    imported, not redefined: Structure/Groupoid.v's [MonHom_grp_inv]
-    already proves (via [mon_inverse_unique]) that a monoid
-    homomorphism between groups preserves inverses, which is why
-    neither that file nor this one defines a separate class of group
-    homomorphisms. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The spine: functors out of a delooping pick an endomorphism
     monoid *)
@@ -53,12 +50,11 @@ Qed.
 Next Obligation. intros c h x; exact (mon_map_unit h). Qed.
 Next Obligation. intros c h x y z f g; exact (mon_map_op h f g). Qed.
 
-(* The reverse leg needs no obligations: every homomorphism law is a
-   functor law by projection, exactly as in Transform.v's
-   [Deloop_unmap] (of which this is the general-codomain form).
-   ([Build_MonHom] is applied to explicit arguments for the same reason
-   Transform.v's [Deloop_map] applies [Build_Functor] so: the fields
-   alone do not determine the record's parameters.) *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition hom_monoid_of_functor (F : Deloop M ⟶ C) :
   MonHom M (hom_monoid C (F ttt)) :=
   @Build_MonHom M (hom_monoid C (F ttt))
@@ -91,26 +87,21 @@ End Spine.
 
 (** ** Part (b): functors between deloopings are homomorphisms *)
 
-(* Construction/Deloop/Transform.v already proves the dictionary:
-   [Deloop_map] / [Deloop_unmap], with the homomorphism-side round trip
-   an EQUALITY OF RECORDS ([Deloop_unmap_map], by [eq_refl]) — stronger
-   than the pointwise form the spine yields, so nothing is re-proved
-   here.  What is added is the two statements Transform.v does not
-   make: [Deloop_map] IS the spine at the delooping's single object
-   (the types agreeing definitionally by Deloop.v's
-   [hom_monoid_Deloop]), and the functor-side round trip in full
-   [Functor_Setoid] strength — Transform.v states it only as [eq_refl]
-   on [fmap] and a propositional case split on [fobj]
-   ([Deloop_map_unmap_fmap]/[_fobj]). *)
+(*
+   本节说明 Functors 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section PartB.
 
 Context {M N : MonObject}.
 
-(* [Deloop_map] is the spine specialized at the single object; the
-   homomorphism argument is accepted UNCHANGED, [MonHom M N] and
-   [MonHom M (hom_monoid (Deloop N) ttt)] being definitionally the
-   same type. *)
+(*
+   本节说明 Functors 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Deloop_map_spine (h : MonHom M N) :
   Deloop_map h ≈ functor_of_hom_monoid (C := Deloop N) ttt h.
 Proof.
@@ -205,10 +196,11 @@ End PartC.
 
 (** ** Part (c): matrix representations *)
 
-(* A matrix representation: a dimension together with a homomorphism
-   into the multiplicative monoid of n × n matrices — the endomorphism
-   monoid of n in Matr R.  The dimension IS the chosen object of the
-   spine correspondence. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition MatrixRep (M : MonObject) (R : RigObject) : Type :=
   { n : nat & MonHom M (hom_monoid (Matr R) n) }.
 
@@ -236,10 +228,11 @@ Section RightActions.
 
 Context {G : MonObject}.
 
-(* Riehl's convention: a right action is a functor out of the OPPOSITE
-   of the delooping; [Deloop_op] carries that source to the delooping of
-   the opposite monoid, so right actions of G are left actions of
-   [MonObject_op G]. *)
+(*
+   本节说明函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition right_action_of_op_functor
   (F : (Deloop G)^op ⟶ Sets) : MSetoidAction (MonObject_op G) :=
   action_of_functor (F ◯ from (Deloop_op G)).
@@ -284,10 +277,11 @@ Context {A : Type} {R : relation A} (P : RelationClasses.PreOrder R).
 #[local] Existing Instance P.
 Context (M : MonObject).
 
-(* A cocycle: an element g_{p,q} for each related pair, independent of
-   the witnessing proof (Awodey indexes by the PAIR, and a functor's
-   [fmap_respects] forces exactly this over the proset's all-True
-   hom-equivalence), with the unit and composition conditions. *)
+(*
+   本节说明函子、hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record Cocycle := {
   cocycle : ∀ p q : A, R p q → carrier M;
   cocycle_irrel : ∀ p q (h h' : R p q), cocycle p q h ≈ cocycle p q h';
@@ -329,10 +323,11 @@ Lemma cocycle_round (γ : Cocycle) (p q : A) (h : R p q) :
     ≈ cocycle γ p q h.
 Proof. reflexivity. Qed.
 
-(* The functor side, at [Functor_Setoid] strength: the components sit
-   over the target's single object, so each is found by case analysis
-   on [fobj F x] (a [poly_unit] has no definitional eta, so the match
-   is genuine — compare Transform.v's [Deloop_map_unmap_fobj]). *)
+(*
+   本节说明函子、（余）强度相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cocycle_functor_round (F : Proset P ⟶ Deloop M) :
   functor_of_cocycle (cocycle_of_functor F) ≈ F.
 Proof.

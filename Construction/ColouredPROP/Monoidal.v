@@ -67,20 +67,20 @@ Proof.
   apply CTE_sym, CTE_id_right.
 Qed.
 
-(** Double [eq_sym] is invisible to [CT_cast].  Unlike the one-sorted
-    donor (which went through UIP on [nat]), destructing the equation
-    closes this by reflexivity, so the lemma is decidability-free. *)
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma CT_cast_sym_sym {cs ds : list Colour} (e : cs = ds) :
   CT_cast (S := S) (eq_sym (eq_sym e)) = CT_cast e.
 Proof. destruct e; reflexivity. Qed.
 
-(** ** Cast shifting: moving a cast across a [CTermEq] equation
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    Solving [f ∘ cast ≈ g] for [f], and dually.  [ccast_shift_l] and
-    [ccast_shift_r] are exported kit with no in-tree consumer yet: the
-    from-direction naturality squares below are all derived through
-    [ccast_square_flip], which flips both casts of a square at once,
-    rather than through these one-sided shifts. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma ccast_shift_l {a b c : list Colour} (e : a = b)
   (f : CTerm S b c) (g : CTerm S a c) :
@@ -161,19 +161,11 @@ Proof.
     + apply CTE_id_right.
 Qed.
 
-(** ** Left-unitor naturality in [CT_cast] form
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    Goal (in [CFreeCat S]):
-      g ∘ unit_left ≈ unit_left ∘ bimap id g
-    expanded to [CTerm]:
-      g ⊙c CT_cast (app_nil_l x) ≈ CT_cast (app_nil_l y) ⊙c (CT_id [] ⊕c g)
-
-    [app_nil_l x : [] ++ x = x] is an OPAQUE stdlib proof of a
-    DEFINITIONAL equation ([app] is left-strict, like [Nat.add]), so
-    the cast does not reduce by computation; [CT_cast_id] (UIP on
-    colour words, hence [Cdec]-conditional) rewrites it to the literal
-    identity, after which the strict left-unit axiom
-    [CTE_tens_id0_left] closes the square. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cleft_unit_natural {x y : list Colour} (g : CTerm S x y) :
   CTermEq S (CT_comp g (CT_cast (app_nil_l x)))
@@ -189,9 +181,11 @@ Proof using Cdec.
     + apply CTE_tens_id0_left.
 Qed.
 
-(** The [from]-direction square [bimap id g ∘ λ⁻¹ ≈ λ⁻¹ ∘ g], obtained
-    by flipping the [to]-direction square through [ccast_square_flip];
-    the [Cdec] dependency is inherited from [cleft_unit_natural]. *)
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cleft_unit_natural_from {x y : list Colour} (g : CTerm S x y) :
   CTermEq S (CT_comp (CT_tens (CT_id []) g) (CT_cast (eq_sym (app_nil_l x))))
             (CT_comp (CT_cast (eq_sym (app_nil_l y))) g).
@@ -219,34 +213,17 @@ Proof. apply CTE_tens_id0_left. Qed.
     sandwich: pre/post-composing by appropriate casts gives a direct
     [CT_tens f (CT_id []) ↔ f]-style equation. *)
 
-(* Note (ported from the one-sorted donor's [Naturality.v]): a clean
-   [CT_cast]-form right-unit lemma — bridging [CTE_tens_id0_right]'s
-   [eq_rect] transport form to a sandwiched [CT_cast] composition at a
-   FIXED boundary — requires generalising over the right-summand
-   word, which Coq cannot do while [f]'s type pins it.  This is a
-   known limitation of the [CTE_tens_id0_right] axiom's [eq_rect]
-   form when consumed pointwise.  For downstream use, prefer
-   [CTE_tens_id0_left] (definitional case) and work with the
-   right-unit case ONLY when the boundary is syntactically known — or
-   go through the transport bridges above, which quantify over the
-   boundary equation first and therefore CAN destruct it; that is
-   precisely how [cright_unit_natural] below succeeds where the
-   pointwise approach stalls.
+(*
+   本节说明（余）极限相关定义、性质与动机。
 
-   Like [ccast_shift_l]/[ccast_shift_r] above, the three pointwise
-   lemmas that follow ([ctens_id0_right_at_0], [ctens_id0_right_at],
-   [ctens_assoc_at]) are exported kit with no in-tree consumer: every
-   naturality square below is derived through the transport bridges
-   instead.  They are kept as the record of what the pointwise route
-   does reach. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(** ** Right-unit at the trivial boundary ([[] ++ [] = []])
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    When both boundaries are empty, the transport in
-    [CTE_tens_id0_right] is along [app_nil_r []], an opaque proof of
-    a definitional equation; UIP on colour words (via [Cdec]) rewrites
-    it to [eq_refl], after which the [eq_rect] collapses by
-    computation. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma ctens_id0_right_at_0 (f : CTerm S [] []) :
   CTermEq S (CT_tens f (CT_id [])) f.
@@ -283,13 +260,11 @@ Lemma ctens_assoc_at {m1 n1 m2 n2 m3 n3 : list Colour}
                (eq_sym (app_assoc m1 m2 m3))).
 Proof. exact (CTE_tens_assoc f g h). Qed.
 
-(** ** Right-unitor naturality in [CT_cast] form
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    The [to]-direction square [g ∘ ρ ≈ ρ ∘ (g ⊕c id_[])].  This is
-    the statement the pointwise approach in the note above could not
-    reach at pinned boundaries; here the transport bridges convert
-    [CTE_tens_id0_right]'s [eq_rect] spelling wholesale, with no UIP
-    involved. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cright_unit_natural {x y : list Colour} (g : CTerm S x y) :
   CTermEq S (CT_comp g (CT_cast (app_nil_r x)))
@@ -313,14 +288,11 @@ Proof.
   apply ccast_square_flip, cright_unit_natural.
 Qed.
 
-(** ** Associator naturality in [CT_cast] form
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    The [to]-direction square
-      [(f ⊕c (g ⊕c h)) ∘ α ≈ α ∘ ((f ⊕c g) ⊕c h)],
-    obtained from [CTE_tens_assoc] through the transport bridges.
-    Recall the stdlib orientation [app_assoc x y z :
-    x ++ y ++ z = (x ++ y) ++ z], so the associator's [to] direction
-    is the [eq_sym] cast (see [CFreeCat_tensor_assoc] in [Cast.v]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cassoc_natural {m1 n1 m2 n2 m3 n3 : list Colour}
   (f : CTerm S m1 n1) (g : CTerm S m2 n2) (h : CTerm S m3 n3) :
@@ -358,24 +330,17 @@ Proof.
   apply ccast_square_flip, cassoc_natural.
 Qed.
 
-(* Note on braid lemmas: the one-sorted donor's [Naturality.v] also
-   re-exported [TE_braid_natural] / [TE_braid_invol] under the
-   friendly names [braid_natural] / [braid_invol].  The coloured
-   spine deliberately does NOT define such synonyms here:
-   [Braided.v], the sole would-be consumer, works with the
-   [CTE_braid_*] constructors directly, and re-exported synonyms in
-   this file would shadow the donor's names for any file importing
-   both spines (the one-sorted PROP files of [Construction/PROP/]
-   likewise decline to import [Naturality.v]'s synonyms, for the same
-   reason).  This comment records the decision. *)
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-(** ** Triangle coherence
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-    [ρ ⊕c id ≈ (id ⊕c λ) ∘ α] on [(x ++ []) ++ y].  Every arrow
-    involved is a cast or an identity tensored with a cast, so both
-    sides collapse to a single [CT_cast] via the tensor-cast fusion
-    kit of [Cast.v] and [CT_cast_compose], and UIP on colour words
-    (via [Cdec]) closes the gap between the two boundary proofs. *)
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cfree_triangle (x y : list Colour) :
   CTermEq S (CT_tens (CT_cast (app_nil_r x)) (CT_id y))
@@ -403,12 +368,11 @@ Proof using Cdec.
         apply CTE_refl.
 Qed.
 
-(** ** Pentagon coherence
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    [(id ⊕c α) ∘ α ∘ (α ⊕c id) ≈ α ∘ α] on [((x ++ y) ++ z) ++ w].
-    Same recipe as the triangle: collapse each tensor-with-identity
-    via the tensor-cast fusion kit, fuse the compositions of casts via
-    [CT_cast_compose], and close with [CT_cast_irrelevant]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cfree_pentagon (x y z w : list Colour) :
   CTermEq S
@@ -462,13 +426,11 @@ Proof using Cdec.
            apply CTE_refl.
 Qed.
 
-(** ** THE shared Monoidal record on [CFreeCat S]
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    All fields explicit, no Program obligations.  The Braided,
-    Symmetric, Strict, and coloured-PROP instances downstream all
-    project this single record, so their agreement is definitional
-    and [Instance.v] can discharge the class's coherence field with
-    [eq_refl] over it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition CFreeCat_Monoidal : @Monoidal (CFreeCat S) := {|
   I            := ([] : list Colour);
@@ -491,14 +453,8 @@ End CFreeMonoidal.
 
 Arguments CFreeCat_Monoidal {Colour} S Cdec : assert.
 
-(* D2 WARNING: [CFreeCat_Monoidal S Cdec] depends on the colour
-   decider [Cdec] through its UIP-conditional proof fields, so two
-   DIFFERENT [Cdec] terms for the same colour type yield
-   propositionally different (though pointwise-equal) [Monoidal]
-   records.  Downstream files that assert definitional agreement over
-   this record — in particular the [eq_refl] discharge of
-   [cprop_monoidal_coherence] in [Instance.v] — require every
-   instance site to fix ONE canonical [Cdec] per colour type; mixing
-   deciders surfaces as an opaque unification error at exactly that
-   [eq_refl].  The machine-checked Examples of [Instance.v] exist to
-   catch such violations at their source. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

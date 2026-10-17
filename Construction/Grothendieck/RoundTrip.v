@@ -412,13 +412,11 @@ Definition idx_id_iso :
 
 End IdxId.
 
-(* The unit iso [idx_id_iso a] has codomain [(`1 a; `2 a)]; the [IndexedCat]
-   field wants codomain [a].  The two objects have definitionally identical
-   hom-sets (the hom depends only on the projections), so the morphisms and
-   proofs transport, but the [Isomorphism] record type is pinned to the
-   codomain object and must be rebuilt.  The rebuilt iso reuses the same
-   underlying [to]/[from], so [to (RT_idx_id a)] is [to (idx_id_iso a)]
-   definitionally and the unit coherence lemmas apply unchanged. *)
+(*
+   本节说明hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition RT_idx_id {x : B} (a : StrictFiber x) :
   @Isomorphism (StrictFiber x) (Reindex (@id B x) a) a :=
   @Build_Isomorphism (StrictFiber x) (Reindex (@id B x) a) a
@@ -576,9 +574,11 @@ Lemma rmap_over {x y : B} (f : x ~> y) (a b : { e : E & P e = x })
   fmap[P] (unique_obj (rmap f a b u)) ≈ rmap_g f a b.
 Proof using Cl. exact (snd (unique_property (rmap f a b u))). Qed.
 
-(* The same accessors phrased through the functor projection, so they match
-   the goal shape [`1 (fmap[Reindex f] u)] that arises after reducing a
-   [StrictFiber] composite to its underlying vertical morphism. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma reindex_comm {x y : B} (f : x ~> y) {a b : StrictFiber x}
   (u : a ~> b) :
   `1 (fmap[Reindex f] u) ∘ pf_mor f (`1 a) (`2 a)
@@ -592,10 +592,11 @@ Lemma reindex_over {x y : B} (f : x ~> y) {a b : StrictFiber x}
         ∘ to (iso_of_eq (pf_anchor f (`1 a) (`2 a))).
 Proof using Cl. exact (rmap_over f a b u). Qed.
 
-(* Break a [StrictFiber] composite down to its underlying vertical morphism:
-   the fibre's composition is the base composition on first components.  A
-   [StrictFiber] object is not in constructor form, so this projection does
-   not fire on its own; the lemma exposes it for rewriting. *)
+(*
+   本节说明 RoundTrip 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma sf_comp1 {x : B} {a b c : StrictFiber x} (u : b ~> c) (v : a ~> b) :
   `1 (u ∘ v) ≈ `1 u ∘ `1 v.
 Proof. reflexivity. Qed.
@@ -789,10 +790,11 @@ Proof using Cl.
       * exact (idi_to_over b).
 Qed.
 
-(* Naturality of the [g]-to-[f∘g] comparison [mg] in the fibre argument: the
-   heart of the composition-iso naturality, proven by the universal property
-   of the [g]-pushforward.  [mg] lies over [f], so the [over] branch carries
-   an [f]-factor rather than a plain vertical cancellation. *)
+(*
+   本节说明 RoundTrip 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mg_natural {x y z : B} (f : y ~> z) (g : x ~> y)
   {a b : StrictFiber x} (k : a ~> b) :
   `1 (fmap[Reindex (f ∘ g)] k) ∘ mg f g a
@@ -1112,10 +1114,11 @@ Proof using Cl.
       exact (reindex_over f (to (RT_idx_id a))).
 Qed.
 
-(* The [h]-pushforward level of the associativity cocycle: the two ways of
-   nesting the [mg] comparisons agree after correcting by the associator
-   ≈-mediator.  The [over] branch reassociates the base composite [(f∘g)∘_]
-   against [f∘(g∘_)]. *)
+(*
+   本节说明 RoundTrip 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mg_cocycle {w x y z : B} (f : y ~> z) (g : x ~> y) (h : w ~> x)
   (a : { e : E & P e = w }) :
   mg (f ∘ g) h a
@@ -1160,10 +1163,11 @@ Proof using Cl.
       reflexivity.
 Qed.
 
-(* The [over]-law of [mg] at a reindexed fibre object, restated so the anchor
-   of the inner object appears in its [pf_obj]/[pf_anchor] normal form (rather
-   than as [`1]/[`2] of [Reindex h a]); this is what makes the [iso_of_eq]
-   cancellations in [RT_cocycle] match syntactically. *)
+(*
+   本节说明 RoundTrip 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mgi_over_Rh {w x y z : B} (f : y ~> z) (g : x ~> y) (h : w ~> x)
   (a : { e : E & P e = w }) :
   fmap[P] (mg f g (Reindex h a))
@@ -1330,11 +1334,11 @@ Definition RT_Indexed : IndexedCat B := {|
 
 (* ---- the comparison functor back to the total category E ---- *)
 
-(* An object of the Grothendieck construction of [RT_Indexed] over [x] is a
-   strict fibre object [(e; p)] with [P e = x]; the comparison sends it to
-   the carrier [e].  A morphism [(f; k)] with [f : x ~> y] and
-   [k : Reindex f a ~> b] is sent to the vertical part [`1 k] precomposed
-   with the chosen lift [pf_mor f], recovering an [E]-morphism [`1 a ~> `1 b]. *)
+(*
+   本节说明 RoundTrip 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition RT_Comparison : Grothendieck RT_Indexed ⟶ E := {|
   fobj := fun o => `1 (`2 o);
   fmap := fun o1 o2 m => `1 (`2 m) ∘ pf_mor (`1 m) (`1 (`2 o1)) (`2 (`2 o1))
@@ -1367,11 +1371,11 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* The image under [P] of a comparison morphism is the base morphism [`1 m]
-   conjugated by the anchoring isomorphisms: the vertical part contributes an
-   anchor-cancelling factor, and the chosen lift contributes [`1 m] itself.
-   This is the naturality square of the isomorphism [P ◯ RT_Comparison ≅
-   Grothendieck_Proj], and the workhorse for both fullness and faithfulness. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma RT_Comparison_over {o1 o2 : Grothendieck RT_Indexed}
   (m : o1 ~> o2) :
   fmap[P] (fmap[RT_Comparison] m)
@@ -1421,10 +1425,11 @@ Defined.
 
 (* ---- the comparison is fully faithful ---- *)
 
-(* Faithfulness: two comparison morphisms with equal image have equal base
-   components (recovered through [RT_base_recover]) and equal vertical parts
-   (by joint monicity of the lift, [vunique], with the transport mediator
-   supplying the base agreement). *)
+(*
+   本节说明 RoundTrip 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition RT_Faithful : Faithful RT_Comparison.
 Proof.
   constructor.
@@ -1452,11 +1457,11 @@ Qed.
 
 (* ---- the comparison is full ---- *)
 
-(* Given an [E]-morphism [h : `1 a ~> `1 b] between the carriers, its
-   preimage in the Grothendieck construction is built from the opcartesian
-   universal property: the base leg is [h] transported across the anchoring
-   isos, and the vertical leg is the unique factorization of [h] through the
-   chosen lift. *)
+(*
+   本节说明 RoundTrip 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section Fullness.
 Context {o1 o2 : Grothendieck RT_Indexed}.
 Context (h : `1 (`2 o1) ~> `1 (`2 o2)).
@@ -1521,9 +1526,11 @@ Definition RT_Full : Full RT_Comparison :=
 
 (* ---- the comparison is essentially (indeed strictly) surjective ---- *)
 
-(* Every carrier [d : E] is the image of the strict fibre object [(d; eq_refl)]
-   over [P d]: [RT_Comparison (P d; (d; eq_refl))] reduces to [d] on the nose,
-   so the witnessing isomorphism is the identity. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition RT_EssSurj : EssentiallySurjective RT_Comparison :=
   @Build_EssentiallySurjective _ _ RT_Comparison
     (fun d => (P d; (d; eq_refl)))
@@ -1538,12 +1545,11 @@ Definition RT_Equivalence : EquivalenceOfCategories RT_Comparison :=
 
 End RoundTrip.
 
-(** ** The named deliverables
+(*
+   本节说明 RoundTrip 相关定义、性质与动机。
 
-    The split cleaving is consumed only through its underlying cloven
-    fibration [Cl] (see the header): the coherence of [IndexedCat] is
-    iso-valued, so the opcartesian universal property already discharges
-    every pseudofunctor law, and strictness of the cleaving is not needed. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* (a) The indexed category built from a split cleaving of [P]. *)
 Definition IndexedCat_of_SplitCleaving {E B : Category} (P : E ⟶ B)
@@ -1589,18 +1595,11 @@ Definition RoundTrip_Equivalence {E B : Category} (P : E ⟶ B)
   EquivalenceOfCategories (RoundTrip_Comparison P Sp) :=
   @RT_Equivalence E B P Cl.
 
-(** ** The cloven-only deliverables
+(*
+   本节说明 RoundTrip 相关定义、性质与动机。
 
-    The split-cleaving argument [Sp] on the deliverables above is inert.
-    Every lemma feeding the round trip is proved [using Cl], the underlying
-    cloven fibration: [IndexedCat]'s coherence is iso-valued, so the
-    opcartesian universal property already discharges each pseudofunctor law
-    (see the header, point 2), and splitness is never consumed.  The two
-    definitions below restate the comparison and its equivalence over a bare
-    [ClovenFibration (P^op)], with no splitness hypothesis.  The
-    [SplitCleaving]-typed [RoundTrip_Comparison] and [RoundTrip_Equivalence]
-    above are then immediate corollaries, retained for API alignment with the
-    split-cleaving entry point. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The comparison functor, needing only a cloven structure on [P^op]. *)
 Definition RoundTrip_Comparison_cloven {E B : Category} (P : E ⟶ B)

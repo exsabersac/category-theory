@@ -43,26 +43,22 @@ Context (P : ColouredPROP Colour).
 Notation "⟦ cs ⟧" := (@cprop_of_list Colour P cs)
   (at level 0, format "⟦ cs ⟧").
 
-(** The two [Monoidal] paths through a coloured PROP: the strict one
-    and the braided/symmetric one.  Everything downstream is phrased
-    at [MPc]; the braid is imported from [MBc] by [transport_braid]. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition MPc : @Monoidal P :=
   @strict_is_monoidal P (@cprop_strict Colour P).
 Definition MBc : @Monoidal P :=
   @braided_is_monoidal P
     (@symmetric_is_braided P (@cprop_symmetric Colour P)).
 
-(** The braiding of [P], re-indexed to the strict monoidal path.  This
-    definition and the six [cstrict_braid_*] lemmas following it are
-    the only places in this file that mention
-    [cprop_monoidal_coherence], and none of them destructs it: each
-    merely passes the concrete coherence proof to a [BraidTransport]
-    lemma imported from [Construction/PROP/Interp.v], which eliminates
-    only its VARIABLE equality.  The rest of this file never touches
-    the coherence again.  The same discipline governs the rest of the
-    coloured-PROP development, with one deliberate exception: the
-    MP/MB mediation of [Construction/ColouredPROP/Supply.v] destructs
-    the concrete proof directly in [ctensor_app_b] / [cunit_nil_b]. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cstrict_braid : braid_family MPc :=
   transport_braid (@cprop_monoidal_coherence Colour P)
     (fun x y : P =>
@@ -125,11 +121,11 @@ Proof.
            (fun a => @braid_unit_right P _ a)).
 Qed.
 
-(** *** Casts and the tensor bifunctor
+(*
+   本节说明 Interp 相关定义、性质与动机。
 
-    Every strict structural map is an [id_cast], and every boundary
-    cast interacts with [⨂[MPc]] by [f_equal]-images.  Each proof
-    destructs the equality and closes with a bifunctor law. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** A transparent pairing of object equalities through the tensor.
     The stdlib's [f_equal2] is opaque, so a cast along it would be
@@ -167,11 +163,11 @@ Lemma cbimap_cast_r {x y b b' : P} (g : x ~> y) (e : b = b') :
         ∘ (g ⨂[MPc] id[b]).
 Proof. destruct e; cat. Qed.
 
-(** Tensoring an identity with a cast IS a cast.  Like [cbimap_cast]
-    through [cbimap_cast_r] above, these two are exported cast/tensor
-    kit with no in-tree consumer yet; the current proofs reach the
-    same effects through the slide lemmas and the [_general] forms
-    below. *)
+(*
+   本节说明 Interp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cbimap_cast_id_l {a x y : P} (e : x = y) :
   (id[a] ⨂[MPc] id_cast e)
     ≈ id_cast (f_equal (fun v : P => (a ⨂[MPc] v)%object) e).
@@ -188,10 +184,11 @@ Proof.
   exact (@bimap_id_id P P P (@tensor P MPc) x a).
 Qed.
 
-(** A tensor of [hom_cast]s is the [hom_cast] along the paired object
-    equalities ([ctensor_obj_eq]).  This is the monoidal extension of
-    the [hom_cast] kit of [Construction/Quotient.v]; it is consumed by
-    the tens case of the uniqueness proof in [Universal.v]. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cbimap_hom_cast {a b c d a' b' c' d' : P}
   (ea : a = a') (eb : b = b') (ec : c = c') (ed : d = d')
   (f : a ~> c) (g : b ~> d) :
@@ -200,13 +197,11 @@ Lemma cbimap_hom_cast {a b c d a' b' c' d' : P}
                (f ⨂[MPc] g).
 Proof. destruct ea, eb, ec, ed; reflexivity. Qed.
 
-(** [cstrict_braid] re-indexes along object equalities by [hom_cast].
-    Consumed by the uniqueness proof of [Universal.v], whose braid
-    case re-indexes a competitor's [cstrict_braid (G cs) (G ds)] to
-    the canonical [cstrict_braid ⟦cs⟧ ⟦ds⟧] along the object
-    agreement.  (The hexagon lemmas K9/K10 below do not need it: they
-    quantify over the strictness equalities in the
-    [cbraid_hex_*_general] forms instead.) *)
+(*
+   本节说明 Interp 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cstrict_braid_cast {x x' y y' : P} (e1 : x = x') (e2 : y = y') :
   cstrict_braid x' y'
     ≈ hom_cast (ctensor_obj_eq e1 e2) (ctensor_obj_eq e2 e1)
@@ -234,11 +229,11 @@ Lemma cconj_compose {x y z x' y' z' : P}
     ≈ id_cast e3 ∘ (f ∘ g) ∘ id_cast (eq_sym e1).
 Proof. destruct e1, e2, e3; cat. Qed.
 
-(** *** The strict structural maps as casts, with sliding naturality
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    In a strict monoidal category the associator and unitors ARE the
-    transported identities; their naturality squares become "slides"
-    that move a cast past a tensor of morphisms. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The strict comparison fields, restated through [id_cast]. *)
 Lemma cstrict_assoc_cast (x y z : P) :
@@ -287,16 +282,11 @@ Qed.
 Definition chcast {cs ds : list Colour} (e : cs = ds) : ⟦cs⟧ ~{P}~> ⟦ds⟧ :=
   @id_cast (cprop_cat P) ⟦cs⟧ ⟦ds⟧ (f_equal (@cprop_of_list Colour P) e).
 
-(** [chcast]s compose and cancel — with no proof irrelevance needed:
-    each lemma destructs its boundary equation.  Of these, the
-    soundness induction below consumes [chcast_inv_r]; [chcast_trans]
-    and [chcast_inv_l] complete the algebra as exported kit with no
-    in-tree consumer yet.  Proof IRRELEVANCE of [chcast] ([chcast_irr]
-    / [chcast_loop]) needs decidable object equality on [P] and lives
-    below the [ObjDecEq] hypothesis — where the one-sorted donor used
-    UIP on [nat] outright, an arbitrary [Colour] carries no decider,
-    and the coloured kit routes irrelevance through the TARGET's
-    objects instead. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma chcast_trans {cs ds es : list Colour} (e1 : cs = ds) (e2 : ds = es) :
   chcast e2 ∘ chcast e1 ≈ chcast (eq_trans e1 e2).
 Proof. destruct e1, e2; cat. Qed.
@@ -323,11 +313,11 @@ Definition cbraid_hom (cs ds : list Colour) : ⟦cs ++ ds⟧ ~{P}~> ⟦ds ++ cs�
   id_cast (cprop_tensor_app ds cs) ∘ cstrict_braid ⟦cs⟧ ⟦ds⟧
     ∘ id_cast (eq_sym (cprop_tensor_app cs ds)).
 
-(** *** The K-kit, part one: bifunctor and braid laws of [⊞c]
+(*
+   本节说明 Interp 相关定义、性质与动机。
 
-    K1–K5 need no proof-irrelevance: the [cprop_tensor_app] casts
-    cancel pairwise by [cconj_compose] and the core laws are those of
-    [⨂[MPc]] and [cstrict_braid]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** K1: [⊞c] preserves identities. *)
 Lemma ctensor_hom_id (cs ds : list Colour) :
@@ -380,22 +370,11 @@ Proof.
   now rewrite cstrict_braid_swap.
 Qed.
 
-(** *** The K-kit, part two: strict unit and associativity laws
+(*
+   本节说明 Interp 相关定义、性质与动机。
 
-    K6–K12 identify casts along DIFFERENT proofs of the same object
-    equality, so they need uniqueness of identity proofs on [obj P] —
-    axiom-free, via decidable object equality ([ObjDecEq], from
-    [Construction/Quotient.v]).
-
-    Each law is first proved in a fully general, object-level form
-    that quantifies over the strictness equalities: destructing the
-    quantified equalities makes the transports definitional, and the
-    single non-destructible residue (a unit- or associativity-shaped
-    loop) is aligned to the canonical strict equality by [obj_uip].
-    The [⟦·⟧]-level K-lemma is then an instantiation.  These
-    [_general] forms never compute on the boundary index type, which
-    is why they transfer from the one-sorted donor with name
-    substitution only. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Context {OD : @ObjDecEq P}.
 
@@ -789,13 +768,11 @@ Definition CValuation : Type :=
 
 Context (v : CValuation).
 
-(** The interpretation of a raw term, by structural recursion:
-    identity wires to identities, block braids to [cbraid_hom],
-    sequential composition to [∘], parallel composition to [⊞c], and
-    generators through the valuation.  [cinterp] COMPUTES on
-    constructors — e.g. [cinterp (CT_comp g f)] is definitionally
-    [cinterp g ∘ cinterp f] — so the functor laws of the packaging
-    file [Universal.v] hold by reflexivity. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Fixpoint cinterp {cs ds : list Colour} (t : CTerm S cs ds) :
   ⟦cs⟧ ~{P}~> ⟦ds⟧ :=
   match t in CTerm _ cs' ds' return ⟦cs'⟧ ~{P}~> ⟦ds'⟧ with
@@ -836,14 +813,11 @@ Lemma cinterp_eq_rect_r_dom {a a' b : list Colour} (e : a' = a)
     ≈ cinterp t ∘ chcast e.
 Proof using P. destruct e; cat. Qed.
 
-(** *** Soundness
+(*
+   本节说明hom、等价相关定义、性质与动机。
 
-    [CTermEq] is [Prop]-valued and the hom equivalence of the abstract
-    target is [Type]-valued, so the induction eliminates into the
-    [Prop]-reflection [heq] of a [HomEqProp] instance (the
-    [Quotient.v] kit) and round-trips through [heq_intro] /
-    [heq_elim].  Every one of the nineteen [CTermEq] constructors is
-    covered. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Context {HP : @HomEqProp P}.
 

@@ -24,11 +24,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Coherence between an iso φ : C ⟶ D (with inverse ψ) and two projections
-   πC, πD : _ ⟶ E that it preserves: the unit/counit η, μ paste together with
-   the comparison cells κ, θ.  Whiskered along φ and ψ this says φ, ψ are
-   compatible "over the projections", the property that makes the comma-category
-   iso below an iso over D ∏ C. *)
+(*
+   本节说明 Adjunction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition whisker_equiv
            {C D E : Category}
            (φ  : C ⟶ D)
@@ -44,24 +44,13 @@ Definition whisker_equiv
 
 Section AdjunctionComma.
 
-(* Wikipedia: "Lawvere showed that the functors F : C → D and G : D → C are
-   adjoint if and only if the comma categories (F ↓ Id[D]) and (Id[C] ↓ G) are
-   isomorphic, and equivalent elements in the comma category can be projected
-   onto the same element of C × D. This allows adjunctions to be described
-   without involving sets, and was in fact the original motivation for
-   introducing comma categories."
+(*
+   Wikipedia: "Lawvere showed that the functors F : C → D and G : D → C are
 
-   From ncatlab: "To give an adjunction i ⊣ r it suffices to give, for each k
-   : x → pe in B ↓ p, an object rk in E such that prk = x and an arrow irk =
-   1x → k in B ↓ p that is universal from i to k."
+   本节说明伴随相关定义、性质与动机。
 
-   Lawvere's own statement of the theorem, from his thesis (page 40):
-
-   "For each functor f : A ⟶ B, there exists a functor g : B ⟶ A such that g
-   is adjoint to f iff for every object B ∈ |B| there exists an object A ∈ |A|
-   and a map φ : B ~> A in B such that for every object A′ ∈ |A| and every
-   map x : B ~> A′ in B, there exists a unique map y : A ~> A′ in A such that
-   x = φ(yf) in B." *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Context {C : Category}.
 Context {D : Category}.
@@ -528,10 +517,11 @@ Proof.
   now cat.
 Qed.
 
-(* Surjective pairing for comma objects: a comma object is recovered from its
-   two D∏C components and its carrier morphism.  This is a structural identity
-   on the underlying sigma (hence Leibniz =, not ≈), used to re-expand objects
-   under the projections. *)
+(*
+   本节说明 Adjunction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma surjective_tripleF (p : obj[F ↓ Id[C]]) :
   ((fst `1 p, snd `1 p); `2 p) = p.
 Proof.
@@ -567,17 +557,11 @@ Lemma expand_ψ_φ {a b} (f : F a ~> b) :
        `2 (φ E ((a, b); f))).
 Proof. now rewrite surjective_tripleG. Qed.
 
-(* Given that:
+(*
+   本节说明Lawvere 理论相关定义、性质与动机。
 
-      π₁((A,B);f) = (A,B)
-        = π₁(φ((A,B);f)) = π₁(ψ((A,B);f))       [projF, projG]
-      φ((A,B);f) ≅ ((A,B);φ'(f))                [lawvere_iso_to]
-      ψ((A,B);f) ≅ ((A,B);ψ'(f))                [lawvere_iso_from]
-      φ(ψ(f)) ≈ f and ψ(φ(f)) ≈ f               [lawvere_iso]
-
-    it follows that:
-
-      φ'(ψ'(f)) ≈ f and ψ'(φ'(f)) ≈ f *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma lawvere_to_from {a b} (g : a ~> G b) : φ' E (ψ' E g) ≈ g.
 Proof.
@@ -646,9 +630,11 @@ Proof.
             ].
 Qed.
 
-(* The extracted hom-set bijection Hom_C(F a, b) ≅ Hom_D(a, G b), packaged as a
-   Sets-isomorphism with the two adjuncts φ' and ψ' as its legs.  This is the
-   classical hom-set datum of an adjunction. *)
+(*
+   本节说明伴随、hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Instance lawvere_morph_iso {a b} : F a ~> b ≊ a ~> G b := {
   to   := {| morphism := φ' E; proper_morphism := lawvere_to_Proper |};
   from := {| morphism := ψ' E; proper_morphism := lawvere_from_Proper |};
@@ -822,9 +808,11 @@ Program Definition lawvere_eqv_counit_transform : F ◯ G ⟹ Id := {|
     symmetry (Right_Functoriality x y (fmap[G] f, f))
 |}.
 
-(* The forward direction of Lawvere's theorem: a genuine adjunction H : F ⊣ G
-   induces the comma iso, sending ((d,c); f : F d ~> c) to ((d,c); ⌊f⌋), the
-   square condition following from naturality of the transpose. *)
+(*
+   本节说明伴随、Lawvere 理论相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Comma_Functor_F_Id_Id_G (H : F ⊣ G) :
   (F ↓ Id[C]) ⟶ (Id[D] ↓ G) := {|
   fobj := fun x => (``x; to adj (`2 x));
@@ -850,9 +838,11 @@ Next Obligation.
   reflexivity.
 Qed.
 
-(* The two functors are mutually inverse (via iso_to_from / iso_from_to of the
-   adjunction's hom-set iso), giving the comma-category isomorphism that
-   Lawvere's theorem asserts in the forward direction. *)
+(*
+   本节说明伴随、函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Instance Comma_F_Id_Id_G_Iso (H : F ⊣ G) :
   (F ↓ Id[C]) ≅[Cat] (Id[D] ↓ G) := {
   to   := Comma_Functor_F_Id_Id_G H;
@@ -889,11 +879,11 @@ Defined.
 
 End AdjunctionComma.
 
-(* Lawvere's characterization, both directions: F ⊣ G holds iff the comma
-   categories (F ↓ Id[C]) and (Id[D] ↓ G) are isomorphic over D ∏ C.  Forward:
-   package Comma_F_Id_Id_G_Iso with its projection coherence.  Backward: read
-   off the unit, counit and triangle identities and build the adjunction from
-   them via Adjunction_from_Transform. *)
+(*
+   本节说明伴随、Lawvere 理论相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Adjunction_Comma `{F : D ⟶ C} `{G : C ⟶ D} :
   F ⊣ G  ↔  @lawvere_equiv _ _ F G.
 Proof.

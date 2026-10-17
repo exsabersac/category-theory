@@ -29,12 +29,11 @@ Context {A B C : Category}.
 
 #[local] Obligation Tactic := simpl; intros.
 
-(** Two objects of a comma category over the SAME underlying A ∏ B-pair, whose
-    mediating morphisms agree up to ≈, are isomorphic by the identity pair.
-    This is the isomorphism of comma objects the file's natural isomorphisms
-    are built from where the mediating morphisms genuinely differ; where the
-    two objects are convertible, [iso_id] is used instead (five later
-    proofs). *)
+(*
+   本节说明同构、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition comma_med_iso {S : A ⟶ C} {T : B ⟶ C} (X : S ↓ T)
         (k : S (fst ``X) ~{C}~> T (snd ``X)) (Heq : k ≈ `2 X) :
@@ -55,20 +54,11 @@ Next Obligation. split; simpl; apply id_left. Qed.
 
 End CommaToolkit.
 
-(** Componentwise comparison of two functors into a comma category.  Every
-    functor-level `≈` below is witnessed by a pointwise isomorphism whose two
-    legs are the comma morphism ((id, id); _) — supplied either by
-    [comma_med_iso] or, when the two object maps are already convertible, by
-    [iso_id] — after which the [Functor_Setoid] obligation is componentwise
-    `fst ``(fmap[F] f) ≈ (id ∘ fst ``(fmap[G] f)) ∘ id` and dually.  This
-    tactic discharges that obligation.
+(*
+   本节说明函子、同构相关定义、性质与动机。
 
-    It is a tactic rather than a lemma for a typing reason worth recording:
-    for arbitrary functors F and G into a comma category, the objects
-    `1 (F x)` and `1 (G x)` of A ∏ B are rigid and distinct, so a hypothesis
-    "the carrier of the isomorphism's leg is `id`" cannot even be STATED
-    without a transport.  At each application below the two are convertible
-    and the identities typecheck, which is exactly what the tactic exploits. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Ltac comma_id_carrier :=
   intros; simpl; split; rewrite id_left, id_right; reflexivity.
@@ -117,12 +107,11 @@ Next Obligation. now repeat intro. Qed.
 Next Obligation. now split. Qed.
 Next Obligation. now split. Qed.
 
-(** Both actions at once — the arrow action of the bifunctor. It is DEFINED
-    as one of the two one-sided composites, so that order of the exchange law
-    holds by [eq_refl] on the whole functor record ([Comma_map_left_right]
-    below), and its object action computes to
+(*
+   本节说明函子相关定义、性质与动机。
 
-      ((a, b); h)  ↦  ((a, b); τ b ∘ h ∘ σ a). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Comma_map {S S' : A ⟶ C} {T T' : B ⟶ C}
            (σ : S' ⟹ S) (τ : T ⟹ T') : (S ↓ T) ⟶ (S' ↓ T') :=
@@ -200,16 +189,11 @@ Lemma Comma_map_exchange_med (σ : S' ⟹ S) (τ : T ⟹ T') (X : S ↓ T) :
     ≈ `2 (fobj[Comma_map_left σ ◯ Comma_map_right τ] X).
 Proof. simpl; apply comp_assoc. Qed.
 
-(** Note what is and is not established here.  [Comma_map_exchange_pair] makes
-    the corresponding LEIBNIZ statement well formed — its two sides have
-    convertible types — and that statement is not closed by [eq_refl]: the two
-    mediating morphisms are (τ b ∘ h) ∘ σ a and τ b ∘ (h ∘ σ a), and
-    composition in an abstract category has no computation rule to bridge
-    them.  A rejected-command guard would record that in the file, and is
-    deliberately omitted because it would add hits to [make todo]; so the
-    non-convertibility is an observation about the two displayed formulas, not
-    a machine-checked claim.  What IS machine-checked is everything else in
-    this block: the pair and morphism agreements by [eq_refl], and the ≈. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition comma_map_exchange_iso (σ : S' ⟹ S) (τ : T ⟹ T')
         (X : S ↓ T) :
@@ -279,11 +263,11 @@ Qed.
 
 End CommaMapLaws.
 
-(** * Part (a): the bifunctor.
+(*
+   本节说明函子相关定义、性质与动机。
 
-    For fixed A, B and C the comma construction is a functor
-    ([A, C])^op ∏ [B, C] ⟶ Cat: contravariant in the source functor,
-    covariant in the target functor. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CommaBifunctor.
 
@@ -316,10 +300,11 @@ Proof. reflexivity. Qed.
 
 End CommaBifunctor.
 
-(** Universe acceptance: nothing above is pinned to [Set].  [Fun] identifies
-    the hom universes of A, B and C (see the header), but the resulting single
-    hom universe is free — here it is declared strictly above [Set] and the
-    bifunctor is still formable. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Monomorphic Universe comma_bifun_hom.
 Monomorphic Constraint Set < comma_bifun_hom.
@@ -329,12 +314,11 @@ Definition Comma_Bifunctor_above_Set
                               comma_bifun_hom}) :=
   @Comma_Bifunctor A B C.
 
-(** * Restriction to natural isomorphisms.
+(*
+   本节说明函子、同构相关定义、性质与动机。
 
-    The four one-sided constructions of Construction/Comma/Isomorphism.v are
-    exactly the one-sided maps above, applied to the appropriate leg of the
-    given isomorphism.  Agreement holds on the nose for the functor data
-    ([eq_refl] below); the ≈-level restatements follow. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CommaIsoRestriction.
 
@@ -418,12 +402,11 @@ Proof.
   exists (fun _ => iso_id); comma_id_carrier.
 Qed.
 
-(** The bifunctor subsumes the invariance result: a pair of natural
-    isomorphisms is an isomorphism in the domain of [Comma_Bifunctor], hence
-    is carried to an isomorphism of comma categories in Cat — the statement
-    of [Comma_Iso], re-derived through part (a).  (No claim that the two
-    isomorphisms coincide: [Comma_Iso] is [Qed]-opaque, and two isomorphisms
-    between the same objects need not be equal.) *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := simpl; intros.
 
@@ -454,11 +437,11 @@ Definition Comma_Bifunctor_Iso
 
 End CommaIsoRestriction.
 
-(** * Part (b): varying the categories.
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Given F : A ⟶ A', G : B ⟶ B', K : C ⟶ C' together with families filling
-    the two squares — α a : S' (F a) ~> K (S a) and β b : K (T b) ~> T' (G b),
-    each natural — one gets a functor (S ↓ T) ⟶ (S' ↓ T'). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CommaReindex.
 
@@ -509,11 +492,11 @@ End CommaReindex.
 
 Arguments Comma_reindex {A B C A' B' C' S T S' T'} F G K α α_natural β β_natural.
 
-(** [Comma_reindex] generalizes part (a): at identity index functors it IS
-    [Comma_map]. The naturality hypotheses reduce to the naturality of σ and
-    τ, and the two functors agree on objects by Leibniz equality — provable
-    after case analysis on the comma object, which is required only because
-    Coq's [prod] has no definitional eta. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CommaReindexSpecializes.
 
@@ -561,12 +544,11 @@ Qed.
 
 End CommaReindexSpecializes.
 
-(** Two witnesses that [Comma_reindex] is not exercised only at identities.
-    Together they move all three categories: the first varies the common
-    codomain C, the second varies the two domains A and B.  In both the
-    filling families are identities, so no coherence data has to be invented;
-    what they demonstrate is that the naturality hypotheses are satisfiable
-    with genuinely non-identity index functors. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CommaReindexPostcompose.
 

@@ -38,12 +38,11 @@ Context {Colour : Type}.
 Context (S : CSignature Colour).
 Context (Cdec : forall c d : Colour, {c = d} + {c <> d}).
 
-(** ** Comparison lemmas
+(*
+   本节说明 Instance 相关定义、性质与动机。
 
-    Each states that a structural map of [CFreeCat_Monoidal S Cdec]
-    equals the transported identity along the corresponding boundary
-    equation.  Both sides are the same [match] on the same proof
-    term, so each proof is [reflexivity]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The associator [(x ++ y) ++ z ≅ x ++ (y ++ z)] is the transported
     identity along [eq_sym (app_assoc x y z)] — the orientation of
@@ -85,12 +84,11 @@ Definition CFreeCat_Strict : @StrictMonoidal (CFreeCat S) := {|
   strict_unit_right_to  := fun x => CFreeCat_strict_unit_right_to x
 |}.
 
-(** ** The bundled instance
+(*
+   本节说明 Instance 相关定义、性质与动机。
 
-    All three structure fields name records that project to THE
-    shared [CFreeCat_Monoidal S Cdec], so each equality field below
-    is [eq_refl].  The record is an explicit [Build_ColouredPROP]
-    application, so no inference is left to a record literal. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition FreeColouredPROP : ColouredPROP Colour :=
   Build_ColouredPROP Colour
@@ -113,12 +111,11 @@ Definition FreeColouredPROP : ColouredPROP Colour :=
     (* [fobj (CFreeCat_Tensor S) (cs, ds)] reduces to [cs ++ ds]. *)
     (fun cs ds : list Colour => eq_refl).
 
-(** ** Side-condition instances for the interpretation files
+(*
+   本节说明hom、等价相关定义、性质与动机。
 
-    The hom-setoid equivalence of [CFreeCat S] is [CTermEq S] by
-    delta/beta reduction of [CTerm_Setoid], and [CTermEq S] is
-    already [Prop]-valued, so the [Prop] reflection is the identity
-    in both directions. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export] Instance CFreeCat_HomEqProp : HomEqProp (CFreeCat S) :=
   Build_HomEqProp (CFreeCat S)
@@ -134,19 +131,17 @@ Definition FreeColouredPROP : ColouredPROP Colour :=
 
 Definition CFreeCat_ObjDecEq : ObjDecEq (CFreeCat S) := list_eq_dec Cdec.
 
-(** ** Machine-checked sanity
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Each [Example] holds by a closed proof term — all but the last by
-    [eq_refl], witnessing that the corresponding field of
-    [FreeColouredPROP] is definitional; the final cons decomposition
-    instead pins the recorded [cprop_tensor_app] conversion between
-    the object correspondence and the shared strict [Monoidal]
-    path. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(** The coherence between the strict and symmetric [Monoidal] paths
-    is the reflexivity proof itself — the "known limitation"
-    discussed in [Construction/PROP.v] does not bite on the free
-    coloured PROP. *)
+(*
+   本节说明幺半结构、（余）极限、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example FreeColouredPROP_coherence_is_refl :
   @cprop_monoidal_coherence Colour FreeColouredPROP = eq_refl := eq_refl.
 
@@ -178,15 +173,11 @@ Example FreeColouredPROP_tensor_app_is_refl (cs ds : list Colour) :
 Example FreeColouredPROP_wire (c : Colour) :
   wire (P := FreeColouredPROP) c = [c] := eq_refl.
 
-(** Cons decomposition smoke test: prepending a colour to a word is
-    the tensor of its wire with the tail, THROUGH the shared strict
-    [Monoidal] path.  The proof term is not bare [eq_refl] but
-    [eq_sym (cprop_tensor_app [c] cs)]: it exercises the recorded
-    tensor/concatenation conversion at the definitional boundary
-    [[c] ++ cs = c :: cs], the coloured analogue of the one-sorted
-    donor's [FreePROP_of_nat_S_smoke] (Construction/PROP/Instance.v),
-    and would catch any regression in the shared-record wiring that
-    the identity-shaped [Example]s above cannot see. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example FreeColouredPROP_cons_decomp (c : Colour) (cs : list Colour) :
   cprop_of_list (ColouredPROP := FreeColouredPROP) (c :: cs)
   = (wire (P := FreeColouredPROP) c

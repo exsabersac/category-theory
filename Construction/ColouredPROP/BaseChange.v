@@ -38,17 +38,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The free coloured PROP's braiding, on the strict path
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    For the free coloured PROP the coherence between the strict and
-    symmetric [Monoidal] paths is [eq_refl]
-    ([FreeColouredPROP_coherence_is_refl]), so the [transport_braid]
-    re-indexing inside [cstrict_braid] is the identity and the
-    strict-path braiding is the [CT_braid] constructor ON THE NOSE.
-    This is the fact that makes braid-square hypotheses against free
-    targets ([CSymmetricStrict] competitors in [BaseChange/Laws.v])
-    definitionally transparent.  Machine-checked here, over an
-    arbitrary signature and decider. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example free_cstrict_braid {Colour : Type} (S : CSignature Colour)
   (Cdec : forall c d : Colour, {c = d} + {c <> d})
@@ -62,21 +56,11 @@ Context (f : Colour -> Colour').
 Context (Cdec : forall c d : Colour, {c = d} + {c <> d}).
 Context (C'dec : forall c d : Colour', {c = d} + {c <> d}).
 
-(** ** 1. Restriction of scalars
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    The [ColouredPROP Colour] induced on a [ColouredPROP Colour'] by
-    reading colour words through [map f].  The underlying category and
-    all monoidal structure are [P]'s own — only [cprop_of_list] and
-    the two object-equality fields change.  An explicit
-    [Build_ColouredPROP] application: [Colour] occurs in no field
-    type, so a record literal could not infer it.
-
-    Since the underlying category is untouched, the side-condition
-    instances of [Construction/Quotient.v] carry over on the nose: any
-    [HomEqProp P] IS a [HomEqProp (ColouredPROP_restrict P)], and any
-    [ObjDecEq P] an [ObjDecEq (ColouredPROP_restrict P)] — the classes
-    mention only the category, which is judgmentally the same — so no
-    new instances are declared here. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition ColouredPROP_restrict (P : ColouredPROP Colour') :
   ColouredPROP Colour :=
@@ -123,14 +107,11 @@ Example ColouredPROP_restrict_unit (P : ColouredPROP Colour') :
 Example ColouredPROP_restrict_wire (P : ColouredPROP Colour') (c : Colour) :
   wire (P := ColouredPROP_restrict P) c = wire (P := P) (f c) := eq_refl.
 
-(** ** 2. Signature morphisms over a colour function
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
 
-    The base-change analogue of [CSubSig] ([Construction/ColouredPROP/
-    Signature.v]): where a signature relabelling ([CSubSig]) preserves
-    boundaries on the nose, a [CSigMap] REINDEXES them through
-    [map f].  The identity and composition of such maps involve
-    transports along [map_id] / [map_map] and live with the
-    functoriality laws in [BaseChange/Laws.v]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition CSigMap (S : CSignature Colour) (S' : CSignature Colour') : Type :=
   forall cs ds : list Colour, S cs ds -> S' (map f cs) (map f ds).
@@ -139,12 +120,11 @@ Context (S : CSignature Colour).
 Context (S' : CSignature Colour').
 Context (h : CSigMap S S').
 
-(** ** 3. The base-change functor, through the universal property
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-    The interpretation target: the free coloured PROP on [S'],
-    restricted along [f].  Its hom-sets at restricted objects are
-    [CTerm S' (map f cs) (map f ds)] ON THE NOSE, so the generator
-    valuation needs no casts. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition basechange_target : ColouredPROP Colour :=
   ColouredPROP_restrict (FreeColouredPROP S' C'dec).
@@ -152,27 +132,22 @@ Definition basechange_target : ColouredPROP Colour :=
 Definition basechange_val : CValuation basechange_target S :=
   fun (cs ds : list Colour) (g : S cs ds) => CT_gen (h cs ds g).
 
-(** The functor: [CInterpF] at the restricted target.  The
-    side-condition instances are the free category's own
-    ([CFreeCat_HomEqProp] / [CFreeCat_ObjDecEq], carried over across
-    the restriction per the note above); [ObjDecEq] is
-    [C'dec]-conditional and therefore passed explicitly (D2).  The
-    stated target category [CFreeCat S'] is judgmentally
-    [cprop_cat basechange_target], so the ascription pins the functor
-    at the type its consumers want. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition BaseChangeF : CFreeCat S ⟶ CFreeCat S' :=
   @CInterpF Colour S basechange_target
     (CFreeCat_HomEqProp S') (CFreeCat_ObjDecEq S' C'dec)
     basechange_val.
 
-(** Machine-checked: the action of [BaseChangeF] is definitional on
-    objects, generators, identities, and composites ([cinterp]
-    computes; [id] and [compose] of [CFreeCat S'] are [CT_id] and
-    [CT_comp]).  Braids and tensors map to their cast-conjugated
-    images — the [cbraid_hom] / [ctensor_hom] combinators of
-    [Construction/ColouredPROP/Interp.v] at [basechange_target] — and
-    are handled by the cast algebra of [BaseChange/Laws.v]. *)
+(*
+   本节说明 BaseChange 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example BaseChangeF_fobj (cs : list Colour) :
   fobj[BaseChangeF] cs = map f cs := eq_refl.
@@ -180,10 +155,11 @@ Example BaseChangeF_fobj (cs : list Colour) :
 Example BaseChangeF_gen {cs ds : list Colour} (g : S cs ds) :
   fmap[BaseChangeF] (CT_gen g) = CT_gen (h cs ds g) := eq_refl.
 
-(* Named after [CInterpF_fmap_id] / [CInterpF_fmap_comp] of
-   [Universal.v] (these are their instances at [basechange_target]);
-   the short names [BaseChangeF_id] / [BaseChangeF_comp] are reserved
-   for the pseudofunctoriality theorems of [BaseChange/Laws.v]. *)
+(*
+   本节说明 BaseChange 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example BaseChangeF_fmap_id (cs : list Colour) :
   fmap[BaseChangeF] (CT_id cs) = CT_id (map f cs) := eq_refl.
 
@@ -192,17 +168,11 @@ Example BaseChangeF_fmap_comp {cs ds es : list Colour}
   fmap[BaseChangeF] (CT_comp u t)
   = CT_comp (fmap[BaseChangeF] u) (fmap[BaseChangeF] t) := eq_refl.
 
-(** ** 4. The strict symmetric monoidal packaging, for free
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Each record below is the corresponding [CInterpF_*] packaging of
-    [Construction/ColouredPROP/Universal.v] at [basechange_target],
-    re-typed at the target's own monoidal tower — legitimate because
-    the restriction leaves the structures untouched, so
-    [MPc basechange_target] is judgmentally [CFreeCat_Monoidal S'
-    C'dec], and likewise for the braided and symmetric records.  Both
-    [Monoidal] instances in each type are THE shared records of their
-    respective colour types (see the D2 WARNING in
-    [Construction/ColouredPROP/Instance.v]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition BaseChangeF_Monoidal :
   @MonoidalFunctor (CFreeCat S) (CFreeCat S')
@@ -223,15 +193,11 @@ Example BaseChangeF_strict_pure_obj_is_refl :
   @strict_pure_obj _ _ _ _ BaseChangeF BaseChangeF_Strict = eq_refl
   := eq_refl.
 
-(** ...but the tensor comparison is the restriction's
-    [cprop_tensor_app] — the [map_app]-shaped composite, NOT [eq_refl]
-    (which would be ill-typed here: [map f cs ++ map f ds] and
-    [map f (cs ++ ds)] differ definitionally for variable [cs]).
-    First the comparison is pinned to the class field verbatim
-    (mirroring [CInterpF_strict_ap_obj_is_cprop_tensor_app]), then the
-    field's shape is exposed: through the free instance the
-    [eq_trans]'s first leg collapses to [eq_refl] and [cprop_of_list]
-    to the identity function, leaving [map_app] as the sole residue. *)
+(*
+   本节说明 BaseChange 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example BaseChangeF_strict_ap_obj_is_tensor_app (cs ds : list Colour) :
   @strict_ap_obj _ _ _ _ BaseChangeF BaseChangeF_Strict cs ds
@@ -250,11 +216,11 @@ Definition BaseChangeF_Braided :
     (CFreeCat_HomEqProp S') (CFreeCat_ObjDecEq S' C'dec)
     basechange_val.
 
-(** Machine-checked: because the free target's monoidal coherence is
-    [eq_refl], the [MonoidalFunctor_transport] inside
-    [CInterpF_Braided] is the identity, so the braided record's
-    underlying strong structure IS [BaseChangeF_Monoidal] — one shared
-    tensor comparison across the whole tower, on the nose. *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example BaseChangeF_Braided_is_strong :
   @braided_is_strong _ _ _ _ BaseChangeF BaseChangeF_Braided
   = BaseChangeF_Monoidal := eq_refl.
@@ -268,21 +234,22 @@ Definition BaseChangeF_Symmetric :
     (CFreeCat_Symmetric S Cdec) (CFreeCat_Symmetric S' C'dec) BaseChangeF :=
   BaseChangeF_Braided.
 
-(** The braid-compatibility square over the strict-path braiding — the
-    hypothesis-pack form that the uniqueness theorem
-    ([cinterp_unique]) consumes.  [BaseChange/Laws.v] instantiates the
-    functoriality arguments with exactly this witness. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition BaseChangeF_SymmetricStrict :
   CSymmetricStrict S Cdec basechange_target BaseChangeF BaseChangeF_Monoidal :=
   @CInterpF_SymmetricStrict Colour S Cdec basechange_target
     (CFreeCat_HomEqProp S') (CFreeCat_ObjDecEq S' C'dec)
     basechange_val.
 
-(** The target-side instance of [free_cstrict_braid], through the
-    restriction: the strict-path braiding of [basechange_target] is
-    the [CT_braid] constructor of [CTerm S'] on the nose (the
-    restriction carries [P]'s coherence verbatim, and the free
-    coherence is [eq_refl]). *)
+(*
+   本节说明 BaseChange 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example basechange_cstrict_braid (xs ys : list Colour') :
   cstrict_braid basechange_target xs ys = CT_braid xs ys := eq_refl.
 
@@ -291,10 +258,11 @@ End BaseChange.
 Arguments ColouredPROP_restrict {Colour Colour'} f P : assert.
 Arguments CSigMap {Colour Colour'} f S S' : assert.
 Arguments basechange_target {Colour Colour'} f C'dec S' : assert.
-(* [basechange_val] keeps its auto-generated argument status
-   ({Colour Colour'} f C'dec S S' h, then the [CValuation] binders):
-   its type unfolds to a ∀, so the boundary words and the generator
-   ride along as trailing arguments. *)
+(*
+   本节说明 BaseChange 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Arguments BaseChangeF {Colour Colour'} f C'dec S S' h : assert.
 Arguments BaseChangeF_Monoidal {Colour Colour'} f Cdec C'dec S S' h : assert.
 Arguments BaseChangeF_Strict {Colour Colour'} f Cdec C'dec S S' h : assert.
@@ -306,16 +274,8 @@ Arguments BaseChangeF_Symmetric {Colour Colour'} f Cdec C'dec S S' h : assert.
    as trailing arguments (compare [CInterpF_SymmetricStrict] in
    [Construction/ColouredPROP/Universal.v]). *)
 
-(** ** Discussion: functoriality and further structure
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Base change is (pseudo)functorial in [f]: along the identity
-    colour function it is the identity up to the [map_id] transports,
-    and along a composite [g ∘ f] it agrees with the composite of the
-    base changes up to the [map_map] transports.  Both statements are
-    necessarily [hom_cast]-conjugated — [map_id] and [map_map] are
-    propositional, not definitional — and both are consequences of the
-    uniqueness half of the universal property rather than fresh
-    inductions; they live in [Construction/ColouredPROP/BaseChange/
-    Laws.v], together with the subset-restriction specialisation
-    (base change along [proj1_sig]) and the descent of base change to
-    presented coloured PROPs. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

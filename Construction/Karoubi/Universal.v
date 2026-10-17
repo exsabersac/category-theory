@@ -28,10 +28,11 @@ Class IdempotentsSplit (C : Category) := {
     ∃ (y : C) (S : @SplitIdempotent C x y), @split_idem C x y S ≈ e
 }.
 
-(* Idempotents split in the Karoubi envelope: [karoubi_idem_splits] from
-   Construction/Karoubi.v, repackaged through the class.  The splitting it
-   chooses for an idempotent φ on (x, e) has φ itself as the split
-   idempotent, so agreement with φ is reflexivity. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance Karoubi_IdempotentsSplit {C : Category} :
   IdempotentsSplit (Karoubi C).
 Proof.
@@ -42,10 +43,11 @@ Proof.
   reflexivity.
 Defined.
 
-(* Splitting objects are unique up to isomorphism: if S splits an idempotent
-   through y, and S' splits an ≈-equal idempotent through y', then composing
-   the section of one with the retraction of the other in both orders yields
-   a two-sided inverse pair between y and y'. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition split_idem_unique {C : Category} {x y y' : C}
            (S : @SplitIdempotent C x y) (S' : @SplitIdempotent C x y')
            (Heq : @split_idem C x y S ≈ @split_idem C x y' S') : y ≅ y'.

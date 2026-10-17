@@ -32,11 +32,11 @@ Arguments cospan_apex {X Y} _.
 Arguments cospan_in1  {X Y} _.
 Arguments cospan_in2  {X Y} _.
 
-(* Two cospans are equivalent if there is an isomorphism of apexes whose
-   composite (in either direction) with the corresponding legs agrees.
+(*
+   本节说明同构相关定义、性质与动机。
 
-   Convention: we require [to phi ∘ cospan_in1 f ≈ cospan_in1 g] (the iso
-   intertwines the legs from the LHS apex to the RHS apex). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cospan_equiv {X Y : C} (f g : CospanArrow X Y) : Type :=
   { phi : cospan_apex f ≅ cospan_apex g
     & ((to phi ∘ cospan_in1 f ≈ cospan_in1 g)
@@ -87,13 +87,11 @@ Definition cospan_id (X : C) : CospanArrow X X :=
 
 Variable HP : HasPushouts C.
 
-(* Composition of cospans via pushout.
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-   Given [f : X ~> Y] with apex [N] and legs [i1f : X ~> N], [i2f : Y ~> N],
-   and [g : Y ~> Z] with apex [M] and legs [i1g : Y ~> M], [i2g : Z ~> M],
-   the pushout of the span [N <-i2f- Y -i1g-> M] gives an apex [P] with
-   [in1 : N ~> P], [in2 : M ~> P].  The composite cospan has apex [P],
-   [cospan_in1 := in1 ∘ i1f] and [cospan_in2 := in2 ∘ i2g]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cospan_compose
            {X Y Z : C}
            (g : CospanArrow Y Z) (f : CospanArrow X Y)
@@ -265,26 +263,11 @@ Defined.
 
 (** ** Associativity via pushout-pasting *)
 
-(* Mirrors [span_compose_assoc] in [Construction/Span/Category.v]
-   with arrows reversed.
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-   Refactoring note (deferred).
-
-   The proof below is 175 lines.  It builds both mediator maps
-   [PR -> PL] and [PL -> PR] inline by the HP-style "construct cocone,
-   apply UMP, prove round-trips by [pushout_med_eq]" technique.
-   The two mediator constructions are structurally identical modulo
-   a swap of inner / outer pushouts.
-
-   Extracting the "mediator-by-pasting" sub-lemma — call it
-   [pushout_pasting_med] — should shrink this proof to roughly
-   50 lines, by replacing the two ad-hoc inline mediator
-   constructions with a single shared lemma application.  The
-   underlying mathematical fact is one application of pushout-pasting
-   in two steps (Mac Lane CWM IX.3, or Riehl Ch.3 Prop 3.4.7).
-
-   Deferred to a follow-up PR; the present proof is correct and
-   self-contained. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cospan_compose_assoc {X Y Z W : C}
       (h : CospanArrow Z W) (g : CospanArrow Y Z) (f : CospanArrow X Y) :
@@ -301,17 +284,11 @@ Proof.
   pose proof (pushout_commutes Phg) as Phgc.
   pose proof (pushout_commutes PL)  as PLc.
   pose proof (pushout_commutes PR)  as PRc.
-  (* === Build mediator PR -> PL ===
-     PR has injections [pushout_in1 PR : apex f ~> apex PR] and
-                       [pushout_in2 PR : apex Phg ~> apex PR].
-     We need a map PR -> PL.  PL has injections from apex Pgf and apex h.
-       - From apex Pgf:  use UMP of Pgf with cocone
-           (pushout_in1 PL ∘ pushout_in1 Pgf : apex f ~> apex PL,
-            pushout_in1 PL ∘ pushout_in2 Pgf : apex g ~> apex PL).
-         BUT — we need a cocone into a single object.  Actually we need a
-         direct map [apex Pgf ~> apex PR]; use [pushout_in1 PR : apex f ~> apex PR]
-         and route apex g via pushout_in2 PR ∘ pushout_in1 Phg.
-         Same structure as the span case, dualised. *)
+  (*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   (* PR has cocone giving a map apex Pgf -> apex PR:
      (pushout_in1 PR : apex f -> apex PR, pushout_in2 PR ∘ pushout_in1 Phg : apex g -> apex PR)
      Commutes because: (pushout_in1 PR) ∘ cospan_in2 f

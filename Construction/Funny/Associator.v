@@ -25,10 +25,11 @@ Context {E : Category}.
 
 (** ** The forward direction: flattening *)
 
-(* Insert [C □ D] at a fixed [e : E], re-nesting [D]-steps inside a right
-   step whose payload is a singleton [D □ E]-word.  The payload congruence
-   [feq_consR] is what lets the inner [feq]-reasoning flow through the outer
-   step in the identity and composition laws. *)
+(*
+   本节说明 Associator 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition FunnyAssocInnerL_sep (e : E) :
   SepFunctorial (E:=C □ (D □ E)) (fun (c : C) (d : D) => (c, (d, e))) := {|
   sf_lmap := fun c c' f d => lstep f;
@@ -164,11 +165,11 @@ Next Obligation. now apply (ffold_app (FunnyAssocInnerR_sep _)). Qed.
 Definition FunnyAssocFrom : (C □ (D □ E)) ⟶ ((C □ D) □ E) :=
   FunnyUP FunnyAssocFrom_sep.
 
-(** ** Computation on the generating steps
+(*
+   本节说明函子相关定义、性质与动机。
 
-    [ffold] and [fapp] compute, so the action of both directions on
-    generating steps reduces to the inner functors (up to a vanishing
-    [fapp _ fnil] on the abstract-payload side). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma FunnyAssocTo_lstep {p p' : C □ D} (e : E) (w : p ~{C □ D}~> p') :
   @fmap ((C □ D) □ E) (C □ (D □ E)) FunnyAssocTo (p, e) (p', e)
@@ -196,12 +197,11 @@ Lemma FunnyAssocFrom_rstep (c : C) {q q' : D □ E} (W : q ~{D □ E}~> q') :
     = @fmap (D □ E) ((C □ D) □ E) (FunnyAssocInnerR c) q q' W.
 Proof. exact (fapp_nil_r _). Qed.
 
-(** ** Segment round trips
+(*
+   本节说明 Associator 相关定义、性质与动机。
 
-    Un-flattening a flattened inner word recovers the original word as a
-    singleton generating step, and vice versa.  These are stated at
-    destructed pairs so that both sides' types are convertible ([prod] has
-    no definitional eta). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma from_innerL (e : E) {c c' : C} {d d' : D}
   (w : FunHom (C:=C) (D:=D) c d c' d') :

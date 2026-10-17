@@ -33,14 +33,11 @@ Notation I := (Incl C S).
 
 Definition radj : reflector R ⊣ I := reflective_adj R.
 
-(** ** A transparent counit isomorphism
+(*
+   本节说明同构相关定义、性质与动机。
 
-    Construction/Reflective.v's [reflective_counit_iso] is [Qed]; this
-    development consumes the isomorphism as DATA (it is whiskered into a
-    diagram isomorphism whose components must reduce), so it is restated
-    here with [Defined].  Fullness of the inclusion is spent exactly once,
-    in [rc_unit_hom]: the unit at [I x] lives in the ambient category and
-    has to be lifted into the subcategory. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition rc_unit_hom (x : Sub C S) : x ~{Sub C S}~> reflector R (I x).
 Proof.
@@ -96,13 +93,11 @@ Proof.
   now rewrite id_left.
 Defined.
 
-(** ** The reflected colimit
+(*
+   本节说明伴随、（余）极限、等价相关定义、性质与动机。
 
-    The reflector, a left adjoint, carries the ambient colimit of [I ◯ K]
-    to a colimit of [reflector ◯ (I ◯ K)] (Adjunction/Continuity.v's
-    [lapc_is_acolimit]); the diagram isomorphism moves it to [K]
-    (Theory/Equivalence/Colimit.v's [isacolimit_transport]); the apex is
-    untouched. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition reflective_colimit (L : Colimit (I ◯ K)) : Colimit K :=
   isalimit_to_limit

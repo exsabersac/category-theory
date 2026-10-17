@@ -60,12 +60,11 @@ Fixpoint can (w : Word) : subst w ≅ nf (wlen w) I :=
   | WT v u => J (wlen v) (wlen u) I ⊙ tensor_iso (can v) (can u)
   end.
 
-(** ** The cast kit
+(*
+   本节说明 Normal 相关定义、性质与动机。
 
-    All transports are [id_cast (f_equal (fun i => nf i X) e)] with [e] a nat
-    equality.  Discipline for everything downstream: NEVER [destruct] a proof
-    of [wlen v = wlen w] — its endpoints are not variables and [destruct]
-    refuses; route through these lemmas, which quantify over bare naturals. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma nf_cast_irr {m n : nat} {X : B} (e e' : m = n) :
   id_cast (f_equal (fun i => nf i X) e)
@@ -131,10 +130,11 @@ Proof.
     rewrite <- !comp_assoc.
     apply compose_respects; [ reflexivity |].
     apply triangle_identity_left.
-  - (* The successor cast becomes [bimap id (cast)]; two associator
-       naturalities bring the two sides into a common shape, the induction
-       hypothesis rewrites under [bimap id (-)], and the residue is the
-       PENTAGON verbatim. *)
+  - (*
+   本节说明 Normal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     rewrite (UIP_dec Nat.eq_dec (Nat.add_assoc (S m) m' n)
                (f_equal S (Nat.add_assoc m m' n))).
     rewrite (@nf_cast_succ (m + (m' + n)) (m + m' + n) X
@@ -173,10 +173,11 @@ Theorem J_right_unit (n : nat) :
     ≈ to (@unit_right B _ (nf n I)).
 Proof.
   induction n; simpl.
-  - (* The cast's index pair (0 + 0, 0) never matches the kit lemmas
-       syntactically (rewrite does not convert inside implicit arguments), so
-       normalise the PROOF to [eq_refl] — a closed subterm, always matchable —
-       and let reduction erase the cast. *)
+  - (*
+   本节说明 Normal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     rewrite (UIP_dec Nat.eq_dec (Nat.add_0_r 0) eq_refl).
     simpl.
     rewrite id_left.

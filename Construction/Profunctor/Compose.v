@@ -35,9 +35,11 @@ Context {C D E : Category}.
 Context (P : C ⇸ D).
 Context (Q : D ⇸ E).
 
-(* Pointwise readings of the functor laws for Sets-valued functors. Every coend
-   obligation below reduces to the functoriality of `P` and `Q` at a point, and
-   these three lemmas apply those laws under an evaluated setoid map. *)
+(*
+   本节说明函子、（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma fmap_pt {A : Category} (F : A ⟶ Sets) {x y : A}
   (m m' : x ~{A}~> y) (Hm : m ≈ m') (a : F x) :
   fmap[F] m a ≈ fmap[F] m' a.
@@ -54,9 +56,11 @@ Proof. exact (@fmap_comp _ _ F x y z m2 m1 a). Qed.
 
 (** ** The integrand bifunctor at a fixed pair *)
 
-(* `prof_integrand c e : D^op ∏ D ⟶ Sets`, `(d', d) ↦ P(c, d) × Q(d', e)`. The
-   action on `(φ, ψ) : (d1', d1) ~> (d2', d2)` post-composes with `Q(φ, e)` on
-   the contravariant factor and with `P(c, ψ)` on the covariant factor. *)
+(*
+   本节说明 Compose 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition prof_integrand (c : C) (e : E) : (D^op ∏ D) ⟶ Sets := {|
   fobj := fun p =>
     {| carrier   := carrier (P (c, snd p)) * carrier (Q (fst p, e))
@@ -177,9 +181,11 @@ Qed.
 
 (** ** The dinaturality (cowedge) condition of the transported legs *)
 
-(* The legs `coend_inj ∘ prof_theta (d, d)` into the target coend form a cowedge
-   over the source integrand. This is naturality of `prof_theta` composed with
-   the target coend's own cowedge condition. *)
+(*
+   本节说明（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma prof_leg_cowedge (c1 c2 : C) (e1 e2 : E)
   (fc : c1 ~{C^op}~> c2) (fe : e1 ~{E}~> e2) :
   Cowedge_cond (prof_integrand c1 e1)

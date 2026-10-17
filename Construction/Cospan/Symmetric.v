@@ -100,30 +100,22 @@ Proof.
     reflexivity.
 Qed.
 
-(** ** C-level hexagon ([from] version)
+(*
+   本节说明 Symmetric 相关定义、性质与动机。
 
-    Dual: domain [x+(y+z)], codomain [(z+x)+y]:
-
-      from α_{z,x,y} ∘ paws_{x+y, z} ∘ from α_{x,y,z}
-        ≈ cover paws_{x,z} id[y] ∘ from α_{x,z,y} ∘ cover id[x] paws_{y,z}
-
-    Proved directly via [coprod_ext] on [x+(y+z)]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma coprod_hexagon_aux_from {x y z : C} :
   from (@coprod_assoc C H_Coc z x y) ∘ paws ∘ from (@coprod_assoc C H_Coc x y z)
   ≈ cover paws id[y] ∘ from (@coprod_assoc C H_Coc x z y) ∘ cover id[x] paws.
 Proof.
   apply coprod_ext.
-  - (* ∘ inl   (x-leg)
-       LHS: from α_{z,x,y} ∘ paws ∘ (inl∘inl)  [assoc_from_inl]
-            = from α_{z,x,y} ∘ (paws ∘ inl) ∘ inl
-            = from α_{z,x,y} ∘ inr ∘ inl       [paws_inl]
-            = inl ∘ inr                         [assoc_from_inr_inl]
-       RHS: cover paws id ∘ from α_{x,z,y} ∘ (cover id paws ∘ inl)
-            = cover paws id ∘ from α_{x,z,y} ∘ (inl ∘ id)  [cover_inl]
-            = cover paws id ∘ (inl ∘ inl)                  [assoc_from_inl]
-            = (inl ∘ paws) ∘ inl                            [cover_inl]
-            = inl ∘ inr                                     [paws_inl]    *)
+  - (*
+   本节说明 Symmetric 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
     rewrite <- !comp_assoc.
     rewrite assoc_from_inl.
     rewrite (comp_assoc paws inl inl).
@@ -139,17 +131,11 @@ Proof.
     reflexivity.
   - (* ∘ inr   need to further decompose y/z *)
     apply coprod_ext.
-    + (* ∘ (inr ∘ inl)  (y-leg)
-         LHS: from α_{z,x,y} ∘ paws ∘ (inl ∘ inr)    [assoc_from_inr_inl]
-              = from α_{z,x,y} ∘ (paws ∘ inl) ∘ inr
-              = from α_{z,x,y} ∘ (inr ∘ inr)         [paws_inl]
-              = inr                                   [assoc_from_inr_inr]
-         RHS: cover paws id ∘ from α_{x,z,y} ∘ (cover id paws ∘ (inr ∘ inl))
-              = cover paws id ∘ from α_{x,z,y} ∘ (inr ∘ paws ∘ inl)   [cover_inr]
-              = cover paws id ∘ from α_{x,z,y} ∘ (inr ∘ inr)          [paws_inl]
-              = cover paws id ∘ inr                                    [assoc_from_inr_inr]
-              = inr ∘ id                                              [cover_inr]
-              = inr                                                                              *)
+    + (*
+   本节说明 Symmetric 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
       rewrite <- !comp_assoc.
       rewrite assoc_from_inr_inl.
       rewrite (comp_assoc paws inl inr).
@@ -163,17 +149,11 @@ Proof.
       rewrite assoc_from_inr_inr.
       rewrite cover_inr, id_right.
       reflexivity.
-    + (* ∘ (inr ∘ inr)  (z-leg)
-         LHS: from α_{z,x,y} ∘ paws ∘ (inr)          [assoc_from_inr_inr]
-              = from α_{z,x,y} ∘ (paws ∘ inr)
-              = from α_{z,x,y} ∘ inl                  [paws_inr]
-              = inl ∘ inl                              [assoc_from_inl]
-         RHS: cover paws id ∘ from α_{x,z,y} ∘ (cover id paws ∘ (inr ∘ inr))
-              = cover paws id ∘ from α_{x,z,y} ∘ (inr ∘ paws ∘ inr)   [cover_inr]
-              = cover paws id ∘ from α_{x,z,y} ∘ (inr ∘ inl)          [paws_inr]
-              = cover paws id ∘ (inl ∘ inr)                            [assoc_from_inr_inl]
-              = (inl ∘ paws) ∘ inr                                     [cover_inl]
-              = inl ∘ inl                                              [paws_inr]               *)
+    + (*
+   本节说明 Symmetric 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
       rewrite <- !comp_assoc.
       rewrite assoc_from_inr_inr.
       rewrite paws_inr.

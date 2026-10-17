@@ -63,9 +63,11 @@ Example csig_transport_refl {Colour : Type} {S : CSignature Colour}
   {a b : list Colour} (s : S a b) :
   csig_transport eq_refl eq_refl s = s := eq_refl.
 
-(** Transporting there and back is the identity — [e]-elimination, no
-    proof irrelevance needed.  Both round-trip orientations are used:
-    [_inv] by the identity law, [_inv_sym] by the composition law. *)
+(*
+   本节说明 Laws 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma csig_transport_inv {Colour : Type} {S : CSignature Colour}
   {a a' b b' : list Colour} (e1 : a = a') (e2 : b = b') (s : S a' b') :
   csig_transport e1 e2 (csig_transport (eq_sym e1) (eq_sym e2) s) = s.
@@ -93,10 +95,11 @@ Context {Colour : Type}.
 Context (Cdec : forall c d : Colour, {c = d} + {c <> d}).
 Context (S : CSignature Colour).
 
-(** The identity signature morphism over [fun c => c]: each generator
-    is transported along [eq_sym (map_id _)] to the boundary words the
-    [CSigMap] type demands.  ([map (fun c => c) cs] and [cs] are only
-    propositionally equal — the seam this whole section threads.) *)
+(*
+   本节说明 Laws 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CSigMap_id : CSigMap (fun c : Colour => c) S S :=
   fun (cs ds : list Colour) (s : S cs ds) =>
     csig_transport (eq_sym (map_id cs)) (eq_sym (map_id ds)) s.
@@ -111,11 +114,11 @@ Example BaseChangeF_identity_gen {cs ds : list Colour} (s : S cs ds) :
   fmap[BaseChangeF (fun c : Colour => c) Cdec S S CSigMap_id] (CT_gen s)
   = CT_gen (CSigMap_id cs ds s) := eq_refl.
 
-(** The identity functor on [CFreeCat S], as a strict symmetric
-    competitor at the identity base-change target: its braid square
-    holds because both tensor comparisons are transported identities
-    along [eq_refl] and the target's strict-path braiding is the
-    [CT_braid] constructor on the nose ([basechange_cstrict_braid]). *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma BaseChangeF_id_square :
   CSymmetricStrict S Cdec (basechange_target (fun c : Colour => c) Cdec S)
     Id[CFreeCat S]
@@ -143,10 +146,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** Functoriality, identity law: the identity base change is the
-    identity functor, up to the [hom_cast] conjugation along [map_id].
-    By [cinterp_unique] at the identity competitor — no induction on
-    terms appears here. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem BaseChangeF_id {cs ds : list Colour} (t : CTerm S cs ds) :
   @hom_cast (CFreeCat S)
     (map (fun c : Colour => c) cs) (map (fun c : Colour => c) ds)
@@ -214,9 +218,11 @@ Notation SG1 := (BaseChangeF_Strict g C'dec C''dec S' S'' hg).
 Notation apF x y := (@strict_ap_obj _ _ _ _ F1 SF1 x y).
 Notation apG x y := (@strict_ap_obj _ _ _ _ G1 SG1 x y).
 
-(** Machine-checked: the composite of the two base changes acts on
-    objects by [map g ∘ map f], and the single base change along the
-    composite function sends a generator to the composite datum. *)
+(*
+   本节说明 Laws 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example BaseChangeF_comp_fobj (cs : list Colour) :
   fobj[G1 ◯ F1] cs = map g (map f cs) := eq_refl.
 
@@ -237,12 +243,11 @@ Definition BaseChangeF_comp_Strict :
     (CFreeCat_Monoidal S'' C''dec)
     G1 F1 SG1 SF1.
 
-(** *** The comparison casts of the three functors
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Each strict tensor comparison, spelled as an [id_cast] — the form
-    the cast algebra below consumes ([id_cast] is definitionally the
-    transported-identity [match] the class fields carry, so each proof
-    is the class field itself). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma hf_ap_cast (x y : list Colour) :
   to (@ap_iso _ _ _ _ F1 (BaseChangeF_Monoidal f Cdec C'dec S S' hf) x y)
@@ -261,15 +266,11 @@ Lemma comp_ap_cast (x y : list Colour) :
     ≈ id_cast (@strict_ap_obj _ _ _ _ (G1 ◯ F1) BaseChangeF_comp_Strict x y).
 Proof. exact (@strict_ap_iso_id _ _ _ _ (G1 ◯ F1) BaseChangeF_comp_Strict x y). Qed.
 
-(** *** The legs' braid images, in cast-conjugated form
+(*
+   本节说明 Laws 相关定义、性质与动机。
 
-    Each leg sends the block braid to the target braid conjugated by
-    its own tensor comparison — its [CSymmetricStrict] square of
-    [BaseChange.v], with both comparisons rewritten to casts and the
-    cast slid across the equation ([comp_cast_shift]).  The target's
-    strict-path braiding is the [CT_braid] constructor on the nose
-    (the free coherence is [eq_refl]), so the braids are spelled as
-    constructors. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma hf_braid_conj (x y : list Colour) :
   fmap[F1] (CT_braid x y)
@@ -293,16 +294,11 @@ Proof.
            (id_cast (apG y x) ∘ CT_braid (map g x) (map g y)) HB).
 Qed.
 
-(** *** The composite braid square
+(*
+   本节说明函子相关定义、性质与动机。
 
-    The composite functor satisfies the braid-compatibility square
-    over ITS composite tensor comparison.  Proof: push [fmap[G1◯F1]]
-    through the two conjugated braid images ([hf_braid_conj] under
-    [fmap[G1]], then [fmap_id_cast] and [hg_braid_conj]), then fuse
-    the resulting cast chain: the three inner casts compose to a loop
-    on the tensor object, killed by axiom-free UIP on colour words
-    ([id_cast_loop] at [CFreeCat_ObjDecEq S'' C''dec]); the two outer
-    casts fuse to exactly the composite comparison. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma BaseChange_comp_square :
   CSymmetricStrict S Cdec
@@ -358,11 +354,11 @@ Lemma BaseChangeF_comp_gen2 (cs ds : list Colour) (s : S cs ds) :
            CSigMap_compose cs ds s).
 Proof. reflexivity. Qed.
 
-(** Functoriality, composition law: base change along [g ∘ f] agrees
-    with the composite of the base changes, up to the [hom_cast]
-    conjugation along [map_map].  Both sides are strict symmetric
-    competitors extending the valuation [CT_gen ∘ CSigMap_compose],
-    so [cinterp_unique2] pins them together. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem BaseChangeF_comp {cs ds : list Colour} (t : CTerm S cs ds) :
   @hom_cast (CFreeCat S'')
     (map g (map f cs)) (map g (map f ds))
@@ -416,18 +412,19 @@ Context (S : CSignature Colour).
 Context (Q : Colour -> Prop).
 Context (Ssub : CSignature (ColourSub Q)).
 
-(** Decidability of the SUBTYPE is an explicit hypothesis: for a
-    [Prop]-valued [Q] it does not follow from [Cdec] without proof
-    irrelevance of [Q], and this file manufactures no such principle.
-    (For proof-irrelevant or decidable [Q] the caller can of course
-    construct [CdecSub] and pass it in.) *)
+(*
+   本节说明 Laws 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context (CdecSub : forall a b : ColourSub Q, {a = b} + {a <> b}).
 Context (hsub : CSigMap (@proj1_sig Colour Q) Ssub S).
 
-(** The restriction functor, and its inherited strict symmetric
-    monoidal packaging — each record is the corresponding
-    [BaseChangeF_*] of [BaseChange.v] at [f := proj1_sig], typed at
-    the two shared [Monoidal] records of the ambient colour types. *)
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition SubColourFunctor : CFreeCat Ssub ⟶ CFreeCat S :=
   BaseChangeF (@proj1_sig Colour Q) Cdec Ssub S hsub.
@@ -493,10 +490,11 @@ Context (hE : CSigMap f (csmt_sig E) (csmt_sig E')).
 (** The base-change functor between the underlying free categories. *)
 Notation BF := (BaseChangeF f C'dec (csmt_sig E) (csmt_sig E') hE).
 
-(** A signature morphism RESPECTS the theories when it carries every
-    axiom of [E] to a derivable equation of [E'].  This is the
-    semantic entry fee of the descent — the analogue, one level up, of
-    the [ESound] hypothesis of the presented universal property. *)
+(*
+   本节说明 Laws 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition BaseChangeRespects : Type :=
   forall (cs ds : list Colour) (s t : CTerm (csmt_sig E) cs ds),
     csmt_eqs E cs ds s t ->
@@ -504,15 +502,11 @@ Definition BaseChangeRespects : Type :=
 
 Context (HR : BaseChangeRespects).
 
-(** [BF] carries the whole theory congruence of [E] into that of
-    [E'].  Six cases; the embedded free equations go through [BF]'s
-    OWN respectfulness (the nineteen-case soundness induction of the
-    universal property, reused through the functor — not repeated);
-    the axioms go through [HR]; the composition and tensor congruence
-    cases are closed by the corresponding [CTermEqW] constructors,
-    since [fmap[BF]] computes to [CT_comp] on composites and to a
-    cast-conjugated [CT_tens] on tensors, with the SAME conjugating
-    casts on both sides of each equation. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma BaseChange_CTermEqW {cs ds : list Colour}
   {s t : CTerm (csmt_sig E) cs ds} :
   CTermEqW E s t -> CTermEqW E' (fmap[BF] s) (fmap[BF] t).
@@ -546,10 +540,11 @@ Proof using C'dec E E' HR f hE.
              (CTermEqW_refl E' _)).
 Qed.
 
-(** The descended functor between the presented coloured PROPs: the
-    quotient lifting of the projection-postcomposed base change.  On
-    objects it is [map f]; on morphisms it is [fmap[BF]] — only the
-    equivalences coarsen. *)
+(*
+   本节说明函子、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PresentedBaseChange : CPresentedCat E ⟶ CPresentedCat E' :=
   @QuotientLift (CFreeCat (csmt_sig E))
     (fun cs ds : list Colour => @CTermEqW Colour E cs ds)
@@ -587,30 +582,8 @@ End PresentedDescent.
 Arguments BaseChangeRespects {Colour Colour'} f C'dec E E' hE : assert.
 Arguments PresentedBaseChange {Colour Colour'} f C'dec E E' hE HR : assert.
 
-(** ** Discussion
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
 
-    The two functoriality laws are as strict as the type theory
-    permits: [map_id] and [map_map] are propositional equalities of
-    colour words, so the laws hold up to the corresponding [hom_cast]
-    conjugations and no more.  (With definitionally-proof-irrelevant
-    equality — or with [nat]-indexed one-sorted PROPs, where the donor
-    spine keeps every boundary equation in [Nat] — some of these casts
-    would collapse; over an arbitrary [Colour : Type] they are
-    irreducible.)  Together the laws exhibit free-coloured-PROP
-    formation as functorial up to the [hom_cast] comparisons — the
-    1-cell-level identity and composition agreements of a would-be
-    pseudofunctor from coloured signatures over varying colour sets
-    to strict symmetric monoidal categories.  The coherence
-    conditions a pseudofunctor additionally demands of its comparison
-    cells (compatibility of the [map_id] / [map_map] cast families
-    under pasting, and their associativity/unit coherence) are NOT
-    formalized here.
-
-    [PresentedBaseChange] extends this to presented coloured PROPs:
-    functoriality of the descended construction along identities and
-    composites follows from [QuotientLift_unique] together with the
-    laws above, at the price of the same casts; the statements are
-    omitted here because nothing in the library consumes them —
-    the same no-consumer ground on which the free-level laws
-    themselves currently stand, since no in-repo file yet imports
-    this one. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

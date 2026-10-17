@@ -45,10 +45,11 @@ Context (HP : HasPushouts C).
 
 (** ** Unit coherence (cheaper) *)
 
-(** [scfa_mu (scfa I) ≈ to unit_left] : at the cospan level, both
-    [mor_as_cospan (id▽id : 0+0 → 0)] and [mor_as_cospan (to coprod_zero_l)]
-    are equal because all morphisms with codomain [0] are equal by
-    initiality. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cospan_scfa_unit_mu :
   cospan_equiv
     (cospan_scfa_mu (@Cospan_unit_obj C H_Ini))
@@ -364,17 +365,11 @@ Proof.
   apply codiag_through_mid_swap.
 Qed.
 
-(** ** Cospan-level mid_swap reduces to [mor_as_cospan mid_swap_C]
+(*
+   本节说明 HypergraphInstance 相关定义、性质与动机。
 
-    The [Hypergraph] class's [mid_swap X Y] is built from cospan
-    [tensor_assoc], [bimap], and [braid].  In [CospanCat C HP],
-    [tensor_assoc] is [mor_iso_lift] of [coprod_assoc] (so [to] is
-    [mor_as_cospan (to coprod_assoc)] and [from] is [mor_as_cospan
-    (from coprod_assoc)]), [bimap] is [cospan_tensor], and [braid] is
-    [mor_as_cospan paws].  The whole expression therefore reduces, by
-    iterated [cospan_tensor_id_left_as_cospan] /
-    [cospan_tensor_mor_as_cospan] / [mor_as_cospan_compose], to
-    [mor_as_cospan (mid_swap_C X Y)]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cospan_mid_swap_as_mor (X Y : C) :
   cospan_equiv
@@ -382,14 +377,11 @@ Lemma cospan_mid_swap_as_mor (X Y : C) :
     (mor_as_cospan (mid_swap_C X Y)).
 Proof.
   unfold mid_swap, mid_swap_C; simpl.
-  (* The expression is left-associated: ((((e1 ∘ e2) ∘ e3) ∘ e4) ∘ e5)
-     where, with cospan_compose g f convention,
-       e1 = α⁻¹              (mor_as_cospan)
-       e2 = bimap id (to α)  → rewrite to mor_as_cospan via tensor_id_left
-       e3 = bimap id (bimap paws id)  → 2-stage reduction
-       e4 = bimap id (α⁻¹)   → rewrite via tensor_id_left
-       e5 = to α             (mor_as_cospan)
-     At depth k from outer, [f] is e_{5-k} and [g] is the prefix. *)
+  (*
+   本节说明 HypergraphInstance 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   (* Stage A: reduce e2, e3, e4 each to mor_as_cospan. *)
   eapply cospan_equiv_trans.
   { apply cospan_compose_respects_aux.
@@ -554,13 +546,11 @@ Proof.
   reflexivity.
 Defined.
 
-(** Composing [mid_swap_C_inv] before [mid_swap_C] cancels (in C).
+(*
+   本节说明 HypergraphInstance 相关定义、性质与动机。
 
-    The five-stage cancellation chain (after full right-associativity):
-    [to α₄ ∘ from α₅], then [cover id (from α₃) ∘ cover id (to α₆)],
-    [cover id (cover paws id) ∘ cover id (cover paws id)],
-    [cover id (to α₂) ∘ cover id (from α₇)], and finally
-    [from α₁ ∘ to α₈]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mid_swap_C_inv_left (X Y : C) :
   mid_swap_C X Y ∘ mid_swap_C_inv X Y ≈ id.
 Proof.
@@ -587,14 +577,11 @@ Proof.
   apply iso_from_to.
 Qed.
 
-(** Reverse cancellation: [mid_swap_C_inv ∘ mid_swap_C ≈ id].
+(*
+   本节说明 HypergraphInstance 相关定义、性质与动机。
 
-    Five stages of cancellation, dual to [mid_swap_C_inv_left]:
-    (1) to α(X,X,Y+Y) ∘ from α(X,X,Y+Y) = id
-    (2) cover id (from α(X,Y,Y)) ∘ cover id (to α(X,Y,Y)) = id
-    (3) cover id (cover paws id) ∘ cover id (cover paws id) = id
-    (4) cover id (to α(Y,X,Y)) ∘ cover id (from α(Y,X,Y)) = id
-    (5) from α(X,Y,X+Y) ∘ to α(X,Y,X+Y) = id *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mid_swap_C_inv_right (X Y : C) :
   mid_swap_C_inv X Y ∘ mid_swap_C X Y ≈ id.
 Proof.
@@ -623,14 +610,11 @@ Lemma cospan_scfa_tensor_delta (X Y : C) :
        (@mid_swap_inv (CospanCat C HP) (Cospan_SymmetricMonoidal HP) X Y)
        (cospan_tensor (cospan_scfa_delta X) (cospan_scfa_delta Y))).
 Proof.
-  (* Build the iso phi : (X+X)+(Y+Y) ≅ (X+Y)+(X+Y) with
-       to phi   := mid_swap_C_inv X Y
-       from phi := mid_swap_C X Y.
-     Then [mor_as_cospan mid_swap_C_inv ≈ mor_as_cospan_to phi].
-     [cospan_compose_forward_iso_back] collapses the composite to a
-     single [mor_as_cospan_back] whose underlying C-morphism is
-     [(cover (id▽id_X)(id▽id_Y)) ∘ from phi = m1 ∘ mid_swap_C],
-     which by [codiag_via_mid_swap_C] equals [id▽id_{X+Y}].         *)
+  (*
+   本节说明 HypergraphInstance 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   apply cospan_equiv_sym.
   eapply cospan_equiv_trans.
   { apply cospan_compose_respects_aux.
@@ -667,12 +651,11 @@ Defined.
 
 End CospanHypergraphInstance.
 
-(** * The [Hypergraph (CospanCat C HP)] instance
+(*
+   本节说明 HypergraphInstance 相关定义、性质与动机。
 
-    Assembling the eight axioms ([4 unit] + [4 tensor]) into the full
-    [Hypergraph] class.  The SCFA on every object is [cospan_scfa]; the
-    tensor coherence is [cospan_scfa_tensor_{mu,eta,delta,epsilon}]; the
-    unit coherence is [cospan_scfa_unit_{mu,eta,delta,epsilon}]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CospanHypergraph.
 

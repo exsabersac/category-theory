@@ -20,14 +20,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** * A small splitting/cons toolkit in K
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Interchange specializations that peel a composite out of one tensor
-    slot, plus right-nested ("cons") forms of the enriched associativity
-    law and of the solved triangle identities from
-    Structure/Monoidal/Braided/Proofs.v.  All are pure monoidal-category
-    facts except [ecompose_assoc_cons], which is the associativity law of
-    an enriched category re-bracketed for right-nested rewriting. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Toolkit.
 
@@ -74,12 +71,11 @@ Qed.
 
 End Toolkit.
 
-(** * Component-level unit and associativity laws
+(*
+   本节说明hom相关定义、性质与动机。
 
-    The vertical composite's unit and associativity laws hold at each
-    component for purely typological reasons — no naturality is involved —
-    so we prove them once, for arbitrary I-sourced elements of hom-objects
-    of any K-category D. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Vertical.
 
@@ -117,9 +113,11 @@ Proof.
   now rewrite id_left.
 Qed.
 
-(* Vertical composition is associative: reassociate with ecompose_assoc,
-   slide the associator through the components, and let the unitor
-   bookkeeping cancel via the solved triangle identities. *)
+(*
+   本节说明 Fun 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma vertical_assoc {w x y z : D}
       (p : I ~{K}~> (y ⟿ z)) (q : I ~{K}~> (x ⟿ y))
       (r : I ~{K}~> (w ⟿ x)) :
@@ -182,11 +180,11 @@ Program Definition EnrichedTransform_vcompose {K : Category} `{M : @Monoidal K}
                   ⨂ etransform (EnrichedTransform := σ) x) ∘ unit_left⁻¹
 |}.
 Next Obligation.
-  (* V-naturality of the vertical composite.  Reassociate with
-     ecompose_assoc so that σ's component meets efmap F, apply σ's
-     enaturality, reassociate back so that τ's component meets efmap G, and
-     apply τ's enaturality; the unitor bookkeeping mirrors the ecompose_assoc
-     proof pattern via the solved triangle identities. *)
+  (*
+   本节说明 Fun 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   intros K M C D F G J τ σ x y.
   simpl.
   rewrite <- !comp_assoc.

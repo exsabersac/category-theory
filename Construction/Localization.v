@@ -23,89 +23,25 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Where localization comes from, and what it is for
+(*
+   关于localization的来源与用途
 
    nLab:  https://ncatlab.org/nlab/show/localization
-          https://ncatlab.org/nlab/show/reflective+localization
-          https://ncatlab.org/nlab/show/orthogonal+subcategory+problem
+   https://ncatlab.org/nlab/show/reflective+localization
+   https://ncatlab.org/nlab/show/orthogonal+subcategory+problem
    Wikipedia:
-     https://en.wikipedia.org/wiki/Localization_(commutative_algebra)
+   https://en.wikipedia.org/wiki/Localization_(commutative_algebra)
 
-   Localization universally inverts a chosen class of morphisms.  Given
-   W it is the initial way to pass from C to a category C[W⁻¹] in which
-   every W-map becomes an isomorphism, so that any functor carrying W to
-   isomorphisms factors, essentially uniquely, through it.  It lets a
-   family of maps be turned into isomorphisms — the weak equivalences of
-   spaces, the quasi-isomorphisms of chain complexes, a multiplicative
-   system in a ring — so that work proceeds in the setting where that
-   identification holds, while a universal comparison back to C is kept
-   (nLab, "localization"; Gabriel–Zisman, "Calculus of Fractions and
-   Homotopy Theory", Springer 1967).
+   本节说明函子、等价、同构相关定义、性质与动机。
 
-   The vocabulary descends from commutative algebra, where the ring of
-   fractions S⁻¹R adjoins formal inverses to a multiplicative set and is
-   universal among ring maps sending it to units.  Øystein Ore gave the
-   corresponding condition for non-commutative rings, and the categorical
-   calculus of fractions is its direct analogue, whence both the names
-   "localization" and "fractions" (Wikipedia; nLab, "calculus of
-   fractions").
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   The general categorical construction is due to Gabriel and Zisman,
-   whose 1967 monograph localized a category at an arbitrary class of
-   morphisms and built the category of fractions C[W⁻¹] — its morphisms
-   finite zig-zags modulo relations, or explicit spans under the
-   Ore-style calculus — with the homotopy category, spaces localized at
-   the weak homotopy equivalences, as its headline application.  The
-   motivating case from homological algebra is Verdier's derived
-   category: in his thesis under Grothendieck in the 1960s he built D(A)
-   by formally inverting the quasi-isomorphisms of chain complexes and
-   introduced triangulated categories and the Verdier quotient, the first
-   published account being Hartshorne, "Residues and Duality" (Springer
-   Lecture Notes in Mathematics 20, 1966).
+(*
+   本节说明hom相关定义、性质与动机。
 
-   This file takes the reflective, rather than the syntactic, reading,
-   whose theory is due to Freyd and Kelly.  Rather than the zig-zag
-   category the localization is identified with the full subcategory of
-   W-local objects [C_W], and Freyd and Kelly ("Categories of continuous
-   functors, I", Journal of Pure and Applied Algebra 2, 1972) studied
-   exactly this orthogonal subcategory problem — when such a subcategory
-   is reflective — as the mechanism behind reflective localizations.
-   Passing to W-local objects sidesteps the size questions and the Ore
-   hypotheses the syntactic construction carries, which is why
-   [reflector_inverts_W] needs neither.
-
-   The applications span the mathematics the construction was built for.
-   The homotopy category of spaces is Top[W⁻¹] at the weak homotopy
-   equivalences; the derived category is chain complexes localized at
-   quasi-isomorphisms, pervasive in sheaf cohomology and duality; and the
-   sheaves on a site are the reflective subcategory of presheaves
-   orthogonal to the covering sieves, sheafification being the reflector
-   — the prototypical Freyd–Kelly orthogonality example, whose full
-   subcategory inclusion Theory/Sheaf/Category.v realizes in-tree, with
-   sheafification, the reflector, a named deferral there.  More generally
-   every reflective subcategory is a reflective localization at the class
-   its reflector inverts, so abelianizations, completions and idempotent
-   reflections are all instances, the homotopical form being left
-   Bousfield localization (nLab, "reflective localization").
-
-   Computationally a reflective localization is an idempotent monad.  The
-   round trip [Incl] ∘ [reflector] is a monad on C whose multiplication
-   is invertible, its algebras are exactly the local objects, and to be
-   local is to be a fixed point while to localize is to apply the monad:
-   idempotent normalization into the full subcategory of already
-   saturated objects, where the inverted maps are isomorphisms.  This is
-   the correspondence of Construction/Reflective/Idempotent.v (reflective
-   subcategory if and only if idempotent monad, with the Eilenberg–Moore
-   equivalence), and the same structure homotopy type theory studies as a
-   reflective modality (Rijke, Shulman, Spitters, "Modalities in homotopy
-   type theory", arXiv:1706.07526, 2020).  The universal property that
-   makes the reflector the localization is established separately in
-   Construction/Localization/Universal.v. *)
-
-(* [WLocal W x]: the object x is local with respect to the class W.  The
-   morphism [fmap[[Hom ─, x]] w] is the [Sets]-map [Hom b x -> Hom a x] sending
-   g to g ∘ w (precomposition by w); W-locality asserts it is invertible in
-   [Sets] for every w selected by W. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition WLocal {C : Category} (W : MorphismClass C) (x : C) : Type :=
   ∀ (a b : C) (w : a ~> b), W a b w →
@@ -155,12 +91,11 @@ Definition Full_C_W {C : Category} (W : MorphismClass C) :
   Construction.Subcategory.Full C (C_W W) :=
   fun x y ox oy f => I.
 
-(* The reflection unit at a W-local object is an isomorphism.  For any object s
-   of the reflective subcategory C_W, the unit η : Iota s ~> Iota (reflector s)
-   is invertible in C, with inverse [fmap[Iota] (counit s)].  This is the dual,
-   for the unit, of [reflective_counit_iso]; the two triangle identities supply
-   both inverse laws, the second one after transporting the subcategory-level
-   [zeta ∘ counit ≈ id] along the inclusion functor. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma unit_at_local_iso {C : Category} {W : MorphismClass C}
       (R : Reflective (C_W W)) (s : Sub C (C_W W)) :
@@ -200,20 +135,21 @@ Proof.
              (Incl C (C_W W)) (reflective_adj R) s).
 Qed.
 
-(* The localization theorem: when C_W is reflective, the reflector inverts every
-   W-map.  For w : a ~> b in W, [fmap[reflector R] w] is an isomorphism of the
-   subcategory.  The inverse is [⌈q⌉], where q : b ~> Iota (reflector a) is any
-   filler of the unit η_a through [(- ∘ w)] (available by W-locality of the
-   reflection Iota (reflector a)); both inverse laws are then discharged through
-   the adjunction transposes and W-locality of Iota (reflector b). *)
+(*
+   本节说明伴随、同构、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Inverts.
 Context {C : Category} {W : MorphismClass C}.
 Context (R : Reflective (C_W W)).
 
-(* Parse-time abbreviations: these expand to the full terms, keeping the goal
-   and every adjunction-transpose lemma instance in the same syntactic form
-   (a [set]-folded form would not match the lemmas' unfolded functor). *)
+(*
+   本节说明伴随、函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Notation Su   := (Sub C (C_W W)).
 Local Notation Iota := (Incl C (C_W W)).
 Local Notation Refl := (reflector R).

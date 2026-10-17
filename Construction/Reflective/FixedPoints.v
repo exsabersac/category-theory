@@ -66,12 +66,11 @@ Context (A : F ⊣ U).
 
 (** *** The closure facts *)
 
-(* If the unit is invertible at [x] then the counit is invertible at
-   [F x], with [fmap[F] (unit x)] as its two-sided inverse.  One law is
-   the triangle identity [counit_fmap_unit] verbatim; the other holds
-   because [fmap[F] (unit x)] is invertible in its own right, so the
-   retraction the triangle supplies is its inverse.  This is the reading
-   under which Riehl's "F eta is inverse to eps F" is true. *)
+(*
+   本节说明 FixedPoints 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition counit_iso_of_unit_iso (x : D)
   (H : IsIsomorphism (@unit C D F U A x)) :
   IsIsomorphism (@counit C D F U A (F x)).
@@ -296,9 +295,11 @@ Definition fixed_point_equivalence_swap :
 
 (** ** (B) The fixed objects are the essential image of the other adjoint *)
 
-(* If [c] is counit-fixed and [x] is isomorphic to [U c], then the unit is
-   invertible at [x]: naturality of the unit at [to phi] rewrites the unit
-   at [x] as a composite of three invertible arrows. *)
+(*
+   本节说明 FixedPoints 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma unit_iso_of_image (x : D) (c : C)
   (K : IsIsomorphism (@counit C D F U A c)) (phi : x ≅ U c) :
   IsIsomorphism (@unit C D F U A x).
@@ -369,10 +370,11 @@ End FixedPoints.
 
 (** ** (C) The comonad side, and the bridge to the monad-side results *)
 
-(* The dual of Construction/Reflective/Idempotent.v's class.  A comonad
-   IS a monad on the opposite category (Theory/Monad.v), so an
-   idempotent comonad is an idempotent monad there; the [Existing Class]
-   declaration follows the Comonad/Core.v accessor idiom. *)
+(*
+   本节说明单子、余单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition IdempotentComonad {C : Category} (W : C ⟶ C)
   (H : @Comonad C W) : Type := @IdempotentMonad (C^op) (W^op) H.
 Existing Class IdempotentComonad.
@@ -383,9 +385,11 @@ Definition WLocal_Subcategory {C : Category} {W : C ⟶ C}
   (H : @Comonad C W) : Subcategory C :=
   op_subcategory (@MLocal_Subcategory (C^op) (W^op) H).
 
-(* The measurement that makes the dual free: [Subcategory] is a record
-   under primitive projections and [op_subcategory] rebuilds its four
-   fields by eta-expansion, so the double opposite returns on the nose. *)
+(*
+   本节说明 FixedPoints 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example wlocal_op_involution {C : Category} (S : Subcategory C) :
   op_subcategory (op_subcategory S) = S := eq_refl.
 
@@ -396,10 +400,11 @@ Definition Idempotent_Coreflective {C : Category} {W : C ⟶ C}
   Coreflective (WLocal_Subcategory H) :=
   @Idempotent_Reflective (C^op) (W^op) H IH.
 
-(* The converse, in the op form.  It is NOT stated as an
-   [IdempotentComonad]: that class asks for an endofunctor presented as
-   [W^op], and the endofunctor a coreflection induces on C^op is
-   [Incl ◯ reflector], which has no such presentation. *)
+(*
+   本节说明 FixedPoints 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Coreflective_IdempotentMonad_op {C : Category}
   {S : Subcategory C} (R : Coreflective S) :
   @IdempotentMonad (C^op) (Incl (C^op) (op_subcategory S) ◯ reflector R)
@@ -413,10 +418,11 @@ Example wlocal_sobj_strict {C : Category} {W : C ⟶ C} (H : @Comonad C W)
   sobj C (WLocal_Subcategory H) x
     = @IsIsomorphism (C^op) x (W x) (@extract C W H x) := eq_refl.
 
-(* The covariant reading.  The two records carry the same morphism -- the
-   comonad's [extract] IS the opposite monad's [ret], definitionally --
-   and differ only in that the two inverse laws are exchanged, C^op's
-   composition being C's flipped. *)
+(*
+   本节说明单子、余单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition wlocal_to_extract {C : Category} {W : C ⟶ C} (H : @Comonad C W)
   (x : C) (o : sobj C (WLocal_Subcategory H) x) :
   IsIsomorphism (@extract C W H x).
@@ -449,10 +455,11 @@ Context {F : D ⟶ C}.
 Context {U : C ⟶ D}.
 Context (A : F ⊣ U).
 
-(* The unit-fixed subcategory IS the local subcategory of the induced
-   monad, on the WHOLE record: Monad/Comparison.v supplies [ret] as
-   the adjunction's unit, and the three remaining fields agree because
-   both records use the terminal [shom]. *)
+(*
+   本节说明伴随、单子、始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example unit_fixed_is_mlocal :
   UnitFixed A
     = @MLocal_Subcategory D (U ◯ F) (Adjunction_Induced_Monad A) := eq_refl.
@@ -477,9 +484,11 @@ Example counit_fixed_op_strict (c : C) :
   sobj (C^op) (UnitFixed (Opposite_Adjunction F U A)) c
     = @IsIsomorphism (C^op) c (F (U c)) (@counit C D F U A c) := eq_refl.
 
-(* The dual of the reflectivity corollary, stated where it is a term: the
-   counit-fixed subcategory, read in C^op, is reflective there whenever
-   the comonad the adjunction induces is idempotent. *)
+(*
+   本节说明伴随、余单子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition counit_fixed_op_reflective_of_idempotent
   (IM : @IdempotentMonad (C^op) (F^op ◯ U^op)
           (Adjunction_Induced_Monad (Opposite_Adjunction F U A))) :

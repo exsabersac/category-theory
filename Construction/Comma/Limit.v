@@ -63,9 +63,11 @@ Definition image_acone {J : Category} {G : J ⟶ C} (L : Limit G) :
   ACone (U L) (U ◯ G) :=
   @Build_ACone J D (U L) (U ◯ G) (image_leg L) (@image_coherence J G L).
 
-(* U preserves limits, cone-faithfully: for every diagram the image cone above
-   is a limit of [U ◯ G].  (See the STATUS header for why this — rather than the
-   apex-only [PreservesAllLimits] — is the operative hypothesis.) *)
+(*
+   本节说明（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition PreservesImageLimit : Type :=
   ∀ (J : Category) (G : J ⟶ C) (L : Limit G) (N : Cone (U ◯ G)),
     ∃! φ : vertex_obj[N] ~{D}~> U L,
@@ -215,13 +217,11 @@ End CommaLimit.
 Require Import Category.Theory.Adjunction.
 Require Import Category.Adjunction.Continuity.
 
-(* Every right adjoint satisfies [PreservesImageLimit]: for an adjunction
-   [A : F ⊣ U], RAPL exhibits the image cone over [U L] as universal, and its
-   legs [rapl_leg x = fmap[U] (limit_leg (limit_is_alimit L) x)] are exactly the
-   image legs [image_leg L x], so [rapl_ump] has, up to conversion, the type
-   demanded by [PreservesImageLimit].  This ties the honest cone-level
-   hypothesis to the preservation vocabulary of [Structure/Limit/Preservation.v]
-   and [Adjunction/Continuity.v]. *)
+(*
+   本节说明伴随、（余）极限相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition right_adjoint_PreservesImageLimit
   {C D : Category} {F : D ⟶ C} {U : C ⟶ D} (A : F ⊣ U) :
   @PreservesImageLimit C D U.

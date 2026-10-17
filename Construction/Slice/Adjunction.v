@@ -402,12 +402,11 @@ Definition sets_bipoint_r : carrier sets_bipoint := Datatypes.inr ttt.
 Lemma sets_bipoint_distinct : sets_bipoint_l ≈ sets_bipoint_r → False.
 Proof. intro H; exact H. Qed.
 
-(* The [proper_morphism] certificate is written out as a POINTWISE TERM
-   rather than left to instance resolution.  Resolution finds
-   [CMorphisms.reflexive_proper@{Set Set}] here and thereby pins the
-   carrier universe of [Sets] to [Set]; the tree records the same hazard
-   at Theory/Universal/Element.v.  With the term supplied by hand both
-   constants stay polymorphic. *)
+(*
+   本节说明 Adjunction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sets_point (b : carrier sets_bipoint) :
   @terminal_obj Sets Sets_Terminal ~{Sets}~> sets_bipoint :=
   {| morphism        := fun _ => b

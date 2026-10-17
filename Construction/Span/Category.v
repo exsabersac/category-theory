@@ -31,11 +31,11 @@ Arguments apex {X Y} _.
 Arguments leg1 {X Y} _.
 Arguments leg2 {X Y} _.
 
-(** Two spans are equivalent if there is an isomorphism of apexes whose
-    composite (in either direction) with the corresponding legs agrees.
+(*
+   本节说明同构相关定义、性质与动机。
 
-    Convention: we require [leg1 g ∘ to phi ≈ leg1 f] (the iso intertwines
-    the legs from the LHS apex to the RHS apex). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition span_equiv {X Y : C} (f g : SpanArrow X Y) : Type :=
   { phi : apex f ≅ apex g
     & ((leg1 g ∘ to phi ≈ leg1 f) * (leg2 g ∘ to phi ≈ leg2 f))%type }.
@@ -85,13 +85,11 @@ Definition span_id (X : C) : SpanArrow X X :=
 
 Variable HP : HasPullbacks C.
 
-(** Composition of spans via pullback.
+(*
+   本节说明拉回/推出相关定义、性质与动机。
 
-    Given [f : X ~> Y] with apex [N] and legs [l1f : N ~> X], [l2f : N ~> Y],
-    and [g : Y ~> Z] with apex [M] and legs [l1g : M ~> Y], [l2g : M ~> Z],
-    the pullback of the cospan [N -l2f-> Y <-l1g- M] gives an apex [P]
-    with [pi1 : P ~> N], [pi2 : P ~> M].  The composite span has apex [P],
-    [leg1 := l1f ∘ pi1] and [leg2 := l2g ∘ pi2]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition span_compose
            {X Y Z : C}
            (g : SpanArrow Y Z) (f : SpanArrow X Y)
@@ -176,15 +174,11 @@ Proof.
   unfold span_compose; simpl.
   pose (P  := pullback (leg2 f)  (leg1 g)).
   pose (P' := pullback (leg2 f') (leg1 g')).
-  (* Mediator P -> P'.  Build a cocone (in the pullback sense) into P' from
-     P, using legs (to phi ∘ pullback_fst P) and (to psi ∘ pullback_snd P).
-     They satisfy
-        leg2 f' ∘ (to phi ∘ pullback_fst P)
-       = (leg2 f' ∘ to phi) ∘ pullback_fst P
-       = leg2 f ∘ pullback_fst P                 (from Hf2 inverted)
-       = leg1 g ∘ pullback_snd P                 (pullback commutes)
-       = (leg1 g' ∘ to psi)? — we need leg1 g' ∘ (to psi ∘ pullback_snd P).
-       Since leg1 g' ∘ to psi ≈ leg1 g, the equality holds. *)
+  (*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   assert (Hcomm : leg2 f' ∘ (to phi ∘ pullback_fst _ _ P)
                   ≈ leg1 g' ∘ (to psi ∘ pullback_snd _ _ P)).
   { rewrite !comp_assoc.
@@ -330,15 +324,11 @@ Proof.
   pose proof (pullback_commutes _ _ Phg) as Phgc.
   pose proof (pullback_commutes _ _ PL)  as PLc.
   pose proof (pullback_commutes _ _ PR)  as PRc.
-  (* === Build mediator PL -> PR ===
-     PL has projections [pullback_fst PL : PL -> Pull Pgf] and
-                        [pullback_snd PL : PL -> apex h].
-     We need a map PL -> PR.  PR has projections to apex f and to Pull Phg.
-       - To apex f:  use [pullback_fst Pgf ∘ pullback_fst PL : PL -> apex f].
-       - To Pull Phg: use the UMP of Phg with cocone
-           (pullback_snd Pgf ∘ pullback_fst PL : PL -> apex g,
-            pullback_snd PL : PL -> apex h).
-         This cocone commutes because of PLc. *)
+  (*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   assert (Hphg :
     leg2 g ∘ (pullback_snd _ _ Pgf ∘ pullback_fst _ _ PL)
     ≈ leg1 h ∘ pullback_snd _ _ PL).

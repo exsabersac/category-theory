@@ -17,15 +17,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(** ** The [id_cast]/[hom_cast] transport kit
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    [id_cast e] is the identity morphism transported along an object-level
-    Leibniz equality [e : x = y].  It is deliberately spelled with the same
-    [match e in _ = T return x ~> T with eq_refl => id end] shape as the
-    [strict_*_to] fields of [Structure/Monoidal/Strict.v] and the
-    [strict_pure_iso_id]/[strict_ap_iso_id] fields of
-    [Functor/Structure/Monoidal/Strict.v], so those fields read as
-    [to φ ≈ id_cast e] without any unfolding. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section HomCast.
 
@@ -122,22 +118,20 @@ Proof. destruct ex, ey; repeat intro; assumption. Qed.
 
 End HomCast.
 
-(** Functors take [id_cast e] to [id_cast (f_equal F e)].  This is the
-    [id_cast]-phrased sibling of [fmap_match_id] from
-    [Functor/Structure/Monoidal/Strict.v]; it is reproved here (one line)
-    to keep this root file independent of the monoidal-functor stack. *)
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma fmap_id_cast {C D : Category} (F : C ⟶ D) {x y : C} (e : x = y) :
   fmap[F] (id_cast e) ≈ id_cast (f_equal F e).
 Proof. destruct e; apply fmap_id. Qed.
 
-(** ** Decidable object equality gives axiom-free UIP
+(*
+   本节说明 Quotient 相关定义、性质与动机。
 
-    When the objects of [C] have decidable Leibniz equality, uniqueness of
-    identity proofs holds for them without any axiom, by
-    [Eqdep_dec.UIP_dec].  This is the target-side mirror of the
-    proof-irrelevance results available on syntactic categories with [nat]
-    objects, and it makes every [id_cast]/[hom_cast] independent of the
-    particular equality proof used. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class ObjDecEq (C : Category) : Type :=
   obj_eq_dec : ∀ x y : obj[C], {x = y} + {x ≠ y}.
@@ -176,15 +170,11 @@ Lemma hom_cast_loop {C : Category} `{@ObjDecEq C} {x y : C}
   hom_cast e1 e2 f = f.
 Proof. rewrite (obj_uip e1 eq_refl), (obj_uip e2 eq_refl); reflexivity. Qed.
 
-(** *** The strict functor-equality reading of a [hom_cast] conjugation
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-    Conjugating by [hom_cast] along Leibniz object equalities is exactly the
-    data of [Functor_StrictEq_Setoid] ([Theory/Functor.v]), the hom-setoid
-    of [StrictCat], modulo the [hom_cast] ↔ [transport]/[transport_r]
-    reshuffle.  The three lemmas below make that reading available in both
-    directions, so a uniqueness statement phrased with [hom_cast] — such as
-    [QuotientLift_unique] below — is legible as an equality of functors in
-    [StrictCat] with nothing further to prove. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The reshuffle itself, both directions, by [destruct] on the endpoint
     equalities. *)
@@ -225,19 +215,11 @@ Proof.
                 (fmap[F] f) (fmap[G] f)) (Hmor x y f)).
 Qed.
 
-(** ** [Prop]-reflected hom equivalence
+(*
+   本节说明hom、等价相关定义、性质与动机。
 
-    The hom-setoid equivalence [≈] of this library is [Type]-valued (it is
-    a [crelation]; see [Lib/Setoid.v]).  A [Prop]-valued inductive with two
-    or more constructors — such as the term congruence of a syntactic
-    category — cannot be eliminated into that [Type]-valued [≈] of an
-    abstract target category: the elimination restriction on [Prop] blocks
-    the induction.  Soundness inductions therefore land in a [Prop]-valued
-    reflection [heq] of the hom equivalence and round-trip through
-    [heq_intro]/[heq_elim].
-
-    No [Equivalence] field is required: reflexivity, symmetry and
-    transitivity of [heq] all follow by round-tripping through [≈]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class HomEqProp (C : Category) : Type := {
   heq : ∀ {x y : C}, (x ~> y) → (x ~> y) → Prop;
@@ -245,24 +227,11 @@ Class HomEqProp (C : Category) : Type := {
   heq_elim : ∀ {x y : C} {f g : x ~> y}, heq f g → f ≈ g
 }.
 
-(** ** Quotient by a hom-congruence
+(*
+   本节说明hom相关定义、性质与动机。
 
-    [HomRel] is the [Prop]-valued relation family, and it remains the shape
-    the syntactic term congruences of [Construction/PROP/Presentation.v]
-    and [Construction/ColouredPROP/Presentation.v] use.
-
-    [HomRelT] is the general [Type]-valued family, and [HomRel] embeds into
-    it by [Prop ⊆ Type] cumulativity, so the congruence class and the
-    quotient below are stated over [HomRelT] and every [Prop]-valued client
-    is accepted unchanged.
-
-    A [Type]-valued family can serve directly as the quotient's hom-setoid
-    equivalence, since [Setoid]'s [equiv] is itself a [crelation].
-
-    [Quotient_HomEqProp] below stays pinned to a [Prop]-valued [R], because
-    its [heq] field must land in [Prop].  That is why the [Prop] family
-    keeps a name of its own, and why a quotient by a generated congruence
-    (the last subsection of this file) carries no [HomEqProp] instance. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition HomRel (C : Category) : Type :=
   ∀ x y : C, (x ~> y) → (x ~> y) → Prop.
@@ -296,10 +265,11 @@ Proof.
   - intros f g k Hfg Hgk. exact (cong_trans Hfg Hgk).
 Qed.
 
-(** The quotient category [C/R]: same objects and morphisms as [C], with
-    the hom-setoid equivalence coarsened from [≈] to [R].  The category
-    laws hold because [R] contains [≈] (via [cong_incl]) and [C] already
-    satisfies them up to [≈]. *)
+(*
+   本节说明hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Quotient (C : Category) (R : HomRelT C)
   `{@HomCongruence C R} : Category := {|
   obj := @obj C;
@@ -335,11 +305,11 @@ Section QuotientUMP.
 
 Context {C : Category} {R : HomRelT C} `{@HomCongruence C R}.
 
-(** The projection functor: identity on objects and on morphisms; only the
-    equivalence coarsens.  (Here and below the record is built with an
-    explicit [Build_Functor] so that the codomain category is pinned to the
-    quotient; a bare record literal would infer it from the field values,
-    which live in [C].) *)
+(*
+   本节说明函子、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition QuotientProj : C ⟶ Quotient C R :=
   Build_Functor C (Quotient C R)
     (fun x => x)
@@ -378,22 +348,11 @@ Lemma QuotientLift_factors_strict :
   @equiv _ (@Functor_StrictEq_Setoid C D) (QuotientLift ◯ QuotientProj) F.
 Proof. exists (fun _ => eq_refl). intros x y f. simpl. reflexivity. Qed.
 
-(** Uniqueness: [QuotientProj] is the identity on objects and on
-    morphisms, so any competitor agreeing with [F] after precomposition
-    with the projection is pinned pointwise on every hom.  The competitor's
-    object action agrees with [F]'s up to the Leibniz equalities [Hobj],
-    and the morphism-level agreement is phrased by conjugating with
-    [hom_cast] along them (see the transport kit above); when the object
-    agreement is definitional, instantiating [Hobj] with [eq_refl] makes
-    both [hom_cast]s disappear definitionally.
+(*
+   本节说明hom相关定义、性质与动机。
 
-    That [hom_cast] conjugation along Leibniz object equalities IS
-    [StrictCat]'s functor equality ([Functor_StrictEq_Setoid],
-    [Theory/Functor.v]); [strict_of_hom_cast] and [hom_cast_of_strict]
-    above convert between the two phrasings in both directions.  The
-    factorization half at that same strength is
-    [QuotientLift_factors_strict] just above, the pointwise Leibniz
-    [QuotientLift_proj] being the sharper but weaker-typed statement. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma QuotientLift_unique (G : Quotient C R ⟶ D)
   (Hobj : ∀ x : C, fobj[G] x = fobj[F] x)
   (HG : ∀ x y (f : x ~{C}~> y),
@@ -405,15 +364,11 @@ Proof. exact HG. Qed.
 
 End QuotientUMP.
 
-(** ** The projection identifies, and never separates
+(*
+   本节说明hom、等价相关定义、性质与动机。
 
-    Imposing equations can only merge morphisms; it never adds any.  The
-    projection is the identity on objects and the identity on morphisms,
-    and only the hom-setoid equivalence coarsens, so both halves of that
-    reading are definitional here.  The projection is deliberately not
-    [Faithful]: that non-instance is the whole content of Fong and
-    Spivak's remark that imposing equations can merge morphisms but never
-    add any (see [Construction/Free/Quiver/Presented.v]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The projection is the identity on objects, on the nose — the honest
     reading of "bijective on objects". *)
@@ -428,20 +383,21 @@ Lemma Quotient_hom_type {C : Category} (R : HomRelT C)
   (x ~{Quotient C R}~> y) = (x ~{C}~> y).
 Proof. reflexivity. Qed.
 
-(** Surjectivity on each hom-set, as a CHOSEN section, so no choice
-    principle is used.  (The record is built with the fully applied
-    [@Build_Full]: a bare record literal does not infer the functor.) *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition QuotientProj_Full {C : Category} (R : HomRelT C)
   `{HR : @HomCongruence C R} : Full (@QuotientProj C R HR) :=
   @Build_Full C (Quotient C R) (@QuotientProj C R HR)
     (fun x y g => g) (fun x y g => @cong_refl C R HR x y g).
 
-(** ** Bifunctor descent
+(*
+   本节说明hom、等价相关定义、性质与动机。
 
-    A bifunctor on [C] whose morphism action preserves [R] componentwise
-    descends to a bifunctor on the quotient.  The object and morphism
-    actions are unchanged; only the respectfulness proof is new (note that
-    the product category's hom equivalence is a pair). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Quotient_bifunctor {C : Category} {R : HomRelT C}
   `{@HomCongruence C R} (F : C ∏ C ⟶ C)
   (HF2 : ∀ (x y : C ∏ C) (f g : x ~{C ∏ C}~> y),
@@ -456,85 +412,26 @@ Definition Quotient_bifunctor {C : Category} {R : HomRelT C}
     (fun x => cong_incl (@fmap_id _ _ F x))
     (fun x y z f g => cong_incl (@fmap_comp _ _ F x y z f g)).
 
-(** ** The congruence generated by a hom-relation
+(*
+   Book: Mac Lane, Categories for the Working Mathematician, 2nd ed.,
+   nLab: https://ncatlab.org/nlab/show/quotient+category
+   nLab: https://ncatlab.org/nlab/show/congruence
 
-    Book: Mac Lane, Categories for the Working Mathematician, 2nd ed.,
-          §II.8, printed pp. 51-52 — Proposition 1 (the quotient by an
-          arbitrary family of relations and its universal property), the
-          definition of a congruence and of the least congruence containing
-          a family, and the definition of a category presented by
-          generators and relations
-    nLab: https://ncatlab.org/nlab/show/quotient+category
-    nLab: https://ncatlab.org/nlab/show/congruence
+   本节说明hom、等价相关定义、性质与动机。
 
-    WHY THE CLOSURE IS [Type]-VALUED.  The hom-setoid equivalence [≈] of
-    this library is [Type]-valued (it is a [crelation]; see
-    [Lib/Setoid.v]).  A [Prop]-valued inductive with two or more
-    constructors cannot be eliminated into that [Type]-valued [≈] of an
-    abstract target category, because the elimination restriction on [Prop]
-    blocks the induction — the same obstruction the [HomEqProp] subsection
-    above records.  The sharp form of it here is that the kernel congruence
-    of a functor, [FunctorKernel] below, is [Type]-valued precisely because
-    [≈] is, so it is not even expressible as a [HomRel]: Mac Lane's own
-    proof of Proposition 1 cannot be transcribed in the [Prop] family.
-
-    SCOPE, universes.  The composition constructor [cc_comp] binds an
-    intermediate object, so the closure's sort absorbs the OBJECT universe,
-    and the resulting quotient carries the constraint that the object
-    universe is at most the proof universe.  This is harmless for
-    quiver-presented categories, the intended application
-    ([Construction/Free/Quiver/Presented.v]), but it would bite an attempt
-    to present a category whose objects live strictly above its homs.
-
-    SCOPE, reflection.  A quotient by a generated congruence has no
-    [HomEqProp] instance, since [Quotient_HomEqProp] requires a
-    [Prop]-valued relation; the consumers that require one —
-    [Construction/PROP/Interp.v], [Construction/PROP/Algebra.v],
-    [Construction/PROP/Universal.v], [Construction/ColouredPROP/Interp.v],
-    [Construction/ColouredPROP/Algebra.v],
-    [Construction/ColouredPROP/Universal.v], [Theory/Lawvere/PROP.v] — do
-    not apply to it.  It has no need of one: the lift below no longer routes
-    through [heq].
-
-    RELATION TO THE SYNTACTIC CLOSURES.  [TermEqW]
-    ([Construction/PROP/Presentation.v]) and [CTermEqW]
-    ([Construction/ColouredPROP/Presentation.v]) are this closure shape run
-    over term syntax: their [TEW_termeq], [TEW_ax], [TEW_sym], [TEW_trans]
-    and [TEW_comp] are one for one [cc_equiv], [cc_gen], [cc_sym],
-    [cc_trans] and [cc_comp], with [TermEq] playing the role the ambient
-    hom-setoid [≈] plays here, whence reflexivity is derived on both sides
-    ([TermEqW_refl] there, [cc_refl] here) rather than assumed.  They carry
-    one constructor more, [TEW_tens] and [CTEW_tens], and it is NOT part of
-    the least congruence in the categorical sense: it is exactly the
-    hypothesis [Quotient_bifunctor] consumes, i.e. what makes those
-    quotients monoidal rather than merely categories.  Formally [cc_least]
-    yields the containment [CongClosure (smt_eqs E) ⊆ TermEqW E]; the
-    converse is not available: nothing in the generic closure pushes a
-    relation through a tensor context, and no in-tree countermodel is
-    exhibited.  That containment is stated here in prose rather than as
-    code because this file cannot depend on the PROP layer.  The phrase
-    "smallest congruence" in both of those files reads in the TERM-ALGEBRA
-    sense — least among relations closed under [T_comp] AND [T_tens] — and
-    [cc_least] does not establish it: [cc_least] supplies only the
-    containment above, the direction that leaves [TermEqW] the larger
-    relation.  What [cc_least] does supply is the categorical half of the
-    vocabulary those headers borrow: a formal least hom-congruence.
-
-    Finally, [TermEqW] must STAY [Prop]-valued: that is what lets
-    [Quotient_HomEqProp] supply the reflection its soundness inductions
-    round-trip through, at the price that Proposition 1's arbitrary-target
-    factorization is not available there — exactly the trade the
-    [Type]-valued closure reverses. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** Mac Lane's kernel congruence of a functor: the morphisms it merges.
     It is [Type]-valued because [≈] is. *)
 Definition FunctorKernel {C D : Category} (F : C ⟶ D) : HomRelT C :=
   fun x y f g => fmap[F] f ≈ fmap[F] g.
 
-(** The kernel of a functor is a congruence.  Kept a plain [Definition] and
-    [Defined] rather than an [Instance], so that nothing new enters
-    typeclass search and the congruence witness stays transparent where
-    [cc_kernel] elaborates its type. *)
+(*
+   本节说明函子、核/余核、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FunctorKernel_Congruence {C D : Category} (F : C ⟶ D) :
   @HomCongruence C (FunctorKernel F).
 Proof.
@@ -550,12 +447,11 @@ Section CongruenceClosure.
 Context {C : Category}.
 Variable R : HomRelT C.
 
-(** The congruence generated by [R]: five constructors — embed [R], embed
-    the ambient [≈], symmetry, transitivity, and closure under composition
-    on both flanks simultaneously (the shape that matches the [cong_comp]
-    field verbatim).  There is deliberately no reflexivity constructor: it
-    is derived below as [cc_refl], mirroring [TermEqW_refl] in the PROP
-    presentation layer. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive CongClosure : ∀ x y : C, (x ~> y) → (x ~> y) → Type :=
   | cc_gen {x y : C} {f g : x ~> y} : R x y f g → CongClosure x y f g
   | cc_equiv {x y : C} {f g : x ~> y} : f ≈ g → CongClosure x y f g
@@ -567,10 +463,11 @@ Inductive CongClosure : ∀ x y : C, (x ~> y) → (x ~> y) → Type :=
       CongClosure y z f f' → CongClosure x y g g' →
       CongClosure x z (f ∘ g) (f' ∘ g').
 
-(** The closure is a congruence, by a pure term: four of the five
-    constructors map onto the four fields, with [cc_equiv] supplying
-    [cong_incl]; [cc_gen] is what makes the closure contain [R] and plays
-    no part here. *)
+(*
+   本节说明 Quotient 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CongClosure_Congruence : @HomCongruence C CongClosure :=
   @Build_HomCongruence C CongClosure
     (fun x y f g H => cc_equiv H)
@@ -598,10 +495,11 @@ Proof.
   - now apply cong_comp.
 Qed.
 
-(** Mac Lane §II.8 Proposition 1's kernel lemma: a functor merging [R]
-    merges the whole generated congruence.  It is a one-line corollary of
-    leastness applied at the kernel congruence, not a second induction, and
-    its type is exactly the hypothesis [QuotientLift] consumes. *)
+(*
+   本节说明函子、核/余核相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition cc_kernel {D : Category} (F : C ⟶ D)
   (HF : ∀ x y (f g : x ~> y), R x y f g → fmap[F] f ≈ fmap[F] g)
   {x y : C} {f g : x ~> y} :

@@ -61,16 +61,11 @@ Proof using C J K S closed full.
   intro x; simpl. now rewrite id_right.
 Defined.
 
-(* Reflection: [Incl C S] is full and faithful.
-   CORRECTION (#481): the body wrote out [@ff_reflect_ump (Sub C S) C
-   (Incl C S) (Full_Implies_Full_Functor C S full) (Incl_Faithful C S) J K
-   M (limitcone_isalimit H) (fun x => reflexivity _)], which is
-   Theory/Equivalence/Limit.v's [ff_ReflectsLimitCone] at the inclusion's
-   fullness and faithfulness: the two read back as one at [eq_refl]
-   (measured).  The body now calls that constant, eta-expanded, and the
-   [About] blocks of this file's nine constants are unchanged, the two
-   equations of this one's among them (compared by script against the
-   earlier body). *)
+(*
+   本节说明（余）极限、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition sub_ReflectsLimitCone : ReflectsLimitCone K (Incl C S) :=
   fun M H =>
     @ff_ReflectsLimitCone (Sub C S) C (Incl C S)

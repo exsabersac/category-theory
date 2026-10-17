@@ -92,28 +92,17 @@ Proof. apply TE_tens_id0_left. Qed.
     sandwich: pre/post-composing by appropriate casts gives a
     direct [T_tens f (T_id 0) ↔ f]-style equation. *)
 
-(* Note: a clean [T_cast]-form right-unit lemma — bridging
-   [TE_tens_id0_right]'s [eq_rect] transport form to a sandwiched
-   [T_cast] composition — requires first generalising over the
-   arity equation [n + 0 = n] rather than destructing it in place.
-   That is exactly what the transport bridges [eq_rect_cod_cast]
-   and [eq_rect_r_dom_cast] of [Construction/PROP/Monoidal.v] do:
-   they convert the [eq_rect] spelling wholesale, and the Monoidal
-   instance derives its [right_unit_natural] there in full
-   generality.
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-   The arity-specialised lemmas below ([tens_id0_right_at_0],
-   [tens_id0_right_at]) treat the case where the arity is
-   syntactically known, so the [eq_rect] collapses by computation
-   (after UIP on [nat] discharges the opaque [Nat.add_0_r]); for
-   the general naturality square, use [right_unit_natural] in
-   [Construction/PROP/Monoidal.v]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-(** ** Right-unit at the trivial arity (0 + 0 = 0)
+(*
+   本节说明 Naturality 相关定义、性质与动机。
 
-    When both arities are 0, [Nat.add_0_r] reduces definitionally
-    and [T_tens f (T_id 0) ≈ f] follows from [TE_tens_id0_right]
-    after the [eq_rect] collapses by [reflexivity]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma tens_id0_right_at_0 (f : Term S 0 0) :
   TermEq S (T_tens f (T_id 0)) f.
@@ -155,16 +144,11 @@ Lemma tens_assoc_at {m1 n1 m2 n2 m3 n3 : nat}
        (eq_sym (Nat.add_assoc m1 m2 m3))).
 Proof. exact (TE_tens_assoc f g h). Qed.
 
-(** ** Braid naturality, exposed as a named lemma
+(*
+   本节说明 Naturality 相关定义、性质与动机。
 
-    Direct restatement of [TE_braid_natural] with a friendly name,
-    for use outside the instance files.  The instance files
-    themselves ([Construction/PROP/Braided.v],
-    [Construction/PROP/Presentation.v]) deliberately apply the
-    constructor [TE_braid_natural] directly and do not import this
-    file: the name [braid_natural] would shadow the
-    [BraidedMonoidal] projection of the same name in their record
-    literals. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma braid_natural {m1 n1 m2 n2 : nat}
                     (f : Term S m1 n1) (g : Term S m2 n2) :
@@ -172,16 +156,11 @@ Lemma braid_natural {m1 n1 m2 n2 : nat}
            (T_comp (T_braid n1 n2) (T_tens f g)).
 Proof. apply TE_braid_natural. Qed.
 
-(** ** Braid involution, exposed as a named lemma
+(*
+   本节说明 Naturality 相关定义、性质与动机。
 
-    Direct restatement of [TE_braid_invol]:
-        σ_{n,m} ⊙ σ_{m,n} ≈ id_{m+n}
-    for use outside the instance files.  As with [braid_natural]
-    above, [Construction/PROP/Symmetric.v] deliberately applies the
-    constructor [TE_braid_invol] directly rather than importing
-    this file, since the name [braid_invol] would shadow the
-    [SymmetricMonoidal] projection of the same name in its record
-    literal. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma braid_invol (m n : nat) :
   TermEq S (T_comp (T_braid n m) (T_braid m n)) (T_id (m + n)).

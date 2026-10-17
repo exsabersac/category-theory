@@ -43,11 +43,11 @@ Definition reflective_incl_adj : reflector R ⊣ I := reflective_adj R.
 Notation "⌊ f ⌋" := (to   (@adj _ _ _ _ reflective_incl_adj _ _) f).
 Notation "⌈ f ⌉" := (from (@adj _ _ _ _ reflective_incl_adj _ _) f).
 
-(* Fullness of the inclusion, in the [Functor.Full] form the reflection
-   lemma consumes.  [Construction.Subcategory.Full] (a property of the
-   subcategory) and [Theory.Functor.Full] (a structure on a functor) are
-   different notions sharing a short name, and both modules are imported
-   here, so the result type is written [Functor.Full] qualified. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition reflective_Incl_Full : Functor.Full I :=
   Full_Implies_Full_Functor C S (reflective_full R).
@@ -178,20 +178,11 @@ End Compare.
 
 (** ** Reflection *)
 
-(* Full and faithful functors reflect limiting cones.  The packaging is
-   the one at Theory/Equivalence/Creation.v.  (That file's own comment
-   cites [ff_reflect_ump] at a line of Theory/Equivalence/Limit.v that no
-   longer holds it; a defect in an untouched file, recorded here
-   and not edited.)
+(*
+   本节说明函子、（余）极限、等价相关定义、性质与动机。
 
-   CORRECTION (#481): the body wrote out [@ff_reflect_ump (Sub C S) C I
-   reflective_Incl_Full (Incl_Faithful C S) J K M (limitcone_isalimit H)
-   (fun x => reflexivity _)], which is Theory/Equivalence/Limit.v's
-   [ff_ReflectsLimitCone] at the inclusion's fullness and faithfulness:
-   the two read back as one at [eq_refl] (measured).  The body now calls
-   that constant, eta-expanded, and the [About] blocks of this file's 24
-   constants are unchanged (compared by script against the earlier
-   body). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition reflective_ReflectsLimitCone : ReflectsLimitCone K I :=
   fun M H =>

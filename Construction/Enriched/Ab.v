@@ -39,14 +39,11 @@ Section FromAbEnriched.
 
 Context {C : Category} {A : AbEnriched C}.
 
-(* [LP] is new since the PR "algebraic carriers are sets" (2026-09-17): an
-   [AbObject] carries [cmon_prop], and [ehom_ab] below takes its carrier
-   setoid straight from [C]'s hom-setoid, which an arbitrary category does not
-   supply a [Prop] mirror for (Instance/Sets/Propositional.v's header records
-   the measurement for [Cat]).  It is a class, so at [Ab] and at [RMod R] it
-   is discharged by resolution from the instances in Instance/Ab.v and
-   Instance/Mod.v.  Adjunction/Additive.v's [hom_ab] takes the same
-   hypothesis, for the same reason. *)
+(*
+   本节说明伴随、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Context {LP : LocallyPropositional C}.
 
 (* The hom-group of a hom-set: Structure/AbCategory.v's fields, packaged
@@ -153,13 +150,11 @@ Next Obligation.
   exact (@compose_padd_left C _ x y z g f f').
 Qed.
 
-(* The enrichment.  Each equation is [tensor_hom_ext] to generators, a
-   mediator computation, and a category/action law (design note 1).
+(*
+   本节说明 Ab 相关定义、性质与动机。
 
-   AN EARLIER REVISION took only [C] and [A]: since the PR "algebraic
-   carriers are sets" (2026-09-17) this is the section's [LP] as well, and
-   [Proof using] records all three.  Design note 5 of the header names the
-   eight constants of this section that gained it and what discharges it. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Enriched_of_AbEnriched : @Enriched Ab Ab_Monoidal.
 Proof using A C LP.
   unshelve refine
@@ -256,9 +251,11 @@ Qed.
 (* The AbEnriched structure: hom-group operations from the hom-objects;
    bilinearity of composition is the generator relations of the tensor
    pushed through [ecompose]'s homomorphism property. *)
-(* The category built from tensor data is LOCALLY PROPOSITIONAL for free: its
-   hom-setoid IS the carrier setoid of an object of [Ab], which since the PR
-   "algebraic carriers are sets" (2026-09-17) carries [cmon_prop]. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition LocallyPropositional_of_Enriched_Ab :
   LocallyPropositional Category_of_Enriched_Ab.
 Proof.
@@ -341,15 +338,11 @@ End ToAbEnriched.
 Definition Enriched_Ab_itself : @Enriched Ab Ab_Monoidal :=
   @Enriched_of_AbEnriched Ab Ab_AbEnriched Ab_LocallyPropositional.
 
-(* AN EARLIER REVISION stated the right-hand side as [{ C : Category &
-   AbEnriched C }].  Since the PR "algebraic carriers are sets" (2026-09-17)
-   the objects of [Ab] are abelian groups on SETS -- their `≈` is
-   propositional -- so a category enriched over [Ab] necessarily has
-   propositional hom-setoids, and conversely an [AbEnriched] category is
-   enriched over [Ab] only if it does.  The extra factor states that, and it
-   is not a hypothesis smuggled in: the forward direction PRODUCES it
-   ([LocallyPropositional_of_Enriched_Ab] below), so the biconditional is the
-   same equivalence with its content made explicit. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Enriched_Ab_iff_AbEnriched :
   @Enriched Ab Ab_Monoidal ↔
   { C : Category & (LocallyPropositional C * AbEnriched C)%type }.

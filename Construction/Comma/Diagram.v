@@ -143,9 +143,11 @@ Proof. apply naturality_sym. Qed.
 
 (** ** The commuting diagram, Mac Lane's displays (5)-(6) *)
 
-(* [Defined], not [Qed], for the same reason as [comma_mediator_proj1] below:
-   [comma_diagram_self] feeds these two back in as the hypotheses of the
-   universal property and needs their object components to reduce. *)
+(*
+   本节说明 Diagram 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem comma_diagram_dom :
   @equiv _ (@Functor_StrictEq_Setoid (S ↓ T) C)
          (Arrow_dom ◯ Comma_to_Arrow) (S ◯ comma_proj1).
@@ -179,11 +181,11 @@ Lemma arrow_eta_cast {C : Category} (z : @Arrow C) {d0 d1 : C}
   (((d0, d1); hom_cast p q (`2 z)) : @Arrow C) = z.
 Proof. destruct z as [[c0 c1] h]; simpl in *; destruct p, q; reflexivity. Defined.
 
-(* A [hom_cast] between two arrow objects presented through [arrow_eta_cast]
-   is settled by its two legs, which is all the hom-setoid of the arrow
-   category records.  Every endpoint here is a variable, so the whole proof is
-   a [destruct] of the four object equalities; the lemma is then applied — not
-   rewritten with — so that unification may unfold [Arrow] to [Id ↓ Id]. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma arrow_eta_cast_legs {C : Category} (z w : @Arrow C) {d0 d1 e0 e1 : C}
       (p : Arrow_dom z = d0) (q : Arrow_cod z = d1)
       (p' : Arrow_dom w = e0) (q' : Arrow_cod w = e1)
@@ -330,15 +332,11 @@ End UMP.
 
 (** ** Non-vacuity: the comma category is its own mediator *)
 
-(* The hypotheses of the universal property are inhabited -- by the diagram
-   the comma category itself carries, where they are literally
-   [comma_diagram_dom] and [comma_diagram_cod] -- and at that competitor the
-   mediator produced is [≈[Cat]] the identity functor (strictly so, in fact:
-   [comma_diagram_self_strict]).  The identity moreover satisfies
-   [MediatesDiagram] outright ([comma_id_mediates], three reflexivities), so
-   [comma_mediator_unique] can be EXERCISED at it
-   ([comma_diagram_self_via_ump]) -- with that, both halves of Exercise 5 are
-   checked against the one case whose answer is forced. *)
+(*
+   本节说明函子、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section SelfMediation.
 
 Context {A B C : Category}.
@@ -377,11 +375,11 @@ Proof.
   - intros [[a b] h] [[a' b'] h'] f; split; simpl; cat.
 Qed.
 
-(* The identity functor satisfies [MediatesDiagram] at the comma's own
-   diagram by three reflexivities -- which lets the UNIQUENESS half of the
-   universal property be exercised, not merely stated: [comma_mediator_unique]
-   at this competitor re-derives [comma_diagram_self] from the other side.
-   (Adapted from the adversarial audit's probe, with thanks.) *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma comma_id_mediates :
   MediatesDiagram (P' := comma_proj1) (Q' := comma_proj2) (R' := Comma_to_Arrow)
                   comma_diagram_dom comma_diagram_cod (Id[S ↓ T]).

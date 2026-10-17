@@ -20,14 +20,11 @@ Context (S : Signature).
 
 Open Scope nat_scope.
 
-(** Tensoring an identity with a cast on the right factor equals a
-    single cast along the [+]-congruenced arity equation.
+(*
+   本节说明 CastTensor 相关定义、性质与动机。
 
-    [(id_m ⊕ T_cast e) ≈ T_cast (f_equal (m + _) e)]
-
-    The right-hand arity equation [m + a = m + b] is [e] congruenced by
-    left-addition of [m]; at [eq_refl] it reduces to [eq_refl] and the
-    goal becomes [TE_tens_id]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma T_tens_id_cast_left {m a b : nat} (e : a = b) :
   TermEq S (T_tens (T_id m) (T_cast e))
            (T_cast (f_equal (fun k => m + k) e)).

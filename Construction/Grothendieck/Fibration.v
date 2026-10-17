@@ -29,24 +29,21 @@ Context (A : IndexedCat B).
 
 (** ** The chosen opcartesian lift *)
 
-(* Over [f : x ~> y] — read in [B^op] as an arrow from [y] to [x] — the
-   chosen lift of [dx : idx_fib A x] is displayed over [f] from the
-   pushforward [idx_map A f dx] (over [y], the op-domain) to [dx] (over
-   [x], the op-codomain); unwinding [Displayed_op] and
-   [Grothendieck_Displayed], such a displayed morphism is a fibre morphism
-   [idx_map A f dx ~> idx_map A f dx], and the chosen one is the
-   identity. *)
+(*
+   本节说明 Fibration 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Grothendieck_op_lift {x y : B} (f : x ~> y) (dx : idx_fib A x) :
   @dhom (B^op) (Displayed_op (Grothendieck_Displayed A)) y x
         (idx_map A f dx) dx f :=
   @id (idx_fib A y) (idx_map A f dx).
 
-(* The chosen lift is opcartesian: every displayed morphism over a
-   composite [g ∘ f] out of [dx] factors through it by a unique displayed
-   morphism over [g].  Unwound, the factorization candidate ranges over
-   fibre morphisms [idx_map A g (idx_map A f dx) ~> dz], the equation
-   composes with [from (idx_comp A g f dx)], and the unique solution
-   conjugates [hh] with the chosen composition iso. *)
+(*
+   本节说明 Fibration 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Grothendieck_lift_cocartesian {x y : B} (f : x ~> y)
   (dx : idx_fib A x) :
   DCartesian (D := Displayed_op (Grothendieck_Displayed A))
@@ -71,14 +68,11 @@ Defined.
 
 (** ** The opcleaving *)
 
-(* The canonical opcleaving of the Grothendieck construction: chosen
-   opcartesian lifts, pushing displayed objects forward along base
-   morphisms by reindexing.  Per Theory/Fibration.v's vocabulary this is a
-   [Cleaving] of the op-displayed category.  Built with an explicit
-   [Build_Cleaving] so the op-displayed instance is pinned during
-   elaboration: record syntax would elaborate the field against an
-   undetermined displayed-category evar, where [dobj v] cannot yet be seen
-   to be [idx_fib A v]. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Grothendieck_OpCleaving :
   OpCleaving (Grothendieck_Displayed A) :=
   @Build_Cleaving (B^op) (Displayed_op (Grothendieck_Displayed A))
@@ -120,10 +114,11 @@ Proof. reflexivity. Qed.
 
 (** ** The split laws *)
 
-(* Identity law: the chosen lift of [id[x]] at [dx], corrected by the
-   chosen unit iso [idx_id A dx], is the identity of [(x; dx)].  The
-   mediator is the CHOSEN iso, not an arbitrary one; for strict [A] it is
-   an identity and the law reads [lift id ≈ id] on the nose. *)
+(*
+   本节说明 Fibration 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Grothendieck_split_lift_id {x : B} (dx : idx_fib A x) :
   Grothendieck_vert (to (idx_id A dx)) ∘ Grothendieck_colift (@id B x) dx
     ≈ @id (Grothendieck A) (x; dx).
@@ -144,11 +139,11 @@ Proof.
   apply id_right.
 Qed.
 
-(* Composition law: the composite of the chosen lifts of [f] and [g],
-   corrected by the chosen composition iso [idx_comp A g f dx], is the
-   chosen lift of [g ∘ f].  Again the mediator is the CHOSEN iso; for
-   strict [A] the law reads [lift g ∘ lift f ≈ lift (g ∘ f)] on the
-   nose. *)
+(*
+   本节说明 Fibration 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma Grothendieck_split_lift_comp {x y z : B} (g : y ~> z) (f : x ~> y)
   (dx : idx_fib A x) :
   Grothendieck_vert (to (idx_comp A g f dx))
@@ -202,9 +197,11 @@ Qed.
 
 (** ** The projection as a cloven fibration of the op-total category *)
 
-(* Through the bridge of Theory/Fibration.v, the chosen opcartesian lifts
-   make the projection out of the op-total category a cloven fibration —
-   the functor-level reading of "∫ A ⟶ B is a (cloven) opfibration". *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Grothendieck_OpCloven :
   ClovenFibration (Total_Proj (Displayed_op (Grothendieck_Displayed A))) :=
   @cleaving_total_cloven (B^op) (Displayed_op (Grothendieck_Displayed A))

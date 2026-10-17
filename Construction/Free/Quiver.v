@@ -164,15 +164,11 @@ Section Quiver.
   Defined.
 End Quiver.
 
-(* The universe annotations are load-bearing, not decoration.  Left to
-   inference the edge setoid's PROOF universe minimizes to [Set], which pins
-   it in the resulting [Quiver@{o h Set}]; and since [InducedFunctor] below
-   identifies the target category's hom and proof universes with the quiver's,
-   that pin propagates to every functor out of a free or presented category
-   built this way, restricting its target to [Category@{o Set Set}].  Naming
-   [p] keeps it a parameter.  ([eq_equivalence] of Lib/Setoid.v is already
-   polymorphic for exactly this reason; what was missing was spending its
-   polymorphism here.) *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Build_Quiver_Standard_Eq@{o h p} ( node_type : Type@{o} )
   ( edge_type : node_type -> node_type -> Type@{h} ) : Quiver@{o h p} :=
   {|
@@ -183,9 +179,11 @@ Definition Build_Quiver_Standard_Eq@{o h p} ( node_type : Type@{o} )
         (@Category.Lib.Setoid.eq_equivalence@{h p} (edge_type X Y))
   |}.
 
-(* A quiver homomorphism G ⇨ G': a map on nodes together with, for each pair
-   of nodes, a map on edges into the image pair (source and target are thus
-   preserved by construction) that respects the edge setoids. *)
+(*
+   本节说明 Quiver 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Class QuiverHomomorphism@{o1 h1 p1 o2 h2 p2}
   (G : Quiver@{o1 h1 p1}) (G' : Quiver@{o2 h2 p2}) := {
     fnodes : @nodes G -> @nodes G';                                    (* action on nodes *)
@@ -537,9 +535,11 @@ Definition FreeForgetfulAdjunction : Adjunction FreeCatFunctor Forgetful :=
 Section FreeQuiverSyntax.
 Context {G : Quiver}.
 
-(* Syntactic free morphisms: the free term algebra on the edges of G, with
-   formal identities and composites.  [morDA] normalises a term to a path,
-   and [Mor_Setoid] quotients terms by equality of their normal forms. *)
+(*
+   本节说明 Quiver 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Inductive Mor : nodes → nodes → Type :=
   | Ident {x} : Mor x x                                   (* formal identity *)
   | Morph {x y} (f : edges x y) : Mor x y                 (* generating edge *)

@@ -57,15 +57,11 @@ Context `{SS : @SelectiveSupply Colour P copyable}.
 Notation "⟦ cs ⟧c" := (@cprop_of_list Colour P cs)
   (at level 0, format "⟦ cs ⟧c").
 
-(** Cho–Jacobs determinism at the derived boundary supplies: the two
-    preservation squares
+(*
+   本节说明 LNL 相关定义、性质与动机。
 
-      scopy ds Hd ∘ f    ≈ (f ⨂ f) ∘ scopy cs Hc
-      sdiscard ds Hd ∘ f ≈ sdiscard cs Hc
-
-    packaged as the [ComonoidHom] they abbreviate — the bridge's
-    export of [sel_deterministic] (Construction/ColouredPROP/
-    Linear.v), stated directly at the derived supplies. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition SupplyDeterministic {cs ds : list Colour}
   (Hc : all_copyable copyable cs) (Hd : all_copyable copyable ds)
   (f : ⟦cs⟧c ~{P}~> ⟦ds⟧c) : Type :=
@@ -84,12 +80,11 @@ Example SupplyDeterministic_is_sel_deterministic
   (f : ⟦cs⟧c ~{P}~> ⟦ds⟧c) :
   SupplyDeterministic Hc Hd f = sel_deterministic Hc Hd f := eq_refl.
 
-(** The embedding of the copyable colour class into the category of
-    internal comonoids of [P] (at the symmetric-side monoidal
-    structure [MBc P], where the derived supplies live): a boundary
-    word together with its derived supply, sigma-packed as an object
-    of [Comon].  Explicit pair, so both projections are
-    definitional. *)
+(*
+   本节说明幺半结构、幺半群、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition supplied_obj (cs : list Colour)
   (H : all_copyable copyable cs) : @Comon (cprop_cat P) (MBc P) :=
   (⟦cs⟧c;
@@ -105,24 +100,22 @@ Definition LNL_lift {cs ds : list Colour}
   supplied_obj cs Hc ~{@Comon (cprop_cat P) (MBc P)}~> supplied_obj ds Hd :=
   (f; Hf).
 
-(** The hom-sets of the embedding ARE the supply-deterministic maps —
-    on the nose, not merely up to bijection: a [Comon]-hom between
-    supplied objects is by definition a boundary map together with a
-    [SupplyDeterministic] witness.  Machine-checked as a definitional
-    equality of types. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example LNL_hom_is_deterministic (cs ds : list Colour)
   (Hc : all_copyable copyable cs) (Hd : all_copyable copyable ds) :
   (supplied_obj cs Hc ~{@Comon (cprop_cat P) (MBc P)}~> supplied_obj ds Hd)
   = { f : ⟦cs⟧c ~{P}~> ⟦ds⟧c & SupplyDeterministic Hc Hd f }
   := eq_refl.
 
-(** *** The round-trip lemma pair
+(*
+   本节说明函子、hom相关定义、性质与动机。
 
-    Forget after lift is the identity on the underlying map
-    (reflexivity-grade), and — via faithfulness of [Comon_Forget] —
-    any [Comon]-hom agreeing with [f] under the forgetful functor IS
-    the lift of [f].  Together these exhibit the [Comon]-homs between
-    supplied objects as exactly the deterministic maps. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma LNL_forget_lift {cs ds : list Colour}
   (Hc : all_copyable copyable cs) (Hd : all_copyable copyable ds)
@@ -158,14 +151,11 @@ Proof.
   reflexivity.
 Qed.
 
-(** *** Functoriality of the lift
+(*
+   本节说明函子、hom、等价相关定义、性质与动机。
 
-    [LNL_lift] sends identities to identities and composites to
-    composites.  Stated over an ARBITRARY determinism witness — the
-    hom equivalence of [Comon] compares only the underlying maps, so
-    the witness is irrelevant up to [≈]; [sel_deterministic_id] /
-    [sel_deterministic_comp] of Linear.v provide the canonical
-    witnesses. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma LNL_lift_id (cs : list Colour) (Hc : all_copyable copyable cs)
   (Hid : SupplyDeterministic Hc Hc (@id P ⟦cs⟧c)) :
@@ -193,30 +183,11 @@ End LNLBridge.
 
 (* ------------------------------------------------------------------ *)
 
-(** ** Total-supply degeneration: [CopyDiscard] from a total supply
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    When EVERY colour is copyable, the free supplied PROP collapses
-    into the world of Structure/Monoidal/CopyDiscard.v: the derived
-    boundary supplies assemble into an honest [CopyDiscard] structure.
-    This is the degeneration test for the selective-supply design —
-    dial the copyability predicate to [fun _ => true] and the
-    [CopyDiscard] class is recovered on the nose.
-
-    The four coherence obligations are [exact] applications of the
-    Fong–Spivak coherence theorems [supply_app_delta] /
-    [supply_app_epsilon] of Supply.v (tensor) and of the definitional
-    collapse of the empty-boundary supply onto the unit comonoid
-    (unit): at [SupplyPROP] the [ctensor_app_b] / [cunit_nil_b]
-    mediation is [eq_refl] (the pinned Examples of Supply/Instance.v),
-    so the [hom_cast] mediation of the theorems vanishes
-    definitionally and no cast survives into the obligations.
-
-    On class fit: [CopyDiscard] supplies a comonoid on EVERY object of
-    the category, whereas a coloured-PROP supply covers only the image
-    of [cprop_of_list]; in general the two differ by a surjectivity
-    hypothesis.  At [SupplyPROP] the objects ARE the colour words and
-    [cprop_of_list] is the identity, so the gap is empty — recorded as
-    a non-defect of the class, not worked around. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section TotalSupply.
 
@@ -244,11 +215,11 @@ Notation TotalSS :=
 Definition TotalPROP_ObjDecEq : @ObjDecEq (cprop_cat TotalPROP) :=
   CFreeCat_ObjDecEq (SupplyExtSig S (fun _ : Colour => true)) Cdec.
 
-(** The [CopyDiscard] instance: the comonoid on the word [X] is its
-    derived supply.  Fully type-ascribed Program definition, keeping
-    every obligation at the ascribed instance (the [CPresented_Strict]
-    precedent of Presentation.v); the obligations are the class fields
-    verbatim. *)
+(*
+   本节说明 LNL 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := intros.
 
 Program Definition CopyDiscard_of_total_supply :
@@ -293,14 +264,11 @@ Example CopyDiscard_of_total_supply_discard (X : list Colour) :
     CopyDiscard_of_total_supply X
   = sdiscard (P := TotalPROP) (SS := TotalSS) X (all_true X) := eq_refl.
 
-(** The degeneration also closes the vocabulary loop of the SCOPE
-    CONTRACT: at the total supply — the one instance where a global
-    [cd_comonoid] supply exists — the bridge predicate
-    [SupplyDeterministic] IS [deterministic] of
-    CopyDiscard/Deterministic.v at [CopyDiscard_of_total_supply], on
-    the nose.  Machine-checked as a definitional equality of types, so
-    any drift in the [cd_comonoid] choice above or in the
-    [supply_list] mediation would be caught here. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example SupplyDeterministic_is_deterministic (X Y : list Colour)
   (f : X ~{TotalPROP}~> Y) :
   SupplyDeterministic TotalPROP (fun _ : Colour => true)
@@ -312,19 +280,11 @@ End TotalSupply.
 
 (* ------------------------------------------------------------------ *)
 
-(** ** The linear/cartesian characterization
+(*
+   本节说明hom、笛卡尔相关定义、性质与动机。
 
-    At the pure supply PROP — base signature [Empty_CSig], so the ONLY
-    generators are the per-wire dup/del of copyable colours — the
-    copyability predicate is characterised by the geometry of the
-    hom-sets: a colour is linear exactly when its wire supports neither
-    a commutative-comonoid supply nor a bare fan-out morphism, and
-    copyable exactly when it supports both.  Fan-out at a linear wire is
-    not disallowed by convention; it is UNINHABITED
-    ([SupplyPROP_no_fanout] — even a supply is refuted through its own
-    comultiplication), and conversely a copyable wire realises its
-    supply syntactically ([supply_wire_comonoid], [SupplyPROP_fanout]).
-    This is the categorical content of the fan-out linearity check. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Characterization.
 

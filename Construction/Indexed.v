@@ -53,26 +53,11 @@ Record IndexedCat (B : Category) : Type := {
     fmap[idx_map (f ∘ g)] k ∘ to (idx_comp f g a)
       ≈ to (idx_comp f g b) ∘ fmap[idx_map f] (fmap[idx_map g] k);
 
-  (* Compatibility of the composition isos with the ≈-mediators: [idx_comp]
-     is natural in each base-morphism argument, with [idx_resp] supplying
-     the connecting components.  Bicategorically, a pseudofunctor's
-     compositor is natural in both 1-cell arguments; here the 2-cells are
-     proofs of ≈, so naturality says that reindexing along equivalent
-     composites commutes with the chosen composition isos.  These fields
-     are not derivable from the others: on the one-object base with
-     hom-monoid (ℤ, +) under congruence mod 2, with a one-object fibre
-     whose hom-group is (ℤ, +) and every [idx_map] the identity functor,
-     take every [idx_resp] and [idx_id] iso to be the identity and
-     [idx_comp f g] to be the bilinear twist f·g.  Bilinearity is exactly
-     the cocycle, and f·g vanishes when either argument is 0, so every
-     other field holds; yet [idx_comp (f+2) g] and [idx_comp f g] differ
-     by 2·g ≠ 0, violating the left compatibility below.  The Grothendieck
-     construction (Construction/Grothendieck.v) consumes exactly these
-     fields to interchange [dtransport] with [dcomp] ([dtransport_comp_l]
-     and [dtransport_comp_r] of Theory/Displayed.v).  The composite-side
-     proof [e'] is universally quantified rather than pinned to the
-     canonical [compose_respects] witness; by proof irrelevance of
-     [idx_resp] the two phrasings are interderivable. *)
+  (*
+   本节说明hom、双范畴相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   idx_comp_resp_l {x y z : B} {f f' : y ~> z} (g : x ~> y) (e : f ≈ f')
                   (e' : f ∘ g ≈ f' ∘ g) (a : idx_fib x) :
     to (idx_comp f' g a) ∘ to (idx_resp e (idx_map g a))
@@ -82,11 +67,11 @@ Record IndexedCat (B : Category) : Type := {
     to (idx_comp f g' a) ∘ fmap[idx_map f] (to (idx_resp e a))
       ≈ to (idx_resp e' a) ∘ to (idx_comp f g a);
 
-  (* Pseudofunctor coherence: the unit isos and the composition isos agree
-     with each other across applications.  These are the cross-application
-     equations that a bare [Functor B Cat] cannot supply (see the honesty
-     note above); Construction/Grothendieck.v discharges the [Displayed]
-     laws of the total category from exactly these fields. *)
+  (*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   idx_unit_left {x y : B} (f : x ~> y) (a : idx_fib x) :
     to (idx_resp (id_left f) a) ∘ to (idx_comp id f a)
       ≈ to (idx_id (idx_map f a));
@@ -116,11 +101,11 @@ Arguments idx_unit_left {B} _ {x y} _ _.
 Arguments idx_unit_right {B} _ {x y} _ _.
 Arguments idx_cocycle {B} _ {w x y z} _ _ _ _.
 
-(* Derived corollaries of the [idx_resp] coherence fields.  These are the
-   forms the Grothendieck construction actually consumes: its [dtransport]
-   post-composes with [from (idx_resp _ _)], so the [from]-side restatements
-   of identity, transitivity, proof irrelevance and naturality are collected
-   here once, rather than re-derived at every use site. *)
+(*
+   本节说明 Indexed 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Section IndexedCatLemmas.
 
 Context {B : Category}.

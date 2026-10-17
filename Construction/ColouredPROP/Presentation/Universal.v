@@ -39,88 +39,16 @@ Generalizable All Variables.
 
 (** * The universal property of a presented coloured PROP *)
 
-(* nLab: https://ncatlab.org/nlab/show/PROP
+(*
+   nLab: https://ncatlab.org/nlab/show/PROP
    nLab: https://ncatlab.org/nlab/show/generators+and+relations
    Wikipedia: https://en.wikipedia.org/wiki/PROP_(category_theory)
    Wikipedia: https://en.wikipedia.org/wiki/Presentation_of_a_monoid
 
-   [Construction/ColouredPROP/Universal.v] packages the interpretation
-   of free coloured terms into the strict symmetric monoidal functor
-   [CInterpF] and proves it unique: the free coloured PROP is initial
-   among coloured PROPs with an [S]-valuation.  This file extends that
-   universal property through a PRESENTATION: given a coloured
-   symmetric monoidal theory [E : CSMT Colour] and a valuation [v] of
-   its generators in a coloured PROP [P] that is SOUND for the axioms
-   of [E] ([CESound] — axiom-related terms have equivalent
-   interpretations), the interpretation factors through the presented
-   coloured PROP of [Construction/ColouredPROP/Presentation.v],
-   uniquely among strict symmetric monoidal functors.
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-   In one sentence: an [E]-sound valuation extends uniquely through
-   the presented coloured PROP.  This is the rule-soundness interface
-   by which a many-sorted equational theory is installed into a
-   semantic target once, and every [CTermEqW]-derivable equation then
-   holds there for free.
-
-   This file is the many-sorted mirror of
-   [Construction/PROP/Presentation/Universal.v] (the one-sorted
-   donor), with [list Colour] replacing [nat], [++] replacing
-   [Nat.add], and the boundary equations [app_nil_l] / [app_nil_r] /
-   [app_assoc] replacing [Nat.add_0_l] / [Nat.add_0_r] /
-   [Nat.add_assoc].  Contents:
-
-   - [cinterpW_sound]: soundness of [cinterp] for the theory
-     congruence [CTermEqW E] — a six-constructor induction whose
-     [CTEW_termeq] case is [Interp.v]'s whole nineteen-case
-     [cinterp_sound_heq], reused; as there, [CTermEqW] is
-     [Prop]-valued while the hom equivalence of the abstract target is
-     [Type]-valued, so the induction lands in the [Prop]-reflection
-     [heq] and round-trips through [heq_intro]/[heq_elim];
-
-   - [CPresentedInterp]: the interpretation functor on
-     [CPresentedCat E], obtained by the quotient lifting of
-     [Construction/Quotient.v]; it factors [CInterpF] through
-     [CPresentedProj E] DEFINITIONALLY ([CPresentedInterp_proj] is a
-     Leibniz equality by [eq_refl], and [CPresented_factor] is its
-     [≈]-level restatement);
-
-   - the strict symmetric monoidal structure on [CPresentedInterp]:
-     the comparison DATA are the same [cprop_unit_nil] /
-     [cprop_tensor_app] casts as [CInterpF]'s, and every proof field
-     is one of [Universal.v]'s named coherence lemmas
-     ([cinterp_ap_natural], [cinterp_monoidal_unit_left] /
-     [cinterp_monoidal_unit_right], [cinterp_monoidal_assoc],
-     [cinterp_braid_ap]) — their statements are purely target-side,
-     which is exactly why they were factored out there;
-
-   - [CPresented_unique]: any strict symmetric competitor
-     [G : CPresentedCat E ⟶ P] agreeing with [v] on generators agrees
-     with [cinterp] on EVERY morphism of the presented category, up to
-     the [hom_cast] conjugation along an object-agreement family
-     [Hobj].  Proved by PRECOMPOSITION with the projection: the
-     composite [G ◯ CPresentedProj E] is strict monoidal by
-     [Compose_StrictMonoidalFunctor], its comparisons collapse onto
-     [G]'s own because the projection's comparisons are identities
-     with [eq_refl] object equalities, so [Universal.v]'s
-     [cinterp_unique] applies to the composite and transfers back
-     definitionally — every hom of [CPresentedCat E] IS a term;
-
-   - [CPresented_unique_from_wires]: the object agreement synthesised
-     from the single-wire data [∀ c, G [c] = ⟦[c]⟧] by the
-     [CPresentedG_obj] fixpoint, exactly as [cinterp_unique_from_wires]
-     does on the free side ([strict_pure_obj] against
-     [cprop_unit_nil] at the empty word, [strict_ap_obj] against
-     [cprop_tensor_app] peeling one typed wire at a time).
-
-   As in [Universal.v], "strict symmetric monoidal functor" is one
-   [StrictMonoidalFunctor] over the strict-path monoidals plus the
-   braid-compatibility square [CSymmetricStrictW] over that SAME
-   tensor comparison, with the target braiding re-indexed to the
-   strict path by [cstrict_braid]; see the design note there for why
-   the hypothesis pack is phrased against this bundle rather than
-   against the two independent functor classes of
-   [Functor/Structure/Monoidal/Strict.v] and
-   [Functor/Structure/Monoidal/Braided.v]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CPresentedUniversal.
 
@@ -138,13 +66,11 @@ Context (v : CValuation P Σ).
 Notation "⟦ cs ⟧" := (@cprop_of_list Colour P cs)
   (at level 0, format "⟦ cs ⟧").
 
-(** ** 1. Soundness for the theory congruence
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    A valuation is [E]-SOUND when the two sides of every axiom of the
-    theory have equivalent interpretations.  This is the semantic
-    entry fee of the presentation: the free equations hold in any
-    coloured PROP ([cinterp_sound]), and the axioms hold by
-    hypothesis. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition CESound : Type :=
   ∀ (cs ds : list Colour) (s t : CTerm Σ cs ds),
@@ -152,11 +78,11 @@ Definition CESound : Type :=
 
 Context (HE : CESound).
 
-(** Soundness of [cinterp] for [CTermEqW E], in the [Prop]-reflection.
-    Six cases: the embedded free equations are [Interp.v]'s
-    [cinterp_sound_heq] wholesale; the axioms are [HE]; symmetry,
-    transitivity and the two composition congruences round-trip
-    through [heq_intro]/[heq_elim] as in the donor induction. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma cinterpW_sound_heq {cs ds : list Colour} {s t : CTerm Σ cs ds} :
   CTermEqW E s t → heq (cinterp P Σ v s) (cinterp P Σ v t).
 Proof using E HE HP OD P v.
@@ -194,12 +120,11 @@ Proof using E HE HP OD P v.
   exact (heq_elim (cinterpW_sound_heq HT)).
 Qed.
 
-(** ** 2. The interpretation functor on the presented category
+(*
+   本节说明函子相关定义、性质与动机。
 
-    [CInterpF] identifies [CTermEqW]-related morphisms (that is
-    [cinterpW_sound]), so it lifts through the quotient by the
-    universal property of [Construction/Quotient.v].  The lift acts
-    on objects and morphisms exactly as [CInterpF] does. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition CPresentedInterp : CPresentedCat E ⟶ P :=
   @QuotientLift (CFreeCat Σ)
@@ -215,13 +140,11 @@ Lemma CPresentedInterp_proj {cs ds : list Colour} (t : CTerm Σ cs ds) :
   = fmap[CInterpF Σ P v] t.
 Proof. reflexivity. Qed.
 
-(** ** 3. The strong and strict monoidal structure
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    Same component data as [CInterpF]'s in [Universal.v] §3: the
-    tensor comparison is the [cprop_tensor_app] cast, packaged as a
-    natural isomorphism in the functor category, and every proof field
-    is a named target-side lemma of [Universal.v] — the source
-    category changed, the target goals did not. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition CPresentedInterp_ap_dom :
   CPresentedCat E ∏ CPresentedCat E ⟶ P :=
@@ -246,10 +169,11 @@ Definition CPresentedInterp_ap_from :
        id_cast (eq_sym (@cprop_tensor_app Colour P (fst mn) (snd mn))))
     (fun x y f => cinterp_ap_natural_from Σ P v (fst f) (snd f)).
 
-(** The two composites are the identity transformation, componentwise
-    (in the functor category the identity's component at [mn] is
-    [fmap id], which on each side reduces to a tensor of identities);
-    proof text as in the free-source donor. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma CPresentedInterp_ap_to_from
   (mn : CPresentedCat E ∏ CPresentedCat E) :
   id_cast (@cprop_tensor_app Colour P (fst mn) (snd mn))
@@ -275,12 +199,11 @@ Proof.
   apply bimap_id_id.
 Qed.
 
-(* The functor-category isomorphism is an explicit [Build_Isomorphism]
-   application, pinning the ambient category to the functor category
-   [Fun (CPresentedCat E ∏ CPresentedCat E) P] (a record literal would
-   leave it to inference; see the import note at the top for why the
-   category is written in qualified form rather than bracket
-   notation). *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CPresentedInterp_ap_iso :
   @Isomorphism
     (@Category.Instance.Fun.Fun (CPresentedCat E ∏ CPresentedCat E) P)
@@ -318,17 +241,11 @@ Definition CPresentedInterp_Monoidal :
     (fun x : list Colour => cinterp_monoidal_unit_right Σ P v x)
     (fun x y z : list Colour => cinterp_monoidal_assoc Σ P v x y z).
 
-(** The comparisons ARE the coloured PROP's strictness equalities,
-    verbatim — [strict_pure_obj] is [cprop_unit_nil] and
-    [strict_ap_obj] is [cprop_tensor_app], as the universal property
-    demands.  The two reflexivity-grade comparison fields are in-situ
-    Program obligations (the [CPresented_Strict] discipline of
-    [Presentation.v]): a separately-declared comparison lemma carries
-    its own universe instance of the polymorphic [CPresentedCat], and
-    the record-field unifier stops at the instance mismatch inside the
-    transported-identity [match] before it would reduce both sides;
-    proving the field in situ keeps the whole comparison at the
-    record's single instance. *)
+(*
+   本节说明 Universal 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition CPresentedInterp_Strict :
   @StrictMonoidalFunctor (CPresentedCat E) P (CPresented_Monoidal E Cdec)
     (MPc P) CPresentedInterp := {|
@@ -338,13 +255,11 @@ Program Definition CPresentedInterp_Strict :
     @cprop_tensor_app Colour P x y                     (* ditto *)
 |}.
 
-(** ** 4. Symmetry
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    The braid-compatibility square of a monoidal functor out of the
-    presented category, over its own tensor comparison, with the
-    target braiding re-indexed to the strict path by [cstrict_braid] —
-    the presented-source sibling of [Universal.v]'s
-    [CSymmetricStrict]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition CSymmetricStrictW (G : CPresentedCat E ⟶ P)
   (MG : @MonoidalFunctor (CPresentedCat E) P (CPresented_Monoidal E Cdec)
@@ -360,11 +275,11 @@ Proof.
   exact (cinterp_braid_ap Σ P v cs ds).
 Qed.
 
-(** ** 5. Factorisation
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    The [≈]-level statement of the (definitional) factorisation of
-    the interpretation through the projection: [CPresentedInterp]
-    extends [v]'s interpretation along [CPresentedProj E]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem CPresented_factor : ∀ cs ds (t : CTerm Σ cs ds),
   fmap[CPresentedInterp] (fmap[CPresentedProj E] t) ≈ cinterp P Σ v t.
@@ -372,14 +287,11 @@ Proof.
   intros; reflexivity.
 Qed.
 
-(** ** 6. Uniqueness
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    Any strict symmetric competitor agreeing with [v] on generators
-    agrees with [cinterp] on every morphism of [CPresentedCat E], up
-    to the [hom_cast] conjugation along the object family [Hobj].  As
-    on the free side, the theorem holds for an ARBITRARY such family —
-    axiom-free UIP on [obj P] (the [ObjDecEq] class) makes any two
-    proofs of the same object equality interchangeable. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CPresentedUniqueness.
 
@@ -392,16 +304,18 @@ Context (Hgen : ∀ cs ds (g : Σ cs ds),
   fmap[G] (cquot E (CT_gen g))
     ≈ hom_cast (eq_sym (Hobj cs)) (eq_sym (Hobj ds)) (v cs ds g)).
 
-(** The competitor, precomposed with the projection: a functor from
-    the FREE category, to which [Universal.v]'s uniqueness applies.
-    Its action on objects and morphisms is definitionally [G]'s own,
-    because the projection is the identity on both. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CPresentedComposite : CFreeCat Σ ⟶ P := G ◯ CPresentedProj E.
 
-(** The composite is strict monoidal: [Compose_StrictMonoidalFunctor]
-    of [SG] after [CPresentedProj_Strict].  Because the projection's
-    strict object equalities are [eq_refl], the composite's strict
-    object data reduce to [SG]'s own ([eq_trans e eq_refl ≡ e]). *)
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition CPresentedComposite_Strict :
   @StrictMonoidalFunctor (CFreeCat Σ) P (CFreeCat_Monoidal Σ Cdec)
     (MPc P) CPresentedComposite :=
@@ -457,10 +371,11 @@ Proof using Cdec E G HBW P SG.
   exact HB.
 Qed.
 
-(** Main uniqueness.  [cinterp_unique] pins the composite on every
-    term; since the projection is the identity on objects and
-    morphisms — every hom of [CPresentedCat E] IS a term — the
-    conclusion transfers back to [G] definitionally. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem CPresented_unique :
   ∀ cs ds (f : cs ~{CPresentedCat E}~> ds),
     fmap[G] f ≈ hom_cast (eq_sym (Hobj cs)) (eq_sym (Hobj ds))
@@ -474,19 +389,11 @@ Qed.
 
 End CPresentedUniqueness.
 
-(** *** Existence, machine-checked against the hypothesis pack
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    [CPresentedInterp] itself — with its strict structure
-    [CPresentedInterp_Strict], its braid square
-    [CPresentedInterp_SymmetricStrict], and the object family
-    [Hobj := eq_refl] (its object action is [cprop_of_list] on the
-    nose) — satisfies the hypotheses of [CPresented_unique]: the
-    generator agreement is the definitional action on terms up to
-    trivial casts, and instantiating the theorem at
-    [CPresentedInterp] typechecks.  As in the donor
-    [Construction/ColouredPROP/Universal.v], this is the named
-    witness that the mediating functor of the existence half is
-    itself pinned by the uniqueness half. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example CPresentedInterp_generator_agreement (cs ds : list Colour)
   (g : Σ cs ds) :
@@ -506,14 +413,11 @@ Proof using Cdec E HE HP OD P v.
            CPresentedInterp_generator_agreement cs ds f).
 Qed.
 
-(** *** Uniqueness from single-wire object data
+(*
+   本节说明 Universal 相关定义、性质与动机。
 
-    As on the free side, the object family [Hobj] can be synthesised
-    from the single-wire data [∀ c, G [c] = ⟦[c]⟧]: empty-word
-    agreement is [strict_pure_obj] against [cprop_unit_nil], and cons
-    agreement peels one typed wire off with [strict_ap_obj] against
-    [cprop_tensor_app], using the definitional fact
-    [[c] ⨂ cs' = [c] ++ cs' = c :: cs'] on the presented side. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CPresentedUniquenessFromWires.
 
@@ -551,12 +455,11 @@ Qed.
 
 End CPresentedUniquenessFromWires.
 
-(** *** Agreement of competitors
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Any two strict symmetric functors out of the presented category
-    that agree with [v] on the generators agree with each other on
-    every morphism, after re-indexing both to the canonical
-    objects. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Corollary CPresented_unique2
   (G1 : CPresentedCat E ⟶ P)

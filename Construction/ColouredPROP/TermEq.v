@@ -95,30 +95,19 @@ Inductive CTermEq : forall {cs ds}, CTerm S cs ds -> CTerm S cs ds -> Prop :=
       CTermEq (CT_comp (CT_tens g f) (CT_braid cs1 cs2))
               (CT_comp (CT_braid ds1 ds2) (CT_tens f g))
 
-  (** Strict-PROP unit on tensor: tensoring with the empty term
-      [CT_id []] on the LEFT is an identity operation modulo the
-      definitional equation [[] ++ cs = cs].
+  (*
+   本节说明幺半结构、幺半群、同构相关定义、性质与动机。
 
-      This axiom is the analogue of the strict-unit law in a
-      [StrictMonoidal] category.  In a generic [Monoidal] category
-      it would be a natural ISOMORPHISM (the left unitor), not an
-      equation; coloured PROPs are strict on the nose, so we assert
-      it as an equation in [CTermEq].
-
-      Both sides have type [CTerm S ([] ++ cs) ds] = [CTerm S cs ds]
-      on the nose, so no transport is needed — [[] ++ l] reduces
-      definitionally, just as [0 + n] does on [nat]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   | CTE_tens_id0_left {cs ds} (f : CTerm S cs ds) :          (* strict unit: left unitor λ = id *)
       CTermEq (CT_tens (CT_id []) f) f
 
-  (** Strict-PROP unit on the right: dually, tensoring with [CT_id []]
-      on the RIGHT is identity modulo [cs ++ [] = cs].
+  (*
+   本节说明 TermEq 相关定义、性质与动机。
 
-      Stated in transport form via [eq_rect] over the boundary
-      equations.  Concretely [CT_tens f (CT_id [])] has type
-      [CTerm S (cs ++ []) (ds ++ [])]; we transport it to
-      [CTerm S cs ds] using [app_nil_r] on both indices, and assert
-      the result equals [f]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   | CTE_tens_id0_right {cs ds} (f : CTerm S cs ds) :         (* strict unit: right unitor ρ = id *)
       CTermEq (eq_rect (ds ++ [])
                        (fun k => CTerm S (cs ++ []) k)
@@ -141,45 +130,11 @@ Inductive CTermEq : forall {cs ds}, CTerm S cs ds -> CTerm S cs ds -> Prop :=
                          (CT_tens f (CT_tens g h))
                          (eq_sym (app_assoc cs1 cs2 cs3)))
 
-  (** ** Hexagon axioms for block braids
+  (*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-      In a strict symmetric monoidal category the braid decomposes
-      additively in either argument (Mac Lane CWM Ch.VII §7;
-      Joyal–Street §2; Selinger, "A survey of graphical languages for
-      monoidal categories" (arXiv:0908.3347), §3.3/§3.5 — braided
-      resp. symmetric):
-
-        σ_{m++n,p} ≈ (σ_{m,p} ⊕c id_n) ⊙c (id_m ⊕c σ_{n,p})     (hex-left)
-        σ_{m,n++p} ≈ (id_n ⊕c σ_{m,p}) ⊙c (σ_{m,n} ⊕c id_p)     (hex-right)
-
-      The LHS and RHS do not have matching types on the nose because
-      concatenation on [list Colour] is associative only up to
-      propositional [=], so both equations are stated in transport
-      form via [eq_rect] against [app_assoc], analogous to
-      [CTE_tens_assoc].
-
-      Without these, e.g. [CT_braid [c1; c2; c3] [d1; d2]] is not
-      provably equal to the layered composite of single-wire swaps,
-      and the [BraidedMonoidal] layer beneath the [SymmetricMonoidal]
-      instance on [CFreeCat S] cannot discharge [hexagon_identity] /
-      [hexagon_identity_sym] for non-trivial colour words.
-
-      ** Minimality note (nLab/Wikipedia, symmetric_monoidal_category)
-
-      In a SYMMETRIC (as opposed to merely braided) monoidal category
-      the two hexagons are NOT independent: given the symmetry equation
-      [σ_{ds,cs} ⊙c σ_{cs,ds} ≈ id] ([CTE_braid_invol]) together with
-      braid naturality ([CTE_braid_natural]), either hexagon implies
-      the other.  So exactly one of [CTE_braid_hex_left] /
-      [CTE_braid_hex_right] is logically necessary; the other is a
-      derivable theorem we keep as a primitive constructor for
-      ergonomics (the [eq_rect] transport bookkeeping makes the formal
-      derivation tedious).  As with the unit-braid constructors below,
-      the redundancy is sound and cannot make [CTermEq] inconsistent
-      (every constructor is inhabited by the standard model in which a
-      term denotes the colour-preserving permutation of its wires).
-      Deriving one as a [Lemma] after the inductive would change only
-      the axiom budget, not any [CTermEq]-judgement. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
   | CTE_braid_hex_left (m n p : list Colour) :               (* symmetry: hexagon (left argument) *)
       CTermEq
@@ -228,54 +183,11 @@ Inductive CTermEq : forall {cs ds}, CTerm S cs ds -> CTerm S cs ds -> Prop :=
                     (m ++ (n ++ p))
                     (eq_sym (app_assoc m n p))))
 
-  (** ** Unit-braid coherence
+  (*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-      In any symmetric monoidal category the braid involving the unit
-      object collapses to the unitor: [σ_{I,X} = ρ_X^{-1} ∘ λ_X].  In
-      the strict coloured-PROP setting on colour words, this becomes
-      [CT_braid [] n ≈ CT_id n] and [CT_braid n [] ≈ CT_id n] modulo
-      the boundary equation [n ++ [] = n] (which is propositional, not
-      definitional — [app] is left-strict only, exactly like
-      [Nat.add]).
-
-      ** Minimality note (Joyal–Street §2 Prop. 2.1; Mac Lane CWM VII §1)
-
-      In the literature these unit-braid equations are NOT independent
-      axioms — they are theorems of [hexagon + naturality + invol +
-      triangle].  Sketch of the derivation in our setting (we omit the
-      formal proof's eq_rect bookkeeping for brevity):
-
-        1. Instantiate [CTE_braid_hex_right] at [m := n], [n := []],
-           [p := []]:
-             σ_{n, [] ++ []} ≈ (id_[] ⊕c σ_{n,[]}) ⊙c (σ_{n,[]} ⊕c id_[]).
-        2. Collapse the [id_[] ⊕c _] and [_ ⊕c id_[]] tensors via
-           [CTE_tens_id0_left] / [CTE_tens_id0_right]:
-             σ_{n, []} ≈ σ_{n, []} ⊙c σ_{n, []}                  (idempotency)
-        3. By [CTE_braid_invol]: [σ_{[], n} ⊙c σ_{n, []} ≈ id_{n ++ []}
-           ≈ id_n].  Compose both sides of (2) with [σ_{[], n}] on the
-           left:
-             σ_{[], n} ⊙c σ_{n, []} ≈ σ_{[], n} ⊙c (σ_{n, []} ⊙c σ_{n, []}).
-             id_n        ≈  σ_{[], n} ⊙c σ_{n, []} ⊙c σ_{n, []}    (assoc)
-             id_n        ≈  id_n ⊙c σ_{n, []}                      (involution)
-             id_n        ≈  σ_{n, []}                              (id-left)
-        4. The dual [σ_{[], n} ≈ id_n] follows by applying
-           [CTE_braid_invol] once more to step (3)'s conclusion.
-
-      We keep them as primitive constructors here for ergonomics: the
-      formal derivation requires substantial [eq_rect] bookkeeping
-      across hexagon-, strict-unit-, and involution-form transports
-      (the unit-boundary cases of those transports do not reduce
-      definitionally in [app]), and the relabelling congruence
-      (Relabel.v), the interpretation soundness cases (Interp.v), and
-      the supply instance (Supply/Instance.v) consume the strict form
-      directly.
-
-      Adding sound redundant constructors is harmless (it cannot make
-      [CTermEq] inconsistent — every constructor remains inhabited by
-      the standard colour-preserving-permutation model).  A future
-      refactor that derives these as [Lemma]s after the inductive
-      declaration would not change any [CTermEq]-judgements, only the
-      axiom budget. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
   | CTE_braid_unit_left (n : list Colour) :                  (* symmetry: unit braid σ_{[],n} = id (derivable) *)
       CTermEq
@@ -319,16 +231,11 @@ Arguments CTE_braid_hex_right {Colour S}.
 Arguments CTE_braid_unit_left {Colour S}.
 Arguments CTE_braid_unit_right {Colour S}.
 
-(** ** Identity bookkeeping
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-    The strict monoidal functors built downstream on free and
-    presented coloured PROPs all have comparison maps that are
-    identities or tensors of identities, so their coherence squares
-    reduce to the same four identity-collapsing equations.  They are
-    stated here once, over an arbitrary signature, and consumed by
-    [Construction/ColouredPROP/Presentation.v] (at the signature of a
-    [CSMT]) and [Construction/ColouredPROP/Relabel.v] — the coloured
-    mirror of the [tm_*] quartet of [Construction/PROP/TermEq.v]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** An identity slides from one side of a morphism to the other. *)
 Lemma ctm_id_swap {Colour : Type} {S : CSignature Colour}

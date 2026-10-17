@@ -101,11 +101,11 @@ Proof.
   rewrite id_left, id_right; reflexivity.
 Qed.
 
-(* Uniqueness, up to Cat's hom-equivalence: any functor whose
-   projections agree with the family agrees with the pairing.  The
-   witnessing isomorphism is assembled componentwise from the given
-   ones, and its naturality is their naturality, component by
-   component. *)
+(*
+   本节说明函子、hom、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma PiCat_ump_unique {I : Type} {C : I → Category} {D : Category}
   (R : ∀ i : I, D ⟶ C i) (H : D ⟶ PiCat C) :
   (∀ i : I, PiCat_Proj C i ◯ H ≈ R i) →

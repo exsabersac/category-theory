@@ -35,15 +35,11 @@ Context (S : Signature).
 
 Open Scope nat_scope.
 
-(** ** Braid naturality in [ArityTwo] form
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    The [braid_natural] field of [BraidedMonoidal] unfolds, through
-    the [Mapping] instances of [Structure/Monoidal/Naturality.v], to
-    the square below: each side tensors one morphism against a
-    half-identity before composing with the braid.  [tens_fuse_l]
-    collapses the left-hand pair to [h ⊕ g] and [tens_fuse_r] the
-    right-hand pair to [g ⊕ h], after which the square is exactly
-    [TE_braid_natural]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma free_braid_square {x y z w : nat} (g : Term S x y) (h : Term S z w) :
   TermEq S
@@ -66,15 +62,11 @@ Proof.
         -- apply tens_fuse_r.
 Qed.
 
-(** ** The right hexagon in [T_cast] form
+(*
+   本节说明 Braided 相关定义、性质与动机。
 
-    [TE_braid_hex_right x y z] asserts the hexagon for [σ_{x,y+z}]
-    with its arity mismatches carried by [eq_rect] transports over
-    [Nat.add_assoc] equations.  Converting the codomain transport on
-    the left-hand side by [eq_rect_cod_cast] and the two domain
-    transports on the right-hand side by [eq_rect_dom_cast] (plus
-    [T_cast_sym_sym] to erase a double [eq_sym]) restates the axiom
-    purely in terms of [T_cast] composites. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma braid_hex_right_cast (x y z : nat) :
   TermEq S
@@ -110,15 +102,11 @@ Proof.
         apply eq_rect_dom_cast.
 Qed.
 
-(** ** First hexagon identity
+(*
+   本节说明 Braided 相关定义、性质与动机。
 
-    The [hexagon_identity] field of [BraidedMonoidal] at [x y z],
-    with every associator spelled as the [T_cast] of the matching
-    [Nat.add_assoc] equation (the [to] direction is the [eq_sym]
-    cast, per [FreeCat_tensor_assoc]).  Post-composing both sides of
-    [braid_hex_right_cast] with the incoming associator and
-    cancelling the resulting cast-inverse pair by [T_cast_inv_sym]
-    yields the class field verbatim. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma free_hexagon (x y z : nat) :
   TermEq S
@@ -161,13 +149,11 @@ Proof.
            ++ apply TE_id_right.
 Qed.
 
-(** ** The left hexagon in [T_cast] form
+(*
+   本节说明 Braided 相关定义、性质与动机。
 
-    Mirror bridge: [TE_braid_hex_left x y z] is the hexagon for
-    [σ_{x+y,z}], and its transports convert by the same three
-    bridges.  Here the inverse associators appear, so the casts are
-    the forward [Nat.add_assoc] equations (the [from] direction of
-    [FreeCat_tensor_assoc]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma braid_hex_left_cast (x y z : nat) :
   TermEq S
@@ -215,14 +201,11 @@ Proof.
       * apply TE_refl.
 Qed.
 
-(** ** Second hexagon identity
+(*
+   本节说明 Braided 相关定义、性质与动机。
 
-    The [hexagon_identity_sym] field of [BraidedMonoidal] at [x y z],
-    phrased through the inverse associators.  Pre-composing both
-    sides of [braid_hex_left_cast] with the outgoing inverse
-    associator [T_cast (Nat.add_assoc z x y)], reassociating, and
-    cancelling the cast-inverse pair by [T_cast_inv_sym] gives the
-    class field. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma free_hexagon_sym (x y z : nat) :
   TermEq S
@@ -270,14 +253,11 @@ Proof.
         -- apply TE_refl.
 Qed.
 
-(** ** THE BraidedMonoidal record on [FreeCat S]
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    [braided_is_monoidal] names the ONE shared [Monoidal] record
-    [FreeCat_Monoidal S]; the braid is [T_braid] (recall that on
-    objects the tensor is [Nat.add], so [m ⨂ n] and [m + n] agree
-    definitionally); all proof fields are the standalone lemmas
-    above.  Every field is explicit, so no Program obligations are
-    generated. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition FreeCat_Braided : @BraidedMonoidal (FreeCat S) := {|
   braided_is_monoidal := FreeCat_Monoidal S;

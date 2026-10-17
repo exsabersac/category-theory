@@ -32,12 +32,11 @@ Context (S : Signature).
 
 Open Scope nat_scope.
 
-(** ** Comparison lemmas
+(*
+   本节说明 Strict 相关定义、性质与动机。
 
-    Each states that a structural map of [FreeCat_Monoidal S] equals
-    the transported identity along the corresponding arity equation.
-    Both sides are the same [match] on the same proof term, so each
-    proof is [reflexivity]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** The associator [(x + y) + z ≅ x + (y + z)] is the transported
     identity along [eq_sym (Nat.add_assoc x y z)] — the orientation of

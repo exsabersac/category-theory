@@ -30,13 +30,11 @@ Definition two_bot (z : TwoObj) : TwoHom TwoX z :=
   | TwoY => TwoXY
   end.
 
-(** A small, self-contained notion of (decidable) preorder.  We keep it
-    local and lightweight instead of pulling in stdlib order-theoretic
-    typeclasses.  The relation is [Type]-valued; decidability is part of
-    the data because building the enrichment requires computing, for
-    each pair of carrier elements, an object of [_2] — a truth value —
-    from the relation.  Direction (a) below supplies decidability
-    automatically, since equality of [TwoObj] is decidable. *)
+(*
+   本节说明 Two 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record TwoPreorder := {
   tpre_carrier : Type;

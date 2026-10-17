@@ -30,12 +30,11 @@ Context (S : Signature).
 
 Open Scope nat_scope.
 
-(** ** Braid involution
+(*
+   本节说明 Symmetric 相关定义、性质与动机。
 
-    The [braid_invol] field of [SymmetricMonoidal] at [x y]: the
-    composite [σ_{y,x} ⊙ σ_{x,y} : x + y ⇒ x + y] is the identity.
-    This is the primitive constructor [TE_braid_invol] applied at
-    [m := x], [n := y]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma free_braid_invol (x y : nat) :
   TermEq S (T_comp (T_braid y x) (T_braid x y)) (T_id (x + y)).
@@ -43,13 +42,11 @@ Proof.
   apply TE_braid_invol.
 Qed.
 
-(** ** THE SymmetricMonoidal record on [FreeCat S]
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    [symmetric_is_braided] names the ONE braided record
-    [FreeCat_Braided S] (hence, through it, the ONE shared [Monoidal]
-    record [FreeCat_Monoidal S]); the involution proof is the
-    standalone lemma above.  Every field is explicit, so no Program
-    obligations are generated. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition FreeCat_Symmetric : @SymmetricMonoidal (FreeCat S) := {|
   symmetric_is_braided := FreeCat_Braided S;

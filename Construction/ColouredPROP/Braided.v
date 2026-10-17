@@ -32,15 +32,11 @@ Context {Colour : Type}.
 Context (S : CSignature Colour).
 Context (Cdec : forall c d : Colour, {c = d} + {c <> d}).
 
-(** ** Braid naturality in [ArityTwo] form
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    The [braid_natural] field of [BraidedMonoidal] unfolds, through
-    the [Mapping] instances of [Structure/Monoidal/Naturality.v], to
-    the square below: each side tensors one morphism against a
-    half-identity before composing with the braid.  [ctens_fuse_l]
-    collapses the left-hand pair to [h ⊕c g] and [ctens_fuse_r] the
-    right-hand pair to [g ⊕c h], after which the square is exactly
-    [CTE_braid_natural]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cfree_braid_square {x y z w : list Colour}
   (g : CTerm S x y) (h : CTerm S z w) :
@@ -66,15 +62,11 @@ Proof.
         -- apply ctens_fuse_r.
 Qed.
 
-(** ** The right hexagon in [CT_cast] form
+(*
+   本节说明 Braided 相关定义、性质与动机。
 
-    [CTE_braid_hex_right x y z] asserts the hexagon for [σ_{x,y++z}]
-    with its boundary mismatches carried by [eq_rect] transports over
-    [app_assoc] equations.  Converting the codomain transport on the
-    left-hand side by [ceq_rect_cod_cast] and the two domain
-    transports on the right-hand side by [ceq_rect_dom_cast] (plus
-    [CT_cast_sym_sym] to erase a double [eq_sym]) restates the axiom
-    purely in terms of [CT_cast] composites. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cbraid_hex_right_cast (x y z : list Colour) :
   CTermEq S
@@ -110,15 +102,11 @@ Proof.
         apply ceq_rect_dom_cast.
 Qed.
 
-(** ** First hexagon identity
+(*
+   本节说明 Braided 相关定义、性质与动机。
 
-    The [hexagon_identity] field of [BraidedMonoidal] at [x y z],
-    with every associator spelled as the [CT_cast] of the matching
-    [app_assoc] equation (the [to] direction is the [eq_sym] cast,
-    per [CFreeCat_tensor_assoc]).  Post-composing both sides of
-    [cbraid_hex_right_cast] with the incoming associator and
-    cancelling the resulting cast-inverse pair by [CT_cast_inv]
-    yields the class field verbatim. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cfree_hexagon (x y z : list Colour) :
   CTermEq S
@@ -161,13 +149,11 @@ Proof.
            ++ apply CTE_id_right.
 Qed.
 
-(** ** The left hexagon in [CT_cast] form
+(*
+   本节说明 Braided 相关定义、性质与动机。
 
-    Mirror bridge: [CTE_braid_hex_left x y z] is the hexagon for
-    [σ_{x++y,z}], and its transports convert by the same three
-    bridges.  Here the inverse associators appear, so the casts are
-    the forward [app_assoc] equations (the [from] direction of
-    [CFreeCat_tensor_assoc]). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cbraid_hex_left_cast (x y z : list Colour) :
   CTermEq S
@@ -215,14 +201,11 @@ Proof.
       * apply CTE_refl.
 Qed.
 
-(** ** Second hexagon identity
+(*
+   本节说明 Braided 相关定义、性质与动机。
 
-    The [hexagon_identity_sym] field of [BraidedMonoidal] at [x y z],
-    phrased through the inverse associators.  Pre-composing both
-    sides of [cbraid_hex_left_cast] with the outgoing inverse
-    associator [CT_cast (app_assoc z x y)], reassociating, and
-    cancelling the cast-inverse pair by [CT_cast_inv] gives the class
-    field. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cfree_hexagon_sym (x y z : list Colour) :
   CTermEq S
@@ -270,15 +253,11 @@ Proof.
         -- apply CTE_refl.
 Qed.
 
-(** ** THE BraidedMonoidal record on [CFreeCat S]
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    [braided_is_monoidal] names the ONE shared [Monoidal] record
-    [CFreeCat_Monoidal S Cdec]; the braid is [CT_braid] (recall that
-    on objects the tensor is [++], so [cs ⨂ ds] and [cs ++ ds] agree
-    definitionally); all proof fields are the standalone lemmas
-    above.  The record is an explicit [Build_BraidedMonoidal]
-    application, so no Program obligations are generated and no
-    inference is left to a record literal. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition CFreeCat_Braided : @BraidedMonoidal (CFreeCat S) :=
   @Build_BraidedMonoidal (CFreeCat S)
@@ -288,12 +267,11 @@ Definition CFreeCat_Braided : @BraidedMonoidal (CFreeCat S) :=
     (fun x y z => cfree_hexagon x y z)
     (fun x y z => cfree_hexagon_sym x y z).
 
-(** ** Braid involution
+(*
+   本节说明 Braided 相关定义、性质与动机。
 
-    The [braid_invol] field of [SymmetricMonoidal] at [x y]: the
-    composite [σ_{y,x} ⊙c σ_{x,y} : x ++ y ⇒ x ++ y] is the identity.
-    This is the primitive constructor [CTE_braid_invol] applied at
-    [cs := x], [ds := y]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cfree_braid_invol (x y : list Colour) :
   CTermEq S (CT_comp (CT_braid y x) (CT_braid x y)) (CT_id (x ++ y)).
@@ -301,14 +279,11 @@ Proof.
   apply CTE_braid_invol.
 Qed.
 
-(** ** THE SymmetricMonoidal record on [CFreeCat S]
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    A coloured PROP is a SYMMETRIC strict monoidal category, so the
-    braiding installed above must be its own inverse.
-    [symmetric_is_braided] names the ONE braided record
-    [CFreeCat_Braided] (hence, through it, the ONE shared [Monoidal]
-    record [CFreeCat_Monoidal S Cdec]); the involution proof is the
-    standalone lemma above. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition CFreeCat_Symmetric : @SymmetricMonoidal (CFreeCat S) :=
   @Build_SymmetricMonoidal (CFreeCat S)

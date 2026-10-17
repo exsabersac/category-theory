@@ -272,10 +272,11 @@ Proof.
       * symmetry; exact (ZigZagLift_fwd g).
 Qed.
 
-(* Uniqueness: a competitor agreeing with [F] after precomposition with the
-   projection is pinned on every zig-zag word, by induction on the word.  The
-   backward letters are pinned because a functor carries the two cancellation
-   equations to two-sided inverses, and inverses are unique. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ZigZagLift_unique (G : FracZigZag ⟶ D)
   (Hobj : ∀ x : C, fobj[G] x = fobj[F] x)
   (Hmor : ∀ (x y : C) (f : x ~{C}~> y),
@@ -336,10 +337,11 @@ Definition FractionsProj_inverts {C : Category} {x y : C} (f : x ~> y) :
   @IsIsomorphism (Fractions C) x y (fmap[FractionsProj C] f) :=
   ZigZagProj_inverts (WAll C) f tt.
 
-(* Composites of isomorphisms are isomorphisms, in the [IsIsomorphism]
-   (predicate) presentation.  Theory/Isomorphism.v states this only for the
-   bundled [Isomorphism] ([iso_compose]); this is the same fact in the
-   presentation [IsGroupoid] is stated over. *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition frac_IsIso_compose {E : Category} {x y z : E} {f : y ~> z} {g : x ~> y}
   (Hf : @IsIsomorphism E y z f) (Hg : @IsIsomorphism E x y g) :
   @IsIsomorphism E x z (f ∘ g).
@@ -360,10 +362,11 @@ Defined.
 Definition frac_IsIso_id {E : Category} (x : E) : @IsIsomorphism E x x id :=
   @Build_IsIsomorphism E x x id id (id_left id) (id_left id).
 
-(* Riehl 4.1.15, the half that makes [Fractions] land in groupoids: every
-   zig-zag word is invertible, by induction on the word — the empty word is
-   the identity, and a word [e ::: rest] is [rest ∘ (e)], a composite of two
-   invertible morphisms. *)
+(*
+   本节说明 Fractions 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Theorem Fractions_IsGroupoid (C : Category) : IsGroupoid (Fractions C).
 Proof.
   intros x y u.
@@ -449,12 +452,11 @@ Qed.
 
 (** ** The bridge to the free groupoid on a quiver *)
 
-(* [Construction/Free/Groupoid.v] runs the same recipe one level down: on the
-   QUIVER of [C], with the two cancellation relations but WITHOUT the
-   composition and identity relations of [C].  [C[C⁻¹]] is therefore a
-   further quotient of [FreeGroupoid (QuiverOfCat C)], and the comparison
-   functor is the one the free groupoid's own universal property produces —
-   no new construction is needed to exhibit it. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FreeGroupoidToFractions (C : Category) :
   FreeGroupoid (QuiverOfCat C) ⟶ Fractions C :=
   FreeGroupoidFunctor (QuiverOfCat C) (Fractions_IsGroupoid C)
@@ -474,13 +476,11 @@ Lemma FreeGroupoidToFractions_obj {C : Category} (x : C) :
   fobj[FreeGroupoidToFractions C] x = x.
 Proof. reflexivity. Qed.
 
-(** ** The universal property, bundled
+(*
+   本节说明伴随相关定义、性质与动机。
 
-    Riehl §4.1 Example 4.1.15, the left-adjoint half, in one statement, in
-    the shape [Construction/Free/Groupoid.v]'s [free_groupoid_universal]
-    uses: the object agreement [Hobj] is nested INSIDE the bundle, because
-    for an abstract competitor [K'] the objects [fobj[K'] x] and [fobj[F] x]
-    are not convertible until it is in scope. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem fractions_universal {C D : Category} (Dg : IsGroupoid D)
   (F : C ⟶ D) :
@@ -507,14 +507,11 @@ Proof.
              K' Hobj' Hgen x y u).
 Qed.
 
-(** ** The two round trips
+(*
+   本节说明函子、（余）强度相关定义、性质与动机。
 
-    Restricting a functor out of [C[C⁻¹]] along the projection gives back a
-    functor out of [C]; re-extending recovers it, and extending a functor and
-    then restricting recovers that.  Both are stated at STRICT strength (an
-    equality of functors in [StrictCat]), in the manner of
-    [Construction/Free/Groupoid.v]'s [fg_restrict_recovers_strict] and
-    [fg_extend_restrict]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition frac_restrict {C D : Category} (S : Fractions C ⟶ D) : C ⟶ D :=
   S ◯ FractionsProj C.
@@ -535,12 +532,11 @@ Lemma frac_extend_restrict {C D : Category} (F : C ⟶ D)
     (frac_restrict (FractionsLift F Finv)) F.
 Proof. exact (FractionsLift_factors F Finv). Qed.
 
-(** ** The congruence merges, but it does not merge everything
+(*
+   本节说明函子相关定义、性质与动机。
 
-    A groupoid-valued functor that separates two morphisms of [C] keeps them
-    separate in [C[C⁻¹]], because it factors through the projection.  This is
-    the general non-collapse statement; it needs no concrete witness, only a
-    functor that already separates. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma FractionsProj_separates {C D : Category} (Dg : IsGroupoid D)
   (F : C ⟶ D) {x y : C} (f g : x ~> y)
@@ -555,10 +551,11 @@ Proof.
   now rewrite E.
 Qed.
 
-(* The sharpest unconditional form: when [C] is ALREADY a groupoid there is
-   nothing left to invert, and the projection merges nothing at all — it is
-   faithful.  The separating functor is the identity, which the groupoid
-   hypothesis makes admissible for [FractionsLift]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition FractionsProj_Faithful {C : Category} (Cg : IsGroupoid C) :
   Faithful (FractionsProj C).
 Proof.

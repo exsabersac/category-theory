@@ -21,79 +21,17 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Why "delooping", and what the one-object reading buys
+(*
+   本节说明来源与用途相关定义、性质与动机。
 
-   The name is topological.  Per the nLab (delooping), a delooping of an
-   object X is an object B X whose loop space object is X again, so that
-   passing from a group G to the one-object groupoid B G (equivalently, to
-   its classifying space BG) inverts the formation of loops; the notation
-   B is Riehl's and is standard.  The categorical content is Mac Lane's
-   observation that the axioms match: associativity of composition is
-   associativity of the operation, the two unit laws of a category are the
-   two unit laws of a monoid, and the single object carries no information
-   whatever.  Fong and Spivak put the equivalence in exactly this form —
-   a category with one object *is* a monoid, taking the hom-set at that
-   object as the carrier — and it is the reason both directions belong in
-   one file rather than sitting apart as unrelated constructions.
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   What the reading buys is that everything defined for categories
-   immediately specializes to monoids.  The opposite category of a
-   delooping is the delooping of the opposite monoid (Riehl, Example
-   1.2.2(iii), the device by which right actions are presented as left
-   actions); the idempotent-splitting completion of a delooped monoid is
-   the category whose objects are the idempotents of the monoid
-   (Construction/Karoubi.v); a functor out of a delooping is an action,
-   which for groups in Vect is a linear representation.  In the other
-   direction, the endomorphism monoid [hom_monoid] is how a category
-   sees a single object in isolation, and it is the local invariant that
-   Theory/Isomorphism.v's [IsIsomorphism] tests for invertibility of.
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-   Relationship to what is already in the tree.  [Instance/CMon.v]'s
-   [CMonObject] is the *commutative* version of [MonObject] below, in the
-   same setoid shape and with the same [Proper] field, and is used for the
-   preadditive/biproduct development; it derives its right unit law from
-   commutativity, whereas a bare monoid must carry both unit laws as data.
-   [Theory/Algebra/Monoid.v] defines a monoid *object* internal to a
-   monoidal category, which is the correct notion in general but drags a
-   monoidal structure into a construction that needs nothing of the kind;
-   the same holds for [Structure/Group.v]'s [GroupObject], an internal
-   group object in a cartesian monoidal category, which is why [GrpObject]
-   below is a small extension record instead.  [Theory/Bicategory/OneObject.v]
-   is the same delooping one level up: it presents a monoidal category as a
-   one-object *bicategory*, with the elements-as-arrows dictionary shifted
-   from (object, arrow) to (arrow, 2-cell).  Finally
-   [Construction/Funny/Comparison.v]'s [ListMon] is a hand-written one-object
-   category on the free monoid over [bool], made for a single counterexample.
-   It is NOT [Deloop] of that monoid: its composition is `v ++ u`, the
-   REVERSED product (that file's own header says so), so it is [Deloop] of the
-   OPPOSITE free monoid -- equivalently `(Deloop FreeBool)^op`, by [Deloop_op]
-   in Construction/Deloop/Opposite.v.  The two are isomorphic via [rev], so no
-   mathematics turns on it, but the distinction is precisely the
-   composition-order point below and is worth stating exactly.
-
-   Two further internal-monoid donors, neither usable here: Structure/Monoid.v
-   defines `Monoid := @MonoidObject C CC_Monoidal` (still an ambient category),
-   and Theory/Coq/Monoid.v is an operations-only class carrying no laws -- it
-   nevertheless already observes in prose that a monoid is the hom-set of a
-   one-object category, which is the statement this file proves. *)
-
-(* A monoid: a setoid with a distinguished unit and an associative binary
-   operation respecting `≈`, for which the unit is neutral on both sides.
-   This is [Instance/CMon.v]'s [CMonObject] minus commutativity, hence with
-   the right unit law promoted from a corollary to a field.
-
-   ASSOCIATIVITY ORIENTATION.  The field is stated as
-
-       a * (b * c) ≈ (a * b) * c
-
-   rather than in the more usual left-to-right reading, because that is
-   verbatim the orientation of [comp_assoc] in Theory/Category.v.  Delooping
-   then supplies the category law by projection instead of by [symmetry], and
-   — since [Set Primitive Projections] gives definitional eta for records —
-   the round trip [hom_monoid_Deloop] below closes by [eq_refl] rather than
-   only up to `≈`.  [mon_op_assoc_sym] restates the law in the other
-   orientation for consumers who want it, exactly as [comp_assoc_sym] does
-   for categories. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record MonObject := {
   mon_setoid :> SetoidObject;
 
@@ -125,11 +63,11 @@ Proof.
   apply mon_op_assoc.
 Qed.
 
-(* Inverses in a monoid are unique when they exist: if b is a left inverse of
-   a and c is a right inverse of a, then b ≈ c, by the classical computation
-   b ≈ b * 1 ≈ b * (a * c) ≈ (b * a) * c ≈ 1 * c ≈ c.  This is what makes the
-   inverse operation of [GrpObject] below respect `≈` without carrying a
-   [Proper] field of its own. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma mon_inverse_unique (M : MonObject) (a b c : carrier M) :
   mon_op b a ≈ mon_unit → mon_op a c ≈ mon_unit → b ≈ c.
 Proof.
@@ -143,27 +81,11 @@ Qed.
 
 (** ** Mac Lane's construction 3: the one-object category B M *)
 
-(* The delooping of a monoid M: one object, the elements of M as its arrows,
-   multiplication as composition and the unit as the identity.  Every category
-   law is a monoid law by projection, so no obligation is generated.
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-   Mac Lane and Riehl write [B M] for this category; the name here is
-   [Deloop], which keeps the single letter B free as an ordinary variable
-   throughout the development.
-
-   COMPOSITION ORDER.  `f ∘ g` in this library means "g first, then f"
-   (Theory/Category.v: `compose : (y ~> z) → (x ~> y) → (x ~> z)`), and the
-   delooping takes `compose f g := mon_op f g`, i.e. the monoid product in the
-   same argument order.  So an element of M read as an arrow multiplies on the
-   left exactly as it composes on the left; no opposite monoid is introduced.
-   (Riehl's Example 1.2.2(iii) — that `(B G)^op` is `B (G^op)`, proved as
-   [Deloop_op] in Construction/Deloop/Opposite.v — is the
-   statement that the *other* choice deloops the opposite monoid.)
-
-   The sole object is [ttt : poly_unit] rather than [tt : unit], following
-   Instance/One.v and Construction/Funny/Comparison.v: [poly_unit] is
-   universe-polymorphic, so the object universe of [Deloop M] stays free
-   instead of being pinned at [Set]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Deloop (M : MonObject) : Category := {|
   obj     := poly_unit;                        (* the single object *)
   hom     := fun _ _ => carrier M;             (* arrows are elements of M *)
@@ -182,10 +104,11 @@ Definition Deloop (M : MonObject) : Category := {|
 
 (** ** The converse: the endomorphism monoid hom(a, a) *)
 
-(* For any category C and object a, the hom-setoid `a ~> a` is a monoid under
-   composition, with the identity arrow as unit.  Again every monoid law is a
-   category law by projection: [compose_respects], [comp_assoc], [id_left] and
-   [id_right] are precisely the four fields required. *)
+(*
+   本节说明hom、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition hom_monoid (C : Category) (a : C) : MonObject := {|
   mon_setoid := {| carrier := a ~> a; is_setoid := @homset C a a |};
 
@@ -201,18 +124,11 @@ Definition hom_monoid (C : Category) (a : C) : MonObject := {|
 
 (** ** The correspondence, on the nose *)
 
-(* Delooping and taking endomorphisms are mutually inverse in the sense that
-   can be stated as an equation: the endomorphism monoid of the single object
-   of [Deloop M] is M itself, on the nose.  Both the data (carrier, unit,
-   operation) and the law fields agree definitionally — the laws because
-   [Deloop] took them from M by projection, in the orientation M states them
-   in; the records because [Set Primitive Projections] gives eta.
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-   The opposite composite has no equational form to prove: [Deloop
-   (hom_monoid C a)] is a one-object category, whereas C in general has many
-   objects, and the honest statement — that it is the full subcategory of C
-   on {a} — is a functor-level claim, belonging with the deferred §I.3
-   dictionary. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example hom_monoid_Deloop (M : MonObject) : hom_monoid (Deloop M) ttt = M :=
   eq_refl.
 
@@ -229,15 +145,11 @@ Example hom_monoid_Deloop_op (M : MonObject) :
 
 (** ** Mac Lane's construction 4: the group case *)
 
-(* A group, as a small extension of [MonObject] by a two-sided inverse
-   operation.  As with [MonObject], this is a bare record rather than
-   [Structure/Group.v]'s [GroupObject] (a group object internal to a cartesian
-   monoidal category): the delooping needs the inverse of an *element*, and
-   nothing about the ambient category the group might be internal to.
+(*
+   本节说明幺半结构、幺半群、笛卡尔相关定义、性质与动机。
 
-   [grp_inv] carries no [Proper] field: respecting `≈` is derivable from
-   uniqueness of inverses, and is supplied as the instance
-   [grp_inv_respects] below. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Record GrpObject := {
   grp_monoid :> MonObject;
 
@@ -251,9 +163,11 @@ Arguments grp_inv {_} _.
 Arguments grp_inv_l {_} _.
 Arguments grp_inv_r {_} _.
 
-(* Inversion respects `≈`.  If a ≈ b then the inverse of a is also a left
-   inverse of b, and [mon_inverse_unique] identifies it with the inverse of b.
-   This is a derived instance, not an axiom of the record. *)
+(*
+   本节说明 Deloop 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance grp_inv_respects (G : GrpObject) :
   Proper (equiv ==> equiv) (@grp_inv G).
 Proof.
@@ -264,23 +178,18 @@ Proof.
   exact (mon_inverse_unique G b (grp_inv a) (grp_inv b) Hinv (grp_inv_r b)).
 Qed.
 
-(* Every obligation from here to the end of the file is a monoid or group law
-   verbatim, so the global [cat_simpl] obligation tactic is switched off (the
-   Instance/CMon.v idiom): nothing below needs a proof search, and the searches
-   [cat_simpl] would run are the wide ones whose behaviour has differed across
-   Rocq versions. *)
+(*
+   本节说明幺半群、（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[local] Obligation Tactic := idtac.
 
-(* Mac Lane's construction 4: every arrow of the delooping of a group is
-   invertible, i.e. [Deloop G] is a one-object groupoid.  The two-sided
-   inverse of the arrow f is the group inverse of the element f, and the two
-   inverse laws of [IsIsomorphism] are the two group laws verbatim.
+(*
+   本节说明同构相关定义、性质与动机。
 
-   Composed with Theory/Isomorphism.v's [IsIsoToIso] — which is what
-   [Deloop_group_iso] below does — this exhibits the single object of
-   [Deloop G] as isomorphic to itself in as many ways as G has elements.  That
-   its endomorphisms are exactly G is [hom_monoid_Deloop] above; here they are
-   in addition all invertible, so they are its automorphisms. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Program Instance Deloop_group_invertible (G : GrpObject)
   (x y : Deloop G) (f : x ~{Deloop G}~> y) : IsIsomorphism f := {
   two_sided_inverse := grp_inv f    (* the group inverse of the element f *)
@@ -302,18 +211,11 @@ Definition Deloop_group_iso (G : GrpObject) (x y : Deloop G)
 
 (** ** Witnesses *)
 
-(* Both records are inhabited by ordinary algebra, so nothing above is
-   vacuously true: the natural numbers under addition are a monoid that is not
-   a group, and the booleans under exclusive or are the group Z/2.  Their
-   carrier setoids take Coq's own equality as `≈`, which is why the
-   [mon_op_respects] field of each is discharged by instance resolution rather
-   than appearing as an obligation — every function respects [eq].
+(*
+   本节说明幺半群相关定义、性质与动机。
 
-   (Both are the standard-library facts [PeanoNat.Nat.add_assoc] and
-   [PeanoNat.Nat.add_0_r], which ARE in scope after Category.Lib -- only the
-   short [Nat.*] aliases are not.  The inductions are kept because they are two
-   lines each and make the witness self-contained, not because the library
-   facts are unavailable.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma nat_add_assoc (a b c : nat) : (a + (b + c))%nat = ((a + b) + c)%nat.
 Proof.
   induction a; simpl; [reflexivity | now rewrite IHa].
@@ -324,11 +226,11 @@ Proof.
   induction a; simpl; [reflexivity | now rewrite IHa].
 Qed.
 
-(* (ℕ, +, 0): the free monoid on one generator, and the first monoid Mac Lane
-   names.  Its delooping is the category with one object and one arrow per
-   natural number — the free category on a single loop (Fong and Spivak's
-   Example 3.13 reads the correspondence off this case).  The carrier setoid
-   is Lib/Datatypes.v's [nat_setoid], i.e. Leibniz equality on [nat]. *)
+(*
+   本节说明幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Nat_Plus : MonObject := {|
   mon_setoid := {| carrier := nat; is_setoid := nat_setoid |};
   mon_unit   := 0%nat;
@@ -377,10 +279,11 @@ Next Obligation.
   intros a; now destruct a.
 Qed.
 
-(* Composition in the delooping really is the monoid operation: the two are
-   the same function, not merely equivalent.  (The objects must be given
-   explicitly — the hom of [Deloop M] is the same setoid at every pair of
-   objects, so nothing in `a ∘ b` determines them.) *)
+(*
+   本节说明hom、幺半群相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example deloop_nat_compose (a b : Nat_Plus) :
   @compose (Deloop Nat_Plus) ttt ttt ttt a b = (a + b)%nat := eq_refl.
 

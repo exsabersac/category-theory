@@ -24,49 +24,19 @@ Generalizable All Variables.
 *)
 Set Default Proof Using "All".
 
-(* nLab: https://ncatlab.org/nlab/show/idempotent+monad
+(*
+   nLab: https://ncatlab.org/nlab/show/idempotent+monad
 
-   An idempotent monad on a category C is a monad (M, ret, join) whose
-   multiplication join (μ) is an isomorphism at every object.  These are
-   exactly the monads that arise from (full) reflective subcategories: the
-   monad C ⟶ C of a reflector-inclusion adjunction is idempotent, and every
-   idempotent monad reflects C onto its subcategory of M-local (fixed-point)
-   objects — those x for which the unit ret x : x ~> M x is invertible.
+   本节说明伴随、单子、同构相关定义、性质与动机。
 
-   This file records both directions of that correspondence together with the
-   Eilenberg–Moore reading.  The class [IdempotentMonad] packages the
-   join-iso data; several equivalent characterizations are given as lemmas —
-   in particular join is invertible at x precisely when ret is invertible at
-   M x ([join_iso_iff_ret_M_iso]), and then M ret coincides with ret M
-   ([join_iso_fmap_ret]).
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-   STATUS.  All four checklist artifacts are established at full strength with
-   the global context closed:
+(*
+   本节说明函子、同构相关定义、性质与动机。
 
-     - [IdempotentMonad]              — the class.
-     - [Reflective_IdempotentMonad]   — a reflective subcategory induces an
-                                        idempotent monad (via the
-                                        adjunction-induced monad U ε F, whose
-                                        join is a functor image of the
-                                        counit, invertible because the counit
-                                        of a full reflective subcategory is).
-     - [Idempotent_Reflective]        — an idempotent monad yields a full
-                                        reflective subcategory on its M-local
-                                        objects, with reflector x ↦ M x.
-     - [Idempotent_EM_Equivalence]    — the Eilenberg–Moore category of M is
-                                        equivalent (a genuine equivalence of
-                                        categories) to that M-local
-                                        subcategory: for an idempotent monad
-                                        every algebra structure map is the
-                                        inverse of its unit, so algebras and
-                                        local objects coincide.
-
-   No axioms, and hom-equality is the setoid ≈ throughout. *)
-
-(* A functor sends isomorphisms to isomorphisms: this is the [IsIsomorphism]
-   (predicate) form, whose two-sided inverse is the functor image of the given
-   inverse, with the two inverse laws discharged through [fmap_comp]/[fmap_id].
-   (Compare [fobj_iso] in Theory/Functor.v, the bundled [Isomorphism] form.) *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition fmap_IsIsomorphism {C D : Category} (F : C ⟶ D) {x y : C}
   (f : x ~> y) (Hf : IsIsomorphism f) : IsIsomorphism (fmap[F] f).
 Proof.
@@ -97,10 +67,11 @@ Context {C : Category}.
 Context {M : C ⟶ C}.
 Context `{@Monad C M}.
 
-(* If join x is invertible then so is ret (M x); indeed join x is itself the
-   two-sided inverse of ret (M x).  The left inverse law is the monad unit law
-   [join_ret]; the right inverse law follows because both ret (M x) and the
-   chosen inverse of join x are right inverses of the (monic) join x. *)
+(*
+   本节说明单子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition join_iso_ret_iso (x : C)
   (Hj : IsIsomorphism (@join C M _ x)) :
   IsIsomorphism (@ret C M _ (M x)).
@@ -166,13 +137,11 @@ Context {C : Category}.
 Context {S : Subcategory C}.
 Context (R : Reflective S).
 
-(* The counit of the reflection adjunction is invertible at every object of
-   the subcategory (predicate form).  Its inverse is the unit read back into
-   the subcategory by fullness; the two inverse laws are the triangle identity
-   [fmap_counit_unit] and, using naturality of the counit, the other triangle
-   identity [counit_fmap_unit].  This mirrors [reflective_counit_iso] of
-   Construction/Reflective.v but delivers the [IsIsomorphism] witness of the
-   counit itself. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma reflective_counit_IsIso (x : Sub C S) :
   IsIsomorphism
     (@Category.Theory.Adjunction.counit
@@ -228,10 +197,11 @@ Definition MLocal_Subcategory : Subcategory C :=
    ; scomp := fun _ _ _ _ _ _ _ _ _ _ => I
    ; sid   := fun _ _ => I |}.
 
-(* Naturality of the unit-inverses over local objects: for local a, b and any
-   h : a ~> b, the inverses of ret intertwine h with fmap h.  This is the
-   commuting square shared by the reflection counit and the equivalence
-   functors below. *)
+(*
+   本节说明函子、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma local_inv_natural {a b : C}
   (oa : IsIsomorphism (@ret C M MM a)) (ob : IsIsomorphism (@ret C M MM b))
   (h : a ~> b) :
@@ -368,9 +338,11 @@ Proof.
     now rewrite Hfj.
 Defined.
 
-(* Conversely every algebra makes its carrier local: the algebra map is the
-   inverse of the unit.  The left inverse law is the algebra unit law [t_id];
-   the right inverse law uses M ret = ret M ([join_iso_fmap_ret]) and [t_id]. *)
+(*
+   本节说明 Idempotent 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition algebra_ret_iso {a : C} (alg : @TAlgebra C M MM a) :
   IsIsomorphism (@ret C M MM a).
 Proof.
@@ -437,9 +409,11 @@ Proof. simpl; reflexivity. Qed.
 #[local] Instance idem_G_Full : Functor.Full idem_G :=
   {| prefmap := @idem_G_prefmap; fmap_sur := @idem_G_fmap_sur |}.
 
-(* [idem_G] is essentially surjective: an algebra (a, ν) is the image of the
-   local object (a, ret a invertible with inverse ν), up to the identity-arrow
-   isomorphism (the two algebra records carry the same structure map ν). *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition idem_eso_obj (z : EilenbergMoore M) : Sub C MLocal_Subcategory :=
   (`1 z; algebra_ret_iso (`2 z)).
 

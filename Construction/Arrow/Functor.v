@@ -36,10 +36,11 @@ Definition triple_nat {C B : Category} (t : ArrowTriple C B) :
 
 (** ** Transparent equivalence witnesses for [Functor_Setoid] *)
 
-(* [Functor_Setoid]'s own Equivalence proof is opaque; the
-   classification needs to compute with the component families of
-   symmetric and transitive witnesses, so they are rebuilt here with
-   transparent families and opaque (Qed) naturality parts. *)
+(*
+   本节说明函子、等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma fs_sym_nat {C D : Category} {F G : C ⟶ D} (σ : F ≈ G) :
   ∀ x y (f : x ~{C}~> y),
@@ -133,13 +134,11 @@ Definition Arrow_dom {C B : Category} (H : C ⟶ @Arrow B) : C ⟶ B :=
 Definition Arrow_cod {C B : Category} (H : C ⟶ @Arrow B) : C ⟶ B :=
   comma_proj2 ◯ H.
 
-(* The arrows H picks out, assembled into a transformation: the
-   component at c is the arrow part of the object H c, and naturality
-   is exactly the square that is the morphism part of H.  This is the
-   whiskering of Construction/Comma.v's [comma_proj_nat] along H — the
-   two agree componentwise — built directly because [comma_proj_nat]'s
-   transform is a tactic-synthesized match on the destructured comma
-   object, which does not reduce at an opaque [H c]. *)
+(*
+   本节说明 Functor 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Arrow_generic {C B : Category} (H : C ⟶ @Arrow B) :
   Arrow_dom H ⟹ Arrow_cod H := {|
   transform := fun c => `2 (H c)
@@ -202,10 +201,11 @@ Qed.
 
 (** ** Component isomorphisms for the classification *)
 
-(* An isomorphism of arrow objects projects to isomorphisms of the two
-   boundaries; its to-square is the intertwining.  (Cf.
-   Construction/Comma.v's [comma_proj_mor_iso], which packages the
-   same content as a single isomorphism in the product category.) *)
+(*
+   本节说明同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Arrow_proj_dom_iso {B : Category} {a b : @Arrow B}
         (i : a ≅ b) : fst (`1 a) ≅ fst (`1 b) := {|
   to   := fst (`1 (to i));

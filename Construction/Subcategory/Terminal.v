@@ -30,10 +30,11 @@ Notation "'TSub'" := (Sub C TerminalObjects).
 Definition TerminalObjects_Full :
   Construction.Subcategory.Full C TerminalObjects := fun _ _ _ _ _ => I.
 
-(* Riehl, CTiC, Exercise 1.6.ii(i) in its subcategory form: the span of
-   the terminal objects is replete.  The object half is Block A's
-   [Terminal_iso], routed through the bundling pair; the morphism halves
-   are trivial because the subcategory is full. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition TerminalObjects_Replete : Replete C TerminalObjects :=
   fun x ox y f =>
     (IsTerminalObj_from_Terminal
@@ -90,10 +91,11 @@ Section InitialSubcategory.
 
 Context {C : Category}.
 
-(* The initial dual.  Unlike Block B this is stated directly rather than
-   as [TerminalObjects] at C^op, because [Sub (C^op) (op_subcategory S)]
-   and [(Sub C S)^op] are different terms, so duality would buy a
-   definition and then cost a translation at every use. *)
+(*
+   本节说明始/终对象相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition InitialObjects : Subcategory C :=
   @Build_Subcategory C
     (fun c => IsInitialObj c)

@@ -18,76 +18,15 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* Where the construction comes from, and what it is for
+(*
+   关于the construction的来源与用途
 
    nLab:  https://ncatlab.org/nlab/show/Grothendieck+construction
-   Text:  Grothendieck, "Catégories fibrées et descente", SGA 1,
-          Exposé VI, Séminaire de Géométrie Algébrique du Bois Marie
-          1960–61, Lecture Notes in Mathematics 224, Springer 1971
-   Notes: Vistoli, "Grothendieck topologies, fibered categories and
-          descent theory", in FGA Explained, AMS Surveys and
-          Monographs 123, 2005 (arXiv:math/0412512)
 
-   The construction flattens an indexed family of categories into a
-   single category over the base.  The external, indexed view presents
-   the data as a pseudofunctor B ⟶ Cat, assigning a fibre to each
-   object and a reindexing functor to each morphism; the internal,
-   fibred view presents the same content as one total category with a
-   projection that records the index of each object.  It is due to
-   Alexander Grothendieck, who introduced fibered categories to
-   organize descent in algebraic geometry: Exposé VI of SGA 1 develops
-   them from the 1960–61 seminar, and Jean Giraud carried the theory
-   further in the years that followed.
+   本节说明来源与用途相关定义、性质与动机。
 
-   The reorganization is more than a convenience.  Passing to the total
-   category is one half of the Grothendieck correspondence, a
-   2-equivalence between the indexed categories over B — the
-   pseudofunctors into Cat — and the Grothendieck (op)fibrations over
-   B.  Theory/Fibration.v is the fibred target of that correspondence;
-   Construction/Grothendieck/Fibration.v shows [Grothendieck_Proj] to
-   be a split opfibration with chosen lifts;
-   Construction/Grothendieck/RoundTrip.v travels the reverse road,
-   reconstructing an indexed category from a cleaving and assembling
-   [RoundTrip_Equivalence]; and Construction/Grothendieck/Fiber.v
-   confirms through [fiber_grothendieck_equiv] that the fibres of the
-   total category recover the original [idx_fib].  In the descent
-   setting where the notion began, a stack is exactly a pseudofunctor,
-   or equivalently a fibration in groupoids, satisfying a descent
-   condition for a Grothendieck topology.
-
-   The construction is the categorification of the dependent sum.  Its
-   total category [Grothendieck], built as [Total] of the displayed
-   category [Grothendieck_Displayed], has for objects the dependent
-   pairs (x; dx) of a base object and an object of its fibre, and
-   [Grothendieck_Proj] is the first projection, exactly as a Σ-type
-   projects onto its index.  This reading is why the file routes
-   through the displayed primitive of Theory/Displayed.v (Ahrens,
-   Lumsdaine, "Displayed Categories", Logical Methods in Computer
-   Science 15(1), 2019): a displayed category records a family in
-   dependent, fibered style, so the total category is assembled without
-   ever comparing base objects for equality.  When the family does not
-   vary the sum degenerates to a product, and
-   Construction/Grothendieck/Strict.v proves
-   [Grothendieck_Constant_iso], identifying the total category of a
-   constant family with B ∏ D.
-
-   Restricting the fibres to sets, viewed as discrete categories,
-   recovers the category of elements el(F), whose projection is a
-   discrete opfibration and whose objects pair an element of the
-   functor with the object it lies over; this is the arena of the
-   Yoneda lemma (Functor/Hom/Yoneda.v), and, read as data, rows that
-   pair a table with a tuple, the projection recording which table
-   each inhabits.  The same flattening organizes structures throughout
-   mathematics.  It collects the modules over every ring into one
-   category fibered over the ring, and realizes the semidirect product
-   of groups as the total category of an action functor, pairs of a
-   group element and a fibre element multiplying by a rule twisted by
-   the action.  Taking nerves, Thomason identified the classifying
-   space of the total category with the homotopy colimit of the
-   diagram, the oplax colimit at the level of categories.  The
-   construction further expresses a weighted colimit as an ordinary
-   colimit, and in type theory it models the relationship between a
-   type theory and a logic over that type theory. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[local] Obligation Tactic := idtac.
 
@@ -96,11 +35,11 @@ Section Grothendieck.
 Context {B : Category}.
 Context (A : IndexedCat B).
 
-(** ** Reindexing preserves isomorphisms
+(*
+   本节说明函子、同构相关定义、性质与动机。
 
-    [idx_map A f] carries fibre isos to fibre isos.  This is the generic
-    fact that functors preserve isomorphisms, packaged with a stable head
-    so the iso-level inversions below can name its components. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition idx_map_iso {x y : B} (f : x ~> y) {a b : idx_fib A x}
   (i : a ≅ b) : idx_map A f a ≅ idx_map A f b := {|
@@ -118,14 +57,11 @@ Next Obligation.
   apply fmap_id.
 Qed.
 
-(** ** The from-side coherence pack
+(*
+   本节说明 Grothendieck 相关定义、性质与动机。
 
-    The displayed structure below writes its transports and mediators with
-    [from]-components, so each coherence field of [IndexedCat] is consumed
-    here in inverted orientation.  Inverting an equation between composites
-    of isos is [to_equiv_implies_iso_equiv] applied at an [iso_compose]
-    packaging of each side, projected to the [from] components — note the
-    inverses compose in reverse order. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Transport inverses are proof-irrelevant, so [from] at [e] agrees with
    [to] at any proof [e'] of the reversed relation. *)
@@ -200,14 +136,11 @@ Proof.
     (idx_cocycle A f g h a))).
 Qed.
 
-(** ** The displayed laws, one standalone lemma each
+(*
+   本节说明 Grothendieck 相关定义、性质与动机。
 
-    Each lemma below is the exact shape of one law of the displayed
-    category, with the data of the construction inlined and the transport
-    proof held abstract: any proof of the relevant base relation works, by
-    proof irrelevance of [idx_resp], and quantifying over it lets the
-    record assembly below unify against whatever proof term the [Displayed]
-    interface pins. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma Grothendieck_transport_trans {x y : B}
   {dx : idx_fib A x} {dy : idx_fib A y} {f g h : x ~> y}

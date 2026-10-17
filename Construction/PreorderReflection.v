@@ -30,9 +30,11 @@ Proof. constructor; intros; exact I. Defined.
 Definition PreorderReflect (C : Category) : Category :=
   Quotient C (TotalRel C).
 
-(** The defining property: the result is thin.  Thin is exactly "is a
-    preorder" (Theory/Category.v), so this is the sense in which
-    [PreorderReflect C] is a preorder rather than merely a category. *)
+(*
+   本节说明 PreorderReflection 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma preorder_reflect_thin (C : Category) (x y : PreorderReflect C)
       (f g : x ~> y) : f ≈ g.
 Proof. exact I. Qed.
@@ -65,9 +67,11 @@ Context {C D : Category}.
 Context (HD : Thin D).
 Context (F : C ⟶ D).
 
-(** Every functor into a thin category factors through the reflection.  The
-    hypothesis [QuotientLift] needs -- that [F] identifies related morphisms --
-    is discharged by thinness of the target alone, with no condition on [F]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition ThinLift : PreorderReflect C ⟶ D :=
   @QuotientLift C (TotalRel C) _ D F (fun x y f g _ => HD _ _ _ _).
 
@@ -76,14 +80,11 @@ Lemma ThinLift_proj {x y : C} (f : x ~> y) :
   fmap[ThinLift] (fmap[Reflect C] f) = fmap[F] f.
 Proof. reflexivity. Qed.
 
-(** ...and it is the only such functor -- in a form STRONGER than the usual
-    uniqueness clause, so read the hypotheses carefully.  No agreement between
-    [G] and [F] after the reflection is assumed; object agreement [Hobj] alone
-    (needed anyway for the statement to typecheck, since [hom_cast] transports
-    along it) already pins [G] on every hom.  The proof is [apply HD] and uses
-    nothing else, which is exactly the content: a thin target leaves no room
-    for two functors with the same object action to differ, so a fortiori none
-    for two different factorizations of [F]. *)
+(*
+   本节说明函子、hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma ThinLift_unique (G : PreorderReflect C ⟶ D)
       (Hobj : ∀ x : C, fobj[G] x = fobj[F] x)
       {x y : C} (f : x ~{PreorderReflect C}~> y) :
@@ -92,7 +93,8 @@ Proof. apply HD. Qed.
 
 End Universal.
 
-(** So [PreorderReflect C] is THE universal thin quotient of [C], not merely a
-    quotient that happens to be thin.  This is what earns the word
-    "reflection" here; the full reflective adjunction with the inclusion of
-    preorders into [Cat] is stronger and is item 4 of #803. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

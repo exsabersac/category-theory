@@ -49,10 +49,11 @@ Lemma elements_respects_cond {c d : D} {x : K c} (f g : c ~> d) :
   f ≈ g → fmap[K] f x ≈ fmap[K] g x.
 Proof. intro Hfg; exact (@fmap_respects _ _ K _ _ f g Hfg x). Qed.
 
-(* Objects are the pairs (d, x) with x an element of the setoid K d;
-   morphisms are the D-morphisms that carry the element. The hom-setoid
-   looks only at the underlying D-morphism, so the carried condition is
-   not compared. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Elements : Category := {|
   obj := ∃ d : D, K d;
@@ -110,14 +111,11 @@ Program Definition Elements_from_Comma : ElementsComma ⟶ Elements := {|
   fmap := fun _ _ f => (snd `1 f; _)
 |}.
 
-(* An isomorphism in Cat, hence an equivalence of categories: `≈` between
-   functors is natural isomorphism. [Elements_from_Comma] after
-   [Elements_to_Comma] is the identity on objects and on morphisms -- up to
-   eta: the equation holds after destructing the object (both projections
-   agree by bare reflexivity), not by reflexivity at a variable -- and its
-   natural isomorphism has identity components; the other round trip
-   replaces a setoid map h by the constant map at h ttt, which agrees with
-   h pointwise up to `≈` and not as a term. *)
+(*
+   本节说明函子、等价、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Theorem Elements_Comma : Elements ≅[Cat] ElementsComma.
 Proof.
@@ -148,11 +146,11 @@ End Elements.
    [Faithful (Elements_proj K)] by typeclass search rather than by name. *)
 #[export] Existing Instance Elements_proj_Faithful.
 
-(* [Category.Functor.Opposite] is not imported because nothing here needs
-   it.  (An earlier draft claimed importing it would shadow the category
-   [^op] notation and break the presheaf section; that was tested and is
-   FALSE -- the two notations live in different scopes, category_scope and
-   functor_scope, and coexist.  The import is omitted purely as unused.) *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Construction.Opposite.
 Require Import Category.Instance.Fun.
@@ -162,10 +160,11 @@ Section Elements_Comma_Projection.
 Context {D : Category}.
 Context (K : D ⟶ Sets).
 
-(* Compatibility of the comma comparison with the projections to D. The
-   two functors agree on objects and on morphisms; only their packaged
-   proof fields differ, so the statement is a natural isomorphism with
-   identity components and not an equation of functors. *)
+(*
+   本节说明函子、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition Elements_proj_comma_iso :
   comma_proj2 ◯ Elements_to_Comma K ≅[[Elements K, D]] Elements_proj K := {|

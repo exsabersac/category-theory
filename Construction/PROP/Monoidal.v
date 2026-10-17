@@ -75,13 +75,11 @@ Lemma T_cast_sym_sym {m n : nat} (e : m = n) :
   T_cast (S:=S) (eq_sym (eq_sym e)) = T_cast e.
 Proof. apply T_cast_irrelevant. Qed.
 
-(** ** Cast shifting: moving a cast across a [TermEq] equation
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    Solving [f ∘ cast ≈ g] for [f], and dually.  [cast_shift_l] and
-    [cast_shift_r] are exported kit with no in-tree consumer yet: the
-    from-direction naturality squares below are all derived through
-    [cast_square_flip], which flips both casts of a square at once,
-    rather than through these one-sided shifts. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma cast_shift_l {a b c : nat} (e : a = b) (f : Term S b c) (g : Term S a c) :
   TermEq S (T_comp f (T_cast e)) g ->
@@ -156,12 +154,11 @@ Proof.
     + apply TE_id_right.
 Qed.
 
-(** ** Right-unitor naturality in [T_cast] form
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    The [to]-direction square [g ∘ ρ ≈ ρ ∘ (g ⊕ id₀)].  This is the
-    statement [Naturality.v] could not derive at pinned arities; here
-    the transport bridges convert [TE_tens_id0_right]'s [eq_rect]
-    spelling wholesale. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma right_unit_natural {x y : nat} (g : Term S x y) :
   TermEq S (T_comp g (T_cast (Nat.add_0_r x)))
@@ -255,12 +252,11 @@ Proof.
         apply TE_refl.
 Qed.
 
-(** ** Pentagon coherence
+(*
+   本节说明 Monoidal 相关定义、性质与动机。
 
-    [(id ⊕ α) ∘ α ∘ (α ⊕ id) ≈ α ∘ α] on [((x + y) + z) + w].  Same
-    recipe as the triangle: collapse each tensor-with-identity via
-    [CastTensor.v], fuse the compositions of casts via
-    [T_cast_compose], and close with [T_cast_irrelevant]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma free_pentagon (x y z w : nat) :
   TermEq S
@@ -313,11 +309,11 @@ Proof.
            apply TE_refl.
 Qed.
 
-(** ** THE shared Monoidal record on [FreeCat S]
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    All fields explicit, no Program obligations.  The Braided,
-    Symmetric, Strict, and PROP instances downstream all project this
-    single record, so their agreement is definitional. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition FreeCat_Monoidal : @Monoidal (FreeCat S) := {|
   I            := 0;

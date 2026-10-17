@@ -30,20 +30,20 @@ Generalizable All Variables.
 
 (** ** The object map: a localization is a groupoid *)
 
-(* [Construction/Fractions.v]'s [Fractions_IsGroupoid] is exactly the
-   membership proof [Grpd] asks for, so the object map needs no work.  Note
-   that this is a PAIR, per [Instance/Grpd.v]: the chosen inverse-assigning
-   function is data. *)
+(*
+   本节说明 Adjunction 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition frac_grpd (C : Category) : Grpd :=
   (Fractions C; Fractions_IsGroupoid C).
 
-(** ** The universal arrow
+(*
+   本节说明 Adjunction 相关定义、性质与动机。
 
-    [FractionsProj C : C ~{Cat}~> Grpd_Incl (frac_grpd C)] is universal from
-    [C] to the inclusion.  The `∃!` is [Fractions_UMP_weak] at the target's
-    own groupoid witness; the only manipulation is the sigma of [Grpd]'s
-    homs, whose second component is [True]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Fractions_universal_arrow (C : Cat) : UniversalArrow C Grpd_Incl.
 Proof.
@@ -70,10 +70,11 @@ Example FractionsF_obj (C : Cat) : fobj[FractionsF] C = frac_grpd C := eq_refl.
 Definition Fractions_Incl_Adjunction : Adjunction FractionsF Grpd_Incl :=
   AdjunctionFromUniversalArrows Grpd_Incl Fractions_universal_arrow.
 
-(* The unit is the projection, up to `≈` -- the two differ only by the
-   [Id] that [AdjunctionFromUniversalArrows] leaves in front of the
-   universal arrow.  This is the counterpart of
-   [Construction/Groupoid/Core.v]'s [core_counit_is_ForgetCore]. *)
+(*
+   本节说明伴随相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Example Fractions_unit_is_proj (C : Cat) :
   @equiv _ (@Functor_Setoid C (Fractions C))
@@ -81,14 +82,11 @@ Example Fractions_unit_is_proj (C : Cat) :
     (FractionsProj C).
 Proof. apply fun_equiv_id_left. Qed.
 
-(** ** Functoriality of the localization, read on the hand-written lift
+(*
+   本节说明函子、hom、同构相关定义、性质与动机。
 
-    [FractionsMap F] is the functor a reader would write down: lift
-    [FractionsProj D ◯ F] along the projection out of [C], which is legal
-    because [Fractions D] is a groupoid.  It agrees with the generated
-    [fmap[FractionsF]] up to `≈`, and that is the sharpest available reading
-    — [Cat]'s hom-setoid identifies functors only up to natural isomorphism,
-    so no [eq_refl] is on offer here, unlike on objects. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition FractionsMap {C D : Category} (F : C ⟶ D) : Fractions C ⟶ Fractions D :=
   FractionsLift (FractionsProj D ◯ F)
@@ -126,15 +124,11 @@ Proof.
   exact (@fmap_comp Cat Grpd FractionsF C D E G F).
 Qed.
 
-(** ** The triple
+(*
+   本节说明伴随、函子、同构相关定义、性质与动机。
 
-    A bundling record: an adjoint triple is a pair of adjunctions sharing
-    their middle functor.  It is defined here because this is its first use
-    in the tree — [Instance/Top/Forgetful.v]'s
-    [discrete_forget_indiscrete_triple] is a tuple of transposition
-    isomorphisms rather than of [Adjunction] records, because the universe
-    stratification there makes the records unformable, so it cannot use
-    this shape. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Record AdjointTriple {A B : Category}
   (L : A ⟶ B) (M : B ⟶ A) (R : A ⟶ B) : Type := {

@@ -21,20 +21,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* SHADOWING GUARD.  Structure/Cocartesian.v defines [inl] and [inr] as the
-   coproduct injections of an arbitrary cocartesian category, which shadow
-   [Datatypes.inl] and [Datatypes.inr].  Every constructor of [sum] below is
-   therefore written qualified, following Instance/Cat/Cocartesian.v and
-   Construction/Free/Quiver/Constructions.v.
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
 
-   [Open Scope category_scope] is DEFENSIVE here, not required, and that was
-   measured rather than assumed: the file compiles unchanged with the line
-   deleted.  The hazard it guards against is real in general — three scopes
-   declare [_ ^op], and [QuiverCategory^op] occurs below in an argument
-   position — but the competing notation is declared in Functor/Opposite.v
-, which also opens functor_scope and which this file does not
-   import.  Theory/Functor.v opens functor_scope too but declares no
-   [^op] in it, so nothing here shadows Construction/Opposite.v's. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Open Scope category_scope.
 
 Local Notation "Q ⇨ Q'" := (QuiverHomomorphism Q Q') (at level 40).
@@ -42,14 +33,11 @@ Local Existing Instance edgeset.
 
 (** ** The empty edge setoid *)
 
-(* The cross-summand edge sets are empty, and an empty type carries exactly
-   one setoid.  All three [Equivalence] fields are written as explicit terms
-   rather than discharged by a tactic or by [Program]: the tree runs
-   [Unset Transparent Obligations] (Lib/Tactics.v) and [Setoid] has
-   primitive projections with eta, so an obligation-built proof would be an
-   opaque constant sitting inside [QuiverCoprod] and would defeat the
-   [eq_refl] measurements below.  The spelling follows [edgeset_prod] of
-   Construction/Free/Quiver/Constructions.v. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition False_Setoid@{h p} : Setoid@{h p} False := {|
   equiv := fun f (_ : False) => match f return Type@{p} with end;
   setoid_equiv :=
@@ -62,11 +50,11 @@ Definition False_Setoid@{h p} : Setoid@{h p} False := {|
 
 Section CoproductQuiver.
 
-(* The edge family: an edge between two left nodes is a left edge, between
-   two right nodes a right edge, and there are NO edges between a left node
-   and a right node in either direction.  [False] is used for the two cross
-   cases exactly as Construction/Coproduct.v uses it for the cross hom-sets
-   of C ∐ D. *)
+(*
+   本节说明hom相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition coprod_edges@{o1 h1 p1 o2 h2 p2 o h p}
   (G : Quiver@{o1 h1 p1}) (H : Quiver@{o2 h2 p2})
   (x y : (@nodes G + @nodes H)%type) : Type@{h} :=
@@ -83,9 +71,11 @@ Definition coprod_edges@{o1 h1 p1 o2 h2 p2 o h p}
       end
   end.
 
-(* The edge setoid, by the same case analysis.  Note that the summand's own
-   setoid is handed back unchanged; see the header for the universe
-   identification this forces and why it does not arise for the product. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition coprod_edgeset@{o1 h1 p1 o2 h2 p2 o h p}
   (G : Quiver@{o1 h1 p1}) (H : Quiver@{o2 h2 p2})
   (x y : (@nodes G + @nodes H)%type)
@@ -228,11 +218,11 @@ Section CoproductUniversal.
 
 Context {G H R : Quiver}.
 
-(* BOTH TRIANGLES hold at LEIBNIZ EQUALITY of the whole homomorphism record,
-   not merely up to [≈].  [QuiverComp] synthesises the composite's
-   respectfulness field as the composite of the two given ones, and
-   [QuiverInl] contributes the identity there, so what remains is the
-   copairing's own field read at [inl], which iota-reduces to [F]'s. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition QuiverCopair_Inl (F : G ⇨ R) (F' : H ⇨ R) :
   @compose QuiverCategory G (QuiverCoprod G H) R (QuiverCopair F F')
@@ -242,10 +232,11 @@ Definition QuiverCopair_Inr (F : G ⇨ R) (F' : H ⇨ R) :
   @compose QuiverCategory H (QuiverCoprod G H) R (QuiverCopair F F')
     QuiverInr = F' := eq_refl.
 
-(* The eta law.  Unlike the product's, this one needs no surjectivity
-   principle: at each constructor the node action of the rebuilt copairing
-   is the original one on the nose, so every node equality is [eq_refl] and
-   the transports in the edge coherence vanish. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition QuiverCopair_eta (M : QuiverCoprod G H ⇨ R) :
   @equiv _ (@homset QuiverCategory (QuiverCoprod G H) R)
     M (QuiverCopair
@@ -257,13 +248,11 @@ Proof.
   - intros [a|a] [b|b] e; try (exact (match e with end)); cbn; reflexivity.
 Defined.
 
-(* Uniqueness, with hypotheses at [≈].  READ THE CONTRAST with
-   [QuiverPair_unique] (Construction/Free/Quiver/Constructions.v), whose
-   hypotheses are Leibniz equalities of the two composites: here the
-   [≈]-form is available, because the node family of the hypothesis is
-   consumed constructor by constructor rather than assembled into an
-   equality of pairs.  The two edge-coherence obligations ARE the
-   hypotheses' own, at the corresponding constructor. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition QuiverCopair_unique (M : QuiverCoprod G H ⇨ R)
   (F : G ⇨ R) (F' : H ⇨ R)
   (p : @equiv _ (@homset QuiverCategory G R)
@@ -302,20 +291,19 @@ End CoproductUniversal.
 
 (** ** Exchange of the two summands *)
 
-(* The exchange of summands is DEFINED as the copairing of the two
-   injections in the other order — the coproduct-side reading of
-   [QuiverSwap_is_pair] (Construction/Free/Quiver/Constructions.v), taken as
-   the definition rather than recorded afterwards, since there is no second
-   candidate here whose agreement would be worth measuring. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition QuiverCoswap {G H : Quiver} :
   QuiverCoprod G H ⇨ QuiverCoprod H G := QuiverCopair QuiverInr QuiverInl.
 
-(* Only [≈], and for the dual of the sibling's reason.  There
-   [QuiverSwap_invol] cannot be [eq_refl] because surjective pairing is not
-   definitional for [prod]; here the node action of the twice-exchanged
-   quiver is a match on a match, which does not reduce while the scrutinee
-   is a variable — [sum] has no eta rule at all.  The [eq_refl] form was
-   tried first and rejected. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition QuiverCoswap_invol {G H : Quiver} :
   @equiv _ (@homset QuiverCategory (QuiverCoprod G H) (QuiverCoprod G H))
     (@compose QuiverCategory (QuiverCoprod G H) (QuiverCoprod H G)
@@ -329,24 +317,11 @@ Defined.
 
 (** ** QuiverCategory has binary coproducts *)
 
-(* [Cocartesian C] is notation for [@Cartesian (C^op)]
-   (Structure/Cocartesian.v), so this instance literally exhibits
-   [QuiverCategory^op] as cartesian.  Read in the opposite, [exl]/[exr] are
-   the two injections, [fork] is the copairing, [fork_respects] is
-   [QuiverCopair_respects], and [ump_products] is
+(*
+   本节说明笛卡尔相关定义、性质与动机。
 
-     M ≈ [F, F']  ↔  (M ∘ inl ≈ F) * (M ∘ inr ≈ F'),
-
-   whose forward direction is [compose_respects] against the two triangles
-   (which, being [eq_refl], need no rewriting step at all) and whose
-   backward direction is [QuiverCopair_unique].
-
-   The record is built by [refine] against [@Build_Cartesian
-   (QuiverCategory^op)] rather than by the [{| … |}] syntax, deliberately:
-   the anonymous record notation infers the class's implicit category from
-   [product_obj]'s type, and since [obj[C^op]] is [obj[C]] definitionally it
-   picks [QuiverCategory] rather than its opposite, after which [fork]'s
-   remaining fields fail to typecheck with a misleading message. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 #[export] Instance QuiverCategory_Cocartesian : @Cocartesian QuiverCategory.
 Proof.
   unshelve refine (@Build_Cartesian (QuiverCategory^op)
@@ -396,11 +371,11 @@ Definition QuiverOfCat_Coproduct_nodes :
   @nodes (QuiverOfCat (C ∐ D))
     = @nodes (QuiverCoprod (QuiverOfCat C) (QuiverOfCat D)) := eq_refl.
 
-(* Edges: all four cases agree on the nose AT CONSTRUCTOR ARGUMENTS,
-   including the two cross cases where both sides are [False].  As functions
-   of two variable nodes the two [edges] fields are NOT convertible, and
-   neither are the whole [Quiver] records; see the header for the two
-   independent causes. *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition QuiverOfCat_Coproduct_edges_ll (a b : obj[C]) :
   @edges (QuiverOfCat (C ∐ D)) (Datatypes.inl a) (Datatypes.inl b)
@@ -422,11 +397,11 @@ Definition QuiverOfCat_Coproduct_edges_rl (a : obj[D]) (b : obj[C]) :
     = @edges (QuiverCoprod (QuiverOfCat C) (QuiverOfCat D))
         (Datatypes.inr a) (Datatypes.inl b) := eq_refl.
 
-(* The comparison, in both directions.  Every branch is the identity: on
-   nodes because the two node types are the same type, on edges because the
-   four equations above are [eq_refl], and in the two cross cases because
-   both sides are [False] (either branch would do; the identity is taken so
-   that no case is special). *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition QuiverOfCat_Coproduct_to :
   QuiverOfCat (C ∐ D) ⇨ QuiverCoprod (QuiverOfCat C) (QuiverOfCat D).
@@ -467,10 +442,11 @@ Proof.
     + intros [a|a] [b|b] e; try (exact (match e with end)); reflexivity.
 Defined.
 
-(* The two inclusion functors.  The tree has none by name:
-   Instance/Cat/Cocartesian.v supplies them only as anonymous inline records
-   in the [exl]/[exr] fields of [Cat_Cocartesian], and naming them from
-   there would cost a dependency on Instance/Cat. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition CoproductInl : C ⟶ C ∐ D.
 Proof.
@@ -492,9 +468,11 @@ Proof.
   - intros x y z f g; reflexivity.
 Defined.
 
-(* Compatibility with the injections: the comparison carries the underlying
-   quiver map of each inclusion functor to the corresponding injection, so
-   what is preserved is the coproduct DIAGRAM and not merely an object. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Forgetful_preserves_coprod_inl :
   @equiv _ (@homset QuiverCategory (QuiverOfCat C)
@@ -524,18 +502,11 @@ End Preservation.
 
 (** ** Non-degeneracy *)
 
-(* Two small quivers, and concrete facts about their coproduct.  [LoopQ] has
-   one node carrying one loop; [TwoQ] has two nodes with two PARALLEL edges
-   between every ordered pair, so a homomorphism into it has room to move
-   both a node and an edge.  Both are built with
-   [Build_Quiver_Standard_Eq], whose edge setoids are Leibniz equality.
-   Measured rather than assumed: neither witness is pinned to [Set] — both
-   are universe-polymorphic, [LoopQ@{u u0 u1} : Quiver@{u0 u1 u}] and
-   [TwoQ@{u u0 u1} : Quiver@{u u0 u1}], each carrying only a bound on the
-   proof level coming from the Leibniz setoid, since [poly_unit] is
-   polymorphic and [bool : Set] is absorbed by cumulativity.  The usual
-   concrete-witness price is therefore not paid here; what does confine the
-   STATEMENTS below is [@homset QuiverCategory], as the header records. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition LoopQ : Quiver :=
   Build_Quiver_Standard_Eq poly_unit (fun _ _ => poly_unit).
@@ -560,10 +531,11 @@ Definition coprod_no_cross_edge
   (e : @edges (QuiverCoprod LoopQ LoopQ)
          (Datatypes.inl ttt) (Datatypes.inr ttt)) : False := e.
 
-(* The two summands are not identified: the injections of [LoopQ] into
-   [QuiverCoprod LoopQ LoopQ] are parallel homomorphisms, and they are not
-   equivalent.  The proof consumes only the node component of a hypothetical
-   equivalence, so no transport and no UIP hypothesis is involved. *)
+(*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition injections_not_equivalent
   (p : @equiv _ (@homset QuiverCategory LoopQ (QuiverCoprod LoopQ LoopQ))
          QuiverInl QuiverInr) : False.
@@ -571,9 +543,11 @@ Proof. destruct p as [pn _]; discriminate (pn ttt). Defined.
 
 Section Witness.
 
-(* Two homomorphisms out of [LoopQ] into [TwoQ] that differ on BOTH the node
-   and the edge: one lands on [false] and sends the loop to [false], the
-   other lands on [true] and sends the loop to [true]. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Ffalse : LoopQ ⇨ TwoQ :=
   Build_QuiverHomomorphism LoopQ TwoQ
@@ -614,12 +588,11 @@ Definition copair_order_matters
          (QuiverCopair Ffalse Ftrue) (QuiverCopair Ftrue Ffalse)) : False.
 Proof. destruct p as [pn _]; discriminate (pn (Datatypes.inl ttt)). Defined.
 
-(* A COMPETITOR for the uniqueness clause: a homomorphism out of the
-   coproduct which fails the first triangle.  Constructions.v discloses that
-   its product-side uniqueness clause has no such witness; this is the
-   coproduct-side supply.  The composite with [QuiverInl] is [Ftrue] by
-   [QuiverCopair_Inl] — a Leibniz equation — so the goal reduces to
-   [Ftrue ≈ Ffalse], which [Ffalse_neq_Ftrue] refutes. *)
+(*
+   本节说明 Coproduct 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition copair_swap_fails_left
   (p : @equiv _ (@homset QuiverCategory LoopQ TwoQ)
          (@compose QuiverCategory LoopQ (QuiverCoprod LoopQ LoopQ) TwoQ

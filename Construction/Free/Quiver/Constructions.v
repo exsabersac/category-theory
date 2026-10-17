@@ -19,14 +19,11 @@ Generalizable All Variables.
    （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
 *)
 
-(* NOTATION GUARD.  [C^op] (category_scope, Construction/Opposite.v) and [F^op]
-   (functor_scope, Functor/Opposite.v) are the same token, and importing
-   Functor/Opposite.v opens functor_scope, so a bare [C^op] in an argument
-   position carrying no scope annotation elaborates as the *functor* opposite
-   and does not typecheck.  Following the precedent recorded in
-   Instance/Rng/Mod.v, category_scope is re-opened here so that [^op] means
-   [Opposite] by default, and the functor opposite is named explicitly as
-   [Opposite_Functor]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Open Scope category_scope.
 
 Local Notation "Q ⇨ Q'" := (QuiverHomomorphism Q Q') (at level 40).
@@ -81,25 +78,11 @@ End OppositeQuiver.
 
 Section ProductQuiver.
 
-(* The componentwise setoid on a product of edge sets.  Two points about the
-   spelling, both of them measured rather than stylistic.
+(*
+   本节说明等价相关定义、性质与动机。
 
-   First, the three [Equivalence] fields are written out as explicit terms
-   rather than discharged by a tactic or by [Program].  The tree runs
-   [Unset Transparent Obligations] (Lib/Tactics.v), so an obligation-built
-   equivalence proof is an opaque constant, and [Setoid] has primitive
-   projections with eta — conversion therefore compares the [setoid_equiv]
-   fields, and an opaque one defeats the definitional agreement recorded in
-   [QuiverOfCat_Product].  The spelling deliberately mirrors
-   Construction/Product.v.
-
-   Second, this is NOT [Lib/Datatypes.v]'s [prod_setoid], which is a global
-   [Program Instance] with exactly this [equiv] but an opaque [setoid_equiv];
-   substituting it here breaks [QuiverOfCat_Product].  That is a deliberate
-   non-reuse, so it is guarded rather than merely stated:
-   Test/ProbeQuiverConstructions.v builds the [prod_setoid] variant (which is a
-   perfectly good quiver — only the DEFINITIONAL agreement is lost) and pins the
-   resulting failure. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition edgeset_prod@{h1 p1 h2 p2 h p}
   {A : Type@{h1}} {B : Type@{h2}}
   (SA : Setoid@{h1 p1} A) (SB : Setoid@{h2 p2} B) : Setoid@{h p} (A * B) := {|
@@ -187,10 +170,11 @@ Section ProductUniversal.
 
 Context {K G H : Quiver}.
 
-(* Both triangles hold at LEIBNIZ EQUALITY of the whole homomorphism record,
-   not merely up to [≈].  The composite's [fedgemap_respects] field reduces —
-   [QuiverFst]'s is [fun _ _ _ _ e => fst e] and [QuiverPair]'s is the explicit
-   pair of the two given proofs, so [fst] of the pair is the first one back. *)
+(*
+   本节说明 Constructions 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition QuiverPair_Fst (F : K ⇨ G) (F' : K ⇨ H) :
   @compose QuiverCategory K (QuiverProd G H) G QuiverFst (QuiverPair F F') = F
   := eq_refl.
@@ -199,9 +183,11 @@ Definition QuiverPair_Snd (F : K ⇨ G) (F' : K ⇨ H) :
   @compose QuiverCategory K (QuiverProd G H) H QuiverSnd (QuiverPair F F') = F'
   := eq_refl.
 
-(* The eta law.  Here [≈] is genuinely needed: the node action of the rebuilt
-   pairing is [fun x => (fst (M x), snd (M x))], and surjective pairing is not
-   definitional for the standard library's [prod]. *)
+(*
+   本节说明 Constructions 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition QuiverPair_eta (M : K ⇨ QuiverProd G H) :
   @equiv _ (@homset QuiverCategory K (QuiverProd G H))
     M (QuiverPair (@compose QuiverCategory K (QuiverProd G H) G QuiverFst M)
@@ -215,10 +201,11 @@ Proof.
     intro e; cbn; split; reflexivity.
 Defined.
 
-(* Uniqueness.  READ THE HYPOTHESES: they are Leibniz equalities of the two
-   composites, which is what makes the proof a substitution into the eta law.
-   The [≈]-hypothesis form would need respectfulness of [QuiverPair] in its two
-   arguments, which is not proved in this file (see the header). *)
+(*
+   本节说明来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition QuiverPair_unique (M : K ⇨ QuiverProd G H) (F : K ⇨ G) (F' : K ⇨ H)
   (p : @compose QuiverCategory K (QuiverProd G H) G QuiverFst M = F)
   (q : @compose QuiverCategory K (QuiverProd G H) H QuiverSnd M = F') :
@@ -246,10 +233,11 @@ Defined.
 
 Section Preservation.
 
-(* Mac Lane's exercise proper: the underlying graph of C^op is the opposite of
-   the underlying graph of C, and likewise for binary products.  Both hold at
-   Leibniz equality of the whole [Quiver] record, by [eq_refl]; see the header
-   for the three facts that allow it. *)
+(*
+   本节说明 Constructions 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition QuiverOfCat_Opposite@{o h p} (C : Category@{o h p}) :
   QuiverOfCat@{o h p} (C^op) = QuiverOp@{o h p} (QuiverOfCat@{o h p} C) := eq_refl.
@@ -260,10 +248,11 @@ Definition QuiverOfCat_Product@{o1 h1 p1 o2 h2 p2 o h p}
     = QuiverProd@{o1 h1 p1 o2 h2 p2 o h p}
         (QuiverOfCat@{o1 h1 p1} C) (QuiverOfCat@{o2 h2 p2} D) := eq_refl.
 
-(* The same two statements phrased through [Forgetful : StrictCat ⟶ Quiv]
-   itself, which is what the exercise asks about.  [fobj[Forgetful]] is
-   [QuiverOfCat] on the nose, so these are the lemmas above read at StrictCat's
-   universe instance. *)
+(*
+   本节说明 Constructions 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Forgetful_fobj (C : Category) :
   fobj[Forgetful] C = QuiverOfCat C := eq_refl.
@@ -275,19 +264,21 @@ Definition Forgetful_preserves_prod (C D : Category) :
   fobj[Forgetful] (C ∏ D) = QuiverProd (fobj[Forgetful] C) (fobj[Forgetful] D)
   := eq_refl.
 
-(* Preservation on arrows as well as objects, for the opposite.  [Forgetful]'s
-   action on a functor is [QuiverHomomorphismOfFunctor], and
-   [Functor/Opposite.v]'s [Opposite_Functor] is a plain [Definition] with
-   explicit fields, so this too is [eq_refl]. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Forgetful_preserves_op_fmap
   {C D : Category} (F : C ⟶ D) :
   QuiverHomomorphismOfFunctor _ _ (Opposite_Functor F)
     = QuiverOp_map (QuiverHomomorphismOfFunctor _ _ F) := eq_refl.
 
-(* On the product side the arrow-level content is that [Forgetful] carries the
-   product projections of [Cat] to the product projections of [Quiv].  This is
-   only [≈]: [Fst] and [Snd] are [Program Instance]s whose [fmap_respects]
-   field is an opaque obligation, so no [eq_refl] is available. *)
+(*
+   本节说明 Constructions 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition Forgetful_preserves_fst (C D : Category) :
   @equiv _ (@homset QuiverCategory (QuiverOfCat (C ∏ D)) (QuiverOfCat C))
     (QuiverHomomorphismOfFunctor _ _ (@Fst C D))

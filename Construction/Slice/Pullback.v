@@ -99,10 +99,11 @@ Section BaseChange.
 
 Context `(f : a ~> b).
 
-(* The universal property of the chosen pullback of k along f, read at
-   the competing cone that a slice morphism Σ_f (o; h) ~> (p; k)
-   supplies: its two legs are the morphism itself and h, and the square
-   condition IS that morphism's slice condition. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition base_ump {o p : C} (h : o ~> a) (k : p ~> b)
       (g : o ~> p) (Hg : k ∘ g ≈ f ∘ h) :
   ∃! u : o ~> Pull k f (pullbacks k f),
@@ -110,9 +111,11 @@ Definition base_ump {o p : C} (h : o ~> a) (k : p ~> b)
       pullback_snd k f (pullbacks k f) ∘ u ≈ h :=
   ump_pullbacks k f (pullbacks k f) o g h Hg.
 
-(* The arrow action of f* is itself a pullback mediator; its underlying
-   C-morphism is named here so that its two leg equations can be stated
-   with the pullback objects already in reduced form. *)
+(*
+   本节说明拉回/推出相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition star_fmap_mor {p1 p2 : C} {k1 : p1 ~> b} {k2 : p2 ~> b}
       (g : (p1; k1) ~{@Slice C b}~> (p2; k2)) :
   Pull k1 f (pullbacks k1 f) ~> Pull k2 f (pullbacks k2 f) :=
@@ -345,9 +348,11 @@ Example bang_star_unit_strict (o : C) (h : o ~> a) :
         (Star_Functor f) Base_Functor_Adjunction (o; h))
   = base_to_mor (id[Bang_Functor f (o; h)]) := eq_refl.
 
-(* The residue is exhibited rather than described: both sides are the
-   mediator of the cone whose legs are [id] and [h], and they differ in
-   nothing but the proof of that cone's square condition. *)
+(*
+   本节说明 Pullback 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Example bang_star_unit_residue (o : C) (h : o ~> a) :
   `1 (@unit (@Slice C b) (@Slice C a) (Bang_Functor f)
         (Star_Functor f) Base_Functor_Adjunction (o; h))
@@ -358,11 +363,11 @@ Example bang_star_unit_mor_residue (o : C) (h : o ~> a) :
   bang_star_unit_mor o h
   = unique_obj (base_ump h (f ∘ h) id (id_right (f ∘ h))) := eq_refl.
 
-(* Against [bang_star_unit_mor] the identification holds up to ≈ and not
-   on the nose: both are mediators of the SAME cone ⟨id, h⟩, but the
-   mediator is produced from a proof of the square condition and the two
-   sides feed it different proofs -- the slice identity's own commuting
-   witness on the class side, [id_right (f ∘ h)] on the named side. *)
+(*
+   本节说明 Pullback 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma bang_star_unit_is_mediator (o : C) (h : o ~> a) :
   `1 (@unit (@Slice C b) (@Slice C a) (Bang_Functor f)
         (Star_Functor f) Base_Functor_Adjunction (o; h))

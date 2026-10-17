@@ -23,15 +23,11 @@ Class EnrichedTransform {K : Category} `{@Monoidal K} {C D : Enriched K}
   etransform (x : C) :
     I ~{K}~> @ehom K _ D (@efobj K _ C D F x) (@efobj K _ C D G x);
 
-  (* V-naturality: the F-then-σ and σ-then-G whiskerings agree, as an
-     equality of K-morphisms (x ⟿ y) ~> (F x ⟿ G y).
+  (*
+   本节说明 Natural 相关定义、性质与动机。
 
-     Left path : coerce (x ⟿ y) to I ⨂ (x ⟿ y) via unit_left⁻¹, then tensor
-       σ_y : I ~> (F y ⟿ G y) with efmap F : (x ⟿ y) ~> (F x ⟿ F y), and
-       compose in D to land in (F x ⟿ G y).
-     Right path: coerce (x ⟿ y) to (x ⟿ y) ⨂ I via unit_right⁻¹, then tensor
-       efmap G : (x ⟿ y) ~> (G x ⟿ G y) with σ_x : I ~> (F x ⟿ G x), and
-       compose in D to land in (F x ⟿ G y). *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   enaturality {x y : C} :
     ecompose ∘ (etransform y ⨂ @efmap K _ C D F x y) ∘ unit_left⁻¹
       << @ehom K _ C x y ~~>

@@ -40,37 +40,18 @@ Context (id_decoration : forall X : C, @I D _ ~{D}~> F X).
 Context (cospan_merge :
           forall (N M : C), (N ⨂[MC] M)%object ~{C}~> (N + M)%object).
 
-(** ** Coherence class for the decorated-cospan category
+(*
+   本节说明 Category 相关定义、性质与动机。
 
-    Bundles the four conditions implicit in Fong's [3.1. Definition] /
-    [3.2. Proposition] of "Decorated Cospans":
-
-      (i) the decoration laws are [Proper] under the apex-iso
-          transport produced by [cospan_equiv];
-      (ii) the identity decoration composes coherently on the left;
-      (iii) the identity decoration composes coherently on the right;
-      (iv) the composite decoration is associative.
-
-    A concrete instance — e.g. for Fong's electrical-circuit example,
-    or for Baez–Fong Markov processes — provides explicit proofs of
-    each, typically by direct calculation in the chosen [F] and the
-    chosen identity-decoration.
-
-    The cospan-level part of each law is proved generically below
-    using [Cospan.Category]'s lemmas; the decoration-level part is
-    delegated to the [DecCospan_Coherent] fields. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Class DecCospan_Coherent : Type := {
-  (** Apex-iso transport for decoration equivalence: if two decorated
-      cospans agree at the cospan level (via some [phi]) and the
-      composite-decoration formula on either side transports through
-      [F phi], they agree.
+  (*
+   本节说明拉回/推出、等价相关定义、性质与动机。
 
-      Concretely this is the field that says: when forming
-      [dec_cospan_compose g f] vs [dec_cospan_compose g' f'] for
-      pairwise-equivalent decorated cospans, the apex iso between the
-      two composite pushouts (built by [cospan_compose_respects_aux])
-      transports the decoration correctly. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   dc_compose_respects_dec :
     forall {X Y Z : C}
            (g g' : DecoratedCospanArrow Y Z)
@@ -120,11 +101,11 @@ Class DecCospan_Coherent : Type := {
           (dec_cospan_compose HP LM cospan_merge h g) f
 }.
 
-(** ** The Category record
+(*
+   本节说明 Category 相关定义、性质与动机。
 
-    With [DecCospan_Coherent] in scope, all four [Category] obligations
-    pair the corresponding cospan-level lemma with the matching
-    decoration-level coherence field. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Context `{DCC : DecCospan_Coherent}.
 
@@ -229,95 +210,14 @@ End DecoratedCospanCategory.
 Arguments DecoratedCospanCat
   {C} HP {H_Coc} {MC} {D} {MD} {F} LM id_decoration cospan_merge {DCC}.
 
-(** ** Path to the full symmetric monoidal layer
+(*
+   本节说明幺半结构、幺半群相关定义、性质与动机。
 
-    Given [DecoratedCospanCat], the next-layer structure (Fong, [3.5.
-    Theorem] of "Decorated Cospans") is a SYMMETRIC MONOIDAL category —
-    in fact a HYPERGRAPH category — extending the underlying
-    [CospanCat]'s SMC structure with decoration data:
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
-      - tensor of two decorated cospans: tensor the cospans (via
-        [Cospan_Monoidal]) and tensor the decorations via [lax_ap[F]];
+(*
+   本节说明幺半结构、函子、幺半群相关定义、性质与动机。
 
-      - unitors and associator: inherited from [Cospan_Monoidal]
-        (which transports cleanly to the decoration side via the
-        lax-monoidal unit and associativity coherences);
-
-      - braid: inherited from [Cospan_BraidedMonoidal] plus the
-        symmetric coherence [bimap d_f d_g ∘ braid = braid ∘ bimap d_g d_f]
-        (which holds when [F] is a SYMMETRIC lax monoidal functor —
-        Fong's standing assumption).
-
-    The categorical infrastructure for stating each obligation is
-    already in place: [Cospan_Monoidal], [Cospan_BraidedMonoidal],
-    [Cospan_SymmetricMonoidal] live in [Construction/Cospan/Symmetric.v]
-    and supply the cospan-level part of every equation.  The
-    decoration side is, on every equation, a routine appeal to one of:
-
-      - [lax_monoidal_unit_left], [lax_monoidal_unit_right]
-        (for the unitor coherences);
-      - [lax_monoidal_assoc] (for the associator coherence);
-      - the symmetric-lax-monoidal property [F (braid) = braid] (for
-        the braid coherence — this is an EXTRA assumption on [F]
-        beyond plain [LaxMonoidalFunctor]).
-
-    Packaging-wise, the cleanest formulation mirrors
-    [DecCospan_Coherent]: bundle the decoration-side coherences into a
-    class [DecCospan_Monoidal_Coherent] and a class
-    [DecCospan_Symmetric_Coherent], then [Program Instance] them as
-    [DecoratedCospan_Monoidal] / [DecoratedCospan_SymmetricMonoidal].
-
-    Hypergraph upgrade: with the [Cospan_Hypergraph] instance on
-    [CospanCat], the canonical hypergraph structure on
-    [DecoratedCospanCat] is the same cospan-level SCFA wrapped with
-    chosen decorations on each generator.  The four
-    [Hypergraph]-class obligations follow once the underlying SMC is
-    in place.
-
-    ** Sticking point analysis
-
-    The implementation cost of the SMC layer is roughly the same as
-    [Construction/Cospan/Symmetric.v] (~400 lines), repeated on the
-    decoration side.  Most of the work is bookkeeping: each obligation
-    is "do the cospan-level fact, then transport along the lax
-    coherence".  No genuinely new mathematics enters — the decoration
-    layer is, in Fong's words, "natively monoidal" because [F] is.
-
-    The implementation is mechanical but volumetric; we expose the
-    [DecoratedCospanCat] [Category] record (above) as the primary
-    landing point and document the SMC + Hypergraph upgrades as
-    follow-up work with concrete coherence-class signatures.  Once a
-    concrete application — Baez–Fong circuits, Markov processes — is
-    formalised, the corresponding coherence-class instance is the
-    bulk of the work; the SMC + Hypergraph instances themselves are
-    then a thin wrapping. *)
-
-(** ** Discussion: the four coherence fields
-
-    Fong's "Decorated Cospans" paper proves each of the four
-    [DecCospan_Coherent] fields directly in the [F = Set] case (where
-    decorations are literal elements of [F N]), using:
-
-      - [dc_id_left_dec] / [dc_id_right_dec]: the lax monoidal-unit
-        coherences [lax_monoidal_unit_left] / [lax_monoidal_unit_right]
-        (van de Wetering's restatement; see [Functor/Structure/Monoidal.v]);
-
-      - [dc_compose_assoc_dec]: the lax monoidal-associativity
-        coherence [lax_monoidal_assoc];
-
-      - [dc_compose_respects_dec]: the naturality of [lax_ap] under
-        the apex-iso transport, combined with [fmap]'s respectfulness.
-
-    Each is a short calculation in the lax monoidal data, but the
-    statements are bulky because they refer to the pushout-mediator
-    iso explicitly.  We have packaged them as an OPAQUE typeclass so
-    downstream sites discharge them once per concrete decoration
-    structure (rather than having every cospan-category user
-    re-derive them).
-
-    A concrete instance — for the trivial decoration [F = const(I_D)] —
-    is the canonical "no-decoration" case where every coherence holds
-    by the [const]-functor laws + [lax_pure ∘ ... = lax_pure] collapses.
-    More interesting instances (Baez–Fong electrical circuits, Fong's
-    Markov processes) provide bespoke proofs that we leave to the
-    application-specific downstream files. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)

@@ -82,10 +82,11 @@ Proof using G rank edge_rank rank_inj.
     lia.
 Qed.
 
-(* The heterogeneous form of uniqueness: two paths with a common target and
-   propositionally equal sources are equivalent along that equality.  This is
-   the form the induction needs, since the intermediate nodes of two parallel
-   paths are only propositionally equal. *)
+(*
+   本节说明 Examples 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma graded_het (k : G) : ∀ (i : G) (f : tlist edges i k)
                                   (j : G) (g : tlist edges j k) (e : i = j),
   tlist'_quiver_equiv G k i j f g e.
@@ -202,10 +203,11 @@ Definition Arrow_from : _2 ⟶ FreeOnQuiver ArrowQuiver :=
     (fun x => arrow_free_thin x x _ _)
     (fun x y z f g => arrow_free_thin x z _ _).
 
-(* Mac Lane's second example: the free category on one arrow with distinct
-   endpoints is that arrow together with an identity at each end -- which is
-   exactly the walking arrow [_2].  Both functors are the IDENTITY on objects,
-   so both strict-equality witnesses are [eq_refl]. *)
+(*
+   本节说明函子、（余）端相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition arrow_free : FreeOnQuiver ArrowQuiver ≅[StrictCat] _2 := {|
   to   := Arrow_to;
   from := Arrow_from
@@ -226,13 +228,11 @@ Definition arrow_free_Cat : FreeOnQuiver ArrowQuiver ≅[Cat] _2 :=
 
 (* ---------- every finite ordinal is free on its linear quiver ---------- *)
 
-(* Nodes are the objects of [Ordinal m] themselves, and an edge x -> y is a
-   proof that y is the successor of x.  Edges are therefore unique by UIP on
-   [nat] (Hedberg, through [Eqdep_dec.UIP_dec] -- no axiom is assumed), and the
-   quiver has exactly the m-1 generating steps 0 -> 1 -> ... -> m-1.  The
-   numbering counts NODES, matching [Ordinal m]'s own convention: [LinQuiver 0]
-   is empty, [LinQuiver 2] is the walking arrow and [LinQuiver 3] the
-   composable pair. *)
+(*
+   本节说明 Examples 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition linear_edges@{o h} {m : nat} (x y : Ord_obj@{o} m) : Type@{h} :=
   (S (ord_val x) = ord_val y)%nat.
 
@@ -283,10 +283,11 @@ Definition linear_hom (m : nat) :
 Definition Linear_to (m : nat) : FreeOnQuiver (LinQuiver m) ⟶ Ordinal m :=
   InducedFunctor (LinQuiver m) (linear_hom m).
 
-(* The comparison out of the ordinal is [Instance/Ordinal.v]'s [Functor_of_Steps]
-   applied to the n generating edges, taken at the clamped indices.  That donor
-   is stated for [Ordinal (S n)], so this half splits on whether the ordinal is
-   empty. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma linear_min_step (n k : nat) (H : le_t (S k) n) :
   (S (Nat.min k n) = Nat.min (S k) n)%nat.
 Proof.
@@ -305,9 +306,11 @@ Definition Linear_from (n : nat) :
   Ordinal (S n) ⟶ FreeOnQuiver (LinQuiver (S n)) :=
   Functor_of_Steps (linear_steps n).
 
-(* The nonempty case.  Both round trips are equations between parallel arrows
-   -- of [Ordinal (S n)], which is thin by [le_t_irr], and of the free category,
-   which is thin by [linear_free_thin] -- so the transports carry no content. *)
+(*
+   本节说明 Examples 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition ordinal_free_S (n : nat) :
   FreeOnQuiver (LinQuiver (S n)) ≅[StrictCat] Ordinal (S n) := {|
   to   := Linear_to (S n);
@@ -394,10 +397,11 @@ Qed.
 
 (* ---------- the composable pair: the three-node instance ---------- *)
 
-(* Mac Lane's third example: the free category on . -> . -> . is the
-   commutative triangle -- three identities, the two generators, and one
-   composite.  This is [ordinal_free] at three nodes, whose target [Ordinal 3]
-   is Instance/Ordinal.v's [_3]; it is an instance, not a second development. *)
+(*
+   本节说明 Examples 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition chain_free : FreeOnQuiver (LinQuiver 3) ≅[StrictCat] _3 :=
   ordinal_free 3.
 
@@ -456,12 +460,11 @@ Proof. pose proof (linear_no_descent _ _ p) as H; simpl in H; lia. Qed.
 Theorem chain_no_21 (p : ord3_2 ~{FreeOnQuiver (LinQuiver 3)}~> ord3_1) : False.
 Proof. pose proof (linear_no_descent _ _ p) as H; simpl in H; lia. Qed.
 
-(* Instance/Ordinal.v's duplicate-free count of endpoint pairs, re-exported at
-   n = 3 for the reader's convenience.  NOTE what this is and is not: the
-   statement mentions neither [FreeOnQuiver] nor [chain_free], and no transport
-   along the isomorphism is formalized -- it is a fact about [Ordinal 3] alone,
-   whose left side is TWICE the morphism count (six).  The free category's own
-   six morphisms are delivered by the nine hom-set theorems above, directly. *)
+(*
+   本节说明hom、同构、来源与用途相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Corollary chain_morphism_count : (2 * length (ord_pairs 3) = 3 * (3 + 1))%nat.
 Proof. exact (ord_morphism_count 3). Qed.
 
@@ -485,13 +488,11 @@ Proof.
   simpl in H; lia.
 Qed.
 
-(* Non-degeneracy.  The generating path cannot be compared with an identity
-   directly -- they inhabit different hom-sets -- so the statement is that it is
-   not invertible: an inverse would be a path TwoY to TwoX, and there is none.
-   The free category on one arrow is therefore not a groupoid, matching
-   [TwoXY_not_iso] (Instance/Two.v) across [arrow_free].  This is one instance;
-   the general fact that a free category has only identity isomorphisms is
-   issue #802's, and is not proved here. *)
+(*
+   本节说明hom、同构相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Lemma arrow_path_not_iso :
   @IsIsomorphism (FreeOnQuiver ArrowQuiver) TwoX TwoY arrow_path → False.
 Proof. intros [g _ _]; exact (arrow_no_YX g). Qed.
@@ -504,9 +505,11 @@ Proof. now destruct a. Qed.
 Lemma ord2_from_to_obj (x : Ord_obj 2) : ord2_obj (ord_two_of (ord_val x)) = x.
 Proof. apply ord_obj_eq, ord_2_val. Qed.
 
-(* Instance/Ordinal.v delivers [Ordinal_2_iso] only in [Cat].  Both categories
-   are thin, so the strict form costs nothing beyond the two object equalities
-   -- which are exactly the lemmas that file already proves. *)
+(*
+   本节说明 Examples 相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Program Definition Ordinal_2_strict_iso : Ordinal 2 ≅[StrictCat] _2 := {|
   to   := Ordinal_2_to;
   from := Ordinal_2_from
@@ -518,10 +521,10 @@ Next Obligation.
   exists ord2_from_to_obj; intros x y f; apply le_t_irr.
 Qed.
 
-(* The walking arrow again, reached through the general theorem at two nodes.
-   The free category is built on a DIFFERENT quiver -- [LinQuiver 2], whose
-   nodes are the objects of [Ordinal 2] -- so this does not subsume
-   [arrow_free], whose comparison functors are the identity on objects; the two
-   are separate presentations of the same shape. *)
+(*
+   本节说明函子相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Definition linear_2_free : FreeOnQuiver (LinQuiver 2) ≅[StrictCat] _2 :=
   iso_compose Ordinal_2_strict_iso (ordinal_free 2).

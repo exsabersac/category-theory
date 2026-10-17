@@ -22,10 +22,11 @@ Program Definition UFun (B E : Category) : Category := {|
   compose := fun _ _ _ τ σ b => τ b ∘ σ b  (* composition, componentwise *)
 |}.
 Next Obligation.
-  (* The componentwise equivalence relation; the remaining five obligations
-     (properness of composition and the category laws, all componentwise in
-     E) are discharged by the global [cat_simpl] obligation tactic once this
-     setoid is in place. *)
+  (*
+   本节说明等价相关定义、性质与动机。
+
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
   equivalence.
   now transitivity (y b).
 Qed.

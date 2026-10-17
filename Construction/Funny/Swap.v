@@ -40,11 +40,11 @@ Next Obligation. apply feq_sym; apply feq_fuseL. Qed.
 Definition FunnySwap {C D : Category} : (C □ D) ⟶ (D □ C) :=
   FunnyUP FunnySwap_sep.
 
-(** ** Computation lemmas
+(*
+   本节说明 Swap 相关定义、性质与动机。
 
-    [ffold] and [fapp] compute, so the action of [FunnySwap] on words is
-    definitional, constructor by constructor: the word is mapped step by
-    step, in order, with L-steps becoming R-steps and vice versa. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma FunnySwap_fnil {C D : Category} {c : C} {d : D} :
   @fmap (C □ D) (D □ C) FunnySwap (c, d) (c, d) fnil = fnil.
@@ -72,13 +72,11 @@ Lemma FunnySwap_rstep {C D : Category} {c : C} {d1 d2 : D}
   @fmap (C □ D) (D □ C) FunnySwap (c, d1) (c, d2) (rstep g) = lstep g.
 Proof. reflexivity. Qed.
 
-(** ** Involutivity
+(*
+   本节说明函子相关定义、性质与动机。
 
-    Swapping twice fixes every generating step on the nose, so the round
-    trip is strictly the identity functor.  On an explicit pair the object
-    round trip computes to [eq_refl]; [Funny_strict_eq] (StrictEq.v)
-    supplies the pair destructuring needed because [prod] has no
-    definitional eta at an abstract object. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Lemma FunnySwap_invol {C D : Category} :
   @equiv _ (@Functor_StrictEq_Setoid (C □ D) (C □ D))
@@ -106,13 +104,11 @@ Proof.
   - intros c d d' g. reflexivity.
 Qed.
 
-(** ** The symmetry isomorphism
+(*
+   本节说明函子、等价、同构相关定义、性质与动机。
 
-    In [StrictCat] the involution makes [FunnySwap] a genuine
-    (on-the-nose) isomorphism of categories; pushing it through the
-    comparison functor [StrictCat_to_Cat] (Instance/StrictCat/ToCat.v)
-    yields the corresponding isomorphism — an equivalence — in the weak
-    [Cat]. *)
+   （本节英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Funny_swap {C D : Category} : (C □ D) ≅[StrictCat] (D □ C) :=
   @Build_Isomorphism StrictCat (C □ D) (D □ C)

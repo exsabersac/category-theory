@@ -16,31 +16,13 @@ Generalizable All Variables.
 
 (** Monoidal structure on a product of functors. *)
 
-(* nLab: https://ncatlab.org/nlab/show/monoidal+functor
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_functor
 
-   Given (lax/strong) monoidal functors F : C ⟶ J and G : D ⟶ K between
-   monoidal categories, the pointwise product functor
+   本文件给出幺半相关结构。
 
-       F ∏⟶ G : C ∏ D ⟶ J ∏ K
-
-   is again (lax/strong) monoidal for the product monoidal structures on
-   C ∏ D and J ∏ K (see Structure.Monoidal.Product). The unit comparison is
-   the pair of the unit comparisons of F and G, and the tensor comparison is
-   the componentwise pair of their tensor comparisons,
-
-       η      = (η_F, η_G)        : I ~> (F ∏⟶ G) I,
-       μ_{..} = (μ^F_{..}, μ^G_{..}).
-
-   Because equivalence in a product category is the componentwise conjunction
-   (see Construction.Product), each coherence square in J ∏ K splits into the
-   corresponding squares in J and in K, so the laws hold whenever they hold
-   for F and G; if both are strong (resp. strict) so is the product.
-
-   Conversely, monoidality of F ∏⟶ G can be projected back onto each factor
-   by feeding the unit I into the unused slot: the [_proj1]/[_proj2]
-   definitions recover monoidality of F and of G. This is the product (in the
-   2-category MonCat / its lax variant) acting on monoidal functors. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProductMonoidal.
 

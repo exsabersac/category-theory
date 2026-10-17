@@ -10,58 +10,14 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * The Eilenberg–Moore free/forgetful adjunction
-
+(*
     nLab: https://ncatlab.org/nlab/show/Eilenberg-Moore+category
     Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)
 
-    Monad/Adjunction.v shows that every adjunction F ⊣ U induces a monad
-    U ◯ F on the domain of F.  This file provides the terminal converse
-    resolution, through the Eilenberg–Moore category C^T of algebras
-    (Monad/Eilenberg/Moore.v) of a monad (T, ret, join) = (T, η, μ) on C:
+   本文件给出伴随相关构造与性质。
 
-    - [EM_Forget] U^T : C^T ⟶ C sends an algebra (a, ν) to its carrier a,
-      and an algebra homomorphism to its underlying C-arrow;
-    - [EM_Free] F^T : C ⟶ C^T sends x to the free algebra (T x, μ_x): the
-      structure map is the multiplication join, whose algebra laws are the
-      monad laws [join_ret] and [join_fmap_join], and a morphism f : x ~> y
-      becomes the homomorphism fmap[T] f, which intertwines the two free
-      actions by the multiplication naturality [join_fmap_fmap];
-    - [EM_Adjunction] F^T ⊣ U^T: the transpose ⌊g⌋ of an algebra map
-      g : (T x, μ_x) ~> (b, ν) is t_alg_hom[g] ∘ ret, and the transpose
-      ⌈f⌉ of f : x ~> b is its universal extension ν ∘ fmap[T] f, packaged
-      as an algebra homomorphism by [EM_extend].  That the two transposes
-      are mutually inverse is the universal property of the free algebra:
-      [EM_extend_ret] (extension restricted along η recovers f) and
-      [EM_extend_unique] (every algebra map out of a free algebra is the
-      extension of its own restriction).
-
-    The adjunction presents the monad we started with:
-    [EM_Monad_agrees] identifies the composite U^T ◯ F^T with T (a natural
-    isomorphism whose components are identities), [EM_unit_agrees]
-    identifies the adjunction unit with ret, and [EM_join_agrees]
-    identifies the U^T-image of the counit — which is exactly the
-    multiplication of the monad that Monad/Adjunction.v extracts from this
-    adjunction — with join.  The counit itself acts at (b, ν) by the
-    structure map ν ([EM_counit_agrees]).
-
-    This is the terminal resolution of T; the initial one is the Kleisli
-    adjunction of Monad/Kleisli/Adjunction.v, whose comparison into C^T
-    lands in the free algebras.
-
-    CORRECTION (#475).  No such comparison existed when this was written.
-    The comparison of the Kleisli adjunction into algebras is now
-    Monad/Comparison.v's [EM_Comparison] at [Kleisli_Adjunction]
-    (constructible since PR #201, merged 2026-07-19), Riehl's own
-    construction of her K (Lemma 5.2.14); but its codomain is the
-    algebras of the monad the Kleisli adjunction induces, not C^T, and
-    its structure map at c is μ ∘ T id, not μ.  Into C^T itself it is
-    Monad/Kleisli/Comparison.v's [Kleisli_EM], which forgets to the same
-    functor ([EM_Comparison_Kleisli_obj], [EM_Comparison_Kleisli_map])
-    and whose arrow action is this file's [EM_extend] (the inverse
-    transpose under [EM_Adjunction]) at [eq_refl], full and faithful onto
-    the free algebras.  The terminality and the initiality are Mac Lane's
-    Theorem VI.5.3, which issue #476 tracks. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section EilenbergMooreAdjunction.
 

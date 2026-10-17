@@ -21,88 +21,14 @@ Require Import Category.Structure.Limit.Preservation.
 
 Generalizable All Variables.
 
-(** * Crude monadicity
-
+(*
     nLab:      https://ncatlab.org/nlab/show/monadicity+theorem
     Wikipedia: https://en.wikipedia.org/wiki/Beck%27s_monadicity_theorem
 
-    Fix an adjunction F ⊣ U with F : D ⟶ C, its induced monad
-    T = U ◯ F on D (Monad/Comparison.v packages it transparently as
-    [Adjunction_Induced_Monad], with ret = η and join = U ε F), and the
-    Eilenberg–Moore comparison K = [EM_Comparison] : C ⟶ D^T.  The crude
-    monadicity theorem states that K is an equivalence of categories
-    provided that
+   本文件给出单子相关定义或实例。
 
-      1. C has coequalizers of reflexive pairs ([HasReflexiveCoequalizers]),
-      2. U preserves them ([PreservesReflexiveCoequalizers] below), and
-      3. U reflects isomorphisms ([ReflectsIsos], i.e. U is conservative).
-
-    Deviation of form: hypothesis 2 is stated elementarily — for every
-    reflexive pair and every elementary coequalizer of it, the U-image of
-    the coequalizing map is again an elementary coequalizer of the image
-    pair.  This is the standard crude hypothesis.  Relating it to the
-    colimit-based [PreservesColimit] vocabulary would use the Phase-8
-    conversions ([coequalizer_is_coequalizer] / [is_coequalizer_colimit]
-    in Structure/Coequalizer.v with [preserves_colimit] in
-    Structure/Limit/Preservation.v) plus an identification of the
-    composed diagram [U ◯ APair f g] with [APair (fmap[U] f) (fmap[U] g)]
-    that the library does not carry; the elementary form is what the
-    proof consumes directly, so no bridge is needed here.
-    CORRECTION (#477): accurate when written; the relation no longer
-    needs that identification.  Structure/Coequalizer.v's
-    [parallel_colimit_coequalizer], at [K := U ◯ APair f g], reads any
-    colimiting cocone over the composed diagram as an elementary
-    coequalizer of [fmap[U] f] and [fmap[U] g] by conversion, and
-    [parallel_coequalizer_colimit] goes back (Test/ProbeAbsolute477.v,
-    C30).  They are what such a relation would now use, against the
-    cone-level [PreservesColimitCocone] at each reflexive pair rather
-    than the apex-only [PreservesColimit]; the relation itself is not
-    stated anywhere, and the identification is still not carried.
-
-    The construction of the quasi-inverse G = [Crude_Inverse] : D^T ⟶ C
-    is the classical Beck argument:
-
-    - Every algebra (d, α) has a canonical presentation by free objects:
-      the pair ε_{F d}, F α : F (U (F d)) ⇉ F d is reflexive with common
-      section F η_d — the two retraction laws are the zig-zag identity
-      [counit_fmap_unit] and the F-image of the algebra unit law [t_id].
-      G (d, α) is the chosen coequalizer q of this pair, with
-      coequalizing map e : F d ~> q.
-
-    - G on morphisms is by descent: for an algebra homomorphism h the
-      composite e' ∘ F h₀ coforks the presentation of the source (by
-      counit naturality and the commuting square of h), so it descends
-      uniquely through e.  Functoriality is descent uniqueness; every
-      square of mediators commutes because both sides descend the same
-      cofork.
-
-    - Downstairs, applying U to the defining coequalizer yields (by
-      hypothesis 2) a coequalizer of the pair U ε_{F d}, U (F α), which
-      is definitionally the canonical pair μ_d, T α of the algebra —
-      the pair split-coequalized by α itself ([canonical_split] in
-      Monadicity/BeckObjects.v).  Coequalizers of the same pair agree up
-      to isomorphism: descending α through U e gives [crude_to], while
-      the split coequalizer's own descent of U e is
-      [crude_from] = U e ∘ η_d, and the two are mutually inverse.
-
-    - The counit K (G (d, α)) ≅ (d, α): [crude_from] underlies an
-      algebra homomorphism (d, α) ~> K (G (d, α)) (its commuting square
-      is counit naturality plus the zig-zag identity), and its carrier
-      is invertible; the inverse arrow is again a homomorphism by the
-      conjugation argument [em_iso_inverse_hom] of BeckObjects.v — this
-      is conservativity of U^T at work, with the inverse kept
-      transparent so the isomorphism can be assembled by hand.
-
-    - The unit c ≅ G (K c): the counit ε_c coforks the presentation of
-      the algebra K c = (U c, U ε_c) by naturality, so it descends to a
-      mediator θ_c : G (K c) ~> c.  Its U-image coincides (by descent
-      uniqueness) with the comparison iso [crude_to] at K c, hence is
-      invertible; hypothesis 3 reflects the invertibility of θ_c itself.
-
-    All mediating morphisms are compared through the uniqueness clause
-    of descent, and both natural-isomorphism cells of the equivalence
-    ([Functor_Setoid]'s bundled form) carry their conjugation coherence
-    by the same discipline. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Hypothesis 2, stated elementarily: U carries any elementary
    coequalizer of a reflexive pair to an elementary coequalizer of the

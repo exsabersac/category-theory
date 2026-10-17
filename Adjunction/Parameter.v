@@ -23,14 +23,11 @@ Require Import Category.Adjunction.Right.
 
 Generalizable All Variables.
 
-(* Adjunction/Natural/Transformation.v is REQUIRED but deliberately NOT
-   IMPORTED: importing it would shadow Theory/Adjunction.v's [unit] and
-   [counit] (measured — with it imported, [Check @unit] returns the
-   Id ⟹ U ◯ F transformation, so §C's and §E's existing [@counit ...] uses
-   would silently change meaning).  The unit/counit-presentation class of §G
-   is therefore reached through this alias, whose short name is swept and
-   free tree-wide.  The cost is the [∹] notation, which does not export
-   without the Import; the class is written [PAT.Adjunction_Transform]. *)
+(*
+   本文件给出伴随相关构造与性质。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Module PAT := Category.Adjunction.Natural.Transformation.
 

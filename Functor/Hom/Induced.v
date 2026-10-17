@@ -14,69 +14,15 @@ Generalizable All Variables.
 (** The hom-action of a functor: [fmap] as one natural transformation of
     hom-bifunctors. *)
 
-(* nLab:      https://ncatlab.org/nlab/show/hom-functor
+(*
    nLab:      https://ncatlab.org/nlab/show/functor
    Wikipedia: https://en.wikipedia.org/wiki/Hom_functor
    Book:      Mac Lane, "Categories for the Working Mathematician",
-              2nd ed., Springer GTM 5, §II.5 Exercise 7 (printed p. 45)
-              [maclane:II.5:ex7]
 
-   A functor T : A ⟶ D carries, for each pair of objects (a, b), a map of
-   hom-sets
+   本文件给出 hom 形式的伴随/同态。
 
-     T_{a,b} : hom_A(a, b) → hom_D(T a, T b),   g ↦ fmap[T] g,
-
-   and Mac Lane's exercise is to observe that this whole family is a single
-   natural transformation. The two sides are bifunctors on one and the same
-   index category A^op ∏ A: the source is the hom-bifunctor Hom A of
-   Functor/Hom.v, and the target is Hom D with T inserted in BOTH slots —
-   contravariantly in the first, covariantly in the second — that is,
-
-     Hom D ◯ (T^op ∏⟶ T) : A^op ∏ A ⟶ Sets,   (a, b) ↦ hom_D(T a, T b).
-
-   The transformation [hom_action] below has fmap[T] as its component at every
-   pair, and its naturality square at a morphism (h, k) of A^op ∏ A — so
-   h : a' ~{A}~> a and k : b ~{A}~> b' — reads
-
-     fmap[T] k ∘ fmap[T] g ∘ fmap[T] h  ≈  fmap[T] (k ∘ g ∘ h).
-
-   Naturality in the pair is therefore not an extra law: it is exactly two
-   instances of [fmap_comp], with the two sides already associated alike. This
-   is the precise sense in which "fmap is natural in both variables jointly",
-   and it is the two-variable packaging of the more familiar one-variable
-   statements (naturality of T on hom(a, −) and on hom(−, b) separately).
-
-   The composite [T^op ∏⟶ T] is new here, and the claim is a narrow one: every
-   OTHER pullback of a hom-bifunctor ALONG A PRODUCT OF TWO FUNCTORS in the
-   tree carries the IDENTITY in one of its two slots.  (The qualifier does
-   work: [CoHom_Alt C := Hom C ◯ Swap], Functor/Hom.v, pulls a hom
-   bifunctor back along the factor-exchange functor, which is not of the
-   form F ∏⟶ G at all.)  Theory/Profunctor.v is the shape precedent,
-
-     Repr_left F  := Hom D ◯ (F^op ∏⟶ Id),
-     Repr_right U := Hom C ◯ (Id^op ∏⟶ U),
-
-   and Adjunction/Hom.v pairs exactly those two, its [hom_adj] making an
-   adjunction a natural isomorphism between them. A functor repeated in both
-   slots is not by itself new — [(⨂) ◯ F ∏⟶ F] is the tensor comparison of a
-   monoidal functor (Functor/Structure/Monoidal.v) — but that composite has
-   no opposite slot and no hom-bifunctor. What the doubled T buys here is that
-   the index category stays fixed at A^op ∏ A, so the hom-maps of a SINGLE
-   functor become comparable to Hom A by an ordinary natural transformation,
-   rather than by a comparison between two distinct profunctors.
-
-   Componentwise readings of fullness and faithfulness follow (Mac Lane's
-   "optional but natural" second half). Theory/Functor.v defines [Faithful]
- with the single field [fmap_inj], injectivity of fmap[T] with respect
-   to ≈, and [Full] with a chosen preimage [prefmap] together with
-   [fmap_sur] making it a section of fmap[T] — note that no functoriality of
-   [prefmap] is demanded. Read through [hom_action], these say precisely that
-   every component of the transformation is injective, respectively surjective
-   as data. Both correspondences are stated as biconditionals with ↔, which in
-   this library is Lib/Foundation.v's Type-valued [iffT]: the classes are
-   Type-valued, and the [Full] direction genuinely transports data, [prefmap]
-   being the first projection of the surjectivity witness. The four directions
-   are also available as separately named lemmas. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Open Scope category_scope.
 

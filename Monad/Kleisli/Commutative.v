@@ -27,63 +27,14 @@ Set Primitive Projections.
 Set Universe Polymorphism.
 Set Transparent Obligations.
 
-(** * The Kleisli category of a commutative strong monad is monoidal
-
+(*
     nLab: https://ncatlab.org/nlab/show/commutative+monad
     nLab: https://ncatlab.org/nlab/show/premonoidal+category
 
-    Monad/Kleisli/Premonoidal.v equips the Kleisli category Kl(M) of a
-    strong monad M over a symmetric monoidal base with its Power-Robinson
-    premonoidal structure, and characterizes centrality there: a Kleisli
-    morphism f is central exactly when the two double strengths [dstr] and
-    [dstr'] agree on every tensor with f in either factor
-    ([kleisli_central_iff]).  This file treats the commutative case of
-    the Kleisli premonoidal development:
+   本文件给出 Kleisli 范畴相关。
 
-    1. The funnel between commutativity and centrality, in both
-       directions.  If M is commutative ([commutative_sm], i.e. dstr and
-       dstr' agree everywhere), then EVERY Kleisli morphism is central
-       ([kleisli_all_central]): both centrality squares are congruence
-       instances of the commutativity equation.  Conversely, if every
-       Kleisli morphism is central, instantiating the centrality of the
-       identity Kleisli maps id[M x] : M x ~{Kl}~> x against id[M y]
-       collapses the centrality square to dstr ≈ dstr' on the nose
-       ([kleisli_all_central_commutative]).  Together: M is commutative
-       iff Kl(M) is monoidal with its canonical tensor.
-
-    2. The monoidal upgrade ([Kleisli_Monoidal]): the all-central engine
-       [Premonoidal_Monoidal] of Structure/Premonoidal/Monoidal.v applied
-       to [Kleisli_Premonoidal] with the centrality witness of point 1.
-       The induced tensor acts on morphism pairs by the double strength:
-       bimap f g ≈ dstr ∘ (f ⨂ g) ([kleisli_bimap_dstr]), and on pure
-       morphisms by the pure image of the base tensor ([kl_pure_tensor]).
-
-    3. The braided and symmetric upgrades ([Kleisli_Braided],
-       [Kleisli_Symmetric]): the braiding of Kl(M) is the pure image of
-       the base braiding.  Its joint naturality square reduces through
-       [kleisli_bimap_dstr] to the conjugation identity
-       dstr' ≈ M(β) ∘ dstr ∘ β ([dstr_braid], a fact of every strong
-       monad over a symmetric base, no commutativity needed); the
-       hexagons and the involution law transfer from the base along the
-       pure functor.
-
-    4. The copy-discard descent ([Kleisli_CopyDiscard]): when the base
-       carries a CopyDiscard structure, Kl(M) does too, with
-       copy := kpure copy and discard := kpure discard.  All comonoid
-       laws and the tensor/unit coherences are pure transfers; the
-       heaviest step is transporting the five-factor middle-interchange
-       word [mid_swap_inv] of Hypergraph.v through the pure functor
-       ([kl_pure_mid_swap_inv]).  Crucially, naturality of copy and
-       discard is not part of the transported structure: in Kl(M) an
-       effectful morphism need not commute with duplication or deletion
-       of its input, and the two Cho-Jacobs squares single out the
-       deterministic morphisms — exactly the substrate
-       Monad/Thunkable.v builds on.
-
-    The comm-gated structures are Definitions, not Instances: they take
-    the commutativity witness as an argument once the section closes, so
-    typeclass resolution can never conjure a monoidal structure on Kl(M)
-    without being handed a proof that M commutes. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section KleisliCommutative.
 

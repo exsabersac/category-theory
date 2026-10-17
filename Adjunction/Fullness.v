@@ -15,40 +15,11 @@ Generalizable All Variables.
 
 (** * Fullness of an adjoint: Mac Lane §IV.3 Exercises 3 and 6. *)
 
-(* Sources.
+(*
+   本文件给出伴随相关构造与性质。
 
-   Mac Lane, *Categories for the Working Mathematician*, 2nd ed., §IV.3,
-   printed page 92 (PDF page 101 of the scan this repository calibrates
-   against in doc/plan/books/maclane/pagemap.md).  The two exercises are
-   quoted here as PRINTED, read off the page image rather than the OCR
-   layer, because the order of the letters in Exercise 3's triple decides
-   which adjoint its hypothesis is about (see "The two readings of
-   Exercise 3" below).
-
-     Exercise 3.  "If ⟨G, F, φ⟩ : X ⇀ A is an adjunction with G full and
-     every unit η_x a monic, then every η_x is also epi."
-
-     Exercise 6.  "Given an adjunction ⟨F, G, η, ε⟩ with either F or G
-     full, prove that Gε : GFG → G is invertible with inverse ηG :
-     G → GFG."
-
-   Note the triple: Exercise 3 writes ⟨G, F, φ⟩ where the table's left
-   column and Exercise 5 write ⟨F, G, φ⟩, and Theorem 1 and Exercise 6
-   ⟨F, G, η, ε⟩ -- F first.  Under §IV.1's convention ⟨F, G, φ⟩ : X ⇀ A has
-   F : X ⟶ A the LEFT adjoint and G : A ⟶ X the RIGHT adjoint.  This
-   library's convention (Theory/Adjunction.v) writes F ⊣ U with
-   F : D ⟶ C left and U : C ⟶ D right, so for the ⟨F, G, φ⟩ exercises
-   the dictionary is
-
-       Mac Lane's G  =  this file's U,      Mac Lane's F  =  this file's F,
-       Mac Lane's X  =  this file's D,      Mac Lane's A  =  this file's C.
-
-   Throughout, "the right adjoint is full" means [Full U] and "the left
-   adjoint is full" means [Full F].  Every name below carries the suffix
-   [_right] or [_left] accordingly; the suffix names WHICH ADJOINT IS
-   ASSUMED FULL, never a handedness of the conclusion.  nLab background:
-   https://ncatlab.org/nlab/show/adjoint+functor and
-   https://ncatlab.org/nlab/show/fully+faithful+functor . *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ** What is delivered, at what strength
 

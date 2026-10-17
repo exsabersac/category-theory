@@ -8,52 +8,13 @@ Generalizable All Variables.
 
 (** * Graded monads *)
 
-(* nLab: https://ncatlab.org/nlab/show/graded+monad
+(*
+ nLab: https://ncatlab.org/nlab/show/graded+monad
 
-   Graded monads (also called parametric monads).  Fix an ordinary monoid
-   (E, ε, ·) of "grades" — here a [GradeMonoid], a record over a Coq type with
-   the monoid laws stated in propositional equality [=].  An E-graded monad on
-   a category C is a family of endofunctors  T : E → (C ⟶ C)  together with a
-   unit
+   本文件给出单子相关定义或实例。
 
-     gret : x ~> T ε x
-
-   and a family of graded multiplications
-
-     gjoin : T m (T n x) ~> T (m · n) x
-
-   satisfying the monad laws up to the monoid's associativity and unit
-   equations, which are transported along the family by the cast morphisms
-   [gcast] below.  Grades typically track a quantitative effect discipline:
-   which effects may occur, how many times, at what cost.
-
-   Honest formulation.  The class [GradedMonad] below mirrors Theory/Monad.v
-   field-for-field: [gret] and [gjoin] generalize [ret] and [join], and the
-   five laws [gfmap_ret], [gjoin_fmap_join], [gjoin_fmap_ret], [gjoin_ret],
-   [gjoin_fmap_fmap] generalize the five monad laws, each mediated by a
-   [gcast] along the corresponding grade-monoid equation.  At the trivial
-   one-element grading every [gcast] reduces to [id] and the five laws are
-   literally the five laws of Theory/Monad.v; the bridges [GradedMonad_Monad]
-   and [Monad_GradedMonad_const] below make this degeneracy precise in both
-   directions, with definitional round-trips ([roundtrip_ret],
-   [roundtrip_join]).
-
-   Relation to the monoid picture.  Monad/Monoid.v ([Monoid_Monad]) exhibits
-   an ordinary monad as a monoid object in the endofunctor category [C, C]
-   under composition.  A graded monad likewise has a delooping reading: it is
-   a lax functor from B E — the one-object bicategory whose 1-cells are the
-   elements of E, composed by ·, with only identity 2-cells — to the
-   one-object bicategory delooping the strict monoidal category
-   ([C, C], ◯, Id).  The unique object goes to the unique object, the 1-cell
-   m goes to the endofunctor T m, and the lax coherence 2-cells are exactly
-   [gret] (unit comparison, Id ⟹ T ε) and [gjoin] (composition comparison,
-   T m ◯ T n ⟹ T (m · n)), natural by [gfmap_ret] and [gjoin_fmap_fmap].
-   Equivalently: a lax monoidal functor into ([C, C], ◯, Id) from E read as a
-   discrete strict monoidal category — objects the grades, tensor ·, unit ε —
-   sending the object m to T m.  Bicategories, deloopings and lax monoidal
-   functors are outside the scope of this file, so that equivalent reading is
-   recorded here as prose only; the record below is the elementary spelling
-   of the same data. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The grade monoid: a plain monoid on a Coq type, with associativity and the
    two unit laws stated in propositional equality [=].

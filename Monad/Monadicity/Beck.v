@@ -22,93 +22,14 @@ Require Import Category.Structure.Limit.Preservation.
 
 Generalizable All Variables.
 
-(** * Beck's monadicity theorem, precise form
-
+(*
     nLab:      https://ncatlab.org/nlab/show/monadicity+theorem
     Wikipedia: https://en.wikipedia.org/wiki/Beck%27s_monadicity_theorem
 
-    Fix an adjunction F ⊣ U with F : D ⟶ C, its induced monad T = U ◯ F
-    on D ([Adjunction_Induced_Monad], Monad/Comparison.v, with ret = η
-    and join = U ε F held transparent), and the Eilenberg–Moore
-    comparison K = [EM_Comparison] : C ⟶ D^T.  Beck's precise monadicity
-    theorem singles out the monadic adjunctions: K is an equivalence of
-    categories whenever U creates coequalizers of U-split pairs —
-    parallel pairs in C whose U-image carries a split coequalizer in D
-    (Structure/Coequalizer/Split.v).
+   本文件给出单子相关定义或实例。
 
-    ** Creation, in the isomorphism-invariant sense
-
-    [CreatesUSplitCoequalizers] renders "U creates coequalizers of
-    U-split pairs" in two clauses:
-
-    - [create_coeq] (existence): every U-split pair has a coequalizer
-      upstairs whose U-image agrees with the given split coequalizer up
-      to a packaged comparison isomorphism i with i ∘ U e ≈ scoeq_e;
-
-    - [create_coeq_reflects] (uniqueness): every cofork upstairs that
-      lies over the given split coequalizer, up to such a compatible
-      isomorphism, is itself a coequalizer upstairs.
-
-    The second clause is the uniqueness half of creation, phrased in the
-    strongest form the theorem can consume.  Mac Lane's strict definition
-    demands a unique on-the-nose lift of the colimiting cocone and that
-    this lift be colimiting; in a setoid-based library, where downstairs
-    data can only be matched up to isomorphism, the non-evil rendering
-    asks instead that every iso-compatible lift be colimiting.  The
-    customary reading "the created data are unique up to compatible
-    isomorphism" follows as the corollary [create_coeq_unique], because
-    any two such lifts are coequalizers of the same pair and so mediate
-    through each other (compare [coequalizer_unique]).
-
-    ** Conservativity is derived, not assumed
-
-    Classical statements of the precise theorem carry no separate
-    conservativity hypothesis, and none is needed here: creation of
-    U-split coequalizers already makes U reflect isomorphisms
-    ([creates_split_reflects_isos]).  If U h is invertible, then the
-    U-image of the identical pair (id, id) is split-coequalized by U h
-    itself, with section (U h)⁻¹; the reflection clause then exhibits h
-    as a coequalizer of (id, id) upstairs, and descending id through it
-    produces a two-sided inverse of h.  Consequently [beck_monadicity]
-    takes only the adjunction and the creation instance — the
-    [ReflectsIsos] input of the crude theorem (Monadicity/Crude.v) is
-    manufactured, not assumed.
-
-    ** The theorem
-
-    [beck_monadicity] instantiates the crude architecture with created
-    rather than chosen coequalizers.  For an algebra (d, α), the
-    canonical presentation ε_{F d}, F α upstairs has as its U-image the
-    canonical pair μ_d, T α, which is split-coequalized by α itself
-    ([canonical_split], Monadicity/BeckObjects.v) — definitionally so,
-    because the induced monad's join transparently reads U ε F.
-    [create_coeq] at this splitting provides the quasi-inverse G on
-    objects, and the downstairs coequalizer that drives every comparison
-    map is recovered by transporting the split coequalizer along the
-    packaged isomorphism ([coequalizer_along_iso]) instead of by the
-    crude preservation hypothesis.  From there the lemma stack of
-    Crude.v repeats with the same proofs; its generically stated pieces
-    ([crude_pair_l], [crude_pair_r], [crude_alg_unit],
-    [crude_hom_square], [crude_alpha_cofork], [crude_unit_alpha],
-    [crude_unit_cofork], and the naturality lemmas of
-    Monad/Comparison.v) are reused directly.
-
-    ** The converse
-
-    [monadic_creates] packages [em_forget_creates_split]
-    (Monadicity/BeckObjects.v) into the class: for any monad T, the
-    Eilenberg–Moore forgetful functor U^T = [EM_Forget] creates
-    coequalizers of U^T-split pairs.  The existence clause is the
-    created algebra with the identity comparison isomorphism; the
-    reflection clause descends through the split coequalizer downstairs
-    and cancels the split epimorphism T e₀ to check that the descended
-    arrow is again an algebra homomorphism.  Transporting this converse
-    along the equivalence K, so that an arbitrary functor U that has a
-    left adjoint with invertible comparison inherits the creation
-    property (closing the loop to a single "monadic iff creates"
-    equivalence), is deliberately left to a later development: the
-    Eilenberg–Moore statement is the mathematical core, and the
-    transport is pure plumbing along [EquivalenceOfCategories]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Transport of an elementary coequalizer along an isomorphism
 

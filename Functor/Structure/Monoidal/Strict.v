@@ -10,39 +10,14 @@ Require Import Category.Functor.Structure.Monoidal.Compose.
 
 Generalizable All Variables.
 
-(** * Strict monoidal functors
-
+(*
     nLab: https://ncatlab.org/nlab/show/monoidal+functor
     Wikipedia: https://en.wikipedia.org/wiki/Monoidal_functor
 
-    A strict monoidal functor is a strong monoidal functor whose comparison
-    maps are identities: the unit comparison η : I ≅ F I and the tensor
-    comparison μ_{x,y} : F x ⨂ F y ≅ F (x ⨂ y) are not merely invertible but
-    equal to [id], so that F preserves the tensor and unit on the nose.
+   本文件给出严格情形。
 
-    As with [Structure/Monoidal/Strict.v] (strict monoidal categories), in
-    this library's setoid-based setting "strict" requires BOTH:
-
-      (a) object-level Leibniz equalities
-            [I = F I]  and  [F x ⨂ F y = F (x ⨂ y)];
-      (b) the comparison isomorphisms [pure_iso] and [ap_iso] coincide
-          (modulo those equalities) with [id].
-
-    Object-level equality (Leibniz [=]) is required because [obj] in
-    [Category] is a [Type], not a setoid; the comparison isos relate
-    distinct objects.  The comparisons then transport along those
-    equalities to give [id], stated in the explicit
-    [match e in _ = T return _ with eq_refl => id end] form — see the
-    "Formulation note" at the end of [Structure/Monoidal/Strict.v] for
-    the rationale behind this discipline.  The equality directions match
-    the [to] directions of [pure_iso : I ≅ F I] and
-    [ap_iso : F x ⨂ F y ≅ F (x ⨂ y)].
-
-    Strict monoidal functors compose ([Compose_StrictMonoidalFunctor]) and
-    include the identity ([Id_StrictMonoidalFunctor]), forming the wide
-    sub-2-category MonCat_strict of MonCat_strong.  They are the morphisms
-    of choice between PROPs, whose universal property is stated against
-    strict symmetric monoidal targets. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section StrictMonoidalFunctor.
 

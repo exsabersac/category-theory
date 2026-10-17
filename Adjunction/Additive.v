@@ -16,13 +16,11 @@ Require Import Category.Instance.Ab.
 
 Generalizable All Variables.
 
-(* Lib.v sets [Default Proof Using "Type"], which keeps only the section
-   variables occurring in a statement.  The additivity hypotheses here
-   ([AU], [AF]) occur only in the PROOFS of the lemmas that consume
-   them, those statements being equations between morphisms that
-   mention no functor class, so they would be discarded.  "All"
-   retains them, the Theory/EckmannHilton.v and
-   Theory/Category/Monoid.v precedent. *)
+(*
+   本文件给出加性相关。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Local Set Default Proof Using "All".
 
 (** * Adjunctions between Ab-categories are additive

@@ -12,25 +12,13 @@ Generalizable All Variables.
 
 (** The product of strong functors is strong *)
 
-(* nLab: https://ncatlab.org/nlab/show/tensorial+strength
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Strong_monad
 
-   If F, G : C ⟶ C are strong (each carries a left tensorial strength
-   strength[x,y] : x ⨂ F y ~> F (x ⨂ y), see Functor/Strong.v), then their
-   componentwise product F ∏⟶ G : C ∏ C ⟶ C ∏ C is strong for the product
-   monoidal structure on C ∏ C (Structure/Monoidal/Product.v), where the
-   tensor and unit act factorwise. The strength of F ∏⟶ G at a pair of objects
-   is built componentwise from the two given strengths,
+   本文件给出（余）强度/强（余）单子相关结构。
 
-     strength[(x₁,x₂),(y₁,y₂)] = (strength[F]_{x₁,y₁}, strength[G]_{x₂,y₂}),
-
-   and naturality together with both coherence laws (unit law w.r.t. λ and
-   associativity law w.r.t. α) hold in C ∏ C because equivalence there is the
-   componentwise conjunction, so each obligation splits into the F-part and the
-   G-part and is discharged factorwise. This needs only that C be monoidal; the
-   cartesian structure is not used. ProductFunctor_Strong_proj1/proj2 are the
-   converse projections, recovering a strength on each factor from a strength on
-   F ∏⟶ G by fixing the other coordinate at the unit I. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProductFunctorStrong.
 

@@ -12,75 +12,14 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(* Book:      Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-              §II.3, printed pp. 37–38 (PDF pp. 47–48) — maclane:II.3:prop1
-              (a bifunctor is determined by its partial functors),
-              maclane:II.3:def3 (naturality in one variable),
-              maclane:II.3:prop2 (bifunctor naturality is componentwise)
+(*
    Book:      Awodey, "Category Theory" (1st ed., 2005 pre-print), §7.6,
-              Lemma 7.14 (the bifunctor lemma), printed p. 168 (PDF
-              pp. 177–178) — awodey:7.6:lem14: the same iff, stated over
-              raw object/arrow data
    nLab:      https://ncatlab.org/nlab/show/bifunctor
 
-   Mac Lane's two propositions: a bifunctor is assembled from functors in
-   each separate variable agreeing on objects exactly when the one-sided
-   arrow actions satisfy the interchange condition (Proposition 1), and a
-   family of arrows between bifunctors is a natural transformation exactly
-   when it is natural in each variable separately (Proposition 2).  The
-   NECESSITY directions have long been in tree as Functor/Bifunctor.v's
-   bimap calculus; this file adds everything else:
+   本文件给出偏函子/偏作用。
 
-     - [Partial_l]/[Partial_r]: the partial functors of a bifunctor,
-       bundled as named [Functor]s (work item 1)
-     - [Build_Bifunctor]: Awodey's raw-data smart constructor — an
-       object map, two separately functorial arrow actions, and the
-       interchange law yield a bifunctor — with [Build_Bifunctor_l]/
-       [Build_Bifunctor_r] computing its partials back to the data and
-       [Build_Bifunctor_unique] the uniqueness half, and
-       [bifunctor_iff_partial] the FULL IFF over the bundled [RawLaws]
-       (necessity by the bimap calculus through the casts, sufficiency
-       the constructor)
-     - [Bifunctor_from_partial]: Mac Lane's family form — functors
-       [L c : B ⟶ D] and [M b : C ⟶ D] agreeing on objects, with the
-       commutation condition — routed through the raw constructor
-       along the agreement casts (design note 2)
-     - [NaturalIn1]/[NaturalIn2] (definitionally the naturality of the
-       partial-functor families — [NaturalIn1_partials] — with the
-       per-c [Transform_partial_l]), [Transform_from_partial] with
-       [transform_natural_in1]/[transform_natural_in2], and the iff
-       [transform_iff_natural_in_each]: Proposition 2, both directions
-       (work items 3–4), round trips in both composites
-
-   Design:
-
-   1. RAW DATA FIRST.  Awodey's phrasing takes a SINGLE object map
-      [S₀ : B → C → D] with two arrow actions over it, so no object
-      agreement — and hence no transport — appears anywhere in the
-      CONSTRUCTOR or its computation lemmas; the interchange condition
-      is stated directly.  (Uniqueness necessarily quantifies over an
-      arbitrary bifunctor, so [Build_Bifunctor_unique] and the iff's
-      realization side carry the agreement equation and its casts —
-      that is the statement's content, not an artifact.)  Mac Lane's family form carries the agreement
-      [L c b = M b c] as Leibniz equalities on objects (the only
-      relation objects have here), and design note 2's [cast2] moves
-      [M]'s arrow action onto [L]'s objects; the family constructor is
-      then an instance of the raw one.
-
-   2. THE FAMILY FORM PAYS FOR ITS OBJECT EQUATIONS.  [cast2] is the
-      endpoint transport (the [acast] idiom of Theory/Multicategory.v,
-      specialized to homs), and the family constructor's interchange
-      hypothesis is stated UNDER the casts — exactly the price Mac
-      Lane's "agreeing on objects" costs in a proof assistant, paid
-      once here rather than by every consumer.
-
-   3. UNIQUENESS IS [Functor_Setoid].  Proposition 1's "unique functor
-      S" is rendered as uniqueness up to Cat's hom-equivalence: any
-      bifunctor whose object map is the data's and whose arrow actions
-      restrict to the data's one-sided actions is ≈ the constructed
-      one.  The witnessing natural isomorphism has cast components
-      built from the object agreement (identity components when the
-      agreement is definitional). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Endpoint casts (design note 2) *)
 

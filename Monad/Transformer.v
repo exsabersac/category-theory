@@ -7,42 +7,13 @@ Generalizable All Variables.
 
 (** * Monad transformers. *)
 
-(* nLab: https://ncatlab.org/nlab/show/monad+transformer
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Monad_transformer
 
-   A monad transformer sends a monad M on C to a new monad T M on C, together
-   with a monad morphism lift : M ⟹ T M embedding the base monad into the
-   transformed one. (nLab phrases this as a pointed endofunctor on the category
-   of monads, whose point is exactly this lift; the Haskell [MonadTrans] class
-   is the same data.)
+   本文件给出单子相关定义或实例。
 
-   Being a monad morphism, lift must respect the unit and the Kleisli bind, the
-   two laws recorded here as [lift_return] and [lift_bind]:
-
-       lift ∘ ret              ≈ ret                               (1)
-       lift ∘ (join ∘ fmap f)  ≈ join ∘ fmap (lift ∘ f) ∘ lift     (2)
-
-   In the pointful Haskell phrasing these are
-
-       lift . return    = return
-       lift (m >>= f)   = lift m >>= (lift . f)
-
-   recalling that bind f = join ∘ fmap f in the join/return presentation (see
-   Theory/Monad.v). In (1) the right-hand ret is that of T M; in (2) the
-   left-hand join/fmap are M's while the right-hand join/fmap are those of T M.
-   Together they say lift commutes with the monadic structure, so that the
-   semantics of an M-computation is preserved when it is lifted into the larger
-   monad T M. Transformers are not in general commutative: T₁ (T₂ M) and
-   T₂ (T₁ M) usually differ.
-
-   CORRECTION (#468).  The class below carries [lift] as a family of arrows
-   with no naturality field, and until #468 the tree had no record of monad
-   morphisms against which to read "monad morphism" above.
-   Monad/Morphism/Transformer.v proves the reading from the two laws:
-   [lift_natural] derives the naturality, [transformer_hom] turns a
-   transformer into a [MonadHom] M (T M) of Monad/Morphism.v, and
-   [hom_transformer] turns one back.  The pointed endofunctor on the
-   category of monads that nLab describes is not built. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Transformer.
 

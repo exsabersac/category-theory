@@ -8,27 +8,13 @@ Generalizable All Variables.
 
 (** The product of two functors. *)
 
-(* nLab: https://ncatlab.org/nlab/show/product+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Product_category
 
-   Given functors F : C ⟶ D and G : J ⟶ K, their product F ∏⟶ G is the
-   functor C ∏ J ⟶ D ∏ K acting componentwise: on objects it sends (c, j) to
-   (F c, G j), and on morphisms it sends (f, g) to (fmap[F] f, fmap[G] g). The
-   functor laws hold componentwise because they hold in each factor. This is
-   the action of the product on morphisms of Cat, making (− ∏ −) a functor
-   Cat ∏ Cat ⟶ Cat; on Wikipedia, (f × g)(x, x') = (f x, g x').
+   本文件给出积（分量）构造。
 
-   This is the componentwise product F ∏⟶ G of two functors. It should not be
-   confused with the pairing (fork) functor ⟨F, G⟩ : C ⟶ D ∏ E arising from
-   the universal property of C ∏ D as a product in Cat, which is not defined
-   here; ⟨F, G⟩ would send c to (F c, G c) and is recovered as (F ∏⟶ G) ◯ Δ
-   along the diagonal Δ : C ⟶ C ∏ C.
-
-   Also provided below are ProductFunctor_swap, which conjugates a bifunctor
-   C ∏ J ⟶ D ∏ K by the symmetry Swap to obtain J ∏ C ⟶ K ∏ D, and the slices
-   ProductFunctor_fst / ProductFunctor_snd, which recover a single-variable
-   functor from a bifunctor by fixing the other argument at the monoidal unit
-   I (used to project the monoidal structure of F ∏⟶ G back onto each factor). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export]
 Program Instance ProductFunctor

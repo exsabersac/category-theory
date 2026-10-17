@@ -14,47 +14,15 @@ Require Import Category.Instance.Fun.
 
 Generalizable All Variables.
 
-(** * The Eilenberg–Moore comparison functor
-
+(*
     nLab: https://ncatlab.org/nlab/show/monadic+adjunction
     nLab: https://ncatlab.org/nlab/show/Eilenberg-Moore+category
     Wikipedia: https://en.wikipedia.org/wiki/Beck%27s_monadicity_theorem
 
-    Every adjunction F ⊣ U with F : D ⟶ C induces a monad T = U ◯ F on D
-    (Monad/Adjunction.v), and the Eilenberg–Moore category D^T of T-algebras
-    carries the terminal resolution F^T ⊣ U^T of that monad
-    (Monad/Eilenberg/Moore/Adjunction.v).  The comparison functor
-    K = [EM_Comparison] : C ⟶ D^T mediates between the given resolution and
-    the terminal one: it sends an object c to the algebra (U c, U ε_c) — the
-    unit law is the zig-zag identity [fmap_counit_unit] and the action law is
-    the U-image of a counit naturality square — and a morphism h to
-    fmap[U] h, an algebra homomorphism again by naturality of ε.  The
-    comparison commutes with both resolutions:
+   本文件给出比较函子相关。
 
-      [EM_Comparison_Forget]  U^T ◯ K ≈ U    (identity components), and
-      [EM_Comparison_Free]    K ◯ F ≈ F^T    (identity underlying arrows).
-
-    U is a monadic functor ([Monadic]) when it has a left adjoint whose
-    comparison functor is an equivalence of categories
-    (Theory/Equivalence.v): then C is, up to equivalence, the category of
-    algebras for the monad it induces.  Beck's monadicity theorem
-    characterizes the adjunctions with this property.
-
-    Mac Lane's comparisons of two resolutions of one monad (§VI.7), the
-    Lemma constructing them, and the uniqueness of K, up to a unique
-    compatible isomorphism, among the comparisons over the identity
-    identification of the two monads (Awodey's clause, in that coherent
-    form) are Monad/Comparison/Resolution.v (#482); without the
-    coherence the clause is false (Instance/Fun/Action/Monad/Comparison.v).
-
-    The induced monad is packaged here as [Adjunction_Induced_Monad], with
-    the same underlying data as [Adjunction_Monad]: ret = η, and
-    join = U ε F.  The latter is a Qed-sealed theorem, so those readings
-    stay hidden inside its proof term (compare the remark in
-    Comonad/Duality.v); the algebra laws of the comparison need them
-    definitionally, hence this transparent packaging, whose law fields are
-    proved below from the zig-zag identities and the naturality of the unit
-    and counit transposes. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section EilenbergMooreComparison.
 

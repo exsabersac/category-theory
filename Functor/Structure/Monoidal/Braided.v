@@ -13,35 +13,14 @@ Generalizable All Variables.
 
 (** * Braided and symmetric monoidal functors *)
 
-(* nLab: https://ncatlab.org/nlab/show/braided+monoidal+functor
+(*
    nLab: https://ncatlab.org/nlab/show/symmetric+monoidal+functor
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_functor
 
-   A monoidal functor F between braided monoidal categories C and D is
-   BRAIDED when its tensor comparison commutes with the two braidings: for
-   all x y, the square
+   本文件给出幺半相关结构。
 
-       F x ⨂ F y --- braid^D ---> F y ⨂ F x
-           |                          |
-         μ_{x,y}                    μ_{y,x}
-           ↓                          ↓
-       F (x ⨂ y) -- F braid^C --> F (y ⨂ x)
-
-   commutes.  Being braided is a PROPERTY of a (lax or strong) monoidal
-   functor, not extra structure: no new data is involved beyond the single
-   compatibility equation.  [BraidedLaxMonoidalFunctor] states it over the
-   lax tensor comparison [lax_ap]; [BraidedMonoidalFunctor] states it over
-   the strong comparison [ap_iso].  A braided monoidal functor between
-   SYMMETRIC monoidal categories is called a symmetric monoidal functor;
-   the condition is literally the same equation, so
-   [SymmetricMonoidalFunctor] below is a definition, not a new class.
-
-   The identity functor is braided monoidal, and braided monoidal functors
-   compose (paste the outer compatibility square with the image of the
-   inner one under the outer functor), so braided monoidal categories,
-   braided (strong) monoidal functors, and monoidal natural transformations
-   form a 2-category BrMonCat, with symmetric monoidal categories and
-   symmetric monoidal functors as a full sub-2-category. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section BraidedMonoidalFunctor.
 

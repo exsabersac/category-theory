@@ -13,14 +13,11 @@ Require Import Category.Structure.Monoidal.HypergraphFunctor.
 
 Generalizable All Variables.
 
-(** * Bridge from symmetric monoidal functors to hypergraph functors
+(*
+   本文件给出幺半相关结构。
 
-    This bridge lives in its own module — rather than in
-    Functor/Structure/Monoidal/Braided.v, where the
-    [BraidedMonoidalFunctor] / [SymmetricMonoidalFunctor] classes are
-    defined — so that importers of the functor classes do not drag in the
-    Frobenius/hypergraph chain (Monoid, Comonoid, Frobenius, SCFA,
-    Hypergraph, HypergraphFunctor). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Structure/Monoidal/HypergraphFunctor.v formalizes a deliberately weakened
    version of Fong–Spivak's hypergraph functors: raw comparison isomorphisms

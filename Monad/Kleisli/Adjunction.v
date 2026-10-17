@@ -9,34 +9,14 @@ Require Import Category.Instance.Sets.
 
 Generalizable All Variables.
 
-(** * The Kleisli free/forgetful adjunction
-
+(*
     nLab: https://ncatlab.org/nlab/show/Kleisli+category
     Wikipedia: https://en.wikipedia.org/wiki/Kleisli_category
 
-    Monad/Adjunction.v shows that every adjunction F ⊣ U induces a monad
-    U ◯ F on the domain of F.  This file provides the converse resolution
-    through the Kleisli category C_M of a monad M on C (Monad/Kleisli.v):
+   本文件给出伴随相关构造与性质。
 
-    - [Kleisli_Free] F_M : C ⟶ C_M is the identity on objects and sends
-      f : x ~> y to the pure Kleisli morphism ret ∘ f;
-    - [Kleisli_Forget] U_M : C_M ⟶ C sends x to M x, and a Kleisli
-      morphism f : x ~> M y to its extension join ∘ fmap[M] f (its bind);
-    - [Kleisli_Adjunction] F_M ⊣ U_M: because F_M x = x and U_M y = M y,
-      the two hom-setoids of the transposition are literally the same
-      setoid x ~> M y, and the adjunction isomorphism [Kleisli_adj_iso]
-      is the identity map in both directions.
-
-    The adjunction presents the monad we started with:
-    [Kleisli_Monad_agrees] identifies the composite U_M ◯ F_M with M (a
-    natural isomorphism whose components are identities),
-    [Kleisli_unit_agrees] identifies the adjunction unit with ret, and
-    [Kleisli_join_agrees] identifies the U_M-image of the counit — which
-    is exactly the multiplication of the monad that Monad/Adjunction.v
-    extracts from this adjunction — with join.
-
-    The other canonical resolution of a monad, through the Eilenberg–Moore
-    category of algebras, lives in Monad/Eilenberg/Moore/Adjunction.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section KleisliAdjunction.
 

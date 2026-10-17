@@ -17,42 +17,11 @@ Generalizable All Variables.
 
 (** * A worked example of the General Adjoint Functor Theorem *)
 
-(* This file exercises [GAFT_from_initials] (Adjunction/GAFT.v) end to end on a
-   concrete, non-degenerate adjunction: the binary diagonal / product adjunction
+(*
+   本文件给出例子。
 
-       Δ ⊣ (×)
-
-   on any cartesian category [C].  Feeding a genuine comma-category initial
-   object to the universal-arrow half of GAFT reproduces this known adjunction,
-   validating that the GAFT plumbing composes with the universal-arrow bridge of
-   [Theory/Universal/Arrow.v].
-
-   VARIANCE (donor-signature deviation, recorded honestly).  [GAFT_from_initials]
-   consumes [forall d, @Initial (=(d) ↓ U)] for a functor [U : C ⟶ D] and yields
-   a *left* adjoint [F ⊣ U].  For the diagonal / product pair, [Δ] is the *left*
-   adjoint and [(×)] the *right* adjoint (the general triangle is
-   [(+) ⊣ Δ ⊣ (×)]).  So the functor that must play the role of [U] — the one
-   fed to GAFT — is the product bifunctor
-
-       ×(C) : C ∏ C ⟶ C   (Functor/Product/Internal.v, [InternalProductFunctor]),
-
-   and the produced left adjoint [F : C ⟶ C ∏ C] is the diagonal.  The initial
-   object of the comma [=(d) ↓ ×(C)] is [((d, d), δ)] with the diagonal
-   [δ := id △ id : d ~> d × d] as its universal arrow (this is the classical
-   "a product is a universal arrow out of the diagonal", read for the binary
-   diagonal).  Taking [U := ×(C)] rather than the literal symbol [Δ] is forced by
-   the *direction* GAFT produces; feeding [Δ] itself to GAFT would instead
-   reconstruct the coproduct adjunction [(+) ⊣ Δ], a different, equally genuine
-   left adjoint; that adjunction is now in the tree, supplied directly rather
-   than through GAFT, as Adjunction/Diagonal/Coproduct.v's
-   [Diagonal_Coproduct_Adjunction], with sanity instantiations at [Coq] and
-   [Sets] at the end of that file -- reconstructing it through GAFT is not
-   undertaken in this file.  The conclusion delivered here is the full, honest
-   adjunction
-   [F ⊣ ×(C)] with no hypothesis weakened; the produced [F] is opaque (GAFT ends
-   in [Qed]) and only *provably* the diagonal, so this file also exhibits, as
-   [diagonal_product_via_gaft_is_diagonal], the natural isomorphism [F ≅ Δ] that
-   makes it genuinely [Δ ⊣ (×)] (uniqueness of left adjoints, [left_adjoint_iso]). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section GAFTExample.
 

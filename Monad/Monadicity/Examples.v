@@ -14,33 +14,14 @@ Require Import Category.Monad.Comparison.
 
 Generalizable All Variables.
 
-(** * Monadicity: sanity witnesses
-
+(*
     nLab:      https://ncatlab.org/nlab/show/monadic+adjunction
     Wikipedia: https://en.wikipedia.org/wiki/Beck%27s_monadicity_theorem
 
-    The smallest example of a monadic adjunction is the identity adjunction
-    Id ⊣ Id on any category C ([Adjunction_Id] of Adjunction/Compose.v,
-    which reuses [adj_id] of Instance/Adjoints.v).  Its induced monad is
-    the identity monad T = Id ◯ Id, whose unit and multiplication are both
-    identities, and its Eilenberg–Moore category C^T is equivalent to C
-    itself: the algebra unit law ν ∘ η ≈ id forces every structure map
-    ν : T a ~> a to be the identity ([identity_alg_id]), so an object of
-    C^T is an object of C carrying an essentially unique algebra, and any
-    C-arrow is a homomorphism between any two identity-monad algebras
-    ([identity_alg_hom_commutes]).
+   本文件给出例子。
 
-    Concretely, the Eilenberg–Moore comparison functor
-    K = [EM_Comparison Adjunction_Id] : C ⟶ C^T of Monad/Comparison.v is
-    an equivalence of categories ([identity_monadic]) with quasi-inverse
-    the forgetful functor [EM_Forget].  The unit cell Id[C] ≈ U^T ◯ K is
-    [EM_Comparison_Forget] read backwards (its components are identity
-    isomorphisms), and the counit cell K ◯ U^T ≈ Id[C^T] is assembled by
-    hand from isomorphisms whose underlying arrows are identities.  In
-    the vocabulary of Monad/Comparison.v this exhibits Id[C] as a monadic
-    functor ([Identity_Monadic]) — the basic sanity witness for the crude
-    monadicity theorem of Monad/Monadicity/Crude.v, checked here directly
-    rather than through that theorem's coequalizer machinery. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section IdentityMonadic.
 

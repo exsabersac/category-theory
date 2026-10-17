@@ -1,6 +1,6 @@
 (** * The finite-shape rows of the diagonal-adjoint table *)
 
-(* nLab:      https://ncatlab.org/nlab/show/equalizer
+(*
    nLab:      https://ncatlab.org/nlab/show/coequalizer
    nLab:      https://ncatlab.org/nlab/show/pullback
    nLab:      https://ncatlab.org/nlab/show/pushout
@@ -8,50 +8,10 @@
    Wikipedia: https://en.wikipedia.org/wiki/Equaliser_(mathematics)
    Wikipedia: https://en.wikipedia.org/wiki/Pullback_(category_theory)
 
-   Mac Lane, "Categories for the Working Mathematician", Springer GTM 5,
-   2nd ed., §IV.2 (p. 90) tabulates a long list of adjunctions together
-   with their units and counits, and Exercise 6 of that section asks for
-   the entries of four of its rows: the equalizer, the coequalizer, the
-   pullback and the pushout.  Each is an instance of the sandwich
-   colim ⊣ Δ ⊣ lim at a FIXED finite shape --
+   本文件给出有限情形。
 
-     - the walking parallel pair (Instance/Parallel.v's [Parallel]): a
-       limit over it is an equalizer, a colimit a coequalizer;
-     - the walking cospan ([Roof^op], Structure/Span.v's [Cospan]): a
-       limit over it is a pullback;
-     - the walking span ([Roof], [Span]): a colimit over it is a pushout
-
-   -- so the FUNCTORS come by instantiation.  The content of the exercise
-   is the other column of the table: what the unit and the counit ARE,
-   read as the elementary data those four words name.  Riehl, "Category
-   Theory in Context", Dover 2016, states the general form as Proposition
-   4.6.1 with Exercise 4.6.ii asking for exactly this identification (the
-   counit is the universal cone, the unit the universal cocone); Awodey,
-   "Category Theory", Oxford 2nd ed. 2010, runs the same argument for the
-   special shapes in §9.3, and treats the four elementary universal
-   properties themselves in §5.2 and §3.4.
-
-   Read the four rows in the two variances and the pattern is visible:
-
-     Δ[Parallel] ⊣ Eq      counit = the equalizing arrow (at ParX)
-                           unit   = an isomorphism (see below)
-     Coeq ⊣ Δ[Parallel]    unit   = the coequalizing arrow (at ParY)
-                           counit = an isomorphism
-     Δ[Roof^op] ⊣ Pb       counit = the two projections (at RNeg, RPos)
-                           unit   = an isomorphism
-     Po ⊣ Δ[Roof]          unit   = the two injections (at RNeg, RPos)
-                           counit = an isomorphism
-
-   THE "IDENTITY" ENTRIES ARE NOT IDENTITIES, AND THIS FILE DOES NOT
-   CLAIM THEY ARE.  For Δ ⊣ lim the unit at x is a morphism
-   x ~> lim(Δ[J](x)) -- an arrow between two DIFFERENT objects -- so
-   [dia_unit L x = id[x]] is not merely false but ill-typed, which is
-   measured below as a rejection of TYPING kind.  What is true, and is
-   what the table's entry means, is that the unit is INVERTIBLE, with the
-   limiting leg at a distinguished shape object as its inverse; that is
-   [dia_unit_iso], and dually [dia_counit_iso].  Both hold over any shape
-   satisfying the sufficient condition [ShapeLinked] introduced here, and
-   all three finite shapes satisfy it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* What is consumed here, and what is built
 

@@ -8,31 +8,14 @@ Generalizable All Variables.
 
 (** * Functors compatible with embedded constants *)
 
-(* nLab: https://ncatlab.org/nlab/show/monoidal+functor
+(*
    nLab: https://ncatlab.org/nlab/show/global+element
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_functor
 
-   Given a functor `F : C ⟶ D` and a shared type `T` of foreign constants
-   embedded into both `C` and `D` as families of global elements (see
-   Structure/Constant.v), this structure says that `F` carries the embedding
-   on the source over to the embedding on the target, up to comparison maps.
+   本文件给出函子相关定义或实例。
 
-   It is the global-element analogue of the *unit comparison map* of a (lax)
-   monoidal functor `ψ_I : I ~> F I`: with the terminal object `1` playing the
-   role of the monoidal unit, `unmap_one` is the comparison between the units,
-   and `map_const` compares the host objects of each constant. Because `1` is
-   terminal in `D`, the unit comparison is forced to run `F 1 ~> 1` (the unique
-   map into the terminal object), the reverse of the lax-monoidal direction.
-
-   Beware that the two `Terminal`/`Constant` instances in scope (`CT`,`H` on the
-   `C` side and `DT`,`H0` on the `D` side) make some textually-identical
-   notations resolve differently. In `unmap_one`, `F 1` is `F` of `C`'s
-   terminal object while the codomain `1` is `D`'s terminal object. In
-   `map_const`, the domain `constant_obj T x` is the `D`-side host object while
-   the `constant_obj T x` under `F` is the `C`-side host object. The coherence
-   law then states `fmap (constant x) ≈ map_const x ∘ constant x ∘ unmap_one`,
-   where the left `constant x` is the `C`-side global element and the right one
-   is the `D`-side global element. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ConstantFunctor.
 

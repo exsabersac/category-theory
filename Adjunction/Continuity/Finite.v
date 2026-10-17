@@ -22,46 +22,11 @@ Generalizable All Variables.
 
 (** * Adjoints preserve the terminal object and binary products, packaged *)
 
-(* Awodey §9.6 (awodey:9.6:remark-adjoint-existence-tests): the corollaries
-   of RAPL/LAPC that make limit preservation a usable test for the
-   non-existence of adjoints, stated in the vocabulary of
-   Functor/Structure/Terminal.v and Functor/Structure/Cartesian.v so that
-   a refutation is a short contradiction rather than a walk through the
-   general cone machinery.  Built for #432 (Instance/Sets/NoAdjoint.v, the
-   first consumer, Mac Lane §V.5 Exercise 1).
+(*
+   本文件给出有限情形。
 
-   Each constant is a two-line composition: Adjunction/Continuity.v's
-   [right_adjoint_PreservesLimitCone] at the empty or the two-object
-   discrete diagram, read through Structure/Limit/Comparison.v's bridges
-   [terminal_functor_iff_preserves_terminal] and
-   [cartesian_functor_iff_preserves_binary_products]; the two
-   left-adjoint forms are the same two lines for [Opposite_Adjunction F U
-   A], in which [F^op] is the right adjoint.  Nothing is re-proved.
-
-   PLACEMENT.  Comparison.v already requires Continuity.v, so these cannot
-   live in Continuity.v without a cycle; Comparison.v owns the bridges but
-   not the adjunction vocabulary.  A satellite of Continuity.v keeps both
-   donors unedited.  Closure 39 files excluding self, Comparison.v 12 at
-   the margin, Structure/Cocartesian.v 1, the other seventeen [Require]s 0
-   (an earlier revision dropped the 1).
-
-   UNIVERSES.  Each of the four carries [u0 = u2], the hom levels of the
-   two categories identified — [Adjunction]'s own equation ([h1 = h2] in
-   [Build_Adjunction']'s block; [right_adjoint_PreservesLimitCone] carries
-   it already), not this file's; no [Set]; the stdlib caps [EqdepFacts],
-   [JMeq], [eq_ind], [eq_ind_r], [eq_rect_r] and [Logic_lemmas.equality]
-   are [DiscreteCat_Functor']'s (Comparison.v).  Four [.glob] heads,
-   all "Closed under the global context"; no [Qed], no [Defined] — [:=]
-   terms.
-
-   NOTATION TRAP.  [InitialFunctor F] and [CocartesianFunctor F] are
-   NOTATIONS (Functor/Structure/Terminal.v, Functor/Structure/
-   Cartesian.v) and do not parse in a definition's return type; the
-   two left-adjoint forms spell them out as [@TerminalFunctor (D^op) (C^op)
-   (F^op) _ _] and [@CartesianFunctor (D^op) (C^op) (F^op) _ _]; [About]
-   prints the first back as [InitialFunctor F] and the second as the
-   qualified [Cartesian.CartesianFunctor] (an earlier revision said both
-   print under the notations). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section AdjointPreservation.
 

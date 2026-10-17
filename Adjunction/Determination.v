@@ -10,94 +10,17 @@ Require Import Category.Theory.Universal.Arrow.Dual.
 
 Generalizable All Variables.
 
-(** * Determination of an adjunction by its counit and by couniversal
-      arrows
-
+(*
     nLab:      https://ncatlab.org/nlab/show/adjoint+functor
     nLab:      https://ncatlab.org/nlab/show/universal+morphism
     Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
-
     Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-          GTM 5, Springer 1998, §IV.1 Theorem 2 -- maclane:IV.1:thm2.
     Book: Awodey, "Category Theory", 2nd ed., §9.2 Corollary 9.5,
-          printed pp. 222-223 -- awodey:9.2:cor5.
 
-    WHAT WAS ALREADY THERE, AND THE ISSUE'S OWN ACCOUNT OF IT IS STALE.
-    #347's "Current state" says a whole-tree search for couniversal
-    arrows "returns nothing" and that Theory/Universal/Arrow.v "has no
-    dual".  Both are false: Theory/Universal/Arrow/Dual.v supplies
-    [CouniversalArrow], [coarrow],
-    [ump_couniversal_arrows],
-    [RightAdjointFunctorFromCouniversalArrows] and
-    [AdjunctionFromCouniversalArrows].  Every one of those is
-    CONSUMED here and none re-derived, which is what that issue's own QA
-    correction directs.
+   本文件给出伴随相关构造与性质。
 
-    THE DISTINCTION THAT DEFINES THIS FILE IS A DIRECTION, AND IT IS EASY
-    TO MISS.  Dual.v already carries a lemma named
-    [counit_couniversal].  It takes a couniversal family as DATA and
-    describes the adjunction that file BUILDS -- every adjunction named
-    there is [AdjunctionFromCouniversalArrows] of that family -- so it
-    never starts from an arbitrary adjunction.  What was open, and is
-    delivered here, is the CONVERSE: from an ARBITRARY [F ⊣ U],
-    [adj_counit_couniversal] exhibits each counit component as a
-    [CouniversalArrow] PACKAGED AS THE CLASS, which is the bar the issue
-    sets ("not merely that the equational form [adj_univ_impl] holds").
-    Neither Theory/Universal/Arrow.v nor its dual contains any passage
-    from an adjunction to a (co)universal arrow.
-
-    STRENGTHS, MEASURED STRICT-FIRST -- AND ONLY ONE OF THEM
-    DISCRIMINATES.  The arrow readback [coarrow (adj_counit_couniversal
-    c) = counit] is [eq_refl], where the donor's [counit_couniversal]
-    reaches only [≈]; building the couniversal arrow FROM the counit
-    makes the counit definitionally its arrow, whereas recovering the
-    counit from a given family leaves an [fmap[F] id] residue.  **The
-    OBJECT readback is NOT evidence of that**: it is [eq_refl] on both
-    sides (Dual.v's [right_adjoint_obj] is [reflexivity]) and also on
-    this file's own other direction ([couniversal_of_counit_obj]), so it
-    is parity, not superiority.  Only the arrow half separates them.
-
-    The [eq_refl] object readbacks are nonetheless load-bearing rather
-    than decorative: [couniversal_of_counit_med] and
-    [adjunction_of_counit_unit] only TYPECHECK because the object
-    readback is definitional.
-
-    THE ONE [≈]-ONLY STEP IS THE MEDIATOR, and the honest statement of
-    its cause is narrower than "donor opacity" alone.  What the contrast
-    below establishes is that the failure is not a property of the
-    couniversal arrow in general: [coarrow] and [coarrow_obj] of the SAME
-    arrow do reduce.  That does NOT by itself isolate the [Qed] on
-    [ump_universal_arrows] (Theory/Universal/Arrow.v), since those
-    two never route through [ump_*] at all and so would reduce under any
-    competing hypothesis.  An isolating experiment -- the same statement
-    against a transparent clone of that donor -- was run during review
-    and DOES confirm the attribution, and it further shows the [≈] could
-    be strengthened by making the donor transparent; that experiment is
-    NOT shipped here, and changing Theory/Universal/Arrow.v is out of
-    scope for this issue.
-
-    WHAT THE UNIT SIDE DOES AND DOES NOT DELIVER.  [UnitPresentation]
-    gives Mac Lane's FIRST presentation its own record -- a left adjoint,
-    a right adjoint, and a unit whose every component is universal --
-    with passages BOTH ways ([unit_presentation_of_adjunction],
-    [adjunction_of_unit_presentation]).  That is a DICTIONARY, not a
-    separation in this tree's usual sense: nothing here proves the two
-    presentations differ.  And unlike the counit side, **no round trip is
-    proved**: there is no statement that
-    [adjunction_of_unit_presentation (unit_presentation_of_adjunction A)]
-    agrees with [A], nor any relating the recovered [up_unit] to
-    [unit A].  [unit_presentation_transpose] and its untransposed sibling
-    are [eq_refl] BY CONSTRUCTION -- [adjunction_of_unit_presentation]
-    defines its transposes as exactly those terms -- so they pin a
-    definition rather than recovering anything, and neither passes
-    through [unit_presentation_of_adjunction].
-
-    NOT DELIVERED: the unit-side round trip just described; no dual of
-    the [UnitPresentation] packaging (a counit presentation as its own
-    record); no naturality of the couniversal family in [c]; no
-    comparison with Theory/Universal/Element.v's universal-element
-    route; and no change to the transparency of
-    [ump_universal_arrows]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 
 Section CounitCouniversal.

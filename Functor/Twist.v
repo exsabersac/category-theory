@@ -8,60 +8,13 @@ Generalizable All Variables.
 
 (** * Twisting a functor by a family of isomorphisms *)
 
-(* nLab: https://ncatlab.org/nlab/show/functor
+(*
    nLab: https://ncatlab.org/nlab/show/natural+isomorphism
 
-   Given a functor [F : C ⟶ C] and a family of isomorphisms
-   [α x : x ≅ F x] -- one for each object, with NO naturality assumed --
-   the assignment
+   本文件给出函子相关定义或实例。
 
-       x ↦ x,      f ↦ (α y)⁻¹ ∘ fmap[F] f ∘ α x
-
-   is again an endofunctor of C, [Twist F α].  Functoriality needs nothing
-   from α beyond invertibility: the identity law is [fmap_id] followed by
-   [iso_from_to], and the composition law is [fmap_comp] with the inner
-   [α y ∘ (α y)⁻¹] cancelled by [iso_to_from].
-
-   The point of the construction is that its OBJECT FUNCTION IS THE
-   IDENTITY, [fun x => x], on the nose, while its arrow function need not
-   be the identity.  It is therefore the standard machine for producing
-   two functors that agree on objects and differ on morphisms -- the
-   question Mac Lane raises in "Categories for the Working Mathematician",
-   2nd ed. (GTM 5), Section I.3 ("Functors"), where the reader is asked to
-   find two different functors [Grp ⟶ Grp] whose object function is the
-   identity, so that a functor is seen not to be determined by its action
-   on objects.
-
-   WHEN THE TWIST COLLAPSES.  [Twist_natural_strict_id] proves that if α
-   IS natural -- [α y ∘ f ≈ fmap[F] f ∘ α x] for every f -- then
-   [Twist F α] is strictly equal to [Id], because naturality lets the two
-   copies of α annihilate across f.  [Twist_strict_id_natural] is the
-   converse under uniqueness of identity proofs on the objects of C, so
-   for a category whose objects have decidable equality the twist differs
-   from the identity EXACTLY when α is not natural.  That is what makes
-   Mac Lane's exercise awkward in a proof assistant: every natural family
-   produces nothing new, and the families one can write uniformly in the
-   object tend to be natural.  Instance/Grp/TwoFunctors.v works two such
-   candidates out in full, and both do collapse.
-
-   STRICT VERSUS WEAK EQUALITY OF FUNCTORS.  The library has two
-   equivalences on [C ⟶ D].  [Functor_Setoid] (Theory/Functor.v),
-   which is the hom-setoid of [Cat] (Instance/Cat.v), identifies two
-   functors as soon as they are naturally isomorphic.
-   [Functor_StrictEq_Setoid] (Theory/Functor.v), the hom-setoid of
-   [StrictCat] (Instance/StrictCat.v), asks instead for a propositional
-   equality of the object maps together with agreement of the arrow maps
-   after transport along it; it refines the weak one
-   ([strict_equiv_implies_fun_equiv], Instance/StrictCat/ToCat.v, and
-   Test/Issue138.v pins both hom-setoids).
-
-   The twist sits exactly on that seam.  [Twist_Id_weak_equiv] shows that
-   for F = Id the twisted functor is ALWAYS identified with [Id] by the
-   weak setoid -- α itself is the witnessing natural isomorphism, and its
-   coherence condition holds by construction rather than by an argument.
-   So a separation of [Twist Id α] from [Id] can only be a separation in
-   the strict setoid, and that is the sense in which Mac Lane's exercise
-   has to be read here. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Twist.
 

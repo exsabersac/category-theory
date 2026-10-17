@@ -12,24 +12,13 @@ Generalizable All Variables.
 
 (** The applicative [pure] from a strong lax monoidal functor. *)
 
-(* nLab: https://ncatlab.org/nlab/show/applicative+functor
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Applicative_functor
 
-   For a strong lax monoidal endofunctor F on a monoidal category, the unit
-   comparison lax_pure : I ~> F I and the tensorial strength combine into the
-   point operation pure : A ~> F A.  This is the categorical source of the
-   Haskell [Applicative] method pure : a -> F a (McBride and Paterson,
-   "Applicative programming with effects", JFP 18(1), 2008).
+   本文件给出幺半相关结构。
 
-   Following nLab, pure[A] is the composite (read right to left, with ρ the
-   right unitor unit_right, ε = lax_pure the unit comparison and st = strength)
-
-       A  --ρ⁻¹-->  A ⨂ I  --id ⨂ ε-->  A ⨂ F I
-          --st-->  F (A ⨂ I)  --F ρ-->  F A,
-
-   i.e. pure ≈ fmap unit_right ∘ strength ∘ (id ⨂ lax_pure) ∘ unit_right⁻¹.
-   The right unitor is used here, matching the nLab presentation; the left
-   unitor would give the mirror-image construction. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Pure.
 

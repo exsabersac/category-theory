@@ -10,32 +10,14 @@ Generalizable All Variables.
 
 (** The internal-hom functor [-,-] : C^op ∏ C ⟶ C. *)
 
-(* nLab: https://ncatlab.org/nlab/show/internal+hom
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Cartesian_closed_category
    Wikipedia: https://en.wikipedia.org/wiki/Exponential_object
 
-   In a closed (here cartesian-closed) category C the hom is internalized:
-   instead of the Set-valued external hom Hom(-,-) : C^op ∏ C ⟶ Sets, the
-   exponential object provides an object [a, b] = b ^ a of C itself, so the
-   internal hom is a bifunctor
+   本文件给出 hom 形式的伴随/同态。
 
-       [-,-] : C^op ∏ C ⟶ C,   [a, b] := exponent_obj a b = b ^ a.
-
-   It is contravariant in its first argument and covariant in its second:
-   given (f, g) : (a, b) ~> (a', b') in C^op ∏ C — that is, f : a' ~{C}~> a
-   (an arrow a ~{C^op}~> a') and g : b ~{C}~> b' — the action is
-
-       [f, g] := curry (g ∘ eval ∘ second f) : b ^ a ~> b' ^ a',
-
-   which pre-composes by f in the exponent and post-composes by g in the base.
-   (Here [op f] only re-reads the C^op arrow f as the underlying C-morphism
-   a' ~{C}~> a; the hom-sets are definitionally equal.)
-
-   The exponential b ^ a is right adjoint to (- × a) — the tensor-hom (here
-   product-hom) adjunction Hom(x × a, b) ≅ Hom(x, b ^ a) of [Closed] — and
-   [eval : b ^ a × a ~> b] is its counit. So this functor is the internal
-   counterpart of Functor/Hom.v, with the cartesian product playing the role
-   of the monoidal tensor. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Program Definition InternalHomFunctor `(C : Category)
         {E : @Cartesian C} {O : @Closed C _} : C^op ∏ C ⟶ C := {|

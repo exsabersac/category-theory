@@ -9,36 +9,13 @@ Generalizable All Variables.
 
 (** Cartesian (product-preserving) functors. *)
 
-(* nLab: https://ncatlab.org/nlab/show/product-preserving+functor
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Limit_(category_theory)
 
-   A cartesian functor F : C ⟶ D between cartesian categories preserves
-   finite (here binary) products. Concretely, for every pair of objects the
-   canonical comparison map
+   本文件给出笛卡尔结构。
 
-       φ : F (x × y) ~> F x × F y,     φ = ⟨fmap exl, fmap exr⟩,
-
-   built from the universal property of F x × F y applied to the images of
-   the projections, is required to be an isomorphism. This is recorded as the
-   field [fobj_prod_iso : F (x × y) ≅ F x × F y]; its forward direction [to]
-   is φ ([prod_out]) and its inverse [from] is φ⁻¹ ([prod_in]). A functor
-   preserves the product exactly when this comparison is invertible, so a
-   cartesian functor is the same data as a strong monoidal functor for the
-   cartesian monoidal structures (tensor = ×, unit = the terminal object).
-
-   The remaining fields fix the comparison and pin down [fmap] on the
-   universal operations. [fmap_exl] and [fmap_exr] state that φ ([prod_out])
-   is indeed ⟨fmap exl, fmap exr⟩, since exl ∘ φ ≈ fmap exl and
-   exr ∘ φ ≈ fmap exr. [fmap_fork] states the dual coherence that F carries
-   pairing to pairing up to the comparison, fmap ⟨f, g⟩ ≈ φ⁻¹ ∘ ⟨fmap f, fmap
-   g⟩, equivalently φ ∘ fmap ⟨f, g⟩ ≈ ⟨fmap f, fmap g⟩.
-
-   This class axiomatizes only the binary-product comparison. Preservation of
-   the nullary product, i.e. of the terminal object F 1 ≅ 1 (the empty
-   product), is the separate concern [TerminalFunctor]; the two together give
-   the full strong monoidal (cartesian) functor. The dual notion, a functor
-   preserving binary coproducts, is named [CocartesianFunctor] below via the
-   opposite functor F^op, following the library's built-in duality. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section CartesianFunctor.
 

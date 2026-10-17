@@ -21,46 +21,13 @@ Generalizable All Variables.
 
 (** Traversable functors (the law-bearing, categorical version) *)
 
-(* nLab: https://ncatlab.org/nlab/show/distributive+law
+(*
    nLab: https://ncatlab.org/nlab/show/applicative+functor
 
-   No dedicated nLab or Wikipedia page exists for "traversable functor": the
-   nLab pages above are the closest (a traversable functor is precisely a
-   functor carrying a coherent distributive law over every applicative
-   functor), and the Haskell-level account lives on the HaskellWiki rather
-   than in the Wikipedia main namespace
-   (https://wiki.haskell.org/Foldable_and_Traversable).  The defining laws
-   below are those of Jaskelioff and Rypacek, "An Investigation of the Laws of
-   Traversals", MSFP 2012 (https://arxiv.org/abs/1202.2919).
+   本文件给出 Traversable 相关结构。
 
-   Following McBride-Paterson, a traversable functor is an endofunctor
-   [F : C ⟶ C] equipped with a distributive law
-
-     sequence : F ◯ G ⟹ G ◯ F     (the traversal, Haskell's [sequenceA])
-
-   natural in the applicative functor [G] (a lax monoidal endofunctor with
-   tensorial strength), subject to three coherence laws.  Writing the
-   component at [X] as [δ_G X : F (G X) ~> G (F X)], and taking [N : G ⟹ H] an
-   applicative transformation (the morphisms of the monoidal category of
-   applicative functors), the laws are:
-
-     naturality in G   transform[N] (F X) ∘ δ_G X
-                         ≈ δ_H X ∘ fmap[F] (transform[N] X)
-                       (sequence commutes with applicative transformations);
-     identity          δ_Id X ≈ id
-                       (traversing in the identity applicative is a no-op, so
-                       no element is skipped);
-     composition       δ_(G ◯ H) X ≈ fmap[G] (δ_H X) ∘ δ_G X
-                       (traversals in [G] then [H] fuse into one traversal in
-                       the composite applicative [G ◯ H], so no element is
-                       visited twice).
-
-   These are precisely the coherence axioms making [Traversable] functors form
-   a monoidal category under composition.  By the Bird-Gibbons /
-   Jaskelioff-O'Connor representation theorem the lawful traversable functors
-   on Set are exactly the finitary containers.  This is the law-bearing
-   counterpart of the lawless Coq/Haskell-style class in
-   [Category.Theory.Coq.Traversable]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Traversable.
 

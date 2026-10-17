@@ -16,48 +16,14 @@ Require Import Category.Structure.Limit.Preservation.
 
 Generalizable All Variables.
 
-(** * Beck objects: split forks, conservativity, created coequalizers
-
+(*
     nLab:      https://ncatlab.org/nlab/show/monadicity+theorem
     Wikipedia: https://en.wikipedia.org/wiki/Beck%27s_monadicity_theorem
 
-    Fix a monad (T, η, μ) = (T, ret, join) on a category D, with
-    Eilenberg–Moore category D^T (Monad/Eilenberg/Moore.v) and forgetful
-    functor U^T = [EM_Forget] (Monad/Eilenberg/Moore/Adjunction.v).  This
-    file assembles the three Eilenberg–Moore ingredients that drive
-    Beck's monadicity theorem; the theorem itself consumes them through
-    the comparison functor.
+   本文件给出单子相关定义或实例。
 
-    1. [canonical_split]: every T-algebra (a, α) is presented by free
-       data — the parallel pair μ_a, T α : T (T a) ⇉ T a is coequalized
-       by α itself, and the coequalizer is split by the sections η_a and
-       η_{T a}.  The order of the pair matters: law 3 of a split
-       coequalizer asks the *first* leg to retract the section η_{T a},
-       which is the monad unit law μ ∘ η_{T a} ≈ id, so μ_a comes first;
-       the second leg T α composes with η_{T a} to η_a ∘ α by naturality
-       of η, which is exactly law 4.  [canonical_reflexive] records that
-       the same pair is also reflexive, with common section T η_a.
-
-    2. [em_forget_reflects_isos]: U^T is conservative.  An algebra
-       homomorphism whose underlying arrow is invertible is itself
-       invertible: the inverse arrow is again an algebra homomorphism,
-       obtained by conjugating the commuting square with the inverse on
-       both sides.
-
-    3. [em_forget_creates_split]: U^T creates coequalizers of U^T-split
-       pairs.  Given f, g : (a, α) ⇉ (b, β) in D^T whose underlying pair
-       has a split coequalizer e : b ~> q in D, the object q carries a
-       unique T-algebra action γ making e an algebra homomorphism, and
-       that homomorphism coequalizes f, g in D^T.  The action γ is the
-       descent of e ∘ β through T e — legitimate because split
-       coequalizers are absolute (Structure/Coequalizer/Split.v), so T
-       and T ∘ T both preserve the given split fork — and its algebra
-       laws follow by cancelling the split epimorphisms T e and T (T e).
-       The whole package is the record [CreatedSplitCoequalizer].  The
-       predicate the word "absolute" names is Structure/Coequalizer/
-       Absolute.v's [AbsoluteCoequalizer] (#477); the proof here uses the
-       stronger [functor_preserves_split], whose image fork is again
-       split. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section BeckObjects.
 

@@ -14,38 +14,14 @@ Generalizable All Variables.
 
 (** The pointwise product of traversable functors is traversable *)
 
-(* nLab:      https://ncatlab.org/nlab/show/distributive+law
-   HaskellWiki: https://wiki.haskell.org/Foldable_and_Traversable
+(*
    Reference: Jaskelioff and Rypacek, "An Investigation of the Laws of
-              Traversals", MSFP 2012 (https://arxiv.org/abs/1202.2919)
-
    Wikipedia: none-exists - there is no Wikipedia page for "traversable
-   functor"; the closest published accounts are the HaskellWiki article and
-   the arXiv reference above (see also Category.Functor.Traversable).
 
-   Here [F :*: G] is the pointwise tensor product of two endofunctors, from
-   Category.Functor.Product: [(F :*: G) x = F x ⨂ G x], where [⨂] is the
-   monoidal tensor.  The monoidal structure in scope is [CC_Monoidal], the
-   cartesian (internal-product) structure [⨂ = ×, I = 1] of the closed
-   monoidal category [C].
+   本文件给出积（分量）构造。
 
-   Lawful traversable endofunctors on [C] form a monoidal category under
-   composition, with the identity functor as unit; this file records that the
-   pointwise product also carries a traversal.  Given traversals [δ_F : F ◯ H
-   ⟹ H ◯ F] and [δ_G : G ◯ H ⟹ H ◯ G], the composite traversal on [F :*: G]
-   pairs the two component sequences and merges them through the applicative's
-   tensor comparison [lax_ap[H] : H a ⨂ H b ~> H (a ⨂ b)]:
-
-     δ_(F :*: G) X
-       := lax_ap[H] ∘ bimap (transform[δ_F] X) (transform[δ_G] X)
-                                : H (F X) ⨂ H (G X) ~> H (F X ⨂ G X).
-
-   The naturality of this transformation is discharged below from the
-   naturality of [ap_functor_nat] and of the two component sequences, axiom
-   free.  The three Traversable coherence laws (naturality in the applicative,
-   identity, and composition) are inherited from the components; assembling
-   them into the full [Traversable (F :*: G)] instance remains in progress and
-   is kept as commented scaffolding after the lemma below. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section ProductTraversable.
 

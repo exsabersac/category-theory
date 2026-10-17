@@ -17,57 +17,14 @@ Generalizable All Variables.
 
 (** * Costrong comonads *)
 
-(* nLab:      https://ncatlab.org/nlab/show/strong+monad
+(*
    nLab:      https://ncatlab.org/nlab/show/tensorial+strength
    Wikipedia: https://en.wikipedia.org/wiki/Strong_monad
 
-   A costrong comonad on a monoidal category (C, ⨂, I) is a comonad
-   (W, ε = extract, δ = duplicate) whose endofunctor carries a tensorial
-   costrength: a family
+   本文件给出（余）强度/强（余）单子相关结构。
 
-     costrength : W (x ⨂ y) ~> x ⨂ W y
-
-   natural in both variables and coherent with the left unitor λ and the
-   associator α ([costrength_id_left], [costrength_assoc], both arriving in
-   their inverse orientations, as dualization inverts the structural
-   isomorphisms), and compatible with the comonad structure:
-
-     - ε-compat ([costrength_extract]):
-         (id ⨂ ε) ∘ costrength ≈ ε            at  W (x ⨂ y) ~> x ⨂ y
-     - δ-compat ([costrength_duplicate]):
-         (id ⨂ δ) ∘ costrength ≈ costrength ∘ W costrength ∘ δ
-                                                at  W (x ⨂ y) ~> x ⨂ W (W y)
-
-   The notion is the formal dual of a (left) strong monad: a costrength for
-   W over (C, ⨂) is exactly a strength for W^op over (C^op, ⨂^op).  Duality
-   is built into this library so that (C^op)^op = C and (W^op)^op = W hold
-   by reflexivity, and Construction/Opposite/Monoidal.v transports monoidal
-   structure to the opposite category, so [CostrongComonad] is DEFINED as
-   the in-tree [StrongMonad] (Monad/Strong.v) instantiated at
-   (C^op, Monoidal_op M) on W^op — no second axiomatization.  The covariant
-   accessors and laws below are definitional op-reads of the [StrongMonad]
-   fields, in the style of Comonad/Core.v, and [Build_CostrongComonad]
-   assembles the bundled structure back out of covariant data, so the
-   unfolding runs in both directions.
-
-   Following the [Monoidal_op] precedent, [CostrongComonad] and all the
-   transfers in this file are Definitions, not Instances: registering them
-   would let instance resolution silently equip a category with a
-   (co)strength, which is rarely what an unannotated goal means.  Callers
-   select them explicitly.
-
-   Double-op caveat (see Construction/Opposite/Monoidal.v): although the
-   underlying category and functor round-trip on the nose, the transported
-   monoidal structure does not — [Monoidal_op (Monoidal_op M)] is not
-   definitionally M, because the transport rebuilds the functor-law and
-   coherence fields as fresh Qed-opaque proof terms.  A strong monad on
-   (C, M) and a costrong comonad on (C^op, Monoidal_op M) are therefore
-   interchanged by rebuilding the record field by field (every data and law
-   component IS convertible across the two monoidal structures), and the
-   resulting round trips are stated up to ≈ on the structure maps rather
-   than as record equalities: see [StrongMonad_to_op_CostrongComonad],
-   [op_CostrongComonad_to_StrongMonad] and the round-trip lemmas at the end
-   of this file. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* Why costrength matters
 

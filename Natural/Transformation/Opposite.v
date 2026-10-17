@@ -9,20 +9,13 @@ Generalizable All Variables.
 
 (** * The opposite (dual) of a natural transformation. *)
 
-(* nLab: https://ncatlab.org/nlab/show/opposite+functor
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Opposite_category
 
-   Oppositization is covariant on functors but reverses 2-cells: a natural
-   transformation `N : F ⟹ G` between `F G : C ⟶ D` yields the opposite
-   transformation `N^op : G^op ⟹ F^op` (note the swap of source and target).
-   The component of `N^op` at `x` is `N x` itself, only reread through the
-   duality: `N x : F x ~> G x` in `D` is the same morphism as `G^op x ~> F^op x`
-   in `D^op`. Accordingly the naturality square of `N^op` is just the naturality
-   square of `N` with its two orientations swapped, so the `naturality` field of
-   `N^op` is `N`'s `naturality_sym` (and vice versa) with object indices
-   transposed — no rewriting is needed, matching the built-in duality of
-   [Transform]. This makes op the 2-functor `Cat^co ⟶ Cat`: a natural
-   transformation `F^op ⟹ G^op` corresponds to one `G ⟹ F`, not `F ⟹ G`. *)
+   本文件给出反范畴、反函子或反自然变换（2-胞方向反转）。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition Opposite_Transform `{F : C ⟶ D} {G : C ⟶ D} `(N : F ⟹ G) :
   G^op ⟹ F^op :=

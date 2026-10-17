@@ -10,24 +10,13 @@ Generalizable All Variables.
 
 (** The diagonal functor Δ : C ⟶ [J, C] (and the binary Δ : C ⟶ C ∏ C). *)
 
-(* nLab: https://ncatlab.org/nlab/show/diagonal+functor
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Diagonal_functor
 
-   For a fixed index category J, the diagonal functor Δ[J] : C ⟶ [J, C] sends
-   each object c : C to the constant functor Δ[J](c) : J ⟶ C, which takes every
-   object of J to c and every morphism of J to id[c]; and it sends each
-   morphism f : c ~> c' to the natural transformation Δ[J](c) ⟹ Δ[J](c') whose
-   component at every j : J is f itself (naturality is f ∘ id ≈ id ∘ f). When J
-   is the discrete two-object category this recovers the binary diagonal
-   Δ : C ⟶ C ∏ C with c ↦ (c, c); Diagonal_Product_Two below witnesses that
-   agreement.
+   本文件给出函子相关定义或实例。
 
-   The diagonal is the universal source of cones: a cone over a diagram
-   F : J ⟶ C with apex c is exactly a natural transformation Δ[J](c) ⟹ F. When
-   the relevant universal cones exist, Δ is sandwiched by the limit and colimit
-   functors as colim ⊣ Δ ⊣ lim (C is J-cocomplete iff Δ has a left adjoint and
-   J-complete iff Δ has a right adjoint); for the binary case this is the
-   familiar (-) + (-) ⊣ Δ ⊣ (-) × (-). *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 #[export]
 Program Instance Diagonal {C : Category} (J : Category) : C ⟶ [J, C] := {

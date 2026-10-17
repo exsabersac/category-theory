@@ -22,96 +22,16 @@ Set Primitive Projections.
 Set Universe Polymorphism.
 Set Transparent Obligations.
 
-(** * Thunkable Kleisli morphisms: Führmann's hierarchy over a strong monad
-
+(*
     nLab: https://ncatlab.org/nlab/show/premonoidal+category
     nLab: https://ncatlab.org/nlab/show/strong+monad
     Reference: Führmann, "Direct models of the computational
-               lambda-calculus", MFPS XV, ENTCS 20, 1999
     Reference: Cho & Jacobs, "Disintegration and Bayesian inversion via
-               string diagrams", MSCS 29(7):938-971, 2019 (arXiv:1709.00322)
 
-    A Kleisli morphism f : x ~> M y of a strong monad M is THUNKABLE
-    (Führmann) when freezing its result into a returned computation is the
-    same as returning the frozen computation:
+   本文件给出单子相关定义或实例。
 
-        fmap[M] ret[M] ∘ f ≈ ret[M] ∘ f        (at x ~> M (M y))
-
-    Operationally: running f and then wrapping the value is the same as
-    wrapping the entire computation f unrun — f can be turned into a thunk
-    without changing its meaning, so f carries no observable effect
-    ordering of its own.  This file develops Führmann's hierarchy over the
-    library's actual Kleisli premonoidal structure
-    (Monad/Kleisli/Premonoidal.v), in three tiers:
-
-    1. Over a bare strong monad on a symmetric monoidal base, the
-       unconditional part of the hierarchy:
-
-           pure  ⇒  thunkable  ⇒  central
-
-       [pure_thunkable] is a two-line naturality computation, and
-       [thunkable_central] runs both centrality squares of
-       [kleisli_central_iff] through Führmann's reassociation lemmas
-       ([dstr_reassoc_left] / [dstr_reassoc_left'] and their mirrors,
-       Monad/Strong/Symmetric.v): rebracketing a double strength through
-       an extra M-layer computes [dstr] when the layer is fmap ret and
-       [dstr'] when it is a bare ret, and thunkability equates the two
-       layers.  Thunkable morphisms contain the identities
-       ([thunkable_id]) and are closed under Kleisli composition
-       ([thunkable_comp]) and under postcomposition with pure maps
-       ([thunkable_fmap_post]), so they form a wide subcategory [Thunk]
-       of Kl(M) through Construction/Subcategory.v — sitting inside the
-       centre Z(Kl(M)) (the [CentralSub] of Structure/Binoidal/Central.v
-       at [Kleisli_Binoidal]) by [thunkable_central].
-
-    2. Over a copy-discard base, the bridge into categorical probability:
-       a thunkable morphism is copyable and discardable — the two
-       Cho-Jacobs squares stated against the double strength — PROVIDED
-       the base copy and discard are natural ([copy_nat], [discard_nat]).
-       The engine is the slide lemma [thunkable_slide]: any G that is an
-       algebra-map-on-returns (G ∘ ret ≈ ret ∘ g) slides across a
-       thunkable f as the pure map g.  The two naturality hypotheses are
-       genuinely needed and genuinely available: they hold automatically
-       in cartesian bases ([CD_of_Cartesian] in
-       Structure/Monoidal/CopyDiscard/Proofs.v, where copy is the natural
-       diagonal), and the discard half holds in any Markov category
-       ([discard_natural] in Structure/Monoidal/Markov.v).  They are NOT
-       derivable in a bare [CopyDiscard] base: taking M := Id makes every
-       morphism thunkable, so an unconditional implication would force
-       every morphism of every copy-discard category to be a comonoid
-       homomorphism — exactly the naturality that [CopyDiscard]
-       deliberately never asks for (its negative space is what carves out
-       the deterministic morphisms in the first place).
-
-    3. Over a commutative strong monad on a copy-discard base, the honest
-       form of the thunkable-determinism statement:
-       [thunkable_deterministic] lands every thunkable Kleisli morphism in
-       the Cho-Jacobs deterministic class of the descended copy-discard
-       structure [Kleisli_CopyDiscard] (Monad/Kleisli/Commutative.v) —
-       i.e. inside the wide subcategory [Det] of Kl(M) — and
-       [pure_deterministic] transports base-deterministic morphisms along
-       the pure functor.  The bridging lemmas [kl_copyable_eq] and
-       [kl_discardable_eq] identify the two comonoid-homomorphism squares
-       of Kl(M) with [copyable] and [discardable] on the nose.
-
-    Strictness of the hierarchy (recorded as prose, not formalized):
-    both inclusions of the thunkable class — inside the centre (tier 1)
-    and inside the deterministic class (tier 3) — are strict in general.
-    Central but not thunkable: for the writer monad M x = x × W over a
-    nontrivial commutative monoid W (in Sets), M is commutative, so
-    EVERY Kleisli morphism is central ([kleisli_all_central],
-    Monad/Kleisli/Commutative.v), yet the map x ↦ (x, w) with w ≠ e is
-    not thunkable, because thunkability forces the written w to equal e;
-    Führmann (1999) draws the same separation for continuation monads.
-    Deterministic but not thunkable: for the read-only state monad
-    M x = x × x (reader along a two-element environment, in Sets), every
-    Kleisli morphism is copyable and discardable, but only the morphisms
-    that ignore the read value are thunkable (Moss & Perrone,
-    "Probability monads with submonads of deterministic states",
-    LICS 2022, Theorem 3.14 and Example 3.16).  The converse of
-    [thunkable_deterministic] is therefore not provable, and the
-    deterministic class is in general strictly larger than the thunkable
-    one. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Thunkable.
 

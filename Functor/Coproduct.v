@@ -7,27 +7,13 @@ Generalizable All Variables.
 
 (** The fold (codiagonal) functor [Id, Id] : C ∐ C ⟶ C. *)
 
-(* nLab: https://ncatlab.org/nlab/show/codiagonal
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Coproduct
 
-   This is the copairing of the identity functor with itself, the functor out
-   of the coproduct category C ∐ C (defined in Construction/Coproduct.v) that
-   collapses both summands back onto C. On objects it sends both inl x and
-   inr x to x (sum_obj); on morphisms it is the identity on each summand's
-   hom-set, the cross-summand homs being empty (False) and so eliminated by [!].
-   It is the unique functor [Id, Id] : C ∐ C ⟶ C with [Id, Id] ∘ inl = Id and
-   [Id, Id] ∘ inr = Id, furnished by the universal property of the coproduct in
-   Cat (a functor C ∐ C ⟶ E is the same as a pair of functors C ⟶ E and
-   C ⟶ E). It is the Cat-level analogue, and dual, of the binary diagonal
-   Δ : C ⟶ C ∏ C of Functor/Diagonal.v.
+   本文件给出余积实例。
 
-   Note this is the codiagonal *functor* out of the coproduct *category*, which
-   needs nothing of C; it should not be confused with the codiagonal *morphism*
-   ∇ : x + x ~> x inside a cocartesian category (merge id id, the copairing
-   id ▽ id of Structure/Cocartesian.v). Accordingly the [@Cocartesian C]
-   hypothesis below is not used by the construction and is retained only to
-   record the intended cocartesian setting; the functor is well defined for any
-   category C. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section Coproduct.
 

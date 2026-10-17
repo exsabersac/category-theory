@@ -10,48 +10,13 @@ Generalizable All Variables.
 
 (** * Identity and composition of hom-set adjunctions *)
 
-(* nLab: https://ncatlab.org/nlab/show/adjoint+functor
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
 
-   Adjunctions compose. Given F ⊣ U with F : D ⟶ C (the convention of
-   Theory/Adjunction.v: F is the left adjoint) and F' ⊣ U' with F' : C ⟶ E,
-   the composite functors are again adjoint: F' ◯ F ⊣ U ◯ U'. In the hom-set
-   presentation this is literally composition of the two adjunction
-   isomorphisms in Sets,
+   本文件给出复合相关构造（伴随/函子/单子等的复合）。
 
-       (F' (F x) ~{E}~> y)  ≊  (F x ~{C}~> U' y)  ≊  (x ~{D}~> U (U' y)),
-
-   pasted by [iso_compose]; each naturality field of the composite is the
-   corresponding field of one constituent placed under the transpose of the
-   other (the transposes are setoid morphisms, so they respect ≈ — this is
-   [to_adj_respects]/[from_adj_respects]).
-
-   The identity functor is self-adjoint via the identity isomorphism of each
-   hom-setoid, giving Id ⊣ Id, the unit for this composition. Alongside the
-   two constructions we record the definitional characterization of the
-   composite's transposes and the standard whiskering formulas for its unit
-   and counit:
-
-       η″ ≈ fmap[U] η′ ∘ η          (unit of the composite)
-       ε″ ≈ ε′ ∘ fmap[F'] ε         (counit of the composite)
-
-   Both nLab (adjoint functor, "basic properties") and Wikipedia
-   ("composition" under properties of adjoints) state this composition law.
-
-   Relation to Instance/Adjoints.v: that pre-existing module already
-   carries both witnesses — [adj_id], an exported instance, and
-   [adj_comp] with its ⊚ notation — as the identity and the composition
-   of its category [Adjoints] of categories and adjunctions.
-   [Adjunction_Id] below therefore reuses [adj_id] rather than re-deriving
-   it, and the corollaries [Adjunction_Compose_adj_comp_to]/[_from] record
-   that [Adjunction_Compose A A'] and [adj_comp F' U' F U A' A] — which
-   have the identical type (F' ◯ F) ⊣ (U ◯ U') — agree definitionally on
-   both transposes.  Integration decision (for the maintainer): pick a
-   single canonical home for adjunction composition — either refactor
-   Instance/Adjoints.v's [adj_comp] to consume [Adjunction_Compose], or
-   derive this file's composite from [adj_comp] — before later phases
-   standardize on one of the two names; until then the agreement
-   corollaries keep the two APIs interchangeable. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The identity adjunction *)
 

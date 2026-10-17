@@ -1,50 +1,8 @@
-(** * Coproducts as the left adjoint of the diagonal functor
+(*
+   本文件给出余积实例。
 
-    Mac Lane, "Categories for the Working Mathematician", §IV.1, p. 84, and
-    Awodey, "Category Theory", §9.3, p. 225, are cited BY LOCATION ONLY: the
-    printed text at those two locations was not consulted while this file was
-    written, and both locations are the ones recorded in issue
-    jwiegley/category-theory#351, which this file answers.
-
-    The tree already carries the other half of the triple: the binary product
-    bifunctor is a RIGHT adjoint of the binary diagonal
-    [Δ = Diagonal_Product C : C ⟶ C ∏ C], namely
-    Adjunction/Diagonal/Product.v's [Diagonal_Product_Adjunction], over the
-    bifunctor Functor/Product/Internal.v with its notation [×(C)]
-    (Functor/Product/Internal.v).  Here the coproduct bifunctor [+(C)] is
-    built and shown to be a LEFT adjoint of that same diagonal, with the
-    statement read in [C] itself: no [^op] occurs in the type of
-    [Diagonal_Coproduct_Adjunction].  The unit and counit of the adjunction
-    are then named and identified -- the pair of injections, and the folding
-    map [id ▽ id].
-
-    ON THE DUALITY ROUTE.  Structure/Cocartesian.v defines [Cocartesian C]
-    to BE [@Cartesian (C^op)], so the product adjunction taken at [C^op] and
-    pushed through Adjunction/Opposite.v's [Opposite_Adjunction] is already
-    a term, of type [×(C^op)^op ⊣ (Diagonal_Product C^op)^op].  Two
-    observations about that term were checked at the Rocq prompt while this
-    file was prepared; they are not re-checked by the build.  Its right-hand
-    endpoint is already the covariant one: [Opposite_Functor (Diagonal_Product
-    (Opposite C))] and [Diagonal_Product C] are equal by [reflexivity], at
-    Leibniz equality.  Its left-hand endpoint is not: [Opposite_Functor
-    (×(Opposite C))] and [+(C)] do not unify: ascribing the whole record is
-    rejected with a bare top-level type mismatch (no field is named), and
-    comparing the two functor records shows [fobj] and [fmap] converging while
-    all three opaque [Program]-obligation fields ([fmap_respects], [fmap_id],
-    [fmap_comp]) differ.  So the coproduct bifunctor has
-    to be given directly on either route, and the dualized term reaches the
-    covariant statement by re-assembling Theory/Adjunction.v's
-    [Adjunction] class field by field (a [Build_Adjunction] with five
-    projections, which does typecheck, since no field of that class mentions
-    [fmap_respects]).  The route taken below gives the two transposes
-    directly, mirroring Adjunction/Diagonal/Product.v field for field; the
-    statement, the transposes and the identification lemmas are then all read
-    in [C], and the obligations close by the coproduct laws of
-    Structure/Cocartesian.v.
-
-    NOT TO BE CONFUSED WITH Functor/Coproduct.v's [CoproductFunctor], which
-    is the fold out of the coproduct CATEGORY [C ∐ C]; the bifunctor here has
-    the product category [C ∏ C] as its domain. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Require Import Category.Lib.
 Require Import Category.Theory.Category.

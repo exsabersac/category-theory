@@ -29,112 +29,16 @@ Require Import Category.Adjunction.Representability.Sets.
 
 Generalizable All Variables.
 
-(** * Resizing a solution set
-
+(*
     nLab:      https://ncatlab.org/nlab/show/solution+set+condition
     nLab:      https://ncatlab.org/nlab/show/essentially+small+category
     nLab:      https://ncatlab.org/nlab/show/adjoint+functor+theorem
     Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors#General_adjoint_functor_theorem
-    Riehl:     Category Theory in Context, §4.6 (the solution set condition)
 
-    Mac Lane, "Categories for the Working Mathematician", 2nd ed. (GTM 5),
-    §V.7, book p. 128 (PDF p. 137), Lemma 2 (catalog id
-    `maclane:V.7:lem2`), is the mathematical content this file makes
-    expressible.  CITED BY LOCATION AND BY THE IN-TREE CATALOG
-    (doc/plan/books/maclane/inventory/V.json); the printed text was not
-    consulted and no sentence of it is reproduced here.
+   本文件给出一般伴随函子定理相关。
 
-    ** What the file is for
-
-    A [SolutionSet U d] (Adjunction/GAFT.v) and an [ElementSolutionSet K]
-    (Adjunction/Representability/Sets.v) each carry an INDEX, a bare
-    [Type@{i}] with no structure on it.  [GAFT] and
-    [representability_theorem] then take limits over the DISCRETE category
-    on that index, so they demand the index at the shape-object universe of
-    the [Complete] they are handed.  Structure/Complete.v's SIZE NOTE is the
-    authority on that chain and is not restated here; item 2(b) is the link
-    that matters, and item 1 is why a naively-built index sits one universe
-    too high.
-
-    Mac Lane's answer, in the book, is Lemma 2: the family is a PROPER
-    CLASS as first written, but the members are quotients of one fixed
-    object, so a SET of representatives up to isomorphism suffices.  This
-    file gives the three shapes in which that answer can be supplied, and
-    the four maps that consume them.
-
-    ** The three shapes, weakest premise last
-
-    [SmallType] (Theory/Size.v) -- a Leibniz round trip onto a small
-    carrier.  The strongest premise: it says the index ITSELF is small.
-
-    [SmallCovering] -- a small type and a map into the index whose image
-    still covers.  No round trip and no surjectivity onto the index: the
-    small family need only remain a solution set.  This is literally a
-    [SolutionSet] at the small index factored through the large one, and it
-    is the honest minimum, since covering is the only thing the index is
-    ever used for.
-
-    [SmallUpToIso] -- for each large index a small one, an ISOMORPHISM of
-    the two solution objects, and the compatibility of the two solution
-    arrows.  This is Mac Lane's own "a small set of representatives up to
-    isomorphism", and it is the shape a quotient presentation can actually
-    supply: a quotient of a term model is isomorphic to, not equal to, an
-    arbitrary spanning codomain.  [covering_of_iso] shows it implies
-    [SmallCovering], so the three are ordered.
-
-    ** THE BINDERS ARE THE THEOREM
-
-    The point of every statement here is that the OUTPUT index universe is
-    a DIFFERENT binder from the input's.  An earlier prototype of these
-    constants left both to inference; the elaborator then identified them
-    and the constants were resizings in name only -- they typechecked and
-    said nothing.  Written with the input index [i] and the output index
-    [w] declared separately, the constraint block says what was intended.
-    Measured, [About] under [Set Printing Universes]:
-
-      resize_solution_set@{i w dobj cobj h} :
-        ∀ {C : Category@{cobj h h}} {D : Category@{dobj h h}} {U : C ⟶ D}
-          {d : obj[D]} (S : SolutionSet@{i dobj cobj h} U d),
-        SmallType@{w i} (sol_index S) → SolutionSet@{w dobj cobj h} U d
-      (* i w dobj cobj h |= *)
-
-    -- an EMPTY constraint block, so [i] and [w] are unrelated and [w] may
-    be taken as low as the consumer needs.  The same for
-    [resize_element_solution_set].  [resize_by_covering] and
-    [resize_up_to_iso] cannot quite reach an empty block, because the small
-    carrier's own universe [u] enters through the record field: they read
-    [u <= w], which is the identification that says the output index is the
-    carrier the premise supplied, and nothing more.
-
-    A [@{w +}] annotation is a DECLARATION form only.  At a USE site the
-    hypothesis is written unannotated and the identification is read off
-    the [About]; there is no way to write [SmallCovering@{w +}] as an
-    argument type.
-
-    ** What is NOT delivered
-
-    (1) NO SMALLNESS IS PROVED HERE.  Every constant takes its smallness as
-    a hypothesis.  The one in-tree discharge is
-    Instance/Mod/TensorAFT.v's [tensor_spanning_SmallUpToIso], Mac Lane's
-    Lemma 2 at [RMod R]; [Instance/Variety/Spanning.v]'s
-    [variety_solution_set] stays conditional, varieties having no
-    [PropEquiv] on their term algebras.
-
-    (2) NO TRUNCATION, hence no uniqueness.  [SmallType] is data (see its
-    header in Theory/Size.v): two resizings of one index need not agree,
-    and [resize_solution_set] applied to two of them gives two solution
-    sets.  Nothing here says the resulting adjoint is independent of the
-    choice, and the AFT's own output is only determined up to isomorphism
-    in any case.
-
-    (3) NO CONVERSE.  Nothing here says a solution set at a low index
-    yields a [SmallType] of a high one, and nothing says an index that
-    cannot be resized obstructs the theorem.
-    Adjunction/GAFT/Necessity.v is the file about necessity and is
-    untouched by this one.
-
-    (4) NOTHING IS AN [Instance].  These are readings of a hypothesis, not
-    structures resolution should search for. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** Resizing along a Leibniz round trip *)
 

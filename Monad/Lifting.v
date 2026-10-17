@@ -23,71 +23,15 @@ Require Import Category.Structure.Limit.Preservation.
 
 Generalizable All Variables.
 
-(** * Adjoint lifting along monadic functors, crude case
-
+(*
     nLab:      https://ncatlab.org/nlab/show/adjoint+lifting+theorem
     nLab:      https://ncatlab.org/nlab/show/adjoint+triangle+theorem
     Wikipedia: https://en.wikipedia.org/wiki/Beck%27s_monadicity_theorem
 
-    This file delivers the adjoint lifting theorem in its adjoint-triangle
-    form (Dubuc, "Adjoint triangles", 1968), scoped to the crude
-    monadicity hypotheses of Monad/Monadicity/Crude.v.
+   本文件给出单子相关定义或实例。
 
-    Fix an adjunction F ⊣ U with F : D ⟶ C, and write T = U ◯ F for the
-    induced monad on D and K = [EM_Comparison A] : C ⟶ D^T for the
-    Eilenberg–Moore comparison (Monad/Comparison.v).  The core statement
-    ([adjoint_triangle]) assumes only that K is fully faithful — that U is
-    "of descent type" — supplied as [Full K] and [Faithful K] hypotheses:
-
-      given R : B ⟶ C together with a left adjoint L0 ⊣ U ◯ R of the
-      composite, if B has coequalizers of reflexive pairs, then R itself
-      has a left adjoint ([Lifted_Left_Adjoint], adjoint to R by
-      [adjoint_triangle]).
-
-    The construction is the classical one.  For c : C, the parallel pair
-
-        L0 (U ε_c),  ⌈U ε ∘ U F η0⌉  :  L0 (U (F (U c))) ⇉ L0 (U c)
-
-    — the L0-transport of the canonical presentation of the comparison
-    algebra K c, with the second leg the A0-inverse-transpose of the free
-    algebra action on the A0-unit η0 — is reflexive with common section
-    L0 η_{U c} ([lift_reflexive]; the retraction laws are the two zig-zag
-    identities).  The value of the left adjoint at c is its chosen
-    reflexive coequalizer e : L0 (U c) ~> q ([lift_obj]/[lift_e]).  The
-    A0-transpose of e is an algebra homomorphism K c ~> K (R q) — its
-    commuting square is the transposed cofork law ([lift_w_commutes]) —
-    and pulling it back through the full comparison K produces the unit
-    c ~> R q ([lift_unit]).  Every f : c ~> R b factors through the unit:
-    the A0-inverse-transpose of U f coforks the pair ([lift_desc_cofork])
-    and so descends through e, faithfulness of K (hence of U,
-    [lift_faithful]) yields the factorization ([lift_factor_property]),
-    and descent uniqueness read back through the transposition gives its
-    uniqueness ([lift_factor_unique]).  The universal arrows so obtained
-    assemble into a left adjoint via Theory/Universal/Arrow.v
-    ([LeftAdjointFunctorFromUniversalArrows]).
-
-    The principal theorem [adjoint_lifting] is the crude case: when the
-    adjunction satisfies the crude hypotheses — C has reflexive
-    coequalizers, U preserves them and reflects isomorphisms — the
-    comparison is an equivalence ([crude_monadicity]), hence full and
-    faithful (Theory/Equivalence/FullFaithful.v), and the triangle
-    theorem applies: every R : B ⟶ C whose composite U ◯ R has a left
-    adjoint has a left adjoint, provided B has reflexive coequalizers.
-    [adjoint_lifting_monadic] states the same with the monadicity data
-    packaged as [Monadic U] (Monad/Comparison.v).
-
-    The classical square form of the adjoint lifting theorem — monads S
-    on B' and T on D, a functor Q̄ between the algebra categories lifting
-    Q : B' ⟶ D through the forgetful functors, and a left adjoint of Q —
-    is the instance R := Q̄ of the triangle form: the composite of Q̄ with
-    the (monadic) forgetful functor is Q ◯ U^S, whose left adjoint is
-    F^S composed with the left adjoint of Q ([Adjunction_Compose]).
-
-    Alongside, [EM_Adjunction_Transport] records the transport piece: an
-    adjunction L ⊣ J whose right adjoint lands in the Eilenberg–Moore
-    category composes with the adjoint equivalence K ⊣ K⁻¹ carried by the
-    comparison (Theory/Equivalence/Adjoint.v) to the adjunction
-    L ◯ K ⊣ K⁻¹ ◯ J, whose right adjoint lands in C. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The adjoint triangle theorem, for U of descent type *)
 

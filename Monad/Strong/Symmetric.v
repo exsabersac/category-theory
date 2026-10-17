@@ -20,58 +20,13 @@ Generalizable All Variables.
 
 (** Strong monads over a symmetric monoidal base: the full right strength. *)
 
-(* nLab: https://ncatlab.org/nlab/show/strong+monad
+(*
    nLab: https://ncatlab.org/nlab/show/commutative+monad
 
-   Monad/Strong.v derives, for a strong monad M over a symmetric monoidal
-   base, the braid-conjugated right strength
+   本文件给出（余）强度/强（余）单子相关结构。
 
-       rstr = M(β) ∘ t ∘ β  :  M x ⨂ y ~> M (x ⨂ y)
-
-   together with its naturality ([rstr_natural]) and its two
-   monad-compatibility laws ([rstr_ret], [rstr_join]) — but stops short of
-   packaging it as a [RightStrongFunctor]: the two functor-level coherences
-   (the ρ-law [rrstrength_id_right] and the α-law [rstrength_assoc]) need the
-   braid/unitor coherence ρ ≈ λ ∘ β of Joyal & Street ("Braided tensor
-   categories", Adv. Math. 102, 1993, Prop. 2.1), which the bare
-   [SymmetricMonoidal] axiomatization does not hand out directly.  That
-   coherence is now proved from the hexagons in
-   Structure/Monoidal/Braided/Proofs.v ([braid_unit_left],
-   [braid_unit_right]), and this file completes the programme:
-
-   1. the naturality corollaries of the left and right strengths in
-      single-variable rewrite form ([strength_natural_l/r],
-      [rstr_natural_l/r]), the workhorses of every proof below and of the
-      Kleisli premonoidal development (Monad/Kleisli/Premonoidal.v);
-
-   2. the double-strength toolkit: unit laws for [dstr] and [dstr'] against
-      ret in either factor ([dstr_ret_left], [dstr_ret_right],
-      [dstr'_ret_left], [dstr'_ret_right]), joint naturality
-      ([dstr_natural], [dstr'_natural]), and Führmann-style reassociation
-      lemmas ([dstr_reassoc_left], [dstr_reassoc_left'],
-      [dstr'_reassoc_right], [dstr'_reassoc_right']) that rebracket a double
-      strength through an extra M-layer (Führmann, "Direct models of the
-      computational lambda-calculus", MFPS 1999);
-
-   3. the two missing coherences [rstr_id_right] and [rstr_assoc], plus the
-      mixed associativity coherence [strength_rstr_assoc] relating the left
-      and the derived right strength across the associator — the key lemma
-      behind associativity of the premonoidal tensor on Kl(M);
-
-   4. the packaging: [rstr_nat] (the right strength as a natural
-      transformation (⨂) ◯ M ∏⟶ Id ⟹ M ◯ (⨂)), the instances
-      [rstr_RightStrongFunctor] and [rstr_RightStrongMonad], and the bridge
-      between the concrete commutativity predicate [commutative_sm] and the
-      abstract [CommutativeStrongMonad] class, in both directions
-      ([commutative_CommutativeStrongMonad], [CSM_commutative_sm]) with the
-      round trip [commutative_sm_round_trip].
-
-   The bridge's converse direction is honest: an abstract
-   [CommutativeStrongMonad] bundles its own right strength, which need not
-   be the braid-derived one, so the converse takes the agreement of the two
-   right strengths as an explicit hypothesis.  At the instance produced by
-   the forward direction that hypothesis holds by reflexivity, which is
-   exactly the round-trip corollary. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section StrongSymmetric.
 

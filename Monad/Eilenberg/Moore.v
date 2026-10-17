@@ -8,37 +8,13 @@ Generalizable All Variables.
 
 (** * The Eilenberg–Moore category of a monad. *)
 
-(* nLab: https://ncatlab.org/nlab/show/Eilenberg-Moore+category
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Monad_(category_theory)
 
-   The Eilenberg–Moore category C^T of a monad (M, ret, join) = (T, η, μ) on C
-   is the category of T-algebras and their homomorphisms (see Monad/Algebra.v).
-   An object is a pair (a, ν) of a carrier a : C together with an action
-   ν : T a ~> a (t_alg) satisfying the unit law ν ∘ η_a ≈ id and the
-   associativity/action law ν ∘ T(ν) ≈ ν ∘ μ_a (t_id and t_action). A morphism
-   (a, ν^a) ~> (b, ν^b) is an underlying C-morphism f : a ~> b that intertwines
-   the actions, f ∘ ν^a ≈ ν^b ∘ T(f) (t_alg_hom_commutes).
+   本文件给出 Eilenberg–Moore 相关。
 
-   Identities and composition are inherited from C on the underlying carriers:
-   id is id_a (which trivially commutes), and the composite of two algebra
-   homomorphisms is again one — the obligation below pastes their two commuting
-   squares, using fmap_comp for T(g ∘ f) and t_alg_hom_commutes twice.
-   Equivalence of morphisms is equivalence of the underlying C-maps.
-
-   The forgetful functor U^T : C^T → C, (a, ν) ↦ a, has the free-algebra
-   functor F^T : C → C^T, x ↦ (T x, μ_x), as left adjoint, and the monad
-   U^T ∘ F^T arising from F^T ⊣ U^T is exactly T; that adjunction is
-   constructed in Monad/Eilenberg/Moore/Adjunction.v ([EM_Free] ⊣ [EM_Forget]
-   as [EM_Adjunction], recovering T via [EM_Monad_agrees]). This is the
-   terminal such resolution of T; the Kleisli category (see Monad/Kleisli.v,
-   whose own resolution lives in Monad/Kleisli/Adjunction.v) is the initial
-   one, sitting inside C^T as the full subcategory of free algebras.
-
-   CORRECTION (#475).  "Sitting inside C^T" was asserted with no functor
-   C_T ⟶ C^T in the tree; it is Monad/Kleisli/Comparison.v's [Kleisli_EM],
-   full and faithful onto the free algebras.  The terminality and the
-   initiality asserted here are Mac Lane's Theorem VI.5.3, which issue #476
-   tracks. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* The monad instance is bound by name so that [TAlgebra]'s instance argument
    can be given explicitly in [obj]: were it left to Program, the elaborator

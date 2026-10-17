@@ -22,24 +22,11 @@ Generalizable All Variables.
 
 (** * A hypothesis-free instantiation of created limits *)
 
-(* Monad/Eilenberg/Moore/Limit.v proves that [EM_Forget T] strictly creates
-   every limit for every monad T on every category.  That is a conditional
-   statement about an arbitrary monad; this file discharges every
-   hypothesis at once, over objects the library already builds: the
-   identity monad on [Coq] (Monad/Strong.v), the empty diagram
-   ([From_0], Instance/Zero.v), and the terminal object of [Coq]
-   downstairs (Instance/Coq.v).  What comes out is the created terminal
-   algebra, and its carrier is the apex of the limit downstairs by
-   [eq_refl] — creation on the nose.  (Nothing here reduces: the equality
-   holds by projection, not by evaluation, for the reason in the next
-   paragraph.)
+(*
+   本文件给出例子。
 
-   Two small points of usage.  [Terminal_Limit]
-   (Structure/Limit/Terminal.v) is an [↔], which in this library is
-   [iffT] (Lib/Foundation.v), so its halves are taken with [fst] and [snd]
-   rather than [proj1]/[proj2].  And it is [Qed]-opaque, so the strictness
-   equality below is stated against [vertex_obj[Lbelow]] — the apex of the
-   limit actually produced — rather than against [unit]. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Definition IdC : Coq ⟶ Coq := Id[Coq].
 

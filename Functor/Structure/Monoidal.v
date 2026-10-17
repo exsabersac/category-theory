@@ -13,38 +13,13 @@ Generalizable All Variables.
 
 (** Monoidal functors. *)
 
-(* nLab: https://ncatlab.org/nlab/show/monoidal+functor
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Monoidal_functor
 
-   A monoidal functor between monoidal categories C and D is a functor
-   F : C ⟶ D equipped with comparison maps relating F to the tensor and the
-   unit, subject to coherence with the associator and unitors.
+   本文件给出幺半相关结构。
 
-   In the lax form (here [LaxMonoidalFunctor]) the comparisons point from the
-   tensor of images to the image of the tensor and from the unit into the
-   image of the unit,
-
-       lax_ap   : F x ⨂ F y ~> F (x ⨂ y)   (the tensor comparison),
-       lax_pure : I ~> F I                  (the unit comparison),
-
-   following nLab and Wikipedia (μ_{x,y} : F x ⊗ F y → F (x ⊗ y) and
-   η : I → F I). A strong monoidal functor (here [MonoidalFunctor]) is the
-   same data with both comparisons invertible, so they are stated directly as
-   isomorphisms [ap_iso] and [pure_iso] oriented in the lax direction; a
-   strict monoidal functor would take them to be identities. The oplax (a.k.a.
-   opmonoidal, colax, comonoidal) variant reverses both comparisons,
-   F (x ⨂ y) ~> F x ⨂ F y and F I ~> I, and is not formalized here.
-
-   Three coherence conditions are imposed in each form:
-
-       unit_left   left  unitality, λ vs. the tensor and unit comparisons,
-       unit_right  right unitality, ρ vs. the tensor and unit comparisons,
-       assoc       associativity,  the associator α vs. two tensor comparisons.
-
-   The [pure_iso_left], [pure_iso_right] and [ap_iso_assoc] fields (and their
-   lax counterparts) record the derived isomorphisms used to phrase those
-   coherence squares; they are consequences of the comparisons, not extra
-   structure. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section MonoidalFunctor.
 

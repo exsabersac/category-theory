@@ -20,63 +20,14 @@ Set Primitive Projections.
 Set Universe Polymorphism.
 Set Transparent Obligations.
 
-(** * The Kleisli category of a strong monad is premonoidal
-
+(*
     nLab: https://ncatlab.org/nlab/show/premonoidal+category
     nLab: https://ncatlab.org/nlab/show/strong+monad
 
-    Power–Robinson ("Premonoidal categories and notions of computation",
-    Math. Structures Comput. Sci. 7(5), 1997) observed that for a strong
-    monad M on a symmetric monoidal category C, the Kleisli category Kl(M)
-    carries a canonical premonoidal structure: the tensor of C extends to
-    Kl(M) separately in each variable — through the derived right strength
-    [rstr] on the left and through the left strength [strength] on the
-    right — but not jointly, because the two orders of sequencing a pair of
-    effectful computations in general disagree.  This file constructs that
-    structure over the library's actual [Kleisli] category
-    (Monad/Kleisli.v), in three tiers:
+   本文件给出 Kleisli 范畴相关。
 
-    1. The binoidal structure ([Kleisli_Binoidal]): for each object y' the
-       one-variable tensoring functors
-
-           f ↦ rstr ∘ (f ⨂ id[y'])        ([kl_left_fmap],  - ⊗ y')
-           f ↦ strength ∘ (id[x'] ⨂ f)    ([kl_right_fmap], x' ⊗ -)
-
-       are Kleisli functors: identity preservation is exactly the η-compat
-       laws [rstr_ret] / [strength_ret], and composition preservation is
-       exactly the μ-compat laws [rstr_join] / [strength_join] glued by the
-       single-variable naturality corollaries of Monad/Strong/Symmetric.v.
-       The two composites of a left-tensored f with a right-tensored g
-       normalize to the two double strengths ([kl_square_lr],
-       [kl_square_rl]), giving the concrete characterization of centrality
-       in Kl(M): f is central exactly when [dstr] and [dstr'] agree on
-       every tensor with f in either factor ([kleisli_central_iff]).
-
-    2. The pure functor ([Kleisli_Pure]): postcomposing with the unit
-       embeds C into Kl(M) by f ↦ ret ∘ f ([kpure]), with the exchange
-       laws [kl_pure_post] / [kl_pure_pre] that let pure morphisms slide
-       through Kleisli composites, and the transfer laws [pure_inj_left] /
-       [pure_inj_right] that let them slide through the tensorings.  Every
-       pure morphism is central ([pure_central]): both centrality squares
-       collapse through the four double-strength unit laws
-       [dstr_ret_left], [dstr'_ret_left], [dstr_ret_right],
-       [dstr'_ret_right] of Monad/Strong/Symmetric.v — no commutativity
-       of M is needed.
-
-    3. The premonoidal structure ([Kleisli_Premonoidal]): the unitors and
-       associator of Kl(M) are the images of C's under [Kleisli_Pure]
-       ([Kleisli_pure_iso]), hence central by [pure_central]; their
-       one-variable naturality squares are the strength coherences —
-       [strength_id_left] and [rstr_id_right] for the unitors, and for the
-       associator the three laws [rstr_assoc_to], [strength_rstr_assoc]
-       and [strength_assoc], one per tensor position, glued by the
-       joint naturality of C's associator; triangle and pentagon transfer
-       from C along the pure functor.
-
-    When M is commutative the two tensorings assemble into a genuine
-    monoidal structure on Kl(M); that upgrade lives in
-    Monad/Kleisli/Commutative.v, built on the all-central engine of
-    Structure/Premonoidal/Monoidal.v and on [kleisli_central_iff] below. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 Section KleisliPremonoidal.
 

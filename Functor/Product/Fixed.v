@@ -22,41 +22,13 @@ Generalizable All Variables.
 (** The fixed-factor product functor H × − and Mac Lane's induced
     transformation "f × id". *)
 
-(* nLab: https://ncatlab.org/nlab/show/natural+transformation
+(*
    nLab: https://ncatlab.org/nlab/show/product
 
-   For a fixed object H of a cartesian category C, the assignment
-   G ↦ H × G is a functor C ⟶ C: on a morphism g : G ~> G' it acts by
-   [second g] : H × G ~> H × G', the identity on the fixed left factor and
-   g on the moving right factor.  For a morphism f : H ~> K of fixed
-   factors, the family whose component at G is [first f] : H × G ~> K × G
-   is natural in G, the naturality square being exactly the interchange
-   of [first] and [second].
+   本文件给出积（分量）构造。
 
-   A word on the spelling of that component.  Mac Lane writes it
-   "f × id".  This tree has no morphism-level × notation; the product of
-   two morphisms is [split] (Structure/Cartesian.v), which is
-   definitionally the action of the product bifunctor,
-   [bimap[×(C)] f g] (Functor/Product/Internal.v).  So the literal
-   in-tree reading of "f × id" is [split f id], and [first f] is that
-   only up to ≈ — the identity survives inside the fork until [id_left]
-   removes it, which is what [fixed_product_transform_bimap] below
-   records.  The components below are [first f] because that is what
-   issue #240's "Work to be done" prescribes verbatim ("components
-   `first f` and naturality by `first_second`"); [alt_transform] carries
-   the [split f id] spelling beside it, and [alt_transform_agrees]
-   proves the two equal up to ≈.
-
-   Provenance.  This is the exercise catalogued in this library's issue
-   tracker as `maclane:I.4:ex2`, located there at Mac Lane, "Categories
-   for the Working Mathematician", 2nd ed. (GTM 5), §I.4, printed p. 18,
-   exercise 2, and reported there as posing the case C = Grp.  Both the
-   location and the wording of the exercise are taken from that catalogue
-   entry; the printed text was NOT consulted while writing this file, and
-   nothing here is offered as a quotation from it.  What is machine-
-   checked below is the mathematical content, in the generality of an
-   arbitrary cartesian category, together with the instantiation at Grp
-   that the exercise asks for. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* What is reused, and what is new
 

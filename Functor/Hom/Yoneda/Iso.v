@@ -13,45 +13,13 @@ Generalizable All Variables.
 
 #[local] Obligation Tactic := idtac.
 
-(** * Representably isomorphic objects
-
-    Riehl, "Category Theory in Context", 2nd ed., §2.3 (printed p. 67):
-    the opening definition — two objects are REPRESENTABLY ISOMORPHIC
-    when their represented functors are naturally isomorphic, in either
-    variance — and Proposition 2.3.1
-    [riehl:2.3:def-representable-isomorphism, riehl:2.3:prop1]: the
-    three kinds of data
-      (i)   an isomorphism x ≅ y,
-      (ii)  a natural isomorphism C(−,x) ≅ C(−,y),
-      (iii) a natural isomorphism C(y,−) ≅ C(x,−)
-    correspond, because the Yoneda embeddings are fully faithful and so
-    preserve, reflect, and CREATE isomorphisms — the explicit mutually
-    inverse pair underlying an α as in (ii) being α_x(id_x) and
-    (α⁻¹)_y(id_y).
+(*
     nLab: https://ncatlab.org/nlab/show/Yoneda+embedding
 
-    Everything here is assembly of parts long in tree, composed for the
-    first time: [FullyFaithful] (Theory/Functor.v) instantiated at the
-    embeddings [Curried_CoHom]/[Curried_Hom] via [Yoneda_Full] and
-    [Yoneda_Faithful] (Functor/Hom.v) gives reflection; [fobj_iso]
-    (Theory/Functor.v) gives preservation; and the CREATION strength —
-    Riehl's actual proposition, a bijection of DATA and not merely a
-    pair of implications — is the setoid isomorphism
-    [representable_iso_setoid] between isomorphisms x ≅ y and natural
-    isomorphisms [Hom ─,x] ≅ [Hom ─,y] — proved for the contravariant
-    variance, which is the bijection Riehl's proposition names (the
-    covariant leg is delivered as the biconditional
-    [iso_iff_corepresentably_iso] only).  One round trip is
-    [Yoneda_Embedding]'s [iso_from_to] leg read pointwise at each of
-    the two legs; the other is the identity laws.
+   本文件给出 Yoneda 相关结果。
 
-    The file also exports [repr_pair_iso] — the explicit-inverse-pair
-    construction that Structure/UniversalProperty.v had inlined at its
-    [univ_property_unique] since that file's beginning (the issue's
-    "library defect"): given isomorphisms of both [Hom c,─] and
-    [Hom v,─] with one and the same F, the objects c and v are
-    isomorphic, by evaluating the composite transformations at the
-    identity.  Structure/UniversalProperty.v now consumes it. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The Yoneda embeddings are fully faithful, in both variances *)
 

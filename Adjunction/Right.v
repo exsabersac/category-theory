@@ -16,22 +16,11 @@ Require Import Category.Instance.Proset.
 Require Import Category.Instance.Sets.Powerset.
 Require Import Category.Instance.Sets.Powerset.Universal.
 
-(* NOTATION GUARD, and it is REQUIRED rather than defensive -- measured:
-   deleting the line below makes this file FAIL to compile.  Three
-   scopes declare [_ ^op] (category, functor and adjunction), and
-   Category.Functor.Opposite together with Category.Adjunction.Opposite
-   open theirs, so a bare [C^op] can parse as the wrong one.  Delete the
-   [Open Scope] and the result-type ascription of
-   [Adjunction_of_AdjointOnTheRight] is rejected with [The term "A" has
-   type "Category" while it is expected to have type "?F ⊣ ?U"]:
-   [adjunction_scope]'s [_^op] wins there.  So an argument position is
-   NOT rescued by [Bind Scope category_scope with Category] -- a sibling
-   file reports the opposite for its own contents, and that reading does
-   not transfer here.  The other
-   half of the hazard is NOT defensive and is obeyed throughout: [T^op]
-   for a FUNCTOR is written [Opposite_Functor T] by name, since under
-   these imports the bare spelling is fragile.  Same family as the guards
-   in Theory/Universal/Arrow/Dual.v and Structure/Limit/Constant.v. *)
+(*
+   本文件给出伴随相关构造与性质。
+
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 Open Scope category_scope.
 
 Generalizable All Variables.

@@ -17,140 +17,14 @@ Require Import Category.Structure.UniversalProperty.
 
 Generalizable All Variables.
 
-(** * Taking the representing object, as a functor
-
+(*
     Book: Mac Lane, "Categories for the Working Mathematician", 2nd ed.,
-          Springer 1998, §III.2, Exercise 1, printed p. 62.
     nLab: https://ncatlab.org/nlab/show/representable+functor
 
-    Functor/Representable.v proves Mac Lane's exercise: a natural
-    transformation τ : K ⟹ K' between represented functors is named by a
-    unique arrow [repr_induced R R' τ : repr_obj R' ~> repr_obj R] compatible
-    with the two representations.  This file collects the three things that
-    statement makes available and that its own file cannot host.
+   本文件给出可表性相关。
 
-    (1) THE COMPARISON WITH THE YONEDA EMBEDDING.  The issue this development
-    answers suggests obtaining the arrow by transporting τ to ψ'⁻¹ ∘ τ ∘ ψ and
-    inverting the hom-bijection [Yoneda_Embedding'] (Functor/Hom.v).
-    Functor/Representable.v does the first half — that is [repr_transport] —
-    and then names the arrow directly rather than through the packaged
-    bijection, for the universe reason recorded in that file's header.  The
-    two agree: [repr_induced_is_yoneda_transpose] is [eq_refl], so wherever
-    both are formable they are the same TERM, not merely equivalent arrows.
-
-    (2) THE CROSS-LINK WITH Structure/UniversalProperty.v.  That file's
-    [univ_property_unique_up_to_unique_iso] is the τ = id case for
-    objects satisfying a universal PREDICATE, and its [univ_property_unique]
- is the underlying uniqueness.  Before this file there was no
-    passage in either direction between [IsUniversalProperty] and
-    [Representable] anywhere in the tree — before this one the two names
-    occurred together in only two files, Structure/UniversalProperty.v (where
-    "representable" is a URL and a paragraph of prose) and
-    Structure/Cartesian/Closed/Adjunction.v
-    (a comment, now that it has been amended to point here) — so the
-    cross-link is a construction and not a citation, and the absence claim is
-    scoped to what was searched: the two class NAMES, over every [.v] file in
-    the tree.  It is a short one: [Representable_of_UnivProperty] is a record
-    literal, and [UnivProperty_of_Representable] takes the predicate
-    "c represents F" and the identity isomorphism.  With it,
-    [univ_property_iso_from_is_induced] identifies the backward leg of that
-    proposition's isomorphism with [repr_induced] at the identity
-    transformation.  The identification factors through [repr_pair_iso]
-    (Functor/Hom/Yoneda/Iso.v), which is what [univ_property_unique]
-    consumes: [up_unique_obj_is_repr_pair_iso] records by [eq_refl] that the
-    proposition's [unique_obj] IS that isomorphism, and
-    [repr_pair_iso_from_is_induced] compares it with the induced arrow.
-
-    (3) THE FUNCTOR.  [repr_induced_id] and [repr_induced_comp] say that
-    K ↦ repr_obj is functorial, contravariantly into C.  [ReprCat C] is the
-    category of functors C ⟶ Sets equipped with a chosen representation — the
-    full subcategory of [C, Sets] cut out by [Representable], built with
-    Construction/Subcategory.v's [Sub], so its objects are pairs ⟨K, R⟩ and
-    its morphisms are natural transformations of the underlying functors
-    (formally, paired with a trivial membership witness that the hom-setoid
-    ignores, [Sub] comparing morphisms by first projection) —
-    and [ReprObjFunctor C : ReprCat C ⟶ C^op] is the assignment.  It is FULL
-    ([ReprObj_Full]) and FAITHFUL ([ReprObj_Faithful]): fullness is Mac Lane's
-    correspondence run backwards, an arrow h being carried to
-    ψ' ∘ Hom(h, −) ∘ ψ⁻¹, and faithfulness is the compatibility condition
-    probed through the surjectivity of ψ.  That is the Yoneda embedding read
-    from the other side; the equivalence with C^op that the slogan suggests is
-    NOT assembled here — see below.
-
-    WHAT IS DELIVERED
-
-    - [repr_induced_is_yoneda_transpose] ([eq_refl]).
-    - [repr_of_representation], [Representable_of_UnivProperty],
-      [UnivProperty_of_Representable]; [up_unique_obj_is_repr_pair_iso]
-      ([eq_refl]); [repr_pair_iso_from_is_induced],
-      [repr_pair_iso_to_is_induced], [univ_property_iso_from_is_induced].
-    - [ReprSubcat], [ReprCat], [ReprObjFunctor], [ReprObj_Full],
-      [ReprObj_Faithful].
-    - Non-vacuity over the delooping of (ℕ, +): a non-identity τ whose induced
-      arrow is a non-identity too, in two forms — against the tautological
-      representations of Functor/Representable.v ([wit_tau], where the induced
-      arrow COMPUTES, [wit_induced_computes] being [eq_refl]) and against the
-      in-tree [YoEvalAt_Representable] (Functor/Hom/Yoneda/Natural.v),
-      where it does not compute on the nose and the agreement is [≈].
-
-    WHAT IS NOT DELIVERED
-
-    - No claim that the passages of (2) are mutually inverse.  They are not
-      even composable in general: [Representable_of_UnivProperty] needs a
-      point of the predicate, and going the other way replaces the predicate
-      by "c represents F", which is not the predicate one started with.  What
-      is proved is that each passage exists and that the τ = id isomorphisms
-      agree.
-    - No essential-surjectivity or equivalence claim for [ReprObjFunctor].
-      Full and faithful are proved, and [Hom_Representable] does exhibit, for
-      every object c of C, an object of [ReprCat C] whose representing object
-      is c on the nose — but the essential-surjectivity witness is not
-      packaged, the equivalence is not assembled, and no
-      [EquivalenceOfCategories] is claimed.
-    - No repleteness or 2-categorical statement about [ReprCat], and no
-      comparison with Construction/Elements.v or with
-      Theory/Universal/Element.v's [UniversalElement].  [ReprObj_Full] and
-      [ReprObj_Faithful] are plain definitions rather than registered
-      instances, so a consumer wanting [FullyFaithful] must supply them by
-      name; that follows the header's reason for [Hom_Representable] being a
-      [Definition] and keeps resolution unperturbed.
-    - The witness's category is one-object, so "the induced arrow is not an
-      identity" is a statement about an ENDOmorphism.  No witness with two
-      DISTINCT representing objects and a non-identity induced arrow is given
-      here; at distinct objects "is not an identity" is not a well-typed
-      claim, and what would replace it — that the correspondence separates
-      transformations — is [ReprObj_Faithful], proved in general.
-
-    A UNIVERSE NOTE, MEASURED PER CONSTANT
-
-    Functor/Representable.v's constants leave the object universe
-    unconstrained relative to the hom universe.  An audit corrected an
-    earlier draft of this note, which blamed section (2) as a whole: the
-    pin follows [repr_pair_iso], NOT the section boundary.  Measured per
-    constant, the partition is
-
-      - FREE (no [o = h], no [o <= h]): [repr_of_representation],
-        [Representable_of_UnivProperty], [UnivProperty_of_Representable] —
-        i.e. the passage between the two classes, which consumes
-        [repr_pair_iso] nowhere — together with [ReprSubcat] and [ReprCat];
-      - [o <= h] with no [o = h]: [ReprObjFunctor], [ReprObj_Full],
-        [ReprObj_Faithful], the price of packaging the assignment as a
-        functor into C^op;
-      - PINNED at [o = h]: exactly the four constants that consume
-        [repr_pair_iso] — [repr_pair_iso_from_is_induced],
-        [repr_pair_iso_to_is_induced], [up_unique_obj_is_repr_pair_iso],
-        [univ_property_iso_from_is_induced] — plus
-        [repr_induced_is_yoneda_transpose], which NAMES [Yoneda_Embedding']
-        in its own statement.
-
-    The inherited pin is invisible in the printed BINDER —
-    [repr_pair_iso_from_is_induced] displays as [∀ (C : Category@{u u0 u0})]
-    — and appears only in the constraint block, as [u = u0].  Section (1) is pinned by
-    construction and deliberately so — [repr_induced_is_yoneda_transpose]
-    NAMES [Yoneda_Embedding'] in its own statement, so it can only be stated
-    where that constant is formable, and its category is left unannotated for
-    that reason.  Both the pins and the freedom are guarded in
-    Test/ProbeRepresentableInduced.v. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (** ** The comparison with the Yoneda embedding *)
 

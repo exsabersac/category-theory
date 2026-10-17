@@ -17,60 +17,13 @@ Generalizable All Variables.
 
 (** Strong monads (monads whose functor carries a compatible strength) *)
 
-(* nLab:      https://ncatlab.org/nlab/show/strong+monad
+(*
    Wikipedia: https://en.wikipedia.org/wiki/Strong_monad
 
-   A strong monad on a monoidal category (C, ⊗, I) is a monad (M, η, μ) whose
-   underlying endofunctor M : C ⟶ C carries a (left) tensorial strength
+   本文件给出（余）强度/强（余）单子相关结构。
 
-     t = strength[M] : x ⨂ M y ~> M (x ⨂ y)          (left strength)
-
-   — that is, M is a [StrongFunctor] (see Functor.Strong), so t already
-   satisfies Kock's two coherence laws [strength_id_left] (w.r.t. the left
-   unitor λ) and [strength_assoc] (w.r.t. the associator α) — and whose strength
-   is *compatible with the monad structure* η and μ.  Following Kock (1972,
-   "Strong functors and monoidal monads", Arch. Math. 23) and Moggi (1991,
-   "Notions of computation and monads", Inf. & Comput. 93), the two
-   compatibility conditions are, writing t = strength[M]:
-
-     - η-compat ([strength_ret]):  t ∘ (id ⨂ η) ≈ η
-                 at type  x ⨂ y ~> M (x ⨂ y)
-
-     - μ-compat ([strength_join]): t ∘ (id ⨂ μ) ≈ μ ∘ M t ∘ t
-                 at type  x ⨂ M (M y) ~> M (x ⨂ y)
-
-   In words: pulling η out of the right factor agrees with applying η to the
-   whole tensor, and pulling μ out of the right factor agrees with sliding the
-   strength through both M-layers and then multiplying.  These are exactly the
-   diagrams that make t respect the monad structure in the tensor variable,
-   which is what is needed to internalize Kleisli composition and to give the
-   do-notation / `>>=` of a computational monad in the sense of Moggi: a strong
-   monad's effects can be parameterized by an ambient context x.
-
-   Deep structural fact (exploited below as a validation): the two compatibility
-   laws are *precisely* the [Strong_Transform] squares for the monad's structure
-   maps.  Since strength[Id] = id ([Id_StrongFunctor]), η-compat is exactly the
-   strength-compatibility square of η : Id ⟹ M; and since strength[M ◯ M] =
-   M t ∘ t ([Compose_StrongFunctor]), μ-compat is exactly the strength-
-   compatibility square of μ : M ◯ M ⟹ M.  Thus a strong monad is exactly a
-   monad whose unit and multiplication are *strong* natural transformations — a
-   monoid object in the category of strong endofunctors and strong natural
-   transformations.  We make this explicit at the end of the Tier-2 section
-   ([ret_Strong_Transform], [join_Strong_Transform]).
-
-   "Strong" here means tensorial strength, NOT "strong (i.e. pseudo) monoidal
-   functor"; the two notions are unrelated.  On a symmetric monoidal base the
-   left strength induces a *right* strength by conjugating with the braiding
-   (see [rstr] below, with [rstr_natural], [rstr_ret], [rstr_join]), so every
-   strong monad over a symmetric base is right-strong in the monad-relevant
-   sense.  Two coherence notions for combining a pair of computations appear
-   below.  Abstractly, a monad that is simultaneously left- and right-strong
-   (over an arbitrary bundled right strength) is *commutative* when its two
-   double strengths agree ([CommutativeStrongMonad]).  Concretely, over a
-   symmetric base the derived right strength [rstr] yields named double
-   strengths M x ⨂ M y ~> M (x ⨂ y) ([dstr], [dstr']) and the predicate
-   [commutative_sm] asserting they agree; this double strength is the laxator
-   that underlies the Applicative/Day structure of a commutative monad. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* ================================================================== *)
 (** ** The strong monad class.                                         *)

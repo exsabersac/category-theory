@@ -1,54 +1,14 @@
 (** * Limits and colimits as adjoints of the diagonal functor *)
 
-(* nLab:      https://ncatlab.org/nlab/show/diagonal+functor
+(*
    nLab:      https://ncatlab.org/nlab/show/limit
    Wikipedia: https://en.wikipedia.org/wiki/Limit_(category_theory)
    Wikipedia: https://en.wikipedia.org/wiki/Adjoint_functors
 
-   Mac Lane, "Categories for the Working Mathematician", Springer GTM 5,
-   2nd ed., §IV.2 (p. 87) tabulates the adjoints of the diagonal functor:
-   for a fixed index category J the constant-diagram functor
-   Δ = Diagonal J : C ⟶ [J, C] has a right adjoint exactly when C has all
-   J-shaped limits, and a left adjoint exactly when it has all J-shaped
-   colimits, so that the three functors sit in the sandwich
+   本文件给出极限相关。
 
-       colim ⊣ Δ ⊣ lim.
-
-   Riehl, "Category Theory in Context", Dover 2016, states the same as
-   Proposition 4.6.1, with exercises 4.6.i and 4.6.ii asking respectively
-   for the degenerate rows of the table (the unique functor to the point)
-   and for the identification of the unit and counit with the universal
-   cocone and cone.  Awodey, "Category Theory", Oxford 2nd ed. 2010, §9.3
-   runs the same argument for the special shapes, and Mac Lane's §V.2
-   Exercise 3 asks for the arrow part: a natural transformation β : F ⟹ F'
-   induces lim β : lim F ~> lim F', the unique arrow commuting with the two
-   limiting cones.
-
-   The content is entirely the observation that a cone over F with apex x
-   IS a natural transformation Δ(x) ⟹ F -- the equivalence Wikipedia
-   records under "Cone (category theory)" and which this library already
-   proves as [Cone_Natural_Transform] in Structure/Cone/Const.v.  Given
-   that identification, the hom-set form of the adjunction
-
-       (Δ(x) ~{[J,C]}~> F)  ≅  (x ~{C}~> lim F)
-
-   is literally the universal property of the limit, read as a bijection
-   rather than as unique existence; naturality in both variables is the
-   uniqueness clause applied twice.  Everything below is that one move,
-   plus its dual, plus the bookkeeping that makes both directions of
-   Riehl's proposition into a genuine biconditional.
-
-   Why this presentation earns its keep.  The elementary statement
-   "every diagram of shape J has a limit" is a family of unrelated
-   universal properties; the adjoint statement packages them into a single
-   functor with a single universal property, after which every general
-   theorem about adjunctions applies at once -- uniqueness of adjoints,
-   composition of adjunctions, and (the reason the sandwich is quoted so
-   often) the fact that left adjoints preserve colimits and right adjoints
-   preserve limits.  It is also the shape in which Kan introduced the
-   subject: Structure/Limit/Kan/Extension.v records the other reading,
-   lim F = Ran_(Erase J) F, which is the same universal property with the
-   terminal category in place of the point of Cat. *)
+   （英文长注释已压缩为中文导言；Coq 标识符/Require/API 未改。）
+*)
 
 (* What is consumed here, and what is built
 

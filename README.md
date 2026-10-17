@@ -1,124 +1,79 @@
-# Category Theory in Coq
+# Coq 中的范畴论 (Category Theory in Coq)
 
-This development encodes category theory in Coq, with the primary aim being to
-allow representation and manipulation of categorical terms, as well
-realization of those terms in various target categories.
+本开发用 Coq 编码范畴论，主要目标是：能够表示与操作范畴论中的项，并把这些项在各种目标范畴中实现出来。
 
-- Supported versions: [Coq](https://github.com/coq/coq/) 8.19 through 8.20 and [Rocq](https://github.com/coq/coq/) 9.0 through 9.1.
-- Some parts depend on [Coq-Equations](https://github.com/mattam82/Coq-Equations) 1.2.4 through 1.3.1.
+- 支持版本：[Coq](https://github.com/coq/coq/) 8.19–8.20 与 [Rocq](https://github.com/coq/coq/) 9.0–9.1。
+- 部分内容依赖 [Coq-Equations](https://github.com/mattam82/Coq-Equations) 1.2.4–1.3.1。
 
-## Building
+## 构建 (Building)
 
-The easiest way to build is with [Nix](https://nixos.org/):
+最简单的方式是用 [Nix](https://nixos.org/)：
 
     nix build
 
-This builds against Rocq 9.1 by default. For other versions:
+默认针对 Rocq 9.1。其他版本：
 
     nix build .#category-theory_8_20
     nix build .#category-theory_9_0
 
-To enter a development shell with all dependencies:
+进入带齐依赖的开发 shell：
 
     nix develop
 
-From there, you can use the standard Makefile:
+之后可用标准 Makefile：
 
-    make          # build everything
-    make clean    # clean build artifacts
-    make install  # install the library
+    make          # 构建全部
+    make clean    # 清理构建产物
+    make install  # 安装库
 
-There are also some additional targets for development:
+开发用额外目标：
 
-    make lint           # check for admitted proofs and TODOs
-    make format-check   # check for trailing whitespace
-    make format         # fix trailing whitespace
-    make timing         # build with per-file timing
-    make timing-report  # show slowest files from last timing build
-    make check          # run all checks
+    make lint           # 检查 admitted 证明与 TODO
+    make format-check   # 检查行尾空白
+    make format         # 修复行尾空白
+    make timing         # 带每文件计时构建
+    make timing-report  # 显示上次 timing 构建中最慢的文件
+    make check          # 运行全部检查
 
-To set up pre-commit hooks (requires [Lefthook](https://github.com/evilmartians/lefthook)):
+安装 pre-commit hooks（需 [Lefthook](https://github.com/evilmartians/lefthook)）：
 
     lefthook install
 
-## Usage
+## 使用 (Usage)
 
-It is recommended to include this library in your developments by adding the
-following to your `_CoqProject` file:
+建议在开发中的 `_CoqProject` 里加入：
 
-    -R <path to this library> Category
+    -R <本库路径> Category
 
-Then include the primary elements of the library using:
+然后用下面方式引入库的核心部分：
 
     Require Import Category.Theory.
 
-## Library structure
+## 库结构 (Library structure)
 
-This library is broken up into several major areas:
+本库大致分为这些主要部分：
 
-  - Core `Theory`, covering topics such as categories, functors, natural
-    transformations, adjunctions, kan extensions, etc.
+  - 核心 `Theory`：范畴、函子、自然变换、伴随、Kan 扩张等。
 
-  - Categorical `Structure`, which reveals internal structure of a category by
-    way of morphisms related to some universal property.
+  - 范畴的 `Structure`：通过与某普遍性质相关的态射，揭示范畴的内部结构。
 
-  - Categorical `Construction`, which introduces external structure by
-    building new categories out of existing ones.
+  - 范畴的 `Construction`：在已有范畴之上构造新范畴，引入外部结构。
 
-  - Species of different kinds of `Functor`, `Natural.Transformation`,
-    `Adjunction` and `Kan.Extension`; for example: categories with monoidal
-    structure give rise to monoidal functors preserving this structure, which
-    in turn leads to monoidal transformations that transform functors while
-    preserving their monoidal mapping property.
+  - 各类 `Functor`、`Natural.Transformation`、`Adjunction` 与 `Kan.Extension` 的“种”（species）；例如带幺半结构的范畴引出保持该结构的幺半函子，进而有保持幺半映射性质的幺半变换。
 
-  - The `Instance` directory defines various categories; some of these are
-    fairly general, such as the category of preorders, applicable to any
-    `PreOrder` relation, but in general these are either not defined in terms
-    of other categories, or are sufficiently specific.
+  - `Instance` 目录定义各种具体范畴；有些较一般（如适用于任意 `PreOrder` 的预序范畴），但多数并不用其他范畴定义，或足够特殊。
 
-  - When a concept, such as limits, can be defined using more fundamental
-    terms, that version of limits can be found in a subdirectory of the
-    derived concept, for example there is `Category.Structure.Limit` and
-    `Category.Limit.Kan.Extension`. This is done to demonstrate the
-    relationship of ideas; for example:
-    `Category.Construction.Comma.Natural.Transformation`. As a result, files
-    with the same name occur often, with the parent directory establishing
-    intent.
+  - 当某个概念（如极限）可用更基础的项定义时，该版本会放在派生概念的子目录中，例如 `Category.Structure.Limit` 与 `Category.Limit.Kan.Extension`。这样用来表明思想之间的关系；例如：`Category.Construction.Comma.Natural.Transformation`。因此同名文件很常见，父目录用来表达意图。
 
-Coverage now extends through much of the classical canon: comonads with
-their (co)resolutions, Beck's monadicity theorems, orthogonal factorization
-systems and regular categories, (co)ends and the profunctor calculus with
-Day convolution, displayed categories and the Grothendieck construction,
-additive and abelian structure, bicategories with the mates correspondence,
-pseudo double categories with companions and conjoints, enriched category
-theory with Sets-weighted limits, the general and special adjoint functor
-theorems with reflective subcategories and orthogonal localization, Lawvere
-theories, symmetric multicategories and operads, and elementary topos
-theory with a fully computable witness on skeletal finite sets — all
-axiom-free.
+覆盖范围已延伸到经典内容的很大一部分：带（余）分解的余单子、Beck 单子性定理、正交分解系统与正则范畴、（余）端与带 Day 卷积的双函子演算、展示范畴与 Grothendieck 构造、加性与阿贝尔结构、带 mates 对应的双范畴、带 companions 与 conjoints 的伪双重范畴、带 Sets-加权极限的充实范畴论、一般与特殊伴随函子定理以及反射子范畴与正交局部化、Lawvere 理论、对称多范畴与 operad、以及以骨骼有限集上完全可计算见证给出的初等 topos 理论——全部无公理。
 
-### Programming sub-library
+### 编程子库 (Programming sub-library)
 
-Within `Theory.Coq` there is now a sub-library that continues work started in
-the [coq-haskell](https://github.com/jwiegley/coq-haskell/) library. This
-sub-library is specifically aimed at "applied category theory" for programmers
-in the category of Coq types and functions. The aim is to mimic the utility of
-Haskell's monad hierarchy -- but for Coq users, similar to what ext-lib
-achieves. I've also adjusted a few of my notations to more closely match
-ext-lib.
+在 `Theory.Coq` 中有一个子库，延续了 [coq-haskell](https://github.com/jwiegley/coq-haskell/) 的工作。该子库面向程序员，做 Coq 类型与函数范畴中的“应用范畴论”，目标是模仿 Haskell monad 层级对 Coq 用户的用处（类似 ext-lib）。部分记号也向 ext-lib 靠拢。
 
-Where this library differs, and what is considered the main contribution of
-this work, is that laws are not defined for these structures in the
-sub-library. Rather, the programmer establishs that her Monad is lawful by
-proving that a mapping exists from that definition into the general definition
-of monads (found in `Theory.Monad`) specialized to the category Coq. In this
-way the rest of the category-theory library is leveraged to discharge these
-proof obligations, while keeping the programmatic side as simple as possible.
+与常见做法不同、也是本工作的主要贡献是：这些结构的定律**不**在子库里直接定义。程序员通过证明：从其定义到（专门化到 Coq 范畴的）一般单子定义（见 `Theory.Monad`）存在一个映射，来说明其 Monad 是合法的。这样可借助其余范畴论库完成证明义务，同时尽量保持程序侧简单。
 
-For example, it is trivial to define the composition of two Applicatives. What
-is not so trivial is proving that this is truly an Applicative, based on that
-simple definition. While this proof was done in coq-haskell, it requires a bit
-of Ltac magic to keep the size down:
+例如，定义两个 Applicative 的复合很容易；难的是从该简单定义证明它确实是 Applicative。在 coq-haskell 里做过，但需要一些 Ltac 技巧控制证明大小：
 
 ```
 Program Instance Compose_ApplicativeLaws
@@ -141,15 +96,9 @@ Obligation 2. (* ap_composition *)
 Qed.
 ```
 
-What's ill-gotten about this proof is that it's confined to the very specific
-case of Coq applicative endo-functors. However, there is a more general truth,
-which is that any two lax monoidal functors in any monoidal category also
-compose. So why not appeal to that proof to establish that our programmatic
-applicative in Coq is lawful by construction?
+这段证明的问题在于：它只针对 Coq 上的 applicative 自函子这一特例。更一般的事实是：任意幺半范畴中任意两个松弛幺半函子也可复合。为何不借助该证明，说明我们在 Coq 中的程序侧 applicative 由构造即合法？
 
-This is what the new sub-library does. Since the more general proof is already
-completed (and is too large to paste here), one may appeal to it directly to
-establish the desired fact:
+新子库正是这样做的。更一般的证明已经完成（太大不便粘贴），可直接引用以得到所需结论：
 
 ```
 (* The composition of two applicatives is itself applicative. We establish
@@ -176,175 +125,98 @@ Proof.
 Qed.
 ```
 
-This proof pulls in several instances to establish that the category Coq is
-cartesian, closed, and thus closed monoidal, etc.
+该证明会拉入若干实例，以说明 Coq 范畴是笛卡尔、闭的，从而是闭幺半的，等等。
 
-The hope is this will become a happy marriage of simple, useful computational
-constructions for Coq programmers, with relevant proof results from what
-category theory tells us about these structures in general, such as the above
-fact concerning composition of monoidal functors.
+希望这能成为对 Coq 程序员简单有用的计算构造，与范畴论对这些结构的一般结论（例如上述幺半函子复合）的良性结合。
 
-## Duality
+## 对偶 (Duality)
 
-The core theory is defined in such a way that "the dual of the dual" is
-evident to Coq by mere simplification (that is, "C^op^op = C" follows by
-reflexivity for the opposite of the opposite of categories, functors, natural
-transformation, adjunctions, isomorphisms, etc.).
+核心理论的定义方式使得“对偶的对偶”对 Coq 仅靠化简即可看清（即范畴、函子、自然变换、伴随、同构等的对偶之对偶中，“C^op^op = C”可由 reflexivity 得到）。
 
-For this to be true, certain artificial constructions are necessary, such as
-repeating the associativity law for categories in symmetric form, and likewise
-the naturality condition of natural transformations. This repeats proof
-obligations when constructing these objects, but pays off in the ability to
-avoid repetition when stating the dual of whole structures.
+为此需要一些人为构造，例如把范畴的结合律以对称形式再写一遍，自然变换的自然性条件同理。构造这些对象时证明义务会重复，但换来陈述整个结构对偶时不必再写一套。
 
-As a result, the definition of comonads, for example, is reduced to one line:
+因此，例如余单子的定义可缩成一行：
 
     Definition Comonad `{M : C ⟶ C} := @Monad (C^op) (M^op).
 
-Most dual constructions are similarly defined, with the exception of `Initial`
-and `Cocartesian` structures. Although the core classes are indeed defined in
-terms of their dual construction, an alternate surface syntax and set of
-theorems is provided (for example, using `a + b` to indicate coproducts) to
-make life is a little less confusing for the reader. For instance, it follows
-from duality that `0 + X ≅ X` is just `1 × X ≅ X` in the opposite category,
-but using separate notations makes it easier to see that these two
-isomorphisms in the *same* category are not identical. This is especially
-important because Coq hides implicit parameters that would usually let you
-know duality is involved.
+多数对偶构造类似；例外是 `Initial` 与 `Cocartesian`。核心类虽仍用对偶构造定义，但提供了另一套表面语法与定理集（例如用 `a + b` 表示余积），让读者少一点困惑。由对偶可知 `0 + X ≅ X` 就是对偶范畴中的 `1 × X ≅ X`，但用不同记号更容易看出：在**同一**范畴里这两个同构并不相同。这一点很重要，因为 Coq 常隐藏隐式参数，读者不易察觉对偶是否介入。
 
-## Design decisions
+## 设计决策 (Design decisions)
 
-Some features and choices made in this library:
+本库的一些特性与选择：
 
-  - Type classes are used throughout to present concepts. When a type class
-    instance would be too general -- and thus overlap with other instances --
-    it is presented as a definition that can later be added to instance
-    resolution with `Existing Instance`.
+  - 全程用类型类呈现概念。当某个类型类实例过于一般、会与其他实例重叠时，改写成定义，之后可用 `Existing Instance` 加入实例解析。
 
-  - All definitions are in Type, so that `Prop` is not used anywhere except
-    specific category instances defined over `Prop`, such as the category
-    `Rel` with heterogeneous relations as arrows.
+  - 所有定义都在 Type 中，除了在 `Prop` 上定义的具体范畴实例（例如箭头为异质关系的 `Rel`）外，核心中不用 `Prop`。
 
-  - No axioms are used anywhere in the core theory; they appear only at times
-    when defining specific category instances, mostly for the `Coq` category.
+  - 核心理论不使用任何公理；公理只在个别范畴实例中出现，主要是 `Coq` 范畴。
 
-  - Homsets are defined as computationally-relevant homsetoids (that is, using
-    `crelation`). This is done using a variant of the `Setoid` type class
-    defined for this library; likewise, the category of `Sets` is actually the
-    category of such setoids. This increases the proof work necessary to
-    establish definitions -- since preservation of the equivalence relation is
-    required at all levels -- but allows categories to be flexible in what it
-    means for two arrows to be equivalent.
+  - Hom 集定义为计算相关的 homsetoid（即用 `crelation`）。为此使用了本库自定义的 `Setoid` 变体；同样，`Sets` 范畴实际上是这类 setoid 的范畴。这增加了建立定义时的证明工作——每一层都要保持等价关系——但使范畴在“两箭头何时等价”上更灵活。
 
-## Notations
+## 记号 (Notations)
 
-There are many notations used through the library, which are chosen in an
-attempt to make complex constructions appear familiar to those reading modern
-texts on category theory. Some of the key notations are:
+库中大量记号，目的是让复杂构造对读过现代范畴论文本的人显得熟悉。主要记号包括：
 
- - `≈` is equivalence; equality is almost never used.
- - `≈[Cat]` is equivalence between arrows of some category, here `Cat`; this
-   is only needed when type inference fails because it tries to find both the
-   type of the arguments, and the type class instance for the equivalence
- - `≅` is isomorphism; apply it with `to` or `from`
- - `≊` is used specifically for isomorphisms between homsets in `Sets`
- - `iso⁻¹` also indicates the reverse direction of an isomorphism
- - `X ~> Y`: a squiggly arrow between objects is a morphism
- - `X ~{C}~> Y`: squiggly arrows may also specify the intended category
- - `id[C]`: many known morphisms allow specifying the intended category;
-   sometimes this is even used in the printing format
- - `C ⟶ D`: a long right arrow between categories is a functor
- - `F ⟹ G`: a long right double arrow between functors is a natural
-   transformation
- - `f ∘ g`: a small centered circle is composition of morphisms, or horizontal
-   composition generally
- - `f ∘[Cat] g`: composition can specify the intended category, as an aid to
-   type inference
-   composition generally
- - `f ○ g`: a larger hollow circle is composition of functors
- - `f ⊙ g`: a larger circle with a dot is composition of isomorphisms
- - `f ∙ g`: a solid composition dot is composition of natural
-   transformations, or vertical composition generally
- - `f ⊚ g`: a larger circle with a smaller circle is composition of
-   adjunctions
- - `([C, D])`: A pair of categories in square brackets is another way to give
-   the type of a functor, being an object of the category `Fun(C, D)`
- - `F ~{[C, D]}~> G`: An arrow in a functor category is a natural
-   transformation
- - `F ⊣ G`: the turnstile is used for adjunctions
- - Cartesian categories use `△` as the `fork` operation and `×` for products
- - Cocartesian categories use `▽` as the `merge` operation and `+` for
-   coproducts
- - Closed categories use `^` for exponents and `≈>` for the internal hom
- - As objects, the numbers `0` and `1` refer to initial and terminal objects
- - As categories, the numbers `0` and `1` refer to the initial and terminal
-   objects of `Cat`
- - Products of categories can be specified using `∏`, which does not require
-   pulling in the cartesian definition of `Cat`
- - Coproducts of categories can be specified using `∐`, which does not require
-   pulling in the cocartesian definition of `Cat`
- - Products of functors are given with `F ∏⟶ G`, combining product and functor
-   notations; the same for `∐⟶`
- - Comma categories of two functors are given by `(F ↓ G)`
- - Likewise, the arrow category of `C⃗`
- - Slice categories use a unicode forward slash `C̸c`, since the normal forward
-   slash is not considered an operator
- - Coslice categories use `c ̸co C`, to avoid ambiguity
+ - `≈`：等价；几乎从不用相等。
+ - `≈[Cat]`：某范畴（此处为 `Cat`）中箭头之间的等价；仅在类型推断失败、既要推断参数类型又要找等价类型类实例时需要。
+ - `≅`：同构；用 `to` 或 `from` 取方向。
+ - `≊`：专用于 `Sets` 中 hom 集之间的同构。
+ - `iso⁻¹`：同构的反向。
+ - `X ~> Y`：对象之间的波浪箭头表示态射。
+ - `X ~{C}~> Y`：波浪箭头也可标明意图中的范畴。
+ - `id[C]`：许多已知态射可标明意图范畴；有时打印格式也会用。
+ - `C ⟶ D`：范畴之间的长右箭头表示函子。
+ - `F ⟹ G`：函子之间的长双箭头表示自然变换。
+ - `f ∘ g`：小实心圆点表示态射复合，或一般的水平复合。
+ - `f ∘[Cat] g`：复合可标明意图范畴，帮助类型推断。
+ - `f ○ g`：较大空心圆表示函子复合。
+ - `f ⊙ g`：带点的较大圆表示同构的复合。
+ - `f ∙ g`：实心复合点表示自然变换的复合，或一般的垂直复合。
+ - `f ⊚ g`：内外两圆表示伴随的复合。
+ - `([C, D])`：方括号中的一对范畴是函子的另一种类型写法，即 `Fun(C, D)` 中的对象。
+ - `F ~{[C, D]}~> G`：函子范畴中的箭头是自然变换。
+ - `F ⊣ G`：转角符表示伴随。
+ - 笛卡尔范畴用 `△` 作 `fork`，用 `×` 作积。
+ - 余笛卡尔范畴用 `▽` 作 `merge`，用 `+` 作余积。
+ - 闭范畴用 `^` 作指数，用 `≈>` 作内部 hom。
+ - 作为对象，数字 `0` 与 `1` 指初始与终对象。
+ - 作为范畴，数字 `0` 与 `1` 指 `Cat` 的初始与终对象。
+ - 范畴的积可用 `∏` 写出，不必拉入 `Cat` 的笛卡尔定义。
+ - 范畴的余积可用 `∐` 写出，不必拉入 `Cat` 的余笛卡尔定义。
+ - 函子的积写作 `F ∏⟶ G`，结合积与函子记号；余积同理 `∐⟶`。
+ - 两函子的逗号范畴写作 `(F ↓ G)`。
+ - 箭头范畴写作 `C⃗`。
+ - 切片范畴用 Unicode 斜杠 `C̸c`（普通 `/` 不算运算符）。
+ - 余切片范畴用 `c ̸co C`，避免歧义。
 
-## Future directions
+## 未来方向 (Future directions)
 
-### Computational Solver
+### 计算求解器 (Computational Solver)
 
-There are some equivalences in category-theory that are very easily expressed
-and proven, but slow to establish in Coq using only symbolic term rewriting.
-For example:
+范畴论中有些等价关系很容易陈述与证明，但若在 Coq 里只靠符号重写会很慢。例如：
 
     (f ∘ g) △ (h ∘ i) ≈ split f h ∘ g △ i
 
-This is solved by unfolding the definition of split, and then rewriting so
-that the fork operation (here given by `△`) absorbs the terms to its left,
-followed by observing the associativity of composition, and then simplify
-based on the universal properties of products. This is repeated several times
-until the prove is trivially completed.
+解法是展开 `split`，再重写使 `fork`（此处为 `△`）吸收左侧项，利用复合的结合律，再按积的普遍性质化简。如此反复直到平凡完成。
 
-Although this is easy to state, and even to write a tactic for, it can be
-extremely slow, especially when the types of the terms involved becomes large.
-A single rewrite can take several seconds to complete for some terms, in my
-experience.
+虽好陈述，也容易写成 tactic，但当相关项的类型很大时会极慢；经验上单次 rewrite 有时要数秒。
 
-The goal of this solver is to reify the above equivalence in terms of its
-fundamental operations, and then, using what we know about the laws of
-category theory, to compute the equivalence down to an equation on indices
-between the reduced terms. This is called *computational reflection*, and
-encodes the fact that our solution only depends on the categorical structure
-of the terms, and not their type.
+该求解器的目标是把上述等价按基本运算具体化（reify），再利用范畴论定律，把等价计算成约化项之间在指标上的等式。这叫**计算反射** (computational reflection)：解只依赖项的范畴结构，不依赖其类型。
 
-That is, an incorrectly-built structure will simply fail to solve; but since
-we're reflecting over well-typed expressions to build the structure we pass to
-the solver, combined with a proof of soundness for that solver, we can know
-that solvable, well-typed, terms always give correct solutions. In this way,
-we transfer the problem to a domain without types, only indices, solve the
-structural problem there, and then bring the solution back to the domain of
-full types by way of the soundness proof.
+构造不当的结构会直接解失败；但我们是对良类型表达式反射以得到交给求解器的结构，再加上求解器的可靠性证明，可知可解且良类型的项总给出正确解。这样把问题转到只有指标、没有类型的域，在那里解结构问题，再靠可靠性证明回到带完整类型的域。
 
-### Compiling to categories
+### 编译到范畴 (Compiling to categories)
 
-Work has started in `Tools/Abstraction` for compiling monomorphic Gallina
-functions into "categorical terms" that can then be instantiated in any
-supporting target category using Coq's type class instance resolution.
+`Tools/Abstraction` 中已开始把单态 Gallina 函数编译成“范畴论项”，再用 Coq 的类型类实例解析在任意支持的目标范畴中实例化。
 
-This is as a Coq implementation of an idea developed by Conal Elliott, which
-he first implemented in and for Haskell. It is hoped that the medium of
-categories may provide a sound means for transporting Gallina terms into other
-syntactic domains, without relying on Coq's extraction mechanism.
+这是 Conal Elliott 想法的 Coq 实现（他先在并面向 Haskell 实现）。希望范畴这一媒介能提供一种可靠方式，把 Gallina 项搬到其他句法域，而不依赖 Coq 的 extraction。
 
-## License
+## 许可证 (License)
 
-This library is made available under the BSD-3-Clause license, a copy of which is
-included in the file [`LICENSE.md`](LICENSE.md). You're free to use it for any
-purpose, personal or commercial (including proprietary derivatives), so long as
-a copy of the license file is maintained in the derived work. Any
-acknowledgement referring back to this repository, while not necessary, is
-certainly appreciated.
+本库以 BSD-3-Clause 许可提供，副本见 [`LICENSE.md`](LICENSE.md)。可自由用于任何目的（含专有衍生作品），只要在衍生作品中保留许可证副本。回指本仓库的致谢非必需，但非常欢迎。
 
 John Wiegley
+
+---
+
+**中文翻译说明**：本分支 `zh-CN` 将文档与注释译为简体中文，便于阅读；Coq 标识符、模块名、`Require` 路径与 API 名称保持英文不变。

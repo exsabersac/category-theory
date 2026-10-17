@@ -1,3 +1,5 @@
+> **zh-CN**：规划/交接文档。篇幅很长，正文以英文为主（便于对照历史 PR 与检查清单）；阅读时可先看 `doc/plan/00-INDEX.md` 中文地图。
+
 # Campaign 3 — Book-coverage catalog: MacLane / Awodey / Seven Sketches
 
 **Frozen plan. Read-only for the purpose of lowering the bar.** Drafted

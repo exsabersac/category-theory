@@ -1,4 +1,10 @@
-# Conventions and Gates — binding for every phase (7–17)
+# 公约 (Conventions) — phases 7–17 共享
+
+> **zh-CN 摘要**：执行任何 `phase-NN-*.md` 前读本文件。核心约束与主库一致：态射用 `≈` 不用 `=`；核心理论零新公理；宇宙多态约束诚实写出；门禁含 `make`、`make todo`、相关 `print-assumptions`；提交信息清楚；对偶优先复用 `C^op`。下文保留英文细则与检查清单，标题已尽量中英对照。
+
+---
+
+# 公约 (Conventions) and Gates — binding for every phase (7–17)
 
 > **AI executor: read this file in full before starting any phase.** It is the
 > shared, binding preamble. Each `phase-NN-*.md` work order assumes these rules

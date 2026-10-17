@@ -49,67 +49,30 @@ Print Assumptions Hypergraph.
 
 ## Caveats：「Closed under the global context」确立与不确立什么
 
-（以下英文原文；标题已中文化。）
+审计把两种真正不同的局面混在一起，必须分开看。
 
- does and does not establish
+1. **无公理且有具体模型居住。** 此处「Closed under the global context」报告认证的是关于库中**实际包含**之物的结果。真正例子是 `classifier_classifies`：它对任意 `ElementaryTopos` 已证，且库无条件地展示了一个——`Instance/FinSet/Topos.v` 中的 `FinSet_Topos : ElementaryTopos FinSet`——其健全性例子由 `eq_refl` 计算（例如 `Pow 2 = 4`）。库还展示两个**条件性**的：`Sets_Topos`（`Instance/Sets/Topos.v`）与 `Presheaf_Topos`（`Instance/Fun/Topos.v`），各依赖尚无无公理树内居住者的假设；它们不影响本例，因 `classifier_classifies` 在两者上均因宇宙理由被拒（钉在 `Test/ProbeToposInstances404.v`）。哪些标题结果带树内见证、哪些仅为条件性，完整台账见 [INHABITATION.md](INHABITATION.md)。
 
-The audit conflates two genuinely different situations, and it is
-important to keep them apart.
+   注意：若像本文件早先版本建议的那样，把 `Sets` 的推出实例 `Sets_HasPushouts` 喂给 `Cospan_Hypergraph`，并不通过类型检查：共跨的 hom 携带顶点对象，故 `CospanCat` 要求对象坐在 hom 之下或同级，而 `Sets` 把对象放在比 hom 高一个宇宙，`CospanCat Sets HP` 对任何 `HP` 都报告宇宙不一致。合用的路线是骨骼 `FinSet`，由 `FinSet_HasPushouts`（`Instance/FinSet/Pushout.v`）供给：在 `FinSet` 上共跨超图与两个 spider 结果均可居住且无公理。见 [INHABITATION.md](INHABITATION.md) 的共跨注记。
 
-1. **Axiom-free AND inhabited by a concrete model.**  Here a "Closed
-   under the global context" report certifies a result about something
-   the library actually contains.  The genuine example is
-   `classifier_classifies`: it is proven for any `ElementaryTopos`, and
-   the library exhibits one unconditionally — `FinSet_Topos :
-   ElementaryTopos FinSet` in `Instance/FinSet/Topos.v` — whose sanity
-   examples compute by `eq_refl` (for instance `Pow 2 = 4`).  It also
-   exhibits two CONDITIONAL ones, `Sets_Topos` (`Instance/Sets/Topos.v`)
-   and `Presheaf_Topos` (`Instance/Fun/Topos.v`), each resting on a
-   hypothesis with no axiom-free in-tree inhabitant; they leave this
-   example untouched, since `classifier_classifies` is refused at both
-   on universe grounds (pinned in `Test/ProbeToposInstances404.v`).  A
-   full ledger of which headline results carry an in-tree witness and
-   which are conditional-only is kept in
-   [INHABITATION.md](INHABITATION.md).
+2. **按书写无公理，但尚未实例化。** `Hypergraph` 是 `Class : Type` 声明，`DecoratedCospan_Hypergraph` 是活在 section `Context {DCHGC : DecCospan_Hypergraph_Coherent}` 下的 `Program Definition`，而其连贯类在库中**从未**实例化（不存在 `DecCospan_Hypergraph_Coherent` 或 `HypergraphPROP` 的居住者）。对这些，「Closed under the global context」平凡或空虚为真，不认证任何具体结果。（对比之下 `PROP` 本身**有**居住者——`FreePROP`、`PresentedPROP`、`Lawvere_PROP`、`RepeatPROP`——故不在此列。）
 
-   Note that feeding `Cospan_Hypergraph` the `Sets` pushout instance
-   `Sets_HasPushouts`, as earlier editions of this file suggested, does
-   not type-check: a cospan's hom carries an apex object, so `CospanCat`
-   requires objects to sit at or below homs, whereas `Sets` places its
-   objects one universe above its homs, and `CospanCat Sets HP` reports
-   a universe inconsistency for any `HP`.  The route that fits is
-   skeletal `FinSet`, and `FinSet_HasPushouts`
-   (`Instance/FinSet/Pushout.v`) supplies it: over `FinSet` the cospan
-   hypergraph and both spider results are inhabited and axiom-free.  See
-   the cospan note in [INHABITATION.md](INHABITATION.md).
+   对 `Class` *类型* 运行 `Print Assumptions` 报告的是类型表达式的假设，而非任何居住者的假设——类型没有可依赖公理的证明内容。同样，量化在未实例化 section 假设上的定义报告「Closed」，只因该假设被 lambda 绑定：假设被排入定义自身的签名而非被满足。两种情形下审计都不确立任何居住者存在。
 
-2. **Axiom-free *as written*, but not yet instantiated.**  `Hypergraph`
-   is a `Class : Type` declaration, and `DecoratedCospan_Hypergraph`
-   is a `Program Definition` living under a section `Context`
-   `{DCHGC : DecCospan_Hypergraph_Coherent}` whose coherence class is
-   NEVER instantiated anywhere in the library (there is no inhabitant
-   of `DecCospan_Hypergraph_Coherent` or of `HypergraphPROP`).  For
-   these, "Closed under the global context" is trivially or vacuously
-   true and certifies no concrete result.  (`PROP` itself, by contrast,
-   IS inhabited — by `FreePROP`, `PresentedPROP`, `Lawvere_PROP`, and
-   `RepeatPROP` — so it is not in this list.)
+   `CreatesLimit` 同样是 `Class` 类型，故其审计条目本身不认证任何东西；应一并阅读的居住者是 `em_forget_CreatesAllLimits`（亦在此审计），以及 [INHABITATION.md](INHABITATION.md) 所记在 `Coq` 上对 `Id_Monad` 的完全具体实例。
 
-   Running `Print Assumptions` on a `Class` *type* reports the
-   assumptions of the type expression, not of any inhabitant — a type
-   has no proof content to depend on axioms.  Likewise, a definition
-   quantified over an uninstantiated section hypothesis reports
-   "Closed" only because that hypothesis is lambda-bound: the
-   assumption is discharged into the definition's own signature rather
-   than satisfied.  In neither case does the audit establish that any
-   inhabitant exists.
+## 如何审计 (How to audit)
 
-   `CreatesLimit` is likewise a `Class` type, so its entry in the audit
-   certifies nothing on its own; the inhabitant to read alongside it is
-   `em_forget_CreatesAllLimits`, which is audited here too, and the
-   fully concrete instantiation at `Id_Monad` over `Coq` recorded in
-   [INHABITATION.md](INHABITATION.md).
+运行：
 
-## How to audit
+```bash
+make print-assumptions
+```
+
+该门禁随库增长；数字是带标准的测量：`grep -c 'Print Assumptions' Makefile` 在 2026-10-08 于 #482 之后返回 **14510**……（下文长段为历次 issue 增补 `Print Assumptions` 目标的英文测量台账，标识符与数字保持原样以便对照 Makefile；概念性说明见上。）
+
+
+ How to audit
 
 Run
 
@@ -2423,7 +2386,10 @@ the [Caveats](#caveats-what-closed-under-the-global-context-does-and-does-not-es
 above: several of these definitions are class types or conditional
 constructions that are axiom-free without yet being inhabited.
 
-## Stdlib axioms
+## Stdlib 公理 (Stdlib axioms)
+
+> 以下为具体实例层所调用 stdlib 公理的英文审计正文（标识符与测量保留）。
+
 
 The audited core definitions listed under [How to audit](#how-to-audit)
 — the ones the `print-assumptions` make target checks — are "Closed
@@ -2758,7 +2724,7 @@ the global context".  Known live uses:
   exactly as the `Instance/Coq` and `Instance/Lambda` entries above
   are.
 
-### The metric-space development, measured per constant
+### 度量空间开发：按常量测量
 
 `Instance/Met.v`, `Instance/Met/Extended.v` and
 `Instance/Met/Completion.v` were audited constant by constant rather
@@ -2850,7 +2816,10 @@ files from `Coq.Logic.*` more generally — those axioms become part of
 your development's assumption set.  The point is that the audited core
 definitions above stay free of them; the library as a whole does not.
 
-## Adding new axioms
+## 添加新公理 (Adding new axioms)
+
+> 流程说明原文如下。
+
 
 The design intent is to keep the audited core definitions free of
 `Axiom`/`Parameter` declarations apart from the ZX `Phase`
@@ -2864,7 +2833,7 @@ add a new `Axiom` or `Parameter` in a contribution:
    `print-assumptions` make target so the addition shows up in audit
    output.
 
-## Note: the former version-conditional obligation
+## 注记：此前版本条件义务
 
 `Structure/UniversalProperty/Universal/Arrow.v` (in
 `UniversalArrowIsUniversalProperty`) once carried a single obligation

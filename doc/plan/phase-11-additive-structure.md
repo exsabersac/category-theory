@@ -1,5 +1,7 @@
 # Phase 11 work order — additive structure
 
+> **zh-CN**：本阶段工单。执行前读 `00-CONVENTIONS.md` 与 `00-INDEX.md`。正文检查清单与 Coq 标识符保持英文。
+
 > **Standalone AI work order. Prerequisite reading: `doc/plan/00-CONVENTIONS.md`
 > (binding rules, gates, definition of done) and `doc/plan/00-INDEX.md`
 > (dependency graph, branch layout, execution lessons from phases 5–6).**

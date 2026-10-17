@@ -1,5 +1,7 @@
 # Phase 18 — Concept documentation coverage (frozen plan)
 
+> **zh-CN**：本阶段工单。执行前读 `00-CONVENTIONS.md` 与 `00-INDEX.md`。正文检查清单与 Coq 标识符保持英文。
+
 Invoked 2026-07-16 via /wiggum. User directive: the comonad files (PR #209)
 carry in-depth background on purpose and utility; the rest of the library
 does not. Build a follow-on PR adding similar coverage for the other

@@ -1,131 +1,27 @@
 # 旗舰居住性 (Flagship inhabitation)
 
-> **zh-CN**：标题与下列导言已译。长表与分项居住性细节本波次保留英文原文（见分隔线后）。配套见 `docs/SIZE.md`、`docs/AXIOMS.md`。
+本文记录：对本库标题结果，每个结果的特有假设是否由库内构造的具体对象满足，抑或该结果仍是无公理的*条件句*，而其假设尚无树内对象满足。
 
-本文记录：对本库标题结果，每个结果的特有假设是否由库内构造的具体对象满足，
-抑或该结果仍是无公理的*条件句*，而其假设尚无树内对象满足。
+请精确阅读此范围。下文点名的每个结果都已证明，且（据 `docs/AXIOMS.md`）已审计者无公理。此处问的是不同且互补的问题：定理是否*关于*库实际构建的东西？量化在 `Complete C` 上的定理，无论是否展示过任何 `Complete` 范畴，都是真正的定理；但校准库证明了多少的读者应知道哪些结果带有模型、哪些没有。参数化证明与在树内实例化是不同成就，本表把它们分开。
 
-请精确阅读此范围。下文点名的每个结果都已证明，且（据 `docs/AXIOMS.md`）已审计者无公理。
-此处问的是不同且互补的问题：定理是否*关于*库实际构建的东西？
+全文适用两条谨慎。第一，「无树内见证」不是「不可满足」：多数情形普通数学中存在模型，只是此处尚未形式化。第二，见证并不总是仅因欠努力而缺席——库的宇宙纪律可使某具体实例化不可能，如下文 cospan 行所示。
 
-全文适用两条谨慎。第一，「无树内见证」不是「不可满足」。第二，见证并不总是仅因欠努力而缺席——库的宇宙纪律可使某具体实例化不可能。
+**大小墙，简述。** 伴随函子行中反复出现的宇宙障碍，权威陈述见 `Structure/Complete.v` 文首大小注记（及 `docs/SIZE.md`）。本库以 `PropEquiv` 等机制在具体代数范畴上推进解集宇宙问题；细节见英文正文与该注记。
+
+配套：`docs/AXIOMS.md`、`docs/SIZE.md`、`docs/INDEX.md`。
 
 ---
 
-This document records, for the library's headline results, whether the
-distinctive hypothesis of each result is satisfied by a concrete object
-constructed inside the library, or whether the result stands as an
-axiom-free *conditional* whose hypothesis no in-tree object yet meets.
+## 已见证结果 (Witnessed results)
 
-Read this scope precisely.  Every result named below is proven, and (per
-`docs/AXIOMS.md`) the audited ones are free of axioms.  The question here is
-a different and complementary one: is the theorem *about* something the
-library actually builds?  A theorem quantified over `Complete C` is a real
-theorem whether or not any `Complete` category is exhibited; but a reader
-calibrating how much the library demonstrates should know which results come
-with a model and which do not.  Proving a theorem parametrically and
-instantiating it in-tree are distinct achievements, and this table keeps
-them apart.
+下列结果的特有前提由库内具体对象满足；对其的「Closed under the global context」报告认证的是库实际包含之物。
 
-Two cautions apply throughout.  First, "no in-tree witness" is not
-"unsatisfiable": in most cases a model exists in ordinary mathematics and
-simply has not been formalised here.  Second, a witness is not always
-merely absent for want of effort — the library's universe discipline can
-make a particular concrete instantiation impossible, as the cospan row
-below shows, so the fact that a premise is inhabited in mathematics does not
-guarantee it can be inhabited in this development.
-
-**The size wall, in brief.** The one universe obstruction that recurs in the
-adjoint-functor rows below has a single authoritative statement, the size note
-in the header of `Structure/Complete.v`; this paragraph and the next are an
-echo of it, and any disagreement between them is to be resolved in that file's
-favour. The arithmetic is that a `Prop`-valued relation on a carrier in
-`Type@{u}` is itself a type in `Type@{u}`, while a `Type`-valued one lands in
-`Type@{u+1}`. This library's `≈` is `Type`-valued and stays so, because in
-`Cat` an `F ≈ G` is a family of isomorphisms and truncating it would discard
-data. So the congruences on a carrier, and with them the family of quotient
-presentations of a term model that Mac Lane's §V.7 solution-set argument
-produces, sit one universe above that carrier.
-
-Against that, `Adjunction/GAFT.v` applies its completeness hypothesis to the
-discrete category on the solution-set index, which identifies the index
-universe with the shape-object universe of `Complete`; the equalizer of all
-endomorphisms in the same proof pushes that universe up to the ambient hom
-universe; and `Sets_Complete` caps it at the carrier universe, a shape `Ab` and
-`RMod` inherit through limit creation. A solution set indexed by a Σ over the
-OBJECTS of a concrete algebraic category therefore sits one universe too high,
-and so does one indexed by `Type`-valued congruences. The escape routes — a
-universe lift, inductive cumulativity, an SProp-valued `≈`, a `Prop`-truncated
-kernel, propositional resizing, index-free large completeness — were each
-compiled and refused, and are enumerated in the size note. The resolution this
-library adopts is `PropEquiv` (`Lib/Setoid/Propositional.v`) on the object
-records of the concrete algebraic categories; the rows below say, per result,
-how far that has been carried.
-
-An earlier revision of this paragraph described that resolution as a plan. It is
-landed. Since 2026-09-17 the object records of `CMon`, `Ab`, `RMod R`, `Grp`,
-`Rig`, `Ring`, `Rng` and `Rg` carry the property (`cmon_prop`, `rig_prop`,
-`grp_prop`), so the congruences on their term models are `Prop`-valued and
-carrier-sized, and the adjoint-functor rows below record the consequence in the
-only form that matters here: the tensor product of modules, the balanced tensor,
-the free rings and the free group are now obtained from `representability_theorem`
-and `GAFT` with no hypothesis beyond the ring or the setoid, and none of those
-applications is circular. Since #450 both lists are longer, as the ADDENDUM
-(#450) to item 4 of that size note records. The categories include the setoid
-variety `SVariety E` of `Instance/Variety/Free.v`, for every operation
-signature and set of equations, whose `SetoidOpAlgebra` record carries
-`soa_prop`. The consumers include three more files: `Instance/Grp/Colimit.v`
-and `Instance/Rng/Colimit.v` apply `GAFT` at the diagonal functor of every
-shape with homs at the carrier universe and objects at or below it (the shape
-discipline `Cocomplete@{u u0 u u1}`), with solution sets
-(`Diagonal_Grp_solution_set`, `Diagonal_Rng_solution_set`) indexed by
-`Prop`-valued cocone congruences on a term model, the kernel of a cocone being a
-`Prop` because its target carries `grp_prop` or `rig_prop`, and obtain
-`Grp_Cocomplete_via_GAFT` and `Rng_Cocomplete_via_GAFT`;
-`Instance/Variety/Colimit.v` does the same for `SVariety E` with two
-congruence-indexed solution sets,
-`Diagonal_SVariety_solution_set` at the diagonal and
-`SVariety_Forget_solution_set` at the forgetful functor, whose kernels are
-`Prop`s because the target carries `soa_prop`, and obtains
-`SVariety_Cocomplete_via_GAFT` and Mac Lane's free algebra
-`Free_Variety_via_GAFT`. The side condition is the same `Set < carrier`, and at
-`Grp`, `Rng` and `SVariety E` it is measured to be `GAFT`'s: the three diagonal
-solution sets elaborate at `Set` carriers, and so does `GAFT` applied to every
-argument but the solution set, while `Grp_colim_via_GAFT`, `Rng_colim_via_GAFT`
-and `SVariety_colim_via_GAFT` are refused there, `GAFT` putting the index AT the
-carrier universe and the index sitting strictly above `Set`
-(`Test/ProbeAlgColimit450.v`'s N4 and N5 and `Test/ProbeVarietyColimit450.v`'s
-N4, with those accepted applications as controls). Since #454 a fourth consumer
-is measured the same way, as the size note's
-ADDENDUM (#454) records: `Instance/Mod/Colimit.v` applies `GAFT` at the
-diagonal into `RMod R` for every ring, with `Diagonal_RMod_solution_set`
-indexed by `Prop`-valued cocone congruences on `Instance/Mod/Free.v`'s term
-model, and obtains `RMod_Cocomplete_via_GAFT`, its `Set < carrier` again
-`GAFT`'s (`Test/ProbeWatts454.v`'s N14). And
-`Instance/Mod/Watts/Unconditional.v`'s `RModop_esols`, the element-wise
-solution set behind the unconditional Watt theorem, is indexed by the
-`Prop`-membership submodules of ONE fixed module paired with an element, at the
-carrier universe `representability_theorem` pins, and not by a Σ over the
-objects of `RMod R`. What the resolution does NOT
-do is lift the wall for a solution set indexed by a Σ over the OBJECTS of such a
-category: Mac Lane's own
-`Subgroup G` family is still not built, `tensor_esols_direct` is still refused as
-a direct premise, and `GAFT_from_spanning` is still refused at `RMod R`. Those
-three are the honest residue, and they are recorded per row. Since #450 a
-fourth of the same kind is measured: `Instance/Variety/Spanning.v`'s
-`variety_solution_set`, indexed by a Σ over the objects of `SVariety E`, is
-refused by `GAFT` even with the real `SVariety_Complete` and
-`SVariety_Forget_continuous` as its other arguments (that file's header quotes
-the refusal), where the congruence-indexed `SVariety_Forget_solution_set` is
-accepted by the same call.
-
-## Witnessed results
 
 Each result here is instantiated by a concrete object constructed in the
 library, so the "Closed under the global context" report on it certifies a
 result about something the library actually contains.
 
-| Result | Distinctive premise | In-tree witness |
+| 结果 (Result) | 特有前提 (Distinctive premise) | 树内见证 (In-tree witness) |
 |--------|---------------------|-----------------|
 | `classifier_classifies`, `relations_iso` | an `ElementaryTopos` | `FinSet_Topos` (`Instance/FinSet/Topos.v`); at `Sets` the theorem is not even STATABLE — its own construction builds a setoid whose carrier is `SubObj x`, forcing objects ≤ homs, while `Sets@{o so} : Category@{so o o}` has o < so (a universe inconsistency, pinned in `Test/ProbeClassifier402.v` against `char_reindex` as the accepted control) — so `FinSet_Topos` remains the only in-tree witness for THESE TWO CONSTANTS, and the reason is now sharper than a missing instance: since #404 the tree has TWO further assembled toposes, `Sets_Topos` (`Instance/Sets/Topos.v`) and `Presheaf_Topos` (`Instance/Fun/Topos.v`), and BOTH `classifier_classifies` and `relations_iso` are REFUSED at each of them — four universe inconsistencies, all four pinned in `Test/ProbeToposInstances404.v` with `Pow` at those toposes as the accepted control — so this row's witness column gains nothing from them; `Instance/Sets/Classifier/OneLevel.v` supplies a conditional `SubobjectClassifier Sets`, and `Instance/Fun/Classifier.v` a conditional one for presheaf categories — where the theorem IS formable at an abstract classifier of `[C^op, Sets]` (unlike at `Sets`), is refused at the built `Fun_Classifier` (whose elaboration minimizes the presheaf category's hom universe below its object universe), and DOES apply to the re-annotated `Fun_Classifier_small`, giving `fun_classifier_classifies` and its naturality upgrade `fun_sub_classifier_natural`; all three measurements are pinned in `Test/ProbeFunClassifier403.v` |
 | `power_object_monadic`, `topos_has_finite_colimits`, `topos_finitely_complete` (`Structure/Topos/{Monadic,Colimits}.v`) | an `ElementaryTopos` (NO further premise: the theorems are unconditional over the class, and their universe instances leave the ambient object universe FREE and carry no `Set`) | `FinSet_Topos` (`Instance/FinSet/Topos.v`), the only UNCONDITIONAL assembled topos of the tree's three — the other two being `Sets_Topos` (`Instance/Sets/Topos.v`, CONDITIONAL on `Untruncate`, or on `DecImage`, or on `IEM`) and `Presheaf_Topos` (`Instance/Fun/Topos.v`, CONDITIONAL on `Untruncate`; `Copresheaf_Topos` is the covariant reading), neither premise having an axiom-free in-tree inhabitant, so this row's "NO further premise" column stays true of the THEOREMS and must not be read as saying the two new witnesses are unconditional.  All three of this row's constants DO elaborate at both, and their colimit legs are exhibited in `Test/ProbeToposInstances404.v`: at `Sets` the derived initial object, binary coproduct, coequalizers, pushouts and equalizers are all SECOND inhabitants, ascribed at `Sets_Initial`/`Sets_Cocartesian`/`Sets_HasCoequalizers`/`Sets_HasPushouts`/`Sets_HasEqualizers`' own types so the types are seen to line up, with NO agreement proof built; at `[C^op, Sets]` all five would be the FIRST inhabitant of their class at any functor category, measured by three sweeps whose criterion `Instance/Fun/Topos.v`'s header states.  At FinSet the derived initial object, binary coproduct and pushout agree with the computable ones up to `≅`; the `eq_refl` form is refused for the initial object and that one refusal is pinned in `Test/ProbeToposColimits405.v` with its cause NOT isolated (the derived object is `Crude_Inverse` at the terminal algebra, a chain that never consumes `PowF_ReflectsIsos`), while the coproduct and pushout readbacks are delivered at `≅` only — and there the derived `HasCoequalizers FinSet` is the first such inhabitant the tree has ever had |
@@ -213,7 +109,10 @@ result about something the library actually contains.
 | `Grp_U_split_iff_transversal`, `transversal_U_IsCoequalizer`, `transversal_U_AbsoluteCoequalizer` and `transversal_untruncates` (`Instance/Grp/Coequalizer.v`), their ring twins `Rng_U_split_iff_transversal`, `rtransversal_U_IsCoequalizer`, `rtransversal_U_AbsoluteCoequalizer` and `rtransversal_untruncates` (`Instance/Rng/Coequalizer.v`), and `Grp_split_iff_hom_transversal` and `Rng_split_iff_hom_rtransversal` (#479 — Mac Lane §VI.6, "if we apply the standard forgetful functor U: Grp→Set, the resulting fork in Set is split", and Exercise 1 for rings) | a `Transversal N` (resp. `RTransversal A`): a representative in each coset with an untruncated coset witness; asked of every N or A a constructive taboo, not a premise to discharge: at N_P ◁ Z/2 and A_P ◁ ℤ (membership the Prop P or a = 0) a transversal is a decision of P (`NP_transversal_decides`, `NP_decides_transversal`, `AP_rtransversal_decides`), so the unconditional splitting decides every proposition (`U_split_taboo`, `Rng_U_split_taboo`), the argument of `Instance/Sets/Regular.v`'s `blanket_splitting_entails_LEM`; for the splitting in `Grp` or `Rng` itself, a `HomTransversal` (a homomorphic section) | WITNESSED by shipped transversals: `TotalNS_transversal G` and `TrivialNS_transversal G` at every group, `A3_transversal` at A₃ ◁ S₃ (Instance/Grp/TwoFunctors.v's decidable S₃, at `Set` carriers, where S₃ lives), `TotalIdeal_transversal R` and `TrivialIdeal_transversal R` at every ring, `EvenIdeal_transversal` (a ↦ a mod 2) at 2ℤ ⊂ ℤ, and `NP_decides_transversal P d` at N_P for each decided P. The splitting in the category itself is shipped at S₃/A₃ (`S3_A3_Grp_split`, through `hom_transversal_Grp_split` at `A3_hom_transversal`) and at the trivial ideal (`TrivialIdeal_Rng_split`), and its premise is REFUTED at Z/4 over {0, 2} (`Z4_two_not_split_in_Grp`) and at 2ℤ ⊂ ℤ (`EvenIdeal_not_split_in_Rng`). Unconditional alternative, attempted and delivered: U corestricted to PropSets carries p to a coequalizer (not a split one), `PropSets_quot_IsCoequalizer` and `PropSets_rquot_IsCoequalizer`, shipped with no premise, and in `Sets` the coequalizer of the U-image pair is the untruncated quotient with no premise (`quot_rel_IsCoequalizer`, `rquot_mem_IsCoequalizer`); U p itself is a coequalizer in `Sets` at N_P outright (`NP_U_IsCoequalizer`). The splittings after U, the U-coequalizers and the untruncations at the witnesses are not shipped constants: measured in a scratch file carrying the two files' `Require` lines and modules, with an `Axiom` instrument in the same file printing `Axioms:`, `transversal_split` at `A3_transversal`, at `TotalNS_transversal G`, at `TrivialNS_transversal G` and at `NP_decides_transversal P d`, `rtransversal_split` at `EvenIdeal_transversal`, at `TotalIdeal_transversal R` and at `TrivialIdeal_transversal R`, `transversal_U_IsCoequalizer` and `transversal_untruncates` at `A3_transversal`, and `rtransversal_U_IsCoequalizer` and `rtransversal_untruncates` at `EvenIdeal_transversal` are each accepted and "Closed under the global context" |
 | `Comparison_exists`, `Comparison_unique_to`, `Comparison_unique` and `Comparison_unique_cell` (`Monad/Comparison/Resolution.v`, #482 — Mac Lane's §VI.7 Lemma: a comparison of two resolutions of one monad into one whose right adjoint creates the coequalizers of its split pairs exists and is unique up to a unique compatible isomorphism) | `CreatesUSplitCoequalizers G` for the right adjoint G of the target resolution, and an isomorphism θ in `Monads X` between the two induced monads | WITNESSED in the same file, at the Eilenberg–Moore resolution of every monad (T, H), by Beck.v's `monadic_creates`: `EM_terminal` and `EM_terminal_unique` take θ from any isomorphism of a resolution's monad with (T; H) through `EM_Monad_iso`, and `EM_Comparison_unique` and `EM_Comparison_via_Lemma_agrees` apply the Lemma at `EM_Comparison_theta`, whose components are the identity; concrete instances of the premise are `monadic_creates` at `Id_Monad` (its own row in this table) and Instance/Fun/Action/Monad.v's `MSet_Forget_creates`, where the Lemma is not applied. It is applied at a concrete monad in `Instance/Fun/Action/Monad/Comparison.v`: `K_no_coherent_comparison` uses `EM_Comparison_unique` at the adjunction of LZ-sets, LZ the three-element monoid there (the premise `monadic_creates` at `ActMonad LZ`), whose hypothesis, a comparison over the identity identification, is inhabited by `EM_Comparison_Comparison` (the probe's controls C20, C21); and the same module refutes the clause without the coherence (`bare_awodey_refuted`, `printed_awodey_not_unique`). All closed. |
 
-## Conditional results (no in-tree witness of the distinctive premise)
+## 条件性结果（特有前提尚无树内见证） (Conditional results)
+
+下列结果已证明且（已审计者）无公理，但其特有前提尚无树内具体对象满足；它们是等待模型的条件句。
+
 
 Each result here is proven, but its distinctive hypothesis has no inhabitant
 anywhere in the library, so no concrete object exercises it.  These are
@@ -266,7 +165,7 @@ and nothing proven elsewhere secretly depends on their being inhabited.
 | `bool_SupLat` (`Instance/SupLat/Examples.v`, #466 — the chain false < true on Instance/Sets.v's `bool_setoid_object`, ordered by `bool_chain_le` and assembled from a given sup by `bool_chain_SupLat`, as a complete semilattice: given `wlem : ∀ Q : Prop, (~ Q) + (~ ~ Q)`, `bool_SupLat wlem` is a `SupLatObject` on that carrier and order, the converse, at this chain only, of `suplat_two_points_WLEM`) | informative weak excluded middle, `∀ Q : Prop, (~ Q) + (~ ~ Q)`, as a HYPOTHESIS in the statement | no axiom-free in-tree inhabitant, and the premise is NECESSARY, not an artefact of the proof: `bool_SupLat_WLEM` derives it from ANY supremum operator for the order false ≤ true on `bool`, as an instance of `suplat_two_points_WLEM`, which derives it from any complete semilattice with a decidable ≈ and two distinct comparable points, bot ≤ top with top ≉ bot, by comparing with top the sup of the subset of the x with Q and x ≈ top, informatively because the supremum is an operation (`sl_sup`) and not a mere existence; so the chain is a complete semilattice in this library exactly under the hypothesis. `Print Assumptions` reports `bool_SupLat` "Closed under the global context" because the premise is a hypothesis, not an axiom, and the two necessity theorems are unconditional and closed. The non-vacuity of Mac Lane's parts (b)–(d) therefore rests on P X and Prop (the #466 rows of the witnessed table), whose ≈ is not decidable without the hypothesis (`Prop_SupLat_decidable_WLEM`: a decidable ≈ on `Prop_SupLat` gives it outright) |
 | `MPos_to_Id`, `MPos_Id_iso` and `TPos_to_id`, with `MPos_IEM_Id_iso` (`Instance/Pos/Monadicity.v`, #469 — Awodey §10.3's "one has as the unit the identity function X = UF(X)" over the tree's `Sets`, whose discrete poset `PosDisc` must truncate ≈, so that its monad `MPos` is the truncation monad, `MPos_trunc_iso`) | `SetsTruncElim@{c so}`: every setoid of `Sets@{c so}` eliminates its own truncation, `inhabited (x ≈ y) → x ≈ y`; equivalently, by `trunc_choice` and `choice_trunc`, ∀ A : Type@{c}, inhabited A → A; for `MPos_IEM_Id_iso`, informative excluded middle at c, Instance/Sets/Classifier/OneLevel.v's `IEM@{c}` written out | no axiom-free in-tree inhabitant, and the premise is NECESSARY, not an artefact of the route: `MPos_to_Id_trunc` derives it from ANY morphism of monads `MPos → IdMonad Sets`, and `any_adj_to_Id_trunc` from any morphism of monads into `IdMonad Sets` out of the monad of ANY left adjoint of `Pos_Forget` (at that lemma's universe instance, the `Adjunction` record's strict slot at so), so an isomorphism with the identity monad requires the principle whichever left adjoint is chosen, and at `PosDisc` `MPos_Id_iff` makes the isomorphism equivalent to it. It follows from `IEM@{c}` (`choice_of_IEM`, whence `MPos_IEM_Id_iso`, a closed conditional over a hypothesis the tree already uses, itself without an axiom-free in-tree inhabitant: the `Sets_Classifier` row above records none for `DecImage`, which is equivalent to it), and it is interderivable, level for level, with `Untruncate@{c}` (`untr_of_choice`, `choice_of_untr`; CORRECTION (#1349): moved to Instance/Sets/Propositional/Full.v, which Instance/Pos/Monadicity.v requires), both hypotheses taken written out, OneLevel's at `eq_refl` by a control of `Test/ProbeMonadicity469.v`, since requiring OneLevel.v would bring the file's closure from 67 modules to 107 (by `Print Libraries`). It is consistent with axiom-free Coq, since it follows from the standard library's axiom `constructive_indefinite_description` (a derivation outside the tree whose `Print Assumptions` lists that axiom alone; no axiom-dependent constant is shipped), and believed independent of it: the normal-form argument docs/INDEX.md's #469 bullet sketches is argued, not established, and one step of it, the elimination restriction on `inhabited`, is illustrated by the sort refusal ("Incorrect elimination") `Test/ProbeMonadicity469.v` pins. The same principle, up to truncation, is the premise #462's `components_left_adjoint_discrete_Sets` needs (its row above, over `Untruncate@{o}`), and in both developments the unconditional reading is over the propositional setoids (`PSets` there, `PropSets` here, one category: the #469 identity-monad row of the witnessed table; CORRECTION (#1349): one definition since, `PSets` being `PropSets`) |
 
-### The cospan universe note
+### 共跨宇宙注记 (The cospan universe note)
 
 `Cospan_Hypergraph` and the spider results are witnessed exactly when a
 `HasPushouts` instance exists on a base category whose object universe sits
@@ -284,7 +183,7 @@ numbers and therefore sit below its homs.  `FinSet_HasPushouts`
 `FinSet` — each reported "Closed under the global context" — which is why
 they appear in the witnessed table above.
 
-### The skeleton choice note
+### 骨骼选择注记 (The skeleton choice note)
 
 The `Skeleton` record is inhabited in-tree, but it is not dischargeable
 uniformly: "every category has a skeleton" is equivalent to the axiom of
@@ -301,7 +200,7 @@ holds.  And every witness supplied is a category whose representatives can
 be named explicitly — `Indiscrete bool` chooses `true`, a skeletal category
 chooses itself — so no witness in the table smuggles a choice principle.
 
-## Maintaining this table
+## 维护本表 (Maintaining this table)
 
 When a new headline result is added, record here whether its distinctive
 premise is witnessed in-tree, and by what.  When a previously conditional
@@ -309,7 +208,7 @@ premise gains an instance, move its row up.  The intent is that a reader can
 tell at a glance which results are demonstrated over a concrete model and
 which are proven parametrically and await one.
 
-### The fundamental-groupoid note
+### 基本群胚注记 (The fundamental-groupoid note)
 
 Two limits of the π₁ development belong here rather than only in the file
 headers, because the gap between them is exactly what this document exists to

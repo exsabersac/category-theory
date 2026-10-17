@@ -43,11 +43,11 @@ Record IsWideEqualizer {C : Category} {I : Type} {x y : C}
 Arguments wfork_eq {_ _ _ _ _ _ _} _ _ _.
 Arguments weq_desc {_ _ _ _ _ _ _} _ {_} _ _.
 
-(* A category has all wide equalizers when every family of parallel arrows
-   carries an elementary wide equalizer.  The index [Type] is a universe
-   PARAMETER of the class, not a quantifier over every universe, exactly as
-   for [Structure/Limit/Product.v]'s indexed products; a consumer whose
-   index is a hom-type instantiates it there. *)
+(* A 范畴 has all wide equalizers family parallel arrows
+ carries elementary wide equalizer. The index [Type] universe
+ PARAMETER class, quantifier over universe, exactly as
+ [Structure/Limit/Product.v]'s indexed products; consumer whose
+ index hom-type instantiates it there. （已译） *)
 Class HasWideEqualizers (C : Category) := {
   wide_equalizer {I : Type} {x y : C} (fs : I → x ~> y) :
     ∃ (q : C) (e : q ~> x), IsWideEqualizer fs q e

@@ -33,12 +33,12 @@ Definition SubFactorsThrough {x : X} {a : A} (f : x ~> G a) (m : SubObj a) :
   Type :=
   { k : x ~> G (sub_dom m) & fmap[G] (sub_mono m) ∘ k ≈ f }.
 
-(* Mac Lane's definition, stated POSITIVELY as a cancellation law: f
-   spans a when every subobject of a through which f factors is already
-   the whole of a, i.e. lies above the top subobject [sub_top] (so its
-   mono is an isomorphism).  "Proper subobject" -- one for which
-   [sub_le sub_top m] does not hold -- never needs to be named, exactly
-   as Adjunction/SAFT.v's [Cogenerator] avoids "distinct arrows". *)
+(* Mac Lane's 定义, stated POSITIVELY 消去律: f
+ spans 子对象 through f factors already
+ whole a, i.e. lies above top 子对象 [sub_top] (so its
+ mono 同构). "Proper 子对象" -- one which
+ [sub_le sub_top m] does hold -- never needs named, exactly
+ Adjunction/SAFT.v's [Cogenerator] avoids "distinct arrows". （已译） *)
 Definition Spanning {x : X} {a : A} (f : x ~> G a) : Type :=
   ∀ m : SubObj a, SubFactorsThrough f m → sub_le sub_top m.
 

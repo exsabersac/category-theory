@@ -134,12 +134,12 @@ Proof.
   - apply feq_consR; [ reflexivity | exact (IHt _ _ E) ].
 Qed.
 
-(* Binary [Proper] phrasing of append-congruence.  A plain lemma, NOT a
-   registered instance: because [fapp]'s implicit target indices {c3 d3}
-   intervene between its two word arguments, the eta-expanded subject below
-   is not a partial application of [@fapp], so setoid rewriting — which keys
-   on the head constant of a literal application — could never select it.
-   [fapp_respects_forall] below is the operative rewrite instance. *)
+(* Binary [Proper] phrasing append-congruence. A plain lemma, NOT a
+ registered 实例: because [fapp]'s implicit target indices {c3 d3}
+ intervene between word arguments, eta-expanded subject below
+ partial application [@fapp], setoid rewriting — keys
+ head constant literal application — could never select it.
+ [fapp_respects_forall] below operative rewrite 实例. （已译） *)
 Lemma fapp_respects {c1 d1 c2 d2 c3 d3} :
   Proper (equiv ==> equiv ==> equiv)
     (fun (t : FunHom c1 d1 c2 d2) (u : FunHom c2 d2 c3 d3) => fapp t u).

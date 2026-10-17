@@ -122,9 +122,7 @@ Example eval_curry_plus :
   eval ∘ first (curry plus_map) ≈ plus_map.
 Proof. exact (ump_exponents plus_map). Qed.
 
-(* Non-vacuity as a genuine inequality: the transpose of addition is not a
-   constant family, so the bijection above is not an identification of two
-   one-element setoids. Concretely 2 + 0 and 0 + 0 differ. *)
+(* 相关说明。 （已译） *)
 Example curry_plus_not_constant :
   (curry plus_map 2%nat ≈ curry plus_map 0%nat) -> False.
 Proof.

@@ -80,10 +80,7 @@ Definition ArrowIndex_op {C : Category} (AI : ArrowIndex C) :
    an earlier revision declared a duplicate [DecObj]; the audit found the
    twin. *)
 
-(* Decode a bundled arrow at a requested pair of endpoints, falling back on
-   the default when the endpoints do not match.  No universe binders are
-   written here on purpose: stdlib [eq] is pinned to a global universe on
-   Coq 8.19/8.20 (Theory/Size.v). *)
+(* 相关说明。 （已译） *)
 Definition td {C : Category} (DO : ObjDecEq C) {x y : obj[C]}
   (m : TotalMor C) (d : x ~> y) : x ~> y :=
   match DO (projT1 m) x with

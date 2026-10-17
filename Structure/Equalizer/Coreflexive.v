@@ -49,11 +49,11 @@ Arguments corefl_retract   {_ _ _ _ _} _.
 Arguments corefl_retract_f {_ _ _ _ _} _.
 Arguments corefl_retract_g {_ _ _ _ _} _.
 
-(* A category has coreflexive equalizers when every coreflexive pair
-   carries an elementary equalizer (Structure/Equalizer/Fork.v's
-   [IsEqualizer]).  Compare [HasEqualizers], which asks the same of every
-   parallel pair, and Structure/Coequalizer/Reflexive.v's
-   [HasReflexiveCoequalizers], the dual. *)
+(* A 范畴 has coreflexive equalizers coreflexive pair
+ carries elementary equalizer (Structure/Equalizer/Fork.v's
+ [IsEqualizer]). Compare [HasEqualizers], asks same every
+ parallel pair, Structure/Coequalizer/Reflexive.v's
+ [HasReflexiveCoequalizers], dual. （已译） *)
 Class HasCoreflexiveEqualizers (C : Category) := {
   coreflexive_eq {x y : C} (f g : x ~> y) :
     CoreflexivePair f g → ∃ (q : C) (e : q ~> x), IsEqualizer f g q e
@@ -293,10 +293,10 @@ Definition diagonal_in_image_of_reflexive (R : ReflexivePair f g) :
   diagonal_in_image :=
   fun b => (refl_section R b; (refl_section_f R b, refl_section_g R b)).
 
-(* The converse needs the chosen witnesses to respect ≈, which the
-   statement of [diagonal_in_image] does not supply: [∃] is [sigT], so a
-   choice function is present, but a Sets morphism also needs
-   [proper_morphism]. *)
+(* The converse needs chosen witnesses respect ≈, the
+ statement [diagonal_in_image] does supply: [∃] [sigT], a
+ choice function present, but Sets 态射 needs
+ [proper_morphism]. （已译） *)
 Definition diagonal_section (D : diagonal_in_image)
   (Hproper : ∀ b b' : Y, b ≈ b' → `1 (D b) ≈ `1 (D b')) : Y ~{Sets}~> X.
 Proof.

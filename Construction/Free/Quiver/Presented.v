@@ -459,10 +459,7 @@ Definition square_diag_gk : Sq_A ~{FreeOnQuiver SquareQuiver}~> Sq_D :=
   tcons (B:=@edges SquareQuiver) _ Sq_g
     (tlist_singleton (B:=@edges SquareQuiver) Sq_k).
 
-(** Riehl §1.6 Remark 1.6.7's negative half.  The in-tree shadow of the
-    same fact under a different name is [funny_diagonals_distinct]
-    ([Construction/Funny/Comparison.v]), which this file does not
-    [Require]. *)
+(* 相关说明。 （已译） *)
 Theorem free_square_diagonals_distinct :
   square_diag_fh ≈ square_diag_gk → False.
 Proof.

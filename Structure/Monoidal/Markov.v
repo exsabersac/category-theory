@@ -55,10 +55,7 @@ Class MarkovCategory : Type := {
 
 Coercion markov_is_cd : MarkovCategory >-> CopyDiscard.
 
-(* [markov_semicartesian] is deliberately NOT an [Existing Instance]:
-   downstream files select it explicitly (mirroring how [cd_comonoid] is
-   accessed by projection), keeping typeclass resolution from picking a
-   semicartesian structure the caller did not ask for. *)
+(* 相关说明。 （已译） *)
 
 Context `{M : MarkovCategory}.
 

@@ -479,11 +479,11 @@ Fail Check (fun z : obj[C] => @GroupObject C M z).
 (* CONTROL for negative 1. *)
 Check (fun z : obj[C] => @GroupObject C CM z).
 
-(* NEGATIVE 2, TYPING.  [MonoidHom] is indexed by Theory/Algebra/Monoid.v's
-   [Monoid], not by Structure/Monoid.v's [MonoidObject], so the raw field of
-   a group object does not fit and #503's class passage
-   ([Monoid_of_MonoidObject], used by [group_monoid]) is load-bearing.
-     "The term "groupobject_is_monoid" has type "MonoidObject x"" *)
+(* NEGATIVE 2, TYPING. [MonoidHom] indexed Theory/Algebra/Monoid.v's
+ [Monoid], Structure/Monoid.v's [MonoidObject], raw field of
+ group 对象 does fit #503's class passage
+ ([Monoid_of_MonoidObject], used [group_monoid]) load-bearing.
+ "The term "groupobject_is_monoid" has type "MonoidObject x"" （已译） *)
 Fail Check (MonoidHom (@groupobject_is_monoid _ _ _ Gx)
                       (@groupobject_is_monoid _ _ _ Gy) f).
 

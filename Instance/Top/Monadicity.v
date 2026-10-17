@@ -306,9 +306,9 @@ Proof.
   exact (@fmap_sur _ _ _ HF PTwoIndisc@{o} PBool@{o} setoid_morphism_id b).
 Qed.
 
-(* Every monadic functor is conservative, and [PForget] is not: it sends
-   [pbool_to_indisc] to an isomorphism of [Sets], and that is not one.
-   Hypothesis 3 of Monad/Monadicity/Crude.v's crude monadicity theorem. *)
+(* Every monadic 函子 conservative, [PForget] not: it sends
+ [pbool_to_indisc] 同构 [Sets], one.
+ Hypothesis 3 Monad/Monadicity/Crude.v's crude monadicity theorem. （已译） *)
 Lemma PForget_not_ReflectsIsos@{o so | o < so +} :
   ReflectsIsos PForget@{o so} → False.
 Proof.

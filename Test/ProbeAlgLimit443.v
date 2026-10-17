@@ -97,10 +97,7 @@ Fail Example p443_n1
 Example p443_ab_zero (d : J) :
   `1 (cmon_zero (vertex_obj[Ab_Complete J K])) d = cmon_zero (K d) := eq_refl.
 
-(* N3 CONVERSION: the created zero is the coordinatewise zero and not its
-   negation.  [ab_neg (K d) (cmon_zero (K d)) ≈ cmon_zero (K d)] is an
-   ordinary consequence of [ab_neg_left]; it is not a conversion, so one
-   operation cannot be read back as another even where they agree. *)
+(* 相关说明。 （已译） *)
 
 Fail Example p443_n3 (d : J) :
   `1 (cmon_zero (vertex_obj[Ab_Complete J K])) d

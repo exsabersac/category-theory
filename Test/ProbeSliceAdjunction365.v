@@ -238,11 +238,7 @@ End Typing.
 (* * ** Controls naming every remaining delivered 常值 （已译） *)
 
 Check @Cartesian.
-(* [Cocartesian] is a NOTATION (Structure/Cocartesian.v), not a
-   constant, so [Check @Cocartesian.] does not parse -- it reports a
-   missing [term] after '@Cocartesian'.  It is named instead by the
-   [Context {CC : @Cocartesian C}] lines above, which are succeeding
-   commands and serve as its control. *)
+(* 相关说明。 （已译） *)
 Check @IsTerminalObj.
 Check @IsInitialObj.
 Check @unit.

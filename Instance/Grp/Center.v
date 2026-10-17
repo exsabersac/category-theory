@@ -218,10 +218,7 @@ Proof.
   intros x; destruct x as [[]|[]]; exact ttt.
 Qed.
 
-(* Mac Lane's remark, before the exercise: a homomorphism need not
-   carry central elements to central elements.  The inclusion sends
-   ℤ/2's central nonidentity to the reflection s, which S₃'s trivial
-   center excludes. *)
+(* 相关说明。 （已译） *)
 Lemma central_not_preserved :
   IsCentral GrpTwo grp_two_one *
   (IsCentral S3 (grp_map grp_two_s3 grp_two_one) → False).

@@ -186,10 +186,10 @@ Definition free_equiv_of_groupoid_equation (a b : FGWord X)
   (H : @equiv _ (@homset (FreeGroupoid (PointQuiver X)) ttt ttt) a b) :
   @equiv _ (is_setoid (grp_setoid (FreeGrpObject X))) a b := inhabits H.
 
-(* CONTROL 3b.  The route out, at a TARGET group, through [pequiv] -- which
-   is how [free_grp_extend]'s respectfulness is proved.  Note what is NOT
-   assumed: nothing about [X].  The witness comes from [H], which carries
-   [grp_prop] as a field. *)
+(* CONTROL 3b. The route out, at TARGET group, through [pequiv] -- which
+ how [free_grp_extend]'s respectfulness proved. Note what NOT
+ assumed: nothing about [X]. The 见证 comes [H], carries
+ [grp_prop] field. （已译） *)
 Definition free_equiv_through_pequiv {H : GrpObject}
   (h : X ~{Sets}~> Grp_Forget H) (a b : FGWord X)
   (Hab : @equiv _ (is_setoid (grp_setoid (FreeGrpObject X))) a b) :

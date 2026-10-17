@@ -42,11 +42,11 @@ Definition FinSet_initial_strict {x : FinSet}
   x ≅ @initial_obj FinSet FinSet_Initial :=
   @initial_strict FinSet FinSet_Cartesian FinSet_Closed FinSet_Initial x f.
 
-(* Concretely in the skeletal model: an object of [FinSet] is a natural
-   number, the initial object is [0], and a morphism [x ~> 0] is a function
-   [Fin.t x -> Fin.t 0].  Strictness says [x] must itself be [0], which we can
-   state as a genuine equality of objects because [FinSet] is skeletal
-   ([FinSet_Skeletal], Instance/FinSet/Skeleton.v). *)
+(* Concretely skeletal model: 对象 [FinSet] natural
+ number, initial 对象 [0], 态射 [x ~> 0] function
+ [Fin.t x -> Fin.t 0]. Strictness says [x] must itself [0], we can
+ state genuine equality 对象 because [FinSet] skeletal
+ ([FinSet_Skeletal], Instance/FinSet/Skeleton.v). （已译） *)
 Lemma FinSet_initial_strict_zero (x : nat)
   (f : x ~{FinSet}~> @initial_obj FinSet FinSet_Initial) : x = 0%nat.
 Proof.

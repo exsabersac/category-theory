@@ -476,9 +476,7 @@ Proof. constructor; intros z g1 g2 _ u; now destruct (g1 u), (g2 u). Qed.
 Lemma collapse_pick_epic : Epic (collapse ∘[Sets] pick_true).
 Proof. constructor; intros z g1 g2 H u; destruct u; apply (H ttt). Qed.
 
-(* ... while the OTHER factor need not be, in either case.  [collapse] identifies the
-   two booleans, so it is not monic: probe it with [pick_true] against
-   [pick_false], which it cannot tell apart. *)
+(* 相关说明。 （已译） *)
 Lemma collapse_not_monic : Monic collapse → False.
 Proof.
   intro M.

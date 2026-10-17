@@ -480,9 +480,7 @@ Definition based_comp {X Y Z : PointedTop}
            (H : BasedHomotopy p p') (H' : BasedHomotopy q q') :
   BasedHomotopy (p ∘ q) (p' ∘ q').
 Proof.
-  (* the ascription is what makes the two readings of the composite meet:
-     [ptop_map (p ∘ q)] reduces to [ptop_map p ∘ ptop_map q], but only by
-     conversion, which unification against a metavariable will not do *)
+  (* 相关说明。 （已译） *)
   refine {| bhtpy := (homotopy_comp (bhtpy H) (bhtpy H')
                        : Homotopy (ptop_map (p ∘ q))
                                   (ptop_map (p' ∘ q'))) |}.

@@ -122,9 +122,7 @@ Qed.
 
 (* * ** A second 论元: Cantor's diagonal at points one coproduct （已译） *)
 
-(* No map from the predicates on a type into it is injective up to a
-   reflexive relation: the predicate "encodes a predicate it does not
-   hold of" holds of its own code exactly when it does not. *)
+(* 相关说明。 （已译） *)
 Lemma cocomp_cantor_diagonal@{u} {A : Type@{u}} (R : A → A → Type@{u})
   (R_refl : ∀ a, R a a) (enc : (A → Prop) → A)
   (enc_inj : ∀ U V, R (enc U) (enc V) → U = V) : False.

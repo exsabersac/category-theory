@@ -302,9 +302,9 @@ Qed.
 
 End MacLaneEx5.
 
-(* Mac Lane §IV.6 Exercise 5: [FinSet] is cartesian closed, [Omega] is a
-   small category, and the functor category is not cartesian closed --
-   under ANY cartesian structure on it, not merely the pointwise one. *)
+(* Mac Lane §IV.6 Exercise 5: [FinSet] cartesian closed, [Omega] a
+ small 范畴, 函子 范畴 cartesian closed --
+ under ANY cartesian structure it, merely pointwise one. （已译） *)
 Theorem fun_not_cartesian_closed
   (CC : @Cartesian ([Omega, FinSet])) :
   @Closed ([Omega, FinSet]) CC -> False.

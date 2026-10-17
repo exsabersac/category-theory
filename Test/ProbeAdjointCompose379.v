@@ -169,9 +169,9 @@ Example probe379_ctrl_id_left_unit (x : C1) :
 
 End Laws.
 
-(* Negative 8 (TYPING): the witness is likewise not of identity type --
-   its two functors move an object, so it does not even have the TYPE of
-   an identity adjoint equivalence.  Control: the object is moved. *)
+(* Negative 8 (TYPING): 见证 同样 恒等类型 --
+ 函子 move 对象, it does even have TYPE of
+ identity adjoint equivalence. Control: 对象 moved. （已译） *)
 Example probe379_ctrl_witness_moves :
   (IndT ◯ Erase (Indiscrete bool)) false = true := eq_refl.
 

@@ -328,9 +328,7 @@ Proof.
     + apply thunit_left.
 Qed.
 
-(* The inclusion is one-directional, which is why def 3 is a condition and
-   not a symmetry: every [tid2 f] is a `·`-unit, whatever f is, while only
-   those at an identity 1-cell are even typeable as `∘`-units. *)
+(* 相关说明。 （已译） *)
 Theorem twocategory_tid2_vunit {a b : tcat} (f : a ~{tcat}~> b) :
   IsVUnit (tid2 f).
 Proof.

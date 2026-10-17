@@ -324,12 +324,12 @@ Theorem probe_image_of_U_not_unit_fixed :
     → False.
 Proof. exact (free_monoid_unit_never_iso (list bool)). Qed.
 
-(* The canonical comparison [eps (F x)] is not invertible here either, so
-   [F eta] is not its inverse: Riehl's "F G F = F" reading is a
-   statement about a Galois connection between POSETS and does not carry
-   over to an arbitrary adjunction.  Whether some OTHER natural
-   isomorphism [F ◯ U ◯ F ≈ F] exists at this adjunction is neither
-   proved nor refuted here. *)
+(* The 典范比较 [eps (F x)] 可逆 either, so
+ [F eta] inverse: Riehl's "F G F = F" reading a
+ statement about Galois connection between POSETS does carry
+ over arbitrary 伴随. Whether some OTHER natural
+ 同构 [F ◯ U ◯ F ≈ F] exists at 伴随 neither
+ proved nor refuted here. （已译） *)
 (* The 对象 question IS [F]-image, what makes next
  two computations statement about CANONICAL comparison. （已译） *)
 Example probe_FreeMon_is_F_bool :

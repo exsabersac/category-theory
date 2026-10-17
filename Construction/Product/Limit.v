@@ -143,9 +143,9 @@ Defined.
 
 (* 相关说明。 （已译） *)
 
-(* A cone over [K] is isomorphic to the pairing of its two projections; the
-   apex isomorphism is [(id, id) : (fst n, snd n) ≅ n], which is not the
-   identity only because [prod] has no definitional eta. *)
+(* A cone over [K] isomorphic pairing projections; the
+ apex 同构 [(id, id) : (fst n, snd n) ≅ n], the
+ identity only because [prod] has no definitional eta. （已译） *)
 
 Definition prod_cone_iso (N : Cone K) :
   ConeIso (prod_cone (FCone Fst N) (FCone Snd N)) N.

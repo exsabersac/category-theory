@@ -125,11 +125,11 @@ Program Definition FinSets_bool_iso :
 Definition FinSets_negb : FinSets_bool ~{FinSetsCat}~> FinSets_bool :=
   (Sets_negb; I).
 
-(* Non-vacuity.  [Sub]'s `≈` is `≈` of first projections, so distinctness of
-   these two parallel morphisms of the subcategory reduces to distinctness of
-   `id` and `negb` in [Sets] — Theory/Concrete.v's [Sets_two_arrows].  Stated
-   with `→ False` because hom-equivalence here is `Type`-valued, so `¬`, which
-   forces `Prop`, does not apply. *)
+(* Non-vacuity. [Sub]'s `≈` `≈` first projections, distinctness of
+ these parallel 态射 subcategory reduces distinctness of
+ `id` `negb` [Sets] — Theory/Concrete.v's [Sets_two_arrows]. Stated
+ `→ False` because hom-equivalence `Type`-valued, `¬`, which
+ forces `Prop`, does apply. （已译） *)
 Lemma FinSets_two_arrows :
   @id FinSetsCat FinSets_bool ≈ FinSets_negb → False.
 Proof.

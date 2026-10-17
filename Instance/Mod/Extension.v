@@ -679,9 +679,7 @@ Fail Example ext_probe_action_strict {R S : RingObject}
   rm_smul (TensorMod (ExtBase phi) M) r t
     = rm_smul (RestrictObj phi (ExtendObj phi Hc M)) r t := eq_refl.
 
-(* The counit does not compute: it is [unique_obj] of the [Qed]-opaque
-   [ump_universal_arrows], so nothing reduces through it.  Compare the
-   UNIT, which does compute — [extend_adj_unit_computes] above. *)
+(* 相关说明。 （已译） *)
 Fail Example ext_probe_counit_strict {R S : RingObject}
   (phi : R ~{Rng}~> S) (Hc : CentralImage phi) (N : RMod S)
   (m : carrier (cmon_setoid N)) :

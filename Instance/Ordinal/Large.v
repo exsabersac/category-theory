@@ -223,10 +223,7 @@ Definition SmallOrd_op_indexed_limit@{u +}
 Definition SmallOrd_op_Terminal : @Terminal SmallOrd_op_Proset :=
   Proset_Terminal (op_PreOrder ole_preorder) ozero ozero_least.
 
-(* Non-vacuity, in the sense of Instance/Proset/Limit.v's
-   [nat_glb_not_4]: [IsLUB] is refutable here, so the positive statements
-   above are not statements about a uniformly inhabited type.  Zero is not
-   a join of {zero, zero+1}. *)
+(* 相关说明。 （已译） *)
 Lemma smallord_lub_not_zero@{u +} :
   IsLUB ole@{u} (pair_family ozero@{u} (osucc@{u} ozero@{u})) ozero@{u}
   -> False.

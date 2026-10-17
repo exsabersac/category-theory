@@ -168,10 +168,10 @@ Proof.
   - intros f g h; exact h.
 Defined.
 
-(* The same statement for a whole category, as a transport rather than an
-   instance: "C's hom-setoid IS strict equality" is not a property of an
-   arbitrary [C] that instance resolution can check, so it is taken as a
-   hypothesis. *)
+(* The same statement whole 范畴, transport rather than an
+ 实例: "C's hom-setoid IS strict equality" property an
+ arbitrary [C] 实例 resolution can check, it taken a
+ 假设. （已译） *)
 Definition LocallyPropositional_of_eq (C : Category)
   (H : forall x y : C, @homset C x y = Morphism_equality x y) :
   LocallyPropositional C.

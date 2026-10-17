@@ -86,10 +86,10 @@ Example p448_t_arr (i : SpanningArrowsOutOf G x) :
 Fail Definition p448_b2 (m : SubObj a) : Type :=
   { k : x ~> G (sub_dom m) & k ∘ fmap[G] (sub_mono m) ≈ f }.
 
-(* B3 -- TYPING, not INSTANCE: [GP] is an EXPLICIT argument of the
-   discharged [spanning_solution_set], so omitting it mis-applies the
-   next argument: "The term "z" has type "obj[X]" while it is expected to
-   have type "PreservesWidePullbacks G"". *)
+(* B3 -- TYPING, INSTANCE: [GP] EXPLICIT argument the
+ 已消解的 [spanning_solution_set], omitting it mis-applies the
+ next argument: "The term "z" has type "obj[X]" it expected to
+ have type "PreservesWidePullbacks G"". （已译） *)
 Fail Definition p448_b3 (z : X) : SolutionSet G z :=
   spanning_solution_set G z.
 
